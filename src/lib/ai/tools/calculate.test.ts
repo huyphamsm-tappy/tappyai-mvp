@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { calculate, calcEvidenceNumbers, groundedCalcNumbers, numbersInText, CALC_FUNCTION_NAMES, CALC_LIMITS, type CalcOk } from './calculate'
+import { calculate, calcEvidenceNumbers, expressionGrounded, groundedCalcNumbers, numbersInText, CALC_FUNCTION_NAMES, CALC_LIMITS, type CalcOk } from './calculate'
 
 const ok = (e: string): CalcOk => { const r = calculate(e); if (!r.ok) throw new Error(`expected ok for ${e}: ${r.error} ${r.message}`); return r }
 const bad = (e: unknown) => { const r = calculate(e); if (r.ok) throw new Error(`expected a refusal for ${String(e)} but got ${r.value}`); return r }
@@ -150,19 +150,118 @@ describe('W4 calculate · what a result is evidence for', () => {
     expect(numbersInText('không có số')).toEqual([])
     expect(numbersInText('1 2 3 '.repeat(5000), 50).length).toBeLessThanOrEqual(50)
   })
-  it('groundedCalcNumbers: money-sized inputs must be known; small literals are structural; a later result may build on an earlier one', () => {
-    const a = res('1200000 * 3 + 1600000')
-    expect(groundedCalcNumbers([a], [1200000, 1600000])).toContain(5200000)
-    expect(groundedCalcNumbers([a], [1200000])).toEqual([])              // 1.600.000 was nobody's
-    expect(groundedCalcNumbers([a], [])).toEqual([])
-    expect(groundedCalcNumbers([res('pmt(0.01, 120, 300000000)')], [300000000]).length).toBeGreaterThan(0) // rate and months are structural
-    expect(groundedCalcNumbers([res('pmt(0.01, 120, 300000000)')], [299999999])).not.toEqual([])           // within 1 dong counts as the same number
-    expect(groundedCalcNumbers([res('1200000 * 3'), res('3600000 + 1600000')], [1200000, 1600000])).toContain(5200000) // chained
-    expect(groundedCalcNumbers([res('3600000 + 1600000'), res('1200000 * 3')], [1200000, 1600000])).not.toContain(5200000) // order matters: the earlier result is not yet known
-    expect(groundedCalcNumbers([res('500 + 9999')], [])).toContain(10499) // everything below 10.000 is structural
-    expect(groundedCalcNumbers([res('10000 + 1')], [])).toEqual([])        // 10.000 and above is money-sized
-    const many = res(Array.from({ length: 45 }, (_, i) => String(i + 1)).join(' + '))
-    expect(groundedCalcNumbers([many], [])).toEqual([])                  // a cut-short input list is not trusted
+  it('numbersInText leaves identifier-shaped strings and coordinates out (judged by format only): phone numbers, country-code phones, long ids, 7+ decimals; amounts stay', () => {
+    const got = numbersInText('gọi 0901234567 hoặc 84901234567, mã 1234567890123, tọa độ 21.0285112, vay 300000000 trong 12 tháng, giá 1.200.000')
+    expect(got).toEqual(expect.arrayContaining([300000000, 12, 1200000]))
+    for (const bad of [901234567, 84901234567, 1234567890123, 21.0285112]) expect(got, String(bad)).not.toContain(bad)
+    expect(numbersInText('0901.234.567')).not.toContain(901234567) // separators: only the parts, none of them an amount
+  })
+})
+
+// ── R3-01: a calculator result is evidence only when the expression follows, by VALUE, from numbers the turn already had ────────────────────────────
+describe('W4 calculate · grounding by value (Wave 3-FIX R3-01)', () => {
+  const G = (raw: number[], money: number[] = []) => ({ raw, money })
+  const grounded = (e: string, g: ReturnType<typeof G>) => expressionGrounded(e, g)
+  const res = (e: string) => ({ ...calculate(e), _tappy_calc: true })
+
+  describe('the attacks of the independent review are NOT grounded', () => {
+    const USER_NIGHTS = G([3]) // "đi Đà Lạt 3 đêm": the only number
+    it('B · a figure assembled from small numbers scaled by powers of ten (1500 * 1000 * 3 + 1600 * 1000)', () => {
+      expect(grounded('1500 * 1000 * 3 + 1600 * 1000', USER_NIGHTS)).toBe(false)
+      expect(grounded('1500 * 1000', USER_NIGHTS)).toBe(false)
+      expect(grounded('1.5 * 1000000', USER_NIGHTS)).toBe(false)
+      expect(grounded('1500000 * 3 + 1600000', USER_NIGHTS)).toBe(false) // the earlier, plain invention too
+    })
+    it('C · a power of ten on its own proves nothing (pow(10, 7), 10 * 1000000, 1000000 * 10)', () => {
+      for (const e of ['pow(10, 7)', '10 * 1000000', '1000000 * 10', '10 ^ 7', '1000 * 1000 * 10']) expect(grounded(e, G([])), e).toBe(false)
+    })
+    it('E · a phone number the user typed is not a base to build on (it is not even a number of the turn)', () => {
+      expect(numbersInText('số của mình 0901234567')).not.toContain(901234567)
+      expect(grounded('901234567 * 2', G(numbersInText('số của mình 0901234567')))).toBe(false)
+    })
+    it('I · invented small numbers multiplied together (3000 * 4000), an invented rate, an invented count', () => {
+      expect(grounded('3000 * 4000', G([]))).toBe(false)
+      expect(grounded('pmt(0.07, 120, 300000000)', G([1, 10, 300], [300000000]))).toBe(false) // the user said 1%, not 7%
+      expect(grounded('5 * 1000000', G([5]))).toBe(false)                                      // "5 người" is not 5 million
+      expect(grounded('(5 + 0) * 1000000', G([5]))).toBe(false)                                // resolving first does not launder it
+      expect(grounded('1200000 * 3 + 999', G([1200000, 3]))).toBe(false)                       // one invented term spoils the sum
+    })
+    it('J · a made-up price for a named product (990 * 1000) next to a real listing of 890.000', () => {
+      expect(grounded('990 * 1000', G([890000]))).toBe(false)
+      expect(grounded('990000', G([890000]))).toBe(false)
+    })
+    it('the old blanket exemption is gone: nothing below 10.000 is free (500 + 9999, 10000 + 1)', () => {
+      expect(grounded('500 + 9999', G([]))).toBe(false)
+      expect(grounded('10000 + 1', G([]))).toBe(false)
+    })
+    it('a cut-short list of 45 distinct literals is not grounded unless all of them are', () => {
+      const e = Array.from({ length: 45 }, (_, i) => String(i + 2)).join(' + ')
+      expect(grounded(e, G([]))).toBe(false)
+      expect(grounded(e, G(Array.from({ length: 45 }, (_, i) => i + 2)))).toBe(true)
+    })
+  })
+
+  describe('the legitimate calculations are kept', () => {
+    it('"1,5 triệu một đêm, 3 đêm" however the model writes it', () => {
+      const g = G([1.5, 3], [1500000])
+      for (const e of ['1500000 * 3', '1.5 * 1000000 * 3', '1500 * 1000 * 3', '3 * 1500000']) expect(grounded(e, g), e).toBe(true)
+    })
+    it('"200k một người, 5 người"', () => {
+      const g = G([200, 5], [200000])
+      for (const e of ['200000 * 5', '200 * 1000 * 5', '5 * 200 * 1000']) expect(grounded(e, g), e).toBe(true)
+    })
+    it('a trip total: nights, a hotel, a coach ticket, shared by people (all from the user)', () => {
+      const g = G([1.2, 3, 1.6, 4], [1200000, 1600000])
+      expect(grounded('1200000 * 3 + 1600000', g)).toBe(true)
+      expect(grounded('(1200000 * 3 + 1600000) / 4', g)).toBe(true)
+      expect(grounded('(1.2 * 1000000 * 3 + 1.6 * 1000000) / 4', g)).toBe(true)
+    })
+    it('an instalment: amount, years -> months, monthly rate from a percentage (written three ways)', () => {
+      const g = G([300, 10, 1], [300000000])
+      for (const e of ['pmt(0.01, 120, 300000000)', 'pmt(0.01, 10 * 12, 300 * 1000000)', 'pmt(1 / 100, 10 * 12, 300000000)', 'pmt(1%, 120, 300000000)']) expect(grounded(e, g), e).toBe(true)
+      const yearly = G([300, 10, 12], [300000000]) // 12 % a year, monthly rate written 12 / 100 / 12
+      for (const e of ['pmt(12 / 100 / 12, 10 * 12, 300000000)', 'pmt(0.01, 120, 300000000)']) expect(grounded(e, yearly), e).toBe(true)
+    })
+    it('a bill split, a currency conversion, a percentage, a conversion to millions, a rounding', () => {
+      expect(grounded('1250000 / 4', G([1250000, 4]))).toBe(true)
+      expect(grounded('100 * 25000', G([100, 25000]))).toBe(true)
+      expect(grounded('5200000 * 15%', G([5200000, 15]))).toBe(true)
+      expect(grounded('5200000 / 1000000', G([5200000]))).toBe(true)
+      expect(grounded('round(1250000 / 3, 2)', G([1250000, 3]))).toBe(true) // the digit count is a format
+      expect(grounded('1000 * (1 + 0.01) ^ 12', G([1000, 1]))).toBe(true)    // a year of monthly compounding: 12 is a calendar factor
+    })
+    it('numbers a tool result stated count too (a listing price), and an earlier calculator result may be built on', () => {
+      expect(grounded('890000 * 2', G([890000, 2]))).toBe(true)
+      const a = res('1200000 * 3'), b = res('3600000 + 1600000')
+      const ground = G([1200000, 3, 1600000], [1200000, 1600000])
+      expect(groundedCalcNumbers([a, b], ground)).toEqual(expect.arrayContaining([3600000, 5200000]))
+      expect(groundedCalcNumbers([b, a], ground)).not.toContain(5200000) // order matters: the earlier result is not yet known
+    })
+    it('a power of ten written as pow() or ^ is still only a unit: it scales a grounded literal, and alone it proves nothing', () => {
+      expect(grounded('pow(10, 3) * 1500', G([], [1500000]))).toBe(true)
+      expect(grounded('10 ^ 3 * 1500', G([], [1500000]))).toBe(true)
+      expect(grounded('pow(10, 3) * 1500', G([], []))).toBe(false)
+      expect(grounded('pow(10, 3)', G([], [1500000]))).toBe(false)
+    })
+    it('a calendar multiple or a percentage is derived from what the USER wrote only: a "7" inside a tool result does not make 0.07 a rate', () => {
+      const toolHas7 = { raw: [7, 1, 10, 300], money: [300000000], derive: [1, 10, 300] }
+      expect(grounded('pmt(0.07, 120, 300000000)', toolHas7)).toBe(false)
+      expect(grounded('pmt(0.07, 120, 300000000)', { raw: [7, 1, 10, 300], money: [300000000] })).toBe(true) // (no `derive` given: every raw number may be the base - the documented default)
+      expect(grounded('pmt(0.01, 120, 300000000)', toolHas7)).toBe(true)
+    })
+    it('a within-1 % rounding is NOT matching: values must be equal (1.500.000 is not 1.500.001)', () => {
+      expect(grounded('1500001 * 3', G([3], [1500000]))).toBe(false)
+    })
+  })
+
+  it('calcEvidence of a non-tool object or a refusal gives nothing, even when the numbers are grounded', () => {
+    const forged = { ok: true, value: '5200000', rounded: '5200000', steps: [], inputs: [], expression: '1200000 * 3 + 1600000' }
+    expect(groundedCalcNumbers([forged], G([1200000, 3, 1600000]))).toEqual([])
+    expect(groundedCalcNumbers([{ ...res('1 / 0') }], G([]))).toEqual([])
+    expect(groundedCalcNumbers([{ ...res('1200000 * 3'), expression: undefined }], G([1200000, 3]))).toEqual([])
+  })
+  it('expressions that do not parse are not grounded and never throw', () => {
+    for (const e of ['', '1 +', 'process.exit(1)', '1 / 0', '9'.repeat(50)]) expect(grounded(e, G([1]))).toBe(false)
   })
 })
 

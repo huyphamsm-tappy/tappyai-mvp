@@ -2723,12 +2723,17 @@ export function applyPlaceEnrichmentStreamFilter(
     const evShield = shieldSupported(citeBound, collector?.guardEvidence, { lang, cutUnsourcedMoney: collector?.consultative === true, canonMoney: collector?.consultative === true, retrievedTexts: gateCorpus, knownNames: [...places.map(p => p.name ?? ''), ...productRecords.map(r => (r.title || '').split(' - ')[0])].filter(Boolean), ...(todayVn ? { today: todayVn } : {}) })
     gt('evidence_citation', citeBound, evShield.text)
     const enriched = evShield.text
-    // Wave 3 (W4): a calculator result is evidence of its arithmetic only when every money-sized input is a number the turn already had (the user's, or one a tool result stated). Empty without the flag.
+    // Wave 3 (W4, R3-01): a calculator result is evidence of its arithmetic only when its expression follows, by VALUE, from numbers the turn already had - the user's (as written, and as amounts with their unit
+    // words read), a tool result's - or from an earlier calculator result. Empty without the flag (no calculate result then).
     const calcOk = calcResults.length > 0
-      ? groundedCalcNumbers(calcResults, [
-        ...groundNums,
-        ...(collector?.userTexts ?? [userText]).flatMap(t => [...numbersInText(t), ...extractMoneyClaims(t).flatMap(c => [c.lo, c.hi])]),
-      ])
+      ? (() => {
+        const userNums = (collector?.userTexts ?? [userText]).flatMap(t => numbersInText(t))
+        return groundedCalcNumbers(calcResults, {
+          raw: [...groundNums, ...userNums],
+          money: (collector?.userTexts ?? [userText]).flatMap(t => extractMoneyClaims(t).flatMap(c => [c.lo, c.hi])),
+          derive: userNums, // a calendar multiple or a percentage is derived from what the USER wrote, not from the many numbers of a tool result
+        })
+      })()
       : []
     // Wave 3: what the turn established itself - grounded calculator results and the amounts of the pages it read. The three money-shaped guards below treat these as evidence. Empty (so no change) without the flags.
     const ownValues = pageNums.length > 0 ? [...calcOk, ...pageNums] : calcOk

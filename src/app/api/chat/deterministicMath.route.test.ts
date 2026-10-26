@@ -200,7 +200,7 @@ describe('W4 — M7 (non-vacuous): turns that are not lean consult turns, or car
 })
 
 describe('W4 — the model calls calculate', () => {
-  const LOAN_Q = one('Mỗi tháng trả góp bao nhiêu nếu vay 300 triệu 10 năm')
+  const LOAN_Q = one('Mỗi tháng trả góp bao nhiêu nếu vay 300 triệu 10 năm, lãi 1%/tháng')
   const LOAN: TurnOpts = { luna: lunaIntent('chat', ['food']), math: '1' }
   const EXPR = 'pmt(0.01, 120, 300000000)'
   const vnd = (s: string) => Number(s).toLocaleString('vi-VN')
@@ -249,7 +249,7 @@ describe('W4 — the model calls calculate', () => {
 })
 
 describe('W4 — a shopping turn: the sum of listed prices the model asked the calculator for', () => {
-  const Q = one('So sánh giá hai chiếc tai nghe ABC không dây')
+  const Q = one('So sánh giá 2 chiếc tai nghe ABC không dây') // (a count written in words - "hai chiếc" - is not a digit the calculator can be grounded on: a documented limit)
   const O: TurnOpts = { luna: lunaIntent('chat', ['shopping']), math: '1' }
   const SEARCH: ScriptedCall = { name: 'search_products', args: { query: 'tai nghe ABC' } }
   const reply = 'Một chiếc giá **890.000đ**, hai chiếc tổng cộng **1.780.000đ**.'
@@ -281,7 +281,7 @@ describe('W4 — a shopping turn: the sum of listed prices the model asked the c
 })
 
 describe('W4 — a travel turn: the trip-cost arithmetic the model asked the calculator for', () => {
-  const Q = one('Đi Đà Lạt 3 đêm khách sạn 1,2 triệu một đêm cộng vé xe 1,6 triệu hết bao nhiêu')
+  const Q = one('Đi Đà Lạt 3 đêm khách sạn 1,2 triệu một đêm cộng vé xe 1,6 triệu, chia cho 4 người, hết bao nhiêu')
   const O: TurnOpts = { luna: lunaIntent('chat', ['travel']), math: '1', gps: GPS_HN }
   const reply = 'Tổng chi phí khoảng **5.200.000đ** cho cả chuyến.'
   it('without the calculator the fail-closed travel guard cuts the total; with the user\'s own numbers in the calculator it stays', async () => {
@@ -296,7 +296,7 @@ describe('W4 — a travel turn: the trip-cost arithmetic the model asked the cal
     expect(r.results.calculate?.rounded).toBe('6100000') // the calculator computed it faithfully ...
     expect(r.text).not.toContain('6.100.000đ')           // ... but the input 1.500.000 was invented, so the figure is not backed
   }, 60000)
-  it('small literals (months, nights, people, percentages) are structural and need no source', async () => {
+  it('the count the user wrote ("chia cho 4 người") is a number of the turn: the share is kept', async () => {
     const r = await turn(Q, { ...O, tools: [{ name: 'calculate', args: { expression: '(1200000 * 3 + 1600000) / 4' } }], reply: 'Chia 4 người, mỗi người khoảng **1.300.000đ**.' })
     expect(r.text).toContain('1.300.000đ')
   }, 60000)
@@ -304,6 +304,57 @@ describe('W4 — a travel turn: the trip-cost arithmetic the model asked the cal
     const r = await turn(Q, { ...O, tools: [{ name: 'calculate', args: { expression: '1200000 * 3' } }, { name: 'calculate', args: { expression: '3600000 + 1600000' } }], reply })
     expect(r.text).toContain('5.200.000đ')
   }, 60000)
+})
+
+// Wave 3-FIX R3-01: the attacks of the independent review (small numbers scaled by powers of ten, pow(10, 7), a phone number as a base, a made-up shopping price) are cut; honest calculations are kept
+describe('W4 — R3-01 grounding by value, at route level', () => {
+  const TRIP = one('Đi Đà Lạt 3 đêm, khách sạn 1,2 triệu một đêm, vé xe 1,6 triệu, hết bao nhiêu')
+  const O: TurnOpts = { luna: lunaIntent('chat', ['travel']), math: '1', gps: GPS_HN }
+  const calc = (expression: string): ScriptedCall => ({ name: 'calculate', args: { expression } })
+  const kept = async (msgs: Msg[], expression: string, reply: string, needle: string, extra: Partial<TurnOpts> = {}) => {
+    const r = await turn(msgs, { ...O, ...extra, tools: [...(extra.tools ?? []), calc(expression)], reply })
+    expect(r.results.calculate?.ok, expression).toBe(true) // the calculator itself always answers faithfully
+    return r.text.includes(needle)
+  }
+
+  it('B · 1500 * 1000 * 3 + 1600 * 1000 builds 6.100.000đ from small numbers: the total and the invented hotel price are cut; the honest spelling of the user\'s own numbers is kept', async () => {
+    expect(await kept(TRIP, '1500 * 1000 * 3 + 1600 * 1000', 'Tổng chi phí khoảng **6.100.000đ**, khách sạn **1.500.000đ**/đêm.', '6.100.000đ')).toBe(false)
+    expect(await kept(TRIP, '1.5 * 1000000 * 3 + 1.6 * 1000000', 'Tổng chi phí khoảng **6.100.000đ**.', '6.100.000đ')).toBe(false) // 1,5 triệu was never said
+    expect(await kept(TRIP, '1.2 * 1000000 * 3 + 1.6 * 1000000', 'Tổng chi phí khoảng **5.200.000đ**.', '5.200.000đ')).toBe(true)
+    expect(await kept(TRIP, '1200 * 1000 * 3 + 1600 * 1000', 'Tổng chi phí khoảng **5.200.000đ**.', '5.200.000đ')).toBe(true)
+  }, 120000)
+  it('C · pow(10, 7) and other powers of ten prove nothing', async () => {
+    for (const e of ['pow(10, 7)', '10 * 1000000', '10 ^ 7']) expect(await kept(TRIP, e, 'Chi phí khoảng **10.000.000đ**.', '10.000.000đ'), e).toBe(false)
+  }, 120000)
+  it('E · a phone number the user typed is not a base for a figure', async () => {
+    const msgs = one('Đi Đà Lạt 3 đêm khách sạn 1,2 triệu, số mình là 0901234567')
+    expect(await kept(msgs, '901234567 * 2', 'Chi phí khoảng **1.802.469.134đ**.', '1.802.469.134đ')).toBe(false)
+    expect(await kept(msgs, '1200000 * 3', 'Chi phí khoảng **3.600.000đ**.', '3.600.000đ')).toBe(true)
+  }, 120000)
+  it('J · a made-up price for a named product (990 * 1000) next to a real listing is cut; the listing\'s own price multiplied by the user\'s count is kept', async () => {
+    const msgs = one('So sánh giá 2 chiếc tai nghe ABC không dây')
+    const o: Partial<TurnOpts> = { luna: lunaIntent('chat', ['shopping']), gps: undefined, tools: [{ name: 'search_products', args: { query: 'tai nghe ABC' } }] }
+    expect(await kept(msgs, '990 * 1000', 'Chiếc ABC giá **990.000đ**.', '990.000đ', o)).toBe(false)
+    expect(await kept(msgs, '890000 * 2', 'Hai chiếc tổng cộng **1.780.000đ**.', '1.780.000đ', o)).toBe(true)
+  }, 120000)
+  // On a shopping turn that LOOKED at a listing the structured-price guard is live: the same sentence without the calculator is cut (the control), so "kept" below is a real result, not a guard that never ran.
+  const SHOP = { luna: lunaIntent('chat', ['shopping']), gps: undefined, tools: [{ name: 'search_products', args: { query: 'tai nghe ABC' } }] } as Partial<TurnOpts>
+  const honest = async (msg: string, expression: string, reply: string, needle: string) => {
+    const control = await turn(one(msg), { ...O, ...SHOP, tools: SHOP.tools, reply })
+    expect(control.text, `control (no calculator): ${needle}`).not.toContain(needle)
+    return kept(one(msg), expression, reply, needle, SHOP)
+  }
+  it('honest cases are kept: 200k a person for 5 people, a bill split, an instalment with the rate the user gave, a conversion', async () => {
+    expect(await honest('Mua quà 200k một người, nhóm 5 người, hết bao nhiêu', '200 * 1000 * 5', 'Cả nhóm khoảng **1.000.000đ**.', '1.000.000đ')).toBe(true)
+    expect(await honest('Hóa đơn 1.250.000 chia cho 4 người, mỗi người bao nhiêu', '1250000 / 4', 'Mỗi người **312.500đ**.', '312.500đ')).toBe(true)
+    expect(await honest('Mua máy 300 triệu trả góp 10 năm, lãi 1%/tháng, mỗi tháng bao nhiêu', 'pmt(0.01, 10 * 12, 300 * 1000000)', 'Mỗi tháng khoảng **4.304.128đ**.', '4.304.128đ')).toBe(true)
+    expect(await honest('Đổi 100 USD sang đồng, tỷ giá 25000', '100 * 25000', '100 USD khoảng **2.500.000đ**.', '2.500.000đ')).toBe(true)
+  }, 180000)
+  it('an invented rate is not the user\'s: the same instalment with 7 % a month is cut, the user\'s 1 % kept', async () => {
+    const msg = 'Mua máy 300 triệu trả góp 10 năm, lãi 1%/tháng, mỗi tháng bao nhiêu'
+    expect(await kept(one(msg), 'pmt(0.07, 120, 300000000)', 'Mỗi tháng khoảng **21.000.000đ**.', '21.000.000đ', SHOP)).toBe(false)
+    expect(await kept(one(msg), 'pmt(0.01, 120, 300000000)', 'Mỗi tháng khoảng **4.304.128đ**.', '4.304.128đ', SHOP)).toBe(true)
+  }, 120000)
 })
 
 describe('W4 — OFF is the previous behaviour, byte for byte', () => {

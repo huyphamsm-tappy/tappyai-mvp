@@ -220,13 +220,107 @@ const FUNCTIONS = new Map<string, Fn>([
 export const CALC_FUNCTION_NAMES: readonly string[] = [...FUNCTIONS.keys()]
 const CONSTANTS = new Map<string, Dec>([['pi', { n: BigInt('3141592653589793238462643383279'), s: 30 }], ['e', { n: BigInt('2718281828459045235360287471352'), s: 30 }]])
 
+// ── provenance (Wave 3-FIX, R3-01): where does a number of the expression come from? ───────────────────────────────────────────────────────
+//
+// A calculator result may stand as evidence for a MONEY figure only when it follows from numbers the turn already had (the user's, a tool result's, an earlier result). Tracked per value while the
+// expression is evaluated, from the structure of the expression - never from a word:
+//   · a literal is `pend`ing: it must match, by VALUE, a number of the turn (`GroundSet`); a power of ten ("unit constant": 1000, 1e6, 0.01 ...) used as a FACTOR scales the literal it multiplies, and the
+//     scaled value is what must match (1500 * 1000 matches the user's 1.500.000); the literal alone does not;
+//   · a calendar factor (7, 12, 24, 30, 52, 60, 365) converts without changing what must match (10 * 12 months is the user's 10 years);
+//   · a unit constant on its own is nothing (`pow(10, 7)` proves nothing); it can only scale or divide something that is grounded;
+//   · a sum or difference, a function argument and a power need every part grounded; 0 and 1 are structural (the "1" of "1 + rate").
+// A forged or different-entity use of a grounded number (the same figure said about another thing) cannot be seen from numbers: that stays a documented limit.
+
+/**
+ * What the turn already had: `raw` = every number as written (user texts, tool results); `money` = the user's amounts with their unit words read (200k, 1,5 triệu); `derive` = the numbers a literal may be
+ * DERIVED from by a calendar factor or a percentage (120 = 10 years x 12, 0.01 = 1 %): the user's own, so that the many numbers of a tool result (ids, coordinates, ratings) cannot match a literal by coincidence.
+ * Absent = `raw`. An exact match is always against `raw` and `money`.
+ */
+export interface GroundSet { raw: readonly number[]; money: readonly number[]; derive?: readonly number[] }
+type Prov =
+  | { k: 'unit'; mag: boolean; v: number }
+  | { k: 'ok' }
+  | { k: 'bad' }
+  | { k: 'pend'; factors: number[]; scale: number }
+/** Calendar conversion factors: they change the number without changing what it is a count of. */
+export const CALENDAR_FACTORS: readonly number[] = [7, 12, 24, 30, 52, 60, 365]
+const OK: Prov = { k: 'ok' }
+const BAD: Prov = { k: 'bad' }
+const nearly = (a: number, b: number): boolean => a === b || Math.abs(a - b) <= 1e-9 * Math.max(Math.abs(a), Math.abs(b))
+/** A power of ten other than 1 (10, 100, ... 1e9, 0.1, 0.01 ... 1e-9). */
+function isPowerOfTen(x: number): boolean {
+  const a = Math.abs(x)
+  if (!(a > 0) || nearly(a, 1)) return false
+  const k = Math.round(Math.log10(a))
+  return Math.abs(k) <= 9 && nearly(a, Math.pow(10, k))
+}
+function unitProv(x: number): Prov | null {
+  if (isPowerOfTen(x)) return { k: 'unit', mag: true, v: Math.abs(x) }
+  if (CALENDAR_FACTORS.some(c => nearly(Math.abs(x), c))) return { k: 'unit', mag: false, v: Math.abs(x) }
+  return null
+}
+function hasNear(list: readonly number[], x: number): boolean { return list.some(g => nearly(g, x)) }
+/** Does the VALUE of a literal appear in the ground, as written, as a calendar multiple/part of a number as written, or as a percentage of one? */
+function literalMatches(x: number, g: GroundSet): boolean {
+  const a = Math.abs(x)
+  if (hasNear(g.raw, a) || hasNear(g.money, a)) return true
+  for (const r of g.derive ?? g.raw) {
+    if (!(r > 0)) continue
+    for (const c of CALENDAR_FACTORS) if (nearly(a, r * c) || nearly(a, r / c)) return true
+    if (a < 1) { if (nearly(a, r / 100)) return true; for (const c of CALENDAR_FACTORS) if (nearly(a, r / 100 / c)) return true }
+  }
+  return false
+}
+function productMatches(x: number, g: GroundSet): boolean { const a = Math.abs(x); return hasNear(g.raw, a) || hasNear(g.money, a) }
+/** A pending literal is compared with the ground: one that a power of ten has scaled must have its SCALED value there (exactly); a plain one its own value (see literalMatches). A bare unit constant: its own value. */
+function resolveProv(p: Prov, g: GroundSet): Prov {
+  if (p.k === 'pend') {
+    if (p.scale === 1) return p.factors.every(f => literalMatches(f, g)) ? OK : BAD
+    // scaled by powers of ten: one factor, times that scale, must be a number of the turn (1500 * 1000 -> 1.500.000); every other factor must match as written (the 3 of "3 đêm")
+    return p.factors.some((f, i) => productMatches(f * p.scale, g) && p.factors.every((h, j) => j === i || literalMatches(h, g))) ? OK : BAD
+  }
+  if (p.k === 'unit') return literalMatches(p.v, g) ? OK : BAD
+  return p
+}
+const allOk = (...ps: Prov[]): Prov => (ps.every(p => p.k === 'ok') ? OK : BAD)
+/** A power of ten written as pow(10, k) or 10 ^ k: the base is a power of ten and the exponent a bare whole-number literal 0-9 - a unit, exactly as 1000 would be (it scales a grounded literal, and alone it proves nothing). */
+function isUnitPower(base: Prov, exp: Prov, exponent: Dec): boolean {
+  const k = Number(decToString(exponent))
+  const bareLiteral = exp.k === 'unit' || exp.k === 'ok' || (exp.k === 'pend' && exp.factors.length === 1 && exp.scale === 1)
+  return base.k === 'unit' && base.mag && bareLiteral && Number.isInteger(k) && k >= 0 && k <= 9
+}
+
 // ── parser + evaluator ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 class Parser {
   private i = 0
   private depth = 0
   readonly inputs: string[] = []
   readonly ctx: Ctx = { approximate: false, steps: [], ops: 0 }
-  constructor(private readonly toks: Tok[]) {}
+  /** Present only when the caller wants the provenance of the result (see GroundSet); absent = plain evaluation, nothing extra is computed. */
+  private readonly pv: WeakMap<object, Prov> | null
+  constructor(private readonly toks: Tok[], private readonly ground: GroundSet | null = null) { this.pv = ground ? new WeakMap() : null }
+  private provOf(d: Dec): Prov { return this.pv?.get(d) ?? BAD }
+  private setProv(d: Dec, p: Prov): Dec { this.pv?.set(d, p); return d }
+  /** The provenance of the whole expression (after parse()): grounded, or not. */
+  finalProv(v: Dec): Prov { return this.ground ? resolveProv(this.provOf(v), this.ground) : OK }
+  /** Provenance of a product or quotient. A power of ten SCALES a literal (or divides it: dividing never invents a number); a calendar factor converts; two units make a unit; anything else needs both sides grounded. */
+  private mulDivProv(op: '*' | '/', a: Prov, b: Prov): Prov {
+    const g = this.ground!
+    if (a.k === 'unit' && b.k === 'unit') return { k: 'unit', mag: a.mag || b.mag, v: op === '*' ? a.v * b.v : a.v / b.v }
+    const [x, u, unitIsRight] = a.k === 'unit' ? [b, a, false] as const : b.k === 'unit' ? [a, b, true] as const : [a, b, true] as const
+    if (u.k === 'unit' && !(x.k === 'unit')) {
+      if (x.k === 'pend') {
+        if (!u.mag) return op === '*' || unitIsRight ? x : allOk(resolveProv(x, g), resolveProv(u, g)) // a calendar factor: what must match stays the literal
+        if (op === '*') return { k: 'pend', factors: x.factors, scale: x.scale * u.v }
+        return unitIsRight ? x : allOk(resolveProv(x, g), resolveProv(u, g)) // dividing a literal by a power of ten: the literal is still what must match
+      }
+      if (x.k === 'ok') return !u.mag || (op === '/' && unitIsRight) ? OK : BAD // a grounded value times a calendar factor, or divided by a power of ten, stays grounded; inflated by a power of ten it does not
+      return BAD
+    }
+    // two pending literal groups multiplied (5 * 200, then * 1000): the factors stay one group, so a power of ten that comes LAST still scales the right factor
+    if (op === '*' && a.k === 'pend' && b.k === 'pend') return { k: 'pend', factors: [...a.factors, ...b.factors], scale: a.scale * b.scale }
+    return allOk(resolveProv(a, g), resolveProv(b, g))
+  }
 
   private peek(): Tok | undefined { return this.toks[this.i] }
   private isOp(v: string): boolean { const t = this.peek(); return !!t && t.t === 'op' && t.v === v }
@@ -245,8 +339,8 @@ class Parser {
     this.enter()
     let v = this.multiplicative()
     for (;;) {
-      if (this.isOp('+')) { this.i++; this.tick(); const r = this.multiplicative(); const o = add(v, r); this.note(`${showDec(v)} + ${showDec(r)} = ${showDec(o)}`); v = o }
-      else if (this.isOp('-')) { this.i++; this.tick(); const r = this.multiplicative(); const o = sub(v, r); this.note(`${showDec(v)} - ${showDec(r)} = ${showDec(o)}`); v = o }
+      if (this.isOp('+')) { this.i++; this.tick(); const r = this.multiplicative(); const o = add(v, r); this.note(`${showDec(v)} + ${showDec(r)} = ${showDec(o)}`); if (this.ground) this.setProv(o, allOk(resolveProv(this.provOf(v), this.ground), resolveProv(this.provOf(r), this.ground))); v = o }
+      else if (this.isOp('-')) { this.i++; this.tick(); const r = this.multiplicative(); const o = sub(v, r); this.note(`${showDec(v)} - ${showDec(r)} = ${showDec(o)}`); if (this.ground) this.setProv(o, allOk(resolveProv(this.provOf(v), this.ground), resolveProv(this.provOf(r), this.ground))); v = o }
       else break
     }
     this.leave()
@@ -255,8 +349,8 @@ class Parser {
   private multiplicative(): Dec {
     let v = this.unary()
     for (;;) {
-      if (this.isOp('*')) { this.i++; this.tick(); const r = this.unary(); const o = mul(v, r); this.note(`${showDec(v)} * ${showDec(r)} = ${showDec(o)}`); v = o }
-      else if (this.isOp('/')) { this.i++; this.tick(); const r = this.unary(); const o = div(v, r); this.note(`${showDec(v)} / ${showDec(r)} = ${showDec(o)}`); v = o }
+      if (this.isOp('*')) { this.i++; this.tick(); const r = this.unary(); const o = mul(v, r); this.note(`${showDec(v)} * ${showDec(r)} = ${showDec(o)}`); if (this.ground) this.setProv(o, this.mulDivProv('*', this.provOf(v), this.provOf(r))); v = o }
+      else if (this.isOp('/')) { this.i++; this.tick(); const r = this.unary(); const o = div(v, r); this.note(`${showDec(v)} / ${showDec(r)} = ${showDec(o)}`); if (this.ground) this.setProv(o, this.mulDivProv('/', this.provOf(v), this.provOf(r))); v = o }
       else break
     }
     return v
@@ -264,7 +358,7 @@ class Parser {
   private unary(): Dec {
     this.enter()
     try {
-      if (this.isOp('-')) { this.i++; return neg(this.unary()) }
+      if (this.isOp('-')) { this.i++; const x = this.unary(); const o = neg(x); if (this.ground) this.setProv(o, this.provOf(x)); return o }
       if (this.isOp('+')) { this.i++; return this.unary() }
       return this.power()
     } finally { this.leave() }
@@ -276,13 +370,23 @@ class Parser {
       const e = this.unary() // right-associative, and the exponent may carry a sign
       const o = powDec(base, e, this.ctx)
       this.note(`${showDec(base)} ^ ${showDec(e)} = ${showDec(o)}`)
+      if (this.ground) {
+        const pb = this.provOf(base), pe = this.provOf(e)
+        // a power of units is a unit and proves nothing (pow(10, 7)); an exponent that is a calendar factor (monthly compounding over a year) is free; otherwise base and exponent must both be grounded
+        this.setProv(o, isUnitPower(pb, pe, e) ? { k: 'unit', mag: true, v: Math.abs(Number(decToString(o))) } : allOk(resolveProv(pb, this.ground), pe.k === 'unit' && !pe.mag ? OK : resolveProv(pe, this.ground)))
+      }
       return o
     }
     return base
   }
   private postfix(): Dec {
     let v = this.primary()
-    while (this.isOp('%')) { this.i++; this.tick(); v = div(v, { n: B100, s: 0 }) }
+    while (this.isOp('%')) {
+      this.i++; this.tick()
+      const before = v
+      v = div(v, { n: B100, s: 0 })
+      if (this.ground) this.setProv(v, resolveProv(this.provOf(before), this.ground)) // "x%" is x as written, divided by a hundred: x must be a number of the turn
+    }
     return v
   }
   private primary(): Dec {
@@ -292,7 +396,15 @@ class Parser {
       this.i++
       if (!this.inputs.includes(t.v) && this.inputs.length < CALC_LIMITS.maxSteps) this.inputs.push(t.v)
       const [ip, fp = ''] = t.v.split('.')
-      return norm({ n: BigInt(`${ip}${fp}`), s: fp.length })
+      const lit = norm({ n: BigInt(`${ip}${fp}`), s: fp.length })
+      if (this.ground) {
+        const x = Number(t.v)
+        // 0 and 1 are the identity elements (the "1" of "1 + rate"); a power of ten or a calendar factor that is ITSELF a number of the turn (the user wrote 1000 or 12) is a grounded value; otherwise it is a unit;
+        // any other literal must match the ground by value
+        const unit = unitProv(x)
+        this.setProv(lit, x === 0 || x === 1 ? OK : unit ? (literalMatches(x, this.ground) ? OK : unit) : { k: 'pend', factors: [x], scale: 1 })
+      }
+      return lit
     }
     if (t.t === 'op' && t.v === '(') {
       this.i++
@@ -319,11 +431,22 @@ class Parser {
         this.tick()
         const o = guard(fn(args, this.ctx))
         this.note(`${t.v}(${args.map(showDec).join(', ')}) = ${showDec(o)}`)
+        if (this.ground) {
+          const ps = args.map(a => this.provOf(a))
+          // round(x, digits): the digit count is a format, not a number of the turn; pow of two units is a unit; every other function needs all its arguments grounded
+          // (a calendar factor as an argument - 12 months, 365 days - is a conversion, free here as it is in a product; a power of ten is not)
+          const arg = (p: Prov): Prov => (p.k === 'unit' && !p.mag ? OK : resolveProv(p, this.ground!))
+          this.setProv(o, t.v === 'round' ? resolveProv(ps[0] ?? BAD, this.ground)
+            : t.v === 'pow' && ps[0] && ps[1] && args[1] && isUnitPower(ps[0], ps[1], args[1]) ? { k: 'unit', mag: true, v: Math.abs(Number(decToString(o))) }
+            : allOk(...ps.map(arg)))
+        }
         return o
       }
       const c = CONSTANTS.get(t.v)
       if (!c) return fail('unknown_name', `ten khong ton tai: ${t.v} (hang so co: ${[...CONSTANTS.keys()].join(', ')})`)
-      return c
+      const copy: Dec = { n: c.n, s: c.s } // a fresh object: provenance is kept per value
+      if (this.ground) this.setProv(copy, OK) // pi and e are structural
+      return copy
     }
     return fail('syntax', `khong hieu o ky hieu ${JSON.stringify(t.v)}`)
   }
@@ -347,43 +470,58 @@ export function calcEvidenceNumbers(result: unknown): number[] {
   return [...out]
 }
 
-/** Amounts below this are structural (a count of months, nights, people; a rate; a percentage), not money a source must state. */
-export const STRUCTURAL_BELOW = 10_000
+/**
+ * A digit string shaped like an IDENTIFIER, not an amount, judged by its format only: a plain run starting with 0 and 8 digits or longer (a phone number: 0901234567), a country-code phone run (84901234567),
+ * or 13 digits or longer (an id, a timestamp). Such a string is never a number of the turn that a calculation can lean on. A plain 9-12 digit run WITHOUT a leading zero is still read as a number (it can be
+ * a legitimate amount such as 300000000): the limit is recorded in the Wave 3 report.
+ */
+function identifierShaped(token: string): boolean {
+  if (!/^\d+$/.test(token)) return false
+  return /^0\d{7,}$/.test(token) || /^84\d{9,10}$/.test(token) || token.length >= 13
+}
 
 /**
  * Every number a text states, as plain values: grouped integers ("1.200.000", "1,200,000"), plain integers ("890000") and decimals ("1,2", "0.01"), without any unit word (the callers add the unit-aware
- * money amounts of the money guard). Bounded; pure.
+ * money amounts of the money guard). Identifier-shaped strings (phone numbers, ids) and coordinate-like decimals (7 or more decimals) are left out. Bounded; pure.
  */
 export function numbersInText(text: string, max = 2000): number[] {
   const out = new Set<number>()
   for (const m of text.matchAll(/\d+(?:[.,]\d+)*/g)) {
     if (out.size >= max) break
     const raw = m[0]
+    if (identifierShaped(raw)) continue
     if (/^\d{1,3}(?:[.,]\d{3})+$/.test(raw)) { out.add(Number(raw.replace(/[.,]/g, ''))); continue } // grouped thousands
     const dec = raw.replace(',', '.')
+    if (/^\d+\.\d{7,}$/.test(dec)) continue // a coordinate, not an amount
     if (/^\d+(?:\.\d+)?$/.test(dec)) out.add(Number(dec))
-    else for (const part of raw.split(/[.,]/)) if (/^\d+$/.test(part)) out.add(Number(part))
+    else for (const part of raw.split(/[.,]/)) if (/^\d+$/.test(part) && !identifierShaped(part)) out.add(Number(part))
   }
   return [...out].filter(n => Number.isFinite(n))
 }
 
+/** Pure. Is the WHOLE expression derived from numbers of the turn (see the provenance block above)? An expression that does not parse is not. */
+export function expressionGrounded(expression: string, ground: GroundSet): boolean {
+  try {
+    const p = new Parser(lex(expression), ground)
+    return p.finalProv(p.parse()).k === 'ok'
+  } catch { return false }
+}
+
 /**
- * The whole numbers the turn's calculator results make evidence for - but ONLY a result whose every MONEY-SIZED input literal (>= STRUCTURAL_BELOW) is a number the turn already had: the user's own, a number a
- * tool result stated, or an earlier calculator result of the turn. A calculation is evidence of its arithmetic, never of its inputs: an input the model made up leaves the result unbacked. Small literals
- * (counts, rates, percentages) are structural. Results are taken in order, so a later calculation may use an earlier result.
+ * The whole numbers the turn's calculator results make evidence for - but ONLY a result whose expression follows, number by number and by VALUE, from numbers the turn already had: the user's (as written,
+ * and as amounts with their unit words read), a tool result's, or an earlier calculator result of the turn (results are taken in order). A calculation is evidence of its arithmetic, never of its inputs:
+ * an invented input, an invented figure assembled from small numbers (1500 * 1000 * 3), or a power of ten on its own leaves the result unbacked. Re-reads each result's own expression; a result object that is
+ * not the tool's (no `_tappy_calc`) or has no expression gives nothing.
  */
-export function groundedCalcNumbers(results: readonly unknown[], ground: readonly number[]): number[] {
-  const known: number[] = [...ground]
-  const near = (x: number): boolean => known.some(g => Math.abs(g - x) <= 1)
+export function groundedCalcNumbers(results: readonly unknown[], ground: GroundSet): number[] {
+  const g: { raw: number[]; money: number[]; derive?: number[] } = { raw: [...ground.raw], money: [...ground.money], ...(ground.derive ? { derive: [...ground.derive] } : {}) }
   const out = new Set<number>()
   for (const r of results) {
     const nums = calcEvidenceNumbers(r)
-    if (nums.length === 0) continue
-    const inputs = (r as { inputs?: unknown }).inputs
-    if (!Array.isArray(inputs)) continue
-    const grounded = inputs.length < CALC_LIMITS.maxSteps /* a full list may be cut short: then not all inputs are known */ && inputs.every(s => typeof s === 'string' && /^\d+(\.\d+)?$/.test(s) && (Number(s) < STRUCTURAL_BELOW || near(Number(s))))
-    if (!grounded) continue
-    for (const n of nums) { out.add(n); known.push(n) }
+    const expression = (r as { expression?: unknown } | null | undefined)?.expression
+    if (nums.length === 0 || typeof expression !== 'string') continue
+    if (!expressionGrounded(expression, g)) continue
+    for (const n of nums) { out.add(n); g.raw.push(n); g.money.push(n) }
   }
   return [...out]
 }
