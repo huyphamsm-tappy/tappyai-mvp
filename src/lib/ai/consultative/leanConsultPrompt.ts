@@ -48,12 +48,17 @@ export const DOMAIN_TOOLS: Record<ConsultDomain, readonly string[]> = {
 }
 
 /** The union of the tools of the turn's areas (multi-area requests get each area's tools). */
-export function consultTools(domains: readonly ConsultDomain[], opts: { shoppingWebSearch?: boolean } = {}): string[] {
+export function consultTools(domains: readonly ConsultDomain[], opts: { shoppingWebSearch?: boolean; knowledgeTurnWebSearch?: boolean } = {}): string[] {
   const tools = domains.flatMap(d => DOMAIN_TOOLS[d] ?? [])
   // round 3h (ROUTE_TOOL_OFFER_GUARD): a shopping turn may also OFFER web_search for a price or market lookup. Offered, never forced.
   if (opts.shoppingWebSearch && domains.includes('shopping')) tools.push('web_search')
+  // Wave 2I (B, CONSULT_KNOWLEDGE_TURN_TOOLS): a turn the search-now gate blocked is a knowledge / conversation turn that still names an area (the intent layer names one for it): it also gets web_search.
+  if (opts.knowledgeTurnWebSearch) tools.push('web_search')
   return [...new Set(tools)]
 }
+
+/** Wave 2I (B): one line for a turn the search-now gate blocked and that is given web_search. Added to the prompt only with CONSULT_KNOWLEDGE_TURN_TOOLS on. */
+export const KNOWLEDGE_TURN_TOOL_RULE = `CAU HOI KIEN THUC / TIN TUC: neu nguoi dung khong nho tim mot noi de den, dung web_search khi can thong tin moi hoac can nguon, va tra loi truc tiep; KHONG goi search_places cho cau hoi nay. Chi khi nguoi dung that su tim mot quan/dia diem de den thi dung search_places (va hoi khu vuc neu chua co vi tri).`
 
 export function buildLeanConsultSystem(o: {
   lang: string

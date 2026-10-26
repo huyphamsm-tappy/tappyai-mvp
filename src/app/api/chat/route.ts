@@ -82,7 +82,7 @@ import { type Budget, extractBudget, extractPlanTotalBudget, applyBudgetFilter, 
 import { detectPlaceConstraints, applyPlaceConstraints } from '@/lib/ai/placeConstraintFilter'
 import { usesEveningFrame, eveningLocation, eveningStagesFor, pickStageStop, buildEveningPlanBlock, eveningIntroInstruction, eveningIntro, fixedPlanStream, type EveningStop } from '@/lib/ai/eveningPlan'
 import { buildSystem, buildSystemSimple, buildPrefBlock, buildRenderedDecisionBlock, buildPlanningBlock } from '@/lib/ai/promptBuilder'
-import { buildLeanConsultSystem, consultCacheLibraryEnabled, consultTools, recentTurns } from '@/lib/ai/consultative/leanConsultPrompt'
+import { buildLeanConsultSystem, consultCacheLibraryEnabled, consultTools, KNOWLEDGE_TURN_TOOL_RULE, recentTurns } from '@/lib/ai/consultative/leanConsultPrompt'
 import { applyPlaceEnrichmentStreamFilter, type TurnEvidence } from '@/lib/ai/streamEnrichment'
 import { splitToolResult, createEnrichmentCollector } from '@/lib/ai/toolResultSplit'
 import { shouldExtractMemory } from '@/lib/ai/memoryGate'
@@ -102,7 +102,7 @@ import { recordDecision, DECISION_RECORD_TIMEOUT_MS } from '@/lib/ai/agent/runti
 import { createPlacesBudget, PLACES_BUDGET_AGENT, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
 // Consultative V1 (flag CONSULTATIVE_V1, default OFF — see docs/audit/consultative-v1-design.md).
 import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
-import { consultFinalSynthesisOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn } from '@/lib/config/consultFlags'
+import { consultFinalSynthesisOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn } from '@/lib/config/consultFlags'
 import { createTurnTrace, traceCallBy, traceToolsInner, traceToolsOuter } from '@/lib/ai/consultative/traceDiagnostics'
 import { deriveSituation, type SituationFrame } from '@/lib/ai/consultative/situationFrame'
 import { buildConsultativeV1Block } from '@/lib/ai/consultative/consultativeV1Prompt'
@@ -1500,6 +1500,11 @@ export async function POST(req: Request) {
     ...gateAreaFacts({ mergedArea: consult?.area, lunaDecisionArea: lunaIntentRun?.decision.area, lunaCheck: lunaIntentRun?.check, rulesArea: routed?.decision.area }) })
   // Wave 2F (M7): what the turn ended up doing, written once at the end (writeGateOutcome) for a turn the gate BLOCKED
   const gateTraceFacts = searchGate?.blocked ? { droppedType: searchNowDerived && !searchNow ? searchNowDerived.type : null, forcedToolIgnored: forcedTool === 'search_places' } : null
+  // Wave 2I (B, CONSULT_KNOWLEDGE_TURN_TOOLS - needs the gate): on a turn the gate blocked the model also gets web_search, and the area question is not appended to its failed place lookup UNLESS the rules router
+  // (a reader independent of the intent layer) reads the message as a place request. OFF = both false and nothing below differs from before.
+  const knowledgeTurnTools = !!searchGate?.blocked && consultKnowledgeTurnToolsOn()
+  const knowledgeKeepsAreaAsk = knowledgeTurnTools && rulesReadVenueRequest(routed)
+  const knowledgeDropsAreaAsk = knowledgeTurnTools && !knowledgeKeepsAreaAsk
   let traceFinishReason: string | null = null
   let traceAreaAsk: { appended: boolean | null; reason: string | null } | null = null
   // Owner 2026-09-28 (c40 T7): a flight search runs without a date; the date is asked at the END.
@@ -2261,7 +2266,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           consultBlock: consultativeBlock,
           ...(consultLibraryOn ? { library: frameLibrary(consultLibraryDomain) } : {}),
           ...(lunaAnswer && process.env.CONSULT_LUNA_PROMPT !== '0' ? { core: LUNA_CORE } : {}),
-          extra: [lunaData ? '' : memoryBlock ?? '', prefBlock, planningIntent ? buildPlanningBlock(planningIntent, lang, planning ?? {}) : '', lunaPlan ? LUNA_PLAN_RULE : '', styleBlock, voiceLayerBlock(), lunaData ? '' : shareContextBlock],
+          extra: [lunaData ? '' : memoryBlock ?? '', prefBlock, planningIntent ? buildPlanningBlock(planningIntent, lang, planning ?? {}) : '', lunaPlan ? LUNA_PLAN_RULE : '', styleBlock, voiceLayerBlock(), lunaData ? '' : shareContextBlock, ...(knowledgeTurnTools ? [KNOWLEDGE_TURN_TOOL_RULE] : [])],
           tail: [adviceEnabled() && adviceApplies(consult.domains[0], consultTravelCall?.name === 'get_flight_prices') ? adviceBlock({ turn: consult.turn, domain: consult.domains[0], flight: consultTravelCall?.name === 'get_flight_prices', days: Number(consult.known.so_ngay?.match(/\d+/)?.[0]) || null }) : ''],
         })
       })()
@@ -2546,6 +2551,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
             noCurrentLocationAsked = true
             console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', step: 'no_current_location' }))
             if (searchGate?.blocked) trace?.emit('search_now_gate_model_lookup', { by: traceCallBy(), outcome: 'no_current_location', asked: true, hasValidGps: false })
+            // Wave 2I (B): on a knowledge turn the system does NOT add the area question, so the model is told what to do instead (decide for itself whether the user really wants a place).
+            if (knowledgeDropsAreaAsk) return { error: 'no_current_location', note: 'Chưa có vị trí hiện tại của người dùng và người dùng chưa nêu khu vực. Không đoán khu vực, không gợi ý quán nào. Hệ thống KHÔNG tự thêm câu hỏi khu vực. Nếu người dùng thật sự cần tìm một nơi để đến, hãy hỏi họ ở khu vực/quận/thành phố nào; nếu đây là câu hỏi kiến thức hoặc tin tức, hãy trả lời trực tiếp (dùng web_search nếu cần thông tin mới) và đừng hỏi vị trí.' }
             return { error: 'no_current_location', note: 'Chưa có vị trí hiện tại của người dùng (thiết bị không gửi vị trí) và người dùng chưa nêu khu vực. Không đoán khu vực, không tìm quanh một thành phố mặc định, không gợi ý quán nào. Hệ thống sẽ tự thêm câu hỏi khu vực vào cuối câu trả lời — KHÔNG tự đặt câu hỏi khu vực, chỉ trả lời ngắn (hoặc không viết gì).' }
           }
           // Wave 2F (M2): on a turn the gate blocked, a place search that goes on to the provider is counted too (by = who started it: the answer model, or the code). Trace only.
@@ -3426,7 +3433,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // call with tools). A TRIP plan has the code's full presearch (hotels, places, weather) → no tools, the plan effort
     // applies. Every other plan keeps its tools (replay 30/09: without them E1-G5 planned only the dinner, R16 named no
     // venue) and so runs at 'none'.
-    tools: (lunaAnswer && presearchAll.length > 0) || (lunaPlan && planningIntent === 'trip') ? undefined : traceToolsOuter(finalSynthesisGuard(lunaGuardTools(lean && tools ? Object.fromEntries(Object.entries(tools).filter(([k]) => consultTools(consult!.domains, { shoppingWebSearch: routeToolOfferOn() }).includes(k))) as typeof tools : tools)), trace),
+    tools: (lunaAnswer && presearchAll.length > 0) || (lunaPlan && planningIntent === 'trip') ? undefined : traceToolsOuter(finalSynthesisGuard(lunaGuardTools(lean && tools ? Object.fromEntries(Object.entries(tools).filter(([k]) => consultTools(consult!.domains, { shoppingWebSearch: routeToolOfferOn(), ...(knowledgeTurnTools ? { knowledgeTurnWebSearch: true } : {}) }).includes(k))) as typeof tools : tools)), trace),
     onFinish: async ({ usage, finishReason, text, steps }) => {
       // CONSULT_TRACE_DIAGNOSTICS (Wave 2C): how the tool loop ended. `requested` includes the code's own pre-search; `blocked` = answered search_budget_used (never counted as a provider request).
       trace?.emit('loop', { stepsRun: steps?.length ?? null, maxSteps: streamMaxSteps, finishReason, modelTextChars: text.length, tools: { ...trace.counters }, ...(searchGate ? { toolsOffered: trace.facts.toolsOffered } : {}) })
@@ -3868,13 +3875,15 @@ ${completionInstruction(lang)}` },
   // end asking. It runs after every guard — measured on Android: the model asked about ticket prices
   // and the entertainment price guard (downstream) removed that sentence, leaving no question at all.
   const timedBody = finalResponse.body
-    ? turnCostStream(areaAskStream(emptyResultStream(askAfterStream(finalResponse.body, agentOn ? null : gateAskAfter, lang), { getEmpty: () => (agentOn ? null : emptyPlaceSearch), bufferText: askedBack && presearchPlan === null, userTexts: subjectUserTexts, lang }), () => noCurrentLocationAsked, lang, trace ? (e: Record<string, unknown>) => { console.log(JSON.stringify(e)); trace.emit('path_cut', { kind: 'area_ask', appended: e.appended ?? null, reason: e.reason ?? null, emptyBody: e.empty_body ?? null, ...(searchGate ? { source: trace.facts.noLocationBy } : {}) }); traceAreaAsk = { appended: typeof e.appended === 'boolean' ? e.appended : null, reason: typeof e.reason === 'string' ? e.reason : null } } : undefined).pipeThrough(stepRepeatGuard()), () => {
+    ? turnCostStream(areaAskStream(emptyResultStream(askAfterStream(finalResponse.body, agentOn ? null : gateAskAfter, lang), { getEmpty: () => (agentOn ? null : emptyPlaceSearch), bufferText: askedBack && presearchPlan === null, userTexts: subjectUserTexts, lang }), () => noCurrentLocationAsked && !knowledgeDropsAreaAsk, lang, trace ? (e: Record<string, unknown>) => { console.log(JSON.stringify(e)); trace.emit('path_cut', { kind: 'area_ask', appended: e.appended ?? null, reason: e.reason ?? null, emptyBody: e.empty_body ?? null, ...(searchGate ? { source: trace.facts.noLocationBy } : {}) }); traceAreaAsk = { appended: typeof e.appended === 'boolean' ? e.appended : null, reason: typeof e.reason === 'string' ? e.reason : null } } : undefined).pipeThrough(stepRepeatGuard()), () => {
         // Wave 2F (M7, CONSULT_TRACE_DIAGNOSTICS=1 + CONSULT_SEARCH_NOW_INTENT_GATE=1 only): ONE line for a turn the gate blocked - what the turn ended up doing. Names, booleans and counts only.
         if (trace && gateTraceFacts) {
           const f = trace.facts
           trace.emit('search_now_gate_outcome', {
             blocked: true, droppedType: gateTraceFacts.droppedType, forcedToolIgnored: gateTraceFacts.forcedToolIgnored, toolsOffered: f.toolsOffered, modelCalledPlaceTool: f.modelPlaceCalls > 0, modelPlaceCalls: f.modelPlaceCalls, codePlaceCalls: f.codePlaceCalls,
             areaAskAppended: traceAreaAsk?.appended === true, areaAskSource: traceAreaAsk?.appended === true ? f.noLocationBy : null, serperRequestsByModel: f.serperRequestsByModel, serperRequestsByCode: f.serperRequestsByCode, finishReason: traceFinishReason,
+            // Wave 2I (B): only with CONSULT_KNOWLEDGE_TURN_TOOLS on (so the line is byte-for-byte the run-4 line when it is off). Booleans and one enum; never a word of the user.
+            ...(consultKnowledgeTurnToolsOn() ? { knowledgeToolsApplied: knowledgeTurnTools, webSearchOffered: !!f.toolsOffered?.includes('web_search'), areaAskSuppressed: knowledgeDropsAreaAsk && noCurrentLocationAsked, areaAskKeptReason: knowledgeKeepsAreaAsk && noCurrentLocationAsked ? 'venue_request_by_rules' : null } : {}),
           })
         }
         // Owner Phần 6: one cost line per turn (brain call + answer model + Serper).
