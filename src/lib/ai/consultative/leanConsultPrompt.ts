@@ -57,8 +57,11 @@ export function consultTools(domains: readonly ConsultDomain[], opts: { shopping
   return [...new Set(tools)]
 }
 
-/** Wave 2I (B): one line for a turn the search-now gate blocked and that is given web_search. Added to the prompt only with CONSULT_KNOWLEDGE_TURN_TOOLS on. */
-export const KNOWLEDGE_TURN_TOOL_RULE = `CAU HOI KIEN THUC / TIN TUC: neu nguoi dung khong nho tim mot noi de den, dung web_search khi can thong tin moi hoac can nguon, va tra loi truc tiep; KHONG goi search_places cho cau hoi nay. Chi khi nguoi dung that su tim mot quan/dia diem de den thi dung search_places (va hoi khu vuc neu chua co vi tri).`
+/**
+ * Wave 2I (B) / Wave 2J: one GENERAL line for a turn the search-now gate blocked and that is given web_search. Added to the prompt only with CONSULT_KNOWLEDGE_TURN_TOOLS on.
+ * It says only which tool a knowledge / information question uses; it carries no keyword, no example and nothing about the area question (that behaves as with the gate alone).
+ */
+export const KNOWLEDGE_TURN_TOOL_RULE = `CAU HOI KIEN THUC / THONG TIN khong nhac toi dia diem: dung web_search khi can thong tin moi hoac can nguon, va tra loi truc tiep; khong dung cong cu tim dia diem neu nguoi dung khong yeu cau dia diem.`
 
 export function buildLeanConsultSystem(o: {
   lang: string

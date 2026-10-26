@@ -1,18 +1,22 @@
 /**
- * Wave 2I · B — CONSULT_KNOWLEDGE_TURN_TOOLS at ROUTE level (full POST /api/chat, scripted intent call and scripted model, Serper mocked, no network).
- * Measured (paid run 4, E10/E11): after the search-now gate (C) the code no longer starts a place lookup on a knowledge turn, but the MODEL still called search_places (no location ->
- * `no_current_location`) and the area question was appended to a knowledge answer; and on the lean path (Luna domain "food") the model was not given web_search at all.
+ * Wave 2I · B / Wave 2J (J1) — CONSULT_KNOWLEDGE_TURN_TOOLS at ROUTE level (full POST /api/chat, scripted intent call and scripted model, Serper mocked, no network).
+ * Measured (paid run 4, E10/E11): after the search-now gate (C) the code no longer pre-searches a place on a knowledge turn, but on the lean path (Luna domain "food") the model was
+ * not given web_search at all. Wave 2J: the flag ONLY adds web_search (and one general tool line) to a turn the gate (C) blocked, and the model chooses. It does NOT touch the area
+ * question: with the flag ON the area question behaves EXACTLY as with the gate alone (the earlier "drop the area question when the rules do not read a venue request" was removed:
+ * review F4/F5).
  * Claims (flag = CONSULT_KNOWLEDGE_TURN_TOOLS, needs CONSULT_SEARCH_NOW_INTENT_GATE):
- *   · ON, turn blocked by the gate: web_search is offered next to search_places; the area question is NOT appended when the model's own place lookup failed for want of a location AND the rules
- *     router did not read the message as a place request; the tool result then tells the model to ask for a place itself if the user really wants one;
- *   · ON, a real place request the intent layer misread as chat (the rules router reads it as a venue request): the area question is still appended, exactly as before;
- *   · ON, a place stated by the user / pick / ask turns: nothing changes (compared directly with the flag OFF);
+ *   · ON, turn blocked by the gate: web_search is offered next to search_places;
+ *   · ON, turn NOT blocked (pick / ask / a stated place): the tool set is the gate-only tool set (no web_search is added);
+ *   · ON: the area question, the tool result, the answer text and the place / web lookups are IDENTICAL to the gate alone, in every cell of a grid of short venue requests,
+ *     food-knowledge questions and named-entity knowledge questions (the only differences allowed are the offered tool list, one prompt line and the trace labels);
  *   · OFF (unset, "0", "true", " 1"), or ON without the gate: the old behaviour.
- * The messages are written for this test; none comes from a benchmark question file.
+ * The messages are written for this test; none comes from a benchmark question file. SAMPLE: the grid below is a convenience sample of {70 short venue requests, 15 food-knowledge
+ * questions, 5 named-entity questions} x 5 intent-layer outcomes x 3 model scripts x GPS yes/no - it shows no difference in THAT sample and proves nothing about other sentences.
  */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { __resetAiQuestionQuotaLocal } from '@/lib/ai/quota/aiQuestionQuota'
 import { AREA_ASK_VI } from '@/lib/ai/consultative/areaAsk'
+import { KNOWLEDGE_TURN_TOOL_RULE } from '@/lib/ai/consultative/leanConsultPrompt'
 
 type Call = { toolCallId: string; toolName: string; args: Record<string, unknown> }
 const h = vi.hoisted(() => {
@@ -139,94 +143,165 @@ beforeEach(() => {
   process.env.CONSULT_V2 = '1'; process.env.CONSULTATIVE_V1 = '1'
   vi.stubGlobal('fetch', async (input: unknown) => { throw new Error('network disabled in this test: ' + String(input).slice(0, 60)) })
 })
-afterEach(() => { for (const k of ['TAPPY_AGENT', 'CONSULT_SEARCH_NOW_INTENT_GATE', 'CONSULT_KNOWLEDGE_TURN_TOOLS', 'CONSULT_TRACE_DIAGNOSTICS', 'NODE_ENV', 'VERCEL_ENV']) { if (k !== 'NODE_ENV') delete process.env[k] } vi.unstubAllGlobals() })
+afterEach(() => { for (const k of ['TAPPY_AGENT', 'CONSULT_SEARCH_NOW_INTENT_GATE', 'CONSULT_KNOWLEDGE_TURN_TOOLS', 'CONSULT_TRACE_DIAGNOSTICS', 'VERCEL_ENV']) delete process.env[k]; vi.unstubAllGlobals() })
 
 const KNOW_1 = 'Tiểu sử ngắn gọn của Nikola Tesla và các sáng chế chính.'
-const KNOW_2 = 'Cho mình biết Marie Curie đã nhận giải Nobel nào và vì công trình gì?'
 const outcome = (r: { traceEvents: Array<Record<string, any>> }) => r.traceEvents.find(e => e.ev === 'search_now_gate_outcome')
 
-describe('B — flag ON (with the gate): a knowledge turn gets web_search and no area question', () => {
-  for (const q of [KNOW_1, KNOW_2]) {
-    it(`E10/E11-shaped ("${q.slice(0, 40)}…"): the model's own place lookup fails for want of a location -> web_search is offered and the area question is NOT appended`, async () => {
-      const on = await turn(one(q), { gate: '1', know: '1', luna: CHAT_FOOD, tool: { query: 'Nikola Tesla' }, reply: 'Trả lời kiến thức.' })
-      expect(on.consultTurn).toBe('chat')
-      expect(on.toolNames).toContain('web_search')
-      expect(on.toolNames).toContain('search_places')
-      expect(on.refused).toBe(true)
-      expect(on.asks).toBe(0)
-      expect(on.text.trim()).toBe('Trả lời kiến thức.')
-      expect(JSON.stringify(on.toolResult)).not.toContain('KHÔNG tự đặt câu hỏi khu vực')
-      expect(on.maps).toEqual([])
-    }, 60000)
-    it(`same turn, flag OFF (gate only): web_search is not offered on the lean path and the area question is appended, as in run 4`, async () => {
-      const off = await turn(one(q), { gate: '1', know: undefined, luna: CHAT_FOOD, tool: { query: 'Nikola Tesla' }, reply: 'Trả lời kiến thức.' })
-      expect(off.toolNames).not.toContain('web_search')
-      expect(off.asks).toBe(1)
-      expect(off.text.trim().endsWith(AREA_ASK_VI)).toBe(true)
-    }, 60000)
-  }
+// ── the sample (data only): short venue requests, food-knowledge questions, named-entity knowledge questions ─────────────────────────────────
+const VENUE_SHORT = [
+  'quán gần chỗ này', 'đâu có bia hơi', 'tìm chỗ nhậu', 'quán phở ngon', 'cafe yên tĩnh để làm việc', 'chỗ nào ăn sáng', 'gợi ý quán nướng cho 4 người', 'spa thư giãn gần đây',
+  'gần đây có gì ăn', 'có quán nào mở khuya không', 'đói quá ăn gì giờ', 'chỗ nào hát karaoke', 'tối nay đi đâu chơi', 'chỗ massage chân', 'lẩu ngon', 'bún chả', 'quán bia',
+  'nhà hàng sang trọng', 'ăn gì bây giờ', 'chỗ ngồi học bài', 'cafe sách', 'quán nhậu bình dân', 'tìm quán ăn', 'có quán chay nào không', 'quán nào ngon gần đây', 'đi nhậu ở đâu',
+  'rạp chiếu phim nào gần', 'bar nào vui', 'nơi nào chụp ảnh đẹp', 'tìm quán cà phê', 'ăn tối ở đâu', 'quán ốc', 'muốn ăn hải sản', 'chỗ gội đầu', 'nail ở đâu đẹp', 'trà sữa', 'buffet',
+  'pizza', 'sushi ngon', 'quán ăn gia đình',
+  'cho mình chỗ gội đầu dưỡng sinh', 'spa nào làm facial tốt', 'tiệm nail gần nhà', 'phòng gym nào rẻ', 'quán lẩu bò', 'bar rooftop', 'chỗ chơi bida', 'rạp nào chiếu phim tối nay',
+  'karaoke gia đình', 'tiệm bánh ngon', 'quán cà phê có view', 'nhà hàng chay', 'chỗ ăn vặt', 'quán bún bò', 'cửa hàng điện thoại gần đây', 'tiệm sửa xe', 'massage đá nóng',
+  'quán nướng ngoài trời', 'chỗ tổ chức sinh nhật', 'tìm nhà sách', 'tiệm tóc nam', 'quán cơm tấm', 'chỗ chơi bowling', 'quán chè', 'tìm tiệm vàng', 'quán nước mía', 'chỗ câu cá giải trí',
+  'quán lẩu dê', 'phòng xông hơi', 'chỗ ăn đêm',
+]
+const KNOW_FOOD = [
+  'Cách nấu nước dùng phở bò ngon', 'Phở có nguồn gốc từ đâu', 'lẩu thái nấu thế nào', 'nên ăn gì khi bị cảm', 'tại sao người Việt thích ăn phở', 'karaoke có nguồn gốc từ nước nào',
+  'massage có tốt cho lưng không', 'pizza Ý khác pizza Mỹ thế nào', 'sushi làm từ gì', 'bia hơi là gì', 'cà phê có hại không', 'trà sữa có bao nhiêu calo', 'bún chả có từ khi nào',
+  'cơm tấm làm từ loại gạo nào', 'ăn chay có đủ đạm không',
+]
+const KNOW_NAMED = ['Nikola Tesla là ai', 'Marie Curie đã nhận giải Nobel nào', 'Hồ Chí Minh sinh năm nào', 'Albert Einstein đóng góp gì', 'Nguyễn Nhật Ánh viết những tác phẩm nào']
+const LUNAS: Array<[string, Record<string, unknown> | null]> = [
+  ['chatFood', CHAT_FOOD], ['chatNone', lunaIntent('chat', [])], ['chatEnt', lunaIntent('chat', ['entertainment'])], ['pickFood', lunaIntent('pick', ['food'], { query: 'quán' })], ['lunaError', null],
+]
+const SCRIPTS: Array<[string, TurnOpts['tool']]> = [['noTool', null], ['placesNoLocation', { query: 'quán' }], ['webSearch', { name: 'web_search', query: 'thông tin' }]]
 
-  it('the model calls web_search itself: it runs once, no place lookup, no area question', async () => {
+/** The fields that must not move when the flag is switched ON on top of the gate. The offered tool list and one prompt line may differ (see below). */
+const sameAsGateOnly = (on: Awaited<ReturnType<typeof turn>>, c: Awaited<ReturnType<typeof turn>>, script: string) => {
+  const diffs: string[] = []
+  if (on.asks !== c.asks) diffs.push(`asks ${c.asks}->${on.asks}`)
+  if (on.text !== c.text) diffs.push('text')
+  if (on.refused !== c.refused) diffs.push('refused')
+  if (JSON.stringify(on.maps) !== JSON.stringify(c.maps)) diffs.push('maps')
+  if (JSON.stringify(on.toolResult) !== JSON.stringify(c.toolResult) && script !== 'webSearch') diffs.push('toolResult')
+  if (script !== 'webSearch' && JSON.stringify(on.web) !== JSON.stringify(c.web)) diffs.push('web')
+  const extra = on.toolNames.filter(t => !c.toolNames.includes(t))
+  if (extra.some(t => t !== 'web_search') || c.toolNames.some(t => !on.toolNames.includes(t))) diffs.push(`tools ${c.toolNames.join(',')}->${on.toolNames.join(',')}`)
+  return diffs
+}
+
+describe('B (Wave 2J) — flag ON: a turn the gate blocked is offered web_search', () => {
+  it('E10/E11-shaped (Luna chat + food, no GPS, the model looks a place up and has no location): web_search is offered next to search_places', async () => {
+    const on = await turn(one(KNOW_1), { gate: '1', know: '1', luna: CHAT_FOOD, tool: { query: 'Nikola Tesla' }, reply: 'Trả lời kiến thức.' })
+    expect(on.consultTurn).toBe('chat')
+    expect(on.toolNames).toContain('web_search')
+    expect(on.toolNames).toContain('search_places')
+  }, 60000)
+
+  it('the same turn with the gate alone: no web_search on the lean path (the run-4 state)', async () => {
+    const c = await turn(one(KNOW_1), { gate: '1', know: undefined, luna: CHAT_FOOD, tool: { query: 'Nikola Tesla' }, reply: 'Trả lời kiến thức.' })
+    expect(c.toolNames).not.toContain('web_search')
+  }, 60000)
+
+  it('the model calls web_search itself: it runs once and no place lookup runs', async () => {
     const on = await turn(one(KNOW_1), { gate: '1', know: '1', luna: CHAT_FOOD, tool: { name: 'web_search', query: 'tiểu sử nhà phát minh' }, reply: 'Có nguồn.' })
     expect(on.web.length).toBe(1)
     expect(on.maps).toEqual([])
-    expect(on.asks).toBe(0)
   }, 60000)
 
-  it('the one-line tool rule for such a turn reaches the model only with the flag ON', async () => {
+  it('the one general tool line reaches the model only with the flag ON; it names no keyword, no example and does not talk about the area question', async () => {
     const on = await turn(one(KNOW_1), { gate: '1', know: '1', luna: CHAT_FOOD, reply: 'x' })
     const off = await turn(one(KNOW_1), { gate: '1', know: undefined, luna: CHAT_FOOD, reply: 'x' })
-    expect(on.system).toContain('web_search')
     expect(on.system.length).toBeGreaterThan(off.system.length)
+    expect(on.system).toContain(JSON.stringify(KNOWLEDGE_TURN_TOOL_RULE).slice(1, -1))
+    expect(off.system).not.toContain(JSON.stringify(KNOWLEDGE_TURN_TOOL_RULE).slice(1, -1))
+    expect(KNOWLEDGE_TURN_TOOL_RULE).toContain('web_search')
+    expect(KNOWLEDGE_TURN_TOOL_RULE.toLowerCase()).not.toMatch(/khu vuc|khu vực|he thong|hệ thống/) // the Wave 2I sentence about the system and the area question is gone
+    expect(KNOWLEDGE_TURN_TOOL_RULE).not.toMatch(/[“"'‘’”(]/) // no quoted example, no keyword list: a general rule only
   }, 60000)
 })
 
-describe('B — two sides: a real place request keeps its area question', () => {
-  const REAL = ['tìm quán phở bò ngon cho 2 người dưới 100k', 'tìm quán nhậu cho nhóm 6 người']
-  for (const q of REAL) {
-    it(`"${q}" misread as chat, no GPS, the model looks the place up: the rules read a venue request -> STILL asked for the area (flag ON == flag OFF)`, async () => {
-      const on = await turn(one(q), { gate: '1', know: '1', trace: true, luna: CHAT_FOOD, tool: { query: 'quán' }, reply: '' })
-      const off = await turn(one(q), { gate: '1', know: undefined, luna: CHAT_FOOD, tool: { query: 'quán' }, reply: '' })
-      expect(on.refused).toBe(true)
-      expect(on.asks).toBe(1)
-      expect(on.text).toBe(off.text)
-      expect(outcome(on)?.areaAskSuppressed).toBe(false)
-      expect(outcome(on)?.areaAskKeptReason).toBe('venue_request_by_rules')
-    }, 60000)
-    it(`"${q}" with GPS: the model's lookup goes ahead exactly as without the flag`, async () => {
-      const on = await turn(one(q), { gate: '1', know: '1', luna: CHAT_FOOD, gps: GPS_HN, tool: { query: 'quán' }, reply: 'ok' })
-      const off = await turn(one(q), { gate: '1', know: undefined, luna: CHAT_FOOD, gps: GPS_HN, tool: { query: 'quán' }, reply: 'ok' })
-      expect(on.maps).toEqual(off.maps)
-      expect(on.maps.length).toBeGreaterThan(0)
-      expect(on.text).toBe(off.text)
+describe('B (Wave 2J) — M7: a turn the gate did NOT block gets no web_search from the flag', () => {
+  const NOT_BLOCKED: Array<[string, Msg[], TurnOpts]> = [
+    ['pick + food (lean path)', one('cho mình quán cơm tấm'), { luna: lunaIntent('pick', ['food'], { query: 'cơm tấm' }), gps: GPS_HN }],
+    ['pick + food, no GPS', one('cho mình quán cơm tấm'), { luna: lunaIntent('pick', ['food'], { query: 'cơm tấm' }) }],
+    ['a place stated by the user', one('quán cà phê yên tĩnh ở quận 3'), { luna: CHAT_FOOD }],
+    ['Luna failed, the rules read a venue request', one('tìm quán phở bò ngon cho 2 người dưới 100k'), { luna: null, gps: GPS_HN }],
+    ['followup', [{ role: 'user', content: 'quán cơm tấm' }, { role: 'assistant', content: 'Mình chọn: Cơm tấm A.' }, { role: 'user', content: 'quán đó mở mấy giờ' }], { luna: lunaIntent('followup', ['food']), gps: GPS_HN }],
+    ['more', [{ role: 'user', content: 'quán cơm tấm' }, { role: 'assistant', content: 'Mình chọn: Cơm tấm A.' }, { role: 'user', content: 'còn quán nào nữa' }], { luna: lunaIntent('more', ['food']), gps: GPS_HN }],
+    ['compare', [{ role: 'user', content: 'quán cơm tấm' }, { role: 'assistant', content: 'Mình chọn: Cơm tấm A.' }, { role: 'user', content: 'so sánh hai quán' }], { luna: lunaIntent('compare', ['food']), gps: GPS_HN }],
+    ['plan', one('lên kế hoạch buổi tối đi ăn và hát'), { luna: lunaIntent('plan', ['food', 'entertainment']), gps: GPS_HN }],
+    ['chat with a stated district', one('Quận 3 có gì thú vị về lịch sử'), { luna: CHAT_FOOD, gps: GPS_HN }],
+    ['entertainment pick', one('chỗ hát karaoke'), { luna: lunaIntent('pick', ['entertainment'], { query: 'karaoke' }), gps: GPS_HN }],
+    ['travel pick', one('khách sạn ở Đà Lạt'), { luna: lunaIntent('pick', ['travel'], { query: 'khách sạn' }), gps: GPS_HN }],
+  ]
+  for (const [name, msgs, o] of NOT_BLOCKED) {
+    it(`${name}: the offered tools with the flag ON are exactly the gate-only tools (no web_search is added)`, async () => {
+      const on = await turn(msgs, { ...o, gate: '1', know: '1', tool: { query: 'quán' }, reply: 'ok' })
+      const c = await turn(msgs, { ...o, gate: '1', know: undefined, tool: { query: 'quán' }, reply: 'ok' })
+      expect(on.toolNames).toEqual(c.toolNames)
+      if (!c.toolNames.includes('web_search')) expect(on.toolNames).not.toContain('web_search')
+      expect(on.system).toBe(c.system)
     }, 60000)
   }
 })
 
-describe('B — nothing else changes', () => {
-  it('a place the user states (district): the gate does not block, so the flag changes nothing', async () => {
-    const q = 'quán cà phê yên tĩnh ở quận 3'
-    const on = await turn(one(q), { gate: '1', know: '1', luna: CHAT_FOOD, tool: { query: 'cà phê' }, reply: 'ok' })
-    const off = await turn(one(q), { gate: '1', know: undefined, luna: CHAT_FOOD, tool: { query: 'cà phê' }, reply: 'ok' })
-    expect(on.toolNames).toEqual(off.toolNames)
-    expect(on.maps).toEqual(off.maps)
-    expect(on.text).toBe(off.text)
-    expect(on.asks).toBe(off.asks)
+describe('B (Wave 2J) — M7 (non-vacuous): turns that are NOT blocked and DO carry a tool list', () => {
+  const WITH_TOOLS: Array<[string, Msg[], TurnOpts]> = [
+    ['a "more" turn', [{ role: 'user', content: 'quán cơm tấm' }, { role: 'assistant', content: 'Mình chọn: Cơm tấm A.' }, { role: 'user', content: 'còn quán nào nữa' }], { luna: lunaIntent('more', ['food']), gps: GPS_HN }],
+    ['a chat turn that states a district', one('Quận 3 có gì thú vị về lịch sử'), { luna: CHAT_FOOD, gps: GPS_HN }],
+  ]
+  for (const [name, msgs, o] of WITH_TOOLS) {
+    it(`${name}: the tool list is the gate-only list (search_places) and the flag adds no web_search`, async () => {
+      const on = await turn(msgs, { ...o, gate: '1', know: '1', reply: 'ok' })
+      const c = await turn(msgs, { ...o, gate: '1', know: undefined, reply: 'ok' })
+      expect(c.toolNames).toEqual(['search_places'])
+      expect(on.toolNames).toEqual(['search_places'])
+    }, 60000)
+  }
+})
+
+describe('B (Wave 2J) — the area question is EXACTLY as with the gate alone', () => {
+  it('E10/E11-shaped: the model\'s own place lookup has no location: the area question is appended, the tool result and the answer are the gate-only ones', async () => {
+    const on = await turn(one(KNOW_1), { gate: '1', know: '1', luna: CHAT_FOOD, tool: { query: 'Nikola Tesla' }, reply: 'Trả lời kiến thức.' })
+    const c = await turn(one(KNOW_1), { gate: '1', know: undefined, luna: CHAT_FOOD, tool: { query: 'Nikola Tesla' }, reply: 'Trả lời kiến thức.' })
+    expect(c.asks).toBe(1)
+    expect(on.asks).toBe(1)
+    expect(on.text).toBe(c.text)
+    expect(on.toolResult).toEqual(c.toolResult)
+    expect(JSON.stringify(on.toolResult)).toContain('KHÔNG tự đặt câu hỏi khu vực') // the original note, not a changed one
+    expect(on.refused).toBe(true)
   }, 60000)
 
-  it('an ask / pick turn (E1–E5-shaped, pick + places + GPS): identical with and without the flag', async () => {
-    const q = 'cho mình chỗ hát karaoke tối nay'
-    const luna = lunaIntent('pick', ['entertainment'], { query: 'karaoke' })
-    const on = await turn(one(q), { gate: '1', know: '1', luna, gps: GPS_HN, tool: { query: 'karaoke' }, reply: 'ok' })
-    const off = await turn(one(q), { gate: '1', know: undefined, luna, gps: GPS_HN, tool: { query: 'karaoke' }, reply: 'ok' })
-    expect(on.toolNames).toEqual(off.toolNames)
-    expect(on.maps).toEqual(off.maps)
-    expect(on.text).toBe(off.text)
-    expect(on.asks).toBe(off.asks)
-  }, 60000)
+  it('GRID (sample of 70 short venue requests): in every cell the area question, answer, tool result and lookups with the flag ON equal the gate alone', async () => {
+    const bad: string[] = []
+    let cells = 0, asksSeen = 0, blockedSeen = 0
+    for (const msg of VENUE_SHORT) for (const [ln, luna] of LUNAS) for (const [sn, tool] of SCRIPTS) for (const gps of [false, true]) {
+      const on = await turn(one(msg), { gate: '1', know: '1', luna, tool, gps: gps ? GPS_HN : undefined, reply: 'ok' })
+      const c = await turn(one(msg), { gate: '1', know: undefined, luna, tool, gps: gps ? GPS_HN : undefined, reply: 'ok' })
+      cells++; asksSeen += c.asks; if (!c.toolNames.includes('web_search') && on.toolNames.includes('web_search')) blockedSeen++
+      const d = sameAsGateOnly(on, c, sn)
+      if (d.length) bad.push(`${msg} | ${ln} | ${sn} | gps=${gps}: ${d.join(', ')}`)
+    }
+    expect(bad).toEqual([])
+    expect(cells).toBe(VENUE_SHORT.length * LUNAS.length * SCRIPTS.length * 2)
+    expect(asksSeen).toBeGreaterThan(50) // the grid really contains area questions (it is not comparing zeros)
+    expect(blockedSeen).toBeGreaterThan(50) // and blocked turns where the flag adds web_search
+  }, 900000)
 
+  it('GRID (15 food-knowledge + 5 named-entity questions): the area question and everything else with the flag ON equal the gate alone (recorded, NOT claimed as fixed)', async () => {
+    const bad: string[] = []
+    let cells = 0
+    for (const msg of [...KNOW_FOOD, ...KNOW_NAMED]) for (const [ln, luna] of LUNAS) for (const [sn, tool] of SCRIPTS) for (const gps of [false, true]) {
+      const on = await turn(one(msg), { gate: '1', know: '1', luna, tool, gps: gps ? GPS_HN : undefined, reply: 'ok' })
+      const c = await turn(one(msg), { gate: '1', know: undefined, luna, tool, gps: gps ? GPS_HN : undefined, reply: 'ok' })
+      cells++
+      const d = sameAsGateOnly(on, c, sn)
+      if (d.length) bad.push(`${msg} | ${ln} | ${sn} | gps=${gps}: ${d.join(', ')}`)
+    }
+    expect(bad).toEqual([])
+    expect(cells).toBe(20 * LUNAS.length * SCRIPTS.length * 2)
+  }, 900000)
+})
+
+describe('B (Wave 2J) — nothing else changes', () => {
   for (const v of [undefined, '0', 'true', ' 1', '1 ', 'on']) {
-    it(`flag value ${JSON.stringify(v)}: the old behaviour (area question appended, no web_search on the lean path)`, async () => {
+    it(`flag value ${JSON.stringify(v)}: the old behaviour (no web_search on the lean path)`, async () => {
       const r = await turn(one(KNOW_1), { gate: '1', know: v, luna: CHAT_FOOD, tool: { query: 'Nikola Tesla' }, reply: 'Trả lời kiến thức.' })
       expect(r.toolNames).not.toContain('web_search')
       expect(r.asks).toBe(1)
@@ -237,6 +312,7 @@ describe('B — nothing else changes', () => {
     const a = await turn(one(KNOW_1), { gate: undefined, know: '1', luna: CHAT_FOOD, tool: { query: 'Nikola Tesla' }, reply: 'Trả lời kiến thức.' })
     const b = await turn(one(KNOW_1), { gate: undefined, know: undefined, luna: CHAT_FOOD, tool: { query: 'Nikola Tesla' }, reply: 'Trả lời kiến thức.' })
     expect(a.toolNames).toEqual(b.toolNames)
+    expect(a.system).toBe(b.system)
     expect(a.text).toBe(b.text)
     expect(a.asks).toBe(b.asks)
   }, 60000)
@@ -250,18 +326,18 @@ describe('B — nothing else changes', () => {
   }, 60000)
 })
 
-describe('B — trace (CONSULT_TRACE_DIAGNOSTICS=1 only): labels, never the user text', () => {
-  it('the outcome line carries knowledgeToolsApplied / webSearchOffered / areaAskSuppressed; no word of the question is in the log', async () => {
-    const r = await turn(one(KNOW_1), { gate: '1', know: '1', trace: true, luna: CHAT_FOOD, tool: { query: 'Nikola Tesla' }, reply: 'Trả lời kiến thức.' })
+describe('B (Wave 2J) — trace (CONSULT_TRACE_DIAGNOSTICS=1 only): labels, never the user text', () => {
+  it('the outcome line carries knowledgeToolsApplied / webSearchOffered; the area-question labels of Wave 2I are gone; no user word or canary in the new lines', async () => {
+    const CANARY = 'zq7canary9xv'
+    const r = await turn(one(`${KNOW_1} ${CANARY}`), { gate: '1', know: '1', trace: true, luna: CHAT_FOOD, tool: { query: 'Nikola Tesla' }, reply: 'Trả lời kiến thức.', gps: { ...GPS_HN, address: `${CANARY} street` } })
     const o = outcome(r)
     expect(o).toBeTruthy()
-    expect(o).toMatchObject({ knowledgeToolsApplied: true, webSearchOffered: true, areaAskSuppressed: true, areaAskAppended: false })
-    expect(o?.areaAskKeptReason ?? null).toBeNull()
-    expect(r.toolNames.length).toBeGreaterThan(0)
-    // Only the lines of the gate (old Wave 2C `tool` events and `tappyai_tool_called` log the model's own query: F-9, out of scope here).
+    expect(o).toMatchObject({ knowledgeToolsApplied: true, webSearchOffered: true })
+    expect(o).not.toHaveProperty('areaAskSuppressed')
+    expect(o).not.toHaveProperty('areaAskKeptReason')
     const gateLines = JSON.stringify(r.traceEvents.filter(e => /^search_now_gate/.test(String(e.ev)) || e.ev === 'loop'))
+    expect(gateLines).not.toContain(CANARY)
     expect(gateLines).not.toContain('Nikola')
-    expect(gateLines).not.toContain('sáng chế')
     expect(gateLines).not.toContain('Tiểu sử')
   }, 60000)
 
