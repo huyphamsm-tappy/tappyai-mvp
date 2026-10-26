@@ -77,6 +77,31 @@ describe('Wave 3-FIX R3-05 · robots on every redirect hop', () => {
   })
 })
 
+describe('Wave 3-FIX R3-09 · the trace never carries a host the user typed', () => {
+  const GOOD = '<html><head><title>Thực đơn</title></head><body><p>Cà phê 45.000đ</p></body></html>'
+  const run = async (userText: string, readUrl: string, toolUrls: string[] = []) => {
+    const events: Array<{ ev: string; data: Record<string, unknown> }> = []
+    const fetchPage = async (u: string): Promise<PageFetchResult> => (u.endsWith('/robots.txt') ? notFound : { ok: true, url: u, finalUrl: u, status: 200, contentType: 'text/html', body: GOOD, bytes: GOOD.length, truncated: false, redirects: 0, ms: 1 })
+    const r = createLeanResearch({ lang: 'vi', userTexts: [userText], emit: (ev, data) => events.push({ ev, data }), fetchPage, robots: createRobotsGate({ fetchPage }) })
+    if (toolUrls.length > 0) await r.collectUrls({ search: { execute: async (_a: unknown, _c: unknown) => ({ results: toolUrls.map(link => ({ link })) }) } }).search.execute({}, {})
+    await (r.tool as unknown as { execute: (a: unknown, c: unknown) => Promise<unknown> }).execute({ url: readUrl }, { toolCallId: 't1', messages: [] })
+    return events
+  }
+  it('a URL the user typed: page_read and evidence carry the fixed label, not the host name (canary)', async () => {
+    const events = await run('xem giúp https://canary-user-host.example/secret?q=1', 'https://canary-user-host.example/secret?q=1')
+    const dump = JSON.stringify(events)
+    expect(events.some(e => e.ev === 'page_read')).toBe(true) // non-vacuous: the page was read and traced
+    expect(dump).not.toContain('canary-user-host')
+    expect(events.filter(e => e.ev === 'page_read' || e.ev === 'evidence').map(e => `${e.ev}:${String(e.data.host)}`)).toEqual(['page_read:user_url', 'evidence:user_url'])
+  })
+  it('a host that came back in a tool result is still recorded by name, also when the user typed the same host', async () => {
+    const a = await run('không có link', 'https://tool-host.example/menu', ['https://tool-host.example/menu'])
+    expect(JSON.stringify(a)).toContain('tool-host.example')
+    const b = await run('xem https://both-host.example/x', 'https://both-host.example/x', ['https://www.both-host.example/y'])
+    expect(JSON.stringify(b)).toContain('both-host.example')
+  })
+})
+
 describe('W1 researchLoop · the reader with the REAL fetcher refuses what the address policy refuses (no network is touched)', () => {
   it('private / loopback / link-local / metadata / internal names: every page is an error, fetch is never called', async () => {
     const fetchSpy = vi.fn(() => { throw new Error('network must not be used') })

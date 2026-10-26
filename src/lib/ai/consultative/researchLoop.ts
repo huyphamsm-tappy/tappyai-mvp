@@ -19,6 +19,8 @@ export const RESEARCH_STEPS = 6
 export const RESEARCH_MAX_READS = 4
 
 export const READ_PAGE_TOOL = 'read_page'
+/** What the trace says instead of a host name the user typed (Wave 3-FIX R3-09). */
+export const USER_URL_LABEL = 'user_url'
 
 /**
  * One GENERAL line, added only with CONSULT_RESEARCH_LOOP on. It says when a page is worth opening, to check each stated constraint against what was actually read, and to say plainly what could not be read.
@@ -75,10 +77,24 @@ export function createLeanResearch(o: {
   robots?: RobotsGate
 }): LeanResearch {
   const allowed = new Set<string>()
-  const addUrls = (urls: readonly string[]): void => { for (const u of urls) if (allowed.size < 400) allowed.add(normUrl(u)) }
-  for (const t of o.userTexts) addUrls(urlsInText(t))
+  // Wave 3-FIX (R3-09): a host the USER typed is the user's text - the consult trace must not carry it. Only a host that also came back in a tool result (search / places) is recorded by name.
+  const userHosts = new Set<string>()
+  const toolHosts = new Set<string>()
+  const hostOf = (u: string): string => { try { return new URL(u).hostname.toLowerCase().replace(/^www\./, '') } catch { return '' } }
+  const addUrls = (urls: readonly string[], fromUser = false): void => {
+    for (const u of urls) {
+      if (allowed.size < 400) allowed.add(normUrl(u))
+      const h = hostOf(u)
+      if (h) (fromUser ? userHosts : toolHosts).add(h)
+    }
+  }
+  for (const t of o.userTexts) addUrls(urlsInText(t), true)
+  const scrub = (data: Record<string, unknown>): Record<string, unknown> => {
+    const h = typeof data.host === 'string' ? data.host.toLowerCase().replace(/^www\./, '') : ''
+    return h && userHosts.has(h) && !toolHosts.has(h) ? { ...data, host: USER_URL_LABEL } : data
+  }
   const trace = {
-    add: (ev: string, data: Record<string, unknown>) => { try { o.emit?.(ev, data) } catch { /* observation only */ } },
+    add: (ev: string, data: Record<string, unknown>) => { try { o.emit?.(ev, scrub(data)) } catch { /* observation only */ } },
     counters: { budgetRefusals: 0 },
   } as unknown as AgentRunTrace
   const inner: Fetcher = o.fetchPage ?? ((u, s, hopGate) => fetchPublicPage(u, { signal: s, ...(hopGate ? { hopGate } : {}) }))
