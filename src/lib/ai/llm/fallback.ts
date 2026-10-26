@@ -53,7 +53,8 @@ export async function generateAbortingPrimary(primary: LanguageModelV1, fallback
   try {
     return await Promise.race([primary.doGenerate({ ...opts, abortSignal: ctrl.signal }), t.p])
   } catch (e) {
-    const abortFirst = !consultAbortAbandonedFirstPartOn()
+    // The agent role (abortPrimaryOnTimeout) keeps its Phase 8 order whatever the flag says.
+    const abortFirst = o.abortPrimaryOnTimeout === true || !consultAbortAbandonedFirstPartOn()
     // Cancel the original FIRST: a timed-out request must not keep running (and billing) beside the retry.
     if (abortFirst) ctrl.abort(new Error('primary_cancelled_before_retry'))
     if (outer?.aborted) { ctrl.abort(outer.reason); throw e }

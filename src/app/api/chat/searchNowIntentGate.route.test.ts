@@ -144,6 +144,7 @@ const one = (u: string): Msg[] => [{ role: 'user', content: u }]
 
 beforeEach(() => {
   process.env.CONSULT_V2 = '1'; process.env.CONSULTATIVE_V1 = '1'
+  delete process.env.CONSULT_KNOWLEDGE_TURN_TOOLS // Wave 2I: this file pins the gate (C) alone; the knowledge-turn flag is covered by knowledgeTurnTools.route.test.ts
   vi.stubGlobal('fetch', async (input: unknown) => { throw new Error('network disabled in this test: ' + String(input).slice(0, 60)) })
 })
 afterEach(() => { for (const k of ['TAPPY_AGENT', 'CONSULT_SEARCH_NOW_INTENT_GATE']) delete process.env[k]; vi.unstubAllGlobals() })

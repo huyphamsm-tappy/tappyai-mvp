@@ -170,6 +170,15 @@ describe('A · the non-streamed call (doGenerate) has the same gap and the same 
     expect(g.records[0]?.unknownReason).toBe(ABANDONED_FIRST_PART_REASON)
   })
 
+  it('role agent (abortPrimaryOnTimeout) keeps its Phase 8 order with the flag ON: the primary is aborted BEFORE the retry is called', async () => {
+    flag('1')
+    const order: string[] = []
+    const primary: LanguageModelV1 = { ...gen(0), async doGenerate(o) { o.abortSignal?.addEventListener('abort', () => order.push('primary_aborted')); return new Promise(() => {}) } }
+    const retry: LanguageModelV1 = { ...gen(0), async doGenerate() { order.push('retry_called'); return { text: 'ok', finishReason: 'stop', usage: USAGE, rawCall: { rawPrompt: null, rawSettings: {} } } } }
+    await withFallback(primary, retry, { firstPartMs: 30, generateMs: 30, label: 'agent', fallbackKind: 'luna_retry', abortPrimaryOnTimeout: true }).doGenerate(CALL)
+    expect(order).toEqual(['primary_aborted', 'retry_called'])
+  })
+
   it('flag OFF: the abandoned primary is not closed while it is abandoned (it books itself only when it finally returns)', async () => {
     flag(undefined)
     const g = turn(); await call(g)
