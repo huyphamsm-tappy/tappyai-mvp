@@ -31,6 +31,7 @@
 //   CONSULT_STRUCTURED_SYNTHESIS  (Wave 3 · W3) the writing step of a lean consult turn gets a shape block for a request with SEVERAL parts (the model counts them): a short conclusion first, one section per part, a
 //                               table when two or more options are compared, "chưa xác minh" in every cell without data, sources with the date they were read, and what is still unverified. A single simple decision keeps the
 //                               short "chốt một lựa chọn" form. The output ceiling of such a turn is 3.500 tokens (under the hard 4.000), and the sentence cap of the prose-shape guard is not applied to it. Only honoured outside production.
+//   CONSULT_CAPABILITY_LEVEL      (Wave 3 · W6) 0-4: one number that switches W2 / W4 (L1), W1 (L2), W3 (L3) on together; L4 deepens the loop. See the block of that name below. Level 0 and production = nothing.
 
 type Env = Record<string, string | undefined>
 
@@ -65,11 +66,46 @@ export function consultThreadAwareAskOn(env: Env = process.env): boolean { retur
 export function consultAbortAbandonedFirstPartOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_ABORT_ABANDONED_FIRST_PART_FLAG]) && !isProductionRuntime(env) }
 /** Wave 2I · B. ON only for the exact value "1", only outside a production runtime, and only together with the search-now gate (C). */
 export function consultKnowledgeTurnToolsOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_KNOWLEDGE_TURN_TOOLS_FLAG]) && !isProductionRuntime(env) && consultSearchNowIntentGateOn(env) }
-/** Wave 3 · W3. ON only for the exact value "1" and only outside a production runtime. */
-export function consultStructuredSynthesisOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_STRUCTURED_SYNTHESIS_FLAG]) && !isProductionRuntime(env) }
-/** Wave 3 · W1. ON only for the exact value "1" and only outside a production runtime. It carries its own reserved writing step (it does not need CONSULT_FINAL_SYNTHESIS). */
-export function consultResearchLoopOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_RESEARCH_LOOP_FLAG]) && !isProductionRuntime(env) }
-/** Wave 3 · W4. ON only for the exact value "1" and only outside a production runtime. */
-export function consultDeterministicMathOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_DETERMINISTIC_MATH_FLAG]) && !isProductionRuntime(env) }
-/** Wave 3 · W2. ON only for the exact value "1", only outside a production runtime, and only together with the search-now gate (C). */
-export function consultToolByNeedOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_TOOL_BY_NEED_FLAG]) && !isProductionRuntime(env) && consultSearchNowIntentGateOn(env) }
+// ── Wave 3 · W6 · capability levels L0-L4 ───────────────────────────────────────────────────────────────────────────────────────────────────────────
+//
+// CONSULT_CAPABILITY_LEVEL is one number that switches the Wave 3 capabilities on together, so a paid run can be priced level by level:
+//   L0  the product as it is (no Wave 3 flag)             L1  + W2 tool by need + W4 calculator     L2  + W1 research loop (search, read, search again)
+//   L3  + W3 structured synthesis                          L4  = L3 with a deeper loop (8 steps, 6 pages) and the full 4.000-token output ceiling of a structured answer
+// Only the single characters 0-4 are a level; anything else (unset, "5", "01", "L2", " 2") is level 0. A production runtime is level 0 whatever the variable says.
+// A Wave 3 flag that is SET (to anything) decides for itself: "1" is on, any other value is off, even when the level would switch it on; an unset flag follows the level.
+// W2 still needs the search-now gate (CONSULT_SEARCH_NOW_INTENT_GATE=1, a Wave 2 flag): without it W2 is inert and the launcher says so. L4's higher reasoning effort for the writing step is NOT set by
+// code: it needs the existing LLM_<ROLE>_REASONING configuration (and the Responses API for tool calls), a deployment decision recorded in the Wave 3 report.
+export const CONSULT_CAPABILITY_LEVEL_FLAG = 'CONSULT_CAPABILITY_LEVEL'
+export type CapabilityLevel = 0 | 1 | 2 | 3 | 4
+/** The level each Wave 3 flag is switched on from. */
+export const CAPABILITY_FLAG_LEVELS: Readonly<Record<string, CapabilityLevel>> = {
+  [CONSULT_TOOL_BY_NEED_FLAG]: 1, [CONSULT_DETERMINISTIC_MATH_FLAG]: 1, [CONSULT_RESEARCH_LOOP_FLAG]: 2, [CONSULT_STRUCTURED_SYNTHESIS_FLAG]: 3,
+}
+/** Pure. The capability level: a single character 0-4, never in a production runtime; anything else is 0. */
+export function capabilityLevel(env: Env = process.env): CapabilityLevel {
+  if (isProductionRuntime(env)) return 0
+  const v = env[CONSULT_CAPABILITY_LEVEL_FLAG]
+  return v !== undefined && /^[0-4]$/.test(v) ? (Number(v) as CapabilityLevel) : 0
+}
+/** Pure. Is this Wave 3 flag switched on by its own value or, when it is unset, by the level? (Production and flag dependencies are applied by the callers.) */
+function waveFlag(env: Env, name: string): boolean {
+  const v = env[name]
+  return v !== undefined ? exactlyOne(v) : capabilityLevel(env) >= (CAPABILITY_FLAG_LEVELS[name] ?? 5)
+}
+/** Pure. The limits that change with the level: L4 reads six pages in eight steps and may write up to the hard 4.000-token ceiling. Below L4 they are the Wave 3 defaults. */
+export function capabilityLimits(env: Env = process.env): { researchSteps: number; researchMaxReads: number; structuredMaxTokens: number } {
+  return capabilityLevel(env) >= 4 ? { researchSteps: 8, researchMaxReads: 6, structuredMaxTokens: 4000 } : { researchSteps: 6, researchMaxReads: 4, structuredMaxTokens: 3500 }
+}
+/** Pure. Everything the level and the flags decide, in one object (for the launcher, the trace and the tests). W2 is reported as it works: on only together with the gate. */
+export function capabilityFlags(env: Env = process.env): { level: CapabilityLevel; toolByNeed: boolean; deterministicMath: boolean; researchLoop: boolean; structuredSynthesis: boolean; limits: ReturnType<typeof capabilityLimits> } {
+  return { level: capabilityLevel(env), toolByNeed: consultToolByNeedOn(env), deterministicMath: consultDeterministicMathOn(env), researchLoop: consultResearchLoopOn(env), structuredSynthesis: consultStructuredSynthesisOn(env), limits: capabilityLimits(env) }
+}
+
+/** Wave 3 · W3. ON by "1" (or, unset, by level 3+), and only outside a production runtime. */
+export function consultStructuredSynthesisOn(env: Env = process.env): boolean { return waveFlag(env, CONSULT_STRUCTURED_SYNTHESIS_FLAG) && !isProductionRuntime(env) }
+/** Wave 3 · W1. ON by "1" (or, unset, by level 2+), and only outside a production runtime. It carries its own reserved writing step (it does not need CONSULT_FINAL_SYNTHESIS). */
+export function consultResearchLoopOn(env: Env = process.env): boolean { return waveFlag(env, CONSULT_RESEARCH_LOOP_FLAG) && !isProductionRuntime(env) }
+/** Wave 3 · W4. ON by "1" (or, unset, by level 1+), and only outside a production runtime. */
+export function consultDeterministicMathOn(env: Env = process.env): boolean { return waveFlag(env, CONSULT_DETERMINISTIC_MATH_FLAG) && !isProductionRuntime(env) }
+/** Wave 3 · W2. ON by "1" (or, unset, by level 1+), only outside a production runtime, and only together with the search-now gate (C). */
+export function consultToolByNeedOn(env: Env = process.env): boolean { return waveFlag(env, CONSULT_TOOL_BY_NEED_FLAG) && !isProductionRuntime(env) && consultSearchNowIntentGateOn(env) }

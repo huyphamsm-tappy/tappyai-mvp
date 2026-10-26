@@ -99,6 +99,8 @@ export const FLAG_ENV_NAMES = [
   'CONSULT_RESEARCH_LOOP',
   // Wave 3 · W3: the writing step of a lean consult turn gets the multi-part shape (conclusion, one section per part, a table, sources with dates, what is unverified) and a 3.500-token ceiling; default OFF, honoured only outside a production runtime
   'CONSULT_STRUCTURED_SYNTHESIS',
+  // Wave 3 · W6: one number 0-4 that switches W2 / W4 (L1), W1 (L2), W3 (L3) on together, L4 deepens the loop; unset = level 0; honoured only outside a production runtime
+  'CONSULT_CAPABILITY_LEVEL',
 ]
 /** Names that look like a setting of the trial or of the route: when one is set but is not in the allow-list the launcher refuses instead of silently dropping it. */
 const LOOKS_LIKE_A_SETTING = /^(CONSULT|CONSULTATIVE|TAPPY|LLM|SERPER|OPENAI|AUDIT|FILM|BENCH|C2|MONEY|PLACE|LEGACY|RETRIEVAL|HAIKU|AGENT|TURN|SEARCH|STYLE|CCP)_/i
@@ -362,10 +364,17 @@ export function quotaLines(env) {
 export const WAVE2_FLAG_NAMES = ['CONSULT_FINAL_SYNTHESIS', 'CONSULT_ANSWER_ATTRIBUTION', 'CONSULT_GENERAL_ASSISTANT', 'CONSULT_TRACE_DIAGNOSTICS', 'CONSULT_SEARCH_NOW_INTENT_GATE', 'CONSULT_THREAD_AWARE_ASK', 'CONSULT_ABORT_ABANDONED_FIRST_PART', 'CONSULT_KNOWLEDGE_TURN_TOOLS', 'CONSULT_TOOL_BY_NEED', 'CONSULT_DETERMINISTIC_MATH', 'CONSULT_RESEARCH_LOOP', 'CONSULT_STRUCTURED_SYNTHESIS']
 /** Wave 2J (F6): a flag that does nothing unless another flag is exactly 1 too (same table as WAVE2_FLAG_NEEDS in liveTrial.ts; a test compares them). */
 export const WAVE2_FLAG_NEEDS = { CONSULT_KNOWLEDGE_TURN_TOOLS: 'CONSULT_SEARCH_NOW_INTENT_GATE', CONSULT_TOOL_BY_NEED: 'CONSULT_SEARCH_NOW_INTENT_GATE' }
+/** Wave 3 (W6): the level each Wave 3 flag is switched on from (same table as CAPABILITY_FLAG_LEVELS in src/lib/config/consultFlags.ts; a test compares them). */
+export const CAPABILITY_FLAG_LEVELS = { CONSULT_TOOL_BY_NEED: 1, CONSULT_DETERMINISTIC_MATH: 1, CONSULT_RESEARCH_LOOP: 2, CONSULT_STRUCTURED_SYNTHESIS: 3 }
+/** The effective capability level: a single character 0-4, else 0 (the child and the product read it the same way). */
+export function capabilityLevelOf(env) { return typeof env.CONSULT_CAPABILITY_LEVEL === 'string' && /^[0-4]$/.test(env.CONSULT_CAPABILITY_LEVEL) ? Number(env.CONSULT_CAPABILITY_LEVEL) : 0 }
 export function wave2Line(env) {
   const show = v => (v === undefined ? 'unset' : /^[A-Za-z0-9_-]{1,12}$/.test(v) ? v : JSON.stringify(v.slice(0, 12)))
-  const state = k => (env[k] !== '1' ? 'TẮT' : (WAVE2_FLAG_NEEDS[k] !== undefined && env[WAVE2_FLAG_NEEDS[k]] !== '1') ? `KHÔNG CÓ HIỆU LỰC — cần ${WAVE2_FLAG_NEEDS[k]}=1` : 'BẬT')
-  return `cờ hành vi Wave 2 (mặc định TẮT; chỉ giá trị 1 là BẬT): ${WAVE2_FLAG_NAMES.map(k => `${k}=${show(env[k])} (${state(k)})`).join(', ')}`
+  const level = capabilityLevelOf(env)
+  // a Wave 3 flag that is UNSET follows the level; a flag that is set decides for itself ("1" on, anything else off)
+  const on = k => (env[k] !== undefined ? env[k] === '1' : level >= (CAPABILITY_FLAG_LEVELS[k] ?? 5))
+  const state = k => (!on(k) ? 'TẮT' : (WAVE2_FLAG_NEEDS[k] !== undefined && env[WAVE2_FLAG_NEEDS[k]] !== '1') ? `KHÔNG CÓ HIỆU LỰC — cần ${WAVE2_FLAG_NEEDS[k]}=1` : (env[k] === undefined ? 'BẬT theo mức' : 'BẬT'))
+  return `cờ hành vi Wave 2 (mặc định TẮT; chỉ giá trị 1 là BẬT): ${WAVE2_FLAG_NAMES.map(k => `${k}=${show(env[k])} (${state(k)})`).join(', ')} | mức năng lực CONSULT_CAPABILITY_LEVEL=${show(env.CONSULT_CAPABILITY_LEVEL)} (mức hiệu lực L${level}; chỉ ký tự 0–4, khác = L0; cờ Wave 3 để trống thì theo mức, cờ đã đặt thì tự quyết)`
 }
 
 /** Round 3f · Gate 1 summary: what the run will do, with no key value. Pure. */

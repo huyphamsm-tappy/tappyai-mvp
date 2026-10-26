@@ -82,7 +82,7 @@ import { type Budget, extractBudget, extractPlanTotalBudget, applyBudgetFilter, 
 import { detectPlaceConstraints, applyPlaceConstraints } from '@/lib/ai/placeConstraintFilter'
 import { usesEveningFrame, eveningLocation, eveningStagesFor, pickStageStop, buildEveningPlanBlock, eveningIntroInstruction, eveningIntro, fixedPlanStream, type EveningStop } from '@/lib/ai/eveningPlan'
 import { buildSystem, buildSystemSimple, buildPrefBlock, buildRenderedDecisionBlock, buildPlanningBlock } from '@/lib/ai/promptBuilder'
-import { buildLeanConsultSystem, consultCacheLibraryEnabled, consultTools, KNOWLEDGE_TURN_TOOL_RULE, TOOL_BY_NEED_RULE, MATH_TOOL_RULE, STRUCTURED_SYNTHESIS_RULE, STRUCTURED_MAX_TOKENS, CALCULATE_DESCRIPTION, WEB_SEARCH_DESCRIPTION_BY_NEED, recentTurns } from '@/lib/ai/consultative/leanConsultPrompt'
+import { buildLeanConsultSystem, consultCacheLibraryEnabled, consultTools, KNOWLEDGE_TURN_TOOL_RULE, TOOL_BY_NEED_RULE, MATH_TOOL_RULE, STRUCTURED_SYNTHESIS_RULE, CALCULATE_DESCRIPTION, WEB_SEARCH_DESCRIPTION_BY_NEED, recentTurns } from '@/lib/ai/consultative/leanConsultPrompt'
 import { applyPlaceEnrichmentStreamFilter, type TurnEvidence } from '@/lib/ai/streamEnrichment'
 import { splitToolResult, createEnrichmentCollector } from '@/lib/ai/toolResultSplit'
 import { shouldExtractMemory } from '@/lib/ai/memoryGate'
@@ -102,8 +102,8 @@ import { recordDecision, DECISION_RECORD_TIMEOUT_MS } from '@/lib/ai/agent/runti
 import { createPlacesBudget, PLACES_BUDGET_AGENT, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
 // Consultative V1 (flag CONSULTATIVE_V1, default OFF — see docs/audit/consultative-v1-design.md).
 import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
-import { consultFinalSynthesisOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn } from '@/lib/config/consultFlags'
-import { createLeanResearch, RESEARCH_RULE, RESEARCH_STEPS } from '@/lib/ai/consultative/researchLoop'
+import { consultFinalSynthesisOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, capabilityLimits } from '@/lib/config/consultFlags'
+import { createLeanResearch, RESEARCH_RULE } from '@/lib/ai/consultative/researchLoop'
 import { calculate } from '@/lib/ai/tools/calculate'
 import { createTurnTrace, traceCallBy, traceToolsInner, traceToolsOuter } from '@/lib/ai/consultative/traceDiagnostics'
 import { deriveSituation, type SituationFrame } from '@/lib/ai/consultative/situationFrame'
@@ -1511,6 +1511,8 @@ export async function POST(req: Request) {
   const deterministicMath = consultDeterministicMathOn()
   // Wave 3 (W3, CONSULT_STRUCTURED_SYNTHESIS): the writing step of a lean consult turn gets a shape block for a multi-part request and a larger output ceiling. OFF = false and nothing below differs from before.
   const structuredSynth = consultStructuredSynthesisOn() && !!consult && consult.domains.length > 0
+  // Wave 3 (W6): the limits that depend on the capability level (L4: eight steps, six pages, the full 4.000-token output ceiling of a structured answer). Level 0 / production: the Wave 3 defaults.
+  const levelLimits = capabilityLimits()
   let traceFinishReason: string | null = null
   let traceAreaAsk: { appended: boolean | null; reason: string | null } | null = null
   // Owner 2026-09-28 (c40 T7): a flight search runs without a date; the date is asked at the END.
@@ -2517,7 +2519,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // turn is bounded by its own credit scope. The object travels with the tools' execute() and the after-loop lookups; serperPost refuses without it.
   const requestCapTurn = !agentOn ? createRequestCapTurn() : null
   // Wave 3 (W1, CONSULT_RESEARCH_LOOP): a lean consult turn may open the pages its own results point to (robots.txt honoured, pages budgeted). OFF = null and nothing below differs from before.
-  const research = consultResearchLoopOn() && lean ? createLeanResearch({ lang, userTexts: recentUserTexts, emit: trace ? (ev, d) => trace.emit(ev, d) : undefined }) : null
+  const research = consultResearchLoopOn() && lean ? createLeanResearch({ lang, userTexts: recentUserTexts, maxReads: levelLimits.researchMaxReads, emit: trace ? (ev, d) => trace.emit(ev, d) : undefined }) : null
   const tools = noToolTurn && !agentOn ? undefined : gateTools(timeTools({
       // A movie/show RECOMMENDATION turn drops the place search entirely, so the
       // model can't answer "recommend a movie" with a list of cinemas — it
@@ -3349,7 +3351,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     }])) as T
   }
   // The step budget of this turn, named once (the very expression the stream used inline: same value). CONSULT_FINAL_SYNTHESIS needs it to reserve the last step.
-  const streamMaxSteps = lunaPlan && planningIntent !== 'trip' ? 3 : consultFollowReuse || consultTripPrefetch || (lean && presearchAll.length > 0 && !planningIntent && !noToolTurn && !eveningBlock) ? 2 : noToolTurn || eveningBlock ? 1 : planningIntent ? (lean ? 3 : 8) : hasImage ? 3 : lean ? (research ? RESEARCH_STEPS : 3) : 5
+  const streamMaxSteps = lunaPlan && planningIntent !== 'trip' ? 3 : consultFollowReuse || consultTripPrefetch || (lean && presearchAll.length > 0 && !planningIntent && !noToolTurn && !eveningBlock) ? 2 : noToolTurn || eveningBlock ? 1 : planningIntent ? (lean ? 3 : 8) : hasImage ? 3 : lean ? (research ? levelLimits.researchSteps : 3) : 5
   // CONSULT_FINAL_SYNTHESIS (Wave 2, default OFF = nothing below runs). Baseline: a tool loop used EVERY step calling web_search, the model never wrote a word (finishReason "tool-calls"), and the
   // user got a canned gap sentence or nothing. With the flag ON the LAST step is kept for writing: a tool call made when only the last step is left is answered by code, without running the
   // tool (no search, no Serper request, no cost), telling the model to write now from what it already has. The step budget is unchanged; a turn of one or two steps is not touched.
@@ -3409,7 +3411,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // with [CTA_BUTTONS] + [FOLLOWUPS]); 2048 is 2.5× that. Planning stays at 4096 (a
     // [TAPPY_PLAN] block is long by design) and image turns at 1024. Output is billed as
     // generated, so this changes no cost on a normal reply — it bounds a runaway one.
-    maxTokens: noToolTurn ? (consult ? (structuredSynth ? STRUCTURED_MAX_TOKENS : 600) : 300) : eveningBlock ? 350 : planningIntent ? 4096 : hasImage ? 1024 : (structuredSynth ? STRUCTURED_MAX_TOKENS : 2048),
+    maxTokens: noToolTurn ? (consult ? (structuredSynth ? levelLimits.structuredMaxTokens : 600) : 300) : eveningBlock ? 350 : planningIntent ? 4096 : hasImage ? 1024 : (structuredSynth ? levelLimits.structuredMaxTokens : 2048),
     // Consult V2: a pick whose search already ran (presearch) answers in ONE step — no second full pass.
     // A follow-up/compare that re-reads its evidence keeps a second step: a stray tool call must still end in text.
     // R15: a pre-fetched trip plan writes in ONE step (a second only if it still reaches for a tool).
@@ -3883,7 +3885,7 @@ ${completionInstruction(lang)}` },
             lastUserChars: lastText.length,
             toolResultChars: auditToolResultChars,
             noToolTurn,
-            maxTokens: noToolTurn ? (consult ? (structuredSynth ? STRUCTURED_MAX_TOKENS : 600) : 300) : planningIntent ? 4096 : hasImage ? 1024 : (structuredSynth ? STRUCTURED_MAX_TOKENS : 2048),
+            maxTokens: noToolTurn ? (consult ? (structuredSynth ? levelLimits.structuredMaxTokens : 600) : 300) : planningIntent ? 4096 : hasImage ? 1024 : (structuredSynth ? levelLimits.structuredMaxTokens : 2048),
           },
         }) + '\n')
       } catch { /* audit only */ }

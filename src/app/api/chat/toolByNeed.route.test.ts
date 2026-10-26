@@ -110,6 +110,7 @@ async function turn(messages: Msg[], o: TurnOpts = {}) {
   delete process.env.CONSULT_DETERMINISTIC_MATH // this file pins W2 alone (W4 is covered by deterministicMath.route.test.ts)
   delete process.env.CONSULT_RESEARCH_LOOP // ... and W1 by researchLoop.route.test.ts
   delete process.env.CONSULT_STRUCTURED_SYNTHESIS // ... and W3 by structuredSynthesis.route.test.ts
+  delete process.env.CONSULT_CAPABILITY_LEVEL // ... and the level by capabilityLevel.route.test.ts
   const toolName = o.tool?.name ?? 'search_places'
   const call: Call | null = o.tool ? { toolCallId: 'c1', toolName, args: toolName === 'search_places' ? { query: o.tool.query, type: 'attraction' } : { query: o.tool.query } } : null
   h.state.legacy = { call: call ?? { toolCallId: 'none', toolName: 'none', args: {} }, text: o.reply ?? 'Đây là câu trả lời.' }

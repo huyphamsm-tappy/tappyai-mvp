@@ -128,7 +128,7 @@ async function turn(messages: Msg[], o: TurnOpts = {}) {
   delete process.env.TAPPY_AGENT
   const set = (k: string, v: string | undefined) => { if (v === undefined) delete process.env[k]; else process.env[k] = v }
   set('CONSULT_RESEARCH_LOOP', o.research); set('VERCEL_ENV', o.vercelEnv)
-  delete process.env.CONSULT_TOOL_BY_NEED; delete process.env.CONSULT_DETERMINISTIC_MATH; delete process.env.CONSULT_STRUCTURED_SYNTHESIS // this file pins W1 alone (W2 / W3 / W4 have their own route tests)
+  delete process.env.CONSULT_TOOL_BY_NEED; delete process.env.CONSULT_DETERMINISTIC_MATH; delete process.env.CONSULT_STRUCTURED_SYNTHESIS; delete process.env.CONSULT_CAPABILITY_LEVEL // this file pins W1 alone (W2 / W3 / W4 / the level have their own route tests)
   h.state.calls = (o.tools ?? []).map((t, i) => ({ toolCallId: `c${i + 1}`, toolName: t.name, args: t.args }))
   h.state.text = o.reply ?? 'Đây là câu trả lời.'
   h.state.luna = o.luna ?? null

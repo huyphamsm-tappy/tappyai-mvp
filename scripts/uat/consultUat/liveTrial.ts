@@ -39,6 +39,7 @@ import https from 'node:https'
 import { syncBuiltinESMExports } from 'node:module'
 import { join } from 'node:path'
 import { inspect } from 'node:util'
+import { CAPABILITY_FLAG_LEVELS, CONSULT_CAPABILITY_LEVEL_FLAG, capabilityLevel } from '@/lib/config/consultFlags'
 import { benchModeOf, checkBenchCaps, capToScaled, MAX_TURN_CAP_USD, maxRunCapUsd, type BenchMode } from '@/lib/ai/budget/spendGate'
 import { safeLookup } from '@/lib/security/safeFetch'
 import { matchesFixedUatSet } from './harness'
@@ -238,7 +239,7 @@ export function isBenchmarkEligible(turns: readonly UatTurn[], runValid: boolean
 
 const TWELVE = new Set(UAT_TURNS.map(t => questionKey(t.text)))
 // (read at summary time: the wave-2 flag list is declared further down) the value of each is printed as the run saw it, "unset" when it was not set
-const flagsInEffectNames = (): string[] => ['CONSULTATIVE_V1', 'CONSULT_V2', 'CONSULT_LUNA', 'TURN_WEB_TICKET', 'SEARCH_FALLBACK_GATE', 'BENCH_SPEND_RUN_CAP_USD', QUOTA_RESET_FLAG, ...WAVE2_FLAGS]
+const flagsInEffectNames = (): string[] => ['CONSULTATIVE_V1', 'CONSULT_V2', 'CONSULT_LUNA', 'TURN_WEB_TICKET', 'SEARCH_FALLBACK_GATE', 'BENCH_SPEND_RUN_CAP_USD', QUOTA_RESET_FLAG, ...WAVE2_FLAGS, CONSULT_CAPABILITY_LEVEL_FLAG]
 
 /**
  * WHY THESE VARIABLES EXIST (round 2f): the real trial runs under the project's vitest setup (src/test/consultativeFlag.setup.ts), which OVERWRITES
@@ -348,9 +349,19 @@ export function wave2FlagReasons(env: Record<string, string | undefined>): strin
 }
 /** Wave 2J (F6): a flag that the product reads as OFF unless another flag is exactly "1" too (src/lib/config/consultFlags.ts: consultKnowledgeTurnToolsOn needs the search-now gate). */
 export const WAVE2_FLAG_NEEDS: Readonly<Record<string, string>> = { CONSULT_KNOWLEDGE_TURN_TOOLS: 'CONSULT_SEARCH_NOW_INTENT_GATE', CONSULT_TOOL_BY_NEED: 'CONSULT_SEARCH_NOW_INTENT_GATE' }
-/** Pure. The state each wave-2 flag really has: ON only for the value "1"; INERT = set to "1" but without the flag it needs (the product reads it as OFF). */
+/** Wave 3 (W6): CONSULT_CAPABILITY_LEVEL is unset or a single character 0-4; anything else is refused by name (the product would read it as level 0 and the run would not measure what was meant). */
+export function capabilityLevelReasons(env: Record<string, string | undefined>): string[] {
+  const v = env[CONSULT_CAPABILITY_LEVEL_FLAG]
+  return v === undefined || /^[0-4]$/.test(v) ? [] : [`${CONSULT_CAPABILITY_LEVEL_FLAG} must be a single character 0-4 or unset (any other value is refused, not guessed at)`]
+}
+/**
+ * Pure. The state each wave-2 flag really has: ON for the value "1", or - for a Wave 3 flag that is UNSET - when the capability level switches it on; a flag that is set to anything else is OFF even at a level.
+ * INERT = on but without the flag it needs (the product reads it as OFF).
+ */
 export function wave2FlagState(env: Record<string, string | undefined>): Record<string, 'ON' | 'OFF' | 'INERT'> {
-  return Object.fromEntries(WAVE2_FLAGS.map(k => [k, env[k] !== '1' ? 'OFF' : (WAVE2_FLAG_NEEDS[k] !== undefined && env[WAVE2_FLAG_NEEDS[k]!] !== '1') ? 'INERT' : 'ON' as const]))
+  const level = capabilityLevel(env)
+  const on = (k: string): boolean => env[k] !== undefined ? env[k] === '1' : level >= (CAPABILITY_FLAG_LEVELS[k] ?? 5)
+  return Object.fromEntries(WAVE2_FLAGS.map(k => [k, !on(k) ? 'OFF' : (WAVE2_FLAG_NEEDS[k] !== undefined && !(env[WAVE2_FLAG_NEEDS[k]!] === '1' || (env[WAVE2_FLAG_NEEDS[k]!] === undefined && level >= (CAPABILITY_FLAG_LEVELS[WAVE2_FLAG_NEEDS[k]!] ?? 5)))) ? 'INERT' : 'ON' as const]))
 }
 
 /** The message for an OpenAI key that is there but is not shaped like one. Names the variable and the rule; holds no character of the value. */

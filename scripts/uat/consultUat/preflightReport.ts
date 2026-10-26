@@ -4,7 +4,8 @@
  * Pure apart from the file that the caller reads and passes in (questionText).
  */
 import { benchModeOf, benchSpendGateOn, capToScaled, checkBenchCaps, MAX_TURN_CAP_USD, maxRunCapUsd } from '@/lib/ai/budget/spendGate'
-import { DDG_FALLBACK_HOSTS, OSM_FALLBACK_HOSTS, QUOTA_RESET_FLAG, WAVE2_FLAGS, WAVE2_FLAG_NEEDS, wave2FlagReasons, wave2FlagState, connectionRedirectReasons, consultativeConfirmationReasons, openaiKeyShapeReasons, osmFallbackAllowed, preflight, quotaResetFlagReasons, quotaResetState, requestCapReasons } from './liveTrial'
+import { capabilityLevel } from '@/lib/config/consultFlags'
+import { DDG_FALLBACK_HOSTS, OSM_FALLBACK_HOSTS, QUOTA_RESET_FLAG, WAVE2_FLAGS, WAVE2_FLAG_NEEDS, capabilityLevelReasons, wave2FlagReasons, wave2FlagState, connectionRedirectReasons, consultativeConfirmationReasons, openaiKeyShapeReasons, osmFallbackAllowed, preflight, quotaResetFlagReasons, quotaResetState, requestCapReasons } from './liveTrial'
 import { parseDevQuestions, sha256OfText } from './devQuestions'
 
 export interface Condition { name: string; ok: boolean; detail: string }
@@ -104,7 +105,7 @@ export function conditionReport(input: PreflightReportInput): Condition[] {
 
   // Wave 2: the product-behaviour flags (unset, 0 or 1; a value outside that is refused by name) and the state each really has.
   const w2 = wave2FlagState(env)
-  add('wave-2 behaviour flags (information; each defaults to OFF = the old behaviour)', wave2FlagReasons(env), WAVE2_FLAGS.map(k => `${k}=${env[k] ?? 'unset'} (${w2[k] === 'INERT' ? `INERT: KHÔNG CÓ HIỆU LỰC, cần ${WAVE2_FLAG_NEEDS[k]}=1` : w2[k]})`).join(' | '))
+  add('wave-2 behaviour flags (information; each defaults to OFF = the old behaviour)', [...wave2FlagReasons(env), ...capabilityLevelReasons(env)], `CONSULT_CAPABILITY_LEVEL=${env.CONSULT_CAPABILITY_LEVEL ?? 'unset'} (mức hiệu lực L${capabilityLevel(env)}) | ` + WAVE2_FLAGS.map(k => `${k}=${env[k] ?? 'unset'} (${w2[k] === 'INERT' ? `INERT: KHÔNG CÓ HIỆU LỰC, cần ${WAVE2_FLAG_NEEDS[k]}=1` : w2[k]})`).join(' | '))
 
   const unmet = out.filter(c => !c.ok).length
   out.push({

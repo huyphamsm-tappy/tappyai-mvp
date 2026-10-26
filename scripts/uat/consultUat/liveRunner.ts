@@ -63,6 +63,8 @@ export const BENCH_FLAG_NAMES: readonly string[] = [
   'CONSULT_RESEARCH_LOOP',
   // Wave 3 · W3 (see liveTrialLauncher.mjs); default OFF
   'CONSULT_STRUCTURED_SYNTHESIS',
+  // Wave 3 · W6: one number 0-4 that switches W2 / W4 (L1), W1 (L2), W3 (L3) on together (see liveTrialLauncher.mjs); default unset = level 0
+  'CONSULT_CAPABILITY_LEVEL',
 ]
 
 /** Variables the route reads as FILE PATHS: ANY value ("off", "0" and "false" included) makes it append the full model requests / usage there. They must be UNSET. */

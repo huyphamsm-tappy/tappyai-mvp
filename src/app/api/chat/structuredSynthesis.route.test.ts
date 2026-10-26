@@ -106,7 +106,7 @@ async function turn(messages: Msg[], o: TurnOpts = {}) {
   delete process.env.TAPPY_AGENT
   const set = (k: string, v: string | undefined) => { if (v === undefined) delete process.env[k]; else process.env[k] = v }
   set('CONSULT_STRUCTURED_SYNTHESIS', o.synth); set('VERCEL_ENV', o.vercelEnv)
-  for (const k of ['CONSULT_TOOL_BY_NEED', 'CONSULT_DETERMINISTIC_MATH', 'CONSULT_RESEARCH_LOOP']) delete process.env[k] // this file pins W3 alone
+  for (const k of ['CONSULT_TOOL_BY_NEED', 'CONSULT_DETERMINISTIC_MATH', 'CONSULT_RESEARCH_LOOP', 'CONSULT_CAPABILITY_LEVEL']) delete process.env[k] // this file pins W3 alone
   h.state.calls = (o.tools ?? []).map((t, i) => ({ toolCallId: `c${i + 1}`, toolName: t.name, args: t.args }))
   h.state.text = o.reply ?? 'Đây là câu trả lời.'
   h.state.luna = o.luna ?? null
