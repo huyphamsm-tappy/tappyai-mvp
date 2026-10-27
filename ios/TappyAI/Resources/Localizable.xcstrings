@@ -8670,6 +8670,22 @@
         }
       }
     },
+    "error.auth.aiConsent": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Agree to share data with AI in the TappyAI iPhone app to use this feature."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cần đồng ý chia sẻ dữ liệu với AI trong ứng dụng TappyAI trên iPhone để dùng tính năng này."
+          }
+        }
+      }
+    },
     "error.auth.anonLimit": {
       "localizations": {
         "en": {
@@ -8730,6 +8746,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "Vui lòng đăng nhập để tiếp tục."
+          }
+        }
+      }
+    },
+    "error.auth.planLimit": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You've reached today's limit on your plan. Come back tomorrow."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn đã dùng hết lượt hôm nay của gói hiện tại. Hẹn gặp lại bạn vào ngày mai."
           }
         }
       }
