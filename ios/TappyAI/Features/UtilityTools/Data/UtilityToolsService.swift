@@ -61,6 +61,8 @@ final class UtilityToolsService: Sendable {
     }
 
     func translate(text: String, targetLang: String) async throws -> TranslateResponse {
+        // Hidden feature: no request leaves the phone while ProductFlags.showTranslate is off.
+        guard ProductFlags.showTranslate else { throw AppError.network(status: 404, code: "not_available") }
         try await requireConsent()
         let body = try JSONSerialization.data(withJSONObject: [
             "text": text,
@@ -81,6 +83,8 @@ final class UtilityToolsService: Sendable {
     }
 
     func generateVietContent(topic: String, platform: String, tone: String, length: String) async throws -> VietContentResponse {
+        // Hidden feature: no request leaves the phone while ProductFlags.showVietContent is off.
+        guard ProductFlags.showVietContent else { throw AppError.network(status: 404, code: "not_available") }
         try await requireConsent()
         let body = try JSONSerialization.data(withJSONObject: [
             "topic": topic,

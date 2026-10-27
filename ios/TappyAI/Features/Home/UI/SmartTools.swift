@@ -41,7 +41,7 @@ struct SmartTool: Identifiable {
 
     /// The registry, in the web's order (minus `suggest`, as on Android): safety FIRST, then scan
     /// (Web registry.ts:75-77, «Phase 7 closeout 8J: Cảnh báo lừa đảo comes before Quét»).
-    static let all: [SmartTool] = [
+    private static let catalogue: [SmartTool] = [
         SmartTool(id: .safety, symbol: "checkmark.shield.fill", hue: .blue, mascot: "TappyRecommendation", group: .daily),
         SmartTool(id: .scan, symbol: "doc.text.viewfinder", hue: .blue, mascot: "TappySearching", group: .daily),
         SmartTool(id: .translate, symbol: "character.bubble", hue: .indigo, mascot: "TappySpeaking", group: .daily),
@@ -52,10 +52,23 @@ struct SmartTool: Identifiable {
         SmartTool(id: .captions, symbol: "pencil.line", hue: .pink, mascot: "TappyPhone", group: .fun),
     ]
 
+    /// Hidden tools are removed here (owner decision 2026-10-25). Their views and services stay in place.
+    /// Translate follows `ProductFlags.showTranslate`; Captions follows `ProductFlags.showVietContent`.
+    var isAvailable: Bool {
+        switch id {
+        case .translate: return ProductFlags.showTranslate
+        case .captions: return ProductFlags.showVietContent
+        default: return true
+        }
+    }
+
+    /// The tools this build offers, in registry order.
+    static var all: [SmartTool] { catalogue.filter(\.isAvailable) }
+
     /// The five Home previews: the Web `home: true` subset, in registry order (Web registry.ts:70-75
     /// `homeSmartTools()`; HomeV3.tsx:748-754 renders exactly those five). Together, Fortune and
     /// Captions are `home: false` (registry.ts:80,84,85) and stay reachable from the catalogue (`all`).
-    static let home: [SmartTool] = all.filter { $0.group == .daily }
+    static var home: [SmartTool] { all.filter { $0.group == .daily } }
 }
 
 /// The web's `.v3-toolcard[data-hue]` stops, per appearance.

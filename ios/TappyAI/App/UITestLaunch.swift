@@ -149,6 +149,8 @@ enum UITestLaunch {
             router.switchTo(.profile)
             router.push(ProfileDestination.subscription, on: .profile)
         case "translate":
+            // Deep link to a hidden tool is ignored while ProductFlags.showTranslate is off.
+            guard ProductFlags.showTranslate else { break }
             router.switchTo(.home)
             router.push(HomeDestination.translate, on: .home)
         case "scan":
@@ -167,6 +169,8 @@ enum UITestLaunch {
             router.switchTo(.home)
             router.push(HomeDestination.groupDining, on: .home)
         case "viet":
+            // Deep link to a hidden tool is ignored while ProductFlags.showVietContent is off.
+            guard ProductFlags.showVietContent else { break }
             router.switchTo(.home)
             router.push(HomeDestination.vietContent, on: .home)
         case "recs":

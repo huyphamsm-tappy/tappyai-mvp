@@ -111,13 +111,15 @@ struct PlaceholderShellView: View {
                     case .currency:
                         CurrencyView(deps: deps)
                     case .translate:
-                        TranslateView(deps: deps)
+                        // Hidden by ProductFlags.showTranslate (owner decision 2026-10-25): nothing to show.
+                        if ProductFlags.showTranslate { TranslateView(deps: deps) } else { EmptyView() }
                     case .scan:
                         ScanView(deps: deps)
                     case .scamShield:
                         ScamShieldView(deps: deps)
                     case .vietContent:
-                        VietContentView(deps: deps)
+                        // Hidden by ProductFlags.showVietContent (owner decision 2026-10-25): nothing to show.
+                        if ProductFlags.showVietContent { VietContentView(deps: deps) } else { EmptyView() }
                     case .splitBill:
                         SplitBillView()
                     case .fortune:
