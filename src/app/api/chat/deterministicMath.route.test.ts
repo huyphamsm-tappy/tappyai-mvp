@@ -110,6 +110,8 @@ type ScriptedCall = { name: string; args: Record<string, unknown> }
 interface TurnOpts { math?: string; vercelEnv?: string; luna?: Record<string, unknown> | null; tool?: ScriptedCall | null; tools?: ScriptedCall[]; gps?: unknown; reply?: string }
 async function turn(messages: Msg[], o: TurnOpts = {}) {
   delete process.env.TAPPY_AGENT
+  // Wave 4: this file measures turns without the Wave 4 paths; a path flag set in the shell must not move its turns to another path (restored after each test).
+  for (const k of ['CONSULT_KNOWLEDGE_PATH', 'CONSULT_PICK_TURN_TOOLS', 'CONSULT_CHAT_DOMAIN_AGREEMENT']) vi.stubEnv(k, '0')
   const set = (k: string, v: string | undefined) => { if (v === undefined) delete process.env[k]; else process.env[k] = v }
   set('CONSULT_DETERMINISTIC_MATH', o.math); set('VERCEL_ENV', o.vercelEnv)
   delete process.env.CONSULT_RESEARCH_LOOP // this file pins W4 alone (W1 is covered by researchLoop.route.test.ts)
@@ -145,7 +147,7 @@ beforeEach(() => {
   process.env.CONSULT_V2 = '1'; process.env.CONSULTATIVE_V1 = '1'
   vi.stubGlobal('fetch', async (input: unknown) => { throw new Error('network disabled in this test: ' + String(input).slice(0, 60)) })
 })
-afterEach(() => { vi.useRealTimers(); for (const k of ['TAPPY_AGENT', 'CONSULT_DETERMINISTIC_MATH', 'CONSULT_SEARCH_NOW_INTENT_GATE', 'CONSULT_TOOL_BY_NEED', 'CONSULT_KNOWLEDGE_TURN_TOOLS', 'VERCEL_ENV']) delete process.env[k]; vi.unstubAllGlobals() })
+afterEach(() => { vi.useRealTimers(); for (const k of ['TAPPY_AGENT', 'CONSULT_DETERMINISTIC_MATH', 'CONSULT_SEARCH_NOW_INTENT_GATE', 'CONSULT_TOOL_BY_NEED', 'CONSULT_KNOWLEDGE_TURN_TOOLS', 'VERCEL_ENV']) delete process.env[k]; vi.unstubAllGlobals(); vi.unstubAllEnvs() })
 
 const JSON_ESC = (s: string) => JSON.stringify(s).slice(1, -1)
 const MORE: Msg[] = [{ role: 'user', content: 'quán cơm tấm' }, { role: 'assistant', content: 'Mình chọn: Cơm tấm A.' }, { role: 'user', content: 'còn quán nào nữa' }]

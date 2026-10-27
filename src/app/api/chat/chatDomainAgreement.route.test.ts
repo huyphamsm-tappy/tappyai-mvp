@@ -77,6 +77,8 @@ const VENUE: Msg[] = [{ role: 'user', content: 'quán cà phê gần đây' }]
 interface Cfg { lunaTurn?: string; lunaDomains?: string[]; msgs?: Msg[]; flag?: string; level?: string; vercelEnv?: string }
 async function turn(c: Cfg = {}) {
   for (const k of ENV_NAMES) delete process.env[k]
+  // this file measures C-PRE-2 alone: the two Wave 4 path flags are pinned off (a value set in the shell would move the controls to another path; restored after each test)
+  for (const k of ['CONSULT_KNOWLEDGE_PATH', 'CONSULT_PICK_TURN_TOOLS']) vi.stubEnv(k, '0')
   if (c.flag !== undefined) process.env.CONSULT_CHAT_DOMAIN_AGREEMENT = c.flag
   if (c.level !== undefined) process.env.CONSULT_CAPABILITY_LEVEL = c.level
   if (c.vercelEnv) process.env.VERCEL_ENV = c.vercelEnv
@@ -95,7 +97,7 @@ async function turn(c: Cfg = {}) {
 
 // The system prompt carries the clock ("lúc 10:09 …"): two turns a minute apart would differ in that line alone. Only Date is faked (timers and promises run for real).
 beforeEach(() => { vi.useFakeTimers({ toFake: ['Date'] }); vi.setSystemTime(new Date('2026-10-27T03:09:00Z')); process.env.CONSULT_V2 = '1'; process.env.CONSULTATIVE_V1 = '1' })
-afterEach(() => { vi.useRealTimers(); for (const k of ENV_NAMES) delete process.env[k] })
+afterEach(() => { vi.useRealTimers(); for (const k of ENV_NAMES) delete process.env[k]; vi.unstubAllEnvs() })
 
 describe('C-PRE-2 — the one-sided chat domain', () => {
   it('flag OFF (unset): the intent layer\'s chat [food] sends a knowledge question down the lean venue path (3 steps) - the measured behaviour', async () => {

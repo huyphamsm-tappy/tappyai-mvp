@@ -109,6 +109,8 @@ const one = (u: string): Msg[] => [{ role: 'user', content: u }]
 interface TurnOpts { gate?: string; know?: string; trace?: boolean; luna?: Record<string, unknown> | null; tool?: { name?: string; query: string; location?: string } | null; gps?: unknown; reply?: string }
 async function turn(messages: Msg[], o: TurnOpts = {}) {
   delete process.env.TAPPY_AGENT
+  // Wave 4: this file measures turns without the Wave 4 paths; a path flag set in the shell must not move its turns to another path (restored after each test).
+  for (const k of ['CONSULT_KNOWLEDGE_PATH', 'CONSULT_PICK_TURN_TOOLS', 'CONSULT_CHAT_DOMAIN_AGREEMENT']) vi.stubEnv(k, '0')
   const set = (k: string, v: string | undefined) => { if (v === undefined) delete process.env[k]; else process.env[k] = v }
   set('CONSULT_SEARCH_NOW_INTENT_GATE', o.gate); set('CONSULT_KNOWLEDGE_TURN_TOOLS', o.know); set('CONSULT_TRACE_DIAGNOSTICS', o.trace ? '1' : undefined)
   delete process.env.CONSULT_TOOL_BY_NEED // Wave 3: this file pins K alone; the by-need flag is covered by toolByNeed.route.test.ts (env isolation only, no assertion changed)
@@ -150,7 +152,7 @@ beforeEach(() => {
   process.env.CONSULT_V2 = '1'; process.env.CONSULTATIVE_V1 = '1'
   vi.stubGlobal('fetch', async (input: unknown) => { throw new Error('network disabled in this test: ' + String(input).slice(0, 60)) })
 })
-afterEach(() => { vi.useRealTimers(); for (const k of ['TAPPY_AGENT', 'CONSULT_SEARCH_NOW_INTENT_GATE', 'CONSULT_KNOWLEDGE_TURN_TOOLS', 'CONSULT_TRACE_DIAGNOSTICS', 'VERCEL_ENV']) delete process.env[k]; vi.unstubAllGlobals() })
+afterEach(() => { vi.useRealTimers(); for (const k of ['TAPPY_AGENT', 'CONSULT_SEARCH_NOW_INTENT_GATE', 'CONSULT_KNOWLEDGE_TURN_TOOLS', 'CONSULT_TRACE_DIAGNOSTICS', 'VERCEL_ENV']) delete process.env[k]; vi.unstubAllGlobals(); vi.unstubAllEnvs() })
 
 const KNOW_1 = 'Tiểu sử ngắn gọn của Nikola Tesla và các sáng chế chính.'
 const outcome = (r: { traceEvents: Array<Record<string, any>> }) => r.traceEvents.find(e => e.ev === 'search_now_gate_outcome')

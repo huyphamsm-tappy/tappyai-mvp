@@ -101,6 +101,8 @@ const CHAT_FOOD = lunaIntent('chat', ['food']) // what the intent layer wrote fo
 /** One turn. `flag`: the value of CONSULT_SEARCH_NOW_INTENT_GATE (undefined = unset). `tool`: the place search the scripted MODEL itself runs while the reply streams (null = none). */
 async function turn(messages: Msg[], o: { flag?: string; luna?: Record<string, unknown> | null; tool?: { name?: string; query: string; location?: string } | null; gps?: unknown; reply?: string } = {}) {
   delete process.env.TAPPY_AGENT
+  // Wave 4: this file measures turns without the Wave 4 paths; a path flag set in the shell must not move its turns to another path (restored after each test).
+  for (const k of ['CONSULT_KNOWLEDGE_PATH', 'CONSULT_PICK_TURN_TOOLS', 'CONSULT_CHAT_DOMAIN_AGREEMENT']) vi.stubEnv(k, '0')
   if (o.flag === undefined) delete process.env.CONSULT_SEARCH_NOW_INTENT_GATE; else process.env.CONSULT_SEARCH_NOW_INTENT_GATE = o.flag
   const reply = o.reply ?? 'Đây là câu trả lời bằng kiến thức chung.'
   const toolName = o.tool?.name ?? 'search_places'
@@ -152,7 +154,7 @@ beforeEach(() => {
   delete process.env.CONSULT_CAPABILITY_LEVEL // Wave 3 (W6): same - covered by capabilityLevel.route.test.ts
   vi.stubGlobal('fetch', async (input: unknown) => { throw new Error('network disabled in this test: ' + String(input).slice(0, 60)) })
 })
-afterEach(() => { for (const k of ['TAPPY_AGENT', 'CONSULT_SEARCH_NOW_INTENT_GATE']) delete process.env[k]; vi.unstubAllGlobals() })
+afterEach(() => { for (const k of ['TAPPY_AGENT', 'CONSULT_SEARCH_NOW_INTENT_GATE']) delete process.env[k]; vi.unstubAllGlobals(); vi.unstubAllEnvs() })
 
 // Written for this test (NOT from any benchmark file). Each knowledge turn is a "chat" turn with domain food, as the intent layer wrote it in the paid run.
 // (searchNow.ts reads a run of capitalised words as a named venue only when it is NOT the first word of the message; need profile does the same.)

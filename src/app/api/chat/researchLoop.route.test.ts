@@ -126,6 +126,8 @@ const MENU_HTML = `<html><head><title>Thực đơn Cà phê Mây</title></head><
 
 async function turn(messages: Msg[], o: TurnOpts = {}) {
   delete process.env.TAPPY_AGENT
+  // Wave 4: this file measures turns without the Wave 4 paths; a path flag set in the shell must not move its turns to another path (restored after each test).
+  for (const k of ['CONSULT_KNOWLEDGE_PATH', 'CONSULT_PICK_TURN_TOOLS', 'CONSULT_CHAT_DOMAIN_AGREEMENT']) vi.stubEnv(k, '0')
   const set = (k: string, v: string | undefined) => { if (v === undefined) delete process.env[k]; else process.env[k] = v }
   set('CONSULT_RESEARCH_LOOP', o.research); set('VERCEL_ENV', o.vercelEnv)
   delete process.env.CONSULT_TOOL_BY_NEED; delete process.env.CONSULT_DETERMINISTIC_MATH; delete process.env.CONSULT_STRUCTURED_SYNTHESIS; delete process.env.CONSULT_CAPABILITY_LEVEL // this file pins W1 alone (W2 / W3 / W4 / the level have their own route tests)
@@ -162,7 +164,7 @@ beforeEach(() => {
   }
   vi.stubGlobal('fetch', async (input: unknown) => { throw new Error('network disabled in this test: ' + String(input).slice(0, 60)) })
 })
-afterEach(() => { vi.useRealTimers(); for (const k of ['TAPPY_AGENT', 'CONSULT_RESEARCH_LOOP', 'CONSULT_SEARCH_NOW_INTENT_GATE', 'VERCEL_ENV']) delete process.env[k]; vi.unstubAllGlobals() })
+afterEach(() => { vi.useRealTimers(); for (const k of ['TAPPY_AGENT', 'CONSULT_RESEARCH_LOOP', 'CONSULT_SEARCH_NOW_INTENT_GATE', 'VERCEL_ENV']) delete process.env[k]; vi.unstubAllGlobals(); vi.unstubAllEnvs() })
 
 const JSON_ESC = (s: string) => JSON.stringify(s).slice(1, -1)
 const MORE: Msg[] = [{ role: 'user', content: 'quán cà phê' }, { role: 'assistant', content: 'Mình chọn: Cà phê Mây.' }, { role: 'user', content: 'còn quán nào nữa' }]

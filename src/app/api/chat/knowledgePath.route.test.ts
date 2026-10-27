@@ -109,10 +109,10 @@ const lunaIntent = (turn: string, domains: string[], difficulty = 'hard') => ({ 
 const J = (s: string) => JSON.stringify(s).slice(1, -1)
 // A knowledge question: the rules read no domain, the intent layer is scripted to read chat with no domain.
 const KNOWLEDGE: Msg[] = [{ role: 'user', content: 'Giải thích giúp mình lãi kép hoạt động thế nào và phí duy trì tài khoản thường tính ra sao' }]
-const ENV_NAMES = ['CONSULT_KNOWLEDGE_PATH', 'CONSULT_CAPABILITY_LEVEL', 'CONSULT_STRUCTURED_SYNTHESIS', 'CONSULT_RESEARCH_LOOP', 'CONSULT_DETERMINISTIC_MATH', 'CONSULT_TOOL_BY_NEED', 'CONSULT_PICK_TURN_TOOLS', 'CONSULT_SEARCH_NOW_INTENT_GATE', 'CONSULT_FINAL_SYNTHESIS', 'VERCEL_ENV', 'TAPPY_AGENT']
+const ENV_NAMES = ['CONSULT_TRACE_DIAGNOSTICS', 'CONSULT_KNOWLEDGE_PATH', 'CONSULT_CAPABILITY_LEVEL', 'CONSULT_STRUCTURED_SYNTHESIS', 'CONSULT_RESEARCH_LOOP', 'CONSULT_DETERMINISTIC_MATH', 'CONSULT_TOOL_BY_NEED', 'CONSULT_PICK_TURN_TOOLS', 'CONSULT_SEARCH_NOW_INTENT_GATE', 'CONSULT_FINAL_SYNTHESIS', 'VERCEL_ENV', 'TAPPY_AGENT']
 const BANK_PAGE = '<html><head><title>Biểu phí</title></head><body><h1>Biểu phí</h1><p>Phí duy trì tài khoản: 11.000đ mỗi tháng.</p></body></html>'
 
-interface Cfg { flag?: string; level?: string; flags?: Record<string, string>; vercelEnv?: string; lunaTurn?: string; lunaDomains?: string[]; difficulty?: string; msgs?: Msg[]; calls?: Array<{ name: string; args: Record<string, unknown> }>; reply?: string }
+interface Cfg { flag?: string; level?: string; flags?: Record<string, string>; vercelEnv?: string; lunaTurn?: string; lunaDomains?: string[]; difficulty?: string; msgs?: Msg[]; calls?: Array<{ name: string; args: Record<string, unknown> }>; reply?: string; withLogs?: boolean }
 async function turn(c: Cfg = {}) {
   for (const k of ENV_NAMES) delete process.env[k]
   if (c.flag !== undefined) process.env.CONSULT_KNOWLEDGE_PATH = c.flag
@@ -129,10 +129,12 @@ async function turn(c: Cfg = {}) {
     headers: new Headers({ 'content-type': 'application/json', 'x-tappy-surface': 'web' }),
     json: () => Promise.resolve({ messages: c.msgs ?? KNOWLEDGE }), signal: undefined,
   }
-  const spy = vi.spyOn(console, 'log').mockImplementation(() => undefined)
+  const logs: string[] = []
+  const spies = [vi.spyOn(console, 'log'), vi.spyOn(console, 'warn'), vi.spyOn(console, 'error'), vi.spyOn(console, 'info')].map(s => s.mockImplementation((...a: unknown[]) => { logs.push(a.map(String).join(' ')) }))
   let raw = ''
-  try { raw = await (await POST(req as never)).text() } finally { spy.mockRestore() }
+  try { raw = await (await POST(req as never)).text() } finally { spies.forEach(s => s.mockRestore()) }
   const text = raw.split('\n').filter(l => l.startsWith('0:')).map(l => { try { return JSON.parse(l.slice(2)) as string } catch { return '' } }).join('')
+  if (c.withLogs) return { tools: [...h.state.toolNames].sort(), webDescription: h.state.webDescription, maxSteps: h.state.maxSteps, maxTokens: h.state.maxTokens, system: h.state.system, text, results: [...h.state.results], fetched: [...h.state.fetched], logs }
   return { tools: [...h.state.toolNames].sort(), webDescription: h.state.webDescription, maxSteps: h.state.maxSteps, maxTokens: h.state.maxTokens, system: h.state.system, text, results: [...h.state.results], fetched: [...h.state.fetched] }
 }
 
@@ -231,6 +233,36 @@ describe('C2 — ON: the knowledge path', () => {
     expect(r.fetched).toContain('https://bank.example/go')               // the first hop was allowed and asked for
     expect(r.fetched).not.toContain('https://bank.example/private/x')    // the redirect target was not
     expect(p?.error).toBe('page_unreadable'); expect(p?.reason).toBe('robots_disallowed')
+  }, 60000)
+  type LogRun = { results: Array<{ name: string; result: any }>; logs: string[]; fetched: string[]; maxSteps: number }
+  const NAME = 'Zqvex Canarymunt'
+  const nameLines = (ls: string[]) => ls.filter(l => /zqvex|canarymunt/i.test(l)).map(l => l.replace(/"t-[0-9a-f]{8}"/g, '"t-X"').replace(/"(ms|[a-zA-Z]*Ms)":\d+/g, '"ms":0').replace(/"seq":\d+/g, '"seq":0').replace(/presearch_[0-9a-f]{8}/g, 'presearch_X'))
+  it('privacy canary (trace ON): on a knowledge turn that really searches and reads a page, the knowledge path adds NO log line carrying the name the user typed', async () => {
+    // A capitalised name makes the rules read a place name and the CODE pre-searches it (see the next test); a private token the user typed stays on the knowledge path.
+    const msgs: Msg[] = [{ role: 'user', content: `${(KNOWLEDGE[0]!.content as string)}, mã hội viên của mình là zqvexcanary7781` }]
+    const calls = [{ name: 'web_search', args: { query: 'phí duy trì tài khoản' } }, { name: 'read_page', args: { urls: ['https://bank.example/bieu-phi'], focus: 'phí' } }]
+    const on = await turn({ flag: '1', flags: { CONSULT_TRACE_DIAGNOSTICS: '1' }, msgs, withLogs: true, calls }) as unknown as LogRun
+    expect(on.maxSteps).toBe(5)                                         // the control really is the knowledge path
+    expect(on.fetched).toContain('https://bank.example/bieu-phi')       // and a page really was read (the canary had a chance to leak)
+    expect(on.logs.some(l => l.includes('"ev":"page_read"'))).toBe(true)
+    const off = await turn({ flags: { CONSULT_TRACE_DIAGNOSTICS: '1' }, msgs, withLogs: true, calls }) as unknown as LogRun
+    // Measured (final check): no line carries the token, OFF or ON.
+    expect(nameLines(on.logs)).toEqual([])
+    expect(nameLines(off.logs)).toEqual([])
+  }, 60000)
+  it('privacy canary (trace ON): a HOST the user typed never reaches a log or trace line with the knowledge flag ON (whatever path the turn takes)', async () => {
+    const CANARY_HOST = 'canary-zq7-host.example'
+    h.state.pages[`https://${CANARY_HOST}/robots.txt`] = { body: '', contentType: 'text/plain' }
+    h.state.pages[`https://${CANARY_HOST}/bang-gia`] = { body: '<html><body><p>Phí 11.000đ</p></body></html>' }
+    const msgs: Msg[] = [{ role: 'user', content: `Mình là ${NAME}, giải thích giúp phí ở trang https://${CANARY_HOST}/bang-gia tính thế nào` }]
+    const READ = { name: 'read_page', args: { urls: [`https://${CANARY_HOST}/bang-gia`], focus: 'phí' } }
+    const on = await turn({ flag: '1', flags: { CONSULT_TRACE_DIAGNOSTICS: '1' }, msgs, withLogs: true, calls: [READ] }) as unknown as LogRun
+    expect(on.logs.length).toBeGreaterThan(0)
+    for (const l of on.logs) expect(l, l.slice(0, 200)).not.toContain('canary-zq7')
+    // Measured (final check, NOT Wave 4): this message makes the CODE pre-search with the user's words as its place query, and the existing query log lines
+    // (tappyai_tool_called / tappyai_presearch / tappyai_place_evidence / the trace "tool" event of a code call) carry the name - with the flag OFF exactly as ON. Reported.
+    const off = await turn({ flags: { CONSULT_TRACE_DIAGNOSTICS: '1' }, msgs, withLogs: true, calls: [READ] }) as unknown as LogRun
+    expect(nameLines(on.logs)).toEqual(nameLines(off.logs))
   }, 60000)
   it('R3-01 at R3: an amount the calculator derived from the user\'s own numbers stays in the answer', async () => {
     const msgs: Msg[] = [{ role: 'user', content: 'Mình gửi 1.000.000 đồng lãi kép 5% mỗi năm trong 2 năm thì cuối kỳ được bao nhiêu?' }]

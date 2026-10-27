@@ -105,6 +105,8 @@ const one = (u: string): Msg[] => [{ role: 'user', content: u }]
 interface TurnOpts { gate?: string; need?: string; trace?: boolean; vercelEnv?: string; luna?: Record<string, unknown> | null; tool?: { name?: string; query: string } | null; gps?: unknown; reply?: string }
 async function turn(messages: Msg[], o: TurnOpts = {}) {
   delete process.env.TAPPY_AGENT
+  // Wave 4: this file measures turns without the Wave 4 paths; a path flag set in the shell must not move its turns to another path (restored after each test).
+  for (const k of ['CONSULT_KNOWLEDGE_PATH', 'CONSULT_PICK_TURN_TOOLS', 'CONSULT_CHAT_DOMAIN_AGREEMENT']) vi.stubEnv(k, '0')
   const set = (k: string, v: string | undefined) => { if (v === undefined) delete process.env[k]; else process.env[k] = v }
   set('CONSULT_SEARCH_NOW_INTENT_GATE', o.gate); set('CONSULT_TOOL_BY_NEED', o.need); set('CONSULT_TRACE_DIAGNOSTICS', o.trace ? '1' : undefined); set('VERCEL_ENV', o.vercelEnv)
   delete process.env.CONSULT_DETERMINISTIC_MATH // this file pins W2 alone (W4 is covered by deterministicMath.route.test.ts)
@@ -142,7 +144,7 @@ beforeEach(() => {
   process.env.CONSULT_V2 = '1'; process.env.CONSULTATIVE_V1 = '1'
   vi.stubGlobal('fetch', async (input: unknown) => { throw new Error('network disabled in this test: ' + String(input).slice(0, 60)) })
 })
-afterEach(() => { vi.useRealTimers(); for (const k of ['TAPPY_AGENT', 'CONSULT_SEARCH_NOW_INTENT_GATE', 'CONSULT_TOOL_BY_NEED', 'CONSULT_KNOWLEDGE_TURN_TOOLS', 'CONSULT_TRACE_DIAGNOSTICS', 'VERCEL_ENV']) delete process.env[k]; vi.unstubAllGlobals() })
+afterEach(() => { vi.useRealTimers(); for (const k of ['TAPPY_AGENT', 'CONSULT_SEARCH_NOW_INTENT_GATE', 'CONSULT_TOOL_BY_NEED', 'CONSULT_KNOWLEDGE_TURN_TOOLS', 'CONSULT_TRACE_DIAGNOSTICS', 'VERCEL_ENV']) delete process.env[k]; vi.unstubAllGlobals(); vi.unstubAllEnvs() })
 
 const JSON_ESC = (s: string) => JSON.stringify(s).slice(1, -1)
 const MORE: Msg[] = [{ role: 'user', content: 'quán cơm tấm' }, { role: 'assistant', content: 'Mình chọn: Cơm tấm A.' }, { role: 'user', content: 'còn quán nào nữa' }]

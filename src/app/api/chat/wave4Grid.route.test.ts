@@ -153,12 +153,11 @@ describe('C4 — the grid: level x turn kind x Wave 4 flags', () => {
     }, 240000)
   }
 
-  it('a production runtime: the flags and the level do nothing in any cell', async () => {
+  it('a production runtime: the flags and the level do nothing in any cell (the reference is the same production turn with the flags off)', async () => {
     for (const [name, kind] of Object.entries(KINDS)) {
-      const ref = await turn(kind, '0', OFF)
-      process.env.VERCEL_ENV = 'production'
-      const prod = await (async () => { const r = await turn(kind, '4', { CONSULT_KNOWLEDGE_PATH: '1', CONSULT_PICK_TURN_TOOLS: '1', VERCEL_ENV: 'production' }); return r })()
-      expect(prod.tools, name).toEqual(ref.tools); expect(prod.maxSteps, name).toBe(ref.maxSteps)
+      const ref = await turn(kind, '0', { ...OFF, VERCEL_ENV: 'production' })
+      const prod = await turn(kind, '4', { CONSULT_KNOWLEDGE_PATH: '1', CONSULT_PICK_TURN_TOOLS: '1', VERCEL_ENV: 'production' })
+      expect(prod, name).toEqual(ref)
     }
   }, 240000)
 })
