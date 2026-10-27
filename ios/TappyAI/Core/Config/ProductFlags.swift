@@ -24,4 +24,13 @@ enum ProductFlags {
     /// Mirrors web `SHOW_MUSIC` (served as `flags.showMusic`) and Android
     /// `com.tappyai.app.ProductFlags.SHOW_MUSIC`. Flip all three together.
     static let showMusic = false
+
+    /// Dịch (Translate) — HIDDEN, NOT DELETED (owner decision 2026-10-25). The view, the service and
+    /// `POST /api/translate` stay in place; the entry points and the service call are gated off.
+    /// Mirrors web `SHOW_TRANSLATE` (`src/lib/config/product.ts`). Flip both together.
+    static let showTranslate = false
+
+    /// Viết nội dung (Captions) — HIDDEN, NOT DELETED (owner decision 2026-10-25). Mirrors web
+    /// `SHOW_VIET_CONTENT`. Flip both together.
+    static let showVietContent = false
 }

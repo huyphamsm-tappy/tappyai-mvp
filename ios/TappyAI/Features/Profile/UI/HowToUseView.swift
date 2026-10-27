@@ -103,7 +103,8 @@ struct HowToUseView: View {
             id: "tools",
             title: "guide.tools.title",
             intro: "guide.tools.intro",
-            steps: ["guide.tools.scan", "guide.tools.translate", "guide.tools.currency", "guide.tools.splitbill"],
+            steps: ["guide.tools.scan"] + (ProductFlags.showTranslate ? ["guide.tools.translate"] : [])
+                + ["guide.tools.currency", "guide.tools.splitbill"],
             outcome: nil,
             note: "guide.tools.note"
         ),
