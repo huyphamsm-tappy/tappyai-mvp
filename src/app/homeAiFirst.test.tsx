@@ -2,6 +2,15 @@
 import { describe, it, expect, afterEach, vi } from 'vitest'
 import { render, screen, cleanup } from '@testing-library/react'
 
+// Translate and Viết nội dung are hidden by default (owner decision 2026-10-25). This file asserts the
+// Home/shell invariant that no tool route is orphaned, which only holds for the tools that are shown, so
+// both run with their flags on. The hidden state is asserted in src/lib/config/hiddenTools.test.ts.
+vi.mock('@/lib/config/product', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@/lib/config/product')>()),
+  SHOW_TRANSLATE: true,
+  SHOW_VIET_CONTENT: true,
+}))
+
 // Home mounts the V3 shell, which reads the app router and the pathname.
 vi.mock('next/navigation', () => ({
   useRouter: () => ({ push: vi.fn(), replace: vi.fn(), back: vi.fn(), refresh: vi.fn() }),

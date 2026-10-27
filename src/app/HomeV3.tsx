@@ -12,7 +12,7 @@ import AiLeftToday from '@/components/subscription/AiLeftToday'
 import { heroGreeting, type HeroClock } from '@/lib/home/heroGreeting'
 import SmartToolCard from '@/components/v3/SmartToolCard'
 import { useTranslation } from '@/lib/i18n/useTranslation'
-import { SHOW_HOME_CATEGORY_ROW } from '@/lib/config/product'
+import { SHOW_HOME_CATEGORY_ROW, SHOW_TRANSLATE } from '@/lib/config/product'
 import { formatRelativeTime, cn } from '@/lib/utils'
 import { homeSmartTools, SMART_TOOLS_HREF } from '@/lib/tools/registry'
 import {
@@ -496,7 +496,7 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
               {t('v3.home.tryAsking')}
             </p>
             <div className="v3-scroll-x flex gap-2 pb-0.5">
-              {QUICK_CHIPS.map(({ key, icon: ChipIcon, tone }) => (
+              {QUICK_CHIPS.filter(({ key }) => SHOW_TRANSLATE || key !== 'v3.chip.translate').map(({ key, icon: ChipIcon, tone }) => (
                 <button
                   key={key}
                   type="button"

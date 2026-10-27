@@ -163,6 +163,28 @@ export const SHOW_HOME_CATEGORY_ROW = false
  */
 export const SHOW_WALLET = false
 /**
+ * Translate (`/translate`, `POST /api/translate`) — HIDDEN, NOT DELETED.
+ *
+ * Hidden on the owner's decision (2026-10-25) while the feature's design and quality are re-examined.
+ * Same shape as `SHOW_MUSIC`: the page, the route, the iOS view and service all stay in place.
+ * Flipping this boolean back to `true` restores every Web entry point and the API.
+ *
+ * 🚨 THE API IS GATED TOO. When `false`, `POST /api/translate` answers 404 `not_available` before it
+ * reads the body, applies its rate limit, or calls any model.
+ *
+ * 🚨 MIRRORED ON iOS as `ProductFlags.showTranslate`. Flip both together.
+ */
+export const SHOW_TRANSLATE = false
+/**
+ * Viết nội dung / captions (`/viet-content`, `POST /api/viet-content`) — HIDDEN, NOT DELETED.
+ *
+ * Same decision and shape as `SHOW_TRANSLATE`. When `false`, `POST /api/viet-content` answers 404
+ * `not_available` before its rate limits or any model call.
+ *
+ * 🚨 MIRRORED ON iOS as `ProductFlags.showVietContent`. Flip both together.
+ */
+export const SHOW_VIET_CONTENT = false
+/**
  * G1 public share ("Link công khai" → /r/<slug>) — the kill switch (A5, PRIVACY-REVIEW-G1).
  *
  * ON by default; OFF when the environment sets `SHOW_PUBLIC_SHARE=false` (or `0`). Unlike the

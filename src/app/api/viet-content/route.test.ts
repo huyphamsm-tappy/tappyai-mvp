@@ -13,6 +13,12 @@ vi.mock('@/lib/ai/llm', () => ({
   },
 }))
 
+// Viết nội dung is hidden by default (SHOW_VIET_CONTENT = false). These ceiling assertions describe the
+// route's own limits, so they run with the flag on; the hidden state is asserted in src/lib/config/hiddenTools.test.ts.
+vi.mock('@/lib/config/product', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@/lib/config/product')>()),
+  SHOW_VIET_CONTENT: true,
+}))
 import { POST } from './route'
 
 const call = (ip: string) => POST(new Request('http://localhost/api/viet-content', {

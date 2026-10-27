@@ -2,7 +2,7 @@ import {
   ScanText, Calculator, Languages, ArrowLeftRight, ShieldCheck,
   Star, Users, Music2, Sparkle, PenLine,
 } from 'lucide-react'
-import { SHOW_SCAM_SHIELD, SHOW_MUSIC } from '@/lib/config/product'
+import { SHOW_SCAM_SHIELD, SHOW_MUSIC, SHOW_TRANSLATE, SHOW_VIET_CONTENT } from '@/lib/config/product'
 
 // ── Smart Tools — THE registry ──────────────────────────────────────────────
 //
@@ -101,6 +101,9 @@ export function smartTools(): SmartTool[] {
     // Music hidden by default (owner decision 2026-09-24). The /music route, its
     // APIs and the module stay intact; only this entry point is gated off.
     if (tool.id === 'music') return SHOW_MUSIC
+    // Hidden on the owner's decision (2026-10-25): the route and its API stay, only the entry point goes.
+    if (tool.id === 'translate') return SHOW_TRANSLATE
+    if (tool.id === 'captions') return SHOW_VIET_CONTENT
     return true
   })
 }

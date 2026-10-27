@@ -1,6 +1,13 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { readdirSync, statSync, existsSync } from 'node:fs'
 import { resolve, join } from 'node:path'
+// Translate and Viết nội dung are hidden by default. These assertions describe the registry's curated
+// shape with both on; the hidden state is asserted in src/lib/config/hiddenTools.test.ts.
+vi.mock('@/lib/config/product', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@/lib/config/product')>()),
+  SHOW_TRANSLATE: true,
+  SHOW_VIET_CONTENT: true,
+}))
 import { smartTools, homeSmartTools, smartToolGroups, TOOL_GROUPS, SMART_TOOLS_HREF } from './registry'
 import { vi as viDict, en as enDict } from '@/lib/i18n/v3/web'
 
@@ -140,6 +147,9 @@ describe('the capability gate actually gates — SHOW_SCAM_SHIELD reaches the We
     vi.doMock('@/lib/config/product', async (importOriginal) => ({
       ...(await importOriginal<typeof import('@/lib/config/product')>()),
       SHOW_SCAM_SHIELD: false,
+      // Translate and Viết nội dung stay on here: this case isolates the Scam Shield flag only.
+      SHOW_TRANSLATE: true,
+      SHOW_VIET_CONTENT: true,
     }))
     const gated = await import('./registry')
 

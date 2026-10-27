@@ -11,6 +11,7 @@ import { formatRelativeTime, cn } from '@/lib/utils'
 import { MessageCircle, Sparkles, ChevronRight, ScanText, ArrowLeftRight, Calculator, ShieldCheck } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { heroGreeting, type HeroClock } from '@/lib/home/heroGreeting'
+import { SHOW_TRANSLATE, SHOW_VIET_CONTENT } from '@/lib/config/product'
 
 interface Suggestion { text: string; textEn: string; category: string; emoji: string; gradient: string }
 interface Conv { id: string; title: string; messageCount: number; updated_at: string }
@@ -259,7 +260,7 @@ export default function HomeView({
                 <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5 leading-snug">{t('home.splitDesc')}</p>
               </div>
             </Link>
-            <Link href="/translate" className="group flex flex-col gap-3 rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 p-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all">
+            {SHOW_TRANSLATE && <Link href="/translate" className="group flex flex-col gap-3 rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 p-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all">
               <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-100 to-sky-100 dark:from-blue-900/30 dark:to-sky-900/30 flex items-center justify-center shadow-sm">
                 <span className="text-xl">🌐</span>
               </div>
@@ -267,7 +268,7 @@ export default function HomeView({
                 <p className="font-semibold text-sm text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{t('home.translateTitle')}</p>
                 <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5 leading-snug">{t('home.translateDesc')}</p>
               </div>
-            </Link>
+            </Link>}
             <Link href="/scam-shield" className="group flex flex-col gap-3 rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 p-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all">
               <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-teal-100 to-emerald-100 dark:from-teal-900/30 dark:to-emerald-900/30 flex items-center justify-center shadow-sm">
                 <ShieldCheck size={20} className="text-teal-600 dark:text-teal-400" />
@@ -281,6 +282,7 @@ export default function HomeView({
         </section>
 
         {/* Content writer */}
+        {SHOW_VIET_CONTENT && (
         <section>
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-semibold text-gray-900 dark:text-white">{t('home.contentTitle')}</h3>
@@ -295,6 +297,7 @@ export default function HomeView({
             <ChevronRight size={18} className="text-gray-300 dark:text-gray-600 flex-shrink-0" />
           </Link>
         </section>
+        )}
 
       </main>
 

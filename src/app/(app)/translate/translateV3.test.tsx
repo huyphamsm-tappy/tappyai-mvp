@@ -24,6 +24,12 @@ vi.mock('@/components/v3/TappyPresence', () => ({
   default: ({ pose }: { pose?: string }) => <span data-testid="tappy" data-pose={pose} />,
 }))
 
+// Translate is hidden by default (SHOW_TRANSLATE = false). These assertions describe the page's own
+// behaviour, so they run with the flag on; the hidden state is asserted in src/lib/config/hiddenTools.test.ts.
+vi.mock('@/lib/config/product', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@/lib/config/product')>()),
+  SHOW_TRANSLATE: true,
+}))
 import TranslatePage from './page'
 import { vi as viCopy, en as enCopy } from '@/lib/i18n/w3/translate'
 

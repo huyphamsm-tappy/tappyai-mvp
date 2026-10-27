@@ -3,6 +3,7 @@ import { clientIp } from '@/lib/security/rateLimit'
 import { publicDailyRateLimit, publicRateLimit } from '@/lib/security/publicRateLimit'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
+import { SHOW_VIET_CONTENT } from '@/lib/config/product'
 
 /** Generations per client IP per VN day — the same ceiling as /api/translate. */
 const VIET_CONTENT_DAILY_LIMIT = 30
@@ -28,6 +29,10 @@ const LENGTH_GUIDE: Record<string, string> = {
 }
 
 export async function POST(req: Request) {
+  // Hidden feature (SHOW_VIET_CONTENT): refuse before the rate limits or any model call.
+  if (!SHOW_VIET_CONTENT) {
+    return Response.json({ error: 'not_available', message: serverMessage('service.unavailable', requestLocale(req)) }, { status: 404 })
+  }
   // Cost-abuse guard: this is an unauthenticated LLM endpoint. Cap bursts per IP
   // before doing any Claude work (protects Anthropic billing from floods).
   //
