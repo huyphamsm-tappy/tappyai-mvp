@@ -61,6 +61,8 @@ const exactlyOne = (v: string | undefined): boolean => v === '1'
 export const isProductionRuntime = (env: Env = process.env): boolean => env.NODE_ENV === 'production' || env.VERCEL_ENV === 'production'
 
 export function consultFinalSynthesisOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_FINAL_SYNTHESIS_FLAG]) }
+/** Wave 4 fix N1: the final writing call C-PRE-1 added (a new paid model call) runs only outside a production runtime. The flag's older behaviour (the reserve guard) is untouched. */
+export function consultFinalWriteOn(env: Env = process.env): boolean { return consultFinalSynthesisOn(env) && !isProductionRuntime(env) }
 export function consultAnswerAttributionOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_ANSWER_ATTRIBUTION_FLAG]) }
 export function consultGeneralAssistantOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_GENERAL_ASSISTANT_FLAG]) }
 /** ON only for the exact value "1" AND only outside a production runtime (local, dev-multi bench, tests). */

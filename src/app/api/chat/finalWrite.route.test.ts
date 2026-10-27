@@ -7,6 +7,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { __resetAiQuestionQuotaLocal } from '@/lib/ai/quota/aiQuestionQuota'
 import { finalWriteInstruction } from '@/lib/ai/finalWrite'
+import { consultFinalSynthesisOn, consultFinalWriteOn } from '@/lib/config/consultFlags'
 
 type Call = { toolCallId: string; toolName: string; args: Record<string, unknown> }
 const h = vi.hoisted(() => {
@@ -161,6 +162,24 @@ describe('C-PRE-1 · the measured case: every step is a tool call, no text', () 
     const r = await turn({ flag: '1', luna: lunaIntent('chat', ['food']), env: { CONSULT_SEARCH_NOW_INTENT_GATE: '1', CONSULT_KNOWLEDGE_TURN_TOOLS: '1' } })
     expect(r.generate).toHaveLength(1); expect(r.generate[0]!.tools).toBeUndefined()
     expect(r.text).toContain('Câu trả lời cuối viết từ kết quả công cụ.')
+  })
+  it('fix N1: a production runtime never makes the extra call, even with CONSULT_FINAL_SYNTHESIS=1; the same turn outside production does (live control)', async () => {
+    const prod = await turn({ flag: '1', env: { VERCEL_ENV: 'production' } })
+    expect(prod.generate).toHaveLength(0)
+    expect(prod.text).not.toContain('Câu trả lời cuối')
+    expect(prod.finish).toEqual(['tool-calls'])
+    expect(prod.lines.some(l => l.includes('tappyai_final_write'))).toBe(false)
+    const preview = await turn({ flag: '1', env: { VERCEL_ENV: 'preview' } })
+    expect(preview.generate).toHaveLength(1)
+    expect(preview.text).toContain('Câu trả lời cuối viết từ kết quả công cụ.')
+  })
+  it('fix N1: the flag itself keeps its older meaning in production (only the new call is blocked there)', () => {
+    expect(consultFinalSynthesisOn({ CONSULT_FINAL_SYNTHESIS: '1', VERCEL_ENV: 'production' })).toBe(true)
+    expect(consultFinalSynthesisOn({ CONSULT_FINAL_SYNTHESIS: '1', NODE_ENV: 'production' })).toBe(true)
+    expect(consultFinalWriteOn({ CONSULT_FINAL_SYNTHESIS: '1', VERCEL_ENV: 'production' })).toBe(false)
+    expect(consultFinalWriteOn({ CONSULT_FINAL_SYNTHESIS: '1', NODE_ENV: 'production' })).toBe(false)
+    expect(consultFinalWriteOn({ CONSULT_FINAL_SYNTHESIS: '1' })).toBe(true)
+    for (const v of [undefined, '0', 'true', ' 1', '1 ']) expect(consultFinalWriteOn({ CONSULT_FINAL_SYNTHESIS: v }), String(v)).toBe(false)
   })
   it('the instruction is in the user\'s language, says no tool call and not to invent', () => {
     expect(finalWriteInstruction('en')).toMatch(/no tool call/i); expect(finalWriteInstruction('en')).toMatch(/do not invent/i)

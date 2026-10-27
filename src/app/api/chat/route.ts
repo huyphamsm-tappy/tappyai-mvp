@@ -102,7 +102,7 @@ import { recordDecision, DECISION_RECORD_TIMEOUT_MS } from '@/lib/ai/agent/runti
 import { createPlacesBudget, PLACES_BUDGET_AGENT, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
 // Consultative V1 (flag CONSULTATIVE_V1, default OFF — see docs/audit/consultative-v1-design.md).
 import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
-import { consultFinalSynthesisOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, finalSynthesisReserveReached, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn } from '@/lib/config/consultFlags'
+import { consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, finalSynthesisReserveReached, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn } from '@/lib/config/consultFlags'
 import { referTitlesForPrompt } from '@/lib/ai/consultative/referTitles'
 import { createLeanResearch } from '@/lib/ai/consultative/researchLoop'
 import { wave3PromptLines, PICK_TURN_TOOL_NAMES } from '@/lib/ai/consultative/wave3PromptLines'
@@ -3656,8 +3656,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   let photoMaxPlaceMs = 0
 
   const streamed = result.toDataStreamResponse()
-  // Wave 4 (C-PRE-1): the final writing call is armed only with CONSULT_FINAL_SYNTHESIS on (read now), never for an agent turn, a planning turn (it has its own completion), an evening plan or a turn with no tools.
-  const finalWriteOn = consultFinalSynthesisOn() && !agentOn && !planningIntent && !eveningBlock && streamedWith !== null && !streamedWith.noTools
+  // Wave 4 (C-PRE-1): the final writing call is armed only with CONSULT_FINAL_SYNTHESIS on (read now) outside a production runtime (fix N1), never for an agent turn, a planning turn (it has its own completion), an evening plan or a turn with no tools.
+  const finalWriteOn = consultFinalWriteOn() && !agentOn && !planningIntent && !eveningBlock && streamedWith !== null && !streamedWith.noTools
   // UAT4 P1-f: a planning turn that announced its plan and stopped gets the block from one extra
   // call, streamed before the finish frame so every plan guard below still runs (planCompletion.ts).
   const sdkResponse = eveningBlock && streamed.body
