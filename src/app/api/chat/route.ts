@@ -156,6 +156,7 @@ import { compactRequestMessages } from '@/lib/chat/requestHistory'
 import { readCappedBody, exceedsTextCeiling } from '@/lib/http/readCappedBody'
 import { stepRepeatGuard } from '@/lib/ai/stepRepeatGuard'
 import { planCompletionStream, toolResultDigest, completionInstruction } from '@/lib/ai/planCompletion'
+import { finalWriteStream, finalWriteInstruction } from '@/lib/ai/finalWrite'
 import { askAfterStream, endsWithQuestion } from '@/lib/ai/consultative/askAfter'
 import { deriveLocalShopSearch } from '@/lib/ai/consultative/localShop'
 import { assistantAskedBack, wantsWiderArea, refineAsk } from '@/lib/ai/consultative/echoQuestion'
@@ -3321,6 +3322,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       : startAgentTurn(turnInput)
   }
   let result
+  // Wave 4 (C-PRE-1): what the stream was built from, kept for the final writing call (the stream options live inside the try block below).
+  let streamedWith: { opts: Parameters<typeof AI.stream>[0]; noTools: boolean } | null = null
   try {
   // Provider-specific optimizations (e.g. prompt caching of this large system
   // prompt) are applied inside the active provider adapter — not here.
@@ -3604,6 +3607,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     },
   }
   result = agentOn ? await agentTurn(streamOpts.onFinish) : AI.stream(streamOpts)
+  streamedWith = { opts: streamOpts, noTools: turnHasNoTools }
   } catch (e) {
     // Log the real error server-side, but NEVER return String(e) to the client:
     // the AI registry's own error text enumerates provider/model names, which the
@@ -3627,6 +3631,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   let photoMaxPlaceMs = 0
 
   const streamed = result.toDataStreamResponse()
+  // Wave 4 (C-PRE-1): the final writing call is armed only with CONSULT_FINAL_SYNTHESIS on (read now), never for an agent turn, a planning turn (it has its own completion), an evening plan or a turn with no tools.
+  const finalWriteOn = consultFinalSynthesisOn() && !agentOn && !planningIntent && !eveningBlock && streamedWith !== null && !streamedWith.noTools
   // UAT4 P1-f: a planning turn that announced its plan and stopped gets the block from one extra
   // call, streamed before the finish frame so every plan guard below still runs (planCompletion.ts).
   const sdkResponse = eveningBlock && streamed.body
@@ -3660,6 +3666,34 @@ ${completionInstruction(lang)}` },
         })
         if (lunaOn) { const c = (done.providerMetadata as { tappy?: { cost?: { usd?: number } } } | undefined)?.tappy?.cost; planCompletionUsd += typeof c?.usd === 'number' ? c.usd : turnUsd({ promptTokens: done.usage?.promptTokens ?? 0, completionTokens: done.usage?.completionTokens ?? 0 }) }
         return done.text.trimStart().startsWith('[TAPPY_PLAN]') ? done.text : `[TAPPY_PLAN]${done.text}`
+      },
+    }), { status: streamed.status, headers: streamed.headers })
+    : finalWriteOn && streamed.body
+    // Wave 4 (C-PRE-1, CONSULT_FINAL_SYNTHESIS): a tool loop that ended without one word of text (every step was a tool call) gets ONE extra call with NO tools, written from the tool results
+    // as plain text, streamed before the finish frame so every guard below still runs (finalWrite.ts). Flag OFF: this branch is not taken and the stream is the one the SDK built.
+    ? new Response(finalWriteStream(streamed.body, {
+      needed: true,
+      deadlineAt: startTime + TURN_DEADLINE_MS,
+      complete: async () => {
+        const steps = await result.steps
+        const toolResults = steps.flatMap(st => ((st.toolResults ?? []) as unknown as Array<{ toolName: string; result?: unknown }>).map(r => ({ toolName: r.toolName, result: r.result })))
+        if (toolResults.length === 0) return null
+        const so = streamedWith!.opts
+        const done = await AI.generate({
+          role: so.role,
+          systemShared,
+          system: so.system,
+          messages: [
+            ...(so.messages as CoreMessage[]),
+            { role: 'assistant', content: '…' },
+            { role: 'user', content: `${toolResultDigest(toolResults)}
+
+${finalWriteInstruction(lang)}` },
+          ],
+          maxTokens: so.maxTokens,
+        })
+        if (lunaOn) { const c = (done.providerMetadata as { tappy?: { cost?: { usd?: number } } } | undefined)?.tappy?.cost; planCompletionUsd += typeof c?.usd === 'number' ? c.usd : turnUsd({ promptTokens: done.usage?.promptTokens ?? 0, completionTokens: done.usage?.completionTokens ?? 0 }) }
+        return done.text
       },
     }), { status: streamed.status, headers: streamed.headers })
     : streamed

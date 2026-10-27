@@ -3,7 +3,9 @@
 // Each flag is OFF unless its variable is EXACTLY "1" (anything else - unset, "0", "true", "on", " 1" - is OFF). OFF is the old behaviour, byte for byte: every call site below does
 // nothing different when the flag is OFF. Production keeps them unset until the Owner approves. The benchmark states each one explicitly (scripts/uat/consultUat/liveTrial.ts).
 //
-//   CONSULT_FINAL_SYNTHESIS     a tool loop that used every step without writing still ends with a written answer (one synthesis step, no more tool calls)
+//   CONSULT_FINAL_SYNTHESIS     a tool loop that used every step without writing still ends with a written answer (one synthesis step, no more tool calls).
+//                               Wave 4 (C-PRE-1): that guard only stopped a tool from RUNNING, so a model that kept calling tools to the last step still wrote nothing; now a loop that
+//                               streamed no text at all but ran tools gets ONE extra call with NO tools (finalWrite.ts), written from the tool results, before the finish frame.
 //   CONSULT_ANSWER_ATTRIBUTION  what a user message IS (an answer to the question just asked, or a new request) is decided by one shared function, from structure
 //   CONSULT_GENERAL_ASSISTANT   the scope block no longer tells the model to refuse general-knowledge questions; sensitive topics are answered with care (not refused)
 //   CONSULT_TRACE_DIAGNOSTICS   (Wave 2C) observability only: structured `tappyai_trace` log lines (attribution label, tool states and result previews, intent merge, tool loop). It never
