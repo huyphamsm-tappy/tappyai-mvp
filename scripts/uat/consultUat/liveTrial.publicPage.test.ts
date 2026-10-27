@@ -3,7 +3,11 @@
 // HTTP(S) page in the bench - only with the flag exactly "1" in the extension mode, only GET, never a private / local / link-local / metadata / internal name, at most
 // PUBLIC_PAGE_MAX_PER_TURN per turn, counted in their own ledger. Flag OFF = the allow-list of a58dd26 byte for byte. MOCK ONLY: a fake network, no key, no real host.
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import http from 'node:http'
 import https from 'node:https'
+import { safeLookup } from '@/lib/security/safeFetch'
+import { realHop } from '@/lib/security/safePageFetch'
+import { reserveSpend } from '@/lib/ai/budget/spendGate'
 import { __resetRequestCap } from '@/lib/ai/tools/serperRequestCap'
 import { traceToolCall } from '@/lib/ai/tools/toolTrace'
 import { BENCH_FLAG_NAMES, __resetBenchProcessGuardForTests } from './liveRunner'
@@ -157,6 +161,88 @@ describe('through the real wrapper', () => {
     try { await runLiveTrial({ env: process.env, post: post as never, fetchImpl: network, fs: memFs(), repoRoot: 'D:/TappyAI-wt/wt-integration', now: () => 1_000, turns: TURN, afterTrial: 'restore' } as never) } finally { spies.forEach(s => s.mockRestore()) }
     expect(called).toBe(0)
     expect(https.request).toBe(real) // the trial restores the network afterwards
+  })
+})
+
+// Wave 4 fix N4: the node:http(s) path of the wrapper, judged through the real wrapper. The node functions the trial captures as "the originals" are fakes put in place BEFORE the
+// trial starts (no socket is ever opened): a call the wrapper admits reaches the fake (recorded), a refused one throws before it.
+type NodeCall = { lib: 'http' | 'https'; fn: 'request' | 'get'; args: unknown[] }
+const DUMMY_REQ = { on: () => DUMMY_REQ, end: () => undefined, destroy: () => undefined, setTimeout: () => DUMMY_REQ }
+async function runNode(env: Record<string, string | undefined>, calls: readonly NodeCall[], turns: readonly UatTurn[] = TURN): Promise<{ outcomes: Array<'sent' | 'blocked'>; reachedNode: string[]; result: Record<string, unknown> }> {
+  for (const [k, v] of Object.entries(env)) vi.stubEnv(k, v)
+  const saved = { hr: http.request, hg: http.get, sr: https.request, sg: https.get }
+  const reachedNode: string[] = []
+  const fake = (label: string) => ((...a: unknown[]) => { const o = (typeof a[0] === 'object' && !(a[0] instanceof URL) ? a[0] : a[1]) as { hostname?: string } | undefined; reachedNode.push(`${label} ${o?.hostname ?? String(a[0])}`); return DUMMY_REQ }) as never
+  http.request = fake('http.request'); http.get = fake('http.get'); https.request = fake('https.request'); https.get = fake('https.get')
+  const outcomes: Array<'sent' | 'blocked'> = []
+  const post = async (): Promise<Response> => {
+    for (const c of calls) {
+      const lib = c.lib === 'http' ? http : https
+      try { await traceToolCall('read_page', {}, async () => (lib[c.fn] as (...a: unknown[]) => unknown)(...c.args)); outcomes.push('sent') } catch { outcomes.push('blocked') }
+    }
+    // a real answer with a known cost (as liveTrial.turnsCap.test.ts): otherwise the runner halts after the first turn and a second turn never runs
+    await fetch('https://api.openai.com/v1/chat/completions', { method: 'POST' })
+    reserveSpend('llm:consult', 0.01)!.settle(0.001, { tokensIn: 1, tokensOut: 1, cachedIn: 0 })
+    return new Response('0:"ok"\nd:{"finishReason":"stop"}\n')
+  }
+  const spies = [vi.spyOn(console, 'log'), vi.spyOn(console, 'warn'), vi.spyOn(console, 'error'), vi.spyOn(console, 'info')].map(s => s.mockImplementation(() => undefined))
+  const fs = memFs()
+  let out
+  try { out = await runLiveTrial({ env: process.env, post: post as never, fetchImpl: network, fs, repoRoot: 'D:/TappyAI-wt/wt-integration', now: () => 1_000, turns, afterTrial: 'restore' } as never) } finally {
+    spies.forEach(s => s.mockRestore()); http.request = saved.hr; http.get = saved.hg; https.request = saved.sr; https.get = saved.sg
+  }
+  if (out.kind !== 'ran') throw new Error('refused: ' + JSON.stringify(out.reasons))
+  const file = [...fs.files.entries()].find(([p]) => /bench-\d+\.json$/.test(p))
+  return { outcomes, reachedNode, result: JSON.parse(file ? file[1] : '{}') }
+}
+const pinned = (o: Record<string, unknown>) => ({ ...o, lookup: safeLookup, agent: false })
+
+describe('fix N4 · the node:http(s) path of the wrapper (flag ON, inside read_page)', () => {
+  it('(a) only GET: the options form, the (url, options) form, node:http and node:https - a non-GET is refused before the request function runs; GET goes through (live control)', async () => {
+    const calls: NodeCall[] = [
+      { lib: 'http', fn: 'request', args: [pinned({ hostname: 'www.nasa.gov', path: '/a', method: 'GET' })] },
+      { lib: 'http', fn: 'request', args: [pinned({ hostname: 'www.nasa.gov', path: '/b', method: 'POST' })] },
+      { lib: 'http', fn: 'request', args: ['http://www.nasa.gov/c', pinned({ method: 'PUT' })] },
+      { lib: 'https', fn: 'request', args: [pinned({ hostname: 'www.nasa.gov', path: '/d', method: 'DELETE' })] },
+      { lib: 'https', fn: 'request', args: [pinned({ hostname: 'www.nasa.gov', path: '/e' })] },            // no method: node's default, a GET
+      { lib: 'http', fn: 'get', args: [pinned({ hostname: 'www.nasa.gov', path: '/f' })] },
+    ]
+    const r = await runNode(ON_ENV, calls)
+    expect(r.outcomes).toEqual(['sent', 'blocked', 'blocked', 'blocked', 'sent', 'sent'])
+    expect(r.reachedNode).toEqual(['http.request www.nasa.gov', 'https.request www.nasa.gov', 'http.get www.nasa.gov'])
+    expect(r.result.pageRequests).toEqual({ 'www.nasa.gov': 3 })
+  })
+  it('(b) the wrapper itself requires the product\'s safeLookup on a public-page request: absent → refused, another function → refused, safeLookup → sent', async () => {
+    const other = (() => undefined) as unknown
+    const calls: NodeCall[] = [
+      { lib: 'https', fn: 'request', args: [{ hostname: 'www.nasa.gov', path: '/x', method: 'GET', agent: false }] },
+      { lib: 'https', fn: 'request', args: ['https://www.nasa.gov/y', { method: 'GET' }] },
+      { lib: 'https', fn: 'request', args: [{ hostname: 'www.nasa.gov', path: '/z', method: 'GET', lookup: other }] },
+      { lib: 'https', fn: 'request', args: [pinned({ hostname: 'www.nasa.gov', path: '/ok', method: 'GET' })] },
+    ]
+    const r = await runNode(ON_ENV, calls)
+    expect(r.outcomes).toEqual(['blocked', 'blocked', 'blocked', 'sent'])
+    expect(r.reachedNode).toEqual(['https.request www.nasa.gov'])
+  })
+  it('(b) the product\'s page reader really passes it: realHop calls node:https with lookup = safeLookup and agent = false', async () => {
+    const seen: Array<Record<string, unknown>> = []
+    const spy = vi.spyOn(https, 'request').mockImplementation(((o: Record<string, unknown>) => { seen.push(o); return { on: (ev: string, cb: (e: Error) => void) => { if (ev === 'error') setTimeout(() => cb(new Error('no network in this test')), 0); return undefined }, end: () => undefined, destroy: () => undefined } }) as never)
+    try { await realHop(new URL('https://www.nasa.gov/x'), { signal: new AbortController().signal, maxBytes: 1000, connectTimeoutMs: 1000, readTimeoutMs: 1000 }) } finally { spy.mockRestore() }
+    expect(seen).toHaveLength(1)
+    expect(seen[0]!.lookup).toBe(safeLookup); expect(seen[0]!.agent).toBe(false); expect(seen[0]!.method).toBe('GET')
+  })
+  it(`(c) the cap is PER TURN: two turns of ${PUBLIC_PAGE_MAX_PER_TURN + 2} requests each - ${PUBLIC_PAGE_MAX_PER_TURN} sent in EACH turn, the 2 over the cap refused in each`, async () => {
+    const turns: UatTurn[] = [{ id: 'P1', conversation: 'P1', turn: 1, text: 'Cau hoi kiem thu thu nhat.' }, { id: 'P2', conversation: 'P2', turn: 1, text: 'Cau hoi kiem thu thu hai.' }]
+    const calls: NodeCall[] = Array.from({ length: PUBLIC_PAGE_MAX_PER_TURN + 2 }, (_, i) => ({ lib: 'https' as const, fn: 'request' as const, args: [pinned({ hostname: 'www.nasa.gov', path: `/p${i}`, method: 'GET' })] }))
+    const r = await runNode(ON_ENV, calls, turns)
+    const perTurn = [r.outcomes.slice(0, calls.length), r.outcomes.slice(calls.length)]
+    expect(r.outcomes).toHaveLength(2 * calls.length)
+    for (const t of perTurn) { expect(t.filter(o => o === 'sent').length).toBe(PUBLIC_PAGE_MAX_PER_TURN); expect(t.slice(PUBLIC_PAGE_MAX_PER_TURN)).toEqual(['blocked', 'blocked']) }
+    expect((r.result.pageRequests as Record<string, number>)['www.nasa.gov']).toBe(2 * PUBLIC_PAGE_MAX_PER_TURN)
+  })
+  it('flag OFF: the same pinned GET is refused (the node path follows the flag too)', async () => {
+    const r = await runNode(EXT_ENV, [{ lib: 'https', fn: 'request', args: [pinned({ hostname: 'www.nasa.gov', path: '/x', method: 'GET' })] }])
+    expect(r.outcomes).toEqual(['blocked']); expect(r.reachedNode).toEqual([])
   })
 })
 

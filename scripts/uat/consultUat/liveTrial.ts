@@ -462,6 +462,14 @@ function nodeRequestMethod(args: unknown[]): string {
   return typeof o.method === 'string' ? o.method : 'GET'
 }
 
+/** Wave 4 fix N4(b): a node:http(s) call whose connection is pinned by the product's own `safeLookup` (the page reader's realHop always passes it). `nodeRequestUrl` only refuses a lookup that is
+ *  present and different; a public-page request is admitted only when it is PRESENT and is safeLookup, so a page request without it cannot reach an address the name was not checked for. */
+function nodeRequestPinned(args: unknown[]): boolean {
+  const [a, b] = args
+  const o = { ...(a && typeof a === 'object' && !(a instanceof URL) ? a as Record<string, unknown> : {}), ...(b && typeof b === 'object' ? b as Record<string, unknown> : {}) }
+  return o.lookup === safeLookup
+}
+
 /** Only a string, a URL or a Request: any other object (one that merely carries a `url` property) could be sent somewhere other than what was checked. */
 const urlOf = (input: unknown): string => (typeof input === 'string' ? input : input instanceof URL ? input.href : input instanceof Request ? input.url : '(unparseable)')
 
@@ -574,12 +582,13 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
   const pagesAllowed = publicPageFetchAllowed(env)
   const pageSent: Record<string, number> = {}
   const pagePerTurn: Record<string, number> = {}
-  const admit = (url: string, method = 'GET'): void => {
+  // `nodePinned`: null for a fetch call (its admission is unchanged), else whether a node:http(s) call carries the product's safeLookup (fix N4(b): required for a public page).
+  const admit = (url: string, method = 'GET', nodePinned: boolean | null = null): void => {
     const d = isAllowedRequest(url, osmAllowed)
     if (!d.ok && pagesAllowed && currentToolCall()?.tool === 'read_page') {
       const turnId = currentTurn()?.id ?? '(none)'
       const p = isPublicPageRequest(url, method)
-      if (p.ok && (pagePerTurn[turnId] ?? 0) < PUBLIC_PAGE_MAX_PER_TURN) {
+      if (p.ok && nodePinned !== false && (pagePerTurn[turnId] ?? 0) < PUBLIC_PAGE_MAX_PER_TURN) {
         pagePerTurn[turnId] = (pagePerTurn[turnId] ?? 0) + 1
         pageSent[p.host] = (pageSent[p.host] ?? 0) + 1
         let path = ''; try { path = new URL(url).pathname.slice(0, 120) } catch { path = '' }
@@ -610,7 +619,7 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
   }) as typeof fetch
   const guardNode = (proto: 'http' | 'https', original: (...a: never[]) => unknown) => function (this: unknown, ...args: unknown[]) {
     if (trialClosed || currentTurn()?.open === false) closedAttempt(nodeRequestUrl(proto, args)) // round 3c: as for fetch
-    admit(nodeRequestUrl(proto, args), nodeRequestMethod(args))
+    admit(nodeRequestUrl(proto, args), nodeRequestMethod(args), nodeRequestPinned(args))
     return (original as (...a: unknown[]) => unknown).apply(proto === 'https' ? https : http, args)
   }
   setNode(guardNode('https', originalNode.httpsRequest as never) as never, guardNode('https', originalNode.httpsGet as never) as never, guardNode('http', originalNode.httpRequest as never) as never, guardNode('http', originalNode.httpGet as never) as never)
