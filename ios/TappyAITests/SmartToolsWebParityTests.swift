@@ -88,7 +88,8 @@ final class SmartToolsWebParityTests: XCTestCase {
 
     func testANewRequestClearsThePreviousTranslation() async {
         let api = MockAPIClient()
-        let vm = TranslateViewModel(service: UtilityToolsService(api: api))
+        // Translate is hidden in the shipped build; the view-model rule is checked with the tool enabled.
+        let vm = TranslateViewModel(service: UtilityToolsService(api: api, translateEnabled: true))
         vm.inputText = "xin chào"
         api.stubbed = Data(#"{"translation":"hello"}"#.utf8)
         await vm.translate()

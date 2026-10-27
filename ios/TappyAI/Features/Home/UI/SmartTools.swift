@@ -54,16 +54,20 @@ struct SmartTool: Identifiable {
 
     /// Hidden tools are removed here (owner decision 2026-10-25). Their views and services stay in place.
     /// Translate follows `ProductFlags.showTranslate`; Captions follows `ProductFlags.showVietContent`.
-    var isAvailable: Bool {
-        switch id {
-        case .translate: return ProductFlags.showTranslate
-        case .captions: return ProductFlags.showVietContent
-        default: return true
+    static func tools(showTranslate: Bool, showVietContent: Bool) -> [SmartTool] {
+        catalogue.filter { tool in
+            switch tool.id {
+            case .translate: return showTranslate
+            case .captions: return showVietContent
+            default: return true
+            }
         }
     }
 
     /// The tools this build offers, in registry order.
-    static var all: [SmartTool] { catalogue.filter(\.isAvailable) }
+    static var all: [SmartTool] {
+        tools(showTranslate: ProductFlags.showTranslate, showVietContent: ProductFlags.showVietContent)
+    }
 
     /// The five Home previews: the Web `home: true` subset, in registry order (Web registry.ts:70-75
     /// `homeSmartTools()`; HomeV3.tsx:748-754 renders exactly those five). Together, Fortune and

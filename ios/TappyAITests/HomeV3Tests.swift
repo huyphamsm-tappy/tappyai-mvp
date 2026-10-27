@@ -87,9 +87,15 @@ final class HomeV3Tests: XCTestCase {
         // Web src/lib/tools/registry.ts:70-75 lists safety first, then scan/translate/currency/split with `home: true`;
         // `homeSmartTools()` (registry.ts:109-110) is that subset and HomeV3.tsx:752 renders exactly those five.
         // Together/Fortune/Captions are `home: false` (registry.ts:80,84,85): catalogue only.
-        XCTAssertEqual(SmartTool.home.map(\.id), [.safety, .scan, .translate, .currency, .split])
-        XCTAssertEqual(SmartTool.all.map(\.id), [.safety, .scan, .translate, .currency, .split, .together, .fortune, .captions])
-        XCTAssertEqual(SmartTool.all.filter { $0.group == .daily }.map(\.id), [.safety, .scan, .translate, .currency, .split])
+        // Translate and Captions are hidden in this build (ProductFlags.showTranslate / showVietContent = false,
+        // owner decision 2026-10-25): the shipped lists omit them. The full web order is still pinned below for
+        // the day the flags are flipped, so un-hiding cannot silently reorder the registry.
+        XCTAssertEqual(SmartTool.home.map(\.id), [.safety, .scan, .currency, .split])
+        XCTAssertEqual(SmartTool.all.map(\.id), [.safety, .scan, .currency, .split, .together, .fortune])
+        XCTAssertEqual(SmartTool.all.filter { $0.group == .daily }.map(\.id), [.safety, .scan, .currency, .split])
+        let unhidden = SmartTool.tools(showTranslate: true, showVietContent: true)
+        XCTAssertEqual(unhidden.map(\.id), [.safety, .scan, .translate, .currency, .split, .together, .fortune, .captions])
+        XCTAssertEqual(unhidden.filter { $0.group == .daily }.map(\.id), [.safety, .scan, .translate, .currency, .split])
         XCTAssertEqual(SmartTool.all.first { $0.id == .together }?.destination, .groupDining)
         XCTAssertEqual(SmartTool.all.first { $0.id == .safety }?.destination, .scamShield)
         for tool in SmartTool.all { XCTAssertNotNil(UIImage(named: tool.mascot), tool.mascot) }

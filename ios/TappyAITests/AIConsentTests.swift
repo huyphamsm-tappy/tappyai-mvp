@@ -128,7 +128,8 @@ final class AIConsentTests: XCTestCase {
         let s = store()
         let c = AIConsentCoordinator(store: s)
         let api = MockAPIClient()
-        let service = UtilityToolsService(api: api, consent: c)
+        // Translate is hidden in the shipped build, so the consent gate is exercised with the tool enabled.
+        let service = UtilityToolsService(api: api, consent: c, translateEnabled: true)
         let task = Task { try await service.translate(text: "xin chao", targetLang: "en") }
         while !c.isPresenting { await Task.yield() }
         c.later()

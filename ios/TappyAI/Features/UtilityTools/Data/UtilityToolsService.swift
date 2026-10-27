@@ -45,9 +45,20 @@ final class UtilityToolsService: Sendable {
     /// Asked before translate / scan / write-content send anything to the AI provider (App Review 5.1.2(i)).
     private let consent: AIConsentCoordinator?
 
-    init(api: APIClient, consent: AIConsentCoordinator? = nil) {
+    /// Default to the product flags; a test passes `true` to exercise the path that comes back when a tool is un-hidden.
+    private let translateEnabled: Bool
+    private let vietContentEnabled: Bool
+
+    init(
+        api: APIClient,
+        consent: AIConsentCoordinator? = nil,
+        translateEnabled: Bool = ProductFlags.showTranslate,
+        vietContentEnabled: Bool = ProductFlags.showVietContent
+    ) {
         self.api = api
         self.consent = consent
+        self.translateEnabled = translateEnabled
+        self.vietContentEnabled = vietContentEnabled
     }
 
     /// «Để sau» = the request is not made, and the screen shows the plain «agree to use this» line.
@@ -62,7 +73,7 @@ final class UtilityToolsService: Sendable {
 
     func translate(text: String, targetLang: String) async throws -> TranslateResponse {
         // Hidden feature: no request leaves the phone while ProductFlags.showTranslate is off.
-        guard ProductFlags.showTranslate else { throw AppError.network(status: 404, code: "not_available") }
+        guard translateEnabled else { throw AppError.network(status: 404, code: "not_available") }
         try await requireConsent()
         let body = try JSONSerialization.data(withJSONObject: [
             "text": text,
@@ -84,7 +95,7 @@ final class UtilityToolsService: Sendable {
 
     func generateVietContent(topic: String, platform: String, tone: String, length: String) async throws -> VietContentResponse {
         // Hidden feature: no request leaves the phone while ProductFlags.showVietContent is off.
-        guard ProductFlags.showVietContent else { throw AppError.network(status: 404, code: "not_available") }
+        guard vietContentEnabled else { throw AppError.network(status: 404, code: "not_available") }
         try await requireConsent()
         let body = try JSONSerialization.data(withJSONObject: [
             "topic": topic,

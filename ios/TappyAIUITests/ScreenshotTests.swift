@@ -282,10 +282,10 @@ final class ScreenshotTests: XCTestCase {
     /// Smart Tools parity (UAT build 129): every tool page opens with the Web's hero; Scan has the Web's two action cards, formats and tips.
     func testSmartToolsOpenWithTheWebLayout() {
         var app = launch(route: "translate", signedIn: true, extra: ["-uitest-theme", "dark"])
-        XCTAssertTrue(any(app, "translate-hero").waitForExistence(timeout: 40), "translate hero")
-        XCTAssertTrue(any(app, "translate-voice").exists, "dictation button (Web data-tr-voice)")
-        XCTAssertTrue(scrollTo(app, "translate-footer-tip"), "translate footer tip")
-        shot("92-translate-web-layout")
+        // Translate is hidden (ProductFlags.showTranslate = false, owner decision 2026-10-25): the deep link
+        // is ignored, so the translate screen never opens.
+        XCTAssertFalse(any(app, "translate-hero").waitForExistence(timeout: 10), "a hidden tool must not open from a deep link")
+        shot("92-translate-hidden")
         app.terminate()
 
         app = launch(route: "currency", signedIn: true, extra: ["-uitest-theme", "dark"])
@@ -485,7 +485,8 @@ final class ScreenshotTests: XCTestCase {
     func testTranslateScanGroupAndComposerScreens() {
         var app = launch(route: "translate", signedIn: true, extra: ["-uitest-theme", "dark"])
         sleep(3)
-        shot("81-translate")
+        XCTAssertFalse(any(app, "translate-hero").exists, "Translate is hidden: its screen must not open")
+        shot("81-translate-hidden")
         app.terminate()
 
         app = launch(route: "scan", signedIn: true, extra: ["-uitest-theme", "dark"])
@@ -1016,9 +1017,9 @@ final class ScreenshotTests: XCTestCase {
 
     func testVietContent() {
         let app = launch(route: "viet")
-        XCTAssertTrue(app.descendants(matching: .any)["vc-hero"].waitForExistence(timeout: 20))
-        app.buttons["vc-try-example"].tap()
-        shot("07-viet-content")
+        // Viết nội dung is hidden (ProductFlags.showVietContent = false, owner decision 2026-10-25).
+        XCTAssertFalse(app.descendants(matching: .any)["vc-hero"].waitForExistence(timeout: 10), "a hidden tool must not open from a deep link")
+        shot("07-viet-content-hidden")
     }
 
     func testRecommendations() {
