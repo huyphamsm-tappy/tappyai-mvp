@@ -48,14 +48,15 @@ const toolStream = (name: string, args: object, inc: boolean) => sse([
 const textStream = (text: string, inc: boolean) => sse([{ choices: [{ index: 0, delta: { role: 'assistant', content: text }, finish_reason: null }] }, { choices: [{ index: 0, delta: {}, finish_reason: 'stop' }] }, ...(inc ? [{ choices: [], usage: usage(1500, 80) }] : [])])
 
 /** The scripted model: it keeps calling web_search (a new query every time) and writes only once a tool result says the budget is used (`obeys`), never otherwise (`stubborn`). */
-const net = { answerCalls: 0, serper: 0, queryN: 0, stubborn: false }
+/** `finalWrite` is what the non-streaming call returns: the Wave 4 final write (a call with no tools, after a tool loop that wrote nothing) is the only such call on these turns. '' = it wrote nothing (the canned line is the fallback these tests are about). */
+const net = { answerCalls: 0, serper: 0, queryN: 0, stubborn: false, finalWrite: '{}' }
 const fakeNetwork = (async (input: unknown, init?: { body?: unknown }) => {
   const u = new URL(typeof input === 'string' ? input : input instanceof URL ? input.href : (input as Request).url)
   if (u.hostname === 'api.openai.com') {
     const body = JSON.parse(String(init?.body ?? '{}'))
     const inc = body.stream_options?.include_usage === true
     if (body.response_format) return jsonCompletion(INTENT, usage(1000, 100))
-    if (body.stream !== true) return jsonCompletion('{}', usage(300, 10))
+    if (body.stream !== true) return jsonCompletion(net.finalWrite, usage(300, 10))
     net.answerCalls++
     const msgs: Array<{ role: string; content?: unknown }> = body.messages ?? []
     const tools: string[] = (body.tools ?? []).map((t: { function?: { name: string } }) => t.function?.name)
@@ -80,7 +81,7 @@ const LEGACY = { ...EXT, CONSULTATIVE_V1: '0', CONSULT_V2: '0', BENCH_EXPECT_CON
 const CONSULT = { ...EXT, CONSULTATIVE_V1: '1', CONSULT_V2: '1', BENCH_EXPECT_CONSULTATIVE_V1: '1', BENCH_EXPECT_CONSULT_V2: '1' }
 beforeEach(() => {
   __resetBenchProcessGuardForTests(); __clearToolCache(); __resetAiQuestionQuotaLocal(); __resetRequestCap()
-  net.answerCalls = 0; net.serper = 0; net.queryN = 0; net.stubborn = false
+  net.answerCalls = 0; net.serper = 0; net.queryN = 0; net.stubborn = false; net.finalWrite = '{}'
   for (const k of [...BENCH_FLAG_NAMES, 'BENCH_RESET_FREE_QUOTA_PER_TURN', 'BENCH_CONFIRM_SPEND', 'BENCH_TRIAL_QUESTION_FILE', 'BENCH_TRIAL_OUT_DIR', 'OPENAI_API_KEY', 'SERPER_API_KEY', 'BENCH_LIVE_TRIAL', 'CI', 'BENCH_TRIAL_MODE', 'BENCH_EXPECT_CONSULTATIVE_V1', 'BENCH_EXPECT_CONSULT_V2', 'KV_REST_API_URL', 'KV_REST_API_TOKEN', 'UPSTASH_REDIS_REST_URL', 'UPSTASH_REDIS_REST_TOKEN']) vi.stubEnv(k, undefined)
 })
 afterEach(() => { vi.unstubAllEnvs(); vi.restoreAllMocks(); __resetBenchProcessGuardForTests() })
@@ -130,12 +131,19 @@ describe('legacy path (no consult frame): the tool loop that never writes', () =
     void off
   })
   it('flag ON, the model ignores the note and keeps calling tools: ONE honest sentence about the evidence ships (no place or shopping words), not an empty answer', async () => {
-    net.stubborn = true
+    net.stubborn = true; net.finalWrite = ''
     const r = await run({ ...LEGACY, CONSULT_FINAL_SYNTHESIS: '1' })
     expect(usageLine(r.logs)).toMatchObject({ finishReason: 'tool-calls' })
     expect(r.answer).toContain('chưa có đủ bằng chứng đáng tin'); expect(r.answer).not.toMatch(PLACE_WORDS)
     expect(r.logs.some(l => l.includes('"guard":"empty_reply_neutral"'))).toBe(true)
     expect(r.summary.problems).toEqual([])
+  })
+  it('flag ON, the model ignores the note and keeps calling tools, but the final write (no tools) writes: its answer ships and the canned line does not (C-PRE-1)', async () => {
+    net.stubborn = true; net.finalWrite = 'Đây là câu trả lời viết ở bước cuối, dựa trên kết quả đã tìm được.'
+    const r = await run({ ...LEGACY, CONSULT_FINAL_SYNTHESIS: '1' })
+    expect(r.answer).toContain('viết ở bước cuối'); expect(r.answer).not.toContain('chưa có đủ bằng chứng đáng tin')
+    expect(r.logs.some(l => l.includes('"type":"tappyai_final_write"') && l.includes('"outcome":"appended"'))).toBe(true)
+    expect(r.logs.some(l => l.includes('empty_reply_neutral'))).toBe(false)
   })
 })
 
@@ -162,7 +170,7 @@ describe('consult path, live turn (no frame, nothing buffered): the reply that s
     expect(r.answer).toBe('')
   })
   it('flag ON: one honest sentence, sent as the reply (empty_reply_neutral, live), no place words; a model that obeys the note writes its own answer', async () => {
-    net.stubborn = true
+    net.stubborn = true; net.finalWrite = ''
     const r = await run({ ...CONSULT, CONSULT_FINAL_SYNTHESIS: '1' })
     expect(r.answer).toContain('chưa có đủ bằng chứng đáng tin'); expect(r.answer).not.toMatch(PLACE_WORDS)
     expect(r.logs.some(l => l.includes('"guard":"empty_reply_neutral"') && l.includes('"live":true'))).toBe(true)
