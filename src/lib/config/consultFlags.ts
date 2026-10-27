@@ -68,6 +68,12 @@ export function consultThreadAwareAskOn(env: Env = process.env): boolean { retur
 export function consultAbortAbandonedFirstPartOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_ABORT_ABANDONED_FIRST_PART_FLAG]) && !isProductionRuntime(env) }
 /** Wave 2I · B. ON only for the exact value "1", only outside a production runtime, and only together with the search-now gate (C). */
 export function consultKnowledgeTurnToolsOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_KNOWLEDGE_TURN_TOOLS_FLAG]) && !isProductionRuntime(env) && consultSearchNowIntentGateOn(env) }
+/**
+ * Wave 4 · C-PRE-2. ON only for the exact value "1" AND only outside a production runtime. NOT tied to the capability level (a product decision for the Owner): on a turn the intent layer reads as free
+ * chat, a domain reaches the lean (venue) path only when BOTH readers - the intent layer and the rules - named it (see agreedChatDecision in consultative/luna.ts).
+ */
+export const CONSULT_CHAT_DOMAIN_AGREEMENT_FLAG = 'CONSULT_CHAT_DOMAIN_AGREEMENT'
+export function consultChatDomainAgreementOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_CHAT_DOMAIN_AGREEMENT_FLAG]) && !isProductionRuntime(env) }
 // ── Wave 3 · W6 · capability levels L0-L4 ───────────────────────────────────────────────────────────────────────────────────────────────────────────
 //
 // CONSULT_CAPABILITY_LEVEL is one number that switches the Wave 3 capabilities on together, so a paid run can be priced level by level:

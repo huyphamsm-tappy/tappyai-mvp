@@ -428,6 +428,19 @@ export function mergeIntentWithRules(luna: ConsultDecision, routed: { decision: 
 }
 
 /**
+ * Wave 4 · C-PRE-2 (CONSULT_CHAT_DOMAIN_AGREEMENT, default OFF; the route calls this only with the flag ON). Pure, structural: no word of the message is read.
+ * A turn the merge settled as free CHAT keeps a domain only when BOTH readers named it - the intent layer (`luna`, before the merge) and the rules (`routed`). A domain only one of them found
+ * (measured B2 27/10: rules "unsure []" + intent "chat [food]", or rules "ask [food]" + intent "chat [shopping]") is not evidence of a venue request, and it was what sent knowledge questions down the
+ * lean venue path. Any other turn type is returned as it was; so is a chat turn whose domains both readers share.
+ */
+export function agreedChatDecision<T extends { decision: ConsultDecision }>(merged: T, luna: ConsultDecision, routed: { decision: ConsultDecision } | null): T {
+  const d = merged.decision
+  if (d.turn !== 'chat' || d.domains.length === 0) return merged
+  const agreed = d.domains.filter(x => luna.domains.includes(x) && (routed?.decision.domains ?? []).includes(x))
+  return agreed.length === d.domains.length ? merged : { ...merged, decision: { ...d, domains: agreed } }
+}
+
+/**
  * "**Mình chọn: X** vì/— <reason>" → "**Mình chọn: X**. <Reason>" — the first pick sentence only, before any marker.
  * Structure only: no word is added or removed, so no guard is bypassed (the reason is still judged on its own).
  */

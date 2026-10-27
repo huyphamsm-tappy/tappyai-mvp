@@ -102,7 +102,7 @@ import { recordDecision, DECISION_RECORD_TIMEOUT_MS } from '@/lib/ai/agent/runti
 import { createPlacesBudget, PLACES_BUDGET_AGENT, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
 // Consultative V1 (flag CONSULTATIVE_V1, default OFF — see docs/audit/consultative-v1-design.md).
 import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
-import { consultFinalSynthesisOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, capabilityLimits } from '@/lib/config/consultFlags'
+import { consultFinalSynthesisOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits } from '@/lib/config/consultFlags'
 import { referTitlesForPrompt } from '@/lib/ai/consultative/referTitles'
 import { createLeanResearch, RESEARCH_RULE } from '@/lib/ai/consultative/researchLoop'
 import { calculate } from '@/lib/ai/tools/calculate'
@@ -138,7 +138,7 @@ import { carriedFromStoredCandidates, storedStates, shoppingPickPriceStoredFirst
 import { promoteTripPlan } from '@/lib/ai/consultative/planIntent'
 import { adviceBlock, adviceEnabled, adviceApplies } from '@/lib/ai/consultative/adviceBlock'
 import { rejectModifierOf, withoutQuotedNames, isFixedPhrase, searchableAsPick, validShownTitles } from '@/lib/ai/consultative/consultRouter'
-import { consultLunaEnabled, consultLunaFastEnabled, skipLunaIntent, consultLunaPlanEnabled, LUNA_PLAN_RULE, isLunaAnswerTurn, runLunaIntent, mergeIntentWithRules, lunaTurnFacts, withoutReferenceTurns, LUNA_CORE, INTENT_SYSTEM } from '@/lib/ai/consultative/luna'
+import { consultLunaEnabled, consultLunaFastEnabled, skipLunaIntent, consultLunaPlanEnabled, LUNA_PLAN_RULE, isLunaAnswerTurn, runLunaIntent, mergeIntentWithRules, agreedChatDecision, lunaTurnFacts, withoutReferenceTurns, LUNA_CORE, INTENT_SYSTEM } from '@/lib/ai/consultative/luna'
 import { lunaDataMessage, buildLeakDetector, sanitizeSearchQuery } from '@/lib/ai/consultative/lunaSafety'
 import { asksOtherDestination, eventPreCall, nearbyDestination, nearbyTurnedDown, onlyRowsNamed, slimResultForModel, travelPreCall, unshownRows, withoutShownRows } from '@/lib/ai/consultative/consultTravel'
 import { geoGuardArea, guardPlaceGeography } from '@/lib/ai/tools/placeGeoGuard'
@@ -497,7 +497,8 @@ export async function POST(req: Request) {
     ? { userTexts: currentConsultationTexts(messages, subjectUserTexts.length), shownTitles: validShownTitles(subjectAssistantTexts(messages, subjectUserTexts.length), lastText), establishedTexts: subjectUserTexts.slice(0, -1), gps: !!userLocation }
     : undefined
   const lunaOwnKnown = lunaStated ? routeConsult(lunaOwnWords, { hasGps: !!userLocation, lang }).decision.known : {}
-  const lunaMerged = lunaStated ? mergeIntentWithRules(lunaStated.decision, routed, lunaOwnKnown, threadAskEvidence) : null
+  // Wave 4 · C-PRE-2 (CONSULT_CHAT_DOMAIN_AGREEMENT, OFF = the merge as it was): a free-chat turn keeps only the domains BOTH readers named.
+  const lunaMerged = lunaStated ? (m => consultChatDomainAgreementOn() ? agreedChatDecision(m, lunaStated.decision, routed) : m)(mergeIntentWithRules(lunaStated.decision, routed, lunaOwnKnown, threadAskEvidence)) : null
   const lunaRun = lunaStated && lunaMerged ? { ...lunaStated, decision: lunaMerged.decision, mode: lunaMerged.mode } : null
   // An invalid intent answer is not retried through the brain (one model decision per turn; the fallback below answers instead).
   const consultRun = lunaRun ?? (!agentOn && consultOn && routed?.confidence === 'unsure' && AI.isConfigured() && !consultInvalid.reason

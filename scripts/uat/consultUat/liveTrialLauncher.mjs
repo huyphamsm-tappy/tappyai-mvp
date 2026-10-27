@@ -101,6 +101,8 @@ export const FLAG_ENV_NAMES = [
   'CONSULT_RESEARCH_LOOP',
   // Wave 3 · W3: the writing step of a lean consult turn gets the multi-part shape (conclusion, one section per part, a table, sources with dates, what is unverified) and a 3.500-token ceiling; default OFF, honoured only outside a production runtime
   'CONSULT_STRUCTURED_SYNTHESIS',
+  // Wave 4 · C-PRE-2: a free-chat turn keeps a domain (and so takes the lean venue path) only when BOTH the intent layer and the rules named it; default OFF, not tied to the level, honoured only outside a production runtime
+  'CONSULT_CHAT_DOMAIN_AGREEMENT',
   // Wave 3 · W6: one number 0-4 that switches W2 / W4 (L1), W1 (L2), W3 (L3) on together, L4 deepens the loop; unset = level 0; honoured only outside a production runtime
   'CONSULT_CAPABILITY_LEVEL',
 ]
@@ -363,7 +365,7 @@ export function quotaLines(env) {
 }
 
 /** Wave 2 · the state each product-behaviour flag REALLY has (ON only for the value 1), for Gate 1. Same rule as wave2FlagState in liveTrial.ts (a test compares them). */
-export const WAVE2_FLAG_NAMES = ['CONSULT_FINAL_SYNTHESIS', 'CONSULT_ANSWER_ATTRIBUTION', 'CONSULT_GENERAL_ASSISTANT', 'CONSULT_TRACE_DIAGNOSTICS', 'CONSULT_SEARCH_NOW_INTENT_GATE', 'CONSULT_THREAD_AWARE_ASK', 'CONSULT_ABORT_ABANDONED_FIRST_PART', 'CONSULT_KNOWLEDGE_TURN_TOOLS', 'CONSULT_TOOL_BY_NEED', 'CONSULT_DETERMINISTIC_MATH', 'CONSULT_RESEARCH_LOOP', 'CONSULT_STRUCTURED_SYNTHESIS']
+export const WAVE2_FLAG_NAMES = ['CONSULT_FINAL_SYNTHESIS', 'CONSULT_ANSWER_ATTRIBUTION', 'CONSULT_GENERAL_ASSISTANT', 'CONSULT_TRACE_DIAGNOSTICS', 'CONSULT_SEARCH_NOW_INTENT_GATE', 'CONSULT_THREAD_AWARE_ASK', 'CONSULT_ABORT_ABANDONED_FIRST_PART', 'CONSULT_KNOWLEDGE_TURN_TOOLS', 'CONSULT_TOOL_BY_NEED', 'CONSULT_DETERMINISTIC_MATH', 'CONSULT_RESEARCH_LOOP', 'CONSULT_STRUCTURED_SYNTHESIS', 'CONSULT_CHAT_DOMAIN_AGREEMENT']
 /** Wave 2J (F6): a flag that does nothing unless another flag is exactly 1 too (same table as WAVE2_FLAG_NEEDS in liveTrial.ts; a test compares them). */
 export const WAVE2_FLAG_NEEDS = { CONSULT_KNOWLEDGE_TURN_TOOLS: 'CONSULT_SEARCH_NOW_INTENT_GATE', CONSULT_TOOL_BY_NEED: 'CONSULT_SEARCH_NOW_INTENT_GATE' }
 /** Wave 3 (W6): the level each Wave 3 flag is switched on from (same table as CAPABILITY_FLAG_LEVELS in src/lib/config/consultFlags.ts; a test compares them). */
