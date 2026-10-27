@@ -102,7 +102,7 @@ import { recordDecision, DECISION_RECORD_TIMEOUT_MS } from '@/lib/ai/agent/runti
 import { createPlacesBudget, PLACES_BUDGET_AGENT, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
 // Consultative V1 (flag CONSULTATIVE_V1, default OFF — see docs/audit/consultative-v1-design.md).
 import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
-import { consultFinalSynthesisOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, finalSynthesisReserveReached } from '@/lib/config/consultFlags'
+import { consultFinalSynthesisOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, finalSynthesisReserveReached, knowledgeDepth, consultKnowledgePathOn } from '@/lib/config/consultFlags'
 import { referTitlesForPrompt } from '@/lib/ai/consultative/referTitles'
 import { createLeanResearch } from '@/lib/ai/consultative/researchLoop'
 import { wave3PromptLines } from '@/lib/ai/consultative/wave3PromptLines'
@@ -2526,8 +2526,13 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // CONSULT_REQUEST_CAP (default OFF → null, read per request): the turn's Serper REQUEST budget (serperRequestCap.ts). Legacy path only: an agent
   // turn is bounded by its own credit scope. The object travels with the tools' execute() and the after-loop lookups; serperPost refuses without it.
   const requestCapTurn = !agentOn ? createRequestCapTurn() : null
+  // Wave 4 · C2 (CONSULT_KNOWLEDGE_PATH, Owner Q1): the knowledge path (R3) - a consult turn with NO domain that is not a planning, image, evening, agent or no-tool turn. Identified by the code's own
+  // state only (no word of the message is read). It keeps every old tool and also gets the page reader, the calculator and the by-need web_search description; steps follow knowledgeDepth.
+  // OFF = false, read first, and nothing below differs from before.
+  const knowledgeTurn = consultKnowledgePathOn() && !lean && !!consult && !noToolTurn && !planningIntent && !hasImage && !eveningFrame && !agentOn
   // Wave 3 (W1, CONSULT_RESEARCH_LOOP): a lean consult turn may open the pages its own results point to (robots.txt honoured, pages budgeted). OFF = null and nothing below differs from before.
-  const research = consultResearchLoopOn() && lean ? createLeanResearch({ lang, userTexts: recentUserTexts, maxReads: levelLimits.researchMaxReads, emit: trace ? (ev, d) => trace.emit(ev, d) : undefined }) : null
+  // Wave 4 · C2: the knowledge path reuses the very same reader (createLeanResearch, robots on every hop, the page budget of the level).
+  const research = (consultResearchLoopOn() && lean) || knowledgeTurn ? createLeanResearch({ lang, userTexts: recentUserTexts, maxReads: levelLimits.researchMaxReads, emit: trace ? (ev, d) => trace.emit(ev, d) : undefined }) : null
   const tools = noToolTurn && !agentOn ? undefined : gateTools(timeTools({
       // A movie/show RECOMMENDATION turn drops the place search entirely, so the
       // model can't answer "recommend a movie" with a list of cinemas — it
@@ -2824,7 +2829,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         }
       }) } : {}),
       web_search: tool({
-        description: toolByNeed && lean ? WEB_SEARCH_DESCRIPTION_BY_NEED : 'Tim kiem tong quat tren internet de lay thong tin moi nhat (ty gia, gia xang, su kien, kien thuc can xac thuc...) khi cac tool khac khong phu hop',
+        description: (toolByNeed && lean) || knowledgeTurn ? WEB_SEARCH_DESCRIPTION_BY_NEED : 'Tim kiem tong quat tren internet de lay thong tin moi nhat (ty gia, gia xang, su kien, kien thuc can xac thuc...) khi cac tool khac khong phu hop',
         parameters: z.object({ query: z.string().describe('Tu khoa can tim kiem (vd: ty gia USD hom nay)') }),
         execute: async ({ query }) => {
           // A travel turn that reaches for the general search still gets the editorial supplement.
@@ -2839,7 +2844,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       // Wave 3 (W4): only defined on a lean consult turn with the flag ON; the filter below offers it only to a lean turn. Deterministic: a typed refusal comes back as a result, never as a thrown error.
       // Wave 3 (W1): the reader's own tool definition (description, schema, execute), declared here like every other tool so the AI tool registry and its boundary test see it.
       ...(research ? { read_page: tool({ ...research.tool }) } : {}),
-      ...(deterministicMath && lean ? {
+      // Wave 4 · C2: the knowledge path is offered the same calculator.
+      ...((deterministicMath && lean) || knowledgeTurn ? {
         calculate: tool({
           description: CALCULATE_DESCRIPTION,
           parameters: z.object({ expression: z.string().describe('Bieu thuc so hoc can tinh, vd: pmt(0.01, 12, 1000)') }),
@@ -3362,7 +3368,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     }])) as T
   }
   // The step budget of this turn, named once (the very expression the stream used inline: same value). CONSULT_FINAL_SYNTHESIS needs it to reserve the last step.
-  const streamMaxSteps = lunaPlan && planningIntent !== 'trip' ? 3 : consultFollowReuse || consultTripPrefetch || (lean && presearchAll.length > 0 && !planningIntent && !noToolTurn && !eveningBlock) ? 2 : noToolTurn || eveningBlock ? 1 : planningIntent ? (lean ? 3 : 8) : hasImage ? 3 : lean ? (research ? levelLimits.researchSteps : 3) : 5
+  const streamMaxSteps = lunaPlan && planningIntent !== 'trip' ? 3 : consultFollowReuse || consultTripPrefetch || (lean && presearchAll.length > 0 && !planningIntent && !noToolTurn && !eveningBlock) ? 2 : noToolTurn || eveningBlock ? 1 : planningIntent ? (lean ? 3 : 8) : hasImage ? 3 : lean ? (research ? levelLimits.researchSteps : 3) : knowledgeTurn ? knowledgeDepth().steps : 5
   // CONSULT_FINAL_SYNTHESIS (Wave 2, default OFF = nothing below runs). Baseline: a tool loop used EVERY step calling web_search, the model never wrote a word (finishReason "tool-calls"), and the
   // user got a canned gap sentence or nothing. With the flag ON the LAST step is kept for writing: a tool call made when only the last step is left is answered by code, without running the
   // tool (no search, no Serper request, no cost), telling the model to write now from what it already has. The step budget is unchanged; a turn of one or two steps is not touched.
@@ -3397,6 +3403,15 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     w3Structured = structured
     if (structured) enrichment.setStructuredSynthesis(true) // the prose-shape sentence cap is stepped aside only for an answer that is really sectioned (streamEnrichment checks the text)
     w3Prompt = buildLean(wave3PromptLines({ offeredToolNames, structured, toolByNeed, math: deterministicMath, research: !!research })).dynamic
+  } else if (knowledgeTurn) {
+    // Wave 4 · C2: the knowledge path gets the same lines from the same function, appended to its own (legacy) prompt - each line only when its tool is in the turn's real tool set, the shape block
+    // only with W3 on, tools offered and a request with several parts (the A3 rule of the lean path).
+    const multiPart = lunaIntentRun ? lunaIntentRun.difficulty !== 'easy' : Object.keys(consult!.known).length >= 3
+    const structured = consultStructuredSynthesisOn() && offeredToolNames.length > 0 && multiPart
+    w3Structured = structured
+    if (structured) enrichment.setStructuredSynthesis(true)
+    const w3 = wave3PromptLines({ offeredToolNames, structured, toolByNeed: true, math: true, research: !!research })
+    w3Prompt = [systemPrompt, ...w3.extra, ...w3.tail].join('\n\n')
   }
   const streamOpts: Parameters<typeof AI.stream>[0] = {
     role,
