@@ -33,6 +33,9 @@
 //   CONSULT_STRUCTURED_SYNTHESIS  (Wave 3 · W3) the writing step of a lean consult turn gets a shape block for a request with SEVERAL parts (the model counts them): a short conclusion first, one section per part, a
 //                               table when two or more options are compared, "chưa xác minh" in every cell without data, sources with the date they were read, and what is still unverified. A single simple decision keeps the
 //                               short "chốt một lựa chọn" form. The output ceiling of such a turn is 3.500 tokens (under the hard 4.000), and the sentence cap of the prose-shape guard is not applied to it. Only honoured outside production.
+//   CONSULT_KNOWLEDGE_PATH        (Wave 4 · Q1) the non-lean free-chat consult turn (R3) keeps its old tools and also gets read_page, calculate and the by-need search description, with steps by level.
+//                               Follows the level from L2. Only honoured outside production.
+//   CONSULT_PICK_TURN_TOOLS       (Wave 4 · Q2) a lean turn the code pre-searched (R2) also offers the model web_search, read_page and calculate. Follows the level from L2. Only honoured outside production.
 //   CONSULT_CAPABILITY_LEVEL      (Wave 3 · W6) 0-4: one number that switches W2 / W4 (L1), W1 (L2), W3 (L3) on together; L4 deepens the loop. See the block of that name below. Level 0 and production = nothing.
 
 type Env = Record<string, string | undefined>
@@ -50,6 +53,8 @@ export const CONSULT_TOOL_BY_NEED_FLAG = 'CONSULT_TOOL_BY_NEED'
 export const CONSULT_DETERMINISTIC_MATH_FLAG = 'CONSULT_DETERMINISTIC_MATH'
 export const CONSULT_RESEARCH_LOOP_FLAG = 'CONSULT_RESEARCH_LOOP'
 export const CONSULT_STRUCTURED_SYNTHESIS_FLAG = 'CONSULT_STRUCTURED_SYNTHESIS'
+export const CONSULT_KNOWLEDGE_PATH_FLAG = 'CONSULT_KNOWLEDGE_PATH'
+export const CONSULT_PICK_TURN_TOOLS_FLAG = 'CONSULT_PICK_TURN_TOOLS'
 
 const exactlyOne = (v: string | undefined): boolean => v === '1'
 /** A production runtime: Vercel production, or a production build (which a Vercel preview also is). Local dev (`next dev`), the bench and tests are not. */
@@ -88,6 +93,8 @@ export type CapabilityLevel = 0 | 1 | 2 | 3 | 4
 /** The level each Wave 3 flag is switched on from. */
 export const CAPABILITY_FLAG_LEVELS: Readonly<Record<string, CapabilityLevel>> = {
   [CONSULT_TOOL_BY_NEED_FLAG]: 1, [CONSULT_DETERMINISTIC_MATH_FLAG]: 1, [CONSULT_RESEARCH_LOOP_FLAG]: 2, [CONSULT_STRUCTURED_SYNTHESIS_FLAG]: 3,
+  // Wave 4 (Owner Q4 27/10): the two path flags follow the level from L2 (L1 does not switch them on); a set flag decides for itself.
+  [CONSULT_KNOWLEDGE_PATH_FLAG]: 2, [CONSULT_PICK_TURN_TOOLS_FLAG]: 2,
 }
 /** Pure. The capability level: a single character 0-4, never in a production runtime; anything else is 0. */
 export function capabilityLevel(env: Env = process.env): CapabilityLevel {
@@ -123,6 +130,16 @@ export function capabilityFlags(env: Env = process.env): { level: CapabilityLeve
   return { level: capabilityLevel(env), toolByNeed: consultToolByNeedOn(env), deterministicMath: consultDeterministicMathOn(env), researchLoop: consultResearchLoopOn(env), structuredSynthesis: consultStructuredSynthesisOn(env), limits: capabilityLimits(env) }
 }
 
+/**
+ * Wave 4 · Q1 (R3, the knowledge path). ON by "1" (or, unset, by level 2+), and only outside a production runtime. A free-chat consult turn that is NOT lean (no domain) and not a planning, image, evening,
+ * agent or no-tool turn keeps its old tools and also gets the page reader, the calculator and the by-need search description; steps follow knowledgeDepth (C2).
+ */
+export function consultKnowledgePathOn(env: Env = process.env): boolean { return waveFlag(env, CONSULT_KNOWLEDGE_PATH_FLAG) && !isProductionRuntime(env) }
+/**
+ * Wave 4 · Q2 (R2, the pre-searched pick). ON by "1" (or, unset, by level 2+), and only outside a production runtime. A lean turn the code pre-searched also offers the model web_search, read_page and
+ * calculate (the code's own pre-search is unchanged) (C3).
+ */
+export function consultPickTurnToolsOn(env: Env = process.env): boolean { return waveFlag(env, CONSULT_PICK_TURN_TOOLS_FLAG) && !isProductionRuntime(env) }
 /** Wave 3 · W3. ON by "1" (or, unset, by level 3+), and only outside a production runtime. */
 export function consultStructuredSynthesisOn(env: Env = process.env): boolean { return waveFlag(env, CONSULT_STRUCTURED_SYNTHESIS_FLAG) && !isProductionRuntime(env) }
 /** Wave 3 · W1. ON by "1" (or, unset, by level 2+), and only outside a production runtime. It carries its own reserved writing step (it does not need CONSULT_FINAL_SYNTHESIS). */

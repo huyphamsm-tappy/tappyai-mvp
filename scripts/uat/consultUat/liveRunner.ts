@@ -67,6 +67,9 @@ export const BENCH_FLAG_NAMES: readonly string[] = [
   'CONSULT_STRUCTURED_SYNTHESIS',
   // Wave 4 · C-PRE-2 (see liveTrialLauncher.mjs); default OFF
   'CONSULT_CHAT_DOMAIN_AGREEMENT',
+  // Wave 4 · Q1 / Q2 (see liveTrialLauncher.mjs); unset follows the level from L2
+  'CONSULT_KNOWLEDGE_PATH',
+  'CONSULT_PICK_TURN_TOOLS',
   // Wave 3 · W6: one number 0-4 that switches W2 / W4 (L1), W1 (L2), W3 (L3) on together (see liveTrialLauncher.mjs); default unset = level 0
   'CONSULT_CAPABILITY_LEVEL',
 ]

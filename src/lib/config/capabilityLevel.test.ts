@@ -37,7 +37,7 @@ describe('Wave 3 · W6 capability level', () => {
       expect(f.level).toBe(l)
       expect([f.toolByNeed, f.deterministicMath, f.researchLoop, f.structuredSynthesis]).toEqual([expected[l]!.toolByNeed, expected[l]!.math, expected[l]!.research, expected[l]!.synth])
     }
-    expect(CAPABILITY_FLAG_LEVELS).toEqual({ CONSULT_TOOL_BY_NEED: 1, CONSULT_DETERMINISTIC_MATH: 1, CONSULT_RESEARCH_LOOP: 2, CONSULT_STRUCTURED_SYNTHESIS: 3 })
+    expect(CAPABILITY_FLAG_LEVELS).toEqual({ CONSULT_TOOL_BY_NEED: 1, CONSULT_DETERMINISTIC_MATH: 1, CONSULT_RESEARCH_LOOP: 2, CONSULT_STRUCTURED_SYNTHESIS: 3, CONSULT_KNOWLEDGE_PATH: 2, CONSULT_PICK_TURN_TOOLS: 2 })
   })
   it('W2 is inert at every level without the search-now gate; the others do not need it', () => {
     for (const l of ['1', '2', '3', '4']) {
