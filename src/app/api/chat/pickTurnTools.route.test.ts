@@ -261,6 +261,39 @@ describe('C3 — a lean turn that was not pre-searched (R1) is untouched', () =>
   }, 60000)
 })
 
+// Review (final) S3 · privacy canary for R2 (trace ON). The code's pre-search logs its query (tappyai_presearch, tappyai_tool_called, tappyai_place_evidence, the trace
+// "tool" event of the code's call): those lines are OLDER than Wave 4 and carry the user's words with the flag OFF exactly as ON (review S4, recorded as backlog, not
+// fixed here). What R2 adds - the model's web_search / read_page, page_read / evidence trace, the final write - must add NO line carrying what the user typed.
+describe('S3 — privacy canary on R2', () => {
+  const TOKEN = 'zqvexcanary7781'
+  const canary = (ls: string[], needle: string) => ls.filter(l => l.toLowerCase().includes(needle)).map(l => l.replace(/"t-[0-9a-f]{8}"/g, '"t-X"').replace(/"(ms|[a-zA-Z]*Ms)":\d+/g, '"ms":0').replace(/"seq":\d+/g, '"seq":0').replace(/presearch_[0-9a-f]{8}/g, 'presearch_X').replace(/"call":\d+/g, '"call":0'))
+  // the pre-existing pre-search lines (S4): named by their line type, so a NEW line type carrying the token is never hidden by this filter
+  const PRESEARCH_TYPES = ['"type":"tappyai_presearch"', '"type":"tappyai_tool_called"', '"type":"tappyai_place_evidence"']
+  const isPresearchLine = (l: string) => PRESEARCH_TYPES.some(t => l.includes(t)) || (l.includes('"ev":"tool"') && l.includes('"by":"code"'))
+  it('a private token the user typed: R2 (web_search + read_page really run) adds no log line carrying it; the older pre-search lines are the same with the flag OFF', async () => {
+    const msgs: Msg[] = [{ role: 'user', content: `quán cà phê gần đây, mã hội viên của mình là ${TOKEN}` }]
+    const calls = [{ name: 'web_search', args: { query: 'Cà phê Mây thực đơn giá' } }, { name: 'read_page', args: { urls: ['https://caphemay.example/'], focus: 'giá' } }]
+    const on = await turn({ flag: '1', env: { CONSULT_TRACE_DIAGNOSTICS: '1' }, msgs, calls, withLogs: true }) as unknown as { tools: string[]; fetched: string[]; logs: string[] }
+    expect(on.tools).toEqual(['calculate', 'read_page', 'web_search'])  // the control really is R2
+    expect(on.fetched).toContain('https://caphemay.example/')           // and a page really was read (the canary had a chance to leak)
+    expect(on.logs.some(l => l.includes('"ev":"page_read"'))).toBe(true)
+    expect(canary(on.logs, TOKEN).filter(l => !isPresearchLine(l))).toEqual([])
+    const off = await turn({ env: { CONSULT_TRACE_DIAGNOSTICS: '1' }, msgs, withLogs: true }) as unknown as { logs: string[] }
+    expect(canary(on.logs, TOKEN).filter(isPresearchLine)).toEqual(canary(off.logs, TOKEN).filter(isPresearchLine))
+  }, 60000)
+  it('a HOST the user typed and R2 reads (user_url) never reaches a log or trace line', async () => {
+    const HOST = 'canary-zq7-host.example'
+    h.state.pages[`https://${HOST}/robots.txt`] = { body: '', contentType: 'text/plain' }
+    h.state.pages[`https://${HOST}/menu`] = { body: '<html><body><p>Bạc xỉu 52.000đ</p></body></html>' }
+    const msgs: Msg[] = [{ role: 'user', content: `quán cà phê gần đây, xem giúp https://${HOST}/menu` }]
+    const on = await turn({ flag: '1', env: { CONSULT_TRACE_DIAGNOSTICS: '1' }, msgs, calls: [{ name: 'read_page', args: { urls: [`https://${HOST}/menu`], focus: 'giá' } }], withLogs: true }) as unknown as { tools: string[]; fetched: string[]; logs: string[] }
+    expect(on.tools).toEqual(['calculate', 'read_page', 'web_search'])
+    expect(on.fetched).toContain(`https://${HOST}/menu`)                 // the page really was read
+    expect(on.logs.some(l => l.includes('"ev":"page_read"') && l.includes('user_url'))).toBe(true)
+    for (const l of on.logs) expect(l, l.slice(0, 200)).not.toContain('canary-zq7')
+  }, 60000)
+})
+
 // Review (final) S1 · the recognition boundary of R2, held by tests: the tools go ONLY to a pre-searched Luna answer turn. Each case: the code still pre-searches, the
 // flag is ON, and the turn is exactly the flag-OFF turn (no web_search / read_page / calculate, not the level's steps). Live control: a Luna pick turn gets the tools.
 const FOLLOW: Msg[] = [{ role: 'user', content: 'quán cà phê gần đây' }, { role: 'assistant', content: 'Mình chọn **Cà phê Mây**: gần bạn, đánh giá 4.5.' }, { role: 'user', content: 'Cà phê Mây có chỗ ngồi ngoài trời không?' }]
