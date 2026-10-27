@@ -2809,6 +2809,8 @@ export function applyPlaceEnrichmentStreamFilter(
      * attribute against. With no rows there is nothing a sentence could name,
      * and the guard keeps its existing area-level behaviour.
      */
+    // Wave 4 (B): a code pre-search's venue rows reach the stream slimmed (no website); their sites come from the full rows instead - an input only, a host already known keeps its venue.
+    for (const s of collector?.placeSites ?? []) { const site = hostOfUrl(s.website); if (site && !placeSiteHosts.has(site) && placeSiteHosts.size < 60) placeSiteHosts.set(site, s.name) }
     // Wave 3 (W1): the amounts on a page of a venue's OWN website belong to that venue (inert when no page was read)
     for (const [host, name] of placeSiteHosts) { const figs = pageFiguresByHost.get(host); if (figs && figs.length > 0) snippetPricesByEntity.set(name, [...(snippetPricesByEntity.get(name) ?? []), ...figs]) }
     const placeScope = (): SnippetPriceScope | undefined =>

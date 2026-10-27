@@ -145,7 +145,7 @@ import { asksOtherDestination, eventPreCall, nearbyDestination, nearbyTurnedDown
 import { geoGuardArea, guardPlaceGeography } from '@/lib/ai/tools/placeGeoGuard'
 import { compactCandidates, compactProducts, loadChatSessionState, nextChatSessionState, readChatSessionId, saveChatSessionState, type ChatSessionState } from '@/lib/ai/consultative/chatSessionState'
 import { turnUsd, sumCounts, turnCostStream } from '@/lib/ai/turnCost'
-import { planPresearch, planFlightPresearch, type FlightPresearchPlan, presearchMessages, presearchFrames, prefixBody, deferredBody, searchingFrame, type PresearchOutcome, type PresearchPlan } from '@/lib/ai/consultative/presearch'
+import { planPresearch, planFlightPresearch, type FlightPresearchPlan, presearchMessages, presearchFrames, presearchPlaceSites, prefixBody, deferredBody, searchingFrame, type PresearchOutcome, type PresearchPlan } from '@/lib/ai/consultative/presearch'
 import { wantsMoreFromSet, reusablePlaceSearch, type PlaceSearchEvidence } from '@/lib/ai/consultative/moreFromSet'
 import { coercePlaceType } from '@/lib/ai/tools/placeType'
 import { coerceTransportMode } from '@/lib/ai/tools/transportMode'
@@ -2537,6 +2537,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // Wave 4 · C3 (CONSULT_PICK_TURN_TOOLS, Owner Q2): a lean Luna answer turn MAY turn out to be pre-searched by the code (R2) - known only after the pre-search below - so the reader and the
   // calculator are DECLARED for it here; they are OFFERED only when the turn really was pre-searched (`pickTools`), and the turn is otherwise exactly the turn without the flag. OFF = false.
   const pickCandidate = consultPickTurnToolsOn() && !!lean && lunaAnswer && !noToolTurn && !planningIntent && !agentOn
+  // Wave 4 (B): the FULL row set of the last place search, kept only on a pick candidate (the pre-search's rows, before the model's copy is slimmed). OFF = never set.
+  let lastFullPlaceResult: unknown = null
   const researchReader = (consultResearchLoopOn() && lean) || knowledgeTurn || pickCandidate ? createLeanResearch({ lang, userTexts: recentUserTexts, maxReads: levelLimits.researchMaxReads, emit: trace ? (ev, d) => trace.emit(ev, d) : undefined }) : null
   const tools = noToolTurn && !agentOn ? undefined : gateTools(timeTools({
       // A movie/show RECOMMENDATION turn drops the place search entirely, so the
@@ -2722,6 +2724,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // enrichment (photos, links) off the FULL row set — trimming first starved the collector
           // of photos and the late resolver bought five /images calls per turn (measured). See
           // `modelPayload.ts`.
+          if (pickCandidate) lastFullPlaceResult = result
           const modelView = trimPlacesForModel(forModel('search_places', withTravelEditorial(pick
             ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }
             : result, editorial)), 'results', { rendersCard: rendersDecisionCard, modelChooses: v1Active || agentV2, ...(consultTopTurn ? { consultTop: 3 } : {}) })
@@ -3379,6 +3382,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // Wave 4 · C3: the code's pre-search results are this turn's results too: a link they carry may be opened, exactly as if the model had searched (the same "only this turn's links" rule; a
   // slimmed place result that carries no link adds nothing - the model then searches the web first).
   if (pickTools && research) for (const o of presearchAll) research.collectFrom(o.result)
+  // Wave 4 (B, Owner option a): the price guard learns the venue websites of the pre-search from its FULL rows (the stream only carries the slimmed copy), for the venues the model saw.
+  // An input only: an amount read on venue X's own site is evidence for X; any other amount is judged exactly as before (still cut when it belongs to no venue it is said of).
+  if (pickTools && presearchOutcome?.toolName === 'search_places') enrichment.placeSites = presearchPlaceSites(lastFullPlaceResult, presearchOutcome.result)
   // The step budget of this turn, named once (the very expression the stream used inline: same value). CONSULT_FINAL_SYNTHESIS needs it to reserve the last step.
   const streamMaxSteps = lunaPlan && planningIntent !== 'trip' ? 3 : pickTools ? knowledgeDepth().steps : consultFollowReuse || consultTripPrefetch || (lean && presearchAll.length > 0 && !planningIntent && !noToolTurn && !eveningBlock) ? 2 : noToolTurn || eveningBlock ? 1 : planningIntent ? (lean ? 3 : 8) : hasImage ? 3 : lean ? (research ? levelLimits.researchSteps : 3) : knowledgeTurn ? knowledgeDepth().steps : 5
   // CONSULT_FINAL_SYNTHESIS (Wave 2, default OFF = nothing below runs). Baseline: a tool loop used EVERY step calling web_search, the model never wrote a word (finishReason "tool-calls"), and the

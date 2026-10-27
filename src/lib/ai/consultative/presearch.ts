@@ -114,6 +114,28 @@ export interface PresearchOutcome {
   ms: number
 }
 
+/**
+ * Wave 4 (B, CONSULT_PICK_TURN_TOOLS): the venue websites of a code pre-search, read from the FULL provider rows (`full`, before the model's copy was slimmed - the slimmed rows that
+ * reach the stream carry no website), for the venues the model's copy (`shown`) still names. The price guard then knows which page host is which venue's own site, so an amount read
+ * on that site is evidence for THAT venue only. Pure: input only; a row without a name or an http(s) website, or a venue the model never saw, gives nothing. At most 10.
+ */
+export function presearchPlaceSites(full: unknown, shown: unknown): Array<{ name: string; website: string }> {
+  const rowsOf = (r: unknown): Array<Record<string, unknown>> => {
+    const rows = r && typeof r === 'object' ? (r as { results?: unknown }).results : undefined
+    return Array.isArray(rows) ? rows.filter((x): x is Record<string, unknown> => !!x && typeof x === 'object') : []
+  }
+  const shownNames = new Set(rowsOf(shown).map(r => r.name).filter((n): n is string => typeof n === 'string' && n !== ''))
+  const webUrl = (u: unknown): boolean => { try { return typeof u === 'string' && ['http:', 'https:'].includes(new URL(u).protocol) } catch { return false } }
+  const out: Array<{ name: string; website: string }> = []
+  for (const r of rowsOf(full)) {
+    const name = r.name, website = r.website_uri ?? r.website
+    if (typeof name !== 'string' || !shownNames.has(name) || typeof website !== 'string' || !webUrl(website)) continue
+    if (!out.some(o => o.name === name)) out.push({ name, website })
+    if (out.length >= 10) break
+  }
+  return out
+}
+
 /** The two CoreMessages that put a completed tool call into the model's history. */
 export function presearchMessages(o: PresearchOutcome): Array<{ role: 'assistant' | 'tool'; content: unknown }> {
   return [

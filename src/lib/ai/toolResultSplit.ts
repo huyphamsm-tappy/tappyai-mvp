@@ -182,6 +182,8 @@ export interface EnrichmentCollector {
   setConsultTurn(turn: string, refers?: string[], known?: Record<string, string>): void
   /** Wave 3 (W3, CONSULT_STRUCTURED_SYNTHESIS): the answer is a structured, multi-part one - the prose-shape sentence cap (a short pick + a reason) is not applied to it. */
   structuredSynthesis?: boolean
+  /** Wave 4 (B, CONSULT_PICK_TURN_TOOLS): the code pre-search's venue websites, from the full rows (presearch.ts presearchPlaceSites). Absent = the price guard as before. */
+  placeSites?: Array<{ name: string; website: string }>
   setStructuredSynthesis(on: boolean): void
   /** The area of the turn ('flight' for a fare turn) — the advice floor (adviceFloor.ts) picks its tips by it. */
   consultDomain?: string

@@ -18,7 +18,7 @@ const h = vi.hoisted(() => {
   const state = {
     calls: [] as Call[], results: [] as Array<{ name: string; result: any }>, luna: null as null | Record<string, unknown>,
     toolNames: [] as string[], maxSteps: 0, system: '' as string, text: 'ok', maps: [] as string[], webCalls: [] as string[], fetched: [] as string[],
-    pages: {} as Record<string, { status?: number; body: string; contentType?: string }>, userId: 'u-pick-turn-tools',
+    pages: {} as Record<string, { status?: number; body: string; contentType?: string }>, userId: 'u-pick-turn-tools', secondVenue: false,
   }
   const builder = (): any => {
     const b: any = {
@@ -67,7 +67,11 @@ vi.mock('@/lib/ai/tools/serperPlaces', async (importOriginal) => ({
   ...(await importOriginal<typeof import('@/lib/ai/tools/serperPlaces')>()),
   serperPlaces: async (q: string, ll?: { lat: number; lng: number } | null) => {
     h.state.maps.push(q)
-    return ll ? [{ title: 'Cà phê Mây', address: 'Cà phê Mây', rating: 4.5, ratingCount: 300, placeId: 'p1', latitude: ll.lat + 0.001, longitude: ll.lng + 0.001, website: 'https://caphemay.example/' }] : []
+    return ll ? [
+      { title: 'Cà phê Mây', address: 'Cà phê Mây', rating: 4.5, ratingCount: 300, placeId: 'p1', latitude: ll.lat + 0.001, longitude: ll.lng + 0.001, website: 'https://caphemay.example/' },
+      // part B: a second venue with a site of its own, only in the tests that ask for it (every other test sees the one-venue pre-search it always saw)
+      ...(h.state.secondVenue ? [{ title: 'Trà Gió', address: 'Trà Gió', rating: 4.4, ratingCount: 200, placeId: 'p2', latitude: ll.lat + 0.002, longitude: ll.lng + 0.002, website: 'https://tragio.example/' }] : []),
+    ] : []
   },
 }))
 vi.mock('@/lib/ai/tools/food', async (importOriginal) => ({ ...(await importOriginal<typeof import('@/lib/ai/tools/food')>()), searchPlacesOSM: async () => ({ results: [] }) }))
@@ -115,9 +119,10 @@ const PICK: Msg[] = [{ role: 'user', content: 'quán cà phê gần đây' }]
 const ENV_NAMES = ['CONSULT_PICK_TURN_TOOLS', 'CONSULT_KNOWLEDGE_PATH', 'CONSULT_CAPABILITY_LEVEL', 'CONSULT_RESEARCH_LOOP', 'CONSULT_DETERMINISTIC_MATH', 'CONSULT_TOOL_BY_NEED', 'CONSULT_STRUCTURED_SYNTHESIS', 'CONSULT_SEARCH_NOW_INTENT_GATE', 'CONSULT_FINAL_SYNTHESIS', 'VERCEL_ENV', 'TAPPY_AGENT']
 const MENU = '<html><head><title>Thực đơn Cà phê Mây</title></head><body><table><caption>Đồ uống</caption><tr><th>Món</th><th>Giá</th></tr><tr><td>Bạc xỉu</td><td>52.000đ</td></tr></table><p>Mở cửa 7h đến 22h.</p></body></html>'
 
-interface Cfg { flag?: string; level?: string; vercelEnv?: string; lunaTurn?: string; lunaDomains?: string[]; msgs?: Msg[]; calls?: Array<{ name: string; args: Record<string, unknown> }>; reply?: string }
+interface Cfg { flag?: string; level?: string; vercelEnv?: string; lunaTurn?: string; lunaDomains?: string[]; msgs?: Msg[]; calls?: Array<{ name: string; args: Record<string, unknown> }>; reply?: string; secondVenue?: boolean }
 async function turn(c: Cfg = {}) {
   for (const k of ENV_NAMES) delete process.env[k]
+  h.state.secondVenue = c.secondVenue ?? false
   if (c.flag !== undefined) process.env.CONSULT_PICK_TURN_TOOLS = c.flag
   if (c.level !== undefined) { process.env.CONSULT_CAPABILITY_LEVEL = c.level; process.env.CONSULT_KNOWLEDGE_PATH = '0' } // this file measures R2 alone
   if (c.vercelEnv) process.env.VERCEL_ENV = c.vercelEnv
@@ -193,12 +198,31 @@ describe('C3 — ON: the pre-searched pick gets the model tools', () => {
     const invented = await turn({ flag: '1', calls: [SEARCH, READ('https://caphemay.example/')], reply: 'Mình chọn **Cà phê Mây**. Bạc xỉu **99.000đ**.' })
     expect(invented.text).not.toContain('99.000đ')
   }, 60000)
-  // KNOWN GAP (C3, reported to the Owner, NOT fixed in this round - the Owner froze the post-filters): the venue rows of the CODE's pre-search reach the price guard without the venue's own
-  // website, so a price read on that site cannot be attributed to the chosen venue and the entity-scoped price guard cuts it (fail-closed). On a lean W1 turn the model's own place search
-  // carries the site and the same price stays. `it.fails` documents the requirement: this test turns RED the day the evidence reaches the guard, and must then become a plain `it`.
-  it.fails('KNOWN GAP: a price read on the chosen venue\'s own site stays in a pre-searched pick (as on a lean W1 turn)', async () => {
+  // Part B (Owner option a; was the C3 KNOWN GAP `it.fails`): the venue rows of the CODE's pre-search reach the stream slimmed (no website); the price guard now gets the venue sites from the
+  // FULL rows (presearchPlaceSites), so a price read on the chosen venue's own site stays - as on a lean W1 turn. Only an input: the controls below are still cut.
+  it('a price read on the chosen venue\'s own site stays in a pre-searched pick (as on a lean W1 turn)', async () => {
     const r = await turn({ flag: '1', calls: [SEARCH, READ('https://caphemay.example/')], reply: 'Mình chọn **Cà phê Mây**. Bạc xỉu **52.000đ**.' })
+    expect(r.results.find(x => x.name === 'read_page')?.result?.pages?.[0]?.error).toBeUndefined() // the page really was read
     expect(r.text).toContain('52.000đ')
+  }, 60000)
+  it('control: the same page price said of ANOTHER venue (which has a site of its own, never read) is still cut', async () => {
+    const r = await turn({ flag: '1', secondVenue: true, calls: [SEARCH, READ('https://caphemay.example/')], reply: 'Mình chọn **Trà Gió**. Bạc xỉu **52.000đ**.' })
+    expect(r.results.find(x => x.name === 'read_page')?.result?.pages?.[0]?.error).toBeUndefined()
+    expect(r.text).toContain('Trà Gió')                                    // the venue sentence is there; only its amount is judged
+    expect(r.text).not.toContain('52.000đ')
+  }, 60000)
+  it('control: with two venues, the own-site price still stays for the right one', async () => {
+    const r = await turn({ flag: '1', secondVenue: true, calls: [SEARCH, READ('https://caphemay.example/')], reply: 'Mình chọn **Cà phê Mây**. Bạc xỉu **52.000đ**.' })
+    expect(r.text).toContain('52.000đ')
+  }, 60000)
+  it('control: an amount the page never states is still cut on the venue\'s own site', async () => {
+    const r = await turn({ flag: '1', calls: [SEARCH, READ('https://caphemay.example/')], reply: 'Mình chọn **Cà phê Mây**. Bạc xỉu **61.000đ**.' })
+    expect(r.text).not.toContain('61.000đ')
+  }, 60000)
+  it('flag OFF: no page is read, the same reply loses the amount (the price guard has no new input: the OFF turn is untouched)', async () => {
+    const r = await turn({ calls: [SEARCH, READ('https://caphemay.example/')], reply: 'Mình chọn **Cà phê Mây**. Bạc xỉu **52.000đ**.' })
+    expect(r.tools).toEqual([])
+    expect(r.text).not.toContain('52.000đ')
   }, 60000)
   it('robots.txt that disallows the whole site: the page is not opened (fail closed on the same reader)', async () => {
     h.state.pages['https://caphemay.example/robots.txt'] = { body: 'User-agent: *\nDisallow: /\n', contentType: 'text/plain' }
