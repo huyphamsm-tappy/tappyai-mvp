@@ -18,7 +18,7 @@ const h = vi.hoisted(() => {
   const state = {
     calls: [] as Call[], results: [] as Array<{ name: string; result: any }>, luna: null as null | Record<string, unknown>,
     toolNames: [] as string[], maxSteps: 0, system: '' as string, text: 'ok', maps: [] as string[], webCalls: [] as string[], fetched: [] as string[],
-    pages: {} as Record<string, { status?: number; body: string; contentType?: string }>, userId: 'u-pick-turn-tools', secondVenue: false,
+    pages: {} as Record<string, { status?: number; body: string; contentType?: string }>, userId: 'u-pick-turn-tools', secondVenue: false, evidence: null as null | Record<string, unknown>,
   }
   const builder = (): any => {
     const b: any = {
@@ -29,7 +29,8 @@ const h = vi.hoisted(() => {
     }
     return b
   }
-  return { state, client: { from: () => builder(), rpc: () => Promise.resolve({ data: null, error: null }) } }
+  // S1: the stored decision evidence a follow-up turn may reuse (null = none, as every other test of this file)
+  return { state, client: { from: () => builder(), rpc: (name: string) => Promise.resolve({ data: name === 'decision_evidence_load' ? state.evidence : null, error: null }) } }
 })
 
 vi.mock('@/lib/supabase/server', () => ({ createClient: () => h.client }))
@@ -116,13 +117,15 @@ type Msg = { role: 'user' | 'assistant'; content: string }
 const lunaIntent = (turn: string, domains: string[]) => ({ domains, turn, goal: 'x', known: [], party: null, budget_vnd_max: null, difficulty: 'easy', missing: [], assumptions: [], ask: null, query: null, area: null, refers: [], reject_reason: null })
 const J = (s: string) => JSON.stringify(s).slice(1, -1)
 const PICK: Msg[] = [{ role: 'user', content: 'quán cà phê gần đây' }]
-const ENV_NAMES = ['CONSULT_PICK_TURN_TOOLS', 'CONSULT_KNOWLEDGE_PATH', 'CONSULT_CAPABILITY_LEVEL', 'CONSULT_RESEARCH_LOOP', 'CONSULT_DETERMINISTIC_MATH', 'CONSULT_TOOL_BY_NEED', 'CONSULT_STRUCTURED_SYNTHESIS', 'CONSULT_SEARCH_NOW_INTENT_GATE', 'CONSULT_FINAL_SYNTHESIS', 'VERCEL_ENV', 'TAPPY_AGENT']
+const ENV_NAMES = ['CONSULT_LUNA', 'CONSULT_FOLLOW_REUSE', 'CONSULT_PICK_TURN_TOOLS','CONSULT_KNOWLEDGE_PATH', 'CONSULT_CAPABILITY_LEVEL', 'CONSULT_RESEARCH_LOOP', 'CONSULT_DETERMINISTIC_MATH', 'CONSULT_TOOL_BY_NEED', 'CONSULT_STRUCTURED_SYNTHESIS', 'CONSULT_SEARCH_NOW_INTENT_GATE', 'CONSULT_FINAL_SYNTHESIS', 'VERCEL_ENV', 'TAPPY_AGENT']
 const MENU = '<html><head><title>Thực đơn Cà phê Mây</title></head><body><table><caption>Đồ uống</caption><tr><th>Món</th><th>Giá</th></tr><tr><td>Bạc xỉu</td><td>52.000đ</td></tr></table><p>Mở cửa 7h đến 22h.</p></body></html>'
 
-interface Cfg { flag?: string; level?: string; vercelEnv?: string; lunaTurn?: string; lunaDomains?: string[]; msgs?: Msg[]; calls?: Array<{ name: string; args: Record<string, unknown> }>; reply?: string; secondVenue?: boolean }
+interface Cfg { flag?: string; level?: string; vercelEnv?: string; lunaTurn?: string; lunaDomains?: string[]; msgs?: Msg[]; calls?: Array<{ name: string; args: Record<string, unknown> }>; reply?: string; secondVenue?: boolean; env?: Record<string, string>; evidence?: Record<string, unknown>; evidenceId?: string; withLogs?: boolean }
 async function turn(c: Cfg = {}) {
   for (const k of ENV_NAMES) delete process.env[k]
+  for (const [k, v] of Object.entries(c.env ?? {})) process.env[k] = v
   h.state.secondVenue = c.secondVenue ?? false
+  h.state.evidence = c.evidence ?? null
   if (c.flag !== undefined) process.env.CONSULT_PICK_TURN_TOOLS = c.flag
   if (c.level !== undefined) { process.env.CONSULT_CAPABILITY_LEVEL = c.level; process.env.CONSULT_KNOWLEDGE_PATH = '0' } // this file measures R2 alone
   if (c.vercelEnv) process.env.VERCEL_ENV = c.vercelEnv
@@ -134,13 +137,15 @@ async function turn(c: Cfg = {}) {
   const req = {
     url: 'http://localhost/api/chat', nextUrl: new URL('http://localhost/api/chat'),
     headers: new Headers({ 'content-type': 'application/json', 'x-tappy-surface': 'web' }),
-    json: () => Promise.resolve({ messages: c.msgs ?? PICK, userLocation: GPS_HN }), signal: undefined,
+    json: () => Promise.resolve({ messages: c.msgs ?? PICK, userLocation: GPS_HN, ...(c.evidenceId ? { decisionEvidenceId: c.evidenceId } : {}) }), signal: undefined,
   }
-  const spy = vi.spyOn(console, 'log').mockImplementation(() => undefined)
+  const logs: string[] = []
+  const spies = [vi.spyOn(console, 'log'), vi.spyOn(console, 'warn'), vi.spyOn(console, 'error'), vi.spyOn(console, 'info')].map(s => s.mockImplementation((...a: unknown[]) => { logs.push(a.map(String).join(' ')) }))
   let raw = ''
-  try { raw = await (await POST(req as never)).text() } finally { spy.mockRestore() }
+  try { raw = await (await POST(req as never)).text() } finally { spies.forEach(s => s.mockRestore()) }
   const text = raw.split('\n').filter(l => l.startsWith('0:')).map(l => { try { return JSON.parse(l.slice(2)) as string } catch { return '' } }).join('')
-  return { tools: [...h.state.toolNames].sort(), maxSteps: h.state.maxSteps, system: h.state.system, text, maps: h.state.maps.length, results: [...h.state.results], fetched: [...h.state.fetched] }
+  const out = { tools: [...h.state.toolNames].sort(), maxSteps: h.state.maxSteps, system: h.state.system, text, maps: h.state.maps.length, results: [...h.state.results], fetched: [...h.state.fetched] }
+  return c.withLogs ? { ...out, logs } : out
 }
 
 beforeEach(() => {
@@ -252,6 +257,51 @@ describe('C3 — a lean turn that was not pre-searched (R1) is untouched', () =>
     const off = await turn({ msgs, lunaTurn: 'chat', lunaDomains: ['food'] })
     const on = await turn({ msgs, lunaTurn: 'chat', lunaDomains: ['food'], flag: '1' })
     expect(off.maps).toBe(0) // the control really is not pre-searched
+    expect(on).toEqual(off)
+  }, 60000)
+})
+
+// Review (final) S1 · the recognition boundary of R2, held by tests: the tools go ONLY to a pre-searched Luna answer turn. Each case: the code still pre-searches, the
+// flag is ON, and the turn is exactly the flag-OFF turn (no web_search / read_page / calculate, not the level's steps). Live control: a Luna pick turn gets the tools.
+const FOLLOW: Msg[] = [{ role: 'user', content: 'quán cà phê gần đây' }, { role: 'assistant', content: 'Mình chọn **Cà phê Mây**: gần bạn, đánh giá 4.5.' }, { role: 'user', content: 'Cà phê Mây có chỗ ngồi ngoài trời không?' }]
+const PRIOR_EVIDENCE = { placeSearch: { args: { query: 'cà phê', type: 'cafe' }, shown: ['Cà phê Mây'], at: '2026-10-27T03:00:00.000Z' } }
+const EVIDENCE_ID = '0b4f6a2e-2b1c-4e8a-9d3f-5a6b7c8d9e0f'
+describe('S1 — R2 only on a pre-searched Luna answer turn', () => {
+  it('live control: a Luna pick turn the code pre-searched gets web_search, read_page, calculate and 6 steps at L2', async () => {
+    const on = await turn({ flag: '1', level: '2' })
+    expect(on.maps).toBeGreaterThan(0)
+    expect(on.tools).toEqual(['calculate', 'read_page', 'web_search'])
+    expect(on.maxSteps).toBe(6)
+  }, 60000)
+  it('`lunaAnswer`: Luna OFF (CONSULT_LUNA=0) - the code still pre-searches, the flag gives nothing: the turn is the flag-OFF turn', async () => {
+    const on = await turn({ flag: '1', level: '2', env: { CONSULT_LUNA: '0' } })
+    const off = await turn({ level: '2', env: { CONSULT_LUNA: '0', CONSULT_PICK_TURN_TOOLS: '0' } })
+    expect(off.maps).toBeGreaterThan(0)                                   // the control really is pre-searched
+    expect(off.maxSteps).toBe(2)                                          // ... on the pre-searched lean path (two steps)
+    // (measured: with Luna off, L2 still offers the Wave 3 lean set - search_places + web_search + read_page + calculate - on BOTH sides; R2 would be exactly three tools and 6 steps)
+    expect(on.tools).not.toEqual(['calculate', 'read_page', 'web_search'])
+    expect(on.maxSteps).toBe(2)
+    expect(on).toEqual(off)
+  }, 60000)
+  it('`!consultFollowReuse`: a follow-up that REUSES the stored place search (the code re-runs it) is not R2: the turn is the flag-OFF turn', async () => {
+    const base = { msgs: FOLLOW, lunaTurn: 'followup', level: '2', evidence: PRIOR_EVIDENCE, evidenceId: EVIDENCE_ID }
+    const on = await turn({ ...base, flag: '1', env: { CONSULT_FOLLOW_REUSE: '1' } })
+    const off = await turn({ ...base, env: { CONSULT_FOLLOW_REUSE: '1', CONSULT_PICK_TURN_TOOLS: '0' } })
+    expect(off.maps).toBeGreaterThan(0)                                   // the control really re-ran the stored search
+    expect(off.maxSteps).toBe(2)                                          // ... on the follow-reuse path (two steps)
+    expect(on.tools).not.toContain('read_page')
+    expect(on).toEqual(off)
+  }, 60000)
+  // `!noToolTurn` in pickCandidate cannot change the outcome (review C3b, an EQUIVALENT mutant - VERIFIED by reading route.ts): a no-tool turn has `tools` undefined, and
+  // willPresearch needs `!noToolTurn` (or `tools`), so a no-tool turn is NEVER pre-searched and pickTools (which needs presearchAll.length > 0) is false anyway.
+  // The assertion `maps === 0` below states exactly that reason; if it ever goes red, `!noToolTurn` becomes a live guard and needs a test of its own.
+  it('`!noToolTurn`: a follow-up WITHOUT a reusable search is a no-tool turn: never pre-searched, the flag gives nothing (the turn is the flag-OFF turn)', async () => {
+    const base = { msgs: FOLLOW, lunaTurn: 'followup', level: '2' }
+    const on = await turn({ ...base, flag: '1' })
+    const off = await turn({ ...base, env: { CONSULT_PICK_TURN_TOOLS: '0' } })
+    expect(on.maps).toBe(0)                                               // the reason C3b is equivalent: a no-tool turn is not pre-searched
+    expect(on.tools).toEqual([])
+    expect(on.maxSteps).not.toBe(6)
     expect(on).toEqual(off)
   }, 60000)
 })

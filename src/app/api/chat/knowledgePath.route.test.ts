@@ -151,6 +151,24 @@ beforeEach(() => {
 })
 afterEach(() => { vi.useRealTimers(); for (const k of ENV_NAMES) delete process.env[k]; vi.unstubAllGlobals() })
 
+// Review (final) S1 · the recognition boundary of R3, held by a test: the knowledge path needs a consult decision (`!!consult`). With the consult layer off (CONSULT_V2=0) the
+// same message, with the flag ON, is NOT a knowledge turn: no read_page, no calculate, not the level's step budget. Live control: the consult layer on → the knowledge path.
+describe('S1 — R3 only on a consult turn (`!!consult`)', () => {
+  it('consult layer OFF + CONSULT_KNOWLEDGE_PATH=1: not the knowledge path (no read_page / calculate, not 6 steps at L2) = the same turn with the flag OFF', async () => {
+    const noConsultOn = await turn({ flag: '1', level: '2', flags: { CONSULT_V2: '0' } })
+    const noConsultOff = await turn({ level: '2', flags: { CONSULT_V2: '0', CONSULT_KNOWLEDGE_PATH: '0' } })
+    expect(noConsultOn.tools).not.toContain('read_page')
+    expect(noConsultOn.tools).not.toContain('calculate')
+    expect(noConsultOn.maxSteps).not.toBe(6)
+    expect(noConsultOn).toEqual(noConsultOff)
+  }, 60000)
+  it('live control: the consult layer ON, the same message and flag → the knowledge path (read_page + calculate, 6 steps at L2)', async () => {
+    const on = await turn({ flag: '1', level: '2' })
+    expect(on.tools).toEqual(expect.arrayContaining(['read_page', 'calculate']))
+    expect(on.maxSteps).toBe(6)
+  }, 60000)
+})
+
 describe('C2 — OFF is the previous R3 turn', () => {
   it('unset: five steps, the old tools (no read_page, no calculate), the general web_search description, no Wave 3 line', async () => {
     const off = await turn()
