@@ -24,6 +24,10 @@ describe('presearchPlaceSites', () => {
     expect(out).toHaveLength(10)
     expect(out.filter(o => o.name === 'V0')).toEqual([{ name: 'V0', website: 'https://v0.example/' }])
   })
+  it('review S2 · B8: only website_uri or website is read - a row that carries its link only as `url` (or `link`, `maps_link`) gives nothing', () => {
+    const rows = [{ name: 'U', url: 'https://u.example/' }, { name: 'L', link: 'https://l.example/' }, { name: 'M', maps_link: 'https://maps.example/x' }, { name: 'W', url: 'https://not-this.example/', website: 'https://w.example/' }]
+    expect(presearchPlaceSites(full(rows), shown('U', 'L', 'M', 'W'))).toEqual([{ name: 'W', website: 'https://w.example/' }])
+  })
   it('anything that is not a result with rows gives nothing', () => {
     for (const [a, b] of [[null, shown('A')], [undefined, shown('A')], ['x', shown('A')], [{ results: 'x' }, shown('A')], [full([{ name: 'A', website_uri: 'https://a.example/' }]), null], [full([{ name: 'A', website_uri: 'https://a.example/' }]), { error: 'x' }]] as Array<[unknown, unknown]>) {
       expect(presearchPlaceSites(a, b)).toEqual([])
