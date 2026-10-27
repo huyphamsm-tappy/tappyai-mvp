@@ -71,6 +71,8 @@ export const FLAG_ENV_NAMES = [
   'TAPPY_AGENT', 'CONSULTATIVE_IN_AGENT', 'TAPPY_ANSWER_V4', 'RETRIEVAL_V5',
   'LLM_PROVIDER', 'LLM_OPENAI_API', 'AGENT_MODEL', 'HAIKU_FALLBACK', 'C2_REQUEST_BUDGET',
   'MONEY_GUARD_KEEP_VERIFIED', 'PLACE_CLAIM_KEEP_VERIFIED_PRICE', 'LEGACY_STREAM_TRACE', 'SERPER_CACHE_V2',
+  // Wave 4 (C-PRE-0), bench only: lets read_page's own requests reach a public page (liveTrial.ts publicPageFetchAllowed); default OFF
+  'BENCH_ALLOW_PUBLIC_PAGE_FETCH',
   'SERPER_USD_PER_CREDIT', 'LLM_LUNA_MODEL', 'LLM_CONSULT_MODEL', 'LLM_INTENT_MODEL', 'LLM_PLAN_MODEL',
   'AUDIT_DRY_RUN', 'AUDIT_MODEL_REQUEST_FILE', 'AUDIT_USAGE_LOG_FILE',
   // round 3b-1: routing guard for the aviation word "hàng không" (intent.ts routeFlightGuardOn); default OFF
@@ -377,6 +379,19 @@ export function wave2Line(env) {
   return `cờ hành vi Wave 2 (mặc định TẮT; chỉ giá trị 1 là BẬT): ${WAVE2_FLAG_NAMES.map(k => `${k}=${show(env[k])} (${state(k)})`).join(', ')} | mức năng lực CONSULT_CAPABILITY_LEVEL=${show(env.CONSULT_CAPABILITY_LEVEL)} (mức hiệu lực L${level}; chỉ ký tự 0–4, khác = L0; cờ Wave 3 để trống thì theo mức, cờ đã đặt thì tự quyết)`
 }
 
+/**
+ * Wave 4 (C-PRE-0): the state the two bench-side switches REALLY have, for Gate 1 (the same words the preflight report prints; a test compares the two). LEGACY_STREAM_TRACE is read by the product like
+ * this (trimmed, "1" or "true"); BENCH_ALLOW_PUBLIC_PAGE_FETCH only counts when it is exactly "1" AND the mode is the extension mode.
+ */
+export function benchSwitchLine(env) {
+  const trimmed = (env.LEGACY_STREAM_TRACE ?? '').trim()
+  const trace = env.LEGACY_STREAM_TRACE === undefined ? 'TẮT' : (trimmed === '1' || trimmed === 'true') ? 'BẬT' : 'TẮT'
+  const v = env.BENCH_ALLOW_PUBLIC_PAGE_FETCH
+  const page = v === undefined ? 'TẮT' : v !== '1' ? 'TẮT (giá trị không phải đúng "1")' : env.BENCH_TRIAL_MODE !== 'dev-multi' ? 'KHÔNG CÓ HIỆU LỰC — chỉ chế độ extension (BENCH_TRIAL_MODE=dev-multi)' : 'BẬT'
+  const show = x => (x === undefined ? 'unset' : /^[A-Za-z0-9_-]{1,12}$/.test(x) ? x : JSON.stringify(x.slice(0, 12)))
+  return `cờ đo của bộ chạy thử: LEGACY_STREAM_TRACE=${show(env.LEGACY_STREAM_TRACE)} (${trace}: đếm ký tự từng chặng lọc hậu kỳ) | BENCH_ALLOW_PUBLIC_PAGE_FETCH=${show(v)} (${page}: read_page tải trang công khai, chỉ GET, robots từng bước nhảy)`
+}
+
 /** Round 3f · Gate 1 summary: what the run will do, with no key value. Pure. */
 export function gate1Summary(env, questionText) {
   const lines = [
@@ -390,6 +405,7 @@ export function gate1Summary(env, questionText) {
       : '; ba host OSM và DuckDuckGo của dự phòng tìm kiếm bị CHẶN (chế độ nghiệm thu)'}`,
     ...quotaLines(env),
     wave2Line(env),
+    benchSwitchLine(env),
     `khóa: OPENAI_API_KEY ${(env.OPENAI_API_KEY ?? '') !== '' ? 'SET' : 'UNSET'}, SERPER_API_KEY ${(env.SERPER_API_KEY ?? '') !== '' ? 'SET' : 'UNSET'}`,
   ]
   if (questionText === null) lines.push('lượt: tệp câu hỏi không đọc được')

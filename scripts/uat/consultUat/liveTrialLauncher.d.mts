@@ -30,6 +30,7 @@ export const WAVE2_FLAG_NEEDS: Record<string, string>
 export const CAPABILITY_FLAG_LEVELS: Record<string, number>
 export function capabilityLevelOf(env: Env): number
 export function wave2Line(env: Env): string
+export function benchSwitchLine(env: Env): string
 export function readHidden(prompt: string, opts?: { input?: unknown; output?: unknown }): Promise<string>
 export function askLine(prompt: string, opts?: { input?: unknown; output?: unknown; timeoutMs?: number }): Promise<string>
 export function runFlow(opts: {

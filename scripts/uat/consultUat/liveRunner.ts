@@ -37,6 +37,8 @@ export const BENCH_FLAG_NAMES: readonly string[] = [
   'TAPPY_AGENT', 'CONSULTATIVE_IN_AGENT', 'TAPPY_ANSWER_V4', 'RETRIEVAL_V5',
   'LLM_PROVIDER', 'LLM_OPENAI_API', 'AGENT_MODEL', 'HAIKU_FALLBACK', 'C2_REQUEST_BUDGET',
   'MONEY_GUARD_KEEP_VERIFIED', 'PLACE_CLAIM_KEEP_VERIFIED_PRICE', 'LEGACY_STREAM_TRACE', 'SERPER_CACHE_V2',
+  // Wave 4 (C-PRE-0), bench only: lets read_page's own requests reach a public page (liveTrial.ts publicPageFetchAllowed); default OFF
+  'BENCH_ALLOW_PUBLIC_PAGE_FETCH',
   // what the prices are read from: a different model id or per-credit price changes what a call is booked at
   'SERPER_USD_PER_CREDIT', 'LLM_LUNA_MODEL', 'LLM_CONSULT_MODEL', 'LLM_INTENT_MODEL', 'LLM_PLAN_MODEL',
   // audit switches the chat route reads: AUDIT_DRY_RUN answers with a canned line and NO model call; the other two write full model requests / usage to a file

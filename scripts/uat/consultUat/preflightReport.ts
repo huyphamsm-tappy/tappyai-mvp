@@ -5,7 +5,7 @@
  */
 import { benchModeOf, benchSpendGateOn, capToScaled, checkBenchCaps, MAX_TURN_CAP_USD, maxRunCapUsd } from '@/lib/ai/budget/spendGate'
 import { capabilityLevel } from '@/lib/config/consultFlags'
-import { DDG_FALLBACK_HOSTS, OSM_FALLBACK_HOSTS, QUOTA_RESET_FLAG, WAVE2_FLAGS, WAVE2_FLAG_NEEDS, capabilityLevelReasons, wave2FlagReasons, wave2FlagState, connectionRedirectReasons, consultativeConfirmationReasons, openaiKeyShapeReasons, osmFallbackAllowed, preflight, quotaResetFlagReasons, quotaResetState, requestCapReasons } from './liveTrial'
+import { DDG_FALLBACK_HOSTS, OSM_FALLBACK_HOSTS, QUOTA_RESET_FLAG, WAVE2_FLAGS, WAVE2_FLAG_NEEDS, capabilityLevelReasons, wave2FlagReasons, wave2FlagState, benchSwitchState, connectionRedirectReasons, consultativeConfirmationReasons, openaiKeyShapeReasons, osmFallbackAllowed, preflight, quotaResetFlagReasons, quotaResetState, requestCapReasons } from './liveTrial'
 import { parseDevQuestions, sha256OfText } from './devQuestions'
 
 export interface Condition { name: string; ok: boolean; detail: string }
@@ -106,6 +106,10 @@ export function conditionReport(input: PreflightReportInput): Condition[] {
   // Wave 2: the product-behaviour flags (unset, 0 or 1; a value outside that is refused by name) and the state each really has.
   const w2 = wave2FlagState(env)
   add('wave-2 behaviour flags (information; each defaults to OFF = the old behaviour)', [...wave2FlagReasons(env), ...capabilityLevelReasons(env)], `CONSULT_CAPABILITY_LEVEL=${env.CONSULT_CAPABILITY_LEVEL ?? 'unset'} (mức hiệu lực L${capabilityLevel(env)}) | ` + WAVE2_FLAGS.map(k => `${k}=${env[k] ?? 'unset'} (${w2[k] === 'INERT' ? `INERT: KHÔNG CÓ HIỆU LỰC, cần ${WAVE2_FLAG_NEEDS[k]}=1` : w2[k]})`).join(' | '))
+
+  // Wave 4 (C-PRE-0): the two bench-side switches and the state each really has (information only: neither can fail the preflight)
+  const bs = benchSwitchState(env)
+  add('bench switches (information)', [], `LEGACY_STREAM_TRACE=${env.LEGACY_STREAM_TRACE ?? 'unset'} (${bs.trace}) | BENCH_ALLOW_PUBLIC_PAGE_FETCH=${env.BENCH_ALLOW_PUBLIC_PAGE_FETCH ?? 'unset'} (${bs.page})`)
 
   const unmet = out.filter(c => !c.ok).length
   out.push({

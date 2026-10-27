@@ -42,6 +42,7 @@ import { inspect } from 'node:util'
 import { CAPABILITY_FLAG_LEVELS, CONSULT_CAPABILITY_LEVEL_FLAG, capabilityLevel } from '@/lib/config/consultFlags'
 import { benchModeOf, checkBenchCaps, capToScaled, MAX_TURN_CAP_USD, maxRunCapUsd, type BenchMode } from '@/lib/ai/budget/spendGate'
 import { safeLookup } from '@/lib/security/safeFetch'
+import { validateHop } from '@/lib/security/safePageFetch'
 import { matchesFixedUatSet } from './harness'
 import { BENCH_FLAG_NAMES, BenchRefusal, assertBenchAllowed, redactSecrets, routeTransport, runBench, type BenchFs } from './liveRunner'
 import { __resetAiQuestionQuotaLocal } from '@/lib/ai/quota/aiQuestionQuota'
@@ -113,6 +114,34 @@ export function providerOfToolResult(result: unknown, rows: number | null): Tool
 /** True only for the extension mode, spelled exactly. (One rule for every extension-only host.) */
 export const osmFallbackAllowed = (env: Record<string, string | undefined>): boolean => env.BENCH_TRIAL_MODE === 'dev-multi'
 export const extensionHostsAllowed = osmFallbackAllowed
+
+/**
+ * Wave 4 (C-PRE-0), bench only: BENCH_ALLOW_PUBLIC_PAGE_FETCH=1 (exactly "1", default OFF, and only in the extension mode like the other extension hosts) lets the page reader's own
+ * requests - the ones made INSIDE a `read_page` tool call (the page and its robots.txt, every redirect hop being a request of its own) - reach a public HTTP(S) page. Everything else stays
+ * blocked: only GET; no credentials, no explicit port, no localhost / private / link-local / metadata address and no internal name (the same string check `validateHop` gives the product), the
+ * connection pinned by the product's own `safeLookup` (already required of every request, see `nodeRequestUrl`), at most PUBLIC_PAGE_MAX_PER_TURN requests per turn. The product's own limits (800 KB
+ * per page, 8 s, robots.txt asked on every hop, fail-closed when it cannot be read) are NOT touched: they are what the reader does. The requests are free (no Serper credit, no OpenAI cost), so they
+ * are counted in their own ledger (`pageRequests`) and recorded in `requestLog` (host + path, never the query), outside the Serper request cap and the USD gate. Production never imports this file.
+ */
+export const PUBLIC_PAGE_FETCH_FLAG = 'BENCH_ALLOW_PUBLIC_PAGE_FETCH'
+export const PUBLIC_PAGE_MAX_PER_TURN = 40
+export const publicPageFetchAllowed = (env: Record<string, string | undefined>): boolean => env[PUBLIC_PAGE_FETCH_FLAG] === '1' && osmFallbackAllowed(env)
+/** Pure. The state the two bench-side switches REALLY have (the words Gate 1 prints; liveTrialLauncher.mjs benchSwitchLine says the same, a test compares). */
+export function benchSwitchState(env: Record<string, string | undefined>): { trace: 'BẬT' | 'TẮT'; page: string } {
+  const t = (env.LEGACY_STREAM_TRACE ?? '').trim()
+  const v = env[PUBLIC_PAGE_FETCH_FLAG]
+  return {
+    trace: t === '1' || t === 'true' ? 'BẬT' : 'TẮT',
+    page: v === undefined ? 'TẮT' : v !== '1' ? 'TẮT (giá trị không phải đúng "1")' : env.BENCH_TRIAL_MODE !== 'dev-multi' ? 'KHÔNG CÓ HIỆU LỰC — chỉ chế độ extension (BENCH_TRIAL_MODE=dev-multi)' : 'BẬT',
+  }
+}
+/** Pure. `ok` only for a GET to a public http(s) page that passes the product's own string-level host check. */
+export function isPublicPageRequest(url: string, method = 'GET'): { ok: true; host: string } | { ok: false; label: string } {
+  if (String(method).toUpperCase() !== 'GET') return { ok: false, label: `(method ${String(method).slice(0, 12)})` }
+  const v = validateHop(url, { allowHttp: true })
+  if ('reason' in v) { let h = '(unparseable)'; try { h = new URL(url).hostname } catch { /* keep */ } return { ok: false, label: `${h} (${v.reason})` } }
+  return { ok: true, host: v.url.hostname }
+}
 
 /** Pure. `ok` only for https, no explicit port, no credentials, an allowed host and an allowed exact path. `label` names what was blocked (a host, host+path, or "(unparseable)"). `allowExtension` (default false) adds the extension-only endpoints above (OSM and DuckDuckGo). */
 export function isAllowedRequest(url: string, allowExtension = false): { ok: true; host: string } | { ok: false; label: string } {
@@ -426,6 +455,13 @@ function nodeRequestUrl(proto: 'http' | 'https', args: unknown[]): string {
   return host ? `${protocol}//${host}${port}${path.startsWith('/') ? '' : '/'}${path}` : '(unparseable)'
 }
 
+/** The HTTP method a node:http(s) request/get call asks for: the `method` of its options object, otherwise GET (`get` variants and the node default). Wave 4 (C-PRE-0): only GET may reach a public page. */
+function nodeRequestMethod(args: unknown[]): string {
+  const [a, b] = args
+  const o = { ...(a && typeof a === 'object' && !(a instanceof URL) ? a as Record<string, unknown> : {}), ...(b && typeof b === 'object' ? b as Record<string, unknown> : {}) }
+  return typeof o.method === 'string' ? o.method : 'GET'
+}
+
 /** Only a string, a URL or a Request: any other object (one that merely carries a `url` property) could be sent somewhere other than what was checked. */
 const urlOf = (input: unknown): string => (typeof input === 'string' ? input : input instanceof URL ? input.href : input instanceof Request ? input.url : '(unparseable)')
 
@@ -534,8 +570,23 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
     blockedLog.push({ turn: currentTurn()?.id ?? null, label: redactSecrets(d.ok ? hostLabel(url) : d.label, env), late: true })
     throw denied(hostLabel(url))
   }
-  const admit = (url: string): void => {
+  // Wave 4 (C-PRE-0): the page reader's own requests, only with BENCH_ALLOW_PUBLIC_PAGE_FETCH=1 (see publicPageFetchAllowed). A separate ledger: counts per host and per turn, nothing else.
+  const pagesAllowed = publicPageFetchAllowed(env)
+  const pageSent: Record<string, number> = {}
+  const pagePerTurn: Record<string, number> = {}
+  const admit = (url: string, method = 'GET'): void => {
     const d = isAllowedRequest(url, osmAllowed)
+    if (!d.ok && pagesAllowed && currentToolCall()?.tool === 'read_page') {
+      const turnId = currentTurn()?.id ?? '(none)'
+      const p = isPublicPageRequest(url, method)
+      if (p.ok && (pagePerTurn[turnId] ?? 0) < PUBLIC_PAGE_MAX_PER_TURN) {
+        pagePerTurn[turnId] = (pagePerTurn[turnId] ?? 0) + 1
+        pageSent[p.host] = (pageSent[p.host] ?? 0) + 1
+        let path = ''; try { path = new URL(url).pathname.slice(0, 120) } catch { path = '' }
+        requestLog.push({ n: requestLog.length + 1, turn: currentTurn()?.id ?? null, host: p.host, path, call: currentToolCall()?.call ?? null })
+        return
+      }
+    }
     if (!d.ok) { const label = redactSecrets(d.label, env); blocked.add(label); blockedLog.push({ turn: currentTurn()?.id ?? null, label }); throw new Error(`trial: ${label} is not allowed (blocked before it was sent)`) }
     sent[d.host] = (sent[d.host] ?? 0) + 1
     let path = ''; try { path = new URL(url).pathname } catch { path = '' }
@@ -547,7 +598,7 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
     // a `dispatcher` in the init is undici's way of changing where the connection goes (a proxy agent, a custom connector): such a call cannot be judged by its URL
     if (init && typeof init === 'object' && 'dispatcher' in init) admit('(unparseable)')
     const url = urlOf(req)
-    admit(url)
+    admit(url, String(init?.method ?? (req instanceof Request ? req.method : 'GET')))
     // never follow a redirect: a request to an allowed host cannot be turned into a request to another host
     const res = await forward(req as never, { ...(init ?? {}), redirect: 'manual' })
     if (res.status >= 300 && res.status < 400) redirects.push({ host: new URL(url).hostname, status: res.status })
@@ -559,7 +610,7 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
   }) as typeof fetch
   const guardNode = (proto: 'http' | 'https', original: (...a: never[]) => unknown) => function (this: unknown, ...args: unknown[]) {
     if (trialClosed || currentTurn()?.open === false) closedAttempt(nodeRequestUrl(proto, args)) // round 3c: as for fetch
-    admit(nodeRequestUrl(proto, args))
+    admit(nodeRequestUrl(proto, args), nodeRequestMethod(args))
     return (original as (...a: unknown[]) => unknown).apply(proto === 'https' ? https : http, args)
   }
   setNode(guardNode('https', originalNode.httpsRequest as never) as never, guardNode('https', originalNode.httpsGet as never) as never, guardNode('http', originalNode.httpRequest as never) as never, guardNode('http', originalNode.httpGet as never) as never)
@@ -596,7 +647,7 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
       }) as typeof input.post), turnCapUsd: pre.caps.turnUsd, runCapUsd: pre.caps.runUsd, confirmSpend: { capUsd: pre.caps.runUsd },
       declaredFlags: Object.fromEntries(BENCH_FLAG_NAMES.map(k => [k, (env[k] ?? '').trim() === '' ? null : env[k]!.trim()])),
       env, outDir: env.BENCH_TRIAL_OUT_DIR!, repoRoot: input.repoRoot, fs: input.fs, turns: trialTurns, now: input.now,
-      extraResult: () => ({ osmRequests: osmCounts(), ddgRequests: ddgCounts(), freeQuotaReset: quotaSummary(), requestLog, blockedLog, toolCalls, questionFile: input.questionInfo ?? null }),
+      extraResult: () => ({ osmRequests: osmCounts(), ddgRequests: ddgCounts(), ...(pagesAllowed ? { pageRequests: { ...pageSent } } : {}), freeQuotaReset: quotaSummary(), requestLog, blockedLog, toolCalls, questionFile: input.questionInfo ?? null }),
     })
     // The turn is over: CLOSE first, then watch. Background work that outlives the answer (memory, logging…) is no longer let through, it is only seen (and recorded).
     trialClosed = true
