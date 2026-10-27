@@ -338,12 +338,13 @@ describe('(f) incidents: the turn is not OK, the run stops, there is no total, a
     expect(out.summary.problems.join(' ')).toMatch(/cost/i)
     noTotal(out)
   })
-  it('Serper answers 200 without credits', async () => {
+  // Wave 4 fix (E18, Owner option A, 27/10): this was an incident (turn not OK, cost unknown, the run stopped). A SENT Serper request whose charge was not stated is now
+  // settled at its reserved worst case, so the turn answers and its cost is known. The next test (a MODEL call failing) is still an incident: model costs are unchanged.
+  it('Serper answers 200 without credits: no longer an incident - the request is counted at its reserved worst case and the turn answers', async () => {
     serperPlan = () => serperOk(null)
     const out = ran(await runLiveTrial(input()))
-    expect(out.summary).toMatchObject({ turnOk: false, trialClean: false, costState: 'unknown' })
-    expect(out.summary.problems.join(' ')).toMatch(/cost|unknown|blocked/i)
-    noTotal(out)
+    expect(out.summary).toMatchObject({ turnOk: true, trialClean: true, costState: 'known' })
+    expect(out.summary.problems).toEqual([])
   })
   it('the provider answers 429 on the tool-choosing stream', async () => {
     let failed = false

@@ -207,7 +207,17 @@ export async function serperPost(endpoint: SerperEndpoint, apiKey: string, body:
   }
   let spendDone = false
   const settleSpend = (reportedCredits: number) => { if (!spend || spendDone) return; spendDone = true; spend.settle(reportedCredits * perCredit, { credits: reportedCredits }) }
-  const unknownSpend = () => { if (!spend || spendDone) return; spendDone = true; spend.markUnknown() }
+  // Wave 4 fix (E18, Owner option A): a request that was SENT but whose charge the provider did not state (a timeout or network error after the send, an HTTP error,
+  // a 200 without `credits`, an unreadable 200) is settled at the RESERVED worst case - the endpoint's fixed credits × the price per credit, which is the most this
+  // one request can cost - instead of "unknown" (which stopped the whole benchmark run on one slow Serper answer). Over-counts, never under-counts; the caps still apply.
+  // Only with BENCH_SPEND_GATE on (no handle otherwise: nothing below runs and nothing is logged). A model call's unknown cost is untouched (meteredModel.ts).
+  const assumeWorstCase = (why: 'thrown_after_send' | 'http_error' | 'no_credits' | 'unreadable_body') => {
+    if (!spend || spendDone) return
+    spendDone = true
+    spend.settle(spend.reservation.maxUsd)
+    console.log(JSON.stringify({ type: 'tappyai_serper_spend', endpoint, assumed: 'worst_case', why, usd: spend.reservation.maxUsd }))
+  }
+  const unknownSpend = () => assumeWorstCase('no_credits')
   if (signal?.aborted) {
     // Reserved, never sent — the one case where a reservation may be given back (and a ticket with it).
     if (entry) refundTurnWebTicket(entry)
@@ -239,12 +249,12 @@ export async function serperPost(endpoint: SerperEndpoint, apiKey: string, body:
     ])
   } catch (e) {
     recordSerperOutcome(endpoint, classifyThrown(e))
-    if (fetched) { if (spend && !spendDone) { spendDone = true; spend.markUnknown() }; report('sent_error', entry) } // sent: what was billed is not known
+    if (fetched) { assumeWorstCase('thrown_after_send'); report('sent_error', entry) } // sent: what was billed is not stated - counted at the reserved worst case
     else { if (entry) refundTurnWebTicket(entry); if (spend && !spendDone) { spendDone = true; spend.release() }; cap.release(); report('not_sent') } // the body could not even be built: fetch was never called
     throw e
   }
   if (!res.ok) {
-    if (spend && !spendDone) { spendDone = true; spend.markUnknown() } // sent, refused or failed by the provider: not provably unbilled
+    assumeWorstCase('http_error') // sent, refused or failed by the provider: not provably unbilled - counted at the reserved worst case
     report('sent_error', entry)
     // 🚨 An ACCOUNT-level failure (out of credits, bad key, forbidden) is the same answer for every further request of the turn:
     // halt the scope so the parallel requests that have not started yet are never sent (only inside a turn / tool scope).
@@ -267,12 +277,12 @@ export async function serperPost(endpoint: SerperEndpoint, apiKey: string, body:
     recorded = true
     const reportedCredits = typeof (raw as { credits?: unknown })?.credits === 'number' ? (raw as { credits: number }).credits : undefined
     recordSerperOutcome(endpoint, 'ok', reportedCredits)
-    // What the provider says it charged; above the reservation → the gate stops the run. An answer that does not say what it charged is not a
-    // PROVEN cost: it is UNKNOWN (the fixed price list is an estimate, and `images` is not even verified).
+    // What the provider says it charged; above the reservation → the gate stops the run. An answer that does not say what it charged is counted at the
+    // reserved worst case (an endpoint without a bound, `images`, is never reserved at all: the gate refuses it before the send).
     if (reportedCredits === undefined) unknownSpend(); else settleSpend(reportedCredits)
     const cleaned = sanitizeSerperJson(raw)
     if (cleaned.changed === 0) return res
     console.log(JSON.stringify({ type: 'tappyai_serper_untrusted_cleaned', endpoint, fields: cleaned.changed }))
     return new Response(JSON.stringify(cleaned.body), { status: res.status, headers: { 'content-type': 'application/json' } })
-  } catch { if (!recorded) recordSerperOutcome(endpoint, 'ok'); unknownSpend(); return res } // an unreadable 200 was processed, but what it cost is not proven
+  } catch { if (!recorded) recordSerperOutcome(endpoint, 'ok'); assumeWorstCase('unreadable_body'); return res } // an unreadable 200 was processed: counted at the reserved worst case
 }

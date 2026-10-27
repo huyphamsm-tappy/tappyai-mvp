@@ -130,24 +130,68 @@ describe('5 · cost reported above the reservation, a failed request, an unreada
     await runWithSpendGate(g, () => post('search'))
     expect(g.calls).toContain('settle:0.002')
   })
-  it('a request that fails after fetch was called (network error / HTTP error) is UNKNOWN — never released, never settled as 0', async () => {
+  // Wave 4 fix (E18, Owner option A, 27/10): these two tests used to say UNKNOWN. A SENT request whose charge the provider did not state is now settled at the RESERVED
+  // worst case (credits × price per credit = the most it can cost): never released, never settled as 0, never below the reservation, and the gate is not blocked.
+  // the console spy's calls are read BEFORE mockRestore (which clears them)
+  const withLog = async (fn: () => Promise<unknown>): Promise<string[]> => {
+    const spy = vi.spyOn(console, 'log').mockImplementation(() => undefined)
+    try { await fn() } catch { /* the caller's business */ }
+    const lines = spy.mock.calls.map(c => String(c[0])).filter(l => l.includes('"type":"tappyai_serper_spend"'))
+    spy.mockRestore()
+    return lines
+  }
+  it('a request that fails after fetch was called (network error / HTTP error) is settled at the reserved worst case — never released, never 0, never unknown', async () => {
     on()
-    for (const m of ['neterr', 'http500'] as const) {
+    for (const [m, why] of [['neterr', 'thrown_after_send'], ['http500', 'http_error']] as const) {
       mode = m
       const g = new NumGate(1)
-      try { await runWithSpendGate(g, () => post('search')) } catch { /* the error is the caller's business */ }
-      expect(g.calls, m).toEqual(['reserve:serper:search', 'unknown'])
+      const lines = await withLog(() => runWithSpendGate(g, () => post('search')))
+      expect(g.calls, m).toEqual(['reserve:serper:search', 'settle:0.001'])
+      expect(g.spent, m).toBeCloseTo(g.reservations[0]!.maxUsd, 12)
+      expect(lines.map(l => JSON.parse(l)), m).toEqual([{ type: 'tappyai_serper_spend', endpoint: 'search', assumed: 'worst_case', why, usd: 0.001 }])
     }
   })
-  it('a 200 answer that cannot be read, or that does not say what it charged, is UNKNOWN: the price list is an estimate, not a proof', async () => {
+  it('a 200 answer that cannot be read, or that does not say what it charged, is settled at the reserved worst case (shopping = 2 credits), not at an invented lower figure', async () => {
     on(); mode = 'badbody'
     const g = new NumGate(1)
     await runWithSpendGate(g, () => post('search'))
-    expect(g.calls).toEqual(['reserve:serper:search', 'unknown'])
+    expect(g.calls).toEqual(['reserve:serper:search', 'settle:0.001'])
     mode = 'ok'; reportedCredits = undefined
     const g2 = new NumGate(1)
     await runWithSpendGate(g2, () => post('shopping')) // (was 'images' before round 2b: images is refused up front now)
-    expect(g2.calls).toEqual(['reserve:serper:shopping', 'unknown'])
+    expect(g2.calls).toEqual(['reserve:serper:shopping', 'settle:0.002'])
+  })
+  it('a request that TIMES OUT after the send (the measured E18 case) is settled at the worst case, and the next paid call of the turn is allowed', async () => {
+    on()
+    vi.stubGlobal('fetch', vi.fn(() => new Promise<Response>(() => { /* never answers */ })))
+    const g = new NumGate(1)
+    let timedOut = false, nextSent: unknown = null
+    const lines = await withLog(() => runWithSpendGate(g, async () => {
+      try { await serperPost('search', 'k-not-real', { q: 'q timeout' }, 30) } catch (e) { timedOut = e instanceof Error && e.message === 'timeout' }
+      stubFetch(); mode = 'ok'; reportedCredits = 1
+      nextSent = await post('search')                                     // the gate was not blocked: the next request is reserved and sent
+    }))
+    expect(timedOut).toBe(true)
+    expect(nextSent).not.toBeNull()
+    expect(g.calls).toEqual(['reserve:serper:search', 'settle:0.001', 'reserve:serper:search', 'settle:0.001'])
+    expect(lines.map(l => JSON.parse(l).why)).toEqual(['thrown_after_send'])
+  })
+  it('gate OFF: a failed / credit-less / timed-out request asks no gate and prints no worst-case line (as before)', async () => {
+    for (const m of ['neterr', 'http500', 'badbody'] as const) {
+      mode = m; sent = 0
+      const g = new NumGate(1)
+      const lines = await withLog(() => runWithSpendGate(g, () => post('search')))
+      expect(sent, m).toBe(1)                                              // the request really was sent (and failed)
+      expect(g.calls, m).toEqual([])
+      expect(lines, m).toEqual([])
+    }
+  })
+  it('a 200 that states its credits is settled at what the provider stated (no worst-case line) - unchanged', async () => {
+    on(); reportedCredits = 1
+    const g = new NumGate(1)
+    const lines = await withLog(() => runWithSpendGate(g, () => post('shopping')))
+    expect(g.calls).toEqual(['reserve:serper:shopping', 'settle:0.001'])
+    expect(lines).toEqual([])
   })
   it('a price per credit set BELOW the list price (0.001) is not believed: the gate prices at the list price', async () => {
     on(); process.env.SERPER_USD_PER_CREDIT = '0.0001'

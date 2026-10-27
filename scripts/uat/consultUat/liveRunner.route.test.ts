@@ -313,27 +313,39 @@ describe('(d) the provider sends no usage', () => {
 })
 
 describe('(e) a VALID Serper request is sent, and the answer is a 200 without `credits`', () => {
-  it('[characterization] the request is sent (the stub is called once); its reservation becomes UNKNOWN and stays open; the gate blocks the next paid call of the turn; the runner and the run stop', async () => {
+  // Wave 4 fix (E18, Owner option A, 27/10). Before: the reservation became UNKNOWN, the gate blocked the answering call, the turn had no answer and the run stopped (the
+  // measured W4-R3 stop). Now: the SENT request whose charge was not stated is settled at its RESERVED worst case (1 credit × $0.001 for /search), the turn answers and
+  // the run goes on. A MODEL call whose cost is not known still blocks and stops the run: (d) and (f) are unchanged.
+  it('[characterization] the request is sent once; it is settled at the reserved worst case ($0.001, no credit figure, marked worst_case); nothing is refused; the turn answers; the run goes on', async () => {
     serperPlan = () => serperOk(null)
     const { o, fs } = opts()
     const { result } = await run(o)
     const r = result!.records[0]
-    expect(net.serper, JSON.stringify(net.serper)).toHaveLength(1)
+    expect(net.serper.filter(x => x.path === '/search').length).toBeGreaterThanOrEqual(1)
     expect(net.serper[0]).toMatchObject({ path: '/search', body: { gl: 'vn', hl: 'vi', num: 8 } })
-    expect(r.blocked).toBe('cost-unknown') // markUnknown on the Serper reservation blocked this turn's gate
-    expect(r.openReservedUsd).toBeCloseTo(0.001, 9) // exactly the Serper reservation (1 credit × $0.001) is still open
-    expect(r.cost).toEqual({ state: 'unknown', usd: null })
-    expect(r.refusals).toBeGreaterThanOrEqual(1) // the next paid call (the answering stream) was refused by the blocked gate
-    expect(net.openai.filter(x => x.hasToolResult)).toHaveLength(0) // ... so the answering call never left the process
-    expect(r.llmRequests).toBe(2) // the intent read and the tool-choosing stream were booked; the answering stream was refused (twice: primary and the fallback's retry)
-    expect(r.refusals).toBe(2)
-    expect(r.answer).toBe('') // the route's stream failed on the refusal: no answer
-    expect(r.error).toMatch(/run blocked: cost-unknown/) // ... and the refusal reached the transport as an error, so runUat books the turn as unknown
-    // runUat stops with reason 'cost-unknown' here (the runner THREW); in (d) it stops with 'invalid-cost' (the runner RETURNED NaN). Either way it stops.
-    expect(result!.report.stopped?.reason).toBe('cost-unknown')
-    expect(result!.report.turns.map(t => [t.id, t.cost])).toEqual([['S1', 'unknown']])
-    expect(result!.valid).toBe(false)
-    expect(hasKey(finalFile(fs)!.json, 'totalUsd')).toBe(false)
+    expect(r.blocked).toBeNull()
+    expect(r.openReservedUsd).toBe(0)                                  // nothing is left open
+    expect(r.refusals).toBe(0)
+    expect(net.openai.filter(x => x.hasToolResult).length).toBeGreaterThan(0) // the answering call left the process
+    expect(r.error ?? null).toBeNull()
+    expect(r.answer.length).toBeGreaterThan(0)
+    // the cost is KNOWN and counts the Serper request at its worst case: exactly what (b) books for a request whose provider stated 1 credit
+    const up = (usd: number) => Math.ceil(Math.round(usd * 1e9) / 1e3) / 1e6
+    expect(r.cost.state).toBe('known')
+    expect(r.cost.usd!).toBeCloseTo(up(usdOf(INTENT_USAGE)) + up(usdOf(TOOL_USAGE)) + up(usdOf(FINAL_USAGE)) + up(1 * 0.001), 9)
+    const s1 = jsonlLines(fs).find(l => l.id === 'S1')!
+    expect(s1.serperCalls[0]).toMatchObject({ endpoint: 'search', credits: null, usd: 0.001, state: 'settled', assumed: 'worst_case' })
+    expect(s1.requestTotals.serper.unknownCalls).toBe(0)
+    expect(result!.report.stopped).toBeNull()
+    expect(result!.report.turns.map(t => t.id)).toEqual(['S1', 'S2'])     // the run went on to the next turn
+    expect(result!.report.turns.every(t => t.cost === 'known')).toBe(true)
+  })
+  it('control: a 200 that states its credits carries the provider figure and NO worst_case mark', async () => {
+    const { o, fs } = opts()
+    await run(o)
+    const s1 = jsonlLines(fs).find(l => l.id === 'S1')!
+    expect(s1.serperCalls[0]).toMatchObject({ credits: 1, usd: 0.001, state: 'settled' })
+    expect(s1.serperCalls[0]).not.toHaveProperty('assumed')
   })
 })
 

@@ -81,9 +81,13 @@ describe('flag ON: the injected gate is told what was sent', () => {
     await runWithSpendGate(g, () => serperPost('shopping', 'k-not-real', { q: 'x', gl: 'vn', hl: 'vi', num: 20 }, 2000))
     expect(g.settled).toEqual([{ actual: 0.002, detail: { credits: 2 } }])
   })
-  it('an answer that does not state its credits is not settled with an invented figure (the call is UNKNOWN: no settle at all)', async () => {
+  // Wave 4 fix (E18, Owner option A): was "UNKNOWN: no settle at all". Now the call is settled at the RESERVED worst case, and still no credit figure is invented:
+  // the settle carries NO detail (no `credits`), which is how the benchmark tells a worst-case settle from a provider-stated one.
+  it('an answer that does not state its credits is settled at the reserved worst case with NO credit figure (nothing invented)', async () => {
     on(); const g = new RecordingGate(); reportedCredits = undefined
+    const log = vi.spyOn(console, 'log').mockImplementation(() => undefined)
     await runWithSpendGate(g, () => serperPost('search', 'k-not-real', { q: 'x', gl: 'vn', hl: 'vi', num: 8 }, 2000))
-    expect(g.settled).toEqual([])
+    expect(g.settled).toEqual([{ actual: g.reserved[0]!.maxUsd }])
+    expect(g.settled[0]).not.toHaveProperty('detail')
   })
 })

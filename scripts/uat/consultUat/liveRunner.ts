@@ -194,6 +194,9 @@ export interface SerperCallRecord {
   /** W = web research (the turn's web ticket); V = a vertical's own request. null = the caller did not say. */
   purpose: 'W' | 'V' | null
   state: SpendRecordState
+  /** Wave 4 fix (E18): present only when the request was SENT but the provider did not state its charge - serperClient settled it at the reserved worst case
+   *  (the endpoint's fixed credits × the price per credit). Every other Serper settle carries the provider's `credits`, so a settled record without them is exactly this case. */
+  assumed?: 'worst_case'
 }
 export interface LlmCallRecord { n: number; role: string; tokensIn: number | null; tokensOut: number | null; cachedIn: number | null; reasoning: number | null; usd: number | null; state: SpendRecordState }
 interface KindTotals { requests: number; credits: number; usd: number }
@@ -235,6 +238,7 @@ export function describeRequests(records: readonly SpendRecord[], env: Record<st
     usd: numOrNull(r.actualUsd),
     purpose: r.detail?.purpose ?? null,
     state: r.state,
+    ...(r.state === 'settled' && r.settleDetail?.credits === undefined ? { assumed: 'worst_case' as const } : {}),
   }))
   const llmCalls: LlmCallRecord[] = sent.filter(r => r.label.startsWith('llm:')).map((r, i) => ({
     n: i + 1, role: r.label.slice('llm:'.length),
