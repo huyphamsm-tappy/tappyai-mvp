@@ -8,6 +8,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { __resetAiQuestionQuotaLocal } from '@/lib/ai/quota/aiQuestionQuota'
 import { finalWriteInstruction } from '@/lib/ai/finalWrite'
 import { consultFinalSynthesisOn, consultFinalWriteOn } from '@/lib/config/consultFlags'
+import { turnUsd } from '@/lib/ai/turnCost'
 
 type Call = { toolCallId: string; toolName: string; args: Record<string, unknown> }
 const h = vi.hoisted(() => {
@@ -102,7 +103,7 @@ type Msg = { role: 'user' | 'assistant'; content: string }
 const lunaIntent = (turn: string, domains: string[]) => ({ domains, turn, goal: 'x', known: [], party: null, budget_vnd_max: null, difficulty: 'easy', missing: [], assumptions: [], ask: null, query: null, area: null, refers: [], reject_reason: null })
 const ASK: Msg[] = [{ role: 'user', content: 'Muốn đổi giấy phép lái xe hạng B1 sang hạng B cần những giấy tờ nào và nộp ở đâu?' }]
 const SEARCH3: Array<{ toolName: string; args: Record<string, unknown> }> = [0, 1, 2].map(i => ({ toolName: 'web_search', args: { query: `thu tuc doi giay phep lai xe ${i}` } }))
-const ENV = ['CONSULT_FINAL_SYNTHESIS', 'CONSULT_KNOWLEDGE_TURN_TOOLS', 'CONSULT_SEARCH_NOW_INTENT_GATE', 'CONSULT_CAPABILITY_LEVEL', 'CONSULT_TOOL_BY_NEED', 'CONSULT_DETERMINISTIC_MATH', 'CONSULT_RESEARCH_LOOP', 'CONSULT_STRUCTURED_SYNTHESIS', 'VERCEL_ENV', 'TAPPY_AGENT']
+const ENV = ['CONSULT_FINAL_SYNTHESIS', 'CONSULT_KNOWLEDGE_TURN_TOOLS', 'CONSULT_SEARCH_NOW_INTENT_GATE', 'CONSULT_CAPABILITY_LEVEL', 'CONSULT_TOOL_BY_NEED', 'CONSULT_DETERMINISTIC_MATH', 'CONSULT_RESEARCH_LOOP', 'CONSULT_STRUCTURED_SYNTHESIS', 'VERCEL_ENV', 'TAPPY_AGENT', 'CONSULT_LUNA']
 
 interface Cfg { env?: Record<string, string>; flag?: string; calls?: typeof SEARCH3; text?: string; finish?: string; errorFrame?: boolean; generateThrows?: boolean; generateText?: string; luna?: Record<string, unknown> | null; advanceMs?: number }
 async function turn(c: Cfg = {}) {
@@ -205,6 +206,42 @@ describe('C-PRE-1 · the measured case: every step is a tool call, no text', () 
   it('the instruction is in the user\'s language, says no tool call and not to invent', () => {
     expect(finalWriteInstruction('en')).toMatch(/no tool call/i); expect(finalWriteInstruction('en')).toMatch(/do not invent/i)
     expect(finalWriteInstruction('vi')).toMatch(/không gọi thêm công cụ/); expect(finalWriteInstruction('vi')).toMatch(/không bịa/)
+  })
+})
+
+// fix G3: the final writing call's tokens (the mock answers 100 in / 20 out) are in the turn cost line, Luna on or off. The comparison turn is the same turn with the call answering
+// nothing usable ("   ": the call still ran and was paid for) versus the flag OFF (no call at all).
+const costLine = (lines: string[]): { tokensIn: number; tokensOut: number; usd: number } => {
+  const l = lines.find(x => x.includes('"type":"tappyai_turn_cost"'))
+  if (!l) throw new Error('no turn cost line')
+  return JSON.parse(l) as { tokensIn: number; tokensOut: number; usd: number }
+}
+// Luna off = no consult brain at all (CONSULT_V2=0): a real tool turn whose cost line is the plain one (CONSULT_LUNA=0 alone makes this message a question-back turn, no tool loop).
+const LUNA_OFF = { CONSULT_V2: '0' }
+const ranFinalWrite = (lines: string[], outcome: string) => lines.some(l => l.includes('"type":"tappyai_final_write"') && l.includes(`"outcome":"${outcome}"`))
+describe('fix G3 · the final write is counted in the turn cost line', () => {
+  for (const [name, env] of [['Luna off', LUNA_OFF], ['Luna on', { CONSULT_LUNA: '1' }]] as const) {
+    it(`${name}: tokensIn +100, tokensOut +20 and a higher usd than the same turn with the flag OFF`, async () => {
+      const offTurn = await turn({ env })
+      const on = await turn({ flag: '1', env })
+      expect(ranFinalWrite(on.lines, 'appended')).toBe(true)      // the call really ran on this turn
+      const off = costLine(offTurn.lines), c = costLine(on.lines)
+      expect(c.tokensIn - off.tokensIn).toBe(100)
+      expect(c.tokensOut - off.tokensOut).toBe(20)
+      expect(c.usd).toBeGreaterThan(off.usd)
+    })
+  }
+  it('Luna off: the plain cost line (no Luna fields - the line the fix had to reach) grows by exactly the price of 100 in + 20 out', async () => {
+    const off = costLine((await turn({ env: LUNA_OFF })).lines)
+    const on = costLine((await turn({ flag: '1', env: LUNA_OFF })).lines)
+    expect(on).not.toHaveProperty('answerUsd')
+    expect(Math.abs((on.usd - off.usd) - turnUsd({ promptTokens: 100, completionTokens: 20 }))).toBeLessThanOrEqual(2e-6)
+  })
+  it('a paid call that wrote nothing usable is still counted', async () => {
+    const off = costLine((await turn({ env: LUNA_OFF })).lines)
+    const empty = await turn({ flag: '1', generateText: '   ', env: LUNA_OFF })
+    expect(ranFinalWrite(empty.lines, 'empty')).toBe(true)
+    expect(costLine(empty.lines).tokensOut - off.tokensOut).toBe(20)
   })
 })
 

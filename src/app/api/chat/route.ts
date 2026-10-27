@@ -2376,6 +2376,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // PHIÊN LUNA: the answer model's cost per vendor (only filled when CONSULT_LUNA is on).
   // PHIÊN LUNA: the plan-completion call (a second model call on some plan turns) is priced too (Phase 7 never counted it).
   let planCompletionUsd = 0
+  // Wave 4 fix G3: the final writing call's own tokens, counted into the turn cost line whether Luna is on or off (zero unless that call ran, so a turn without it is unchanged).
+  const finalWriteTokens = { in: 0, out: 0 }
   let lunaAnswerCost: { usd: number; reasoningTokens: number; cachedInputTokens: number; cacheWriteTokens: number; served: string[]; fellBack: boolean } | null = null
   let usageAcct: {
     finishReason: string
@@ -3718,6 +3720,7 @@ ${finalWriteInstruction(lang)}` },
           maxTokens: so.maxTokens,
         })
         if (lunaOn) { const c = (done.providerMetadata as { tappy?: { cost?: { usd?: number } } } | undefined)?.tappy?.cost; planCompletionUsd += typeof c?.usd === 'number' ? c.usd : turnUsd({ promptTokens: done.usage?.promptTokens ?? 0, completionTokens: done.usage?.completionTokens ?? 0 }) }
+        finalWriteTokens.in += done.usage?.promptTokens ?? 0; finalWriteTokens.out += done.usage?.completionTokens ?? 0
         return done.text
       },
     }), { status: streamed.status, headers: streamed.headers })
@@ -3994,9 +3997,9 @@ ${finalWriteInstruction(lang)}` },
         // Owner Phần 6: one cost line per turn (brain call + answer model + Serper).
         if (requestCapTurn) closeRequestCapTurn(requestCapTurn) // the turn is over: a request that starts after this is refused
         const d = serperDelta(serperAtStart)
-        const tokensIn = (usageAcct?.promptTokens ?? 0) + (usageAcct?.cacheReadTokens ?? 0) + (usageAcct?.cacheCreationTokens ?? 0) + (consultRun?.usage.promptTokens ?? 0)
-        const tokensOut = (usageAcct?.completionTokens ?? 0) + (consultRun?.usage.completionTokens ?? 0)
-        const usd = turnUsd({ promptTokens: (usageAcct?.promptTokens ?? 0) + (consultRun?.usage.promptTokens ?? 0), completionTokens: tokensOut, cacheReadTokens: usageAcct?.cacheReadTokens ?? 0, cacheCreationTokens: usageAcct?.cacheCreationTokens ?? 0, serperCredits: d.credits })
+        const tokensIn = (usageAcct?.promptTokens ?? 0) + (usageAcct?.cacheReadTokens ?? 0) + (usageAcct?.cacheCreationTokens ?? 0) + (consultRun?.usage.promptTokens ?? 0) + finalWriteTokens.in
+        const tokensOut = (usageAcct?.completionTokens ?? 0) + (consultRun?.usage.completionTokens ?? 0) + finalWriteTokens.out
+        const usd = turnUsd({ promptTokens: (usageAcct?.promptTokens ?? 0) + (consultRun?.usage.promptTokens ?? 0) + finalWriteTokens.in, completionTokens: tokensOut, cacheReadTokens: usageAcct?.cacheReadTokens ?? 0, cacheCreationTokens: usageAcct?.cacheCreationTokens ?? 0, serperCredits: d.credits })
         const base = { domain: consult?.domains[0] ?? decisionFrame.domains[0] ?? null, turnType: consult?.turn ?? (planningIntent ? 'plan' : 'legacy'), model: 'haiku-4.5', tokensIn, tokensOut, serperCalls: sumCounts(d.calls), cacheHits: sumCounts(d.hits), promptCacheRead: usageAcct?.cacheReadTokens ?? 0, promptCacheWrite: usageAcct?.cacheCreationTokens ?? 0, usd }
         if (!lunaOn) return base
         // PHIÊN LUNA: each part at its own vendor's price — intent call + answer steps (reasoning tokens are in
