@@ -18,7 +18,7 @@ const h = vi.hoisted(() => {
   const state = {
     calls: [] as Call[], results: [] as Array<{ name: string; result: any }>, luna: null as null | Record<string, unknown>,
     toolNames: [] as string[], webDescription: '' as string, maxSteps: 0, maxTokens: 0, system: '' as string, text: 'ok', webCalls: [] as string[], fetched: [] as string[],
-    pages: {} as Record<string, { status?: number; body: string; contentType?: string }>, userId: 'u-knowledge-path',
+    pages: {} as Record<string, { status?: number; body: string; contentType?: string }>, redirects: {} as Record<string, string>, userId: 'u-knowledge-path',
   }
   const builder = (): any => {
     const b: any = {
@@ -42,8 +42,16 @@ vi.mock('@/lib/auth/getRequestUser', () => ({ getRequestUser: () => Promise.reso
 vi.mock('@/lib/security/rateLimit', () => ({ rateLimit: () => ({ ok: true, retryAfter: 0 }), dailyRateLimit: () => ({ ok: true }), clientIp: () => '127.0.0.1' }))
 vi.mock('@/lib/security/safePageFetch', async (importOriginal) => ({
   ...(await importOriginal<typeof import('@/lib/security/safePageFetch')>()),
-  fetchPublicPage: async (url: string) => {
+  fetchPublicPage: async (url: string, opts?: { signal?: AbortSignal; hopGate?: (u: URL, s?: AbortSignal) => Promise<string | null> }) => {
     h.state.fetched.push(url)
+    // A redirect: the real fetcher asks the hop gate before it opens the target (safePageFetch); the stand-in does the same.
+    const to = h.state.redirects[url]
+    if (to) {
+      const refused = await opts?.hopGate?.(new URL(to), opts?.signal)
+      if (refused) return { ok: false, url, reason: refused, redirects: 1, ms: 1 }
+      h.state.fetched.push(to); const t = h.state.pages[to]
+      return t ? { ok: true, url: to, finalUrl: to, status: 200, contentType: 'text/html; charset=utf-8', body: t.body, bytes: t.body.length, truncated: false, redirects: 1, ms: 1 } : { ok: false, url, reason: 'http_error', status: 404, redirects: 1, ms: 1 }
+    }
     const p = h.state.pages[url]
     if (!p) return { ok: false, url, reason: 'http_error', status: 404, redirects: 0, ms: 1 }
     if ((p.status ?? 200) >= 400) return { ok: false, url, reason: 'http_error', status: p.status, redirects: 0, ms: 1 }
@@ -54,7 +62,7 @@ vi.mock('@/lib/ai/tools/common', async (importOriginal) => ({
   ...(await importOriginal<typeof import('@/lib/ai/tools/common')>()),
   getCache: () => null, setCache: () => undefined, fetchPlacePhotosByName: async () => [],
   serperSearch: async (q: string) => { h.state.webCalls.push(String(q)); return [] },
-  webSearch: async (q: string) => { h.state.webCalls.push(String(q)); return { results: [{ title: 'Biểu phí', link: 'https://bank.example/bieu-phi', snippet: 'Biểu phí dịch vụ' }, { title: 'Nội bộ', link: 'https://bank.example/private/x', snippet: 'x' }] } },
+  webSearch: async (q: string) => { h.state.webCalls.push(String(q)); return { results: [{ title: 'Biểu phí', link: 'https://bank.example/bieu-phi', snippet: 'Biểu phí dịch vụ' }, { title: 'Nội bộ', link: 'https://bank.example/private/x', snippet: 'x' }, { title: 'Chuyển', link: 'https://bank.example/go', snippet: 'x' }] } },
 }))
 vi.mock('@/lib/ai/tools/serperPlaces', async (importOriginal) => ({ ...(await importOriginal<typeof import('@/lib/ai/tools/serperPlaces')>()), serperPlaces: async () => [] }))
 vi.mock('@/lib/ai/tools/food', async (importOriginal) => ({ ...(await importOriginal<typeof import('@/lib/ai/tools/food')>()), searchPlacesOSM: async () => ({ results: [] }) }))
@@ -136,6 +144,7 @@ beforeEach(() => {
     'https://bank.example/bieu-phi': { body: BANK_PAGE },
     'https://bank.example/private/x': { body: '<html><body>secret 77.000đ</body></html>' },
   }
+  h.state.redirects = { 'https://bank.example/go': 'https://bank.example/private/x' }
   vi.stubGlobal('fetch', async (input: unknown) => { throw new Error('network disabled in this test: ' + String(input).slice(0, 60)) })
 })
 afterEach(() => { vi.useRealTimers(); for (const k of ENV_NAMES) delete process.env[k]; vi.unstubAllGlobals() })
@@ -215,6 +224,19 @@ describe('C2 — ON: the knowledge path', () => {
     // Measured (C2): on R3 an amount for a NON-venue answer is not cut, with the flag OFF as well as ON - the amount guards judge venue / price-card answers. The knowledge path neither adds nor
     // removes a guard; recorded in the C2 report as an open point for the Owner, not changed here.
     expect(inventedOff.text).toContain('99.000đ')
+  }, 60000)
+  it('a redirect into a disallowed path is refused at the hop (robots on EVERY hop, not only the first URL): the target is never opened', async () => {
+    const r = await turn({ flag: '1', calls: [{ name: 'web_search', args: { query: 'phí' } }, { name: 'read_page', args: { urls: ['https://bank.example/go'], focus: 'phí' } }] })
+    const p = r.results.find(x => x.name === 'read_page')?.result?.pages?.[0]
+    expect(r.fetched).toContain('https://bank.example/go')               // the first hop was allowed and asked for
+    expect(r.fetched).not.toContain('https://bank.example/private/x')    // the redirect target was not
+    expect(p?.error).toBe('page_unreadable'); expect(p?.reason).toBe('robots_disallowed')
+  }, 60000)
+  it('R3-01 at R3: an amount the calculator derived from the user\'s own numbers stays in the answer', async () => {
+    const msgs: Msg[] = [{ role: 'user', content: 'Mình gửi 1.000.000 đồng lãi kép 5% mỗi năm trong 2 năm thì cuối kỳ được bao nhiêu?' }]
+    const r = await turn({ flag: '1', msgs, calls: [{ name: 'calculate', args: { expression: '1000000 * (1 + 0.05) ^ 2' } }], reply: 'Cuối năm thứ 2 bạn có **1.102.500 đồng**.' })
+    expect(r.results.find(x => x.name === 'calculate')).toBeTruthy()
+    expect(r.text).toContain('1.102.500')
   }, 60000)
   it('calculate runs on the knowledge path (an exact result), the model chooses to call it', async () => {
     const r = await turn({ flag: '1', calls: [{ name: 'calculate', args: { expression: '1000000 * (1 + 0.05) ^ 2' } }] })

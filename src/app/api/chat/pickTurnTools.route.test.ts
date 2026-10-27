@@ -42,8 +42,15 @@ vi.mock('@/lib/auth/getRequestUser', () => ({ getRequestUser: () => Promise.reso
 vi.mock('@/lib/security/rateLimit', () => ({ rateLimit: () => ({ ok: true, retryAfter: 0 }), dailyRateLimit: () => ({ ok: true }), clientIp: () => '127.0.0.1' }))
 vi.mock('@/lib/security/safePageFetch', async (importOriginal) => ({
   ...(await importOriginal<typeof import('@/lib/security/safePageFetch')>()),
-  fetchPublicPage: async (url: string) => {
+  fetchPublicPage: async (url: string, opts?: { signal?: AbortSignal; hopGate?: (u: URL, s?: AbortSignal) => Promise<string | null> }) => {
     h.state.fetched.push(url)
+    // A redirect: the real fetcher asks the hop gate before it opens the target (safePageFetch); the stand-in does the same.
+    if (url === 'https://caphemay.example/go') {
+      const refused = await opts?.hopGate?.(new URL('https://caphemay.example/private/staff'), opts?.signal)
+      if (refused) return { ok: false, url, reason: refused, redirects: 1, ms: 1 }
+      h.state.fetched.push('https://caphemay.example/private/staff')
+      return { ok: true, url: 'https://caphemay.example/private/staff', finalUrl: 'https://caphemay.example/private/staff', status: 200, contentType: 'text/html; charset=utf-8', body: '<html><body>x</body></html>', bytes: 27, truncated: false, redirects: 1, ms: 1 }
+    }
     const p = h.state.pages[url]
     if (!p) return { ok: false, url, reason: 'http_error', status: 404, redirects: 0, ms: 1 }
     if ((p.status ?? 200) >= 400) return { ok: false, url, reason: 'http_error', status: p.status, redirects: 0, ms: 1 }
@@ -54,7 +61,7 @@ vi.mock('@/lib/ai/tools/common', async (importOriginal) => ({
   ...(await importOriginal<typeof import('@/lib/ai/tools/common')>()),
   getCache: () => null, setCache: () => undefined, fetchPlacePhotosByName: async () => [],
   serperSearch: async (q: string) => { h.state.webCalls.push(String(q)); return [] },
-  webSearch: async (q: string) => { h.state.webCalls.push(String(q)); return { results: [{ title: 'Cà phê Mây', link: 'https://caphemay.example/', snippet: 'Thực đơn' }, { title: 'Nhân sự', link: 'https://caphemay.example/private/staff', snippet: 'x' }] } },
+  webSearch: async (q: string) => { h.state.webCalls.push(String(q)); return { results: [{ title: 'Cà phê Mây', link: 'https://caphemay.example/', snippet: 'Thực đơn' }, { title: 'Nhân sự', link: 'https://caphemay.example/private/staff', snippet: 'x' }, { title: 'Chuyển', link: 'https://caphemay.example/go', snippet: 'x' }] } },
 }))
 vi.mock('@/lib/ai/tools/serperPlaces', async (importOriginal) => ({
   ...(await importOriginal<typeof import('@/lib/ai/tools/serperPlaces')>()),
@@ -199,6 +206,13 @@ describe('C3 — ON: the pre-searched pick gets the model tools', () => {
     const p = r.results.find(x => x.name === 'read_page')?.result?.pages?.[0]
     expect(p?.error).toBe('page_unreadable'); expect(p?.reason).toBe('robots_disallowed')
     expect(r.fetched).not.toContain('https://caphemay.example/')
+  }, 60000)
+  it('a redirect into a disallowed path is refused at the hop (robots on every hop): the target is never opened', async () => {
+    const r = await turn({ flag: '1', calls: [SEARCH, READ('https://caphemay.example/go')] })
+    const p = r.results.find(x => x.name === 'read_page')?.result?.pages?.[0]
+    expect(r.fetched).toContain('https://caphemay.example/go')
+    expect(r.fetched).not.toContain('https://caphemay.example/private/staff')
+    expect(p?.error).toBe('page_unreadable'); expect(p?.reason).toBe('robots_disallowed')
   }, 60000)
   it('a link the user typed may be opened (user_url), as in lean', async () => {
     const msgs: Msg[] = [{ role: 'user', content: 'quán cà phê gần đây, xem giúp https://caphemay.example/' }]
