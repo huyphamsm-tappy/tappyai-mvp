@@ -126,10 +126,12 @@ async function turn(messages: Msg[], o: TurnOpts = {}) {
 }
 
 beforeEach(() => {
+  // The system prompt carries the clock ("lúc 10:09 …"): two turns a minute apart differ in that line alone, and these tests compare prompts byte for byte. Only Date is faked.
+  vi.useFakeTimers({ toFake: ['Date'] }); vi.setSystemTime(new Date('2026-10-27T03:09:00Z'))
   process.env.CONSULT_V2 = '1'; process.env.CONSULTATIVE_V1 = '1'
   vi.stubGlobal('fetch', async (input: unknown) => { throw new Error('network disabled in this test: ' + String(input).slice(0, 60)) })
 })
-afterEach(() => { for (const k of ['TAPPY_AGENT', 'CONSULT_STRUCTURED_SYNTHESIS', 'CONSULT_SEARCH_NOW_INTENT_GATE', 'VERCEL_ENV']) delete process.env[k]; vi.unstubAllGlobals() })
+afterEach(() => { vi.useRealTimers(); for (const k of ['TAPPY_AGENT', 'CONSULT_STRUCTURED_SYNTHESIS', 'CONSULT_SEARCH_NOW_INTENT_GATE', 'VERCEL_ENV']) delete process.env[k]; vi.unstubAllGlobals() })
 
 const JSON_ESC = (s: string) => JSON.stringify(s).slice(1, -1)
 const MORE: Msg[] = [{ role: 'user', content: 'quán cà phê' }, { role: 'assistant', content: 'Mình chọn: Cà phê Mây.' }, { role: 'user', content: 'còn quán nào nữa' }]

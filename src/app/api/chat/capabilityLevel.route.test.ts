@@ -122,12 +122,14 @@ async function turn(c: Cfg = {}) {
 }
 
 beforeEach(() => {
+  // The system prompt carries the clock ("lúc 10:09 …"): two turns a minute apart differ in that line alone, and these tests compare prompts byte for byte. Only Date is faked.
+  vi.useFakeTimers({ toFake: ['Date'] }); vi.setSystemTime(new Date('2026-10-27T03:09:00Z'))
   process.env.CONSULT_V2 = '1'; process.env.CONSULTATIVE_V1 = '1'
   h.state.pages = { 'https://caphemay.example/robots.txt': { body: '', contentType: 'text/plain' } }
   for (let k = 1; k <= 8; k++) h.state.pages[`https://caphemay.example/p${k}`] = { body: `<html><body><p>Trang ${k} giá ${k}0.000đ</p></body></html>` }
   vi.stubGlobal('fetch', async (input: unknown) => { throw new Error('network disabled in this test: ' + String(input).slice(0, 60)) })
 })
-afterEach(() => { for (const k of ENV_NAMES) delete process.env[k]; vi.unstubAllGlobals() })
+afterEach(() => { vi.useRealTimers(); for (const k of ENV_NAMES) delete process.env[k]; vi.unstubAllGlobals() })
 
 describe('W6 — the previous behaviour is kept at level 0, unset, invalid, and in production', () => {
   it('L0, unset, "5", "01", "L3", " 3" and a production L4 all equal the unset turn (tools, steps, ceiling, prompt)', async () => {
