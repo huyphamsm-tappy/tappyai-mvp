@@ -13,7 +13,7 @@ type Call = { toolCallId: string; toolName: string; args: Record<string, unknown
 const h = vi.hoisted(() => {
   const state = {
     calls: [] as Call[], results: [] as Array<{ name: string; result: any }>, luna: null as null | Record<string, unknown>,
-    text: '', finish: 'tool-calls', errorFrame: false,
+    text: '', finish: 'tool-calls', errorFrame: false, advanceMs: 0,
     generateCalls: [] as Array<Record<string, any>>, generateText: 'Câu trả lời cuối viết từ kết quả công cụ.', generateThrows: false, userId: 'u-final-write',
   }
   const builder = (): any => {
@@ -63,6 +63,8 @@ vi.mock('@/lib/ai/llm', () => ({
           }
           if (h.state.text) c.enqueue(enc.encode(`0:${JSON.stringify(h.state.text)}\n`))
           if (h.state.errorFrame) c.enqueue(enc.encode(`3:${JSON.stringify('provider failed')}\n`))
+          // fix N2: the tool loop "took" this long (the clock is faked in the deadline tests only)
+          if (h.state.advanceMs) vi.setSystemTime(Date.now() + h.state.advanceMs)
           try { await opts.onFinish?.({ usage: { promptTokens: 0, completionTokens: 0 }, finishReason: h.state.finish, text: h.state.text, steps: [] }) } catch { /* the mock must not fail a turn */ }
           c.enqueue(enc.encode(`d:{"finishReason":"${h.state.finish}","usage":{"promptTokens":0,"completionTokens":0}}\n`))
           c.close()
@@ -84,13 +86,14 @@ const ASK: Msg[] = [{ role: 'user', content: 'Muốn đổi giấy phép lái xe
 const SEARCH3: Array<{ toolName: string; args: Record<string, unknown> }> = [0, 1, 2].map(i => ({ toolName: 'web_search', args: { query: `thu tuc doi giay phep lai xe ${i}` } }))
 const ENV = ['CONSULT_FINAL_SYNTHESIS', 'CONSULT_KNOWLEDGE_TURN_TOOLS', 'CONSULT_SEARCH_NOW_INTENT_GATE', 'CONSULT_CAPABILITY_LEVEL', 'CONSULT_TOOL_BY_NEED', 'CONSULT_DETERMINISTIC_MATH', 'CONSULT_RESEARCH_LOOP', 'CONSULT_STRUCTURED_SYNTHESIS', 'VERCEL_ENV', 'TAPPY_AGENT']
 
-interface Cfg { env?: Record<string, string>; flag?: string; calls?: typeof SEARCH3; text?: string; finish?: string; errorFrame?: boolean; generateThrows?: boolean; generateText?: string; luna?: Record<string, unknown> | null }
+interface Cfg { env?: Record<string, string>; flag?: string; calls?: typeof SEARCH3; text?: string; finish?: string; errorFrame?: boolean; generateThrows?: boolean; generateText?: string; luna?: Record<string, unknown> | null; advanceMs?: number }
 async function turn(c: Cfg = {}) {
   for (const k of ENV) delete process.env[k]
   if (c.flag !== undefined) process.env.CONSULT_FINAL_SYNTHESIS = c.flag
   for (const [k, v] of Object.entries(c.env ?? {})) process.env[k] = v
   h.state.calls = (c.calls ?? SEARCH3).map((t, i) => ({ toolCallId: `c${i + 1}`, toolName: t.toolName, args: t.args }))
   h.state.results = []; h.state.generateCalls = []
+  h.state.advanceMs = c.advanceMs ?? 0
   h.state.text = c.text ?? ''; h.state.finish = c.finish ?? 'tool-calls'; h.state.errorFrame = c.errorFrame ?? false
   h.state.generateThrows = c.generateThrows ?? false; h.state.generateText = c.generateText ?? 'Câu trả lời cuối viết từ kết quả công cụ.'
   h.state.luna = c.luna === undefined ? lunaIntent('chat', []) : c.luna
@@ -184,5 +187,24 @@ describe('C-PRE-1 · the measured case: every step is a tool call, no text', () 
   it('the instruction is in the user\'s language, says no tool call and not to invent', () => {
     expect(finalWriteInstruction('en')).toMatch(/no tool call/i); expect(finalWriteInstruction('en')).toMatch(/do not invent/i)
     expect(finalWriteInstruction('vi')).toMatch(/không gọi thêm công cụ/); expect(finalWriteInstruction('vi')).toMatch(/không bịa/)
+  })
+})
+
+// fix N2: the route hands the TURN deadline (start + 110 s) to the final write. Only Date is faked; the mock moves the clock forward while the tool loop "runs".
+// finalWriteStream starts the call only when (deadline - now - 2 s) >= 8 s: 101 s in leaves 7 s (no call), 95 s in leaves 13 s (the call). Without a deadline both would call;
+// with a shorter deadline (the agent's 85 s, say) both would refuse.
+describe('fix N2 · the turn deadline reaches the final write', () => {
+  beforeEach(() => { vi.useFakeTimers({ toFake: ['Date'] }); vi.setSystemTime(new Date('2026-10-27T03:09:00Z')) })
+  afterEach(() => { vi.useRealTimers() })
+  it('101 s into the turn: too little time is left, no extra call, the "no_time" line, the turn ships as the model left it', async () => {
+    const r = await turn({ flag: '1', advanceMs: 101_000 })
+    expect(r.generate).toHaveLength(0)
+    expect(r.lines.some(l => l.includes('"type":"tappyai_final_write"') && l.includes('"outcome":"no_time"'))).toBe(true)
+    expect(r.finish).toEqual(['tool-calls'])
+  })
+  it('95 s into the turn: enough time is left, the call is made (live control - the deadline is the turn\'s, not a shorter one)', async () => {
+    const r = await turn({ flag: '1', advanceMs: 95_000 })
+    expect(r.generate).toHaveLength(1)
+    expect(r.text).toContain('Câu trả lời cuối viết từ kết quả công cụ.')
   })
 })
