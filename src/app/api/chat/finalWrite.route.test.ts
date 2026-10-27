@@ -77,6 +77,24 @@ vi.mock('@/lib/ai/llm', () => ({
   },
 }))
 
+// fix N3: an agent turn (TAPPY_AGENT=1) is scripted at the agent entry point: tool frames, no text, finish "tool-calls". `agentSteps` picks the shape of result.steps:
+// 'real' = what agentStreamResult builds (toolResults always [] - dataStream.ts), 'withResults' = steps that DO carry tool results (the shape the final write could write from).
+const agentH = vi.hoisted(() => ({ calls: 0, steps: 'real' as 'real' | 'withResults' }))
+vi.mock('@/lib/ai/agent', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@/lib/ai/agent')>()),
+  startAgentTurn: () => {
+    agentH.calls++
+    const result = { title: 'Nguon A', link: 'https://a.example/x', snippet: 'Du lieu A' }
+    return {
+      steps: Promise.resolve([{ toolCalls: [{ toolCallId: 'g1', toolName: 'web_search', args: { query: 'q' } }], toolResults: agentH.steps === 'real' ? [] : [{ toolName: 'web_search', result }], text: '', usage: { promptTokens: 0, completionTokens: 0 } }]),
+      text: Promise.resolve(''),
+      toDataStreamResponse: () => new Response(
+        `9:${JSON.stringify({ toolCallId: 'g1', toolName: 'web_search', args: { query: 'q' } })}\na:${JSON.stringify({ toolCallId: 'g1', result })}\nd:{"finishReason":"tool-calls","usage":{"promptTokens":0,"completionTokens":0}}\n`,
+        { status: 200, headers: { 'content-type': 'text/plain' } }),
+    }
+  },
+}))
+
 import { POST } from '@/app/api/chat/route'
 
 const GPS_HN = { lat: 21.0285, lng: 105.8542, address: 'Hoàn Kiếm, Hà Nội' }
@@ -187,6 +205,25 @@ describe('C-PRE-1 · the measured case: every step is a tool call, no text', () 
   it('the instruction is in the user\'s language, says no tool call and not to invent', () => {
     expect(finalWriteInstruction('en')).toMatch(/no tool call/i); expect(finalWriteInstruction('en')).toMatch(/do not invent/i)
     expect(finalWriteInstruction('vi')).toMatch(/không gọi thêm công cụ/); expect(finalWriteInstruction('vi')).toMatch(/không bịa/)
+  })
+})
+
+// fix N3: the final write never touches an agent turn (the agent has its own loop and its own final answer).
+describe('fix N3 · an agent turn is left alone', () => {
+  it('TAPPY_AGENT=1, flag ON, tool frames and no text: no extra call, no final_write line - for both shapes of result.steps', async () => {
+    for (const shape of ['real', 'withResults'] as const) {
+      agentH.calls = 0; agentH.steps = shape
+      const r = await turn({ flag: '1', env: { TAPPY_AGENT: '1' } })
+      expect(agentH.calls, shape).toBe(1)                     // the turn really went down the agent path
+      expect(r.generate, shape).toHaveLength(0)
+      expect(r.lines.some(l => l.includes('tappyai_final_write')), shape).toBe(false)
+    }
+  })
+  it('the same turn without the agent takes the final write (live control)', async () => {
+    agentH.calls = 0
+    const r = await turn({ flag: '1' })
+    expect(agentH.calls).toBe(0)
+    expect(r.generate).toHaveLength(1)
   })
 })
 
