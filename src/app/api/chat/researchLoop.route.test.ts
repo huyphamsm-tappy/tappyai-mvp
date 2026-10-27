@@ -127,7 +127,8 @@ const MENU_HTML = `<html><head><title>Thực đơn Cà phê Mây</title></head><
 async function turn(messages: Msg[], o: TurnOpts = {}) {
   delete process.env.TAPPY_AGENT
   // Wave 4: this file measures turns without the Wave 4 paths; a path flag set in the shell must not move its turns to another path (restored after each test).
-  for (const k of ['CONSULT_KNOWLEDGE_PATH', 'CONSULT_PICK_TURN_TOOLS', 'CONSULT_CHAT_DOMAIN_AGREEMENT']) vi.stubEnv(k, '0')
+  // CONSULT_FINAL_SYNTHESIS too: W1 carries its own reserved step, and the OFF control below claims "CONSULT_FINAL_SYNTHESIS off" (measured: a shell with it on turned that control red).
+  for (const k of ['CONSULT_KNOWLEDGE_PATH', 'CONSULT_PICK_TURN_TOOLS', 'CONSULT_CHAT_DOMAIN_AGREEMENT', 'CONSULT_FINAL_SYNTHESIS']) vi.stubEnv(k, '0')
   const set = (k: string, v: string | undefined) => { if (v === undefined) delete process.env[k]; else process.env[k] = v }
   set('CONSULT_RESEARCH_LOOP', o.research); set('VERCEL_ENV', o.vercelEnv)
   delete process.env.CONSULT_TOOL_BY_NEED; delete process.env.CONSULT_DETERMINISTIC_MATH; delete process.env.CONSULT_STRUCTURED_SYNTHESIS; delete process.env.CONSULT_CAPABILITY_LEVEL // this file pins W1 alone (W2 / W3 / W4 / the level have their own route tests)

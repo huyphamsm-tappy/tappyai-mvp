@@ -108,6 +108,8 @@ const ENV = ['CONSULT_FINAL_SYNTHESIS', 'CONSULT_KNOWLEDGE_TURN_TOOLS', 'CONSULT
 interface Cfg { env?: Record<string, string>; flag?: string; calls?: typeof SEARCH3; text?: string; finish?: string; errorFrame?: boolean; generateThrows?: boolean; generateText?: string; luna?: Record<string, unknown> | null; advanceMs?: number }
 async function turn(c: Cfg = {}) {
   for (const k of ENV) delete process.env[k]
+  // the Wave 4 path flags are pinned off (a value set in the shell would move these turns to another path - measured: CONSULT_CHAT_DOMAIN_AGREEMENT=1 took the lean G4 turn off the lean path)
+  for (const k of ['CONSULT_KNOWLEDGE_PATH', 'CONSULT_PICK_TURN_TOOLS', 'CONSULT_CHAT_DOMAIN_AGREEMENT']) vi.stubEnv(k, '0')
   if (c.flag !== undefined) process.env.CONSULT_FINAL_SYNTHESIS = c.flag
   for (const [k, v] of Object.entries(c.env ?? {})) process.env[k] = v
   h.state.calls = (c.calls ?? SEARCH3).map((t, i) => ({ toolCallId: `c${i + 1}`, toolName: t.toolName, args: t.args }))
@@ -132,7 +134,7 @@ async function turn(c: Cfg = {}) {
 }
 
 beforeEach(() => { process.env.CONSULT_V2 = '1'; process.env.CONSULTATIVE_V1 = '1'; vi.stubGlobal('fetch', async (input: unknown) => { throw new Error('network disabled in this test: ' + String(input).slice(0, 60)) }) })
-afterEach(() => { for (const k of ENV) delete process.env[k]; vi.unstubAllGlobals() })
+afterEach(() => { for (const k of ENV) delete process.env[k]; vi.unstubAllGlobals(); vi.unstubAllEnvs() })
 
 describe('C-PRE-1 · the measured case: every step is a tool call, no text', () => {
   it('flag ON: ONE extra call with NO tools, from the tool results as plain text; its answer is streamed; the finish frame says stop', async () => {
