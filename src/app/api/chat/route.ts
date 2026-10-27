@@ -102,7 +102,7 @@ import { recordDecision, DECISION_RECORD_TIMEOUT_MS } from '@/lib/ai/agent/runti
 import { createPlacesBudget, PLACES_BUDGET_AGENT, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
 // Consultative V1 (flag CONSULTATIVE_V1, default OFF — see docs/audit/consultative-v1-design.md).
 import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
-import { consultFinalSynthesisOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits } from '@/lib/config/consultFlags'
+import { consultFinalSynthesisOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, finalSynthesisReserveReached } from '@/lib/config/consultFlags'
 import { referTitlesForPrompt } from '@/lib/ai/consultative/referTitles'
 import { createLeanResearch, RESEARCH_RULE } from '@/lib/ai/consultative/researchLoop'
 import { calculate } from '@/lib/ai/tools/calculate'
@@ -3374,7 +3374,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     return Object.fromEntries(Object.entries(set as Record<string, { execute?: (args: Record<string, unknown>, ctx: unknown) => unknown }>).map(([name, t]) => [name, !t?.execute ? t : {
       ...t,
       execute: (args: Record<string, unknown>, ctx: unknown) => {
-        if (stepsFinishedN >= 1 && stepsFinishedN >= streamMaxSteps - 2) {
+        if (finalSynthesisReserveReached(stepsFinishedN, streamMaxSteps)) {
           console.log(JSON.stringify({ type: 'tappyai_final_synthesis_guard', tool: name, stepsFinished: stepsFinishedN, maxSteps: streamMaxSteps }))
           // A Promise like every tool result (the wrapped tool chains .then on execute()).
           return Promise.resolve({ error: 'search_budget_used', note: lang === 'en' ? 'No more tool calls this turn. Write the answer now from the data you already have; say plainly what you could not confirm, and do not invent it.' : 'Hết lượt tìm của lượt này. Viết ngay câu trả lời từ dữ liệu đã có; phần nào chưa xác nhận được thì nói rõ là chưa có, không bịa.' })

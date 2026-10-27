@@ -100,6 +100,20 @@ function waveFlag(env: Env, name: string): boolean {
   const v = env[name]
   return v !== undefined ? exactlyOne(v) : capabilityLevel(env) >= (CAPABILITY_FLAG_LEVELS[name] ?? 5)
 }
+/** The model steps the final-synthesis / research guard keeps for WRITING: it answers a tool call made at `stepsFinished >= maxSteps - 2` with "search budget used" instead of running it. */
+export const FINAL_SYNTHESIS_RESERVED_STEPS = 2
+/** Pure. Has the guard's reserve been reached (a tool call now is answered by code, not run)? One step must have finished, and only the reserved steps may be left. */
+export function finalSynthesisReserveReached(stepsFinished: number, maxSteps: number): boolean { return stepsFinished >= 1 && stepsFinished >= maxSteps - FINAL_SYNTHESIS_RESERVED_STEPS }
+/**
+ * Wave 4 · C-PRE-3. Pure. The depth of a turn that carries the page reader but is NOT on the lean path (the knowledge path, C2), by capability level: below L2 the previous five steps, L2-L3 six, L4 eight
+ * (the research loop's own budget). `toolRounds` is what the reserve leaves for tools: at five steps the guard allowed THREE lookups and cut the fourth (measured B2 27/10: E18, E22, X2 - four web_search
+ * requests each, the fourth answered "search_budget_used" at stepsFinished 3 of 5); six steps allow four, eight allow six.
+ */
+export function knowledgeDepth(env: Env = process.env): { steps: number; toolRounds: number } {
+  const level = capabilityLevel(env)
+  const steps = level >= 4 ? 8 : level >= 2 ? 6 : 5
+  return { steps, toolRounds: steps - FINAL_SYNTHESIS_RESERVED_STEPS }
+}
 /** Pure. The limits that change with the level: L4 reads six pages in eight steps and may write up to the hard 4.000-token ceiling. Below L4 they are the Wave 3 defaults. */
 export function capabilityLimits(env: Env = process.env): { researchSteps: number; researchMaxReads: number; structuredMaxTokens: number } {
   return capabilityLevel(env) >= 4 ? { researchSteps: 8, researchMaxReads: 6, structuredMaxTokens: 4000 } : { researchSteps: 6, researchMaxReads: 4, structuredMaxTokens: 3500 }
