@@ -1,9 +1,11 @@
 package com.tappyai.app.home
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.tappyai.app.ProductFlags
 import com.tappyai.app.currency.CurrencyRoute
 import com.tappyai.app.currency.CurrencyScreen
 import com.tappyai.app.deals.DealsRoute
@@ -28,6 +30,12 @@ import com.tappyai.app.translate.TranslateRoute
 import com.tappyai.app.translate.TranslateScreen
 import com.tappyai.app.vietwriter.VietWriterRoute
 import com.tappyai.app.vietwriter.VietWriterScreen
+
+/** The destination of a hidden tool: draws nothing and pops back to wherever the user came from. */
+@Composable
+private fun LeaveHiddenTool(onLeave: () -> Unit) {
+    LaunchedEffect(Unit) { onLeave() }
+}
 
 /**
  * The Home tab's content. Hosts its own nested NavHost (Landing → Fortune sub-screens)
@@ -100,7 +108,12 @@ fun HomeTabHost(
             )
         }
         composable<TranslateRoute.Main> {
-            TranslateScreen(onBack = { navController.popBackStack() })
+            // Hidden (ProductFlags.SHOW_TRANSLATE, owner decision 2026-10-25): a stale route leaves at once.
+            if (ProductFlags.SHOW_TRANSLATE) {
+                TranslateScreen(onBack = { navController.popBackStack() })
+            } else {
+                LeaveHiddenTool(onLeave = { navController.popBackStack() })
+            }
         }
         composable<ScamShieldRoute.Main> {
             ScamShieldScreen(onBack = { navController.popBackStack() })
@@ -109,7 +122,12 @@ fun HomeTabHost(
             ScanScreen(onBack = { navController.popBackStack() })
         }
         composable<VietWriterRoute.Main> {
-            VietWriterScreen(onBack = { navController.popBackStack() })
+            // Hidden (ProductFlags.SHOW_VIET_CONTENT, owner decision 2026-10-25): a stale route leaves at once.
+            if (ProductFlags.SHOW_VIET_CONTENT) {
+                VietWriterScreen(onBack = { navController.popBackStack() })
+            } else {
+                LeaveHiddenTool(onLeave = { navController.popBackStack() })
+            }
         }
         composable<CurrencyRoute.Main> {
             CurrencyScreen(onBack = { navController.popBackStack() })

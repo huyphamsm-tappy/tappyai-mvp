@@ -36,7 +36,9 @@
     <string name="guide_saves_body">Giữ lại địa điểm và nội dung bạn muốn quay lại.\n\n1. Bấm nút lưu trên thứ bạn thích.\n2. Tìm lại nó trong mục Đã lưu ở trang cá nhân.\n\nLưu cần có tài khoản, để danh sách theo bạn qua các thiết bị.</string>
 
     <string name="guide_tools_title">Vài công cụ nhỏ</string>
-    <string name="guide_tools_body">Vài công cụ gọn nằm cạnh phần trò chuyện, cho những việc thường ngày.\n\n• Quét tài liệu — chụp ảnh giấy tờ và lấy chữ ra khỏi ảnh.\n• Dịch — dịch văn bản giữa các ngôn ngữ.\n• Tiền tệ — quy đổi một số tiền sang đơn vị khác.\n• Chia tiền — tính xem ai còn nợ bao nhiêu sau bữa ăn chung.\n\nMỗi công cụ đều báo khi không làm được — ví dụ ảnh quá mờ nên không đọc nổi chữ.</string>
+    <string name="guide_tools_body">Vài công cụ gọn nằm cạnh phần trò chuyện, cho những việc thường ngày.\n\n• Quét tài liệu — chụp ảnh giấy tờ và lấy chữ ra khỏi ảnh.\n• Tiền tệ — quy đổi một số tiền sang đơn vị khác.\n• Chia tiền — tính xem ai còn nợ bao nhiêu sau bữa ăn chung.\n\nMỗi công cụ đều báo khi không làm được — ví dụ ảnh quá mờ nên không đọc nổi chữ.</string>
+    <!-- Dùng thay guide_tools_body chỉ khi ProductFlags.SHOW_TRANSLATE = true (hiện Dịch đang ẩn). -->
+    <string name="guide_tools_body_with_translate">Vài công cụ gọn nằm cạnh phần trò chuyện, cho những việc thường ngày.\n\n• Quét tài liệu — chụp ảnh giấy tờ và lấy chữ ra khỏi ảnh.\n• Dịch — dịch văn bản giữa các ngôn ngữ.\n• Tiền tệ — quy đổi một số tiền sang đơn vị khác.\n• Chia tiền — tính xem ai còn nợ bao nhiêu sau bữa ăn chung.\n\nMỗi công cụ đều báo khi không làm được — ví dụ ảnh quá mờ nên không đọc nổi chữ.</string>
 
     <string name="guide_account_title">Tài khoản của bạn</string>
     <string name="guide_account_body">Bạn dùng TappyAI được ngay mà không cần tài khoản. Đăng nhập là để mọi thứ của bạn đi theo bạn.\n\n• Chưa có tài khoản — vẫn trò chuyện và xem được.\n• Có tài khoản — mục đã lưu, bài đánh giá của bạn, thông báo và tuỳ chọn riêng.\n\nKhi có việc cần tài khoản, TappyAI mới mời bạn đăng nhập ngay lúc đó, chứ không chặn bạn từ trước.</string>

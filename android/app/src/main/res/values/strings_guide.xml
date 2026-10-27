@@ -47,7 +47,9 @@
     <string name="guide_saves_body">Keep places and content you want to come back to.\n\n1. Tap the save control on something you like.\n2. Find it again under Saved in your profile.\n\nSaving needs an account, so that the list follows you between devices.</string>
 
     <string name="guide_tools_title">The small tools</string>
-    <string name="guide_tools_body">A few focused tools sit alongside chat for everyday jobs.\n\n• Scan — photograph a document and get the text out of it.\n• Translate — translate text between languages.\n• Currency — convert an amount between currencies.\n• Split bill — work out who owes what after a shared meal.\n\nEach tool tells you when it cannot finish — for example when a photo is too blurry to read.</string>
+    <string name="guide_tools_body">A few focused tools sit alongside chat for everyday jobs.\n\n• Scan — photograph a document and get the text out of it.\n• Currency — convert an amount between currencies.\n• Split bill — work out who owes what after a shared meal.\n\nEach tool tells you when it cannot finish — for example when a photo is too blurry to read.</string>
+    <!-- Used instead of guide_tools_body only when ProductFlags.SHOW_TRANSLATE is true (Translate is hidden today). -->
+    <string name="guide_tools_body_with_translate">A few focused tools sit alongside chat for everyday jobs.\n\n• Scan — photograph a document and get the text out of it.\n• Translate — translate text between languages.\n• Currency — convert an amount between currencies.\n• Split bill — work out who owes what after a shared meal.\n\nEach tool tells you when it cannot finish — for example when a photo is too blurry to read.</string>
 
     <string name="guide_account_title">Your account</string>
     <string name="guide_account_body">You can start using TappyAI without an account. Signing in is what lets your things follow you.\n\n• Without an account — chat and browse.\n• With an account — saved items, your reviews, notifications, and preferences.\n\nWhen something needs an account, TappyAI asks you to sign in at that point rather than blocking you earlier.</string>

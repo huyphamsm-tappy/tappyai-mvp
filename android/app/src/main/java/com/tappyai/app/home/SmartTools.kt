@@ -59,6 +59,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.tappyai.app.ProductFlags
 import com.tappyai.app.R
 import com.tappyai.core.designsystem.theme.TappySpacing
 
@@ -126,8 +127,11 @@ internal data class SmartTool(
  * The registry — identity, order, grouping, hue and pose all as the web declares them. Scam
  * Shield is gated on the web by `SHOW_SCAM_SHIELD` (true today, and the Android shell routes to
  * it unconditionally), so it is listed unconditionally here too.
+ *
+ * This is the FULL catalogue, hidden tools included. Nothing renders it directly: screens read
+ * [SMART_TOOLS], which drops Dịch and Viết nội dung while their flags are off.
  */
-internal val SMART_TOOLS: List<SmartTool> = listOf(
+internal val SMART_TOOL_CATALOGUE: List<SmartTool> = listOf(
     SmartTool(SmartToolId.Scan, R.string.smart_tool_scan, R.string.smart_tool_scan_desc, Icons.Outlined.DocumentScanner, SmartToolHue.Blue, R.drawable.tappy_searching, SmartToolGroup.Daily, home = true),
     SmartTool(SmartToolId.Translate, R.string.smart_tool_translate, R.string.smart_tool_translate_desc, Icons.Filled.Translate, SmartToolHue.Indigo, R.drawable.tappy_speaking, SmartToolGroup.Daily, home = true),
     SmartTool(SmartToolId.Currency, R.string.smart_tool_currency, R.string.smart_tool_currency_desc, Icons.Filled.SwapHoriz, SmartToolHue.Emerald, R.drawable.tappy_deals, SmartToolGroup.Daily, home = true),
@@ -137,6 +141,25 @@ internal val SMART_TOOLS: List<SmartTool> = listOf(
     SmartTool(SmartToolId.Fortune, R.string.smart_tool_fortune, R.string.smart_tool_fortune_desc, Icons.Filled.AutoAwesome, SmartToolHue.Violet, R.drawable.tappy_thinking, SmartToolGroup.Fun, home = false),
     SmartTool(SmartToolId.Captions, R.string.smart_tool_captions, R.string.smart_tool_captions_desc, Icons.Filled.Edit, SmartToolHue.Pink, R.drawable.tappy_phone, SmartToolGroup.Fun, home = false),
 )
+
+/**
+ * The tools a build offers: the catalogue minus the hidden ones (owner decision 2026-10-25) —
+ * web `smartTools()` filtering on `SHOW_TRANSLATE` / `SHOW_VIET_CONTENT`, iOS `SmartTool.all`.
+ * The flags are parameters so a test can prove what comes back when a tool is un-hidden.
+ */
+internal fun smartTools(
+    showTranslate: Boolean = ProductFlags.SHOW_TRANSLATE,
+    showVietContent: Boolean = ProductFlags.SHOW_VIET_CONTENT,
+): List<SmartTool> = SMART_TOOL_CATALOGUE.filter {
+    when (it.id) {
+        SmartToolId.Translate -> showTranslate
+        SmartToolId.Captions -> showVietContent
+        else -> true
+    }
+}
+
+/** What Home, the Smart Tools page and its search show — [smartTools] with the product flags. */
+internal val SMART_TOOLS: List<SmartTool> = smartTools()
 
 /** The registry by group, in group order — `smartToolGroups()` on the web. */
 internal fun smartToolGroups(tools: List<SmartTool> = SMART_TOOLS): List<Pair<SmartToolGroup, List<SmartTool>>> =

@@ -32,4 +32,22 @@ internal object ProductFlags {
      * also means re-adding the music package, which was removed here.
      */
     const val SHOW_MUSIC = false
+
+    /**
+     * Dịch (Translate) — HIDDEN, NOT DELETED (owner decision 2026-10-25). The screen, its
+     * ViewModel and `POST /api/translate` client stay in place; the Smart Tools entries, the Home
+     * preview and the destination are gated off, and the repository sends nothing while this is
+     * `false`. A stale route to the screen pops straight back.
+     *
+     * Compile-time constant like [SHOW_MUSIC], read from no server flag — same as web `SHOW_TRANSLATE`
+     * (`src/lib/config/product.ts`) and iOS `ProductFlags.showTranslate`. Flip all three together.
+     */
+    const val SHOW_TRANSLATE = false
+
+    /**
+     * Viết nội dung (Captions) — HIDDEN, NOT DELETED (owner decision 2026-10-25). Same shape and
+     * same decision as [SHOW_TRANSLATE]. Mirrors web `SHOW_VIET_CONTENT` and iOS
+     * `ProductFlags.showVietContent`. Flip all three together.
+     */
+    const val SHOW_VIET_CONTENT = false
 }

@@ -1,5 +1,6 @@
 package com.tappyai.app.home
 
+import com.tappyai.app.ProductFlags
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -39,13 +40,55 @@ class SmartToolsTest {
         // 🔑 Android drops `suggest` (Home already has "Gợi ý cho bạn") and `music` (music reuse
         // retired — the backend endpoints answer 410); every other row, in the web's order, with the
         // web's group and flags.
-        val ours = SMART_TOOLS.map { listOf(it.id.name.lowercase(), it.group.name.lowercase(), it.home.toString(), it.auth.toString()) }
+        // The FULL catalogue (hidden tools included) is still the web's registry, row for row.
+        val ours = SMART_TOOL_CATALOGUE.map { listOf(it.id.name.lowercase(), it.group.name.lowercase(), it.home.toString(), it.auth.toString()) }
         assertEquals(rows.filter { it[0] != "suggest" && it[0] != "music" }, ours)
-        assertEquals(8, SMART_TOOLS.size)
-        assertEquals(listOf("scan", "translate", "currency", "split", "safety", "together", "fortune", "captions"), SMART_TOOLS.map { it.id.name.lowercase() })
+        assertEquals(8, SMART_TOOL_CATALOGUE.size)
+        assertEquals(listOf("scan", "translate", "currency", "split", "safety", "together", "fortune", "captions"), SMART_TOOL_CATALOGUE.map { it.id.name.lowercase() })
+        // Un-hidden, the offered list is the whole catalogue again — the day the flags flip nothing is lost.
+        assertEquals(SMART_TOOL_CATALOGUE, smartTools(showTranslate = true, showVietContent = true))
+        assertEquals(listOf("daily", "discover", "fun"), smartToolGroups(SMART_TOOL_CATALOGUE).map { it.first.name.lowercase() })
+        assertEquals(listOf(5, 1, 2), smartToolGroups(SMART_TOOL_CATALOGUE).map { it.second.size })
+        assertEquals(setOf(SmartToolId.Together), SMART_TOOL_CATALOGUE.filter { it.auth }.map { it.id }.toSet())
+    }
+
+    @Test
+    fun `Dịch and Viết nội dung are hidden by default - same flags and default as web and iOS - and every other tool is untouched`() {
+        assertFalse(ProductFlags.SHOW_TRANSLATE)
+        assertFalse(ProductFlags.SHOW_VIET_CONTENT)
+        val shipped = SMART_TOOLS.map { it.id.name.lowercase() }
+        assertEquals(listOf("scan", "currency", "split", "safety", "together", "fortune"), shipped)
+        assertEquals(listOf(4, 1, 1), smartToolGroups().map { it.second.size })
         assertEquals(listOf("daily", "discover", "fun"), smartToolGroups().map { it.first.name.lowercase() })
-        assertEquals(listOf(5, 1, 2), smartToolGroups().map { it.second.size })
-        assertEquals(setOf(SmartToolId.Together), SMART_TOOLS.filter { it.auth }.map { it.id }.toSet())
+        // Each flag hides only its own tool.
+        assertEquals(listOf("translate"), (SMART_TOOL_CATALOGUE.map { it.id } - smartTools(showTranslate = false, showVietContent = true).map { it.id }.toSet()).map { it.name.lowercase() })
+        assertEquals(listOf("captions"), (SMART_TOOL_CATALOGUE.map { it.id } - smartTools(showTranslate = true, showVietContent = false).map { it.id }.toSet()).map { it.name.lowercase() })
+        // Home and the Smart Tools page (and its search) read SMART_TOOLS, so Dịch and Viết appear on none of them.
+        assertTrue(SMART_TOOLS.none { it.id == SmartToolId.Translate || it.id == SmartToolId.Captions })
+        assertTrue("the page searches the shipped list", screen.contains("smartToolGroups(filterSmartTools(SMART_TOOLS, query))"))
+        assertTrue("Home previews from the shipped list", home.contains("SMART_TOOLS.filter { it.id in previewed }"))
+    }
+
+    @Test
+    fun `a stale route to a hidden tool pops straight back, the repositories send nothing, and the guide does not describe Translate`() {
+        // Destination guards (no crash, back to a valid screen).
+        assertTrue(host.contains("if (ProductFlags.SHOW_TRANSLATE) {"))
+        assertTrue(host.contains("if (ProductFlags.SHOW_VIET_CONTENT) {"))
+        assertEquals(2, Regex("LeaveHiddenTool\\(onLeave = \\{ navController\\.popBackStack\\(\\) \\}\\)").findAll(host).count())
+        assertTrue(host.contains("LaunchedEffect(Unit) { onLeave() }"))
+        // Neither flag has a deep link, shortcut or manifest entry to reach the screens another way.
+        val manifest = src("app/src/main/AndroidManifest.xml")
+        assertFalse(manifest.contains("translate", ignoreCase = true))
+        assertFalse(manifest.contains("VietWriter"))
+        // The repositories take the flag as the only thing between the screen and the network.
+        assertTrue(src("app/src/main/java/com/tappyai/app/translate/data/RealTranslateRepository.kt").contains("ProductFlags.SHOW_TRANSLATE"))
+        assertTrue(src("app/src/main/java/com/tappyai/app/vietwriter/data/RealVietWriterRepository.kt").contains("ProductFlags.SHOW_VIET_CONTENT"))
+        // The guide's tools paragraph follows the flag.
+        assertTrue(src("app/src/main/java/com/tappyai/app/profile/HowToUseScreen.kt").contains("if (ProductFlags.SHOW_TRANSLATE) R.string.guide_tools_body_with_translate else R.string.guide_tools_body"))
+        val en = src("app/src/main/res/values/strings_guide.xml")
+        val body = Regex("""<string name="guide_tools_body">(.*?)</string>""", RegexOption.DOT_MATCHES_ALL).find(en)!!.groupValues[1]
+        assertFalse("the shipped guide must not describe Translate", body.contains("Translate"))
+        assertTrue(en.contains("<string name=\"guide_tools_body_with_translate\">"))
     }
 
     @Test
@@ -77,11 +120,12 @@ class SmartToolsTest {
             SmartToolId.Safety to ("Cảnh báo lừa đảo" to "Kiểm tra link, website mã QR an toàn"), SmartToolId.Together to ("Nhóm ăn" to "Chọn quán cùng nhau"),
             SmartToolId.Fortune to ("Bói" to "Xem tử vi hôm nay"), SmartToolId.Captions to ("Viết" to "Viết caption"),
         )
-        assertEquals(SMART_TOOLS.map { it.id }.toSet(), titles.keys)
-        val hits = SMART_TOOLS.filter { val (t, d) = titles.getValue(it.id); matchesSmartToolQuery("gợi ý", t, d) }
+        // The search rule is checked over the whole catalogue, hidden tools included: it is a property of the rule, not of the flags.
+        assertEquals(SMART_TOOL_CATALOGUE.map { it.id }.toSet(), titles.keys)
+        val hits = SMART_TOOL_CATALOGUE.filter { val (t, d) = titles.getValue(it.id); matchesSmartToolQuery("gợi ý", t, d) }
         assertTrue("no Smart Tool answers to gợi ý", hits.isEmpty())
-        for (tool in SMART_TOOLS) { val (t, d) = titles.getValue(tool.id); assertTrue(tool.id.name, matchesSmartToolQuery(t, t, d)) }
-        assertEquals(8, SMART_TOOLS.count { val (t, d) = titles.getValue(it.id); matchesSmartToolQuery("", t, d) })
+        for (tool in SMART_TOOL_CATALOGUE) { val (t, d) = titles.getValue(tool.id); assertTrue(tool.id.name, matchesSmartToolQuery(t, t, d)) }
+        assertEquals(8, SMART_TOOL_CATALOGUE.count { val (t, d) = titles.getValue(it.id); matchesSmartToolQuery("", t, d) })
     }
 
     @Test
