@@ -62,6 +62,8 @@ export interface LeanResearch {
   tool: ReturnType<typeof readPageTool>
   /** Wraps a tool set so every URL a tool result carries becomes a URL the reader may open. Pure with respect to the results (they are returned unchanged). */
   collectUrls<T>(tools: T): T
+  /** Wave 4 · C3: the same for a result the CODE already obtained (a pre-search): its URLs become URLs the reader may open. Nothing is fetched; an odd shape adds nothing. */
+  collectFrom(result: unknown): void
   /** The URLs the reader may open right now (for tests and the trace). */
   allowedCount(): number
 }
@@ -120,6 +122,7 @@ export function createLeanResearch(o: {
         },
       }])) as T
     },
+    collectFrom(result: unknown): void { try { addUrls(urlsIn(result)) } catch { /* a result of an odd shape adds nothing */ } },
     allowedCount: () => allowed.size,
   }
 }

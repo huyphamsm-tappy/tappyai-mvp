@@ -102,10 +102,10 @@ import { recordDecision, DECISION_RECORD_TIMEOUT_MS } from '@/lib/ai/agent/runti
 import { createPlacesBudget, PLACES_BUDGET_AGENT, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
 // Consultative V1 (flag CONSULTATIVE_V1, default OFF — see docs/audit/consultative-v1-design.md).
 import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
-import { consultFinalSynthesisOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, finalSynthesisReserveReached, knowledgeDepth, consultKnowledgePathOn } from '@/lib/config/consultFlags'
+import { consultFinalSynthesisOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, finalSynthesisReserveReached, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn } from '@/lib/config/consultFlags'
 import { referTitlesForPrompt } from '@/lib/ai/consultative/referTitles'
 import { createLeanResearch } from '@/lib/ai/consultative/researchLoop'
-import { wave3PromptLines } from '@/lib/ai/consultative/wave3PromptLines'
+import { wave3PromptLines, PICK_TURN_TOOL_NAMES } from '@/lib/ai/consultative/wave3PromptLines'
 import { calculate } from '@/lib/ai/tools/calculate'
 import { createTurnTrace, traceCallBy, traceToolsInner, traceToolsOuter } from '@/lib/ai/consultative/traceDiagnostics'
 import { deriveSituation, type SituationFrame } from '@/lib/ai/consultative/situationFrame'
@@ -2532,7 +2532,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   const knowledgeTurn = consultKnowledgePathOn() && !lean && !!consult && !noToolTurn && !planningIntent && !hasImage && !eveningFrame && !agentOn
   // Wave 3 (W1, CONSULT_RESEARCH_LOOP): a lean consult turn may open the pages its own results point to (robots.txt honoured, pages budgeted). OFF = null and nothing below differs from before.
   // Wave 4 · C2: the knowledge path reuses the very same reader (createLeanResearch, robots on every hop, the page budget of the level).
-  const research = (consultResearchLoopOn() && lean) || knowledgeTurn ? createLeanResearch({ lang, userTexts: recentUserTexts, maxReads: levelLimits.researchMaxReads, emit: trace ? (ev, d) => trace.emit(ev, d) : undefined }) : null
+  // Wave 4 · C3 (CONSULT_PICK_TURN_TOOLS, Owner Q2): a lean Luna answer turn MAY turn out to be pre-searched by the code (R2) - known only after the pre-search below - so the reader and the
+  // calculator are DECLARED for it here; they are OFFERED only when the turn really was pre-searched (`pickTools`), and the turn is otherwise exactly the turn without the flag. OFF = false.
+  const pickCandidate = consultPickTurnToolsOn() && !!lean && lunaAnswer && !noToolTurn && !planningIntent && !agentOn
+  const researchReader = (consultResearchLoopOn() && lean) || knowledgeTurn || pickCandidate ? createLeanResearch({ lang, userTexts: recentUserTexts, maxReads: levelLimits.researchMaxReads, emit: trace ? (ev, d) => trace.emit(ev, d) : undefined }) : null
   const tools = noToolTurn && !agentOn ? undefined : gateTools(timeTools({
       // A movie/show RECOMMENDATION turn drops the place search entirely, so the
       // model can't answer "recommend a movie" with a list of cinemas — it
@@ -2843,9 +2846,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       }),
       // Wave 3 (W4): only defined on a lean consult turn with the flag ON; the filter below offers it only to a lean turn. Deterministic: a typed refusal comes back as a result, never as a thrown error.
       // Wave 3 (W1): the reader's own tool definition (description, schema, execute), declared here like every other tool so the AI tool registry and its boundary test see it.
-      ...(research ? { read_page: tool({ ...research.tool }) } : {}),
-      // Wave 4 · C2: the knowledge path is offered the same calculator.
-      ...((deterministicMath && lean) || knowledgeTurn ? {
+      ...(researchReader ? { read_page: tool({ ...researchReader.tool }) } : {}),
+      // Wave 4 · C2 / C3: the knowledge path and a possible pre-searched pick get the same calculator.
+      ...((deterministicMath && lean) || knowledgeTurn || pickCandidate ? {
         calculate: tool({
           description: CALCULATE_DESCRIPTION,
           parameters: z.object({ expression: z.string().describe('Bieu thuc so hoc can tinh, vd: pmt(0.01, 12, 1000)') }),
@@ -3367,8 +3370,15 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       },
     }])) as T
   }
+  // Wave 4 · C3: the turn really was pre-searched by the code (R2) - only then are the model's tools offered. The code's own pre-search above is unchanged.
+  const pickTools = pickCandidate && presearchAll.length > 0 && !lunaPlan && !consultFollowReuse && !consultTripPrefetch && !eveningBlock
+  // The reader is IN EFFECT (read_page offered, URLs collected, the writing step reserved) on a W1 lean turn, the knowledge path, or a pre-searched pick with the flag; a declared-only reader is not.
+  const research = (consultResearchLoopOn() && lean) || knowledgeTurn || pickTools ? researchReader : null
+  // Wave 4 · C3: the code's pre-search results are this turn's results too: a link they carry may be opened, exactly as if the model had searched (the same "only this turn's links" rule; a
+  // slimmed place result that carries no link adds nothing - the model then searches the web first).
+  if (pickTools && research) for (const o of presearchAll) research.collectFrom(o.result)
   // The step budget of this turn, named once (the very expression the stream used inline: same value). CONSULT_FINAL_SYNTHESIS needs it to reserve the last step.
-  const streamMaxSteps = lunaPlan && planningIntent !== 'trip' ? 3 : consultFollowReuse || consultTripPrefetch || (lean && presearchAll.length > 0 && !planningIntent && !noToolTurn && !eveningBlock) ? 2 : noToolTurn || eveningBlock ? 1 : planningIntent ? (lean ? 3 : 8) : hasImage ? 3 : lean ? (research ? levelLimits.researchSteps : 3) : knowledgeTurn ? knowledgeDepth().steps : 5
+  const streamMaxSteps = lunaPlan && planningIntent !== 'trip' ? 3 : pickTools ? knowledgeDepth().steps : consultFollowReuse || consultTripPrefetch || (lean && presearchAll.length > 0 && !planningIntent && !noToolTurn && !eveningBlock) ? 2 : noToolTurn || eveningBlock ? 1 : planningIntent ? (lean ? 3 : 8) : hasImage ? 3 : lean ? (research ? levelLimits.researchSteps : 3) : knowledgeTurn ? knowledgeDepth().steps : 5
   // CONSULT_FINAL_SYNTHESIS (Wave 2, default OFF = nothing below runs). Baseline: a tool loop used EVERY step calling web_search, the model never wrote a word (finishReason "tool-calls"), and the
   // user got a canned gap sentence or nothing. With the flag ON the LAST step is kept for writing: a tool call made when only the last step is left is answered by code, without running the
   // tool (no search, no Serper request, no cost), telling the model to write now from what it already has. The step budget is unchanged; a turn of one or two steps is not touched.
@@ -3392,17 +3402,18 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   }
   // Wave 3-FIX (R3-04): the tools this turn REALLY carries, decided once and used both for the `tools:` option and for which Wave 3 rule lines the prompt gets. A turn the code pre-searched (Luna answer),
   // a Luna trip plan and a no-tool turn carry none - and are not told to call one or to write a sectioned answer.
-  const leanToolSet = lean && tools ? Object.fromEntries(Object.entries(tools).filter(([k]) => consultTools(consult!.domains, { shoppingWebSearch: routeToolOfferOn(), ...(knowledgeTurnTools ? { knowledgeTurnWebSearch: true } : {}), ...(toolByNeed ? { toolByNeed: true } : {}), ...(deterministicMath ? { math: true } : {}), ...(research ? { research: true } : {}) }).includes(k))) as typeof tools : tools
-  const turnHasNoTools = (lunaAnswer && presearchAll.length > 0) || (lunaPlan && planningIntent === 'trip')
+  // Wave 4 · C3: a pre-searched pick with the flag carries exactly web_search, read_page and calculate (the place search already ran in code).
+  const leanToolSet = pickTools && tools ? Object.fromEntries(Object.entries(tools).filter(([k]) => PICK_TURN_TOOL_NAMES.includes(k))) as typeof tools : lean && tools ? Object.fromEntries(Object.entries(tools).filter(([k]) => consultTools(consult!.domains, { shoppingWebSearch: routeToolOfferOn(), ...(knowledgeTurnTools ? { knowledgeTurnWebSearch: true } : {}), ...(toolByNeed ? { toolByNeed: true } : {}), ...(deterministicMath ? { math: true } : {}), ...(research ? { research: true } : {}) }).includes(k))) as typeof tools : tools
+  const turnHasNoTools = (lunaAnswer && presearchAll.length > 0 && !pickTools) || (lunaPlan && planningIntent === 'trip')
   const offeredToolNames = turnHasNoTools || !leanToolSet ? [] : Object.keys(leanToolSet)
-  if (lean && (toolByNeed || deterministicMath || research || structuredSynth)) {
+  if (lean && (toolByNeed || deterministicMath || research || structuredSynth || pickTools)) {
     // A request with several parts (Luna: not an easy turn; or two or more stated constraints) or a research turn gets the sectioned shape and the full ceiling; a simple pick keeps the ordinary short answer.
     // Luna's own reading of the request decides when it ran; without it, three or more stated constraints.
     const multiPart = lunaIntentRun ? lunaIntentRun.difficulty !== 'easy' : Object.keys(consult!.known).length >= 3
     const structured = structuredSynth && offeredToolNames.length > 0 && multiPart
     w3Structured = structured
     if (structured) enrichment.setStructuredSynthesis(true) // the prose-shape sentence cap is stepped aside only for an answer that is really sectioned (streamEnrichment checks the text)
-    w3Prompt = buildLean(wave3PromptLines({ offeredToolNames, structured, toolByNeed, math: deterministicMath, research: !!research })).dynamic
+    w3Prompt = buildLean(wave3PromptLines({ offeredToolNames, structured, toolByNeed: toolByNeed || pickTools, math: deterministicMath || pickTools, research: !!research })).dynamic
   } else if (knowledgeTurn) {
     // Wave 4 · C2: the knowledge path gets the same lines from the same function, appended to its own (legacy) prompt - each line only when its tool is in the turn's real tool set, the shape block
     // only with W3 on, tools offered and a request with several parts (the A3 rule of the lean path).

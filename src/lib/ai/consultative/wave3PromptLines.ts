@@ -5,6 +5,9 @@
 import { TOOL_BY_NEED_RULE, MATH_TOOL_RULE, STRUCTURED_SYNTHESIS_RULE } from './leanConsultPrompt'
 import { RESEARCH_RULE } from './researchLoop'
 
+/** Wave 4 · C3 (Owner Q2): what a lean turn the code pre-searched (R2) offers the model when CONSULT_PICK_TURN_TOOLS is on - no place tool (the code already searched). */
+export const PICK_TURN_TOOL_NAMES: readonly string[] = ['web_search', 'read_page', 'calculate']
+
 export interface Wave3PromptInput {
   /** The tool names the turn really carries (none for a pre-searched answer, a trip plan or a no-tool turn). */
   offeredToolNames: readonly string[]
