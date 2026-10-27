@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { finalWriteStream, finishFrameAfterText, FINAL_WRITE_TIMEOUT_MS, MIN_FINAL_WRITE_MS } from './finalWrite'
+import { finalWriteStream, finishFrameAfterText, finalWriteSystem, finalWriteSystemNote, FINAL_WRITE_TIMEOUT_MS, MIN_FINAL_WRITE_MS } from './finalWrite'
 
 const enc = new TextEncoder()
 const streamOf = (chunks: string[]) => new ReadableStream<Uint8Array>({ start(c) { for (const x of chunks) c.enqueue(enc.encode(x)); c.close() } })
@@ -66,5 +66,22 @@ describe('finishFrameAfterText', () => {
   it('rewrites only a tool-calls reason; anything else (a stop, a length, an unparseable or another frame) is returned as it was', () => {
     expect(finishFrameAfterText('d:{"finishReason":"tool-calls","u":1}')).toBe('d:{"finishReason":"stop","u":1}')
     for (const l of ['d:{"finishReason":"stop"}', 'd:{"finishReason":"length"}', 'd:not json', '0:"x"', 'e:{"finishReason":"tool-calls"}']) expect(finishFrameAfterText(l)).toBe(l)
+  })
+})
+
+describe('finalWriteSystem / finalWriteSystemNote (Wave 4 fix G4)', () => {
+  it('the system prompt is kept whole, the note comes after it', () => {
+    const sys = 'MAIN PROMPT\nrule: call read_page when a page is needed'
+    expect(finalWriteSystem(sys, 'vi')).toBe(`${sys}\n\n${finalWriteSystemNote('vi')}`)
+    expect(finalWriteSystem(sys, 'en').startsWith(sys)).toBe(true)
+    expect(finalWriteSystem(undefined, 'en')).toBe(`\n\n${finalWriteSystemNote('en')}`)
+  })
+  it('the note says: the results are here, no tool exists, earlier tool rules do not apply, write the answer, no tool call / name / promise to look up - in the user\'s language', () => {
+    const en = finalWriteSystemNote('en'), vi = finalWriteSystemNote('vi')
+    expect(en).toMatch(/tool results of this turn are already/i); expect(en).toMatch(/no tool exists/i); expect(en).toMatch(/does not apply/i)
+    expect(en).toMatch(/write the final answer/i); expect(en).toMatch(/do not call a tool/i); expect(en).toMatch(/tool name or a tool call/i); expect(en).toMatch(/do not promise to look/i)
+    expect(vi).toMatch(/Kết quả công cụ của lượt này đã có/); expect(vi).toMatch(/không có công cụ nào/); expect(vi).toMatch(/không áp dụng/)
+    expect(vi).toMatch(/viết câu trả lời cuối/); expect(vi).toMatch(/Không gọi công cụ/); expect(vi).toMatch(/không viết tên công cụ/); expect(vi).toMatch(/không hứa sẽ tra thêm/)
+    expect(en).not.toBe(vi)
   })
 })

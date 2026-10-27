@@ -6,7 +6,7 @@
  */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { __resetAiQuestionQuotaLocal } from '@/lib/ai/quota/aiQuestionQuota'
-import { finalWriteInstruction } from '@/lib/ai/finalWrite'
+import { finalWriteInstruction, finalWriteSystem, finalWriteSystemNote } from '@/lib/ai/finalWrite'
 import { consultFinalSynthesisOn, consultFinalWriteOn } from '@/lib/config/consultFlags'
 import { turnUsd } from '@/lib/ai/turnCost'
 
@@ -14,7 +14,7 @@ type Call = { toolCallId: string; toolName: string; args: Record<string, unknown
 const h = vi.hoisted(() => {
   const state = {
     calls: [] as Call[], results: [] as Array<{ name: string; result: any }>, luna: null as null | Record<string, unknown>,
-    text: '', finish: 'tool-calls', errorFrame: false, advanceMs: 0,
+    text: '', finish: 'tool-calls', errorFrame: false, advanceMs: 0, streamSystem: undefined as unknown,
     generateCalls: [] as Array<Record<string, any>>, generateText: 'Câu trả lời cuối viết từ kết quả công cụ.', generateThrows: false, userId: 'u-final-write',
   }
   const builder = (): any => {
@@ -50,7 +50,7 @@ vi.mock('@/lib/ai/llm', () => ({
     extract: () => h.state.luna
       ? Promise.resolve({ object: h.state.luna, usage: { promptTokens: 10, completionTokens: 5 }, providerMetadata: {} })
       : Promise.reject(new Error('no provider in this test')),
-    stream: (opts: Record<string, any>) => ({
+    stream: (opts: Record<string, any>) => (h.state.streamSystem = opts.system, {
       get steps() { return Promise.resolve([{ toolResults: h.state.results.map(r => ({ toolName: r.name, result: r.result })) }]) },
       toDataStreamResponse: () => new Response(new ReadableStream<Uint8Array>({
         async start(c) {
@@ -128,7 +128,7 @@ async function turn(c: Cfg = {}) {
   try { raw = await (await POST(req as never)).text() } finally { spy.mockRestore() }
   const text = raw.split('\n').filter(l => l.startsWith('0:')).map(l => { try { return JSON.parse(l.slice(2)) as string } catch { return '' } }).join('')
   const finish = raw.split('\n').filter(l => l.startsWith('d:')).map(l => { try { return (JSON.parse(l.slice(2)) as { finishReason?: string }).finishReason } catch { return undefined } })
-  return { raw, text, finish, generate: [...h.state.generateCalls], lines }
+  return { raw, text, finish, generate: [...h.state.generateCalls], lines, streamSystem: h.state.streamSystem }
 }
 
 beforeEach(() => { process.env.CONSULT_V2 = '1'; process.env.CONSULTATIVE_V1 = '1'; vi.stubGlobal('fetch', async (input: unknown) => { throw new Error('network disabled in this test: ' + String(input).slice(0, 60)) }) })
@@ -206,6 +206,35 @@ describe('C-PRE-1 · the measured case: every step is a tool call, no text', () 
   it('the instruction is in the user\'s language, says no tool call and not to invent', () => {
     expect(finalWriteInstruction('en')).toMatch(/no tool call/i); expect(finalWriteInstruction('en')).toMatch(/do not invent/i)
     expect(finalWriteInstruction('vi')).toMatch(/không gọi thêm công cụ/); expect(finalWriteInstruction('vi')).toMatch(/không bịa/)
+  })
+})
+
+// fix G4: the final writing call has its own instruction at the END of ITS system prompt; the turn's main system prompt is not touched (flag ON = flag OFF, byte for byte).
+// Only Date is faked: the system prompt carries the minute.
+describe('fix G4 · the final write\'s own instruction', () => {
+  beforeEach(() => { vi.useFakeTimers({ toFake: ['Date'] }); vi.setSystemTime(new Date('2026-10-27T03:09:00Z')) })
+  afterEach(() => { vi.useRealTimers() })
+  it('the call\'s system prompt = the turn\'s system prompt, unchanged, then the note (tool results present, write the answer, no tool)', async () => {
+    const r = await turn({ flag: '1' })
+    expect(r.generate).toHaveLength(1)
+    const main = r.streamSystem as string
+    expect(typeof main).toBe('string'); expect(main.length).toBeGreaterThan(100)
+    expect(r.generate[0]!.system).toBe(`${main}\n\n${finalWriteSystemNote('vi')}`)
+    expect(r.generate[0]!.system).toBe(finalWriteSystem(main, 'vi'))
+  })
+  it('the turn\'s main system prompt is byte-identical with the flag ON and OFF (the note lives only in the extra call)', async () => {
+    const off = await turn({})
+    const on = await turn({ flag: '1' })
+    expect(on.streamSystem).toBe(off.streamSystem)
+    expect(String(off.streamSystem)).not.toContain(finalWriteSystemNote('vi'))
+  })
+  it('the same on a lean turn whose main prompt tells the model to call a tool (the research rule): the note follows it and overrides it in that call only', async () => {
+    const env = { CONSULT_SEARCH_NOW_INTENT_GATE: '1', CONSULT_KNOWLEDGE_TURN_TOOLS: '1', CONSULT_RESEARCH_LOOP: '1' }
+    const r = await turn({ flag: '1', luna: lunaIntent('chat', ['food']), env })
+    expect(r.generate).toHaveLength(1)
+    const main = r.streamSystem as string
+    expect(main).toContain('read_page')                                  // the main prompt really has a "call a tool" rule
+    expect(r.generate[0]!.system).toBe(finalWriteSystem(main, 'vi'))
   })
 })
 

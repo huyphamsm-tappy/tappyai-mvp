@@ -157,7 +157,7 @@ import { compactRequestMessages } from '@/lib/chat/requestHistory'
 import { readCappedBody, exceedsTextCeiling } from '@/lib/http/readCappedBody'
 import { stepRepeatGuard } from '@/lib/ai/stepRepeatGuard'
 import { planCompletionStream, toolResultDigest, completionInstruction } from '@/lib/ai/planCompletion'
-import { finalWriteStream, finalWriteInstruction } from '@/lib/ai/finalWrite'
+import { finalWriteStream, finalWriteInstruction, finalWriteSystem } from '@/lib/ai/finalWrite'
 import { askAfterStream, endsWithQuestion } from '@/lib/ai/consultative/askAfter'
 import { deriveLocalShopSearch } from '@/lib/ai/consultative/localShop'
 import { assistantAskedBack, wantsWiderArea, refineAsk } from '@/lib/ai/consultative/echoQuestion'
@@ -3709,7 +3709,7 @@ ${completionInstruction(lang)}` },
         const done = await AI.generate({
           role: so.role,
           systemShared,
-          system: so.system,
+          system: finalWriteSystem(so.system, lang),
           messages: [
             ...(so.messages as CoreMessage[]),
             { role: 'assistant', content: '…' },

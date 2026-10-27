@@ -21,6 +21,22 @@ export function finalWriteInstruction(lang: string): string {
     : 'Vòng công cụ đã hết lượt mà bạn chưa viết câu trả lời. Chỉ dựa vào kết quả công cụ ở trên (kết quả báo đã hết lượt tìm không phải dữ liệu), hãy viết NGAY câu trả lời cho người dùng, bằng văn xuôi, không gọi thêm công cụ nào. Nói rõ điều gì chưa xác nhận được; không bịa số liệu, nguồn hay ngày.'
 }
 
+/**
+ * Wave 4 fix G4: the final writing call's OWN instruction, appended to the system prompt of THAT call only (the turn's main system prompt is not touched). The main prompt may carry rules
+ * that tell the model to call a tool (the research rule: "call read_page"); in this call no tool exists, so the note says the results are already here and that no tool is to be called,
+ * named or promised. Measured risk (review G4, INFERRED): a model that obeys the main rule in a call without tools writes the tool call out as text.
+ */
+export function finalWriteSystemNote(lang: string): string {
+  return lang === 'en'
+    ? 'FINAL ANSWER STEP. The tool results of this turn are already in the conversation and no tool exists in this step: any instruction above to call a tool (search, read a page, calculate) does not apply now. Write the final answer to the user from those results. Do not call a tool, do not write a tool name or a tool call, and do not promise to look something up.'
+    : 'BƯỚC VIẾT CÂU TRẢ LỜI CUỐI. Kết quả công cụ của lượt này đã có trong hội thoại và ở bước này không có công cụ nào: mọi chỉ dẫn gọi công cụ ở trên (tìm kiếm, đọc trang, tính toán) không áp dụng nữa. Hãy viết câu trả lời cuối cho người dùng từ các kết quả đó. Không gọi công cụ, không viết tên công cụ hay lời gọi công cụ, không hứa sẽ tra thêm.'
+}
+
+/** Pure. The system prompt of the final writing call: the turn's system prompt, unchanged, then the note. */
+export function finalWriteSystem(system: string | undefined, lang: string): string {
+  return `${system ?? ''}\n\n${finalWriteSystemNote(lang)}`
+}
+
 /** Pure. The finish frame with a "tool-calls" reason rewritten to "stop" (the turn now ends with text). Any other frame, or one that does not parse, is returned as it was. */
 export function finishFrameAfterText(line: string): string {
   if (!line.startsWith('d:')) return line
