@@ -14,7 +14,7 @@ import {
   Music2, Sparkle, PenLine,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { SHOW_MARKETPLACE, SHOW_WALLET, SHOW_MUSIC } from '@/lib/config/product'
+import { SHOW_MARKETPLACE, SHOW_WALLET, SHOW_MUSIC, SHOW_VIET_CONTENT } from '@/lib/config/product'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import BottomNav from '@/components/BottomNav'
 import { useNotifications } from '@/components/NotificationProvider'
@@ -130,7 +130,8 @@ const GROUPS: NavGroup[] = [
       // Same shape as SHOW_MARKETPLACE/SHOW_WALLET below; route + module left intact.
       ...(SHOW_MUSIC ? [{ href: '/music', labelKey: 'v3.tool.music', icon: Music2 }] : []),
       { href: '/boi', labelKey: 'v3.tool.fortune', icon: Sparkle },
-      { href: '/viet-content', labelKey: 'v3.tool.captions', icon: PenLine },
+      // Viết nội dung hidden by default (SHOW_VIET_CONTENT, owner decision 2026-10-25). Same shape as SHOW_MUSIC.
+      ...(SHOW_VIET_CONTENT ? [{ href: '/viet-content', labelKey: 'v3.tool.captions', icon: PenLine }] : []),
     ],
   },
   {

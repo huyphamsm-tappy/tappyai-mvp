@@ -11,6 +11,8 @@ import { useTranslation } from '@/lib/i18n/useTranslation'
 import { inputLocaleFor } from '@/lib/voice/config'
 import TappyPresence from '@/components/v3/TappyPresence'
 import { SMART_TOOLS_HREF } from '@/lib/tools/registry'
+import { notFound } from 'next/navigation'
+import { SHOW_TRANSLATE } from '@/lib/config/product'
 
 const LANGUAGES = [
   { code: 'vi', name: 'Tiếng Việt', tts: 'vi-VN' },
@@ -59,7 +61,14 @@ const FEATURES: { titleKey: string; descKey: string; icon: LucideIcon; tone: 'bl
   { titleKey: 'translate.featEasy', descKey: 'translate.featEasyDesc', icon: Users, tone: 'violet' },
 ]
 
+// Deep-link guard. Translate is hidden (SHOW_TRANSLATE, owner decision 2026-10-25), so a direct
+// hit on /translate 404s. The view stays intact; the wrapper calls no hooks, keeping hook order.
 export default function TranslatePage() {
+  if (!SHOW_TRANSLATE) notFound()
+  return <TranslateView />
+}
+
+function TranslateView() {
   const { t, locale } = useTranslation()
   const [inputText, setInputText] = useState('')
   const [targetLang, setTargetLang] = useState('vi')

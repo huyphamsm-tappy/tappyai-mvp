@@ -4,6 +4,7 @@ import { clientIp } from '@/lib/security/rateLimit'
 import { publicDailyRateLimit } from '@/lib/security/publicRateLimit'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
+import { SHOW_TRANSLATE } from '@/lib/config/product'
 
 // Daily cap via the shared limiter (lib/security/rateLimit) — one implementation
 // for every daily-capped route instead of per-route Maps.
@@ -21,6 +22,10 @@ const LANG_NAMES: Record<string, string> = {
 }
 
 export async function POST(req: NextRequest) {
+  // Hidden feature (SHOW_TRANSLATE): refuse before the body, the rate limit or any model call.
+  if (!SHOW_TRANSLATE) {
+    return NextResponse.json({ error: 'not_available', message: serverMessage('service.unavailable', requestLocale(req)) }, { status: 404 })
+  }
   // B04 — resolved once per request; the `error` codes below are unchanged machine contract and
   // only the human sentence follows the caller's language.
   const locale = requestLocale(req)

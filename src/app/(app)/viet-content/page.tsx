@@ -1,4 +1,6 @@
+import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import { SHOW_VIET_CONTENT } from '@/lib/config/product'
 import VietContentView from './VietContentView'
 
 export const metadata = {
@@ -7,6 +9,8 @@ export const metadata = {
 }
 
 export default async function VietContentPage() {
+  // Hidden feature (SHOW_VIET_CONTENT): a direct hit 404s before any session or profile read.
+  if (!SHOW_VIET_CONTENT) notFound()
   const supabase = createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
