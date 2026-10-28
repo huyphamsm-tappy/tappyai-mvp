@@ -126,3 +126,28 @@ export function createLeanResearch(o: {
     allowedCount: () => allowed.size,
   }
 }
+
+/** Wave 5 · W5-2: venue pages the code opens on a pre-searched pick (one read_page call; the reader caps a call at three too). */
+export const PICK_PAGE_READ_MAX = 3
+
+/**
+ * Wave 5 · W5-2 (CONSULT_PICK_PAGE_READ). The code opens the websites of the venues the pre-search showed the model (presearchPlaceSites: only rows the model saw, only http(s)), at most
+ * PICK_PAGE_READ_MAX, in ONE call of the turn's own `read_page` tool - so robots.txt, the safe fetch (DNS pinned, redirects re-checked, size and time caps) and the turn's page budget all apply, and a
+ * read here counts against what the model may still read. The focus is general (what a visitor needs to decide), never the user's words. No model call, no search request.
+ * Fail-open: no site, a throw, or no page read returns null, and the caller leaves the turn as it was.
+ */
+export async function readVenuePages(research: LeanResearch, sites: ReadonlyArray<{ name: string; website: string }>, lang: string): Promise<{ args: { urls: string[]; focus: string; kind: 'other' }; result: unknown } | null> {
+  const urls = [...new Set(sites.map(s => s.website))].slice(0, PICK_PAGE_READ_MAX)
+  if (urls.length === 0) return null
+  // a place's own website is a link the reader may open (the module rule); the pre-search's slimmed rows may not carry it
+  research.collectFrom(urls.map(website => ({ website })))
+  const args = { urls, focus: lang === 'en' ? 'prices, opening hours, booking' : 'giá, giờ mở cửa, đặt chỗ', kind: 'other' as const }
+  try {
+    const result = await research.tool.execute!(args, { toolCallId: 'pick_page_read', messages: [] })
+    const pages = (result as { pages?: unknown } | null)?.pages
+    const read = Array.isArray(pages) && pages.some(p => !!p && typeof p === 'object' && !('error' in p))
+    return read ? { args, result } : null
+  } catch {
+    return null
+  }
+}

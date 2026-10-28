@@ -127,6 +127,14 @@ export function reserveHoldsToolCall(tool: string, stepsFinished: number, maxSte
   return finalSynthesisReserveReached(stepsFinished, maxSteps)
 }
 /**
+ * Wave 5 · W5-2 (CONSULT_PICK_PAGE_READ). ON only for the exact value "1" and outside a production runtime: NOT tied to the level. It acts only on a pre-searched pick (R2) that carries the page reader,
+ * i.e. with CONSULT_PICK_TURN_TOOLS on (Wave 4 · C3); without that there is no R2 reader and the flag changes nothing.
+ * Measured (W4-R2, 28/10): on R2 the model called no tool at all (5/5 questions) and lost all five - the venue pages were never opened, so price, hours and booking were never in its evidence.
+ * With this flag the CODE opens up to three venue websites of the pre-search once, through the turn's own read_page reader, before the model writes (route.ts, researchLoop.readVenuePages).
+ */
+export const CONSULT_PICK_PAGE_READ_FLAG = 'CONSULT_PICK_PAGE_READ'
+export function consultPickPageReadOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_PICK_PAGE_READ_FLAG]) && !isProductionRuntime(env) }
+/**
  * Wave 4 · C-PRE-3. Pure. The depth of a turn that carries the page reader but is NOT on the lean path (the knowledge path, C2), by capability level: below L2 the previous five steps, L2-L3 six, L4 eight
  * (the research loop's own budget). `toolRounds` is what the reserve leaves for tools: at five steps the guard allowed THREE lookups and cut the fourth (measured B2 27/10: E18, E22, X2 - four web_search
  * requests each, the fourth answered "search_budget_used" at stepsFinished 3 of 5); six steps allow four, eight allow six.

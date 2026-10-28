@@ -9,9 +9,10 @@
  */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { __resetAiQuestionQuotaLocal } from '@/lib/ai/quota/aiQuestionQuota'
-import { RESEARCH_RULE, __resetSharedRobots } from '@/lib/ai/consultative/researchLoop'
+import { RESEARCH_RULE, __resetSharedRobots, readVenuePages, PICK_PAGE_READ_MAX } from '@/lib/ai/consultative/researchLoop'
 import { MATH_TOOL_RULE, TOOL_BY_NEED_RULE } from '@/lib/ai/consultative/leanConsultPrompt'
 import { __resetPageCache } from '@/lib/ai/agent/runtime/readPage'
+import { CONSULT_PICK_PAGE_READ_FLAG, consultPickPageReadOn } from '@/lib/config/consultFlags'
 
 type Call = { toolCallId: string; toolName: string; args: Record<string, unknown> }
 const h = vi.hoisted(() => {
@@ -19,6 +20,8 @@ const h = vi.hoisted(() => {
     calls: [] as Call[], results: [] as Array<{ name: string; result: any }>, luna: null as null | Record<string, unknown>,
     toolNames: [] as string[], maxSteps: 0, system: '' as string, text: 'ok', maps: [] as string[], webCalls: [] as string[], fetched: [] as string[],
     pages: {} as Record<string, { status?: number; body: string; contentType?: string }>, userId: 'u-pick-turn-tools', secondVenue: false, evidence: null as null | Record<string, unknown>,
+    // W5-2: what the model was given, how many model calls the turn made, more venues with sites of their own, and a page fetch that throws
+    messages: '' as string, streamCalls: 0, generateCalls: 0, extractCalls: 0, moreVenues: 0, throwOn: '' as string, lastRaw: '' as string,
   }
   const builder = (): any => {
     const b: any = {
@@ -45,6 +48,7 @@ vi.mock('@/lib/security/safePageFetch', async (importOriginal) => ({
   ...(await importOriginal<typeof import('@/lib/security/safePageFetch')>()),
   fetchPublicPage: async (url: string, opts?: { signal?: AbortSignal; hopGate?: (u: URL, s?: AbortSignal) => Promise<string | null> }) => {
     h.state.fetched.push(url)
+    if (h.state.throwOn && url === h.state.throwOn) throw new Error('socket hang up')
     // A redirect: the real fetcher asks the hop gate before it opens the target (safePageFetch); the stand-in does the same.
     if (url === 'https://caphemay.example/go') {
       const refused = await opts?.hopGate?.(new URL('https://caphemay.example/private/staff'), opts?.signal)
@@ -72,6 +76,7 @@ vi.mock('@/lib/ai/tools/serperPlaces', async (importOriginal) => ({
       { title: 'Cà phê Mây', address: 'Cà phê Mây', rating: 4.5, ratingCount: 300, placeId: 'p1', latitude: ll.lat + 0.001, longitude: ll.lng + 0.001, website: 'https://caphemay.example/' },
       // part B: a second venue with a site of its own, only in the tests that ask for it (every other test sees the one-venue pre-search it always saw)
       ...(h.state.secondVenue ? [{ title: 'Trà Gió', address: 'Trà Gió', rating: 4.4, ratingCount: 200, placeId: 'p2', latitude: ll.lat + 0.002, longitude: ll.lng + 0.002, website: 'https://tragio.example/' }] : []),
+      ...Array.from({ length: h.state.moreVenues }, (_, i) => ({ title: `Quán Số ${i + 3}`, address: `Quán Số ${i + 3}`, rating: 4.3, ratingCount: 150, placeId: `p${i + 3}`, latitude: ll.lat + 0.003 + i / 1000, longitude: ll.lng + 0.003, website: `https://quan${i + 3}.example/` })),
     ] : []
   },
 }))
@@ -79,10 +84,12 @@ vi.mock('@/lib/ai/tools/food', async (importOriginal) => ({ ...(await importOrig
 vi.mock('@/lib/ai/llm', () => ({
   AI: {
     isConfigured: () => true, providerId: () => 'mock', serving: () => ({ provider: 'mock', model: 'mock-model', effort: 'none' }),
-    extract: () => h.state.luna
+    extract: () => (h.state.extractCalls++, h.state.luna
       ? Promise.resolve({ object: h.state.luna, usage: { promptTokens: 10, completionTokens: 5 }, providerMetadata: {} })
-      : Promise.reject(new Error('no provider in this test')),
+      : Promise.reject(new Error('no provider in this test'))),
     stream: (opts: Record<string, any>) => {
+      h.state.streamCalls++
+      try { h.state.messages = JSON.stringify(opts.messages) } catch { h.state.messages = '' }
       h.state.toolNames = Object.keys(opts.tools ?? {})
       h.state.maxSteps = Number(opts.maxSteps ?? 0)
       try { h.state.system = JSON.stringify({ system: opts.system }) } catch { h.state.system = '' }
@@ -106,7 +113,7 @@ vi.mock('@/lib/ai/llm', () => ({
       }
     },
     step: () => Promise.resolve({ text: '', toolCalls: [], finishReason: 'stop', usage: { promptTokens: 100, completionTokens: 20 }, providerMetadata: {} }),
-    generate: () => Promise.resolve({ text: '' }), vision: () => Promise.resolve({ text: '' }),
+    generate: () => (h.state.generateCalls++, Promise.resolve({ text: '' })), vision: () => Promise.resolve({ text: '' }),
   },
 }))
 
@@ -117,14 +124,16 @@ type Msg = { role: 'user' | 'assistant'; content: string }
 const lunaIntent = (turn: string, domains: string[]) => ({ domains, turn, goal: 'x', known: [], party: null, budget_vnd_max: null, difficulty: 'easy', missing: [], assumptions: [], ask: null, query: null, area: null, refers: [], reject_reason: null })
 const J = (s: string) => JSON.stringify(s).slice(1, -1)
 const PICK: Msg[] = [{ role: 'user', content: 'quán cà phê gần đây' }]
-const ENV_NAMES = ['CONSULT_LUNA', 'CONSULT_FOLLOW_REUSE', 'CONSULT_PICK_TURN_TOOLS','CONSULT_KNOWLEDGE_PATH', 'CONSULT_CAPABILITY_LEVEL', 'CONSULT_RESEARCH_LOOP', 'CONSULT_DETERMINISTIC_MATH', 'CONSULT_TOOL_BY_NEED', 'CONSULT_STRUCTURED_SYNTHESIS', 'CONSULT_SEARCH_NOW_INTENT_GATE', 'CONSULT_FINAL_SYNTHESIS', 'VERCEL_ENV', 'TAPPY_AGENT']
+const ENV_NAMES = ['CONSULT_LUNA', 'CONSULT_FOLLOW_REUSE', 'CONSULT_PICK_TURN_TOOLS', 'CONSULT_PICK_PAGE_READ', 'CONSULT_KNOWLEDGE_PATH', 'CONSULT_CAPABILITY_LEVEL', 'CONSULT_RESEARCH_LOOP', 'CONSULT_DETERMINISTIC_MATH', 'CONSULT_TOOL_BY_NEED', 'CONSULT_STRUCTURED_SYNTHESIS', 'CONSULT_SEARCH_NOW_INTENT_GATE', 'CONSULT_FINAL_SYNTHESIS', 'VERCEL_ENV', 'TAPPY_AGENT']
 const MENU = '<html><head><title>Thực đơn Cà phê Mây</title></head><body><table><caption>Đồ uống</caption><tr><th>Món</th><th>Giá</th></tr><tr><td>Bạc xỉu</td><td>52.000đ</td></tr></table><p>Mở cửa 7h đến 22h.</p></body></html>'
 
-interface Cfg { flag?: string; level?: string; vercelEnv?: string; lunaTurn?: string; lunaDomains?: string[]; msgs?: Msg[]; calls?: Array<{ name: string; args: Record<string, unknown> }>; reply?: string; secondVenue?: boolean; env?: Record<string, string>; evidence?: Record<string, unknown>; evidenceId?: string; withLogs?: boolean }
+interface Cfg { flag?: string; level?: string; vercelEnv?: string; lunaTurn?: string; lunaDomains?: string[]; msgs?: Msg[]; calls?: Array<{ name: string; args: Record<string, unknown> }>; reply?: string; secondVenue?: boolean; env?: Record<string, string>; evidence?: Record<string, unknown>; evidenceId?: string; withLogs?: boolean; moreVenues?: number; throwOn?: string }
 async function turn(c: Cfg = {}) {
   for (const k of ENV_NAMES) delete process.env[k]
   for (const [k, v] of Object.entries(c.env ?? {})) process.env[k] = v
   h.state.secondVenue = c.secondVenue ?? false
+  h.state.moreVenues = c.moreVenues ?? 0; h.state.throwOn = c.throwOn ?? ''
+  h.state.messages = ''; h.state.streamCalls = 0; h.state.generateCalls = 0; h.state.extractCalls = 0
   h.state.evidence = c.evidence ?? null
   if (c.flag !== undefined) process.env.CONSULT_PICK_TURN_TOOLS = c.flag
   if (c.level !== undefined) { process.env.CONSULT_CAPABILITY_LEVEL = c.level; process.env.CONSULT_KNOWLEDGE_PATH = '0' } // this file measures R2 alone
@@ -143,9 +152,15 @@ async function turn(c: Cfg = {}) {
   const spies = [vi.spyOn(console, 'log'), vi.spyOn(console, 'warn'), vi.spyOn(console, 'error'), vi.spyOn(console, 'info')].map(s => s.mockImplementation((...a: unknown[]) => { logs.push(a.map(String).join(' ')) }))
   let raw = ''
   try { raw = await (await POST(req as never)).text() } finally { spies.forEach(s => s.mockRestore()) }
+  h.state.lastRaw = raw
   const text = raw.split('\n').filter(l => l.startsWith('0:')).map(l => { try { return JSON.parse(l.slice(2)) as string } catch { return '' } }).join('')
   const out = { tools: [...h.state.toolNames].sort(), maxSteps: h.state.maxSteps, system: h.state.system, text, maps: h.state.maps.length, results: [...h.state.results], fetched: [...h.state.fetched] }
   return c.withLogs ? { ...out, logs } : out
+}
+/** W5-2: the same turn with what the model was given and what the turn spent (kept out of `out`: the pre-search ids are random, and `out` is compared ON vs OFF byte for byte above). */
+async function detail(c: Cfg = {}) {
+  const r = await turn({ ...c, withLogs: true }) as Awaited<ReturnType<typeof turn>> & { logs: string[] }
+  return { ...r, messages: h.state.messages, streamCalls: h.state.streamCalls, generateCalls: h.state.generateCalls, extractCalls: h.state.extractCalls, webCalls: [...h.state.webCalls], raw: h.state.lastRaw }
 }
 
 beforeEach(() => {
@@ -336,5 +351,141 @@ describe('S1 — R2 only on a pre-searched Luna answer turn', () => {
     expect(on.tools).toEqual([])
     expect(on.maxSteps).not.toBe(6)
     expect(on).toEqual(off)
+  }, 60000)
+})
+
+// Wave 5 · W5-2 (CONSULT_PICK_PAGE_READ): on R2 the CODE opens the venue websites of its pre-search (at most three, one read_page call of the turn's own reader) before the model writes.
+// Measured (W4-R2, 28/10): the model called no tool on R2 (5/5), so no venue page was ever read. Every test here: the model itself calls NO tool unless the test says so.
+describe('W5-2 — the code reads the venue pages on R2', () => {
+  const PR = { CONSULT_PICK_PAGE_READ: '1' }
+  const GOOD = 'Mình chọn **Cà phê Mây**. Bạc xỉu **52.000đ**.'
+  const norm = (s: string) => s.replace(/presearch_[0-9a-f]+/g, 'presearch_X')
+  const venuePages = (fetched: string[]) => fetched.filter(u => !u.endsWith('/robots.txt'))
+  it('the flag: only the exact value "1", never in a production runtime, not tied to the level', () => {
+    expect(CONSULT_PICK_PAGE_READ_FLAG).toBe('CONSULT_PICK_PAGE_READ')
+    expect(consultPickPageReadOn({ CONSULT_PICK_PAGE_READ: '1' })).toBe(true)
+    for (const v of [undefined, '', '0', 'true', ' 1', '1 ', 'on']) expect(consultPickPageReadOn({ CONSULT_PICK_PAGE_READ: v }), String(v)).toBe(false)
+    expect(consultPickPageReadOn({ CONSULT_PICK_PAGE_READ: '1', VERCEL_ENV: 'production' })).toBe(false)
+    for (const lvl of ['1', '2', '3', '4']) expect(consultPickPageReadOn({ CONSULT_CAPABILITY_LEVEL: lvl }), lvl).toBe(false)
+  })
+  it('OFF (unset, "0", any other value, production): R2 opens no page by itself and the turn is the turn without the flag', async () => {
+    const off = await turn({ flag: '1' })
+    expect(off.fetched).toEqual([])
+    for (const v of ['0', 'true', ' 1', '1 ', '']) expect(await turn({ flag: '1', env: { CONSULT_PICK_PAGE_READ: v } }), JSON.stringify(v)).toEqual(off)
+    const prodOff = await turn({ flag: '1', level: '4', vercelEnv: 'production' })
+    expect(await turn({ flag: '1', level: '4', vercelEnv: 'production', env: PR })).toEqual(prodOff)
+    expect(prodOff.fetched).toEqual([])
+  }, 120000)
+  it('not R2, no read: without the R2 tools (C3 off), with Luna off, on a lean turn the code did not pre-search - each is the turn without the flag and opens nothing', async () => {
+    const noC3 = await turn()
+    expect(await turn({ env: PR })).toEqual(noC3)
+    expect(noC3.maps).toBeGreaterThan(0) // the control really was pre-searched (it simply is not R2 without C3)
+    const lunaOff = await turn({ flag: '1', level: '2', env: { CONSULT_LUNA: '0' } })
+    const lunaOffPr = await turn({ flag: '1', level: '2', env: { CONSULT_LUNA: '0', ...PR } })
+    expect(lunaOffPr).toEqual(lunaOff); expect(lunaOffPr.fetched).toEqual([])
+    const msgs: Msg[] = [{ role: 'user', content: 'Giải thích giúp mình cách chọn hạt cà phê ngon' }]
+    const r1 = await turn({ msgs, lunaTurn: 'chat', lunaDomains: ['food'], flag: '1' })
+    const r1Pr = await turn({ msgs, lunaTurn: 'chat', lunaDomains: ['food'], flag: '1', env: PR })
+    expect(r1.maps).toBe(0)
+    expect(r1Pr).toEqual(r1); expect(r1Pr.fetched).toEqual([])
+    // a pre-searched lean turn that carries the W1 reader but not the R2 tools (CONSULT_RESEARCH_LOOP on, C3 off) is not R2 either: no read, not even tried
+    const w1 = await detail({ env: { CONSULT_RESEARCH_LOOP: '1', ...PR } })
+    expect(w1.maps).toBeGreaterThan(0)
+    expect(w1.fetched).toEqual([])
+    expect(w1.logs.some(l => l.includes('"type":"tappyai_pick_page_read"'))).toBe(false)
+  }, 120000)
+  it('readVenuePages itself: at most three distinct sites in ONE read_page call, each made a link the reader may open, a general focus; null when nothing was read, on a throw, or with no site', async () => {
+    const seen: Array<{ urls: string[]; focus: string }> = []
+    const allowed: unknown[] = []
+    let answer: unknown = { pages: [{ url: 'https://a.example/', title: 'A', page_content: 'x' }] }
+    const fake = {
+      tool: { execute: async (args: { urls: string[]; focus: string }) => { seen.push(args); if (answer instanceof Error) throw answer; return answer } },
+      collectFrom: (r: unknown) => { allowed.push(r) }, collectUrls: <T,>(t: T) => t, allowedCount: () => 0,
+    } as unknown as Parameters<typeof readVenuePages>[0]
+    const sites = ['a', 'b', 'a', 'c', 'd', 'e'].map(x => ({ name: x.toUpperCase(), website: `https://${x}.example/` }))
+    const ok = await readVenuePages(fake, sites, 'vi')
+    expect(seen).toHaveLength(1)
+    expect(seen[0]!.urls).toEqual(['https://a.example/', 'https://b.example/', 'https://c.example/'])
+    expect(PICK_PAGE_READ_MAX).toBe(3)
+    expect(allowed).toEqual([[{ website: 'https://a.example/' }, { website: 'https://b.example/' }, { website: 'https://c.example/' }]])
+    expect(seen[0]!.focus).toBe('giá, giờ mở cửa, đặt chỗ')
+    expect(ok?.result).toBe(answer)
+    expect(await readVenuePages(fake, [], 'vi')).toBeNull()
+    expect(seen).toHaveLength(1)                                                        // no site: no call at all
+    answer = { pages: [{ url: 'https://a.example/', error: 'page_unreadable' }] }
+    expect(await readVenuePages(fake, sites, 'vi')).toBeNull()
+    answer = new Error('boom')
+    expect(await readVenuePages(fake, sites, 'en')).toBeNull()
+    expect(seen.at(-1)!.focus).toBe('prices, opening hours, booking')
+  })
+  it('ON: robots.txt first, then the venue page; the model gets a completed read_page call with the page before it writes, and the price it read stays although it called no tool', async () => {
+    const d = await detail({ flag: '1', env: PR, reply: GOOD })
+    expect(d.fetched).toEqual(['https://caphemay.example/robots.txt', 'https://caphemay.example/'])
+    expect(d.results).toEqual([])                                                       // the model itself called nothing
+    expect(d.messages).toContain('"toolName":"read_page"')
+    expect(d.messages).toContain('52.000')
+    expect(d.raw).toMatch(/9:\{"toolCallId":"pick_read_[0-9a-f]{6}","toolName":"read_page"/) // the frames lead the stream, as the pre-search's do (the guards read them)
+    expect(d.text).toContain('52.000đ')
+    expect(d.logs.filter(l => l.includes('"type":"tappyai_pick_page_read"'))).toEqual([expect.stringMatching(/^\{"type":"tappyai_pick_page_read","sites":1,"read":true,"ms":\d+\}$/)])
+    // live control: the very same reply without the flag loses the amount (no page was read)
+    expect((await turn({ flag: '1', reply: GOOD })).text).not.toContain('52.000đ')
+  }, 60000)
+  it('ON: an amount the page never states is still cut, and a page price said of another venue is still cut (the guards are unchanged)', async () => {
+    expect((await turn({ flag: '1', env: PR, reply: 'Mình chọn **Cà phê Mây**. Bạc xỉu **99.000đ**.' })).text).not.toContain('99.000đ')
+    h.state.pages['https://tragio.example/robots.txt'] = { body: 'User-agent: *\nDisallow: /\n', contentType: 'text/plain' }
+    const other = await turn({ flag: '1', env: PR, secondVenue: true, reply: 'Mình chọn **Trà Gió**. Bạc xỉu **52.000đ**.' })
+    expect(other.text).toContain('Trà Gió')
+    expect(other.text).not.toContain('52.000đ')
+  }, 60000)
+  it('limits: at most three venue pages, in one call; the others are never opened', async () => {
+    h.state.pages['https://tragio.example/'] = { body: '<html><body><p>Trà Gió. Trà đào 45.000đ.</p></body></html>' }
+    for (const i of [3, 4, 5]) h.state.pages[`https://quan${i}.example/`] = { body: `<html><body><p>Quán Số ${i}. Mở 8h.</p></body></html>` }
+    const d = await detail({ flag: '1', env: PR, secondVenue: true, moreVenues: 3 })
+    expect(venuePages(d.fetched)).toHaveLength(3)
+    expect(d.raw.match(/"toolName":"read_page"/g)).toHaveLength(1)
+    expect(d.logs.find(l => l.includes('"type":"tappyai_pick_page_read"'))).toContain('"sites":3')
+  }, 60000)
+  it('limits: robots.txt that disallows the whole site - the page is not opened, nothing reaches the model, the turn is as without the flag', async () => {
+    h.state.pages['https://caphemay.example/robots.txt'] = { body: 'User-agent: *\nDisallow: /\n', contentType: 'text/plain' }
+    const off = await detail({ flag: '1', reply: GOOD })
+    const on = await detail({ flag: '1', env: PR, reply: GOOD })
+    expect(on.fetched).toEqual(['https://caphemay.example/robots.txt'])
+    expect(norm(on.messages)).toEqual(norm(off.messages))
+    expect(on.text).toBe(off.text)
+    expect(on.raw).not.toContain('pick_read_')
+  }, 60000)
+  it('fail-open: a page that errors (HTTP 500) or a fetch that throws - the turn ships as without the flag, nothing thrown', async () => {
+    const off = await detail({ flag: '1', reply: GOOD })
+    h.state.pages['https://caphemay.example/'] = { status: 500, body: '' }
+    const e500 = await detail({ flag: '1', env: PR, reply: GOOD })
+    h.state.pages['https://caphemay.example/'] = { body: MENU }
+    const thrown = await detail({ flag: '1', env: PR, reply: GOOD, throwOn: 'https://caphemay.example/' })
+    for (const [name, r] of [['500', e500], ['throw', thrown]] as const) {
+      expect(r.fetched, name).toContain('https://caphemay.example/')                    // the read really was tried
+      expect(norm(r.messages), name).toEqual(norm(off.messages))
+      expect(r.text, name).toBe(off.text)
+      expect(r.tools, name).toEqual(off.tools)
+      expect(r.maxSteps, name).toBe(off.maxSteps)
+      expect(r.logs.find(l => l.includes('"type":"tappyai_pick_page_read"')), name).toContain('"read":false')
+    }
+  }, 60000)
+  it('cost: the read is no model call and no search request - the turn makes the same Luna call, ONE stream call (the metered one), no extra call, and the same searches as without the flag', async () => {
+    const off = await detail({ flag: '1' })
+    const on = await detail({ flag: '1', env: PR })
+    expect(venuePages(on.fetched)).toHaveLength(1)                                      // the control really read a page
+    expect(on.streamCalls).toBe(1); expect(off.streamCalls).toBe(1)
+    expect(on.generateCalls).toBe(0); expect(on.generateCalls).toBe(off.generateCalls)
+    expect(on.extractCalls).toBe(off.extractCalls)
+    expect(on.maps).toBe(off.maps)
+    expect(on.webCalls).toEqual(off.webCalls)
+  }, 60000)
+  it('privacy: a private token the user typed reaches no new log line (the new line carries numbers only)', async () => {
+    const TOKEN = 'zqvexcanary7781'
+    const msgs: Msg[] = [{ role: 'user', content: `quán cà phê gần đây, mã hội viên của mình là ${TOKEN}` }]
+    const off = await detail({ flag: '1', msgs, env: { CONSULT_TRACE_DIAGNOSTICS: '1' } })
+    const on = await detail({ flag: '1', msgs, env: { CONSULT_TRACE_DIAGNOSTICS: '1', ...PR } })
+    expect(venuePages(on.fetched)).toHaveLength(1)
+    const withToken = (ls: string[]) => ls.filter(l => l.toLowerCase().includes(TOKEN)).map(l => l.replace(/"(ms|[a-zA-Z]*Ms)":\d+/g, '"ms":0').replace(/"t-[0-9a-f]{8}"/g, '"t-X"').replace(/"seq":\d+/g, '"seq":0').replace(/presearch_[0-9a-f]+/g, 'presearch_X'))
+    expect(withToken(on.logs)).toEqual(withToken(off.logs))
   }, 60000)
 })

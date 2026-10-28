@@ -102,9 +102,9 @@ import { recordDecision, DECISION_RECORD_TIMEOUT_MS } from '@/lib/ai/agent/runti
 import { createPlacesBudget, PLACES_BUDGET_AGENT, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
 // Consultative V1 (flag CONSULTATIVE_V1, default OFF — see docs/audit/consultative-v1-design.md).
 import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
-import { consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, consultReadPageLateOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn } from '@/lib/config/consultFlags'
+import { consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, consultReadPageLateOn, consultPickPageReadOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn } from '@/lib/config/consultFlags'
 import { referTitlesForPrompt } from '@/lib/ai/consultative/referTitles'
-import { createLeanResearch } from '@/lib/ai/consultative/researchLoop'
+import { createLeanResearch, readVenuePages, PICK_PAGE_READ_MAX } from '@/lib/ai/consultative/researchLoop'
 import { wave3PromptLines, PICK_TURN_TOOL_NAMES } from '@/lib/ai/consultative/wave3PromptLines'
 import { calculate } from '@/lib/ai/tools/calculate'
 import { createTurnTrace, traceCallBy, traceToolsInner, traceToolsOuter } from '@/lib/ai/consultative/traceDiagnostics'
@@ -3384,7 +3384,23 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   if (pickTools && research) for (const o of presearchAll) research.collectFrom(o.result)
   // Wave 4 (B, Owner option a): the price guard learns the venue websites of the pre-search from its FULL rows (the stream only carries the slimmed copy), for the venues the model saw.
   // An input only: an amount read on venue X's own site is evidence for X; any other amount is judged exactly as before (still cut when it belongs to no venue it is said of).
-  if (pickTools && presearchOutcome?.toolName === 'search_places') enrichment.placeSites = presearchPlaceSites(lastFullPlaceResult, presearchOutcome.result)
+  const pickPlaceSites = pickTools && presearchOutcome?.toolName === 'search_places' ? presearchPlaceSites(lastFullPlaceResult, presearchOutcome.result) : null
+  if (pickPlaceSites) enrichment.placeSites = pickPlaceSites
+  // Wave 5 · W5-2 (CONSULT_PICK_PAGE_READ, default OFF = nothing here runs). Measured (W4-R2, 28/10): on R2 the model called no tool (5/5) and lost 5/5 - no venue page was ever opened. With the flag
+  // the CODE opens up to three of those venue websites once, through this turn's own read_page reader (robots.txt, safe fetch, page budget), and the result reaches the model as a completed read_page
+  // call before it writes: the same messages and the same leading frames as the pre-search, so the price / hours guards see the page evidence exactly as when the model reads. No model call, no
+  // search request (the model's own stream stays the one metered call). Fail-open: nothing read, or an error, leaves the turn exactly as with the flag OFF.
+  let pickPageRead: PresearchOutcome | null = null
+  if (pickPlaceSites && research && consultPickPageReadOn()) {
+    const t0 = Date.now()
+    const read = await readVenuePages(research, pickPlaceSites, lang)
+    if (read) pickPageRead = { toolCallId: 'pick_read_' + randomUUID().slice(0, 6), toolName: 'read_page', args: read.args as unknown as PresearchOutcome['args'], result: read.result, ms: Date.now() - t0 }
+    console.log(JSON.stringify({ type: 'tappyai_pick_page_read', sites: Math.min(pickPlaceSites.length, PICK_PAGE_READ_MAX), read: pickPageRead !== null, ms: Date.now() - t0 }))
+  }
+  // The read joins the pre-search outcomes AFTER the model's copy of them was built (modelMessagesWithPresearch): from here on presearchAll only gives the leading frames (and `.length > 0`
+  // checks, which a read cannot change - it exists only on a pre-searched turn). Its model copy is added once, unslimmed, just below.
+  if (pickPageRead) presearchAll.push(pickPageRead)
+  const modelMessagesForStream = pickPageRead ? [...modelMessagesWithPresearch, ...presearchMessages(pickPageRead)] : modelMessagesWithPresearch
   // The step budget of this turn, named once (the very expression the stream used inline: same value). CONSULT_FINAL_SYNTHESIS needs it to reserve the last step.
   const streamMaxSteps = lunaPlan && planningIntent !== 'trip' ? 3 : pickTools ? knowledgeDepth().steps : consultFollowReuse || consultTripPrefetch || (lean && presearchAll.length > 0 && !planningIntent && !noToolTurn && !eveningBlock) ? 2 : noToolTurn || eveningBlock ? 1 : planningIntent ? (lean ? 3 : 8) : hasImage ? 3 : lean ? (research ? levelLimits.researchSteps : 3) : knowledgeTurn ? knowledgeDepth().steps : 5
   // CONSULT_FINAL_SYNTHESIS (Wave 2, default OFF = nothing below runs). Baseline: a tool loop used EVERY step calling web_search, the model never wrote a word (finishReason "tool-calls"), and the
@@ -3462,7 +3478,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     abortSignal: req.signal,
     systemShared,
     system: eveningAddendum ? (w3Prompt ?? systemPrompt) + eveningAddendum : (w3Prompt ?? systemPrompt),
-    messages: (lunaData ? (() => { const at = modelMessagesWithPresearch.map((m: { role: string }) => m.role).lastIndexOf('user'); return at < 0 ? modelMessagesWithPresearch : [...modelMessagesWithPresearch.slice(0, at), { role: 'user' as const, content: lunaData }, ...modelMessagesWithPresearch.slice(at)] })() : modelMessagesWithPresearch) as typeof modelMessages,
+    messages: (lunaData ? (() => { const at = modelMessagesForStream.map((m: { role: string }) => m.role).lastIndexOf('user'); return at < 0 ? modelMessagesForStream : [...modelMessagesForStream.slice(0, at), { role: 'user' as const, content: lunaData }, ...modelMessagesForStream.slice(at)] })() : modelMessagesForStream) as typeof modelMessages,
     // Completion cap. Place/product replies previously hit finishReason:"length"
     // at 2048 (deterministic image/review/order URLs are token-heavy). Those are
     // now injected by streamEnrichment instead of written by the LLM (see prompt),
