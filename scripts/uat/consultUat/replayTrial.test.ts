@@ -126,6 +126,30 @@ describe('W6 replay run · a V0 run with the whole safety path', () => {
     }
     expect(POSTED().map(r => r.body.messages.length)).toEqual([4, 4, 4])
     expect(s.evidenceChars).toBeGreaterThan(300)
+    expect(s.noEvidenceTurns).toEqual([])
+  })
+  it('amendment 3 (S3.2): with T2\'s search empty (no_results), X0 runs; T2 is sent with NO evidence block and its request equals the V0 request byte for byte; the result says which turns had evidence', async () => {
+    setEnv({ BENCH_REPLAY_VARIANT: 'V0' })
+    ran(await run())
+    const v0 = POSTED().map(r => JSON.stringify(r.body))
+    net.requests = []; written = {}; vi.unstubAllEnvs(); for (const k of ALL_NAMES) vi.stubEnv(k, undefined)
+    for (const t of ['T1', 'T3']) files[`${EVIDENCE_DIR}/evidence-${t}.json`] = JSON.stringify({ turn: t, results: [{ url: `https://e.example/${t}`, highlights: [`bang chung ${t}`] }] })
+    files[`${EVIDENCE_DIR}/evidence-T2.json`] = JSON.stringify({ turn: 'T2', results: [], no_results: true })
+    setEnv({ BENCH_REPLAY_VARIANT: 'X0', BENCH_REPLAY_EVIDENCE_DIR: EVIDENCE_DIR })
+    const s = ran(await run())
+    expect(s.trialClean).toBe(true); expect(s.noEvidenceTurns).toEqual(['T2'])
+    const x0 = POSTED().map(r => JSON.stringify(r.body))
+    expect(x0[1]).toBe(v0[1]) // T2: exactly the V0 request
+    expect(x0[0]).not.toBe(v0[0]); expect(x0[2]).not.toBe(v0[2]); expect(x0[0]).toContain(EVIDENCE_HEADER)
+    const file = JSON.parse(Object.values(written)[0]!)
+    expect(file.turns.map((t: { id: string; evidence?: boolean }) => [t.id, t.evidence])).toEqual([['T1', true], ['T2', false], ['T3', true], ['T4', undefined]])
+    expect(file.summary).toMatchObject({ evidenceTurns: ['T1', 'T3'], noEvidenceTurns: ['T2'] })
+    // the characters counted are those of the two blocks really sent, T2 adds 0
+    const blocks = POSTED().map(r => r.body.messages[r.body.messages.length - 1]).filter((m: { content: string }) => String(m.content).startsWith(EVIDENCE_HEADER)).reduce((n: number, m: { content: string }) => n + m.content.length, 0)
+    expect(s.evidenceChars).toBe(blocks)
+    expect(formatReplaySummary(s)).toContain('sent WITHOUT evidence (search found no usable page): T2')
+    // and the plan the preflight report (Gate 0) prints from
+    expect(replayCheck(process.env, deps()).plan!.noEvidenceTurns).toEqual(['T2'])
   })
 })
 
@@ -278,8 +302,12 @@ describe('W6 replay run · every check of a normal run still applies, and the re
     await refusedWith({}, 'no turn with a writer call', () => { files[CAP_PATH] = toBytes({ ...CAPTURE, calls: [call('T1', 1, writerBody('T1'), { status: 500 })] }) })
     await refusedWith({}, 'plain identifier', () => { files[CAP_PATH] = toBytes({ ...CAPTURE, calls: [call('../x', 1, writerBody('x'), { textChars: 5 })] }) })
     await refusedWith({ BENCH_REPLAY_VARIANT: 'X0' }, `BENCH_REPLAY_EVIDENCE_DIR must be a folder on drive D`)
-    await refusedWith({ BENCH_REPLAY_VARIANT: 'X1', BENCH_REPLAY_EVIDENCE_DIR: EVIDENCE_DIR }, 'no usable outside evidence for turn(s): T1, T2, T3')
-    await refusedWith({ BENCH_REPLAY_VARIANT: 'X0', BENCH_REPLAY_EVIDENCE_DIR: EVIDENCE_DIR }, 'T2', () => { for (const t of ['T1', 'T3']) files[`${EVIDENCE_DIR}/evidence-${t}.json`] = JSON.stringify({ results: [{ url: 'https://e.example', highlights: ['a'] }] }) })
+    // amendment 3: a MISSING or unreadable evidence file still refuses the whole variant (the turn was never searched)
+    await refusedWith({ BENCH_REPLAY_VARIANT: 'X1', BENCH_REPLAY_EVIDENCE_DIR: EVIDENCE_DIR }, 'outside evidence file missing or unreadable for turn(s): T1, T2, T3')
+    await refusedWith({ BENCH_REPLAY_VARIANT: 'X0', BENCH_REPLAY_EVIDENCE_DIR: EVIDENCE_DIR }, 'missing or unreadable for turn(s): T2', () => { for (const t of ['T1', 'T3']) files[`${EVIDENCE_DIR}/evidence-${t}.json`] = JSON.stringify({ results: [{ url: 'https://e.example', highlights: ['a'] }] }) })
+    await refusedWith({ BENCH_REPLAY_VARIANT: 'X0', BENCH_REPLAY_EVIDENCE_DIR: EVIDENCE_DIR }, 'missing or unreadable for turn(s): T2', () => { for (const t of ['T1', 'T3']) files[`${EVIDENCE_DIR}/evidence-${t}.json`] = JSON.stringify({ results: [{ url: 'https://e.example', highlights: ['a'] }] }); files[`${EVIDENCE_DIR}/evidence-T2.json`] = '{not json' })
+    // ... and a variant in which NO turn has usable evidence would be V0 / V1 itself: refused
+    await refusedWith({ BENCH_REPLAY_VARIANT: 'X1', BENCH_REPLAY_EVIDENCE_DIR: EVIDENCE_DIR }, 'no turn has usable outside evidence', () => { for (const t of ['T1', 'T2', 'T3']) files[`${EVIDENCE_DIR}/evidence-${t}.json`] = JSON.stringify({ turn: t, results: [], no_results: true }) })
     await refusedWith({ BENCH_REPLAY_VARIANT: 'V0', BENCH_REPLAY_EVIDENCE_DIR: EVIDENCE_DIR }, 'takes no evidence')
   })
   it('a part that is not text cannot be bounded by its size (pure check); the allowed ceilings are the Owner\'s and the launcher states the same ones', () => {

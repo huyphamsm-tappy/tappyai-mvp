@@ -112,7 +112,9 @@ function withNote(messages: NonNullable<Body['messages']>, note: string): NonNul
  *   - the model is the captured call's own, always (amendment 28/10);
  *   - a variant with an `effort` (V2 / V3: `medium`) sets `reasoning_effort` in the body. /chat/completions refuses function tools with any effort but "none" (openai.ts effortForCall), so such a
  *     request carries NO tools (`tools`, `tool_choice`, `parallel_tool_calls` removed): the replay cannot search either way, the history's tool messages stay;
- *   - V1 / V3 / X1: the note appended to the first system message; X0 / X1: the outside evidence appended as the last message (`o.evidence`; refused when the variant needs it and there is none).
+ *   - V1 / V3 / X1: the note appended to the first system message; X0 / X1: the outside evidence appended as the last message (`o.evidence`).
+ *     Amendment 3 (S3.2): a turn whose search came back with NO usable page (`o.evidence` is an empty list) gets NO evidence block: its request is exactly the V0 (X0) / V1 (X1) request.
+ *     Evidence that was not given at all (`o.evidence` undefined: the turn was never searched) is refused - that is a missing input, not an empty result.
  */
 export function variantRequest(body: Body, variant: VariantSpec, o: { evidence?: readonly EvidencePage[] } = {}): Body {
   const out: Body = { ...body }
@@ -125,15 +127,19 @@ export function variantRequest(body: Body, variant: VariantSpec, o: { evidence?:
   } else if (Array.isArray(body.tools) && body.tools.length > 0) out.tool_choice = 'none'
   let messages = variant.note ? withNote(body.messages ?? [], V1_WRITING_NOTE) : (body.messages ?? [])
   if (variant.evidence) {
-    const ev = evidenceMessage(o.evidence ?? [])
-    if (ev === null) throw new Error(`${variant.id}: no outside evidence for this turn`)
-    messages = [...messages, ev]
+    if (o.evidence === undefined) throw new Error(`${variant.id}: no outside evidence was given for this turn`)
+    const ev = evidenceMessage(o.evidence)
+    if (ev !== null) messages = [...messages, ev]
   }
   if (variant.note || variant.evidence) out.messages = messages
   return out
 }
 
-export interface ReplayAnswer { turn: string; text: string | null; error?: string; usd: number | null; /** why the model stopped (`stop`, `length`...), when the sender knew */ finish?: string | null }
+export interface ReplayAnswer {
+  turn: string; text: string | null; error?: string; usd: number | null
+  /** why the model stopped (`stop`, `length`...), when the sender knew */ finish?: string | null
+  /** evidence variants only: whether this turn's request carried an evidence block (amendment 3: a turn with no usable page carries none) */ evidence?: boolean
+}
 /** The injected paid call: returns the answer text and its cost. The paid implementation is replayTrial.ts (through the metered model and the spend gate), not this file. */
 export type ReplaySend = (request: Body, meta: { turn: string; variant: VariantId }) => Promise<{ text: string; usd: number | null; finish?: string | null }>
 
@@ -142,11 +148,14 @@ export async function replayVariant(picks: readonly WriterPick[], variant: Varia
   const out: ReplayAnswer[] = []
   for (const p of picks) {
     if (p.n === null) { out.push({ turn: p.turn, text: null, error: `not replayed: ${p.reason}`, usd: 0 }); continue }
+    let evidence: boolean | undefined
     try {
-      const r = await send(variantRequest(p.body, variant, { evidence: o.evidence?.(p.turn) }), { turn: p.turn, variant: variant.id })
-      out.push({ turn: p.turn, text: r.text, usd: r.usd, ...(r.finish !== undefined ? { finish: r.finish } : {}) })
+      const pages = variant.evidence ? o.evidence?.(p.turn) : undefined
+      if (variant.evidence) evidence = (pages?.length ?? 0) > 0
+      const r = await send(variantRequest(p.body, variant, { evidence: pages }), { turn: p.turn, variant: variant.id })
+      out.push({ turn: p.turn, text: r.text, usd: r.usd, ...(r.finish !== undefined ? { finish: r.finish } : {}), ...(evidence !== undefined ? { evidence } : {}) })
     } catch (e) {
-      out.push({ turn: p.turn, text: null, error: String(e instanceof Error ? e.message : e).slice(0, 200), usd: null })
+      out.push({ turn: p.turn, text: null, error: String(e instanceof Error ? e.message : e).slice(0, 200), usd: null, ...(evidence !== undefined ? { evidence } : {}) })
     }
   }
   return out
@@ -157,12 +166,17 @@ export async function replayVariant(picks: readonly WriterPick[], variant: Varia
  * A turn that was not replayed keeps an empty answer and says why (the pairing tool then reports it, never pairs it).
  */
 export function packReplayRun(answers: readonly ReplayAnswer[], meta: { variant: VariantId; captureFile: string; questionSha256: string | null; model: string | null; at: string }) {
-  const turns = answers.map(a => ({ id: a.turn, answer: a.text ?? '', chars: (a.text ?? '').length, ...(a.error ? { replayError: a.error } : {}), ...(a.finish !== undefined ? { finish: a.finish } : {}), usd: a.usd }))
+  const turns = answers.map(a => ({ id: a.turn, answer: a.text ?? '', chars: (a.text ?? '').length, ...(a.error ? { replayError: a.error } : {}), ...(a.finish !== undefined ? { finish: a.finish } : {}), ...(a.evidence !== undefined ? { evidence: a.evidence } : {}), usd: a.usd }))
   const known = answers.filter(a => typeof a.usd === 'number').reduce((s, a) => s + (a.usd as number), 0)
+  const flagged = answers.filter(a => a.evidence !== undefined)
   return {
     kind: 'tappy-writer-replay', version: 1, variant: meta.variant, model: meta.model, at: meta.at, captureFile: meta.captureFile,
     questionFile: { sha256: meta.questionSha256 },
     turns,
-    summary: { turns: turns.length, answered: turns.filter(t => t.chars > 0).length, notReplayed: turns.filter(t => t.replayError).length, totalChars: turns.reduce((s, t) => s + t.chars, 0), knownUsd: Math.round(known * 1e6) / 1e6, unknownCostTurns: answers.filter(a => a.usd === null).length },
+    summary: {
+      turns: turns.length, answered: turns.filter(t => t.chars > 0).length, notReplayed: turns.filter(t => t.replayError).length, totalChars: turns.reduce((s, t) => s + t.chars, 0), knownUsd: Math.round(known * 1e6) / 1e6, unknownCostTurns: answers.filter(a => a.usd === null).length,
+      // evidence variants only (amendment 3): which turns carried an evidence block and which did not
+      ...(flagged.length ? { evidenceTurns: flagged.filter(a => a.evidence).map(a => a.turn), noEvidenceTurns: flagged.filter(a => !a.evidence).map(a => a.turn) } : {}),
+    },
   }
 }

@@ -25,7 +25,7 @@ import { BudgetGuard, BudgetRefusal, type Reservation } from './harness'
 import { redactSecrets } from './liveRunner'
 import { preflight } from './liveTrial'
 import { GuardSpendGate } from './spendGateAdapter'
-import { EVIDENCE_LIMITS, VARIANTS, evidencePagesFrom, packReplayRun, pickWriterCalls, replayVariant, variantRequest, type EvidencePage, type ReplayAnswer, type VariantSpec, type WriterPick } from './writerReplay'
+import { EVIDENCE_LIMITS, VARIANTS, evidenceMessage, evidencePagesFrom, packReplayRun, pickWriterCalls, replayVariant, type EvidencePage, type ReplayAnswer, type VariantSpec, type WriterPick } from './writerReplay'
 import type { WriterCaptureFile } from './writerCapture'
 
 export const REPLAY_CAPTURE_ENV = 'BENCH_REPLAY_CAPTURE'
@@ -65,6 +65,8 @@ export interface ReplayPlan {
   models: string[]
   efforts: string[]
   evidenceDir: string | null
+  /** Evidence variants: the turns whose search found no usable page; they are sent WITHOUT an evidence block (amendment 3). */
+  noEvidenceTurns: string[]
 }
 
 export interface ReplayDeps { readText?: (path: string) => string; readBytes?: (path: string) => Uint8Array }
@@ -104,14 +106,21 @@ export function replayCheck(env: Env, deps: ReplayDeps = {}): { reasons: string[
         const models = [...new Set(sendable.map(p => (p.n === null ? '' : String(p.body.model ?? '?'))))]
         const efforts = [...new Set(sendable.map(p => (p.n === null ? '' : typeof p.body.reasoning_effort === 'string' ? p.body.reasoning_effort : 'unset')))]
         const evidenceDir = (env[REPLAY_EVIDENCE_DIR_ENV] ?? '').trim()
+        const noEvidence: string[] = []
         if (variant?.evidence) {
           if (evidenceDir === '' || !/^D:[\\/]/i.test(evidenceDir)) reasons.push(`${REPLAY_EVIDENCE_DIR_ENV} must be a folder on drive D (the variant adds outside evidence)`)
           else {
-            const missing = sendable.filter(p => { try { return evidencePagesOfText(readText(evidenceFile(evidenceDir, p.turn))).length === 0 } catch { return true } }).map(p => p.turn)
-            if (missing.length) reasons.push(`no usable outside evidence for turn(s): ${missing.join(', ')} (a variant with evidence is never run on part of the turns)`)
+            // amendment 3 (S3.2): a file that is MISSING or cannot be read refuses the variant (the turn was never searched); a file whose search found no usable page is a valid
+            // result: that turn is sent without an evidence block (= the V0 / V1 request). A variant where NO turn has evidence would be V0 / V1 itself: refused.
+            const missing: string[] = []
+            for (const p of sendable) {
+              try { if (evidencePagesOfText(readText(evidenceFile(evidenceDir, p.turn))).length === 0) noEvidence.push(p.turn) } catch { missing.push(p.turn) }
+            }
+            if (missing.length) reasons.push(`outside evidence file missing or unreadable for turn(s): ${missing.join(', ')} (a variant with evidence is never run on part of the turns)`)
+            else if (sendable.length > 0 && noEvidence.length === sendable.length) reasons.push('no turn has usable outside evidence: the variant would be the same as V0 / V1')
           }
         } else if (evidenceDir !== '') reasons.push(`${REPLAY_EVIDENCE_DIR_ENV} is set but the variant ${variant?.id ?? '?'} takes no evidence`)
-        if (variant) plan = { variant, captureFile: file, captureSha256: createHash('sha256').update(bytes).digest('hex'), capture, picks, sendable: sendable.length, models, efforts, evidenceDir: variant.evidence ? evidenceDir : null }
+        if (variant) plan = { variant, captureFile: file, captureSha256: createHash('sha256').update(bytes).digest('hex'), capture, picks, sendable: sendable.length, models, efforts, evidenceDir: variant.evidence ? evidenceDir : null, noEvidenceTurns: noEvidence }
       }
     } catch (e) { reasons.push(`the capture file cannot be read as JSON (${e instanceof Error ? e.name : 'error'})`) }
   }
@@ -152,6 +161,8 @@ export interface ReplaySummary {
   truncated: string[]
   totalChars: number
   evidenceChars: number
+  /** Evidence variants: the turns sent without an evidence block because their search found no usable page (amendment 3). */
+  noEvidenceTurns: string[]
   usd: number | null
   llmRequests: number
   hostRequests: Record<string, number>
@@ -314,7 +325,8 @@ export async function runReplayTrial(input: ReplayInput): Promise<ReplayOutcome>
   const costKnownAll = sendable.length > 0 && unknownCost.length === 0
   const usd = costKnownAll ? Math.round(sendable.reduce((s, a) => s + (a.usd ?? 0), 0) * 1e6) / 1e6 : null
   const model = plan.models.length === 1 ? plan.models[0]! : plan.models.join('+')
-  const evidenceChars = plan.evidenceDir ? plan.picks.reduce((s, p) => { try { const m = p.n === null ? null : variantRequest(p.body, plan.variant, { evidence: evidenceOf(p.turn) }); const last = (m?.messages as Array<{ content?: unknown }> | undefined)?.slice(-1)[0]; return s + (typeof last?.content === 'string' ? last.content.length : 0) } catch { return s } }, 0) : 0
+  // the characters of the evidence blocks really sent (a turn without evidence adds 0)
+  const evidenceChars = plan.evidenceDir ? plan.picks.reduce((s, p) => { try { return s + (p.n === null ? 0 : (evidenceMessage(evidenceOf(p.turn))?.content.length ?? 0)) } catch { return s } }, 0) : 0
   const packed = packReplayRun(answers, { variant: plan.variant.id, captureFile: plan.captureFile.replace(/^.*[\\/]/, ''), questionSha256: (() => { try { return createHash('sha256').update(Buffer.from((input.readText ?? ((p: string) => readFileSync(p, 'utf8')))((env.BENCH_TRIAL_QUESTION_FILE ?? '').trim()), 'utf8')).digest('hex') } catch { return null } })(), model, at: new Date(stamp).toISOString() })
   const extras = {
     captureSha256: plan.captureSha256, effort: plan.variant.effort ?? 'as captured', capturedEfforts: plan.efforts, note: plan.variant.note, evidence: plan.variant.evidence, evidenceChars,
@@ -332,7 +344,7 @@ export async function runReplayTrial(input: ReplayInput): Promise<ReplayOutcome>
   const summary: ReplaySummary = {
     turnOk, trialClean: turnOk && blocked.size === 0 && late.length === 0 && redirects.length === 0 && warnings.length === 0 && resultPath !== null,
     variant: plan.variant.id, model, efforts: plan.variant.effort ? [plan.variant.effort] : plan.efforts, turnsInCapture: plan.picks.length, replayed: sendable.length, notReplayed: answers.length - sendable.length,
-    answered: answers.filter(a => (a.text ?? '') !== '').length, emptyAnswers, truncated, totalChars: packed.summary.totalChars, evidenceChars, usd, llmRequests: llm, hostRequests: sent,
+    answered: answers.filter(a => (a.text ?? '') !== '').length, emptyAnswers, truncated, totalChars: packed.summary.totalChars, evidenceChars, noEvidenceTurns: plan.noEvidenceTurns, usd, llmRequests: llm, hostRequests: sent,
     hostsBlocked: [...blocked].sort(), lateBlocked: [...late], refusals, problems: problems.map(p => redactSecrets(p, env)), warnings: warnings.map(w => redactSecrets(w, env)),
     captureSha256: plan.captureSha256, resultPath, budget: { turnCapUsd: pre.caps.turnUsd, runCapUsd: pre.caps.runUsd },
   }
@@ -349,7 +361,7 @@ export function formatReplaySummary(s: ReplaySummary): string {
   lines.push(
     `variant=${s.variant} model=${s.model} reasoning_effort=${s.efforts.join(',')} | turns in capture ${s.turnsInCapture}: replayed ${s.replayed}, not replayed ${s.notReplayed}, answered ${s.answered}`,
     `costState=${s.usd === null ? 'unknown' : 'known'} usd(estimate)=${s.usd} | ledger: llm=${s.llmRequests} refusals=${s.refusals} | wrappers sent: ${JSON.stringify(s.hostRequests)}`,
-    `answer characters: total ${s.totalChars}${s.evidenceChars ? ` | outside evidence characters sent: ${s.evidenceChars}` : ''}${s.emptyAnswers.length ? ` | EMPTY answers: ${s.emptyAnswers.join(', ')}` : ''}${s.truncated.length ? ` | cut at the output cap (finish=length): ${s.truncated.join(', ')}` : ''}`,
+    `answer characters: total ${s.totalChars}${s.evidenceChars ? ` | outside evidence characters sent: ${s.evidenceChars}` : ''}${s.noEvidenceTurns.length ? ` | sent WITHOUT evidence (search found no usable page): ${s.noEvidenceTurns.join(', ')}` : ''}${s.emptyAnswers.length ? ` | EMPTY answers: ${s.emptyAnswers.join(', ')}` : ''}${s.truncated.length ? ` | cut at the output cap (finish=length): ${s.truncated.join(', ')}` : ''}`,
     `caps: turn ${s.budget.turnCapUsd} USD, run ${s.budget.runCapUsd} USD (ESTIMATES) | capture sha256=${s.captureSha256} | result=${s.resultPath ?? '-'}`,
   )
   return lines.join('\n')

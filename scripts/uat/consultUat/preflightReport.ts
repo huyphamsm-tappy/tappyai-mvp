@@ -119,7 +119,7 @@ export function conditionReport(input: PreflightReportInput): Condition[] {
     const chk = replayCheck(env)
     const p = chk.plan
     add('replay of the writing step: variant, capture file, caps (run <= 0.30, turn <= 0.10), model priced, outside evidence present for every turn of an evidence variant', chk.reasons,
-      p ? `variant ${p.variant.id} | capture sha256=${p.captureSha256} | ${p.sendable} writer call(s) of ${p.picks.length} turn(s) | model ${p.models.join(',')} | reasoning effort in the capture ${p.efforts.join(',')} -> ${p.variant.effort ?? 'unchanged'}` : '')
+      p ? `variant ${p.variant.id} | capture sha256=${p.captureSha256} | ${p.sendable} writer call(s) of ${p.picks.length} turn(s) | model ${p.models.join(',')} | reasoning effort in the capture ${p.efforts.join(',')} -> ${p.variant.effort ?? 'unchanged'}${p.variant.evidence ? ` | outside evidence: ${p.sendable - p.noEvidenceTurns.length} turn(s) with, ${p.noEvidenceTurns.length} without (no usable page, sent without a block${p.noEvidenceTurns.length ? `: ${p.noEvidenceTurns.join(', ')}` : ''})` : ''}` : '')
   }
 
   const unmet = out.filter(c => !c.ok).length

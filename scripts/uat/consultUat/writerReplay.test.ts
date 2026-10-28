@@ -149,15 +149,34 @@ describe('W6 replay · outside evidence (X0 / X1)', () => {
     expect(msgs[0]!.content).toBe(`${big(5000)}\n\n${V1_WRITING_NOTE}`)
     expect(msgs[msgs.length - 1]).toEqual(evidenceMessage(pages)); expect(msgs.length).toBe((body.messages as unknown[]).length + 1)
   })
-  it('an evidence variant without evidence for the turn is refused (never run silently as V0 / V1); a variant without evidence ignores what it is given', () => {
-    expect(() => variantRequest(body, VARIANTS[4]!, { evidence: [] })).toThrow('no outside evidence for this turn')
-    expect(() => variantRequest(body, VARIANTS[4]!)).toThrow('no outside evidence for this turn')
+  it('amendment 3 (S3.2): a turn whose search found NO usable page gets no evidence block - its X0 request is exactly the V0 request, its X1 request exactly the V1 request (never an empty block)', () => {
+    for (const [x, v] of [[4, 0], [5, 1]] as const) {
+      expect(variantRequest(body, VARIANTS[x]!, { evidence: [] }), VARIANTS[x]!.id).toEqual(variantRequest(body, VARIANTS[v]!))
+      // pages that are all unusable reduce to none: the same
+      expect(variantRequest(body, VARIANTS[x]!, { evidence: evidencePagesFrom({ results: [{ url: 'https://u.example', highlights: [] }, { title: 'no url', highlights: ['x'] }] }) })).toEqual(variantRequest(body, VARIANTS[v]!))
+    }
+    expect(JSON.stringify(variantRequest(body, VARIANTS[4]!, { evidence: [] }))).not.toContain(EVIDENCE_HEADER)
+  })
+  it('evidence that was not given at all (the turn was never searched) is refused - a missing input, not an empty result; a variant without evidence ignores what it is given', () => {
+    expect(() => variantRequest(body, VARIANTS[4]!)).toThrow('no outside evidence was given for this turn')
+    expect(() => variantRequest(body, VARIANTS[5]!)).toThrow('no outside evidence was given for this turn')
     expect(variantRequest(body, VARIANTS[0]!, { evidence: evidencePagesFrom(file) }).messages).toEqual(body.messages)
   })
-  it('replayVariant asks for the evidence of each turn and records the refusal of a turn that has none; the others still run', async () => {
-    const sent: string[] = []
-    const answers = await replayVariant(pickWriterCalls(CAP).slice(0, 3), VARIANTS[4]!, async (_r, m) => { sent.push(m.turn); return { text: 'ok', usd: 0.001 } }, { evidence: t => (t === 'B' ? [] : evidencePagesFrom(file)) })
-    expect(sent).toEqual(['A', 'C']); expect(answers[1]!.error).toContain('no outside evidence')
+  it('replayVariant: every turn is sent; each answer and the packed run say whether the turn carried evidence (yes / no); a variant without evidence has no such flag', async () => {
+    const sent: Array<[string, boolean]> = []
+    const answers = await replayVariant(pickWriterCalls(CAP).slice(0, 3), VARIANTS[4]!, async (r, m) => { sent.push([m.turn, JSON.stringify(r).includes(EVIDENCE_HEADER)]); return { text: 'ok', usd: 0.001 } }, { evidence: t => (t === 'B' ? [] : evidencePagesFrom(file)) })
+    expect(sent).toEqual([['A', true], ['B', false], ['C', true]])
+    expect(answers.map(a => [a.turn, a.evidence, a.error ?? null])).toEqual([['A', true, null], ['B', false, null], ['C', true, null]])
+    const run = packReplayRun(answers, { variant: 'X0', captureFile: 'c.json', questionSha256: null, model: 'gpt-6-luna', at: 'x' })
+    expect(run.turns.map(t => [t.id, t.evidence])).toEqual([['A', true], ['B', false], ['C', true]])
+    expect(run.summary).toMatchObject({ evidenceTurns: ['A', 'C'], noEvidenceTurns: ['B'] })
+    const v0 = await replayVariant(pickWriterCalls(CAP).slice(0, 2), VARIANTS[0]!, async () => ({ text: 'ok', usd: 0.001 }))
+    expect(v0.every(a => !('evidence' in a))).toBe(true)
+    expect('evidenceTurns' in packReplayRun(v0, { variant: 'V0', captureFile: 'c.json', questionSha256: null, model: null, at: 'x' }).summary).toBe(false)
+  })
+  it('a turn whose evidence cannot be read (the reader throws) is recorded as an error, never sent; the next turn still runs', async () => {
+    const answers = await replayVariant(pickWriterCalls(CAP).slice(0, 2), VARIANTS[4]!, async () => ({ text: 'ok', usd: 0.001 }), { evidence: t => { if (t === 'A') throw new Error('unreadable'); return evidencePagesFrom(file) } })
+    expect(answers[0]).toMatchObject({ turn: 'A', text: null, error: 'unreadable' }); expect(answers[1]).toMatchObject({ turn: 'B', text: 'ok', evidence: true })
   })
 })
 
