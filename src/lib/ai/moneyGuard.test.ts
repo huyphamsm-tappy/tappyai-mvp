@@ -758,7 +758,8 @@ describe('MONEY_GUARD_KEEP_VERIFIED — a verified amount survives an unverified
   })
 
   // ── through the actual stream filter (the legacy-path collector is INFERRED, see below) ─────────────
-  const streamText = (text: string, flag: string | undefined) => withFlagAsync(flag, async () => {
+  // Named filteredText, not streamText: the architecture guard reads `streamText(` outside src/lib/ai/llm as a direct SDK call.
+  const filteredText = (text: string, flag: string | undefined) => withFlagAsync(flag, async () => {
     const { createEnrichmentCollector } = await import('./toolResultSplit')
     const { applyPlaceEnrichmentStreamFilter } = await import('./streamEnrichment')
     const userText = 'Tai nghe Sony WH-1000XM5 giá bao nhiêu'
@@ -782,11 +783,11 @@ describe('MONEY_GUARD_KEEP_VERIFIED — a verified amount survives an unverified
   })
 
   it('stream filter, flag OFF: the verified amount goes with the sentence (the known loss), nothing else changes', async () => {
-    expect(await streamText(`${INDEPENDENT} ${TARGET}`, undefined)).toBe(INDEPENDENT)
+    expect(await filteredText(`${INDEPENDENT} ${TARGET}`, undefined)).toBe(INDEPENDENT)
   })
 
   it('stream filter, flag ON: the verified amount survives, the unverified one does not, the independent sentence stays', async () => {
-    const out = await streamText(`${INDEPENDENT} ${TARGET}`, '1')
+    const out = await filteredText(`${INDEPENDENT} ${TARGET}`, '1')
     expect(out).toContain('8.000.000')
     expect(out).not.toContain('3.000.000')
     expect(out).toBe(`${INDEPENDENT} Mua ở Tiki, Sony WH-1000XM5 giá 8.000.000đ.`)
