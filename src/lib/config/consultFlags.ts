@@ -214,3 +214,7 @@ export const CONSULT_UNWIND_S4A_FLAG = 'CONSULT_UNWIND_S4A'
 export const CONSULT_UNWIND_S4B_FLAG = 'CONSULT_UNWIND_S4B'
 export function consultUnwindS4aOn(env: Env = process.env): boolean { return unwindOn(env, CONSULT_UNWIND_S4A_FLAG) }
 export function consultUnwindS4bOn(env: Env = process.env): boolean { return unwindOn(env, CONSULT_UNWIND_S4B_FLAG) }
+//   CONSULT_UNWIND_S5   LOCALHOST ONLY: the model's first web_search of a turn also carries two Exa deep-search rounds (deepSearch.ts). Needs EXA_API_KEY on the server; without it nothing changes.
+//                       A new data processor (Exa): never in production until the Owner decides on the privacy page and the AI-data consent.
+export const CONSULT_UNWIND_S5_FLAG = 'CONSULT_UNWIND_S5'
+export function consultUnwindS5On(env: Env = process.env): boolean { return unwindOn(env, CONSULT_UNWIND_S5_FLAG) }

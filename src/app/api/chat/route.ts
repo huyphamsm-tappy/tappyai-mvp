@@ -102,7 +102,8 @@ import { recordDecision, DECISION_RECORD_TIMEOUT_MS } from '@/lib/ai/agent/runti
 import { createPlacesBudget, PLACES_BUDGET_AGENT, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
 // Consultative V1 (flag CONSULTATIVE_V1, default OFF — see docs/audit/consultative-v1-design.md).
 import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
-import { isProductionRuntime, consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, consultReadPageLateOn, consultPickPageReadOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn, consultUnwindS1aOn, consultUnwindS1bOn, consultUnwindS1dOn, consultUnwindS2aOn, consultUnwindS2bOn, consultUnwindS2cOn, consultUnwindS3aOn, consultUnwindS3bOn, consultUnwindS3cOn, consultUnwindS4aOn, consultUnwindS4bOn } from '@/lib/config/consultFlags'
+import { isProductionRuntime, consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, consultReadPageLateOn, consultPickPageReadOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn, consultUnwindS1aOn, consultUnwindS1bOn, consultUnwindS1dOn, consultUnwindS2aOn, consultUnwindS2bOn, consultUnwindS2cOn, consultUnwindS3aOn, consultUnwindS3bOn, consultUnwindS3cOn, consultUnwindS4aOn, consultUnwindS4bOn, consultUnwindS5On } from '@/lib/config/consultFlags'
+import { deepResearch, exaSearch, deepEvidenceForModel, GAP_SYSTEM, EXA_PRICE } from '@/lib/ai/consultative/deepSearch'
 import { unwindWritingBlock, unwindToolHint, UNWIND_PICK_ROWS, UNWIND_MAX_TOKENS } from '@/lib/ai/consultative/unwindWriting'
 import { answerInsteadOfAsk, unwoundAskLine } from '@/lib/ai/consultative/answerInsteadOfAsk'
 import { checkToolLocation, locationRefusal, HOTEL_CALL_CREDIT_CAP } from '@/lib/ai/consultative/toolLocation'
@@ -3044,6 +3045,33 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // The ticket is the current one inside every tool.execute() — the model's calls, the pre-search and the trip pre-fetch all run these same wrapped objects.
   if (tools && turnWebTicket) wrapToolsWithTurnWebTicket(tools as unknown as Record<string, unknown>, turnWebTicket)
   if (tools && requestCapTurn) wrapToolsWithRequestCap(tools as unknown as Record<string, unknown>, requestCapTurn)
+  // CONSULT_UNWIND_S5 (deepSearch.ts, LOCALHOST ONLY): the model's FIRST web_search of the turn also carries two Exa deep-search rounds as `deep_evidence`.
+  // No key on the server: nothing changes (= flag OFF) and one count line says so. The key is never logged.
+  if (tools && consultUnwindS5On()) {
+    const exaKey = process.env.EXA_API_KEY ?? ''
+    const ws = (tools as unknown as Record<string, { execute?: (a: unknown, o: unknown) => Promise<unknown> }>).web_search
+    if (!exaKey) console.log(JSON.stringify({ type: 'tappyai_deep_search', skipped: 'no_key' }))
+    else if (ws?.execute) {
+      const inner = ws.execute.bind(ws)
+      let deepDone = false
+      ws.execute = async (a: unknown, o: unknown) => {
+        const base = await inner(a, o)
+        const q = typeof (a as { query?: unknown })?.query === 'string' ? (a as { query: string }).query.trim() : ''
+        if (deepDone || !q || !base || typeof base !== 'object') return base
+        deepDone = true
+        const r = await deepResearch({
+          firstQuery: q,
+          search: query => exaSearch(query, { apiKey: exaKey }),
+          findGap: async pages => {
+            const out = await AI.extract({ role: 'intent', systemShared: GAP_SYSTEM, messages: [{ role: 'user', content: `CAU HOI:\n${lastText.slice(0, 600)}\n\nTIEU DE TRANG DA CO:\n${pages.map(p => `- ${p.title}${p.publishedDate ? ` (${p.publishedDate})` : ''}`).join('\n').slice(0, 1500)}` }], schema: z.object({ query: z.string().nullable() }), schemaName: 'tappy_deep_gap', maxTokens: 120 } as never) as { object?: { query?: string | null } } | null
+            return out?.object?.query ?? null
+          },
+        })
+        console.log(JSON.stringify({ type: 'tappyai_deep_search', rounds: r.rounds, pages: r.pages.length, usd: Number(r.usd.toFixed(6)), price_confirmed: EXA_PRICE.confirmed, stopped: r.stopped }))
+        return r.pages.length ? { ...(base as Record<string, unknown>), deep_evidence: deepEvidenceForModel(r) } : base
+      }
+    }
+  }
   // CONSULT_TRACE_DIAGNOSTICS (Wave 2C): in place, like the wrappers above (returns `tools` untouched when the trace is off): proves a tool body RAN and reads its result.
   traceToolsInner(tools, trace, () => { const s = serperSnapshot(); return s.maps + s.search + s.shopping + s.images })
 
