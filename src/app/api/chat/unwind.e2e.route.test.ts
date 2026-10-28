@@ -31,6 +31,7 @@ const h = vi.hoisted(() => {
     pages: {} as Record<string, { status?: number; body: string; contentType?: string }>,
     userId: 'u-unwind-e2e',
     accountErrorAt: 0,
+    finishSteps: [] as Array<Record<string, unknown>>,
   }
   const builder = (): any => {
     const b: any = {
@@ -102,7 +103,7 @@ vi.mock('@/lib/ai/llm', () => ({
               c.enqueue(enc.encode(`a:${JSON.stringify({ toolCallId: call.toolCallId, result })}\n`))
             }
             if (h.state.text) c.enqueue(enc.encode(`0:${JSON.stringify(h.state.text)}\n`))
-            try { await opts.onFinish?.({ usage: { promptTokens: 0, completionTokens: 0 }, finishReason: 'stop', text: h.state.text, steps: [] }) } catch { /* the mock must not fail a turn */ }
+            try { await opts.onFinish?.({ usage: { promptTokens: 0, completionTokens: 0 }, finishReason: 'stop', text: h.state.text, steps: h.state.finishSteps }) } catch { /* the mock must not fail a turn */ }
             c.enqueue(enc.encode('d:{"finishReason":"stop","usage":{"promptTokens":0,"completionTokens":0}}\n'))
             c.close()
           },
@@ -126,7 +127,7 @@ type Msg = { role: 'user' | 'assistant'; content: string }
 const intent = (turn: string, domains: string[], extra: Record<string, unknown> = {}) => ({
   domains, turn, goal: 'x', known: [], party: null, budget_vnd_max: null, difficulty: 'normal', missing: [], assumptions: [], ask: null, query: null, area: null, refers: [], reject_reason: null, ...extra,
 })
-interface TurnOpts { unwind: boolean; oneBrain?: boolean; media?: boolean; luna: Record<string, unknown>; tools?: Array<{ name: string; args: Record<string, unknown> }>; reply?: string; gapQuery?: string | null }
+interface TurnOpts { unwind: boolean; oneBrain?: boolean; media?: boolean; luna: Record<string, unknown>; tools?: Array<{ name: string; args: Record<string, unknown> }>; reply?: string; gapQuery?: string | null; finishSteps?: Array<Record<string, unknown>> }
 
 async function turn(messages: Msg[], o: TurnOpts) {
   delete process.env.TAPPY_AGENT
@@ -139,6 +140,7 @@ async function turn(messages: Msg[], o: TurnOpts) {
   h.state.text = o.reply ?? 'Câu trả lời của mô hình.'
   h.state.luna = o.luna
   h.state.gapQuery = o.gapQuery ?? null
+  h.state.finishSteps = o.finishSteps ?? []
   h.state.extractRoles = []; h.state.streamCalled = 0; h.state.toolNames = []; h.state.opts = {}; h.state.system = ''; h.state.results = []; h.state.webCalls = []; h.state.fetched = []
   __resetAiQuestionQuotaLocal(); __resetPageCache(); __resetSharedRobots()
   const req = {
@@ -410,6 +412,20 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     expect(on?.[0].description).toContain('gợi ý chưa kiểm chứng')
     expect(JSON.stringify(on)).not.toContain('Tao Ngộ')
     expect(JSON.stringify(on)).not.toContain('Hoa Mai')
+  }, 60000)
+  it('flag ON: the turn cost line prices the answer at the call\'s own vendor cost, not at the Haiku list price; flag OFF unchanged', async () => {
+    // Localhost 29/10: a one-brain turn logged model "haiku-4.5" and priced the vendor's tokens at the Haiku list price.
+    const finishSteps = [{ usage: { promptTokens: 8000, completionTokens: 500 }, providerMetadata: { tappy: { cost: { provider: 'openai', effort: 'none', usd: 0.0123, reasoningTokens: 0, cachedInputTokens: 6000, cacheWriteTokens: 0 } } } }]
+    const cost = (t: { logs: Array<Record<string, any>> }) => t.logs.find(x => x.type === 'tappyai_turn_cost')
+    const on = cost(await turn(KNOW, { unwind: true, oneBrain: true, luna: KNOW_INTENT, reply, finishSteps }))
+    expect(on?.model).toBe('openai:none')
+    expect(on?.answerUsd).toBeCloseTo(0.0123, 6)
+    expect(on?.usd).toBeCloseTo(0.0123, 6)
+    expect(on?.lunaCachedIn).toBe(6000)
+    // Flag OFF this route runs the Luna path, which already priced each step from its own cost: the same line, with the intent call added.
+    const off = cost(await turn(KNOW, { unwind: true, luna: KNOW_INTENT, reply, finishSteps }))
+    expect(off?.model).toBe('openai:none')
+    expect(off?.answerUsd).toBeCloseTo(0.0123, 6)
   }, 60000)
   it('CONSULT_ONE_BRAIN_MEDIA: the picture step runs after the answer and leaves the answer and its finish frame whole; without the flag it does not run', async () => {
     const on = await turn(KNOW, { unwind: true, oneBrain: true, media: true, luna: KNOW_INTENT, reply })

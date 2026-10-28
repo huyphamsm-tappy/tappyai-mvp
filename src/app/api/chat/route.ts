@@ -3743,7 +3743,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         if (typeof meta.cacheReadInputTokens === 'number') { cacheReadTokens += meta.cacheReadInputTokens; sawCacheMetadata = true }
         if (typeof meta.cacheCreationInputTokens === 'number') { cacheCreationTokens += meta.cacheCreationInputTokens; sawCacheMetadata = true }
       }
-      if (lunaOn) {
+      // CONSULT_ONE_BRAIN: the answer model is the vendor's (no Luna), so its steps are priced the same way, from the call's own cost.
+      if (lunaOn || oneBrain) {
         const acc = { usd: 0, reasoningTokens: 0, cachedInputTokens: 0, cacheWriteTokens: 0, served: [] as string[], fellBack: false }
         for (const step of steps ?? []) {
           const tp = step.providerMetadata?.tappy as { cost?: CallCost; fellBack?: boolean } | undefined
@@ -4217,7 +4218,8 @@ ${finalWriteInstruction(lang)}` },
         const tokensOut = (usageAcct?.completionTokens ?? 0) + (consultRun?.usage.completionTokens ?? 0) + finalWriteTokens.out
         const usd = turnUsd({ promptTokens: (usageAcct?.promptTokens ?? 0) + (consultRun?.usage.promptTokens ?? 0) + finalWriteTokens.in, completionTokens: tokensOut, cacheReadTokens: usageAcct?.cacheReadTokens ?? 0, cacheCreationTokens: usageAcct?.cacheCreationTokens ?? 0, serperCredits: d.credits })
         const base = { domain: consult?.domains[0] ?? decisionFrame.domains[0] ?? null, turnType: consult?.turn ?? (planningIntent ? 'plan' : 'legacy'), model: 'haiku-4.5', tokensIn, tokensOut, serperCalls: sumCounts(d.calls), cacheHits: sumCounts(d.hits), promptCacheRead: usageAcct?.cacheReadTokens ?? 0, promptCacheWrite: usageAcct?.cacheCreationTokens ?? 0, usd }
-        if (!lunaOn) return base
+        // CONSULT_ONE_BRAIN (localhost 29/10): the line said model 'haiku-4.5' and priced the vendor's tokens at the Haiku list price.
+        if (!lunaOn && !oneBrain) return base
         // PHIÊN LUNA: each part at its own vendor's price — intent call + answer steps (reasoning tokens are in
         // the output count) + Serper. The Haiku brain, when it ran instead, keeps the Haiku price.
         const intentUsd = lunaRun?.costUsd ?? turnUsd({ promptTokens: consultRun?.usage.promptTokens ?? 0, completionTokens: consultRun?.usage.completionTokens ?? 0 })
