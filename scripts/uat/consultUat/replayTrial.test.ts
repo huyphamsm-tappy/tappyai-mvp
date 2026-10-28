@@ -116,7 +116,8 @@ describe('W6 replay run · a V0 run with the whole safety path', () => {
     ran(await run())
     expect(String(POSTED()[0]!.body.messages[0].content)).toContain('HUONG DAN VIET BO SUNG')
     net.requests = []; vi.unstubAllEnvs(); for (const k of ALL_NAMES) vi.stubEnv(k, undefined)
-    for (const t of ['T1', 'T2', 'T3']) files[`${EVIDENCE_DIR}/evidence-${t}.json`] = JSON.stringify({ results: [{ url: `https://e.example/${t}`, title: 'Tieu de', highlights: [`bang chung cho ${t}`] }] })
+    // (T3's file starts with a byte-order mark, as a Windows editor may write it)
+    for (const t of ['T1', 'T2', 'T3']) files[`${EVIDENCE_DIR}/evidence-${t}.json`] = (t === 'T3' ? String.fromCharCode(0xfeff) : '') + JSON.stringify({ results: [{ url: `https://e.example/${t}`, title: 'Tieu de', highlights: [`bang chung cho ${t}`] }] })
     setEnv({ BENCH_REPLAY_VARIANT: 'X0', BENCH_REPLAY_EVIDENCE_DIR: EVIDENCE_DIR })
     const s = ran(await run())
     for (const r of POSTED()) {

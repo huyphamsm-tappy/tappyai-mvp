@@ -107,7 +107,7 @@ export function replayCheck(env: Env, deps: ReplayDeps = {}): { reasons: string[
         if (variant?.evidence) {
           if (evidenceDir === '' || !/^D:[\\/]/i.test(evidenceDir)) reasons.push(`${REPLAY_EVIDENCE_DIR_ENV} must be a folder on drive D (the variant adds outside evidence)`)
           else {
-            const missing = sendable.filter(p => { try { return evidencePagesFrom(JSON.parse(readText(evidenceFile(evidenceDir, p.turn)))).length === 0 } catch { return true } }).map(p => p.turn)
+            const missing = sendable.filter(p => { try { return evidencePagesOfText(readText(evidenceFile(evidenceDir, p.turn))).length === 0 } catch { return true } }).map(p => p.turn)
             if (missing.length) reasons.push(`no usable outside evidence for turn(s): ${missing.join(', ')} (a variant with evidence is never run on part of the turns)`)
           }
         } else if (evidenceDir !== '') reasons.push(`${REPLAY_EVIDENCE_DIR_ENV} is set but the variant ${variant?.id ?? '?'} takes no evidence`)
@@ -119,6 +119,8 @@ export function replayCheck(env: Env, deps: ReplayDeps = {}): { reasons: string[
 }
 
 export const evidenceFile = (dir: string, turn: string): string => `${dir.replace(/[\\/]+$/, '')}/evidence-${turn}.json`
+/** Pure. The pages of one evidence file's text (one byte-order mark dropped: a Windows editor may add it). Throws on text that is not JSON. */
+export const evidencePagesOfText = (text: string): EvidencePage[] => evidencePagesFrom(JSON.parse(text.charCodeAt(0) === 0xfeff ? text.slice(1) : text))
 
 export interface ReplayInput {
   env: Env
@@ -217,7 +219,7 @@ export async function runReplayTrial(input: ReplayInput): Promise<ReplayOutcome>
   const plan = chk.plan
   if ((env.OPENAI_API_KEY ?? '').trim() === '') return refuse(['OPENAI_API_KEY is UNSET'])
   const readText = input.readText ?? ((p: string) => readFileSync(p, 'utf8'))
-  const evidenceOf = (turn: string): readonly EvidencePage[] => (plan.evidenceDir ? evidencePagesFrom(JSON.parse(readText(evidenceFile(plan.evidenceDir, turn)))) : [])
+  const evidenceOf = (turn: string): readonly EvidencePage[] => (plan.evidenceDir ? evidencePagesOfText(readText(evidenceFile(plan.evidenceDir, turn))) : [])
 
   // 2. the wrapped network: ONE endpoint, POST, https, default port, no dispatcher, never a redirect
   const forward = input.fetchImpl ?? originalFetch
