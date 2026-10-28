@@ -355,7 +355,7 @@ describe('S1 — R2 only on a pre-searched Luna answer turn', () => {
 })
 
 // Wave 5 · W5-2 (CONSULT_PICK_PAGE_READ): on R2 the CODE opens the venue websites of its pre-search (at most three, one read_page call of the turn's own reader) before the model writes.
-// Measured (W4-R2, 28/10): the model called no tool on R2 (5/5), so no venue page was ever read. Every test here: the model itself calls NO tool unless the test says so.
+// Measured (W4-R2, 28/10): the model called no tool on R2 in 4 of 5 turns, so those venue pages were never read. Every test here: the model itself calls NO tool unless the test says so.
 describe('W5-2 — the code reads the venue pages on R2', () => {
   const PR = { CONSULT_PICK_PAGE_READ: '1' }
   const GOOD = 'Mình chọn **Cà phê Mây**. Bạc xỉu **52.000đ**.'

@@ -3386,7 +3386,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // An input only: an amount read on venue X's own site is evidence for X; any other amount is judged exactly as before (still cut when it belongs to no venue it is said of).
   const pickPlaceSites = pickTools && presearchOutcome?.toolName === 'search_places' ? presearchPlaceSites(lastFullPlaceResult, presearchOutcome.result) : null
   if (pickPlaceSites) enrichment.placeSites = pickPlaceSites
-  // Wave 5 · W5-2 (CONSULT_PICK_PAGE_READ, default OFF = nothing here runs). Measured (W4-R2, 28/10): on R2 the model called no tool (5/5) and lost 5/5 - no venue page was ever opened. With the flag
+  // Wave 5 · W5-2 (CONSULT_PICK_PAGE_READ, default OFF = nothing here runs). Measured (W4-R2, 28/10): on R2 the model called no tool in 4/5 turns and lost 5/5 - those venue pages were never opened. With the flag
   // the CODE opens up to three of those venue websites once, through this turn's own read_page reader (robots.txt, safe fetch, page budget), and the result reaches the model as a completed read_page
   // call before it writes: the same messages and the same leading frames as the pre-search, so the price / hours guards see the page evidence exactly as when the model reads. No model call, no
   // search request (the model's own stream stays the one metered call). Fail-open: nothing read, or an error, leaves the turn exactly as with the flag OFF.
