@@ -114,6 +114,19 @@ export const FINAL_SYNTHESIS_RESERVED_STEPS = 2
 /** Pure. Has the guard's reserve been reached (a tool call now is answered by code, not run)? One step must have finished, and only the reserved steps may be left. */
 export function finalSynthesisReserveReached(stepsFinished: number, maxSteps: number): boolean { return stepsFinished >= 1 && stepsFinished >= maxSteps - FINAL_SYNTHESIS_RESERVED_STEPS }
 /**
+ * Wave 5 · W5-1 (CONSULT_READ_PAGE_LATE). ON only for the exact value "1", outside a production runtime, AND only while the final writing call is armed (consultFinalWriteOn): NOT tied to the level.
+ * Measured (W4 runs, 28/10): with six steps the reserve answered a read_page made in step five ("search_budget_used"), so a page the model had just found was never read (E22, E24, E9), although its
+ * result would still reach step six, where the model writes. With this flag a read_page call is held back only in the LAST step; every other tool keeps the two-step reserve.
+ * The writing guarantee holds: the last step still refuses every tool, and a turn that ends without a word gets the final write (C-PRE-1) - which is why the flag needs it.
+ */
+export const CONSULT_READ_PAGE_LATE_FLAG = 'CONSULT_READ_PAGE_LATE'
+export function consultReadPageLateOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_READ_PAGE_LATE_FLAG]) && !isProductionRuntime(env) && consultFinalWriteOn(env) }
+/** Pure. Does the reserve hold this tool call back? read_page with W5-1 on: only in the last step (one step must have finished). Anything else: the two-step reserve, as before. */
+export function reserveHoldsToolCall(tool: string, stepsFinished: number, maxSteps: number, readPageLate: boolean): boolean {
+  if (readPageLate && tool === 'read_page') return stepsFinished >= 1 && stepsFinished >= maxSteps - 1
+  return finalSynthesisReserveReached(stepsFinished, maxSteps)
+}
+/**
  * Wave 4 · C-PRE-3. Pure. The depth of a turn that carries the page reader but is NOT on the lean path (the knowledge path, C2), by capability level: below L2 the previous five steps, L2-L3 six, L4 eight
  * (the research loop's own budget). `toolRounds` is what the reserve leaves for tools: at five steps the guard allowed THREE lookups and cut the fourth (measured B2 27/10: E18, E22, X2 - four web_search
  * requests each, the fourth answered "search_budget_used" at stepsFinished 3 of 5); six steps allow four, eight allow six.

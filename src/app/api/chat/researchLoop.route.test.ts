@@ -12,6 +12,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { __resetAiQuestionQuotaLocal } from '@/lib/ai/quota/aiQuestionQuota'
 import { RESEARCH_RULE, RESEARCH_STEPS, __resetSharedRobots } from '@/lib/ai/consultative/researchLoop'
 import { __resetPageCache } from '@/lib/ai/agent/runtime/readPage'
+import { CONSULT_READ_PAGE_LATE_FLAG, consultReadPageLateOn, reserveHoldsToolCall } from '@/lib/config/consultFlags'
 
 type Call = { toolCallId: string; toolName: string; args: Record<string, unknown> }
 const h = vi.hoisted(() => {
@@ -28,6 +29,7 @@ const h = vi.hoisted(() => {
     fetched: [] as string[],
     pages: {} as Record<string, { status?: number; body: string; contentType?: string }>,
     userId: 'u-research-loop',
+    generateText: '', generateCalls: 0,
   }
   const builder = (): any => {
     const b: any = {
@@ -84,6 +86,8 @@ vi.mock('@/lib/ai/llm', () => ({
       h.state.maxSteps = Number(opts.maxSteps ?? 0)
       try { h.state.system = JSON.stringify({ system: opts.system }) } catch { h.state.system = '' }
       return {
+        // W5-1: the final write (C-PRE-1) reads the tool results from here once the stream is drained
+        get steps() { return Promise.resolve([{ toolResults: h.state.results.map(r => ({ toolName: r.name, result: r.result })) }]) },
         toDataStreamResponse: () => new Response(new ReadableStream<Uint8Array>({
           async start(c) {
             const enc = new TextEncoder()
@@ -104,7 +108,7 @@ vi.mock('@/lib/ai/llm', () => ({
       }
     },
     step: () => Promise.resolve({ text: '', toolCalls: [], finishReason: 'stop', usage: { promptTokens: 100, completionTokens: 20 }, providerMetadata: {} }),
-    generate: () => Promise.resolve({ text: '' }), vision: () => Promise.resolve({ text: '' }),
+    generate: () => { h.state.generateCalls++; return Promise.resolve({ text: h.state.generateText }) }, vision: () => Promise.resolve({ text: '' }),
   },
 }))
 
@@ -117,7 +121,7 @@ const lunaIntent = (turn: string, domains: string[], extra: Record<string, unkno
 })
 const one = (u: string): Msg[] => [{ role: 'user', content: u }]
 type ScriptedCall = { name: string; args: Record<string, unknown> }
-interface TurnOpts { research?: string; vercelEnv?: string; luna?: Record<string, unknown> | null; tools?: ScriptedCall[]; gps?: unknown; reply?: string }
+interface TurnOpts { research?: string; vercelEnv?: string; luna?: Record<string, unknown> | null; tools?: ScriptedCall[]; gps?: unknown; reply?: string; env?: Record<string, string>; finalText?: string }
 
 const MENU_HTML = `<html><head><title>Thực đơn Cà phê Mây</title></head><body><h1>Thực đơn</h1>
 <table><caption>Đồ uống</caption><tr><th>Món</th><th>Giá</th></tr><tr><td>Cà phê sữa</td><td>45.000đ</td></tr><tr><td>Bạc xỉu</td><td>52.000đ</td></tr></table>
@@ -128,10 +132,13 @@ async function turn(messages: Msg[], o: TurnOpts = {}) {
   delete process.env.TAPPY_AGENT
   // Wave 4: this file measures turns without the Wave 4 paths; a path flag set in the shell must not move its turns to another path (restored after each test).
   // CONSULT_FINAL_SYNTHESIS too: W1 carries its own reserved step, and the OFF control below claims "CONSULT_FINAL_SYNTHESIS off" (measured: a shell with it on turned that control red).
-  for (const k of ['CONSULT_KNOWLEDGE_PATH', 'CONSULT_PICK_TURN_TOOLS', 'CONSULT_CHAT_DOMAIN_AGREEMENT', 'CONSULT_FINAL_SYNTHESIS']) vi.stubEnv(k, '0')
+  // W5-1: CONSULT_READ_PAGE_LATE is pinned off the same way; only the W5-1 tests set it (and CONSULT_FINAL_SYNTHESIS) through `env`, after these pins.
+  for (const k of ['CONSULT_KNOWLEDGE_PATH', 'CONSULT_PICK_TURN_TOOLS', 'CONSULT_CHAT_DOMAIN_AGREEMENT', 'CONSULT_FINAL_SYNTHESIS', 'CONSULT_READ_PAGE_LATE']) vi.stubEnv(k, '0')
   const set = (k: string, v: string | undefined) => { if (v === undefined) delete process.env[k]; else process.env[k] = v }
   set('CONSULT_RESEARCH_LOOP', o.research); set('VERCEL_ENV', o.vercelEnv)
   delete process.env.CONSULT_TOOL_BY_NEED; delete process.env.CONSULT_DETERMINISTIC_MATH; delete process.env.CONSULT_STRUCTURED_SYNTHESIS; delete process.env.CONSULT_CAPABILITY_LEVEL // this file pins W1 alone (W2 / W3 / W4 / the level have their own route tests)
+  for (const [k, v] of Object.entries(o.env ?? {})) vi.stubEnv(k, v)
+  h.state.generateText = o.finalText ?? ''; h.state.generateCalls = 0
   h.state.calls = (o.tools ?? []).map((t, i) => ({ toolCallId: `c${i + 1}`, toolName: t.name, args: t.args }))
   h.state.text = o.reply ?? 'Đây là câu trả lời.'
   h.state.luna = o.luna ?? null
@@ -148,7 +155,7 @@ async function turn(messages: Msg[], o: TurnOpts = {}) {
   try { raw = await (await POST(req as never)).text() } finally { spy.mockRestore() }
   const text = raw.split('\n').filter(l => l.startsWith('0:')).map(l => { try { return JSON.parse(l.slice(2)) as string } catch { return '' } }).join('')
   const res = (name: string, i = 0): any => h.state.results.filter(r => r.name === name)[i]?.result
-  return { raw, text, toolNames: [...h.state.toolNames], maxSteps: h.state.maxSteps, system: h.state.system, web: [...h.state.webCalls], fetched: [...h.state.fetched], res, all: [...h.state.results], lines }
+  return { raw, text, toolNames: [...h.state.toolNames], maxSteps: h.state.maxSteps, system: h.state.system, web: [...h.state.webCalls], fetched: [...h.state.fetched], res, all: [...h.state.results], lines, generate: h.state.generateCalls }
 }
 
 beforeEach(() => {
@@ -283,6 +290,76 @@ describe('W1 — four tool rounds, then the model must write (the reserved step)
     const r = await turn(MORE, { luna: lunaIntent('more', ['food']), gps: GPS_HN, research: undefined, tools: [{ name: 'search_places', args: { query: 'a', type: 'cafe' } }, STEP, { name: 'search_places', args: { query: 'b', type: 'cafe' } }, STEP, { name: 'search_places', args: { query: 'c', type: 'cafe' } }], reply: 'ok' })
     expect(r.all.map(x => x.name)).toEqual(['search_places', 'search_places', 'search_places'])
     expect(r.all.some(x => x.result?.error === 'search_budget_used')).toBe(false)
+  }, 60000)
+})
+
+describe('W5-1 — CONSULT_READ_PAGE_LATE: a page found late is still read, and the turn still ends in writing', () => {
+  const STEP: ScriptedCall = { name: '__step__', args: {} }
+  const LOOK = (q: string): ScriptedCall => ({ name: 'web_search', args: { query: q } })
+  const MENU = 'https://caphemay.example/menu'
+  const LATE_ON = { CONSULT_FINAL_SYNTHESIS: '1', CONSULT_READ_PAGE_LATE: '1' }
+  // The measured case (W4 R3b E22/E24, AGREE E9): four search rounds, then the model asks for the page it found, in step five of six.
+  const lateRead = [LOOK('một'), STEP, LOOK('hai'), STEP, LOOK('ba'), STEP, LOOK('bốn'), STEP, READ(MENU)]
+
+  it('pure rule (6 steps): OFF = the two-step reserve for every tool; ON = read_page is held back only in the last step, every other tool keeps the reserve', () => {
+    for (const sf of [0, 1, 2, 3]) for (const late of [false, true]) for (const tool of ['read_page', 'web_search']) expect(reserveHoldsToolCall(tool, sf, 6, late), `${tool} ${sf} ${late}`).toBe(false)
+    expect(reserveHoldsToolCall('read_page', 4, 6, false)).toBe(true)
+    expect(reserveHoldsToolCall('read_page', 4, 6, true)).toBe(false)
+    expect(reserveHoldsToolCall('web_search', 4, 6, true)).toBe(true)
+    expect(reserveHoldsToolCall('calculate', 4, 6, true)).toBe(true)
+    for (const late of [false, true]) expect(reserveHoldsToolCall('read_page', 5, 6, late)).toBe(true)
+    // the first step is never held back, whatever the cap (the reserve's own rule)
+    for (const late of [false, true]) expect(reserveHoldsToolCall('read_page', 0, 1, late)).toBe(false)
+  })
+  it('the flag: only the exact value "1", never in a production runtime, and only with the final write armed (CONSULT_FINAL_SYNTHESIS=1)', () => {
+    expect(CONSULT_READ_PAGE_LATE_FLAG).toBe('CONSULT_READ_PAGE_LATE')
+    expect(consultReadPageLateOn({ CONSULT_READ_PAGE_LATE: '1', CONSULT_FINAL_SYNTHESIS: '1' })).toBe(true)
+    for (const v of [undefined, '', '0', 'true', ' 1', '1 ', 'on']) expect(consultReadPageLateOn({ CONSULT_READ_PAGE_LATE: v, CONSULT_FINAL_SYNTHESIS: '1' }), String(v)).toBe(false)
+    expect(consultReadPageLateOn({ CONSULT_READ_PAGE_LATE: '1' })).toBe(false)
+    expect(consultReadPageLateOn({ CONSULT_READ_PAGE_LATE: '1', CONSULT_FINAL_SYNTHESIS: '0' })).toBe(false)
+    expect(consultReadPageLateOn({ CONSULT_READ_PAGE_LATE: '1', CONSULT_FINAL_SYNTHESIS: '1', VERCEL_ENV: 'production' })).toBe(false)
+    // not tied to the capability level: no level turns it on
+    for (const lvl of ['1', '2', '3', '4']) expect(consultReadPageLateOn({ CONSULT_CAPABILITY_LEVEL: lvl, CONSULT_FINAL_SYNTHESIS: '1' }), lvl).toBe(false)
+  })
+  it('the measured case, OFF (CONSULT_FINAL_SYNTHESIS on, W5-1 unset): the read_page in step five is answered search_budget_used and the page is never opened - the starvation, as before', async () => {
+    const r = await turn(Q, { ...O, tools: lateRead, reply: 'ok', env: { CONSULT_FINAL_SYNTHESIS: '1' } })
+    expect(r.maxSteps).toBe(RESEARCH_STEPS)
+    expect(r.all.map(x => x.name)).toEqual(['web_search', 'web_search', 'web_search', 'web_search', 'read_page'])
+    expect(r.all[4]?.result?.error).toBe('search_budget_used')
+    expect(r.fetched).not.toContain(MENU)
+  }, 60000)
+  it('the measured case, ON: the read_page in step five runs through the read_page path (robots first) and its prices reach the model', async () => {
+    const r = await turn(Q, { ...O, tools: lateRead, reply: 'ok', env: LATE_ON })
+    expect(r.maxSteps).toBe(RESEARCH_STEPS)
+    expect(r.all.map(x => x.name)).toEqual(['web_search', 'web_search', 'web_search', 'web_search', 'read_page'])
+    expect(r.all[4]?.result?.error).toBeUndefined()
+    expect(r.fetched).toEqual(expect.arrayContaining(['https://caphemay.example/robots.txt', MENU]))
+    expect(JSON.stringify(r.all[4]?.result)).toContain('45.000')
+    expect(r.lines.some(l => l.includes('tappyai_final_synthesis_guard'))).toBe(false)
+  }, 60000)
+  it('ON: every other tool keeps the reserve - a web_search in step five is still answered search_budget_used and searches nothing', async () => {
+    const r = await turn(Q, { ...O, tools: [LOOK('một'), STEP, LOOK('hai'), STEP, LOOK('ba'), STEP, LOOK('bốn'), STEP, LOOK('năm')], reply: 'ok', env: LATE_ON })
+    expect(r.all[4]?.result?.error).toBe('search_budget_used')
+    expect(r.web.length).toBe(4)
+  }, 60000)
+  it('ON: the last step still refuses every tool, read_page too (step six is for writing)', async () => {
+    const r = await turn(Q, { ...O, tools: [...lateRead, STEP, READ('https://caphemay.example/')], reply: 'ok', env: LATE_ON })
+    expect(r.all.map(x => x.name)).toEqual(['web_search', 'web_search', 'web_search', 'web_search', 'read_page', 'read_page'])
+    expect(r.all[4]?.result?.error).toBeUndefined()
+    expect(r.all[5]?.result?.error).toBe('search_budget_used')
+    expect(r.fetched).not.toContain('https://caphemay.example/')
+  }, 60000)
+  it('ON: a turn that runs out of steps on tool calls without one word still ends in writing (the final write, from the page it read)', async () => {
+    const r = await turn(Q, { ...O, tools: [...lateRead, STEP, LOOK('sáu')], reply: '', finalText: 'Cà phê Mây: cà phê sữa 45.000đ, mở 7h đến 22h.', env: LATE_ON })
+    expect(r.all[4]?.result?.error).toBeUndefined()
+    expect(r.all[5]?.result?.error).toBe('search_budget_used')
+    expect(r.generate).toBe(1)
+    expect(r.text).toContain('45.000đ')
+  }, 60000)
+  it('inert without the final write: CONSULT_READ_PAGE_LATE=1 with CONSULT_FINAL_SYNTHESIS off keeps the two-step reserve (no page read late without the writing guarantee)', async () => {
+    const r = await turn(Q, { ...O, tools: lateRead, reply: 'ok', env: { CONSULT_READ_PAGE_LATE: '1' } })
+    expect(r.all[4]?.result?.error).toBe('search_budget_used')
+    expect(r.fetched).not.toContain(MENU)
   }, 60000)
 })
 
