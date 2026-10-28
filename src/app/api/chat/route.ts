@@ -107,6 +107,7 @@ import { searchWithReads, createOnce, FOLLOW_UP_SYSTEM, S6_MAX_READS } from '@/l
 import { ONE_BRAIN_CORE, ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, oneBrainDynamic } from '@/lib/ai/consultative/oneBrain'
 import { oneBrainMediaStream } from '@/lib/ai/consultative/oneBrainMedia'
 import { serperLastAccountErrorAt } from '@/lib/ai/tools/serperClient'
+import { getWeatherForecast } from '@/lib/ai/tools/weatherForecast'
 import { understandTurn } from '@/lib/ai/answerV4/understand'
 import { deepResearch, exaSearch, deepEvidenceForModel, GAP_SYSTEM, EXA_PRICE } from '@/lib/ai/consultative/deepSearch'
 import { unwindWritingBlock, unwindToolHint, UNWIND_PICK_ROWS, UNWIND_MAX_TOKENS } from '@/lib/ai/consultative/unwindWriting'
@@ -2401,7 +2402,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         const raw = await orig(...a)
         // CONSULT_ONE_BRAIN: a lookup the search provider refused at account level is a FAILED lookup, not an empty one - the model is told so.
         const out = oneBrain && serperLastAccountErrorAt() >= startedAt && raw && typeof raw === 'object' && !Array.isArray(raw)
-          ? { ...(raw as Record<string, unknown>), provider_error: 'search_provider_refused', provider_note: 'The search provider refused this request (account or key error). This lookup FAILED; it is not an empty result. Say plainly that the lookup did not work this time, and mark anything you add from your own knowledge as not checked.' }
+          // the tool's own "no result" note is replaced: measured 28/10, a place search refused by the provider kept its "ask for a narrower area" note and the model asked the person instead of saying the lookup failed
+          ? { ...(raw as Record<string, unknown>), provider_error: 'search_provider_refused', note: 'The search provider refused this request (account or key error). This lookup FAILED; it is not an empty result and the person does not need to narrow anything. Say plainly that the lookup did not work this time, give what you know from general knowledge marked as not checked, and do not ask the person to change the request.' }
           : raw
         // B1 (2026-09-20): the product unit is judged too — against the shopping constraints.
         const gate = applyHardConstraintGate(name, out, situation, lang, { shopping: shoppingConstraints })
@@ -2930,6 +2932,12 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         parameters: z.object({ location: z.string().describe('Ten thanh pho/tinh can xem thoi tiet (vd: Ha Noi, Da Nang, TP HCM)') }),
         execute: async ({ location }) => getWeather(location, lang)
       }),
+      // CONSULT_ONE_BRAIN: a daily forecast up to 10 days (weatherForecast.ts, Open-Meteo, no key) - get_weather gives today only.
+      ...(oneBrain ? { get_weather_forecast: tool({
+        description: 'Daily weather forecast for the next 1-10 days for a city or place anywhere (min/max temperature, rain chance and amount, wind, sky). Use for a day after today: the weekend, a trip date, next week.',
+        parameters: z.object({ location: z.string().describe('City or place name, e.g. Da Nang, Quy Nhon, Tokyo'), days: z.number().describe('How many days to return, counting TODAY as day 1, 1-10. To reach a date, count it in: from a Wednesday, the coming Sunday needs 5') }),
+        execute: async ({ location, days }) => getWeatherForecast(location, days, lang),
+      }) } : {}),
       get_gold_price: tool({
         description: 'Lay gia vang SJC, PNJ, DOJI, vang the gioi (XAU/USD) realtime, cap nhat moi 5 phut tu vang.today',
         parameters: z.object({ query: z.string().optional().describe('Loai vang user hoi, vd: SJC, PNJ, vang the gioi (khong bat buoc)') }),

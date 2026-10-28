@@ -2698,7 +2698,9 @@ export function applyPlaceEnrichmentStreamFilter(
     // of the turn states loses only the part that carries it, when a safe cut keeps the sentence's other amounts; no safe cut ⇒ the sentence is not touched.
     // Rows = the turn's search results + the passages of the pages it read. See rangeEvidence.ts.
     const rangeEvRows = [...rangeRows.map(r => r.text), ...(collector?.guardEvidence?.sources ?? []).flatMap(s => s.passages)]
-    const rangeCut = coachRows.length === 0 && rangeEvRows.length > 0
+    // CONSULT_ONE_BRAIN: the model cites the page right after each figure, so its sentences are not cut. Measured 28/10 on localhost: the sentence splitter broke a
+    // sentence at the dot of a source name inside a markdown link ("[Giaxe.2banh](…)"), the cut left "Giaxe.2banh)." at the top of a bullet and appended "not verified".
+    const rangeCut = coachRows.length === 0 && rangeEvRows.length > 0 && collector?.oneBrain !== true
       ? cutUnbackedRanges(citeBoundRaw, {
         rows: rangeEvRows,
         hosts: [...rangeRows.map(r => r.host), ...(collector?.guardEvidence?.sources ?? []).map(s => s.host)],
@@ -3288,7 +3290,9 @@ export function applyPlaceEnrichmentStreamFilter(
       // Wave 3 (W3, R3-03): the post-processing that turns a consult answer into "a short pick" steps aside only for an answer that REALLY has a structure (a markdown table, or two headings) AND only on a turn that
       // asked for one (the flag). A long simple pick keeps every guard it has always had.
       const structuredAnswer = collector?.structuredSynthesis === true && hasMarkdownStructure(claims.text)
-      const atmosphere = guardAtmosphereClaims(claims.text, { attrs: v1Attrs, names: snippetPlaceNames, gapAttributes, agentHedges: collector?.semanticRanking === true, ...(structuredAnswer ? { labelWords: new Set(foldWords((collector?.userTexts ?? [userText]).join(' '))) } : {}) })
+      // CONSULT_ONE_BRAIN: no sentence is deleted for an unsupported atmosphere word (measured 28/10: a cafe request whose place search failed lost the
+      // sentence about quiet cafes and the reply shrank to one line); the model marks what it could not check (oneBrain.ts).
+      const atmosphere = collector?.oneBrain === true ? { text: claims.text, removed: 0, unsupportedInPick: 0 } : guardAtmosphereClaims(claims.text, { attrs: v1Attrs, names: snippetPlaceNames, gapAttributes, agentHedges: collector?.semanticRanking === true, ...(structuredAnswer ? { labelWords: new Set(foldWords((collector?.userTexts ?? [userText]).join(' '))) } : {}) })
       // The shape rules are about a card-backed decision. A turn with no venues (a film
       // recommendation, a subject question) keeps its prose — measured E7: the cap dropped
       // films two and three as "least informative".
@@ -3393,7 +3397,8 @@ export function applyPlaceEnrichmentStreamFilter(
       // M7 (TAPPY_AGENT=2): Luna owns reading the user's needs and what to caution about. These lines come from the legacy situation
       // frame, which parses the conversation itself and knows nothing of the task state — measured SR-G1: the user dropped "yên tĩnh" for
       // "gần biển" and code still appended "chưa thấy bằng chứng về yên tĩnh". Facts stay protected by the guards; Phase 7 / legacy unchanged.
-      const runtimeOwnsCautions = collector?.semanticRanking === true
+      // CONSULT_ONE_BRAIN: the model states what it could not confirm itself (oneBrain.ts); measured 28/10: a scooter comparison got "chưa xác nhận được đúng loại sản phẩm từ các listing" appended.
+      const runtimeOwnsCautions = collector?.semanticRanking === true || collector?.oneBrain === true
       if (unsaid.length > 0 && !runtimeOwnsCautions) {
         // B1: a shopping turn's heads-up points at the seller page, not at a phone call.
         const shoppingGaps = unsaid.every(g => g in SHOPPING_GAP_WORDS)

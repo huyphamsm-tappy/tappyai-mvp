@@ -315,7 +315,7 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
   const TRIP: Msg[] = [{ role: 'user', content: 'len lich trinh 2 ngay 1 dem o da lat giup minh' }]
   const TRIP_INTENT = intent('plan', ['travel'], { known: [{ key: 'diem_den', value: 'Đà Lạt' }, { key: 'so_ngay', value: '2' }] })
   const cases: Array<[string, Msg[], Record<string, unknown>]> = [['review', REVIEW, intent('chat', [])], ['trip', TRIP, TRIP_INTENT], ['pick', PICK, PICK_INTENT], ['know', KNOW, KNOW_INTENT], ['hello', [{ role: 'user', content: 'chao ban' }], intent('chat', [])]]
-  const ALL_TOOLS = ['search_places', 'get_news', 'search_products', 'web_search', 'read_page', 'calculate', 'get_weather', 'get_gold_price', 'get_flight_prices', 'get_hotel_prices', 'get_transport_options', 'save_price_watch']
+  const ALL_TOOLS = ['search_places', 'get_news', 'search_products', 'web_search', 'read_page', 'calculate', 'get_weather', 'get_weather_forecast', 'get_gold_price', 'get_flight_prices', 'get_hotel_prices', 'get_transport_options', 'save_price_watch']
   const reply = 'Trả lời của mô hình.'
   it('flag ON: every kind of request reaches the model the same way - no intent call, the whole tool set, the one general instruction, 6 steps, 4000 tokens', async () => {
     for (const [name, m, l] of cases) {
@@ -365,11 +365,24 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     try {
       const on = await turn(KNOW, { unwind: true, oneBrain: true, luna: KNOW_INTENT, tools: [SEARCH], reply })
       expect(JSON.stringify(on.results)).toContain('search_provider_refused')
+      // the tool's own "no result" note is replaced by the failure note
+      expect(JSON.stringify(on.results)).toMatch(/(?<![_a-z])\\*"note\\*":\\*"The search provider refused/)
       const off = await turn(KNOW, { unwind: true, oneBrain: false, luna: KNOW_INTENT, tools: [SEARCH], reply })
       expect(JSON.stringify(off.results)).not.toContain('search_provider_refused')
     } finally { h.state.accountErrorAt = 0 }
     const fine = await turn(KNOW, { unwind: true, oneBrain: true, luna: KNOW_INTENT, tools: [SEARCH], reply })
     expect(JSON.stringify(fine.results)).not.toContain('search_provider_refused')
+  }, 60000)
+  it('flag ON: a cited price range stays in the model\'s sentence and no "not verified" line is appended', async () => {
+    const ranged = '- **Giá mua:** Xe A khoảng 18,9–19,5 triệu đồng, xe B khoảng 22 triệu đồng (theo [Giaxe.2banh](https://giaxe.example/bang-gia)). Xe C niêm yết 24,9 triệu đồng.\n\nNên so giá lăn bánh.'
+    const ASK_BUY: Msg[] = [{ role: 'user', content: 'nen mua xe may dien hay xe xang cho sinh vien di hoc hang ngay' }]
+    const on = await turn(ASK_BUY, { unwind: true, oneBrain: true, luna: intent('chat', [], { difficulty: 'easy' }), tools: [SEARCH], reply: ranged })
+    expect(on.text).toContain('Xe A khoảng 18,9–19,5 triệu đồng')
+    expect(on.logs.some(x => x.type === 'tappyai_guard' && x.guard === 'range_evidence')).toBe(false)
+    expect(on.text).toContain('Xe C niêm yết 24,9 triệu đồng.')
+    expect(on.text).not.toContain('Mình chưa xác minh được giá hiện tại')
+    // The OFF side is not reproduced here: the guard needs evidence rows from real search / page results, which this offline harness does not build.
+    // The fix was checked on localhost 28/10 with the turn that showed it (MOT-BO-NAO report, question 8).
   }, 60000)
   it('CONSULT_ONE_BRAIN_MEDIA: the picture step runs after the answer and leaves the answer and its finish frame whole; without the flag it does not run', async () => {
     const on = await turn(KNOW, { unwind: true, oneBrain: true, media: true, luna: KNOW_INTENT, reply })
