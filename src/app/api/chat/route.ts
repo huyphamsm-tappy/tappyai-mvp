@@ -102,8 +102,8 @@ import { recordDecision, DECISION_RECORD_TIMEOUT_MS } from '@/lib/ai/agent/runti
 import { createPlacesBudget, PLACES_BUDGET_AGENT, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
 // Consultative V1 (flag CONSULTATIVE_V1, default OFF — see docs/audit/consultative-v1-design.md).
 import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
-import { isProductionRuntime, consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, consultReadPageLateOn, consultPickPageReadOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn, consultUnwindS1aOn, consultUnwindS1bOn, consultUnwindS1dOn, consultUnwindS2aOn, consultUnwindS2bOn, consultUnwindS2cOn, consultUnwindS3aOn, consultUnwindS3bOn, consultUnwindS3cOn } from '@/lib/config/consultFlags'
-import { unwindWritingBlock, UNWIND_PICK_ROWS, UNWIND_MAX_TOKENS } from '@/lib/ai/consultative/unwindWriting'
+import { isProductionRuntime, consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, consultReadPageLateOn, consultPickPageReadOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn, consultUnwindS1aOn, consultUnwindS1bOn, consultUnwindS1dOn, consultUnwindS2aOn, consultUnwindS2bOn, consultUnwindS2cOn, consultUnwindS3aOn, consultUnwindS3bOn, consultUnwindS3cOn, consultUnwindS4aOn, consultUnwindS4bOn } from '@/lib/config/consultFlags'
+import { unwindWritingBlock, unwindToolHint, UNWIND_PICK_ROWS, UNWIND_MAX_TOKENS } from '@/lib/ai/consultative/unwindWriting'
 import { answerInsteadOfAsk, unwoundAskLine } from '@/lib/ai/consultative/answerInsteadOfAsk'
 import { checkToolLocation, locationRefusal, HOTEL_CALL_CREDIT_CAP } from '@/lib/ai/consultative/toolLocation'
 import { referTitlesForPrompt } from '@/lib/ai/consultative/referTitles'
@@ -358,6 +358,10 @@ export async function POST(req: Request) {
   const replyLanguage = resolveReplyLanguage({ lastText, priorUserTexts: earlierUserTexts, clientLocale })
   const lang = replyLanguage.lang
   const forcedTool = detectForcedTool(lastText)
+  // CONSULT_UNWIND_S4A: the keyword reading no longer DECIDES (domain, pre-search, decision frame, actionability); it reaches the model as a hint
+  // only (unwindToolHint, below). Memory scoping and the logs keep reading `forcedTool`. Measured 28/10: "tiệm vàng" forced search_places, "mua" forced
+  // search_products, "trời mưa" was read as "mua". OFF: `forcedToolDecides` is `forcedTool`, as at HEAD.
+  const forcedToolDecides = consultUnwindS4aOn() ? null : forcedTool
   // P0: a travel turn buffers and runs the fail-closed dynamic-fact guard, so no
   // fabricated fare/price/schedule/availability can reach the user.
   const travelIntent = detectTravelIntent(lastText)
@@ -485,7 +489,7 @@ export async function POST(req: Request) {
   // a domain outside the catalogue) is recorded here. A FAILED call (error, timeout, empty) is not: that turn continues as before.
   const consultInvalid: { reason: string | null } = { reason: null }
   const lunaIntentRun = !agentOn && lunaOn && !lunaSkipped && AI.isConfigured() && !(routed?.confidence === 'rule' && isFixedPhrase(lastText))
-    ? await runLunaIntent(o => AI.extract(o) as never, routingMessages, { hasGps: !!userLocation, previousWasAsk: routingAnswersAsk, deterministicDomain: routingLastUserMsg ? turnDomain(routingLastUserMsg, { hasGps: !!userLocation, lang }) : null, userTexts: lunaUserTexts, storedNames: earlyChatState?.shown?.slice(-8), onInvalid: r => { consultInvalid.reason = `intent:${r}` } })
+    ? await runLunaIntent(o => AI.extract(o) as never, routingMessages, { hasGps: !!userLocation, previousWasAsk: routingAnswersAsk, deterministicDomain: routingLastUserMsg ? turnDomain(routingLastUserMsg, { hasGps: !!userLocation, lang }) : null, userTexts: lunaUserTexts, storedNames: earlyChatState?.shown?.slice(-8), onInvalid: r => { consultInvalid.reason = `intent:${r}` }, ...(consultUnwindS4bOn() ? { knowledgeDomainless: true } : {}) })
     : null
   if (lunaIntentRun) console.log(JSON.stringify({ type: 'tappyai_luna_intent', rules: routed?.confidence ?? null, rulesTurn: routed?.decision.turn ?? null, turn: lunaIntentRun.decision.turn, domains: lunaIntentRun.decision.domains, difficulty: lunaIntentRun.difficulty, served: lunaIntentRun.served, ms: lunaIntentRun.ms, usd: lunaIntentRun.costUsd, dropped: lunaIntentRun.check.dropped, corrected: lunaIntentRun.check.corrected }))
   // A continuing turn the intent could not place keeps the stored consultation's area (same rule as the router's).
@@ -800,11 +804,11 @@ export async function POST(req: Request) {
     if (agentOn || cannedEarly !== null || intent === 'chitchat' || !consultativeV1Enabled() || clipRef || hasImage || decisionStage === 'confirmation') return null
     // A turn that starts a new consultation is gated on its own words (see ownDomainSwitch).
     const gateMessages = ownDomainSwitch ? messages.slice(-1) : messages
-    const a = assessActionability({ messages: gateMessages, hasGps: !!userLocation, lang, lastAssistantText: ownDomainSwitch ? null : lastAssistantText, planningIntent, forcedTool, movieRecommend })
+    const a = assessActionability({ messages: gateMessages, hasGps: !!userLocation, lang, lastAssistantText: ownDomainSwitch ? null : lastAssistantText, planningIntent, forcedTool: forcedToolDecides, movieRecommend })
     console.log(JSON.stringify({ type: 'tappyai_clarify_gate', actionable: a.actionable, domain: a.domain, missing: a.missing, signals: a.signals, questions: a.questions.map(q => q.q), scope: ownDomainSwitch ? 'turn' : 'thread' }))
     // UAT 2026-09-28: the question belongs to THIS turn's domain. A shopping turn in a thread that began
     // on food ("tìm giùm cái ốp 17 promax uag") was asked "dưới 100k/người" — the thread's food buckets.
-    const own = ownDomainSwitch ? a : assessActionability({ messages: messages.slice(-1), hasGps: !!userLocation, lang, lastAssistantText: null, planningIntent, forcedTool, movieRecommend })
+    const own = ownDomainSwitch ? a : assessActionability({ messages: messages.slice(-1), hasGps: !!userLocation, lang, lastAssistantText: null, planningIntent, forcedTool: forcedToolDecides, movieRecommend })
     const ask = own.domain && own.domain !== a.domain ? (own.askAfter ?? null) : (a.askAfter ?? null)
     gateDomain = own.domain ?? a.domain
     // One question per consultation: a reply that already ended by asking is not followed by another.
@@ -1441,7 +1445,7 @@ export async function POST(req: Request) {
     messages: framingMessages,
     need: needProfile,
     planningIntent,
-    forcedTool,
+    forcedTool: forcedToolDecides,
     hasGps: !!userLocation,
     storedPreferences: storedPrefs,
     now: new Date(),
@@ -1515,7 +1519,7 @@ export async function POST(req: Request) {
     ? wardStatedAsPlace(lastText, rulesReadVenueRequest(routed), wardFree => rulesReadPlaceOrTripRequest(routeConsult([{ role: 'user', content: wardFree }], { hasGps: !!userLocation, lang })))
     : false
   const searchGate = consultSearchNowIntentGateOn() && !agentOn ? searchNowIntentGate({ consult, statedArea: statedArea?.label ?? null, statedCity: gateStatedCity, statedStreet: streetNameUsedAsPlace(lastText), statedWard: gateStatedWard }) : null
-  const searchNowDerived = consultNoSearchNow ? null : (localShopAsked ? null : consultSearch) ?? (situation ? deriveSearchNow({ text: framingText, situation, frame: decisionFrame, need: needProfile, forcedTool, isFirstReply: isFirstReply || afterClarify || moreTurn, movieRecommend, afterClarify, askedBack, consultationText: consultationUserTexts(framingMessages).join(' ') }) : null)
+  const searchNowDerived = consultNoSearchNow ? null : (localShopAsked ? null : consultSearch) ?? (situation ? deriveSearchNow({ text: framingText, situation, frame: decisionFrame, need: needProfile, forcedTool: forcedToolDecides, isFirstReply: isFirstReply || afterClarify || moreTurn, movieRecommend, afterClarify, askedBack, consultationText: consultationUserTexts(framingMessages).join(' ') }) : null)
   const searchNow = applySearchNowGate(searchGate, searchNowDerived)
   if (searchGate) trace?.emit('search_now_gate', { blocked: searchGate.blocked, reason: searchGate.reason, consultTurn: searchGate.consultTurn, statedPlaceFrom: searchGate.statedPlaceFrom, droppedType: searchGate.blocked && searchNowDerived && !searchNow ? searchNowDerived.type : null, forcedToolIgnored: searchGate.blocked && forcedTool === 'search_places', hasValidGps: hasValidCurrentLocation(userLocation), rulesTurn: routed?.decision.turn ?? null, rulesConfidence: routed?.confidence ?? null, rulesDomains: routed?.decision.domains ?? [],
     // Wave 2F (M6): the intent layer's own label and which stated places existed - booleans and labels only, never a word of the user.
@@ -2174,7 +2178,7 @@ export async function POST(req: Request) {
   const v1Active = !!situation && !noToolTurn && (
     isDecisionDomain
     || decisionFrame.goal === 'recommend' || decisionFrame.goal === 'compare' || decisionFrame.goal === 'decide' || decisionFrame.goal === 'plan'
-    || (forcedTool === 'search_places' && !searchGate?.blocked)
+    || (forcedToolDecides === 'search_places' && !searchGate?.blocked)
     || frameSaysDecision
     || v1PriorVenues.length > 0
     || searchNow?.type === 'flight'
@@ -2294,7 +2298,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     nonPick: !consult || consult.turn === 'chat',
     wideShortlist: consultUnwindS3cOn() && !!consult && ['pick', 'more', 'reject'].includes(consult.turn),
     lang,
-  })
+  }) + (consultUnwindS4aOn() && forcedTool ? unwindToolHint(forcedTool, lang) : '')
   const legacyPrompt = (built ? built.dynamic : buildSystemSimple(lang, memoryBlock)) + styleBlock + voiceLayerBlock() + shareContextBlock + unwindWriting
   // Consult V2 lean prompt: small fixed core + this area's tool rules + the frame/state (leanConsultPrompt.ts).
   // Measured on uat 70667d3: the full rulebook made one pick turn 34k input tokens ($0.049).

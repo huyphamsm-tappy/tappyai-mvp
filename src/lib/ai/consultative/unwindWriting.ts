@@ -36,6 +36,16 @@ export const UNWIND_MAX_TOKENS = 4000
 /** The sentence cap of the prose-shape guard on a consult turn with S3B (HEAD: 9, or 13 with the advice block). */
 export const UNWIND_MAX_SENTENCES = 20
 
+/**
+ * CONSULT_UNWIND_S4A. The keyword reading of the message (intent.detectForcedTool) no longer decides the domain or the pre-search; the model
+ * reads it as a hint it may ignore. Measured 28/10: "tiệm vàng" forced the place tool, a bare "mua" the product tool.
+ */
+export function unwindToolHint(tool: string, lang: string): string {
+  return lang === 'en'
+    ? `\n\n- TOOL HINT (not binding; decide from the question itself): ${tool}`
+    : `\n\n- GOI Y CONG CU (khong bat buoc; tu quyet theo chinh cau hoi): ${tool}`
+}
+
 export function unwindWritingBlock(i: UnwindWritingInput): string {
   const lines: string[] = []
   if (i.writing) {

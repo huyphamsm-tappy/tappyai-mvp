@@ -179,6 +179,15 @@ LOẠI LƯỢT (turn):
 - area: khu vực/thành phố người dùng nói, không thì null. refers: tên người dùng nhắc tới (compare/followup). reject_reason: điều bị chê.
 - Câu hỏi/lựa chọn viết tiếng Việt có dấu (tiếng Anh nếu người dùng viết tiếng Anh), xưng "mình"/"bạn".`
 
+/**
+ * CONSULT_UNWIND_S4B. The same instructions with ONE sentence replaced: "domains = [] only when truly outside the 5 areas" pushed a land-price
+ * question and a police-news question into "shopping" (localhost 28/10, turns 2 and 4). The replacement says WHEN an area applies (the user asks
+ * to choose / find / book something specific) and that a question asked to KNOW has none. Same schema, same enum: no data-contract change.
+ */
+const INTENT_DOMAIN_RULE_HEAD = 'Nhu cầu thuộc 5 mảng LUÔN thuộc Tappy. domains = [] chỉ khi thật sự ngoài 5 mảng.'
+const INTENT_DOMAIN_RULE_UNWIND = 'Mảng chỉ dùng khi người dùng nhờ CHỌN / TÌM / ĐẶT một quán, sản phẩm, chuyến đi, chỗ chơi hay dịch vụ cụ thể. Câu hỏi để BIẾT (kiến thức, tin tức, số liệu hay giá chung, giải thích) → domains = [], kể cả khi chủ đề gần một mảng hoặc câu có tên một nơi.'
+export const INTENT_SYSTEM_UNWIND = INTENT_SYSTEM.replace(INTENT_DOMAIN_RULE_HEAD, INTENT_DOMAIN_RULE_UNWIND)
+
 export function intentMessages(messages: Array<{ role: string; content: unknown }>, extra: { hasGps: boolean; storedNames?: string[] }): CoreMessage[] {
   const text = (c: unknown) => (typeof c === 'string' ? c : Array.isArray(c) ? c.map((p: { text?: string }) => p?.text ?? '').join(' ') : '')
   const clean = (s: string) => s.replace(/\[(TAPPY_[A-Z_]+|CTA_BUTTONS|FOLLOWUPS)\][\s\S]*?\[\/\1\]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 700)
@@ -335,19 +344,20 @@ type Extract = (opts: { role: 'intent'; systemShared: string; messages: CoreMess
 export async function runLunaIntent(
   extract: Extract,
   messages: Array<{ role: string; content: unknown }>,
-  ctx: { hasGps: boolean; previousWasAsk: boolean; deterministicDomain?: ConsultDomain | null; userTexts: readonly string[]; storedNames?: string[]; timeoutMs?: number; onInvalid?: (reason: 'schema') => void },
+  ctx: { hasGps: boolean; previousWasAsk: boolean; deterministicDomain?: ConsultDomain | null; userTexts: readonly string[]; storedNames?: string[]; timeoutMs?: number; onInvalid?: (reason: 'schema') => void; knowledgeDomainless?: boolean },
 ): Promise<IntentRun | null> {
   const t0 = Date.now()
   let timer: ReturnType<typeof setTimeout> | undefined
   const timeout = new Promise<null>(res => { timer = setTimeout(() => res(null), ctx.timeoutMs ?? 12000) })
   try {
     const out = await Promise.race([
-      extract({ role: 'intent', systemShared: INTENT_SYSTEM, messages: intentMessages(messages, { hasGps: ctx.hasGps, storedNames: ctx.storedNames }), schema: LunaIntentSchema, schemaName: 'tappy_intent', maxTokens: 900 }),
+      extract({ role: 'intent', systemShared: ctx.knowledgeDomainless ? INTENT_SYSTEM_UNWIND : INTENT_SYSTEM, messages: intentMessages(messages, { hasGps: ctx.hasGps, storedNames: ctx.storedNames }), schema: LunaIntentSchema, schemaName: 'tappy_intent', maxTokens: 900 }),
       timeout,
     ])
     if (!out) return null
     const { intent, check } = checkIntent(out.object, ctx.userTexts, { hasGps: ctx.hasGps })
-    const decision = enforceConsultRules(intentToDecision(intent), { previousWasAsk: ctx.previousWasAsk, deterministicDomain: ctx.deterministicDomain })
+    // CONSULT_UNWIND_S4B: an empty `domains` the intent layer chose is kept - the rules' keyword domain no longer fills it in (enforceConsultRules).
+    const decision = enforceConsultRules(intentToDecision(intent), { previousWasAsk: ctx.previousWasAsk, deterministicDomain: ctx.knowledgeDomainless ? null : ctx.deterministicDomain })
     const cost = out.providerMetadata?.tappy?.cost as { usd?: number; provider?: string; effort?: string } | undefined
     return {
       decision,

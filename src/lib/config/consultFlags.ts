@@ -208,3 +208,9 @@ export const CONSULT_UNWIND_S3C_FLAG = 'CONSULT_UNWIND_S3C'
 export function consultUnwindS3aOn(env: Env = process.env): boolean { return unwindOn(env, CONSULT_UNWIND_S3A_FLAG) }
 export function consultUnwindS3bOn(env: Env = process.env): boolean { return unwindOn(env, CONSULT_UNWIND_S3B_FLAG) }
 export function consultUnwindS3cOn(env: Env = process.env): boolean { return unwindOn(env, CONSULT_UNWIND_S3C_FLAG) }
+//   CONSULT_UNWIND_S4A  the keyword tool reading (intent.detectForcedTool) no longer decides the domain, the pre-search, the decision frame or the clarify gate; the model gets it as a hint.
+//   CONSULT_UNWIND_S4B  the intent layer is told that a question asked to KNOW (knowledge, news, general figures) has no domain, instead of "domains = [] only outside the 5 areas". Same schema.
+export const CONSULT_UNWIND_S4A_FLAG = 'CONSULT_UNWIND_S4A'
+export const CONSULT_UNWIND_S4B_FLAG = 'CONSULT_UNWIND_S4B'
+export function consultUnwindS4aOn(env: Env = process.env): boolean { return unwindOn(env, CONSULT_UNWIND_S4A_FLAG) }
+export function consultUnwindS4bOn(env: Env = process.env): boolean { return unwindOn(env, CONSULT_UNWIND_S4B_FLAG) }
