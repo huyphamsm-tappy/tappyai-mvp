@@ -232,3 +232,7 @@ export function consultUnwindS5On(env: Env = process.env): boolean { return unwi
 //                       and the per-turn prompt rulebook do not run; safety, spend caps, quota and the card rendering of what the model looked up stay. Pages are read with S6A (set it too).
 export const CONSULT_ONE_BRAIN_FLAG = 'CONSULT_ONE_BRAIN'
 export function consultOneBrainOn(env: Env = process.env): boolean { return unwindOn(env, CONSULT_ONE_BRAIN_FLAG) }
+//   CONSULT_ONE_BRAIN_MEDIA  a one-brain answer gets pictures after it is written: a Wikipedia subject card and one picture per item of a list answer (oneBrainMedia.ts,
+//                       the V4 picture layer). One extra intent-role call reads what the pictures should show; up to 6 image searches. Needs CONSULT_ONE_BRAIN. Localhost UAT only.
+export const CONSULT_ONE_BRAIN_MEDIA_FLAG = 'CONSULT_ONE_BRAIN_MEDIA'
+export function consultOneBrainMediaOn(env: Env = process.env): boolean { return unwindOn(env, CONSULT_ONE_BRAIN_MEDIA_FLAG) && consultOneBrainOn(env) }

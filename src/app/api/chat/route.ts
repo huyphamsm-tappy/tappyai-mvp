@@ -102,9 +102,11 @@ import { recordDecision, DECISION_RECORD_TIMEOUT_MS } from '@/lib/ai/agent/runti
 import { createPlacesBudget, PLACES_BUDGET_AGENT, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
 // Consultative V1 (flag CONSULTATIVE_V1, default OFF — see docs/audit/consultative-v1-design.md).
 import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
-import { isProductionRuntime, consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, consultReadPageLateOn, consultPickPageReadOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn, consultUnwindS1aOn, consultUnwindS1bOn, consultUnwindS1dOn, consultUnwindS2aOn, consultUnwindS2bOn, consultUnwindS2cOn, consultUnwindS3aOn, consultUnwindS3bOn, consultUnwindS3cOn, consultUnwindS4aOn, consultUnwindS4bOn, consultUnwindS5On, consultUnwindS6aOn, consultUnwindS6bOn, consultUnwindS6cOn, consultOneBrainOn } from '@/lib/config/consultFlags'
+import { isProductionRuntime, consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, consultReadPageLateOn, consultPickPageReadOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn, consultUnwindS1aOn, consultUnwindS1bOn, consultUnwindS1dOn, consultUnwindS2aOn, consultUnwindS2bOn, consultUnwindS2cOn, consultUnwindS3aOn, consultUnwindS3bOn, consultUnwindS3cOn, consultUnwindS4aOn, consultUnwindS4bOn, consultUnwindS5On, consultUnwindS6aOn, consultUnwindS6bOn, consultUnwindS6cOn, consultOneBrainOn, consultOneBrainMediaOn } from '@/lib/config/consultFlags'
 import { searchWithReads, createOnce, FOLLOW_UP_SYSTEM, S6_MAX_READS } from '@/lib/ai/consultative/searchReads'
 import { ONE_BRAIN_CORE, ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, oneBrainDynamic } from '@/lib/ai/consultative/oneBrain'
+import { oneBrainMediaStream } from '@/lib/ai/consultative/oneBrainMedia'
+import { understandTurn } from '@/lib/ai/answerV4/understand'
 import { deepResearch, exaSearch, deepEvidenceForModel, GAP_SYSTEM, EXA_PRICE } from '@/lib/ai/consultative/deepSearch'
 import { unwindWritingBlock, unwindToolHint, UNWIND_PICK_ROWS, UNWIND_MAX_TOKENS } from '@/lib/ai/consultative/unwindWriting'
 import { answerInsteadOfAsk, unwoundAskLine } from '@/lib/ai/consultative/answerInsteadOfAsk'
@@ -2333,6 +2335,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   const lean = consult && consult.domains.length > 0 ? buildLean({ extra: [], tail: [] }) : null
   // CONSULT_ONE_BRAIN: one general instruction in place of the rulebook (legacy / lean / Wave 3 lines); the person's own blocks (memory, preferences, style, shared page) stay.
   const oneBrainPrompt = oneBrain ? { shared: ONE_BRAIN_CORE, dynamic: oneBrainDynamic({ lang, now: new Date(), address: userLocation?.address ?? null, hasLocation: hasValidCurrentLocation(userLocation), blocks: [memoryBlock ?? '', prefBlock, styleBlock, shareContextBlock] }) } : null
+  // CONSULT_ONE_BRAIN_MEDIA: what the pictures should show is read beside the answer (never before it, never for the answer) and used when the answer ends.
+  const oneBrainUnderstanding = oneBrain && consultOneBrainMediaOn()
+    ? understandTurn({ userText: lastText, previousUser: (() => { const u = userMessages[userMessages.length - 2] as { content?: unknown } | undefined; return typeof u?.content === 'string' ? u.content : null })(), previousReply: priorAssistantText ?? null })
+    : null
   const systemShared = oneBrainPrompt ? oneBrainPrompt.shared : lean ? lean.shared : legacyShared
   const systemPrompt = oneBrainPrompt ? oneBrainPrompt.dynamic : lean ? lean.dynamic : legacyPrompt
 
@@ -2446,7 +2452,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
    * collector, so one conversation can never spend another's allowance.
    */
   // Google Places safety quota (provider layer, placesBudget.ts) — never an orchestration constant of either agent loop.
-  const placesBudget = createPlacesBudget(agentOn ? PLACES_BUDGET_AGENT : planningIntent ? PLACES_BUDGET_PLANNING : PLACES_BUDGET_DEFAULT)
+  // CONSULT_ONE_BRAIN: the model plans its own searches (restaurants, then attractions, ...), so it gets the agent's budget, not one place search a turn.
+  const placesBudget = createPlacesBudget(agentOn ? PLACES_BUDGET_AGENT : oneBrain ? PLACES_BUDGET_AGENT : planningIntent ? PLACES_BUDGET_PLANNING : PLACES_BUDGET_DEFAULT)
   // chat2 A2 + security review 02/10: the one extra "widen" retrieval after an empty search is paid from ITS OWN one-call allowance per request
   // (not a fresh budget per tool step), and never runs when the turn's Places budget was already refused.
   const widenBudget = createPlacesBudget(1)
@@ -2731,7 +2738,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           })
           if (relax.relaxed.length > 0 || relax.empty) console.log(JSON.stringify({ type: 'tappyai_place_relax', relaxed: relax.relaxed, empty: relax.empty, budget_max: constraints.budgetMax, district: constraints.district?.label ?? null, query }))
           // CONSULT_UNWIND_S1B: the wider-search chip only for the city of the district the user stated, and only when that wider search has not just run.
-          emptyPlaceSearch = relax.empty ? { query, area: statedArea?.label ?? location ?? null, ...(consultUnwindS1bOn() ? { widenCity: statedArea && !widenTried ? (statedArea.city === 'hn' ? 'Hà Nội' : 'TP.HCM') : null } : {}) } : null
+          // CONSULT_ONE_BRAIN: the model read the empty result and wrote its own answer; no code block is appended after it.
+          emptyPlaceSearch = relax.empty && !oneBrain ? { query, area: statedArea?.label ?? location ?? null, ...(consultUnwindS1bOn() ? { widenCity: statedArea && !widenTried ? (statedArea.city === 'hn' ? 'Hà Nội' : 'TP.HCM') : null } : {}) } : null
           const constrained = relax.relaxed.length > 0 ? { ...constrained0, result: relax.result } : constrained0
           if (constrained.dropped.length > 0 || constrained.demotedClosed > 0 || constrained.priceUnknown > 0 || constraints.district) {
             console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', step: 'constraint_filter', budget_max: constraints.budgetMax, exclude: constraints.exclude, open_now: constraints.openNow, district: constraints.district?.label ?? null, dropped: constrained.dropped, demoted_closed: constrained.demotedClosed, price_unknown: constrained.priceUnknown, price_fits: constrained.priceFits }))
@@ -4174,7 +4182,9 @@ ${finalWriteInstruction(lang)}` },
         return { ...base, model: [...new Set(lunaAnswerCost?.served ?? [])].join('+') || base.model, intent: lunaRun?.served ?? (consultRun ? 'haiku' : null), intentUsd, answerUsd, serperUsd, reasoningTokens: lunaAnswerCost?.reasoningTokens ?? 0, lunaCachedIn: lunaAnswerCost?.cachedInputTokens ?? 0, lunaCacheWrite: lunaAnswerCost?.cacheWriteTokens ?? 0, fellBack: lunaAnswerCost?.fellBack ?? false, usd: Math.round((intentUsd + answerUsd + serperUsd) * 1e6) / 1e6 }
       }).pipeThrough(timeClientEmit(startTime, Date.now, (t) => logUsage(t.ttuaMs))).pipeThrough(traceTailStream(agentRunTrace))
     : finalResponse.body
-  return new Response(timedBody, { status: finalResponse.status, headers: finalResponse.headers })
+  // CONSULT_ONE_BRAIN_MEDIA: the pictures go out last, before the finish frame, once every guard and frame above has run on the answer.
+  const pictured = oneBrainUnderstanding && timedBody ? oneBrainMediaStream(timedBody, { understanding: oneBrainUnderstanding, cardTurn: () => !!(enrichment.placesRecommendations?.length || enrichment.shoppingMarker), log: l => console.log(JSON.stringify(l)) }) : timedBody
+  return new Response(pictured, { status: finalResponse.status, headers: finalResponse.headers })
   }
   if (willPresearch) {
     return new Response(deferredBody(hasValidCurrentLocation(userLocation) ? searchingFrame(lang) : '', finishTurn), {

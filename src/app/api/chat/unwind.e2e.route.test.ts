@@ -124,13 +124,14 @@ type Msg = { role: 'user' | 'assistant'; content: string }
 const intent = (turn: string, domains: string[], extra: Record<string, unknown> = {}) => ({
   domains, turn, goal: 'x', known: [], party: null, budget_vnd_max: null, difficulty: 'normal', missing: [], assumptions: [], ask: null, query: null, area: null, refers: [], reject_reason: null, ...extra,
 })
-interface TurnOpts { unwind: boolean; oneBrain?: boolean; luna: Record<string, unknown>; tools?: Array<{ name: string; args: Record<string, unknown> }>; reply?: string; gapQuery?: string | null }
+interface TurnOpts { unwind: boolean; oneBrain?: boolean; media?: boolean; luna: Record<string, unknown>; tools?: Array<{ name: string; args: Record<string, unknown> }>; reply?: string; gapQuery?: string | null }
 
 async function turn(messages: Msg[], o: TurnOpts) {
   delete process.env.TAPPY_AGENT
   for (const [k, v] of Object.entries(BASE_FLAGS)) vi.stubEnv(k, v)
   for (const k of UNWIND) vi.stubEnv(k, o.unwind ? '1' : '0')
   vi.stubEnv('CONSULT_ONE_BRAIN', o.oneBrain ? '1' : '0')
+  vi.stubEnv('CONSULT_ONE_BRAIN_MEDIA', o.media ? '1' : '0')
   for (const k of ['CONSULT_PICK_TURN_TOOLS', 'CONSULT_KNOWLEDGE_PATH', 'CONSULT_RESEARCH_LOOP', 'CONSULT_TOOL_BY_NEED', 'CONSULT_DETERMINISTIC_MATH', 'CONSULT_STRUCTURED_SYNTHESIS', 'CONSULT_CHAT_DOMAIN_AGREEMENT', 'CONSULT_THREAD_AWARE_ASK', 'CONSULT_PICK_PAGE_READ', 'CONSULT_LUNA_ONE', 'VERCEL_ENV']) vi.stubEnv(k, undefined as unknown as string)
   h.state.calls = (o.tools ?? []).map((t, i) => ({ toolCallId: `c${i + 1}`, toolName: t.name, args: t.args }))
   h.state.text = o.reply ?? 'Câu trả lời của mô hình.'
@@ -354,6 +355,23 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     expect(on.logs.some(x => x.type === 'tappyai_tool_called' && x.tool === 'search_places')).toBe(true)
     expect(on.text).toContain('Mình chưa thấy quán khớp')
     expect(on.text).not.toContain('[TAPPY_ASK]')
+    // the model read the empty result and wrote its own answer: no code block after it (S1A alone appends one)
+    expect(on.text).not.toContain('chưa thấy kết quả đủ tin cậy')
+  }, 60000)
+  it('CONSULT_ONE_BRAIN_MEDIA: the picture step runs after the answer and leaves the answer and its finish frame whole; without the flag it does not run', async () => {
+    const on = await turn(KNOW, { unwind: true, oneBrain: true, media: true, luna: KNOW_INTENT, reply })
+    expect(on.text).toContain(reply)
+    expect(on.logs.some(x => x.type === 'tappyai_one_brain_media')).toBe(true)
+    expect(on.raw.trim().split('\n').filter(l => l.startsWith('d:')).length).toBe(1)
+    const off = await turn(KNOW, { unwind: true, oneBrain: true, luna: KNOW_INTENT, reply })
+    expect(off.logs.some(x => x.type === 'tappyai_one_brain_media')).toBe(false)
+    expect(off.text).toContain(reply)
+  }, 60000)
+  it('flag ON: the model may run a second place search of another kind in the same turn (the one-search-a-turn budget is not applied)', async () => {
+    const calls = [{ name: 'search_places', args: { query: 'hải sản', location: 'Nha Trang', type: 'restaurant' } }, { name: 'search_places', args: { query: 'điểm tham quan', location: 'Nha Trang', type: 'attraction' } }]
+    const on = await turn([{ role: 'user', content: 'di nha trang 2 ngay an gi choi gi' }], { unwind: true, oneBrain: true, luna: intent('chat', []), tools: calls, reply })
+    expect(on.logs.filter(x => x.type === 'tappyai_tool_called' && x.tool === 'search_places' && x.step === undefined).length).toBe(2)
+    expect(on.logs.some(x => x.type === 'tappyai_places_budget' && x.step === 'blocked')).toBe(false)
   }, 60000)
   it('flag ON with every unwind flag OFF: the model\'s table is not line-tidied (the tidy is for prose the shape guard cut)', async () => {
     const COMPARE: Msg[] = [{ role: 'user', content: 'so sanh lai suat tiet kiem 12 thang cua Vietcombank va BIDV giup minh' }]
