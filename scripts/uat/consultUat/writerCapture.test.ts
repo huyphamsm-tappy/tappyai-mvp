@@ -13,6 +13,7 @@ import { WAVE2_FLAGS, runLiveTrial, wave2FlagState } from './liveTrial'
 import { conditionReport } from './preflightReport'
 import { FLAG_ENV_NAMES, WAVE2_FLAG_NAMES, buildChildEnv, gate1Summary, launcherRefusals } from './liveTrialLauncher.mjs'
 import type { UatTurn } from './questions'
+import { pickWriterCalls } from './writerReplay'
 import { WRITER_CAPTURE_FLAG, WRITER_CAPTURE_MAX_CALLS, createWriterCapture, isChatCompletionsUrl, summarizeCompletion, writerCaptureOn, type WriterCaptureFile } from './writerCapture'
 
 const h = vi.hoisted(() => {
@@ -147,6 +148,8 @@ describe('W6 capture · through the real trial (real route, fake network)', () =
     expect(writers.length).toBe(2)
     for (const w of writers) expect(w.response).toMatchObject({ status: 200, textChars: ANSWER.length, toolCalls: 0, finishReason: 'stop' })
     expect(r.summary.warnings).toEqual([]); expect(r.summary.trialClean).toBe(true)
+    // end to end with the replay core: the registered rule picks, in each turn, exactly the call that wrote the answer
+    expect(pickWriterCalls(cap).map(p => [p.turn, p.n])).toEqual(writers.map(w => [w.turn, w.n]))
   }, 120_000)
   it('the capture is in its OWN file: the bench json carries none of it, the key is nowhere, no header is kept', async () => {
     const r = await run({ ...EXT, BENCH_CAPTURE_WRITER_INPUT: '1' })
