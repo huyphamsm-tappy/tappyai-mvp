@@ -28,7 +28,7 @@
 import { describe, it, expect, vi, beforeAll } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { formatSummary, runLiveTrial } from './liveTrial'
-import { parseDevQuestions, sha256OfText } from './devQuestions'
+import { benchmarkTextsFor, parseDevQuestions, sha256OfText } from './devQuestions'
 import { REFUSED_BEGIN, REFUSED_END, SUMMARY_BEGIN, SUMMARY_END, PREFLIGHT_BEGIN, PREFLIGHT_END, marker } from './liveTrialLauncher.mjs'
 import { conditionReport, formatConditionReport } from './preflightReport'
 import { formatReplaySummary, isReplayRequested, runReplayTrial } from './replayTrial'
@@ -109,7 +109,7 @@ describe.skipIf(process.env.BENCH_LIVE_TRIAL !== 'I-UNDERSTAND-THIS-SPENDS-REAL-
 
   it.skipIf(!devMulti || preflightOnly || replay)('runs the development turns in one process (BENCH_TRIAL_MODE=dev-multi): a run cap across turns, each turn closed on its own, one summary', async () => {
     const questionText = readFileSync(process.env.BENCH_TRIAL_QUESTION_FILE!.trim(), 'utf8')
-    const parsed = parseDevQuestions(questionText)
+    const parsed = parseDevQuestions(questionText, benchmarkTextsFor(process.env))
     if (!parsed.ok) {
       // eslint-disable-next-line no-console
       console.info(`${marker(REFUSED_BEGIN, nonce)}\n${parsed.reasons.join('\n')}\n${marker(REFUSED_END, nonce)}`)

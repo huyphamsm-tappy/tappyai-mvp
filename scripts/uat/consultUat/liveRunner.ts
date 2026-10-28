@@ -80,6 +80,9 @@ export const BENCH_FLAG_NAMES: readonly string[] = [
   'CONSULT_UNWIND_S2A', 'CONSULT_UNWIND_S2B', 'CONSULT_UNWIND_S2C',
   'CONSULT_UNWIND_S3A', 'CONSULT_UNWIND_S3B', 'CONSULT_UNWIND_S3C',
   'CONSULT_UNWIND_S4A', 'CONSULT_UNWIND_S4B',
+  'CONSULT_UNWIND_S6A', 'CONSULT_UNWIND_S6B', 'CONSULT_UNWIND_S6C',
+  // Owner 28/10: a dev-multi run may carry the benchmark questions (see liveTrialLauncher.mjs, devQuestions.benchmarkTextsFor)
+  'BENCH_DEV_INCLUDES_BENCHMARK',
   // Wave 3 · W6: one number 0-4 that switches W2 / W4 (L1), W1 (L2), W3 (L3) on together (see liveTrialLauncher.mjs); default unset = level 0
   'CONSULT_CAPABILITY_LEVEL',
 ]

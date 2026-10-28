@@ -70,7 +70,8 @@ describe('Wave 2I flags: values and shown state', () => {
   })
   it('the "needs" table of the trial and of the launcher are the same, and mirror the product (consultKnowledgeTurnToolsOn)', () => {
     expect(WAVE2_FLAG_NEEDS_LAUNCHER).toEqual(WAVE2_FLAG_NEEDS)
-    expect(WAVE2_FLAG_NEEDS).toEqual({ CONSULT_KNOWLEDGE_TURN_TOOLS: 'CONSULT_SEARCH_NOW_INTENT_GATE', CONSULT_TOOL_BY_NEED: 'CONSULT_SEARCH_NOW_INTENT_GATE' })
+    // Unwind S6 (28/10): the follow-up search (S6B) works only with the page reads (S6A) - registered like the two Wave 2 entries
+    expect(WAVE2_FLAG_NEEDS).toEqual({ CONSULT_KNOWLEDGE_TURN_TOOLS: 'CONSULT_SEARCH_NOW_INTENT_GATE', CONSULT_TOOL_BY_NEED: 'CONSULT_SEARCH_NOW_INTENT_GATE', CONSULT_UNWIND_S6B: 'CONSULT_UNWIND_S6A' })
     for (const g of [undefined, '1']) for (const k of [undefined, '1']) {
       const env = { CONSULT_SEARCH_NOW_INTENT_GATE: g, CONSULT_KNOWLEDGE_TURN_TOOLS: k }
       expect(consultKnowledgeTurnToolsOn(env)).toBe(wave2FlagState(env).CONSULT_KNOWLEDGE_TURN_TOOLS === 'ON')

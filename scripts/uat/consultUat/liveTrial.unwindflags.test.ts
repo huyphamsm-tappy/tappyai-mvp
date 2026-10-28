@@ -8,9 +8,11 @@ import { BENCH_FLAG_NAMES, __resetBenchProcessGuardForTests } from './liveRunner
 import * as flags from '@/lib/config/consultFlags'
 import { WAVE2_FLAGS, wave2FlagState } from './liveTrial'
 import { conditionReport } from './preflightReport'
+import { benchmarkTextsFor } from './devQuestions'
+import { UAT_TURNS } from './questions'
 import { FLAG_ENV_NAMES, WAVE2_FLAG_NAMES, buildChildEnv, gate1Summary, launcherRefusals, wave2Line } from './liveTrialLauncher.mjs'
 
-const IDS = ['S1A', 'S1B', 'S1C', 'S1D', 'S2A', 'S2B', 'S2C', 'S3A', 'S3B', 'S3C', 'S4A', 'S4B'] as const
+const IDS = ['S1A', 'S1B', 'S1C', 'S1D', 'S2A', 'S2B', 'S2C', 'S3A', 'S3B', 'S3C', 'S4A', 'S4B', 'S6A', 'S6B', 'S6C'] as const
 const fn = (id: string) => (flags as unknown as Record<string, (env: Record<string, string | undefined>) => boolean>)[`consultUnwind${id[0]}${id.slice(1).toLowerCase()}On`]
 const U = Object.fromEntries(IDS.map(id => [`CONSULT_UNWIND_${id}`, fn(id)])) as Record<string, (env: Record<string, string | undefined>) => boolean>
 const EXT: Record<string, string> = {
@@ -88,6 +90,30 @@ describe('Unwind flags: the state shown is the state the product really has', ()
         expect(shown.startsWith('BẬT'), `${k} line level=${l} flag=${w}: ${shown}`).toBe(on(env))
       }
     }
+  })
+  it('S6B without S6A: the product keeps it off, and Gate 1 / the trial say so (never ON / BẬT)', () => {
+    const env = { CONSULT_UNWIND_S6B: '1' }
+    expect(U.CONSULT_UNWIND_S6B(env)).toBe(false)
+    expect(wave2FlagState(env).CONSULT_UNWIND_S6B).toBe('INERT')
+    expect(wave2Line({ ...EXT, ...env })).toContain('CONSULT_UNWIND_S6B=1 (KHÔNG CÓ HIỆU LỰC — cần CONSULT_UNWIND_S6A=1)')
+  })
+  it('the benchmark-questions switch: exactly "1" and only dev-multi; it reaches the child and the preflight states it', () => {
+    expect(benchmarkTextsFor({ BENCH_DEV_INCLUDES_BENCHMARK: '1', BENCH_TRIAL_MODE: 'dev-multi' })).toEqual([])
+    for (const env of [{}, { BENCH_DEV_INCLUDES_BENCHMARK: '1' }, { BENCH_DEV_INCLUDES_BENCHMARK: 'true', BENCH_TRIAL_MODE: 'dev-multi' }, { BENCH_DEV_INCLUDES_BENCHMARK: ' 1', BENCH_TRIAL_MODE: 'dev-multi' }]) {
+      expect(benchmarkTextsFor(env).length, JSON.stringify(env)).toBeGreaterThan(0)
+    }
+    expect(buildChildEnv({ ...EXT, BENCH_DEV_INCLUDES_BENCHMARK: '1' }, CHILD).BENCH_DEV_INCLUDES_BENCHMARK).toBe('1')
+    expect(launcherRefusals({ ...EXT, BENCH_DEV_INCLUDES_BENCHMARK: '1' }).join(' | ')).not.toContain(notPassed('BENCH_DEV_INCLUDES_BENCHMARK'))
+    for (const [n, v] of Object.entries({ ...EXT, BENCH_DEV_INCLUDES_BENCHMARK: '1' })) vi.stubEnv(n, v)
+    const bench = UAT_TURNS[0]
+    const line = conditionReport({ env: process.env, repoRoot: 'D:/TappyAI-wt/wt-integration', questionText: `${bench.id}|${bench.conversation}|1|${bench.text}\n` }).find(x => x.name.startsWith('benchmark questions in this development run'))!
+    expect(line.detail).toContain('ALLOWED')
+    const qf = conditionReport({ env: process.env, repoRoot: 'D:/TappyAI-wt/wt-integration', questionText: `${bench.id}|${bench.conversation}|1|${bench.text}\n` }).find(x => x.name.startsWith('question file: parses'))!
+    expect(qf.ok).toBe(true)
+    vi.unstubAllEnvs()
+    for (const [n, v] of Object.entries(EXT)) vi.stubEnv(n, v)
+    const refused = conditionReport({ env: process.env, repoRoot: 'D:/TappyAI-wt/wt-integration', questionText: `${bench.id}|${bench.conversation}|1|${bench.text}\n` }).find(x => x.name.startsWith('question file: parses'))!
+    expect(refused.ok).toBe(false)
   })
   it('Gate 1 and the preflight of the dev run shape (L2 + every unwind flag)', () => {
     const env = { ...EXT, CONSULT_CAPABILITY_LEVEL: '2', CONSULT_FINAL_SYNTHESIS: '1', ...ALL_ON }

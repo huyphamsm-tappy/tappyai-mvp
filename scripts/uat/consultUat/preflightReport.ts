@@ -6,7 +6,7 @@
 import { benchModeOf, benchSpendGateOn, capToScaled, checkBenchCaps, MAX_TURN_CAP_USD, maxRunCapUsd } from '@/lib/ai/budget/spendGate'
 import { capabilityLevel } from '@/lib/config/consultFlags'
 import { DDG_FALLBACK_HOSTS, OSM_FALLBACK_HOSTS, QUOTA_RESET_FLAG, WAVE2_FLAGS, WAVE2_FLAG_NEEDS, capabilityLevelReasons, wave2FlagReasons, wave2FlagState, benchSwitchState, connectionRedirectReasons, consultativeConfirmationReasons, openaiKeyShapeReasons, osmFallbackAllowed, preflight, quotaResetFlagReasons, quotaResetState, requestCapReasons } from './liveTrial'
-import { parseDevQuestions, sha256OfText } from './devQuestions'
+import { BENCH_DEV_INCLUDES_BENCHMARK_FLAG, benchmarkTextsFor, parseDevQuestions, sha256OfText } from './devQuestions'
 import { isReplayRequested, replayCheck } from './replayTrial'
 
 export interface Condition { name: string; ok: boolean; detail: string }
@@ -58,7 +58,10 @@ export function conditionReport(input: PreflightReportInput): Condition[] {
   if (input.questionText === null) {
     add('question file read and checked', ['the question file could not be read'], '')
   } else {
-    const parsed = parseDevQuestions(input.questionText)
+    const benchTexts = benchmarkTextsFor(env)
+    const parsed = parseDevQuestions(input.questionText, benchTexts)
+    add(`benchmark questions in this development run (${BENCH_DEV_INCLUDES_BENCHMARK_FLAG}; information)`, [],
+      benchTexts.length === 0 ? `ALLOWED (${BENCH_DEV_INCLUDES_BENCHMARK_FLAG}=1, dev-multi; Owner 28/10) - the copy comparison below has no benchmark text` : 'NOT allowed (the copy comparison below runs)')
     add('question file: parses, and no copy or near-copy of the benchmark (70% rule, judged on the user words only: judge notes are not counted)',
       parsed.ok ? [] : parsed.reasons, `${parsed.ok ? parsed.turns.length : 0} turns`)
     // Wave 2B: which file this is, so the owner can compare it with the SHA-256 on the approval form; the notes are named by id only, never shown.

@@ -49,6 +49,16 @@ export function sha256OfText(text: string): string { return createHash('sha256')
  */
 const DIRECTIVES = new Set(['@format', '@doc', '@note'])
 
+/**
+ * Owner decision 28/10/2026 (Huy, "dùng cả 40 câu": the twelve benchmark questions are no longer kept apart): BENCH_DEV_INCLUDES_BENCHMARK=1, together with
+ * BENCH_TRIAL_MODE=dev-multi, lets a development run carry the benchmark questions (the copy / near-copy comparison gets no benchmark text). Exactly "1" and
+ * only dev-multi; anything else = the comparison as before. Every other check of the file is unchanged, and the preflight states the switch on its own line.
+ */
+export const BENCH_DEV_INCLUDES_BENCHMARK_FLAG = 'BENCH_DEV_INCLUDES_BENCHMARK'
+export function benchmarkTextsFor(env: Record<string, string | undefined>): readonly string[] {
+  return env[BENCH_DEV_INCLUDES_BENCHMARK_FLAG] === '1' && env.BENCH_TRIAL_MODE === 'dev-multi' ? [] : UAT_TURNS.map(t => t.text)
+}
+
 /** Parses the file text. Refuses: empty, malformed line, bad turn number, duplicate (id, turn), a copy or near-copy of a benchmark question, a badly formed directive line. */
 export function parseDevQuestions(raw: string, benchTexts: readonly string[] = UAT_TURNS.map(t => t.text)): DevQuestionsResult {
   const text = raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw
