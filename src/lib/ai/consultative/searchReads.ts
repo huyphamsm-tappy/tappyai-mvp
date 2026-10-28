@@ -19,6 +19,13 @@
 export const SEARCH_READ_TOP = 3
 /** Pages opened for the follow-up search. */
 export const GAP_READ_TOP = 2
+/**
+ * S6A read-on: when the top pages gave fewer than this many readable pages, the next results are read (one more read call, at most SEARCH_READ_TOP
+ * more links). Measured on the real web, 28/10 (10 hard questions, 30 links): a legal site answered 403 to the reader on 3 links, a page came back
+ * empty (rendered by script), a news site timed out / answered 502 - for one question all three top links failed and the model would have had
+ * snippets only. The next results are links of the same search: the same reader rules and page budget apply.
+ */
+export const MIN_PAGES_READ = 2
 /** The reader's page budget for a turn with S6A on (HEAD: 4, or 6 at level 4): room for two searches' reads plus the model's own. */
 export const S6_MAX_READS = 10
 
@@ -47,10 +54,13 @@ export function resultTitles(result: unknown, max = 8): string[] {
   return rowsOf(result).map(r => (typeof r.title === 'string' ? r.title.replace(/https?:\/\/\S+/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 140) : '')).filter(Boolean).slice(0, max)
 }
 
-/** Pure. How many pages of a read_page answer were actually read (not an error entry). */
+/**
+ * Pure. How many pages of a read_page answer were actually read: not an error entry, and not a page the extractor found empty or thin (measured on
+ * the real web, 28/10: a news page rendered by script came back as status "empty" with no text - it must not count as evidence).
+ */
 export function pagesReadCount(readResult: unknown): number {
   const pages = (readResult as { pages?: unknown } | null)?.pages
-  return Array.isArray(pages) ? pages.filter(p => !!p && typeof p === 'object' && !('error' in (p as object))).length : 0
+  return Array.isArray(pages) ? pages.filter(p => !!p && typeof p === 'object' && !('error' in (p as object)) && !['empty', 'thin'].includes(String((p as { status?: unknown }).status ?? 'ok'))).length : 0
 }
 
 export interface SearchReadsInput {
@@ -70,11 +80,22 @@ export async function searchWithReads(i: SearchReadsInput): Promise<SearchReadsO
   if (!i.base || typeof i.base !== 'object' || Array.isArray(i.base)) return none
   let out: Record<string, unknown> = i.base as Record<string, unknown>
   let pagesRead = 0
-  const urls = topResultUrls(i.base, SEARCH_READ_TOP)
-  if (urls.length) {
-    const r = await i.read(urls, i.query).catch(() => null)
+  const ranked = topResultUrls(i.base, SEARCH_READ_TOP * 2)
+  const top = ranked.slice(0, SEARCH_READ_TOP)
+  /** Every link this search opened (the follow-up never opens one again). Kept apart from the arrays handed to `read`. */
+  const urls = [...top]
+  if (top.length) {
+    const r = await i.read(top, i.query).catch(() => null)
     pagesRead = pagesReadCount(r)
-    if (pagesRead > 0) out = { ...out, pages_read: (r as { pages: unknown }).pages }
+    let pages: unknown[] = pagesRead > 0 ? ((r as { pages: unknown[] }).pages) : []
+    // read-on: too few readable pages -> the next results of the same search
+    const more = ranked.slice(SEARCH_READ_TOP, SEARCH_READ_TOP + (SEARCH_READ_TOP - pagesRead))
+    if (pagesRead < MIN_PAGES_READ && more.length) {
+      const r2 = await i.read(more, i.query).catch(() => null)
+      const n2 = pagesReadCount(r2)
+      if (n2 > 0) { pages = [...pages, ...((r2 as { pages: unknown[] }).pages)]; pagesRead += n2; urls.push(...more) }
+    }
+    if (pagesRead > 0) out = { ...out, pages_read: pages }
   }
   if (!i.gap) return { result: out, pagesRead, followUp: false, followUpPages: 0 }
   let q: string | null = null

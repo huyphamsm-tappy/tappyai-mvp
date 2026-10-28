@@ -3,7 +3,7 @@
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { searchWithReads, createOnce, topResultUrls, resultTitles, pagesReadCount, SEARCH_READ_TOP, GAP_READ_TOP, S6_MAX_READS } from './searchReads'
+import { searchWithReads, createOnce, topResultUrls, resultTitles, pagesReadCount, SEARCH_READ_TOP, GAP_READ_TOP, S6_MAX_READS, MIN_PAGES_READ } from './searchReads'
 import { createLeanResearch } from './researchLoop'
 import { consultUnwindS6aOn, consultUnwindS6bOn, consultUnwindS6cOn, CONSULT_UNWIND_S6A_FLAG, CONSULT_UNWIND_S6B_FLAG, CONSULT_UNWIND_S6C_FLAG } from '@/lib/config/consultFlags'
 import type { PageFetchResult } from '@/lib/security/safePageFetch'
@@ -36,6 +36,7 @@ describe('pure helpers', () => {
   it('titles without URLs; read count ignores error entries', () => {
     expect(resultTitles({ results: [{ title: 'Giá vàng https://evil.example hôm nay' }, { title: '' }] })).toEqual(['Giá vàng hôm nay'])
     expect(pagesReadCount({ pages: [{ url: 'u' }, { error: 'page_unreadable' }] })).toBe(1)
+    expect(pagesReadCount({ pages: [{ url: 'a', status: 'ok' }, { url: 'b', status: 'empty' }, { url: 'c', status: 'thin' }] })).toBe(1)
     expect(pagesReadCount(null)).toBe(0)
   })
 })
@@ -49,6 +50,36 @@ describe('searchWithReads', () => {
     expect((r.result as { pages_read: unknown[] }).pages_read).toHaveLength(3)
     expect((r.result as { results: unknown[] }).results).toHaveLength(5)
     expect(r.pagesRead).toBe(3)
+  })
+  it('read-on: all three top pages unreadable -> the next three results are read, and their pages are what the model gets', async () => {
+    const calls: string[][] = []
+    const failAll = (urls: string[]) => ({ pages: urls.map(u => ({ url: u, error: 'page_unreadable' })) })
+    const r = await searchWithReads({ query: 'q', base: search(6), read: async urls => { calls.push(urls); return calls.length === 1 ? failAll(urls) : readOk(urls) } })
+    expect(calls).toEqual([['https://a0.vn/p', 'https://a1.vn/p', 'https://a2.vn/p'], ['https://a3.vn/p', 'https://a4.vn/p', 'https://a5.vn/p']])
+    expect(r.pagesRead).toBe(3)
+    expect(((r.result as { pages_read: Array<{ url: string; error?: string }> }).pages_read).filter(p => !p.error).map(p => p.url)).toEqual(['https://a3.vn/p', 'https://a4.vn/p', 'https://a5.vn/p'])
+  })
+  it('read-on: one readable page -> two more results are read; two readable pages -> nothing more', async () => {
+    const calls: string[][] = []
+    const oneOk = (urls: string[]) => ({ pages: urls.map((u, k) => (k === 0 ? { url: u, passages: ['x'] } : { url: u, error: 'page_unreadable' })) })
+    const r = await searchWithReads({ query: 'q', base: search(6), read: async urls => { calls.push(urls); return calls.length === 1 ? oneOk(urls) : readOk(urls) } })
+    expect(calls[1]).toEqual(['https://a3.vn/p', 'https://a4.vn/p'])
+    expect(r.pagesRead).toBe(3)
+    const calls2: string[][] = []
+    const twoOk = (urls: string[]) => ({ pages: urls.map((u, k) => (k < 2 ? { url: u, passages: ['x'] } : { url: u, error: 'page_unreadable' })) })
+    await searchWithReads({ query: 'q', base: search(6), read: async urls => { calls2.push(urls); return twoOk(urls) } })
+    expect(calls2.length).toBe(1)
+    expect(MIN_PAGES_READ).toBe(2)
+  })
+  it('read-on: the follow-up search never re-reads a link the read-on already opened', async () => {
+    const reads: string[][] = []
+    const failAll = (urls: string[]) => ({ pages: urls.map(u => ({ url: u, error: 'page_unreadable' })) })
+    await searchWithReads({
+      query: 'q', base: search(6),
+      read: async urls => { reads.push(urls); return reads.length === 1 ? failAll(urls) : readOk(urls) },
+      gap: { find: async () => 'khac', search: async () => ({ results: [{ title: 't', link: 'https://a4.vn/p' }, { title: 'u', link: 'https://new.vn/x' }] }) },
+    })
+    expect(reads[2]).toEqual(['https://new.vn/x'])
   })
   it('a failed or empty read leaves the search result as it came (same object)', async () => {
     const base = search(2)

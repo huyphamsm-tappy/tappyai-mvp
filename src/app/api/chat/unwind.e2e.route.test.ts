@@ -149,17 +149,21 @@ async function turn(messages: Msg[], o: TurnOpts) {
   return { raw, text, logs, streamCalled: h.state.streamCalled, toolNames: [...h.state.toolNames], system: h.state.system, web: [...h.state.webCalls], fetched: [...h.state.fetched], results: [...h.state.results], extract: [...h.state.extractRoles] }
 }
 
+/** A page as long as a real article (the real pages read on 28/10 gave 2 500 - 7 000 characters): a one-line page is read as "thin". */
+const ARTICLE = (title: string, lines: string[]) => `<html><head><title>${title}</title></head><body><h1>${title}</h1>${[...lines, ...Array.from({ length: 6 }, (_, i) => `Đoạn ${i + 1}: phần giải thích chi tiết về cách tính, các trường hợp áp dụng, ví dụ cụ thể và những lưu ý thường gặp khi người dân tra cứu thông tin này trên các trang chính thức.`)].map(l => `<p>${l}</p>`).join('')}</body></html>`
 beforeEach(() => {
   vi.useFakeTimers({ toFake: ['Date'] }); vi.setSystemTime(new Date('2026-10-28T03:09:00Z'))
   h.state.pages = {
     'https://giadien.example/robots.txt': { body: 'User-agent: *\nDisallow: /noi-bo\n', contentType: 'text/plain' },
-    'https://giadien.example/bang-gia': { body: '<html><head><title>Bảng giá điện</title></head><body><h1>Biểu giá bán lẻ điện sinh hoạt</h1><p>Bậc 1 (0 - 50 kWh): 1.893 đồng/kWh, áp dụng từ 11/10/2026.</p></body></html>' },
+    'https://giadien.example/bang-gia': { body: ARTICLE('Biểu giá bán lẻ điện sinh hoạt', ['Bậc 1 (0 - 50 kWh): 1.893 đồng/kWh, áp dụng từ 11/10/2026.']) },
     'https://tin.example/robots.txt': { status: 503, body: '' },
-    'https://tin.example/bai': { body: '<html><body><p>Không được mở: robots.txt của trang không tới được.</p></body></html>' },
+    'https://tin.example/bai': { body: ARTICLE('Không được mở', ['robots.txt của trang không tới được.']) },
     'https://forum.example/robots.txt': { status: 404, body: '' },
-    'https://forum.example/t/1': { body: '<html><head><title>Diễn đàn</title></head><body><p>Mình đóng tiền điện tháng 10 khoảng 650.000 đồng.</p></body></html>' },
+    'https://forum.example/t/1': { body: ARTICLE('Diễn đàn', ['Mình đóng tiền điện tháng 10 khoảng 650.000 đồng.']) },
+    'https://khac.example/robots.txt': { status: 404, body: '' },
+    'https://khac.example/4': { body: ARTICLE('Trang thứ tư', ['Bảng giá điện cập nhật.']) },
     'https://chinhphu.example/robots.txt': { status: 404, body: '' },
-    'https://chinhphu.example/qd': { body: '<html><head><title>Quyết định</title></head><body><p>Giá bán lẻ điện bình quân điều chỉnh tăng 4,8% từ ngày 11/10/2026.</p></body></html>' },
+    'https://chinhphu.example/qd': { body: ARTICLE('Quyết định điều chỉnh giá điện', ['Giá bán lẻ điện bình quân điều chỉnh tăng 4,8% từ ngày 11/10/2026.']) },
   }
   vi.stubGlobal('fetch', async (input: unknown) => { throw new Error('network disabled in this test: ' + String(input).slice(0, 60)) })
 })
@@ -219,6 +223,14 @@ describe('unwind e2e — a web search comes back with its pages read (S6A, S6B)'
     // the freshness line (S3A) and the writing block (S3B) reach the model
     expect(on.system).toContain('hom nay la 2026-10-28')
     expect(on.system).toContain('CACH VIET LUOT NAY')
+  }, 60000)
+  it('flags ON, read-on: when only one of the top three is readable, the next result is read too (real web 28/10: a question whose three top links all failed)', async () => {
+    h.state.pages['https://forum.example/t/1'] = { status: 403, body: '' }
+    const on = await turn(KNOW, { unwind: true, luna: KNOW_INTENT, tools: [SEARCH], gapQuery: null })
+    const ws = on.results.find(r => r.name === 'web_search')?.result
+    expect(on.fetched).toContain('https://khac.example/4')
+    expect((ws.pages_read as Array<Record<string, unknown>>).filter(p => !('error' in p)).length).toBe(2)
+    expect(on.logs.find(l => l.type === 'tappyai_search_reads')).toMatchObject({ pages_read: 2, follow_up: false })
   }, 60000)
   it('flags OFF (same turn): the search result is the plain search, no page is opened by the code, no follow-up', async () => {
     const off = await turn(KNOW, { unwind: false, luna: KNOW_INTENT, tools: [SEARCH], gapQuery: 'x' })
