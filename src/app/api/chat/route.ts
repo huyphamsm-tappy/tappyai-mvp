@@ -102,7 +102,8 @@ import { recordDecision, DECISION_RECORD_TIMEOUT_MS } from '@/lib/ai/agent/runti
 import { createPlacesBudget, PLACES_BUDGET_AGENT, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
 // Consultative V1 (flag CONSULTATIVE_V1, default OFF — see docs/audit/consultative-v1-design.md).
 import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
-import { isProductionRuntime, consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, consultReadPageLateOn, consultPickPageReadOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn, consultUnwindS1aOn, consultUnwindS1bOn, consultUnwindS1dOn, consultUnwindS2aOn, consultUnwindS2bOn, consultUnwindS2cOn } from '@/lib/config/consultFlags'
+import { isProductionRuntime, consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, consultReadPageLateOn, consultPickPageReadOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn, consultUnwindS1aOn, consultUnwindS1bOn, consultUnwindS1dOn, consultUnwindS2aOn, consultUnwindS2bOn, consultUnwindS2cOn, consultUnwindS3aOn, consultUnwindS3bOn, consultUnwindS3cOn } from '@/lib/config/consultFlags'
+import { unwindWritingBlock, UNWIND_PICK_ROWS, UNWIND_MAX_TOKENS } from '@/lib/ai/consultative/unwindWriting'
 import { answerInsteadOfAsk, unwoundAskLine } from '@/lib/ai/consultative/answerInsteadOfAsk'
 import { checkToolLocation, locationRefusal, HOTEL_CALL_CREDIT_CAP } from '@/lib/ai/consultative/toolLocation'
 import { referTitlesForPrompt } from '@/lib/ai/consultative/referTitles'
@@ -1537,6 +1538,8 @@ export async function POST(req: Request) {
   // Wave 3-FIX (R3-03/R3-04): set once the turn's real tool set is known (just before the stream is built). null / false = the turn runs exactly as with every Wave 3 flag off.
   let w3Prompt: string | null = null
   let w3Structured = false
+  // CONSULT_UNWIND_S3B: set with the turn's tool set (below); null = the HEAD output ceiling.
+  let unwindToolTurnCeiling: number | null = null
   let traceFinishReason: string | null = null
   let traceAreaAsk: { appended: boolean | null; reason: string | null } | null = null
   // Owner 2026-09-28 (c40 T7): a flight search runs without a date; the date is asked at the END.
@@ -2284,7 +2287,15 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     planning,
   )
   const legacyShared = built?.shared
-  const legacyPrompt = (built ? built.dynamic : buildSystemSimple(lang, memoryBlock)) + styleBlock + voiceLayerBlock() + shareContextBlock
+  // CONSULT_UNWIND_S3A..S3C (unwindWriting.ts): one block after the voice layer, on both prompt builds; '' with every flag OFF.
+  const unwindWriting = unwindWritingBlock({
+    ...(consultUnwindS3aOn() ? { freshToday: new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Ho_Chi_Minh' }) } : {}),
+    writing: consultUnwindS3bOn(),
+    nonPick: !consult || consult.turn === 'chat',
+    wideShortlist: consultUnwindS3cOn() && !!consult && ['pick', 'more', 'reject'].includes(consult.turn),
+    lang,
+  })
+  const legacyPrompt = (built ? built.dynamic : buildSystemSimple(lang, memoryBlock)) + styleBlock + voiceLayerBlock() + shareContextBlock + unwindWriting
   // Consult V2 lean prompt: small fixed core + this area's tool rules + the frame/state (leanConsultPrompt.ts).
   // Measured on uat 70667d3: the full rulebook made one pick turn 34k input tokens ($0.049).
   // An in-area knowledge question ("chốt, cần kiểm tra gì khi mua") is lean too — measured 30,970 input
@@ -2302,7 +2313,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       consultBlock: consultativeBlock,
       ...(consultLibraryOn ? { library: frameLibrary(consultLibraryDomain) } : {}),
       ...(lunaAnswer && process.env.CONSULT_LUNA_PROMPT !== '0' ? { core: LUNA_CORE } : {}),
-      extra: [lunaData ? '' : memoryBlock ?? '', prefBlock, planningIntent ? buildPlanningBlock(planningIntent, lang, planning ?? {}) : '', lunaPlan ? LUNA_PLAN_RULE : '', styleBlock, voiceLayerBlock(), lunaData ? '' : shareContextBlock, ...(knowledgeTurnTools ? [KNOWLEDGE_TURN_TOOL_RULE] : []), ...w3.extra],
+      extra: [lunaData ? '' : memoryBlock ?? '', prefBlock, planningIntent ? buildPlanningBlock(planningIntent, lang, planning ?? {}) : '', lunaPlan ? LUNA_PLAN_RULE : '', styleBlock, voiceLayerBlock(), lunaData ? '' : shareContextBlock, ...(knowledgeTurnTools ? [KNOWLEDGE_TURN_TOOL_RULE] : []), ...w3.extra, unwindWriting],
       tail: [adviceEnabled() && adviceApplies(consult!.domains[0], consultTravelCall?.name === 'get_flight_prices') ? adviceBlock({ turn: consult!.turn, domain: consult!.domains[0], flight: consultTravelCall?.name === 'get_flight_prices', days: Number(consult!.known.so_ngay?.match(/\d+/)?.[0]) || null }) : '', ...w3.tail],
     })
   }
@@ -2509,6 +2520,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // search. Fewer left → search again (the candidates ran out).
   // Consult pick / "xem thêm" / "bác": the model reads the engine's top 3 only (trimPlacesForModel consultTop).
   const consultTopTurn = !!consult && ['pick', 'more', 'reject'].includes(consult.turn) && process.env.CONSULT_TOP3 !== '0'
+  // CONSULT_UNWIND_S3C: the model sees UNWIND_PICK_ROWS rows of a pick (HEAD: 3).
+  const consultTopRows = consultUnwindS3cOn() ? UNWIND_PICK_ROWS : 3
   const storedCandidates = chatState?.candidates
   // Follow-up / compare: the guards' EVIDENCE for the venues being discussed comes from the stored candidates
   // (stream-filter seed) — no tool call, no provider call, nothing new for the model to read. r14: the guards
@@ -2750,7 +2763,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           if (pickCandidate) lastFullPlaceResult = result
           const modelView = trimPlacesForModel(forModel('search_places', withTravelEditorial(pick
             ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }
-            : result, editorial)), 'results', { rendersCard: rendersDecisionCard, modelChooses: v1Active || agentV2, ...(consultTopTurn ? { consultTop: 3 } : {}) })
+            : result, editorial)), 'results', { rendersCard: rendersDecisionCard, modelChooses: v1Active || agentV2, ...(consultTopTurn ? { consultTop: consultTopRows } : {}) })
           // CONSULTATIVE_IN_AGENT + audit trace only (cardPathTrace.ts): which rows the provider returned, which the MODEL reads, which became card candidates.
           if (enrichment.diagTurnId) {
             const foldName = (s: unknown) => String(s ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/gi, 'd').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
@@ -2956,7 +2969,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // from the full list above. Same trim as places (cost item 4).
           return trimPlacesForModel(forModel('get_hotel_prices', withTravelEditorial(pick
             ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }
-            : result, editorial)), 'hotel_list', { modelChooses: v1Active || agentV2, ...(consultTopTurn && consult?.domains[0] === 'travel' ? { consultTop: 3 } : {}) })
+            : result, editorial)), 'hotel_list', { modelChooses: v1Active || agentV2, ...(consultTopTurn && consult?.domains[0] === 'travel' ? { consultTop: consultTopRows } : {}) })
         }
       }),
       get_transport_options: tool({
@@ -3441,6 +3454,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // checks, which a read cannot change - it exists only on a pre-searched turn). Its model copy is added once, unslimmed, just below.
   if (pickPageRead) presearchAll.push(pickPageRead)
   const modelMessagesForStream = pickPageRead ? [...modelMessagesWithPresearch, ...presearchMessages(pickPageRead)] : modelMessagesWithPresearch
+  // CONSULT_UNWIND_S3B: a turn that carries tools may write up to UNWIND_MAX_TOKENS (HEAD 2048); null = the HEAD ceiling.
+  unwindToolTurnCeiling = consultUnwindS3bOn() && !!tools ? UNWIND_MAX_TOKENS : null
   // The step budget of this turn, named once (the very expression the stream used inline: same value). CONSULT_FINAL_SYNTHESIS needs it to reserve the last step.
   const streamMaxSteps = lunaPlan && planningIntent !== 'trip' ? 3 : pickTools ? knowledgeDepth().steps : consultFollowReuse || consultTripPrefetch || (lean && presearchAll.length > 0 && !planningIntent && !noToolTurn && !eveningBlock) ? 2 : noToolTurn || eveningBlock ? 1 : planningIntent ? (lean ? 3 : 8) : hasImage ? 3 : lean ? (research ? levelLimits.researchSteps : 3) : knowledgeTurn ? knowledgeDepth().steps : 5
   // CONSULT_FINAL_SYNTHESIS (Wave 2, default OFF = nothing below runs). Baseline: a tool loop used EVERY step calling web_search, the model never wrote a word (finishReason "tool-calls"), and the
@@ -3528,7 +3543,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // with [CTA_BUTTONS] + [FOLLOWUPS]); 2048 is 2.5× that. Planning stays at 4096 (a
     // [TAPPY_PLAN] block is long by design) and image turns at 1024. Output is billed as
     // generated, so this changes no cost on a normal reply — it bounds a runaway one.
-    maxTokens: noToolTurn ? (consult ? 600 : 300) : eveningBlock ? 350 : planningIntent ? 4096 : hasImage ? 1024 : (w3Structured ? levelLimits.structuredMaxTokens : 2048),
+    maxTokens: noToolTurn ? (consult ? 600 : 300) : eveningBlock ? 350 : planningIntent ? 4096 : hasImage ? 1024 : (w3Structured ? levelLimits.structuredMaxTokens : unwindToolTurnCeiling ?? 2048),
     // Consult V2: a pick whose search already ran (presearch) answers in ONE step — no second full pass.
     // A follow-up/compare that re-reads its evidence keeps a second step: a stray tool call must still end in text.
     // R15: a pre-fetched trip plan writes in ONE step (a second only if it still reaches for a tool).
@@ -4035,7 +4050,7 @@ ${finalWriteInstruction(lang)}` },
             lastUserChars: lastText.length,
             toolResultChars: auditToolResultChars,
             noToolTurn,
-            maxTokens: noToolTurn ? (consult ? 600 : 300) : planningIntent ? 4096 : hasImage ? 1024 : (w3Structured ? levelLimits.structuredMaxTokens : 2048),
+            maxTokens: noToolTurn ? (consult ? 600 : 300) : planningIntent ? 4096 : hasImage ? 1024 : (w3Structured ? levelLimits.structuredMaxTokens : unwindToolTurnCeiling ?? 2048),
           },
         }) + '\n')
       } catch { /* audit only */ }

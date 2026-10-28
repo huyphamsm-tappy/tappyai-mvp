@@ -67,7 +67,8 @@ import { isValidTikTokContentUrl } from '@/lib/links/tiktokReview'
 import { guardSpecClaimsInText, type SpecEvidence } from './consultative/specGuard'
 import { sanitizeUrlForMarkdown, escapeMarkdownLabel } from './tools/common'
 import { riskBackstopEnabled, riskBackstopMode } from '@/lib/config/product'
-import { consultFinalSynthesisOn, consultUnwindS1cOn } from '@/lib/config/consultFlags'
+import { consultFinalSynthesisOn, consultUnwindS1cOn, consultUnwindS3bOn, consultUnwindS3cOn } from '@/lib/config/consultFlags'
+import { UNWIND_PICK_ALTERNATIVES, UNWIND_MAX_SENTENCES } from './consultative/unwindWriting'
 import { applyRiskBackstop, isSecondHandPurchaseAdvice } from './riskBackstop'
 import { EMIT_TAPPY_PLACES, EMIT_PLACES_ANNOTATION, SERVER_AUTHORED_CTA, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
 import { bandFromRow, type PriceBand } from '@/lib/recommendation/priceBand'
@@ -3302,7 +3303,8 @@ export function applyPlaceEnrichmentStreamFilter(
       const agentOwnsProse = collector?.agentMode === true
       const shape = !hasVenues || consultPlan || agentOwnsProse || structuredAnswer ? { text: atmosphere.text, stats: { sentences_in: 0, sentences_out: 0, listing_removed: 0, alternatives_removed: 0, capped: 0 } } : guardProseShape(atmosphere.text, {
         rendersCard: v1.rendersCard,
-        ...(collector?.consultTurn ? { maxAlternatives: 2, maxSentences: adviceEnabled() ? 13 : 9 } : {}),
+        // CONSULT_UNWIND_S3C: 3 alternatives (HEAD 2); CONSULT_UNWIND_S3B: a fuller answer is not cut back to the short pick (20 sentences, HEAD 9 / 13).
+        ...(collector?.consultTurn ? { maxAlternatives: consultUnwindS3cOn() ? UNWIND_PICK_ALTERNATIVES : 2, maxSentences: consultUnwindS3bOn() ? UNWIND_MAX_SENTENCES : adviceEnabled() ? 13 : 9 } : {}),
         venues: snippetPlaceNames.map(name => ({
           name,
           rating: ratingsByEntity.get(name)?.[0] ?? null,

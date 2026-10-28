@@ -199,3 +199,12 @@ export const CONSULT_UNWIND_S2C_FLAG = 'CONSULT_UNWIND_S2C'
 export function consultUnwindS2aOn(env: Env = process.env): boolean { return unwindOn(env, CONSULT_UNWIND_S2A_FLAG) }
 export function consultUnwindS2bOn(env: Env = process.env): boolean { return unwindOn(env, CONSULT_UNWIND_S2B_FLAG) }
 export function consultUnwindS2cOn(env: Env = process.env): boolean { return unwindOn(env, CONSULT_UNWIND_S2C_FLAG) }
+//   CONSULT_UNWIND_S3A  the writing step gets today's date and a general freshness line (state each source's date, judge its age); no field added to the intent layer.
+//   CONSULT_UNWIND_S3B  the writing step is told to fit the length to the question (headings / table / list when comparing), no "Mình chọn" on a turn that picks nothing; output ceiling 4000 on a tool turn.
+//   CONSULT_UNWIND_S3C  a pick shows the model 4 rows (HEAD 3) and the prose-shape guard keeps 3 alternatives (HEAD 2).
+export const CONSULT_UNWIND_S3A_FLAG = 'CONSULT_UNWIND_S3A'
+export const CONSULT_UNWIND_S3B_FLAG = 'CONSULT_UNWIND_S3B'
+export const CONSULT_UNWIND_S3C_FLAG = 'CONSULT_UNWIND_S3C'
+export function consultUnwindS3aOn(env: Env = process.env): boolean { return unwindOn(env, CONSULT_UNWIND_S3A_FLAG) }
+export function consultUnwindS3bOn(env: Env = process.env): boolean { return unwindOn(env, CONSULT_UNWIND_S3B_FLAG) }
+export function consultUnwindS3cOn(env: Env = process.env): boolean { return unwindOn(env, CONSULT_UNWIND_S3C_FLAG) }
