@@ -102,7 +102,8 @@ import { recordDecision, DECISION_RECORD_TIMEOUT_MS } from '@/lib/ai/agent/runti
 import { createPlacesBudget, PLACES_BUDGET_AGENT, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
 // Consultative V1 (flag CONSULTATIVE_V1, default OFF — see docs/audit/consultative-v1-design.md).
 import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
-import { isProductionRuntime, consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, consultReadPageLateOn, consultPickPageReadOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn, consultUnwindS1aOn, consultUnwindS1bOn, consultUnwindS1dOn, consultUnwindS2aOn, consultUnwindS2bOn, consultUnwindS2cOn, consultUnwindS3aOn, consultUnwindS3bOn, consultUnwindS3cOn, consultUnwindS4aOn, consultUnwindS4bOn, consultUnwindS5On } from '@/lib/config/consultFlags'
+import { isProductionRuntime, consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, consultReadPageLateOn, consultPickPageReadOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn, consultUnwindS1aOn, consultUnwindS1bOn, consultUnwindS1dOn, consultUnwindS2aOn, consultUnwindS2bOn, consultUnwindS2cOn, consultUnwindS3aOn, consultUnwindS3bOn, consultUnwindS3cOn, consultUnwindS4aOn, consultUnwindS4bOn, consultUnwindS5On, consultUnwindS6aOn, consultUnwindS6bOn, consultUnwindS6cOn } from '@/lib/config/consultFlags'
+import { searchWithReads, createOnce, FOLLOW_UP_SYSTEM, S6_MAX_READS } from '@/lib/ai/consultative/searchReads'
 import { deepResearch, exaSearch, deepEvidenceForModel, GAP_SYSTEM, EXA_PRICE } from '@/lib/ai/consultative/deepSearch'
 import { unwindWritingBlock, unwindToolHint, UNWIND_PICK_ROWS, UNWIND_MAX_TOKENS } from '@/lib/ai/consultative/unwindWriting'
 import { answerInsteadOfAsk, unwoundAskLine } from '@/lib/ai/consultative/answerInsteadOfAsk'
@@ -2576,7 +2577,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   const pickCandidate = consultPickTurnToolsOn() && !!lean && lunaAnswer && !noToolTurn && !planningIntent && !agentOn
   // Wave 4 (B): the FULL row set of the last place search, kept only on a pick candidate (the pre-search's rows, before the model's copy is slimmed). OFF = never set.
   let lastFullPlaceResult: unknown = null
-  const researchReader = (consultResearchLoopOn() && lean) || knowledgeTurn || pickCandidate ? createLeanResearch({ lang, userTexts: recentUserTexts, maxReads: levelLimits.researchMaxReads, emit: trace ? (ev, d) => trace.emit(ev, d) : undefined }) : null
+  const researchReader = (consultResearchLoopOn() && lean) || knowledgeTurn || pickCandidate ? createLeanResearch({ lang, userTexts: recentUserTexts, maxReads: consultUnwindS6aOn() ? Math.max(S6_MAX_READS, levelLimits.researchMaxReads) : levelLimits.researchMaxReads, ...(consultUnwindS6cOn() ? { v5Reading: true } : {}), emit: trace ? (ev, d) => trace.emit(ev, d) : undefined }) : null
   const tools = noToolTurn && !agentOn ? undefined : gateTools(timeTools({
       // A movie/show RECOMMENDATION turn drops the place search entirely, so the
       // model can't answer "recommend a movie" with a list of cinemas — it
@@ -3045,6 +3046,38 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // The ticket is the current one inside every tool.execute() — the model's calls, the pre-search and the trip pre-fetch all run these same wrapped objects.
   if (tools && turnWebTicket) wrapToolsWithTurnWebTicket(tools as unknown as Record<string, unknown>, turnWebTicket)
   if (tools && requestCapTurn) wrapToolsWithRequestCap(tools as unknown as Record<string, unknown>, requestCapTurn)
+  // CONSULT_UNWIND_S6A / S6B (searchReads.ts): the model's web_search also reads its top pages - through the turn's OWN read_page tool (after the request-cap / trace
+  // wrappers above, so robots.txt, the safe fetch, the page budget and the bench wall all apply), and once per turn one follow-up search through the same web_search.
+  // The links are registered with the reader first (the outer collectUrls wrapper adds them only after this returns). No read_page tool on the turn: nothing changes.
+  if (tools && researchReader && consultUnwindS6aOn()) {
+    const tt = tools as unknown as Record<string, { execute?: (a: unknown, o: unknown) => Promise<unknown> }>
+    const ws = tt.web_search, rp = tt.read_page
+    if (ws?.execute && rp?.execute) {
+      const innerSearch = ws.execute.bind(ws), innerRead = rp.execute.bind(rp)
+      const followUpOnce = createOnce()
+      ws.execute = async (a: unknown, o: unknown) => {
+        const base = await innerSearch(a, o)
+        const q = typeof (a as { query?: unknown })?.query === 'string' ? (a as { query: string }).query.trim() : ''
+        if (!q) return base
+        researchReader.collectFrom(base)
+        const withGap = consultUnwindS6bOn() && followUpOnce()
+        const r = await searchWithReads({
+          query: q,
+          base,
+          read: (urls, focus) => innerRead({ urls, focus, kind: 'other' }, { toolCallId: `search_read_${randomUUID().slice(0, 6)}`, messages: [] }),
+          gap: withGap ? {
+            find: async titles => {
+              const out = await AI.extract({ role: 'intent', systemShared: FOLLOW_UP_SYSTEM, messages: [{ role: 'user', content: `CAU HOI:\n${lastText.slice(0, 600)}\n\nTRUY VAN DA DUNG:\n${q.slice(0, 200)}\n\nTIEU DE TRANG DA CO:\n${titles.map(t => `- ${t}`).join('\n').slice(0, 1500)}` }], schema: z.object({ query: z.string().nullable() }), schemaName: 'tappy_follow_up', maxTokens: 120 } as never) as { object?: { query?: string | null } } | null
+              return out?.object?.query ?? null
+            },
+            search: async q2 => { const b2 = await innerSearch({ query: q2 }, o); researchReader.collectFrom(b2); return b2 },
+          } : null,
+        })
+        console.log(JSON.stringify({ type: 'tappyai_search_reads', pages_read: r.pagesRead, follow_up: r.followUp, follow_up_pages: r.followUpPages }))
+        return r.result
+      }
+    }
+  }
   // CONSULT_UNWIND_S5 (deepSearch.ts, LOCALHOST ONLY): the model's FIRST web_search of the turn also carries two Exa deep-search rounds as `deep_evidence`.
   // No key on the server: nothing changes (= flag OFF) and one count line says so. The key is never logged.
   if (tools && consultUnwindS5On()) {

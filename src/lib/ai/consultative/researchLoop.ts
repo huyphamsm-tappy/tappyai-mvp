@@ -7,7 +7,7 @@
 //
 // Everything a page says is DATA (pageExtract strips instructions; the tool result says so). Nothing here calls a model or the network by itself: the model chooses to call `read_page`.
 
-import { createPageReader, readPageTool, urlsIn, urlsInText } from '@/lib/ai/agent/runtime/readPage'
+import { createPageReader, readPageTool, urlsIn, urlsInText, V5_FETCH } from '@/lib/ai/agent/runtime/readPage'
 import { EvidenceLedger, normUrl } from '@/lib/ai/agent/runtime/evidence'
 import type { AgentRunTrace } from '@/lib/ai/agent/runtime/trace'
 import { fetchPublicPage, type PageFailure, type PageFetchOptions, type PageFetchResult } from '@/lib/security/safePageFetch'
@@ -72,6 +72,11 @@ export function createLeanResearch(o: {
   lang: string
   userTexts: readonly string[]
   maxReads?: number
+  /**
+   * CONSULT_UNWIND_S6C: the RETRIEVAL_V5 reading path - PDFs with a text layer, pages up to 2.5 MB (fptshop / tripadvisor / vexere pages are 0.8-2 MB and were cut at
+   * 800 KB), compressed answers decoded, script bodies dropped before the text cap. Same fetch rules, same robots.txt gate. Absent / false: HEAD.
+   */
+  v5Reading?: boolean
   /** Where reader events go (the consult trace); optional. */
   emit?: (ev: string, data: Record<string, unknown>) => void
   /** Test seams. */
@@ -99,7 +104,7 @@ export function createLeanResearch(o: {
     add: (ev: string, data: Record<string, unknown>) => { try { o.emit?.(ev, scrub(data)) } catch { /* observation only */ } },
     counters: { budgetRefusals: 0 },
   } as unknown as AgentRunTrace
-  const inner: Fetcher = o.fetchPage ?? ((u, s, hopGate) => fetchPublicPage(u, { signal: s, ...(hopGate ? { hopGate } : {}) }))
+  const inner: Fetcher = o.fetchPage ?? ((u, s, hopGate) => fetchPublicPage(u, { signal: s, ...(o.v5Reading ? V5_FETCH : {}), ...(hopGate ? { hopGate } : {}) }))
   const reader = createPageReader({
     ledger: new EvidenceLedger(),
     allowed: (u: string) => allowed.has(normUrl(u)),
@@ -108,6 +113,7 @@ export function createLeanResearch(o: {
     maxReads: o.maxReads ?? RESEARCH_MAX_READS,
     structured: true,
     fetchPage: robotsAwareFetch(inner, o.robots ?? sharedRobotsGate()),
+    ...(o.v5Reading ? { retrievalV5: true } : {}),
   })
   return {
     tool: readPageTool(reader),

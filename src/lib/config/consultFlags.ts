@@ -216,5 +216,14 @@ export function consultUnwindS4aOn(env: Env = process.env): boolean { return unw
 export function consultUnwindS4bOn(env: Env = process.env): boolean { return unwindOn(env, CONSULT_UNWIND_S4B_FLAG) }
 //   CONSULT_UNWIND_S5   LOCALHOST ONLY: the model's first web_search of a turn also carries two Exa deep-search rounds (deepSearch.ts). Needs EXA_API_KEY on the server; without it nothing changes.
 //                       A new data processor (Exa): never in production until the Owner decides on the privacy page and the AI-data consent.
+//   CONSULT_UNWIND_S6A  every web_search of the model also opens its top three result pages through the turn's own read_page (searchReads.ts); the reader's page budget becomes 10.
+//   CONSULT_UNWIND_S6B  once per turn, one follow-up search for what the first results left open (an intent-role call writes the query), its top two pages read. Needs S6A.
+//   CONSULT_UNWIND_S6C  the consult reader uses the RETRIEVAL_V5 reading path: PDFs with a text layer, pages up to 2.5 MB, compressed answers decoded.
+export const CONSULT_UNWIND_S6A_FLAG = 'CONSULT_UNWIND_S6A'
+export const CONSULT_UNWIND_S6B_FLAG = 'CONSULT_UNWIND_S6B'
+export const CONSULT_UNWIND_S6C_FLAG = 'CONSULT_UNWIND_S6C'
+export function consultUnwindS6aOn(env: Env = process.env): boolean { return unwindOn(env, CONSULT_UNWIND_S6A_FLAG) }
+export function consultUnwindS6bOn(env: Env = process.env): boolean { return unwindOn(env, CONSULT_UNWIND_S6B_FLAG) && consultUnwindS6aOn(env) }
+export function consultUnwindS6cOn(env: Env = process.env): boolean { return unwindOn(env, CONSULT_UNWIND_S6C_FLAG) }
 export const CONSULT_UNWIND_S5_FLAG = 'CONSULT_UNWIND_S5'
 export function consultUnwindS5On(env: Env = process.env): boolean { return unwindOn(env, CONSULT_UNWIND_S5_FLAG) }
