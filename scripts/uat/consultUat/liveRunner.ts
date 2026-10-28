@@ -75,6 +75,11 @@ export const BENCH_FLAG_NAMES: readonly string[] = [
   'CONSULT_READ_PAGE_LATE',
   // Wave 6, bench only (see liveTrialLauncher.mjs, writerCapture.ts); default OFF
   'BENCH_CAPTURE_WRITER_INPUT',
+  // Unwind (28/10, see liveTrialLauncher.mjs, consultFlags.ts); default OFF, not tied to the level; S5 (Exa) not registered
+  'CONSULT_UNWIND_S1A', 'CONSULT_UNWIND_S1B', 'CONSULT_UNWIND_S1C', 'CONSULT_UNWIND_S1D',
+  'CONSULT_UNWIND_S2A', 'CONSULT_UNWIND_S2B', 'CONSULT_UNWIND_S2C',
+  'CONSULT_UNWIND_S3A', 'CONSULT_UNWIND_S3B', 'CONSULT_UNWIND_S3C',
+  'CONSULT_UNWIND_S4A', 'CONSULT_UNWIND_S4B',
   // Wave 3 · W6: one number 0-4 that switches W2 / W4 (L1), W1 (L2), W3 (L3) on together (see liveTrialLauncher.mjs); default unset = level 0
   'CONSULT_CAPABILITY_LEVEL',
 ]
