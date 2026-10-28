@@ -8,13 +8,13 @@ Evidence labels:
 - `INFERRED` — concluded from verified facts, not observed directly.
 - `UNVERIFIED` — no evidence either way.
 
-Last updated: 2026-10-22.
+Last updated: 2026-10-28 (section 8 added; the rest of the file is as of 2026-10-22–23).
 
 ## 1. Canonical branch and platforms
 
 | Platform | Worktree | Branch | SHA | Label |
 |---|---|---|---|---|
-| Web (canonical) | `D:/TappyAI-wt/wt-integration` | `integration/canonical-20261020` | `62e49df` | VERIFIED (`git rev-parse HEAD`, 22/10) |
+| Web (canonical) | `D:/TappyAI-wt/wt-integration` | `integration/canonical-20261020` | `371095d` (code) + the docs commit that added section 8 | VERIFIED (`git rev-parse HEAD`, 28/10; was `62e49df` on 22/10) |
 | Android | `D:/TappyAI-wt/wtk-android` | `android/phase-k-web-parity` | `b6bf3a7` | VERIFIED by `rev-parse` at the start of the 22/10 session; not re-checked since |
 | iOS | `D:/TappyAI-wt/wtk-ios` | `ios/phase-k-web-parity` | `75fa9bb` | VERIFIED (`git rev-parse HEAD`, 22/10) |
 
@@ -158,7 +158,67 @@ Corrected 22/10 (owner instruction, supersedes the earlier wording): `844f5b7` i
 
 A decision is closed only when the owner states it or evidence shows it.
 
-## 8. Change log
+## 8. Consultative (Web) — Wave 3 → Wave 4 (26–28/10/2026)
+
+Pasted on the owner's instruction (28/10) from `D:/TappyAI-review-artifacts/consultative-wave3/project-state-snippet.md`, after the four Wave 4 measurement runs finished. Handover for a new session: `D:/TappyAI-review-artifacts/consultative-wave3/HANDOVER.md`.
+
+### Consultative — trạng thái sau Wave 4 (27–28/10/2026)
+
+- **Mã:** `wt-integration`, nhánh `integration/canonical-20261020`, HEAD mã **`371095d`** (commit tài liệu này nằm trên nó), cục bộ, KHÔNG push, KHÔNG deploy. Mọi cờ mặc định TẮT; production luôn TẮT/L0 (từ N1: kể cả bước viết cuối của `CONSULT_FINAL_SYNTHESIS`).
+- **Chuỗi commit Wave 4** (sau `a58dd26`; mỗi commit có nhánh `backup/wave4-*`; `backup/wave3-a58dd26` giữ điểm xuất phát):
+  - `0b26d49` C-PRE-0 — cờ chỉ cho bench `BENCH_ALLOW_PUBLIC_PAGE_FETCH`.
+  - `25900c5` C-PRE-1 — bước viết cuối không công cụ khi vòng công cụ không viết chữ nào, dưới `CONSULT_FINAL_SYNTHESIS`.
+  - `e71a58e` — sửa hai test C-PRE-1 làm đỏ.
+  - `8b59da7` C-PRE-2 — cờ `CONSULT_CHAT_DOMAIN_AGREEMENT`, KHÔNG gắn mức; Owner quyết có bật hay không.
+  - `e0cafd5` C-PRE-3 — `knowledgeDepth`: 5/6/8 bước theo mức.
+  - `fa498be` C0 — test robots + đóng băng đồng hồ.
+  - `a88211a` C1 — hai cờ `CONSULT_KNOWLEDGE_PATH` / `CONSULT_PICK_TURN_TOOLS` (bật theo mức từ L2) + hàm thuần `wave3PromptLines`.
+  - `de5fdf4` C2 — đường kiến thức R3.
+  - `352513a` C3 — R2 có công cụ.
+  - `dda744d` C4 — lưới test.
+  - `ed34c13` — kiểm cuối: ghim cờ Wave 4 = "0" trong 7 file test cũ (cô lập môi trường), test vnexpressTravel #23 nhận ngoại lệ bước viết cuối như khóa kiến trúc, canary riêng tư.
+- **Kiểm cuối (VERIFIED bằng mock):** 7 chế độ test mỗi chế độ 6876 đạt, chỉ 3 đỏ cũ ở security; tsc/eslint/`git diff --check` sạch; khóa kiến trúc vẫn 17; OFF parity 350 ô × 3 lần × 9 bộ giá trị: 0 khác biệt ổn định với `a58dd26`/`1bd9d62`/`6693493`/`613220b`, 11 ô chỉ khác dòng log với `cf26018` (giống hệt `a58dd26`, có từ trước).
+- **Sửa sau review độc lập (27/10, sau `ed34c13`; mỗi commit có nhánh `backup/wave4-fix-*`):**
+  - `5a0a8f1` N1 — bước viết cuối không chạy ở production dù `CONSULT_FINAL_SYNTHESIS=1` (`consultFinalWriteOn`); hành vi cũ của cờ giữ nguyên.
+  - `27806ed` N2 — test: hạn chót lượt (`startTime + TURN_DEADLINE_MS`) tới bước viết cuối.
+  - `a13d896` N3 — test: lượt agent không bao giờ có bước viết cuối (`result.steps` của agent có `toolResults` luôn `[]`).
+  - `48b026a` N4 — bench: trang công khai qua `node:http(s)` phải có `lookup = safeLookup`; test chỉ GET ở đường node; trần 40 theo từng lượt (hai lượt).
+  - `30ad2ca` G3 — chi phí bước viết cuối vào dòng `tappyai_turn_cost` cả khi Luna tắt.
+  - `37a3402` G4 — bước viết cuối có chỉ dẫn riêng ở cuối system của riêng lời gọi đó; system chính không đổi.
+  - `3db1aad` B — R2: bộ chặn giá biết website của quán từ hàng gốc của lần tra trước (phương án a); `it.fails` thành test thường; giá của quán khác / giá bịa vẫn bị cắt.
+  - `52962aa` — kiểm cuối: hai test route ghim cờ mà shell có thể đặt (`vi.stubEnv`), không đổi assert.
+- **Sau lần đo W4-R3 (dừng ở E18) và review bản cuối (27/10):**
+  - `e92076e` — bộ đo (chỉ khi `BENCH_SPEND_GATE` bật): request Serper ĐÃ GỬI mà không rõ giá (hết giờ, lỗi mạng, HTTP lỗi, 200 không credit) được tính bằng mức trần đã giữ chỗ (`assumed: worst_case`), không còn "không biết" làm dừng cả lần chạy. Lời gọi mô hình không rõ giá vẫn chặn như cũ. `spendGate.ts` / `spendGateAdapter.ts` không đổi. 5 kỳ vọng test cũ đổi sang luật mới (Owner duyệt phương án A).
+  - `be07bc2` S1 — test ranh giới: R3 cần `!!consult`; R2 cần `lunaAnswer` và `!consultFollowReuse`; `!noToolTurn` ở R2 là đột biến tương đương (lượt không công cụ không bao giờ được tra trước), lý do ghi bằng assert trong test.
+  - `8835c64` S2 — test đầu vào website quán của R2: host đã biết không bị ghi đè, trần 60 host, chỉ đọc `website_uri` / `website`.
+  - `371095d` S3 — canary riêng tư R2: công cụ web / `read_page` của R2 không thêm dòng log nào mang chữ hay host người dùng gõ.
+- **W4-R3 (đo thật, 27/10):** dừng ở E18 sau 9/14 lượt (Serper hết giờ → chi phí "không biết" → cổng chặn); không chạy lại; kết quả ở `probe2/run-W4-R3/SEND/`. 6 lượt còn lại đo ở **W4-R3b** (`probe-R3b.txt`).
+- **Việc tồn đọng S4 (có từ trước Wave 4, CHƯA sửa):** các dòng log `tappyai_presearch`, `tappyai_tool_called`, `tappyai_place_evidence` và sự kiện trace `tool` của lời gọi do mã mang chữ người dùng gõ (truy vấn tra trước), chạy cả ở production, cờ TẮT cũng vậy. Sửa **sau khi đo xong**; **phải xong trước khi mở cho người dùng thật**.
+- **Kiểm cuối các bản sửa (VERIFIED bằng mock):** 8 chế độ test (mặc định, 3 cờ Wave 4, `CONSULT_FINAL_SYNTHESIS=1`, L2, L4, A+C+K+ABORT): chỉ 3 đỏ cũ ở security; OFF parity 350 ô × 3 lần so với `a58dd26` và `ed34c13` (cờ trống, "0", "true", mức "0", "5"): 0 khác biệt ổn định (có 5 ô dạng R2); khóa kiến trúc vẫn 17; tsc/eslint/`git diff --check` sạch.
+- **Mở / cần Owner quyết:**
+  - (1) bật C-PRE-2 hay không (khối 4 của `probe2/RUN-CHAIN.md` đo đúng việc này);
+  - (2) R3: số tiền bịa trong câu trả lời KHÔNG về địa điểm không bị cắt (hành vi có sẵn, cờ TẮT cũng vậy);
+  - (3) đề xuất "giữ phần có nguồn" ở bộ lọc hậu kỳ (số đo: 2/20 lượt bị cắt ~10–12 %);
+  - (4) bench: yêu cầu đọc trang qua `fetch` vẫn không bị ghim địa chỉ (sản phẩm không dùng đường này - INFERRED); chặn nó cần đổi kỳ vọng test cũ.
+- **Đo thật (28/10, cả 4 lần sạch, tổng 0,155 USD ước tính; cả đợt kể W4-R3 ≈ 0,179 USD):**
+  - **W4-R3b:** R3 ×6; đọc trang 8/8 ok; `calculate` ở E20; bước viết cuối cứu E22.
+  - **W4-R2:** R2 ×5, nhưng mô hình chỉ dùng công cụ ở 1/5 lượt.
+  - **W4-R1:** R1 ×6; bước viết cuối cứu đúng E10 / E21 / E25 (lỗi "không viết" của B2).
+  - **W4-R1-AGREE:** C-PRE-2 đổi 6/6 lượt từ R1 sang R3.
+  - Chi tiết: `probe2/bao-cao-4-lan-do-W4.md`. **Chưa chấm mù**; khối chấm mù dán sẵn nằm ở mục 6 của báo cáo đó.
+
+### (lịch sử) Consultative — trạng thái sau Wave 3-FIX (26/10/2026)
+
+- **Mã:** `D:/TappyAI-wt/wt-integration`, nhánh `integration/canonical-20261020`, HEAD `a58dd26`, **cục bộ, KHÔNG push, KHÔNG deploy**. Mọi cờ mặc định TẮT (chỉ chuỗi đúng `"1"`; mức `CONSULT_CAPABILITY_LEVEL` chỉ ký tự `0`–`4`); production luôn TẮT/L0. Cờ A (`CONSULT_THREAD_AWARE_ASK`) vẫn tạm dừng.
+- **Chuỗi commit:** `6693493` (Wave 2J) → Wave 3: `ea87089` tiền đề · `2043e4c` W2 · `816d64f` W4 · `c47cd24` W1 · `9525628` W3 · `bbf9435` W6 · `1bd9d62` W5 → **Wave 3-FIX:** `db6bed4` đăng ký công cụ (R3-02) · `a9d6b82` máy tính chỉ là bằng chứng theo GIÁ TRỊ (R3-01) · `0933b04` phạm vi W3 + luật đi cùng công cụ (R3-03/04) · `9875662` robots mỗi hop + mọi Content-Type + dấu chấm cuối (R3-05/08) · `2507ae9` trace nhãn `user_url` (R3-09) · `3b86d9c` trần cứng 0,10/lượt (R3-06) · `c26a3b2` sửa khoảng trắng · `a58dd26` hai test giết hai đột biến sống (R3-10). Mỗi commit có nhánh `backup/wave3-*` / `backup/wave3fix-*`.
+- **Review độc lập Wave 3** (ĐẠT CÓ ĐIỀU KIỆN, R3-01…R3-12): đã xử lý ở Wave 3-FIX — chi tiết từng mục ở `D:/TappyAI-review-artifacts/consultative-wave3/fix-report.md`. Mở/ghi nhận: R3-07 (nhãn tài liệu đã sửa), R3-10 (hai đột biến tương đương), R3-11, R3-12 (đo theo lô nhỏ).
+- **Mức năng lực:** L0 = hiện tại; L1 = W2 `web_search` theo nhu cầu (cần cổng C) + W4 máy tính; L2 = + W1 đọc trang (6 bước, ≤ 4 trang, robots.txt mỗi hop); L3 = + W3 trả lời có cấu trúc (chỉ lượt NHIỀU VẾ có công cụ, trần ra 3.500); L4 = L3 + 8 bước, ≤ 6 trang, trần ra 4.000.
+- **Quyết định của Owner (26/10/2026):** robots.txt LÀM; không model mạnh hơn; không `needs_sources`; Deep Research ngoài phạm vi; L-A ghi nhận chưa chạy; **trần cứng một lượt `MAX_TURN_CAP_USD` = 0,10 USD CHỈ trong chế độ đo (`BENCH_SPEND_GATE` BẬT)** — production và mọi đường không-bench không đổi, trần chạy 0,65/1,75 không đổi, Owner vẫn tự gõ trần thật ở launcher.
+- **Kiểm chứng:** bảy chế độ test (mặc định; bốn cờ Wave 3; cổng C; C+K+ABORT+Wave 3; A+C+K+ABORT+Wave 3; L2+cổng; L4+cổng) mỗi chế độ 347 file / 6.721 test — chỉ 3 test đỏ CŨ ngoài phạm vi Wave 3 (`cronAuth`×2, `costRouteCoverage` trong `src/lib/security`, đỏ từ trước); tsc 0, eslint 0, architecture guard 17 (không tăng). OFF parity, đột biến, canary riêng tư: xem `fix-report.md`.
+- **Chưa làm / còn mở:** F3 (cổng chặn mọi bước sau một lời gọi chính bị bỏ), F8, cửa sổ lời gọi thứ ba, M4, F5, C-F3 (Wave 2F), F1/F2 của cờ A; biểu thức/`inputs` của `calculate` không nằm trong trace; trần 0,10 vẫn có thể từ chối ở hội thoại rất dài (nền ~200 KB ở L4). (Lúc đó chưa có lần chạy trả phí nào cho năng lực Wave 3; nay đã có, xem phần trên.)
+- **Bước kế tiếp (lúc đó):** (1) review độc lập lại Wave 3-FIX bằng `re-review-checklist.md`; (2) nếu đạt, Huy tự chạy bốn lần thăm dò A→B→C→D theo `runbook-probe.md`; (3) phiên "So sánh ChatGPT" chấm mù kết quả thư mục `consultative-wave3/probe/`; (4) quyết định riêng cho các mục §6 của `report.md`.
+
+## 9. Change log
 
 - 2026-10-22: file created; canonical `6816cb2`; S5h3 stream test failing and uncommitted.
 - 2026-10-22: gate `MG-OPTION-OFF-VERIFIED-LOSS-01` created (docs only, no code change); an earlier owner message in the session approved `844f5b7` only as "FIXED-pending-review" (superseded by the correction recorded below: `844f5b7` is not approved), `TG-VERIFIED-LOSS-PRE-01` not closed. At this time the worktree also held uncommitted changes made by someone else (`src/app/api/subscription/route.ts`, `src/lib/plans/entitlement.ts`, new payments and entitlement test files); they are not part of this work and were left untouched.
@@ -177,3 +237,4 @@ A decision is closed only when the owner states it or evidence shows it.
 - 2026-10-22: Final security patch for Apple IAP H1/H2: (H1) Authoritative Product ID derived strictly from verified Apple transaction payload in verify route (rejecting client-sent product mismatch with 400 invalid_product and enforcing targetPlan derivation from verifiedProductId); (H2) APPLE_IAP_ALLOW_SANDBOX enforced as opt-in flag, default OFF across all code paths (POST /api/iap/apple/verify, App Store Server API fallback getSubscriptionStatuses with 4040010 check, and Server Notifications v2 in notifications/route.ts); unit test suites added/updated in transactionPolicy, verify, notifications, and new api.test.ts (52/52 Apple IAP tests pass; full 25 test files, 263/263 pass; tsc clean 0 errors).
 - 2026-10-22: Merged PR #271 (`fix(iap): enforce authoritative product mapping and opt-in sandbox policy`) into `main` at commit `4281936`; verified all required checks pass (Test suite, Types/lint/SQL grants, AI architecture rules, Brand registry validation); Vercel Production deployment confirmed live running `4281936` via `https://www.tappyai.com/api/version`.
 - 2026-10-22: Consultative gates, tests only, no production code changed (base `e569b9b`): S5h3 and `PLACE-ORDERING-EMPTY-01` covered through the stream filter under consultative flag OFF and ON (4 new tests in `priceDateRange.settle.test.ts`, all pass); `RS-3-LEGACY-RESIDUE` and `PLACE-ORDERING-EMPTY-01` definitions recorded from the Round 42 register (REPORTED); `MG-OPTION-OFF-VERIFIED-LOSS-01` reachability traced, not reproduced, still OPEN. `TG-VERIFIED-LOSS-PRE-01` stays awaiting owner review. No gate closed.
+- 2026-10-28: section 8 added — the Consultative Wave 3 → Wave 4 state (commits `6693493`…`371095d`, each with a `backup/*` branch; the four Wave 4 measurement runs of 28/10, all clean; S4 log privacy backlog; open owner decisions), pasted on the owner's instruction from `project-state-snippet.md` after measurement finished. Docs only, no code change. Nothing pushed or deployed.
