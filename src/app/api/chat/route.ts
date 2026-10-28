@@ -3395,10 +3395,12 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // the CODE opens up to three of those venue websites once, through this turn's own read_page reader (robots.txt, safe fetch, page budget), and the result reaches the model as a completed read_page
   // call before it writes: the same messages and the same leading frames as the pre-search, so the price / hours guards see the page evidence exactly as when the model reads. No model call, no
   // search request (the model's own stream stays the one metered call). Fail-open: nothing read, or an error, leaves the turn exactly as with the flag OFF.
+  // W5-2b: the read runs through the turn's OWN read_page tool (`tools.read_page`, after the request-cap / tool-call trace wrappers of line `wrapToolsWithRequestCap` above), the very object the
+  // model's read_page runs, exactly as the pre-search runs `tools[name].execute` - never the reader's bare tool (measured W5-R2: outside any tool call, the bench wall blocked every venue page).
   let pickPageRead: PresearchOutcome | null = null
   if (pickPlaceSites && research && consultPickPageReadOn()) {
     const t0 = Date.now()
-    const read = await readVenuePages(research, pickPlaceSites, lang)
+    const read = await readVenuePages(research, (tools as Record<string, { execute?: (args: never, ctx: never) => unknown }> | undefined)?.read_page, pickPlaceSites, lang)
     if (read) pickPageRead = { toolCallId: 'pick_read_' + randomUUID().slice(0, 6), toolName: 'read_page', args: read.args as unknown as PresearchOutcome['args'], result: read.result, ms: Date.now() - t0 }
     console.log(JSON.stringify({ type: 'tappyai_pick_page_read', sites: Math.min(pickPlaceSites.length, PICK_PAGE_READ_MAX), read: pickPageRead !== null, ms: Date.now() - t0 }))
   }

@@ -13,6 +13,7 @@ import { RESEARCH_RULE, __resetSharedRobots, readVenuePages, PICK_PAGE_READ_MAX 
 import { MATH_TOOL_RULE, TOOL_BY_NEED_RULE } from '@/lib/ai/consultative/leanConsultPrompt'
 import { __resetPageCache } from '@/lib/ai/agent/runtime/readPage'
 import { CONSULT_PICK_PAGE_READ_FLAG, consultPickPageReadOn } from '@/lib/config/consultFlags'
+import { setToolTraceObserver } from '@/lib/ai/tools/toolTrace'
 
 type Call = { toolCallId: string; toolName: string; args: Record<string, unknown> }
 const h = vi.hoisted(() => {
@@ -22,6 +23,8 @@ const h = vi.hoisted(() => {
     pages: {} as Record<string, { status?: number; body: string; contentType?: string }>, userId: 'u-pick-turn-tools', secondVenue: false, evidence: null as null | Record<string, unknown>,
     // W5-2: what the model was given, how many model calls the turn made, more venues with sites of their own, and a page fetch that throws
     messages: '' as string, streamCalls: 0, generateCalls: 0, extractCalls: 0, moreVenues: 0, throwOn: '' as string, lastRaw: '' as string,
+    // W5-2b: for each page request, the tool call it ran inside (what the bench wall checks: liveTrial.ts admit(), currentToolCall()?.tool === 'read_page')
+    fetchedIn: [] as Array<{ url: string; tool: string | null; call: number | null }>,
   }
   const builder = (): any => {
     const b: any = {
@@ -48,6 +51,7 @@ vi.mock('@/lib/security/safePageFetch', async (importOriginal) => ({
   ...(await importOriginal<typeof import('@/lib/security/safePageFetch')>()),
   fetchPublicPage: async (url: string, opts?: { signal?: AbortSignal; hopGate?: (u: URL, s?: AbortSignal) => Promise<string | null> }) => {
     h.state.fetched.push(url)
+    { const c = (await import('@/lib/ai/tools/toolTrace')).currentToolCall(); h.state.fetchedIn.push({ url, tool: c?.tool ?? null, call: c?.call ?? null }) }
     if (h.state.throwOn && url === h.state.throwOn) throw new Error('socket hang up')
     // A redirect: the real fetcher asks the hop gate before it opens the target (safePageFetch); the stand-in does the same.
     if (url === 'https://caphemay.example/go') {
@@ -124,7 +128,7 @@ type Msg = { role: 'user' | 'assistant'; content: string }
 const lunaIntent = (turn: string, domains: string[]) => ({ domains, turn, goal: 'x', known: [], party: null, budget_vnd_max: null, difficulty: 'easy', missing: [], assumptions: [], ask: null, query: null, area: null, refers: [], reject_reason: null })
 const J = (s: string) => JSON.stringify(s).slice(1, -1)
 const PICK: Msg[] = [{ role: 'user', content: 'quán cà phê gần đây' }]
-const ENV_NAMES = ['CONSULT_LUNA', 'CONSULT_FOLLOW_REUSE', 'CONSULT_PICK_TURN_TOOLS', 'CONSULT_PICK_PAGE_READ', 'CONSULT_KNOWLEDGE_PATH', 'CONSULT_CAPABILITY_LEVEL', 'CONSULT_RESEARCH_LOOP', 'CONSULT_DETERMINISTIC_MATH', 'CONSULT_TOOL_BY_NEED', 'CONSULT_STRUCTURED_SYNTHESIS', 'CONSULT_SEARCH_NOW_INTENT_GATE', 'CONSULT_FINAL_SYNTHESIS', 'VERCEL_ENV', 'TAPPY_AGENT']
+const ENV_NAMES = ['CONSULT_LUNA', 'CONSULT_FOLLOW_REUSE', 'CONSULT_PICK_TURN_TOOLS', 'CONSULT_PICK_PAGE_READ', 'CONSULT_REQUEST_CAP', 'CONSULT_REQUEST_CAP_PER_TURN', 'CONSULT_REQUEST_CAP_PER_RUN', 'CONSULT_KNOWLEDGE_PATH', 'CONSULT_CAPABILITY_LEVEL', 'CONSULT_RESEARCH_LOOP', 'CONSULT_DETERMINISTIC_MATH', 'CONSULT_TOOL_BY_NEED', 'CONSULT_STRUCTURED_SYNTHESIS', 'CONSULT_SEARCH_NOW_INTENT_GATE', 'CONSULT_FINAL_SYNTHESIS', 'VERCEL_ENV', 'TAPPY_AGENT']
 const MENU = '<html><head><title>Thực đơn Cà phê Mây</title></head><body><table><caption>Đồ uống</caption><tr><th>Món</th><th>Giá</th></tr><tr><td>Bạc xỉu</td><td>52.000đ</td></tr></table><p>Mở cửa 7h đến 22h.</p></body></html>'
 
 interface Cfg { flag?: string; level?: string; vercelEnv?: string; lunaTurn?: string; lunaDomains?: string[]; msgs?: Msg[]; calls?: Array<{ name: string; args: Record<string, unknown> }>; reply?: string; secondVenue?: boolean; env?: Record<string, string>; evidence?: Record<string, unknown>; evidenceId?: string; withLogs?: boolean; moreVenues?: number; throwOn?: string }
@@ -133,7 +137,7 @@ async function turn(c: Cfg = {}) {
   for (const [k, v] of Object.entries(c.env ?? {})) process.env[k] = v
   h.state.secondVenue = c.secondVenue ?? false
   h.state.moreVenues = c.moreVenues ?? 0; h.state.throwOn = c.throwOn ?? ''
-  h.state.messages = ''; h.state.streamCalls = 0; h.state.generateCalls = 0; h.state.extractCalls = 0
+  h.state.messages = ''; h.state.streamCalls = 0; h.state.generateCalls = 0; h.state.extractCalls = 0; h.state.fetchedIn = []
   h.state.evidence = c.evidence ?? null
   if (c.flag !== undefined) process.env.CONSULT_PICK_TURN_TOOLS = c.flag
   if (c.level !== undefined) { process.env.CONSULT_CAPABILITY_LEVEL = c.level; process.env.CONSULT_KNOWLEDGE_PATH = '0' } // this file measures R2 alone
@@ -357,6 +361,7 @@ describe('S1 — R2 only on a pre-searched Luna answer turn', () => {
 // Measured (W4-R2, 28/10): the model called no tool on R2 in 4 of 5 turns, so those venue pages were never read. Every test here: the model itself calls NO tool unless the test says so.
 describe('W5-2 — the code reads the venue pages on R2', () => {
   const PR = { CONSULT_PICK_PAGE_READ: '1' }
+  const BENCH_CAP = { CONSULT_REQUEST_CAP: '1', CONSULT_REQUEST_CAP_PER_TURN: '15', CONSULT_REQUEST_CAP_PER_RUN: '450' }
   const GOOD = 'Mình chọn **Cà phê Mây**. Bạc xỉu **52.000đ**.'
   const norm = (s: string) => s.replace(/presearch_[0-9a-f]+/g, 'presearch_X')
   const venuePages = (fetched: string[]) => fetched.filter(u => !u.endsWith('/robots.txt'))
@@ -393,30 +398,53 @@ describe('W5-2 — the code reads the venue pages on R2', () => {
     expect(w1.fetched).toEqual([])
     expect(w1.logs.some(l => l.includes('"type":"tappyai_pick_page_read"'))).toBe(false)
   }, 120000)
-  it('readVenuePages itself: at most three distinct sites in ONE read_page call, each made a link the reader may open, a general focus; null when nothing was read, on a throw, or with no site', async () => {
+  it('readVenuePages itself: at most three distinct sites in ONE call of the TURN\'s read_page tool (never the reader\'s bare tool), each made a link the reader may open, a general focus; null when nothing was read, on a throw, with no site or with no turn tool', async () => {
     const seen: Array<{ urls: string[]; focus: string }> = []
     const allowed: unknown[] = []
+    let bareCalls = 0
     let answer: unknown = { pages: [{ url: 'https://a.example/', title: 'A', page_content: 'x' }] }
     const fake = {
-      tool: { execute: async (args: { urls: string[]; focus: string }) => { seen.push(args); if (answer instanceof Error) throw answer; return answer } },
+      // the reader's own (unwrapped) tool: W5-2b must never call it (measured W5-R2: outside any tool call, the bench wall blocked every page)
+      tool: { execute: async () => { bareCalls++; return answer } },
       collectFrom: (r: unknown) => { allowed.push(r) }, collectUrls: <T,>(t: T) => t, allowedCount: () => 0,
     } as unknown as Parameters<typeof readVenuePages>[0]
+    // the turn's tool as route.ts carries it (after the wrappers); `this` is the tool object, as when the SDK calls it
+    const turnTool = { execute(this: unknown, args: { urls: string[]; focus: string }) { expect(this).toBe(turnTool); seen.push(args); if (answer instanceof Error) return Promise.reject(answer); return Promise.resolve(answer) } }
+    const T = turnTool as unknown as Parameters<typeof readVenuePages>[1]
     const sites = ['a', 'b', 'a', 'c', 'd', 'e'].map(x => ({ name: x.toUpperCase(), website: `https://${x}.example/` }))
-    const ok = await readVenuePages(fake, sites, 'vi')
+    const ok = await readVenuePages(fake, T, sites, 'vi')
     expect(seen).toHaveLength(1)
     expect(seen[0]!.urls).toEqual(['https://a.example/', 'https://b.example/', 'https://c.example/'])
     expect(PICK_PAGE_READ_MAX).toBe(3)
     expect(allowed).toEqual([[{ website: 'https://a.example/' }, { website: 'https://b.example/' }, { website: 'https://c.example/' }]])
     expect(seen[0]!.focus).toBe('giá, giờ mở cửa, đặt chỗ')
     expect(ok?.result).toBe(answer)
-    expect(await readVenuePages(fake, [], 'vi')).toBeNull()
+    expect(await readVenuePages(fake, T, [], 'vi')).toBeNull()
     expect(seen).toHaveLength(1)                                                        // no site: no call at all
+    expect(await readVenuePages(fake, undefined, sites, 'vi')).toBeNull()               // no turn tool: no read (never the bare tool instead)
+    expect(await readVenuePages(fake, {} as Parameters<typeof readVenuePages>[1], sites, 'vi')).toBeNull()
+    expect(seen).toHaveLength(1)
     answer = { pages: [{ url: 'https://a.example/', error: 'page_unreadable' }] }
-    expect(await readVenuePages(fake, sites, 'vi')).toBeNull()
+    expect(await readVenuePages(fake, T, sites, 'vi')).toBeNull()
     answer = new Error('boom')
-    expect(await readVenuePages(fake, sites, 'en')).toBeNull()
+    expect(await readVenuePages(fake, T, sites, 'en')).toBeNull()
     expect(seen.at(-1)!.focus).toBe('prices, opening hours, booking')
+    expect(bareCalls).toBe(0)
   })
+  it('W5-2b, the bench configuration: with a tool-call observer installed (as the bench does), every request of the code\'s venue read - robots.txt and the page - runs INSIDE a read_page tool call (the one condition the bench wall admits a public page on), and the call is traced like the pre-search', async () => {
+    const events: Array<{ tool: string; call: number }> = []
+    setToolTraceObserver(e => { events.push({ tool: e.tool, call: e.call }) })
+    try {
+      // the bench's own settings (RUN-ALL / RUN-CHAIN): the request cap is armed, which is where route.ts wraps every tool of the turn with the tool-call trace (wrapToolsWithRequestCap)
+      const d = await detail({ flag: '1', env: { ...PR, ...BENCH_CAP }, reply: GOOD })
+      expect(venuePages(d.fetched)).toEqual(['https://caphemay.example/'])              // the page really was read
+      expect(h.state.fetchedIn.map(x => x.url)).toEqual(['https://caphemay.example/robots.txt', 'https://caphemay.example/'])
+      expect(h.state.fetchedIn.map(x => x.tool)).toEqual(['read_page', 'read_page'])    // what liveTrial.ts admit() checks: currentToolCall()?.tool === 'read_page'
+      expect(events.map(e => e.tool)).toEqual(['search_places', 'read_page'])           // the pre-search, then the venue read - each a traced tool call of the turn
+      expect(new Set(h.state.fetchedIn.map(x => x.call))).toEqual(new Set([events[1]!.call]))
+      expect(d.text).toContain('52.000đ')
+    } finally { setToolTraceObserver(null) }
+  }, 60000)
   it('ON: robots.txt first, then the venue page; the model gets a completed read_page call with the page before it writes, and the price it read stays although it called no tool', async () => {
     const d = await detail({ flag: '1', env: PR, reply: GOOD })
     expect(d.fetched).toEqual(['https://caphemay.example/robots.txt', 'https://caphemay.example/'])

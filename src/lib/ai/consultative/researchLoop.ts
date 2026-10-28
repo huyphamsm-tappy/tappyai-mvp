@@ -134,16 +134,19 @@ export const PICK_PAGE_READ_MAX = 3
  * Wave 5 · W5-2 (CONSULT_PICK_PAGE_READ). The code opens the websites of the venues the pre-search showed the model (presearchPlaceSites: only rows the model saw, only http(s)), at most
  * PICK_PAGE_READ_MAX, in ONE call of the turn's own `read_page` tool - so robots.txt, the safe fetch (DNS pinned, redirects re-checked, size and time caps) and the turn's page budget all apply, and a
  * read here counts against what the model may still read. The focus is general (what a visitor needs to decide), never the user's words. No model call, no search request.
- * Fail-open: no site, a throw, or no page read returns null, and the caller leaves the turn as it was.
+ * `readPage` is the tool AS THE TURN CARRIES IT (route.ts `tools.read_page`, after every wrapper: the request-cap turn, the tool-call trace, the diagnostics trace) - the very object the model's own
+ * read_page call runs, exactly as the pre-search calls `tools[name].execute`. Measured (W5-R2, 28/10): calling the reader's bare tool instead ran its requests outside any tool call, so the bench wall
+ * (which admits a public page only inside a read_page call) blocked every venue robots.txt and no page was read. No such tool on the turn = no read.
+ * Fail-open: no site, no tool, a throw, or no page read returns null, and the caller leaves the turn as it was.
  */
-export async function readVenuePages(research: LeanResearch, sites: ReadonlyArray<{ name: string; website: string }>, lang: string): Promise<{ args: { urls: string[]; focus: string; kind: 'other' }; result: unknown } | null> {
+export async function readVenuePages(research: LeanResearch, readPage: { execute?: (args: never, ctx: never) => unknown } | undefined, sites: ReadonlyArray<{ name: string; website: string }>, lang: string): Promise<{ args: { urls: string[]; focus: string; kind: 'other' }; result: unknown } | null> {
   const urls = [...new Set(sites.map(s => s.website))].slice(0, PICK_PAGE_READ_MAX)
-  if (urls.length === 0) return null
+  if (urls.length === 0 || typeof readPage?.execute !== 'function') return null
   // a place's own website is a link the reader may open (the module rule); the pre-search's slimmed rows may not carry it
   research.collectFrom(urls.map(website => ({ website })))
   const args = { urls, focus: lang === 'en' ? 'prices, opening hours, booking' : 'giá, giờ mở cửa, đặt chỗ', kind: 'other' as const }
   try {
-    const result = await research.tool.execute!(args, { toolCallId: 'pick_page_read', messages: [] })
+    const result = await (readPage.execute as (a: typeof args, ctx: { toolCallId: string; messages: unknown[] }) => unknown).call(readPage, args, { toolCallId: 'pick_page_read', messages: [] })
     const pages = (result as { pages?: unknown } | null)?.pages
     const read = Array.isArray(pages) && pages.some(p => !!p && typeof p === 'object' && !('error' in p))
     return read ? { args, result } : null
