@@ -102,7 +102,8 @@ import { recordDecision, DECISION_RECORD_TIMEOUT_MS } from '@/lib/ai/agent/runti
 import { createPlacesBudget, PLACES_BUDGET_AGENT, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
 // Consultative V1 (flag CONSULTATIVE_V1, default OFF — see docs/audit/consultative-v1-design.md).
 import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
-import { isProductionRuntime, consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, consultReadPageLateOn, consultPickPageReadOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn } from '@/lib/config/consultFlags'
+import { isProductionRuntime, consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, consultReadPageLateOn, consultPickPageReadOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn, consultUnwindS1aOn, consultUnwindS1bOn, consultUnwindS1dOn } from '@/lib/config/consultFlags'
+import { checkToolLocation, locationRefusal, HOTEL_CALL_CREDIT_CAP } from '@/lib/ai/consultative/toolLocation'
 import { referTitlesForPrompt } from '@/lib/ai/consultative/referTitles'
 import { createLeanResearch, readVenuePages, PICK_PAGE_READ_MAX } from '@/lib/ai/consultative/researchLoop'
 import { logText } from '@/lib/ai/logSafeText'
@@ -2478,7 +2479,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   /** A1(d): the place search this turn ran — saved with the names shown, for a "gợi ý thêm" follow-up. */
   let lastPlaceSearch: PlaceSearchEvidence | null = null
   // chat2 A2: set when a place search came back empty after every relaxation (placeRelax.ts) — the reply is then the honest block.
-  let emptyPlaceSearch: { query: string; area: string | null } | null = null
+  let emptyPlaceSearch: { query: string; area: string | null; widenCity?: string | null } | null = null
   // LOC-DEFAULT-HCM-01: set when search_places refused for want of a location (no valid GPS, no area named) — the code then asks for the area (areaAsk.ts).
   let noCurrentLocationAsked = false
   // Owner 29/09 (design): "xem thêm" / "bác" continue from the candidates kept in the chat-session state —
@@ -2670,6 +2671,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // area (one more provider call), and say what was relaxed (placeRelax.ts). Still nothing → the honest no-result block.
           // Phase 8 M5 (TAPPY_AGENT=2): a stated budget / district is a HARD constraint — never relaxed by code. Nothing left → the honest
           // no-result path below, and Luna offers to widen it (the user's call).
+          let widenTried = false
           const relax = agentV2 ? { result: constrained0.result, relaxed: [] as string[], empty: ((constrained0.result as { results?: unknown[] })?.results ?? []).length === 0 } : await relaxEmptyPlaces({
             budgeted, constrained: constrained0, constraints, lang,
             applyConstraints: (res, cc) => applyPlaceConstraints(res, cc, lang === 'en' ? 'en' : 'vi'),
@@ -2677,13 +2679,15 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
               const city = widenLocation(statedArea)
               if (!city) return null
               if ((budgeted as { source?: string }).source === 'budget') return null
+              widenTried = true
               // A deliberate second retrieval, only after an empty first one: its own one-call budget (the turn budget is spent by the empty search).
               const wide = await searchPlaces(query, city, type, lang, userLocation, widenBudget, { priceRetry: false })
               return guardPlaceGeography(wide, geoGuardArea(city, userLocation)).result
             },
           })
           if (relax.relaxed.length > 0 || relax.empty) console.log(JSON.stringify({ type: 'tappyai_place_relax', relaxed: relax.relaxed, empty: relax.empty, budget_max: constraints.budgetMax, district: constraints.district?.label ?? null, query }))
-          emptyPlaceSearch = relax.empty ? { query, area: statedArea?.label ?? location ?? null } : null
+          // CONSULT_UNWIND_S1B: the wider-search chip only for the city of the district the user stated, and only when that wider search has not just run.
+          emptyPlaceSearch = relax.empty ? { query, area: statedArea?.label ?? location ?? null, ...(consultUnwindS1bOn() ? { widenCity: statedArea && !widenTried ? (statedArea.city === 'hn' ? 'Hà Nội' : 'TP.HCM') : null } : {}) } : null
           const constrained = relax.relaxed.length > 0 ? { ...constrained0, result: relax.result } : constrained0
           if (constrained.dropped.length > 0 || constrained.demotedClosed > 0 || constrained.priceUnknown > 0 || constraints.district) {
             console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', step: 'constraint_filter', budget_max: constraints.budgetMax, exclude: constraints.exclude, open_now: constraints.openNow, district: constraints.district?.label ?? null, dropped: constrained.dropped, demoted_closed: constrained.demotedClosed, price_unknown: constrained.priceUnknown, price_fits: constrained.priceFits }))
@@ -2908,7 +2912,20 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const stored = stayOverride
           stayOverride = null
           if (stored) console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'get_hotel_prices', step: 'from_chat_state', rows: stored.length }))
-          const [r, editorial] = await Promise.all([stored ? Promise.resolve({ location, source: 'chat_state', hotel_list: stored }) : getHotelPrices(location, checkIn, checkOut, budget?.max, lang), travelEditorialFor(location)])
+          // CONSULT_UNWIND_S1D (toolLocation.ts): a location that clearly contradicts the stated area is sent back to the model as a structured
+          // error, and one call spends at most HOTEL_CALL_CREDIT_CAP Serper credits (on top of the turn cap). Flag OFF: neither runs.
+          const s1d = !stored && consultUnwindS1dOn()
+          if (s1d) {
+            const verdict = checkToolLocation(location, consult?.known.diem_den ?? consult?.area ?? null, recentUserTexts)
+            console.log(JSON.stringify({ type: 'tappyai_tool_location', tool: 'get_hotel_prices', ok: verdict.ok, reason: verdict.reason, ...(verdict.ok ? {} : { km: verdict.km }) }))
+            if (!verdict.ok) return locationRefusal(verdict, lang)
+          }
+          const cappedHotels = async () => {
+            const capped = await withSerperToolBudget(HOTEL_CALL_CREDIT_CAP, () => getHotelPrices(location, checkIn, checkOut, budget?.max, lang))
+            console.log(JSON.stringify({ type: 'tappyai_tool_call_cap', tool: 'get_hotel_prices', limit: HOTEL_CALL_CREDIT_CAP, spent: capped.spent, refused: capped.refused }))
+            return capped.value
+          }
+          const [r, editorial] = await Promise.all([stored ? Promise.resolve({ location, source: 'chat_state', hotel_list: stored }) : s1d ? cappedHotels() : getHotelPrices(location, checkIn, checkOut, budget?.max, lang), travelEditorialFor(location)])
           // A travel "bác": hotels already offered leave the list BEFORE ranking (replay r19 TRAVEL-2 re-picked one).
           const unseen = travelMoreTurn ? withoutShownRows(r, [...consultShownEver, ...(chatState?.shown ?? [])]) : r
           const filtered = budget ? applyBudgetFilter(unseen as typeof r, budget, 'khach san') : unseen as typeof r
@@ -4013,7 +4030,7 @@ ${finalWriteInstruction(lang)}` },
   // end asking. It runs after every guard — measured on Android: the model asked about ticket prices
   // and the entertainment price guard (downstream) removed that sentence, leaving no question at all.
   const timedBody = finalResponse.body
-    ? turnCostStream(areaAskStream(emptyResultStream(askAfterStream(finalResponse.body, agentOn ? null : gateAskAfter, lang), { getEmpty: () => (agentOn ? null : emptyPlaceSearch), bufferText: askedBack && presearchPlan === null, userTexts: subjectUserTexts, lang }), () => noCurrentLocationAsked, lang, trace ? (e: Record<string, unknown>) => { console.log(JSON.stringify(e)); trace.emit('path_cut', { kind: 'area_ask', appended: e.appended ?? null, reason: e.reason ?? null, emptyBody: e.empty_body ?? null, ...(searchGate ? { source: trace.facts.noLocationBy } : {}) }); traceAreaAsk = { appended: typeof e.appended === 'boolean' ? e.appended : null, reason: typeof e.reason === 'string' ? e.reason : null } } : undefined).pipeThrough(stepRepeatGuard()), () => {
+    ? turnCostStream(areaAskStream(emptyResultStream(askAfterStream(finalResponse.body, agentOn ? null : gateAskAfter, lang), { getEmpty: () => (agentOn ? null : emptyPlaceSearch), bufferText: askedBack && presearchPlan === null, userTexts: subjectUserTexts, lang, ...(consultUnwindS1aOn() ? { appendOnly: true } : {}) }), () => noCurrentLocationAsked, lang, trace ? (e: Record<string, unknown>) => { console.log(JSON.stringify(e)); trace.emit('path_cut', { kind: 'area_ask', appended: e.appended ?? null, reason: e.reason ?? null, emptyBody: e.empty_body ?? null, ...(searchGate ? { source: trace.facts.noLocationBy } : {}) }); traceAreaAsk = { appended: typeof e.appended === 'boolean' ? e.appended : null, reason: typeof e.reason === 'string' ? e.reason : null } } : undefined).pipeThrough(stepRepeatGuard()), () => {
         // Wave 2F (M7, CONSULT_TRACE_DIAGNOSTICS=1 + CONSULT_SEARCH_NOW_INTENT_GATE=1 only): ONE line for a turn the gate blocked - what the turn ended up doing. Names, booleans and counts only.
         if (trace && gateTraceFacts) {
           const f = trace.facts

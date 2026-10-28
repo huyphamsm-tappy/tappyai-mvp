@@ -61,6 +61,23 @@ export function stripModelArtifacts(text: string): string {
   return changed ? out : text
 }
 
+/**
+ * CONSULT_UNWIND_S1C. ONLY the citation part of `stripModelArtifacts`: the whole marker, a cut-off marker, its visible text, the dagger
+ * bracket, and a stray code point of the marker's own alphabet (0xE200-0xE202: open, close, separator). Nothing else of the text changes
+ * (other hidden characters are the full sanitizer's job, behind CONSULT_LUNA_ONE). Measured 28/10 on localhost: with CONSULT_LUNA_ONE
+ * off a reply showed the marker as boxes.
+ */
+export function stripCitationMarkers(text: string): string {
+  if (!text) return text
+  const t = text.replace(CITE_MARKER, '').replace(CITE_CUT_OFF, '').replace(CITE_TEXT, '').replace(CITE_BRACKET, '')
+  let out = ''
+  for (const ch of t) {
+    const c = ch.codePointAt(0)!
+    if (c < 0xe200 || c > 0xe202) out += ch
+  }
+  return out === text ? text : out
+}
+
 // The END of a text that cannot be decided yet (more text may still arrive): its result depends on what follows.
 const HOLD_OPEN_MARKER = /[ \t]*\u{E200}[^\u{E200}\u{E201}]{0,200}$/u
 const HOLD_CITE_TEXT = /[ \t]*(?:(?<![A-Za-z0-9_])cite(?:turn\d+[a-z]+\d+)*(?:t|tu|tur|turn|turn\d+|turn\d+[a-z]+)?|(?<![A-Za-z0-9_])(?:c|ci|cit))$/u
@@ -85,7 +102,11 @@ export function undecidedTail(text: string): number {
  * (across `9:` / `a:` / `8:` frames too) and is settled at the finish frame `d:` or at the end of the stream. Every frame that is not
  * text passes byte for byte.
  */
-export function outboundTextSanitizer(log: (e: Record<string, unknown>) => void = e => console.warn(JSON.stringify(e))): TransformStream<Uint8Array, Uint8Array> {
+export function outboundTextSanitizer(
+  log: (e: Record<string, unknown>) => void = e => console.warn(JSON.stringify(e)),
+  /** The rule applied to the text: the full sanitizer by default; CONSULT_UNWIND_S1C passes `stripCitationMarkers`. */
+  strip: (text: string) => string = stripModelArtifacts,
+): TransformStream<Uint8Array, Uint8Array> {
   const decoder = new TextDecoder()
   const encoder = new TextEncoder()
   let partial = ''
@@ -98,7 +119,7 @@ export function outboundTextSanitizer(log: (e: Record<string, unknown>) => void 
   const settle = (controller: TransformStreamDefaultController<Uint8Array>, final: boolean) => {
     const end = final ? raw.length : raw.length - undecidedTail(raw)
     if (end <= rawSent) return
-    const clean = stripModelArtifacts(raw.slice(0, end))
+    const clean = strip(raw.slice(0, end))
     if (clean.startsWith(sent)) {
       emitText(controller, clean.slice(sent.length))
       sent = clean
@@ -106,7 +127,7 @@ export function outboundTextSanitizer(log: (e: Record<string, unknown>) => void 
       // Not expected (the undecided end is held back so that a decided prefix never changes); measured, and the new part is still
       // sanitized on its own.
       log({ type: 'tappyai_guard', guard: 'outbound_sanitizer', kind: 'prefix_mismatch', sent_chars: sent.length, clean_chars: clean.length })
-      const piece = stripModelArtifacts(raw.slice(rawSent, end))
+      const piece = strip(raw.slice(rawSent, end))
       emitText(controller, piece)
       sent += piece
     }

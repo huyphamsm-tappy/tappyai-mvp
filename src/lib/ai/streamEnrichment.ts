@@ -7,7 +7,7 @@ import { extractMoneyClaims, guardMoneyClaimsInText, sentenceSpans, protectedSpa
 import { consultLunaOneEnabled } from './evidence/flag'
 import { createLegacyStreamTrace, legacyStreamTraceEnabled } from './legacyStreamTrace'
 import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
-import { outboundTextSanitizer, stripModelArtifacts } from './security/outputSanitizer'
+import { outboundTextSanitizer, stripModelArtifacts, stripCitationMarkers } from './security/outputSanitizer'
 import { sanitizeMediaBlock } from '@/lib/media/mediaHosts'
 import { checkCitationSupport } from './citationSupport'
 import { cardsAllowed, stripTaskFrame } from './agent/runtime/taskFrame'
@@ -67,7 +67,7 @@ import { isValidTikTokContentUrl } from '@/lib/links/tiktokReview'
 import { guardSpecClaimsInText, type SpecEvidence } from './consultative/specGuard'
 import { sanitizeUrlForMarkdown, escapeMarkdownLabel } from './tools/common'
 import { riskBackstopEnabled, riskBackstopMode } from '@/lib/config/product'
-import { consultFinalSynthesisOn } from '@/lib/config/consultFlags'
+import { consultFinalSynthesisOn, consultUnwindS1cOn } from '@/lib/config/consultFlags'
 import { applyRiskBackstop, isSecondHandPurchaseAdvice } from './riskBackstop'
 import { EMIT_TAPPY_PLACES, EMIT_PLACES_ANNOTATION, SERVER_AUTHORED_CTA, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
 import { bandFromRow, type PriceBand } from '@/lib/recommendation/priceBand'
@@ -1768,6 +1768,8 @@ export function applyPlaceEnrichmentStreamFilter(
   const lunaOne = consultLunaOneEnabled() && collector?.consultative === true
   // The outbound text sanitizer applies to EVERY turn this filter serves (not only consultative ones) once the flag is on.
   const outboundSanitize = consultLunaOneEnabled()
+  // CONSULT_UNWIND_S1C: without that flag, the citation part of the same sanitizer still runs on every turn (nothing else of it).
+  const citeOnly = !outboundSanitize && consultUnwindS1cOn()
   const productRecords: EvidenceRecord[] = [] // C3-B.10: structured evidence, price included
   let latestPlaces: PlaceLike[] = []
   let bufferMode = false
@@ -4578,7 +4580,7 @@ export function applyPlaceEnrichmentStreamFilter(
           if (presentedIds.length === 0) presentedIds = namedHeldIds(liveText)
           // The stored reply is what the client was sent: the same outbound sanitizer as the stream when the flag is on.
           const keptReply = finalReplyText || liveText
-          await onEvidence({ places: resolvePlaces(), productRecords, productQueries, presentedNames: [...new Set(presentedNames)], cardOrder: [...cardOrder], presentedIds: [...new Set(presentedIds)], ungroundedNames, replyText: outboundSanitize ? stripModelArtifacts(keptReply) : keptReply })
+          await onEvidence({ places: resolvePlaces(), productRecords, productQueries, presentedNames: [...new Set(presentedNames)], cardOrder: [...cardOrder], presentedIds: [...new Set(presentedIds)], ungroundedNames, replyText: outboundSanitize ? stripModelArtifacts(keptReply) : citeOnly ? stripCitationMarkers(keptReply) : keptReply })
         } catch { /* state is best-effort; the reply already shipped */ }
       }
     },
@@ -4592,7 +4594,9 @@ export function applyPlaceEnrichmentStreamFilter(
    * U+E202 "turn0search0" U+E201) reached the user as "citeturn0search0". The reply text kept in the session (`onEvidence` below)
    * goes through the same `stripModelArtifacts`.
    */
-  const readable = outboundSanitize ? body.pipeThrough(transform).pipeThrough(outboundTextSanitizer()) : body.pipeThrough(transform)
+  const readable = outboundSanitize ? body.pipeThrough(transform).pipeThrough(outboundTextSanitizer())
+    : citeOnly ? body.pipeThrough(transform).pipeThrough(outboundTextSanitizer(undefined, stripCitationMarkers))
+    : body.pipeThrough(transform)
   return new Response(readable, {
     headers: {
       'Content-Type': 'text/event-stream',

@@ -172,3 +172,21 @@ export function consultResearchLoopOn(env: Env = process.env): boolean { return 
 export function consultDeterministicMathOn(env: Env = process.env): boolean { return waveFlag(env, CONSULT_DETERMINISTIC_MATH_FLAG) && !isProductionRuntime(env) }
 /** Wave 3 · W2. ON by "1" (or, unset, by level 1+), only outside a production runtime, and only together with the search-now gate (C). */
 export function consultToolByNeedOn(env: Env = process.env): boolean { return waveFlag(env, CONSULT_TOOL_BY_NEED_FLAG) && !isProductionRuntime(env) && consultSearchNowIntentGateOn(env) }
+
+// ── Unwind (28/10/2026) · the code stops deciding in the model's place ──────────────────────────────────────────────────────────────────────────
+//
+// Diagnosis of six localhost turns (consultative-wave3/chan-doan-6-luot.md): most failures came from code that replaced, blocked or rewrote what the model would have done. Each flag below
+// removes ONE such layer. Each is OFF unless its variable is EXACTLY "1", is NOT tied to the capability level, and is always OFF in a production runtime. OFF is HEAD 7e60081, byte for byte.
+//   CONSULT_UNWIND_S1A  an empty place search no longer REPLACES the model's reply with the no-result block: the block is appended after it (the place-claim guard upstream still runs).
+//   CONSULT_UNWIND_S1B  the no-result chips offer a wider search only for the area the turn really stated, and only when that wider search was not already tried; no hard-coded TP.HCM.
+//   CONSULT_UNWIND_S1C  the model's citation markers are removed from every reply even when CONSULT_LUNA_ONE is off (only the citation part of the outbound sanitizer, not all of it).
+//   CONSULT_UNWIND_S1D  a tool whose location argument is a description rather than a place is refused with a structured error the model can act on, and one hotel call has its own request cap.
+export const CONSULT_UNWIND_S1A_FLAG = 'CONSULT_UNWIND_S1A'
+export const CONSULT_UNWIND_S1B_FLAG = 'CONSULT_UNWIND_S1B'
+export const CONSULT_UNWIND_S1C_FLAG = 'CONSULT_UNWIND_S1C'
+export const CONSULT_UNWIND_S1D_FLAG = 'CONSULT_UNWIND_S1D'
+const unwindOn = (env: Env, name: string): boolean => exactlyOne(env[name]) && !isProductionRuntime(env)
+export function consultUnwindS1aOn(env: Env = process.env): boolean { return unwindOn(env, CONSULT_UNWIND_S1A_FLAG) }
+export function consultUnwindS1bOn(env: Env = process.env): boolean { return unwindOn(env, CONSULT_UNWIND_S1B_FLAG) }
+export function consultUnwindS1cOn(env: Env = process.env): boolean { return unwindOn(env, CONSULT_UNWIND_S1C_FLAG) }
+export function consultUnwindS1dOn(env: Env = process.env): boolean { return unwindOn(env, CONSULT_UNWIND_S1D_FLAG) }

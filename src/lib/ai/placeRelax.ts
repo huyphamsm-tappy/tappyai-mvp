@@ -98,7 +98,24 @@ export function safeInline(raw: string, max = 80): string {
   return String(raw ?? '').replace(/(?:https?:\/\/|www\.)\S*/gi, ' ').replace(/[\u0000-\u001f\u007f\[\]{}()<>`|]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, max)
 }
 
-export interface NoResultInput { query: string | null; area?: string | null; lang: string }
+export interface NoResultInput {
+  query: string | null
+  area?: string | null
+  lang: string
+  /**
+   * CONSULT_UNWIND_S1B. Absent: the old chips (a hard-coded "Tìm trên cả TP.HCM", whatever the area - measured 28/10 on a Quy Nhơn turn).
+   * Present: the wider-search chip names this city, and there is none when it is null (no stated area, or the wider search already ran).
+   * The chip's words ("rộng ra") are the ones `wantsWiderArea` already reads as "drop the district", so a tap widens the next search.
+   */
+  widenCity?: string | null
+}
+
+function noResultChips(i: NoResultInput, vi: boolean): string[] {
+  if (i.widenCity === undefined) return vi ? ['Tìm trên cả TP.HCM', 'Đổi từ khóa khác', 'Gợi ý chỗ gần mình'] : ['Search the whole city', 'Try other keywords', 'Suggest places near me']
+  const city = i.widenCity ? safeInline(i.widenCity, 40) : ''
+  const wider = city ? [vi ? `Tìm rộng ra cả ${city}` : `Search all of ${city}`] : []
+  return [...wider, ...(vi ? ['Đổi từ khóa khác', 'Gợi ý chỗ gần mình'] : ['Try other keywords', 'Suggest places near me'])]
+}
 
 /**
  * The reply when nothing reliable was found after every relaxation: one honest sentence, the Maps
@@ -109,7 +126,7 @@ export interface NoResultInput { query: string | null; area?: string | null; lan
 export function noResultBlock(i: NoResultInput): string {
   const vi = i.lang !== 'en'
   const where = i.area ? safeInline(i.area, 60) : ''
-  const chips = vi ? ['Tìm trên cả TP.HCM', 'Đổi từ khóa khác', 'Gợi ý chỗ gần mình'] : ['Search the whole city', 'Try other keywords', 'Suggest places near me']
+  const chips = noResultChips(i, vi)
   const query = i.query === null ? '' : safeInline(i.query)
   if (!query) {
     const plain = vi

@@ -185,9 +185,11 @@ describe('wired into the chat stream behind CONSULT_LUNA_ONE', () => {
     const src = readFileSync(join(__dirname, '../streamEnrichment.ts'), 'utf8')
     const fn = src.slice(src.indexOf('export function applyPlaceEnrichmentStreamFilter('))
     expect(fn.match(/new TransformStream/g)).toHaveLength(1)
-    expect(fn).toMatch(/const readable = outboundSanitize \? body\.pipeThrough\(transform\)\.pipeThrough\(outboundTextSanitizer\(\)\) : body\.pipeThrough\(transform\)/)
+    // Unwind S1C (28/10) added ONE middle branch (citation-only stripping when CONSULT_LUNA_ONE is off and CONSULT_UNWIND_S1C is "1");
+    // the first and the last branch are the HEAD 7e60081 ones, unchanged.
+    expect(fn).toMatch(/const readable = outboundSanitize \? body\.pipeThrough\(transform\)\.pipeThrough\(outboundTextSanitizer\(\)\)\s*: citeOnly \? body\.pipeThrough\(transform\)\.pipeThrough\(outboundTextSanitizer\(undefined, stripCitationMarkers\)\)\s*: body\.pipeThrough\(transform\)/)
     expect(fn.match(/return new Response\(/g)).toHaveLength(1)
     expect(fn).toMatch(/return new Response\(readable,/)
-    expect(fn).toMatch(/replyText: outboundSanitize \? stripModelArtifacts\(keptReply\) : keptReply/)
+    expect(fn).toMatch(/replyText: outboundSanitize \? stripModelArtifacts\(keptReply\) : citeOnly \? stripCitationMarkers\(keptReply\) : keptReply/)
   })
 })
