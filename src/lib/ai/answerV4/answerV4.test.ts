@@ -190,6 +190,57 @@ describe('layer 2 · pictures resolved by the server (docMedia.ts)', () => {
     expect(r.block?.kind).toBe('entity')
   })
 
+  // Localhost 29/10, "biết testla ko": the vi article found by the NAME "Tesla" is the unit; the understanding's title "Tesla, Inc." says
+  // the user means the company. The card must be the company's article, never the unit's.
+  const VI_ARTICLES: Record<string, MediaEntity> = {
+    Tesla: { ...wikiEnt('Tesla'), summary: 'Tesla: đơn vị đo cảm ứng từ' },
+    'Tesla, Inc.': wikiEnt('Tesla, Inc.'),
+    'Chiến dịch Điện Biên Phủ': wikiEnt('Chiến dịch Điện Biên Phủ'),
+  }
+  const LINKS: Record<string, string> = { 'vi:Tesla': 'Tesla (unit)', 'en:Tesla, Inc.': 'Tesla, Inc.', 'vi:Chiến dịch Điện Biên Phủ': 'Battle of Dien Bien Phu' }
+  const linked = async (t: string, from: 'vi' | 'en') => LINKS[`${from}:${t}`] ?? null
+  const TESLA = U({ intent: 'knowledge', answer_shape: 'explanation', item_kind: 'none', entities: [{ name: 'Tesla', type: 'organization', wiki_title: 'Tesla, Inc.' }] })
+
+  it('a name with several senses: the article found by name is dropped when it is another sense than the title the understanding gave', async () => {
+    const tried: Array<[string, string]> = []
+    const r = await resolveDocMedia(TESLA, 'Có, Tesla là hãng xe điện…', {}, {
+      wiki: async (s, l) => { tried.push([s, l]); return VI_ARTICLES[s] ?? null }, langlink: linked, webImages: async () => [],
+    })
+    expect(r.block).toEqual({ v: 1, kind: 'entity', entity: VI_ARTICLES['Tesla, Inc.'] })
+    expect(tried).toEqual([['Tesla', 'vi'], ['Tesla, Inc.', 'vi']])
+  })
+
+  it('a Vietnamese article whose English counterpart IS the title is kept (no English card for a vi reply)', async () => {
+    const r = await resolveDocMedia(U({ intent: 'knowledge', answer_shape: 'explanation', item_kind: 'none', entities: [{ name: 'Chiến dịch Điện Biên Phủ', type: 'event', wiki_title: 'Battle of Dien Bien Phu' }] }), 'x', {}, {
+      wiki: async s => VI_ARTICLES[s] ?? null, langlink: linked, webImages: async () => [],
+    })
+    expect(r.block).toEqual({ v: 1, kind: 'entity', entity: VI_ARTICLES['Chiến dịch Điện Biên Phủ'] })
+  })
+
+  it('the sense cannot be checked (no interlanguage link): never the name\'s article; the title\'s English article instead, else no card', async () => {
+    const tried: Array<[string, string]> = []
+    const en: Record<string, MediaEntity> = { 'Tesla, Inc.': { ...wikiEnt('Tesla, Inc.'), href: 'https://en.wikipedia.org/wiki/Tesla,_Inc.' } }
+    const r = await resolveDocMedia(TESLA, 'x', {}, {
+      wiki: async (s, l) => { tried.push([s, l]); return l === 'en' ? en[s] ?? null : s === 'Tesla' ? VI_ARTICLES.Tesla : null }, langlink: async () => null, webImages: async () => [],
+    })
+    expect(tried).toEqual([['Tesla', 'vi'], ['Tesla, Inc.', 'en']])
+    expect(r.block).toEqual({ v: 1, kind: 'entity', entity: en['Tesla, Inc.'] })
+    const none = await resolveDocMedia(TESLA, 'x', {}, { wiki: async (s, l) => (l === 'vi' && s === 'Tesla' ? VI_ARTICLES.Tesla : null), langlink: async () => null, webImages: async () => [] })
+    expect(none.block).toBeNull()
+  })
+
+  it('an English article of another title is another subject; a name with no title (ambiguous) is looked up as before', async () => {
+    const unitEn: MediaEntity = { ...wikiEnt('Tesla (unit)'), href: 'https://en.wikipedia.org/wiki/Tesla_(unit)' }
+    const r = await resolveDocMedia(U({ reply_language: 'en', intent: 'knowledge', answer_shape: 'explanation', item_kind: 'none', entities: [{ name: 'Tesla', type: 'organization', wiki_title: 'Tesla, Inc.' }] }), 'x', {}, {
+      wiki: async s => (s === 'Tesla' ? unitEn : null), langlink: async () => { throw new Error('must not be asked') }, webImages: async () => [],
+    })
+    expect(r.block).toBeNull()
+    const plain = await resolveDocMedia(U({ intent: 'knowledge', answer_shape: 'explanation', item_kind: 'none', entities: [{ name: 'Tesla', type: 'organization', wiki_title: null }] }), 'x', {}, {
+      wiki: async s => VI_ARTICLES[s] ?? null, langlink: async () => { throw new Error('must not be asked') }, webImages: async () => [],
+    })
+    expect(plain.block).toEqual({ v: 1, kind: 'entity', entity: VI_ARTICLES.Tesla })
+  })
+
   it('no pictures for abstract items (tips, reasons), for a card turn (places / products have their own cards), or when the lookups time out', async () => {
     const web = async () => ['https://img.example/a.jpg']
     expect((await resolveDocMedia(U({ item_kind: 'other' }), dishes, {}, { wiki: async () => null, webImages: web })).annotation).toBeNull()

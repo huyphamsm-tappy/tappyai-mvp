@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
 import { isAllowedMediaImage, isAllowedMediaPage, sanitizeMediaBlock, parseMediaBlocks } from './mediaHosts'
-import { fetchWikiEntity, mainSubjectOf } from './wikiEntity'
+import { fetchWikiEntity, mainSubjectOf, sameSubject, wikiLanglink } from './wikiEntity'
 import { rssItemImage } from '@/lib/ai/tools/food'
 
 // CONSULT_V3 layouts (owner 17/10): the media block's URL rules, the Wikipedia subject card, the RSS picture. Pure units (fetch faked).
@@ -78,6 +78,26 @@ describe('wikiEntity', () => {
     const e = await fetchWikiEntity('Elon Musk', 'vi', fake({ 'vi.wikipedia.org': summary({ thumbnail: { source: 'https://evil.example/x.jpg' } }) }))
     expect(e?.image).toBeUndefined()
     expect(await fetchWikiEntity('Elon Musk', 'vi', vi.fn(async () => { throw new Error('down') }))).toBeNull()
+  })
+  it('wikiLanglink: the same article in the other Wikipedia, from the fixed host with the title encoded; anything odd → null', async () => {
+    const f = vi.fn(async () => ({ ok: true, json: async () => ({ query: { pages: [{ title: 'Tesla', langlinks: [{ lang: 'en', title: 'Tesla (unit)' }] }] } }) }))
+    expect(await wikiLanglink('Tesla', 'vi', 'en', f)).toBe('Tesla (unit)')
+    expect((f.mock.calls[0] as unknown[])[0]).toBe('https://vi.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=langlinks&redirects=1&lllang=en&titles=Tesla')
+    const g = vi.fn(async () => ({ ok: true, json: async () => ({ query: { pages: [{ langlinks: [{ lang: 'vi', title: 'Tesla, Inc.' }] }] } }) }))
+    expect(await wikiLanglink('Tesla, Inc.', 'en', 'vi', g)).toBe('Tesla, Inc.')
+    expect((g.mock.calls[0] as unknown[])[0]).toContain('https://en.wikipedia.org/w/api.php?')
+    expect((g.mock.calls[0] as unknown[])[0]).toContain('&titles=Tesla%2C%20Inc.')
+    expect(await wikiLanglink('X', 'vi', 'en', vi.fn(async () => ({ ok: true, json: async () => ({ query: { pages: [{ title: 'X' }] } }) })))).toBeNull()
+    expect(await wikiLanglink('X', 'vi', 'en', vi.fn(async () => ({ ok: true, json: async () => ({ query: { pages: [{ langlinks: [{ lang: 'fr', title: 'Y' }] }] } }) })))).toBeNull()
+    expect(await wikiLanglink('X', 'vi', 'en', vi.fn(async () => ({ ok: false, json: async () => ({}) })))).toBeNull()
+    expect(await wikiLanglink('X', 'vi', 'en', vi.fn(async () => { throw new Error('down') }))).toBeNull()
+    expect(await wikiLanglink('X', 'vi', 'vi', f)).toBeNull()
+  })
+  it('sameSubject: Tesla is not Tesla, Inc. nor Tesla (unit); the same title is', () => {
+    expect(sameSubject('Tesla', 'Tesla, Inc.')).toBe(false)
+    expect(sameSubject('Tesla (unit)', 'Tesla, Inc.')).toBe(false)
+    expect(sameSubject('Tesla, Inc.', 'Tesla, Inc.')).toBe(true)
+    expect(sameSubject('Battle of Dien Bien Phu', 'Battle of Dien Bien Phu')).toBe(true)
   })
 })
 

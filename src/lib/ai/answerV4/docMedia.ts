@@ -14,7 +14,7 @@ import { z } from 'zod'
 import { AI } from '@/lib/ai/llm'
 import { DATA_OPEN, DATA_CLOSE } from '@/lib/ai/consultative/lunaSafety'
 import { neutralizeFenceMarkers } from '@/lib/ai/security/fence'
-import { fetchWikiEntity } from '@/lib/media/wikiEntity'
+import { fetchWikiEntity, sameSubject, wikiLanglink } from '@/lib/media/wikiEntity'
 import type { MediaBlock, MediaEntity } from '@/lib/media/mediaHosts'
 import { isAllowedMediaPage } from '@/lib/media/mediaHosts'
 import { fetchPlacePhotosByName, type ImageContext } from '@/lib/ai/tools/common'
@@ -62,6 +62,8 @@ export interface DocMediaDeps {
   webImages?: (query: string, context: ImageContext) => Promise<string[]>
   /** What each item line names (default: one structured model call). A failure falls back to the item titles. */
   nameItems?: (lines: readonly string[], kind: string) => Promise<Array<string | null>>
+  /** The same article's title in the other Wikipedia (default: the interlanguage link; with an injected `wiki`, none — one fake world). */
+  langlink?: (title: string, from: 'vi' | 'en', to: 'vi' | 'en') => Promise<string | null>
   timeoutMs?: number
 }
 
@@ -84,7 +86,28 @@ export async function resolveDocMedia(
 ): Promise<DocMediaResult> {
   const wiki = deps.wiki ?? ((s: string, l: string) => fetchWikiEntity(s, l))
   const web = deps.webImages ?? ((q: string, c: ImageContext) => fetchPlacePhotosByName('', q, 1, c))
+  const langlink = deps.langlink ?? (deps.wiki ? async () => null : (t: string, f: 'vi' | 'en', to: 'vi' | 'en') => wikiLanglink(t, f, to))
   const lang = wikiLangOf(u)
+
+  // A name has several senses ("Tesla": the car maker, the unit); the understanding's English article title says WHICH one the user means.
+  // Measured 29/10 on localhost: "biết testla ko" → the vi article "Tesla" is the unit of magnetic flux, and it became the card. The article
+  // found by name is kept only when it IS that title — same title, or its English counterpart is that title. Otherwise the title's own
+  // article (in the reply's Wikipedia when it has one). A name with no title (ambiguous to the understanding) is looked up as before.
+  const sameSense = async (a: MediaEntity, wikiTitle: string | null): Promise<boolean> => {
+    if (!wikiTitle || sameSubject(a.name, wikiTitle)) return true
+    if (!/^https:\/\/vi\.wikipedia\.org\//.test(a.href ?? '')) return false
+    const en = await langlink(a.name, 'vi', 'en').catch(() => null)
+    return !!en && sameSubject(en, wikiTitle)
+  }
+  const bySense = async (e: TurnUnderstanding['entities'][number]): Promise<MediaEntity | null> => {
+    const a = await wiki(e.name, lang).catch(() => null)
+    if (a && (await sameSense(a, e.wiki_title))) return a
+    if (!e.wiki_title) return null
+    const local = lang === 'vi' ? await langlink(e.wiki_title, 'en', 'vi').catch(() => null) : null
+    const b = local ? await wiki(local, 'vi').catch(() => null) : null
+    if (b) return b
+    return e.wiki_title !== e.name || a ? await wiki(e.wiki_title, 'en').catch(() => null) : null
+  }
   let webImages = 0
   const trace: Record<string, unknown> = {}
 
@@ -93,11 +116,7 @@ export async function resolveDocMedia(
     // A list answer illustrates its items; its subject card would only repeat the question. A comparison shows its subjects side by side.
     if (u.answer_shape === 'list' || u.answer_shape === 'itinerary' || u.answer_shape === 'news_digest' || u.answer_shape === 'steps') return []
     const wanted = u.entities.filter(e => CARD_TYPES.has(e.type)).slice(0, MAX_ENTITIES)
-    const found = await Promise.all(wanted.map(async e => {
-      const a = await wiki(e.name, lang).catch(() => null)
-      if (a) return a
-      return e.wiki_title && e.wiki_title !== e.name ? await wiki(e.wiki_title, 'en').catch(() => null) : null
-    }))
+    const found = await Promise.all(wanted.map(bySense))
     const seen = new Set<string>()
     return found.filter((x): x is MediaEntity => !!x && isAllowedMediaPage(x.href) && !seen.has(x.href) && !!seen.add(x.href))
   })()

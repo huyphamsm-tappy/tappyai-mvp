@@ -30,7 +30,7 @@ export function mainSubjectOf(reply: string, userText?: string): string | null {
 }
 
 /** Wikipedia's title matches the subject: same words, or one contains the other with at least two words in common. */
-function sameSubject(title: string, subject: string): boolean {
+export function sameSubject(title: string, subject: string): boolean {
   const a = fold(title), b = fold(subject)
   if (!a || !b) return false
   if (a === b) return true
@@ -55,4 +55,22 @@ export async function fetchWikiEntity(subject: string, lang: string, fetchImpl: 
     } catch { /* timeout / network / bad JSON: try the next wiki, then give up */ } finally { clearTimeout(timer) }
   }
   return null
+}
+
+/**
+ * The title of the SAME article in the other Wikipedia (its interlanguage link): vi "Tesla" → en "Tesla (unit)", en "Tesla, Inc." → vi
+ * "Tesla, Inc.". One GET to a fixed host (`from` is one of two literals; only the title varies, URL-encoded). Any failure → null.
+ */
+export async function wikiLanglink(title: string, from: 'vi' | 'en', to: 'vi' | 'en', fetchImpl: FetchLike = fetch as unknown as FetchLike, timeoutMs = 1500): Promise<string | null> {
+  const t = title.trim()
+  if (!t || t.length > 100 || from === to) return null
+  const ctrl = new AbortController()
+  const timer = setTimeout(() => ctrl.abort(), timeoutMs)
+  try {
+    const res = await fetchImpl(`https://${from}.wikipedia.org/w/api.php?action=query&format=json&formatversion=2&prop=langlinks&redirects=1&lllang=${to}&titles=${encodeURIComponent(t)}`, { headers: { accept: 'application/json', 'user-agent': 'TappyAI/1.0 (https://www.tappyai.com)' }, signal: ctrl.signal })
+    if (!res.ok) return null
+    const j = (await res.json()) as { query?: { pages?: Array<{ langlinks?: Array<{ lang?: string; title?: string }> }> } }
+    const link = j?.query?.pages?.[0]?.langlinks?.find(l => l?.lang === to)?.title
+    return typeof link === 'string' && link.trim() ? link.trim().slice(0, 100) : null
+  } catch { return null } finally { clearTimeout(timer) }
 }
