@@ -73,6 +73,8 @@ export const BENCH_FLAG_NAMES: readonly string[] = [
   // Wave 5 · W5-2 / W5-1 (see liveTrialLauncher.mjs); default OFF, not tied to the level
   'CONSULT_PICK_PAGE_READ',
   'CONSULT_READ_PAGE_LATE',
+  // Wave 6, bench only (see liveTrialLauncher.mjs, writerCapture.ts); default OFF
+  'BENCH_CAPTURE_WRITER_INPUT',
   // Wave 3 · W6: one number 0-4 that switches W2 / W4 (L1), W1 (L2), W3 (L3) on together (see liveTrialLauncher.mjs); default unset = level 0
   'CONSULT_CAPABILITY_LEVEL',
 ]

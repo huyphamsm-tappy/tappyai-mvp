@@ -111,6 +111,8 @@ export const FLAG_ENV_NAMES = [
   'CONSULT_PICK_PAGE_READ',
   // Wave 5 · W5-1: read_page is held back only in the LAST step (other tools keep the two-step reserve); needs CONSULT_FINAL_SYNTHESIS=1; default OFF, not tied to the level, honoured only outside a production runtime
   'CONSULT_READ_PAGE_LATE',
+  // Wave 6, bench only: keeps the body of every model request the trial lets through, in its own capture-<n>.json in the run folder, for a replay of the writing step (writerCapture.ts); default OFF, only "1", only BENCH_TRIAL_MODE=dev-multi, never in production
+  'BENCH_CAPTURE_WRITER_INPUT',
   // Wave 3 · W6: one number 0-4 that switches W2 / W4 (L1), W1 (L2), W3 (L3) on together, L4 deepens the loop; unset = level 0; honoured only outside a production runtime
   'CONSULT_CAPABILITY_LEVEL',
 ]
@@ -373,7 +375,7 @@ export function quotaLines(env) {
 }
 
 /** Wave 2 · the state each product-behaviour flag REALLY has (ON only for the value 1), for Gate 1. Same rule as wave2FlagState in liveTrial.ts (a test compares them). */
-export const WAVE2_FLAG_NAMES = ['CONSULT_FINAL_SYNTHESIS', 'CONSULT_ANSWER_ATTRIBUTION', 'CONSULT_GENERAL_ASSISTANT', 'CONSULT_TRACE_DIAGNOSTICS', 'CONSULT_SEARCH_NOW_INTENT_GATE', 'CONSULT_THREAD_AWARE_ASK', 'CONSULT_ABORT_ABANDONED_FIRST_PART', 'CONSULT_KNOWLEDGE_TURN_TOOLS', 'CONSULT_TOOL_BY_NEED', 'CONSULT_DETERMINISTIC_MATH', 'CONSULT_RESEARCH_LOOP', 'CONSULT_STRUCTURED_SYNTHESIS', 'CONSULT_CHAT_DOMAIN_AGREEMENT', 'CONSULT_KNOWLEDGE_PATH', 'CONSULT_PICK_TURN_TOOLS', 'CONSULT_PICK_PAGE_READ', 'CONSULT_READ_PAGE_LATE']
+export const WAVE2_FLAG_NAMES = ['CONSULT_FINAL_SYNTHESIS', 'CONSULT_ANSWER_ATTRIBUTION', 'CONSULT_GENERAL_ASSISTANT', 'CONSULT_TRACE_DIAGNOSTICS', 'CONSULT_SEARCH_NOW_INTENT_GATE', 'CONSULT_THREAD_AWARE_ASK', 'CONSULT_ABORT_ABANDONED_FIRST_PART', 'CONSULT_KNOWLEDGE_TURN_TOOLS', 'CONSULT_TOOL_BY_NEED', 'CONSULT_DETERMINISTIC_MATH', 'CONSULT_RESEARCH_LOOP', 'CONSULT_STRUCTURED_SYNTHESIS', 'CONSULT_CHAT_DOMAIN_AGREEMENT', 'CONSULT_KNOWLEDGE_PATH', 'CONSULT_PICK_TURN_TOOLS', 'CONSULT_PICK_PAGE_READ', 'CONSULT_READ_PAGE_LATE', 'BENCH_CAPTURE_WRITER_INPUT']
 /** Wave 2J (F6): a flag that does nothing unless another flag is exactly 1 too (same table as WAVE2_FLAG_NEEDS in liveTrial.ts; a test compares them). */
 export const WAVE2_FLAG_NEEDS = { CONSULT_KNOWLEDGE_TURN_TOOLS: 'CONSULT_SEARCH_NOW_INTENT_GATE', CONSULT_TOOL_BY_NEED: 'CONSULT_SEARCH_NOW_INTENT_GATE' }
 /** Wave 3 (W6): the level each Wave 3 flag is switched on from (same table as CAPABILITY_FLAG_LEVELS in src/lib/config/consultFlags.ts; a test compares them). */

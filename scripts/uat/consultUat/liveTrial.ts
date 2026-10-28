@@ -33,7 +33,7 @@
  * Costs in the ledger are ESTIMATES (tokens × the price table in the code; Serper by credits), NOT the provider's invoice. The caps are enforced on that
  * estimate for the paths the gate covers; they are not a promise about the invoice.
  */
-import { readFileSync, realpathSync } from 'node:fs'
+import { readFileSync, realpathSync, writeFileSync } from 'node:fs'
 import http from 'node:http'
 import https from 'node:https'
 import { syncBuiltinESMExports } from 'node:module'
@@ -48,6 +48,7 @@ import { BENCH_FLAG_NAMES, BenchRefusal, assertBenchAllowed, redactSecrets, rout
 import { __resetAiQuestionQuotaLocal } from '@/lib/ai/quota/aiQuestionQuota'
 import { currentToolCall, setToolTraceObserver } from '@/lib/ai/tools/toolTrace'
 import { currentTurn } from './turnScope'
+import { createWriterCapture, isChatCompletionsUrl, writerCaptureOn } from './writerCapture'
 import { UAT_TURNS, type UatTurn } from './questions'
 import { REQUEST_CAP_MAX_PER_RUN, REQUEST_CAP_MAX_PER_TURN, REQUEST_CAP_PER_RUN_ENV, REQUEST_CAP_PER_TURN_ENV, beginRequestCapRun, endRequestCapRun, parseCapValue, requestCapOn } from '@/lib/ai/tools/serperRequestCap'
 
@@ -371,7 +372,7 @@ export function quotaResetFlagReasons(env: Record<string, string | undefined>): 
  * (unset = the old behaviour, byte for byte). A paid run states them explicitly: the preflight accepts unset, 0 or 1 and refuses anything else by name; the summary, the
  * result file, the preflight report and Gate 1 print the state the configuration really has (never an assumed ON).
  */
-export const WAVE2_FLAGS: readonly string[] = ['CONSULT_FINAL_SYNTHESIS', 'CONSULT_ANSWER_ATTRIBUTION', 'CONSULT_GENERAL_ASSISTANT', 'CONSULT_TRACE_DIAGNOSTICS', 'CONSULT_SEARCH_NOW_INTENT_GATE', 'CONSULT_THREAD_AWARE_ASK', 'CONSULT_ABORT_ABANDONED_FIRST_PART', 'CONSULT_KNOWLEDGE_TURN_TOOLS', 'CONSULT_TOOL_BY_NEED', 'CONSULT_DETERMINISTIC_MATH', 'CONSULT_RESEARCH_LOOP', 'CONSULT_STRUCTURED_SYNTHESIS', 'CONSULT_CHAT_DOMAIN_AGREEMENT', 'CONSULT_KNOWLEDGE_PATH', 'CONSULT_PICK_TURN_TOOLS', 'CONSULT_PICK_PAGE_READ', 'CONSULT_READ_PAGE_LATE']
+export const WAVE2_FLAGS: readonly string[] = ['CONSULT_FINAL_SYNTHESIS', 'CONSULT_ANSWER_ATTRIBUTION', 'CONSULT_GENERAL_ASSISTANT', 'CONSULT_TRACE_DIAGNOSTICS', 'CONSULT_SEARCH_NOW_INTENT_GATE', 'CONSULT_THREAD_AWARE_ASK', 'CONSULT_ABORT_ABANDONED_FIRST_PART', 'CONSULT_KNOWLEDGE_TURN_TOOLS', 'CONSULT_TOOL_BY_NEED', 'CONSULT_DETERMINISTIC_MATH', 'CONSULT_RESEARCH_LOOP', 'CONSULT_STRUCTURED_SYNTHESIS', 'CONSULT_CHAT_DOMAIN_AGREEMENT', 'CONSULT_KNOWLEDGE_PATH', 'CONSULT_PICK_TURN_TOOLS', 'CONSULT_PICK_PAGE_READ', 'CONSULT_READ_PAGE_LATE', 'BENCH_CAPTURE_WRITER_INPUT']
 /** Pure. One reason per wave-2 flag whose value is not unset, 0 or 1. */
 export function wave2FlagReasons(env: Record<string, string | undefined>): string[] {
   return WAVE2_FLAGS.filter(k => { const v = env[k]; return !(v === undefined || v === '0' || v === '1') }).map(k => `${k} must be exactly 1, 0 or unset (any other value is refused, not guessed at)`)
@@ -602,14 +603,18 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
     requestLog.push({ n: requestLog.length + 1, turn: currentTurn()?.id ?? null, host: d.host, path, call: currentToolCall()?.call ?? null })
   }
   filterConsole()
+  // Wave 6 (BENCH_CAPTURE_WRITER_INPUT, bench only, default OFF): the bodies of the model requests this wrapper lets through, for a replay of the writing step (writerCapture.ts). Never a header.
+  const writerCapture = writerCaptureOn(env) ? createWriterCapture({ stamp: (input.now ?? Date.now)(), redact: s => redactSecrets(s, env) }) : null
   globalThis.fetch = (async (req: unknown, init?: RequestInit) => {
     if (trialClosed || currentTurn()?.open === false) closedAttempt(urlOf(req)) // round 3c: a closed turn refuses its late requests too
     // a `dispatcher` in the init is undici's way of changing where the connection goes (a proxy agent, a custom connector): such a call cannot be judged by its URL
     if (init && typeof init === 'object' && 'dispatcher' in init) admit('(unparseable)')
     const url = urlOf(req)
     admit(url, String(init?.method ?? (req instanceof Request ? req.method : 'GET')))
+    const capturedBody = writerCapture && isChatCompletionsUrl(url) ? (typeof init?.body === 'string' ? init.body : null) : undefined
     // never follow a redirect: a request to an allowed host cannot be turned into a request to another host
     const res = await forward(req as never, { ...(init ?? {}), redirect: 'manual' })
+    if (writerCapture && capturedBody !== undefined) writerCapture.record(currentTurn()?.id ?? null, capturedBody, res)
     if (res.status >= 300 && res.status < 400) redirects.push({ host: new URL(url).hostname, status: res.status })
     if (res.status === 401 || res.status === 403) {
       const host = new URL(url).hostname
@@ -643,6 +648,7 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
   const capRun = beginRequestCapRun(env)
   if (!capRun.ok) { closeTrial(); return refuse([capRun.problem]) }
   let capFinal: { limit: number; sent: number; refused: number } | null = null
+  let captureNote: string | null = null
   let result
   try {
     result = await runBench({
@@ -661,6 +667,16 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
     // The turn is over: CLOSE first, then watch. Background work that outlives the answer (memory, logging…) is no longer let through, it is only seen (and recorded).
     trialClosed = true
     await new Promise(r => setTimeout(r, input.drainMs ?? 100))
+    // Wave 6: the writer capture goes to its OWN file in the run folder (never the bench json, never SEND\, never the de-identifier). A failed write is reported, never thrown.
+    if (writerCapture) {
+      try {
+        const file = await writerCapture.finish()
+        const path = `${env.BENCH_TRIAL_OUT_DIR!.trim().replace(/\\/g, '/').replace(/\/+$/, '')}/capture-${file.stamp}.json`
+        if (input.fs) input.fs.write(path, JSON.stringify(file)); else writeFileSync(path, JSON.stringify(file), 'utf8')
+        // a capture that stopped at its cap misses the later writer calls: the run did not keep what it was asked to keep (a warning makes the trial not clean)
+        if (file.truncated) captureNote = `writer capture TRUNCATED at ${file.calls.length} model requests: the later calls were not kept`
+      } catch (e) { captureNote = `writer capture NOT written: ${redactSecrets(String(e instanceof Error ? e.message : e).slice(0, 200), env)}` }
+    }
   } catch (e) {
     if (e instanceof BenchRefusal) return refuse(e.reasons) // (a file-system error quoted in a reason may hold a key)
     throw e
@@ -674,6 +690,7 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
   const records = result.records
   const warnings: string[] = []
   const problems: string[] = []
+  if (captureNote) warnings.push(captureNote)
   if (records.length === 0) problems.push('no turn record: the turn never ran')
   for (const r of records) {
     if (r.cost.state !== 'known') problems.push(`${r.id}: cost not known (${r.blocked ?? 'unknown'}; open reservations ≈ ${r.openReservedUsd})`)
