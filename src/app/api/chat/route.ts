@@ -102,8 +102,9 @@ import { recordDecision, DECISION_RECORD_TIMEOUT_MS } from '@/lib/ai/agent/runti
 import { createPlacesBudget, PLACES_BUDGET_AGENT, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
 // Consultative V1 (flag CONSULTATIVE_V1, default OFF — see docs/audit/consultative-v1-design.md).
 import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
-import { isProductionRuntime, consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, consultReadPageLateOn, consultPickPageReadOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn, consultUnwindS1aOn, consultUnwindS1bOn, consultUnwindS1dOn, consultUnwindS2aOn, consultUnwindS2bOn, consultUnwindS2cOn, consultUnwindS3aOn, consultUnwindS3bOn, consultUnwindS3cOn, consultUnwindS4aOn, consultUnwindS4bOn, consultUnwindS5On, consultUnwindS6aOn, consultUnwindS6bOn, consultUnwindS6cOn } from '@/lib/config/consultFlags'
+import { isProductionRuntime, consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, consultReadPageLateOn, consultPickPageReadOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn, consultUnwindS1aOn, consultUnwindS1bOn, consultUnwindS1dOn, consultUnwindS2aOn, consultUnwindS2bOn, consultUnwindS2cOn, consultUnwindS3aOn, consultUnwindS3bOn, consultUnwindS3cOn, consultUnwindS4aOn, consultUnwindS4bOn, consultUnwindS5On, consultUnwindS6aOn, consultUnwindS6bOn, consultUnwindS6cOn, consultOneBrainOn } from '@/lib/config/consultFlags'
 import { searchWithReads, createOnce, FOLLOW_UP_SYSTEM, S6_MAX_READS } from '@/lib/ai/consultative/searchReads'
+import { ONE_BRAIN_CORE, ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, oneBrainDynamic } from '@/lib/ai/consultative/oneBrain'
 import { deepResearch, exaSearch, deepEvidenceForModel, GAP_SYSTEM, EXA_PRICE } from '@/lib/ai/consultative/deepSearch'
 import { unwindWritingBlock, unwindToolHint, UNWIND_PICK_ROWS, UNWIND_MAX_TOKENS } from '@/lib/ai/consultative/unwindWriting'
 import { answerInsteadOfAsk, unwoundAskLine } from '@/lib/ai/consultative/answerInsteadOfAsk'
@@ -363,7 +364,10 @@ export async function POST(req: Request) {
   // CONSULT_UNWIND_S4A: the keyword reading no longer DECIDES (domain, pre-search, decision frame, actionability); it reaches the model as a hint
   // only (unwindToolHint, below). Memory scoping and the logs keep reading `forcedTool`. Measured 28/10: "tiệm vàng" forced search_places, "mua" forced
   // search_products, "trời mưa" was read as "mua". OFF: `forcedToolDecides` is `forcedTool`, as at HEAD.
-  const forcedToolDecides = consultUnwindS4aOn() ? null : forcedTool
+  // CONSULT_ONE_BRAIN (oneBrain.ts): the answer model is the only reader of the question - no rules router, intent call, code question, pre-search, plan frame
+  // or keyword tool decides the turn; it gets the whole conversation, every tool and one general instruction. An image / clip turn and the agent keep their own path.
+  const oneBrain = consultOneBrainOn() && !tappyAgentEnabled() && !hasImage && !clipRef
+  const forcedToolDecides = consultUnwindS4aOn() ? null : forcedTool && !oneBrain ? forcedTool : null
   // P0: a travel turn buffers and runs the fail-closed dynamic-fact guard, so no
   // fabricated fare/price/schedule/availability can reach the user.
   const travelIntent = detectTravelIntent(lastText)
@@ -439,7 +443,7 @@ export async function POST(req: Request) {
   const c2PromptVersion = agentV2 ? agentPromptVersion(consultativeAgent) : agentOn ? 'agent_v1' : 'legacy'
   if (c2PromptVersion === 'consult_v3') startRequestBudget(startTime)
   if (requestBudgetOn()) console.log(JSON.stringify({ type: 'tappyai_request_budget_scope', prompt_version: c2PromptVersion, ledger: !!currentBudget() }))
-  const consultOn = consultV2Enabled() && !hasImage && !clipRef
+  const consultOn = consultV2Enabled() && !hasImage && !clipRef && !oneBrain
   // R14 (UAT 9644d8e): the stored state must be known BEFORE routing — a client whose history does not show
   // the consultation ("xem thêm" alone) was routed as a fresh chat. The request user is looked up ONCE; this
   // promise is the same one the account branch awaits below (a failure surfaces there, as before).
@@ -593,7 +597,7 @@ export async function POST(req: Request) {
   // reads as a trip, so the last 3 user texts together decide. Without this the plan was cut to its first sentence and venue cards stood in for it (live 2026-10-11).
   const consultThreadTrip = consultativeAgent && !consult && ownPlanningIntent === null && inheritedPlanningIntent === null
     && detectPlanningIntent(subjectUserTexts.slice(-3).join(' \n ')) === 'trip' ? 'trip' as const : null
-  const planningIntent = consult
+  const planningIntent = oneBrain ? null : consult
     ? (consult.turn === 'plan' && consult.domains[0] === 'travel' ? 'trip' as const : null)
     : ownPlanningIntent ?? inheritedPlanningIntent ?? consultThreadTrip
   // A plan's budget is the WHOLE envelope, and its searches are the activities
@@ -775,6 +779,7 @@ export async function POST(req: Request) {
    * reuses this value, so "not charged" and "not modelled" can never disagree.
    */
   const cannedEarly: string | null = (() => {
+    if (oneBrain) return null
     if (pendingWaiting && !pendingEndsByThanks) return null
     if (pendingWithMedia) return null
     if (intent === 'chitchat') return ackAnswersTappy ? null : cannedChitchat(lastText, lang)
@@ -803,7 +808,7 @@ export async function POST(req: Request) {
   let gateAskAfter: { q: string; options: string[] } | null = null
   let gateDomain: string | null = null
   let clarifyGate = (() => {
-    if (agentOn || cannedEarly !== null || intent === 'chitchat' || !consultativeV1Enabled() || clipRef || hasImage || decisionStage === 'confirmation') return null
+    if (agentOn || oneBrain || cannedEarly !== null || intent === 'chitchat' || !consultativeV1Enabled() || clipRef || hasImage || decisionStage === 'confirmation') return null
     // A turn that starts a new consultation is gated on its own words (see ownDomainSwitch).
     const gateMessages = ownDomainSwitch ? messages.slice(-1) : messages
     const a = assessActionability({ messages: gateMessages, hasGps: !!userLocation, lang, lastAssistantText: ownDomainSwitch ? null : lastAssistantText, planningIntent, forcedTool: forcedToolDecides, movieRecommend })
@@ -823,8 +828,8 @@ export async function POST(req: Request) {
    * a travel turn was asked a hotel budget instead. The one closing question names exactly what the
    * thread still lacks (tripFacts.ts); it replaces the gate's budget question on a trip.
    */
-  if (consultativeV1Enabled() && !(lastAssistantText && endsWithQuestion(lastAssistantText))) {
-    const threadUser = messages.filter(m => m.role === 'user' && typeof m.content === 'string').map(m => normalizeVN((m.content as string).toLowerCase())).join(' \n ')
+  if (consultativeV1Enabled() && !oneBrain && !(lastAssistantText && endsWithQuestion(lastAssistantText))) {
+    const threadUser =messages.filter(m => m.role === 'user' && typeof m.content === 'string').map(m => normalizeVN((m.content as string).toLowerCase())).join(' \n ')
     const lastFolded = normalizeVN(lastText.toLowerCase())
     // Origin / transport belong to an inter-city or abroad TRIP only — never to an evening out.
     const tripTurn = planningIntent === 'trip' || (planningIntent !== 'evening' && gateDomain === 'travel' && TRIP_WORDS.test(lastFolded))
@@ -839,8 +844,8 @@ export async function POST(req: Request) {
   // code — honest, with the cinemas' own pages — and NO search runs (no Serper, no Places, no card of cinemas).
   // AI-Hay pass (04/10): the data IS one query away (a web search returns Moveek's / the chains' now-showing lists) — a film question now SEARCHES
   // (searchIntel/filmSearch.ts) and the model answers from the extracted titles. FILM_SEARCH=0 restores the canned reply.
-  const filmAsk = !agentOn && process.env.FILM_SEARCH !== '0' && wantsFilmTitles(lastText) && (!consult || consult.domains.includes('entertainment') || consult.domains.length === 0)
-  const cannedMovie = !agentOn && !filmAsk && wantsFilmTitles(lastText) && (!consult || consult.domains.includes('entertainment') || consult.domains.length === 0) ? movieTitlesReply(lang) : null
+  const filmAsk = !agentOn && !oneBrain && process.env.FILM_SEARCH !== '0' && wantsFilmTitles(lastText) && (!consult || consult.domains.includes('entertainment') || consult.domains.length === 0)
+  const cannedMovie = !agentOn && !oneBrain && !filmAsk && wantsFilmTitles(lastText) && (!consult || consult.domains.includes('entertainment') || consult.domains.length === 0) ? movieTitlesReply(lang) : null
   const consultAskReply = !cannedMovie && !filmAsk && consult?.turn === 'ask' && consult.ask
     ? buildAskReply(consult.ask, { lang, structured: rendersAskBlock(req.headers.get('x-tappy-surface'), req.headers.get('x-tappy-caps')) })
     : null
@@ -1520,7 +1525,7 @@ export async function POST(req: Request) {
   const gateStatedWard = consultSearchNowIntentGateOn() && !agentOn
     ? wardStatedAsPlace(lastText, rulesReadVenueRequest(routed), wardFree => rulesReadPlaceOrTripRequest(routeConsult([{ role: 'user', content: wardFree }], { hasGps: !!userLocation, lang })))
     : false
-  const searchGate = consultSearchNowIntentGateOn() && !agentOn ? searchNowIntentGate({ consult, statedArea: statedArea?.label ?? null, statedCity: gateStatedCity, statedStreet: streetNameUsedAsPlace(lastText), statedWard: gateStatedWard }) : null
+  const searchGate = consultSearchNowIntentGateOn() && !agentOn && !oneBrain ? searchNowIntentGate({ consult, statedArea: statedArea?.label ?? null, statedCity: gateStatedCity, statedStreet: streetNameUsedAsPlace(lastText), statedWard: gateStatedWard }) : null
   const searchNowDerived = consultNoSearchNow ? null : (localShopAsked ? null : consultSearch) ?? (situation ? deriveSearchNow({ text: framingText, situation, frame: decisionFrame, need: needProfile, forcedTool: forcedToolDecides, isFirstReply: isFirstReply || afterClarify || moreTurn, movieRecommend, afterClarify, askedBack, consultationText: consultationUserTexts(framingMessages).join(' ') }) : null)
   const searchNow = applySearchNowGate(searchGate, searchNowDerived)
   if (searchGate) trace?.emit('search_now_gate', { blocked: searchGate.blocked, reason: searchGate.reason, consultTurn: searchGate.consultTurn, statedPlaceFrom: searchGate.statedPlaceFrom, droppedType: searchGate.blocked && searchNowDerived && !searchNow ? searchNowDerived.type : null, forcedToolIgnored: searchGate.blocked && forcedTool === 'search_places', hasValidGps: hasValidCurrentLocation(userLocation), rulesTurn: routed?.decision.turn ?? null, rulesConfidence: routed?.confidence ?? null, rulesDomains: routed?.decision.domains ?? [],
@@ -1557,7 +1562,7 @@ export async function POST(req: Request) {
   // the model told which venues were already shown. moreFromSet.ts. The stored search (signed-in
   // users) is exact; without a row the directive's call stands in and the prior reply's names do.
   const priorPlaceSearch = reusablePlaceSearch(loadedEvidenceRow, !ownDomainSwitch)
-  if (consultativeV1 && priorPlaceSearch && wantsMoreFromSet(lastText) && !clipContext && !planningIntent) {
+  if (consultativeV1 && !oneBrain && priorPlaceSearch && wantsMoreFromSet(lastText) && !clipContext && !planningIntent) {
     presearchPlan = { toolName: 'search_places', args: priorPlaceSearch.args, exact: true, reuse: { shown: priorPlaceSearch.shown } }
   } else if (presearchPlan && moreTurn) {
     presearchPlan = { ...presearchPlan, reuse: { shown: (consultShownBefore.length ? consultShownBefore : priorVenuesIn(lastAssistantText).map(v => v.name)).slice(0, 12) } }
@@ -1579,6 +1584,8 @@ export async function POST(req: Request) {
   const consultFollowReuse = followFromState || !!(process.env.CONSULT_FOLLOW_REUSE === '1' && consultativeV1 && (consult?.turn === 'followup' || consult?.turn === 'compare') && !presearchPlan && priorPlaceSearch && ['food', 'entertainment', 'spa'].includes(consult?.domains[0] ?? ''))
   if (followFromState && chatState?.candidates) presearchPlan = { toolName: 'search_places', args: chatState.candidates.args, exact: true }
   else if (consultFollowReuse && priorPlaceSearch) presearchPlan = { toolName: 'search_places', args: priorPlaceSearch.args, exact: true }
+  // CONSULT_ONE_BRAIN: no place search runs before the model; the model decides whether and what to search.
+  if (oneBrain) presearchPlan = null
   // Owner 2026-09-28 (c40 T7): a flight request naming two airports runs its fare call before the model.
   // Consult V2: a shopping pick runs the product search before the model (one model step, like a place pick).
   // "xem thêm" on shopping searches again from the carried product slots (replay SHOP-2/3: with no search the
@@ -1639,7 +1646,7 @@ export async function POST(req: Request) {
   const consultEventCall = consult && (consult.turn === 'pick' || consult.turn === 'reject' || consult.turn === 'more') && consult.domains[0] === 'entertainment'
     ? eventPreCall([...(consultThreadTexts ?? []), lastText].join(' . '), consult.known)
     : null
-  const flightPresearch = consultativeV1 && !agentOn && !presearchPlan && !clipContext ? planFlightPresearch(searchNow, lastText, new Date(), { planning: !!planningIntent }) : null
+  const flightPresearch = consultativeV1 && !agentOn && !oneBrain && !presearchPlan && !clipContext ? planFlightPresearch(searchNow, lastText, new Date(), { planning: !!planningIntent }) : null
 
   /**
    * VnExpress Travel — the LIMITED editorial supplement (see vnexpressTravel.ts).
@@ -2014,7 +2021,7 @@ export async function POST(req: Request) {
   const lunaAnswer = lunaOn && !hasImage && isLunaAnswerTurn(consult, !!planningIntent)
   // CONSULT_LUNA_PLAN: the detailed plan (a consult "plan" turn, or a trip / evening plan) runs on role `plan`.
   const lunaPlan = consultLunaPlanEnabled() && !hasImage && (consult?.turn === 'plan' || !!planningIntent)
-  const role: ModelRole = lunaAnswer ? 'consult' : lunaPlan ? 'plan' : (planningIntent || hasImage) ? 'planning' : isSimpleQuery(lastText, isFirstReply) ? 'fast' : 'smart'
+  const role: ModelRole = oneBrain || lunaAnswer ? 'consult' : lunaPlan ? 'plan' : (planningIntent || hasImage) ? 'planning' : isSimpleQuery(lastText, isFirstReply) ? 'fast' : 'smart'
   const roleServed = lunaOn ? AI.serving(role) : null
   // PHIÊN LUNA safety (owner 30/09): untrusted text — what users wrote, names and snippets from search, memory, shared
   // context — leaves the system prompt; it goes to the model as ONE marked data message (lunaSafety.ts).
@@ -2101,7 +2108,7 @@ export async function POST(req: Request) {
   // bridge text alone would have read as chitchat.
   // CONSULT_UNWIND_S2B: a follow-up / compare turn keeps its tools (the model decides whether the question needs a lookup); OFF: no tool, one step, as at HEAD.
   const s2bFollowTools = consultUnwindS2bOn() && (consult?.turn === 'followup' || consult?.turn === 'compare') && intent !== 'chitchat' && decisionStage !== 'confirmation'
-  const noToolTurn = !clipContext && (intent === 'chitchat' || decisionStage === 'confirmation' || ((consult?.turn === 'followup' || consult?.turn === 'compare') && !consultFollowReuse)) && !s2bFollowTools
+  const noToolTurn = !clipContext && (intent === 'chitchat' || decisionStage === 'confirmation' || ((consult?.turn === 'followup' || consult?.turn === 'compare') && !consultFollowReuse)) && !s2bFollowTools && !oneBrain
   // The ranking instruction is only carried on turns that can actually produce a
   // ranked result — Places and Hotel are the two domains with structured
   // candidate attributes today. A weather or gold lookup pays nothing for it.
@@ -2324,8 +2331,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     })
   }
   const lean = consult && consult.domains.length > 0 ? buildLean({ extra: [], tail: [] }) : null
-  const systemShared = lean ? lean.shared : legacyShared
-  const systemPrompt = lean ? lean.dynamic : legacyPrompt
+  // CONSULT_ONE_BRAIN: one general instruction in place of the rulebook (legacy / lean / Wave 3 lines); the person's own blocks (memory, preferences, style, shared page) stay.
+  const oneBrainPrompt = oneBrain ? { shared: ONE_BRAIN_CORE, dynamic: oneBrainDynamic({ lang, now: new Date(), address: userLocation?.address ?? null, hasLocation: hasValidCurrentLocation(userLocation), blocks: [memoryBlock ?? '', prefBlock, styleBlock, shareContextBlock] }) } : null
+  const systemShared = oneBrainPrompt ? oneBrainPrompt.shared : lean ? lean.shared : legacyShared
+  const systemPrompt = oneBrainPrompt ? oneBrainPrompt.dynamic : lean ? lean.dynamic : legacyPrompt
 
   // ── Model timing instrumentation ────────────────────────────────────────
   //
@@ -2450,7 +2459,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
    * usage line records `llmCalls: 0` so the saving is visible. Everything else — including a
    * fact the prior prose lacks — still reaches the model, which may re-search by name.
    */
-  const canned = agentOn ? (intent === 'chitchat' ? cannedEarly : plannerAsk) : cannedMovie ?? consultAskReply ?? cannedEarly ?? clarifyGate?.reply ?? cannedFollowUp
+  const canned = agentOn ? (intent === 'chitchat' ? cannedEarly : plannerAsk) : oneBrain ? null : cannedMovie ?? consultAskReply ?? cannedEarly ?? clarifyGate?.reply ?? cannedFollowUp
   if (canned) {
     const kind = plannerAsk && canned === plannerAsk ? 'planner_destination' : cannedMovie ? 'movie_titles' : consultAskReply ? 'consult_ask' : intent === 'chitchat' ? 'chitchat' : clarifyGate ? 'clarify' : 'carried_fact'
     console.log(JSON.stringify({ type: 'tappyai_canned_reply', kind, elapsedMs: Date.now() - startTime }))
@@ -2577,12 +2586,12 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   const pickCandidate = consultPickTurnToolsOn() && !!lean && lunaAnswer && !noToolTurn && !planningIntent && !agentOn
   // Wave 4 (B): the FULL row set of the last place search, kept only on a pick candidate (the pre-search's rows, before the model's copy is slimmed). OFF = never set.
   let lastFullPlaceResult: unknown = null
-  const researchReader = (consultResearchLoopOn() && lean) || knowledgeTurn || pickCandidate ? createLeanResearch({ lang, userTexts: recentUserTexts, maxReads: consultUnwindS6aOn() ? Math.max(S6_MAX_READS, levelLimits.researchMaxReads) : levelLimits.researchMaxReads, ...(consultUnwindS6cOn() ? { v5Reading: true } : {}), emit: trace ? (ev, d) => trace.emit(ev, d) : undefined }) : null
+  const researchReader = (consultResearchLoopOn() && lean) || knowledgeTurn || pickCandidate || oneBrain ? createLeanResearch({ lang, userTexts: recentUserTexts, maxReads: consultUnwindS6aOn() ? Math.max(S6_MAX_READS, levelLimits.researchMaxReads) : levelLimits.researchMaxReads, ...(consultUnwindS6cOn() ? { v5Reading: true } : {}), emit: trace ? (ev, d) => trace.emit(ev, d) : undefined }) : null
   const tools = noToolTurn && !agentOn ? undefined : gateTools(timeTools({
       // A movie/show RECOMMENDATION turn drops the place search entirely, so the
       // model can't answer "recommend a movie" with a list of cinemas — it
       // recommends titles from film knowledge instead (see detectMovieRecommendationIntent).
-      ...(((movieRecommend && !agentOn) || filmAsk) ? {} : { search_places: tool({
+      ...(((movieRecommend && !agentOn && !oneBrain) || filmAsk) ? {} : { search_places: tool({
         description: 'Tim dia diem, nha hang, cafe, spa, khach san, diem tham quan/du lich (thang canh, bao tang, cong vien, danh lam), benh vien, giai tri (rap phim, karaoke, gym, bar...) tai Viet Nam. Voi quan an/nha hang/cafe/spa/giai tri se kem gia mon/dich vu/ve tham khao tu Google Search (Serper)',
         parameters: z.object({
           query: z.string().describe('Tu khoa tim kiem (vd: pho ngon, cafe dep, spa tot, diem tham quan)'),
@@ -2792,7 +2801,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         parameters: z.object({ query: z.string().describe('Tu khoa tin tuc can tim') }),
         execute: async ({ query }) => getNews(query, lang)
       }),
-      ...(locationIntent !== 'offline' ? { search_products: tool({
+      ...(locationIntent !== 'offline' || oneBrain ? { search_products: tool({
         description: 'Tim san pham/shop mua sam: gia tren Shopee/Tiki/Lazada, website rieng cua shop, dia chi cua hang vat ly (neu co), Facebook cua shop - tat ca tu Google Search (Serper)',
         parameters: z.object({ query: z.string().describe('Ten san pham can tim mua'), ...(agentV2 ? { purchase_links: z.boolean().optional().describe('true CHI KHI nguoi dung hoi mua o dau / xin link mua / the hien ro y dinh mua. Tu van, tieu chi, so sanh, danh gia: bo trong (khong tra link mua)') } : {}) }),
         execute: async ({ query, purchase_links }: { query: string; purchase_links?: unknown }) => {
@@ -2895,7 +2904,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       // Wave 3 (W1): the reader's own tool definition (description, schema, execute), declared here like every other tool so the AI tool registry and its boundary test see it.
       ...(researchReader ? { read_page: tool({ ...researchReader.tool }) } : {}),
       // Wave 4 · C2 / C3: the knowledge path and a possible pre-searched pick get the same calculator.
-      ...((deterministicMath && lean) || knowledgeTurn || pickCandidate ? {
+      ...((deterministicMath && lean) || knowledgeTurn || pickCandidate || oneBrain ? {
         calculate: tool({
           description: CALCULATE_DESCRIPTION,
           parameters: z.object({ expression: z.string().describe('Bieu thuc so hoc can tinh, vd: pmt(0.01, 12, 1000)') }),
@@ -3323,6 +3332,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   let agentStatePatch: { flight?: NonNullable<ChatSessionState['flight']>; movie?: NonNullable<ChatSessionState['movie']>; plan?: NonNullable<ChatSessionState['plan']> } = {}
   let agentRejected: string[] = []
   if (agentOn) enrichment.agentMode = true
+  // CONSULT_ONE_BRAIN: the model's own prose is not reshaped (sentence cap, alternatives cap) or line-tidied; the claim guards still run.
+  if (oneBrain) enrichment.oneBrain = true
   // Phase 8: one structured trace per run (runtime/trace.ts) — every settle-path guard that changes the reply reports to it.
   const agentRunTrace = agentV2 ? new AgentRunTrace({ chatSessionId, messageCount: messages.length, provider: AI.serving('agent').provider, serperLimit: agentSerperLimit, deadlineMs: RUNTIME_LIMITS.deadlineMs, flag: 'TAPPY_AGENT=2' }) : null
   if (agentRunTrace) enrichment.guardTrace = (stage, before, after) => {
@@ -3502,7 +3513,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // Wave 4 · C3: the turn really was pre-searched by the code (R2) - only then are the model's tools offered. The code's own pre-search above is unchanged.
   const pickTools = pickCandidate && presearchAll.length > 0 && !lunaPlan && !consultFollowReuse && !consultTripPrefetch && !eveningBlock
   // The reader is IN EFFECT (read_page offered, URLs collected, the writing step reserved) on a W1 lean turn, the knowledge path, or a pre-searched pick with the flag; a declared-only reader is not.
-  const research = (consultResearchLoopOn() && lean) || knowledgeTurn || pickTools ? researchReader : null
+  const research = (consultResearchLoopOn() && lean) || knowledgeTurn || pickTools || oneBrain ? researchReader : null
   // Wave 4 · C3: the code's pre-search results are this turn's results too: a link they carry may be opened, exactly as if the model had searched (the same "only this turn's links" rule; a
   // slimmed place result that carries no link adds nothing - the model then searches the web first).
   if (pickTools && research) for (const o of presearchAll) research.collectFrom(o.result)
@@ -3530,7 +3541,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // CONSULT_UNWIND_S3B: a turn that carries tools may write up to UNWIND_MAX_TOKENS (HEAD 2048); null = the HEAD ceiling.
   unwindToolTurnCeiling = consultUnwindS3bOn() && !!tools ? UNWIND_MAX_TOKENS : null
   // The step budget of this turn, named once (the very expression the stream used inline: same value). CONSULT_FINAL_SYNTHESIS needs it to reserve the last step.
-  const streamMaxSteps = lunaPlan && planningIntent !== 'trip' ? 3 : pickTools ? knowledgeDepth().steps : consultFollowReuse || consultTripPrefetch || (lean && presearchAll.length > 0 && !planningIntent && !noToolTurn && !eveningBlock) ? 2 : noToolTurn || eveningBlock ? 1 : planningIntent ? (lean ? 3 : 8) : hasImage ? 3 : lean ? (research ? levelLimits.researchSteps : 3) : knowledgeTurn ? knowledgeDepth().steps : 5
+  const streamMaxSteps = oneBrain ? ONE_BRAIN_MAX_STEPS : lunaPlan && planningIntent !== 'trip' ? 3 : pickTools ? knowledgeDepth().steps : consultFollowReuse || consultTripPrefetch || (lean && presearchAll.length > 0 && !planningIntent && !noToolTurn && !eveningBlock) ? 2 : noToolTurn || eveningBlock ? 1 : planningIntent ? (lean ? 3 : 8) : hasImage ? 3 : lean ? (research ? levelLimits.researchSteps : 3) : knowledgeTurn ? knowledgeDepth().steps : 5
   // CONSULT_FINAL_SYNTHESIS (Wave 2, default OFF = nothing below runs). Baseline: a tool loop used EVERY step calling web_search, the model never wrote a word (finishReason "tool-calls"), and the
   // user got a canned gap sentence or nothing. With the flag ON the LAST step is kept for writing: a tool call made when only the last step is left is answered by code, without running the
   // tool (no search, no Serper request, no cost), telling the model to write now from what it already has. The step budget is unchanged; a turn of one or two steps is not touched.
@@ -3616,7 +3627,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // with [CTA_BUTTONS] + [FOLLOWUPS]); 2048 is 2.5× that. Planning stays at 4096 (a
     // [TAPPY_PLAN] block is long by design) and image turns at 1024. Output is billed as
     // generated, so this changes no cost on a normal reply — it bounds a runaway one.
-    maxTokens: noToolTurn ? (consult ? 600 : 300) : eveningBlock ? 350 : planningIntent ? 4096 : hasImage ? 1024 : (w3Structured ? levelLimits.structuredMaxTokens : unwindToolTurnCeiling ?? 2048),
+    maxTokens: oneBrain ? ONE_BRAIN_MAX_TOKENS : noToolTurn ? (consult ? 600 : 300) : eveningBlock ? 350 : planningIntent ? 4096 : hasImage ? 1024 : (w3Structured ? levelLimits.structuredMaxTokens : unwindToolTurnCeiling ?? 2048),
     // Consult V2: a pick whose search already ran (presearch) answers in ONE step — no second full pass.
     // A follow-up/compare that re-reads its evidence keeps a second step: a stray tool call must still end in text.
     // R15: a pre-fetched trip plan writes in ONE step (a second only if it still reaches for a tool).
@@ -4123,7 +4134,7 @@ ${finalWriteInstruction(lang)}` },
             lastUserChars: lastText.length,
             toolResultChars: auditToolResultChars,
             noToolTurn,
-            maxTokens: noToolTurn ? (consult ? 600 : 300) : planningIntent ? 4096 : hasImage ? 1024 : (w3Structured ? levelLimits.structuredMaxTokens : unwindToolTurnCeiling ?? 2048),
+            maxTokens: oneBrain ? ONE_BRAIN_MAX_TOKENS : noToolTurn ? (consult ? 600 : 300) : planningIntent ? 4096 : hasImage ? 1024 : (w3Structured ? levelLimits.structuredMaxTokens : unwindToolTurnCeiling ?? 2048),
           },
         }) + '\n')
       } catch { /* audit only */ }

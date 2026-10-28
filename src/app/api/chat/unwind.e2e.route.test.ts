@@ -23,6 +23,7 @@ const h = vi.hoisted(() => {
     extractRoles: [] as string[],
     streamCalled: 0,
     toolNames: [] as string[],
+    opts: {} as { role?: string; maxSteps?: number; maxTokens?: number; systemShared?: string },
     system: '' as string,
     text: 'ok',
     webCalls: [] as string[],
@@ -84,6 +85,7 @@ vi.mock('@/lib/ai/llm', () => ({
     stream: (opts: Record<string, any>) => {
       h.state.streamCalled++
       h.state.toolNames = Object.keys(opts.tools ?? {})
+      h.state.opts = { role: opts.role, maxSteps: opts.maxSteps, maxTokens: opts.maxTokens, systemShared: typeof opts.systemShared === 'string' ? opts.systemShared : '' }
       try { h.state.system = JSON.stringify({ system: opts.system, messages: opts.messages }) } catch { h.state.system = '' }
       return {
         get steps() { return Promise.resolve([{ toolResults: h.state.results.map(r => ({ toolName: r.name, result: r.result })) }]) },
@@ -122,18 +124,19 @@ type Msg = { role: 'user' | 'assistant'; content: string }
 const intent = (turn: string, domains: string[], extra: Record<string, unknown> = {}) => ({
   domains, turn, goal: 'x', known: [], party: null, budget_vnd_max: null, difficulty: 'normal', missing: [], assumptions: [], ask: null, query: null, area: null, refers: [], reject_reason: null, ...extra,
 })
-interface TurnOpts { unwind: boolean; luna: Record<string, unknown>; tools?: Array<{ name: string; args: Record<string, unknown> }>; reply?: string; gapQuery?: string | null }
+interface TurnOpts { unwind: boolean; oneBrain?: boolean; luna: Record<string, unknown>; tools?: Array<{ name: string; args: Record<string, unknown> }>; reply?: string; gapQuery?: string | null }
 
 async function turn(messages: Msg[], o: TurnOpts) {
   delete process.env.TAPPY_AGENT
   for (const [k, v] of Object.entries(BASE_FLAGS)) vi.stubEnv(k, v)
   for (const k of UNWIND) vi.stubEnv(k, o.unwind ? '1' : '0')
+  vi.stubEnv('CONSULT_ONE_BRAIN', o.oneBrain ? '1' : '0')
   for (const k of ['CONSULT_PICK_TURN_TOOLS', 'CONSULT_KNOWLEDGE_PATH', 'CONSULT_RESEARCH_LOOP', 'CONSULT_TOOL_BY_NEED', 'CONSULT_DETERMINISTIC_MATH', 'CONSULT_STRUCTURED_SYNTHESIS', 'CONSULT_CHAT_DOMAIN_AGREEMENT', 'CONSULT_THREAD_AWARE_ASK', 'CONSULT_PICK_PAGE_READ', 'CONSULT_LUNA_ONE', 'VERCEL_ENV']) vi.stubEnv(k, undefined as unknown as string)
   h.state.calls = (o.tools ?? []).map((t, i) => ({ toolCallId: `c${i + 1}`, toolName: t.name, args: t.args }))
   h.state.text = o.reply ?? 'Câu trả lời của mô hình.'
   h.state.luna = o.luna
   h.state.gapQuery = o.gapQuery ?? null
-  h.state.extractRoles = []; h.state.streamCalled = 0; h.state.toolNames = []; h.state.system = ''; h.state.results = []; h.state.webCalls = []; h.state.fetched = []
+  h.state.extractRoles = []; h.state.streamCalled = 0; h.state.toolNames = []; h.state.opts = {}; h.state.system = ''; h.state.results = []; h.state.webCalls = []; h.state.fetched = []
   __resetAiQuestionQuotaLocal(); __resetPageCache(); __resetSharedRobots()
   const req = {
     url: 'http://localhost/api/chat', nextUrl: new URL('http://localhost/api/chat'),
@@ -146,7 +149,7 @@ async function turn(messages: Msg[], o: TurnOpts) {
   try { raw = await (await POST(req as never)).text() } finally { spy.mockRestore() }
   const text = raw.split('\n').filter(l => l.startsWith('0:')).map(l => { try { return JSON.parse(l.slice(2)) as string } catch { return '' } }).join('')
   const logs = lines.map(l => { try { return JSON.parse(l) as Record<string, any> } catch { return null } }).filter((x): x is Record<string, any> => !!x)
-  return { raw, text, logs, streamCalled: h.state.streamCalled, toolNames: [...h.state.toolNames], system: h.state.system, web: [...h.state.webCalls], fetched: [...h.state.fetched], results: [...h.state.results], extract: [...h.state.extractRoles] }
+  return { raw, text, logs, streamCalled: h.state.streamCalled, toolNames: [...h.state.toolNames], opts: { ...h.state.opts }, system: h.state.system, web: [...h.state.webCalls], fetched: [...h.state.fetched], results: [...h.state.results], extract: [...h.state.extractRoles] }
 }
 
 /** A page as long as a real article (the real pages read on 28/10 gave 2 500 - 7 000 characters): a one-line page is read as "thin". */
@@ -300,5 +303,84 @@ describe('unwind e2e — the citation marker never reaches the user (S1C)', () =
   it('flags OFF: left as at HEAD (CONSULT_LUNA_ONE off)', async () => {
     const off = await turn(KNOW, { unwind: false, luna: KNOW_INTENT, reply })
     expect(off.text).toContain('turn0search0')
+  }, 60000)
+})
+
+describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reader of the question', () => {
+  // Four different kinds of request, written for this test: a review of a text (the rules read "ban hang" as shopping), a trip plan, a place pick, a knowledge question.
+  const REVIEW: Msg[] = [{ role: 'user', content: 'nhan xet giup minh prompt nay: "Hay thiet ke kien truc cho mot website ban hang online co gio hang va thanh toan"' }]
+  const TRIP: Msg[] = [{ role: 'user', content: 'len lich trinh 2 ngay 1 dem o da lat giup minh' }]
+  const TRIP_INTENT = intent('plan', ['travel'], { known: [{ key: 'diem_den', value: 'Đà Lạt' }, { key: 'so_ngay', value: '2' }] })
+  const cases: Array<[string, Msg[], Record<string, unknown>]> = [['review', REVIEW, intent('chat', [])], ['trip', TRIP, TRIP_INTENT], ['pick', PICK, PICK_INTENT], ['know', KNOW, KNOW_INTENT], ['hello', [{ role: 'user', content: 'chao ban' }], intent('chat', [])]]
+  const ALL_TOOLS = ['search_places', 'get_news', 'search_products', 'web_search', 'read_page', 'calculate', 'get_weather', 'get_gold_price', 'get_flight_prices', 'get_hotel_prices', 'get_transport_options', 'save_price_watch']
+  const reply = 'Trả lời của mô hình.'
+  it('flag ON: every kind of request reaches the model the same way - no intent call, the whole tool set, the one general instruction, 6 steps, 4000 tokens', async () => {
+    for (const [name, m, l] of cases) {
+      const on = await turn(m, { unwind: true, oneBrain: true, luna: l, reply })
+      expect(on.streamCalled, name).toBe(1)
+      expect(on.extract, name).not.toContain('tappy_intent')
+      expect(on.logs.some(x => x.type === 'tappyai_luna_intent'), name).toBe(false)
+      expect([...on.toolNames].sort(), name).toEqual([...ALL_TOOLS].sort())
+      expect(on.opts.systemShared, name).toContain('You are Tappy, a general AI assistant')
+      expect(on.opts, name).toMatchObject({ role: 'consult', maxSteps: 6, maxTokens: 4000 })
+      expect(on.system, name).not.toContain('NGUOI TU VAN')
+      expect(on.text, name).toContain(reply)
+    }
+  }, 120000)
+  it('flag OFF (same turns, unwind flags ON): the intent call reads each turn and the code gives each its own tool set and prompt', async () => {
+    const seen: Record<string, { tools: string[]; role?: string }> = {}
+    for (const [name, m, l] of cases) {
+      const off = await turn(m, { unwind: true, oneBrain: false, luna: l, reply })
+      // a greeting is answered by the code's canned small talk: no model at all
+      if (name === 'hello') { expect(off.streamCalled).toBe(0); continue }
+      expect(off.extract, name).toContain('tappy_intent')
+      expect(off.opts.systemShared ?? '', name).not.toContain('You are Tappy, a general AI assistant')
+      seen[name] = { tools: off.toolNames, role: off.opts.role }
+    }
+    expect(seen.trip).toEqual({ tools: [], role: 'plan' })
+    expect(seen.pick.tools).not.toContain('get_weather')
+  }, 120000)
+  it('flag ON, trip plan: no code question, no pre-fetch, no plan frame - the model plans with its tools', async () => {
+    const on = await turn(TRIP, { unwind: true, oneBrain: true, luna: TRIP_INTENT, reply })
+    expect(on.web).toEqual([])
+    expect(on.results).toEqual([])
+    expect(on.logs.some(x => ['tappyai_unwind_ask', 'tappyai_luna_plan_data', 'tappyai_presearch', 'tappyai_clarify_gate', 'tappyai_canned_reply'].includes(String(x.type)))).toBe(false)
+    expect(on.toolNames).toEqual(expect.arrayContaining(['search_places', 'web_search', 'get_weather', 'get_hotel_prices']))
+  }, 60000)
+  it('flag ON, place pick: no code card or pre-search; the model\'s own place search runs and its words are kept', async () => {
+    const PLACE_CALL = { name: 'search_places', args: { query: 'bún chả', location: 'Hàng Bạc, Hà Nội', type: 'restaurant' } }
+    const on = await turn(PICK, { unwind: true, oneBrain: true, luna: PICK_INTENT, tools: [PLACE_CALL], reply: 'Mình chưa thấy quán khớp; bạn cho mình thêm tên phố gần đó nhé.' })
+    expect(on.logs.some(x => x.type === 'tappyai_presearch' || x.type === 'tappyai_canned_reply')).toBe(false)
+    expect(on.logs.some(x => x.type === 'tappyai_tool_called' && x.tool === 'search_places')).toBe(true)
+    expect(on.text).toContain('Mình chưa thấy quán khớp')
+    expect(on.text).not.toContain('[TAPPY_ASK]')
+  }, 60000)
+  it('flag ON with every unwind flag OFF: the model\'s table is not line-tidied (the tidy is for prose the shape guard cut)', async () => {
+    const COMPARE: Msg[] = [{ role: 'user', content: 'so sanh lai suat tiet kiem 12 thang cua Vietcombank va BIDV giup minh' }]
+    const table = 'So sánh nhanh:\n\n| Ngân hàng | 12 tháng |\n|---|---|\n| A | 5,9% |\n| B | 4,9% |'
+    const on = await turn(COMPARE, { unwind: false, oneBrain: true, luna: intent('chat', [], { difficulty: 'easy' }), tools: [SEARCH], reply: table })
+    expect(on.text).toContain('| Ngân hàng | 12 tháng |\n|---|---|\n| A | 5,9% |')
+    // the one-brain limits do not lean on the unwind flags (S3B alone would also give 4000)
+    expect(on.opts).toMatchObject({ role: 'consult', maxSteps: 6, maxTokens: 4000 })
+  }, 60000)
+  it('flag ON: a follow-up about a venue of the previous reply is answered by the model, not by a code-written reply', async () => {
+    const thread: Msg[] = [{ role: 'user', content: 'Gợi ý giúp mình một quán cà phê yên tĩnh để làm việc' }, { role: 'assistant', content: 'Mình chọn **Cơm Niêu Sài Gòn**, số **028 1111 2222**.' }, { role: 'user', content: 'số điện thoại của quán này là gì?' }]
+    const on = await turn(thread, { unwind: true, oneBrain: true, luna: intent('followup', ['food']), reply })
+    expect(on.streamCalled).toBe(1)
+    expect(on.logs.some(x => x.type === 'tappyai_canned_reply')).toBe(false)
+    expect(on.text).toContain(reply)
+  }, 60000)
+  it('flag ON: a fare request naming two cities is not pre-searched by the code; the model gets the fare tool', async () => {
+    const on = await turn([{ role: 'user', content: 've may bay tu ha noi di da nang ngay 5/11 gia bao nhieu' }], { unwind: true, oneBrain: true, luna: intent('pick', ['travel']), reply })
+    expect(on.logs.some(x => x.type === 'tappyai_presearch')).toBe(false)
+    expect(on.results).toEqual([])
+    expect(on.toolNames).toContain('get_flight_prices')
+  }, 60000)
+  it('flag ON: a place request that names its district is not pre-searched by the code; the model gets the place tool', async () => {
+    // without the one-brain guard the V1 frame pre-searches this one (measured with the guard removed)
+    const on = await turn([{ role: 'user', content: 'cafe yen tinh quan 3 tphcm' }], { unwind: true, oneBrain: true, luna: intent('pick', ['food']), reply })
+    expect(on.logs.some(x => x.type === 'tappyai_presearch')).toBe(false)
+    expect(on.results).toEqual([])
+    expect(on.toolNames).toContain('search_places')
   }, 60000)
 })

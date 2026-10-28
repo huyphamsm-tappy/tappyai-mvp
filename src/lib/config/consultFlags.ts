@@ -227,3 +227,8 @@ export function consultUnwindS6bOn(env: Env = process.env): boolean { return unw
 export function consultUnwindS6cOn(env: Env = process.env): boolean { return unwindOn(env, CONSULT_UNWIND_S6C_FLAG) }
 export const CONSULT_UNWIND_S5_FLAG = 'CONSULT_UNWIND_S5'
 export function consultUnwindS5On(env: Env = process.env): boolean { return unwindOn(env, CONSULT_UNWIND_S5_FLAG) }
+//   CONSULT_ONE_BRAIN   ONE reader of the question: the answer model reads the whole conversation with every tool and decides alone what to look up, whether to ask and how long to write
+//                       (oneBrain.ts). The rules router, the intent call and its merge, the code's question cards, clarify gate, pre-searches, trip / evening frames, keyword tool, search gate
+//                       and the per-turn prompt rulebook do not run; safety, spend caps, quota and the card rendering of what the model looked up stay. Pages are read with S6A (set it too).
+export const CONSULT_ONE_BRAIN_FLAG = 'CONSULT_ONE_BRAIN'
+export function consultOneBrainOn(env: Env = process.env): boolean { return unwindOn(env, CONSULT_ONE_BRAIN_FLAG) }

@@ -195,6 +195,8 @@ export interface EnrichmentCollector {
   consultBrief?: boolean
   /** TAPPY_AGENT: the turn was decided by the bounded agent (no consult turn) — claim guards that used to key on a consult pick turn still run. */
   agentMode?: boolean
+  /** CONSULT_ONE_BRAIN: the answer model alone decided the turn — its prose is not reshaped or line-tidied (the claim guards still run). */
+  oneBrain?: boolean
   /** Phase 8 (TAPPY_AGENT=2) run trace: called with every settle-path stage that CHANGED the reply text (observation only). */
   guardTrace?: (stage: string, before: string, after: string) => void
   /** Phase 8 M3 (TAPPY_AGENT=2): pages the agent read this turn — [S#] markers become source links at the enrichment site (citeSources). */

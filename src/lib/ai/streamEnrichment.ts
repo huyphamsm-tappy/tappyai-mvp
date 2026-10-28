@@ -3300,7 +3300,8 @@ export function applyPlaceEnrichmentStreamFilter(
       // shape is NOT applied to it. UAT 2026-10-07: a 10-sentence recipe after a place turn was cut to 6 (capped 4, 3 orphan lines) because
       // the previous turn's venues counted as `carried`. The claim guards below (search claims, atmosphere, budget-fit, evidence gaps)
       // still run on Agent prose.
-      const agentOwnsProse = collector?.agentMode === true
+      // CONSULT_ONE_BRAIN: the one-brain model owns its prose the same way.
+      const agentOwnsProse = collector?.agentMode === true || collector?.oneBrain === true
       const shape = !hasVenues || consultPlan || agentOwnsProse || structuredAnswer ? { text: atmosphere.text, stats: { sentences_in: 0, sentences_out: 0, listing_removed: 0, alternatives_removed: 0, capped: 0 } } : guardProseShape(atmosphere.text, {
         rendersCard: v1.rendersCard,
         // CONSULT_UNWIND_S3C: 3 alternatives (HEAD 2); CONSULT_UNWIND_S3B: a fuller answer is not cut back to the short pick (20 sentences, HEAD 9 / 13).
