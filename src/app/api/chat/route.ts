@@ -2949,7 +2949,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           people: z.number().optional(),
           budget_total: z.string().optional().describe('only when the person gave a budget or the tools gave prices'),
           days: z.array(z.object({
-            label: z.string().describe('e.g. "Ngày 1 — Kỳ Co, Eo Gió"'),
+            label: z.string().describe('e.g. "Ngày 1 — Kỳ Co, Eo Gió"; each day has 3-6 items (morning, lunch, afternoon, dinner, evening)'),
             items: z.array(z.object({
               time: z.string().describe('e.g. "07:00" or "Sáng"'),
               emoji: z.string(),
@@ -2965,7 +2965,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         }),
         execute: async (plan) => {
           enrichment.planBlock = JSON.stringify(plan)
-          return { ok: true, note: 'The app shows this plan as a card that can be shared as a brochure. Write only a short summary and the key tips; do not repeat the plan.' }
+          return { ok: true, note: 'The app shows this plan as a card BELOW your text, and it can be shared as a brochure. Write only a short summary and the key tips; do not repeat the plan, and do not say the card is above.' }
         },
       }) } : {}),
       get_gold_price: tool({
