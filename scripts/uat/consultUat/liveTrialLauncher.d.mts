@@ -25,7 +25,7 @@ export function gate1Line(env: Env): string | null
 export function buildChildEnv(parentEnv: Env, opts: { confirm: boolean; nonce: string; preflightOnly?: boolean }): Record<string, string>
 export function gate1Summary(env: Env, questionText: string | null): string[]
 export function quotaLines(env: Env): string[]
-export const REPLAY_VARIANT_TABLE: Record<string, { effort: string | null; note: boolean; evidence: boolean }>
+export const REPLAY_VARIANT_TABLE: Record<string, { effort: string | null; note: boolean; evidence: boolean; passageChars?: number }>
 export const REPLAY_MAX_RUN_CAP_USD: string
 export const REPLAY_MAX_TURN_CAP_USD: string
 export function replayLines(env: Env, opts?: { readBytes?: (path: string) => Uint8Array }): string[]

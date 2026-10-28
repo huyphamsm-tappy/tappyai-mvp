@@ -4,7 +4,7 @@
 import { createHash } from 'node:crypto'
 import { describe, it, expect } from 'vitest'
 import type { CapturedCall, WriterCaptureFile } from './writerCapture'
-import { EVIDENCE_HEADER, EVIDENCE_LIMITS, REASONING_OUTPUT_CAP, V1_WRITING_NOTE, VARIANTS, evidenceMessage, evidencePagesFrom, packReplayRun, pickWriterCalls, replayVariant, sentChars, variantRequest } from './writerReplay'
+import { EVIDENCE_HEADER, EVIDENCE_LIMITS, REASONING_OUTPUT_CAP, V1_WRITING_NOTE, VARIANTS, evidenceLimitsOf, evidenceMessage, evidencePagesFrom, packReplayRun, pickWriterCalls, replayVariant, sentChars, variantRequest } from './writerReplay'
 
 const sys = (t: string) => ({ role: 'system', content: t })
 const user = (t: string) => ({ role: 'user', content: t })
@@ -81,8 +81,12 @@ describe('W6 replay · the request of each registered variant', () => {
     const two = variantRequest({ messages: [sys('shared'), sys('own'), user('q')] }, VARIANTS[1]!)
     expect(two.messages).toEqual([sys(`shared\n\n${V1_WRITING_NOTE}`), sys('own'), user('q')])
   })
-  it('the registered table: V0..V3 (amendment 28/10: V2 / V3 change the reasoning effort, never the model) and X0 / X1 (outside evidence)', () => {
-    expect(VARIANTS.map(v => [v.id, v.effort, v.note, v.evidence])).toEqual([['V0', null, false, false], ['V1', null, true, false], ['V2', 'medium', false, false], ['V3', 'medium', true, false], ['X0', null, false, true], ['X1', null, true, true]])
+  it('the registered table: V0..V3 (amendment 28/10: V2 / V3 change the reasoning effort, never the model), X0 / X1 (outside evidence), X2 / X3 (amendment 4)', () => {
+    expect(VARIANTS.map(v => [v.id, v.effort, v.note, v.evidence, v.passageChars ?? null])).toEqual([
+      ['V0', null, false, false, null], ['V1', null, true, false, null], ['V2', 'medium', false, false, null], ['V3', 'medium', true, false, null],
+      ['X0', null, false, true, 1200], ['X1', null, true, true, 1200], ['X2', null, true, true, 3200], ['X3', 'medium', true, true, 1200],
+    ])
+    expect(evidenceLimitsOf(VARIANTS[6]!)).toEqual({ pages: 6, passages: 4, passageChars: 3200 }); expect(evidenceLimitsOf(VARIANTS[5]!)).toEqual(EVIDENCE_LIMITS)
   })
   it('V2: reasoning_effort "medium", the SAME model and messages; no tools at all (the API refuses tools with an effort other than none), the history stays', () => {
     const v2 = variantRequest(body, VARIANTS[2]!)

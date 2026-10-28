@@ -413,7 +413,9 @@ export function benchSwitchLine(env) {
 export const REPLAY_VARIANT_TABLE = {
   V0: { effort: null, note: false, evidence: false }, V1: { effort: null, note: true, evidence: false },
   V2: { effort: 'medium', note: false, evidence: false }, V3: { effort: 'medium', note: true, evidence: false },
-  X0: { effort: null, note: false, evidence: true }, X1: { effort: null, note: true, evidence: true },
+  X0: { effort: null, note: false, evidence: true, passageChars: 1200 }, X1: { effort: null, note: true, evidence: true, passageChars: 1200 },
+  // amendment 4 (28/10): X2 = X1 with passages up to 3 200 characters; X3 = X1 with reasoning effort medium
+  X2: { effort: null, note: true, evidence: true, passageChars: 3200 }, X3: { effort: 'medium', note: true, evidence: true, passageChars: 1200 },
 }
 /** The replay's own ceilings (the same constants as replayTrial.ts; a test compares them). */
 export const REPLAY_MAX_RUN_CAP_USD = '0.30', REPLAY_MAX_TURN_CAP_USD = '0.10'
@@ -425,7 +427,7 @@ export function replayLines(env, { readBytes = p => readFileSync(p) } = {}) {
   if (env.BENCH_REPLAY_VARIANT === undefined && env.BENCH_REPLAY_CAPTURE === undefined && env.BENCH_REPLAY_EVIDENCE_DIR === undefined) return []
   const v = REPLAY_VARIANT_TABLE[env.BENCH_REPLAY_VARIANT]
   const show = x => (x === undefined ? 'unset' : /^[A-Za-z0-9_.-]{1,24}$/.test(x) ? x : JSON.stringify(x.slice(0, 24)))
-  const lines = [`PHÁT LẠI bước viết (KHÔNG tìm kiếm lại, KHÔNG Serper) — biến thể ${show(env.BENCH_REPLAY_VARIANT)}${v ? `: chỉ dẫn ${v.note ? 'gốc + lời dặn V1' : 'gốc'}; mức suy luận ${v.effort ?? 'như lời gọi gốc'}; trần đầu ra ${v.effort ? '4000 token (gồm cả token suy luận; không công cụ)' : 'như lời gọi gốc (tối đa 4000)'}; bằng chứng Exa ${v.evidence ? 'CÓ (khối cuối đầu vào viết)' : 'không'}` : ' — KHÔNG HỢP LỆ (V0,V1,V2,V3,X0,X1)'}`]
+  const lines = [`PHÁT LẠI bước viết (KHÔNG tìm kiếm lại, KHÔNG Serper) — biến thể ${show(env.BENCH_REPLAY_VARIANT)}${v ? `: chỉ dẫn ${v.note ? 'gốc + lời dặn V1' : 'gốc'}; mức suy luận ${v.effort ?? 'như lời gọi gốc'}; trần đầu ra ${v.effort ? '4000 token (gồm cả token suy luận; không công cụ)' : 'như lời gọi gốc (tối đa 4000)'}; bằng chứng Exa ${v.evidence ? `CÓ (khối cuối đầu vào viết; mỗi đoạn tối đa ${v.passageChars} ký tự)` : 'không'}` : ` — KHÔNG HỢP LỆ (${Object.keys(REPLAY_VARIANT_TABLE).join(',')})`}`]
   const file = (env.BENCH_REPLAY_CAPTURE ?? '').trim()
   if (file === '') lines.push('tệp capture: KHÔNG ĐẶT BENCH_REPLAY_CAPTURE')
   else {

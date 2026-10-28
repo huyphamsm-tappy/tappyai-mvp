@@ -153,6 +153,71 @@ describe('W6 replay run · a V0 run with the whole safety path', () => {
   })
 })
 
+describe('W6 replay run · X2 / X3 (amendment 4): wider passages, reasoning with evidence', () => {
+  const LONG = (t: string) => `${t} `.repeat(2000) // 6 000 characters: longer than both limits
+  const putEvidence = (empty: string[] = []) => {
+    for (const t of ['T1', 'T2', 'T3']) files[`${EVIDENCE_DIR}/evidence-${t}.json`] = JSON.stringify(empty.includes(t) ? { turn: t, results: [], no_results: true } : { turn: t, results: [{ url: `https://e.example/${t}`, highlights: [LONG(t)] }, { url: `https://f.example/${t}`, highlights: ['ngan'] }] })
+  }
+  const blockOf = (body: any) => { const last = body.messages[body.messages.length - 1]; return String(last.content).startsWith(EVIDENCE_HEADER) ? JSON.parse(String(last.content).slice(EVIDENCE_HEADER.length + 1)) : null }
+  it('X2: like X1 (note, captured effort and output cap), but each passage keeps up to 3 200 characters instead of 1 200; evidence characters are recorded per turn', async () => {
+    putEvidence(); setEnv({ BENCH_REPLAY_VARIANT: 'X1', BENCH_REPLAY_EVIDENCE_DIR: EVIDENCE_DIR })
+    const s1 = ran(await run())
+    const x1 = POSTED().map(r => r.body)
+    net.requests = []; written = {}; vi.unstubAllEnvs(); for (const k of ALL_NAMES) vi.stubEnv(k, undefined)
+    setEnv({ BENCH_REPLAY_VARIANT: 'X2', BENCH_REPLAY_EVIDENCE_DIR: EVIDENCE_DIR })
+    const s2 = ran(await run())
+    expect(s2.trialClean).toBe(true)
+    const x2 = POSTED().map(r => r.body)
+    for (const [i, b] of x2.entries()) {
+      expect(blockOf(b).pages[0].passages[0]).toHaveLength(3200); expect(blockOf(x1[i]).pages[0].passages[0]).toHaveLength(1200)
+      expect(blockOf(b).pages[1].passages).toEqual(['ngan']) // a short passage is kept whole by both
+      expect(String(b.messages[0].content)).toContain('HUONG DAN VIET BO SUNG'); expect(b.reasoning_effort).toBe('none'); expect(b.max_completion_tokens).toBe(3500)
+      // apart from the evidence block, X2 sends exactly what X1 sends
+      expect({ ...b, messages: b.messages.slice(0, -1) }).toEqual({ ...x1[i], messages: x1[i].messages.slice(0, -1) })
+    }
+    expect(s2.evidenceChars).toBeGreaterThan(s1.evidenceChars)
+    const file = JSON.parse(Object.values(written)[0]!)
+    expect(file.evidenceLimits).toEqual({ pages: 6, passages: 4, passageChars: 3200 })
+    expect(Object.keys(file.evidenceCharsByTurn)).toEqual(['T1', 'T2', 'T3', 'T4']); expect(file.evidenceCharsByTurn.T4).toBe(0)
+    expect(Object.values(file.evidenceCharsByTurn as Record<string, number>).reduce((a, n) => a + n, 0)).toBe(s2.evidenceChars)
+  })
+  it('X3: like X1 (note, 1 200-character passages) but reasoning_effort medium, NO tools, output cap 4 000 (as V3); a turn with no evidence sends exactly the V3 request', async () => {
+    putEvidence(['T2']); setEnv({ BENCH_REPLAY_VARIANT: 'V3' })
+    ran(await run())
+    const v3 = POSTED().map(r => r.body)
+    net.requests = []; vi.unstubAllEnvs(); for (const k of ALL_NAMES) vi.stubEnv(k, undefined)
+    setEnv({ BENCH_REPLAY_VARIANT: 'X3', BENCH_REPLAY_EVIDENCE_DIR: EVIDENCE_DIR })
+    const s = ran(await run())
+    expect(s.trialClean).toBe(true); expect(s.noEvidenceTurns).toEqual(['T2'])
+    const x3 = POSTED().map(r => r.body)
+    for (const b of x3) { expect(b.reasoning_effort).toBe('medium'); expect('tools' in b).toBe(false); expect('tool_choice' in b).toBe(false); expect(b.max_completion_tokens).toBe(4000) }
+    expect(blockOf(x3[0]).pages[0].passages[0]).toHaveLength(1200)
+    expect(x3[1]).toEqual(v3[1]) // T2: no evidence -> the V3 request
+    expect(String(x3[0].messages[0].content)).toContain('HUONG DAN VIET BO SUNG')
+  })
+  it('X2 / X3: a missing evidence file still refuses the whole variant before anything is sent', async () => {
+    for (const v of ['X2', 'X3']) {
+      vi.unstubAllEnvs(); for (const k of ALL_NAMES) vi.stubEnv(k, undefined); net.requests = []
+      files = { [CAP_PATH]: toBytes(CAPTURE), [QUESTIONS_PATH]: 'T1|c1|1|hoi mot\n' }
+      files[`${EVIDENCE_DIR}/evidence-T1.json`] = JSON.stringify({ turn: 'T1', results: [{ url: 'https://e.example', highlights: ['a'] }] })
+      setEnv({ BENCH_REPLAY_VARIANT: v, BENCH_REPLAY_EVIDENCE_DIR: EVIDENCE_DIR })
+      const o = await run()
+      expect(o.kind, v).toBe('refused'); expect(net.requests, v).toHaveLength(0)
+      if (o.kind === 'refused') expect(o.reasons.join(' | ')).toContain('missing or unreadable for turn(s): T2, T3')
+    }
+  })
+  it('the worst case of a larger X2 request is still reserved before sending: a per-turn cap below it sends nothing', async () => {
+    putEvidence(); setEnv({ BENCH_REPLAY_VARIANT: 'X2', BENCH_REPLAY_EVIDENCE_DIR: EVIDENCE_DIR, BENCH_SPEND_TURN_CAP_USD: '0.002', BENCH_SPEND_RUN_CAP_USD: '0.30' })
+    const s = ran(await run())
+    expect(POSTED()).toHaveLength(0); expect(s.trialClean).toBe(false); expect(s.answered).toBe(0)
+  })
+  it('Gate 1 names the passage limit of an evidence variant', () => {
+    expect(replayLines({ ...EXT, BENCH_REPLAY_VARIANT: 'X2', BENCH_REPLAY_EVIDENCE_DIR: EVIDENCE_DIR }, { readBytes: () => toBytes(CAPTURE) }).join('\n')).toContain('mỗi đoạn tối đa 3200 ký tự')
+    const x3 = replayLines({ ...EXT, BENCH_REPLAY_VARIANT: 'X3', BENCH_REPLAY_EVIDENCE_DIR: EVIDENCE_DIR }, { readBytes: () => toBytes(CAPTURE) }).join('\n')
+    expect(x3).toContain('mức suy luận medium'); expect(x3).toContain('mỗi đoạn tối đa 1200 ký tự'); expect(x3).toContain('trần đầu ra 4000 token')
+  })
+})
+
 describe('W6 replay run · V2 / V3 and the pricing of the reasoning', () => {
   const CAPPED: WriterCaptureFile = { ...CAPTURE, calls: [
     call('T1', 1, writerBody('T1', { max_completion_tokens: 3500 }), { textChars: 100 }),
@@ -342,7 +407,7 @@ describe('W6 replay · the preflight report and the launcher (Gate 0 / Gate 1)',
     for (const k of ['BENCH_REPLAY_MODEL', 'BENCH_REPLAY_EFFORT', 'BENCH_REPLAY_CAPTURE2']) expect(launcherRefusals({ ...EXT, [k]: '1' }).join(' | ')).toContain(`${k} is set but is not one of the variables the trial passes on`)
   })
   it('the launcher\'s variant table, caps and call count are the same as the code\'s (writerReplay / replayTrial)', () => {
-    expect(Object.entries(REPLAY_VARIANT_TABLE).map(([id, v]) => [id, v.effort, v.note, v.evidence])).toEqual(VARIANTS.map(v => [v.id, v.effort, v.note, v.evidence]))
+    expect(Object.entries(REPLAY_VARIANT_TABLE).map(([id, v]) => [id, v.effort, v.note, v.evidence, v.passageChars ?? null])).toEqual(VARIANTS.map(v => [v.id, v.effort, v.note, v.evidence, v.passageChars ?? null]))
     // a capture with the shapes the rule tells apart: a small helper call after the answer, a failed call, a full answer after a tool step
     const shaped: WriterCaptureFile = { ...CAPTURE, calls: [...CAPTURE.calls,
       // the helper (no reasoning_effort, a third of the size of the writer's request) is not the writer: it sent less than half of the largest request
@@ -404,6 +469,23 @@ describe('W6 replay · the preflight report and the launcher (Gate 0 / Gate 1)',
     runs.length = 0
     expect(await flow('CHAY LUOT DO EXTENSION TRAN 0.30')).toBe(0)
     expect(runs).toEqual([{ preflightOnly: true }, { preflightOnly: false }]) // the real run starts only after the exact line
+  })
+  it('the launcher runs Gate 0 WITH the keys typed once, before Gate 1: a failing keyed preflight stops the flow before Gate 1 and before any real run (why RUN-ALL\'s separate keyed preflight was redundant)', async () => {
+    const seen: Array<{ preflightOnly: boolean; hasKey: boolean }> = []
+    let asked = 0
+    const run = (pass: boolean) => (async ({ env }: { env: Record<string, string> }) => {
+      const n = env.BENCH_TRIAL_ISOLATED, isPre = env.BENCH_TRIAL_PREFLIGHT_ONLY === '1'
+      seen.push({ preflightOnly: isPre, hasKey: env.OPENAI_API_KEY === KEY })
+      const text = isPre ? `<<TRIAL-PREFLIGHT-BEGIN:${n}>>\n${pass ? 'TỔNG: mọi điều kiện ĐẠT (preflight-only; không có request nào được gửi)' : '[KHÔNG ĐẠT] x\nTỔNG: 1 điều kiện KHÔNG ĐẠT — không chạy'}\n<<TRIAL-PREFLIGHT-END:${n}>>` : `<<TRIAL-SUMMARY-BEGIN:${n}>>\nturnOk=true trialClean=true\n<<TRIAL-SUMMARY-END:${n}>>`
+      return { text, truncated: false, exitCode: 0, killedBy: null, stillAlive: false, pipesOpen: false, pid: 1, ms: 1 }
+    }) as never
+    const env = { ...EXT }; delete (env as Record<string, string | undefined>).OPENAI_API_KEY
+    const out: string[] = []
+    expect(await runFlow({ env, keys: { OPENAI_API_KEY: KEY }, repoRoot: 'D:/x', print: s => out.push(s), run: run(false), questionText: null, stdinIsTTY: true, askGate1: async () => { asked++; return 'CHAY LUOT DO EXTENSION TRAN 0.30' } })).not.toBe(0)
+    expect(seen).toEqual([{ preflightOnly: true, hasKey: true }]); expect(asked).toBe(0); expect(out.join('\n')).toContain('Gate 0 not passed: nothing was sent.')
+    seen.length = 0
+    expect(await runFlow({ env, keys: { OPENAI_API_KEY: KEY }, repoRoot: 'D:/x', print: () => {}, run: run(true), questionText: null, stdinIsTTY: true, askGate1: async () => { asked++; return 'CHAY LUOT DO EXTENSION TRAN 0.30' } })).toBe(0)
+    expect(seen).toEqual([{ preflightOnly: true, hasKey: true }, { preflightOnly: false, hasKey: true }]); expect(asked).toBe(1) // one key entry serves Gate 0 and the run
   })
   it('isReplayRequested: any BENCH_REPLAY_* variable makes the child a replay, never a route trial', () => {
     expect(isReplayRequested({})).toBe(false); expect(isReplayRequested({ BENCH_REPLAY_VARIANT: 'V0' })).toBe(true); expect(isReplayRequested({ BENCH_REPLAY_CAPTURE: 'x' })).toBe(true)

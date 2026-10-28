@@ -25,7 +25,7 @@ import { BudgetGuard, BudgetRefusal, type Reservation } from './harness'
 import { redactSecrets } from './liveRunner'
 import { preflight } from './liveTrial'
 import { GuardSpendGate } from './spendGateAdapter'
-import { EVIDENCE_LIMITS, VARIANTS, evidenceMessage, evidencePagesFrom, packReplayRun, pickWriterCalls, replayVariant, type EvidencePage, type ReplayAnswer, type VariantSpec, type WriterPick } from './writerReplay'
+import { VARIANTS, evidenceLimitsOf, evidenceMessage, evidencePagesFrom, packReplayRun, pickWriterCalls, replayVariant, type EvidenceLimits, type EvidencePage, type ReplayAnswer, type VariantSpec, type WriterPick } from './writerReplay'
 import type { WriterCaptureFile } from './writerCapture'
 
 export const REPLAY_CAPTURE_ENV = 'BENCH_REPLAY_CAPTURE'
@@ -129,7 +129,7 @@ export function replayCheck(env: Env, deps: ReplayDeps = {}): { reasons: string[
 
 export const evidenceFile = (dir: string, turn: string): string => `${dir.replace(/[\\/]+$/, '')}/evidence-${turn}.json`
 /** Pure. The pages of one evidence file's text (one byte-order mark dropped: a Windows editor may add it). Throws on text that is not JSON. */
-export const evidencePagesOfText = (text: string): EvidencePage[] => evidencePagesFrom(JSON.parse(text.charCodeAt(0) === 0xfeff ? text.slice(1) : text))
+export const evidencePagesOfText = (text: string, limits?: EvidenceLimits): EvidencePage[] => evidencePagesFrom(JSON.parse(text.charCodeAt(0) === 0xfeff ? text.slice(1) : text), limits)
 
 export interface ReplayInput {
   env: Env
@@ -230,7 +230,8 @@ export async function runReplayTrial(input: ReplayInput): Promise<ReplayOutcome>
   const plan = chk.plan
   if ((env.OPENAI_API_KEY ?? '').trim() === '') return refuse(['OPENAI_API_KEY is UNSET'])
   const readText = input.readText ?? ((p: string) => readFileSync(p, 'utf8'))
-  const evidenceOf = (turn: string): readonly EvidencePage[] => (plan.evidenceDir ? evidencePagesOfText(readText(evidenceFile(plan.evidenceDir, turn))) : [])
+  // the variant's own limits (amendment 4: X2 keeps passages up to 3 200 characters)
+  const evidenceOf = (turn: string): readonly EvidencePage[] => (plan.evidenceDir ? evidencePagesOfText(readText(evidenceFile(plan.evidenceDir, turn)), evidenceLimitsOf(plan.variant)) : [])
 
   // 2. the wrapped network: ONE endpoint, POST, https, default port, no dispatcher, never a redirect
   const forward = input.fetchImpl ?? originalFetch
@@ -325,12 +326,14 @@ export async function runReplayTrial(input: ReplayInput): Promise<ReplayOutcome>
   const costKnownAll = sendable.length > 0 && unknownCost.length === 0
   const usd = costKnownAll ? Math.round(sendable.reduce((s, a) => s + (a.usd ?? 0), 0) * 1e6) / 1e6 : null
   const model = plan.models.length === 1 ? plan.models[0]! : plan.models.join('+')
-  // the characters of the evidence blocks really sent (a turn without evidence adds 0)
-  const evidenceChars = plan.evidenceDir ? plan.picks.reduce((s, p) => { try { return s + (p.n === null ? 0 : (evidenceMessage(evidenceOf(p.turn))?.content.length ?? 0)) } catch { return s } }, 0) : 0
+  // the characters of the evidence blocks really sent, per turn and in total (a turn without evidence adds 0)
+  const evidenceCharsByTurn: Record<string, number> = {}
+  if (plan.evidenceDir) for (const p of plan.picks) { try { evidenceCharsByTurn[p.turn] = p.n === null ? 0 : (evidenceMessage(evidenceOf(p.turn))?.content.length ?? 0) } catch { evidenceCharsByTurn[p.turn] = 0 } }
+  const evidenceChars = Object.values(evidenceCharsByTurn).reduce((s, n) => s + n, 0)
   const packed = packReplayRun(answers, { variant: plan.variant.id, captureFile: plan.captureFile.replace(/^.*[\\/]/, ''), questionSha256: (() => { try { return createHash('sha256').update(Buffer.from((input.readText ?? ((p: string) => readFileSync(p, 'utf8')))((env.BENCH_TRIAL_QUESTION_FILE ?? '').trim()), 'utf8')).digest('hex') } catch { return null } })(), model, at: new Date(stamp).toISOString() })
   const extras = {
     captureSha256: plan.captureSha256, effort: plan.variant.effort ?? 'as captured', capturedEfforts: plan.efforts, note: plan.variant.note, evidence: plan.variant.evidence, evidenceChars,
-    evidenceLimits: plan.variant.evidence ? EVIDENCE_LIMITS : null, caps: { turnUsd: pre.caps.turnUsd, runUsd: pre.caps.runUsd }, hostRequests: sent, llmRequests: llm, refusals, problems, warnings,
+    evidenceLimits: plan.variant.evidence ? evidenceLimitsOf(plan.variant) : null, evidenceCharsByTurn: plan.variant.evidence ? evidenceCharsByTurn : null, caps: { turnUsd: pre.caps.turnUsd, runUsd: pre.caps.runUsd }, hostRequests: sent, llmRequests: llm, refusals, problems, warnings,
   }
   let resultPath: string | null = null
   try {
