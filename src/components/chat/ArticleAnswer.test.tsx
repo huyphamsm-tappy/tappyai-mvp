@@ -3,7 +3,9 @@
 // any script), unsafe picture URLs never rendered, every inline run still through the chat formatter (escaping: no raw HTML from the text).
 import { describe, it, expect } from 'vitest'
 import { renderToStaticMarkup } from 'react-dom/server'
-import { ArticleAnswer, EntityRow, summaryOpening } from './ArticleAnswer'
+import { StrictMode, act } from 'react'
+import { createRoot } from 'react-dom/client'
+import { ArticleAnswer, EntityRow, ImageGrid, SourcesFooter, answerSources, summaryOpening } from './ArticleAnswer'
 import { formatMessage } from '@/components/ChatInterface'
 import type { DocItemImage } from '@/lib/answerDoc/media'
 
@@ -69,5 +71,43 @@ describe('ArticleAnswer', () => {
     expect(d.querySelectorAll('[role="button"]')).toHaveLength(2)
     expect(d.querySelector('[role="button"] p')!.textContent).toBe('Elon_Musk …')
     expect(renderToStaticMarkup(<EntityRow entities={[e('A'), e('B', 'https://evil.example/B')]} onOpen={() => {}} />)).toBe('')
+  })
+
+  it('ImageGrid: one large and two small pictures from the first three safe ones; fewer than three -> nothing', () => {
+    const p = (t: string, src = `https://img.example/${t}.jpg`): DocItemImage => ({ title: t, src, source: 'web' })
+    const d = dom(renderToStaticMarkup(<ImageGrid images={[p('a'), p('bad', 'javascript:alert(1)'), p('b'), p('c'), p('d')]} />))
+    expect([...d.querySelectorAll('img')].map(i => i.getAttribute('src'))).toEqual(['https://img.example/a.jpg', 'https://img.example/b.jpg', 'https://img.example/c.jpg'])
+    expect(d.querySelector('[data-doc-grid] > div')!.className).toContain('col-span-2')
+    expect(renderToStaticMarkup(<ImageGrid images={[p('a'), p('b')]} />)).toBe('')
+  })
+
+  it('answerSources / SourcesFooter: one entry per site in order, safe https only, the link text as label, no third-party favicon', () => {
+    const text = 'A [VnExpress](https://vnexpress.net/a) và [Tuổi Trẻ](https://tuoitre.vn/b), lại [VnExpress khác](https://www.vnexpress.net/c), [x](http://plain.example/x), [y](javascript:alert(1)), [z](https://user:pw@cred.example/p).'
+    expect(answerSources(text)).toEqual([{ label: 'VnExpress', href: 'https://vnexpress.net/a', host: 'vnexpress.net' }, { label: 'Tuổi Trẻ', href: 'https://tuoitre.vn/b', host: 'tuoitre.vn' }])
+    const d = dom(renderToStaticMarkup(<SourcesFooter text={text} lang="vi" />))
+    expect(d.querySelector('summary')!.textContent).toContain('Nguồn · 2')
+    expect([...d.querySelectorAll('a')].map(a => a.getAttribute('href'))).toEqual(['https://vnexpress.net/a', 'https://tuoitre.vn/b'])
+    expect(d.querySelectorAll('img')).toHaveLength(0)
+    expect(renderToStaticMarkup(<SourcesFooter text="không có link" lang="vi" />)).toBe('')
+  })
+
+  it('the pictures survive a render that runs twice (React StrictMode in dev, measured 28/10: every picture was dropped)', async () => {
+    ;(globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true
+    const host = document.createElement('div')
+    document.body.appendChild(host)
+    const root = createRoot(host)
+    await act(async () => {
+      root.render(<StrictMode><ArticleAnswer text={ART} images={[{ title: 'Phở bò', src: 'https://img.example/pho.jpg', source: 'web' }, { title: 'Lẩu Thái', src: 'https://img.example/lau.jpg', source: 'web' }]} format={formatMessage} /></StrictMode>)
+    })
+    const items = host.querySelectorAll('ol > li')
+    expect(items[0].querySelector('img')!.getAttribute('src')).toBe('https://img.example/lau.jpg')
+    expect(items[1].querySelector('img')!.getAttribute('src')).toBe('https://img.example/pho.jpg')
+    // one picture per item, still: a title that appears twice gets its picture once
+    await act(async () => {
+      root.render(<StrictMode><ArticleAnswer text={'- **Phở bò** – a\n- **Phở bò** – b'} images={[{ title: 'Phở bò', src: 'https://img.example/pho.jpg', source: 'web' }]} format={formatMessage} /></StrictMode>)
+    })
+    expect(host.querySelectorAll('img')).toHaveLength(1)
+    act(() => root.unmount())
+    host.remove()
   })
 })

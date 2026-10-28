@@ -35,21 +35,37 @@ function Inline({ html, as = 'div', className }: { html: string; as?: 'div' | 's
   return <Tag className={className} dangerouslySetInnerHTML={{ __html: html }} />
 }
 
-function Blocks({ blocks, format, pics, used }: { blocks: DocBlock[]; format: Format; pics: Map<string, DocItemImage>; used: Set<string> }) {
-  const take = (title: string | null): DocItemImage | null => {
-    if (!title) return null
+/**
+ * Which picture goes where, decided ONCE before rendering: each picture at the first heading / list item (document order, nested lists
+ * included) whose title matches it. Measured 28/10: the former "take while rendering" mutated a shared set, so React StrictMode's second
+ * render (dev) found every picture already taken and showed none. Keys are positions ("3", "5.2", "5.2/0") so a render is a pure lookup.
+ */
+function assignPictures(blocks: DocBlock[], pics: Map<string, DocItemImage>, prefix = '', used = new Set<string>(), out = new Map<string, DocItemImage>()): Map<string, DocItemImage> {
+  const claim = (site: string, title: string | null) => {
+    if (!title) return
     const k = titleKey(title)
     const img = pics.get(k)
-    if (!img || used.has(k)) return null
+    if (!img || used.has(k)) return
     used.add(k)
-    return img
+    out.set(site, img)
   }
+  blocks.forEach((b, i) => {
+    if (b.t === 'heading') claim(`${prefix}${i}`, headingTitle(b.text))
+    if (b.t === 'list') b.items.forEach((it, k) => {
+      claim(`${prefix}${i}.${k}`, listItemTitle(it.text))
+      if (it.children) assignPictures(parseDoc(it.children), pics, `${prefix}${i}.${k}/`, used, out)
+    })
+  })
+  return out
+}
+
+function Blocks({ blocks, format, placed, prefix = '' }: { blocks: DocBlock[]; format: Format; placed: Map<string, DocItemImage>; prefix?: string }) {
   return (
     <>
       {blocks.map((b, i) => {
         switch (b.t) {
           case 'heading': {
-            const img = take(headingTitle(b.text))
+            const img = placed.get(`${prefix}${i}`) ?? null
             const cls = b.level <= 2 ? 'text-xl font-semibold mt-6 mb-2 first:mt-0' : b.level === 3 ? 'text-lg font-semibold mt-5 mb-2 first:mt-0' : 'text-base font-semibold mt-4 mb-1.5 first:mt-0'
             return (
               <Fragment key={i}>
@@ -72,11 +88,11 @@ function Blocks({ blocks, format, pics, used }: { blocks: DocBlock[]; format: Fo
               <ListTag key={i} start={b.ordered && b.start !== 1 ? b.start : undefined}
                 className={`my-3 space-y-2 pl-6 ${b.ordered ? 'list-decimal' : 'list-disc'} marker:text-gray-400 dark:marker:text-gray-500`}>
                 {b.items.map((it, k) => {
-                  const img = take(listItemTitle(it.text))
+                  const img = placed.get(`${prefix}${i}.${k}`) ?? null
                   const body = (
                     <>
                       <Inline html={format(it.text)} className="whitespace-pre-line" />
-                      {it.children && <div className="mt-1.5"><Blocks blocks={parseDoc(it.children)} format={format} pics={pics} used={used} /></div>}
+                      {it.children && <div className="mt-1.5"><Blocks blocks={parseDoc(it.children)} format={format} placed={placed} prefix={`${prefix}${i}.${k}/`} /></div>}
                     </>
                   )
                   return (
@@ -94,12 +110,79 @@ function Blocks({ blocks, format, pics, used }: { blocks: DocBlock[]; format: Fo
   )
 }
 
+/**
+ * Owner 28/10 (ChatGPT Go screenshots): the pictures of an answer also open it as a grid under the first paragraph — one large picture and
+ * two stacked beside it. Built only from the answer's own item pictures (already re-checked, live-only); fewer than three → no grid.
+ */
+export function ImageGrid({ images }: { images: readonly DocItemImage[] }) {
+  const safe = images.filter(i => isSafeHttpsUrl(i.src)).slice(0, 3)
+  if (safe.length < 3) return null
+  const pic = (img: DocItemImage, cls: string) => (
+    <img src={img.src} alt={img.title} loading="lazy" referrerPolicy="no-referrer" data-zoomable="true"
+      onError={e => { e.currentTarget.style.setProperty('visibility', 'hidden') }} className={`h-full w-full object-cover bg-gray-100 dark:bg-gray-800 ${cls}`} />
+  )
+  return (
+    <div data-doc-grid className="my-3 grid h-48 grid-cols-3 grid-rows-2 gap-1 overflow-hidden rounded-2xl sm:h-60">
+      <div className="col-span-2 row-span-2">{pic(safe[0], '')}</div>
+      <div>{pic(safe[1], '')}</div>
+      <div>{pic(safe[2], '')}</div>
+    </div>
+  )
+}
+
+/** A source of the answer: the link text the model wrote and the page's host. */
+export interface AnswerSource { label: string; href: string; host: string }
+
+/** The pages the answer links to, in order, one per host (markdown links with a safe https URL). */
+export function answerSources(text: string, max = 8): AnswerSource[] {
+  const out: AnswerSource[] = []
+  const seen = new Set<string>()
+  for (const m of text.matchAll(/\[([^\]\n]{1,80})\]\((https:\/\/[^)\s]{1,500})\)/g)) {
+    const href = m[2]
+    if (!isSafeHttpsUrl(href)) continue
+    let host = ''
+    try { host = new URL(href).hostname.replace(/^www\./, '') } catch { continue }
+    if (!host || seen.has(host)) continue
+    seen.add(host)
+    out.push({ label: m[1].replace(/[*_`]/g, '').trim() || host, href, host })
+    if (out.length >= max) break
+  }
+  return out
+}
+
+/**
+ * Owner 28/10: like ChatGPT's "Nguồn" button, the answer ends with the list of pages it used. A letter badge per site (no third-party favicon
+ * service: it would tell that service which sources the person reads). Collapsed to a single line; the full list opens on tap.
+ */
+export function SourcesFooter({ text, lang }: { text: string; lang: string }) {
+  const sources = answerSources(text)
+  if (!sources.length) return null
+  return (
+    <details data-doc-sources className="mt-3 group">
+      <summary className="inline-flex cursor-pointer list-none items-center gap-2 rounded-full border border-gray-200 px-3 py-1 text-[13px] text-gray-600 dark:border-gray-700 dark:text-gray-300">
+        <span className="flex -space-x-1.5">
+          {sources.slice(0, 3).map(s => (
+            <span key={s.host} className="flex h-5 w-5 items-center justify-center rounded-full bg-gray-200 text-[10px] font-semibold uppercase text-gray-700 ring-2 ring-white dark:bg-gray-700 dark:text-gray-100 dark:ring-gray-900">{s.host[0]}</span>
+          ))}
+        </span>
+        {lang === 'en' ? 'Sources' : 'Nguồn'} · {sources.length}
+      </summary>
+      <ul className="mt-2 space-y-1.5 text-[13px]">
+        {sources.map(s => (
+          <li key={s.host}><a href={s.href} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline dark:text-blue-400">{s.label}</a> <span className="text-gray-500">· {s.host}</span></li>
+        ))}
+      </ul>
+    </details>
+  )
+}
+
 export function ArticleAnswer({ text, images, format, className, onClick }: { text: string; images: readonly DocItemImage[]; format: Format; className?: string; onClick?: (e: MouseEvent<HTMLDivElement>) => void }) {
   const pics = new Map<string, DocItemImage>()
   for (const img of images) { const k = titleKey(img.title); if (k && !pics.has(k)) pics.set(k, img) }
+  const blocks = parseDoc(text)
   return (
     <div data-answer="article" className={`message-content text-[15.5px] leading-7 ${className ?? ''}`} onClick={onClick}>
-      <Blocks blocks={parseDoc(text)} format={format} pics={pics} used={new Set()} />
+      <Blocks blocks={blocks} format={format} placed={assignPictures(blocks, pics)} />
     </div>
   )
 }

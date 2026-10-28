@@ -83,6 +83,8 @@ export const AI_TOOLS: readonly AiToolDescriptor[] = [
   { tool: 'get_weather', effect: 'external_read', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
   // CONSULT_ONE_BRAIN only: daily forecast up to 10 days (Open-Meteo, no key, only the place name leaves the server)
   { tool: 'get_weather_forecast', effect: 'external_read', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
+  // CONSULT_ONE_BRAIN only: the model hands its day-by-day plan to the plan card; nothing leaves the server, nothing is stored by the tool
+  { tool: 'present_plan', effect: 'deterministic', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
   { tool: 'get_gold_price', effect: 'external_read', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
   { tool: 'get_flight_prices', effect: 'external_read', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
   { tool: 'get_hotel_prices', effect: 'external_read', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },

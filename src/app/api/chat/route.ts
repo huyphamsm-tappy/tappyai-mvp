@@ -2938,6 +2938,36 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         parameters: z.object({ location: z.string().describe('City or place name, e.g. Da Nang, Quy Nhon, Tokyo'), days: z.number().describe('How many days to return, counting TODAY as day 1, 1-10. To reach a date, count it in: from a Wednesday, the coming Sunday needs 5') }),
         execute: async ({ location, days }) => getWeatherForecast(location, days, lang),
       }) } : {}),
+      // CONSULT_ONE_BRAIN: the plan card / brochure (TripPlanCard, the shared plan page). Before, code decided a "trip turn" and wrote the
+      // [TAPPY_PLAN] spec into the prompt; with one brain the model decides to present a day-by-day plan and passes it here (TappyPlan shape,
+      // components/TripPlanCard.tsx). The block is appended in streamEnrichment, where the photo, link and price guards still run on it.
+      ...(oneBrain ? { present_plan: tool({
+        description: 'Show a day-by-day trip or evening plan as the app\'s plan card (it can be shared as a brochure). Call it once, after looking things up, for any itinerary or schedule the person asked for; then write only a short summary around it, not the plan again.',
+        parameters: z.object({
+          type: z.enum(['trip', 'evening']),
+          title: z.string().describe('e.g. "Quy Nhơn 3 ngày 2 đêm"'),
+          people: z.number().optional(),
+          budget_total: z.string().optional().describe('only when the person gave a budget or the tools gave prices'),
+          days: z.array(z.object({
+            label: z.string().describe('e.g. "Ngày 1 — Kỳ Co, Eo Gió"'),
+            items: z.array(z.object({
+              time: z.string().describe('e.g. "07:00" or "Sáng"'),
+              emoji: z.string(),
+              category: z.string().describe('food | sightseeing | hotel | transport | activity | rest'),
+              name: z.string().describe('a real place or activity'),
+              description: z.string().optional(),
+              price: z.string().optional().describe('only from the tool results'),
+              address: z.string().optional().describe('only from the tool results'),
+            })).min(1),
+          })).min(1),
+          cost_breakdown: z.record(z.string()).optional(),
+          local_tips: z.array(z.object({ text: z.string(), basis: z.enum(['tool', 'general']) })).optional(),
+        }),
+        execute: async (plan) => {
+          enrichment.planBlock = JSON.stringify(plan)
+          return { ok: true, note: 'The app shows this plan as a card that can be shared as a brochure. Write only a short summary and the key tips; do not repeat the plan.' }
+        },
+      }) } : {}),
       get_gold_price: tool({
         description: 'Lay gia vang SJC, PNJ, DOJI, vang the gioi (XAU/USD) realtime, cap nhat moi 5 phut tu vang.today',
         parameters: z.object({ query: z.string().optional().describe('Loai vang user hoi, vd: SJC, PNJ, vang the gioi (khong bat buoc)') }),

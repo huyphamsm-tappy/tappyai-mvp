@@ -66,7 +66,7 @@ import ChoiceCard from '@/components/chat/ChoiceCard'
 import { parseChoiceTail, isOtherOption, otherPrefill } from '@/lib/structuredContent/parseChoices'
 import { parseMediaBlocks, type MediaEntity } from '@/lib/media/mediaHosts'
 import { NewsMediaGrid, EntityCard, EntityPanel } from '@/components/chat/MediaBlocks'
-import { ArticleAnswer, EntityRow, summaryOpening } from '@/components/chat/ArticleAnswer'
+import { ArticleAnswer, EntityRow, ImageGrid, SourcesFooter, summaryOpening } from '@/components/chat/ArticleAnswer'
 import { readDocMedia, rememberDocMedia, recallDocMedia } from '@/lib/answerDoc/media'
 import { StreamedTextKeeper } from '@/lib/chat/streamedText'
 import { useLatencyMarks } from '@/lib/chat/useLatencyMarks'
@@ -1807,16 +1807,22 @@ export default function ChatInterface({
                           }
                           // TAPPY_ANSWER_V4 (build flag, off by default): the article layout — same text, same formatter, block typography and the
                           // server's item pictures (an annotation, live-only).
-                          if (ANSWER_V4) return (
-                            <>
-                              <ArticleAnswer text={lead} images={docImages} format={formatMessage} onClick={onBodyClick}
-                                className={cn(isLoading && isLastMessage && 'streaming-cursor', (entity || entities) && '[&_strong]:cursor-pointer')} />
-                              {news && <NewsMediaGrid items={news} />}
-                              {entity && <EntityCard entity={{ ...entity, summary: summaryOpening(entity.summary, 300) }} onOpen={() => setEntityPanel(entity)} />}
-                              {entities && <EntityRow entities={entities} onOpen={x => setEntityPanel(x)} />}
-                              {rest && <ArticleAnswer text={rest} images={docImages} format={formatMessage} onClick={onBodyClick} className="mt-3" />}
-                            </>
-                          )
+                          if (ANSWER_V4) {
+                            // Owner 28/10 (ChatGPT layout): the item pictures also open the answer as a grid under its first paragraph; the pages it used end it ("Nguồn").
+                            const [gLead, gRest] = !entity && !news && !entities && settled && docImages.length >= 3 ? splitLeadParagraph(shown) : [lead, rest]
+                            return (
+                              <>
+                                <ArticleAnswer text={gLead} images={docImages} format={formatMessage} onClick={onBodyClick}
+                                  className={cn(isLoading && isLastMessage && 'streaming-cursor', (entity || entities) && '[&_strong]:cursor-pointer')} />
+                                {gLead !== lead && <ImageGrid images={docImages} />}
+                                {news && <NewsMediaGrid items={news} />}
+                                {entity && <EntityCard entity={{ ...entity, summary: summaryOpening(entity.summary, 300) }} onOpen={() => setEntityPanel(entity)} />}
+                                {entities && <EntityRow entities={entities} onOpen={x => setEntityPanel(x)} />}
+                                {gRest && <ArticleAnswer text={gRest} images={docImages} format={formatMessage} onClick={onBodyClick} className="mt-3" />}
+                                {settled && <SourcesFooter text={shown} lang={locale === 'en' ? 'en' : 'vi'} />}
+                              </>
+                            )
+                          }
                           if (!entity && !news) return <div className={cn('message-content whitespace-pre-wrap', isLoading && isLastMessage && 'streaming-cursor')} onClick={onMessageLinkClick} dangerouslySetInnerHTML={{ __html: formatMessage(shown) }} />
                           return (
                             <>

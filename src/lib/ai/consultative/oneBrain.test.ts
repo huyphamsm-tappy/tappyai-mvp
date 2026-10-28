@@ -16,7 +16,7 @@ describe('CONSULT_ONE_BRAIN flag', () => {
 
 describe('the one general instruction', () => {
   it('carries the layout and voice principles and the tool and source rules', () => {
-    for (const s of ['Read the WHOLE conversation', 'Ask a question INSTEAD of answering only when no useful answer is possible', 'web_search', 'Never invent a fact', 'markdown link', 'give the date', 'Answer the main question first', 'default to a complete answer', '**bold label**', 'look them up BEFORE writing', 'never guess who someone is', 'means the lookup FAILED', 'Leave a blank line before and after every list', 'One search_places call per kind of place', 'markdown table', 'one heading per day', 'does not render LaTeX', '"mình"', 'No routine closing question']) {
+    for (const s of ['Read the WHOLE conversation', 'Ask a question INSTEAD of answering only when no useful answer is possible', 'web_search', 'Never invent a fact', 'markdown link', 'give the date', 'Answer the main question first', 'default to a complete answer', '**bold label**', 'look them up BEFORE writing', 'never guess who someone is', 'means the lookup FAILED', 'decide your pick BEFORE you write', 'Leave a blank line before and after every list', 'One search_places call per kind of place', 'markdown table', 'one heading per day', 'does not render LaTeX', '"mình"', 'No routine closing question']) {
       expect(ONE_BRAIN_CORE, s).toContain(s)
     }
   })

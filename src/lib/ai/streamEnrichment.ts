@@ -2320,6 +2320,9 @@ export function applyPlaceEnrichmentStreamFilter(
     if (emitted) return
     emitted = true
     if (!bufferMode) return // nothing buffered — everything already streamed live
+    // CONSULT_ONE_BRAIN: the plan the model handed to present_plan becomes the [TAPPY_PLAN] block (the brochure card and its share page),
+    // here, before the photo, link-egress, price and trip-fact guards below read the text. The model writes only the short summary around it.
+    if (collector?.oneBrain && collector.planBlock && !mainText.includes('[TAPPY_PLAN]')) mainText = `${mainText.trimEnd()}\n\n[TAPPY_PLAN]${collector.planBlock}[/TAPPY_PLAN]`
     /**
      * Phase 8 M5 (TAPPY_AGENT=2) — LUNA'S RANKING. The machine line Luna ends a recommendation with ([TAPPY_RANK]…) is removed from the
      * reply here, before any guard reads it, and applied to the card data: only the candidates Luna ranked, in its order, its first pick
@@ -4184,6 +4187,8 @@ export function applyPlaceEnrichmentStreamFilter(
             const call = JSON.parse(line.slice(2)) as { toolCallId?: string; toolName?: string; args?: { query?: string; destination?: string; location?: string } }
             if (call.toolCallId && call.toolName) toolNameByCallId.set(call.toolCallId, call.toolName)
             anyToolCalled = true
+            // CONSULT_ONE_BRAIN: a present_plan turn is rebuilt at the end (the plan block is appended before the plan guards).
+            if (call.toolName === 'present_plan' && collector?.oneBrain) bufferMode = true
             if (collector?.planTurn) {
               const d = call.toolName === 'get_trip_data' ? call.args?.destination : call.toolName && PLACE_TOOLS.has(call.toolName) ? call.args?.location : undefined
               if (typeof d === 'string' && d.trim() && (call.toolName === 'get_trip_data' || !planDestination)) planDestination = d.trim().slice(0, 60)
