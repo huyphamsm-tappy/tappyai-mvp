@@ -401,7 +401,7 @@ export default function NewReviewPage() {
 
   /* ─── Auth gate ───
      The composer is login-only: every upload path mints a server token that 401s for anonymous users.
-     Mount gate: no session, no form — an anonymous visitor is sent to login before the form paints. */
+     Mount gate: no session, no form — an anonymous visitor is sent to login before the form is shown. */
   const [authed, setAuthed] = useState(false)
   useEffect(() => {
     let cancelled = false
