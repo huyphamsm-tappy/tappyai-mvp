@@ -142,6 +142,12 @@ export function serperSpendBoundUsd(endpoint: SerperEndpoint, body: Record<strin
   return SERPER_CREDITS[endpoint] * perCredit
 }
 
+/** When the provider last refused a request at ACCOUNT level (401 / 402 / 403 / credits). Read by the one-brain turn (route.ts) so the model is told that a
+ *  lookup FAILED rather than came back empty (measured 28/10: a revoked key answered 403 on every endpoint and the replies said "no reliable result"). */
+let lastAccountErrorAt = 0
+export function serperLastAccountErrorAt(): number { return lastAccountErrorAt }
+export function __resetSerperAccountError(): void { lastAccountErrorAt = 0 }
+
 /**
  * One Serper request. `null` when refused by the ceiling; otherwise the Response (a timeout
  * rejects, exactly as the inlined `Promise.race` did at every call site before).
@@ -264,7 +270,7 @@ export async function serperPost(endpoint: SerperEndpoint, apiKey: string, body:
       try { if (/credit/i.test(await res.clone().text())) account = 'http_400_credits' } catch { /* classification only */ }
     }
     recordSerperOutcome(endpoint, account ? 'account_error' : 'http_error')
-    if (account) haltSerperScope(account)
+    if (account) { lastAccountErrorAt = Date.now(); haltSerperScope(account) }
     return res
   }
   report('sent_ok', entry)

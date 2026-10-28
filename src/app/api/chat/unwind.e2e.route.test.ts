@@ -30,6 +30,7 @@ const h = vi.hoisted(() => {
     fetched: [] as string[],
     pages: {} as Record<string, { status?: number; body: string; contentType?: string }>,
     userId: 'u-unwind-e2e',
+    accountErrorAt: 0,
   }
   const builder = (): any => {
     const b: any = {
@@ -72,6 +73,7 @@ vi.mock('@/lib/ai/tools/common', async (importOriginal) => ({
       : { results: [{ title: 'Quyết định điều chỉnh giá', link: 'https://chinhphu.example/qd', snippet: 'Văn bản' }, { title: 'Bảng giá điện sinh hoạt', link: 'https://giadien.example/bang-gia', snippet: 'trùng' }] }
   },
 }))
+vi.mock('@/lib/ai/tools/serperClient', async (importOriginal) => ({ ...(await importOriginal<typeof import('@/lib/ai/tools/serperClient')>()), serperLastAccountErrorAt: () => h.state.accountErrorAt }))
 vi.mock('@/lib/ai/tools/serperPlaces', async (importOriginal) => ({ ...(await importOriginal<typeof import('@/lib/ai/tools/serperPlaces')>()), serperPlaces: async () => [] }))
 vi.mock('@/lib/ai/tools/food', async (importOriginal) => ({ ...(await importOriginal<typeof import('@/lib/ai/tools/food')>()), searchPlacesOSM: async () => ({ results: [] }) }))
 vi.mock('@/lib/ai/llm', () => ({
@@ -357,6 +359,17 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     expect(on.text).not.toContain('[TAPPY_ASK]')
     // the model read the empty result and wrote its own answer: no code block after it (S1A alone appends one)
     expect(on.text).not.toContain('chưa thấy kết quả đủ tin cậy')
+  }, 60000)
+  it('flag ON: a lookup the search provider refused at account level reaches the model as a FAILED lookup, not an empty one; flag OFF unchanged', async () => {
+    h.state.accountErrorAt = Number.MAX_SAFE_INTEGER
+    try {
+      const on = await turn(KNOW, { unwind: true, oneBrain: true, luna: KNOW_INTENT, tools: [SEARCH], reply })
+      expect(JSON.stringify(on.results)).toContain('search_provider_refused')
+      const off = await turn(KNOW, { unwind: true, oneBrain: false, luna: KNOW_INTENT, tools: [SEARCH], reply })
+      expect(JSON.stringify(off.results)).not.toContain('search_provider_refused')
+    } finally { h.state.accountErrorAt = 0 }
+    const fine = await turn(KNOW, { unwind: true, oneBrain: true, luna: KNOW_INTENT, tools: [SEARCH], reply })
+    expect(JSON.stringify(fine.results)).not.toContain('search_provider_refused')
   }, 60000)
   it('CONSULT_ONE_BRAIN_MEDIA: the picture step runs after the answer and leaves the answer and its finish frame whole; without the flag it does not run', async () => {
     const on = await turn(KNOW, { unwind: true, oneBrain: true, media: true, luna: KNOW_INTENT, reply })

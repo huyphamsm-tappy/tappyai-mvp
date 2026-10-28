@@ -106,6 +106,7 @@ import { isProductionRuntime, consultFinalSynthesisOn, consultFinalWriteOn, cons
 import { searchWithReads, createOnce, FOLLOW_UP_SYSTEM, S6_MAX_READS } from '@/lib/ai/consultative/searchReads'
 import { ONE_BRAIN_CORE, ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, oneBrainDynamic } from '@/lib/ai/consultative/oneBrain'
 import { oneBrainMediaStream } from '@/lib/ai/consultative/oneBrainMedia'
+import { serperLastAccountErrorAt } from '@/lib/ai/tools/serperClient'
 import { understandTurn } from '@/lib/ai/answerV4/understand'
 import { deepResearch, exaSearch, deepEvidenceForModel, GAP_SYSTEM, EXA_PRICE } from '@/lib/ai/consultative/deepSearch'
 import { unwindWritingBlock, unwindToolHint, UNWIND_PICK_ROWS, UNWIND_MAX_TOKENS } from '@/lib/ai/consultative/unwindWriting'
@@ -2396,7 +2397,12 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       const orig = def.execute
       if (typeof orig !== 'function') continue
       def.execute = async (...a: unknown[]) => {
-        const out = await orig(...a)
+        const startedAt = Date.now()
+        const raw = await orig(...a)
+        // CONSULT_ONE_BRAIN: a lookup the search provider refused at account level is a FAILED lookup, not an empty one - the model is told so.
+        const out = oneBrain && serperLastAccountErrorAt() >= startedAt && raw && typeof raw === 'object' && !Array.isArray(raw)
+          ? { ...(raw as Record<string, unknown>), provider_error: 'search_provider_refused', provider_note: 'The search provider refused this request (account or key error). This lookup FAILED; it is not an empty result. Say plainly that the lookup did not work this time, and mark anything you add from your own knowledge as not checked.' }
+          : raw
         // B1 (2026-09-20): the product unit is judged too — against the shopping constraints.
         const gate = applyHardConstraintGate(name, out, situation, lang, { shopping: shoppingConstraints })
         const ctx = enrichment.consultativeV1
