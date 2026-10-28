@@ -2655,12 +2655,15 @@ export function applyPlaceEnrichmentStreamFilter(
     // PLAN ITEMS (UAT 2026-09-28): every venue stop is a place retrieved this turn, its booking link
     // comes from the action authority, never from the model; markdown leaves the JSON. The `a:` rows
     // carry the provider fields (booking_links, maps_link); the collector carries the Commerce Links.
+    // CONSULT_ONE_BRAIN (localhost 29/10, "Đà Lạt 2 ngày 1 đêm", place search down): the strict mode dropped all 9 stops and the brochure showed
+    // empty days. The one-brain plan (present_plan) gets the consultative mode: known sights kept by name and marked unchecked, meals as plain
+    // slots, an invented venue still dropped.
     const tipped = tips ? tips.text : pricedPlan
     const planItems = tipped.includes('[TAPPY_PLAN]')
       ? guardPlanItems(tipped, latestPlaces.map(p => {
         const c = places.find(q => (q.name || '').trim().toLowerCase() === (p.name || '').trim().toLowerCase()) as { commerce_links?: PlanPlace['commerce_links'] } | undefined
         return { ...(p as PlanPlace), ...(c?.commerce_links ? { commerce_links: c.commerce_links } : {}) }
-      }), { destination: collector?.planTurn ? planDestination : null, ...(collector?.consultative === true ? { keepSights: true, vegetarian: wantsVegetarian(collector?.userTexts ?? [userText]) } : {}) })
+      }), { destination: collector?.planTurn ? planDestination : null, ...(collector?.consultative === true || collector?.oneBrain === true ? { keepSights: true, vegetarian: wantsVegetarian(collector?.userTexts ?? [userText]) } : {}) })
       : null
     if (planItems && (planItems.mealSlots || planItems.replaced || planItems.dropped || planItems.linksSet || planItems.linksRemoved || planItems.timesMoved || planItems.timesCleared || planItems.outOfArea)) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'plan_items', out_of_area: planItems.outOfArea ?? 0, matched: planItems.matched, replaced: planItems.replaced, dropped: planItems.dropped, links_set: planItems.linksSet, links_removed: planItems.linksRemoved, times_moved: planItems.timesMoved, times_cleared: planItems.timesCleared, ...(planItems.mealSlots ? { meal_slots: planItems.mealSlots, veg_slots: planItems.vegSlots ?? 0 } : {}) }))
     // 🚨 UAT 2026-09-28 (live, uat @ 062c7ec: every "Đà Nẵng 3 ngày 2 đêm" plan card broken). The

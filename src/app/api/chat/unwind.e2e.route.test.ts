@@ -393,6 +393,24 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     expect(JSON.parse(m![1])).toMatchObject({ type: 'trip', title: 'Đà Lạt 2 ngày 1 đêm', days: [{ label: 'Ngày 1 — Hồ Xuân Hương' }] })
     expect(on.text.indexOf('Lịch trình gọn')).toBeLessThan(on.text.indexOf('[TAPPY_PLAN]'))
   }, 60000)
+  it('flag ON, no place retrieved (search down): the brochure keeps known sights marked unchecked and meals as plain slots; an invented hotel is still dropped', async () => {
+    // Localhost 29/10 ("Đà Lạt 2 ngày 1 đêm", Serper 403): the strict plan guard dropped all 9 stops and every day of the card was empty.
+    const plan = { type: 'trip', title: 'Đà Lạt 2 ngày 1 đêm', days: [{ label: 'Ngày 1 — Trung tâm', items: [
+      { time: '08:00', emoji: '🌲', category: 'attraction', name: 'Hồ Xuân Hương', description: 'Đi dạo quanh hồ' },
+      { time: '12:00', emoji: '🍲', category: 'food', name: 'Lẩu gà lá é Tao Ngộ', description: 'Ăn trưa' },
+      { time: '14:00', emoji: '🏨', category: 'hotel', name: 'Khách sạn Hoa Mai Đà Lạt', description: 'Nhận phòng' },
+    ] }] }
+    const items = async (o: { oneBrain: boolean }) => {
+      const t = await turn(TRIP, { unwind: true, oneBrain: o.oneBrain, luna: TRIP_INTENT, tools: [{ name: 'present_plan', args: plan }], reply: 'Lịch trình gọn cho bạn.' })
+      const m = t.text.match(/\[TAPPY_PLAN\]([\s\S]*?)\[\/TAPPY_PLAN\]/)
+      return m ? (JSON.parse(m[1]).days?.[0]?.items ?? []) as Array<{ name: string; description?: string; category?: string }> : null
+    }
+    const on = await items({ oneBrain: true })
+    expect(on?.map(i => i.name)).toEqual(['Hồ Xuân Hương', 'Ăn trưa gần chỗ ở'])
+    expect(on?.[0].description).toContain('gợi ý chưa kiểm chứng')
+    expect(JSON.stringify(on)).not.toContain('Tao Ngộ')
+    expect(JSON.stringify(on)).not.toContain('Hoa Mai')
+  }, 60000)
   it('CONSULT_ONE_BRAIN_MEDIA: the picture step runs after the answer and leaves the answer and its finish frame whole; without the flag it does not run', async () => {
     const on = await turn(KNOW, { unwind: true, oneBrain: true, media: true, luna: KNOW_INTENT, reply })
     expect(on.text).toContain(reply)

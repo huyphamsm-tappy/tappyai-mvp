@@ -2606,7 +2606,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       // A movie/show RECOMMENDATION turn drops the place search entirely, so the
       // model can't answer "recommend a movie" with a list of cinemas — it
       // recommends titles from film knowledge instead (see detectMovieRecommendationIntent).
-      ...(((movieRecommend && !agentOn && !oneBrain) || filmAsk) ? {} : { search_places: tool({
+      ...(!oneBrain && ((movieRecommend && !agentOn) || filmAsk) ? {} : { search_places: tool({
         description: 'Tim dia diem, nha hang, cafe, spa, khach san, diem tham quan/du lich (thang canh, bao tang, cong vien, danh lam), benh vien, giai tri (rap phim, karaoke, gym, bar...) tai Viet Nam. Voi quan an/nha hang/cafe/spa/giai tri se kem gia mon/dich vu/ve tham khao tu Google Search (Serper)',
         parameters: z.object({
           query: z.string().describe('Tu khoa tim kiem (vd: pho ngon, cafe dep, spa tot, diem tham quan)'),
