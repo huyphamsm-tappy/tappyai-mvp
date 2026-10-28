@@ -1,4 +1,5 @@
 import { getCache, setCache, serperSearch } from './common'
+import { logText } from '@/lib/ai/logSafeText'
 import { withRetrievedAt } from './retrievalClock'
 import { normalizeVN } from '@/lib/ai/intent'
 import { createClient } from '@/lib/supabase/server'
@@ -613,7 +614,8 @@ async function searchPlacesUncached(
   // fallback can never disagree about which city this search is for.
   const { destination, remote: remoteDestination } = resolveSearchScope(location, locationBias)
   console.log(JSON.stringify({
-    type: 'tappyai_tool_called', tool: 'searchPlaces', step: 'fn_entry', query, location, placeType: type,
+    // S4 (D): the query and the location are the user's words (or a copy of them): a length and whether a location was set, never the text
+    type: 'tappyai_tool_called', tool: 'searchPlaces', step: 'fn_entry', query: logText(query, 'tool_arg'), hasLocation: !!location, placeType: type,
     // Operational only — a city name we resolved, never user text.
     destination: destination?.query ?? null, remoteDestination,
     // A5 (2026-09-20): the GPS the search is centred on, to TWO decimals (≈1 km — a district, never
@@ -1007,9 +1009,11 @@ async function searchPlacesImpl(
   // The area is part of the question, so it is part of the key: "phở" centred on Quận 3 is not the
   // same answer as "phở" centred on the user.
   const cacheKey = placesCacheKey(query, opts.areaCentre ? `${location ?? ''}@area:${opts.areaCentre.label}` : location, type, locationBias, lang)
+  // S4 (found by the S4 canary, not in the design list): the cache key holds the query and the location - the log keeps its length only
+  const logCacheHit = (step: 'cache_hit' | 'cache_hit_after_join') => console.log(JSON.stringify({ type: 'tappyai_places_budget', step, cacheKey: logText(cacheKey, 'tool_arg') }))
   const cached = getCache(cacheKey)
   if (cached) {
-    console.log(JSON.stringify({ type: 'tappyai_places_budget', step: 'cache_hit', cacheKey }))
+    logCacheHit('cache_hit')
     return cached
   }
 
@@ -1017,7 +1021,7 @@ async function searchPlacesImpl(
     // A flight that finished while this one waited has already filled the cache.
     const fresh = getCache(cacheKey)
     if (fresh) {
-      console.log(JSON.stringify({ type: 'tappyai_places_budget', step: 'cache_hit_after_join', cacheKey }))
+      logCacheHit('cache_hit_after_join')
       return fresh
     }
 

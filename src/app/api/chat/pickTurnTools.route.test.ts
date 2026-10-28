@@ -276,15 +276,14 @@ describe('C3 — a lean turn that was not pre-searched (R1) is untouched', () =>
   }, 60000)
 })
 
-// Review (final) S3 · privacy canary for R2 (trace ON). The code's pre-search logs its query (tappyai_presearch, tappyai_tool_called, tappyai_place_evidence, the trace
-// "tool" event of the code's call): those lines are OLDER than Wave 4 and carry the user's words with the flag OFF exactly as ON (review S4, recorded as backlog, not
-// fixed here). What R2 adds - the model's web_search / read_page, page_read / evidence trace, the final write - must add NO line carrying what the user typed.
+// Review (final) S3 · privacy canary for R2 (trace ON). What R2 adds - the model's web_search / read_page, page_read / evidence trace, the final write - must add NO line carrying
+// what the user typed. S4 (Wave 5): the code's own pre-search lines (tappyai_presearch, tappyai_tool_called, tappyai_place_evidence) no longer carry the user's words either, so
+// they are no longer set aside here; only the trace "tool" event of the code's call still is (a bench-only diagnostic, CONSULT_TRACE_DIAGNOSTICS, never in production - design item I).
 describe('S3 — privacy canary on R2', () => {
   const TOKEN = 'zqvexcanary7781'
   const canary = (ls: string[], needle: string) => ls.filter(l => l.toLowerCase().includes(needle)).map(l => l.replace(/"t-[0-9a-f]{8}"/g, '"t-X"').replace(/"(ms|[a-zA-Z]*Ms)":\d+/g, '"ms":0').replace(/"seq":\d+/g, '"seq":0').replace(/presearch_[0-9a-f]{8}/g, 'presearch_X').replace(/"call":\d+/g, '"call":0'))
-  // the pre-existing pre-search lines (S4): named by their line type, so a NEW line type carrying the token is never hidden by this filter
-  const PRESEARCH_TYPES = ['"type":"tappyai_presearch"', '"type":"tappyai_tool_called"', '"type":"tappyai_place_evidence"']
-  const isPresearchLine = (l: string) => PRESEARCH_TYPES.some(t => l.includes(t)) || (l.includes('"ev":"tool"') && l.includes('"by":"code"'))
+  // the one older line set aside: the bench-only trace of the code's own call, named by its shape, so a NEW line carrying the token is never hidden by this filter
+  const isPresearchLine = (l: string) => l.includes('"ev":"tool"') && l.includes('"by":"code"')
   it('a private token the user typed: R2 (web_search + read_page really run) adds no log line carrying it; the older pre-search lines are the same with the flag OFF', async () => {
     const msgs: Msg[] = [{ role: 'user', content: `quán cà phê gần đây, mã hội viên của mình là ${TOKEN}` }]
     const calls = [{ name: 'web_search', args: { query: 'Cà phê Mây thực đơn giá' } }, { name: 'read_page', args: { urls: ['https://caphemay.example/'], focus: 'giá' } }]

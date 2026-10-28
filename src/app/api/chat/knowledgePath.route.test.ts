@@ -277,9 +277,14 @@ describe('C2 — ON: the knowledge path', () => {
     const on = await turn({ flag: '1', flags: { CONSULT_TRACE_DIAGNOSTICS: '1' }, msgs, withLogs: true, calls: [READ] }) as unknown as LogRun
     expect(on.logs.length).toBeGreaterThan(0)
     for (const l of on.logs) expect(l, l.slice(0, 200)).not.toContain('canary-zq7')
-    // Measured (final check, NOT Wave 4): this message makes the CODE pre-search with the user's words as its place query, and the existing query log lines
-    // (tappyai_tool_called / tappyai_presearch / tappyai_place_evidence / the trace "tool" event of a code call) carry the name - with the flag OFF exactly as ON. Reported.
+    // Measured (final check, NOT Wave 4): this message makes the CODE pre-search with the user's words as its place query. Before S4 the query log lines
+    // (tappyai_tool_called / tappyai_presearch / tappyai_place_evidence) carried the name. S4: none does any more, ON or OFF. Only the trace "tool" event of the code's call still
+    // carries it - a bench-only diagnostic (CONSULT_TRACE_DIAGNOSTICS, never in a production runtime; design item I, not S4) - with the flag OFF exactly as ON.
     const off = await turn({ flags: { CONSULT_TRACE_DIAGNOSTICS: '1' }, msgs, withLogs: true, calls: [READ] }) as unknown as LogRun
+    expect(on.logs.some(l => l.includes('"type":"tappyai_presearch"'))).toBe(true) // live control: the code really pre-searched
+    const codeToolTrace = (l: string) => l.includes('"ev":"tool"') && l.includes('"by":"code"')
+    expect(nameLines(on.logs).filter(l => !codeToolTrace(l))).toEqual([])
+    expect(nameLines(off.logs).filter(l => !codeToolTrace(l))).toEqual([])
     expect(nameLines(on.logs)).toEqual(nameLines(off.logs))
   }, 60000)
   it('R3-01 at R3: an amount the calculator derived from the user\'s own numbers stays in the answer', async () => {

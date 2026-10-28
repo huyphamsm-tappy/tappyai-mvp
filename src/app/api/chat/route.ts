@@ -102,9 +102,10 @@ import { recordDecision, DECISION_RECORD_TIMEOUT_MS } from '@/lib/ai/agent/runti
 import { createPlacesBudget, PLACES_BUDGET_AGENT, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
 // Consultative V1 (flag CONSULTATIVE_V1, default OFF — see docs/audit/consultative-v1-design.md).
 import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
-import { consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, consultReadPageLateOn, consultPickPageReadOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn } from '@/lib/config/consultFlags'
+import { isProductionRuntime, consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, consultReadPageLateOn, consultPickPageReadOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn } from '@/lib/config/consultFlags'
 import { referTitlesForPrompt } from '@/lib/ai/consultative/referTitles'
 import { createLeanResearch, readVenuePages, PICK_PAGE_READ_MAX } from '@/lib/ai/consultative/researchLoop'
+import { logText } from '@/lib/ai/logSafeText'
 import { wave3PromptLines, PICK_TURN_TOOL_NAMES } from '@/lib/ai/consultative/wave3PromptLines'
 import { calculate } from '@/lib/ai/tools/calculate'
 import { createTurnTrace, traceCallBy, traceToolsInner, traceToolsOuter } from '@/lib/ai/consultative/traceDiagnostics'
@@ -549,7 +550,8 @@ export async function POST(req: Request) {
   if (threadAwareAsk && (askReconciled?.report.applicable || lunaMerged?.rule)) trace?.emit('ask_reconcile', { mergeRule: lunaMerged?.rule ?? null, shownProducts: threadAskEvidence?.shownTitles.length ?? 0, ...(askReconciled ? { reference: askReconciled.report.reference, asked: askReconciled.report.asked, resolved: askReconciled.report.resolved, kept: askReconciled.report.kept, outcome: askReconciled.report.outcome, lunaValuesCounted: askReconciled.report.lunaCounted, lunaValuesNotGrounded: askReconciled.report.lunaNotGrounded } : {}), notWorthAsking, finalTurn: consult?.turn ?? null, finalAskIds: consult?.ask?.questions.map(q => q.id) ?? [] })
   if (consultPlanPromoted.promoted) console.log(JSON.stringify({ type: 'tappyai_plan_promoted', domain: 'travel', from: 'pick' }))
   // Measurement only (CONSULT_DECISION_LOG=1, off by default — replay sets it): the full decision, to check intent reading.
-  if (process.env.CONSULT_DECISION_LOG === '1' && consult) console.log(JSON.stringify({ type: 'tappyai_consult_decision', by: lunaRun ? `luna-${lunaRun.mode}` : consultRun ? 'brain' : lunaSkipped ? 'rules-fast' : 'rules', turn: consult.turn, domains: consult.domains, known: consult.known, area: consult.area ?? null }))
+  // S4 (J): a debug line, never in a production runtime; it keeps the KEY NAMES of what is known and whether an area was given, not the values (the user's words).
+  if (process.env.CONSULT_DECISION_LOG === '1' && consult && !isProductionRuntime()) console.log(JSON.stringify({ type: 'tappyai_consult_decision', by: lunaRun ? `luna-${lunaRun.mode}` : consultRun ? 'brain' : lunaSkipped ? 'rules-fast' : 'rules', turn: consult.turn, domains: consult.domains, known: Object.keys(consult.known), hasArea: !!consult.area }))
   console.log(JSON.stringify({ type: 'tappyai_consult', by: consultRun ? 'brain' : routed ? 'rules' : 'off', turn: consult?.turn ?? 'fallback', domains: consult?.domains ?? [], ms: consultRun?.ms ?? null, known: consult ? Object.keys(consult.known) : [], brain_in: consultRun?.usage.promptTokens ?? 0, brain_out: consultRun?.usage.completionTokens ?? 0 }))
   // CONSULT_TRACE_DIAGNOSTICS (Wave 2C): the intent decision at every stage, side by side - the rules' reading, Luna's reading (after her own "no second ask" rule), the merge and its mode, the brain,
   // and what the later card / plan steps turned it into. Reading only: nothing above or below depends on it.
@@ -2176,8 +2178,8 @@ export async function POST(req: Request) {
       who: situation.who, occasion: situation.occasion, time: situation.time, mood: situation.mood, hard: situation.hard,
       assumptions: situation.assumptions.length, confidence: situation.confidence,
       prior_venues: priorVenues.length, referenced: referenced.length, facts, named_refetch: refetch.length,
-      // Where the search is centred and why (UAT 29/09: "Nguyễn Huệ" read as Huế) — labels only, no GPS.
-      place: situation.place.text, stated_area: statedArea?.label ?? null, near_me: situation.place.nearMe,
+      // Where the search is centred and why (UAT 29/09: "Nguyễn Huệ" read as Huế) — labels only, no GPS. S4 (F): the place the user named is kept as its length, not its words.
+      place: logText(situation.place.text, 'user_words'), stated_area: statedArea?.label ?? null, near_me: situation.place.nearMe,
     }))
     enrichment.setConsultativeV1({
       on: true, rendersCard: rendersDecisionCard, namedRefetch: refetch.map(v => v.name),
@@ -2569,7 +2571,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // too — "ở Đà Nẵng" must not be searched around the default TP.HCM centre (food.ts defaultCentre) when the model names no location.
           const modelOrClip = modelLocation ?? exploreClipLocationHint(clipContext)
           const location = (modelOrClip?.trim() || hasValidCurrentLocation(userLocation)) ? modelOrClip : (areaFromAnswer(lastAssistantText, lastText) ?? modelOrClip)
-          console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', query, location, placeType: type, hasLocationBias: !!userLocation, locationFromClip: modelLocation === undefined && location !== undefined }))
+          // S4 (C): the query and the location are the user's words (or the model's copy of them): a length and whether a location was set, never the text
+          console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', query: logText(query, 'tool_arg'), hasLocation: !!location, placeType: type, hasLocationBias: !!userLocation, locationFromClip: modelLocation === undefined && location !== undefined }))
           // Item 5: the `/maps` price-band retry is paid only when price is part of this decision —
           // a stated budget (this turn or the thread) or a price word in the request.
           const priceRetry = !!budget || !!needProfile.budget || /\b(gia|re|dat|bao nhieu|budget|price|cheap|expensive)\b/.test(normalizeVN(lastText.toLowerCase()))
@@ -3069,7 +3072,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       }
       if (pick) { stops.push({ stage, place: pick }); used.add(pick.place_id || normalizeVN((pick.name ?? '').toLowerCase())) }
     }
-    console.log(JSON.stringify({ type: 'tappyai_evening_frame', location: location ?? null, searches: eveningOutcomes.map(o => (o.args as { query: string }).query), stops: stops.map(s => s.stage.key) }))
+    // S4 (G): how many stage searches ran and whether a location was set - not the area or the queries
+    console.log(JSON.stringify({ type: 'tappyai_evening_frame', hasLocation: !!location, searches: eveningOutcomes.length, stops: stops.map(s => s.stage.key) }))
     if (stops.length > 0) {
       eveningBlock = buildEveningPlanBlock(stops, { lang, area: location, people: situation?.partySize ?? null, budgetTotal: planning?.totalBudget ?? null })
       eveningAddendum = eveningIntroInstruction(stops, lang)
@@ -3135,8 +3139,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     }
     presearchOutcome = { toolCallId, toolName: preCall.name, args: preCall.args as PresearchOutcome['args'], result, ms: Date.now() - t0 }
     const error = (result as { error?: unknown })?.error ? true : false
-    if (presearchPlan) console.log(JSON.stringify({ type: 'tappyai_presearch', reuse: !!presearchPlan.reuse, exact: presearchPlan.exact, query: presearchPlan.args.query, location: presearchPlan.args.location ?? null, placeType: presearchPlan.args.type, ms: presearchOutcome.ms, rows: Array.isArray((result as { results?: unknown[] })?.results) ? (result as { results: unknown[] }).results.length : null, error }))
-    else if (flightPresearch) console.log(JSON.stringify({ type: 'tappyai_presearch', tool: 'get_flight_prices', origin: flightPresearch.args.origin, destination: flightPresearch.args.destination, departDate: flightPresearch.args.departDate ?? null, ms: presearchOutcome.ms, fares: Array.isArray((result as { flights?: unknown[] })?.flights) ? (result as { flights: unknown[] }).flights.length : null, error }))
+    // S4 (A, B): the code's pre-search query is built from the user's words, and a flight's origin, destination and date are what the user said: lengths and yes/no only
+    if (presearchPlan) console.log(JSON.stringify({ type: 'tappyai_presearch', reuse: !!presearchPlan.reuse, exact: presearchPlan.exact, query: logText(presearchPlan.args.query, presearchPlan.reuse ? 'stored' : 'code'), hasLocation: !!presearchPlan.args.location, placeType: presearchPlan.args.type, ms: presearchOutcome.ms, rows: Array.isArray((result as { results?: unknown[] })?.results) ? (result as { results: unknown[] }).results.length : null, error }))
+    else if (flightPresearch) console.log(JSON.stringify({ type: 'tappyai_presearch', tool: 'get_flight_prices', hasOrigin: !!flightPresearch.args.origin, hasDestination: !!flightPresearch.args.destination, departDateKind: flightPresearch.args.departDate ? 'given' : 'none', ms: presearchOutcome.ms, fares: Array.isArray((result as { flights?: unknown[] })?.flights) ? (result as { flights: unknown[] }).flights.length : null, error }))
   }
   // R15 (29/09): a trip plan fetched its data itself, over up to 3 sequential model steps — 39–68 s per turn,
   // past Vercel's 60 s on the slow ones, which is when the [TAPPY_PLAN] block went missing (Android trip-full).
@@ -3828,7 +3833,8 @@ ${finalWriteInstruction(lang)}` },
     if (!row || !evidenceDb) return
     try {
       await evidenceDb.rpc('decision_evidence_save', { p_id: evidenceId, p_evidence: row })
-      console.log(JSON.stringify({ type: 'tappyai_place_evidence', step: 'saved', shown: row.placeSearch.shown.length, query: lastPlaceSearch?.args.query ?? null }))
+      // S4 (E): the length of the saved search's query, never its words
+      console.log(JSON.stringify({ type: 'tappyai_place_evidence', step: 'saved', shown: row.placeSearch.shown.length, query: logText(lastPlaceSearch?.args.query, 'tool_arg') }))
     } catch (e) {
       console.error('[chat] place evidence save failed (the next "more" turn will search afresh):', e)
     }

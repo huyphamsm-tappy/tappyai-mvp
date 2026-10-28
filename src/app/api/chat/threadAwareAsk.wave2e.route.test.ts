@@ -44,6 +44,7 @@ const luna = (turn: string, domains: string[], extra: Record<string, unknown> = 
 async function run(msgs: Msg[], o: { on: boolean; luna?: Record<string, unknown> | null }) {
   delete process.env.TAPPY_AGENT
   process.env.CONSULT_THREAD_AWARE_ASK = o.on ? '1' : '0'; delete process.env.CONSULT_SEARCH_NOW_INTENT_GATE
+  vi.stubEnv('CONSULT_TRACE_DIAGNOSTICS', '1') // S4: the code's own calls are read from the trace (see `codeCalls`); observation only, both sides alike
   h.state.luna = o.luna ?? null; h.state.userId = `u-wave2e-a-${o.on ? 'on' : 'off'}`
   __resetAiQuestionQuotaLocal()
   const req = { url: 'http://localhost/api/chat', nextUrl: new URL('http://localhost/api/chat'), headers: new Headers({ 'content-type': 'application/json', 'x-tappy-surface': 'web' }), json: () => Promise.resolve({ messages: msgs }), signal: undefined }
@@ -59,7 +60,12 @@ async function run(msgs: Msg[], o: { on: boolean; luna?: Record<string, unknown>
     turn: (js.find(j => j.type === 'tappyai_consult') ?? {}).turn as string | undefined,
     canned: js.some(j => j.type === 'tappyai_canned_reply' && j.kind === 'consult_ask'),
     askedQ: asked.map(q => q.q), asked,
-    presearch: js.filter(j => j.type === 'tappyai_presearch').map(j => `${j.query}@${j.location}`),
+    // S4: the production log line no longer carries the query (only its length and source): its new shape is compared, and the code's own calls are read, with their
+    // `query@location`, from the bench-only trace (CONSULT_TRACE_DIAGNOSTICS, never in production): the "tool" event the code's call opens (by:"code"). That is the search
+    // the code really RAN (measured 28/10: in this file the tappyai_presearch line is emitted by no case, so the old `query@location` list compared two empty lists every time;
+    // the code calls are non-empty in 6 of the 15 comparisons).
+    presearch: js.filter(j => j.type === 'tappyai_presearch').map(j => `${j.query?.len}:${j.query?.kind}@${j.hasLocation}`),
+    codeCalls: js.filter(j => j.type === 'tappyai_trace' && j.ev === 'tool' && j.by === 'code' && j.state === 'requested').map(j => `${j.tool}:${j.args?.query}@${j.args?.location}`),
     text,
     events: js.filter(j => j.type === 'tappyai_trace') as Array<Record<string, any>>,
   }
@@ -70,7 +76,7 @@ afterEach(() => { delete process.env.CONSULT_THREAD_AWARE_ASK; vi.unstubAllGloba
 const card = (names: string[], bold = true) => `Mình đã tìm vài mẫu.${bold ? ` **Mình chọn: ${names[0]}**.` : ''}\n[TAPPY_SHOPPING]${JSON.stringify({ v: 1, entities: names.map((name, i) => ({ key: `e${i}`, name, priceLow: 900000 + i * 10000 })) })}[/TAPPY_SHOPPING]`
 const STYLE_ASK = 'Để chọn đúng ốp lưng cho bạn:\n\n[TAPPY_ASK]{"v":1,"questions":[{"id":"line","q":"Kiểu ốp nào?","options":["Chống sốc","Trong suốt","Ốp da","Chưa biết"]}]}[/TAPPY_ASK]\n\nChọn nhanh bên dưới.'
 const UAG_CARD = ['Ốp lưng iPhone 15 UAG Plasma Magsafe Clear', 'Ốp lưng iPhone 15 Spigen Tough Armor', 'Ốp lưng iPhone 15 Casetify Impact']
-const same = (a: Awaited<ReturnType<typeof run>>, b: Awaited<ReturnType<typeof run>>) => { expect(a.turn).toBe(b.turn); expect(a.askedQ).toEqual(b.askedQ); expect(a.canned).toBe(b.canned); expect(a.presearch).toEqual(b.presearch) }
+const same = (a: Awaited<ReturnType<typeof run>>, b: Awaited<ReturnType<typeof run>>) => { expect(a.turn).toBe(b.turn); expect(a.askedQ).toEqual(b.askedQ); expect(a.canned).toBe(b.canned); expect(a.presearch).toEqual(b.presearch); expect(a.codeCalls).toEqual(b.codeCalls) }
 
 describe('F-R1 · a NEW request after a finished consultation does not inherit its line, budget or MagSafe', () => {
   const finished = (closing: string): Msg[] => [{ role: 'user', content: 'tìm ốp UAG Plasma cho iphone 15 dưới 200k có magsafe' }, { role: 'assistant', content: closing }]

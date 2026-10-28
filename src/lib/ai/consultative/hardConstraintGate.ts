@@ -139,7 +139,8 @@ function applyShoppingGate(result: unknown, k: ShoppingConstraints | null, lang:
     const anyPrice = rows.some(row => typeof row.price === 'number' || typeof row.price_vnd === 'number' || (typeof row.price === 'string' && /\d/.test(row.price)))
     const budgetGap = !!k.budget && !anyPrice
     if (budgetGap) r._tappy_budget_evidence = false
-    if (k.unknownType && !k.productType) console.warn(JSON.stringify({ type: 'tappyai_shopping_constraints', step: 'unknown_product_type', text: k.unknownType.slice(0, 60) }))
+    // S4 (H): the product the user typed is their words - the log keeps its length only
+    if (k.unknownType && !k.productType) console.warn(JSON.stringify({ type: 'tappyai_shopping_constraints', step: 'unknown_product_type', textLen: k.unknownType.length }))
     console.log(JSON.stringify({
       type: 'tappyai_consultative_v1', step: 'attributes', tool: 'search_products', rows: rows.length, venues_with_attributes: 0,
       hard: [k.brand && 'brand', k.size && 'size', k.variant && 'variant', k.inStock && 'in_stock', k.recipient && 'recipient', k.unknownType && 'unknown_type'].filter(Boolean),

@@ -9,6 +9,7 @@ import {
   type TicketEntry,
 } from './serperToolBudget'
 import { messages } from '@/lib/ai/messages'
+import { logText } from '@/lib/ai/logSafeText'
 import { webSearchCacheKey, serperSearchCacheKey, placePhotosCacheKey, cacheKeyPart } from './cacheKeys'
 
 // ===== In-memory cache (theo Vercel instance, giam goi API lap lai cho cung 1 query) =====
@@ -52,7 +53,8 @@ const inFlight = new Map<string, Promise<unknown>>()
 export async function withSingleFlight<T>(key: string, fn: () => Promise<T>): Promise<T> {
   const running = inFlight.get(key)
   if (running) {
-    console.log(JSON.stringify({ type: 'tappyai_places_budget', step: 'single_flight_join', key }))
+    // S4 (found by the S4 canary): a cache key holds the query and the location - its length only
+    console.log(JSON.stringify({ type: 'tappyai_places_budget', step: 'single_flight_join', key: logText(key, 'tool_arg') }))
     return running as Promise<T>
   }
   const p = (async () => fn())()
