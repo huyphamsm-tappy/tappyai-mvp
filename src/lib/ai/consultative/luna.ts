@@ -36,7 +36,10 @@ export function consultLunaEnabled(env: Record<string, string | undefined> = pro
   return flagOn(env.CONSULT_LUNA, env)
 }
 
-/** CONSULT_LUNA_FAST (needs CONSULT_LUNA; default OFF): skip the intent call on continuing turns the rules are sure of. */
+/**
+ * CONSULT_LUNA_FAST (needs CONSULT_LUNA): skip the intent call on continuing turns the rules are sure of. NOT default OFF: like every Luna flag
+ * (flagOn above) an unset value is ON with the default provider; only an explicit '0' / 'off' / 'false' turns it off (verified 28/10, localhost turn 3a).
+ */
 export function consultLunaFastEnabled(env: Record<string, string | undefined> = process.env): boolean {
   return consultLunaEnabled(env) && flagOn(env.CONSULT_LUNA_FAST, env)
 }

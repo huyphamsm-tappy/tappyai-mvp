@@ -190,3 +190,12 @@ export function consultUnwindS1aOn(env: Env = process.env): boolean { return unw
 export function consultUnwindS1bOn(env: Env = process.env): boolean { return unwindOn(env, CONSULT_UNWIND_S1B_FLAG) }
 export function consultUnwindS1cOn(env: Env = process.env): boolean { return unwindOn(env, CONSULT_UNWIND_S1C_FLAG) }
 export function consultUnwindS1dOn(env: Env = process.env): boolean { return unwindOn(env, CONSULT_UNWIND_S1D_FLAG) }
+//   CONSULT_UNWIND_S2A  a code-built question card on a decision that already holds two stated facts becomes an answer with stated assumptions and one question at the end.
+//   CONSULT_UNWIND_S2B  the rules' "follow-up" reading no longer carries the domain of an old thread to a message that does not refer to what was shown, and a follow-up turn keeps its tools.
+//   CONSULT_UNWIND_S2C  the code's pre-search query keeps what the request asked for (the intent layer's query and area), and its coverage check also runs on an "exact" query.
+export const CONSULT_UNWIND_S2A_FLAG = 'CONSULT_UNWIND_S2A'
+export const CONSULT_UNWIND_S2B_FLAG = 'CONSULT_UNWIND_S2B'
+export const CONSULT_UNWIND_S2C_FLAG = 'CONSULT_UNWIND_S2C'
+export function consultUnwindS2aOn(env: Env = process.env): boolean { return unwindOn(env, CONSULT_UNWIND_S2A_FLAG) }
+export function consultUnwindS2bOn(env: Env = process.env): boolean { return unwindOn(env, CONSULT_UNWIND_S2B_FLAG) }
+export function consultUnwindS2cOn(env: Env = process.env): boolean { return unwindOn(env, CONSULT_UNWIND_S2C_FLAG) }

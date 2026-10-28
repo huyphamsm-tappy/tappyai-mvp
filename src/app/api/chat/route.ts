@@ -102,7 +102,8 @@ import { recordDecision, DECISION_RECORD_TIMEOUT_MS } from '@/lib/ai/agent/runti
 import { createPlacesBudget, PLACES_BUDGET_AGENT, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
 // Consultative V1 (flag CONSULTATIVE_V1, default OFF — see docs/audit/consultative-v1-design.md).
 import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
-import { isProductionRuntime, consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, consultReadPageLateOn, consultPickPageReadOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn, consultUnwindS1aOn, consultUnwindS1bOn, consultUnwindS1dOn } from '@/lib/config/consultFlags'
+import { isProductionRuntime, consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, consultReadPageLateOn, consultPickPageReadOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn, consultUnwindS1aOn, consultUnwindS1bOn, consultUnwindS1dOn, consultUnwindS2aOn, consultUnwindS2bOn, consultUnwindS2cOn } from '@/lib/config/consultFlags'
+import { answerInsteadOfAsk, unwoundAskLine } from '@/lib/ai/consultative/answerInsteadOfAsk'
 import { checkToolLocation, locationRefusal, HOTEL_CALL_CREDIT_CAP } from '@/lib/ai/consultative/toolLocation'
 import { referTitlesForPrompt } from '@/lib/ai/consultative/referTitles'
 import { createLeanResearch, readVenuePages, PICK_PAGE_READ_MAX } from '@/lib/ai/consultative/researchLoop'
@@ -147,7 +148,7 @@ import { asksOtherDestination, eventPreCall, nearbyDestination, nearbyTurnedDown
 import { geoGuardArea, guardPlaceGeography } from '@/lib/ai/tools/placeGeoGuard'
 import { compactCandidates, compactProducts, loadChatSessionState, nextChatSessionState, readChatSessionId, saveChatSessionState, type ChatSessionState } from '@/lib/ai/consultative/chatSessionState'
 import { turnUsd, sumCounts, turnCostStream } from '@/lib/ai/turnCost'
-import { planPresearch, planFlightPresearch, type FlightPresearchPlan, presearchMessages, presearchFrames, presearchPlaceSites, prefixBody, deferredBody, searchingFrame, type PresearchOutcome, type PresearchPlan } from '@/lib/ai/consultative/presearch'
+import { coveringQuery, planPresearch, planFlightPresearch, type FlightPresearchPlan, presearchMessages, presearchFrames, presearchPlaceSites, prefixBody, deferredBody, searchingFrame, type PresearchOutcome, type PresearchPlan } from '@/lib/ai/consultative/presearch'
 import { wantsMoreFromSet, reusablePlaceSearch, type PlaceSearchEvidence } from '@/lib/ai/consultative/moreFromSet'
 import { coercePlaceType } from '@/lib/ai/tools/placeType'
 import { coerceTransportMode } from '@/lib/ai/tools/transportMode'
@@ -457,7 +458,7 @@ export async function POST(req: Request) {
     const aiConsentRefusal = await refuseWithoutAiConsent(aiConsentUser.id, clientLocale)
     if (aiConsentRefusal) return aiConsentRefusal
   }
-  const routedRaw = consultOn ? routeConsult(routingMessages, { hasGps: !!userLocation, lang, ...(trace ? { trace: (e: Record<string, unknown>) => { const { ev, ...rest } = e; trace.emit(String(ev), rest) } } : {}) }) : null
+  const routedRaw = consultOn ? routeConsult(routingMessages, { hasGps: !!userLocation, lang, ...(consultUnwindS2bOn() ? { unwindFollowup: true } : {}), ...(trace ? { trace: (e: Record<string, unknown>) => { const { ev, ...rest } = e; trace.emit(String(ev), rest) } } : {}) }) : null
   // A continuing turn (a button, "xem thêm", "chỗ đó…") that the visible history cannot place takes the
   // stored consultation's area and slots, decided by code (no brain call).
   const routed = routedRaw && earlyChatState?.domains?.length && routedRaw.decision.domains.length === 0
@@ -547,7 +548,13 @@ export async function POST(req: Request) {
   const cardBeforeNarrowing = !threadAwareAsk ? null : lunaStated && lunaMerged?.rule === 'evidence_partial' ? mergeIntentWithRules(lunaStated.decision, routed, lunaOwnKnown, undefined).decision : consultPlanPromoted.decision
   const narrowedCard = askReconciled?.decision ?? consultPlanPromoted.decision
   const { card: consultToCard, notWorthAsking } = settleNarrowedCard(cardBeforeNarrowing, narrowedCard, subjectUserTexts, refineOpts)
-  const consult = agentOn ? null : keepServerFallback(refineAsk((consultToCard ? searchableAsPick(consultToCard, subjectUserTexts, !!userLocation) : null) ?? consultToCard, subjectUserTexts, refineOpts))
+  const consultCarded = keepServerFallback(refineAsk((consultToCard ? searchableAsPick(consultToCard, subjectUserTexts, !!userLocation) : null) ?? consultToCard, subjectUserTexts, refineOpts))
+  // CONSULT_UNWIND_S2A (answerInsteadOfAsk.ts): a card on a decision that already holds enough becomes an answer with stated assumptions and one question at
+  // the end (a travel plan request: the plan turn). Flag OFF: `unwoundAsk` is null and the decision is untouched.
+  const unwindAsk = consultUnwindS2aOn() && !agentOn ? answerInsteadOfAsk(consultCarded, { serverFallback: consultCarded === consultFallback || (consultCarded?.domains.length ?? 0) === 0 }) : null
+  const unwoundAsk = unwindAsk?.unwound ?? null
+  const consult = agentOn ? null : unwindAsk && unwoundAsk ? (adviceEnabled() ? promoteTripPlan(unwindAsk.decision, messages, wasAskReply).decision : unwindAsk.decision) : consultCarded
+  if (unwoundAsk) console.log(JSON.stringify({ type: 'tappyai_unwind_ask', open_questions: unwoundAsk.questions.length, known_slots: Object.keys(consult?.known ?? {}).length, turn: consult?.turn ?? null }))
   if (threadAwareAsk && (askReconciled?.report.applicable || lunaMerged?.rule)) trace?.emit('ask_reconcile', { mergeRule: lunaMerged?.rule ?? null, shownProducts: threadAskEvidence?.shownTitles.length ?? 0, ...(askReconciled ? { reference: askReconciled.report.reference, asked: askReconciled.report.asked, resolved: askReconciled.report.resolved, kept: askReconciled.report.kept, outcome: askReconciled.report.outcome, lunaValuesCounted: askReconciled.report.lunaCounted, lunaValuesNotGrounded: askReconciled.report.lunaNotGrounded } : {}), notWorthAsking, finalTurn: consult?.turn ?? null, finalAskIds: consult?.ask?.questions.map(q => q.id) ?? [] })
   if (consultPlanPromoted.promoted) console.log(JSON.stringify({ type: 'tappyai_plan_promoted', domain: 'travel', from: 'pick' }))
   // Measurement only (CONSULT_DECISION_LOG=1, off by default — replay sets it): the full decision, to check intent reading.
@@ -854,7 +861,7 @@ export async function POST(req: Request) {
 
 ===== DA HIEU (bo nao tu van) =====
 - User da noi: ${Object.entries(consult.known).map(([k, v]) => `${k}: ${v}`).join(' · ') || '(chua ro)'}
-- Gia dinh cho phan con thieu (${styleLuna6On() ? 'dung ngam, KHONG nhac voi user tru khi no doi lua chon' : 'noi ro trong cau xac nhan'}): ${consult.assumptions.join(' · ') || '(khong)'}${consult.rejectReason ? `
+- Gia dinh cho phan con thieu (${styleLuna6On() ? 'dung ngam, KHONG nhac voi user tru khi no doi lua chon' : 'noi ro trong cau xac nhan'}): ${consult.assumptions.join(' · ') || '(khong)'}${unwoundAsk ? unwoundAskLine(unwoundAsk, lang) : ''}${consult.rejectReason ? `
 - User da BAC: ${consult.rejectReason} — KHONG nhac lai cho da bac.` : ''}${consult.refers?.length ? `
 - User dang noi toi: ${referTitlesForPrompt(consult.refers, consultThreadAwareAskOn())}${consult.ordinalRef ? ' (day la quan user goi theo thu tu tren the da hien: tra loi thang ve quan nay, KHONG noi khong co quan thu N)' : ''}` : ''}${(() => { const m = latestConsultPick(messages); return m ? `
 - LUA CHON DA CHOT gan nhat: ${m}` : '' })()}${consultShownEver.length ? `
@@ -1481,8 +1488,15 @@ export async function POST(req: Request) {
   const moreTurn = consultativeV1 && !ownDomainSwitch && !clipContext && !planningIntent && !consult?.reprioritize && (wantsMoreFromSet(lastText) || consult?.turn === 'more' || consult?.turn === 'reject') && (priorVenuesIn(lastAssistantText).length > 0 || consultShownEver.length > 0)
   // Consult V2: a pick / reject searches the brain's query (what the user actually wants, e.g. "tiệm nail
   // sơn gel", "karaoke phòng lớn") — never a generic "spa massage" / "khu vui chơi" rewrite.
-  const consultSearch = consult && (consult.turn === 'pick' || consult.turn === 'reject') && consult.query
-    ? (() => { const t = consult.domains[0] === 'shopping' ? 'product' : placeTypeFor(consult.domains[0]); return t ? ({ query: consult.query as string, type: t, exact: true } as SearchNow) : null })()
+  // CONSULT_UNWIND_S2C (presearch.coveringQuery): a place pick searches the first query - the rules', then the intent layer's - that covers the request (the area the
+  // intent layer read counts as covered); none covers it → no code pre-search, the model searches. Shopping keeps its query. OFF: the rules' query, as at HEAD.
+  const s2cArea = consultUnwindS2cOn() ? (consult?.area ?? consult?.known.khu_vuc ?? null) : null
+  const consultQuery = consult && consultUnwindS2cOn() && consult.domains[0] !== 'shopping'
+    ? coveringQuery([consult.query, lunaStated?.decision.query], framingText, s2cArea ?? statedArea?.label ?? null)
+    : consult?.query
+  if (consult && consultUnwindS2cOn() && consult.domains[0] !== 'shopping' && (consult.turn === 'pick' || consult.turn === 'reject')) console.log(JSON.stringify({ type: 'tappyai_unwind_presearch_query', rules_query: !!consult.query, intent_query: !!lunaStated?.decision.query, chosen: consultQuery === null ? 'none' : consultQuery === consult.query?.trim() ? 'rules' : 'intent', area_from_intent: !!s2cArea }))
+  const consultSearch = consult && (consult.turn === 'pick' || consult.turn === 'reject') && consultQuery
+    ? (() => { const t = consult.domains[0] === 'shopping' ? 'product' : placeTypeFor(consult.domains[0]); return t ? ({ query: consultQuery as string, type: t, exact: true } as SearchNow) : null })()
     : null
   // A follow-up / comparison / non-trip plan works from what is already known: no "search now" order.
   const consultNoSearchNow = !!consult && (consult.turn === 'followup' || consult.turn === 'compare' || (consult.turn === 'plan' && consult.domains[0] !== 'travel'))
@@ -1529,7 +1543,7 @@ export async function POST(req: Request) {
   if (!consult && searchNow?.type === 'flight' && !SPECIFIC_DATE.test(normalizeVN(lastText.toLowerCase())) && !(lastAssistantText && endsWithQuestion(lastAssistantText))) {
     gateAskAfter = { q: lang === 'en' ? 'Which date?' : 'Ngày bay?', options: [] }
   }
-  let presearchPlan = consultativeV1 && !agentOn ? planPresearch(searchNow, situation, { clip: !!clipContext, planning: !!planningIntent, movie: movieRecommend || filmAsk, more: moreTurn, statedArea: statedArea?.label ?? null, userText: framingText }) : null
+  let presearchPlan = consultativeV1 && !agentOn ? planPresearch(searchNow, situation, { clip: !!clipContext, planning: !!planningIntent, movie: movieRecommend || filmAsk, more: moreTurn, statedArea: statedArea?.label ?? s2cArea ?? null, userText: framingText }) : null
   // A1(d): "gợi ý thêm" — the same search again (the 30-minute cache answers it on a warm instance),
   // the model told which venues were already shown. moreFromSet.ts. The stored search (signed-in
   // users) is exact; without a row the directive's call stands in and the prior reply's names do.
@@ -2076,7 +2090,9 @@ export async function POST(req: Request) {
   // A clip question is a place question by construction — the button exists only
   // on an item with a place — so it is never a no-tool turn even when the short
   // bridge text alone would have read as chitchat.
-  const noToolTurn = !clipContext && (intent === 'chitchat' || decisionStage === 'confirmation' || ((consult?.turn === 'followup' || consult?.turn === 'compare') && !consultFollowReuse))
+  // CONSULT_UNWIND_S2B: a follow-up / compare turn keeps its tools (the model decides whether the question needs a lookup); OFF: no tool, one step, as at HEAD.
+  const s2bFollowTools = consultUnwindS2bOn() && (consult?.turn === 'followup' || consult?.turn === 'compare') && intent !== 'chitchat' && decisionStage !== 'confirmation'
+  const noToolTurn = !clipContext && (intent === 'chitchat' || decisionStage === 'confirmation' || ((consult?.turn === 'followup' || consult?.turn === 'compare') && !consultFollowReuse)) && !s2bFollowTools
   // The ranking instruction is only carried on turns that can actually produce a
   // ranked result — Places and Hotel are the two domains with structured
   // candidate attributes today. A weather or gold lookup pays nothing for it.

@@ -106,6 +106,21 @@ export function queryCoversRequest(query: string, userText: string, area?: strin
   return text.split(' ').filter(Boolean).every(w => queryWords.has(w) || COVERED_BY_OTHER_MEANS.has(w) || /^\d+k?$/.test(w))
 }
 
+/**
+ * CONSULT_UNWIND_S2C. The code's own pre-search of a pick was the RULES' query, sent as "exact", so the coverage check above never ran on it.
+ * Measured 28/10 (localhost turn 5, "kiếm quán cơm gà ở phan xích long"): the rules built "quán cơm" (their dish table has only "cơm"), the
+ * street was not a district, so the search ran with neither the dish nor the area and found nothing. With the flag the first candidate that
+ * covers the request (the rules' query, then the intent layer's own query) is searched; when none covers it, the code does not pre-search
+ * at all and the model writes its own search. Same coverage rule as a suggested directive; nothing new is matched.
+ */
+export function coveringQuery(candidates: ReadonlyArray<string | null | undefined>, userText: string, area?: string | null): string | null {
+  for (const c of candidates) {
+    const q = (c ?? '').trim()
+    if (q && queryCoversRequest(q, userText, area)) return q
+  }
+  return null
+}
+
 export interface PresearchOutcome {
   toolCallId: string
   toolName: string

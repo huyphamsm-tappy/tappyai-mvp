@@ -28,6 +28,13 @@ export interface RouteCtx {
   lang: string
   /** CONSULT_TRACE_DIAGNOSTICS (Wave 2C): receives diagnostic events about the LAST user turn. Absent = nothing is reported. It never influences a decision. */
   trace?: (event: Record<string, unknown>) => void
+  /**
+   * CONSULT_UNWIND_S2B. A question inside a stored thread that names none of the shown picks and does not point at them is NOT read as a follow-up
+   * about the first pick (measured 28/10, localhost turn 3a: "ông biết thiếu tướng Phạm Xuân Ẩn không" became a travel follow-up, the intent layer
+   * was skipped and the model ran one step with no tool). It goes on to step 4 as a new request (no domain: "chat", unsure, so the intent layer reads it).
+   * Absent / false: HEAD.
+   */
+  unwindFollowup?: boolean
 }
 export interface RouteResult { decision: ConsultDecision; confidence: RouteConfidence }
 
@@ -1197,8 +1204,9 @@ function routeTurn(turns: Msg[], ui: number, thread: Thread, ctx: RouteCtx, isLa
     if (!newArea && REFINE_RE.test(t.f)) return { result: pickFrom(domains, threadText(thread.start), 'reject', { rejectReason: userText.slice(0, 160) }), thread }
     if (!newArea && !cur.domains.length) {
       // About the picks, but no rule places it: a question → followup; anything else → the brain.
-      if (isQ || deictic) return keep({ domains, turn: 'followup', refers: names.slice(0, 1) })
-      return keep({ domains, turn: 'reject', rejectReason: userText.slice(0, 160) }, 'unsure')
+      // CONSULT_UNWIND_S2B: a question that neither names nor points at a shown pick is not about the picks; it goes on to step 4 (a new request).
+      if (deictic || (isQ && !ctx.unwindFollowup)) return keep({ domains, turn: 'followup', refers: names.slice(0, 1) })
+      if (!(isQ && ctx.unwindFollowup)) return keep({ domains, turn: 'reject', rejectReason: userText.slice(0, 160) }, 'unsure')
     }
   }
 
