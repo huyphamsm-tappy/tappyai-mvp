@@ -31,6 +31,7 @@ import { formatSummary, runLiveTrial } from './liveTrial'
 import { parseDevQuestions, sha256OfText } from './devQuestions'
 import { REFUSED_BEGIN, REFUSED_END, SUMMARY_BEGIN, SUMMARY_END, PREFLIGHT_BEGIN, PREFLIGHT_END, marker } from './liveTrialLauncher.mjs'
 import { conditionReport, formatConditionReport } from './preflightReport'
+import { formatReplaySummary, isReplayRequested, runReplayTrial } from './replayTrial'
 
 const h = vi.hoisted(() => {
   const builder = (): any => {
@@ -79,7 +80,9 @@ describe.skipIf(process.env.BENCH_LIVE_TRIAL !== 'I-UNDERSTAND-THIS-SPENDS-REAL-
   // Round 3c: BENCH_TRIAL_MODE=dev-multi runs the development turns of BENCH_TRIAL_QUESTION_FILE in this one process (devQuestions.ts validates them).
   const devMulti = process.env.BENCH_TRIAL_MODE === 'dev-multi'
   const preflightOnly = process.env.BENCH_TRIAL_PREFLIGHT_ONLY === '1'
-  it.skipIf(devMulti || preflightOnly)('runs the single trial turn in its own process, writes the evidence to drive D and prints a summary that contains no secret', async () => {
+  // Wave 6 (Owner decision A, 28/10): any BENCH_REPLAY_* variable replaces the route trial by the replay of the writing step (replayTrial.ts); it never starts a route trial by the side.
+  const replay = isReplayRequested(process.env)
+  it.skipIf(devMulti || preflightOnly || replay)('runs the single trial turn in its own process, writes the evidence to drive D and prints a summary that contains no secret', async () => {
     const outcome = await runLiveTrial({ env: process.env, post: POST, afterTrial: 'deny' })
     if (outcome.kind === 'refused') {
       // eslint-disable-next-line no-console
@@ -92,7 +95,19 @@ describe.skipIf(process.env.BENCH_LIVE_TRIAL !== 'I-UNDERSTAND-THIS-SPENDS-REAL-
     expect(outcome.summary.trialClean, 'NOT CLEAN: a host was blocked, a redirect was seen or the counts disagree - this is not a complete result').toBe(true)
   }, 240_000)
 
-  it.skipIf(!devMulti || preflightOnly)('runs the development turns in one process (BENCH_TRIAL_MODE=dev-multi): a run cap across turns, each turn closed on its own, one summary', async () => {
+  it.skipIf(!replay || preflightOnly)('replays the writing step of a capture with ONE registered variant (BENCH_REPLAY_*): only api.openai.com chat completions, through the metered model and the spend gate, one summary', async () => {
+    const outcome = await runReplayTrial({ env: process.env, afterTrial: 'deny', repoRoot: process.cwd(), execArgv: process.execArgv })
+    if (outcome.kind === 'refused') {
+      // eslint-disable-next-line no-console
+      console.info(`${marker(REFUSED_BEGIN, nonce)}\n${outcome.reasons.join('\n')}\n${marker(REFUSED_END, nonce)}`)
+      throw new Error('the replay was refused before anything was sent')
+    }
+    // eslint-disable-next-line no-console
+    console.info(`${marker(SUMMARY_BEGIN, nonce)}\n${formatReplaySummary(outcome.summary)}\n${marker(SUMMARY_END, nonce)}`)
+    expect(outcome.summary.trialClean, 'NOT CLEAN: a request was blocked, a cost is not known, a call failed, or the books disagree - this is not a complete replay result').toBe(true)
+  }, 3_600_000)
+
+  it.skipIf(!devMulti || preflightOnly || replay)('runs the development turns in one process (BENCH_TRIAL_MODE=dev-multi): a run cap across turns, each turn closed on its own, one summary', async () => {
     const questionText = readFileSync(process.env.BENCH_TRIAL_QUESTION_FILE!.trim(), 'utf8')
     const parsed = parseDevQuestions(questionText)
     if (!parsed.ok) {

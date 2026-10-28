@@ -7,6 +7,7 @@ import { benchModeOf, benchSpendGateOn, capToScaled, checkBenchCaps, MAX_TURN_CA
 import { capabilityLevel } from '@/lib/config/consultFlags'
 import { DDG_FALLBACK_HOSTS, OSM_FALLBACK_HOSTS, QUOTA_RESET_FLAG, WAVE2_FLAGS, WAVE2_FLAG_NEEDS, capabilityLevelReasons, wave2FlagReasons, wave2FlagState, benchSwitchState, connectionRedirectReasons, consultativeConfirmationReasons, openaiKeyShapeReasons, osmFallbackAllowed, preflight, quotaResetFlagReasons, quotaResetState, requestCapReasons } from './liveTrial'
 import { parseDevQuestions, sha256OfText } from './devQuestions'
+import { isReplayRequested, replayCheck } from './replayTrial'
 
 export interface Condition { name: string; ok: boolean; detail: string }
 
@@ -20,6 +21,8 @@ export interface PreflightReportInput {
 
 /** The only hosts and paths the trial may reach. Printed so that the Owner sees the list being enforced. */
 export const ALLOW_LIST_TEXT = 'https api.openai.com/v1/chat/completions; google.serper.dev /search /maps /shopping (default port only)'
+/** What a REPLAY run may reach (replayTrial.ts): one endpoint, POST only; no Serper, no OSM, no DuckDuckGo, no page. */
+export const REPLAY_ALLOW_LIST_TEXT = 'REPLAY run: https POST api.openai.com/v1/chat/completions ONLY (no Serper, no OSM, no DuckDuckGo, no page, no other host or path; a redirect is never followed)'
 /** Added to the printed list in the extension mode only (BENCH_TRIAL_MODE=dev-multi): the three free OSM fallback endpoints of search_places, counted per host. */
 export const DDG_ALLOW_TEXT = `; EXTENSION MODE ONLY, free DuckDuckGo fallback of web_search (counted per host, no cost, outside the request cap and the USD gate): ${DDG_FALLBACK_HOSTS.join(', ')} /html/ only`
 export const OSM_ALLOW_TEXT = `; EXTENSION MODE ONLY, free OSM fallback of search_places (counted per host, no cost, outside the request cap and the USD gate): ${OSM_FALLBACK_HOSTS.join(', ')} on their exact paths`
@@ -111,12 +114,20 @@ export function conditionReport(input: PreflightReportInput): Condition[] {
   const bs = benchSwitchState(env)
   add('bench switches (information)', [], `LEGACY_STREAM_TRACE=${env.LEGACY_STREAM_TRACE ?? 'unset'} (${bs.trace}) | BENCH_ALLOW_PUBLIC_PAGE_FETCH=${env.BENCH_ALLOW_PUBLIC_PAGE_FETCH ?? 'unset'} (${bs.page})`)
 
+  // Wave 6 (Owner decision A, 28/10): the replay of the writing step. Added only when a BENCH_REPLAY_* variable is set; every condition above still applies unchanged.
+  if (isReplayRequested(env)) {
+    const chk = replayCheck(env)
+    const p = chk.plan
+    add('replay of the writing step: variant, capture file, caps (run <= 0.30, turn <= 0.10), model priced, outside evidence present for every turn of an evidence variant', chk.reasons,
+      p ? `variant ${p.variant.id} | capture sha256=${p.captureSha256} | ${p.sendable} writer call(s) of ${p.picks.length} turn(s) | model ${p.models.join(',')} | reasoning effort in the capture ${p.efforts.join(',')} -> ${p.variant.effort ?? 'unchanged'}` : '')
+  }
+
   const unmet = out.filter(c => !c.ok).length
   out.push({
     name: 'budget mode and limits in force (information)', ok: true,
     detail: `mode ${mode} (maximum run cap ${maxRunCapUsd(mode)} USD, per-turn ${MAX_TURN_CAP_USD} USD) | run cap ${env.BENCH_SPEND_RUN_CAP_USD ?? 'unset'} | per-turn cap ${env.BENCH_SPEND_TURN_CAP_USD ?? 'unset'} | L1 ${env.CONSULT_REQUEST_CAP_PER_TURN ?? 'unset'} | L2 ${env.CONSULT_REQUEST_CAP_PER_RUN ?? 'unset'} | conditions not met: ${unmet}`,
   })
-  out.push({ name: 'allow-list the run may reach', ok: true, detail: ALLOW_LIST_TEXT + (osmFallbackAllowed(env) ? OSM_ALLOW_TEXT + DDG_ALLOW_TEXT : '') })
+  out.push({ name: 'allow-list the run may reach', ok: true, detail: isReplayRequested(env) ? REPLAY_ALLOW_LIST_TEXT : ALLOW_LIST_TEXT + (osmFallbackAllowed(env) ? OSM_ALLOW_TEXT + DDG_ALLOW_TEXT : '') })
   return out
 }
 

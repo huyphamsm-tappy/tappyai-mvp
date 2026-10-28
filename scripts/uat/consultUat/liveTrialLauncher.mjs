@@ -59,6 +59,8 @@ export const TRIAL_ENV_NAMES = [
   'BENCH_TRIAL_MODE',
   // quota option (d): 1 = reset the free-question counter before each turn, effective ONLY with BENCH_TRIAL_MODE=dev-multi; unset or 0 = the real limit applies
   'BENCH_RESET_FREE_QUOTA_PER_TURN',
+  // Wave 6 (Owner decision A, 28/10): the replay of the writing step - the capture file, the variant, the folder of outside evidence (names only; replayTrial.ts checks the values)
+  'BENCH_REPLAY_CAPTURE', 'BENCH_REPLAY_VARIANT', 'BENCH_REPLAY_EVIDENCE_DIR',
 ]
 /**
  * The benchmark flag names (kept equal to BENCH_FLAG_NAMES in liveRunner.ts by liveTrialLauncher.test.ts). A flag the Owner set is passed on, an unset one stays unset.
@@ -404,6 +406,54 @@ export function benchSwitchLine(env) {
   return `cờ đo của bộ chạy thử: LEGACY_STREAM_TRACE=${show(env.LEGACY_STREAM_TRACE)} (${trace}: đếm ký tự từng chặng lọc hậu kỳ) | BENCH_ALLOW_PUBLIC_PAGE_FETCH=${show(v)} (${page}: read_page tải trang công khai, chỉ GET, robots từng bước nhảy)`
 }
 
+/**
+ * Wave 6 (Owner decision A, 28/10) · the variants of the writing-step replay, as the Gate 1 lines name them (the same table as VARIANTS in writerReplay.ts; a test compares them):
+ * the reasoning effort put in the request (null = the captured call's own), the V1 note, the outside evidence.
+ */
+export const REPLAY_VARIANT_TABLE = {
+  V0: { effort: null, note: false, evidence: false }, V1: { effort: null, note: true, evidence: false },
+  V2: { effort: 'medium', note: false, evidence: false }, V3: { effort: 'medium', note: true, evidence: false },
+  X0: { effort: null, note: false, evidence: true }, X1: { effort: null, note: true, evidence: true },
+}
+/** The replay's own ceilings (the same constants as replayTrial.ts; a test compares them). */
+export const REPLAY_MAX_RUN_CAP_USD = '0.30', REPLAY_MAX_TURN_CAP_USD = '0.10'
+/**
+ * The Gate 1 lines of a replay run (none for an ordinary run): the capture file by NAME and SHA-256, the variant, the model, the reasoning effort, the number of calls, the caps. The capture is read here
+ * only to hash it and to count the writer calls (the same rule as pickWriterCalls in writerReplay.ts; a test compares the two); its text is never printed.
+ */
+export function replayLines(env, { readBytes = p => readFileSync(p) } = {}) {
+  if (env.BENCH_REPLAY_VARIANT === undefined && env.BENCH_REPLAY_CAPTURE === undefined && env.BENCH_REPLAY_EVIDENCE_DIR === undefined) return []
+  const v = REPLAY_VARIANT_TABLE[env.BENCH_REPLAY_VARIANT]
+  const show = x => (x === undefined ? 'unset' : /^[A-Za-z0-9_.-]{1,24}$/.test(x) ? x : JSON.stringify(x.slice(0, 24)))
+  const lines = [`PHÁT LẠI bước viết (KHÔNG tìm kiếm lại, KHÔNG Serper) — biến thể ${show(env.BENCH_REPLAY_VARIANT)}${v ? `: chỉ dẫn ${v.note ? 'gốc + lời dặn V1' : 'gốc'}; mức suy luận ${v.effort ?? 'như lời gọi gốc'}; trần đầu ra ${v.effort ? '4000 token (gồm cả token suy luận; không công cụ)' : 'như lời gọi gốc (tối đa 4000)'}; bằng chứng Exa ${v.evidence ? 'CÓ (khối cuối đầu vào viết)' : 'không'}` : ' — KHÔNG HỢP LỆ (V0,V1,V2,V3,X0,X1)'}`]
+  const file = (env.BENCH_REPLAY_CAPTURE ?? '').trim()
+  if (file === '') lines.push('tệp capture: KHÔNG ĐẶT BENCH_REPLAY_CAPTURE')
+  else {
+    const name = file.replace(/^.*[\\/]/, '')
+    try {
+      const bytes = readBytes(file)
+      const sha = createHash('sha256').update(bytes).digest('hex')
+      const cap = JSON.parse(Buffer.from(bytes).toString('utf8'))
+      const sentChars = b => { try { return JSON.stringify(b?.messages ?? []).length } catch { return 0 } }
+      const turns = []
+      for (const c of cap.calls ?? []) if (c.turn !== null && c.turn !== undefined && !turns.includes(c.turn)) turns.push(c.turn)
+      const picks = turns.map(t => {
+        const mine = cap.calls.filter(c => c.turn === t && c.body !== null && typeof c.body === 'object')
+        const largest = Math.max(0, ...mine.map(c => sentChars(c.body)))
+        return [...mine].reverse().find(c => !c.body.response_format && c.response?.status === 200 && (c.response?.textChars ?? 0) > 0 && (c.response?.toolCalls ?? 0) === 0 && sentChars(c.body) * 2 >= largest)
+      })
+      const picked = picks.filter(Boolean)
+      const models = [...new Set(picked.map(c => String(c.body.model ?? '?')))].join(',')
+      const efforts = [...new Set(picked.map(c => (typeof c.body.reasoning_effort === 'string' ? c.body.reasoning_effort : 'unset')))].join(',')
+      lines.push(`tệp capture: ${name} sha256=${sha}`)
+      lines.push(`mô hình của lời gọi viết: ${models || '-'} (mức suy luận ghi trong capture: ${efforts || '-'}) | số lời gọi sẽ gửi: ${picked.length} trên ${turns.length} lượt (mỗi lượt đúng 1 lời gọi viết) | chỉ gọi api.openai.com/v1/chat/completions (không Serper, không host khác)`)
+    } catch { lines.push(`tệp capture: ${name} — KHÔNG ĐỌC ĐƯỢC hoặc không phải JSON`) }
+  }
+  if (v && v.evidence) lines.push(`thư mục bằng chứng Exa: ${(env.BENCH_REPLAY_EVIDENCE_DIR ?? '').trim() || 'KHÔNG ĐẶT BENCH_REPLAY_EVIDENCE_DIR'} (mỗi lượt cần một tệp evidence-<lượt>.json)`)
+  lines.push(`trần phát lại: mỗi lượt ${env.BENCH_SPEND_TURN_CAP_USD ?? '?'} USD (tối đa ${REPLAY_MAX_TURN_CAP_USD}), cả biến thể ${env.BENCH_SPEND_RUN_CAP_USD ?? '?'} USD (tối đa ${REPLAY_MAX_RUN_CAP_USD}) — ƯỚC TÍNH; mọi lời gọi qua meteredModel + cổng chi tiêu, chi phí không rõ thì chặn`)
+  return lines
+}
+
 /** Round 3f · Gate 1 summary: what the run will do, with no key value. Pure. */
 export function gate1Summary(env, questionText) {
   const lines = [
@@ -418,6 +468,7 @@ export function gate1Summary(env, questionText) {
     ...quotaLines(env),
     wave2Line(env),
     benchSwitchLine(env),
+    ...replayLines(env),
     `khóa: OPENAI_API_KEY ${(env.OPENAI_API_KEY ?? '') !== '' ? 'SET' : 'UNSET'}, SERPER_API_KEY ${(env.SERPER_API_KEY ?? '') !== '' ? 'SET' : 'UNSET'}`,
   ]
   if (questionText === null) lines.push('lượt: tệp câu hỏi không đọc được')
