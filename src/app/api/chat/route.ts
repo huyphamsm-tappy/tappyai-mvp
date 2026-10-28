@@ -3067,8 +3067,16 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           read: (urls, focus) => innerRead({ urls, focus, kind: 'other' }, { toolCallId: `search_read_${randomUUID().slice(0, 6)}`, messages: [] }),
           gap: withGap ? {
             find: async titles => {
-              const out = await AI.extract({ role: 'intent', systemShared: FOLLOW_UP_SYSTEM, messages: [{ role: 'user', content: `CAU HOI:\n${lastText.slice(0, 600)}\n\nTRUY VAN DA DUNG:\n${q.slice(0, 200)}\n\nTIEU DE TRANG DA CO:\n${titles.map(t => `- ${t}`).join('\n').slice(0, 1500)}` }], schema: z.object({ query: z.string().nullable() }), schemaName: 'tappy_follow_up', maxTokens: 120 } as never) as { object?: { query?: string | null } } | null
-              return out?.object?.query ?? null
+              // The outcome of the gap call is logged as counts / a reason only (no query, no user words): a follow-up that never runs must be visible.
+              try {
+                const out = await AI.extract({ role: 'intent', systemShared: FOLLOW_UP_SYSTEM, messages: [{ role: 'user', content: `CAU HOI:\n${lastText.slice(0, 600)}\n\nTRUY VAN DA DUNG:\n${q.slice(0, 200)}\n\nTIEU DE TRANG DA CO:\n${titles.map(t => `- ${t}`).join('\n').slice(0, 1500)}` }], schema: z.object({ query: z.string().nullable() }), schemaName: 'tappy_follow_up', maxTokens: 120 } as never) as { object?: { query?: string | null } } | null
+                const gq = out?.object?.query ?? null
+                console.log(JSON.stringify({ type: 'tappyai_follow_up_gap', ok: true, has_query: !!(gq && gq.trim()), titles: titles.length }))
+                return gq
+              } catch (e) {
+                console.log(JSON.stringify({ type: 'tappyai_follow_up_gap', ok: false, error: e instanceof Error ? e.name : 'unknown', message_chars: e instanceof Error ? e.message.length : 0 }))
+                return null
+              }
             },
             search: async q2 => { const b2 = await innerSearch({ query: q2 }, o); researchReader.collectFrom(b2); return b2 },
           } : null,

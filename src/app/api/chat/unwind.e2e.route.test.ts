@@ -271,6 +271,23 @@ describe('unwind e2e — a place request whose search finds nothing keeps the mo
   }, 60000)
 })
 
+describe('unwind e2e — a markdown table reaches the user whole (S3B)', () => {
+  // measured on localhost 28/10 (L2): the line tidy dropped the "|---|" rule (no letter or digit) and the user saw raw "|" lines
+  const reply = 'So sánh nhanh:\n\n| Ngân hàng | 12 tháng |\n|---|---|\n| A | 5,9% |\n| B | 4,9% |\n\nNguồn ngày 26/10/2026.'
+  // the localhost turn: a comparison (the V1 frame is on: goal "compare") read as EASY, so no structured synthesis (route.ts: structured needs difficulty !== 'easy') and only the line tidy decides the table
+  const COMPARE: Msg[] = [{ role: 'user', content: 'so sanh lai suat tiet kiem 12 thang cua Vietcombank va BIDV giup minh' }]
+  const LEAN_CHAT = intent('chat', [], { difficulty: 'easy' })
+  it('flags ON: the rule line and every row are kept', async () => {
+    const on = await turn(COMPARE, { unwind: true, luna: LEAN_CHAT, tools: [SEARCH], reply })
+    expect(on.text).toContain('| Ngân hàng | 12 tháng |\n|---|---|\n| A | 5,9% |')
+  }, 60000)
+  it('flags OFF (L2, no structured synthesis): the rule line is dropped as at HEAD', async () => {
+    const off = await turn(COMPARE, { unwind: false, luna: LEAN_CHAT, tools: [SEARCH], reply })
+    expect(off.text).toContain('| Ngân hàng | 12 tháng |')
+    expect(off.text).not.toContain('|---|---|')
+  }, 60000)
+})
+
 describe('unwind e2e — the citation marker never reaches the user (S1C)', () => {
   const OPEN = String.fromCharCode(0xe200), CLOSE = String.fromCharCode(0xe201), SEP = String.fromCharCode(0xe202)
   const reply = `Giá điện bậc 1 là 1.893 đồng/kWh ${OPEN}cite${SEP}turn0search0${CLOSE}.`
