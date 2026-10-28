@@ -34,6 +34,7 @@ vi.mock('ai/react', () => ({
 
 import ChatInterface from './ChatInterface'
 import LocationProvider from './LocationProvider'
+import { setLocale } from '@/lib/i18n/useTranslation'
 
 const DAY = 24 * 3600 * 1000
 // a fix stored by an EARLIER session (Đà Nẵng, three days old) and the device's position NOW (TP.HCM, Quận 1)
@@ -104,6 +105,23 @@ describe('(a) a fix stored by an earlier session vs the device position now', ()
     expect(stored.lat).toBe(NOW_HCM.lat)
     expect(sessionStorage.getItem('tappy_location_session')).toBe(String(stored.ts))
   })
+})
+
+describe('(b2) the chip asks in the session\'s language', () => {
+  // 29/10: the chip sent 'Gợi ý vài địa điểm hay ở gần mình nhé' as the user's message even in an English session.
+  for (const [lang, sent] of [['en', 'Suggest a few good places near me'], ['vi', 'Gợi ý vài địa điểm hay ở gần mình nhé']] as const) {
+    it(`${lang}: the message the chip sends is "${sent}"`, async () => {
+      act(() => setLocale(lang)) // the app-wide locale store (a module value: set it, then put the default back)
+      try {
+        installGeo({ kind: 'ok', at: NOW_HCM })
+        render(<ChatInterface />)
+        await flush()
+        fireEvent.click(nearbyChip())
+        await flush()
+        expect(append.mock.calls.map(c => (c[0] as { content: string }).content)).toEqual([sent])
+      } finally { act(() => setLocale('vi')) }
+    })
+  }
 })
 
 describe('(c) the device refuses or times out', () => {

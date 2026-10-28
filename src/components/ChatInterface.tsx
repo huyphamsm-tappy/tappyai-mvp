@@ -1336,7 +1336,8 @@ export default function ChatInterface({
     const send = () => {
       posthog.capture('nearby_search_clicked')
       // The "📍 Nearby" chip is a place-search TOOL button — what it asks for is the place search, not a statement of Tappy's scope.
-      append({ role: 'user', content: 'Gợi ý vài địa điểm hay ở gần mình nhé' })
+      // In the session's language (29/10: an English session sent the Vietnamese sentence as the user's message).
+      append({ role: 'user', content: t('chat.chipNearbyAsk') })
     }
 
     // Round 42: always a NEW device fix (maximumAge 0). Refused / timed out → send WITHOUT a location (never an older fix); the server asks.
@@ -1345,7 +1346,7 @@ export default function ChatInterface({
       flushSync(() => setUserLocation(loc))
       send()
     })
-  }, [append])
+  }, [append, t])
 
   // Round 42 (D2): a typed "gần tôi / quanh đây …" message asks for a fresh fix before it is sent, like the 📍 chip. Other messages send at once.
   const freshFixPendingRef = useRef(false)
