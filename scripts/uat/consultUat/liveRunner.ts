@@ -70,6 +70,9 @@ export const BENCH_FLAG_NAMES: readonly string[] = [
   // Wave 4 · Q1 / Q2 (see liveTrialLauncher.mjs); unset follows the level from L2
   'CONSULT_KNOWLEDGE_PATH',
   'CONSULT_PICK_TURN_TOOLS',
+  // Wave 5 · W5-2 / W5-1 (see liveTrialLauncher.mjs); default OFF, not tied to the level
+  'CONSULT_PICK_PAGE_READ',
+  'CONSULT_READ_PAGE_LATE',
   // Wave 3 · W6: one number 0-4 that switches W2 / W4 (L1), W1 (L2), W3 (L3) on together (see liveTrialLauncher.mjs); default unset = level 0
   'CONSULT_CAPABILITY_LEVEL',
 ]
