@@ -1,0 +1,275 @@
+/**
+ * Unwind (28/10/2026) at ROUTE level, with the flag set of the U-DEV25 / U-BENCH12 measurement (RUN-ALL.ps1): L2 + the Wave 2 flags RUN-ALL sets +
+ * CONSULT_READ_PAGE_LATE + CONSULT_UNWIND_S1A..S4B + S6A..S6C. Full POST /api/chat, scripted intent call and scripted model, Serper and the page fetch
+ * mocked, no network, no key, no cost. It checks that the pieces work TOGETHER on the real route before a paid run:
+ *   · a request that already holds enough is answered by the model, never by the code-built card (S2A), and the model reads the open question;
+ *   · a model web_search comes back with the pages it found already read (S6A), only links of the turn, robots.txt honoured, and one follow-up search (S6B);
+ *   · the model's citation marker never reaches the user (S1C);
+ *   · the same turns with every unwind flag OFF behave as before (the card, no page read, the marker left alone).
+ * The messages and pages are written for this test; none comes from a benchmark or development question file, nor from the 28/10 UAT turns.
+ */
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { __resetAiQuestionQuotaLocal } from '@/lib/ai/quota/aiQuestionQuota'
+import { __resetSharedRobots } from '@/lib/ai/consultative/researchLoop'
+import { __resetPageCache } from '@/lib/ai/agent/runtime/readPage'
+
+type Call = { toolCallId: string; toolName: string; args: Record<string, unknown> }
+const h = vi.hoisted(() => {
+  const state = {
+    calls: [] as Call[],
+    results: [] as Array<{ name: string; result: any }>,
+    luna: null as null | Record<string, unknown>,
+    gapQuery: null as null | string,
+    extractRoles: [] as string[],
+    streamCalled: 0,
+    toolNames: [] as string[],
+    system: '' as string,
+    text: 'ok',
+    webCalls: [] as string[],
+    fetched: [] as string[],
+    pages: {} as Record<string, { status?: number; body: string; contentType?: string }>,
+    userId: 'u-unwind-e2e',
+  }
+  const builder = (): any => {
+    const b: any = {
+      select: () => b, in: () => b, or: () => b, order: () => b, limit: () => b, gte: () => b, lt: () => b, not: () => b, is: () => b, eq: () => b,
+      single: () => Promise.resolve({ data: null, error: null }), maybeSingle: () => Promise.resolve({ data: null, error: null }),
+      insert: () => Promise.resolve({ data: null, error: null }), upsert: () => Promise.resolve({ data: null, error: null }),
+      then: (r: any) => r({ data: [], error: null }),
+    }
+    return b
+  }
+  return { state, client: { from: () => builder(), rpc: () => Promise.resolve({ data: null, error: null }) } }
+})
+
+vi.mock('@/lib/supabase/server', () => ({ createClient: () => h.client }))
+vi.mock('@/lib/supabase/admin', () => ({ createAdminClient: () => h.client }))
+vi.mock('@/lib/account/ageEligibility', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@/lib/account/ageEligibility')>()),
+  getAgeEligibility: async () => ({ status: 'eligible', ageBand: '25_34', age: 30, canSelfCorrect: true }),
+}))
+vi.mock('@/lib/auth/getRequestUser', () => ({ getRequestUser: () => Promise.resolve({ user: { id: h.state.userId }, supabase: h.client }) }))
+vi.mock('@/lib/security/rateLimit', () => ({ rateLimit: () => ({ ok: true, retryAfter: 0 }), dailyRateLimit: () => ({ ok: true }), clientIp: () => '127.0.0.1' }))
+vi.mock('@/lib/security/safePageFetch', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@/lib/security/safePageFetch')>()),
+  fetchPublicPage: async (url: string) => {
+    h.state.fetched.push(url)
+    const p = h.state.pages[url]
+    if (!p) return { ok: false, url, reason: 'http_error', status: 404, redirects: 0, ms: 1 }
+    if ((p.status ?? 200) >= 400) return { ok: false, url, reason: 'http_error', status: p.status, redirects: 0, ms: 1 }
+    return { ok: true, url, finalUrl: url, status: 200, contentType: p.contentType ?? 'text/html; charset=utf-8', body: p.body, bytes: p.body.length, truncated: false, redirects: 0, ms: 1 }
+  },
+}))
+vi.mock('@/lib/ai/tools/common', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@/lib/ai/tools/common')>()),
+  getCache: () => null, setCache: () => undefined, fetchPlacePhotosByName: async () => [],
+  serperSearch: async (q: string) => { h.state.webCalls.push(String(q)); return [] },
+  webSearch: async (q: string) => {
+    h.state.webCalls.push(String(q))
+    return h.state.webCalls.length === 1
+      ? { results: [{ title: 'Bảng giá điện sinh hoạt', link: 'https://giadien.example/bang-gia', snippet: 'Biểu giá bậc thang' }, { title: 'Tin tức', link: 'https://tin.example/bai', snippet: 'Bài viết' }, { title: 'Diễn đàn', link: 'https://forum.example/t/1', snippet: 'Thảo luận' }, { title: 'Thứ tư', link: 'https://khac.example/4', snippet: 'x' }] }
+      : { results: [{ title: 'Quyết định điều chỉnh giá', link: 'https://chinhphu.example/qd', snippet: 'Văn bản' }, { title: 'Bảng giá điện sinh hoạt', link: 'https://giadien.example/bang-gia', snippet: 'trùng' }] }
+  },
+}))
+vi.mock('@/lib/ai/tools/serperPlaces', async (importOriginal) => ({ ...(await importOriginal<typeof import('@/lib/ai/tools/serperPlaces')>()), serperPlaces: async () => [] }))
+vi.mock('@/lib/ai/tools/food', async (importOriginal) => ({ ...(await importOriginal<typeof import('@/lib/ai/tools/food')>()), searchPlacesOSM: async () => ({ results: [] }) }))
+vi.mock('@/lib/ai/llm', () => ({
+  AI: {
+    isConfigured: () => true, providerId: () => 'mock', serving: () => ({ provider: 'mock', model: 'mock-model', effort: 'none' }),
+    extract: (o: { schemaName?: string }) => {
+      h.state.extractRoles.push(String(o?.schemaName ?? ''))
+      if (o?.schemaName === 'tappy_follow_up') return Promise.resolve({ object: { query: h.state.gapQuery }, usage: { promptTokens: 10, completionTokens: 5 }, providerMetadata: {} })
+      return h.state.luna ? Promise.resolve({ object: h.state.luna, usage: { promptTokens: 10, completionTokens: 5 }, providerMetadata: {} }) : Promise.reject(new Error('no provider in this test'))
+    },
+    stream: (opts: Record<string, any>) => {
+      h.state.streamCalled++
+      h.state.toolNames = Object.keys(opts.tools ?? {})
+      try { h.state.system = JSON.stringify({ system: opts.system, messages: opts.messages }) } catch { h.state.system = '' }
+      return {
+        get steps() { return Promise.resolve([{ toolResults: h.state.results.map(r => ({ toolName: r.name, result: r.result })) }]) },
+        toDataStreamResponse: () => new Response(new ReadableStream<Uint8Array>({
+          async start(c) {
+            const enc = new TextEncoder()
+            for (const call of h.state.calls) {
+              if (!opts.tools?.[call.toolName]) continue
+              c.enqueue(enc.encode(`9:${JSON.stringify(call)}\n`))
+              const result = await opts.tools[call.toolName].execute(call.args, { toolCallId: call.toolCallId, messages: [] })
+              h.state.results.push({ name: call.toolName, result })
+              c.enqueue(enc.encode(`a:${JSON.stringify({ toolCallId: call.toolCallId, result })}\n`))
+            }
+            if (h.state.text) c.enqueue(enc.encode(`0:${JSON.stringify(h.state.text)}\n`))
+            try { await opts.onFinish?.({ usage: { promptTokens: 0, completionTokens: 0 }, finishReason: 'stop', text: h.state.text, steps: [] }) } catch { /* the mock must not fail a turn */ }
+            c.enqueue(enc.encode('d:{"finishReason":"stop","usage":{"promptTokens":0,"completionTokens":0}}\n'))
+            c.close()
+          },
+        }), { status: 200, headers: { 'content-type': 'text/plain' } }),
+      }
+    },
+    step: () => Promise.resolve({ text: '', toolCalls: [], finishReason: 'stop', usage: { promptTokens: 100, completionTokens: 20 }, providerMetadata: {} }),
+    generate: () => Promise.resolve({ text: '' }), vision: () => Promise.resolve({ text: '' }),
+  },
+}))
+
+import { POST } from '@/app/api/chat/route'
+
+/** The flag set of RUN-ALL.ps1 Set-RunEnv + the U-DEV25 Extra (the bench-only BENCH_* switches are not route flags). */
+const UNWIND = ['S1A', 'S1B', 'S1C', 'S1D', 'S2A', 'S2B', 'S2C', 'S3A', 'S3B', 'S3C', 'S4A', 'S4B', 'S6A', 'S6B', 'S6C'].map(s => `CONSULT_UNWIND_${s}`)
+const BASE_FLAGS: Record<string, string> = {
+  CONSULTATIVE_V1: '1', CONSULT_V2: '1', CONSULT_FINAL_SYNTHESIS: '1', CONSULT_ANSWER_ATTRIBUTION: '1', CONSULT_GENERAL_ASSISTANT: '1', CONSULT_TRACE_DIAGNOSTICS: '1',
+  CONSULT_ABORT_ABANDONED_FIRST_PART: '1', CONSULT_KNOWLEDGE_TURN_TOOLS: '1', CONSULT_SEARCH_NOW_INTENT_GATE: '1', CONSULT_CAPABILITY_LEVEL: '2', CONSULT_READ_PAGE_LATE: '1',
+}
+type Msg = { role: 'user' | 'assistant'; content: string }
+const intent = (turn: string, domains: string[], extra: Record<string, unknown> = {}) => ({
+  domains, turn, goal: 'x', known: [], party: null, budget_vnd_max: null, difficulty: 'normal', missing: [], assumptions: [], ask: null, query: null, area: null, refers: [], reject_reason: null, ...extra,
+})
+interface TurnOpts { unwind: boolean; luna: Record<string, unknown>; tools?: Array<{ name: string; args: Record<string, unknown> }>; reply?: string; gapQuery?: string | null }
+
+async function turn(messages: Msg[], o: TurnOpts) {
+  delete process.env.TAPPY_AGENT
+  for (const [k, v] of Object.entries(BASE_FLAGS)) vi.stubEnv(k, v)
+  for (const k of UNWIND) vi.stubEnv(k, o.unwind ? '1' : '0')
+  for (const k of ['CONSULT_PICK_TURN_TOOLS', 'CONSULT_KNOWLEDGE_PATH', 'CONSULT_RESEARCH_LOOP', 'CONSULT_TOOL_BY_NEED', 'CONSULT_DETERMINISTIC_MATH', 'CONSULT_STRUCTURED_SYNTHESIS', 'CONSULT_CHAT_DOMAIN_AGREEMENT', 'CONSULT_THREAD_AWARE_ASK', 'CONSULT_PICK_PAGE_READ', 'CONSULT_LUNA_ONE', 'VERCEL_ENV']) vi.stubEnv(k, undefined as unknown as string)
+  h.state.calls = (o.tools ?? []).map((t, i) => ({ toolCallId: `c${i + 1}`, toolName: t.name, args: t.args }))
+  h.state.text = o.reply ?? 'Câu trả lời của mô hình.'
+  h.state.luna = o.luna
+  h.state.gapQuery = o.gapQuery ?? null
+  h.state.extractRoles = []; h.state.streamCalled = 0; h.state.toolNames = []; h.state.system = ''; h.state.results = []; h.state.webCalls = []; h.state.fetched = []
+  __resetAiQuestionQuotaLocal(); __resetPageCache(); __resetSharedRobots()
+  const req = {
+    url: 'http://localhost/api/chat', nextUrl: new URL('http://localhost/api/chat'),
+    headers: new Headers({ 'content-type': 'application/json', 'x-tappy-surface': 'web' }),
+    json: () => Promise.resolve({ messages }), signal: undefined,
+  }
+  const lines: string[] = []
+  const spy = vi.spyOn(console, 'log').mockImplementation((...a: unknown[]) => { lines.push(String(a[0])) })
+  let raw = ''
+  try { raw = await (await POST(req as never)).text() } finally { spy.mockRestore() }
+  const text = raw.split('\n').filter(l => l.startsWith('0:')).map(l => { try { return JSON.parse(l.slice(2)) as string } catch { return '' } }).join('')
+  const logs = lines.map(l => { try { return JSON.parse(l) as Record<string, any> } catch { return null } }).filter((x): x is Record<string, any> => !!x)
+  return { raw, text, logs, streamCalled: h.state.streamCalled, toolNames: [...h.state.toolNames], system: h.state.system, web: [...h.state.webCalls], fetched: [...h.state.fetched], results: [...h.state.results], extract: [...h.state.extractRoles] }
+}
+
+beforeEach(() => {
+  vi.useFakeTimers({ toFake: ['Date'] }); vi.setSystemTime(new Date('2026-10-28T03:09:00Z'))
+  h.state.pages = {
+    'https://giadien.example/robots.txt': { body: 'User-agent: *\nDisallow: /noi-bo\n', contentType: 'text/plain' },
+    'https://giadien.example/bang-gia': { body: '<html><head><title>Bảng giá điện</title></head><body><h1>Biểu giá bán lẻ điện sinh hoạt</h1><p>Bậc 1 (0 - 50 kWh): 1.893 đồng/kWh, áp dụng từ 11/10/2026.</p></body></html>' },
+    'https://tin.example/robots.txt': { status: 503, body: '' },
+    'https://tin.example/bai': { body: '<html><body><p>Không được mở: robots.txt của trang không tới được.</p></body></html>' },
+    'https://forum.example/robots.txt': { status: 404, body: '' },
+    'https://forum.example/t/1': { body: '<html><head><title>Diễn đàn</title></head><body><p>Mình đóng tiền điện tháng 10 khoảng 650.000 đồng.</p></body></html>' },
+    'https://chinhphu.example/robots.txt': { status: 404, body: '' },
+    'https://chinhphu.example/qd': { body: '<html><head><title>Quyết định</title></head><body><p>Giá bán lẻ điện bình quân điều chỉnh tăng 4,8% từ ngày 11/10/2026.</p></body></html>' },
+  }
+  vi.stubGlobal('fetch', async (input: unknown) => { throw new Error('network disabled in this test: ' + String(input).slice(0, 60)) })
+})
+afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals(); vi.unstubAllEnvs(); delete process.env.TAPPY_AGENT })
+
+const PLAN: Msg[] = [{ role: 'user', content: 'len ke hoach di choi da nang 4 ngay 3 dem, tong chi phi tam 18 trieu' }]
+const PLAN_INTENT = intent('ask', ['travel'], {
+  known: [{ key: 'diem_den', value: 'Đà Nẵng' }, { key: 'so_ngay', value: '4 ngày 3 đêm' }, { key: 'ngan_sach', value: '18 triệu' }],
+  ask: { lead: 'Để lên lịch cho bạn:', questions: [{ id: 'so_nguoi', q: 'Đi mấy người?', options: ['1', '2', '3-4'] }] },
+})
+
+describe('unwind e2e — a request that already holds enough is answered by the model (S2A)', () => {
+  it('flags ON: the model is called, the reply is the model\'s, no canned path, and the open question reaches the model', async () => {
+    const on = await turn(PLAN, { unwind: true, luna: PLAN_INTENT, reply: 'Lịch 4 ngày ở Đà Nẵng, giả định 2 người. Bạn đi mấy người?' })
+    expect(on.streamCalled).toBe(1)
+    expect(on.text).toContain('Lịch 4 ngày ở Đà Nẵng')
+    expect(on.logs.some(l => l.type === 'tappyai_canned_reply')).toBe(false)
+    expect(on.logs.some(l => l.type === 'tappyai_trace' && l.ev === 'path_cut' && l.kind === 'canned_reply')).toBe(false)
+    expect(on.logs.find(l => l.type === 'tappyai_unwind_ask')?.open_questions).toBe(1)
+    expect(on.system).toContain('LUOT NAY KHONG HOI LAI TRUOC')
+    // this turn is a lean (domain) turn: the writing block reaches that prompt build too
+    expect(on.system).toContain('CACH VIET LUOT NAY')
+  }, 60000)
+  it('flags OFF (same turn): the code-built card answers and the model is never called (HEAD)', async () => {
+    const off = await turn(PLAN, { unwind: false, luna: PLAN_INTENT })
+    expect(off.streamCalled).toBe(0)
+    expect(off.logs.some(l => l.type === 'tappyai_canned_reply')).toBe(true)
+    expect(off.text).not.toContain('Câu trả lời của mô hình')
+  }, 60000)
+})
+
+const KNOW: Msg[] = [{ role: 'user', content: 'gia dien sinh hoat bay gio bao nhieu 1 so' }]
+const KNOW_INTENT = intent('chat', [])
+const SEARCH = { name: 'web_search', args: { query: 'giá điện sinh hoạt 2026' } }
+
+describe('unwind e2e — a web search comes back with its pages read (S6A, S6B)', () => {
+  it('flags ON: the top pages are read in the search result, only through the reader (robots.txt honoured), plus ONE follow-up search', async () => {
+    const on = await turn(KNOW, { unwind: true, luna: KNOW_INTENT, tools: [SEARCH], gapQuery: 'quyết định điều chỉnh giá điện tháng 10 2026' })
+    expect(on.streamCalled).toBe(1)
+    expect(on.toolNames).toContain('read_page')
+    const ws = on.results.find(r => r.name === 'web_search')?.result
+    expect(Array.isArray(ws?.pages_read)).toBe(true)
+    const read = (ws.pages_read as Array<Record<string, unknown>>).filter(p => !('error' in p))
+    expect(read.length).toBe(2) // giadien + forum; tin.example has an unreachable robots.txt
+    expect(on.fetched).toContain('https://giadien.example/bang-gia')
+    expect(on.fetched).toContain('https://forum.example/t/1')
+    expect(on.fetched).not.toContain('https://tin.example/bai')
+    expect(on.fetched).not.toContain('https://khac.example/4') // only the top three are opened
+    // the follow-up: one gap call, one more search, its NEW page read (the duplicate link is not opened twice)
+    expect(on.extract).toContain('tappy_follow_up')
+    expect(on.web).toEqual(['giá điện sinh hoạt 2026', 'quyết định điều chỉnh giá điện tháng 10 2026'])
+    expect(ws.follow_up?.query).toBe('quyết định điều chỉnh giá điện tháng 10 2026')
+    expect(on.fetched).toContain('https://chinhphu.example/qd')
+    expect(on.fetched.filter(u => u === 'https://giadien.example/bang-gia').length).toBe(1)
+    const line = on.logs.find(l => l.type === 'tappyai_search_reads')
+    expect(line).toMatchObject({ pages_read: 2, follow_up: true, follow_up_pages: 1 })
+    // the freshness line (S3A) and the writing block (S3B) reach the model
+    expect(on.system).toContain('hom nay la 2026-10-28')
+    expect(on.system).toContain('CACH VIET LUOT NAY')
+  }, 60000)
+  it('flags OFF (same turn): the search result is the plain search, no page is opened by the code, no follow-up', async () => {
+    const off = await turn(KNOW, { unwind: false, luna: KNOW_INTENT, tools: [SEARCH], gapQuery: 'x' })
+    const ws = off.results.find(r => r.name === 'web_search')?.result
+    expect(ws?.pages_read).toBeUndefined()
+    expect(ws?.follow_up).toBeUndefined()
+    expect(off.fetched).toEqual([])
+    expect(off.web).toEqual(['giá điện sinh hoạt 2026'])
+    expect(off.extract).not.toContain('tappy_follow_up')
+    expect(off.logs.some(l => l.type === 'tappyai_search_reads')).toBe(false)
+    expect(off.system).not.toContain('CACH VIET LUOT NAY')
+  }, 60000)
+})
+
+const PICK: Msg[] = [{ role: 'user', content: 'tim quan bun cha ngon o pho hang bac giup minh' }]
+const PICK_INTENT = intent('pick', ['food'], { known: [{ key: 'mon', value: 'bún chả' }, { key: 'khu_vuc', value: 'Hàng Bạc' }], query: 'bún chả Hàng Bạc', area: 'Hàng Bạc' })
+
+describe('unwind e2e — a place request whose search finds nothing keeps the model\'s reply (S1A)', () => {
+  // S2C: neither the rules' query nor the intent layer's covers "phố" of the request, so the code does not pre-search: the MODEL searches (scripted below).
+  const PLACE_CALL = { name: 'search_places', args: { query: 'bún chả', location: 'Hàng Bạc, Hà Nội', type: 'restaurant' } }
+  it('flags ON: no code pre-search (S2C), the model has the place tool, its empty search keeps the model\'s words with the block appended, no TP.HCM chip', async () => {
+    const on = await turn(PICK, { unwind: true, luna: PICK_INTENT, tools: [PLACE_CALL], reply: 'Mình chưa thấy quán khớp trong dữ liệu; bạn thử tìm thêm theo tên phố nhé.' })
+    expect(on.logs.find(l => l.type === 'tappyai_unwind_presearch_query')?.chosen).toBe('none')
+    expect(on.logs.some(l => l.type === 'tappyai_presearch')).toBe(false)
+    expect(on.toolNames).toContain('search_places')
+    expect(on.text).toContain('Mình chưa thấy quán khớp trong dữ liệu')
+    expect(on.logs.find(l => l.type === 'tappyai_empty_result')).toMatchObject({ replaced: false, appended: true })
+    expect(on.text).toContain('chưa thấy kết quả đủ tin cậy')
+    expect(on.text).not.toContain('Tìm trên cả TP.HCM')
+  }, 60000)
+  it('flags OFF (same turn): HEAD never calls the model - the code-built card asks "how many people" (measured on this route, 28/10)', async () => {
+    const off = await turn(PICK, { unwind: false, luna: PICK_INTENT, tools: [PLACE_CALL], reply: 'Câu của mô hình không được giữ.' })
+    expect(off.logs.some(l => l.type === 'tappyai_unwind_presearch_query')).toBe(false)
+    expect(off.streamCalled).toBe(0)
+    expect(off.logs.some(l => l.type === 'tappyai_canned_reply')).toBe(true)
+    expect(off.text).toContain('[TAPPY_ASK]')
+    expect(off.text).not.toContain('Câu của mô hình không được giữ.')
+  }, 60000)
+})
+
+describe('unwind e2e — the citation marker never reaches the user (S1C)', () => {
+  const OPEN = String.fromCharCode(0xe200), CLOSE = String.fromCharCode(0xe201), SEP = String.fromCharCode(0xe202)
+  const reply = `Giá điện bậc 1 là 1.893 đồng/kWh ${OPEN}cite${SEP}turn0search0${CLOSE}.`
+  it('flags ON: removed from the stream', async () => {
+    const on = await turn(KNOW, { unwind: true, luna: KNOW_INTENT, reply })
+    expect(on.text).toContain('Giá điện bậc 1 là 1.893 đồng/kWh')
+    expect(on.text).not.toContain(OPEN)
+    expect(on.text).not.toContain('turn0search0')
+  }, 60000)
+  it('flags OFF: left as at HEAD (CONSULT_LUNA_ONE off)', async () => {
+    const off = await turn(KNOW, { unwind: false, luna: KNOW_INTENT, reply })
+    expect(off.text).toContain('turn0search0')
+  }, 60000)
+})
