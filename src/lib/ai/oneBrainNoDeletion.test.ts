@@ -46,9 +46,15 @@ describe('one brain: a venue bullet whose figures the place tool returned is kep
     expect(out).toContain('**The Coffee House – Cao Thắng:** 86–88 Cao Thắng')
     expect(out).toContain('từ 3.111 lượt')
   })
-  it('without one brain the same reply still loses those sentences (the shadow is one-brain only)', async () => {
+  // The cause was the review-count pattern: "07:00–22:00, đánh giá" read as "00, đánh giá" = 0 reviews (placeClaimGuard.ts); fixed for every path.
+  it('the same reply on every other path keeps them too: an hour followed by a comma and "đánh giá" is not a review count', async () => {
     const out = await run(CAFE_USER, placeFrames({ query: 'quiet cafe power outlets work laptop', location: 'Quận 3, TP.HCM', type: 'cafe' }, CAFE_ROWS, CAFE_REPLY), false)
-    expect(out).not.toContain('223 Võ Văn Tần')
+    expect(out).toContain('223 Võ Văn Tần')
+    expect(out).toContain('từ 2.261 lượt')
+  })
+  it('a real review count the tool does not have is still cut on every path', async () => {
+    const reply = CAFE_REPLY.replace('đánh giá 4,3/5 từ 2.261 lượt', 'đánh giá 4,3/5 từ 9.999 đánh giá')
+    expect(await run(CAFE_USER, placeFrames({ query: 'quiet cafe power outlets work laptop', location: 'Quận 3, TP.HCM', type: 'cafe' }, CAFE_ROWS, reply), false)).not.toContain('9.999 đánh giá')
   })
 })
 
@@ -174,6 +180,12 @@ describe('the same split through the stream filter (travel turn)', () => {
   })
   it('without one brain they are cut as before', async () => {
     expect(await run(TRIP_USER, frames, false, true)).not.toContain('2,1 triệu')
+  })
+  it('a plan turn in one brain gets no code-written "÷ 2 người" line after the model\'s own split; elsewhere the line is still added', async () => {
+    const plan = JSON.stringify({ type: 'trip', title: 'Phú Quốc 3 ngày 2 đêm', people: 2, days: [{ label: 'Ngày 1', items: [{ time: 'Sáng', category: 'transport', name: 'Bay Hà Nội – Phú Quốc', description: 'Chọn chuyến đến trước đầu giờ chiều.' }] }] })
+    const withPlan = ['0:' + JSON.stringify(`Mình đã lập lịch trình bên dưới.\n\n[TAPPY_PLAN]\n${plan}\n[/TAPPY_PLAN]`), 'd:{"finishReason":"stop"}']
+    expect(await run(TRIP_USER, withPlan, true, true, plan)).not.toContain('÷ 2 người')
+    expect(await run(TRIP_USER, withPlan, false, true)).toContain('÷ 2 người')
   })
   it('a plan card in the reply keeps its budget in one brain and loses it without', async () => {
     const plan = { type: 'trip', title: 'Phú Quốc 3 ngày 2 đêm', people: 2, budget_total: 'Khoảng 15.000.000₫ cho 2 người; dự toán giả định vé tối đa 6,0 triệu/2 người.', days: [{ label: 'Ngày 1', items: [{ time: 'Sáng', category: 'transport', name: 'Bay Hà Nội – Phú Quốc', description: 'Chọn chuyến đến trước đầu giờ chiều.' }] }] }

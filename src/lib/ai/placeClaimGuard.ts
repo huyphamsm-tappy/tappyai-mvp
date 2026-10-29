@@ -412,7 +412,9 @@ function statedScores(sentence: string, re: RegExp): number[] {
  * `á` is not an ASCII word character, so the boundary does not exist and the whole
  * pattern silently fails. Same trap that has now bitten three times in this repo.
  */
-const REVIEW_COUNT_RE = /\d[\d.,]*\s*(?:\+\s*)?(?:đánh giá|danh gia|nhận xét|nhan xet|lượt đánh giá|luot danh gia|reviews?|ratings?)(?!\p{L})/iu
+// A count does not begin inside another number or a clock time: "07:00–22:00, đánh giá 4,3/5" is an hour, a comma and the word, not "00, đánh giá" = 0 reviews
+// (measured 29/10 on localhost: two venue bullets whose every figure the place tool had returned were deleted whole by this).
+const REVIEW_COUNT_RE = /(?<![\d:.,])\d[\d.,]*\s*(?:\+\s*)?(?:đánh giá|danh gia|nhận xét|nhan xet|lượt đánh giá|luot danh gia|reviews?|ratings?)(?!\p{L})/iu
 
 /**
  * A Vietnamese phone number stated in prose.

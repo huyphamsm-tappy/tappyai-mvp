@@ -262,6 +262,23 @@ export function renderShoppingMarker(view: SynthesisView): string {
 }
 
 /**
+ * One brain: the model searches more than once in a turn (a first query, then one for the model it settled on), and the card was built from the FIRST
+ * search only — measured 29/10: the text recommended the Xiaomi 4 Lite found by the second search, the card showed the first search's filter. The later
+ * search's entities join the first's (a listing of the same name once, its key made unique); the first marker's recommendation and the rest stay as they were.
+ * A marker that does not parse leaves `a` as it is.
+ */
+export function mergeShoppingMarkers(a: string, b: string): string {
+  const x = parseShoppingMarker(a).view, y = parseShoppingMarker(b).view
+  if (!x || !y) return a
+  const nameOf = (e: SynthesisEntityView): string => (e.name ?? e.config ?? '').trim().toLowerCase()
+  const seen = new Set(x.entities.map(nameOf))
+  const keys = new Set(x.entities.map(e => e.key))
+  const added = y.entities.filter(e => { const n = nameOf(e); if (!n || seen.has(n)) return false; seen.add(n); return true })
+    .map(e => { let key = e.key, i = 1; while (keys.has(key)) key = `${e.key}#${i++}`; keys.add(key); return { ...e, key, recommended: false } })
+  return added.length === 0 ? a : renderShoppingMarker({ ...x, entities: [...x.entities, ...added] })
+}
+
+/**
  * Client: pull the view out of an assistant reply and return the text WITHOUT
  * the marker (so it never reaches formatMessage / TTS / copy). A missing or
  * malformed marker degrades to `{ text, view: null }` — never throws.

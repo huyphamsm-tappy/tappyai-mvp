@@ -33,6 +33,7 @@ import { capabilitiesOf, type CapabilitySource } from '@/lib/recommendation/capa
 import type { CommerceLinkRow } from '@/lib/ccp'
 import type { Recommendation } from '@/lib/recommendation/recommendation'
 import { admitsProducer, type ProducerSubject } from '@/lib/recommendation/slotAdmission'
+import { mergeShoppingMarkers } from '@/lib/ai/consultative/synthesisView'
 
 // `commerce_links` is the CCP row attachment (owner decision P6-B): Commerce Links the platform
 // resolved for the row. Carved for the same reason as `order_links` — the model must never see a
@@ -574,6 +575,8 @@ export function createEnrichmentCollector(turnText = '', earlierUserTexts: reado
     setShoppingMarker(marker) {
       // First one wins, mirroring the TikTok URL: one shopping decision per turn.
       if (marker && !this.shoppingMarker) this.shoppingMarker = marker
+      // CONSULT_ONE_BRAIN: every search of the turn contributes its listings, so the card can show the item the answer settled on.
+      else if (marker && this.oneBrain === true) this.shoppingMarker = mergeShoppingMarkers(this.shoppingMarker as string, marker)
     },
     appendix: undefined as { text: string; links: Array<{ name: string; url: string }> } | undefined,
     setAppendix(block) {

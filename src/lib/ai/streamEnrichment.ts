@@ -48,7 +48,8 @@ import { bindCitationMarkers, enforceCitationIntegrity, dropBareListMarkers, dro
 import { renumberOrderedLists } from './listNumbering'
 import { noFabricationGate } from './noFabricationGate'
 import { softenDoseClaims, markUnverifiedClaims } from './answerV4/doseClaims'
-import { extractRanking, applyRankingToRecs, applyRankingToShoppingMarker, withoutRecommendation } from './agent/runtime/rankingContract'
+import { extractRanking, applyRankingToRecs, applyRankingToShoppingMarker, withoutRecommendation, type RankingContract } from './agent/runtime/rankingContract'
+import { rankingFromProse } from './consultative/proseRanking'
 import { parseShoppingMarker } from './consultative/synthesisView'
 import { footerRemaining, CARDS_SHOWN as CARD_FOLD_SHOWN } from './cardCounts'
 import { groundEntityNames } from './entityNameGuard'
@@ -2350,8 +2351,9 @@ export function applyPlaceEnrichmentStreamFilter(
      * recommended with its own (qualitative) reason; `none` → no card. Everything downstream (photos, fold, emphasis) then reads that.
      * No block / no matching name → the pre-M5 behaviour (cards follow the venues the reply names). See rankingContract.ts.
      */
-    if (collector?.semanticRanking) {
-      const ex = extractRanking(mainText)
+    // CONSULT_ONE_BRAIN: no ranking line is asked of the model; the cards follow the items its answer names (proseRanking.ts, below).
+    if (collector?.semanticRanking || collector?.oneBrain === true) {
+      const ex = collector.semanticRanking ? extractRanking(mainText) : { text: mainText, contract: null as RankingContract | null, malformed: false }
       mainText = ex.text
       const rt: Record<string, unknown> = { block: ex.contract ? 'ok' : ex.malformed ? 'malformed' : 'absent', via: ex.contract ? 'inline' : null }
       // WS2: no valid inline block, and the turn has candidates → the decision is RECORDED from the final answer (one structured Luna
@@ -2365,6 +2367,14 @@ export function applyPlaceEnrichmentStreamFilter(
       if (planOwnsAnswer) { contract = null; rt.block = 'skipped_plan'; rt.via = null }
       let shoppingRanked = false // Luna's ranking reached the shopping card (otherwise the card is shown without a crowned option)
       const candidateNames = [...(collector.placesRecommendations ?? []).map(r => r.entity.identity.name ?? ''), ...(collector.shoppingMarker ? (parseShoppingMarker(collector.shoppingMarker).view?.entities ?? []).map(e => e.name ?? e.config ?? '') : [])].filter(Boolean)
+      // CONSULT_ONE_BRAIN: the named items, in the order named, the first crowned; a card nobody named is not shown, and none named leaves the cards as they were.
+      if (!planOwnsAnswer && !contract && collector.oneBrain === true && !collector.semanticRanking && candidateNames.length) {
+        const fromProse = rankingFromProse(mainText, [
+          ...(collector.placesRecommendations ?? []).map(r => ({ name: r.entity.identity.name ?? '' })),
+          ...(collector.shoppingMarker ? (parseShoppingMarker(collector.shoppingMarker).view?.entities ?? []).map(e => ({ name: e.name ?? e.config ?? '', price: typeof e.priceLow === 'number' ? e.priceLow : null })) : []),
+        ].filter(c => c.name))
+        if (fromProse) { contract = fromProse; rt.block = 'prose'; rt.via = 'prose' }
+      }
       // CONSULT_V3 task frame: no venue card will be shown for this task → the decision recorder (one structured call) is not needed for places.
       const taskSkipsRecorder = collector.consultV3 === true && !!collector.taskFrame && !cardsAllowed(collector.taskFrame.kind).places && !collector.shoppingMarker
       if (!planOwnsAnswer && !taskSkipsRecorder && !contract && collector.recordDecision && candidateNames.length) {
@@ -3157,7 +3167,8 @@ export function applyPlaceEnrichmentStreamFilter(
     if (collector?.evidenceTrace && evShield.report.sentences) { try { collector.evidenceTrace({ ...evShield.report }) } catch { /* trace only */ } }
     // CONSULT_V3 (owner 17/10, UAT đợt A): the "30.000.000đ ÷ 2 người = …" line is not added — the budget table below already allocates the
     // user's total (it stood next to the table as a duplicate). Off the flag: unchanged.
-    const budgeted0 = collector?.consultV3 === true ? planMask.restore(evRestored) : appendPlanBudgetMath(planMask.restore(evRestored), collector?.userTexts ?? [userText], lang).text
+    // CONSULT_ONE_BRAIN: the same (localhost 29/10: "💰 Ngân sách: 15.000.000đ ÷ 2 người = 7.500.000đ/người · ÷ 3 ngày…" was appended after the model's own split of the 15 triệu).
+    const budgeted0 = collector?.consultV3 === true || collector?.oneBrain === true ? planMask.restore(evRestored) : appendPlanBudgetMath(planMask.restore(evRestored), collector?.userTexts ?? [userText], lang).text
     // The user's own trip total (nearest statement wins; a figure under 500.000đ is a slang misread, not a trip budget) — CONSULT_V3 allocates it.
     const v3UserTotal = collector?.consultV3 === true
       ? ((collector.userTexts ?? [userText]).slice().reverse().map(t => extractPlanTotalBudget(t)).find(v => v !== null && v >= 500_000) ?? null)
@@ -4599,7 +4610,8 @@ export function applyPlaceEnrichmentStreamFilter(
           // Nothing model-authored rides along: this is the same server-built
           // object as before, emitted earlier and unchanged.
           // M5: under the agent's semantic ranking the card waits for Luna's order (it is sent with the reply).
-          if (!earlyShoppingMarkerSent && collector?.shoppingMarker && !collector.semanticRanking) {
+          // CONSULT_ONE_BRAIN: the same — the card waits for the answer, which names the item it recommends (proseRanking.ts); sent early it was the first search's engine pick.
+          if (!earlyShoppingMarkerSent && collector?.shoppingMarker && !collector.semanticRanking && collector.oneBrain !== true) {
             earlyShoppingMarkerSent = true
             earlyMarkerSentText = collector.shoppingMarker + '\n\n'
             controller.enqueue(encoder.encode('0:' + JSON.stringify(earlyMarkerSentText) + '\n'))
