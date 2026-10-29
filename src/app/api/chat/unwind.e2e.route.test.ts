@@ -330,7 +330,7 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
   const cases: Array<[string, Msg[], Record<string, unknown>]> = [['review', REVIEW, intent('chat', [])], ['trip', TRIP, TRIP_INTENT], ['pick', PICK, PICK_INTENT], ['know', KNOW, KNOW_INTENT], ['hello', [{ role: 'user', content: 'chao ban' }], intent('chat', [])]]
   const ALL_TOOLS = ['search_places', 'get_news', 'search_products', 'web_search', 'read_page', 'calculate', 'get_weather', 'get_weather_forecast', 'present_plan', 'get_gold_price', 'get_flight_prices', 'get_hotel_prices', 'get_transport_options', 'save_price_watch']
   const reply = 'Trả lời của mô hình.'
-  it('flag ON: every kind of request reaches the model the same way - no intent call, the whole tool set, the one general instruction, 6 steps, 4000 tokens', async () => {
+  it('flag ON: every kind of request reaches the model the same way - no intent call, the whole tool set, the one general instruction, 8 steps, 4000 tokens', async () => {
     for (const [name, m, l] of cases) {
       const on = await turn(m, { unwind: true, oneBrain: true, luna: l, reply })
       expect(on.streamCalled, name).toBe(1)
@@ -338,7 +338,7 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
       expect(on.logs.some(x => x.type === 'tappyai_luna_intent'), name).toBe(false)
       expect([...on.toolNames].sort(), name).toEqual([...ALL_TOOLS].sort())
       expect(on.opts.systemShared, name).toContain('You are Tappy, a general AI assistant')
-      expect(on.opts, name).toMatchObject({ role: 'consult', maxSteps: 6, maxTokens: 4000 })
+      expect(on.opts, name).toMatchObject({ role: 'consult', maxSteps: 8, maxTokens: 4000 })
       expect(on.system, name).not.toContain('NGUOI TU VAN')
       expect(on.text, name).toContain(reply)
     }
@@ -538,7 +538,7 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     const on = await turn(COMPARE, { unwind: false, oneBrain: true, luna: intent('chat', [], { difficulty: 'easy' }), tools: [SEARCH], reply: table })
     expect(on.text).toContain('| Ngân hàng | 12 tháng |\n|---|---|\n| A | 5,9% |')
     // the one-brain limits do not lean on the unwind flags (S3B alone would also give 4000)
-    expect(on.opts).toMatchObject({ role: 'consult', maxSteps: 6, maxTokens: 4000 })
+    expect(on.opts).toMatchObject({ role: 'consult', maxSteps: 8, maxTokens: 4000 })
   }, 60000)
   it('flag ON: a follow-up about a venue of the previous reply is answered by the model, not by a code-written reply', async () => {
     const thread: Msg[] = [{ role: 'user', content: 'Gợi ý giúp mình một quán cà phê yên tĩnh để làm việc' }, { role: 'assistant', content: 'Mình chọn **Cơm Niêu Sài Gòn**, số **028 1111 2222**.' }, { role: 'user', content: 'số điện thoại của quán này là gì?' }]

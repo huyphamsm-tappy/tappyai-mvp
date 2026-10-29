@@ -25,8 +25,8 @@ describe('the one general instruction', () => {
     expect(ONE_BRAIN_CORE.replace('"mình"', '').replace('"bạn"', '')).not.toMatch(/[ăâđêôơưạảấầẩẫậắằẳẵặẹẻẽếềểễệỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹ]/i)
     for (const w of ['Tesla', 'Quy Nhơn', 'Quy Nhon', 'Điện Biên', 'GitHub', 'Hoàng Sa', 'e-commerce']) expect(ONE_BRAIN_CORE, w).not.toContain(w)
   })
-  it('limits: 6 steps, 4000 output tokens', () => {
-    expect(ONE_BRAIN_MAX_STEPS).toBe(6)
+  it('limits: 8 steps (2 kept for writing, so 6 rounds of lookup; owner 29/10), 4000 output tokens', () => {
+    expect(ONE_BRAIN_MAX_STEPS).toBe(8)
     expect(ONE_BRAIN_MAX_TOKENS).toBe(4000)
   })
 })

@@ -10,8 +10,8 @@
 // (ChatGPT_Conversation_Layout_and_Voice_Guide_VI.pdf, 28/10) as principles; it names no question, topic word or evaluation item.
 // Pure.
 
-/** Tool steps of a one-brain turn: a search, its pages, a second search, a place / price call and the writing step. */
-export const ONE_BRAIN_MAX_STEPS = 6
+/** Steps of a one-brain turn: 2 are kept for writing (FINAL_SYNTHESIS_RESERVED_STEPS), the other 6 are lookup rounds (29/10: 6 → 8, so a multi-criteria question can search, read reviews and check again). */
+export const ONE_BRAIN_MAX_STEPS = 8
 /** Output ceiling of a one-brain turn (the hard ceiling of the route, as S3B). */
 export const ONE_BRAIN_MAX_TOKENS = 4000
 
