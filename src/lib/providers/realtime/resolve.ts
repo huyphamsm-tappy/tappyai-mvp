@@ -1,6 +1,7 @@
 import { resolveCommerce, type CommerceLink, type CommerceRequest, type DiscoveryHint } from '@/lib/ccp'
 import { mergeRefs, verifiedRefsFor, type LocateFn } from './locations'
 import { agodaAdapter } from './agoda'
+import { agodaLiteAdapter } from './agodaLite'
 import { bookingDemandAdapter } from './bookingDemand'
 import { locateRefs } from './locate'
 import { adapterState, claimableAvailability, claimablePrice, defaultHttp, logRealtime } from './common'
@@ -17,7 +18,9 @@ import type { AdapterDeps, AdapterState, CapabilityLevel, HttpPost, OutcomeReaso
 //
 // Affiliate wrapping is applied (or not) inside src/lib/ccp and is invisible here: it never changes which level a provider reaches.
 
-export const REALTIME_ADAPTERS: readonly RealtimeAdapter[] = [bookingDemandAdapter, agodaAdapter, travelokaAdapter, vexereAdapter]
+// 30/10: agodaLiteAdapter is the Agoda API the partner account actually holds (Affiliate Lite); agodaAdapter (Demand API) stays for the day
+// Agoda grants it. Each has its own flag; switch on one of the two, never both (they answer for the same provider).
+export const REALTIME_ADAPTERS: readonly RealtimeAdapter[] = [bookingDemandAdapter, agodaAdapter, agodaLiteAdapter, travelokaAdapter, vexereAdapter]
 
 export interface ProviderStatus {
   provider: RealtimeProviderId
