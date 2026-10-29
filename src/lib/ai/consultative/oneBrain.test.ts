@@ -45,6 +45,10 @@ describe('oneBrainDynamic', () => {
     expect(d.endsWith(ONE_BRAIN_SHAPE_REMINDER)).toBe(true)
     expect(ONE_BRAIN_SHAPE_REMINDER).toContain('**bold label**')
   })
+  it('the person\'s own style setting outranks the default shape, even though the reminder is last (29/10)', () => {
+    expect(ONE_BRAIN_SHAPE_REMINDER).toMatch(/response style[^.]*(wins|overrides)|(wins|overrides)[^.]*response style/i)
+    expect(ONE_BRAIN_SHAPE_REMINDER).toContain('the person asks for')
+  })
   it('names the address the device sent, never coordinates', () => {
     expect(oneBrainDynamic({ lang: 'en', now, address: 'Quận 1, TP.HCM', hasLocation: true, blocks: [] })).toContain('device location: Quận 1, TP.HCM')
     const noAddr = oneBrainDynamic({ lang: 'en', now, address: null, hasLocation: true, blocks: [] })
