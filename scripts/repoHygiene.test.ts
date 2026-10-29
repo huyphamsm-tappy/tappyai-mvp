@@ -55,5 +55,7 @@ describe('audit captures carry no new personal data', () => {
       try { if (statSync(f).size > 8_000_000) continue; if (re.test(readFileSync(f, 'utf8'))) n++ } catch { /* deleted in the working tree */ }
     }
     expect(n).toBeLessThanOrEqual(20)
-  })
+    // 29/10: a synchronous read of every tracked audit / evidence file (up to 8 MB each); under the full run it passed the default 5 s
+    // (green alone, 6/6). The scan and its ceiling are unchanged; only the time it is given.
+  }, 60_000)
 })
