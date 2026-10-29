@@ -4477,6 +4477,15 @@ export function applyPlaceEnrichmentStreamFilter(
               }
             }
             if (toolName === 'get_hotel_prices') {
+              // 29/10 (localhost, Agoda Lite ON): a nightly rate the realtime layer FETCHED for these dates (`realtime_results`, a fresh price
+              // only) is live structured evidence like a flight's price_vnd; the travel guard emptied the reply's price table and wrote "Giá
+              // phòng theo ngày mình chưa xác nhận được". The stay's total (the rate × its nights, `stay_nights`) is evidence too. Nothing is
+              // added when no realtime provider answered (every flag OFF by default).
+              for (const row of ((res.result as { realtime_results?: unknown } | undefined)?.realtime_results ?? []) as Array<Record<string, unknown>>) {
+                if (typeof row?.price !== 'number' || !(row.price > 0)) continue
+                travelFares.push(row.price)
+                if (typeof row.stay_nights === 'number' && row.stay_nights > 1 && row.stay_nights <= 30) travelFares.push(row.price * row.stay_nights)
+              }
               // A hotel's star class and its "cách X 900 m" come from the row's own
               // snippet, never a structured field — so the snippet IS the evidence
               // for those numbers. Without this the place guard would redact a

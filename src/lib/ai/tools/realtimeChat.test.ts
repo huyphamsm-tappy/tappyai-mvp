@@ -80,6 +80,15 @@ describe('A. "khách sạn Đà Lạt 20-22/10 cho 2 người"', () => {
     expect(realtimeLogs().find(l => l.step === 'attach')).toMatchObject({ provider: 'agoda', ok: true, results: 1 })
   })
 
+  it('a hotel row carries the nights searched (20→22/10 = 2), so the stay total is evidence; a stale row carries none (29/10)', async () => {
+    const r = hotelResult()
+    await attachCommerceLinks('get_hotel_prices', r, hotelCtx({ env: AGODA_ENV, http: httpOk(agodaSearch()), now: () => NOW }) as never)
+    expect((r.realtime_results as Row[])[0].stay_nights).toBe(2)
+    const stale = hotelResult()
+    await attachCommerceLinks('get_hotel_prices', stale, hotelCtx({ env: AGODA_ENV, http: httpOk(agodaSearch()), now: () => new Date(NOW.getTime() + 24 * 3_600_000) }) as never)
+    for (const row of (stale.realtime_results ?? []) as Row[]) expect(row.stay_nights).toBeUndefined()
+  })
+
   it('realtime timeout: the result is untouched and the fallback reason is logged', async () => {
     const abort: HttpPost = async () => { const e = new Error('slow'); e.name = 'AbortError'; throw e }
     const r = hotelResult()

@@ -150,10 +150,13 @@ function describe(o: SearchResult, now: Date, assumedAdults: boolean, c: SearchC
   const priceText = fresh ? vnd(price as number, o.currency as 'VND' | 'USD') : null
   const checkedAt = fresh ? hhmm(o.lastCheckedAt as string) : null
   const guests = c.context.adults !== undefined ? `${c.context.adults} người${assumedAdults ? ' (mặc định)' : ''}` : null
+  // 29/10: a hotel rate is per night; the number of nights searched lets the reply state the stay's total, and that total stays evidence.
+  const nights = c.vertical === 'hotel' && c.context.checkIn && c.context.checkOut ? Math.round((Date.parse(c.context.checkOut) - Date.parse(c.context.checkIn)) / 86_400_000) : null
   return {
     provider,
     name: o.title,
     ...(fresh ? { price, currency: o.currency, price_text: priceText } : {}),
+    ...(fresh && nights !== null && nights >= 1 && nights <= 30 ? { stay_nights: nights } : {}),
     ...(fresh && avail === 'available' && o.availability !== null ? { rooms_left: o.availability } : {}),
     availability_status: avail,
     ...(checkedAt ? { checked_at: checkedAt } : {}),
