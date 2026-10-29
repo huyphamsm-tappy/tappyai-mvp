@@ -70,7 +70,7 @@ describe('Agoda Lite adapter — response', () => {
     expect(r.ok).toBe(true)
     if (!r.ok) return
     const [a, b] = r.value
-    expect(a).toMatchObject({ provider: 'agoda', vertical: 'hotel', providerItemId: '463019', title: 'Hoi An Riverside Hotel', price: 850000, currency: 'VND', availability: null, availabilityStatus: 'available', source: 'REALTIME_TAPPY', realtimeSource: 'agoda-lite/lt_v1', lastCheckedAt: NOW.toISOString(), rawReference: 'agoda-lite:463019' })
+    expect(a).toMatchObject({ provider: 'agoda', vertical: 'hotel', providerItemId: '463019', title: 'Hoi An Riverside Hotel', price: 850000, currency: 'VND', priceUnit: 'per_night', availability: null, availabilityStatus: 'available', source: 'REALTIME_TAPPY', realtimeSource: 'agoda-lite/lt_v1', lastCheckedAt: NOW.toISOString(), rawReference: 'agoda-lite:463019' })
     expect(a.bookingUrl).toBe(LANDING(463019))
     expect(a.contextMissingInUrl).toEqual([]) // checkin, checkout, NumberofAdults, Rooms all carried
     expect(a.subtitle).toBe('4★ · 8,6/10 (1.234 đánh giá) · giá/đêm chưa gồm thuế, phí')

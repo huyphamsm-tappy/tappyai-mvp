@@ -85,6 +85,7 @@ export function mapLiteHotel(raw: unknown, c: SearchCriteria, now: Date): Search
     subtitle: subtitleOf(r),
     price: rate !== null && rate > 0 && currency ? rate : null,
     currency: rate !== null && rate > 0 && currency ? currency : null,
+    priceUnit: 'per_night',
     availability: null, // the Lite API states no room count
     // A row is an offer for these dates; a row without a rate is not evidence of a room.
     availabilityStatus: rate !== null && rate > 0 ? 'available' : 'unknown',

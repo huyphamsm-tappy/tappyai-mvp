@@ -80,13 +80,30 @@ describe('A. "khách sạn Đà Lạt 20-22/10 cho 2 người"', () => {
     expect(realtimeLogs().find(l => l.step === 'attach')).toMatchObject({ provider: 'agoda', ok: true, results: 1 })
   })
 
-  it('a hotel row carries the nights searched (20→22/10 = 2), so the stay total is evidence; a stale row carries none (29/10)', async () => {
-    const r = hotelResult()
-    await attachCommerceLinks('get_hotel_prices', r, hotelCtx({ env: AGODA_ENV, http: httpOk(agodaSearch()), now: () => NOW }) as never)
-    expect((r.realtime_results as Row[])[0].stay_nights).toBe(2)
+  it('a PER-NIGHT rate (Agoda Lite) says "/đêm" and carries the stay total for the nights searched; a provider total (Demand) does not (29/10)', async () => {
+    // live 29/10: the unlabelled Agoda Lite nightly rate was stated as the 2-night total
+    const LITE_ENV = { CCP_REALTIME_AGODA_LITE: '1', AGODA_LITE_SITE_ID: '1', AGODA_LITE_API_KEY: 'secret-key-value' }
+    const liteJson = { results: [{ hotelId: 4942635, hotelName: 'The Luxe Hotel Da Lat', dailyRate: 900_000, currency: 'VND', landingURL: LANDING }] }
+    const lite = hotelResult()
+    await attachCommerceLinks('get_hotel_prices', lite, hotelCtx({ env: LITE_ENV, http: httpOk(liteJson), now: () => NOW }) as never)
+    const row = (lite.realtime_results as Row[])[0]
+    expect(row).toMatchObject({ price: 900_000, price_text: '900.000đ/đêm', price_unit: 'mỗi đêm, chưa gồm thuế và phí', stay_nights: 2, stay_total: 1_800_000, stay_total_text: '1.800.000đ cho 2 đêm, chưa gồm thuế và phí' })
+    expect(row.link_label).toBe('The Luxe Hotel Da Lat — 900.000đ/đêm, kiểm tra lúc 10:00')
+    expect(row.sentence).toMatch(/^900\.000đ\/đêm \(Tappy kiểm tra lúc 10:00/)
+    expect(String(lite.realtime_note)).toMatch(/MỘT ĐÊM/)
+    // a rate past its freshness window states no price, so no unit and no total either
     const stale = hotelResult()
-    await attachCommerceLinks('get_hotel_prices', stale, hotelCtx({ env: AGODA_ENV, http: httpOk(agodaSearch()), now: () => new Date(NOW.getTime() + 24 * 3_600_000) }) as never)
-    for (const row of (stale.realtime_results ?? []) as Row[]) expect(row.stay_nights).toBeUndefined()
+    await attachCommerceLinks('get_hotel_prices', stale, { ...hotelCtx({ env: LITE_ENV, http: httpOk(liteJson), now: () => NOW }), now: new Date(NOW.getTime() + 24 * 3_600_000) } as never)
+    for (const s of (stale.realtime_results ?? []) as Row[]) { expect(s.price).toBeUndefined(); expect(s.stay_total).toBeUndefined(); expect(s.price_unit).toBeUndefined() }
+    expect(((stale.realtime_results ?? []) as Row[]).length).toBe(1)
+    // Agoda Demand's totalPayment is the stay's total: no unit, no nights, no multiplication
+    const demand = hotelResult()
+    await attachCommerceLinks('get_hotel_prices', demand, hotelCtx({ env: AGODA_ENV, http: httpOk(agodaSearch()), now: () => NOW }) as never)
+    const d = (demand.realtime_results as Row[])[0]
+    expect(d.price_text).toBe('1.800.000đ')
+    expect(d.stay_nights).toBeUndefined()
+    expect(d.price_unit).toBeUndefined()
+    expect(String(demand.realtime_note)).not.toMatch(/MỘT ĐÊM/)
   })
 
   it('realtime timeout: the result is untouched and the fallback reason is logged', async () => {

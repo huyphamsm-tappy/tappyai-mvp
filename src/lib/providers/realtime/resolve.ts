@@ -166,7 +166,7 @@ export function liveSentence(r: SearchResult, now: Date): string {
   const avail = claimableAvailability(r, now)
   if (price !== null && r.currency && r.lastCheckedAt) {
     const left = avail === 'available' && r.availability !== null ? `, còn ${r.availability} phòng` : avail === 'sold_out' ? ', hết phòng' : ''
-    return `${vnd(price, r.currency)} (Tappy kiểm tra lúc ${hhmm(r.lastCheckedAt)}${left}) — sẽ kiểm tra lại khi bạn chọn.`
+    return `${vnd(price, r.currency)}${r.priceUnit === 'per_night' ? '/đêm' : ''} (Tappy kiểm tra lúc ${hhmm(r.lastCheckedAt)}${left}) — sẽ kiểm tra lại khi bạn chọn.`
   }
   return pageSentence(r.provider)
 }
