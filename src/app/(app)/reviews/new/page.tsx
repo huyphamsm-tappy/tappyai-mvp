@@ -21,6 +21,7 @@ import {
   type MusicSelection,
 } from '@/modules/music'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { isAnonymousUser } from '@/lib/auth/socialWriteAccess'
 import { detectSource, placeholderFor, SUPPORTED_LINK_SOURCES, type LinkSource } from '@/lib/links/platforms'
 import { mergeHashtags, parseHashtags } from '@/lib/reviews/hashtags'
 
@@ -76,6 +77,9 @@ const MODES = [
 ] as const
 /** The body's existing ceiling - the same 1000 the textarea and its counter always used. */
 const BODY_MAX = 1000
+/** A visitor's unposted review, kept across the trip to /login (owner C1 = b). */
+const REVIEW_DRAFT_KEY = 'tappy_review_draft_v1'
+const REVIEW_DRAFT_TTL_MS = 24 * 60 * 60 * 1000
 
 /* ─── helpers ─── */
 
@@ -394,25 +398,34 @@ export default function NewReviewPage() {
   const loginHref = () => `/login?returnTo=${encodeURIComponent('/reviews/new' + window.location.search)}`
   const ensureSession = async () => {
     const { data: { user } } = await supabase.auth.getUser()
-    if (user) return true
+    if (user && !isAnonymousUser(user)) return true
+    saveDraft()
     router.replace(loginHref())
     return false
   }
 
-  /* ─── Auth gate ───
-     The composer is login-only: every upload path mints a server token that 401s for anonymous users.
-     Mount gate: no session, no form — an anonymous visitor is sent to login before the form is shown. */
-  const [authed, setAuthed] = useState(false)
+  /* ─── Draft (owner C1 = b, 29 Oct 2026) ───
+     A visitor may write before signing in; login is asked at the first upload or at Post. What was typed is
+     kept in this browser across that trip to /login and restored here, then cleared once the review is posted.
+     Text fields only: media needs a signed-in upload, so none exists yet. 24 h, then dropped. */
+  const saveDraft = () => {
+    try {
+      localStorage.setItem(REVIEW_DRAFT_KEY, JSON.stringify({ at: Date.now(), mediaMode, body, placeName, placeArea, rating, source_url }))
+    } catch { /* storage blocked: the trip to login simply starts over */ }
+  }
   useEffect(() => {
-    let cancelled = false
-    supabase.auth.getUser()
-      .then(({ data: { user } }) => {
-        if (cancelled) return
-        if (user) setAuthed(true)
-        else router.replace(loginHref())
-      })
-      .catch(() => { if (!cancelled) router.replace(loginHref()) })
-    return () => { cancelled = true }
+    try {
+      const raw = localStorage.getItem(REVIEW_DRAFT_KEY)
+      if (!raw) return
+      const d = JSON.parse(raw) as Partial<{ at: number; mediaMode: typeof mediaMode; body: string; placeName: string; placeArea: string; rating: number; source_url: string }>
+      if (typeof d.at !== 'number' || Date.now() - d.at > REVIEW_DRAFT_TTL_MS) { localStorage.removeItem(REVIEW_DRAFT_KEY); return }
+      if (d.mediaMode === 'photo' || d.mediaMode === 'video' || d.mediaMode === 'url') setMediaMode(d.mediaMode)
+      if (typeof d.body === 'string') setBody(d.body)
+      if (typeof d.placeName === 'string') setPlaceName(d.placeName)
+      if (typeof d.placeArea === 'string') setPlaceArea(d.placeArea)
+      if (typeof d.rating === 'number') setRating(d.rating)
+      if (typeof d.source_url === 'string' && d.source_url) handleUrlChange(d.source_url)
+    } catch { /* a malformed draft is ignored */ }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -714,7 +727,8 @@ export default function NewReviewPage() {
     setError(''); setSubmitting(true)
     try {
       const { data: { user } } = await supabase.auth.getUser()
-      if (!user) { router.push('/login?returnTo=/reviews/new'); return }
+      // A visitor (no session, or the anonymous chat session) signs in here; what they wrote waits in the draft.
+      if (!user || isAnonymousUser(user)) { saveDraft(); router.push(loginHref()); return }
 
       const placeId = mediaMode === 'photo' && placeName.trim()
         ? 'community_' + placeName.trim().toLowerCase().replace(/\s+/g, '_')
@@ -773,6 +787,7 @@ export default function NewReviewPage() {
       const data = await res.json()
       if (!res.ok) { vfail('submit-review', tSubmit, new Error(data.error || `HTTP ${res.status}`)); throw new Error(data.message || data.error || t('reviewNew.postError')) }
       vok('submit-review', tSubmit)
+      try { localStorage.removeItem(REVIEW_DRAFT_KEY) } catch { /* nothing kept */ }
 
       // The server decides whether this was published. Saving the row is not the
       // same as publishing it, and reporting success for content the gate has
@@ -837,16 +852,6 @@ export default function NewReviewPage() {
             </Link>
           </div>
         </div>
-      </div>
-    )
-  }
-
-  /* ─── Auth gate screen ───
-     Held until the session is confirmed, so an anonymous visitor never sees the form (already on the way to /login). */
-  if (!authed) {
-    return (
-      <div className="min-h-dvh bg-white dark:bg-gray-950 flex items-center justify-center">
-        <Loader2 size={24} className="animate-spin text-gray-400" />
       </div>
     )
   }
