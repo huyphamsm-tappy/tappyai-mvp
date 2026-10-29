@@ -99,6 +99,7 @@ import { HARD_GAP_WORDS } from './consultative/hardConstraints'
 import { capHedges } from './consultative/hedgeCap'
 import type { Hard } from './consultative/situationFrame'
 import { guardProseShape } from './consultative/proseShape'
+import { compactSystemLinks } from './consultative/systemLinkRow'
 import { admitsUnverified, dedupeCaveats, stripOrphanSourceLabels } from './caveatDedupe'
 import { auditTrace } from './auditTrace'
 import { cardPathTrace } from './cardPathTrace'
@@ -4070,7 +4071,7 @@ export function applyPlaceEnrichmentStreamFilter(
       ? (lang === 'vi' ? '🔗 Liên kết đối tác:' : '🔗 Partner links:')
       : (lang === 'vi' ? '🔗 Liên kết chính thức:' : '🔗 Official links:')
     const systemLinksSuffix = systemLinks.length > 0 && missingSystemLinks.length === systemLinks.length
-      ? `\n\n${linksLabel} ${missingSystemLinks.map(l => `[${escapeMarkdownLabel(l.name)}](${sanitizeUrlForMarkdown(l.url)})`).join(' · ')}`
+      ? `\n\n${linksLabel} ${(collector?.oneBrain === true ? compactSystemLinks(missingSystemLinks) : missingSystemLinks).map(l => `[${escapeMarkdownLabel(l.name)}](${sanitizeUrlForMarkdown(l.url)})`).join(' · ')}`
       : ''
     // Phase 7 2B/2C: a flight / film fact no approved source returns is said to be unverified for exactly the dimension the user asked
     // (fare, flight times, flight status, showtime, ticket price) — the system's sentence leads unless the reply already says it.
