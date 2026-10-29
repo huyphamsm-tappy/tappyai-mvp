@@ -70,7 +70,7 @@ import { placeRecommendations, productRecommendations, stayRecommendations } fro
 import { producerSubject } from '@/lib/recommendation/slotAdmission'
 import { enrichWithTikTok } from '@/lib/links/tiktokEnrichment'
 import { serperSearch } from '@/lib/ai/tools/common'
-import { dropInactiveMerchantRows, attachCommerceLinks } from '@/lib/ai/tools/commerce'
+import { dropInactiveMerchantRows, attachCommerceLinks as attachCommerceLinksBase } from '@/lib/ai/tools/commerce'
 import { dropLoginWallRows } from '@/lib/ai/tools/loginWallHosts'
 import { commerceActorHash } from '@/lib/ccp'
 import { sealIdentity } from '@/lib/ccp/tracking/clickLink'
@@ -2462,6 +2462,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
    * other turn is answering one question and gets one. Request-scoped, exactly like the enrichment
    * collector, so one conversation can never spend another's allowance.
    */
+  // CONSULT_ONE_BRAIN (P0-3): a question that names several merchants ("Shopee hay Lazada…") is a comparison; the keyword reading must not pick the first as "the" requested merchant.
+  const attachCommerceLinks: typeof attachCommerceLinksBase = (toolName, result, ctx = {}) => attachCommerceLinksBase(toolName, result, oneBrain ? { ...ctx, unambiguousMerchantOnly: true } : ctx)
   // Google Places safety quota (provider layer, placesBudget.ts) — never an orchestration constant of either agent loop.
   // CONSULT_ONE_BRAIN: the model plans its own searches (restaurants, then attractions, ...), so it gets the agent's budget, not one place search a turn.
   const placesBudget = createPlacesBudget(agentOn ? PLACES_BUDGET_AGENT : oneBrain ? PLACES_BUDGET_AGENT : planningIntent ? PLACES_BUDGET_PLANNING : PLACES_BUDGET_DEFAULT)
@@ -4048,6 +4050,7 @@ ${finalWriteInstruction(lang)}` },
     }
   // A trip PLAN holds the whole reply too (owner 2026-09-28, B4): on uat @ 444774d a released prefix
   // carried the model's own "bay hay đi xe khách từ thành phố nào?" past planTripFactsGuard.
+  // (CONSULT_ONE_BRAIN, P0-3: the stream filter ignores this keyword reading of the question there; the place guards follow the place TOOL the model called.)
   }, followSeed, travelIntent || planningIntent === 'trip', lastText, needProfile.domain === 'places',
   /**
    * 🚨 TIKTOK REVIEW DISCOVERY — THE V1/V2 CAPABILITY, RESTORED WITH A QUERY

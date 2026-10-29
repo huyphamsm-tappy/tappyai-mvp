@@ -153,11 +153,17 @@ const MERCHANT_PATTERNS: ReadonlyArray<{ providerId: string; re: RegExp }> = Obj
   .sort((a, b) => b.n.length - a.n.length)
   .map(({ providerId, n }) => ({ providerId, re: new RegExp(`${EDGE_L}${n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s+/g, '\\s*')}${EDGE_R}`, 'iu') }))
 
-/** The registry provider the user named in the window (newest turn wins), or null. */
-export function requestedProviderOf(input: UserTurns): string | null {
+/**
+ * The registry provider the user named in the window (newest turn wins), or null.
+ * `unambiguousOnly` (one brain, P0-3): a turn that names SEVERAL merchants ("Shopee hay Lazada mua chỗ nào lợi hơn?") is a comparison, not a request for one — the first
+ * pattern that happened to match used to become "the" requested merchant and the other merchant's links were unmade. With it that turn names none (null).
+ */
+export function requestedProviderOf(input: UserTurns, opts: { unambiguousOnly?: boolean } = {}): string | null {
   for (const t of turns(input).reverse()) {
     const hit = MERCHANT_PATTERNS.find(m => m.re.test(t))
-    if (hit) return hit.providerId
+    if (!hit) continue
+    if (opts.unambiguousOnly && new Set(MERCHANT_PATTERNS.filter(m => m.re.test(t)).map(m => m.providerId)).size > 1) return null
+    return hit.providerId
   }
   return null
 }

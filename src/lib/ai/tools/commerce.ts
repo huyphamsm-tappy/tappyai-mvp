@@ -97,6 +97,8 @@ export interface CommerceAttachContext {
   transportMode?: 'intercity' | 'taxi'
   platform?: 'web' | 'android' | 'ios'
   locale?: 'vi' | 'en'
+  /** One brain (P0-3): a turn that names several merchants names none (requestedProviderOf `unambiguousOnly`). */
+  unambiguousMerchantOnly?: boolean
   /**
    * Pseudonymous attribution id (24 hex) for the affiliate `sub1` — the keyed hash the route derives
    * from the verified identity via `commerceActorHash`. Never a raw id, e-mail, name or phone.
@@ -210,7 +212,7 @@ function rowInactiveOwner(row: Record<string, unknown>, off: ReturnType<typeof i
 const rowBelongsToInactive = (row: Record<string, unknown>, off: ReturnType<typeof inactiveMerchants>): boolean => off.length > 0 && rowInactiveOwner(row, off) !== null
 
 function requestedProvider(ctx: CommerceAttachContext): RequestedProvider | null {
-  const providerId = requestedProviderOf(userTurns(ctx))
+  const providerId = requestedProviderOf(userTurns(ctx), { unambiguousOnly: ctx.unambiguousMerchantOnly === true })
   const entry = providerId ? getProvider(providerId) : null
   if (!providerId || !entry) return null
   // A3.1: naming a provider the runtime registry switched OFF (DMX) does not make it the request —

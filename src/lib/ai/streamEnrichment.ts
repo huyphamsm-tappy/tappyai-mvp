@@ -79,6 +79,8 @@ import { renderPlacesMarker } from '@/lib/recommendation/marker'
 import { buildPlacesLiveView, alignEmphasisToModelPick, alignEmphasisToEnginePick, placesRenderOrder, type PlacesLiveView } from '@/lib/recommendation/liveView'
 import { buildProgressAnnotation } from '@/lib/recommendation/progressAnnotation'
 import { SHOPPING_GAP_WORDS } from '@/lib/ai/consultative/shoppingConstraints'
+/** The tools whose call makes a one-brain turn a travel turn (P0-3). */
+const TRAVEL_TOOLS: ReadonlySet<string> = new Set(['get_flight_prices', 'get_transport_options', 'get_hotel_prices'])
 /** Item 2: cards above the fold — the model's picks (pick + alternatives) filled from the engine. */
 const CARDS_SHOWN = CARD_FOLD_SHOWN
 import { renderCtaBlock, stripModelCta } from '@/lib/recommendation/cta'
@@ -1792,6 +1794,8 @@ export function applyPlaceEnrichmentStreamFilter(
   const citeOnly = !outboundSanitize && consultUnwindS1cOn()
   const productRecords: EvidenceRecord[] = [] // C3-B.10: structured evidence, price included
   let latestPlaces: PlaceLike[] = []
+  // CONSULT_ONE_BRAIN (P0-3): the route's keyword reading of the question ("a place question") does not switch the place guards or the hold on; the place TOOL the model called does.
+  if (collector?.oneBrain === true) placeIntent = false
   let bufferMode = false
   /** Live VND fares fetched by get_flight_prices this turn. Empty ⇒ every travel
    *  price the model states is unverifiable and gets redacted by the travel guard. */
@@ -1951,7 +1955,8 @@ export function applyPlaceEnrichmentStreamFilter(
    * prose hygiene that unmakes a mislabelled or front-door merchant link runs at settle time —
    * a live-streamed "[Ticketbox.vn](https://ticketbox.vn/)" was measured getting through.
    */
-  const requestedProviderId = requestedProviderOf(userText)
+  // CONSULT_ONE_BRAIN (P0-3): a turn that names several merchants is a comparison and names none (requestedProviderOf `unambiguousOnly`).
+  const requestedProviderId = requestedProviderOf(userText, { unambiguousOnly: collector?.oneBrain === true })
   const commerceHandoffIntent = !!requestedProviderId || entertainmentCapabilityOf(userText) === 'event_ticket'
   if (commerceHandoffIntent) bufferMode = true
   /**
@@ -2343,6 +2348,12 @@ export function applyPlaceEnrichmentStreamFilter(
     if (emitted) return
     emitted = true
     if (!bufferMode) return // nothing buffered — everything already streamed live
+    // CONSULT_ONE_BRAIN (P0-3): the tools the model called decide which turn this is; the keyword reading of the question is only the fallback. A travel tool makes it a travel
+    // turn even with no travel word; a shopping tool without a travel tool makes it a shopping turn ("tư vấn … dễ vệ sinh. Shopee hay … mua chỗ nào" matches the route pattern "tư … vệ").
+    if (collector?.oneBrain === true) {
+      const travelTool = gateTools.some(n => TRAVEL_TOOLS.has(n))
+      travelIntent = travelTool || (travelIntent && !gateTools.includes('search_products'))
+    }
     // CONSULT_ONE_BRAIN: the plan the model handed to present_plan becomes the [TAPPY_PLAN] block (the brochure card and its share page),
     // here, before the photo, link-egress, price and trip-fact guards below read the text. The model writes only the short summary around it.
     if (collector?.oneBrain && collector.planBlock && !mainText.includes('[TAPPY_PLAN]')) mainText = `${mainText.trimEnd()}\n\n[TAPPY_PLAN]${collector.planBlock}[/TAPPY_PLAN]`
@@ -4246,6 +4257,8 @@ export function applyPlaceEnrichmentStreamFilter(
             anyToolCalled = true
             // CONSULT_ONE_BRAIN: a present_plan turn is rebuilt at the end (the plan block is appended before the plan guards).
             if (call.toolName === 'present_plan' && collector?.oneBrain) bufferMode = true
+            // CONSULT_ONE_BRAIN (P0-3): a fare / hotel / transport tool call holds the answer for the travel guard, whatever words the question used.
+            if (call.toolName && TRAVEL_TOOLS.has(call.toolName) && collector?.oneBrain) bufferMode = true
             if (collector?.planTurn) {
               const d = call.toolName === 'get_trip_data' ? call.args?.destination : call.toolName && PLACE_TOOLS.has(call.toolName) ? call.args?.location : undefined
               if (typeof d === 'string' && d.trim() && (call.toolName === 'get_trip_data' || !planDestination)) planDestination = d.trim().slice(0, 60)

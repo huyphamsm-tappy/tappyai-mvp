@@ -661,3 +661,20 @@ describe('one brain keeps the conversation the model answers (P0-1)', () => {
     expect(joined(offLong)).not.toContain('ô-bảng-KAPPA-có-hồ-bơi')
   }, 60000)
 })
+
+// P0-3 (29/10 audit): the route passed `needProfile.domain === 'places'` (a keyword reading of the question) to the stream filter as `placeIntent`. In one brain the place
+// guards follow the place TOOL the model called, so a place-sounding question the model answered without a tool switches nothing on.
+describe('one brain: a place keyword alone does not run the place guards (P0-3)', () => {
+  const ASK: Msg[] = [{ role: 'user', content: 'quán phở ngon ở quận 3 tphcm' }]
+  const reply = 'Phở ở quận 3 thường khoảng **50.000đ** một tô, quán nào cũng đông vào buổi trưa.'
+  it('no place tool: no place-price stage record in one brain; the other route still runs it', async () => {
+    const on = await turn(ASK, { unwind: true, oneBrain: true, luna: intent('pick', ['food']), reply })
+    expect(on.streamCalled).toBe(1)
+    expect(on.logs.some(l => l.guard === 'legacy_stage' && String(l.stage).includes('snippet_price'))).toBe(false)
+    expect(on.text).toContain('50.000đ')
+    vi.stubEnv('LEGACY_STREAM_TRACE', '1') // (the counters of the other route are behind this flag)
+    const off = await turn(ASK, { unwind: true, oneBrain: false, luna: intent('pick', ['food']), reply })
+    expect(off.text).not.toContain('50.000đ')
+    expect(off.logs.some(l => l.guard === 'legacy_stage' && l.stage === 'snippet_price')).toBe(true)
+  }, 60000)
+})

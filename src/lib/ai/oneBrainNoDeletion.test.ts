@@ -154,10 +154,13 @@ describe('one brain: a price the shopping tool returned survives the travel guar
     'd:{"finishReason":"stop"}',
   ]
   const REPLY = 'Mình ưu tiên nồi 5–6 lít.\n\n- **Mẫu đáng cân nhắc:** Nồi chiên không dầu **B.COOK 6 lít** đang được niêm yết trên Shopee với giá **690.000 đồng**, đánh giá **4,9/5 từ 148 lượt**.\n- **Mẫu khác:** Nồi chiên **Bịa 5 lít** giá **555.000 đồng**.'
-  it('the listing price stays, an invented price is still cut', async () => {
+  // P0-3 (29/10): this turn was only "a travel turn" because the keyword reading of the question said so. A shopping tool was called, so it is a shopping turn: the travel guard
+  // no longer judges its figures, and the shopping money stage (shadow in one brain) logs what it would change instead of cutting. An invented FARE is still cut
+  // (oneBrainLabelNotDelete.test.ts, unwind.e2e.route.test.ts, oneBrainToolState.test.ts).
+  it('the listing price stays; an invented shopping price is no longer cut by the travel guard (the shopping money stage only logs it)', async () => {
     const out = await run(USER, frames(REPLY), true, true)
     expect(out).toContain('giá **690.000 đồng**')
-    expect(out).not.toContain('555.000')
+    expect(out).toContain('Bịa 5 lít')
   })
   it('without one brain the travel guard still judges it as before (the listing price is not its evidence)', async () => {
     const out = await run(USER, frames(REPLY), false, true)
