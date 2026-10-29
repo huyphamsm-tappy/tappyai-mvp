@@ -22,7 +22,9 @@ describe('deprecated flight-fare provider: zero references', () => {
     const files = [...walk('src'), ...walk('scripts'), ...walk('supabase'), '.env.local.example', 'package.json', 'next.config.ts', 'vercel.json'].filter(f => fs.existsSync(f))
     const hits = files.filter(f => BANNED.test(fs.readFileSync(f, 'utf8')))
     expect(hits).toEqual([])
-  })
+    // 30/10: a synchronous read of every file in src/, scripts/ and supabase/; under the full run it passed the default 5 s (measured
+    // 29–30/10, green alone every time). The scan and its assertion are unchanged; only the time it is given.
+  }, 60_000)
   it('no flight-fare env var is read anywhere in src', () => {
     const files = walk('src')
     const hits = files.filter(f => /process\.env\.[A-Z_]*(FLIGHT|FARE|AVIA)[A-Z_]*/.test(fs.readFileSync(f, 'utf8')))
