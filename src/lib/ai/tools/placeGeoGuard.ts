@@ -5,7 +5,33 @@
 // Vietnamese city/province, a row whose address names a DIFFERENT one goes. Rows with no address stay (the
 // provider did not say where they are, and dropping them would hide real local places).
 
+import { CITY_MATCH_RADIUS_KM, haversineKm, VIETNAM_CITY_ENTRIES, type VietnamCity } from './vietnamCities'
+
 const fold = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[đĐ]/g, 'd').toLowerCase()
+
+// 29/10 (localhost, "Hội An 2 ngày 1 đêm"): the place cards showed Cầu Vàng (Bà Nà), Ngũ Hành Sơn and Núi Thần Tài. Since the 2025
+// merger Maps writes Hội An as "…, Hội An, Đà Nẵng", and a search area of "Hội An, Đà Nẵng" resolves (rightmost) to the province Đà
+// Nẵng — every row in Đà Nẵng then passes, ~35 km away included. A province no longer tells a destination inside it apart.
+// So when the area names a DESTINATION of the measured city table (vietnamCities.ts: Hội An, Nha Trang, Đà Lạt, Phú Quốc, Sa Pa…),
+// a row with coordinates must lie within CITY_MATCH_RADIUS_KM of it — the repository's own "same place" distance. The destination is
+// the place named FIRST (a Vietnamese address runs small → large). The centrally-run cities are provinces in their own right, wider
+// than that radius (Ba Vì is Hà Nội), and keep the province rule alone.
+const PROVINCE_LEVEL = new Set(['ha noi', 'ho chi minh', 'da nang', 'hai phong', 'can tho', 'hue'])
+/** A table city one of whose aliases IS a centrally-run city (by the PLACES table below). Read at call time. */
+const isProvinceLevel = (city: VietnamCity): boolean =>
+  VIETNAM_CITY_ENTRIES.some(([alias, c]) => c === city && PROVINCE_LEVEL.has(provinceOf(alias) ?? ''))
+
+/** The table destination the area names first, with its coordinates; null when it names none, or only a centrally-run city. Pure. */
+export function destinationOf(area: string | null | undefined): VietnamCity | null {
+  const t = fold(area ?? '')
+  if (!t) return null
+  let best: { city: VietnamCity; at: number } | null = null
+  for (const [alias, city] of VIETNAM_CITY_ENTRIES) {
+    const m = new RegExp(`(^|[^a-z0-9])${alias.replace(/ /g, '\\s+')}([^a-z0-9]|$)`).exec(t)
+    if (m && (best === null || m.index < best.at)) best = { city, at: m.index }
+  }
+  return best && !isProvinceLevel(best.city) ? best.city : null
+}
 
 /** The 63 provinces / centrally-run cities, folded, plus the common short forms users and Maps write. */
 const PLACES: Array<[string, RegExp]> = [
@@ -61,7 +87,13 @@ function provincesIn(address: string): Set<string> {
   return new Set(PLACES.filter(([, re]) => re.test(t)).map(([k]) => k))
 }
 
-export interface GeoGuardOutcome { result: unknown; dropped: Array<{ name: string; reason: 'foreign' | 'other_city' }> }
+export interface GeoGuardOutcome { result: unknown; dropped: Array<{ name: string; reason: 'foreign' | 'other_city' | 'too_far' }> }
+
+/** A row's own coordinates (`lat` / `lng`, as serperPlaceToRow writes them), or null. */
+function coordsOf(row: unknown): [number, number] | null {
+  const r = row as { lat?: unknown; lng?: unknown }
+  return typeof r?.lat === 'number' && typeof r?.lng === 'number' && Number.isFinite(r.lat) && Number.isFinite(r.lng) ? [r.lat, r.lng] : null
+}
 
 /**
  * Drops place rows outside Việt Nam, and — when `area` names a Vietnamese city/province — rows whose address
@@ -74,10 +106,19 @@ export function guardPlaceGeography(result: unknown, area: string | null | undef
   const rows = r.results
   if (!Array.isArray(rows) || rows.length === 0) return none
   const want = provinceOf(area)
+  const destination = destinationOf(area)
   const dropped: GeoGuardOutcome['dropped'] = []
   const kept = rows.filter(row => {
     const address = String((row as { address?: unknown })?.address ?? '')
     const name = String((row as { name?: unknown })?.name ?? '')
+    // A destination inside a province: the row's own coordinates decide, both ways (29/10, see destinationOf) — the address's province
+    // name says nothing reliable since the merger ("Hội An" was Quảng Nam; its rows now read "Đà Nẵng"). No coordinates: the address rules.
+    const at = destination ? coordsOf(row) : null
+    if (destination && at) {
+      if (haversineKm(destination.coords, at) <= CITY_MATCH_RADIUS_KM) return true
+      dropped.push({ name, reason: 'too_far' })
+      return false
+    }
     if (!address.trim()) return true
     if (FOREIGN.test(address) && !/vi[eệ]t ?nam/i.test(address)) { dropped.push({ name, reason: 'foreign' }); return false }
     if (want) {
