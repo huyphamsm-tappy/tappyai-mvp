@@ -42,6 +42,16 @@ const SERVICE_ROLE_FLAG_READ = 'src/app/api/users/search/route.ts'
 /** The only module that may read a forwarded-IP header (P3-F1 / S-2). */
 const RATE_LIMIT = 'src/lib/security/rateLimit.ts'
 
+// Documented exception (owner B1, 29 Oct 2026), three TEST files by exact path, three rules only (model ids, facade bypass,
+// vendor keys). They prove the spend gate and the per-turn web ticket at the SDK seam the production code wraps: a fake
+// `streamText`/`generateText` model, a fake OpenAI completion carrying a model id, a dummy key. No production file is
+// exempt, no other test is, and no other rule is relaxed for them.
+const SPEND_GATE_SDK_FIXTURES = [
+  'src/lib/ai/budget/spendGate.llm.test.ts',
+  'src/lib/ai/budget/spendGate.openai.test.ts',
+  'src/lib/ai/tools/turnWebTicket.als.test.ts',
+]
+
 // ── Commerce Capability Platform (CCP) zones ─────────────────────────────────
 // Merchant URL grammars and affiliate-network knowledge live ONLY under
 // src/lib/ccp (adapters + registry + tracking). The AI layer, tools and clients
@@ -170,7 +180,7 @@ const RULES = [
       /\bllama-?\d/i,
       /\bmistral-(large|medium|small|\d)/i,
     ],
-    allow: [PROVIDER_LAYER],
+    allow: [PROVIDER_LAYER, ...SPEND_GATE_SDK_FIXTURES],
     hint: "pass a semantic role instead: AI.generate({ role: 'fast' | 'smart' | 'planning' | 'vision' }). Concrete ids belong in the adapter's DEFAULT_MODELS or LLM_*_MODEL env.",
   },
   {
@@ -179,7 +189,7 @@ const RULES = [
     patterns: [
       /\b(ANTHROPIC|OPENAI|GEMINI|GOOGLE_GENERATIVE_AI|XAI|GROK|DEEPSEEK|MISTRAL|TOGETHER|FIREWORKS)_API_KEY\b/,
     ],
-    allow: [PROVIDER_LAYER],
+    allow: [PROVIDER_LAYER, ...SPEND_GATE_SDK_FIXTURES],
     hint: 'use AI.isConfigured() to gate on credentials. Only the matching adapter may read its vendor key.',
   },
   {
@@ -207,7 +217,7 @@ const RULES = [
       /\bembed\s*\(/,
       /import\s*\{[^}]*\b(generateText|streamText|generateObject|streamObject|embedMany)\b[^}]*\}\s*from\s*['"]ai['"]/,
     ],
-    allow: [AI_LAYER],
+    allow: [AI_LAYER, ...SPEND_GATE_SDK_FIXTURES],
     hint: "business code reaches models only through AI.generate / AI.stream / AI.vision from '@/lib/ai/llm'. (Importing { tool } or types from 'ai' is fine — tool defs are neutral.)",
   },
   {
