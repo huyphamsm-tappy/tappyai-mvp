@@ -71,6 +71,15 @@ export function discoveryScopeForProvider(providerId: string, domain: CommerceDo
   return { providerId: e.providerId, merchantName: e.merchantName, site, subjectKind: kind, ...(e.segment ? { segment: e.segment } : {}) }
 }
 
+/** The route scopes for RAIL pages: the same providers as coach routes, searched on their declared `railSite`. */
+export function railDiscoveryScopes(flags: Record<string, boolean> = CCP_ADAPTERS): DiscoveryScope[] {
+  const coach = discoveryScopesFor('travel', 'book_transport', flags)
+  return coach.flatMap(s => {
+    const railSite = PROVIDER_REGISTRY.find(p => p.providerId === s.providerId)?.discovery?.railSite
+    return railSite ? [{ ...s, site: railSite }] : []
+  })
+}
+
 /**
  * Which registered provider owns this URL, by EXACT host match against the
  * registry allow-lists (the same rule `isAllowedHost` applies to emitted links).

@@ -3044,8 +3044,11 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // an off-enum value ("bus", "grab") used to fail SDK validation and end the whole turn.
           mode: z.string().optional().describe('"intercity" cho xe khach/tau giua 2 tinh thanh, "taxi" cho di chuyen trong thanh pho/quang duong ngan bang taxi/xe cong nghe. Bo trong neu khong ro.'),
           date: z.string().optional().describe('Ngay di dang YYYY-MM-DD neu user noi ro (chi cho xe khach/tau, khong bat buoc)'),
+          // 29 Oct 2026: the dated train list takes the adult count (Vexere passenger[adt]); same field and clamp as get_flight_prices.
+          passengers: z.number().optional().describe('So hanh khach nguoi lon neu user noi ro (khong bat buoc; toi da 9 tren mot ve le)'),
         }),
-        execute: async ({ origin, destination, mode: rawMode, date }) => {
+        execute: async ({ origin, destination, mode: rawMode, date, passengers: rawPassengers }) => {
+          const { passengers } = clampPassengers(rawPassengers, lang)
           const m = coerceTransportMode(rawMode)
           if (m.coerced) console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'get_transport_options', step: 'mode_coerced', from: String(m.raw).slice(0, 40), to: m.mode }))
           if (m.mode === 'unknown') {
@@ -3063,7 +3066,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const mode = m.mode
           const [r, editorial] = await Promise.all([getTransportOptions(origin, destination, mode === 'taxi' ? 'taxi' : undefined, lang, consultativeAgent && mode !== 'taxi' ? date : undefined), travelEditorialFor(destination)])
           // Completion Pass (14 Sep 2026): the Vexere link is CCP-resolved (route page + date) when CCP is on.
-          await attachCommerceLinks('get_transport_options', r, { origin, destination, departDate: date, transportMode: mode === 'taxi' ? 'taxi' : 'intercity', platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, actorSeal: commerceActorSealValue, userText: lastText, userTexts: recentUserTexts })
+          await attachCommerceLinks('get_transport_options', r, { origin, destination, departDate: date, passengers, transportMode: mode === 'taxi' ? 'taxi' : 'intercity', platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, actorSeal: commerceActorSealValue, userText: lastText, userTexts: recentUserTexts })
           return withTravelEditorial(r, editorial)
         }
       }),

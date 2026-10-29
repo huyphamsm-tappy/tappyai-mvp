@@ -7,6 +7,7 @@ import { checkCommerceUrl } from '../validation/url'
 import { wrapWithAccesstrade } from '../tracking/accesstrade'
 import { buildClickUrl } from '../tracking/clickLink'
 import { wrapWithTemplate } from '../tracking/template'
+import { wrapWithParam } from '../tracking/param'
 import { effectiveTracking, providerOverride } from '../registry/runtime'
 
 // ── Deep Link Resolver (Plan §6) ─────────────────────────────────────────────
@@ -90,10 +91,12 @@ export function resolveDeepLink(
     const actorHash = opts.actorHash ?? request.context?.actorHash
     const w = trackingConfig.network === 'template'
       ? wrapWithTemplate({ directUrl: build.url, tracking: trackingConfig, actorHash })
-      : wrapWithAccesstrade({ directUrl: build.url, tracking: trackingConfig, actorHash, utmContent: opts.utmContent })
+      : trackingConfig.network === 'param'
+        ? wrapWithParam({ directUrl: build.url, tracking: trackingConfig })
+        : wrapWithAccesstrade({ directUrl: build.url, tracking: trackingConfig, actorHash, utmContent: opts.utmContent })
     if (w.ok) {
       // Phương án C: an ACCESSTRADE deep link goes out through /go/at (fresh sub1 per click, join kept server-side).
-      url = (trackingConfig.network === 'template' ? undefined : buildClickUrl({ wrapperUrl: w.url, providerId: adapter.providerId, seal: request.context?.actorSeal, actorHash })) ?? w.url
+      url = (trackingConfig.network === 'accesstrade' ? buildClickUrl({ wrapperUrl: w.url, providerId: adapter.providerId, seal: request.context?.actorSeal, actorHash }) : undefined) ?? w.url
       tracking = w.tracking
       validation = 'param_echo_ok'
       wrapper = 'applied'

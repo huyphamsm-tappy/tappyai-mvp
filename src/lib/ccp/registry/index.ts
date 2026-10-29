@@ -155,8 +155,13 @@ export function validateRegistry(entries: readonly ProviderRegistryEntry[] = PRO
     }
     if (!e.commerce.includes('commerce_handoff')) problems.push(`${e.providerId}: a registry provider hands off to a merchant and must declare commerce_handoff`)
     if (e.tracking) {
-      if (e.tracking.network !== 'accesstrade') problems.push(`${e.providerId}: the code registry declares only accesstrade tracking (templates are runtime rows)`)
-      if (!/^\d{10,25}$/.test(e.tracking.campaignId ?? '')) problems.push(`${e.providerId}: campaignId not numeric`)
+      // A merchant's own partner id on its own page (`param`, Agoda's cid) is code data too; templates stay runtime rows.
+      if (e.tracking.network === 'param') {
+        if (!e.tracking.param || !/^[a-z][a-z0-9_]{0,15}$/i.test(e.tracking.param.name) || !/^[A-Za-z0-9_-]{1,40}$/.test(e.tracking.param.value)) problems.push(`${e.providerId}: param tracking needs a plain name and value`)
+      } else {
+        if (e.tracking.network !== 'accesstrade') problems.push(`${e.providerId}: the code registry declares only accesstrade or param tracking (templates are runtime rows)`)
+        if (!/^\d{10,25}$/.test(e.tracking.campaignId ?? '')) problems.push(`${e.providerId}: campaignId not numeric`)
+      }
       if (e.tracking.safeWrapper !== 'deep_link') problems.push(`${e.providerId}: only the deep_link wrapper is verified safe`)
       if (!e.capabilities.includes('tracking')) problems.push(`${e.providerId}: tracking config without tracking capability`)
     }

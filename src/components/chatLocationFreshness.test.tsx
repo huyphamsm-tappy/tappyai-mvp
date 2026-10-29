@@ -74,7 +74,8 @@ afterEach(() => { cleanup(); captured.length = 0; append.mockReset(); handleSubm
 const pressEnter = () => fireEvent.keyDown(screen.getByRole('textbox'), { key: 'Enter' })
 
 const flush = async () => { await act(async () => { await new Promise(r => setTimeout(r, 0)) }) }
-const nearbyChip = () => screen.getAllByRole('button').find(b => /Tìm quanh đây|Nearby/i.test(b.textContent ?? '')) as HTMLElement
+// The chip's exact label: a loose /nearby/i also matched a random English starter ("A 2-day, 1-night trip itinerary nearby?") — red in 2 full runs, 29/10.
+const nearbyChip = () => screen.getAllByRole('button').find(b => /^📍\s*(Tìm quanh đây|Nearby)$/.test((b.textContent ?? '').trim())) as HTMLElement
 const record = (name: string, o: Record<string, unknown>) => console.log('CASE ' + JSON.stringify({ name, ...o }))
 
 describe('(a) a fix stored by an earlier session vs the device position now', () => {
@@ -118,7 +119,9 @@ describe('(b2) the chip asks in the session\'s language', () => {
         await flush()
         fireEvent.click(nearbyChip())
         await flush()
-        expect(append.mock.calls.map(c => (c[0] as { content: string }).content)).toEqual([sent])
+        const got = append.mock.calls.map(c => (c[0] as { content: string }).content)
+        // Seen red twice, only inside the full suite (29/10): the message names what was sent so the next full run says why.
+        expect(got, `sent ${JSON.stringify(got)} while the stored locale was ${JSON.stringify(localStorage.getItem('tappy_lang'))}`).toEqual([sent])
       } finally { act(() => setLocale('vi')) }
     })
   }

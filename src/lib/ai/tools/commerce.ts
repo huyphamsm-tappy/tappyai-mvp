@@ -12,6 +12,7 @@ import {
   discoveryScopeForProvider,
   getProvider,
   providerOwning,
+  railDiscoveryScopes,
   type DiscoveryHint,
   type DiscoveryScope,
   type IntentType,
@@ -916,6 +917,12 @@ async function attachRouteLinks(toolName: 'get_flight_prices' | 'get_transport_o
     const requested = requestedProvider(ctx)
     const request: CommerceRequest = { domain: 'travel', intentType, capability: capabilityForIntent(intentType), subject, configuration, ...(requested ? { constraints: { merchantAllowList: requested.merchantAllowList } } : {}), context }
     const out = (ctx.resolve ?? resolveCommerce)(request, { hints, now, enabled: true })
+    // Trains (29 Oct 2026): the coach turn also asks for the dated train list of the same two places. Its own result, its own field.
+    const railRows = flight ? [] : await railRouteRows(r, ctx, { configuration, subject, context, requested, assumed, now })
+    if (railRows.length > 0) {
+      r.train_booking_link = railRows[0].url
+      r._tappy_commerce = railRows.map(routeFacts)
+    }
     if (!('links' in out) || out.links.length === 0) return r
     // A3.3: the dated route page or nothing — a merchant's front door with the route to be typed is not a route link.
     const rows = dedupeLinks([], out.links.filter(l => l.depth >= MIN_ROUTE_LINK_DEPTH).map(l => projectCommerceLinkRow(l, out.requestId, intentType, assumed, { primary: true })), flight ? 4 : 1)
@@ -926,13 +933,52 @@ async function attachRouteLinks(toolName: 'get_flight_prices' | 'get_transport_o
     const projected = rows.map(l => ({ name: flight ? (/^en/i.test(ctx.locale ?? '') ? `See prices on ${l.merchantName}` : `Xem giá trên ${l.merchantName}`) : l.merchantName, url: l.url }))
     if (flight) r.booking_links = projected
     else r.vexere_link = projected[0].url
-    r._tappy_commerce = rows.map((l): RouteHandoffFacts => ({
-      merchantName: l.merchantName, providerId: l.providerId, kind: l.kind, depth: l.depth, guestDepth: l.guestDepth, authRequiredAt: l.authRequiredAt,
-      linkId: l.linkId, requestId: l.requestId, assumedParams: l.assumedParams, limitations: l.limitations,
-    }))
+    r._tappy_commerce = [...rows.map(routeFacts), ...railRows.map(routeFacts)]
     return r
   } catch {
     return r
+  }
+}
+
+const routeFacts = (l: CommerceLinkRow): RouteHandoffFacts => ({
+  merchantName: l.merchantName, providerId: l.providerId, kind: l.kind, depth: l.depth, guestDepth: l.guestDepth, authRequiredAt: l.authRequiredAt,
+  linkId: l.linkId, requestId: l.requestId, assumedParams: l.assumedParams, limitations: l.limitations,
+})
+
+/**
+ * The dated train list for the coach turn's two places (owner 29 Oct 2026: "vé xe vé tàu thì chúng ta có vexere").
+ * The rail route page carries Vexere's own area ids, so it is DISCOVERED, never composed: first among the train rows the
+ * transport tool already fetched (no extra request), else one scoped search on the registry's `railSite`. No page, no link.
+ */
+async function railRouteRows(
+  r: Row,
+  ctx: CommerceAttachContext,
+  base: { configuration: NonNullable<CommerceRequest['configuration']>; subject: string; context: NonNullable<CommerceRequest['context']>; requested: ReturnType<typeof requestedProvider>; assumed: string[]; now: Date },
+): Promise<CommerceLinkRow[]> {
+  try {
+    const scopes = railDiscoveryScopes()
+    if (scopes.length === 0 || base.configuration.kind !== 'transport') return []
+    const wanted = new Set(scopes.map(s => s.providerId))
+    const fetched = (Array.isArray(r.train_search_results) ? r.train_search_results : [])
+      .map(x => (isRecord(x) && typeof x.link === 'string' ? { url: x.link, title: typeof x.title === 'string' ? x.title : base.subject } : null))
+      .filter((h): h is { url: string; title: string } => !!h && wanted.has(providerOwning(h.url) ?? ''))
+    let hints: DiscoveryHint[] = fetched
+    if (hints.length === 0) {
+      const origin = str(ctx.origin), destination = str(ctx.destination)
+      const hits = await discoverBySubject('travel', 'book_transport', `tàu ${origin} ${destination}`, undefined, { search: ctx.search, perScope: 3, scopes })
+      hints = hits.map(h => ({ url: h.url, title: h.title ?? base.subject }))
+    }
+    if (hints.length === 0) return []
+    const request: CommerceRequest = {
+      domain: 'travel', intentType: 'book_transport', capability: capabilityForIntent('book_transport'), subject: base.subject,
+      configuration: { ...base.configuration, mode: 'train' },
+      ...(base.requested ? { constraints: { merchantAllowList: base.requested.merchantAllowList } } : {}), context: base.context,
+    }
+    const out = (ctx.resolve ?? resolveCommerce)(request, { hints, now: base.now, enabled: true })
+    if (!('links' in out)) return []
+    return dedupeLinks([], out.links.filter(l => l.depth >= MIN_ROUTE_LINK_DEPTH).map(l => projectCommerceLinkRow(l, out.requestId, 'book_transport', base.assumed, { primary: true })), 1)
+  } catch {
+    return []
   }
 }
 
