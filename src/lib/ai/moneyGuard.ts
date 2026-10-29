@@ -1,4 +1,5 @@
 import { foldedWords, namedInSegments } from './entityNameGuard'
+import { ENDS_SENTENCE, isCitationOnly, maskLinks } from './citationTail'
 
 // ── Deterministic money-claim guard (C3-B.10) ────────────────────────────────
 //
@@ -510,6 +511,27 @@ export function sentenceSpans(text: string): Array<[number, number]> {
 }
 
 /**
+ * 30/10: `sentenceSpans` keeps every link / URL as a span of its own, so "… 120.000đ/người (theo [Vietravel](https://…))." is three spans;
+ * removing "the sentence" removed only the first and left "[Vietravel](…))." (measured on localhost, "Vietravel)." on screen). For the
+ * removal below, a span boundary that only a LINK made (not a stop, not a line break, not a machine block) is joined back, so the sentence
+ * that goes takes its own citation with it. Each guard that reads `sentenceSpans` for judging keeps its spans as they are.
+ */
+function withInlineLinksJoined(text: string, spans: Array<[number, number]>): Array<[number, number]> {
+  const linkEdges = new Set<number>()
+  for (const [a, b] of protectedSpans(text)) {
+    if (/^\[(?:CTA_BUTTONS|FOLLOWUPS|TAPPY_PLAN)\]/.test(text.slice(a, b))) continue
+    linkEdges.add(a); linkEdges.add(b)
+  }
+  const out: Array<[number, number]> = []
+  for (const [a, b] of spans) {
+    const last = out[out.length - 1]
+    const joinable = last && last[1] === a && linkEdges.has(a) && text[a - 1] !== '\n' && !ENDS_SENTENCE.test(text.slice(last[0], a))
+    if (joinable) last[1] = b; else out.push([a, b])
+  }
+  return out
+}
+
+/**
  * POLICY R3 — PROPORTIONAL (owner, 2026-09-20; supersedes the whole-sentence default locked in
  * C3-B.10.2).
  *
@@ -570,7 +592,10 @@ export function removeClauseAround(sentenceWithBreak: string, at: number, end: n
   // Clause bounds inside this sentence: the delimiter before the amount (excluded from what
   // stays) and the delimiter after it (kept, so the remaining clauses still read as a list).
   let a = 0, b = Math.max(stop, end), bDelim = ''
-  for (const m of sentence.matchAll(decimalSafe ? CLAUSE_DELIM_DECIMAL : CLAUSE_DELIM)) {
+  // 30/10: the brackets of a link are not clause delimiters ("(theo [Vietravel](https://…))." was cut at the link's own "(", leaving
+  // "Vietravel)."): the scan runs over the sentence with each link masked, same length, so every offset still holds.
+  const scan = maskLinks(sentence)
+  for (const m of scan.matchAll(decimalSafe ? CLAUSE_DELIM_DECIMAL : CLAUSE_DELIM)) {
     const i = m.index!
     if (i < at) a = i
     else if (i >= end) { b = i + m[0].length; bDelim = m[0]; break }
@@ -583,7 +608,7 @@ export function removeClauseAround(sentenceWithBreak: string, at: number, end: n
    */
   let qualifier = false
   if (bDelim === '(') {
-    const close = sentence.indexOf(')', b)
+    const close = scan.indexOf(')', b)
     if (close !== -1) { b = close + 1; bDelim = ')'; qualifier = true }
   }
   const before = sentence.slice(0, a).replace(HEDGE_BEFORE, '').replace(/\s+$/, '')
@@ -661,7 +686,9 @@ function cutAroundVerified(sentenceWithBreak: string, verified: Array<[number, n
   const sentence = sentenceWithBreak.slice(0, sentenceWithBreak.length - brk.length)
   const stop = sentence.match(/[.!?…]+[\s"'”’]*$/u)?.index ?? sentence.length
   const lead = sentence.match(/^\s*/)?.[0].length ?? 0
-  const spans = (re: RegExp) => [...sentence.matchAll(re)].map(m => [m.index!, m.index! + m[0].length] as [number, number])
+  // 30/10: a link's own brackets are not clause delimiters (see removeClauseAround); offsets are unchanged by the mask.
+  const scan = maskLinks(sentence)
+  const spans = (re: RegExp) => [...scan.matchAll(re)].map(m => [m.index!, m.index! + m[0].length] as [number, number])
   const delims = spans(decimalSafe ? CLAUSE_DELIM_DECIMAL : CLAUSE_DELIM)
   const conns = spans(FARE_CONNECTIVE)
   const within = (from: number, to: number) => (x: [number, number]) => x[0] >= from && x[1] <= to
@@ -772,8 +799,9 @@ export function redactUnsupportedClaims(text: string, claims: MoneyClaim[], opts
     .replace(/[ \t]{2,}/g, ' ').replace(/[ \t]+([.,;])/g, '$1').replace(/\n{3,}/g, '\n\n').trim()
 
   // 1) clause-level removal inside each affected sentence; 2) the sentence when the clause is all of it
-  const spans = sentenceSpans(text)
+  const spans = withInlineLinksJoined(text, sentenceSpans(text))
   let dropped = false // the previous sentence went: a connective opening this one dangles
+  let droppedOnLine = false // …and it went on this line, without a line break after it: a citation that follows it is its own
   // F-094: "Và phù hợp bữa trưa…" after a removed sentence became "phù hợp bữa trưa…" — a sentence
   // with no capital. The connective goes and the first letter takes its case back.
   const stripConnective = (s: string) => {
@@ -783,12 +811,17 @@ export function redactUnsupportedClaims(text: string, claims: MoneyClaim[], opts
   const pieces = spans.map(([a, b]) => {
     const inSentence = bad.filter(c => c.start >= a && c.start < b).sort((x, y) => y.start - x.start)
     const raw = text.slice(a, b)
+    const pieceDropped = (): string => { dropped = true; droppedOnLine = !raw.endsWith('\n'); return '' }
     if (inSentence.length === 0) {
       // F-094: what a removed sentence leaves behind that is not prose — the " 🤔" after
       // "… 70-80k để có thêm lựa chọn? 🤔" (golden post-f094b T3 t2) — goes with it.
       if (dropped && raw.trim() && !/[\p{L}\p{N}]/u.test(raw)) return raw.match(/\n+$/)?.[0] ?? ''
+      // 30/10: the citation written after it on the same line ("… 120.000đ/người. [Vietravel](https://…)") was the removed sentence's own
+      // source, and stood alone once the sentence went. A link on a line of its own is not touched.
+      if (droppedOnLine && raw.trim() && isCitationOnly(raw)) { droppedOnLine = !raw.endsWith('\n'); return raw.match(/\n+$/)?.[0] ?? '' }
       const out = dropped && raw.trim() ? stripConnective(raw) : raw
       if (raw.trim()) dropped = false
+      if (raw.trim() || raw.includes('\n')) droppedOnLine = false
       return out
     }
     let sentence = raw
@@ -798,7 +831,8 @@ export function redactUnsupportedClaims(text: string, claims: MoneyClaim[], opts
     // every anti-fragment rule of that path still applies.
     const lineStart = text.lastIndexOf('\n', a - 1) + 1
     const isListLine = /^\s*(?:\*\*)?\s*(?:[-*•+]|\d+[.)])\s/u.test(text.slice(lineStart, b))
-    if (opts.wholeSentence && !isListLine) { dropped = true; return '' }
+    if (opts.wholeSentence && !isListLine) return pieceDropped()
+    droppedOnLine = false
     // Round 42 round 3 (commit 3a): with the opt-in, a sentence that also states a verified amount is cut around it BEFORE the clause path (1),
     // whose cut can take the verified amount with the clause (S5h3) or drop the sentence whole (travelGuard.test.ts case 4).
     if (opts.noAmountOnlyFallback) {
@@ -828,7 +862,7 @@ export function redactUnsupportedClaims(text: string, claims: MoneyClaim[], opts
     }
     for (const c of inSentence) {
       const cut = removeClauseAround(sentence, c.start - a, c.end - a, text.slice(text.lastIndexOf('\n', a - 1) + 1, a), opts.decimalSafe === true)
-      if (cut === null) { dropped = true; return '' }
+      if (cut === null) return pieceDropped()
       sentence = cut // claims are processed from the end, so earlier offsets are unaffected
     }
     dropped = false

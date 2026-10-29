@@ -12,6 +12,7 @@ import { sanitizeMediaBlock } from '@/lib/media/mediaHosts'
 import { checkCitationSupport } from './citationSupport'
 import { cardsAllowed, stripTaskFrame } from './agent/runtime/taskFrame'
 import { guardTravelClaimsInText, journeyTimeOf, scheduleTimesIn } from './travelGuard'
+import { ENDS_SENTENCE } from './citationTail'
 import { guardHoursClaimsInText } from './hoursGuard'
 import { verificationLead } from './verificationLead'
 import { guardFormatClaimsInText } from './formatClaimGuard'
@@ -635,8 +636,17 @@ function stripUnownedLinks(text: string, allowed?: ReadonlySet<string>): string 
   )
   const tail = text.slice(cut)
   const withLinks = prose.replace(
-    /(?<!!)\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/g,
-    (whole, label: string, url: string) => (isGivenUrl(url, allowed) ? whole : label),
+    /([ \t]*)(?<!!)\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/g,
+    (whole: string, space: string, label: string, url: string, at: number, all: string) => {
+      if (isGivenUrl(url, allowed)) return whole
+      // 30/10 (localhost, Hội An): a CITATION standing after its sentence ("… đừng cố đi thuyền. [Dự báo thời tiết](https://…)") whose
+      // link is not ours left its label as a line of its own ("Dự báo thời tiết"). Such a citation goes whole: a source name with
+      // nothing to open is not prose. Read from the line's structure only: a sentence stop before it, nothing but punctuation after it.
+      const lineStart = all.lastIndexOf('\n', at - 1) + 1
+      const lineEnd = (i => (i === -1 ? all.length : i))(all.indexOf('\n', at + whole.length))
+      const isTail = ENDS_SENTENCE.test(all.slice(lineStart, at)) && !/[\p{L}\p{N}]/u.test(all.slice(at + whole.length, lineEnd).replace(/(?<!!)\[[^\]]*\]\([^)]*\)/g, ' '))
+      return isTail ? '' : space + label
+    },
   )
   const guardedProse = withLinks.replace(
     /(\*\*|__)?(?<!\]\()(https?:\/\/[^\s<>()\\[\]]+)/g,

@@ -18,6 +18,7 @@
 
 import { normalizeVN, detectTripLength } from './intent'
 import { missingTripFacts, type TripFact } from './consultative/tripFacts'
+import { isCitationOnly } from './citationTail'
 
 const OPEN = '[TAPPY_PLAN]'
 const CLOSE = '[/TAPPY_PLAN]'
@@ -95,10 +96,14 @@ export function guardUngivenTravelDate(fullText: string, userTexts: readonly str
     if (i % 2 === 1) return part
     return part.split('\n').map(line => {
       const sentences = line.split(SENTENCE_SPLIT)
+      let prevGone = false
       const kept = sentences.filter(sn => {
+        // 30/10: the citation after a removed sentence was its source, and stood alone once it went (see citationTail.ts).
+        if (prevGone && isCitationOnly(sn)) return false
+        prevGone = false
         if (ENDS_WITH_QUESTION.test(sn)) return true
         const bad = hasCalendarDate(sn) || ASSUMED_DAY.test(withoutUrls(sn))
-        if (bad) dropped++
+        if (bad) { dropped++; prevGone = true }
         return !bad
       })
       return kept.length === sentences.length ? line : kept.join(' ')
@@ -114,7 +119,11 @@ function guardProse(prose: string, missing: Set<TripFact>): { text: string; drop
     // A sentence may end in markdown or a closing quote/paren: "…nào?** Để mình…" (uat 192973d run 1).
     const parts = line.split(SENTENCE_SPLIT)
     let afterDroppedQuestion = false
+    let prevGone = false
     const kept = parts.filter(sentence => {
+      // 30/10: the citation after a removed sentence was its source, and stood alone once it went (see citationTail.ts).
+      if (prevGone && isCitationOnly(sentence)) return false
+      prevGone = false
       // The "(để xác nhận …)" aside, or the "Để mình tìm giá vé …" reason, that followed a dropped
       // question goes with it.
       const aside = afterDroppedQuestion && (/^\(.*\)[.!]?$/u.test(sentence.trim()) || /^(?:để|de)\s+(?:mình|minh|tôi|toi)\b/iu.test(sentence.trim()))
@@ -126,12 +135,12 @@ function guardProse(prose: string, missing: Set<TripFact>): { text: string; drop
       // sat right above the closing question; on 192973d it came bolded ("- **…nào?**").
       if (ENDS_WITH_QUESTION.test(sentence)) {
         const own = TRIP_QUESTION.test(sentence)
-        if (own) { dropped++; afterDroppedQuestion = true }
+        if (own) { dropped++; afterDroppedQuestion = true; prevGone = true }
         return !own
       }
       const bad = (missing.has('date') && hasCalendarDate(sentence))
         || ((missing.has('origin') || missing.has('transport')) && DEPARTURE.test(sentence))
-      if (bad) dropped++
+      if (bad) { dropped++; prevGone = true }
       return !bad
     })
     return kept.length === parts.length ? line : kept.join(' ')

@@ -18,6 +18,7 @@
 // price — only the VERDICT rule differs (fail-closed instead of inert).
 
 import { extractMoneyClaims, redactUnsupportedClaims, type MoneyClaim } from './moneyGuard'
+import { isCitationOnly } from './citationTail'
 
 /** A live, fetched travel price in VND. Only a FETCHED_LIVE value authorizes a
  *  current-price claim — a search URL or a prose snippet never does. */
@@ -204,7 +205,13 @@ function redactScheduleAvailability(text: string, evidenceTimes: readonly string
     if (sched || avail.test(s)) doomed.add(i)
   })
   if (doomed.size === 0) return { text, removed: 0, removedTexts: [] }
-  const kept = spans.filter((_, i) => !doomed.has(i)).map(([a, b]) => text.slice(a, b)).join('')
+  // 30/10: the citation written right after a removed sentence, on its line, was that sentence's source (see citationTail.ts).
+  const tails = new Set<number>()
+  spans.forEach(([a, b], i) => {
+    const prev = i - 1
+    if (prev >= 0 && (doomed.has(prev) || tails.has(prev)) && !text.slice(spans[prev][0], spans[prev][1]).endsWith('\n') && isCitationOnly(text.slice(a, b))) tails.add(i)
+  })
+  const kept = spans.filter((_, i) => !doomed.has(i) && !tails.has(i)).map(([a, b]) => text.slice(a, b)).join('')
   const tidy = kept.replace(/[ \t]{2,}/g, ' ').replace(/\s+([.,;])/g, '$1').replace(/\n{3,}/g, '\n\n').trim()
   // If we'd leave nothing, keep the original — a monetary redaction / the prompt
   // fallback handles the "whole reply was the fabrication" case without emptiness.
