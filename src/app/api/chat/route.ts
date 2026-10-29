@@ -1046,10 +1046,9 @@ export async function POST(req: Request) {
         quotaMetered = true
       } else {
         const spend = await consumeAiQuestion(aiQuotaIdentity(user, clientIp(req)))
-        // CONSULT_V3 turn contract: decided AFTER the spend (R-3). A direct answer to Tappy's own question hands the unit back and passes even
-        // when the quota is spent. Called once per metered turn; the same turn never reaches the other spend sites.
-        const freeClarify = await clarifyFreeTurn(aiQuotaIdentity(user, clientIp(req)))
-        if (!spend.ok && !freeClarify) {
+        // Owner 29/10 (D2): a guest has five questions for life, once. No free clarify answer here, not even under CONSULT_V3:
+        // past the five, the guest signs in. No clarify credit is taken or issued for a guest identity.
+        if (!spend.ok) {
           return new Response(
             JSON.stringify({
               error: 'anon_limit_reached',
@@ -1061,7 +1060,6 @@ export async function POST(req: Request) {
         }
         quotaMetered = true
         quotaRefund = spend.refund
-        if (freeClarify) { if (spend.ok) await refundAiQuestion(spend.refund); quotaRefund = null }
       }
     } else if (user) {
       // Module 08 §4 — a suspended account cannot use AI. Checked before memory,
@@ -1325,9 +1323,8 @@ export async function POST(req: Request) {
   // previous cookie counter is gone — a counter the client carries is a counter the client resets.
   if (!quotaMetered) {
     const spend = quotaExempt ? { ok: true, refund: null } : await consumeAiQuestion(aiQuotaIdentity(null, clientIp(req)))
-    // CONSULT_V3 turn contract: after the spend; an exempt (canned) turn never takes a credit.
-    const freeClarify = !quotaExempt && await clarifyFreeTurn(aiQuotaIdentity(null, clientIp(req)))
-    if (!spend.ok && !freeClarify) {
+    // Owner 29/10 (D2): the same five, once — no free clarify answer for a guest (see the anonymous-session branch).
+    if (!spend.ok) {
       return new Response(
         JSON.stringify({
           error: 'anon_limit_reached',
@@ -1338,7 +1335,6 @@ export async function POST(req: Request) {
       )
     }
     quotaRefund = spend.refund
-    if (freeClarify) { if (spend.ok) await refundAiQuestion(spend.refund); quotaRefund = null }
   }
 
   // ── G1-E: per-Zalo-identity daily cap ────────────────────────────────────

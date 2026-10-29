@@ -21,6 +21,8 @@ const h = vi.hoisted(() => {
     stepCalls: [] as Array<Record<string, unknown>>,
     writes: [] as unknown[],
     signedIn: true,
+    /** Signed in through an anonymous session (a guest), not a real account. */
+    guest: false,
     legacyModelCalls: 0,
     stepThrows: false,
   }
@@ -42,7 +44,7 @@ vi.mock('@/lib/account/ageEligibility', async (importOriginal) => ({
   ...(await importOriginal<typeof import('@/lib/account/ageEligibility')>()),
   getAgeEligibility: async () => ({ status: 'eligible', ageBand: '25_34', age: 30, canSelfCorrect: true }),
 }))
-vi.mock('@/lib/auth/getRequestUser', () => ({ getRequestUser: () => Promise.resolve({ user: h.state.signedIn ? { id: 'u-clarify' } : null, supabase: h.client }) }))
+vi.mock('@/lib/auth/getRequestUser', () => ({ getRequestUser: () => Promise.resolve({ user: !h.state.signedIn ? null : h.state.guest ? { id: 'g-clarify', is_anonymous: true } : { id: 'u-clarify' }, supabase: h.client }) }))
 vi.mock('@/lib/security/rateLimit', () => ({ rateLimit: () => ({ ok: true, retryAfter: 0 }), dailyRateLimit: () => ({ ok: true }), clientIp: () => '127.0.0.1' }))
 vi.mock('@/lib/ai/llm', () => ({
   AI: {
@@ -81,6 +83,7 @@ async function turn(messages: unknown[], sid: string) {
   log.mockRestore(); warn.mockRestore()
   const json = logs.map(l => { try { return JSON.parse(l) } catch { return null } }).filter(Boolean) as Array<Record<string, any>>
   return {
+    status: res.status,
     json,
     takes: json.filter(j => j.type === 'tappyai_clarify_credit' && j.step === 'take'),
     issues: json.filter(j => j.type === 'tappyai_clarify_credit' && j.step === 'issue'),
@@ -94,7 +97,7 @@ const ASKED = 'Bạn đang ở khu vực nào để mình tìm chỗ gần bạn
 const ASK = 'Gợi ý giúp mình một quán cà phê yên tĩnh để làm việc'
 
 beforeEach(() => {
-  h.state.steps = []; h.state.stepCalls = []; h.state.writes = []; h.state.signedIn = true; h.state.legacyModelCalls = 0; h.state.stepThrows = false
+  h.state.steps = []; h.state.stepCalls = []; h.state.writes = []; h.state.signedIn = true; h.state.guest = false; h.state.legacyModelCalls = 0; h.state.stepThrows = false
   __resetAiQuestionQuotaLocal(); __resetClarifyCreditLocal(); __resetChatSessionStore()
   vi.stubGlobal('fetch', async (input: unknown) => { throw new Error('network disabled in this test: ' + String(input).slice(0, 60)) })
   for (const [k, v] of Object.entries({ TAPPY_AGENT: '2', CONSULTATIVE_IN_AGENT: '1', CONSULT_V2: '1', CONSULTATIVE_V1: '1' })) process.env[k] = v
@@ -178,4 +181,32 @@ describe('Batch 6C · free-clarify turn contract (route level, offline)', () => 
     expect(t3.takes.every(t => t.free !== true)).toBe(true)
     expect(await used()).toBe(afterCharged + 1)
   })
+})
+
+// Owner 29/10 (D2): a guest has five questions for life, once; past them the guest signs in. No free clarify answer, even under CONSULT_V3.
+describe('a guest gets no free clarify answer past the five (owner D2)', () => {
+  const QUESTIONS = ['Gợi ý giúp mình một quán phở ngon', 'Thời tiết Đà Lạt tháng 12 thế nào', 'Nên mua tai nghe nào dưới 2 triệu', 'Đi Huế 2 ngày nên xem gì']
+  async function spendTheFive(sid: string) {
+    h.state.steps = [{ text: ASKED, toolCalls: [] }]
+    const first = await turn([U(ASK)], sid)
+    for (const q of QUESTIONS) { h.state.steps = [{ text: 'Mình gợi ý nhé.', toolCalls: [] }]; await turn([U(q)], sid) }
+    return first
+  }
+  for (const [label, setup] of [
+    ['an anonymous session', () => { h.state.guest = true }],
+    ['a caller with no verified identity', () => { h.state.signedIn = false }],
+  ] as const) {
+    it(`CONSULT_V3 ON, ${label}: Tappy's question issues no credit, and the answer after the five is refused with anon_limit_reached`, async () => {
+      process.env.CONSULT_V3 = '1'
+      setup()
+      const sid = randomUUID()
+      const first = await spendTheFive(sid)
+      expect(first.status).toBe(200)
+      expect(first.issues).toHaveLength(0)
+      h.state.steps = [{ text: 'Mình gợi ý vài quán ở Quận 3.', toolCalls: [] }]
+      const answer = await turn([U(ASK), A(ASKED), U('Quận 3')], sid)
+      expect(answer.takes).toHaveLength(0)
+      expect(answer.status).toBe(401)
+    })
+  }
 })
