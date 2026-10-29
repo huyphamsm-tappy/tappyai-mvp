@@ -404,6 +404,23 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     expect(none.results.find(r => r.name === 'get_transport_options')?.result?.train_schedule).toBeUndefined()
     expect(none.text).not.toContain('363.000')
   }, 60000)
+  it('a train question: the journey time a row implies is evidence too; a journey time no row implies is still cut (30/10)', async () => {
+    // Measured offline 30/10 (travel guard with the rows as evidence): "khởi hành 13:00 và mất khoảng 12h35" was cut whole, the journey
+    // time read as a clock time no row states. SE8 06:00 → 13:43 is 7 h 43; SE6 08:45 → 16:06 is 7 h 21.
+    const ROWS = [
+      { train: 'SE8', depart: '06:00', arrive: '13:43', from_station: 'Ga Sài Gòn', to_station: 'Ga Nha Trang', price_from_vnd: 315000 },
+      { train: 'SE6', depart: '08:45', arrive: '16:06', from_station: 'Ga Sài Gòn', to_station: 'Ga Nha Trang', price_from_vnd: 363000 },
+    ]
+    const TRAIN: Msg[] = [{ role: 'user', content: 've tau sai gon nha trang ngay 16/11' }]
+    const CALL = { name: 'get_transport_options', args: { origin: 'Sài Gòn', destination: 'Nha Trang', date: '2026-11-16' } }
+    const reply = 'Đi tàu vào Nha Trang khá thoải mái. Tàu SE8 khởi hành 06:00 và mất khoảng 7h43 để tới Nha Trang. Tàu SE6 khởi hành 08:45 và mất khoảng 9h15.'
+    const on = await turn(TRAIN, { unwind: true, oneBrain: true, luna: intent('ask', ['travel']), tools: [CALL], reply, railRows: ROWS })
+    expect(on.text).toContain('mất khoảng 7h43')
+    expect(on.text).not.toContain('9h15')
+    // No page rows: nothing implies a journey time, and the sentence goes as before.
+    const none = await turn(TRAIN, { unwind: true, oneBrain: true, luna: intent('ask', ['travel']), tools: [CALL], reply })
+    expect(none.text).not.toContain('7h43')
+  }, 60000)
   it('flag ON, trip plan: no code question, no pre-fetch, no plan frame - the model plans with its tools', async () => {
     const on = await turn(TRIP, { unwind: true, oneBrain: true, luna: TRIP_INTENT, reply })
     expect(on.web).toEqual([])

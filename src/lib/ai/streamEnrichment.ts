@@ -11,7 +11,7 @@ import { outboundTextSanitizer, stripModelArtifacts, stripCitationMarkers } from
 import { sanitizeMediaBlock } from '@/lib/media/mediaHosts'
 import { checkCitationSupport } from './citationSupport'
 import { cardsAllowed, stripTaskFrame } from './agent/runtime/taskFrame'
-import { guardTravelClaimsInText, scheduleTimesIn } from './travelGuard'
+import { guardTravelClaimsInText, journeyTimeOf, scheduleTimesIn } from './travelGuard'
 import { guardHoursClaimsInText } from './hoursGuard'
 import { verificationLead } from './verificationLead'
 import { guardFormatClaimsInText } from './formatClaimGuard'
@@ -4443,6 +4443,8 @@ export function applyPlaceEnrichmentStreamFilter(
                 for (const row of rows) {
                   if (typeof row?.price_from_vnd === 'number') for (let k = 1; k <= MAX_PASSENGERS_PER_BOOKING; k++) travelFares.push(row.price_from_vnd * k)
                   for (const t of [row?.depart, row?.arrive]) if (typeof t === 'string') for (const s of scheduleTimesIn(t)) travelTimes.add(s)
+                  // 30/10: the journey time the row implies ("mất khoảng 12h35"), which the guard reads as a clock-shaped token.
+                  if (typeof row?.depart === 'string' && typeof row?.arrive === 'string') { const d = journeyTimeOf(row.depart, row.arrive); if (d) travelTimes.add(d) }
                 }
               }
             }

@@ -153,11 +153,31 @@ export function scheduleTimesIn(text: string): string[] {
     const after = t.slice(hm.index! + hm[0].length)
     const mm = hm[2] ?? after.match(/^\s*(?:h|giờ|gio)\s*([0-5]\d)/)?.[1] ?? (/rưỡi|ruoi/.test(after) ? '30' : '00')
     const min = mm.padStart(2, '0')
-    if (/pm|p\.m\.|chiều|chieu|tối|toi/.test(t) && h < 12) h += 12
-    else if (/đêm|dem/.test(t) && h >= 6 && h < 12) h += 12
+    // 30/10: the period word may also come FIRST ("buổi chiều 1 giờ", "tối 9h"): measured offline, "chọn SE9 khởi hành buổi chiều 1 giờ"
+    // read as 1:00 against the row's 13:00 and was cut. Only a word that ends right before the time counts; one inside the token wins.
+    // Accented forms only: unaccented "toi" / "sang" before a time are as often "tới" (until) / "sang" (over to).
+    const lead = /(?<!\p{L})(sáng|trưa|chiều|tối|đêm)\s*$/iu.exec(text.slice(Math.max(0, m.index! - 12), m.index!))?.[1]?.toLowerCase() ?? ''
+    const period = /sáng|sang|trưa|trua|chiều|chieu|tối|toi|đêm|dem|am|pm|a\.m\.|p\.m\./.test(t) ? t : lead
+    if (/pm|p\.m\.|chiều|chieu|tối|toi/.test(period) && h < 12) h += 12
+    else if (/đêm|dem/.test(period) && h >= 6 && h < 12) h += 12
     out.add(`${h}:${min}`)
   }
   return [...out]
+}
+
+/**
+ * A trip's journey time from its two stated clock times ("13:00" → "01:35" = 12 h 35), as "h:mm" — the form scheduleTimesIn gives
+ * "12h35". 30/10: the model states the journey time it reads off a fetched rail row ("mất khoảng 12h35"); this guard read that token as
+ * a clock time no row states and cut the whole sentence. Under 24 h only (a longer trip is not written as a clock-shaped token); an
+ * unreadable time gives null. Pure.
+ */
+export function journeyTimeOf(depart: string, arrive: string): string | null {
+  const m = (t: string) => { const x = /^([01]?\d|2[0-3]):([0-5]\d)$/.exec(t.trim()); return x ? Number(x[1]) * 60 + Number(x[2]) : null }
+  const a = m(depart), b = m(arrive)
+  if (a === null || b === null) return null
+  const mins = (b - a + 24 * 60) % (24 * 60)
+  if (mins === 0) return null
+  return `${Math.floor(mins / 60)}:${String(mins % 60).padStart(2, '0')}`
 }
 
 /**
