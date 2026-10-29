@@ -29,6 +29,9 @@ import { mergeHashtags, parseHashtags } from '@/lib/reviews/hashtags'
 // The title and cover still come from the allowed source (POST /api/links/resolve = oEmbed). The old
 // suggestion code is kept but unreachable unless this flag is set at build time (default OFF).
 const LINK_AI_SUGGEST_ENABLED = process.env.NEXT_PUBLIC_POST_LINK_AI_ENABLED === 'true'
+// 29/10 (owner): the video upload no longer asks a model for a caption, hashtags or an area — the poster writes them. Same shape
+// as the link switch above: the code stays, unreachable unless this is set at build time (default OFF). The server is off too.
+const UPLOAD_AI_SUGGEST_ENABLED = process.env.NEXT_PUBLIC_POST_UPLOAD_AI_ENABLED === 'true'
 
 // Display label per provider. Only entries in SUPPORTED_LINK_SOURCES are rendered.
 const LINK_SOURCE_LABEL: Record<LinkSource, string> = { youtube: '▶ YouTube' }
@@ -549,28 +552,30 @@ export default function NewReviewPage() {
       setMedia_url(result.url)
       vok('video-upload', tVideo, { url: result.url })
 
-      /* 3. AI processing (non-blocking — failure is OK) */
-      setUploadStep('ai')
-      const tAi = vstart('ai-process')
-      try {
-        const aiRes = await apiFetch('/api/explore/process', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            thumbnail_url: thumbUrl,
-            caption: body.trim() || undefined,
-          }),
-        })
-        if (aiRes.ok) {
-          const ai = await aiRes.json()
-          if (Array.isArray(ai.hashtags) && ai.hashtags.length > 0) setAiHashtags(mergeHashtags(ai.hashtags.map(String)))
-          if (!bodyNow.current.trim() && typeof ai.caption === 'string' && ai.caption) setBody(ai.caption)
-          suggestArea(ai)
-          vok('ai-process', tAi, { hashtags: Array.isArray(ai.hashtags) ? ai.hashtags.length : 0, area: typeof ai.location === 'string' && !!ai.location })
-        } else {
-          vfail('ai-process', tAi, new Error(`HTTP ${aiRes.status}`), { note: 'non-blocking' })
-        }
-      } catch (e) { vfail('ai-process', tAi, e, { note: 'non-blocking' }) }
+      /* 3. AI processing (non-blocking — failure is OK). Off by default since 29/10 (owner). */
+      if (UPLOAD_AI_SUGGEST_ENABLED) {
+        setUploadStep('ai')
+        const tAi = vstart('ai-process')
+        try {
+          const aiRes = await apiFetch('/api/explore/process', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              thumbnail_url: thumbUrl,
+              caption: body.trim() || undefined,
+            }),
+          })
+          if (aiRes.ok) {
+            const ai = await aiRes.json()
+            if (Array.isArray(ai.hashtags) && ai.hashtags.length > 0) setAiHashtags(mergeHashtags(ai.hashtags.map(String)))
+            if (!bodyNow.current.trim() && typeof ai.caption === 'string' && ai.caption) setBody(ai.caption)
+            suggestArea(ai)
+            vok('ai-process', tAi, { hashtags: Array.isArray(ai.hashtags) ? ai.hashtags.length : 0, area: typeof ai.location === 'string' && !!ai.location })
+          } else {
+            vfail('ai-process', tAi, new Error(`HTTP ${aiRes.status}`), { note: 'non-blocking' })
+          }
+        } catch (e) { vfail('ai-process', tAi, e, { note: 'non-blocking' }) }
+      }
 
       setUploadStep('done')
     } catch (e) {

@@ -86,6 +86,9 @@ export async function POST(req: NextRequest) {
   // description / hashtags. The code below stays, but this switch (default OFF) makes it unreachable
   // for link posts; the upload flow (no title) is unchanged.
   if (title && process.env.EXPLORE_LINK_AI_ENABLED !== 'true') return NextResponse.json(EMPTY)
+  // 29/10 (owner): no AI-written caption, hashtags or area for ANY post — the poster writes their own, and the API is not paid
+  // for it. Default OFF, checked before the model call, so every client (web composer, iOS, an older app build) gets EMPTY.
+  if (process.env.EXPLORE_CAPTION_AI_ENABLED !== 'true') return NextResponse.json(EMPTY)
 
   const result = await processContent({
     thumbnailUrl: thumbnail_url || undefined,

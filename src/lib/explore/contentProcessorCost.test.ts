@@ -105,7 +105,9 @@ describe('the link field does not spend a model call per keystroke', () => {
     expect(composer).toContain('URL_RESOLVE_DEBOUNCE_MS')
     expect(composer).toMatch(/urlDebounceRef\.current = setTimeout\(/)
     // The synchronous state updates must stay OUTSIDE the timer or the field goes unresponsive.
-    expect(composer).toMatch(/const handleUrlChange = \(val: string\) => \{\s*\n\s*setSource_url\(val\)/)
+    // B2 (owner 29/10): the request sequence is bumped first (`const seq = ++urlReqSeqRef.current`, 3750bac) - a synchronous
+    // line, not the timer; nothing that costs money may precede setSource_url.
+    expect(composer).toMatch(/const handleUrlChange = \(val: string\) => \{\s*\n(\s*const seq = \+\+urlReqSeqRef\.current\s*\n)?\s*setSource_url\(val\)/)
   })
 
   it('the same URL is never resolved twice', () => {
