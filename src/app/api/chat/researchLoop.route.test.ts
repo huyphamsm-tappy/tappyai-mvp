@@ -311,6 +311,15 @@ describe('W5-1 — CONSULT_READ_PAGE_LATE: a page found late is still read, and 
     // the first step is never held back, whatever the cap (the reserve's own rule)
     for (const late of [false, true]) expect(reserveHoldsToolCall('read_page', 0, 1, late)).toBe(false)
   })
+  it('29/10: present_plan (the brochure the reply describes, no search, no cost) is held back only in the LAST step, flag or not', () => {
+    // measured live: called in step five of six, refused with "search_budget_used", the reply pointed at a card that never came
+    for (const late of [false, true]) {
+      for (const sf of [0, 1, 2, 3, 4]) expect(reserveHoldsToolCall('present_plan', sf, 6, late), `${sf} ${late}`).toBe(false)
+      expect(reserveHoldsToolCall('present_plan', 5, 6, late)).toBe(true)
+    }
+    // a search in the same step is still held back by the two-step reserve
+    expect(reserveHoldsToolCall('web_search', 4, 6, false)).toBe(true)
+  })
   it('the flag: only the exact value "1", never in a production runtime, and only with the final write armed (CONSULT_FINAL_SYNTHESIS=1)', () => {
     expect(CONSULT_READ_PAGE_LATE_FLAG).toBe('CONSULT_READ_PAGE_LATE')
     expect(consultReadPageLateOn({ CONSULT_READ_PAGE_LATE: '1', CONSULT_FINAL_SYNTHESIS: '1' })).toBe(true)

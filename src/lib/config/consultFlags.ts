@@ -121,9 +121,15 @@ export function finalSynthesisReserveReached(stepsFinished: number, maxSteps: nu
  */
 export const CONSULT_READ_PAGE_LATE_FLAG = 'CONSULT_READ_PAGE_LATE'
 export function consultReadPageLateOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_READ_PAGE_LATE_FLAG]) && !isProductionRuntime(env) && consultFinalWriteOn(env) }
-/** Pure. Does the reserve hold this tool call back? read_page with W5-1 on: only in the last step (one step must have finished). Anything else: the two-step reserve, as before. */
+/**
+ * A tool whose call IS part of writing the answer, not a lookup: `present_plan` lays out the brochure the reply describes (no search,
+ * no provider, no cost). Held back only in the LAST step, like a late read_page. Measured live 29/10 (one brain, six steps): the
+ * reserve answered it in step five with "search_budget_used" and the reply said "the plan card above" over a card that never came.
+ */
+const PRESENTATION_TOOLS = new Set(['present_plan'])
+/** Pure. Does the reserve hold this tool call back? read_page with W5-1 on, and a presentation tool: only in the last step (one step must have finished). Anything else: the two-step reserve, as before. */
 export function reserveHoldsToolCall(tool: string, stepsFinished: number, maxSteps: number, readPageLate: boolean): boolean {
-  if (readPageLate && tool === 'read_page') return stepsFinished >= 1 && stepsFinished >= maxSteps - 1
+  if ((readPageLate && tool === 'read_page') || PRESENTATION_TOOLS.has(tool)) return stepsFinished >= 1 && stepsFinished >= maxSteps - 1
   return finalSynthesisReserveReached(stepsFinished, maxSteps)
 }
 /**
