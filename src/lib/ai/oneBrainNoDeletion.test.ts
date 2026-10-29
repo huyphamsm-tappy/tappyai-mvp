@@ -113,6 +113,31 @@ describe('one brain: the date the model gives for its own lookup stays', () => {
   })
 })
 
+// the shopping answer of the same run: its price sentence ("…dưới ngân sách 3 triệu") went with the budget-fit rule
+describe('one brain: the price sentence of a shopping answer stays', () => {
+  const USER = 'Tư vấn nồi chiên không dầu cho gia đình 4 người, dưới 3 triệu, dễ vệ sinh. Shopee hay Điện Máy Xanh mua chỗ nào lợi hơn?'
+  const PAGE = 'https://www.dienmayxanh.com/noi-chien-khong-dau/noi-chien-khong-dau-philips-na231-00-6-2-lit?srsltid=AYCX9vJZgMsKLJr7inV4BcMYIrraSoDJbjaKiRVb6RCNks0Tf0b-Uc2Z'
+  const REPLY = `**Mình khuyên Philips NA231/00 6.2 lít mua ở Điện Máy Xanh** nếu ưu tiên dễ vệ sinh, bảo hành và ít rủi ro khi mua. Giá đang niêm yết **2.090.000₫**, dưới ngân sách 3 triệu; 6.2 lít cũng phù hợp gia đình 4 người. [Điện Máy Xanh](${PAGE})\n\n- **Vì sao hợp:** Lòng nồi phủ chống dính, vỉ tách dầu tháo rời. [Chi tiết NA231/00](${PAGE})`
+  const settle = async (oneBrain: boolean): Promise<string> => {
+    const collector = createEnrichmentCollector(USER)
+    if (oneBrain) collector.oneBrain = true
+    // the legacy frame: a budget was stated and no row carried a price
+    collector.setConsultativeV1({ on: true, rendersCard: true, namedRefetch: [], referenced: [], carried: [], hardGaps: [], budgetGap: true, budget: null, priorTimes: [] } as never)
+    const orig = console.log
+    console.log = () => {}
+    try {
+      const res = applyPlaceEnrichmentStreamFilter(new Response(['0:' + JSON.stringify(REPLY), 'd:{"finishReason":"stop"}'].join('\n') + '\n'), 'vi', collector, undefined, undefined, undefined, false, USER, false)
+      return (await new Response(res.body).text()).split('\n').filter(l => l.startsWith('0:')).map(l => JSON.parse(l.slice(2)) as string).join('')
+    } finally { console.log = orig }
+  }
+  it('one brain keeps the price sentence', async () => {
+    expect(await settle(true)).toContain('Giá đang niêm yết **2.090.000₫**, dưới ngân sách 3 triệu')
+  })
+  it('without one brain the price sentence is cut, as before', async () => {
+    expect(await settle(false)).not.toContain('dưới ngân sách 3 triệu')
+  })
+})
+
 // the user's 15 triệu split by the model into its own planning figures (the real reply of the run, plan block left out)
 const SPLIT = '**Ngân sách 15 triệu cho hai người có thể làm được**, nếu săn được vé khứ hồi Hà Nội–Phú Quốc khoảng **5–6 triệu đồng tổng cộng**, ở nhà nghỉ/khách sạn bình dân và đi tự túc. Mình đã tạo lịch trình 3 ngày 2 đêm kèm dự toán trong thẻ kế hoạch bên dưới.\n\n- **Vé máy bay:** Hiện chưa thể chốt giá chính xác nếu chưa có ngày bay cụ thể. Một trang so sánh vé ghi giá khứ hồi tham khảo khoảng 1,38–4,42 triệu đồng/người, nhưng đây không phải báo giá đảm bảo cho ngày giữa tháng 12; hãy đặt mục tiêu tối đa **6 triệu đồng/2 người**, gồm hành lý cần thiết.\n- **Lưu trú:** Dự trù **1,4 triệu/2 đêm** cho phòng đôi bình dân ở Dương Đông. Mình chưa xác minh được giá phòng theo ngày; các khách sạn tìm thấy hiện chưa có giá xác nhận, nên cần kiểm tra ngày cụ thể trước khi đặt.\n- **Ăn uống và đi lại:** Dự trù **2,1 triệu** ăn uống, **700.000 đồng** thuê xe máy và xăng, **500.000 đồng** cho đi sân bay/đi lại khác. Đây là mức lập kế hoạch tiết kiệm, chưa phải giá báo từ nhà cung cấp.\n- **Tổng dự toán:** Khoảng **11–12 triệu đồng**, gồm vé bay theo mục tiêu săn vé, còn khoảng **3–4 triệu dự phòng** cho giá vé/phòng tăng hoặc hành lý.\n\n**Lưu ý:** Dự toán này chưa tính mua sắm lớn và có thể vượt 15 triệu nếu vé bay khứ hồi hai người cao hơn 6 triệu.'
 const TRIP_USER = 'Mình với bạn gái muốn đi Phú Quốc 3 ngày 2 đêm từ Hà Nội vào giữa tháng 12/2026, tổng ngân sách khoảng 15 triệu cho 2 người, gồm vé máy bay. Lên giúp mình lịch trình từng ngày và chia chi phí từng khoản.'

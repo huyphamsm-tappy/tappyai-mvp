@@ -3404,7 +3404,9 @@ export function applyPlaceEnrichmentStreamFilter(
        * the honest thing once).
        */
       const fitClaim = /\b(?:deu |hoan toan |chac chan |van )?(?:duoi|trong tam(?: gia)?|vua tam|nam trong|hop (?:tui tien|ngan sach)|vua (?:voi )?ngan sach|dung ngan sach|khong vuot|re hon ngan sach|within (?:your )?budget|under your budget)\b/
-      const tidyBudget = !v1.budgetGap ? tidy : (() => {
+      // CONSULT_ONE_BRAIN: no sentence is deleted for a budget-fit word either. Measured 29/10 (25 questions): "Giá đang niêm yết 2.090.000₫, dưới ngân sách 3 triệu" (the
+      // price the shopping tool returned) and "…để không vượt ngân sách" (advice) went, because "dưới" / "không vượt" read as a fit claim on a turn whose rows had no priced place.
+      const tidyBudget = !v1.budgetGap || collector?.oneBrain === true ? tidy : (() => {
         const protB = protectedSpans(tidy)
         const spansB = sentenceSpans(tidy)
         let seenPick = false
