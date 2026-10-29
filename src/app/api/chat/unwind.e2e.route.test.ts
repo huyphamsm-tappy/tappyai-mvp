@@ -561,3 +561,103 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     expect(on.toolNames).toContain('search_places')
   }, 60000)
 })
+
+// P0-1 (29/10 audit): the one-brain model must read the conversation it is answering. Before, a keyword reading of the last turn's domain (turnStartsNewConsultation)
+// cut the history to ONE message, and the server compaction shrank every assistant reply but the last exchange to its first paragraph (≤420 characters), so
+// "cái thứ hai" / "bảng ở trên" pointed at text the model no longer had. The payload the model gets is read here (`system` = {system, messages} as sent to AI.stream).
+describe('one brain keeps the conversation the model answers (P0-1)', () => {
+  const sent = (r: { system: string }): Array<{ role: string; content: string }> => (JSON.parse(r.system).messages as Array<{ role: string; content: unknown }>).map(m => ({ role: m.role, content: typeof m.content === 'string' ? m.content : JSON.stringify(m.content) }))
+  const joined = (r: { system: string }): string => sent(r).map(m => m.content).join('\n')
+  // a long answer with a list and a table, each carrying a detail that only the full text has (a first paragraph + bold names would lose it)
+  const ANSWER = [
+    'Mình gợi ý 3 chỗ ở Đà Lạt cho gia đình, ưu tiên gần trung tâm.',
+    '',
+    '- **Villa Hoa Sữa:** phòng ba người, có bếp riêng, bãi đậu xe rộng; chi tiết-ZETA-ngày-hai-bữa-sáng-miễn-phí.',
+    '- **Khách sạn Thông Xanh:** gần chợ đêm, nhưng phòng nhỏ hơn.',
+    '- **Homestay Mây Chiều:** view đồi, xa trung tâm 6 km.',
+    '',
+    '| Chỗ | Giá/đêm | Ghi chú |',
+    '|---|---|---|',
+    '| Villa Hoa Sữa | 1.150.000đ | ô-bảng-KAPPA-có-hồ-bơi |',
+    '| Khách sạn Thông Xanh | 780.000đ | gần chợ |',
+    '| Homestay Mây Chiều | 640.000đ | view đồi |',
+    '',
+    'Nếu ưu tiên tiện đi lại thì chọn Villa Hoa Sữa; ngân sách chặt hơn thì Homestay Mây Chiều. '.repeat(3),
+  ].join('\n')
+  const U1 = 'gia đình mình 4 người muốn đi Đà Lạt 3 ngày, ngân sách khoảng 12 triệu, cần chỗ ở có bếp và bãi đậu xe'
+  const U2 = 'gợi ý giúp mình quán cà phê view đẹp'
+  const KEYWORD_SWITCH: Msg[] = [{ role: 'user', content: U1 }, { role: 'assistant', content: ANSWER }, { role: 'user', content: U2 }]
+  const FOLLOW = 'cái thứ hai có gần chợ không, và cái ở bảng trên giá rẻ nhất là chỗ nào'
+  const LONG_THREAD: Msg[] = [
+    { role: 'user', content: U1 }, { role: 'assistant', content: ANSWER },
+    { role: 'user', content: 'vậy chỗ nào gần chợ đêm' }, { role: 'assistant', content: 'Khách sạn Thông Xanh gần chợ đêm nhất. '.repeat(30) },
+    { role: 'user', content: FOLLOW },
+  ]
+  const one = (m: Msg[]) => turn(m, { unwind: true, oneBrain: true, luna: intent('followup', []), reply: 'Ok.' })
+
+  it('a turn the keyword reading calls a new subject still gets the whole thread (role order kept, nothing doubled)', async () => {
+    const on = await one(KEYWORD_SWITCH)
+    const m = sent(on)
+    expect(m.map(x => x.role)).toEqual(['user', 'assistant', 'user'])
+    expect(m[0].content).toContain('ngân sách khoảng 12 triệu')
+    expect(m[1].content).toContain('chi tiết-ZETA-ngày-hai-bữa-sáng-miễn-phí')
+    expect(m[2].content).toBe(U2)
+    expect(joined(on).split(U2).length - 1).toBe(1)
+  }, 60000)
+  it('"cái thứ hai" / "bảng ở trên": the earlier list and table reach the model whole, not as a first paragraph', async () => {
+    const m = sent(await one(LONG_THREAD))
+    expect(m.map(x => x.role)).toEqual(['user', 'assistant', 'user', 'assistant', 'user'])
+    expect(m[1].content).toContain('chi tiết-ZETA-ngày-hai-bữa-sáng-miễn-phí')
+    expect(m[1].content).toContain('ô-bảng-KAPPA-có-hồ-bơi')
+    expect(m[1].content).toContain('| Homestay Mây Chiều | 640.000đ | view đồi |')
+    expect(m[4].content).toBe(FOLLOW)
+  }, 60000)
+  it('a constraint stated in the first turn is still in the payload several turns later', async () => {
+    for (const thread of [LONG_THREAD, [...LONG_THREAD.slice(0, 4), { role: 'user', content: U2 } as Msg]]) {
+      const t = joined(await one(thread))
+      expect(t).toContain('ngân sách khoảng 12 triệu')
+      expect(t).toContain('cần chỗ ở có bếp và bãi đậu xe')
+    }
+  }, 60000)
+  it('no application-generated state block rides along with the longer history', async () => {
+    const on = await one(KEYWORD_SWITCH)
+    expect(on.system).not.toContain('DỮ LIỆU PHIÊN')
+    expect(on.system).not.toContain('TRANG THAI PHIEN')
+  }, 60000)
+  it('over the request budget (the existing 20 000 characters of requestHistory): the OLDEST turns go whole, the newest stay verbatim, the thread never opens on an assistant turn', async () => {
+    // four replies of ~5.2k characters: ~21k with the user turns, over the 20 000 budget and under the server's 24 000 cap, inside the ten-message window
+    const BIG = (tag: string) => `Câu trả lời ${tag}. ` + `Đoạn dài về chuyến đi ${tag} với nhiều chi tiết. `.repeat(115).trimEnd() + `\n\n**Quán Cây Thông ${tag}** ngon.`
+    const thread: Msg[] = [
+      { role: 'user', content: 'câu hỏi một về Đà Lạt' }, { role: 'assistant', content: BIG('A1') },
+      { role: 'user', content: 'câu hỏi hai về Đà Lạt' }, { role: 'assistant', content: BIG('A2') },
+      { role: 'user', content: 'câu hỏi ba về Đà Lạt' }, { role: 'assistant', content: BIG('A3') },
+      { role: 'user', content: 'câu hỏi bốn về Đà Lạt' }, { role: 'assistant', content: BIG('A4') },
+      { role: 'user', content: 'câu hỏi năm về Đà Lạt, tóm tắt giúp mình' },
+    ]
+    expect(thread.reduce((n, x) => n + x.content.length, 0)).toBeGreaterThan(20_000)
+    const m = sent(await one(thread))
+    const chars = m.reduce((n, x) => n + x.content.length, 0)
+    expect(chars).toBeLessThanOrEqual(20_000)
+    // the first exchange went (requestHistory drops the oldest turns, then any assistant turn left in front); what is left is whole and in order
+    expect(m[0].role).toBe('user')
+    expect(m.map(x => x.role)).toEqual(['user', 'assistant', 'user', 'assistant', 'user', 'assistant', 'user'])
+    expect(m.filter(x => x.role === 'user').map(x => x.content)).toEqual(thread.filter(x => x.role === 'user').slice(1).map(x => x.content))
+    expect(m.filter(x => x.role === 'assistant').map(x => x.content.trim())).toEqual([BIG('A2').trim(), BIG('A3').trim(), BIG('A4').trim()])
+  }, 60000)
+  it('inside the budget nothing is shrunk: every assistant reply of a short thread arrives whole', async () => {
+    const m = sent(await one(LONG_THREAD))
+    // (compared without the stray end space: the route's marker stripping may touch it)
+    expect(m[1].content.trim()).toBe(ANSWER.trim())
+    expect(m[3].content.trim()).toBe('Khách sạn Thông Xanh gần chợ đêm nhất. '.repeat(30).trim())
+  }, 60000)
+  it('the other routes are unchanged: the same keyword-switch thread still reaches a flag-OFF model as ONE message, and an old reply is still compacted', async () => {
+    const off = await turn(KEYWORD_SWITCH, { unwind: true, oneBrain: false, luna: intent('pick', ['food']), reply: 'Ok.' })
+    expect(off.streamCalled).toBe(1)
+    expect(joined(off)).toContain(U2)
+    expect(joined(off)).not.toContain('ngân sách khoảng 12 triệu') // the earlier subject's turns do not reach the model on this route (unchanged)
+    expect(joined(off)).not.toContain('chi tiết-ZETA')
+    const offLong = await turn(LONG_THREAD, { unwind: true, oneBrain: false, luna: intent('followup', []), reply: 'Ok.' })
+    expect(offLong.streamCalled).toBe(1)
+    expect(joined(offLong)).not.toContain('ô-bảng-KAPPA-có-hồ-bơi')
+  }, 60000)
+})

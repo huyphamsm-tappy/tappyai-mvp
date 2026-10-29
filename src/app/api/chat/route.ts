@@ -164,7 +164,7 @@ import { clampPassengers } from '@/lib/ai/tools/passengers'
 import { fetchRailSchedule } from '@/lib/ai/tools/railSchedule'
 import { trimPlacesForModel } from '@/lib/ai/consultative/modelPayload'
 import { agentCandidateSet } from '@/lib/ai/agent/runtime/candidateSet'
-import { compactHistory } from '@/lib/ai/historyCompaction'
+import { compactHistory as compactHistoryTail, compactHistoryToBudget } from '@/lib/ai/historyCompaction'
 import { compactRequestMessages } from '@/lib/chat/requestHistory'
 import { readCappedBody, exceedsTextCeiling } from '@/lib/http/readCappedBody'
 import { stepRepeatGuard } from '@/lib/ai/stepRepeatGuard'
@@ -2055,7 +2055,11 @@ export async function POST(req: Request) {
   // The Agent decides what is relevant itself and keeps the thread (UAT 2026-10-07: "đi Đà Lạt nên ăn gì" → "lập kế hoạch ăn chơi 3 ngày 2 đêm"
   // was cut to one message by ownDomainSwitch, so the plan was written for the GPS city and the destination was lost): the legacy
   // new-subject cut applies to the legacy path only.
-  const trimmedMessages = ownDomainSwitch && !agentOn ? messages.slice(-1) : consult ? recentTurns(messages, 3) : messages.length > 10 ? messages.slice(-10) : messages
+  // CONSULT_ONE_BRAIN (P0-1, 29/10 audit): the one-brain model reads the conversation and decides for itself whether the message continues it or starts a new subject
+  // (oneBrain.ts, "Understand the request yourself"). The keyword reading of the turn's domain no longer cuts the thread to one message there: "đi Đà Lạt 3 ngày…"
+  // then "gợi ý quán cà phê view đẹp" lost the trip, the budget and the people. `ownDomainSwitch` itself is unchanged: it still isolates the application's own state
+  // (situation frame, evidence reuse). The ten-message window stays; its compaction is by budget, below.
+  const trimmedMessages = ownDomainSwitch && !agentOn && !oneBrain ? messages.slice(-1) : consult ? recentTurns(messages, 3) : messages.length > 10 ? messages.slice(-10) : messages
 
   // V2 highlighted regression: on a tool-less follow-up ("Giá cả thế nào?",
   // "cụ thể hơn", "chọn giúp tôi"), no PLACE_TOOL runs so bufferMode stays
@@ -2077,6 +2081,8 @@ export async function POST(req: Request) {
   // provider rejects a whitespace-only text block ("text content blocks must contain non-whitespace text":
   // replay 29/09, the turn AFTER an empty compare crashed). It becomes a short neutral stand-in instead.
   const nonEmpty = (t: string) => (t.trim() ? t : '(Tappy đã trả lời bằng thẻ/nút, không có chữ.)')
+  // CONSULT_ONE_BRAIN: compaction by budget (every message whole while the thread fits the request budget; the oldest assistant replies give way first when it does not).
+  const compactHistory = <M extends { role: string; content: unknown }>(ms: M[]): M[] => (oneBrain ? compactHistoryToBudget(ms) : compactHistoryTail(ms))
   const modelMessages = compactHistory(collapseClarifyTurns(trimmedMessages).map((m) => {
     if (m.role !== 'assistant') return m
     if (typeof m.content === 'string') {
