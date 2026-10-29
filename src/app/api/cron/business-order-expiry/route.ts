@@ -1,6 +1,7 @@
 import { logBusinessError } from '@/lib/business/logging'
 import { NextResponse } from 'next/server'
 import { expireStaleOrders } from '@/lib/business/repositories/orders'
+import { isAuthorizedCronRequest } from '@/lib/security/cronAuth'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60
@@ -24,12 +25,12 @@ export const maxDuration = 60
 // because the merchant's own accept path will check the same condition. A finer
 // interval changes only how quickly the customer sees it.
 //
-// AUTH: the platform's `CRON_SECRET` bearer, identical to every other cron
-// route. This authenticates a trusted job, not a user.
+// AUTH: the platform's `CRON_SECRET` bearer through the shared constant-time
+// check (security-audit L6), identical to every other cron route. This
+// authenticates a trusted job, not a user.
 
 export async function GET(req: Request) {
-  const secret = process.env.CRON_SECRET
-  if (!secret || req.headers.get('authorization') !== `Bearer ${secret}`) {
+  if (!isAuthorizedCronRequest(req)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 

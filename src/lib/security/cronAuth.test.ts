@@ -53,11 +53,12 @@ describe('guard — every scheduler route uses it', () => {
     'src/app/api/notifications/backfill/route.ts',
   ]
 
-  it('covers all 18 cron routes and the notifications backfill', () => {
+  it('covers all 19 cron routes and the notifications backfill', () => {
     // 15 since the R21 click-attributions-sweep cron (rc, 2026-09-29) — added after L6 was written.
     // 17 since the two moderation crons (moderation-digest, moderation-snapshot-purge; 02/10, flagged, not scheduled)
     // 18 since subscriptions-expire (P7 subscriptions; flagged, not scheduled)
-    expect(routes.length).toBe(19)
+    // 19 since business-order-expiry (Tappy Business e0f48b3, 21/10; not scheduled — owner 30/10: "fix hết", mục D)
+    expect(routes.length).toBe(20)
   })
 
   it.each(routes)('%s', (file) => {
