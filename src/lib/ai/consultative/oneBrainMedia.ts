@@ -10,7 +10,7 @@
 // stored: web images are not persisted). Any failure or the deadline: no picture, the finish frame as it was.
 
 import { resolveDocMedia, type DocMediaDeps } from '@/lib/ai/answerV4/docMedia'
-import type { UnderstandResult } from '@/lib/ai/answerV4/understand'
+import type { UnderstandResult, TurnUnderstanding } from '@/lib/ai/answerV4/understand'
 import { sanitizeMediaBlock } from '@/lib/media/mediaHosts'
 import { docMediaFrame, sanitizeDocMedia } from '@/lib/answerDoc/media'
 
@@ -26,6 +26,9 @@ export interface OneBrainMediaOptions {
   resolve?: typeof resolveDocMedia
   log?: (line: Record<string, unknown>) => void
 }
+
+/** The understanding's intents for which the turn is ABOUT the entities it names (what / who is it, how do they differ): only these get a subject card. */
+export const SUBJECT_CARD_INTENTS: ReadonlySet<TurnUnderstanding['intent']> = new Set<TurnUnderstanding['intent']>(['knowledge', 'comparison'])
 
 /** The whole picture step after the answer ends; the picture search itself gets ONE_BRAIN_MEDIA_SEARCH_MS (measured 28/10 on localhost: four item
  *  pictures of an itinerary did not come back within the V4 default of 4.5 s). The answer text is already on screen while this runs. */
@@ -66,7 +69,7 @@ export function oneBrainMediaStream(body: ReadableStream<Uint8Array>, o: OneBrai
         const work = (async () => {
           const r = await o.understanding
           if (!r.u) return { skipped: r.error ?? 'no_understanding' }
-          const dm = await resolve(r.u, answer, { skipItems: o.cardTurn() }, { timeoutMs: ONE_BRAIN_MEDIA_SEARCH_MS, ...o.deps })
+          const dm = await resolve(r.u, answer, { skipItems: o.cardTurn(), subjectIntents: SUBJECT_CARD_INTENTS },{ timeoutMs: ONE_BRAIN_MEDIA_SEARCH_MS, ...o.deps })
           const block = dm.block ? sanitizeMediaBlock(dm.block) : null
           const ann = dm.annotation ? sanitizeDocMedia(dm.annotation) : null
           if (block) frames += '0:' + JSON.stringify(`\n\n[TAPPY_MEDIA]${JSON.stringify(block)}[/TAPPY_MEDIA]`) + '\n'

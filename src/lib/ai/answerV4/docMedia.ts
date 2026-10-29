@@ -81,7 +81,17 @@ const wikiLangOf = (u: TurnUnderstanding) => (/^vi\b/i.test(u.reply_language) ? 
 export async function resolveDocMedia(
   u: TurnUnderstanding,
   answer: string,
-  o: { skipItems?: boolean; skipEntities?: boolean } = {},
+  o: {
+    skipItems?: boolean
+    skipEntities?: boolean
+    /**
+     * One brain (29/10, 25-question run: Sa Pa under a weather question, Vietcombank under an exchange-rate question, Hà Nội under a train fare,
+     * Shopee under a shopping comparison, Thủ Đức under a business plan): the understanding names every entity the message MENTIONS, and the card
+     * explained a place or a shop that was only the setting. A subject card is for a turn that is ABOUT the entity — the understanding's own
+     * reading of the intent says so. When set, the card is made only for these intents; undefined = every intent, as before.
+     */
+    subjectIntents?: ReadonlySet<TurnUnderstanding['intent']>
+  } = {},
   deps: DocMediaDeps = {},
 ): Promise<DocMediaResult> {
   const wiki = deps.wiki ?? ((s: string, l: string) => fetchWikiEntity(s, l))
@@ -113,6 +123,7 @@ export async function resolveDocMedia(
 
   const entitiesP = (async (): Promise<MediaEntity[]> => {
     if (o.skipEntities) return []
+    if (o.subjectIntents && !o.subjectIntents.has(u.intent)) return []
     // A list answer illustrates its items; its subject card would only repeat the question. A comparison shows its subjects side by side.
     if (u.answer_shape === 'list' || u.answer_shape === 'itinerary' || u.answer_shape === 'news_digest' || u.answer_shape === 'steps') return []
     const wanted = u.entities.filter(e => CARD_TYPES.has(e.type)).slice(0, MAX_ENTITIES)
