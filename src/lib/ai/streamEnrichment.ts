@@ -23,6 +23,7 @@ import { modelPickName, pickStillStated, ALT_SENTENCE } from './modelPick'
 import { extractBudget, extractPlanTotalBudget } from './budget'
 import { guardSnippetPricesInText, pricesFromSnippets, type SnippetPriceScope } from './snippetPriceGuard'
 import { groundedCalcNumbers, numbersInText } from './tools/calculate'
+import { MAX_PASSENGERS_PER_BOOKING } from './tools/passengers'
 import { pageFigures, pageTexts } from './consultative/pageFigures'
 import { hasMarkdownStructure } from './consultative/answerStructure'
 import { guardPlaceClaimsInText, isDirectTicketUrl, mentionsTickets, dropUnbackedOrderingPossession } from './placeClaimGuard'
@@ -4434,12 +4435,13 @@ export function applyPlaceEnrichmentStreamFilter(
             // no price at all on error/missing-token, so an empty travelFares means
             // "no live fare" and the guard redacts every fare the model states.
             // 29/10: the trains a rail route page states (`train_schedule`, get_transport_options) are structured fetched evidence like
-            // a flight's price: each train's lowest fare and its departure / arrival times may be restated.
+            // a flight's price: each train's lowest fare and its departure / arrival times may be restated. The party's total is that
+            // fare times the travellers (2–9, one booking's cap): "675.000đ/người — khoảng 1.350.000đ/2 người" was cut live on 29/10.
             if (toolName === 'get_transport_options') {
               const rows = (res.result as { train_schedule?: { rows?: Array<{ price_from_vnd?: unknown; depart?: unknown; arrive?: unknown }> } } | undefined)?.train_schedule?.rows
               if (Array.isArray(rows)) {
                 for (const row of rows) {
-                  if (typeof row?.price_from_vnd === 'number') travelFares.push(row.price_from_vnd)
+                  if (typeof row?.price_from_vnd === 'number') for (let k = 1; k <= MAX_PASSENGERS_PER_BOOKING; k++) travelFares.push(row.price_from_vnd * k)
                   for (const t of [row?.depart, row?.arrive]) if (typeof t === 'string') for (const s of scheduleTimesIn(t)) travelTimes.add(s)
                 }
               }

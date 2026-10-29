@@ -33,6 +33,15 @@ describe('Vexere trains — the rail route page composes the dated train list', 
     }
   })
 
+  it('a request that names the STATIONS ("Ga Sài Gòn" → "Ga Nha Trang", measured live 29/10) resolves the same city and station pages', () => {
+    for (const page of [CITY_PAGE, STATION_PAGE]) {
+      const r = resolveCommerce(trainReq('ga-sai-gon', 'ga-nha-trang', 2), { hints: [{ url: page }], now: NOW, enabled: true })
+      expect(('links' in r ? r.links : []).filter(l => l.depth >= 2), page).toHaveLength(1)
+    }
+    const wrong = resolveCommerce(trainReq('ga-ha-noi', 'ga-nha-trang', 2), { hints: [{ url: CITY_PAGE }], now: NOW, enabled: true })
+    expect(('links' in wrong ? wrong.links : []).filter(l => l.depth >= 2)).toEqual([])
+  })
+
   it('identity: a rail page for other places is refused; a coach request never takes a rail page, a train request never a coach page', () => {
     const other = resolveCommerce(trainReq('ha-noi', 'da-nang'), { hints: [{ url: CITY_PAGE }], now: NOW, enabled: true })
     expect('links' in other && other.links.filter(l => l.depth >= 2)).toEqual([])

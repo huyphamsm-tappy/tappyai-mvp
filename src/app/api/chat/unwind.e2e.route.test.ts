@@ -386,7 +386,7 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     const TRAIN: Msg[] = [{ role: 'user', content: 've tau sai gon nha trang ngay 16/11 cho 2 nguoi' }]
     const CALL = { name: 'get_transport_options', args: { origin: 'Sài Gòn', destination: 'Nha Trang', date: '2026-11-16', passengers: 2 } }
     // "khởi hành" is the wording the travel guard judges a time in: a departure the page states stays, one it does not is cut.
-    const reply = 'Tàu SE8 khởi hành 06:00, đến 13:43, giá từ 315.000đ. Tàu SE6 khởi hành 08:45 giá từ 363.000đ. Giường nằm VIP giá 999.000đ. Có thêm chuyến khởi hành lúc 23:10.'
+    const reply = 'Tàu SE8 khởi hành 06:00, đến 13:43, giá từ 315.000đ. Tàu SE6 khởi hành 08:45 giá từ 363.000đ, hai người khoảng 726.000đ. Giường nằm VIP giá 999.000đ. Có thêm chuyến khởi hành lúc 23:10.'
     const on = await turn(TRAIN, { unwind: true, oneBrain: true, luna: intent('ask', ['travel']), tools: [CALL], reply, railRows: ROWS })
     const tr = on.results.find(r => r.name === 'get_transport_options')?.result
     expect(tr?.train_booking_link).toBe('https://vexere.com/vn/ve-tau-hoa/dat-ve-tau.vi?from=29_area&to=417_area&date%5Bdepart%5D=2026-11-16&passenger%5Badt%5D=2')
@@ -396,6 +396,7 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     expect(on.text).toContain('363.000')
     expect(on.text).toContain('06:00')
     expect(on.text).toContain('08:45')
+    expect(on.text).toContain('726.000') // the party's total: 363.000đ × 2
     expect(on.text).not.toContain('999.000')
     expect(on.text).not.toContain('23:10') // a departure no page states
     // No page rows: no field, and the fares the model states have nothing behind them.

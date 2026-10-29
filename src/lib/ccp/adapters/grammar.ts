@@ -263,8 +263,11 @@ const traveloka: HandoffGrammar = {
 /** Vexere spells Hồ Chí Minh City as "sai-gon"; the other city slugs follow the plain name. */
 const VEXERE_ALIASES: Record<string, string> = { 'ho-chi-minh': 'sai-gon', 'tp-ho-chi-minh': 'sai-gon', 'tp-hcm': 'sai-gon', 'tphcm': 'sai-gon', 'hcm': 'sai-gon', 'saigon': 'sai-gon', 'thanh-pho-ho-chi-minh': 'sai-gon' }
 const vexereSlug = (name: string) => { const s = slug(name); return VEXERE_ALIASES[s] ?? s }
-/** Vexere's RAIL pages spell the city "ho-chi-minh" (the coach pages say "sai-gon"); a station page names "ga-<station>-<district>-<city>". */
-const railNames = (name: string) => { const s = vexereSlug(name); return s === 'sai-gon' ? ['ho-chi-minh', 'sai-gon'] : s ? [s] : [] }
+/**
+ * Vexere's RAIL pages spell the city "ho-chi-minh" (the coach pages say "sai-gon"); a station page names "ga-<station>-<district>-<city>".
+ * The request may name the station too ("Ga Hà Nội", measured live 29/10): the "ga" word is dropped on both sides.
+ */
+const railNames = (name: string) => { const raw = slug(name).replace(/^ga-/, ''); const s = VEXERE_ALIASES[raw] ?? raw; return s === 'sai-gon' ? ['ho-chi-minh', 'sai-gon'] : s ? [s] : [] }
 const railNamesPlace = (pageSlug: string, name: string) => railNames(name).some(n => pageSlug.replace(/^ga-/, '').startsWith(n))
 
 const vexere: HandoffGrammar = {
