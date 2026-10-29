@@ -2836,8 +2836,12 @@ export function applyPlaceEnrichmentStreamFilter(
     // CONSULT_ONE_BRAIN (29/10): the pages the model read back a departure time, exactly as a fetched row does. (Their amounts already reach
     // this guard as `ownValues`, the read pages' figures.)
     const travelEvidenceTimes = collector?.oneBrain === true ? [...travelTimes, ...pageEvidenceTexts.flatMap(t => scheduleTimesIn(t))] : [...travelTimes]
+    // CONSULT_ONE_BRAIN: a price the shopping tool returned is evidence wherever it is said. Measured 29/10 ("Shopee hay Điện Máy Xanh mua chỗ nào lợi hơn?" read as a
+    // travel turn by the keyword detector on the question): "B.COOK 6 lít … 690.000 đồng", a Shopee listing the tool had returned, was cut and a "giá, giờ và tình trạng
+    // chỗ cụ thể mình chưa xác nhận được… trang đặt chỗ" line added under a fryer answer.
+    const travelOwnValues = collector?.oneBrain === true ? [...ownValues, ...productRecords.flatMap(r => { const v = structuredPrice(r); return v === null ? [] : [v] })] : ownValues
     const travelGuarded = travelIntent && collector?.consultV3 !== true
-      ? guardTravelClaimsInText(specGuarded, travelFares, userText, { evidenceTimes: travelEvidenceTimes, lang, ...(ownValues.length > 0 ? { calcValues: ownValues } : {}), ...(collector?.oneBrain === true ? { availability: 'counted' as const, ...(collector.planBlock ? { money: 'keep' as const } : {}) } : {}) }).text
+      ? guardTravelClaimsInText(specGuarded, travelFares, userText, { evidenceTimes: travelEvidenceTimes, lang, ...(travelOwnValues.length > 0 ? { calcValues: travelOwnValues } : {}), ...(collector?.oneBrain === true ? { availability: 'counted' as const, ...(collector.planBlock ? { money: 'keep' as const } : {}) } : {}) }).text
       : specGuarded
     // A5 EVIDENCE BOUNDARY for food/spa. Their menu/service prices exist only in
     // Serper snippets, so a stated price must TRACE to a retrieved snippet; a
