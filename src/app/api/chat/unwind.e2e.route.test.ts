@@ -345,6 +345,28 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     expect(seen.trip).toEqual({ tools: [], role: 'plan' })
     expect(seen.pick.tools).not.toContain('get_weather')
   }, 120000)
+  it('flag ON, a fare question: a fare and a departure the READ pages state are kept; a number no page states is still cut (29/10)', async () => {
+    // Measured 29/10 on localhost: the travel guard cut 11 of 16 amounts the model copied from the Vexere train page it had read.
+    h.state.pages['https://giadien.example/bang-gia'] = { body: ARTICLE('Vé tàu Sài Gòn Nha Trang', ['Tàu SE8 khởi hành 06:00, ghế ngồi mềm giá vé 315.000đ.']) }
+    const FARE: Msg[] = [{ role: 'user', content: 've tau sai gon di nha trang ngay 16/11 gia bao nhieu' }]
+    const FARE_INTENT = intent('ask', ['travel'])
+    const said = 'Tàu SE8 khởi hành lúc 06:00, ghế ngồi mềm giá 315.000đ.'
+    const invented = 'Giường nằm khoang 4 giá 987.000đ.'
+    // No place tool ran: the place guard does not judge these (it deleted both on 29/10, the second a hedge).
+    const booking = 'Bạn có thể đặt vé trực tuyến trên Vexere.'
+    const hedge = 'Mình chưa xác minh được còn chỗ cho ngày 16/11.'
+    const on = await turn(FARE, { unwind: true, oneBrain: true, luna: FARE_INTENT, tools: [SEARCH], reply: `${said} ${invented} ${booking} ${hedge}` })
+    const ws = on.results.find(r => r.name === 'web_search')?.result
+    expect((ws?.pages_read as unknown[] | undefined)?.length ?? 0).toBeGreaterThan(0)
+    expect(on.text).toContain('315.000')
+    expect(on.text).toContain('06:00')
+    expect(on.text).not.toContain('987.000')
+    expect(on.text).toContain('đặt vé trực tuyến trên Vexere')
+    expect(on.text).toContain('chưa xác minh được còn chỗ')
+    // Without the one-brain flag the same turn keeps its old evidence (snippets only): the page fare is cut as before.
+    const off = await turn(FARE, { unwind: true, oneBrain: false, luna: FARE_INTENT, tools: [SEARCH], reply: `${said} ${invented}` })
+    expect(off.text).not.toContain('315.000')
+  }, 60000)
   it('flag ON, trip plan: no code question, no pre-fetch, no plan frame - the model plans with its tools', async () => {
     const on = await turn(TRIP, { unwind: true, oneBrain: true, luna: TRIP_INTENT, reply })
     expect(on.web).toEqual([])

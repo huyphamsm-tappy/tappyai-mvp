@@ -624,7 +624,14 @@ function guardCtaButtons(text: string, allowed: ReadonlySet<string>): string {
 function stripUnownedLinks(text: string, allowed?: ReadonlySet<string>): string {
   if (!allowed) return text
   const cut = earliestMarker(text)
-  const prose = text.slice(0, cut)
+  // 29/10 (live, a dated Vexere train link): the model copied a long link with a space inside it ("…passenger%5Bad t%5D=2"); the markdown no
+  // longer parsed and the reader saw a broken chip. A link whose target, with the whitespace taken out, is EXACTLY a link this turn gave the
+  // model is joined back; anything else is left to the rules below (label kept, link dropped). Nothing new can be produced this way.
+  const prose = text.slice(0, cut).replace(
+    /(?<!!)\[([^\]\n]*)\]\((https?:\/\/[^)\n]*?\s[^)\n]*)\)/g,
+    // The model's own token is kept and only its target's whitespace goes: no markdown is built here (retrievalArchitecture G1).
+    (whole: string, _label: string, url: string) => { const joined = url.replace(/\s+/g, ''); return isGivenUrl(joined, allowed) ? whole.replace(url, joined) : whole },
+  )
   const tail = text.slice(cut)
   const withLinks = prose.replace(
     /(?<!!)\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/g,
@@ -2801,8 +2808,11 @@ export function applyPlaceEnrichmentStreamFilter(
     gt('spec', moneyText, specGuarded)
     // CONSULT_V3: no travel-claims cut — it deleted the model's budget question and inserted "Giá vé cụ thể mình chưa xác nhận được…" (UAT
     // 17/10). Fares stay under the No-Fabrication Gate (a stated figure needs a source, or an explicit estimate label).
+    // CONSULT_ONE_BRAIN (29/10): the pages the model read back a departure time, exactly as a fetched row does. (Their amounts already reach
+    // this guard as `ownValues`, the read pages' figures.)
+    const travelEvidenceTimes = collector?.oneBrain === true ? [...travelTimes, ...pageEvidenceTexts.flatMap(t => scheduleTimesIn(t))] : [...travelTimes]
     const travelGuarded = travelIntent && collector?.consultV3 !== true
-      ? guardTravelClaimsInText(specGuarded, travelFares, userText, { evidenceTimes: [...travelTimes], lang, ...(ownValues.length > 0 ? { calcValues: ownValues } : {}) }).text
+      ? guardTravelClaimsInText(specGuarded, travelFares, userText, { evidenceTimes: travelEvidenceTimes, lang, ...(ownValues.length > 0 ? { calcValues: ownValues } : {}) }).text
       : specGuarded
     // A5 EVIDENCE BOUNDARY for food/spa. Their menu/service prices exist only in
     // Serper snippets, so a stated price must TRACE to a retrieved snippet; a
@@ -2949,9 +2959,14 @@ export function applyPlaceEnrichmentStreamFilter(
     // With a declared task (taskFrame.ts) the task decides: a knowledge / recipe / news turn is not a place turn even right after a place reply
     // (eval 17/10 sw-3#2: "biết elon musk không" after a cơm tấm pick — the prior-context rule cut "nổi tiếng với Tesla" again).
     const v3PlaceData = hadPlaceSearch || ticketIntent || carriedPlaceFollowUp || ((placeIntent || travelIntent) && collector?.priorPlaceContext === true)
+    // CONSULT_ONE_BRAIN (29/10): the place guard judges claims about the PLACES a place tool returned (or a carried place fact). A train / coach
+    // fare turn has none: its ticket and availability sentences ("đặt vé trên Vexere", even the hedge "chưa xác minh được còn chỗ") were deleted
+    // by rules that need no evidence at all (measured 29/10). Its fares stay under the travel guard, which now reads the pages the model read.
     const placeGuardOn = collector?.consultV3 === true
       ? (collector.taskFrame ? cardsAllowed(collector.taskFrame.kind).places && (v3PlaceData || collector.taskFrame.kind === 'place_followup') : v3PlaceData)
-      : (hadPlaceSearch || placeIntent || travelIntent || ticketIntent || carriedPlaceFollowUp)
+      : collector?.oneBrain === true
+        ? (hadPlaceSearch || carriedPlaceFollowUp)
+        : (hadPlaceSearch || placeIntent || travelIntent || ticketIntent || carriedPlaceFollowUp)
     const placeGuardResult = placeGuardOn
       ? guardPlaceClaimsInText(foodGuarded, {
         nowShowingListed: filmTitlesSeen.length > 0,
@@ -4338,6 +4353,17 @@ export function applyPlaceEnrichmentStreamFilter(
             else if (toolName !== undefined && groundNums.length < 20_000) groundNums.push(...numbersInText(line.slice(2, 2 + 120_000), 800))
             if (toolName === 'read_page' && pageNums.length < 5000) { pageNums.push(...pageFigures((res as { result?: unknown }).result)); if (pageEvidenceTexts.length < 60) pageEvidenceTexts.push(...pageTexts((res as { result?: unknown }).result))
               for (const p of ((res as { result?: { pages?: unknown } }).result?.pages as Array<{ url?: unknown }> | undefined) ?? []) { const host = hostOfUrl(p?.url); if (host && pageFiguresByHost.size < 30) pageFiguresByHost.set(host, [...(pageFiguresByHost.get(host) ?? []), ...pageFigures({ pages: [p] })]) } }
+            // CONSULT_ONE_BRAIN (29/10): a web_search that opened pages (S6 `pages_read`, and its follow-up's) carries the same page objects a
+            // read_page result does — the pages the model READ. They are this turn's evidence too (a train's fare and departure on the Vexere page
+            // were cut as invented, measured 29/10: 11 of 16 amounts). One-brain only, so the default path is unchanged.
+            if (collector?.oneBrain === true && toolName === 'web_search' && pageNums.length < 5000) {
+              const r = (res as { result?: { pages_read?: unknown; follow_up?: { pages_read?: unknown } } }).result
+              for (const pages of [r?.pages_read, r?.follow_up?.pages_read]) {
+                if (!Array.isArray(pages)) continue
+                pageNums.push(...pageFigures({ pages }))
+                if (pageEvidenceTexts.length < 60) pageEvidenceTexts.push(...pageTexts({ pages }))
+              }
+            }
             if (toolName === 'search_places') {
               const results = res.result?.results
               if (Array.isArray(results)) newPlaces = results
