@@ -2409,7 +2409,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           ? { ...(raw as Record<string, unknown>), provider_error: 'search_provider_refused', note: 'The search provider refused this request (account or key error). This lookup FAILED; it is not an empty result and the person does not need to narrow anything. Say plainly that the lookup did not work this time, give what you know from general knowledge marked as not checked, and do not ask the person to change the request.' }
           : raw
         // B1 (2026-09-20): the product unit is judged too — against the shopping constraints.
-        const gate = applyHardConstraintGate(name, out, situation, lang, { shopping: shoppingConstraints })
+        const gate = applyHardConstraintGate(name, out, situation, lang, { shopping: shoppingConstraints, verifyFirst: oneBrain })
         const ctx = enrichment.consultativeV1
         if (gate.applicable && gate.report && ctx) {
           ctx.hardGaps = [...gate.report.gaps]

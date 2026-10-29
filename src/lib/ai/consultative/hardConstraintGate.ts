@@ -81,10 +81,10 @@ export function applyHardConstraintGate(
   result: unknown,
   situation: SituationFrame | null,
   lang: string,
-  opts: { shopping?: ShoppingConstraints | null } = {},
+  opts: { shopping?: ShoppingConstraints | null; verifyFirst?: boolean } = {},
 ): HardGateOutcome {
   const none: HardGateOutcome = { applicable: false, report: null, budgetGap: false }
-  if (SHOPPING_GATE_TOOLS.has(toolName)) return applyShoppingGate(result, opts.shopping ?? null, lang)
+  if (SHOPPING_GATE_TOOLS.has(toolName)) return applyShoppingGate(result, opts.shopping ?? null, lang, opts.verifyFirst === true)
   if (!situation) return none
   if (!HARD_GATE_TOOLS.has(toolName)) {
     if (situation.hard.length > 0 || situation.budget) {
@@ -102,7 +102,7 @@ export function applyHardConstraintGate(
     if (report.gaps.length > 0) r._tappy_hard_gaps = report.gaps
     if (report.contrary.length > 0) r._tappy_hard_contrary = report.contrary
     if (report.rowBacked.length > 0) r._tappy_hard_backed_by = report.rowBackedBy
-    const note = evidenceNote(report, lang)
+    const note = evidenceNote(report, lang, { verifyFirst: opts.verifyFirst === true })
     if (note) r._tappy_evidence_note = note
     const anyPrice = rows.some(row => {
       const x = row as Record<string, unknown>
@@ -124,7 +124,7 @@ export function applyHardConstraintGate(
 }
 
 /** The product-unit gate (B1): the same annotations, the shopping vocabulary. */
-function applyShoppingGate(result: unknown, k: ShoppingConstraints | null, lang: string): HardGateOutcome {
+function applyShoppingGate(result: unknown, k: ShoppingConstraints | null, lang: string, verifyFirst = false): HardGateOutcome {
   const none: HardGateOutcome = { applicable: false, report: null, budgetGap: false }
   if (!k || !result || typeof result !== 'object' || Array.isArray(result)) return none
   const r = result as Record<string, unknown>
@@ -134,7 +134,7 @@ function applyShoppingGate(result: unknown, k: ShoppingConstraints | null, lang:
     const report: HardGapReport = { gaps: gaps as never, contrary: [], assumed: [], rowBacked: Object.keys(rowBackedBy) as never, rowBackedBy: rowBackedBy as never, fieldMissing: [], unclassified: [] }
     if (gaps.length > 0) r._tappy_hard_gaps = gaps
     if (Object.keys(rowBackedBy).length > 0) r._tappy_hard_backed_by = rowBackedBy
-    const note = shoppingEvidenceNote(gaps, lang)
+    const note = shoppingEvidenceNote(gaps, lang, { verifyFirst })
     if (note) r._tappy_evidence_note = note
     const anyPrice = rows.some(row => typeof row.price === 'number' || typeof row.price_vnd === 'number' || (typeof row.price === 'string' && /\d/.test(row.price)))
     const budgetGap = !!k.budget && !anyPrice

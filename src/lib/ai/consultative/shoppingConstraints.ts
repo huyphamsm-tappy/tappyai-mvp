@@ -655,9 +655,14 @@ export function classifyShoppingGaps(k: ShoppingConstraints, rows: ReadonlyArray
 }
 
 /** The model-facing sentence for shopping gaps — the product-unit twin of `evidenceNote`. */
-export function shoppingEvidenceNote(gaps: readonly ShoppingGap[], lang: string): string | null {
+export function shoppingEvidenceNote(gaps: readonly ShoppingGap[], lang: string, opts: { verifyFirst?: boolean } = {}): string | null {
   if (gaps.length === 0) return null
   const w = gaps.map(g => SHOPPING_GAP_WORDS[g][lang === 'en' ? 1 : 0]).join(', ')
+  if (opts.verifyFirst) {
+    return lang === 'en'
+      ? `Listing titles do not state: ${w}. That is NOT evidence either way. Check the product pages with web_search or read_page first; only if they say nothing, say so plainly.`
+      : `Tieu de listing khong neu: ${w}. Day KHONG phai bang chung co hay khong. Hay kiem tra trang san pham bang web_search hoac read_page truoc; chi khi trang cung khong noi gi thi moi noi thang la chua thay.`
+  }
   return lang === 'en'
     ? `No listing confirms: ${w}. Say in ONE sentence that you could not confirm it and that the seller page is where to check; never assert it.`
     : `KHONG listing nao xac nhan: ${w}. Noi ro trong MOT cau "minh chua xac nhan duoc X, ban kiem tra tren trang ban truoc khi dat"; KHONG khang dinh co.`
