@@ -122,6 +122,12 @@ const SHOW_CTX = /(?:^|\s)(?:suất|suat|chiếu|chieu|screening|showtimes?|show
 // so "còn 3 chỗ\b" never matches (the same Unicode-boundary trap the money guard
 // documents). A leading (^|\s) keeps "con" from firing inside another word.
 export const AVAIL_RE = /(?:^|\s)(?:còn|con)\s+\d+\s*(?:chỗ|cho|vé|ve|ghế|ghe|phòng|phong)|(?:^|\s)(?:hết|het)\s+(?:vé|ve|phòng|phong|chỗ|cho)|\d+\s*(?:seats?|rooms?)\s+(?:left|available|remaining)|(?:sold\s*out|fully\s*booked|còn trống|con trong|hết chỗ|het cho)/iu
+/**
+ * The COUNTED availability claims alone ("còn 3 chỗ", "5 seats left"): a number of seats / rooms is a fact about one departure that no
+ * tool returns. Owner 30/10 (choice a), one brain only: the general forms ("vé hay hết chỗ sớm, nên đặt trước", "xem chỗ còn trống ở
+ * link đặt vé") are advice and a pointer to the booking page — measured offline 30/10, both were cut whole by AVAIL_RE.
+ */
+export const AVAIL_COUNT_RE = /(?:^|\s)(?:còn|con)\s+\d+\s*(?:chỗ|cho|vé|ve|ghế|ghe|phòng|phong)|\d+\s*(?:seats?|rooms?)\s+(?:left|available|remaining)/iu
 
 /** Sentence spans. The schedule/availability patterns require a flight verb or an
  *  explicit availability phrase, so a URL's digits can't masquerade as a claim. */
@@ -188,14 +194,14 @@ export function journeyTimeOf(depart: string, arrive: string): string | null {
  * stays; anything else is still fail-closed. Availability has no source and is always removed.
  * Writes nothing new; if removal would empty the reply, leaves it.
  */
-function redactScheduleAvailability(text: string, evidenceTimes: readonly string[] = [], ctx: RegExp = DEPART_CTX): { text: string; removed: number; removedTexts: string[] } {
+function redactScheduleAvailability(text: string, evidenceTimes: readonly string[] = [], ctx: RegExp = DEPART_CTX, avail: RegExp = AVAIL_RE): { text: string; removed: number; removedTexts: string[] } {
   const spans = sentenceSpans(text)
   const doomed = new Set<number>()
   const known = new Set(evidenceTimes)
   spans.forEach(([a, b], i) => {
     const s = text.slice(a, b)
     const sched = TIME_RE.test(s) && ctx.test(s) && !(known.size > 0 && scheduleTimesIn(s).every(t => known.has(t)))
-    if (sched || AVAIL_RE.test(s)) doomed.add(i)
+    if (sched || avail.test(s)) doomed.add(i)
   })
   if (doomed.size === 0) return { text, removed: 0, removedTexts: [] }
   const kept = spans.filter((_, i) => !doomed.has(i)).map(([a, b]) => text.slice(a, b)).join('')
@@ -247,12 +253,14 @@ export function travelCutNotice(o: { topic: TravelCutTopic; money: boolean; sche
  * @param opts.unit  'travel' (default: fares, departures) or 'ticket' — C3 (2026-09-20): a venue's
  *                   SCHEDULE + TICKET unit (cinema showtimes, admission). Same fail-closed money rule;
  *                   the schedule context is a screening word and the hedge points at the venue page.
+ * @param opts.availability  'any' (default): every availability wording is cut (AVAIL_RE). 'counted': only a stated number of seats /
+ *                   rooms (AVAIL_COUNT_RE) — the one-brain path (owner 30/10, choice a).
  */
 export function guardTravelClaimsInText(
   text: string,
   fares: number[],
   userText: string,
-  opts: { evidenceTimes?: readonly string[]; lang?: string; unit?: 'travel' | 'ticket'; calcValues?: readonly number[] } = {},
+  opts: { evidenceTimes?: readonly string[]; lang?: string; unit?: 'travel' | 'ticket'; calcValues?: readonly number[]; availability?: 'any' | 'counted' } = {},
 ): { text: string; redacted: number; enforced: boolean } {
   const ticketUnit = opts.unit === 'ticket'
   // Wave 3 (W4): whole-number results of the exact calculator this turn whose money-sized inputs the turn already had (groundedCalcNumbers). An amount equal to one (within 0.5 %) is the turn's own arithmetic.
@@ -284,7 +292,7 @@ export function guardTravelClaimsInText(
 
   // 2) Schedule/availability — we have no live source for either, so any specific
   //    assertion on a travel turn is unverifiable and removed.
-  const sa = redactScheduleAvailability(out, opts.evidenceTimes ?? [], ticketUnit ? SHOW_CTX : DEPART_CTX)
+  const sa = redactScheduleAvailability(out, opts.evidenceTimes ?? [], ticketUnit ? SHOW_CTX : DEPART_CTX, opts.availability === 'counted' ? AVAIL_COUNT_RE : AVAIL_RE)
   out = sa.text; redacted += sa.removed
   cutTexts.push(...sa.removedTexts)
 

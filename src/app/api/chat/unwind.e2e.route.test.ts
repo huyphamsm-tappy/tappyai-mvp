@@ -421,6 +421,20 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     const none = await turn(TRAIN, { unwind: true, oneBrain: true, luna: intent('ask', ['travel']), tools: [CALL], reply })
     expect(none.text).not.toContain('7h43')
   }, 60000)
+  it('a train question, one brain: availability ADVICE and the pointer to the booking page stay; a stated seat count is cut; flag OFF unchanged (owner 30/10, a)', async () => {
+    const TRAIN: Msg[] = [{ role: 'user', content: 've tau sai gon nha trang ngay 16/11' }]
+    const CALL = { name: 'get_transport_options', args: { origin: 'Sài Gòn', destination: 'Nha Trang', date: '2026-11-16' } }
+    const advice = 'Dịp cuối tuần vé giường nằm hay hết chỗ sớm, nên đặt trước.'
+    const pointer = 'Bạn bấm link đặt vé để xem chỗ còn trống.'
+    const reply = `Đi tàu vào Nha Trang khá thoải mái. ${advice} ${pointer} Chuyến SE8 hiện còn 3 chỗ.`
+    const on = await turn(TRAIN, { unwind: true, oneBrain: true, luna: intent('ask', ['travel']), tools: [CALL], reply })
+    expect(on.text).toContain(advice)
+    expect(on.text).toContain(pointer)
+    expect(on.text).not.toContain('còn 3 chỗ')
+    const off = await turn(TRAIN, { unwind: true, oneBrain: false, luna: intent('ask', ['travel']), tools: [CALL], reply })
+    expect(off.text).not.toContain('hay hết chỗ sớm')
+    expect(off.text).not.toContain('chỗ còn trống')
+  }, 60000)
   it('flag ON, trip plan: no code question, no pre-fetch, no plan frame - the model plans with its tools', async () => {
     const on = await turn(TRIP, { unwind: true, oneBrain: true, luna: TRIP_INTENT, reply })
     expect(on.web).toEqual([])

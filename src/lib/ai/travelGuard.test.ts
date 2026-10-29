@@ -232,6 +232,20 @@ describe('journeyTimeOf', () => {
     expect(guardTravelClaimsInText(text, [], 've tau ha noi hue', { evidenceTimes: ['13:00'], lang: 'vi' }).text).toContain('buổi chiều 1 giờ')
     expect(guardTravelClaimsInText(text, [], 've tau ha noi hue', { evidenceTimes: ['1:00'], lang: 'vi' }).text).not.toContain('buổi chiều 1 giờ')
   })
+  it("availability 'counted' (one brain, owner 30/10 a): advice and a pointer to the booking page stay; a stated number of seats is still cut", () => {
+    const lead = 'Đi tàu vào Huế khá thoải mái.\n\n'
+    const advice = 'Dịp cuối tuần vé giường nằm hay hết chỗ sớm, nên đặt trước 1–2 tuần.'
+    const pointer = 'Bạn bấm link đặt vé để xem chỗ còn trống và giá đúng ngày.'
+    const counted = 'Chuyến SE9 hiện còn 3 chỗ giường nằm.'
+    const seats = 'Only 4 seats left on that train.'
+    const run = (s: string, availability?: 'any' | 'counted') => guardTravelClaimsInText(`${lead}${s}`, [], 've tau ha noi hue', { lang: 'vi', ...(availability ? { availability } : {}) }).text
+    expect(run(advice, 'counted')).toContain(advice)
+    expect(run(pointer, 'counted')).toContain(pointer)
+    expect(run(counted, 'counted')).not.toContain('còn 3 chỗ')
+    expect(run(seats, 'counted')).not.toContain('4 seats left')
+    // default ('any', every other path): unchanged, every availability wording goes
+    for (const s of [advice, pointer, counted]) { expect(run(s)).not.toContain(s); expect(run(s, 'any')).not.toContain(s) }
+  })
   it('gives nothing for an unreadable time or a zero-length trip', () => {
     expect(journeyTimeOf('13h', '01:35')).toBeNull()
     expect(journeyTimeOf('', '01:35')).toBeNull()

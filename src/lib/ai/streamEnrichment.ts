@@ -2813,7 +2813,7 @@ export function applyPlaceEnrichmentStreamFilter(
     // this guard as `ownValues`, the read pages' figures.)
     const travelEvidenceTimes = collector?.oneBrain === true ? [...travelTimes, ...pageEvidenceTexts.flatMap(t => scheduleTimesIn(t))] : [...travelTimes]
     const travelGuarded = travelIntent && collector?.consultV3 !== true
-      ? guardTravelClaimsInText(specGuarded, travelFares, userText, { evidenceTimes: travelEvidenceTimes, lang, ...(ownValues.length > 0 ? { calcValues: ownValues } : {}) }).text
+      ? guardTravelClaimsInText(specGuarded, travelFares, userText, { evidenceTimes: travelEvidenceTimes, lang, ...(ownValues.length > 0 ? { calcValues: ownValues } : {}), ...(collector?.oneBrain === true ? { availability: 'counted' as const } : {}) }).text
       : specGuarded
     // A5 EVIDENCE BOUNDARY for food/spa. Their menu/service prices exist only in
     // Serper snippets, so a stated price must TRACE to a retrieved snippet; a
