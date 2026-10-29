@@ -262,12 +262,16 @@ export function travelCutNotice(o: { topic: TravelCutTopic; money: boolean; sche
  *                   the schedule context is a screening word and the hedge points at the venue page.
  * @param opts.availability  'any' (default): every availability wording is cut (AVAIL_RE). 'counted': only a stated number of seats /
  *                   rooms (AVAIL_COUNT_RE) — the one-brain path (owner 30/10, choice a).
+ * @param opts.money  'judge' (default): a money claim no live fare / user number / calculator backs is cut. 'keep': the money claims are not judged
+ *                   (the one-brain path, 29/10: the model's own planning figures — "vé khoảng 6 triệu", "ăn uống 2,1 triệu" in a split of the user's
+ *                   15 triệu — were cut as invented, leaving a table with only its total; V3 took the same step, see streamEnrichment.ts). Schedule
+ *                   and availability claims are still judged.
  */
 export function guardTravelClaimsInText(
   text: string,
   fares: number[],
   userText: string,
-  opts: { evidenceTimes?: readonly string[]; lang?: string; unit?: 'travel' | 'ticket'; calcValues?: readonly number[]; availability?: 'any' | 'counted' } = {},
+  opts: { evidenceTimes?: readonly string[]; lang?: string; unit?: 'travel' | 'ticket'; calcValues?: readonly number[]; availability?: 'any' | 'counted'; money?: 'judge' | 'keep' } = {},
 ): { text: string; redacted: number; enforced: boolean } {
   const ticketUnit = opts.unit === 'ticket'
   // Wave 3 (W4): whole-number results of the exact calculator this turn whose money-sized inputs the turn already had (groundedCalcNumbers). An amount equal to one (within 0.5 %) is the turn's own arithmetic.
@@ -277,7 +281,7 @@ export function guardTravelClaimsInText(
   let redacted = 0
 
   // 1) Money claims — fail-closed: keep only what a live fare (or the user) backs.
-  const claims = extractMoneyClaims(out)
+  const claims = opts.money === 'keep' ? [] : extractMoneyClaims(out)
   const cutTexts: string[] = []
   let moneyCut = false
   if (claims.length > 0) {

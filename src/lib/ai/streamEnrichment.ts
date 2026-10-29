@@ -1904,8 +1904,11 @@ export function applyPlaceEnrichmentStreamFilter(
   // TAPPY_ANSWER_V4 (owner 19/10): a QUALITY stage — one that deletes or rewrites a sentence because its claim is not in this turn's evidence — runs
   // in shadow: what it would have changed is logged (and traced as `shadow:<stage>`), the text it was given goes on unchanged. Off the flag: its
   // output is used, as before. Security / egress / leak / card / marker stages never go through this.
-  const v4Shadow = collector?.answerV4 === true && collector.consultV3 === true
-  const qual = (stage: string, before: string, after: string): string => {
+  // CONSULT_ONE_BRAIN (localhost 29/10, 25-question run): the same holds for the one-brain model. These stages matched the model's wording against the
+  // rows by name and by number format, and a wording difference ("Mi" / "Smart", "–" / "-", "22:00, đánh giá") deleted a name, a table row or a
+  // whole bullet whose figures the tools had returned. What they would have changed is logged and traced as before; the text goes on unchanged.
+  const v4Shadow = (collector?.answerV4 === true && collector.consultV3 === true) || collector?.oneBrain === true
+  const qual =(stage: string, before: string, after: string): string => {
     if (!v4Shadow || before === after) return after
     try { console.log(JSON.stringify({ type: 'tappyai_guard_shadow', stage, before_len: before.length, after_len: after.length })) } catch { /* log only */ }
     gt(`shadow:${stage}`, before, after)
@@ -2662,7 +2665,7 @@ export function applyPlaceEnrichmentStreamFilter(
     const planRepair = enrichedProse.includes('[TAPPY_PLAN]') ? repairPlanBlock(enrichedProse, collector?.consultative === true ? { balance: true } : {}) : { text: enrichedProse, repaired: false }
     if (planRepair.repaired) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'plan_json_repaired', repaired: 1 }))
     const pricedPlan = planRepair.text.includes('[TAPPY_PLAN]')
-      ? guardPlanPrices(planRepair.text, planEvidence, lang).text
+      ? guardPlanPrices(planRepair.text, planEvidence, lang, { keepModelBudget: collector?.oneBrain === true }).text
       : planRepair.text
     // LOCAL TIPS (UAT3 P2, 2026-09-27): a tip survives only tied to a stop retrieved this turn,
     // or flagged general and naming no venue, price, hour or ticket — see planLocalTipsGuard.
@@ -2700,7 +2703,8 @@ export function applyPlaceEnrichmentStreamFilter(
     // while the fare links searched 05/10) — planTripFactsGuard.guardUngivenTravelDate.
     const tripped = tripFacts ? tripFacts.text : itemized
     // CONSULTATIVE_IN_AGENT: the date in the reply is the system calendar's resolution of "cuối tuần sau" etc. (an assumption the reply states), not an invented one.
-    const dated = travelIntent && collector?.consultative !== true ? guardUngivenTravelDate(tripped, collector?.userTexts ?? [userText]) : null
+    // CONSULT_ONE_BRAIN: the date the model states is the date it looked things up ("kết quả tra cứu ngày 29/10/2026"), which the prompt asks for; measured, this cut it.
+    const dated = travelIntent && collector?.consultative !== true && collector?.oneBrain !== true ? guardUngivenTravelDate(tripped, collector?.userTexts ?? [userText]) : null
     if (dated?.dropped) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'travel_ungiven_date', dropped: dated.dropped }))
     gt('enrichment_inject', mainText, enrichedProse)
     gt('plan_repair', enrichedProse, planRepair.text)
@@ -2823,7 +2827,7 @@ export function applyPlaceEnrichmentStreamFilter(
     // this guard as `ownValues`, the read pages' figures.)
     const travelEvidenceTimes = collector?.oneBrain === true ? [...travelTimes, ...pageEvidenceTexts.flatMap(t => scheduleTimesIn(t))] : [...travelTimes]
     const travelGuarded = travelIntent && collector?.consultV3 !== true
-      ? guardTravelClaimsInText(specGuarded, travelFares, userText, { evidenceTimes: travelEvidenceTimes, lang, ...(ownValues.length > 0 ? { calcValues: ownValues } : {}), ...(collector?.oneBrain === true ? { availability: 'counted' as const } : {}) }).text
+      ? guardTravelClaimsInText(specGuarded, travelFares, userText, { evidenceTimes: travelEvidenceTimes, lang, ...(ownValues.length > 0 ? { calcValues: ownValues } : {}), ...(collector?.oneBrain === true ? { availability: 'counted' as const, ...(collector.planBlock ? { money: 'keep' as const } : {}) } : {}) }).text
       : specGuarded
     // A5 EVIDENCE BOUNDARY for food/spa. Their menu/service prices exist only in
     // Serper snippets, so a stated price must TRACE to a retrieved snippet; a
@@ -3519,9 +3523,11 @@ export function applyPlaceEnrichmentStreamFilter(
         // CONSULTATIVE_IN_AGENT: a plan answered in text has no card at all (planTurn clears the standalone cards), so no line may point at one.
         ...(collector?.planTurn && !scaffoldStripped.includes('[TAPPY_PLAN]') ? { noCardLine: true } : {}),
         ...(collector?.consultative ? { dayHeadings: true } : {}),
-        ...(collector?.consultV3 === true ? { pickAndOrderFree: true } : {}),
+        // CONSULT_ONE_BRAIN: the model writes a place's name in its own order ("Bún chả Bà Thành" for the row "Bà Thành - Bún chả & Bún Hải Sản", measured 29/10)
+        ...(collector?.consultV3 === true || collector?.oneBrain === true ? { pickAndOrderFree: true } : {}),
         // RETRIEVAL_V5 lần 2c (B3): label an unverified venue once, never cut its sentence
-        ...(collector?.retrievalV5 === true ? { labelUngrounded: true } : {}),
+        // CONSULT_ONE_BRAIN: the same (measured 29/10, a venue the model read on a page: its name and address went and "Mở 06:30–14:00…" stood alone)
+        ...(collector?.retrievalV5 === true || collector?.oneBrain === true ? { labelUngrounded: true } : {}),
       },
     )
     // Phase 7: the guards above may have removed the sentence an injected photo/link block was
