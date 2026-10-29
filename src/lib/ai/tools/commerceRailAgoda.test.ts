@@ -51,6 +51,16 @@ describe('Vexere trains — the rail route page composes the dated train list', 
     expect(result.vexere_link).toBe('https://vexere.com/vi-VN/ve-xe-khach-tu-sai-gon-di-nha-trang-khanh-hoa-129t23591.html?date=16-11-2026')
     expect(search.mock.calls.map(c => c[0])).toEqual(['xe khách Sài Gòn Nha Trang site:vexere.com/vi-VN'])
     expect((result._tappy_commerce as RouteHandoffFacts[]).map(f => f.providerId)).toEqual(['vexere', 'vexere'])
+    // The route page behind the link (CCP's canonical, untracked): the transport tool reads its trains from it.
+    expect(result._tappy_rail_page).toBe(CITY_PAGE)
+  })
+
+  it('fetched train rows that hold only a COACH page of the provider do not stop the rail search', async () => {
+    const search = vi.fn(async (q: string) => q.includes('site:vexere.com/vn/ve-tau-hoa') ? [{ title: 'Vé tàu', link: STATION_PAGE, snippet: '' }] : [])
+    const result: Row = { type: 'intercity', train_search_results: [{ title: 'Vé xe', link: 'https://vexere.com/vi-VN/ve-xe-khach-tu-sai-gon-di-nha-trang-khanh-hoa-129t23591.html', snippet: '' }] }
+    await attachCommerceLinks('get_transport_options', result, { enabled: true, now: NOW, search, origin: 'Sài Gòn', destination: 'Nha Trang', departDate: '2026-11-16', transportMode: 'intercity' })
+    expect(result.train_booking_link).toContain('from=171723_area&to=171699_area')
+    expect(result._tappy_rail_page).toBe(STATION_PAGE)
   })
 
   it('without a rail page among the fetched rows, ONE scoped search on the registry railSite; nothing found → no field', async () => {

@@ -32,6 +32,8 @@ const h = vi.hoisted(() => {
     userId: 'u-unwind-e2e',
     accountErrorAt: 0,
     finishSteps: [] as Array<Record<string, unknown>>,
+    /** 29/10: the trains a rail route page states (railSchedule mock); null = the page gives none. */
+    railRows: null as null | Array<Record<string, unknown>>,
   }
   const builder = (): any => {
     const b: any = {
@@ -66,13 +68,21 @@ vi.mock('@/lib/security/safePageFetch', async (importOriginal) => ({
 vi.mock('@/lib/ai/tools/common', async (importOriginal) => ({
   ...(await importOriginal<typeof import('@/lib/ai/tools/common')>()),
   getCache: () => null, setCache: () => undefined, fetchPlacePhotosByName: async () => [],
-  serperSearch: async (q: string) => { h.state.webCalls.push(String(q)); return [] },
+  serperSearch: async (q: string) => {
+    h.state.webCalls.push(String(q))
+    // 29/10: the scoped rail search finds the Vexere rail route page; every other search here finds nothing.
+    return String(q).includes('site:vexere.com/vn/ve-tau-hoa') ? [{ title: 'Vé tàu Hồ Chí Minh Nha Trang', link: 'https://vexere.com/vn/ve-tau-hoa/tu-ho-chi-minh-di-nha-trang-khanh-hoa.29.417.vi', snippet: '' }] : []
+  },
   webSearch: async (q: string) => {
     h.state.webCalls.push(String(q))
     return h.state.webCalls.length === 1
       ? { results: [{ title: 'Bảng giá điện sinh hoạt', link: 'https://giadien.example/bang-gia', snippet: 'Biểu giá bậc thang' }, { title: 'Tin tức', link: 'https://tin.example/bai', snippet: 'Bài viết' }, { title: 'Diễn đàn', link: 'https://forum.example/t/1', snippet: 'Thảo luận' }, { title: 'Thứ tư', link: 'https://khac.example/4', snippet: 'x' }] }
       : { results: [{ title: 'Quyết định điều chỉnh giá', link: 'https://chinhphu.example/qd', snippet: 'Văn bản' }, { title: 'Bảng giá điện sinh hoạt', link: 'https://giadien.example/bang-gia', snippet: 'trùng' }] }
   },
+}))
+vi.mock('@/lib/ai/tools/railSchedule', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@/lib/ai/tools/railSchedule')>()),
+  fetchRailSchedule: async (page: string) => (h.state.railRows ? { page_url: page, rows: h.state.railRows } : null),
 }))
 vi.mock('@/lib/ai/tools/serperClient', async (importOriginal) => ({ ...(await importOriginal<typeof import('@/lib/ai/tools/serperClient')>()), serperLastAccountErrorAt: () => h.state.accountErrorAt }))
 vi.mock('@/lib/ai/tools/serperPlaces', async (importOriginal) => ({ ...(await importOriginal<typeof import('@/lib/ai/tools/serperPlaces')>()), serperPlaces: async () => [] }))
@@ -127,7 +137,7 @@ type Msg = { role: 'user' | 'assistant'; content: string }
 const intent = (turn: string, domains: string[], extra: Record<string, unknown> = {}) => ({
   domains, turn, goal: 'x', known: [], party: null, budget_vnd_max: null, difficulty: 'normal', missing: [], assumptions: [], ask: null, query: null, area: null, refers: [], reject_reason: null, ...extra,
 })
-interface TurnOpts { unwind: boolean; oneBrain?: boolean; media?: boolean; luna: Record<string, unknown>; tools?: Array<{ name: string; args: Record<string, unknown> }>; reply?: string; gapQuery?: string | null; finishSteps?: Array<Record<string, unknown>> }
+interface TurnOpts { unwind: boolean; oneBrain?: boolean; media?: boolean; luna: Record<string, unknown>; tools?: Array<{ name: string; args: Record<string, unknown> }>; reply?: string; gapQuery?: string | null; finishSteps?: Array<Record<string, unknown>>; railRows?: Array<Record<string, unknown>> }
 
 async function turn(messages: Msg[], o: TurnOpts) {
   delete process.env.TAPPY_AGENT
@@ -141,6 +151,7 @@ async function turn(messages: Msg[], o: TurnOpts) {
   h.state.luna = o.luna
   h.state.gapQuery = o.gapQuery ?? null
   h.state.finishSteps = o.finishSteps ?? []
+  h.state.railRows = o.railRows ?? null
   h.state.extractRoles = []; h.state.streamCalled = 0; h.state.toolNames = []; h.state.opts = {}; h.state.system = ''; h.state.results = []; h.state.webCalls = []; h.state.fetched = []
   __resetAiQuestionQuotaLocal(); __resetPageCache(); __resetSharedRobots()
   const req = {
@@ -366,6 +377,31 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     // Without the one-brain flag the same turn keeps its old evidence (snippets only): the page fare is cut as before.
     const off = await turn(FARE, { unwind: true, oneBrain: false, luna: FARE_INTENT, tools: [SEARCH], reply: `${said} ${invented}` })
     expect(off.text).not.toContain('315.000')
+  }, 60000)
+  it('a train question: the transport tool carries the dated train link AND the route page\'s trains with their fares; the reply may restate them, an invented fare is cut (29/10)', async () => {
+    const ROWS = [
+      { train: 'SE8', depart: '06:00', arrive: '13:43', from_station: 'Ga Sài Gòn', to_station: 'Ga Nha Trang', price_from_vnd: 315000 },
+      { train: 'SE6', depart: '08:45', arrive: '16:06', from_station: 'Ga Sài Gòn', to_station: 'Ga Nha Trang', price_from_vnd: 363000 },
+    ]
+    const TRAIN: Msg[] = [{ role: 'user', content: 've tau sai gon nha trang ngay 16/11 cho 2 nguoi' }]
+    const CALL = { name: 'get_transport_options', args: { origin: 'Sài Gòn', destination: 'Nha Trang', date: '2026-11-16', passengers: 2 } }
+    // "khởi hành" is the wording the travel guard judges a time in: a departure the page states stays, one it does not is cut.
+    const reply = 'Tàu SE8 khởi hành 06:00, đến 13:43, giá từ 315.000đ. Tàu SE6 khởi hành 08:45 giá từ 363.000đ. Giường nằm VIP giá 999.000đ. Có thêm chuyến khởi hành lúc 23:10.'
+    const on = await turn(TRAIN, { unwind: true, oneBrain: true, luna: intent('ask', ['travel']), tools: [CALL], reply, railRows: ROWS })
+    const tr = on.results.find(r => r.name === 'get_transport_options')?.result
+    expect(tr?.train_booking_link).toBe('https://vexere.com/vn/ve-tau-hoa/dat-ve-tau.vi?from=29_area&to=417_area&date%5Bdepart%5D=2026-11-16&passenger%5Badt%5D=2')
+    expect(tr?.train_schedule?.rows).toEqual(ROWS)
+    expect(tr?.train_schedule?.page_url).toBe('https://vexere.com/vn/ve-tau-hoa/tu-ho-chi-minh-di-nha-trang-khanh-hoa.29.417.vi')
+    expect(on.text).toContain('315.000')
+    expect(on.text).toContain('363.000')
+    expect(on.text).toContain('06:00')
+    expect(on.text).toContain('08:45')
+    expect(on.text).not.toContain('999.000')
+    expect(on.text).not.toContain('23:10') // a departure no page states
+    // No page rows: no field, and the fares the model states have nothing behind them.
+    const none = await turn(TRAIN, { unwind: true, oneBrain: true, luna: intent('ask', ['travel']), tools: [CALL], reply })
+    expect(none.results.find(r => r.name === 'get_transport_options')?.result?.train_schedule).toBeUndefined()
+    expect(none.text).not.toContain('363.000')
   }, 60000)
   it('flag ON, trip plan: no code question, no pre-fetch, no plan frame - the model plans with its tools', async () => {
     const on = await turn(TRIP, { unwind: true, oneBrain: true, luna: TRIP_INTENT, reply })

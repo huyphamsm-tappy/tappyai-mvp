@@ -4433,6 +4433,17 @@ export function applyPlaceEnrichmentStreamFilter(
             // have. get_flight_prices returns `flights[].price_vnd` on success and
             // no price at all on error/missing-token, so an empty travelFares means
             // "no live fare" and the guard redacts every fare the model states.
+            // 29/10: the trains a rail route page states (`train_schedule`, get_transport_options) are structured fetched evidence like
+            // a flight's price: each train's lowest fare and its departure / arrival times may be restated.
+            if (toolName === 'get_transport_options') {
+              const rows = (res.result as { train_schedule?: { rows?: Array<{ price_from_vnd?: unknown; depart?: unknown; arrive?: unknown }> } } | undefined)?.train_schedule?.rows
+              if (Array.isArray(rows)) {
+                for (const row of rows) {
+                  if (typeof row?.price_from_vnd === 'number') travelFares.push(row.price_from_vnd)
+                  for (const t of [row?.depart, row?.arrive]) if (typeof t === 'string') for (const s of scheduleTimesIn(t)) travelTimes.add(s)
+                }
+              }
+            }
             if (toolName === 'get_flight_prices') {
               const flights = (res.result as { flights?: Array<{ price_vnd?: number }> } | undefined)?.flights
               if (Array.isArray(flights)) {

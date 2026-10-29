@@ -161,6 +161,7 @@ import { wantsMoreFromSet, reusablePlaceSearch, type PlaceSearchEvidence } from 
 import { coercePlaceType } from '@/lib/ai/tools/placeType'
 import { coerceTransportMode } from '@/lib/ai/tools/transportMode'
 import { clampPassengers } from '@/lib/ai/tools/passengers'
+import { fetchRailSchedule } from '@/lib/ai/tools/railSchedule'
 import { trimPlacesForModel } from '@/lib/ai/consultative/modelPayload'
 import { agentCandidateSet } from '@/lib/ai/agent/runtime/candidateSet'
 import { compactHistory } from '@/lib/ai/historyCompaction'
@@ -3067,6 +3068,21 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const [r, editorial] = await Promise.all([getTransportOptions(origin, destination, mode === 'taxi' ? 'taxi' : undefined, lang, consultativeAgent && mode !== 'taxi' ? date : undefined), travelEditorialFor(destination)])
           // Completion Pass (14 Sep 2026): the Vexere link is CCP-resolved (route page + date) when CCP is on.
           await attachCommerceLinks('get_transport_options', r, { origin, destination, departDate: date, passengers, transportMode: mode === 'taxi' ? 'taxi' : 'intercity', platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, actorSeal: commerceActorSealValue, userText: lastText, userTexts: recentUserTexts })
+          // 29/10 (owner: "quan trọng là lấy được giá"): the trains and lowest fares the rail route page behind the train link states.
+          // A reference (the page's own day); the dated link is where the day's fare is confirmed. No page / unreadable / no row: no field.
+          const railPage = r && typeof r === 'object' ? (r as { _tappy_rail_page?: unknown })._tappy_rail_page : undefined
+          if (typeof railPage === 'string') {
+            const schedule = await fetchRailSchedule(railPage)
+            if (schedule) {
+              (r as Record<string, unknown>).train_schedule = {
+                page_url: schedule.page_url,
+                rows: schedule.rows,
+                note: lang === 'en'
+                  ? 'Trains and the lowest fare of each (cheapest class) as the Vexere route page shows them (DSVN data), read today; the fare for the chosen day is on train_booking_link.'
+                  : 'Cac chuyen tau va gia thap nhat moi chuyen (hang re nhat) theo trang tuyen Vexere (du lieu DSVN), doc hom nay; gia dung ngay da chon xem o train_booking_link.',
+              }
+            }
+          }
           return withTravelEditorial(r, editorial)
         }
       }),

@@ -160,7 +160,7 @@ export const TOOL_URL_CONTRACT: Readonly<Record<string, Contract>> = {
   get_weather: { search_url: 'action' },
   get_gold_price: { search_url: 'action' },
   get_transport_options: {
-    'vexere_link': 'action', 'train_booking_link': 'action', 'apps[].link': 'action',
+    'vexere_link': 'action', 'train_booking_link': 'action', 'train_schedule.page_url': 'source', 'apps[].link': 'action',
     'bus_search_results[].link': 'source', 'train_search_results[].link': 'source', 'travel_editorial[].url': 'source',
   },
   get_now_showing: { 'film_links[].url': 'action', 'results[].link': 'source', '_tappy_films.sources[].url': 'source' },
