@@ -1897,7 +1897,8 @@ export function applyPlaceEnrichmentStreamFilter(
   if (collector?.agentMode) bufferMode = true
   // Phase 8 (TAPPY_AGENT=2): every text change a settle-path stage makes goes to the run trace — observation only, never alters the text.
   // LEGACY_STREAM_TRACE (default OFF): counts-only per-stage records on the default path. Created only with the flag on and no agent run trace.
-  const legacyTrace = !collector?.guardTrace && legacyStreamTraceEnabled() ? createLegacyStreamTrace() : null
+  // CONSULT_ONE_BRAIN (P0-2): the per-stage counters (sizes only, never text) are always on there, so a stage that cuts or would cut is visible without a flag.
+  const legacyTrace = !collector?.guardTrace && (legacyStreamTraceEnabled() || collector?.oneBrain === true) ? createLegacyStreamTrace() : null
   const gt = (stage: string, before: string, after: string): void => {
     if (collector?.guardTrace && before !== after) { try { collector.guardTrace(stage, before, after) } catch { /* trace only */ } }
     else if (legacyTrace && before !== after) legacyTrace.stage(stage, before, after)
@@ -2841,7 +2842,7 @@ export function applyPlaceEnrichmentStreamFilter(
     // chỗ cụ thể mình chưa xác nhận được… trang đặt chỗ" line added under a fryer answer.
     const travelOwnValues = collector?.oneBrain === true ? [...ownValues, ...productRecords.flatMap(r => { const v = structuredPrice(r); return v === null ? [] : [v] })] : ownValues
     const travelGuarded = travelIntent && collector?.consultV3 !== true
-      ? guardTravelClaimsInText(specGuarded, travelFares, userText, { evidenceTimes: travelEvidenceTimes, lang, ...(travelOwnValues.length > 0 ? { calcValues: travelOwnValues } : {}), ...(collector?.oneBrain === true ? { availability: 'counted' as const, ...(collector.planBlock ? { money: 'keep' as const } : {}) } : {}) }).text
+      ? guardTravelClaimsInText(specGuarded, travelFares, userText, { evidenceTimes: travelEvidenceTimes, lang, ...(travelOwnValues.length > 0 ? { calcValues: travelOwnValues } : {}), ...(collector?.oneBrain === true ? { availability: 'counted' as const, money: collector.planBlock ? 'keep' as const : 'label' as const } : {}) }).text
       : specGuarded
     // A5 EVIDENCE BOUNDARY for food/spa. Their menu/service prices exist only in
     // Serper snippets, so a stated price must TRACE to a retrieved snippet; a
@@ -3074,6 +3075,8 @@ export function applyPlaceEnrichmentStreamFilter(
     const formatGuard = (hadPlaceSearch || placeIntent) && !shoppingTurn
       ? guardFormatClaimsInText(budgetFit.text, (collector?.userTexts ?? [userText]).join('\n'), [...places.map(p => p.name ?? ''), ...placeTexts], lang)
       : { text: budgetFit.text, hedged: [] as string[], reworded: 0 }
+    // CONSULT_ONE_BRAIN (P0-2): this and the next two stages rewrite the model's wording from the USER's words (a screen format, a district, an asked feature): shadow, like the other quality stages.
+    formatGuard.text = qual('format_claim', budgetFit.text, formatGuard.text)
     gt('format_claim', budgetFit.text, formatGuard.text)
     if (formatGuard.hedged.length > 0 || formatGuard.reworded > 0) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'format_claim', hedged: formatGuard.hedged, reworded: formatGuard.reworded }))
     // PRELAUNCH 5b: a venue whose ADDRESS is in another district is never presented as being in the
@@ -3082,6 +3085,7 @@ export function applyPlaceEnrichmentStreamFilter(
     const districtGuard = (hadPlaceSearch || placeIntent) && !shoppingTurn && requestedDistrict
       ? guardDistrictClaims(formatGuard.text, requestedDistrict, places.map(p => ({ name: p.name, address: p.address })))
       : { text: formatGuard.text, rewritten: 0, venues: [] as string[] }
+    districtGuard.text = qual('district_claim', formatGuard.text, districtGuard.text)
     gt('district_claim', formatGuard.text, districtGuard.text)
     if (districtGuard.rewritten > 0) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'district_claim', rewritten: districtGuard.rewritten, district: requestedDistrict?.label }))
     // Owner 2026-09-28 (round-5 blind grading, golden T2 / c40 F2 T1 P6): four unsupported-claim shapes
@@ -3096,6 +3100,7 @@ export function applyPlaceEnrichmentStreamFilter(
         distancesKm: placeDistancesKm,
       })
       : { text: districtGuard.text, rewritten: [] as string[] }
+    unsupported.text = qual('unsupported_claim', districtGuard.text, unsupported.text)
     gt('unsupported_claim', districtGuard.text, unsupported.text)
     if (unsupported.rewritten.length > 0) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'unsupported_claim', rewritten: unsupported.rewritten }))
     // Principle 7 (owner 2026-09-29): a plan the user budgeted shows the split as code-written arithmetic,

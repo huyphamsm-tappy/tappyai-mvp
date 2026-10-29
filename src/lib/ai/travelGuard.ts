@@ -17,7 +17,7 @@
 // travel price is judged and removed by the same audited machinery as a shopping
 // price — only the VERDICT rule differs (fail-closed instead of inert).
 
-import { extractMoneyClaims, redactUnsupportedClaims, type MoneyClaim } from './moneyGuard'
+import { extractMoneyClaims, redactUnsupportedClaims, labelUnsupportedAmounts, type MoneyClaim } from './moneyGuard'
 import { isCitationOnly } from './citationTail'
 
 /** A live, fetched travel price in VND. Only a FETCHED_LIVE value authorizes a
@@ -265,13 +265,14 @@ export function travelCutNotice(o: { topic: TravelCutTopic; money: boolean; sche
  * @param opts.money  'judge' (default): a money claim no live fare / user number / calculator backs is cut. 'keep': the money claims are not judged
  *                   (the one-brain path, 29/10: the model's own planning figures — "vé khoảng 6 triệu", "ăn uống 2,1 triệu" in a split of the user's
  *                   15 triệu — were cut as invented, leaving a table with only its total; V3 took the same step, see streamEnrichment.ts). Schedule
- *                   and availability claims are still judged.
+ *                   and availability claims are still judged. 'label' (one brain, P0-2): the unbacked figure is replaced by "chưa xác minh" and the line,
+ *                   name and row around it stay; no "not confirmed" notice is added (the label says it).
  */
 export function guardTravelClaimsInText(
   text: string,
   fares: number[],
   userText: string,
-  opts: { evidenceTimes?: readonly string[]; lang?: string; unit?: 'travel' | 'ticket'; calcValues?: readonly number[]; availability?: 'any' | 'counted'; money?: 'judge' | 'keep' } = {},
+  opts: { evidenceTimes?: readonly string[]; lang?: string; unit?: 'travel' | 'ticket'; calcValues?: readonly number[]; availability?: 'any' | 'counted'; money?: 'judge' | 'keep' | 'label' } = {},
 ): { text: string; redacted: number; enforced: boolean } {
   const ticketUnit = opts.unit === 'ticket'
   // Wave 3 (W4): whole-number results of the exact calculator this turn whose money-sized inputs the turn already had (groundedCalcNumbers). An amount equal to one (within 0.5 %) is the turn's own arithmetic.
@@ -295,9 +296,14 @@ export function guardTravelClaimsInText(
     if (bad > 0) {
       const spans = sentenceSpans(out)
       for (const j of judged) if (j.verdict !== 'VERIFIED') { const sp = spans.find(([a, b]) => j.start >= a && j.start < b); if (sp) cutTexts.push(out.slice(sp[0], sp[1])) }
-      moneyCut = true
-      // Round 42 round 3 (PRICE-CUT-RESIDUE-01): never "…có giá /chiều." — a sentence that cannot lose just a clause goes whole; the notice below says what was cut.
-      out = redactUnsupportedClaims(out, judged, { noAmountOnlyFallback: true }); redacted += bad
+      if (opts.money === 'label') {
+        // the figure is replaced, the line stays: the label is the disclosure, so no second notice below (moneyCut stays false)
+        out = labelUnsupportedAmounts(out, judged, opts.lang === 'en' ? 'unverified' : 'chưa xác minh'); redacted += bad
+      } else {
+        moneyCut = true
+        // Round 42 round 3 (PRICE-CUT-RESIDUE-01): never "…có giá /chiều." — a sentence that cannot lose just a clause goes whole; the notice below says what was cut.
+        out = redactUnsupportedClaims(out, judged, { noAmountOnlyFallback: true }); redacted += bad
+      }
     }
   }
 

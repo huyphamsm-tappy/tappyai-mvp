@@ -768,6 +768,16 @@ function removeAmountsOnly(sentenceWithBreak: string, spans: Array<[number, numb
   return out
 }
 
+/**
+ * ONE BRAIN (P0-2, 29/10 audit): the figures no evidence backs are REPLACED by `label` ("chưa xác minh") — the hedge word right before each ("khoảng", "tầm") goes with it,
+ * and every other character stays: the name, the row, the bullet, the heading around the figure are the model's own words. Pure; claims must come from this `text`.
+ */
+export function labelUnsupportedAmounts(text: string, claims: ReadonlyArray<{ start: number; end: number; verdict: string }>, label: string): string {
+  let out = text
+  for (const c of [...claims].filter(x => x.verdict !== 'VERIFIED').sort((a, b) => b.start - a.start)) out = out.slice(0, c.start).replace(HEDGE_BEFORE, '') + label + out.slice(c.end)
+  return out
+}
+
 export interface RedactOptions {
   /**
    * F-094 (owner 2026-09-25): remove every affected sentence WHOLE — no clause cut. The v1 snippet
