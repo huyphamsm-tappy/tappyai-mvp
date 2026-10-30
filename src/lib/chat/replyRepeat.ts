@@ -91,15 +91,17 @@ function isRepeat(key: string, seen: string[]): boolean {
  * Drops every prose sentence that repeats one said earlier — earlier in `text`, or in `prior`
  * (prose already sent in this turn). Blocks are untouched; nothing new is ever removed.
  */
-export function dedupeSentences(text: string, prior: string[] = []): string {
+export function dedupeSentences(text: string, prior: string[] = [], opts: { withinText?: boolean } = {}): string {
   const seen = prior.flatMap(p => sentences(p.replace(BLOCK_RE, ' ')).map(sentenceKey)).filter(Boolean)
+  // withinText false (one brain, review 30/10): only what repeats `prior` goes - the same advice under two days of one plan stays
+  const withinText = opts.withinText !== false
   let changed = false
   const out = segments(text).map(seg => {
     if (seg.block) return seg.text
     return sentences(seg.text).map(s => {
       const key = sentenceKey(s)
       if (isRepeat(key, seen)) { changed = true; return '' }
-      if (key) seen.push(key)
+      if (key && withinText) seen.push(key)
       return s
     }).join('')
   }).join('')
