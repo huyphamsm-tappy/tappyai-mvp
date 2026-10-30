@@ -1905,7 +1905,7 @@ export function applyPlaceEnrichmentStreamFilter(
   // Phase 8 (TAPPY_AGENT=2): every text change a settle-path stage makes goes to the run trace — observation only, never alters the text.
   // LEGACY_STREAM_TRACE (default OFF): counts-only per-stage records on the default path. Created only with the flag on and no agent run trace.
   // CONSULT_ONE_BRAIN (P0-2): the per-stage counters (sizes only, never text) are always on there, so a stage that cuts or would cut is visible without a flag.
-  const legacyTrace = !collector?.guardTrace && (legacyStreamTraceEnabled() || collector?.oneBrain === true) ? createLegacyStreamTrace() : null
+  const legacyTrace = !collector?.guardTrace && (legacyStreamTraceEnabled() || collector?.oneBrain === true) ? createLegacyStreamTrace(undefined, { always: collector?.oneBrain === true }) : null
   const gt = (stage: string, before: string, after: string): void => {
     if (collector?.guardTrace && before !== after) { try { collector.guardTrace(stage, before, after) } catch { /* trace only */ } }
     else if (legacyTrace && before !== after) legacyTrace.stage(stage, before, after)

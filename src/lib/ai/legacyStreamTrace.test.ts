@@ -92,4 +92,66 @@ describe('createLegacyStreamTrace', () => {
     expect(turn).toMatchObject({ guard: 'legacy_turn', stages_changed: 1, chars_in: 32, chars_out: 15 })
     expect(lines.join('')).not.toContain('Giá')
   })
+
+  // P2-8 (30/10): the TOTAL a turn lost, not just the first and last size - a stage that adds text must not hide one that deleted it
+  describe('chars removed per turn', () => {
+    const run = (stages: Array<[string, string, string]>, opts?: { always?: boolean }) => {
+      const lines: string[] = []
+      const t = createLegacyStreamTrace(l => lines.push(l), opts)
+      for (const [n, b, a] of stages) t.stage(n, b, a)
+      t.turn()
+      return lines.map(l => JSON.parse(l) as Record<string, any>).filter(r => r.guard === 'legacy_turn')[0]
+    }
+    it('sums what every stage that SHORTENED the text removed, by stage', () => {
+      const t = run([['money', 'a'.repeat(100), 'a'.repeat(70)], ['format', 'a'.repeat(70), 'a'.repeat(60)]])
+      expect(t).toMatchObject({ chars_removed_total: 40, removed_by_stage: { money: 30, format: 10 }, chars_would_remove_total: 0 })
+    })
+    it('a stage that only ADDED text removes nothing, and does not cancel an earlier removal', () => {
+      const t = run([['money', 'a'.repeat(100), 'a'.repeat(80)], ['notice', 'a'.repeat(80), 'a'.repeat(150)]])
+      expect(t.chars_removed_total).toBe(20)
+      expect(t.removed_by_stage).toEqual({ money: 20 })
+    })
+    it('a shadow stage (logged, text kept) is counted apart: it is what WOULD have gone', () => {
+      const t = run([['shadow:money', 'a'.repeat(100), 'a'.repeat(60)], ['format', 'a'.repeat(100), 'a'.repeat(95)]])
+      expect(t).toMatchObject({ chars_removed_total: 5, chars_would_remove_total: 40, would_remove_by_stage: { 'shadow:money': 40 } })
+    })
+    it('the same stage removing twice in a turn adds up (a stage runs once per sentence block)', () => {
+      const t = run([['money', 'a'.repeat(100), 'a'.repeat(90)], ['money', 'a'.repeat(90), 'a'.repeat(85)]])
+      expect(t.removed_by_stage).toEqual({ money: 15 })
+    })
+    it('a shadow stage never moves the size the reader actually received (chars_out is the last REAL stage)', () => {
+      const t = run([['format', 'a'.repeat(100), 'a'.repeat(95)], ['shadow:money', 'a'.repeat(95), 'a'.repeat(10)]])
+      expect(t).toMatchObject({ chars_in: 100, chars_out: 95 })
+    })
+    it('a stage that deletes and adds in one pass counts its net removal only', () => {
+      expect(run([['rewrite', 'a'.repeat(100), 'a'.repeat(90)]]).chars_removed_total).toBe(10)
+    })
+    it('always: a turn in which nothing changed still writes the line, with zeros (so "0 removed" is distinct from "no trace")', () => {
+      const lines: string[] = []
+      const t = createLegacyStreamTrace(l => lines.push(l), { always: true })
+      t.turn()
+      expect(JSON.parse(lines[0])).toMatchObject({ guard: 'legacy_turn', stages_changed: 0, chars_removed_total: 0, chars_would_remove_total: 0 })
+    })
+    it('without always, an unchanged turn writes nothing (as before)', () => {
+      const lines: string[] = []
+      createLegacyStreamTrace(l => lines.push(l)).turn()
+      expect(lines).toEqual([])
+    })
+    it('counts only: no text and no stage content in the line', () => {
+      const lines: string[] = []
+      const t = createLegacyStreamTrace(l => lines.push(l))
+      t.stage('money', 'Giá bí mật 8.000.000đ', 'Giá')
+      t.turn()
+      expect(lines.join('')).not.toContain('bí mật')
+    })
+  })
+
+  describe('wiring', () => {
+    it('one brain asks for the always-on turn line', async () => {
+      const { readFileSync } = await import('node:fs')
+      const { join } = await import('node:path')
+      const src = readFileSync(join(process.cwd(), 'src/lib/ai/streamEnrichment.ts'), 'utf8')
+      expect(src).toContain('createLegacyStreamTrace(undefined, { always: collector?.oneBrain === true })')
+    })
+  })
 })

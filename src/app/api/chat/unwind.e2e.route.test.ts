@@ -233,6 +233,14 @@ describe('P2-8 (30/10): one line per one-brain turn about how the loop ended (th
     expect(t[0]).toMatchObject({ steps_run: 2, max_steps: 8, step_cap_hit: false, wrote_text: true, finish_reason: 'stop', tools: { web_search: 1, read_page: 1 }, tool_calls: 2, response_model: 'reported-model-x', provider: 'mock' })
     expect(JSON.stringify(t[0])).not.toContain('bí mật') // names and counts only
   }, 60000)
+  it('one brain: a turn that went through the settle stages writes ONE line with the chars it lost (0 when nothing was cut), and what would have gone is counted apart', async () => {
+    const ASK: Msg[] = [{ role: 'user', content: 'Tư vấn nồi chiên không dầu 6 lít' }]
+    const r = await turn(ASK, { unwind: true, oneBrain: true, luna: intent('pick', ['shopping']), tools: [{ name: 'search_products', args: { query: 'nồi chiên không dầu 6 lít' } }], reply: 'Mình chọn nồi 6 lít, giá **5.550.000đ** ở một cửa hàng.' })
+    const t = r.logs.filter(l => l.guard === 'legacy_turn')
+    expect(t).toHaveLength(1)
+    expect(t[0]).toMatchObject({ chars_removed_total: expect.any(Number), chars_would_remove_total: expect.any(Number), removed_by_stage: expect.any(Object), would_remove_by_stage: expect.any(Object) })
+    expect(JSON.stringify(t[0])).not.toContain('5.550.000') // counts only
+  }, 60000)
   it('not one brain: no such line (the other routes are unchanged)', async () => {
     const r = await turn(Q, { unwind: false, oneBrain: false, luna: intent('answer', ['knowledge']), finishSteps: STEPS, reply: 'Lạm phát là sự tăng mức giá chung.' })
     expect(traceOf(r.logs)).toHaveLength(0)
