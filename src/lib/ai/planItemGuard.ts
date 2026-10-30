@@ -150,6 +150,8 @@ export interface PlanItemGuardResult {
   mealSlots?: number
   /** Check-in / check-out stops with no hotel row to point at, kept as plain stops (flag on only). */
   genericStays?: number
+  /** One brain: venues the tools did not return, kept under the model's own name, labelled, with no link / price / address. */
+  unverifiedKept?: number
   /** Sights of the turn's own results added to a thin return day (flag on only). */
   returnDayFilled?: number
   /** Of those, restaurants of a vegetarian request whose row carries no vegetarian data (flag on only). */
@@ -262,7 +264,7 @@ function isInlandSight(p: PlanPlace): boolean {
   return !OFFSHORE.test(where) && !FULL_DAY_VENUE.test(`${where} ${types}`)
 }
 
-export function guardPlanItems(fullText: string, places: readonly PlanPlace[], opts: { destination?: string | null; keepSights?: boolean; vegetarian?: boolean; knownSightsUnlabelled?: boolean } = {}): PlanItemGuardResult {
+export function guardPlanItems(fullText: string, places: readonly PlanPlace[], opts: { destination?: string | null; keepSights?: boolean; vegetarian?: boolean; knownSightsUnlabelled?: boolean; keepNamedVenues?: boolean } = {}): PlanItemGuardResult {
   const none = { text: fullText, matched: 0, replaced: 0, dropped: 0, linksSet: 0, linksRemoved: 0, timesMoved: 0, timesCleared: 0 }
   const start = fullText.indexOf(OPEN)
   const end = fullText.indexOf(CLOSE)
@@ -284,7 +286,7 @@ export function guardPlanItems(fullText: string, places: readonly PlanPlace[], o
     return pool.find(p => fold(p.name!) === key)
       ?? pool.find(p => { const n = fold(p.name!); return n.length >= 6 && key.length >= 6 && (n.includes(key) || key.includes(n)) })
   }
-  const res: { matched: number; replaced: number; dropped: number; linksSet: number; linksRemoved: number; timesMoved: number; timesCleared: number; sightsKept?: number; mealSlots?: number; vegSlots?: number; genericStays?: number; returnDayFilled?: number } = { matched: 0, replaced: 0, dropped: 0, linksSet: 0, linksRemoved: 0, timesMoved: 0, timesCleared: 0 }
+  const res: { matched: number; replaced: number; dropped: number; linksSet: number; linksRemoved: number; timesMoved: number; timesCleared: number; sightsKept?: number; mealSlots?: number; vegSlots?: number; genericStays?: number; returnDayFilled?: number; unverifiedKept?: number } = { matched: 0, replaced: 0, dropped: 0, linksSet: 0, linksRemoved: 0, timesMoved: 0, timesCleared: 0 }
   const placeOf = new Map<Item, PlanPlace>()
   let stayPlace: PlanPlace | null = null
 
@@ -342,6 +344,18 @@ export function guardPlanItems(fullText: string, places: readonly PlanPlace[], o
       if (place) {
         res.matched++
         if (opts.keepSights && (kind === 'attraction' || kind === 'entertainment')) item.description = groundedSightDescription(item.description, place)
+      } else if (opts.keepNamedVenues === true && typeof item.name === 'string' && item.name.trim() && !(kind === 'hotel' && GENERIC_STAY.test(item.name) && !HOTEL_WORD.test(item.name))) {
+        // Review 30/10 (one brain): a stop the tools did not return was renamed to ANOTHER retrieved place of its kind (a hotel became a different
+        // hotel) or a meal became "Ăn trưa gần chỗ ở". It keeps the model's own name and words, labelled once; nothing that can be wrong or acted on
+        // survives (no price, link, address, place id, photo) - so no booking button points at an unchecked place.
+        item.price = typeof item.price === 'string' && /chưa có giá|miễn phí|free/i.test(item.price) ? item.price : ''
+        for (const f of ['address', 'maps_link', 'place_id', 'photo_url', 'booking_link']) delete item[f]
+        delete item.booking_links
+        const d = typeof item.description === 'string' ? item.description.trim() : ''
+        item.description = /chưa xác minh/i.test(d) ? d : d ? `${d} (chưa xác minh)` : '(chưa xác minh)'
+        res.unverifiedKept = (res.unverifiedKept ?? 0) + 1
+        kept.push(item)
+        continue
       } else {
         // An invented venue ("Quán bar/lounge Quận 1"): an unused retrieved place of the same kind, or nothing.
         // CONSULTATIVE_IN_AGENT: a meal the model did not name (or named wrongly) is NEVER swapped for "the next unused restaurant of the pool" — the pool holds

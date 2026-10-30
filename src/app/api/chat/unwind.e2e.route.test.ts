@@ -605,7 +605,7 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     expect(JSON.parse(m![1])).toMatchObject({ type: 'trip', title: 'Đà Lạt 2 ngày 1 đêm', days: [{ label: 'Ngày 1 — Hồ Xuân Hương' }] })
     expect(on.text.indexOf('Lịch trình gọn')).toBeLessThan(on.text.indexOf('[TAPPY_PLAN]'))
   }, 60000)
-  it('flag ON, no place retrieved (search down): the brochure keeps known sights (no "chưa kiểm chứng" tag since N3, owner 30/10) and meals as plain slots; an invented hotel is still dropped', async () => {
+  it('flag ON, no place retrieved (search down): the brochure keeps every stop under the model\'s own name - sights untagged (N3), unreturned venues labelled "(chưa xác minh)" with no link, address or price (review 30/10)', async () => {
     // Localhost 29/10 ("Đà Lạt 2 ngày 1 đêm", Serper 403): the strict plan guard dropped all 9 stops and every day of the card was empty.
     const plan = { type: 'trip', title: 'Đà Lạt 2 ngày 1 đêm', days: [{ label: 'Ngày 1 — Trung tâm', items: [
       { time: '08:00', emoji: '🌲', category: 'attraction', name: 'Hồ Xuân Hương', description: 'Đi dạo quanh hồ' },
@@ -618,11 +618,14 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
       return m ? (JSON.parse(m[1]).days?.[0]?.items ?? []) as Array<{ name: string; description?: string; category?: string }> : null
     }
     const on = await items({ oneBrain: true })
-    expect(on?.map(i => i.name)).toEqual(['Hồ Xuân Hương', 'Ăn trưa gần chỗ ở'])
+    // Review 30/10: the meal used to become "Ăn trưa gần chỗ ở" and the hotel be dropped (or renamed to ANOTHER retrieved hotel when one existed).
+    // On one brain a stop keeps the name the model gave; what is unchecked is labelled, and nothing actionable (link, address, price) survives.
+    expect(on?.map(i => i.name)).toEqual(['Hồ Xuân Hương', 'Lẩu gà lá é Tao Ngộ', 'Khách sạn Hoa Mai Đà Lạt'])
     // N3 (owner 30/10, "để lại nó cũng đâu có giải quyết được câu trả lời cho user"): a famous sight keeps the model's own words, untagged.
     expect(on?.[0].description).toBe('Đi dạo quanh hồ')
-    expect(JSON.stringify(on)).not.toContain('Tao Ngộ')
-    expect(JSON.stringify(on)).not.toContain('Hoa Mai')
+    expect(on?.[1].description).toBe('Ăn trưa (chưa xác minh)')
+    expect(on?.[2].description).toBe('Nhận phòng (chưa xác minh)')
+    for (const it of on ?? []) for (const f of ['booking_link', 'booking_links', 'address', 'maps_link', 'place_id']) expect((it as Record<string, unknown>)[f], `${it.name}.${f}`).toBeUndefined()
   }, 60000)
   it('P0-2 rest (30/10): one brain, a plan turn - no post-model stage deletes the model\'s prose or plan content (they run in shadow and are logged)', async () => {
     // Measured 30/10 (O-DEV30 k3a/k3par, C3010 k3): plan_local_tips ~1 000, plan_trip_facts ~500-600, plan_price ~340-600 characters removed per run on

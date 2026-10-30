@@ -34,7 +34,35 @@ describe('N3 · plan card sights on the one-brain route', () => {
   })
   it('the stream filter asks for it on the one-brain route only (wiring, read from the source)', () => {
     const src = readFileSync(join(__dirname, 'streamEnrichment.ts'), 'utf8')
-    expect(src).toContain("...(collector?.oneBrain === true ? { knownSightsUnlabelled: true } : {})")
+    expect(src).toContain("...(collector?.oneBrain === true ? { knownSightsUnlabelled: true, keepNamedVenues: true } : {})")
+  })
+  // Review 30/10 (read-only): a stop the tools did not return was renamed to ANOTHER retrieved place of the same kind (a hotel became a
+  // different hotel, its description wiped) or, for a meal, replaced by "Ăn trưa gần chỗ ở". Renaming tells the user something false.
+  const HOTELS = [{ name: 'Wind Garden Coffee', address: '72 Lê Mạnh Trinh, Đà Nẵng', place_types: ['cafe'] }, { name: 'Khách sạn Mường Thanh Đà Nẵng', address: '962 Ngô Quyền, Đà Nẵng', place_types: ['khách sạn'] }]
+  const STOPS = [
+    { time: '12:00', category: 'food', name: 'Mì Quảng Bà Mua', description: 'Mì Quảng gà đặc trưng', price: '45.000đ', booking_link: 'https://x.example/b' },
+    { time: '14:00', category: 'hotel', name: 'Khách sạn Hoa Mai', description: 'Nhận phòng, gần biển', address: '1 Võ Nguyên Giáp' },
+  ]
+  it('one brain: a venue the tools did not return keeps the model\'s own name, is labelled, and carries no link, price, address or place id', () => {
+    const r = guardPlanItems(plan(STOPS), HOTELS, { destination: 'Đà Nẵng', keepSights: true, knownSightsUnlabelled: true, keepNamedVenues: true })
+    const [meal, hotel] = items(r)
+    expect(meal.name).toBe('Mì Quảng Bà Mua')
+    expect(meal.description).toBe('Mì Quảng gà đặc trưng (chưa xác minh)')
+    expect(meal.price).toBe('')
+    expect(meal.booking_link).toBeUndefined()
+    expect(hotel.name).toBe('Khách sạn Hoa Mai') // not renamed to Mường Thanh
+    expect(hotel.description).toBe('Nhận phòng, gần biển (chưa xác minh)')
+    expect(hotel.address).toBeUndefined()
+    expect(JSON.stringify(items(r))).not.toContain('Mường Thanh')
+  })
+  it('other routes: unchanged - the meal becomes a plain slot, the hotel is swapped for a retrieved one', () => {
+    const [meal, hotel] = items(guardPlanItems(plan(STOPS), HOTELS, { destination: 'Đà Nẵng', keepSights: true }))
+    expect(meal.name).toBe('Ăn trưa gần chỗ ở')
+    expect(hotel.name).toBe('Khách sạn Mường Thanh Đà Nẵng')
+  })
+  it('the stream filter asks for named venues to be kept on one brain only (wiring)', () => {
+    const src = readFileSync(join(__dirname, 'streamEnrichment.ts'), 'utf8')
+    expect(src).toContain("...(collector?.oneBrain === true ? { knownSightsUnlabelled: true, keepNamedVenues: true } : {})")
   })
   it('other routes: the tag and the general-knowledge line stay as before', () => {
     const it0 = items(guardPlanItems(plan([BEACH]), PLACES, { destination: 'Đà Nẵng', keepSights: true }))[0]
