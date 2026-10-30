@@ -44,6 +44,11 @@ export function inactiveMerchants(): Array<{ providerId: string; hosts: string[]
     nameRe: new RegExp(`(?<![\\p{L}\\p{N}])(?:${[e.merchantName, ...merchantAliases(e.providerId)].map(escapeRe).join('|')})(?![\\p{L}\\p{N}])`, 'iu'),
   }))
 }
+/** Matches the name of any shopping merchant in the registry (active or not), with the spellings the model uses. Global, for removing a merchant's name from a product query. */
+export function shoppingMerchantNameRe(): RegExp {
+  const names = PROVIDER_REGISTRY.filter(e => e.domains.includes('shopping')).flatMap(e => [e.merchantName, ...merchantAliases(e.providerId)])
+  return new RegExp(`(?<![\\p{L}\\p{N}])(?:${names.map(escapeRe).join('|')})(?![\\p{L}\\p{N}])`, 'giu')
+}
 /** Spellings the model uses for a merchant beyond `merchantName` (the intent module keeps the AI layer's list; these are the registry's). */
 function merchantAliases(providerId: string): string[] {
   return providerId === 'dmx' ? ['Điện máy XANH', 'Điện Máy Xanh', 'dien may xanh', 'dienmayxanh', 'DMX'] : []
