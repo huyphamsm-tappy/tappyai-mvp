@@ -12,6 +12,8 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { __resetAiQuestionQuotaLocal } from '@/lib/ai/quota/aiQuestionQuota'
 import { __resetSharedRobots } from '@/lib/ai/consultative/researchLoop'
 import { __resetPageCache } from '@/lib/ai/agent/runtime/readPage'
+import { ONE_BRAIN_CORE, ONE_BRAIN_SHAPE_REMINDER } from '@/lib/ai/consultative/oneBrain'
+import { STYLE_LUNA6_BLOCK } from '@/lib/ai/consultative/styleLuna6'
 
 type Call = { toolCallId: string; toolName: string; args: Record<string, unknown> }
 const h = vi.hoisted(() => {
@@ -220,6 +222,34 @@ describe('P0-3 follow-up (30/10): the route\'s attachCommerceLinks wrapper, offl
     expect(all.length).toBeGreaterThan(0) // the wrapper really ran (a loop over nothing proves nothing)
     for (const c of all) expect(c.unambiguousMerchantOnly).toBeUndefined()
   }, 60000)
+})
+
+describe('P1-2 (30/10): in one brain the model reads ONE scope and ONE style source (the real route, offline)', () => {
+  const Q2: Msg[] = [{ role: 'user', content: 'Giải thích giúp mình lạm phát là gì' }]
+  const read = async (oneBrain: boolean) => {
+    const r = await turn(Q2, { unwind: oneBrain, oneBrain, luna: intent('answer', ['knowledge']), reply: 'ok' })
+    const sys = JSON.parse(r.system || '{}') as { system?: string }
+    return { shared: r.opts.systemShared ?? '', dynamic: typeof sys.system === 'string' ? sys.system : '' }
+  }
+  it('the shared segment is the one general instruction and nothing else; it states the scope once (a general assistant, no refusal outside five areas)', async () => {
+    const { shared } = await read(true)
+    expect(shared).toBe(ONE_BRAIN_CORE)
+    expect(shared).toContain('general AI assistant')
+    expect(shared).not.toContain('CHI ho tro 5 linh vuc')
+  })
+  it('no second scope block and no second voice block reach the model: the legacy refusal, the five-area scope and the voice layer are absent', async () => {
+    const { shared, dynamic } = await read(true)
+    for (const text of [shared, dynamic]) {
+      expect(text).not.toContain('HAY TU CHOI LICH SU')
+      expect(text).not.toContain('PHAM VI HOAT DONG')
+      expect(text).not.toContain(STYLE_LUNA6_BLOCK.trim().slice(0, 60))
+    }
+  })
+  it('the person\'s own settings are inside the per-turn part and the shape reminder is its LAST line, so a style the person set is read before it and wins (the reminder says so)', async () => {
+    const { dynamic } = await read(true)
+    expect(dynamic.endsWith(ONE_BRAIN_SHAPE_REMINDER)).toBe(true)
+    expect(ONE_BRAIN_SHAPE_REMINDER).toContain('wins over it')
+  })
 })
 
 describe('P2-8 (30/10): one line per one-brain turn about how the loop ended (the real route, offline)', () => {
