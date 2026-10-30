@@ -605,7 +605,7 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     expect(JSON.parse(m![1])).toMatchObject({ type: 'trip', title: 'Đà Lạt 2 ngày 1 đêm', days: [{ label: 'Ngày 1 — Hồ Xuân Hương' }] })
     expect(on.text.indexOf('Lịch trình gọn')).toBeLessThan(on.text.indexOf('[TAPPY_PLAN]'))
   }, 60000)
-  it('flag ON, no place retrieved (search down): the brochure keeps known sights marked unchecked and meals as plain slots; an invented hotel is still dropped', async () => {
+  it('flag ON, no place retrieved (search down): the brochure keeps known sights (no "chưa kiểm chứng" tag since N3, owner 30/10) and meals as plain slots; an invented hotel is still dropped', async () => {
     // Localhost 29/10 ("Đà Lạt 2 ngày 1 đêm", Serper 403): the strict plan guard dropped all 9 stops and every day of the card was empty.
     const plan = { type: 'trip', title: 'Đà Lạt 2 ngày 1 đêm', days: [{ label: 'Ngày 1 — Trung tâm', items: [
       { time: '08:00', emoji: '🌲', category: 'attraction', name: 'Hồ Xuân Hương', description: 'Đi dạo quanh hồ' },
@@ -619,7 +619,8 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     }
     const on = await items({ oneBrain: true })
     expect(on?.map(i => i.name)).toEqual(['Hồ Xuân Hương', 'Ăn trưa gần chỗ ở'])
-    expect(on?.[0].description).toContain('gợi ý chưa kiểm chứng')
+    // N3 (owner 30/10, "để lại nó cũng đâu có giải quyết được câu trả lời cho user"): a famous sight keeps the model's own words, untagged.
+    expect(on?.[0].description).toBe('Đi dạo quanh hồ')
     expect(JSON.stringify(on)).not.toContain('Tao Ngộ')
     expect(JSON.stringify(on)).not.toContain('Hoa Mai')
   }, 60000)

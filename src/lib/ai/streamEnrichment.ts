@@ -2741,7 +2741,7 @@ export function applyPlaceEnrichmentStreamFilter(
       ? guardPlanItems(tipped, latestPlaces.map(p => {
         const c = places.find(q => (q.name || '').trim().toLowerCase() === (p.name || '').trim().toLowerCase()) as { commerce_links?: PlanPlace['commerce_links'] } | undefined
         return { ...(p as PlanPlace), ...(c?.commerce_links ? { commerce_links: c.commerce_links } : {}) }
-      }), { destination: collector?.planTurn ? planDestination : null, ...(collector?.consultative === true || collector?.oneBrain === true ? { keepSights: true, vegetarian: wantsVegetarian(collector?.userTexts ?? [userText]) } : {}) })
+      }), { destination: collector?.planTurn ? planDestination : null, ...(collector?.consultative === true || collector?.oneBrain === true ? { keepSights: true, vegetarian: wantsVegetarian(collector?.userTexts ?? [userText]) } : {}), ...(collector?.oneBrain === true ? { knownSightsUnlabelled: true } : {}) })
       : null
     if (planItems && (planItems.mealSlots || planItems.replaced || planItems.dropped || planItems.linksSet || planItems.linksRemoved || planItems.timesMoved || planItems.timesCleared || planItems.outOfArea)) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'plan_items', out_of_area: planItems.outOfArea ?? 0, matched: planItems.matched, replaced: planItems.replaced, dropped: planItems.dropped, links_set: planItems.linksSet, links_removed: planItems.linksRemoved, times_moved: planItems.timesMoved, times_cleared: planItems.timesCleared, ...(planItems.mealSlots ? { meal_slots: planItems.mealSlots, veg_slots: planItems.vegSlots ?? 0 } : {}) }))
     // 🚨 UAT 2026-09-28 (live, uat @ 062c7ec: every "Đà Nẵng 3 ngày 2 đêm" plan card broken). The

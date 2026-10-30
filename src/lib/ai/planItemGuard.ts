@@ -262,7 +262,7 @@ function isInlandSight(p: PlanPlace): boolean {
   return !OFFSHORE.test(where) && !FULL_DAY_VENUE.test(`${where} ${types}`)
 }
 
-export function guardPlanItems(fullText: string, places: readonly PlanPlace[], opts: { destination?: string | null; keepSights?: boolean; vegetarian?: boolean } = {}): PlanItemGuardResult {
+export function guardPlanItems(fullText: string, places: readonly PlanPlace[], opts: { destination?: string | null; keepSights?: boolean; vegetarian?: boolean; knownSightsUnlabelled?: boolean } = {}): PlanItemGuardResult {
   const none = { text: fullText, matched: 0, replaced: 0, dropped: 0, linksSet: 0, linksRemoved: 0, timesMoved: 0, timesCleared: 0 }
   const start = fullText.indexOf(OPEN)
   const end = fullText.indexOf(CLOSE)
@@ -327,9 +327,13 @@ export function guardPlanItems(fullText: string, places: readonly PlanPlace[], o
         item.price = typeof item.price === 'string' && /chưa có giá|miễn phí|free/i.test(item.price) ? item.price : ''
         for (const f of ['address', 'maps_link', 'place_id', 'photo_url', 'booking_link']) delete item[f]
         delete item.booking_links
-        if (typeof item.description === 'string' && /\d/.test(item.description)) item.description = 'Điểm nổi tiếng (gợi ý từ kiến thức chung); giờ mở cửa và giá cần kiểm tra lại.'
+        // N3 (30/10): on the one-brain route a famous sight is a stable fact ("Dạo biển Mỹ Khê" was tagged "chưa kiểm chứng"); only what can
+        // change is flagged. Price, link, address and place id are dropped above on every route, and a figure in the description is still replaced.
+        const unlabelled = opts.knownSightsUnlabelled === true
+        if (typeof item.description === 'string' && /\d/.test(item.description)) item.description = unlabelled ? 'Giờ mở cửa và giá vé cần kiểm tra lại trước khi đi.' : 'Điểm nổi tiếng (gợi ý từ kiến thức chung); giờ mở cửa và giá cần kiểm tra lại.'
         // Marked as what it is: a suggestion from general knowledge, not checked against the tools' data.
-        if (typeof item.description === 'string' && !/chưa kiểm chứng|kiến thức chung/i.test(item.description)) item.description = `${item.description.trim()} (gợi ý chưa kiểm chứng)`.trim()
+        if (unlabelled) { if (typeof item.description !== 'string') item.description = '' }
+        else if (typeof item.description === 'string' && !/chưa kiểm chứng|kiến thức chung/i.test(item.description)) item.description = `${item.description.trim()} (gợi ý chưa kiểm chứng)`.trim()
         else if (typeof item.description !== 'string' || !item.description.trim()) item.description = 'Điểm nổi tiếng (gợi ý chưa kiểm chứng).'
         res.sightsKept = (res.sightsKept ?? 0) + 1
         kept.push(item)
