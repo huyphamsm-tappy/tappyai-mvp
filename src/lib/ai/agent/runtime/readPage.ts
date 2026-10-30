@@ -55,6 +55,27 @@ export interface PageReaderContext {
    * rendered, PDF without text, cut at the size cap, a table the extract lost). Off: unchanged.
    */
   retrievalV5?: boolean
+  /**
+   * CONSULT_PARALLEL: a page this reader could not read — blocked (HTTP error), timed out, unreachable, or fetched but JavaScript-rendered / thin —
+   * is read once more by this extractor (Parallel Extract, parallelClient.ts). Never for a page the site's robots.txt forbids, an address the
+   * policy refuses, or a URL that did not appear in this research. At most `maxExtractFallbacks` per turn. Absent: HEAD.
+   */
+  extractFallback?: ExtractFallback
+  /** Fallback reads per turn (default 3). */
+  maxExtractFallbacks?: number
+}
+
+/** Reads one page another way. Never throws; `text` is untrusted page text (plain lines, no markup expected). */
+export type ExtractFallback = (url: string, focus: string, signal?: AbortSignal) => Promise<{ ok: true; title: string; text: string } | { ok: false; reason: string }>
+
+/** Fetch failures the fallback may retry: the site was reached but answered badly, or did not answer in time. Not robots, not the address policy. */
+const FALLBACK_FETCH_FAILURES = /^(http_error|connect_timeout|read_timeout|total_timeout|timeout|network_error|unsupported_encoding|too_many_redirects|redirect_without_location)$/
+
+/** Plain page text as a minimal HTML page for the extractor: any markup in it is dropped, the rest escaped; one line = one paragraph. */
+function fallbackHtml(title: string, text: string): string {
+  const esc = (s: string) => s.replace(/<[^>]*>/g, ' ').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+  const paras = text.split('\n').map(l => l.trim()).filter(Boolean).map(l => `<p>${esc(l)}</p>`).join('')
+  return `<html><head><title>${esc(title)}</title></head><body><main>${paras}</main></body></html>`
 }
 
 /**
@@ -100,6 +121,24 @@ export function createPageReader(ctx: PageReaderContext) {
   const fetchPage = ctx.fetchPage ?? ((u: string, s?: AbortSignal) => fetchPublicPage(u, { signal: s, ...(ctx.retrievalV5 ? V5_FETCH : {}) }))
   /** RETRIEVAL_V5: the reader's diagnosis of each page (by normalised URL). */
   const diags = new Map<string, string>()
+  /** CONSULT_PARALLEL: pages read through the fallback this turn (by normalised URL), and how many fallback reads are left. */
+  const viaFallback = new Set<string>()
+  let fallbacksLeft = ctx.maxExtractFallbacks ?? 3
+
+  /** CONSULT_PARALLEL: one fallback read of a page; null when there is no fallback, none left, or it failed. */
+  async function readByFallback(url: string, focus: string, signal?: AbortSignal): Promise<PageDoc | null> {
+    if (!ctx.extractFallback || fallbacksLeft <= 0) return null
+    fallbacksLeft--
+    const t0 = Date.now()
+    const r = await ctx.extractFallback(url, focus, signal)
+    if (!r.ok) { ctx.trace.add('page_read', { host: hostSafe(url), via: 'parallel_extract', status: 'failed', reason: r.reason, ms: Date.now() - t0 }); return null }
+    let doc = extractPage(fallbackHtml(r.title, r.text), { url, contentType: 'text/html', focus, structured: ctx.structured === true, ...(ctx.retrievalV5 ? { v5: true } : {}) })
+    if (doc.status === 'empty') { ctx.trace.add('page_read', { host: hostSafe(url), via: 'parallel_extract', status: 'empty', ms: Date.now() - t0 }); return null }
+    doc = { ...doc, url }
+    viaFallback.add(normUrl(url))
+    ctx.trace.add('page_read', { host: doc.host, via: 'parallel_extract', status: 'ok', extraction: doc.status, ms: Date.now() - t0, passages: doc.passages.length, injection_dropped: doc.injectionDropped })
+    return doc
+  }
   const L = ctx.lang === 'en'
   const lang = ctx.lang
 
@@ -129,11 +168,13 @@ export function createPageReader(ctx: PageReaderContext) {
     const r = await fetchPage(url, signal)
     const fetchMs = Date.now() - t0
     if (!r.ok) {
-      turnFailures.set(key, r.reason)
-      if (/timeout|network_error|blocked/.test(r.reason)) failedHosts.add(hostSafe(url))
       const diag = ctx.retrievalV5 ? fetchFailureDiag(r.reason, r.status) : null
       if (diag) diags.set(key, diag)
       ctx.trace.add('page_read', { host: hostSafe(url), status: r.reason, ms: fetchMs, redirects: r.redirects, ...(r.status ? { http: r.status } : {}), ...(diag ? { diag } : {}) })
+      const fb = FALLBACK_FETCH_FAILURES.test(r.reason) ? await readByFallback(url, focus, signal) : null
+      if (fb) { turnDocs.set(key, fb); return { doc: fb } }
+      turnFailures.set(key, r.reason)
+      if (/timeout|network_error|blocked/.test(r.reason)) failedHosts.add(hostSafe(url))
       return { error: 'page_unreadable', reason: r.reason }
     }
     const t1 = Date.now()
@@ -162,6 +203,11 @@ export function createPageReader(ctx: PageReaderContext) {
     const extractMs = Date.now() - t1
     const diag = ctx.retrievalV5 ? (r.raw ? 'pdf' : pageDiag(r.body, doc, r.truncated)) : null
     if (diag) diags.set(key, diag)
+    // CONSULT_PARALLEL: fetched but JavaScript-rendered or thin -> one fallback read; a better page replaces it (not cached across turns)
+    if (!r.raw && (doc.status === 'empty' || doc.status === 'thin') && ctx.extractFallback) {
+      const fb = await readByFallback(url, focus, signal)
+      if (fb) { turnDocs.set(key, fb); return { doc: fb } }
+    }
     pageCache.set(cacheKey, { doc, at: Date.now() })
     if (pageCache.size > 50) pageCache.delete(pageCache.keys().next().value as string)
     turnDocs.set(key, doc)
@@ -198,6 +244,7 @@ export function createPageReader(ctx: PageReaderContext) {
         url: source.url,
         status: doc.status,
         ...(diags.get(normUrl(list[k])) ? { diag: diags.get(normUrl(list[k])) } : {}),
+        ...(viaFallback.has(normUrl(list[k])) ? { read_via: 'parallel_extract' } : {}),
         ...ctx.ledger.viewFor(source, added, conflicts),
         // V4: every block the structure-preserving reader picked, as ONE text (whole tables / lists included; ≤ BLOCK_CAPS.total per page) —
         // `page_content` has its own, larger bound in the tool-output guard (guards.ts), an array of passages would be cut to 12 rows of 1,200

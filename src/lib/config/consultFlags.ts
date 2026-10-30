@@ -242,3 +242,8 @@ export function consultOneBrainOn(env: Env = process.env): boolean { return unwi
 //                       the V4 picture layer). One extra intent-role call reads what the pictures should show; up to 6 image searches. Needs CONSULT_ONE_BRAIN. Localhost UAT only.
 export const CONSULT_ONE_BRAIN_MEDIA_FLAG = 'CONSULT_ONE_BRAIN_MEDIA'
 export function consultOneBrainMediaOn(env: Env = process.env): boolean { return unwindOn(env, CONSULT_ONE_BRAIN_MEDIA_FLAG) && consultOneBrainOn(env) }
+//   CONSULT_PARALLEL    LOCALHOST ONLY: Parallel (parallelClient.ts) reads a page the consult reader could not (blocked / timed out / JavaScript / thin), and
+//                       searches when Serper gives no rows. Needs PARALLEL_API_KEY; at most 1 search + 3 reads a turn, 5 USD a day. A new data processor:
+//                       never in production until the Owner decides on the privacy page and the AI-data consent.
+export const CONSULT_PARALLEL_FLAG = 'CONSULT_PARALLEL'
+export function consultParallelOn(env: Env = process.env): boolean { return unwindOn(env, CONSULT_PARALLEL_FLAG) && !!env.PARALLEL_API_KEY?.trim() }

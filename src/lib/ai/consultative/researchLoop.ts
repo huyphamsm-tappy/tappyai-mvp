@@ -7,7 +7,7 @@
 //
 // Everything a page says is DATA (pageExtract strips instructions; the tool result says so). Nothing here calls a model or the network by itself: the model chooses to call `read_page`.
 
-import { createPageReader, readPageTool, urlsIn, urlsInText, V5_FETCH } from '@/lib/ai/agent/runtime/readPage'
+import { createPageReader, readPageTool, urlsIn, urlsInText, V5_FETCH, type ExtractFallback } from '@/lib/ai/agent/runtime/readPage'
 import { EvidenceLedger, normUrl } from '@/lib/ai/agent/runtime/evidence'
 import type { AgentRunTrace } from '@/lib/ai/agent/runtime/trace'
 import { fetchPublicPage, type PageFailure, type PageFetchOptions, type PageFetchResult } from '@/lib/security/safePageFetch'
@@ -79,6 +79,8 @@ export function createLeanResearch(o: {
   v5Reading?: boolean
   /** Where reader events go (the consult trace); optional. */
   emit?: (ev: string, data: Record<string, unknown>) => void
+  /** CONSULT_PARALLEL: the reader's fallback for a page it could not read (readPage.ts). Absent: HEAD. */
+  extractFallback?: ExtractFallback
   /** Test seams. */
   fetchPage?: Fetcher
   robots?: RobotsGate
@@ -114,6 +116,7 @@ export function createLeanResearch(o: {
     structured: true,
     fetchPage: robotsAwareFetch(inner, o.robots ?? sharedRobotsGate()),
     ...(o.v5Reading ? { retrievalV5: true } : {}),
+    ...(o.extractFallback ? { extractFallback: o.extractFallback } : {}),
   })
   return {
     tool: readPageTool(reader),

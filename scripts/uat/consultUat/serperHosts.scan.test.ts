@@ -31,6 +31,7 @@ export const EXCEPTIONS: Exception[] = [
   { path: 'src/app/api/cron/price-check/route.ts', rules: ['key'], reason: 'Cron route (not on the chat path): reads SERPER_API_KEY and hands it ONLY to serperPost (search, num 5).' },
   { path: 'scripts/consult/replay/lib/env.ts', rules: ['key'], reason: 'Replay tool (opt-in): copies SERPER_API_KEY from the audit env file into process.env for the replay run; it makes no request.' },
   { path: 'scripts/uat/consultUat/liveRunner.testkit.ts', rules: ['key'], reason: 'Test helper: only NAMES SERPER_API_KEY in the list of variables the tests clear (applyEnv); it reads no value and makes no request.' },
+  { path: 'src/lib/ai/tools/parallelClient.ts', rules: ['header'], reason: 'CONSULT_PARALLEL (owner 30/10): the one door to PARALLEL (api.parallel.ai), NOT Serper. Parallel\'s only documented auth scheme is a header that happens to share the name x-api-key; the file sends PARALLEL_API_KEY (a parameter) to api.parallel.ai only. It never names the Serper host, never reads SERPER_API_KEY and makes no Serper request - the host and key rules still apply to it.' },
 ]
 
 const NAMES = { host: /serper\.dev/i, header: /x-api-key/i, key: /SERPER_API_KEY/ }

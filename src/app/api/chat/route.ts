@@ -102,7 +102,8 @@ import { recordDecision, DECISION_RECORD_TIMEOUT_MS } from '@/lib/ai/agent/runti
 import { createPlacesBudget, PLACES_BUDGET_AGENT, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
 // Consultative V1 (flag CONSULTATIVE_V1, default OFF — see docs/audit/consultative-v1-design.md).
 import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
-import { isProductionRuntime, consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, consultReadPageLateOn, consultPickPageReadOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn, consultUnwindS1aOn, consultUnwindS1bOn, consultUnwindS1dOn, consultUnwindS2aOn, consultUnwindS2bOn, consultUnwindS2cOn, consultUnwindS3aOn, consultUnwindS3bOn, consultUnwindS3cOn, consultUnwindS4aOn, consultUnwindS4bOn, consultUnwindS5On, consultUnwindS6aOn, consultUnwindS6bOn, consultUnwindS6cOn, consultOneBrainOn, consultOneBrainMediaOn } from '@/lib/config/consultFlags'
+import { isProductionRuntime, consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, consultReadPageLateOn, consultPickPageReadOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn, consultUnwindS1aOn, consultUnwindS1bOn, consultUnwindS1dOn, consultUnwindS2aOn, consultUnwindS2bOn, consultUnwindS2cOn, consultUnwindS3aOn, consultUnwindS3bOn, consultUnwindS3cOn, consultUnwindS4aOn, consultUnwindS4bOn, consultUnwindS5On, consultUnwindS6aOn, consultUnwindS6bOn, consultUnwindS6cOn, consultOneBrainOn, consultOneBrainMediaOn, consultParallelOn } from '@/lib/config/consultFlags'
+import { createParallelTurnBudget, parallelExtract, parallelSearch } from '@/lib/ai/tools/parallelClient'
 import { searchWithReads, createOnce, FOLLOW_UP_SYSTEM, S6_MAX_READS } from '@/lib/ai/consultative/searchReads'
 import { ONE_BRAIN_CORE, ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, oneBrainDynamic } from '@/lib/ai/consultative/oneBrain'
 import { oneBrainMediaStream } from '@/lib/ai/consultative/oneBrainMedia'
@@ -2607,7 +2608,28 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   const pickCandidate = consultPickTurnToolsOn() && !!lean && lunaAnswer && !noToolTurn && !planningIntent && !agentOn
   // Wave 4 (B): the FULL row set of the last place search, kept only on a pick candidate (the pre-search's rows, before the model's copy is slimmed). OFF = never set.
   let lastFullPlaceResult: unknown = null
-  const researchReader = (consultResearchLoopOn() && lean) || knowledgeTurn || pickCandidate || oneBrain ? createLeanResearch({ lang, userTexts: recentUserTexts, maxReads: consultUnwindS6aOn() ? Math.max(S6_MAX_READS, levelLimits.researchMaxReads) : levelLimits.researchMaxReads, ...(consultUnwindS6cOn() ? { v5Reading: true } : {}), emit: trace ? (ev, d) => trace.emit(ev, d) : undefined }) : null
+  // CONSULT_PARALLEL (localhost only, one brain): Parallel reads a page the reader could not and searches when Serper gives no rows - one turn
+  // budget for both (1 search + 3 reads), 5 USD a day. The logs carry counts only (no query, no URL). OFF = null, nothing changes.
+  const parallel = oneBrain && consultParallelOn() ? (() => {
+    const apiKey = process.env.PARALLEL_API_KEY!.trim()
+    const budget = createParallelTurnBudget()
+    const log = (kind: string, d: Record<string, unknown>) => console.log(JSON.stringify({ type: 'tappyai_parallel', kind, ...d }))
+    return {
+      search: async (q: string) => {
+        if (!budget.take('search')) { log('search', { refused: true }); return { ok: false as const, rows: [] as [], reason: 'budget' } }
+        const r = await parallelSearch(q, { apiKey })
+        log('search', { ok: r.ok, rows: r.rows.length, ...(r.ok ? {} : { reason: r.reason }) })
+        return r
+      },
+      extract: async (url: string, focus: string, signal?: AbortSignal) => {
+        if (!budget.take('extract')) { log('extract', { refused: true }); return { ok: false as const, reason: 'budget' } }
+        const r = await parallelExtract(url, focus, { apiKey, signal })
+        log('extract', { ok: r.ok, ...(r.ok ? { chars: r.text.length } : { reason: r.reason }) })
+        return r
+      },
+    }
+  })() : null
+  const researchReader = (consultResearchLoopOn() && lean) || knowledgeTurn || pickCandidate || oneBrain ? createLeanResearch({ lang, userTexts: recentUserTexts, maxReads: consultUnwindS6aOn() ? Math.max(S6_MAX_READS, levelLimits.researchMaxReads) : levelLimits.researchMaxReads, ...(consultUnwindS6cOn() ? { v5Reading: true } : {}), emit: trace ? (ev, d) => trace.emit(ev, d) : undefined, ...(parallel ? { extractFallback: parallel.extract } : {}) }) : null
   const tools = noToolTurn && !agentOn ? undefined : gateTools(timeTools({
       // A movie/show RECOMMENDATION turn drops the place search entirely, so the
       // model can't answer "recommend a movie" with a list of cinemas — it
@@ -2924,6 +2946,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const { country, language } = args as { country?: string; language?: string }
           // A travel turn that reaches for the general search still gets the editorial supplement.
           const searchRegion = oneBrain ? { gl: country, hl: language } : null
+          // CONSULT_PARALLEL: no Serper rows -> Parallel Search once (the turn's Parallel budget). OFF: parallel is null, nothing added.
+          if (searchRegion && parallel) Object.assign(searchRegion, { parallelSearch: parallel.search })
           const [r, editorial] = await Promise.all([searchRegion ? webSearch(query, lang, searchRegion) : webSearch(query, lang), travelEditorialFor(null)])
           // Completion Pass (14 Sep 2026): an EVENT question is answered here, not by the places
           // tool — Ticketbox listings are discovered and validated by CCP and projected as

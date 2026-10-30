@@ -11,6 +11,7 @@ import {
 import { messages } from '@/lib/ai/messages'
 import { logText } from '@/lib/ai/logSafeText'
 import { webSearchCacheKey, serperSearchCacheKey, placePhotosCacheKey, cacheKeyPart, type SearchRegion } from './cacheKeys'
+import type { ParallelSearchOutcome } from './parallelClient'
 
 // ===== In-memory cache (theo Vercel instance, giam goi API lap lai cho cung 1 query) =====
 type CacheEntry = { data: unknown; expires: number; /** when the data was really fetched; null = not known (a row rebuilt from a legacy shared entry) */ at: number | null }
@@ -796,7 +797,11 @@ export function parseSerperPriceVnd(value: unknown): number | null {
 
 // ===== WEB SEARCH: DuckDuckGo HTML (free, no API key) =====
 /** `vertical: true` = a vertical's own fallback search (the legacy hotel fallback in travel.ts): a "V" request that does not take the turn's web ticket (Plan B). */
-async function webSearchImpl(query: string, lang = 'vi', opts: { vertical?: boolean; gl?: unknown; hl?: unknown } = {}) {
+/**
+ * `parallelSearch` (CONSULT_PARALLEL, parallelClient.ts): when Serper gives no rows (refused, failed, or empty), the model's query goes to Parallel
+ * once; its rows become the result (`source: 'Parallel'`). The caller binds it to the turn's Parallel budget. Absent: HEAD.
+ */
+async function webSearchImpl(query: string, lang = 'vi', opts: { vertical?: boolean; gl?: unknown; hl?: unknown; parallelSearch?: (q: string) => Promise<ParallelSearchOutcome> } = {}) {
   const region = searchRegionOf(opts)
   const cacheKey = webSearchCacheKey(query, lang, region)
   const cached = getCache(cacheKey)
@@ -812,6 +817,16 @@ async function webSearchImpl(query: string, lang = 'vi', opts: { vertical?: bool
     result = { query, source: 'Google (Serper)', results: serperResults, ...(serperEx.extras ?? {}), search_url: fallbackUrl }
     setCache(cacheKey, result, 5 * 60 * 1000)
     return result
+  }
+
+  // CONSULT_PARALLEL: no Serper rows -> Parallel once (its own per-turn and daily budget, bound by the caller); nothing found -> on as before
+  if (opts.parallelSearch) {
+    const p = await opts.parallelSearch(query)
+    if (p.ok && p.rows.length > 0) {
+      result = { query, source: 'Parallel', results: p.rows, search_url: fallbackUrl }
+      setCache(cacheKey, result, 5 * 60 * 1000)
+      return result
+    }
   }
 
   // TURN_WEB_TICKET / SEARCH_FALLBACK_GATE (both default OFF, read now; the flag matrix is in serperToolBudget.ts). With both OFF nothing below changes.
