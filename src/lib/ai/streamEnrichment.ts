@@ -2119,6 +2119,35 @@ export function applyPlaceEnrichmentStreamFilter(
    * it returns (an image becomes its alt).
    */
   let liveReleased = ''
+  /**
+   * The FILTERED text the last live release was cut from. Equal to `liveReleased` until a later egress decision removes bytes the
+   * client already has (30/10 P0: since 1552a18 an unowned tail citation goes with the whitespace before it, and that space was
+   * released while the `[` was still arriving). Those bytes cannot be taken back; the release resumes after them from where the
+   * filtered text and this string still agree — only filtered text is ever sent, never `liveText`.
+   */
+  let liveFiltered = ''
+
+  /**
+   * Sends what `filtered` (an egress-filtered view of `liveText`) adds to what was released. When it no longer extends the last
+   * filtered text, it resumes from their common prefix once that is settled: at the end of the stream, or when a line has ended after
+   * the point where they part (the tail-citation rule judges a link by its own line only). Before 30/10 this case returned for the
+   * rest of the turn — the answer stopped mid-way with no error (Q16: 1 753 characters written, 227 received).
+   */
+  const releaseFiltered = (controller: TransformStreamDefaultController, filtered: string, endOfStream: boolean) => {
+    let base = liveFiltered
+    if (!filtered.startsWith(base)) {
+      let k = 0
+      while (k < base.length && k < filtered.length && base[k] === filtered[k]) k++
+      if (!endOfStream && filtered.indexOf('\n', k) === -1) return
+      console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'live_prefix_resumed', dropped: base.length - k, formatting_only: /^[\s*_~]*$/.test(base.slice(k)) }))
+      base = filtered.slice(0, k)
+    }
+    liveFiltered = filtered
+    if (filtered.length === base.length) return
+    const slice = filtered.slice(base.length)
+    liveReleased += slice
+    controller.enqueue(encoder.encode('0:' + JSON.stringify(slice) + '\n'))
+  }
 
   /**
    * The one place live assistant text leaves this filter — the B12 step break and the model's
@@ -2133,11 +2162,7 @@ export function applyPlaceEnrichmentStreamFilter(
     // PHIÊN LUNA safety: stop releasing the moment the live text echoes the prompt / shows a secret shape.
     if (liveLeak) return
     if (collector?.leakCheck?.(liveText).leak) { liveLeak = true; console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'luna_leak', path: 'live' })); return }
-    const releasable = releasableLiveText(liveText, false, allowedUrls)
-    if (!releasable.startsWith(liveReleased) || releasable.length === liveReleased.length) return
-    const slice = releasable.slice(liveReleased.length)
-    liveReleased = releasable
-    controller.enqueue(encoder.encode('0:' + JSON.stringify(slice) + '\n'))
+    releaseFiltered(controller, releasableLiveText(liveText, false, allowedUrls), false)
   }
 
   /** End of stream: a still-forming token is no longer forming — release what it turned out to be, sanitised. */
@@ -2183,10 +2208,7 @@ export function applyPlaceEnrichmentStreamFilter(
     // cannot be rewritten: it applies only when the released bytes are untouched by it. Otherwise
     // the text goes out as before and the clients' render-time balancing covers the prefix.
     const normalized = normalizeReplyMarkdown(settled)
-    const final = normalized.startsWith(liveReleased) ? normalized : settled
-    if (!final.startsWith(liveReleased) || final.length === liveReleased.length) return
-    controller.enqueue(encoder.encode('0:' + JSON.stringify(final.slice(liveReleased.length)) + '\n'))
-    liveReleased = final
+    releaseFiltered(controller, normalized.startsWith(liveFiltered) ? normalized : settled, true)
   }
 
   /**
@@ -4680,7 +4702,7 @@ export function applyPlaceEnrichmentStreamFilter(
                 ? 'I searched but did not find enough reliable evidence to answer this fully. Tell me more precisely what you need (the year, the source or the aspect) and I will search again.'
                 : 'Mình đã tìm nhưng chưa có đủ bằng chứng đáng tin để trả lời đầy đủ câu này. Bạn thử nói rõ hơn phạm vi (năm, nguồn hoặc khía cạnh cần biết) để mình tìm lại nhé.'
               controller.enqueue(encoder.encode('0:' + JSON.stringify(tail) + '\n'))
-              liveReleased += tail; liveText += tail
+              liveReleased += tail; liveText += tail; liveFiltered += tail
               console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'empty_reply_neutral', live: true }))
             }
           }
