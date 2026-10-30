@@ -14,7 +14,9 @@ import { extractMoneyClaims } from '@/lib/ai/moneyGuard'
 const fold = (s: string): string => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/gi, 'd').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
 const tokens = (s: string): string[] => fold(s).split(' ').filter(t => t.length >= 2 || /\d/.test(t))
 /** A model code: letters and digits together ("na231", "shd4030", "ac0650"). */
-const isCode = (t: string): boolean => t.length >= 3 && /[a-z]/.test(t) && /\d/.test(t)
+/** A capacity, size or power ("256gb", "6l", "1000w", "13inch", "9000btu") says WHICH VARIANT, never WHICH MODEL. */
+const MEASURE = /^\d+(?:gb|tb|mb|kb|mah|hz|ghz|mhz|kg|g|ml|l|w|v|inch|in|mm|cm|m|k|p|hp|btu)$/
+const isCode = (t: string): boolean => t.length >= 3 && /[a-z]/.test(t) && /\d/.test(t) && !MEASURE.test(t)
 
 export interface RankCandidate { name: string; /** VND, when the listing states one (a product). */ price?: number | null }
 
@@ -50,9 +52,11 @@ export function rankingFromProse(text: string, candidates: readonly RankCandidat
   const tokenCount = new Map<string, number>()
   for (const c of candidates) for (const t of new Set(tokens(c.name))) tokenCount.set(t, (tokenCount.get(t) ?? 0) + 1)
   const first = new Map<number, number>()
+  // The answer's first pick names a model code that no single listing could be matched to: a LATER pick that did match is not the answer's pick, so nothing is crowned.
+  let firstPickUnresolved = false
   for (const { s, at, after } of boldSpans(text)) {
     let pool = candidates.map((c, i) => ({ i, a: overlap(s, c.name) })).filter((x): x is { i: number; a: number } => x.a !== null).map(x => x.i)
-    if (pool.length === 0) continue
+    if (pool.length === 0) { if (first.size === 0 && tokens(s).some(isCode)) firstPickUnresolved = true; continue }
     if (pool.length > 1) {
       // the price stated beside the name says which listing it is
       const stated = extractMoneyClaims(`${s} ${after}`).flatMap(c => [c.lo, c.hi])
@@ -67,10 +71,10 @@ export function rankingFromProse(text: string, candidates: readonly RankCandidat
       const best = hits.filter(h => h.n === top)
       pool = top > 0 && best.length === 1 ? [best[0].i] : []
     }
-    if (pool.length !== 1) continue
+    if (pool.length !== 1) { if (first.size === 0 && tokens(s).some(isCode)) firstPickUnresolved = true; continue }
     if (!first.has(pool[0])) first.set(pool[0], at)
   }
   if (first.size === 0) return null
   const picks = [...first.entries()].sort((x, y) => x[1] - y[1]).map(([i]) => ({ name: candidates[i].name, why: null, tradeoff: null, fits: null, refs: [] as string[] }))
-  return { picks, none: false, confidence: 'medium' }
+  return { picks, none: false, confidence: firstPickUnresolved ? 'low' : 'medium' }
 }
