@@ -65,8 +65,8 @@ describe('one brain: the travel guard labels a figure instead of cutting its lin
   it('no plan card: every bullet stays with its name, the unbacked figures read "chưa xác minh"', async () => {
     const out = (await run(TRIP_USER, frames, true, true)).text
     for (const keep of ['**Vé máy bay:**', '**Lưu trú:**', '**Ăn uống và đi lại:**', '**Tổng dự toán:**']) expect(out).toContain(keep)
-    expect(out).not.toContain('2,1 triệu')
-    expect(out).toContain('chưa xác minh')
+    // owner 30/10 ("giữ con số kèm nhãn"): the figure stays, labelled right after it (it used to be replaced by the label)
+    expect(out).toMatch(/2,1 triệu\*{0,2} \(ước tính, chưa xác minh\)/)
   })
   it('without one brain the same reply still loses the line, as before', async () => {
     expect((await run(TRIP_USER, frames, false, true)).text).not.toContain('**Ăn uống và đi lại:**')

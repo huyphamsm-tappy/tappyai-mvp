@@ -2915,7 +2915,7 @@ export function applyPlaceEnrichmentStreamFilter(
     // chỗ cụ thể mình chưa xác nhận được… trang đặt chỗ" line added under a fryer answer.
     const travelOwnValues = collector?.oneBrain === true ? [...ownValues, ...productRecords.flatMap(r => { const v = structuredPrice(r); return v === null ? [] : [v] })] : ownValues
     const travelGuarded = travelIntent && collector?.consultV3 !== true
-      ? guardTravelClaimsInText(specGuarded, travelFares, userText, { evidenceTimes: travelEvidenceTimes, lang, ...(travelOwnValues.length > 0 ? { calcValues: travelOwnValues } : {}), ...(collector?.oneBrain === true ? { availability: 'counted' as const, money: collector.planBlock ? 'keep' as const : 'label' as const } : {}) }).text
+      ? guardTravelClaimsInText(specGuarded, travelFares, userText, { evidenceTimes: travelEvidenceTimes, lang, ...(travelOwnValues.length > 0 ? { calcValues: travelOwnValues } : {}), ...(collector?.oneBrain === true ? { availability: 'counted' as const, money: collector.planBlock ? 'keep' as const : 'annotate' as const, schedule: 'label' as const, notice: false } : {}) }).text
       : specGuarded
     // A5 EVIDENCE BOUNDARY for food/spa. Their menu/service prices exist only in
     // Serper snippets, so a stated price must TRACE to a retrieved snippet; a

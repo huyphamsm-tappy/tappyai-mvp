@@ -463,7 +463,9 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     expect((ws?.pages_read as unknown[] | undefined)?.length ?? 0).toBeGreaterThan(0)
     expect(on.text).toContain('315.000')
     expect(on.text).toContain('06:00')
-    expect(on.text).not.toContain('987.000')
+    // owner 30/10 ("giữ con số kèm nhãn"): a figure no page states stays, labelled right after it - it used to be cut
+    expect(on.text).toContain('987.000đ (ước tính, chưa xác minh)')
+    expect(on.text).not.toMatch(/315\.000đ? \(ước tính/)
     expect(on.text).toContain('đặt vé trực tuyến trên Vexere')
     expect(on.text).toContain('chưa xác minh được còn chỗ')
     // Without the one-brain flag the same turn keeps its old evidence (snippets only): the page fare is cut as before.
@@ -489,12 +491,15 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     expect(on.text).toContain('06:00')
     expect(on.text).toContain('08:45')
     expect(on.text).toContain('726.000') // the party's total: 363.000đ × 2
-    expect(on.text).not.toContain('999.000')
-    expect(on.text).not.toContain('23:10') // a departure no page states
+    // owner 30/10 ("giữ con số kèm nhãn"): an invented fare and a departure no page states stay, labelled - they used to be cut
+    expect(on.text).toContain('999.000đ (ước tính, chưa xác minh)')
+    expect(on.text).toMatch(/23:10 \(giờ tham khảo, chưa xác minh\)/)
+    expect(on.text).not.toMatch(/(?:315|363)\.000đ? \(ước tính/)
     // No page rows: no field, and the fares the model states have nothing behind them.
     const none = await turn(TRAIN, { unwind: true, oneBrain: true, luna: intent('ask', ['travel']), tools: [CALL], reply })
     expect(none.results.find(r => r.name === 'get_transport_options')?.result?.train_schedule).toBeUndefined()
-    expect(none.text).not.toContain('363.000')
+    // no page rows: the fares have nothing behind them - kept, each labelled (owner 30/10)
+    expect(none.text).toContain('363.000đ (ước tính, chưa xác minh)')
   }, 60000)
   it('a train question: the journey time a row implies is evidence too; a journey time no row implies is still cut (30/10)', async () => {
     // Measured offline 30/10 (travel guard with the rows as evidence): "khởi hành 13:00 và mất khoảng 12h35" was cut whole, the journey
@@ -508,10 +513,12 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     const reply = 'Đi tàu vào Nha Trang khá thoải mái. Tàu SE8 khởi hành 06:00 và mất khoảng 7h43 để tới Nha Trang. Tàu SE6 khởi hành 08:45 và mất khoảng 9h15.'
     const on = await turn(TRAIN, { unwind: true, oneBrain: true, luna: intent('ask', ['travel']), tools: [CALL], reply, railRows: ROWS })
     expect(on.text).toContain('mất khoảng 7h43')
-    expect(on.text).not.toContain('9h15')
-    // No page rows: nothing implies a journey time, and the sentence goes as before.
+    // owner 30/10 ("giữ con số kèm nhãn"): a journey time no row implies stays, its sentence labelled - it used to be cut
+    expect(on.text).toMatch(/9h15 \(giờ tham khảo, chưa xác minh\)/)
+    expect(on.text).not.toMatch(/7h43 \(giờ tham khảo/)
+    // No page rows: nothing implies a journey time; the sentences stay, labelled.
     const none = await turn(TRAIN, { unwind: true, oneBrain: true, luna: intent('ask', ['travel']), tools: [CALL], reply })
-    expect(none.text).not.toContain('7h43')
+    expect(none.text).toContain('mất khoảng 7h43 để tới Nha Trang (giờ tham khảo, chưa xác minh).')
   }, 60000)
   it('a train question, one brain: availability ADVICE and the pointer to the booking page stay; a stated seat count is cut; flag OFF unchanged (owner 30/10, a)', async () => {
     const TRAIN: Msg[] = [{ role: 'user', content: 've tau sai gon nha trang ngay 16/11' }]

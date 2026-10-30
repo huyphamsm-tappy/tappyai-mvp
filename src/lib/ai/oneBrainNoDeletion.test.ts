@@ -200,8 +200,8 @@ describe('the same split through the stream filter (travel turn)', () => {
     expect(out).toContain('**2,1 triệu** ăn uống')
     expect(out).toContain('Khoảng **11–12 triệu đồng**')
   })
-  it('a one-brain turn with no plan keeps judging the money it states (an invented fare is cut)', async () => {
-    expect(await run(TRIP_USER, frames, true, true)).not.toContain('2,1 triệu')
+  it('a one-brain turn with no plan keeps judging the money it states (an unbacked figure is labelled - owner 30/10, it used to be cut)', async () => {
+    expect(await run(TRIP_USER, frames, true, true)).toMatch(/2,1 triệu\*{0,2} \(ước tính, chưa xác minh\)/)
   })
   it('without one brain they are cut as before', async () => {
     expect(await run(TRIP_USER, frames, false, true)).not.toContain('2,1 triệu')

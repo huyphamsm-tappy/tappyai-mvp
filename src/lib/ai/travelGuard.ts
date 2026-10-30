@@ -195,15 +195,32 @@ export function journeyTimeOf(depart: string, arrive: string): string | null {
  * stays; anything else is still fail-closed. Availability has no source and is always removed.
  * Writes nothing new; if removal would empty the reply, leaves it.
  */
-function redactScheduleAvailability(text: string, evidenceTimes: readonly string[] = [], ctx: RegExp = DEPART_CTX, avail: RegExp = AVAIL_RE): { text: string; removed: number; removedTexts: string[] } {
-  const spans = sentenceSpans(text)
+/** One brain (owner 30/10, "giữ con số kèm nhãn"): the label a departure / arrival time no evidence states gets, once, at the end of its sentence. */
+export const SCHEDULE_LABEL_VI = ' (giờ tham khảo, chưa xác minh)'
+const SCHEDULE_LABEL_EN = ' (indicative time, not verified)'
+function redactScheduleAvailability(text: string, evidenceTimes: readonly string[] = [], ctx: RegExp = DEPART_CTX, avail: RegExp = AVAIL_RE, scheduleLabel: string | null = null): { text: string; removed: number; removedTexts: string[] } {
+  let spans = sentenceSpans(text)
   const doomed = new Set<number>()
   const known = new Set(evidenceTimes)
+  const labelled = new Set<number>()
   spans.forEach(([a, b], i) => {
     const s = text.slice(a, b)
     const sched = TIME_RE.test(s) && ctx.test(s) && !(known.size > 0 && scheduleTimesIn(s).every(t => known.has(t)))
-    if (sched || avail.test(s)) doomed.add(i)
+    if (avail.test(s)) doomed.add(i)
+    else if (sched && scheduleLabel !== null) labelled.add(i)
+    else if (sched) doomed.add(i)
   })
+  // the labelled sentences keep every word; the label goes before the sentence's own closing punctuation
+  if (labelled.size > 0) {
+    text = spans.map(([a, b], i) => {
+      const s = text.slice(a, b)
+      if (!labelled.has(i) || s.includes(scheduleLabel!.trim())) return s
+      const m = s.match(/^([\s\S]*?)([.!?…]*)(\s*)$/)
+      return m ? `${m[1]}${scheduleLabel}${m[2]}${m[3]}` : s
+    }).join('')
+    spans = sentenceSpans(text)
+    if (doomed.size === 0) return { text, removed: labelled.size, removedTexts: [] }
+  }
   if (doomed.size === 0) return { text, removed: 0, removedTexts: [] }
   // 30/10: the citation written right after a removed sentence, on its line, was that sentence's source (see citationTail.ts).
   const tails = new Set<number>()
@@ -272,8 +289,11 @@ export function guardTravelClaimsInText(
   text: string,
   fares: number[],
   userText: string,
-  opts: { evidenceTimes?: readonly string[]; lang?: string; unit?: 'travel' | 'ticket'; calcValues?: readonly number[]; availability?: 'any' | 'counted'; money?: 'judge' | 'keep' | 'label' } = {},
+  opts: { evidenceTimes?: readonly string[]; lang?: string; unit?: 'travel' | 'ticket'; calcValues?: readonly number[]; availability?: 'any' | 'counted'; money?: 'judge' | 'keep' | 'label' | 'annotate'; schedule?: 'cut' | 'label'; notice?: boolean } = {},
 ): { text: string; redacted: number; enforced: boolean } {
+  // One brain (owner 30/10, "giữ con số kèm nhãn"; KIEM-BO-LOC-DU-LICH-20261030.md): money 'annotate' keeps an unbacked figure and follows it with
+  // "(ước tính, chưa xác minh)" ('label' replaced it, leaving "khoang 4 chưa xác minh/người"); schedule 'label' keeps a departure time no evidence
+  // states and labels its sentence ('cut' deleted it, also general advice); notice false = no code-written notice. A stated seat count is still cut.
   const ticketUnit = opts.unit === 'ticket'
   // Wave 3 (W4): whole-number results of the exact calculator this turn whose money-sized inputs the turn already had (groundedCalcNumbers). An amount equal to one (within 0.5 %) is the turn's own arithmetic.
   const calcValues = opts.calcValues ?? []
@@ -296,7 +316,11 @@ export function guardTravelClaimsInText(
     if (bad > 0) {
       const spans = sentenceSpans(out)
       for (const j of judged) if (j.verdict !== 'VERIFIED') { const sp = spans.find(([a, b]) => j.start >= a && j.start < b); if (sp) cutTexts.push(out.slice(sp[0], sp[1])) }
-      if (opts.money === 'label') {
+      if (opts.money === 'annotate') {
+        const tag = opts.lang === 'en' ? ' (estimate, not verified)' : ' (ước tính, chưa xác minh)'
+        for (const j of [...judged].filter(x => x.verdict !== 'VERIFIED').sort((a, b) => b.start - a.start)) if (!out.slice(j.end, j.end + tag.length + 2).includes(tag.trim())) out = out.slice(0, j.end) + tag + out.slice(j.end)
+        redacted += bad
+      } else if (opts.money === 'label') {
         // the figure is replaced, the line stays: the label is the disclosure, so no second notice below (moneyCut stays false)
         out = labelUnsupportedAmounts(out, judged, opts.lang === 'en' ? 'unverified' : 'chưa xác minh'); redacted += bad
       } else {
@@ -309,12 +333,12 @@ export function guardTravelClaimsInText(
 
   // 2) Schedule/availability — we have no live source for either, so any specific
   //    assertion on a travel turn is unverifiable and removed.
-  const sa = redactScheduleAvailability(out, opts.evidenceTimes ?? [], ticketUnit ? SHOW_CTX : DEPART_CTX, opts.availability === 'counted' ? AVAIL_COUNT_RE : AVAIL_RE)
+  const sa = redactScheduleAvailability(out, opts.evidenceTimes ?? [], ticketUnit ? SHOW_CTX : DEPART_CTX, opts.availability === 'counted' ? AVAIL_COUNT_RE : AVAIL_RE, opts.schedule === 'label' ? (opts.lang === 'en' ? SCHEDULE_LABEL_EN : SCHEDULE_LABEL_VI) : null)
   out = sa.text; redacted += sa.removed
   cutTexts.push(...sa.removedTexts)
 
   // C1: what was cut is said, once, with where to look — never left as a silent gap.
-  if (redacted > 0) {
+  if (redacted > 0 && opts.notice !== false) {
     const hedge = travelCutNotice({ topic: travelCutTopic(cutTexts), money: moneyCut, schedule: sa.removed > 0, lang: opts.lang, ticketUnit, remaining: out })
     if (hedge && !out.includes(hedge)) {
       const markerAt = (() => { let end = out.length; for (const m of ['[CTA_BUTTONS]', '[FOLLOWUPS]', '[TAPPY_PLAN]', '[TAPPY_SHOPPING]', '[TAPPY_PLACES]']) { const i = out.indexOf(m); if (i !== -1 && i < end) end = i } return end })()

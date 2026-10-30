@@ -57,19 +57,19 @@ describe('one brain: the tools the model called decide the turn, the user\'s wor
   it('a travel tool was called with no travel word in the question: the travel guard runs (state decides)', async () => {
     expect(detectTravelIntent(NO_WORD)).toBe(false)
     const on = await run(NO_WORD, [...call('get_flight_prices', { origin: 'HAN', destination: 'DAD' }, { results: [] }), ...done(FLIGHT_REPLY)], { oneBrain: true, travel: false })
-    expect(on.text).not.toContain('987.000')
-    expect(on.text).toContain('chưa xác minh')
+    // the guard ran: the figure is labelled (owner 30/10, "giữ con số kèm nhãn"; it used to be replaced)
+    expect(on.text).toMatch(/987\.000đ\*{0,2} \(ước tính, chưa xác minh\)/)
   })
   it('the same turn without one brain is not guarded (the keyword reading found nothing)', async () => {
     const off = await run(NO_WORD, [...call('get_flight_prices', { origin: 'HAN', destination: 'DAD' }, { results: [] }), ...done(FLIGHT_REPLY)], { oneBrain: false, travel: false })
     expect(off.text).toContain('987.000')
   })
-  it('train / coach / flight asked of web_search alone: the keyword reading is still the fallback, an invented fare is still cut', async () => {
+  it('train / coach / flight asked of web_search alone: the keyword reading is still the fallback, an invented fare is still judged (labelled, owner 30/10)', async () => {
     const user = 've tau sai gon di nha trang ngay 16/11 gia bao nhieu'
     expect(detectTravelIntent(user)).toBe(true)
     const reply = 'Mình đã tra giá vé tàu.\n\nGiường nằm khoang 4 giá **987.000đ** theo một trang.'
     const on = await run(user, [...call('web_search', { query: 'vé tàu sài gòn nha trang' }, { results: [] }), ...done(reply)], { oneBrain: true, travel: true })
-    expect(on.text).not.toContain('987.000')
+    expect(on.text).toMatch(/987\.000đ\*{0,2} \(ước tính, chưa xác minh\)/)
   })
   it('a hotel / transport tool plus a shopping tool in one turn stays a travel turn', async () => {
     const frames = [...call('search_products', { query: 'ốp lưng' }, FRYER_ROWS), ...call('get_transport_options', { origin: 'SGN', destination: 'NHA' }, { results: [] }), ...done('Mình đã tra.\n\nVé tàu khoảng **987.000đ** một người.')]
