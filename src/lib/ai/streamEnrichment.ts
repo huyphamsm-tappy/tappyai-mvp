@@ -2732,8 +2732,12 @@ export function applyPlaceEnrichmentStreamFilter(
     // R15: a plan body whose JSON does not parse (measured `{time":"10:00"`) is repaired before any plan guard.
     const planRepair = enrichedProse.includes('[TAPPY_PLAN]') ? repairPlanBlock(enrichedProse, collector?.consultative === true ? { balance: true } : {}) : { text: enrichedProse, repaired: false }
     if (planRepair.repaired) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'plan_json_repaired', repaired: 1 }))
+    // P0-2 rest (30/10): on the one-brain route the plan stages that DELETE (a price clause, a tip, a date sentence, the model's own date/origin question)
+    // run in shadow like the prose quality stages: logged and traced as `shadow:<stage>`, the text goes on unchanged. Measured 30/10: ~2 000 characters a run
+    // removed on trip answers by plan_local_tips / plan_trip_facts / plan_price. plan_items is not shadowed: it also carries the booking-link authority.
+    const oneBrainShadow = (stage: string, before: string, after: string): string => (collector?.oneBrain === true ? qual(stage, before, after) : after)
     const pricedPlan = planRepair.text.includes('[TAPPY_PLAN]')
-      ? guardPlanPrices(planRepair.text, planEvidence, lang, { keepModelBudget: collector?.oneBrain === true }).text
+      ? oneBrainShadow('plan_price', planRepair.text, guardPlanPrices(planRepair.text, planEvidence, lang, { keepModelBudget: collector?.oneBrain === true }).text)
       : planRepair.text
     // LOCAL TIPS (UAT3 P2, 2026-09-27): a tip survives only tied to a stop retrieved this turn,
     // or flagged general and naming no venue, price, hour or ticket — see planLocalTipsGuard.
@@ -2747,7 +2751,7 @@ export function applyPlaceEnrichmentStreamFilter(
     // CONSULT_ONE_BRAIN (localhost 29/10, "Đà Lạt 2 ngày 1 đêm", place search down): the strict mode dropped all 9 stops and the brochure showed
     // empty days. The one-brain plan (present_plan) gets the consultative mode: known sights kept by name and marked unchecked, meals as plain
     // slots, an invented venue still dropped.
-    const tipped = tips ? tips.text : pricedPlan
+    const tipped = tips ? oneBrainShadow('plan_local_tips', pricedPlan, tips.text) : pricedPlan
     const planItems = tipped.includes('[TAPPY_PLAN]')
       ? guardPlanItems(tipped, latestPlaces.map(p => {
         const c = places.find(q => (q.name || '').trim().toLowerCase() === (p.name || '').trim().toLowerCase()) as { commerce_links?: PlanPlace['commerce_links'] } | undefined
@@ -2769,7 +2773,7 @@ export function applyPlaceEnrichmentStreamFilter(
     if (tripFacts && (tripFacts.labelsCleaned || tripFacts.stopsDropped || tripFacts.sentencesDropped || tripFacts.daysTrimmed)) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'plan_trip_facts', missing: tripFacts.missing, labels_cleaned: tripFacts.labelsCleaned, stops_dropped: tripFacts.stopsDropped, sentences_dropped: tripFacts.sentencesDropped, days_trimmed: tripFacts.daysTrimmed ?? 0 }))
     // A travel turn never states a travel DATE the user did not give (c40 O8: 'giả sử … hôm nay (28/9)'
     // while the fare links searched 05/10) — planTripFactsGuard.guardUngivenTravelDate.
-    const tripped = tripFacts ? tripFacts.text : itemized
+    const tripped = tripFacts ? oneBrainShadow('plan_trip_facts', itemized, tripFacts.text) : itemized
     // CONSULTATIVE_IN_AGENT: the date in the reply is the system calendar's resolution of "cuối tuần sau" etc. (an assumption the reply states), not an invented one.
     // CONSULT_ONE_BRAIN: the date the model states is the date it looked things up ("kết quả tra cứu ngày 29/10/2026"), which the prompt asks for; measured, this cut it.
     const dated = travelIntent && collector?.consultative !== true && collector?.oneBrain !== true ? guardUngivenTravelDate(tripped, collector?.userTexts ?? [userText]) : null
@@ -3386,10 +3390,11 @@ export function applyPlaceEnrichmentStreamFilter(
     // CONSULTATIVE_IN_AGENT: these two are voice-shaping, not fact guards (they move or drop the model's own questions) — the model decides how to
     // ask, and askGate.ts is the only rule about WHEN. Off under the flag; unchanged (byte for byte) without it. See docs/phase8/POST-MODEL-FILTERS.md.
     if (collector?.consultative) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'filters_disabled_by_flag', filters: ['answer_first', 'clarification'] }))
-    const answeredFirst = (hadPlaceSearch || travelIntent) && !collector?.consultative ? answerFirst(placeGuarded) : { text: placeGuarded, moved: null }
+    // P0-2 rest (30/10): on one brain the model's question stays where it wrote it, and a second "?" (a heading "### Nên ở khu nào?") is not deleted.
+    const answeredFirst = (hadPlaceSearch || travelIntent) && !collector?.consultative && collector?.oneBrain !== true ? answerFirst(placeGuarded) : { text: placeGuarded, moved: null }
     if (answeredFirst.moved) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'answer_first', step: answeredFirst.moved }))
     // POST-UAT B7: on agent turns a requested information checklist ("mình cần biết:" + list) is one question unit.
-    const clarifiedBase = collector?.consultative ? answeredFirst.text : guardClarifications(answeredFirst.text, collector?.clarificationPolicy ?? 'allow', { checklist: collector?.agentMode === true }).text
+    const clarifiedBase = collector?.consultative || collector?.oneBrain === true ? answeredFirst.text : guardClarifications(answeredFirst.text, collector?.clarificationPolicy ?? 'allow', { checklist: collector?.agentMode === true }).text
     /**
      * Consultative V1 (flag): three prose guards, in this order, on prose only.
      *   search-claim  — "mình đã kiểm tra / tìm lại" on a turn that ran no tool.
@@ -3408,16 +3413,16 @@ export function applyPlaceEnrichmentStreamFilter(
       return v1PlanMask.restore((() => {
       const v1 = collector?.consultativeV1
       // CONSULT_V3: the model's alternatives and wording are kept (the atmosphere cut turned a two-way answer into one pick, UAT 17/10).
-      if (!v1 || collector?.consultV3 === true) return v1PlanMask.text
+      // P0-2 rest (30/10): one brain too - the V1 prose guards delete ("mình đã kiểm tra…" on a no-tool turn) and reshape (≤ 6 sentences).
+      if (!v1 || collector?.consultV3 === true || collector?.oneBrain === true) return v1PlanMask.text
       const claims = guardSearchClaims(v1PlanMask.text, { madeToolCall: anyToolCalled || v1.namedRefetch.length > 0 })
       const v1Attrs = extractAttributes(placeEntityTexts)
       const gapAttributes = v1.hardGaps.map(g => attributeForHard(g as Hard)).filter((a): a is NonNullable<typeof a> => a !== null)
       // Wave 3 (W3, R3-03): the post-processing that turns a consult answer into "a short pick" steps aside only for an answer that REALLY has a structure (a markdown table, or two headings) AND only on a turn that
       // asked for one (the flag). A long simple pick keeps every guard it has always had.
       const structuredAnswer = collector?.structuredSynthesis === true && hasMarkdownStructure(claims.text)
-      // CONSULT_ONE_BRAIN: no sentence is deleted for an unsupported atmosphere word (measured 28/10: a cafe request whose place search failed lost the
-      // sentence about quiet cafes and the reply shrank to one line); the model marks what it could not check (oneBrain.ts).
-      const atmosphere = collector?.oneBrain === true ? { text: claims.text, removed: 0, unsupportedInPick: 0 } : guardAtmosphereClaims(claims.text, { attrs: v1Attrs, names: snippetPlaceNames, gapAttributes, agentHedges: collector?.semanticRanking === true, ...(structuredAnswer ? { labelWords: new Set(foldWords((collector?.userTexts ?? [userText]).join(' '))) } : {}) })
+      // (CONSULT_ONE_BRAIN never reaches this block since 30/10: the atmosphere cut measured 28/10 - a cafe reply shrunk to one line - is skipped with it.)
+      const atmosphere = guardAtmosphereClaims(claims.text, { attrs: v1Attrs, names: snippetPlaceNames, gapAttributes, agentHedges: collector?.semanticRanking === true, ...(structuredAnswer ? { labelWords: new Set(foldWords((collector?.userTexts ?? [userText]).join(' '))) } : {}) })
       // The shape rules are about a card-backed decision. A turn with no venues (a film
       // recommendation, a subject question) keeps its prose — measured E7: the cap dropped
       // films two and three as "least informative".
@@ -3429,8 +3434,7 @@ export function applyPlaceEnrichmentStreamFilter(
       // shape is NOT applied to it. UAT 2026-10-07: a 10-sentence recipe after a place turn was cut to 6 (capped 4, 3 orphan lines) because
       // the previous turn's venues counted as `carried`. The claim guards below (search claims, atmosphere, budget-fit, evidence gaps)
       // still run on Agent prose.
-      // CONSULT_ONE_BRAIN: the one-brain model owns its prose the same way.
-      const agentOwnsProse = collector?.agentMode === true || collector?.oneBrain === true
+      const agentOwnsProse = collector?.agentMode === true
       const shape = !hasVenues || consultPlan || agentOwnsProse || structuredAnswer ? { text: atmosphere.text, stats: { sentences_in: 0, sentences_out: 0, listing_removed: 0, alternatives_removed: 0, capped: 0 } } : guardProseShape(atmosphere.text, {
         rendersCard: v1.rendersCard,
         // CONSULT_UNWIND_S3C: 3 alternatives (HEAD 2); CONSULT_UNWIND_S3B: a fuller answer is not cut back to the short pick (20 sentences, HEAD 9 / 13).
@@ -3493,9 +3497,8 @@ export function applyPlaceEnrichmentStreamFilter(
        * the honest thing once).
        */
       const fitClaim = /\b(?:deu |hoan toan |chac chan |van )?(?:duoi|trong tam(?: gia)?|vua tam|nam trong|hop (?:tui tien|ngan sach)|vua (?:voi )?ngan sach|dung ngan sach|khong vuot|re hon ngan sach|within (?:your )?budget|under your budget)\b/
-      // CONSULT_ONE_BRAIN: no sentence is deleted for a budget-fit word either. Measured 29/10 (25 questions): "Giá đang niêm yết 2.090.000₫, dưới ngân sách 3 triệu" (the
-      // price the shopping tool returned) and "…để không vượt ngân sách" (advice) went, because "dưới" / "không vượt" read as a fit claim on a turn whose rows had no priced place.
-      const tidyBudget = !v1.budgetGap || collector?.oneBrain === true ? tidy : (() => {
+      // (CONSULT_ONE_BRAIN never reaches this block since 30/10: the budget-fit cut that removed "Giá đang niêm yết 2.090.000₫, dưới ngân sách 3 triệu" on 29/10 is skipped with it.)
+      const tidyBudget = !v1.budgetGap ? tidy : (() => {
         const protB = protectedSpans(tidy)
         const spansB = sentenceSpans(tidy)
         let seenPick = false
@@ -3524,8 +3527,8 @@ export function applyPlaceEnrichmentStreamFilter(
       // M7 (TAPPY_AGENT=2): Luna owns reading the user's needs and what to caution about. These lines come from the legacy situation
       // frame, which parses the conversation itself and knows nothing of the task state — measured SR-G1: the user dropped "yên tĩnh" for
       // "gần biển" and code still appended "chưa thấy bằng chứng về yên tĩnh". Facts stay protected by the guards; Phase 7 / legacy unchanged.
-      // CONSULT_ONE_BRAIN: the model states what it could not confirm itself (oneBrain.ts); measured 28/10: a scooter comparison got "chưa xác nhận được đúng loại sản phẩm từ các listing" appended.
-      const runtimeOwnsCautions = collector?.semanticRanking === true || collector?.oneBrain === true
+      // (CONSULT_ONE_BRAIN never reaches this block since 30/10, so the appended caution measured 28/10 on a scooter comparison cannot come back.)
+      const runtimeOwnsCautions = collector?.semanticRanking === true
       if (unsaid.length > 0 && !runtimeOwnsCautions) {
         // B1: a shopping turn's heads-up points at the seller page, not at a phone call.
         const shoppingGaps = unsaid.every(g => g in SHOPPING_GAP_WORDS)

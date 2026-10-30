@@ -624,6 +624,41 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     expect(JSON.stringify(on)).not.toContain('Tao Ngộ')
     expect(JSON.stringify(on)).not.toContain('Hoa Mai')
   }, 60000)
+  it('P0-2 rest (30/10): one brain, a plan turn - no post-model stage deletes the model\'s prose or plan content (they run in shadow and are logged)', async () => {
+    // Measured 30/10 (O-DEV30 k3a/k3par, C3010 k3): plan_local_tips ~1 000, plan_trip_facts ~500-600, plan_price ~340-600 characters removed per run on
+    // trip answers; review 30/10: plan_trip_facts dropped the model's own date / origin questions (no system question replaces them on one brain),
+    // guardClarifications dropped every "?" heading after the first, answerFirst moved the opening question.
+    const plan = { type: 'trip', title: 'Đà Lạt 2 ngày 1 đêm', local_tips: [{ text: 'Mang áo khoác, đêm xuống khoảng 15°C.', basis: 'general' }, { text: 'Đi chợ đêm sau 18:00 cho đỡ nắng.', basis: 'general' }], days: [{ label: 'Ngày 1', items: [
+      { time: '08:00', emoji: '🌲', category: 'attraction', name: 'Hồ Xuân Hương', description: 'Đi dạo quanh hồ' },
+    ] }] }
+    const reply = 'Bạn muốn đi ngày nào để mình xem thời tiết đúng ngày?\n\nMình tạm tính đi ngày 7/11, khởi hành từ TP.HCM bằng xe giường nằm.\n\n### Đi mùa nào đẹp?\nTháng 11 trời se lạnh, ít mưa.\n\n### Nên ở khu nào?\nGần chợ Đà Lạt cho tiện đi bộ.\n\nBạn xuất phát từ TP.HCM hay Hà Nội?'
+    const on = await turn(TRIP, { unwind: true, oneBrain: true, luna: TRIP_INTENT, tools: [{ name: 'present_plan', args: plan }], reply })
+    for (const s of ['Bạn muốn đi ngày nào để mình xem thời tiết đúng ngày?', 'Mình tạm tính đi ngày 7/11, khởi hành từ TP.HCM', '### Đi mùa nào đẹp?', '### Nên ở khu nào?', 'Bạn xuất phát từ TP.HCM hay Hà Nội?']) expect(on.text, s).toContain(s)
+    expect(on.text.indexOf('Bạn muốn đi ngày nào')).toBeLessThan(on.text.indexOf('Mình tạm tính')) // not moved to the end
+    const m = on.text.match(/\[TAPPY_PLAN\]([\s\S]*?)\[\/TAPPY_PLAN\]/)
+    const p = JSON.parse(m![1])
+    expect(p.local_tips?.map((t: { text: string }) => t.text)).toEqual(['Mang áo khoác, đêm xuống khoảng 15°C.', 'Đi chợ đêm sau 18:00 cho đỡ nắng.'])
+    expect(on.logs.some(x => x.type === 'tappyai_guard_shadow')).toBe(true)
+  }, 60000)
+  it('P0-2 rest (30/10): one brain - a plan stop\'s price and fee clause stay (plan_price runs in shadow); a no-tool answer keeps "mình đã kiểm tra" (V1 guards off)', async () => {
+    const plan = { type: 'trip', title: 'Đà Lạt 2 ngày 1 đêm', days: [{ label: 'Ngày 1', items: [
+      { time: '06:00', emoji: '🚌', category: 'transport', name: 'Xe giường nằm TP.HCM – Đà Lạt', description: 'Đi đêm cho đỡ mất ngày, vé khoảng 300.000đ một chiều', price: '300.000đ' },
+    ] }] }
+    const on = await turn(TRIP, { unwind: true, oneBrain: true, luna: TRIP_INTENT, tools: [{ name: 'present_plan', args: plan }], reply: 'Lịch trình gọn cho bạn.' })
+    const p = JSON.parse(on.text.match(/\[TAPPY_PLAN\]([\s\S]*?)\[\/TAPPY_PLAN\]/)![1])
+    expect(p.days[0].items[0].description).toContain('300.000đ')
+    // a pick question with no tool call: the V1 frame is active (a place decision), its search-claim guard deleted this sentence
+    const said = 'Mình đã kiểm tra lại: phố Hàng Bạc có vài quán bún chả mở từ sáng sớm.'
+    const pick = await turn(PICK, { unwind: true, oneBrain: true, luna: PICK_INTENT, reply: `${said} Bạn thích quán vỉa hè hay quán có điều hòa?` })
+    expect(pick.text).toContain(said)
+  }, 60000)
+  it('P0-2 rest (30/10): one brain, a place search ran - the model\'s opening question stays first (answerFirst off)', async () => {
+    const CALL = { name: 'search_places', args: { query: 'bún chả', location: 'Hàng Bạc, Hà Nội' } }
+    const reply = 'Bạn ăn trưa hay ăn tối?\n\nPhố Hàng Bạc có nhiều quán bún chả lâu năm, đi bộ quanh phố cổ rất tiện.'
+    const on = await turn(PICK, { unwind: true, oneBrain: true, luna: PICK_INTENT, tools: [CALL], reply })
+    expect(on.text.indexOf('Bạn ăn trưa hay ăn tối?')).toBeGreaterThan(-1)
+    expect(on.text.indexOf('Bạn ăn trưa hay ăn tối?')).toBeLessThan(on.text.indexOf('Phố Hàng Bạc'))
+  }, 60000)
   it('flag ON: the turn cost line prices the answer at the call\'s own vendor cost, not at the Haiku list price; flag OFF unchanged', async () => {
     // Localhost 29/10: a one-brain turn logged model "haiku-4.5" and priced the vendor's tokens at the Haiku list price.
     const finishSteps = [{ usage: { promptTokens: 8000, completionTokens: 500 }, providerMetadata: { tappy: { cost: { provider: 'openai', effort: 'none', usd: 0.0123, reasoningTokens: 0, cachedInputTokens: 6000, cacheWriteTokens: 0 } } } }]
