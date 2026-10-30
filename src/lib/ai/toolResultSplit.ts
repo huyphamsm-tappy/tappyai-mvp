@@ -565,7 +565,9 @@ export function createEnrichmentCollector(turnText = '', earlierUserTexts: reado
        * Order matters: admission is judged before emptiness, so a REFUSED
        * producer cannot leave a trace either way.
        */
-      if (!admitsProducer(turnText, producer, earlierUserTexts)) return
+      // review 30/10 (one brain): the tool the model called decides the cards - "đi Đà Lạt chơi gì" + a hotel search the model chose was refused
+      // because the user typed no hotel word. The admission reading of the user's words stays for every other route.
+      if (this.oneBrain !== true && !admitsProducer(turnText, producer, earlierUserTexts)) return
       if (recs && recs.length > 0 && (!this.placesRecommendations || (this.preferStay && producer === 'stay' && this.placesProducer !== 'stay'))) {
         this.placesRecommendations = recs
         this.placesProducer = producer ?? undefined

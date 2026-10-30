@@ -79,7 +79,7 @@ import { normalizePwLang } from '@/lib/priceWatch/messages'
 import { runAiWriteAction } from '@/lib/ai/actions/runAction'
 import { savePriceWatchPolicy } from '@/lib/ai/actions/savePriceWatch'
 import { type Budget, extractBudget, extractPlanTotalBudget, applyBudgetFilter, LUXURY_PRICE_FLOOR, applyLuxuryStreamFilter } from '@/lib/ai/budget'
-import { detectPlaceConstraints, applyPlaceConstraints } from '@/lib/ai/placeConstraintFilter'
+import { detectPlaceConstraints, applyPlaceConstraints, NO_PLACE_CONSTRAINTS } from '@/lib/ai/placeConstraintFilter'
 import { usesEveningFrame, eveningLocation, eveningStagesFor, pickStageStop, buildEveningPlanBlock, eveningIntroInstruction, eveningIntro, fixedPlanStream, type EveningStop } from '@/lib/ai/eveningPlan'
 import { buildSystem, buildSystemSimple, buildPrefBlock, buildRenderedDecisionBlock, buildPlanningBlock } from '@/lib/ai/promptBuilder'
 import { buildLeanConsultSystem, consultCacheLibraryEnabled, consultTools, KNOWLEDGE_TURN_TOOL_RULE, CALCULATE_DESCRIPTION, WEB_SEARCH_DESCRIPTION_BY_NEED, recentTurns } from '@/lib/ai/consultative/leanConsultPrompt'
@@ -2775,7 +2775,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // "now") shape the ROWS here, before ranking, so the set the model reads and the card
           // the client renders are the same set. `applyBudgetFilter` above only ever touched web
           // snippets; the place rows were never constrained (`placeConstraintFilter.ts`).
-          const constraints = { ...detectPlaceConstraints(lastText, budget ?? needProfile.budget, recentSubjectUserTexts.slice(0, -1), new Date(), { explicitOnly: agentV2 }), ...(wantsWiderArea(lastText) || (userStatedArea && !statedArea) ? { district: null } : {}) }
+          // review 30/10 (one brain): rows are not dropped by a keyword reading of the user's words ("đang mở", "dưới …k", "không muốn nhà hàng", a district)
+          const constraints = oneBrain ? NO_PLACE_CONSTRAINTS : { ...detectPlaceConstraints(lastText, budget ?? needProfile.budget, recentSubjectUserTexts.slice(0, -1), new Date(), { explicitOnly: agentV2 }), ...(wantsWiderArea(lastText) || (userStatedArea && !statedArea) ? { district: null } : {}) }
           const constrained0 = applyPlaceConstraints(budgeted, constraints, lang === 'en' ? 'en' : 'vi')
           // chat2 A2: price and distance are SOFT — when the hard filters leave nothing, drop the price ceiling, then widen the
           // area (one more provider call), and say what was relaxed (placeRelax.ts). Still nothing → the honest no-result block.

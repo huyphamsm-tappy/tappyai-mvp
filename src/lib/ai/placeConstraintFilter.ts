@@ -49,6 +49,12 @@ export interface PlaceConstraints {
   district?: District | null
 }
 
+/**
+ * Review 30/10 (one brain): no constraint read from the user's words with keyword lists - the model reads the whole conversation and
+ * chooses from the rows, which carry their hours, price band and address. Applying these is the identity.
+ */
+export const NO_PLACE_CONSTRAINTS: PlaceConstraints = { budgetMax: null, exclude: [], openNow: false, district: null }
+
 export interface ConstraintFilterOutcome {
   result: unknown
   dropped: Array<{ name: string; reason: 'over_budget' | 'venue_type' | 'out_of_district' }>
