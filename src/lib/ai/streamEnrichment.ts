@@ -50,6 +50,7 @@ import { noFabricationGate } from './noFabricationGate'
 import { softenDoseClaims, markUnverifiedClaims } from './answerV4/doseClaims'
 import { extractRanking, applyRankingToRecs, applyRankingToShoppingMarker, withoutRecommendation, type RankingContract } from './agent/runtime/rankingContract'
 import { rankingFromProse } from './consultative/proseRanking'
+import { labelUnbackedPrices } from './consultative/unbackedPrices'
 import { parseShoppingMarker } from './consultative/synthesisView'
 import { footerRemaining, CARDS_SHOWN as CARD_FOLD_SHOWN } from './cardCounts'
 import { groundEntityNames } from './entityNameGuard'
@@ -2844,7 +2845,19 @@ export function applyPlaceEnrichmentStreamFilter(
     // money runs first so the spec pass reads text whose prices are already
     // settled. Inert unless structured shopping records were collected, and
     // inert for every other domain.
-    const moneyText = qual('money', enriched, guarded.text)
+    const moneyShadowText = qual('money', enriched, guarded.text)
+    // CONSULT_ONE_BRAIN (owner + review 30/10): the step above only logs in one brain, so a price no tool carried would reach the person as fact. It is
+    // LABELLED instead ("chưa xác minh", the figure only; the name, the bullet, the row and the rest of the line stay) - never cut. Evidence: every number a
+    // tool result carried this turn, the listing prices, the calculator and page figures, and the person's own amounts.
+    const moneyText = collector?.oneBrain === true && productRecords.length > 0 && !collector.planBlock && !collector.planTurn
+      ? (() => {
+        const userMoney = (collector?.userTexts ?? [userText]).flatMap(t => extractMoneyClaims(t).flatMap(c => [c.lo, c.hi]))
+        const listed = productRecords.flatMap(r => { const v = structuredPrice(r); return v === null ? [] : [v] })
+        const r = labelUnbackedPrices(moneyShadowText, [...groundNums, ...listed, ...ownValues, ...userMoney], lang === 'en' ? 'unverified' : 'chưa xác minh')
+        if (r.labelled > 0) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'money', step: 'labelled_unbacked', claims: r.claims, labelled: r.labelled }))
+        return r.text
+      })()
+      : moneyShadowText
     gt('money', enriched, moneyText)
     const specGuarded = qual('spec', moneyText, specRecords.length > 0
       ? guardSpecClaimsInText(moneyText, specRecords, collector?.consultV3 === true ? { figuresOnly: true } : {}).text

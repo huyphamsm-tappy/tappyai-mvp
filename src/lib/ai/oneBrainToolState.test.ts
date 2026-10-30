@@ -38,13 +38,14 @@ describe('one brain: the tools the model called decide the turn, the user\'s wor
   it('precondition: the keyword reading really calls the fryer question a travel turn', () => {
     expect(detectTravelIntent(FRYER_USER)).toBe(true)
   })
-  it('a shopping tool was called: a figure about a coupon is a shopping claim, not a "travel fact" — kept, no "đặt chỗ" notice', async () => {
+  it('a shopping tool was called: a figure about a coupon is a shopping claim, not a "travel fact" — no "đặt chỗ" notice, the sentence stays; the coupon amount no tool carried is LABELLED by the shopping step (30/10), not cut', async () => {
     const on = await run(FRYER_USER, [...call('search_products', { query: 'nồi chiên không dầu 6 lít' }, FRYER_ROWS), ...done(FRYER_REPLY)], { oneBrain: true, travel: true })
-    expect(on.text).toContain('voucher khoảng **50.000 đồng**')
-    expect(on.text).toContain('giá **690.000 đồng**')
+    expect(on.text).toContain('voucher khoảng **chưa xác minh** cho đơn đầu') // the sentence stays; only the unbacked figure is replaced (a "khoảng" that the bold markers separate from it stays)
+    expect(on.text).not.toContain('50.000')
+    expect(on.text).toContain('giá **690.000 đồng**') // a listing price the tool carried stays to the figure
     expect(on.text).toContain('khởi hành lúc 8h sáng hôm sau') // a "departure time" the travel guard would cut: this is a shopping turn
     expect(on.text).not.toContain('trang đặt')
-    expect(on.text).not.toContain('chưa xác minh')
+    expect(on.text.match(/chưa xác minh/g)?.length).toBe(1) // the shopping label only; no second, travel-style notice
   })
   it('the same turn without one brain keeps the old reading (labelled/cut by the travel guard)', async () => {
     const off = await run(FRYER_USER, [...call('search_products', { query: 'nồi chiên không dầu 6 lít' }, FRYER_ROWS), ...done(FRYER_REPLY)], { oneBrain: false, travel: true })
