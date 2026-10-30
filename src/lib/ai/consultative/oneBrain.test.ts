@@ -24,6 +24,7 @@ describe('the one general instruction', () => {
     for (const s of ['lay out the concrete listings', 'at most three short narrowing questions', 'from the whole message, not from single words', "search that store's own site", 'Never write a product link that did not come from a tool result', '[FOLLOWUPS]option 1|option 2|option 3[/FOLLOWUPS]', 'in place of the usual closing offer', 'then end the same way: a narrowing question and its tap-to-send chips', 'one search_products call is rarely the whole picture', 'price range by condition and version', 'a listing you did not name gets no card']) expect(ONE_BRAIN_CORE, s).toContain(s)
     // the shape reminder (last in the prompt) must not undo the buying rule
     expect(ONE_BRAIN_SHAPE_REMINDER).toContain('narrowing questions of the buying rule')
+    expect(ONE_BRAIN_SHAPE_REMINDER).toContain('[FOLLOWUPS] chips') // the reminder is last in the prompt: the chips line is named there too (measured 17/20 without it)
   })
   it('the buying rule names no product, brand, store or language of the question (any product, any language)', () => {
     const rule = ONE_BRAIN_CORE.split('\n').filter(l => /BUY something|names a store|price or buying question|Name each product or listing/.test(l)).join('\n')
