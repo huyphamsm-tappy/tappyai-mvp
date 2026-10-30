@@ -96,6 +96,11 @@ describe('N2 (30/10): the final writing call answers EVERY part of the request',
     expect(vi).toMatch(/mọi phần/); expect(vi).toMatch(/từng (?:mục|công ty|sản phẩm|nơi)/); expect(vi).toMatch(/chưa có/)
     expect(en).toMatch(/do not invent/i); expect(vi).toMatch(/không bịa/)
   })
+  it('N3: results first, and what the model reliably knows for stable facts - not "ONLY the tool results"', () => {
+    const en = finalWriteInstruction('en'), vi = finalWriteInstruction('vi')
+    expect(en).not.toMatch(/Using ONLY the tool results/); expect(vi).not.toMatch(/Chỉ dựa vào kết quả công cụ/)
+    expect(en).toMatch(/what you reliably know/i); expect(vi).toMatch(/điều bạn biết chắc/)
+  })
 })
 
 describe('N2 (30/10): the one-brain instruction asks for the lookups of a many-part request in the same step', () => {

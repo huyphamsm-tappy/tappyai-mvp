@@ -447,7 +447,8 @@ export function pageGroundedNames(text: string, ev: GuardEvidence | null | undef
   const passages = ev.sources.flatMap(s => s.passages.map(p => fold(p)))
   const out = new Set<string>()
   for (const m of text.matchAll(NAME_RE)) {
-    const n = m[1].trim()
+    // N3 (30/10): a bullet heading carries its colon inside the bold ("**The Wiselands Coffee:**"); the name is the words before it.
+    const n = m[1].trim().replace(/[:：,;.!?\-–—\s]+$/, '')
     if (/\d/.test(n) || !/\p{L}{3,}/u.test(n)) continue
     const f = fold(n).replace(/\s+/g, ' ').trim()
     if (f.length >= 4 && passages.some(p => p.includes(f))) out.add(n)
