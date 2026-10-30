@@ -41,6 +41,46 @@ describe('cardsConsistentWithAnswer: a card whose numbers the answer never menti
   })
 })
 
+describe('cardsConsistentWithAnswer: a shorter model name that the answer only ever says as part of a longer one is that longer model (30/10: "Pro" under "Pro Max")', () => {
+  const mk = (names: string[]) => marker(names.map((n, i) => ent(String.fromCharCode(97 + i), n, 'chua_ro')))
+  it('drops "iPhone 15 Pro 256GB" when every mention in the answer is "iPhone 15 Pro Max"', () => {
+    const m = mk(['iPhone 15 Pro 256GB', 'Apple iPhone 15 Pro Max', 'iPhone 15 Pro Max 256GB'])
+    const out = cardsConsistentWithAnswer(m, 'Giá iPhone 15 Pro Max 256GB khoảng 17 triệu; bản iPhone 15 Pro Max mới 25 triệu.')
+    expect(names(out)).toEqual(['Apple iPhone 15 Pro Max', 'iPhone 15 Pro Max 256GB'])
+  })
+  it('keeps the shorter model when the answer also names it on its own', () => {
+    const m = mk(['iPhone 15 Pro 256GB', 'Apple iPhone 15 Pro Max'])
+    const out = cardsConsistentWithAnswer(m, 'iPhone 15 Pro Max giá 25 triệu, còn iPhone 15 Pro 256GB rẻ hơn.')
+    expect(names(out)).toEqual(['iPhone 15 Pro 256GB', 'Apple iPhone 15 Pro Max'])
+  })
+  it('keeps both when the longer one is not a card (nothing to defer to)', () => {
+    const m = mk(['iPhone 15 Pro 256GB', 'iPhone 15 Plus 256GB'])
+    expect(names(cardsConsistentWithAnswer(m, 'iPhone 15 Pro Max 256GB 17 triệu; iPhone 15 Plus 256GB'))).toEqual(['iPhone 15 Pro 256GB', 'iPhone 15 Plus 256GB']) // a known limit: no card for the longer name, so no rule can say which one it is
+  })
+  it('two cards with the same name are two listings of one product: both stay', () => {
+    const m = mk(['iPhone 15 Pro Max', 'iPhone 15 Pro Max'])
+    expect(cardsConsistentWithAnswer(m, 'iPhone 15 Pro Max giá 25 triệu')).toBe(m)
+  })
+  it('a short name the answer never says as a sequence is not judged (nothing to compare)', () => {
+    const m = mk(['Alpha Pro', 'Alpha Pro Max'])
+    expect(cardsConsistentWithAnswer(m, 'Pro Alpha Max')).toBe(m)
+  })
+  it('a name that is not a prefix of another card is untouched (a different product)', () => {
+    const m = mk(['Philips HD9270 6.2L', 'Philips HD9285 7.2L'])
+    expect(cardsConsistentWithAnswer(m, 'Philips HD9270 6.2L giá 2 triệu, Philips HD9285 7.2L giá 3 triệu')).toBe(m)
+  })
+  it('works for any product family, in any language (token sequences, no word list)', () => {
+    const m = mk(['Galaxy S24', 'Galaxy S24 Ultra'])
+    expect(names(cardsConsistentWithAnswer(m, 'Galaxy S24 Ultra is the one to buy'))).toEqual(['Galaxy S24 Ultra'])
+    const k = mk(['Máy lạnh Daikin 1HP', 'Máy lạnh Daikin 1HP Inverter FTKB25'])
+    expect(names(cardsConsistentWithAnswer(k, 'Chọn máy lạnh Daikin 1HP Inverter FTKB25 là hợp'))).toEqual(['Máy lạnh Daikin 1HP Inverter FTKB25'])
+  })
+  it('a capacity beside the name does not change the verdict', () => {
+    const m = mk(['MacBook Air 13', 'MacBook Air 13 M3 16GB'])
+    expect(names(cardsConsistentWithAnswer(m, 'MacBook Air 13 M3 16GB giá 27 triệu'))).toEqual(['MacBook Air 13 M3 16GB'])
+  })
+})
+
 describe('wiring', () => {
   it('one brain applies it when the answer named no listing', () => {
     const src = readFileSync(join(process.cwd(), 'src/lib/ai/streamEnrichment.ts'), 'utf8')
