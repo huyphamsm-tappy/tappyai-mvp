@@ -3746,6 +3746,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // that writes straight away is unchanged (no second pass is made), a stray tool call now ends in text.
     // Luna non-trip plan: one search step + a step that must write (the second search is answered by code, above).
     maxSteps: streamMaxSteps,
+    // N2 (30/10): the one-brain model may look up several things in ONE step (a question about four companies looked them up one per step, ran out of
+    // its eight steps and answered about one). The old rule "one call per step" (30/09) stays for every other route; the reserve and the final write still end a turn in text.
+    parallelTools: oneBrain,
     // A one-step consult turn never reads the history breakpoint back — skip its +25% write (claude.ts).
     // A/B 29/09: a consult plan that is not a multi-step trip wrote ~4.2k tokens of history to the cache (1.25×)
     // and read back ~20% — a net loss. The history breakpoint stays only where a second model step is likely.

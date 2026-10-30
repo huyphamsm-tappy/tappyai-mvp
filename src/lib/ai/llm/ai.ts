@@ -125,6 +125,7 @@ export const AI = {
       onError: opts.onError,
       onStepFinish: opts.onStepFinish,
       abortSignal: opts.abortSignal,
+      ...(opts.parallelTools && opts.tools ? { providerOptions: { tappy: { parallelTools: true } } } : {}),
       // A shape mistake in the model's tool arguments (null, number-as-string…) is repaired from
       // the tool's own schema instead of ending the stream (toolCallRepair.ts; every repair logged).
       experimental_repairToolCall: repairToolCall as never,

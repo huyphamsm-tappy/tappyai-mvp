@@ -25,7 +25,7 @@ const h = vi.hoisted(() => {
     extractRoles: [] as string[],
     streamCalled: 0,
     toolNames: [] as string[],
-    opts: {} as { role?: string; maxSteps?: number; maxTokens?: number; systemShared?: string },
+    opts: {} as { role?: string; maxSteps?: number; maxTokens?: number; systemShared?: string; parallelTools?: boolean },
     system: '' as string,
     text: 'ok',
     webCalls: [] as string[],
@@ -106,7 +106,7 @@ vi.mock('@/lib/ai/llm', () => ({
     stream: (opts: Record<string, any>) => {
       h.state.streamCalled++
       h.state.toolNames = Object.keys(opts.tools ?? {})
-      h.state.opts = { role: opts.role, maxSteps: opts.maxSteps, maxTokens: opts.maxTokens, systemShared: typeof opts.systemShared === 'string' ? opts.systemShared : '' }
+      h.state.opts = { role: opts.role, maxSteps: opts.maxSteps, maxTokens: opts.maxTokens, systemShared: typeof opts.systemShared === 'string' ? opts.systemShared : '', parallelTools: opts.parallelTools === true }
       try { h.state.system = JSON.stringify({ system: opts.system, messages: opts.messages }) } catch { h.state.system = '' }
       return {
         get steps() { return Promise.resolve([{ toolResults: h.state.results.map(r => ({ toolName: r.name, result: r.result })) }]) },
@@ -523,6 +523,14 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     const off = await turn(TRAIN, { unwind: true, oneBrain: false, luna: intent('ask', ['travel']), tools: [CALL], reply })
     expect(off.text).not.toContain('hay hết chỗ sớm')
     expect(off.text).not.toContain('chỗ còn trống')
+  }, 60000)
+  it('N2 (30/10): the one-brain model may call several tools in ONE step; every other route keeps one call per step', async () => {
+    // Measured 30/10 (C3010 T14, O-DEV30 Q08): a request naming four companies / three products was looked up one call per step, the
+    // eight steps ran out (finish "tool-calls", 0 characters written) and the answer covered one company of four.
+    const on = await turn(KNOW, { unwind: true, oneBrain: true, luna: KNOW_INTENT, reply })
+    expect(on.opts.parallelTools).toBe(true)
+    const off = await turn(KNOW, { unwind: true, oneBrain: false, luna: KNOW_INTENT, reply })
+    expect(off.opts.parallelTools).toBe(false)
   }, 60000)
   it('flag ON, trip plan: no code question, no pre-fetch, no plan frame - the model plans with its tools', async () => {
     const on = await turn(TRIP, { unwind: true, oneBrain: true, luna: TRIP_INTENT, reply })

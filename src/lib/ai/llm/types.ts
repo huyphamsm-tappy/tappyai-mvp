@@ -91,6 +91,8 @@ export interface AIStreamOptions extends AIGenerateOptions {
   /** AI-SDK tool set (zod-defined) — provider-neutral by construction. */
   tools?: Parameters<typeof streamText>[0]['tools']
   maxSteps?: number
+  /** N2 (30/10): allow several tool calls in one step (sent only with tools, like AIStepOptions.parallelTools). Unset = one call per step. */
+  parallelTools?: boolean
   // REMOVED (C2): a `prepareStep` option forwarded as experimental_prepareStep.
   // streamText in ai@4.3.19 does not accept it — only generateText does — so it
   // was silently discarded on every call while its @ts-ignore claimed the

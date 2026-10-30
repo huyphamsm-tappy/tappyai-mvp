@@ -17,8 +17,8 @@ export const MIN_FINAL_WRITE_MS = 8_000
 
 export function finalWriteInstruction(lang: string): string {
   return lang === 'en'
-    ? 'The tool loop ran out of steps before you wrote the answer. Using ONLY the tool results above (a result that says the search budget is used is not data), write the answer to the user NOW, in plain prose, with no tool call. Say plainly what you could not confirm; do not invent a figure, a source or a date.'
-    : 'Vòng công cụ đã hết lượt mà bạn chưa viết câu trả lời. Chỉ dựa vào kết quả công cụ ở trên (kết quả báo đã hết lượt tìm không phải dữ liệu), hãy viết NGAY câu trả lời cho người dùng, bằng văn xuôi, không gọi thêm công cụ nào. Nói rõ điều gì chưa xác nhận được; không bịa số liệu, nguồn hay ngày.'
+    ? 'The tool loop ran out of steps before you wrote the answer. Using ONLY the tool results above (a result that says the search budget is used is not data), write the answer to the user NOW, in plain prose, with no tool call. Answer every part of the request: each item, company, product, place or question the person named gets its own part, in the order they asked; a part the results do not cover gets one short line saying it is not covered by this lookup. Say plainly what you could not confirm; do not invent a figure, a source or a date.'
+    : 'Vòng công cụ đã hết lượt mà bạn chưa viết câu trả lời. Chỉ dựa vào kết quả công cụ ở trên (kết quả báo đã hết lượt tìm không phải dữ liệu), hãy viết NGAY câu trả lời cho người dùng, bằng văn xuôi, không gọi thêm công cụ nào. Trả lời mọi phần của câu hỏi: từng mục, công ty, sản phẩm, nơi chốn hay câu hỏi người dùng nêu đều có phần riêng, theo thứ tự họ hỏi; phần nào kết quả chưa có thì một dòng ngắn nói lần tra này chưa có. Nói rõ điều gì chưa xác nhận được; không bịa số liệu, nguồn hay ngày.'
 }
 
 /**

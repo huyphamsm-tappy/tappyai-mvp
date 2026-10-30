@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
-import { finalWriteStream, finishFrameAfterText, finalWriteSystem, finalWriteSystemNote, FINAL_WRITE_TIMEOUT_MS, MIN_FINAL_WRITE_MS } from './finalWrite'
+import { finalWriteStream, finishFrameAfterText, finalWriteSystem, finalWriteSystemNote, finalWriteInstruction, FINAL_WRITE_TIMEOUT_MS, MIN_FINAL_WRITE_MS } from './finalWrite'
+import { ONE_BRAIN_CORE } from './consultative/oneBrain'
 
 const enc = new TextEncoder()
 const streamOf = (chunks: string[]) => new ReadableStream<Uint8Array>({ start(c) { for (const x of chunks) c.enqueue(enc.encode(x)); c.close() } })
@@ -83,5 +84,22 @@ describe('finalWriteSystem / finalWriteSystemNote (Wave 4 fix G4)', () => {
     expect(vi).toMatch(/Kết quả công cụ của lượt này đã có/); expect(vi).toMatch(/không có công cụ nào/); expect(vi).toMatch(/không áp dụng/)
     expect(vi).toMatch(/viết câu trả lời cuối/); expect(vi).toMatch(/Không gọi công cụ/); expect(vi).toMatch(/không viết tên công cụ/); expect(vi).toMatch(/không hứa sẽ tra thêm/)
     expect(en).not.toBe(vi)
+  })
+})
+
+describe('N2 (30/10): the final writing call answers EVERY part of the request', () => {
+  // Measured 30/10 (C3010 T14): the steps ran out on a question about four companies' AI agents; the final write wrote from what it had,
+  // and the answer was about one company ("Riêng xAI…") - three of four parts missing, constraint −4 to −5 in the blind grading.
+  it('the instruction names every part the person asked about, and a short line for a part the results do not cover', () => {
+    const en = finalWriteInstruction('en'), vi = finalWriteInstruction('vi')
+    expect(en).toMatch(/every part/i); expect(en).toMatch(/each (?:item|company|product|place)/i); expect(en).toMatch(/not covered/i)
+    expect(vi).toMatch(/mọi phần/); expect(vi).toMatch(/từng (?:mục|công ty|sản phẩm|nơi)/); expect(vi).toMatch(/chưa có/)
+    expect(en).toMatch(/do not invent/i); expect(vi).toMatch(/không bịa/)
+  })
+})
+
+describe('N2 (30/10): the one-brain instruction asks for the lookups of a many-part request in the same step', () => {
+  it('ONE_BRAIN_CORE says several items are looked up together, in one step', () => {
+    expect(ONE_BRAIN_CORE).toMatch(/several (?:items|parts)[^.]*same step/i)
   })
 })
