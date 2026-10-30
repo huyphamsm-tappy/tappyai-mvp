@@ -1026,7 +1026,7 @@ async function searchPlacesImpl(
     }
 
     if (budget) {
-      const verdict = budget.claim(type, location)
+      const verdict = budget.claim(type, location, query)
       if (!verdict.allowed) {
         console.log(JSON.stringify({
           type: 'tappyai_places_budget', step: 'blocked', reason: verdict.reason,
@@ -1035,7 +1035,8 @@ async function searchPlacesImpl(
         // No search, and nothing invented to stand in for one. The turn answers from its prose and
         // from whatever it already retrieved — a thinner answer, never a fabricated one.
         return {
-          source: 'budget', count: 0, results: [],
+          // review 30/10: said plainly, so the model does not read the empty list as "no such place exists"
+          source: 'budget', count: 0, results: [], place_search_status: verdict.reason === 'budget_exhausted' ? 'not_run_turn_budget_used' : 'not_run_same_search_already_done',
           note: messages.places.searchOnMaps(lang, 'https://maps.google.com/maps?q=' + encodeURIComponent(query + ' ' + (location || ''))),
         }
       }

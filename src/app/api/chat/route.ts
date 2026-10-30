@@ -135,6 +135,10 @@ import { statedDistrict } from '@/lib/ai/districts'
 import { cityForName, cityInText } from '@/lib/ai/tools/vietnamCities'
 import { hasValidCurrentLocation } from '@/lib/location/currentLocation'
 import { areaAskStream, areaFromAnswer, mergeAreaAnswer, ONE_BRAIN_NO_LOCATION_NOTE } from '@/lib/ai/consultative/areaAsk'
+import { maskStreetNames } from '@/lib/ai/streetNames'
+
+/** Tools whose lookup goes through the search provider (Serper) - the only ones an account-level refusal can have failed. */
+const SEARCH_BACKED_TOOLS = new Set(['web_search', 'search_places', 'search_products', 'get_news', 'get_flight_prices', 'get_hotel_prices', 'get_transport_options'])
 import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilter'
 import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/memoryTopic'
 import { deriveSearchNow, SPECIFIC_DATE, type SearchNow } from '@/lib/ai/consultative/searchNow'
@@ -401,6 +405,8 @@ export async function POST(req: Request) {
   // A district the USER named (never the model's own location string, which it fills from the GPS).
   // It centres the place search and constrains the rows by address (placeConstraintFilter.ts).
   const statedArea = wantsWiderArea(lastText) ? null : statedDistrict(lastText)
+  /** The same district under a second name: the one-brain place search shadows `statedArea` with what it decides (review 30/10). */
+  const userStatedArea = statedArea
     ?? subjectUserTexts.slice(0, -1).reverse().map(t => statedDistrict(t)).find(d => d !== null)
     ?? null
   // Phase 7 group 4 (golden T1/G4a): a plan is built across turns. The planning block used to be
@@ -2407,7 +2413,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         const startedAt = Date.now()
         const raw = await orig(...a)
         // CONSULT_ONE_BRAIN: a lookup the search provider refused at account level is a FAILED lookup, not an empty one - the model is told so.
-        const out = oneBrain && serperLastAccountErrorAt() >= startedAt && raw && typeof raw === 'object' && !Array.isArray(raw)
+        // Review 30/10: the account error is one timestamp for the whole server, so it also marked a lookup that DID return rows (Parallel after a
+        // refused Serper, the cache) and tools that never call the provider. Only a search-backed tool that came back with no rows is marked.
+        const rowsIn = (o: Record<string, unknown>) => ['results', 'organic', 'rows', 'products', 'items', 'articles', 'news'].some(k => Array.isArray(o[k]) && (o[k] as unknown[]).length > 0)
+        const out = oneBrain && SEARCH_BACKED_TOOLS.has(name) && serperLastAccountErrorAt() >= startedAt && raw && typeof raw === 'object' && !Array.isArray(raw) && !rowsIn(raw as Record<string, unknown>)
           // the tool's own "no result" note is replaced: measured 28/10, a place search refused by the provider kept its "ask for a narrower area" note and the model asked the person instead of saying the lookup failed
           ? { ...(raw as Record<string, unknown>), provider_error: 'search_provider_refused', note: 'The search provider refused this request (account or key error). This lookup FAILED; it is not an empty result and the person does not need to narrow anything. Say plainly that the lookup did not work this time, give what you know from general knowledge marked as not checked, and do not ask the person to change the request.' }
           : raw
@@ -2469,7 +2478,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   const attachCommerceLinks: typeof attachCommerceLinksBase = (toolName, result, ctx = {}) => attachCommerceLinksBase(toolName, result, oneBrain ? { ...ctx, unambiguousMerchantOnly: true } : ctx)
   // Google Places safety quota (provider layer, placesBudget.ts) — never an orchestration constant of either agent loop.
   // CONSULT_ONE_BRAIN: the model plans its own searches (restaurants, then attractions, ...), so it gets the agent's budget, not one place search a turn.
-  const placesBudget = createPlacesBudget(agentOn ? PLACES_BUDGET_AGENT : oneBrain ? PLACES_BUDGET_AGENT : planningIntent ? PLACES_BUDGET_PLANNING : PLACES_BUDGET_DEFAULT)
+  const placesBudget = createPlacesBudget(agentOn ? PLACES_BUDGET_AGENT : oneBrain ? PLACES_BUDGET_AGENT : planningIntent ? PLACES_BUDGET_PLANNING : PLACES_BUDGET_DEFAULT, { byQuery: oneBrain })
   // chat2 A2 + security review 02/10: the one extra "widen" retrieval after an empty search is paid from ITS OWN one-call allowance per request
   // (not a fresh budget per tool step), and never runs when the turn's Places budget was already refused.
   const widenBudget = createPlacesBudget(1)
@@ -2659,7 +2668,15 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // LOC-DEFAULT-HCM-01: with no valid current location, the area the user gave IN ANSWER to the area question fills the blank
           // too — "ở Đà Nẵng" must not be searched around the default TP.HCM centre (food.ts defaultCentre) when the model names no location.
           const modelOrClip = modelLocation ?? exploreClipLocationHint(clipContext)
-          const location = (modelOrClip?.trim() || hasValidCurrentLocation(userLocation)) ? modelOrClip : (areaFromAnswer(lastAssistantText, lastText) ?? modelOrClip)
+          // Review 30/10 (one brain): with no location argument the search was centred on the GPS, the default TP.HCM centre or nothing (Serper then answers
+          // from New York) although the model's own query named the city ("cà phê đẹp chụp ảnh Đà Lạt"). The city the query names - else the one the
+          // question names - fills the blank; a dish or street named after a city is not that city (maskStreetNames: "bún bò Huế").
+          const cityOf = (s: string) => cityInText(maskStreetNames(normalizeVN((s || '').toLowerCase())))
+          const oneBrainCity = oneBrain && !modelOrClip?.trim() ? (cityOf(query) ?? cityOf(lastText)) : null
+          const location = oneBrainCity ? oneBrainCity.query : (modelOrClip?.trim() || hasValidCurrentLocation(userLocation)) ? modelOrClip : (areaFromAnswer(lastAssistantText, lastText) ?? modelOrClip)
+          // Review 30/10 (one brain): "Mình ở Quận 3, tháng sau đi Đà Lạt" - the model asked for Đà Lạt, the district read from the user's words centred the
+          // search on Quận 3 and its filter then kept Quận 3 rows. The place the model asked for wins; the district stays only when that place IS the district.
+          const statedArea = oneBrain && location?.trim() && userStatedArea && statedDistrict(location)?.label !== userStatedArea.label ? null : userStatedArea
           // S4 (C): the query and the location are the user's words (or the model's copy of them): a length and whether a location was set, never the text
           console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', query: logText(query, 'tool_arg'), hasLocation: !!location, placeType: type, hasLocationBias: !!userLocation, locationFromClip: modelLocation === undefined && location !== undefined }))
           // Item 5: the `/maps` price-band retry is paid only when price is part of this decision —
@@ -2668,7 +2685,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // Round 42 (D1, then LOC-DEFAULT-HCM-01): no valid current location and no place named anywhere — do not search around a default
           // centre (TP.HCM), "gần tôi" or not; tell the model the location is missing, and the code asks for the area (areaAsk.ts).
           if (!placesOverride && !hasValidCurrentLocation(userLocation) && !statedArea
-            && !cityInText(lastText) && !(location && (cityForName(location) ?? cityInText(location) ?? statedDistrict(location))) && !cityInText(query) && !statedDistrict(query)) {
+            && !(oneBrain ? cityOf(lastText) : cityInText(lastText)) && !(location && (cityForName(location) ?? cityInText(location) ?? statedDistrict(location))) && !(oneBrain ? cityOf(query) : cityInText(query)) && !statedDistrict(query)) {
             // Wave 2E (C1): this lookup is the MODEL's own (the gate dropped the code pre-search, so a lookup that reaches here was asked for by the model): it needs a place, so the user is asked for the area
             // exactly as before - the gate never says "no place needed" for the model.
             // N5 (30/10): on the one-brain route the code writes nothing into the answer - the model, which read the whole request, decides whether
@@ -2756,7 +2773,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // "now") shape the ROWS here, before ranking, so the set the model reads and the card
           // the client renders are the same set. `applyBudgetFilter` above only ever touched web
           // snippets; the place rows were never constrained (`placeConstraintFilter.ts`).
-          const constraints = { ...detectPlaceConstraints(lastText, budget ?? needProfile.budget, recentSubjectUserTexts.slice(0, -1), new Date(), { explicitOnly: agentV2 }), ...(wantsWiderArea(lastText) ? { district: null } : {}) }
+          const constraints = { ...detectPlaceConstraints(lastText, budget ?? needProfile.budget, recentSubjectUserTexts.slice(0, -1), new Date(), { explicitOnly: agentV2 }), ...(wantsWiderArea(lastText) || (userStatedArea && !statedArea) ? { district: null } : {}) }
           const constrained0 = applyPlaceConstraints(budgeted, constraints, lang === 'en' ? 'en' : 'vi')
           // chat2 A2: price and distance are SOFT — when the hard filters leave nothing, drop the price ceiling, then widen the
           // area (one more provider call), and say what was relaxed (placeRelax.ts). Still nothing → the honest no-result block.

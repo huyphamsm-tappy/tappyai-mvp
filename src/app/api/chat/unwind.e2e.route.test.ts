@@ -38,6 +38,8 @@ const h = vi.hoisted(() => {
     railRows: null as null | Array<Record<string, unknown>>,
     /** 30/10: what the route's attachCommerceLinks wrapper passed on, per call (the real function still runs). */
     commerceCtx: [] as Array<{ tool: string; ctx: Record<string, unknown> }>,
+    /** 30/10: every Serper /maps call - its query and its centre (the mock returns no rows). */
+    placesCalls: [] as Array<{ q: string; centre: { lat: number; lng: number } | null }>,
   }
   const builder = (): any => {
     const b: any = {
@@ -93,7 +95,7 @@ vi.mock('@/lib/ai/tools/railSchedule', async (importOriginal) => ({
   fetchRailSchedule: async (page: string) => (h.state.railRows ? { page_url: page, rows: h.state.railRows } : null),
 }))
 vi.mock('@/lib/ai/tools/serperClient', async (importOriginal) => ({ ...(await importOriginal<typeof import('@/lib/ai/tools/serperClient')>()), serperLastAccountErrorAt: () => h.state.accountErrorAt }))
-vi.mock('@/lib/ai/tools/serperPlaces', async (importOriginal) => ({ ...(await importOriginal<typeof import('@/lib/ai/tools/serperPlaces')>()), serperPlaces: async () => [] }))
+vi.mock('@/lib/ai/tools/serperPlaces', async (importOriginal) => ({ ...(await importOriginal<typeof import('@/lib/ai/tools/serperPlaces')>()), serperPlaces: async (q: string, centre: { lat: number; lng: number } | null) => { h.state.placesCalls.push({ q, centre }); return [] } }))
 vi.mock('@/lib/ai/tools/food', async (importOriginal) => ({ ...(await importOriginal<typeof import('@/lib/ai/tools/food')>()), searchPlacesOSM: async () => ({ results: [] }) }))
 vi.mock('@/lib/ai/llm', () => ({
   AI: {
@@ -161,6 +163,7 @@ async function turn(messages: Msg[], o: TurnOpts) {
   h.state.finishSteps = o.finishSteps ?? []
   h.state.railRows = o.railRows ?? null
   h.state.commerceCtx = []
+  h.state.placesCalls = []
   h.state.extractRoles = []; h.state.streamCalled = 0; h.state.toolNames = []; h.state.opts = {}; h.state.system = ''; h.state.results = []; h.state.webCalls = []; h.state.fetched = []
   __resetAiQuestionQuotaLocal(); __resetPageCache(); __resetSharedRobots()
   const req = {
@@ -174,7 +177,7 @@ async function turn(messages: Msg[], o: TurnOpts) {
   try { raw = await (await POST(req as never)).text() } finally { spy.mockRestore() }
   const text = raw.split('\n').filter(l => l.startsWith('0:')).map(l => { try { return JSON.parse(l.slice(2)) as string } catch { return '' } }).join('')
   const logs = lines.map(l => { try { return JSON.parse(l) as Record<string, any> } catch { return null } }).filter((x): x is Record<string, any> => !!x)
-  return { raw, text, logs, streamCalled: h.state.streamCalled, toolNames: [...h.state.toolNames], opts: { ...h.state.opts }, system: h.state.system, web: [...h.state.webCalls], fetched: [...h.state.fetched], results: [...h.state.results], extract: [...h.state.extractRoles] }
+  return { places: [...h.state.placesCalls], raw, text, logs, streamCalled: h.state.streamCalled, toolNames: [...h.state.toolNames], opts: { ...h.state.opts }, system: h.state.system, web: [...h.state.webCalls], fetched: [...h.state.fetched], results: [...h.state.results], extract: [...h.state.extractRoles] }
 }
 
 /** A page as long as a real article (the real pages read on 28/10 gave 2 500 - 7 000 characters): a one-line page is read as "thin". */
@@ -549,6 +552,40 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     const off = await turn(ASK, { unwind: true, oneBrain: false, luna: intent('pick', ['food']), tools: [CALL], reply: '' })
     expect(off.text).toContain('Bạn muốn mình tìm ở đâu (khu vực/quận/thành phố)?')
   }, 60000)
+  it('places (review 30/10): one brain - the place the MODEL asks for is searched; a district read from the user\'s words does not override it', async () => {
+    // Đà Lạt ≈ 11.94, 108.44; Quận 3 ≈ 10.78, 106.68. No GPS in this harness.
+    const nearDaLat = (c: { lat: number; lng: number } | null) => !!c && Math.abs(c.lat - 11.94) < 0.3 && Math.abs(c.lng - 108.44) < 0.3
+    const a = await turn([{ role: 'user', content: 'Mình ở Quận 3, tháng sau đi Đà Lạt, quán cà phê nào đẹp?' }], { unwind: true, oneBrain: true, luna: intent('pick', ['food']), tools: [{ name: 'search_places', args: { query: 'cà phê đẹp', location: 'Đà Lạt', type: 'cafe' } }], reply: 'x' })
+    expect(a.places.length).toBeGreaterThan(0)
+    expect(nearDaLat(a.places[0].centre), JSON.stringify(a.places[0])).toBe(true)
+  }, 60000)
+  it('places (review 30/10): one brain - with no location argument, a city in the model\'s query (or the question) is the place; never the default TP.HCM centre', async () => {
+    const nearDaLat = (c: { lat: number; lng: number } | null) => !!c && Math.abs(c.lat - 11.94) < 0.3 && Math.abs(c.lng - 108.44) < 0.3
+    const q = await turn([{ role: 'user', content: 'Mình đi Đà Lạt 3 ngày' }, { role: 'assistant', content: 'Ok.' }, { role: 'user', content: 'Quán cà phê nào ở đó đẹp để chụp ảnh?' }], { unwind: true, oneBrain: true, luna: intent('pick', ['food']), tools: [{ name: 'search_places', args: { query: 'cà phê đẹp chụp ảnh Đà Lạt', type: 'cafe' } }], reply: 'x' })
+    expect(q.places.length).toBeGreaterThan(0)
+    expect(nearDaLat(q.places[0].centre), JSON.stringify(q.places[0])).toBe(true)
+    const t = await turn([{ role: 'user', content: 'quán cà phê đẹp ở Đà Lạt' }], { unwind: true, oneBrain: true, luna: intent('pick', ['food']), tools: [{ name: 'search_places', args: { query: 'cà phê đẹp', type: 'cafe' } }], reply: 'x' })
+    expect(t.places.length).toBeGreaterThan(0)
+    expect(nearDaLat(t.places[0].centre), JSON.stringify(t.places[0])).toBe(true)
+  }, 60000)
+  it('places (review 30/10): one brain - two dishes in one city are two lookups; a blocked lookup says why', async () => {
+    const calls = [
+      { name: 'search_places', args: { query: 'lẩu gà lá é', location: 'Đà Lạt', type: 'restaurant' } },
+      { name: 'search_places', args: { query: 'bánh căn', location: 'Đà Lạt', type: 'restaurant' } },
+      { name: 'search_places', args: { query: 'lẩu gà lá é', location: 'Đà Lạt', type: 'restaurant' } },
+    ]
+    const r = await turn([{ role: 'user', content: 'ở Đà Lạt ăn gì ngon' }], { unwind: true, oneBrain: true, luna: intent('pick', ['food']), tools: calls, reply: 'x' })
+    expect(r.places.map(p => p.q).filter(q => /bánh căn/.test(q)).length).toBe(1)
+    const third = r.results.filter(x => x.name === 'search_places')[2]?.result
+    expect(JSON.stringify(third)).toContain('not_run_same_search_already_done')
+  }, 60000)
+  it('places (review 30/10): one brain - a dish named after a city is not that city ("bún bò Huế" is searched where the person is asked, not in Huế)', async () => {
+    const b = await turn([{ role: 'user', content: 'quán bún bò Huế ngon' }], { unwind: true, oneBrain: true, luna: intent('pick', ['food']), tools: [{ name: 'search_places', args: { query: 'bún bò Huế' } }], reply: 'x' })
+    const r = b.results.find(x => x.name === 'search_places')?.result
+    expect(r?.error).toBe('no_current_location')
+    expect(String(r?.note ?? '')).not.toContain('người dùng chưa nêu khu vực')
+    expect(String(r?.note ?? '')).toContain('gọi lại search_places')
+  }, 60000)
   it('N5 (30/10): one brain, a flight question with no date - no code question ("Ngày bay?") is stacked after the answer', async () => {
     const FLY: Msg[] = [{ role: 'user', content: 'vé máy bay sài gòn đi hà nội giá bao nhiêu' }]
     const on = await turn(FLY, { unwind: true, oneBrain: true, luna: intent('ask', ['travel']), reply: 'Giá vé thường từ 1,5 triệu một chiều.' })
@@ -574,13 +611,22 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
   }, 60000)
   it('flag ON: a lookup the search provider refused at account level reaches the model as a FAILED lookup, not an empty one; flag OFF unchanged', async () => {
     h.state.accountErrorAt = Number.MAX_SAFE_INTEGER
+    // 30/10 (review): the refused lookup here is one that came back with NOTHING (a place search; the provider mock returns no rows). Before,
+    // this case used a web search that returned rows - a lookup with real rows (a fallback provider, a cache) is not a failed lookup (below).
+    const PLACE = { name: 'search_places', args: { query: 'cà phê', location: 'Đà Lạt', type: 'cafe' } }
     try {
-      const on = await turn(KNOW, { unwind: true, oneBrain: true, luna: KNOW_INTENT, tools: [SEARCH], reply })
+      const on = await turn(KNOW, { unwind: true, oneBrain: true, luna: KNOW_INTENT, tools: [PLACE], reply })
       expect(JSON.stringify(on.results)).toContain('search_provider_refused')
       // the tool's own "no result" note is replaced by the failure note
       expect(JSON.stringify(on.results)).toMatch(/(?<![_a-z])\\*"note\\*":\\*"The search provider refused/)
-      const off = await turn(KNOW, { unwind: true, oneBrain: false, luna: KNOW_INTENT, tools: [SEARCH], reply })
+      const off = await turn(KNOW, { unwind: true, oneBrain: false, luna: KNOW_INTENT, tools: [PLACE], reply })
       expect(JSON.stringify(off.results)).not.toContain('search_provider_refused')
+      // review 30/10: rows that did come back (a fallback such as Parallel, the cache) are data, not a failure; a tool that never calls the
+      // search provider (calculate) is never marked failed by another call's account error
+      const rows = await turn(KNOW, { unwind: true, oneBrain: true, luna: KNOW_INTENT, tools: [SEARCH], reply })
+      expect(JSON.stringify(rows.results.find(r => r.name === 'web_search')?.result ?? {})).not.toContain('search_provider_refused')
+      const calc = await turn(KNOW, { unwind: true, oneBrain: true, luna: KNOW_INTENT, tools: [{ name: 'calculate', args: { expression: '2*3' } }], reply })
+      expect(JSON.stringify(calc.results)).not.toContain('search_provider_refused')
     } finally { h.state.accountErrorAt = 0 }
     const fine = await turn(KNOW, { unwind: true, oneBrain: true, luna: KNOW_INTENT, tools: [SEARCH], reply })
     expect(JSON.stringify(fine.results)).not.toContain('search_provider_refused')

@@ -34,7 +34,7 @@ export type BudgetVerdict =
 
 export interface PlacesBudget {
   /** Records the intent and says whether a Google-backed search may proceed. */
-  claim(type: string | undefined, location: string | undefined): BudgetVerdict
+  claim(type: string | undefined, location: string | undefined, query?: string): BudgetVerdict
   /** Distinct intents retrieved so far. */
   readonly used: number
   readonly limit: number
@@ -77,13 +77,19 @@ function intentKey(type: string | undefined, location: string | undefined): stri
   return `${norm(type)}|${norm(location)}`
 }
 
-export function createPlacesBudget(limit: number): PlacesBudget {
+/**
+ * `byQuery` (one brain, review 30/10): the query is part of the intent. The model that plans a day asks "lẩu gà lá é" and then "bánh căn" -
+ * both restaurant + Đà Lạt - and the second came back as zero rows ('intent_already_retrieved'), read by the model as "nothing found".
+ * The limit still caps the distinct lookups of the turn.
+ */
+export function createPlacesBudget(limit: number, opts: { byQuery?: boolean } = {}): PlacesBudget {
   const retrieved = new Set<string>()
+  const norm = (s: string | undefined) => normalizeVN((s ?? '').normalize('NFC').toLowerCase()).replace(/\s+/g, ' ').trim()
   return {
     get used() { return retrieved.size },
     limit,
-    claim(type, location) {
-      const key = intentKey(type, location)
+    claim(type, location, query) {
+      const key = opts.byQuery ? `${intentKey(type, location)}|${norm(query)}` : intentKey(type, location)
       // Asked again in different words. The first answer already covers it, and the cache will
       // serve it when the key matches; when it does not, a second call buys nothing.
       if (retrieved.has(key)) return { allowed: false, reason: 'intent_already_retrieved' }

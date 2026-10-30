@@ -22,7 +22,9 @@ export const AREA_ASK_EN = "Where should I search (area, district, or city)? I d
  * nothing into the answer: the model decides whether it can answer without an area or must ask, in its own words. Measured 30/10
  * (C3010 T08 "tính đi du lịch chơi, chưa biết đi đâu"): the fixed area question above followed the model's answer; ChatGPT suggested destinations.
  */
-export const ONE_BRAIN_NO_LOCATION_NOTE = 'Chưa có vị trí hiện tại của người dùng (thiết bị không gửi vị trí) và người dùng chưa nêu khu vực, nên lần tìm địa điểm này không chạy: không đoán khu vực, không tìm quanh một thành phố mặc định, không bịa tên quán hay địa chỉ. Bạn tự quyết: phần nào trả lời được mà không cần vị trí (ý tưởng, điểm đến, tiêu chí chọn, kinh nghiệm) thì trả lời đầy đủ; nếu thật sự cần khu vực để gợi ý chỗ cụ thể thì hỏi người dùng bằng lời của bạn, một câu, ở cuối câu trả lời.'
+// Review 30/10: the note used to say "người dùng chưa nêu khu vực" - false when the area was named in an earlier turn, and it pushed the model to a
+// generic answer. It now says what is true: THIS call carried no area the system can place.
+export const ONE_BRAIN_NO_LOCATION_NOTE = 'Lần tìm địa điểm này không chạy: thiết bị không gửi vị trí và lời gọi không có khu vực (tham số location) mà hệ thống nhận ra. Không đoán khu vực, không tìm quanh một thành phố mặc định, không bịa tên quán hay địa chỉ. Nếu người dùng đã nêu tỉnh/thành, quận hay điểm đến ở bất kỳ lượt nào của cuộc trò chuyện, hãy gọi lại search_places với location là nơi đó. Nếu chưa nêu: phần nào trả lời được mà không cần vị trí (ý tưởng, điểm đến, tiêu chí chọn, kinh nghiệm) thì trả lời đầy đủ; nếu thật sự cần khu vực để gợi ý chỗ cụ thể thì hỏi người dùng bằng lời của bạn, một câu, ở cuối câu trả lời.'
 
 export function areaAskSentence(lang: string): string {
   return lang === 'en' ? AREA_ASK_EN : AREA_ASK_VI
