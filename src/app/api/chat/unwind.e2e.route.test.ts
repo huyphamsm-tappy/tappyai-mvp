@@ -95,7 +95,12 @@ vi.mock('@/lib/ai/tools/railSchedule', async (importOriginal) => ({
   fetchRailSchedule: async (page: string) => (h.state.railRows ? { page_url: page, rows: h.state.railRows } : null),
 }))
 vi.mock('@/lib/ai/tools/serperClient', async (importOriginal) => ({ ...(await importOriginal<typeof import('@/lib/ai/tools/serperClient')>()), serperLastAccountErrorAt: () => h.state.accountErrorAt }))
-vi.mock('@/lib/ai/tools/serperPlaces', async (importOriginal) => ({ ...(await importOriginal<typeof import('@/lib/ai/tools/serperPlaces')>()), serperPlaces: async (q: string, centre: { lat: number; lng: number } | null) => { h.state.placesCalls.push({ q, centre }); return [] } }))
+vi.mock('@/lib/ai/tools/serperPlaces', async (importOriginal) => ({ ...(await importOriginal<typeof import('@/lib/ai/tools/serperPlaces')>()), serperPlaces: async (q: string, centre: { lat: number; lng: number } | null) => { h.state.placesCalls.push({ q, centre }); return /lẩu/i.test(q) ? LAU_ROWS : [] } }))
+/** 30/10: rows the Serper /maps mock returns for a hotpot query (Đà Lạt), so a turn can have one search WITH rows and one without. */
+const LAU_ROWS = [
+  { title: 'Lẩu Gà Lá É Tao Ngộ', address: '5 Đường 3 Tháng 4, Phường 3, Đà Lạt, Lâm Đồng', latitude: 11.928, longitude: 108.446, rating: 4.4, ratingCount: 5200, cid: '1111' },
+  { title: 'Lẩu Bò Ba Toa Quán Gỗ', address: '1/1 Hoàng Diệu, Phường 5, Đà Lạt, Lâm Đồng', latitude: 11.951, longitude: 108.426, rating: 4.5, ratingCount: 3100, cid: '2222' },
+]
 vi.mock('@/lib/ai/tools/food', async (importOriginal) => ({ ...(await importOriginal<typeof import('@/lib/ai/tools/food')>()), searchPlacesOSM: async () => ({ results: [] }) }))
 vi.mock('@/lib/ai/llm', () => ({
   AI: {

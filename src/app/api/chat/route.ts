@@ -136,6 +136,7 @@ import { cityForName, cityInText } from '@/lib/ai/tools/vietnamCities'
 import { hasValidCurrentLocation } from '@/lib/location/currentLocation'
 import { areaAskStream, areaFromAnswer, mergeAreaAnswer, ONE_BRAIN_NO_LOCATION_NOTE } from '@/lib/ai/consultative/areaAsk'
 import { maskStreetNames } from '@/lib/ai/streetNames'
+import { createTurnPlaceOwner } from '@/lib/ai/consultative/turnPlaceState'
 
 /** Tools whose lookup goes through the search provider (Serper) - the only ones an account-level refusal can have failed. */
 const SEARCH_BACKED_TOOLS = new Set(['web_search', 'search_places', 'search_products', 'get_news', 'get_flight_prices', 'get_hotel_prices', 'get_transport_options'])
@@ -2478,6 +2479,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   const attachCommerceLinks: typeof attachCommerceLinksBase = (toolName, result, ctx = {}) => attachCommerceLinksBase(toolName, result, oneBrain ? { ...ctx, unambiguousMerchantOnly: true } : ctx)
   // Google Places safety quota (provider layer, placesBudget.ts) — never an orchestration constant of either agent loop.
   // CONSULT_ONE_BRAIN: the model plans its own searches (restaurants, then attractions, ...), so it gets the agent's budget, not one place search a turn.
+  const placeOwner = createTurnPlaceOwner(oneBrain)
   const placesBudget = createPlacesBudget(agentOn ? PLACES_BUDGET_AGENT : oneBrain ? PLACES_BUDGET_AGENT : planningIntent ? PLACES_BUDGET_PLANNING : PLACES_BUDGET_DEFAULT, { byQuery: oneBrain })
   // chat2 A2 + security review 02/10: the one extra "widen" retrieval after an empty search is paid from ITS OWN one-call allowance per request
   // (not a fresh budget per tool step), and never runs when the turn's Places budget was already refused.
@@ -2811,10 +2813,12 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const { result, pick } = clipTarget === 'ambiguous'
             ? { result: filtered, pick: null }
             : rankForModel('search_places', filtered, query)
-          if (pick) turnPick = pick
           // The ranked candidate set of a REAL search goes to the chat-session state ("xem thêm" / "bác" reuse it).
           const rankedRows = (result as { results?: unknown }).results
-          if (!placesOverride && Array.isArray(rankedRows)) lastPlaceRowsForState = { args: { query, ...(type ? { type } : {}), ...(location ? { location } : {}) }, rows: rankedRows }
+          // review 30/10 (one brain, several searches in one step): the first search with rows owns the turn's place state (turnPlaceState.ts)
+          const ownsPlaceState = placeOwner.mayWrite(Array.isArray(rankedRows) ? rankedRows.length : 0)
+          if (pick && ownsPlaceState) turnPick = pick
+          if (!placesOverride && Array.isArray(rankedRows) && ownsPlaceState) lastPlaceRowsForState ={ args: { query, ...(type ? { type } : {}), ...(location ? { location } : {}) }, rows: rankedRows }
           // CCP (Phase 6, owner decision P6-B): Commerce Links ride the ranked rows as
           // `commerce_links`, read by buildActions below and carved from the model by forModel.
           // Identity-preserving and a no-op while CCP_ENABLED is false.
@@ -2825,7 +2829,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // keeps the data layer exercised (and its tests honest) while the
           // emission flag stays off; the collector holds them until the stream
           // filter has photos to fold in.
-          turnPlaceLocation = location
+          if (ownsPlaceState) turnPlaceLocation = location
           const builtRecs = placeRecommendations(result, location, pickContext(pick))
           enrichment.setPlacesRecommendations(
             builtRecs,
@@ -2834,7 +2838,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // The map destination the provider itself returned for this search.
           const mapsUrl = (result as Record<string, unknown>).google_maps_search
             ?? (result as Record<string, unknown>).search_url
-          enrichment.setPlacesMapsUrl(typeof mapsUrl === 'string' ? mapsUrl : undefined)
+          if (ownsPlaceState) enrichment.setPlacesMapsUrl(typeof mapsUrl === 'string' ? mapsUrl : undefined)
           // The model reads the decision set only (cost optimization item 4); the card above
           // was built from the full result and is unaffected. Trimmed AFTER `forModel` carved the
           // enrichment (photos, links) off the FULL row set — trimming first starved the collector
