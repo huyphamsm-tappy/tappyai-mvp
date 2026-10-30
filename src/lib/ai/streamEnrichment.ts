@@ -100,7 +100,7 @@ import { capHedges } from './consultative/hedgeCap'
 import type { Hard } from './consultative/situationFrame'
 import { guardProseShape } from './consultative/proseShape'
 import { compactSystemLinks } from './consultative/systemLinkRow'
-import { onlyMatchingCards } from './consultative/cardsMatchRequest'
+import { onlyMatchingCards, cardsConsistentWithAnswer } from './consultative/cardsMatchRequest'
 import { admitsUnverified, dedupeCaveats, stripOrphanSourceLabels } from './caveatDedupe'
 import { auditTrace } from './auditTrace'
 import { cardPathTrace } from './cardPathTrace'
@@ -2390,7 +2390,7 @@ export function applyPlaceEnrichmentStreamFilter(
         if (fromProse) { contract = fromProse; rt.block = 'prose'; rt.via = 'prose' }
       }
       // CONSULT_ONE_BRAIN: the answer named no listing (it may rest on store pages the model read), so the card is the tools' - but a listing that differs from what was asked for does not stand beside the ones that match.
-      if (!planOwnsAnswer && !contract && collector.oneBrain === true && collector.shoppingMarker) collector.shoppingMarker = onlyMatchingCards(collector.shoppingMarker)
+      if (!planOwnsAnswer && !contract && collector.oneBrain === true && collector.shoppingMarker) collector.shoppingMarker = cardsConsistentWithAnswer(onlyMatchingCards(collector.shoppingMarker), mainText)
       // CONSULT_V3 task frame: no venue card will be shown for this task → the decision recorder (one structured call) is not needed for places.
       const taskSkipsRecorder = collector.consultV3 === true && !!collector.taskFrame && !cardsAllowed(collector.taskFrame.kind).places && !collector.shoppingMarker
       if (!planOwnsAnswer && !taskSkipsRecorder && !contract && collector.recordDecision && candidateNames.length) {

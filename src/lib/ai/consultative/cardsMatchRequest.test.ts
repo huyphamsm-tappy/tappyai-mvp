@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { onlyMatchingCards } from './cardsMatchRequest'
+import { onlyMatchingCards, cardsConsistentWithAnswer } from './cardsMatchRequest'
 import { parseShoppingMarker, renderShoppingMarker, type SynthesisView } from './synthesisView'
 
 // 30/10 localhost (MacBook Air M3): the answer talked about two product pages and the card under it showed a different product
@@ -14,10 +14,37 @@ const marker = (entities: SynthesisView['entities'], recKey: string | null = nul
   renderShoppingMarker({ v: 1, entities, recommendation: recKey ? ({ entityKey: recKey, seller: null, reasons: [], tradeOff: null, conditional: false } as never) : null, asked: null } as unknown as SynthesisView)
 const names = (m: string) => parseShoppingMarker(m).view?.entities.map(e => e.name)
 
+describe('cardsConsistentWithAnswer: a card whose numbers the answer never mentions is a different model', () => {
+  const m = () => marker([ent('a', 'Apple iPhone 15 Pro Max', 'chua_ro'), ent('b', 'Apple iPhone 16 Pro Max 256GB', 'chua_ro'), ent('c', 'iPhone 15 Pro Max 256GB', 'chua_ro'), ent('d', 'iPhone 15 Plus', 'chua_ro')])
+  it('drops the listings with a number (generation, capacity, code) the answer does not contain', () => {
+    const out = cardsConsistentWithAnswer(m(), 'Giá iPhone 15 Pro Max 256 GB khoảng 17 triệu, mới 25 triệu.')
+    expect(names(out)).toEqual(['Apple iPhone 15 Pro Max', 'iPhone 15 Pro Max 256GB', 'iPhone 15 Plus'])
+  })
+  it('a spaced capacity ("256 GB") still matches "256GB"', () => {
+    expect(names(cardsConsistentWithAnswer(marker([ent('a', 'X 256GB', 'chua_ro'), ent('b', 'X 512GB', 'chua_ro')]), 'bản 256 GB giá tốt'))).toEqual(['X 256GB'])
+  })
+  it('never blanks the card: when nothing is consistent, everything stays', () => {
+    const only = marker([ent('a', 'Model 99', 'chua_ro'), ent('b', 'Model 98', 'chua_ro')])
+    expect(cardsConsistentWithAnswer(only, 'a general answer with no figures')).toBe(only)
+  })
+  it('a listing with no number at all is kept (nothing to contradict)', () => {
+    const k = marker([ent('a', 'Kettle Pro', 'chua_ro'), ent('b', 'Kettle 2000W', 'chua_ro')])
+    expect(names(cardsConsistentWithAnswer(k, 'Kettle Pro is fine'))).toEqual(['Kettle Pro'])
+  })
+  it('the answer\'s own text only: the machine blocks are not read as the answer', () => {
+    const out = cardsConsistentWithAnswer(m(), 'Giá iPhone 15 Pro Max 17 triệu.\n[TAPPY_SHOPPING]{"x":"iPhone 16 Pro Max 256GB"}[/TAPPY_SHOPPING]')
+    expect(names(out)).not.toContain('Apple iPhone 16 Pro Max 256GB')
+  })
+  it('works for any product family', () => {
+    const k = marker([ent('a', 'Máy giặt LG 9kg', 'chua_ro'), ent('b', 'Máy giặt LG 11kg', 'chua_ro')])
+    expect(names(cardsConsistentWithAnswer(k, 'Mình chọn máy giặt LG 9 kg'))).toEqual(['Máy giặt LG 9kg'])
+  })
+})
+
 describe('wiring', () => {
   it('one brain applies it when the answer named no listing', () => {
     const src = readFileSync(join(process.cwd(), 'src/lib/ai/streamEnrichment.ts'), 'utf8')
-    expect(src).toContain('collector.oneBrain === true && collector.shoppingMarker) collector.shoppingMarker = onlyMatchingCards(collector.shoppingMarker)')
+    expect(src).toContain('collector.oneBrain === true && collector.shoppingMarker) collector.shoppingMarker = cardsConsistentWithAnswer(onlyMatchingCards(collector.shoppingMarker), mainText)')
   })
 })
 
