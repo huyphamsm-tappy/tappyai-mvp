@@ -36,6 +36,22 @@ describe('the one general instruction', () => {
     expect(ONE_BRAIN_CORE.replace('"mình"', '').replace('"bạn"', '')).not.toMatch(/[ăâđêôơưạảấầẩẫậắằẳẵặẹẻẽếềểễệỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹ]/i)
     for (const w of ['Tesla', 'Quy Nhơn', 'Quy Nhon', 'Điện Biên', 'GitHub', 'Hoàng Sa', 'e-commerce']) expect(ONE_BRAIN_CORE, w).not.toContain(w)
   })
+  it('N1 (30/10): answers the need behind the question; a subject gets a real overview, not 150-350 words', () => {
+    // Measured 30/10 (blind, vs ChatGPT Think): "complete" 6.2 vs 8.4, "useful" 6.7 vs 8.2. "Sài Gòn có mưa không" got one sentence (ChatGPT:
+    // the rain hours and what to do), "cuối tuần Hà Nội có mưa không, định picnic" 415 characters. The old rule sent a yes/no to 1-3 paragraphs.
+    for (const s of ['Answer the need behind the question', 'then what the person needs to act on it', 'about 200-500 words', 'each option as its own block', 'a short table that maps each need to the option', 'one numbered item per story']) expect(ONE_BRAIN_CORE, s).toContain(s)
+    expect(ONE_BRAIN_CORE).not.toContain('150-350')
+    expect(ONE_BRAIN_CORE).not.toMatch(/a yes\/no\) gets 1-3 short paragraphs/)
+    expect(ONE_BRAIN_SHAPE_REMINDER).toContain('the need behind the question')
+    expect(ONE_BRAIN_SHAPE_REMINDER).not.toContain('150-350')
+  })
+  it('N3 (30/10): useful, not only careful - known facts are stated, only what changes is hedged, a partial lookup still answers every part', () => {
+    // Measured 30/10: "5 tin kinh tế" answered with 2 items and "mình chưa tìm đủ 5 tin"; three air purifiers with "chưa xác nhận được CADR,
+    // độ ồn" for each (ChatGPT stated the maker's published figures). The rule against inventing stays as it is.
+    for (const s of ['# Be useful, not only careful', 'Use what you reliably know', 'Hedge only what changes', 'Asked for N items, give N items', 'never in place of the answer']) expect(ONE_BRAIN_CORE, s).toContain(s)
+    expect(ONE_BRAIN_CORE).toContain('Never invent a fact')
+    expect(ONE_BRAIN_SHAPE_REMINDER).toMatch(/hedge only what changes/i)
+  })
   it('limits: 8 steps (2 kept for writing, so 6 rounds of lookup; owner 29/10), 4000 output tokens', () => {
     expect(ONE_BRAIN_MAX_STEPS).toBe(8)
     expect(ONE_BRAIN_MAX_TOKENS).toBe(4000)
