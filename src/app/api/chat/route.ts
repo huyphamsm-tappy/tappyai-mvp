@@ -2910,10 +2910,20 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       }) } : {}),
       web_search: tool({
         description: (toolByNeed && lean) || knowledgeTurn ? WEB_SEARCH_DESCRIPTION_BY_NEED : 'Tim kiem tong quat tren internet de lay thong tin moi nhat (ty gia, gia xang, su kien, kien thuc can xac thuc...) khi cac tool khac khong phu hop',
-        parameters: z.object({ query: z.string().describe('Tu khoa can tim kiem (vd: ty gia USD hom nay)') }),
-        execute: async ({ query }) => {
+        // CONSULT_ONE_BRAIN: the model may name the country and the language of the search (two letters each; anything else falls back to Vietnam / Vietnamese). Other routes keep the one-field schema.
+        parameters: z.object({
+          query: z.string().describe('Tu khoa can tim kiem (vd: ty gia USD hom nay)'),
+          ...(oneBrain ? {
+            country: z.string().optional().describe('Optional two-letter country code of the sources you want (e.g. us, jp, th, fr). Omit for Vietnam.'),
+            language: z.string().optional().describe('Optional two-letter language code of the sources you want (e.g. en, ja, th). Omit for Vietnamese.'),
+          } : {}),
+        }),
+        execute: async (args) => {
+          const { query } = args
+          const { country, language } = args as { country?: string; language?: string }
           // A travel turn that reaches for the general search still gets the editorial supplement.
-          const [r, editorial] = await Promise.all([webSearch(query, lang), travelEditorialFor(null)])
+          const searchRegion = oneBrain ? { gl: country, hl: language } : null
+          const [r, editorial] = await Promise.all([searchRegion ? webSearch(query, lang, searchRegion) : webSearch(query, lang), travelEditorialFor(null)])
           // Completion Pass (14 Sep 2026): an EVENT question is answered here, not by the places
           // tool — Ticketbox listings are discovered and validated by CCP and projected as
           // `event_links` (when CCP is on); the result is untouched otherwise.

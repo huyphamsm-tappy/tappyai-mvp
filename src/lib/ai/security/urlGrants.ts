@@ -136,6 +136,7 @@ const WEB: Contract = {
   'search_url': 'action', // code-built search page
   'event_links[].url': 'action', 'film_links[].url': 'action', // CCP-resolved ticket / film pages
   'product_links[].url': 'action', // CCP-resolved product page of a registry shopping merchant found by the model's own web search
+  'answer_box.link': 'source', 'knowledge_graph.website': 'source', // what Google shows above the list: a page the model may cite, never a button
 }
 const prefixed = (prefix: string, c: Contract): Contract => Object.fromEntries(Object.entries(c).map(([k, v]) => [`${prefix}.${k}`, v]))
 

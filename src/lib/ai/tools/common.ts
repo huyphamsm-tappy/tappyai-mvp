@@ -10,7 +10,7 @@ import {
 } from './serperToolBudget'
 import { messages } from '@/lib/ai/messages'
 import { logText } from '@/lib/ai/logSafeText'
-import { webSearchCacheKey, serperSearchCacheKey, placePhotosCacheKey, cacheKeyPart } from './cacheKeys'
+import { webSearchCacheKey, serperSearchCacheKey, placePhotosCacheKey, cacheKeyPart, type SearchRegion } from './cacheKeys'
 
 // ===== In-memory cache (theo Vercel instance, giam goi API lap lai cho cung 1 query) =====
 type CacheEntry = { data: unknown; expires: number; /** when the data was really fetched; null = not known (a row rebuilt from a legacy shared entry) */ at: number | null }
@@ -489,16 +489,44 @@ export async function fetchPlacePhotoByName(placeId: string, placeName: string):
 }
 
 // ===== SERPER: Google Search API (can SERPER_API_KEY, 2500 query free) =====
-type SerperSearchRow = { title: string; link: string; snippet: string }
+type SerperSearchRow = { title: string; link: string; snippet: string; /** The result's own date as Google shows it ("2 giờ trước", "Oct 25, 2026"), when it has one. */ date?: string }
+/** What Serper returns beside the organic list, compacted to short text for the model. Absent when the search had none. */
+export interface SerperExtras {
+  answer_box?: { title?: string; answer?: string; snippet?: string; link?: string }
+  knowledge_graph?: { title?: string; type?: string; description?: string; website?: string; attributes?: Record<string, string> }
+}
+const EXTRA_TEXT_MAX = 400
+const KG_ATTRIBUTES_MAX = 8
+const clip = (v: unknown, max = EXTRA_TEXT_MAX): string | undefined => (typeof v === 'string' && v.trim() ? v.trim().slice(0, max) : undefined)
+const dropEmpty = <T extends Record<string, unknown>>(o: T): T | undefined => { const e = Object.entries(o).filter(([, v]) => v !== undefined); return e.length > 0 ? Object.fromEntries(e) as T : undefined }
+/** Reads Serper's `answerBox` / `knowledgeGraph` into short text fields (nothing is composed; a field the response lacks stays absent). */
+export function serperExtrasOf(data: unknown): SerperExtras | undefined {
+  const d = (data ?? {}) as { answerBox?: Record<string, unknown>; knowledgeGraph?: Record<string, unknown> }
+  const ab = d.answerBox
+  const kg = d.knowledgeGraph
+  const answer_box = ab && typeof ab === 'object' ? dropEmpty({ title: clip(ab.title, 200), answer: clip(ab.answer), snippet: clip(ab.snippet), link: typeof ab.link === 'string' ? sanitizeUrlForMarkdown(ab.link) : undefined }) : undefined
+  const attrs = kg && typeof kg.attributes === 'object' && kg.attributes ? Object.entries(kg.attributes as Record<string, unknown>).filter(([, v]) => typeof v === 'string').slice(0, KG_ATTRIBUTES_MAX).map(([k, v]) => [k.slice(0, 80), String(v).slice(0, 120)] as [string, string]) : []
+  const knowledge_graph = kg && typeof kg === 'object' ? dropEmpty({ title: clip(kg.title, 200), type: clip(kg.type, 120), description: clip(kg.description), website: typeof kg.website === 'string' ? sanitizeUrlForMarkdown(kg.website) : undefined, attributes: attrs.length > 0 ? Object.fromEntries(attrs) : undefined }) : undefined
+  return answer_box || knowledge_graph ? { ...(answer_box ? { answer_box } : {}), ...(knowledge_graph ? { knowledge_graph } : {}) } : undefined
+}
+/** Country and language of a search (two letters each; anything else falls back to Vietnam / Vietnamese, the way every search was sent before). */
+export function searchRegionOf(opts?: { gl?: unknown; hl?: unknown }): SearchRegion {
+  const two = (v: unknown, dflt: string): string => (typeof v === 'string' && /^[a-zA-Z]{2}$/.test(v) ? v.toLowerCase() : dflt)
+  return { gl: two(opts?.gl, 'vn'), hl: two(opts?.hl, 'vi') }
+}
+const isDefaultRegion = (r: SearchRegion): boolean => r.gl === 'vn' && r.hl === 'vi'
 /**
  * How a Serper /search call ended (TURN_WEB_TICKET / SEARCH_FALLBACK_GATE read it; see serperToolBudget.ts for the meanings).
  * 'cache' = answered from a cache, nothing sent. A FOLLOWER of a single-flight receives the leader's state (the request was sent by someone).
  */
 export type SerperSearchState = 'cache' | 'not_sent' | 'ticket_denied' | 'sent_success' | 'sent_empty' | 'sent_error'
-export interface SerperSearchOutcome { rows: SerperSearchRow[] | null; state: SerperSearchState }
+export interface SerperSearchOutcome { rows: SerperSearchRow[] | null; state: SerperSearchState; extras?: SerperExtras }
 export interface SerperSearchOpts {
   /** 'W' = web research: shares the turn's one-request web ticket (TURN_WEB_TICKET). Absent = a vertical's own search (not limited by it). */
   purpose?: 'W'
+  /** Country and language the model asked for (validated by `searchRegionOf`). Absent = Vietnam / Vietnamese. */
+  gl?: string
+  hl?: string
 }
 const NOT_SENT: SerperSearchOutcome = Object.freeze({ rows: null, state: 'not_sent' as const })
 
@@ -517,29 +545,33 @@ export async function serperSearchEx(query: string, opts?: SerperSearchOpts): Pr
    * was paid for again. Same rule as the photo cache: only a non-empty result is
    * stored, so a timeout never becomes a 5-minute hole in the data.
    */
-  const searchCacheKey = serperSearchCacheKey(query)
+  const region = searchRegionOf(opts)
+  const searchCacheKey = serperSearchCacheKey(query, region)
   const cachedSearch = getCache(searchCacheKey)
   if (Array.isArray(cachedSearch) && cachedSearch.length > 0) {
     recordSerperL1Hit('search')
     noteRetrieval(getCacheAt(searchCacheKey))
-    return { rows: cachedSearch as SerperSearchRow[], state: 'cache' }
+    const extras = getCache(`${searchCacheKey}:extras`) as SerperExtras | null
+    return { rows: cachedSearch as SerperSearchRow[], state: 'cache', ...(extras ? { extras } : {}) }
   }
   const apiKey = process.env.SERPER_API_KEY
   if (!apiKey) return NOT_SENT
   const lead = { led: false }
-  const out = await serperFlight<SerperSearchOutcome>(`search:${searchCacheKey}`, () => { lead.led = true; return serperSearchPaid(query, searchCacheKey, apiKey, opts?.purpose) }, NOT_SENT)
+  const out = await serperFlight<SerperSearchOutcome>(`search:${searchCacheKey}`, () => { lead.led = true; return serperSearchPaid(query, searchCacheKey, apiKey, opts?.purpose, region) }, NOT_SENT)
   if (out.state !== 'ticket_denied' || lead.led) return out
   // A FOLLOWER (a W or a V caller, this turn or another) of a flight whose LEADER was refused by the leader's own spent ticket sent nothing and
   // spent nothing: it is not refused for that. It asks once more under a flight key of its own, so it is certain to lead (never joins another
   // refused flight): its own purpose and its own ticket decide. Followers never take a ticket; only a leader does.
-  return serperFlight<SerperSearchOutcome>(`search:${searchCacheKey}:re${++retrySeq}`, () => serperSearchPaid(query, searchCacheKey, apiKey, opts?.purpose), NOT_SENT)
+  return serperFlight<SerperSearchOutcome>(`search:${searchCacheKey}:re${++retrySeq}`, () => serperSearchPaid(query, searchCacheKey, apiKey, opts?.purpose, region), NOT_SENT)
 }
 let retrySeq = 0
 
-async function serperSearchPaid(query: string, searchCacheKey: string, apiKey: string, purpose?: 'W'): Promise<SerperSearchOutcome> {
+async function serperSearchPaid(query: string, searchCacheKey: string, apiKey: string, purpose?: 'W', region: SearchRegion = { gl: 'vn', hl: 'vi' }): Promise<SerperSearchOutcome> {
   // L2: the shared 24 h cache (serperCache.ts). Fails open — a miss or a store outage falls
-  // through to the paid call below.
-  const shared = await serperCacheGetMeta<{ title: string; link: string; snippet: string }>('search', query, null)
+  // through to the paid call below. It is keyed on the query alone, so only the default region (Vietnam / Vietnamese) reads or writes it;
+  // the answer box and knowledge graph are not kept in it either (a hit from it has the rows only).
+  const defaultRegion = isDefaultRegion(region)
+  const shared = defaultRegion ? await serperCacheGetMeta<{ title: string; link: string; snippet: string }>('search', query, null) : null
   if (shared) {
     recordSerperCacheHit('search')
     const sharedAt = shared.at ? Date.parse(shared.at) : null
@@ -550,23 +582,25 @@ async function serperSearchPaid(query: string, searchCacheKey: string, apiKey: s
   // What serperPost says about this request (the state is never guessed from the shape of the result).
   const post: { state: SerperPostState; entry?: TicketEntry } = { state: 'not_sent' }
   try {
-    const resp = await serperPost('search', apiKey, { q: query, gl: 'vn', hl: 'vi', num: 8 }, 6000, { ...(purpose ? { purpose } : {}), report: (s, e) => { post.state = s; post.entry = e } })
+    const resp = await serperPost('search', apiKey, { q: query, gl: region.gl, hl: region.hl, num: 8 }, 6000, { ...(purpose ? { purpose } : {}), report: (s, e) => { post.state = s; post.entry = e } })
     if (!resp) return post.state === 'ticket_denied' ? { rows: null, state: 'ticket_denied' } : NOT_SENT // A2: over today's Serper ceiling
     if (!(resp as Response).ok) return { rows: null, state: 'sent_error' }
     const data = await (resp as Response).json()
-    const organic = (data?.organic || []) as Array<{ title?: string; link?: string; snippet?: string }>
-    const results = organic
+    const organic = (data?.organic || []) as Array<{ title?: string; link?: string; snippet?: string; date?: unknown }>
+    const results: SerperSearchRow[] = organic
       .filter(r => r.title && r.link)
       .slice(0, 6)
-      .map(r => ({ title: r.title as string, link: sanitizeUrlForMarkdown(r.link as string), snippet: r.snippet || '' }))
+      .map(r => ({ title: r.title as string, link: sanitizeUrlForMarkdown(r.link as string), snippet: r.snippet || '', ...(clip(r.date, 60) ? { date: clip(r.date, 60) } : {}) }))
+    const extras = serperExtrasOf(data)
     if (post.entry) settleTurnWebTicket(post.entry, results.length > 0 ? 'sent_success' : 'sent_empty')
     // 5 minutes, matching webSearch's own TTL for the same upstream endpoint.
     if (results.length > 0) {
       setCache(searchCacheKey, results, 5 * 60 * 1000)
-      await serperCacheSet('search', query, null, results)
+      if (extras) setCache(`${searchCacheKey}:extras`, extras, 5 * 60 * 1000)
+      if (defaultRegion) await serperCacheSet('search', query, null, results)
     }
     noteRetrieval(Date.now())
-    return { rows: results, state: results.length > 0 ? 'sent_success' : 'sent_empty' }
+    return { rows: results, state: results.length > 0 ? 'sent_success' : 'sent_empty', ...(extras ? { extras } : {}) }
   } catch {
     // After fetch was called (a timeout, a network error, an unreadable body) the request counts as SENT; only a body that could not even be
     // built is not_sent (serperPost reports which).
@@ -762,18 +796,20 @@ export function parseSerperPriceVnd(value: unknown): number | null {
 
 // ===== WEB SEARCH: DuckDuckGo HTML (free, no API key) =====
 /** `vertical: true` = a vertical's own fallback search (the legacy hotel fallback in travel.ts): a "V" request that does not take the turn's web ticket (Plan B). */
-async function webSearchImpl(query: string, lang = 'vi', opts: { vertical?: boolean } = {}) {
-  const cacheKey = webSearchCacheKey(query, lang)
+async function webSearchImpl(query: string, lang = 'vi', opts: { vertical?: boolean; gl?: unknown; hl?: unknown } = {}) {
+  const region = searchRegionOf(opts)
+  const cacheKey = webSearchCacheKey(query, lang, region)
   const cached = getCache(cacheKey)
   if (cached) return cached
 
   const fallbackUrl = 'https://duckduckgo.com/?q=' + encodeURIComponent(query)
   let result: unknown
 
-  const serperEx = await serperSearchEx(query, opts.vertical ? {} : { purpose: 'W' })
+  const serperEx = await serperSearchEx(query, { ...(opts.vertical ? {} : { purpose: 'W' as const }), gl: region.gl, hl: region.hl })
   const serperResults = serperEx.rows
   if (serperResults && serperResults.length > 0) {
-    result = { query, source: 'Google (Serper)', results: serperResults, search_url: fallbackUrl }
+    // answer_box / knowledge_graph: what Google itself put above the list (a figure, a definition); absent when the search had none
+    result = { query, source: 'Google (Serper)', results: serperResults, ...(serperEx.extras ?? {}), search_url: fallbackUrl }
     setCache(cacheKey, result, 5 * 60 * 1000)
     return result
   }
