@@ -1557,7 +1557,8 @@ export async function POST(req: Request) {
   let traceFinishReason: string | null = null
   let traceAreaAsk: { appended: boolean | null; reason: string | null } | null = null
   // Owner 2026-09-28 (c40 T7): a flight search runs without a date; the date is asked at the END.
-  if (!consult && searchNow?.type === 'flight' && !SPECIFIC_DATE.test(normalizeVN(lastText.toLowerCase())) && !(lastAssistantText && endsWithQuestion(lastAssistantText))) {
+  // N5 rest (30/10): not on one brain - the model asks for the date itself when it needs it (no code question after its answer).
+  if (!consult && !oneBrain && searchNow?.type === 'flight' && !SPECIFIC_DATE.test(normalizeVN(lastText.toLowerCase())) && !(lastAssistantText && endsWithQuestion(lastAssistantText))) {
     gateAskAfter = { q: lang === 'en' ? 'Which date?' : 'Ngày bay?', options: [] }
   }
   let presearchPlan = consultativeV1 && !agentOn ? planPresearch(searchNow, situation, { clip: !!clipContext, planning: !!planningIntent, movie: movieRecommend || filmAsk, more: moreTurn, statedArea: statedArea?.label ?? s2cArea ?? null, userText: framingText }) : null

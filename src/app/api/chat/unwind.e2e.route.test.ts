@@ -659,6 +659,15 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     expect(on.text.indexOf('Bạn ăn trưa hay ăn tối?')).toBeGreaterThan(-1)
     expect(on.text.indexOf('Bạn ăn trưa hay ăn tối?')).toBeLessThan(on.text.indexOf('Phố Hàng Bạc'))
   }, 60000)
+  it('N5 rest (30/10): one brain - no code-written lead or backstop sentence is added to the model\'s answer (flight lead, shopping "chưa tìm được listing")', async () => {
+    // Review 30/10: verificationLead prepends a fare line, the V1 backstops add "Mình chọn …" / "Mình chưa tìm được listing…" on one brain.
+    const fly = 'Vé Sài Gòn – Hà Nội ngày 20/11 thường dao động theo hãng, bạn nên so trên trang hãng bay.'
+    const f = await turn([{ role: 'user', content: 'vé máy bay sài gòn hà nội ngày 20/11 giá bao nhiêu' }], { unwind: true, oneBrain: true, luna: intent('ask', ['travel']), tools: [{ name: 'get_flight_prices', args: { origin: 'SGN', destination: 'HAN', date: '2026-11-20' } }], reply: fly })
+    expect(f.text.trimStart().startsWith(fly)).toBe(true)
+    const shop = await turn([{ role: 'user', content: 'Tư vấn nồi chiên không dầu 6 lít dưới 2 triệu' }], { unwind: true, oneBrain: true, luna: intent('pick', ['shopping']), tools: [{ name: 'search_products', args: { query: 'nồi chiên không dầu 6 lít' } }], reply: 'Ok.' })
+    expect(shop.text).not.toContain('Mình chưa tìm được listing')
+    expect(shop.text).not.toMatch(/^Mình chọn \*\*/)
+  }, 60000)
   it('flag ON: the turn cost line prices the answer at the call\'s own vendor cost, not at the Haiku list price; flag OFF unchanged', async () => {
     // Localhost 29/10: a one-brain turn logged model "haiku-4.5" and priced the vendor's tokens at the Haiku list price.
     const finishSteps = [{ usage: { promptTokens: 8000, completionTokens: 500 }, providerMetadata: { tappy: { cost: { provider: 'openai', effort: 'none', usd: 0.0123, reasoningTokens: 0, cachedInputTokens: 6000, cacheWriteTokens: 0 } } } }]

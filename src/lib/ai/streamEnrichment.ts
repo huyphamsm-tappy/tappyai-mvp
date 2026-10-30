@@ -3701,7 +3701,8 @@ export function applyPlaceEnrichmentStreamFilter(
     // M7 (agent path): Luna owns the answer — the evidence-only pick sentence is a BACKSTOP for a pick the guards cut, never a second
     // "Mình chọn …" under a short reply that already states it (measured M6 route test: the pick appeared twice).
     const pickAlreadyStated = !!collector?.agentMode && !!pickForFallback && pickStillStated(bodyAfterGuards, pickForFallback)
-    const g1bFallback = bodyLetters < 40 && !pickAlreadyStated ? fallbackSentence(subjectOnly(pickForFallback)) : null
+    // N5 rest (30/10): on one brain no server-authored pick / "not found" sentence is added - the model wrote the answer (review 30/10).
+    const g1bFallback = collector?.oneBrain !== true && bodyLetters < 40 && !pickAlreadyStated ? fallbackSentence(subjectOnly(pickForFallback)) : null
     if (g1bFallback) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'place_claim_fallback', v2: guardV2, body_letters: bodyLetters, emitted: true }))
     /**
      * Consultative V1 backstop — THE PICK MUST BE STATED (rule 1). Measured 2026-09-18 on the
@@ -3713,7 +3714,7 @@ export function applyPlaceEnrichmentStreamFilter(
      */
     const v1PickBackstop = (() => {
       // The Agent chooses what to say: the code does not write a "Mình chọn **X** — 4.9⭐ (N đánh giá Google Maps)…" sentence on top of its answer.
-      if (g1bFallback || !collector?.consultativeV1?.on || collector.agentMode) return null
+      if (g1bFallback || !collector?.consultativeV1?.on || collector.agentMode || collector.oneBrain === true) return null
       const body = bodyAfterGuards.replace(/\[(?:CTA_BUTTONS|TAPPY_SHOPPING|TAPPY_PLACES|TAPPY_PLAN)\][\s\S]*?\[\/(?:CTA_BUTTONS|TAPPY_SHOPPING|TAPPY_PLACES|TAPPY_PLAN)\]/g, '').replace(/\[FOLLOWUPS\][^\n]*/g, '')
       const shopping = shoppingPickFromMarker(collector.shoppingMarker)
       const known = [...places.map(p => p.name || ''), ...(shopping ? [shopping.name] : [])]
@@ -3794,7 +3795,7 @@ export function applyPlaceEnrichmentStreamFilter(
      * name: what was searched found nothing the guards could keep, and what would help next.
      */
     const shoppingNoneBackstop = (() => {
-      if (g1bFallback || v1PickBackstop || !collector?.consultativeV1?.on) return null
+      if (g1bFallback || v1PickBackstop || !collector?.consultativeV1?.on || collector.oneBrain === true) return null
       if (bodyLetters >= 40 || collector.shoppingMarker || places.length > 0) return null
       if (productRecords.length === 0 && productQueries.length === 0) return null
       console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'consultative_v1_pick_backstop', kind: 'shopping_none', body_letters: bodyLetters, records: productRecords.length }))
@@ -4090,6 +4091,8 @@ export function applyPlaceEnrichmentStreamFilter(
       return r.text
     }
     const shapeFinalProse = (raw: string): string => {
+      // N5 rest (30/10): on one brain the coach-fare rewrite and its "not verified for that date" sentence are not added; the model writes from the rows.
+      if (collector?.oneBrain === true) return raw
       if (!(collector?.consultative === true && collector.agentMode)) {
         // Round 42 round 3 (RANGE-27-33, rule R-C1, Huy 2026-10-13): the coach range step runs on this path too; the operator rule stays flag-on only.
         const split = coachRows.length > 0 ? splitCoachRanges(raw, coachRows, lang) : null
@@ -4139,7 +4142,8 @@ export function applyPlaceEnrichmentStreamFilter(
     // CONSULTATIVE_IN_AGENT: the lead is dropped when the prose already carries a "not verified" sentence (the lead would be its twin).
     // (audit trace, Snow Crash / flight turn 2026-10-11: the model's own "Chưa xác minh được giá vé …" and the code lead "Giá vé hiện chưa xác minh được …" stood
     // back to back — the lead's `alreadySaid` wants "giá" BEFORE "chưa xác minh" and the model's sentence is > 160 characters, so neither dedupe saw it.)
-    const fareLead = fareLead0 && collector?.consultative === true && (admitsUnverified(ctaOwnedProse) || dedupeCaveats(`${fareLead0}${ctaOwnedProse}`).length < `${fareLead0}${ctaOwnedProse}`.length) ? '' : fareLead0
+    // N5 rest (30/10): no code-written lead on one brain - the model states what it could not confirm (oneBrain.ts).
+    const fareLead = fareLead0 && (collector?.oneBrain === true || (collector?.consultative === true && (admitsUnverified(ctaOwnedProse) || dedupeCaveats(`${fareLead0}${ctaOwnedProse}`).length < `${fareLead0}${ctaOwnedProse}`.length))) ? '' : fareLead0
     const finalText = `${fareLead}${ctaOwnedProse}${systemLinksSuffix}${markerSuffix}${placesSuffix}${ctaSuffix}`
     if (fareLead) gt('verification_lead', ctaOwnedProse, `${fareLead}${ctaOwnedProse}`)
     legacyTrace?.turn()
