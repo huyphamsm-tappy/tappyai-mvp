@@ -716,11 +716,22 @@ function formingStart(text: string): number {
  * token. With no `[`/`![`/scheme in the text the result is the input, byte for byte, so an
  * ordinary turn keeps its timing and frame count. Monotonic: what was releasable stays a prefix.
  */
+/**
+ * 30/10 (O-DEV30 Q09, B27): the model wrote "[ FOLLOWUPS ] 256GB|512GB[/FOLLOWUPS]"; every parser reads the marker exactly, so the line reached
+ * the user as text and no chips came. A marker name we know with only whitespace inside its brackets IS that marker. Applied where the model's
+ * text enters this filter (live release, buffered accumulation), before any parser or guard - a spaced server-only marker therefore meets the
+ * forged-marker rule like an unspaced one. Anything else is returned byte for byte.
+ */
+export function canonicalMarkers(text: string): string {
+  return text.indexOf('[') === -1 ? text : text.replace(/\[[ \t]*(\/?)[ \t]*(FOLLOWUPS|CTA_BUTTONS|TAPPY_[A-Z_]+)[ \t]*\]/g, (whole, slash: string, name: string) => (whole.length === name.length + slash.length + 2 ? whole : `[${slash}${name}]`))
+}
+
 export function releasableLiveText(
   text: string,
   endOfStream = false,
   allowedUrls?: ReadonlySet<string>,
 ): string {
+  text = canonicalMarkers(text)
   if (!endOfStream) {
     const from = formingStart(text)
     if (from !== -1) return releasableLiveText(text.slice(0, from), true, allowedUrls)
@@ -4234,7 +4245,9 @@ export function applyPlaceEnrichmentStreamFilter(
             try {
               const delta = JSON.parse(line.slice(2)) as string
               uatTrace('chunk_in', delta)
-              mainText += delta
+              // a spaced marker ("[ FOLLOWUPS ]") is repaired in the part not released yet (canonicalMarkers); the released prefix is never rewritten
+              const released = mainText.startsWith(flushedText) ? flushedText : ''
+              mainText = released + canonicalMarkers(mainText.slice(released.length) + delta)
               assistantSoFar += delta
             } catch { /* skip malformed */ }
             // A5-P1: release the part that the guard provably cannot touch, instead of making the
