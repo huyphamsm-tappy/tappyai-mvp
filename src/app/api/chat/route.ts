@@ -106,6 +106,7 @@ import { isProductionRuntime, consultFinalSynthesisOn, consultFinalWriteOn, cons
 import { searchWithReads, createOnce, FOLLOW_UP_SYSTEM, S6_MAX_READS } from '@/lib/ai/consultative/searchReads'
 import { ONE_BRAIN_CORE, ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, oneBrainDynamic } from '@/lib/ai/consultative/oneBrain'
 import { oneBrainMediaStream } from '@/lib/ai/consultative/oneBrainMedia'
+import { oneBrainTurnTrace } from '@/lib/ai/consultative/turnTrace'
 import { serperLastAccountErrorAt } from '@/lib/ai/tools/serperClient'
 import { getWeatherForecast } from '@/lib/ai/tools/weatherForecast'
 import { understandTurn } from '@/lib/ai/answerV4/understand'
@@ -3757,6 +3758,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // venue) and so runs at 'none'.
     tools: turnHasNoTools ? undefined : traceToolsOuter(finalSynthesisGuard(lunaGuardTools(withResearchUrls(leanToolSet))), trace),
     onFinish: async ({ usage, finishReason, text, steps }) => {
+      // P2-8: one line per one-brain turn - model, effort, steps run vs the cap, tools by name, how it ended (counts and names only; never text or arguments).
+      if (oneBrain) { try { console.log(JSON.stringify(oneBrainTurnTrace({ serving: AI.serving(role), finishReason, maxSteps: streamMaxSteps, maxTokens: ONE_BRAIN_MAX_TOKENS, text, usage, steps: steps as never }))) } catch { /* trace only */ } }
       // CONSULT_TRACE_DIAGNOSTICS (Wave 2C): how the tool loop ended. `requested` includes the code's own pre-search; `blocked` = answered search_budget_used (never counted as a provider request).
       trace?.emit('loop', { stepsRun: steps?.length ?? null, maxSteps: streamMaxSteps, finishReason, modelTextChars: text.length, tools: { ...trace.counters }, ...(searchGate ? { toolsOffered: trace.facts.toolsOffered } : {}) })
       if (trace) traceFinishReason = typeof finishReason === 'string' ? finishReason : null

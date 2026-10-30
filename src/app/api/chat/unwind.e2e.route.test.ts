@@ -222,6 +222,23 @@ describe('P0-3 follow-up (30/10): the route\'s attachCommerceLinks wrapper, offl
   }, 60000)
 })
 
+describe('P2-8 (30/10): one line per one-brain turn about how the loop ended (the real route, offline)', () => {
+  const Q: Msg[] = [{ role: 'user', content: 'Giải thích giúp mình lạm phát là gì' }]
+  const STEPS = [{ toolCalls: [{ toolName: 'web_search', args: { query: 'bí mật của người dùng' } }, { toolName: 'read_page' }], response: { modelId: 'reported-model-x' } }, { toolCalls: [], response: { modelId: 'reported-model-x' } }]
+  const traceOf = (logs: Array<Record<string, any>>) => logs.filter(l => l.type === 'tappyai_one_brain_turn')
+  it('one brain: exactly one line, with steps, tools by name, the model the provider reported and the cap', async () => {
+    const r = await turn(Q, { unwind: true, oneBrain: true, luna: intent('answer', ['knowledge']), finishSteps: STEPS, reply: 'Lạm phát là sự tăng mức giá chung.' })
+    const t = traceOf(r.logs)
+    expect(t).toHaveLength(1)
+    expect(t[0]).toMatchObject({ steps_run: 2, max_steps: 8, step_cap_hit: false, wrote_text: true, finish_reason: 'stop', tools: { web_search: 1, read_page: 1 }, tool_calls: 2, response_model: 'reported-model-x', provider: 'mock' })
+    expect(JSON.stringify(t[0])).not.toContain('bí mật') // names and counts only
+  }, 60000)
+  it('not one brain: no such line (the other routes are unchanged)', async () => {
+    const r = await turn(Q, { unwind: false, oneBrain: false, luna: intent('answer', ['knowledge']), finishSteps: STEPS, reply: 'Lạm phát là sự tăng mức giá chung.' })
+    expect(traceOf(r.logs)).toHaveLength(0)
+  }, 60000)
+})
+
 const PLAN: Msg[] = [{ role: 'user', content: 'len ke hoach di choi da nang 4 ngay 3 dem, tong chi phi tam 18 trieu' }]
 const PLAN_INTENT = intent('ask', ['travel'], {
   known: [{ key: 'diem_den', value: 'Đà Nẵng' }, { key: 'so_ngay', value: '4 ngày 3 đêm' }, { key: 'ngan_sach', value: '18 triệu' }],
