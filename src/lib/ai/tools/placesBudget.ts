@@ -38,6 +38,8 @@ export interface PlacesBudget {
   /** Distinct intents retrieved so far. */
   readonly used: number
   readonly limit: number
+  /** One brain (review 30/10): a place name the city list does not know may cost one extra /maps lookup for its coordinates (food.ts). */
+  readonly namedCentre?: boolean
 }
 
 /**
@@ -82,12 +84,13 @@ function intentKey(type: string | undefined, location: string | undefined): stri
  * both restaurant + Đà Lạt - and the second came back as zero rows ('intent_already_retrieved'), read by the model as "nothing found".
  * The limit still caps the distinct lookups of the turn.
  */
-export function createPlacesBudget(limit: number, opts: { byQuery?: boolean } = {}): PlacesBudget {
+export function createPlacesBudget(limit: number, opts: { byQuery?: boolean; namedCentre?: boolean } = {}): PlacesBudget {
   const retrieved = new Set<string>()
   const norm = (s: string | undefined) => normalizeVN((s ?? '').normalize('NFC').toLowerCase()).replace(/\s+/g, ' ').trim()
   return {
     get used() { return retrieved.size },
     limit,
+    namedCentre: opts.namedCentre === true,
     claim(type, location, query) {
       const key = opts.byQuery ? `${intentKey(type, location)}|${norm(query)}` : intentKey(type, location)
       // Asked again in different words. The first answer already covers it, and the cache will

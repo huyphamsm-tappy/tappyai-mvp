@@ -508,6 +508,15 @@ function isDirectFoodOrderLink(link: string): boolean {
  * query or the location, the search is centred on Ho Chi Minh City (the default city); a city the
  * text names keeps its own destination centre (resolved by the caller).
  */
+/** The coordinates of a named place the city list does not know: the first /maps row for the bare name, only inside Việt Nam's bounds. */
+async function placeCoordinates(name: string): Promise<{ lat: number; lng: number } | null> {
+  if (cityInText(name)) return null
+  const rows = await serperPlaces(name, null, { priceRetry: false }).catch(() => null)
+  const top = (rows ?? []).find(r => typeof r.latitude === 'number' && typeof r.longitude === 'number' && r.latitude > 8 && r.latitude < 23.5 && r.longitude > 102 && r.longitude < 110)
+  console.log(JSON.stringify({ type: 'tappyai_places_debug', provider: 'serper_maps', step: 'named_place_centre', found: !!top }))
+  return top ? { lat: top.latitude as number, lng: top.longitude as number } : null
+}
+
 function defaultCentre(query: string, location: string | undefined): { lat: number; lng: number; zoom: number } | null {
   if (cityInText(query) || cityInText(location)) return null
   console.log(JSON.stringify({ type: 'tappyai_places_debug', provider: 'serper_maps', step: 'default_centre', city: 'hcm' }))
@@ -540,6 +549,8 @@ async function searchPlacesSerper(
   priceRetry = true,
   placeType?: string | null,
   areaCentre: { lat: number; lng: number; label: string } | null = null,
+  /** One brain (review 30/10): this turn may spend one /maps lookup to place a name the city list does not know (PlacesBudget.namedCentre). */
+  namedCentre = false,
 ): Promise<Record<string, unknown> | null> {
   const { destination, remote } = scope
   // PRELAUNCH 5b: a district the user NAMED beats their GPS — "phở ở Quận 3" asked from Quận 1 is
@@ -552,6 +563,9 @@ async function searchPlacesSerper(
   // near (14z). The engine still ranks nearer rows higher, so a close venue still wins when it exists.
   const zoom = placeType === 'attraction' || placeType === 'cinema' ? 12 : 14
   const centreAt = (lat: number, lng: number) => ({ lat, lng, zoom })
+  // Review 30/10: a place the city list does not know ("Côn Đảo", "Tam Cốc", "Mộc Châu") had no centre - refused by the route, or centred on
+  // the default TP.HCM. The place name itself is looked up once (no centre) and its own coordinates are the centre, when they are in Việt Nam.
+  const named = namedCentre && !useArea && !centeredOnUser && !destination && !locationBias && !!location?.trim() ? await placeCoordinates(location!.trim()) : null
   const centre = useArea
     ? centreAt(areaCentre!.lat, areaCentre!.lng)
     : centeredOnUser
@@ -560,7 +574,9 @@ async function searchPlacesSerper(
       ? centreAt(destination.coords[0], destination.coords[1])
       : locationBias
         ? centreAt(locationBias.lat, locationBias.lng)
-        : defaultCentre(query, location)
+        : named
+          ? centreAt(named.lat, named.lng)
+          : defaultCentre(query, location)
 
   // The place string is normalised (city alias → Maps name, no commas) so `/maps` answers with
   // `priceLevel` consistently — see serperLocation.ts for the measurement. Serper only.
@@ -609,6 +625,7 @@ async function searchPlacesUncached(
   locationBias?: { lat: number; lng: number } | null,
   priceRetry = true,
   areaCentre: { lat: number; lng: number; label: string } | null = null,
+  namedCentre = false,
 ): Promise<{ result: unknown; googleOk: boolean }> {
   // BUG-011: resolved once here and used by BOTH providers, so the Google call and the OSM
   // fallback can never disagree about which city this search is for.
@@ -648,7 +665,7 @@ async function searchPlacesUncached(
    * see the wrapper). Only the OSM fallback and failures stay uncached.
    */
   if (!result && provider !== 'osm') {
-    result = await searchPlacesSerper(query, location, lang, locationBias, { destination, remote: remoteDestination }, priceRetry, type, areaCentre)
+    result = await searchPlacesSerper(query, location, lang, locationBias, { destination, remote: remoteDestination }, priceRetry, type, areaCentre, namedCentre)
     if (result) googleOk = true
   }
   if (!result) {
@@ -1043,7 +1060,7 @@ async function searchPlacesImpl(
     }
 
     console.log(JSON.stringify({ type: 'tappyai_places_budget', step: 'provider_attempt', provider: placesProvider(), placeType: type ?? null }))
-    const { result, googleOk } = await searchPlacesUncached(query, location, type, lang, locationBias, opts.priceRetry !== false, opts.areaCentre ?? null)
+    const { result, googleOk } = await searchPlacesUncached(query, location, type, lang, locationBias, opts.priceRetry !== false, opts.areaCentre ?? null, budget?.namedCentre === true)
     if (googleOk) {
       setCache(cacheKey, result, 30 * 60 * 1000) // cache 30 phut, dia diem it thay doi
       console.log(JSON.stringify({ type: 'tappyai_places_budget', step: 'google_ok_cached' }))

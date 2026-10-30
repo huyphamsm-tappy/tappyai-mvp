@@ -2480,7 +2480,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // Google Places safety quota (provider layer, placesBudget.ts) — never an orchestration constant of either agent loop.
   // CONSULT_ONE_BRAIN: the model plans its own searches (restaurants, then attractions, ...), so it gets the agent's budget, not one place search a turn.
   const placeOwner = createTurnPlaceOwner(oneBrain)
-  const placesBudget = createPlacesBudget(agentOn ? PLACES_BUDGET_AGENT : oneBrain ? PLACES_BUDGET_AGENT : planningIntent ? PLACES_BUDGET_PLANNING : PLACES_BUDGET_DEFAULT, { byQuery: oneBrain })
+  const placesBudget = createPlacesBudget(agentOn ? PLACES_BUDGET_AGENT : oneBrain ? PLACES_BUDGET_AGENT : planningIntent ? PLACES_BUDGET_PLANNING : PLACES_BUDGET_DEFAULT, { byQuery: oneBrain, namedCentre: oneBrain })
   // chat2 A2 + security review 02/10: the one extra "widen" retrieval after an empty search is paid from ITS OWN one-call allowance per request
   // (not a fresh budget per tool step), and never runs when the turn's Places budget was already refused.
   const widenBudget = createPlacesBudget(1)
@@ -2687,7 +2687,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // Round 42 (D1, then LOC-DEFAULT-HCM-01): no valid current location and no place named anywhere — do not search around a default
           // centre (TP.HCM), "gần tôi" or not; tell the model the location is missing, and the code asks for the area (areaAsk.ts).
           if (!placesOverride && !hasValidCurrentLocation(userLocation) && !statedArea
-            && !(oneBrain ? cityOf(lastText) : cityInText(lastText)) && !(location && (cityForName(location) ?? cityInText(location) ?? statedDistrict(location))) && !(oneBrain ? cityOf(query) : cityInText(query)) && !statedDistrict(query)) {
+            // review 30/10 (one brain): a place the model names that the city list does not know (Côn Đảo) is searched around its own coordinates (food.ts)
+            && !(oneBrain ? cityOf(lastText) : cityInText(lastText)) && !(location && (oneBrain || cityForName(location) || cityInText(location) || statedDistrict(location))) &&!(oneBrain ? cityOf(query) : cityInText(query)) && !statedDistrict(query)) {
             // Wave 2E (C1): this lookup is the MODEL's own (the gate dropped the code pre-search, so a lookup that reaches here was asked for by the model): it needs a place, so the user is asked for the area
             // exactly as before - the gate never says "no place needed" for the model.
             // N5 (30/10): on the one-brain route the code writes nothing into the answer - the model, which read the whole request, decides whether
