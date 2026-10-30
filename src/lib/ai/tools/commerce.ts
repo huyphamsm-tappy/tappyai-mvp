@@ -1020,6 +1020,45 @@ async function eventScheduleOf(url: string, ctx: CommerceAttachContext, now: Dat
   return scheduleFacts(stated, now)
 }
 
+/** Product pages the platform offers from one web search. */
+const MAX_WEB_PRODUCT_LINKS = 3
+
+/**
+ * A web result that IS a product page of a registry shopping merchant (the model searched `site:<store> <product>` itself, in
+ * whatever language the person wrote) becomes a validated Commerce Link under `product_links`. Decided by the result's HOST and
+ * the merchant adapter's product-page shape - never by words in the question. A category page, an article, a search page, or a
+ * host the registry does not own gives nothing. The web results themselves are left as they are.
+ */
+function attachProductHandoffs(r: Row, ctx: CommerceAttachContext, now: Date): Row {
+  const results = Array.isArray(r.results) ? (r.results as Array<{ title?: unknown; link?: unknown }>) : []
+  const context = { ...(ctx.platform ? { platform: ctx.platform } : {}), ...(ctx.locale ? { locale: ctx.locale } : {}), ...(ctx.actorHash ? { actorHash: ctx.actorHash } : {}), ...(ctx.actorSeal ? { actorSeal: ctx.actorSeal } : {}), allowTracking: true }
+  const rows: CommerceLinkRow[] = []
+  const names: string[] = []
+  for (const h of results) {
+    if (rows.length >= MAX_WEB_PRODUCT_LINKS) break
+    const url = str(h?.link)
+    const title = str(h?.title)
+    if (!url || !title) continue
+    const owner = providerOwning(url)
+    const entry = owner ? getProvider(owner) : null
+    if (!entry || !entry.domains.includes('shopping') || !entry.intents.includes('buy_product')) continue
+    const request: CommerceRequest = { domain: 'shopping', intentType: 'buy_product', capability: capabilityForIntent('buy_product'), subject: title.slice(0, 200), constraints: { merchantAllowList: [entry.merchantId] }, context }
+    const out = (ctx.resolve ?? resolveCommerce)(request, { hints: [{ url, title }], now, enabled: true })
+    const detail = 'links' in out ? out.links.find(l => l.kind !== 'SEARCH_HANDOFF') : undefined
+    if (!('links' in out) || !detail) continue
+    if (rows.some(x => x.destinationUrl === detail.directUrl)) continue
+    rows.push(projectCommerceLinkRow(detail, out.requestId, 'buy_product', [], { primary: true }))
+    names.push(title)
+  }
+  if (rows.length === 0) return r
+  r.product_links = rows.map((l, i) => ({ name: names[i], platform: l.merchantName, url: l.url }))
+  r._tappy_commerce = rows.map((l): RouteHandoffFacts => ({
+    merchantName: l.merchantName, providerId: l.providerId, kind: l.kind, depth: l.depth, guestDepth: l.guestDepth, authRequiredAt: l.authRequiredAt,
+    linkId: l.linkId, requestId: l.requestId, assumedParams: l.assumedParams, limitations: l.limitations,
+  }))
+  return r
+}
+
 async function attachWebHandoffs(r: Row, ctx: CommerceAttachContext): Promise<unknown> {
   try {
     const capability = entertainmentCapabilityOf(userTurns(ctx))
@@ -1029,7 +1068,7 @@ async function attachWebHandoffs(r: Row, ctx: CommerceAttachContext): Promise<un
     // is the boundary — showtimes are never composed.
     const film = capability === 'cinema_ticket' ? filmTitleOf(userTurns(ctx)) : null
     const event = capability === 'event_ticket'
-    if (!event && !film) return r
+    if (!event && !film) return attachProductHandoffs(r, ctx, now)
     const subject = event ? str(ctx.query) : film
     if (!subject) return r
     const intentType: IntentType = event ? 'buy_event_ticket' : 'buy_ticket'

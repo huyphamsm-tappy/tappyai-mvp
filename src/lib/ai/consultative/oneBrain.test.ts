@@ -20,6 +20,14 @@ describe('the one general instruction', () => {
       expect(ONE_BRAIN_CORE, s).toContain(s)
     }
   })
+  it('buying: concrete listings and at most three narrowing questions; a store the person names is searched on its own site (30/10)', () => {
+    for (const s of ['lay out the concrete listings', 'at most three short narrowing questions', 'from the whole message, not from single words', "search that store's own site", 'Never write a product link that did not come from a tool result']) expect(ONE_BRAIN_CORE, s).toContain(s)
+  })
+  it('the buying rule names no product, brand, store or language of the question (any product, any language)', () => {
+    const rule = ONE_BRAIN_CORE.split('\n').filter(l => /BUY something|names a store/.test(l)).join('\n')
+    expect(rule.length).toBeGreaterThan(200)
+    for (const w of ['iPhone', 'Apple', 'MacBook', 'Samsung', 'Điện Máy', 'dienmayxanh', 'Thế Giới Di Động', 'Phong Vũ', 'Shopee', 'Lazada', 'TikTok', 'giá', 'mua']) expect(rule, w).not.toContain(w)
+  })
   it('is general: no Vietnamese phrase list, no topic or evaluation item named', () => {
     // every line is written in English; a quoted Vietnamese phrase would be a per-question rule. The only Vietnamese words are the two forms of address.
     expect(ONE_BRAIN_CORE.replace('"mình"', '').replace('"bạn"', '')).not.toMatch(/[ăâđêôơưạảấầẩẫậắằẳẵặẹẻẽếềểễệỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹ]/i)

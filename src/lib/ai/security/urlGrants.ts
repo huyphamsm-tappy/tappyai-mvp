@@ -135,6 +135,7 @@ const WEB: Contract = {
   'results[].link': 'source', 'pages[].url': 'source', 'travel_editorial[].url': 'source',
   'search_url': 'action', // code-built search page
   'event_links[].url': 'action', 'film_links[].url': 'action', // CCP-resolved ticket / film pages
+  'product_links[].url': 'action', // CCP-resolved product page of a registry shopping merchant found by the model's own web search
 }
 const prefixed = (prefix: string, c: Contract): Contract => Object.fromEntries(Object.entries(c).map(([k, v]) => [`${prefix}.${k}`, v]))
 

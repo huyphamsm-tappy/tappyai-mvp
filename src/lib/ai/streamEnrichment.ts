@@ -4332,8 +4332,8 @@ export function applyPlaceEnrichmentStreamFilter(
             // CCP route / event / film projections (`_tappy_commerce` marks them): every URL the
             // platform validated for this turn, so the ticket guard can tell a system link from a claim.
             if (res.result && Array.isArray((res.result as { _tappy_commerce?: unknown })._tappy_commerce)) {
-              const r = res.result as { booking_links?: Array<{ url?: string }>; event_links?: Array<{ url?: string }>; film_links?: Array<{ url?: string }>; vexere_link?: string; train_booking_link?: string }
-              for (const l of [...(r.booking_links ?? []), ...(r.event_links ?? []), ...(r.film_links ?? [])] as Array<{ name?: string; platform?: string; url?: string }>) {
+              const r = res.result as { booking_links?: Array<{ url?: string }>; event_links?: Array<{ url?: string }>; film_links?: Array<{ url?: string }>; product_links?: Array<{ url?: string }>; vexere_link?: string; train_booking_link?: string }
+              for (const l of [...(r.booking_links ?? []), ...(r.event_links ?? []), ...(r.film_links ?? []), ...(r.product_links ?? [])] as Array<{ name?: string; platform?: string; url?: string }>) {
                 if (typeof l?.url !== 'string' || systemLinkUrls.has(l.url)) continue
                 systemLinkUrls.add(l.url)
                 systemLinks.push({ name: [l.name, l.platform].filter(Boolean).join(' · ') || l.url, url: l.url })
