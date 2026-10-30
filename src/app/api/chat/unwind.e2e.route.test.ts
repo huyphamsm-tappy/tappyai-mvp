@@ -34,6 +34,8 @@ const h = vi.hoisted(() => {
     finishSteps: [] as Array<Record<string, unknown>>,
     /** 29/10: the trains a rail route page states (railSchedule mock); null = the page gives none. */
     railRows: null as null | Array<Record<string, unknown>>,
+    /** 30/10: what the route's attachCommerceLinks wrapper passed on, per call (the real function still runs). */
+    commerceCtx: [] as Array<{ tool: string; ctx: Record<string, unknown> }>,
   }
   const builder = (): any => {
     const b: any = {
@@ -80,6 +82,10 @@ vi.mock('@/lib/ai/tools/common', async (importOriginal) => ({
       : { results: [{ title: 'Quyết định điều chỉnh giá', link: 'https://chinhphu.example/qd', snippet: 'Văn bản' }, { title: 'Bảng giá điện sinh hoạt', link: 'https://giadien.example/bang-gia', snippet: 'trùng' }] }
   },
 }))
+vi.mock('@/lib/ai/tools/commerce', async (importOriginal) => {
+  const m = await importOriginal<typeof import('@/lib/ai/tools/commerce')>()
+  return { ...m, attachCommerceLinks: (tool: string, result: unknown, ctx: Record<string, unknown> = {}) => { h.state.commerceCtx.push({ tool, ctx }); return m.attachCommerceLinks(tool as never, result, ctx as never) } }
+})
 vi.mock('@/lib/ai/tools/railSchedule', async (importOriginal) => ({
   ...(await importOriginal<typeof import('@/lib/ai/tools/railSchedule')>()),
   fetchRailSchedule: async (page: string) => (h.state.railRows ? { page_url: page, rows: h.state.railRows } : null),
@@ -152,6 +158,7 @@ async function turn(messages: Msg[], o: TurnOpts) {
   h.state.gapQuery = o.gapQuery ?? null
   h.state.finishSteps = o.finishSteps ?? []
   h.state.railRows = o.railRows ?? null
+  h.state.commerceCtx = []
   h.state.extractRoles = []; h.state.streamCalled = 0; h.state.toolNames = []; h.state.opts = {}; h.state.system = ''; h.state.results = []; h.state.webCalls = []; h.state.fetched = []
   __resetAiQuestionQuotaLocal(); __resetPageCache(); __resetSharedRobots()
   const req = {
@@ -187,6 +194,33 @@ beforeEach(() => {
   vi.stubGlobal('fetch', async (input: unknown) => { throw new Error('network disabled in this test: ' + String(input).slice(0, 60)) })
 })
 afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals(); vi.unstubAllEnvs(); delete process.env.TAPPY_AGENT })
+
+describe('P0-3 follow-up (30/10): the route\'s attachCommerceLinks wrapper, offline (the real function runs; Serper and the network are stubbed)', () => {
+  const ASK: Msg[] = [{ role: 'user', content: 'Tư vấn nồi chiên không dầu 6 lít. Shopee hay Lazada mua chỗ nào lợi hơn?' }]
+  const SHOP = intent('pick', ['shopping'])
+  const run = (oneBrain: boolean) => turn(ASK, { unwind: oneBrain, oneBrain, luna: SHOP, tools: [{ name: 'search_products', args: { query: 'nồi chiên không dầu 6 lít' } }], reply: 'Mình chọn nồi 6 lít.' })
+  const shoppingCtx = () => h.state.commerceCtx.filter(c => c.tool === 'search_products').map(c => c.ctx)
+  it('one brain: a search_products result reaches CCP with unambiguousMerchantOnly = true (a turn naming several merchants names none)', async () => {
+    await run(true)
+    const ctxs = shoppingCtx()
+    expect(ctxs.length).toBeGreaterThan(0)
+    for (const c of ctxs) expect(c.unambiguousMerchantOnly).toBe(true)
+  }, 60000)
+  it('one brain: the context the tool layer built is passed on whole (only the flag is added)', async () => {
+    await run(true)
+    const c = shoppingCtx()[0]
+    expect(c).toBeDefined()
+    expect(Object.keys(c)).toEqual(expect.arrayContaining(['unambiguousMerchantOnly']))
+    expect(Object.keys(c).filter(k => k !== 'unambiguousMerchantOnly').length).toBeGreaterThan(0)
+  }, 60000)
+  it('not one brain: the flag is absent on every tool the route offers (the old reading of the question is unchanged)', async () => {
+    // search_products is not offered off one brain for this intent, so the wrapper is exercised through the places tool of the same route
+    await turn([{ role: 'user', content: 'Quán cà phê yên tĩnh gần Quận 1' }], { unwind: false, oneBrain: false, luna: intent('pick', ['food']), tools: [{ name: 'search_places', args: { query: 'quán cà phê yên tĩnh', type: 'cafe' } }], reply: 'Mình gợi ý vài quán.' })
+    const all = h.state.commerceCtx.map(c => c.ctx)
+    expect(all.length).toBeGreaterThan(0) // the wrapper really ran (a loop over nothing proves nothing)
+    for (const c of all) expect(c.unambiguousMerchantOnly).toBeUndefined()
+  }, 60000)
+})
 
 const PLAN: Msg[] = [{ role: 'user', content: 'len ke hoach di choi da nang 4 ngay 3 dem, tong chi phi tam 18 trieu' }]
 const PLAN_INTENT = intent('ask', ['travel'], {
