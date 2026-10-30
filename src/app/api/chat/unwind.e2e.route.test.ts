@@ -532,6 +532,29 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     const off = await turn(KNOW, { unwind: true, oneBrain: false, luna: KNOW_INTENT, reply })
     expect(off.opts.parallelTools).toBe(false)
   }, 60000)
+  it('N5 (30/10): one brain, a place lookup with no location - the code writes no area question into the answer; the model decides', async () => {
+    // Measured 30/10 (C3010 T08 "tính đi du lịch chơi, chưa biết đi đâu"): the model's answer was followed by the code's fixed
+    // "Bạn muốn mình tìm ở đâu (khu vực/quận/thành phố)? Mình chưa có vị trí của bạn." - ChatGPT suggested destinations.
+    const ASK: Msg[] = [{ role: 'user', content: 'tìm quán cà phê yên tĩnh để ngồi làm việc' }]
+    const CALL = { name: 'search_places', args: { query: 'quán cà phê yên tĩnh' } }
+    const own = 'Bạn đang ở khu nào để mình tìm quán gần nhất?'
+    const on = await turn(ASK, { unwind: true, oneBrain: true, luna: intent('pick', ['food']), tools: [CALL], reply: own })
+    const r = on.results.find(x => x.name === 'search_places')?.result
+    expect(r?.error).toBe('no_current_location') // still no search around a default city (LOC-DEFAULT-HCM-01)
+    expect(String(r?.note ?? '')).not.toContain('Hệ thống sẽ tự thêm câu hỏi khu vực')
+    expect(on.text).toContain(own)
+    expect(on.text).not.toContain('Bạn muốn mình tìm ở đâu (khu vực/quận/thành phố)?')
+    expect(on.logs.some(x => x.type === 'tappyai_area_ask' && x.appended === true)).toBe(false)
+    // The old route keeps its code question.
+    const off = await turn(ASK, { unwind: true, oneBrain: false, luna: intent('pick', ['food']), tools: [CALL], reply: '' })
+    expect(off.text).toContain('Bạn muốn mình tìm ở đâu (khu vực/quận/thành phố)?')
+  }, 60000)
+  it('N5 (30/10): one brain, a flight question with no date - no code question ("Ngày bay?") is stacked after the answer', async () => {
+    const FLY: Msg[] = [{ role: 'user', content: 'vé máy bay sài gòn đi hà nội giá bao nhiêu' }]
+    const on = await turn(FLY, { unwind: true, oneBrain: true, luna: intent('ask', ['travel']), reply: 'Giá vé thường từ 1,5 triệu một chiều.' })
+    expect(on.text).not.toContain('Ngày bay?')
+    expect(on.text).not.toContain('Which date?')
+  }, 60000)
   it('flag ON, trip plan: no code question, no pre-fetch, no plan frame - the model plans with its tools', async () => {
     const on = await turn(TRIP, { unwind: true, oneBrain: true, luna: TRIP_INTENT, reply })
     expect(on.web).toEqual([])

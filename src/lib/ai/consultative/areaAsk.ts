@@ -17,6 +17,13 @@ import { normalizeVN } from '../intent'
 export const AREA_ASK_VI = 'Bạn muốn mình tìm ở đâu (khu vực/quận/thành phố)? Mình chưa có vị trí của bạn.'
 export const AREA_ASK_EN = "Where should I search (area, district, or city)? I don't have your location yet."
 
+/**
+ * N5 (30/10): the one-brain route's `no_current_location` note. The place search still refuses (no default city), but the code writes
+ * nothing into the answer: the model decides whether it can answer without an area or must ask, in its own words. Measured 30/10
+ * (C3010 T08 "tính đi du lịch chơi, chưa biết đi đâu"): the fixed area question above followed the model's answer; ChatGPT suggested destinations.
+ */
+export const ONE_BRAIN_NO_LOCATION_NOTE = 'Chưa có vị trí hiện tại của người dùng (thiết bị không gửi vị trí) và người dùng chưa nêu khu vực, nên lần tìm địa điểm này không chạy: không đoán khu vực, không tìm quanh một thành phố mặc định, không bịa tên quán hay địa chỉ. Bạn tự quyết: phần nào trả lời được mà không cần vị trí (ý tưởng, điểm đến, tiêu chí chọn, kinh nghiệm) thì trả lời đầy đủ; nếu thật sự cần khu vực để gợi ý chỗ cụ thể thì hỏi người dùng bằng lời của bạn, một câu, ở cuối câu trả lời.'
+
 export function areaAskSentence(lang: string): string {
   return lang === 'en' ? AREA_ASK_EN : AREA_ASK_VI
 }

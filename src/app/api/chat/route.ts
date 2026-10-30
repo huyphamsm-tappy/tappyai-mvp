@@ -134,7 +134,7 @@ import { currentSubjectMessages, currentSubjectUserTexts, inheritedPlanningInten
 import { statedDistrict } from '@/lib/ai/districts'
 import { cityForName, cityInText } from '@/lib/ai/tools/vietnamCities'
 import { hasValidCurrentLocation } from '@/lib/location/currentLocation'
-import { areaAskStream, areaFromAnswer, mergeAreaAnswer } from '@/lib/ai/consultative/areaAsk'
+import { areaAskStream, areaFromAnswer, mergeAreaAnswer, ONE_BRAIN_NO_LOCATION_NOTE } from '@/lib/ai/consultative/areaAsk'
 import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilter'
 import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/memoryTopic'
 import { deriveSearchNow, SPECIFIC_DATE, type SearchNow } from '@/lib/ai/consultative/searchNow'
@@ -2670,9 +2670,12 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
             && !cityInText(lastText) && !(location && (cityForName(location) ?? cityInText(location) ?? statedDistrict(location))) && !cityInText(query) && !statedDistrict(query)) {
             // Wave 2E (C1): this lookup is the MODEL's own (the gate dropped the code pre-search, so a lookup that reaches here was asked for by the model): it needs a place, so the user is asked for the area
             // exactly as before - the gate never says "no place needed" for the model.
-            noCurrentLocationAsked = true
+            // N5 (30/10): on the one-brain route the code writes nothing into the answer - the model, which read the whole request, decides whether
+            // it can answer without an area (ideas, destinations) or must ask, in its own words. Still no search around a default city.
+            noCurrentLocationAsked = !oneBrain
             console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', step: 'no_current_location' }))
-            if (searchGate?.blocked) trace?.emit('search_now_gate_model_lookup', { by: traceCallBy(), outcome: 'no_current_location', asked: true, hasValidGps: false })
+            if (searchGate?.blocked) trace?.emit('search_now_gate_model_lookup', { by: traceCallBy(), outcome: 'no_current_location', asked: !oneBrain, hasValidGps: false })
+            if (oneBrain) return { error: 'no_current_location', note: ONE_BRAIN_NO_LOCATION_NOTE }
             return { error: 'no_current_location', note: 'Chưa có vị trí hiện tại của người dùng (thiết bị không gửi vị trí) và người dùng chưa nêu khu vực. Không đoán khu vực, không tìm quanh một thành phố mặc định, không gợi ý quán nào. Hệ thống sẽ tự thêm câu hỏi khu vực vào cuối câu trả lời — KHÔNG tự đặt câu hỏi khu vực, chỉ trả lời ngắn (hoặc không viết gì).' }
           }
           // Wave 2F (M2): on a turn the gate blocked, a place search that goes on to the provider is counted too (by = who started it: the answer model, or the code). Trace only.
