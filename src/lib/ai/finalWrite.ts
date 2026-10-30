@@ -56,6 +56,11 @@ export interface FinalWriteOptions {
   /** Epoch ms by which the whole turn must be done. */
   deadlineAt?: number
   log?: (event: Record<string, unknown>) => void
+  /**
+   * One brain (review 30/10): a loop that ended on tool calls ("tool-calls") after streaming only a short intro ("Mình sẽ tra giúp bạn.") has
+   * no answer either - the write runs when the streamed text is at most this many characters. Unset = only a turn with no text at all.
+   */
+  afterShortIntro?: number
 }
 
 /** Pass an AI SDK data stream through, holding its finish frame(s); append the answer when the turn streamed no text but ran tools. */
@@ -89,7 +94,10 @@ export function finalWriteStream(body: ReadableStream<Uint8Array>, opts: FinalWr
       }
       let appended = false
       // Structural condition only: no text at all, no error frame, at least one tool result. (No word of any answer is looked at.)
-      if (!failed && text.trim() === '' && toolResultFrames > 0) {
+      // afterShortIntro (one brain): or only a short intro, on a loop that ended on tool calls.
+      const endedOnTools = held.some(l => { try { return (JSON.parse(l.slice(2)) as { finishReason?: unknown }).finishReason === 'tool-calls' } catch { return false } })
+      const noAnswer = text.trim() === '' || (opts.afterShortIntro !== undefined && endedOnTools && text.trim().length <= opts.afterShortIntro)
+      if (!failed && noAnswer && toolResultFrames > 0) {
         const left = (opts.deadlineAt ?? Number.POSITIVE_INFINITY) - Date.now() - 2_000
         if (opts.deadlineAt !== undefined && left < MIN_FINAL_WRITE_MS) {
           log({ type: 'tappyai_final_write', outcome: 'no_time', ms: 0, toolResults: toolResultFrames, leftMs: Math.max(0, Math.round(left)) })
@@ -103,7 +111,7 @@ export function finalWriteStream(body: ReadableStream<Uint8Array>, opts: FinalWr
             ])
             if (answer === null) outcome = 'no_results'
             else if (answer.trim() !== '') {
-              controller.enqueue(encoder.encode(`0:${JSON.stringify(answer.trim())}\n`))
+              controller.enqueue(encoder.encode(`0:${JSON.stringify((text.trim() ? '\n\n' : '') + answer.trim())}\n`))
               appended = true
               outcome = 'appended'
             }

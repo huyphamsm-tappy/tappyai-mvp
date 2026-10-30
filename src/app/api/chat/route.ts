@@ -4001,6 +4001,8 @@ ${completionInstruction(lang)}` },
     ? new Response(finalWriteStream(streamed.body, {
       needed: true,
       deadlineAt: startTime + TURN_DEADLINE_MS,
+      // review 30/10: on one brain a short intro followed by a loop that ran out on tool calls still gets the answer
+      ...(oneBrain ? { afterShortIntro: 300 } : {}),
       complete: async () => {
         const steps = await result.steps
         const toolResults = steps.flatMap(st => ((st.toolResults ?? []) as unknown as Array<{ toolName: string; result?: unknown }>).map(r => ({ toolName: r.toolName, result: r.result })))

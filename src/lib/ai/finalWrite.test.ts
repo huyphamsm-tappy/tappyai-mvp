@@ -1,6 +1,8 @@
 import { describe, it, expect, vi } from 'vitest'
 import { finalWriteStream, finishFrameAfterText, finalWriteSystem, finalWriteSystemNote, finalWriteInstruction, FINAL_WRITE_TIMEOUT_MS, MIN_FINAL_WRITE_MS } from './finalWrite'
 import { ONE_BRAIN_CORE } from './consultative/oneBrain'
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
 
 const enc = new TextEncoder()
 const streamOf = (chunks: string[]) => new ReadableStream<Uint8Array>({ start(c) { for (const x of chunks) c.enqueue(enc.encode(x)); c.close() } })
@@ -61,6 +63,27 @@ describe('finalWriteStream (C-PRE-1)', () => {
     expect(complete).not.toHaveBeenCalled(); expect(log).toHaveBeenCalledWith(expect.objectContaining({ outcome: 'no_time' }))
   })
   it('constants', () => { expect(FINAL_WRITE_TIMEOUT_MS).toBe(30_000); expect(MIN_FINAL_WRITE_MS).toBe(8_000) })
+  // Review 30/10 (one brain): "Mình sẽ tra giúp bạn." then every step spent on tools (finish "tool-calls") - the final write never ran and the
+  // user got the intro alone. With the one-brain option a short intro on a loop that ended on tool calls still gets the answer after it.
+  it('one brain (afterShortIntro): a short intro + a loop that ended on tool calls gets the answer appended after the intro', async () => {
+    const complete = vi.fn(async () => 'Câu trả lời đầy đủ.')
+    const out = await read(finalWriteStream(streamOf(['0:"Mình sẽ tra giúp bạn. "\n', ...TOOLS_ONLY]), { needed: true, complete, afterShortIntro: 300 }))
+    expect(complete).toHaveBeenCalledTimes(1)
+    expect(out.indexOf('Mình sẽ tra')).toBeLessThan(out.indexOf('Câu trả lời đầy đủ.'))
+    expect(out).toContain('0:"\\n\\nCâu trả lời đầy đủ."') // its own paragraph, not glued to the intro
+    expect(out).toContain('"finishReason":"stop"')
+  })
+  it('the route asks for it on one brain only (wiring, read from the source)', () => {
+    const src = readFileSync(join(__dirname, '../../app/api/chat/route.ts'), 'utf8')
+    expect(src).toContain('...(oneBrain ? { afterShortIntro: 300 } : {}),')
+  })
+  it('one brain: an answer longer than the limit, or a loop that ended with "stop", is never written twice', async () => {
+    const complete = vi.fn(async () => 'x')
+    const long = 'a'.repeat(301)
+    await read(finalWriteStream(streamOf([`0:"${long}"\n`, ...TOOLS_ONLY]), { needed: true, complete, afterShortIntro: 300 }))
+    await read(finalWriteStream(streamOf(['0:"Ngắn."\n', TOOLS_ONLY[0]!, TOOLS_ONLY[1]!, 'd:{"finishReason":"stop"}\n']), { needed: true, complete, afterShortIntro: 300 }))
+    expect(complete).not.toHaveBeenCalled()
+  })
 })
 
 describe('finishFrameAfterText', () => {
