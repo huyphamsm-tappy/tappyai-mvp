@@ -44,7 +44,11 @@ describe('cardsConsistentWithAnswer: a card whose numbers the answer never menti
 describe('wiring', () => {
   it('one brain applies it when the answer named no listing', () => {
     const src = readFileSync(join(process.cwd(), 'src/lib/ai/streamEnrichment.ts'), 'utf8')
-    expect(src).toContain('collector.oneBrain === true && collector.shoppingMarker) collector.shoppingMarker = cardsConsistentWithAnswer(onlyMatchingCards(collector.shoppingMarker), mainText)')
+    expect(src).toContain('collector.oneBrain === true && collector.shoppingMarker) {')
+    expect(src).toContain('const m1 = onlyMatchingCards(m0)')
+    expect(src).toContain('const m2 = cardsConsistentWithAnswer(m1, mainText)')
+    expect(src).toContain('collector.shoppingMarker = m2')
+    expect(src).toContain("type: 'tappyai_one_brain_cards', before: cardCount(m0), after_match: cardCount(m1), after_answer: cardCount(m2)")
   })
 })
 

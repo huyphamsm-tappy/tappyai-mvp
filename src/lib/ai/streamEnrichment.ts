@@ -2390,7 +2390,15 @@ export function applyPlaceEnrichmentStreamFilter(
         if (fromProse) { contract = fromProse; rt.block = 'prose'; rt.via = 'prose' }
       }
       // CONSULT_ONE_BRAIN: the answer named no listing (it may rest on store pages the model read), so the card is the tools' - but a listing that differs from what was asked for does not stand beside the ones that match.
-      if (!planOwnsAnswer && !contract && collector.oneBrain === true && collector.shoppingMarker) collector.shoppingMarker = cardsConsistentWithAnswer(onlyMatchingCards(collector.shoppingMarker), mainText)
+      if (!planOwnsAnswer && !contract && collector.oneBrain === true && collector.shoppingMarker) {
+        const cardCount = (m: string): number => parseShoppingMarker(m).view?.entities.length ?? 0
+        const m0 = collector.shoppingMarker
+        const m1 = onlyMatchingCards(m0)
+        const m2 = cardsConsistentWithAnswer(m1, mainText)
+        // counts only, never a name: how many cards each step left (the steps stay observable on a real turn)
+        console.log(JSON.stringify({ type: 'tappyai_one_brain_cards', before: cardCount(m0), after_match: cardCount(m1), after_answer: cardCount(m2) }))
+        collector.shoppingMarker = m2
+      }
       // CONSULT_V3 task frame: no venue card will be shown for this task → the decision recorder (one structured call) is not needed for places.
       const taskSkipsRecorder = collector.consultV3 === true && !!collector.taskFrame && !cardsAllowed(collector.taskFrame.kind).places && !collector.shoppingMarker
       if (!planOwnsAnswer && !taskSkipsRecorder && !contract && collector.recordDecision && candidateNames.length) {
