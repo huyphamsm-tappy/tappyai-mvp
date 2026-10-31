@@ -1928,7 +1928,10 @@ export function applyPlaceEnrichmentStreamFilter(
   if (riskBackstopMode() === 'buffer' && isSecondHandPurchaseAdvice(collector?.userTexts ?? [userText])) bufferMode = true
   // Consultative V1: a decision turn buffers whether or not a tool runs, so the
   // search-claim guard can judge "mình đã kiểm tra" on a no-tool follow-up.
-  if (collector?.consultativeV1) bufferMode = true
+  // 31/10 (latency, one brain): the V1 frame is set by a keyword reading of the question and its prose guards are off on one brain (ce65ace), but this
+  // hold stayed - every one-brain answer reached the user in one block at the end (measured: T03 12 s, nothing shown while the model wrote 7.5 s). On one
+  // brain the TOOLS decide the hold (price, travel, place, product, plan and option turns still buffer below); the live egress filter covers the rest.
+  if (collector?.consultativeV1 && collector?.oneBrain !== true) bufferMode = true
   // TAPPY_AGENT (hardening C): every agent answer is held until the settle-path guards (evidence, price, place claims, leak check) have run on the
   // COMPLETE text — nothing reaches the user before it is checked (the guards cannot retract text already sent).
   if (collector?.agentMode) bufferMode = true
@@ -1992,6 +1995,8 @@ export function applyPlaceEnrichmentStreamFilter(
   const requestedProviderId = requestedProviderOf(userText, { unambiguousOnly: collector?.oneBrain === true })
   const commerceHandoffIntent = !!requestedProviderId || entertainmentCapabilityOf(userText) === 'event_ticket'
   if (commerceHandoffIntent) bufferMode = true
+  // 31/10 (latency): which start-of-turn reason holds a one-brain answer back (observation only; names, no text).
+  if (collector?.oneBrain === true) console.log(JSON.stringify({ type: 'tappyai_buffer_reasons', hold: bufferMode, travel: travelIntent, place: placeIntent, v1: !!collector.consultativeV1, agent: !!collector.agentMode, ticket: ticketIntent, commerce: commerceHandoffIntent }))
   /**
    * A5-P1. Buffering the WHOLE places reply was broader than the danger: measured on production
    * 63313d5, shopping showed content at 2.2s and food at 15.4s with the same pipeline and the same
