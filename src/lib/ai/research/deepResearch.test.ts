@@ -305,6 +305,9 @@ describe('canonicalSourceUrl', () => {
     expect(canonicalSourceUrl('https://en-m-wikipedia-org.translate.goog/wiki/Big_Bang?_x_tr_sl=en&_x_tr_tl=vi&x=1')).toBe('https://en.m.wikipedia.org/wiki/Big_Bang?x=1')
     expect(canonicalSourceUrl('https://my--site-com.translate.goog/a?_x_tr_sl=en')).toBe('https://my-site.com/a')
     expect(canonicalSourceUrl('https://www.google.com/search?q=x')).toBeNull()
+    // a goto token the search layer could not resolve stays (it opens the page in a browser; its snippet is evidence)
+    expect(canonicalSourceUrl('https://www.google.com/goto?url=CAESdw')).toBe('https://www.google.com/goto?url=CAESdw')
+    expect(canonicalSourceUrl('https://www.google.com/goto')).toBeNull()
     expect(canonicalSourceUrl('https://www.google.com.vn/url?q=javascript:alert(1)')).toBeNull()
     expect(canonicalSourceUrl('http://a.example/')).toBeNull()
     expect(canonicalSourceUrl('not a url')).toBeNull()
@@ -384,6 +387,10 @@ describe('sourcesBlock', () => {
     const d = deps({ gather: async () => [{ ...page('a'), published: '2026-08-11T03:00:00Z' }, { ...page('b'), published: 'hôm qua' }] })
     const out = await runDeepResearch('q', '', 'vi', d, collect().emit)
     expect(out.evidence.map(e => e.published)).toEqual(['2026-08-11', undefined])
+  })
+  it('a Google-redirect source shows its real site, not google.com', () => {
+    const ev = [{ id: 1, title: 'EV sales', url: 'https://www.google.com/goto?url=x', snippet: '', text: '', site: 'tridenstechnology.com' }]
+    expect(sourcesBlock(ev, [{ step: 1, text: 't', source: 1 }], 'en')).toContain('1. EV sales — tridenstechnology.com')
   })
   it('a search result title cannot become markup', () => {
     const ev = [{ id: 1, title: '[bấm](javascript:alert(1)) <img src=x onerror=y> `code` **đậm** # h | t', url: 'https://a.example/', snippet: '', text: '' }]

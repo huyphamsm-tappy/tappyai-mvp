@@ -15,6 +15,12 @@ export const isGoogleGoto = (u: unknown): u is string => typeof u === 'string' &
 
 const MAX_CACHE = 500
 const cache = new Map<string, string | null>()
+/**
+ * Measured 31/10: after the first redirect, Google answers further tokens with a 200 bot-check page (a timed refresh needing its cookie). That
+ * check is never worked around: on the first such answer the resolver stops asking Google for PAUSE_MS, and rows keep their token meanwhile.
+ */
+const PAUSE_MS = 10 * 60 * 1000
+let pausedUntil = 0
 
 type Fetch = (url: string, init: RequestInit) => Promise<Response>
 
@@ -22,12 +28,15 @@ type Fetch = (url: string, init: RequestInit) => Promise<Response>
 export async function resolveGoogleGoto(link: string, o: { fetch?: Fetch; timeoutMs?: number } = {}): Promise<string | null> {
   if (!isGoogleGoto(link)) return null
   if (cache.has(link)) return cache.get(link) ?? null
+  if (Date.now() < pausedUntil) return null
   const ctrl = new AbortController()
   const timer = setTimeout(() => ctrl.abort(), o.timeoutMs ?? 2500)
   let out: string | null = null
   try {
     const res = await (o.fetch ?? fetch)(link, { redirect: 'manual', signal: ctrl.signal, headers: { 'user-agent': 'Mozilla/5.0 (compatible; TappyAI/1.0)' } })
-    const loc = res.status >= 300 && res.status < 400 ? res.headers.get('location') : null
+    // not a redirect (the bot-check page): stop asking for a while, and do not remember this token as unresolvable
+    if (res.status < 300 || res.status >= 400) { pausedUntil = Date.now() + PAUSE_MS; return null }
+    const loc = res.headers.get('location')
     if (loc && !/^https?:\/\/(?:[\w-]+\.)*google\.[a-z.]+\/(?:goto|url)\b/i.test(loc)) {
       const hop = validateHop(loc, { allowHttp: true })
       out = 'url' in hop ? hop.url.toString() : null
@@ -51,5 +60,15 @@ export async function resolveGotoRows<T extends { link: string }>(rows: T[], o: 
   return { rows: out, resolved, failed }
 }
 
+/** The site Google shows for a result ("https://tridenstechnology.com › E-Mobility" → "tridenstechnology.com"); not a host → null. Pure. */
+export function displayedSite(d: unknown): string | null {
+  if (typeof d !== 'string') return null
+  const head = d.split(/\s+›\s+|\s+>\s+/)[0].trim()
+  let host = head
+  try { host = new URL(/^https?:\/\//i.test(head) ? head : `https://${head}`).hostname } catch { return null }
+  host = host.toLowerCase().replace(/^www\./, '')
+  return /^(?:[a-z0-9-]+\.)+[a-z]{2,}$/.test(host) && !/(^|\.)google\.[a-z.]+$/.test(host) ? host : null
+}
+
 /** Test-only. */
-export function __resetGotoCache(): void { cache.clear() }
+export function __resetGotoCache(): void { cache.clear(); pausedUntil = 0 }

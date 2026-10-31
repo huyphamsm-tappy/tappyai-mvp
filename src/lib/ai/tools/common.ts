@@ -1,7 +1,7 @@
 import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 import { withRetrievedAt } from './retrievalClock'
 import { serperPost, type SerperPostState } from './serperClient'
-import { resolveGotoRows } from './googleGoto'
+import { resolveGotoRows, isGoogleGoto, displayedSite } from './googleGoto'
 import { serperCacheGetMeta, serperCacheSet } from './serperCache'
 import { noteRetrieval, withRetrievalClock, type Retrieval } from './retrievalClock'
 import { recordSerperCacheHit, recordSerperL1Hit } from './serperMeter'
@@ -491,7 +491,11 @@ export async function fetchPlacePhotoByName(placeId: string, placeName: string):
 }
 
 // ===== SERPER: Google Search API (can SERPER_API_KEY, 2500 query free) =====
-type SerperSearchRow = { title: string; link: string; snippet: string; /** The result's own date as Google shows it ("2 giờ trước", "Oct 25, 2026"), when it has one. */ date?: string }
+type SerperSearchRow = {
+  title: string; link: string; snippet: string; /** The result's own date as Google shows it ("2 giờ trước", "Oct 25, 2026"), when it has one. */ date?: string
+  /** 31/10: only on a row whose link is still a google.com/goto token (googleGoto.ts could not resolve it) - the site Google shows for it. */
+  site?: string
+}
 /** What Serper returns beside the organic list, compacted to short text for the model. Absent when the search had none. */
 export interface SerperExtras {
   answer_box?: { title?: string; answer?: string; snippet?: string; link?: string }
@@ -593,7 +597,10 @@ async function serperSearchPaid(query: string, searchCacheKey: string, apiKey: s
     const gone = await resolveGotoRows(organic.filter(r => r.title && r.link).slice(0, 6).map(r => ({ ...r, link: r.link as string })))
     if (gone.resolved || gone.failed) console.log(JSON.stringify({ type: 'tappyai_serper_goto', resolved: gone.resolved, failed: gone.failed }))
     const results: SerperSearchRow[] = gone.rows
-      .map(r => ({ title: r.title as string, link: sanitizeUrlForMarkdown(r.link), snippet: r.snippet || '', ...(clip(r.date, 60) ? { date: clip(r.date, 60) } : {}) }))
+      .map(r => {
+        const site = isGoogleGoto(r.link) ? displayedSite((r as { displayedLink?: unknown }).displayedLink) : null
+        return { title: r.title as string, link: sanitizeUrlForMarkdown(r.link), snippet: r.snippet || '', ...(clip(r.date, 60) ? { date: clip(r.date, 60) } : {}), ...(site ? { site } : {}) }
+      })
     const extras = serperExtrasOf(data)
     if (post.entry) settleTurnWebTicket(post.entry, results.length > 0 ? 'sent_success' : 'sent_empty')
     // 5 minutes, matching webSearch's own TTL for the same upstream endpoint.

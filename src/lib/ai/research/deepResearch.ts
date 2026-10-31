@@ -45,7 +45,7 @@ const GAP_MIN_LEFT_MS = 20_000
 /** Owner 31/10 ("báo cáo có phần hình ảnh chèn vào cho hợp nội dung từng mục"): pictures per report, at most this many (one per section). */
 export const MAX_SECTION_IMAGES = 4
 /** `published`: the page's own publication date (YYYY-MM-DD) when the reader found one. */
-export interface Evidence { id: number; title: string; url: string; snippet: string; text: string; published?: string }
+export interface Evidence { id: number; title: string; url: string; snippet: string; text: string; published?: string; /** the real site of a Google-redirect result */ site?: string }
 /**
  * Owner 31/10 ("mấu chốt cuối cùng của report là số liệu và sự chính xác"): a finding that states one figure also carries it as data -
  * what is measured (`series`), for what (`label`: an item or a year), the value and its unit - checked by code against its source's own
@@ -88,7 +88,7 @@ export function httpsUrl(u: unknown): u is string {
 export interface DeepResearchDeps {
   plan(question: string, context: string): Promise<ResearchPlan>
   /** One query: its search results with the text of the pages read (empty when nothing came back). */
-  gather(query: string, focus: string): Promise<Array<{ title: string; url: string; snippet: string; text: string; published?: string }>>
+  gather(query: string, focus: string): Promise<Array<{ title: string; url: string; snippet: string; text: string; published?: string; site?: string }>>
   /** The step's findings; `source` is an id of the evidence handed in; `figure` when the finding states one figure. */
   notes(step: string, question: string, evidence: readonly Evidence[]): Promise<Array<{ text: string; source: number; figure?: Figure | null }>>
   write(input: { question: string; plan: ResearchPlan; evidence: readonly Evidence[]; findings: readonly Finding[] }): AsyncIterable<string>
@@ -253,6 +253,9 @@ export function canonicalSourceUrl(raw: string): string | null {
     return canonicalSourceUrl(`https://${original}${u.pathname}${u.search}${u.hash}`)
   }
   if (/(^|\.)google\.[a-z.]+$/.test(host)) {
+    // 31/10: a google.com/goto token the search layer could not resolve (Google's bot check) - kept: it opens the page in a browser, and its
+    // snippet is evidence; the site it names comes with the row (Evidence.site)
+    if (u.protocol === 'https:' && u.pathname === '/goto' && u.searchParams.has('url')) return u.toString()
     const inner = u.pathname === '/url' ? u.searchParams.get('q') ?? u.searchParams.get('url') : host.startsWith('translate.') ? u.searchParams.get('u') : null
     return inner && inner !== raw ? canonicalSourceUrl(inner) : null
   }
@@ -313,7 +316,7 @@ export function sourcesBlock(evidence: readonly Evidence[], findings: readonly F
   const host = (u: string) => { try { return new URL(u).hostname.replace(/^www\./, '') } catch { return '' } }
   const label = (t: string) => t.replace(/[[\]()<>`*_#|\\\n]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 140)
   const head = heading || (lang === 'en' ? 'Sources' : 'Nguồn')
-  return `\n\n### ${head}\n${used.map(e => `${e.id}. ${label(e.title) || host(e.url)} — ${host(e.url)}${e.published ? `, ${sourceDate(e.published, lang)}` : ''}`).join('\n')}\n`
+  return `\n\n### ${head}\n${used.map(e => `${e.id}. ${label(e.title) || e.site || host(e.url)} — ${e.site ?? host(e.url)}${e.published ? `, ${sourceDate(e.published, lang)}` : ''}`).join('\n')}\n`
 }
 
 /** A source's date as the reader's locale writes it: 22/10/2025 (vi), 2025-10-22 otherwise. Pure. */
@@ -384,7 +387,8 @@ export async function runDeepResearch(question: string, context: string, lang: s
       let e = byUrl.get(url)
       if (!e) {
         const published = typeof g.published === 'string' && /^\d{4}-\d{2}-\d{2}/.test(g.published) ? g.published.slice(0, 10) : undefined
-        e = { id: evidence.length + 1, title: clean(g.title, 200), url, snippet: clean(g.snippet, 400), text: g.text.slice(0, 6000), ...(published ? { published } : {}) }
+        const site = typeof g.site === 'string' && /^(?:[a-z0-9-]+\.)+[a-z]{2,}$/i.test(g.site) ? g.site.toLowerCase() : undefined
+        e = { id: evidence.length + 1, title: clean(g.title, 200), url, snippet: clean(g.snippet, 400), text: g.text.slice(0, 6000), ...(published ? { published } : {}), ...(site ? { site } : {}) }
         evidence.push(e); byUrl.set(url, e)
       }
       if (!mine.includes(e)) mine.push(e)
