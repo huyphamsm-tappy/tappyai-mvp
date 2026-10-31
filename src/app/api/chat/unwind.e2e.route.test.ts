@@ -772,6 +772,7 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     expect(cost?.modelCalls).toBe(4) // plan + two notes + the writer
     expect(cost?.answerUsd).toBeCloseTo(0.0003 + 0.0002 * 2 + 0.004, 6)
     expect(deep.logs.find(x => x.type === 'tappyai_deep_research')).toMatchObject({ ok: true, steps: 2 })
+    expect(deep.logs.find(x => x.type === 'tappyai_deep_research')?.with_text).toBeGreaterThanOrEqual(3) // the pages read reach their sources
     // the model's plan fails: no report, the question is given back, the person is told
     const warns: string[] = []
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation((...a: unknown[]) => { warns.push(String(a[0])) })

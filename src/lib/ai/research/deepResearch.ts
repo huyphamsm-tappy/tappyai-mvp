@@ -104,6 +104,28 @@ export function linkStripper(): { push(delta: string): string; end(): string } {
   }
 }
 
+/**
+ * A search result's page, not Google's wrapper around it (measured 31/10: sources shown as "google.com" / "translate.google.com"): a redirect
+ * (`google.com/url?q=` / `url=`), a translate proxy (`translate.google.com/translate?u=`, `<host-with-dashes>.translate.goog`) becomes the page
+ * it points to; any other Google page (a search page) is not a source (null). Only https results are sources. Pure.
+ */
+export function canonicalSourceUrl(raw: string): string | null {
+  let u: URL
+  try { u = new URL(raw) } catch { return null }
+  const host = u.hostname.toLowerCase()
+  if (host.endsWith('.translate.goog')) {
+    // Google's scheme: "-" stands for "." and "--" for "-" in the original host; the _x_tr_* parameters are the proxy's own
+    const original = host.slice(0, -'.translate.goog'.length).split('--').map(p => p.replace(/-/g, '.')).join('-')
+    for (const k of [...u.searchParams.keys()]) if (k.startsWith('_x_tr_')) u.searchParams.delete(k)
+    return canonicalSourceUrl(`https://${original}${u.pathname}${u.search}${u.hash}`)
+  }
+  if (/(^|\.)google\.[a-z.]+$/.test(host)) {
+    const inner = u.pathname === '/url' ? u.searchParams.get('q') ?? u.searchParams.get('url') : host.startsWith('translate.') ? u.searchParams.get('u') : null
+    return inner && inner !== raw ? canonicalSourceUrl(inner) : null
+  }
+  return u.protocol === 'https:' ? u.toString() : null
+}
+
 /** The evidence the findings cite, in report order. */
 export const citedEvidence = (evidence: readonly Evidence[], findings: readonly Finding[]) => {
   const cited = new Set(findings.map(f => f.source))
@@ -146,9 +168,10 @@ export async function runDeepResearch(question: string, context: string, lang: s
     const gathered = (await Promise.all(step.queries.map(q => deps.gather(q, `${step.title} - ${question}`).catch(() => [])))).flat()
     const mine: Evidence[] = []
     for (const g of gathered) {
-      if (!g.url || !/^https:\/\//i.test(g.url)) continue
-      let e = byUrl.get(g.url)
-      if (!e) { e = { id: evidence.length + 1, title: clean(g.title, 200), url: g.url, snippet: clean(g.snippet, 400), text: g.text.slice(0, 6000) }; evidence.push(e); byUrl.set(g.url, e) }
+      const url = g.url ? canonicalSourceUrl(g.url) : null
+      if (!url) continue
+      let e = byUrl.get(url)
+      if (!e) { e = { id: evidence.length + 1, title: clean(g.title, 200), url, snippet: clean(g.snippet, 400), text: g.text.slice(0, 6000) }; evidence.push(e); byUrl.set(url, e) }
       if (!mine.includes(e)) mine.push(e)
     }
     if (!mine.length) { steps[k].status = 'failed'; show('researching'); return }
@@ -172,10 +195,14 @@ export async function runDeepResearch(question: string, context: string, lang: s
   if (!findings.length) return { plan, evidence, findings, failed: fail(plan.title, steps, 'no_findings') }
 
   show('writing')
+  // the report numbers its sources 1..n: only the cited ones, renumbered in the order they were found (the person reads [1]..[n], not [3][14][24])
+  const renumber = new Map(citedEvidence(evidence, findings).map((e, i) => [e.id, i + 1]))
+  const cited = citedEvidence(evidence, findings).map(e => ({ ...e, id: renumber.get(e.id)! }))
+  const notes = findings.map(f => ({ ...f, source: renumber.get(f.source)! }))
   const stripper = linkStripper()
   let cut = false
   try {
-    for await (const delta of deps.write({ question, plan, evidence, findings })) {
+    for await (const delta of deps.write({ question, plan, evidence: cited, findings: notes })) {
       const t = stripper.push(delta); if (t) emit.text(t)
       // the run's own deadline: what was written stays and gets its sources (the route must answer inside its maxDuration)
       if (now() - t0 >= DEEP_RESEARCH_LIMITS.runDeadlineMs) { cut = true; break }
@@ -185,8 +212,8 @@ export async function runDeepResearch(question: string, context: string, lang: s
     const tail = stripper.end(); if (tail) emit.text(tail)
     return { plan, evidence, findings, failed: fail(plan.title, steps, 'write_failed'), cut }
   }
-  emit.text(sourcesBlock(evidence, findings, lang))
-  const links = citedEvidence(evidence, findings).map(e => ({ id: e.id, title: e.title, url: e.url }))
+  emit.text(sourcesBlock(cited, notes, lang))
+  const links = cited.map(e => ({ id: e.id, title: e.title, url: e.url }))
   emit.status({ type: 'tappy.research.v1', title: plan.title, phase: 'done', steps: steps.map(s => ({ ...s })), sources: evidence.length, links })
   return { plan, evidence, findings, failed: null, cut }
 }

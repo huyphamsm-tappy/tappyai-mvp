@@ -1,7 +1,7 @@
 // 31/10 Deep Research orchestration (deepResearch.ts) with fake dependencies: plan, parallel steps, findings tied to handed-in sources,
 // the deadline, the writer's links removed, the sources list built by code, and the failure paths.
 import { describe, it, expect, vi, afterEach } from 'vitest'
-import { runDeepResearch, normalisePlan, linkStripper, sourcesBlock, readResearchStatus, DEEP_RESEARCH_LIMITS, type DeepResearchDeps, type ResearchStatus } from './deepResearch'
+import { runDeepResearch, canonicalSourceUrl, normalisePlan, linkStripper, sourcesBlock, readResearchStatus, DEEP_RESEARCH_LIMITS, type DeepResearchDeps, type ResearchStatus } from './deepResearch'
 
 const PLAN = { title: 'Thị trường xe điện', steps: [{ title: 'Doanh số', queries: ['doanh so xe dien 2026'] }, { title: 'Giá', queries: ['gia xe dien', 'bang gia xe dien'] }] }
 const page = (u: string) => ({ title: `Trang ${u}`, url: `https://${u}.example/a`, snippet: 's', text: `nội dung ${u}` })
@@ -50,6 +50,28 @@ describe('runDeepResearch', () => {
     await runDeepResearch('q', '', 'vi', d, c.emit)
     expect(c.statuses.at(-1)?.links?.map(l => l.url)).toEqual(['https://a.example/a'])
     expect(c.text).not.toContain('b.example')
+  })
+  it('the writer, the sources list and the card number the cited sources 1..n', async () => {
+    let seen: { evidence: readonly { id: number; url: string }[]; findings: readonly { source: number }[] } | null = null
+    const d = deps({
+      notes: async (_s, _q, ev) => ev.filter(e => !e.url.startsWith('https://a.')).map(e => ({ text: 'x', source: e.id })),
+      write: async function* (input) { seen = input; yield 'Báo cáo [1][2].' },
+    })
+    const c = collect()
+    await runDeepResearch('q', '', 'vi', d, c.emit)
+    expect(seen!.evidence.map(e => [e.id, e.url])).toEqual([[1, 'https://b.example/a'], [2, 'https://c.example/a']])
+    expect(new Set(seen!.findings.map(f => f.source))).toEqual(new Set([1, 2]))
+    expect(c.text).toContain('### Nguồn\n1. Trang b — b.example\n2. Trang c — c.example')
+    expect(c.statuses.at(-1)?.links?.map(l => [l.id, l.url])).toEqual([[1, 'https://b.example/a'], [2, 'https://c.example/a']])
+  })
+  it('a page found through a Google redirect or translate proxy is that page; the same page twice is one source', async () => {
+    const d = deps({ gather: async () => [
+      { ...page('x'), url: 'https://www.google.com/url?q=https://vnexpress.net/bai-1.html&sa=U' },
+      { ...page('y'), url: 'https://vnexpress.net/bai-1.html' },
+      { ...page('z'), url: 'https://www.google.com/search?q=xe+dien' },
+    ] })
+    const out = await runDeepResearch('q', '', 'vi', d, collect().emit)
+    expect(out.evidence.map(e => e.url)).toEqual(['https://vnexpress.net/bai-1.html'])
   })
   it('steps run at the same time (the second starts before the first ends)', async () => {
     const order: string[] = []
@@ -116,6 +138,21 @@ describe('runDeepResearch', () => {
     const c = collect()
     await runDeepResearch('ev market', '', 'en', deps(), c.emit)
     expect(c.text).toContain('### Sources\n')
+  })
+})
+
+describe('canonicalSourceUrl', () => {
+  it('unwraps Google redirects and translate proxies, drops other Google pages and non-https', () => {
+    expect(canonicalSourceUrl('https://www.google.com/url?q=https://a.example/p%3Fx%3D1&sa=U')).toBe('https://a.example/p?x=1')
+    expect(canonicalSourceUrl('https://www.google.com/url?url=https://a.example/p')).toBe('https://a.example/p')
+    expect(canonicalSourceUrl('https://translate.google.com/translate?u=https://en.wikipedia.org/wiki/Big_Bang&hl=vi')).toBe('https://en.wikipedia.org/wiki/Big_Bang')
+    expect(canonicalSourceUrl('https://en-m-wikipedia-org.translate.goog/wiki/Big_Bang?_x_tr_sl=en&_x_tr_tl=vi&x=1')).toBe('https://en.m.wikipedia.org/wiki/Big_Bang?x=1')
+    expect(canonicalSourceUrl('https://my--site-com.translate.goog/a?_x_tr_sl=en')).toBe('https://my-site.com/a')
+    expect(canonicalSourceUrl('https://www.google.com/search?q=x')).toBeNull()
+    expect(canonicalSourceUrl('https://www.google.com.vn/url?q=javascript:alert(1)')).toBeNull()
+    expect(canonicalSourceUrl('http://a.example/')).toBeNull()
+    expect(canonicalSourceUrl('not a url')).toBeNull()
+    expect(canonicalSourceUrl('https://about.bnef.com/x')).toBe('https://about.bnef.com/x')
   })
 })
 

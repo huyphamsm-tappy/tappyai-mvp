@@ -1,8 +1,8 @@
 // ── 31/10: the app's Deep Research dependencies (deepResearch.ts runs them) ─────────────────────────────────────────────────────────────────
 //
 // plan / notes: gpt-6-luna structured calls (role 'intent', effort none - small and cheap). gather: the chat's own web search (Serper, the same
-// cache and budget) and the chat's own page reader (createLeanResearch + searchWithReads: same fetch rules, robots.txt, PDF text, size caps;
-// only links the search returned can be opened). write: one streamed call at medium reasoning on the Responses API (AI.stream thinkEffort),
+// cache and budget) and the chat's own page reader (createLeanResearch: same fetch rules, robots.txt, PDF text, size caps;
+// only links the search returned can be opened; the top 5 of each query). write: one streamed call at medium reasoning on the Responses API (AI.stream thinkEffort),
 // no tools. Every model call's cost is added to `cost` (the provider puts it in providerMetadata.tappy.cost). Untrusted text (search rows,
 // page text, the conversation) reaches a model only inside the shared fence.
 
@@ -12,7 +12,7 @@ import { AI } from '@/lib/ai/llm'
 import { fenceUntrusted } from '@/lib/ai/security/fence'
 import { webSearch } from '@/lib/ai/tools/common'
 import { createLeanResearch } from '@/lib/ai/consultative/researchLoop'
-import { searchWithReads, topResultUrls } from '@/lib/ai/consultative/searchReads'
+import { topResultUrls } from '@/lib/ai/consultative/searchReads'
 import { DEEP_RESEARCH_LIMITS, type DeepResearchDeps, type Evidence, type ResearchPlan } from './deepResearch'
 
 const PlanSchema = z.object({
@@ -48,8 +48,14 @@ const rowsOf = (r: unknown): Array<Record<string, unknown>> => {
   return []
 }
 
+const READ_PER_QUERY = 5
+/** A page address compared loosely: host without www., no trailing slash, no fragment. Pure. */
+export function pageKey(u: string): string {
+  try { const x = new URL(u); return `${x.hostname.toLowerCase().replace(/^www\./, '')}${x.pathname.replace(/\/+$/, '')}${x.search}` } catch { return u }
+}
+
 export function createDeepResearchDeps(o: { lang: string; userTexts: readonly string[]; cost: Cost }): DeepResearchDeps {
-  const reader = createLeanResearch({ lang: o.lang, userTexts: o.userTexts, maxReads: DEEP_RESEARCH_LIMITS.steps * DEEP_RESEARCH_LIMITS.queriesPerStep * 3, v5Reading: true })
+  const reader = createLeanResearch({ lang: o.lang, userTexts: o.userTexts, maxReads: DEEP_RESEARCH_LIMITS.steps * DEEP_RESEARCH_LIMITS.queriesPerStep * READ_PER_QUERY, v5Reading: true })
   const exec = reader.tool.execute as unknown as (a: unknown, c: unknown) => Promise<unknown>
   return {
     async plan(question, context) {
@@ -60,16 +66,19 @@ export function createDeepResearchDeps(o: { lang: string; userTexts: readonly st
     async gather(query, focus) {
       const base = await webSearch(query, o.lang)
       reader.collectFrom(base)
-      const r = await searchWithReads({ query, base, read: (urls, f) => exec({ urls, focus: f || focus, kind: 'other' }, { toolCallId: `research_${randomUUID().slice(0, 6)}`, messages: [] }) })
-      const out = r.result as Record<string, unknown>
+      // the top READ_PER_QUERY results are opened at once (measured 31/10: the chat's 3 reads per search gave full text for 7-21 of 42-58 sources)
+      const toRead = topResultUrls(base, READ_PER_QUERY)
+      const r = toRead.length ? await exec({ urls: toRead, focus, kind: 'other' }, { toolCallId: `research_${randomUUID().slice(0, 6)}`, messages: [] }).catch(() => null) : null
+      // a page is keyed by its normalised address: the reader reports the page it landed on (after a redirect, www., a trailing slash)
       const pages = new Map<string, string>()
-      for (const p of (Array.isArray(out.pages_read) ? out.pages_read : []) as Array<Record<string, unknown>>) {
-        if (typeof p.url === 'string' && typeof p.page_content === 'string') pages.set(p.url, p.page_content)
+      for (const p of (Array.isArray((r as { pages?: unknown } | null)?.pages) ? (r as { pages: unknown[] }).pages : []) as Array<Record<string, unknown>>) {
+        const text = typeof p.page_content === 'string' ? p.page_content : Array.isArray(p.passages) ? p.passages.filter(x => typeof x === 'string').join('\n') : ''
+        if (typeof p.url === 'string' && text.trim() && !('error' in p)) pages.set(pageKey(p.url), text)
       }
       const top = new Set(topResultUrls(base, 8))
       return rowsOf(base).filter(row => top.has(String(row.link ?? row.url ?? ''))).map(row => {
         const url = String(row.link ?? row.url ?? '')
-        return { title: String(row.title ?? ''), url, snippet: String(row.snippet ?? ''), text: pages.get(url) ?? '' }
+        return { title: String(row.title ?? ''), url, snippet: String(row.snippet ?? ''), text: pages.get(pageKey(url)) ?? '' }
       })
     },
     async notes(step, question, evidence) {
