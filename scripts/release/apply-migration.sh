@@ -45,6 +45,10 @@ policy_of() {
     # endpoint can store iOS decisions from its first request and no client role ever holds the default grants.
     20261018_ai_data_consent.sql|20261019_ai_data_consent_client_acl.sql)
       echo APPLY ;;
+    # AI usage ledger (owner 01/11/2026, cost reporting only). Additive; the code writes it only with AI_USAGE_LEDGER=1, so it may go
+    # before or after the web deploy - turn the flag on only after this file is applied.
+    20261101_ai_usage_events.sql)
+      echo APPLY ;;
     # H1 → M1 first, then the security-branch migrations in MIGRATION_ORDER.txt order (owner 30/09): 20260928b needs the
     # deal-click code (service role) on production; the others are code-independent but ride the same verified window.
     20260927_owner_update_column_privileges.sql|20260928_revoke_reviews_insert.sql|\
