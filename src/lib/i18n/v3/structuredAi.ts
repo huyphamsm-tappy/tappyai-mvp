@@ -72,6 +72,7 @@ export const vi: Record<string, string> = {
   'research.done': 'Đã nghiên cứu xong · {sources} nguồn',
   'research.failed': 'Không hoàn thành được nghiên cứu',
   'research.sources': 'Nguồn',
+  'research.download': 'Tải báo cáo:',
 }
 
 export const en: Record<string, string> = {
@@ -139,4 +140,5 @@ export const en: Record<string, string> = {
   'research.done': 'Research complete · {sources} sources',
   'research.failed': 'The research could not be completed',
   'research.sources': 'Sources',
+  'research.download': 'Download report:',
 }

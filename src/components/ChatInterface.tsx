@@ -1807,7 +1807,7 @@ export default function ChatInterface({
                   <div key={msg.id} data-msg-id={msg.id} className="animate-slide-up flex gap-3">
                     <TappyAvatar category={category} active={isLoading && isLastMessage} searching={!!(isLoading && isLastMessage && activeTool)} />
                     <div className="flex-1 min-w-0">
-                      {research && <ResearchCard status={research} />}
+                      {research && <ResearchCard status={research} report={msg.content} images={docImages} format={formatMessage} />}
                       <div className="text-base leading-[1.6] text-gray-800 dark:text-gray-100 pt-0.5">
                         {(() => {
                           // CONSULT_V3 layouts: the news grid / subject card sit right after the answer's first paragraph (as ChatGPT places them);
@@ -1829,7 +1829,8 @@ export default function ChatInterface({
                           // server's item pictures (an annotation, live-only).
                           if (ANSWER_V4) {
                             // Owner 28/10 (ChatGPT layout): the item pictures also open the answer as a grid under its first paragraph; the pages it used end it ("Nguồn").
-                            const [gLead, gRest] = !entity && !news && !entities && settled && docImages.length >= 3 ? splitLeadParagraph(shown) : [lead, rest]
+                            // a deep research report shows its pictures under their own sections only (no opening grid of the same pictures)
+                            const [gLead, gRest] = !entity && !news && !entities && !research && settled && docImages.length >= 3 ? splitLeadParagraph(shown) : [lead, rest]
                             return (
                               <>
                                 <ArticleAnswer text={gLead} images={docImages} format={formatMessage} onClick={onBodyClick}

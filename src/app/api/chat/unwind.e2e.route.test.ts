@@ -75,7 +75,8 @@ vi.mock('@/lib/security/safePageFetch', async (importOriginal) => ({
 }))
 vi.mock('@/lib/ai/tools/common', async (importOriginal) => ({
   ...(await importOriginal<typeof import('@/lib/ai/tools/common')>()),
-  getCache: () => null, setCache: () => undefined, fetchPlacePhotosByName: async () => [],
+  // 31/10: a deep research step's image query finds one picture; every other photo lookup finds none
+  getCache: () => null, setCache: () => undefined, fetchPlacePhotosByName: async (_id: string, q: string) => (String(q).startsWith('ảnh nghiên cứu') ? ['https://img.example/dien.jpg'] : []),
   serperSearch: async (q: string) => {
     h.state.webCalls.push(String(q))
     // 29/10: the scoped rail search finds the Vexere rail route page; every other search here finds nothing.
@@ -751,8 +752,12 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
   }, 60000)
   it('31/10 deep research (mode "deep"): a plan, its steps searched and read, one report at medium reasoning; the links come from the searches only', async () => {
     const Q: Msg[] = [{ role: 'user', content: 'nghien cuu gia dien sinh hoat 2026' }]
-    const plan = { title: 'Giá điện sinh hoạt 2026', steps: [{ title: 'Biểu giá hiện hành', queries: ['bieu gia dien sinh hoat 2026'] }, { title: 'Lần điều chỉnh gần nhất', queries: ['dieu chinh gia dien 2026'] }] }
-    const deep = await turn(Q, { unwind: true, oneBrain: true, mode: 'deep', researchPlan: plan, luna: intent('chat', []), reply: '# Giá điện\nBậc 1 là 1.893 đồng/kWh [1], xem [đây](https://evil.example/x) hoặc https://evil.example/y nhé.' })
+    const plan = { title: 'Giá điện sinh hoạt 2026', steps: [{ title: 'Biểu giá hiện hành', queries: ['bieu gia dien sinh hoat 2026'], image_query: 'ảnh nghiên cứu công tơ điện' }, { title: 'Lần điều chỉnh gần nhất', queries: ['dieu chinh gia dien 2026'], image_query: null }] }
+    const deep = await turn(Q, { unwind: true, oneBrain: true, mode: 'deep', researchPlan: plan, luna: intent('chat', []), reply: '# Giá điện\n## Biểu giá hiện hành\nBậc 1 là 1.893 đồng/kWh [1], xem [đây](https://evil.example/x) hoặc https://evil.example/y nhé.\n## Lần điều chỉnh gần nhất\nTăng 4,8% [2].' })
+    // owner 31/10: the section picture goes under its section, as the answer's item pictures (doc_media), never into the text
+    const media = deep.raw.split('\n').filter(l => l.startsWith('8:')).flatMap(l => JSON.parse(l.slice(2)) as Array<Record<string, any>>).filter(a => a.kind === 'tappy.doc_media.v1')
+    expect(media).toEqual([{ kind: 'tappy.doc_media.v1', v: 1, items: [{ title: 'Biểu giá hiện hành', src: 'https://img.example/dien.jpg', source: 'web' }] }])
+    expect(deep.text).not.toContain('img.example')
     const frames = deep.raw.split('\n').filter(l => l.startsWith('8:')).flatMap(l => JSON.parse(l.slice(2)) as Array<Record<string, any>>).filter(a => a.type === 'tappy.research.v1')
     expect(frames.map(f => f.phase)).toEqual(expect.arrayContaining(['planning', 'researching', 'writing', 'done']))
     expect(frames.at(-1)).toMatchObject({ phase: 'done', title: plan.title, steps: [{ title: 'Biểu giá hiện hành', status: 'done' }, { title: 'Lần điều chỉnh gần nhất', status: 'done' }] })
@@ -771,7 +776,7 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     const cost = deep.logs.find(x => x.type === 'tappyai_turn_cost' && x.turnType === 'deep_research')
     expect(cost?.modelCalls).toBe(4) // plan + two notes + the writer
     expect(cost?.answerUsd).toBeCloseTo(0.0003 + 0.0002 * 2 + 0.004, 6)
-    expect(deep.logs.find(x => x.type === 'tappyai_deep_research')).toMatchObject({ ok: true, steps: 2 })
+    expect(deep.logs.find(x => x.type === 'tappyai_deep_research')).toMatchObject({ ok: true, steps: 2, pictures: 1 })
     expect(deep.logs.find(x => x.type === 'tappyai_deep_research')?.with_text).toBeGreaterThanOrEqual(3) // the pages read reach their sources
     // the model's plan fails: no report, the question is given back, the person is told
     const warns: string[] = []

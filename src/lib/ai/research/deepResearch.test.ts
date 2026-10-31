@@ -1,7 +1,7 @@
 // 31/10 Deep Research orchestration (deepResearch.ts) with fake dependencies: plan, parallel steps, findings tied to handed-in sources,
 // the deadline, the writer's links removed, the sources list built by code, and the failure paths.
 import { describe, it, expect, vi, afterEach } from 'vitest'
-import { runDeepResearch, canonicalSourceUrl, normalisePlan, linkStripper, sourcesBlock, readResearchStatus, DEEP_RESEARCH_LIMITS, type DeepResearchDeps, type ResearchStatus } from './deepResearch'
+import { runDeepResearch, sectionImages, MAX_SECTION_IMAGES, canonicalSourceUrl, normalisePlan, linkStripper, sourcesBlock, readResearchStatus, DEEP_RESEARCH_LIMITS, type DeepResearchDeps, type ResearchStatus } from './deepResearch'
 
 const PLAN = { title: 'Thị trường xe điện', steps: [{ title: 'Doanh số', queries: ['doanh so xe dien 2026'] }, { title: 'Giá', queries: ['gia xe dien', 'bang gia xe dien'] }] }
 const page = (u: string) => ({ title: `Trang ${u}`, url: `https://${u}.example/a`, snippet: 's', text: `nội dung ${u}` })
@@ -144,6 +144,48 @@ describe('runDeepResearch', () => {
     await runDeepResearch('fabricantes de VEs', '', 'vi', deps({ plan: async () => ({ ...PLAN, sources_label: 'Fontes' }) }), c.emit)
     expect(c.text).toContain('### Fontes\n1. ')
     expect(normalisePlan({ ...PLAN, sources_label: '[Źródła](javascript:x)' }, 'q')?.sources_label).toBe('Źródła javascript:x')
+  })
+})
+
+describe('section pictures (owner 31/10: pictures that fit each section of the report)', () => {
+  const plan = { title: 'T', steps: [{ title: 'Doanh số', queries: ['q'] }, { title: 'Giá', queries: ['q'] }, { title: 'Triển vọng', queries: ['q'] }] }
+  it('a heading that is a step\'s own title takes that step\'s picture, whatever its place; a step without one takes the k-th heading if free', () => {
+    // headings: "Giá" (step 2's own, first), "Doanh số toàn cầu" (nobody's), "Triển vọng" (step 3's own), "Kết luận"
+    const report = '# T\n- tóm tắt\n## 1. Giá\nx\n## Doanh số toàn cầu\ny\n## Triển vọng\nz\n## Kết luận\nw'
+    const pics = ['https://i.example/a.jpg', 'https://i.example/b.jpg', 'https://i.example/c.jpg']
+    expect(sectionImages(report, plan, pics)).toEqual([
+      { title: 'Giá', src: 'https://i.example/b.jpg' },
+      { title: 'Triển vọng', src: 'https://i.example/c.jpg' },
+    ]) // step 1's k-th heading (the first) is step 2's: step 1 gets none rather than a wrong section
+    expect(sectionImages('## Doanh số toàn cầu\n## Giá\n## Triển vọng', plan, pics)).toEqual([
+      { title: 'Doanh số toàn cầu', src: 'https://i.example/a.jpg' },
+      { title: 'Giá', src: 'https://i.example/b.jpg' },
+      { title: 'Triển vọng', src: 'https://i.example/c.jpg' },
+    ])
+  })
+  it('no picture: a step without one, a non-https address, a heading too long to be a title, beyond the cap', () => {
+    const long = '## ' + 'một hai ba bốn năm sáu bảy tám chín mười'
+    expect(sectionImages(`${long}\n## Giá\n## Triển vọng`, plan, [null, 'http://i.example/b.jpg', 'https://i.example/c.jpg'])).toEqual([{ title: 'Triển vọng', src: 'https://i.example/c.jpg' }])
+    expect(sectionImages(`${long}\nx`, plan, ['https://i.example/a.jpg', null, null])).toEqual([])
+    const many = { title: 'T', steps: Array.from({ length: 5 }, (_, i) => ({ title: `Mục ${i}`, queries: ['q'] })) }
+    expect(sectionImages(many.steps.map(s => `## ${s.title}`).join('\n'), many, many.steps.map((_, i) => `https://i.example/${i}.jpg`))).toHaveLength(MAX_SECTION_IMAGES)
+  })
+  it('the run looks pictures up for the steps that have an image query, and sends them under the written sections', async () => {
+    const asked: string[] = []
+    const d = deps({
+      plan: async () => ({ title: 'T', steps: [{ title: 'Doanh số', queries: ['doanh so'], image_query: 'xe điện VinFast' }, { title: 'Giá', queries: ['gia'] }] }),
+      images: async q => { asked.push(q); return ['javascript:x', 'https://i.example/vf.jpg'] },
+      write: async function* () { yield '# T\n## Doanh số\nBán chạy [1].\n## Giá\nRẻ [2].' },
+    })
+    const c = collect()
+    const sent: unknown[] = []
+    await runDeepResearch('q', '', 'vi', d, { ...c.emit, images: items => sent.push(items) })
+    expect(asked).toEqual(['xe điện VinFast'])
+    expect(sent).toEqual([[{ title: 'Doanh số', src: 'https://i.example/vf.jpg' }]])
+  })
+  it('the plan keeps a step\'s image query (cleaned), and none when it is empty', () => {
+    const p = normalisePlan({ title: 't', steps: [{ title: 'a', queries: ['q'], image_query: '  xe\nđiện  ' }, { title: 'b', queries: ['q'], image_query: null }] }, 'q')
+    expect(p?.steps.map(s => s.image_query)).toEqual(['xe điện', undefined])
   })
 })
 

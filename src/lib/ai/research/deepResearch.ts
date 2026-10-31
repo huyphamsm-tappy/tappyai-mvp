@@ -14,10 +14,17 @@
 
 // The chat route's maxDuration is 120 s (owner decision 28/09, pinned by planCompletion.test.ts): research gets 55 s, and the whole run stops
 // writing at 105 s (what was written stays, with its sources) so the answer always ends inside the platform's limit.
+import { parseDoc, headingTitle, titleKey, type DocBlock } from '@/lib/answerDoc/parse'
+
 export const DEEP_RESEARCH_LIMITS = { steps: 5, queriesPerStep: 2, findingsPerStep: 10, researchDeadlineMs: 55_000, runDeadlineMs: 105_000 } as const
 
-/** `sources_label`: the heading of the sources list in the question's language (the plan call writes it; absent = by the app's locale). */
-export interface ResearchPlan { title: string; sources_label?: string; steps: Array<{ title: string; queries: string[] }> }
+/**
+ * `sources_label`: the heading of the sources list in the question's language (the plan call writes it; absent = by the app's locale).
+ * A step's `image_query`: what to search a picture for, when the step is about something one can see (absent = no picture for it).
+ */
+export interface ResearchPlan { title: string; sources_label?: string; steps: Array<{ title: string; queries: string[]; image_query?: string }> }
+/** Owner 31/10 ("báo cáo có phần hình ảnh chèn vào cho hợp nội dung từng mục"): pictures per report, at most this many (one per section). */
+export const MAX_SECTION_IMAGES = 4
 export interface Evidence { id: number; title: string; url: string; snippet: string; text: string }
 export interface Finding { step: number; text: string; source: number }
 export type StepStatus = 'pending' | 'running' | 'done' | 'failed'
@@ -55,10 +62,14 @@ export interface DeepResearchDeps {
   /** The step's findings; `source` is an id of the evidence handed in. */
   notes(step: string, question: string, evidence: readonly Evidence[]): Promise<Array<{ text: string; source: number }>>
   write(input: { question: string; plan: ResearchPlan; evidence: readonly Evidence[]; findings: readonly Finding[] }): AsyncIterable<string>
+  /** Picture URLs for one image query (server-chosen, never the model's); absent = a report without pictures. */
+  images?(query: string): Promise<string[]>
   now?: () => number
 }
 
-export interface ResearchEmit { status(s: ResearchStatus): void; text(t: string): void }
+/** One section picture: `title` is the section heading it goes under (the client matches it like an item picture, answerDoc/media). */
+export interface SectionImage { title: string; src: string }
+export interface ResearchEmit { status(s: ResearchStatus): void; text(t: string): void; images?(items: SectionImage[]): void }
 
 const clean = (s: unknown, max: number) => (typeof s === 'string' ? s.replace(/[\u0000-\u001f]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, max) : '')
 
@@ -66,9 +77,10 @@ const clean = (s: unknown, max: number) => (typeof s === 'string' ? s.replace(/[
 export function normalisePlan(p: unknown, question: string): ResearchPlan | null {
   const r = (p ?? {}) as { title?: unknown; sources_label?: unknown; steps?: unknown }
   const steps = (Array.isArray(r.steps) ? r.steps : []).map(s => {
-    const x = (s ?? {}) as { title?: unknown; queries?: unknown }
+    const x = (s ?? {}) as { title?: unknown; queries?: unknown; image_query?: unknown }
     const queries = (Array.isArray(x.queries) ? x.queries : []).map(q => clean(q, 200)).filter(Boolean).slice(0, DEEP_RESEARCH_LIMITS.queriesPerStep)
-    return { title: clean(x.title, 160), queries }
+    const image = clean(x.image_query, 80)
+    return { title: clean(x.title, 160), queries, ...(image ? { image_query: image } : {}) }
   }).filter(s => s.title && s.queries.length).slice(0, DEEP_RESEARCH_LIMITS.steps)
   if (!steps.length) return null
   // the label is one short heading word or two: markup characters are blanked like a source title's
@@ -149,6 +161,33 @@ export function sourcesBlock(evidence: readonly Evidence[], findings: readonly F
   return `\n\n### ${head}\n${used.map(e => `${e.id}. ${label(e.title) || host(e.url)} — ${host(e.url)}`).join('\n')}\n`
 }
 
+/**
+ * Which picture goes under which section of the written report: the report's level-2 headings are the research steps in plan order (the
+ * writer is told so); a heading whose title is the step's own title takes that step's picture, else the k-th heading takes step k's. The
+ * picture's `title` is the heading's title as the client reads it (answerDoc/parse headingTitle), so the article layout puts it right under
+ * that heading; a heading the client cannot read as a title (too long) gets none. Pure.
+ */
+export function sectionImages(report: string, plan: ResearchPlan, pictures: ReadonlyArray<string | null>): SectionImage[] {
+  const heads = parseDoc(report).filter((b): b is Extract<DocBlock, { t: 'heading' }> => b.t === 'heading' && b.level === 2).map(b => headingTitle(b.text))
+  const used = new Set<number>()
+  const at = new Map<number, number>()
+  // first every heading that IS a step's title, then the k-th heading for a step still without one (never a heading another step owns)
+  plan.steps.forEach((s, k) => {
+    const own = headingTitle(s.title)
+    const i = own ? heads.findIndex((h, j) => !used.has(j) && !!h && titleKey(h) === titleKey(own)) : -1
+    if (i >= 0) { used.add(i); at.set(k, i) }
+  })
+  plan.steps.forEach((_, k) => { if (!at.has(k) && k < heads.length && !used.has(k) && heads[k]) { used.add(k); at.set(k, k) } })
+  const out: SectionImage[] = []
+  plan.steps.forEach((_, k) => {
+    const src = pictures[k]
+    const i = at.get(k)
+    if (!src || !httpsUrl(src) || i === undefined || out.length >= MAX_SECTION_IMAGES) return
+    out.push({ title: heads[i]!, src })
+  })
+  return out
+}
+
 /** Runs one deep research. Never throws: a failure ends with a `failed` status and whatever was written. */
 export async function runDeepResearch(question: string, context: string, lang: string, deps: DeepResearchDeps, emit: ResearchEmit): Promise<{ plan: ResearchPlan | null; evidence: Evidence[]; findings: Finding[]; failed: string | null; cut?: boolean }> {
   const now = deps.now ?? Date.now
@@ -164,6 +203,13 @@ export async function runDeepResearch(question: string, context: string, lang: s
   const steps: ResearchStatus['steps'] = plan.steps.map(s => ({ title: s.title, status: 'pending' }))
   const show = (phase: ResearchStatus['phase']) => emit.status({ type: 'tappy.research.v1', title: plan!.title, phase, steps: steps.map(s => ({ ...s })), sources: evidence.length })
   show('researching')
+  // the section pictures are looked up while the research runs (no added wait): the first MAX_SECTION_IMAGES steps that have something to show
+  let wanted = 0
+  const picturesP: Promise<Array<string | null>> = Promise.all(plan.steps.map(async s => {
+    if (!deps.images || !s.image_query || wanted >= MAX_SECTION_IMAGES) return null
+    wanted++
+    return (await deps.images(s.image_query).catch(() => [] as string[])).find(httpsUrl) ?? null
+  }))
 
   const runStep = async (k: number): Promise<void> => {
     const step = plan!.steps[k]
@@ -204,18 +250,26 @@ export async function runDeepResearch(question: string, context: string, lang: s
   const notes = findings.map(f => ({ ...f, source: renumber.get(f.source)! }))
   const stripper = linkStripper()
   let cut = false
+  let written = ''
+  const say = (t: string) => { if (t) { written += t; emit.text(t) } }
   try {
     for await (const delta of deps.write({ question, plan, evidence: cited, findings: notes })) {
-      const t = stripper.push(delta); if (t) emit.text(t)
+      say(stripper.push(delta))
       // the run's own deadline: what was written stays and gets its sources (the route must answer inside its maxDuration)
       if (now() - t0 >= DEEP_RESEARCH_LIMITS.runDeadlineMs) { cut = true; break }
     }
-    const tail = stripper.end(); if (tail) emit.text(tail)
+    say(stripper.end())
   } catch {
-    const tail = stripper.end(); if (tail) emit.text(tail)
+    say(stripper.end())
     return { plan, evidence, findings, failed: fail(plan.title, steps, 'write_failed'), cut }
   }
   emit.text(sourcesBlock(cited, notes, lang, plan.sources_label))
+  // the pictures go under their sections (an annotation the article layout places; never in the text). A lookup still running is not waited for.
+  let pictureTimer: ReturnType<typeof setTimeout> | undefined
+  const pictures = await Promise.race([picturesP, new Promise<null>(r => { pictureTimer = setTimeout(() => r(null), 1500) })])
+  clearTimeout(pictureTimer)
+  const placed = pictures ? sectionImages(written, plan, pictures) : []
+  if (placed.length && emit.images) emit.images(placed)
   const links = cited.map(e => ({ id: e.id, title: e.title, url: e.url }))
   emit.status({ type: 'tappy.research.v1', title: plan.title, phase: 'done', steps: steps.map(s => ({ ...s })), sources: evidence.length, links })
   return { plan, evidence, findings, failed: null, cut }
