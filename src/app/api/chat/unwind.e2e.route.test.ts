@@ -42,6 +42,8 @@ const h = vi.hoisted(() => {
     placesCalls: [] as Array<{ q: string; centre: { lat: number; lng: number } | null }>,
     /** 31/10: what the Deep Research plan call returns (null = the call fails). */
     researchPlan: null as null | Record<string, unknown>,
+    /** 31/10: the follow-up steps the Deep Research gap check asks for ([] = the findings cover the question). */
+    researchGaps: [] as Array<{ title: string; queries: string[] }>,
   }
   const builder = (): any => {
     const b: any = {
@@ -115,6 +117,7 @@ vi.mock('@/lib/ai/llm', () => ({
       if (o?.schemaName === 'tappy_follow_up') return Promise.resolve({ object: { query: h.state.gapQuery }, usage: { promptTokens: 10, completionTokens: 5 }, providerMetadata: {} })
       // 31/10 Deep Research: its plan and its notes calls
       if (o?.schemaName === 'tappy_research_plan') return h.state.researchPlan ? Promise.resolve({ object: h.state.researchPlan, providerMetadata: { tappy: { cost: { usd: 0.0003 } } } }) : Promise.reject(new Error('no plan'))
+      if (o?.schemaName === 'tappy_research_gaps') return Promise.resolve({ object: { steps: h.state.researchGaps }, providerMetadata: { tappy: { cost: { usd: 0.0001 } } } })
       if (o?.schemaName === 'tappy_research_notes') return Promise.resolve({ object: { findings: [{ text: 'Bậc 1 giá 1.893 đồng/kWh từ 11/10/2026', source: 1 }, { text: 'nguồn không có trong danh sách', source: 99 }] }, providerMetadata: { tappy: { cost: { usd: 0.0002 } } } })
       return h.state.luna ? Promise.resolve({ object: h.state.luna, usage: { promptTokens: 10, completionTokens: 5 }, providerMetadata: {} }) : Promise.reject(new Error('no provider in this test'))
     },
@@ -774,8 +777,8 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     for (const l of frames.at(-1)!.links) expect(l.url).toMatch(/^https:\/\/(giadien|chinhphu|tin|forum|khac)\.example\//)
     expect(deep.text).not.toMatch(/\n99\. /) // a finding naming a source that was not handed in is dropped
     const cost = deep.logs.find(x => x.type === 'tappyai_turn_cost' && x.turnType === 'deep_research')
-    expect(cost?.modelCalls).toBe(4) // plan + two notes + the writer
-    expect(cost?.answerUsd).toBeCloseTo(0.0003 + 0.0002 * 2 + 0.004, 6)
+    expect(cost?.modelCalls).toBe(5) // plan + two notes + the gap check (nothing missing) + the writer
+    expect(cost?.answerUsd).toBeCloseTo(0.0003 + 0.0002 * 2 + 0.0001 + 0.004, 6)
     expect(deep.logs.find(x => x.type === 'tappyai_deep_research')).toMatchObject({ ok: true, steps: 2, pictures: 1 })
     expect(deep.logs.find(x => x.type === 'tappyai_deep_research')?.with_text).toBeGreaterThanOrEqual(3) // the pages read reach their sources
     // the model's plan fails: no report, the question is given back, the person is told

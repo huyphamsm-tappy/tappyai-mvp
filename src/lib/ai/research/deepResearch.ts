@@ -16,13 +16,21 @@
 // writing at 105 s (what was written stays, with its sources) so the answer always ends inside the platform's limit.
 import { parseDoc, headingTitle, titleKey, type DocBlock } from '@/lib/answerDoc/parse'
 
-export const DEEP_RESEARCH_LIMITS = { steps: 5, queriesPerStep: 2, findingsPerStep: 10, researchDeadlineMs: 55_000, runDeadlineMs: 105_000 } as const
+// planSteps: the plan's own steps; steps: all steps of a run (the plan's + the follow-up round's GAP_STEPS), as the card shows them
+export const DEEP_RESEARCH_LIMITS = { planSteps: 5, steps: 7, queriesPerStep: 2, findingsPerStep: 10, researchDeadlineMs: 55_000, runDeadlineMs: 105_000 } as const
 
 /**
  * `sources_label`: the heading of the sources list in the question's language (the plan call writes it; absent = by the app's locale).
  * A step's `image_query`: what to search a picture for, when the step is about something one can see (absent = no picture for it).
  */
 export interface ResearchPlan { title: string; sources_label?: string; steps: Array<{ title: string; queries: string[]; image_query?: string }> }
+/**
+ * Measured 31/10 (T22, "how many EV makers are there"): one research round found sales by brand but no count, and the report could only say
+ * "not found". Like the published systems (research, see what is still missing, research that), a second round runs for what the first did
+ * not answer: at most this many follow-up steps, only when time is left.
+ */
+export const GAP_STEPS = 2
+const GAP_MIN_LEFT_MS = 20_000
 /** Owner 31/10 ("báo cáo có phần hình ảnh chèn vào cho hợp nội dung từng mục"): pictures per report, at most this many (one per section). */
 export const MAX_SECTION_IMAGES = 4
 export interface Evidence { id: number; title: string; url: string; snippet: string; text: string }
@@ -62,6 +70,11 @@ export interface DeepResearchDeps {
   /** The step's findings; `source` is an id of the evidence handed in. */
   notes(step: string, question: string, evidence: readonly Evidence[]): Promise<Array<{ text: string; source: number }>>
   write(input: { question: string; plan: ResearchPlan; evidence: readonly Evidence[]; findings: readonly Finding[] }): AsyncIterable<string>
+  /**
+   * The parts of the question the findings do not answer yet, as at most GAP_STEPS follow-up steps (title + queries); [] = covered.
+   * Absent = one research round only.
+   */
+  gaps?(question: string, plan: ResearchPlan, findings: readonly string[]): Promise<Array<{ title: string; queries: string[] }>>
   /** Picture URLs for one image query (server-chosen, never the model's); absent = a report without pictures. */
   images?(query: string): Promise<string[]>
   now?: () => number
@@ -81,7 +94,7 @@ export function normalisePlan(p: unknown, question: string): ResearchPlan | null
     const queries = (Array.isArray(x.queries) ? x.queries : []).map(q => clean(q, 200)).filter(Boolean).slice(0, DEEP_RESEARCH_LIMITS.queriesPerStep)
     const image = clean(x.image_query, 80)
     return { title: clean(x.title, 160), queries, ...(image ? { image_query: image } : {}) }
-  }).filter(s => s.title && s.queries.length).slice(0, DEEP_RESEARCH_LIMITS.steps)
+  }).filter(s => s.title && s.queries.length).slice(0, DEEP_RESEARCH_LIMITS.planSteps)
   if (!steps.length) return null
   // the label is one short heading word or two: markup characters are blanked like a source title's
   const label = clean(r.sources_label, 30).replace(/[[\]()<>`*_#|\\]/g, ' ').replace(/\s+/g, ' ').trim()
@@ -189,7 +202,7 @@ export function sectionImages(report: string, plan: ResearchPlan, pictures: Read
 }
 
 /** Runs one deep research. Never throws: a failure ends with a `failed` status and whatever was written. */
-export async function runDeepResearch(question: string, context: string, lang: string, deps: DeepResearchDeps, emit: ResearchEmit): Promise<{ plan: ResearchPlan | null; evidence: Evidence[]; findings: Finding[]; failed: string | null; cut?: boolean }> {
+export async function runDeepResearch(question: string, context: string, lang: string, deps: DeepResearchDeps, emit: ResearchEmit): Promise<{ plan: ResearchPlan | null; evidence: Evidence[]; findings: Finding[]; failed: string | null; cut?: boolean; followUps?: number }> {
   const now = deps.now ?? Date.now
   const t0 = now()
   const evidence: Evidence[] = []
@@ -238,7 +251,23 @@ export async function runDeepResearch(question: string, context: string, lang: s
   // every step at once; a step still running at the deadline is dropped (marked failed), the report is written from what came back
   let timer: ReturnType<typeof setTimeout> | undefined
   const deadline = new Promise<'deadline'>(r => { timer = setTimeout(() => r('deadline'), Math.max(0, DEEP_RESEARCH_LIMITS.researchDeadlineMs - (now() - t0))) })
-  await Promise.race([Promise.all(plan.steps.map((_, k) => runStep(k).catch(() => { steps[k].status = 'failed' }))), deadline])
+  const round = (from: number) => Promise.race([Promise.all(plan!.steps.slice(from).map((_, j) => runStep(from + j).catch(() => { steps[from + j].status = 'failed' }))), deadline])
+  let timedOut = (await round(0)) === 'deadline'
+  // the second round: what the question asks that the findings do not answer yet, as follow-up steps (shown on the card like the others)
+  let followUps = 0
+  if (!timedOut && deps.gaps && findings.length && DEEP_RESEARCH_LIMITS.researchDeadlineMs - (now() - t0) >= GAP_MIN_LEFT_MS) {
+    const asked = await deps.gaps(question, plan, findings.map(f => f.text)).catch(() => [])
+    const more = (Array.isArray(asked) ? asked : [])
+      .map(g => normalisePlan({ title: plan!.title, steps: [g] }, question)?.steps[0]).filter((s): s is ResearchPlan['steps'][number] => !!s).slice(0, GAP_STEPS)
+    if (more.length) {
+      const from = plan.steps.length
+      plan = { ...plan, steps: [...plan.steps, ...more] }
+      for (const s of more) steps.push({ title: s.title, status: 'pending' })
+      followUps = more.length
+      show('researching')
+      timedOut = (await round(from)) === 'deadline'
+    }
+  }
   clearTimeout(timer)
   for (const s of steps) if (s.status !== 'done') s.status = 'failed'
   if (!findings.length) return { plan, evidence, findings, failed: fail(plan.title, steps, 'no_findings') }
@@ -272,5 +301,5 @@ export async function runDeepResearch(question: string, context: string, lang: s
   if (placed.length && emit.images) emit.images(placed)
   const links = cited.map(e => ({ id: e.id, title: e.title, url: e.url }))
   emit.status({ type: 'tappy.research.v1', title: plan.title, phase: 'done', steps: steps.map(s => ({ ...s })), sources: evidence.length, links })
-  return { plan, evidence, findings, failed: null, cut }
+  return { plan, evidence, findings, failed: null, cut, followUps }
 }

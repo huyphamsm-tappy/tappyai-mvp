@@ -1,7 +1,7 @@
 // 31/10 Deep Research orchestration (deepResearch.ts) with fake dependencies: plan, parallel steps, findings tied to handed-in sources,
 // the deadline, the writer's links removed, the sources list built by code, and the failure paths.
 import { describe, it, expect, vi, afterEach } from 'vitest'
-import { runDeepResearch, sectionImages, MAX_SECTION_IMAGES, canonicalSourceUrl, normalisePlan, linkStripper, sourcesBlock, readResearchStatus, DEEP_RESEARCH_LIMITS, type DeepResearchDeps, type ResearchStatus } from './deepResearch'
+import { runDeepResearch, sectionImages, MAX_SECTION_IMAGES, GAP_STEPS, canonicalSourceUrl, normalisePlan, linkStripper, sourcesBlock, readResearchStatus, DEEP_RESEARCH_LIMITS, type DeepResearchDeps, type ResearchStatus } from './deepResearch'
 
 const PLAN = { title: 'Thị trường xe điện', steps: [{ title: 'Doanh số', queries: ['doanh so xe dien 2026'] }, { title: 'Giá', queries: ['gia xe dien', 'bang gia xe dien'] }] }
 const page = (u: string) => ({ title: `Trang ${u}`, url: `https://${u}.example/a`, snippet: 's', text: `nội dung ${u}` })
@@ -147,6 +147,36 @@ describe('runDeepResearch', () => {
   })
 })
 
+describe('the follow-up round (measured T22: one round found no count and the report could only say "not found")', () => {
+  it('what the findings do not answer yet becomes follow-up steps, researched before writing and shown on the card', async () => {
+    let seen: string[] = []
+    const asked: string[] = []
+    const d = deps({
+      gather: async q => { asked.push(q); return [page(q.includes('so luong') ? 'n' : 'a')] },
+      gaps: async (_q, _p, found) => { seen = [...found]; return [{ title: 'Số hãng xe điện', queries: ['so luong hang xe dien 2026'] }, { title: 'x', queries: [] }, { title: 'thứ ba', queries: ['a'] }, { title: 'thứ tư', queries: ['b'] }] },
+    })
+    const c = collect()
+    const out = await runDeepResearch('q', '', 'vi', d, c.emit)
+    expect(seen.length).toBeGreaterThan(0) // the check reads the findings of the first round
+    expect(asked).toContain('so luong hang xe dien 2026')
+    expect(out.followUps).toBe(GAP_STEPS) // an empty step is dropped, the rest capped
+    expect(out.findings.some(f => f.step === 3)).toBe(true)
+    expect(c.statuses.at(-1)?.steps.map(s => s.title)).toEqual(['Doanh số', 'Giá', 'Số hãng xe điện', 'thứ ba'])
+  })
+  it('no follow-up when nothing is missing, when the check fails, or when too little time is left', async () => {
+    for (const gaps of [async () => [], async () => { throw new Error('x') }, async () => undefined as never]) {
+      const out = await runDeepResearch('q', '', 'vi', deps({ gaps }), collect().emit)
+      expect(out.followUps).toBe(0)
+      expect(out.failed).toBeNull()
+    }
+    let t = 0
+    let called = false
+    const late = deps({ now: () => t, gather: async () => { t = DEEP_RESEARCH_LIMITS.researchDeadlineMs - 5_000; return [page('a')] }, gaps: async () => { called = true; return [{ title: 'y', queries: ['y'] }] } })
+    await runDeepResearch('q', '', 'vi', late, collect().emit)
+    expect(called).toBe(false)
+  })
+})
+
 describe('section pictures (owner 31/10: pictures that fit each section of the report)', () => {
   const plan = { title: 'T', steps: [{ title: 'Doanh số', queries: ['q'] }, { title: 'Giá', queries: ['q'] }, { title: 'Triển vọng', queries: ['q'] }] }
   it('a heading that is a step\'s own title takes that step\'s picture, whatever its place; a step without one takes the k-th heading if free', () => {
@@ -208,7 +238,7 @@ describe('normalisePlan', () => {
   it('caps steps and queries, drops empty ones, falls back to the question as the title', () => {
     const p = normalisePlan({ steps: Array.from({ length: 9 }, (_, i) => ({ title: `b${i}`, queries: ['q1', ' ', 'q2', 'q3'] })).concat([{ title: '', queries: ['x'] }, { title: 'no queries', queries: [] }] as never) }, 'câu hỏi')
     expect(p?.title).toBe('câu hỏi')
-    expect(p?.steps).toHaveLength(DEEP_RESEARCH_LIMITS.steps)
+    expect(p?.steps).toHaveLength(DEEP_RESEARCH_LIMITS.planSteps)
     expect(p?.steps[0].queries).toEqual(['q1', 'q2'])
   })
   it('nothing usable is null', () => {
