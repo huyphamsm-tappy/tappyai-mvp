@@ -25,6 +25,35 @@ describe('getWeatherForecast (Open-Meteo, no key)', () => {
     expect(urls[1]).toContain('forecast_days=4')
     expect(urls[1]).toContain('timezone=Asia%2FHo_Chi_Minh')
   })
+  it('01/11 (measured T12 "you said rain tonight, it is dry now"): one call also returns the weather NOW and the next 12 hours hour by hour', async () => {
+    const urls: string[] = []
+    const fetchFn = (async (u: string) => {
+      urls.push(String(u))
+      if (String(u).includes('geocoding-api')) return ok({ results: [{ name: 'Thành phố Hồ Chí Minh', country: 'Việt Nam', latitude: 10.82, longitude: 106.63, timezone: 'Asia/Ho_Chi_Minh' }] })
+      return ok({
+        current: { time: '2026-10-30T19:00', temperature_2m: 28.04, relative_humidity_2m: 79, precipitation: 0, weather_code: 3 },
+        hourly: { time: ['2026-10-30T19:00', '2026-10-30T20:00', '2026-10-30T21:00'], temperature_2m: [28, 27.6, 27.1], precipitation_probability: [10, 19, 45], precipitation: [0, 0, 0.6], weather_code: [3, 3, 80] },
+        daily: { time: ['2026-10-30'], weather_code: [80], temperature_2m_max: [33], temperature_2m_min: [25], precipitation_probability_max: [70], precipitation_sum: [4.2], wind_speed_10m_max: [14] },
+      })
+    }) as unknown as typeof fetch
+    const r = await getWeatherForecast('Sài Gòn', 1, 'vi', fetchFn, new Date('2026-10-30T12:07:00Z'))
+    if ('error' in r) throw new Error('unexpected error')
+    expect(r.now).toEqual({ time: '2026-10-30T19:00', summary: 'nhiều mây', temp_c: 28, humidity_pct: 79, rain_mm: 0 })
+    expect(r.next_hours).toEqual([
+      { time: '2026-10-30T19:00', summary: 'nhiều mây', temp_c: 28, rain_chance_pct: 10, rain_mm: 0 },
+      { time: '2026-10-30T20:00', summary: 'nhiều mây', temp_c: 27.6, rain_chance_pct: 19, rain_mm: 0 },
+      { time: '2026-10-30T21:00', summary: 'mưa', temp_c: 27.1, rain_chance_pct: 45, rain_mm: 0.6 },
+    ])
+    expect(r.days).toHaveLength(1)
+    expect(urls[1]).toContain('current=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cweather_code')
+    expect(urls[1]).toContain('hourly=temperature_2m%2Cprecipitation_probability%2Cprecipitation%2Cweather_code')
+    expect(urls[1]).toContain('forecast_hours=12')
+  })
+  it('a forecast without the current / hourly blocks still returns its days (now: null, next_hours: [])', async () => {
+    const fetchFn = (async (u: string) => String(u).includes('geocoding') ? ok({ results: [{ name: 'Huế', latitude: 16, longitude: 107 }] }) : ok({ daily: { time: ['2026-10-29'], weather_code: [2] } })) as unknown as typeof fetch
+    const r = await getWeatherForecast('Huế', 1, 'vi', fetchFn)
+    expect(r).toMatchObject({ now: null, next_hours: [], days: [{ date: '2026-10-29', summary: 'ít mây, có nắng' }] })
+  })
   it('days are clamped to 1..10', async () => {
     const urls: string[] = []
     const fetchFn = (async (u: string) => { urls.push(String(u)); return String(u).includes('geocoding') ? ok({ results: [{ name: 'X', latitude: 1, longitude: 2 }] }) : ok({ daily: { time: ['2026-10-29'] } }) }) as unknown as typeof fetch

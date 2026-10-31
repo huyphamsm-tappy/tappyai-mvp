@@ -3048,7 +3048,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       }),
       // CONSULT_ONE_BRAIN: a daily forecast up to 10 days (weatherForecast.ts, Open-Meteo, no key) - get_weather gives today only.
       ...(oneBrain ? { get_weather_forecast: tool({
-        description: 'Daily weather forecast for the next 1-10 days for a city or place anywhere (min/max temperature, rain chance and amount, wind, sky). Use for a day after today: the weekend, a trip date, next week.',
+        description: 'Weather for a city or place anywhere, from one call: the conditions NOW, the next 12 hours hour by hour (rain chance and amount, sky, temperature, local time), and a daily forecast for 1-10 days (min/max temperature, rain chance and amount, wind, sky). Use it for now, tonight, the next hours, the weekend, a trip date or next week.',
         parameters: z.object({ location: z.string().describe('City or place name, e.g. Da Nang, Quy Nhon, Tokyo'), days: z.number().describe('How many days to return, counting TODAY as day 1, 1-10. To reach a date, count it in: from a Wednesday, the coming Sunday needs 5') }),
         execute: async ({ location, days }) => getWeatherForecast(location, days, lang),
       }) } : {}),

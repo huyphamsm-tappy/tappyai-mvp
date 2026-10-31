@@ -39,8 +39,13 @@ async function getJson(url: string, fetchFn: typeof fetch): Promise<unknown> {
 }
 
 export interface ForecastDay { date: string; summary: string; temp_min_c: number | null; temp_max_c: number | null; rain_chance_pct: number | null; rain_mm: number | null; wind_max_kmh: number | null }
+/** 01/11/2026 (measured T12, "you said rain tonight, why is it dry now"): the daily rows cannot answer now / tonight / the next hours,
+ *  so the same call also returns the conditions now and the next 12 hours, local time of the place. */
+export interface ForecastNow { time: string; summary: string; temp_c: number | null; humidity_pct: number | null; rain_mm: number | null }
+export interface ForecastHour { time: string; summary: string; temp_c: number | null; rain_chance_pct: number | null; rain_mm: number | null }
+export const FORECAST_NEXT_HOURS = 12
 export type ForecastResult =
-  | { location: string; country: string | null; days: ForecastDay[]; source: 'open-meteo.com'; fetched_at: string; timezone: string }
+  | { location: string; country: string | null; now: ForecastNow | null; next_hours: ForecastHour[]; days: ForecastDay[]; source: 'open-meteo.com'; fetched_at: string; timezone: string }
   | { error: 'place_not_found' | 'forecast_unavailable'; note: string }
 
 const num = (v: unknown): number | null => (typeof v === 'number' && Number.isFinite(v) ? Math.round(v * 10) / 10 : null)
@@ -54,15 +59,28 @@ export async function getWeatherForecast(place: string, days: number, lang = 'vi
     const hit = geo?.results?.[0]
     if (!hit || typeof hit.latitude !== 'number' || typeof hit.longitude !== 'number') return { error: 'place_not_found', note: `The forecast service did not recognise "${name}". Ask for or try the city name.` }
     const tz = typeof hit.timezone === 'string' && hit.timezone ? hit.timezone : 'Asia/Ho_Chi_Minh'
-    const q = new URLSearchParams({ latitude: String(hit.latitude), longitude: String(hit.longitude), daily: 'weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_sum,wind_speed_10m_max', timezone: tz, forecast_days: String(n) })
-    const f = await getJson(`${FORECAST}?${q.toString()}`, fetchFn) as { daily?: Record<string, unknown[]> }
+    const q = new URLSearchParams({
+      latitude: String(hit.latitude), longitude: String(hit.longitude),
+      current: 'temperature_2m,relative_humidity_2m,precipitation,weather_code',
+      hourly: 'temperature_2m,precipitation_probability,precipitation,weather_code', forecast_hours: String(FORECAST_NEXT_HOURS),
+      daily: 'weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_sum,wind_speed_10m_max', timezone: tz, forecast_days: String(n),
+    })
+    const f = await getJson(`${FORECAST}?${q.toString()}`, fetchFn) as { daily?: Record<string, unknown[]>; hourly?: Record<string, unknown[]>; current?: Record<string, unknown> }
     const d = f?.daily
     const dates = Array.isArray(d?.time) ? d!.time as string[] : []
     if (!dates.length) return { error: 'forecast_unavailable', note: 'The forecast service returned no days. This lookup FAILED; do not guess the weather.' }
     const at = (k: string, i: number) => (Array.isArray(d?.[k]) ? (d![k] as unknown[])[i] : undefined)
+    const h = f?.hourly
+    const hAt = (k: string, i: number) => (Array.isArray(h?.[k]) ? (h![k] as unknown[])[i] : undefined)
+    const hours = Array.isArray(h?.time) ? (h!.time as string[]).slice(0, FORECAST_NEXT_HOURS) : []
+    const c = f?.current
     return {
       location: [hit.name, hit.country].filter(Boolean).join(', '),
       country: hit.country ?? null,
+      now: c && typeof c.time === 'string'
+        ? { time: c.time, summary: weatherCodeText(Number(c.weather_code), lang), temp_c: num(c.temperature_2m), humidity_pct: num(c.relative_humidity_2m), rain_mm: num(c.precipitation) }
+        : null,
+      next_hours: hours.map((time, i) => ({ time, summary: weatherCodeText(Number(hAt('weather_code', i)), lang), temp_c: num(hAt('temperature_2m', i)), rain_chance_pct: num(hAt('precipitation_probability', i)), rain_mm: num(hAt('precipitation', i)) })),
       days: dates.map((date, i) => ({ date, summary: weatherCodeText(Number(at('weather_code', i)), lang), temp_min_c: num(at('temperature_2m_min', i)), temp_max_c: num(at('temperature_2m_max', i)), rain_chance_pct: num(at('precipitation_probability_max', i)), rain_mm: num(at('precipitation_sum', i)), wind_max_kmh: num(at('wind_speed_10m_max', i)) })),
       source: 'open-meteo.com',
       fetched_at: now.toISOString(),
