@@ -3,6 +3,7 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 import { CHANNEL_SOURCE, EntitlementWriteError, grantPlan } from './grantPlan'
 import { entitlementFromRow } from '@/lib/plans/entitlement'
 import { aiQuotaFor, paymentsCatalog, planForStoreProduct } from '@/lib/plans/planConfig'
+import { PAID_DAILY_CEILING } from '@/lib/config/product'
 
 // PAYMENTS — grantPlan is a thin, exact caller of the SQL writer (the stacking and the
 // idempotency are proven on a real database in supabase/tests/p8_payments.test.ts).
@@ -56,10 +57,12 @@ describe('grantPlan', () => {
 
 describe('quota reads the entitlement only — the channel never matters', () => {
   const future = new Date(Date.now() + 5 * 86_400_000).toISOString()
-  it.each(['web_sepay', 'google_play', 'apple_iap', 'manual'])('a %s grant = paid, 30 AI questions a day', (source) => {
+  it.each(['web_sepay', 'google_play', 'apple_iap', 'manual'])(`a %s grant = paid, hidden ceiling of ${PAID_DAILY_CEILING} AI questions a day`, (source) => {
     const ent = entitlementFromRow({ plan: 'momo', status: 'active', current_period_end: future, source })
     expect(ent).toMatchObject({ paid: true, plan: 'momo', source })
-    expect(aiQuotaFor(ent.plan)).toEqual({ limit: 30, period: 'day' })
+    // owner 01/11/2026: 30 -> 1000 (accounts have no visible limit; hidden anti-abuse ceiling)
+    expect(PAID_DAILY_CEILING).toBe(1000)
+    expect(aiQuotaFor(ent.plan)).toEqual({ limit: PAID_DAILY_CEILING, period: 'day' })
   })
 })
 

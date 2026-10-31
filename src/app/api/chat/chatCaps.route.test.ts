@@ -3,7 +3,7 @@
  *
  *   per IP        30/min   (was in-process only; now publicRateLimit — shared when KV is configured)
  *   per account   20/min   (new: one account behind many IPs)
- *   Pro per day   300      (new: Pro was unlimited)
+ *   Pro per day   1000     (new: Pro was unlimited; owner 01/11/2026 raised it from 300 - a hidden anti-abuse ceiling)
  *
  * Every refusal is a 429 with a server-written sentence and costs no model call. Numbers are env
  * overrides (chatCaps.ts). These drive the REAL limiters against the in-process store (no KV in
@@ -86,10 +86,11 @@ let n = 0
 beforeEach(() => { n++; h.state.user = { id: `u-${n}` }; h.state.pro = false; h.state.calls.model = 0; h.state.ip = `10.0.${n}.1` })
 
 describe('the caps exist and are env-tunable defaults', () => {
-  it('30 / 20 / 300', () => {
+  it('30 / 20 / 1000', () => {
     expect(CHAT_IP_BURST_PER_MINUTE).toBe(30)
     expect(CHAT_USER_BURST_PER_MINUTE).toBe(20)
-    expect(PRO_DAILY_CHAT_CAP).toBe(300)
+    // owner 01/11/2026: 300 -> 1000 (accounts have no visible limit; hidden anti-abuse ceiling)
+    expect(PRO_DAILY_CHAT_CAP).toBe(1000)
   })
 })
 

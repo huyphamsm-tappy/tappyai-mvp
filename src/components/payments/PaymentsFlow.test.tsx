@@ -35,14 +35,16 @@ beforeEach(() => {
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); vi.useRealTimers() })
 
 describe('plan picker', () => {
-  it('shows five plans, Momo marked popular and pre-selected, 30 questions a day, one primary button', () => {
+  it('shows five plans, Momo marked popular and pre-selected, unlimited AI questions, one primary button', () => {
     render(<PaymentsFlow plans={paymentsCatalog()} current={null} />)
     const radios = screen.getAllByRole('radio')
     expect(radios).toHaveLength(5)
     expect(radios.map((r) => r.textContent)).toEqual(expect.arrayContaining([expect.stringContaining('Pip'), expect.stringContaining('Sunny')]))
     expect(screen.getByText('Phổ biến').closest('[role=radio]')!.textContent).toContain('Momo')
     expect(screen.getByRole('radio', { checked: true }).textContent).toContain('Momo')
-    expect(screen.getAllByText(/30 câu hỏi AI mỗi ngày/)).toHaveLength(5)
+    // owner 01/11/2026: "30 câu hỏi AI mỗi ngày" -> "Không giới hạn câu hỏi AI" (accounts have no visible limit; hidden anti-abuse ceiling)
+    expect(screen.getAllByText(/Không giới hạn câu hỏi AI/)).toHaveLength(5)
+    expect(document.body.textContent).not.toMatch(/câu hỏi AI mỗi ngày|1000|1\.000/) // the hidden ceiling is never shown
     expect(screen.getByText('179.000đ')).toBeTruthy()
     expect(screen.getAllByRole('button', { name: 'Tiếp tục' })).toHaveLength(1)
   })

@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { subscriptionCatalog } from '@/lib/payments/subscriptionCatalog'
 import { mySubscription } from '@/lib/payments/subscriptionState'
+import { ANON_LIFETIME_LIMIT, FREE_DAILY_LIMIT, PAID_DAILY_CEILING } from '@/lib/config/product'
 
 // SUBSCRIPTIONS — the web screens (docs/payments/PLAN.md). Written by the security session.
 
@@ -19,10 +20,10 @@ import SubscriptionFlow, { type MyPlanResponse } from './SubscriptionFlow'
 
 const catalog = subscriptionCatalog({ env: {} as NodeJS.ProcessEnv })
 const inDays = (d: number) => new Date(Date.now() + d * 86_400_000).toISOString()
-const quota = { limit: 10, used: 3, remaining: 7, period: 'day' as const }
+const quota = { limit: FREE_DAILY_LIMIT, used: 3, remaining: FREE_DAILY_LIMIT - 3, period: 'day' as const }
 const free: MyPlanResponse = { signedIn: true, subscription: mySubscription(null), quota }
 const activeWeb = (endDays = 20): MyPlanResponse => ({
-  signedIn: true, quota: { limit: 30, used: 2, remaining: 28, period: 'day' },
+  signedIn: true, quota: { limit: PAID_DAILY_CEILING, used: 2, remaining: PAID_DAILY_CEILING - 2, period: 'day' },
   subscription: mySubscription({ plan: 'momo', status: 'active', current_period_end: inDays(endDays), source: 'web_sepay' }),
 })
 const ORDER = {
@@ -51,7 +52,7 @@ const goTo = (plan: string) => {
 }
 
 describe('plan list', () => {
-  it('five plans by duration, no badge, Free limit from the server, honest hints only', () => {
+  it('five plans by duration, no badge, Free shown as unlimited (no number), honest hints only', () => {
     render(<SubscriptionFlow catalog={catalog} initialMe={free} />)
     const ids = [...document.querySelectorAll('[data-plan]')].map((e) => e.getAttribute('data-plan'))
     expect(ids).toEqual(['pip', 'momo', 'coco', 'milo', 'sunny'])
@@ -60,8 +61,11 @@ describe('plan list', () => {
     expect(badges.length).toBe(2)
     for (const b of badges) expect(b.closest('[data-plan],[data-plan-col]')?.getAttribute(b.closest('[data-plan]') ? 'data-plan' : 'data-plan-col')).toBe('sunny')
     expect(screen.queryByText(/Best|Winner|Tiết kiệm so với|Giá trị lâu dài/)).toBeNull()
-    expect(screen.getAllByText('10 câu hỏi AI mỗi ngày').length).toBeGreaterThan(0) // Free = live backend value
-    expect(screen.getAllByText('5 câu hỏi AI trọn đời').length).toBe(1)
+    // owner 01/11/2026: "10 câu hỏi AI mỗi ngày" -> "Không giới hạn câu hỏi AI", guest 5 -> 10 (accounts have no visible limit; hidden anti-abuse ceiling)
+    expect(screen.getAllByText('Không giới hạn câu hỏi AI').length).toBeGreaterThan(0) // Free = no visible limit
+    expect(document.body.textContent).not.toMatch(/câu hỏi AI mỗi ngày/) // the hidden ceiling is never shown as a daily number
+    expect(document.body.textContent).not.toMatch(new RegExp(`(^|\\D)(${FREE_DAILY_LIMIT}|${PAID_DAILY_CEILING}) câu`))
+    expect(screen.getAllByText(`${ANON_LIFETIME_LIMIT} câu hỏi AI trọn đời`).length).toBe(1)
     // Standardized VND prices on the plans; no price per day, no %, no USD
     expect(document.body.textContent).toMatch(/29\.000đ \/ 7 ngày/)
     expect(document.body.textContent).toMatch(/179\.000đ \/ 1 tháng/)
@@ -108,7 +112,7 @@ describe('purchase (web)', () => {
     expect(screen.getByText('Tappy Sunny')).toBeTruthy()
     expect(screen.getByRole('button', { name: 'Chọn Sunny' })).toBeTruthy()
     const detail = screen.getByTestId('sub-detail').textContent!
-    expect(detail).toMatch(/30 câu hỏi AI mỗi ngày/)
+    expect(detail).toMatch(/Không giới hạn câu hỏi AI/)
     expect(detail).toMatch(/Dùng cho mọi tính năng AI của Tappy/)
     expect(detail).not.toMatch(/\bPro\b/)
     unmount()
@@ -117,7 +121,7 @@ describe('purchase (web)', () => {
     expect(screen.queryByTestId('sub-monthly')).toBeNull()
     // Huy 2026-10-02: Pip/Momo/Coco/Milo show 3 lines (no "dùng chung số câu hỏi" line)
     const lines = [...screen.getByTestId('sub-detail').querySelectorAll('li')].map((li) => li.textContent)
-    expect(lines).toEqual(['30 câu hỏi AI mỗi ngày', 'Dùng cho mọi tính năng AI của Tappy', 'Đồng hành lâu dài, trải nghiệm trọn vẹn hơn'])
+    expect(lines).toEqual(['Không giới hạn câu hỏi AI', 'Dùng cho mọi tính năng AI của Tappy', 'Đồng hành lâu dài, trải nghiệm trọn vẹn hơn'])
   })
 
   it('the order row says paid but the server does not show ACTIVE → failure, not success', async () => {
@@ -136,7 +140,7 @@ describe('purchase (web)', () => {
     goTo('coco')
     await act(async () => { fireEvent.click(screen.getByRole('button', { name: /Thanh toán 489\.000đ/ })) })
     orderStatus = 'paid'
-    meAfterPay = { signedIn: true, quota: { limit: 30, used: 0, remaining: 30, period: 'day' },
+    meAfterPay = { signedIn: true, quota: { limit: PAID_DAILY_CEILING, used: 0, remaining: PAID_DAILY_CEILING, period: 'day' },
       subscription: mySubscription({ plan: 'coco', status: 'active', current_period_end: inDays(90), source: 'web_sepay' }) }
     await waitFor(() => expect(screen.getByTestId('sub-success')).toBeTruthy(), { timeout: 5_000 })
     expect(screen.getByText('Xong rồi! Coco đã đồng hành cùng bạn.')).toBeTruthy()
@@ -211,18 +215,19 @@ describe('Pip — one-time trial', () => {
     expect([...document.querySelectorAll('[data-plan]')].map((e) => e.getAttribute('data-plan'))).toEqual(['momo', 'coco', 'milo', 'sunny'])
   })
 
-  it('a guest is shown as "Welcome Guest" with 5 questions for life — never as the Free tier — and Free asks them to sign in', () => {
-    const guest: MyPlanResponse = { signedIn: false, pipUsed: false, subscription: mySubscription(null), quota: { limit: 5, used: 0, remaining: 5, period: 'lifetime' } }
+  it(`a guest is shown as "Welcome Guest" with ${ANON_LIFETIME_LIMIT} questions for life — never as the Free tier — and Free asks them to sign in`, () => {
+    const guest: MyPlanResponse = { signedIn: false, pipUsed: false, subscription: mySubscription(null), quota: { limit: ANON_LIFETIME_LIMIT, used: 0, remaining: ANON_LIFETIME_LIMIT, period: 'lifetime' } }
     render(<SubscriptionFlow catalog={catalog} initialMe={guest} />)
     const access = screen.getByTestId('sub-access').textContent!
     expect(access).toMatch(/Welcome Guest/)
-    expect(access).toMatch(/5 câu hỏi AI trọn đời/)
-    expect(access).not.toMatch(/Miễn phí|10 câu/)
+    expect(access).toMatch(new RegExp(`(^|\\D)${ANON_LIFETIME_LIMIT} câu hỏi AI trọn đời`))
+    // the Free tier's wording is now "Không giới hạn câu hỏi AI" (was "10 câu ... mỗi ngày"): a guest must see neither
+    expect(access).not.toMatch(/Miễn phí|Không giới hạn|mỗi ngày/)
     expect(screen.getByRole('link', { name: 'Đăng nhập miễn phí' }).getAttribute('href')).toBe('/login?returnTo=%2Fsubscription')
   })
 
   it('a guest still sees Pip as available; buying sends them to sign in first', () => {
-    const guest: MyPlanResponse = { signedIn: false, pipUsed: false, subscription: mySubscription(null), quota: { limit: 5, used: 0, remaining: 5, period: 'lifetime' } }
+    const guest: MyPlanResponse = { signedIn: false, pipUsed: false, subscription: mySubscription(null), quota: { limit: ANON_LIFETIME_LIMIT, used: 0, remaining: ANON_LIFETIME_LIMIT, period: 'lifetime' } }
     const assign = vi.fn()
     vi.stubGlobal('location', { ...window.location, assign })
     render(<SubscriptionFlow catalog={catalog} initialMe={guest} />)

@@ -10,7 +10,7 @@
 // P7 closeout (owner 02/10): Free = FREE_DAILY_LIMIT (10/day, Phase 7 canonical catalog 04/10), guest 5 for the lifetime, every paid plan 30/day.
 // A legacy `pro` row (Stripe/Apple) stays unmetered until its paid period ends (isGrandfatheredPro), then it is a 30/day plan like the others.
 
-import { FREE_DAILY_LIMIT } from '@/lib/config/product'
+import { FREE_DAILY_LIMIT, PAID_DAILY_CEILING, ANON_LIFETIME_LIMIT } from '@/lib/config/product'
 import { SUBSCRIPTION_PRICES } from './subscriptionPrices'
 
 /** Prices come from configuration (subscriptionPrices.json) — never typed here. */
@@ -60,16 +60,17 @@ export interface PlanDefinition {
 }
 
 export const PLAN_CONFIG: Readonly<Record<PlanId, PlanDefinition>> = Object.freeze({
-  guest: { id: 'guest', label: 'Guest', aiQuota: { limit: 5, period: 'lifetime' } },
+  // Owner 01/11/2026: an account has no question limit - free / paid limits below are the hidden anti-abuse ceilings only (product.ts).
+  guest: { id: 'guest', label: 'Guest', aiQuota: { limit: ANON_LIFETIME_LIMIT, period: 'lifetime' } },
   free: { id: 'free', label: 'Free', aiQuota: { limit: FREE_DAILY_LIMIT, period: 'day' } },
-  pip: { id: 'pip', label: 'Pip', priceVnd: P.pip.vnd, priceUsd: P.pip.usd, durationDays: 7, periodLabelVi: '7 ngày', storeProductId: 'tappy_pip_1w', aiQuota: { limit: 30, period: 'day' } },
-  momo: { id: 'momo', label: 'Momo', priceVnd: P.momo.vnd, priceUsd: P.momo.usd, durationDays: 30, periodLabelVi: '1 tháng', storeProductId: 'tappy_momo_1m', popular: true, aiQuota: { limit: 30, period: 'day' } },
-  coco: { id: 'coco', label: 'Coco', priceVnd: P.coco.vnd, priceUsd: P.coco.usd, durationDays: 90, periodLabelVi: '3 tháng', storeProductId: 'tappy_coco_3m', aiQuota: { limit: 30, period: 'day' } },
-  milo: { id: 'milo', label: 'Milo', priceVnd: P.milo.vnd, priceUsd: P.milo.usd, durationDays: 180, periodLabelVi: '6 tháng', storeProductId: 'tappy_milo_6m', aiQuota: { limit: 30, period: 'day' } },
-  sunny: { id: 'sunny', label: 'Sunny', priceVnd: P.sunny.vnd, priceUsd: P.sunny.usd, durationDays: 365, periodLabelVi: '12 tháng', storeProductId: 'tappy_sunny_12m', subscriptionBadge: 'popular', showMonthlyApprox: true, aiQuota: { limit: 30, period: 'day' } },
+  pip: { id: 'pip', label: 'Pip', priceVnd: P.pip.vnd, priceUsd: P.pip.usd, durationDays: 7, periodLabelVi: '7 ngày', storeProductId: 'tappy_pip_1w', aiQuota: { limit: PAID_DAILY_CEILING, period: 'day' } },
+  momo: { id: 'momo', label: 'Momo', priceVnd: P.momo.vnd, priceUsd: P.momo.usd, durationDays: 30, periodLabelVi: '1 tháng', storeProductId: 'tappy_momo_1m', popular: true, aiQuota: { limit: PAID_DAILY_CEILING, period: 'day' } },
+  coco: { id: 'coco', label: 'Coco', priceVnd: P.coco.vnd, priceUsd: P.coco.usd, durationDays: 90, periodLabelVi: '3 tháng', storeProductId: 'tappy_coco_3m', aiQuota: { limit: PAID_DAILY_CEILING, period: 'day' } },
+  milo: { id: 'milo', label: 'Milo', priceVnd: P.milo.vnd, priceUsd: P.milo.usd, durationDays: 180, periodLabelVi: '6 tháng', storeProductId: 'tappy_milo_6m', aiQuota: { limit: PAID_DAILY_CEILING, period: 'day' } },
+  sunny: { id: 'sunny', label: 'Sunny', priceVnd: P.sunny.vnd, priceUsd: P.sunny.usd, durationDays: 365, periodLabelVi: '12 tháng', storeProductId: 'tappy_sunny_12m', subscriptionBadge: 'popular', showMonthlyApprox: true, aiQuota: { limit: PAID_DAILY_CEILING, period: 'day' } },
   // Legacy paid plan (Stripe `STRIPE_PRO_PRICE_ID`, Apple IAP). Was quota-EXEMPT
-  // in the release; under the v2 quota it is a 30/day paid plan like the others.
-  pro: { id: 'pro', label: 'Pro', aiQuota: { limit: 30, period: 'day' } },
+  // in the release; under the v2 quota it is a paid plan like the others (hidden ceiling only).
+  pro: { id: 'pro', label: 'Pro', aiQuota: { limit: PAID_DAILY_CEILING, period: 'day' } },
 })
 
 export const PAID_PLAN_IDS: readonly PaidPlanId[] = ['pip', 'momo', 'coco', 'milo', 'sunny']

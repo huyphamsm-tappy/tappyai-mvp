@@ -9,10 +9,12 @@
 //   · route and runLiveTrial run in ONE process (one pid at module load, in the turn handler and in the network layer), by direct function call (no HTTP server)
 //   · the quota module is evaluated ONCE and the '@/' alias and a relative import give the SAME module (same functions)
 //   · with BENCH_TRIAL_MODE=dev-multi + BENCH_RESET_FREE_QUOTA_PER_TURN=1 the counter the ROUTE writes is the counter the RESET clears: 13 turns, no 429, the counter is 0 at the start
-//     of every turn and 1 after it; with the flag missing the counter climbs 0..10 and turn 11 is refused with free_limit_reached
+//     of every turn and 1 after it; with the flag missing the counter climbs (FREE_DAILY_LIMIT - 10)..FREE_DAILY_LIMIT and turn 11 is refused with free_limit_reached
+//     (owner 01/11/2026: Free 10 -> 300; the child drives the same counter to 10 below the limit before the run)
 import { describe, it, expect } from 'vitest'
 import { join } from 'node:path'
 import { runLauncher, buildChildEnv } from './liveTrialLauncher.mjs'
+import { FREE_DAILY_LIMIT } from '@/lib/config/product'
 
 const REPO = process.cwd()
 const CHILD = 'scripts/uat/consultUat/liveTrial.procproof.child.test.ts'
@@ -31,7 +33,7 @@ interface Proof {
   pidAtLoad: number; pidInTest: number; postPids: number[]; fetchPids: number[]; fetchCalls: number; ppid: number; argv1: string; execArgv: string[]; isMainThread: boolean
   hasIpcChannel: boolean; vitestPoolId: string | null; vitestWorkerId: string | null; quotaModuleEvaluations: number; sameFunctionAliasVsRelative: boolean; counterIsAMap: boolean
   distributedStoreConfigured: boolean; storeLikeEnvNames: string[]
-  startHits: number[]; endHits: number[]
+  preSpent: number; startHits: number[]; endHits: number[]
   summary: { turnsRun: number; stopped: string | null; quotaReset: { on: boolean; reason: string; resets: number }; problems: string[]; hostsBlocked: string[]; requestCap: { sent: number; refused: number } }
 }
 async function viaLauncher(extra: Record<string, string>): Promise<{ proof: Proof; printed: string; code: number; childEnvHasKeyOrFlag: Record<string, boolean> }> {
@@ -78,13 +80,15 @@ describe.skipIf(!canRun)('the real launcher → the real child process → the r
     expect(p.summary.turnsRun).toBe(13); expect(p.summary.stopped).toBeNull()
     expect(p.summary.problems.join(' | ')).not.toMatch(/429|free_limit_reached/)
     expect(p.summary.quotaReset).toEqual({ on: true, reason: 'mode=dev-multi, flag=1', resets: 13 })
+    // the counter started FREE_DAILY_LIMIT - 10 deep, so without the reset turn 11 would have been refused
+    expect(p.preSpent).toBe(FREE_DAILY_LIMIT - 10)
     expect(p.startHits).toEqual(Array(13).fill(0)); expect(p.endHits).toEqual(Array(13).fill(1))
     expect(p.summary.requestCap).toMatchObject({ sent: 0, refused: 0 }); expect(p.summary.hostsBlocked).toEqual([])
     expect(r.childEnvHasKeyOrFlag).toEqual({ flag: true, key: true }) // what the launcher passes on
     expect(r.printed).not.toContain('sk-test-not-a-real-key')
   }, 240_000)
 
-  it('flag missing (dev-multi): the SAME counter climbs 0..10 and turn 11 is refused with free_limit_reached — the real limit', async () => {
+  it(`flag missing (dev-multi): the SAME counter climbs ${FREE_DAILY_LIMIT - 10}..${FREE_DAILY_LIMIT} and turn 11 (question ${FREE_DAILY_LIMIT + 1} of the day) is refused with free_limit_reached — the real limit`, async () => {
     const r = await viaLauncher({})
     const p = r.proof
     expect(new Set([p.pidAtLoad, p.pidInTest, ...p.postPids, ...p.fetchPids]).size).toBe(1)
@@ -92,6 +96,9 @@ describe.skipIf(!canRun)('the real launcher → the real child process → the r
     expect(p.summary.turnsRun).toBe(11)
     expect(p.summary.problems.join(' | ')).toContain('T11: error: HTTP 429: not an answer (error: free_limit_reached)')
     expect(p.summary.quotaReset).toEqual({ on: false, reason: 'mode=dev-multi, flag=unset', resets: 0 })
-    expect(p.startHits).toEqual([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]); expect(p.endHits).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10])
+    // owner 01/11/2026: 10 -> 300 (accounts have no visible limit; hidden anti-abuse ceiling) - the child first drives the same counter to FREE_DAILY_LIMIT - 10
+    const base = FREE_DAILY_LIMIT - 10
+    expect(p.preSpent).toBe(base)
+    expect(p.startHits).toEqual([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => base + n)); expect(p.endHits).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10].map(n => base + n))
   }, 240_000)
 })

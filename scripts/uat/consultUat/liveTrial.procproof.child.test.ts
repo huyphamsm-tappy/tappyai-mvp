@@ -14,6 +14,7 @@ import * as quotaByRelative from '../../../src/lib/ai/quota/aiQuestionQuota'
 import { isMainThread } from 'node:worker_threads'
 import { basename } from 'node:path'
 import { isDistributedStoreConfigured } from '@/lib/security/distributedRateLimit'
+import { FREE_DAILY_LIMIT } from '@/lib/config/product'
 import { formatSummary, runLiveTrial } from './liveTrial'
 import { SUMMARY_BEGIN, SUMMARY_END, marker } from './liveTrialLauncher.mjs'
 import { memFs } from './liveRunner.testkit'
@@ -90,6 +91,11 @@ describe.skipIf(!launched)('PROCESS-BOUNDARY PROOF child (started by the real la
       endHits.push(hits())
       return res
     }
+    // owner 01/11/2026: Free 10 -> 300 a day (accounts have no visible limit; hidden anti-abuse ceiling). The trial's own caps stop it long before 300 real turns, so the SAME
+    // counter the route spends from (same user id, the real quota module) is first driven to 10 below the real limit: turn 11 is then question FREE_DAILY_LIMIT + 1 of the day.
+    const benchUser = quotaByAlias.aiQuotaIdentity({ id: '00000000-0000-4000-8000-0000000c0001', is_anonymous: false }, '127.0.0.1')
+    for (let i = 0; i < FREE_DAILY_LIMIT - 10; i++) if (!(await quotaByAlias.consumeAiQuestion(benchUser)).ok) throw new Error(`pre-spend refused at ${i + 1}`)
+    const preSpent = hits()
     const outcome = await runLiveTrial({ env: process.env, post, fetchImpl: fakeNetwork, fs: memFs(), repoRoot: process.cwd(), turns: TURNS, afterTrial: 'deny' })
     if (outcome.kind === 'refused') {
       // eslint-disable-next-line no-console
@@ -105,7 +111,7 @@ describe.skipIf(!launched)('PROCESS-BOUNDARY PROOF child (started by the real la
       counterIsAMap: map instanceof Map,
       // the shared store the quota would use INSTEAD of the in-process counter (a reset does not reach it): is one configured in THIS process? (names only, never a value)
       distributedStoreConfigured: isDistributedStoreConfigured(), storeLikeEnvNames: Object.keys(process.env).filter(k => /^(KV|UPSTASH|REDIS)/i.test(k)),
-      startHits, endHits,
+      preSpent, startHits, endHits,
       summary: { turnsRun: s.turnsRun, stopped: s.stopped, quotaReset: s.quotaReset, problems: s.problems, hostsBlocked: s.hostsBlocked, requestCap: s.requestCap },
     }
     // eslint-disable-next-line no-console

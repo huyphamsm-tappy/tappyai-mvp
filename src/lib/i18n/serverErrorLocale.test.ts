@@ -92,7 +92,8 @@ describe('every server message exists in both languages and they differ', () => 
     const vi = serverMessage('chat.anonLimit', 'vi', { n: 5, d: 15 })
     expect(en).toContain('5')
     expect(vi).toContain('5')
-    expect(en).toContain('15')
+    // owner 01/11/2026: the sentence no longer states a daily allowance ({d}) - an account has no question limit
+    expect(serverMessage('chat.planLimit', 'en', { n: 1000, plan: 'Coco' })).toContain('1000')
     expect(en).not.toMatch(/\{[nd]\}/)
     expect(vi).not.toMatch(/\{[nd]\}/)
   })

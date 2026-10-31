@@ -1,12 +1,14 @@
 // @vitest-environment node
 // Quota option (d) · the extension mode can reset the FREE-plan question counter before each turn, only when BOTH the mode is exactly dev-multi AND the flag
-// BENCH_RESET_FREE_QUOTA_PER_TURN is exactly 1. Everything else (flag missing / 0, acceptance, missing or odd mode) leaves the real limit in force: the 11th question of the
-// simulated Free account is refused by the REAL route with HTTP 429 free_limit_reached (this is what stopped the baseline at E11).
+// BENCH_RESET_FREE_QUOTA_PER_TURN is exactly 1. Everything else (flag missing / 0, acceptance, missing or odd mode) leaves the real limit in force: question FREE_DAILY_LIMIT + 1 of
+// the simulated Free account is refused by the REAL route with HTTP 429 free_limit_reached (at 10/day this is what stopped the baseline at E11; owner 01/11/2026 raised Free to a
+// hidden 300/day ceiling, so the tests first drive the same counter to 10 below it - see spendToTenBelowTheLimit).
 //
 // REAL chat route + REAL AI layer + REAL quota, the REAL runLiveTrial; only the network is fake (a scripted OpenAI that answers an intent request and a plain text answer; no tools,
 // so Serper is never asked). MOCK ONLY: no key, no real host, no model. Questions are written for this test.
 import { describe, it, expect, vi, beforeAll, beforeEach, afterEach } from 'vitest'
-import { __resetAiQuestionQuotaLocal } from '@/lib/ai/quota/aiQuestionQuota'
+import { __resetAiQuestionQuotaLocal, aiQuotaIdentity, consumeAiQuestion, peekAiQuestionQuota } from '@/lib/ai/quota/aiQuestionQuota'
+import { FREE_DAILY_LIMIT } from '@/lib/config/product'
 import { __clearToolCache, getCache, setCache } from '@/lib/ai/tools/common'
 import { __resetRequestCap } from '@/lib/ai/tools/serperRequestCap'
 import { BENCH_FLAG_NAMES, __resetBenchProcessGuardForTests, httpErrorCodeOf } from './liveRunner'
@@ -107,6 +109,17 @@ async function run(env: Record<string, string | undefined>, n: number): Promise<
   const file = [...fs.files.entries()].find(([p]) => /bench-\d+\.json$/.test(p))
   return { out, summary: out.summary, resultJson: file ? JSON.parse(file[1]) : null, text: formatSummary(out.summary), logs }
 }
+/**
+ * owner 01/11/2026: Free 10 -> 300 a day (accounts have no visible limit; hidden anti-abuse ceiling). The harness cannot send 300+ real turns (its own request cap of 450 per
+ * run and its spend cap stop it first), so the SAME counter the route spends from - the same user id, through the real quota module - is first driven to 10 below the
+ * real limit, one real unit at a time. Turn T11 of the run is then question FREE_DAILY_LIMIT + 1 of the day, and it must be refused by the real route at the real limit.
+ */
+const BENCH_USER = { id: '00000000-0000-4000-8000-0000000c0a01', is_anonymous: false }
+async function spendToTenBelowTheLimit(): Promise<void> {
+  const id = aiQuotaIdentity(BENCH_USER, '127.0.0.1')
+  for (let i = 0; i < FREE_DAILY_LIMIT - 10; i++) expect((await consumeAiQuestion(id)).ok).toBe(true)
+  expect(await peekAiQuestionQuota(id)).toMatchObject({ limit: FREE_DAILY_LIMIT, used: FREE_DAILY_LIMIT - 10, remaining: 10 })
+}
 const refusal = async (env: Record<string, string | undefined>): Promise<string[]> => {
   for (const [k, v] of Object.entries(env)) vi.stubEnv(k, v)
   const out = await runLiveTrial({ env: process.env, post: (async () => { throw new Error('must not be called') }) as never, fetchImpl: fakeNetwork, fs: memFs(), repoRoot: 'D:/TappyAI-wt/wt-integration', now: () => 1_000, turns: turnsOf(2), afterTrial: 'restore' } as never)
@@ -140,6 +153,8 @@ describe('the decision: mode × flag (pure)', () => {
 describe('(a) dev-multi + flag 1: 13 turns in one process, one user, no 429; history and the L1 cache are kept', () => {
   it('runs all 13 turns, the quota was reset 13 times, a three-turn conversation keeps its history, the L1 sentinel survives, nothing else changed', async () => {
     setCache('quota-test-sentinel', { kept: true }, 600_000)
+    // the counter starts 10 below the real limit, so without the per-turn reset T11 would be refused: 13 answers prove the reset reached it
+    await spendToTenBelowTheLimit()
     const r = await run({ ...EXT_ENV, [FLAG]: '1' }, 13)
     const s = r.summary
     expect(s.turnsRun).toBe(13); expect(s.stopped).toBeNull()
@@ -157,9 +172,11 @@ describe('(a) dev-multi + flag 1: 13 turns in one process, one user, no 429; his
   })
 })
 
-describe('(b) dev-multi and the flag missing / 0: the real limit stays — the 11th question gets HTTP 429 free_limit_reached', () => {
+describe(`(b) dev-multi and the flag missing / 0: the real limit stays — question ${FREE_DAILY_LIMIT + 1} of the day (run turn T11) gets HTTP 429 free_limit_reached`, () => {
   for (const [name, flag] of [['missing', undefined], ['0', '0']] as const) {
     it(`flag ${name}: the run stops at T11 with the 429 and its code; nothing after T11 is sent`, async () => {
+      // owner 01/11/2026: 10 -> 300 (accounts have no visible limit; hidden anti-abuse ceiling)
+      await spendToTenBelowTheLimit()
       const r = await run({ ...EXT_ENV, ...(flag === undefined ? {} : { [FLAG]: flag }) }, 13)
       const s = r.summary
       expect(s.turnsRun).toBe(11)
@@ -180,10 +197,11 @@ describe('(b) dev-multi and the flag missing / 0: the real limit stays — the 1
   }
 })
 
-describe('(c) every other mode, flag 1: no reset — the 11th question still gets 429', () => {
+describe(`(c) every other mode, flag 1: no reset — question ${FREE_DAILY_LIMIT + 1} of the day (run turn T11) still gets 429`, () => {
   const modes: Array<[string, string | undefined]> = [['mode missing (acceptance)', undefined], ['acceptance written out', 'acceptance'], ['an unknown mode', 'weird'], ['DEV-MULTI', 'DEV-MULTI'], ['"dev-multi " with a space', 'dev-multi '], ['an empty mode', '']]
   for (const [name, mode] of modes) {
     it(`${name}`, async () => {
+      await spendToTenBelowTheLimit()
       const r = await run({ ...NON_EXT, BENCH_TRIAL_MODE: mode, [FLAG]: '1' }, 13)
       expect(r.summary.turnsRun).toBe(11)
       expect(r.summary.problems.join(' | ')).toContain('T11: error: HTTP 429: not an answer (error: free_limit_reached)')
@@ -270,6 +288,7 @@ describe('(g) the error code of a non-2xx answer is recorded, short and redacted
     expect(httpErrorCodeOf('{"error":"Hẹn gặp lại"}', {})).not.toMatch(/Hẹn|lại/)
   })
   it('the summary line and the file hold the code, and not the sentence the route sent to the user', async () => {
+    await spendToTenBelowTheLimit()
     const r = await run({ ...EXT_ENV }, 12)
     expect(r.text).toContain('error: free_limit_reached')
     for (const t of [r.text, JSON.stringify(r.resultJson.turns[10])]) expect(t).not.toMatch(/Hẹn gặp lại|câu hỏi AI hôm nay|used all/)

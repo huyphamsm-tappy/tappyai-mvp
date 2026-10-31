@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server'
 import {
   FREE_DAILY_LIMIT,
   ANON_LIFETIME_LIMIT,
+  ACCOUNT_QUESTIONS_UNLIMITED,
   SHOW_PRO_UPGRADE,
   showProUpgradeEnabled,
   SHOW_APP_CONNECTIONS,
@@ -45,8 +46,10 @@ export async function GET() {
     {
       freemium: {
         // ONE shared AI question pool for every AI feature (chat in all areas, Scam Alerts).
-        /** Registered account: AI questions per VN day. */
+        /** Registered account: the hidden anti-abuse ceiling per VN day (owner 01/11/2026: accounts have no question limit). */
         freeDailyLimit: FREE_DAILY_LIMIT,
+        /** Owner 01/11/2026: an account (any plan) has no question limit - a client shows "unlimited", never a number. Additive field. */
+        accountQuestionsUnlimited: ACCOUNT_QUESTIONS_UNLIMITED,
         /**
          * Anonymous identity: AI questions for its LIFETIME — one trial, once. Not per day.
          * 🚨 Renamed from `anonDailyLimit` (2026-09-15): the old name said "daily" for a value

@@ -1,24 +1,29 @@
 import { describe, expect, it } from 'vitest'
 import { subscriptionCatalog } from './subscriptionCatalog'
+import { ANON_LIFETIME_LIMIT, FREE_DAILY_LIMIT, PAID_DAILY_CEILING } from '@/lib/config/product'
 
 const env = (v: Record<string, string> = {}) => v as unknown as NodeJS.ProcessEnv
 
 describe('subscriptionCatalog', () => {
-  it('five plans ordered by duration, 30 AI questions a day, only Sunny badged', () => {
+  it(`five plans ordered by duration, hidden ceiling of ${PAID_DAILY_CEILING} AI questions a day, only Sunny badged`, () => {
     const c = subscriptionCatalog({ env: env() })
     expect(c.plans.map((p) => p.id)).toEqual(['pip', 'momo', 'coco', 'milo', 'sunny'])
     expect(c.plans.map((p) => p.durationDays)).toEqual([7, 30, 90, 180, 365])
     for (const p of c.plans) {
-      expect(p.dailyAiQuestions).toBe(30)
+      // owner 01/11/2026: 30 -> 1000 (accounts have no visible limit; hidden anti-abuse ceiling)
+      expect(PAID_DAILY_CEILING).toBe(1000)
+      expect(p.dailyAiQuestions).toBe(PAID_DAILY_CEILING)
       expect(p).not.toHaveProperty('popular')
       expect(p.badge).toBe(p.id === 'sunny' ? 'popular' : null)
     }
   })
 
-  it('Free shows the value the backend enforces (10 a day); guest 5; every paid plan 30 a day', () => {
-    expect(subscriptionCatalog({ env: env() }).free.dailyAiQuestions).toBe(10)
-    for (const p of subscriptionCatalog({ env: env() }).plans) expect(p.dailyAiQuestions).toBe(30)
-    expect(subscriptionCatalog({ env: env() }).guest.aiQuestions).toBe(5)
+  it(`Free carries the value the backend enforces (hidden ${FREE_DAILY_LIMIT} a day); guest ${ANON_LIFETIME_LIMIT}; every paid plan ${PAID_DAILY_CEILING} a day`, () => {
+    expect(FREE_DAILY_LIMIT).toBe(300)
+    expect(ANON_LIFETIME_LIMIT).toBe(10)
+    expect(subscriptionCatalog({ env: env() }).free.dailyAiQuestions).toBe(FREE_DAILY_LIMIT)
+    for (const p of subscriptionCatalog({ env: env() }).plans) expect(p.dailyAiQuestions).toBe(PAID_DAILY_CEILING)
+    expect(subscriptionCatalog({ env: env() }).guest.aiQuestions).toBe(ANON_LIFETIME_LIMIT)
   })
 
   it('web gets VND prices; only Sunny gets "about …/month"; no per-day price or hint anywhere; apps get no price', () => {

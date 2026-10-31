@@ -26,7 +26,7 @@
 
 ```json
 {
-  "freemium": { "freeDailyLimit": 15, "anonLifetimeLimit": 5 },   // anon = 5 for the identity's LIFETIME (renamed from anonDailyLimit, 2026-09-15)
+  "freemium": { "freeDailyLimit": 300, "accountQuestionsUnlimited": true, "anonLifetimeLimit": 10 },   // owner 01/11/2026: anon = 10 for the identity's LIFETIME; an account has no visible limit (300/day is the hidden anti-abuse ceiling)
   "flags":    { "showProUpgrade": false },
   "upload":   { "maxPhotosPerReview": 6, "maxVideoSizeMb": 50, "maxVideoDurationSec": 15 }
 }

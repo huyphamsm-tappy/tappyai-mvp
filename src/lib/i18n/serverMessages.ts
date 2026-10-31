@@ -31,13 +31,15 @@ const MESSAGES = {
   },
   // ONE shared AI question pool (2026-09-15): the anonymous allowance is a one-time trial, not a
   // daily one — so its copy must not promise "tomorrow". The registered copy keeps "today".
+  // Owner 01/11/2026: a visitor asks 10 questions, then creates a free account to go on - an account has no question limit.
   'chat.anonLimit': {
-    vi: 'Bạn đã dùng hết {n} câu hỏi AI dùng thử. Đăng nhập để có {d} câu hỏi AI mỗi ngày với Tappy!',
-    en: "You've used all {n} free trial AI questions. Sign in for {d} AI questions a day with Tappy!",
+    vi: 'Bạn đã dùng hết {n} câu hỏi AI dùng thử. Tạo tài khoản miễn phí để hỏi Tappy tiếp - không giới hạn số câu hỏi!',
+    en: "You've used all {n} free trial AI questions. Create a free account to keep asking Tappy - with no limit on questions!",
   },
+  // Owner 01/11/2026: accounts have no question limit; this is only the hidden anti-abuse ceiling (FREE_DAILY_LIMIT), never advertised.
   'chat.freeLimit': {
-    vi: 'Bạn đã dùng hết {n} câu hỏi AI hôm nay (tính chung mọi tính năng). Hẹn gặp lại bạn vào ngày mai nhé!',
-    en: "You've used all {n} AI questions for today (across every feature). See you again tomorrow!",
+    vi: 'Hôm nay bạn đã hỏi Tappy tới {n} câu - mức trần để giữ dịch vụ ổn định cho mọi người. Hẹn gặp lại bạn vào ngày mai nhé!',
+    en: "You've asked Tappy {n} questions today - a ceiling that keeps the service steady for everyone. See you again tomorrow!",
   },
   // A2 (2026-09-20): a Pro account's daily ceiling — far above real use; a graceful sentence, never a wall.
   'chat.proDailyLimit': {
@@ -45,9 +47,10 @@ const MESSAGES = {
     en: "You've reached today's ceiling of {n} Tappy turns — a limit that keeps the service steady for everyone. See you again tomorrow!",
   },
   // P7 closeout (02/10): a PAID plan that used its daily allowance — no upgrade nag, it resets at 00:00 Vietnam time.
+  // Owner 01/11/2026: paid plans have no question limit; this is only the hidden anti-abuse ceiling (PAID_DAILY_CEILING).
   'chat.planLimit': {
-    vi: 'Bạn đã dùng hết {n} câu hỏi AI hôm nay của gói {plan}. Lượt hỏi được làm mới lúc 00:00 (giờ Việt Nam).',
-    en: "You've used all {n} of today's AI questions on the {plan} plan. They refresh at 00:00 (Vietnam time).",
+    vi: 'Hôm nay bạn đã hỏi Tappy tới {n} câu với gói {plan} - mức trần để giữ dịch vụ ổn định cho mọi người. Lượt hỏi được làm mới lúc 00:00 (giờ Việt Nam).',
+    en: "You've asked Tappy {n} questions today on the {plan} plan - a ceiling that keeps the service steady for everyone. It refreshes at 00:00 (Vietnam time).",
   },
   'chat.tooLong': {
     vi: 'Tin nhắn quá dài. Vui lòng rút gọn.',

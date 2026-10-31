@@ -14,6 +14,7 @@ import { randomUUID } from 'node:crypto'
 import { __resetAiQuestionQuotaLocal, peekAiQuestionQuota } from '@/lib/ai/quota/aiQuestionQuota'
 import { __resetClarifyCreditLocal } from '@/lib/ai/quota/clarifyCredit'
 import { __resetChatSessionStore } from '@/lib/ai/consultative/chatSessionState'
+import { ANON_LIFETIME_LIMIT } from '@/lib/config/product'
 
 const h = vi.hoisted(() => {
   const state = {
@@ -183,10 +184,17 @@ describe('Batch 6C · free-clarify turn contract (route level, offline)', () => 
   })
 })
 
-// Owner 29/10 (D2): a guest has five questions for life, once; past them the guest signs in. No free clarify answer, even under CONSULT_V3.
-describe('a guest gets no free clarify answer past the five (owner D2)', () => {
-  const QUESTIONS = ['Gợi ý giúp mình một quán phở ngon', 'Thời tiết Đà Lạt tháng 12 thế nào', 'Nên mua tai nghe nào dưới 2 triệu', 'Đi Huế 2 ngày nên xem gì']
-  async function spendTheFive(sid: string) {
+// Owner 29/10 (D2): a guest has ANON_LIFETIME_LIMIT questions for life, once; past them the guest signs in. No free clarify answer,
+// even under CONSULT_V3.
+describe(`a guest gets no free clarify answer past the ${ANON_LIFETIME_LIMIT} (owner D2)`, () => {
+  // owner 01/11/2026: 5 -> 10 (accounts have no visible limit; hidden anti-abuse ceiling) - the first turn plus ANON_LIFETIME_LIMIT - 1 more.
+  const QUESTIONS = [
+    'Gợi ý giúp mình một quán phở ngon', 'Thời tiết Đà Lạt tháng 12 thế nào', 'Nên mua tai nghe nào dưới 2 triệu', 'Đi Huế 2 ngày nên xem gì',
+    'Cách làm bánh flan đơn giản tại nhà', 'Nên học tiếng Anh giao tiếp ở đâu', 'So sánh xe máy điện và xe xăng cho sinh viên',
+    'Gợi ý quà sinh nhật cho mẹ khoảng 500 nghìn', 'Lịch trình 3 ngày ở Phú Quốc', 'Nên đọc sách gì để quản lý thời gian tốt hơn',
+  ].slice(0, ANON_LIFETIME_LIMIT - 1)
+  async function spendTheAllowance(sid: string) {
+    expect(QUESTIONS).toHaveLength(ANON_LIFETIME_LIMIT - 1)
     h.state.steps = [{ text: ASKED, toolCalls: [] }]
     const first = await turn([U(ASK)], sid)
     for (const q of QUESTIONS) { h.state.steps = [{ text: 'Mình gợi ý nhé.', toolCalls: [] }]; await turn([U(q)], sid) }
@@ -196,11 +204,11 @@ describe('a guest gets no free clarify answer past the five (owner D2)', () => {
     ['an anonymous session', () => { h.state.guest = true }],
     ['a caller with no verified identity', () => { h.state.signedIn = false }],
   ] as const) {
-    it(`CONSULT_V3 ON, ${label}: Tappy's question issues no credit, and the answer after the five is refused with anon_limit_reached`, async () => {
+    it(`CONSULT_V3 ON, ${label}: Tappy's question issues no credit, and the answer after the ${ANON_LIFETIME_LIMIT} is refused with anon_limit_reached`, async () => {
       process.env.CONSULT_V3 = '1'
       setup()
       const sid = randomUUID()
-      const first = await spendTheFive(sid)
+      const first = await spendTheAllowance(sid)
       expect(first.status).toBe(200)
       expect(first.issues).toHaveLength(0)
       h.state.steps = [{ text: 'Mình gợi ý vài quán ở Quận 3.', toolCalls: [] }]
