@@ -349,12 +349,14 @@ export function sectionImages(report: string, plan: ResearchPlan, pictures: Read
 }
 
 /** Runs one deep research. Never throws: a failure ends with a `failed` status and whatever was written. */
-export async function runDeepResearch(question: string, context: string, lang: string, deps: DeepResearchDeps, emit: ResearchEmit): Promise<{ plan: ResearchPlan | null; evidence: Evidence[]; findings: Finding[]; failed: string | null; cut?: boolean; followUps?: number; charts?: number }> {
+export async function runDeepResearch(question: string, context: string, lang: string, deps: DeepResearchDeps, emit: ResearchEmit): Promise<{ plan: ResearchPlan | null; evidence: Evidence[]; findings: Finding[]; failed: string | null; cut?: boolean; followUps?: number; charts?: number; figures?: { proposed: number; kept: number } }> {
   const now = deps.now ?? Date.now
   const t0 = now()
   const evidence: Evidence[] = []
   const findings: Finding[] = []
   const byUrl = new Map<string, Evidence>()
+  /** For the run's log: figures the notes gave, and those found in their own source. */
+  const figureCount = { proposed: 0, kept: 0 }
   const fail = (title: string, steps: ResearchStatus['steps'], why: string) => { emit.status({ type: 'tappy.research.v1', title, phase: 'failed', steps, sources: evidence.length }); return why }
   emit.status({ type: 'tappy.research.v1', title: clean(question, 120), phase: 'planning', steps: [], sources: 0 })
   let plan: ResearchPlan | null = null
@@ -397,6 +399,8 @@ export async function runDeepResearch(question: string, context: string, lang: s
       if (!text || !src) continue
       // a figure stays only when its value is written in its own source (title, snippet or the page read)
       const figure = checkedFigure(f.figure, `${src.title}\n${src.snippet}\n${src.text}`)
+      if (f.figure) figureCount.proposed++
+      if (figure) figureCount.kept++
       findings.push({ step: k + 1, text, source: f.source, ...(figure ? { figure } : {}) })
       if (++kept >= DEEP_RESEARCH_LIMITS.findingsPerStep) break
     }
@@ -466,5 +470,5 @@ export async function runDeepResearch(question: string, context: string, lang: s
   if (placed.length && emit.images) emit.images(placed)
   const links = cited.map(e => ({ id: e.id, title: e.title, url: e.url }))
   emit.status({ type: 'tappy.research.v1', title: plan.title, phase: 'done', steps: steps.map(s => ({ ...s })), sources: evidence.length, links })
-  return { plan, evidence, findings, failed: null, cut, followUps, charts: charts.length }
+  return { plan, evidence, findings, failed: null, cut, followUps, charts: charts.length, figures: { ...figureCount } }
 }
