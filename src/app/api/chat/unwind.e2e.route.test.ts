@@ -9,7 +9,7 @@
  * The messages and pages are written for this test; none comes from a benchmark or development question file, nor from the 28/10 UAT turns.
  */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { __resetAiQuestionQuotaLocal } from '@/lib/ai/quota/aiQuestionQuota'
+import { __resetAiQuestionQuotaLocal, consumeDeepResearch } from '@/lib/ai/quota/aiQuestionQuota'
 import { __resetSharedRobots } from '@/lib/ai/consultative/researchLoop'
 import { __resetPageCache } from '@/lib/ai/agent/runtime/readPage'
 import { ONE_BRAIN_CORE, ONE_BRAIN_SHAPE_REMINDER } from '@/lib/ai/consultative/oneBrain'
@@ -44,17 +44,21 @@ const h = vi.hoisted(() => {
     researchPlan: null as null | Record<string, unknown>,
     /** 31/10: the follow-up steps the Deep Research gap check asks for ([] = the findings cover the question). */
     researchGaps: [] as Array<{ title: string; queries: string[] }>,
+    /** 01/11: the account's subscription row (null = Free). */
+    subscription: null as null | Record<string, unknown>,
   }
-  const builder = (): any => {
+  const builder = (table?: string): any => {
+    // 01/11: the account's subscription row (plan tiers); every other table answers nothing
+    const row = () => Promise.resolve({ data: table === 'subscriptions' ? state.subscription : null, error: null })
     const b: any = {
       select: () => b, in: () => b, or: () => b, order: () => b, limit: () => b, gte: () => b, lt: () => b, not: () => b, is: () => b, eq: () => b,
-      single: () => Promise.resolve({ data: null, error: null }), maybeSingle: () => Promise.resolve({ data: null, error: null }),
+      single: row, maybeSingle: row,
       insert: () => Promise.resolve({ data: null, error: null }), upsert: () => Promise.resolve({ data: null, error: null }),
       then: (r: any) => r({ data: [], error: null }),
     }
     return b
   }
-  return { state, client: { from: () => builder(), rpc: () => Promise.resolve({ data: null, error: null }) } }
+  return { state, client: { from: (t: string) => builder(t), rpc: () => Promise.resolve({ data: null, error: null }) } }
 })
 
 vi.mock('@/lib/supabase/server', () => ({ createClient: () => h.client }))
@@ -168,7 +172,7 @@ type Msg = { role: 'user' | 'assistant'; content: string }
 const intent = (turn: string, domains: string[], extra: Record<string, unknown> = {}) => ({
   domains, turn, goal: 'x', known: [], party: null, budget_vnd_max: null, difficulty: 'normal', missing: [], assumptions: [], ask: null, query: null, area: null, refers: [], reject_reason: null, ...extra,
 })
-interface TurnOpts { unwind: boolean; oneBrain?: boolean; media?: boolean; mode?: 'chat' | 'web' | 'think' | 'deep'; researchPlan?: Record<string, unknown> | null; luna: Record<string, unknown>; tools?: Array<{ name: string; args: Record<string, unknown> }>; reply?: string; gapQuery?: string | null; finishSteps?: Array<Record<string, unknown>>; railRows?: Array<Record<string, unknown>> }
+interface TurnOpts { unwind: boolean; oneBrain?: boolean; media?: boolean; mode?: 'chat' | 'web' | 'think' | 'deep'; researchPlan?: Record<string, unknown> | null; plan?: string; subscriptionsOn?: boolean; preSpendDeep?: number; luna: Record<string, unknown>; tools?: Array<{ name: string; args: Record<string, unknown> }>; reply?: string; gapQuery?: string | null; finishSteps?: Array<Record<string, unknown>>; railRows?: Array<Record<string, unknown>> }
 
 async function turn(messages: Msg[], o: TurnOpts) {
   delete process.env.TAPPY_AGENT
@@ -184,10 +188,13 @@ async function turn(messages: Msg[], o: TurnOpts) {
   h.state.finishSteps = o.finishSteps ?? []
   h.state.railRows = o.railRows ?? null
   h.state.researchPlan = o.researchPlan ?? null
+  h.state.subscription = o.plan ? { plan: o.plan, status: 'active', current_period_end: '2099-01-01T00:00:00Z', source: 'web' } : null
+  vi.stubEnv('SUBSCRIPTIONS_ENABLED', o.subscriptionsOn ? '1' : undefined as unknown as string)
   h.state.commerceCtx = []
   h.state.placesCalls = []
   h.state.extractRoles = []; h.state.streamCalled = 0; h.state.toolNames = []; h.state.opts = {}; h.state.system = ''; h.state.results = []; h.state.webCalls = []; h.state.fetched = []
   __resetAiQuestionQuotaLocal(); __resetPageCache(); __resetSharedRobots()
+  for (let i = 0; i < (o.preSpendDeep ?? 0); i++) await consumeDeepResearch(h.state.userId, 1000)
   const req = {
     url: 'http://localhost/api/chat', nextUrl: new URL('http://localhost/api/chat'),
     headers: new Headers({ 'content-type': 'application/json', 'x-tappy-surface': 'web' }),
@@ -761,6 +768,25 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     // the choice is described by what the answer needs, and left to the model's reading of the conversation
     expect(deep.system).toContain('when it needs several sources (a comparison')
     expect(deep.system).toContain('Judge from what the person needs in this conversation, not from single words.')
+  }, 60000)
+  it('01/11 plan tiers (with the plans on sale): Pip (Free) asks for Thinking or Deep Research and gets Chat; Coco gets them; the 11th Deep Research of the month is refused', async () => {
+    const Q: Msg[] = [{ role: 'user', content: 'nghien cuu gia dien sinh hoat 2026' }]
+    const plan = { title: 'Giá điện', steps: [{ title: 'Biểu giá hiện hành', queries: ['bieu gia dien'] }] }
+    const freeThink = await turn(Q, { unwind: true, oneBrain: true, mode: 'think', subscriptionsOn: true, luna: intent('chat', []), reply: 'x' })
+    expect(freeThink.opts.thinkEffort).toBeNull()
+    expect(freeThink.logs.find(x => x.type === 'tappyai_mode_tier')).toMatchObject({ asked: 'think', ran: 'chat', tier: 'free' })
+    const freeDeep = await turn(Q, { unwind: true, oneBrain: true, mode: 'deep', researchPlan: plan, subscriptionsOn: true, luna: intent('chat', []), reply: 'x' })
+    expect(freeDeep.raw).not.toContain('tappy.research.v1')
+    const coco = await turn(Q, { unwind: true, oneBrain: true, mode: 'deep', researchPlan: plan, plan: 'momo', subscriptionsOn: true, luna: intent('chat', []), reply: '# Giá điện\n## Biểu giá hiện hành\nx [1]' })
+    expect(coco.raw).toContain('tappy.research.v1')
+    expect(coco.logs.some(x => x.type === 'tappyai_mode_tier')).toBe(false)
+    const used = await turn(Q, { unwind: true, oneBrain: true, mode: 'deep', researchPlan: plan, plan: 'momo', subscriptionsOn: true, preSpendDeep: 10, luna: intent('chat', []), reply: 'x' })
+    expect(used.raw).toContain('deep_research_limit_reached')
+    expect(used.raw).not.toContain('tappy.research.v1')
+    expect(used.streamCalled).toBe(0)
+    // with the plans not on sale (the flag off): every mode for everyone, as before
+    const off = await turn(Q, { unwind: true, oneBrain: true, mode: 'think', luna: intent('chat', []), reply: 'x' })
+    expect(off.opts.thinkEffort).toBe('medium')
   }, 60000)
   it('31/10 (T01 measured): a news lookup is not the last word - its result tells the model to search the web when it does not answer', async () => {
     const Q: Msg[] = [{ role: 'user', content: 'tin moi nhat ve vu hack san giao dich' }]

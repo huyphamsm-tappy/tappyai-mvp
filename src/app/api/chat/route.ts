@@ -98,7 +98,9 @@ import { guardShareFollowUp } from '@/lib/share/followUpGuard'
 import { readZaloIdentity, zaloIdentitySecret } from '@/lib/zalo/identity'
 import { flushPending, recordEvent, type UsageEvent } from '@/lib/observability'
 import { FREE_DAILY_LIMIT, ANON_LIFETIME_LIMIT } from '@/lib/config/product'
-import { accountQuotaFor, aiQuotaIdentity, consumeAiQuestion, refundAiQuestion, type AiQuotaRefund } from '@/lib/ai/quota/aiQuestionQuota'
+import { accountQuotaFor, aiQuotaIdentity, consumeAiQuestion, consumeDeepResearch, refundAiQuestion, type AiQuotaRefund } from '@/lib/ai/quota/aiQuestionQuota'
+import { tierOf, modeForTier, DEEP_RESEARCH_MONTHLY } from '@/lib/plans/tiers'
+import { subscriptionsEnabled } from '@/lib/payments/flags'
 import { entitlementFromRow, type SubscriptionRow } from '@/lib/plans/entitlement'
 import { PLAN_CONFIG, type PlanId } from '@/lib/plans/planConfig'
 import { recordDecision, DECISION_RECORD_TIMEOUT_MS } from '@/lib/ai/agent/runtime/decisionRecord'
@@ -319,7 +321,8 @@ export async function POST(req: Request) {
   }
 
   // 31/10: the composer mode (chat / web / think), shape-checked; it acts on one-brain turns only (below).
-  const chatMode = readChatMode(rawBody)
+  // the composer mode the client asked for; the plan's tier may run a lower one (below, once the account's plan is known)
+  let chatMode = readChatMode(rawBody)
 
   // User-controlled response style (Personalization — MFS 2.6: lets the user shape tone).
   // Sent from the client (localStorage); no persistence needed. Validated to a small enum.
@@ -2368,6 +2371,14 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   }
   const lean = consult && consult.domains.length > 0 ? buildLean({ extra: [], tail: [] }) : null
   // CONSULT_ONE_BRAIN: one general instruction in place of the rulebook (legacy / lean / Wave 3 lines); the person's own blocks (memory, preferences, style, shared page) stay.
+  // Owner 01/11/2026 (plan tiers, lib/plans/tiers.ts): with the plans on sale (SUBSCRIPTIONS_ENABLED) a mode the account's tier does not
+  // have runs as Chat - Pip (Free) and visitors chat with Luna 6.0; Coco / MoMo / Tappy have every mode. Off: every mode, as before.
+  const planTier = tierOf(quotaPlan)
+  if (subscriptionsEnabled()) {
+    const asked = chatMode
+    chatMode = modeForTier(chatMode, planTier)
+    if (asked !== chatMode) console.log(JSON.stringify({ type: 'tappyai_mode_tier', asked, ran: chatMode, tier: planTier }))
+  }
   const oneBrainPrompt = oneBrain ? { shared: ONE_BRAIN_CORE, dynamic: oneBrainDynamic({ lang, now: new Date(), address: userLocation?.address ?? null, hasLocation: hasValidCurrentLocation(userLocation), blocks: [memoryBlock ?? '', prefBlock, styleBlock, shareContextBlock], latestLang: detectLangConfident(lastText), mode: chatMode === 'deep' ? 'think' : chatMode }) } : null
   if (oneBrain) console.log(JSON.stringify({ type: 'tappyai_chat_mode', mode: chatMode }))
   // CONSULT_ONE_BRAIN_MEDIA: what the pictures should show is read beside the answer (never before it, never for the answer) and used when the answer ends.
@@ -3552,6 +3563,18 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // 31/10 (mode "Nghiên cứu sâu", owner): plan → parallel research branches → one report (lib/ai/research). Here, after the identity, consent,
   // age and quota checks every turn passes, and in place of the single answer call. A run that produces nothing gives the question back.
   if (oneBrain && chatMode === 'deep') {
+    // Owner 01/11/2026: Deep Research runs per VN month by tier (Coco 10, Tappy 69) on the quota store, with the plans on sale; a run that
+    // produces nothing gives the run back with the question.
+    let deepRefund: Awaited<ReturnType<typeof consumeDeepResearch>>['refund'] = null
+    if (subscriptionsEnabled() && authedUserId) {
+      const limit = DEEP_RESEARCH_MONTHLY[planTier]
+      const spent = await consumeDeepResearch(authedUserId, limit)
+      if (!spent.ok) {
+        await refundQuotaOnFailure('deep_research_month_used')
+        return new Response(JSON.stringify({ error: 'deep_research_limit_reached', message: serverMessage('chat.deepResearchLimit', requestLocale(req), { n: limit }) }), { status: 429, headers: { 'Content-Type': 'application/json' } })
+      }
+      deepRefund = spent.refund
+    }
     const recent = typedMessages.slice(-7, -1).map(m => `${m.role}: ${typeof m.content === 'string' ? m.content : m.content.map(p => (p.type === 'text' ? p.text : '')).join(' ')}`).join('\n').slice(-2500)
     const cost = { usd: 0, calls: 0 }
     // 01/11 (owner approved): Parallel's search beside Serper for every query - its own budget for the run (16 searches), the same daily cap
@@ -3564,7 +3587,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         const d = serperDelta(serperAtStart)
         return { usd: Math.round((turnUsd({ promptTokens: 0, completionTokens: 0, serperCredits: d.credits }) + (par?.sent() ?? 0) * PARALLEL_PRICE.searchFastUsd) * 1e6) / 1e6, calls: sumCounts(d.calls) + (par?.sent() ?? 0) }
       },
-      onFailed: reason => refundQuotaOnFailure(`deep_research_${reason}`),
+      onFailed: async reason => { await refundQuotaOnFailure(`deep_research_${reason}`); await refundAiQuestion(deepRefund) },
       onUsage: u => { turnSearch.depth = 'thorough'; usageSink({ domain: null, turnType: 'deep_research', model: 'luna', tokensIn: 0, tokensOut: 0, serperCalls: u.searchCalls - (par?.sent() ?? 0), cacheHits: 0, usd: u.usd }, { parallelCalls: par?.sent() ?? 0, ok: u.ok }) },
     })
   }

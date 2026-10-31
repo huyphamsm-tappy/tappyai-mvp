@@ -52,6 +52,11 @@ const MESSAGES = {
     vi: 'Hôm nay bạn đã hỏi Tappy tới {n} câu với gói {plan} - mức trần để giữ dịch vụ ổn định cho mọi người. Lượt hỏi được làm mới lúc 00:00 (giờ Việt Nam).',
     en: "You've asked Tappy {n} questions today on the {plan} plan - a ceiling that keeps the service steady for everyone. It refreshes at 00:00 (Vietnam time).",
   },
+  // Owner 01/11/2026: Deep Research runs per month by plan (Coco 10, Tappy 69); the person can still use "Suy nghĩ".
+  'chat.deepResearchLimit': {
+    vi: 'Bạn đã dùng hết {n} lượt Nghiên cứu sâu của tháng này. Bạn vẫn có thể dùng chế độ "Suy nghĩ" để có câu trả lời kỹ; lượt Nghiên cứu sâu được làm mới vào đầu tháng sau.',
+    en: 'You have used all {n} Deep Research runs for this month. You can still use "Thinking" for a thorough answer; Deep Research runs refresh at the start of next month.',
+  },
   'chat.tooLong': {
     vi: 'Tin nhắn quá dài. Vui lòng rút gọn.',
     en: 'That message is too long. Please shorten it.',
