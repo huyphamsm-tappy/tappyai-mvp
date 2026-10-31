@@ -49,6 +49,10 @@ policy_of() {
     # before or after the web deploy - turn the flag on only after this file is applied.
     20261101_ai_usage_events.sql)
       echo APPLY ;;
+    # Tappy (Promax) plan ids (owner 01/11/2026). Widens the allowed plan lists only (constraints + p8_apply_entitlement); apply it
+    # BEFORE the web release that sells promax1m / promax3m - until then the database refuses those orders and purchases.
+    20261102_plans_promax.sql)
+      echo APPLY ;;
     # H1 → M1 first, then the security-branch migrations in MIGRATION_ORDER.txt order (owner 30/09): 20260928b needs the
     # deal-click code (service role) on production; the others are code-independent but ride the same verified window.
     20260927_owner_update_column_privileges.sql|20260928_revoke_reviews_insert.sql|\

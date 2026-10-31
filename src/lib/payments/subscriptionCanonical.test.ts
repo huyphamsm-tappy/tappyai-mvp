@@ -7,7 +7,7 @@ import { FREE_DAILY_LIMIT, ANON_LIFETIME_LIMIT, PAID_DAILY_CEILING, ACCOUNT_QUES
 import { subscriptionCatalog } from './subscriptionCatalog'
 
 describe('canonical catalog', () => {
-  it('Guest 10 lifetime · accounts unlimited (hidden ceiling Free 300/day, Pip/Momo/Coco/Milo/Sunny 1000/day) at $1/$7/$19/$36/$66 for 7/30/90/180/365 days', () => {
+  it('Guest 10 lifetime · accounts unlimited (hidden ceiling Free 300/day, every sale plan 1000/day) at $1/$7/$9/$18.9/$24.3 for 7/30/30/90/90 days', () => {
     // owner 01/11/2026: guest 5 -> 10, Free 10 -> 300, paid 30 -> 1000 (accounts have no visible limit; hidden anti-abuse ceiling)
     expect(ANON_LIFETIME_LIMIT).toBe(10)
     expect(FREE_DAILY_LIMIT).toBe(300)
@@ -16,9 +16,10 @@ describe('canonical catalog', () => {
     const c = subscriptionCatalog({ env: { SUBSCRIPTIONS_ENABLED: '1' } as unknown as NodeJS.ProcessEnv })
     expect(c.guest.aiQuestions).toBe(ANON_LIFETIME_LIMIT)
     expect(c.free.dailyAiQuestions).toBe(FREE_DAILY_LIMIT)
-    expect(c.plans.map(p => p.id)).toEqual(['pip', 'momo', 'coco', 'milo', 'sunny'])
+    // Owner 01/11/2026: new plan catalog
+    expect(c.plans.map(p => p.id)).toEqual(['pip', 'momo', 'promax1m', 'coco', 'promax3m'])
     for (const p of c.plans) expect(p.dailyAiQuestions).toBe(PAID_DAILY_CEILING)
-    expect(c.plans.map(p => [p.priceUsd, p.durationDays])).toEqual([[1, 7], [7, 30], [19, 90], [36, 180], [66, 365]])
+    expect(c.plans.map(p => [p.priceUsd, p.durationDays])).toEqual([[1, 7], [7, 30], [9, 30], [18.9, 90], [24.3, 90]])
   })
 })
 

@@ -30,17 +30,39 @@ beforeEach(() => {
 afterEach(() => { vi.unstubAllEnvs(); vi.restoreAllMocks() })
 
 describe('create order', () => {
-  it('calls p8_payments_create_order with exactly the arguments the migration declares (Pip = 29.000 VND / 7 days)', async () => {
-    rpc.mockResolvedValue({ data: { status: 'created', order: { id: 'o1', plan: 'pip', amount_vnd: 29000, code: 'TAPPYABC234', status: 'pending', expires_at: '2099-01-01T00:00:00Z', paid_at: null } }, error: null })
+  // Owner 01/11/2026: new plan catalog (pip = MoMo trial 25.000 VND / 7 days)
+  it('calls p8_payments_create_order with exactly the arguments the migration declares (pip = 25.000 VND / 7 days)', async () => {
+    rpc.mockResolvedValue({ data: { status: 'created', order: { id: 'o1', plan: 'pip', amount_vnd: 25000, code: 'TAPPYABC234', status: 'pending', expires_at: '2099-01-01T00:00:00Z', paid_at: null } }, error: null })
     const res = await post('pip')
     expect(res.status).toBe(201)
     const [name, args] = rpc.mock.calls[0]
     expect(name).toBe('p8_payments_create_order')
     // 20261016_p7_pip_one_time.sql: (p_user uuid, p_plan text, p_amount bigint, p_days int, p_ttl_seconds int, p_max_pending int)
     expect(Object.keys(args).sort()).toEqual(['p_amount', 'p_days', 'p_max_pending', 'p_plan', 'p_ttl_seconds', 'p_user'])
-    expect(args).toMatchObject({ p_plan: 'pip', p_amount: 29000, p_days: 7 })
-    expect(PLAN_CONFIG.pip.priceVnd).toBe(29000)
+    expect(args).toMatchObject({ p_plan: 'pip', p_amount: 25000, p_days: 7 })
+    expect(PLAN_CONFIG.pip.priceVnd).toBe(25000)
     expect(PLAN_CONFIG.pip.durationDays).toBe(7)
+  })
+
+  it('a Tappy 1-month order (promax1m) is created at 225.000 VND / 30 days', async () => {
+    // Owner 01/11/2026: new plan catalog
+    rpc.mockResolvedValue({ data: { status: 'created', order: { id: 'o2', plan: 'promax1m', amount_vnd: 225000, code: 'TAPPYDEF567', status: 'pending', expires_at: '2099-01-01T00:00:00Z', paid_at: null } }, error: null })
+    const res = await post('promax1m')
+    expect(res.status).toBe(201)
+    expect(rpc).toHaveBeenCalledTimes(1)
+    const [name, args] = rpc.mock.calls[0]
+    expect(name).toBe('p8_payments_create_order')
+    expect(args).toMatchObject({ p_plan: 'promax1m', p_amount: 225000, p_days: 30 })
+    expect(PLAN_CONFIG.promax1m.priceVnd).toBe(225000)
+    expect(PLAN_CONFIG.promax1m.durationDays).toBe(30)
+  })
+
+  it.each(['milo', 'sunny'])('a web order for %s (no longer sold) is refused with 400 invalid_plan; no order is created', async (plan) => {
+    // Owner 01/11/2026: new plan catalog - milo/sunny stay valid stored plans but are not on sale
+    const res = await post(plan)
+    expect(res.status).toBe(400)
+    expect((await res.json()).error).toBe('invalid_plan')
+    expect(rpc).not.toHaveBeenCalled()
   })
 
   it('a missing payments function (migrations not applied) answers 503 "payments unavailable", not a retry-able order failure', async () => {

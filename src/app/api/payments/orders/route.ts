@@ -19,12 +19,13 @@ import { mySubscription, type SubscriptionRowForState } from '@/lib/payments/sub
 import { MY_PLAN_COLUMNS } from '@/lib/payments/myPlan'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
-import { PAID_PLAN_IDS, PLAN_CONFIG, type PaidPlanId } from '@/lib/plans/planConfig'
+import { SALE_PLAN_IDS, PLAN_CONFIG, type PaidPlanId } from '@/lib/plans/planConfig'
 import { MAX_PENDING_ORDERS, ORDER_TTL_SECONDS, sepayBankConfig, sepayQrUrl } from '@/lib/payments/sepay'
 
 export const dynamic = 'force-dynamic'
 
-const CreateSchema = z.object({ plan: z.enum(PAID_PLAN_IDS as unknown as [PaidPlanId, ...PaidPlanId[]]) })
+// Only the plans on sale (owner 01/11/2026: Milo and Sunny are no longer sold).
+const CreateSchema = z.object({ plan: z.enum(SALE_PLAN_IDS as unknown as [PaidPlanId, ...PaidPlanId[]]) })
 const ORDER_COLUMNS = 'id, plan, amount_vnd, code, status, expires_at, paid_at, created_at'
 
 interface OrderRow {

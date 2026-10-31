@@ -17,9 +17,10 @@ vi.mock('@/lib/i18n/useTranslation', async () => {
 import PaymentsFlow from './PaymentsFlow'
 
 const ORDER = {
-  order: { id: '0b3c0f7e-0000-4000-8000-000000000001', code: 'TAPPYAB23CD', plan: 'momo', amountVnd: 179000, status: 'pending', expiresAt: new Date(Date.now() + 15 * 60_000).toISOString() },
+  // Owner 01/11/2026: new plan catalog (plan momo = Coco 1 month, 175.000đ)
+  order: { id: '0b3c0f7e-0000-4000-8000-000000000001', code: 'TAPPYAB23CD', plan: 'momo', amountVnd: 175000, status: 'pending', expiresAt: new Date(Date.now() + 15 * 60_000).toISOString() },
   bank: { accountNumber: '0011223344', accountName: 'PHAM HUY', bankCode: 'MBBank' },
-  qrUrl: 'https://qr.sepay.vn/img?acc=0011223344&bank=MBBank&amount=179000&des=TAPPYAB23CD',
+  qrUrl: 'https://qr.sepay.vn/img?acc=0011223344&bank=MBBank&amount=175000&des=TAPPYAB23CD',
 }
 
 let orderStatus = 'pending'
@@ -35,17 +36,24 @@ beforeEach(() => {
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); vi.useRealTimers() })
 
 describe('plan picker', () => {
-  it('shows five plans, Momo marked popular and pre-selected, unlimited AI questions, one primary button', () => {
+  it('shows five plans, Coco 1 month (plan momo) marked popular and pre-selected, unlimited AI questions, one primary button', () => {
     render(<PaymentsFlow plans={paymentsCatalog()} current={null} />)
     const radios = screen.getAllByRole('radio')
     expect(radios).toHaveLength(5)
-    expect(radios.map((r) => r.textContent)).toEqual(expect.arrayContaining([expect.stringContaining('Pip'), expect.stringContaining('Sunny')]))
-    expect(screen.getByText('Phổ biến').closest('[role=radio]')!.textContent).toContain('Momo')
-    expect(screen.getByRole('radio', { checked: true }).textContent).toContain('Momo')
+    // Owner 01/11/2026: new plan catalog (MoMo trial, Coco 1/3 months, Tappy 1/3 months; Milo/Sunny not sold)
+    expect(radios.map((r) => r.textContent)).toEqual([
+      'MoMo7 ngày · Không giới hạn câu hỏi AI25.000đ',
+      'CocoPhổ biến1 tháng · Không giới hạn câu hỏi AI175.000đ',
+      'Coco3 tháng · Không giới hạn câu hỏi AI472.500đ≈ 5.250đ/ngày',
+      'Tappy1 tháng · Không giới hạn câu hỏi AI225.000đ',
+      'Tappy3 tháng · Không giới hạn câu hỏi AI607.500đ≈ 6.750đ/ngày',
+    ])
+    expect(screen.getByText('Phổ biến').closest('[role=radio]')!.textContent).toBe('CocoPhổ biến1 tháng · Không giới hạn câu hỏi AI175.000đ') // Owner 01/11/2026: new plan catalog
+    expect(screen.getByRole('radio', { checked: true }).textContent).toContain('175.000đ')
     // owner 01/11/2026: "30 câu hỏi AI mỗi ngày" -> "Không giới hạn câu hỏi AI" (accounts have no visible limit; hidden anti-abuse ceiling)
     expect(screen.getAllByText(/Không giới hạn câu hỏi AI/)).toHaveLength(5)
     expect(document.body.textContent).not.toMatch(/câu hỏi AI mỗi ngày|1000|1\.000/) // the hidden ceiling is never shown
-    expect(screen.getByText('179.000đ')).toBeTruthy()
+    expect(screen.getByText('175.000đ')).toBeTruthy() // Owner 01/11/2026: new plan catalog
     expect(screen.getAllByRole('button', { name: 'Tiếp tục' })).toHaveLength(1)
   })
 
@@ -73,7 +81,7 @@ describe('VietQR → success', () => {
     orderStatus = 'paid'
     await act(async () => { await vi.advanceTimersByTimeAsync(3_100) })
     await waitFor(() => expect(screen.getByTestId('pay-success')).toBeTruthy())
-    expect(screen.getByText('Bạn đã là thành viên Momo 🎉')).toBeTruthy()
+    expect(screen.getByText('Bạn đã là thành viên Coco 🎉')).toBeTruthy() // Owner 01/11/2026: new plan catalog
     expect(screen.getByText(/27\/10\/2026/)).toBeTruthy()
     expect(screen.getByRole('link', { name: 'Bắt đầu hỏi Tappy' }).getAttribute('href')).toBe('/chat')
   })

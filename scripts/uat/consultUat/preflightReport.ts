@@ -106,8 +106,8 @@ export function conditionReport(input: PreflightReportInput): Condition[] {
   const quota = quotaResetState(env)
   const quotaReasons = quotaResetFlagReasons(env)
   const ignored = env[QUOTA_RESET_FLAG] === '1' && env.BENCH_TRIAL_MODE !== 'dev-multi'
-  add('free-question quota reset per turn (information; the Free plan allows 10 questions a day)', quotaReasons,
-    `${quota.on ? 'ON' : 'OFF'} (${quota.reason})${ignored ? ' | CẢNH BÁO: cờ không có hiệu lực ở chế độ này (chỉ BENCH_TRIAL_MODE=dev-multi); hạn mức Free vẫn áp dụng, run dừng ở lượt 11 nếu hơn 10 lượt' : quota.on ? ' | hạn mức Free được đặt lại mỗi lượt (chỉ đo tư vấn)' : ' | hạn mức Free 10 câu/ngày áp dụng như thật: run dừng ở lượt 11 nếu hơn 10 lượt'}`)
+  add('free-question quota reset per turn (information; a Free account has a hidden ceiling of 300 questions a day)', quotaReasons,
+    `${quota.on ? 'ON' : 'OFF'} (${quota.reason})${ignored ? ' | CẢNH BÁO: cờ không có hiệu lực ở chế độ này (chỉ BENCH_TRIAL_MODE=dev-multi); trần ẩn của Free vẫn áp dụng, run dừng ở lượt 301 nếu hơn 300 lượt' : quota.on ? ' | hạn mức Free được đặt lại mỗi lượt (chỉ đo tư vấn)' : ' | trần ẩn của Free 300 câu/ngày áp dụng như thật: run dừng ở lượt 301 nếu hơn 300 lượt'}`)
 
   // Wave 2: the product-behaviour flags (unset, 0 or 1; a value outside that is refused by name) and the state each really has.
   const w2 = wave2FlagState(env)

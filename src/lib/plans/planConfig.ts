@@ -16,7 +16,7 @@ import { SUBSCRIPTION_PRICES } from './subscriptionPrices'
 /** Prices come from configuration (subscriptionPrices.json) — never typed here. */
 const P = SUBSCRIPTION_PRICES.plans
 
-export type PaidPlanId = 'pip' | 'momo' | 'coco' | 'milo' | 'sunny'
+export type PaidPlanId = 'pip' | 'momo' | 'coco' | 'milo' | 'sunny' | 'promax1m' | 'promax3m'
 /** `pro` is the legacy Stripe/Apple plan id already stored in `subscriptions.plan`. */
 export type SubscriptionPlanId = PaidPlanId | 'pro'
 export type PlanId = 'guest' | 'free' | SubscriptionPlanId
@@ -61,19 +61,26 @@ export interface PlanDefinition {
 
 export const PLAN_CONFIG: Readonly<Record<PlanId, PlanDefinition>> = Object.freeze({
   // Owner 01/11/2026: an account has no question limit - free / paid limits below are the hidden anti-abuse ceilings only (product.ts).
+  // Plans shown as Pip (Free), MoMo (Trial), Coco (Pro), Tappy (Promax). The stored ids stay (rows of people who bought them):
+  // pip = MoMo trial, momo/coco = Coco 1/3 months, promax1m/promax3m = Tappy. milo/sunny are no longer sold (SALE_PLAN_IDS).
   guest: { id: 'guest', label: 'Guest', aiQuota: { limit: ANON_LIFETIME_LIMIT, period: 'lifetime' } },
-  free: { id: 'free', label: 'Free', aiQuota: { limit: FREE_DAILY_LIMIT, period: 'day' } },
-  pip: { id: 'pip', label: 'Pip', priceVnd: P.pip.vnd, priceUsd: P.pip.usd, durationDays: 7, periodLabelVi: '7 ngày', storeProductId: 'tappy_pip_1w', aiQuota: { limit: PAID_DAILY_CEILING, period: 'day' } },
-  momo: { id: 'momo', label: 'Momo', priceVnd: P.momo.vnd, priceUsd: P.momo.usd, durationDays: 30, periodLabelVi: '1 tháng', storeProductId: 'tappy_momo_1m', popular: true, aiQuota: { limit: PAID_DAILY_CEILING, period: 'day' } },
+  free: { id: 'free', label: 'Pip', aiQuota: { limit: FREE_DAILY_LIMIT, period: 'day' } },
+  pip: { id: 'pip', label: 'MoMo', priceVnd: P.pip.vnd, priceUsd: P.pip.usd, durationDays: 7, periodLabelVi: '7 ngày', storeProductId: 'tappy_pip_1w', aiQuota: { limit: PAID_DAILY_CEILING, period: 'day' } },
+  momo: { id: 'momo', label: 'Coco', priceVnd: P.momo.vnd, priceUsd: P.momo.usd, durationDays: 30, periodLabelVi: '1 tháng', storeProductId: 'tappy_momo_1m', popular: true, aiQuota: { limit: PAID_DAILY_CEILING, period: 'day' } },
   coco: { id: 'coco', label: 'Coco', priceVnd: P.coco.vnd, priceUsd: P.coco.usd, durationDays: 90, periodLabelVi: '3 tháng', storeProductId: 'tappy_coco_3m', aiQuota: { limit: PAID_DAILY_CEILING, period: 'day' } },
+  promax1m: { id: 'promax1m', label: 'Tappy', priceVnd: P.promax1m.vnd, priceUsd: P.promax1m.usd, durationDays: 30, periodLabelVi: '1 tháng', storeProductId: 'tappy_promax_1m', aiQuota: { limit: PAID_DAILY_CEILING, period: 'day' } },
+  promax3m: { id: 'promax3m', label: 'Tappy', priceVnd: P.promax3m.vnd, priceUsd: P.promax3m.usd, durationDays: 90, periodLabelVi: '3 tháng', storeProductId: 'tappy_promax_3m', aiQuota: { limit: PAID_DAILY_CEILING, period: 'day' } },
   milo: { id: 'milo', label: 'Milo', priceVnd: P.milo.vnd, priceUsd: P.milo.usd, durationDays: 180, periodLabelVi: '6 tháng', storeProductId: 'tappy_milo_6m', aiQuota: { limit: PAID_DAILY_CEILING, period: 'day' } },
-  sunny: { id: 'sunny', label: 'Sunny', priceVnd: P.sunny.vnd, priceUsd: P.sunny.usd, durationDays: 365, periodLabelVi: '12 tháng', storeProductId: 'tappy_sunny_12m', subscriptionBadge: 'popular', showMonthlyApprox: true, aiQuota: { limit: PAID_DAILY_CEILING, period: 'day' } },
+  sunny: { id: 'sunny', label: 'Sunny', priceVnd: P.sunny.vnd, priceUsd: P.sunny.usd, durationDays: 365, periodLabelVi: '12 tháng', storeProductId: 'tappy_sunny_12m', showMonthlyApprox: true, aiQuota: { limit: PAID_DAILY_CEILING, period: 'day' } },
   // Legacy paid plan (Stripe `STRIPE_PRO_PRICE_ID`, Apple IAP). Was quota-EXEMPT
   // in the release; under the v2 quota it is a paid plan like the others (hidden ceiling only).
   pro: { id: 'pro', label: 'Pro', aiQuota: { limit: PAID_DAILY_CEILING, period: 'day' } },
 })
 
-export const PAID_PLAN_IDS: readonly PaidPlanId[] = ['pip', 'momo', 'coco', 'milo', 'sunny']
+/** Every paid plan id a subscription, an order or a store purchase may carry (sold now or before). */
+export const PAID_PLAN_IDS: readonly PaidPlanId[] = ['pip', 'momo', 'coco', 'promax1m', 'promax3m', 'milo', 'sunny']
+/** The plans on sale (owner 01/11/2026): MoMo trial, Coco 1/3 months, Tappy 1/3 months. Catalogs and new web orders use this list. */
+export const SALE_PLAN_IDS: readonly PaidPlanId[] = ['pip', 'momo', 'coco', 'promax1m', 'promax3m']
 export const SUBSCRIPTION_PLAN_IDS: readonly SubscriptionPlanId[] = [...PAID_PLAN_IDS, 'pro']
 
 /**
@@ -130,7 +137,7 @@ export interface CatalogPlan {
 
 /** The catalog. `forApp` drops web prices (Google Play policy: no mention of the web price in the app). */
 export function paymentsCatalog(opts: { forApp?: boolean } = {}): CatalogPlan[] {
-  return PAID_PLAN_IDS.map((id) => {
+  return SALE_PLAN_IDS.map((id) => {
     const p = PLAN_CONFIG[id]
     const days = p.durationDays!
     const plan: CatalogPlan = {

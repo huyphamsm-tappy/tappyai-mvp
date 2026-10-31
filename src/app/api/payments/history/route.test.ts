@@ -80,7 +80,8 @@ describe('GET /api/payments/history — Payments History', () => {
     expect(body.items).toHaveLength(2)
     expect(body.items[0]).toEqual({
       date: '2026-10-15T12:00:00Z',
-      plan: { id: 'momo', name: 'Momo' },
+      // Owner 01/11/2026: new plan catalog (plan `momo` is shown as Coco; the stored amount is the order's own)
+      plan: { id: 'momo', name: 'Coco' },
       amountVnd: 179000,
       status: 'paid',
     })

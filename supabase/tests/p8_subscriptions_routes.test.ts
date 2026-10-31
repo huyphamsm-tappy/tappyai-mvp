@@ -103,6 +103,7 @@ import { POST as createOrder } from '@/app/api/payments/orders/route'
 import { POST as sepayHook } from '@/app/api/payments/sepay/route'
 import { GET as expireCron } from '@/app/api/cron/subscriptions-expire/route'
 import { fakeBank, FakeBankRefused } from '@/lib/payments/providers'
+import { ANON_LIFETIME_LIMIT, FREE_DAILY_LIMIT, PAID_DAILY_CEILING } from '@/lib/config/product'
 
 const KEY = 'test-sepay-key-0123456789'
 const HMAC_SECRET = 'test-sepay-hmac-secret-0123456789'
@@ -119,7 +120,8 @@ beforeAll(async () => {
   await t.db.query(readRepo('supabase/migrations/20261015_p8_subscriptions.sql'))
   await t.db.query(readRepo('supabase/migrations/20261016_p7_pip_one_time.sql'))
   await t.db.query(readRepo('supabase/migrations/20261017_p7_pip_trial_any_source.sql'))
-  h.run = (role, sql, sub, params) => t.rows(role, sql, sub, params)
+  await t.db.query(readRepo('supabase/migrations/20261102_plans_promax.sql'))
+  h.run =(role, sql, sub, params) => t.rows(role, sql, sub, params)
 }, 240_000)
 afterAll(async () => { await t?.stop() })
 
@@ -173,20 +175,20 @@ describe('the purchase flow (web): order → bank → verified webhook → ACTIV
     const r = await myPlan()
     expect(r.signedIn).toBe(false)
     expect(r.subscription.state).toBe('NONE')
-    expect(r.quota).toMatchObject({ limit: 5, period: 'lifetime' })
+    expect(r.quota).toMatchObject({ limit: ANON_LIFETIME_LIMIT, period: 'lifetime' })
   })
 
   it('a free account: NONE, the live Free limit', async () => {
     const r = await myPlan()
     expect(r.subscription).toMatchObject({ state: 'NONE', canBuy: true })
-    expect(r.quota).toMatchObject({ limit: 10, period: 'day' }) // Phase 7 canonical Free = 10/day
+    expect(r.quota).toMatchObject({ limit: FREE_DAILY_LIMIT, period: 'day' }) // Owner 01/11/2026: Free = hidden anti-abuse ceiling per day
   })
 
   it('creating an order (server price) → PENDING; a client "success" changes nothing', async () => {
     const res = await newOrder('momo')
     expect(res.status).toBe(201)
     const { order } = await res.json()
-    expect(order.amountVnd).toBe(179_000)
+    expect(order.amountVnd).toBe(175_000) // Owner 01/11/2026: momo = 175 000 VND
     expect((await myPlan()).subscription.state).toBe('PENDING')
     // There is no endpoint that accepts a client's "paid": the only writer is the verified webhook.
     expect((await t.rows('authenticated', 'SELECT 1 FROM public.subscriptions', BOB)).length).toBe(0)
@@ -194,7 +196,7 @@ describe('the purchase flow (web): order → bank → verified webhook → ACTIV
 
   it('a webhook without the right key activates nothing', async () => {
     const { order } = await (await newOrder('momo')).json()
-    const n = fakeBank().transfer(order.code, 179_000)
+    const n = fakeBank().transfer(order.code, 175_000)
     const h = new Headers(n.headers); h.set('x-sepay-signature', 'sha256=' + '0'.repeat(64))
     const res = await deliver(h, n.rawBody)
     expect(res.status).toBe(401)
@@ -207,14 +209,15 @@ describe('the purchase flow (web): order → bank → verified webhook → ACTIV
     expect((await myPlan()).subscription.state).not.toBe('ACTIVE')
   })
 
-  it('verified full payment → ACTIVE, 30 a day, buy hidden; replay grants nothing more', async () => {
+  it('verified full payment → ACTIVE, the paid daily ceiling, buy hidden; replay grants nothing more', async () => {
     const { order } = await (await newOrder('momo')).json()
-    const n = fakeBank().transfer(order.code, 179_000)
+    const n = fakeBank().transfer(order.code, 175_000)
     const send = () => deliver(n.headers, n.rawBody)
     expect((await send()).status).toBe(200)
     const r = await myPlan()
-    expect(r.subscription).toMatchObject({ state: 'ACTIVE', plan: { id: 'momo', name: 'Momo' }, channel: 'web', autoRenew: false, canBuy: false })
-    expect(r.quota).toMatchObject({ limit: 30, period: 'day' })
+    // Owner 01/11/2026: the stored id `momo` is shown as Coco (1 month).
+    expect(r.subscription).toMatchObject({ state: 'ACTIVE', plan: { id: 'momo', name: 'Coco' }, channel: 'web', autoRenew: false, canBuy: false })
+    expect(r.quota).toMatchObject({ limit: PAID_DAILY_CEILING, period: 'day' })
     const end = r.subscription.periodEnd as string
     expect((await send()).status).toBe(200)
     expect((await myPlan()).subscription.periodEnd).toBe(end)
@@ -235,7 +238,7 @@ describe('the purchase flow (web): order → bank → verified webhook → ACTIV
     // Pip is a one-time trial: BOB never bought it, so the FIRST Pip is allowed...
     const first = await newOrder('pip')
     expect(first.status).toBe(201)
-    await bankPays((await first.json()).order.code, 29_000)
+    await bankPays((await first.json()).order.code, 25_000) // Owner 01/11/2026: pip = 25 000 VND
     const mine = (await myPlan()).subscription
     expect(mine).toMatchObject({ state: 'ACTIVE', plan: { id: 'pip' } })
     expect((Date.parse(mine.periodEnd as string) - Date.now()) / DAY).toBeCloseTo(7, 0)
@@ -267,27 +270,27 @@ describe('SePay webhook HMAC (default)', () => {
   it('body changed after signing (amount raised) → 401, nothing activated', async () => {
     const o = await freshOrder()
     const n = fakeBank().transfer(o.code, 1_000)
-    expect((await deliver(n.headers, n.rawBody.replace('"transferAmount":1000', '"transferAmount":179000'))).status).toBe(401)
+    expect((await deliver(n.headers, n.rawBody.replace('"transferAmount":1000', '"transferAmount":175000'))).status).toBe(401)
     expect(await state()).toBe('PENDING')
   })
 
   it('timestamp older than 5 minutes → 401 even with a correct signature for it', async () => {
     const o = await freshOrder()
-    const n = fakeBank().transfer(o.code, 179_000, {}, Date.now() - 6 * 60_000)
+    const n = fakeBank().transfer(o.code, 175_000, {}, Date.now() - 6 * 60_000)
     expect((await deliver(n.headers, n.rawBody)).status).toBe(401)
     expect(await state()).toBe('PENDING')
   })
 
   it('an Apikey header is not accepted while HMAC is the mode', async () => {
     const o = await freshOrder()
-    const n = fakeBank().transfer(o.code, 179_000)
+    const n = fakeBank().transfer(o.code, 175_000)
     expect((await deliver(new Headers({ authorization: `Apikey ${KEY}` }), n.rawBody)).status).toBe(401)
     expect(await state()).toBe('PENDING')
   })
 
   it('no secret configured → 401 (fails closed)', async () => {
     const o = await freshOrder()
-    const n = fakeBank().transfer(o.code, 179_000)
+    const n = fakeBank().transfer(o.code, 175_000)
     vi.stubEnv('SEPAY_WEBHOOK_HMAC_SECRET', '')
     expect((await deliver(n.headers, n.rawBody)).status).toBe(401)
     vi.stubEnv('SEPAY_WEBHOOK_HMAC_SECRET', HMAC_SECRET)
@@ -296,19 +299,19 @@ describe('SePay webhook HMAC (default)', () => {
 
   it('valid → ACTIVE; the same request replayed, or the same id re-signed, grants nothing more', async () => {
     const o = await freshOrder()
-    const n = fakeBank().transfer(o.code, 179_000)
+    const n = fakeBank().transfer(o.code, 175_000)
     expect((await deliver(n.headers, n.rawBody)).status).toBe(200)
     const end = (await myPlan()).subscription.periodEnd
     expect(await state()).toBe('ACTIVE')
     expect((await deliver(n.headers, n.rawBody)).status).toBe(200) // replay inside the 5 minutes
-    const again = fakeBank().transfer(o.code, 179_000, { id: (n.body as { id: number }).id }) // same tx id, new signature
+    const again = fakeBank().transfer(o.code, 175_000, { id: (n.body as { id: number }).id }) // same tx id, new signature
     expect((await deliver(again.headers, again.rawBody)).status).toBe(200)
     expect((await myPlan()).subscription.periodEnd).toBe(end)
   })
 
   it('wrong receiving account → recorded, nothing activated', async () => {
     const o = await freshOrder()
-    const n = fakeBank().transfer(o.code, 179_000, { accountNumber: '9999999999' })
+    const n = fakeBank().transfer(o.code, 175_000, { accountNumber: '9999999999' })
     expect((await deliver(n.headers, n.rawBody)).status).toBe(200)
     expect(await state()).toBe('PENDING')
   })
@@ -316,7 +319,7 @@ describe('SePay webhook HMAC (default)', () => {
   it('the API-key fallback works only when chosen', async () => {
     const o = await freshOrder()
     vi.stubEnv('SEPAY_WEBHOOK_AUTH_MODE', 'apikey')
-    const n = fakeBank().transfer(o.code, 179_000)
+    const n = fakeBank().transfer(o.code, 175_000)
     expect(n.headers.get('authorization')).toBe(`Apikey ${KEY}`)
     expect((await deliver(n.headers, n.rawBody)).status).toBe(200)
     expect(await state()).toBe('ACTIVE')
@@ -334,8 +337,8 @@ describe('Tappy Pip — one-time trial per account (owner decision, enforced in 
     const res = await newOrder('pip')
     expect(res.status).toBe(201)
     const { order } = await res.json()
-    expect(order.amountVnd).toBe(29_000)
-    const n = fakeBank().transfer(order.code, 29_000)
+    expect(order.amountVnd).toBe(25_000) // Owner 01/11/2026: pip = 25 000 VND
+    const n = fakeBank().transfer(order.code, 25_000)
     expect((await deliver(n.headers, n.rawBody)).status).toBe(200)
     return { order, n }
   }
@@ -343,13 +346,13 @@ describe('Tappy Pip — one-time trial per account (owner decision, enforced in 
     Number((await t.one<{ c: string }>(`SELECT count(*) AS c FROM public.entitlement_ledger WHERE user_id = $1 AND plan = 'pip'${_any ? '' : ` AND source = 'web_sepay'`}`, [user])).c)
   type Me = { pipUsed: boolean; subscription: Record<string, unknown>; quota: Record<string, number> }
 
-  it('first purchase allowed: $1 plan, 7 days, ACTIVE, 30 a day; the account is then marked as having used Pip', async () => {
+  it('first purchase allowed: $1 plan, 7 days, ACTIVE, the paid daily ceiling; the account is then marked as having used Pip', async () => {
     h.user = { id: DAVE }
     expect(((await myPlan()) as unknown as Me).pipUsed).toBe(false)
     await buyPip(DAVE)
     const r = (await myPlan()) as unknown as Me
     expect(r.subscription).toMatchObject({ state: 'ACTIVE', plan: { id: 'pip' } })
-    expect(r.quota).toMatchObject({ limit: 30, period: 'day' })
+    expect(r.quota).toMatchObject({ limit: PAID_DAILY_CEILING, period: 'day' })
     expect(r.pipUsed).toBe(true)
   })
 
@@ -416,9 +419,9 @@ describe('Tappy Pip — one-time trial per account (owner decision, enforced in 
     const o1 = (await (await post(createOrder, { plan: 'pip' })).json()).order
     const o2 = (await (await post(createOrder, { plan: 'pip' })).json()).order
     expect(o1.code).not.toBe(o2.code)
-    expect((await bankPays(o1.code, 29_000)).status).toBe(200)
+    expect((await bankPays(o1.code, 25_000)).status).toBe(200)
     const end = (await myPlan()).subscription.periodEnd
-    expect((await bankPays(o2.code, 29_000)).status).toBe(200)
+    expect((await bankPays(o2.code, 25_000)).status).toBe(200)
     expect((await myPlan()).subscription.periodEnd).toBe(end)
     expect(await pipGrants(FRANK)).toBe(1)
     const ev = await t.one<{ result: string }>(`SELECT e.result FROM public.payment_events e JOIN public.payment_orders o ON o.id = e.order_id WHERE o.code = $1`, [o2.code])
@@ -464,13 +467,14 @@ describe('Tappy Pip — one-time trial per account (owner decision, enforced in 
     h.user = null
     const c = await (await get(catalog)).json()
     const pip = c.plans.find((p: { id: string }) => p.id === 'pip')
-    expect(pip).toMatchObject({ priceUsd: 1, trialOnce: true, durationDays: 7, priceVnd: 29_000 })
+    expect(pip).toMatchObject({ priceUsd: 1, trialOnce: true, durationDays: 7, priceVnd: 25_000 }) // Owner 01/11/2026
     expect(c.plans.filter((p: { trialOnce: boolean }) => p.trialOnce)).toHaveLength(1)
   })
 })
 
 describe('order amount = the FIXED VND catalog (never USD x a rate)', () => {
-  it.each([['pip', 29_000], ['momo', 179_000], ['coco', 489_000], ['milo', 939_000], ['sunny', 1_719_000]])('%s is charged exactly %i', async (plan, vnd) => {
+  // Owner 01/11/2026: the plans on sale and their fixed VND prices (USD x 25 000).
+  it.each([['pip', 25_000], ['momo', 175_000], ['coco', 472_500], ['promax1m', 225_000], ['promax3m', 607_500]])('%s is charged exactly %i', async (plan, vnd) => {
     await t.db.query(`DELETE FROM public.subscriptions WHERE user_id = $1`, [CAROL])
     h.user = { id: CAROL }
     await t.db.query(`DELETE FROM public.payment_orders WHERE user_id = $1 AND plan = 'pip'`, [CAROL])
@@ -482,6 +486,35 @@ describe('order amount = the FIXED VND catalog (never USD x a rate)', () => {
     // one dong short is NOT paid; the full catalog amount is
     expect((await bankPays(order.code, vnd - 1)).status).toBe(200)
     expect((await myPlan()).subscription.state).not.toBe('ACTIVE')
+  })
+
+  // Owner 01/11/2026: Milo and Sunny are no longer sold - a new web order for them is refused as an unknown plan.
+  it.each(['milo', 'sunny'])('%s is no longer sold: the order is refused (400), nothing is created', async (plan) => {
+    await t.db.query(`DELETE FROM public.subscriptions WHERE user_id = $1`, [CAROL])
+    h.user = { id: CAROL }
+    const before = Number((await t.one<{ c: string }>(`SELECT count(*) AS c FROM public.payment_orders WHERE user_id = $1`, [CAROL])).c)
+    const res = await newOrder(plan)
+    expect(res.status).toBe(400)
+    expect((await res.json()).message).toBeTruthy()
+    expect(Number((await t.one<{ c: string }>(`SELECT count(*) AS c FROM public.payment_orders WHERE user_id = $1`, [CAROL])).c)).toBe(before)
+  })
+})
+
+describe('Tappy (promax) - the purchase flow (20261102_plans_promax)', () => {
+  it('promax1m: order 225 000 → verified webhook → ACTIVE, plan promax1m, 30 days', async () => {
+    await t.db.query(`DELETE FROM public.subscriptions WHERE user_id = $1`, [CAROL])
+    h.user = { id: CAROL }
+    const res = await newOrder('promax1m')
+    expect(res.status).toBe(201)
+    const { order } = await res.json()
+    expect(order.amountVnd).toBe(225_000) // Owner 01/11/2026
+    expect((await bankPays(order.code, 225_000)).status).toBe(200)
+    const r = await myPlan()
+    expect(r.subscription).toMatchObject({ state: 'ACTIVE', plan: { id: 'promax1m', name: 'Tappy' }, channel: 'web', canBuy: false })
+    expect((Date.parse(r.subscription.periodEnd as string) - Date.now()) / DAY).toBeCloseTo(30, 0)
+    expect(r.quota).toMatchObject({ limit: PAID_DAILY_CEILING, period: 'day' })
+    expect((await t.one<{ plan: string; status: string }>(`SELECT plan, status FROM public.subscriptions WHERE user_id = $1`, [CAROL])))
+      .toMatchObject({ plan: 'promax1m', status: 'active' })
   })
 })
 
@@ -526,7 +559,7 @@ describe('expiry cron + fake bank safety', () => {
     const res = await expireCron(new Request('https://t.test/x', { headers: { authorization: 'Bearer cron-test' } }))
     expect((await res.json()).expired).toBeGreaterThanOrEqual(1)
     expect((await myPlan()).subscription).toMatchObject({ state: 'EXPIRED', canBuy: true })
-    expect((await myPlan()).quota.limit).toBe(10)
+    expect((await myPlan()).quota.limit).toBe(FREE_DAILY_LIMIT)
   })
 
   it('the fake bank refuses to exist in production', () => {

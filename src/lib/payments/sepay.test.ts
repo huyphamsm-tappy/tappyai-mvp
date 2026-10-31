@@ -43,13 +43,25 @@ describe('SePay helpers', () => {
 })
 
 describe('payment mail', () => {
-  const m = { to: 'a@b.test', plan: 'momo' as const, amountVnd: 179000, code: 'TAPPYAB23CD', expiresAt: '2026-10-27T10:00:00Z' }
+  // Owner 01/11/2026: new plan catalog (plan `momo` is shown as Coco, 175.000đ)
+  const m = { to: 'a@b.test', plan: 'momo' as const, amountVnd: 175000, code: 'TAPPYAB23CD', expiresAt: '2026-10-27T10:00:00Z' }
 
   it('is plain Vietnamese with the plan, amount and expiry', () => {
     const c = paymentMailContent(m)
-    expect(c.subject).toContain('Momo')
-    expect(c.text).toContain('179.000đ')
+    // Owner 01/11/2026: new plan catalog
+    expect(c.subject).toContain('Coco')
+    expect(c.text).toContain('175.000đ')
     expect(c.text).toContain('27/10/2026')
+    expect(c.text).toContain('Bạn hỏi AI không giới hạn, có Suy nghĩ, Tìm web và 10 lượt Nghiên cứu sâu mỗi tháng.')
+    expect(c.text).not.toMatch(/câu hỏi AI mỗi ngày/)
+  })
+
+  it('a Tappy (Promax) plan mail states 69 Deep Research a month', () => {
+    // Owner 01/11/2026: new plan catalog
+    const c = paymentMailContent({ ...m, plan: 'promax1m', amountVnd: 225000 })
+    expect(c.subject).toContain('Tappy')
+    expect(c.text).toContain('225.000đ')
+    expect(c.text).toContain('Bạn hỏi AI không giới hạn, có Suy nghĩ, Tìm web và 69 lượt Nghiên cứu sâu mỗi tháng.')
   })
 
   it('is skipped without Brevo settings, and never throws', async () => {

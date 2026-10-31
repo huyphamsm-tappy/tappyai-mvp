@@ -181,7 +181,8 @@ describe('GET /api/payments/me — Signed-in User State', () => {
     expect(body.signedIn).toBe(true)
     expect(body.subscription).toEqual({
       state: 'ACTIVE',
-      plan: { id: 'momo', name: 'Momo' },
+      // Owner 01/11/2026: new plan catalog (plan `momo` is shown as Coco)
+      plan: { id: 'momo', name: 'Coco' },
       periodEnd: future,
       channel: 'web',
       autoRenew: false,

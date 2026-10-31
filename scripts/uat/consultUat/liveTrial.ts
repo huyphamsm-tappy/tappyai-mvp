@@ -349,7 +349,7 @@ export function connectionRedirectReasons(env: Record<string, string | undefined
 }
 
 /**
- * Quota option (d) (owner decision). The route meters the simulated registered FREE account at FREE_DAILY_LIMIT (10) questions a day, in a counter held in this process: the 11th
+ * Quota option (d) (owner decision). The route meters the simulated registered FREE account at FREE_DAILY_LIMIT (300, the hidden anti-abuse ceiling) questions a day, in a counter held in this process: the 301st
  * turn of any run is refused with HTTP 429 free_limit_reached (this is what stopped the baseline at E11). The benchmark measures the advice, not that commercial limit, so
  * the extension mode can reset the counter before each turn - and only when BOTH the mode is exactly dev-multi AND this flag is exactly 1. Default OFF = the real limit applies.
  * The reset is the test hook the rehearsals already use; the user, the conversation, the history, the L1 cache, the cap and the cost gate are not touched.
@@ -757,7 +757,7 @@ export function formatSummary(s: TrialSummary): string {
     `OSM fallback hosts (free: no Serper credit, no OpenAI cost; outside the request cap and the USD gate; counted, not priced): ${Object.entries(s.osmRequests).map(([h, n]) => `${h}=${n}`).join(' ')}`,
     `tool calls recorded: ${s.trace.toolCalls} (empty: ${s.trace.emptyToolCalls}) | requests logged with a turn id: ${s.trace.requestsWithTurn}/${s.trace.requestsLogged}${s.trace.blocked.length ? ` | blocked by turn: ${[...s.trace.blocked.reduce((m, b) => m.set(`${b.turn ?? '(no turn)'}: ${b.label}`, (m.get(`${b.turn ?? '(no turn)'}: ${b.label}`) ?? 0) + 1), new Map<string, number>())].map(([k, n]) => `${k}×${n}`).join('; ')}` : ''}`,
     `DuckDuckGo fallback host (free: no Serper credit, no OpenAI cost; outside the request cap and the USD gate; counted, not priced): ${Object.entries(s.ddgRequests).map(([h, n]) => `${h}=${n}`).join(' ')}`,
-    `free-question quota reset per turn: ${s.quotaReset.on ? 'ON' : 'OFF'} (reason: ${s.quotaReset.reason}) | resets: ${s.quotaReset.resets}${s.quotaReset.on ? ' (the Free limit of 10 questions a day was NOT applied; the benchmark measures the advice, not that limit)' : ' (the real Free limit of 10 questions a day applies: more than 10 questions stop the run with HTTP 429)'}`,
+    `free-question quota reset per turn: ${s.quotaReset.on ? 'ON' : 'OFF'} (reason: ${s.quotaReset.reason}) | resets: ${s.quotaReset.resets}${s.quotaReset.on ? ' (the Free ceiling of 300 questions a day was NOT applied; the benchmark measures the advice, not that limit)' : ' (the real Free ceiling of 300 questions a day applies: more than 300 questions stop the run with HTTP 429)'}`,
     `budget mode: ${s.budget.mode} | run cap ${s.budget.runCapUsd} USD (maximum of the mode ${maxRunCapUsd(s.budget.mode)}) | per-turn cap ${s.budget.turnCapUsd} USD (maximum ${MAX_TURN_CAP_USD}) — ESTIMATES, not an invoice`,
     `request cap (a COUNT of Serper requests, not a price): per turn ${s.requestCap.perTurnLimit ?? '-'} | per run ${s.requestCap.runLimit ?? '-'} | let through ${s.requestCap.sent} | refused ${s.requestCap.refused}`,
     s.question === null

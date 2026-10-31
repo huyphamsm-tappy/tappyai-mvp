@@ -351,7 +351,7 @@ describe('the rail', () => {
     expect(premium).toBeTruthy()
     expect(within(premium).getByRole('link').getAttribute('href')).toBe('/subscription')
     // Phase 7: lines TRUE of the canonical catalog (30/day, 7 days–12 months, VietQR) — never "unlimited".
-    expect(within(premium).getByText(/30 câu hỏi AI mỗi ngày|30 AI questions a day/i)).toBeTruthy()
+    expect(within(premium).getByText(/Suy nghĩ, Tìm web và Nghiên cứu sâu|Thinking, Web search and Deep Research/i)).toBeTruthy()
     expect(within(premium).getByText(/7 ngày đến 12 tháng|7 days to 12 months/i)).toBeTruthy()
     expect(within(premium).getByText(/VietQR/)).toBeTruthy()
     expect(premium.textContent ?? '').not.toMatch(/không giới hạn|unlimited/i)

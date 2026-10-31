@@ -153,3 +153,4 @@ supabase/migrations/20261018_ai_data_consent.sql
 supabase/migrations/20261018_chat_honours_user_blocks.sql
 supabase/migrations/20261019_ai_data_consent_client_acl.sql
 supabase/migrations/20261101_ai_usage_events.sql
+supabase/migrations/20261102_plans_promax.sql

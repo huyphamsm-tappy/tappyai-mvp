@@ -382,9 +382,9 @@ export function quotaLines(env) {
   const on = env.BENCH_TRIAL_MODE === 'dev-multi' && flag === '1'
   const show = v => (v === undefined ? 'unset' : /^[A-Za-z0-9_-]{1,24}$/.test(v) ? v : JSON.stringify(v.slice(0, 24)))
   const why = `mode=${show(env.BENCH_TRIAL_MODE)}, flag=${show(flag)}`
-  if (on) return [`hạn mức Free (10 câu/ngày): được ĐẶT LẠI mỗi lượt (${why}) — chỉ để đo chất lượng tư vấn, không phải hành vi thật; user, hội thoại, lịch sử, cache, trần chi phí và trần request giữ nguyên`]
+  if (on) return [`trần ẩn của Free (300 câu/ngày): được ĐẶT LẠI mỗi lượt (${why}) — chỉ để đo chất lượng tư vấn, không phải hành vi thật; user, hội thoại, lịch sử, cache, trần chi phí và trần request giữ nguyên`]
   const ignored = flag === '1' ? ' — cờ không có hiệu lực ở chế độ này (chỉ BENCH_TRIAL_MODE=dev-multi)' : ''
-  return [`hạn mức Free (10 câu/ngày): ÁP DỤNG như thật (${why})${ignored} — nếu có hơn 10 lượt, run sẽ dừng ở lượt 11 (HTTP 429 free_limit_reached)`]
+  return [`trần ẩn của Free (300 câu/ngày): ÁP DỤNG như thật (${why})${ignored} — nếu có hơn 300 lượt, run sẽ dừng ở lượt 301 (HTTP 429 free_limit_reached)`]
 }
 
 /** Wave 2 · the state each product-behaviour flag REALLY has (ON only for the value 1), for Gate 1. Same rule as wave2FlagState in liveTrial.ts (a test compares them). */

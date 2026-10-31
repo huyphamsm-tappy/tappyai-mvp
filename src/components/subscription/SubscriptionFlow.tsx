@@ -4,7 +4,8 @@
 // after Huy's mockups (web page + app screens 3–9). Written by the security session (p8/subscriptions).
 //
 //   home        hero (badge, title, 3 benefits) + "Gói hiện tại" when ACTIVE
-//               desktop: 7 columns — Welcome Guest, Tappy (free), Pip … Sunny (Sunny "Phổ biến nhất")
+//               desktop: 7 columns — Welcome Guest, Pip (free), then the plans on sale: MoMo (trial), Coco 1/3 months,
+//               Tappy 1/3 months (owner 01/11/2026; no badge)
 //               mobile:  "Quyền truy cập hiện tại" + the 5 plans as app-style list cards
 //               + 4 trust tiles
 //   detail      gradient hero card in the plan colour, 4 lines, "Chọn {plan}"; Sunny only: "Chỉ khoảng …/tháng"
@@ -470,7 +471,7 @@ function PlansHome({ catalog, me, onChoose, onManage }: {
             : <span className="block rounded-2xl bg-gray-100 py-2.5 text-center text-sm font-semibold text-content-secondary dark:bg-gray-800">{t('sub.card.current')}</span>}
         />
         <AccessColumn
-          image="/subscription/tappy.webp" name={t('sub.freeTier.name')} tagline={t('sub.freeTier.tagline')}
+          image="/subscription/pip.webp" name={t('sub.freeTier.name')} tagline={t('sub.freeTier.tagline')}
           lines={[t('sub.free.quota', { count: String(catalog.free.dailyAiQuestions) }), t('sub.free.most')]}
           action={!me.signedIn
             ? <Link href="/login?returnTo=%2Fsubscription" className="block rounded-2xl border border-gray-300 py-2.5 text-center text-sm font-semibold text-gray-900 dark:border-gray-600 dark:text-white">{t('sub.free.signIn')}</Link>

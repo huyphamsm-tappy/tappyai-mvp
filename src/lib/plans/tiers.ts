@@ -5,13 +5,13 @@
 // runs and the Deep Research allowance per VN calendar month:
 //   free   (guest, anonymous, free)                       - Chat only (Luna 6.0, the model's own quick lookup); no Web / Thinking / Deep Research
 //   pro    (pip = MoMo trial, momo / coco = Coco, and the older milo / sunny / pro while they last) - every mode, Deep Research 10 a month
-//   promax (the Tappy plans, once added)                  - every mode, Deep Research 69 a month
+//   promax (promax1m / promax3m = Tappy)                   - every mode, Deep Research 69 a month
 // The SERVER enforces it (a mode the tier does not have runs as Chat); the client only hides what it cannot use. Pure.
 import type { ChatMode } from '@/lib/ai/security/clientInput'
 
 export type Tier = 'free' | 'pro' | 'promax'
 
-/** Plan ids of the Promax tier (the Tappy plans). Empty until the plans exist in the catalog and the database. */
+/** Plan ids of the Promax tier (the Tappy plans). */
 const PROMAX_PLANS: ReadonlySet<string> = new Set(['promax1m', 'promax3m'])
 
 export function tierOf(plan: string | null | undefined): Tier {

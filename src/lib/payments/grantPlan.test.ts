@@ -69,9 +69,12 @@ describe('quota reads the entitlement only — the channel never matters', () =>
 describe('catalog', () => {
   it('the web catalog has prices and per-day prices for long plans', () => {
     const c = paymentsCatalog()
-    expect(c.map((p) => p.id)).toEqual(['pip', 'momo', 'coco', 'milo', 'sunny'])
+    // Owner 01/11/2026: new plan catalog (SALE_PLAN_IDS order; Milo/Sunny not sold)
+    expect(c.map((p) => p.id)).toEqual(['pip', 'momo', 'coco', 'promax1m', 'promax3m'])
     expect(c.find((p) => p.id === 'pip')!.pricePerDayVnd).toBeUndefined()
-    expect(c.find((p) => p.id === 'sunny')!.pricePerDayVnd).toBe(Math.round(1_719_000 / 365))
+    expect(c.find((p) => p.id === 'promax1m')!.pricePerDayVnd).toBeUndefined()
+    expect(c.find((p) => p.id === 'coco')!.pricePerDayVnd).toBe(Math.round(472_500 / 90))
+    expect(c.find((p) => p.id === 'promax3m')!.pricePerDayVnd).toBe(Math.round(607_500 / 90))
   })
 
   it('the app catalog carries NO web price (Google Play policy)', () => {
@@ -84,6 +87,10 @@ describe('catalog', () => {
   it('maps store product ids, including the Play `product:baseplan` form', () => {
     expect(planForStoreProduct('tappy_coco_3m')).toBe('coco')
     expect(planForStoreProduct('tappy_momo_1m:monthly')).toBe('momo')
+    // Owner 01/11/2026: new plan catalog - Tappy store products; retired ids still map (stored purchases)
+    expect(planForStoreProduct('tappy_promax_1m')).toBe('promax1m')
+    expect(planForStoreProduct('tappy_promax_3m')).toBe('promax3m')
+    expect(planForStoreProduct('tappy_sunny_12m')).toBe('sunny')
     expect(planForStoreProduct('com.tappyai.ios.pro.monthly')).toBeNull()
     expect(planForStoreProduct(null)).toBeNull()
   })

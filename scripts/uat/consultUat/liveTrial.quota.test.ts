@@ -226,13 +226,13 @@ describe('(e) the summary, the result file and Gate 1 show the state the configu
       expect(r.text).toContain(`free-question quota reset per turn: ${on ? 'ON' : 'OFF'} (reason: ${q.reason}) | resets: ${on ? 3 : 0}`)
       expect(r.resultJson.freeQuotaReset).toEqual(q)
       const gate = gate1Summary(env, null).join('\n')
-      expect(gate).toMatch(on ? /hạn mức Free \(10 câu\/ngày\): được ĐẶT LẠI mỗi lượt/ : /hạn mức Free \(10 câu\/ngày\): ÁP DỤNG như thật/)
+      expect(gate).toMatch(on ? /trần ẩn của Free \(300 câu\/ngày\): được ĐẶT LẠI mỗi lượt/ : /trần ẩn của Free \(300 câu\/ngày\): ÁP DỤNG như thật/)
       expect(gate).not.toMatch(on ? /ÁP DỤNG như thật/ : /được ĐẶT LẠI/)
     })
   }
-  it('Gate 1 names the stop at turn 11 when the limit applies, and says a flag outside the extension mode has no effect; it never names a Serper host', () => {
+  it('Gate 1 names the stop at turn 301 when the limit applies, and says a flag outside the extension mode has no effect; it never names a Serper host', () => {
     const off = gate1Summary({ ...EXT_ENV }, null).join('\n')
-    expect(off).toMatch(/dừng ở lượt 11/)
+    expect(off).toMatch(/dừng ở lượt 301/)
     const ignored = gate1Summary({ ...NON_EXT, BENCH_TRIAL_MODE: undefined, [FLAG]: '1' }, null).join('\n')
     expect(ignored).toMatch(/cờ không có hiệu lực ở chế độ này/)
     for (const t of [off, ignored, gate1Summary({ ...EXT_ENV, [FLAG]: '1' }, null).join('\n')]) expect(t).not.toMatch(/serper\.dev/i)
