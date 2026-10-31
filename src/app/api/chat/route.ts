@@ -108,7 +108,7 @@ import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuar
 import { isProductionRuntime, consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, consultReadPageLateOn, consultPickPageReadOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn, consultUnwindS1aOn, consultUnwindS1bOn, consultUnwindS1dOn, consultUnwindS2aOn, consultUnwindS2bOn, consultUnwindS2cOn, consultUnwindS3aOn, consultUnwindS3bOn, consultUnwindS3cOn, consultUnwindS4aOn, consultUnwindS4bOn, consultUnwindS5On, consultUnwindS6aOn, consultUnwindS6bOn, consultUnwindS6cOn, consultOneBrainOn, consultOneBrainMediaOn, consultParallelOn } from '@/lib/config/consultFlags'
 import { createParallelTurnBudget, parallelExtract, parallelSearch } from '@/lib/ai/tools/parallelClient'
 import { searchWithReads, createOnce, FOLLOW_UP_SYSTEM, S6_MAX_READS } from '@/lib/ai/consultative/searchReads'
-import { ONE_BRAIN_CORE, ONE_BRAIN_CHAT_CAP_NOTE, ONE_BRAIN_FARE_NOTE, ONE_BRAIN_WEB_FALLBACK_NOTE, ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, oneBrainDynamic } from '@/lib/ai/consultative/oneBrain'
+import { ONE_BRAIN_CORE, ONE_BRAIN_CHAT_CAP_NOTE, ONE_BRAIN_FARE_NOTE, ONE_BRAIN_WEB_FALLBACK_NOTE, CHAT_SEARCH_BUDGET, SEARCH_DEPTH_DESCRIPTION, searchDepthOf, type SearchDepth, ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, oneBrainDynamic } from '@/lib/ai/consultative/oneBrain'
 import { oneBrainMediaStream } from '@/lib/ai/consultative/oneBrainMedia'
 import { oneBrainTurnTrace } from '@/lib/ai/consultative/turnTrace'
 import { serperLastAccountErrorAt } from '@/lib/ai/tools/serperClient'
@@ -2991,6 +2991,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           ...(oneBrain ? {
             country: z.string().optional().describe('Optional two-letter country code of the sources you want (e.g. us, jp, th, fr). Omit for Vietnam.'),
             language: z.string().optional().describe('Optional two-letter language code of the sources you want (e.g. en, ja, th). Omit for Vietnamese.'),
+            // 01/11: the model chooses how deep the lookup goes (Chat mode turns it into a budget; Web / Thinking are always thorough)
+            depth: z.enum(['quick', 'thorough']).optional().describe(SEARCH_DEPTH_DESCRIPTION),
           } : {}),
         }),
         execute: async (args) => {
@@ -3264,7 +3266,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           read: (urls, focus) => innerRead({ urls, focus, kind: 'other' }, { toolCallId: `search_read_${randomUUID().slice(0, 6)}`, messages: [] }),
           // 31/10 (Chat mode): the search still reads its top pages, but no follow-up search (it costs a model call and a second search).
           // Measured: snippets only lost 0.85 points against the pre-mode default (T01 news: 357 characters), so the reads stay.
-          gap: withGap && !(oneBrain && chatMode === 'chat') ? {
+          // 01/11: unless the model asked for a thorough lookup (CHAT_SEARCH_BUDGET.thorough.followUp).
+          gap: withGap && !(oneBrain && chatMode === 'chat' && !CHAT_SEARCH_BUDGET[searchDepthOf(a)].followUp) ? {
             find: async titles => {
               // The outcome of the gap call is logged as counts / a reason only (no query, no user words): a follow-up that never runs must be visible.
               try {
@@ -3285,17 +3288,25 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       }
     }
   }
-  // 31/10 (mode Chat): one web search and one page read per turn; a further call is answered with a note, never run (ONE_BRAIN_MODE_LINES.chat says so).
+  // 31/10 (mode Chat): a budget of web searches and page reads per turn; a further call is answered with a note, never run.
+  // 01/11: the budget is the one of the depth the model chose (CHAT_SEARCH_BUDGET): quick = 1 search / 1 read, and once any web_search of
+  // the turn asked for "thorough", 3 / 3 for the rest of the turn. One line per search says which depth was chosen (counts only).
   if (tools && oneBrain && chatMode === 'chat') {
     const tt = tools as unknown as Record<string, { execute?: (a: unknown, o: unknown) => Promise<unknown> }>
-    for (const [name, cap] of [['web_search', 1], ['read_page', 1]] as const) {
+    let depth: SearchDepth = 'quick'
+    for (const name of ['web_search', 'read_page'] as const) {
       const t = tt[name]
       if (!t?.execute) continue
       const inner = t.execute.bind(t)
       let used = 0
       t.execute = async (a: unknown, o: unknown) => {
-        if (used >= cap) {
-          console.log(JSON.stringify({ type: 'tappyai_chat_mode_cap', tool: name }))
+        if (name === 'web_search') {
+          if (searchDepthOf(a) === 'thorough') depth = 'thorough'
+          console.log(JSON.stringify({ type: 'tappyai_search_depth', asked: searchDepthOf(a), turn_depth: depth, n: used + 1 }))
+        }
+        const budget = CHAT_SEARCH_BUDGET[depth]
+        if (used >= (name === 'web_search' ? budget.searches : budget.reads)) {
+          console.log(JSON.stringify({ type: 'tappyai_chat_mode_cap', tool: name, depth }))
           return { error: 'chat_mode_budget_used', note: ONE_BRAIN_CHAT_CAP_NOTE }
         }
         used++

@@ -127,10 +127,21 @@ export interface OneBrainContext {
  * this next step. Language- and subject-free: the model judges whether the rows answer the request.
  */
 export const ONE_BRAIN_WEB_FALLBACK_NOTE = 'If these results are empty or do not answer the request (about other things, too old), do not conclude that nothing exists: call web_search with a precise query (names, the event, the year) before answering, and answer from what it finds.'
-export const ONE_BRAIN_CHAT_CAP_NOTE = 'Chat mode allows one quick lookup of this kind per answer and it is used. Answer now from what you have and what you reliably know; if a deeper look would help, say the person can turn on "Tìm web" or "Suy nghĩ".'
+export const ONE_BRAIN_CHAT_CAP_NOTE = 'The lookups of this answer are used (a quick search allows one, a thorough one three). Answer now from what you have and what you reliably know, and say what could not be checked.'
+
+/**
+ * 01/11 (owner: "làm bộ não để tappy nhận diện context và câu hỏi, chứ không phải prompt hay keywords"): in Chat mode the model itself chooses
+ * how deep a web lookup goes - the `depth` of its web_search call. The route turns that choice into a budget (CHAT_SEARCH_BUDGET); nothing
+ * reads the person's words to decide it.
+ */
+export const CHAT_SEARCH_BUDGET = { quick: { searches: 1, reads: 1, followUp: false }, thorough: { searches: 3, reads: 3, followUp: true } } as const
+export type SearchDepth = keyof typeof CHAT_SEARCH_BUDGET
+export const SEARCH_DEPTH_DESCRIPTION = 'How deep this lookup goes. "quick": one clear current fact (a price today, a date, the weather, a definition, one name) - one search reading its top pages. "thorough": the answer needs several sources (a comparison, figures that differ between sources, events still unfolding, a choice or advice with real consequences) - more pages read, one follow-up search for what is missing, up to three searches in this answer. Omit for quick.'
+/** The depth a web_search call asked for: "thorough" only when it says so; anything else is quick. Pure. */
+export const searchDepthOf = (args: unknown): SearchDepth => ((args as { depth?: unknown } | null)?.depth === 'thorough' ? 'thorough' : 'quick')
 
 export const ONE_BRAIN_MODE_LINES: Readonly<Record<'chat' | 'web' | 'think', string>> = {
-  chat: 'Mode: Chat. Answer from what you reliably know, with the same completeness and layout as always. Look something up only when the answer depends on current facts (prices, news, weather, opening hours, a place or product to pick): use the dedicated tool when one fits (places, products, weather, gold price, news) and, when it gives nothing useful or no tool fits, your one web_search with the best query (its result includes the top pages). Do not chain further searches or page reads. If a deeper look would clearly help, say in one short line that the person can turn on "Tìm web" or "Suy nghĩ".',
+  chat: 'Mode: Chat. Answer from what you reliably know, with the same completeness and layout as always. Look something up only when the answer depends on current facts (prices, news, weather, opening hours, a place or product to pick): use the dedicated tool when one fits (places, products, weather, gold price, news) and, when it gives nothing useful or no tool fits, web_search with the best query and the depth the answer needs - "quick" when it is one clear current fact (a price today, a date, the weather, a definition, one name): one search that reads its top pages; "thorough" when it needs several sources (a comparison, figures that differ between sources, events still unfolding, a choice or advice with real consequences): it reads more pages, looks once more for what is missing, and allows up to three searches. Judge from what the person needs in this conversation, not from single words. Do not chain searches beyond that.',
   web: 'Mode: Web search. The person asked you to look things up: search, read the best pages, compare sources, and cite each fact with its link and date.',
   think: 'Mode: Thinking. The person asked for a thorough answer: work out every part of the request, look up what you need, check the figures, and write a complete, well-organised answer.',
 }

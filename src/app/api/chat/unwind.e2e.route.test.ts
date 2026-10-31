@@ -745,6 +745,23 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     expect(junk.opts.thinkEffort).toBeNull()
     expect(junk.system).toContain('Mode: Chat.')
   }, 60000)
+  it('01/11 (owner: "làm bộ não"): in Chat the model chooses the depth of its lookup; "thorough" widens the budget to 3 searches and allows the follow-up', async () => {
+    const Q: Msg[] = [{ role: 'user', content: 'so sanh gia dien cac bac' }]
+    const four = ['a', 'b', 'c', 'd'].map(x => ({ name: 'web_search', args: { query: `gia dien ${x}`, depth: 'thorough' } }))
+    const deep = await turn(Q, { unwind: true, oneBrain: true, luna: intent('chat', []), tools: four, reply: 'x' })
+    const res = deep.results.filter(r => r.name === 'web_search').map(r => JSON.stringify(r.result))
+    expect(res.slice(0, 3).every(r => !r.includes('chat_mode_budget_used'))).toBe(true)
+    expect(res[3]).toContain('chat_mode_budget_used')
+    expect(deep.extract).toContain('tappy_follow_up') // the follow-up search ran
+    expect(deep.logs.filter(x => x.type === 'tappyai_search_depth').map(x => x.turn_depth)).toEqual(['thorough', 'thorough', 'thorough', 'thorough'])
+    // quick (or no depth): one search, no follow-up - as before
+    const quick = await turn(Q, { unwind: true, oneBrain: true, luna: intent('chat', []), tools: [{ name: 'web_search', args: { query: 'gia dien', depth: 'quick' } }, { name: 'web_search', args: { query: 'gia dien 2' } }], reply: 'x' })
+    expect(JSON.stringify(quick.results.filter(r => r.name === 'web_search')[1]?.result)).toContain('chat_mode_budget_used')
+    expect(quick.extract).not.toContain('tappy_follow_up')
+    // the choice is described by what the answer needs, and left to the model's reading of the conversation
+    expect(deep.system).toContain('when it needs several sources (a comparison')
+    expect(deep.system).toContain('Judge from what the person needs in this conversation, not from single words.')
+  }, 60000)
   it('31/10 (T01 measured): a news lookup is not the last word - its result tells the model to search the web when it does not answer', async () => {
     const Q: Msg[] = [{ role: 'user', content: 'tin moi nhat ve vu hack san giao dich' }]
     const NEWS = [{ name: 'get_news', args: { query: 'vu hack san giao dich' } }]
