@@ -1,7 +1,7 @@
 // 31/10 Deep Research orchestration (deepResearch.ts) with fake dependencies: plan, parallel steps, findings tied to handed-in sources,
 // the deadline, the writer's links removed, the sources list built by code, and the failure paths.
 import { describe, it, expect, vi, afterEach } from 'vitest'
-import { runDeepResearch, sectionImages, MAX_SECTION_IMAGES, GAP_STEPS, canonicalSourceUrl, normalisePlan, linkStripper, sourcesBlock, readResearchStatus, DEEP_RESEARCH_LIMITS, type DeepResearchDeps, type ResearchStatus } from './deepResearch'
+import { runDeepResearch, sectionImages, sectionSteps, writerNotes, MAX_SECTION_IMAGES, GAP_STEPS, canonicalSourceUrl, normalisePlan, linkStripper, sourcesBlock, readResearchStatus, DEEP_RESEARCH_LIMITS, type DeepResearchDeps, type ResearchStatus } from './deepResearch'
 
 const PLAN = { title: 'Thị trường xe điện', steps: [{ title: 'Doanh số', queries: ['doanh so xe dien 2026'] }, { title: 'Giá', queries: ['gia xe dien', 'bang gia xe dien'] }] }
 const page = (u: string) => ({ title: `Trang ${u}`, url: `https://${u}.example/a`, snippet: 's', text: `nội dung ${u}` })
@@ -162,6 +162,20 @@ describe('the follow-up round (measured T22: one round found no count and the re
     expect(out.followUps).toBe(GAP_STEPS) // an empty step is dropped, the rest capped
     expect(out.findings.some(f => f.step === 3)).toBe(true)
     expect(c.statuses.at(-1)?.steps.map(s => s.title)).toEqual(['Doanh số', 'Giá', 'Số hãng xe điện', 'thứ ba'])
+  })
+  it('a follow-up that completes a plan step adds to that section instead of being a section of its own (measured: sections 5 and 6 repeated 1 and 3)', async () => {
+    let notes = ''
+    let sectionsSeen: string[] = []
+    const d = deps({
+      gaps: async () => [{ title: 'Số hãng', queries: ['so luong'], completes: 1 }, { title: 'Riêng', queries: ['rieng'], completes: 9 }],
+      write: async function* (input) { notes = writerNotes(input.plan, input.findings); sectionsSeen = sectionSteps(input.plan).map(s => s.title); yield '# T\n## Doanh số\nx' },
+    })
+    const out = await runDeepResearch('q', '', 'vi', d, collect().emit)
+    expect(out.plan?.steps.map(s => s.completes)).toEqual([undefined, undefined, 1, undefined]) // 9 is no plan step: a section of its own
+    expect(sectionsSeen).toEqual(['Doanh số', 'Giá', 'Riêng'])
+    const first = notes.split('\n\n## ')[0]
+    expect(first).toContain('Số hãng từ') // the follow-up's findings are in step 1's section
+    expect(notes).not.toContain('## Số hãng')
   })
   it('no follow-up when nothing is missing, when the check fails, or when too little time is left', async () => {
     for (const gaps of [async () => [], async () => { throw new Error('x') }, async () => undefined as never]) {

@@ -22,8 +22,19 @@ export const DEEP_RESEARCH_LIMITS = { planSteps: 5, steps: 7, queriesPerStep: 2,
 /**
  * `sources_label`: the heading of the sources list in the question's language (the plan call writes it; absent = by the app's locale).
  * A step's `image_query`: what to search a picture for, when the step is about something one can see (absent = no picture for it).
+ * A follow-up step's `completes`: the plan step (1-based) whose section its findings complete (measured 31/10: follow-ups written as their own
+ * sections repeated two earlier ones); absent = a section of its own.
  */
-export interface ResearchPlan { title: string; sources_label?: string; steps: Array<{ title: string; queries: string[]; image_query?: string }> }
+export interface ResearchPlan { title: string; sources_label?: string; steps: Array<{ title: string; queries: string[]; image_query?: string; completes?: number }> }
+
+/** The report's sections: the steps that are not follow-ups of another, in order. Pure. */
+export const sectionSteps = (plan: ResearchPlan) => plan.steps.filter(s => !s.completes)
+
+/** The writer's notes: one "## title" per section, its findings and those of the follow-ups that complete it. Pure. */
+export function writerNotes(plan: ResearchPlan, findings: readonly Finding[]): string {
+  const of = (k: number) => findings.filter(f => f.step === k + 1 || plan.steps[f.step - 1]?.completes === k + 1)
+  return plan.steps.map((s, k) => (s.completes ? '' : `## ${s.title}\n${of(k).map(f => `- ${f.text} [${f.source}]`).join('\n') || '- (no findings)'}`)).filter(Boolean).join('\n\n')
+}
 /**
  * Measured 31/10 (T22, "how many EV makers are there"): one research round found sales by brand but no count, and the report could only say
  * "not found". Like the published systems (research, see what is still missing, research that), a second round runs for what the first did
@@ -74,7 +85,7 @@ export interface DeepResearchDeps {
    * The parts of the question the findings do not answer yet, as at most GAP_STEPS follow-up steps (title + queries); [] = covered.
    * Absent = one research round only.
    */
-  gaps?(question: string, plan: ResearchPlan, findings: readonly string[]): Promise<Array<{ title: string; queries: string[] }>>
+  gaps?(question: string, plan: ResearchPlan, findings: readonly string[]): Promise<Array<{ title: string; queries: string[]; completes?: number | null }>>
   /** Picture URLs for one image query (server-chosen, never the model's); absent = a report without pictures. */
   images?(query: string): Promise<string[]>
   now?: () => number
@@ -184,15 +195,16 @@ export function sectionImages(report: string, plan: ResearchPlan, pictures: Read
   const heads = parseDoc(report).filter((b): b is Extract<DocBlock, { t: 'heading' }> => b.t === 'heading' && b.level === 2).map(b => headingTitle(b.text))
   const used = new Set<number>()
   const at = new Map<number, number>()
+  const sections = sectionSteps(plan) // the plan's own steps come first, so `pictures[k]` is section k's
   // first every heading that IS a step's title, then the k-th heading for a step still without one (never a heading another step owns)
-  plan.steps.forEach((s, k) => {
+  sections.forEach((s, k) => {
     const own = headingTitle(s.title)
     const i = own ? heads.findIndex((h, j) => !used.has(j) && !!h && titleKey(h) === titleKey(own)) : -1
     if (i >= 0) { used.add(i); at.set(k, i) }
   })
-  plan.steps.forEach((_, k) => { if (!at.has(k) && k < heads.length && !used.has(k) && heads[k]) { used.add(k); at.set(k, k) } })
+  sections.forEach((_, k) => { if (!at.has(k) && k < heads.length && !used.has(k) && heads[k]) { used.add(k); at.set(k, k) } })
   const out: SectionImage[] = []
-  plan.steps.forEach((_, k) => {
+  sections.forEach((_, k) => {
     const src = pictures[k]
     const i = at.get(k)
     if (!src || !httpsUrl(src) || i === undefined || out.length >= MAX_SECTION_IMAGES) return
@@ -257,8 +269,13 @@ export async function runDeepResearch(question: string, context: string, lang: s
   let followUps = 0
   if (!timedOut && deps.gaps && findings.length && DEEP_RESEARCH_LIMITS.researchDeadlineMs - (now() - t0) >= GAP_MIN_LEFT_MS) {
     const asked = await deps.gaps(question, plan, findings.map(f => f.text)).catch(() => [])
+    const planned = plan.steps.length
     const more = (Array.isArray(asked) ? asked : [])
-      .map(g => normalisePlan({ title: plan!.title, steps: [g] }, question)?.steps[0]).filter((s): s is ResearchPlan['steps'][number] => !!s).slice(0, GAP_STEPS)
+      .map(g => {
+        const s = normalisePlan({ title: plan!.title, steps: [g] }, question)?.steps[0]
+        const c = Number((g as { completes?: unknown } | null)?.completes)
+        return s ? { title: s.title, queries: s.queries, ...(Number.isInteger(c) && c >= 1 && c <= planned ? { completes: c } : {}) } : null
+      }).filter((s): s is ResearchPlan['steps'][number] => !!s).slice(0, GAP_STEPS)
     if (more.length) {
       const from = plan.steps.length
       plan = { ...plan, steps: [...plan.steps, ...more] }
