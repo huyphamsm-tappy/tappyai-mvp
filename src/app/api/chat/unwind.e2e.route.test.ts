@@ -144,6 +144,7 @@ vi.mock('@/lib/ai/llm', () => ({
 
 import { POST } from '@/app/api/chat/route'
 import { getFlightPrices } from '@/lib/ai/tools/travel'
+import { tinyPdf } from '@/lib/ai/attachments/tinyPdf.fixture'
 
 /** The flag set of RUN-ALL.ps1 Set-RunEnv + the U-DEV25 Extra (the bench-only BENCH_* switches are not route flags). */
 const UNWIND = ['S1A', 'S1B', 'S1C', 'S1D', 'S2A', 'S2B', 'S2C', 'S3A', 'S3B', 'S3C', 'S4A', 'S4B', 'S6A', 'S6B', 'S6C'].map(s => `CONSULT_UNWIND_${s}`)
@@ -700,6 +701,18 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     // without one brain there is no such tool and no block
     const off = await turn(ASK, { unwind: true, oneBrain: false, luna: intent('chat', []), tools: [{ name: 'present_options', args: { options } }], reply: 'x' })
     expect(off.text).not.toContain('[TAPPY_MEDIA]')
+  }, 60000)
+  it('31/10 attachments: a web picture now reaches the model on one brain; a PDF reaches it as fenced text, and the typed words stay the question', async () => {
+    const PNG = 'data:image/png;base64,iVBORw0KGgo='
+    const pic = await turn([{ role: 'user', content: 'ảnh này là gì', experimental_attachments: [{ url: PNG, contentType: 'image/png', name: 'a.png' }] } as unknown as Msg], { unwind: true, oneBrain: true, luna: intent('chat', []), reply: 'Đó là một ô màu đỏ.' })
+    expect(pic.opts).toMatchObject({ role: 'consult', maxSteps: 8 }) // one brain, not the old image path
+    expect(pic.system).toContain(PNG)
+    const line = 'Quarterly revenue grew twelve percent across the Hanoi stores this year'
+    const doc = await turn([{ role: 'user', content: 'tóm tắt tệp này', experimental_attachments: [{ url: tinyPdf(line), contentType: 'application/pdf', name: 'Q3.pdf' }] } as unknown as Msg], { unwind: true, oneBrain: true, luna: intent('chat', []), reply: 'Tóm tắt: doanh thu tăng 12%.' })
+    expect(doc.system).toContain(line)
+    expect(doc.system).toContain('DATA source=user_document')
+    expect(doc.system).not.toContain('data:application/pdf') // the bytes never reach the model
+    expect(doc.logs.some(x => x.type === 'tappyai_pdf_attachments')).toBe(true)
   }, 60000)
   it('31/10 fares (share run T08/T09): on one brain the fare tool\'s result points the model at the web for a reference price instead of forbidding any price; the other paths keep their note', async () => {
     const FLY: Msg[] = [{ role: 'user', content: 've may bay sai gon di bangkok thang 11 bao nhieu' }]

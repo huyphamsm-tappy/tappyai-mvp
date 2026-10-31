@@ -28,6 +28,7 @@ import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { fenceUntrusted } from '@/lib/ai/security/fence'
 import { wrapToolResultAsData } from '@/lib/ai/security/toolResultFence'
+import { pdfPartsToText } from '@/lib/ai/attachments/pdfAttachments'
 import { classifyIntent, detectLang, detectLangConfident, detectExplicitLangRequest, detectForcedTool, detectTravelIntent, detectLocationIntent, detectPlanningIntent, detectPlanningIntentFromConversation, detectPlanActivities, detectTripLength, isPlanningRefinement, defaultTransportFor, detectMovieRecommendationIntent, isSimpleQuery, normalizeVN, isPurchaseShaped, routeToolOfferOn } from '@/lib/ai/intent'
 import { deriveNeedProfile, type StoredPreferences } from '@/lib/ai/consultative/needProfile'
 import { resolveDecisionStage, taskSwitched, consultationUserTexts } from '@/lib/ai/consultative/refinement'
@@ -288,6 +289,7 @@ export async function POST(req: Request) {
       || validated.code === 'preference_budget_exceeded'
       || validated.code === 'input_budget_exceeded'
       || validated.code === 'image_too_large'
+      || validated.code === 'file_too_large'
     return new Response(
       JSON.stringify(isSize
         ? { error: validated.code, message: serverMessage('chat.tooLong', requestLocale(req)) }
@@ -296,6 +298,12 @@ export async function POST(req: Request) {
     )
   }
 
+  // 31/10: an attached PDF becomes its fenced text layer here, as the last step of the validated result and before anything reads the turn
+  // (pdfAttachments.ts); the model never gets the bytes. The person's own words are kept apart (typedMessages) for every reader of "what they asked".
+  const typedMessages = validated.messages
+  const pdfRead = await pdfPartsToText(typedMessages)
+  if (pdfRead.docs.length) console.log(JSON.stringify({ type: 'tappyai_pdf_attachments', docs: pdfRead.docs }))
+  validated.messages = pdfRead.messages
   const messages = validated.messages
   const rawUserPrefs = validated.preferences
   const { userLocation: rawUserLocation, responseStyle: rawResponseStyle, shareSlug: rawShareSlug } = (rawBody ?? {}) as {
@@ -330,7 +338,8 @@ export async function POST(req: Request) {
   /** Who pressed the button, for the `ask_tappy_place` metric row. Null for a guest. */
   let clipUserId: string | null = null
 
-  const lastUserMsg = [...messages].reverse().find((m: { role: string }) => m.role === 'user')
+  // the person's own words: read from the turn BEFORE a PDF became text, so a document's text never passes for what they typed
+  const lastUserMsg = [...typedMessages].reverse().find((m: { role: string }) => m.role === 'user')
   const rawContent = lastUserMsg?.content
   const lastText = typeof rawContent === 'string'
     ? rawContent
@@ -378,7 +387,9 @@ export async function POST(req: Request) {
   // search_products, "trời mưa" was read as "mua". OFF: `forcedToolDecides` is `forcedTool`, as at HEAD.
   // CONSULT_ONE_BRAIN (oneBrain.ts): the answer model is the only reader of the question - no rules router, intent call, code question, pre-search, plan frame
   // or keyword tool decides the turn; it gets the whole conversation, every tool and one general instruction. An image / clip turn and the agent keep their own path.
-  const oneBrain = consultOneBrainOn() && !tappyAgentEnabled() && !hasImage && !clipRef
+  // 31/10: a turn with a picture runs on one brain too (gpt-6-luna reads images with tools defined - probe 31/10); before, it fell back to the
+  // old 3-step, 1 024-token path with the old rulebook.
+  const oneBrain = consultOneBrainOn() && !tappyAgentEnabled() && !clipRef
   const forcedToolDecides = consultUnwindS4aOn() ? null : forcedTool && !oneBrain ? forcedTool : null
   // P0: a travel turn buffers and runs the fail-closed dynamic-fact guard, so no
   // fabricated fare/price/schedule/availability can reach the user.

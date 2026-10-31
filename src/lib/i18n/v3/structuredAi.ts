@@ -49,6 +49,11 @@ export const vi: Record<string, string> = {
   // ── Offline (P4-15) ─────────────────────────────────────────────────────
   // Plain language, no status code, and it says what is still possible.
   'offline.composer': 'Đang mất kết nối. Bạn vẫn đọc được đoạn chat; tin nhắn sẽ gửi được khi có mạng lại.',
+
+  // ── Attachments (31/10): images and PDFs ────────────────────────────────
+  'attach.pdfTooLarge': 'Tệp PDF lớn hơn 3 MB, Tappy chưa đọc được. Bạn thử gửi tệp nhỏ hơn hoặc chỉ các trang cần hỏi.',
+  'attach.unsupported': 'Tappy đọc được ảnh (PNG, JPG, WEBP, GIF) và tệp PDF.',
+  'attach.remove': 'Bỏ tệp đính kèm',
 }
 
 export const en: Record<string, string> = {
@@ -93,4 +98,9 @@ export const en: Record<string, string> = {
 
   // ── Offline (P4-15) ─────────────────────────────────────────────────────
   'offline.composer': 'You are offline. You can still read this chat; your message will send once you are back online.',
+
+  // ── Attachments (31/10): images and PDFs ────────────────────────────────
+  'attach.pdfTooLarge': 'This PDF is larger than 3 MB, so Tappy cannot read it yet. Try a smaller file or only the pages you need.',
+  'attach.unsupported': 'Tappy can read images (PNG, JPG, WEBP, GIF) and PDF files.',
+  'attach.remove': 'Remove attachment',
 }

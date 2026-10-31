@@ -41,10 +41,27 @@ function mapText(m: Msg, f: (s: string) => string): Msg {
   return m
 }
 
+/**
+ * 31/10: an attachment (picture or PDF) travels with the turn that sent it ONLY. useChat resends every earlier message with its
+ * `experimental_attachments`, so one 3 MB PDF made every later request pass the 4.5 MB body ceiling (readCappedBody) and fail. An
+ * earlier turn keeps a one-line note naming what it carried; the answer given to it is in the history.
+ */
+function withoutAttachments<M extends Msg>(m: M): M {
+  const atts = m.experimental_attachments
+  if (!Array.isArray(atts) || atts.length === 0) return m
+  const names = atts.map(a => (a && typeof a === 'object' && typeof (a as { name?: unknown }).name === 'string' ? (a as { name: string }).name : (a as { contentType?: string })?.contentType === 'application/pdf' ? 'PDF' : 'ảnh')).join(', ')
+  const copy: Msg = { ...m }
+  delete copy.experimental_attachments
+  const note = `[Đã gửi kèm ở lượt này: ${names}]`
+  return mapText(copy, s => (s.trim() ? `${s}\n${note}` : note)) as M
+}
+
 export function compactRequestMessages<M extends Msg>(messages: readonly M[], budget = REQUEST_HISTORY_BUDGET): M[] {
-  let lastAssistant = -1
+  let lastAssistant = -1, lastUser = -1
   for (let i = messages.length - 1; i >= 0; i--) if (messages[i].role === 'assistant') { lastAssistant = i; break }
+  for (let i = messages.length - 1; i >= 0; i--) if (messages[i].role === 'user') { lastUser = i; break }
   let out = messages
+    .map((m, i) => (m.role === 'user' && i !== lastUser ? withoutAttachments(m) : m))
     .map((m, i) => (m.role === 'assistant' && i !== lastAssistant ? mapText(m, proseOnly) : m))
     // A turn that was ONLY blocks is now empty; the server drops empty assistant turns anyway.
     .filter(m => !(m.role === 'assistant' && textLength(m) === 0)) as M[]

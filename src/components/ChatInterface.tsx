@@ -1513,19 +1513,25 @@ export default function ChatInterface({
     })
   }
 
+  // 31/10: an image or a PDF (the server reads the PDF's text: pdfAttachments.ts). The same limits as the server, said before sending.
+  const [attachError, setAttachError] = useState<string | null>(null)
   const handleImageSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
-    if (!file) return
-    setImageFile(file)
-    const url = URL.createObjectURL(file)
-    setImagePreviewUrl(url)
     // Reset so same file can be re-selected
     e.target.value = ''
-  }, [])
+    if (!file) return
+    const isPdf = file.type === 'application/pdf'
+    if (!isPdf && !/^image\/(png|jpeg|webp|gif)$/.test(file.type)) { setAttachError(t('attach.unsupported')); return }
+    if (isPdf && file.size > 3_000_000) { setAttachError(t('attach.pdfTooLarge')); return }
+    setAttachError(null)
+    setImageFile(file)
+    setImagePreviewUrl(isPdf ? null : URL.createObjectURL(file))
+  }, [t])
 
   const clearImage = useCallback(() => {
     setImageFile(null)
     setImagePreviewUrl(null)
+    setAttachError(null)
   }, [])
 
   // Revoke the object URL whenever it changes (re-selection) or on unmount, so a
@@ -2038,6 +2044,12 @@ export default function ChatInterface({
                         className="rounded-2xl rounded-br-md max-w-[240px] max-h-[280px] object-cover border border-white/20 shadow cursor-zoom-in"
                       />
                     ))}
+                    {msgAttachments?.filter(a => a.contentType === 'application/pdf').map((att, i) => (
+                      <div key={`pdf-${i}`} className="inline-flex items-center gap-2 rounded-2xl rounded-br-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200">
+                        <span aria-hidden="true">📄</span>
+                        <span className="max-w-[220px] truncate">{att.name || 'PDF'}</span>
+                      </div>
+                    ))}
                     {(typeof msg.content === 'string' ? msg.content : '').trim() && (
                       <div className="bg-interactive text-white rounded-2xl rounded-br-md px-4 py-2.5 text-base leading-[1.6]">
                         <div className="message-content whitespace-pre-wrap" onClick={onMessageLinkClick} dangerouslySetInnerHTML={{ __html: formatMessage(typeof msg.content === 'string' ? msg.content : '') }} />
@@ -2241,8 +2253,7 @@ export default function ChatInterface({
         <input
           ref={fileInputRef}
           type="file"
-          accept="image/*"
-          capture="environment"
+          accept="image/png,image/jpeg,image/webp,image/gif,application/pdf"
           className="hidden"
           onChange={handleImageSelect}
         />
@@ -2287,6 +2298,17 @@ export default function ChatInterface({
               </button>
             </div>
           )}
+          {/* PDF chosen: its name (no preview of a document's pages); a refused file says why */}
+          {imageFile && imageFile.type === 'application/pdf' && (
+            <div className="inline-flex items-center gap-2 self-start ml-1 rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200" data-testid="pdf-attachment">
+              <span aria-hidden="true">📄</span>
+              <span className="max-w-[220px] truncate">{imageFile.name}</span>
+              <button type="button" onClick={clearImage} className="ml-1 rounded-full p-0.5 hover:bg-gray-200 dark:hover:bg-gray-700" aria-label={t('attach.remove')}>
+                <X size={12} />
+              </button>
+            </div>
+          )}
+          {attachError && <div role="status" className="self-start ml-1 text-xs text-red-600 dark:text-red-400">{attachError}</div>}
           {/* Image preview */}
           {imagePreviewUrl && (
             <div className="relative inline-flex self-start ml-1">
