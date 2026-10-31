@@ -1,6 +1,7 @@
 import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 import { withRetrievedAt } from './retrievalClock'
 import { serperPost, type SerperPostState } from './serperClient'
+import { resolveGotoRows } from './googleGoto'
 import { serperCacheGetMeta, serperCacheSet } from './serperCache'
 import { noteRetrieval, withRetrievalClock, type Retrieval } from './retrievalClock'
 import { recordSerperCacheHit, recordSerperL1Hit } from './serperMeter'
@@ -588,10 +589,11 @@ async function serperSearchPaid(query: string, searchCacheKey: string, apiKey: s
     if (!(resp as Response).ok) return { rows: null, state: 'sent_error' }
     const data = await (resp as Response).json()
     const organic = (data?.organic || []) as Array<{ title?: string; link?: string; snippet?: string; date?: unknown }>
-    const results: SerperSearchRow[] = organic
-      .filter(r => r.title && r.link)
-      .slice(0, 6)
-      .map(r => ({ title: r.title as string, link: sanitizeUrlForMarkdown(r.link as string), snippet: r.snippet || '', ...(clip(r.date, 60) ? { date: clip(r.date, 60) } : {}) }))
+    // 31/10 (measured: 7 of 10 rows were google.com/goto tokens): each token becomes the page it points to before anyone sees the row
+    const gone = await resolveGotoRows(organic.filter(r => r.title && r.link).slice(0, 6).map(r => ({ ...r, link: r.link as string })))
+    if (gone.resolved || gone.failed) console.log(JSON.stringify({ type: 'tappyai_serper_goto', resolved: gone.resolved, failed: gone.failed }))
+    const results: SerperSearchRow[] = gone.rows
+      .map(r => ({ title: r.title as string, link: sanitizeUrlForMarkdown(r.link), snippet: r.snippet || '', ...(clip(r.date, 60) ? { date: clip(r.date, 60) } : {}) }))
     const extras = serperExtrasOf(data)
     if (post.entry) settleTurnWebTicket(post.entry, results.length > 0 ? 'sent_success' : 'sent_empty')
     // 5 minutes, matching webSearch's own TTL for the same upstream endpoint.
