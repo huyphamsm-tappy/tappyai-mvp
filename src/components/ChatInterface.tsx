@@ -889,6 +889,10 @@ export default function ChatInterface({
   // CONSULT_V3 layouts: the subject panel (Wikipedia summary) open over the chat, or none.
   const [entityPanel, setEntityPanel] = useState<MediaEntity | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  // 31/10 (owner, ChatGPT's composer): the mode the person picks - chat (default), web search, thinking. Sent with every request of this chat
+  // until turned off; the server decides what each mode may do (clientInput.readChatMode, route.ts).
+  const [chatMode, setChatMode] = useState<'chat' | 'web' | 'think'>('chat')
+  const [plusOpen, setPlusOpen] = useState(false)
   const recognitionRef = useRef<SpeechRecognition | null>(null)
   // The input text captured when dictation starts, so interim results append to
   // (not clobber) whatever the user already typed.
@@ -1034,6 +1038,7 @@ export default function ChatInterface({
       ...((responseStyle.tone || responseStyle.length) ? { responseStyle } : {}),
       chatSessionId,
       ...(initialContext ? { context: initialContext } : {}),
+      ...(chatMode !== 'chat' ? { mode: chatMode } : {}),
     },
     onResponse: (response) => {
       latencyOnResponseRef.current()
@@ -2343,7 +2348,56 @@ export default function ChatInterface({
               <span>{voiceError}</span>
             </div>
           )}
+          {/* 31/10: the mode in use, removable (Chat is the default and shows nothing) */}
+          {chatMode !== 'chat' && (
+            <div className="inline-flex items-center gap-1.5 self-start rounded-full border border-primary-500/40 bg-primary-500/10 px-3 py-1 text-xs font-medium text-primary-700 dark:text-primary-300" data-testid="chat-mode-chip">
+              <span aria-hidden="true">{chatMode === 'web' ? '🌐' : '💡'}</span>
+              <span>{t(chatMode === 'web' ? 'mode.web' : 'mode.think')}</span>
+              <button type="button" onClick={() => setChatMode('chat')} className="ml-0.5 rounded-full p-0.5 hover:bg-primary-500/20" aria-label={t('mode.off')}>
+                <X size={11} />
+              </button>
+            </div>
+          )}
           <div className="flex gap-2 items-end">
+          {/* 31/10: "+" - attach a picture or a PDF, or pick a mode (ChatGPT's composer menu) */}
+          <div className="relative flex-shrink-0">
+            <button
+              type="button"
+              onClick={() => setPlusOpen(v => !v)}
+              aria-expanded={plusOpen}
+              aria-label={t('composer.plus')}
+              className={cn('w-11 h-11 rounded-2xl flex items-center justify-center transition-all text-xl leading-none', plusOpen ? 'bg-primary-500/15 text-primary-600' : 'bg-gray-100 dark:bg-gray-800 text-content-secondary hover:bg-gray-200 dark:hover:bg-gray-700')}
+            >
+              +
+            </button>
+            {plusOpen && (
+              <>
+                <button type="button" aria-hidden="true" tabIndex={-1} className="fixed inset-0 z-10 cursor-default" onClick={() => setPlusOpen(false)} />
+                <div role="menu" data-testid="composer-plus-menu" className="absolute bottom-14 left-0 z-20 w-72 rounded-2xl border border-gray-100 bg-white p-1.5 shadow-xl dark:border-gray-800 dark:bg-gray-900">
+                  {([
+                    { key: 'attach', icon: '📎', label: t('composer.attach'), hint: t('composer.attachHint'), on: false, act: () => fileInputRef.current?.click() },
+                    { key: 'web', icon: '🌐', label: t('mode.web'), hint: t('mode.webHint'), on: chatMode === 'web', act: () => setChatMode(m => (m === 'web' ? 'chat' : 'web')) },
+                    { key: 'think', icon: '💡', label: t('mode.think'), hint: t('mode.thinkHint'), on: chatMode === 'think', act: () => setChatMode(m => (m === 'think' ? 'chat' : 'think')) },
+                  ] as const).map(item => (
+                    <button
+                      key={item.key}
+                      type="button"
+                      role="menuitem"
+                      data-testid={`composer-${item.key}`}
+                      onClick={() => { item.act(); setPlusOpen(false) }}
+                      className={cn('flex w-full items-start gap-3 rounded-xl px-3 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-800', item.on && 'bg-primary-500/10')}
+                    >
+                      <span aria-hidden="true" className="text-lg leading-6">{item.icon}</span>
+                      <span className="min-w-0">
+                        <span className="block text-sm font-medium text-gray-900 dark:text-gray-100">{item.label}{item.on ? ' ✓' : ''}</span>
+                        <span className="block text-xs text-gray-500 dark:text-gray-400">{item.hint}</span>
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
           <textarea
               ref={inputRef}
               value={input}

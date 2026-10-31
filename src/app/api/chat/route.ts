@@ -20,7 +20,7 @@ import { getNews, searchPlaces } from '@/lib/ai/tools/food'
 import { getFlightPrices, getHotelPrices, getTransportOptions } from '@/lib/ai/tools/travel'
 import { createTurnEditorial, editorialGate, withTravelEditorial, type TravelEditorialItem } from '@/lib/ai/tools/vnexpressTravel'
 import { AI, type ModelRole, type CallCost } from '@/lib/ai/llm'
-import { validateClientInput, readDecisionEvidenceId, readExploreClipContext } from '@/lib/ai/security/clientInput'
+import { validateClientInput, readDecisionEvidenceId, readExploreClipContext, readChatMode } from '@/lib/ai/security/clientInput'
 import { loadExploreClipContext, buildExploreClipBlock, exploreClipLocationHint, type ExploreClipContext } from '@/lib/ai/exploreClipContext'
 import { applyClipTarget, applyClipAlternatives, asksForAlternatives, type ClipTargetStatus } from '@/lib/ai/exploreClipTarget'
 import { withPlacesVerification, clipTargetMetric, askTappyPlaceEvent } from '@/lib/explore/clipVenueEvidence'
@@ -106,7 +106,7 @@ import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuar
 import { isProductionRuntime, consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, consultReadPageLateOn, consultPickPageReadOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn, consultUnwindS1aOn, consultUnwindS1bOn, consultUnwindS1dOn, consultUnwindS2aOn, consultUnwindS2bOn, consultUnwindS2cOn, consultUnwindS3aOn, consultUnwindS3bOn, consultUnwindS3cOn, consultUnwindS4aOn, consultUnwindS4bOn, consultUnwindS5On, consultUnwindS6aOn, consultUnwindS6bOn, consultUnwindS6cOn, consultOneBrainOn, consultOneBrainMediaOn, consultParallelOn } from '@/lib/config/consultFlags'
 import { createParallelTurnBudget, parallelExtract, parallelSearch } from '@/lib/ai/tools/parallelClient'
 import { searchWithReads, createOnce, FOLLOW_UP_SYSTEM, S6_MAX_READS } from '@/lib/ai/consultative/searchReads'
-import { ONE_BRAIN_CORE, ONE_BRAIN_FARE_NOTE, ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, oneBrainDynamic } from '@/lib/ai/consultative/oneBrain'
+import { ONE_BRAIN_CORE, ONE_BRAIN_CHAT_CAP_NOTE, ONE_BRAIN_FARE_NOTE, ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, oneBrainDynamic } from '@/lib/ai/consultative/oneBrain'
 import { oneBrainMediaStream } from '@/lib/ai/consultative/oneBrainMedia'
 import { oneBrainTurnTrace } from '@/lib/ai/consultative/turnTrace'
 import { serperLastAccountErrorAt } from '@/lib/ai/tools/serperClient'
@@ -312,6 +312,9 @@ export async function POST(req: Request) {
     /** G1: set only by the public shared-result page's follow-up box. Validated in the guard. */
     shareSlug?: unknown
   }
+
+  // 31/10: the composer mode (chat / web / think), shape-checked; it acts on one-brain turns only (below).
+  const chatMode = readChatMode(rawBody)
 
   // User-controlled response style (Personalization — MFS 2.6: lets the user shape tone).
   // Sent from the client (localStorage); no persistence needed. Validated to a small enum.
@@ -2360,7 +2363,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   }
   const lean = consult && consult.domains.length > 0 ? buildLean({ extra: [], tail: [] }) : null
   // CONSULT_ONE_BRAIN: one general instruction in place of the rulebook (legacy / lean / Wave 3 lines); the person's own blocks (memory, preferences, style, shared page) stay.
-  const oneBrainPrompt = oneBrain ? { shared: ONE_BRAIN_CORE, dynamic: oneBrainDynamic({ lang, now: new Date(), address: userLocation?.address ?? null, hasLocation: hasValidCurrentLocation(userLocation), blocks: [memoryBlock ?? '', prefBlock, styleBlock, shareContextBlock], latestLang: detectLangConfident(lastText) }) } : null
+  const oneBrainPrompt = oneBrain ? { shared: ONE_BRAIN_CORE, dynamic: oneBrainDynamic({ lang, now: new Date(), address: userLocation?.address ?? null, hasLocation: hasValidCurrentLocation(userLocation), blocks: [memoryBlock ?? '', prefBlock, styleBlock, shareContextBlock], latestLang: detectLangConfident(lastText), mode: chatMode }) } : null
+  if (oneBrain) console.log(JSON.stringify({ type: 'tappyai_chat_mode', mode: chatMode }))
   // CONSULT_ONE_BRAIN_MEDIA: what the pictures should show is read beside the answer (never before it, never for the answer) and used when the answer ends.
   const oneBrainUnderstanding = oneBrain && consultOneBrainMediaOn()
     ? understandTurn({ userText: lastText, previousUser: (() => { const u = userMessages[userMessages.length - 2] as { content?: unknown } | undefined; return typeof u?.content === 'string' ? u.content : null })(), previousReply: priorAssistantText ?? null })
@@ -3237,7 +3241,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // The links are registered with the reader first (the outer collectUrls wrapper adds them only after this returns). No read_page tool on the turn: nothing changes.
   if (tools && researchReader && consultUnwindS6aOn()) {
     const tt = tools as unknown as Record<string, { execute?: (a: unknown, o: unknown) => Promise<unknown> }>
-    const ws = tt.web_search, rp = tt.read_page
+    // 31/10: in Chat mode a search is answered from its snippets - no page reads, no follow-up search (measured: ~8 s per search with them).
+    const ws = oneBrain && chatMode === 'chat' ? undefined : tt.web_search, rp = tt.read_page
     if (ws?.execute && rp?.execute) {
       const innerSearch = ws.execute.bind(ws), innerRead = rp.execute.bind(rp)
       const followUpOnce = createOnce()
@@ -3269,6 +3274,24 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         })
         console.log(JSON.stringify({ type: 'tappyai_search_reads', pages_read: r.pagesRead, follow_up: r.followUp, follow_up_pages: r.followUpPages }))
         return r.result
+      }
+    }
+  }
+  // 31/10 (mode Chat): one web search and one page read per turn; a further call is answered with a note, never run (ONE_BRAIN_MODE_LINES.chat says so).
+  if (tools && oneBrain && chatMode === 'chat') {
+    const tt = tools as unknown as Record<string, { execute?: (a: unknown, o: unknown) => Promise<unknown> }>
+    for (const [name, cap] of [['web_search', 1], ['read_page', 1]] as const) {
+      const t = tt[name]
+      if (!t?.execute) continue
+      const inner = t.execute.bind(t)
+      let used = 0
+      t.execute = async (a: unknown, o: unknown) => {
+        if (used >= cap) {
+          console.log(JSON.stringify({ type: 'tappyai_chat_mode_cap', tool: name }))
+          return { error: 'chat_mode_budget_used', note: ONE_BRAIN_CHAT_CAP_NOTE }
+        }
+        used++
+        return inner(a, o)
       }
     }
   }
@@ -3805,6 +3828,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // [TAPPY_PLAN] block is long by design) and image turns at 1024. Output is billed as
     // generated, so this changes no cost on a normal reply — it bounds a runaway one.
     maxTokens: oneBrain ? ONE_BRAIN_MAX_TOKENS : noToolTurn ? (consult ? 600 : 300) : eveningBlock ? 350 : planningIntent ? 4096 : hasImage ? 1024 : (w3Structured ? levelLimits.structuredMaxTokens : unwindToolTurnCeiling ?? 2048),
+    // 31/10 (mode think): the one-brain answer reasons at medium WITH its tools (Responses API, streamed). Measured on 11 hard turns:
+    // 7.32 vs ChatGPT Think 6.64 (none: 6.80 vs 7.00), ~20 s slower, +34 % per hard turn.
+    ...(oneBrain && chatMode === 'think' ? { thinkEffort: 'medium' as const } : {}),
     // Consult V2: a pick whose search already ran (presearch) answers in ONE step — no second full pass.
     // A follow-up/compare that re-reads its evidence keeps a second step: a stray tool call must still end in text.
     // R15: a pre-fetched trip plan writes in ONE step (a second only if it still reaches for a tool).

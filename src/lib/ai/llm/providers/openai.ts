@@ -622,6 +622,32 @@ function streamOf(r: GenerateResult): { stream: ReadableStream<LanguageModelV1St
   return { stream, rawCall: r.rawCall, warnings: r.warnings }
 }
 
+/** 31/10: the call asked for the Responses API itself (AIStreamOptions.thinkEffort → providerMetadata.tappy.api), whatever LLM_OPENAI_API says. */
+const thinkAsked = (o: { providerMetadata?: Record<string, Record<string, unknown>> }): boolean => o.providerMetadata?.tappy?.api === 'responses'
+
+/**
+ * 31/10 (mode "Suy nghĩ"): the Chat Completions model, except for a regular call that asked for the Responses API (thinkAsked) - that one call
+ * goes to the Responses model (reasoning WITH tools, streamed) at the effort it asked for. Every other call is the chat model, byte for byte.
+ */
+function chatOrThinkModel(modelId: string, effort: ReasoningEffort, apiKey: string, role: string): LanguageModelV1 {
+  const chat = lunaModel(modelId, effort, apiKey, false)
+  let think: LanguageModelV1 | null = null
+  const thinkModel = () => (think ??= responsesModel(modelId, effort, apiKey, false, role))
+  // the Responses path needs its process spend cap (reserveBudget refuses every call without it): no cap configured → the chat model, as before
+  const routed = (o: CallOpts) => o.mode?.type === 'regular' && thinkAsked(o as never) && Number(process.env.LLM_RESPONSES_PROCESS_BUDGET_USD) > 0
+  return {
+    ...chat,
+    specificationVersion: 'v1',
+    provider: chat.provider,
+    modelId: chat.modelId,
+    defaultObjectGenerationMode: chat.defaultObjectGenerationMode,
+    supportsStructuredOutputs: false,
+    supportsImageUrls: chat.supportsImageUrls, // 🔑 SSRF: carried explicitly, same as the chat wrapper
+    doGenerate: opts => (routed(opts) ? thinkModel().doGenerate(opts) : chat.doGenerate(opts)),
+    doStream: opts => (routed(opts) ? thinkModel().doStream(opts) : chat.doStream(opts)),
+  }
+}
+
 function responsesModel(modelId: string, effort: ReasoningEffort, apiKey: string, structured: boolean, role: string): LanguageModelV1 {
   const chat = lunaModel(modelId, effort, apiKey, structured)
   const regular = (o: CallOpts) => o.mode?.type === 'regular'
@@ -645,8 +671,9 @@ function responsesModel(modelId: string, effort: ReasoningEffort, apiKey: string
     },
     async doStream(opts) {
       if (!regular(opts)) { logCall({ role, served_api: 'chat', model: modelId, status: 'delegated', reason: 'object mode' }); return chat.doStream(opts) }
-      // C2_STREAM_ADAPTER: a real SSE stream; off → the finished answer chunked (first byte = last byte), unchanged
-      if (streamAdapterOn()) return responsesStream(modelId, sent(opts), apiKey, role, opts)
+      // C2_STREAM_ADAPTER: a real SSE stream; off → the finished answer chunked (first byte = last byte), unchanged.
+      // 31/10: a call that asked for the Responses API itself (mode "Suy nghĩ", thinkAsked) is always really streamed.
+      if (streamAdapterOn() || thinkAsked(opts)) return responsesStream(modelId, sent(opts), apiKey, role, opts)
       return streamOf(await responsesGenerate(modelId, sent(opts), apiKey, role, opts))
     },
   }
@@ -658,7 +685,7 @@ export function createOpenAIProvider(overrides: Partial<Record<ModelRole, string
   return {
     id: 'openai',
     isConfigured: () => !!process.env.OPENAI_API_KEY,
-    model: (role) => (responsesEnabled() ? responsesModel(id(role), reasoningEffortFor(role), key(), false, role) : lunaModel(id(role), reasoningEffortFor(role), key(), false)),
+    model: (role) => (responsesEnabled() ? responsesModel(id(role), reasoningEffortFor(role), key(), false, role) : chatOrThinkModel(id(role), reasoningEffortFor(role), key(), role)),
     structuredModel: (role) => lunaModel(id(role), reasoningEffortFor(role), key(), true),
     effort: (role) => reasoningEffortFor(role),
   }

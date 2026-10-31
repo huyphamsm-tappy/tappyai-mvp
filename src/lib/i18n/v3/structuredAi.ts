@@ -54,6 +54,16 @@ export const vi: Record<string, string> = {
   'attach.pdfTooLarge': 'Tệp PDF lớn hơn 3 MB, Tappy chưa đọc được. Bạn thử gửi tệp nhỏ hơn hoặc chỉ các trang cần hỏi.',
   'attach.unsupported': 'Tappy đọc được ảnh (PNG, JPG, WEBP, GIF) và tệp PDF.',
   'attach.remove': 'Bỏ tệp đính kèm',
+
+  // ── Composer modes (31/10, ChatGPT-style "+" menu) ──────────────────────
+  'composer.plus': 'Thêm tệp hoặc chọn chế độ',
+  'composer.attach': 'Thêm ảnh & tệp PDF',
+  'composer.attachHint': 'Ảnh chụp, ảnh màn hình, PDF tới 3 MB',
+  'mode.web': 'Tìm web',
+  'mode.webHint': 'Tra cứu nhiều nguồn, có link và ngày',
+  'mode.think': 'Suy nghĩ',
+  'mode.thinkHint': 'Trả lời kỹ cho câu khó, chậm hơn',
+  'mode.off': 'Tắt chế độ',
 }
 
 export const en: Record<string, string> = {
@@ -103,4 +113,14 @@ export const en: Record<string, string> = {
   'attach.pdfTooLarge': 'This PDF is larger than 3 MB, so Tappy cannot read it yet. Try a smaller file or only the pages you need.',
   'attach.unsupported': 'Tappy can read images (PNG, JPG, WEBP, GIF) and PDF files.',
   'attach.remove': 'Remove attachment',
+
+  // ── Composer modes (31/10, ChatGPT-style "+" menu) ──────────────────────
+  'composer.plus': 'Add a file or choose a mode',
+  'composer.attach': 'Add photos & PDF files',
+  'composer.attachHint': 'Photos, screenshots, PDFs up to 3 MB',
+  'mode.web': 'Web search',
+  'mode.webHint': 'Look things up across sources, with links and dates',
+  'mode.think': 'Thinking',
+  'mode.thinkHint': 'A thorough answer for hard questions, slower',
+  'mode.off': 'Turn the mode off',
 }

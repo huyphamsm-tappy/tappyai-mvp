@@ -25,7 +25,7 @@ const h = vi.hoisted(() => {
     extractRoles: [] as string[],
     streamCalled: 0,
     toolNames: [] as string[],
-    opts: {} as { role?: string; maxSteps?: number; maxTokens?: number; systemShared?: string; parallelTools?: boolean },
+    opts: {} as { role?: string; maxSteps?: number; maxTokens?: number; systemShared?: string; parallelTools?: boolean; thinkEffort?: string | null },
     system: '' as string,
     text: 'ok',
     webCalls: [] as string[],
@@ -115,7 +115,7 @@ vi.mock('@/lib/ai/llm', () => ({
     stream: (opts: Record<string, any>) => {
       h.state.streamCalled++
       h.state.toolNames = Object.keys(opts.tools ?? {})
-      h.state.opts = { role: opts.role, maxSteps: opts.maxSteps, maxTokens: opts.maxTokens, systemShared: typeof opts.systemShared === 'string' ? opts.systemShared : '', parallelTools: opts.parallelTools === true }
+      h.state.opts = { role: opts.role, maxSteps: opts.maxSteps, maxTokens: opts.maxTokens, systemShared: typeof opts.systemShared === 'string' ? opts.systemShared : '', parallelTools: opts.parallelTools === true, thinkEffort: opts.thinkEffort ?? null }
       try { h.state.system = JSON.stringify({ system: opts.system, messages: opts.messages }) } catch { h.state.system = '' }
       return {
         get steps() { return Promise.resolve([{ toolResults: h.state.results.map(r => ({ toolName: r.name, result: r.result })) }]) },
@@ -156,7 +156,7 @@ type Msg = { role: 'user' | 'assistant'; content: string }
 const intent = (turn: string, domains: string[], extra: Record<string, unknown> = {}) => ({
   domains, turn, goal: 'x', known: [], party: null, budget_vnd_max: null, difficulty: 'normal', missing: [], assumptions: [], ask: null, query: null, area: null, refers: [], reject_reason: null, ...extra,
 })
-interface TurnOpts { unwind: boolean; oneBrain?: boolean; media?: boolean; luna: Record<string, unknown>; tools?: Array<{ name: string; args: Record<string, unknown> }>; reply?: string; gapQuery?: string | null; finishSteps?: Array<Record<string, unknown>>; railRows?: Array<Record<string, unknown>> }
+interface TurnOpts { unwind: boolean; oneBrain?: boolean; media?: boolean; mode?: 'chat' | 'web' | 'think'; luna: Record<string, unknown>; tools?: Array<{ name: string; args: Record<string, unknown> }>; reply?: string; gapQuery?: string | null; finishSteps?: Array<Record<string, unknown>>; railRows?: Array<Record<string, unknown>> }
 
 async function turn(messages: Msg[], o: TurnOpts) {
   delete process.env.TAPPY_AGENT
@@ -178,7 +178,7 @@ async function turn(messages: Msg[], o: TurnOpts) {
   const req = {
     url: 'http://localhost/api/chat', nextUrl: new URL('http://localhost/api/chat'),
     headers: new Headers({ 'content-type': 'application/json', 'x-tappy-surface': 'web' }),
-    json: () => Promise.resolve({ messages }), signal: undefined,
+    json: () => Promise.resolve({ messages, ...(o.mode ? { mode: o.mode } : {}) }), signal: undefined,
   }
   const lines: string[] = []
   const spy = vi.spyOn(console, 'log').mockImplementation((...a: unknown[]) => { lines.push(String(a[0])) })
@@ -468,7 +468,8 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     // No place tool ran: the place guard does not judge these (it deleted both on 29/10, the second a hedge).
     const booking = 'Bạn có thể đặt vé trực tuyến trên Vexere.'
     const hedge = 'Mình chưa xác minh được còn chỗ cho ngày 16/11.'
-    const on = await turn(FARE, { unwind: true, oneBrain: true, luna: FARE_INTENT, tools: [SEARCH], reply: `${said} ${invented} ${booking} ${hedge}` })
+    // 31/10: the web search reads its top pages in the web mode (chat, the new default, answers from snippets)
+    const on = await turn(FARE, { unwind: true, oneBrain: true, mode: 'web', luna: FARE_INTENT, tools: [SEARCH], reply: `${said} ${invented} ${booking} ${hedge}` })
     const ws = on.results.find(r => r.name === 'web_search')?.result
     expect((ws?.pages_read as unknown[] | undefined)?.length ?? 0).toBeGreaterThan(0)
     expect(on.text).toContain('315.000')
@@ -701,6 +702,31 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     // without one brain there is no such tool and no block
     const off = await turn(ASK, { unwind: true, oneBrain: false, luna: intent('chat', []), tools: [{ name: 'present_options', args: { options } }], reply: 'x' })
     expect(off.text).not.toContain('[TAPPY_MEDIA]')
+  }, 60000)
+  it('31/10 modes: chat (the default) answers a search from snippets and allows one search; web reads pages, no cap; think asks for medium reasoning', async () => {
+    const Q: Msg[] = [{ role: 'user', content: 'gia dien sinh hoat bao nhieu' }]
+    h.state.pages['https://giadien.example/bang-gia'] = { body: ARTICLE('Bang gia dien', ['Bac 1 gia 1.893 dong/kWh.']) }
+    const two = [SEARCH, { name: 'web_search', args: { query: 'gia dien bac 2' } }]
+    const chat = await turn(Q, { unwind: true, oneBrain: true, luna: intent('chat', []), tools: two, reply: 'x' })
+    const chatResults = chat.results.filter(r => r.name === 'web_search').map(r => JSON.stringify(r.result))
+    expect(chatResults[1]).toContain('chat_mode_budget_used')
+    expect(chatResults[0]).not.toContain('pages_read')
+    expect(chat.web).toHaveLength(1) // the second search never reached the provider
+    expect(chat.system).toContain('Mode: Chat.')
+    expect(chat.opts.thinkEffort).toBeNull()
+    expect(chat.logs.some(x => x.type === 'tappyai_chat_mode' && x.mode === 'chat')).toBe(true)
+    const web = await turn(Q, { unwind: true, oneBrain: true, mode: 'web', luna: intent('chat', []), tools: two, reply: 'x' })
+    const webResults = web.results.filter(r => r.name === 'web_search').map(r => JSON.stringify(r.result))
+    expect(webResults.every(r => !r.includes('chat_mode_budget_used'))).toBe(true)
+    expect(webResults[0]).toContain('pages_read')
+    expect(web.system).toContain('Mode: Web search.')
+    const think = await turn(Q, { unwind: true, oneBrain: true, mode: 'think', luna: intent('chat', []), tools: two, reply: 'x' })
+    expect(think.opts.thinkEffort).toBe('medium')
+    expect(think.system).toContain('Mode: Thinking.')
+    // a mode a client invents is Chat (the cheapest), never a dearer one
+    const junk = await turn(Q, { unwind: true, oneBrain: true, mode: 'deep' as never, luna: intent('chat', []), reply: 'x' })
+    expect(junk.opts.thinkEffort).toBeNull()
+    expect(junk.system).toContain('Mode: Chat.')
   }, 60000)
   it('31/10 attachments: a web picture now reaches the model on one brain; a PDF reaches it as fenced text, and the typed words stay the question', async () => {
     const PNG = 'data:image/png;base64,iVBORw0KGgo='

@@ -49,10 +49,11 @@ function mapText(m: Msg, f: (s: string) => string): Msg {
 function withoutAttachments<M extends Msg>(m: M): M {
   const atts = m.experimental_attachments
   if (!Array.isArray(atts) || atts.length === 0) return m
-  const names = atts.map(a => (a && typeof a === 'object' && typeof (a as { name?: unknown }).name === 'string' ? (a as { name: string }).name : (a as { contentType?: string })?.contentType === 'application/pdf' ? 'PDF' : 'ảnh')).join(', ')
+  // The note is read by the model only (never shown), so it is written in plain English like the other model-facing markers.
+  const names = atts.map(a => (a && typeof a === 'object' && typeof (a as { name?: unknown }).name === 'string' ? (a as { name: string }).name : (a as { contentType?: string })?.contentType === 'application/pdf' ? 'PDF' : 'image')).join(', ')
   const copy: Msg = { ...m }
   delete copy.experimental_attachments
-  const note = `[Đã gửi kèm ở lượt này: ${names}]`
+  const note = `[Attached with this message: ${names}]`
   return mapText(copy, s => (s.trim() ? `${s}\n${note}` : note)) as M
 }
 

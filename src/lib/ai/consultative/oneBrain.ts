@@ -111,6 +111,22 @@ export interface OneBrainContext {
   blocks: readonly string[]
   /** The language the latest message is written in when its SCRIPT settles it (intent.detectLangConfident: zh, ja, ko, th, ar); else null. */
   latestLang?: string | null
+  /** 31/10: the mode the person picked in the composer (clientInput.readChatMode); absent = no mode line (the route before modes). */
+  mode?: 'chat' | 'web' | 'think'
+}
+
+/**
+ * 31/10 (owner, ChatGPT's composer menu): what the person picked decides how much looking-up a turn may do. Chat answers fast from what the
+ * model knows and looks something up only when the answer depends on today's facts (one search, no page reading - the route enforces it);
+ * "Tìm web" and "Suy nghĩ" research properly. The line tells the model the rule the route enforces, so it plans within it.
+ */
+/** 31/10: the result a further web_search / read_page gets in Chat mode (route.ts caps them at one each); names the composer's own labels. */
+export const ONE_BRAIN_CHAT_CAP_NOTE = 'Chat mode allows one quick lookup of this kind per answer and it is used. Answer now from what you have and what you reliably know; if a deeper look would help, say the person can turn on "Tìm web" or "Suy nghĩ".'
+
+export const ONE_BRAIN_MODE_LINES: Readonly<Record<'chat' | 'web' | 'think', string>> = {
+  chat: 'Mode: Chat. Answer quickly from what you reliably know. Look something up only when the answer depends on current facts (prices, news, weather, opening hours, a place or product to pick): one web_search with the best query, answered from its result snippets, or the dedicated tool (places, products, weather, gold price). Do not read pages one after another. If a deeper look would clearly help, say in one short line that the person can turn on "Tìm web" or "Suy nghĩ".',
+  web: 'Mode: Web search. The person asked you to look things up: search, read the best pages, compare sources, and cite each fact with its link and date.',
+  think: 'Mode: Thinking. The person asked for a thorough answer: work out every part of the request, look up what you need, check the figures, and write a complete, well-organised answer.',
 }
 
 /**
@@ -134,6 +150,7 @@ export function oneBrainDynamic(c: OneBrainContext): string {
     where,
     language,
     ...(scriptLang ? [`The person's latest message is written in ${scriptLang}: write this whole answer in ${scriptLang}, headings and table included.`] : []),
+    ...(c.mode ? [ONE_BRAIN_MODE_LINES[c.mode]] : []),
     ...c.blocks.map(b => b.trim()).filter(Boolean),
     // last, where a small model weighs it most: the shape rule of the general instruction, restated in one line
     ONE_BRAIN_SHAPE_REMINDER,

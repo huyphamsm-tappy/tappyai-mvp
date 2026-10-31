@@ -85,7 +85,7 @@ describe('the web request carries an attachment with its own turn only; the raw 
       { role: 'user', content: 'ảnh này thì sao', experimental_attachments: [{ url: PNG, contentType: 'image/png', name: 'b.png' }] },
     ])
     expect('experimental_attachments' in out[0]).toBe(false)
-    expect(out[0].content).toBe('tóm tắt\n[Đã gửi kèm ở lượt này: Q3.pdf]')
+    expect(out[0].content).toBe('tóm tắt\n[Attached with this message: Q3.pdf]')
     expect(out[2].experimental_attachments).toEqual([{ url: PNG, contentType: 'image/png', name: 'b.png' }])
   })
   it('a body over 256 KB passes the text ceiling when it carries a web image or PDF attachment, not otherwise', () => {

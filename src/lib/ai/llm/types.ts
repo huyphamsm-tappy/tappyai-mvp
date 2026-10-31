@@ -93,6 +93,11 @@ export interface AIStreamOptions extends AIGenerateOptions {
   maxSteps?: number
   /** N2 (30/10): allow several tool calls in one step (sent only with tools, like AIStepOptions.parallelTools). Unset = one call per step. */
   parallelTools?: boolean
+  /**
+   * 31/10 (mode "Suy nghĩ"): reasoning effort for THIS call, sent through the OpenAI Responses API (the only one that reasons WITH tools) and
+   * streamed. Unset = the role's configured path and effort, unchanged. Other providers ignore it.
+   */
+  thinkEffort?: ReasoningEffort
   // REMOVED (C2): a `prepareStep` option forwarded as experimental_prepareStep.
   // streamText in ai@4.3.19 does not accept it — only generateText does — so it
   // was silently discarded on every call while its @ts-ignore claimed the

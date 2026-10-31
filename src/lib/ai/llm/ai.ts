@@ -38,6 +38,15 @@ function buildMessages(opts: { systemShared?: string; system?: string; prompt?: 
 /** AGENT_MODEL=haiku55: no SDK-level retry on the Anthropic agent model (a failed paid call is not repeated). undefined = SDK default. */
 const retriesFor = (role: ModelRole, agentRuntime?: boolean): number | undefined => (usesAnthropicAgentModel(role, { agentRuntime }) ? 0 : undefined)
 
+/**
+ * The `tappy` provider options of a streamed answer: several tool calls per step (N2) and, 31/10, the mode "Suy nghĩ" (the Responses API at
+ * `thinkEffort`). Nothing asked → no providerOptions at all (the call is unchanged). Pure; exported for tests.
+ */
+export function streamProviderOptions(o: { parallelTools?: boolean; tools?: unknown; thinkEffort?: string }): { providerOptions: { tappy: Record<string, string | boolean> } } | Record<string, never> {
+  const tappy: Record<string, string | boolean> = { ...(o.parallelTools && o.tools ? { parallelTools: true } : {}), ...(o.thinkEffort ? { api: 'responses', effort: o.thinkEffort } : {}) }
+  return Object.keys(tappy).length ? { providerOptions: { tappy } } : {}
+}
+
 export const AI = {
   /** Which provider is active (telemetry/debug only — never branch on this). */
   providerId(): string {
@@ -125,7 +134,7 @@ export const AI = {
       onError: opts.onError,
       onStepFinish: opts.onStepFinish,
       abortSignal: opts.abortSignal,
-      ...(opts.parallelTools && opts.tools ? { providerOptions: { tappy: { parallelTools: true } } } : {}),
+      ...streamProviderOptions(opts),
       // A shape mistake in the model's tool arguments (null, number-as-string…) is repaired from
       // the tool's own schema instead of ending the stream (toolCallRepair.ts; every repair logged).
       experimental_repairToolCall: repairToolCall as never,
