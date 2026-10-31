@@ -65,7 +65,7 @@ import AskCard from '@/components/chat/AskCard'
 import ChoiceCard from '@/components/chat/ChoiceCard'
 import { parseChoiceTail, isOtherOption, otherPrefill } from '@/lib/structuredContent/parseChoices'
 import { parseMediaBlocks, type MediaEntity } from '@/lib/media/mediaHosts'
-import { NewsMediaGrid, EntityCard, EntityPanel } from '@/components/chat/MediaBlocks'
+import { NewsMediaGrid, EntityCard, EntityPanel, OptionCards } from '@/components/chat/MediaBlocks'
 import { ArticleAnswer, EntityRow, ImageGrid, SourcesFooter, summaryOpening } from '@/components/chat/ArticleAnswer'
 import { readDocMedia, rememberDocMedia, recallDocMedia } from '@/lib/answerDoc/media'
 import { StreamedTextKeeper } from '@/lib/chat/streamedText'
@@ -1719,6 +1719,7 @@ export default function ChatInterface({
                 const newsMedia = mediaBlocks.find(b => b.kind === 'news')
                 const entityMedia = mediaBlocks.find(b => b.kind === 'entity')
                 const entitiesMedia = mediaBlocks.find(b => b.kind === 'entities')
+                const optionsMedia = mediaBlocks.find(b => b.kind === 'options')
                 const { text, questions: askQuestions } = parseAsk(textAfterMedia)
                 // TAPPY_ANSWER_V4: the item pictures arrive as an ANNOTATION (never stored text — web images are live-only); kept for the tab's life
                 // across the save navigation, like the place card. Flag off: nothing is read.
@@ -1835,6 +1836,7 @@ export default function ChatInterface({
                           )
                         })()}
                       </div>
+                      {optionsMedia?.kind === 'options' && !(isLoading && isLastMessage) && <OptionCards title={optionsMedia.title} options={optionsMedia.options} />}
                       {plan && <TripPlanCard plan={plan} placePhotos={placeView?.items} />}
                       {shopView && (
                         <ShoppingDecision

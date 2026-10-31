@@ -545,6 +545,25 @@ function isGivenUrl(url: string, allowed: ReadonlySet<string>): boolean {
 }
 
 /**
+ * CONSULT_ONE_BRAIN (owner 31/10, ChatGPT's option cards): the options the model handed to present_options, as the [TAPPY_MEDIA] block the
+ * client renders. An option's link stays only when this turn handed it to the model (the same rule as a link in the prose); the block is then
+ * re-validated like every media block. Malformed or empty → ''. Pure.
+ */
+export function renderOptionsMedia(raw: string | undefined, allowed: ReadonlySet<string>): string {
+  if (!raw) return ''
+  let parsed: unknown
+  try { parsed = JSON.parse(raw) } catch { return '' }
+  const r = (parsed ?? {}) as { options?: unknown }
+  if (!Array.isArray(r.options)) return ''
+  const options = r.options.map(o => {
+    const x = (o ?? {}) as Record<string, unknown>
+    return typeof x.href === 'string' && isGivenUrl(x.href, allowed) ? x : { ...x, href: undefined, linkLabel: undefined }
+  })
+  const block = sanitizeMediaBlock({ ...(parsed as object), options })
+  return block?.kind === 'options' ? `\n\n[TAPPY_MEDIA]${JSON.stringify(block)}[/TAPPY_MEDIA]` : ''
+}
+
+/**
  * P3-F5 · where a model-CONSTRUCTED button or plan link may point. The original list (the
  * platforms the rulebook names) plus, since the shipping branch moved the hand-off set into the
  * CCP registry, every registry merchant host and every search template the prompt hands the
@@ -4144,7 +4163,9 @@ export function applyPlaceEnrichmentStreamFilter(
     // back to back — the lead's `alreadySaid` wants "giá" BEFORE "chưa xác minh" and the model's sentence is > 160 characters, so neither dedupe saw it.)
     // N5 rest (30/10): no code-written lead on one brain - the model states what it could not confirm (oneBrain.ts).
     const fareLead = fareLead0 && (collector?.oneBrain === true || (collector?.consultative === true && (admitsUnverified(ctaOwnedProse) || dedupeCaveats(`${fareLead0}${ctaOwnedProse}`).length < `${fareLead0}${ctaOwnedProse}`.length))) ? '' : fareLead0
-    const finalText = `${fareLead}${ctaOwnedProse}${systemLinksSuffix}${markerSuffix}${placesSuffix}${ctaSuffix}`
+    // CONSULT_ONE_BRAIN (31/10): the option cards ride in the message after every link guard (server-only block; its links checked against this turn's).
+    const optionsSuffix = collector?.oneBrain === true ? renderOptionsMedia(collector.optionsBlock, allowedUrls) : ''
+    const finalText = `${fareLead}${ctaOwnedProse}${systemLinksSuffix}${markerSuffix}${placesSuffix}${ctaSuffix}${optionsSuffix}`
     if (fareLead) gt('verification_lead', ctaOwnedProse, `${fareLead}${ctaOwnedProse}`)
     legacyTrace?.turn()
     finalReplyText = finalText
@@ -4174,7 +4195,7 @@ export function applyPlaceEnrichmentStreamFilter(
     // The SHOPPING marker is the only thing the early send delivered, so it is the only thing
     // subtracted here. `placesSuffix` has not been sent by anyone and must still ride out, or a
     // turn that searched both places and products would lose its place cards entirely.
-    const outText = earlyShoppingMarkerSent ? `${prose}${placesSuffix}` : finalText
+    const outText = earlyShoppingMarkerSent ? `${prose}${placesSuffix}${optionsSuffix}` : finalText
     // After an early marker the client receives the marker, then `outText`, not `finalText` (which also holds the appendix, system links,
     // CTA suffix and fare lead that this branch does not send). The stored reply follows what was SENT.
     if (earlyShoppingMarkerSent) finalReplyText = `${earlyMarkerSentText}${outText}`
@@ -4323,7 +4344,7 @@ export function applyPlaceEnrichmentStreamFilter(
             if (call.toolCallId && call.toolName) toolNameByCallId.set(call.toolCallId, call.toolName)
             anyToolCalled = true
             // CONSULT_ONE_BRAIN: a present_plan turn is rebuilt at the end (the plan block is appended before the plan guards).
-            if (call.toolName === 'present_plan' && collector?.oneBrain) bufferMode = true
+            if ((call.toolName === 'present_plan' || call.toolName === 'present_options') && collector?.oneBrain) bufferMode = true
             // CONSULT_ONE_BRAIN (P0-3): a fare / hotel / transport tool call holds the answer for the travel guard, whatever words the question used.
             if (call.toolName && TRAVEL_TOOLS.has(call.toolName) && collector?.oneBrain) bufferMode = true
             if (collector?.planTurn) {

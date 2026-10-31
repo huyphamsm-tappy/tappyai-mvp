@@ -105,7 +105,7 @@ import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuar
 import { isProductionRuntime, consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, consultReadPageLateOn, consultPickPageReadOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn, consultUnwindS1aOn, consultUnwindS1bOn, consultUnwindS1dOn, consultUnwindS2aOn, consultUnwindS2bOn, consultUnwindS2cOn, consultUnwindS3aOn, consultUnwindS3bOn, consultUnwindS3cOn, consultUnwindS4aOn, consultUnwindS4bOn, consultUnwindS5On, consultUnwindS6aOn, consultUnwindS6bOn, consultUnwindS6cOn, consultOneBrainOn, consultOneBrainMediaOn, consultParallelOn } from '@/lib/config/consultFlags'
 import { createParallelTurnBudget, parallelExtract, parallelSearch } from '@/lib/ai/tools/parallelClient'
 import { searchWithReads, createOnce, FOLLOW_UP_SYSTEM, S6_MAX_READS } from '@/lib/ai/consultative/searchReads'
-import { ONE_BRAIN_CORE, ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, oneBrainDynamic } from '@/lib/ai/consultative/oneBrain'
+import { ONE_BRAIN_CORE, ONE_BRAIN_FARE_NOTE, ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, oneBrainDynamic } from '@/lib/ai/consultative/oneBrain'
 import { oneBrainMediaStream } from '@/lib/ai/consultative/oneBrainMedia'
 import { oneBrainTurnTrace } from '@/lib/ai/consultative/turnTrace'
 import { serperLastAccountErrorAt } from '@/lib/ai/tools/serperClient'
@@ -2420,7 +2420,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         const out = oneBrain && SEARCH_BACKED_TOOLS.has(name) && serperLastAccountErrorAt() >= startedAt && raw && typeof raw === 'object' && !Array.isArray(raw) && !rowsIn(raw as Record<string, unknown>)
           // the tool's own "no result" note is replaced: measured 28/10, a place search refused by the provider kept its "ask for a narrower area" note and the model asked the person instead of saying the lookup failed
           ? { ...(raw as Record<string, unknown>), provider_error: 'search_provider_refused', note: 'The search provider refused this request (account or key error). This lookup FAILED; it is not an empty result and the person does not need to narrow anything. Say plainly that the lookup did not work this time, give what you know from general knowledge marked as not checked, and do not ask the person to change the request.' }
-          : raw
+          // One brain (31/10): a fare tool with no fare source points the model at the web for a reference price, instead of forbidding any price.
+          : oneBrain && raw && typeof raw === 'object' && !Array.isArray(raw) && (raw as Record<string, unknown>).fare_status === 'not_verified'
+            ? { ...(raw as Record<string, unknown>), note: ONE_BRAIN_FARE_NOTE }
+            : raw
         // B1 (2026-09-20): the product unit is judged too — against the shopping constraints.
         const gate = applyHardConstraintGate(name, out, situation, lang, { shopping: shoppingConstraints, verifyFirst: oneBrain })
         const ctx = enrichment.consultativeV1
@@ -3035,13 +3038,39 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           return { ok: true, note: 'The app shows this plan as a card BELOW your text, and it can be shared as a brochure. Write only a short summary and the key tips; do not repeat the plan, and do not say the card is above.' }
         },
       }) } : {}),
+      // Owner 31/10 (ChatGPT's option cards): a recommendation of things that have no place or product card (tours, services, plans, courses, tools)
+      // becomes one card per option. The model fills the fields; the server keeps only links this turn's tools returned (streamEnrichment).
+      ...(oneBrain ? { present_options: tool({
+        description: 'Show the options of a recommendation as cards, one per option: tours, services, packages, plans, courses, apps or tools, routes. Not for places or products (search_places / search_products make their own cards). Call it once, after looking things up, when you recommend 2-6 options; then write the lead, your pick and the comparison table around it, not every detail again.',
+        parameters: z.object({
+          title: z.string().optional().describe('e.g. "3 tour Thái Lan 7 ngày đáng cân nhắc"'),
+          options: z.array(z.object({
+            name: z.string(),
+            badge: z.string().optional().describe('who or what it suits best, a few words, e.g. "Rẻ nhất", "Hợp lần đầu đi"'),
+            figure: z.string().optional().describe('the one figure to compare by, e.g. "7.990.000đ/người"; only a figure from the tool results or one you reliably know'),
+            figure_note: z.string().optional().describe('what the figure is and its date or source, e.g. "giá niêm yết, cập nhật 30/10/2026"'),
+            verdict: z.string().optional().describe('one sentence: who it suits and why'),
+            highlights: z.array(z.string()).describe('2-5 key facts'),
+            extras: z.array(z.string()).optional().describe('costs or conditions on top of the figure'),
+            caveat: z.string().optional().describe('its limit, or what to check before choosing it'),
+            link: z.string().optional().describe('a URL from this turn\'s tool results where the person can act on it (book, read, buy); never invent one'),
+            link_label: z.string().optional(),
+          })).min(1),
+        }),
+        execute: async ({ title, options }) => {
+          enrichment.optionsBlock = JSON.stringify({ v: 1, kind: 'options', ...(title ? { title } : {}), options: options.map(o => ({ name: o.name, badge: o.badge, figure: o.figure, figureNote: o.figure_note, verdict: o.verdict, highlights: o.highlights, extras: o.extras, caveat: o.caveat, href: o.link, linkLabel: o.link_label })) })
+          return { ok: true, note: 'The app shows these options as cards BELOW your text. Write the lead (what you chose by), your pick and why, and a short table mapping each need to an option; do not repeat each card, and do not say the cards are above.' }
+        },
+      }) } : {}),
       get_gold_price: tool({
         description: 'Lay gia vang SJC, PNJ, DOJI, vang the gioi (XAU/USD) realtime, cap nhat moi 5 phut tu vang.today',
         parameters: z.object({ query: z.string().optional().describe('Loai vang user hoi, vd: SJC, PNJ, vang the gioi (khong bat buoc)') }),
         execute: async ({ query }) => getGoldPrice(query || '', lang)
       }),
       get_flight_prices: tool({
-        description: 'Ve may bay giua 2 thanh pho/san bay: link dat ve theo dung chang/ngay (Trip.com, Traveloka, hang bay). Gia, gio bay, tinh trang chuyen: CHUA XAC MINH (chua co nguon) — khong neu gia/gio.',
+        description: oneBrain
+          ? 'Flight booking pages between two cities or airports for the route and date (Trip.com, Traveloka, airlines), shown as buttons. It has NO fare, time or status data: for a reference price, web_search current fares instead.'
+          : 'Ve may bay giua 2 thanh pho/san bay: link dat ve theo dung chang/ngay (Trip.com, Traveloka, hang bay). Gia, gio bay, tinh trang chuyen: CHUA XAC MINH (chua co nguon) — khong neu gia/gio.',
         parameters: z.object({
           origin: z.string().describe('Diem di (ten thanh pho hoac ma san bay IATA, vd: Ha Noi, HAN)'),
           destination: z.string().describe('Diem den (ten thanh pho hoac ma san bay IATA, vd: TP HCM, SGN)'),

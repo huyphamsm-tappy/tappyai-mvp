@@ -200,6 +200,8 @@ export interface EnrichmentCollector {
   oneBrain?: boolean
   /** CONSULT_ONE_BRAIN: the plan the model passed to present_plan (TappyPlan JSON); appended as [TAPPY_PLAN] before the plan guards run. */
   planBlock?: string
+  /** CONSULT_ONE_BRAIN (31/10): the options the model passed to present_options (MediaBlock 'options' JSON); emitted as [TAPPY_MEDIA] after the link guards, with only this turn's tool links. */
+  optionsBlock?: string
   /** Phase 8 (TAPPY_AGENT=2) run trace: called with every settle-path stage that CHANGED the reply text (observation only). */
   guardTrace?: (stage: string, before: string, after: string) => void
   /** Phase 8 M3 (TAPPY_AGENT=2): pages the agent read this turn — [S#] markers become source links at the enrichment site (citeSources). */

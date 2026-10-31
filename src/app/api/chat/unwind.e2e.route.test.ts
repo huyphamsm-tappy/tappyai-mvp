@@ -143,6 +143,7 @@ vi.mock('@/lib/ai/llm', () => ({
 }))
 
 import { POST } from '@/app/api/chat/route'
+import { getFlightPrices } from '@/lib/ai/tools/travel'
 
 /** The flag set of RUN-ALL.ps1 Set-RunEnv + the U-DEV25 Extra (the bench-only BENCH_* switches are not route flags). */
 const UNWIND = ['S1A', 'S1B', 'S1C', 'S1D', 'S2A', 'S2B', 'S2C', 'S3A', 'S3B', 'S3C', 'S4A', 'S4B', 'S6A', 'S6B', 'S6C'].map(s => `CONSULT_UNWIND_${s}`)
@@ -427,7 +428,8 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
   const TRIP: Msg[] = [{ role: 'user', content: 'len lich trinh 2 ngay 1 dem o da lat giup minh' }]
   const TRIP_INTENT = intent('plan', ['travel'], { known: [{ key: 'diem_den', value: 'Đà Lạt' }, { key: 'so_ngay', value: '2' }] })
   const cases: Array<[string, Msg[], Record<string, unknown>]> = [['review', REVIEW, intent('chat', [])], ['trip', TRIP, TRIP_INTENT], ['pick', PICK, PICK_INTENT], ['know', KNOW, KNOW_INTENT], ['hello', [{ role: 'user', content: 'chao ban' }], intent('chat', [])]]
-  const ALL_TOOLS = ['search_places', 'get_news', 'search_products', 'web_search', 'read_page', 'calculate', 'get_weather', 'get_weather_forecast', 'present_plan', 'get_gold_price', 'get_flight_prices', 'get_hotel_prices', 'get_transport_options', 'save_price_watch']
+  // 31/10 (owner approved the option cards): present_options joins the one-brain tool set.
+  const ALL_TOOLS = ['search_places', 'get_news', 'search_products', 'web_search', 'read_page', 'calculate', 'get_weather', 'get_weather_forecast', 'present_plan', 'present_options', 'get_gold_price', 'get_flight_prices', 'get_hotel_prices', 'get_transport_options', 'save_price_watch']
   const reply = 'Trả lời của mô hình.'
   it('flag ON: every kind of request reaches the model the same way - no intent call, the whole tool set, the one general instruction, 8 steps, 4000 tokens', async () => {
     for (const [name, m, l] of cases) {
@@ -674,6 +676,41 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     expect(m).not.toBeNull()
     expect(JSON.parse(m![1])).toMatchObject({ type: 'trip', title: 'Đà Lạt 2 ngày 1 đêm', days: [{ label: 'Ngày 1 — Hồ Xuân Hương' }] })
     expect(on.text.indexOf('Lịch trình gọn')).toBeLessThan(on.text.indexOf('[TAPPY_PLAN]'))
+  }, 60000)
+  it('31/10 option cards: options handed to present_options reach the user as a [TAPPY_MEDIA] options block after the text; a link the turn\'s tools gave stays, any other link is dropped (the card stays)', async () => {
+    const ASK: Msg[] = [{ role: 'user', content: 'tour thai lan 7 ngay nao dang tien' }]
+    const options = [
+      { name: 'Tour A Bangkok – Pattaya', badge: 'Rẻ nhất', figure: '7.990.000đ', figure_note: 'giá niêm yết/người', highlights: ['Bay thẳng', 'Khách sạn 3 sao'], link: 'https://giadien.example/bang-gia' },
+      { name: 'Tour B Phuket', highlights: ['Biển đẹp'], link: 'https://lua-dao.example/dat-ngay' },
+    ]
+    const on = await turn(ASK, { unwind: true, oneBrain: true, luna: intent('chat', []), tools: [{ name: 'web_search', args: { query: 'tour thai lan 7 ngay' } }, { name: 'present_options', args: { title: 'Tour Thái 7 ngày', options } }], reply: 'Mình chọn theo giá và lịch trình; tour A hợp nhất nếu muốn tiết kiệm.' })
+    const m = on.text.match(/\[TAPPY_MEDIA\]([\s\S]*?)\[\/TAPPY_MEDIA\]/)
+    expect(m).not.toBeNull()
+    const block = JSON.parse(m![1])
+    expect(block).toMatchObject({ v: 1, kind: 'options', title: 'Tour Thái 7 ngày' })
+    expect(block.options.map((o: { name: string }) => o.name)).toEqual(['Tour A Bangkok – Pattaya', 'Tour B Phuket'])
+    expect(block.options[0]).toMatchObject({ badge: 'Rẻ nhất', figure: '7.990.000đ', figureNote: 'giá niêm yết/người', href: 'https://giadien.example/bang-gia' })
+    expect(block.options[1].href).toBeUndefined()
+    expect(on.text).not.toContain('lua-dao.example')
+    expect(on.text.indexOf('Mình chọn theo giá')).toBeLessThan(on.text.indexOf('[TAPPY_MEDIA]'))
+    // present_options alone (no lookup tool in the turn) still holds the answer for the block
+    const only = await turn([{ role: 'user', content: 'nen hoc tieng anh o dau' }], { unwind: true, oneBrain: true, luna: intent('chat', []), tools: [{ name: 'present_options', args: { options: [{ name: 'Khóa X', highlights: ['Online'] }] } }], reply: 'Mình chọn khóa X.' })
+    expect(only.text).toContain('Mình chọn khóa X.')
+    expect(only.text).toContain('"kind":"options"')
+    // without one brain there is no such tool and no block
+    const off = await turn(ASK, { unwind: true, oneBrain: false, luna: intent('chat', []), tools: [{ name: 'present_options', args: { options } }], reply: 'x' })
+    expect(off.text).not.toContain('[TAPPY_MEDIA]')
+  }, 60000)
+  it('31/10 fares (share run T08/T09): on one brain the fare tool\'s result points the model at the web for a reference price instead of forbidding any price; the other paths keep their note', async () => {
+    const FLY: Msg[] = [{ role: 'user', content: 've may bay sai gon di bangkok thang 11 bao nhieu' }]
+    const call = { name: 'get_flight_prices', args: { origin: 'TP HCM', destination: 'Bangkok' } }
+    const on = await turn(FLY, { unwind: true, oneBrain: true, luna: intent('chat', []), tools: [call], reply: 'x' })
+    const onResult = JSON.stringify(on.results.find(r => r.name === 'get_flight_prices')?.result)
+    expect(onResult).toContain('web_search current fares for this route')
+    expect(onResult).not.toContain('KHÔNG nêu giá')
+    expect(onResult).toContain('booking') // the booking pages stay
+    // the tool's own note (what every other path gives the model) is unchanged; this harness's off-flag turns carry no fare tool
+    expect(JSON.stringify(await getFlightPrices('TP HCM', 'Bangkok', 'vi'))).toContain('KHÔNG nêu giá')
   }, 60000)
   it('flag ON, no place retrieved (search down): the brochure keeps every stop under the model\'s own name - sights untagged (N3), unreturned venues labelled "(chưa xác minh)" with no link, address or price (review 30/10)', async () => {
     // Localhost 29/10 ("Đà Lạt 2 ngày 1 đêm", Serper 403): the strict plan guard dropped all 9 stops and every day of the card was empty.

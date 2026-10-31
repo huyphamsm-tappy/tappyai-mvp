@@ -126,7 +126,7 @@ export function consultReadPageLateOn(env: Env = process.env): boolean { return 
  * no provider, no cost). Held back only in the LAST step, like a late read_page. Measured live 29/10 (one brain, six steps): the
  * reserve answered it in step five with "search_budget_used" and the reply said "the plan card above" over a card that never came.
  */
-const PRESENTATION_TOOLS = new Set(['present_plan'])
+const PRESENTATION_TOOLS = new Set(['present_plan', 'present_options'])
 /** Pure. Does the reserve hold this tool call back? read_page with W5-1 on, and a presentation tool: only in the last step (one step must have finished). Anything else: the two-step reserve, as before. */
 export function reserveHoldsToolCall(tool: string, stepsFinished: number, maxSteps: number, readPageLate: boolean): boolean {
   if ((readPageLate && tool === 'read_page') || PRESENTATION_TOOLS.has(tool)) return stepsFinished >= 1 && stepsFinished >= maxSteps - 1

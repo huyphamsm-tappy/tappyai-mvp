@@ -7,7 +7,49 @@
 import { useEffect } from 'react'
 import { X, ExternalLink } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
-import { isAllowedMediaImage, isAllowedMediaPage, type MediaEntity, type MediaNewsItem } from '@/lib/media/mediaHosts'
+import { isAllowedMediaImage, isAllowedMediaPage, type MediaEntity, type MediaNewsItem, type MediaOption } from '@/lib/media/mediaHosts'
+import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
+
+/**
+ * CONSULT_ONE_BRAIN (owner 31/10, ChatGPT's option cards): each option of a recommendation as a bordered card — its tag, its name, the figure to
+ * compare by (large) with what the figure is and its date, the highlights, what costs extra, a small caveat and the link to act on it.
+ * Text only; the link is re-checked here (safe https) although the server kept only links this turn's tools returned.
+ */
+export function OptionCards({ title, options }: { title?: string; options: MediaOption[] }) {
+  if (!options.length) return null
+  return (
+    <div data-media="options" className="my-3">
+      {title && <p className="mb-2 text-sm font-semibold text-gray-700 dark:text-gray-200">{title}</p>}
+      <div className="grid gap-3 sm:grid-cols-2">
+        {options.map(o => (
+          <div key={o.name} className="flex flex-col rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900/60 p-4">
+            {o.badge && <span className="mb-2 self-start rounded-full bg-primary-500/10 px-2.5 py-0.5 text-xs font-medium text-primary-700 dark:text-primary-300">{o.badge}</span>}
+            <p className="text-base font-semibold text-gray-900 dark:text-gray-100">{o.name}</p>
+            {o.figure && <p className="mt-1 text-2xl font-bold text-emerald-600 dark:text-emerald-400">{o.figure}</p>}
+            {o.figureNote && <p className="text-xs text-gray-500 dark:text-gray-400">{o.figureNote}</p>}
+            {o.verdict && <p className="mt-2 text-sm text-gray-700 dark:text-gray-300">{o.verdict}</p>}
+            {o.highlights.length > 0 && (
+              <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-gray-700 dark:text-gray-300">
+                {o.highlights.map(h => <li key={h}>{h}</li>)}
+              </ul>
+            )}
+            {o.extras && o.extras.length > 0 && (
+              <ul className="mt-2 space-y-0.5 text-xs text-gray-600 dark:text-gray-400">
+                {o.extras.map(x => <li key={x}>+ {x}</li>)}
+              </ul>
+            )}
+            {o.caveat && <p className="mt-2 text-xs italic text-gray-500 dark:text-gray-400">{o.caveat}</p>}
+            {o.href && isSafeHttpsUrl(o.href) && (
+              <a href={o.href} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1 self-start text-sm font-medium text-primary-600 dark:text-primary-300">
+                {o.linkLabel || new URL(o.href).hostname.replace(/^www\./, '')} <ExternalLink size={13} aria-hidden="true" />
+              </a>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
 
 export function NewsMediaGrid({ items }: { items: MediaNewsItem[] }) {
   const ok = items.filter(it => isAllowedMediaImage(it.src) && isAllowedMediaPage(it.href))

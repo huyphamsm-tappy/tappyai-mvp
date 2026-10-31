@@ -69,7 +69,7 @@ export function oneBrainMediaStream(body: ReadableStream<Uint8Array>, o: OneBrai
         const work = (async () => {
           const r = await o.understanding
           if (!r.u) return { skipped: r.error ?? 'no_understanding' }
-          const dm = await resolve(r.u, answer, { skipItems: o.cardTurn(), subjectIntents: SUBJECT_CARD_INTENTS },{ timeoutMs: ONE_BRAIN_MEDIA_SEARCH_MS, ...o.deps })
+          const dm = await resolve(r.u, answer, { skipItems: o.cardTurn(), subjectIntents: SUBJECT_CARD_INTENTS, confirmSense: true },{ timeoutMs: ONE_BRAIN_MEDIA_SEARCH_MS, ...o.deps })
           const block = dm.block ? sanitizeMediaBlock(dm.block) : null
           const ann = dm.annotation ? sanitizeDocMedia(dm.annotation) : null
           if (block) frames += '0:' + JSON.stringify(`\n\n[TAPPY_MEDIA]${JSON.stringify(block)}[/TAPPY_MEDIA]`) + '\n'
