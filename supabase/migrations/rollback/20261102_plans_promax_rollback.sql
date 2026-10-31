@@ -1,6 +1,16 @@
 -- Rollback of 20261102_plans_promax.sql: the plan lists without promax1m / promax3m.
 -- The constraints come back NOT VALID so rows already written for the Tappy plans (the ledger is append-only) do not block it;
 -- new rows for those ids are refused again. p8_apply_entitlement is restored exactly as 20261015_p8_subscriptions.sql wrote it.
+-- Review 02/11: a Tappy order still payable would be paid with no plan granted (its UPDATE to 'paid' fails the CHECK), so the rollback
+-- refuses to run while one exists - expire those orders first. After a rollback a Tappy subscription already written can no longer be
+-- changed by p8_apply_entitlement (cancel / revoke keep its plan): re-apply 20261102 before touching one.
+
+DO $$
+BEGIN
+  IF EXISTS (SELECT 1 FROM public.payment_orders WHERE plan IN ('promax1m', 'promax3m') AND status = 'pending' AND expires_at > now()) THEN
+    RAISE EXCEPTION 'rollback 20261102: a Tappy (promax) order is still payable; expire it first' USING ERRCODE = 'P0001';
+  END IF;
+END $$;
 
 ALTER TABLE public.subscriptions DROP CONSTRAINT IF EXISTS subscriptions_plan_check;
 ALTER TABLE public.subscriptions

@@ -172,9 +172,20 @@ export function createDeepResearchDeps(o: { lang: string; userTexts: readonly st
       const sources = evidence.filter(e => findings.some(f => f.source === e.id)).map(e => `[${e.id}] ${e.title} — ${e.site ?? host(e.url)}${e.published ? `, ${e.published}` : ''}`).join('\n')
       const notes = writerNotes(plan, findings)
       const result = AI.stream({ role: 'consult', thinkEffort: 'medium', maxTokens: 6000, systemShared: WRITER_SYSTEM, messages: [{ role: 'user', content: `Question:\n${question}${langLine}\n\nToday's date: ${new Date().toISOString().slice(0, 10)}\nResearch plan: ${plan.title}\n\n${fenceUntrusted('tool_result', `Sources:\n${sources}\n\nFindings by step:\n${notes}`)}` }] })
-      for await (const t of result.textStream) yield t
+      yield* writtenText(result.fullStream)
       addCost(o.cost, await result.providerMetadata.catch(() => undefined))
     },
+  }
+}
+
+/**
+ * The writer's text from the stream's parts. Review 02/11: the SDK's textStream drops the `error` part, so a write the provider failed (429/5xx,
+ * timeout, budget) ended as a "done" report of sources alone and stayed charged; an error part now throws, as AI.stepStream does.
+ */
+export async function* writtenText(parts: AsyncIterable<unknown>): AsyncGenerator<string> {
+  for await (const p of parts as AsyncIterable<{ type?: string; textDelta?: string; error?: unknown }>) {
+    if (p.type === 'text-delta' && p.textDelta) yield p.textDelta
+    else if (p.type === 'error') throw p.error instanceof Error ? p.error : new Error(String(p.error))
   }
 }
 

@@ -24,7 +24,7 @@ const MSG = (text: string) => ({ id: 'msg_1', type: 'message', role: 'assistant'
 const body = (output: unknown[], status = 'completed', extra: Record<string, unknown> = {}) => ({ id: 'resp_1', model: 'gpt-6-luna', status, output, usage: { input_tokens: 900, input_tokens_details: { cached_tokens: 600 }, output_tokens: 120, output_tokens_details: { reasoning_tokens: 40 } }, ...extra })
 
 let sent: Array<Record<string, any>>
-let script: { status?: number; chunks?: string[]; json?: unknown; hang?: boolean }
+let script: { status?: number; chunks?: string[]; json?: unknown; hang?: boolean; gapMs?: number }
 let lastSignal: AbortSignal | undefined
 beforeEach(() => {
   __resetResponsesStateForTests(); resetRoutingForTests()
@@ -38,8 +38,12 @@ beforeEach(() => {
     if (script.status && script.status !== 200) return new Response(JSON.stringify(script.json ?? { error: { message: 'bad' } }), { status: script.status, headers: { 'content-type': 'application/json' } })
     const chunks = [...(script.chunks ?? [])]
     const hang = script.hang
+    const gapMs = script.gapMs
     return new Response(new ReadableStream({
       async pull(c) {
+        if (gapMs) await new Promise(r => setTimeout(r, gapMs))
+        // a real fetch body fails once its request is aborted
+        if (init?.signal?.aborted) throw new Error('aborted')
         const next = chunks.shift()
         if (next !== undefined) { c.enqueue(new TextEncoder().encode(next)); return }
         if (hang) { await new Promise((_, rej) => init?.signal?.addEventListener('abort', () => rej(new Error('aborted')))); return }
@@ -134,6 +138,19 @@ describe('S3 · failures are never a success', () => {
     await reader.read(); await reader.read()
     await reader.cancel('client gone')
     expect(lastSignal?.aborted).toBe(true)
+  })
+  // review 02/11: the timeout bounded the WHOLE streamed body, so a long report or Think answer still streaming at 60 s was cut mid-sentence.
+  // It is a silence timeout now: the stream may run longer while records keep arriving; a stream that goes quiet still ends.
+  it('LLM_RESPONSES_TIMEOUT_MS is a silence timeout: a stream that keeps sending runs past it; one that goes quiet ends with the timeout error', async () => {
+    process.env.LLM_RESPONSES_TIMEOUT_MS = '120'
+    script = { chunks: [ev('response.output_text.delta', { delta: 'a ' }), ev('response.output_text.delta', { delta: 'b ' }), ev('response.output_text.delta', { delta: 'c ' }), ev('response.output_text.delta', { delta: 'd ' }), ev('response.output_text.delta', { delta: 'e.' }), ev('response.completed', { response: body([MSG('a b c d e.')]) })], gapMs: 50 }
+    const ok = await drain((await model().doStream(opts())).stream)
+    expect(ok.some(p => p.type === 'error')).toBe(false)
+    expect(ok.find(p => p.type === 'finish')).toBeTruthy()
+    script = { chunks: [ev('response.output_text.delta', { delta: 'đang ' })], hang: true }
+    const quiet = await drain((await model().doStream(opts())).stream)
+    expect(String((quiet.at(-1) as any).error?.message)).toContain('responses_timeout_120ms')
+    delete process.env.LLM_RESPONSES_TIMEOUT_MS
   })
   it('an already-aborted caller signal never sends the request', async () => {
     const ctrl = new AbortController(); ctrl.abort(new Error('gone'))

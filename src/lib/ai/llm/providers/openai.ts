@@ -511,7 +511,10 @@ async function responsesStream(modelId: string, effort: ReasoningEffort, apiKey:
   mk?.mark('upstream_call_start', { role, effort, streamed: true })
   const timeoutMs = Number(process.env.LLM_RESPONSES_TIMEOUT_MS) > 0 ? Number(process.env.LLM_RESPONSES_TIMEOUT_MS) : 60_000
   const ctrl = new AbortController(); let timedOut = false
-  const timer = setTimeout(() => { timedOut = true; ctrl.abort() }, timeoutMs)
+  // review 02/11: a SILENCE timeout - re-armed by every record - so a long report or Think answer that keeps streaming is not cut at 60 s;
+  // the turn's own deadline bounds the whole answer
+  let timer = setTimeout(() => { timedOut = true; ctrl.abort() }, timeoutMs)
+  const rearm = () => { if (settled) return; clearTimeout(timer); timer = setTimeout(() => { timedOut = true; ctrl.abort() }, timeoutMs) }
   const external = opts.abortSignal
   const onExternal = () => ctrl.abort()
   if (external?.aborted) { clearTimeout(timer); inflight = Math.max(0, inflight - 1); throw (external.reason ?? new Error('aborted')) }
@@ -563,6 +566,7 @@ async function responsesStream(modelId: string, effort: ReasoningEffort, apiKey:
           finishBook({ ok: false, usd: UNKNOWN_CALL_USD / 4, extra: { error: 'stream_ended_without_completion', mid_stream: true, deltas } })
           c.enqueue({ type: 'error', error: new Error('responses_stream_ended_without_completion') }); c.close(); return
         }
+        rearm()
         const { data } = n.value
         const type = String(data.type ?? n.value.event)
         if (type === 'response.output_text.delta' && typeof data.delta === 'string' && data.delta) {

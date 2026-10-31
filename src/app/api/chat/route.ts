@@ -191,6 +191,7 @@ import { relaxEmptyPlaces, widenLocation } from '@/lib/ai/placeRelax'
 import { resolveReplyLanguage } from '@/lib/ai/replyLanguage'
 import type { CoreMessage } from 'ai'
 import { cannedChitchat, cannedCarriedFact, cannedDataStreamResponse, isAckOnly, isThanksOnly } from '@/lib/ai/cannedReply'
+import { turnSignal } from '@/lib/chat/turnDeadline'
 
 // Owner decision 28 Sep 2026: 3-day plan turns measured 61–89 s locally, over the old 60 s cap. The
 // project runs on Fluid compute (verified read-only: fluid=true, default timeout 300 s), so 120 s needs no
@@ -3909,8 +3910,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     },
     // Cancel the upstream generation (and skip the onFinish memory-extraction
     // call) if the client disconnects — otherwise it runs to maxDuration billing
-    // tokens for a response nobody is receiving.
-    abortSignal: req.signal,
+    // tokens for a response nobody is receiving. Review 02/11: also at the turn's deadline (maxDuration is 300 s for Deep Research only).
+    abortSignal: turnSignal(req.signal, startTime, TURN_DEADLINE_MS),
     systemShared,
     system: eveningAddendum ? (w3Prompt ?? systemPrompt) + eveningAddendum : (w3Prompt ?? systemPrompt),
     messages: (lunaData ? (() => { const at = modelMessagesForStream.map((m: { role: string }) => m.role).lastIndexOf('user'); return at < 0 ? modelMessagesForStream : [...modelMessagesForStream.slice(0, at), { role: 'user' as const, content: lunaData }, ...modelMessagesForStream.slice(at)] })() : modelMessagesForStream) as typeof modelMessages,

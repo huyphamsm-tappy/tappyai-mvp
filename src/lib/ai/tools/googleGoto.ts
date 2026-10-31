@@ -37,6 +37,8 @@ export async function resolveGoogleGoto(link: string, o: { fetch?: Fetch; timeou
     // not a redirect (the bot-check page): stop asking for a while, and do not remember this token as unresolvable
     if (res.status < 300 || res.status >= 400) { pausedUntil = Date.now() + PAUSE_MS; return null }
     const loc = res.headers.get('location')
+    // review 02/11: a redirect to another Google page (the rate-limit "sorry" page, the consent page) is the bot check as well - never a source
+    if (loc && /^https?:\/\/(?:[\w-]+\.)*google\.[a-z.]+(?:[/?#:]|$)/i.test(loc) && !/^https?:\/\/(?:[\w-]+\.)*google\.[a-z.]+\/(?:goto|url)\b/i.test(loc)) { pausedUntil = Date.now() + PAUSE_MS; return null }
     if (loc && !/^https?:\/\/(?:[\w-]+\.)*google\.[a-z.]+\/(?:goto|url)\b/i.test(loc)) {
       const hop = validateHop(loc, { allowHttp: true })
       out = 'url' in hop ? hop.url.toString() : null

@@ -127,6 +127,9 @@ describe('runDeepResearch', () => {
       [{ gather: async () => [] }, 'no_findings'],
       [{ notes: async () => [] }, 'no_findings'],
       [{ write: async function* () { yield 'Một phần '; throw new Error('cut') } }, 'write_failed'],
+      // review 02/11: a writer that ends with no text (the provider failed before writing) is a failure, never a "done" report of sources alone
+      [{ write: async function* () { /* nothing */ } }, 'write_failed'],
+      [{ write: async function* () { yield '  \n' } }, 'write_failed'],
     ] as Array<[Partial<DeepResearchDeps>, string]>) {
       const c = collect()
       const out = await runDeepResearch('q', '', 'vi', deps(over), c.emit)

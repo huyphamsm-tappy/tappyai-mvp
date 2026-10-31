@@ -39,6 +39,15 @@ describe('googleGoto', () => {
     expect(await resolveGoogleGoto(`${TOKEN}2`, { fetch: next.f })).toBeNull()
     expect(next.calls).toHaveLength(0) // paused: no request at all
   })
+  it('a redirect to any other Google page (the rate-limit "sorry" page, the consent page) is the bot check too: nothing kept, the resolver pauses', async () => {
+    for (const loc of ['https://www.google.com/sorry/index?continue=https://www.google.com/goto', 'https://consent.google.com/ml?continue=x']) {
+      __resetGotoCache()
+      expect(await resolveGoogleGoto(TOKEN, { fetch: redirectTo(loc).f })).toBeNull()
+      const next = redirectTo('https://y.example/')
+      expect(await resolveGoogleGoto(`${TOKEN}2`, { fetch: next.f })).toBeNull()
+      expect(next.calls).toHaveLength(0)
+    }
+  })
   it('a network failure or timeout gives nothing; a non-token is never requested', async () => {
     const boom = async () => { throw new Error('down') }
     expect(await resolveGoogleGoto(TOKEN, { fetch: boom })).toBeNull()

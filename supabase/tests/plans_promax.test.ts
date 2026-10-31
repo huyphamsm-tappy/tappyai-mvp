@@ -70,6 +70,10 @@ describe('20261102_plans_promax', () => {
   })
 
   it('rollback: new Tappy writes are refused again, the rows already written stay; it re-applies', async () => {
+    // review 02/11: refused while a Tappy order is still payable (it would be paid with no plan); nothing of it is applied
+    expect(await t.exec('postgres', ROLLBACK)).toBe('P0001')
+    expect(await order(ALICE, 'promax1m', 'TAPPYAAAAA6')).toBeNull()
+    await t.db.query(`UPDATE public.payment_orders SET status = 'expired' WHERE plan IN ('promax1m', 'promax3m') AND status = 'pending'`)
     await t.db.query(ROLLBACK)
     expect(await planOf(BOB)).toBe('promax1m')
     expect(await grant(ALICE, 'promax1m')).toBe('22023')

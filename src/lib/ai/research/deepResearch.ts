@@ -458,6 +458,8 @@ export async function runDeepResearch(question: string, context: string, lang: s
       if (now() - t0 >= DEEP_RESEARCH_LIMITS.runDeadlineMs) { cut = true; break }
     }
     finish()
+    // review 02/11: a writer that wrote nothing is a failed write (refunded), not a report of sources alone
+    if (!written.trim()) throw new Error('empty_report')
   } catch {
     finish()
     return { plan, evidence, findings, failed: fail(plan.title, steps, 'write_failed'), cut }

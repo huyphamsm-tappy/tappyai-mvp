@@ -133,6 +133,8 @@ vi.mock('@/lib/ai/llm', () => ({
       return {
         // 31/10 Deep Research: its writer reads the text stream directly (no tools)
         textStream: (async function* () { for (const part of h.state.text.split(/(?<= )/)) yield part })(),
+        // review 02/11: the writer reads the full stream (as the SDK gives it), so a provider error part is a failed write
+        fullStream: (async function* () { for (const part of h.state.text.split(/(?<= )/)) yield { type: 'text-delta', textDelta: part } })(),
         providerMetadata: Promise.resolve({ tappy: { cost: { usd: 0.004 } } }),
         get steps() { return Promise.resolve([{ toolResults: h.state.results.map(r => ({ toolName: r.name, result: r.result })) }]) },
         toDataStreamResponse: () => new Response(new ReadableStream<Uint8Array>({
