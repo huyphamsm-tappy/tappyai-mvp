@@ -1,7 +1,7 @@
 // 31/10 Deep Research orchestration (deepResearch.ts) with fake dependencies: plan, parallel steps, findings tied to handed-in sources,
 // the deadline, the writer's links removed, the sources list built by code, and the failure paths.
 import { describe, it, expect, vi, afterEach } from 'vitest'
-import { runDeepResearch, sectionImages, sectionSteps, writerNotes, MAX_SECTION_IMAGES, GAP_STEPS, canonicalSourceUrl, normalisePlan, linkStripper, sourcesBlock, readResearchStatus, DEEP_RESEARCH_LIMITS, type DeepResearchDeps, type ResearchStatus } from './deepResearch'
+import { runDeepResearch, headingNumberer, sectionImages, sectionSteps, writerNotes, MAX_SECTION_IMAGES, GAP_STEPS, canonicalSourceUrl, normalisePlan, linkStripper, sourcesBlock, readResearchStatus, DEEP_RESEARCH_LIMITS, type DeepResearchDeps, type ResearchStatus } from './deepResearch'
 
 const PLAN = { title: 'Thị trường xe điện', steps: [{ title: 'Doanh số', queries: ['doanh so xe dien 2026'] }, { title: 'Giá', queries: ['gia xe dien', 'bang gia xe dien'] }] }
 const page = (u: string) => ({ title: `Trang ${u}`, url: `https://${u}.example/a`, snippet: 's', text: `nội dung ${u}` })
@@ -270,6 +270,36 @@ describe('linkStripper', () => {
   it('a long text without spaces is still released', () => {
     const s = linkStripper()
     expect(s.push('x'.repeat(700)).length).toBe(700)
+  })
+})
+
+describe('headingNumberer (measured: "1. Tóm tắt, 2. Phạm vi, 1. Xác minh…")', () => {
+  const run = (parts: string[]) => { const n = headingNumberer(); return parts.map(p => n.push(p)).join('') + n.end() }
+  const REPORT = '# T\n*phạm vi*\n## 1. Tóm tắt\nx\n## 2. Phạm vi\ny\n## 1. Xác minh\n### 1.1 Phần a\n### 1.2 Phần b\n## 2. Đối chiếu\n## Kết luận\nz [1].'
+  const WANT = '# T\n*phạm vi*\n## 1. Tóm tắt\nx\n## 2. Phạm vi\ny\n## 3. Xác minh\n### 3.1. Phần a\n### 3.2. Phần b\n## 4. Đối chiếu\n## Kết luận\nz [1].'
+  it('numbers the sections in order, and their sub-sections under them; unnumbered headings stay', () => {
+    expect(run([REPORT])).toBe(WANT)
+  })
+  it('the same when the text arrives in pieces, cut anywhere', () => {
+    for (const size of [1, 2, 3, 5, 8, 13]) {
+      const parts: string[] = []
+      for (let i = 0; i < REPORT.length; i += size) parts.push(REPORT.slice(i, i + size))
+      expect(run(parts)).toBe(WANT)
+    }
+  })
+  it('sub-sections start again at 1 under each section', () => {
+    expect(run(['## 5. A\n### 5.1 a\n## 7. B\n### 2.4 b\n### 2.5 c\n'])).toBe('## 1. A\n### 1.1. a\n## 2. B\n### 2.1. b\n### 2.2. c\n')
+  })
+  it('the run numbers the report it streams', async () => {
+    const c = collect()
+    await runDeepResearch('q', '', 'vi', deps({ write: async function* () { yield '## 1. Tóm tắt\nx [1]\n## 1. Doanh số\ny [2]\n' } }), c.emit)
+    expect(c.text).toContain('## 1. Tóm tắt\nx [1]\n## 2. Doanh số\n')
+  })
+  it('a "## 3." inside a line is text, and a long line starting with # is released', () => {
+    expect(run(['Xem mục ## 3. ', 'bên dưới\n## 9. A'])).toBe('Xem mục ## 3. bên dưới\n## 1. A')
+    expect(run(['abc', '## 3. x\n'])).toBe('abc## 3. x\n') // the rest of a line already sent is never a heading
+    const long = '#' + 'x'.repeat(400)
+    expect(run([long, '\n'])).toBe(long + '\n')
   })
 })
 

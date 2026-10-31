@@ -166,6 +166,43 @@ export function canonicalSourceUrl(raw: string): string | null {
   return u.protocol === 'https:' ? u.toString() : null
 }
 
+/**
+ * Measured 31/10: the writer numbered its own sections "1. Summary, 2. Scope" and then the research sections from 1 again. The numbers are
+ * the code's: every "## <n>." heading is renumbered 1, 2, 3… in order, and every "### <n>.<m>" under it becomes "<section>.<1, 2…>" (an
+ * unnumbered heading stays as written). Streaming-safe: a line that may be a heading is held until it ends.
+ */
+export function headingNumberer(): { push(delta: string): string; end(): string } {
+  let held = ''
+  let mid = false
+  let section = 0
+  let sub = 0
+  const fix = (line: string) => {
+    const h2 = /^##\s+\d{1,2}[.)]?\s+/.exec(line)
+    if (h2 && !line.startsWith('###')) { section++; sub = 0; return `## ${section}. ${line.slice(h2[0].length)}` }
+    const h3 = /^###\s+\d{1,2}\.\d{1,2}[.)]?\s+/.exec(line)
+    if (h3 && section > 0) { sub++; return `### ${section}.${sub}. ${line.slice(h3[0].length)}` }
+    return line
+  }
+  return {
+    push(delta: string) {
+      let text = held + delta
+      held = ''
+      let out = ''
+      for (let i = text.indexOf('\n'); i >= 0; i = text.indexOf('\n')) {
+        const line = text.slice(0, i)
+        out += (mid ? line : fix(line)) + '\n'
+        mid = false
+        text = text.slice(i + 1)
+      }
+      if (!text) return out
+      if (!mid && text.startsWith('#') && text.length < 300) { held = text; return out }
+      mid = true
+      return out + text
+    },
+    end() { const out = mid ? held : fix(held); held = ''; return out },
+  }
+}
+
 /** The evidence the findings cite, in report order. */
 export const citedEvidence = (evidence: readonly Evidence[], findings: readonly Finding[]) => {
   const cited = new Set(findings.map(f => f.source))
@@ -304,18 +341,20 @@ export async function runDeepResearch(question: string, context: string, lang: s
   const cited = citedEvidence(evidence, findings).map(e => ({ ...e, id: renumber.get(e.id)! }))
   const notes = findings.map(f => ({ ...f, source: renumber.get(f.source)! }))
   const stripper = linkStripper()
+  const numberer = headingNumberer()
   let cut = false
   let written = ''
   const say = (t: string) => { if (t) { written += t; emit.text(t) } }
+  const finish = () => { say(numberer.push(stripper.end())); say(numberer.end()) }
   try {
     for await (const delta of deps.write({ question, plan, evidence: cited, findings: notes })) {
-      say(stripper.push(delta))
+      say(numberer.push(stripper.push(delta)))
       // the run's own deadline: what was written stays and gets its sources (the route must answer inside its maxDuration)
       if (now() - t0 >= DEEP_RESEARCH_LIMITS.runDeadlineMs) { cut = true; break }
     }
-    say(stripper.end())
+    finish()
   } catch {
-    say(stripper.end())
+    finish()
     return { plan, evidence, findings, failed: fail(plan.title, steps, 'write_failed'), cut }
   }
   emit.text(sourcesBlock(cited, notes, lang, plan.sources_label))
