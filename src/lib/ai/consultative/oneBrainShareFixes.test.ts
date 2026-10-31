@@ -91,6 +91,9 @@ describe('the one-brain instruction (share run 31/10)', () => {
   it('voice: the person\'s own address and register are mirrored; "mình/bạn" is only the default with no cue', () => {
     expect(ONE_BRAIN_CORE).toContain('address the person the way they address you and themselves')
     expect(ONE_BRAIN_CORE).not.toContain('unless they set another way of addressing')
+    // rerun T07: "the same pair back" was read as calling the person "tui"; the direction is spelt out
+    expect(ONE_BRAIN_CORE).toContain('call THEM by the word they use for you, and call YOURSELF by the word they use for themselves')
+    expect(ONE_BRAIN_CORE).toContain('never call the person by the word they use for themselves')
   })
   it('the answer ends on a takeaway, not a question or an offer; option cards are asked for things with no card of their own', () => {
     expect(ONE_BRAIN_CORE).toContain('End on a closing line that lands')

@@ -199,6 +199,14 @@ function toNumber(raw: string, hasScaleUnit: boolean): number {
  */
 const isLowercaseMetre = (unit: string): boolean => unit === 'm'
 
+/**
+ * A TOUR LENGTH IS NOT MONEY (share run 31/10, T07): "8N7Đ" / "5N4Đ" is the travel-trade way of writing "8 ngày 7 đêm", and the one-brain
+ * label step read "7Đ" as 7 đồng and replaced it — the answer said "tour 8Nchưa xác minh". Decided on the SHAPE, as the "đồng" rule above:
+ * a number written right after "<number>N", with "đ" as its unit, is the nights of a duration. A price after a duration is written with a
+ * space and its thousands ("5N4Đ 7.990.000đ"), so it is still read.
+ */
+const isNightsOfDuration = (masked: string, at: number, unit: string): boolean => /^đ$/i.test(unit) && /\d\s*n\s*$/i.test(masked.slice(Math.max(0, at - 6), at))
+
 /** Every monetary claim in the prose, with its offsets in the ORIGINAL text. */
 export function extractMoneyClaims(text: string): Array<Omit<MoneyClaim, 'verdict' | 'entity' | 'reason'>> {
   return extractMoneyClaimsDetailed(text).claims
@@ -236,6 +244,7 @@ export function extractMoneyClaimsDetailed(text: string): { claims: Array<Omit<M
     if (overlaps(m.index!)) continue
     const unit = m[2]
     if (isLowercaseMetre(unit)) { lowercaseMSkipped++; continue }
+    if (isNightsOfDuration(masked, m.index!, unit)) continue
     const scale = unitScale(unit)
     const v = toNumber(m[1], scale > 1) * scale
     out.push({
