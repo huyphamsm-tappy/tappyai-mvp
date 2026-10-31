@@ -40,6 +40,8 @@ const h = vi.hoisted(() => {
     commerceCtx: [] as Array<{ tool: string; ctx: Record<string, unknown> }>,
     /** 30/10: every Serper /maps call - its query and its centre (the mock returns no rows). */
     placesCalls: [] as Array<{ q: string; centre: { lat: number; lng: number } | null }>,
+    /** 31/10: what the Deep Research plan call returns (null = the call fails). */
+    researchPlan: null as null | Record<string, unknown>,
   }
   const builder = (): any => {
     const b: any = {
@@ -110,6 +112,9 @@ vi.mock('@/lib/ai/llm', () => ({
     extract: (o: { schemaName?: string }) => {
       h.state.extractRoles.push(String(o?.schemaName ?? ''))
       if (o?.schemaName === 'tappy_follow_up') return Promise.resolve({ object: { query: h.state.gapQuery }, usage: { promptTokens: 10, completionTokens: 5 }, providerMetadata: {} })
+      // 31/10 Deep Research: its plan and its notes calls
+      if (o?.schemaName === 'tappy_research_plan') return h.state.researchPlan ? Promise.resolve({ object: h.state.researchPlan, providerMetadata: { tappy: { cost: { usd: 0.0003 } } } }) : Promise.reject(new Error('no plan'))
+      if (o?.schemaName === 'tappy_research_notes') return Promise.resolve({ object: { findings: [{ text: 'Bậc 1 giá 1.893 đồng/kWh từ 11/10/2026', source: 1 }, { text: 'nguồn không có trong danh sách', source: 99 }] }, providerMetadata: { tappy: { cost: { usd: 0.0002 } } } })
       return h.state.luna ? Promise.resolve({ object: h.state.luna, usage: { promptTokens: 10, completionTokens: 5 }, providerMetadata: {} }) : Promise.reject(new Error('no provider in this test'))
     },
     stream: (opts: Record<string, any>) => {
@@ -118,6 +123,9 @@ vi.mock('@/lib/ai/llm', () => ({
       h.state.opts = { role: opts.role, maxSteps: opts.maxSteps, maxTokens: opts.maxTokens, systemShared: typeof opts.systemShared === 'string' ? opts.systemShared : '', parallelTools: opts.parallelTools === true, thinkEffort: opts.thinkEffort ?? null }
       try { h.state.system = JSON.stringify({ system: opts.system, messages: opts.messages }) } catch { h.state.system = '' }
       return {
+        // 31/10 Deep Research: its writer reads the text stream directly (no tools)
+        textStream: (async function* () { for (const part of h.state.text.split(/(?<= )/)) yield part })(),
+        providerMetadata: Promise.resolve({ tappy: { cost: { usd: 0.004 } } }),
         get steps() { return Promise.resolve([{ toolResults: h.state.results.map(r => ({ toolName: r.name, result: r.result })) }]) },
         toDataStreamResponse: () => new Response(new ReadableStream<Uint8Array>({
           async start(c) {
@@ -156,7 +164,7 @@ type Msg = { role: 'user' | 'assistant'; content: string }
 const intent = (turn: string, domains: string[], extra: Record<string, unknown> = {}) => ({
   domains, turn, goal: 'x', known: [], party: null, budget_vnd_max: null, difficulty: 'normal', missing: [], assumptions: [], ask: null, query: null, area: null, refers: [], reject_reason: null, ...extra,
 })
-interface TurnOpts { unwind: boolean; oneBrain?: boolean; media?: boolean; mode?: 'chat' | 'web' | 'think'; luna: Record<string, unknown>; tools?: Array<{ name: string; args: Record<string, unknown> }>; reply?: string; gapQuery?: string | null; finishSteps?: Array<Record<string, unknown>>; railRows?: Array<Record<string, unknown>> }
+interface TurnOpts { unwind: boolean; oneBrain?: boolean; media?: boolean; mode?: 'chat' | 'web' | 'think' | 'deep'; researchPlan?: Record<string, unknown> | null; luna: Record<string, unknown>; tools?: Array<{ name: string; args: Record<string, unknown> }>; reply?: string; gapQuery?: string | null; finishSteps?: Array<Record<string, unknown>>; railRows?: Array<Record<string, unknown>> }
 
 async function turn(messages: Msg[], o: TurnOpts) {
   delete process.env.TAPPY_AGENT
@@ -171,6 +179,7 @@ async function turn(messages: Msg[], o: TurnOpts) {
   h.state.gapQuery = o.gapQuery ?? null
   h.state.finishSteps = o.finishSteps ?? []
   h.state.railRows = o.railRows ?? null
+  h.state.researchPlan = o.researchPlan ?? null
   h.state.commerceCtx = []
   h.state.placesCalls = []
   h.state.extractRoles = []; h.state.streamCalled = 0; h.state.toolNames = []; h.state.opts = {}; h.state.system = ''; h.state.results = []; h.state.webCalls = []; h.state.fetched = []
@@ -727,9 +736,55 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     expect(think.opts.thinkEffort).toBe('medium')
     expect(think.system).toContain('Mode: Thinking.')
     // a mode a client invents is Chat (the cheapest), never a dearer one
-    const junk = await turn(Q, { unwind: true, oneBrain: true, mode: 'deep' as never, luna: intent('chat', []), reply: 'x' })
+    // 31/10: 'deep' became a mode of its own (Nghiên cứu sâu, tested below); the invented value here is now 'ultra'
+    const junk = await turn(Q, { unwind: true, oneBrain: true, mode: 'ultra' as never, luna: intent('chat', []), reply: 'x' })
     expect(junk.opts.thinkEffort).toBeNull()
     expect(junk.system).toContain('Mode: Chat.')
+  }, 60000)
+  it('31/10 (T01 measured): a news lookup is not the last word - its result tells the model to search the web when it does not answer', async () => {
+    const Q: Msg[] = [{ role: 'user', content: 'tin moi nhat ve vu hack san giao dich' }]
+    const NEWS = [{ name: 'get_news', args: { query: 'vu hack san giao dich' } }]
+    const on = await turn(Q, { unwind: true, oneBrain: true, luna: intent('chat', []), tools: NEWS, reply: 'x' })
+    expect(JSON.stringify(on.results.find(r => r.name === 'get_news')?.result)).toContain('call web_search with a precise query')
+    const off = await turn(Q, { unwind: true, oneBrain: false, luna: intent('chat', []), tools: NEWS, reply: 'x' })
+    expect(JSON.stringify(off.results.find(r => r.name === 'get_news')?.result ?? '')).not.toContain('call web_search with a precise query')
+  }, 60000)
+  it('31/10 deep research (mode "deep"): a plan, its steps searched and read, one report at medium reasoning; the links come from the searches only', async () => {
+    const Q: Msg[] = [{ role: 'user', content: 'nghien cuu gia dien sinh hoat 2026' }]
+    const plan = { title: 'Giá điện sinh hoạt 2026', steps: [{ title: 'Biểu giá hiện hành', queries: ['bieu gia dien sinh hoat 2026'] }, { title: 'Lần điều chỉnh gần nhất', queries: ['dieu chinh gia dien 2026'] }] }
+    const deep = await turn(Q, { unwind: true, oneBrain: true, mode: 'deep', researchPlan: plan, luna: intent('chat', []), reply: '# Giá điện\nBậc 1 là 1.893 đồng/kWh [1], xem [đây](https://evil.example/x) hoặc https://evil.example/y nhé.' })
+    const frames = deep.raw.split('\n').filter(l => l.startsWith('8:')).flatMap(l => JSON.parse(l.slice(2)) as Array<Record<string, any>>).filter(a => a.type === 'tappy.research.v1')
+    expect(frames.map(f => f.phase)).toEqual(expect.arrayContaining(['planning', 'researching', 'writing', 'done']))
+    expect(frames.at(-1)).toMatchObject({ phase: 'done', title: plan.title, steps: [{ title: 'Biểu giá hiện hành', status: 'done' }, { title: 'Lần điều chỉnh gần nhất', status: 'done' }] })
+    expect(deep.web).toEqual(expect.arrayContaining(['bieu gia dien sinh hoat 2026', 'dieu chinh gia dien 2026']))
+    expect(deep.fetched).toContain('https://giadien.example/bang-gia') // the pages were read, not only the snippets
+    expect(deep.streamCalled).toBe(1) // one writer, after the research
+    expect(deep.opts).toMatchObject({ role: 'consult', thinkEffort: 'medium' })
+    expect(deep.toolNames).toEqual([])
+    expect(deep.text).toContain('Bậc 1 là 1.893 đồng/kWh [1]')
+    expect(deep.text).not.toContain('evil.example')
+    expect(deep.text).toMatch(/### Nguồn\n1\. .+ — (giadien|chinhphu|tin|forum|khac)\.example\n/)
+    expect(deep.text).not.toContain('](') // no link in the text; the card carries them
+    expect(frames.at(-1)?.links?.length).toBeGreaterThan(0)
+    for (const l of frames.at(-1)!.links) expect(l.url).toMatch(/^https:\/\/(giadien|chinhphu|tin|forum|khac)\.example\//)
+    expect(deep.text).not.toMatch(/\n99\. /) // a finding naming a source that was not handed in is dropped
+    const cost = deep.logs.find(x => x.type === 'tappyai_turn_cost' && x.turnType === 'deep_research')
+    expect(cost?.modelCalls).toBe(4) // plan + two notes + the writer
+    expect(cost?.answerUsd).toBeCloseTo(0.0003 + 0.0002 * 2 + 0.004, 6)
+    expect(deep.logs.find(x => x.type === 'tappyai_deep_research')).toMatchObject({ ok: true, steps: 2 })
+    // the model's plan fails: no report, the question is given back, the person is told
+    const warns: string[] = []
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation((...a: unknown[]) => { warns.push(String(a[0])) })
+    let failed: Awaited<ReturnType<typeof turn>>
+    try { failed = await turn(Q, { unwind: true, oneBrain: true, mode: 'deep', researchPlan: null, luna: intent('chat', []), reply: 'x' }) } finally { warnSpy.mockRestore() }
+    expect(warns.some(w => w.includes('"tappyai_quota_refund"') && w.includes('deep_research_no_plan'))).toBe(true)
+    expect(failed.streamCalled).toBe(0)
+    expect(failed.text).toContain('hoàn lại')
+    expect(failed.logs.find(x => x.type === 'tappyai_deep_research')).toMatchObject({ ok: false, failed: 'no_plan' })
+    // without one brain there is no deep research path: the usual answer call
+    const off = await turn(Q, { unwind: true, oneBrain: false, mode: 'deep', researchPlan: plan, luna: intent('chat', []), reply: 'x' })
+    expect(off.raw).not.toContain('tappy.research.v1')
+    expect(off.streamCalled).toBe(1)
   }, 60000)
   it('31/10 attachments: a web picture now reaches the model on one brain; a PDF reaches it as fenced text, and the typed words stay the question', async () => {
     const PNG = 'data:image/png;base64,iVBORw0KGgo='

@@ -334,10 +334,10 @@ export function validateClientInput(body: unknown): ValidationResult {
  * search), 'web' (look things up properly), 'think' (reason longer). Shape only: anything else - absent, misspelt, another type - is 'chat',
  * the cheapest and fastest, so a client cannot buy a dearer mode by sending junk. Whether the account may USE a mode is the route's decision.
  */
-export type ChatMode = 'chat' | 'web' | 'think'
+export type ChatMode = 'chat' | 'web' | 'think' | 'deep'
 export function readChatMode(body: unknown): ChatMode {
   const m = isRecord(body) ? body.mode : undefined
-  return m === 'web' || m === 'think' ? m : 'chat'
+  return m === 'web' || m === 'think' || m === 'deep' ? m : 'chat'
 }
 
 /** A canonical UUID. Anything else is not a key we minted. */

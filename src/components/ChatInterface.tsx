@@ -81,6 +81,8 @@ import { parseShoppingMarker } from '@/lib/ai/consultative/synthesisView'
 import { parsePlacesMarker } from '@/lib/recommendation/marker'
 import { readPlacesLiveView } from '@/lib/recommendation/liveView'
 import { readProgress, readTurnStatus } from '@/lib/recommendation/progressAnnotation'
+import { readResearchStatus } from '@/lib/ai/research/deepResearch'
+import ResearchCard from '@/components/chat/ResearchCard'
 import { rememberPlacesView, recallPlacesView } from '@/lib/recommendation/liveViewCache'
 import { rememberTurnStatus, recallTurnStatus } from '@/lib/recommendation/turnStatusCache'
 import PlaceDecision from '@/components/chat/PlaceDecision'
@@ -891,7 +893,7 @@ export default function ChatInterface({
   const fileInputRef = useRef<HTMLInputElement>(null)
   // 31/10 (owner, ChatGPT's composer): the mode the person picks - chat (default), web search, thinking. Sent with every request of this chat
   // until turned off; the server decides what each mode may do (clientInput.readChatMode, route.ts).
-  const [chatMode, setChatMode] = useState<'chat' | 'web' | 'think'>('chat')
+  const [chatMode, setChatMode] = useState<'chat' | 'web' | 'think' | 'deep'>('chat')
   const [plusOpen, setPlusOpen] = useState(false)
   const recognitionRef = useRef<SpeechRecognition | null>(null)
   // The input text captured when dictation starts, so interim results append to
@@ -1042,6 +1044,8 @@ export default function ChatInterface({
     },
     onResponse: (response) => {
       latencyOnResponseRef.current()
+      // 31/10: a deep research is one question (as ChatGPT's); the composer goes back to Chat once the request is accepted
+      setChatMode(m => (m === 'deep' ? 'chat' : m))
       setRevealMode(response.headers.get('x-tappy-reveal') === '1')
       // Latest key wins — see the note on setEvidenceKey.
       const eid = response.headers.get('X-Decision-Evidence-Id')
@@ -1797,10 +1801,13 @@ export default function ChatInterface({
                 const liveTurnStatus = readTurnStatus(msg.annotations as unknown[] | undefined)
                 if (liveTurnStatus) rememberTurnStatus(msg.content, liveTurnStatus)
                 const turnStatus = liveTurnStatus ?? recallTurnStatus(msg.content)
+                // 31/10: a deep research's plan and progress (tappy.research.v1), above its report; live-only like the cards above
+                const research = readResearchStatus(msg.annotations as unknown[] | undefined)
                 return (
                   <div key={msg.id} data-msg-id={msg.id} className="animate-slide-up flex gap-3">
                     <TappyAvatar category={category} active={isLoading && isLastMessage} searching={!!(isLoading && isLastMessage && activeTool)} />
                     <div className="flex-1 min-w-0">
+                      {research && <ResearchCard status={research} />}
                       <div className="text-base leading-[1.6] text-gray-800 dark:text-gray-100 pt-0.5">
                         {(() => {
                           // CONSULT_V3 layouts: the news grid / subject card sit right after the answer's first paragraph (as ChatGPT places them);
@@ -2351,8 +2358,8 @@ export default function ChatInterface({
           {/* 31/10: the mode in use, removable (Chat is the default and shows nothing) */}
           {chatMode !== 'chat' && (
             <div className="inline-flex items-center gap-1.5 self-start rounded-full border border-primary-500/40 bg-primary-500/10 px-3 py-1 text-xs font-medium text-primary-700 dark:text-primary-300" data-testid="chat-mode-chip">
-              <span aria-hidden="true">{chatMode === 'web' ? '🌐' : '💡'}</span>
-              <span>{t(chatMode === 'web' ? 'mode.web' : 'mode.think')}</span>
+              <span aria-hidden="true">{chatMode === 'web' ? '🌐' : chatMode === 'deep' ? '🔎' : '💡'}</span>
+              <span>{t(`mode.${chatMode}`)}</span>
               <button type="button" onClick={() => setChatMode('chat')} className="ml-0.5 rounded-full p-0.5 hover:bg-primary-500/20" aria-label={t('mode.off')}>
                 <X size={11} />
               </button>
@@ -2378,6 +2385,7 @@ export default function ChatInterface({
                     { key: 'attach', icon: '📎', label: t('composer.attach'), hint: t('composer.attachHint'), on: false, act: () => fileInputRef.current?.click() },
                     { key: 'web', icon: '🌐', label: t('mode.web'), hint: t('mode.webHint'), on: chatMode === 'web', act: () => setChatMode(m => (m === 'web' ? 'chat' : 'web')) },
                     { key: 'think', icon: '💡', label: t('mode.think'), hint: t('mode.thinkHint'), on: chatMode === 'think', act: () => setChatMode(m => (m === 'think' ? 'chat' : 'think')) },
+                    { key: 'deep', icon: '🔎', label: t('mode.deep'), hint: t('mode.deepHint'), on: chatMode === 'deep', act: () => setChatMode(m => (m === 'deep' ? 'chat' : 'deep')) },
                   ] as const).map(item => (
                     <button
                       key={item.key}

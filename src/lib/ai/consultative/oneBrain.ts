@@ -121,6 +121,12 @@ export interface OneBrainContext {
  * "Tìm web" and "Suy nghĩ" research properly. The line tells the model the rule the route enforces, so it plans within it.
  */
 /** 31/10: the result a further web_search / read_page gets in Chat mode (route.ts caps them at one each); names the composer's own labels. */
+/**
+ * 31/10 (measured, mode Chat T01): a news lookup came back with articles about other things and the model answered "no reliable news found"
+ * without searching the web. A dedicated lookup (news; any search-backed tool that found nothing) is not the last word: its result carries
+ * this next step. Language- and subject-free: the model judges whether the rows answer the request.
+ */
+export const ONE_BRAIN_WEB_FALLBACK_NOTE = 'If these results are empty or do not answer the request (about other things, too old), do not conclude that nothing exists: call web_search with a precise query (names, the event, the year) before answering, and answer from what it finds.'
 export const ONE_BRAIN_CHAT_CAP_NOTE = 'Chat mode allows one quick lookup of this kind per answer and it is used. Answer now from what you have and what you reliably know; if a deeper look would help, say the person can turn on "Tìm web" or "Suy nghĩ".'
 
 export const ONE_BRAIN_MODE_LINES: Readonly<Record<'chat' | 'web' | 'think', string>> = {

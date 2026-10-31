@@ -29,6 +29,8 @@ import { serverMessage } from '@/lib/i18n/serverMessages'
 import { fenceUntrusted } from '@/lib/ai/security/fence'
 import { wrapToolResultAsData } from '@/lib/ai/security/toolResultFence'
 import { pdfPartsToText } from '@/lib/ai/attachments/pdfAttachments'
+import { deepResearchResponse } from '@/lib/ai/research/deepResearchResponse'
+import { createDeepResearchDeps } from '@/lib/ai/research/deepResearchDeps'
 import { classifyIntent, detectLang, detectLangConfident, detectExplicitLangRequest, detectForcedTool, detectTravelIntent, detectLocationIntent, detectPlanningIntent, detectPlanningIntentFromConversation, detectPlanActivities, detectTripLength, isPlanningRefinement, defaultTransportFor, detectMovieRecommendationIntent, isSimpleQuery, normalizeVN, isPurchaseShaped, routeToolOfferOn } from '@/lib/ai/intent'
 import { deriveNeedProfile, type StoredPreferences } from '@/lib/ai/consultative/needProfile'
 import { resolveDecisionStage, taskSwitched, consultationUserTexts } from '@/lib/ai/consultative/refinement'
@@ -106,7 +108,7 @@ import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuar
 import { isProductionRuntime, consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, consultReadPageLateOn, consultPickPageReadOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn, consultUnwindS1aOn, consultUnwindS1bOn, consultUnwindS1dOn, consultUnwindS2aOn, consultUnwindS2bOn, consultUnwindS2cOn, consultUnwindS3aOn, consultUnwindS3bOn, consultUnwindS3cOn, consultUnwindS4aOn, consultUnwindS4bOn, consultUnwindS5On, consultUnwindS6aOn, consultUnwindS6bOn, consultUnwindS6cOn, consultOneBrainOn, consultOneBrainMediaOn, consultParallelOn } from '@/lib/config/consultFlags'
 import { createParallelTurnBudget, parallelExtract, parallelSearch } from '@/lib/ai/tools/parallelClient'
 import { searchWithReads, createOnce, FOLLOW_UP_SYSTEM, S6_MAX_READS } from '@/lib/ai/consultative/searchReads'
-import { ONE_BRAIN_CORE, ONE_BRAIN_CHAT_CAP_NOTE, ONE_BRAIN_FARE_NOTE, ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, oneBrainDynamic } from '@/lib/ai/consultative/oneBrain'
+import { ONE_BRAIN_CORE, ONE_BRAIN_CHAT_CAP_NOTE, ONE_BRAIN_FARE_NOTE, ONE_BRAIN_WEB_FALLBACK_NOTE, ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, oneBrainDynamic } from '@/lib/ai/consultative/oneBrain'
 import { oneBrainMediaStream } from '@/lib/ai/consultative/oneBrainMedia'
 import { oneBrainTurnTrace } from '@/lib/ai/consultative/turnTrace'
 import { serperLastAccountErrorAt } from '@/lib/ai/tools/serperClient'
@@ -2363,7 +2365,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   }
   const lean = consult && consult.domains.length > 0 ? buildLean({ extra: [], tail: [] }) : null
   // CONSULT_ONE_BRAIN: one general instruction in place of the rulebook (legacy / lean / Wave 3 lines); the person's own blocks (memory, preferences, style, shared page) stay.
-  const oneBrainPrompt = oneBrain ? { shared: ONE_BRAIN_CORE, dynamic: oneBrainDynamic({ lang, now: new Date(), address: userLocation?.address ?? null, hasLocation: hasValidCurrentLocation(userLocation), blocks: [memoryBlock ?? '', prefBlock, styleBlock, shareContextBlock], latestLang: detectLangConfident(lastText), mode: chatMode }) } : null
+  const oneBrainPrompt = oneBrain ? { shared: ONE_BRAIN_CORE, dynamic: oneBrainDynamic({ lang, now: new Date(), address: userLocation?.address ?? null, hasLocation: hasValidCurrentLocation(userLocation), blocks: [memoryBlock ?? '', prefBlock, styleBlock, shareContextBlock], latestLang: detectLangConfident(lastText), mode: chatMode === 'deep' ? 'think' : chatMode }) } : null
   if (oneBrain) console.log(JSON.stringify({ type: 'tappyai_chat_mode', mode: chatMode }))
   // CONSULT_ONE_BRAIN_MEDIA: what the pictures should show is read beside the answer (never before it, never for the answer) and used when the answer ends.
   const oneBrainUnderstanding = oneBrain && consultOneBrainMediaOn()
@@ -2438,7 +2440,12 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // One brain (31/10): a fare tool with no fare source points the model at the web for a reference price, instead of forbidding any price.
           : oneBrain && raw && typeof raw === 'object' && !Array.isArray(raw) && (raw as Record<string, unknown>).fare_status === 'not_verified'
             ? { ...(raw as Record<string, unknown>), note: ONE_BRAIN_FARE_NOTE }
-            : raw
+            // One brain (31/10): a news lookup, or any other search-backed lookup that found nothing (and says nothing itself), is not the last
+            // word while web_search is in the turn - the result carries the next step (ONE_BRAIN_WEB_FALLBACK_NOTE).
+            : oneBrain && name !== 'web_search' && SEARCH_BACKED_TOOLS.has(name) && 'web_search' in tools && raw && typeof raw === 'object' && !Array.isArray(raw)
+                && (name === 'get_news' || (!rowsIn(raw as Record<string, unknown>) && !(raw as Record<string, unknown>).note))
+              ? { ...(raw as Record<string, unknown>), next_step: ONE_BRAIN_WEB_FALLBACK_NOTE }
+              : raw
         // B1 (2026-09-20): the product unit is judged too — against the shopping constraints.
         const gate = applyHardConstraintGate(name, out, situation, lang, { shopping: shoppingConstraints, verifyFirst: oneBrain })
         const ctx = enrichment.consultativeV1
@@ -3515,6 +3522,18 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     quotaRefunded = true
     console.warn(JSON.stringify({ type: 'tappyai_quota_refund', reason, scope: quotaRefund.scope }))
     await refundAiQuestion(quotaRefund)
+  }
+  // 31/10 (mode "Nghiên cứu sâu", owner): plan → parallel research branches → one report (lib/ai/research). Here, after the identity, consent,
+  // age and quota checks every turn passes, and in place of the single answer call. A run that produces nothing gives the question back.
+  if (oneBrain && chatMode === 'deep') {
+    const recent = typedMessages.slice(-7, -1).map(m => `${m.role}: ${typeof m.content === 'string' ? m.content : m.content.map(p => (p.type === 'text' ? p.text : '')).join(' ')}`).join('\n').slice(-2500)
+    const cost = { usd: 0, calls: 0 }
+    return deepResearchResponse({
+      question: lastText, context: recent, lang, cost,
+      deps: createDeepResearchDeps({ lang, userTexts: recentUserTexts, cost }),
+      serperUsd: () => { const d = serperDelta(serperAtStart); return { usd: turnUsd({ promptTokens: 0, completionTokens: 0, serperCredits: d.credits }), calls: sumCounts(d.calls) } },
+      onFailed: reason => refundQuotaOnFailure(`deep_research_${reason}`),
+    })
   }
   // ── TAPPY_AGENT: the bounded agent turn (src/lib/ai/agent) ──────────────────────────────────────────────────────────────
   let agentPendingAction: { id: string; tool: string; args: Record<string, unknown>; argsHash: string; summary: string; at: string; expiresAt: string } | null | undefined

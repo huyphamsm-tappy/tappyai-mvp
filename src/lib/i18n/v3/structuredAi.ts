@@ -63,7 +63,15 @@ export const vi: Record<string, string> = {
   'mode.webHint': 'Tra cứu nhiều nguồn, có link và ngày',
   'mode.think': 'Suy nghĩ',
   'mode.thinkHint': 'Trả lời kỹ cho câu khó, chậm hơn',
+  'mode.deep': 'Nghiên cứu sâu',
+  'mode.deepHint': 'Lập kế hoạch, đọc nhiều nguồn, viết báo cáo (1–3 phút)',
   'mode.off': 'Tắt chế độ',
+  'research.planning': 'Đang lập kế hoạch nghiên cứu…',
+  'research.researching': 'Đang nghiên cứu · {sources} nguồn',
+  'research.writing': 'Đang viết báo cáo · {sources} nguồn',
+  'research.done': 'Đã nghiên cứu xong · {sources} nguồn',
+  'research.failed': 'Không hoàn thành được nghiên cứu',
+  'research.sources': 'Nguồn',
 }
 
 export const en: Record<string, string> = {
@@ -122,5 +130,13 @@ export const en: Record<string, string> = {
   'mode.webHint': 'Look things up across sources, with links and dates',
   'mode.think': 'Thinking',
   'mode.thinkHint': 'A thorough answer for hard questions, slower',
+  'mode.deep': 'Deep research',
+  'mode.deepHint': 'Plans, reads many sources, writes a report (1–3 minutes)',
   'mode.off': 'Turn the mode off',
+  'research.planning': 'Planning the research…',
+  'research.researching': 'Researching · {sources} sources',
+  'research.writing': 'Writing the report · {sources} sources',
+  'research.done': 'Research complete · {sources} sources',
+  'research.failed': 'The research could not be completed',
+  'research.sources': 'Sources',
 }
