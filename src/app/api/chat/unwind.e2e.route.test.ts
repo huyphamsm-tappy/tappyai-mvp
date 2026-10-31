@@ -703,14 +703,16 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     const off = await turn(ASK, { unwind: true, oneBrain: false, luna: intent('chat', []), tools: [{ name: 'present_options', args: { options } }], reply: 'x' })
     expect(off.text).not.toContain('[TAPPY_MEDIA]')
   }, 60000)
-  it('31/10 modes: chat (the default) answers a search from snippets and allows one search; web reads pages, no cap; think asks for medium reasoning', async () => {
+  it('31/10 modes: chat (the default) allows one search - its top pages are read, no follow-up search; web reads and follows up, no cap; think asks for medium reasoning', async () => {
     const Q: Msg[] = [{ role: 'user', content: 'gia dien sinh hoat bao nhieu' }]
     h.state.pages['https://giadien.example/bang-gia'] = { body: ARTICLE('Bang gia dien', ['Bac 1 gia 1.893 dong/kWh.']) }
     const two = [SEARCH, { name: 'web_search', args: { query: 'gia dien bac 2' } }]
     const chat = await turn(Q, { unwind: true, oneBrain: true, luna: intent('chat', []), tools: two, reply: 'x' })
     const chatResults = chat.results.filter(r => r.name === 'web_search').map(r => JSON.stringify(r.result))
     expect(chatResults[1]).toContain('chat_mode_budget_used')
-    expect(chatResults[0]).not.toContain('pages_read')
+    // measured 31/10: snippets alone lost 0.85 points (T01 news 357 characters) - the one search still reads its pages, without the follow-up call
+    expect(chatResults[0]).toContain('pages_read')
+    expect(chat.extract).not.toContain('tappy_follow_up')
     expect(chat.web).toHaveLength(1) // the second search never reached the provider
     expect(chat.system).toContain('Mode: Chat.')
     expect(chat.opts.thinkEffort).toBeNull()
@@ -719,6 +721,7 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     const webResults = web.results.filter(r => r.name === 'web_search').map(r => JSON.stringify(r.result))
     expect(webResults.every(r => !r.includes('chat_mode_budget_used'))).toBe(true)
     expect(webResults[0]).toContain('pages_read')
+    expect(web.extract).toContain('tappy_follow_up')
     expect(web.system).toContain('Mode: Web search.')
     const think = await turn(Q, { unwind: true, oneBrain: true, mode: 'think', luna: intent('chat', []), tools: two, reply: 'x' })
     expect(think.opts.thinkEffort).toBe('medium')

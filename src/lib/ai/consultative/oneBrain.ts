@@ -124,7 +124,7 @@ export interface OneBrainContext {
 export const ONE_BRAIN_CHAT_CAP_NOTE = 'Chat mode allows one quick lookup of this kind per answer and it is used. Answer now from what you have and what you reliably know; if a deeper look would help, say the person can turn on "Tìm web" or "Suy nghĩ".'
 
 export const ONE_BRAIN_MODE_LINES: Readonly<Record<'chat' | 'web' | 'think', string>> = {
-  chat: 'Mode: Chat. Answer quickly from what you reliably know. Look something up only when the answer depends on current facts (prices, news, weather, opening hours, a place or product to pick): one web_search with the best query, answered from its result snippets, or the dedicated tool (places, products, weather, gold price). Do not read pages one after another. If a deeper look would clearly help, say in one short line that the person can turn on "Tìm web" or "Suy nghĩ".',
+  chat: 'Mode: Chat. Answer from what you reliably know, with the same completeness and layout as always. Look something up only when the answer depends on current facts (prices, news, weather, opening hours, a place or product to pick): one web_search with the best query (its result includes the top pages), or the dedicated tool (places, products, weather, gold price). Do not chain further searches or page reads. If a deeper look would clearly help, say in one short line that the person can turn on "Tìm web" or "Suy nghĩ".',
   web: 'Mode: Web search. The person asked you to look things up: search, read the best pages, compare sources, and cite each fact with its link and date.',
   think: 'Mode: Thinking. The person asked for a thorough answer: work out every part of the request, look up what you need, check the figures, and write a complete, well-organised answer.',
 }

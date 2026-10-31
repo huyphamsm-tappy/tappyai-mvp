@@ -3241,8 +3241,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // The links are registered with the reader first (the outer collectUrls wrapper adds them only after this returns). No read_page tool on the turn: nothing changes.
   if (tools && researchReader && consultUnwindS6aOn()) {
     const tt = tools as unknown as Record<string, { execute?: (a: unknown, o: unknown) => Promise<unknown> }>
-    // 31/10: in Chat mode a search is answered from its snippets - no page reads, no follow-up search (measured: ~8 s per search with them).
-    const ws = oneBrain && chatMode === 'chat' ? undefined : tt.web_search, rp = tt.read_page
+    const ws = tt.web_search, rp = tt.read_page
     if (ws?.execute && rp?.execute) {
       const innerSearch = ws.execute.bind(ws), innerRead = rp.execute.bind(rp)
       const followUpOnce = createOnce()
@@ -3256,7 +3255,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           query: q,
           base,
           read: (urls, focus) => innerRead({ urls, focus, kind: 'other' }, { toolCallId: `search_read_${randomUUID().slice(0, 6)}`, messages: [] }),
-          gap: withGap ? {
+          // 31/10 (Chat mode): the search still reads its top pages, but no follow-up search (it costs a model call and a second search).
+          // Measured: snippets only lost 0.85 points against the pre-mode default (T01 news: 357 characters), so the reads stay.
+          gap: withGap && !(oneBrain && chatMode === 'chat') ? {
             find: async titles => {
               // The outcome of the gap call is logged as counts / a reason only (no query, no user words): a follow-up that never runs must be visible.
               try {
