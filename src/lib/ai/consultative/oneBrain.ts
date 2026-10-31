@@ -112,7 +112,7 @@ export interface OneBrainContext {
   /** The language the latest message is written in when its SCRIPT settles it (intent.detectLangConfident: zh, ja, ko, th, ar); else null. */
   latestLang?: string | null
   /** 31/10: the mode the person picked in the composer (clientInput.readChatMode); absent = no mode line (the route before modes). */
-  mode?: 'chat' | 'web' | 'think'
+  mode?: 'chat' | 'web' | 'think' | 'auto'
 }
 
 /**
@@ -140,10 +140,20 @@ export const SEARCH_DEPTH_DESCRIPTION = 'How deep this lookup goes. "quick": one
 /** The depth a web_search call asked for: "thorough" only when it says so; anything else is quick. Pure. */
 export const searchDepthOf = (args: unknown): SearchDepth => ((args as { depth?: unknown } | null)?.depth === 'thorough' ? 'thorough' : 'quick')
 
-export const ONE_BRAIN_MODE_LINES: Readonly<Record<'chat' | 'web' | 'think', string>> = {
+/**
+ * 01/11 (owner chose "C": an Auto mode like ChatGPT Go's). In Auto the model itself decides, from the conversation, whether this answer needs
+ * thinking - the same "the model judges, nothing reads the words" brain as the search depth. Calling think_deeper switches the REST of the turn
+ * to the Thinking mode (reasoning at medium on every later step, the Thinking lookups: no Chat budget, the follow-up search); not calling it
+ * keeps the turn exactly Chat. Described by what the answer needs, never by topic or keyword.
+ */
+export const THINK_DEEPER_DESCRIPTION = 'Turn on careful thinking for the rest of this answer. Call it FIRST, alone, before any other tool, when a good answer needs real reasoning: several parts to work out, a comparison or a choice with consequences, a plan, figures or code to get right, a subject where a thin answer would mislead. Do not call it for a greeting, small talk, a short follow-up, one clear fact or a short message to write. Judge from what the person needs in this conversation, not from single words.'
+export const THINK_DEEPER_NOTE = 'Thinking is on for the rest of this answer: look up what you need (several sources are allowed), check the figures, and write a complete, well-organised answer.'
+
+export const ONE_BRAIN_MODE_LINES: Readonly<Record<'chat' | 'web' | 'think' | 'auto', string>> = {
   chat: 'Mode: Chat. Answer from what you reliably know, with the same completeness and layout as always. Look something up only when the answer depends on current facts (prices, news, weather, opening hours, a place or product to pick): use the dedicated tool when one fits (places, products, weather, gold price, news) and, when it gives nothing useful or no tool fits, web_search with the best query and the depth the answer needs - "quick" when it is one clear current fact (a price today, a date, the weather, a definition, one name): one search that reads its top pages; "thorough" when it needs several sources (a comparison, figures that differ between sources, events still unfolding, a choice or advice with real consequences): it reads more pages, looks once more for what is missing, and allows up to three searches. Judge from what the person needs in this conversation, not from single words. Do not chain searches beyond that.',
   web: 'Mode: Web search. The person asked you to look things up: search, read the best pages, compare sources, and cite each fact with its link and date.',
   think: 'Mode: Thinking. The person asked for a thorough answer: work out every part of the request, look up what you need, check the figures, and write a complete, well-organised answer.',
+  auto: 'Mode: Auto. First decide whether this answer needs careful thinking. If it does, call think_deeper first, alone; the rest of the answer then reasons and researches like the Thinking mode. If it does not, answer as in Chat: from what you reliably know, looking something up only when the answer depends on current facts (the dedicated tool when one fits, else web_search with depth "quick" for one clear current fact or "thorough" when it needs several sources).',
 }
 
 /**

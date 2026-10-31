@@ -893,9 +893,10 @@ export default function ChatInterface({
   // CONSULT_V3 layouts: the subject panel (Wikipedia summary) open over the chat, or none.
   const [entityPanel, setEntityPanel] = useState<MediaEntity | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
-  // 31/10 (owner, ChatGPT's composer): the mode the person picks - chat (default), web search, thinking. Sent with every request of this chat
+  // 31/10 (owner, ChatGPT's composer): the mode the person picks - web search, thinking, deep research. Sent with every request of this chat
   // until turned off; the server decides what each mode may do (clientInput.readChatMode, route.ts).
-  const [chatMode, setChatMode] = useState<'chat' | 'web' | 'think' | 'deep'>('chat')
+  // 01/11 (owner chose "C", like ChatGPT Go): the default is Auto (Tappy decides when to think); "Trả lời nhanh" is Chat.
+  const [chatMode, setChatMode] = useState<'auto' | 'chat' | 'web' | 'think' | 'deep'>('auto')
   const [plusOpen, setPlusOpen] = useState(false)
   const recognitionRef = useRef<SpeechRecognition | null>(null)
   // The input text captured when dictation starts, so interim results append to
@@ -1042,12 +1043,12 @@ export default function ChatInterface({
       ...((responseStyle.tone || responseStyle.length) ? { responseStyle } : {}),
       chatSessionId,
       ...(initialContext ? { context: initialContext } : {}),
-      ...(chatMode !== 'chat' ? { mode: chatMode } : {}),
+      mode: chatMode,
     },
     onResponse: (response) => {
       latencyOnResponseRef.current()
       // 31/10: a deep research is one question (as ChatGPT's); the composer goes back to Chat once the request is accepted
-      setChatMode(m => (m === 'deep' ? 'chat' : m))
+      setChatMode(m => (m === 'deep' ? 'auto' : m))
       setRevealMode(response.headers.get('x-tappy-reveal') === '1')
       // Latest key wins — see the note on setEvidenceKey.
       const eid = response.headers.get('X-Decision-Evidence-Id')
@@ -2364,12 +2365,12 @@ export default function ChatInterface({
               <span>{voiceError}</span>
             </div>
           )}
-          {/* 31/10: the mode in use, removable (Chat is the default and shows nothing) */}
-          {chatMode !== 'chat' && (
+          {/* 31/10: the mode in use, removable (01/11: Auto is the default and shows nothing) */}
+          {chatMode !== 'auto' && (
             <div className="inline-flex items-center gap-1.5 self-start rounded-full border border-primary-500/40 bg-primary-500/10 px-3 py-1 text-xs font-medium text-primary-700 dark:text-primary-300" data-testid="chat-mode-chip">
-              <span aria-hidden="true">{chatMode === 'web' ? '🌐' : chatMode === 'deep' ? '🔎' : '💡'}</span>
+              <span aria-hidden="true">{chatMode === 'web' ? '🌐' : chatMode === 'deep' ? '🔎' : chatMode === 'chat' ? '⚡' : '💡'}</span>
               <span>{t(`mode.${chatMode}`)}</span>
-              <button type="button" onClick={() => setChatMode('chat')} className="ml-0.5 rounded-full p-0.5 hover:bg-primary-500/20" aria-label={t('mode.off')}>
+              <button type="button" onClick={() => setChatMode('auto')} className="ml-0.5 rounded-full p-0.5 hover:bg-primary-500/20" aria-label={t('mode.off')}>
                 <X size={11} />
               </button>
             </div>
@@ -2392,9 +2393,10 @@ export default function ChatInterface({
                 <div role="menu" data-testid="composer-plus-menu" className="absolute bottom-14 left-0 z-20 w-72 rounded-2xl border border-gray-100 bg-white p-1.5 shadow-xl dark:border-gray-800 dark:bg-gray-900">
                   {([
                     { key: 'attach', icon: '📎', label: t('composer.attach'), hint: t('composer.attachHint'), on: false, act: () => fileInputRef.current?.click() },
-                    { key: 'web', icon: '🌐', label: t('mode.web'), hint: t('mode.webHint'), on: chatMode === 'web', act: () => setChatMode(m => (m === 'web' ? 'chat' : 'web')) },
-                    { key: 'think', icon: '💡', label: t('mode.think'), hint: t('mode.thinkHint'), on: chatMode === 'think', act: () => setChatMode(m => (m === 'think' ? 'chat' : 'think')) },
-                    { key: 'deep', icon: '🔎', label: t('mode.deep'), hint: t('mode.deepHint'), on: chatMode === 'deep', act: () => setChatMode(m => (m === 'deep' ? 'chat' : 'deep')) },
+                    { key: 'chat', icon: '⚡', label: t('mode.chat'), hint: t('mode.chatHint'), on: chatMode === 'chat', act: () => setChatMode(m => (m === 'chat' ? 'auto' : 'chat')) },
+                    { key: 'web', icon: '🌐', label: t('mode.web'), hint: t('mode.webHint'), on: chatMode === 'web', act: () => setChatMode(m => (m === 'web' ? 'auto' : 'web')) },
+                    { key: 'think', icon: '💡', label: t('mode.think'), hint: t('mode.thinkHint'), on: chatMode === 'think', act: () => setChatMode(m => (m === 'think' ? 'auto' : 'think')) },
+                    { key: 'deep', icon: '🔎', label: t('mode.deep'), hint: t('mode.deepHint'), on: chatMode === 'deep', act: () => setChatMode(m => (m === 'deep' ? 'auto' : 'deep')) },
                   ] as const).map(item => (
                     <button
                       key={item.key}

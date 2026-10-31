@@ -42,8 +42,15 @@ const retriesFor = (role: ModelRole, agentRuntime?: boolean): number | undefined
  * The `tappy` provider options of a streamed answer: several tool calls per step (N2) and, 31/10, the mode "Suy nghĩ" (the Responses API at
  * `thinkEffort`). Nothing asked → no providerOptions at all (the call is unchanged). Pure; exported for tests.
  */
-export function streamProviderOptions(o: { parallelTools?: boolean; tools?: unknown; thinkEffort?: string }): { providerOptions: { tappy: Record<string, string | boolean> } } | Record<string, never> {
+export function streamProviderOptions(o: { parallelTools?: boolean; tools?: unknown; thinkEffort?: string; autoThink?: { on: boolean; effort: string } }): { providerOptions: { tappy: Record<string, string | boolean> } } | Record<string, never> {
   const tappy: Record<string, string | boolean> = { ...(o.parallelTools && o.tools ? { parallelTools: true } : {}), ...(o.thinkEffort ? { api: 'responses', effort: o.thinkEffort } : {}) }
+  // 01/11 (mode "Tự động"): read at each step's call - streamText passes this same object to every step - so the steps after the switch
+  // is turned on ask for the Responses API at its effort, and the steps before it ask for nothing (Chat).
+  const sw = o.autoThink
+  if (sw && !o.thinkEffort) {
+    Object.defineProperty(tappy, 'api', { enumerable: true, get: () => (sw.on ? 'responses' : undefined) })
+    Object.defineProperty(tappy, 'effort', { enumerable: true, get: () => (sw.on ? sw.effort : undefined) })
+  }
   return Object.keys(tappy).length ? { providerOptions: { tappy } } : {}
 }
 

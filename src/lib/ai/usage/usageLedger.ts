@@ -6,7 +6,8 @@
 // write costs one log line (counts only) and nothing else. Behind AI_USAGE_LEDGER=1 (off until the migration is applied).
 import { createAdminClient } from '@/lib/supabase/admin'
 
-export type UsageMode = 'chat' | 'web' | 'think' | 'deep'
+/** 01/11: 'auto' = a Tự động turn that stayed Chat; 'auto_think' = one where the model turned thinking on. */
+export type UsageMode = 'chat' | 'web' | 'think' | 'deep' | 'auto' | 'auto_think'
 export type UsageDepth = 'none' | 'quick' | 'thorough'
 export interface AiUsageEvent {
   userId: string | null
@@ -33,7 +34,7 @@ export function usageRow(e: AiUsageEvent): Record<string, unknown> | null {
   return {
     user_id: e.userId,
     plan: (String(e.plan || 'free').replace(/[^a-z0-9_-]/gi, '').slice(0, 24) || 'free').toLowerCase(),
-    mode: (['chat', 'web', 'think', 'deep'] as const).includes(e.mode) ? e.mode : 'chat',
+    mode: (['chat', 'web', 'think', 'deep', 'auto', 'auto_think'] as const).includes(e.mode) ? e.mode : 'chat',
     search_depth: (['none', 'quick', 'thorough'] as const).includes(e.searchDepth) ? e.searchDepth : 'none',
     cost_usd: cost,
     tokens_in: count(e.tokensIn),

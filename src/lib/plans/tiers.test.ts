@@ -20,6 +20,11 @@ describe('modeForTier', () => {
       expect(modeForTier(m, 'promax')).toBe(m)
     }
   })
+  it('01/11 Auto: Free runs it as Chat; Pro and Promax run Auto', () => {
+    expect(modeForTier('auto', 'free')).toBe('chat')
+    expect(modeForTier('auto', 'pro')).toBe('auto')
+    expect(modeForTier('auto', 'promax')).toBe('auto')
+  })
   it('Deep Research per month: Free 0, Pro 10, Promax 69', () => {
     expect(DEEP_RESEARCH_MONTHLY).toEqual({ free: 0, pro: 10, promax: 69 })
   })

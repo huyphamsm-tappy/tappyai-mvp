@@ -21,8 +21,8 @@ export function tierOf(plan: string | null | undefined): Tier {
 
 const MODES: Record<Tier, ReadonlySet<ChatMode>> = {
   free: new Set<ChatMode>(['chat']),
-  pro: new Set<ChatMode>(['chat', 'web', 'think', 'deep']),
-  promax: new Set<ChatMode>(['chat', 'web', 'think', 'deep']),
+  pro: new Set<ChatMode>(['chat', 'web', 'think', 'deep', 'auto']),
+  promax: new Set<ChatMode>(['chat', 'web', 'think', 'deep', 'auto']),
 }
 
 /** The mode the server runs: the one asked for when the tier has it, else Chat. */

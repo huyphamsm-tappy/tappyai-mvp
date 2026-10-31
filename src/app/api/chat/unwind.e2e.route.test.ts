@@ -25,7 +25,7 @@ const h = vi.hoisted(() => {
     extractRoles: [] as string[],
     streamCalled: 0,
     toolNames: [] as string[],
-    opts: {} as { role?: string; maxSteps?: number; maxTokens?: number; systemShared?: string; parallelTools?: boolean; thinkEffort?: string | null },
+    opts: {} as { role?: string; maxSteps?: number; maxTokens?: number; systemShared?: string; parallelTools?: boolean; thinkEffort?: string | null; autoThink?: { on: boolean; effort: string } | null },
     system: '' as string,
     text: 'ok',
     webCalls: [] as string[],
@@ -128,7 +128,7 @@ vi.mock('@/lib/ai/llm', () => ({
     stream: (opts: Record<string, any>) => {
       h.state.streamCalled++
       h.state.toolNames = Object.keys(opts.tools ?? {})
-      h.state.opts = { role: opts.role, maxSteps: opts.maxSteps, maxTokens: opts.maxTokens, systemShared: typeof opts.systemShared === 'string' ? opts.systemShared : '', parallelTools: opts.parallelTools === true, thinkEffort: opts.thinkEffort ?? null }
+      h.state.opts = { role: opts.role, maxSteps: opts.maxSteps, maxTokens: opts.maxTokens, systemShared: typeof opts.systemShared === 'string' ? opts.systemShared : '', parallelTools: opts.parallelTools === true, thinkEffort: opts.thinkEffort ?? null, autoThink: opts.autoThink ?? null }
       try { h.state.system = JSON.stringify({ system: opts.system, messages: opts.messages }) } catch { h.state.system = '' }
       return {
         // 31/10 Deep Research: its writer reads the text stream directly (no tools)
@@ -172,7 +172,7 @@ type Msg = { role: 'user' | 'assistant'; content: string }
 const intent = (turn: string, domains: string[], extra: Record<string, unknown> = {}) => ({
   domains, turn, goal: 'x', known: [], party: null, budget_vnd_max: null, difficulty: 'normal', missing: [], assumptions: [], ask: null, query: null, area: null, refers: [], reject_reason: null, ...extra,
 })
-interface TurnOpts { unwind: boolean; oneBrain?: boolean; media?: boolean; mode?: 'chat' | 'web' | 'think' | 'deep'; researchPlan?: Record<string, unknown> | null; plan?: string; subscriptionsOn?: boolean; preSpendDeep?: number; luna: Record<string, unknown>; tools?: Array<{ name: string; args: Record<string, unknown> }>; reply?: string; gapQuery?: string | null; finishSteps?: Array<Record<string, unknown>>; railRows?: Array<Record<string, unknown>> }
+interface TurnOpts { unwind: boolean; oneBrain?: boolean; media?: boolean; mode?: 'chat' | 'web' | 'think' | 'deep' | 'auto'; researchPlan?: Record<string, unknown> | null; plan?: string; subscriptionsOn?: boolean; preSpendDeep?: number; luna: Record<string, unknown>; tools?: Array<{ name: string; args: Record<string, unknown> }>; reply?: string; gapQuery?: string | null; finishSteps?: Array<Record<string, unknown>>; railRows?: Array<Record<string, unknown>> }
 
 async function turn(messages: Msg[], o: TurnOpts) {
   delete process.env.TAPPY_AGENT
@@ -768,6 +768,37 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     // the choice is described by what the answer needs, and left to the model's reading of the conversation
     expect(deep.system).toContain('when it needs several sources (a comparison')
     expect(deep.system).toContain('Judge from what the person needs in this conversation, not from single words.')
+  }, 60000)
+  it('01/11 Auto (owner chose "C", like ChatGPT Go): the model itself turns thinking on (think_deeper); the rest of the turn reasons at medium with the Thinking lookups; without it the turn is Chat', async () => {
+    const Q: Msg[] = [{ role: 'user', content: 'so sanh gia dien cac bac va cach tiet kiem' }]
+    h.state.pages['https://giadien.example/bang-gia'] = { body: ARTICLE('Bang gia dien', ['Bac 1 gia 1.893 dong/kWh.']) }
+    const two = [SEARCH, { name: 'web_search', args: { query: 'gia dien bac 2' } }]
+    const deep = await turn(Q, { unwind: true, oneBrain: true, mode: 'auto', luna: intent('chat', []), tools: [{ name: 'think_deeper', args: { reason: 'a comparison with figures and advice' } }, ...two], reply: 'x' })
+    expect(deep.toolNames).toContain('think_deeper')
+    expect(deep.opts.thinkEffort).toBeNull() // the first step is as fast as Chat
+    expect(deep.opts.autoThink).toMatchObject({ on: true, effort: 'medium' }) // ... and every later step reasons at medium
+    expect(JSON.stringify(deep.results.find(r => r.name === 'think_deeper')?.result)).toContain('Thinking is on')
+    const deepRes = deep.results.filter(r => r.name === 'web_search').map(r => JSON.stringify(r.result))
+    expect(deepRes).toHaveLength(2)
+    expect(deepRes.every(r => !r.includes('chat_mode_budget_used'))).toBe(true)
+    expect(deep.extract).toContain('tappy_follow_up')
+    expect(deep.logs.find(x => x.type === 'tappyai_auto_think')).toMatchObject({ on: true })
+    expect(deep.system).toContain('Mode: Auto.')
+    // the model did not ask: the turn is Chat (one quick search, no reasoning)
+    const quick = await turn(Q, { unwind: true, oneBrain: true, mode: 'auto', luna: intent('chat', []), tools: two, reply: 'x' })
+    expect(quick.opts.autoThink).toMatchObject({ on: false })
+    expect(JSON.stringify(quick.results.filter(r => r.name === 'web_search')[1]?.result)).toContain('chat_mode_budget_used')
+    expect(quick.extract).not.toContain('tappy_follow_up')
+    // Chat and Thinking never see the tool
+    const chat = await turn(Q, { unwind: true, oneBrain: true, mode: 'chat', luna: intent('chat', []), reply: 'x' })
+    expect(chat.toolNames).not.toContain('think_deeper')
+    expect(chat.opts.autoThink).toBeNull()
+    const think = await turn(Q, { unwind: true, oneBrain: true, mode: 'think', luna: intent('chat', []), reply: 'x' })
+    expect(think.toolNames).not.toContain('think_deeper')
+    // Pip (Free) with the plans on sale: Auto runs as Chat
+    const free = await turn(Q, { unwind: true, oneBrain: true, mode: 'auto', subscriptionsOn: true, luna: intent('chat', []), reply: 'x' })
+    expect(free.logs.find(x => x.type === 'tappyai_mode_tier')).toMatchObject({ asked: 'auto', ran: 'chat', tier: 'free' })
+    expect(free.toolNames).not.toContain('think_deeper')
   }, 60000)
   it('01/11 plan tiers (with the plans on sale): Pip (Free) asks for Thinking or Deep Research and gets Chat; Coco gets them; the 11th Deep Research of the month is refused', async () => {
     const Q: Msg[] = [{ role: 'user', content: 'nghien cuu gia dien sinh hoat 2026' }]

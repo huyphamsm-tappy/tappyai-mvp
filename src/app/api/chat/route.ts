@@ -110,7 +110,7 @@ import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuar
 import { isProductionRuntime, consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, consultReadPageLateOn, consultPickPageReadOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn, consultUnwindS1aOn, consultUnwindS1bOn, consultUnwindS1dOn, consultUnwindS2aOn, consultUnwindS2bOn, consultUnwindS2cOn, consultUnwindS3aOn, consultUnwindS3bOn, consultUnwindS3cOn, consultUnwindS4aOn, consultUnwindS4bOn, consultUnwindS5On, consultUnwindS6aOn, consultUnwindS6bOn, consultUnwindS6cOn, consultOneBrainOn, consultOneBrainMediaOn, consultParallelOn } from '@/lib/config/consultFlags'
 import { createParallelTurnBudget, parallelExtract, parallelSearch } from '@/lib/ai/tools/parallelClient'
 import { searchWithReads, createOnce, FOLLOW_UP_SYSTEM, S6_MAX_READS } from '@/lib/ai/consultative/searchReads'
-import { ONE_BRAIN_CORE, ONE_BRAIN_CHAT_CAP_NOTE, ONE_BRAIN_FARE_NOTE, ONE_BRAIN_WEB_FALLBACK_NOTE, CHAT_SEARCH_BUDGET, SEARCH_DEPTH_DESCRIPTION, searchDepthOf, type SearchDepth, ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, oneBrainDynamic } from '@/lib/ai/consultative/oneBrain'
+import { ONE_BRAIN_CORE, THINK_DEEPER_DESCRIPTION, THINK_DEEPER_NOTE, ONE_BRAIN_CHAT_CAP_NOTE, ONE_BRAIN_FARE_NOTE, ONE_BRAIN_WEB_FALLBACK_NOTE, CHAT_SEARCH_BUDGET, SEARCH_DEPTH_DESCRIPTION, searchDepthOf, type SearchDepth, ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, oneBrainDynamic } from '@/lib/ai/consultative/oneBrain'
 import { oneBrainMediaStream } from '@/lib/ai/consultative/oneBrainMedia'
 import { oneBrainTurnTrace } from '@/lib/ai/consultative/turnTrace'
 import { serperLastAccountErrorAt } from '@/lib/ai/tools/serperClient'
@@ -2379,6 +2379,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     chatMode = modeForTier(chatMode, planTier)
     if (asked !== chatMode) console.log(JSON.stringify({ type: 'tappyai_mode_tier', asked, ran: chatMode, tier: planTier }))
   }
+  // 01/11 (mode "Tự động", owner chose "C"): the switch the model turns on with think_deeper; every later step of the stream reasons at medium
+  // (AI.stream autoThink) and the lookups follow the Thinking mode. Off for the whole turn = exactly Chat.
+  const autoThink: { on: boolean; effort: 'medium' } = { on: false, effort: 'medium' }
+  const chatLike = () => chatMode === 'chat' || (chatMode === 'auto' && !autoThink.on)
   const oneBrainPrompt = oneBrain ? { shared: ONE_BRAIN_CORE, dynamic: oneBrainDynamic({ lang, now: new Date(), address: userLocation?.address ?? null, hasLocation: hasValidCurrentLocation(userLocation), blocks: [memoryBlock ?? '', prefBlock, styleBlock, shareContextBlock], latestLang: detectLangConfident(lastText), mode: chatMode === 'deep' ? 'think' : chatMode }) } : null
   if (oneBrain) console.log(JSON.stringify({ type: 'tappyai_chat_mode', mode: chatMode }))
   // CONSULT_ONE_BRAIN_MEDIA: what the pictures should show is read beside the answer (never before it, never for the answer) and used when the answer ends.
@@ -2685,7 +2689,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // plan, mode, the deepest web lookup, the turn's price and counts - never a word of the conversation. Reporting only; fire and forget.
   const turnSearch: { depth: 'none' | SearchDepth } = { depth: 'none' }
   const usageSink = (i: TurnCostInfo, extra: { parallelCalls?: number; ok?: boolean } = {}) => {
-    void recordAiUsage({ userId: authedUserId ?? null, plan: quotaPlan, mode: chatMode, searchDepth: turnSearch.depth, costUsd: i.usd, tokensIn: i.tokensIn, tokensOut: i.tokensOut, serperCalls: i.serperCalls, ...extra })
+    void recordAiUsage({ userId: authedUserId ?? null, plan: quotaPlan, mode: chatMode === 'auto' && autoThink.on ? 'auto_think' : chatMode, searchDepth: turnSearch.depth, costUsd: i.usd, tokensIn: i.tokensIn, tokensOut: i.tokensOut, serperCalls: i.serperCalls, ...extra })
   }
   const tools = noToolTurn && !agentOn ? undefined : gateTools(timeTools({
       // A movie/show RECOMMENDATION turn drops the place search entirely, so the
@@ -3046,6 +3050,17 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         parameters: z.object({ location: z.string().describe('Ten thanh pho/tinh can xem thoi tiet (vd: Ha Noi, Da Nang, TP HCM)') }),
         execute: async ({ location }) => getWeather(location, lang)
       }),
+      // 01/11 (mode "Tự động"): the model's own decision to think for the rest of this answer (oneBrain.ts THINK_DEEPER_DESCRIPTION). Nothing
+      // leaves the server; the reason is counted, never logged.
+      ...(oneBrain && chatMode === 'auto' ? { think_deeper: tool({
+        description: THINK_DEEPER_DESCRIPTION,
+        parameters: z.object({ reason: z.string().describe('In a few words, what in this request needs the thinking') }),
+        execute: async ({ reason }) => {
+          autoThink.on = true
+          console.log(JSON.stringify({ type: 'tappyai_auto_think', on: true, reason_chars: typeof reason === 'string' ? reason.length : 0 }))
+          return { ok: true, note: THINK_DEEPER_NOTE }
+        },
+      }) } : {}),
       // CONSULT_ONE_BRAIN: a daily forecast up to 10 days (weatherForecast.ts, Open-Meteo, no key) - get_weather gives today only.
       ...(oneBrain ? { get_weather_forecast: tool({
         description: 'Weather for a city or place anywhere, from one call: the conditions NOW, the next 12 hours hour by hour (rain chance and amount, sky, temperature, local time), and a daily forecast for 1-10 days (min/max temperature, rain chance and amount, wind, sky). Use it for now, tonight, the next hours, the weekend, a trip date or next week.',
@@ -3287,7 +3302,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // 31/10 (Chat mode): the search still reads its top pages, but no follow-up search (it costs a model call and a second search).
           // Measured: snippets only lost 0.85 points against the pre-mode default (T01 news: 357 characters), so the reads stay.
           // 01/11: unless the model asked for a thorough lookup (CHAT_SEARCH_BUDGET.thorough.followUp).
-          gap: withGap && !(oneBrain && chatMode === 'chat' && !CHAT_SEARCH_BUDGET[searchDepthOf(a)].followUp) ? {
+          gap: withGap && !(oneBrain && chatLike() && !CHAT_SEARCH_BUDGET[searchDepthOf(a)].followUp) ? {
             find: async titles => {
               // The outcome of the gap call is logged as counts / a reason only (no query, no user words): a follow-up that never runs must be visible.
               try {
@@ -3309,14 +3324,15 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     }
   }
   // 01/11 (usage ledger): the deepest web lookup this turn made - quick / thorough in Chat (the model's choice), thorough in Web / Thinking.
-  if (tools && oneBrain && chatMode !== 'chat') {
+  if (tools && oneBrain && chatMode !== 'chat' && chatMode !== 'auto') {
     const ws = (tools as unknown as Record<string, { execute?: (a: unknown, o: unknown) => Promise<unknown> }>).web_search
     if (ws?.execute) { const inner = ws.execute.bind(ws); ws.execute = async (a: unknown, o: unknown) => { turnSearch.depth = 'thorough'; return inner(a, o) } }
   }
   // 31/10 (mode Chat): a budget of web searches and page reads per turn; a further call is answered with a note, never run.
   // 01/11: the budget is the one of the depth the model chose (CHAT_SEARCH_BUDGET): quick = 1 search / 1 read, and once any web_search of
   // the turn asked for "thorough", 3 / 3 for the rest of the turn. One line per search says which depth was chosen (counts only).
-  if (tools && oneBrain && chatMode === 'chat') {
+  // 01/11 (mode "Tự động"): the same budget until the model turns thinking on; after it, no budget (the Thinking mode's lookups).
+  if (tools && oneBrain && (chatMode === 'chat' || chatMode === 'auto')) {
     const tt = tools as unknown as Record<string, { execute?: (a: unknown, o: unknown) => Promise<unknown> }>
     let depth: SearchDepth = 'quick'
     for (const name of ['web_search', 'read_page'] as const) {
@@ -3325,6 +3341,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       const inner = t.execute.bind(t)
       let used = 0
       t.execute = async (a: unknown, o: unknown) => {
+        if (autoThink.on) {
+          if (name === 'web_search') turnSearch.depth = 'thorough'
+          return inner(a, o)
+        }
         if (name === 'web_search') {
           if (searchDepthOf(a) === 'thorough') depth = 'thorough'
           turnSearch.depth = depth
@@ -3907,6 +3927,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // 31/10 (mode think): the one-brain answer reasons at medium WITH its tools (Responses API, streamed). Measured on 11 hard turns:
     // 7.32 vs ChatGPT Think 6.64 (none: 6.80 vs 7.00), ~20 s slower, +34 % per hard turn.
     ...(oneBrain && chatMode === 'think' ? { thinkEffort: 'medium' as const } : {}),
+    // 01/11 (mode "Tự động"): Chat until the model calls think_deeper, then every later step at medium (streamProviderOptions reads the switch per step).
+    ...(oneBrain && chatMode === 'auto' ? { autoThink } : {}),
     // Consult V2: a pick whose search already ran (presearch) answers in ONE step — no second full pass.
     // A follow-up/compare that re-reads its evidence keeps a second step: a stray tool call must still end in text.
     // R15: a pre-fetched trip plan writes in ONE step (a second only if it still reaches for a tool).

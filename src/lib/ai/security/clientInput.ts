@@ -334,10 +334,12 @@ export function validateClientInput(body: unknown): ValidationResult {
  * search), 'web' (look things up properly), 'think' (reason longer). Shape only: anything else - absent, misspelt, another type - is 'chat',
  * the cheapest and fastest, so a client cannot buy a dearer mode by sending junk. Whether the account may USE a mode is the route's decision.
  */
-export type ChatMode = 'chat' | 'web' | 'think' | 'deep'
+// 01/11 (owner chose "C", like ChatGPT Go): 'auto' - Chat that the model itself may turn into Thinking for the rest of the turn (think_deeper).
+// The web composer sends it by default; a request without a mode stays 'chat' (apps and older clients unchanged).
+export type ChatMode = 'chat' | 'web' | 'think' | 'deep' | 'auto'
 export function readChatMode(body: unknown): ChatMode {
   const m = isRecord(body) ? body.mode : undefined
-  return m === 'web' || m === 'think' || m === 'deep' ? m : 'chat'
+  return m === 'web' || m === 'think' || m === 'deep' || m === 'auto' ? m : 'chat'
 }
 
 /** A canonical UUID. Anything else is not a key we minted. */

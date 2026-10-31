@@ -51,6 +51,37 @@ describe('AI.stream asks for it only when the mode does', () => {
   })
 })
 
+describe('01/11 mode "Tự động": the turn switches to thinking between two steps', () => {
+  it('autoThink → the tappy options of the stream ask for nothing until it is on, then for the Responses API at its effort; parallel tools kept', async () => {
+    const { streamProviderOptions } = await import('../ai')
+    const sw = { on: false, effort: 'medium' as const }
+    const o = streamProviderOptions({ parallelTools: true, tools: {}, autoThink: sw }) as { providerOptions: { tappy: Record<string, unknown> } }
+    expect(o.providerOptions.tappy.parallelTools).toBe(true)
+    expect(o.providerOptions.tappy.api).toBeUndefined()
+    expect(o.providerOptions.tappy.effort).toBeUndefined()
+    sw.on = true
+    expect(o.providerOptions.tappy).toMatchObject({ parallelTools: true, api: 'responses', effort: 'medium' })
+    // a turn without tools still gets the switch (no parallelTools)
+    const bare = streamProviderOptions({ autoThink: { on: true, effort: 'medium' } }) as { providerOptions: { tappy: Record<string, unknown> } }
+    expect(bare.providerOptions.tappy).toMatchObject({ api: 'responses', effort: 'medium' })
+  })
+  it('the SAME options object on two calls (as streamText passes it to every step): chat completions first, the Responses API once switched on', async () => {
+    process.env.LLM_RESPONSES_PROCESS_BUDGET_USD = '1'
+    const { streamProviderOptions } = await import('../ai')
+    const sw = { on: false, effort: 'medium' as const }
+    const tappy = (streamProviderOptions({ autoThink: sw }) as { providerOptions: { tappy: Record<string, unknown> } }).providerOptions.tappy
+    const before = requests.length
+    await Promise.resolve((await model()).doStream(call(tappy, true))).catch(() => null) // step 1: chat completions (offline)
+    expect(requests.slice(before).some(x => x.path === '/v1/responses')).toBe(false)
+    sw.on = true
+    const r = await (await model()).doStream(call(tappy)) // step 2: the model asked to think
+    expect(await drain(r.stream as never)).toBe('Xin chào')
+    const last = requests[requests.length - 1]
+    expect(last.path).toBe('/v1/responses')
+    expect(last.body).toMatchObject({ reasoning: { effort: 'medium' } })
+  })
+})
+
 describe('mode "Suy nghĩ": one call on the Responses API, streamed, at the asked effort', () => {
   it('a call that asks for it (api: responses, effort: medium) is streamed from /v1/responses with reasoning.effort medium', async () => {
     process.env.LLM_RESPONSES_PROCESS_BUDGET_USD = '1'

@@ -98,6 +98,12 @@ export interface AIStreamOptions extends AIGenerateOptions {
    * streamed. Unset = the role's configured path and effort, unchanged. Other providers ignore it.
    */
   thinkEffort?: ReasoningEffort
+  /**
+   * 01/11 (mode "Tự động"): a switch the caller turns on during the turn (the model's think_deeper tool). streamText hands the SAME provider
+   * options to every step, so each step after it is switched on asks for the Responses API at `effort` (as thinkEffort does for a whole
+   * turn); the steps before it run as Chat. Ignored when thinkEffort is set.
+   */
+  autoThink?: { on: boolean; effort: ReasoningEffort }
   // REMOVED (C2): a `prepareStep` option forwarded as experimental_prepareStep.
   // streamText in ai@4.3.19 does not accept it — only generateText does — so it
   // was silently discarded on every call while its @ts-ignore claimed the

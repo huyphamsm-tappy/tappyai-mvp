@@ -13,8 +13,8 @@ CREATE TABLE IF NOT EXISTS public.ai_usage_events (
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   -- the account's plan when the turn ran: guest | free | trial | pro | promax (and the older plan ids while they last)
   plan TEXT NOT NULL CHECK (char_length(plan) BETWEEN 1 AND 24),
-  -- the composer mode: chat | web | think | deep
-  mode TEXT NOT NULL CHECK (mode IN ('chat', 'web', 'think', 'deep')),
+  -- the composer mode: chat | web | think | deep | auto (Tự động, stayed Chat) | auto_think (Tự động, the model turned thinking on)
+  mode TEXT NOT NULL CHECK (mode IN ('chat', 'web', 'think', 'deep', 'auto', 'auto_think')),
   -- the deepest web lookup of the turn: none | quick | thorough
   search_depth TEXT NOT NULL DEFAULT 'none' CHECK (search_depth IN ('none', 'quick', 'thorough')),
   cost_usd NUMERIC(10, 6) NOT NULL DEFAULT 0 CHECK (cost_usd >= 0 AND cost_usd < 100),
