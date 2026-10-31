@@ -44,7 +44,8 @@ export const GAP_STEPS = 2
 const GAP_MIN_LEFT_MS = 20_000
 /** Owner 31/10 ("báo cáo có phần hình ảnh chèn vào cho hợp nội dung từng mục"): pictures per report, at most this many (one per section). */
 export const MAX_SECTION_IMAGES = 4
-export interface Evidence { id: number; title: string; url: string; snippet: string; text: string }
+/** `published`: the page's own publication date (YYYY-MM-DD) when the reader found one. */
+export interface Evidence { id: number; title: string; url: string; snippet: string; text: string; published?: string }
 export interface Finding { step: number; text: string; source: number }
 export type StepStatus = 'pending' | 'running' | 'done' | 'failed'
 /** A cited source as the card links it (https only); the report text names it without a link. */
@@ -77,7 +78,7 @@ export function httpsUrl(u: unknown): u is string {
 export interface DeepResearchDeps {
   plan(question: string, context: string): Promise<ResearchPlan>
   /** One query: its search results with the text of the pages read (empty when nothing came back). */
-  gather(query: string, focus: string): Promise<Array<{ title: string; url: string; snippet: string; text: string }>>
+  gather(query: string, focus: string): Promise<Array<{ title: string; url: string; snippet: string; text: string; published?: string }>>
   /** The step's findings; `source` is an id of the evidence handed in. */
   notes(step: string, question: string, evidence: readonly Evidence[]): Promise<Array<{ text: string; source: number }>>
   write(input: { question: string; plan: ResearchPlan; evidence: readonly Evidence[]; findings: readonly Finding[] }): AsyncIterable<string>
@@ -182,27 +183,31 @@ export function sourcesBlock(evidence: readonly Evidence[], findings: readonly F
   const host = (u: string) => { try { return new URL(u).hostname.replace(/^www\./, '') } catch { return '' } }
   const label = (t: string) => t.replace(/[[\]()<>`*_#|\\\n]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 140)
   const head = heading || (lang === 'en' ? 'Sources' : 'Nguồn')
-  return `\n\n### ${head}\n${used.map(e => `${e.id}. ${label(e.title) || host(e.url)} — ${host(e.url)}`).join('\n')}\n`
+  return `\n\n### ${head}\n${used.map(e => `${e.id}. ${label(e.title) || host(e.url)} — ${host(e.url)}${e.published ? `, ${sourceDate(e.published, lang)}` : ''}`).join('\n')}\n`
+}
+
+/** A source's date as the reader's locale writes it: 22/10/2025 (vi), 2025-10-22 otherwise. Pure. */
+export function sourceDate(iso: string, lang: string): string {
+  const [y, m, d] = iso.slice(0, 10).split('-')
+  return lang === 'vi' ? `${d}/${m}/${y}` : `${y}-${m}-${d}`
 }
 
 /**
- * Which picture goes under which section of the written report: the report's level-2 headings are the research steps in plan order (the
- * writer is told so); a heading whose title is the step's own title takes that step's picture, else the k-th heading takes step k's. The
- * picture's `title` is the heading's title as the client reads it (answerDoc/parse headingTitle), so the article layout puts it right under
- * that heading; a heading the client cannot read as a title (too long) gets none. Pure.
+ * Which picture goes under which section of the written report: the writer heads each research section with its step's title, so a picture
+ * goes to the level-2 heading whose title IS its step's title (numbering aside). No position guess: the report also has sections of its own
+ * (the summary, the scope note, the recommendations), and a picture under the wrong section is worse than none. The picture's `title` is the
+ * heading's title as the client reads it (answerDoc/parse headingTitle), so the article layout puts it right under that heading. Pure.
  */
 export function sectionImages(report: string, plan: ResearchPlan, pictures: ReadonlyArray<string | null>): SectionImage[] {
   const heads = parseDoc(report).filter((b): b is Extract<DocBlock, { t: 'heading' }> => b.t === 'heading' && b.level === 2).map(b => headingTitle(b.text))
   const used = new Set<number>()
   const at = new Map<number, number>()
   const sections = sectionSteps(plan) // the plan's own steps come first, so `pictures[k]` is section k's
-  // first every heading that IS a step's title, then the k-th heading for a step still without one (never a heading another step owns)
   sections.forEach((s, k) => {
     const own = headingTitle(s.title)
     const i = own ? heads.findIndex((h, j) => !used.has(j) && !!h && titleKey(h) === titleKey(own)) : -1
     if (i >= 0) { used.add(i); at.set(k, i) }
   })
-  sections.forEach((_, k) => { if (!at.has(k) && k < heads.length && !used.has(k) && heads[k]) { used.add(k); at.set(k, k) } })
   const out: SectionImage[] = []
   sections.forEach((_, k) => {
     const src = pictures[k]
@@ -245,7 +250,11 @@ export async function runDeepResearch(question: string, context: string, lang: s
       const url = g.url ? canonicalSourceUrl(g.url) : null
       if (!url) continue
       let e = byUrl.get(url)
-      if (!e) { e = { id: evidence.length + 1, title: clean(g.title, 200), url, snippet: clean(g.snippet, 400), text: g.text.slice(0, 6000) }; evidence.push(e); byUrl.set(url, e) }
+      if (!e) {
+        const published = typeof g.published === 'string' && /^\d{4}-\d{2}-\d{2}/.test(g.published) ? g.published.slice(0, 10) : undefined
+        e = { id: evidence.length + 1, title: clean(g.title, 200), url, snippet: clean(g.snippet, 400), text: g.text.slice(0, 6000), ...(published ? { published } : {}) }
+        evidence.push(e); byUrl.set(url, e)
+      }
       if (!mine.includes(e)) mine.push(e)
     }
     if (!mine.length) { steps[k].status = 'failed'; show('researching'); return }

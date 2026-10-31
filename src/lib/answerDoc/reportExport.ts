@@ -64,7 +64,9 @@ export function reportHtml(text: string, o: { title: string; images: readonly Re
   }).join('\n')
   return `<!doctype html><html lang="${esc(o.lang)}"><head><meta charset="utf-8"><title>${esc(o.title)}</title><style>
 body{font-family:Georgia,'Times New Roman',serif;color:#111;max-width:760px;margin:32px auto;padding:0 24px;line-height:1.6;font-size:15px}
-h1,h2,h3,h4{font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;line-height:1.3}h1{font-size:26px}h2{font-size:20px;margin-top:28px}h3{font-size:17px}
+h1,h2,h3,h4{font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;line-height:1.3}h1{font-size:28px;margin-bottom:4px;border-bottom:2px solid #1a4fb5;padding-bottom:8px}h1+p{color:#555;margin-top:6px}h2{font-size:20px;margin-top:28px;color:#1a3d7c}h3{font-size:17px}
+table+div em,table+p em{color:#555;font-size:13px}
+@page{margin:18mm 16mm;@bottom-center{content:counter(page) " / " counter(pages);font-family:Arial,sans-serif;font-size:10px;color:#666}}
 figure{margin:12px 0}figure img{max-width:100%;max-height:320px;object-fit:cover;border-radius:8px}
 table{border-collapse:collapse;width:100%;font-size:13px;margin:12px 0}th,td{border:1px solid #ccc;padding:6px 8px;text-align:left;vertical-align:top}
 a{color:#1a4fb5}blockquote{border-left:3px solid #ccc;margin:12px 0;padding-left:12px;color:#444}

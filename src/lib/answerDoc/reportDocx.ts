@@ -40,7 +40,8 @@ export async function reportDocx(text: string, links: readonly ReportLink[], tit
   const HEADINGS = [d.HeadingLevel.HEADING_1, d.HeadingLevel.HEADING_2, d.HeadingLevel.HEADING_3, d.HeadingLevel.HEADING_4]
   const body = (blocks: DocBlock[], level = 0): Array<InstanceType<typeof d.Paragraph> | InstanceType<typeof d.Table>> => blocks.flatMap(b => {
     switch (b.t) {
-      case 'heading': return [new d.Paragraph({ heading: HEADINGS[Math.min(Math.max(b.level, 1), 4) - 1], children: runs(b.text) })]
+      // the report's "# " title is the document's Title; its sections are Heading 1..3
+      case 'heading': return [new d.Paragraph({ heading: b.level === 1 ? d.HeadingLevel.TITLE : HEADINGS[Math.min(b.level - 1, 3) - 1] ?? HEADINGS[0], children: runs(b.text) })]
       case 'para': return b.text.split('\n').map(l => new d.Paragraph({ children: runs(l) }))
       case 'quote': return [new d.Paragraph({ indent: { left: 400 }, children: runs(b.text) })]
       case 'hr': return [new d.Paragraph({ thematicBreak: true, children: [] })]
@@ -59,6 +60,8 @@ export async function reportDocx(text: string, links: readonly ReportLink[], tit
       ])
     }
   })
-  const doc = new d.Document({ title, creator: 'Tappy', sections: [{ children: body(parseDoc(reportMarkdown(text, links))) }] })
+  // page numbers at the bottom of every page (like a report printed from Word)
+  const footer = new d.Footer({ children: [new d.Paragraph({ alignment: d.AlignmentType.CENTER, children: [new d.TextRun({ children: [d.PageNumber.CURRENT, ' / ', d.PageNumber.TOTAL_PAGES], size: 18, color: '666666' })] })] })
+  const doc = new d.Document({ title, creator: 'Tappy', sections: [{ footers: { default: footer }, children: body(parseDoc(reportMarkdown(text, links))) }] })
   return d.Packer.toBlob(doc)
 }

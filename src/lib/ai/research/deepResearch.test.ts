@@ -193,16 +193,11 @@ describe('the follow-up round (measured T22: one round found no count and the re
 
 describe('section pictures (owner 31/10: pictures that fit each section of the report)', () => {
   const plan = { title: 'T', steps: [{ title: 'Doanh số', queries: ['q'] }, { title: 'Giá', queries: ['q'] }, { title: 'Triển vọng', queries: ['q'] }] }
-  it('a heading that is a step\'s own title takes that step\'s picture, whatever its place; a step without one takes the k-th heading if free', () => {
-    // headings: "Giá" (step 2's own, first), "Doanh số toàn cầu" (nobody's), "Triển vọng" (step 3's own), "Kết luận"
-    const report = '# T\n- tóm tắt\n## 1. Giá\nx\n## Doanh số toàn cầu\ny\n## Triển vọng\nz\n## Kết luận\nw'
+  it('a picture goes only to the heading that is its step\'s own title (numbering aside), wherever it is; no position guess', () => {
+    // the report's own sections (summary, scope) come first; "Doanh số toàn cầu" is nobody's title
+    const report = '# T\n## 1. Tóm tắt\nx\n## 2. Phạm vi và lưu ý số liệu\nx\n## 3. Giá\nx\n## 4. Doanh số toàn cầu\ny\n## 5. Triển vọng\nz\n## 6. Kết luận\nw'
     const pics = ['https://i.example/a.jpg', 'https://i.example/b.jpg', 'https://i.example/c.jpg']
     expect(sectionImages(report, plan, pics)).toEqual([
-      { title: 'Giá', src: 'https://i.example/b.jpg' },
-      { title: 'Triển vọng', src: 'https://i.example/c.jpg' },
-    ]) // step 1's k-th heading (the first) is step 2's: step 1 gets none rather than a wrong section
-    expect(sectionImages('## Doanh số toàn cầu\n## Giá\n## Triển vọng', plan, pics)).toEqual([
-      { title: 'Doanh số toàn cầu', src: 'https://i.example/a.jpg' },
       { title: 'Giá', src: 'https://i.example/b.jpg' },
       { title: 'Triển vọng', src: 'https://i.example/c.jpg' },
     ])
@@ -211,6 +206,8 @@ describe('section pictures (owner 31/10: pictures that fit each section of the r
     const long = '## ' + 'một hai ba bốn năm sáu bảy tám chín mười'
     expect(sectionImages(`${long}\n## Giá\n## Triển vọng`, plan, [null, 'http://i.example/b.jpg', 'https://i.example/c.jpg'])).toEqual([{ title: 'Triển vọng', src: 'https://i.example/c.jpg' }])
     expect(sectionImages(`${long}\nx`, plan, ['https://i.example/a.jpg', null, null])).toEqual([])
+    const tooLong = { title: 'T', steps: [{ title: 'một hai ba bốn năm sáu bảy tám chín mười', queries: ['q'] }] }
+    expect(sectionImages(`## một hai ba bốn năm sáu bảy tám chín mười`, tooLong, ['https://i.example/a.jpg'])).toEqual([])
     const many = { title: 'T', steps: Array.from({ length: 5 }, (_, i) => ({ title: `Mục ${i}`, queries: ['q'] })) }
     expect(sectionImages(many.steps.map(s => `## ${s.title}`).join('\n'), many, many.steps.map((_, i) => `https://i.example/${i}.jpg`))).toHaveLength(MAX_SECTION_IMAGES)
   })
@@ -282,6 +279,14 @@ describe('sourcesBlock', () => {
     expect(sourcesBlock(ev, [{ step: 1, text: 't', source: 2 }], 'vi')).toBe('\n\n### Nguồn\n2. B — b.example\n')
     expect(sourcesBlock(ev, [], 'vi')).toBe('')
     expect(sourcesBlock(ev, [{ step: 1, text: 't', source: 1 }], 'vi')).toContain('1. A x — a.example')
+  })
+  it('a source with its page\'s date shows it, in the reader\'s locale (the Claude report lists publisher, title and date)', async () => {
+    const ev = [{ id: 1, title: 'Báo cáo TMĐT', url: 'https://idea.gov.vn/x', snippet: '', text: '', published: '2025-10-22' }]
+    expect(sourcesBlock(ev, [{ step: 1, text: 't', source: 1 }], 'vi')).toContain('1. Báo cáo TMĐT — idea.gov.vn, 22/10/2025')
+    expect(sourcesBlock(ev, [{ step: 1, text: 't', source: 1 }], 'en')).toContain('— idea.gov.vn, 2025-10-22')
+    const d = deps({ gather: async () => [{ ...page('a'), published: '2026-08-11T03:00:00Z' }, { ...page('b'), published: 'hôm qua' }] })
+    const out = await runDeepResearch('q', '', 'vi', d, collect().emit)
+    expect(out.evidence.map(e => e.published)).toEqual(['2026-08-11', undefined])
   })
   it('a search result title cannot become markup', () => {
     const ev = [{ id: 1, title: '[bấm](javascript:alert(1)) <img src=x onerror=y> `code` **đậm** # h | t', url: 'https://a.example/', snippet: '', text: '' }]
