@@ -108,7 +108,16 @@ export interface OneBrainContext {
   hasLocation: boolean
   /** Blocks the route already built for every path (memory, preferences, response style, shared page); '' when absent. */
   blocks: readonly string[]
+  /** The language the latest message is written in when its SCRIPT settles it (intent.detectLangConfident: zh, ja, ko, th, ar); else null. */
+  latestLang?: string | null
 }
+
+/**
+ * A script nothing else writes (rerun 31/10: the question in Chinese got a Vietnamese answer again, while the Polish and Portuguese ones were
+ * answered in their language). The general line was not enough against a long Vietnamese conversation; when the script itself says which
+ * language the message is in, the turn says it by name. Latin-script languages stay with the general line (their detection is not certain).
+ */
+const SCRIPT_LANGS: Readonly<Record<string, string>> = { zh: 'Chinese', ja: 'Japanese', ko: 'Korean', th: 'Thai', ar: 'Arabic' }
 
 /** The per-turn part: today's date, where the person is, and the person's own settings. No routing, no domain rule. */
 export function oneBrainDynamic(c: OneBrainContext): string {
@@ -118,10 +127,12 @@ export function oneBrainDynamic(c: OneBrainContext): string {
   // 31/10 (share run T20): "Reply in Vietnamese unless the person writes in another language" was read against the whole Vietnamese conversation,
   // and a question written in Chinese got a Vietnamese answer. The app language is only the default; the latest message decides.
   const language = `Reply in the language the person's latest message is written in, even when earlier turns used another. Reply in ${c.lang === 'en' ? 'English' : 'Vietnamese'} only when that message has no language of its own (a link, a number, an emoji).`
+  const scriptLang = c.latestLang ? SCRIPT_LANGS[c.latestLang] : undefined
   return [
     `Now in Vietnam: ${vnDateTime} (${vnDateISO}). Information dated before today may be out of date; say so when it matters.`,
     where,
     language,
+    ...(scriptLang ? [`The person's latest message is written in ${scriptLang}: write this whole answer in ${scriptLang}, headings and table included.`] : []),
     ...c.blocks.map(b => b.trim()).filter(Boolean),
     // last, where a small model weighs it most: the shape rule of the general instruction, restated in one line
     ONE_BRAIN_SHAPE_REMINDER,

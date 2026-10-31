@@ -88,6 +88,18 @@ describe('the one-brain instruction (share run 31/10)', () => {
     expect(dyn('vi')).not.toContain('Reply in Vietnamese unless the person writes in another language')
     expect(ONE_BRAIN_CORE).toContain("Reply in the language of the person's LATEST message")
   })
+  it('T20 rerun: when the latest message\'s script settles its language, the turn names it; a Latin-script or unknown language adds nothing', () => {
+    const d = (latestLang: string | null) => oneBrainDynamic({ lang: 'vi', now: new Date('2026-10-31T03:00:00Z'), address: null, hasLocation: false, blocks: [], latestLang })
+    expect(d('zh')).toContain("The person's latest message is written in Chinese: write this whole answer in Chinese")
+    expect(d('ja')).toContain('written in Japanese')
+    for (const l of [null, 'vi', 'en']) expect(d(l), String(l)).not.toContain('write this whole answer in')
+  })
+  it('the route passes the script-certain language of the latest message (detectLangConfident) to the turn', async () => {
+    const { detectLangConfident } = await import('@/lib/ai/intent')
+    expect(detectLangConfident('你能幫我找出全球貧窮的成因，以及非洲兒童挨餓、無法上學的原因嗎？')).toBe('zh')
+    const src = (await import('node:fs')).readFileSync('src/app/api/chat/route.ts', 'utf8')
+    expect(src).toContain('latestLang: detectLangConfident(lastText)')
+  })
   it('voice: the person\'s own address and register are mirrored; "mình/bạn" is only the default with no cue', () => {
     expect(ONE_BRAIN_CORE).toContain('address the person the way they address you and themselves')
     expect(ONE_BRAIN_CORE).not.toContain('unless they set another way of addressing')
