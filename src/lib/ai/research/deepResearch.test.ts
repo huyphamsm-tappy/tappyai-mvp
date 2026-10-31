@@ -139,6 +139,12 @@ describe('runDeepResearch', () => {
     await runDeepResearch('ev market', '', 'en', deps(), c.emit)
     expect(c.text).toContain('### Sources\n')
   })
+  it('the sources heading is the plan\'s, in the question\'s language (measured: a Portuguese report ended with "Nguồn"); markup in it is blanked', async () => {
+    const c = collect()
+    await runDeepResearch('fabricantes de VEs', '', 'vi', deps({ plan: async () => ({ ...PLAN, sources_label: 'Fontes' }) }), c.emit)
+    expect(c.text).toContain('### Fontes\n1. ')
+    expect(normalisePlan({ ...PLAN, sources_label: '[Źródła](javascript:x)' }, 'q')?.sources_label).toBe('Źródła javascript:x')
+  })
 })
 
 describe('canonicalSourceUrl', () => {

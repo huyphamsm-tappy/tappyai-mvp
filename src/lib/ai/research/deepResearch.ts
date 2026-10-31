@@ -16,7 +16,8 @@
 // writing at 105 s (what was written stays, with its sources) so the answer always ends inside the platform's limit.
 export const DEEP_RESEARCH_LIMITS = { steps: 5, queriesPerStep: 2, findingsPerStep: 10, researchDeadlineMs: 55_000, runDeadlineMs: 105_000 } as const
 
-export interface ResearchPlan { title: string; steps: Array<{ title: string; queries: string[] }> }
+/** `sources_label`: the heading of the sources list in the question's language (the plan call writes it; absent = by the app's locale). */
+export interface ResearchPlan { title: string; sources_label?: string; steps: Array<{ title: string; queries: string[] }> }
 export interface Evidence { id: number; title: string; url: string; snippet: string; text: string }
 export interface Finding { step: number; text: string; source: number }
 export type StepStatus = 'pending' | 'running' | 'done' | 'failed'
@@ -63,14 +64,16 @@ const clean = (s: unknown, max: number) => (typeof s === 'string' ? s.replace(/[
 
 /** The plan as the run uses it: titled, 1..steps steps, each with 1..queriesPerStep non-empty queries; nothing usable → null. Pure. */
 export function normalisePlan(p: unknown, question: string): ResearchPlan | null {
-  const r = (p ?? {}) as { title?: unknown; steps?: unknown }
+  const r = (p ?? {}) as { title?: unknown; sources_label?: unknown; steps?: unknown }
   const steps = (Array.isArray(r.steps) ? r.steps : []).map(s => {
     const x = (s ?? {}) as { title?: unknown; queries?: unknown }
     const queries = (Array.isArray(x.queries) ? x.queries : []).map(q => clean(q, 200)).filter(Boolean).slice(0, DEEP_RESEARCH_LIMITS.queriesPerStep)
     return { title: clean(x.title, 160), queries }
   }).filter(s => s.title && s.queries.length).slice(0, DEEP_RESEARCH_LIMITS.steps)
   if (!steps.length) return null
-  return { title: clean(r.title, 160) || clean(question, 120), steps }
+  // the label is one short heading word or two: markup characters are blanked like a source title's
+  const label = clean(r.sources_label, 30).replace(/[[\]()<>`*_#|\\]/g, ' ').replace(/\s+/g, ' ').trim()
+  return { title: clean(r.title, 160) || clean(question, 120), ...(label ? { sources_label: label } : {}), steps }
 }
 
 /**
@@ -137,12 +140,12 @@ export const citedEvidence = (evidence: readonly Evidence[], findings: readonly 
  * research card links them; retrievalArchitecture.test.ts G1 keeps markdown links from retrieval to the enrichment site). Markdown and HTML
  * characters of a title are blanked, so a search result cannot turn into markup.
  */
-export function sourcesBlock(evidence: readonly Evidence[], findings: readonly Finding[], lang: string): string {
+export function sourcesBlock(evidence: readonly Evidence[], findings: readonly Finding[], lang: string, heading?: string): string {
   const used = citedEvidence(evidence, findings)
   if (!used.length) return ''
   const host = (u: string) => { try { return new URL(u).hostname.replace(/^www\./, '') } catch { return '' } }
   const label = (t: string) => t.replace(/[[\]()<>`*_#|\\\n]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 140)
-  const head = lang === 'en' ? 'Sources' : 'Nguồn'
+  const head = heading || (lang === 'en' ? 'Sources' : 'Nguồn')
   return `\n\n### ${head}\n${used.map(e => `${e.id}. ${label(e.title) || host(e.url)} — ${host(e.url)}`).join('\n')}\n`
 }
 
@@ -212,7 +215,7 @@ export async function runDeepResearch(question: string, context: string, lang: s
     const tail = stripper.end(); if (tail) emit.text(tail)
     return { plan, evidence, findings, failed: fail(plan.title, steps, 'write_failed'), cut }
   }
-  emit.text(sourcesBlock(cited, notes, lang))
+  emit.text(sourcesBlock(cited, notes, lang, plan.sources_label))
   const links = cited.map(e => ({ id: e.id, title: e.title, url: e.url }))
   emit.status({ type: 'tappy.research.v1', title: plan.title, phase: 'done', steps: steps.map(s => ({ ...s })), sources: evidence.length, links })
   return { plan, evidence, findings, failed: null, cut }

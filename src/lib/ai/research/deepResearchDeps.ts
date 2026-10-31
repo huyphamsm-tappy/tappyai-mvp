@@ -17,6 +17,7 @@ import { DEEP_RESEARCH_LIMITS, type DeepResearchDeps, type Evidence, type Resear
 
 const PlanSchema = z.object({
   title: z.string().describe('a short title of the research, in the language of the question'),
+  sources_label: z.string().describe('the word "Sources" (the heading of a list of sources) in the language of the question'),
   steps: z.array(z.object({
     title: z.string().describe('what this step finds out, one line, in the language of the question'),
     queries: z.array(z.string()).describe('1-2 web search queries for this step, in the language that gives the best sources'),
