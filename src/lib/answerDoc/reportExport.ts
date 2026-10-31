@@ -4,6 +4,8 @@
 // re-checked). Nothing is sent anywhere; the pictures stay remote links, never fetched or stored by the app. Pure builders + two browser helpers.
 import { parseDoc, headingTitle, titleKey, type DocBlock } from '@/lib/answerDoc/parse'
 import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
+import { chartSvg, chartTable } from '@/lib/answerDoc/reportChart'
+import type { ResearchChart } from '@/lib/ai/research/deepResearch'
 
 export interface ReportLink { id: number; title: string; url: string }
 export interface ReportImage { title: string; src: string }
@@ -33,24 +35,45 @@ export function reportMarkdown(text: string, links: readonly ReportLink[]): stri
   }).join('\n').trim() + '\n'
 }
 
+/**
+ * The report with each section chart's figures as a table right under its heading (Markdown and Word: no drawing there; the PDF draws the
+ * chart instead). A chart whose section heading is not in the text is left out. Pure.
+ */
+export function withChartTables(text: string, charts: readonly ResearchChart[], lang: string): string {
+  if (!charts.length) return text
+  const left = new Map(charts.map(c => [titleKey(c.section), c]))
+  return text.split('\n').map(line => {
+    const h = /^\s{0,3}#{2,6}\s+(.+?)\s*#*\s*$/.exec(line)
+    const t = h ? headingTitle(h[1]) : null
+    const c = t ? left.get(titleKey(t)) : undefined
+    if (!c) return line
+    left.delete(titleKey(t!))
+    return `${line}\n\n${chartTable(c, lang)}\n`
+  }).join('\n')
+}
+
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 
 /**
  * The report as one printable HTML page: the same blocks and inline formatter as the chat's article layout (`format` is the chat's own
  * sanitising formatter), each section picture under its heading, the sources linked. No script; opened in a sandboxed frame to print.
  */
-export function reportHtml(text: string, o: { title: string; images: readonly ReportImage[]; links: readonly ReportLink[]; format: (s: string) => string; lang: string }): string {
+export function reportHtml(text: string, o: { title: string; images: readonly ReportImage[]; links: readonly ReportLink[]; format: (s: string) => string; lang: string; charts?: readonly ResearchChart[] }): string {
   const pics = new Map<string, ReportImage>()
   for (const img of o.images) { const k = titleKey(img.title); if (k && isSafeHttpsUrl(img.src) && !pics.has(k)) pics.set(k, img) }
+  const charts = new Map((o.charts ?? []).map(c => [titleKey(c.section), c]))
   const blocks = parseDoc(reportMarkdown(text, o.links))
   const html = (bs: DocBlock[]): string => bs.map(b => {
     switch (b.t) {
       case 'heading': {
         const lv = Math.min(Math.max(b.level, 1), 4)
         const t = headingTitle(b.text)
-        const img = t ? pics.get(titleKey(t)) : undefined
+        // a section's chart comes before (and instead of) its picture: the figures matter more
+        const chart = t ? charts.get(titleKey(t)) : undefined
+        if (chart) charts.delete(titleKey(t!))
+        const img = !chart && t ? pics.get(titleKey(t)) : undefined
         if (img) pics.delete(titleKey(t!))
-        return `<h${lv}>${o.format(b.text)}</h${lv}>${img ? `<figure><img src="${esc(img.src)}" alt="${esc(img.title)}" referrerpolicy="no-referrer"></figure>` : ''}`
+        return `<h${lv}>${o.format(b.text)}</h${lv}>${chart ? `<figure class="chart">${chartSvg(chart, o.lang)}</figure>` : ''}${img ? `<figure><img src="${esc(img.src)}" alt="${esc(img.title)}" referrerpolicy="no-referrer"></figure>` : ''}`
       }
       case 'para': return `<p>${o.format(b.text)}</p>`
       case 'quote': return `<blockquote>${o.format(b.text)}</blockquote>`
@@ -67,7 +90,7 @@ body{font-family:Georgia,'Times New Roman',serif;color:#111;max-width:760px;marg
 h1,h2,h3,h4{font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;line-height:1.3}h1{font-size:28px;margin-bottom:4px;border-bottom:2px solid #1a4fb5;padding-bottom:8px}h1+p{color:#555;margin-top:6px}h2{font-size:20px;margin-top:28px;color:#1a3d7c}h3{font-size:17px}
 table+div em,table+p em{color:#555;font-size:13px}
 @page{margin:18mm 16mm;@bottom-center{content:counter(page) " / " counter(pages);font-family:Arial,sans-serif;font-size:10px;color:#666}}
-figure{margin:12px 0}figure img{max-width:100%;max-height:320px;object-fit:cover;border-radius:8px}
+figure{margin:12px 0}figure img{max-width:100%;max-height:320px;object-fit:cover;border-radius:8px}figure.chart svg{max-width:100%;height:auto;border:1px solid #ddd;border-radius:8px}
 table{border-collapse:collapse;width:100%;font-size:13px;margin:12px 0}th,td{border:1px solid #ccc;padding:6px 8px;text-align:left;vertical-align:top}
 a{color:#1a4fb5}blockquote{border-left:3px solid #ccc;margin:12px 0;padding-left:12px;color:#444}
 @media print{body{margin:0 auto}h2,h3{break-after:avoid}figure,table{break-inside:avoid}}
@@ -94,10 +117,13 @@ export function printHtml(html: string): void {
   frame.srcdoc = html
   frame.onload = () => {
     const w = frame.contentWindow
-    // pictures load before printing (at most 4 s), then the frame goes
+    // pictures load before printing (at most 4 s); a picture its site refused (or still not loaded) is removed, not printed as an empty box
     const imgs = Array.from(frame.contentDocument?.images ?? [])
     Promise.race([Promise.all(imgs.map(i => (i.complete ? null : new Promise(r => { i.onload = i.onerror = r })))), new Promise(r => setTimeout(r, 4000))])
-      .then(() => { w?.focus(); w?.print(); setTimeout(() => frame.remove(), 60_000) })
+      .then(() => {
+        for (const i of imgs) if (!i.complete || i.naturalWidth === 0) (i.closest('figure') ?? i).remove()
+        w?.focus(); w?.print(); setTimeout(() => frame.remove(), 60_000)
+      })
   }
   document.body.appendChild(frame)
 }

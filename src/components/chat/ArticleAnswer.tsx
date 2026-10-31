@@ -6,7 +6,7 @@
 // every block still goes through the chat's formatter (`format` = formatMessage: escaping, bold, link chips, source chips, tables, code), so
 // nothing about what may reach the page changes. The server's item pictures (tappy.doc_media.v1) are placed next to the item they belong to,
 // matched by title in any script (titleKey); a picture whose item is not found is not shown. Every picture URL is re-checked (safe https).
-import { Fragment, type MouseEvent } from 'react'
+import { Fragment, type MouseEvent, type ReactNode } from 'react'
 import { parseDoc, listItemTitle, headingTitle, titleKey, type DocBlock } from '@/lib/answerDoc/parse'
 import type { DocItemImage } from '@/lib/answerDoc/media'
 import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
@@ -59,7 +59,10 @@ function assignPictures(blocks: DocBlock[], pics: Map<string, DocItemImage>, pre
   return out
 }
 
-function Blocks({ blocks, format, placed, prefix = '' }: { blocks: DocBlock[]; format: Format; placed: Map<string, DocItemImage>; prefix?: string }) {
+/** What goes right under a heading besides its picture (31/10: a deep research section's chart), by the heading's title; none → null. */
+type UnderHeading = (title: string) => ReactNode
+
+function Blocks({ blocks, format, placed, prefix = '', under }: { blocks: DocBlock[]; format: Format; placed: Map<string, DocItemImage>; prefix?: string; under?: UnderHeading }) {
   return (
     <>
       {blocks.map((b, i) => {
@@ -71,6 +74,7 @@ function Blocks({ blocks, format, placed, prefix = '' }: { blocks: DocBlock[]; f
               <Fragment key={i}>
                 <Inline html={format(b.text)} className={`${cls} text-gray-900 dark:text-gray-50 [text-wrap:balance]`} />
                 {img && <ItemPicture img={img} size="wide" />}
+                {under && (() => { const t = headingTitle(b.text); return t ? under(t) : null })()}
               </Fragment>
             )
           }
@@ -92,7 +96,7 @@ function Blocks({ blocks, format, placed, prefix = '' }: { blocks: DocBlock[]; f
                   const body = (
                     <>
                       <Inline html={format(it.text)} className="whitespace-pre-line" />
-                      {it.children && <div className="mt-1.5"><Blocks blocks={parseDoc(it.children)} format={format} placed={placed} prefix={`${prefix}${i}.${k}/`} /></div>}
+                      {it.children && <div className="mt-1.5"><Blocks blocks={parseDoc(it.children)} format={format} placed={placed} prefix={`${prefix}${i}.${k}/`} under={under} /></div>}
                     </>
                   )
                   return (
@@ -176,13 +180,13 @@ export function SourcesFooter({ text, lang }: { text: string; lang: string }) {
   )
 }
 
-export function ArticleAnswer({ text, images, format, className, onClick }: { text: string; images: readonly DocItemImage[]; format: Format; className?: string; onClick?: (e: MouseEvent<HTMLDivElement>) => void }) {
+export function ArticleAnswer({ text, images, format, className, onClick, under }: { text: string; images: readonly DocItemImage[]; format: Format; className?: string; onClick?: (e: MouseEvent<HTMLDivElement>) => void; under?: UnderHeading }) {
   const pics = new Map<string, DocItemImage>()
   for (const img of images) { const k = titleKey(img.title); if (k && !pics.has(k)) pics.set(k, img) }
   const blocks = parseDoc(text)
   return (
     <div data-answer="article" className={`message-content text-[15.5px] leading-7 ${className ?? ''}`} onClick={onClick}>
-      <Blocks blocks={blocks} format={format} placed={assignPictures(blocks, pics)} />
+      <Blocks blocks={blocks} format={format} placed={assignPictures(blocks, pics)} under={under} />
     </div>
   )
 }

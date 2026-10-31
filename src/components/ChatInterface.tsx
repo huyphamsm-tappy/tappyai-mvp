@@ -81,7 +81,9 @@ import { parseShoppingMarker } from '@/lib/ai/consultative/synthesisView'
 import { parsePlacesMarker } from '@/lib/recommendation/marker'
 import { readPlacesLiveView } from '@/lib/recommendation/liveView'
 import { readProgress, readTurnStatus } from '@/lib/recommendation/progressAnnotation'
-import { readResearchStatus } from '@/lib/ai/research/deepResearch'
+import { readResearchStatus, readResearchCharts } from '@/lib/ai/research/deepResearch'
+import { chartDataUrl } from '@/lib/answerDoc/reportChart'
+import { titleKey } from '@/lib/answerDoc/parse'
 import ResearchCard from '@/components/chat/ResearchCard'
 import { rememberPlacesView, recallPlacesView } from '@/lib/recommendation/liveViewCache'
 import { rememberTurnStatus, recallTurnStatus } from '@/lib/recommendation/turnStatusCache'
@@ -1803,11 +1805,17 @@ export default function ChatInterface({
                 const turnStatus = liveTurnStatus ?? recallTurnStatus(msg.content)
                 // 31/10: a deep research's plan and progress (tappy.research.v1), above its report; live-only like the cards above
                 const research = readResearchStatus(msg.annotations as unknown[] | undefined)
+                // owner 31/10: a deep research section's chart (figures checked against their sources) right under its heading
+                const researchCharts = research ? readResearchCharts(msg.annotations as unknown[] | undefined) : []
+                const underHeading = researchCharts.length ? (title: string) => {
+                  const c = researchCharts.find(x => titleKey(x.section) === titleKey(title))
+                  return c ? <figure className="my-3" data-research-chart><img src={chartDataUrl(c, locale)} alt={c.title} className="w-full max-w-2xl rounded-xl border border-gray-200 dark:border-gray-700" /></figure> : null
+                } : undefined
                 return (
                   <div key={msg.id} data-msg-id={msg.id} className="animate-slide-up flex gap-3">
                     <TappyAvatar category={category} active={isLoading && isLastMessage} searching={!!(isLoading && isLastMessage && activeTool)} />
                     <div className="flex-1 min-w-0">
-                      {research && <ResearchCard status={research} report={msg.content} images={docImages} format={formatMessage} />}
+                      {research && <ResearchCard status={research} report={msg.content} images={docImages} charts={researchCharts} format={formatMessage} />}
                       <div className="text-base leading-[1.6] text-gray-800 dark:text-gray-100 pt-0.5">
                         {(() => {
                           // CONSULT_V3 layouts: the news grid / subject card sit right after the answer's first paragraph (as ChatGPT places them);
@@ -1833,13 +1841,13 @@ export default function ChatInterface({
                             const [gLead, gRest] = !entity && !news && !entities && !research && settled && docImages.length >= 3 ? splitLeadParagraph(shown) : [lead, rest]
                             return (
                               <>
-                                <ArticleAnswer text={gLead} images={docImages} format={formatMessage} onClick={onBodyClick}
+                                <ArticleAnswer text={gLead} images={docImages} format={formatMessage} onClick={onBodyClick} under={underHeading}
                                   className={cn(isLoading && isLastMessage && 'streaming-cursor', (entity || entities) && '[&_strong]:cursor-pointer')} />
                                 {gLead !== lead && <ImageGrid images={docImages} />}
                                 {news && <NewsMediaGrid items={news} />}
                                 {entity && <EntityCard entity={{ ...entity, summary: summaryOpening(entity.summary, 300) }} onOpen={() => setEntityPanel(entity)} />}
                                 {entities && <EntityRow entities={entities} onOpen={x => setEntityPanel(x)} />}
-                                {gRest && <ArticleAnswer text={gRest} images={docImages} format={formatMessage} onClick={onBodyClick} className="mt-3" />}
+                                {gRest && <ArticleAnswer text={gRest} images={docImages} format={formatMessage} onClick={onBodyClick} className="mt-3" under={underHeading} />}
                                 {settled && <SourcesFooter text={shown} lang={locale === 'en' ? 'en' : 'vi'} />}
                               </>
                             )

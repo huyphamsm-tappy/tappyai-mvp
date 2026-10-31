@@ -1,6 +1,7 @@
 // 31/10 Deep Research orchestration (deepResearch.ts) with fake dependencies: plan, parallel steps, findings tied to handed-in sources,
 // the deadline, the writer's links removed, the sources list built by code, and the failure paths.
 import { describe, it, expect, vi, afterEach } from 'vitest'
+import { numberInText, checkedFigure, sectionCharts, readResearchCharts, chartsFrame, type Finding, type ResearchChart } from './deepResearch'
 import { runDeepResearch, headingNumberer, sectionImages, sectionSteps, writerNotes, MAX_SECTION_IMAGES, GAP_STEPS, canonicalSourceUrl, normalisePlan, linkStripper, sourcesBlock, readResearchStatus, DEEP_RESEARCH_LIMITS, type DeepResearchDeps, type ResearchStatus } from './deepResearch'
 
 const PLAN = { title: 'Thị trường xe điện', steps: [{ title: 'Doanh số', queries: ['doanh so xe dien 2026'] }, { title: 'Giá', queries: ['gia xe dien', 'bang gia xe dien'] }] }
@@ -144,6 +145,72 @@ describe('runDeepResearch', () => {
     await runDeepResearch('fabricantes de VEs', '', 'vi', deps({ plan: async () => ({ ...PLAN, sources_label: 'Fontes' }) }), c.emit)
     expect(c.text).toContain('### Fontes\n1. ')
     expect(normalisePlan({ ...PLAN, sources_label: '[Źródła](javascript:x)' }, 'q')?.sources_label).toBe('Źródła javascript:x')
+  })
+})
+
+describe('section charts (owner 31/10: "mấu chốt cuối cùng của report là số liệu và sự chính xác")', () => {
+  it('numberInText reads a number the way pages write it', () => {
+    expect(numberInText(2.26, 'BYD bán 2,26 triệu xe')).toBe(true)
+    expect(numberInText(2.26, 'BYD sold 2.26 million')).toBe(true)
+    expect(numberInText(2260000, 'tổng 2.260.000 xe')).toBe(true)
+    expect(numberInText(2260000, 'total 2,260,000 cars')).toBe(true)
+    expect(numberInText(2260000, 'tổng 2 260 000 xe')).toBe(true)
+    expect(numberInText(35, 'tăng 35% năm 2024')).toBe(true)
+    expect(numberInText(1893, 'giá 1.893 đồng/kWh')).toBe(true)
+    expect(numberInText(36, 'tăng 35% năm 2024')).toBe(false)
+    expect(numberInText(2024.35, 'năm 2024 35%')).toBe(false)
+    expect(numberInText(NaN, '1')).toBe(false)
+  })
+  it('a figure stays only when its value is written in its own source', () => {
+    expect(checkedFigure({ series: 'Doanh số', label: 'BYD', value: 2.26, unit: 'triệu xe' }, 'BYD 2,26 triệu')).toEqual({ series: 'Doanh số', label: 'BYD', value: 2.26, unit: 'triệu xe' })
+    expect(checkedFigure({ series: 'Doanh số', label: 'BYD', value: 3.1, unit: 'triệu xe' }, 'BYD 2,26 triệu')).toBeUndefined()
+    expect(checkedFigure({ series: '', label: 'BYD', value: 2.26, unit: '' }, '2,26')).toBeUndefined()
+    expect(checkedFigure(null, '2,26')).toBeUndefined()
+  })
+  const plan = { title: 'T', steps: [{ title: 'Doanh số', queries: ['q'] }, { title: 'Xu hướng', queries: ['q'] }, { title: 'Bù', queries: ['q'], completes: 2 }] }
+  const fig = (step: number, series: string, label: string, value: number, source = 1, unit = 'triệu xe'): Finding => ({ step, text: 't', source, figure: { series, label, value, unit } })
+  const report = '# T\n## 1. Tóm tắt\n## 2. Doanh số\nx\n## 3. Xu hướng\ny'
+  it('bars for items, a line over years (sorted), under the heading that is the step\'s title; a follow-up\'s figures join its section', () => {
+    const findings = [
+      fig(1, 'Doanh số 2025', 'BYD', 2.26), fig(1, 'Doanh số 2025', 'Tesla', 1.64, 2), fig(1, 'Doanh số 2025', 'Geely', 1.2, 3), fig(1, 'Doanh số 2025', 'BYD', 9, 4),
+      fig(1, 'Thị phần', 'BYD', 20, 1, '%'),
+      fig(2, 'Doanh số toàn cầu', '2025', 21.5), fig(2, 'Doanh số toàn cầu', '2023', 14), fig(3, 'Doanh số toàn cầu', '2024', 17),
+    ]
+    const charts = sectionCharts(report, plan, findings)
+    expect(charts).toEqual([
+      { section: 'Doanh số', title: 'Doanh số 2025', unit: 'triệu xe', kind: 'bar', points: [{ label: 'BYD', value: 2.26, source: 1 }, { label: 'Tesla', value: 1.64, source: 2 }, { label: 'Geely', value: 1.2, source: 3 }] },
+      { section: 'Xu hướng', title: 'Doanh số toàn cầu', unit: 'triệu xe', kind: 'line', points: [{ label: '2023', value: 14, source: 1 }, { label: '2024', value: 17, source: 1 }, { label: '2025', value: 21.5, source: 1 }] },
+    ])
+  })
+  it('no chart: fewer than 3 labels, different units, a heading not in the report', () => {
+    expect(sectionCharts(report, plan, [fig(1, 'S', 'a', 1), fig(1, 'S', 'b', 2)])).toEqual([])
+    expect(sectionCharts(report, plan, [fig(1, 'S', 'a', 1), fig(1, 'S', 'b', 2, 1, '%'), fig(1, 'S', 'c', 3, 1, 'USD')])).toEqual([])
+    expect(sectionCharts('# T\n## 1. Khác', plan, [fig(1, 'S', 'a', 1), fig(1, 'S', 'b', 2), fig(1, 'S', 'c', 3)])).toEqual([])
+  })
+  it('the run keeps only checked figures, sends the charts, and a charted section gets no picture', async () => {
+    const sent: { charts?: ResearchChart[]; images?: unknown[] } = {}
+    const d = deps({
+      plan: async () => ({ title: 'T', steps: [{ title: 'Doanh số', queries: ['doanh so'], image_query: 'xe' }, { title: 'Giá', queries: ['gia'], image_query: 'gia xe' }] }),
+      gather: async q => (q.includes('doanh') ? [{ ...page('a'), text: 'BYD 2,26 triệu; Tesla 1,64 triệu; Geely 1,2 triệu' }] : [page('b')]),
+      notes: async (step, _q, ev) => step === 'Doanh số'
+        ? [{ text: 'BYD', source: ev[0].id, figure: { series: 'Doanh số', label: 'BYD', value: 2.26, unit: 'triệu xe' } }, { text: 'Tesla', source: ev[0].id, figure: { series: 'Doanh số', label: 'Tesla', value: 1.64, unit: 'triệu xe' } },
+          { text: 'Geely', source: ev[0].id, figure: { series: 'Doanh số', label: 'Geely', value: 1.2, unit: 'triệu xe' } }, { text: 'bịa', source: ev[0].id, figure: { series: 'Doanh số', label: 'Xiaomi', value: 0.9, unit: 'triệu xe' } }]
+        : [{ text: 'giá', source: ev[0].id }],
+      images: async q => [`https://i.example/${encodeURIComponent(q)}.jpg`],
+      write: async function* () { yield '# T\n## 1. Doanh số\na [1]\n## 2. Giá\nb [2]' },
+    })
+    const out = await runDeepResearch('q', '', 'vi', d, { ...collect().emit, charts: c => { sent.charts = c }, images: i => { sent.images = i } })
+    expect(out.findings.filter(f => f.figure).map(f => f.figure!.label)).toEqual(['BYD', 'Tesla', 'Geely']) // 0,9 is nowhere in the source
+    expect(sent.charts?.map(c => [c.section, c.points.length])).toEqual([['Doanh số', 3]])
+    expect(sent.images).toEqual([{ title: 'Giá', src: 'https://i.example/gia%20xe.jpg' }])
+    expect(out.charts).toBe(1)
+  })
+  it('the client re-checks the charts frame', () => {
+    const ok = { section: 'S', title: 'T', unit: '%', kind: 'line', points: [{ label: 'a', value: 1, source: 1 }, { label: 'b', value: 2, source: 2 }] }
+    expect(readResearchCharts([chartsFrame([ok as ResearchChart])])).toEqual([ok])
+    expect(readResearchCharts([{ type: 'tappy.research_charts.v1', charts: [{ ...ok, kind: 'pie', points: [...ok.points, { label: 'x', value: 'NaN', source: 1 }, { label: 'y', value: Infinity, source: 1 }] }] }])).toEqual([{ ...ok, kind: 'bar' }])
+    expect(readResearchCharts([{ type: 'tappy.research_charts.v1', charts: [{ ...ok, points: [ok.points[0]] }] }])).toEqual([])
+    expect(readResearchCharts(undefined)).toEqual([])
   })
 })
 

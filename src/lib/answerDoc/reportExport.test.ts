@@ -1,6 +1,7 @@
 // 31/10: a finished deep research report as files (Markdown, a printable page for PDF, Word) - built on the client from what is on screen.
 import { describe, it, expect } from 'vitest'
-import { reportFileName, reportMarkdown, reportHtml } from './reportExport'
+import { reportFileName, reportMarkdown, reportHtml, withChartTables } from './reportExport'
+import { chartSvg } from './reportChart'
 import { inlineRuns, tableRows, reportDocx } from './reportDocx'
 
 const REPORT = '# Xe điện 2026\n- Tóm tắt [1]\n## Doanh số\n1. BYD dẫn đầu [1].\n2. Tesla thứ hai.\n\n| Hãng | Xe |\n|---|---|\n| BYD | 2,26 tr |\n\n### Nguồn\n1. BYD sales — byd.com\n2. Không có link — x.example\n'
@@ -36,6 +37,27 @@ describe('reportHtml', () => {
     expect(html).toContain('<title>Xe &quot;điện&quot;</title>')
     expect(html).toContain('[BYD sales](https://byd.com/a)') // the formatter given decides how a link renders; here it is escaped text
     expect(html).not.toMatch(/<script/i)
+  })
+})
+
+describe('section charts in the files', () => {
+  const chart = { section: 'Doanh số', title: 'Bán <script>x</script>', unit: 'triệu xe', kind: 'bar' as const, points: [{ label: 'BYD & co', value: 2.26, source: 1 }, { label: 'Tesla', value: 1.64, source: 2 }, { label: 'Geely', value: 1.2, source: 3 }] }
+  it('the SVG escapes every text and shows the values in the reader\'s locale with their sources', () => {
+    const svg = chartSvg(chart, 'vi')
+    expect(svg).not.toContain('<script')
+    expect(svg).toContain('Bán &lt;script&gt;x&lt;/script&gt;')
+    expect(svg).toContain('BYD &amp; co')
+    expect(svg).toContain('2,26 [1]')
+    expect(svg).toContain('Nguồn [1][2][3]')
+    expect(chartSvg({ ...chart, kind: 'line', points: [{ label: '2023', value: 14, source: 1 }, { label: '2024', value: 17, source: 1 }] }, 'en')).toContain('<polyline')
+  })
+  it('Markdown / Word: the figures as a table under the section heading; the PDF draws the chart instead of the picture', () => {
+    const md = withChartTables('# T\n## 2. Doanh số\nx\n## 3. Khác\ny', [chart], 'vi')
+    expect(md).toContain('## 2. Doanh số\n\n| Mục | Giá trị |\n|---|---|\n| BYD & co | 2,26 triệu xe [1] |')
+    expect(md.indexOf('Biểu đồ: Bán')).toBeLessThan(md.indexOf('## 3. Khác'))
+    const html = reportHtml('# T\n## 2. Doanh số\nx', { title: 'T', images: [{ title: 'Doanh số', src: 'https://i.example/a.jpg' }], links: [], format: esc, lang: 'vi', charts: [chart] })
+    expect(html).toContain('<figure class="chart"><svg')
+    expect(html).not.toContain('a.jpg')
   })
 })
 

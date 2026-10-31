@@ -46,7 +46,17 @@ const GAP_MIN_LEFT_MS = 20_000
 export const MAX_SECTION_IMAGES = 4
 /** `published`: the page's own publication date (YYYY-MM-DD) when the reader found one. */
 export interface Evidence { id: number; title: string; url: string; snippet: string; text: string; published?: string }
-export interface Finding { step: number; text: string; source: number }
+/**
+ * Owner 31/10 ("mấu chốt cuối cùng của report là số liệu và sự chính xác"): a finding that states one figure also carries it as data -
+ * what is measured (`series`), for what (`label`: an item or a year), the value and its unit - checked by code against its source's own
+ * text (numberInText) before it may draw a chart.
+ */
+export interface Figure { series: string; label: string; value: number; unit: string }
+export interface Finding { step: number; text: string; source: number; figure?: Figure }
+/** A chart the code draws from the figures of one section; every point names its source. */
+export interface ResearchChart { section: string; title: string; unit: string; kind: 'bar' | 'line'; points: Array<{ label: string; value: number; source: number }> }
+export const MAX_CHARTS = 4
+const MAX_CHART_POINTS = 12
 export type StepStatus = 'pending' | 'running' | 'done' | 'failed'
 /** A cited source as the card links it (https only); the report text names it without a link. */
 export interface ResearchLink { id: number; title: string; url: string }
@@ -79,8 +89,8 @@ export interface DeepResearchDeps {
   plan(question: string, context: string): Promise<ResearchPlan>
   /** One query: its search results with the text of the pages read (empty when nothing came back). */
   gather(query: string, focus: string): Promise<Array<{ title: string; url: string; snippet: string; text: string; published?: string }>>
-  /** The step's findings; `source` is an id of the evidence handed in. */
-  notes(step: string, question: string, evidence: readonly Evidence[]): Promise<Array<{ text: string; source: number }>>
+  /** The step's findings; `source` is an id of the evidence handed in; `figure` when the finding states one figure. */
+  notes(step: string, question: string, evidence: readonly Evidence[]): Promise<Array<{ text: string; source: number; figure?: Figure | null }>>
   write(input: { question: string; plan: ResearchPlan; evidence: readonly Evidence[]; findings: readonly Finding[] }): AsyncIterable<string>
   /**
    * The parts of the question the findings do not answer yet, as at most GAP_STEPS follow-up steps (title + queries); [] = covered.
@@ -94,7 +104,90 @@ export interface DeepResearchDeps {
 
 /** One section picture: `title` is the section heading it goes under (the client matches it like an item picture, answerDoc/media). */
 export interface SectionImage { title: string; src: string }
-export interface ResearchEmit { status(s: ResearchStatus): void; text(t: string): void; images?(items: SectionImage[]): void }
+export interface ResearchEmit { status(s: ResearchStatus): void; text(t: string): void; images?(items: SectionImage[]): void; charts?(charts: ResearchChart[]): void }
+
+/**
+ * Whether `value` is written in `text` - in any of the ways a page writes a number: 2.26 / 2,26 / 2.260.000 / 2,260,000 / 2 260 000 / 35%.
+ * Every number in the text is read both ways (dot or comma as the decimal mark); one reading equal to the value is enough. Pure.
+ */
+export function numberInText(value: number, text: string): boolean {
+  if (!Number.isFinite(value)) return false
+  const same = (x: number) => Math.abs(x - value) <= Math.max(1e-9, Math.abs(value) * 1e-9)
+  // runs of digits with dots / commas, and thousands grouped by a (no-break) space: "2 260 000"
+  const runs = [...text.matchAll(/\d[\d.,]*\d|\d/g), ...text.matchAll(/\d{1,3}(?:[ \xa0]\d{3})+(?!\d)/g)]
+  for (const m of runs) {
+    const raw = m[0].replace(/[ \xa0]/g, '')
+    const readings = [raw.replace(/,/g, ''), raw.replace(/\./g, '').replace(',', '.')]
+    // a run like "2.260.000" (thousands only) reads as one number; "2,26" as a decimal; each reading must be a plain number
+    if (readings.some(r => /^\d+(\.\d+)?$/.test(r) && same(Number(r)))) return true
+  }
+  return false
+}
+
+/** A finding's figure as the run keeps it: clean strings, a finite value written in its own source's text; anything else → none. Pure. */
+export function checkedFigure(f: unknown, sourceText: string): Figure | undefined {
+  const x = (f ?? null) as Partial<Figure> | null
+  if (!x || typeof x !== 'object') return undefined
+  const series = clean(x.series, 80), label = clean(x.label, 40), unit = clean(x.unit, 24)
+  const value = typeof x.value === 'number' ? x.value : NaN
+  if (!series || !label || !Number.isFinite(value) || !numberInText(value, sourceText)) return undefined
+  return { series, label, value, unit }
+}
+
+/**
+ * The charts of a written report: per section (a plan step with the follow-ups that complete it), the largest group of figures measuring
+ * the same thing in the same unit, when it has at least 3 different labels - a line over the years when every label is a year, else bars
+ * (in the order the sources gave them). The chart goes under the heading that is its step's title (like the section pictures). Pure.
+ */
+export function sectionCharts(report: string, plan: ResearchPlan, findings: readonly Finding[]): ResearchChart[] {
+  const heads = parseDoc(report).filter((b): b is Extract<DocBlock, { t: 'heading' }> => b.t === 'heading' && b.level === 2).map(b => headingTitle(b.text))
+  const key = (s: string) => titleKey(s)
+  const out: ResearchChart[] = []
+  plan.steps.forEach((s, k) => {
+    if (s.completes || out.length >= MAX_CHARTS) return
+    const own = headingTitle(s.title)
+    const head = own ? heads.find(h => !!h && key(h) === key(own)) : undefined
+    if (!head) return
+    const groups = new Map<string, Finding[]>()
+    for (const f of findings) {
+      if (!f.figure || !(f.step === k + 1 || plan.steps[f.step - 1]?.completes === k + 1)) continue
+      const g = `${key(f.figure.series)}|${key(f.figure.unit)}`
+      groups.set(g, [...(groups.get(g) ?? []), f])
+    }
+    let best: Array<{ label: string; value: number; source: number }> = []
+    let first: Finding | undefined
+    for (const g of groups.values()) {
+      const seen = new Set<string>()
+      const pts = g.filter(f => !seen.has(key(f.figure!.label)) && !!seen.add(key(f.figure!.label))).map(f => ({ label: f.figure!.label, value: f.figure!.value, source: f.source }))
+      if (pts.length > best.length) { best = pts; first = g[0] }
+    }
+    if (best.length < 3 || !first) return
+    const years = best.every(p => /^(19|20)\d{2}$/.test(p.label))
+    const points = (years ? [...best].sort((a, b) => Number(a.label) - Number(b.label)) : best).slice(0, MAX_CHART_POINTS)
+    out.push({ section: head, title: first.figure!.series, unit: first.figure!.unit, kind: years ? 'line' : 'bar', points })
+  })
+  return out
+}
+
+const CHARTS_KIND = 'tappy.research_charts.v1'
+/** Client: the charts among a message's annotations (the last valid frame wins), re-checked; none → []. Pure. */
+export function readResearchCharts(annotations: unknown[] | undefined | null): ResearchChart[] {
+  if (!Array.isArray(annotations)) return []
+  let out: ResearchChart[] = []
+  for (const a of annotations) {
+    const c = a as { type?: unknown; charts?: unknown } | null
+    if (!c || typeof c !== 'object' || c.type !== CHARTS_KIND || !Array.isArray(c.charts)) continue
+    out = (c.charts as unknown[]).flatMap((x): ResearchChart[] => {
+      const r = (x ?? {}) as Partial<ResearchChart>
+      const points = (Array.isArray(r.points) ? r.points : []).filter(p => p && typeof p.label === 'string' && typeof p.value === 'number' && Number.isFinite(p.value) && typeof p.source === 'number')
+        .slice(0, MAX_CHART_POINTS).map(p => ({ label: clean(p.label, 40), value: p.value, source: p.source }))
+      if (typeof r.section !== 'string' || typeof r.title !== 'string' || points.length < 2) return []
+      return [{ section: clean(r.section, 80), title: clean(r.title, 80), unit: clean(r.unit, 24), kind: r.kind === 'line' ? 'line' : 'bar', points }]
+    }).slice(0, MAX_CHARTS)
+  }
+  return out
+}
+export const chartsFrame = (charts: ResearchChart[]) => ({ type: CHARTS_KIND, charts })
 
 const clean = (s: unknown, max: number) => (typeof s === 'string' ? s.replace(/[\u0000-\u001f]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, max) : '')
 
@@ -256,7 +349,7 @@ export function sectionImages(report: string, plan: ResearchPlan, pictures: Read
 }
 
 /** Runs one deep research. Never throws: a failure ends with a `failed` status and whatever was written. */
-export async function runDeepResearch(question: string, context: string, lang: string, deps: DeepResearchDeps, emit: ResearchEmit): Promise<{ plan: ResearchPlan | null; evidence: Evidence[]; findings: Finding[]; failed: string | null; cut?: boolean; followUps?: number }> {
+export async function runDeepResearch(question: string, context: string, lang: string, deps: DeepResearchDeps, emit: ResearchEmit): Promise<{ plan: ResearchPlan | null; evidence: Evidence[]; findings: Finding[]; failed: string | null; cut?: boolean; followUps?: number; charts?: number }> {
   const now = deps.now ?? Date.now
   const t0 = now()
   const evidence: Evidence[] = []
@@ -296,12 +389,15 @@ export async function runDeepResearch(question: string, context: string, lang: s
     }
     if (!mine.length) { steps[k].status = 'failed'; show('researching'); return }
     const got = await deps.notes(step.title, question, mine).catch(() => [])
-    const ids = new Set(mine.map(e => e.id))
+    const byId = new Map(mine.map(e => [e.id, e]))
     let kept = 0
     for (const f of got) {
       const text = clean(f.text, 600)
-      if (!text || !ids.has(f.source)) continue
-      findings.push({ step: k + 1, text, source: f.source })
+      const src = byId.get(f.source)
+      if (!text || !src) continue
+      // a figure stays only when its value is written in its own source (title, snippet or the page read)
+      const figure = checkedFigure(f.figure, `${src.title}\n${src.snippet}\n${src.text}`)
+      findings.push({ step: k + 1, text, source: f.source, ...(figure ? { figure } : {}) })
       if (++kept >= DEEP_RESEARCH_LIMITS.findingsPerStep) break
     }
     steps[k].status = 'done'; show('researching')
@@ -362,9 +458,13 @@ export async function runDeepResearch(question: string, context: string, lang: s
   let pictureTimer: ReturnType<typeof setTimeout> | undefined
   const pictures = await Promise.race([picturesP, new Promise<null>(r => { pictureTimer = setTimeout(() => r(null), 1500) })])
   clearTimeout(pictureTimer)
-  const placed = pictures ? sectionImages(written, plan, pictures) : []
+  // owner 31/10: the figures matter more than a picture - a section with a chart gets the chart, not a (small) picture
+  const charts = sectionCharts(written, plan, notes)
+  if (charts.length && emit.charts) emit.charts(charts)
+  const charted = new Set(charts.map(c => titleKey(c.section)))
+  const placed = (pictures ? sectionImages(written, plan, pictures) : []).filter(p => !charted.has(titleKey(p.title)))
   if (placed.length && emit.images) emit.images(placed)
   const links = cited.map(e => ({ id: e.id, title: e.title, url: e.url }))
   emit.status({ type: 'tappy.research.v1', title: plan.title, phase: 'done', steps: steps.map(s => ({ ...s })), sources: evidence.length, links })
-  return { plan, evidence, findings, failed: null, cut, followUps }
+  return { plan, evidence, findings, failed: null, cut, followUps, charts: charts.length }
 }

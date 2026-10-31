@@ -4,27 +4,28 @@
 // Labels from the i18n dictionaries (research.*); the title and step lines are the plan's own words, shown as plain text.
 // Owner 31/10: a finished report downloads as Markdown, Word or PDF (lib/answerDoc/reportExport.ts - built here, nothing is sent anywhere).
 import { useState } from 'react'
-import type { ResearchStatus } from '@/lib/ai/research/deepResearch'
-import { downloadBlob, printHtml, reportFileName, reportHtml, reportMarkdown, type ReportImage } from '@/lib/answerDoc/reportExport'
+import type { ResearchChart, ResearchStatus } from '@/lib/ai/research/deepResearch'
+import { downloadBlob, printHtml, reportFileName, reportHtml, reportMarkdown, withChartTables, type ReportImage } from '@/lib/answerDoc/reportExport'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { cn } from '@/lib/utils'
 
 const MARK: Record<ResearchStatus['steps'][number]['status'], string> = { pending: '○', running: '◌', done: '✓', failed: '–' }
 
-export default function ResearchCard({ status, report, images = [], format }: { status: ResearchStatus; report?: string; images?: readonly ReportImage[]; format?: (s: string) => string }) {
+export default function ResearchCard({ status, report, images = [], charts = [], format }: { status: ResearchStatus; report?: string; images?: readonly ReportImage[]; charts?: readonly ResearchChart[]; format?: (s: string) => string }) {
   const { t, locale } = useTranslation()
   const [busy, setBusy] = useState(false)
   const working = status.phase === 'planning' || status.phase === 'researching' || status.phase === 'writing'
   const links = status.links ?? []
   const canExport = status.phase === 'done' && !!report && !!format
   const title = status.title || 'report'
-  const asMarkdown = () => downloadBlob(new Blob([reportMarkdown(report!, links)], { type: 'text/markdown;charset=utf-8' }), reportFileName(title, 'md'))
-  const asPdf = () => printHtml(reportHtml(report!, { title, images, links, format: format!, lang: locale }))
+  // Markdown and Word carry each chart's figures as a table under its section; the PDF draws the chart
+  const asMarkdown = () => downloadBlob(new Blob([reportMarkdown(withChartTables(report!, charts, locale), links)], { type: 'text/markdown;charset=utf-8' }), reportFileName(title, 'md'))
+  const asPdf = () => printHtml(reportHtml(report!, { title, images, links, format: format!, lang: locale, charts }))
   const asWord = async () => {
     setBusy(true)
     try {
       const { reportDocx } = await import('@/lib/answerDoc/reportDocx')
-      downloadBlob(await reportDocx(report!, links, title), reportFileName(title, 'docx'))
+      downloadBlob(await reportDocx(withChartTables(report!, charts, locale), links, title), reportFileName(title, 'docx'))
     } finally { setBusy(false) }
   }
   return (
