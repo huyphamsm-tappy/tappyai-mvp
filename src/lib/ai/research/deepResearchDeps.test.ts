@@ -1,6 +1,15 @@
 // 31/10: the page a reader landed on is matched to the search result's link loosely (pageKey) - measured: full text reached 7-21 of 42-58 sources.
 import { describe, it, expect } from 'vitest'
-import { pageKey, mergeSearchRows, deepResearchParallel } from './deepResearchDeps'
+import { pageKey, mergeSearchRows, deepResearchParallel, questionLanguageLine } from './deepResearchDeps'
+
+describe('the language of the question (measured 01/11: an English question got German headings)', () => {
+  it('stated only when the code is certain of it', () => {
+    expect(questionLanguageLine('en')).toContain('written in English')
+    expect(questionLanguageLine('vi')).toContain('in Vietnamese')
+    expect(questionLanguageLine(null)).toBe('')
+    expect(questionLanguageLine('xx')).toBe('')
+  })
+})
 
 describe('Serper + Parallel rows (owner 01/11: "thêm nguồn Parallel")', () => {
   it('Serper\'s rows first, then Parallel\'s; a page both found is kept once', () => {

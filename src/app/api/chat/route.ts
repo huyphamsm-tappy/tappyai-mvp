@@ -3544,7 +3544,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     return deepResearchResponse({
       question: lastText, context: recent, lang, cost,
       // 01/11 (owner approved): Parallel's search beside Serper for every query - its own budget for the run (16 searches), the same daily cap
-      deps: createDeepResearchDeps({ lang, userTexts: recentUserTexts, cost, ...(consultParallelOn() ? { parallelSearch: deepResearchParallel() } : {}) }),
+      deps: createDeepResearchDeps({ lang, userTexts: recentUserTexts, cost, questionLang: detectLangConfident(lastText), ...(consultParallelOn() ? { parallelSearch: deepResearchParallel() } : {}) }),
       serperUsd: () => { const d = serperDelta(serperAtStart); return { usd: turnUsd({ promptTokens: 0, completionTokens: 0, serperCredits: d.credits }), calls: sumCounts(d.calls) } },
       onFailed: reason => refundQuotaOnFailure(`deep_research_${reason}`),
     })
