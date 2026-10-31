@@ -30,7 +30,7 @@ import { fenceUntrusted } from '@/lib/ai/security/fence'
 import { wrapToolResultAsData } from '@/lib/ai/security/toolResultFence'
 import { pdfPartsToText } from '@/lib/ai/attachments/pdfAttachments'
 import { deepResearchResponse } from '@/lib/ai/research/deepResearchResponse'
-import { createDeepResearchDeps } from '@/lib/ai/research/deepResearchDeps'
+import { createDeepResearchDeps, deepResearchParallel } from '@/lib/ai/research/deepResearchDeps'
 import { classifyIntent, detectLang, detectLangConfident, detectExplicitLangRequest, detectForcedTool, detectTravelIntent, detectLocationIntent, detectPlanningIntent, detectPlanningIntentFromConversation, detectPlanActivities, detectTripLength, isPlanningRefinement, defaultTransportFor, detectMovieRecommendationIntent, isSimpleQuery, normalizeVN, isPurchaseShaped, routeToolOfferOn } from '@/lib/ai/intent'
 import { deriveNeedProfile, type StoredPreferences } from '@/lib/ai/consultative/needProfile'
 import { resolveDecisionStage, taskSwitched, consultationUserTexts } from '@/lib/ai/consultative/refinement'
@@ -192,7 +192,9 @@ import { cannedChitchat, cannedCarriedFact, cannedDataStreamResponse, isAckOnly,
 // Owner decision 28 Sep 2026: 3-day plan turns measured 61–89 s locally, over the old 60 s cap. The
 // project runs on Fluid compute (verified read-only: fluid=true, default timeout 300 s), so 120 s needs no
 // plan change. TURN_DEADLINE_MS keeps 10 s of headroom for the finish frame and post-stream guards.
-export const maxDuration = 120
+// 01/11 (owner approved: "nâng giới hạn thời gian lên 300 giây chỉ riêng cho Nghiên cứu sâu"; was 120, owner decision 28/09): the platform
+// ceiling is 300 s for the Deep Research turn (lib/ai/research DEEP_RESEARCH_LIMITS); every other turn still ends by TURN_DEADLINE_MS (110 s).
+export const maxDuration = 300
 const TURN_DEADLINE_MS = 110_000
 
 /** A travel turn that is a TRIP (going somewhere), not a single hotel or ticket lookup. Folded text. */
@@ -3541,7 +3543,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     const cost = { usd: 0, calls: 0 }
     return deepResearchResponse({
       question: lastText, context: recent, lang, cost,
-      deps: createDeepResearchDeps({ lang, userTexts: recentUserTexts, cost }),
+      // 01/11 (owner approved): Parallel's search beside Serper for every query - its own budget for the run (16 searches), the same daily cap
+      deps: createDeepResearchDeps({ lang, userTexts: recentUserTexts, cost, ...(consultParallelOn() ? { parallelSearch: deepResearchParallel() } : {}) }),
       serperUsd: () => { const d = serperDelta(serperAtStart); return { usd: turnUsd({ promptTokens: 0, completionTokens: 0, serperCredits: d.credits }), calls: sumCounts(d.calls) } },
       onFailed: reason => refundQuotaOnFailure(`deep_research_${reason}`),
     })

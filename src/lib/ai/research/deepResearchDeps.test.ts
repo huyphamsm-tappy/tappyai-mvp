@@ -1,6 +1,17 @@
 // 31/10: the page a reader landed on is matched to the search result's link loosely (pageKey) - measured: full text reached 7-21 of 42-58 sources.
 import { describe, it, expect } from 'vitest'
-import { pageKey } from './deepResearchDeps'
+import { pageKey, mergeSearchRows, deepResearchParallel } from './deepResearchDeps'
+
+describe('Serper + Parallel rows (owner 01/11: "thêm nguồn Parallel")', () => {
+  it('Serper\'s rows first, then Parallel\'s; a page both found is kept once', () => {
+    const s = [{ url: 'https://a.example/x', from: 's' }, { url: 'https://www.google.com/goto?url=t', from: 's' }]
+    const p = [{ url: 'https://www.a.example/x/', from: 'p' }, { url: 'https://b.example/y', from: 'p' }]
+    expect(mergeSearchRows(s, p)).toEqual([...s, { url: 'https://b.example/y', from: 'p' }])
+  })
+  it('no key: nothing is sent, the run goes on with Serper alone', async () => {
+    expect(await deepResearchParallel('')('q')).toEqual({ ok: false, rows: [] })
+  })
+})
 
 describe('pageKey', () => {
   it('www., a trailing slash, the fragment and the host case do not make two pages', () => {

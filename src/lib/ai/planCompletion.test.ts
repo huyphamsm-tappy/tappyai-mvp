@@ -113,7 +113,9 @@ describe('the route budget', () => {
   const maxDuration = Number(route.match(/export const maxDuration = (\d+)/)?.[1])
   const deadline = Number(route.match(/const TURN_DEADLINE_MS = ([\d_]+)/)?.[1].replace(/_/g, ''))
   it('the turn deadline sits under maxDuration with headroom, and maxDuration within the Fluid cap', () => {
-    expect(maxDuration).toBe(120)
+    // Owner 01/11/2026 approved 300 for the Deep Research turn (was 120, decision 28/09); every other turn keeps the 110 s deadline below.
+    expect(maxDuration).toBe(300)
+    expect(deadline).toBe(110_000)
     expect(deadline).toBeGreaterThan(0)
     expect(deadline).toBeLessThanOrEqual(maxDuration * 1000 - 5_000)
     expect(maxDuration).toBeLessThanOrEqual(300)

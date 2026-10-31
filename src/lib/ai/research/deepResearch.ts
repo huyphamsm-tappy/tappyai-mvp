@@ -12,12 +12,13 @@
 // Bounded: DEEP_RESEARCH_LIMITS (steps, queries, a deadline after which a step still running is dropped). Pure orchestration: every model
 // call, search and page read is an injected dependency (deepResearchDeps.ts in the app; fakes in the tests).
 
-// The chat route's maxDuration is 120 s (owner decision 28/09, pinned by planCompletion.test.ts): research gets 55 s, and the whole run stops
-// writing at 105 s (what was written stays, with its sources) so the answer always ends inside the platform's limit.
+// The chat route's maxDuration is 300 s (owner 01/11, for this mode; it was 120 s): research gets 120 s, and the whole run stops writing at
+// 270 s (what was written stays, with its sources) so the answer always ends inside the platform's limit. Measured 01/11 at 55 s / 105 s:
+// a pricing report was cut at 105 s.
 import { parseDoc, headingTitle, titleKey, type DocBlock } from '@/lib/answerDoc/parse'
 
 // planSteps: the plan's own steps; steps: all steps of a run (the plan's + the follow-up round's GAP_STEPS), as the card shows them
-export const DEEP_RESEARCH_LIMITS = { planSteps: 5, steps: 7, queriesPerStep: 2, findingsPerStep: 10, researchDeadlineMs: 55_000, runDeadlineMs: 105_000 } as const
+export const DEEP_RESEARCH_LIMITS = { planSteps: 5, steps: 7, queriesPerStep: 2, findingsPerStep: 10, researchDeadlineMs: 120_000, runDeadlineMs: 270_000 } as const
 
 /**
  * `sources_label`: the heading of the sources list in the question's language (the plan call writes it; absent = by the app's locale).

@@ -13,6 +13,7 @@ import { fenceUntrusted } from '@/lib/ai/security/fence'
 import { webSearch, fetchPlacePhotosByName } from '@/lib/ai/tools/common'
 import { createLeanResearch } from '@/lib/ai/consultative/researchLoop'
 import { topResultUrls } from '@/lib/ai/consultative/searchReads'
+import { createParallelTurnBudget, parallelSearch } from '@/lib/ai/tools/parallelClient'
 import { DEEP_RESEARCH_LIMITS, writerNotes, type Figure, type DeepResearchDeps, type Evidence, type ResearchPlan } from './deepResearch'
 
 const PlanSchema = z.object({
@@ -82,7 +83,30 @@ export function pageKey(u: string): string {
   try { const x = new URL(u); return `${x.hostname.toLowerCase().replace(/^www\./, '')}${x.pathname.replace(/\/+$/, '')}${x.search}` } catch { return u }
 }
 
-export function createDeepResearchDeps(o: { lang: string; userTexts: readonly string[]; cost: Cost }): DeepResearchDeps {
+/**
+ * 01/11 (owner approved "thêm nguồn Parallel"; measured: ~7 of 10 Serper rows are Google redirect tokens): each query is also searched on
+ * Parallel, whose rows are real page addresses with long excerpts. Merged after Serper's own rows (a page both found is kept once).
+ */
+export type ResearchParallelSearch = (query: string) => Promise<{ ok: boolean; rows: Array<{ title: string; link: string; snippet: string; date?: string }> }>
+
+/** The run's Parallel search: at most 16 searches (each booked against the process-wide daily cap before it is sent); counts-only logs. */
+export function deepResearchParallel(apiKey = process.env.PARALLEL_API_KEY?.trim() ?? ''): ResearchParallelSearch {
+  const budget = createParallelTurnBudget({ searches: 16, extracts: 0 })
+  return async (query: string) => {
+    if (!apiKey || !budget.take('search')) { console.log(JSON.stringify({ type: 'tappyai_parallel', kind: 'research_search', refused: true })); return { ok: false, rows: [] } }
+    const r = await parallelSearch(query, { apiKey })
+    console.log(JSON.stringify({ type: 'tappyai_parallel', kind: 'research_search', ok: r.ok, rows: r.rows.length }))
+    return r
+  }
+}
+
+/** Serper's rows then Parallel's, a page once (by its normalised address). Pure. */
+export function mergeSearchRows<T extends { url: string }>(first: readonly T[], second: readonly T[]): T[] {
+  const seen = new Set(first.map(r => pageKey(r.url)))
+  return [...first, ...second.filter(r => { const k = pageKey(r.url); if (seen.has(k)) return false; seen.add(k); return true })]
+}
+
+export function createDeepResearchDeps(o: { lang: string; userTexts: readonly string[]; cost: Cost; parallelSearch?: ResearchParallelSearch }): DeepResearchDeps {
   const reader = createLeanResearch({ lang: o.lang, userTexts: o.userTexts, maxReads: DEEP_RESEARCH_LIMITS.steps * DEEP_RESEARCH_LIMITS.queriesPerStep * READ_PER_QUERY, v5Reading: true })
   const exec = reader.tool.execute as unknown as (a: unknown, c: unknown) => Promise<unknown>
   return {
@@ -92,7 +116,8 @@ export function createDeepResearchDeps(o: { lang: string; userTexts: readonly st
       return r.object
     },
     async gather(query, focus) {
-      const base = await webSearch(query, o.lang)
+      // Parallel's search runs alongside (its rows carry their excerpts; a failure or no budget = Serper's rows alone)
+      const [base, par] = await Promise.all([webSearch(query, o.lang), o.parallelSearch ? o.parallelSearch(query).catch(() => null) : Promise.resolve(null)])
       reader.collectFrom(base)
       // the top READ_PER_QUERY results are opened at once (measured 31/10: the chat's 3 reads per search gave full text for 7-21 of 42-58 sources)
       const toRead = topResultUrls(base, READ_PER_QUERY)
@@ -106,11 +131,13 @@ export function createDeepResearchDeps(o: { lang: string; userTexts: readonly st
         if (typeof p.url === 'string' && text.trim() && !('error' in p)) pages.set(pageKey(p.url), { text, ...(date ? { published: date.slice(0, 10) } : {}) })
       }
       const top = new Set(topResultUrls(base, 8))
-      return rowsOf(base).filter(row => top.has(String(row.link ?? row.url ?? ''))).map(row => {
+      const serper = rowsOf(base).filter(row => top.has(String(row.link ?? row.url ?? ''))).map(row => {
         const url = String(row.link ?? row.url ?? '')
         const page = pages.get(pageKey(url))
         return { title: String(row.title ?? ''), url, snippet: String(row.snippet ?? ''), text: page?.text ?? '', ...(page?.published ? { published: page.published } : {}), ...(typeof row.site === 'string' ? { site: row.site } : {}) }
       })
+      const parallelRows = par?.ok ? par.rows.slice(0, 6).map(r => ({ title: r.title, url: r.link, snippet: r.snippet.slice(0, 400), text: r.snippet, ...(r.date ? { published: r.date } : {}) })) : []
+      return mergeSearchRows(serper, parallelRows)
     },
     async notes(step, question, evidence) {
       const data = evidence.map(e => `[${e.id}] ${e.title}\n${e.snippet}\n${e.text.slice(0, 3500)}`).join('\n\n')
