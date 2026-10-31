@@ -13,7 +13,8 @@ import { fenceUntrusted } from '@/lib/ai/security/fence'
 import { webSearch, fetchPlacePhotosByName } from '@/lib/ai/tools/common'
 import { createLeanResearch } from '@/lib/ai/consultative/researchLoop'
 import { topResultUrls } from '@/lib/ai/consultative/searchReads'
-import { createParallelTurnBudget, parallelSearch } from '@/lib/ai/tools/parallelClient'
+import { createParallelTurnBudget, parallelSearch, PARALLEL_PRICE } from '@/lib/ai/tools/parallelClient'
+export { PARALLEL_PRICE }
 import { DEEP_RESEARCH_LIMITS, writerNotes, type Figure, type DeepResearchDeps, type Evidence, type ResearchPlan } from './deepResearch'
 
 const PlanSchema = z.object({
@@ -90,14 +91,18 @@ export function pageKey(u: string): string {
 export type ResearchParallelSearch = (query: string) => Promise<{ ok: boolean; rows: Array<{ title: string; link: string; snippet: string; date?: string }> }>
 
 /** The run's Parallel search: at most 16 searches (each booked against the process-wide daily cap before it is sent); counts-only logs. */
-export function deepResearchParallel(apiKey = process.env.PARALLEL_API_KEY?.trim() ?? ''): ResearchParallelSearch {
+export function deepResearchParallel(apiKey = process.env.PARALLEL_API_KEY?.trim() ?? ''): ResearchParallelSearch & { sent(): number } {
   const budget = createParallelTurnBudget({ searches: 16, extracts: 0 })
-  return async (query: string) => {
+  let sent = 0
+  const search = async (query: string) => {
     if (!apiKey || !budget.take('search')) { console.log(JSON.stringify({ type: 'tappyai_parallel', kind: 'research_search', refused: true })); return { ok: false, rows: [] } }
+    sent++
     const r = await parallelSearch(query, { apiKey })
     console.log(JSON.stringify({ type: 'tappyai_parallel', kind: 'research_search', ok: r.ok, rows: r.rows.length }))
     return r
   }
+  // how many searches were sent (each is priced: PARALLEL_PRICE.searchFastUsd) - the run's cost line and the usage ledger read it
+  return Object.assign(search, { sent: () => sent })
 }
 
 /** Serper's rows then Parallel's, a page once (by its normalised address). Pure. */

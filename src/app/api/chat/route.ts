@@ -30,7 +30,7 @@ import { fenceUntrusted } from '@/lib/ai/security/fence'
 import { wrapToolResultAsData } from '@/lib/ai/security/toolResultFence'
 import { pdfPartsToText } from '@/lib/ai/attachments/pdfAttachments'
 import { deepResearchResponse } from '@/lib/ai/research/deepResearchResponse'
-import { createDeepResearchDeps, deepResearchParallel } from '@/lib/ai/research/deepResearchDeps'
+import { createDeepResearchDeps, deepResearchParallel, PARALLEL_PRICE } from '@/lib/ai/research/deepResearchDeps'
 import { classifyIntent, detectLang, detectLangConfident, detectExplicitLangRequest, detectForcedTool, detectTravelIntent, detectLocationIntent, detectPlanningIntent, detectPlanningIntentFromConversation, detectPlanActivities, detectTripLength, isPlanningRefinement, defaultTransportFor, detectMovieRecommendationIntent, isSimpleQuery, normalizeVN, isPurchaseShaped, routeToolOfferOn } from '@/lib/ai/intent'
 import { deriveNeedProfile, type StoredPreferences } from '@/lib/ai/consultative/needProfile'
 import { resolveDecisionStage, taskSwitched, consultationUserTexts } from '@/lib/ai/consultative/refinement'
@@ -165,7 +165,8 @@ import { lunaDataMessage, buildLeakDetector, sanitizeSearchQuery } from '@/lib/a
 import { asksOtherDestination, eventPreCall, nearbyDestination, nearbyTurnedDown, onlyRowsNamed, slimResultForModel, travelPreCall, unshownRows, withoutShownRows } from '@/lib/ai/consultative/consultTravel'
 import { geoGuardArea, guardPlaceGeography } from '@/lib/ai/tools/placeGeoGuard'
 import { compactCandidates, compactProducts, loadChatSessionState, nextChatSessionState, readChatSessionId, saveChatSessionState, type ChatSessionState } from '@/lib/ai/consultative/chatSessionState'
-import { turnUsd, sumCounts, turnCostStream } from '@/lib/ai/turnCost'
+import { turnUsd, sumCounts, turnCostStream, type TurnCostInfo } from '@/lib/ai/turnCost'
+import { recordAiUsage } from '@/lib/ai/usage/usageLedger'
 import { coveringQuery, planPresearch, planFlightPresearch, type FlightPresearchPlan, presearchMessages, presearchFrames, presearchPlaceSites, prefixBody, deferredBody, searchingFrame, type PresearchOutcome, type PresearchPlan } from '@/lib/ai/consultative/presearch'
 import { wantsMoreFromSet, reusablePlaceSearch, type PlaceSearchEvidence } from '@/lib/ai/consultative/moreFromSet'
 import { coercePlaceType } from '@/lib/ai/tools/placeType'
@@ -2669,6 +2670,12 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     }
   })() : null
   const researchReader = (consultResearchLoopOn() && lean) || knowledgeTurn || pickCandidate || oneBrain ? createLeanResearch({ lang, userTexts: recentUserTexts, maxReads: consultUnwindS6aOn() ? Math.max(S6_MAX_READS, levelLimits.researchMaxReads) : levelLimits.researchMaxReads, ...(consultUnwindS6cOn() ? { v5Reading: true } : {}), emit: trace ? (ev, d) => trace.emit(ev, d) : undefined, ...(parallel ? { extractFallback: parallel.extract } : {}) }) : null
+  // 01/11 (owner: "bảng thống kê chi phí - làm ngay"): one ledger row per turn of a signed-in account (lib/ai/usage, AI_USAGE_LEDGER=1):
+  // plan, mode, the deepest web lookup, the turn's price and counts - never a word of the conversation. Reporting only; fire and forget.
+  const turnSearch: { depth: 'none' | SearchDepth } = { depth: 'none' }
+  const usageSink = (i: TurnCostInfo, extra: { parallelCalls?: number; ok?: boolean } = {}) => {
+    void recordAiUsage({ userId: authedUserId ?? null, plan: quotaPlan, mode: chatMode, searchDepth: turnSearch.depth, costUsd: i.usd, tokensIn: i.tokensIn, tokensOut: i.tokensOut, serperCalls: i.serperCalls, ...extra })
+  }
   const tools = noToolTurn && !agentOn ? undefined : gateTools(timeTools({
       // A movie/show RECOMMENDATION turn drops the place search entirely, so the
       // model can't answer "recommend a movie" with a list of cinemas — it
@@ -3290,6 +3297,11 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       }
     }
   }
+  // 01/11 (usage ledger): the deepest web lookup this turn made - quick / thorough in Chat (the model's choice), thorough in Web / Thinking.
+  if (tools && oneBrain && chatMode !== 'chat') {
+    const ws = (tools as unknown as Record<string, { execute?: (a: unknown, o: unknown) => Promise<unknown> }>).web_search
+    if (ws?.execute) { const inner = ws.execute.bind(ws); ws.execute = async (a: unknown, o: unknown) => { turnSearch.depth = 'thorough'; return inner(a, o) } }
+  }
   // 31/10 (mode Chat): a budget of web searches and page reads per turn; a further call is answered with a note, never run.
   // 01/11: the budget is the one of the depth the model chose (CHAT_SEARCH_BUDGET): quick = 1 search / 1 read, and once any web_search of
   // the turn asked for "thorough", 3 / 3 for the rest of the turn. One line per search says which depth was chosen (counts only).
@@ -3304,6 +3316,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       t.execute = async (a: unknown, o: unknown) => {
         if (name === 'web_search') {
           if (searchDepthOf(a) === 'thorough') depth = 'thorough'
+          turnSearch.depth = depth
           console.log(JSON.stringify({ type: 'tappyai_search_depth', asked: searchDepthOf(a), turn_depth: depth, n: used + 1 }))
         }
         const budget = CHAT_SEARCH_BUDGET[depth]
@@ -3541,12 +3554,18 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   if (oneBrain && chatMode === 'deep') {
     const recent = typedMessages.slice(-7, -1).map(m => `${m.role}: ${typeof m.content === 'string' ? m.content : m.content.map(p => (p.type === 'text' ? p.text : '')).join(' ')}`).join('\n').slice(-2500)
     const cost = { usd: 0, calls: 0 }
+    // 01/11 (owner approved): Parallel's search beside Serper for every query - its own budget for the run (16 searches), the same daily cap
+    const par = consultParallelOn() ? deepResearchParallel() : null
     return deepResearchResponse({
       question: lastText, context: recent, lang, cost,
-      // 01/11 (owner approved): Parallel's search beside Serper for every query - its own budget for the run (16 searches), the same daily cap
-      deps: createDeepResearchDeps({ lang, userTexts: recentUserTexts, cost, questionLang: detectLangConfident(lastText), ...(consultParallelOn() ? { parallelSearch: deepResearchParallel() } : {}) }),
-      serperUsd: () => { const d = serperDelta(serperAtStart); return { usd: turnUsd({ promptTokens: 0, completionTokens: 0, serperCredits: d.credits }), calls: sumCounts(d.calls) } },
+      deps: createDeepResearchDeps({ lang, userTexts: recentUserTexts, cost, questionLang: detectLangConfident(lastText), ...(par ? { parallelSearch: par } : {}) }),
+      // the searches' price: Serper's credits plus the Parallel searches sent
+      serperUsd: () => {
+        const d = serperDelta(serperAtStart)
+        return { usd: Math.round((turnUsd({ promptTokens: 0, completionTokens: 0, serperCredits: d.credits }) + (par?.sent() ?? 0) * PARALLEL_PRICE.searchFastUsd) * 1e6) / 1e6, calls: sumCounts(d.calls) + (par?.sent() ?? 0) }
+      },
       onFailed: reason => refundQuotaOnFailure(`deep_research_${reason}`),
+      onUsage: u => { turnSearch.depth = 'thorough'; usageSink({ domain: null, turnType: 'deep_research', model: 'luna', tokensIn: 0, tokensOut: 0, serperCalls: u.searchCalls - (par?.sent() ?? 0), cacheHits: 0, usd: u.usd }, { parallelCalls: par?.sent() ?? 0, ok: u.ok }) },
     })
   }
   // ── TAPPY_AGENT: the bounded agent turn (src/lib/ai/agent) ──────────────────────────────────────────────────────────────
@@ -4419,7 +4438,7 @@ ${finalWriteInstruction(lang)}` },
         const answerUsd = (lunaAnswerCost?.usd ?? 0) + planCompletionUsd
         const serperUsd = turnUsd({ promptTokens: 0, completionTokens: 0, serperCredits: d.credits })
         return { ...base, model: [...new Set(lunaAnswerCost?.served ?? [])].join('+') || base.model, intent: lunaRun?.served ?? (consultRun ? 'haiku' : null), intentUsd, answerUsd, serperUsd, reasoningTokens: lunaAnswerCost?.reasoningTokens ?? 0, lunaCachedIn: lunaAnswerCost?.cachedInputTokens ?? 0, lunaCacheWrite: lunaAnswerCost?.cacheWriteTokens ?? 0, fellBack: lunaAnswerCost?.fellBack ?? false, usd: Math.round((intentUsd + answerUsd + serperUsd) * 1e6) / 1e6 }
-      }).pipeThrough(timeClientEmit(startTime, Date.now, (t) => logUsage(t.ttuaMs))).pipeThrough(traceTailStream(agentRunTrace))
+      }, usageSink).pipeThrough(timeClientEmit(startTime, Date.now, (t) => logUsage(t.ttuaMs))).pipeThrough(traceTailStream(agentRunTrace))
     : finalResponse.body
   // CONSULT_ONE_BRAIN_MEDIA: the pictures go out last, before the finish frame, once every guard and frame above has run on the answer.
   const pictured = oneBrainUnderstanding && timedBody ? oneBrainMediaStream(timedBody, { understanding: oneBrainUnderstanding, cardTurn: () => !!(enrichment.placesRecommendations?.length || enrichment.shoppingMarker), log: l => console.log(JSON.stringify(l)) }) : timedBody
