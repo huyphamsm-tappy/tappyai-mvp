@@ -5,6 +5,8 @@ import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,6 +24,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -62,6 +65,7 @@ import com.tappyai.app.R
 import com.tappyai.app.chat.plan.PlanArea
 import com.tappyai.app.chat.plan.PlanCardView
 import com.tappyai.app.chat.plan.PlanImageManifest
+import com.tappyai.app.chat.plan.dayTabIndex
 import com.tappyai.app.chat.plan.planCardViewOf
 import com.tappyai.app.chat.plan.planImageRepository
 import com.tappyai.app.share.PlanShareOutcome
@@ -92,6 +96,7 @@ fun TripPlanCard(plan: TappyPlan, modifier: Modifier = Modifier, planJson: Strin
     val manifest = rememberPlanImageManifest()
 
     var shareOpen by remember(plan) { mutableStateOf(false) }
+    var selectedDay by remember(plan) { mutableStateOf(0) }
     if (shareOpen) {
         val artifact = remember(plan, planJson) { ShareArtifactBuilder.buildPlanArtifact(plan, Locale.getDefault().language, planJson) }
         // SL1 (owner 29/09): the plan card uses the approved sheet (sample #6) with the plan image (#7).
@@ -113,7 +118,10 @@ fun TripPlanCard(plan: TappyPlan, modifier: Modifier = Modifier, planJson: Strin
         Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 18.dp), verticalArrangement = Arrangement.spacedBy(18.dp)) {
             if (view.days.isNotEmpty()) {
                 Text(stringResource(R.string.chat_plan_v2_itinerary), color = PlanPal.Text, fontSize = 20.sp, fontWeight = FontWeight.Bold)
-                view.days.forEach { day -> DayBlock(day, view.area, manifest) { url -> openUrl(context, url) } }
+                // the web's day tabs (one day drawn at a time), not every day stacked
+                val active = dayTabIndex(selectedDay, view.days.size)
+                if (view.days.size > 1) DayTabs(view.days, active) { selectedDay = it }
+                DayBlock(view.days[active], view.area, manifest) { url -> openUrl(context, url) }
             }
             if (view.overview.isNotEmpty()) Overview(view)
             if (view.highlights.isNotEmpty()) Highlights(view, manifest)
@@ -250,6 +258,34 @@ private fun MetaChip(icon: ImageVector, text: String) {
     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(5.dp)) {
         Icon(icon, contentDescription = null, tint = PlanPal.Accent, modifier = Modifier.size(16.dp))
         Text(text, color = PlanPal.Text, fontSize = 13.sp, fontWeight = FontWeight.Medium)
+    }
+}
+
+/** The row of day tabs (web TripPlanCard tabs): each shows the day's own label ("Ngày 2 — Hội An: ăn món phố cổ"); the chosen one is filled. */
+@Composable
+private fun DayTabs(days: List<PlanCardView.Day>, active: Int, onPick: (Int) -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).testTag("plan_day_tabs"),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        days.forEachIndexed { i, day ->
+            val on = i == active
+            Text(
+                text = day.label.ifBlank { "%02d".format(day.number) },
+                color = if (on) Color.White else PlanPal.Muted,
+                fontSize = 13.sp,
+                fontWeight = if (on) FontWeight.Bold else FontWeight.Normal,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier
+                    .widthIn(max = 260.dp)
+                    .clip(RoundedCornerShape(50))
+                    .then(if (on) Modifier.background(PlanPal.Badge) else Modifier.background(Color(0x1AFFFFFF)))
+                    .clickable { onPick(i) }
+                    .padding(horizontal = 14.dp, vertical = 8.dp)
+                    .testTag("plan_day_tab_${day.number}"),
+            )
+        }
     }
 }
 

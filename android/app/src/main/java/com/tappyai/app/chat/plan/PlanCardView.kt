@@ -106,6 +106,9 @@ data class PlanCardView(
 /** At most this many "Điểm nổi bật" tiles (the sample's 2×2 grid). */
 const val PLAN_MAX_HIGHLIGHTS = 4
 
+/** The day tab to draw: the chosen one, kept inside the days the card has (a new answer can shrink the plan). */
+fun dayTabIndex(selected: Int, dayCount: Int): Int = selected.coerceIn(0, maxOf(0, dayCount - 1))
+
 /**
  * The card for [plan]. Prices go through [PlanPrice] (the same projection the parser applies), so a
  * sentinel like "chưa có giá" never lands in a price slot; a stop without an amount reads [NO_PRICE].
