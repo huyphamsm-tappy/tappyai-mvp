@@ -67,7 +67,7 @@ struct ShoppingDecisionCardView: View {
     private func recommendedCard(_ entity: ShoppingEntityView) -> some View {
         VStack(alignment: .leading, spacing: Spacing.xs) {
             HStack(alignment: .top, spacing: Spacing.sm) {
-                if let image = entity.image, let url = URL(string: image) {
+                if let image = entity.image, let url = safeWebURL(image) {
                     AsyncImage(url: url) { phase in
                         if case .success(let img) = phase {
                             img.resizable().aspectRatio(contentMode: .fill)
@@ -184,7 +184,7 @@ struct ShoppingDecisionCardView: View {
                 .font(TappyFont.caption)
                 .fontWeight(.medium)
                 .foregroundStyle(TappyColor.textPrimary)
-            if let urlString = offer.url, let url = URL(string: urlString) {
+            if let urlString = offer.url, let url = safeWebURL(urlString) {
                 Link(String(localized: "shoppingDecision.view"), destination: url)
                     .font(TappyFont.caption)
                     .foregroundStyle(TappyColor.primary)

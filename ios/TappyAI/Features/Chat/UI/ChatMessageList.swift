@@ -635,7 +635,8 @@ private struct CTAButtonView: View {
 
     var body: some View {
         Button {
-            guard let url = URL(string: button.url) else { return }
+            // tel / mailto / http(s) as the web allows; never another AI product's page or a stray scheme (itms-apps:, file:, intent:…)
+            guard let url = ContentParser.ctaOpenURL(button.url) else { return }
             if button.type != "internal_booking" {
                 UIApplication.shared.open(url)
             }

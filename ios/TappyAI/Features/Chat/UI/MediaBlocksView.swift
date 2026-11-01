@@ -26,7 +26,7 @@ private struct MediaPicture: View {
     let height: CGFloat
 
     var body: some View {
-        AsyncImage(url: url.flatMap { URL(string: $0) }) { phase in
+        AsyncImage(url: url.flatMap { safeWebURL($0) }) { phase in
             if let image = phase.image {
                 image.resizable().scaledToFill()
             } else {
@@ -45,7 +45,7 @@ private struct MediaNewsStrip: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(alignment: .top, spacing: Spacing.sm) {
                 ForEach(items, id: \.href) { item in
-                    if let destination = URL(string: item.href) {
+                    if let destination = safeWebURL(item.href) {
                         Link(destination: destination) {
                             VStack(alignment: .leading, spacing: Spacing.xxs) {
                                 MediaPicture(url: item.src, height: 112)
@@ -79,7 +79,7 @@ private struct MediaEntityCard: View {
     let entity: MediaBlock.Entity
 
     var body: some View {
-        if let destination = URL(string: entity.href) {
+        if let destination = safeWebURL(entity.href) {
             Link(destination: destination) {
                 VStack(alignment: .leading, spacing: Spacing.xs) {
                     if entity.image != nil {

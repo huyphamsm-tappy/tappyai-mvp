@@ -310,11 +310,8 @@ enum PlanCardContent {
 
     /// A Maps / booking link the card may open: http(s) with a host, else nil.
     static func link(_ raw: String?) -> URL? {
-        guard let raw, let url = URL(string: raw),
-              let scheme = url.scheme?.lowercased(), scheme == "https" || scheme == "http",
-              url.host?.isEmpty == false
-        else { return nil }
-        return url
+        guard let raw else { return nil }
+        return safeWebURL(raw)
     }
 }
 

@@ -96,7 +96,7 @@ struct PlaceCardsView: View {
 
     private func exploreMapFooter(_ url: String) -> some View {
         Button {
-            if let u = URL(string: url) { UIApplication.shared.open(u) }
+            if let u = safeWebURL(url) { UIApplication.shared.open(u) }
         } label: {
             HStack(spacing: Spacing.md) {
                 Image(systemName: "map.fill").foregroundStyle(TappyColor.accent)
@@ -171,7 +171,7 @@ private struct PlaceCardRow: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            if let image = place.image, !image.isEmpty, let url = URL(string: image) {
+            if let image = place.image, !image.isEmpty, let url = safeWebURL(image) {
                 AsyncImage(url: url) { phase in
                     if let img = phase.image {
                         img.resizable().aspectRatio(contentMode: .fill)
@@ -292,7 +292,8 @@ private struct PlaceCardRow: View {
 /// action's URL is the one the Commerce Capability Platform validated. A device with nothing able
 /// to open it reports a failed handoff rather than an error on a card the user can still read.
 func openPlaceAction(_ action: PersistedPlaceAction) {
-    guard let url = URL(string: action.url) else {
+    // http(s) only, and never another AI product's page: the CCP builds https addresses, anything else is not its link.
+    guard let url = safeWebURL(action.url) else {
         if let c = action.commerce {
             CommerceHandoffReporter.tapped(c, opened: false, transport: DIContainer.shared.resolve(CommerceHandoffTransport.self), sink: DIContainer.shared.resolve(CommerceEventSink.self))
         }

@@ -225,6 +225,8 @@ enum ContentParser {
                   let url = dict["url"] as? String else { return nil }
             // Web parity: a button the Web would drop is dropped here too (see `isAllowedCTAURL`).
             guard isAllowedCTAURL(url) else { return nil }
+            // Owner 01/11: a button to another AI product's page is not shown.
+            guard !AiSourcePolicy.isAiProductSource(url) else { return nil }
             let primary = dict["primary"] as? Bool ?? false
             return CTAButton(label: label, type: type, url: url, primary: primary)
         }
@@ -250,6 +252,17 @@ enum ContentParser {
             return next != "/" && next != "\\"
         }
         return false
+    }
+
+    /// The address a CTA button may OPEN: the web's policy (`isAllowedCTAURL`) narrowed to what a phone opens from a chat — http(s)
+    /// (never another AI product's page), `tel:` and `mailto:`. A same-site path is not opened from here, and `javascript:`, `intent:`,
+    /// `file:`, `itms-apps:` and every other scheme never are.
+    static func ctaOpenURL(_ raw: String) -> URL? {
+        guard isAllowedCTAURL(raw) else { return nil }
+        let t = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+        let lower = t.lowercased()
+        if lower.hasPrefix("tel:") || lower.hasPrefix("mailto:") { return URL(string: t) }
+        return safeWebURL(t)
     }
 
     // MARK: - Trip Plan
@@ -432,7 +445,14 @@ enum ContentParser {
         do {
             var options = AttributedString.MarkdownParsingOptions()
             options.interpretedSyntax = .inlineOnlyPreservingWhitespace
-            return try AttributedString(markdown: text, options: options)
+            var rendered = try AttributedString(markdown: text, options: options)
+            // A link opens only as http(s) and never to another AI product's page; any other scheme keeps its label as plain text.
+            let unsafe = rendered.runs.compactMap { run -> Range<AttributedString.Index>? in
+                guard let link = run.link else { return nil }
+                return safeWebURL(link.absoluteString) == nil ? run.range : nil
+            }
+            for range in unsafe { rendered[range].link = nil }
+            return rendered
         } catch {
             return AttributedString(text)
         }

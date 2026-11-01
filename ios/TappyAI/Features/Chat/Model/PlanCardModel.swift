@@ -196,8 +196,9 @@ struct PlanCardModel: Equatable {
         return PlanImageKeys.isKey(key) ? key : nil
     }
 
+    /// A Maps / booking link the card opens: http(s) in any case, never another AI product's page (`safeWebURL`).
     private static func httpsLink(_ raw: String?) -> URL? {
-        guard let raw, raw.hasPrefix("https://") else { return nil }
-        return URL(string: raw)
+        guard let raw else { return nil }
+        return safeWebURL(raw)
     }
 }
