@@ -21,6 +21,9 @@ import com.tappyai.app.chat.data.ChatRepository
 import com.tappyai.app.chat.data.CommerceHandoffReporter
 import com.tappyai.core.analytics.AnalyticsProvider
 import com.tappyai.app.chat.data.ChatStreamEvent
+import com.tappyai.app.chat.data.DocMediaItem
+import com.tappyai.app.chat.data.ResearchChart
+import com.tappyai.app.chat.data.ResearchStatus
 import com.tappyai.app.chat.data.MessageFeedback
 import com.tappyai.app.chat.data.MessageFeedbackRepository
 import com.tappyai.app.chat.data.PublishedShare
@@ -151,6 +154,9 @@ class ChatViewModel @Inject constructor(
     val streamingHint: StateFlow<String?> = _streamingHint.asStateFlow()
     private val _streamingPlaces = MutableStateFlow<PlacesLiveView?>(null)
     val streamingPlaces: StateFlow<PlacesLiveView?> = _streamingPlaces.asStateFlow()
+    // A3: the Deep Research card while the run streams (drawn by A5); kept on the reply once it is built.
+    private val _streamingResearch = MutableStateFlow<ResearchStatus?>(null)
+    val streamingResearch: StateFlow<ResearchStatus?> = _streamingResearch.asStateFlow()
 
     // True only while a resumed conversation's history is still loading, so the Welcome state
     // doesn't flash before the real messages arrive (see init{} below). Chats started fresh
@@ -681,6 +687,12 @@ class ChatViewModel @Inject constructor(
                 // is built — it is never appended to the text, which is why it cannot leak into the
                 // reply, into TTS, or into what gets persisted.
                 var livePlaces: PlacesLiveView? = null
+                // A3: the one-brain turn's live annotations, kept on the reply when it is built (never in its text)
+                var research: ResearchStatus? = null
+                var charts: List<ResearchChart> = emptyList()
+                var docMedia: List<DocMediaItem> = emptyList()
+                var turnStatus: String? = null
+                var serverSaidProgress = false
                 val turnMode = _mode.value
                 _mode.value = turnMode.afterSend()
                 chatRepository.streamReply(history, chatSessionId, turnMode).collect { event ->
@@ -689,9 +701,16 @@ class ChatViewModel @Inject constructor(
                         // The last place frame is the turn's view (the preliminary set is replaced
                         // by the decision); both are shown live as they arrive.
                         is ChatStreamEvent.Places -> { livePlaces = event.view; _streamingPlaces.value = event.view; return@collect }
-                        is ChatStreamEvent.Progress -> { _streamingHint.value = event.text; return@collect }
+                        is ChatStreamEvent.Progress -> { serverSaidProgress = true; _streamingHint.value = event.text; return@collect }
                         // Last event of a reply that closed without `d:`/`3:`: the half answer stays, with an «answer again» notice.
                         ChatStreamEvent.Cut -> { _streamCut.value = true; return@collect }
+                        is ChatStreamEvent.Research -> { research = event.status; _streamingResearch.value = event.status; return@collect }
+                        is ChatStreamEvent.Charts -> { charts = event.charts; return@collect }
+                        is ChatStreamEvent.DocMedia -> { docMedia = event.items; return@collect }
+                        is ChatStreamEvent.TurnStatus -> { turnStatus = event.status; return@collect }
+                        // Web parity (TOOL_HINTS): say which tool runs; the server's own progress line, when it sent one, wins.
+                        is ChatStreamEvent.ToolCall -> { toolHint(event.name)?.takeIf { !serverSaidProgress }?.let { _streamingHint.value = it }; return@collect }
+                        is ChatStreamEvent.ToolResult -> return@collect
                     }
                     reply.append(token)
                     // Surface the running text with structured blocks stripped but image markdown
@@ -730,6 +749,10 @@ class ChatViewModel @Inject constructor(
                         // What gets SAVED. See [ChatMessage.raw]: the stripped text cannot rebuild
                         // a card, so the unstripped reply is carried alongside it.
                         raw = finalReply,
+                        research = research,
+                        charts = charts,
+                        docMedia = docMedia,
+                        turnStatus = turnStatus,
                     )
                 }
                 persistConversation()
@@ -774,9 +797,25 @@ class ChatViewModel @Inject constructor(
                 _streamingText.value = ""
                 _streamingHint.value = null
                 _streamingPlaces.value = null
+                _streamingResearch.value = null
             }
         }
     }
+
+    /** What a tool call means to the person (the web's TOOL_HINTS, same tools and words); an unmapped tool keeps the current hint. */
+    private fun toolHint(name: String): String? = when (name) {
+        "search_places" -> R.string.chat_tool_search_places
+        "search_products" -> R.string.chat_tool_search_products
+        "get_weather", "get_weather_forecast" -> R.string.chat_tool_weather
+        "get_gold_price" -> R.string.chat_tool_gold
+        "get_flight_prices" -> R.string.chat_tool_flights
+        "get_hotel_prices" -> R.string.chat_tool_hotels
+        "get_transport_options" -> R.string.chat_tool_transport
+        "get_news" -> R.string.chat_tool_news
+        "web_search" -> R.string.chat_tool_web_search
+        "save_price_watch" -> R.string.chat_tool_price_watch
+        else -> null
+    }?.let(stringProvider::get)
 
     /**
      * The message's index in the **persisted** `messages` array — which is what

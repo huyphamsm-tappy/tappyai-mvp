@@ -40,7 +40,11 @@ class AgentFinalReplayTest {
         for (r in all) {
             assertEquals("${r.name}: one d: frame", 1, r.lines.count { it.startsWith("d:") })
             assertFalse("${r.name} is a complete reply", r.end.cut)
-            for (l in r.lines.filter { it.startsWith("9:") || it.startsWith("a:") || it.startsWith("e:") || it.startsWith("d:") }) assertNull("${r.name}: $l", ChatStreamFrames.parse(l))
+            for (l in r.lines.filter { it.startsWith("e:") || it.startsWith("d:") }) assertNull("${r.name}: $l", ChatStreamFrames.parse(l))
+            // A3 (02/11): a tool call / its result is read now (the web's tool hint) - as that, never as text or a card
+            for (l in r.lines.filter { it.startsWith("9:") }) assertTrue("${r.name}: $l", ChatStreamFrames.parse(l) is com.tappyai.app.chat.data.ChatStreamEvent.ToolCall)
+            // a result with no toolCallId (the agent's trimmed `a:{"trimmed":true}`) is nothing
+            for (l in r.lines.filter { it.startsWith("a:") }) ChatStreamFrames.parse(l).let { assertTrue("${r.name}: $l", it == null || it is com.tappyai.app.chat.data.ChatStreamEvent.ToolResult) }
             val turn = r.lines.single { it.startsWith("8:") && "tappy.turn.v1" in it }
             assertNull("${r.name}: tappy.turn.v1 is not for the screen", ChatStreamFrames.parse(turn))
             assertTrue("${r.name}: there is an answer", r.text.isNotBlank())

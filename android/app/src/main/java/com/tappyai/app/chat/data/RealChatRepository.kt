@@ -110,7 +110,7 @@ class RealChatRepository @Inject constructor(
                         close(ChatException.AiError(""))
                         return@launch
                     }
-                    ChatStreamFrames.parse(line)?.let { trySend(it) }
+                    ChatStreamFrames.events(line).forEach { trySend(it) }
                 }
                 // Closed cleanly with no `d:`/`3:` frame: half an answer (web streamCut.ts) — say so.
                 if (end.cut) trySend(ChatStreamEvent.Cut)

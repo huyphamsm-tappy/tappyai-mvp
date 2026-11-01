@@ -350,4 +350,15 @@
     <string name="chat_mode_think_hint">Trả lời kỹ cho câu khó, chậm hơn</string>
     <string name="chat_mode_deep">Nghiên cứu sâu</string>
     <string name="chat_mode_deep_hint">Lập kế hoạch, đọc nhiều nguồn, viết báo cáo (1–3 phút)</string>
+    <!-- A3 (02/11): công cụ đang chạy, đúng TOOL_HINTS của web (ChatInterface.tsx) -->
+    <string name="chat_tool_search_places">🔎 Đang tìm địa điểm…</string>
+    <string name="chat_tool_search_products">🛍️ Đang tìm sản phẩm…</string>
+    <string name="chat_tool_weather">⛅ Đang xem thời tiết…</string>
+    <string name="chat_tool_gold">🪙 Đang tra giá vàng…</string>
+    <string name="chat_tool_flights">✈️ Đang tìm vé máy bay…</string>
+    <string name="chat_tool_hotels">🏨 Đang tìm khách sạn…</string>
+    <string name="chat_tool_transport">🚗 Đang tìm cách di chuyển…</string>
+    <string name="chat_tool_news">📰 Đang đọc tin tức…</string>
+    <string name="chat_tool_web_search">🌐 Đang tìm trên web…</string>
+    <string name="chat_tool_price_watch">🔔 Đang đặt theo dõi giá…</string>
 </resources>

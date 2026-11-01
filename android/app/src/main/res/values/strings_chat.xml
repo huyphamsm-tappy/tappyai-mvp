@@ -353,4 +353,15 @@
     <string name="chat_mode_think_hint">A thorough answer for hard questions, slower</string>
     <string name="chat_mode_deep">Deep research</string>
     <string name="chat_mode_deep_hint">Plans, reads many sources, writes a report (1–3 minutes)</string>
+    <!-- A3 (02/11): the tool in use, the web's TOOL_HINTS (ChatInterface.tsx) -->
+    <string name="chat_tool_search_places">🔎 Searching places…</string>
+    <string name="chat_tool_search_products">🛍️ Searching products…</string>
+    <string name="chat_tool_weather">⛅ Checking the weather…</string>
+    <string name="chat_tool_gold">🪙 Checking gold prices…</string>
+    <string name="chat_tool_flights">✈️ Finding flights…</string>
+    <string name="chat_tool_hotels">🏨 Finding hotels…</string>
+    <string name="chat_tool_transport">🚗 Finding transport…</string>
+    <string name="chat_tool_news">📰 Reading the news…</string>
+    <string name="chat_tool_web_search">🌐 Searching the web…</string>
+    <string name="chat_tool_price_watch">🔔 Setting up price watch…</string>
 </resources>

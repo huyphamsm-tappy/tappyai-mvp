@@ -113,7 +113,8 @@ class ConsultV2RawReplayTest {
     @Test fun `tappy turn v1 and other unknown 8 kinds are ignored, a places frame still decodes`() {
         val s = named("r15-run1-t1")
         assertTrue(File(javaClass.classLoader!!.getResource("consult-raw/${s.name}")!!.toURI()).readText().contains("tappy.turn.v1"))
-        assertTrue(s.events.all { it is ChatStreamEvent.Text || it is ChatStreamEvent.Places || it is ChatStreamEvent.Progress })
+        // A3 (02/11): the tool call and its result are read too (the tool hint); nothing else of this stream becomes an event
+        assertTrue(s.events.all { it is ChatStreamEvent.Text || it is ChatStreamEvent.Places || it is ChatStreamEvent.Progress || it is ChatStreamEvent.ToolCall || it is ChatStreamEvent.ToolResult })
         assertTrue(s.events.any { it is ChatStreamEvent.Places })
         assertNull(ChatStreamFrames.parse("""8:[{"kind":"tappy.turn.v1","domain":"travel","turnType":"pick","usd":0.01}]"""))
     }
