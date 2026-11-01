@@ -13,6 +13,7 @@ import { ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, CHAT_SEARCH_BUDGET, ONE_BRAI
 import { DEEP_RESEARCH_LIMITS } from '@/lib/ai/research/deepResearch'
 import { isAiProductSource } from '@/lib/security/aiSourcePolicy'
 import { deepResearchOffered } from '@/lib/subscription/modeAccess'
+import { rendersDecisionCard, DECISION_CARD_SURFACES } from '@/lib/ai/decisionSurface'
 import { guardPlaceGeography } from '@/lib/ai/tools/placeGeoGuard'
 import { guardPlanItems, CHECK_HOURS_AND_FEES } from '@/lib/ai/planItemGuard'
 
@@ -91,6 +92,12 @@ describe('architecture freeze, second (after the review of 01/11)', () => {
     expect(deepResearchOffered(undefined)).toBe(true)
     expect(deepResearchOffered({ signedIn: false, subscription: null })).toBe(false)
     expect(deepResearchOffered({ signedIn: true, subscription: { state: 'ACTIVE', plan: { id: 'coco' } } })).toBe(true)
+  })
+  it('decision card surfaces: web and android by surface; any client that declares x-tappy-caps: card (the iOS app); the iOS surface alone is no card', () => {
+    expect([...DECISION_CARD_SURFACES].sort()).toEqual(['android', 'web'])
+    expect(rendersDecisionCard('ios', 'card')).toBe(true)
+    expect(rendersDecisionCard('ios', null)).toBe(false)
+    expect(ROUTE).toContain("rendersDecisionCardFor(surfaceHeader, req.headers.get('x-tappy-caps'))")
   })
   it('the freeze document has its second and third sections', () => {
     expect(FREEZE_DOC).toContain('## 5. Đóng băng lần 2')
