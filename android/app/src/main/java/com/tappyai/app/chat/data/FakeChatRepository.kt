@@ -2,6 +2,7 @@ package com.tappyai.app.chat.data
 
 import com.tappyai.app.chat.ChatCategory
 import com.tappyai.app.chat.ChatMessage
+import com.tappyai.app.chat.ChatMode
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -36,7 +37,7 @@ class FakeChatRepository @Inject constructor() : ChatRepository {
         """.trimIndent(),
     )
 
-    override fun streamReply(messages: List<ChatMessage>, chatSessionId: String?): Flow<ChatStreamEvent> = flow {
+    override fun streamReply(messages: List<ChatMessage>, chatSessionId: String?, mode: ChatMode): Flow<ChatStreamEvent> = flow {
         delay(RESPONDING_DURATION_MS)
         emit(ChatStreamEvent.Text(sampleReplies[messages.size % sampleReplies.size]))
     }

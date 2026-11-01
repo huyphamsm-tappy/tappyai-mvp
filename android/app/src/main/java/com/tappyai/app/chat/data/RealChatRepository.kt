@@ -6,6 +6,7 @@ import android.util.Base64
 import com.tappyai.app.R
 import com.tappyai.app.chat.ChatCategory
 import com.tappyai.app.chat.ChatMessage
+import com.tappyai.app.chat.ChatMode
 import com.tappyai.core.common.StringProvider
 import com.tappyai.core.designsystem.component.TappyChatRole
 import com.tappyai.core.logging.LoggerProvider
@@ -51,7 +52,7 @@ class RealChatRepository @Inject constructor(
         return JwtDecoder.decode(token)?.isAnonymous == true
     }
 
-    override fun streamReply(messages: List<ChatMessage>, chatSessionId: String?): Flow<ChatStreamEvent> = callbackFlow {
+    override fun streamReply(messages: List<ChatMessage>, chatSessionId: String?, mode: ChatMode): Flow<ChatStreamEvent> = callbackFlow {
         // Error bubbles (isError) are a UI artifact, not real model output. They live in the
         // ViewModel's message list with role=Assistant, so without this filter a prior failed
         // turn's error text (e.g. a connection-error message) would be replayed to the backend as a genuine
@@ -67,7 +68,7 @@ class RealChatRepository @Inject constructor(
         }
         // The device's last known position rides along when the user granted it (see
         // ChatLocationSource); a guest's 18+ declaration rides as a header (see GuestAgeStore).
-        val body = json.encodeToString(ChatRequest(dtoMessages, userLocation = location.lastKnown(), chatSessionId = chatSessionId?.takeIf(ChatSessionId::isValid)))
+        val body = json.encodeToString(ChatRequest(dtoMessages, userLocation = location.lastKnown(), chatSessionId = chatSessionId?.takeIf(ChatSessionId::isValid), mode = mode.wire))
             .toRequestBody("application/json".toMediaType())
 
         val request = chatRequest(baseUrl, body, ageDeclared = if (isGuest()) guestAge.declared() else null)
@@ -79,8 +80,10 @@ class RealChatRepository @Inject constructor(
         // "network error" on a request the backend is still processing (its own ceiling is
         // maxDuration=60s). Align this call's read timeout with that ceiling. newBuilder()
         // shares the connection pool and interceptors — this is a cheap per-call override.
+        // 02/11: the one-brain route allows a turn 110 s and Deep Research 300 s, with silent stretches (thinking, a research
+        // step) — see [streamReadTimeoutSeconds]; it is still a silence limit, not a cap on the whole reply.
         val streamingClient = okHttpClient.newBuilder()
-            .readTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(streamReadTimeoutSeconds(mode), TimeUnit.SECONDS)
             .build()
         val call = streamingClient.newCall(request)
 
@@ -227,6 +230,12 @@ internal const val SURFACE_ANDROID = "android"
 /** Rendering capabilities this build declares to /api/chat (comma list). "ask" = [com.tappyai.app.chat.AskBlock]. */
 internal const val CAPS_HEADER = "x-tappy-caps"
 internal const val CAPS_ANDROID = "ask"
+
+/**
+ * How long the reply stream may stay silent before it counts as a network failure. Above the server's own limits (web route:
+ * TURN_DEADLINE_MS 110 s, Deep Research maxDuration 300 s), so the server always ends a turn first and says why.
+ */
+internal fun streamReadTimeoutSeconds(mode: ChatMode): Long = if (mode == ChatMode.Deep) 320L else 130L
 
 /** What a history turn sends as content: an assistant turn's raw reply (markers kept), else its text. */
 internal fun historyBody(role: String, text: String, raw: String): String =

@@ -124,6 +124,11 @@ class ChatViewModel @Inject constructor(
     private val _isAssistantResponding = MutableStateFlow(false)
     val isAssistantResponding: StateFlow<Boolean> = _isAssistantResponding.asStateFlow()
 
+    // The answer mode sent with the next turn (web parity, 02/11: the one-brain modes; the web starts on Auto).
+    private val _mode = MutableStateFlow(ChatMode.Default)
+    val mode: StateFlow<ChatMode> = _mode.asStateFlow()
+    fun onModeSelected(mode: ChatMode) { _mode.value = mode }
+
     // The last reply's stream closed without its finish frame (ChatStreamEvent.Cut): the screen says so and
     // offers «answer again». Cleared as soon as a new turn starts. Web parity: ChatInterface `streamCut`.
     private val _streamCut = MutableStateFlow(false)
@@ -675,7 +680,8 @@ class ChatViewModel @Inject constructor(
                 // is built — it is never appended to the text, which is why it cannot leak into the
                 // reply, into TTS, or into what gets persisted.
                 var livePlaces: PlacesLiveView? = null
-                chatRepository.streamReply(history, chatSessionId).collect { event ->
+                val turnMode = _mode.value
+                chatRepository.streamReply(history, chatSessionId, turnMode).collect { event ->
                     val token = when (event) {
                         is ChatStreamEvent.Text -> event.delta
                         // The last place frame is the turn's view (the preliminary set is replaced

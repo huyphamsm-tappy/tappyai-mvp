@@ -42,7 +42,8 @@ class ChatSessionIdTest {
 
     @Test fun `every turn of the chat streams with the SAME id (one per ViewModel, never regenerated)`() {
         val vm = File("src/main/java/com/tappyai/app/chat/ChatViewModel.kt").let { if (it.exists()) it else File("app/" + it.path) }.readText()
-        assertTrue(vm.contains("chatRepository.streamReply(history, chatSessionId)"))
+        // A1 (02/11): the mode rides as the third argument; the session id is still the same one on every turn
+        assertTrue(vm.contains("chatRepository.streamReply(history, chatSessionId, turnMode)"))
         assertEquals(1, Regex("""ChatSessionId\.resolve\(""").findAll(vm).count())
         assertTrue(vm.contains("private val chatSessionId: String = ChatSessionId.resolve("))
     }

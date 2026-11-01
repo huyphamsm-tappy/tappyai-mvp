@@ -2,6 +2,7 @@ package com.tappyai.app.chat.data
 
 import com.tappyai.app.chat.ChatCategory
 import com.tappyai.app.chat.ChatMessage
+import com.tappyai.app.chat.ChatMode
 import com.tappyai.app.chat.PlacesLiveView
 import kotlinx.coroutines.flow.Flow
 
@@ -54,7 +55,7 @@ sealed interface ChatStreamEvent {
 }
 
 interface ChatRepository {
-    fun streamReply(messages: List<ChatMessage>, chatSessionId: String? = null): Flow<ChatStreamEvent>
+    fun streamReply(messages: List<ChatMessage>, chatSessionId: String? = null, mode: ChatMode = ChatMode.Default): Flow<ChatStreamEvent>
     fun getFollowups(category: ChatCategory): List<String>
 }
 // The V3 share artifact used to read the `8:` frame through a `takeLatestPlacesView()` side

@@ -22,6 +22,11 @@ data class ChatRequest(
      * once per chat and sent on every turn — see [com.tappyai.app.chat.ChatSessionId].
      */
     val chatSessionId: String? = null,
+    /**
+     * The answer mode the person picked ([com.tappyai.app.chat.ChatMode.wire]); always sent (null default, so encodeDefaults=false
+     * still writes a set value). Absent = the server's `chat`.
+     */
+    val mode: String? = null,
 )
 
 @Serializable
