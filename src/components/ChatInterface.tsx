@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Send, Sparkles, Mic, Smile, Heart, X, Square, RotateCcw, Brain, Info } from 'lucide-react'
 import posthog from 'posthog-js'
+import { useDeepResearchOffered } from '@/lib/subscription/modeAccess'
 import { useServerTTS } from '@/hooks/useServerTTS'
 import MessageActionBar from '@/components/chat/MessageActionBar'
 import { cn, CATEGORIES, type CategoryId } from '@/lib/utils'
@@ -901,6 +902,9 @@ export default function ChatInterface({
   // 01/11 (owner chose "C", like ChatGPT Go): the default is Auto (Tappy decides when to think); "Trả lời nhanh" is Chat.
   const [chatMode, setChatMode] = useState<'auto' | 'chat' | 'web' | 'think' | 'deep'>('auto')
   const [plusOpen, setPlusOpen] = useState(false)
+  // the plan decides whether Deep Research is offered (Free: no); whole menu until the plan is known
+  const deepOffered = useDeepResearchOffered()
+  useEffect(() => { if (!deepOffered) setChatMode(m => (m === 'deep' ? 'auto' : m)) }, [deepOffered])
   const recognitionRef = useRef<SpeechRecognition | null>(null)
   // The input text captured when dictation starts, so interim results append to
   // (not clobber) whatever the user already typed.
@@ -2450,7 +2454,7 @@ export default function ChatInterface({
                     // 01/11 (owner): people just type - Auto picks a quick answer, a web lookup or thinking by itself, so the menu keeps
                     // only attaching and Deep Research.
                     { key: 'deep', icon: '🔎', label: t('mode.deep'), hint: t('mode.deepHint'), on: chatMode === 'deep', act: () => setChatMode(m => (m === 'deep' ? 'auto' : 'deep')) },
-                  ] as const).map(item => (
+                  ] as const).filter(item => item.key !== 'deep' || deepOffered).map(item => (
                     <button
                       key={item.key}
                       type="button"
