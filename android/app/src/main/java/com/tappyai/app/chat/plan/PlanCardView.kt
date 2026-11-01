@@ -94,7 +94,10 @@ data class PlanCardView(
         val priced: Boolean,
         val mapsLink: String?,
         val bookingLink: String?,
-    )
+    ) {
+        /** What the card prints under a stop: the server's amount, or nothing (web TripPlanCard shows a price chip only when the stop has one). */
+        val priceLine: String? get() = if (priced) price else null
+    }
     enum class OverviewKind { DESTINATION, DURATION, PEOPLE, BUDGET }
     data class OverviewRow(val kind: OverviewKind, val value: String, val sub: String? = null)
     data class Highlight(val label: String, val imageKey: String?)

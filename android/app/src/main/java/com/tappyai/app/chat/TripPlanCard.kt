@@ -287,7 +287,8 @@ private fun StopRow(stop: PlanCardView.Stop, isLast: Boolean, area: PlanArea, ma
         )
         Column(modifier = Modifier.weight(1f).padding(bottom = 10.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
             Text(stop.name, color = PlanPal.Text, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, maxLines = 2, overflow = TextOverflow.Ellipsis)
-            stop.description?.let { Text(it, color = PlanPal.Muted, fontSize = 12.sp, lineHeight = 16.sp, maxLines = 3, overflow = TextOverflow.Ellipsis) }
+            // the description whole (web shows it whole): a three-line cut dropped the closing "(chưa xác minh)" caveat
+            stop.description?.let { Text(it, color = PlanPal.Muted, fontSize = 12.sp, lineHeight = 16.sp) }
             stop.address?.let { addr ->
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Filled.LocationOn, contentDescription = null, tint = PlanPal.Accent, modifier = Modifier.size(12.dp))
@@ -295,13 +296,10 @@ private fun StopRow(stop: PlanCardView.Stop, isLast: Boolean, area: PlanArea, ma
                     Text(addr, color = PlanPal.Muted, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 }
             }
-            Text(
-                text = if (stop.priced) stop.price else stringResource(R.string.chat_plan_v2_no_price),
-                color = if (stop.priced) Color(0xFFFFD27A) else PlanPal.Muted,
-                fontSize = 12.sp,
-                fontWeight = if (stop.priced) FontWeight.SemiBold else FontWeight.Normal,
-                modifier = Modifier.testTag(if (stop.priced) "plan_price" else "plan_no_price"),
-            )
+            // a price line only for a priced stop (web: the chip shows only when the stop has a price); meals and walks carry none
+            stop.priceLine?.let { price ->
+                Text(text = price, color = Color(0xFFFFD27A), fontSize = 12.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.testTag("plan_price"))
+            }
             if (stop.mapsLink != null || stop.bookingLink != null) {
                 Row(horizontalArrangement = Arrangement.spacedBy(14.dp), modifier = Modifier.padding(top = 2.dp)) {
                     stop.mapsLink?.let { PlanLink(Icons.Filled.LocationOn, stringResource(R.string.chat_plan_map)) { onOpenUrl(it) } }
