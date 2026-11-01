@@ -48,6 +48,11 @@ struct ChatMessageList: View {
     /// The running turn's charts (`ChatViewModel.liveCharts`), with the same fallback rule as `liveResearch`.
     var liveCharts: [ResearchChart] = []
 
+    /// What the parser made of each reply (see `ParsedContentCache`); a reference, so reading it in `body` costs no redraw.
+    @State private var parseCache = ParsedContentCache()
+    /// Bumped to draw again when a streaming reply's last words were held back by the parse throttle.
+    @State private var parseTick = 0
+
     var body: some View {
         ScrollViewReader { proxy in
             ScrollView {
@@ -71,7 +76,12 @@ struct ChatMessageList: View {
                             UserBubble(content: msg.content, attachment: msg.attachment)
                         } else {
                             let isLast = index == messages.count - 1
-                            let parsed = ContentParser.parse(msg.content)
+                            // Parsed once per finished reply; the reply being written at most every ~50 ms (`ParsedContentCache`), so a long
+                            // streaming report does not re-parse the whole conversation on every token. `parseTick` is read so a throttled
+                            // pass is drawn again once the words pause.
+                            let _ = parseTick
+                            let parsed = parseCache.parsed(id: msg.id, content: msg.content, isStreaming: isStreaming && isLast,
+                                                           now: ProcessInfo.processInfo.systemUptime)
                             AssistantBubble(
                                 msgId: msg.id,
                                 messageIndex: index,
@@ -186,6 +196,11 @@ struct ChatMessageList: View {
                 }
             }
             .scrollDismissesKeyboard(.interactively)
+            // The parse throttle holds back words that arrived inside its interval; when the tokens pause, draw once more so they show.
+            .task(id: messages.last?.content.utf8.count ?? 0) { @MainActor in
+                try? await Task.sleep(nanoseconds: 80_000_000)
+                if parseCache.hasPendingRefresh { parseTick &+= 1 }
+            }
             .onChange(of: messages.last?.content) { _ in
                 if isStreaming {
                     proxy.scrollTo("bottom", anchor: .bottom)

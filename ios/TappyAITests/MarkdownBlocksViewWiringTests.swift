@@ -20,6 +20,14 @@ final class MarkdownBlocksViewWiringTests: XCTestCase {
         XCTAssertTrue(list.contains("docMedia: msg.docMedia"))
     }
 
+    func testTheListParsesThroughTheCacheNotOnEveryPassOfItsBody() throws {
+        let list = try source("TappyAI/Features/Chat/UI/ChatMessageList.swift")
+        XCTAssertTrue(list.contains("parseCache.parsed(id: msg.id"))
+        XCTAssertFalse(list.contains("ContentParser.parse(msg.content)"), "a long streaming report parsed every reply on every token")
+        XCTAssertTrue(list.contains("isStreaming: isStreaming && isLast"), "only the reply being written is throttled")
+        XCTAssertTrue(list.contains("hasPendingRefresh"), "words held back by the throttle are drawn once the stream pauses")
+    }
+
     func testTheBlocksAreNamedForVoiceOverAndOpenNoAddressThemselves() throws {
         let view = try source("TappyAI/Features/Chat/UI/MarkdownBlocksView.swift")
         XCTAssertTrue(view.contains(".isHeader"), "a heading is a heading to VoiceOver")
