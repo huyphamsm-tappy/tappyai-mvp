@@ -40,7 +40,8 @@ final class ChatContractTests: XCTestCase {
         XCTAssertEqual(ChatClientDeclaration.surfaceHeader, "x-tappy-surface")
         XCTAssertEqual(ChatClientDeclaration.surface, "ios")
         XCTAssertEqual(ChatClientDeclaration.capsHeader, "x-tappy-caps")
-        XCTAssertEqual(ChatClientDeclaration.caps, "ask")
+        // The one-brain server reads `card` as "this client draws the decision card"; the ASK block no longer exists.
+        XCTAssertEqual(ChatClientDeclaration.caps, "card")
     }
 
     // MARK: - AskBlock

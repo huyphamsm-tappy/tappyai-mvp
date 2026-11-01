@@ -248,13 +248,13 @@ enum ChatStreamTimeout {
 
 /// What this build declares to `/api/chat`. `x-tappy-surface: ios` tells the server the client
 /// draws the place/shopping decision as a card (so the prose must not repeat it) — the server
-/// whitelist does not know "ios" yet (docs/ios/IOS-REQUESTS.md #1). `x-tappy-caps: ask` = this
-/// build parses `[TAPPY_ASK]` (`AskBlock`).
+/// whitelist does not know "ios" yet (docs/ios/IOS-REQUESTS.md #1). `x-tappy-caps: card` = this
+/// build draws the decision card (`rendersDecisionCard(surface, caps)` on the server). The ASK block is gone.
 enum ChatClientDeclaration {
     static let surfaceHeader = "x-tappy-surface"
     static let surface = "ios"
     static let capsHeader = "x-tappy-caps"
-    static let caps = "ask"
+    static let caps = "card"
 }
 
 private struct MemoryCheckResponse: Decodable {
