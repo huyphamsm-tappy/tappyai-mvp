@@ -856,6 +856,9 @@ final class ChatViewModel: AppObservableObject {
             case .anonLimitReached: return .anonLimitReached
             case .freeLimitReached: return .freeLimitReached
             case .planLimitReached(let message): return .planLimitReached(message: message)
+            case .deepResearchLimitReached(let message): return .deepResearchLimit(message: message)
+            case .proDailyLimitReached(let message): return .proDailyLimit(message: message)
+            case .rateLimited(let message): return .rateLimited(message: message)
             // The server holds no current AI-sharing agreement: not a sign-in problem (that would send a
             // signed-in person to the login screen), the remedy is the consent sheet.
             case .aiConsentRequired(let message): return .aiConsentRequired(message: message)
@@ -908,6 +911,12 @@ enum ChatError: Equatable, Sendable {
     case freeLimitReached
     /// 429 `plan_limit_reached` — a paid plan spent its daily questions; `message` is the server's sentence.
     case planLimitReached(message: String?)
+    /// 429 `deep_research_limit_reached` — the plan's Deep Research reports for the month are spent.
+    case deepResearchLimit(message: String?)
+    /// 429 `pro_daily_limit_reached` — the hidden daily ceiling of a paid account.
+    case proDailyLimit(message: String?)
+    /// 429 `rate_limit` — too many requests in a minute.
+    case rateLimited(message: String?)
     /// 403 `ai_consent_required` — no current AI-sharing agreement on the server; offers the consent sheet.
     case aiConsentRequired(message: String?)
     /// 18+ gate — guest must state their age (inline year / "I am 18 or older").
@@ -928,7 +937,23 @@ enum ChatError: Equatable, Sendable {
         switch self {
         case .generic, .offline: return true
         case .authRequired, .anonLimitReached, .freeLimitReached, .planLimitReached, .aiConsentRequired,
+             .deepResearchLimit, .proDailyLimit, .rateLimited,
              .ageDeclarationRequired, .ageVerificationRequired, .ageIneligible: return false
+        }
+    }
+
+    /// The sentence for a limit state: the server's own when it sent one (already in the request language), else the app's.
+    /// Nil for every other state.
+    var limitSentence: String? {
+        switch self {
+        case .deepResearchLimit(let message):
+            return message ?? NSLocalizedString("chat.error.deepResearchLimit", comment: "")
+        case .proDailyLimit(let message):
+            return message ?? NSLocalizedString("chat.error.proDailyLimit", comment: "")
+        case .rateLimited(let message):
+            return message ?? NSLocalizedString("chat.error.rateLimited", comment: "")
+        default:
+            return nil
         }
     }
 }

@@ -148,6 +148,8 @@ final class URLSessionAPIClient: APIClient {
         // A paid plan that spent its daily questions, and an account without a current AI-sharing
         // agreement: each has its own server sentence and its own remedy (Phase K, web parity).
         case (429, "plan_limit_reached"): return .authentication(reason: .planLimitReached(message: serverMessage(from: data)))
+        case (429, "deep_research_limit_reached"): return .authentication(reason: .deepResearchLimitReached(message: serverMessage(from: data)))
+        case (429, "pro_daily_limit_reached"): return .authentication(reason: .proDailyLimitReached(message: serverMessage(from: data)))
         case (403, "ai_consent_required"): return .authentication(reason: .aiConsentRequired(message: serverMessage(from: data)))
         case (400, _): return .validation(message: errorMessage(from: data) ?? "Invalid request")
         case (401, _): return .authentication(reason: .unauthenticated)
@@ -159,9 +161,21 @@ final class URLSessionAPIClient: APIClient {
         }
     }
 
+    /// `mapHTTP` for the chat stream: the same, except that the burst limit (`429 rate_limit`) is read with the server's own
+    /// sentence. Other endpoints keep seeing it as `.network(429, "rate_limit")` (Scam Shield reads that), so the shared
+    /// mapping is not changed.
+    static func mapChatHTTP(status: Int, data: Data) -> AppError {
+        if status == 429, errorCode(from: data) == "rate_limit" {
+            return .authentication(reason: .rateLimited(message: serverMessage(from: data)))
+        }
+        return mapHTTP(status: status, data: data)
+    }
+
+    /// A refusal that repeating cannot change (a spent allowance or a burst limit): never retried by the client.
     static func isKnownLimit(status: Int, data: Data) -> Bool {
         let code = errorCode(from: data)
         return code == "free_limit_reached" || code == "anon_limit_reached" || code == "plan_limit_reached"
+            || code == "deep_research_limit_reached" || code == "pro_daily_limit_reached" || code == "rate_limit"
     }
 
     /// The server's own `message` sentence (already in the request locale), or nil. Unlike

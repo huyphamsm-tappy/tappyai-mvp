@@ -29,6 +29,13 @@ enum AppError: Error, Equatable {
         /// backend 429 `plan_limit_reached`: a PAID plan spent its daily questions. Not «upgrade» copy;
         /// `message` is the server's localized sentence for that plan, when present.
         case planLimitReached(message: String?)
+        /// backend 429 `deep_research_limit_reached`: the plan's Deep Research reports for the month are spent.
+        /// `message` is the server's sentence in the request language.
+        case deepResearchLimitReached(message: String?)
+        /// backend 429 `pro_daily_limit_reached`: the hidden daily ceiling of a paid account. `message` as above.
+        case proDailyLimitReached(message: String?)
+        /// backend 429 `rate_limit` on the chat path: too many requests in a minute. `message` as above.
+        case rateLimited(message: String?)
         /// backend 403 `ai_consent_required`: the server holds no current AI-sharing agreement for this
         /// account (disclosure version 2). NOT a sign-in problem; the remedy is the consent sheet.
         case aiConsentRequired(message: String?)

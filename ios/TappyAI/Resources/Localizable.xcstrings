@@ -29967,6 +29967,57 @@
           }
         }
       }
+    },
+    "chat.error.deepResearchLimit": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You've used this month's Deep Research reports on your plan."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn đã dùng hết số báo cáo Nghiên cứu sâu của tháng này trong gói hiện tại."
+          }
+        }
+      }
+    },
+    "chat.error.proDailyLimit": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You've asked a lot today. Come back tomorrow."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hôm nay bạn đã hỏi rất nhiều rồi. Hẹn gặp lại bạn vào ngày mai nhé."
+          }
+        }
+      }
+    },
+    "chat.error.rateLimited": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You're sending requests too fast. Wait a moment and try again."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn gửi hơi nhanh. Chờ một chút rồi thử lại nhé."
+          }
+        }
+      }
     }
   }
 }

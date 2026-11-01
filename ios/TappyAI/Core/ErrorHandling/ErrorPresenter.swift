@@ -43,6 +43,12 @@ enum ErrorPresenter {
         case .freeLimitReached: return L("error.auth.freeLimit", "You've reached today's limit. Come back tomorrow.")
         case .planLimitReached(let message):
             return message ?? L("error.auth.planLimit", "You've reached today's limit on your plan. Come back tomorrow.")
+        case .deepResearchLimitReached(let message):
+            return message ?? L("chat.error.deepResearchLimit", "You've used this month's Deep Research reports on your plan.")
+        case .proDailyLimitReached(let message):
+            return message ?? L("chat.error.proDailyLimit", "You've asked a lot today. Come back tomorrow.")
+        case .rateLimited(let message):
+            return message ?? L("chat.error.rateLimited", "You're sending requests too fast. Wait a moment and try again.")
         case .aiConsentRequired(let message):
             return message ?? L("error.auth.aiConsent", "Agree to share data with AI in the TappyAI iPhone app to use this feature.")
         case .forbidden:        return L("error.auth.forbidden", "You don't have access to this.")

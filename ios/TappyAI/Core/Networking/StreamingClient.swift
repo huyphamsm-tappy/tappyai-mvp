@@ -146,7 +146,7 @@ final class URLSessionStreamingClient: StreamingClient {
                             body.append(byte)
                             if body.count > 64 * 1024 { break }
                         }
-                        throw URLSessionAPIClient.mapHTTP(status: http.statusCode, data: body)
+                        throw URLSessionAPIClient.mapChatHTTP(status: http.statusCode, data: body)
                     }
                     // ADR-024: surface the decision-evidence key BEFORE the body streams, so the ViewModel has it stored
                     // by the time the next turn is sent. A header the server does not set yields no frame.

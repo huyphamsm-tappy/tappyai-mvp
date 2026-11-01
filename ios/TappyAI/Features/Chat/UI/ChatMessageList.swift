@@ -558,6 +558,15 @@ private struct ChatErrorBanner: View {
                         .background(TappyColor.secondary.opacity(0.08))
                         .clipShape(RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
 
+                case .deepResearchLimit, .proDailyLimit, .rateLimited:
+                    // A spent allowance or a burst limit: the server's sentence, no retry button (repeating changes nothing).
+                    Text(error.limitSentence ?? "")
+                        .font(TappyFont.callout)
+                        .foregroundStyle(TappyColor.secondary)
+                        .padding(Spacing.sm)
+                        .background(TappyColor.secondary.opacity(0.08))
+                        .clipShape(RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
+
                 case .aiConsentRequired(let message):
                     VStack(alignment: .leading, spacing: Spacing.xs) {
                         Text(message ?? NSLocalizedString("chat.error.aiConsentRequired", comment: ""))

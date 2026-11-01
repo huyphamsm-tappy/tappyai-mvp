@@ -46,7 +46,9 @@ final class ChatQuotaConsentErrorTests: XCTestCase {
     func testAPlanLimitIsAKnownLimitSoItIsNeverRetriedByTheClient() {
         XCTAssertTrue(URLSessionAPIClient.isKnownLimit(status: 429, data: Data(#"{"error":"plan_limit_reached"}"#.utf8)))
         XCTAssertTrue(URLSessionAPIClient.isKnownLimit(status: 429, data: Data(#"{"error":"free_limit_reached"}"#.utf8)))
-        XCTAssertFalse(URLSessionAPIClient.isKnownLimit(status: 429, data: Data(#"{"error":"rate_limit"}"#.utf8)))
+        // Changed with G13: the burst limit is a known limit too (repeating it at once only meets it again); ChatLimitErrorTests covers it.
+        XCTAssertTrue(URLSessionAPIClient.isKnownLimit(status: 429, data: Data(#"{"error":"rate_limit"}"#.utf8)))
+        XCTAssertFalse(URLSessionAPIClient.isKnownLimit(status: 429, data: Data(#"{"error":"something_else"}"#.utf8)))
     }
 
     func testChatMapsThemToTheirOwnNonRetriableStates() {
