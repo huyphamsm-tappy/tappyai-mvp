@@ -8,8 +8,6 @@ enum StreamFrame: Equatable, Sendable {
     case text(String)
     case toolCall(Data)
     case toolResult(Data)
-    /// `8:[…]` — message annotations; the `tappy.places.v1` recommendation rides here.
-    case annotation(Data)
     case stepEnd
     /// ADR-024. The `X-Decision-Evidence-Id` response header, surfaced as a frame so the caller can store it and
     /// echo it back on the conversation's next turn. A lookup KEY only, never the evidence facts.
@@ -59,50 +57,63 @@ let progressAnnotationKind = "tappy.progress.v1"
 /// transport (`URLSession.AsyncBytes.lines`); higher-level marker extraction ([TAPPY_PLAN] etc.) is a
 /// chat-feature concern (Phase 2), NOT part of the foundation.
 enum DataStreamLineParser {
+    /// The FIRST frame of a line, or nil for a line that is not a frame. A line can carry several frames (an `8:` array holds
+    /// one per annotation), so the stream reads `frames(line:)`; this stays for callers that want one.
     static func parse(line: String) -> StreamFrame? {
-        guard let sep = line.firstIndex(of: ":") else { return nil }
+        frames(line: line).first
+    }
+
+    /// Every frame of one line, in order. Only an `8:` array can hold more than one: each element is an annotation, and each
+    /// is read on its own, so one array that carries the progress sentence and the place set gives both. A line that is not a
+    /// frame gives none.
+    static func frames(line: String) -> [StreamFrame] {
+        guard let sep = line.firstIndex(of: ":") else { return [] }
         let prefix = String(line[line.startIndex..<sep])
         let payloadString = String(line[line.index(after: sep)...])
         let payload = Data(payloadString.utf8)
         switch prefix {
         case "0":
             // JSON-encoded string delta.
-            if let s = try? JSONDecoder().decode(String.self, from: payload) { return .text(s) }
-            return .text(payloadString)
-        case "f": return .messageStart(payload)
+            if let s = try? JSONDecoder().decode(String.self, from: payload) { return [.text(s)] }
+            return [.text(payloadString)]
+        case "f": return [.messageStart(payload)]
         case "8":
-            // Gated on the annotation's own `kind`: the `8:` part is shared, and an annotation of
-            // another kind must fall through to `.unknown` rather than be read as a place set.
-            if let views = try? JSONDecoder().decode([PlacesLiveView].self, from: payload),
-               let view = views.first(where: { $0.kind == placesAnnotationKind && !$0.items.isEmpty }) {
+            // An element this version does not know (or one that is malformed) is skipped on its own; an array with
+            // nothing usable in it stays one `.unknown` frame, so the line is carried and never breaks the turn.
+            let found = annotationFrames(payload)
+            return found.isEmpty ? [.unknown(prefix: prefix, payload: payload)] : found
+        case "9": return [.toolCall(payload)]
+        case "a": return [.toolResult(payload)]
+        case "e": return [.stepEnd]
+        case "d": return [.done]
+        default:  return [.unknown(prefix: prefix, payload: payload)]
+        }
+    }
+
+    /// The frames of one `8:` payload: one per usable element, in order. Each element is gated on its own `kind`.
+    private static func annotationFrames(_ payload: Data) -> [StreamFrame] {
+        guard let elements = (try? JSONSerialization.jsonObject(with: payload)) as? [Any] else { return [] }
+        return elements.compactMap { element -> StreamFrame? in
+            guard let item = element as? [String: Any],
+                  let kind = item["kind"] as? String else { return nil }
+            switch kind {
+            case placesAnnotationKind:
+                guard let data = try? JSONSerialization.data(withJSONObject: item),
+                      let view = try? JSONDecoder().decode(PlacesLiveView.self, from: data),
+                      !view.items.isEmpty else { return nil }
                 return .places(view)
-            }
-            // The turn's end state. A status value this version does not know is ignored (stays `.unknown`).
-            if let items = (try? JSONSerialization.jsonObject(with: payload)) as? [[String: Any]],
-               let status = items.compactMap({ item -> TurnStatusKind? in
-                   guard (item["kind"] as? String) == turnStatusAnnotationKind,
-                         let raw = item["status"] as? String else { return nil }
-                   return TurnStatusKind(rawValue: raw)
-               }).last {
+            case turnStatusAnnotationKind:
+                // A status value this version does not know is ignored.
+                guard let raw = item["status"] as? String, let status = TurnStatusKind(rawValue: raw) else { return nil }
                 return .turnStatus(status)
+            case progressAnnotationKind:
+                // A blank text is not a frame.
+                guard let text = (item["text"] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines),
+                      !text.isEmpty else { return nil }
+                return .progress(stage: (item["stage"] as? String) ?? "", text: text)
+            default:
+                return nil
             }
-            // The turn's progress sentence; the LATEST element wins, a blank text is not a frame.
-            if let items = (try? JSONSerialization.jsonObject(with: payload)) as? [[String: Any]],
-               let progress = items.compactMap({ item -> (String, String)? in
-                   guard (item["kind"] as? String) == progressAnnotationKind,
-                         let text = (item["text"] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines),
-                         !text.isEmpty else { return nil }
-                   return ((item["stage"] as? String) ?? "", text)
-               }).last {
-                return .progress(stage: progress.0, text: progress.1)
-            }
-            return .unknown(prefix: prefix, payload: payload)
-        case "9": return .toolCall(payload)
-        case "a": return .toolResult(payload)
-        case "8": return .annotation(payload)
-        case "e": return .stepEnd
-        case "d": return .done
-        default:  return .unknown(prefix: prefix, payload: payload)
         }
     }
 }
@@ -144,10 +155,12 @@ final class URLSessionStreamingClient: StreamingClient {
                     for try await line in bytes.lines {
                         try Task.checkCancellation()
                         if line.isEmpty { continue }
-                        if let frame = DataStreamLineParser.parse(line: line) {
+                        var finished = false
+                        for frame in DataStreamLineParser.frames(line: line) {
                             continuation.yield(frame)
-                            if frame == .done { break }
+                            if frame == .done { finished = true }
                         }
+                        if finished { break }
                     }
                     continuation.finish()
                 } catch {

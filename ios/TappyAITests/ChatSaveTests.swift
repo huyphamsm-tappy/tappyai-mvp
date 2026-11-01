@@ -114,7 +114,7 @@ private struct GatedChatStreaming: StreamingClient {
     let gate: TestGate
     func stream(_ endpoint: Endpoint) -> AsyncThrowingStream<StreamFrame, Error> {
         AsyncThrowingStream { c in
-            for line in lines { if let f = DataStreamLineParser.parse(line: line) { c.yield(f) } }
+            for line in lines { for f in DataStreamLineParser.frames(line: line) { c.yield(f) } }
             let waiter = Task {
                 await gate.wait()
                 c.finish()

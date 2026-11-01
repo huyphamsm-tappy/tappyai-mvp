@@ -70,7 +70,7 @@ private struct ScriptedStreaming: StreamingClient {
     let lines: [String]
     func stream(_ endpoint: Endpoint) -> AsyncThrowingStream<StreamFrame, Error> {
         AsyncThrowingStream { c in
-            for line in lines { if let f = DataStreamLineParser.parse(line: line) { c.yield(f) } }
+            for line in lines { for f in DataStreamLineParser.frames(line: line) { c.yield(f) } }
             c.finish()
         }
     }

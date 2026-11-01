@@ -80,7 +80,7 @@ struct ScriptedChatStreaming: StreamingClient {
     let lines: [String]
     func stream(_ endpoint: Endpoint) -> AsyncThrowingStream<StreamFrame, Error> {
         AsyncThrowingStream { c in
-            for line in lines { if let f = DataStreamLineParser.parse(line: line) { c.yield(f) } }
+            for line in lines { for f in DataStreamLineParser.frames(line: line) { c.yield(f) } }
             c.finish()
         }
     }
@@ -127,7 +127,7 @@ final class SequencedChatStreaming: StreamingClient, @unchecked Sendable {
         return AsyncThrowingStream { c in
             let worker = Task {
                 if let gate = script.holdBefore { await gate.wait() }
-                for line in script.lines { if let f = DataStreamLineParser.parse(line: line) { c.yield(f) } }
+                for line in script.lines { for f in DataStreamLineParser.frames(line: line) { c.yield(f) } }
                 if let gate = script.holdAfter { await gate.wait() }
                 if let error = script.error { c.finish(throwing: error) } else { c.finish() }
             }

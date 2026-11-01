@@ -766,7 +766,7 @@ final class ChatViewModel: AppObservableObject {
                         self.log.error("server error part in the chat stream: \(String(decoding: payload.prefix(200), as: UTF8.self))")
 
                     // Non-places annotations carry nothing the chat UI renders yet.
-                    case .messageStart, .annotation, .unknown:
+                    case .messageStart, .unknown:
                         break
                     }
                 }
