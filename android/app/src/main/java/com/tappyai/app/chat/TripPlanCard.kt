@@ -184,8 +184,10 @@ private fun PlanImage(
     glyphSize: Int,
     modifier: Modifier,
     glyphAlignment: Alignment = Alignment.Center,
+    /** The photo the server matched to this stop (web TripPlanCard draws it); drawn before the key picture. 01/11: the 29/09 "no photo_url" rule is dropped. */
+    photoUrl: String? = null,
 ) {
-    val url = manifest.urlFor(key)
+    val url = photoUrl ?: manifest.urlFor(key)
     Box(modifier = modifier.background(area.placeholder())) {
         if (url != null) {
             TappyImage(url = url, contentDescription = null, contentScale = ContentScale.Crop, modifier = Modifier.fillMaxSize())
@@ -320,6 +322,7 @@ private fun StopRow(stop: PlanCardView.Stop, isLast: Boolean, area: PlanArea, ma
         PlanImage(
             key = stop.imageKey, area = area, manifest = manifest, glyph = stop.emoji, glyphSize = 22,
             modifier = Modifier.size(64.dp).clip(RoundedCornerShape(10.dp)),
+            photoUrl = stop.photoUrl,
         )
         Column(modifier = Modifier.weight(1f).padding(bottom = 10.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
             Text(stop.name, color = PlanPal.Text, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, maxLines = 2, overflow = TextOverflow.Ellipsis)
@@ -434,8 +437,16 @@ private fun Tips(plan: TappyPlan) {
 @Composable
 private fun CostLines(plan: TappyPlan) {
     val lines = plan.costBreakdown?.filterValues { it.isNotBlank() }.orEmpty()
-    if (lines.isEmpty()) return
+    // owner 01/11 (web TripPlanCard shows the total in the cost block): the server's total, never summed here
+    val total = com.tappyai.app.chat.PlanPrice.amount(plan.budgetTotal)
+    if (lines.isEmpty() && total == null) return
     Panel(stringResource(R.string.chat_plan_cost_title), "plan_costs") {
+        total?.let { t ->
+            Row(modifier = Modifier.fillMaxWidth()) {
+                Text(stringResource(R.string.chat_plan_v2_total_estimate), color = PlanPal.Text, fontSize = 13.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f))
+                Text(t, color = PlanPal.Text, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
+            }
+        }
         lines.forEach { (k, v) ->
             Row(modifier = Modifier.fillMaxWidth()) {
                 Text(k, color = PlanPal.Muted, fontSize = 13.sp, modifier = Modifier.weight(1f))

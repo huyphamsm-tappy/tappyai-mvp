@@ -2,6 +2,7 @@ package com.tappyai.app.chat.plan
 
 import com.tappyai.app.chat.PlanPrice
 import com.tappyai.app.chat.TappyPlan
+import com.tappyai.app.chat.data.OneBrainFrames
 
 /**
  * Plan card v2 — the pure half (owner 29/09, sample `docs/design/share-layouts/plan-share.png`,
@@ -94,6 +95,8 @@ data class PlanCardView(
         val priced: Boolean,
         val mapsLink: String?,
         val bookingLink: String?,
+        /** The photo the server matched to this stop (https only), drawn before the key picture (web TripPlanCard `photo_url`). */
+        val photoUrl: String? = null,
     ) {
         /** What the card prints under a stop: the server's amount, or nothing (web TripPlanCard shows a price chip only when the stop has one). */
         val priceLine: String? get() = if (priced) price else null
@@ -106,6 +109,11 @@ data class PlanCardView(
 /** At most this many "Điểm nổi bật" tiles (the sample's 2×2 grid). */
 const val PLAN_MAX_HIGHLIGHTS = 4
 
+private val DAY_LABEL_NUMBER = Regex("""^\s*(?:ngày|ngay|day)\s*(\d{1,2})""", RegexOption.IGNORE_CASE)
+
+/** The day number a label names ("Ngày 3 — Hội An" → 3), or null when it names none ("Buổi tối"). */
+fun dayNumberOf(label: String): Int? = DAY_LABEL_NUMBER.find(label)?.groupValues?.get(1)?.toIntOrNull()
+
 /** The day tab to draw: the chosen one, kept inside the days the card has (a new answer can shrink the plan). */
 fun dayTabIndex(selected: Int, dayCount: Int): Int = selected.coerceIn(0, maxOf(0, dayCount - 1))
 
@@ -115,27 +123,35 @@ fun dayTabIndex(selected: Int, dayCount: Int): Int = selected.coerceIn(0, maxOf(
  */
 fun planCardViewOf(plan: TappyPlan): PlanCardView {
     val area = PlanArea.of(plan)
+    // owner 01/11 (Android = the web): a stop shows when it has a name OR words (the web shows a stop with a blank name; here the words stand in for
+    // the name), and a day's badge is the number its label names ("Ngày 3 — …"), not its position among the days that survived.
+    var lastNumber = 0
     val days = plan.days
-        .map { d -> d to d.items.filter { it.name.isNotBlank() } }
+        .map { d -> d to d.items.filter { it.name.isNotBlank() || !it.description.isNullOrBlank() } }
         .filter { (_, items) -> items.isNotEmpty() }
         .mapIndexed { i, (d, items) ->
+            val number = dayNumberOf(d.label) ?: if (lastNumber > 0) lastNumber else i + 1
+            lastNumber = number
             PlanCardView.Day(
-                number = i + 1,
+                number = number,
                 label = d.label.trim(),
                 title = d.title?.trim()?.takeIf { it.isNotEmpty() },
                 stops = items.map { it ->
                     val amount = PlanPrice.amount(it.price)
+                    val named = it.name.trim()
+                    val words = it.description?.trim()?.takeIf { d -> d.isNotEmpty() }
                     PlanCardView.Stop(
                         time = it.time.trim(),
                         imageKey = it.image?.trim()?.takeIf(PlanImageKeys::isKey),
                         emoji = it.emoji.ifBlank { "📍" },
-                        name = it.name.trim(),
-                        description = it.description?.trim()?.takeIf { d -> d.isNotEmpty() },
+                        name = named.ifEmpty { words.orEmpty() },
+                        description = if (named.isEmpty()) null else words,
                         address = it.address?.trim()?.takeIf { a -> a.isNotEmpty() && a != "Xem bản đồ" },
                         price = amount ?: NO_PRICE,
                         priced = amount != null,
                         mapsLink = it.mapsLink?.takeIf { l -> l.startsWith("https://") },
                         bookingLink = it.bookingLink?.takeIf { l -> l.startsWith("https://") },
+                        photoUrl = it.photoUrl?.trim()?.takeIf { u -> OneBrainFrames.isSafeHttpsUrl(u) },
                     )
                 },
             )

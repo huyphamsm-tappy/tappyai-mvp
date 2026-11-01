@@ -102,7 +102,9 @@ class PlanCardV2Test {
         }
     }
 
-    @Test fun `images - only STORED keys, never a photo_url, never a URL posing as a key`() {
+    // Owner 01/11 ("ảnh ngày 29/9 bỏ qua, cứ tham chiếu web"): the 29/09 rule "a stop never shows its server photo_url" is dropped - the web draws it, so
+    // the stop's own https photo is drawn first (PlanStopPhotoTest). What stays: the HERO and the key names are never a URL, and a key is a stored key.
+    @Test fun `images - a stop's own https photo first, then STORED keys, a hero or a URL posing as a key is never used`() {
         val plan = TappyPlan(
             title = "x", heroImage = "https://evil.example/x.jpg",
             days = listOf(PlanDay("Ngày 1", listOf(
@@ -114,10 +116,11 @@ class PlanCardV2Test {
         val v = planCardViewOf(plan)
         assertNull(v.heroKey)
         assertEquals(listOf(null, "diem-bien", null), v.days[0].stops.map { it.imageKey })
-        // The card source never reads photo_url.
+        // The stop keeps its own https photo (the web draws it); the key still comes from the stored manifest, the placeholder is still there.
+        assertEquals(listOf("https://lh3.googleusercontent.com/p/a", null, null), v.days[0].stops.map { it.photoUrl })
         val card = File("src/main/java/com/tappyai/app/chat/TripPlanCard.kt").readText()
-        assertFalse(card.contains("photoUrl"))
         assertTrue(card.contains("manifest.urlFor(key)") && card.contains("area.placeholder()"))
+        assertTrue(card.contains("photoUrl = stop.photoUrl"))
     }
 
     @Test fun `image key names - background mang-kieu-N, stop diem-loai`() {
