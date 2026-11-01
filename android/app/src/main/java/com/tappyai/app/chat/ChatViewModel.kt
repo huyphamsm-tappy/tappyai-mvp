@@ -334,7 +334,7 @@ class ChatViewModel @Inject constructor(
             viewModelScope.launch {
                 when (val result = chatHistoryRepository.getConversationMessages(id)) {
                     is NetworkResult.Success -> {
-                        _messages.value = result.data.map { stored ->
+                        val loaded = result.data.map { stored ->
                             val isUser = stored.role == "user"
                             // 🚨 A REOPENED CONVERSATION USED TO LOSE EVERY STRUCTURED CARD.
                             // The stored content is the raw reply, markers and all, so the plan,
@@ -363,11 +363,15 @@ class ChatViewModel @Inject constructor(
                                 raw = if (isUser) "" else stored.content,
                             )
                         }
+                        // the history goes first; a question sent while it was loading stays after it (it used to be overwritten)
+                        _messages.update { loaded + it }
                     }
                     is NetworkResult.Error -> {
                         // Resume is best-effort: an id that fails to load (deleted, network error)
-                        // just falls back to a fresh chat rather than blocking the screen.
+                        // just falls back to a fresh chat rather than blocking the screen. A FRESH chat has no id: keeping the old one made the
+                        // next save replace the stored history (a PUT of the whole list) with the new messages only.
                         logger.e(TAG, "Failed to load conversation $id: ${result.error}")
+                        conversationId = null
                     }
                 }
                 _isLoadingConversation.value = false

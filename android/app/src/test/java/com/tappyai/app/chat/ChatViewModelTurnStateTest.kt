@@ -27,6 +27,18 @@ class ChatViewModelTurnStateTest {
         assertTrue("the live state is cleared before the save starts", vm.substring(built, save).contains("_isAssistantResponding.value = false"))
     }
 
+    // Saving a conversation is a PUT that replaces the whole message list. A reopened chat whose history failed to load kept its id, so the
+    // next turn replaced the stored history with the new messages only (and the title); a message sent before the history arrived was
+    // overwritten by it.
+    @Test fun `a history that fails to load starts a new chat instead of overwriting the stored one`() {
+        val load = vm.indexOf("getConversationMessages(id)")
+        val failure = vm.indexOf("is NetworkResult.Error ->", load)
+        val end = vm.indexOf("_isLoadingConversation.value = false", failure)
+        assertTrue(load > 0 && failure > load && end > failure)
+        assertTrue("the failed id is dropped", vm.substring(failure, end).contains("conversationId = null"))
+        assertTrue("loaded history never replaces what is already on screen", !vm.contains("_messages.value = result.data.map"))
+    }
+
     // viewModelScope runs on Main.immediate, so a turn started from init (a prefilled question) assigns currentReply BEFORE the property
     // initializers that follow init run; a declaration below init then resets it to null and Stop keeps nothing.
     @Test fun `the partial-reply holders are declared before init so a prefilled turn keeps them`() {
