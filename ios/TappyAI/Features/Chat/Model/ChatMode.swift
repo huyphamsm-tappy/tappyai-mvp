@@ -20,4 +20,23 @@ enum ChatMode: String, CaseIterable, Sendable {
 
     /// What a turn runs as unless the person picked another mode.
     static let `default`: ChatMode = .auto
+
+    /// The menu's rule (web `setChatMode(m => (m === key ? 'auto' : key))`): the mode in use, picked again, goes back to Auto.
+    func picked(_ choice: ChatMode) -> ChatMode { self == choice ? .auto : choice }
+
+    /// The mode once a question is sent: Deep Research is for that one question (web `setChatMode(m => (m === 'deep' ? 'auto' : m))`).
+    func afterSend() -> ChatMode { self == .deep ? .auto : self }
+
+    /// What the "+" menu offers beside attaching. People just type: Auto picks a quick answer, a web lookup or thinking by itself,
+    /// so only Deep Research is a choice. Chat, Web and Think stay modes the server understands, not menu items.
+    static let menu: [ChatMode] = [.deep]
+
+    /// The modes the menu offers for this account (web `tiers.ts`, which the server enforces: a mode the plan lacks runs as Chat).
+    /// A visitor, or an account without a live plan, or the free plan, has none; every paid plan has the whole menu.
+    /// `nil` = plans not on sale or not known yet: the whole menu, never less.
+    static func menuFor(_ access: PlanAccess?) -> [ChatMode] {
+        guard let access else { return menu }
+        if !access.signedIn || access.state != "ACTIVE" || access.planId == "free" { return [] }
+        return menu
+    }
 }
