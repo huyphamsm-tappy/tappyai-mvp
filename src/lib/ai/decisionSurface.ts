@@ -24,7 +24,10 @@
  */
 export const DECISION_CARD_SURFACES: ReadonlySet<string> = new Set(['web', 'android'])
 
-export function rendersDecisionCard(surface: string | null | undefined): boolean {
+export function rendersDecisionCard(surface: string | null | undefined, caps?: string | null): boolean {
+  // Owner 02/11: the iOS app draws the card too, but older iOS builds in the store may not and send the same `x-tappy-surface: ios`.
+  // A client says it can in `x-tappy-caps: card` (the R10 way of the ask block); the surface header alone is unchanged.
+  if (clientCaps(caps).has('card')) return true
   return surface != null && DECISION_CARD_SURFACES.has(surface)
 }
 

@@ -2173,7 +2173,7 @@ export async function POST(req: Request) {
   // sends no header - iOS, an older Android build, a script - keeps today's
   // prose (and, with MEDIA_PLACEMENT_V2, the G3 block placement).
   const surfaceHeader = req.headers.get('x-tappy-surface')
-  const rendersDecisionCard = rendersDecisionCardFor(surfaceHeader)
+  const rendersDecisionCard = rendersDecisionCardFor(surfaceHeader, req.headers.get('x-tappy-caps'))
   // CommerceContext for the CCP seam: the surface header is the only platform signal the route
   // has, and the response language is what the merchant page should open in. No raw user identifier:
   // attribution travels only as the keyed hash below.
