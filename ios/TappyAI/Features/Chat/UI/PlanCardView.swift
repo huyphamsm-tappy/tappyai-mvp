@@ -288,7 +288,7 @@ struct ChatPlanCardView: View {
     @ViewBuilder private var costLines: some View {
         // The server's total goes above its lines (web TripPlanCard, Android CostLines); never a sum made here.
         let total = PlanCardModel.costTotal(plan)
-        let lines = plan.costBreakdown ?? [:]
+        let lines = plan.costBreakdown ?? []
         if !lines.isEmpty || total != nil {
             panel("chat.plan.costBreakdown", id: "plan-costs") {
                 if let total {
@@ -300,11 +300,12 @@ struct ChatPlanCardView: View {
                     .font(.system(size: 13))
                     .accessibilityIdentifier("plan-total")
                 }
-                ForEach(lines.keys.sorted(), id: \.self) { key in
+                // In the order the server wrote them (ContentParser restores it from the raw block), not sorted.
+                ForEach(Array(lines.enumerated()), id: \.offset) { _, line in
                     HStack {
-                        Text(key).foregroundStyle(PlanPal.muted)
+                        Text(line.key).foregroundStyle(PlanPal.muted)
                         Spacer()
-                        Text(lines[key] ?? "").foregroundStyle(PlanPal.text)
+                        Text(line.value).foregroundStyle(PlanPal.text)
                     }
                     .font(.system(size: 13))
                 }

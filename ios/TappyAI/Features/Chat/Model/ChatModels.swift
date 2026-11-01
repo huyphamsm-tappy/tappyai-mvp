@@ -120,7 +120,9 @@ struct TappyPlan: Equatable, Sendable, Decodable {
     let people: Int?
     let budgetTotal: String?
     let days: [PlanDay]
-    let costBreakdown: [String: String]?
+    /// The server's cost lines in the order it wrote them (web, Android). A decoder cannot see that order, so `ContentParser` restores it from the
+    /// raw block with `withCostLinesOrdered(byRawJSON:)`; straight from a decoder the lines are sorted by key.
+    private(set) var costBreakdown: [CostLine]?
     let shareText: String?
     let localTips: [LocalTip]?
 
@@ -140,6 +142,40 @@ struct TappyPlan: Equatable, Sendable, Decodable {
     let budgetPerPerson: String?
     /// Up to 4 "Điểm nổi bật" tiles, each with its STORED image key.
     let highlights: [Highlight]?
+
+    /// One line of the cost block: the server's label and its amount (a number the server wrote is kept as text).
+    struct CostLine: Equatable, Sendable {
+        let key: String
+        let value: String
+    }
+
+    /// A cost value as the server wrote it: text, or a bare number (turned into text). Anything else is nil and the line is dropped.
+    private struct CostValue: Decodable, Sendable {
+        let text: String?
+        init(from decoder: Decoder) throws {
+            guard let c = try? decoder.singleValueContainer() else { text = nil; return }
+            if let s = try? c.decode(String.self) { text = s }
+            else if let n = try? c.decode(Int64.self) { text = String(n) }
+            else if let d = try? c.decode(Double.self) { text = String(d) }
+            else { text = nil }
+        }
+    }
+
+    /// The same plan with its cost lines in the order `raw` (the verbatim block) wrote them; a line the raw text does not name keeps its place
+    /// after the named ones. Unchanged when there is nothing to reorder.
+    func withCostLinesOrdered(byRawJSON raw: String) -> TappyPlan {
+        guard let lines = costBreakdown, lines.count > 1 else { return self }
+        let order = JSONKeyOrder.keys(ofTopLevel: "cost_breakdown", in: raw)
+        guard !order.isEmpty else { return self }
+        var rest = lines
+        var ordered: [CostLine] = []
+        for key in order {
+            if let at = rest.firstIndex(where: { $0.key == key }) { ordered.append(rest.remove(at: at)) }
+        }
+        var copy = self
+        copy.costBreakdown = ordered + rest
+        return copy
+    }
 
     struct Highlight: Equatable, Sendable, Decodable {
         let label: String
@@ -256,8 +292,11 @@ struct TappyPlan: Equatable, Sendable, Decodable {
         let people = (try? c.decodeIfPresent(Int.self, forKey: .people)) ?? nil
         self.people = (people ?? 0) > 0 ? people : nil
         budgetTotal = PlanPrice.amount((try? c.decodeIfPresent(String.self, forKey: .budgetTotal)) ?? nil)
-        let breakdown = ((try? c.decodeIfPresent([String: String].self, forKey: .costBreakdown)) ?? nil)?
-            .compactMapValues { PlanPrice.amount($0) } ?? [:]
+        // A numeric value is kept (as text) and one odd value costs only its own line, never the whole block.
+        let rawLines = ((try? c.decodeIfPresent([String: CostValue].self, forKey: .costBreakdown)) ?? nil) ?? [:]
+        let breakdown: [CostLine] = rawLines.keys.sorted().compactMap { key in
+            PlanPrice.amount(rawLines[key]?.text).map { CostLine(key: key, value: $0) }
+        }
         costBreakdown = breakdown.isEmpty ? nil : breakdown
         let share = ((try? c.decodeIfPresent(String.self, forKey: .shareText)) ?? nil)?
             .trimmingCharacters(in: .whitespacesAndNewlines)

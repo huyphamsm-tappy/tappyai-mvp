@@ -85,7 +85,7 @@ final class TappyPlanDecodeTests: XCTestCase {
          "local_tips":[{"text":"Đi sớm","basis":"tool","place":"Bà Nà"},{"text":"Mang áo mưa","basis":"general"},{"text":"  ","basis":"general"}]}
         """#))
         XCTAssertEqual(PlanCardContent.summary(p), String(format: NSLocalizedString("chat.plan.people", comment: ""), 3) + " · 2.500.000đ")
-        XCTAssertEqual(p.costBreakdown, ["Ăn uống": "800.000đ"], "a no-price sentinel is not a cost")
+        XCTAssertEqual(p.costBreakdown, [TappyPlan.CostLine(key: "Ăn uống", value: "800.000đ")], "a no-price sentinel is not a cost")
         let tips = PlanCardContent.tips(p)
         XCTAssertEqual(tips.map { $0.text }, ["Đi sớm", "Mang áo mưa"])
         XCTAssertEqual(tips.map { $0.place }, ["Bà Nà", nil])

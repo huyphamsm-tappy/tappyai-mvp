@@ -291,7 +291,8 @@ enum ContentParser {
               !plan.days.isEmpty else {
             return (text, nil, nil)
         }
-        return (text, plan, jsonStr)
+        // The decoder cannot keep the order the server wrote the cost lines in; the raw block can.
+        return (text, plan.withCostLinesOrdered(byRawJSON: jsonStr), jsonStr)
     }
 
     // MARK: - Follow-up suggestions
