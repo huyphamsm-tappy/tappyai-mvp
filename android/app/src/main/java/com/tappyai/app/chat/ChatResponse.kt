@@ -329,7 +329,8 @@ object ChatResponseParser {
         .replace(BARE_URL_RE) { m -> if (isImageUrl(m.groupValues[2])) "${m.groupValues[1]}![](${m.groupValues[2]})" else m.value }
 
     fun parse(content: String): ParsedAssistantReply {
-        var text = normalizeImageLinks(content)
+        // owner 01/11: a link to another AI product's page is never shown (the server filters sources; this is the second line, web aiSourcePolicy.ts)
+        var text = normalizeImageLinks(AiSourcePolicy.stripAiLinks(content))
 
         // 0. Consult V2 ASK turn (server 70667d3): 2-3 questions, each with its own options.
         // ALWAYS stripped — complete, malformed, or still arriving mid-stream — so no raw JSON reads.

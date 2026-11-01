@@ -50,7 +50,8 @@ internal object OneBrainFrames {
             val lo = l as? JsonObject ?: return@mapNotNull null
             val id = lo.num("id")?.toInt() ?: return@mapNotNull null
             val title = lo.str("title") ?: return@mapNotNull null
-            val url = lo.str("url")?.takeIf(::isSafeHttpsUrl) ?: return@mapNotNull null
+            // owner 01/11: another AI product's page is never a source, even if one got through the server (web aiSourcePolicy.ts)
+            val url = lo.str("url")?.takeIf(::isSafeHttpsUrl)?.takeUnless { com.tappyai.app.chat.AiSourcePolicy.isAiProductSource(it) } ?: return@mapNotNull null
             ResearchLink(id, title.take(200), url)
         }.take(MAX_LINKS)
         val sources = o.num("sources")?.takeIf { it >= 0 }?.toInt() ?: 0

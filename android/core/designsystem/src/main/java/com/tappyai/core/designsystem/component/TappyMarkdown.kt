@@ -294,6 +294,13 @@ private fun buildInlineAnnotated(
                     if (closeParen > closeBracket) {
                         val linkText = text.substring(i + 1, closeBracket)
                         val url = text.substring(closeBracket + 2, closeParen)
+                        // review 01/11: only http(s) is a link. A model-written [x](intent:...) / (tel:...) / (javascript:...) reached the OS before;
+                        // it reads as its label now.
+                        if (!isOpenableLink(url)) {
+                            append(buildInlineAnnotated(linkText, codeBackground, linkColor))
+                            i = closeParen + 1
+                            continue
+                        }
                         // Real clickable link: withLink + LinkAnnotation.Url. With no explicit
                         // listener, the Text opens it through the ambient UriHandler, i.e. the
                         // system browser (Intent.ACTION_VIEW) — no in-app browser, no analytics.
@@ -390,6 +397,9 @@ private val TABLE_COLUMN_WIDTH = 160.dp
 
 /** The punctuation a backslash makes literal in Markdown (CommonMark's ASCII punctuation the renderer uses). */
 private const val MARKDOWN_ESCAPABLE = "\\`*_{}[]()#+-.!|~>"
+
+/** Only an http(s) address is a link the reader can open; any other scheme (intent:, tel:, sms:, javascript:, file:, content:, market:) is not. */
+fun isOpenableLink(url: String): Boolean = url.startsWith("https://", ignoreCase = true) || url.startsWith("http://", ignoreCase = true)
 
 /** A label that is an address without its scheme: `www.x.y…` or `host.tld/path…`, no spaces. */
 private val ADDRESS_LABEL = Regex("""(?i)(?:www\.\S+|[a-z0-9-]+(?:\.[a-z0-9-]+)+/\S*)""")
