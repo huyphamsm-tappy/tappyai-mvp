@@ -92,7 +92,10 @@ private fun parseBlocks(markdown: String): List<DBlock> {
     return out
 }
 
-private fun esc(s: String) = s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;")
+// XML 1.0 forbids these control characters (all but tab, line feed, carriage return): one in the text makes Word call the file corrupt.
+private val XML_FORBIDDEN = Regex("[\\u0000-\\u0008\\u000B\\u000C\\u000E-\\u001F]")
+
+private fun esc(s: String) = s.replace(XML_FORBIDDEN, "").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;")
 
 private class Rels {
     val urls = mutableListOf<String>()

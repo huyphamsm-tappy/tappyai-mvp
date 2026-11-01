@@ -235,6 +235,41 @@ private fun parseMarkdownBlocks(markdown: String): List<MdBlock> {
 // scan; any unterminated marker is emitted literally.
 // ---------------------------------------------------------------------------------------------
 
+/**
+ * The ")" that closes a link's address starting at [from]: brackets inside the address count in pairs ("…/Foo_(bar)"), so the link is not cut
+ * at the first ")". An address with a space or an unbalanced ")" keeps the old rule, the first ")".
+ */
+private fun closingParen(text: String, from: Int): Int {
+    var depth = 1
+    var k = from
+    while (k < text.length) {
+        when (text[k]) {
+            '(' -> depth++
+            ')' -> { depth--; if (depth == 0) return k }
+            ' ', '\n', '\t' -> return text.indexOf(')', from)
+        }
+        k++
+    }
+    return text.indexOf(')', from)
+}
+
+/**
+ * Where an emphasis opened at [i] with [c] ('*' or '_') ends, or -1 (the mark is then plain text). CommonMark's flanking, in short: the text
+ * does not start or end with a space, and an underscore inside a word is not emphasis ("ABC_123 … XYZ_456", "tin_a_b" kept their marks).
+ */
+private fun emphasisEnd(text: String, i: Int, c: Char): Int {
+    if (c == '_' && i > 0 && text[i - 1].isLetterOrDigit()) return -1
+    if (i + 1 >= text.length || text[i + 1].isWhitespace()) return -1
+    var from = i + 1
+    while (true) {
+        val end = text.indexOf(c, from)
+        if (end < 0) return -1
+        val closes = !text[end - 1].isWhitespace() && (c == '*' || end + 1 >= text.length || !text[end + 1].isLetterOrDigit())
+        if (closes) return end
+        from = end + 1
+    }
+}
+
 private fun buildInlineAnnotated(
     text: String,
     codeBackground: Color,
@@ -277,7 +312,7 @@ private fun buildInlineAnnotated(
                 }
             }
             c == '*' || c == '_' -> {
-                val end = text.indexOf(c, i + 1)
+                val end = emphasisEnd(text, i, c)
                 if (end > i) {
                     withStyle(SpanStyle(fontStyle = FontStyle.Italic)) {
                         append(buildInlineAnnotated(text.substring(i + 1, end), codeBackground, linkColor))
@@ -290,7 +325,7 @@ private fun buildInlineAnnotated(
             c == '[' -> {
                 val closeBracket = text.indexOf(']', i + 1)
                 if (closeBracket > i && closeBracket + 1 < n && text[closeBracket + 1] == '(') {
-                    val closeParen = text.indexOf(')', closeBracket + 2)
+                    val closeParen = closingParen(text, closeBracket + 2)
                     if (closeParen > closeBracket) {
                         val linkText = text.substring(i + 1, closeBracket)
                         val url = text.substring(closeBracket + 2, closeParen)

@@ -41,7 +41,8 @@ fun reportMarkdown(text: String, links: List<ResearchLink>): String {
         if (i <= last) return@mapIndexed l
         val m = Regex("""^(\d{1,3})\.\s+(.*)$""").find(l) ?: return@mapIndexed l
         val link = byId[m.groupValues[1].toInt()] ?: return@mapIndexed l
-        "${m.groupValues[1]}. [${mdLabel(link.title).ifEmpty { mdLabel(m.groupValues[2]) }}](${link.url})"
+        // a "(" or ")" in the address ends it early in every reader of [label](address); %28 / %29 is the same address
+        "${m.groupValues[1]}. [${mdLabel(link.title).ifEmpty { mdLabel(m.groupValues[2]) }}](${link.url.replace("(", "%28").replace(")", "%29")})"
     }.joinToString("\n").trim() + "\n"
 }
 
