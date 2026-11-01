@@ -765,7 +765,11 @@ final class ChatViewModel: AppObservableObject {
                         streamReportedError = true
                         self.log.error("server error part in the chat stream: \(String(decoding: payload.prefix(200), as: UTF8.self))")
 
-                    // Non-places annotations carry nothing the chat UI renders yet.
+                    // The Deep Research card, its charts and the section pictures: read and checked by the parser; the
+                    // turn keeps them in the next step.
+                    case .research, .charts, .docMedia:
+                        break
+
                     case .messageStart, .unknown:
                         break
                     }

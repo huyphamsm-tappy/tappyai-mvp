@@ -27,6 +27,15 @@ enum StreamFrame: Equatable, Sendable {
     /// sentence the server wrote in the turn's language (never the user's words). Shown in the thinking
     /// indicator; never text, never persisted. Web parity: `progressAnnotation.ts` `readProgress`.
     case progress(stage: String, text: String)
+    /// A message ANNOTATION (`8:`) of type `tappy.research.v1`: the Deep Research card (plan, steps, source count, cited sources),
+    /// re-checked by `OneBrainFrames.research`. The latest one is the card's state. Never text, never saved.
+    case research(ResearchStatus)
+    /// A message ANNOTATION (`8:`) of type `tappy.research_charts.v1`: the report's charts, from figures the server checked in
+    /// their own source (`OneBrainFrames.charts`). Never text, never saved.
+    case charts([ResearchChart])
+    /// A message ANNOTATION (`8:`) of kind `tappy.doc_media.v1`: the pictures that go under the answer's headings
+    /// (`OneBrainFrames.docMedia`). Live only; never text, never saved.
+    case docMedia([DocMediaItem])
     case done
     case unknown(prefix: String, payload: Data)
 }
@@ -90,13 +99,23 @@ enum DataStreamLineParser {
         }
     }
 
-    /// The frames of one `8:` payload: one per usable element, in order. Each element is gated on its own `kind`.
+    /// The frames of one `8:` payload: one per usable element, in order. Each element is gated on its own tag: `kind`, or `type` for
+    /// the research frames (`tappy.research.v1`, `tappy.research_charts.v1`), as the web writes them.
     private static func annotationFrames(_ payload: Data) -> [StreamFrame] {
         guard let elements = (try? JSONSerialization.jsonObject(with: payload)) as? [Any] else { return [] }
         return elements.compactMap { element -> StreamFrame? in
             guard let item = element as? [String: Any],
-                  let kind = item["kind"] as? String else { return nil }
+                  let kind = (item["kind"] as? String) ?? (item["type"] as? String) else { return nil }
             switch kind {
+            case researchAnnotationType:
+                guard let status = OneBrainFrames.research(item) else { return nil }
+                return .research(status)
+            case researchChartsAnnotationType:
+                let charts = OneBrainFrames.charts(item)
+                return charts.isEmpty ? nil : .charts(charts)
+            case docMediaAnnotationKind:
+                let items = OneBrainFrames.docMedia(item)
+                return items.isEmpty ? nil : .docMedia(items)
             case placesAnnotationKind:
                 guard let data = try? JSONSerialization.data(withJSONObject: item),
                       let view = try? JSONDecoder().decode(PlacesLiveView.self, from: data),
