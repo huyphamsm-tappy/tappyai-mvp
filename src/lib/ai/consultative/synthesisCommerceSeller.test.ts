@@ -50,6 +50,12 @@ describe("a card's purchase links come from the shop that sells that offer", () 
     expect(e.commerce?.providerId).toBe('shopee')
     expect(e.commerceLinks?.map(l => l.providerId).sort()).toEqual(['lazada', 'shopee'])
   })
+  it('review 01/11: a seller whose name is only a piece of a marketplace\'s ("Shop", "Mall") is not that marketplace', () => {
+    for (const seller of ['Shop', 'Mall', 'Sho']) {
+      const v = viewOf([cand('Ổ cứng SSD Adata SU650 256GB SATA III 2.5"', seller, 990_000, [SHOPEE_512])])
+      expect(v.entities[0].commerce, seller).toBeUndefined()
+    }
+  })
   it('a shop named with its marketplace ("Shopee Mall - ADATA") is that marketplace', () => {
     const v = viewOf([cand('SSD ADATA SU650 256GB', 'Shopee Mall - ADATA Official', 1_050_000, [SHOPEE_256])])
     expect(v.entities[0].commerce?.providerId).toBe('shopee')

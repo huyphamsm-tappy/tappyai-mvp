@@ -200,7 +200,8 @@ const shopKey = (s: string): string => s.normalize('NFKD').replace(/\p{M}+/gu, '
 function sameShop(offerSeller: string | null | undefined, offerUrl: string | null | undefined, r: CommerceLinkRow): boolean {
   const seller = shopKey(offerSeller ?? '')
   const names = [r.providerId, r.merchantName].map(shopKey).filter(n => n.length >= 3)
-  if (seller && names.some(n => seller.includes(n) || n.includes(seller))) return true
+  // a seller name that is only a piece of a marketplace's ("Shop" in "shopee") is not that marketplace: the reverse containment needs a real name
+  if (seller && names.some(n => seller.includes(n) || (seller.length >= 5 && n.includes(seller)))) return true
   let host = ''
   try { host = shopKey(new URL(offerUrl ?? '').hostname.replace(/^www\./, '').split('.')[0]) } catch { /* no own link */ }
   return !!host && names.some(n => host === n || host.includes(n))
