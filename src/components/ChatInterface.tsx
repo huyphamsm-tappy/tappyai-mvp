@@ -111,6 +111,7 @@ import { balanceBoldPerLine } from '@/lib/chat/markdownNormalize'
 import { cleanRepeats } from '@/lib/chat/replyRepeat'
 import { isAgeGateMessage, redirectToAgeCheck } from '@/lib/account/ageGateClient'
 import { checkAttachment, firstAttachable, dragHasFiles } from '@/components/chat/composerAttachment'
+import UserMessageCopy from '@/components/chat/UserMessageCopy'
 
 // Mood chips — labels and the message each sends are dictionary keys so both
 // localize; the analytics id stays stable across languages.
@@ -2111,6 +2112,7 @@ export default function ChatInterface({
                         <div className="message-content whitespace-pre-wrap" onClick={onMessageLinkClick} dangerouslySetInnerHTML={{ __html: formatMessage(typeof msg.content === 'string' ? msg.content : '') }} />
                       </div>
                     )}
+                    <UserMessageCopy text={typeof msg.content === 'string' ? msg.content : ''} />
                   </div>
                 </div>
               )
