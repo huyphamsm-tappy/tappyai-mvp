@@ -597,7 +597,12 @@ fun ChatScreen(
                         if (c.moveToFirst()) { name = c.getString(0); size = if (c.isNull(1)) null else c.getLong(1) }
                     }
                 }
-                viewModel.onAttachmentPicked(uri, resolver.getType(uri), name, size)
+                val mime = resolver.getType(uri)
+                // review 01/11: a PDF whose provider reports no size is measured from its stream (a missing size was taken as 0 bytes)
+                if (size == null && mime == com.tappyai.app.chat.data.PDF_MIME) {
+                    size = runCatching { resolver.openInputStream(uri)?.use { countBytesUpTo(it, PDF_LIMIT_BYTES + 1) } }.getOrNull()
+                }
+                viewModel.onAttachmentPicked(uri, mime, name, size)
             }
         }
         viewModel.pendingImageUri?.let { uri ->
