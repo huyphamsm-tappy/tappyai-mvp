@@ -355,6 +355,8 @@ final class ChatViewModel: AppObservableObject {
 
         if let last = messages.last, last.isAssistant, last.status == .streaming {
             messages[messages.count - 1].status = .complete
+            // What was shown stays, and is stored (the turn's own Task no longer saves a stopped turn).
+            if !last.content.isEmpty { scheduleSave() }
         }
     }
 
@@ -666,7 +668,10 @@ final class ChatViewModel: AppObservableObject {
                 self.stopThinkTimer()
                 self.hasMemory = true
 
-                await self.persistConversation()
+                // The save is NOT this turn's work: it runs in its own Task, after the message is built, so
+                // Stop cannot cancel it and the input is not locked while the network call is out. A turn
+                // that was stopped is saved by `stop()` itself.
+                if !Task.isCancelled { self.scheduleSave() }
 
             } catch {
                 self.isStreaming = false
@@ -722,10 +727,33 @@ final class ChatViewModel: AppObservableObject {
 
     // MARK: - Conversation persistence
 
+    /// Asks for the conversation to be saved. The save runs in a Task of its own (not the turn's `streamTask`, which
+    /// Stop cancels) and one save at a time: a request that comes while a save is out is folded into ONE more save
+    /// that runs when it returns, so two quick turns never create two conversations and an older PUT never lands
+    /// after a newer one.
+    private func scheduleSave() {
+        saveRequestedAgain = true
+        guard saveTask == nil else { return }
+        saveTask = Task { @MainActor in
+            while self.saveRequestedAgain {
+                self.saveRequestedAgain = false
+                await self.persistConversation()
+            }
+            self.saveTask = nil
+        }
+    }
+
+    private var saveTask: Task<Void, Never>?
+    private var saveRequestedAgain = false
+
+    /// One save, from the list as it is NOW (read when the request is built, not when the turn ended). A reply that
+    /// is still streaming is not part of it.
     private func persistConversation() async {
         guard session.state.isAuthenticated else { return }
-        let payloads = messages.map { MessagePayload(role: $0.role.rawValue, content: $0.content) }
-        let title = messages.first(where: { $0.isUser })?.content.prefix(50).description ?? "Chat"
+        let stored = messages.filter { $0.status != .streaming }
+        guard !stored.isEmpty else { return }
+        let payloads = stored.map { MessagePayload(role: $0.role.rawValue, content: $0.content) }
+        let title = stored.first(where: { $0.isUser })?.content.prefix(50).description ?? "Chat"
 
         do {
             if let id = conversationId {
