@@ -4,6 +4,7 @@ import XCTest
 /// Review 02/11 (iOS): a markdown image whose address has brackets was cut at the first ")" (the rest of the address stayed in the
 /// text as ".jpg)"), http images were drawn, "Copy plaintext" swallowed the address of every link and the "*" between two numbers,
 /// and the menu offered "Copy ID" (the message id is no business of the person; the web has no such item).
+@MainActor
 final class PlainTextAndImageBracketTests: XCTestCase {
     private let wiki = "https://upload.wikimedia.org/wikipedia/commons/a/ab/Foo_(bar).jpg"
 
