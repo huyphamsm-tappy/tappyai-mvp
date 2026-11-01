@@ -42,14 +42,18 @@ final class PlanCardV2Tests: XCTestCase {
         XCTAssertEqual(first.address, "Xã Nhơn Lý, Quy Nhơn")
     }
 
-    func testMoneyIsOnlyTheServersAmountsAndAMissingPriceReadsExactly() throws {
+    // 02/11 review: this test used to pin the sentence "chưa có giá — hỏi quán" for a stop without an amount. The web and Android
+    // dropped it (a card must not print a "no price" sentence under every stop the server gave no price to), so a stop without an
+    // amount now has NO price at all and the card draws no price line; a stop WITH an amount is unchanged.
+    func testMoneyIsOnlyTheServersAmountsAndAMissingPriceIsNoPriceAtAll() throws {
         let card = try quyNhon()
-        let prices = Dictionary(card.days.flatMap(\.stops).map { ($0.name, $0.price) }, uniquingKeysWith: { _, last in last })
-        XCTAssertEqual(prices["Hải sản Nhơn Lý"], "300.000đ/người")
-        XCTAssertEqual(prices["Tháp Đôi"], "Miễn phí")
-        XCTAssertEqual(prices["Eo Gió"], PlanCardModel.noPrice, "the model's «chưa có giá» sentinel never sits in a price slot")
-        XCTAssertEqual(prices["Bãi Kỳ Co"], PlanCardModel.noPrice, "no price at all")
-        XCTAssertEqual(PlanCardModel.noPrice, "chưa có giá — hỏi quán")
+        let stops = Dictionary(card.days.flatMap(\.stops).map { ($0.name, $0) }, uniquingKeysWith: { _, last in last })
+        XCTAssertEqual(stops["Hải sản Nhơn Lý"]?.price, "300.000đ/người")
+        XCTAssertEqual(stops["Tháp Đôi"]?.price, "Miễn phí")
+        XCTAssertNotNil(stops["Eo Gió"])
+        XCTAssertNil(stops["Eo Gió"]?.price, "the model's «chưa có giá» sentinel is not a price: no price line")
+        XCTAssertNotNil(stops["Bãi Kỳ Co"])
+        XCTAssertNil(stops["Bãi Kỳ Co"]?.price, "no price at all: no price line")
         // The overview budget is the server's total and ITS per-person line — nothing divided here.
         let budget = try XCTUnwrap(card.overview.first { $0.kind == .budget })
         XCTAssertEqual(budget.value, "5.000.000đ")
@@ -95,7 +99,8 @@ final class PlanCardV2Tests: XCTestCase {
         XCTAssertFalse(card.title.isEmpty)
         XCTAssertNil(card.heroKey, "no v2 hero in today's blocks → placeholder")
         XCTAssertTrue(card.days.flatMap(\.stops).allSatisfy { $0.imageKey == nil }, "no stored stop images → placeholders")
-        XCTAssertTrue(card.days.flatMap(\.stops).allSatisfy { $0.priced || $0.price == PlanCardModel.noPrice })
+        // the legacy block's "chưa có giá" is no price: nothing to draw (02/11 review: the "no price" sentence is gone)
+        XCTAssertTrue(card.days.flatMap(\.stops).allSatisfy { $0.price == nil })
         XCTAssertTrue(card.highlights.isEmpty)
     }
 

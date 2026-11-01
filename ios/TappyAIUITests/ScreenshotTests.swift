@@ -586,8 +586,8 @@ final class ScreenshotTests: XCTestCase {
         XCTAssertTrue(any(app, "plan-title").exists)
         XCTAssertEqual(any(app, "plan-title").label, "Quy Nhơn")
         XCTAssertTrue(any(app, "plan-price").exists, "a stop with the server's amount")
-        XCTAssertTrue(any(app, "plan-no-price").exists, "«chưa có giá — hỏi quán» for a stop without an amount")
-        XCTAssertEqual(any(app, "plan-no-price").label, "chưa có giá — hỏi quán")
+        // 02/11 review: a stop without an amount used to read «chưa có giá — hỏi quán» (plan-no-price); the web and Android print no such line
+        XCTAssertFalse(any(app, "plan-no-price").exists, "no «chưa có giá» line for a stop without an amount")
         shot("48-plan-travel")
         XCTAssertTrue(scrollTo(app, "plan-overview"), "«Tổng quan chuyến đi»")
         XCTAssertTrue(scrollTo(app, "plan-highlights"), "«Điểm nổi bật»")

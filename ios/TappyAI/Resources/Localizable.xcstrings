@@ -6607,13 +6607,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Budget"
+            "value": "Estimated total"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ngân sách"
+            "value": "Tổng ước tính"
           }
         }
       }

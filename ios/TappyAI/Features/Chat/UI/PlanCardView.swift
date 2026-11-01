@@ -6,7 +6,7 @@ import SwiftUI
 ///  - the hero: the plan's STORED background image (the area's gradient until the manifest serves it),
 ///    «TAPPY PLAN», the title, destination · duration · people, the tagline;
 ///  - «Hành trình»: every day stacked (a non-travel plan is ONE session with times of day), each stop with its
-///    time, its STORED stop image, name, description, address and the server's price — or «chưa có giá — hỏi quán»;
+///    time, its STORED stop image, name, description, address and the server's price (no price line without one);
 ///  - «Tổng quan» (only what the server wrote), «Điểm nổi bật» (2×2), the server's tips and cost lines, and
 ///    «Xem kế hoạch đầy đủ trên Tappy», which publishes the plan and opens its page.
 /// What is shown is decided in `PlanCardModel.of` (pure, unit-tested); this file only draws. Fixed dark palette:
@@ -151,10 +151,13 @@ struct ChatPlanCardView: View {
                         Text(a).font(.system(size: 12)).foregroundStyle(PlanPal.muted).lineLimit(1)
                     }
                 }
-                Text(stop.priced ? stop.price : NSLocalizedString("chat.planV2.noPrice", comment: ""))
-                    .font(.system(size: 12, weight: stop.priced ? .semibold : .regular))
-                    .foregroundStyle(stop.priced ? Color(hex: 0xFFD27A) : PlanPal.muted)
-                    .accessibilityIdentifier(stop.priced ? "plan-price" : "plan-no-price")
+                // A price line only for a stop the server priced: no "no price" sentence (web and Android print none).
+                if let price = stop.price {
+                    Text(price)
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundStyle(Color(hex: 0xFFD27A))
+                        .accessibilityIdentifier("plan-price")
+                }
                 if stop.mapsLink != nil || stop.bookingLink != nil {
                     HStack(spacing: 14) {
                         if let url = stop.mapsLink { planLink("mappin.and.ellipse", "chat.plan.map", url) }
@@ -254,8 +257,20 @@ struct ChatPlanCardView: View {
 
     /// The server's cost lines, verbatim (already projected by `PlanPrice`: a non-amount never shows).
     @ViewBuilder private var costLines: some View {
-        if let lines = plan.costBreakdown, !lines.isEmpty {
+        // The server's total goes above its lines (web TripPlanCard, Android CostLines); never a sum made here.
+        let total = PlanCardModel.costTotal(plan)
+        let lines = plan.costBreakdown ?? [:]
+        if !lines.isEmpty || total != nil {
             panel("chat.plan.costBreakdown", id: "plan-costs") {
+                if let total {
+                    HStack {
+                        Text("chat.plan.totalEstimate").fontWeight(.semibold).foregroundStyle(PlanPal.text)
+                        Spacer()
+                        Text(total).fontWeight(.semibold).foregroundStyle(PlanPal.text)
+                    }
+                    .font(.system(size: 13))
+                    .accessibilityIdentifier("plan-total")
+                }
                 ForEach(lines.keys.sorted(), id: \.self) { key in
                     HStack {
                         Text(key).foregroundStyle(PlanPal.muted)

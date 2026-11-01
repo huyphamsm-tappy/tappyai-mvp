@@ -46,7 +46,10 @@ final class WebFinalContractTests: XCTestCase {
             let card = PlanCardModel.of(plan)
             XCTAssertNil(card.overview.first { $0.kind == .budget }, "no budget row without a stated budget")
             XCTAssertEqual(card.days.first?.stops.count, 1)
-            XCTAssertEqual(card.days.first?.stops.first?.price, PlanCardModel.noPrice, "a missing price keeps its sentinel, never a number")
+            // 02/11 review: was pinned to the sentence "chưa có giá — hỏi quán"; the web and Android print no such sentence, so a missing
+            // price is no price (the card draws no price line) — still never a number
+            XCTAssertNotNil(card.days.first?.stops.first)
+            XCTAssertNil(card.days.first?.stops.first?.price, "a missing price is no price, never a number")
         }
     }
 

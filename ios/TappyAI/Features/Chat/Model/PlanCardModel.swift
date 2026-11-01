@@ -9,8 +9,8 @@ import Foundation
 //     shown, resolved to a URL through the image manifest (`PlanImageManifest`). The app never picks, guesses or
 //     randomises a picture — a stop's Google `photo_url` is NOT used. A key the manifest cannot serve (or no key at
 //     all) draws the gradient placeholder of the plan's area.
-//  2. MONEY: only the figures the server wrote. A stop whose price is not an amount reads exactly
-//     `PlanCardModel.noPrice`; nothing is summed, divided or estimated on the device.
+//  2. MONEY: only the figures the server wrote. A stop whose price is not an amount has NO price (`Stop.price` is nil, the card
+//     draws no price line — review 02/11, as the web and Android); nothing is summed, divided or estimated on the device.
 //  3. ALL FIVE AREAS use the same frame. A non-travel plan is one session ("Tối nay") with times of day — one day
 //     block, the same timeline, overview, highlights and call to action.
 
@@ -72,8 +72,6 @@ enum PlanImageKeys {
 }
 
 struct PlanCardModel: Equatable {
-    /// Exactly what a stop without an amount reads (owner 29/09) — in Vietnamese in every language, as on Android.
-    static let noPrice = "chưa có giá — hỏi quán"
     /// At most this many "Điểm nổi bật" tiles (the sample's 2×2 grid).
     static let maxHighlights = 4
 
@@ -105,9 +103,8 @@ struct PlanCardModel: Equatable {
         let name: String
         let description: String?
         let address: String?
-        /// The server's amount, or `noPrice`.
-        let price: String
-        let priced: Bool
+        /// The server's amount, or nil when it gave none (then no price line is drawn).
+        let price: String?
         let mapsLink: URL?
         let bookingLink: URL?
     }
@@ -128,7 +125,7 @@ struct PlanCardModel: Equatable {
     }
 
     /// The card for `plan`. Prices go through `PlanPrice` (the same projection the parser applies), so a sentinel
-    /// like "chưa có giá" never lands in a price slot; a stop without an amount reads `noPrice`.
+    /// like "chưa có giá" never lands in a price slot; a stop without an amount has no price.
     static func of(_ plan: TappyPlan) -> PlanCardModel {
         let area = PlanArea.of(plan)
         var stopId = 0
@@ -154,8 +151,7 @@ struct PlanCardModel: Equatable {
                             name: item.name.trimmingCharacters(in: .whitespaces),
                             description: item.description?.trimmingCharacters(in: .whitespaces).nilIfEmpty,
                             address: (address?.isEmpty == false && address != "Xem bản đồ") ? address : nil,
-                            price: amount ?? noPrice,
-                            priced: amount != nil,
+                            price: amount,
                             mapsLink: httpsLink(item.mapsLink),
                             bookingLink: httpsLink(item.bookingLink))
                     })
@@ -189,6 +185,11 @@ struct PlanCardModel: Equatable {
                 .filter { !$0.label.trimmingCharacters(in: .whitespaces).isEmpty }
                 .prefix(maxHighlights)
                 .map { HighlightTile(label: $0.label.trimmingCharacters(in: .whitespaces), imageKey: cleanKey($0.image)) })
+    }
+
+    /// The "Tổng ước tính" line of the cost block: the server's total, only when it is an amount. Never a sum made here.
+    static func costTotal(_ plan: TappyPlan) -> String? {
+        PlanPrice.amount(plan.budgetTotal)
     }
 
     private static func cleanKey(_ raw: String?) -> String? {
