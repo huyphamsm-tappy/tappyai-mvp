@@ -410,6 +410,11 @@ enum ToolHints {
         "get_news":              ("📰 Đang đọc tin tức…",          "📰 Reading the news…"),
         "web_search":            ("🌐 Đang tìm trên web…",        "🌐 Searching the web…"),
         "save_price_watch":      ("🔔 Đang đặt theo dõi giá…",    "🔔 Setting up price watch…"),
+        // The one-brain tools (web `route.ts`): the model's own reading, forecast, arithmetic and extra thinking.
+        "read_page":             ("📄 Đang đọc trang…",            "📄 Reading a page…"),
+        "think_deeper":          ("🧠 Đang suy nghĩ kỹ hơn…",     "🧠 Thinking it through…"),
+        "get_weather_forecast":  ("⛅ Đang xem dự báo thời tiết…", "⛅ Checking the forecast…"),
+        "calculate":             ("🧮 Đang tính…",                "🧮 Calculating…"),
     ]
 
     static func hint(for tool: String, locale: String) -> String? {

@@ -809,22 +809,33 @@ final class ChatViewModel: AppObservableObject {
 
     // MARK: - Parsing helpers
 
-    private struct ToolCallParsed { let id: String; let toolName: String }
-    private struct ToolResultParsed { let id: String; let data: Data }
+    struct ToolCallParsed { let id: String; let toolName: String }
+    struct ToolResultParsed { let id: String; let data: Data }
 
-    private nonisolated static func parseToolCall(_ data: Data) -> ToolCallParsed? {
-        guard let arr = try? JSONSerialization.jsonObject(with: data) as? [[String: Any]],
-              let first = arr.first,
-              let id = first["toolCallId"] as? String,
-              let name = first["toolName"] as? String else { return nil }
+    /// The one JSON object a `9:` / `a:` frame carries. The AI SDK v4 data stream sends an OBJECT
+    /// (`{toolCallId, toolName, args}` / `{toolCallId, result}`); an array of them (first element wins) is read too.
+    private nonisolated static func toolFrameObject(_ data: Data) -> [String: Any]? {
+        let json = try? JSONSerialization.jsonObject(with: data)
+        if let object = json as? [String: Any] { return object }
+        if let array = json as? [[String: Any]] { return array.first }
+        return nil
+    }
+
+    nonisolated static func parseToolCall(_ data: Data) -> ToolCallParsed? {
+        guard let object = toolFrameObject(data),
+              let id = object["toolCallId"] as? String,
+              let name = object["toolName"] as? String else { return nil }
         return ToolCallParsed(id: id, toolName: name)
     }
 
-    private nonisolated static func parseToolResult(_ data: Data) -> ToolResultParsed? {
-        guard let arr = try? JSONSerialization.jsonObject(with: data) as? [[String: Any]],
-              let first = arr.first,
-              let id = first["toolCallId"] as? String else { return nil }
-        let resultData = (try? JSONSerialization.data(withJSONObject: first["result"] ?? [:])) ?? Data()
+    nonisolated static func parseToolResult(_ data: Data) -> ToolResultParsed? {
+        guard let object = toolFrameObject(data),
+              let id = object["toolCallId"] as? String else { return nil }
+        // A result that is a bare string or number is a JSON fragment: encoding it as a top-level value needs the option
+        // (without it Foundation raises instead of throwing).
+        let result: Any = object["result"] ?? [String: Any]()
+        let options: JSONSerialization.WritingOptions = JSONSerialization.isValidJSONObject(result) ? [] : [.fragmentsAllowed]
+        let resultData = (try? JSONSerialization.data(withJSONObject: result, options: options)) ?? Data()
         return ToolResultParsed(id: id, data: resultData)
     }
 
