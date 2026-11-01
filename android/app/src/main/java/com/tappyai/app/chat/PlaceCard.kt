@@ -58,6 +58,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.tappyai.app.R
 import com.tappyai.core.designsystem.component.TappyImage
+import com.tappyai.core.designsystem.component.isOpenableLink
 import com.tappyai.core.designsystem.theme.TappyShapes
 import com.tappyai.core.designsystem.theme.TappySpacing
 import com.tappyai.core.designsystem.theme.tappyCategoryColors
@@ -479,11 +480,12 @@ fun PlaceDecisionSection(
         }
 
         if (pages.isNotEmpty()) {
+            val pageKeys = remember(pages) { pageKeys(pages.map { "${it.rank}:${it.name}" }) }
             HorizontalPager(
                 state = pagerState,
                 // A stable identity per merchant, so a chip that removes page 0 does not hand
                 // page 0's state to whoever moves into its slot.
-                key = { page -> pages[page].let { "${it.rank}:${it.name}" } },
+                key = { page -> pageKeys[page] },
                 pageSpacing = TappySpacing.sm,
                 contentPadding = PaddingValues(end = if (pages.size > 1) PAGE_PEEK else 0.dp),
                 verticalAlignment = Alignment.Top,
@@ -597,9 +599,23 @@ private fun ExploreMapFooter(onClick: () -> Unit) {
     }
 }
 
+/**
+ * One distinct key per pager page, in order: a repeat of the same "rank:name" (two branches of one chain with the default rank) gets "#2",
+ * "#3"... The first keeps its plain key, so removing a page above does not hand its state to the next one.
+ */
+internal fun pageKeys(base: List<String>): List<String> {
+    val seen = HashMap<String, Int>()
+    return base.map { key ->
+        val n = (seen[key] ?: 0) + 1
+        seen[key] = n
+        if (n == 1) key else "$key#$n"
+    }
+}
+
 private fun openUrl(context: android.content.Context, url: String) {
     // A URL the server built. A device with nothing able to open it is not worth a crash on a
-    // card the user can still read.
+    // card the user can still read. Only http(s): the CTA buttons check the scheme too (review 02/11).
+    if (!isOpenableLink(url)) return
     runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url))) }
 }
 
@@ -611,7 +627,7 @@ private fun openUrl(context: android.content.Context, url: String) {
  * able to open it reports a failed handoff rather than crashing a card the user can still read.
  */
 internal fun openPlaceAction(context: android.content.Context, action: PlaceCardAction, callbacks: CommerceActionCallbacks) {
-    val opened = runCatching {
+    val opened = isOpenableLink(action.url) && runCatching {
         context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(action.url)))
     }.isSuccess
     action.commerce?.let { callbacks.onHandoff(it, opened) }

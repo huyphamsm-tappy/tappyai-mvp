@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import com.tappyai.app.R
 import com.tappyai.core.common.formatCompactVnd
 import com.tappyai.core.designsystem.component.TappyImage
+import com.tappyai.core.designsystem.component.isOpenableLink
 import com.tappyai.core.designsystem.theme.TappyShapes
 import com.tappyai.core.designsystem.theme.TappySpacing
 
@@ -433,7 +434,7 @@ private fun OfferRow(offer: ShoppingOfferView, onSearchLinkTap: (String) -> Unit
         modifier = Modifier
             .fillMaxWidth()
             .then(
-                if (offer.url != null) {
+                if (offer.url != null && isOpenableLink(offer.url)) {
                     Modifier.clickable {
                         // shopping_search_click fires ONLY for a search redirect (never a genuine
                         // product page), matching web's `!dest.direct` gate. Platform enum only —

@@ -326,7 +326,9 @@ class PlaceDecisionSectionTest {
     fun `23 25 28 the section is a horizontal pager with dots and the map CTA below it - not a vertical stack`() {
         val src = File(findSrc("app/src/main/java/com/tappyai/app/chat/PlaceCard.kt")).readText().replace(Regex("(?m)^\\s*//.*$"), "")
         assertTrue("Compose's pager, one merchant per viewport", src.contains("HorizontalPager("))
-        assertTrue("stable identity per merchant", src.contains("key = { page -> pages[page]"))
+        // 02/11 review: the key is still one per merchant ("rank:name"), now made distinct when two branches share both (pageKeys, see
+        // ChatScreenReviewTest) - the pager refuses a repeated key
+        assertTrue("stable identity per merchant", src.contains("key = { page -> pageKeys[page] }") && src.contains("pages.map { \"\${it.rank}:\${it.name}\" }"))
         assertTrue("the next card peeks in", src.contains("contentPadding = PaddingValues(end = if (pages.size > 1) PAGE_PEEK else 0.dp)"))
         assertTrue("position dots", src.contains("PagerDots(count = pages.size, current = pagerState.currentPage)"))
         assertTrue("a chip restarts at the first admitted merchant", src.contains("LaunchedEffect(active.id) { if (pagerState.currentPage != 0) pagerState.scrollToPage(0) }"))

@@ -231,8 +231,9 @@ fun ChatScreen(
     }
 
     val listState = rememberLazyListState()
-    LaunchedEffect(messages.size, isResponding) {
-        val itemCount = messages.size + if (isResponding) 1 else 0
+    LaunchedEffect(messages.size, isResponding, streamCut) {
+        // the "stream cut" card is the last item when the stream ended cut (it used to be left below the screen)
+        val itemCount = messages.size + (if (isResponding) 1 else 0) + (if (streamCut && !isResponding) 1 else 0)
         if (itemCount > 0) listState.animateScrollToItem(itemCount - 1)
     }
 
