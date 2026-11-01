@@ -48,7 +48,40 @@ final class ResearchReportSaveTests: XCTestCase {
         XCTAssertEqual(ResearchExportFormat.markdown.fileExtension, "md")
     }
 
+    func testThereAreThreeFormatsMarkdownPdfAndWordEachWithItsNameExtensionAndType() {
+        XCTAssertEqual(ResearchExportFormat.allCases, [.markdown, .pdf, .word])
+        XCTAssertEqual(ResearchExportFormat.pdf.label, "PDF")
+        XCTAssertEqual(ResearchExportFormat.pdf.fileExtension, "pdf")
+        XCTAssertEqual(ResearchExportFormat.pdf.contentType, .pdf)
+        XCTAssertEqual(ResearchExportFormat.word.label, "Word")
+        XCTAssertEqual(ResearchExportFormat.word.fileExtension, "docx")
+        XCTAssertNotEqual(ResearchExportFormat.word.contentType, .pdf)
+        XCTAssertEqual(ResearchReportFile.fileName(title: "Xe điện: thị trường 2025", format: .pdf), "Xe điện thị trường 2025.pdf")
+        XCTAssertEqual(ResearchReportFile.fileName(title: "", format: .word), "report.docx")
+    }
+
+    func testEachFormatsBytesComeFromTheSameReportAndAreTheRightKindOfFile() throws {
+        let md = ResearchReportFile.data(format: .markdown, report: report, charts: charts, links: links, lang: "vi", title: "Xe điện")
+        XCTAssertEqual(md, Data(ResearchReportFile.markdown(report: report, charts: charts, links: links, lang: "vi").utf8))
+
+        let pdf = ResearchReportFile.data(format: .pdf, report: report, charts: charts, links: links, lang: "vi", title: "Xe điện")
+        XCTAssertEqual(String(data: pdf.prefix(4), encoding: .ascii), "%PDF")
+
+        let word = ResearchReportFile.data(format: .word, report: report, charts: charts, links: links, lang: "vi", title: "Xe điện")
+        XCTAssertEqual([UInt8](word.prefix(4)), [0x50, 0x4B, 0x03, 0x04]) // a zip
+        XCTAssertEqual(word, writeReportDocx(title: "Xe điện", markdown: ResearchReportFile.markdown(report: report, charts: charts, links: links, lang: "vi")))
+    }
+
     // MARK: - The document
+
+    func testTheOneBinaryDocumentCanWriteEveryFormatsTypeAndKeepsItsBytes() throws {
+        for format in ResearchExportFormat.allCases {
+            XCTAssertTrue(ReportFileDocument.writableContentTypes.contains(format.contentType), format.label)
+        }
+        let doc = ReportFileDocument(data: Data([1, 2, 3]))
+        XCTAssertEqual(doc.data, Data([1, 2, 3]))
+        XCTAssertEqual(MarkdownReportDocument.markdownType, ResearchExportFormat.markdown.contentType)
+    }
 
     func testTheDocumentWritesTheTextAsUTF8AndTheTypeIsMarkdown() throws {
         let doc = MarkdownReportDocument(text: "# Tiêu đề\n")
@@ -88,6 +121,9 @@ final class ResearchReportSaveTests: XCTestCase {
         XCTAssertTrue(card.contains(".fileExporter("))
         XCTAssertTrue(card.contains("ResearchCardModel.offersDownload("))
         XCTAssertTrue(card.contains("ResearchReportFile.notice("))
+        XCTAssertTrue(card.contains("ReportFileDocument("), "one save dialog for Markdown, PDF and Word")
+        XCTAssertTrue(card.contains("Task.detached"), "the file is built off the main thread")
+        XCTAssertEqual(card.components(separatedBy: ".fileExporter(").count - 1, 1, "two exporters on one view: only one of them works")
         let list = try source("TappyAI/Features/Chat/UI/ChatMessageList.swift")
         XCTAssertTrue(list.contains("report: isStreaming ? nil : content"), "the card is given the reply's finished text, never anything else")
     }

@@ -14,7 +14,9 @@ struct ResearchCardView: View {
     var onOpenLink: (URL) -> Void = { _ in }
 
     @State private var exporting = false
-    @State private var document = MarkdownReportDocument(text: "")
+    @State private var document = ReportFileDocument()
+    @State private var exportFormat: ResearchExportFormat = .markdown
+    @State private var preparing = false
     @State private var notice: ReportSaveNotice? = nil
 
     var body: some View {
@@ -63,8 +65,8 @@ struct ResearchCardView: View {
         .overlay(RoundedRectangle(cornerRadius: Radius.md, style: .continuous).stroke(TappyColor.border, lineWidth: 1))
         .accessibilityElement(children: .contain)
         // the file goes where the person chooses (the system's save dialog); nothing is uploaded
-        .fileExporter(isPresented: $exporting, document: document, contentType: MarkdownReportDocument.markdownType,
-                      defaultFilename: ResearchReportFile.fileName(title: status.title, format: .markdown)) { result in
+        .fileExporter(isPresented: $exporting, document: document, contentType: exportFormat.contentType,
+                      defaultFilename: ResearchReportFile.fileName(title: status.title, format: exportFormat)) { result in
             notice = ResearchReportFile.notice(for: result)
         }
         // the line under the buttons goes away by itself
@@ -93,16 +95,28 @@ struct ResearchCardView: View {
                         .overlay(Capsule().stroke(TappyColor.border, lineWidth: 1))
                 }
                 .buttonStyle(.plain)
+                .disabled(preparing)
                 .minimumTapTarget()
             }
         }
     }
 
+    // The file is built on the phone from what is on screen, off the main thread (a long report's PDF takes a moment), then handed to the
+    // system's save dialog.
     private func startExport(_ format: ResearchExportFormat) {
-        guard let report else { return }
-        switch format {
-        case .markdown:
-            document = MarkdownReportDocument(text: ResearchReportFile.markdown(report: report, charts: charts, links: status.links, lang: lang))
+        guard let report, !preparing else { return }
+        preparing = true
+        let title = status.title
+        let links = status.links
+        let charts = self.charts
+        let lang = self.lang
+        Task { @MainActor in
+            let data = await Task.detached(priority: .userInitiated) {
+                ResearchReportFile.data(format: format, report: report, charts: charts, links: links, lang: lang, title: title)
+            }.value
+            document = ReportFileDocument(data: data)
+            exportFormat = format
+            preparing = false
             exporting = true
         }
     }
