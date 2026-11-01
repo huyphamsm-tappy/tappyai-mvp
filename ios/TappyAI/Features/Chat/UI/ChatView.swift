@@ -43,7 +43,6 @@ struct ChatView: View {
                     Spacer()
                 } else if vm.messages.isEmpty && vm.error == nil {
                     ChatEmptyState(
-                        category: vm.category,
                         locale: localization.language.rawValue,
                         hasMemory: vm.hasMemory,
                         onQuickPrompt: { vm.sendQuickPrompt($0) }
@@ -107,19 +106,13 @@ struct ChatView: View {
                         onInsertEmoji: { vm.insertEmoji($0) },
                         onNearby: { vm.nearbySearch() },
                         onTonight: { vm.sendQuickPrompt(
-                            localization.language.rawValue == "en"
-                            ? "Tonight I want a relaxing spa then a nice dinner, 2 people, budget around 800k — plan it for me!"
-                            : "Tối nay mình muốn spa thư giãn rồi ăn tối ngon, 2 người, budget khoảng 800k, gợi ý lịch trình giúp mình nhé"
+                            ChatWelcome.text("chat.chip.tonightPrompt", language: localization.language.rawValue)
                         ) },
                         onTripPrefill: {
-                            vm.inputText = localization.language.rawValue == "en"
-                            ? "Itinerary for "
-                            : "Lịch trình "
+                            vm.inputText = ChatWelcome.text("chat.chip.tripPrefill", language: localization.language.rawValue)
                         },
                         onPriceWatchPrefill: {
-                            vm.inputText = localization.language.rawValue == "en"
-                            ? "Tappy, track "
-                            : "Tappy theo dõi "
+                            vm.inputText = ChatWelcome.text("chat.chip.priceWatchPrefill", language: localization.language.rawValue)
                         },
                         showNearYou: vm.locationContextEnabled && vm.hasLocationContext,
                         onRemoveNearYou: { vm.locationContextEnabled = false },

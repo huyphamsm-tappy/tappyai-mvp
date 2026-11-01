@@ -30970,6 +30970,312 @@
           }
         }
       }
+    },
+    "chat.welcome.subtitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ask me anything — advice, explanations, lookups, plans"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hỏi mình bất cứ điều gì — tư vấn, giải thích, tra cứu, lên kế hoạch"
+          }
+        }
+      }
+    },
+    "chat.welcome.memory": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tappy remembers your preferences"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tappy nhớ sở thích của bạn"
+          }
+        }
+      }
+    },
+    "chat.welcome.moodQuestion": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How are you feeling today?"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hôm nay bạn cảm thấy thế nào?"
+          }
+        }
+      }
+    },
+    "chat.mood.happy": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Happy"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vui"
+          }
+        }
+      }
+    },
+    "chat.mood.happy.prompt": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I'm in a great mood — any ideas to make today even better?"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mình đang vui, Tappy gợi ý gì để hôm nay thêm trọn vẹn không?"
+          }
+        }
+      }
+    },
+    "chat.mood.sad": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sad"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Buồn"
+          }
+        }
+      }
+    },
+    "chat.mood.sad.prompt": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I'm feeling a bit down — any suggestions to cheer me up?"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mình đang hơi buồn, Tappy gợi ý gì giúp mình cảm thấy tốt hơn không?"
+          }
+        }
+      }
+    },
+    "chat.mood.stress": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stressed"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stress"
+          }
+        }
+      }
+    },
+    "chat.mood.stress.prompt": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I'm stressed and things keep piling up. Can you help me calm down and sort it out?"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mình đang stress, việc cứ dồn lại. Tappy giúp mình bình tĩnh lại và sắp xếp được không?"
+          }
+        }
+      }
+    },
+    "chat.mood.tired": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tired"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mệt"
+          }
+        }
+      }
+    },
+    "chat.mood.tired.prompt": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I'm really tired and want to unwind gently. Any suggestions?"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mình đang rất mệt, muốn nghỉ ngơi cho nhẹ nhàng. Tappy gợi ý giúp mình nhé"
+          }
+        }
+      }
+    },
+    "chat.mood.bored": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bored"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chán"
+          }
+        }
+      }
+    },
+    "chat.mood.bored.prompt": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I'm bored and don't know what to do. Anything fun and new to try?"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mình đang chán, không biết làm gì. Tappy gợi ý gì vui và mới lạ không?"
+          }
+        }
+      }
+    },
+    "chat.mood.excited": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Excited"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hứng"
+          }
+        }
+      }
+    },
+    "chat.mood.excited.prompt": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I'm super excited and want to do something special. Any ideas?"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mình đang rất hứng khởi, muốn làm gì đó thật đặc biệt. Tappy gợi ý không?"
+          }
+        }
+      }
+    },
+    "chat.chip.tonightPrompt": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tonight I want a relaxing spa then a nice dinner, 2 people, budget around 800k — plan it for me!"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tối nay mình muốn spa thư giãn rồi ăn tối ngon, 2 người, budget khoảng 800k, gợi ý lịch trình giúp mình nhé"
+          }
+        }
+      }
+    },
+    "chat.chip.tripPrefill": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Itinerary for "
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lịch trình "
+          }
+        }
+      }
+    },
+    "chat.chip.priceWatchPrefill": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tappy, track "
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tappy theo dõi "
+          }
+        }
+      }
     }
   }
 }
