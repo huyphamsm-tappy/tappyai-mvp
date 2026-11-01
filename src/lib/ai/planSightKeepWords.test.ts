@@ -24,6 +24,12 @@ describe('withoutFigureClauses', () => {
     expect(withoutFigureClauses('Mở cửa 05:00–22:00, vé 20.000đ')).toBe('')
     expect(withoutFigureClauses('Đi dạo khi trời tạnh, để ý cờ cảnh báo')).toBe('Đi dạo khi trời tạnh, để ý cờ cảnh báo')
   })
+  it('review 01/11: only hours and fees are figures - a duration or a digit inside a name stays', () => {
+    const kept = 'Đi bộ khoảng 2 tiếng, ngắm Cầu Rồng 3D khi trời tối, chụp 20 tấm ảnh'
+    expect(withoutFigureClauses(kept)).toBe(kept)
+    expect(withoutFigureClauses('Ngắm cảnh, mở từ 7h30, vé 30$, giá €22, 50k một người, 2 triệu một đêm, ¥500')).toBe('Ngắm cảnh')
+    expect(withoutFigureClauses('Mở 9am–5pm, đi 2 km từ bến')).toBe('Đi 2 km từ bến')
+  })
 })
 
 const planOf = (r: { text: string }) => JSON.parse(r.text.slice(r.text.indexOf('[TAPPY_PLAN]') + 12, r.text.indexOf('[/TAPPY_PLAN]')))
@@ -52,6 +58,11 @@ describe('the check line is written once per plan (UAT 01/11: it repeated on 19 
     const r = guardPlanItems(`x [TAPPY_PLAN]${JSON.stringify({ type: 'trip', title: 'T', local_tips: [{ text: 'Mang ô', basis: 'general' }], days: [{ label: 'Ngày 1', items: [sight('mở cửa 05:00')] }] })}[/TAPPY_PLAN]`, [], OPTS)
     const p = planOf(r)
     expect(p.local_tips.map((t: { text: string }) => t.text)).toEqual(['Mang ô', CHECK])
+  })
+  it('a description whose only digits are a duration is kept whole and adds no tip (reviewer 01/11)', () => {
+    const r = guardPlanItems(plan([sight('Đi bộ khoảng 2 tiếng quanh khu phố cổ')]), [], OPTS)
+    expect(items(r)[0].description).toBe('Đi bộ khoảng 2 tiếng quanh khu phố cổ')
+    expect(tipsWithCheck(planOf(r))).toHaveLength(0)
   })
   it('not added when the model already wrote it, nor when no figure was left out', () => {
     const had = guardPlanItems(`x [TAPPY_PLAN]${JSON.stringify({ type: 'trip', title: 'T', local_tips: [{ text: CHECK, basis: 'general' }], days: [{ label: 'Ngày 1', items: [sight('mở cửa 05:00')] }] })}[/TAPPY_PLAN]`, [], OPTS)

@@ -25,16 +25,24 @@ import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 export const CHECK_HOURS_AND_FEES = 'Giờ mở cửa và giá vé cần kiểm tra lại trước khi đi.'
 
 /**
- * 01/11: a description without the clauses that carry a figure (hours, a fee, a time). The sentences and comma clauses with no digit stay
- * as written; a sentence that had a figure keeps its figure-free clauses (first letter raised). Empty when nothing is left. Pure.
+ * A clock time ("17:30", "7h30", "9am", "8-17h"), a money amount ("20.000đ", "50k", "2 triệu", "$30", "€22", "¥500") or a thousands-grouped number.
+ * Review 01/11: only these are the hours and fees a sight's description may not state; a duration ("2 tiếng", "2 km") or a digit inside a name
+ * ("Cầu Rồng 3D") is not one and stays.
+ */
+const HOURS_OR_FEE = /\d{1,2}\s*[:h]\s*\d{2}|\d{1,2}\s*(?:am|pm)(?![\p{L}\p{N}])|\d{1,2}\s*[-–]\s*\d{1,2}\s*(?:h|giờ)(?![\p{L}\p{N}])|\d{1,3}(?:[.,]\d{3})+|\d+(?:[.,]\d+)?\s*(?:đ|₫|vnđ|vnd|k|nghìn|ngàn|triệu|tr|usd|sgd|idr|thb|krw|jpy|eur|baht|yen|won)(?![\p{L}\p{N}])|[$€£¥₩฿]\s*\d|\d\s*[$€£¥₩฿]/iu
+
+/**
+ * 01/11: a description without the clauses that state hours or a fee. The sentences and comma clauses without one stay as written (a sentence
+ * with none is returned untouched); a sentence that had one keeps its other clauses (first letter raised). Empty when nothing is left. Pure.
  */
 export function withoutFigureClauses(text: string): string {
   const kept: string[] = []
   for (const s of text.trim().split(/(?<=[.!?;])\s+/)) {
-    if (!/\d/.test(s)) { kept.push(s); continue }
-    const clauses = s.replace(/[.!?;]+$/, '').split(/,\s+/).filter(c => c.trim() && !/\d/.test(c))
-    if (!clauses.length) continue
-    const joined = clauses.join(', ')
+    const clauses = s.replace(/[.!?;]+$/, '').split(/,\s+/)
+    if (!clauses.some(c => HOURS_OR_FEE.test(c))) { kept.push(s); continue }
+    const rest = clauses.filter(c => c.trim() && !HOURS_OR_FEE.test(c))
+    if (!rest.length) continue
+    const joined = rest.join(', ')
     kept.push(`${joined.charAt(0).toUpperCase()}${joined.slice(1)}${/[.!?;]$/.test(s) ? s.slice(-1) : ''}`)
   }
   return kept.join(' ').trim()
@@ -368,8 +376,11 @@ export function guardPlanItems(fullText: string, places: readonly PlanPlace[], o
         // 01/11 (owner UAT, bland plan card): on the one-brain route only the clauses that carry a figure go; the words around them stay.
         // The "check the hours and fee" line is written ONCE for the whole plan (a tip, below), not on every stop it applies to.
         if (typeof item.description === 'string' && /\d/.test(item.description)) {
-          if (unlabelled) figuresLeftOut = true
-          item.description = unlabelled ? withoutFigureClauses(item.description) : 'Điểm nổi tiếng (gợi ý từ kiến thức chung); giờ mở cửa và giá cần kiểm tra lại.'
+          if (unlabelled) {
+            const without = withoutFigureClauses(item.description)
+            if (without !== item.description.trim()) figuresLeftOut = true // hours or a fee really went: only then does the plan say to check them
+            item.description = without
+          } else item.description = 'Điểm nổi tiếng (gợi ý từ kiến thức chung); giờ mở cửa và giá cần kiểm tra lại.'
         }
         // Marked as what it is: a suggestion from general knowledge, not checked against the tools' data.
         if (unlabelled) { if (typeof item.description !== 'string') item.description = '' }
