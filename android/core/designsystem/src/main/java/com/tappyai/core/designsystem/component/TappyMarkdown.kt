@@ -247,6 +247,11 @@ private fun buildInlineAnnotated(
     while (i < n) {
         val c = text[i]
         when {
+            // 02/11 (emulator, T22): a backslash escape is the character itself (CommonMark) - the model wrote "\*São faixas…\*" for a
+            // footnote mark and it read "\São faixas…*" in italics
+            c == '\\' && i + 1 < n && text[i + 1] in MARKDOWN_ESCAPABLE -> {
+                append(text[i + 1]); i += 2
+            }
             c == '`' -> {
                 val end = text.indexOf('`', i + 1)
                 if (end > i) {
@@ -382,6 +387,9 @@ private val LINK_LABELS: List<Pair<Regex, String>> = listOf(
 )
 
 private val TABLE_COLUMN_WIDTH = 160.dp
+
+/** The punctuation a backslash makes literal in Markdown (CommonMark's ASCII punctuation the renderer uses). */
+private const val MARKDOWN_ESCAPABLE = "\\`*_{}[]()#+-.!|~>"
 
 /** A label that is an address without its scheme: `www.x.y…` or `host.tld/path…`, no spaces. */
 private val ADDRESS_LABEL = Regex("""(?i)(?:www\.\S+|[a-z0-9-]+(?:\.[a-z0-9-]+)+/\S*)""")

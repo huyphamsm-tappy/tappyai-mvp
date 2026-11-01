@@ -38,6 +38,12 @@ class WebParityFiltersTest {
         assertEquals("xem App Store", markdownVisibleText("xem [App Store](https://apps.apple.com/vn/app/pages/id361309726)"))
     }
 
+    // measured on the emulator 02/11 (T22): "\*São faixas…\*" read "\São faixas…*" in italics
+    @Test fun `a backslash escape is the character itself`() {
+        assertEquals("*São faixas amplas*, não cotações", markdownVisibleText("\\*São faixas amplas\\*, não cotações"))
+        assertEquals("C:\\dir và 2 * 3", markdownVisibleText("C:\\dir và 2 \\* 3"))
+    }
+
     @Test fun `copy and read-aloud take the text as shown`() {
         assertEquals("Học C# trước, rồi Python.\nMột --- hai --- ba", stripMarkdown("Học **C#** trước, rồi Python.\n\nMột --- hai --- ba"))
         assertEquals("Xem Google Maps", stripMarkdown("Xem [Google Maps](https://maps.google.com/x)"))
