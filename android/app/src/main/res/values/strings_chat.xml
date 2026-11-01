@@ -125,6 +125,8 @@
     <string name="shopping_decision_match_different">Different config</string>
     <string name="shopping_decision_match_unknown">Config unclear</string>
     <string name="shopping_decision_no_price">price unknown</string>
+    <string name="shopping_rating_line">★ %1$s · %2$s reviews</string>
+    <string name="shopping_rating_only">★ %1$s</string>
     <string name="shopping_decision_unknown_seller">Seller unknown</string>
     <string name="shopping_decision_trade_off">Trade-off</string>
     <string name="shopping_decision_conditional">Depends on your needs.</string>

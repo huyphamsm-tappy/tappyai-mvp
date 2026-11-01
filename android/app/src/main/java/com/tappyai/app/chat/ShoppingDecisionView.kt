@@ -28,6 +28,9 @@ data class ShoppingOfferView(
     val price: Double? = null,
     val currency: String? = null,
     val condition: String? = null,
+    /** The rating THIS listing carries (never the entity's) and its review count - the server's, shown beside the price (web `Rating`). */
+    val rating: Double? = null,
+    val ratingCount: Int? = null,
 )
 
 /**
@@ -112,6 +115,9 @@ data class ShoppingEntityView(
     val commerce: ShoppingCommerceView? = null,
     /** Every Commerce Link CCP attached, in CCP's ranking order. */
     @SerialName("commerceLinks") val commerceLinks: List<ShoppingCommerceView>? = null,
+    /** The stated configuration as data (chip / ram / storage / size) and the seller's condition, labelled on the card (web `Specs`). LAST: older markers carry neither. */
+    val specs: List<ShoppingSpecView> = emptyList(),
+    val condition: ShoppingConditionView? = null,
 ) {
     val displayName: String? get() = name?.trim()?.takeIf { it.isNotEmpty() }
 
