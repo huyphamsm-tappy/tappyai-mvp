@@ -30579,6 +30579,142 @@
           }
         }
       }
+    },
+    "chat.attach.unsupported": {
+      "extractionState": "manual",
+      "localizations": {
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tappy đọc được ảnh (PNG, JPG, WEBP, GIF) và tệp PDF."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tappy can read images (PNG, JPG, WEBP, GIF) and PDF files."
+          }
+        }
+      }
+    },
+    "chat.attach.pdfTooLarge": {
+      "extractionState": "manual",
+      "localizations": {
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tệp PDF lớn hơn 3 MB, Tappy chưa đọc được. Bạn thử gửi tệp nhỏ hơn hoặc chỉ các trang cần hỏi."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This PDF is larger than 3 MB, so Tappy cannot read it yet. Try a smaller file or only the pages you need."
+          }
+        }
+      }
+    },
+    "chat.attach.remove": {
+      "extractionState": "manual",
+      "localizations": {
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bỏ tệp đính kèm"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove attachment"
+          }
+        }
+      }
+    },
+    "chat.attach.pickPhoto": {
+      "extractionState": "manual",
+      "localizations": {
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chọn ảnh"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose a photo"
+          }
+        }
+      }
+    },
+    "chat.attach.pickPdf": {
+      "extractionState": "manual",
+      "localizations": {
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chọn tệp PDF"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose a PDF file"
+          }
+        }
+      }
+    },
+    "chat.attach.readFailed": {
+      "extractionState": "manual",
+      "localizations": {
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không đọc được tệp này. Bạn thử chọn lại."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Could not read this file. Please try again."
+          }
+        }
+      }
+    },
+    "chat.attach.imageA11y": {
+      "extractionState": "manual",
+      "localizations": {
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ảnh đính kèm"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Attached photo"
+          }
+        }
+      }
+    },
+    "chat.attach.pdfA11y": {
+      "extractionState": "manual",
+      "localizations": {
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tệp PDF đính kèm: %@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Attached PDF: %@"
+          }
+        }
+      }
     }
   }
 }
