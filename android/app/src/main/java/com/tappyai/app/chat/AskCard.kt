@@ -107,9 +107,10 @@ import com.tappyai.core.designsystem.component.TappyImage
  * " · ", a multi-choice question's picks joined ", ", free text last ([AskCardModel.composeAnswer]).
  */
 @Composable
-fun AskCard(questions: List<AskQuestion>, onSend: (String) -> Unit, modifier: Modifier = Modifier, context: String = "") {
+fun AskCard(questions: List<AskQuestion>, onSend: (String) -> Unit, modifier: Modifier = Modifier) {
     val views = remember(questions) { AskCardModel.viewOf(questions) }
-    val area = remember(questions, context) { AskCardModel.areaOf(questions, context) }
+    // 02/11: the area from the ask itself, as on the web (no guess from the conversation's words)
+    val area = remember(questions) { AskCardModel.areaOf(questions) }
     val chosen = remember(questions) { mutableStateMapOf<String, Set<String>>() }
     var free by remember(questions) { mutableStateOf("") }
     // R23.1: «Tìm cho tôi» is always on — nothing chosen sends «Tìm cho tôi»; once sent the card locks.

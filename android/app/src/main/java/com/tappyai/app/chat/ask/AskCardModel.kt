@@ -40,15 +40,16 @@ object AskCardModel {
     /**
      * The area of the ask turn — drives the header, the tint, the placeholder tiles and the free-text example.
      *
-     * First the question ids the router emits (web `askAreaOf`, unchanged). Where the ids say nothing — or only
-     * the generic `style` — the area is read from what the conversation is ABOUT ([context] = the user's message
-     * and the reply's lead line) plus the words of the questions and options themselves.
+     * The web's `askAreaOf` (src/lib/structuredContent/askCardModel.ts): the question ids the server sends, then the two rules the web
+     * reads from the ask itself (spa words in a `style` question's options, a hotel ask's per-night words). 02/11 (owner: Android follows
+     * the web's one-brain architecture): the app no longer guesses the area from the conversation's words — the web never did; with no
+     * signal the card is the neutral [AskArea.MAIN].
      *
      * 🚨 Huy 01/10: web's rule made every `style` ask without spa words a TRIP, so «Phở Bắc hay Phở Nam?» (ids
      * `style` / `party` / `budget`) drew «Chuyến đi thế nào đây?». Here a card never defaults to travel: with no
      * signal at all it is the neutral [AskArea.MAIN]. Correct whether or not the server later sends `dish` / `mode`.
      */
-    fun areaOf(questions: List<AskQuestion>, context: String = ""): AskArea {
+    fun areaOf(questions: List<AskQuestion>): AskArea {
         val ids = questions.map { it.id }.toSet()
         if ("dish" in ids || "mode" in ids) return AskArea.FOOD
         if ("service" in ids || "special" in ids) return AskArea.SPA
@@ -65,35 +66,10 @@ object AskCardModel {
                     (q.id == "party" && q.options.any { Regex("\\b(?:gia dinh|nhom ban)\\b").containsMatchIn(fold(it)) })
             }
         ) return AskArea.TRAVEL
-        return areaFromWords(questions, context)
+        return AskArea.MAIN
     }
 
     private val SPA_WORDS = Regex("\\b(?:massage|toan than|vai gay|da nong|nail|son gel|dinh da|dap bot|mong|toc|cat|uon|nhuom|phuc hoi|goi)\\b")
-
-    /** Word lists per area (folded, ASCII). The conversation text counts double — it is what the person asked. */
-    private val AREA_WORDS: List<Pair<AskArea, Regex>> = listOf(
-        AskArea.SPA to Regex("\\b(?:massage|spa|nail|goi dau|xong hoi|cham soc da|lam dep|vai gay|da nong|toan than|lam toc|cat toc|nhuom toc|uon toc|dap bot|dinh da|son gel|tri lieu|body|mong tay|mong chan)\\b"),
-        AskArea.FOOD to Regex("\\b(?:pho|bun|mi quang|hu tieu|com|banh mi|banh|lau|nuong|quan an|nha hang|mon an|an uong|an gi|an sang|an trua|an toi|an vat|nhau|buffet|hai san|mon viet|mon nhat|mon han|do an|giao tan noi|an tai quan|vegan|an chay|quan cafe|cafe|ca phe|tra sua|bia)\\b"),
-        AskArea.ENTERTAINMENT to Regex("\\b(?:karaoke|xem phim|rap phim|phim|bar|pub|bida|billiard|bowling|concert|ca nhac|live music|giai tri|di choi|vui choi|club|escape room|san khau|nhac song|nightlife)\\b"),
-        AskArea.SHOPPING to Regex("\\b(?:mua sam|tai nghe|nhet tai|chup tai|chong on|iphone|ipad|samsung|phu kien|op lung|kinh cuong luc|dien thoai|laptop|may tinh|tivi|tu lanh|may giat|may anh|thoi trang|dong ho|qua tang|bao hanh|chinh hang|lazada|shopee|tiki|do cong nghe|thiet bi|pin|sac|giay|tui xach)\\b"),
-        AskArea.TRAVEL to Regex("\\b(?:du lich|chuyen di|tour|resort|homestay|khach san|nghi duong|bien|nui|ve may bay|chuyen bay|bay tu|bay den|visa|dat phong|lich trinh|3n2d|2n1d|may ngay|may dem|moi dem|di choi xa|phuot)\\b"),
-    )
-
-    /** `mua` (to buy) — only with its tone marks, so «mùa» / «mưa» do not count. */
-    private val BUY = Regex("(?<![\\p{L}])mua(?![\\p{L}])")
-
-    private fun areaFromWords(questions: List<AskQuestion>, context: String): AskArea {
-        val own = (questions.map { it.q } + questions.flatMap { it.options }).joinToString(" ")
-        val scores = AREA_WORDS.map { (area, re) ->
-            val ctx = re.findAll(fold(context)).map { it.value }.toSet().size
-            val inAsk = re.findAll(fold(own)).map { it.value }.toSet().size
-            var score = ctx * 2 + inAsk
-            if (area == AskArea.SHOPPING && BUY.containsMatchIn(lower(context))) score += 2
-            area to score
-        }
-        val best = scores.maxOf { it.second }
-        return if (best <= 0) AskArea.MAIN else scores.first { it.second == best }.first
-    }
 
     private val TYPE_IDS = setOf("style", "type", "kind", "activity", "genre", "artist", "cuisine", "category", "loai", "mon", "product", "dish", "service")
     private val PARTY_IDS = setOf("party", "people", "group", "pax")
