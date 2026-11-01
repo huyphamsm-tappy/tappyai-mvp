@@ -162,6 +162,7 @@ fun ChatScreen(
     val streamCut by viewModel.streamCut.collectAsStateWithLifecycle()
     val streamingText by viewModel.streamingText.collectAsStateWithLifecycle()
     val streamingHint by viewModel.streamingHint.collectAsStateWithLifecycle()
+    val streamingResearch by viewModel.streamingResearch.collectAsStateWithLifecycle()
     val streamingPlaces by viewModel.streamingPlaces.collectAsStateWithLifecycle()
     val sharePublic by viewModel.sharePublic.collectAsStateWithLifecycle()
     // G1 share-out dialog — rendered at the screen level so it survives list recomposition.
@@ -314,6 +315,8 @@ fun ChatScreen(
                             val segments = message.segments.ifEmpty {
                                 if (message.text.isNotBlank()) listOf(ReplySegment.Text(message.text)) else emptyList()
                             }
+                            // A5: the Deep Research card above its report (web: ResearchCard before the message content)
+                            message.research?.let { research -> ResearchCard(status = research, report = message.text, charts = message.charts) }
                             if (segments.isNotEmpty()) {
                                 TappyChatBubble(role = TappyChatRole.Assistant) {
                                     Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.xs)) {
@@ -532,6 +535,9 @@ fun ChatScreen(
                 }
                 if (isResponding) {
                     item(key = "assistant-responding") {
+                        Column {
+                        // A5: the research card while the run streams (its steps tick as they finish)
+                        streamingResearch?.let { live -> ResearchCard(status = live, report = null, charts = emptyList(), modifier = Modifier.padding(start = 44.dp)) }
                         AssistantStreamingRow(
                             mascot = viewModel.category.mascot,
                             streamingText = streamingText,
@@ -539,6 +545,7 @@ fun ChatScreen(
                             places = streamingPlaces,
                             commerce = commerceCallbacks,
                         )
+                        }
                     }
                 }
                 // A reply whose stream closed without its finish frame is half an answer: say so and offer to answer

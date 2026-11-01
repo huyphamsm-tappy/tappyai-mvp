@@ -364,4 +364,12 @@
     <!-- A4 (02/11): trạng thái lượt từ máy chủ (tappy.turn_status.v1), đúng chữ của web (src/lib/i18n/w5/chatResilience.ts) -->
     <string name="chat_turn_incomplete">Câu trả lời có thể chưa đầy đủ. Bạn hỏi tiếp để mình viết thêm nhé.</string>
     <string name="chat_turn_interrupted">Câu trả lời bị gián đoạn giữa chừng. Phần trên là những gì đã nhận được — bạn có thể hỏi lại.</string>
+    <!-- A5 (02/11): thẻ Nghiên cứu sâu, đúng chữ của web (research.*) -->
+    <string name="chat_research_planning">Đang lập kế hoạch nghiên cứu…</string>
+    <string name="chat_research_researching">Đang nghiên cứu · %1$d nguồn</string>
+    <string name="chat_research_writing">Đang viết báo cáo · %1$d nguồn</string>
+    <string name="chat_research_done">Đã nghiên cứu xong · %1$d nguồn</string>
+    <string name="chat_research_failed">Không hoàn thành được nghiên cứu</string>
+    <string name="chat_research_sources">Nguồn</string>
+    <string name="chat_research_download">Tải báo cáo:</string>
 </resources>

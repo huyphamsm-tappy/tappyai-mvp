@@ -367,4 +367,12 @@
     <!-- A4 (02/11): the server's turn status (tappy.turn_status.v1), the web's words (src/lib/i18n/w5/chatResilience.ts) -->
     <string name="chat_turn_incomplete">This answer may be incomplete. Ask a follow-up and I will continue.</string>
     <string name="chat_turn_interrupted">This answer was interrupted. What is above is what arrived — you can ask again.</string>
+    <!-- A5 (02/11): the Deep Research card, the web's words (research.*) -->
+    <string name="chat_research_planning">Planning the research…</string>
+    <string name="chat_research_researching">Researching · %1$d sources</string>
+    <string name="chat_research_writing">Writing the report · %1$d sources</string>
+    <string name="chat_research_done">Research complete · %1$d sources</string>
+    <string name="chat_research_failed">The research could not be completed</string>
+    <string name="chat_research_sources">Sources</string>
+    <string name="chat_research_download">Download report:</string>
 </resources>
