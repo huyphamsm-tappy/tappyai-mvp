@@ -21,6 +21,7 @@ struct ChatPlanCardView: View {
     @ObservedObject private var images = PlanImageStore.shared
     @State private var publishing = false
     @State private var linkNote: String?
+    @State private var selectedDay = 0
 
     private var model: PlanCardModel { PlanCardModel.of(plan) }
 
@@ -32,7 +33,10 @@ struct ChatPlanCardView: View {
             VStack(alignment: .leading, spacing: 18) {
                 if !m.days.isEmpty {
                     Text("chat.planV2.itinerary").font(.system(size: 20, weight: .bold)).foregroundStyle(PlanPal.text)
-                    ForEach(m.days) { day in dayBlock(day, area: m.area) }
+                    // The web's day tabs: one day drawn at a time, the chosen tab kept inside the days the card has.
+                    let active = dayTabIndex(selectedDay, dayCount: m.days.count)
+                    if m.days.count > 1 { dayTabs(m.days, active: active) }
+                    dayBlock(m.days[active], area: m.area)
                 }
                 if !m.overview.isEmpty { overview(m) }
                 if !m.highlights.isEmpty { highlights(m) }
@@ -111,6 +115,31 @@ struct ChatPlanCardView: View {
     private func peopleText(_ n: Int) -> String { String(format: NSLocalizedString("chat.planV2.people", comment: ""), n) }
 
     // MARK: Days and stops
+
+    /// The row of day tabs (web TripPlanCard tabs, Android `DayTabs`): each shows the day's own label, the chosen one is filled.
+    private func dayTabs(_ days: [PlanCardModel.Day], active: Int) -> some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 8) {
+                ForEach(days) { day in
+                    let on = day.index == active
+                    Button { selectedDay = day.index } label: {
+                        Text(day.label.isEmpty ? String(format: "%02d", day.number) : day.label)
+                            .font(.system(size: 13, weight: on ? .bold : .regular))
+                            .foregroundStyle(on ? Color.white : PlanPal.muted)
+                            .lineLimit(1)
+                            .frame(maxWidth: 260)
+                            .padding(.horizontal, 14).frame(minHeight: 44)
+                            .background(Capsule().fill(on ? AnyShapeStyle(PlanPal.badge) : AnyShapeStyle(Color.white.opacity(0.1))))
+                            .contentShape(Capsule())
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityAddTraits(on ? .isSelected : [])
+                    .accessibilityIdentifier("plan-day-tab-\(day.index)")
+                }
+            }
+        }
+        .accessibilityIdentifier("plan-day-tabs")
+    }
 
     private func dayBlock(_ day: PlanCardModel.Day, area: PlanArea) -> some View {
         VStack(alignment: .leading, spacing: 12) {

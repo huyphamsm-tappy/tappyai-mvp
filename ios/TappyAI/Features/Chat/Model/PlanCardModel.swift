@@ -71,6 +71,21 @@ enum PlanImageKeys {
     }
 }
 
+private let dayLabelNumber = try! NSRegularExpression(pattern: "^\\s*(?:ngày|ngay|day)\\s*([0-9]{1,2})", options: [.caseInsensitive])
+
+/// The day number a label names ("Ngày 3 — Hội An" → 3), or nil when it names none ("Buổi tối"). Port of Android `dayNumberOf`.
+func dayNumberOf(_ label: String) -> Int? {
+    guard let m = dayLabelNumber.firstMatch(in: label, range: NSRange(label.startIndex..., in: label)),
+          m.numberOfRanges > 1, let r = Range(m.range(at: 1), in: label)
+    else { return nil }
+    return Int(label[r])
+}
+
+/// The day tab to draw: the chosen one, kept inside the days the card has (a new answer can shrink the plan). Port of Android `dayTabIndex`.
+func dayTabIndex(_ selected: Int, dayCount: Int) -> Int {
+    min(max(selected, 0), max(0, dayCount - 1))
+}
+
 struct PlanCardModel: Equatable {
     /// At most this many "Điểm nổi bật" tiles (the sample's 2×2 grid).
     static let maxHighlights = 4
@@ -88,11 +103,14 @@ struct PlanCardModel: Equatable {
     let highlights: [HighlightTile]
 
     struct Day: Equatable, Identifiable {
+        /// The number the day's label names ("Ngày 3 — …" → 3); a label naming none follows the previous day.
         let number: Int
         let label: String
         let title: String?
         let stops: [Stop]
-        var id: Int { number }
+        /// Position among the days drawn: unique, so it picks the tab (two days can share a `number`).
+        let index: Int
+        var id: Int { index }
     }
 
     struct Stop: Equatable, Identifiable {
@@ -129,14 +147,18 @@ struct PlanCardModel: Equatable {
     static func of(_ plan: TappyPlan) -> PlanCardModel {
         let area = PlanArea.of(plan)
         var stopId = 0
+        // A day's badge is the number its label names, not its position among the days that survived (web, Android).
+        var lastNumber = 0
         let days: [Day] = plan.days
             .map { day in (day, day.items.filter { !$0.name.trimmingCharacters(in: .whitespaces).isEmpty }) }
             .filter { !$0.1.isEmpty }
             .enumerated()
             .map { index, pair -> Day in
                 let (day, items) = pair
+                let number = dayNumberOf(day.label) ?? (lastNumber > 0 ? lastNumber : index + 1)
+                lastNumber = number
                 return Day(
-                    number: index + 1,
+                    number: number,
                     label: day.label.trimmingCharacters(in: .whitespaces),
                     title: day.title?.trimmingCharacters(in: .whitespaces).nilIfEmpty,
                     stops: items.map { item -> Stop in
@@ -154,7 +176,8 @@ struct PlanCardModel: Equatable {
                             price: amount,
                             mapsLink: httpsLink(item.mapsLink),
                             bookingLink: httpsLink(item.bookingLink))
-                    })
+                    },
+                    index: index)
             }
 
         let destination = plan.destination?.trimmingCharacters(in: .whitespaces).nilIfEmpty
