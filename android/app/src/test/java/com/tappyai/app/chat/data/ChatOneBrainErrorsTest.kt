@@ -48,7 +48,8 @@ class ChatOneBrainErrorsTest {
 
     @Test fun `the ViewModel keeps the partial reply on Stop and on an error after text`() {
         val vm = File("src/main/java/com/tappyai/app/chat/ChatViewModel.kt").let { if (it.exists()) it else File("app/" + it.path) }.readText()
-        assertTrue(vm.contains("partialReplyMessage(nextId++, partial, interrupted = false)"))
-        assertTrue(vm.contains("partialReplyMessage(nextId++, reply.toString(), interrupted = true)"))
+        // 01/11: both calls also hand over the turn's annotations (research card, charts, pictures) - PartialReplyAnnotationsTest
+        assertTrue(vm.contains("partialReplyMessage(nextId++, partial, interrupted = false, currentAnnotations)"))
+        assertTrue(vm.contains("partialReplyMessage(nextId++, reply.toString(), interrupted = true, currentAnnotations)"))
     }
 }
