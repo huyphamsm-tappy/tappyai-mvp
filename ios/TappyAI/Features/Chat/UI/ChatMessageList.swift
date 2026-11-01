@@ -290,7 +290,8 @@ private struct AssistantBubble: View {
             VStack(alignment: .leading, spacing: Spacing.xs) {
                 // Deep Research: the card above its report (web: the card before the message content)
                 if let research {
-                    ResearchCardView(status: research, onOpenLink: { UIApplication.shared.open($0) })
+                    ResearchCardView(status: research, report: isStreaming ? nil : content, charts: charts, lang: chartLang,
+                                     onOpenLink: { UIApplication.shared.open($0) })
                 }
 
                 // Message text

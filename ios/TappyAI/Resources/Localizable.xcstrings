@@ -30885,6 +30885,57 @@
           }
         }
       }
+    },
+    "chat.research.download": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Download report:"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tải báo cáo:"
+          }
+        }
+      }
+    },
+    "chat.research.saved": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Report saved"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đã lưu báo cáo"
+          }
+        }
+      }
+    },
+    "chat.research.saveFailed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't save the report. Try again or pick another place."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không lưu được báo cáo. Hãy thử lại hoặc chọn nơi lưu khác."
+          }
+        }
+      }
     }
   }
 }

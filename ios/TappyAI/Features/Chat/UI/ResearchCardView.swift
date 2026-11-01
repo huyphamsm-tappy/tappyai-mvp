@@ -5,7 +5,17 @@ import SwiftUI
 /// address itself: a tap on a source goes to `onOpenLink`, and only an address `safeWebURL` accepts is a tap target.
 struct ResearchCardView: View {
     let status: ResearchStatus
+    /// The reply's finished text: the report the card offers to keep once the research is done (nil while it is still being written).
+    var report: String? = nil
+    /// The report's charts: their figures go into the saved file as tables under their sections.
+    var charts: [ResearchChart] = []
+    /// "vi" or "en": the language the saved file's figures and captions are written in.
+    var lang: String = "en"
     var onOpenLink: (URL) -> Void = { _ in }
+
+    @State private var exporting = false
+    @State private var document = MarkdownReportDocument(text: "")
+    @State private var notice: ReportSaveNotice? = nil
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
@@ -36,11 +46,65 @@ struct ResearchCardView: View {
                     sourceRow(link)
                 }
             }
+
+            if ResearchCardModel.offersDownload(phase: status.phase, report: report) {
+                Divider()
+                downloadRow
+                if let notice {
+                    Text(LocalizedStringKey(notice.key))
+                        .font(TappyFont.caption)
+                        .foregroundStyle(notice == .failed ? TappyColor.danger : TappyColor.textSecondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(Spacing.md)
         .overlay(RoundedRectangle(cornerRadius: Radius.md, style: .continuous).stroke(TappyColor.border, lineWidth: 1))
         .accessibilityElement(children: .contain)
+        // the file goes where the person chooses (the system's save dialog); nothing is uploaded
+        .fileExporter(isPresented: $exporting, document: document, contentType: MarkdownReportDocument.markdownType,
+                      defaultFilename: ResearchReportFile.fileName(title: status.title, format: .markdown)) { result in
+            notice = ResearchReportFile.notice(for: result)
+        }
+        // the line under the buttons goes away by itself
+        .task(id: notice) {
+            guard notice != nil else { return }
+            try? await Task.sleep(nanoseconds: 5_000_000_000)
+            if !Task.isCancelled { notice = nil }
+        }
+    }
+
+    // "Download report:" and one button per form (a wrapping row, so a form added later needs no new layout).
+    private var downloadRow: some View {
+        ChatFlowLayout(spacing: Spacing.xs) {
+            Text("chat.research.download")
+                .font(TappyFont.caption)
+                .foregroundStyle(TappyColor.textSecondary)
+            ForEach(ResearchExportFormat.allCases, id: \.self) { format in
+                Button {
+                    startExport(format)
+                } label: {
+                    Text(format.label)
+                        .font(TappyFont.caption.weight(.medium))
+                        .foregroundStyle(TappyColor.textPrimary)
+                        .padding(.horizontal, Spacing.sm)
+                        .padding(.vertical, Spacing.xxs)
+                        .overlay(Capsule().stroke(TappyColor.border, lineWidth: 1))
+                }
+                .buttonStyle(.plain)
+                .minimumTapTarget()
+            }
+        }
+    }
+
+    private func startExport(_ format: ResearchExportFormat) {
+        guard let report else { return }
+        switch format {
+        case .markdown:
+            document = MarkdownReportDocument(text: ResearchReportFile.markdown(report: report, charts: charts, links: status.links, lang: lang))
+            exporting = true
+        }
     }
 
     // The phase line, with the count of sources where there is one (the catalog's "%lld" keys).
