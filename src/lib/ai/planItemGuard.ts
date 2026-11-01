@@ -21,6 +21,22 @@ import { buildActions, type ActionSource } from '@/lib/recommendation/actions'
 import { isOpenNow } from './tools/serperPlaces'
 import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 
+/**
+ * 01/11: a description without the clauses that carry a figure (hours, a fee, a time). The sentences and comma clauses with no digit stay
+ * as written; a sentence that had a figure keeps its figure-free clauses (first letter raised). Empty when nothing is left. Pure.
+ */
+export function withoutFigureClauses(text: string): string {
+  const kept: string[] = []
+  for (const s of text.trim().split(/(?<=[.!?;])\s+/)) {
+    if (!/\d/.test(s)) { kept.push(s); continue }
+    const clauses = s.replace(/[.!?;]+$/, '').split(/,\s+/).filter(c => c.trim() && !/\d/.test(c))
+    if (!clauses.length) continue
+    const joined = clauses.join(', ')
+    kept.push(`${joined.charAt(0).toUpperCase()}${joined.slice(1)}${/[.!?;]$/.test(s) ? s.slice(-1) : ''}`)
+  }
+  return kept.join(' ').trim()
+}
+
 // ── c40 T6 (UAT @ 2bd5c59, 2026-09-28): a stop scheduled while the venue is closed ────────────
 //
 // "Hội An có gì hay, đi 1 ngày" put "MẸT Hội An" at 08:00 as breakfast; its own row says
@@ -333,7 +349,12 @@ export function guardPlanItems(fullText: string, places: readonly PlanPlace[], o
         // N3 (30/10): on the one-brain route a famous sight is a stable fact ("Dạo biển Mỹ Khê" was tagged "chưa kiểm chứng"); only what can
         // change is flagged. Price, link, address and place id are dropped above on every route, and a figure in the description is still replaced.
         const unlabelled = opts.knownSightsUnlabelled === true
-        if (typeof item.description === 'string' && /\d/.test(item.description)) item.description = unlabelled ? 'Giờ mở cửa và giá vé cần kiểm tra lại trước khi đi.' : 'Điểm nổi tiếng (gợi ý từ kiến thức chung); giờ mở cửa và giá cần kiểm tra lại.'
+        // 01/11 (owner UAT, bland plan card): on the one-brain route only the clauses that carry a figure go; the words around them stay.
+        if (typeof item.description === 'string' && /\d/.test(item.description)) {
+          const CHECK = 'Giờ mở cửa và giá vé cần kiểm tra lại trước khi đi.'
+          const kept = unlabelled ? withoutFigureClauses(item.description) : ''
+          item.description = unlabelled ? (kept ? `${kept} ${CHECK}` : CHECK) : 'Điểm nổi tiếng (gợi ý từ kiến thức chung); giờ mở cửa và giá cần kiểm tra lại.'
+        }
         // Marked as what it is: a suggestion from general knowledge, not checked against the tools' data.
         if (unlabelled) { if (typeof item.description !== 'string') item.description = '' }
         else if (typeof item.description === 'string' && !/chưa kiểm chứng|kiến thức chung/i.test(item.description)) item.description = `${item.description.trim()} (gợi ý chưa kiểm chứng)`.trim()
