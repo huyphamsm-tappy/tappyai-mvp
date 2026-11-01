@@ -115,8 +115,8 @@ struct ChatView: View {
                         showNearYou: vm.locationContextEnabled && vm.hasLocationContext,
                         onRemoveNearYou: { vm.locationContextEnabled = false }
                     )
-                    // Blocked under 18: the input is locked (and send() refuses too).
-                    .disabled(vm.isAgeBlocked)
+                    // Blocked under 18, or a turn held for the AI-sharing sheet: the input is locked (and send() refuses too).
+                    .disabled(vm.isAgeBlocked || vm.isAwaitingConsent)
                     .opacity(vm.isAgeBlocked ? 0.4 : 1)
                     .accessibilityHint(vm.isAgeBlocked ? Text("chat.age.blocked.title") : Text(verbatim: ""))
                 }

@@ -70,6 +70,8 @@ final class ChatViewModel: AppObservableObject {
     /// arrives, and the chip would stay hidden for the rest of the session.
     @Published private(set) var hasLocationContext = false
     private var streamTask: Task<Void, Never>?
+    /// The current turn, or nil when none is running (Stop clears it). A turn's task checks it before it changes any state.
+    private var turnToken: UUID?
     /// ADR-024. The latest decision-evidence key for THIS conversation, echoed on the next turn so a shopping
     /// follow-up is grounded in the frozen listing facts. Instance-scoped: a new conversation gets a new view
     /// model and therefore no key. Not persisted, so a reopened conversation starts without one until its next
@@ -323,7 +325,7 @@ final class ChatViewModel: AppObservableObject {
     func send() {
         cancelAutoSend()
         let text = inputText.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !text.isEmpty, !isStreaming, !isAgeBlocked else { return }
+        guard !text.isEmpty, !isStreaming, !isAgeBlocked, !isAwaitingConsent else { return }
         inputText = ""
         error = nil
 
@@ -334,7 +336,7 @@ final class ChatViewModel: AppObservableObject {
     }
 
     func sendQuickPrompt(_ text: String) {
-        guard !isStreaming, !isAgeBlocked else { return }
+        guard !isStreaming, !isAgeBlocked, !isAwaitingConsent else { return }
         inputText = ""
         error = nil
 
@@ -347,6 +349,8 @@ final class ChatViewModel: AppObservableObject {
     // MARK: - Stop / Cancel
 
     func stop() {
+        // The token goes first: the cancelled turn's own task may still run its tail, and must find the turn gone.
+        turnToken = nil
         streamTask?.cancel()
         streamTask = nil
         stopThinkTimer()
@@ -397,7 +401,12 @@ final class ChatViewModel: AppObservableObject {
     // MARK: - Retry after error
 
     func retry() {
-        guard !isStreaming else { return }
+        guard !isStreaming, !isAwaitingConsent else { return }
+        // A reply that broke half way stays on screen marked as failed; the new attempt replaces it. Left in place it
+        // would be doubled, and the history sent would end with the assistant's half answer instead of the question.
+        if let last = messages.last, last.isAssistant, last.status == .failed {
+            messages.removeLast()
+        }
         error = nil
         startStreaming()
     }
@@ -529,18 +538,20 @@ final class ChatViewModel: AppObservableObject {
 
     /// «Share data with AI» (App Review 5.1.2(i)): asked once, before the first message goes out.
     private let consent: AIConsentCoordinator?
-    private var awaitingConsent = false
+    /// A turn is held for the person's answer to the sharing sheet. Nothing else may be sent meanwhile (a second
+    /// question would join the held turn), so `send()` refuses and the input bar is locked while this is true.
+    @AppPublished private(set) var isAwaitingConsent: Bool = false
 
     /// Whether this turn must wait for the person's answer. When it must, the sheet is shown and the turn
     /// resumes on «Đồng ý»; on «Để sau» NOTHING is sent and the typed text goes back into the box.
     private func holdForConsent() -> Bool {
         guard let consent, !consent.isGranted else { return false }
-        guard !awaitingConsent else { return true }
-        awaitingConsent = true
+        guard !isAwaitingConsent else { return true }
+        isAwaitingConsent = true
         Task { @MainActor [weak self] in
             let agreed = await consent.ensure()
             guard let self else { return }
-            self.awaitingConsent = false
+            self.isAwaitingConsent = false
             if agreed {
                 self.startStreaming()
             } else if let last = self.messages.last, last.isUser {
@@ -564,7 +575,13 @@ final class ChatViewModel: AppObservableObject {
 
         let assistantMsg = ChatMessage(role: .assistant, content: "", status: .streaming)
         messages.append(assistantMsg)
-        let assistantIndex = messages.count - 1
+        // The bubble is found by ITS id, never by a position: a history that loads meanwhile goes in front and
+        // moves every index.
+        let assistantId = assistantMsg.id
+        // This turn's token. Everything the turn does after it has been stopped or replaced is dropped, so a turn
+        // that ends late cannot clear the state of the next one.
+        let token = UUID()
+        turnToken = token
 
         isStreaming = true
         activeTool = nil
@@ -574,6 +591,15 @@ final class ChatViewModel: AppObservableObject {
 
         streamTask = Task { [weak self] in
             guard let self else { return }
+            /// Edits this turn's reply bubble, if the turn is still the current one and the bubble is still there.
+            func edit(_ change: (inout ChatMessage) -> Void) {
+                guard self.turnToken == token,
+                      let index = self.messages.firstIndex(where: { $0.id == assistantId }) else { return }
+                change(&self.messages[index])
+            }
+            func reply() -> ChatMessage? {
+                self.messages.first(where: { $0.id == assistantId })
+            }
             let stream = self.service.chatWithContext(
                 messages: payloads,
                 userPreferences: self.userPreferences.isEmpty ? nil : self.userPreferences,
@@ -588,10 +614,10 @@ final class ChatViewModel: AppObservableObject {
             var sawDone = false
             do {
                 for try await frame in stream {
-                    guard !Task.isCancelled else { break }
+                    guard !Task.isCancelled, self.turnToken == token else { break }
                     switch frame {
                     case .text(let delta):
-                        self.messages[assistantIndex].content += delta
+                        edit { $0.content += delta }
                         self.activeTool = nil
 
                     case .toolCall(let data):
@@ -600,14 +626,15 @@ final class ChatViewModel: AppObservableObject {
                             let invocation = ToolInvocation(
                                 id: call.id, toolName: call.toolName, state: .calling
                             )
-                            self.messages[assistantIndex].toolInvocations.append(invocation)
+                            edit { $0.toolInvocations.append(invocation) }
                         }
 
                     case .toolResult(let data):
                         if let result = Self.parseToolResult(data) {
-                            if let idx = self.messages[assistantIndex].toolInvocations
-                                .firstIndex(where: { $0.id == result.id }) {
-                                self.messages[assistantIndex].toolInvocations[idx].state = .result(result.data)
+                            edit { message in
+                                if let idx = message.toolInvocations.firstIndex(where: { $0.id == result.id }) {
+                                    message.toolInvocations[idx].state = .result(result.data)
+                                }
                             }
                         }
                         self.activeTool = nil
@@ -615,9 +642,11 @@ final class ChatViewModel: AppObservableObject {
                     case .places(let view):
                         // Held on the message, never appended to `content` — so it cannot leak into
                         // the reply, into TTS or into what gets persisted.
-                        self.messages[assistantIndex].livePlaces = view
                         // Share parity: the same decision, projected for the share sheet.
-                        self.messages[assistantIndex].placesView = SharePlacesView(from: view)
+                        edit {
+                            $0.livePlaces = view
+                            $0.placesView = SharePlacesView(from: view)
+                        }
 
                     case .stepEnd:
                         self.activeTool = nil
@@ -649,20 +678,23 @@ final class ChatViewModel: AppObservableObject {
                     }
                 }
 
+                // A turn that was stopped or replaced ends here: `stop()` / the next turn own the state now.
+                guard !Task.isCancelled, self.turnToken == token else { return }
+
                 // A stream that ends with nothing to show is a failure, never a reply: say so and offer a retry.
-                if !Task.isCancelled, Self.streamProducedNothing(content: self.messages[assistantIndex].content,
-                                              hasPlaces: self.messages[assistantIndex].livePlaces != nil) {
+                if Self.streamProducedNothing(content: reply()?.content ?? "",
+                                              hasPlaces: reply()?.livePlaces != nil) {
                     throw AppError.streaming(reason: streamReportedError ? "server reported an error" : "empty reply")
                 }
 
                 // Half an answer, said so: a `3:` error part after some text, or a body that closed without its finish
                 // frame (web `streamCut.ts`). The server's own status, when it sent one, wins.
-                if !Task.isCancelled, self.endNotice == nil {
+                if self.endNotice == nil {
                     if streamReportedError { self.endNotice = .interrupted }
                     else if !sawDone { self.endNotice = .cut }
                 }
 
-                self.messages[assistantIndex].status = .complete
+                edit { $0.status = .complete }
                 self.isStreaming = false
                 self.activeTool = nil
                 self.stopThinkTimer()
@@ -671,23 +703,27 @@ final class ChatViewModel: AppObservableObject {
                 // The save is NOT this turn's work: it runs in its own Task, after the message is built, so
                 // Stop cannot cancel it and the input is not locked while the network call is out. A turn
                 // that was stopped is saved by `stop()` itself.
-                if !Task.isCancelled { self.scheduleSave() }
+                self.scheduleSave()
 
             } catch {
+                // Not this turn's any more (stopped or replaced): leave the current state alone.
+                guard self.turnToken == token else { return }
+
                 self.isStreaming = false
                 self.activeTool = nil
                 self.stopThinkTimer()
 
                 if error is CancellationError || (error as? AppError) == .cancellation {
-                    self.messages[assistantIndex].status = .complete
+                    edit { $0.status = .complete }
                     return
                 }
 
-                if Self.streamProducedNothing(content: self.messages[assistantIndex].content,
-                                              hasPlaces: self.messages[assistantIndex].livePlaces != nil) {
-                    self.messages.remove(at: assistantIndex)   // nothing the person could read: no empty bubble next to the error
+                if Self.streamProducedNothing(content: reply()?.content ?? "",
+                                              hasPlaces: reply()?.livePlaces != nil) {
+                    // nothing the person could read: no empty bubble next to the error
+                    self.messages.removeAll { $0.id == assistantId }
                 } else {
-                    self.messages[assistantIndex].status = .failed
+                    edit { $0.status = .failed }
                 }
 
                 self.error = Self.mapError(error, isGuest: self.isGuest)

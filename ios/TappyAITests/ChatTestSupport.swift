@@ -86,6 +86,56 @@ struct ScriptedChatStreaming: StreamingClient {
     }
 }
 
+/// One stream per call, in order: each yields its `lines`, then ends (with `error` when one is given). `holdBefore` delays the first
+/// frame and `holdAfter` the end until the gate opens. It remembers every request, so a test can read what was sent.
+final class SequencedChatStreaming: StreamingClient, @unchecked Sendable {
+    struct Script: Sendable {
+        var lines: [String] = []
+        var error: Error? = nil
+        var holdBefore: TestGate? = nil
+        var holdAfter: TestGate? = nil
+    }
+
+    private let lock = NSLock()
+    private var scripts: [Script]
+    private var requests: [Endpoint] = []
+
+    init(_ scripts: [Script]) {
+        self.scripts = scripts
+    }
+
+    var sentEndpoints: [Endpoint] {
+        lock.lock()
+        defer { lock.unlock() }
+        return requests
+    }
+
+    /// The `messages` array of the nth request, as `(role, content)` pairs.
+    func sentMessages(at index: Int) -> [(role: String, content: String)] {
+        let endpoints = sentEndpoints
+        guard endpoints.indices.contains(index), let body = endpoints[index].body,
+              let object = (try? JSONSerialization.jsonObject(with: body)) as? [String: Any],
+              let rows = object["messages"] as? [[String: Any]] else { return [] }
+        return rows.map { (role: ($0["role"] as? String) ?? "", content: ($0["content"] as? String) ?? "") }
+    }
+
+    func stream(_ endpoint: Endpoint) -> AsyncThrowingStream<StreamFrame, Error> {
+        lock.lock()
+        let script = scripts.isEmpty ? Script() : scripts.removeFirst()
+        requests.append(endpoint)
+        lock.unlock()
+        return AsyncThrowingStream { c in
+            let worker = Task {
+                if let gate = script.holdBefore { await gate.wait() }
+                for line in script.lines { if let f = DataStreamLineParser.parse(line: line) { c.yield(f) } }
+                if let gate = script.holdAfter { await gate.wait() }
+                if let error = script.error { c.finish(throwing: error) } else { c.finish() }
+            }
+            c.onTermination = { _ in worker.cancel() }
+        }
+    }
+}
+
 /// A stream that fails before any frame with `error`.
 struct FailingChatStreaming: StreamingClient {
     let error: Error
