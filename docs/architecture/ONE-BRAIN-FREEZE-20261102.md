@@ -117,3 +117,13 @@ Chủ sở hữu (01/11): "đóng băng kiến trúc web sau khi fix bugs nếu 
 4. **Hạn mức Nghiên cứu sâu:** hoàn lượt chỉ khi khách rời trước khi có chữ nào của báo cáo.
 
 Ngoài các mục trên, phần giao diện và xuất tệp (PDF/Word dễ đọc, kéo thả/dán tệp, nút sao chép câu hỏi) hoàn tất ở mốc này.
+
+## 6. Đóng băng lần 3
+
+Chủ sở hữu (02/11): "đóng băng lại đi, mai anh UAT cả web lẫn Android". Mốc: tag `arch-freeze-20261102c`, nhánh sao lưu `backup/arch-freeze-20261102c`, trên commit đóng băng này. Từ mục 5 chỉ có thêm quy tắc giao diện sau (hai commit `ccefbc4`, `c14b75c`); phía máy chủ không đổi.
+
+1. **Menu "+" của ô chat:** chỉ có **đính kèm** và **Nghiên cứu sâu**. Trả lời nhanh, Tìm web, Suy nghĩ không còn là mục menu: chế độ Tự động để mô hình tự chọn (ý Owner: người dùng cứ gõ, không biết bật chức năng). Máy chủ vẫn đọc cả năm chế độ.
+2. **Menu theo gói như máy chủ (`lib/plans/tiers.ts`):** khách hoặc tài khoản không có gói đang hoạt động không thấy Nghiên cứu sâu; mọi gói trả tiền thấy. Gói đọc từ `/api/payments/me` chỉ khi cờ `SUBSCRIPTIONS_ENABLED` bật; cờ tắt, mất mạng hay trả lời lỗi nghĩa là chưa biết, và chưa biết thì giữ menu đủ (`deepResearchOffered`, `useDeepResearchOffered`). Nghiên cứu sâu đã chọn mà gói không có thì tự về Tự động.
+3. **Android theo cùng quy tắc** (đóng băng riêng ở `docs/architecture/ANDROID-CHAT-FREEZE-20261102.md`). iOS chưa có: đang audit để làm theo web.
+
+Test canh có thêm hai khối (menu và mục 6 của tài liệu này); một dòng đỏ ở đó là một thay đổi kiến trúc: cần Owner duyệt và một mục có ngày ở mục 4 trước.

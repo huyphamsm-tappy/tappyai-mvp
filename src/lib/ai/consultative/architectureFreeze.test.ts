@@ -12,6 +12,7 @@ import { SALE_PLAN_IDS } from '@/lib/plans/planConfig'
 import { ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, CHAT_SEARCH_BUDGET, ONE_BRAIN_MODE_LINES, PRESENT_PLAN_DESCRIPTION } from './oneBrain'
 import { DEEP_RESEARCH_LIMITS } from '@/lib/ai/research/deepResearch'
 import { isAiProductSource } from '@/lib/security/aiSourcePolicy'
+import { deepResearchOffered } from '@/lib/subscription/modeAccess'
 import { guardPlaceGeography } from '@/lib/ai/tools/placeGeoGuard'
 import { guardPlanItems, CHECK_HOURS_AND_FEES } from '@/lib/ai/planItemGuard'
 
@@ -82,7 +83,17 @@ describe('architecture freeze, second (after the review of 01/11)', () => {
     const src = readFileSync(join(process.cwd(), 'src/lib/ai/research/deepResearchResponse.ts'), 'utf8')
     expect(src).toContain("if (out.failed === 'client_gone') { if (chars === 0)")
   })
-  it('the freeze document has its second section', () => {
+  it('composer menu (owner 01/11): attaching and Deep Research only, and Deep Research follows the plan; an unknown plan keeps it', () => {
+    const chat = readFileSync(join(process.cwd(), 'src/components/ChatInterface.tsx'), 'utf8')
+    const menu = chat.slice(chat.indexOf('data-testid="composer-plus-menu"'), chat.indexOf('<textarea'))
+    expect([...menu.matchAll(/\{ key: '(\w+)'/g)].map(m => m[1])).toEqual(['attach', 'deep'])
+    expect(chat).toContain('useDeepResearchOffered()')
+    expect(deepResearchOffered(undefined)).toBe(true)
+    expect(deepResearchOffered({ signedIn: false, subscription: null })).toBe(false)
+    expect(deepResearchOffered({ signedIn: true, subscription: { state: 'ACTIVE', plan: { id: 'coco' } } })).toBe(true)
+  })
+  it('the freeze document has its second and third sections', () => {
     expect(FREEZE_DOC).toContain('## 5. Đóng băng lần 2')
+    expect(FREEZE_DOC).toContain('## 6. Đóng băng lần 3')
   })
 })
