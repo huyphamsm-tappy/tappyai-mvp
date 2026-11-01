@@ -16,11 +16,23 @@ final class ChatService: Sendable {
 
     // MARK: - Streaming chat
 
+    /// The request's `messages`: `{role, content}`, plus `experimental_attachments: [{url, contentType, name}]` on a question that
+    /// carries a photo or PDF (the web's useChat shape; the server's `validateAttachment` reads it). A question without one has no such key.
+    static func wireMessages(_ messages: [MessagePayload]) -> [[String: Any]] {
+        messages.map { message in
+            var row: [String: Any] = ["role": message.role, "content": message.content]
+            if !message.attachments.isEmpty {
+                row["experimental_attachments"] = message.attachments.map { $0.wireObject }
+            }
+            return row
+        }
+    }
+
     /// Streams a chat response. Returns an AsyncThrowingStream of StreamFrame.
     /// The caller (ViewModel) assembles frames into message content.
     func chat(messages: [MessagePayload]) -> AsyncThrowingStream<StreamFrame, Error> {
         let body: [String: Any] = [
-            "messages": messages.map { ["role": $0.role, "content": $0.content] }
+            "messages": Self.wireMessages(messages)
         ]
         guard let bodyData = try? JSONSerialization.data(withJSONObject: body) else {
             return AsyncThrowingStream { $0.finish(throwing: AppError.validation(message: "Failed to encode chat request")) }
@@ -182,7 +194,7 @@ final class ChatService: Sendable {
                         decisionEvidenceId: String? = nil,
                         mode: ChatMode = .default) -> AsyncThrowingStream<StreamFrame, Error> {
         var bodyDict: [String: Any] = [
-            "messages": messages.map { ["role": $0.role, "content": $0.content] }
+            "messages": Self.wireMessages(messages)
         ]
         if let prefs = userPreferences, !prefs.isEmpty {
             bodyDict["userPreferences"] = prefs

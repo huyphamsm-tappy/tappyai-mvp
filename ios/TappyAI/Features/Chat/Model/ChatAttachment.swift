@@ -42,3 +42,56 @@ func attachmentCheck(mime: String?, byteCount: Int) -> AttachmentCheck {
     }
     return .unsupported
 }
+
+/// A photo or PDF on a question, with its bytes (held in memory for the session: a retry sends the question again).
+struct ChatAttachment: Equatable, Sendable, Identifiable {
+    let id: String
+    let kind: ChatAttachmentKind
+    /// The file's name as the person knows it (the PDF's name is what the bubble and the server show).
+    let name: String
+    /// The type the data URL declares: `application/pdf` or one of the four picture types.
+    let mime: String
+    let data: Data
+
+    init(id: String = UUID().uuidString, kind: ChatAttachmentKind, name: String, mime: String, data: Data) {
+        self.id = id
+        self.kind = kind
+        let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        // The server's own fallback for a nameless PDF (clientInput.ts); a nameless picture is just a photo.
+        self.name = trimmed.isEmpty ? (kind == .pdf ? "tai-lieu.pdf" : "photo.jpg") : trimmed
+        self.mime = mime
+        self.data = data
+    }
+
+    var byteCount: Int { data.count }
+
+    /// `data:<type>;base64,...` - the type must be the one the attachment declares (the server rejects a mismatch).
+    var dataURL: String { "data:\(mime);base64,\(data.base64EncodedString())" }
+
+    /// One entry of the request's `experimental_attachments` (the AI SDK's shape: `url`, `contentType`, `name`).
+    var wireObject: [String: String] { ["url": dataURL, "contentType": mime, "name": name] }
+
+    /// Compared without the bytes: a message list diffed on every streamed character must not compare megabytes.
+    static func == (lhs: ChatAttachment, rhs: ChatAttachment) -> Bool {
+        lhs.id == rhs.id && lhs.kind == rhs.kind && lhs.name == rhs.name && lhs.mime == rhs.mime && lhs.data.count == rhs.data.count
+    }
+}
+
+extension MessagePayload {
+    /// The history one request sends. The latest question carries its photo or PDF; an earlier one is NOT sent again (it would resend
+    /// megabytes every turn): its text names the file instead, as Android's history compaction and the web's note do.
+    static func history(from messages: [ChatMessage]) -> [MessagePayload] {
+        let lastUser = messages.lastIndex(where: { $0.isUser })
+        return messages.enumerated().map { index, message in
+            guard let attachment = message.attachment else {
+                return MessagePayload(role: message.role.rawValue, content: message.content)
+            }
+            if index == lastUser {
+                return MessagePayload(role: message.role.rawValue, content: message.content, attachments: [attachment])
+            }
+            let note = attachment.kind == .pdf ? "[Attached with this message: \(attachment.name)]" : "[Attached with this message: photo]"
+            let text = message.content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? note : "\(message.content)\n\(note)"
+            return MessagePayload(role: message.role.rawValue, content: text)
+        }
+    }
+}

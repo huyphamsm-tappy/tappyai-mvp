@@ -584,7 +584,8 @@ final class ChatViewModel: AppObservableObject {
     private func startStreaming() {
         if holdForConsent() { return }
         // Trim history from the front to stay under the backend's 24 000-char input cap.
-        var payloads = messages.map { MessagePayload(role: $0.role.rawValue, content: $0.content) }
+        // The latest question carries its photo or PDF; an earlier one only names it (`MessagePayload.history`).
+        var payloads = MessagePayload.history(from: messages)
         let maxChars = 20_000
         var totalChars = payloads.reduce(0) { $0 + $1.content.count }
         while totalChars > maxChars && payloads.count > 1 {

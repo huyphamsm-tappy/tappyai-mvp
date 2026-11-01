@@ -18,16 +18,20 @@ struct ChatMessage: Identifiable, Equatable, Sendable {
     /// for the session; never persisted — Places data is live-only, and `persistConversation`
     /// sends `content` alone.
     var placesView: SharePlacesView? = nil
+    /// The photo or PDF the person sent with this question (a user message). In memory for the session, like the web's
+    /// `experimental_attachments`: never part of `content`, never saved with the conversation (`persistConversation` sends `content` alone).
+    var attachment: ChatAttachment? = nil
 
     init(id: String = UUID().uuidString, role: MessageRole, content: String,
          status: MessageStatus = .complete, toolInvocations: [ToolInvocation] = [],
-         livePlaces: PlacesLiveView? = nil) {
+         livePlaces: PlacesLiveView? = nil, attachment: ChatAttachment? = nil) {
         self.id = id
         self.role = role
         self.content = content
         self.status = status
         self.toolInvocations = toolInvocations
         self.livePlaces = livePlaces
+        self.attachment = attachment
     }
 
     var isUser: Bool { role == .user }
@@ -419,6 +423,11 @@ struct UpdateConversationRequest: Encodable, Sendable {
 struct MessagePayload: Encodable, Sendable {
     let role: String
     let content: String
+    /// What the question carries beside its text. Only the chat request sends it (`ChatService.wireMessages`, as
+    /// `experimental_attachments`); it is not a coding key, so a saved conversation holds the text alone.
+    var attachments: [ChatAttachment] = []
+
+    private enum CodingKeys: String, CodingKey { case role, content }
 }
 
 // MARK: - Chat request body (matches Web's /api/chat POST)
