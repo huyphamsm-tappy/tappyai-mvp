@@ -13,6 +13,7 @@ import { fenceUntrusted } from '@/lib/ai/security/fence'
 import { webSearch, fetchPlacePhotosByName } from '@/lib/ai/tools/common'
 import { createLeanResearch } from '@/lib/ai/consultative/researchLoop'
 import { topResultUrls } from '@/lib/ai/consultative/searchReads'
+import { isAiProductSource, withoutAiSources } from '@/lib/security/aiSourcePolicy'
 import { createParallelTurnBudget, parallelSearch, PARALLEL_PRICE } from '@/lib/ai/tools/parallelClient'
 export { PARALLEL_PRICE }
 import { DEEP_RESEARCH_LIMITS, writerNotes, type Figure, type DeepResearchDeps, type Evidence, type ResearchPlan } from './deepResearch'
@@ -107,8 +108,10 @@ export function deepResearchParallel(apiKey = process.env.PARALLEL_API_KEY?.trim
 
 /** Serper's rows then Parallel's, a page once (by its normalised address). Pure. */
 export function mergeSearchRows<T extends { url: string }>(first: readonly T[], second: readonly T[]): T[] {
-  const seen = new Set(first.map(r => pageKey(r.url)))
-  return [...first, ...second.filter(r => { const k = pageKey(r.url); if (seen.has(k)) return false; seen.add(k); return true })]
+  // 01/11 (owner: another AI product is never a source): neither search's rows may be an AI product's page
+  const f = first.filter(r => !isAiProductSource(r.url))
+  const seen = new Set(f.map(r => pageKey(r.url)))
+  return [...f, ...second.filter(r => { if (isAiProductSource(r.url)) return false; const k = pageKey(r.url); if (seen.has(k)) return false; seen.add(k); return true })]
 }
 
 /**
@@ -132,7 +135,8 @@ export function createDeepResearchDeps(o: { lang: string; userTexts: readonly st
     },
     async gather(query, focus) {
       // Parallel's search runs alongside (its rows carry their excerpts; a failure or no budget = Serper's rows alone)
-      const [base, par] = await Promise.all([webSearch(query, o.lang), o.parallelSearch ? o.parallelSearch(query).catch(() => null) : Promise.resolve(null)])
+      const [rawBase, par] = await Promise.all([webSearch(query, o.lang), o.parallelSearch ? o.parallelSearch(query).catch(() => null) : Promise.resolve(null)])
+      const base = withoutAiSources(rawBase).value // 01/11: no AI product's page is read or kept as a source
       reader.collectFrom(base)
       // the top READ_PER_QUERY results are opened at once (measured 31/10: the chat's 3 reads per search gave full text for 7-21 of 42-58 sources)
       const toRead = topResultUrls(base, READ_PER_QUERY)

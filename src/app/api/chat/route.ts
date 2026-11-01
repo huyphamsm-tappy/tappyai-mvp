@@ -100,6 +100,7 @@ import { flushPending, recordEvent, type UsageEvent } from '@/lib/observability'
 import { FREE_DAILY_LIMIT, ANON_LIFETIME_LIMIT } from '@/lib/config/product'
 import { accountQuotaFor, aiQuotaIdentity, consumeAiQuestion, consumeDeepResearch, refundAiQuestion, type AiQuotaRefund } from '@/lib/ai/quota/aiQuestionQuota'
 import { tierOf, modeForTier, DEEP_RESEARCH_MONTHLY } from '@/lib/plans/tiers'
+import { wrapToolsWithoutAiSources } from '@/lib/security/aiSourcePolicy'
 import { subscriptionsEnabled } from '@/lib/payments/flags'
 import { entitlementFromRow, type SubscriptionRow } from '@/lib/plans/entitlement'
 import { PLAN_CONFIG, type PlanId } from '@/lib/plans/planConfig'
@@ -3280,6 +3281,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       } : {}),
   }))
   // The ticket is the current one inside every tool.execute() — the model's calls, the pre-search and the trip pre-fetch all run these same wrapped objects.
+  // 01/11 (owner: another AI product is never a source): innermost, so the rows leave before the reader, the link guard or the model see them.
+  if (tools) wrapToolsWithoutAiSources(tools as unknown as Record<string, unknown>)
   if (tools && turnWebTicket) wrapToolsWithTurnWebTicket(tools as unknown as Record<string, unknown>, turnWebTicket)
   if (tools && requestCapTurn) wrapToolsWithRequestCap(tools as unknown as Record<string, unknown>, requestCapTurn)
   // CONSULT_UNWIND_S6A / S6B (searchReads.ts): the model's web_search also reads its top pages - through the turn's OWN read_page tool (after the request-cap / trace
