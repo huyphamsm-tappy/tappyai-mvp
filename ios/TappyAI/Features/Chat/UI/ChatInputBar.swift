@@ -176,6 +176,8 @@ struct ChatInputBar: View {
                             .clipShape(RoundedRectangle(cornerRadius: Radius.lg, style: .continuous))
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel(Text("chat.pickEmoji"))
+                    .accessibilityAddTraits(showEmojiPanel ? .isSelected : [])
 
                     // Mic button (orange)
                     Button(action: onToggleVoice) {
@@ -188,6 +190,8 @@ struct ChatInputBar: View {
                     }
                     .buttonStyle(.plain)
                     .disabled(isStreaming)
+                    // While listening the same button stops listening: its name says which.
+                    .accessibilityLabel(Text(LocalizedStringKey(isListening ? "voice.stopListening" : "a11y.chat.mic")))
 
                     // Stop or Send button
                     if isStreaming {
@@ -244,7 +248,7 @@ struct ChatInputBar: View {
                     } label: {
                         Text(emoji)
                             .font(.system(size: 22))
-                            .frame(width: 36, height: 36)
+                            .frame(minWidth: 44, minHeight: 44)
                     }
                     .buttonStyle(.plain)
                 }

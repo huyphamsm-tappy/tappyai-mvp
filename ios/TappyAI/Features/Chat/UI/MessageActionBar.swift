@@ -42,6 +42,7 @@ struct MessageActionBar: View {
                 // Copy
                 actionButton(
                     icon: copyState == .copied ? "checkmark" : "doc.on.doc",
+                    label: copyState == .copied ? "common.copied" : "common.copy",
                     tint: copyState == .copied ? TappyColor.success : nil
                 ) {
                     onCopy()
@@ -53,13 +54,15 @@ struct MessageActionBar: View {
                 }
 
                 // Share
-                actionButton(icon: "square.and.arrow.up") { onShare() }
+                actionButton(icon: "square.and.arrow.up", label: "common.share") { onShare() }
 
                 // Like
                 actionButton(
                     icon: "hand.thumbsup",
+                    label: "a11y.chat.like",
                     tint: liked ? Color.green : nil,
-                    filled: liked
+                    filled: liked,
+                    selected: liked
                 ) {
                     liked.toggle()
                     if liked {
@@ -73,8 +76,10 @@ struct MessageActionBar: View {
                 // Dislike
                 actionButton(
                     icon: "hand.thumbsdown",
+                    label: "a11y.chat.dislike",
                     tint: disliked ? Color.red : nil,
-                    filled: disliked
+                    filled: disliked,
+                    selected: disliked
                 ) {
                     disliked.toggle()
                     if disliked {
@@ -88,12 +93,14 @@ struct MessageActionBar: View {
                 // TTS
                 actionButton(
                     icon: "speaker.wave.2",
-                    tint: isSpeaking ? TappyColor.primary : nil
+                    label: "a11y.chat.speak",
+                    tint: isSpeaking ? TappyColor.primary : nil,
+                    selected: isSpeaking
                 ) { onSpeak() }
 
                 // Regenerate (last message only)
                 if let onRegenerate {
-                    actionButton(icon: "arrow.counterclockwise") { onRegenerate() }
+                    actionButton(icon: "arrow.counterclockwise", label: "a11y.chat.regenerate") { onRegenerate() }
                 }
 
                 // More menu
@@ -121,7 +128,9 @@ struct MessageActionBar: View {
                     Image(systemName: "ellipsis")
                         .font(.system(size: 12))
                         .foregroundStyle(TappyColor.textSecondary)
-                        .frame(minWidth: 28, minHeight: 28)
+                        .minimumTapTarget()
+                        .contentShape(Rectangle())
+                        .accessibilityLabel(Text("a11y.chat.more"))
                 }
             }
 
@@ -133,42 +142,53 @@ struct MessageActionBar: View {
     }
 
     @ViewBuilder
-    private func actionButton(icon: String, tint: Color? = nil, filled: Bool = false, action: @escaping () -> Void) -> some View {
+    private func actionButton(icon: String, label: LocalizedStringKey, tint: Color? = nil, filled: Bool = false, selected: Bool = false, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Image(systemName: filled ? icon + ".fill" : icon)
                 .font(.system(size: 12))
                 .foregroundStyle(tint ?? TappyColor.textSecondary)
-                .frame(minWidth: 28, minHeight: 28)
+                .minimumTapTarget()
+                .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        .accessibilityLabel(Text(label))
+        .accessibilityAddTraits(selected ? .isSelected : [])
     }
 
     private var ttsPlayerBar: some View {
         HStack(spacing: Spacing.xxs) {
             TappyAvatar(size: 22)
+                .accessibilityHidden(true)
 
             Button(action: onTTSPause) {
                 Image(systemName: isPaused ? "play.fill" : "pause.fill")
                     .font(.system(size: 11))
+                    .minimumTapTarget()
+                    .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
-            .frame(width: 24, height: 24)
+            .accessibilityLabel(Text(LocalizedStringKey(isPaused ? "a11y.chat.ttsPlay" : "a11y.chat.ttsPause")))
 
+            // «15 / 15»: the visible text is a symbol, the spoken name says what the button does.
             Button(action: onTTSSkipBack) {
                 Text("«15")
                     .font(.system(size: 9, weight: .medium, design: .monospaced))
                     .foregroundStyle(TappyColor.textSecondary)
+                    .minimumTapTarget()
+                    .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
-            .frame(width: 28, height: 24)
+            .accessibilityLabel(Text("a11y.chat.ttsBack"))
 
             Button(action: onTTSSkipForward) {
                 Text("15»")
                     .font(.system(size: 9, weight: .medium, design: .monospaced))
                     .foregroundStyle(TappyColor.textSecondary)
+                    .minimumTapTarget()
+                    .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
-            .frame(width: 28, height: 24)
+            .accessibilityLabel(Text("a11y.chat.ttsForward"))
 
             Text(fmtTime(ttsElapsed))
                 .font(.system(size: 10, design: .monospaced))
@@ -190,22 +210,28 @@ struct MessageActionBar: View {
                 let idx = Self.speedOptions.firstIndex(of: ttsSpeed) ?? 0
                 onTTSSpeedChange(Self.speedOptions[(idx + 1) % Self.speedOptions.count])
             } label: {
-                Text("\(ttsSpeed, specifier: ttsSpeed == 1 ? "%.0f" : "%.1f")x")
+                Text(ttsSpeedText(ttsSpeed))
                     .font(.system(size: 10, weight: .semibold, design: .monospaced))
                     .padding(.horizontal, 4)
                     .padding(.vertical, 2)
                     .background(TappyColor.surface)
                     .clipShape(RoundedRectangle(cornerRadius: 4))
+                    .minimumTapTarget()
+                    .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
+            .accessibilityLabel(Text("a11y.chat.ttsSpeed"))
+            .accessibilityValue(Text(ttsSpeedText(ttsSpeed)))
 
             Button(action: onTTSStop) {
                 Image(systemName: "xmark")
                     .font(.system(size: 10))
                     .foregroundStyle(TappyColor.textSecondary)
+                    .minimumTapTarget()
+                    .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
-            .frame(width: 24, height: 24)
+            .accessibilityLabel(Text("a11y.chat.ttsStop"))
         }
         .padding(.horizontal, Spacing.sm)
         .padding(.vertical, Spacing.xxs)
@@ -218,4 +244,9 @@ struct MessageActionBar: View {
         let s = sec % 60
         return "\(m):\(String(format: "%02d", s))"
     }
+}
+
+/// The reading speed as the player shows and says it: "1x", "1,5x" (vi), "2,0x". The decimal sign follows the reader's locale.
+func ttsSpeedText(_ speed: Float, locale: Locale = .current) -> String {
+    String(format: speed == 1 ? "%.0fx" : "%.1fx", locale: locale, Double(speed))
 }
