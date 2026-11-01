@@ -171,6 +171,16 @@ final class ChatService: Sendable {
         _ = try? await api.send(endpoint)
     }
 
+    // MARK: - Plan (composer mode menu)
+
+    /// The account's plan (`GET /api/payments/me`: 404 while plans are not on sale). Any failure — 404, no network, a body that does
+    /// not decode — is nil: not known, and the menu keeps every mode rather than hide one on a guess.
+    func getPlanAccess() async -> PlanAccess? {
+        let endpoint = Endpoint(path: "/api/payments/me", method: .get, requiresAuth: true)
+        guard let result = try? await api.send(endpoint, as: PaymentsMeResponse.self) else { return nil }
+        return PlanAccess(signedIn: result.signedIn, state: result.subscription.state, planId: result.subscription.plan?.id)
+    }
+
     // MARK: - Streaming chat with enrichment
 
     /// `guestAgeDeclaration`: the guest's stated age (`18plus` | `YYYY`), sent as
@@ -258,6 +268,17 @@ private struct VoiceLanguageResponse: Decodable {
 
 private struct ChatPreferencesResponse: Decodable {
     let preferences: [String]?
+}
+
+/// The part of `GET /api/payments/me` the composer needs (web `subscriptionState.ts`); the rest of the body is not read.
+private struct PaymentsMeResponse: Decodable {
+    struct Subscription: Decodable {
+        struct Plan: Decodable { let id: String }
+        let state: String
+        let plan: Plan?
+    }
+    let signedIn: Bool
+    let subscription: Subscription
 }
 
 private struct IgnoredJSONValue: Decodable {
