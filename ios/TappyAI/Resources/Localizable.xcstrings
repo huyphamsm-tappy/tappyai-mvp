@@ -31276,6 +31276,295 @@
           }
         }
       }
+    },
+    "chat.tool.search_places": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "🔎 Searching places…"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "🔎 Đang tìm địa điểm…"
+          }
+        }
+      }
+    },
+    "chat.tool.search_products": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "🛍️ Searching products…"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "🛍️ Đang tìm sản phẩm…"
+          }
+        }
+      }
+    },
+    "chat.tool.get_weather": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⛅ Checking the weather…"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⛅ Đang xem thời tiết…"
+          }
+        }
+      }
+    },
+    "chat.tool.get_gold_price": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "🪙 Checking gold prices…"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "🪙 Đang tra giá vàng…"
+          }
+        }
+      }
+    },
+    "chat.tool.get_flight_prices": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "✈️ Finding flights…"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "✈️ Đang tìm vé máy bay…"
+          }
+        }
+      }
+    },
+    "chat.tool.get_hotel_prices": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "🏨 Finding hotels…"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "🏨 Đang tìm khách sạn…"
+          }
+        }
+      }
+    },
+    "chat.tool.get_transport_options": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "🚗 Finding transport…"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "🚗 Đang tìm cách di chuyển…"
+          }
+        }
+      }
+    },
+    "chat.tool.get_news": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "📰 Reading the news…"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "📰 Đang đọc tin tức…"
+          }
+        }
+      }
+    },
+    "chat.tool.web_search": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "🌐 Searching the web…"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "🌐 Đang tìm trên web…"
+          }
+        }
+      }
+    },
+    "chat.tool.save_price_watch": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "🔔 Setting up price watch…"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "🔔 Đang đặt theo dõi giá…"
+          }
+        }
+      }
+    },
+    "chat.tool.read_page": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "📄 Reading a page…"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "📄 Đang đọc trang…"
+          }
+        }
+      }
+    },
+    "chat.tool.think_deeper": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "🧠 Thinking it through…"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "🧠 Đang suy nghĩ kỹ hơn…"
+          }
+        }
+      }
+    },
+    "chat.tool.get_weather_forecast": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⛅ Checking the forecast…"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "⛅ Đang xem dự báo thời tiết…"
+          }
+        }
+      }
+    },
+    "chat.tool.calculate": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "🧮 Calculating…"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "🧮 Đang tính…"
+          }
+        }
+      }
+    },
+    "chat.think.1": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tappy is thinking…"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tappy đang suy nghĩ…"
+          }
+        }
+      }
+    },
+    "chat.think.2": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Looking things up…"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đang tìm thông tin…"
+          }
+        }
+      }
+    },
+    "chat.think.3": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Putting it together…"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đang tổng hợp câu trả lời…"
+          }
+        }
+      }
     }
   }
 }

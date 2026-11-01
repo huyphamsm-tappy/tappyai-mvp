@@ -494,9 +494,6 @@ private struct ThinkingIndicator: View {
     /// language. Shown in place of the rotating generic hint while it is set.
     var progressHint: String? = nil
 
-    private let thinkHintsVi = ["Tappy đang suy nghĩ…", "Đang tìm thông tin…", "Đang tổng hợp câu trả lời…"]
-    private let thinkHintsEn = ["Tappy is thinking…", "Looking things up…", "Putting it together…"]
-
     var body: some View {
         HStack(alignment: .top, spacing: Spacing.xs) {
             TappyAvatar()
@@ -525,7 +522,7 @@ private struct ThinkingIndicator: View {
         if let tool = activeTool, let hint = ToolHints.hint(for: tool, locale: locale) {
             return hint
         }
-        let hints = locale == "en" ? thinkHintsEn : thinkHintsVi
+        let hints = ToolHints.waitHints(locale: locale)
         return hints[thinkHintIndex % hints.count]
     }
 }

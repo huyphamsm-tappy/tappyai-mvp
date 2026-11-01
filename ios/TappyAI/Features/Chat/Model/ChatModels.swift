@@ -460,26 +460,22 @@ struct ChatRequest: Encodable, Sendable {
 // MARK: - Tool hint mapping (matches Web TOOL_HINTS)
 
 enum ToolHints {
-    static let hints: [String: (vi: String, en: String)] = [
-        "search_places":         ("🔎 Đang tìm địa điểm…",       "🔎 Searching places…"),
-        "search_products":       ("🛍️ Đang tìm sản phẩm…",      "🛍️ Searching products…"),
-        "get_weather":           ("⛅ Đang xem thời tiết…",       "⛅ Checking the weather…"),
-        "get_gold_price":        ("🪙 Đang tra giá vàng…",        "🪙 Checking gold prices…"),
-        "get_flight_prices":     ("✈️ Đang tìm vé máy bay…",     "✈️ Finding flights…"),
-        "get_hotel_prices":      ("🏨 Đang tìm khách sạn…",      "🏨 Finding hotels…"),
-        "get_transport_options": ("🚗 Đang tìm cách di chuyển…",  "🚗 Finding transport…"),
-        "get_news":              ("📰 Đang đọc tin tức…",          "📰 Reading the news…"),
-        "web_search":            ("🌐 Đang tìm trên web…",        "🌐 Searching the web…"),
-        "save_price_watch":      ("🔔 Đang đặt theo dõi giá…",    "🔔 Setting up price watch…"),
-        // The one-brain tools (web `route.ts`): the model's own reading, forecast, arithmetic and extra thinking.
-        "read_page":             ("📄 Đang đọc trang…",            "📄 Reading a page…"),
-        "think_deeper":          ("🧠 Đang suy nghĩ kỹ hơn…",     "🧠 Thinking it through…"),
-        "get_weather_forecast":  ("⛅ Đang xem dự báo thời tiết…", "⛅ Checking the forecast…"),
-        "calculate":             ("🧮 Đang tính…",                "🧮 Calculating…"),
+    /// The tools a turn can run, by wire name (web `TOOL_HINTS` + the one-brain tools of `route.ts`). The WORDS are in the String
+    /// Catalog (`chat.tool.<name>`); a tool not listed keeps the rotating wait hint.
+    static let tools = [
+        "search_places", "search_products", "get_weather", "get_gold_price", "get_flight_prices", "get_hotel_prices",
+        "get_transport_options", "get_news", "web_search", "save_price_watch",
+        // The one-brain tools: the model's own reading, forecast, arithmetic and extra thinking.
+        "read_page", "think_deeper", "get_weather_forecast", "calculate",
     ]
 
     static func hint(for tool: String, locale: String) -> String? {
-        guard let pair = hints[tool] else { return nil }
-        return locale == "en" ? pair.en : pair.vi
+        guard tools.contains(tool) else { return nil }
+        return ChatWelcome.text("chat.tool.\(tool)", language: locale)
+    }
+
+    /// The three hints that rotate while the reply has not started and no tool is named (web `THINK_HINTS`).
+    static func waitHints(locale: String) -> [String] {
+        (1...3).map { ChatWelcome.text("chat.think.\($0)", language: locale) }
     }
 }

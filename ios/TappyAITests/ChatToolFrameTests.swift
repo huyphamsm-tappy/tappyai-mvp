@@ -78,4 +78,27 @@ final class ChatToolFrameTests: XCTestCase {
         }
         XCTAssertNil(ToolHints.hint(for: "some_future_tool", locale: "en"), "an unknown tool keeps the generic indicator")
     }
+
+    func testEveryToolHintComesFromTheCatalogWithTheWebWords() {
+        for tool in ToolHints.tools {
+            for lang in ["vi", "en"] {
+                let h = ToolHints.hint(for: tool, locale: lang)
+                XCTAssertNotNil(h, tool)
+                XCTAssertNotEqual(h, "chat.tool.\(tool)", "\(tool) \(lang) is missing from the catalog")
+            }
+        }
+        // Web `TOOL_HINTS` words, unchanged.
+        XCTAssertEqual(ToolHints.hint(for: "web_search", locale: "vi"), "🌐 Đang tìm trên web…")
+        XCTAssertEqual(ToolHints.hint(for: "get_gold_price", locale: "en"), "🪙 Checking gold prices…")
+        XCTAssertEqual(ToolHints.hint(for: "think_deeper", locale: "en"), "🧠 Thinking it through…")
+    }
+
+    func testTheRotatingWaitHintsAreInTheCatalog() {
+        for lang in ["vi", "en"] {
+            let hints = ToolHints.waitHints(locale: lang)
+            XCTAssertEqual(hints.count, 3)
+            XCTAssertFalse(hints.contains { $0.hasPrefix("chat.think.") }, "a wait hint is missing from the catalog")
+        }
+        XCTAssertEqual(ToolHints.waitHints(locale: "en")[0], "Tappy is thinking…")
+    }
 }
