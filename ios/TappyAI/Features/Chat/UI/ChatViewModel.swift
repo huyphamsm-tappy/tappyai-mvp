@@ -1,5 +1,6 @@
 import Foundation
 import Combine
+import PhotosUI
 
 @MainActor
 final class ChatViewModel: AppObservableObject {
@@ -124,6 +125,62 @@ final class ChatViewModel: AppObservableObject {
     /// The chip's ×: back to Auto.
     func clearMode() {
         mode = .auto
+    }
+
+    // MARK: - Attachment (the composer's "+" -> photo or PDF)
+
+    /// The photo or PDF chosen for the next question; sent with it (even with no text) and then cleared.
+    @AppPublished private(set) var stagedAttachment: ChatAttachment? = nil
+    /// Why the last chosen file was not taken (the web's `attachError`), in the app's language; nil when there is nothing to say.
+    @AppPublished private(set) var attachError: String? = nil
+
+    /// Offers a chosen file to the composer. `attachmentCheck` decides by type and size; a refusal says why and stages nothing, and a
+    /// file that passed but could not be read says so. `data` may be nil only for a file refused by its size alone.
+    func attach(mime: String?, name: String, byteCount: Int, data: Data?) {
+        let check = attachmentCheck(mime: mime, byteCount: byteCount)
+        guard case .ok(let kind) = check else {
+            attachError = NSLocalizedString(check.errorKey ?? "chat.attach.unsupported", comment: "")
+            return
+        }
+        guard let data, let mime else {
+            attachError = NSLocalizedString("chat.attach.readFailed", comment: "")
+            return
+        }
+        attachError = nil
+        stagedAttachment = ChatAttachment(kind: kind, name: name, mime: mime.lowercased(), data: data)
+    }
+
+    /// A photo from the photo library: read, turned into a JPEG within the server's bounds, then offered as any file.
+    func attachPhoto(from item: PhotosPickerItem) async {
+        guard let raw = try? await item.loadTransferable(type: Data.self) else {
+            attachError = NSLocalizedString("chat.attach.readFailed", comment: "")
+            return
+        }
+        guard let jpeg = await AttachmentPreparer.prepareJPEG(raw) else {
+            attachError = NSLocalizedString("chat.attach.unsupported", comment: "")
+            return
+        }
+        attach(mime: "image/jpeg", name: "", byteCount: jpeg.count, data: jpeg)
+    }
+
+    /// A file from the Files picker (`fileImporter`'s result): read with its security scope, then offered as any file.
+    func attachFile(from result: Result<[URL], Error>) async {
+        guard case .success(let urls) = result, let url = urls.first else {
+            // The person cancelled, or the picker failed: only a failure is worth a sentence.
+            if case .failure = result { attachError = NSLocalizedString("chat.attach.readFailed", comment: "") }
+            return
+        }
+        guard let picked = await AttachmentPreparer.readPickedFile(at: url) else {
+            attachError = NSLocalizedString("chat.attach.readFailed", comment: "")
+            return
+        }
+        attach(mime: picked.mime, name: picked.name, byteCount: picked.byteCount, data: picked.data)
+    }
+
+    /// The preview card's ×.
+    func removeAttachment() {
+        stagedAttachment = nil
+        attachError = nil
     }
 
     init(service: ChatService, session: SessionStore, category: String = "general",
@@ -344,11 +401,15 @@ final class ChatViewModel: AppObservableObject {
     func send() {
         cancelAutoSend()
         let text = inputText.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !text.isEmpty, !isStreaming, !isAgeBlocked, !isAwaitingConsent else { return }
+        let attachment = stagedAttachment
+        // A staged photo or PDF is a question by itself (the web sends it with an empty box).
+        guard !text.isEmpty || attachment != nil, !isStreaming, !isAgeBlocked, !isAwaitingConsent else { return }
         inputText = ""
         error = nil
+        stagedAttachment = nil
+        attachError = nil
 
-        let userMsg = ChatMessage(role: .user, content: text, status: .complete)
+        let userMsg = ChatMessage(role: .user, content: text, status: .complete, attachment: attachment)
         messages.append(userMsg)
 
         startStreaming()
@@ -575,6 +636,7 @@ final class ChatViewModel: AppObservableObject {
                 self.startStreaming()
             } else if let last = self.messages.last, last.isUser {
                 self.inputText = last.content
+                self.stagedAttachment = last.attachment
                 self.messages.removeLast()
             }
         }
@@ -818,8 +880,9 @@ final class ChatViewModel: AppObservableObject {
         guard session.state.isAuthenticated else { return }
         let stored = messages.filter { $0.status != .streaming }
         guard !stored.isEmpty else { return }
-        let payloads = stored.map { MessagePayload(role: $0.role.rawValue, content: $0.content) }
-        let title = stored.first(where: { $0.isUser })?.content.prefix(50).description ?? "Chat"
+        // Text only: a photo or PDF is not saved (a question that was only a file is saved as the note naming it).
+        let payloads = MessagePayload.saved(from: stored)
+        let title = payloads.first(where: { $0.role == MessageRole.user.rawValue })?.content.prefix(50).description ?? "Chat"
 
         do {
             if let id = conversationId {

@@ -78,6 +78,22 @@ struct ChatAttachment: Equatable, Sendable, Identifiable {
 }
 
 extension MessagePayload {
+    /// The words that stand for an attachment where only text can go (an earlier question in the history, a saved conversation).
+    static func attachmentNote(_ attachment: ChatAttachment) -> String {
+        attachment.kind == .pdf ? "[Attached with this message: \(attachment.name)]" : "[Attached with this message: photo]"
+    }
+
+    /// What a saved conversation holds: the text alone. A question that was only a file is saved as the note naming it, so it is not an empty message.
+    static func saved(from messages: [ChatMessage]) -> [MessagePayload] {
+        messages.map { message in
+            guard let attachment = message.attachment,
+                  message.content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+                return MessagePayload(role: message.role.rawValue, content: message.content)
+            }
+            return MessagePayload(role: message.role.rawValue, content: attachmentNote(attachment))
+        }
+    }
+
     /// The history one request sends. The latest question carries its photo or PDF; an earlier one is NOT sent again (it would resend
     /// megabytes every turn): its text names the file instead, as Android's history compaction and the web's note do.
     static func history(from messages: [ChatMessage]) -> [MessagePayload] {
@@ -89,7 +105,7 @@ extension MessagePayload {
             if index == lastUser {
                 return MessagePayload(role: message.role.rawValue, content: message.content, attachments: [attachment])
             }
-            let note = attachment.kind == .pdf ? "[Attached with this message: \(attachment.name)]" : "[Attached with this message: photo]"
+            let note = attachmentNote(attachment)
             let text = message.content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? note : "\(message.content)\n\(note)"
             return MessagePayload(role: message.role.rawValue, content: text)
         }

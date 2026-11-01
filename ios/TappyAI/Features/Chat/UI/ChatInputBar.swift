@@ -29,6 +29,10 @@ struct ChatInputBar: View {
     var onClearMode: () -> Void = {}
     /// Adding a photo or PDF. Nil = this build cannot attach yet: the item is not shown.
     var onAttach: (() -> Void)? = nil
+    /// The photo or PDF chosen for the next question (shown above the box, with a button to remove it), and why the last one was refused.
+    var stagedAttachment: ChatAttachment? = nil
+    var attachError: String? = nil
+    var onRemoveAttachment: () -> Void = {}
 
     @FocusState private var isFocused: Bool
     @State private var showEmojiPanel = false
@@ -146,6 +150,21 @@ struct ChatInputBar: View {
                         .padding(.horizontal, Spacing.md)
                 }
 
+                // The chosen photo or PDF, and why a refused file was not taken.
+                if let stagedAttachment {
+                    StagedAttachmentCard(attachment: stagedAttachment, onRemove: onRemoveAttachment)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.horizontal, Spacing.md)
+                }
+                if let attachError, !attachError.isEmpty {
+                    Text(attachError)
+                        .font(.system(size: 11))
+                        .foregroundStyle(TappyColor.danger)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.horizontal, Spacing.md)
+                        .accessibilityIdentifier("chat-attach-error")
+                }
+
                 // Input row
                 HStack(alignment: .bottom, spacing: Spacing.xs) {
                     if showsPlusMenu { plusMenu }
@@ -164,7 +183,7 @@ struct ChatInputBar: View {
                         .disabled(isStreaming)
                         .submitLabel(.send)
                         .onSubmit {
-                            if !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                            if canSend {
                                 sendAndEndEditing()
                             }
                         }
@@ -359,8 +378,9 @@ struct ChatInputBar: View {
         .opacity(isStreaming ? 0.4 : 1)
     }
 
+    /// Text, or a chosen photo / PDF (a question by itself, as on the web), and no reply streaming.
     private var canSend: Bool {
-        !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && !isStreaming
+        (!text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || stagedAttachment != nil) && !isStreaming
     }
 }
 

@@ -1,4 +1,6 @@
 import SwiftUI
+import PhotosUI
+import UniformTypeIdentifiers
 
 /// The Chat tab root. New conversation (empty messages) or existing conversation (loaded messages).
 struct ChatView: View {
@@ -7,6 +9,11 @@ struct ChatView: View {
     @AppEnvironmentState private var localization: LocalizationManager
     @State private var ageScreen = false
     @State private var showVoice = false
+    // The "+" menu's «Thêm ảnh & tệp PDF»: a choice between the photo library and the Files picker.
+    @State private var showAttachChoice = false
+    @State private var showPhotoPicker = false
+    @State private var showPdfPicker = false
+    @State private var pickedPhoto: PhotosPickerItem?
 
     init(deps: AppDependencies, category: String = "general",
          conversationId: String? = nil, savedMessages: [Conversation.ConversationMessage]? = nil) {
@@ -117,7 +124,11 @@ struct ChatView: View {
                         mode: vm.mode,
                         menuModes: vm.menuModes,
                         onSelectMode: { vm.selectMode($0) },
-                        onClearMode: { vm.clearMode() }
+                        onClearMode: { vm.clearMode() },
+                        onAttach: { showAttachChoice = true },
+                        stagedAttachment: vm.stagedAttachment,
+                        attachError: vm.attachError,
+                        onRemoveAttachment: { vm.removeAttachment() }
                     )
                     // Blocked under 18, or a turn held for the AI-sharing sheet: the input is locked (and send() refuses too).
                     .disabled(vm.isAgeBlocked || vm.isAwaitingConsent)
@@ -136,6 +147,20 @@ struct ChatView: View {
             }
         }
         .navigationBarTitleDisplayMode(.inline)
+        .confirmationDialog(Text("chat.composer.attach"), isPresented: $showAttachChoice, titleVisibility: .hidden) {
+            Button("chat.attach.pickPhoto") { showPhotoPicker = true }
+            Button("chat.attach.pickPdf") { showPdfPicker = true }
+            Button("common.cancel", role: .cancel) {}
+        }
+        .photosPicker(isPresented: $showPhotoPicker, selection: $pickedPhoto, matching: .images)
+        .onChange(of: pickedPhoto) { item in
+            guard let item else { return }
+            pickedPhoto = nil
+            Task { await vm.attachPhoto(from: item) }
+        }
+        .fileImporter(isPresented: $showPdfPicker, allowedContentTypes: [UTType.pdf], allowsMultipleSelection: false) { result in
+            Task { await vm.attachFile(from: result) }
+        }
         .sheet(item: $vm.shareArtifact) { artifact in
             TappyShareSheet(artifact: artifact, lang: localization.language.rawValue, planShare: vm.planShare) {
                 vm.shareArtifact = nil

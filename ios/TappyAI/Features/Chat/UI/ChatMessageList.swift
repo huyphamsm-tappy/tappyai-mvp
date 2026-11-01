@@ -63,7 +63,7 @@ struct ChatMessageList: View {
 
                     ForEach(Array(messages.enumerated()), id: \.element.id) { index, msg in
                         if msg.isUser {
-                            UserBubble(content: msg.content)
+                            UserBubble(content: msg.content, attachment: msg.attachment)
                         } else {
                             let isLast = index == messages.count - 1
                             let parsed = ContentParser.parse(msg.content)
@@ -194,18 +194,28 @@ struct ChatMessageList: View {
 
 private struct UserBubble: View {
     let content: String
+    var attachment: ChatAttachment? = nil
 
     var body: some View {
         HStack {
             Spacer(minLength: Spacing.xxl)
-            VStack(alignment: .trailing, spacing: 0) {
-                Text(content)
-                    .font(TappyFont.body)
-                    .foregroundStyle(.white)
-                    .padding(.horizontal, Spacing.md)
-                    .padding(.vertical, Spacing.sm)
-                    .background(TappyColor.primary)
-                    .clipShape(RoundedRectangle(cornerRadius: Radius.lg, style: .continuous))
+            VStack(alignment: .trailing, spacing: Spacing.xxs) {
+                // The photo or PDF sent with the question (web: above the text, which is hidden when empty).
+                if let attachment {
+                    switch attachment.kind {
+                    case .image: AttachmentPhotoView(attachment: attachment)
+                    case .pdf: AttachmentPdfChip(name: attachment.name)
+                    }
+                }
+                if attachment == nil || !content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                    Text(content)
+                        .font(TappyFont.body)
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, Spacing.md)
+                        .padding(.vertical, Spacing.sm)
+                        .background(TappyColor.primary)
+                        .clipShape(RoundedRectangle(cornerRadius: Radius.lg, style: .continuous))
+                }
                 // the answers have their action bar; the question has its copy button (web UserMessageCopy)
                 UserMessageCopyButton(text: content)
             }
