@@ -110,7 +110,7 @@ import { useStickToBottom } from '@/components/chat/useStickToBottom'
 import { balanceBoldPerLine } from '@/lib/chat/markdownNormalize'
 import { cleanRepeats } from '@/lib/chat/replyRepeat'
 import { isAgeGateMessage, redirectToAgeCheck } from '@/lib/account/ageGateClient'
-import { checkAttachment, firstAttachable, dragHasFiles } from '@/components/chat/composerAttachment'
+import { checkAttachment, firstAttachable, pastedAttachment, dragHasFiles } from '@/components/chat/composerAttachment'
 import UserMessageCopy from '@/components/chat/UserMessageCopy'
 
 // Mood chips — labels and the message each sends are dictionary keys so both
@@ -1544,26 +1544,37 @@ export default function ChatInterface({
     e.target.value = ''
     if (file) acceptAttachment(file)
   }, [acceptAttachment])
+  // A file dragged over the chat: the hint shows while it is over any part of the chat. enter / leave are counted (a child element fires its own pair;
+  // Safari gives no relatedTarget), so the hint does not flicker. While Tappy is answering the box is disabled: the drop is still taken over (the
+  // browser would otherwise open the file) but nothing is attached and no hint shows.
   const [dragOver, setDragOver] = useState(false)
+  const dragDepth = useRef(0)
+  const onChatDragEnter = useCallback((e: React.DragEvent) => {
+    if (!dragHasFiles(e.dataTransfer)) return
+    dragDepth.current += 1
+    if (!isLoading) setDragOver(true)
+  }, [isLoading])
   const onChatDragOver = useCallback((e: React.DragEvent) => {
     if (!dragHasFiles(e.dataTransfer)) return
     e.preventDefault()
-    setDragOver(true)
   }, [])
   const onChatDragLeave = useCallback((e: React.DragEvent) => {
-    // leaving to a child element is not leaving the chat
-    if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setDragOver(false)
+    if (!dragHasFiles(e.dataTransfer)) return
+    dragDepth.current = Math.max(0, dragDepth.current - 1)
+    if (dragDepth.current === 0) setDragOver(false)
   }, [])
   const onChatDrop = useCallback((e: React.DragEvent) => {
     if (!dragHasFiles(e.dataTransfer)) return
     e.preventDefault()
+    dragDepth.current = 0
     setDragOver(false)
+    if (isLoading) return
     const file = firstAttachable(e.dataTransfer.files)
     if (file) acceptAttachment(file)
-  }, [acceptAttachment])
+  }, [acceptAttachment, isLoading])
   const onComposerPaste = useCallback((e: React.ClipboardEvent) => {
-    const file = firstAttachable(e.clipboardData?.files)
-    if (!file) return // pasted text goes into the box as before
+    const file = pastedAttachment(e.clipboardData)
+    if (!file) return // pasted text (and anything Tappy cannot read) goes into the box as before
     e.preventDefault()
     acceptAttachment(file)
   }, [acceptAttachment])
@@ -1640,7 +1651,7 @@ export default function ChatInterface({
   }, [category, locale])
 
   return (
-    <div className="relative flex flex-col h-full" onDragOver={onChatDragOver} onDragLeave={onChatDragLeave} onDrop={onChatDrop} data-chat-dropzone>
+    <div className="relative flex flex-col h-full" onDragEnter={onChatDragEnter} onDragOver={onChatDragOver} onDragLeave={onChatDragLeave} onDrop={onChatDrop} data-chat-dropzone>
       {dragOver && (
         <div className="pointer-events-none absolute inset-2 z-50 flex items-center justify-center rounded-3xl border-2 border-dashed border-primary-500 bg-primary-500/10 text-sm font-medium text-primary-600 dark:text-primary-300" data-print-hide data-chat-drop-hint>
           {t('attach.drop')}

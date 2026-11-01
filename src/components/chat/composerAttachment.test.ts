@@ -1,7 +1,7 @@
 // 01/11 (owner UAT: a file could not be dragged into the chat, only added with the attach button). The rules the button always had, now one
 // place the button, the drop and the paste all use.
 import { describe, it, expect } from 'vitest'
-import { checkAttachment, firstAttachable, dragHasFiles, PDF_MAX_BYTES } from './composerAttachment'
+import { checkAttachment, firstAttachable, pastedAttachment, dragHasFiles, PDF_MAX_BYTES } from './composerAttachment'
 
 const f = (type: string, size = 100, name = 'x') => ({ type, size, name }) as File
 
@@ -29,6 +29,34 @@ describe('firstAttachable', () => {
   it('returns null for no files', () => {
     expect(firstAttachable([])).toBeNull()
     expect(firstAttachable(null)).toBeNull()
+  })
+})
+
+describe('firstAttachable prefers a file that can actually be sent (reviewer 01/11)', () => {
+  it('a PDF over the limit does not hide a good image dropped with it', () => {
+    const big = f('application/pdf', PDF_MAX_BYTES + 1, 'big.pdf'); const png = f('image/png', 5, 'ok.png')
+    expect(firstAttachable([big, png])).toBe(png)
+  })
+  it('when nothing can be sent, the first readable-type file is returned so the person is told why', () => {
+    const big = f('application/pdf', PDF_MAX_BYTES + 1, 'big.pdf')
+    expect(firstAttachable([f('text/plain'), big])).toBe(big)
+  })
+})
+
+describe('pastedAttachment: a paste is a picture only when it has no text (reviewer 01/11)', () => {
+  const png = f('image/png', 5, 'shot.png')
+  it('a screenshot (files, no text) becomes the attachment', () => {
+    expect(pastedAttachment({ files: [png], types: ['Files'] })).toBe(png)
+  })
+  it('cells copied from a spreadsheet carry a rendered image AND text: the text is pasted as usual', () => {
+    expect(pastedAttachment({ files: [png], types: ['text/plain', 'text/html', 'Files'] })).toBeNull()
+  })
+  it('a copied file Tappy cannot read is not swallowed: the paste goes on', () => {
+    expect(pastedAttachment({ files: [f('application/msword')], types: ['Files'] })).toBeNull()
+  })
+  it('nothing on the clipboard', () => {
+    expect(pastedAttachment(null)).toBeNull()
+    expect(pastedAttachment({ files: [], types: ['text/plain'] })).toBeNull()
   })
 })
 
