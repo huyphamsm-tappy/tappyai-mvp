@@ -128,6 +128,31 @@ private fun tableRowsOf(chunk: String): List<List<String>>? {
     }
 }
 
+private val HEADING_LINE = Regex("""^\s{0,3}#{1,6}\s""")
+
+/**
+ * A chunk written without blank lines around its heading or table (review 02/11): the heading line is a block of its own (it used to make
+ * the whole list under it a heading), and a table starting under a sentence is a block of its own (it used to be drawn as tabbed text).
+ * A chunk holding a fence is left whole.
+ */
+private fun splitAtHeadingsAndTables(chunk: String): List<String> {
+    if (chunk.contains("```")) return listOf(chunk)
+    val out = mutableListOf<String>()
+    val buf = mutableListOf<String>()
+    fun flush() { if (buf.isNotEmpty()) { out += buf.joinToString("\n"); buf.clear() } }
+    var inTable = false
+    for (line in chunk.split('\n')) {
+        val isHeading = HEADING_LINE.containsMatchIn(line)
+        val isTableLine = line.trimStart().startsWith("|")
+        if (isHeading || isTableLine != inTable) flush()
+        inTable = isTableLine
+        buf += line
+        if (isHeading) flush()
+    }
+    flush()
+    return out
+}
+
 /** The report cut into blocks at blank lines (a fenced code block stays whole), each read through the chat's own Markdown reader. */
 fun pdfBlocks(markdown: String): List<PdfBlock> {
     val chunks = mutableListOf<String>()
@@ -140,7 +165,7 @@ fun pdfBlocks(markdown: String): List<PdfBlock> {
         buf.append(line)
     }
     if (buf.isNotEmpty()) chunks += buf.toString()
-    return chunks.mapNotNull { chunk ->
+    return chunks.flatMap(::splitAtHeadingsAndTables).mapNotNull { chunk ->
         tableRowsOf(chunk)?.let { rows -> return@mapNotNull PdfBlock(0, rows.joinToString("\n") { it.joinToString("\t") }, rows) }
         val text = visibleKeepingAddresses(chunk).trim().takeIf { it.isNotEmpty() } ?: return@mapNotNull null
         val level = Regex("""^\s{0,3}(#{1,6})\s""").find(chunk)?.groupValues?.get(1)?.length?.coerceAtMost(3) ?: 0

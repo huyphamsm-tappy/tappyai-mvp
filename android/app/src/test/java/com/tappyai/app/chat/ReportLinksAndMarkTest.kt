@@ -38,6 +38,24 @@ class ReportLinksAndMarkTest {
         assertTrue(xml.contains("Có ký tự"))
     }
 
+    // pdfBlocks cut the report only at blank lines, so a heading written right above its list made the whole list a heading (bold, 15 pt),
+    // and a table written right under a sentence was drawn as text with tabs instead of a grid.
+    @Test fun `a heading or a table without a blank line around it is still its own block`() {
+        val heading = pdfBlocks("### Ngày 1\n- mục a\n- mục b")
+        assertEquals(2, heading.size)
+        assertEquals(PdfBlock(3, "Ngày 1"), heading[0])
+        assertEquals(0, heading[1].level)
+        assertTrue(heading[1].text.contains("mục a") && heading[1].text.contains("mục b"))
+
+        val table = pdfBlocks("Bảng giá:\n| Mẫu | Giá |\n|---|---|\n| VF 3 | 240 |")
+        assertEquals(2, table.size)
+        assertEquals("Bảng giá:", table[0].text)
+        assertEquals(listOf(listOf("Mẫu", "Giá"), listOf("VF 3", "240")), table[1].rows)
+
+        // a fenced block stays whole
+        assertEquals(1, pdfBlocks("```\n# not a heading\n| a | b |\n```").size)
+    }
+
     // CommonMark: an underscore inside a word is just an underscore ("ABC_123 … XYZ_456" was italic and lost its marks).
     @Test fun `an underscore inside a word is not emphasis`() {
         assertEquals("Mã ABC_123 và XYZ_456 hết", markdownVisibleText("Mã ABC_123 và XYZ_456 hết"))
