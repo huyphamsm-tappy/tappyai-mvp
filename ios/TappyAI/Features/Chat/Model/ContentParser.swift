@@ -46,7 +46,8 @@ enum ContentParser {
             planJSON: planJSON,
             places: places,
             ask: askResult.questions,
-            media: mediaResult.blocks
+            media: mediaResult.blocks,
+            segments: replySegments(clean)
         )
     }
 
@@ -414,6 +415,64 @@ enum ContentParser {
         let result = regex.stringByReplacingMatches(in: content, range: range, withTemplate: "")
             .replacingOccurrences(of: #"\n{3,}"#, with: "\n\n", options: .regularExpression)
         return result.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    // MARK: - Prose and pictures in the order written
+
+    /// A text piece ready to show: no run of blank lines, no list mark left alone on its last line (the picture that followed it was the item's
+    /// content), trimmed.
+    private static func tidySegmentText(_ raw: String) -> String {
+        var t = raw.replacingOccurrences(of: #"\n{3,}"#, with: "\n\n", options: .regularExpression)
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        var lines = t.components(separatedBy: "\n")
+        if let last = lines.last, last.trimmingCharacters(in: .whitespaces).range(of: #"^(?:[-*+•>]|\d{1,3}[.)])$"#, options: .regularExpression) != nil {
+            lines.removeLast()
+            t = lines.joined(separator: "\n").trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+        return t
+    }
+
+    /// The prose and the pictures in reading order: a picture sits between the words before and after it, and pictures with only blank space
+    /// between them are one run. Same rules as `extractImages` for which picture is drawn (https only, never another AI product's page);
+    /// a picture that is not drawn is removed from the text without breaking it.
+    static func replySegments(_ content: String) -> [ReplySegment] {
+        guard let regex = try? NSRegularExpression(pattern: imageSyntax, options: .caseInsensitive) else {
+            let only = tidySegmentText(content)
+            return only.isEmpty ? [] : [.text(only)]
+        }
+        let ns = content as NSString
+        var out: [ReplySegment] = []
+        var pending: [ParsedImage] = []
+        var textBuf = ""
+        func flushText() {
+            let t = tidySegmentText(textBuf)
+            if !t.isEmpty { out.append(.text(t)) }
+            textBuf = ""
+        }
+        func flushImages() {
+            if !pending.isEmpty { out.append(.images(pending)); pending = [] }
+        }
+        func addText(_ piece: String) {
+            if !piece.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                flushImages()
+                textBuf += piece
+            } else if pending.isEmpty {
+                textBuf += piece
+            }
+        }
+        var at = 0
+        for m in regex.matches(in: content, range: NSRange(location: 0, length: ns.length)) {
+            addText(ns.substring(with: NSRange(location: at, length: m.range.location - at)))
+            at = m.range.location + m.range.length
+            let url = ns.substring(with: m.range(at: 2))
+            if !url.lowercased().hasPrefix("https://") || AiSourcePolicy.isAiProductSource(url) { continue }
+            flushText()
+            pending.append(ParsedImage(alt: ns.substring(with: m.range(at: 1)), url: url))
+        }
+        addText(ns.substring(from: at))
+        flushImages()
+        flushText()
+        return out
     }
 
     // MARK: - Parse place from internal_booking URL

@@ -96,6 +96,16 @@ struct ParsedContent: Equatable, Sendable {
     /// `[TAPPY_MEDIA]` news pictures / Wikipedia subject cards, host-checked (`MediaBlocks`). Empty
     /// unless the server flags (CONSULT_V3 / ANSWER_V4) emit them.
     var media: [MediaBlock] = []
+    /// The reply's prose in reading order with its `![alt](url)` pictures kept WHERE the model wrote them (`text` and `images` above are the
+    /// older split: all the prose, then all the pictures). A text piece is clean prose; a run of pictures with only blank space between
+    /// them is one `.images`. The same pictures as `images`, the same prose as `text`, only in order.
+    var segments: [ReplySegment] = []
+}
+
+/// One piece of a reply's prose, in the order the model wrote it.
+enum ReplySegment: Equatable, Sendable {
+    case text(String)
+    case images([ParsedImage])
 }
 
 struct ParsedImage: Equatable, Sendable, Identifiable {
