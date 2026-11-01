@@ -110,6 +110,7 @@ import { useStickToBottom } from '@/components/chat/useStickToBottom'
 import { balanceBoldPerLine } from '@/lib/chat/markdownNormalize'
 import { cleanRepeats } from '@/lib/chat/replyRepeat'
 import { isAgeGateMessage, redirectToAgeCheck } from '@/lib/account/ageGateClient'
+import { checkAttachment, firstAttachable, dragHasFiles } from '@/components/chat/composerAttachment'
 
 // Mood chips — labels and the message each sends are dictionary keys so both
 // localize; the analytics id stays stable across languages.
@@ -1528,18 +1529,43 @@ export default function ChatInterface({
 
   // 31/10: an image or a PDF (the server reads the PDF's text: pdfAttachments.ts). The same limits as the server, said before sending.
   const [attachError, setAttachError] = useState<string | null>(null)
+  // 01/11: the attach button, a file dropped on the chat and a picture pasted into the box all end here (composerAttachment.ts rules).
+  const acceptAttachment = useCallback((file: File) => {
+    const check = checkAttachment(file)
+    if (!check.ok) { setAttachError(t(check.error)); return }
+    setAttachError(null)
+    setImageFile(file)
+    setImagePreviewUrl(check.isPdf ? null : URL.createObjectURL(file))
+  }, [t])
   const handleImageSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     // Reset so same file can be re-selected
     e.target.value = ''
-    if (!file) return
-    const isPdf = file.type === 'application/pdf'
-    if (!isPdf && !/^image\/(png|jpeg|webp|gif)$/.test(file.type)) { setAttachError(t('attach.unsupported')); return }
-    if (isPdf && file.size > 3_000_000) { setAttachError(t('attach.pdfTooLarge')); return }
-    setAttachError(null)
-    setImageFile(file)
-    setImagePreviewUrl(isPdf ? null : URL.createObjectURL(file))
-  }, [t])
+    if (file) acceptAttachment(file)
+  }, [acceptAttachment])
+  const [dragOver, setDragOver] = useState(false)
+  const onChatDragOver = useCallback((e: React.DragEvent) => {
+    if (!dragHasFiles(e.dataTransfer)) return
+    e.preventDefault()
+    setDragOver(true)
+  }, [])
+  const onChatDragLeave = useCallback((e: React.DragEvent) => {
+    // leaving to a child element is not leaving the chat
+    if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setDragOver(false)
+  }, [])
+  const onChatDrop = useCallback((e: React.DragEvent) => {
+    if (!dragHasFiles(e.dataTransfer)) return
+    e.preventDefault()
+    setDragOver(false)
+    const file = firstAttachable(e.dataTransfer.files)
+    if (file) acceptAttachment(file)
+  }, [acceptAttachment])
+  const onComposerPaste = useCallback((e: React.ClipboardEvent) => {
+    const file = firstAttachable(e.clipboardData?.files)
+    if (!file) return // pasted text goes into the box as before
+    e.preventDefault()
+    acceptAttachment(file)
+  }, [acceptAttachment])
 
   const clearImage = useCallback(() => {
     setImageFile(null)
@@ -1613,7 +1639,12 @@ export default function ChatInterface({
   }, [category, locale])
 
   return (
-    <div className="relative flex flex-col h-full">
+    <div className="relative flex flex-col h-full" onDragOver={onChatDragOver} onDragLeave={onChatDragLeave} onDrop={onChatDrop} data-chat-dropzone>
+      {dragOver && (
+        <div className="pointer-events-none absolute inset-2 z-50 flex items-center justify-center rounded-3xl border-2 border-dashed border-primary-500 bg-primary-500/10 text-sm font-medium text-primary-600 dark:text-primary-300" data-print-hide data-chat-drop-hint>
+          {t('attach.drop')}
+        </div>
+      )}
       {voiceOpen && (
         <VoiceOverlay listening={isListening} text={voiceText} error={voiceError} firstUse={voiceFirstUse} onToggle={toggleVoice} onCancel={closeVoice} onSend={sendVoice} />
       )}
@@ -2438,6 +2469,7 @@ export default function ChatInterface({
                 e.target.style.height = Math.min(e.target.scrollHeight, 160) + 'px'
               }}
               onKeyDown={handleKeyDown}
+              onPaste={onComposerPaste}
               placeholder={imageFile ? t('chat.inputImagePlaceholder') : t('chat.inputPlaceholder')}
               disabled={isLoading}
               rows={1}

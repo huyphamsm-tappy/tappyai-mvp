@@ -53,6 +53,7 @@ export const vi: Record<string, string> = {
   // ── Attachments (31/10): images and PDFs ────────────────────────────────
   'attach.pdfTooLarge': 'Tệp PDF lớn hơn 3 MB, Tappy chưa đọc được. Bạn thử gửi tệp nhỏ hơn hoặc chỉ các trang cần hỏi.',
   'attach.unsupported': 'Tappy đọc được ảnh (PNG, JPG, WEBP, GIF) và tệp PDF.',
+  'attach.drop': 'Thả ảnh hoặc PDF vào đây để gửi cho Tappy',
   'attach.remove': 'Bỏ tệp đính kèm',
 
   // ── Composer modes (31/10, ChatGPT-style "+" menu) ──────────────────────
@@ -126,6 +127,7 @@ export const en: Record<string, string> = {
   // ── Attachments (31/10): images and PDFs ────────────────────────────────
   'attach.pdfTooLarge': 'This PDF is larger than 3 MB, so Tappy cannot read it yet. Try a smaller file or only the pages you need.',
   'attach.unsupported': 'Tappy can read images (PNG, JPG, WEBP, GIF) and PDF files.',
+  'attach.drop': 'Drop an image or PDF here to send it to Tappy',
   'attach.remove': 'Remove attachment',
 
   // ── Composer modes (31/10, ChatGPT-style "+" menu) ──────────────────────
