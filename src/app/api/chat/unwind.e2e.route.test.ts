@@ -104,9 +104,11 @@ vi.mock('@/lib/ai/tools/railSchedule', async (importOriginal) => ({
   fetchRailSchedule: async (page: string) => (h.state.railRows ? { page_url: page, rows: h.state.railRows } : null),
 }))
 vi.mock('@/lib/ai/tools/serperClient', async (importOriginal) => ({ ...(await importOriginal<typeof import('@/lib/ai/tools/serperClient')>()), serperLastAccountErrorAt: () => h.state.accountErrorAt }))
-vi.mock('@/lib/ai/tools/serperPlaces', async (importOriginal) => ({ ...(await importOriginal<typeof import('@/lib/ai/tools/serperPlaces')>()), serperPlaces: async (q: string, centre: { lat: number; lng: number } | null) => { h.state.placesCalls.push({ q, centre: centre ?? null }); return /lẩu/i.test(q) ? LAU_ROWS : !centre && /^côn đảo$/i.test(q.trim()) ? CON_DAO : [] } }))
+vi.mock('@/lib/ai/tools/serperPlaces', async (importOriginal) => ({ ...(await importOriginal<typeof import('@/lib/ai/tools/serperPlaces')>()), serperPlaces: async (q: string, centre: { lat: number; lng: number } | null) => { h.state.placesCalls.push({ q, centre: centre ?? null }); return /lẩu/i.test(q) ? LAU_ROWS : !centre && /^côn đảo$/i.test(q.trim()) ? CON_DAO : !centre && /^tokyo,? japan$/i.test(q.trim()) ? TOKYO : [] } }))
 /** 30/10: what Serper /maps answers for the bare place name "Côn Đảo" (no centre): the island itself. */
 const CON_DAO = [{ title: 'Côn Đảo', address: 'Côn Đảo, Bà Rịa - Vũng Tàu, Việt Nam', latitude: 8.6833, longitude: 106.6094, cid: '9999' }]
+/** UAT 02/11: what /maps answers for "Tokyo, Japan" (no centre): Tokyo - nothing in Việt Nam. */
+const TOKYO = [{ title: 'Tokyo', address: 'Tokyo, Nhật Bản', latitude: 35.6764, longitude: 139.65, cid: '9998' }]
 /** 30/10: rows the Serper /maps mock returns for a hotpot query (Đà Lạt), so a turn can have one search WITH rows and one without. */
 const LAU_ROWS = [
   { title: 'Lẩu Gà Lá É Tao Ngộ', address: '5 Đường 3 Tháng 4, Phường 3, Đà Lạt, Lâm Đồng', latitude: 11.928, longitude: 108.446, rating: 4.4, ratingCount: 5200, cid: '1111' },
@@ -628,6 +630,14 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     expect(r.places[0]?.centre).toBeNull()
     const centred = r.places.find(p => p.centre && Math.abs(p.centre.lat - 8.68) < 0.2 && Math.abs(p.centre.lng - 106.61) < 0.2)
     expect(centred, JSON.stringify(r.places)).toBeTruthy()
+  }, 60000)
+  it('places (owner UAT 02/11): one brain - a place abroad (Tokyo) is searched around its own coordinates, never the default TP.HCM', async () => {
+    // "Hỏi ăn chơi nhật bản mà để địa chỉ việt nam": the lookup found Tokyo outside Việt Nam's bounds, dropped it, and the search ran around TP.HCM.
+    const r = await turn([{ role: 'user', content: 'đi Tokyo nhậu bar pub ở đâu' }], { unwind: true, oneBrain: true, luna: intent('pick', ['food']), tools: [{ name: 'search_places', args: { query: 'izakaya bar pub Shinjuku', location: 'Tokyo, Japan', type: 'bar' } }], reply: 'x' })
+    expect(r.results.find(x => x.name === 'search_places')?.result?.error).toBeUndefined()
+    const centred = r.places.filter(p => p.centre)
+    expect(centred.some(p => Math.abs(p.centre!.lat - 35.68) < 0.2 && Math.abs(p.centre!.lng - 139.65) < 0.2), JSON.stringify(r.places)).toBe(true)
+    expect(centred.some(p => Math.abs(p.centre!.lat - 10.7769) < 0.01), JSON.stringify(r.places)).toBe(false)
   }, 60000)
   it('places (review 30/10): one brain - a dish named after a city is not that city ("bún bò Huế" is searched where the person is asked, not in Huế)', async () => {
     const b = await turn([{ role: 'user', content: 'quán bún bò Huế ngon' }], { unwind: true, oneBrain: true, luna: intent('pick', ['food']), tools: [{ name: 'search_places', args: { query: 'bún bò Huế' } }], reply: 'x' })

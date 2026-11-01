@@ -508,11 +508,17 @@ function isDirectFoodOrderLink(link: string): boolean {
  * query or the location, the search is centred on Ho Chi Minh City (the default city); a city the
  * text names keeps its own destination centre (resolved by the caller).
  */
-/** The coordinates of a named place the city list does not know: the first /maps row for the bare name, only inside Việt Nam's bounds. */
+/**
+ * The coordinates of a named place the city list does not know: the first /maps row for the bare name inside Việt Nam's bounds; when
+ * no row is in Việt Nam the place is abroad, and its first row is the place (owner UAT 02/11: "Tokyo, Japan" was dropped for being
+ * outside Việt Nam and the search ran around the default TP.HCM - Saigon izakayas on a Tokyo plan).
+ */
 async function placeCoordinates(name: string): Promise<{ lat: number; lng: number } | null> {
   if (cityInText(name)) return null
-  const rows = await serperPlaces(name, null, { priceRetry: false }).catch(() => null)
-  const top = (rows ?? []).find(r => typeof r.latitude === 'number' && typeof r.longitude === 'number' && r.latitude > 8 && r.latitude < 23.5 && r.longitude > 102 && r.longitude < 110)
+  const rows = (await serperPlaces(name, null, { priceRetry: false }).catch(() => null) ?? [])
+    .filter(r => typeof r.latitude === 'number' && typeof r.longitude === 'number')
+  const inVietnam = (r: (typeof rows)[number]) => (r.latitude as number) > 8 && (r.latitude as number) < 23.5 && (r.longitude as number) > 102 && (r.longitude as number) < 110
+  const top = rows.find(inVietnam) ?? rows[0]
   console.log(JSON.stringify({ type: 'tappyai_places_debug', provider: 'serper_maps', step: 'named_place_centre', found: !!top }))
   return top ? { lat: top.latitude as number, lng: top.longitude as number } : null
 }
@@ -564,7 +570,7 @@ async function searchPlacesSerper(
   const zoom = placeType === 'attraction' || placeType === 'cinema' ? 12 : 14
   const centreAt = (lat: number, lng: number) => ({ lat, lng, zoom })
   // Review 30/10: a place the city list does not know ("Côn Đảo", "Tam Cốc", "Mộc Châu") had no centre - refused by the route, or centred on
-  // the default TP.HCM. The place name itself is looked up once (no centre) and its own coordinates are the centre, when they are in Việt Nam.
+  // the default TP.HCM. The place name itself is looked up once (no centre) and its own coordinates are the centre (a Việt Nam row first; abroad, its own).
   const named = namedCentre && !useArea && !centeredOnUser && !destination && !locationBias && !!location?.trim() ? await placeCoordinates(location!.trim()) : null
   const centre = useArea
     ? centreAt(areaCentre!.lat, areaCentre!.lng)
