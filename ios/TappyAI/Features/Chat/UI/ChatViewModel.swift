@@ -410,7 +410,7 @@ final class ChatViewModel: AppObservableObject {
         let text = inputText.trimmingCharacters(in: .whitespacesAndNewlines)
         let attachment = stagedAttachment
         // A staged photo or PDF is a question by itself (the web sends it with an empty box).
-        guard !text.isEmpty || attachment != nil, !isStreaming, !isAgeBlocked, !isAwaitingConsent, !isLoadingConversation else { return }
+        guard !text.isEmpty || attachment != nil, !isStreaming, !isAgeBlocked, !isAwaitingConsent else { return }
         inputText = ""
         error = nil
         stagedAttachment = nil
@@ -423,7 +423,7 @@ final class ChatViewModel: AppObservableObject {
     }
 
     func sendQuickPrompt(_ text: String) {
-        guard !isStreaming, !isAgeBlocked, !isAwaitingConsent, !isLoadingConversation else { return }
+        guard !isStreaming, !isAgeBlocked, !isAwaitingConsent else { return }
         inputText = ""
         error = nil
 
