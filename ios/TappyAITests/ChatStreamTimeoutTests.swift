@@ -8,12 +8,12 @@ import XCTest
 @MainActor
 final class ChatStreamTimeoutTests: XCTestCase {
 
-    private func request(deepResearch: Bool?) -> Endpoint? {
+    private func request(mode: ChatMode?) -> Endpoint? {
         let streaming = SequencedChatStreaming([])
         let service = ChatService(api: MockAPIClient(), streaming: streaming)
         let messages = [MessagePayload(role: "user", content: "Chào")]
-        if let deepResearch {
-            _ = service.chatWithContext(messages: messages, userPreferences: nil, responseStyle: nil, deepResearch: deepResearch)
+        if let mode {
+            _ = service.chatWithContext(messages: messages, userPreferences: nil, responseStyle: nil, mode: mode)
         } else {
             _ = service.chatWithContext(messages: messages, userPreferences: nil, responseStyle: nil)
         }
@@ -21,12 +21,13 @@ final class ChatStreamTimeoutTests: XCTestCase {
     }
 
     func testAChatTurnMayStaySilentFor130Seconds() {
-        XCTAssertEqual(request(deepResearch: nil)?.timeout, 130)
-        XCTAssertEqual(request(deepResearch: false)?.timeout, 130)
+        XCTAssertEqual(request(mode: nil)?.timeout, 130)
+        XCTAssertEqual(request(mode: .chat)?.timeout, 130)
+        XCTAssertEqual(request(mode: .think)?.timeout, 130)
     }
 
     func testADeepResearchTurnMayStaySilentFor320Seconds() {
-        XCTAssertEqual(request(deepResearch: true)?.timeout, 320)
+        XCTAssertEqual(request(mode: .deep)?.timeout, 320)
     }
 
     func testTheConstantsAreTheWebs() {

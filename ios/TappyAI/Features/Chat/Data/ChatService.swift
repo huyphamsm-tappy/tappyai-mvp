@@ -180,7 +180,7 @@ final class ChatService: Sendable {
                         guestAgeDeclaration: String? = nil,
                         chatSessionId: String? = nil,
                         decisionEvidenceId: String? = nil,
-                        deepResearch: Bool = false) -> AsyncThrowingStream<StreamFrame, Error> {
+                        mode: ChatMode = .default) -> AsyncThrowingStream<StreamFrame, Error> {
         var bodyDict: [String: Any] = [
             "messages": messages.map { ["role": $0.role, "content": $0.content] }
         ]
@@ -202,6 +202,8 @@ final class ChatService: Sendable {
         if let key = decisionEvidenceId, !key.isEmpty {
             bodyDict["decisionEvidenceId"] = key
         }
+        // The one-brain server reads the mode from here; without it a request runs as plain Chat.
+        bodyDict["mode"] = mode.wire
         guard let bodyData = try? JSONSerialization.data(withJSONObject: bodyDict) else {
             return AsyncThrowingStream { $0.finish(throwing: AppError.validation(message: "Failed to encode chat request")) }
         }
@@ -218,7 +220,7 @@ final class ChatService: Sendable {
             headers: headers,
             body: bodyData,
             requiresAuth: true,
-            timeout: deepResearch ? ChatStreamTimeout.deepResearch : ChatStreamTimeout.standard
+            timeout: mode == .deep ? ChatStreamTimeout.deepResearch : ChatStreamTimeout.standard
         )
         return streaming.stream(endpoint)
     }
