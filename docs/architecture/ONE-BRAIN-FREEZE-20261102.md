@@ -86,3 +86,4 @@ Chế độ đọc từ trường `mode` của request. Thiếu hoặc giá tr�
   - **de930fe — nút mua trên thẻ mua sắm:** chỉ dẫn đầu bằng link của đúng cửa hàng của dòng đó; link cửa hàng khác chỉ giữ khi cùng dung lượng; trang tìm kiếm luôn giữ.
   - **365cd7f — thẻ lịch trình:** luôn chia tab theo ngày như thiết kế (bỏ biến thể "mọi ngày một trang" 29/10).
   - **2160573 — thẻ địa điểm mang lời câu trả lời:** tên in đậm đứng đầu dòng → phần còn lại của dòng (lời mô hình, giữ số, bỏ link) thành dòng "Vì sao" trên **mọi** thẻ được nêu; vẫn chỉ thẻ đầu được chọn. Không thêm lệnh gọi mô hình.
+  - **Cùng lời phàn nàn "hỏi Nhật ra địa chỉ Việt Nam", lớp thứ hai (đo lại localhost sau 48ef618):** tìm địa điểm với nơi ở nước ngoài ("Tokyo, Japan") bị bỏ tọa độ vì ngoài Việt Nam rồi rơi về tâm TP.HCM. `placeCoordinates` nay lấy dòng trong Việt Nam trước như cũ; không có dòng nào trong Việt Nam thì lấy tọa độ của chính nơi đó.
