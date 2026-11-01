@@ -23,6 +23,13 @@ class WebParityFiltersTest {
         assertEquals("1. a\n2. b", markdownVisibleText("1. a\n2. b"))
     }
 
+    // measured on the emulator 02/11 (T01): "…đang được thu hồi.CNBC" - the web shows the source as its own chip
+    @Test fun `a source link right after a word or a full stop is set apart`() {
+        assertEquals("đã thu hồi. CNBC", markdownVisibleText("đã thu hồi.[CNBC](https://www.cnbc.com/x)"))
+        assertEquals("xem (CNBC)", markdownVisibleText("xem ([CNBC](https://www.cnbc.com/x))"))
+        assertEquals("xem CNBC", markdownVisibleText("xem [CNBC](https://www.cnbc.com/x)"))
+    }
+
     @Test fun `copy and read-aloud take the text as shown`() {
         assertEquals("Học C# trước, rồi Python.\nMột --- hai --- ba", stripMarkdown("Học **C#** trước, rồi Python.\n\nMột --- hai --- ba"))
         assertEquals("Xem Google Maps", stripMarkdown("Xem [Google Maps](https://maps.google.com/x)"))

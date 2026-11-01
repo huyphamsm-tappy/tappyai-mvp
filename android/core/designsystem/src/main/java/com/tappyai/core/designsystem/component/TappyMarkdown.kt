@@ -296,6 +296,9 @@ private fun buildInlineAnnotated(
                         // UAT 2026-09-28 (P1c): two links written back to back rendered as one
                         // word ("Official WebsiteGoogle Maps") — a separator keeps them apart.
                         if (lastWasLink) append(" · ")
+                        // 02/11: a source link written right after a word or a full stop ("…thu hồi.[CNBC](…)") read "thu hồi.CNBC";
+                        // the web draws it as a separate chip - here it gets a space before it.
+                        else if (i > 0 && !text[i - 1].isWhitespace() && text[i - 1] !in "([\"'“‘") append(" ")
                         withLink(
                             LinkAnnotation.Url(
                                 url = url,
