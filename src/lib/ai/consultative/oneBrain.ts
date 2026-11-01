@@ -146,7 +146,17 @@ export const searchDepthOf = (args: unknown): SearchDepth => ((args as { depth?:
  * to the Thinking mode (reasoning at medium on every later step, the Thinking lookups: no Chat budget, the follow-up search); not calling it
  * keeps the turn exactly Chat. Described by what the answer needs, never by topic or keyword.
  */
-export const THINK_DEEPER_DESCRIPTION = 'Turn on careful thinking for the rest of this answer. Call it FIRST, alone, before any other tool, when a good answer needs real reasoning: several parts to work out, a comparison or a choice with consequences, a plan, figures or code to get right, a subject where a thin answer would mislead. Do not call it for a greeting, small talk, a short follow-up, one clear fact or a short message to write. Judge from what the person needs in this conversation, not from single words.'
+export const THINK_DEEPER_DESCRIPTION = 'Turn on careful thinking for the rest of this answer. Call it FIRST, alone, before any other tool, when a good answer needs real reasoning: several parts to work out, a comparison or a choice with consequences, a plan, figures or code to get right, a subject where a thin answer would mislead. An itinerary, a schedule or a recommendation the person will act on ALWAYS needs it. Do not call it for a greeting, small talk, a short follow-up, one clear fact or a short message to write. Judge from what the person needs in this conversation, not from single words.'
+
+/**
+ * 01/11 (owner UAT: the plan card was accurate but bland): what the model reads when it fills present_plan. General principles of a plan worth
+ * following - never a topic, a place or a dish. The server's guards (verified places, links, prices) still run on the card as before.
+ */
+export const PRESENT_PLAN_DESCRIPTION = 'Show a day-by-day trip or evening plan as the app\'s plan card (it can be shared as a brochure). Call it once, after looking things up, for any itinerary or schedule the person asked for; then write only a short summary around it, not the plan again. Make it a plan worth following, not a list of filler: give each day a theme in its label and keep a day inside one area, so the person is not crossing the city; name the specific restaurant, cafe or venue from the lookups, and the dish or the thing to try there; say why it is on the plan (what makes it worth going, who it suits); say how long to stay and how to get from one stop to the next when it matters; pace the day (one headline stop, lighter ones, a meal worth planning around). Never fill a slot with "rest" or "free time" alone: a free slot says what to do with it. Put the practical items that change the plan (booking lead time, documents, what to carry, a wet-weather swap where the season asks for one) in the tips.'
+export const PRESENT_PLAN_FIELD_NOTES = {
+  name: 'the specific venue or activity by its own name from the lookups - never a generic "a restaurant in the centre"',
+  description: 'one or two sentences: what to do or try there and why it is on the plan (how long, how to get there when it matters)',
+} as const
 export const THINK_DEEPER_NOTE = 'Thinking is on for the rest of this answer: look up what you need (several sources are allowed), check the figures, and write a complete, well-organised answer.'
 
 export const ONE_BRAIN_MODE_LINES: Readonly<Record<'chat' | 'web' | 'think' | 'auto', string>> = {

@@ -111,7 +111,7 @@ import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuar
 import { isProductionRuntime, consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, consultReadPageLateOn, consultPickPageReadOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn, consultUnwindS1aOn, consultUnwindS1bOn, consultUnwindS1dOn, consultUnwindS2aOn, consultUnwindS2bOn, consultUnwindS2cOn, consultUnwindS3aOn, consultUnwindS3bOn, consultUnwindS3cOn, consultUnwindS4aOn, consultUnwindS4bOn, consultUnwindS5On, consultUnwindS6aOn, consultUnwindS6bOn, consultUnwindS6cOn, consultOneBrainOn, consultOneBrainMediaOn, consultParallelOn } from '@/lib/config/consultFlags'
 import { createParallelTurnBudget, parallelExtract, parallelSearch } from '@/lib/ai/tools/parallelClient'
 import { searchWithReads, createOnce, FOLLOW_UP_SYSTEM, S6_MAX_READS } from '@/lib/ai/consultative/searchReads'
-import { ONE_BRAIN_CORE, THINK_DEEPER_DESCRIPTION, THINK_DEEPER_NOTE, ONE_BRAIN_CHAT_CAP_NOTE, ONE_BRAIN_FARE_NOTE, ONE_BRAIN_WEB_FALLBACK_NOTE, CHAT_SEARCH_BUDGET, SEARCH_DEPTH_DESCRIPTION, searchDepthOf, type SearchDepth, ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, oneBrainDynamic } from '@/lib/ai/consultative/oneBrain'
+import { ONE_BRAIN_CORE, PRESENT_PLAN_DESCRIPTION, PRESENT_PLAN_FIELD_NOTES, THINK_DEEPER_DESCRIPTION, THINK_DEEPER_NOTE, ONE_BRAIN_CHAT_CAP_NOTE, ONE_BRAIN_FARE_NOTE, ONE_BRAIN_WEB_FALLBACK_NOTE, CHAT_SEARCH_BUDGET, SEARCH_DEPTH_DESCRIPTION, searchDepthOf, type SearchDepth, ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, oneBrainDynamic } from '@/lib/ai/consultative/oneBrain'
 import { oneBrainMediaStream } from '@/lib/ai/consultative/oneBrainMedia'
 import { oneBrainTurnTrace } from '@/lib/ai/consultative/turnTrace'
 import { serperLastAccountErrorAt } from '@/lib/ai/tools/serperClient'
@@ -3074,7 +3074,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       // [TAPPY_PLAN] spec into the prompt; with one brain the model decides to present a day-by-day plan and passes it here (TappyPlan shape,
       // components/TripPlanCard.tsx). The block is appended in streamEnrichment, where the photo, link and price guards still run on it.
       ...(oneBrain ? { present_plan: tool({
-        description: 'Show a day-by-day trip or evening plan as the app\'s plan card (it can be shared as a brochure). Call it once, after looking things up, for any itinerary or schedule the person asked for; then write only a short summary around it, not the plan again.',
+        description: PRESENT_PLAN_DESCRIPTION,
         parameters: z.object({
           type: z.enum(['trip', 'evening']),
           title: z.string().describe('e.g. "Quy Nhơn 3 ngày 2 đêm"'),
@@ -3086,8 +3086,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
               time: z.string().describe('e.g. "07:00" or "Sáng"'),
               emoji: z.string(),
               category: z.string().describe('food | sightseeing | hotel | transport | activity | rest'),
-              name: z.string().describe('a real place or activity'),
-              description: z.string().optional(),
+              name: z.string().describe(PRESENT_PLAN_FIELD_NOTES.name),
+              description: z.string().optional().describe(PRESENT_PLAN_FIELD_NOTES.description),
               price: z.string().optional().describe('only from the tool results'),
               address: z.string().optional().describe('only from the tool results'),
             })).min(1),
