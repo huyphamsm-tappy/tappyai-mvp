@@ -258,14 +258,21 @@ final class ChatViewModel: AppObservableObject {
         isLoadingConversation = true
         do {
             let conversation = try await service.loadConversation(id: id)
-            messages = conversation.messages.enumerated().map { idx, m in
+            let history = conversation.messages.enumerated().map { idx, m in
                 ChatMessage(
                     id: String(idx),
                     role: MessageRole(rawValue: m.role) ?? .user,
                     content: m.content
                 )
             }
+            // The stored history goes IN FRONT of whatever is already on screen: a question sent while it
+            // was loading must not be overwritten when it arrives.
+            messages = history + messages
         } catch {
+            // Saving is a PUT that replaces the whole stored list. A chat that could not load its history
+            // and kept this id would overwrite the stored conversation with the new messages only: it is a
+            // new chat now.
+            conversationId = nil
             self.error = Self.mapError(error, isGuest: isGuest)
             log.error("load conversation failed: \(error)")
         }
