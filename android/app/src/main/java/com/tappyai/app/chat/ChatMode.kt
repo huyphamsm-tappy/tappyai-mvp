@@ -27,8 +27,11 @@ enum class ChatMode(val wire: String) {
 
     companion object {
         val Default = Auto
-        /** What the "+" menu offers, in the web's order (Auto is the default and has no item: its chip's ✕ goes back to it). */
-        val menu: List<ChatMode> = listOf(Chat, Web, Think, Deep)
+        /**
+         * What the "+" menu offers beside attaching (owner 01/11: people just type; Tappy picks quick answer, web lookup or thinking by itself in
+         * Auto, so only Deep Research is a choice). Chat, Web and Think stay as modes the server understands, not as menu items.
+         */
+        val menu: List<ChatMode> = listOf(Deep)
         fun fromWire(value: String?): ChatMode = entries.firstOrNull { it.wire == value } ?: Default
 
         /**

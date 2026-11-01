@@ -18,8 +18,10 @@ class ChatModeMenuTest {
         assertEquals(ChatMode.Auto, ChatMode.Think.picked(ChatMode.Think))
     }
 
-    @Test fun `the menu offers the four modes after Auto, in the web's order`() {
-        assertEquals(listOf(ChatMode.Chat, ChatMode.Web, ChatMode.Think, ChatMode.Deep), ChatMode.menu)
+    // Owner 01/11: people just type and Auto picks quick answer / web lookup / thinking itself, so the menu keeps only Deep Research
+    // (besides attaching). Chat, Web and Think remain modes the server reads, not menu items.
+    @Test fun `the menu offers only Deep Research after attaching`() {
+        assertEquals(listOf(ChatMode.Deep), ChatMode.menu)
     }
 
     @Test fun `Deep Research is for one question, every other mode stays`() {
