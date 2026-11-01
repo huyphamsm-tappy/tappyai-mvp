@@ -310,8 +310,11 @@ private fun buildInlineAnnotated(
                                 ),
                             ),
                         ) {
-                            // A label that is itself a URL is never printed: the platform name instead.
-                            append(if (linkText.startsWith("http", ignoreCase = true)) linkLabelFor(url) else linkText)
+                            // A label that is itself a URL is never printed: the platform name instead. 02/11 (emulator, T31): also an
+                            // address written without its scheme ("apps.apple.com/vn/app/…"). Any other label keeps its own emphasis
+                            // (T22: "*The Global … 2025*" showed its asterisks). A label holds no "]", so no link can nest in it.
+                            if (linkText.startsWith("http", ignoreCase = true) || ADDRESS_LABEL.matches(linkText.trim())) append(linkLabelFor(url))
+                            else append(buildInlineAnnotated(linkText, codeBackground, linkColor))
                         }
                         i = closeParen + 1
                         lastWasLink = true
@@ -378,6 +381,9 @@ private val LINK_LABELS: List<Pair<Regex, String>> = listOf(
     Regex("""(^|\.)trip\.com$""") to "Trip.com",
     Regex("""(^|\.)ticketbox\.vn$""") to "Ticketbox",
 )
+
+/** A label that is an address without its scheme: `www.x.y…` or `host.tld/path…`, no spaces. */
+private val ADDRESS_LABEL = Regex("""(?i)(?:www\.\S+|[a-z0-9-]+(?:\.[a-z0-9-]+)+/\S*)""")
 
 /** A readable name for a link target — the platform, else the short host. Never the URL (web parity: linkLabelFor). */
 internal fun linkLabelFor(url: String): String {

@@ -30,6 +30,14 @@ class WebParityFiltersTest {
         assertEquals("xem CNBC", markdownVisibleText("xem [CNBC](https://www.cnbc.com/x)"))
     }
 
+    // measured on the emulator 02/11: T22 showed "Virta, *The Global Electric Vehicle Market in 2025*" with its asterisks;
+    // T31 showed a source whose label was its own address without https, in full
+    @Test fun `a link label keeps its emphasis, and a label that is an address reads as the site`() {
+        assertEquals("Virta, The Global EV Market", markdownVisibleText("[Virta, *The Global EV Market*](https://www.virta.global/x)"))
+        assertEquals("xem apps.apple.com", markdownVisibleText("xem [apps.apple.com/vn/app/adobe/id1?l=vi&platform=ipad](https://apps.apple.com/vn/app/adobe/id1?l=vi&platform=ipad)"))
+        assertEquals("xem App Store", markdownVisibleText("xem [App Store](https://apps.apple.com/vn/app/pages/id361309726)"))
+    }
+
     @Test fun `copy and read-aloud take the text as shown`() {
         assertEquals("Học C# trước, rồi Python.\nMột --- hai --- ba", stripMarkdown("Học **C#** trước, rồi Python.\n\nMột --- hai --- ba"))
         assertEquals("Xem Google Maps", stripMarkdown("Xem [Google Maps](https://maps.google.com/x)"))
