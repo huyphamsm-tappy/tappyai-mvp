@@ -56,6 +56,18 @@ class ReportLinksAndMarkTest {
         assertEquals(1, pdfBlocks("```\n# not a heading\n| a | b |\n```").size)
     }
 
+    // PDF tables: a row taller than a page ran off the bottom over the footer, and a table of 41 or more columns gave a cell no width, which
+    // StaticLayout refuses (the export then failed with an empty file). Such a row, or such a table, is drawn as flowing text instead.
+    @Test fun `a table that cannot be a grid, or a row that cannot fit a page, is drawn as text`() {
+        assertTrue(tableFitsGrid(cols = 3, width = 483, pad = 6))
+        assertTrue(tableFitsGrid(cols = 8, width = 483, pad = 6))
+        assertTrue(!tableFitsGrid(cols = 41, width = 483, pad = 6))
+        assertTrue(!tableFitsGrid(cols = 0, width = 483, pad = 6))
+        assertTrue(rowFitsPage(rowH = 300, bodyH = 700))
+        assertTrue(rowFitsPage(rowH = 700, bodyH = 700))
+        assertTrue(!rowFitsPage(rowH = 701, bodyH = 700))
+    }
+
     // CommonMark: an underscore inside a word is just an underscore ("ABC_123 … XYZ_456" was italic and lost its marks).
     @Test fun `an underscore inside a word is not emphasis`() {
         assertEquals("Mã ABC_123 và XYZ_456 hết", markdownVisibleText("Mã ABC_123 và XYZ_456 hết"))

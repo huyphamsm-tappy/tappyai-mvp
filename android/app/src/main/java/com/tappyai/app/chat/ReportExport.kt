@@ -98,6 +98,15 @@ internal object PdfStyle {
 /** True when a heading drawn at [y] would be left alone at the bottom of the page: it needs room for itself and two lines of what follows. */
 internal fun keepHeadingWithNext(y: Int, headingH: Int, nextLineH: Int, bottom: Int): Boolean = y + headingH + 2 * nextLineH > bottom
 
+/** The narrowest text width, in points, that is worth a grid column. */
+private const val MIN_CELL_TEXT_W = 24
+
+/** True when a table of [cols] columns in [width] points leaves each cell a readable text width (else it is drawn as text). */
+internal fun tableFitsGrid(cols: Int, width: Int, pad: Int): Boolean = cols > 0 && width / cols - 2 * pad >= MIN_CELL_TEXT_W
+
+/** True when a table row of [rowH] points fits the body of one page ([bodyH]); a taller row is drawn as text. */
+internal fun rowFitsPage(rowH: Int, bodyH: Int): Boolean = rowH <= bodyH
+
 /** The footer of a page: "n / N" (the web prints the same). */
 internal fun pageLabel(n: Int, total: Int): String = "$n / $total"
 
@@ -260,12 +269,23 @@ private class PdfWriter(private val doc: PdfDocument?, private val total: Int) {
         val cols = rows.maxOf { it.size }
         val colW = width / cols
         val pad = PdfStyle.CELL_PAD
+        // so many columns that a cell has no width (StaticLayout refuses a negative one): the rows flow as text, cells joined by " | "
+        if (!tableFitsGrid(cols, width, pad)) {
+            rows.forEachIndexed { r, cells -> text(cells.joinToString(" | "), pdfPaint(PdfStyle.BODY - 1f, r == 0), 4) }
+            y += PdfStyle.GAP_BODY
+            return
+        }
         val line = Paint().apply { style = Paint.Style.STROKE; strokeWidth = 0.7f; color = 0xFFBBBBBB.toInt() }
         val fill = Paint().apply { style = Paint.Style.FILL; color = 0xFFEEF2FA.toInt() }
         rows.forEachIndexed { r, cells ->
             val p = pdfPaint(PdfStyle.BODY - 1f, r == 0)
             val layouts = (0 until cols).map { c -> pdfLayout(cells.getOrElse(c) { "" }, p, colW - 2 * pad) }
             val rowH = layouts.maxOf { it.height } + 2 * pad
+            // a row taller than a whole page cannot be a grid row (it ran off the bottom over the footer): its cells flow as text
+            if (!rowFitsPage(rowH, bottom - PdfStyle.MARGIN)) {
+                cells.filter { it.isNotBlank() }.forEach { text(it, p, 4) }
+                return@forEachIndexed
+            }
             if (y + rowH > bottom && y > PdfStyle.MARGIN) newPage()
             val canvas = page?.canvas
             if (canvas != null) {
