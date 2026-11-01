@@ -21,12 +21,39 @@ const isCode = (t: string): boolean => t.length >= 3 && /[a-z]/.test(t) && /\d/.
 export interface RankCandidate { name: string; /** VND, when the listing states one (a product). */ price?: number | null }
 
 /** Bold spans of the answer prose (machine blocks and links removed), with their offsets and the prose right after them. */
-function boldSpans(text: string): Array<{ s: string; at: number; after: string }> {
+function boldSpans(text: string): Array<{ s: string; at: number; after: string; said: string | null }> {
   const prose = text
     .replace(/\[TAPPY_[A-Z_]+\][\s\S]*?(?:\[\/TAPPY_[A-Z_]+\]|$)/g, m => ' '.repeat(m.length))
     .replace(/\]\([^)\n]*\)/g, m => ' '.repeat(m.length))
   return [...prose.matchAll(/\*\*([^*\n]{2,120})\*\*/g)]
-    .map(m => ({ s: m[1].trim(), at: m.index ?? 0, after: prose.slice((m.index ?? 0) + m[0].length, (m.index ?? 0) + m[0].length + 160) }))
+    .map(m => {
+      const at = m.index ?? 0, end = at + m[0].length
+      return { s: m[1].trim(), at, after: prose.slice(end, end + 160), said: saidAfter(text, at, end) }
+    })
+}
+
+const SAID_MAX = 220
+
+/**
+ * What the answer says about a name that heads its own line ("- **Name**: …", "1. **Name** – …"): the rest of that line, in the
+ * model's words - figures kept (it is the guarded prose itself), links and markup removed, cut at a word near SAID_MAX. A name
+ * mentioned inside a sentence heads nothing: null.
+ */
+function saidAfter(text: string, at: number, end: number): string | null {
+  const lineStart = text.lastIndexOf('\n', at - 1) + 1
+  if (!/^\s*(?:[-*+•]|\d{1,2}[.)]|#{1,6})?\s*$/.test(text.slice(lineStart, at))) return null
+  const lineEnd = text.indexOf('\n', end)
+  const said = text.slice(end, lineEnd < 0 ? text.length : lineEnd)
+    .replace(/\[([^\]\n]*)\]\([^)\n]*\)/g, ' ')
+    .replace(/\*\*|__/g, '')
+    .replace(/\s+/g, ' ')
+    .replace(/^[\s:：–—-]+/, '')
+    .replace(/[\s·|,;–—-]+$/, '')
+    .trim()
+  if (said.length < 3) return null
+  if (said.length <= SAID_MAX) return said
+  const cut = said.slice(0, SAID_MAX)
+  return `${cut.slice(0, Math.max(cut.lastIndexOf(' '), SAID_MAX / 2)).trimEnd()}…`
 }
 
 /** Is the span a name of this candidate? The share of the span's tokens the candidate has, or null. */
@@ -52,9 +79,10 @@ export function rankingFromProse(text: string, candidates: readonly RankCandidat
   const tokenCount = new Map<string, number>()
   for (const c of candidates) for (const t of new Set(tokens(c.name))) tokenCount.set(t, (tokenCount.get(t) ?? 0) + 1)
   const first = new Map<number, number>()
+  const said = new Map<number, string>()
   // The answer's first pick names a model code that no single listing could be matched to: a LATER pick that did match is not the answer's pick, so nothing is crowned.
   let firstPickUnresolved = false
-  for (const { s, at, after } of boldSpans(text)) {
+  for (const { s, at, after, said: words } of boldSpans(text)) {
     let pool = candidates.map((c, i) => ({ i, a: overlap(s, c.name) })).filter((x): x is { i: number; a: number } => x.a !== null).map(x => x.i)
     if (pool.length === 0) { if (first.size === 0 && tokens(s).some(isCode)) firstPickUnresolved = true; continue }
     if (pool.length > 1) {
@@ -73,8 +101,9 @@ export function rankingFromProse(text: string, candidates: readonly RankCandidat
     }
     if (pool.length !== 1) { if (first.size === 0 && tokens(s).some(isCode)) firstPickUnresolved = true; continue }
     if (!first.has(pool[0])) first.set(pool[0], at)
+    if (words && !said.has(pool[0])) said.set(pool[0], words)
   }
   if (first.size === 0) return null
-  const picks = [...first.entries()].sort((x, y) => x[1] - y[1]).map(([i]) => ({ name: candidates[i].name, why: null, tradeoff: null, fits: null, refs: [] as string[] }))
+  const picks = [...first.entries()].sort((x, y) => x[1] - y[1]).map(([i]) => ({ name: candidates[i].name, why: null, tradeoff: null, fits: null, refs: [] as string[], said: said.get(i) ?? null }))
   return { picks, none: false, confidence: firstPickUnresolved ? 'low' : 'medium' }
 }

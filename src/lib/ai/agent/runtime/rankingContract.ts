@@ -25,7 +25,8 @@ export const RANK_OPEN = '[TAPPY_RANK]'
 export const RANK_CLOSE = '[/TAPPY_RANK]'
 export const MAX_PICKS = 5
 
-export interface RankedPick { name: string; why: string | null; tradeoff: string | null; fits: string | null; refs: string[] }
+/** `said`: what the answer prose itself says about this pick (proseRanking), figures included - it is the guarded prose, not a new claim. */
+export interface RankedPick { name: string; why: string | null; tradeoff: string | null; fits: string | null; refs: string[]; said?: string | null }
 export interface RankingContract { picks: RankedPick[]; none: boolean; confidence: 'high' | 'medium' | 'low' | null }
 
 const fold = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/gi, 'd').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
@@ -101,9 +102,11 @@ export function applyRankingToRecs(recs: readonly Recommendation[], c: RankingCo
     if (i < 0 || out.includes(recs[i])) { unmatched++; continue }
     // A LOW-confidence ranking orders the cards but crowns none: a label must not claim more than Luna's own confidence (and its prose) does.
     const first = out.length === 0 && c.confidence !== 'low'
-    const why = qualitative(p.why)
+    // Owner UAT 02/11: every card the answer names carries what the answer said about it (its prose words); else Luna's qualitative why on the first.
+    const said = clean(p.said, 240)
+    const why = said ?? qualitative(p.why)
     const trade = qualitative(p.tradeoff)
-    const reasons: RecommendationReason[] = first && why ? [{ attribute: 'rationale', evidence: why }] : []
+    const reasons: RecommendationReason[] = why && (first || said) ? [{ attribute: 'rationale', evidence: why }] : []
     out.push({ ...recs[i], rank: out.length, shortlistPosition: out.length + 1, role: null, recommended: first, reasons, tradeOff: first && trade ? { attribute: 'tradeoff', evidence: trade } : null, ...(why ? { summary: why } : {}) })
   }
   if (!out.length) return null
