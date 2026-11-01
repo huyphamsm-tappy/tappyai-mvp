@@ -21,6 +21,13 @@ struct ChatMessage: Identifiable, Equatable, Sendable {
     /// The photo or PDF the person sent with this question (a user message). In memory for the session, like the web's
     /// `experimental_attachments`: never part of `content`, never saved with the conversation (`persistConversation` sends `content` alone).
     var attachment: ChatAttachment? = nil
+    /// The Deep Research card of this reply (`tappy.research.v1`): plan, steps, source count and the cited sources. In memory for the
+    /// session, like the web's annotations: never part of `content`, never saved (the server keeps the text alone). Nil on every other reply.
+    var research: ResearchStatus? = nil
+    /// The report's charts (`tappy.research_charts.v1`), drawn from figures the server checked. In memory only; empty on every other reply.
+    var charts: [ResearchChart] = []
+    /// The pictures that go under the answer's headings (`tappy.doc_media.v1`). Live only: in memory, never saved; empty on every other reply.
+    var docMedia: [DocMediaItem] = []
 
     init(id: String = UUID().uuidString, role: MessageRole, content: String,
          status: MessageStatus = .complete, toolInvocations: [ToolInvocation] = [],
