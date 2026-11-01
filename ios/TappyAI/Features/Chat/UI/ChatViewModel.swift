@@ -107,12 +107,48 @@ final class ChatViewModel: AppObservableObject {
     /// Blocked account: the correction form is open.
     @AppPublished var ageCorrecting: Bool = false
 
+    // MARK: - Answer mode (the composer's "+" menu)
+
+    /// Reads the account's plan (`GET /api/payments/me`); nil = not known.
+    typealias PlanAccessLoader = @Sendable () async -> PlanAccess?
+    private let planAccessLoader: PlanAccessLoader?
+    private var planAccessRead = false
+
+    /// The mode the next question is sent in. Auto unless the person picked Deep Research; it goes back to Auto when that
+    /// question's stream opens (web `onResponse`), never when it is sent.
+    @AppPublished private(set) var mode: ChatMode = .auto
+    /// The modes the "+" menu offers. Starts as the whole menu and follows the plan once it has been read.
+    @AppPublished private(set) var menuModes: [ChatMode] = ChatMode.menu
+
+    /// The menu's choice: ignored when the mode is not on offer; the mode in use, picked again, goes back to Auto.
+    func selectMode(_ choice: ChatMode) {
+        guard menuModes.contains(choice) else { return }
+        mode = mode.picked(choice)
+    }
+
+    /// The chip's ×: back to Auto.
+    func clearMode() {
+        mode = .auto
+    }
+
+    /// Reads the plan once and narrows the menu to what it has; a mode picked meanwhile that the menu no longer has goes back to Auto.
+    /// Unknown (no loader, 404, offline) leaves the whole menu.
+    func loadPlanAccess() async {
+        guard !planAccessRead, let planAccessLoader else { return }
+        planAccessRead = true
+        let access = await planAccessLoader()
+        menuModes = ChatMode.menuFor(access)
+        if mode != .auto, !menuModes.contains(mode) { mode = .auto }
+    }
+
     init(service: ChatService, session: SessionStore, category: String = "general",
          conversationId: String? = nil, savedMessages: [Conversation.ConversationMessage]? = nil,
          planShare: PlanSharing? = nil, saveDateOfBirth: DateOfBirthSaver? = nil,
          loadAgeStatus: AgeStatusLoader? = nil,
          guestAge: GuestAgeStore = GuestAgeStore(),
-         consent: AIConsentCoordinator? = nil) {
+         consent: AIConsentCoordinator? = nil,
+         loadPlanAccess: PlanAccessLoader? = nil) {
+        self.planAccessLoader = loadPlanAccess
         self.consent = consent
         self.service = service
         self.session = session
@@ -588,6 +624,8 @@ final class ChatViewModel: AppObservableObject {
         endNotice = nil
         progressHint = nil
         startThinkTimer()
+        // The mode this question goes out in, read now: a later pick is for the next question.
+        let sentMode = mode
 
         streamTask = Task { [weak self] in
             guard let self else { return }
@@ -607,14 +645,22 @@ final class ChatViewModel: AppObservableObject {
                 userLocation: self.activeLocation,
                 guestAgeDeclaration: self.isGuest ? self.guestAge.declaration : nil,
                 chatSessionId: self.chatSessionId,
-                decisionEvidenceId: self.decisionEvidenceId
+                decisionEvidenceId: self.decisionEvidenceId,
+                mode: sentMode
             )
 
             var streamReportedError = false
             var sawDone = false
+            var streamOpened = false
             do {
                 for try await frame in stream {
                     guard !Task.isCancelled, self.turnToken == token else { break }
+                    // The stream is open: Deep Research was for this question (web `onResponse`). A request that was refused
+                    // or never connected sends no frame and keeps it. Only if the person has not picked another mode meanwhile.
+                    if !streamOpened {
+                        streamOpened = true
+                        if self.mode == sentMode { self.mode = sentMode.afterSend() }
+                    }
                     switch frame {
                     case .text(let delta):
                         edit { $0.content += delta }

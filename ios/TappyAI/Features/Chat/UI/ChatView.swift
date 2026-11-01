@@ -23,7 +23,8 @@ struct ChatView: View {
             loadAgeStatus: { [api = deps.api] in
                 try await ProfileService(api: api).fetchAgeStatus()
             },
-            consent: deps.aiConsent
+            consent: deps.aiConsent,
+            loadPlanAccess: { await service.getPlanAccess() }
         ))
     }
 
