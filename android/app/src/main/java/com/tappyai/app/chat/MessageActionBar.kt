@@ -272,14 +272,8 @@ private fun copyToClipboard(context: Context, value: String) {
     clipboard.setPrimaryClip(ClipData.newPlainText("TappyAI", value))
 }
 
-private fun stripMarkdown(text: String): String =
-    text
-        .replace(Regex("\\*\\*(.*?)\\*\\*"), "$1")
-        .replace(Regex("\\*(.*?)\\*"), "$1")
-        .replace(Regex("#{1,3}\\s"), "")
-        .replace(Regex("\\[([^]]+)]\\([^)]+\\)"), "$1")
-        .replace(Regex("`([^`]+)`"), "$1")
-        .replace(Regex("^- ", RegexOption.MULTILINE), "• ")
-        .replace(Regex("^>\\s?", RegexOption.MULTILINE), "")
-        .replace(Regex("---+"), "")
-        .trim()
+/**
+ * What is copied and read aloud: exactly the characters the reply shows (the renderer's own reading, [markdownVisibleText]). 02/11: it was a
+ * separate regex pass that turned "C# " into "C" and deleted every "---" in the text.
+ */
+internal fun stripMarkdown(text: String): String = com.tappyai.core.designsystem.component.markdownVisibleText(text).trim()

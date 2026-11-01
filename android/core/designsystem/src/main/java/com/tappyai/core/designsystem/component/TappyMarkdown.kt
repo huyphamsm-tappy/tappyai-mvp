@@ -96,7 +96,7 @@ fun markdownVisibleText(markdown: String): String =
             is MdBlock.Paragraph -> inline(block.text)
             is MdBlock.CodeBlock -> block.code
             is MdBlock.BulletList -> block.items.joinToString("\n") { "• " + inline(it) }
-            is MdBlock.NumberedList -> block.items.mapIndexed { i, it -> "${i + 1}. " + inline(it) }.joinToString("\n")
+            is MdBlock.NumberedList -> block.items.mapIndexed { i, it -> "${block.start + i}. " + inline(it) }.joinToString("\n")
             is MdBlock.Quote -> inline(block.text)
             MdBlock.Rule -> "—"
             // one line per row, cells apart by a tab: what a reader sees as columns
@@ -113,7 +113,8 @@ private sealed interface MdBlock {
     data class Paragraph(val text: String) : MdBlock
     data class CodeBlock(val code: String) : MdBlock
     data class BulletList(val items: List<String>) : MdBlock
-    data class NumberedList(val items: List<String>) : MdBlock
+    /** [start] = the model's own first number (02/11, web ArticleAnswer `<ol start>`): a list broken by a paragraph keeps counting. */
+    data class NumberedList(val items: List<String>, val start: Int = 1) : MdBlock
     data class Quote(val text: String) : MdBlock
     data object Rule : MdBlock
     /** A4 (02/11, web parity: formatMessage draws GFM tables): a header row, its body rows; cells are inline markdown. */
@@ -201,12 +202,13 @@ private fun parseMarkdownBlocks(markdown: String): List<MdBlock> {
             }
 
             NUMBERED_REGEX.matches(line) -> {
+                val start = Regex("""^\s*(\d+)\.""").find(line)?.groupValues?.get(1)?.toIntOrNull()?.takeIf { it in 0..9999 } ?: 1
                 val items = mutableListOf<String>()
                 while (i < lines.size && NUMBERED_REGEX.matches(lines[i])) {
                     items += NUMBERED_REGEX.find(lines[i])!!.groupValues[1]
                     i++
                 }
-                blocks += MdBlock.NumberedList(items)
+                blocks += MdBlock.NumberedList(items, start)
             }
 
             else -> {
@@ -427,7 +429,7 @@ private fun MarkdownBlock(block: MdBlock) {
         }
         is MdBlock.NumberedList -> Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.sm)) {
             block.items.forEachIndexed { index, item ->
-                MarkdownListItem(marker = "${index + 1}.", text = item)
+                MarkdownListItem(marker = "${block.start + index}.", text = item)
             }
         }
         is MdBlock.Quote -> MarkdownQuote(block.text)
