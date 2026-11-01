@@ -84,7 +84,8 @@ struct ChatView: View {
                         onReviewAIConsent: { vm.reviewAIConsent() },
                         endNotice: vm.endNotice,
                         progressHint: vm.progressHint,
-                        planShare: vm.planShare
+                        planShare: vm.planShare,
+                        liveResearch: vm.liveResearch
                     )
                 }
 

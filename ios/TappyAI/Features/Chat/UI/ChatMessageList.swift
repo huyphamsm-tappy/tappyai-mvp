@@ -42,6 +42,9 @@ struct ChatMessageList: View {
     var progressHint: String? = nil
     /// Publishes a plan for «Xem kế hoạch đầy đủ trên Tappy» on the plan card (nil = the button stays inert).
     var planShare: PlanSharing? = nil
+    /// The running turn's Deep Research card (`ChatViewModel.liveResearch`). The reply bubble being built carries the same card; this is
+    /// the fallback for the one frame where the bubble has none yet, and it is never drawn next to the bubble's own.
+    var liveResearch: ResearchStatus? = nil
 
     var body: some View {
         ScrollViewReader { proxy in
@@ -73,6 +76,8 @@ struct ChatMessageList: View {
                                 conversationId: conversationId,
                                 content: parsed.text,
                                 images: parsed.images,
+                                // the Deep Research card: the reply's own, or the running turn's while this is the reply being built
+                                research: msg.research ?? (isLast && isStreaming ? liveResearch : nil),
                                 isStreaming: isStreaming && isLast,
                                 status: msg.status,
                                 ctaButtons: parsed.ctaButtons,
@@ -231,6 +236,8 @@ private struct AssistantBubble: View {
     let conversationId: String?
     let content: String
     let images: [ParsedImage]
+    /// The Deep Research card of this reply; drawn above its text (nil on every other reply).
+    var research: ResearchStatus? = nil
     let isStreaming: Bool
     let status: MessageStatus
     let ctaButtons: [CTAButton]
@@ -272,6 +279,11 @@ private struct AssistantBubble: View {
             TappyAvatar()
 
             VStack(alignment: .leading, spacing: Spacing.xs) {
+                // Deep Research: the card above its report (web: the card before the message content)
+                if let research {
+                    ResearchCardView(status: research, onOpenLink: { UIApplication.shared.open($0) })
+                }
+
                 // Message text
                 if !content.isEmpty {
                     Text(attributedContent)
