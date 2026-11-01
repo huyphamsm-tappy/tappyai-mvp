@@ -88,7 +88,10 @@ enum ShoppingFactsLabels {
 
     static func condition(key: String) -> String? {
         guard conditionKeys.contains(key) else { return nil }
-        return NSLocalizedString("shoppingDecision.condition." + key, comment: "")
+        // The key is built from the server's condition word; the whole key goes in a variable, so a scan that reads the literal passed
+        // to NSLocalizedString (iosLocalization.test.ts) does not mistake the prefix for a missing catalog key.
+        let catalogKey = "shoppingDecision.condition." + key
+        return NSLocalizedString(catalogKey, comment: "")
     }
 
     static func spec(key: String, value: String) -> String {

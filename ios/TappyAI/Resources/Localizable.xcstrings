@@ -30099,7 +30099,7 @@
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@GB RAM"
+            "value": "RAM %@GB"
           }
         }
       }
