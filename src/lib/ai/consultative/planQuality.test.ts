@@ -42,6 +42,16 @@ describe('think_deeper', () => {
     expect(THINK_DEEPER_DESCRIPTION).toMatch(/itinerar/i)
     expect(THINK_DEEPER_DESCRIPTION).toMatch(/always/i)
   })
+  it('names advice the person will act on and recent or uncertain information as reasons to think', () => {
+    expect(THINK_DEEPER_DESCRIPTION).toMatch(/advice/i)
+    expect(THINK_DEEPER_DESCRIPTION).toMatch(/recent|current/i)
+    expect(THINK_DEEPER_DESCRIPTION).toMatch(/not (be )?sure|uncertain|cannot be sure/i)
+  })
+  it('stays a principle: it names no topic, place, product or language, and keeps its limits', () => {
+    expect(THINK_DEEPER_DESCRIPTION).not.toMatch(/Hà Nội|Đà Nẵng|Tokyo|Shopee|phở|tiếng Việt/i)
+    expect(THINK_DEEPER_DESCRIPTION).toMatch(/greeting/i)
+    expect(THINK_DEEPER_DESCRIPTION).toMatch(/not from single words/i)
+  })
 })
 
 describe('the chat route', () => {
