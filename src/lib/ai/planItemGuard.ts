@@ -264,7 +264,8 @@ function isInlandSight(p: PlanPlace): boolean {
   return !OFFSHORE.test(where) && !FULL_DAY_VENUE.test(`${where} ${types}`)
 }
 
-export function guardPlanItems(fullText: string, places: readonly PlanPlace[], opts: { destination?: string | null; keepSights?: boolean; vegetarian?: boolean; knownSightsUnlabelled?: boolean; keepNamedVenues?: boolean } = {}): PlanItemGuardResult {
+/** `topUpReturnDay` false (one brain, owner UAT 02/11): a thin return day stays as the model wrote it - no searched place is added. */
+export function guardPlanItems(fullText: string, places: readonly PlanPlace[], opts: { destination?: string | null; keepSights?: boolean; vegetarian?: boolean; knownSightsUnlabelled?: boolean; keepNamedVenues?: boolean; topUpReturnDay?: boolean } = {}): PlanItemGuardResult {
   const none = { text: fullText, matched: 0, replaced: 0, dropped: 0, linksSet: 0, linksRemoved: 0, timesMoved: 0, timesCleared: 0 }
   const start = fullText.indexOf(OPEN)
   const end = fullText.indexOf(CLOSE)
@@ -395,7 +396,7 @@ export function guardPlanItems(fullText: string, places: readonly PlanPlace[], o
       kept.push(item)
     }
     // CONSULTATIVE_IN_AGENT: the return day of a multi-day plan with fewer than FULL_DAY stops (see isInlandSight).
-    if (opts.keepSights && plan.days.length >= 2 && day === plan.days[plan.days.length - 1] && kept.length < FULL_DAY) {
+    if (opts.keepSights && opts.topUpReturnDay !== false && plan.days.length >= 2 && day === plan.days[plan.days.length - 1] && kept.length < FULL_DAY) {
       let anchor = kept.findIndex((it, i) => i > 0 && (/^(?:hotel|transport)$/i.test(String(it.category ?? '')) || GENERIC_STAY.test(String(it.name ?? ''))))
       if (anchor > 0) {
         const taken = new Set(plan.days.flatMap(d => (d?.items ?? []).map(it => fold(String(it?.name ?? '')))).concat(kept.map(it => fold(String(it.name ?? '')))))

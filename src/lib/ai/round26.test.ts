@@ -1,6 +1,8 @@
 // @vitest-environment node
 import { describe, it as test, expect } from 'vitest'
 import { guardPlanItems, type PlanPlace } from './planItemGuard'
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
 
 // Round 26: a thin return day is topped up from the turn's OWN results (flag on only). Fixtures = the Round 25 live turn on 3018 (audit trace): the model's plan as
 // written and the get_trip_data rows of that turn (compact: the fields the guard reads).
@@ -82,6 +84,18 @@ describe('return day topped up from the turn\'s own results (flag on)', () => {
     const d3 = daysOf(guardPlanItems(wrap(LIVE_DAYS), ROWS, ON).text)[2].items
     const earlier = new Set(daysOf(wrap(LIVE_DAYS)).slice(0, 2).flatMap(d => names(d.items)))
     expect(names(d3).filter(n => earlier.has(n))).toEqual([])
+  })
+  // owner UAT 02/11: the one-brain plan is the model's - the return day got two searched places the model never wrote (a Japan plan
+  // ended with two Saigon addresses, a Quy Nhon plan repeated Kỳ Co the day after visiting it). No top-up when the model plans.
+  test('one brain (topUpReturnDay false): the return day is left as the model wrote it', () => {
+    const out = guardPlanItems(wrap(LIVE_DAYS), ROWS, { ...ON, topUpReturnDay: false })
+    expect(names(daysOf(out.text)[2].items)).not.toContain('Bãi Tranh Nha Trang')
+    expect(daysOf(out.text)[2].items).toHaveLength(4)
+    expect(out.returnDayFilled).toBeUndefined()
+  })
+  test('the one-brain call site turns the top-up off', () => {
+    const src = readFileSync(join(process.cwd(), 'src/lib/ai/streamEnrichment.ts'), 'utf8')
+    expect(src).toContain("...(collector?.oneBrain === true ? { knownSightsUnlabelled: true, keepNamedVenues: true, topUpReturnDay: false } : {})")
   })
   test('no valid candidate (the only inland unused sight is gone) → the plan is left as it is: 4 stops, honest', () => {
     const out = guardPlanItems(wrap(LIVE_DAYS), ROWS.filter(r => r !== BAI_TRANH), ON)

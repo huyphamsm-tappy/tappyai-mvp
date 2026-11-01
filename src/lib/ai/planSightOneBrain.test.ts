@@ -34,7 +34,8 @@ describe('N3 · plan card sights on the one-brain route', () => {
   })
   it('the stream filter asks for it on the one-brain route only (wiring, read from the source)', () => {
     const src = readFileSync(join(__dirname, 'streamEnrichment.ts'), 'utf8')
-    expect(src).toContain("...(collector?.oneBrain === true ? { knownSightsUnlabelled: true, keepNamedVenues: true } : {})")
+    // 02/11: one brain also turns the return-day top-up off (round26.test.ts); these two keys are unchanged
+    expect(src).toContain("...(collector?.oneBrain === true ? { knownSightsUnlabelled: true, keepNamedVenues: true, topUpReturnDay: false } : {})")
   })
   // Review 30/10 (read-only): a stop the tools did not return was renamed to ANOTHER retrieved place of the same kind (a hotel became a
   // different hotel, its description wiped) or, for a meal, replaced by "Ăn trưa gần chỗ ở". Renaming tells the user something false.
@@ -62,7 +63,8 @@ describe('N3 · plan card sights on the one-brain route', () => {
   })
   it('the stream filter asks for named venues to be kept on one brain only (wiring)', () => {
     const src = readFileSync(join(__dirname, 'streamEnrichment.ts'), 'utf8')
-    expect(src).toContain("...(collector?.oneBrain === true ? { knownSightsUnlabelled: true, keepNamedVenues: true } : {})")
+    // 02/11: one brain also turns the return-day top-up off (round26.test.ts); these two keys are unchanged
+    expect(src).toContain("...(collector?.oneBrain === true ? { knownSightsUnlabelled: true, keepNamedVenues: true, topUpReturnDay: false } : {})")
   })
   it('other routes: the tag and the general-knowledge line stay as before', () => {
     const it0 = items(guardPlanItems(plan([BEACH]), PLACES, { destination: 'Đà Nẵng', keepSights: true }))[0]
