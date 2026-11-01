@@ -60,6 +60,11 @@ export const PLACES_BUDGET_DEFAULT = 1
  * agent may ask several different questions in one turn (food, then attractions, then a hotel), never the same one twice.
  */
 export const PLACES_BUDGET_AGENT = 3
+/**
+ * One brain (owner UAT 02/11): the model plans its own searches, and a day out asks several (a stay, food, sights, the evening). At 3 a
+ * Quy Nhon plan had its "bar pub" searches refused and ended at dinner. 6 leaves room for a full day; the model decides how many it needs.
+ */
+export const PLACES_BUDGET_ONE_BRAIN = 6
 
 /**
  * Normalizes an intent to what actually decides the result set.
