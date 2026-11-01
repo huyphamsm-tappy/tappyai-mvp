@@ -19,6 +19,12 @@ final class ChatViewModel: AppObservableObject {
     /// What the pipeline is doing right now, as the server wrote it (`tappy.progress.v1`); shown in the
     /// thinking indicator until the answer starts. Never text of the answer, never persisted.
     @AppPublished var progressHint: String? = nil
+    /// The turn that is running RIGHT NOW: its Deep Research card, its charts and its section pictures, as they arrive, for the card to draw
+    /// live (web `ChatInterface`; Android `_streamingResearch`). Each is also held on the reply bubble, which keeps them when the turn ends,
+    /// is stopped or drops after some text; these are cleared when a turn starts and when it ends. Never text, never saved.
+    @AppPublished private(set) var liveResearch: ResearchStatus? = nil
+    @AppPublished private(set) var liveCharts: [ResearchChart] = []
+    @AppPublished private(set) var liveDocMedia: [DocMediaItem] = []
     @AppPublished var thinkHintIndex: Int = 0
     @AppPublished var activeTool: String? = nil
     @AppPublished var conversationId: String? = nil
@@ -437,6 +443,8 @@ final class ChatViewModel: AppObservableObject {
         stopThinkTimer()
         isStreaming = false
         activeTool = nil
+        // The reply bubble keeps the card, the charts and the pictures that had arrived (like its text).
+        clearLiveAnnotations()
 
         if let last = messages.last, last.isAssistant, last.status == .streaming {
             messages[messages.count - 1].status = .complete
@@ -670,6 +678,7 @@ final class ChatViewModel: AppObservableObject {
         activeTool = nil
         endNotice = nil
         progressHint = nil
+        clearLiveAnnotations()
         startThinkTimer()
         // The mode this question goes out in, read now: a later pick is for the next question.
         let sentMode = mode
@@ -765,10 +774,20 @@ final class ChatViewModel: AppObservableObject {
                         streamReportedError = true
                         self.log.error("server error part in the chat stream: \(String(decoding: payload.prefix(200), as: UTF8.self))")
 
-                    // The Deep Research card, its charts and the section pictures: read and checked by the parser; the
-                    // turn keeps them in the next step.
-                    case .research, .charts, .docMedia:
-                        break
+                    // The Deep Research card, its charts and the section pictures (read and checked by the parser). The latest
+                    // of each is the turn's. They go on the reply bubble as they arrive - so a Stop, or a drop after some text,
+                    // keeps them with the text - and are published for the card to draw live. Never appended to `content`.
+                    case .research(let status):
+                        edit { $0.research = status }
+                        self.liveResearch = status
+
+                    case .charts(let charts):
+                        edit { $0.charts = charts }
+                        self.liveCharts = charts
+
+                    case .docMedia(let items):
+                        edit { $0.docMedia = items }
+                        self.liveDocMedia = items
 
                     case .messageStart, .unknown:
                         break
@@ -794,6 +813,7 @@ final class ChatViewModel: AppObservableObject {
                 edit { $0.status = .complete }
                 self.isStreaming = false
                 self.activeTool = nil
+                self.clearLiveAnnotations()
                 self.stopThinkTimer()
                 self.hasMemory = true
 
@@ -808,6 +828,7 @@ final class ChatViewModel: AppObservableObject {
 
                 self.isStreaming = false
                 self.activeTool = nil
+                self.clearLiveAnnotations()
                 self.stopThinkTimer()
 
                 if error is CancellationError || (error as? AppError) == .cancellation {
@@ -839,6 +860,13 @@ final class ChatViewModel: AppObservableObject {
         return p.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
             && p.ctaButtons.isEmpty && p.plan == nil && p.followups.isEmpty && p.images.isEmpty
             && p.shopping == nil && p.places.isEmpty && p.ask.isEmpty && p.media.isEmpty
+    }
+
+    /// The running turn's card, charts and pictures are gone from the live state (the reply bubble holds them).
+    private func clearLiveAnnotations() {
+        liveResearch = nil
+        liveCharts = []
+        liveDocMedia = []
     }
 
     // MARK: - Think timer
