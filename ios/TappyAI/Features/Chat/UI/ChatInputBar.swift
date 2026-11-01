@@ -21,6 +21,14 @@ struct ChatInputBar: View {
     /// «📍 Gần bạn ✕»: the device-context chip lives WITH the input (right above the box), not floating above the list.
     var showNearYou = false
     var onRemoveNearYou: () -> Void = {}
+    /// The answer mode in use and what the "+" menu offers (web `ChatInterface.tsx`): only Deep Research is an item. A menu with
+    /// nothing to offer and no attach action draws no "+".
+    var mode: ChatMode = .auto
+    var menuModes: [ChatMode] = []
+    var onSelectMode: (ChatMode) -> Void = { _ in }
+    var onClearMode: () -> Void = {}
+    /// Adding a photo or PDF. Nil = this build cannot attach yet: the item is not shown.
+    var onAttach: (() -> Void)? = nil
 
     @FocusState private var isFocused: Bool
     @State private var showEmojiPanel = false
@@ -131,8 +139,17 @@ struct ChatInputBar: View {
                         .padding(.horizontal, Spacing.md)
                 }
 
+                // The mode in use, with its ×: back to Auto.
+                if let modeKey = mode.titleKey {
+                    modeChip(titleKey: modeKey)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.horizontal, Spacing.md)
+                }
+
                 // Input row
                 HStack(alignment: .bottom, spacing: Spacing.xs) {
+                    if showsPlusMenu { plusMenu }
+
                     // Text input
                     TextField("chat.input.placeholder", text: $text, axis: .vertical)
                         .font(TappyFont.body)
@@ -234,6 +251,67 @@ struct ChatInputBar: View {
         }
     }
 
+    private var showsPlusMenu: Bool { onAttach != nil || !menuModes.isEmpty }
+
+    /// «+» beside the box: attach (when this build can) and the modes the plan offers, the one in use ticked.
+    private var plusMenu: some View {
+        Menu {
+            if let onAttach {
+                Button(action: onAttach) {
+                    Label(NSLocalizedString("chat.composer.attach", comment: ""), systemImage: "paperclip")
+                }
+                .accessibilityHint(Text("chat.composer.attachHint"))
+            }
+            ForEach(menuModes, id: \.self) { item in
+                if let key = item.titleKey {
+                    Button {
+                        onSelectMode(item)
+                    } label: {
+                        if mode == item {
+                            Label(NSLocalizedString(key, comment: ""), systemImage: "checkmark")
+                        } else {
+                            Text(NSLocalizedString(key, comment: ""))
+                        }
+                    }
+                    .accessibilityAddTraits(mode == item ? .isSelected : [])
+                    .accessibilityHint(Text(LocalizedStringKey(item.hintKey ?? "")))
+                }
+            }
+        } label: {
+            Image(systemName: "plus")
+                .font(.system(size: 18, weight: .medium))
+                .foregroundStyle(TappyColor.textSecondary)
+                .frame(width: 44, height: 44)
+                .background(TappyColor.surface)
+                .clipShape(RoundedRectangle(cornerRadius: Radius.lg, style: .continuous))
+        }
+        .disabled(isStreaming)
+        .opacity(isStreaming ? 0.4 : 1)
+        .accessibilityLabel(Text("chat.composer.plus"))
+        .accessibilityAddTraits(.isButton)
+    }
+
+    /// «Nghiên cứu sâu ✕»: states the mode and turns it off.
+    private func modeChip(titleKey: String) -> some View {
+        HStack(spacing: Spacing.xxs) {
+            Text(LocalizedStringKey(titleKey))
+                .font(.system(size: 12, weight: .medium))
+                .foregroundStyle(TappyColor.secondary)
+                .padding(.leading, Spacing.sm)
+            Button(action: onClearMode) {
+                Image(systemName: "xmark")
+                    .font(.system(size: 10, weight: .semibold))
+                    .foregroundStyle(TappyColor.textSecondary)
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(Text("chat.mode.off"))
+            .minimumTapTarget()
+        }
+        .background(TappyColor.secondary.opacity(0.1))
+        .clipShape(Capsule())
+        .accessibilityElement(children: .contain)
+    }
+
     private var emojiGrid: some View {
         VStack(alignment: .leading, spacing: Spacing.xs) {
             Text("chat.pickEmoji")
@@ -283,5 +361,24 @@ struct ChatInputBar: View {
 
     private var canSend: Bool {
         !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && !isStreaming
+    }
+}
+
+extension ChatMode {
+    /// The catalog key of the mode's name where the composer shows one (the menu item and the chip). Only Deep Research is a
+    /// choice; Auto, Chat, Web and Think have no name there.
+    var titleKey: String? {
+        switch self {
+        case .deep: return "chat.mode.deep"
+        case .auto, .chat, .web, .think: return nil
+        }
+    }
+
+    /// The catalog key of the mode's one-line hint, read by VoiceOver on the menu item.
+    var hintKey: String? {
+        switch self {
+        case .deep: return "chat.mode.deepHint"
+        case .auto, .chat, .web, .think: return nil
+        }
     }
 }

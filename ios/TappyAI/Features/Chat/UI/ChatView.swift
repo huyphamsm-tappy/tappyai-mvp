@@ -114,7 +114,11 @@ struct ChatView: View {
                             : "Tappy theo dõi "
                         },
                         showNearYou: vm.locationContextEnabled && vm.hasLocationContext,
-                        onRemoveNearYou: { vm.locationContextEnabled = false }
+                        onRemoveNearYou: { vm.locationContextEnabled = false },
+                        mode: vm.mode,
+                        menuModes: vm.menuModes,
+                        onSelectMode: { vm.selectMode($0) },
+                        onClearMode: { vm.clearMode() }
                     )
                     // Blocked under 18, or a turn held for the AI-sharing sheet: the input is locked (and send() refuses too).
                     .disabled(vm.isAgeBlocked || vm.isAwaitingConsent)
@@ -191,6 +195,8 @@ struct ChatView: View {
                 close: { showVoice = false }
             )
         }
+        // The "+" menu follows the account's plan; unknown (404, offline) keeps the whole menu.
+        .task { await vm.loadPlanAccess() }
         .task {
             vm.restorePendingChat()
             if vm.conversationId != nil && vm.messages.isEmpty {

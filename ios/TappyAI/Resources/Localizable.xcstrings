@@ -30477,6 +30477,108 @@
           }
         }
       }
+    },
+    "chat.composer.plus": {
+      "extractionState": "manual",
+      "localizations": {
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thêm tệp hoặc chọn chế độ"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add a file or choose a mode"
+          }
+        }
+      }
+    },
+    "chat.composer.attach": {
+      "extractionState": "manual",
+      "localizations": {
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thêm ảnh & tệp PDF"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add photos & PDF files"
+          }
+        }
+      }
+    },
+    "chat.composer.attachHint": {
+      "extractionState": "manual",
+      "localizations": {
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ảnh chụp, ảnh màn hình, PDF tới 3 MB"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photos, screenshots, PDFs up to 3 MB"
+          }
+        }
+      }
+    },
+    "chat.mode.deep": {
+      "extractionState": "manual",
+      "localizations": {
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nghiên cứu sâu"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deep research"
+          }
+        }
+      }
+    },
+    "chat.mode.deepHint": {
+      "extractionState": "manual",
+      "localizations": {
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lập kế hoạch, đọc nhiều nguồn, viết báo cáo (1–3 phút)"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plans, reads many sources, writes a report (1–3 minutes)"
+          }
+        }
+      }
+    },
+    "chat.mode.off": {
+      "extractionState": "manual",
+      "localizations": {
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tắt chế độ"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Turn the mode off"
+          }
+        }
+      }
     }
   }
 }
