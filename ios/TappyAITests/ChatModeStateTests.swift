@@ -3,7 +3,7 @@ import XCTest
 
 /// The chat mode in the view model (web `ChatInterface.tsx` `chatMode`; Android 86addc8, 5340e3b, 257c1ee):
 /// the menu's choice is what the turn sends; Deep Research goes back to Auto when the stream OPENS (web `onResponse`), not when the
-/// question is sent, so a request that is refused or never connects keeps it; the menu follows the plan once it is read.
+/// question is sent, so a request that is refused or never connects keeps it. The menu is the fixed Deep-only one (the app reads no plan).
 @MainActor
 final class ChatModeStateTests: XCTestCase {
 
@@ -13,10 +13,8 @@ final class ChatModeStateTests: XCTestCase {
         return session
     }
 
-    private func makeViewModel(_ streaming: StreamingClient,
-                               planAccess: ChatViewModel.PlanAccessLoader? = nil) -> ChatViewModel {
-        ChatViewModel(service: ChatService(api: MockAPIClient(), streaming: streaming), session: modeSession(),
-                      loadPlanAccess: planAccess)
+    private func makeViewModel(_ streaming: StreamingClient) -> ChatViewModel {
+        ChatViewModel(service: ChatService(api: MockAPIClient(), streaming: streaming), session: modeSession())
     }
 
     private func sentMode(_ streaming: SequencedChatStreaming, at index: Int) throws -> String? {
@@ -95,41 +93,4 @@ final class ChatModeStateTests: XCTestCase {
         XCTAssertEqual(vm.mode, .deep)
     }
 
-    func testAPlanWithoutDeepResearchEmptiesTheMenuAndDropsAPickedMode() async {
-        let vm = makeViewModel(SequencedChatStreaming([]), planAccess: {
-            PlanAccess(signedIn: true, state: "ACTIVE", planId: "free")
-        })
-        vm.selectMode(.deep)
-        await vm.loadPlanAccess()
-        XCTAssertEqual(vm.menuModes, [])
-        XCTAssertEqual(vm.mode, .auto)
-    }
-
-    func testAPaidPlanKeepsTheMenuAndAPickedMode() async {
-        let vm = makeViewModel(SequencedChatStreaming([]), planAccess: {
-            PlanAccess(signedIn: true, state: "ACTIVE", planId: "coco")
-        })
-        vm.selectMode(.deep)
-        await vm.loadPlanAccess()
-        XCTAssertEqual(vm.menuModes, [.deep])
-        XCTAssertEqual(vm.mode, .deep)
-    }
-
-    func testAPlanThatIsNotKnownKeepsTheWholeMenu() async {
-        let vm = makeViewModel(SequencedChatStreaming([]), planAccess: { nil })
-        await vm.loadPlanAccess()
-        XCTAssertEqual(vm.menuModes, [.deep])
-    }
-
-    func testThePlanIsReadOnce() async {
-        final class Counter: @unchecked Sendable { var n = 0 }
-        let counter = Counter()
-        let vm = makeViewModel(SequencedChatStreaming([]), planAccess: {
-            counter.n += 1
-            return nil
-        })
-        await vm.loadPlanAccess()
-        await vm.loadPlanAccess()
-        XCTAssertEqual(counter.n, 1)
-    }
 }

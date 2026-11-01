@@ -29,14 +29,6 @@ enum ChatMode: String, CaseIterable, Sendable {
 
     /// What the "+" menu offers beside attaching. People just type: Auto picks a quick answer, a web lookup or thinking by itself,
     /// so only Deep Research is a choice. Chat, Web and Think stay modes the server understands, not menu items.
+    /// The menu is the same for everyone: the app reads no plan (App Review 3.1.1), and the server runs a mode the plan lacks as Chat.
     static let menu: [ChatMode] = [.deep]
-
-    /// The modes the menu offers for this account (web `tiers.ts`, which the server enforces: a mode the plan lacks runs as Chat).
-    /// A visitor, or an account without a live plan, or the free plan, has none; every paid plan has the whole menu.
-    /// `nil` = plans not on sale or not known yet: the whole menu, never less.
-    static func menuFor(_ access: PlanAccess?) -> [ChatMode] {
-        guard let access else { return menu }
-        if !access.signedIn || access.state != "ACTIVE" || access.planId == "free" { return [] }
-        return menu
-    }
 }

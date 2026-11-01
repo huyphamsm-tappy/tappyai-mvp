@@ -2,7 +2,8 @@ import XCTest
 @testable import TappyAI
 
 /// The mode rules of the composer's "+" menu (web `ChatInterface.tsx`, `modeAccess.ts`; Android `ChatMode.kt`): a mode picked again
-/// goes back to Auto, Deep Research is for one question, and only Deep Research is a menu item — for an account whose plan has it.
+/// goes back to Auto, Deep Research is for one question, and only Deep Research is a menu item. The menu does not follow the plan on iOS
+/// (App Review 3.1.1: the app reads no plan; the server runs a mode the plan lacks as Chat).
 final class ChatModeMenuRulesTests: XCTestCase {
 
     func testPickingAnotherModeSelectsIt() {
@@ -27,27 +28,4 @@ final class ChatModeMenuRulesTests: XCTestCase {
         XCTAssertEqual(ChatMode.menu, [.deep])
     }
 
-    func testUnknownPlanKeepsTheWholeMenu() {
-        XCTAssertEqual(ChatMode.menuFor(nil), ChatMode.menu)
-    }
-
-    func testAVisitorGetsNoModeItem() {
-        XCTAssertEqual(ChatMode.menuFor(PlanAccess(signedIn: false, state: "NONE", planId: nil)), [])
-    }
-
-    func testAnAccountWithoutALivePlanGetsNoModeItem() {
-        for state in ["NONE", "EXPIRED", "CANCELLED", "PENDING"] {
-            XCTAssertEqual(ChatMode.menuFor(PlanAccess(signedIn: true, state: state, planId: "coco")), [], state)
-        }
-    }
-
-    func testTheFreePlanGetsNoModeItem() {
-        XCTAssertEqual(ChatMode.menuFor(PlanAccess(signedIn: true, state: "ACTIVE", planId: "free")), [])
-    }
-
-    func testAPaidActivePlanKeepsTheWholeMenu() {
-        for plan in ["coco", "promax1m", "promax3m"] {
-            XCTAssertEqual(ChatMode.menuFor(PlanAccess(signedIn: true, state: "ACTIVE", planId: plan)), ChatMode.menu, plan)
-        }
-    }
 }

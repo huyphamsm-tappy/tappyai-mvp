@@ -23,8 +23,7 @@ struct ChatView: View {
             loadAgeStatus: { [api = deps.api] in
                 try await ProfileService(api: api).fetchAgeStatus()
             },
-            consent: deps.aiConsent,
-            loadPlanAccess: { await service.getPlanAccess() }
+            consent: deps.aiConsent
         ))
     }
 
@@ -195,8 +194,6 @@ struct ChatView: View {
                 close: { showVoice = false }
             )
         }
-        // The "+" menu follows the account's plan; unknown (404, offline) keeps the whole menu.
-        .task { await vm.loadPlanAccess() }
         .task {
             vm.restorePendingChat()
             if vm.conversationId != nil && vm.messages.isEmpty {

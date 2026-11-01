@@ -109,16 +109,11 @@ final class ChatViewModel: AppObservableObject {
 
     // MARK: - Answer mode (the composer's "+" menu)
 
-    /// Reads the account's plan (`GET /api/payments/me`); nil = not known.
-    typealias PlanAccessLoader = @Sendable () async -> PlanAccess?
-    private let planAccessLoader: PlanAccessLoader?
-    private var planAccessRead = false
-
     /// The mode the next question is sent in. Auto unless the person picked Deep Research; it goes back to Auto when that
     /// question's stream opens (web `onResponse`), never when it is sent.
     @AppPublished private(set) var mode: ChatMode = .auto
-    /// The modes the "+" menu offers. Starts as the whole menu and follows the plan once it has been read.
-    @AppPublished private(set) var menuModes: [ChatMode] = ChatMode.menu
+    /// The modes the "+" menu offers: the fixed Deep-only menu.
+    let menuModes: [ChatMode] = ChatMode.menu
 
     /// The menu's choice: ignored when the mode is not on offer; the mode in use, picked again, goes back to Auto.
     func selectMode(_ choice: ChatMode) {
@@ -131,24 +126,12 @@ final class ChatViewModel: AppObservableObject {
         mode = .auto
     }
 
-    /// Reads the plan once and narrows the menu to what it has; a mode picked meanwhile that the menu no longer has goes back to Auto.
-    /// Unknown (no loader, 404, offline) leaves the whole menu.
-    func loadPlanAccess() async {
-        guard !planAccessRead, let planAccessLoader else { return }
-        planAccessRead = true
-        let access = await planAccessLoader()
-        menuModes = ChatMode.menuFor(access)
-        if mode != .auto, !menuModes.contains(mode) { mode = .auto }
-    }
-
     init(service: ChatService, session: SessionStore, category: String = "general",
          conversationId: String? = nil, savedMessages: [Conversation.ConversationMessage]? = nil,
          planShare: PlanSharing? = nil, saveDateOfBirth: DateOfBirthSaver? = nil,
          loadAgeStatus: AgeStatusLoader? = nil,
          guestAge: GuestAgeStore = GuestAgeStore(),
-         consent: AIConsentCoordinator? = nil,
-         loadPlanAccess: PlanAccessLoader? = nil) {
-        self.planAccessLoader = loadPlanAccess
+         consent: AIConsentCoordinator? = nil) {
         self.consent = consent
         self.service = service
         self.session = session
