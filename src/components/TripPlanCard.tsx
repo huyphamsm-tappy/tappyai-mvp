@@ -10,8 +10,8 @@ import { withPlacePhotos, type PlacePhotoSource } from '@/lib/plans/share/planPh
 import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 
 const DAY_COVERS = process.env.NEXT_PUBLIC_CONSULT_V3 === '1'
-// CONSULT_ONE_BRAIN UAT build (inlined at build, default OFF): a multi-day plan lists every day, one after the other, instead of day tabs.
-const ALL_DAYS = process.env.NEXT_PUBLIC_CONSULT_ONE_BRAIN === '1'
+// Owner UAT 02/11: a multi-day plan is the designed card - a page per day behind day tabs - on every build. The 29/10 one-brain variant
+// that listed every day in one long page is withdrawn.
 
 export interface PlanItem {
   time: string
@@ -86,9 +86,7 @@ export default function TripPlanCard({ plan: rawPlan, placePhotos }: {
   // CONSULT_V3 UAT build (NEXT_PUBLIC_CONSULT_V3, inlined at build): a cover photo for the day, like ChatGPT's itinerary — the first safe
   // https photo among the day's own stops (server-matched place photos; no new image source, no new request).
   const coverOf = (day: typeof currentDay): string | null => DAY_COVERS ? day?.items.map(it => it.photo_url).find((u): u is string => !!u && isSafeHttpsUrl(u)) ?? null : null
-  // One brain UAT (29/10, 25-question run): ChatGPT shows every day of an itinerary in the answer; here days 2-3 were only a tab name until tapped.
-  const showAll = ALL_DAYS && plan.days.length > 1
-  const daysToShow = showAll ? plan.days : [currentDay]
+  const daysToShow = [currentDay]
 
   return (
     <div className="mt-3 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden bg-white dark:bg-gray-900 shadow-sm">
@@ -118,7 +116,7 @@ export default function TripPlanCard({ plan: rawPlan, placePhotos }: {
       </div>
 
       {/* ── Day tabs (multi-day trip only) ── */}
-      {plan.days.length > 1 && !showAll && (
+      {plan.days.length > 1 && (
         <div className="flex overflow-x-auto border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50 scrollbar-none">
           {plan.days.map((day, i) => (
             <button
@@ -140,9 +138,6 @@ export default function TripPlanCard({ plan: rawPlan, placePhotos }: {
       const dayCover = coverOf(day)
       return (
       <div key={di}>
-      {showAll && (
-        <div className="px-4 py-2 text-xs font-semibold text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-800" data-plan-day-heading>{day?.label}</div>
-      )}
       {dayCover && (
         <div className="relative">
           <img src={dayCover} alt={day?.label ?? ''} loading="lazy" onError={(e) => { e.currentTarget.parentElement!.style.display = 'none' }} className="w-full h-40 object-cover" />

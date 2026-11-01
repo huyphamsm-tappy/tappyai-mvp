@@ -26,16 +26,21 @@ const plan: TappyPlan = {
 }
 const load = async () => (await import('./TripPlanCard')).default
 
-describe('TripPlanCard: every day listed (one brain UAT build)', () => {
-  it('ON: the stops of days 1, 2 and 3 are all in the card, each under its day heading, and there are no day tabs', async () => {
+describe('TripPlanCard: day tabs, the designed layout (owner UAT 02/11)', () => {
+  // Owner UAT 02/11 (approved): the card is the designed one - a page per day behind day tabs - on the one-brain build too. The 29/10
+  // "every day in one long page" variant (NEXT_PUBLIC_CONSULT_ONE_BRAIN) read as one long scroll and is withdrawn.
+  it('ONE BRAIN BUILD: day 1 and the day tabs, as designed; tapping a tab shows that day', async () => {
     vi.stubEnv('NEXT_PUBLIC_CONSULT_ONE_BRAIN', '1')
     vi.resetModules()
     const Card = await load()
-    const { container } = render(<Card plan={plan} />)
-    const text = container.textContent ?? ''
-    for (const s of ['Bay Hà Nội – Phú Quốc', 'Bãi Sao', 'Chợ đêm Dương Đông']) expect(text).toContain(s)
-    expect([...container.querySelectorAll('[data-plan-day-heading]')].map(e => e.textContent)).toEqual(['Ngày 1 — Đến nơi', 'Ngày 2 — Nam đảo', 'Ngày 3 — Bắc đảo'])
-    expect(container.querySelectorAll('button').length).toBe(2) // the two share buttons only
+    const { container, getByText } = render(<Card plan={plan} />)
+    expect(container.textContent).toContain('Bay Hà Nội – Phú Quốc')
+    expect(container.textContent).not.toContain('Bãi Sao')
+    expect(container.querySelectorAll('[data-plan-day-heading]').length).toBe(0)
+    expect(container.querySelectorAll('button').length).toBe(2 + 3) // share ×2 + three day tabs
+    getByText('Ngày 2 — Nam đảo').click()
+    await Promise.resolve()
+    expect(container.textContent).toContain('Bãi Sao')
   })
   it('OFF: day 1 and the day tabs, as before', async () => {
     vi.resetModules()
