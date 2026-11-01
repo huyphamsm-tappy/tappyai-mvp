@@ -22,6 +22,10 @@ struct ShoppingOfferView: Codable, Equatable, Sendable {
     let price: Double?
     let currency: String?
     let condition: String?
+    /// The rating THIS listing carries (never the entity's) and its review count — the server's, shown beside the price (web `Rating`).
+    /// `var` with a default so older markers decode as before and existing call sites keep their memberwise form.
+    var rating: Double? = nil
+    var ratingCount: Int? = nil
 }
 
 /// A Commerce Link the platform attached to a product entity (web `SynthesisCommerceView`,
@@ -141,6 +145,9 @@ struct ShoppingEntityView: Codable, Equatable, Sendable, Identifiable {
     let commerce: ShoppingCommerceView?
     /// Every Commerce Link CCP attached, in CCP's ranking order.
     let commerceLinks: [ShoppingCommerceView]?
+    /// The stated configuration as data (chip / ram / storage / size) and the seller's condition, shown as chips (web `Specs`).
+    let specs: [ShoppingSpecView]
+    let condition: ShoppingConditionView?
 
     var id: String { key }
 
@@ -162,7 +169,9 @@ struct ShoppingEntityView: Codable, Equatable, Sendable, Identifiable {
         image: String? = nil,
         offers: [ShoppingOfferView] = [],
         commerce: ShoppingCommerceView? = nil,
-        commerceLinks: [ShoppingCommerceView]? = nil
+        commerceLinks: [ShoppingCommerceView]? = nil,
+        specs: [ShoppingSpecView] = [],
+        condition: ShoppingConditionView? = nil
     ) {
         self.key = key
         self.config = config
@@ -174,6 +183,8 @@ struct ShoppingEntityView: Codable, Equatable, Sendable, Identifiable {
         self.offers = offers
         self.commerce = commerce
         self.commerceLinks = commerceLinks
+        self.specs = specs
+        self.condition = condition
     }
 
     // Defaults on decode: a field the server omitted must not fail the whole decision, but it must
@@ -192,6 +203,9 @@ struct ShoppingEntityView: Codable, Equatable, Sendable, Identifiable {
         commerce = try? c.decode(ShoppingCommerceView.self, forKey: .commerce)
         // nil when absent (a stored marker from before commerceLinks), lossy when present.
         commerceLinks = c.contains(.commerceLinks) ? c.lossyArray(ShoppingCommerceView.self, forKey: .commerceLinks) : nil
+        // Absent in an older marker: no specs, no condition. One odd spec costs only itself.
+        specs = c.lossyArray(ShoppingSpecView.self, forKey: .specs)
+        condition = try? c.decode(ShoppingConditionView.self, forKey: .condition)
     }
 }
 
