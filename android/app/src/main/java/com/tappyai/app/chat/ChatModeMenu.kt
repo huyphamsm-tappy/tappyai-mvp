@@ -72,7 +72,7 @@ private val ChatMode.hint: Int
 
 /** The "+" button left of the input (web: `w-11 h-11 rounded-2xl`); its menu lists [ChatMode.menu], the one in use ticked. */
 @Composable
-internal fun ChatModeMenuButton(mode: ChatMode, enabled: Boolean, container: Color, onPick: (ChatMode) -> Unit) {
+internal fun ChatModeMenuButton(mode: ChatMode, enabled: Boolean, container: Color, onPick: (ChatMode) -> Unit, onAttach: (() -> Unit)? = null) {
     var open by remember { mutableStateOf(false) }
     val menuLabel = stringResource(R.string.chat_mode_menu)
     Box {
@@ -89,6 +89,17 @@ internal fun ChatModeMenuButton(mode: ChatMode, enabled: Boolean, container: Col
             Text("+", fontSize = 22.sp, color = if (open) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
         }
         DropdownMenu(expanded = open, onDismissRequest = { open = false }, modifier = Modifier.width(288.dp)) {
+            // 02/11: attaching first, as in the web's menu (📎 «Thêm ảnh & tệp PDF»)
+            if (onAttach != null) DropdownMenuItem(
+                leadingIcon = { Text("📎", fontSize = 18.sp) },
+                text = {
+                    Column(modifier = Modifier.padding(vertical = 4.dp)) {
+                        Text(stringResource(R.string.chat_attach), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium)
+                        Text(stringResource(R.string.chat_attach_hint), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    }
+                },
+                onClick = { open = false; onAttach() },
+            )
             ChatMode.menu.forEach { item ->
                 val on = item == mode
                 DropdownMenuItem(

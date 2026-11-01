@@ -148,10 +148,11 @@ class RealChatRepository @Inject constructor(
      *  send — the user's typed text still reaches the model even if the photo didn't attach. */
     private fun ChatMessage.toDto(): ChatMessageDto {
         val role = if (this.role == TappyChatRole.User) "user" else "assistant"
+        val isPdf = attachmentMime == PDF_MIME
         val dataUrl = imageUri?.let { uri ->
             try {
                 val bytes = context.contentResolver.openInputStream(uri)?.use { it.readBytes() }
-                val mimeType = context.contentResolver.getType(uri)?.takeIf { it.startsWith("image/") } ?: "image/jpeg"
+                val mimeType = if (isPdf) PDF_MIME else context.contentResolver.getType(uri)?.takeIf { it.startsWith("image/") } ?: "image/jpeg"
                 bytes?.let { "data:$mimeType;base64,${Base64.encodeToString(it, Base64.NO_WRAP)}" }
             } catch (e: Exception) {
                 logger.e(TAG, "Failed to read chat image attachment", e)
@@ -164,6 +165,8 @@ class RealChatRepository @Inject constructor(
         // (sanitizePriorAssistantContent). Sending the reader-facing [text] lost that state: after
         // "Lên kế hoạch chi tiết" the server asked "Bạn muốn đi đâu?" on Android (UAT 2026-09-29).
         val body = historyBody(role, text, raw)
+        // 02/11: a PDF goes as the web sends it (an attachment; the server reads its text); a photo as the vision part, as before
+        if (isPdf && dataUrl != null) return ChatMessageDto(role = role, content = textContent(body), experimental_attachments = listOf(pdfAttachment(dataUrl, attachmentName.orEmpty())))
         val content = if (dataUrl != null) textAndImageContent(body, dataUrl) else textContent(body)
         return ChatMessageDto(role = role, content = content)
     }

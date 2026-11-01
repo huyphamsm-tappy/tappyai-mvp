@@ -18,8 +18,11 @@ internal fun compactHistory(messages: List<ChatMessage>, hasImage: (ChatMessage)
     val lastAssistant = messages.indexOfLast { it.role == TappyChatRole.Assistant }
     return messages.mapIndexed { i, m ->
         when {
-            m.role == TappyChatRole.User && i != lastUser && hasImage(m) ->
-                m.copy(imageUri = null, text = if (m.text.isBlank()) ATTACHED_NOTE else "${m.text}\n$ATTACHED_NOTE")
+            m.role == TappyChatRole.User && i != lastUser && hasImage(m) -> {
+                // a PDF is named, a photo is "photo" (web: the attachment's name)
+                val note = m.attachmentName?.takeIf { m.attachmentMime == PDF_MIME }?.let { "[Attached with this message: $it]" } ?: ATTACHED_NOTE
+                m.copy(imageUri = null, attachmentMime = null, attachmentName = null, text = if (m.text.isBlank()) note else "${m.text}\n$note")
+            }
             m.role == TappyChatRole.Assistant && i != lastAssistant && m.raw.isNotEmpty() -> m.copy(raw = "")
             else -> m
         }

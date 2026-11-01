@@ -472,16 +472,38 @@ class ChatViewModel @Inject constructor(
         voiceInputBase = null
     }
 
-    fun onImagePicked(uri: Uri) { pendingImageUri = uri }
+    fun onImagePicked(uri: Uri) { pendingImageUri = uri; pendingMime = null; pendingName = null; attachError = null }
 
-    fun onClearPendingImage() { pendingImageUri = null }
+    /**
+     * 02/11 (web parity: the composer's «Thêm ảnh & tệp PDF»): a photo or a PDF picked from the "+" menu, checked with the web's limits
+     * before it is staged; a refused file says why (the web's words) and stages nothing.
+     */
+    fun onAttachmentPicked(uri: Uri, mime: String?, name: String?, sizeBytes: Long?) {
+        when (attachmentCheck(mime, sizeBytes)) {
+            AttachCheck.Image -> onImagePicked(uri)
+            AttachCheck.Pdf -> { pendingImageUri = uri; pendingMime = mime; pendingName = name; attachError = null }
+            AttachCheck.PdfTooLarge -> attachError = stringProvider.get(R.string.chat_attach_pdf_too_large)
+            AttachCheck.Unsupported -> attachError = stringProvider.get(R.string.chat_attach_unsupported)
+        }
+    }
+
+    fun onClearPendingImage() { pendingImageUri = null; pendingMime = null; pendingName = null }
+
+    /** The staged file's type when it is a PDF (null = a photo) and its name; why the last pick was refused, or null. */
+    var pendingMime by mutableStateOf<String?>(null)
+        private set
+    var pendingName by mutableStateOf<String?>(null)
+        private set
+    var attachError by mutableStateOf<String?>(null)
+        private set
 
     fun onSend() {
         val text = input.trim()
         val image = pendingImageUri
         if (text.isEmpty() && image == null) return
-        sendUserMessage(text, image)
-        pendingImageUri = null
+        sendUserMessage(text, image, pendingMime, pendingName)
+        onClearPendingImage()
+        attachError = null
     }
 
     fun onMoodSelected(mood: MoodChip) = sendUserMessage(mood.prompt)
@@ -673,8 +695,8 @@ class ChatViewModel @Inject constructor(
         analytics.track("shopping_search_click", mapOf("domain" to "shopping", "platform" to platform))
     }
 
-    private fun sendUserMessage(text: String, imageUri: Uri? = null) {
-        _messages.update { it + ChatMessage(id = nextId++, role = TappyChatRole.User, text = text, imageUri = imageUri) }
+    private fun sendUserMessage(text: String, imageUri: Uri? = null, attachmentMime: String? = null, attachmentName: String? = null) {
+        _messages.update { it + ChatMessage(id = nextId++, role = TappyChatRole.User, text = text, imageUri = imageUri, attachmentMime = attachmentMime, attachmentName = attachmentName) }
         input = ""
         streamAssistantReply(_messages.value)
     }

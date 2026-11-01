@@ -357,4 +357,9 @@
     <string name="chat_research_failed">The research could not be completed</string>
     <string name="chat_research_sources">Sources</string>
     <string name="chat_research_download">Download report:</string>
+    <!-- 02/11: attaching, the web's words (composer.attach*, attach.*) -->
+    <string name="chat_attach">Add photos &amp; PDF files</string>
+    <string name="chat_attach_hint">Photos, screenshots, PDFs up to 3 MB</string>
+    <string name="chat_attach_unsupported">Tappy can read images (PNG, JPG, WEBP, GIF) and PDF files.</string>
+    <string name="chat_attach_pdf_too_large">This PDF is larger than 3 MB, so Tappy cannot read it yet. Try a smaller file or only the pages you need.</string>
 </resources>

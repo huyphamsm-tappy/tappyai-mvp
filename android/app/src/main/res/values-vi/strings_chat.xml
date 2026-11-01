@@ -354,4 +354,9 @@
     <string name="chat_research_failed">Không hoàn thành được nghiên cứu</string>
     <string name="chat_research_sources">Nguồn</string>
     <string name="chat_research_download">Tải báo cáo:</string>
+    <!-- 02/11: đính kèm, đúng chữ của web (composer.attach*, attach.*) -->
+    <string name="chat_attach">Thêm ảnh &amp; tệp PDF</string>
+    <string name="chat_attach_hint">Ảnh chụp, ảnh màn hình, PDF tới 3 MB</string>
+    <string name="chat_attach_unsupported">Tappy đọc được ảnh (PNG, JPG, WEBP, GIF) và tệp PDF.</string>
+    <string name="chat_attach_pdf_too_large">Tệp PDF lớn hơn 3 MB, Tappy chưa đọc được. Bạn thử gửi tệp nhỏ hơn hoặc chỉ các trang cần hỏi.</string>
 </resources>

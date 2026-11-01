@@ -278,7 +278,10 @@ fun ChatScreen(
                         TappyChatRole.User -> Box(modifier = Modifier.messageAppear()) {
                             TappyChatBubble(role = TappyChatRole.User) {
                             Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.xs)) {
-                                message.imageUri?.let { uri ->
+                                // 02/11: a PDF shows as its name (the server reads its text), a photo as itself
+                                if (message.imageUri != null && message.attachmentMime == com.tappyai.app.chat.data.PDF_MIME) {
+                                    Text("📄 ${message.attachmentName ?: "PDF"}", style = MaterialTheme.typography.labelLarge)
+                                } else message.imageUri?.let { uri ->
                                     TappyImage(
                                         url = uri.toString(),
                                         contentDescription = null,
@@ -584,8 +587,32 @@ fun ChatScreen(
             contract = ActivityResultContracts.RequestPermission(),
         ) { granted -> if (granted) viewModel.startVoiceInput(deferAutoSend = true) }
 
+        // 02/11: the "+" menu's «Thêm ảnh & tệp PDF» (web parity); the file's type, name and size come from the system, checked before staging
+        val attachPicker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+            if (uri != null) {
+                val resolver = context.contentResolver
+                var name: String? = null
+                var size: Long? = null
+                runCatching {
+                    resolver.query(uri, arrayOf(android.provider.OpenableColumns.DISPLAY_NAME, android.provider.OpenableColumns.SIZE), null, null, null)?.use { c ->
+                        if (c.moveToFirst()) { name = c.getString(0); size = if (c.isNull(1)) null else c.getLong(1) }
+                    }
+                }
+                viewModel.onAttachmentPicked(uri, resolver.getType(uri), name, size)
+            }
+        }
         viewModel.pendingImageUri?.let { uri ->
-            PendingImagePreview(uri = uri, onClear = viewModel::onClearPendingImage)
+            if (viewModel.pendingMime == com.tappyai.app.chat.data.PDF_MIME) {
+                Row(modifier = Modifier.padding(horizontal = TappySpacing.md, vertical = TappySpacing.sm), verticalAlignment = Alignment.CenterVertically) {
+                    Text("📄 ${viewModel.pendingName ?: "PDF"}", style = MaterialTheme.typography.labelLarge, modifier = Modifier.weight(1f, fill = false))
+                    IconButton(onClick = viewModel::onClearPendingImage) {
+                        Icon(Icons.Filled.Close, contentDescription = stringResource(R.string.chat_clear_pending_image), modifier = Modifier.size(16.dp))
+                    }
+                }
+            } else PendingImagePreview(uri = uri, onClear = viewModel::onClearPendingImage)
+        }
+        viewModel.attachError?.let { why ->
+            Text(why, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.error, modifier = Modifier.padding(horizontal = TappySpacing.md))
         }
 
         // Quick prompt chips (web parity: the 4 static action chips above the composer —
@@ -613,6 +640,7 @@ fun ChatScreen(
             mode = chatMode,
             onModePicked = viewModel::onModeSelected,
             onModeCleared = viewModel::onModeCleared,
+            onAttach = { attachPicker.launch(ATTACHABLE_TYPES) },
             isListening = isListening,
             onVoice = {
                 if (ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO)
@@ -883,6 +911,7 @@ private fun ChatComposer(
     mode: ChatMode = ChatMode.Default,
     onModePicked: (ChatMode) -> Unit = {},
     onModeCleared: () -> Unit = {},
+    onAttach: (() -> Unit)? = null,
 ) {
     val canSend = input.isNotBlank() || hasPendingImage
     // Web parity: the composer's Smile button toggles an emoji panel; picking one inserts it
@@ -908,10 +937,7 @@ private fun ChatComposer(
             verticalAlignment = Alignment.Bottom,
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            // Attach button hidden for MVP — AI Chat is text-only, matching the web
-            // (ChatInterface: "Camera button hidden for MVP"). The staged-image plumbing
-            // (pendingImageUri → preview → vision send) stays dormant like the web's hidden
-            // file input, so re-enabling is a one-button change on both platforms.
+            // 02/11: attaching is the "+" menu's first item, as on the web (a photo or a PDF; pendingImageUri → preview → send).
             // ── Vietnamese IME composition ───────────────────────────────────────────
             // The value lives HERE as a TextFieldValue, not as the ViewModel's String.
             //
@@ -930,6 +956,7 @@ private fun ChatComposer(
                 enabled = !isResponding,
                 container = if (MaterialTheme.colorScheme.background.luminance() < 0.5f) WebGray800 else WebGray100,
                 onPick = onModePicked,
+                onAttach = onAttach,
             )
             var field by remember { mutableStateOf(TextFieldValue(input)) }
             // Only an EXTERNAL change resets the field — a voice transcript, a prefill, or the clear

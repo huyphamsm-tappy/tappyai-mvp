@@ -52,6 +52,10 @@ data class ChatMessage(
      */
     val errorAction: ChatErrorAction? = null,
     val imageUri: Uri? = null,
+    /** 02/11: what [imageUri] points at when it is not a photo - `application/pdf` (sent as an attachment, as on the web); null = a photo. */
+    val attachmentMime: String? = null,
+    /** The attached file's name (a PDF's, shown in the bubble and named in the history). */
+    val attachmentName: String? = null,
     /**
      * The assistant's reply EXACTLY as it arrived, markers included.
      *
