@@ -532,14 +532,18 @@ class ChatViewModel @Inject constructor(
         respondingJob?.cancel()
         respondingJob = null
         _isAssistantResponding.value = false
-        partialReplyMessage(nextId++, partial, interrupted = false)?.let { kept ->
+        partialReplyMessage(nextId++, partial, interrupted = false, currentAnnotations)?.let { kept ->
             _messages.update { it + kept }
             viewModelScope.launch { persistConversation() }
         }
+        currentAnnotations = null
     }
 
     /** The reply streaming right now (A6: kept on Stop); null when none is, or once it was built. */
     private var currentReply: StringBuilder? = null
+
+    /** The research card, charts and pictures the streaming turn has sent so far (kept on Stop and on a drop after text, like the text). */
+    private var currentAnnotations: TurnAnnotations? = null
 
     /**
      * Regenerates the last assistant reply — mirrors the web's `reload()` (Vercel AI SDK):
@@ -715,6 +719,8 @@ class ChatViewModel @Inject constructor(
 
             val reply = StringBuilder()
             currentReply = reply
+            val annotations = TurnAnnotations()
+            currentAnnotations = annotations
             try {
                 // The turn's LIVE place decision, if the stream carried one. It arrives on its own
                 // `8:` frame, usually before the prose finishes, and is held here until the message
@@ -739,9 +745,9 @@ class ChatViewModel @Inject constructor(
                         is ChatStreamEvent.Progress -> { serverSaidProgress = true; _streamingHint.value = event.text; return@collect }
                         // Last event of a reply that closed without `d:`/`3:`: the half answer stays, with an «answer again» notice.
                         ChatStreamEvent.Cut -> { _streamCut.value = true; return@collect }
-                        is ChatStreamEvent.Research -> { research = event.status; _streamingResearch.value = event.status; return@collect }
-                        is ChatStreamEvent.Charts -> { charts = event.charts; return@collect }
-                        is ChatStreamEvent.DocMedia -> { docMedia = event.items; return@collect }
+                        is ChatStreamEvent.Research -> { research = event.status; annotations.research = event.status; _streamingResearch.value = event.status; return@collect }
+                        is ChatStreamEvent.Charts -> { charts = event.charts; annotations.charts = event.charts; return@collect }
+                        is ChatStreamEvent.DocMedia -> { docMedia = event.items; annotations.docMedia = event.items; return@collect }
                         is ChatStreamEvent.TurnStatus -> { turnStatus = event.status; return@collect }
                         // Web parity (TOOL_HINTS): say which tool runs; the server's own progress line, when it sent one, wins.
                         is ChatStreamEvent.ToolCall -> { toolHint(event.name)?.takeIf { !serverSaidProgress }?.let { _streamingHint.value = it }; return@collect }
@@ -768,6 +774,7 @@ class ChatViewModel @Inject constructor(
                 // UAT3: one reply, not two — a reply that streamed the same answer twice is kept as
                 // its last version, on screen AND in what is saved (ReplyRepeat, web parity).
                 currentReply = null // built below: Stop no longer keeps a partial copy
+                currentAnnotations = null
                 val finalReply = ReplyRepeat.cleanRepeats(reply.toString())
                 val parsed = ChatResponseParser.parse(finalReply)
                 val followups = parsed.followups
@@ -845,13 +852,14 @@ class ChatViewModel @Inject constructor(
                 _streamingPlaces.value = null
                 _streamingResearch.value = null
                 if (currentReply === reply) currentReply = null
+                if (currentAnnotations === annotations) currentAnnotations = null
             }
         }
     }
 
     /** A6: the reply that failed after text, kept and marked interrupted; false when nothing arrived (the caller shows its error bubble). */
     private suspend fun keepInterrupted(reply: StringBuilder): Boolean {
-        val kept = partialReplyMessage(nextId++, reply.toString(), interrupted = true) ?: return false
+        val kept = partialReplyMessage(nextId++, reply.toString(), interrupted = true, currentAnnotations) ?: return false
         _messages.update { it + kept }
         persistConversation()
         return true

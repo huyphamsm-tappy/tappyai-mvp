@@ -10,7 +10,7 @@ internal fun reparseDue(lastAtMs: Long, nowMs: Long, delta: String): Boolean = n
  * [interrupted] = the stream failed after text (the web's "interrupted" line under it); false = the person tapped Stop (nothing added).
  * Nothing arrived → null (the caller shows its error bubble as before). The text is read like any reply, so no marker reaches the reader.
  */
-internal fun partialReplyMessage(id: Long, raw: String, interrupted: Boolean): ChatMessage? {
+internal fun partialReplyMessage(id: Long, raw: String, interrupted: Boolean, annotations: TurnAnnotations? = null): ChatMessage? {
     if (raw.isBlank()) return null
     val parsed = ChatResponseParser.parse(ReplyRepeat.cleanRepeats(raw))
     if (parsed.text.isBlank()) return null
@@ -20,6 +20,17 @@ internal fun partialReplyMessage(id: Long, raw: String, interrupted: Boolean): C
         text = parsed.text,
         segments = parsed.segments,
         raw = raw,
+        // review 01/11: the research card, the charts and the section pictures the turn had sent ride with the partial text, as on the web
+        research = annotations?.research,
+        charts = annotations?.charts ?: emptyList(),
+        docMedia = annotations?.docMedia ?: emptyList(),
         turnStatus = if (interrupted) "interrupted" else null,
     )
+}
+
+/** The live annotations of the turn streaming right now (a Deep Research turn's card, charts and pictures), kept so a Stop or a drop after text still has them. */
+internal class TurnAnnotations {
+    var research: com.tappyai.app.chat.data.ResearchStatus? = null
+    var charts: List<com.tappyai.app.chat.data.ResearchChart> = emptyList()
+    var docMedia: List<com.tappyai.app.chat.data.DocMediaItem> = emptyList()
 }
