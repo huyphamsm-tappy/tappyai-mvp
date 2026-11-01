@@ -129,6 +129,16 @@ final class URLSessionAPIClient: APIClient {
         return .network(status: nil, code: nil)
     }
 
+    /// `mapTransport` for the chat STREAM: a stream that stayed silent past its limit is a timeout, not a missing
+    /// connection (the person was told "no internet" while the network was fine). Everything else is unchanged.
+    static func mapStreamTransport(_ error: Error) -> AppError {
+        let ns = error as NSError
+        if ns.domain == NSURLErrorDomain, ns.code == NSURLErrorTimedOut {
+            return .streaming(reason: "timeout")
+        }
+        return mapTransport(error)
+    }
+
     static func mapHTTP(status: Int, data: Data) -> AppError {
         // The 502 session body keeps its message in `error` and the machine code in `code`; carry the code through.
         let code = UploadUnavailable.matches(status: status, data: data) ? UploadUnavailable.code : errorCode(from: data)

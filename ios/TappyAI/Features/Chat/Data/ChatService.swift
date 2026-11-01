@@ -179,7 +179,8 @@ final class ChatService: Sendable {
                         userLocation: [String: Double]? = nil,
                         guestAgeDeclaration: String? = nil,
                         chatSessionId: String? = nil,
-                        decisionEvidenceId: String? = nil) -> AsyncThrowingStream<StreamFrame, Error> {
+                        decisionEvidenceId: String? = nil,
+                        deepResearch: Bool = false) -> AsyncThrowingStream<StreamFrame, Error> {
         var bodyDict: [String: Any] = [
             "messages": messages.map { ["role": $0.role, "content": $0.content] }
         ]
@@ -217,10 +218,18 @@ final class ChatService: Sendable {
             headers: headers,
             body: bodyData,
             requiresAuth: true,
-            timeout: 60
+            timeout: deepResearch ? ChatStreamTimeout.deepResearch : ChatStreamTimeout.standard
         )
         return streaming.stream(endpoint)
     }
+}
+
+/// How long the chat stream may stay SILENT before the request times out (`URLRequest.timeoutInterval` counts the time
+/// without a byte). 130 s / 320 s as the one-brain web and Android read a silent stream: a Think step, or most of a Deep
+/// Research run, is quiet for a long time.
+enum ChatStreamTimeout {
+    static let standard: TimeInterval = 130
+    static let deepResearch: TimeInterval = 320
 }
 
 /// What this build declares to `/api/chat`. `x-tappy-surface: ios` tells the server the client

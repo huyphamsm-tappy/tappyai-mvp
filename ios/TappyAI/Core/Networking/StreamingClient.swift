@@ -165,7 +165,7 @@ final class URLSessionStreamingClient: StreamingClient {
                     continuation.finish()
                 } catch {
                     continuation.finish(throwing: (error is CancellationError) ? AppError.cancellation
-                                        : (error as? AppError) ?? URLSessionAPIClient.mapTransport(error))
+                                        : (error as? AppError) ?? URLSessionAPIClient.mapStreamTransport(error))
                 }
             }
             continuation.onTermination = { _ in task.cancel() }
