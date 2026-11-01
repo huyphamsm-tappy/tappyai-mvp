@@ -31,7 +31,9 @@ enum ContentParser {
         // so an end-anchored removal here would take the rest of the reply with it (rule 3/4 of the
         // shared fixture contract, and the shape `[CTA_BUTTONS]` leaked through once already).
         let (textAfterPlaces, places) = parsePlaces(textAfterFollowups)
-        let clean = stripMarkerResidue(textAfterPlaces)
+        // Owner 01/11: a link to another AI product's page is never shown (label stays, link goes). Only the prose, after every
+        // marker block is out, so a URL inside a block's JSON is never cut by this pass.
+        let clean = AiSourcePolicy.stripAiLinks(stripMarkerResidue(textAfterPlaces))
         let images = extractImages(clean)
         let text = stripImages(clean)
         return ParsedContent(
@@ -374,7 +376,10 @@ enum ContentParser {
             guard let m = match,
                   let altRange = Range(m.range(at: 1), in: content),
                   let urlRange = Range(m.range(at: 2), in: content) else { return }
-            images.append(ParsedImage(alt: String(content[altRange]), url: String(content[urlRange])))
+            let url = String(content[urlRange])
+            // never a picture a page of another AI product serves (owner 01/11)
+            if AiSourcePolicy.isAiProductSource(url) { return }
+            images.append(ParsedImage(alt: String(content[altRange]), url: url))
         }
         return images
     }

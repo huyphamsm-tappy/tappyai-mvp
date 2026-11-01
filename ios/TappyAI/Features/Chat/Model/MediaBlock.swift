@@ -61,12 +61,12 @@ enum MediaBlocks {
     }
 
     static func isAllowedImage(_ url: String?) -> Bool {
-        guard let url, let host = safeHTTPSHost(url) else { return false }
+        guard let url, let host = safeHTTPSHost(url), !AiSourcePolicy.isAiProductSource(url) else { return false }
         return imageExactHosts.contains(host) || imageSuffixes.contains { hasSuffix(host, $0) }
     }
 
     static func isAllowedPage(_ url: String?) -> Bool {
-        guard let url, let host = safeHTTPSHost(url) else { return false }
+        guard let url, let host = safeHTTPSHost(url), !AiSourcePolicy.isAiProductSource(url) else { return false }
         if pageExactHosts.contains(host) {
             // A Wikipedia link is an article page only.
             return url.range(of: #"^https://(vi|en)\.wikipedia\.org/wiki/[^?#\s]+$"#, options: .regularExpression) != nil
