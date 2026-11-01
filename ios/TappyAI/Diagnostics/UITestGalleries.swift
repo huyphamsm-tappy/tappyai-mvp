@@ -5,55 +5,6 @@ import SwiftUI
 // of `Diagnostics`: the fixtures carry Vietnamese sample content so the pictures read like the real app, and nothing here
 // can be reached in a Release/TestFlight build.
 
-/// The ask card v2 over the chat background, fed the question sets the router really emits
-/// (web `askCardModel.test.ts`). The sent text is printed under it so a test can read it.
-struct AskCardGalleryView: View {
-    let area: String
-    @State private var sent: String?
-
-    var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 12) {
-                AskCardView(questions: Self.questions(area)) { sent = $0 }
-                if let sent {
-                    Text(sent).font(.footnote).foregroundStyle(.white).accessibilityIdentifier("ask-sent")
-                }
-            }
-            .padding(12)
-        }
-        .background(Color(hex: 0x050814).ignoresSafeArea())
-        .statusBarHidden(true)
-    }
-
-    static func questions(_ area: String) -> [AskQuestion] {
-        func q(_ id: String, _ text: String, _ options: [String]) -> AskQuestion { AskQuestion(id: id, q: text, options: options) }
-        switch area {
-        case "food":
-            return [q("dish", "Món gì / kiểu quán?", ["Món Việt", "Nhật/Hàn", "Lẩu/nướng", "Chưa biết"]),
-                    q("mode", "Ăn tại quán hay giao?", ["Ăn tại quán", "Giao tận nơi"]),
-                    q("area", "Khu vực nào?", ["Gần mình", "Quận 1", "Quận 3", "Quận 7"])]
-        case "spa":
-            return [q("service", "Muốn làm dịch vụ gì?", ["Massage", "Gội đầu dưỡng sinh", "Xông hơi", "Chăm sóc da"]),
-                    q("time", "Khi nào đi?", ["Hôm nay", "Tối nay", "Cuối tuần"])]
-        case "travel":
-            return [q("date", "Đi khi nào, mấy ngày?", ["Cuối tuần 2N1Đ", "3N2Đ", "4-5 ngày", "Chưa chốt"]),
-                    q("origin", "Xuất phát từ đâu?", ["TP.HCM", "Hà Nội", "Đà Nẵng", "Nơi khác"]),
-                    q("style", "Thích kiểu gì?", ["Biển", "Núi", "Ăn uống", "Nghỉ dưỡng"])]
-        case "flight":
-            // The flight ask the server adds (IOS-REQUESTS I-3): only «Bay từ đâu?» (id `origin`) is specified there.
-            return [q("origin", "Bay từ đâu?", ["Từ TP.HCM", "Từ Hà Nội", "Từ nơi khác"])]
-        case "shopping":
-            return [q("line", "Loại nào?", ["Nhét tai", "Chụp tai", "Chưa biết"]),
-                    q("budget", "Tầm giá bao nhiêu?", ["Dưới 1tr", "1-3tr", "3-5tr", "Trên 5tr"]),
-                    q("must", "Cần chống ồn không?", ["Có chống ồn", "Không cần"])]
-        default:
-            return [q("activity", "Muốn chơi gì?", ["Karaoke", "Xem phim", "Bar/pub", "Bida/bowling"]),
-                    q("party", "Mấy người / đi với ai?", ["1 mình", "2 người", "Nhóm 3-5", "Nhóm đông"]),
-                    q("time", "Đi lúc mấy giờ?", ["Chiều nay", "Tối nay", "Cuối tuần"])]
-        }
-    }
-}
-
 /// The place decision over the chat background: five fixture places, three above the fold, chips for the
 /// open / top-rated / Wi-Fi splits, and each card's four decision actions (map, website, find reviews, call).
 struct PlaceCardsGalleryView: View {

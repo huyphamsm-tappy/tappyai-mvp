@@ -15,10 +15,9 @@ enum ContentParser {
         // One place for «no literal ** in any answer» (web `normalizeReplyMarkdown`): prose bold balanced, markdown stripped
         // from the strings inside the marker blocks, before any card sees them.
         let content = MarkdownNormalize.normalizeReply(rawContent)
-        // ASK first: it is a whole-turn question block with nothing else in it worth decoding.
-        let askResult = AskBlock.parse(content)
         // `[TAPPY_MEDIA]` (news pictures / subject card): host-checked and removed before anything else reads the text.
-        let mediaResult = MediaBlocks.parse(askResult.text)
+        // (`[TAPPY_ASK]` has no card any more; an older server's block is only hidden, by `stripMarkerResidue`.)
+        let mediaResult = MediaBlocks.parse(content)
         let (textAfterPlan, plan, planJSON) = parsePlanBlock(mediaResult.text)
         let (textAfterCta, buttons) = parseCTA(textAfterPlan)
         let (textAfterFollowups, followups) = parseFollowups(textAfterCta)
@@ -45,7 +44,6 @@ enum ContentParser {
             shopping: shopping,
             planJSON: planJSON,
             places: places,
-            ask: askResult.questions,
             media: mediaResult.blocks,
             segments: replySegments(clean)
         )

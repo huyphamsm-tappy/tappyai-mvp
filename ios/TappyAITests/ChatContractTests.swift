@@ -1,7 +1,7 @@
 import XCTest
 @testable import TappyAI
 
-/// R14 chatSessionId + the `[TAPPY_ASK]` block + the client declaration headers.
+/// R14 chatSessionId + the old `[TAPPY_ASK]` block staying hidden + the client declaration headers.
 final class ChatContractTests: XCTestCase {
     private var defaults: UserDefaults!
 
@@ -44,48 +44,30 @@ final class ChatContractTests: XCTestCase {
         XCTAssertEqual(ChatClientDeclaration.caps, "card")
     }
 
-    // MARK: - AskBlock
+    // MARK: - Old ASK block stays hidden
 
     private let block = """
     Mình hỏi nhanh nhé.
     [TAPPY_ASK]{"v":1,"questions":[{"id":"party","q":"Đi mấy người?","options":["2 người"," 4 người ","nhóm"]},{"id":"bad","q":"Chỉ một","options":["x"]}]}[/TAPPY_ASK]
     """
 
-    func testAskParsesAndDropsShortQuestions() {
-        let r = AskBlock.parse(block)
-        XCTAssertEqual(r.text, "Mình hỏi nhanh nhé.")
-        XCTAssertEqual(r.questions.count, 1)
-        XCTAssertEqual(r.questions[0].options, ["2 người", "4 người", "nhóm"])
+    // The one-brain server does not emit the ASK block and no card is drawn for it; an older server that still sends one must
+    // not leak its JSON (the block is only hidden, by the marker-residue pass).
+    func testAnOldServersAskBlockIsHiddenAndDrawsNothing() {
+        let parsed = ContentParser.parse(block)
+        XCTAssertEqual(parsed.text, "Mình hỏi nhanh nhé.")
+        XCTAssertFalse(parsed.text.contains("TAPPY_ASK"))
+        XCTAssertFalse(parsed.text.contains("party"))
     }
 
     func testAskStreamingPartialIsHidden() {
-        let r = AskBlock.parse("Chào\n[TAPPY_ASK]{\"v\":1,\"quest")
-        XCTAssertEqual(r.text, "Chào")
-        XCTAssertTrue(r.questions.isEmpty)
+        let parsed = ContentParser.parse("Chào\n[TAPPY_ASK]{\"v\":1,\"quest")
+        XCTAssertEqual(parsed.text, "Chào")
     }
 
     func testAskMalformedBlockIsRemoved() {
-        let r = AskBlock.parse("Hi [TAPPY_ASK]{oops[/TAPPY_ASK] bye")
-        XCTAssertTrue(r.questions.isEmpty)
-        XCTAssertFalse(r.text.contains("TAPPY_ASK"))
-    }
-
-    func testAskLimitsToThreeQuestionsAndFourOptions() {
-        let q = (1...5).map { #"{"id":"q\#($0)","q":"Q\#($0)","options":["a","b","c","d","e"]}"# }.joined(separator: ",")
-        let r = AskBlock.parse(#"[TAPPY_ASK]{"v":1,"questions":[\#(q)]}[/TAPPY_ASK]"#)
-        XCTAssertEqual(r.questions.count, 3)
-        XCTAssertEqual(r.questions[0].options.count, 4)
-    }
-
-    func testComposeAnswerJoinsInQuestionOrder() {
-        let qs = [AskQuestion(id: "a", q: "A", options: ["1", "2"]), AskQuestion(id: "b", q: "B", options: ["x", "y"])]
-        XCTAssertEqual(AskBlock.composeAnswer(qs, chosen: ["b": "y", "a": "1"], free: " thêm "), "1 · y · thêm")
-        XCTAssertEqual(AskBlock.composeAnswer(qs, chosen: [:]), "")
-    }
-
-    func testContentParserExposesAskAndStripsIt() {
-        let parsed = ContentParser.parse(block)
-        XCTAssertEqual(parsed.ask.count, 1)
+        let parsed = ContentParser.parse("Hi [TAPPY_ASK]{oops[/TAPPY_ASK] bye")
         XCTAssertFalse(parsed.text.contains("TAPPY_ASK"))
+        XCTAssertFalse(parsed.text.contains("oops"))
     }
 }

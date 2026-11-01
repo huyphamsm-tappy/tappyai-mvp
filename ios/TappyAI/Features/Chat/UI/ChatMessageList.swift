@@ -114,7 +114,6 @@ struct ChatMessageList: View {
                                 placesMapsURL: msg.livePlaces?.mapsSearchUrl,
                                 placesShown: msg.livePlaces?.shown,
                                 followups: isLast && !isStreaming ? parsed.followups : [],
-                                ask: isLast && !isStreaming ? parsed.ask : [],
                                 media: parsed.media,
                                 isLastMessage: isLast,
                                 tts: tts,
@@ -285,8 +284,6 @@ private struct AssistantBubble: View {
     /// Whether the comparison sheet is open for this row.
     @State private var showComparison = false
     let followups: [String]
-    /// The consult ASK questions of this (last) turn; empty otherwise.
-    var ask: [AskQuestion] = []
     /// The turn's news pictures / subject cards (`[TAPPY_MEDIA]`, already host-checked).
     var media: [MediaBlock] = []
     let isLastMessage: Bool
@@ -439,10 +436,6 @@ private struct AssistantBubble: View {
                             }
                         }
                     }
-                }
-
-                if !ask.isEmpty {
-                    AskCardView(questions: ask, onSend: onFollowup)
                 }
 
                 // Follow-up chips

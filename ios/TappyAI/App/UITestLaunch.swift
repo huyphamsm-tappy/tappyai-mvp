@@ -6,8 +6,6 @@ struct UITestOverlay: View {
         #if DEBUG
         if let layout = UITestLaunch.cardRoute {
             CardGalleryView(layout: layout)
-        } else if let area = UITestLaunch.askRoute {
-            AskCardGalleryView(area: area)
         } else if let area = UITestLaunch.planRoute {
             PlanCardGalleryView(area: area)
         } else if UITestLaunch.placesRoute {
@@ -51,12 +49,6 @@ enum UITestLaunch {
 
     /// App Store pictures: the Debug-only Diagnostics button is not drawn, so the picture shows what a store build shows.
     static var isAppStoreShot: Bool { ProcessInfo.processInfo.arguments.contains("-uitest-appstore") }
-
-    /// An `ask-<area>` route shows the ask card v2 with the router's real questions for that area.
-    static var askRoute: String? {
-        guard let route = value("-uitest-route"), route.hasPrefix("ask-") else { return nil }
-        return String(route.dropFirst(4))
-    }
 
     /// A `plan-<area>` route shows the plan card v2 with a fixture plan of that area (travel carries stored image keys).
     static var planRoute: String? {
@@ -133,11 +125,11 @@ enum UITestLaunch {
         case "safety-review":
             router.switchTo(.profile)
             router.push(ReviewsDestination.reviewDetail(id: "r-safety"), on: .profile)
-        case "chat-old", "conv-old", "conv-ask", "conv-plan", "conv-store":
-            // A saved chat from the fixture server (`history` mode): chat-old/conv-old = places, conv-ask, conv-plan,
+        case "chat-old", "conv-old", "conv-plan", "conv-store":
+            // A saved chat from the fixture server (`history` mode): chat-old/conv-old = places, conv-plan,
             // conv-store = the places chat as drawn for the App Store picture.
             router.switchTo(.home)
-            let id = route == "conv-ask" ? "c-ask" : route == "conv-plan" ? "c-plan" : route == "conv-store" ? "c-store" : "c-old"
+            let id = route == "conv-plan" ? "c-plan" : route == "conv-store" ? "c-store" : "c-old"
             router.push(HomeDestination.conversation(id: id), on: .home)
         case "scam":
             router.switchTo(.home)

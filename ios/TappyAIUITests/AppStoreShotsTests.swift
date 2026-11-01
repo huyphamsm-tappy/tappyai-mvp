@@ -17,10 +17,10 @@ final class AppStoreShotsTests: XCTestCase {
     }
 
     func testAppStoreShots() {
-        // 1 — chat with the new ask card (a saved chat; the last assistant message carries the ask).
-        var app = launch(route: "conv-ask", signedIn: true)
-        XCTAssertTrue(any(app, "ask-send").waitForExistence(timeout: 60), "ask card in the chat")
-        settle(); shot("01-chat-ask")
+        // 1 — the chat's general welcome (the one-brain chat has no ask card any more).
+        var app = launch(route: "chat", signedIn: true)
+        XCTAssertTrue(any(app, "chat-input").waitForExistence(timeout: 60), "the chat's input")
+        settle(); shot("01-chat")
         app.terminate()
 
         // 2 — chat with a plan card.

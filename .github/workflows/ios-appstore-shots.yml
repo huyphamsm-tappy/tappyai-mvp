@@ -2,7 +2,7 @@ name: ios-appstore-shots
 
 # App Store screenshots from the REAL app against the fixture backend (no real user data), on a simulator whose
 # screenshots are one of the sizes App Store Connect accepts for the 6.5" slot: 1242x2688, 2688x1242, 1284x2778, 2778x1284.
-# Output: the artifact `appstore-screenshots` (01-chat-ask.png ... 10-settings.png) and a table of the real pixel sizes.
+# Output: the artifact `appstore-screenshots` (01-chat.png ... 10-settings.png) and a table of the real pixel sizes.
 # Nothing is signed, archived or uploaded anywhere.
 #
 # Starts by itself when this file or AppStoreShotsTests.swift changes on an ios/** branch (a workflow that lives only on a

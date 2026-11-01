@@ -45,8 +45,15 @@ final class ChatSilentFailureTests: XCTestCase {
         XCTAssertFalse(vm.messages.contains { $0.isAssistant })
     }
 
-    func testAMarkerOnlyReplyThatDecodesToACardIsStillAReply() async {
+    func testAReplyThatIsOnlyAnOldServersWellFormedAskBlockIsAnError() async {
+        // No ASK card exists any more: a well-formed block from an older server is hidden and leaves nothing to read.
         let vm = await chat(["0:\"[TAPPY_ASK]{\\\"v\\\":1,\\\"questions\\\":[{\\\"id\\\":\\\"q1\\\",\\\"q\\\":\\\"Mấy người?\\\",\\\"options\\\":[\\\"1\\\",\\\"2\\\"]}]}[/TAPPY_ASK]\"", "d:{\"finishReason\":\"stop\"}"])
+        XCTAssertEqual(vm.error, .generic)
+        XCTAssertFalse(vm.messages.contains { $0.isAssistant })
+    }
+
+    func testAMarkerOnlyReplyThatDecodesToSomethingDrawnIsStillAReply() async {
+        let vm = await chat(["0:\"[FOLLOWUPS]Một|Hai\"", "d:{\"finishReason\":\"stop\"}"])
         XCTAssertNil(vm.error)
         XCTAssertEqual(vm.messages.last?.status, .complete)
     }

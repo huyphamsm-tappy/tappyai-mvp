@@ -555,27 +555,6 @@ final class ScreenshotTests: XCTestCase {
         XCTAssertFalse(any(app, "auth-apple").exists, "hidden until the provider is enabled")
     }
 
-    // MARK: - Ask card v2 (R23 + R23.1), all 5 areas beside docs/design/ask-card/ask-card-mockup.png
-
-    func testAskCardEntertainmentSelectsAndSends() {
-        let app = launch(route: "ask-entertainment")
-        XCTAssertTrue(any(app, "ask-send").waitForExistence(timeout: 30), "ask card")
-        for label in ["Karaoke", "Bida/bowling", "1 mình", "2 người", "Tối nay"] { option(app, label).tap() }
-        shot("28-ask-entertainment")
-        any(app, "ask-send").tap()
-        let sent = any(app, "ask-sent")
-        XCTAssertTrue(sent.waitForExistence(timeout: 10))
-        XCTAssertEqual(sent.label, "Karaoke, Bida/bowling · 2 người · Tối nay", "type takes several, the others one")
-        any(app, "ask-send").tap()
-        XCTAssertEqual(sent.label, "Karaoke, Bida/bowling · 2 người · Tối nay", "the card locks after one send")
-    }
-
-    func testAskCardFood() { askShot("food", "29-ask-food", picks: ["Món Việt", "Ăn tại quán"]) }
-    func testAskCardShopping() { askShot("shopping", "30-ask-shopping", picks: ["Nhét tai", "1-3tr"]) }
-    func testAskCardTravel() { askShot("travel", "31-ask-travel", picks: ["3N2Đ", "Biển", "Núi"]) }
-    func testAskCardSpa() { askShot("spa", "32-ask-spa", picks: ["Massage", "Tối nay"]) }
-    func testAskCardFlightOrigin() { askShot("flight", "61-ask-flight", picks: ["Từ Hà Nội"]) }
-
     // MARK: - B1 Plan card v2 (docs/design/share-layouts/plan-share.png), all 5 areas
 
     /// Travel carries stored image KEYS; the fixture manifest serves them, so the card shows images
@@ -700,28 +679,6 @@ final class ScreenshotTests: XCTestCase {
         any(app, "place-filter-all").tap()
         XCTAssertTrue(scrollTo(app, "place-explore-map"), "«Xem tất cả trên bản đồ»")
         shot("58-places-footer")
-    }
-
-    func testAskCardEmptySendSearches() {
-        let app = launch(route: "ask-food")
-        XCTAssertTrue(any(app, "ask-send").waitForExistence(timeout: 30))
-        any(app, "ask-send").tap()
-        XCTAssertEqual(any(app, "ask-sent").label, "Tìm cho tôi")
-    }
-
-    private func askShot(_ area: String, _ name: String, picks: [String]) {
-        let app = launch(route: "ask-" + area)
-        XCTAssertTrue(any(app, "ask-send").waitForExistence(timeout: 30), "ask card")
-        for label in picks { option(app, label).tap() }
-        shot(name)
-    }
-
-    /// An option tile by its visible label (the hyphen is drawn non-breaking).
-    private func option(_ app: XCUIApplication, _ label: String) -> XCUIElement {
-        let shown = label.replacingOccurrences(of: "-", with: "\u{2011}")
-        let el = app.buttons.matching(NSPredicate(format: "label CONTAINS %@", shown)).firstMatch
-        XCTAssertTrue(el.waitForExistence(timeout: 10), "option \(label)")
-        return el
     }
 
     // MARK: - Home V3 (Android L12), dark like the Android reference
