@@ -117,15 +117,17 @@ class ShoppingDecisionParseTest {
 
     @Test
     fun `price range renders both bounds, a single bound, or an explicit unknown`() {
-        assertEquals("18.9 triệu – 20.4 triệu", priceRangeText(18_990_000.0, 20_490_000.0, "chưa rõ"))
-        assertEquals("24.9 triệu", priceRangeText(24_990_000.0, null, "chưa rõ"))
-        assertEquals("24.9 triệu", priceRangeText(null, 24_990_000.0, "chưa rõ"))
+        // 02/11 review: the compact price is ROUNDED to a decimal (it used to cut: 24.990.000 read "24.9 triệu", a price the shop never
+        // asked) and written with a comma as Vietnamese reads it (see CompactVndTest)
+        assertEquals("19 triệu – 20,5 triệu", priceRangeText(18_990_000.0, 20_490_000.0, "chưa rõ"))
+        assertEquals("25 triệu", priceRangeText(24_990_000.0, null, "chưa rõ"))
+        assertEquals("25 triệu", priceRangeText(null, 24_990_000.0, "chưa rõ"))
         // Neither bound known: say so. Never "0đ", never an empty string.
         assertEquals("chưa rõ", priceRangeText(null, null, "chưa rõ"))
     }
 
     @Test
     fun `a single-point price is not rendered as a fake range`() {
-        assertEquals("18.9 triệu", priceRangeText(18_990_000.0, 18_990_000.0, "chưa rõ"))
+        assertEquals("19 triệu", priceRangeText(18_990_000.0, 18_990_000.0, "chưa rõ"))
     }
 }
