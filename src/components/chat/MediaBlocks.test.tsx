@@ -35,6 +35,25 @@ describe('EntityCard / EntityPanel', () => {
     fireEvent.keyDown(window, { key: 'Escape' })
     expect(onClose).toHaveBeenCalled()
   })
+  // owner 02/11: with Nikola Tesla open, tapping Elon took two taps - the panel's full-screen backdrop caught the first one
+  it('with the panel open, a tap outside it reaches what is under it (one tap switches subject) and closes the panel', () => {
+    const onClose = vi.fn()
+    const behind = vi.fn()
+    const { container } = render(<div><button type="button" onClick={behind}>Elon card</button><EntityPanel entity={ENTITY} onClose={onClose} /></div>)
+    const card = screen.getByText('Elon card')
+    // nothing of the panel covers the page: no full-screen element takes the tap
+    expect(container.querySelector('[data-media="entity-panel"]')?.className).toContain('pointer-events-none')
+    fireEvent.pointerDown(card)
+    fireEvent.click(card)
+    expect(onClose).toHaveBeenCalledTimes(1)
+    expect(behind).toHaveBeenCalledTimes(1)
+  })
+  it('a tap inside the panel keeps it open', () => {
+    const onClose = vi.fn()
+    render(<EntityPanel entity={ENTITY} onClose={onClose} />)
+    fireEvent.pointerDown(screen.getByText('Elon Reeve Musk là doanh nhân.'))
+    expect(onClose).not.toHaveBeenCalled()
+  })
   it('an entity whose link is not an allowed article page renders nothing', () => {
     const { container } = render(<EntityCard entity={{ ...ENTITY, href: 'https://evil.example/wiki/x' }} onOpen={() => {}} />)
     expect(container.innerHTML).toBe('')

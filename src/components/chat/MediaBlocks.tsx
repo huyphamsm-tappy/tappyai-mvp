@@ -4,7 +4,7 @@
 //   · entity — the answer's subject as a card (Wikipedia picture + summary), and a panel that slides in from the right to read more
 //              without leaving the chat (opened from the card or by tapping the subject's bold name in the answer).
 // Every URL is re-checked here (mediaHosts.ts: allowed image CDNs / article pages, safe https) even though the server checked it.
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { X, ExternalLink } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { isAllowedMediaImage, isAllowedMediaPage, type MediaEntity, type MediaNewsItem, type MediaOption } from '@/lib/media/mediaHosts'
@@ -98,16 +98,21 @@ export function EntityCard({ entity, onOpen }: { entity: MediaEntity; onOpen: ()
 
 export function EntityPanel({ entity, onClose }: { entity: MediaEntity; onClose: () => void }) {
   const { t } = useTranslation()
+  const asideRef = useRef<HTMLElement>(null)
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
+    // owner 02/11: with one subject open, tapping another took two taps - a full-screen backdrop caught the first. Nothing covers the
+    // page now: a tap outside the panel closes it AND reaches what is under it, so another subject's card opens at once.
+    const onPointerDown = (e: PointerEvent) => { if (!asideRef.current?.contains(e.target as Node)) onClose() }
     window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
+    document.addEventListener('pointerdown', onPointerDown)
+    return () => { window.removeEventListener('keydown', onKey); document.removeEventListener('pointerdown', onPointerDown) }
   }, [onClose])
   if (!isAllowedMediaPage(entity.href)) return null
   return (
-    <div className="fixed inset-0 z-50" data-media="entity-panel">
-      <button type="button" aria-label={t('placeDecision.mediaClose')} onClick={onClose} className="absolute inset-0 bg-black/30" />
-      <aside role="dialog" aria-label={entity.name} className="absolute right-0 top-0 h-full w-full sm:w-[400px] overflow-y-auto bg-white dark:bg-gray-900 shadow-2xl">
+    <div className="pointer-events-none fixed inset-0 z-50" data-media="entity-panel">
+      <div aria-hidden="true" className="absolute inset-0 bg-black/30" />
+      <aside ref={asideRef} role="dialog" aria-label={entity.name} className="pointer-events-auto absolute right-0 top-0 h-full w-full sm:w-[400px] overflow-y-auto bg-white dark:bg-gray-900 shadow-2xl">
         <div className="relative">
           {entity.image && isAllowedMediaImage(entity.image) && (
             <img src={entity.image} alt={entity.name} className="h-72 w-full object-cover object-top" onError={e => { e.currentTarget.style.display = 'none' }} />
