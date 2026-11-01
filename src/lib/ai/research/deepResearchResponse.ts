@@ -48,8 +48,9 @@ export function deepResearchResponse(t: DeepResearchTurn): Response {
         charts: charts => send(`8:${JSON.stringify([chartsFrame(charts)])}`),
         images: items => { const a = sanitizeDocMedia({ kind: DOC_MEDIA_KIND, v: 1, items: items.map(i => ({ title: i.title, src: i.src, source: 'web' })) }); if (a) { pictures = a.items.length; send(docMediaFrame(a).trimEnd()) } },
       }, t.stop?.signal)
-      // the person left: nobody reads the report, so the run is given back whatever was written before
-      if (out.failed === 'client_gone') await Promise.resolve(t.onFailed(out.failed))
+      // the person left before any report text went out: nothing was read, so the run is given back. Review 01/11: once the report had started
+      // streaming it was read (at least in part), so leaving before the sources is not a way to get the quota back.
+      if (out.failed === 'client_gone') { if (chars === 0) await Promise.resolve(t.onFailed(out.failed)) }
       else if (out.failed && chars === 0) { send(`0:${JSON.stringify(FAILED_TEXT[t.lang === 'en' ? 'en' : 'vi'])}`); await Promise.resolve(t.onFailed(out.failed)) }
       const serper = t.serperUsd()
       const usd = Math.round((t.cost.usd + serper.usd) * 1e6) / 1e6

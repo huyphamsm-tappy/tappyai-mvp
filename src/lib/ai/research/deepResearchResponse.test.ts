@@ -33,6 +33,27 @@ describe('deepResearchResponse - the person left', () => {
     await vi.waitFor(() => expect(onFailed).toHaveBeenCalledWith('client_gone'))
     expect(stop.signal.aborted).toBe(true)
   })
+  it('review 01/11: leaving AFTER the report started streaming is not given back (read the text, drop before the sources, keep the quota)', async () => {
+    const stop = new AbortController()
+    let writing!: () => void
+    const wrote = new Promise<void>(r => { writing = r })
+    const rows = [{ title: 'a', url: 'https://a.example/1', snippet: 's', text: 'x'.repeat(400) }, { title: 'b', url: 'https://b.example/2', snippet: 's', text: 'y'.repeat(400) }]
+    const { t, onFailed } = turn(stop, {
+      gather: async () => rows,
+      notes: async () => [{ text: 'f1', source: 1 }, { text: 'f2', source: 2 }],
+      write: async function* () { yield 'Một đoạn của báo cáo. '; writing(); await new Promise(r => stop.signal.addEventListener('abort', r, { once: true })); throw new Error('aborted') },
+    })
+    const res = deepResearchResponse(t)
+    const reader = res.body!.getReader()
+    let text = ''
+    const dec = new TextDecoder()
+    while (!text.includes('Một đoạn')) { const { value, done } = await reader.read(); if (done) break; text += dec.decode(value) }
+    await wrote
+    await reader.cancel()
+    await new Promise(r => setTimeout(r, 100))
+    expect(text).toContain('Một đoạn')
+    expect(onFailed).not.toHaveBeenCalled()
+  })
   it('the request is aborted (the route links the request signal to `stop`): same outcome', async () => {
     const stop = new AbortController()
     const { t, onFailed, started } = turn(stop)
