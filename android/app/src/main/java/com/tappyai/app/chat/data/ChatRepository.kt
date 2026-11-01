@@ -1,6 +1,5 @@
 package com.tappyai.app.chat.data
 
-import com.tappyai.app.chat.ChatCategory
 import com.tappyai.app.chat.ChatMessage
 import com.tappyai.app.chat.ChatMode
 import com.tappyai.app.chat.PlacesLiveView
@@ -15,7 +14,7 @@ import kotlinx.coroutines.flow.Flow
  * on network failure. Cancelling the collecting coroutine (user taps Stop) immediately cancels
  * the underlying HTTP call — no waiting for a 30-second timeout.
  *
- * [getFollowups] is client-side only; the backend does not return follow-up suggestions.
+ * Follow-up chips come from the reply itself ([FOLLOWUPS]); A7 (02/11) removed the app's own per-domain fallback (the web has none).
  */
 /**
  * One thing the stream said.
@@ -70,7 +69,6 @@ sealed interface ChatStreamEvent {
 
 interface ChatRepository {
     fun streamReply(messages: List<ChatMessage>, chatSessionId: String? = null, mode: ChatMode = ChatMode.Default): Flow<ChatStreamEvent>
-    fun getFollowups(category: ChatCategory): List<String>
 }
 // The V3 share artifact used to read the `8:` frame through a `takeLatestPlacesView()` side
 // channel; it now takes it from [ChatStreamEvent.Places] like the card does (see

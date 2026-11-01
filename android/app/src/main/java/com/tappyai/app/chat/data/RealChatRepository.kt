@@ -4,7 +4,6 @@ import com.tappyai.app.chat.ChatSessionId
 import android.content.Context
 import android.util.Base64
 import com.tappyai.app.R
-import com.tappyai.app.chat.ChatCategory
 import com.tappyai.app.chat.ChatMessage
 import com.tappyai.app.chat.ChatMode
 import com.tappyai.core.common.StringProvider
@@ -64,7 +63,7 @@ class RealChatRepository @Inject constructor(
         // text-only turn sends `content` as a plain string, a turn with an image sends it as
         // `[{type:"text",...},{type:"image",...}]` (see ChatRequest.kt's doc).
         val dtoMessages = withContext(Dispatchers.IO) {
-            messages.filterNot { it.isError }.map { msg -> msg.toDto() }
+            compactHistory(messages.filterNot { it.isError }).map { msg -> msg.toDto() }
         }
         // The device's last known position rides along when the user granted it (see
         // ChatLocationSource); a guest's 18+ declaration rides as a header (see GuestAgeStore).
@@ -133,39 +132,6 @@ class RealChatRepository @Inject constructor(
         // Do NOT use invokeOnClose — callbackFlow's internals already use it and calling it
         // again throws "Another handler is already registered".
         awaitClose { call.cancel() }
-    }
-
-    override fun getFollowups(category: ChatCategory): List<String> = when (category) {
-        ChatCategory.Food -> listOf(
-            stringProvider.get(R.string.chat_followup_food_1),
-            stringProvider.get(R.string.chat_followup_food_2),
-            stringProvider.get(R.string.chat_followup_food_3),
-        )
-        ChatCategory.Travel -> listOf(
-            stringProvider.get(R.string.chat_followup_travel_1),
-            stringProvider.get(R.string.chat_followup_travel_2),
-            stringProvider.get(R.string.chat_followup_travel_3),
-        )
-        ChatCategory.Shopping -> listOf(
-            stringProvider.get(R.string.chat_followup_shopping_1),
-            stringProvider.get(R.string.chat_followup_shopping_2),
-            stringProvider.get(R.string.chat_followup_shopping_3),
-        )
-        ChatCategory.Entertainment -> listOf(
-            stringProvider.get(R.string.chat_followup_entertainment_1),
-            stringProvider.get(R.string.chat_followup_entertainment_2),
-            stringProvider.get(R.string.chat_followup_entertainment_3),
-        )
-        ChatCategory.Spa -> listOf(
-            stringProvider.get(R.string.chat_followup_spa_1),
-            stringProvider.get(R.string.chat_followup_spa_2),
-            stringProvider.get(R.string.chat_followup_spa_3),
-        )
-        ChatCategory.General -> listOf(
-            stringProvider.get(R.string.chat_followup_general_1),
-            stringProvider.get(R.string.chat_followup_general_2),
-            stringProvider.get(R.string.chat_followup_general_3),
-        )
     }
 
     /** Decodes a failed response body and classifies it — see [chatErrorFor] for the rules. */

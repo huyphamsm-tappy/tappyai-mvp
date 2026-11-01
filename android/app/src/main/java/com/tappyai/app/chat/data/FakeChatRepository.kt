@@ -1,6 +1,5 @@
 package com.tappyai.app.chat.data
 
-import com.tappyai.app.chat.ChatCategory
 import com.tappyai.app.chat.ChatMessage
 import com.tappyai.app.chat.ChatMode
 import kotlinx.coroutines.delay
@@ -41,12 +40,6 @@ class FakeChatRepository @Inject constructor() : ChatRepository {
         delay(RESPONDING_DURATION_MS)
         emit(ChatStreamEvent.Text(sampleReplies[messages.size % sampleReplies.size]))
     }
-
-    override fun getFollowups(category: ChatCategory): List<String> = listOf(
-        "Tìm quán gần đây",
-        "Xem thêm gợi ý",
-        "Đổi chủ đề khác",
-    )
 
     private companion object {
         const val RESPONDING_DURATION_MS = 2500L

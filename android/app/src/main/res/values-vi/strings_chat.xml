@@ -80,24 +80,6 @@
     <string name="chat_age_declaration_adult">Tôi đủ 18 tuổi</string>
     <string name="chat_error_login_required">Đăng nhập để tiếp tục trò chuyện với Tappy nhé!</string>
 
-    <string name="chat_followup_food_1">Tìm quán khác</string>
-    <string name="chat_followup_food_2">Xem giá menu</string>
-    <string name="chat_followup_food_3">Đặt bàn trước</string>
-    <string name="chat_followup_travel_1">Lịch trình chi tiết</string>
-    <string name="chat_followup_travel_2">Tìm khách sạn</string>
-    <string name="chat_followup_travel_3">Vé máy bay</string>
-    <string name="chat_followup_shopping_1">So sánh giá</string>
-    <string name="chat_followup_shopping_2">Tìm cửa hàng</string>
-    <string name="chat_followup_shopping_3">Xem review</string>
-    <string name="chat_followup_entertainment_1">Xem giờ chiếu</string>
-    <string name="chat_followup_entertainment_2">Đặt vé ngay</string>
-    <string name="chat_followup_entertainment_3">Xem thêm</string>
-    <string name="chat_followup_spa_1">Xem bảng giá</string>
-    <string name="chat_followup_spa_2">Đặt lịch</string>
-    <string name="chat_followup_spa_3">Xem review</string>
-    <string name="chat_followup_general_1">Hỏi thêm</string>
-    <string name="chat_followup_general_2">Tìm thêm</string>
-    <string name="chat_followup_general_3">Chủ đề khác</string>
 
     <string name="chat_action_copy">Sao chép</string>
     <string name="chat_action_share">Chia sẻ</string>

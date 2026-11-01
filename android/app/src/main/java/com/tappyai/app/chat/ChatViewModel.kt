@@ -705,6 +705,7 @@ class ChatViewModel @Inject constructor(
                 var docMedia: List<DocMediaItem> = emptyList()
                 var turnStatus: String? = null
                 var serverSaidProgress = false
+                var lastParseAt = 0L
                 val turnMode = _mode.value
                 _mode.value = turnMode.afterSend()
                 chatRepository.streamReply(history, chatSessionId, turnMode).collect { event ->
@@ -729,19 +730,25 @@ class ChatViewModel @Inject constructor(
                     // RETAINED — the UI segments it live, so each recommendation's photos render
                     // inline at their position during the stream (web parity: formatMessage runs
                     // on the accumulated stream every frame; images are never deferred to the end).
-                    _streamingText.value = ChatResponseParser.parse(reply.toString()).streamText
+                    // A7: at most every 50 ms or at a line break - a long report re-read the whole text on every token.
+                    val now = System.currentTimeMillis()
+                    if (reparseDue(lastParseAt, now, token)) {
+                        lastParseAt = now
+                        _streamingText.value = ChatResponseParser.parse(reply.toString()).streamText
+                    }
                 }
+                // the last tokens since the last re-read are on screen until the reply below replaces the live text
+                _streamingText.value = ChatResponseParser.parse(reply.toString()).streamText
 
                 // Parse the structured blocks the model may append (plan/CTA/followups) and strip
-                // them from the visible text — web parity (see ChatResponseParser). Web parses
-                // followups from the reply itself; keep the dedicated endpoint as a fallback when
-                // the model didn't inline any, so existing Android followups don't regress.
+                // them from the visible text — web parity (see ChatResponseParser). Follow-ups are the
+                // reply's own; A7 (02/11) dropped the app's per-domain fallback chips (web has none).
                 // UAT3: one reply, not two — a reply that streamed the same answer twice is kept as
                 // its last version, on screen AND in what is saved (ReplyRepeat, web parity).
                 currentReply = null // built below: Stop no longer keeps a partial copy
                 val finalReply = ReplyRepeat.cleanRepeats(reply.toString())
                 val parsed = ChatResponseParser.parse(finalReply)
-                val followups = parsed.followups.ifEmpty { chatRepository.getFollowups(category) }
+                val followups = parsed.followups
                 _messages.update { msgs ->
                     msgs + ChatMessage(
                         id = nextId++,

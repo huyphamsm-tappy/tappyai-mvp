@@ -2,6 +2,9 @@ package com.tappyai.app.chat
 
 import com.tappyai.core.designsystem.component.TappyChatRole
 
+/** A7 (02/11): re-read the live text when 50 ms have passed since the last time, or the new piece ends a line. */
+internal fun reparseDue(lastAtMs: Long, nowMs: Long, delta: String): Boolean = nowMs - lastAtMs >= 50 || '\n' in delta
+
 /**
  * A6 (02/11): what already arrived of a reply that did not finish, as a reply (web: useChat keeps the streamed text on stop and on error).
  * [interrupted] = the stream failed after text (the web's "interrupted" line under it); false = the person tapped Stop (nothing added).

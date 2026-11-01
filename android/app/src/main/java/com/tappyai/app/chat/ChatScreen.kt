@@ -252,7 +252,8 @@ fun ChatScreen(
             }
         } else if (messages.isEmpty() && !isResponding) {
             WelcomeState(
-                category = viewModel.category,
+                // A7 (02/11): one welcome, the general Tappy's, whatever shortcut opened the chat (web: one welcome; one brain decides)
+                category = ChatCategory.General,
                 onMoodSelected = viewModel::onMoodSelected,
                 onQuickPromptSelected = viewModel::onQuickPromptSelected,
                 modifier = Modifier.weight(1f).fillMaxWidth(),
@@ -297,7 +298,7 @@ fun ChatScreen(
                         ) {
                           // Per-message mascot avatar (web parity: <TappyAvatar> beside each reply).
                           Image(
-                              painter = painterResource(viewModel.category.mascot),
+                              painter = painterResource(ChatCategory.General.mascot), // A7: the general Tappy
                               contentDescription = null,
                               modifier = Modifier
                                   .padding(top = 2.dp)
@@ -441,7 +442,7 @@ fun ChatScreen(
                             // aloud — play/pause, ±15s skip, elapsed + progress, speed, close.
                             if (speakingMessageId == message.id) {
                                 TtsPlayerBar(
-                                    mascot = viewModel.category.mascot,
+                                    mascot = ChatCategory.General.mascot,
                                     isPaused = viewModel.ttsIsPaused,
                                     speed = viewModel.ttsSpeed,
                                     elapsedSec = viewModel.ttsElapsedSec,
@@ -539,7 +540,7 @@ fun ChatScreen(
                         // A5: the research card while the run streams (its steps tick as they finish)
                         streamingResearch?.let { live -> ResearchCard(status = live, report = null, charts = emptyList(), modifier = Modifier.padding(start = 44.dp)) }
                         AssistantStreamingRow(
-                            mascot = viewModel.category.mascot,
+                            mascot = ChatCategory.General.mascot,
                             streamingText = streamingText,
                             hint = streamingHint,
                             places = streamingPlaces,
