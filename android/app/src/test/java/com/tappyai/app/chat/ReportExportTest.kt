@@ -44,7 +44,8 @@ class ReportExportTest {
 
     @Test fun `the pdf reads the report block by block - headings apart, no markdown marks`() {
         val blocks = pdfBlocks("# Tiêu đề\n\nMột **đậm** và [link](https://a.example).\n\n- mục **một**\n\n| A | B |\n|---|---|\n| 1 | 2 |")
-        assertEquals(listOf(PdfBlock(1, "Tiêu đề"), PdfBlock(0, "Một đậm và link."), PdfBlock(0, "• mục một"), PdfBlock(0, "A\tB\n1\t2")), blocks)
+        // 01/11: the table block keeps its text (the tab-joined reading) and now also its rows, so the PDF can draw a grid (ReportExportLayoutTest)
+        assertEquals(listOf(PdfBlock(1, "Tiêu đề"), PdfBlock(0, "Một đậm và link."), PdfBlock(0, "• mục một"), PdfBlock(0, "A\tB\n1\t2", listOf(listOf("A", "B"), listOf("1", "2")))), blocks)
         assertFalse(blocks.any { "**" in it.text || "](" in it.text })
     }
 

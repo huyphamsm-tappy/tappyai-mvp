@@ -58,7 +58,15 @@ internal fun ResearchCard(status: ResearchStatus, report: String?, charts: List<
     val savePdf = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/pdf")) { target ->
         if (target != null && report != null) scope.launch {
             withContext(Dispatchers.IO) {
-                runCatching { context.contentResolver.openOutputStream(target)?.use { writeReportPdf(title, withChartTables(report, charts, lang), it) } }
+                runCatching { context.contentResolver.openOutputStream(target)?.use { writeReportPdf(title, reportForPdf(withChartTables(report, charts, lang), status.links), it) } }
+            }
+        }
+    }
+    // 01/11 (web reportDocx.ts): the report as a Word file
+    val saveDocx = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/vnd.openxmlformats-officedocument.wordprocessingml.document")) { target ->
+        if (target != null && report != null) scope.launch {
+            withContext(Dispatchers.IO) {
+                runCatching { context.contentResolver.openOutputStream(target)?.use { writeReportDocx(title, reportMarkdown(withChartTables(report, charts, lang), status.links), it) } }
             }
         }
     }
@@ -109,6 +117,7 @@ internal fun ResearchCard(status: ResearchStatus, report: String?, charts: List<
                 Text(stringResource(R.string.chat_research_download), fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(top = 4.dp))
                 ExportButton("Markdown") { saveMd.launch(reportFileName(title, "md")) }
                 ExportButton("PDF") { savePdf.launch(reportFileName(title, "pdf")) }
+                ExportButton("Word") { saveDocx.launch(reportFileName(title, "docx")) }
             }
         }
     }
