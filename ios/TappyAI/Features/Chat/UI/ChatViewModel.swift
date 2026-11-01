@@ -592,12 +592,12 @@ final class ChatViewModel: AppObservableObject {
         streamTask = Task { [weak self] in
             guard let self else { return }
             /// Edits this turn's reply bubble, if the turn is still the current one and the bubble is still there.
-            func edit(_ change: (inout ChatMessage) -> Void) {
+            @MainActor func edit(_ change: (inout ChatMessage) -> Void) {
                 guard self.turnToken == token,
                       let index = self.messages.firstIndex(where: { $0.id == assistantId }) else { return }
                 change(&self.messages[index])
             }
-            func reply() -> ChatMessage? {
+            @MainActor func reply() -> ChatMessage? {
                 self.messages.first(where: { $0.id == assistantId })
             }
             let stream = self.service.chatWithContext(
