@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentCopy
@@ -382,6 +381,8 @@ private val LINK_LABELS: List<Pair<Regex, String>> = listOf(
     Regex("""(^|\.)ticketbox\.vn$""") to "Ticketbox",
 )
 
+private val TABLE_COLUMN_WIDTH = 160.dp
+
 /** A label that is an address without its scheme: `www.x.y…` or `host.tld/path…`, no spaces. */
 private val ADDRESS_LABEL = Regex("""(?i)(?:www\.\S+|[a-z0-9-]+(?:\.[a-z0-9-]+)+/\S*)""")
 
@@ -472,7 +473,9 @@ private fun MarkdownTable(table: MdBlock.Table) {
                             text = inlineText(cell),
                             style = MaterialTheme.typography.bodySmall,
                             fontWeight = if (r == 0) FontWeight.SemiBold else null,
-                            modifier = Modifier.widthIn(min = 72.dp, max = 220.dp).padding(horizontal = TappySpacing.md, vertical = TappySpacing.sm),
+                            // one width per column, the same in every row, so the columns line up (emulator 02/11: each row sized
+                            // its own cells and the header's dividers missed the rows')
+                            modifier = Modifier.width(TABLE_COLUMN_WIDTH).padding(horizontal = TappySpacing.md, vertical = TappySpacing.sm),
                         )
                     }
                 }
