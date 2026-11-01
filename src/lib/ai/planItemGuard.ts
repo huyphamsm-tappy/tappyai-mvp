@@ -222,11 +222,19 @@ export function addressInDestination(address: unknown, key: string): boolean {
 }
 
 /** A meal with no venue the tools can vouch for: a plain slot (category `rest`, nothing invented), named by its time of day. */
-function mealSlot(item: Item): Item {
+function mealSlot(item: Item, keepWords = false): Item | null {
   const at = minutesOf(item.time)
-  const name = at === null ? 'Bữa ăn gần chỗ ở' : at < 10 * 60 + 30 ? 'Ăn sáng gần chỗ ở' : at < 15 * 60 ? 'Ăn trưa gần chỗ ở' : 'Ăn tối gần chỗ ở'
-  const out: Item = { time: typeof item.time === 'string' ? item.time : '', emoji: '🍽️', category: 'rest', name, description: 'Chọn một quán gần chỗ ở khi tới nơi; hỏi trước món có hợp với bạn không.' }
-  return out
+  const byTime = at === null ? 'Bữa ăn gần chỗ ở' : at < 10 * 60 + 30 ? 'Ăn sáng gần chỗ ở' : at < 15 * 60 ? 'Ăn trưa gần chỗ ở' : 'Ăn tối gần chỗ ở'
+  const time = typeof item.time === 'string' ? item.time : ''
+  if (keepWords) {
+    // 01/11 (one brain): the stop keeps what the model wrote - its name and its words minus any figure - and none of the venue data. With neither, there is
+    // nothing to show: dropped, never a generic line (owner UAT: the same "choose a place near your stay" filler twice in one plan).
+    const name = typeof item.name === 'string' ? item.name.trim() : ''
+    const words = typeof item.description === 'string' ? withoutFigureClauses(item.description.trim()) : ''
+    if (!name && !words) return null
+    return { time, emoji: typeof item.emoji === 'string' && item.emoji ? item.emoji : '🍽️', category: 'rest', name: name || byTime, description: words }
+  }
+  return { time, emoji: '🍽️', category: 'rest', name: byTime, description: 'Chọn một quán gần chỗ ở khi tới nơi; hỏi trước món có hợp với bạn không.' }
 }
 
 const GENERIC_STAY = /nhận phòng|trả phòng|check-?in|check-?out|gửi hành lý|lấy hành lý/i
@@ -331,13 +339,17 @@ export function guardPlanItems(fullText: string, places: readonly PlanPlace[], o
       if (checkout && stayPlace && typeof item.name === 'string') { item.name = stayPlace.name; for (const f of ['address', 'maps_link', 'place_id', 'photo_url']) delete item[f] }
       // A vegetarian request: a restaurant whose row carries no vegetarian data is not kept as a venue (see `hasVegetarianBasis`); it becomes the plain meal slot.
       if (place && opts.keepSights && opts.vegetarian && kind === 'food' && !hasVegetarianBasis(place)) {
-        kept.push(mealSlot(item)); res.mealSlots = (res.mealSlots ?? 0) + 1; res.vegSlots = (res.vegSlots ?? 0) + 1; continue
+        kept.push(mealSlot(item)!); res.mealSlots = (res.mealSlots ?? 0) + 1; res.vegSlots = (res.vegSlots ?? 0) + 1; continue
       }
       if (place && opts.keepSights && used.has(place) && kind !== 'hotel') {
         // CONSULTATIVE_IN_AGENT: the same venue twice in one plan (Quảng trường Lâm Viên afternoon AND evening) is one stop, not two. A MEAL slot is not
         // dropped (Round 21 trace: day 3 lost its breakfast and lunch because both restaurants were already used on days 1–2 and the day ended after
         // the check-out): it stays as a plain "meal near the stay" slot with no venue named.
-        if (kind === 'food' || kind === 'cafe') { kept.push(mealSlot(item)); res.mealSlots = (res.mealSlots ?? 0) + 1; continue }
+        if (kind === 'food' || kind === 'cafe') {
+          const slot = mealSlot(item, opts.keepNamedVenues === true)
+          if (slot) { kept.push(slot); res.mealSlots = (res.mealSlots ?? 0) + 1 } else res.dropped++
+          continue
+        }
         res.dropped++; continue
       }
       if (!place && opts.keepSights && (kind === 'attraction' || kind === 'entertainment') && typeof item.name === 'string' && item.name.trim()) {
@@ -383,7 +395,11 @@ export function guardPlanItems(fullText: string, places: readonly PlanPlace[], o
         // CONSULTATIVE_IN_AGENT: a meal the model did not name (or named wrongly) is NEVER swapped for "the next unused restaurant of the pool" — the pool holds
         // whatever the search returned, vegetarian or not (live Round 22: a vegetarian plan showed "Hải Sản Hạnh Xuân", "Cơm Gà Hà", "Quán Bò Nướng Lạc Cảnh").
         // It stays a plain meal slot; a venue only appears when the model named it and the tools returned it.
-        if (opts.keepSights && (kind === 'food' || kind === 'cafe')) { kept.push(mealSlot(item)); res.mealSlots = (res.mealSlots ?? 0) + 1; continue }
+        if (opts.keepSights && (kind === 'food' || kind === 'cafe')) {
+          const slot = mealSlot(item, opts.keepNamedVenues === true)
+          if (slot) { kept.push(slot); res.mealSlots = (res.mealSlots ?? 0) + 1 } else res.dropped++
+          continue
+        }
         place = pool.find(p => !used.has(p) && [...kindsOf(p)].some(k => COMPATIBLE[kind].includes(k)))
         if (!place && opts.keepSights && kind === 'hotel' && GENERIC_STAY.test(String(item.name ?? '')) && !HOTEL_WORD.test(String(item.name ?? ''))) {
           // CONSULTATIVE_IN_AGENT: "Gửi hành lý / nhận phòng", "Trả phòng" with no hotel row to point at is the stop itself, not an invented hotel: kept as a plain stop
