@@ -128,6 +128,14 @@ class ChatViewModel @Inject constructor(
     private val _isAssistantResponding = MutableStateFlow(false)
     val isAssistantResponding: StateFlow<Boolean> = _isAssistantResponding.asStateFlow()
 
+    // Declared BEFORE init: a prefilled question starts its turn from init, on Main.immediate, and the property initializers below init
+    // would otherwise reset these to null right after the turn assigned them (Stop would keep nothing).
+    /** The reply streaming right now (A6: kept on Stop); null when none is, or once it was built. */
+    private var currentReply: StringBuilder? = null
+
+    /** The research card, charts and pictures the streaming turn has sent so far (kept on Stop and on a drop after text, like the text). */
+    private var currentAnnotations: TurnAnnotations? = null
+
     // The answer mode sent with the next turn (web parity, 02/11: the one-brain modes; the web starts on Auto).
     private val _mode = MutableStateFlow(ChatMode.Default)
     val mode: StateFlow<ChatMode> = _mode.asStateFlow()
@@ -552,12 +560,6 @@ class ChatViewModel @Inject constructor(
         }
         currentAnnotations = null
     }
-
-    /** The reply streaming right now (A6: kept on Stop); null when none is, or once it was built. */
-    private var currentReply: StringBuilder? = null
-
-    /** The research card, charts and pictures the streaming turn has sent so far (kept on Stop and on a drop after text, like the text). */
-    private var currentAnnotations: TurnAnnotations? = null
 
     /**
      * Regenerates the last assistant reply — mirrors the web's `reload()` (Vercel AI SDK):
