@@ -85,7 +85,8 @@ struct ChatView: View {
                         endNotice: vm.endNotice,
                         progressHint: vm.progressHint,
                         planShare: vm.planShare,
-                        liveResearch: vm.liveResearch
+                        liveResearch: vm.liveResearch,
+                        liveCharts: vm.liveCharts
                     )
                 }
 

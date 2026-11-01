@@ -45,6 +45,8 @@ struct ChatMessageList: View {
     /// The running turn's Deep Research card (`ChatViewModel.liveResearch`). The reply bubble being built carries the same card; this is
     /// the fallback for the one frame where the bubble has none yet, and it is never drawn next to the bubble's own.
     var liveResearch: ResearchStatus? = nil
+    /// The running turn's charts (`ChatViewModel.liveCharts`), with the same fallback rule as `liveResearch`.
+    var liveCharts: [ResearchChart] = []
 
     var body: some View {
         ScrollViewReader { proxy in
@@ -78,6 +80,8 @@ struct ChatMessageList: View {
                                 images: parsed.images,
                                 // the Deep Research card: the reply's own, or the running turn's while this is the reply being built
                                 research: msg.research ?? (isLast && isStreaming ? liveResearch : nil),
+                                charts: msg.charts.isEmpty && isLast && isStreaming ? liveCharts : msg.charts,
+                                chartLang: locale == "vi" ? "vi" : "en",
                                 isStreaming: isStreaming && isLast,
                                 status: msg.status,
                                 ctaButtons: parsed.ctaButtons,
@@ -238,6 +242,11 @@ private struct AssistantBubble: View {
     let images: [ParsedImage]
     /// The Deep Research card of this reply; drawn above its text (nil on every other reply).
     var research: ResearchStatus? = nil
+    /// The report's charts, drawn under its text (empty on every other reply). Under the text for now: under the section each names is the
+    /// answer renderer's job (Android `ArticlePlacer`).
+    var charts: [ResearchChart] = []
+    /// "vi" or "en": the language the charts' figures are written in.
+    var chartLang: String = "en"
     let isStreaming: Bool
     let status: MessageStatus
     let ctaButtons: [CTAButton]
@@ -296,6 +305,11 @@ private struct AssistantBubble: View {
                 // Inline image strip
                 if !images.isEmpty {
                     ChatImageStrip(images: images, onZoom: onZoomImage)
+                }
+
+                // Deep Research: the report's charts under its text
+                ForEach(Array(charts.enumerated()), id: \.offset) { _, chart in
+                    ResearchChartView(chart: chart, lang: chartLang)
                 }
 
                 // Plan card
