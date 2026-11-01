@@ -51,6 +51,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import java.util.Locale
 import javax.inject.Inject
 
@@ -820,7 +822,14 @@ class ChatViewModel @Inject constructor(
                         turnStatus = turnStatus,
                     )
                 }
-                persistConversation()
+                // The reply is final: the live bubble, its research card and the Stop button go now. Saving is a network call that must
+                // not keep them on screen (a second copy of the reply, a locked input) nor be cancelled by Stop - it runs on its own.
+                _isAssistantResponding.value = false
+                _streamingText.value = ""
+                _streamingHint.value = null
+                _streamingPlaces.value = null
+                _streamingResearch.value = null
+                viewModelScope.launch { persistConversation() }
                 // chat_response (RUNBOOK §3.19) — one hit per completed AI answer; feature
                 // is the domain enum (matches web's `feature`), never the reply text.
                 analytics.track("chat_response", mapOf("feature" to category.name.lowercase()))
@@ -877,7 +886,7 @@ class ChatViewModel @Inject constructor(
     private suspend fun keepInterrupted(reply: StringBuilder): Boolean {
         val kept = partialReplyMessage(nextId++, reply.toString(), interrupted = true, currentAnnotations) ?: return false
         _messages.update { it + kept }
-        persistConversation()
+        viewModelScope.launch { persistConversation() }
         return true
     }
 
@@ -1027,7 +1036,15 @@ class ChatViewModel @Inject constructor(
      * surfaces failures via `useChat`'s `error`, never as a stored message), so persisting them
      * would corrupt both the history list and any later resume of this conversation.
      */
-    private suspend fun persistConversation() {
+    // One save at a time: the first save of a chat creates the conversation and sets conversationId; a second one that started before it
+    // answered would create a duplicate. The messages are read inside the lock, so a save always writes the latest list.
+    private val persistLock = Mutex()
+
+    private suspend fun persistConversation() = persistLock.withLock {
+        persistLocked()
+    }
+
+    private suspend fun persistLocked() {
         val stored = _messages.value
             .filterNot { it.isError }
             // 🚨 `raw`, NOT `text`. `text` has had every structured block decoded and REMOVED, so
