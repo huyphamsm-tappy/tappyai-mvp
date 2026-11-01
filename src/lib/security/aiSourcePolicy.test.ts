@@ -41,6 +41,42 @@ describe('AIHAY: its site (ai-hay.vn) and its app, owner 01/11', () => {
   })
 })
 
+describe('review 01/11: forms of an address that used to get past', () => {
+  it('a scheme-less address, a protocol-relative one and a displayed link are read as what they say', () => {
+    for (const u of ['chatgpt.com/share/x', 'aihay.vn/hoi-dap/1', '//ai-hay.vn/x', 'www.perplexity.ai/search/q']) expect(isAiProductSource(u), u).toBe(true)
+    expect(isAiProductSource('vnexpress.net/the-gioi')).toBe(false)
+    expect(isAiProductSource('not a url at all')).toBe(false)
+  })
+  it('redirectors, archives and readers around an AI page are unwrapped', () => {
+    for (const u of [
+      'https://www.google.com/url?q=https://chatgpt.com/share/x&sa=U', 'https://www.google.com/url?sa=t&url=https%3A%2F%2Faihay.vn%2Fa',
+      'https://r.jina.ai/https://claude.ai/share/x', 'https://web.archive.org/web/20261001000000/https://ai-hay.vn/a', 'https://webcache.googleusercontent.com/search?q=cache:https://perplexity.ai/x',
+    ]) expect(isAiProductSource(u), u).toBe(true)
+    for (const u of ['https://www.google.com/url?q=https://vnexpress.net/x', 'https://web.archive.org/web/2026/https://vnexpress.net/', 'https://www.google.com/search?q=aihay', 'https://example.com/?u=https://aihay.vn']) expect(isAiProductSource(u), u).toBe(false)
+  })
+  it('more of the product family: other TLDs of AIHAY, AI Studio, DuckDuckGo AI, Bing chat, Hugging Face chat', () => {
+    for (const u of ['https://aihay.ai/x', 'https://aihay.org/x', 'https://aihay.app/x', 'https://ai-hay.com/x', 'https://aistudio.google.com/prompts/x', 'https://duck.ai/chat', 'https://www.bing.com/chat?q=x', 'https://huggingface.co/chat/conversation/x']) expect(isAiProductSource(u), u).toBe(true)
+    for (const u of ['https://www.bing.com/search?q=x', 'https://huggingface.co/docs/transformers', 'https://x.ai/news/grok']) expect(isAiProductSource(u), u).toBe(false)
+  })
+  it('a malformed percent escape does not switch the store-page block off', () => {
+    expect(isAiProductSource('https://play.google.com/store/apps/details?id=vn.aihay&hl=%E0%A4%A')).toBe(true)
+  })
+  it('the other link keys are read too (href, sourceUrl, pageUrl, canonical, displayedLink, site)', () => {
+    for (const k of ['href', 'sourceUrl', 'source_url', 'pageUrl', 'canonical', 'displayedLink', 'site', 'uri']) {
+      expect(withoutAiSources({ results: [{ title: 't', [k]: 'https://aihay.vn/a' }, { title: 'ok', [k]: 'https://vnexpress.net/a' }] }).value, k).toEqual({ results: [{ title: 'ok', [k]: 'https://vnexpress.net/a' }] })
+    }
+    expect(withoutAiSources({ results: [{ title: 't', displayedLink: 'aihay.vn › hoi-dap › 1' }] }).value).toEqual({ results: [] })
+  })
+  it('a single object (a Serper answer box, a knowledge graph) and a top-level page result are checked too, not only array rows', () => {
+    const r = withoutAiSources({ answerBox: { title: 'a', link: 'https://chatgpt.com/share/x' }, knowledgeGraph: { title: 'k', website: 'https://aihay.vn/a' }, organic: [{ title: 'ok', link: 'https://vnexpress.net/a' }] })
+    expect(r.value).toEqual({ organic: [{ title: 'ok', link: 'https://vnexpress.net/a' }] })
+    expect(r.dropped).toBe(2)
+    const top = withoutAiSources({ url: 'https://claude.ai/share/x', content: 'text' })
+    expect((top.value as { error?: string }).error).toBe('source_not_allowed')
+    expect(top.dropped).toBe(1)
+  })
+})
+
 describe('withoutAiSources', () => {
   const rows = [
     { title: 'Wiki', link: 'https://vi.wikipedia.org/wiki/Quang_Trung', snippet: 'a' },
