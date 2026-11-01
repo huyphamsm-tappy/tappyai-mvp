@@ -40,6 +40,21 @@ import java.util.Locale
 
 private fun mark(status: String) = when (status) { "pending" -> "○"; "running" -> "◌"; "done" -> "✓"; else -> "–" }
 
+/**
+ * Writes a report to the place the person chose, off the main thread, and says how it went (review 02/11: every failure was swallowed and
+ * success said nothing). The system's save dialog has already created the file, so a failed write removes the empty file it left.
+ */
+private fun saveReport(context: android.content.Context, scope: kotlinx.coroutines.CoroutineScope, target: android.net.Uri, write: (java.io.OutputStream) -> Unit) {
+    scope.launch {
+        val ok = withContext(Dispatchers.IO) {
+            val written = runCatching { (context.contentResolver.openOutputStream(target) ?: error("no output stream")).use(write) }.isSuccess
+            if (!written) runCatching { android.provider.DocumentsContract.deleteDocument(context.contentResolver, target) }
+            written
+        }
+        android.widget.Toast.makeText(context, if (ok) R.string.chat_research_saved else R.string.chat_research_save_failed, android.widget.Toast.LENGTH_SHORT).show()
+    }
+}
+
 @Composable
 internal fun ResearchCard(status: ResearchStatus, report: String?, charts: List<ResearchChart>, modifier: Modifier = Modifier) {
     val context = LocalContext.current
@@ -49,26 +64,14 @@ internal fun ResearchCard(status: ResearchStatus, report: String?, charts: List<
     val title = status.title.ifBlank { "report" }
     // the file goes where the person chooses (the system's save dialog); nothing is uploaded
     val saveMd = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("text/markdown")) { target ->
-        if (target != null && report != null) scope.launch {
-            withContext(Dispatchers.IO) {
-                runCatching { context.contentResolver.openOutputStream(target)?.use { it.write(reportMarkdown(withChartTables(report, charts, lang), status.links).toByteArray()) } }
-            }
-        }
+        if (target != null && report != null) saveReport(context, scope, target) { it.write(reportMarkdown(withChartTables(report, charts, lang), status.links).toByteArray()) }
     }
     val savePdf = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/pdf")) { target ->
-        if (target != null && report != null) scope.launch {
-            withContext(Dispatchers.IO) {
-                runCatching { context.contentResolver.openOutputStream(target)?.use { writeReportPdf(title, reportForPdf(withChartTables(report, charts, lang), status.links), it) } }
-            }
-        }
+        if (target != null && report != null) saveReport(context, scope, target) { writeReportPdf(title, reportForPdf(withChartTables(report, charts, lang), status.links), it) }
     }
     // 01/11 (web reportDocx.ts): the report as a Word file
     val saveDocx = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/vnd.openxmlformats-officedocument.wordprocessingml.document")) { target ->
-        if (target != null && report != null) scope.launch {
-            withContext(Dispatchers.IO) {
-                runCatching { context.contentResolver.openOutputStream(target)?.use { writeReportDocx(title, reportMarkdown(withChartTables(report, charts, lang), status.links), it) } }
-            }
-        }
+        if (target != null && report != null) saveReport(context, scope, target) { writeReportDocx(title, reportMarkdown(withChartTables(report, charts, lang), status.links), it) }
     }
     val phaseText = when (status.phase) {
         "planning" -> stringResource(R.string.chat_research_planning)

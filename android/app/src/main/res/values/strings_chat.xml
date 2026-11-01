@@ -358,6 +358,8 @@
     <string name="chat_research_researching">Researching · %1$d sources</string>
     <string name="chat_research_writing">Writing the report · %1$d sources</string>
     <string name="chat_research_done">Research complete · %1$d sources</string>
+    <string name="chat_research_saved">Report saved</string>
+    <string name="chat_research_save_failed">Couldn\'t save the report. Try again or pick another place.</string>
     <string name="chat_research_failed">The research could not be completed</string>
     <string name="chat_research_sources">Sources</string>
     <string name="chat_research_download">Download report:</string>
