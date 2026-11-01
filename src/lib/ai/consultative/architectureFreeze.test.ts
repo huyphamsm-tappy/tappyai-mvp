@@ -9,8 +9,11 @@ import { join } from 'node:path'
 import { readChatMode } from '@/lib/ai/security/clientInput'
 import { tierOf, modeForTier, DEEP_RESEARCH_MONTHLY } from '@/lib/plans/tiers'
 import { SALE_PLAN_IDS } from '@/lib/plans/planConfig'
-import { ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, CHAT_SEARCH_BUDGET, ONE_BRAIN_MODE_LINES } from './oneBrain'
+import { ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, CHAT_SEARCH_BUDGET, ONE_BRAIN_MODE_LINES, PRESENT_PLAN_DESCRIPTION } from './oneBrain'
 import { DEEP_RESEARCH_LIMITS } from '@/lib/ai/research/deepResearch'
+import { isAiProductSource } from '@/lib/security/aiSourcePolicy'
+import { guardPlaceGeography } from '@/lib/ai/tools/placeGeoGuard'
+import { guardPlanItems, CHECK_HOURS_AND_FEES } from '@/lib/ai/planItemGuard'
 
 const ROUTE = readFileSync(join(process.cwd(), 'src/app/api/chat/route.ts'), 'utf8')
 const FREEZE_DOC = readFileSync(join(process.cwd(), 'docs/architecture/ONE-BRAIN-FREEZE-20261102.md'), 'utf8')
@@ -46,5 +49,40 @@ describe('architecture freeze 02/11/2026', () => {
     expect(ROUTE).toContain("chatMode === 'auto'")
     expect(ROUTE).toContain('think_deeper')
     expect(ROUTE).toContain('...(oneBrain && chatMode === \'auto\' ? { autoThink } : {})')
+  })
+})
+
+// ── Architecture freeze, second (owner: "đóng băng kiến trúc web sau khi fix bugs") ────────────────────────────────────────────────────
+// The four rules added after the first freeze, written in section 5 of the same document. Same rule: a red line is an architecture change.
+describe('architecture freeze, second (after the review of 01/11)', () => {
+  it('sources: no AI product\'s page is read, listed or cited; the policy wraps every chat tool before the web ticket wrapper', () => {
+    expect(isAiProductSource('https://ai-hay.vn/x')).toBe(true)
+    expect(isAiProductSource('https://www.google.com/url?q=https://chatgpt.com/share/x')).toBe(true)
+    expect(isAiProductSource('https://vi.wikipedia.org/wiki/Quang_Trung')).toBe(false)
+    expect(ROUTE.indexOf('wrapToolsWithoutAiSources(tools')).toBeGreaterThan(0)
+    expect(ROUTE.indexOf('wrapToolsWithTurnWebTicket(tools')).toBeGreaterThan(ROUTE.indexOf('wrapToolsWithoutAiSources(tools'))
+  })
+  it('places abroad: a search centred abroad keeps the rows near its centre; one about Việt Nam still drops rows outside it', () => {
+    const near = { name: 'A', address: 'Jl. X, Bali, Indonesia', lat: -8.8, lng: 115.2 }
+    const far = { name: 'B', address: '1 Main St, Omaha, NE 68144', lat: 41.2, lng: -96.1 }
+    const abroad = guardPlaceGeography({ results: [near, far], centre_abroad: { lat: -8.8, lng: 115.22 } }, 'Bali, Indonesia')
+    expect((abroad.result as { results: Array<{ name: string }> }).results.map(r => r.name)).toEqual(['A'])
+    const home = guardPlaceGeography({ results: [near] }, 'Quận 1, TP.HCM')
+    expect(home.dropped).toEqual([{ name: 'A', reason: 'foreign' }])
+  })
+  it('plan card: present_plan is described by principle (oneBrain.ts), a sight keeps the model\'s words, the hours/fees line is one tip per plan', () => {
+    expect(ROUTE).toContain('description: PRESENT_PLAN_DESCRIPTION')
+    expect(PRESENT_PLAN_DESCRIPTION).toMatch(/theme/i)
+    const plan = `x [TAPPY_PLAN]${JSON.stringify({ type: 'trip', title: 'T', days: [{ label: 'Ngày 1', items: [1, 2].map(n => ({ time: '10:00', category: 'attraction', name: `Điểm ${n}`, description: 'Ngắm cảnh đẹp, mở cửa 07:00, vé 30.000đ' })) }] })}[/TAPPY_PLAN]`
+    const out = JSON.parse((s => s.slice(s.indexOf('[TAPPY_PLAN]') + 12, s.indexOf('[/TAPPY_PLAN]')))(guardPlanItems(plan, [], { destination: 'Đà Nẵng', keepSights: true, knownSightsUnlabelled: true }).text))
+    expect(out.days[0].items.map((i: { description: string }) => i.description)).toEqual(['Ngắm cảnh đẹp', 'Ngắm cảnh đẹp'])
+    expect(out.local_tips.filter((t: { text: string }) => t.text === CHECK_HOURS_AND_FEES)).toHaveLength(1)
+  })
+  it('Deep Research quota: given back when the person leaves before any report text, not after it started streaming', () => {
+    const src = readFileSync(join(process.cwd(), 'src/lib/ai/research/deepResearchResponse.ts'), 'utf8')
+    expect(src).toContain("if (out.failed === 'client_gone') { if (chars === 0)")
+  })
+  it('the freeze document has its second section', () => {
+    expect(FREEZE_DOC).toContain('## 5. Đóng băng lần 2')
   })
 })
