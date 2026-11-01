@@ -302,7 +302,9 @@ internal fun chatErrorFor(code: Int, dto: ChatErrorDto?, strings: StringProvider
         ?: dto?.error?.takeIf { looksLikeSentence(it) }
     val message = serverSentence ?: strings.get(R.string.chat_error_generic_with_code, code)
     return when {
-        code == 429 && (dto?.error == "free_limit_reached" || dto?.error == "plan_limit_reached") ->
+        // A6 (02/11): the plan's Deep Research runs per month are a limit of the plan too; the server's sentence names it.
+        // (`pro_daily_limit_reached` stays a rate limit: it is the hidden anti-abuse ceiling, logged by the server as one.)
+        code == 429 && dto?.error in setOf("free_limit_reached", "plan_limit_reached", "deep_research_limit_reached") ->
             ChatException.DailyLimitReached(message)
         code == 429 ->
             ChatException.RateLimited(message)

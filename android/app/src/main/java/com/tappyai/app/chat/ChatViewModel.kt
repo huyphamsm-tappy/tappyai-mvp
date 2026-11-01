@@ -503,10 +503,21 @@ class ChatViewModel @Inject constructor(
     fun onFollowupSelected(followup: String) = sendUserMessage(followup)
 
     fun onStop() {
+        // A6 (02/11): what already arrived stays as the reply (web useChat keeps the streamed text on stop). Read before the cancel; null
+        // once the reply was built (both run on the main thread, so the finished reply and this one never both land).
+        val partial = currentReply?.toString().orEmpty()
+        currentReply = null
         respondingJob?.cancel()
         respondingJob = null
         _isAssistantResponding.value = false
+        partialReplyMessage(nextId++, partial, interrupted = false)?.let { kept ->
+            _messages.update { it + kept }
+            viewModelScope.launch { persistConversation() }
+        }
     }
+
+    /** The reply streaming right now (A6: kept on Stop); null when none is, or once it was built. */
+    private var currentReply: StringBuilder? = null
 
     /**
      * Regenerates the last assistant reply — mirrors the web's `reload()` (Vercel AI SDK):
@@ -680,8 +691,9 @@ class ChatViewModel @Inject constructor(
             _streamingHint.value = null
             _streamingPlaces.value = null
 
+            val reply = StringBuilder()
+            currentReply = reply
             try {
-                val reply = StringBuilder()
                 // The turn's LIVE place decision, if the stream carried one. It arrives on its own
                 // `8:` frame, usually before the prose finishes, and is held here until the message
                 // is built — it is never appended to the text, which is why it cannot leak into the
@@ -726,6 +738,7 @@ class ChatViewModel @Inject constructor(
                 // the model didn't inline any, so existing Android followups don't regress.
                 // UAT3: one reply, not two — a reply that streamed the same answer twice is kept as
                 // its last version, on screen AND in what is saved (ReplyRepeat, web parity).
+                currentReply = null // built below: Stop no longer keeps a partial copy
                 val finalReply = ReplyRepeat.cleanRepeats(reply.toString())
                 val parsed = ChatResponseParser.parse(finalReply)
                 val followups = parsed.followups.ifEmpty { chatRepository.getFollowups(category) }
@@ -773,6 +786,8 @@ class ChatViewModel @Inject constructor(
                     is ChatException.AgeGate -> if (e.code == "age_verification_required") ChatErrorAction.VerifyAge else null
                     else -> null
                 }
+                // A6: the turn failed after text (a `3:` frame) - what arrived stays, marked interrupted (web), instead of an error bubble
+                if (keepInterrupted(reply)) return@launch
                 _messages.update { msgs ->
                     msgs + ChatMessage(
                         id = nextId++,
@@ -784,6 +799,8 @@ class ChatViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 logger.e(TAG, "Chat stream failed", e)
+                // A6: the connection dropped after text - the same: what arrived stays, marked interrupted
+                if (keepInterrupted(reply)) return@launch
                 _messages.update { msgs ->
                     msgs + ChatMessage(
                         id = nextId++,
@@ -798,8 +815,17 @@ class ChatViewModel @Inject constructor(
                 _streamingHint.value = null
                 _streamingPlaces.value = null
                 _streamingResearch.value = null
+                if (currentReply === reply) currentReply = null
             }
         }
+    }
+
+    /** A6: the reply that failed after text, kept and marked interrupted; false when nothing arrived (the caller shows its error bubble). */
+    private suspend fun keepInterrupted(reply: StringBuilder): Boolean {
+        val kept = partialReplyMessage(nextId++, reply.toString(), interrupted = true) ?: return false
+        _messages.update { it + kept }
+        persistConversation()
+        return true
     }
 
     /** What a tool call means to the person (the web's TOOL_HINTS, same tools and words); an unmapped tool keeps the current hint. */
