@@ -187,24 +187,65 @@ function nn<T>(v: T | typeof UNKNOWN): T | null {
  * The seam attaches at most one link per provider per row and marks the requested capability
  * as primary; a primary link is preferred, else the first valid one. Nothing is repaired.
  */
-function entityCommerceLinks(e: Entity): SynthesisCommerceView[] {
+/** Lower-case letters and digits only, so "Shopee Mall - ADATA" and "shopee" compare. */
+const shopKey = (s: string): string => s.normalize('NFKD').replace(/\p{M}+/gu, '').toLowerCase().replace(/[^a-z0-9]+/g, '')
+
+/**
+ * Owner UAT 02/11: does this marketplace link belong to the shop that sells this offer? A row's links are looked up by the product's
+ * title, so a store's offer (Tin Học Ngôi Sao, 990.000₫) came back with a Shopee link to ANOTHER listing (512GB, not the 256GB asked) and
+ * the card read "990.000₫ · Mua trên Shopee". Only the offer's own shop (its seller name, or the host of its own link) LEADS the card;
+ * another shop's product page stays beside it only when the product's identity is certain (so the same product, not another variant);
+ * a search page ("Tìm trên Lazada") states no price and no product, and always stays.
+ */
+function sameShop(offerSeller: string | null | undefined, offerUrl: string | null | undefined, r: CommerceLinkRow): boolean {
+  const seller = shopKey(offerSeller ?? '')
+  const names = [r.providerId, r.merchantName].map(shopKey).filter(n => n.length >= 3)
+  if (seller && names.some(n => seller.includes(n) || n.includes(seller))) return true
+  let host = ''
+  try { host = shopKey(new URL(offerUrl ?? '').hostname.replace(/^www\./, '').split('.')[0]) } catch { /* no own link */ }
+  return !!host && names.some(n => host === n || host.includes(n))
+}
+
+/** The capacities a text names ("256GB", "1 TB", "8gb-256gb"), in GB. */
+const capacities = (s: string): number[] =>
+  [...s.matchAll(/(\d{1,4})\s*-?\s*(gb|tb)(?![a-z])/gi)].map(m => (m[2].toLowerCase() === 'tb' ? Number(m[1]) * 1024 : Number(m[1])))
+
+const decodeURIComponentSafe = (s: string): string => { try { return decodeURIComponent(s) } catch { return s } }
+
+/**
+ * Can another shop's product page be the same product as this entity? Only when the entity's own title names its capacity and the page
+ * names no other one - the SSD card "SU650 SATA" (no capacity) got a Shopee 512GB page for a 256GB ask. Numbers, not words.
+ */
+function sameVariant(e: Entity, url: string): boolean {
+  const own = capacities(entityName(e))
+  if (own.length === 0) return false
+  const page = capacities(decodeURIComponentSafe(url))
+  return page.length === 0 || page.every(c => own.includes(c))
+}
+
+function entityCommerceLinks(e: Entity): { links: SynthesisCommerceView[]; ownShop: Set<string> } {
   const out: SynthesisCommerceView[] = []
   const seen = new Set<string>()
+  const ownShop = new Set<string>()
   for (const o of e.offers) {
     const rows = (o.evidence.raw as Record<string, unknown>)[COMMERCE_LINKS_KEY]
     if (!Array.isArray(rows)) continue
     for (const r of rows) {
       if (!isCommerceLinkRow(r) || seen.has(r.providerId)) continue
+      const own = sameShop(o.seller, o.url, r)
+      if (!own && r.kind !== 'SEARCH_HANDOFF' && !sameVariant(e, r.destinationUrl)) continue
+      if (own) ownShop.add(r.providerId)
       seen.add(r.providerId)
       out.push(projectCommerce(r))
     }
   }
-  return out
+  return { links: out, ownShop }
 }
 
-/** The entity's leading handoff: the first DETAIL-level link (a search page is never "the" handoff). */
-function entityCommerce(links: SynthesisCommerceView[]): SynthesisCommerceView | undefined {
-  return links.find(l => l.kind !== 'SEARCH_HANDOFF' && l.primary) ?? links.find(l => l.kind !== 'SEARCH_HANDOFF')
+/** The entity's leading handoff: the first DETAIL-level link of the offer's OWN shop (a search page, or another shop, never leads). */
+function entityCommerce(links: SynthesisCommerceView[], ownShop: Set<string>): SynthesisCommerceView | undefined {
+  const own = links.filter(l => l.kind !== 'SEARCH_HANDOFF' && ownShop.has(l.providerId))
+  return own.find(l => l.primary) ?? own[0]
 }
 
 function projectCommerce(r: CommerceLinkRow): SynthesisCommerceView {
@@ -329,8 +370,8 @@ export function buildSynthesisView(s: ShoppingSynthesis): SynthesisView {
     if (id.storageGb !== UNKNOWN) specs.push({ key: 'storage', value: id.storageGb })
     if (id.size !== UNKNOWN) specs.push({ key: 'size', value: id.size })
     const conditionLabel = id.condition === UNKNOWN ? null : String(id.condition)
-    const commerceLinks = entityCommerceLinks(e)
-    const commerce = entityCommerce(commerceLinks)
+    const { links: commerceLinks, ownShop } = entityCommerceLinks(e)
+    const commerce = entityCommerce(commerceLinks, ownShop)
     return {
       key: e.entityKey,
       name: entityName(e),
