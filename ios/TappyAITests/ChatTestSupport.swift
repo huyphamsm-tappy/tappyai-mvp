@@ -1,15 +1,15 @@
 import XCTest
 @testable import TappyAI
 
-extension XCTestCase {
-    /// Polls `condition` every 20 ms for up to `ticks` ticks (5 s by default) on the main actor.
-    @MainActor
-    func waitUntil(ticks: Int = 250, _ condition: @escaping () -> Bool) async {
-        var waited = 0
-        while !condition(), waited < ticks {
-            try? await Task.sleep(nanoseconds: 20_000_000)
-            waited += 1
-        }
+/// Polls `condition` every 20 ms for up to `ticks` ticks (5 s by default) on the main actor.
+/// A free function, not a member of XCTestCase: CommentFlowTests has its own private `waitUntil`, and a second one on every test case
+/// made its calls ambiguous.
+@MainActor
+func waitUntil(ticks: Int = 250, _ condition: @escaping () -> Bool) async {
+    var waited = 0
+    while !condition(), waited < ticks {
+        try? await Task.sleep(nanoseconds: 20_000_000)
+        waited += 1
     }
 }
 
