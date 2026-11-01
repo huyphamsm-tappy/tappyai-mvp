@@ -1,6 +1,7 @@
 import Foundation
 import Combine
 import PhotosUI
+import SwiftUI
 
 @MainActor
 final class ChatViewModel: AppObservableObject {
