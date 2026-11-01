@@ -339,4 +339,15 @@
     <string name="ask_v2_sub_spa">Chọn nhanh vài thứ, Tappy sẽ tìm chỗ hợp nhất.</string>
     <string name="ask_v2_example_spa">Ví dụ: kỹ thuật viên nữ, phòng riêng...</string>
     <string name="ask_v2_example_main">Ví dụ: gần nhà, giá vừa phải...</string>
+    <!-- A2 (02/11): các chế độ trả lời, đúng chữ của web (src/lib/i18n/v3/structuredAi.ts mode.*) -->
+    <string name="chat_mode_menu">Chọn chế độ</string>
+    <string name="chat_mode_off">Tắt chế độ</string>
+    <string name="chat_mode_chat">Trả lời nhanh</string>
+    <string name="chat_mode_chat_hint">Trả lời ngay, không suy nghĩ lâu</string>
+    <string name="chat_mode_web">Tìm web</string>
+    <string name="chat_mode_web_hint">Tra cứu nhiều nguồn, có link và ngày</string>
+    <string name="chat_mode_think">Suy nghĩ</string>
+    <string name="chat_mode_think_hint">Trả lời kỹ cho câu khó, chậm hơn</string>
+    <string name="chat_mode_deep">Nghiên cứu sâu</string>
+    <string name="chat_mode_deep_hint">Lập kế hoạch, đọc nhiều nguồn, viết báo cáo (1–3 phút)</string>
 </resources>

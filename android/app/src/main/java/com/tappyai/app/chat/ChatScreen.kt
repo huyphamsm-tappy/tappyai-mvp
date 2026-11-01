@@ -158,6 +158,7 @@ fun ChatScreen(
     val messages by viewModel.messages.collectAsStateWithLifecycle()
     val publicShareEnabled by viewModel.publicShareEnabled.collectAsStateWithLifecycle()
     val isResponding by viewModel.isAssistantResponding.collectAsStateWithLifecycle()
+    val chatMode by viewModel.mode.collectAsStateWithLifecycle()
     val streamCut by viewModel.streamCut.collectAsStateWithLifecycle()
     val streamingText by viewModel.streamingText.collectAsStateWithLifecycle()
     val streamingHint by viewModel.streamingHint.collectAsStateWithLifecycle()
@@ -595,6 +596,9 @@ fun ChatScreen(
             onEmojiPicked = viewModel::onEmojiPicked,
             onSend = { withLocationPrompt(false) { viewModel.onSend() } },
             onStop = viewModel::onStop,
+            mode = chatMode,
+            onModePicked = viewModel::onModeSelected,
+            onModeCleared = viewModel::onModeCleared,
             isListening = isListening,
             onVoice = {
                 if (ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO)
@@ -862,6 +866,9 @@ private fun ChatComposer(
     onSend: () -> Unit,
     onStop: () -> Unit,
     onVoice: () -> Unit,
+    mode: ChatMode = ChatMode.Default,
+    onModePicked: (ChatMode) -> Unit = {},
+    onModeCleared: () -> Unit = {},
 ) {
     val canSend = input.isNotBlank() || hasPendingImage
     // Web parity: the composer's Smile button toggles an emoji panel; picking one inserts it
@@ -875,6 +882,11 @@ private fun ChatComposer(
                 onEmojiPicked(emoji)
             })
         }
+        ChatModeChip(
+            mode = mode,
+            onClear = onModeCleared,
+            modifier = Modifier.padding(start = TappySpacing.md, top = TappySpacing.sm),
+        )
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -898,6 +910,13 @@ private fun ChatComposer(
             //
             // Committed text is still pushed straight to the ViewModel, so send, voice, prefill and
             // persistence all keep reading exactly what they read before.
+            // A2: "+" opens the mode menu (web: the composer's "+" left of the textarea; attaching stays hidden, as above)
+            ChatModeMenuButton(
+                mode = mode,
+                enabled = !isResponding,
+                container = if (MaterialTheme.colorScheme.background.luminance() < 0.5f) WebGray800 else WebGray100,
+                onPick = onModePicked,
+            )
             var field by remember { mutableStateOf(TextFieldValue(input)) }
             // Only an EXTERNAL change resets the field — a voice transcript, a prefill, or the clear
             // after send. Comparing text (not the whole value) is what keeps this from stamping on

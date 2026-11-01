@@ -17,8 +17,16 @@ enum class ChatMode(val wire: String) {
     /** Nghiên cứu sâu: plan, research branches, one report (a long turn, counted per month by plan). */
     Deep("deep");
 
+    /** The composer menu's rule (web: `setChatMode(m => (m === key ? 'auto' : key))`): the mode in use, picked again, goes back to Auto. */
+    fun picked(choice: ChatMode): ChatMode = if (this == choice) Auto else choice
+
+    /** The mode once a question is sent: Deep Research is for that one question (web: `setChatMode(m => (m === 'deep' ? 'auto' : m))`). */
+    fun afterSend(): ChatMode = if (this == Deep) Auto else this
+
     companion object {
         val Default = Auto
+        /** What the "+" menu offers, in the web's order (Auto is the default and has no item: its chip's ✕ goes back to it). */
+        val menu: List<ChatMode> = listOf(Chat, Web, Think, Deep)
         fun fromWire(value: String?): ChatMode = entries.firstOrNull { it.wire == value } ?: Default
     }
 }

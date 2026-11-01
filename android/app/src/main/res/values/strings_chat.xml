@@ -342,4 +342,15 @@
     <string name="ask_v2_sub_spa">Pick a few things, Tappy finds the best place.</string>
     <string name="ask_v2_example_spa">E.g. female therapist, private room...</string>
     <string name="ask_v2_example_main">E.g. close to home, mid-range price...</string>
+    <!-- A2 (02/11): the answer modes, the web's words (src/lib/i18n/v3/structuredAi.ts mode.*) -->
+    <string name="chat_mode_menu">Choose a mode</string>
+    <string name="chat_mode_off">Turn the mode off</string>
+    <string name="chat_mode_chat">Quick answer</string>
+    <string name="chat_mode_chat_hint">Answers at once, without long thinking</string>
+    <string name="chat_mode_web">Web search</string>
+    <string name="chat_mode_web_hint">Look things up across sources, with links and dates</string>
+    <string name="chat_mode_think">Thinking</string>
+    <string name="chat_mode_think_hint">A thorough answer for hard questions, slower</string>
+    <string name="chat_mode_deep">Deep research</string>
+    <string name="chat_mode_deep_hint">Plans, reads many sources, writes a report (1–3 minutes)</string>
 </resources>

@@ -127,7 +127,8 @@ class ChatViewModel @Inject constructor(
     // The answer mode sent with the next turn (web parity, 02/11: the one-brain modes; the web starts on Auto).
     private val _mode = MutableStateFlow(ChatMode.Default)
     val mode: StateFlow<ChatMode> = _mode.asStateFlow()
-    fun onModeSelected(mode: ChatMode) { _mode.value = mode }
+    fun onModeSelected(mode: ChatMode) { _mode.value = _mode.value.picked(mode) }
+    fun onModeCleared() { _mode.value = ChatMode.Auto }
 
     // The last reply's stream closed without its finish frame (ChatStreamEvent.Cut): the screen says so and
     // offers «answer again». Cleared as soon as a new turn starts. Web parity: ChatInterface `streamCut`.
@@ -681,6 +682,7 @@ class ChatViewModel @Inject constructor(
                 // reply, into TTS, or into what gets persisted.
                 var livePlaces: PlacesLiveView? = null
                 val turnMode = _mode.value
+                _mode.value = turnMode.afterSend()
                 chatRepository.streamReply(history, chatSessionId, turnMode).collect { event ->
                     val token = when (event) {
                         is ChatStreamEvent.Text -> event.delta
