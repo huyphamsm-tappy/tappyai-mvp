@@ -106,11 +106,9 @@ struct ChatMessageList: View {
                                 // the richer projection and exists for the session that produced
                                 // the turn; it is never persisted, so a reopened conversation has
                                 // only the durable block, which is what that block is for.
-                                // A place the itinerary already presents is not drawn again as a card (Android `TravelPlaceFilter`).
-                                places: TravelPlaceFilter.placesOutsideItinerary(
-                                    plan: parsed.plan,
-                                    places: msg.livePlaces.map { $0.renderOrder().map { $0.toCardView() } }
-                                        ?? parsed.places.compactMap { $0.toCardView() }),
+                                // The server's places show as sent: the web draws them all (it has no itinerary filter).
+                                places: msg.livePlaces.map { $0.renderOrder().map { $0.toCardView() } }
+                                    ?? parsed.places.compactMap { $0.toCardView() },
                                 placesMapsURL: msg.livePlaces?.mapsSearchUrl,
                                 placesShown: msg.livePlaces?.shown,
                                 followups: isLast && !isStreaming ? parsed.followups : [],
