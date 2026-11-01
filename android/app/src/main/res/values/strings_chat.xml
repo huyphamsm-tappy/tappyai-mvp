@@ -83,6 +83,7 @@
 
 
     <string name="chat_action_copy">Copy</string>
+    <string name="chat_action_copied">Copied</string>
     <string name="chat_action_share">Share</string>
     <string name="chat_share_chooser_title">Share message</string>
     <string name="chat_action_like">Like</string>

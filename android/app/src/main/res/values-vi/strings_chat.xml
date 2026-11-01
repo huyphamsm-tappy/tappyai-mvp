@@ -82,6 +82,7 @@
 
 
     <string name="chat_action_copy">Sao chép</string>
+    <string name="chat_action_copied">Đã sao chép</string>
     <string name="chat_action_share">Chia sẻ</string>
     <string name="chat_share_chooser_title">Chia sẻ tin nhắn</string>
     <string name="chat_action_like">Thích</string>

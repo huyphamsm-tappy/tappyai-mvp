@@ -275,7 +275,7 @@ fun ChatScreen(
                         // User bubbles slide up on entry (web: animate-slide-up). Assistant replies
                         // are NOT re-animated on commit — they take over the streaming row's exact
                         // position seamlessly (only the cursor drops + actions/CTA fade in).
-                        TappyChatRole.User -> Box(modifier = Modifier.messageAppear()) {
+                        TappyChatRole.User -> Column(modifier = Modifier.fillMaxWidth().messageAppear(), horizontalAlignment = Alignment.End) {
                             TappyChatBubble(role = TappyChatRole.User) {
                             Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.xs)) {
                                 // 02/11: a PDF shows as its name (the server reads its text), a photo as itself
@@ -293,6 +293,8 @@ fun ChatScreen(
                                 if (message.text.isNotBlank()) Text(message.text)
                             }
                             }
+                            // 01/11 (web UserMessageCopy): a copy button under every question the person sent, copying it exactly as typed
+                            UserMessageCopyButton(message.text)
                         }
                         TappyChatRole.Assistant -> Row(
                             modifier = Modifier.fillMaxWidth(),
