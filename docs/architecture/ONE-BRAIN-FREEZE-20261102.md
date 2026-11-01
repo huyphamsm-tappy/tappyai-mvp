@@ -80,3 +80,9 @@ Chế độ đọc từ trường `mode` của request. Thiếu hoặc giá tr�
 - **02/11, Owner duyệt "Có sửa luôn đi em"** (2 rủi ro ở mục 3). Không đổi dòng nào của test canh.
   - **Nghiên cứu sâu dừng khi khách rời trang:** route nối tín hiệu của request vào `stop` (`deepResearchResponse`). Thân trả lời bị hủy cũng kích hoạt `stop`. Lệnh gọi mô hình đang chạy bị bỏ (`createDeepResearchDeps({ signal })`). Vòng chạy dừng ở bước đang làm, không viết tiếp, kết thúc `client_gone` và **hoàn lượt** (cả lượt hỏi lẫn lượt Nghiên cứu sâu).
   - **Sổ chi phí ghi đúng chế độ thật:** `ledgerMode()`. Khi chưa đặt `LLM_RESPONSES_PROCESS_BUDGET_USD`, lượt Suy nghĩ ghi `chat`, lượt Tự động có bật suy nghĩ ghi `auto`.
+- **02/11, Owner duyệt "Duyệt, chọn (a)"** (5 lỗi từ UAT in lịch sử chat). Cả 5 là lớp mã server/thẻ quanh mô hình, không đổi lời dặn mô hình, không thêm từ khóa.
+  - **48ef618 — bỏ bù ngày về:** `guardPlanItems` có `topUpReturnDay`; một bộ não truyền `false`, ngày về giữ đúng như mô hình viết (trước đó mã bù chỗ của nơi khác → địa chỉ Sài Gòn lọt vào lịch Nhật).
+  - **fa72364 — hạn mức tìm địa điểm:** `PLACES_BUDGET_ONE_BRAIN = 6` lượt/câu (trước 3/3 → chặn tìm "bar pub về đêm").
+  - **de930fe — nút mua trên thẻ mua sắm:** chỉ dẫn đầu bằng link của đúng cửa hàng của dòng đó; link cửa hàng khác chỉ giữ khi cùng dung lượng; trang tìm kiếm luôn giữ.
+  - **365cd7f — thẻ lịch trình:** luôn chia tab theo ngày như thiết kế (bỏ biến thể "mọi ngày một trang" 29/10).
+  - **2160573 — thẻ địa điểm mang lời câu trả lời:** tên in đậm đứng đầu dòng → phần còn lại của dòng (lời mô hình, giữ số, bỏ link) thành dòng "Vì sao" trên **mọi** thẻ được nêu; vẫn chỉ thẻ đầu được chọn. Không thêm lệnh gọi mô hình.
