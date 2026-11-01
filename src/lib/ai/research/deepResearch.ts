@@ -353,7 +353,8 @@ export function sectionImages(report: string, plan: ResearchPlan, pictures: Read
 }
 
 /** Runs one deep research. Never throws: a failure ends with a `failed` status and whatever was written. */
-export async function runDeepResearch(question: string, context: string, lang: string, deps: DeepResearchDeps, emit: ResearchEmit): Promise<{ plan: ResearchPlan | null; evidence: Evidence[]; findings: Finding[]; failed: string | null; cut?: boolean; followUps?: number; charts?: number; figures?: { proposed: number; kept: number } }> {
+/** `left` (review 02/11): the person went away - the run stops where it is, writes nothing more and ends as 'client_gone'. */
+export async function runDeepResearch(question: string, context: string, lang: string, deps: DeepResearchDeps, emit: ResearchEmit, left?: AbortSignal): Promise<{ plan: ResearchPlan | null; evidence: Evidence[]; findings: Finding[]; failed: string | null; cut?: boolean; followUps?: number; charts?: number; figures?: { proposed: number; kept: number } }> {
   const now = deps.now ?? Date.now
   const t0 = now()
   const evidence: Evidence[] = []
@@ -365,6 +366,7 @@ export async function runDeepResearch(question: string, context: string, lang: s
   emit.status({ type: 'tappy.research.v1', title: clean(question, 120), phase: 'planning', steps: [], sources: 0 })
   let plan: ResearchPlan | null = null
   try { plan = normalisePlan(await deps.plan(question, context), question) } catch { plan = null }
+  if (left?.aborted) return { plan, evidence, findings, failed: 'client_gone' }
   if (!plan) return { plan: null, evidence, findings, failed: fail(clean(question, 120), [], 'no_plan') }
   const steps: ResearchStatus['steps'] = plan.steps.map(s => ({ title: s.title, status: 'pending' }))
   const show = (phase: ResearchStatus['phase']) => emit.status({ type: 'tappy.research.v1', title: plan!.title, phase, steps: steps.map(s => ({ ...s })), sources: evidence.length })
@@ -414,7 +416,8 @@ export async function runDeepResearch(question: string, context: string, lang: s
   // every step at once; a step still running at the deadline is dropped (marked failed), the report is written from what came back
   let timer: ReturnType<typeof setTimeout> | undefined
   const deadline = new Promise<'deadline'>(r => { timer = setTimeout(() => r('deadline'), Math.max(0, DEEP_RESEARCH_LIMITS.researchDeadlineMs - (now() - t0))) })
-  const round = (from: number) => Promise.race([Promise.all(plan!.steps.slice(from).map((_, j) => runStep(from + j).catch(() => { steps[from + j].status = 'failed' }))), deadline])
+  const gone = new Promise<'deadline'>(r => { if (left?.aborted) r('deadline'); else left?.addEventListener('abort', () => r('deadline'), { once: true }) })
+  const round = (from: number) => Promise.race([Promise.all(plan!.steps.slice(from).map((_, j) => runStep(from + j).catch(() => { steps[from + j].status = 'failed' }))), deadline, gone])
   let timedOut = (await round(0)) === 'deadline'
   // the second round: what the question asks that the findings do not answer yet, as follow-up steps (shown on the card like the others)
   let followUps = 0
@@ -437,6 +440,7 @@ export async function runDeepResearch(question: string, context: string, lang: s
     }
   }
   clearTimeout(timer)
+  if (left?.aborted) return { plan, evidence, findings, failed: 'client_gone' }
   for (const s of steps) if (s.status !== 'done') s.status = 'failed'
   if (!findings.length) return { plan, evidence, findings, failed: fail(plan.title, steps, 'no_findings') }
 
@@ -454,6 +458,7 @@ export async function runDeepResearch(question: string, context: string, lang: s
   try {
     for await (const delta of deps.write({ question, plan, evidence: cited, findings: notes })) {
       say(numberer.push(stripper.push(delta)))
+      if (left?.aborted) break
       // the run's own deadline: what was written stays and gets its sources (the route must answer inside its maxDuration)
       if (now() - t0 >= DEEP_RESEARCH_LIMITS.runDeadlineMs) { cut = true; break }
     }
@@ -462,8 +467,9 @@ export async function runDeepResearch(question: string, context: string, lang: s
     if (!written.trim()) throw new Error('empty_report')
   } catch {
     finish()
-    return { plan, evidence, findings, failed: fail(plan.title, steps, 'write_failed'), cut }
+    return { plan, evidence, findings, failed: left?.aborted ? 'client_gone' : fail(plan.title, steps, 'write_failed'), cut }
   }
+  if (left?.aborted) return { plan, evidence, findings, failed: 'client_gone', cut }
   emit.text(sourcesBlock(cited, notes, lang, plan.sources_label))
   // the pictures go under their sections (an annotation the article layout places; never in the text). A lookup still running is not waited for.
   let pictureTimer: ReturnType<typeof setTimeout> | undefined

@@ -22,6 +22,16 @@ export interface AiUsageEvent {
   ok?: boolean
 }
 
+/**
+ * Review 02/11: the mode that really served the turn. Thinking asked without the Responses spend cap configured ran on the chat model, so it
+ * is recorded as chat ('think' → 'chat', a Tự động turn that turned thinking on → 'auto'). Pure.
+ */
+export function ledgerMode(asked: 'chat' | 'web' | 'think' | 'deep' | 'auto', thinkOn: boolean, responsesOn: boolean): UsageMode {
+  if (asked === 'think') return responsesOn ? 'think' : 'chat'
+  if (asked === 'auto') return thinkOn && responsesOn ? 'auto_think' : 'auto'
+  return asked
+}
+
 export const aiUsageLedgerOn = (env: Record<string, string | undefined> = process.env) => env.AI_USAGE_LEDGER === '1'
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i

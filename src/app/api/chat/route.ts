@@ -168,7 +168,8 @@ import { asksOtherDestination, eventPreCall, nearbyDestination, nearbyTurnedDown
 import { geoGuardArea, guardPlaceGeography } from '@/lib/ai/tools/placeGeoGuard'
 import { compactCandidates, compactProducts, loadChatSessionState, nextChatSessionState, readChatSessionId, saveChatSessionState, type ChatSessionState } from '@/lib/ai/consultative/chatSessionState'
 import { turnUsd, sumCounts, turnCostStream, type TurnCostInfo } from '@/lib/ai/turnCost'
-import { recordAiUsage } from '@/lib/ai/usage/usageLedger'
+import { recordAiUsage, ledgerMode } from '@/lib/ai/usage/usageLedger'
+import { responsesConfigured } from '@/lib/ai/llm/providers/openai'
 import { coveringQuery, planPresearch, planFlightPresearch, type FlightPresearchPlan, presearchMessages, presearchFrames, presearchPlaceSites, prefixBody, deferredBody, searchingFrame, type PresearchOutcome, type PresearchPlan } from '@/lib/ai/consultative/presearch'
 import { wantsMoreFromSet, reusablePlaceSearch, type PlaceSearchEvidence } from '@/lib/ai/consultative/moreFromSet'
 import { coercePlaceType } from '@/lib/ai/tools/placeType'
@@ -2690,7 +2691,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // plan, mode, the deepest web lookup, the turn's price and counts - never a word of the conversation. Reporting only; fire and forget.
   const turnSearch: { depth: 'none' | SearchDepth } = { depth: 'none' }
   const usageSink = (i: TurnCostInfo, extra: { parallelCalls?: number; ok?: boolean } = {}) => {
-    void recordAiUsage({ userId: authedUserId ?? null, plan: quotaPlan, mode: chatMode === 'auto' && autoThink.on ? 'auto_think' : chatMode, searchDepth: turnSearch.depth, costUsd: i.usd, tokensIn: i.tokensIn, tokensOut: i.tokensOut, serperCalls: i.serperCalls, ...extra })
+    void recordAiUsage({ userId: authedUserId ?? null, plan: quotaPlan, mode: ledgerMode(chatMode, autoThink.on, responsesConfigured()), searchDepth: turnSearch.depth, costUsd: i.usd, tokensIn: i.tokensIn, tokensOut: i.tokensOut, serperCalls: i.serperCalls, ...extra })
   }
   const tools = noToolTurn && !agentOn ? undefined : gateTools(timeTools({
       // A movie/show RECOMMENDATION turn drops the place search entirely, so the
@@ -3600,9 +3601,12 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     const cost = { usd: 0, calls: 0 }
     // 01/11 (owner approved): Parallel's search beside Serper for every query - its own budget for the run (16 searches), the same daily cap
     const par = consultParallelOn() ? deepResearchParallel() : null
+    // review 02/11: the person closed the page - the run stops (the model call in flight too) and is given back
+    const deepStop = new AbortController()
+    if (req.signal?.aborted) deepStop.abort(); else req.signal?.addEventListener('abort', () => deepStop.abort(), { once: true })
     return deepResearchResponse({
-      question: lastText, context: recent, lang, cost,
-      deps: createDeepResearchDeps({ lang, userTexts: recentUserTexts, cost, questionLang: detectLangConfident(lastText), ...(par ? { parallelSearch: par } : {}) }),
+      question: lastText, context: recent, lang, cost, stop: deepStop,
+      deps: createDeepResearchDeps({ lang, userTexts: recentUserTexts, cost, questionLang: detectLangConfident(lastText), signal: deepStop.signal, ...(par ? { parallelSearch: par } : {}) }),
       // the searches' price: Serper's credits plus the Parallel searches sent
       serperUsd: () => {
         const d = serperDelta(serperAtStart)

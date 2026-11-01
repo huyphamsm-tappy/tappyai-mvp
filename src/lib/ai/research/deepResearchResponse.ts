@@ -20,6 +20,11 @@ export interface DeepResearchTurn {
   onFailed: (reason: string) => Promise<void> | void
   /** 01/11: the run's price once known (the usage ledger); never awaited, must not throw. */
   onUsage?: (u: { usd: number; searchCalls: number; ok: boolean }) => void
+  /**
+   * review 02/11: aborted when the person goes away - by the route (the request's own signal) or here (the body cancelled). The run stops and
+   * is given back ('client_gone'); the deps' model calls are built on the same signal, so the call in flight is dropped too.
+   */
+  stop?: AbortController
 }
 
 const FAILED_TEXT: Record<string, string> = {
@@ -42,16 +47,19 @@ export function deepResearchResponse(t: DeepResearchTurn): Response {
         // the section charts (drawn by the client from these checked figures; every point names its source)
         charts: charts => send(`8:${JSON.stringify([chartsFrame(charts)])}`),
         images: items => { const a = sanitizeDocMedia({ kind: DOC_MEDIA_KIND, v: 1, items: items.map(i => ({ title: i.title, src: i.src, source: 'web' })) }); if (a) { pictures = a.items.length; send(docMediaFrame(a).trimEnd()) } },
-      })
-      if (out.failed && chars === 0) { send(`0:${JSON.stringify(FAILED_TEXT[t.lang === 'en' ? 'en' : 'vi'])}`); await Promise.resolve(t.onFailed(out.failed)) }
+      }, t.stop?.signal)
+      // the person left: nobody reads the report, so the run is given back whatever was written before
+      if (out.failed === 'client_gone') await Promise.resolve(t.onFailed(out.failed))
+      else if (out.failed && chars === 0) { send(`0:${JSON.stringify(FAILED_TEXT[t.lang === 'en' ? 'en' : 'vi'])}`); await Promise.resolve(t.onFailed(out.failed)) }
       const serper = t.serperUsd()
       const usd = Math.round((t.cost.usd + serper.usd) * 1e6) / 1e6
       console.log(JSON.stringify({ type: 'tappyai_turn_cost', turnType: 'deep_research', usd, answerUsd: Math.round(t.cost.usd * 1e6) / 1e6, serperUsd: serper.usd, serperCalls: serper.calls, modelCalls: t.cost.calls }))
       try { t.onUsage?.({ usd, searchCalls: serper.calls, ok: !out.failed }) } catch { /* the ledger never breaks a run */ }
       console.log(JSON.stringify({ type: 'tappyai_deep_research', ok: !out.failed, failed: out.failed, cut: out.cut === true, follow_ups: out.followUps ?? 0, steps: out.plan?.steps.length ?? 0, findings: out.findings.length, ...evidenceCounts(out.evidence), report_chars: chars, pictures, charts: out.charts ?? 0, figures_proposed: out.figures?.proposed ?? 0, figures_kept: out.figures?.kept ?? 0, ms: Date.now() - t0 }))
       send(`d:${JSON.stringify({ finishReason: out.failed ? 'error' : 'stop', usage: { promptTokens: 0, completionTokens: 0 } })}`)
-      c.close()
+      try { c.close() } catch { /* client gone */ }
     },
+    cancel() { t.stop?.abort() },
   })
   return new Response(body, { status: 200, headers: { 'Content-Type': 'text/plain; charset=utf-8', 'X-Vercel-AI-Data-Stream': 'v1', 'Cache-Control': 'no-cache' } })
 }

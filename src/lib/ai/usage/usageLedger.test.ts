@@ -1,6 +1,6 @@
 // 01/11 (owner: "bảng thống kê chi phí - làm ngay"): the usage ledger writes one row per turn of a signed-in account, reporting only.
 import { describe, it, expect, vi, afterEach } from 'vitest'
-import { usageRow, recordAiUsage, aiUsageLedgerOn, type AiUsageEvent } from './usageLedger'
+import { usageRow, recordAiUsage, aiUsageLedgerOn, ledgerMode, type AiUsageEvent } from './usageLedger'
 import { turnCostStream, type TurnCostInfo } from '@/lib/ai/turnCost'
 
 const USER = '0b9a5c1e-2f3d-4a6b-8c7d-1e2f3a4b5c6d'
@@ -21,6 +21,21 @@ describe('usageRow', () => {
     const r = usageRow({ ...EV, plan: 'Pro<script>', mode: 'x' as never, searchDepth: 'deep' as never, costUsd: -1, tokensIn: NaN, tokensOut: -5, serperCalls: 2.7, ok: false })!
     expect(r).toMatchObject({ plan: 'proscript', mode: 'chat', search_depth: 'none', cost_usd: 0, tokens_in: 0, tokens_out: 0, serper_calls: 2, ok: false })
     expect(usageRow({ ...EV, costUsd: 1e9 })!.cost_usd).toBe(99.999999)
+  })
+})
+
+describe('ledgerMode (review 02/11: the mode that really served the turn)', () => {
+  it('thinking asked and the Responses API configured: think / auto_think', () => {
+    expect(ledgerMode('think', false, true)).toBe('think')
+    expect(ledgerMode('auto', true, true)).toBe('auto_think')
+    expect(ledgerMode('auto', false, true)).toBe('auto')
+  })
+  it('no Responses spend cap configured: the turn ran on the chat model and is recorded as such', () => {
+    expect(ledgerMode('think', false, false)).toBe('chat')
+    expect(ledgerMode('auto', true, false)).toBe('auto')
+  })
+  it('the other modes are what was asked', () => {
+    for (const m of ['chat', 'web', 'deep'] as const) for (const r of [true, false]) expect(ledgerMode(m, false, r)).toBe(m)
   })
 })
 

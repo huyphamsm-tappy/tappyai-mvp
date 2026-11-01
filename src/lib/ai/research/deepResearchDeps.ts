@@ -119,13 +119,14 @@ export function mergeSearchRows<T extends { url: string }>(first: readonly T[], 
 const LANGUAGE_NAMES: Record<string, string> = { vi: 'Vietnamese', en: 'English', ja: 'Japanese', ko: 'Korean', zh: 'Chinese', ar: 'Arabic', th: 'Thai' }
 export const questionLanguageLine = (code: string | null | undefined) => (code && LANGUAGE_NAMES[code] ? `\n(The question is written in ${LANGUAGE_NAMES[code]}: every title, heading and line you write is in ${LANGUAGE_NAMES[code]}.)` : '')
 
-export function createDeepResearchDeps(o: { lang: string; userTexts: readonly string[]; cost: Cost; parallelSearch?: ResearchParallelSearch; questionLang?: string | null }): DeepResearchDeps {
+/** `signal` (review 02/11): the person went away - the model call in flight is dropped. */
+export function createDeepResearchDeps(o: { lang: string; userTexts: readonly string[]; cost: Cost; parallelSearch?: ResearchParallelSearch; questionLang?: string | null; signal?: AbortSignal }): DeepResearchDeps {
   const langLine = questionLanguageLine(o.questionLang)
   const reader = createLeanResearch({ lang: o.lang, userTexts: o.userTexts, maxReads: DEEP_RESEARCH_LIMITS.steps * DEEP_RESEARCH_LIMITS.queriesPerStep * READ_PER_QUERY, v5Reading: true })
   const exec = reader.tool.execute as unknown as (a: unknown, c: unknown) => Promise<unknown>
   return {
     async plan(question, context) {
-      const r = await AI.extract({ role: 'intent', systemShared: PLAN_SYSTEM, messages: [{ role: 'user', content: `${context ? `Conversation so far:\n${context}\n\n` : ''}Question:\n${question}${langLine}` }], schema: PlanSchema, schemaName: 'tappy_research_plan', maxTokens: 900, budgetKind: 'aux' } as never) as { object: ResearchPlan; providerMetadata?: unknown }
+      const r = await AI.extract({ role: 'intent', systemShared: PLAN_SYSTEM, messages: [{ role: 'user', content: `${context ? `Conversation so far:\n${context}\n\n` : ''}Question:\n${question}${langLine}` }], schema: PlanSchema, schemaName: 'tappy_research_plan', maxTokens: 900, budgetKind: 'aux', abortSignal: o.signal } as never) as { object: ResearchPlan; providerMetadata?: unknown }
       addCost(o.cost, r.providerMetadata)
       return r.object
     },
@@ -155,13 +156,13 @@ export function createDeepResearchDeps(o: { lang: string; userTexts: readonly st
     },
     async notes(step, question, evidence) {
       const data = evidence.map(e => `[${e.id}] ${e.title}\n${e.snippet}\n${e.text.slice(0, 3500)}`).join('\n\n')
-      const r = await AI.extract({ role: 'intent', systemShared: NOTES_SYSTEM, messages: [{ role: 'user', content: `Question: ${question}${langLine}\nResearch step: ${step}\n\n${fenceUntrusted('tool_result', data)}` }], schema: NotesSchema, schemaName: 'tappy_research_notes', maxTokens: 2400, budgetKind: 'aux' } as never) as { object: { findings: Array<{ text: string; source: number; figure?: Figure | null }> }; providerMetadata?: unknown }
+      const r = await AI.extract({ role: 'intent', systemShared: NOTES_SYSTEM, messages: [{ role: 'user', content: `Question: ${question}${langLine}\nResearch step: ${step}\n\n${fenceUntrusted('tool_result', data)}` }], schema: NotesSchema, schemaName: 'tappy_research_notes', maxTokens: 2400, budgetKind: 'aux', abortSignal: o.signal } as never) as { object: { findings: Array<{ text: string; source: number; figure?: Figure | null }> }; providerMetadata?: unknown }
       addCost(o.cost, r.providerMetadata)
       return r.object.findings
     },
     async gaps(question, plan, found) {
       const data = `Research plan: ${plan.title}\n${plan.steps.map((s, k) => `${k + 1}. ${s.title}`).join('\n')}\n\nFindings so far:\n${found.map(f => `- ${f}`).join('\n').slice(0, 12_000)}`
-      const r = await AI.extract({ role: 'intent', systemShared: GAPS_SYSTEM, messages: [{ role: 'user', content: `Question:\n${question}${langLine}\n\n${fenceUntrusted('tool_result', data)}` }], schema: GapsSchema, schemaName: 'tappy_research_gaps', maxTokens: 500, budgetKind: 'aux' } as never) as { object: { steps: Array<{ title: string; queries: string[] }> }; providerMetadata?: unknown }
+      const r = await AI.extract({ role: 'intent', systemShared: GAPS_SYSTEM, messages: [{ role: 'user', content: `Question:\n${question}${langLine}\n\n${fenceUntrusted('tool_result', data)}` }], schema: GapsSchema, schemaName: 'tappy_research_gaps', maxTokens: 500, budgetKind: 'aux', abortSignal: o.signal } as never) as { object: { steps: Array<{ title: string; queries: string[] }> }; providerMetadata?: unknown }
       addCost(o.cost, r.providerMetadata)
       return Array.isArray(r.object?.steps) ? r.object.steps.map(s => ({ title: s.title, queries: s.queries, completes: (s as { completes_step?: number | null }).completes_step ?? null })) : []
     },
@@ -171,7 +172,7 @@ export function createDeepResearchDeps(o: { lang: string; userTexts: readonly st
       const host = (u: string) => { try { return new URL(u).hostname.replace(/^www\./, '') } catch { return '' } }
       const sources = evidence.filter(e => findings.some(f => f.source === e.id)).map(e => `[${e.id}] ${e.title} — ${e.site ?? host(e.url)}${e.published ? `, ${e.published}` : ''}`).join('\n')
       const notes = writerNotes(plan, findings)
-      const result = AI.stream({ role: 'consult', thinkEffort: 'medium', maxTokens: 6000, systemShared: WRITER_SYSTEM, messages: [{ role: 'user', content: `Question:\n${question}${langLine}\n\nToday's date: ${new Date().toISOString().slice(0, 10)}\nResearch plan: ${plan.title}\n\n${fenceUntrusted('tool_result', `Sources:\n${sources}\n\nFindings by step:\n${notes}`)}` }] })
+      const result = AI.stream({ role: 'consult', thinkEffort: 'medium', maxTokens: 6000, abortSignal: o.signal, systemShared: WRITER_SYSTEM, messages: [{ role: 'user', content: `Question:\n${question}${langLine}\n\nToday's date: ${new Date().toISOString().slice(0, 10)}\nResearch plan: ${plan.title}\n\n${fenceUntrusted('tool_result', `Sources:\n${sources}\n\nFindings by step:\n${notes}`)}` }] })
       yield* writtenText(result.fullStream)
       addCost(o.cost, await result.providerMetadata.catch(() => undefined))
     },

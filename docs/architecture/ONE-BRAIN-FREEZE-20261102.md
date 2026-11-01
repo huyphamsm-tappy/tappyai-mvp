@@ -72,9 +72,11 @@ Chế độ đọc từ trường `mode` của request. Thiếu hoặc giá tr�
 
 - **Khi `SUBSCRIPTIONS_ENABLED` còn tắt:** mọi người, kể cả khách, đều chọn được Nghiên cứu sâu và Suy nghĩ, mỗi lần chỉ tốn 1 lượt hỏi. Phải bật cờ này cùng lúc với lần deploy có một bộ não.
 - **Thứ tự deploy:** chạy migration `20261102` **trước** khi deploy mã có gói Tappy. Nếu không, đơn Tappy lỗi 500 và webhook cửa hàng lặp lại.
-- **Sổ chi phí ghi sai chế độ khi chưa đặt ngân sách Responses:** sổ chi phí và log vẫn ghi `think`/`auto_think` dù lượt đã bị hạ về Chat. Nguyên nhân là chưa đặt `LLM_RESPONSES_PROCESS_BUDGET_USD`.
-- **Nghiên cứu sâu không dừng khi khách đóng trang.** Nó chạy tới hết và vẫn tốn khoảng 0,012 USD.
+- ~~Sổ chi phí ghi sai chế độ khi chưa đặt ngân sách Responses~~: đã sửa 02/11 (mục 4).
+- ~~Nghiên cứu sâu không dừng khi khách đóng trang~~: đã sửa 02/11 (mục 4).
 
 ## 4. Nhật ký thay đổi kiến trúc sau đóng băng
 
-(Trống. Mỗi thay đổi ghi theo dạng: ngày, Owner duyệt gì, commit, và dòng nào của test canh đã đổi.)
+- **02/11, Owner duyệt "Có sửa luôn đi em"** (2 rủi ro ở mục 3). Không đổi dòng nào của test canh.
+  - **Nghiên cứu sâu dừng khi khách rời trang:** route nối tín hiệu của request vào `stop` (`deepResearchResponse`). Thân trả lời bị hủy cũng kích hoạt `stop`. Lệnh gọi mô hình đang chạy bị bỏ (`createDeepResearchDeps({ signal })`). Vòng chạy dừng ở bước đang làm, không viết tiếp, kết thúc `client_gone` và **hoàn lượt** (cả lượt hỏi lẫn lượt Nghiên cứu sâu).
+  - **Sổ chi phí ghi đúng chế độ thật:** `ledgerMode()`. Khi chưa đặt `LLM_RESPONSES_PROCESS_BUDGET_USD`, lượt Suy nghĩ ghi `chat`, lượt Tự động có bật suy nghĩ ghi `auto`.

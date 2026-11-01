@@ -629,6 +629,9 @@ function streamOf(r: GenerateResult): { stream: ReadableStream<LanguageModelV1St
 /** 31/10: the call asked for the Responses API itself (AIStreamOptions.thinkEffort → providerMetadata.tappy.api), whatever LLM_OPENAI_API says. */
 const thinkAsked = (o: { providerMetadata?: Record<string, Record<string, unknown>> }): boolean => o.providerMetadata?.tappy?.api === 'responses'
 
+/** The Responses path has its process spend cap; without it a call that asked for thinking is served by the chat model (chatOrThinkModel). */
+export const responsesConfigured = (): boolean => Number(process.env.LLM_RESPONSES_PROCESS_BUDGET_USD) > 0
+
 /**
  * 31/10 (mode "Suy nghĩ"): the Chat Completions model, except for a regular call that asked for the Responses API (thinkAsked) - that one call
  * goes to the Responses model (reasoning WITH tools, streamed) at the effort it asked for. Every other call is the chat model, byte for byte.
@@ -638,7 +641,7 @@ function chatOrThinkModel(modelId: string, effort: ReasoningEffort, apiKey: stri
   let think: LanguageModelV1 | null = null
   const thinkModel = () => (think ??= responsesModel(modelId, effort, apiKey, false, role))
   // the Responses path needs its process spend cap (reserveBudget refuses every call without it): no cap configured → the chat model, as before
-  const routed = (o: CallOpts) => o.mode?.type === 'regular' && thinkAsked(o as never) && Number(process.env.LLM_RESPONSES_PROCESS_BUDGET_USD) > 0
+  const routed = (o: CallOpts) => o.mode?.type === 'regular' && thinkAsked(o as never) && responsesConfigured()
   return {
     ...chat,
     specificationVersion: 'v1',

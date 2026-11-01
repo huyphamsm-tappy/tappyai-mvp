@@ -410,6 +410,32 @@ describe('readResearchStatus', () => {
     expect(readResearchStatus(undefined)).toBeNull()
     expect(readResearchStatus([{ kind: 'tappy.progress' }])).toBeNull()
   })
+  // review 02/11: the person closed the page - the run stops where it is (no more searching, no writing) and is given back
+  it('the person left during the research: no report is written, the run ends as client_gone', async () => {
+    const left = new AbortController()
+    const d = deps({ gather: async q => { if (q.includes('doanh')) left.abort(); return new Promise(() => undefined) } })
+    const c = collect()
+    const out = await runDeepResearch('q', '', 'vi', d, c.emit, left.signal)
+    expect(out.failed).toBe('client_gone')
+    expect(d.calls).not.toContain('write')
+    expect(c.text).not.toContain('### Nguồn')
+  })
+  it('the person left before the plan came back: client_gone, not no_plan', async () => {
+    const left = new AbortController()
+    const d = deps({ plan: async () => { left.abort(); throw new Error('aborted') } })
+    const out = await runDeepResearch('q', '', 'vi', d, collect().emit, left.signal)
+    expect(out.failed).toBe('client_gone')
+  })
+  it('the person left while the report was written: the writer stops, no sources list, client_gone', async () => {
+    const left = new AbortController()
+    let after = 0
+    const d = deps({ write: async function* () { yield 'Phần đầu '; left.abort(); for (let i = 0; i < 50; i++) { after++; yield `câu ${i} ` } } })
+    const c = collect()
+    const out = await runDeepResearch('q', '', 'vi', d, c.emit, left.signal)
+    expect(out.failed).toBe('client_gone')
+    expect(after).toBeLessThanOrEqual(1)
+    expect(c.text).not.toContain('### Nguồn')
+  })
   it('the card links https sources only', () => {
     const links = [{ id: 1, title: 'ok', url: 'https://a.example/x' }, { id: 2, title: 'js', url: 'javascript:alert(1)' }, { id: 3, title: 'plain', url: 'http://b.example/' }, { id: 4, title: 'data', url: 'data:text/html,x' }, { id: 5, title: 'rel', url: '/x' }]
     expect(readResearchStatus([{ type: 'tappy.research.v1', title: 'T', phase: 'done', steps: [], sources: 5, links }])?.links).toEqual([{ id: 1, title: 'ok', url: 'https://a.example/x' }])
