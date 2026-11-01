@@ -120,7 +120,7 @@ Ngoài các mục trên, phần giao diện và xuất tệp (PDF/Word dễ đ�
 
 ## 6. Đóng băng lần 3
 
-Chủ sở hữu (02/11): "đóng băng lại đi, mai anh UAT cả web lẫn Android". Mốc: tag `arch-freeze-20261102c`, nhánh sao lưu `backup/arch-freeze-20261102c`, trên commit đóng băng này. Từ mục 5 chỉ có thêm quy tắc giao diện sau (hai commit `ccefbc4`, `c14b75c`); phía máy chủ không đổi.
+Chủ sở hữu (02/11): "đóng băng lại đi, mai anh UAT cả web lẫn Android". Mốc: tag `arch-freeze-20261102c`, nhánh sao lưu `backup/arch-freeze-20261102c`, trên commit đóng băng này. Sau đó thêm mục 4 bên dưới (năng lực `card`), nên **mốc cuối là tag `arch-freeze-20261102d`** (nhánh sao lưu `backup/arch-freeze-20261102d`). Từ mục 5 chỉ có thêm quy tắc giao diện sau (hai commit `ccefbc4`, `c14b75c`); phía máy chủ không đổi.
 
 1. **Menu "+" của ô chat:** chỉ có **đính kèm** và **Nghiên cứu sâu**. Trả lời nhanh, Tìm web, Suy nghĩ không còn là mục menu: chế độ Tự động để mô hình tự chọn (ý Owner: người dùng cứ gõ, không biết bật chức năng). Máy chủ vẫn đọc cả năm chế độ.
 2. **Menu theo gói như máy chủ (`lib/plans/tiers.ts`):** khách hoặc tài khoản không có gói đang hoạt động không thấy Nghiên cứu sâu; mọi gói trả tiền thấy. Gói đọc từ `/api/payments/me` chỉ khi cờ `SUBSCRIPTIONS_ENABLED` bật; cờ tắt, mất mạng hay trả lời lỗi nghĩa là chưa biết, và chưa biết thì giữ menu đủ (`deepResearchOffered`, `useDeepResearchOffered`). Nghiên cứu sâu đã chọn mà gói không có thì tự về Tự động.
