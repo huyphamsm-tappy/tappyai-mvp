@@ -99,15 +99,10 @@ struct MessageActionBar: View {
                 // More menu
                 Menu {
                     Button {
-                        UIPasteboard.general.string = TTSManager.stripMarkdown(text)
+                        // the links keep their addresses; the message id is not offered (the web has no such item)
+                        UIPasteboard.general.string = TTSManager.stripMarkdown(text, keepLinkAddresses: true)
                     } label: {
                         Label("chat.copyPlaintext", systemImage: "doc.plaintext")
-                    }
-
-                    Button {
-                        UIPasteboard.general.string = msgId
-                    } label: {
-                        Label("chat.copyId", systemImage: "number")
                     }
 
                     Divider()

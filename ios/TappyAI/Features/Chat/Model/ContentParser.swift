@@ -379,8 +379,12 @@ enum ContentParser {
 
     // MARK: - Extract markdown images
 
+    /// A markdown image: its address may hold one level of brackets ("…/Foo_(bar).jpg") — the first ")" is not its end — and
+    /// every http(s) image is removed from the text, but only an https one is drawn (`extractImages`).
+    private static let imageSyntax = #"!\[([^\]]*)\]\((https?://(?:[^()\s]|\([^()\s]*\))+)\)"#
+
     static func extractImages(_ content: String) -> [ParsedImage] {
-        guard let regex = try? NSRegularExpression(pattern: #"!\[([^\]]*)\]\((https?://[^\s)]+)\)"#) else {
+        guard let regex = try? NSRegularExpression(pattern: imageSyntax, options: .caseInsensitive) else {
             return []
         }
         let range = NSRange(content.startIndex..., in: content)
@@ -390,8 +394,9 @@ enum ContentParser {
                   let altRange = Range(m.range(at: 1), in: content),
                   let urlRange = Range(m.range(at: 2), in: content) else { return }
             let url = String(content[urlRange])
-            // never a picture a page of another AI product serves (owner 01/11)
-            if AiSourcePolicy.isAiProductSource(url) { return }
+            // only https is drawn (an http picture is dropped, never left in the text), and never a picture a page of another
+            // AI product serves (owner 01/11)
+            if !url.lowercased().hasPrefix("https://") || AiSourcePolicy.isAiProductSource(url) { return }
             images.append(ParsedImage(alt: String(content[altRange]), url: url))
         }
         return images
@@ -400,7 +405,7 @@ enum ContentParser {
     // MARK: - Strip markdown images
 
     static func stripImages(_ content: String) -> String {
-        guard let regex = try? NSRegularExpression(pattern: #"!\[([^\]]*)\]\(https?://[^\s)]+\)"#) else {
+        guard let regex = try? NSRegularExpression(pattern: imageSyntax, options: .caseInsensitive) else {
             return content
         }
         let range = NSRange(content.startIndex..., in: content)
