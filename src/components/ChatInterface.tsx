@@ -2447,9 +2447,8 @@ export default function ChatInterface({
                 <div role="menu" data-testid="composer-plus-menu" className="absolute bottom-14 left-0 z-20 w-72 rounded-2xl border border-gray-100 bg-white p-1.5 shadow-xl dark:border-gray-800 dark:bg-gray-900">
                   {([
                     { key: 'attach', icon: '📎', label: t('composer.attach'), hint: t('composer.attachHint'), on: false, act: () => fileInputRef.current?.click() },
-                    { key: 'chat', icon: '⚡', label: t('mode.chat'), hint: t('mode.chatHint'), on: chatMode === 'chat', act: () => setChatMode(m => (m === 'chat' ? 'auto' : 'chat')) },
-                    { key: 'web', icon: '🌐', label: t('mode.web'), hint: t('mode.webHint'), on: chatMode === 'web', act: () => setChatMode(m => (m === 'web' ? 'auto' : 'web')) },
-                    { key: 'think', icon: '💡', label: t('mode.think'), hint: t('mode.thinkHint'), on: chatMode === 'think', act: () => setChatMode(m => (m === 'think' ? 'auto' : 'think')) },
+                    // 01/11 (owner): people just type - Auto picks a quick answer, a web lookup or thinking by itself, so the menu keeps
+                    // only attaching and Deep Research.
                     { key: 'deep', icon: '🔎', label: t('mode.deep'), hint: t('mode.deepHint'), on: chatMode === 'deep', act: () => setChatMode(m => (m === 'deep' ? 'auto' : 'deep')) },
                   ] as const).map(item => (
                     <button
