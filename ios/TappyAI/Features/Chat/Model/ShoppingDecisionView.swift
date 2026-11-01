@@ -266,19 +266,40 @@ enum ShoppingMatch {
 /// Free function because this is where the honesty rule is easiest to break: an empty string, a
 /// "0đ", or a low bound presented as a range would each be a claim the server never made.
 func shoppingPriceRangeText(low: Double?, high: Double?, unknown: String) -> String {
-    func compact(_ amount: Double) -> String {
-        let v = Int(amount)
-        if v >= 1_000_000 {
-            let millions = v / 1_000_000
-            let remainder = (v % 1_000_000) / 100_000
-            return remainder > 0 ? "\(millions).\(remainder) triệu" : "\(millions) triệu"
-        }
-        return "\(v / 1000)k"
+    // A price is a finite, non-negative number; anything else is not a claim the card can make.
+    func usable(_ x: Double?) -> Double? {
+        guard let x, x.isFinite, x >= 0 else { return nil }
+        return x
     }
-    switch (low, high) {
-    case let (l?, h?) where l != h: return "\(compact(l)) – \(compact(h))"
-    case let (l?, _): return compact(l)
-    case let (_, h?): return compact(h)
+    switch (usable(low), usable(high)) {
+    case let (l?, h?) where l != h:
+        let a = formatCompactVnd(l)
+        let b = formatCompactVnd(h)
+        return a == b ? a : "\(a) – \(b)"
+    case let (l?, _): return formatCompactVnd(l)
+    case let (_, h?): return formatCompactVnd(h)
     default: return unknown
     }
+}
+
+/// A compact price (port of Android `formatCompactVnd`). A price is never stated higher or lower than it is:
+/// 999.950 and up → "X triệu" rounded to one decimal, written with a comma as Vietnamese reads it ("25,8 triệu", 24.990.000 → "25 triệu");
+/// a round number of thousands → "250k"; anything else → the exact amount with dot thousands ("249.500đ", "500đ").
+/// The amount is cut to a whole number of đồng first and clamped, so no value can trap.
+func formatCompactVnd(_ amount: Double) -> String {
+    let v = Int64(max(0, min(amount.isFinite ? amount : 0, 1e15)).rounded(.towardZero))
+    if v >= 999_950 {
+        let tenths = (v + 50_000) / 100_000
+        let whole = tenths / 10
+        let decimal = tenths % 10
+        return decimal > 0 ? "\(whole),\(decimal) triệu" : "\(whole) triệu"
+    }
+    if v >= 1_000 && v % 1_000 == 0 { return "\(v / 1_000)k" }
+    let digits = Array(String(v))
+    var grouped = ""
+    for (i, digit) in digits.enumerated() {
+        if i > 0 && (digits.count - i) % 3 == 0 { grouped.append(".") }
+        grouped.append(digit)
+    }
+    return grouped + "đ"
 }
