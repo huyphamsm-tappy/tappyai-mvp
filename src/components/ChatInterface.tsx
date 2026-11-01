@@ -89,6 +89,7 @@ import { rememberPlacesView, recallPlacesView } from '@/lib/recommendation/liveV
 import { rememberTurnStatus, recallTurnStatus } from '@/lib/recommendation/turnStatusCache'
 import PlaceDecision from '@/components/chat/PlaceDecision'
 import { useTranslation, getStoredLocale } from '@/lib/i18n/useTranslation'
+import ScrollJumpButtons from '@/components/chat/ScrollJumpButtons'
 import { validateModelCtaButtons } from '@/lib/recommendation/ctaValidation'
 import { requestedProviderOf } from '@/lib/ai/tools/commerceIntent'
 import { inputLocaleFor } from '@/lib/voice/config'
@@ -842,7 +843,7 @@ export default function ChatInterface({
   const router = useRouter()
   const { t, locale } = useTranslation()
   // A1 (2026-10-02): the thread stays pinned to its end while it grows (see useStickToBottom).
-  const { scrollRef, contentRef, pin } = useStickToBottom<HTMLDivElement, HTMLDivElement>()
+  const { scrollRef, contentRef, pin, pinned } = useStickToBottom<HTMLDivElement, HTMLDivElement>()
   // A reply stream that closed without its finish frame (streamCut.ts): the UI offers «answer again».
   const [streamCut, setStreamCut] = useState(false)
   const cutAwareFetch = useMemo(() => withCutWatch(withCompactedHistory, () => setStreamCut(true)), [])
@@ -1624,7 +1625,9 @@ export default function ChatInterface({
           }}
         />
       )}
-      <div ref={scrollRef} style={{ overflowAnchor: "none" }} className="flex-1 overflow-y-auto">
+      {/* owner 02/11: the pane and its jump buttons (to the top / to the end, with the typing dots while Tappy answers below) */}
+      <div className="relative flex min-h-0 flex-1 flex-col">
+      <div ref={scrollRef} data-chat-scroll style={{ overflowAnchor: "none" }} className="flex-1 overflow-y-auto">
         <div ref={contentRef} className="max-w-container-content mx-auto w-full px-4 py-5">
           {messages.length === 0 && (
             <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 animate-fade-in">
@@ -2214,7 +2217,14 @@ export default function ChatInterface({
           </div>
         </div>
       </div>
-      <div className="flex-shrink-0 px-4 pb-4 pt-2 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-950">
+      <ScrollJumpButtons
+        scrollRef={scrollRef}
+        answering={isLoading}
+        onTop={() => { pinned.current = false; scrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' }) }}
+        onEnd={pin}
+      />
+      </div>
+      <div data-print-hide className="flex-shrink-0 px-4 pb-4 pt-2 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-950">
         {/* Emoji panel overlay — click outside to close */}
         {showEmojiPanel && (
           <div className="fixed inset-0 z-10" onClick={() => setShowEmojiPanel(false)} />

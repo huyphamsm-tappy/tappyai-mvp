@@ -45,7 +45,7 @@ export default function ChatConversation({ conversation }: { conversation: Conve
   // the same product instead of a light page reached from a dark one. No behaviour changes: the
   // marker contract, the action boundary and the honesty rule are untouched.
   return (
-    <div className="v3-theme dark flex flex-col h-dvh">
+    <div data-chat-page className="v3-theme dark flex flex-col h-dvh">
       {/* The saved-conversation header carries the same approved pose as the live
         * one — the two are the same surface and must not disagree. See the note
         * in src/app/(app)/chat/page.tsx. */}
