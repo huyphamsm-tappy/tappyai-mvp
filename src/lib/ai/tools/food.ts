@@ -513,11 +513,13 @@ function isDirectFoodOrderLink(link: string): boolean {
  * no row is in Việt Nam the place is abroad, and its first row is the place (owner UAT 02/11: "Tokyo, Japan" was dropped for being
  * outside Việt Nam and the search ran around the default TP.HCM - Saigon izakayas on a Tokyo plan).
  */
+const inVietnamBounds = (lat: number, lng: number) => lat > 8 && lat < 23.5 && lng > 102 && lng < 110
+
 async function placeCoordinates(name: string): Promise<{ lat: number; lng: number } | null> {
   if (cityInText(name)) return null
   const rows = (await serperPlaces(name, null, { priceRetry: false }).catch(() => null) ?? [])
     .filter(r => typeof r.latitude === 'number' && typeof r.longitude === 'number')
-  const inVietnam = (r: (typeof rows)[number]) => (r.latitude as number) > 8 && (r.latitude as number) < 23.5 && (r.longitude as number) > 102 && (r.longitude as number) < 110
+  const inVietnam = (r: (typeof rows)[number]) => inVietnamBounds(r.latitude as number, r.longitude as number)
   const top = rows.find(inVietnam) ?? rows[0]
   console.log(JSON.stringify({ type: 'tappyai_places_debug', provider: 'serper_maps', step: 'named_place_centre', found: !!top }))
   return top ? { lat: top.latitude as number, lng: top.longitude as number } : null
@@ -611,11 +613,15 @@ async function searchPlacesSerper(
     returned: records.length, inScope: rows.length,
     destination: destination?.query ?? null, centeredOnUser, area: useArea ? areaCentre!.label : null,
   }))
+  // 01/11: a search centred on a place ABROAD says so, so the route's geography guard holds its rows to that place instead of dropping every
+  // row for being outside Việt Nam (UAT: Singapore and Bali came back empty).
+  const abroad = !useArea && !centeredOnUser && !destination && !locationBias && named && !inVietnamBounds(named.lat, named.lng) ? { lat: named.lat, lng: named.lng } : null
   return {
     source: SERPER_PLACES_SOURCE,
     count: rows.length,
     location: location ?? '',
     results: rows.slice(0, 10),
+    ...(abroad ? { centre_abroad: abroad } : {}),
     google_maps_search: 'https://maps.google.com/maps?q=' + encodeURIComponent(query + ' ' + (location ?? '')),
   }
 }

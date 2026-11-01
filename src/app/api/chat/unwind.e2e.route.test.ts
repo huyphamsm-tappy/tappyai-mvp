@@ -104,11 +104,16 @@ vi.mock('@/lib/ai/tools/railSchedule', async (importOriginal) => ({
   fetchRailSchedule: async (page: string) => (h.state.railRows ? { page_url: page, rows: h.state.railRows } : null),
 }))
 vi.mock('@/lib/ai/tools/serperClient', async (importOriginal) => ({ ...(await importOriginal<typeof import('@/lib/ai/tools/serperClient')>()), serperLastAccountErrorAt: () => h.state.accountErrorAt }))
-vi.mock('@/lib/ai/tools/serperPlaces', async (importOriginal) => ({ ...(await importOriginal<typeof import('@/lib/ai/tools/serperPlaces')>()), serperPlaces: async (q: string, centre: { lat: number; lng: number } | null) => { h.state.placesCalls.push({ q, centre: centre ?? null }); return /lẩu/i.test(q) ? LAU_ROWS : !centre && /^côn đảo$/i.test(q.trim()) ? CON_DAO : !centre && /^tokyo,? japan$/i.test(q.trim()) ? TOKYO : [] } }))
+vi.mock('@/lib/ai/tools/serperPlaces', async (importOriginal) => ({ ...(await importOriginal<typeof import('@/lib/ai/tools/serperPlaces')>()), serperPlaces: async (q: string, centre: { lat: number; lng: number } | null) => { h.state.placesCalls.push({ q, centre: centre ?? null }); return /lẩu/i.test(q) ? LAU_ROWS : !centre && /^côn đảo$/i.test(q.trim()) ? CON_DAO : !centre && /^tokyo,? japan$/i.test(q.trim()) ? TOKYO : centre && Math.abs(centre.lat - 35.68) < 0.5 ? TOKYO_ROWS : [] } }))
 /** 30/10: what Serper /maps answers for the bare place name "Côn Đảo" (no centre): the island itself. */
 const CON_DAO = [{ title: 'Côn Đảo', address: 'Côn Đảo, Bà Rịa - Vũng Tàu, Việt Nam', latitude: 8.6833, longitude: 106.6094, cid: '9999' }]
 /** UAT 02/11: what /maps answers for "Tokyo, Japan" (no centre): Tokyo - nothing in Việt Nam. */
 const TOKYO = [{ title: 'Tokyo', address: 'Tokyo, Nhật Bản', latitude: 35.6764, longitude: 139.65, cid: '9998' }]
+/** 01/11: what /maps answers for a search centred on Tokyo: real Tokyo venues, none of them in Việt Nam (UAT: Singapore / Bali came back empty). */
+const TOKYO_ROWS = [
+  { title: 'Uoshin Izakaya Shinjuku', address: '1-2-3 Kabukicho, Shinjuku City, Tokyo 160-0021, Japan', latitude: 35.6938, longitude: 139.7034, rating: 4.4, ratingCount: 900, cid: '7001' },
+  { title: 'Omoide Yokocho Yakitori', address: 'Nishishinjuku, Shinjuku City, Tokyo, Japan', latitude: 35.6925, longitude: 139.6996, rating: 4.3, ratingCount: 1500, cid: '7002' },
+]
 /** 30/10: rows the Serper /maps mock returns for a hotpot query (Đà Lạt), so a turn can have one search WITH rows and one without. */
 const LAU_ROWS = [
   { title: 'Lẩu Gà Lá É Tao Ngộ', address: '5 Đường 3 Tháng 4, Phường 3, Đà Lạt, Lâm Đồng', latitude: 11.928, longitude: 108.446, rating: 4.4, ratingCount: 5200, cid: '1111' },
@@ -638,6 +643,11 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     const centred = r.places.filter(p => p.centre)
     expect(centred.some(p => Math.abs(p.centre!.lat - 35.68) < 0.2 && Math.abs(p.centre!.lng - 139.65) < 0.2), JSON.stringify(r.places)).toBe(true)
     expect(centred.some(p => Math.abs(p.centre!.lat - 10.7769) < 0.01), JSON.stringify(r.places)).toBe(false)
+  }, 60000)
+  it('places (UAT 01/11): one brain - the rows of a search centred abroad reach the model; the Vietnam-only geography guard no longer empties it', async () => {
+    const r = await turn([{ role: 'user', content: 'đi Tokyo nhậu bar pub ở đâu' }], { unwind: true, oneBrain: true, luna: intent('pick', ['food']), tools: [{ name: 'search_places', args: { query: 'izakaya bar pub Shinjuku', location: 'Tokyo, Japan', type: 'bar' } }], reply: 'x' })
+    const out = r.results.find(x => x.name === 'search_places')?.result as { results?: Array<{ name: string }> } | undefined
+    expect(out?.results?.map(x => x.name), JSON.stringify(out)).toEqual(['Uoshin Izakaya Shinjuku', 'Omoide Yokocho Yakitori'])
   }, 60000)
   it('places (review 30/10): one brain - a dish named after a city is not that city ("bún bò Huế" is searched where the person is asked, not in Huế)', async () => {
     const b = await turn([{ role: 'user', content: 'quán bún bò Huế ngon' }], { unwind: true, oneBrain: true, luna: intent('pick', ['food']), tools: [{ name: 'search_places', args: { query: 'bún bò Huế' } }], reply: 'x' })

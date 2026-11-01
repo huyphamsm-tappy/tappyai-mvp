@@ -87,6 +87,9 @@ function provincesIn(address: string): Set<string> {
   return new Set(PLACES.filter(([, re]) => re.test(t)).map(([k]) => k))
 }
 
+/** How far from the centre of a search abroad a row may be (a whole island or city region; a namesake on another continent is thousands of km away). */
+const ABROAD_RADIUS_KM = 80
+
 export interface GeoGuardOutcome { result: unknown; dropped: Array<{ name: string; reason: 'foreign' | 'other_city' | 'too_far' }> }
 
 /** A row's own coordinates (`lat` / `lng`, as serperPlaceToRow writes them), or null. */
@@ -108,7 +111,16 @@ export function guardPlaceGeography(result: unknown, area: string | null | undef
   const want = provinceOf(area)
   const destination = destinationOf(area)
   const dropped: GeoGuardOutcome['dropped'] = []
+  // 01/11: a search centred on a place ABROAD (food.ts `centre_abroad`: the place's own coordinates) is about that place, so the rows that count are
+  // the ones near it; the "outside Việt Nam" drop below is for a search about Việt Nam.
+  const ca = r.centre_abroad as { lat?: unknown; lng?: unknown } | null | undefined
+  const abroad: [number, number] | null = typeof ca?.lat === 'number' && typeof ca?.lng === 'number' ? [ca.lat, ca.lng] : null
   const kept = rows.filter(row => {
+    if (abroad) {
+      const at = coordsOf(row)
+      if (at && haversineKm(abroad, at) > ABROAD_RADIUS_KM) { dropped.push({ name: String((row as { name?: unknown })?.name ?? ''), reason: 'too_far' }); return false }
+      return true
+    }
     const address = String((row as { address?: unknown })?.address ?? '')
     const name = String((row as { name?: unknown })?.name ?? '')
     // A destination inside a province: the row's own coordinates decide, both ways (29/10, see destinationOf) — the address's province
