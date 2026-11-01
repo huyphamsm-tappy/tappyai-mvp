@@ -355,6 +355,11 @@
     <string name="chat_research_researching">Đang nghiên cứu · %1$d nguồn</string>
     <string name="chat_research_writing">Đang viết báo cáo · %1$d nguồn</string>
     <string name="chat_research_done">Đã nghiên cứu xong · %1$d nguồn</string>
+    <string name="chat_tts_pause">Tạm dừng đọc</string>
+    <string name="chat_tts_play">Đọc tiếp</string>
+    <string name="chat_tts_back">Lùi 15 giây</string>
+    <string name="chat_tts_forward">Tua tới 15 giây</string>
+    <string name="chat_tts_speed">Đổi tốc độ đọc</string>
     <string name="chat_research_saved">Đã lưu báo cáo</string>
     <string name="chat_research_save_failed">Không lưu được báo cáo. Hãy thử lại hoặc chọn nơi lưu khác.</string>
     <string name="chat_research_failed">Không hoàn thành được nghiên cứu</string>

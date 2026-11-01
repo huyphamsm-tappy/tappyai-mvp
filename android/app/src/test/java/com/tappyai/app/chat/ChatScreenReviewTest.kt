@@ -38,6 +38,19 @@ class ChatScreenReviewTest {
         }
     }
 
+    // TalkBack read the read-aloud player's play/pause as an unnamed "button", and "«15", "15»" and the speed as plain text; the "+" had a
+    // description but no button role.
+    @Test fun `the read-aloud player and the plus button have names and roles`() {
+        val screen = src("ChatScreen.kt")
+        for (name in listOf("chat_tts_pause", "chat_tts_play", "chat_tts_back", "chat_tts_forward", "chat_tts_speed")) assertTrue(name, screen.contains("R.string.$name"))
+        assertTrue(src("ChatModeMenu.kt").contains("Role.Button"))
+        fun res(p: String) = File("src/main/res/$p").let { if (it.exists()) it else File("app/" + it.path) }.readText()
+        for (file in listOf("values/strings_chat.xml", "values-vi/strings_chat.xml")) {
+            val xml = res(file)
+            for (name in listOf("chat_tts_pause", "chat_tts_play", "chat_tts_back", "chat_tts_forward", "chat_tts_speed")) assertTrue("$file $name", "name=\"$name\"" in xml)
+        }
+    }
+
     // The "stream cut" card is the last item when the stream ended cut; the scroll to the end did not count it, so a long last reply left
     // the card (and its "answer again") below the screen.
     @Test fun `the scroll to the end counts the stream-cut card`() {

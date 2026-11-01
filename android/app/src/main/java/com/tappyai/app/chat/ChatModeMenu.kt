@@ -31,7 +31,9 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -83,7 +85,10 @@ internal fun ChatModeMenuButton(mode: ChatMode, modes: List<ChatMode>, enabled: 
                 .clip(RoundedCornerShape(16.dp))
                 .background(if (open) MaterialTheme.colorScheme.primary.copy(alpha = 0.15f) else container)
                 .clickable(enabled = enabled) { open = !open }
-                .semantics { contentDescription = menuLabel },
+                .semantics {
+                    contentDescription = menuLabel
+                    role = Role.Button
+                },
             contentAlignment = Alignment.Center,
         ) {
             Text("+", fontSize = 22.sp, color = if (open) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)

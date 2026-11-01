@@ -87,6 +87,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.booleanResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
@@ -1251,11 +1254,14 @@ private fun TtsPlayerBar(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(TappySpacing.sm), // gap-1.5 = 6px
     ) {
+        val ttsBack = stringResource(R.string.chat_tts_back)
+        val ttsForward = stringResource(R.string.chat_tts_forward)
+        val ttsSpeed = stringResource(R.string.chat_tts_speed)
         Image(painter = painterResource(mascot), contentDescription = null, modifier = Modifier.size(24.dp))
         IconButton(onClick = onPauseResume, modifier = Modifier.size(28.dp)) {
             Icon(
                 imageVector = if (isPaused) Icons.Filled.PlayArrow else Icons.Filled.Pause,
-                contentDescription = null,
+                contentDescription = stringResource(if (isPaused) R.string.chat_tts_play else R.string.chat_tts_pause),
                 modifier = Modifier.size(16.dp),
                 tint = MaterialTheme.colorScheme.onSurface,
             )
@@ -1265,14 +1271,18 @@ private fun TtsPlayerBar(
             style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.SemiBold,
             color = onSurfaceVariant,
-            modifier = Modifier.clip(RoundedCornerShape(6.dp)).clickable { onSkip(-15) }.padding(2.dp),
+            modifier = Modifier.clip(RoundedCornerShape(6.dp))
+                .semantics { contentDescription = ttsBack }
+                .clickable(role = Role.Button) { onSkip(-15) }.padding(2.dp),
         )
         Text(
             text = "15»",
             style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.SemiBold,
             color = onSurfaceVariant,
-            modifier = Modifier.clip(RoundedCornerShape(6.dp)).clickable { onSkip(15) }.padding(2.dp),
+            modifier = Modifier.clip(RoundedCornerShape(6.dp))
+                .semantics { contentDescription = ttsForward }
+                .clickable(role = Role.Button) { onSkip(15) }.padding(2.dp),
         )
         Text(
             text = formatMinSec(elapsedSec),
@@ -1303,7 +1313,8 @@ private fun TtsPlayerBar(
             modifier = Modifier
                 .clip(RoundedCornerShape(6.dp))
                 .background(MaterialTheme.colorScheme.surfaceVariant)
-                .clickable { onCycleSpeed() }
+                .semantics { contentDescription = ttsSpeed }
+                .clickable(role = Role.Button) { onCycleSpeed() }
                 .padding(horizontal = TappySpacing.sm, vertical = 2.dp)
                 .widthIn(min = 28.dp),
             textAlign = androidx.compose.ui.text.style.TextAlign.Center,

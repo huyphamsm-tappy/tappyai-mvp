@@ -358,6 +358,11 @@
     <string name="chat_research_researching">Researching · %1$d sources</string>
     <string name="chat_research_writing">Writing the report · %1$d sources</string>
     <string name="chat_research_done">Research complete · %1$d sources</string>
+    <string name="chat_tts_pause">Pause reading</string>
+    <string name="chat_tts_play">Resume reading</string>
+    <string name="chat_tts_back">Back 15 seconds</string>
+    <string name="chat_tts_forward">Forward 15 seconds</string>
+    <string name="chat_tts_speed">Change reading speed</string>
     <string name="chat_research_saved">Report saved</string>
     <string name="chat_research_save_failed">Couldn\'t save the report. Try again or pick another place.</string>
     <string name="chat_research_failed">The research could not be completed</string>
