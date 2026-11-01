@@ -51,6 +51,7 @@ export async function reportDocx(text: string, links: readonly ReportLink[], tit
         const width = Math.max(...rows.map(r => r.length))
         return [new d.Table({
           width: { size: 100, type: d.WidthType.PERCENTAGE },
+          margins: { top: 80, bottom: 80, left: 120, right: 120 },
           rows: rows.map((r, i) => new d.TableRow({ tableHeader: i === 0, children: Array.from({ length: width }, (_, k) => new d.TableCell({ children: [new d.Paragraph({ children: inlineRuns(r[k] ?? '').map(x => new d.TextRun({ text: x.text, bold: i === 0 || x.bold, italics: x.italics })) })] })) })),
         })]
       }
@@ -62,6 +63,19 @@ export async function reportDocx(text: string, links: readonly ReportLink[], tit
   })
   // page numbers at the bottom of every page (like a report printed from Word)
   const footer = new d.Footer({ children: [new d.Paragraph({ alignment: d.AlignmentType.CENTER, children: [new d.TextRun({ children: [d.PageNumber.CURRENT, ' / ', d.PageNumber.TOTAL_PAGES], size: 18, color: '666666' })] })] })
-  const doc = new d.Document({ title, creator: 'Tappy', sections: [{ footers: { default: footer }, children: body(parseDoc(reportMarkdown(text, links))) }] })
+  // 01/11: without styles Word shows its tiny default with no spacing. A font that covers Vietnamese, 11 pt, lines at about 1.4, room after each paragraph.
+  const FONT = 'Calibri'
+  const heading = (size: number, before: number, after: number, color: string) => ({ run: { font: FONT, size, bold: true, color }, paragraph: { spacing: { before, after, line: 300 }, keepNext: true } })
+  const styles = {
+    default: {
+      document: { run: { font: FONT, size: 22 }, paragraph: { spacing: { line: 336, after: 140 } } },
+      title: heading(48, 0, 200, '1A3D7C'),
+      heading1: heading(34, 360, 140, '1A3D7C'),
+      heading2: heading(28, 300, 120, '1A3D7C'),
+      heading3: heading(24, 240, 100, '333333'),
+      heading4: heading(22, 200, 80, '333333'),
+    },
+  }
+  const doc = new d.Document({ title, creator: 'Tappy', styles, sections: [{ footers: { default: footer }, children: body(parseDoc(reportMarkdown(text, links))) }] })
   return d.Packer.toBlob(doc)
 }
