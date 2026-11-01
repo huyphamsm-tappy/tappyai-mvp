@@ -317,15 +317,23 @@ fun ChatScreen(
                             if (segments.isNotEmpty()) {
                                 TappyChatBubble(role = TappyChatRole.Assistant) {
                                     Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.xs)) {
-                                        segments.forEach { segment ->
-                                            when (segment) {
-                                                is ReplySegment.Text -> TappyMarkdown(segment.markdown)
-                                                is ReplySegment.Images -> ChatImageCarousel(segment.urls)
+                                        // A4: the answer's pictures and charts under the sections they name (web article layout)
+                                        val parts: List<Any> = remember(message) {
+                                            val placer = ArticlePlacer(message.docMedia, message.charts)
+                                            segments.flatMap { s -> if (s is ReplySegment.Text) placer.place(s.markdown) else listOf(s) }
+                                        }
+                                        parts.forEach { part ->
+                                            when (part) {
+                                                is ReplySegment.Images -> ChatImageCarousel(part.urls)
+                                                is ArticlePart.Markdown -> TappyMarkdown(part.text)
+                                                is ArticlePart.Picture -> ArticlePicture(part.item)
+                                                is ArticlePart.Chart -> ResearchChartView(part.chart)
                                             }
                                         }
                                     }
                                 }
                             }
+                            message.turnStatus?.let { TurnStatusLine(it) }
                             message.plan?.let { plan -> TripPlanCard(plan, planJson = message.planJson) }
                             // The place decision. Rendered only once generation is done, like every
                             // other structured block: a half-arrived card is not a card, and showing

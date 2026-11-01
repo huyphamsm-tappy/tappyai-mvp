@@ -361,4 +361,7 @@
     <string name="chat_tool_news">📰 Đang đọc tin tức…</string>
     <string name="chat_tool_web_search">🌐 Đang tìm trên web…</string>
     <string name="chat_tool_price_watch">🔔 Đang đặt theo dõi giá…</string>
+    <!-- A4 (02/11): trạng thái lượt từ máy chủ (tappy.turn_status.v1), đúng chữ của web (src/lib/i18n/w5/chatResilience.ts) -->
+    <string name="chat_turn_incomplete">Câu trả lời có thể chưa đầy đủ. Bạn hỏi tiếp để mình viết thêm nhé.</string>
+    <string name="chat_turn_interrupted">Câu trả lời bị gián đoạn giữa chừng. Phần trên là những gì đã nhận được — bạn có thể hỏi lại.</string>
 </resources>

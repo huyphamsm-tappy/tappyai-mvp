@@ -364,4 +364,7 @@
     <string name="chat_tool_news">📰 Reading the news…</string>
     <string name="chat_tool_web_search">🌐 Searching the web…</string>
     <string name="chat_tool_price_watch">🔔 Setting up price watch…</string>
+    <!-- A4 (02/11): the server's turn status (tappy.turn_status.v1), the web's words (src/lib/i18n/w5/chatResilience.ts) -->
+    <string name="chat_turn_incomplete">This answer may be incomplete. Ask a follow-up and I will continue.</string>
+    <string name="chat_turn_interrupted">This answer was interrupted. What is above is what arrived — you can ask again.</string>
 </resources>

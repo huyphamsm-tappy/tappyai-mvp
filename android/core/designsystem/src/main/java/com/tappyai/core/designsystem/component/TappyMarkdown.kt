@@ -1,6 +1,7 @@
 package com.tappyai.core.designsystem.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentCopy
@@ -53,7 +55,8 @@ import com.tappyai.core.designsystem.theme.TappySpacing
  *   headings (#/##/###), **bold**, *italic*, `inline code`, fenced ``` code blocks,
  *   bullet lists, numbered lists, > blockquotes, --- horizontal rules, and [links](url)
  *   rendered as styled text (no click handling yet).
- * Explicitly out of scope: tables, raw HTML, nested lists, task lists, LaTeX, Mermaid,
+ * and (A4, 02/11) GFM tables, scrolling sideways when wide.
+ * Explicitly out of scope: raw HTML, nested lists, task lists, LaTeX, Mermaid,
  * markdown images.
  *
  * **The public API is intentionally just `TappyMarkdown(markdown, modifier)`** so the internals
@@ -96,6 +99,8 @@ fun markdownVisibleText(markdown: String): String =
             is MdBlock.NumberedList -> block.items.mapIndexed { i, it -> "${i + 1}. " + inline(it) }.joinToString("\n")
             is MdBlock.Quote -> inline(block.text)
             MdBlock.Rule -> "—"
+            // one line per row, cells apart by a tab: what a reader sees as columns
+            is MdBlock.Table -> (listOf(block.header) + block.rows).joinToString("\n") { row -> row.joinToString("\t") { inline(it) } }
         }
     }
 
@@ -111,7 +116,18 @@ private sealed interface MdBlock {
     data class NumberedList(val items: List<String>) : MdBlock
     data class Quote(val text: String) : MdBlock
     data object Rule : MdBlock
+    /** A4 (02/11, web parity: formatMessage draws GFM tables): a header row, its body rows; cells are inline markdown. */
+    data class Table(val header: List<String>, val rows: List<List<String>>) : MdBlock
 }
+
+// A GFM table: a `| a | b |` row followed by its separator `|---|:---:|`; a pipe line without that separator stays a paragraph.
+private val TABLE_ROW_REGEX = Regex("""^\s*\|.*\|\s*$""")
+private val TABLE_SEPARATOR_REGEX = Regex("""^\s*\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)*\|?\s*$""")
+
+private fun isTableStart(lines: List<String>, i: Int) =
+    i + 1 < lines.size && TABLE_ROW_REGEX.matches(lines[i]) && '|' in lines[i + 1] && TABLE_SEPARATOR_REGEX.matches(lines[i + 1])
+
+private fun tableCells(line: String): List<String> = line.trim().removePrefix("|").removeSuffix("|").split('|').map { it.trim() }
 
 private val HEADING_REGEX = Regex("^(#{1,3})\\s+(.*)$")
 // "•" too: the server writes its clarify / ASK questions as "• …" lines (consult V2, 2026-09-29);
@@ -140,6 +156,18 @@ private fun parseMarkdownBlocks(markdown: String): List<MdBlock> {
                 }
                 if (i < lines.size) i++ // consume the closing fence
                 blocks += MdBlock.CodeBlock(code.toString().trimEnd('\n'))
+            }
+
+            isTableStart(lines, i) -> {
+                val header = tableCells(line)
+                i += 2 // the header and its separator
+                val rows = mutableListOf<List<String>>()
+                while (i < lines.size && TABLE_ROW_REGEX.matches(lines[i])) {
+                    // a short row is padded, a long one cut: every row has the header's columns
+                    rows += tableCells(lines[i]).let { c -> List(header.size) { k -> c.getOrElse(k) { "" } } }
+                    i++
+                }
+                blocks += MdBlock.Table(header, rows)
             }
 
             // Rule is checked before bullet so "---" isn't mistaken for a "-" list item.
@@ -185,7 +213,7 @@ private fun parseMarkdownBlocks(markdown: String): List<MdBlock> {
                 // Paragraph: fold consecutive plain lines into one, until a blank or a line that
                 // starts a different block type.
                 val paragraph = StringBuilder()
-                while (i < lines.size && lines[i].isNotBlank() &&
+                while (i < lines.size && lines[i].isNotBlank() && !(paragraph.isNotEmpty() && isTableStart(lines, i)) &&
                     !FENCE_REGEX.matches(lines[i]) && !RULE_REGEX.matches(lines[i]) &&
                     !HEADING_REGEX.matches(lines[i]) && !QUOTE_REGEX.matches(lines[i]) &&
                     !BULLET_REGEX.matches(lines[i]) && !NUMBERED_REGEX.matches(lines[i])
@@ -404,6 +432,41 @@ private fun MarkdownBlock(block: MdBlock) {
         }
         is MdBlock.Quote -> MarkdownQuote(block.text)
         MdBlock.Rule -> HorizontalDivider()
+        is MdBlock.Table -> MarkdownTable(block)
+    }
+}
+
+/** A table that scrolls sideways when wider than the bubble (web: `overflow-x-auto`); the header row bold on a tinted row. */
+@Composable
+private fun MarkdownTable(table: MdBlock.Table) {
+    val border = MaterialTheme.colorScheme.outlineVariant
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(TappyShapes.input)
+            .border(1.dp, border, TappyShapes.input)
+            .horizontalScroll(rememberScrollState()),
+    ) {
+        Column {
+            (listOf(table.header) + table.rows).forEachIndexed { r, row ->
+                if (r > 0) HorizontalDivider(color = border)
+                Row(
+                    modifier = Modifier
+                        .height(IntrinsicSize.Min)
+                        .then(if (r == 0) Modifier.background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f)) else Modifier),
+                ) {
+                    row.forEachIndexed { c, cell ->
+                        if (c > 0) Box(Modifier.width(1.dp).fillMaxHeight().background(border))
+                        Text(
+                            text = inlineText(cell),
+                            style = MaterialTheme.typography.bodySmall,
+                            fontWeight = if (r == 0) FontWeight.SemiBold else null,
+                            modifier = Modifier.widthIn(min = 72.dp, max = 220.dp).padding(horizontal = TappySpacing.md, vertical = TappySpacing.sm),
+                        )
+                    }
+                }
+            }
+        }
     }
 }
 
