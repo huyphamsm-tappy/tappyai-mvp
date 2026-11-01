@@ -45,6 +45,16 @@ class ReportExportLayoutTest {
         assertTrue(out.contains("BYD dẫn đầu [1]."))
     }
 
+    @Test fun `the PDF blocks keep an address in the text - the chat's reader turns a bare address into a site name, a PDF has no link to tap`() {
+        // seen on the emulator (01/11): the PDF's sources read "n. title — tilleke.com" with no address at all, because markdownVisibleText replaced it
+        val text = "### Nguồn\n1. BYD sales — https://byd.com/a\n2. Báo — https://vnexpress.net/x?id=1&p=2"
+        val block = pdfBlocks(reportForPdf(text, listOf(ResearchLink(1, "BYD sales", "https://byd.com/a")))).last()
+        assertTrue(block.text, block.text.contains("https://byd.com/a"))
+        assertTrue(block.text, block.text.contains("https://vnexpress.net/x?id=1&p=2"))
+        // a link written as [label](url) in prose still reads as its label (the reader's own rule)
+        assertEquals("Xem BYD.", pdfBlocks("Xem [BYD](https://byd.com/a).").single().text)
+    }
+
     @Test fun `a heading is never left alone at the bottom of a page, and the page label reads n over N`() {
         val bottom = 700
         assertTrue(keepHeadingWithNext(y = 660, headingH = 30, nextLineH = 18, bottom = bottom)) // heading + two body lines do not fit: next page

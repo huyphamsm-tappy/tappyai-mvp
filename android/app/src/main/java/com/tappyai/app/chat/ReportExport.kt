@@ -141,10 +141,24 @@ fun pdfBlocks(markdown: String): List<PdfBlock> {
     if (buf.isNotEmpty()) chunks += buf.toString()
     return chunks.mapNotNull { chunk ->
         tableRowsOf(chunk)?.let { rows -> return@mapNotNull PdfBlock(0, rows.joinToString("\n") { it.joinToString("\t") }, rows) }
-        val text = markdownVisibleText(chunk).trim().takeIf { it.isNotEmpty() } ?: return@mapNotNull null
+        val text = visibleKeepingAddresses(chunk).trim().takeIf { it.isNotEmpty() } ?: return@mapNotNull null
         val level = Regex("""^\s{0,3}(#{1,6})\s""").find(chunk)?.groupValues?.get(1)?.length?.coerceAtMost(3) ?: 0
         PdfBlock(level, text)
     }
+}
+
+private val STANDALONE_URL = Regex("""(?<![(])https?://[^\s)\]]+""")
+private val URL_SLOT = Regex("""ZZURL(\d+)ZZ""")
+
+/**
+ * The chunk as the reader sees it, except that an address standing on its own stays an address: the chat's reader turns a bare address into the
+ * name of its site (right on a screen where it is a link, wrong on paper where it is not - seen on the emulator: a PDF whose sources read
+ * "n. title - tilleke.com" and no address). A [label](address) in prose still reads as its label.
+ */
+private fun visibleKeepingAddresses(chunk: String): String {
+    val urls = mutableListOf<String>()
+    val masked = STANDALONE_URL.replace(chunk) { m -> urls += m.value; "ZZURL${urls.size - 1}ZZ" }
+    return URL_SLOT.replace(markdownVisibleText(masked)) { urls.getOrElse(it.groupValues[1].toInt()) { "" } }
 }
 
 private fun pdfPaint(size: Float, bold: Boolean, color: Int = Color.BLACK) = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
