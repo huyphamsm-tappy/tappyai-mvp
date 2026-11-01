@@ -60,8 +60,22 @@ internal object ReplyRepeat {
         return out
     }
 
-    private fun sentences(prose: String): List<String> =
-        SENTENCE.findAll(prose).map { it.value }.filter { it.isNotEmpty() }.toList().ifEmpty { listOf(prose) }
+    private val MD_LINK = Regex("""\[[^\]\n]*]\(https?://[^\s)]+\)""")
+    private val BARE_URL = Regex("""https?://[^\s)\]]+""")
+    private val MASKED = Regex("\u0001(\\d+)\u0002")
+
+    /**
+     * Sentences with their trailing punctuation kept attached. Port of web `sentences()`: a whole markdown link and a bare address are ONE token
+     * (their dots and a "?" are not sentence ends), so a second citation of the same page or a second search link with the same keyword is never
+     * cut in the middle (web A3 02/10, 11/10; Android review 01/11).
+     */
+    private fun sentences(prose: String): List<String> {
+        val urls = mutableListOf<String>()
+        val mask = { m: MatchResult -> urls += m.value; "\u0001${urls.size - 1}\u0002" }
+        val masked = BARE_URL.replace(MD_LINK.replace(prose, mask), mask)
+        val parts = SENTENCE.findAll(masked).map { it.value }.filter { it.isNotEmpty() }.toList().ifEmpty { listOf(masked) }
+        return parts.map { p -> MASKED.replace(p) { urls[it.groupValues[1].toInt()] } }
+    }
 
     private fun isRepeat(k: String, seen: List<String>): Boolean =
         k.length >= MIN_SENTENCE_KEY && seen.any { it == k || (it.length >= MIN_SENTENCE_KEY && similarity(it, k) >= NEAR_DUPLICATE) }
