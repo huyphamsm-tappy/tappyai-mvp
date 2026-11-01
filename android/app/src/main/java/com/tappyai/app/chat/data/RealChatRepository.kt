@@ -13,8 +13,10 @@ import com.tappyai.core.security.JwtDecoder
 import com.tappyai.core.security.TokenProvider
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -133,6 +135,9 @@ class RealChatRepository @Inject constructor(
         // again throws "Another handler is already registered".
         awaitClose { call.cancel() }
     }
+        // callbackFlow's default buffer is 64 events and trySend drops the rest when it is full (Main re-reads the whole text every 50 ms):
+        // a burst lost words, research cards, charts or the "cut" notice. Nothing in the stream may be dropped.
+        .buffer(Channel.UNLIMITED)
 
     /** Decodes a failed response body and classifies it — see [chatErrorFor] for the rules. */
     private fun parseChatError(code: Int, body: String?): ChatException {
