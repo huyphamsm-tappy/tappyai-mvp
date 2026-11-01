@@ -7,7 +7,7 @@
 // The list is DATA: a host (and every subdomain of it). Add a product by adding its host here.
 
 const AI_PRODUCT_HOSTS: readonly string[] = [
-  'aihay.vn', 'aihay.net', 'aihay.com',
+  'aihay.vn', 'aihay.net', 'aihay.com', 'ai-hay.vn',
   'chatgpt.com', 'chat.openai.com',
   'perplexity.ai',
   'gemini.google.com', 'bard.google.com', 'notebooklm.google.com',
@@ -36,18 +36,37 @@ function hostOf(url: unknown): string | null {
   }
 }
 
-/** True when the address is a page of another AI product (its domain or a subdomain of it). Pure. */
+// Owner 01/11: AIHAY also has an app. A store page lives on the store's own host, so the host alone says nothing: the page is blocked when
+// its address (or, for a result row, its title) names the product. Only on these hosts, so an ordinary article about "AI hay" is untouched.
+const APP_STORE_HOSTS: readonly string[] = ['play.google.com', 'apps.apple.com', 'itunes.apple.com', 'galaxy.store', 'appgallery.huawei.com']
+const APP_BRAND = /ai[-_]?hay/i
+const onHost = (h: string, list: readonly string[]) => list.some(d => h === d || h.endsWith(`.${d}`))
+
+/** True when the address is a page of another AI product (its domain or a subdomain of it, or its app's store page). Pure. */
 export function isAiProductSource(url: unknown): boolean {
   const h = hostOf(url)
   if (!h) return false
-  return AI_PRODUCT_HOSTS.some(d => h === d || h.endsWith(`.${d}`))
+  if (onHost(h, AI_PRODUCT_HOSTS)) return true
+  if (!onHost(h, APP_STORE_HOSTS)) return false
+  try {
+    const u = new URL(url as string)
+    return APP_BRAND.test(decodeURIComponent(`${u.pathname}${u.search}`))
+  } catch {
+    return false
+  }
 }
 
 const URL_KEY = /^(link|url|website|website_uri|source_url|official_url)$/i
 
 const isAiRow = (v: unknown): boolean => {
   if (!v || typeof v !== 'object' || Array.isArray(v)) return false
-  return Object.entries(v as Record<string, unknown>).some(([k, x]) => URL_KEY.test(k) && isAiProductSource(x))
+  const row = v as Record<string, unknown>
+  return Object.entries(row).some(([k, x]) => {
+    if (!URL_KEY.test(k)) return false
+    if (isAiProductSource(x)) return true
+    const h = hostOf(x)
+    return !!h && onHost(h, APP_STORE_HOSTS) && [row.title, row.name].some(t => typeof t === 'string' && APP_BRAND.test(t))
+  })
 }
 
 /** The result without the rows whose address is an AI product (at any depth), and how many were dropped. The input is not changed. Pure. */

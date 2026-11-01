@@ -21,6 +21,26 @@ describe('isAiProductSource', () => {
   })
 })
 
+describe('AIHAY: its site (ai-hay.vn) and its app, owner 01/11', () => {
+  it('blocks ai-hay.vn on any subdomain', () => {
+    for (const u of ['https://ai-hay.vn/', 'https://www.ai-hay.vn/hoi-dap/1', 'https://app.ai-hay.vn/c/2']) expect(isAiProductSource(u), u).toBe(true)
+  })
+  it('blocks its app\'s store pages (the store host alone is not a reason: the page must be AIHAY\'s)', () => {
+    for (const u of [
+      'https://play.google.com/store/apps/details?id=vn.aihay.app', 'https://play.google.com/store/apps/details?id=vn.ai_hay.app&hl=vi',
+      'https://apps.apple.com/vn/app/aihay/id1234567', 'https://apps.apple.com/vn/app/ai-hay-tro-ly-ai/id1234567',
+    ]) expect(isAiProductSource(u), u).toBe(true)
+    for (const u of ['https://play.google.com/store/apps/details?id=com.zing.zalo', 'https://apps.apple.com/vn/app/zalo/id579523206', 'https://vnexpress.net/ai-hay-nhat-2026-123.html']) expect(isAiProductSource(u), u).toBe(false)
+  })
+  it('drops a store row whose address does not say it but whose title does', () => {
+    const rows = [
+      { title: 'AIHAY - Trợ lý AI - Ứng dụng trên Google Play', link: 'https://play.google.com/store/apps/details?id=com.x.y1' },
+      { title: 'Zalo - Ứng dụng trên Google Play', link: 'https://play.google.com/store/apps/details?id=com.zing.zalo' },
+    ]
+    expect(withoutAiSources({ results: rows }).value).toEqual({ results: [rows[1]] })
+  })
+})
+
 describe('withoutAiSources', () => {
   const rows = [
     { title: 'Wiki', link: 'https://vi.wikipedia.org/wiki/Quang_Trung', snippet: 'a' },
