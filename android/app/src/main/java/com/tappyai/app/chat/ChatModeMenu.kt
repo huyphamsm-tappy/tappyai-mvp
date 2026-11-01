@@ -72,7 +72,7 @@ private val ChatMode.hint: Int
 
 /** The "+" button left of the input (web: `w-11 h-11 rounded-2xl`); its menu lists [ChatMode.menu], the one in use ticked. */
 @Composable
-internal fun ChatModeMenuButton(mode: ChatMode, enabled: Boolean, container: Color, onPick: (ChatMode) -> Unit, onAttach: (() -> Unit)? = null) {
+internal fun ChatModeMenuButton(mode: ChatMode, modes: List<ChatMode>, enabled: Boolean, container: Color, onPick: (ChatMode) -> Unit, onAttach: (() -> Unit)? = null) {
     var open by remember { mutableStateOf(false) }
     val menuLabel = stringResource(R.string.chat_mode_menu)
     Box {
@@ -100,7 +100,7 @@ internal fun ChatModeMenuButton(mode: ChatMode, enabled: Boolean, container: Col
                 },
                 onClick = { open = false; onAttach() },
             )
-            ChatMode.menu.forEach { item ->
+            modes.forEach { item ->
                 val on = item == mode
                 DropdownMenuItem(
                     modifier = if (on) Modifier.background(MaterialTheme.colorScheme.primary.copy(alpha = 0.10f)) else Modifier,

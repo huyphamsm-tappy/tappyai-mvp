@@ -159,6 +159,7 @@ fun ChatScreen(
     val publicShareEnabled by viewModel.publicShareEnabled.collectAsStateWithLifecycle()
     val isResponding by viewModel.isAssistantResponding.collectAsStateWithLifecycle()
     val chatMode by viewModel.mode.collectAsStateWithLifecycle()
+    val menuModes by viewModel.menuModes.collectAsStateWithLifecycle()
     val streamCut by viewModel.streamCut.collectAsStateWithLifecycle()
     val streamingText by viewModel.streamingText.collectAsStateWithLifecycle()
     val streamingHint by viewModel.streamingHint.collectAsStateWithLifecycle()
@@ -642,6 +643,7 @@ fun ChatScreen(
             onSend = { withLocationPrompt(false) { viewModel.onSend() } },
             onStop = viewModel::onStop,
             mode = chatMode,
+            menuModes = menuModes,
             onModePicked = viewModel::onModeSelected,
             onModeCleared = viewModel::onModeCleared,
             onAttach = { attachPicker.launch(ATTACHABLE_TYPES) },
@@ -913,6 +915,7 @@ private fun ChatComposer(
     onStop: () -> Unit,
     onVoice: () -> Unit,
     mode: ChatMode = ChatMode.Default,
+    menuModes: List<ChatMode> = ChatMode.menu,
     onModePicked: (ChatMode) -> Unit = {},
     onModeCleared: () -> Unit = {},
     onAttach: (() -> Unit)? = null,
@@ -957,6 +960,7 @@ private fun ChatComposer(
             // A2: "+" opens the mode menu (web: the composer's "+" left of the textarea; attaching stays hidden, as above)
             ChatModeMenuButton(
                 mode = mode,
+                modes = menuModes,
                 enabled = !isResponding,
                 container = if (MaterialTheme.colorScheme.background.luminance() < 0.5f) WebGray800 else WebGray100,
                 onPick = onModePicked,

@@ -1,5 +1,7 @@
 package com.tappyai.app.chat
 
+import com.tappyai.app.membership.data.PlanAccess
+
 /**
  * The answer mode the person picks (web parity, 02/11: the one-brain chat's five modes; the web's menu in ChatInterface.tsx).
  * [wire] is what `/api/chat` reads in `mode` (src/lib/ai/security/clientInput.ts readChatMode). The server decides what the turn
@@ -28,5 +30,16 @@ enum class ChatMode(val wire: String) {
         /** What the "+" menu offers, in the web's order (Auto is the default and has no item: its chip's ✕ goes back to it). */
         val menu: List<ChatMode> = listOf(Chat, Web, Think, Deep)
         fun fromWire(value: String?): ChatMode = entries.firstOrNull { it.wire == value } ?: Default
+
+        /**
+         * The modes the "+" menu offers for this account (web src/lib/plans/tiers.ts, which the server enforces: a mode the tier lacks runs as Chat).
+         * Free (a visitor, or no live plan) has Chat only, so no mode is offered; every paid tier has them all. [access] null = plans not on sale
+         * or not known yet: the whole menu, never less.
+         */
+        fun menuFor(access: PlanAccess?): List<ChatMode> = when {
+            access == null -> menu
+            !access.signedIn || access.state != "ACTIVE" || access.planId == "free" -> emptyList()
+            else -> menu
+        }
     }
 }

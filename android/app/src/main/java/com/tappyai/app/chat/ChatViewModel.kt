@@ -72,6 +72,7 @@ class ChatViewModel @Inject constructor(
     private val stringProvider: StringProvider,
     @ApplicationContext private val context: android.content.Context,
     private val productFlags: com.tappyai.app.config.ProductFlagsRepository,
+    private val membershipRepository: com.tappyai.app.membership.data.MembershipRepository,
 ) : ViewModel() {
 
     /** The web's SHOW_PUBLIC_SHARE (`/api/config` flags.publicShare); false until the server says on. */
@@ -130,8 +131,16 @@ class ChatViewModel @Inject constructor(
     // The answer mode sent with the next turn (web parity, 02/11: the one-brain modes; the web starts on Auto).
     private val _mode = MutableStateFlow(ChatMode.Default)
     val mode: StateFlow<ChatMode> = _mode.asStateFlow()
-    fun onModeSelected(mode: ChatMode) { _mode.value = _mode.value.picked(mode) }
+    fun onModeSelected(mode: ChatMode) {
+        if (mode !in _menuModes.value) return
+        _mode.value = _mode.value.picked(mode)
+    }
     fun onModeCleared() { _mode.value = ChatMode.Auto }
+
+    // The modes the "+" menu offers for this account's plan (web tiers.ts; the server enforces it). The whole menu until /api/payments/me
+    // answers, and for good when it cannot (plans not on sale answers 404): the app never takes a mode away on doubt.
+    private val _menuModes = MutableStateFlow(ChatMode.menu)
+    val menuModes: StateFlow<List<ChatMode>> = _menuModes.asStateFlow()
 
     // The last reply's stream closed without its finish frame (ChatStreamEvent.Cut): the screen says so and
     // offers «answer again». Cleared as soon as a new turn starts. Web parity: ChatInterface `streamCut`.
@@ -301,6 +310,11 @@ class ChatViewModel @Inject constructor(
 
     init {
         viewModelScope.launch { productFlags.refresh() }
+        viewModelScope.launch {
+            _menuModes.value = ChatMode.menuFor(membershipRepository.getPlanAccess())
+            // a mode picked before the answer came, that the plan does not have, goes back to Auto
+            if (_mode.value != ChatMode.Auto && _mode.value !in _menuModes.value) _mode.value = ChatMode.Auto
+        }
         val id = conversationId
         // chat_opened (RUNBOOK §3.19) — fires once when a fresh main chat opens. A
         // resumed conversation (conversationId != null) is a continuation, matching
