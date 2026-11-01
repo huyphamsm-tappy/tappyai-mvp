@@ -4,7 +4,7 @@ import XCTest
 extension XCTestCase {
     /// Polls `condition` every 20 ms for up to `ticks` ticks (5 s by default) on the main actor.
     @MainActor
-    func waitUntil(ticks: Int = 250, _ condition: () -> Bool) async {
+    func waitUntil(ticks: Int = 250, _ condition: @escaping () -> Bool) async {
         var waited = 0
         while !condition(), waited < ticks {
             try? await Task.sleep(nanoseconds: 20_000_000)
