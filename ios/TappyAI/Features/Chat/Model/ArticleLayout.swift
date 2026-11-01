@@ -88,14 +88,59 @@ enum ArticleLayout {
     /// The reply laid out: its text pieces cut at the headings and bold-lead list items that have a chart or a picture, each placed right after
     /// its block; pictures written in the text stay where they are; what matched nothing comes last.
     static func place(segments: [ReplySegment], media: [DocMediaItem], charts: [ResearchChart]) -> [ArticlePart] {
+        place(parsed: parsedPieces(segments), media: media, charts: charts)
+    }
+
+    /// Whether the reply needs the laid-out drawing: it has structure the single text view cannot show (heading, list, table, ...), or a chart /
+    /// section picture to place, or a picture written in the middle of its text. A reply of plain paragraphs, with its pictures (if any) at the
+    /// end, keeps the old drawing.
+    static func needsLayout(segments: [ReplySegment], media: [DocMediaItem], charts: [ResearchChart]) -> Bool {
+        needsLayout(parsed: parsedPieces(segments), media: media, charts: charts)
+    }
+
+    /// `place` when the reply `needsLayout`, else nil - the text is read into blocks once for both questions.
+    static func layout(segments: [ReplySegment], media: [DocMediaItem], charts: [ResearchChart]) -> [ArticlePart]? {
+        let pieces = parsedPieces(segments)
+        guard needsLayout(parsed: pieces, media: media, charts: charts) else { return nil }
+        return place(parsed: pieces, media: media, charts: charts)
+    }
+
+    /// A segment read: a text piece as its blocks, a run of pictures as it is.
+    private enum ParsedPiece {
+        case blocks([MarkdownBlock])
+        case images([ParsedImage])
+    }
+
+    private static func parsedPieces(_ segments: [ReplySegment]) -> [ParsedPiece] {
+        segments.map { segment -> ParsedPiece in
+            switch segment {
+            case .text(let text): return .blocks(MarkdownBlocks.parse(text))
+            case .images(let images): return .images(images)
+            }
+        }
+    }
+
+    private static func needsLayout(parsed: [ParsedPiece], media: [DocMediaItem], charts: [ResearchChart]) -> Bool {
+        if !media.isEmpty || !charts.isEmpty { return true }
+        for (index, piece) in parsed.enumerated() {
+            switch piece {
+            case .blocks(let blocks):
+                if MarkdownBlocks.hasStructure(blocks) { return true }
+            case .images:
+                if index < parsed.count - 1 { return true }
+            }
+        }
+        return false
+    }
+
+    private static func place(parsed: [ParsedPiece], media: [DocMediaItem], charts: [ResearchChart]) -> [ArticlePart] {
         var placer = Placer(media: media, charts: charts)
         var out: [ArticlePart] = []
-        for segment in segments {
-            switch segment {
+        for piece in parsed {
+            switch piece {
             case .images(let images):
                 if !images.isEmpty { out.append(.images(images)) }
-            case .text(let text):
-                let blocks = MarkdownBlocks.parse(text)
+            case .blocks(let blocks):
                 if placer.isEmpty {
                     if !blocks.isEmpty { out.append(.blocks(blocks)) }
                     continue
@@ -112,21 +157,5 @@ enum ArticleLayout {
             }
         }
         return out + placer.rest()
-    }
-
-    /// Whether the reply needs the laid-out drawing: it has structure the single text view cannot show (heading, list, table, ...), or a chart /
-    /// section picture to place, or a picture written in the middle of its text. A reply of plain paragraphs, with its pictures (if any) at the
-    /// end, keeps the old drawing.
-    static func needsLayout(segments: [ReplySegment], media: [DocMediaItem], charts: [ResearchChart]) -> Bool {
-        if !media.isEmpty || !charts.isEmpty { return true }
-        for (index, segment) in segments.enumerated() {
-            switch segment {
-            case .text(let text):
-                if MarkdownBlocks.hasStructure(MarkdownBlocks.parse(text)) { return true }
-            case .images:
-                if index < segments.count - 1 { return true }
-            }
-        }
-        return false
     }
 }

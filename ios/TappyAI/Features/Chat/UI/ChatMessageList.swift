@@ -81,6 +81,8 @@ struct ChatMessageList: View {
                                 // the Deep Research card: the reply's own, or the running turn's while this is the reply being built
                                 research: msg.research ?? (isLast && isStreaming ? liveResearch : nil),
                                 charts: msg.charts.isEmpty && isLast && isStreaming ? liveCharts : msg.charts,
+                                docMedia: msg.docMedia,
+                                segments: parsed.segments,
                                 chartLang: locale == "vi" ? "vi" : "en",
                                 isStreaming: isStreaming && isLast,
                                 status: msg.status,
@@ -242,9 +244,12 @@ private struct AssistantBubble: View {
     let images: [ParsedImage]
     /// The Deep Research card of this reply; drawn above its text (nil on every other reply).
     var research: ResearchStatus? = nil
-    /// The report's charts, drawn under its text (empty on every other reply). Under the text for now: under the section each names is the
-    /// answer renderer's job (Android `ArticlePlacer`).
+    /// The report's charts (empty on every other reply): each drawn under the section it names, the rest after the text (`ArticleLayout`).
     var charts: [ResearchChart] = []
+    /// The pictures that go under the answer's headings / list items (`tappy.doc_media.v1`; empty on every other reply).
+    var docMedia: [DocMediaItem] = []
+    /// The reply's prose and pictures in the order written (`ParsedContent.segments`).
+    var segments: [ReplySegment] = []
     /// "vi" or "en": the language the charts' figures are written in.
     var chartLang: String = "en"
     let isStreaming: Bool
@@ -294,23 +299,26 @@ private struct AssistantBubble: View {
                                      onOpenLink: { UIApplication.shared.open($0) })
                 }
 
-                // Message text
-                if !content.isEmpty {
-                    Text(attributedContent)
-                        .font(TappyFont.body)
-                        .foregroundStyle(TappyColor.textPrimary)
-                        .textSelection(.enabled)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
+                if let parts = articleParts {
+                    // An answer with structure (heading, list, table, ...), charts or section pictures, or a picture in the middle of its text:
+                    // drawn block by block, each chart / picture right under the section it names (web ArticleAnswer, Android ArticleViews)
+                    ForEach(Array(parts.enumerated()), id: \.offset) { _, part in
+                        articlePartView(part)
+                    }
+                } else {
+                    // Message text
+                    if !content.isEmpty {
+                        Text(attributedContent)
+                            .font(TappyFont.body)
+                            .foregroundStyle(TappyColor.textPrimary)
+                            .textSelection(.enabled)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
 
-                // Inline image strip
-                if !images.isEmpty {
-                    ChatImageStrip(images: images, onZoom: onZoomImage)
-                }
-
-                // Deep Research: the report's charts under its text
-                ForEach(Array(charts.enumerated()), id: \.offset) { _, chart in
-                    ResearchChartView(chart: chart, lang: chartLang)
+                    // Inline image strip
+                    if !images.isEmpty {
+                        ChatImageStrip(images: images, onZoom: onZoomImage)
+                    }
                 }
 
                 // Plan card
@@ -445,6 +453,26 @@ private struct AssistantBubble: View {
 
     private var attributedContent: AttributedString {
         ContentParser.renderMarkdown(content)
+    }
+
+    /// The laid-out answer, or nil when the reply is plain prose (then the single text view above draws it, as it always did).
+    private var articleParts: [ArticlePart]? {
+        ArticleLayout.layout(segments: segments, media: docMedia, charts: charts)
+    }
+
+    @ViewBuilder
+    private func articlePartView(_ part: ArticlePart) -> some View {
+        switch part {
+        case .blocks(let blocks):
+            MarkdownBlocksView(blocks: blocks)
+        case .chart(let chart):
+            // Deep Research: the report's chart under the section it names
+            ResearchChartView(chart: chart, lang: chartLang)
+        case .picture(let item):
+            ArticlePictureView(item: item, onZoom: onZoomImage)
+        case .images(let pictures):
+            ChatImageStrip(images: pictures, onZoom: onZoomImage)
+        }
     }
 }
 

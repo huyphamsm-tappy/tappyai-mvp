@@ -30936,6 +30936,40 @@
           }
         }
       }
+    },
+    "chat.table.label": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Table"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bảng"
+          }
+        }
+      }
+    },
+    "chat.table.size %lld %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld rows, %lld columns"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld hàng, %lld cột"
+          }
+        }
+      }
     }
   }
 }

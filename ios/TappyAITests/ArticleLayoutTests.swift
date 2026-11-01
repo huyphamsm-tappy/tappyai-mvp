@@ -136,6 +136,13 @@ final class ArticleLayoutTests: XCTestCase {
         XCTAssertFalse(ArticleLayout.needsLayout(segments: [], media: [], charts: []))
     }
 
+    func testLayoutIsNilForPlainProseAndThePlacementOtherwise() {
+        XCTAssertNil(ArticleLayout.layout(segments: text("Chỉ chữ."), media: [], charts: []))
+        let parts = ArticleLayout.layout(segments: text("## Doanh số\nx"), media: [], charts: [chart("Doanh số")])
+        XCTAssertEqual(parts.map(shape), ["B1", "C:Doanh số", "B1"])
+        XCTAssertEqual(ArticleLayout.layout(segments: text("# T\nx"), media: [], charts: []).map(shape), ["B2"])
+    }
+
     func testStructureAChartASectionPictureOrAPictureInTheMiddleNeedTheLayout() {
         let image = ParsedImage(alt: "a", url: "https://example.com/a.png")
         XCTAssertTrue(ArticleLayout.needsLayout(segments: text("## T\nx"), media: [], charts: []))
