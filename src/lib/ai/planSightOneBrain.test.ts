@@ -23,14 +23,17 @@ describe('N3 · plan card sights on the one-brain route', () => {
     expect(it0.name).toBe('Dạo biển Mỹ Khê')
     expect(it0.description).toBe('Đi dạo khi trời tạnh, để ý cờ cảnh báo của cứu hộ')
   })
-  it('one brain: what can change is still dropped - no price, link, place id; a figure in the description is replaced by a plain check line', () => {
-    const it0 = items(guardPlanItems(plan([{ ...BEACH, description: 'Mở cửa 05:00–22:00, vé 20.000đ' }]), PLACES, { destination: 'Đà Nẵng', keepSights: true, knownSightsUnlabelled: true }))[0]
+  it('one brain: what can change is still dropped - no price, link, place id; a figure in the description is left out and the PLAN says once to check it', () => {
+    // 01/11 (owner UAT): the check line used to replace the description on every such stop; it is now one tip of the plan (planSightKeepWords.test.ts).
+    const r = guardPlanItems(plan([{ ...BEACH, description: 'Mở cửa 05:00–22:00, vé 20.000đ' }]), PLACES, { destination: 'Đà Nẵng', keepSights: true, knownSightsUnlabelled: true })
+    const it0 = items(r)[0]
     expect(it0.price).toBe('')
     expect(it0.maps_link).toBeUndefined()
     expect(it0.place_id).toBeUndefined()
     expect(it0.description).not.toMatch(/\d/)
-    expect(it0.description).toContain('kiểm tra lại')
     expect(it0.description).not.toMatch(/chưa kiểm chứng|kiến thức chung/)
+    const tips = JSON.parse(r.text.slice(r.text.indexOf('[TAPPY_PLAN]') + 12, r.text.indexOf('[/TAPPY_PLAN]'))).local_tips as Array<{ text: string }>
+    expect(tips.map(t => t.text).join(' ')).toContain('kiểm tra lại')
   })
   it('the stream filter asks for it on the one-brain route only (wiring, read from the source)', () => {
     const src = readFileSync(join(__dirname, 'streamEnrichment.ts'), 'utf8')

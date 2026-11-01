@@ -21,6 +21,9 @@ import { buildActions, type ActionSource } from '@/lib/recommendation/actions'
 import { isOpenNow } from './tools/serperPlaces'
 import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 
+/** The one line a plan says about hours and fees that were left out of its stops (01/11: once per plan, a tip). */
+export const CHECK_HOURS_AND_FEES = 'Giờ mở cửa và giá vé cần kiểm tra lại trước khi đi.'
+
 /**
  * 01/11: a description without the clauses that carry a figure (hours, a fee, a time). The sentences and comma clauses with no digit stay
  * as written; a sentence that had a figure keeps its figure-free clauses (first letter raised). Empty when nothing is left. Pure.
@@ -311,6 +314,7 @@ export function guardPlanItems(fullText: string, places: readonly PlanPlace[], o
     return pool.find(p => fold(p.name!) === key)
       ?? pool.find(p => { const n = fold(p.name!); return n.length >= 6 && key.length >= 6 && (n.includes(key) || key.includes(n)) })
   }
+  let figuresLeftOut = false // a stop's hours / fee were left out of its description (one-brain sights): the plan says once to check them
   const res: { matched: number; replaced: number; dropped: number; linksSet: number; linksRemoved: number; timesMoved: number; timesCleared: number; sightsKept?: number; mealSlots?: number; vegSlots?: number; genericStays?: number; returnDayFilled?: number; unverifiedKept?: number } = { matched: 0, replaced: 0, dropped: 0, linksSet: 0, linksRemoved: 0, timesMoved: 0, timesCleared: 0 }
   const placeOf = new Map<Item, PlanPlace>()
   let stayPlace: PlanPlace | null = null
@@ -362,10 +366,10 @@ export function guardPlanItems(fullText: string, places: readonly PlanPlace[], o
         // change is flagged. Price, link, address and place id are dropped above on every route, and a figure in the description is still replaced.
         const unlabelled = opts.knownSightsUnlabelled === true
         // 01/11 (owner UAT, bland plan card): on the one-brain route only the clauses that carry a figure go; the words around them stay.
+        // The "check the hours and fee" line is written ONCE for the whole plan (a tip, below), not on every stop it applies to.
         if (typeof item.description === 'string' && /\d/.test(item.description)) {
-          const CHECK = 'Giờ mở cửa và giá vé cần kiểm tra lại trước khi đi.'
-          const kept = unlabelled ? withoutFigureClauses(item.description) : ''
-          item.description = unlabelled ? (kept ? `${kept} ${CHECK}` : CHECK) : 'Điểm nổi tiếng (gợi ý từ kiến thức chung); giờ mở cửa và giá cần kiểm tra lại.'
+          if (unlabelled) figuresLeftOut = true
+          item.description = unlabelled ? withoutFigureClauses(item.description) : 'Điểm nổi tiếng (gợi ý từ kiến thức chung); giờ mở cửa và giá cần kiểm tra lại.'
         }
         // Marked as what it is: a suggestion from general knowledge, not checked against the tools' data.
         if (unlabelled) { if (typeof item.description !== 'string') item.description = '' }
@@ -466,6 +470,11 @@ export function guardPlanItems(fullText: string, places: readonly PlanPlace[], o
     }
     day.items = kept
     fitTimesToHours(kept, placeOf, res)
+  }
+  if (figuresLeftOut) {
+    const p = plan as { local_tips?: Array<{ text?: unknown; basis?: unknown }> }
+    const tips = Array.isArray(p.local_tips) ? p.local_tips : []
+    if (!tips.some(t => t?.text === CHECK_HOURS_AND_FEES)) p.local_tips = [...tips, { text: CHECK_HOURS_AND_FEES, basis: 'general' }]
   }
   if (!res.matched && !res.replaced && !res.dropped && !res.sightsKept && !res.mealSlots && !res.genericStays && !res.returnDayFilled && !res.linksSet && !res.linksRemoved && !res.timesMoved && !res.timesCleared) {
     // Markdown may still have been stripped — re-serialise only when something visible changed.

@@ -26,15 +26,37 @@ describe('withoutFigureClauses', () => {
   })
 })
 
+const planOf = (r: { text: string }) => JSON.parse(r.text.slice(r.text.indexOf('[TAPPY_PLAN]') + 12, r.text.indexOf('[/TAPPY_PLAN]')))
+const CHECK = 'Giờ mở cửa và giá vé cần kiểm tra lại trước khi đi.'
+const sight = (description: string, name = 'Chùa Linh Ứng') => ({ time: '16:00', category: 'attraction', name, description })
+const tipsWithCheck = (p: { local_tips?: Array<{ text: string }> }) => (p.local_tips ?? []).filter(t => t.text === CHECK)
+
 describe('an unmatched sight on the one-brain route', () => {
-  it('keeps the words around a figure and says once that hours and fees were left out', () => {
+  it('keeps the words around a figure, and the stop itself carries no check line', () => {
     const d = run('Đi sớm để ngắm bình minh, chụp ảnh đẹp nhất ở bậc thang phía Đông. Mở cửa 05:00–22:00, vé 20.000đ')
-    expect(d).toContain('Đi sớm để ngắm bình minh, chụp ảnh đẹp nhất ở bậc thang phía Đông.')
-    expect(d).toContain('kiểm tra lại')
-    expect(d).not.toMatch(/\d/)
+    expect(d).toBe('Đi sớm để ngắm bình minh, chụp ảnh đẹp nhất ở bậc thang phía Đông.')
   })
-  it('a description that is only figures is still the plain check line', () => {
-    const d = run('Mở cửa 05:00–22:00, vé 20.000đ')
-    expect(d).toBe('Giờ mở cửa và giá vé cần kiểm tra lại trước khi đi.')
+  it('a description that is only figures leaves the stop with no description', () => {
+    expect(run('Mở cửa 05:00–22:00, vé 20.000đ')).toBe('')
+  })
+})
+
+describe('the check line is written once per plan (UAT 01/11: it repeated on 19 stops of 10 plans)', () => {
+  const run3 = () => planOf(guardPlanItems(plan([sight('Đi dạo, mở cửa 05:00', 'A'), sight('Ngắm cảnh, vé 20.000đ', 'B'), sight('Chụp ảnh đẹp, giá 50.000đ', 'C')]), [], OPTS))
+  it('one tip for the whole plan, none on the stops', () => {
+    const p = run3()
+    expect(tipsWithCheck(p)).toHaveLength(1)
+    expect(JSON.stringify(p.days)).not.toContain(CHECK)
+  })
+  it('added to the model\'s own tips, which stay', () => {
+    const r = guardPlanItems(`x [TAPPY_PLAN]${JSON.stringify({ type: 'trip', title: 'T', local_tips: [{ text: 'Mang ô', basis: 'general' }], days: [{ label: 'Ngày 1', items: [sight('mở cửa 05:00')] }] })}[/TAPPY_PLAN]`, [], OPTS)
+    const p = planOf(r)
+    expect(p.local_tips.map((t: { text: string }) => t.text)).toEqual(['Mang ô', CHECK])
+  })
+  it('not added when the model already wrote it, nor when no figure was left out', () => {
+    const had = guardPlanItems(`x [TAPPY_PLAN]${JSON.stringify({ type: 'trip', title: 'T', local_tips: [{ text: CHECK, basis: 'general' }], days: [{ label: 'Ngày 1', items: [sight('mở cửa 05:00')] }] })}[/TAPPY_PLAN]`, [], OPTS)
+    expect(tipsWithCheck(planOf(had))).toHaveLength(1)
+    const none = planOf(guardPlanItems(plan([sight('Đi dạo khi trời tạnh')]), [], OPTS))
+    expect(tipsWithCheck(none)).toHaveLength(0)
   })
 })
