@@ -77,7 +77,8 @@ class SessionRedirectTest {
         assertTrue("anonymous → shell, no onboarding", effect.contains("SessionRedirect.EnterShell -> {") && effect.contains("navController.navigate(AppRoute.HomeShell) {"))
         assertTrue("sign-out → Login", effect.contains("SessionRedirect.Login -> navController.navigate(AuthRoute.Login) {"))
         assertEquals("every redirect still clears the stack down to the graph root", 3, Regex("""popUpTo\(navController\.graph\.id\) \{ inclusive = true \}""").findAll(effect).count())
-        assertEquals("a pending deep link still owns both login transitions", 2, Regex("""if \(deepLinkTarget != null\) return@LaunchedEffect""").findAll(effect).count())
+        // 02/11: the login transition now OPENS the pending link itself (GuestDeepLinkTest) instead of standing aside for the other effect
+        assertEquals("a pending deep link still owns both login transitions", 2, Regex("""if \(openPendingDeepLink\(\)\) return@LaunchedEffect""").findAll(effect).count())
         assertTrue("no unconditional navigation on Authenticated remains", !effect.contains("AuthSessionState.Authenticated ->") && !effect.contains("AuthSessionState.Anonymous ->"))
         assertTrue("the three auth screens, nothing else, count as an auth screen",
             host.contains("hasRoute<AuthRoute.Login>() || hasRoute<AuthRoute.EmailOtpVerification>() || hasRoute<AuthRoute.AuthCallback>()"))

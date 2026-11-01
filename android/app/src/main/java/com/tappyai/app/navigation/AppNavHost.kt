@@ -85,9 +85,21 @@ fun AppNavHost(
     // only acted on once authenticated — so a cold-start tap survives until the graph exists, and a
     // logged-out user is routed to the group right after they sign in. Consumed so it fires once.
     val deepLinkTarget by viewModel.deepLinkTarget.collectAsStateWithLifecycle()
+    // 02/11 (emulator: a text shared into a fresh install stayed on Login, then landed on Home without it): ONE owner per moment.
+    // On an auth screen the session redirect below owns the link - it opens the link in place of the shell (openPendingDeepLink);
+    // inside the app this effect opens it, for a signed-in account or a guest (deepLinkReady). Before, a guest's link waited for
+    // Authenticated forever, and once that was relaxed both paths built the shell and the second one dropped the shared text.
+    val openPendingDeepLink: () -> Boolean = {
+        val link = deepLinkTarget
+        if (link == null) false else {
+            navController.navigate(link) { popUpTo(navController.graph.id) { inclusive = true } }
+            viewModel.consumeDeepLink()
+            true
+        }
+    }
     LaunchedEffect(deepLinkTarget, sessionState) {
         val route = deepLinkTarget ?: return@LaunchedEffect
-        if (sessionState == AuthSessionState.Authenticated) {
+        if (deepLinkReady(sessionState) && !navController.currentDestination.isAuthScreen()) {
             navController.navigate(route)
             viewModel.consumeDeepLink()
         }
@@ -132,11 +144,10 @@ fun AppNavHost(
             // needsOnboarding() fails open (false) so a check failure never blocks entry.
             SessionRedirect.EnterApp -> {
                 // A pending deep link (e.g. a shared group link tapped while logged out) owns
-                // navigation for this transition — the deepLinkTarget effect above navigates
-                // straight to it and consumes it. This generic redirect must not also fire: its
-                // popUpTo(inclusive = true) would clear the deep-linked destination right back out
-                // of the stack the instant it lands, silently discarding the deep link.
-                if (deepLinkTarget != null) return@LaunchedEffect
+                // navigation for this transition: it is opened HERE, in place of the generic
+                // destination (02/11; before, the effect above opened it and this branch stood aside,
+                // and the two raced). Only one navigation, so nothing clears the deep link back out.
+                if (openPendingDeepLink()) return@LaunchedEffect
                 val destination = if (viewModel.needsOnboarding()) AppRoute.Onboarding else AppRoute.HomeShell
                 navController.navigate(destination) {
                     popUpTo(navController.graph.id) { inclusive = true }
@@ -149,7 +160,7 @@ fun AppNavHost(
             // the wizard. Signing in with Google/Zalo creates the profile and restores the normal
             // onboarding decision.
             SessionRedirect.EnterShell -> {
-                if (deepLinkTarget != null) return@LaunchedEffect
+                if (openPendingDeepLink()) return@LaunchedEffect
                 navController.navigate(AppRoute.HomeShell) {
                     popUpTo(navController.graph.id) { inclusive = true }
                 }
@@ -251,6 +262,13 @@ fun AppNavHost(
 
 /** What the root host does when the session state changes after the first resolution. */
 internal enum class SessionRedirect { EnterApp, EnterShell, Login }
+
+/**
+ * Whether a pending deep link may open now: a session the app can be used with - a signed-in account or a guest (02/11, emulator: the
+ * guest redirect stands aside for a pending deep link, so a link that waited for `Authenticated` alone was never opened for a guest).
+ */
+internal fun deepLinkReady(state: AuthSessionState): Boolean =
+    state == AuthSessionState.Authenticated || state == AuthSessionState.Anonymous
 
 /**
  * The root host's redirect for a session transition, from the new [state] and WHERE the user
