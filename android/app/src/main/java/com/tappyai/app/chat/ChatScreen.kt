@@ -352,9 +352,8 @@ fun ChatScreen(
                             // is never persisted, so a reopened conversation has only the durable
                             // block, which is exactly what that block exists for.
                             //
-                            // On a plan turn either projection can repeat venues the itinerary
-                            // above already presents; those are dropped (TravelPlaceFilter) so one
-                            // venue is one card. The projections themselves are untouched.
+                            // 02/11 (owner: no client filter the web does not have): the server's places are shown as it sent them,
+                            // also on a plan turn - the old client-side itinerary filter (TravelPlaceFilter) is gone, as on the web.
                             //
                             // Web parity (`ChatInterface.tsx`): a turn that carries a SHOPPING
                             // decision shows that card and not the places, and any model-written
@@ -363,10 +362,8 @@ fun ChatScreen(
                             val placeCards = if (message.shopping == null) {
                                 // Item 2: the model's picks first (renderOrder), engine order after.
                                 message.livePlaces?.renderOrder()
-                                    ?.let { livePlacesOutsideItinerary(message.plan, it) }
                                     ?.map { it.toCardView() }
-                                    ?: placesOutsideItinerary(message.plan, message.places)
-                                        .mapNotNull { it.toCardView() }
+                                    ?: message.places.mapNotNull { it.toCardView() }
                             } else emptyList()
                             val placesMapsUrl = message.livePlaces?.mapsSearchUrl
                             if (!isResponding) {
@@ -457,8 +454,8 @@ fun ChatScreen(
                                 )
                             }
                             // Save-place affordance (web SavePlaceButton) — appears when the reply
-                            // mentions a place; saves it to favorites.
-                            if (!isResponding && !message.isError) {
+                            // mentions a place (the web's replyHasSavablePlace); saves it to favorites.
+                            if (!isResponding && !message.isError && replyHasSavablePlace(message.text, message.ctaButtons, placeCards.isNotEmpty())) {
                                 SavePlaceButton(
                                     text = message.text,
                                     buttons = message.ctaButtons,

@@ -375,7 +375,8 @@ class PlaceDecisionSectionTest {
     fun `29 shopping hides places, 31 live renders, 32 durable is the fallback, and ranked plus the map url reach the section`() {
         val screen = File(findSrc("app/src/main/java/com/tappyai/app/chat/ChatScreen.kt")).readText().replace(Regex("(?m)^\\s*//.*$"), "")
         assertTrue("places yield to a shopping decision, like web", screen.contains("if (message.shopping == null)"))
-        assertTrue("live first, durable as the fallback", screen.contains("?: placesOutsideItinerary(message.plan, message.places)"))
+        // 02/11: no client itinerary filter any more (the web has none) - live first, durable as the fallback, as sent
+        assertTrue("live first, durable as the fallback", screen.contains("?: message.places.mapNotNull { it.toCardView() }"))
         // F (2026-09-20): the flag reaches the section THROUGH positionsRanked(), which also honours pickUnmatched (web parity).
         assertTrue("the server's ranked flag reaches the section", screen.contains("ranked = message.livePlaces?.positionsRanked() != false"))
         assertTrue("the server's map url reaches the section", screen.contains("mapsSearchUrl = placesMapsUrl"))

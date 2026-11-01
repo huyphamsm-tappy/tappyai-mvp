@@ -232,6 +232,22 @@ private fun parsePlaceFromUrl(url: String): CtaPlace {
     )
 }
 
+/**
+ * Whether the reply names a place worth saving - the web's `replyHasSavablePlace` (ChatInterface.tsx), 02/11: before, Android showed the
+ * button under any reply with a bold span. A place card, a maps / booking button, or a bold name followed by what a place line carries
+ * (rating, street, district, opening hours).
+ */
+internal fun replyHasSavablePlace(text: String, buttons: List<CtaButton>, hasPlaceCards: Boolean): Boolean {
+    if (hasPlaceCards) return true
+    if (buttons.any { it.ctaType == CtaType.Maps || it.ctaType == CtaType.Booking || it.ctaType == CtaType.InternalBooking }) return true
+    return SAVABLE_PLACE_LINE.containsMatchIn(text)
+}
+
+private val SAVABLE_PLACE_LINE = Regex(
+    """\*\*[^*\n]{3,60}\*\*[^\n]{0,80}(?:⭐|★|đánh giá|reviews?|\d+\s*(?:đường|street|quận|q\.|phường|district)|\bmở\b|\bopen\b|\d{1,2}[:h]\d{2})""",
+    RegexOption.IGNORE_CASE,
+)
+
 /** Mirrors the web detectFirstPlaceName: an internal_booking button's name, else the first bold span. */
 private fun detectFirstPlaceName(text: String, buttons: List<CtaButton>): String {
     val booking = buttons.firstOrNull { it.ctaType == CtaType.InternalBooking }

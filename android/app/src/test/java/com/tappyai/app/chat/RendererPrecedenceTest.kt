@@ -74,17 +74,22 @@ class RendererPrecedenceTest {
     // ── Shopping: the card wins ─────────────────────────────────────────────────────────────
 
     @Test
-    fun `a shopping card suppresses the inline photos and merchant rows`() {
+    fun `a shopping card suppresses the inline photos, and only them, as the web does`() {
         val parsed = ChatResponseParser.parse(enrichedProse + shoppingMarker)
 
         assertNotNull(parsed.shopping)
         // The card renders the photos, so no inline gallery is left to draw under it.
         assertTrue(parsed.segments.none { it is ReplySegment.Images })
         assertFalse(parsed.streamText.contains("![Ảnh sản phẩm]"))
-        // The offer rows carry the real sellers; the raw duplicates are gone.
-        assertFalse(parsed.streamText.contains("Shopee"))
-        assertFalse(parsed.streamText.contains("Lazada"))
-        assertFalse(parsed.streamText.contains("tiki.vn"))
+        // 02/11 (owner: Android follows the web's one-brain client): the web's stripProductImages removes photos and the
+        // "📸" block only, so the link lines stay as written (the server sends no injected rows to the android surface anyway).
+        assertTrue(parsed.streamText.contains("[Shopee](https://shopee.vn/x)"))
+    }
+
+    @Test
+    fun `the trailing photo block goes whole, its header with it`() {
+        val parsed = ChatResponseParser.parse("Gợi ý cho bạn.\n\n📸 _Hình ảnh & link review:_\n**Sony**\n[Shopee](https://shopee.vn/x)" + shoppingMarker)
+        assertEquals("Gợi ý cho bạn.", parsed.text)
     }
 
     @Test
