@@ -26,6 +26,21 @@ final class SafeWebURLTests: XCTestCase {
         XCTAssertNotNil(safeWebURL("https://www.anthropic.com/news/x"), "a company's own site stays")
     }
 
+    // Re-audit 02/11: the host door is the web's `isSafeHttpsUrl`; an accented address still opens.
+
+    func testAnAddressWithCredentialsOrAPrivateHostIsNotOpened() {
+        for s in ["https://apple.com@evil.com/", "http://192.168.0.1/admin", "http://localhost:3000/", "https://10.0.0.5/", "http://0177.0.0.1/",
+                  "http://[::1]/", "http://[00::1]/", "http://[0000::1]/", "http://[fd00::1]/", "http://[fe80::1]/", "http://x.local/"] {
+            XCTAssertNil(safeWebURL(s), s)
+        }
+        XCTAssertNotNil(safeWebURL("http://93.184.216.34/a"), "a public IPv4 address stays")
+    }
+
+    func testAnAddressWithAccentedLettersStillOpens() {
+        XCTAssertEqual(safeWebURL("https://vi.wikipedia.org/wiki/Hà_Nội")?.host, "vi.wikipedia.org")
+        XCTAssertNotNil(safeWebURL("https://vi.wikipedia.org/wiki/Hà_Nội#Lịch_sử"))
+    }
+
     // MARK: - Markdown links
 
     private func linkTargets(_ text: AttributedString) -> [String] {

@@ -439,7 +439,7 @@ private struct AssistantBubble: View {
                 // Follow-up chips
                 if !followups.isEmpty {
                     ChatFlowLayout(spacing: Spacing.xs) {
-                        ForEach(followups, id: \.self) { f in
+                        ForEach(Array(followups.enumerated()), id: \.offset) { _, f in
                             Button { onFollowup(f) } label: {
                                 Text(f)
                                     .font(TappyFont.caption)

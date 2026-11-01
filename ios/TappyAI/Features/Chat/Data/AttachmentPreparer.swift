@@ -31,7 +31,10 @@ enum AttachmentPreparer {
         let format = UIGraphicsImageRendererFormat.default()
         format.scale = 1
         format.opaque = true
-        let drawn = UIGraphicsImageRenderer(size: target, format: format).image { _ in
+        let drawn = UIGraphicsImageRenderer(size: target, format: format).image { context in
+            // A JPEG has no transparency: a transparent PNG (a screenshot, a logo) would come out black without a white ground.
+            UIColor.white.setFill()
+            context.fill(CGRect(origin: .zero, size: target))
             image.draw(in: CGRect(origin: .zero, size: target))
         }
         for quality in jpegQualities {

@@ -151,7 +151,10 @@ enum OneBrainFrames {
         if host.split(separator: ".").contains(where: { $0.hasPrefix("0x") }) { return false }
         if host.allSatisfy({ $0 == "." || ($0.isASCII && $0.isNumber) }) {
             // An address: only a plain, public a.b.c.d. Shorter or longer spellings (`2130706433`) name a private one too often.
-            let octets = host.split(separator: ".", omittingEmptySubsequences: false).compactMap { Int($0) }
+            let parts = host.split(separator: ".", omittingEmptySubsequences: false)
+            // A leading zero (`0177.0.0.1`) is octal to the system resolver: 127.0.0.1.
+            if parts.contains(where: { $0.count > 1 && $0.hasPrefix("0") }) { return false }
+            let octets = parts.compactMap { Int($0) }
             guard octets.count == 4, octets.allSatisfy({ $0 <= 255 }) else { return false }
             if !isPublicIPv4(octets[0], octets[1]) { return false }
         }
@@ -169,9 +172,12 @@ enum OneBrainFrames {
 
     /// A literal IPv6 host: loopback, unspecified, IPv4-mapped (`::ffff:…`), unique-local and link-local are not public.
     private static func isPublicIPv6(_ h: String) -> Bool {
-        if h.hasPrefix("::") || h.hasPrefix("0:") { return false }
-        if h.hasPrefix("fc") || h.hasPrefix("fd") { return false }
-        if h.hasPrefix("fe8") || h.hasPrefix("fe9") || h.hasPrefix("fea") || h.hasPrefix("feb") { return false }
+        // Read the first group as a number, so `00::1` and `0000:…` are the unspecified/loopback range like `::1`.
+        let first = h.split(separator: ":", omittingEmptySubsequences: false).first.map(String.init) ?? ""
+        guard !first.isEmpty, let group = Int(first, radix: 16) else { return false }
+        if group == 0 { return false }
+        if (0xfc00...0xfdff).contains(group) { return false }
+        if (0xfe80...0xfebf).contains(group) { return false }
         return true
     }
 

@@ -7,11 +7,19 @@ import Foundation
 /// scheme they carried.
 func safeWebURL(_ s: String) -> URL? {
     let trimmed = s.trimmingCharacters(in: .whitespacesAndNewlines)
-    guard !trimmed.isEmpty,
-          let url = URL(string: trimmed),
-          let scheme = url.scheme?.lowercased(), scheme == "https" || scheme == "http",
-          let host = url.host, !host.isEmpty,
-          !AiSourcePolicy.isAiProductSource(trimmed)
+    let lower = trimmed.lowercased()
+    let isHttps = lower.hasPrefix("https://")
+    guard isHttps || lower.hasPrefix("http://"),
+          !AiSourcePolicy.isAiProductSource(trimmed),
+          // The host door of the web's `isSafeHttpsUrl`: no credentials (`apple.com@evil.com`), no private or internal address.
+          OneBrainFrames.isSafeHttpsUrl("https://" + trimmed.dropFirst(isHttps ? 8 : 7))
+    else { return nil }
+    if let url = URL(string: trimmed), let host = url.host, !host.isEmpty { return url }
+    // iOS 16's `URL(string:)` refuses accented letters (a Vietnamese Wikipedia title): percent-encode what is not allowed, keep what is.
+    var allowed = CharacterSet.urlQueryAllowed
+    allowed.insert(charactersIn: "#%[]")
+    guard let encoded = trimmed.addingPercentEncoding(withAllowedCharacters: allowed),
+          let url = URL(string: encoded), let host = url.host, !host.isEmpty
     else { return nil }
     return url
 }

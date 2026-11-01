@@ -28,25 +28,6 @@ final class ChatService: Sendable {
         }
     }
 
-    /// Streams a chat response. Returns an AsyncThrowingStream of StreamFrame.
-    /// The caller (ViewModel) assembles frames into message content.
-    func chat(messages: [MessagePayload]) -> AsyncThrowingStream<StreamFrame, Error> {
-        let body: [String: Any] = [
-            "messages": Self.wireMessages(messages)
-        ]
-        guard let bodyData = try? JSONSerialization.data(withJSONObject: body) else {
-            return AsyncThrowingStream { $0.finish(throwing: AppError.validation(message: "Failed to encode chat request")) }
-        }
-        let endpoint = Endpoint(
-            path: "/api/chat",
-            method: .post,
-            body: bodyData,
-            requiresAuth: true,
-            timeout: 60
-        )
-        return streaming.stream(endpoint)
-    }
-
     // MARK: - Conversation CRUD
 
     func loadConversation(id: String) async throws -> Conversation {

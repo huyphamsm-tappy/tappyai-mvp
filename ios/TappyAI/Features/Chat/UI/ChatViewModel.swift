@@ -410,7 +410,7 @@ final class ChatViewModel: AppObservableObject {
         let text = inputText.trimmingCharacters(in: .whitespacesAndNewlines)
         let attachment = stagedAttachment
         // A staged photo or PDF is a question by itself (the web sends it with an empty box).
-        guard !text.isEmpty || attachment != nil, !isStreaming, !isAgeBlocked, !isAwaitingConsent else { return }
+        guard !text.isEmpty || attachment != nil, !isStreaming, !isAgeBlocked, !isAwaitingConsent, !isLoadingConversation else { return }
         inputText = ""
         error = nil
         stagedAttachment = nil
@@ -423,7 +423,7 @@ final class ChatViewModel: AppObservableObject {
     }
 
     func sendQuickPrompt(_ text: String) {
-        guard !isStreaming, !isAgeBlocked, !isAwaitingConsent else { return }
+        guard !isStreaming, !isAgeBlocked, !isAwaitingConsent, !isLoadingConversation else { return }
         inputText = ""
         error = nil
 
@@ -447,16 +447,21 @@ final class ChatViewModel: AppObservableObject {
         clearLiveAnnotations()
 
         if let last = messages.last, last.isAssistant, last.status == .streaming {
-            messages[messages.count - 1].status = .complete
-            // What was shown stays, and is stored (the turn's own Task no longer saves a stopped turn).
-            if !last.content.isEmpty { scheduleSave() }
+            if last.content.isEmpty, last.research == nil, last.charts.isEmpty, last.docMedia.isEmpty {
+                // Nothing had arrived: an empty reply bubble would only enter the next turn's history.
+                messages.removeLast()
+            } else {
+                messages[messages.count - 1].status = .complete
+                // What was shown stays, and is stored (the turn's own Task no longer saves a stopped turn).
+                scheduleSave()
+            }
         }
     }
 
     // MARK: - Regenerate
 
     func regenerate() {
-        guard !isStreaming, !isAgeBlocked else { return }
+        guard !isStreaming, !isAgeBlocked, !isAwaitingConsent else { return }
         if let last = messages.last, last.isAssistant {
             messages.removeLast()
         }
@@ -498,12 +503,6 @@ final class ChatViewModel: AppObservableObject {
         }
         error = nil
         startStreaming()
-    }
-
-    // MARK: - Delete message
-
-    func deleteMessage(id: String) {
-        messages.removeAll { $0.id == id }
     }
 
     // MARK: - Share

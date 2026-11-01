@@ -444,19 +444,6 @@ struct MessagePayload: Encodable, Sendable {
     private enum CodingKeys: String, CodingKey { case role, content }
 }
 
-// MARK: - Chat request body (matches Web's /api/chat POST)
-
-struct ChatRequest: Encodable, Sendable {
-    let messages: [MessagePayload]
-    var userLocation: LocationPayload?
-
-    struct LocationPayload: Encodable, Sendable {
-        let lat: Double
-        let lng: Double
-        let address: String
-    }
-}
-
 // MARK: - Tool hint mapping (matches Web TOOL_HINTS)
 
 enum ToolHints {
