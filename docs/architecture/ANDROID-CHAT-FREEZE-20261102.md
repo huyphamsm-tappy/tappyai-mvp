@@ -59,4 +59,9 @@ Android chỉ gửi hội thoại và chế độ, rồi vẽ những gì máy c
 
 ## 3. Nhật ký thay đổi sau đóng băng
 
-(Chưa có. Mỗi mục: ngày, ai duyệt, đổi gì, vì sao.)
+Mỗi mục: ngày, ai duyệt, đổi gì, vì sao.
+
+- **02/11/2026, Owner yêu cầu ("sao 2 lỗi nhẹ ko làm luôn đi"):** hai sửa lỗi nhỏ ngay sau đóng băng, **không đổi kiến trúc** (test canh giữ nguyên, vẫn xanh).
+  - Nhãn và vai trò nút cho trình đọc to và nút "+" (trợ năng), commit `cc1ac64`.
+  - Bảng PDF không thể thành lưới (từ 41 cột) hoặc hàng cao hơn một trang được vẽ như chữ liền, commit `8073275`.
+  - Mốc đóng băng dời sang tag `android-arch-freeze-20261102b` (nhánh dự phòng `backup/android-arch-freeze-20261102b`). Tag `android-arch-freeze-20261102` giữ nguyên ở `16601f3`.
