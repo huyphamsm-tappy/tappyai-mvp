@@ -529,6 +529,9 @@ class ChatViewModel @Inject constructor(
         val text = input.trim()
         val image = pendingImageUri
         if (text.isEmpty() && image == null) return
+        // the text send is locked while a reply streams, but the voice screen and the recognizer's auto-send come here too: sending now
+        // would cancel the reply with nothing kept; the transcript stays in the field to send once the reply is done
+        if (_isAssistantResponding.value) return
         sendUserMessage(text, image, pendingMime, pendingName)
         onClearPendingImage()
         attachError = null
@@ -757,8 +760,14 @@ class ChatViewModel @Inject constructor(
                 var serverSaidProgress = false
                 var lastParseAt = 0L
                 val turnMode = _mode.value
-                _mode.value = turnMode.afterSend()
+                var modeSpent = false
                 chatRepository.streamReply(history, chatSessionId, turnMode).collect { event ->
+                    // web (onResponse): Deep Research is for one question, spent once the request was ACCEPTED - a refused or dropped
+                    // request keeps it, so "try again" is the same question
+                    if (!modeSpent) {
+                        modeSpent = true
+                        _mode.value = turnMode.afterSend()
+                    }
                     val token = when (event) {
                         is ChatStreamEvent.Text -> event.delta
                         // The last place frame is the turn's view (the preliminary set is replaced
@@ -976,7 +985,8 @@ class ChatViewModel @Inject constructor(
         val id = conversationId ?: return false
         val index = persistedIndexOf(messageId) ?: return false
         _sharePublic.value = SharePublicState.Loading
-        viewModelScope.launch {
+        shareJob?.cancel()
+        shareJob = viewModelScope.launch {
             _sharePublic.value = when (val outcome = sharedResultRepository.preview(id, index, shareLocale)) {
                 is ShareOutcome.Success -> SharePublicState.Preview(id, index, outcome.data, outcome.data.title)
                 else -> SharePublicState.Failed(outcome.toFailure())
@@ -993,7 +1003,8 @@ class ChatViewModel @Inject constructor(
     fun onConfirmSharePublic() {
         val current = _sharePublic.value as? SharePublicState.Preview ?: return
         _sharePublic.value = SharePublicState.Publishing
-        viewModelScope.launch {
+        shareJob?.cancel()
+        shareJob = viewModelScope.launch {
             _sharePublic.value = when (val outcome = sharedResultRepository.publish(current.conversationId, current.messageIndex, current.title, shareLocale)) {
                 is ShareOutcome.Success -> SharePublicState.Published(outcome.data)
                 else -> SharePublicState.Failed(outcome.toFailure())
@@ -1001,7 +1012,12 @@ class ChatViewModel @Inject constructor(
         }
     }
 
+    // The pending preview/publish call: closing the dialog cancels it, so its answer cannot reopen the dialog.
+    private var shareJob: Job? = null
+
     fun onDismissSharePublic() {
+        shareJob?.cancel()
+        shareJob = null
         _sharePublic.value = SharePublicState.Idle
     }
 

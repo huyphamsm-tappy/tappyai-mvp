@@ -39,6 +39,31 @@ class ChatViewModelTurnStateTest {
         assertTrue("loaded history never replaces what is already on screen", !vm.contains("_messages.value = result.data.map"))
     }
 
+    // The text send is locked while a reply streams (the screen), but the microphone is not: the voice screen and the recognizer's auto-send
+    // call onSend, which cancelled the streaming reply with nothing kept and left two user messages in a row in the history.
+    @Test fun `sending by voice while a reply streams does not cancel it`() {
+        val send = vm.indexOf("fun onSend()")
+        val body = vm.substring(send, vm.indexOf("sendUserMessage(text, image", send))
+        assertTrue(body.contains("_isAssistantResponding.value"))
+    }
+
+    // Web (ChatInterface onResponse): Deep Research goes back to Auto once the request was ACCEPTED. Resetting before the request left a
+    // refused one (limit, 401, offline) on Auto, and "try again" ran a plain turn.
+    @Test fun `Deep Research goes back to Auto only once the stream opened`() {
+        val reset = vm.indexOf("_mode.value = turnMode.afterSend()")
+        val collect = vm.indexOf("chatRepository.streamReply(history, chatSessionId, turnMode).collect")
+        assertTrue(reset > collect && collect > 0)
+    }
+
+    // A closed share dialog was reopened by the answer that came after (the launched call was never cancelled), and a publish started
+    // before the close went through although the person had closed the dialog.
+    @Test fun `closing the share dialog cancels its pending call`() {
+        val dismiss = vm.indexOf("fun onDismissSharePublic()")
+        val body = vm.substring(dismiss, vm.indexOf("}", dismiss))
+        assertTrue(body.contains("shareJob?.cancel()"))
+        assertTrue(vm.contains("shareJob = viewModelScope.launch"))
+    }
+
     // viewModelScope runs on Main.immediate, so a turn started from init (a prefilled question) assigns currentReply BEFORE the property
     // initializers that follow init run; a declaration below init then resets it to null and Stop keeps nothing.
     @Test fun `the partial-reply holders are declared before init so a prefilled turn keeps them`() {
