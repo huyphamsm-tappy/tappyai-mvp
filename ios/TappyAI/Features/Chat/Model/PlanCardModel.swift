@@ -7,8 +7,9 @@ import Foundation
 // Three rules the owner fixed and this file enforces:
 //  1. IMAGES: only the image keys STORED in the plan (`hero_image`, `items[].image`, `highlights[].image`) are
 //     shown, resolved to a URL through the image manifest (`PlanImageManifest`). The app never picks, guesses or
-//     randomises a picture — a stop's Google `photo_url` is NOT used. A key the manifest cannot serve (or no key at
-//     all) draws the gradient placeholder of the plan's area.
+//     randomises a picture. Owner 02/11 dropped the 29/09 ban on a stop's `photo_url` (the web draws it): a stop shows its
+//     own https photo first, then its stored key's picture; the hero and the keys are never a URL. A key the manifest cannot
+//     serve (or no key at all) draws the gradient placeholder of the plan's area.
 //  2. MONEY: only the figures the server wrote. A stop whose price is not an amount has NO price (`Stop.price` is nil, the card
 //     draws no price line — review 02/11, as the web and Android); nothing is summed, divided or estimated on the device.
 //  3. ALL FIVE AREAS use the same frame. A non-travel plan is one session ("Tối nay") with times of day — one day
@@ -117,6 +118,8 @@ struct PlanCardModel: Equatable {
         let id: Int
         let time: String
         let imageKey: String?
+        /// The photo the server matched to this stop (https only, never another AI product's), drawn before the key picture.
+        let photoUrl: URL?
         let emoji: String
         let name: String
         let description: String?
@@ -150,7 +153,12 @@ struct PlanCardModel: Equatable {
         // A day's badge is the number its label names, not its position among the days that survived (web, Android).
         var lastNumber = 0
         let days: [Day] = plan.days
-            .map { day in (day, day.items.filter { !$0.name.trimmingCharacters(in: .whitespaces).isEmpty }) }
+            .map { day in
+                (day, day.items.filter {
+                    !$0.name.trimmingCharacters(in: .whitespaces).isEmpty
+                        || !($0.description?.trimmingCharacters(in: .whitespaces).isEmpty ?? true)
+                })
+            }
             .filter { !$0.1.isEmpty }
             .enumerated()
             .map { index, pair -> Day in
@@ -165,13 +173,17 @@ struct PlanCardModel: Equatable {
                         defer { stopId += 1 }
                         let amount = PlanPrice.amount(item.price)
                         let address = item.address?.trimmingCharacters(in: .whitespaces)
+                        // A stop without a name shows its words in the name's place (web TripPlanCard); never twice.
+                        let named = item.name.trimmingCharacters(in: .whitespaces)
+                        let words = item.description?.trimmingCharacters(in: .whitespaces).nilIfEmpty
                         return Stop(
                             id: stopId,
                             time: item.time.trimmingCharacters(in: .whitespaces),
                             imageKey: cleanKey(item.image),
+                            photoUrl: httpsPhoto(item.photoUrl),
                             emoji: item.emoji.isEmpty ? "📍" : item.emoji,
-                            name: item.name.trimmingCharacters(in: .whitespaces),
-                            description: item.description?.trimmingCharacters(in: .whitespaces).nilIfEmpty,
+                            name: named.isEmpty ? (words ?? "") : named,
+                            description: named.isEmpty ? nil : words,
                             address: (address?.isEmpty == false && address != "Xem bản đồ") ? address : nil,
                             price: amount,
                             mapsLink: httpsLink(item.mapsLink),
@@ -218,6 +230,12 @@ struct PlanCardModel: Equatable {
     private static func cleanKey(_ raw: String?) -> String? {
         let key = raw?.trimmingCharacters(in: .whitespaces)
         return PlanImageKeys.isKey(key) ? key : nil
+    }
+
+    /// A stop's own photo: https only (a plain http image is not loaded), never another AI product's address (`safeWebURL`).
+    private static func httpsPhoto(_ raw: String?) -> URL? {
+        guard let raw, let url = safeWebURL(raw), url.scheme?.lowercased() == "https" else { return nil }
+        return url
     }
 
     /// A Maps / booking link the card opens: http(s) in any case, never another AI product's page (`safeWebURL`).

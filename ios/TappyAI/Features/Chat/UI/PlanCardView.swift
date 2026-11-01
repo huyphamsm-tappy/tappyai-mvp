@@ -169,7 +169,7 @@ struct ChatPlanCardView: View {
             .frame(width: 10)
             Text(stop.time.isEmpty ? "—" : stop.time).font(.system(size: 13, weight: .semibold)).foregroundStyle(PlanPal.text)
                 .frame(width: 42, alignment: .leading)
-            PlanImage(key: stop.imageKey, area: area, manifest: images.manifest, glyph: stop.emoji, glyphSize: 22)
+            PlanImage(key: stop.imageKey, area: area, manifest: images.manifest, glyph: stop.emoji, glyphSize: 22, photoUrl: stop.photoUrl)
                 .frame(width: 64, height: 64).clipShape(RoundedRectangle(cornerRadius: 10))
             VStack(alignment: .leading, spacing: 2) {
                 Text(stop.name).font(.system(size: 14, weight: .semibold)).foregroundStyle(PlanPal.text).lineLimit(2)
@@ -356,8 +356,8 @@ struct ChatPlanCardView: View {
     }
 }
 
-/// One image slot: the manifest's URL for the STORED `key`, else the area's gradient with its emoji. Never
-/// another picture — no `photo_url` fallback, no key chosen here.
+/// One image slot: the stop's own https photo (owner 02/11, as the web), else the manifest's URL for the STORED `key`, else the
+/// area's gradient with its emoji. Never another picture — no key chosen here.
 struct PlanImage: View {
     let key: String?
     let area: PlanArea
@@ -366,9 +366,11 @@ struct PlanImage: View {
     let glyphSize: CGFloat
     /// The hero's glyph sits in the top-right corner, clear of the title; elsewhere it is centred.
     var glyphCorner = false
+    /// The photo the server matched to this stop; drawn before the key's picture.
+    var photoUrl: URL? = nil
 
     var body: some View {
-        let url = manifest.url(for: key)
+        let url = photoUrl ?? manifest.url(for: key)
         // The gradient sizes the slot; the picture is an OVERLAY so a scaled-to-fill image can never widen it.
         area.placeholder
             .overlay(alignment: glyphCorner ? .topTrailing : .center) {

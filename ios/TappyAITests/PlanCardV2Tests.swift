@@ -104,7 +104,9 @@ final class PlanCardV2Tests: XCTestCase {
         XCTAssertTrue(card.highlights.isEmpty)
     }
 
-    func testImagesAreOnlyStoredKeysNeverAPhotoUrlNorAUrlPosingAsAKey() throws {
+    // Owner 02/11 («ảnh ngày 29/9 bỏ qua, cứ tham chiếu web»): the 29/09 rule "a stop never shows its server photo_url" is dropped, because the web
+    // draws it (PlanStopPhotoTests). What stays: the HERO and the key names are never a URL, and a key is a stored key.
+    func testAStopsOwnPhotoThenStoredKeysAHeroOrAUrlPosingAsAKeyIsNeverUsed() throws {
         let json = #"""
         {"title":"x","hero_image":"https://evil.example/x.jpg","days":[{"label":"Ngày 1","items":[
           {"time":"09:00","name":"A","photo_url":"https://lh3.googleusercontent.com/p/a"},
@@ -114,10 +116,11 @@ final class PlanCardV2Tests: XCTestCase {
         let card = PlanCardModel.of(try plan(json: json))
         XCTAssertNil(card.heroKey)
         XCTAssertEqual(card.days[0].stops.map(\.imageKey), [nil, "diem-bien", nil])
-        // The view never reads `photoUrl`: an image is the manifest's URL for a stored key, or the area's placeholder.
+        // The stop keeps its own https photo (the web draws it); the key still comes from the stored manifest, the placeholder is still there.
+        XCTAssertEqual(card.days[0].stops.map { $0.photoUrl?.absoluteString }, ["https://lh3.googleusercontent.com/p/a", nil, nil])
         let source = try String(contentsOf: Self.repoRoot.appendingPathComponent("ios/TappyAI/Features/Chat/UI/PlanCardView.swift"), encoding: .utf8)
-        XCTAssertFalse(source.contains("photoUrl"))
         XCTAssertTrue(source.contains("manifest.url(for: key)") && source.contains("area.placeholder"))
+        XCTAssertTrue(source.contains("photoUrl: stop.photoUrl"))
     }
 
     func testImageKeyNames() {

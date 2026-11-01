@@ -111,7 +111,7 @@ struct CTAButton: Equatable, Sendable, Identifiable {
 ///
 /// Required: `days`, and `items` on every day — a block without them does not decode, so a plan
 /// in another shape can never turn into days with nothing in them. An item without a `name` is
-/// dropped (web `derivePlans` / the share snapshot do the same). Prices go through
+/// dropped unless it has words (`description`), which then stand in for the name. Prices go through
 /// `PlanPrice.amount`, like web `projectPlanPrices`: a sentinel such as "chưa có giá" is not a price.
 struct TappyPlan: Equatable, Sendable, Decodable {
     let type: String?
@@ -186,7 +186,7 @@ struct TappyPlan: Equatable, Sendable, Decodable {
         let placeId: String?
         let photoUrl: String?
         /// Plan card v2: the STORED image key of this stop (`diem-<loai>`, 1:1), resolved via the manifest.
-        /// Never `photoUrl`: the card shows a stored key or its area's placeholder, nothing else.
+        /// The card draws the stop's own `photoUrl` (https only, as the web does) first, then this key's picture, then the area's placeholder.
         let image: String?
 
         private enum CodingKeys: String, CodingKey {
@@ -202,15 +202,17 @@ struct TappyPlan: Equatable, Sendable, Decodable {
                 let v = raw.trimmingCharacters(in: .whitespacesAndNewlines)
                 return v.isEmpty ? nil : v
             }
-            guard let name = text(.name) else {
+            // A stop needs a name OR words (the web shows a stop whose name is blank); with neither there is nothing to show.
+            let words = text(.description)
+            guard let name = text(.name) ?? (words == nil ? nil : "") else {
                 throw DecodingError.keyNotFound(CodingKeys.name, .init(codingPath: c.codingPath,
-                                                                       debugDescription: "plan item without a name"))
+                                                                       debugDescription: "plan item without a name or words"))
             }
             self.name = name
             time = text(.time) ?? ""
             emoji = text(.emoji) ?? ""
             category = text(.category) ?? ""
-            description = text(.description)
+            description = words
             price = PlanPrice.amount(text(.price))
             address = text(.address)
             mapsLink = text(.mapsLink)
