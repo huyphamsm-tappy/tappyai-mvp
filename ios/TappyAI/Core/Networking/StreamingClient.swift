@@ -134,20 +134,7 @@ final class URLSessionStreamingClient: StreamingClient {
                     var request = try builder.makeRequest(endpoint)
                     request.setValue("text/event-stream", forHTTPHeaderField: "Accept")
                     if endpoint.requiresAuth { await auth.authorize(&request) }
-                    let (bytes, response) = try await session.bytes(for: request)
-                    if let http = response as? HTTPURLResponse, !(200...299).contains(http.statusCode) {
-                        // Read the (small) JSON error body so backend error codes map to their
-                        // specific UX — 429 free_limit_reached → "come back tomorrow",
-                        // 401 anon_limit_reached → sign-in prompt (docs/ios/04 §2.1). Without
-                        // this, every limit surfaced as a generic "streaming" failure. Bounded
-                        // read: limit responses are tiny; cap guards a misbehaving server.
-                        var body = Data()
-                        for try await byte in bytes {
-                            body.append(byte)
-                            if body.count > 64 * 1024 { break }
-                        }
-                        throw URLSessionAPIClient.mapChatHTTP(status: http.statusCode, data: body)
-                    }
+                    let (bytes, response) = try await openRefreshingOnce(request, requiresAuth: endpoint.requiresAuth)
                     // ADR-024: surface the decision-evidence key BEFORE the body streams, so the ViewModel has it stored
                     // by the time the next turn is sent. A header the server does not set yields no frame.
                     if let http = response as? HTTPURLResponse,
@@ -169,6 +156,49 @@ final class URLSessionStreamingClient: StreamingClient {
                 }
             }
             continuation.onTermination = { _ in task.cancel() }
+        }
+    }
+
+    /// A non-2xx answer, with its (small) body, before it is mapped to an `AppError`.
+    private struct HTTPRefusal: Error {
+        let status: Int
+        let body: Data
+    }
+
+    /// Opens the stream. A non-2xx answer is read as a JSON error body so backend error codes map to their specific UX —
+    /// 429 free_limit_reached → "come back tomorrow", 401 anon_limit_reached → sign-in prompt (docs/ios/04 §2.1); without
+    /// this every limit surfaced as a generic "streaming" failure. Bounded read: limit responses are tiny; the cap guards a
+    /// misbehaving server.
+    private func open(_ request: URLRequest) async throws -> (URLSession.AsyncBytes, URLResponse) {
+        let (bytes, response) = try await session.bytes(for: request)
+        if let http = response as? HTTPURLResponse, !(200...299).contains(http.statusCode) {
+            var body = Data()
+            for try await byte in bytes {
+                body.append(byte)
+                if body.count > 64 * 1024 { break }
+            }
+            throw HTTPRefusal(status: http.statusCode, body: body)
+        }
+        return (bytes, response)
+    }
+
+    /// `open`, with the rule `URLSessionAPIClient` has for plain requests: a 401 on an authenticated request forces ONE token
+    /// refresh and reopens the stream with the new token. The guest limit (`anon_limit_reached`, also a 401) is not a token
+    /// problem and is not refreshed; a failed refresh, or a second 401, is the sign-in error.
+    private func openRefreshingOnce(_ request: URLRequest, requiresAuth: Bool) async throws -> (URLSession.AsyncBytes, URLResponse) {
+        do {
+            return try await open(request)
+        } catch let refusal as HTTPRefusal {
+            guard refusal.status == 401, requiresAuth,
+                  !URLSessionAPIClient.isKnownLimit(status: refusal.status, data: refusal.body),
+                  let retried = await auth.retryAfterUnauthorized(request) else {
+                throw URLSessionAPIClient.mapChatHTTP(status: refusal.status, data: refusal.body)
+            }
+            do {
+                return try await open(retried)
+            } catch let second as HTTPRefusal {
+                throw URLSessionAPIClient.mapChatHTTP(status: second.status, data: second.body)
+            }
         }
     }
 }
