@@ -198,13 +198,17 @@ private struct UserBubble: View {
     var body: some View {
         HStack {
             Spacer(minLength: Spacing.xxl)
-            Text(content)
-                .font(TappyFont.body)
-                .foregroundStyle(.white)
-                .padding(.horizontal, Spacing.md)
-                .padding(.vertical, Spacing.sm)
-                .background(TappyColor.primary)
-                .clipShape(RoundedRectangle(cornerRadius: Radius.lg, style: .continuous))
+            VStack(alignment: .trailing, spacing: 0) {
+                Text(content)
+                    .font(TappyFont.body)
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, Spacing.md)
+                    .padding(.vertical, Spacing.sm)
+                    .background(TappyColor.primary)
+                    .clipShape(RoundedRectangle(cornerRadius: Radius.lg, style: .continuous))
+                // the answers have their action bar; the question has its copy button (web UserMessageCopy)
+                UserMessageCopyButton(text: content)
+            }
         }
     }
 }
