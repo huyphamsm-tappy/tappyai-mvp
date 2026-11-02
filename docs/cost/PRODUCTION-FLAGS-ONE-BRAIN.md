@@ -40,4 +40,7 @@ CONSULT_ONE_BRAIN,CONSULT_FINAL_SYNTHESIS,CONSULT_SEARCH_NOW_INTENT_GATE,CONSULT
 `SUBSCRIPTIONS_ENABLED` hiện không có (tắt). Khi tắt, mọi chế độ chạy cho mọi tài khoản và Nghiên cứu sâu chưa có hạn mức tháng; chưa có người dùng thật nên chưa thành vấn đề, nhưng cần xong trước chiến dịch.
 
 ## 5. Quay lại nếu có sự cố
-Xóa `CONSULT_PRODUCTION_ALLOW` (hoặc chỉ gỡ `CONSULT_ONE_BRAIN` khỏi danh sách) rồi Redeploy: bộ não tắt ngay, chat chạy đường cũ.
+Xóa `CONSULT_PRODUCTION_ALLOW` (hoặc chỉ gỡ `CONSULT_ONE_BRAIN` khỏi danh sách) rồi Redeploy: bộ não tắt từ bản deploy mới, chat chạy đường cũ.
+
+## 6. Trạng thái đã đặt trên Vercel (02/11/2026)
+31 biến ở mục 1–2 (trừ `CCP_REALTIME_AGODA_LITE`, cần khóa `AGODA_LITE_SITE_ID` và `AGODA_LITE_API_KEY` do chủ tự thêm) đã được lưu cho môi trường **Production**, kiểu Config, kèm `LLM_RESPONSES_PROCESS_BUDGET_USD=3`. Vercel chỉ áp biến cho bản deploy **mới**: bản này (tài liệu) tạo ra bản deploy đó. Chưa đặt: Parallel, `CONSULT_ONE_BRAIN_MEDIA`, `AI_USAGE_LEDGER`, `SUBSCRIPTIONS_ENABLED`.
