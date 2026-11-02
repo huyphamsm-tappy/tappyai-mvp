@@ -47,3 +47,6 @@ Xóa `CONSULT_PRODUCTION_ALLOW` (hoặc chỉ gỡ `CONSULT_ONE_BRAIN` khỏi da
 
 ### 6.1. Khóa OpenAI của production (02/11)
 Lượt chat đầu tiên trên production (13:30) báo `Your API key has expired`: khóa `tappy-luna-test` của dự án OpenAI "TappyAI" được tạo 30/9 với hạn 30/10. Dòng log `tappyai_chat_mode` xuất hiện ở lượt đó, nghĩa là các cờ bộ não đã có hiệu lực. Chủ đã tạo khóa mới (không hết hạn, quyền Tất cả) và đặt vào `OPENAI_API_KEY` (Production) lúc ~13:45; bản này là bản deploy áp khóa đó. Khóa chỉ nằm trong Vercel (Sensitive), không có trong mã hay tài liệu. Khi tạo khóa OpenAI mới cho dự án, **không đặt ngày hết hạn ngắn** và ghi ngày hết hạn (nếu có) vào lịch nhắc.
+
+### 6.2. Khóa Serper của production (02/11)
+Sau khi khóa OpenAI chạy (14:07), chat trả lời bằng bộ não (`tappyai_one_brain_turn`, `gpt-6-luna`) nhưng công cụ tìm địa điểm trả về rỗng gần như ngay (`places_provider: serper` rồi `osm_fallback_used`, `no_google_result`, 0 dòng): khóa `SERPER_API_KEY` của production (thêm 13/6) bị Serper từ chối, không thấy yêu cầu nào trong nhật ký tài khoản Serper của chủ lúc đó. Chủ đã đặt khóa Serper đang dùng được vào `SERPER_API_KEY` (Production); bản này là bản deploy áp khóa đó. Khóa không có trong mã hay tài liệu.
