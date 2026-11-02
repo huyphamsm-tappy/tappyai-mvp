@@ -44,3 +44,6 @@ Xóa `CONSULT_PRODUCTION_ALLOW` (hoặc chỉ gỡ `CONSULT_ONE_BRAIN` khỏi da
 
 ## 6. Trạng thái đã đặt trên Vercel (02/11/2026)
 31 biến ở mục 1–2 (trừ `CCP_REALTIME_AGODA_LITE`, cần khóa `AGODA_LITE_SITE_ID` và `AGODA_LITE_API_KEY` do chủ tự thêm) đã được lưu cho môi trường **Production**, kiểu Config, kèm `LLM_RESPONSES_PROCESS_BUDGET_USD=3`. Vercel chỉ áp biến cho bản deploy **mới**: bản này (tài liệu) tạo ra bản deploy đó. Chưa đặt: Parallel, `CONSULT_ONE_BRAIN_MEDIA`, `AI_USAGE_LEDGER`, `SUBSCRIPTIONS_ENABLED`.
+
+### 6.1. Khóa OpenAI của production (02/11)
+Lượt chat đầu tiên trên production (13:30) báo `Your API key has expired`: khóa `tappy-luna-test` của dự án OpenAI "TappyAI" được tạo 30/9 với hạn 30/10. Dòng log `tappyai_chat_mode` xuất hiện ở lượt đó, nghĩa là các cờ bộ não đã có hiệu lực. Chủ đã tạo khóa mới (không hết hạn, quyền Tất cả) và đặt vào `OPENAI_API_KEY` (Production) lúc ~13:45; bản này là bản deploy áp khóa đó. Khóa chỉ nằm trong Vercel (Sensitive), không có trong mã hay tài liệu. Khi tạo khóa OpenAI mới cho dự án, **không đặt ngày hết hạn ngắn** và ghi ngày hết hạn (nếu có) vào lịch nhắc.
