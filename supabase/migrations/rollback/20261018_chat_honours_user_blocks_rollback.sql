@@ -117,3 +117,12 @@ BEGIN
   RETURN v_thread;
 END;
 $$;
+
+-- The rollback restores the previous bodies, not the grants: the same EXECUTE model as the forward migration (ADR-019), stated here so a
+-- restored SECURITY DEFINER function is never callable by anon or PUBLIC, whatever the state it is restored over.
+REVOKE EXECUTE ON FUNCTION public.chat_can_reach(UUID) FROM PUBLIC, anon, authenticated;
+GRANT  EXECUTE ON FUNCTION public.chat_can_reach(UUID) TO authenticated, service_role;
+REVOKE EXECUTE ON FUNCTION public.chat_thread_blocked(UUID) FROM PUBLIC, anon, authenticated;
+GRANT  EXECUTE ON FUNCTION public.chat_thread_blocked(UUID) TO authenticated, service_role;
+REVOKE EXECUTE ON FUNCTION public.chat_create_group(TEXT, UUID[]) FROM PUBLIC, anon, authenticated;
+GRANT  EXECUTE ON FUNCTION public.chat_create_group(TEXT, UUID[]) TO authenticated;
