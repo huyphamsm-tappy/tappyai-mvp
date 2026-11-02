@@ -131,36 +131,52 @@ private final class PdfPageWriter {
             return
         }
         let colW = (width / CGFloat(cols)).rounded(.down)
-        for (r, cells) in rows.enumerated() {
+        func measure(_ r: Int) -> (blocks: [PdfTextBlock], rowH: CGFloat) {
+            let cells = rows[r]
             let font = pdfFont(PdfStyle.body - 1, bold: r == 0)
             let blocks = (0..<cols).map { c in
                 PdfTextBlock(text: c < cells.count ? cells[c] : "", font: font, color: .black, width: colW - 2 * pad)
             }
-            let rowH = (blocks.map { $0.height }.max() ?? 0) + 2 * pad
-            // a row taller than a whole page cannot be a grid row (it would run off the bottom over the footer): its cells flow as text
-            if !rowFitsPage(rowH: rowH, bodyH: bottom - PdfStyle.margin) {
-                for cell in cells where !pdfIsBlank(cell) { text(cell, font: font, gapAfter: 4) }
-                continue
-            }
-            if y + rowH > bottom && y > PdfStyle.margin { newPage() }
+            return (blocks, (blocks.map { $0.height }.max() ?? 0) + 2 * pad)
+        }
+        func draw(_ r: Int, _ m: (blocks: [PdfTextBlock], rowH: CGFloat)) {
             if let cg = context?.cgContext {
                 cg.setLineWidth(0.7)
                 for c in 0..<cols {
                     let x = PdfStyle.margin + CGFloat(c) * colW
-                    let rect = CGRect(x: x, y: y, width: colW, height: rowH)
+                    let rect = CGRect(x: x, y: y, width: colW, height: m.rowH)
                     if r == 0 {
                         cg.setFillColor(UIColor(red: 0xEE / 255, green: 0xF2 / 255, blue: 0xFA / 255, alpha: 1).cgColor)
                         cg.fill(rect)
                     }
                     cg.setStrokeColor(UIColor(white: 0xBB / 255, alpha: 1).cgColor)
                     cg.stroke(rect)
-                    let cell = blocks[c]
+                    let cell = m.blocks[c]
                     if !cell.lines.isEmpty {
                         cell.draw(first: 0, last: cell.lines.count - 1, at: CGPoint(x: x + pad, y: y + pad), clipWidth: colW - 2 * pad, in: cg)
                     }
                 }
             }
-            y += rowH
+            y += m.rowH
+        }
+        let header = measure(0)
+        for r in rows.indices {
+            let m = r == 0 ? header : measure(r)
+            // a row taller than a whole page cannot be a grid row (it would run off the bottom over the footer): its cells flow as text
+            if !rowFitsPage(rowH: m.rowH, bodyH: bottom - PdfStyle.margin) {
+                let font = pdfFont(PdfStyle.body - 1, bold: r == 0)
+                for cell in rows[r] where !pdfIsBlank(cell) { text(cell, font: font, gapAfter: 4) }
+                continue
+            }
+            if y + m.rowH > bottom && y > PdfStyle.margin {
+                newPage()
+                // the header row again on the new page (a table that goes over a page keeps its column names), when it fits with this row
+                if r > 0, rowFitsPage(rowH: header.rowH, bodyH: bottom - PdfStyle.margin),
+                   PdfStyle.margin + header.rowH + m.rowH <= bottom {
+                    draw(0, header)
+                }
+            }
+            draw(r, m)
         }
         y += PdfStyle.gapBody
     }

@@ -113,7 +113,9 @@ private func pdfTableRows(_ chunk: String) -> [[String]]? {
         var line = entry.element
         if line.hasPrefix("|") { line.removeFirst() }
         if line.hasSuffix("|") { line.removeLast() }
-        return line.components(separatedBy: "|").map { pdfTrim(pdfVisibleKeepingAddresses(pdfTrim($0))) }
+        // `\|` is a pipe inside a cell, not a column break (GFM).
+        return line.replacingOccurrences(of: "\\|", with: "\u{E000}").components(separatedBy: "|")
+            .map { pdfTrim(pdfVisibleKeepingAddresses(pdfTrim($0))).replacingOccurrences(of: "\u{E000}", with: "|") }
     }
 }
 

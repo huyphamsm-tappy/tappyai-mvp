@@ -59,7 +59,9 @@ private func mdbCells(_ line: String) -> [String] {
     var t = mdbTrim(line)
     if t.hasPrefix("|") { t.removeFirst() }
     if t.hasSuffix("|") { t.removeLast() }
-    return t.components(separatedBy: "|").map { mdbTrim($0) }
+    // `\|` is a pipe inside a cell, not a column break (GFM).
+    return t.replacingOccurrences(of: "\\|", with: "\u{E000}").components(separatedBy: "|")
+        .map { mdbTrim($0).replacingOccurrences(of: "\u{E000}", with: "|") }
 }
 
 /// Whether the line at `i` begins a block of its own (so a paragraph before it ends there).

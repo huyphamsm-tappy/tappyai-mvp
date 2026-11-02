@@ -11,6 +11,24 @@ import Foundation
 /// file and Android `ChatResponseParser` are part of that change, not a follow-up to it.
 enum ContentParser {
 
+    /// Each pattern is compiled once: a reply is parsed up to 20 times a second while it streams, and `stripMarkerResidue` alone ran
+    /// three patterns for every marker name on every pass.
+    private final class RegexCache: @unchecked Sendable {
+        private let lock = NSLock()
+        private var compiled: [String: NSRegularExpression] = [:]
+
+        func regex(_ pattern: String, _ options: NSRegularExpression.Options = .caseInsensitive) -> NSRegularExpression? {
+            let key = "\(options.rawValue)|\(pattern)"
+            lock.lock(); defer { lock.unlock() }
+            if let hit = compiled[key] { return hit }
+            guard let made = try? NSRegularExpression(pattern: pattern, options: options) else { return nil }
+            compiled[key] = made
+            return made
+        }
+    }
+
+    private static let regexCache = RegexCache()
+
     static func parse(_ rawContent: String) -> ParsedContent {
         // One place for «no literal ** in any answer» (web `normalizeReplyMarkdown`): prose bold balanced, markdown stripped
         // from the strings inside the marker blocks, before any card sees them.
@@ -57,10 +75,7 @@ enum ContentParser {
     /// decision is not a decision. It never mutates the text — stripping remains the residue pass's
     /// job, so a payload that fails to decode still cannot reach the user.
     static func decodeShoppingDecision(_ content: String) -> ShoppingDecisionView? {
-        guard let regex = try? NSRegularExpression(
-            pattern: #"\[TAPPY_SHOPPING\]([\s\S]*?)\[/TAPPY_SHOPPING\]"#,
-            options: .caseInsensitive
-        ) else { return nil }
+        guard let regex = regexCache.regex(#"\[TAPPY_SHOPPING\]([\s\S]*?)\[/TAPPY_SHOPPING\]"#) else { return nil }
 
         let range = NSRange(content.startIndex..., in: content)
         guard let m = regex.firstMatch(in: content, range: range),
@@ -89,10 +104,7 @@ enum ContentParser {
     /// is the answer Web's `parsePlacesMarker` gives — a turn cannot show a card on one platform
     /// and a blank frame on another.
     static func parsePlaces(_ content: String) -> (text: String, places: [PersistedPlace]) {
-        let withTag = try? NSRegularExpression(
-            pattern: #"\[TAPPY_PLACES\]([\s\S]*?)\[/TAPPY_PLACES\]"#,
-            options: .caseInsensitive
-        )
+        let withTag = regexCache.regex(#"\[TAPPY_PLACES\]([\s\S]*?)\[/TAPPY_PLACES\]"#)
         let range = NSRange(content.startIndex..., in: content)
 
         var text: String
@@ -187,7 +199,7 @@ enum ContentParser {
         // the message and swallows trailing prose. Web settled on brace matching after hitting both
         // failures; Android and iOS now use the same algorithm, pinned by the shared fixtures in
         // shared/structured-content/marker-fixtures.json.
-        let withTag = try? NSRegularExpression(pattern: #"\[CTA_BUTTONS\]([\s\S]*?)\[/CTA_BUTTONS\]"#, options: .caseInsensitive)
+        let withTag = regexCache.regex(#"\[CTA_BUTTONS\]([\s\S]*?)\[/CTA_BUTTONS\]"#)
         let range = NSRange(content.startIndex..., in: content)
 
         var text: String
@@ -273,7 +285,7 @@ enum ContentParser {
 
     /// `parsePlan`, plus the block itself — kept verbatim for the share (see `ParsedContent.planJSON`).
     static func parsePlanBlock(_ content: String) -> (text: String, plan: TappyPlan?, planJSON: String?) {
-        guard let regex = try? NSRegularExpression(pattern: #"\[TAPPY_PLAN\]([\s\S]*?)\[/TAPPY_PLAN\]"#, options: .caseInsensitive) else {
+        guard let regex = regexCache.regex(#"\[TAPPY_PLAN\]([\s\S]*?)\[/TAPPY_PLAN\]"#) else {
             return (content, nil, nil)
         }
         let range = NSRange(content.startIndex..., in: content)
@@ -297,7 +309,7 @@ enum ContentParser {
     // MARK: - Follow-up suggestions
 
     static func parseFollowups(_ content: String) -> (text: String, followups: [String]) {
-        guard let regex = try? NSRegularExpression(pattern: #"\[FOLLOWUPS\]([^\n]*?)(?:\[/FOLLOWUPS\]|\n|$)"#, options: .caseInsensitive) else {
+        guard let regex = regexCache.regex(#"\[FOLLOWUPS\]([^\n]*?)(?:\[/FOLLOWUPS\]|\n|$)"#) else {
             return (content, [])
         }
         let range = NSRange(content.startIndex..., in: content)
@@ -315,7 +327,7 @@ enum ContentParser {
         }
 
         // Strip stray/orphan markers
-        if let orphan = try? NSRegularExpression(pattern: #"\[/?FOLLOWUPS\]"#, options: .caseInsensitive) {
+        if let orphan = regexCache.regex(#"\[/?FOLLOWUPS\]"#) {
             text = orphan.stringByReplacingMatches(in: text, range: NSRange(text.startIndex..., in: text), withTemplate: "")
         }
         return (text.trimmingCharacters(in: .whitespacesAndNewlines), followups)
@@ -366,7 +378,7 @@ enum ContentParser {
                 #"\[/?\#(name)\]"#,
             ]
             for pattern in patterns {
-                guard let regex = try? NSRegularExpression(pattern: pattern, options: .caseInsensitive) else { continue }
+                guard let regex = regexCache.regex(pattern) else { continue }
                 text = regex.stringByReplacingMatches(
                     in: text,
                     range: NSRange(text.startIndex..., in: text),
@@ -384,7 +396,7 @@ enum ContentParser {
     private static let imageSyntax = #"!\[([^\]]*)\]\((https?://(?:[^()\s]|\([^()\s]*\))+)\)"#
 
     static func extractImages(_ content: String) -> [ParsedImage] {
-        guard let regex = try? NSRegularExpression(pattern: imageSyntax, options: .caseInsensitive) else {
+        guard let regex = regexCache.regex(imageSyntax) else {
             return []
         }
         let range = NSRange(content.startIndex..., in: content)
@@ -405,7 +417,7 @@ enum ContentParser {
     // MARK: - Strip markdown images
 
     static func stripImages(_ content: String) -> String {
-        guard let regex = try? NSRegularExpression(pattern: imageSyntax, options: .caseInsensitive) else {
+        guard let regex = regexCache.regex(imageSyntax) else {
             return content
         }
         let range = NSRange(content.startIndex..., in: content)
@@ -434,7 +446,7 @@ enum ContentParser {
     /// between them are one run. Same rules as `extractImages` for which picture is drawn (https only, never another AI product's page);
     /// a picture that is not drawn is removed from the text without breaking it.
     static func replySegments(_ content: String) -> [ReplySegment] {
-        guard let regex = try? NSRegularExpression(pattern: imageSyntax, options: .caseInsensitive) else {
+        guard let regex = regexCache.regex(imageSyntax) else {
             let only = tidySegmentText(content)
             return only.isEmpty ? [] : [.text(only)]
         }
@@ -494,12 +506,28 @@ enum ContentParser {
            let name = comps.queryItems?.first(where: { $0.name == "name" })?.value, !name.isEmpty {
             return name
         }
-        if let regex = try? NSRegularExpression(pattern: #"\*\*([^*]{3,40})\*\*"#),
+        if let regex = regexCache.regex(#"\*\*([^*]{3,40})\*\*"#, []),
            let m = regex.firstMatch(in: text, range: NSRange(text.startIndex..., in: text)),
            let r = Range(m.range(at: 1), in: text) {
             return String(text[r])
         }
         return ""
+    }
+
+    // MARK: - Does the reply carry a place worth saving?
+
+    /// A bold name that reads like a venue: followed, in the same paragraph, by a rating, an address or hours (web `replyHasSavablePlace`).
+    private static let venueLine: NSRegularExpression? = regexCache.regex(
+        #"\*\*[^*\n]{3,60}\*\*[^\n]{0,80}(?:⭐|★|đánh giá|reviews?|\d+\s*(?:đường|street|quận|q\.|phường|district)|\bmở\b|\bopen\b|\d{1,2}[:h]\d{2})"#)
+
+    /// Web `replyHasSavablePlace`: a rendered place card, a maps / booking / internal-booking button, or — with no card — a bold name
+    /// that reads like a venue. A bold phrase alone is not a place ("**cần check kỹ**" in a shopping checklist offered «Lưu địa điểm»),
+    /// and neither is a button that only opens a shop or a link.
+    static func replyHasSavablePlace(text: String, buttons: [CTAButton], hasPlaceCards: Bool) -> Bool {
+        if hasPlaceCards { return true }
+        if buttons.contains(where: { $0.type == "maps" || $0.type == "booking" || $0.type == "internal_booking" }) { return true }
+        guard let venueLine else { return false }
+        return venueLine.firstMatch(in: text, range: NSRange(text.startIndex..., in: text)) != nil
     }
 
     // MARK: - Markdown → AttributedString

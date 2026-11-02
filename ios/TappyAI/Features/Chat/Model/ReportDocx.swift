@@ -37,7 +37,7 @@ private func docxTrim(_ s: String) -> String { s.trimmingCharacters(in: .whitesp
 
 /// Inline Markdown as runs: bold, italic, code, links (https only; any other link keeps its label). Pure.
 func inlineRuns(_ s: String) -> [DocxRun] {
-    guard let re = docxRegex(#"\*\*([^*]+)\*\*|\*([^*\n]+)\*|`([^`\n]+)`|\[([^\]\n]+)\]\(([^)\s]+)\)"#) else { return [DocxRun(s)] }
+    guard let re = docxRegex(#"\*\*([^*]+)\*\*|\*([^\s*](?:[^*\n]*[^\s*])?)\*|`([^`\n]+)`|\[([^\]\n]+)\]\(([^)\s]+)\)"#) else { return [DocxRun(s)] }
     let ns = s as NSString
     var out: [DocxRun] = []
     var at = 0
@@ -84,7 +84,9 @@ private func docxCells(_ line: String) -> [String] {
     var t = docxTrim(line)
     if t.hasPrefix("|") { t.removeFirst() }
     if t.hasSuffix("|") { t.removeLast() }
-    return t.components(separatedBy: "|").map { docxTrim($0) }
+    // `\|` is a pipe inside a cell, not a column break (GFM).
+    return t.replacingOccurrences(of: "\\|", with: "\u{E000}").components(separatedBy: "|")
+        .map { docxTrim($0).replacingOccurrences(of: "\u{E000}", with: "|") }
 }
 
 private func docxParseBlocks(_ markdown: String) -> [DocxBlock] {

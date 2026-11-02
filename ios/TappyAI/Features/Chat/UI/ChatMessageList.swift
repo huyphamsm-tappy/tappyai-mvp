@@ -407,7 +407,7 @@ private struct AssistantBubble: View {
                 }
 
                 // Save place button
-                if !isStreaming && !ctaButtons.isEmpty {
+                if !isStreaming, ContentParser.replyHasSavablePlace(text: content, buttons: ctaButtons, hasPlaceCards: !places.isEmpty) {
                     SavePlaceButton(
                         text: content,
                         buttons: ctaButtons,
