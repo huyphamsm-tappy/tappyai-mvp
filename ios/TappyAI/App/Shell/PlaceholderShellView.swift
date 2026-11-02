@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 
 /// The application shell — the real navigation architecture (ADR-002): a 5-tab `TabView` with a
 /// `NavigationStack` per tab, driven by `AppRouter`. Future feature roots attach here.
@@ -10,8 +11,8 @@ struct PlaceholderShellView: View {
     @AppEnvironmentState private var deps: AppDependencies
     @AppEnvironmentState private var session: SessionStore
     @AppEnvironmentState private var router: AppRouter
+    @AppEnvironmentState private var notificationCenter: NotificationCenterStore
 
-    @State private var showAuth = false
     @State private var showSignOut = false
     @State private var showDiagnostics = false
 
@@ -30,6 +31,8 @@ struct PlaceholderShellView: View {
                             switch dest {
                             case .reviewDetail(let id):
                                 ReviewDetailView(deps: deps, reviewId: id)
+                            case .clipViewer(let seedId, let start):
+                                ReviewsFeedView(deps: deps, seed: ClipSeed(posts: ClipSeedStore.posts(for: seedId), start: start))
                             case .userProfile(let id):
                                 UserProfileView(deps: deps, userId: id)
                             case .group(let id):
@@ -52,7 +55,7 @@ struct PlaceholderShellView: View {
                                 }
                             }
                             #if DEBUG
-                            if tab != .explore {
+                            if tab != .explore && !UITestLaunch.isAppStoreShot {
                                 ToolbarItem(placement: .navigationBarTrailing) {
                                     Button { showDiagnostics = true } label: { Image(systemName: "ladybug") }
                                         .accessibilityLabel(Text("Diagnostics"))
@@ -62,11 +65,35 @@ struct PlaceholderShellView: View {
                         }
                 }
                 .tabItem { Label(LocalizedStringKey(tab.titleKey), systemImage: tab.systemImage) }
+                // The inbox lives under Profile; 0 hides the badge. The count is the app-level store's (it keeps updating off that screen).
+                .badge(tab == .profile ? notificationCenter.unreadCount : 0)
                 .tag(tab)
             }
         }
-        .fullScreenCover(isPresented: $showAuth) {
-            AuthFlowView(repo: deps.authRepository, config: deps.configService) { showAuth = false }
+        .modifier(AIConsentSheet(consent: deps.aiConsent))
+        // Sends any AI-consent decision the server has not accepted yet (after sign-in, or after a failed send), and each
+        // new decision as it is made.
+        .task(id: session.state.isAuthenticated) {
+            await AIConsentSync.flush(api: deps.api, signedIn: session.state.isAuthenticated)
+        }
+        // The unread badge follows who is signed in: counts on sign-in and on launch, drops to 0 and lets go of the live channel on sign-out.
+        .task(id: session.state.isAuthenticated) {
+            await notificationCenter.sessionChanged()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: AIConsentStore.didChange)) { _ in
+            Task { await AIConsentSync.flush(api: deps.api, signedIn: session.state.isAuthenticated) }
+        }
+        .fullScreenCover(isPresented: $router.showLogin) {
+            AuthFlowView(repo: deps.authRepository, config: deps.configService) { router.loginFinished(signedIn: session.state.isAuthenticated) }
+        }
+        .alert(Text("auth.sessionExpired.title"), isPresented: Binding(
+            get: { session.notice == .sessionExpired },
+            set: { if !$0 { session.clearNotice() } }
+        )) {
+            Button { session.clearNotice(); router.requestLogin() } label: { Text("auth.signIn") }
+            Button(role: .cancel) { session.clearNotice() } label: { Text("common.close") }
+        } message: {
+            Text("auth.sessionExpired.message")
         }
         .confirmationDialog(NSLocalizedString("account.title", comment: ""), isPresented: $showSignOut, titleVisibility: .visible) {
             Button(NSLocalizedString("auth.signOut", comment: ""), role: .destructive) { Task { await deps.authRepository.signOut() } }
@@ -91,13 +118,15 @@ struct PlaceholderShellView: View {
                     case .currency:
                         CurrencyView(deps: deps)
                     case .translate:
-                        TranslateView(deps: deps)
+                        // Hidden by ProductFlags.showTranslate (owner decision 2026-10-25): nothing to show.
+                        if ProductFlags.showTranslate { TranslateView(deps: deps) } else { EmptyView() }
                     case .scan:
                         ScanView(deps: deps)
                     case .scamShield:
                         ScamShieldView(deps: deps)
                     case .vietContent:
-                        VietContentView(deps: deps)
+                        // Hidden by ProductFlags.showVietContent (owner decision 2026-10-25): nothing to show.
+                        if ProductFlags.showVietContent { VietContentView(deps: deps) } else { EmptyView() }
                     case .splitBill:
                         SplitBillView()
                     case .fortune:
@@ -108,6 +137,12 @@ struct PlaceholderShellView: View {
                         ServiceDetailView(service: service, deps: deps)
                     case .favorites:
                         FavoritesView(deps: deps)
+                    case .smartTools:
+                        SmartToolsView()
+                    case .groupDining:
+                        GroupDiningView(deps: deps)
+                    case .categoryChat(let category):
+                        ChatView(deps: deps, category: category)
                     }
                 }
         case .chat:
@@ -123,6 +158,8 @@ struct PlaceholderShellView: View {
             ProfileMainView(deps: deps)
                 .navigationDestination(for: ProfileDestination.self) { dest in
                     switch dest {
+                    case .accountMenu:
+                        AccountMenuView(deps: deps)
                     case .account:
                         AccountView(deps: deps)
                     case .editProfile:
@@ -159,8 +196,14 @@ struct PlaceholderShellView: View {
                         NotificationsInboxView(deps: deps)
                     case .userSearch:
                         UserSearchView(deps: deps)
+                    case .planner:
+                        PlannerView(deps: deps)
+                    case .social:
+                        SocialView(deps: deps)
                     case .groupDining:
                         GroupDiningView(deps: deps)
+                    case .blockedAccounts:
+                        BlockedAccountsView(deps: deps)
                     }
                 }
         default:
@@ -169,6 +212,6 @@ struct PlaceholderShellView: View {
     }
 
     private func accountTapped() {
-        if session.state.isAuthenticated { showSignOut = true } else { showAuth = true }
+        if session.state.isAuthenticated { showSignOut = true } else { router.requestLogin() }
     }
 }

@@ -155,7 +155,7 @@ struct BookingsView: View {
 
             // Notes
             if let notes = b.notes, !notes.isEmpty {
-                Text(""\(notes)"")
+                Text("“\(notes)”")
                     .font(.system(size: 11))
                     .foregroundStyle(TappyColor.textSecondary)
                     .italic()

@@ -5,16 +5,23 @@ struct ReviewsFeedView: View {
     @AppEnvironmentState private var router: AppRouter
 
     private let deps: AppDependencies
+    /// Set when this is a profile's clip viewer: that list, opened at one clip, instead of the network feed.
+    private let seed: ClipSeed?
+    @Environment(\.scenePhase) private var scenePhase
     @State private var videoPlayers: [String: FeedVideoPlayer] = [:]
     @State private var showCreateReview = false
     @State private var soundPageTrackId: String?
+    @ObservedObject private var safety: SafetyStore
+    @State private var safetyTarget: SafetyTarget?
 
-    init(deps: AppDependencies) {
+    init(deps: AppDependencies, seed: ClipSeed? = nil) {
         self.deps = deps
+        self.seed = seed
+        _safety = ObservedObject(wrappedValue: deps.safety)
         let service = ReviewsService(api: deps.api)
-        _vm = AppStateObject(wrappedValue: ReviewsFeedViewModel(
-            service: service, session: deps.session
-        ))
+        let model = ReviewsFeedViewModel(service: service, session: deps.session)
+        if let seed { model.seed(seed.posts, start: seed.start) }
+        _vm = AppStateObject(wrappedValue: model)
     }
 
     var body: some View {
@@ -32,13 +39,20 @@ struct ReviewsFeedView: View {
             } else if vm.reviews.isEmpty && !vm.isLoading {
                 emptyView
             } else if !vm.reviews.isEmpty {
-                feedContent
+                // The picture runs to the very top: the status bar is hidden here, so a safe-area inset would only
+                // leave a black band above the clip (seen at the top of the App Store picture).
+                feedContent.ignoresSafeArea(edges: .top)
             }
 
-            feedTabs
-            createButton
+            if seed == nil {
+                feedTabs
+                createButton
+            } else {
+                backButton
+            }
         }
         .statusBarHidden(true)
+        .toolbar(.hidden, for: .navigationBar)
         .sheet(item: commentBinding) { _ in
             ReviewCommentSheet(
                 comments: vm.comments,
@@ -48,9 +62,13 @@ struct ReviewsFeedView: View {
                 isAuthenticated: vm.isAuthenticated,
                 currentUserId: vm.currentUserId,
                 errorMessage: vm.commentError,
+                safety: safety,
                 text: $vm.commentText,
                 onPost: { vm.postComment() },
                 onDelete: { vm.deleteComment(commentId: $0) },
+                replyingTo: vm.replyingTo,
+                onReply: { vm.replyingTo = $0 },
+                onReact: { vm.react(to: $0, with: $1) },
                 onDismiss: { vm.closeComments() }
             )
             .presentationDetents([.medium, .large])
@@ -62,20 +80,35 @@ struct ReviewsFeedView: View {
                     baseURL: deps.env.apiBaseURL.absoluteString,
                     onDismiss: { vm.closeShare() }
                 )
-                .presentationDetents([.medium])
+                .presentationDetents([.large])
             }
         }
         .fullScreenCover(isPresented: $showCreateReview) {
             CreateReviewView(deps: deps)
         }
+        .sheet(item: $safetyTarget) { target in
+            SafetySheet(target: target, safety: safety) { safetyTarget = nil }
+                .presentationDetents([.large])
+        }
+        .onChange(of: safety.blockedIds) { vm.dropAuthors($0) }
+        .onChange(of: safety.reportedReviewIds) { vm.dropReviews($0) }
         .sheet(item: soundPageBinding) { wrapper in
             NavigationStack {
                 SoundPageView(trackId: wrapper.id, deps: deps)
             }
         }
-        .task {
-            await vm.loadFeed()
+        .alert(NSLocalizedString(vm.reportOutcome?.messageKey ?? "review.report.thanks", comment: ""),
+               isPresented: Binding(get: { vm.reportOutcome != nil }, set: { if !$0 { vm.reportOutcome = nil } })) {
+            Button(NSLocalizedString("common.ok", comment: "")) { vm.reportOutcome = nil }
         }
+        .task {
+            if seed == nil { await vm.loadFeed() }
+            vm.dropAuthors(safety.blockedIds)
+        }
+        // Explore (or the viewer) is leaving the screen — another tab, a pushed screen, a full-screen cover, the lock screen: no clip
+        // may go on playing. Coming back re-activates the clip that is on screen (its page's `onAppear`).
+        .onDisappear { FeedVideoPlayer.pauseAll() }
+        .onChange(of: scenePhase) { if $0 != .active { FeedVideoPlayer.pauseAll() } }
         .onChange(of: vm.reviews.map(\.id)) { newIDs in
             let active = Set(newIDs)
             for key in videoPlayers.keys where !active.contains(key) {
@@ -110,36 +143,45 @@ struct ReviewsFeedView: View {
         )
     }
 
+    private var backButton: some View {
+        VStack {
+            HStack {
+                Button { router.pop() } label: {
+                    Image(systemName: "chevron.left")
+                        .font(.system(size: 18, weight: .bold)).foregroundStyle(.white)
+                        .frame(width: 38, height: 38).background(.black.opacity(0.4)).clipShape(Circle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityIdentifier("review-back")
+                Spacer()
+            }
+            .padding(.top, Spacing.xxl - 4).padding(.leading, Spacing.md)
+            Spacer()
+        }
+    }
+
     // MARK: - Create button (matches Web TikTok-style "+" center nav button)
 
     private var createButton: some View {
+        // Top-right, level with the feed tabs: the old bottom-centre button sat on top of the post's caption.
         VStack {
-            Spacer()
             HStack {
                 Spacer()
                 Button { showCreateReview = true } label: {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 8)
-                            .fill(Color(red: 105/255, green: 201/255, blue: 208/255))
-                            .frame(width: 42, height: 28)
-                            .offset(x: -4)
-                        RoundedRectangle(cornerRadius: 8)
-                            .fill(Color(red: 254/255, green: 44/255, blue: 85/255))
-                            .frame(width: 42, height: 28)
-                            .offset(x: 4)
-                        RoundedRectangle(cornerRadius: 8)
-                            .fill(.white)
-                            .frame(width: 42, height: 28)
-                        Image(systemName: "plus")
-                            .font(.system(size: 18, weight: .bold))
-                            .foregroundStyle(.black)
-                    }
-                    .frame(width: 50, height: 32)
+                    Image(systemName: "plus")
+                        .font(.system(size: 18, weight: .bold))
+                        .foregroundStyle(.white)
+                        .frame(width: 38, height: 38)
+                        .background(TappyColor.primary)
+                        .clipShape(Circle())
                 }
                 .buttonStyle(.plain)
-                Spacer()
+                .accessibilityIdentifier("feed-create")
+                .accessibilityLabel(Text("feed.create.a11y"))
             }
-            .padding(.bottom, Spacing.lg)
+            .padding(.top, Spacing.xxl - 4)
+            .padding(.trailing, Spacing.md)
+            Spacer()
         }
     }
 
@@ -219,6 +261,12 @@ struct ReviewsFeedView: View {
                 },
                 onMusicTap: review.music?.trackId != nil ? {
                     soundPageTrackId = review.music?.trackId
+                } : nil,
+                onReport: { vm.reportReview(reviewId: review.id, reason: $0) },
+                onSafety: safety.flags.anyEnabled ? {
+                    safetyTarget = SafetyTarget(kind: .review, targetId: review.id, authorId: review.userId,
+                                                authorName: review.profiles?.fullName,
+                                                summary: review.placeName ?? review.body)
                 } : nil
             )
         }
@@ -313,4 +361,10 @@ struct ReviewsFeedView: View {
 
 struct StringIdentifiable: Identifiable {
     let id: String
+}
+
+/// A fixed list of posts and the one to open first (the profile's clip viewer).
+struct ClipSeed {
+    let posts: [Review]
+    let start: Int
 }

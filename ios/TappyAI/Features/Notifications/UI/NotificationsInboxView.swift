@@ -6,6 +6,7 @@ import SwiftUI
 struct NotificationsInboxView: View {
     let deps: AppDependencies
     @AppEnvironmentState private var router: AppRouter
+    @AppEnvironmentState private var notificationCenter: NotificationCenterStore
     @AppStateObject private var vm: NotificationsViewModel
 
     init(deps: AppDependencies) {
@@ -43,7 +44,10 @@ struct NotificationsInboxView: View {
         .toolbar {
             if vm.unreadCount > 0 {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(NSLocalizedString("notif.markAllRead", comment: "")) { vm.markAllRead() }
+                    Button(NSLocalizedString("notif.markAllRead", comment: "")) {
+                        vm.markAllRead()
+                        notificationCenter.markAllReadLocally()
+                    }
                         .font(.system(size: 13, weight: .medium))
                 }
             }
@@ -52,7 +56,11 @@ struct NotificationsInboxView: View {
             await vm.load()
             vm.startRealtimeIfPossible()
         }
-        .onDisappear { vm.stopRealtime() }
+        .onDisappear {
+            vm.stopRealtime()
+            // Reconcile the tab badge with the server after the visit (rows read one by one, or new ones that arrived).
+            Task { await notificationCenter.refresh() }
+        }
         .refreshable { await vm.load() }
     }
 

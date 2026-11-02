@@ -28,6 +28,7 @@ final class ReviewDetailViewModel: AppObservableObject {
     @AppPublished var commentText = ""
     @AppPublished var isPostingComment = false
     @AppPublished var commentError: String?
+    @AppPublished var replyingTo: ReviewComment?
     @AppPublished var showShare = false
 
     let reviewId: String
@@ -111,6 +112,33 @@ final class ReviewDetailViewModel: AppObservableObject {
         }
     }
 
+    // MARK: - Author and own-post actions (the same service calls the Explore feed makes, `ReviewsFeedViewModel`)
+
+    func toggleFollow(userId: String) {
+        Task {
+            do { _ = try await service.toggleFollow(userId: userId) } catch { log.error("follow failed: \(error)") }
+        }
+    }
+
+    /// Deletes the post; `onGone` runs once it is gone (the screen has nothing left to show).
+    func deleteReview(onGone: @escaping () -> Void) {
+        Task {
+            do {
+                try await service.deleteReview(reviewId: reviewId)
+                onGone()
+            } catch { log.error("delete review failed: \(error)") }
+        }
+    }
+
+    func hideReview(onGone: @escaping () -> Void) {
+        Task {
+            do {
+                try await service.hideReview(reviewId: reviewId, hidden: true)
+                onGone()
+            } catch { log.error("hide review failed: \(error)") }
+        }
+    }
+
     // MARK: - Comments
 
     func openComments() {
@@ -140,15 +168,17 @@ final class ReviewDetailViewModel: AppObservableObject {
 
     func postComment() {
         let body = commentText.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !body.isEmpty, body.count <= 300 else { return }
+        guard !body.isEmpty, body.count <= 300, !isPostingComment else { return }
         isPostingComment = true
         commentError = nil
         let savedText = commentText
+        let parent = replyingTo
         commentText = ""
 
         Task {
             do {
-                let response = try await service.postComment(reviewId: reviewId, body: body)
+                let response = try await service.postComment(reviewId: reviewId, body: body, parentId: parent.map(CommentActions.parentId(forReplyingTo:)))
+                replyingTo = nil
                 comments.append(response.comment)
                 commentCount = response.count
                 review?.commentCount = response.count
@@ -161,11 +191,25 @@ final class ReviewDetailViewModel: AppObservableObject {
         }
     }
 
+    /// Picks (or takes back) `reaction` on a comment: shown at once, undone if the server refuses.
+    func react(to comment: ReviewComment, with reaction: CommentReaction) {
+        guard let idx = comments.firstIndex(where: { $0.id == comment.id }) else { return }
+        let before = comments[idx]
+        comments[idx] = CommentActions.applying(reaction, to: before)
+        let result = CommentActions.resulting(reaction, on: before)
+        Task {
+            do { try await service.setCommentReaction(commentId: comment.id, reaction: result) } catch {
+                if let i = comments.firstIndex(where: { $0.id == comment.id }) { comments[i] = before }
+                log.error("comment reaction failed: \(error)")
+            }
+        }
+    }
+
     func deleteComment(commentId: String) {
         Task {
             do {
                 let response = try await service.deleteComment(reviewId: reviewId, commentId: commentId)
-                comments.removeAll { $0.id == commentId }
+                comments = CommentActions.removing(commentId, from: comments)
                 commentCount = response.count
                 review?.commentCount = response.count
             } catch {

@@ -162,6 +162,13 @@ struct NotificationsSettingsView: View {
             if subscribed {
                 await deps.notificationManager.unsubscribe()
                 subscribed = false
+            } else if permissionStatus == .denied {
+                // Already declined: iOS never shows the prompt again, so asking would look like the
+                // switch does nothing (Android `DIRECT_TO_SETTINGS`). Send them to the app's settings.
+                if let url = URL(string: UIApplication.openSettingsURLString) {
+                    await UIApplication.shared.open(url)
+                }
+                error = NSLocalizedString("notif.error.denied", comment: "")
             } else {
                 do {
                     let granted = try await deps.notificationManager.requestPermissionAndRegister()

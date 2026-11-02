@@ -8,22 +8,46 @@ struct ScanView: View {
     @State private var photoPickerItem: PhotosPickerItem?
 
     init(deps: AppDependencies) {
-        let service = UtilityToolsService(api: deps.api)
+        let service = UtilityToolsService(api: deps.api, consent: deps.aiConsent)
         _vm = AppStateObject(wrappedValue: ScanViewModel(service: service))
     }
 
     var body: some View {
         ScrollView {
             VStack(spacing: Spacing.md) {
-                imageSection
-                if vm.hasImage && !vm.hasResult && !vm.loading {
-                    scanButton
+                ToolHeroCard(eyebrow: NSLocalizedString("scan.heroEyebrow", comment: ""),
+                             title: [NSLocalizedString("scan.heroTitle1", comment: ""), NSLocalizedString("scan.heroTitle2", comment: "")],
+                             subtitle: NSLocalizedString("scan.heroBody", comment: ""),
+                             chips: [NSLocalizedString("scan.capCapture", comment: ""), NSLocalizedString("scan.capLangs", comment: "")],
+                             mascot: "TappySearching", identifier: "scan-hero")
+                if vm.hasImage {
+                    imageSection     // «Ảnh đã chọn» card with the picture and «Bỏ ảnh này»
+                } else {
+                    // Web: two big action cards, camera first, then the library
+                    ToolActionCard(symbol: "camera.fill", tint: Color(hex: 0x007AFF),
+                                   title: NSLocalizedString("scan.cameraTitle", comment: ""), detail: NSLocalizedString("scan.cameraDesc", comment: ""),
+                                   cta: NSLocalizedString("scan.cameraCta", comment: ""), identifier: "scan-camera") { showCamera = true }
+                    ToolActionCard(symbol: "photo.on.rectangle", tint: Color(hex: 0xFF9500),
+                                   title: NSLocalizedString("scan.galleryTitle", comment: ""), detail: NSLocalizedString("scan.galleryDesc", comment: ""),
+                                   cta: NSLocalizedString("scan.galleryCta", comment: ""), identifier: "scan-gallery") { showPhotoPicker = true }
                 }
-                if vm.loading {
-                    loadingSection
+                if vm.showsScanButton {
+                    scanButton
                 }
                 if vm.hasResult {
                     resultSection
+                }
+                // Web renders the formats card on every state of the page (`data-scan-formats`), the tips only before a result.
+                ToolInfoCard(title: NSLocalizedString("scan.formatsTitle", comment: ""),
+                             detail: NSLocalizedString("scan.formatsDesc", comment: ""),
+                             badges: ScanViewModel.supportedFormats, identifier: "scan-formats")
+                if !vm.hasImage && !vm.hasResult {
+                    ToolInfoCard(title: NSLocalizedString("scan.tipsTitle", comment: ""),
+                                 rows: [("sun.max", NSLocalizedString("scan.tipLightTitle", comment: ""), NSLocalizedString("scan.tipLightDesc", comment: "")),
+                                        ("viewfinder", NSLocalizedString("scan.tipAngleTitle", comment: ""), NSLocalizedString("scan.tipAngleDesc", comment: "")),
+                                        ("sparkle.magnifyingglass", NSLocalizedString("scan.tipSharpTitle", comment: ""), NSLocalizedString("scan.tipSharpDesc", comment: "")),
+                                        ("character.book.closed", NSLocalizedString("scan.tipLangTitle", comment: ""), NSLocalizedString("scan.tipLangDesc", comment: ""))],
+                                 note: String(format: NSLocalizedString("scan.tipLimit", comment: ""), 20), identifier: "scan-tips")
                 }
                 if let error = vm.error {
                     errorBanner(error)
@@ -60,8 +84,13 @@ struct ScanView: View {
             Task { await vm.scan() }
         } label: {
             HStack(spacing: Spacing.sm) {
-                Image(systemName: "doc.text.viewfinder")
-                Text(NSLocalizedString("scan.heading", comment: ""))
+                if vm.loading {
+                    ProgressView().tint(.white)
+                    Text(NSLocalizedString("scan.scanning", comment: ""))
+                } else {
+                    Image(systemName: "doc.text.viewfinder")
+                    Text(NSLocalizedString("scan.scanButton", comment: ""))
+                }
             }
             .font(.system(size: 15, weight: .semibold))
             .frame(maxWidth: .infinity)
@@ -71,6 +100,9 @@ struct ScanView: View {
             .clipShape(RoundedRectangle(cornerRadius: Radius.lg))
         }
         .buttonStyle(.plain)
+        .disabled(!vm.canScan)
+        .opacity(vm.canScan ? 1 : 0.5)
+        .accessibilityIdentifier("scan-submit")
     }
 
     // MARK: - Image section
@@ -78,6 +110,8 @@ struct ScanView: View {
     private var imageSection: some View {
         VStack(spacing: Spacing.md) {
             if let image = vm.selectedImage {
+                Text(NSLocalizedString("scan.previewLabel", comment: "")).font(TappyFont.caption.weight(.bold)).textCase(.uppercase)
+                    .foregroundStyle(TappyColor.textSecondary).frame(maxWidth: .infinity, alignment: .leading)
                 Image(uiImage: image)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
@@ -134,23 +168,6 @@ struct ScanView: View {
         .buttonStyle(.plain)
     }
 
-    // MARK: - Loading
-
-    private var loadingSection: some View {
-        HStack(spacing: Spacing.sm) {
-            ProgressView()
-                .tint(TappyColor.primary)
-                .scaleEffect(0.8)
-            Text(NSLocalizedString("scan.recognizing", comment: ""))
-                .font(TappyFont.callout)
-                .foregroundStyle(TappyColor.textSecondary)
-        }
-        .frame(maxWidth: .infinity)
-        .padding(Spacing.lg)
-        .background(TappyColor.cardBackground)
-        .clipShape(RoundedRectangle(cornerRadius: Radius.xl))
-    }
-
     // MARK: - Result
 
     private var resultSection: some View {
@@ -161,17 +178,18 @@ struct ScanView: View {
                     .foregroundStyle(TappyColor.textSecondary)
                 Spacer()
                 Button {
-                    UIPasteboard.general.string = vm.extractedText
+                    vm.copyResult()
                 } label: {
                     HStack(spacing: 4) {
-                        Image(systemName: "doc.on.doc")
+                        Image(systemName: vm.copied ? "checkmark" : "doc.on.doc")
                             .font(.system(size: 11))
-                        Text(NSLocalizedString("common.copy", comment: ""))
+                        Text(NSLocalizedString(vm.copied ? "scan.copied" : "scan.copy", comment: ""))
                             .font(.system(size: 12, weight: .medium))
                     }
                     .foregroundStyle(TappyColor.primary)
                 }
                 .buttonStyle(.plain)
+                .accessibilityIdentifier("scan-copy")
             }
 
             Text(vm.extractedText)

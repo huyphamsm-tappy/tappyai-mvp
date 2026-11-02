@@ -112,14 +112,17 @@ final class OwnCollectionsTests: XCTestCase {
         XCTAssertEqual(vm.state(of: .hidden), .loaded)
     }
 
-    /// `/mine` sends `{ reviews }` with no `page`/`limit`. Decoding it as `FeedResponse` — which
-    /// declares both required — threw on every load; `ReviewListResponse` is the fix.
+    /// `/mine` sends `{ reviews }` with no `page`/`limit`. It used to throw as `FeedResponse`
+    /// (both required); since the lenient-decoding pass (30/09) a missing page/limit no longer
+    /// fails any list — `/mine` still has its own `ReviewListResponse`, pinned at compile time.
     func testMineDecodesWithoutPageAndLimit() throws {
         let decoded = try ResponseDecoder.json.decode(ReviewListResponse.self, from: Self.minePayload)
         XCTAssertEqual(decoded.reviews.count, 2)
         XCTAssertEqual(decoded.reviews[1].isHidden, true)
-        XCTAssertThrowsError(try ResponseDecoder.json.decode(FeedResponse.self, from: Self.minePayload),
-                             "the feed shape must NOT be used for /mine")
+        let asFeed = try ResponseDecoder.json.decode(FeedResponse.self, from: Self.minePayload)
+        XCTAssertEqual(asFeed.reviews.count, 2, "a missing page/limit costs pagination, never the list")
+        let mine: (ReviewsService) -> () async throws -> ReviewListResponse = ReviewsService.fetchMyReviews
+        _ = mine
     }
 
     func testLikedSavedSharedUseTheirOwnGatedRoutes() async {
@@ -146,10 +149,16 @@ final class OwnCollectionsTests: XCTestCase {
         XCTAssertEqual(api.sentEndpoints.count, 3)
     }
 
-    func testCompactRowsCannotBeMistakenForFullReviews() {
-        XCTAssertThrowsError(try ResponseDecoder.json.decode(ReviewListResponse.self, from: Self.likedPayload),
-                             "the compact collection row has no counts and no author; it is a CollectionReview")
-        XCTAssertNoThrow(try ResponseDecoder.json.decode(CollectionReviewListResponse.self, from: Self.likedPayload))
+    /// The compact collection rows (no counts, no author) are `CollectionReview`. Before the
+    /// lenient-decoding pass a full `Review` refused them; now it would accept them with zero counts,
+    /// so the guard is the service's return types, pinned at compile time.
+    func testCompactRowsCannotBeMistakenForFullReviews() throws {
+        let rows = try ResponseDecoder.json.decode(CollectionReviewListResponse.self, from: Self.likedPayload)
+        XCTAssertEqual(rows.reviews.first?.likedAt, "2026-09-16T10:00:00Z")
+        let liked: (ReviewsService) -> () async throws -> CollectionReviewListResponse = ReviewsService.fetchLikedReviews
+        let saved: (ReviewsService) -> () async throws -> CollectionReviewListResponse = ReviewsService.fetchSavedReviews
+        let shared: (ReviewsService) -> () async throws -> CollectionReviewListResponse = ReviewsService.fetchSharedReviews
+        _ = (liked, saved, shared)
     }
 
     func testAFailedLoadIsAFailedState() async {

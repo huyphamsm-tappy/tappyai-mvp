@@ -20,19 +20,29 @@ struct AppLogger {
     /// Debug/verbose — only emitted in DEBUG builds.
     func debug(_ message: @autoclosure () -> String) {
         #if DEBUG
-        logger.debug("\(message(), privacy: .public)")
+        let text = message()  // os.Logger interpolation is an escaping autoclosure
+        logger.debug("\(text, privacy: .public)")
         #endif
     }
 
     func info(_ message: @autoclosure () -> String) {
         #if DEBUG
-        logger.info("\(message(), privacy: .public)")
+        let text = message()  // os.Logger interpolation is an escaping autoclosure
+        logger.info("\(text, privacy: .public)")
         #endif
+    }
+
+    /// Diagnostic outcomes (e.g. a store request result). Recorded in Release/TestFlight, not
+    /// DEBUG-gated. Only non-sensitive values (IDs, counts, durations) may be passed here.
+    func notice(_ message: @autoclosure () -> String) {
+        let text = message()  // os.Logger interpolation is an escaping autoclosure
+        logger.notice("\(text, privacy: .public)")
     }
 
     /// Errors are always recorded (Release included), but keep sensitive data private.
     func error(_ message: @autoclosure () -> String) {
-        logger.error("\(message(), privacy: .public)")
+        let text = message()  // os.Logger interpolation is an escaping autoclosure
+        logger.error("\(text, privacy: .public)")
     }
 
     /// Lightweight performance marker. Use around expensive foundation operations only.
@@ -60,4 +70,34 @@ extension AppLogger {
     static let chat = AppLogger(.chat)
     static let reviews = AppLogger(.reviews)
     static let music = AppLogger(.music)
+}
+
+extension Error {
+    /// Log-safe tag: an allowlisted type plus its code. Never `localizedDescription` or the
+    /// associated values of an error, which can carry URLs, server messages or user text.
+    var diagnosticTag: String {
+        switch self {
+        case let appError as AppError:
+            switch appError {
+            case .network(let status, _):
+                if let status { return "AppError.network(status=\(status))" }
+                return "AppError.network"
+            case .authentication: return "AppError.authentication"
+            case .streaming: return "AppError.streaming"
+            case .validation: return "AppError.validation"
+            case .cancellation: return "AppError.cancellation"
+            case .offline: return "AppError.offline"
+            case .unexpected: return "AppError.unexpected"
+            }
+        case is CancellationError:
+            return "CancellationError"
+        default:
+            let ns = self as NSError
+            // Only domains that carry diagnostic codes are named; anything else is reduced to its code.
+            if ns.domain == URLError.errorDomain || ns.domain == "SKErrorDomain" {
+                return "\(ns.domain)#\(ns.code)"
+            }
+            return "NSError#\(ns.code)"
+        }
+    }
 }

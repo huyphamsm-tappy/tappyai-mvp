@@ -101,3 +101,29 @@ export function applePlanForProduct(productId: string | null | undefined): PaidP
   if (base === 'com.tappyai.ios.pro.monthly') return 'momo'
   return planForStoreProduct(base)
 }
+
+/** The columns `keepsLongerExternalPlan` reads from the account's current `subscriptions` row. */
+export interface ExistingPlanRow {
+  status?: string | null
+  current_period_end?: string | null
+  source?: string | null
+  stripe_sub_id?: string | null
+}
+
+/**
+ * True when the account already holds an ACTIVE plan that did not come from the App Store and that lasts longer
+ * than the App Store period being recorded (`incomingEnd`; null = no usable App Store period). `subscriptions`
+ * has one row per account, so recording the App Store plan would replace that plan, or mark it expired.
+ * A row that is itself an App Store row (renewal, or a second device) is never kept: it is the normal update.
+ */
+export function keepsLongerExternalPlan(
+  existing: ExistingPlanRow | null | undefined,
+  incomingEnd: Date | null,
+  now: Date = new Date(),
+): boolean {
+  if (!existing || existing.status !== 'active' || !existing.current_period_end) return false
+  if (existing.source === 'apple_iap' || String(existing.stripe_sub_id ?? '').startsWith('apple_')) return false
+  const end = new Date(existing.current_period_end)
+  if (Number.isNaN(end.getTime()) || end <= now) return false
+  return incomingEnd === null || end > incomingEnd
+}

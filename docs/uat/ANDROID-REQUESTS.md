@@ -350,6 +350,10 @@ Huy quyết: cờ `ACCOUNT_SELF_DELETE_ENABLED` BẬT lúc release; bấm xoá t
 - Repo chỉ giữ RELEASE-PROGRESS.md (web) / tài liệu Android với đường dẫn `gs://…` hoặc
   `gs://tappyai-uat-evidence/evidence/<SHA>/…`.
 
+## Từ phiên iOS 02/10 — ghi nguồn OpenStreetMap
+
+Android cũng hiển thị thẻ địa điểm có dữ liệu OSM (nguồn dự phòng) mà không có dòng «© OpenStreetMap contributors». Đề nghị thêm trong Cài đặt một dòng «Dữ liệu địa điểm: © OpenStreetMap contributors (ODbL)» là liên kết tới https://www.openstreetmap.org/copyright (cùng chuỗi với iOS). `MapCanvas.kt` hiện là khung giả; nếu sau này gắn bản đồ thật thì ghi nguồn phải nằm ở góc bản đồ. Chi tiết: `docs/ios/SOURCES-AND-CONTENT-RIGHTS.md`.
+
 ## 4. Chặn người dùng — HỢP ĐỒNG CUỐI (01/10, nhánh sec/user-blocks-slice; chưa merge)
 - Hiện nút «Chặn» CHỈ khi `GET /api/config` → `p8.userBlocks === true` (thiếu khối `p8` = tắt). Không cần build lại: cờ do server bật.
 - `POST /api/users/{id}/block` → `200 {ok:true, blocked:true}`; `DELETE` cùng đường dẫn → `{ok:true, blocked:false}`. Idempotent. 401 chưa đăng nhập; 403 tài khoản ẩn danh; 400 id sai hoặc chính mình; 429 quá 30 lần/phút; 404 thân rỗng khi cờ tắt. Không phân biệt được «tài khoản kia không tồn tại».

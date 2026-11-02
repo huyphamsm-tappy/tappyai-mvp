@@ -241,9 +241,7 @@ struct PriceWatchesView: View {
     }
 
     private func fmtDateTime(_ iso: String) -> String {
-        let f = ISO8601DateFormatter()
-        f.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        guard let d = f.date(from: iso) ?? ISO8601DateFormatter().date(from: iso) else { return iso }
+        guard let d = ISO8601Timestamp.date(from: iso) else { return iso }
         let df = DateFormatter()
         df.locale = Locale(identifier: "vi_VN")
         df.dateStyle = .short

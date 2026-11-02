@@ -16,6 +16,8 @@ final class ReviewsFeedViewModel: AppObservableObject {
     @AppPublished var commentText = ""
     @AppPublished var isPostingComment = false
     @AppPublished var commentError: String?
+    /// The comment the next post replies to (Web: one level of thread), nil = a new top-level comment.
+    @AppPublished var replyingTo: ReviewComment?
     @AppPublished var shareReviewId: String?
     @AppPublished var menuReviewId: String?
 
@@ -32,6 +34,13 @@ final class ReviewsFeedViewModel: AppObservableObject {
     init(service: ReviewsService, session: SessionStore) {
         self.service = service
         self.session = session
+    }
+
+    /// A fixed list opened at one post (a profile's clips): no network feed, no further pages.
+    func seed(_ posts: [Review], start: Int) {
+        reviews = posts
+        hasMore = false
+        activeIndex = max(0, min(start, max(0, posts.count - 1)))
     }
 
     // MARK: - Feed loading
@@ -196,6 +205,7 @@ final class ReviewsFeedViewModel: AppObservableObject {
         commentCount = 0
         commentText = ""
         commentError = nil
+        replyingTo = nil
         Task { await loadComments(reviewId: reviewId) }
     }
 
@@ -220,15 +230,17 @@ final class ReviewsFeedViewModel: AppObservableObject {
     func postComment() {
         guard let reviewId = commentReviewId else { return }
         let body = commentText.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !body.isEmpty, body.count <= 300 else { return }
+        guard !body.isEmpty, body.count <= 300, !isPostingComment else { return }
         isPostingComment = true
         commentError = nil
         let savedText = commentText
+        let parent = replyingTo
         commentText = ""
 
         Task {
             do {
-                let response = try await service.postComment(reviewId: reviewId, body: body)
+                let response = try await service.postComment(reviewId: reviewId, body: body, parentId: parent.map(CommentActions.parentId(forReplyingTo:)))
+                replyingTo = nil
                 comments.append(response.comment)
                 commentCount = response.count
                 if let idx = reviews.firstIndex(where: { $0.id == reviewId }) {
@@ -243,12 +255,26 @@ final class ReviewsFeedViewModel: AppObservableObject {
         }
     }
 
+    /// Picks (or takes back) `reaction` on a comment: shown at once, undone if the server refuses.
+    func react(to comment: ReviewComment, with reaction: CommentReaction) {
+        guard let idx = comments.firstIndex(where: { $0.id == comment.id }) else { return }
+        let before = comments[idx]
+        comments[idx] = CommentActions.applying(reaction, to: before)
+        let result = CommentActions.resulting(reaction, on: before)
+        Task {
+            do { try await service.setCommentReaction(commentId: comment.id, reaction: result) } catch {
+                if let i = comments.firstIndex(where: { $0.id == comment.id }) { comments[i] = before }
+                log.error("comment reaction failed: \(error)")
+            }
+        }
+    }
+
     func deleteComment(commentId: String) {
         guard let reviewId = commentReviewId else { return }
         Task {
             do {
                 let response = try await service.deleteComment(reviewId: reviewId, commentId: commentId)
-                comments.removeAll { $0.id == commentId }
+                comments = CommentActions.removing(commentId, from: comments)
                 commentCount = response.count
                 if let idx = reviews.firstIndex(where: { $0.id == reviewId }) {
                     reviews[idx].commentCount = response.count
@@ -304,6 +330,38 @@ final class ReviewsFeedViewModel: AppObservableObject {
             } catch {
                 log.error("hide review failed: \(error)")
             }
+        }
+    }
+
+    /// Drops posts by people the viewer has blocked (App Store 1.2). The server already hides them from
+    /// the next fetch; this makes the feed on screen agree straight away.
+    func dropAuthors(_ blocked: Set<String>) {
+        guard !blocked.isEmpty, reviews.contains(where: { blocked.contains($0.userId ?? "") }) else { return }
+        reviews.removeAll { blocked.contains($0.userId ?? "") }
+        if activeIndex >= reviews.count { activeIndex = max(0, reviews.count - 1) }
+    }
+
+    /// A post the person just reported leaves their feed straight away.
+    func dropReviews(_ ids: Set<String>) {
+        guard !ids.isEmpty, reviews.contains(where: { ids.contains($0.id) }) else { return }
+        reviews.removeAll { ids.contains($0.id) }
+        if activeIndex >= reviews.count { activeIndex = max(0, reviews.count - 1) }
+    }
+
+    // MARK: - Report (someone else's post)
+
+    /// Set when a report finishes; the feed shows it as an alert, then clears it.
+    @AppPublished var reportOutcome: ReviewReportOutcome?
+
+    func reportReview(reviewId: String, reason: ReviewReportReason) {
+        Task {
+            let result: Result<ReviewReportResponse, Error>
+            do { result = .success(try await service.reportReview(reviewId: reviewId, reason: reason)) }
+            catch {
+                result = .failure(error)
+                log.error("report review failed: \(error)")
+            }
+            reportOutcome = ReviewReportOutcome.from(result)
         }
     }
 

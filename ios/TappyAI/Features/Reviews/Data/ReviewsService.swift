@@ -175,8 +175,10 @@ struct ReviewsService: Sendable {
         return try await api.send(endpoint, as: CommentsResponse.self)
     }
 
-    func postComment(reviewId: String, body: String) async throws -> PostCommentResponse {
-        let payload = try JSONSerialization.data(withJSONObject: ["body": body])
+    func postComment(reviewId: String, body: String, parentId: String? = nil) async throws -> PostCommentResponse {
+        var fields: [String: String] = ["body": body]
+        if let parentId, !parentId.isEmpty { fields["parentId"] = parentId }   // Web: a reply carries `parentId`
+        let payload = try JSONSerialization.data(withJSONObject: fields)
         let endpoint = Endpoint(
             path: "/api/reviews/\(reviewId)/comments",
             method: .post,
@@ -184,6 +186,18 @@ struct ReviewsService: Sendable {
             requiresAuth: true
         )
         return try await api.send(endpoint, as: PostCommentResponse.self)
+    }
+
+    /// `POST /api/comments/{id}/reactions {reaction}` sets or changes the caller's one reaction; `DELETE` removes it.
+    func setCommentReaction(commentId: String, reaction: CommentReaction?) async throws {
+        let endpoint: Endpoint
+        if let reaction {
+            let payload = try JSONSerialization.data(withJSONObject: ["reaction": reaction.rawValue])
+            endpoint = Endpoint(path: "/api/comments/\(commentId)/reactions", method: .post, body: payload, requiresAuth: true)
+        } else {
+            endpoint = Endpoint(path: "/api/comments/\(commentId)/reactions", method: .delete, requiresAuth: true)
+        }
+        _ = try await api.send(endpoint)
     }
 
     func deleteComment(reviewId: String, commentId: String) async throws -> DeleteCommentResponse {
@@ -205,6 +219,37 @@ struct ReviewsService: Sendable {
             requiresAuth: true
         )
         return try await api.send(endpoint, as: FollowResponse.self)
+    }
+
+    // MARK: - Share history
+
+    /// `POST /api/reviews/{id}/share {"channel": …}` — records ONE completed share (the "Đã chia sẻ"
+    /// history). Called only after the share really happened, never when the sheet merely opens.
+    /// The channel must match `^[a-z0-9][a-z0-9._:-]{0,63}$`: "copy", "native", "ios:<activity type>".
+    /// Best effort: the share already succeeded, so a failure here is not surfaced.
+    func recordShare(reviewId: String, channel: String) async {
+        let safe = String(channel.lowercased().unicodeScalars.map { c -> Character in
+            let ok = (c.value >= 97 && c.value <= 122) || (c.value >= 48 && c.value <= 57) || ".:_-".unicodeScalars.contains(c)
+            return ok ? Character(c) : "-"
+        }.prefix(64))
+        guard let first = safe.first, first.isLetter || first.isNumber,
+              let body = try? JSONSerialization.data(withJSONObject: ["channel": safe]) else { return }
+        let endpoint = Endpoint(path: "/api/reviews/\(reviewId)/share", method: .post, body: body, requiresAuth: true)
+        _ = try? await api.send(endpoint)
+    }
+
+    // MARK: - Report review
+
+    /// `POST /api/reviews/{id}/report {"reason": …}` — account session required.
+    func reportReview(reviewId: String, reason: ReviewReportReason) async throws -> ReviewReportResponse {
+        let body = try JSONSerialization.data(withJSONObject: ["reason": reason.rawValue])
+        let endpoint = Endpoint(
+            path: "/api/reviews/\(reviewId)/report",
+            method: .post,
+            body: body,
+            requiresAuth: true
+        )
+        return try await api.send(endpoint, as: ReviewReportResponse.self)
     }
 
     // MARK: - Delete review

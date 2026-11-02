@@ -119,7 +119,10 @@ describe('GET /api/subscription — Common Entitlement & Cross-Platform Contract
       isPro: true,
       plan: 'momo',
       status: 'active',
-      source: 'web_sepay',
+      // `source` is the store contract of the iOS app (App Review 3.1.3(b): 'apple' | 'external' | null, see source.test.ts); the raw
+      // grant is `entitlementSource`.
+      source: 'external',
+      entitlementSource: 'web_sepay',
       currentPeriodEnd: future,
       freeDailyLimit: 30,
       quotaPeriod: 'day',

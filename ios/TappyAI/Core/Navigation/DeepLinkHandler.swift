@@ -33,6 +33,10 @@ struct DeepLinkHandler {
     func target(for urlOrPath: String) -> DeepLinkTarget? {
         let path: String
         if let url = URL(string: urlOrPath), url.scheme != nil {
+            // MOB-1: a sign-in callback opened from outside (Safari, another app, a message) is
+            // never a destination and never imports a session. Only the web-auth session the app
+            // itself started receives callbacks, and it checks their state.
+            if AuthCallbackURL.isAuthCallback(url) { return nil }
             // For custom-scheme URLs (tappyai://chat), Foundation parses the segment after "://"
             // as the host, not the path. Universal links (https://…/chat) set url.path correctly.
             if url.path.isEmpty {

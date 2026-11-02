@@ -25,6 +25,23 @@ struct ProfileService {
         _ = try await api.send(endpoint)
     }
 
+    /// Stores the signed-in user's date of birth (`PATCH /api/profile {"dateOfBirth":"YYYY-MM-DD"}`,
+    /// `src/app/api/profile/route.ts`). The route is deliberately outside the age gate, so an
+    /// account refused by `/api/chat` can still reach it. 400 → `.validation(serverMessage)`;
+    /// 409 `age_correction_exhausted` once the one self-correction is used.
+    func updateDateOfBirth(_ iso: String) async throws -> DateOfBirthUpdateResponse {
+        let body = try JSONSerialization.data(withJSONObject: ["dateOfBirth": iso])
+        let endpoint = Endpoint(path: "/api/profile", method: .patch, body: body, requiresAuth: true)
+        return try await api.send(endpoint, as: DateOfBirthUpdateResponse.self)
+    }
+
+    /// The account's age status (`GET /api/profile` → `ageStatus`, `canCorrectAge`); the raw date of
+    /// birth is never returned.
+    func fetchAgeStatus() async throws -> DateOfBirthUpdateResponse {
+        let endpoint = Endpoint(path: "/api/profile", requiresAuth: true)
+        return try await api.send(endpoint, as: DateOfBirthUpdateResponse.self)
+    }
+
     func uploadAvatar(_ data: Data, boundary: String) async throws -> String? {
         let endpoint = Endpoint(
             path: "/api/profile",
@@ -35,6 +52,27 @@ struct ProfileService {
         )
         let resp = try await api.send(endpoint, as: AvatarUploadResponse.self)
         return resp.avatarUrl
+    }
+
+    /// `POST /api/profile` with a `cover` multipart part (≤5 MB, bytes sniffed server-side) → the new
+    /// public `cover_url`. The web's "Thay ảnh bìa".
+    func uploadCover(_ data: Data, boundary: String) async throws -> String? {
+        let endpoint = Endpoint(
+            path: "/api/profile",
+            method: .post,
+            body: data,
+            requiresAuth: true,
+            contentType: "multipart/form-data; boundary=\(boundary)"
+        )
+        let resp = try await api.send(endpoint, as: CoverUploadResponse.self)
+        return resp.coverUrl
+    }
+
+    /// `PATCH /api/profile {"cover_url": null}` — the web's "Gỡ ảnh bìa" (a cover can only be cleared by PATCH).
+    func clearCover() async throws {
+        let body = "{\"cover_url\":null}".data(using: .utf8)
+        let endpoint = Endpoint(path: "/api/profile", method: .patch, body: body, requiresAuth: true)
+        _ = try await api.send(endpoint)
     }
 
     // MARK: - Memory
@@ -59,7 +97,7 @@ struct ProfileService {
 
     func fetchConversations() async throws -> [ChatHistoryItem] {
         let endpoint = Endpoint(path: "/api/conversations", requiresAuth: true)
-        return try await api.send(endpoint, as: [ChatHistoryItem].self)
+        return try await api.send(endpoint, as: LossyList<ChatHistoryItem>.self).items
     }
 
     func deleteConversation(_ id: String) async throws {
@@ -130,6 +168,13 @@ struct ProfileService {
     func fetchIntegrations() async throws -> IntegrationsResponse {
         let endpoint = Endpoint(path: "/api/integrations", requiresAuth: true)
         return try await api.send(endpoint, as: IntegrationsResponse.self)
+    }
+}
+
+private struct CoverUploadResponse: Codable {
+    var coverUrl: String?
+    enum CodingKeys: String, CodingKey {
+        case coverUrl = "cover_url"
     }
 }
 

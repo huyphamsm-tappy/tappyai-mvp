@@ -9,8 +9,8 @@ struct SplitBillView: View {
     @State private var customTip = ""
     @State private var mode: SplitMode = .equal
     @State private var persons: [SplitPerson] = [
-        SplitPerson(id: 1, name: NSLocalizedString("splitbill.person1", comment: ""), amount: ""),
-        SplitPerson(id: 2, name: NSLocalizedString("splitbill.person2", comment: ""), amount: ""),
+        SplitPerson(id: 1, name: SplitBillRows.defaultName(1), amount: ""),
+        SplitPerson(id: 2, name: SplitBillRows.defaultName(2), amount: ""),
     ]
 
     private var activeTip: Double {
@@ -33,6 +33,12 @@ struct SplitBillView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: Spacing.md) {
+                ToolHeroCard(eyebrow: NSLocalizedString("splitBill.heroEyebrow", comment: ""), title: [NSLocalizedString("splitBill.title", comment: "")],
+                             subtitle: NSLocalizedString("splitBill.heroSubtitle", comment: ""),
+                             chips: [String(format: NSLocalizedString("splitBill.chipPeople", comment: ""), 2, 20),
+                                     NSLocalizedString("splitBill.chipTip", comment: ""),
+                                     NSLocalizedString("splitBill.chipModes", comment: "")],
+                             mascot: "TappyWelcome", identifier: "splitbill-hero")
                 totalAndPeople
                 tipSection
                 modeToggle
@@ -120,7 +126,7 @@ struct SplitBillView: View {
 
     private var tipSection: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
-            Text("Tip")
+            Text(NSLocalizedString("splitBill.tipLabel", comment: ""))
                 .font(TappyFont.caption)
                 .foregroundStyle(TappyColor.textSecondary)
 
@@ -173,7 +179,7 @@ struct SplitBillView: View {
     private var modeToggle: some View {
         HStack(spacing: Spacing.xxs) {
             modeButton(NSLocalizedString("splitbill.mode.equal", comment: ""), isActive: mode == .equal) { mode = .equal }
-            modeButton(NSLocalizedString("splitbill.mode.custom", comment: ""), isActive: mode == .custom) { mode = .custom }
+            modeButton(NSLocalizedString("splitbill.mode.custom", comment: ""), isActive: mode == .custom) { enterCustomMode() }
         }
         .padding(4)
         .background(TappyColor.surface)
@@ -207,7 +213,7 @@ struct SplitBillView: View {
                     .foregroundStyle(.white)
 
                 if activeTip > 0 {
-                    Text("Đã gồm tip \(Int(activeTip))% — Tổng: \(fmtVND(grandTotal)) đ")
+                    Text(SplitBillRows.includesTipLine(tip: activeTip, total: fmtVND(grandTotal)))
                         .font(TappyFont.caption)
                         .foregroundStyle(.white.opacity(0.6))
                 }
@@ -216,7 +222,7 @@ struct SplitBillView: View {
 
                 HStack(spacing: 0) {
                     statCol(NSLocalizedString("splitbill.stat.bill", comment: ""), fmtVND(totalNum))
-                    statCol("Tip", fmtVND(totalNum * activeTip / 100))
+                    statCol(NSLocalizedString("splitBill.tipShortLabel", comment: ""), fmtVND(totalNum * activeTip / 100))
                     statCol(NSLocalizedString("splitbill.stat.grandTotal", comment: ""), fmtVND(grandTotal))
                 }
             } else {
@@ -354,18 +360,17 @@ struct SplitBillView: View {
     private func syncPeopleCount(_ n: Int) {
         people = n
         if mode == .equal { return }
-        if n > persons.count {
-            for i in persons.count..<n {
-                persons.append(SplitPerson(id: i + 1, name: "Người \(i + 1)", amount: ""))
-            }
-        } else if n < persons.count {
-            persons = Array(persons.prefix(n))
-        }
+        persons = SplitBillRows.fit(persons, to: n)
+    }
+
+    /// Web `enterCustomMode`: fit the list to the current people count first (2 -> 5 in equal mode, then by item, shows five rows).
+    private func enterCustomMode() {
+        persons = SplitBillRows.fit(persons, to: people)
+        mode = .custom
     }
 
     private func addPerson() {
-        let next = (persons.map(\.id).max() ?? 0) + 1
-        persons.append(SplitPerson(id: next, name: "Người \(persons.count + 1)", amount: ""))
+        persons = SplitBillRows.adding(to: persons)
     }
 
     private func removePerson(_ id: Int) {
@@ -404,10 +409,4 @@ struct SplitBillView: View {
 
 private enum SplitMode {
     case equal, custom
-}
-
-private struct SplitPerson: Identifiable {
-    let id: Int
-    var name: String
-    var amount: String
 }

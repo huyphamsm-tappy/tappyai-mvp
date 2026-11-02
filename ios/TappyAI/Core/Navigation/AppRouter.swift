@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 /// Sheets/full-screen covers presented app-wide. Feature cases are added later; a placeholder keeps
 /// the type usable in Phase 0.
@@ -16,6 +17,22 @@ final class AppRouter: AppObservableObject {
         uniqueKeysWithValues: AppTab.allCases.map { ($0, NavigationPath()) }
     )
     @AppPublished var presentedSheet: AppSheet?
+    /// A message another screen wants the Chat tab to send (e.g. "Hỏi Tappy về chỗ này" on a
+    /// recommendation). The chat view consumes it and clears it.
+    @AppPublished var chatSeed: String?
+
+    /// The ONE login screen. Every «sign in» entry (chat card, Profile, account icon, locked rows) calls
+    /// `requestLogin()`; the shell presents it over whatever is on screen, so the person never changes tab.
+    @AppPublished var showLogin = false
+    /// Bumped when a sign-in succeeded while the login screen was up; the screen underneath resumes
+    /// what it was doing (chat resends the held message).
+    @AppPublished var loginCompleted = 0
+
+    func requestLogin() { showLogin = true }
+    func loginFinished(signedIn: Bool) {
+        showLogin = false
+        if signedIn { loginCompleted += 1 }
+    }
 
     private let log = AppLogger.navigation
 
@@ -72,7 +89,9 @@ final class AppRouter: AppObservableObject {
             open(ProfileDestination.groupDining, on: .profile)
 
         case .copyrightPolicy:
-            open(ReviewsDestination.copyrightPolicy, on: .profile)
+            // Music is hidden everywhere (copyright), so the native music-policy screen is no longer a
+            // destination: the general policy is the web page, the same one Settings opens.
+            if let url = URL(string: TappyShare.canonicalOrigin + "/copyright") { UIApplication.shared.open(url) }
         }
     }
 

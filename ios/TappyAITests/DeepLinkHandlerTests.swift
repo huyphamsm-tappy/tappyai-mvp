@@ -69,6 +69,24 @@ final class DeepLinkHandlerTests: XCTestCase {
         )
     }
 
+    func testWwwUniversalLinksResolve() {
+        // Associated domains list www.tappyai.com only (the apex 308s to www and never verifies),
+        // so every universal link the app receives is on www — they must all resolve.
+        XCTAssertEqual(handler.target(for: "https://www.tappyai.com/users/u-1"), .userProfile(id: "u-1"))
+        XCTAssertEqual(handler.target(for: "https://www.tappyai.com/reviews/r-9"), .review(id: "r-9"))
+        XCTAssertEqual(handler.target(for: "https://www.tappyai.com/chat"), .tab(.chat))
+    }
+
+    func testEntitlementsListOnlyTheWwwAppLinksDomain() throws {
+        // The entitlements file is not in the test bundle; read it from the source tree.
+        let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
+        let data = try Data(contentsOf: root.appendingPathComponent("TappyAI/TappyAI.entitlements"))
+        let plist = try XCTUnwrap(PropertyListSerialization.propertyList(from: data, format: nil) as? [String: Any])
+        let domains = try XCTUnwrap(plist["com.apple.developer.associated-domains"] as? [String])
+        XCTAssertEqual(domains.filter { $0.hasPrefix("applinks:") }, ["applinks:www.tappyai.com"])
+        XCTAssertTrue(domains.contains("webcredentials:www.tappyai.com"))
+    }
+
     func testUnknownPathReturnsNil() {
         XCTAssertNil(handler.target(for: "/unknown-section"))
     }
