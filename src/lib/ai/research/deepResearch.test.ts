@@ -1,7 +1,7 @@
 // 31/10 Deep Research orchestration (deepResearch.ts) with fake dependencies: plan, parallel steps, findings tied to handed-in sources,
 // the deadline, the writer's links removed, the sources list built by code, and the failure paths.
 import { describe, it, expect, vi, afterEach } from 'vitest'
-import { numberInText, checkedFigure, sectionCharts, readResearchCharts, chartsFrame, type Finding, type ResearchChart } from './deepResearch'
+import { numberInText, checkedFigure, sectionCharts, readResearchCharts, chartsFrame, isLowValueSource, numbersOf, stepForGap, withPartSteps, PART_STEPS, unsupportedNumbers, type Finding, type ResearchChart } from './deepResearch'
 import { runDeepResearch, headingNumberer, sectionImages, sectionSteps, writerNotes, MAX_SECTION_IMAGES, GAP_STEPS, canonicalSourceUrl, normalisePlan, linkStripper, sourcesBlock, readResearchStatus, DEEP_RESEARCH_LIMITS, type DeepResearchDeps, type ResearchStatus } from './deepResearch'
 
 const PLAN = { title: 'Thị trường xe điện', steps: [{ title: 'Doanh số', queries: ['doanh so xe dien 2026'] }, { title: 'Giá', queries: ['gia xe dien', 'bang gia xe dien'] }] }
@@ -45,6 +45,52 @@ describe('runDeepResearch', () => {
     expect(c.statuses.slice(0, -1).every(s => !s.links)).toBe(true)
     expect(c.statuses.some(s => s.phase === 'writing')).toBe(true)
   })
+  it('02/11: a finding whose figures are all in a finding already kept from the same step is the same fact again (several sites restating one release)', async () => {
+    const d = deps({
+      notes: async (_s, _q, ev) => [
+        { text: 'Q2/2026 bookings đạt 2.359 tỷ đồng, tăng 22%', source: ev[0].id },
+        { text: 'bookings quý II/2026: 2.359 tỷ đồng, +22%', source: ev[1].id },
+        { text: 'Người dùng hoạt động 61,3 triệu', source: ev[1].id },
+        { text: 'Không có số', source: ev[0].id },
+        { text: 'Cũng không có số', source: ev[0].id },
+      ],
+    })
+    const out = await runDeepResearch('q', '', 'vi', d, collect().emit)
+    const step1 = out.findings.filter(f => f.step === 1).map(f => f.text)
+    expect(step1).toEqual(['Q2/2026 bookings đạt 2.359 tỷ đồng, tăng 22%', 'Người dùng hoạt động 61,3 triệu', 'Không có số', 'Cũng không có số'])
+    expect(numbersOf('tăng 22% lên 2.359 tỷ, 61,3 triệu, 5')).toEqual(new Set(['22', '2.359', '61,3']))
+  })
+  it('02/11: stepForGap joins a follow-up to the one plan step it shares the most words with, else none', () => {
+    const steps = [{ title: 'Quy mô và tăng trưởng thị trường' }, { title: 'Food Delivery' }, { title: 'Đối thủ và mô hình kiếm tiền' }]
+    expect(stepForGap('Bổ sung quy mô thị trường từng năm', steps)).toBe(1)
+    expect(stepForGap('Hoàn thiện đối thủ chính', steps)).toBe(3)
+    expect(stepForGap('Chiến lược', steps)).toBeUndefined()
+    expect(stepForGap('quy mô đối thủ', [{ title: 'Quy mô' }, { title: 'Đối thủ' }])).toBeUndefined() // a tie is no match
+  })
+  it('02/11: a part of the question no step covers gets a step of its own, titled with the person\'s words; covered parts add nothing', () => {
+    const plan = { title: 'Thị trường số', parts: ['Phân tích mô hình kiếm tiền', 'Những khoảng trống thị trường'], uncovered: ['Những khoảng trống thị trường'], steps: [{ title: 'Đối thủ và mô hình kiếm tiền', queries: ['q'] }, { title: 'Quy mô', queries: ['q'] }] }
+    const out = withPartSteps(plan)
+    expect(out.steps.map(s => s.title)).toEqual(['Đối thủ và mô hình kiếm tiền', 'Quy mô', 'Những khoảng trống thị trường'])
+    expect(out.steps[2].queries).toEqual(['Những khoảng trống thị trường - Thị trường số'])
+    expect(withPartSteps({ title: 't', steps: [{ title: 'x', queries: ['q'] }] }).steps).toHaveLength(1) // nothing uncovered: nothing added
+    const many = withPartSteps({ title: 't', uncovered: ['một', 'hai', 'ba', 'bốn', 'năm'], steps: [{ title: 'zzz', queries: ['q'] }] })
+    expect(many.steps).toHaveLength(1 + PART_STEPS)
+    const norm = normalisePlan({ title: 't', parts: [' A ', '', 'B'], uncovered: [' B ', ''], steps: [{ title: 's', queries: ['q'] }] }, 'q')
+    expect(norm?.parts).toEqual(['A', 'B'])
+    expect(norm?.uncovered).toEqual(['B'])
+  })
+  it('02/11: unsupportedNumbers finds the report\'s numbers that no finding states (citations, years and small numbers are not counted)', () => {
+    const findings = [{ text: 'GMV đạt 39 tỷ USD, tăng 17% năm 2025; ShopeeFood 48%.' }, { text: 'Doanh thu 2.359 tỷ đồng, 61,3 triệu người dùng.' }]
+    const report = 'Năm 2025 GMV 39 tỷ USD [1], tăng 17%, doanh thu 2.359 tỷ [2], 61,3 triệu người. Dự kiến 120 tỷ và 7,5% [3]. Có 3 nhóm.'
+    expect(unsupportedNumbers(report, findings)).toEqual(['120', '7,5%'])
+  })
+  it('02/11: the gap check is told how much each plan step brought', async () => {
+    let seen: ReadonlyArray<{ title: string; findings: number; figures: number }> | undefined
+    const d = deps({ gaps: async (_q, _p, _f, coverage) => { seen = coverage; return [] } })
+    await runDeepResearch('q', '', 'vi', d, collect().emit)
+    expect(seen?.map(x => x.title)).toEqual(['Doanh số', 'Giá'])
+    expect(seen?.every(x => x.findings > 0 && x.figures === 0)).toBe(true)
+  })
   it('a source no finding cites is in neither the sources list nor the card', async () => {
     const d = deps({ notes: async (_s, _q, ev) => ev.filter(e => e.url.startsWith('https://a.')).map(e => ({ text: 'chỉ a', source: e.id })) })
     const c = collect()
@@ -87,7 +133,7 @@ describe('runDeepResearch', () => {
     expect(order.indexOf('start gia xe dien')).toBeLessThan(order.indexOf('end doanh so xe dien 2026'))
   })
   it('a finding naming a source the step was not given is dropped; findings per step are capped', async () => {
-    const many = Array.from({ length: 30 }, (_, i) => ({ text: `f${i}`, source: 1 }))
+    const many = Array.from({ length: DEEP_RESEARCH_LIMITS.findingsPerStep + 6 }, (_, i) => ({ text: `f${i}`, source: 1 }))
     const d = deps({ notes: async (step) => (step === 'Doanh số' ? [{ text: 'bịa', source: 42 }, ...many] : []) })
     const out = await runDeepResearch('q', '', 'vi', d, collect().emit)
     expect(out.findings.some(f => f.source === 42)).toBe(false)
@@ -185,6 +231,18 @@ describe('section charts (owner 31/10: "mấu chốt cuối cùng của report l
       { section: 'Xu hướng', title: 'Doanh số toàn cầu', unit: 'triệu xe', kind: 'line', points: [{ label: '2023', value: 14, source: 1 }, { label: '2024', value: 17, source: 1 }, { label: '2025', value: 21.5, source: 1 }] },
     ])
   })
+  it('02/11: no chart when the labels mix whole years with months or "end of year" (not one axis); whole years alone still chart', () => {
+    const mixed = [fig(1, 'S', 'Cuối năm 2021', 91.3), fig(1, 'S', 'Tháng 3/2022', 93.5), fig(1, 'S', '2023', 100.1), fig(1, 'S', '2024', 100.7)]
+    expect(sectionCharts(report, plan, mixed)).toEqual([])
+    const years = [fig(1, 'S', '2021', 91.3), fig(1, 'S', '2022', 93.5), fig(1, 'S', '2023', 100.1)]
+    expect(sectionCharts(report, plan, years).map(c => c.kind)).toEqual(['line'])
+  })
+  it('02/11: posts, profiles and shared homework are not evidence; news and ministries are', () => {
+    for (const u of ['https://www.facebook.com/x/posts/1', 'https://m.facebook.com/a', 'https://vt.tiktok.com/z', 'https://www.studocu.vn/vn/document/x', 'https://x.com/a/status/1', 'https://www.pinterest.com/pin/1'])
+      expect(isLowValueSource(u), u).toBe(true)
+    for (const u of ['https://vnexpress.net/a', 'https://mst.gov.vn/x', 'https://metric.vn/bao-cao', 'https://example.com/x.html', 'https://max.com/a', 'not a url'])
+      expect(isLowValueSource(u), u).toBe(false)
+  })
   it('no chart: fewer than 3 labels, different units, a heading not in the report', () => {
     expect(sectionCharts(report, plan, [fig(1, 'S', 'a', 1), fig(1, 'S', 'b', 2)])).toEqual([])
     expect(sectionCharts(report, plan, [fig(1, 'S', 'a', 1), fig(1, 'S', 'b', 2, 1, '%'), fig(1, 'S', 'c', 3, 1, 'USD')])).toEqual([])
@@ -223,7 +281,7 @@ describe('the follow-up round (measured T22: one round found no count and the re
     const asked: string[] = []
     const d = deps({
       gather: async q => { asked.push(q); return [page(q.includes('so luong') ? 'n' : 'a')] },
-      gaps: async (_q, _p, found) => { seen = [...found]; return [{ title: 'Số hãng xe điện', queries: ['so luong hang xe dien 2026'] }, { title: 'x', queries: [] }, { title: 'thứ ba', queries: ['a'] }, { title: 'thứ tư', queries: ['b'] }] },
+      gaps: async (_q, _p, found) => { seen = [...found]; return [{ title: 'Số hãng xe điện', queries: ['so luong hang xe dien 2026'] }, { title: 'x', queries: [] }, { title: 'thứ ba', queries: ['a'] }, { title: 'thứ tư', queries: ['b'] }, { title: 'thứ năm', queries: ['c'] }, { title: 'thứ sáu', queries: ['d'] }] },
     })
     const c = collect()
     const out = await runDeepResearch('q', '', 'vi', d, c.emit)
@@ -231,7 +289,7 @@ describe('the follow-up round (measured T22: one round found no count and the re
     expect(asked).toContain('so luong hang xe dien 2026')
     expect(out.followUps).toBe(GAP_STEPS) // an empty step is dropped, the rest capped
     expect(out.findings.some(f => f.step === 3)).toBe(true)
-    expect(c.statuses.at(-1)?.steps.map(s => s.title)).toEqual(['Doanh số', 'Giá', 'Số hãng xe điện', 'thứ ba'])
+    expect(c.statuses.at(-1)?.steps.map(s => s.title)).toEqual(['Doanh số', 'Giá', 'Số hãng xe điện', 'thứ ba', 'thứ tư', 'thứ năm'])
   })
   it('a follow-up that completes a plan step adds to that section instead of being a section of its own (measured: sections 5 and 6 repeated 1 and 3)', async () => {
     let notes = ''
@@ -320,10 +378,11 @@ describe('canonicalSourceUrl', () => {
 
 describe('normalisePlan', () => {
   it('caps steps and queries, drops empty ones, falls back to the question as the title', () => {
-    const p = normalisePlan({ steps: Array.from({ length: 9 }, (_, i) => ({ title: `b${i}`, queries: ['q1', ' ', 'q2', 'q3'] })).concat([{ title: '', queries: ['x'] }, { title: 'no queries', queries: [] }] as never) }, 'câu hỏi')
+    const p = normalisePlan({ steps: Array.from({ length: DEEP_RESEARCH_LIMITS.planSteps + 3 }, (_, i) => ({ title: `b${i}`, queries: ['q1', ' ', 'q2', 'q3', 'q4'] })).concat([{ title: '', queries: ['x'] }, { title: 'no queries', queries: [] }] as never) }, 'câu hỏi')
     expect(p?.title).toBe('câu hỏi')
     expect(p?.steps).toHaveLength(DEEP_RESEARCH_LIMITS.planSteps)
-    expect(p?.steps[0].queries).toEqual(['q1', 'q2'])
+    expect(DEEP_RESEARCH_LIMITS.queriesPerStep).toBe(3)
+    expect(p?.steps[0].queries).toEqual(['q1', 'q2', 'q3'])
   })
   it('nothing usable is null', () => {
     expect(normalisePlan(null, 'q')).toBeNull()

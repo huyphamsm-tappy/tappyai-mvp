@@ -30,11 +30,11 @@ describe('architecture freeze 02/11/2026', () => {
     expect(readChatMode({ mode: 'turbo' })).toBe('chat')
     expect(Object.keys(ONE_BRAIN_MODE_LINES).sort()).toEqual(['auto', 'chat', 'think', 'web'])
   })
-  it('tiers: Pip (Free) runs Chat only; every paid plan has every mode; Deep Research 0 / 10 / 69 a month', () => {
+  it('tiers: Pip (Free) runs Chat only; every paid plan has every mode; Deep Research 0 / 10 / 50 a month', () => {
     for (const m of ['web', 'think', 'deep', 'auto'] as const) expect(modeForTier(m, 'free')).toBe('chat')
     for (const m of ['chat', 'web', 'think', 'deep', 'auto'] as const) { expect(modeForTier(m, 'pro')).toBe(m); expect(modeForTier(m, 'promax')).toBe(m) }
     expect([tierOf(null), tierOf('guest'), tierOf('pip'), tierOf('coco'), tierOf('milo'), tierOf('promax1m'), tierOf('promax3m')]).toEqual(['free', 'free', 'pro', 'pro', 'pro', 'promax', 'promax'])
-    expect(DEEP_RESEARCH_MONTHLY).toEqual({ free: 0, pro: 10, promax: 69 })
+    expect(DEEP_RESEARCH_MONTHLY).toEqual({ free: 0, pro: 10, promax: 50 })
     expect([...SALE_PLAN_IDS]).toEqual(['pip', 'momo', 'coco', 'promax1m', 'promax3m'])
   })
   it('one brain: 8 steps, 4000 output tokens; Chat lookups quick 1 / thorough 3', () => {

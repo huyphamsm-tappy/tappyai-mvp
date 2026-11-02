@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { consultOneBrainOn, CONSULT_ONE_BRAIN_FLAG } from '@/lib/config/consultFlags'
-import { ONE_BRAIN_CORE, ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, ONE_BRAIN_SHAPE_REMINDER, oneBrainDynamic } from './oneBrain'
+import { ONE_BRAIN_CORE, ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, ONE_BRAIN_SHAPE_REMINDER, PLACE_RULE, oneBrainDynamic } from './oneBrain'
 
 describe('CONSULT_ONE_BRAIN flag', () => {
   it('is ON only for exactly "1", and never in a production runtime', () => {
@@ -75,6 +75,16 @@ describe('oneBrainDynamic', () => {
   it('the person\'s own style setting outranks the default shape, even though the reminder is last (29/10)', () => {
     expect(ONE_BRAIN_SHAPE_REMINDER).toMatch(/response style[^.]*(wins|overrides)|(wins|overrides)[^.]*response style/i)
     expect(ONE_BRAIN_SHAPE_REMINDER).toContain('the person asks for')
+  })
+  it('02/11: the language of a message is not a place - local services default to Vietnam for every language, and the rule sits before the language lines', () => {
+    for (const lang of ['vi', 'en']) {
+      const d = oneBrainDynamic({ lang, now, address: null, hasLocation: false, blocks: [], latestLang: 'zh' })
+      expect(d).toContain(PLACE_RULE)
+      expect(d.indexOf(PLACE_RULE)).toBeLessThan(d.indexOf('write this whole answer in Chinese'))
+    }
+    expect(PLACE_RULE).toMatch(/in Vietnam by default, whatever language/)
+    expect(PLACE_RULE).toMatch(/hospitals and clinics, emergency numbers/)
+    expect(PLACE_RULE).toMatch(/unless their device location or their own words/)
   })
   it('names the address the device sent, never coordinates', () => {
     expect(oneBrainDynamic({ lang: 'en', now, address: 'Quận 1, TP.HCM', hasLocation: true, blocks: [] })).toContain('device location: Quận 1, TP.HCM')
