@@ -11,6 +11,7 @@ struct PlaceholderShellView: View {
     @AppEnvironmentState private var deps: AppDependencies
     @AppEnvironmentState private var session: SessionStore
     @AppEnvironmentState private var router: AppRouter
+    @AppEnvironmentState private var notificationCenter: NotificationCenterStore
 
     @State private var showSignOut = false
     @State private var showDiagnostics = false
@@ -64,6 +65,8 @@ struct PlaceholderShellView: View {
                         }
                 }
                 .tabItem { Label(LocalizedStringKey(tab.titleKey), systemImage: tab.systemImage) }
+                // The inbox lives under Profile; 0 hides the badge. The count is the app-level store's (it keeps updating off that screen).
+                .badge(tab == .profile ? notificationCenter.unreadCount : 0)
                 .tag(tab)
             }
         }
@@ -72,6 +75,10 @@ struct PlaceholderShellView: View {
         // new decision as it is made.
         .task(id: session.state.isAuthenticated) {
             await AIConsentSync.flush(api: deps.api, signedIn: session.state.isAuthenticated)
+        }
+        // The unread badge follows who is signed in: counts on sign-in and on launch, drops to 0 and lets go of the live channel on sign-out.
+        .task(id: session.state.isAuthenticated) {
+            await notificationCenter.sessionChanged()
         }
         .onReceive(NotificationCenter.default.publisher(for: AIConsentStore.didChange)) { _ in
             Task { await AIConsentSync.flush(api: deps.api, signedIn: session.state.isAuthenticated) }

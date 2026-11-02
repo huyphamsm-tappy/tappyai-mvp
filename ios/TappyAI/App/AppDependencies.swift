@@ -21,6 +21,8 @@ final class AppDependencies: AppObservableObject {
     let authRepository: AuthRepository
     let configService: AppConfigService
     let notificationManager: NotificationManager
+    /// The unread count of the in-app inbox, read by the tab bar (it must not live in one screen).
+    let notificationCenter: NotificationCenterStore
     let safety: SafetyStore
     /// One-time «share data with AI» consent (App Review 5.1.2(i)); the networking layer enforces it too.
     let aiConsent = AIConsentCoordinator()
@@ -55,6 +57,7 @@ final class AppDependencies: AppObservableObject {
         self.entitlements = ServerEntitlementService(api: api)
         self.paymentProvider = StoreKitProvider(api: api, session: session)
         self.notificationManager = NotificationManager(api: api, deepLinks: deepLinks, router: router, session: session)
+        self.notificationCenter = NotificationCenterStore(service: NotificationsService(api: api), supabase: supabase, session: session)
         self.safety = SafetyStore(service: SafetyService(api: api), config: configService, session: session)
 
         // Auth feature wiring (Phase 1).
