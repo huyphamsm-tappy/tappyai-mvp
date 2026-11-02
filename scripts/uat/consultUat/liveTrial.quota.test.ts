@@ -104,7 +104,7 @@ async function run(env: Record<string, string | undefined>, n: number): Promise<
   const spies = [vi.spyOn(console, 'log'), vi.spyOn(console, 'warn'), vi.spyOn(console, 'error'), vi.spyOn(console, 'info')].map(s => s.mockImplementation((...a: unknown[]) => { logs.push(a.map(String).join(' ').slice(0, 300)) }))
   const fs = memFs()
   let out: TrialOutcome
-  try { out = await runLiveTrial({ env: process.env, post: POST as never, fetchImpl: fakeNetwork, fs, repoRoot: 'D:/TappyAI-wt/wt-integration', now: () => 1_000, turns: turnsOf(n), afterTrial: 'restore' } as never) } finally { spies.forEach(s => s.mockRestore()) }
+  try { out = await runLiveTrial({ env: process.env, post: POST as never, fetchImpl: fakeNetwork, fs, repoRoot: process.cwd(), now: () => 1_000, turns: turnsOf(n), afterTrial: 'restore' } as never) } finally { spies.forEach(s => s.mockRestore()) }
   if (out.kind !== 'ran') throw new Error('refused: ' + JSON.stringify(out.reasons))
   const file = [...fs.files.entries()].find(([p]) => /bench-\d+\.json$/.test(p))
   return { out, summary: out.summary, resultJson: file ? JSON.parse(file[1]) : null, text: formatSummary(out.summary), logs }
@@ -122,7 +122,7 @@ async function spendToTenBelowTheLimit(): Promise<void> {
 }
 const refusal = async (env: Record<string, string | undefined>): Promise<string[]> => {
   for (const [k, v] of Object.entries(env)) vi.stubEnv(k, v)
-  const out = await runLiveTrial({ env: process.env, post: (async () => { throw new Error('must not be called') }) as never, fetchImpl: fakeNetwork, fs: memFs(), repoRoot: 'D:/TappyAI-wt/wt-integration', now: () => 1_000, turns: turnsOf(2), afterTrial: 'restore' } as never)
+  const out = await runLiveTrial({ env: process.env, post: (async () => { throw new Error('must not be called') }) as never, fetchImpl: fakeNetwork, fs: memFs(), repoRoot: process.cwd(), now: () => 1_000, turns: turnsOf(2), afterTrial: 'restore' } as never)
   if (out.kind !== 'refused') throw new Error('expected a refusal')
   return out.reasons
 }
@@ -259,7 +259,7 @@ describe('(f) the flag reaches the child, the preflight checks its value, other 
   })
   const report = (env: Record<string, string | undefined>) => {
     for (const [k, v] of Object.entries(env)) vi.stubEnv(k, v)
-    return conditionReport({ env: process.env, repoRoot: 'D:/TappyAI-wt/wt-integration', questionText: null })
+    return conditionReport({ env: process.env, repoRoot: process.cwd(), questionText: null })
   }
   const line = (c: ReturnType<typeof conditionReport>) => c.find(x => x.name.startsWith('free-question quota reset per turn'))!
   it('a valid value gives an information line that says ON or OFF with its reason', () => {

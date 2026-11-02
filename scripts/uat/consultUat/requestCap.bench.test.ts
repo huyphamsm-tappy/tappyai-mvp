@@ -17,7 +17,7 @@ import { UAT_TURNS, type UatTurn } from './questions'
 const OPENAI = 'https://api.openai.com/v1/chat/completions'
 const SECRET_KEY = 'sk-test-SECRET-closure-1'
 const SECRET_SERPER = 'serper-SECRET-closure-2'
-const REPO = 'D:/TappyAI-wt/wt-integration'
+const REPO = process.cwd()
 
 /** The structure of the acceptance set with fake text. Nothing of the real wording is read into the output. */
 const mockStructure = (): UatTurn[] => UAT_TURNS.map(t => ({ id: t.id, conversation: t.conversation, turn: t.turn, text: `[mock] ${t.id}` }))

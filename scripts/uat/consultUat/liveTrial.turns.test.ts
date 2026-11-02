@@ -45,7 +45,7 @@ afterEach(() => {
 const turnsOf = (n: number, conv = 'T'): UatTurn[] => Array.from({ length: n }, (_, i) => ({ id: `${conv}${i + 1}`, conversation: conv, turn: i + 1, text: `câu thử số ${i + 1}` }))
 
 const run = async (post: (req: never) => Promise<Response>, turns: UatTurn[], over: Partial<LiveTrialInput> = {}): Promise<TrialOutcome> =>
-  runLiveTrial({ env: process.env, post: post as never, fetchImpl: fakeNetwork, fs: memFs(), repoRoot: 'D:/TappyAI-wt/wt-integration', now: () => 1_000, turns, ...over } as LiveTrialInput)
+  runLiveTrial({ env: process.env, post: post as never, fetchImpl: fakeNetwork, fs: memFs(), repoRoot: process.cwd(), now: () => 1_000, turns, ...over } as LiveTrialInput)
 const ranOk = (o: TrialOutcome) => { if (o.kind !== 'ran') throw new Error(`expected a run, got ${JSON.stringify(o)}`); return o }
 const okResponse = () => new Response(ANSWER)
 

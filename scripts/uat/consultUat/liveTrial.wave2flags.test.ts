@@ -79,7 +79,7 @@ describe('the values are checked by the preflight: unset, 0 or 1 only', () => {
   })
   it('the report marks an odd value KHÔNG ĐẠT on the flags line and does not repeat it on the "every other check" line', () => {
     for (const [k, v] of Object.entries({ ...EXT, CONSULT_GENERAL_ASSISTANT: 'yes' })) vi.stubEnv(k, v)
-    const c = conditionReport({ env: process.env, repoRoot: 'D:/TappyAI-wt/wt-integration', questionText: null })
+    const c = conditionReport({ env: process.env, repoRoot: process.cwd(), questionText: null })
     const line = c.find(x => x.name.startsWith('wave-2 behaviour flags'))!
     expect(line.ok).toBe(false); expect(line.detail).toContain('CONSULT_GENERAL_ASSISTANT must be exactly 1, 0 or unset')
     expect(c.find(x => x.name.startsWith('every other check'))!.detail).not.toContain('CONSULT_GENERAL_ASSISTANT')
@@ -99,7 +99,7 @@ describe('the state shown is the state the configuration really has', () => {
     for (const f of combos) {
       for (const k of WAVE2_FLAGS) vi.stubEnv(k, undefined)
       for (const [k, v] of Object.entries({ ...EXT, ...f })) vi.stubEnv(k, v)
-      const line = conditionReport({ env: process.env, repoRoot: 'D:/TappyAI-wt/wt-integration', questionText: null }).find(x => x.name.startsWith('wave-2 behaviour flags'))!.detail
+      const line = conditionReport({ env: process.env, repoRoot: process.cwd(), questionText: null }).find(x => x.name.startsWith('wave-2 behaviour flags'))!.detail
       const gate = gate1Summary({ ...EXT, ...f }, null).join('\n')
       for (const k of WAVE2_FLAGS) {
         const on = f[k] === '1'
@@ -114,7 +114,7 @@ describe('the state shown is the state the configuration really has', () => {
     const spies = [vi.spyOn(console, 'log'), vi.spyOn(console, 'warn'), vi.spyOn(console, 'error'), vi.spyOn(console, 'info')].map(s => s.mockImplementation(() => undefined))
     const fs = memFs()
     let out
-    try { out = await runLiveTrial({ env: process.env, post: (async () => new Response('', { status: 200 })) as never, fetchImpl: (async () => new Response('{}')) as typeof fetch, fs, repoRoot: 'D:/TappyAI-wt/wt-integration', now: () => 1_000, turns: TURN, afterTrial: 'restore' } as never) } finally { spies.forEach(s => s.mockRestore()) }
+    try { out = await runLiveTrial({ env: process.env, post: (async () => new Response('', { status: 200 })) as never, fetchImpl: (async () => new Response('{}')) as typeof fetch, fs, repoRoot: process.cwd(), now: () => 1_000, turns: TURN, afterTrial: 'restore' } as never) } finally { spies.forEach(s => s.mockRestore()) }
     if (out.kind !== 'ran') throw new Error('refused: ' + JSON.stringify(out.reasons))
     expect(out.summary.flagsInEffect).toMatchObject({ CONSULT_FINAL_SYNTHESIS: '1', CONSULT_ANSWER_ATTRIBUTION: null, CONSULT_GENERAL_ASSISTANT: '0' })
     expect(formatSummary(out.summary)).toMatch(/CONSULT_FINAL_SYNTHESIS=1 CONSULT_ANSWER_ATTRIBUTION=unset CONSULT_GENERAL_ASSISTANT=0/)
@@ -124,7 +124,7 @@ describe('the state shown is the state the configuration really has', () => {
   it('a run with an odd flag value is refused before anything is sent', async () => {
     for (const [k, v] of Object.entries({ ...EXT, CONSULT_ANSWER_ATTRIBUTION: 'maybe' })) vi.stubEnv(k, v)
     const post = vi.fn(async () => new Response('', { status: 200 }))
-    const out = await runLiveTrial({ env: process.env, post: post as never, fetchImpl: (async () => new Response('{}')) as typeof fetch, fs: memFs(), repoRoot: 'D:/TappyAI-wt/wt-integration', now: () => 1_000, turns: TURN, afterTrial: 'restore' } as never)
+    const out = await runLiveTrial({ env: process.env, post: post as never, fetchImpl: (async () => new Response('{}')) as typeof fetch, fs: memFs(), repoRoot: process.cwd(), now: () => 1_000, turns: TURN, afterTrial: 'restore' } as never)
     expect(out.kind).toBe('refused'); if (out.kind === 'refused') expect(out.reasons.join(' | ')).toContain('CONSULT_ANSWER_ATTRIBUTION must be exactly 1, 0 or unset')
     expect(post).not.toHaveBeenCalled()
   })

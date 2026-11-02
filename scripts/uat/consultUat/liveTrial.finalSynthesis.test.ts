@@ -94,7 +94,7 @@ async function run(env: Record<string, string | undefined>): Promise<Run> {
   const spies = [vi.spyOn(console, 'log'), vi.spyOn(console, 'warn'), vi.spyOn(console, 'error'), vi.spyOn(console, 'info')].map(s => s.mockImplementation((...a: unknown[]) => { logs.push(a.map(String).join(' ').slice(0, 4000)) }))
   const fs = memFs()
   let out
-  try { out = await runLiveTrial({ env: process.env, post: POST as never, fetchImpl: fakeNetwork, fs, repoRoot: 'D:/TappyAI-wt/wt-integration', now: () => 1_000, turns: TURN, afterTrial: 'restore' } as never) } finally { spies.forEach(s => s.mockRestore()) }
+  try { out = await runLiveTrial({ env: process.env, post: POST as never, fetchImpl: fakeNetwork, fs, repoRoot: process.cwd(), now: () => 1_000, turns: TURN, afterTrial: 'restore' } as never) } finally { spies.forEach(s => s.mockRestore()) }
   if (out.kind !== 'ran') throw new Error('refused: ' + JSON.stringify(out.reasons))
   const f = [...fs.files.entries()].find(([p]) => /bench-\d+\.json$/.test(p))
   const file = f ? JSON.parse(f[1]) : null
@@ -155,7 +155,7 @@ async function runTurns(env: Record<string, string | undefined>, turns: UatTurn[
   const spies = [vi.spyOn(console, 'log'), vi.spyOn(console, 'warn'), vi.spyOn(console, 'error'), vi.spyOn(console, 'info')].map(s => s.mockImplementation((...a: unknown[]) => { logs.push(a.map(String).join(' ').slice(0, 4000)) }))
   const fs = memFs()
   let out
-  try { out = await runLiveTrial({ env: process.env, post: POST as never, fetchImpl: fakeNetwork, fs, repoRoot: 'D:/TappyAI-wt/wt-integration', now: () => 1_000, turns, afterTrial: 'restore' } as never) } finally { spies.forEach(s => s.mockRestore()) }
+  try { out = await runLiveTrial({ env: process.env, post: POST as never, fetchImpl: fakeNetwork, fs, repoRoot: process.cwd(), now: () => 1_000, turns, afterTrial: 'restore' } as never) } finally { spies.forEach(s => s.mockRestore()) }
   if (out.kind !== 'ran') throw new Error('refused: ' + JSON.stringify(out.reasons))
   const f = [...fs.files.entries()].find(([p]) => /bench-\d+\.json$/.test(p))
   const file = f ? JSON.parse(f[1]) : null
@@ -219,7 +219,7 @@ describe('a turn with a normal single search is not touched by the flag', () => 
       const spies = [vi.spyOn(console, 'log'), vi.spyOn(console, 'warn'), vi.spyOn(console, 'error'), vi.spyOn(console, 'info')].map(s => s.mockImplementation(() => undefined))
       const fs = memFs()
       let out
-      try { out = await runLiveTrial({ env: process.env, post: POST as never, fetchImpl: normal, fs, repoRoot: 'D:/TappyAI-wt/wt-integration', now: () => 1_000, turns: TURN, afterTrial: 'restore' } as never) } finally { spies.forEach(s => s.mockRestore()) }
+      try { out = await runLiveTrial({ env: process.env, post: POST as never, fetchImpl: normal, fs, repoRoot: process.cwd(), now: () => 1_000, turns: TURN, afterTrial: 'restore' } as never) } finally { spies.forEach(s => s.mockRestore()) }
       if (out.kind !== 'ran') throw new Error('refused')
       const file = JSON.parse([...fs.files.entries()].find(([p]) => /bench-\d+\.json$/.test(p))![1])
       return { answer: file.turns[0].answer as string, answerCalls: net.answerCalls, serper: net.serper }

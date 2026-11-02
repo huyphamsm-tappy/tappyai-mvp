@@ -98,7 +98,7 @@ async function reproduce(): Promise<{ summary: TrialSummary; decisions: string[]
   const spies = [vi.spyOn(console, 'log'), vi.spyOn(console, 'warn'), vi.spyOn(console, 'error'), vi.spyOn(console, 'info')].map(s => s.mockImplementation((...a: unknown[]) => { lines.push(a.map(String).join(' ').slice(0, 400)) }))
   const fs = memFs()
   let out
-  try { out = await runLiveTrial({ env: process.env, post: POST as never, fetchImpl: fakeNetwork, fs, repoRoot: 'D:/TappyAI-wt/wt-integration', now: () => 1_000, turns: TURNS, afterTrial: 'restore' } as never) } finally { spies.forEach(s => s.mockRestore()) }
+  try { out = await runLiveTrial({ env: process.env, post: POST as never, fetchImpl: fakeNetwork, fs, repoRoot: process.cwd(), now: () => 1_000, turns: TURNS, afterTrial: 'restore' } as never) } finally { spies.forEach(s => s.mockRestore()) }
   if (out.kind !== 'ran') throw new Error('the run was refused: ' + JSON.stringify(out.reasons))
   const resultFile = [...fs.files.entries()].find(([p]) => /bench-\d+\.json$/.test(p))
   return { summary: out.summary, decisions, lines, resultText: [...fs.files.values()].join('\n'), resultJson: resultFile ? resultFile[1] : '' }
@@ -183,7 +183,7 @@ describe('E1 fix 1 — the summary NAMES a rejected credential instead of leavin
     const net500 = (async (input: unknown) => { const u = new URL(typeof input === 'string' ? input : input instanceof URL ? input.href : (input as Request).url); if (u.hostname === 'api.openai.com') return apiError(500, 'server error'); return new Response('{}', { status: 200 }) }) as typeof fetch
     const spies = [vi.spyOn(console, 'log'), vi.spyOn(console, 'warn'), vi.spyOn(console, 'error'), vi.spyOn(console, 'info')].map(s => s.mockImplementation(() => undefined))
     let out
-    try { out = await runLiveTrial({ env: process.env, post: POST as never, fetchImpl: net500, fs: memFs(), repoRoot: 'D:/TappyAI-wt/wt-integration', now: () => 1_000, turns: TURNS.slice(0, 1), afterTrial: 'restore' } as never) } finally { spies.forEach(s => s.mockRestore()) }
+    try { out = await runLiveTrial({ env: process.env, post: POST as never, fetchImpl: net500, fs: memFs(), repoRoot: process.cwd(), now: () => 1_000, turns: TURNS.slice(0, 1), afterTrial: 'restore' } as never) } finally { spies.forEach(s => s.mockRestore()) }
     expect(out.kind).toBe('ran')
     if (out.kind === 'ran') { expect(out.summary.providerRejections).toEqual([]); expect(out.summary.warnings.join(' ')).not.toContain('rejected the credentials') }
   })

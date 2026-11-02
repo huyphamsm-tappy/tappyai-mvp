@@ -12,7 +12,7 @@ import { conditionReport, formatConditionReport } from './preflightReport'
 import { GOOD_ENV, applyEnv, memFs, options, turnTransport } from './liveRunner.testkit'
 import { UAT_TURNS, type UatTurn } from './questions'
 
-const REPO = 'D:/TappyAI-wt/wt-integration'
+const REPO = process.cwd()
 const CAPS = { CONSULT_REQUEST_CAP: '1', CONSULT_REQUEST_CAP_PER_TURN: '15', CONSULT_REQUEST_CAP_PER_RUN: '450' }
 
 beforeEach(() => { __resetBenchProcessGuardForTests(); vi.stubGlobal('fetch', vi.fn(() => { throw new Error('TRIPWIRE: a real request must never be made') })) })

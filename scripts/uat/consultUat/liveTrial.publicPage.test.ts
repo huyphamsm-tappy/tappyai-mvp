@@ -55,7 +55,7 @@ async function run(env: Record<string, string | undefined>, calls: readonly Call
   const spies = [vi.spyOn(console, 'log'), vi.spyOn(console, 'warn'), vi.spyOn(console, 'error'), vi.spyOn(console, 'info')].map(s => s.mockImplementation(() => undefined))
   const fs = memFs()
   let out
-  try { out = await runLiveTrial({ env: process.env, post: post as never, fetchImpl: network, fs, repoRoot: 'D:/TappyAI-wt/wt-integration', now: () => 1_000, turns: TURN, afterTrial: 'restore' } as never) } finally { spies.forEach(s => s.mockRestore()) }
+  try { out = await runLiveTrial({ env: process.env, post: post as never, fetchImpl: network, fs, repoRoot: process.cwd(), now: () => 1_000, turns: TURN, afterTrial: 'restore' } as never) } finally { spies.forEach(s => s.mockRestore()) }
   if (out.kind !== 'ran') throw new Error('refused: ' + JSON.stringify(out.reasons))
   const file = [...fs.files.entries()].find(([p]) => /bench-\d+\.json$/.test(p))
   const resultJson = file ? file[1] : '{}'
@@ -158,7 +158,7 @@ describe('through the real wrapper', () => {
     }
     for (const [k, v] of Object.entries(EXT_ENV)) vi.stubEnv(k, v)
     const spies = [vi.spyOn(console, 'log'), vi.spyOn(console, 'warn'), vi.spyOn(console, 'error'), vi.spyOn(console, 'info')].map(s => s.mockImplementation(() => undefined))
-    try { await runLiveTrial({ env: process.env, post: post as never, fetchImpl: network, fs: memFs(), repoRoot: 'D:/TappyAI-wt/wt-integration', now: () => 1_000, turns: TURN, afterTrial: 'restore' } as never) } finally { spies.forEach(s => s.mockRestore()) }
+    try { await runLiveTrial({ env: process.env, post: post as never, fetchImpl: network, fs: memFs(), repoRoot: process.cwd(), now: () => 1_000, turns: TURN, afterTrial: 'restore' } as never) } finally { spies.forEach(s => s.mockRestore()) }
     expect(called).toBe(0)
     expect(https.request).toBe(real) // the trial restores the network afterwards
   })
@@ -188,7 +188,7 @@ async function runNode(env: Record<string, string | undefined>, calls: readonly 
   const spies = [vi.spyOn(console, 'log'), vi.spyOn(console, 'warn'), vi.spyOn(console, 'error'), vi.spyOn(console, 'info')].map(s => s.mockImplementation(() => undefined))
   const fs = memFs()
   let out
-  try { out = await runLiveTrial({ env: process.env, post: post as never, fetchImpl: network, fs, repoRoot: 'D:/TappyAI-wt/wt-integration', now: () => 1_000, turns, afterTrial: 'restore' } as never) } finally {
+  try { out = await runLiveTrial({ env: process.env, post: post as never, fetchImpl: network, fs, repoRoot: process.cwd(), now: () => 1_000, turns, afterTrial: 'restore' } as never) } finally {
     spies.forEach(s => s.mockRestore()); http.request = saved.hr; http.get = saved.hg; https.request = saved.sr; https.get = saved.sg
   }
   if (out.kind !== 'ran') throw new Error('refused: ' + JSON.stringify(out.reasons))
@@ -256,7 +256,7 @@ describe('Gate 1 and the preflight say the real state; the launcher knows the na
       expect(gate1Summary({ ...env }, null).some(l => l === line)).toBe(true)
       const full = { ...EXT_ENV, ...env }, sf = benchSwitchState(full)
       expect(benchSwitchLine(full)).toContain(`(${sf.page}:`)
-      const report = conditionReport({ env: full, repoRoot: 'D:/TappyAI-wt/wt-integration', questionText: null })
+      const report = conditionReport({ env: full, repoRoot: process.cwd(), questionText: null })
       const row = report.find(c => c.name.startsWith('bench switches'))!
       expect(row.ok).toBe(true); expect(row.detail).toContain(`(${sf.trace})`); expect(row.detail).toContain(`(${sf.page})`)
     })

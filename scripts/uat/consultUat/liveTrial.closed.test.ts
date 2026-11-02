@@ -48,7 +48,7 @@ afterEach(() => {
 })
 
 const run = async (post: (req: never) => Promise<Response>, over: Partial<LiveTrialInput> = {}): Promise<TrialOutcome> =>
-  runLiveTrial({ env: process.env, post: post as never, fetchImpl: fakeNetwork, fs: memFs(), readTextFile: () => 'Câu hỏi thử ngoài bộ nghiệm thu về thời tiết hôm nay?', repoRoot: 'D:/TappyAI-wt/wt-integration', now: () => 1_000, ...over })
+  runLiveTrial({ env: process.env, post: post as never, fetchImpl: fakeNetwork, fs: memFs(), readTextFile: () => 'Câu hỏi thử ngoài bộ nghiệm thu về thời tiết hôm nay?', repoRoot: process.cwd(), now: () => 1_000, ...over })
 const ranOk = (o: TrialOutcome) => { if (o.kind !== 'ran') throw new Error(`expected a run, got ${JSON.stringify(o)}`); return o }
 const okResponse = () => new Response(ANSWER)
 

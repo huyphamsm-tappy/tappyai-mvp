@@ -87,7 +87,7 @@ async function run(env: Record<string, string | undefined>) {
   const spies = [vi.spyOn(console, 'log'), vi.spyOn(console, 'warn'), vi.spyOn(console, 'error'), vi.spyOn(console, 'info')].map(s => s.mockImplementation(() => undefined))
   const fs = memFs()
   let out
-  try { out = await runLiveTrial({ env: process.env, post: POST as never, fetchImpl: fakeNetwork, fs, repoRoot: 'D:/TappyAI-wt/wt-integration', now: () => 4_242, turns: TURNS, afterTrial: 'restore' } as never) } finally { spies.forEach(s => s.mockRestore()) }
+  try { out = await runLiveTrial({ env: process.env, post: POST as never, fetchImpl: fakeNetwork, fs, repoRoot: process.cwd(), now: () => 4_242, turns: TURNS, afterTrial: 'restore' } as never) } finally { spies.forEach(s => s.mockRestore()) }
   if (out.kind !== 'ran') throw new Error('refused: ' + JSON.stringify(out.reasons))
   const files = [...fs.files.entries()]
   const bench = files.find(([p]) => /bench-\d+\.json$/.test(p))
@@ -199,10 +199,10 @@ describe('W6 capture · registered like the Wave 5 flags (names only)', () => {
     for (const [k, v] of Object.entries(env)) vi.stubEnv(k, v)
     expect(gate1Summary(env, null).join('\n')).toContain('BENCH_CAPTURE_WRITER_INPUT=1 (BẬT)')
     expect(wave2FlagState(env).BENCH_CAPTURE_WRITER_INPUT).toBe('ON')
-    const line = conditionReport({ env: process.env, repoRoot: 'D:/TappyAI-wt/wt-integration', questionText: null }).find(x => x.name.startsWith('wave-2 behaviour flags'))!
+    const line = conditionReport({ env: process.env, repoRoot: process.cwd(), questionText: null }).find(x => x.name.startsWith('wave-2 behaviour flags'))!
     expect(line.ok).toBe(true); expect(line.detail).toContain('BENCH_CAPTURE_WRITER_INPUT=1 (ON)')
     vi.stubEnv('BENCH_CAPTURE_WRITER_INPUT', 'yes')
-    const bad = conditionReport({ env: process.env, repoRoot: 'D:/TappyAI-wt/wt-integration', questionText: null }).find(x => x.name.startsWith('wave-2 behaviour flags'))!
+    const bad = conditionReport({ env: process.env, repoRoot: process.cwd(), questionText: null }).find(x => x.name.startsWith('wave-2 behaviour flags'))!
     expect(bad.ok).toBe(false); expect(bad.detail).toContain('BENCH_CAPTURE_WRITER_INPUT must be exactly 1, 0 or unset')
   })
 })

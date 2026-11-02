@@ -47,7 +47,7 @@ async function run(env: Record<string, string | undefined>, urls: readonly strin
   const spies = [vi.spyOn(console, 'log'), vi.spyOn(console, 'warn'), vi.spyOn(console, 'error'), vi.spyOn(console, 'info')].map(s => s.mockImplementation(() => undefined))
   const fs = memFs()
   let out
-  try { out = await runLiveTrial({ env: process.env, post: post as never, fetchImpl: network, fs, repoRoot: 'D:/TappyAI-wt/wt-integration', now: () => 1_000, turns: TURN, afterTrial: 'restore' } as never) } finally { spies.forEach(s => s.mockRestore()) }
+  try { out = await runLiveTrial({ env: process.env, post: post as never, fetchImpl: network, fs, repoRoot: process.cwd(), now: () => 1_000, turns: TURN, afterTrial: 'restore' } as never) } finally { spies.forEach(s => s.mockRestore()) }
   if (out.kind !== 'ran') throw new Error('refused: ' + JSON.stringify(out.reasons))
   const file = [...fs.files.entries()].find(([p]) => /bench-\d+\.json$/.test(p))
   return { summary: out.summary, outcomes, resultJson: file ? file[1] : '', net: [...reached] }
@@ -111,7 +111,7 @@ describe('a redirect from the endpoint cannot leave the allow-list', () => {
 describe('what the Owner is shown names the endpoint in the extension mode only', () => {
   const allow = (env: Record<string, string | undefined>) => {
     for (const [k, v] of Object.entries(env)) vi.stubEnv(k, v)
-    return conditionReport({ env: process.env, repoRoot: 'D:/TappyAI-wt/wt-integration', questionText: null }).find(x => x.name === 'allow-list the run may reach')!.detail
+    return conditionReport({ env: process.env, repoRoot: process.cwd(), questionText: null }).find(x => x.name === 'allow-list the run may reach')!.detail
   }
   it('the preflight list', () => {
     expect(allow(EXT_ENV)).toMatch(/html\.duckduckgo\.com \/html\//)

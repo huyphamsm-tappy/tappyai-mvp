@@ -31,7 +31,8 @@ const P2 = readFileSync(
   'utf8'
 )
 
-const PORT = 54377
+// 54377 belongs to phase6_messenger (V3); unique per suite, see portAllocation.test.ts
+const PORT = 54312
 
 const pid = (n: number) => String(n).padStart(26, '0')
 const HASH = (seed: string) => `decode(repeat('${seed}',32),'hex')`

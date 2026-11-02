@@ -83,7 +83,7 @@ async function run(fileText: string) {
   const spies = [vi.spyOn(console, 'log'), vi.spyOn(console, 'warn'), vi.spyOn(console, 'error'), vi.spyOn(console, 'info')].map(s => s.mockImplementation((...a: unknown[]) => { logs.push(a.map(String).join(' ')) }))
   let out
   try {
-    out = await runLiveTrial({ env: process.env, post: POST as never, fetchImpl: fakeNetwork, fs, repoRoot: 'D:/TappyAI-wt/wt-integration', now: () => 1_000, turns: parsed.turns,
+    out = await runLiveTrial({ env: process.env, post: POST as never, fetchImpl: fakeNetwork, fs, repoRoot: process.cwd(), now: () => 1_000, turns: parsed.turns,
       questionInfo: { sha256: sha256OfText(fileText), formatVersion: parsed.formatVersion, notesWithheld: parsed.notes.map(n => n.id) }, afterTrial: 'restore' } as never)
   } finally { spies.forEach(s => s.mockRestore()) }
   if (out.kind !== 'ran') throw new Error('refused: ' + JSON.stringify(out.reasons))
@@ -117,7 +117,7 @@ describe('the judge note never reaches the model (route + runLiveTrial, mock net
     for (const [k, v] of Object.entries(BASE)) vi.stubEnv(k, v)
     const parsed = parseDevQuestions('Q1|Q1|1|' + USER_WORDS)
     if (!parsed.ok) throw new Error('refused')
-    const out = await runLiveTrial({ env: process.env, post: POST as never, fetchImpl: fakeNetwork, fs: memFs(), repoRoot: 'D:/TappyAI-wt/wt-integration', now: () => 1_000, turns: parsed.turns, afterTrial: 'restore' } as never)
+    const out = await runLiveTrial({ env: process.env, post: POST as never, fetchImpl: fakeNetwork, fs: memFs(), repoRoot: process.cwd(), now: () => 1_000, turns: parsed.turns, afterTrial: 'restore' } as never)
     if (out.kind !== 'ran') throw new Error('refused')
     expect(formatSummary(out.summary)).toContain('question file: not reported by the caller')
   })

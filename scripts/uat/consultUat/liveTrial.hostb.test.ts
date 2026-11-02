@@ -66,7 +66,7 @@ async function run(env: Record<string, string | undefined>, urls: readonly strin
   const spies = [vi.spyOn(console, 'log'), vi.spyOn(console, 'warn'), vi.spyOn(console, 'error'), vi.spyOn(console, 'info')].map(s => s.mockImplementation(() => undefined))
   const fs = memFs()
   let out
-  try { out = await runLiveTrial({ env: process.env, post: post as never, fetchImpl: network, fs, repoRoot: 'D:/TappyAI-wt/wt-integration', now: () => 1_000, turns: TURN, afterTrial: 'restore' } as never) } finally { spies.forEach(s => s.mockRestore()) }
+  try { out = await runLiveTrial({ env: process.env, post: post as never, fetchImpl: network, fs, repoRoot: process.cwd(), now: () => 1_000, turns: TURN, afterTrial: 'restore' } as never) } finally { spies.forEach(s => s.mockRestore()) }
   if (out.kind !== 'ran') throw new Error('refused: ' + JSON.stringify(out.reasons))
   const file = [...fs.files.entries()].find(([p]) => /bench-\d+\.json$/.test(p))
   return { summary: out.summary, outcomes, resultJson: file ? file[1] : '', allText: [...fs.files.values()].join('\n'), net: [...reached] }
@@ -154,7 +154,7 @@ describe('option B · a redirect from an allowed host cannot leave the allow-lis
     const post = async (): Promise<Response> => { await fetch(OSM.overpass, { redirect: 'follow' }); return new Response('', { status: 200 }) }
     const spies = [vi.spyOn(console, 'log'), vi.spyOn(console, 'warn'), vi.spyOn(console, 'error'), vi.spyOn(console, 'info')].map(s => s.mockImplementation(() => undefined))
     let out
-    try { out = await runLiveTrial({ env: process.env, post: post as never, fetchImpl: makeNetwork('overpass-api.de'), fs: memFs(), repoRoot: 'D:/TappyAI-wt/wt-integration', now: () => 1_000, turns: TURN, afterTrial: 'restore' } as never) } finally { spies.forEach(s => s.mockRestore()) }
+    try { out = await runLiveTrial({ env: process.env, post: post as never, fetchImpl: makeNetwork('overpass-api.de'), fs: memFs(), repoRoot: process.cwd(), now: () => 1_000, turns: TURN, afterTrial: 'restore' } as never) } finally { spies.forEach(s => s.mockRestore()) }
     expect(out.kind).toBe('ran')
     expect(followed).toEqual([])
     expect(reached).not.toContain('evil.example')
@@ -192,7 +192,7 @@ describe('option B · the counts per host are reported without anything sensitiv
 describe('option B · what the Owner is shown says which hosts the run may reach', () => {
   const allow = (env: Record<string, string | undefined>) => {
     for (const [k, v] of Object.entries(env)) vi.stubEnv(k, v)
-    return conditionReport({ env: process.env, repoRoot: 'D:/TappyAI-wt/wt-integration', questionText: null }).find(x => x.name === 'allow-list the run may reach')!.detail
+    return conditionReport({ env: process.env, repoRoot: process.cwd(), questionText: null }).find(x => x.name === 'allow-list the run may reach')!.detail
   }
   it('the preflight list names the three OSM hosts in the extension mode only', () => {
     expect(allow(EXT_ENV)).toMatch(/EXTENSION MODE ONLY, free OSM fallback.*nominatim\.openstreetmap\.org, overpass-api\.de, maps\.mail\.ru/)
@@ -213,7 +213,7 @@ describe('option B · the key must have the OpenAI shape before the first paid c
   const lineOf = (c: ReturnType<typeof conditionReport>, name: string) => c.find(x => x.name.startsWith(name))!
   const report = (env: Record<string, string | undefined>) => {
     for (const [k, v] of Object.entries(env)) vi.stubEnv(k, v)
-    return conditionReport({ env: process.env, repoRoot: 'D:/TappyAI-wt/wt-integration', questionText: GOOD_QUESTIONS })
+    return conditionReport({ env: process.env, repoRoot: process.cwd(), questionText: GOOD_QUESTIONS })
   }
   const WRONG = 'WRONGKEY-9a8b7c6d5e4f'
   it('a key that starts with sk- passes (the line stays "present", no other line changes)', () => {
@@ -253,7 +253,7 @@ describe('option B · the key must have the OpenAI shape before the first paid c
   it('the real run refuses too: nothing is sent, the reason names the variable and holds no character of the key', async () => {
     for (const [k, v] of Object.entries({ ...EXT_ENV, OPENAI_API_KEY: WRONG })) vi.stubEnv(k, v)
     const post = vi.fn(async () => new Response('', { status: 200 }))
-    const out = await runLiveTrial({ env: process.env, post: post as never, fetchImpl: makeNetwork(), fs: memFs(), repoRoot: 'D:/TappyAI-wt/wt-integration', now: () => 1_000, turns: TURN, afterTrial: 'restore' } as never)
+    const out = await runLiveTrial({ env: process.env, post: post as never, fetchImpl: makeNetwork(), fs: memFs(), repoRoot: process.cwd(), now: () => 1_000, turns: TURN, afterTrial: 'restore' } as never)
     expect(out.kind).toBe('refused')
     if (out.kind === 'refused') {
       expect(out.reasons.join(' | ')).toContain('OPENAI_API_KEY không đúng dạng key OpenAI (phải bắt đầu bằng sk-)')

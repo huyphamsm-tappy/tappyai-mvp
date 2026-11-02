@@ -174,7 +174,7 @@ afterEach(() => {
 })
 
 const input = (over: Partial<LiveTrialInput> = {}): LiveTrialInput => ({
-  env: process.env, post: POST, fetchImpl, fs, readTextFile: p => { reads.push(p); return QUESTION }, repoRoot: 'D:/TappyAI-wt/wt-integration', now: () => 1_000, ...over,
+  env: process.env, post: POST, fetchImpl, fs, readTextFile: p => { reads.push(p); return QUESTION }, repoRoot: process.cwd(), now: () => 1_000, ...over,
 })
 const ran = (o: TrialOutcome) => { if (o.kind !== 'ran') throw new Error(`expected a run, got: ${JSON.stringify(o)}`); return o }
 const nothingHappened = () => { expect(net.openai).toHaveLength(0); expect(net.serper).toHaveLength(0); expect(fs.ops).toEqual([]); expect(globalThis.fetch).toBe(tripwireFetch) }

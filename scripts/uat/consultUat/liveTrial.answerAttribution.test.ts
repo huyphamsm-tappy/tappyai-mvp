@@ -89,7 +89,7 @@ async function run(env: Record<string, string | undefined>, second: string): Pro
   const logs: string[] = []
   const spies = [vi.spyOn(console, 'log'), vi.spyOn(console, 'warn'), vi.spyOn(console, 'error'), vi.spyOn(console, 'info')].map(s => s.mockImplementation((...a: unknown[]) => { logs.push(a.map(String).join(' ').slice(0, 4000)) }))
   let out
-  try { out = await runLiveTrial({ env: process.env, post: POST as never, fetchImpl: fakeNetwork, fs: memFs(), repoRoot: 'D:/TappyAI-wt/wt-integration', now: () => 1_000, turns: turns(second), afterTrial: 'restore' } as never) } finally { spies.forEach(s => s.mockRestore()) }
+  try { out = await runLiveTrial({ env: process.env, post: POST as never, fetchImpl: fakeNetwork, fs: memFs(), repoRoot: process.cwd(), now: () => 1_000, turns: turns(second), afterTrial: 'restore' } as never) } finally { spies.forEach(s => s.mockRestore()) }
   if (out.kind !== 'ran') throw new Error('refused: ' + JSON.stringify(out.reasons))
   expect(logs.some(l => l.includes('tappyai_luna_intent_error')), 'the scripted intent answer must be valid').toBe(false)
   const consult = logs.filter(l => l.includes('"type":"tappyai_consult"')).map(l => JSON.parse(l.slice(l.indexOf('{'))) as { turn: string; domains: string[] })
@@ -103,7 +103,7 @@ async function runKnowledge(env: Record<string, string | undefined>): Promise<st
   const logs: string[] = []
   const spies = [vi.spyOn(console, 'log'), vi.spyOn(console, 'warn'), vi.spyOn(console, 'error'), vi.spyOn(console, 'info')].map(s => s.mockImplementation((...a: unknown[]) => { logs.push(a.map(String).join(' ').slice(0, 300)) }))
   let out
-  try { out = await runLiveTrial({ env: process.env, post: POST as never, fetchImpl: fakeNetwork, fs: memFs(), repoRoot: 'D:/TappyAI-wt/wt-integration', now: () => 1_000, turns: KNOWLEDGE_TURN, afterTrial: 'restore' } as never) } finally { spies.forEach(s => s.mockRestore()) }
+  try { out = await runLiveTrial({ env: process.env, post: POST as never, fetchImpl: fakeNetwork, fs: memFs(), repoRoot: process.cwd(), now: () => 1_000, turns: KNOWLEDGE_TURN, afterTrial: 'restore' } as never) } finally { spies.forEach(s => s.mockRestore()) }
   if (out.kind !== 'ran') throw new Error('refused: ' + JSON.stringify(out.reasons))
   expect(logs.some(l => l.includes('tappyai_luna_intent_error'))).toBe(false)
   expect(net.answerCalls).toBeGreaterThanOrEqual(1)

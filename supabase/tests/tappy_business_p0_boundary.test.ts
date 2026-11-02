@@ -30,7 +30,8 @@ const REPO = join(__dirname, '..', '..')
 const MIGRATION_PATH = 'supabase/migrations/20260908_tappy_business_p0.sql'
 const MIGRATION = readFileSync(join(REPO, MIGRATION_PATH), 'utf8')
 
-const PORT = 54375
+// 54375 belongs to chat_messaging_boundary (V3); unique per suite, see portAllocation.test.ts
+const PORT = 54311
 
 const MERCHANT_PUBLIC = '01ARZ3NDEKTSV4RRFFQ69G5FAV'
 const PRODUCT_PUBLIC = '01BX5ZZKBKACTAV9WEVGEMMVRZ'

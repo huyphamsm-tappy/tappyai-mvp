@@ -32,7 +32,8 @@ const MIGRATIONS = [
   'supabase/migrations/20260911_tappy_business_p4_order_immutability.sql',
 ].map((f) => readFileSync(join(REPO, f), 'utf8'))
 
-const PORT = 54381
+// 54381 belongs to review_likes_private (V3); unique per suite, see portAllocation.test.ts
+const PORT = 54314
 
 const pid = (n: number) => String(n).padStart(26, '0')
 const hashOf = (token: string) =>

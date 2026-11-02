@@ -58,9 +58,11 @@ function scripted(cost: number, failOnCall?: number) {
 const seen2sessions = (s: Array<{ session: string }>) => s.map(x => x.session)
 
 const run = (post: unknown, turns: UatTurn[], fsObj = memFs()): Promise<TrialOutcome> =>
-  runLiveTrial({ env: process.env, post, fetchImpl: (async () => new Response('{}', { status: 200 })) as typeof fetch, fs: fsObj, repoRoot: 'D:/TappyAI-wt/wt-integration', now: () => 1_000, turns, afterTrial: 'deny' } as never)
+  runLiveTrial({ env: process.env, post, fetchImpl: (async () => new Response('{}', { status: 200 })) as typeof fetch, fs: fsObj, repoRoot: process.cwd(), now: () => 1_000, turns, afterTrial: 'deny' } as never)
 
-describe('mock 30-turn run through runLiveTrial (dev-multi path, fake network, scripted model)', () => {
+// The question set is the owner's own file outside the repository (as devQuestions.notes.test.ts and questionFileV2.test.ts already treat theirs):
+// where it is absent (GitHub's runner) these runs are skipped, on the owner's machine they run as before.
+describe.skipIf(!fs.existsSync(EXT))('mock 30-turn run through runLiveTrial (dev-multi path, fake network, scripted model)', () => {
   it('a) all 30 turns run in one process, in file order, with the right ids and no gaps or repeats', async () => {
     const turns = ext30()
     const m = scripted(0.01)

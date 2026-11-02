@@ -30,7 +30,8 @@ const MIGRATIONS = [
   'supabase/migrations/20260910_tappy_business_p3_order_transitions.sql',
 ].map((f) => readFileSync(join(REPO, f), 'utf8'))
 
-const PORT = 54379
+// 54379 belongs to plan_shares_boundary (RC); unique per suite, see portAllocation.test.ts
+const PORT = 54313
 
 const pid = (n: number) => String(n).padStart(26, '0')
 const hashOf = (token: string) =>

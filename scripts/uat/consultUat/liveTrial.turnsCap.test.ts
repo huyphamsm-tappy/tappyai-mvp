@@ -44,7 +44,7 @@ const spendingPost = (usd: number, unknownOnCall?: number) => {
 }
 
 const run = (post: never, turns: UatTurn[], over: Record<string, unknown> = {}): Promise<TrialOutcome> =>
-  runLiveTrial({ env: process.env, post, fetchImpl: fakeNetwork, fs: memFs(), repoRoot: 'D:/TappyAI-wt/wt-integration', now: () => 1_000, turns, afterTrial: 'deny', ...over } as never)
+  runLiveTrial({ env: process.env, post, fetchImpl: fakeNetwork, fs: memFs(), repoRoot: process.cwd(), now: () => 1_000, turns, afterTrial: 'deny', ...over } as never)
 
 describe('the run cap across turns in one process (the sum is never above the cap)', () => {
   it('the cap cuts in the middle: turn 3 is refused BEFORE its request, turns 4+ are not run, and the sum never exceeds the run cap', async () => {

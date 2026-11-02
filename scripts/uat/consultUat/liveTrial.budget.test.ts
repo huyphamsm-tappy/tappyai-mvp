@@ -43,7 +43,7 @@ const spend = (actualUsd: number | 'unknown', reserveUsd = 0.03) => {
   return { post, calls }
 }
 const run = (post: never, turns: UatTurn[]): Promise<TrialOutcome> =>
-  runLiveTrial({ env: process.env, post, fetchImpl: (async () => new Response('{}', { status: 200 })) as typeof fetch, fs: memFs(), repoRoot: 'D:/TappyAI-wt/wt-integration', now: () => 1_000, turns, afterTrial: 'deny' } as never)
+  runLiveTrial({ env: process.env, post, fetchImpl: (async () => new Response('{}', { status: 200 })) as typeof fetch, fs: memFs(), repoRoot: process.cwd(), now: () => 1_000, turns, afterTrial: 'deny' } as never)
 
 describe('a settled turn releases its reservation: the next turn is admitted on the known total, not on every earlier reservation', () => {
   it('(a) turn 1 spends a small 0.004 (its per-call worst case is 0.03; the run guard holds the 0.05 turn cap): turn 2 is admitted and runs', async () => {
