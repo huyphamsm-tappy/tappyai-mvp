@@ -14,13 +14,17 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { NextResponse } from 'next/server'
 import { isAppleIAPConfigured, isSubscriptionActive, getSubscriptionStatuses } from '@/lib/apple-iap/api'
 import { verifyTransactionInfo, JWSVerificationError } from '@/lib/apple-iap/jws'
-import { checkAppleTransaction, APPLE_PRO_PRODUCT_IDS, applePlanForProduct, keepsLongerExternalPlan } from '@/lib/apple-iap/transactionPolicy'
+import { checkAppleTransaction, transactionMismatchKind, APPLE_PRO_PRODUCT_IDS, applePlanForProduct, keepsLongerExternalPlan } from '@/lib/apple-iap/transactionPolicy'
 import { type PaidPlanId } from '@/lib/plans/planConfig'
 import { applyEntitlement } from '@/lib/payments/grantPlan'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 
 import type { JWSTransaction } from '@/lib/apple-iap/types'
+
+/** The refusal for the server log; a transaction_mismatch also says WHICH check refused (a label, never an id or a token). */
+const refusalLabel = (refusal: string, tx: JWSTransaction, opts: { originalTransactionId: string; appAccountToken: string }): string =>
+  refusal === 'transaction_mismatch' ? `${refusal} (${transactionMismatchKind(tx, opts) ?? 'unknown'})` : refusal
 
 export async function POST(req: Request) {
   try {
@@ -83,7 +87,7 @@ export async function POST(req: Request) {
               expectedProductId: productId,
             })
             if (refusal) {
-              console.error('[iap/apple/verify] API signedTransactionInfo refused:', refusal)
+              console.error('[iap/apple/verify] API signedTransactionInfo refused:', refusalLabel(refusal, decoded, { originalTransactionId: String(originalTransactionId), appAccountToken: user.id }))
               if (refusal === 'product_mismatch' || refusal === 'unknown_product') {
                 return NextResponse.json({ error: 'invalid_product', message: serverMessage('subscription.invalidTransaction', requestLocale(req)) }, { status: 400 })
               }
@@ -141,7 +145,7 @@ export async function POST(req: Request) {
           expectedProductId: productId,
         })
         if (refusal) {
-          console.error('[iap/apple/verify] Client-sent JWS refused:', refusal)
+          console.error('[iap/apple/verify] Client-sent JWS refused:', refusalLabel(refusal, decoded, { originalTransactionId: String(originalTransactionId), appAccountToken: user.id }))
           if (refusal === 'product_mismatch' || refusal === 'unknown_product') {
             return NextResponse.json({ error: 'invalid_product', message: serverMessage('subscription.invalidTransaction', requestLocale(req)) }, { status: 400 })
           }
