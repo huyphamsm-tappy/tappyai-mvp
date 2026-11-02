@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple kiểm tra MacBook Activation Lock Find My trước khi mua used Mac",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:34:58.179Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple kiểm tra MacBook Activation Lock Find My trước khi mua used Mac",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cách check iCloud ẩn trên iPhone, iPad chính xác tuyệt đối",
+    "link": "https://www.thegioididong.com/hoi-dap/check-icloud-tren-thiet-bi-cua-apple-635683",
+    "snippet": "Hướng dẫn 3 cách check iCloud ẩn bằng IMEI và restore máy trước khi mua iPhone, iPad cũ. Đảm bảo an toàn, tránh bị khoá máy và mất tiền oan!",
+    "date": "30 thg 11, 2025",
+    "position": 1
+   },
+   {
+    "title": "Cách kiểm tra iCloud ẩn trên iPhone khi mua máy cũ đơn ...",
+    "link": "https://dienthoaivui.com.vn/icloud-an-la-gi-cach-kiem-tra-ipad-co-dinh-icloud-an-khong",
+    "snippet": "Cách kiểm tra iCloud ẩn trên iPhone giúp xác minh Activation Lock khi mua máy cũ, tránh thiết bị còn liên kết Apple Account của chủ trước.",
+    "date": "2 ngày trước",
+    "position": 2
+   },
+   {
+    "title": "Hướng dẫn check iCloud MacBook bị dính không và cách ...",
+    "link": "https://cellphones.com.vn/sforum/check-icloud-macbook",
+    "snippet": "Kiểm tra thông qua iUnlocker ... iUnlocker là một công cụ trực tuyến miễn phí giúp check iCloud MacBook có dính không một cách nhanh chóng và dễ dàng. iUnlocker ...",
+    "rating": 1,
+    "ratingCount": 1,
+    "position": 3
+   },
+   {
+    "title": "Cảnh báo anh em mua máy Mac cũ! | Viết bởi summon_rain",
+    "link": "https://tinhte.vn/thread/canh-bao-anh-em-mua-may-mac-cu.3680805/",
+    "snippet": "Cách chắc chắn 100% để kiểm tra Activation Lock - iCloud ẩn. Sau khi gọi lên Apple Support VN và chat với nhân viên của Apple, mình được ...",
+    "date": "12 thg 6, 2023",
+    "rating": 5,
+    "ratingCount": 23,
+    "position": 4
+   },
+   {
+    "title": "Cách Kiểm Tra iCloud iPhone Cũ Trước Khi Mua",
+    "link": "https://hoanghamobile.com/tin-tuc/cach-kiem-tra-icloud-iphone-cu/?srsltid=AU7gw4Wfhl3Hp9APAYxVRqOxValo7k5xnEpL9r-EORez99JtccBGNV6s",
+    "snippet": "Cách kiểm tra iCloud iPhone cũ trước khi mua để tránh dính Activation Lock: kiểm tra theo IMEI, đăng xuất iCloud. Hướng dẫn chi tiết tại Hoàng Hà Mobile.",
+    "position": 5
+   },
+   {
+    "title": "️ iPhone, iPad và MacBook đều có nhiều trường hợp dính ...",
+    "link": "https://www.facebook.com/ngo.hoai.anh.2024/videos/%EF%B8%8F-iphone-ipad-v%C3%A0-macbook-%C4%91%E1%BB%81u-c%C3%B3-nhi%E1%BB%81u-tr%C6%B0%E1%BB%9Dng-h%E1%BB%A3p-d%C3%ADnh-icloud-%C4%91%E1%BA%B7c-bi%E1%BB%87t-mua-%C4%91%E1%BA%AFt-ch/1059410806854703/",
+    "snippet": "iPhone, iPad và MacBook đều có nhiều trường hợp dính iCloud. Đặc biệt, mua đắt chưa chắc đã an toàn — vẫn có thể gặp máy bị khóa.",
+    "position": 6
+   },
+   {
+    "title": "Nếu máy Mac của bạn bị thất lạc hoặc mất cắp",
+    "link": "https://support.apple.com/vi-vn/102481",
+    "snippet": "Đăng nhập vào icloud.com/find, rồi chọn máy Mac từ menu Thiết bị. · Nhập mật mã bạn đã tạo khi khóa máy bằng tính năng Tìm trên máy Mac dùng chip Intel, không có ...",
+    "position": 7
+   },
+   {
+    "title": "Mẹo check iPhone có bị dính iCloud hay không | Thế Giới Di ...",
+    "link": "https://www.youtube.com/watch?v=dWg_qgYJkBw",
+    "snippet": "Tôi có vô cài đặt và chọn reset máy và chọn dòng 2 nhưng trước khi reset nó hỏi có xóa esim vs dữ liệu không , t chọn không thì thế đã reset ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

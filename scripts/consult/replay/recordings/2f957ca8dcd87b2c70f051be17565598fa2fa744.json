@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hanami Hotel Danang\" OR \"Khách Sạn Parosand\" OR \"Eden Ocean View Đà Nẵng\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:06:50.251Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hanami Hotel Danang\" OR \"Khách Sạn Parosand\" OR \"Eden Ocean View Đà Nẵng\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn Parosand Đà Nẵng gần My Khe",
+    "link": "https://www.tiktok.com/@vivudanang243/video/7684608514567720212",
+    "snippet": "Khách sạn Parosand Đà Nẵng gần My Khe: Review nhanh cho chuyến đi. Tổng quan nhanh Bạn đang tham khảo căn phòng tại Parosand Hotel để quyết ...",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn Parosand Đà Nẵng: Sang trọng và Tiện Lợi",
+    "link": "https://www.tiktok.com/@thoitietdanang.tiktok/video/7569812041976810759",
+    "snippet": "Khách sạn Parosand Đà Nẵng: Sang trọng và Tiện Lợi. Khám phá khách sạn 4 sao Parosand với view đẹp và phòng nghỉ sang trọng tại Đà Nẵng. Tận ...",
+    "position": 2
+   },
+   {
+    "title": "deco lại khách sạn eden ocean view Đà Nẵng #biểnmykhe ...",
+    "link": "https://www.tiktok.com/@tetj73/video/7005734780885126427",
+    "snippet": "Video TikTok từ tẹt nội thất✓ (@tetj73): \"deco lại khách sạn eden ocean view Đà Nẵng #biểnmykhe #đànẵng\".nhạc nền - tẹt nội thất✓.",
+    "position": 3
+   },
+   {
+    "title": "Eden Ocean View Đà Nẵng",
+    "link": "https://www.tiktok.com/discover/eden-ocean-view-%C4%91%C3%A0-n%E1%BA%B5ng",
+    "snippet": "4.2M bài đăng. Hãy khám phá video liên quan đến Eden Ocean View Đà Nẵng trên TikTok. Xem thêm video về Eco Beach Đà Nẵng, Belle Maison Đà ...",
+    "date": "14 thg 9, 2026",
+    "position": 4
+   },
+   {
+    "title": "Eden Hotel Da Nang: Luxury by Maia Beach",
+    "link": "https://www.tiktok.com/@robgreeley2/video/7585884963909029141",
+    "snippet": "Experience luxury at Eden Hotel Da Nang with ocean views, a buffet breakfast, and. @Rob Greeley · Christmas · Eden Ocean View Đà Nẵng · author.",
+    "position": 5
+   },
+   {
+    "title": "original sound - bookmorepatients.ca",
+    "link": "https://www.tiktok.com/music/original-sound-bookmorepatientsca-7627487995364526866",
+    "snippet": "eden-ocean-view-đà-nẵng. |. Pandawara saluran dibuang ke sungai masih berfungsi? slowmo reaction. |. como-tomar-capture-en-samsung-a17. |. Earpod Case mura at ...",
+    "position": 6
+   },
+   {
+    "title": "mahamat bechir mahamat - son original",
+    "link": "https://www.tiktok.com/music/son-original-7679872444152302354",
+    "snippet": "Khách sạn Parosand Đà Nẵng gần My Khe: Review nhanh cho chuyến đi. |. Ash Greninja: A Tough Childhood Companion. |. douglas road bristol bad. |. منيو-مطعم-علي ...",
+    "position": 7
+   },
+   {
+    "title": "รีวิว Eden Ocean View Đà NAng โรงแรมระดับ 4 ดาว แต่ถ้าถาม ...",
+    "link": "https://www.tiktok.com/@travelwonders.th/video/7655528137480047893",
+    "snippet": "... รีวิว Eden Ocean View Đà NAng โรงแรมระดับ 4 ดาว แต่ถ้าถามความรู้สึกส่วนตัว. @TravelWonders.th · Originalton · Eden Ocean View Đà Nẵng · author.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

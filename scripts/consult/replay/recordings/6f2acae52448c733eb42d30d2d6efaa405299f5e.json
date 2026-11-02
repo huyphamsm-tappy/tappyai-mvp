@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Cầu Rồng\" OR \"Bảo tàng 3D Art In Paradise\" OR \"Công viên Suối khoáng nóng Núi Thần Tài Đà Nẵng\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:36:19.251Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Cầu Rồng\" OR \"Bảo tàng 3D Art In Paradise\" OR \"Công viên Suối khoáng nóng Núi Thần Tài Đà Nẵng\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Lưu Ý Quan Trọng Khi Xem Cầu Rồng Phun Lửa",
+    "link": "https://www.tiktok.com/@insightdanang/video/7691603474605264148",
+    "snippet": "* **Ngày diễn:** Chỉ có vào thứ Bảy và Chủ Nhật. * **Địa điểm:** Cầu Rồng, nối liền hai quận Hải Châu và Sơn Trà. ### Kinh Nghiệm Xem Cầu Rồng ...",
+    "position": 1
+   },
+   {
+    "title": "Photobooth Cầu Rồng ở Đà Nẵng",
+    "link": "https://www.tiktok.com/@ptbdanang/video/7685691355934297364",
+    "snippet": "Photobooth Cầu Rồng ở Đà Nẵng là chủ đề chính. Nội dung liên quan tới photobooth Cầu Rồng và sự kiện Cầu Rồng phun lửa được nhắc đến cùng ...",
+    "position": 2
+   },
+   {
+    "title": "Cầu Rồng Đà Nẵng Lạ Lùng & Tour Ngắm Cầu",
+    "link": "https://www.tiktok.com/@hii_twn/video/7679766311987072276",
+    "snippet": "Cầu Rồng Đà Nẵng mang đến một vẻ ngoài thật lạ lẫm, thu hút sự chú ý của nhiều người. Bạn có thể trải nghiệm vẻ đẹp độc đáo này bằng cách ...",
+    "position": 3
+   },
+   {
+    "title": "Dân chơi sợ gì mưa rơi - Photobooth Cầu Rồng Đà Nẵng",
+    "link": "https://www.tiktok.com/@ptbdanang/video/7684569376325995797",
+    "snippet": "Cầu Rồng thường phun lửa theo lịch trình, tạo nền hậu cảnh ấn tượng cho ảnh và video. - Tình huống thời tiết: Mưa không ngăn được nhóm người vui ...",
+    "position": 4
+   },
+   {
+    "title": "Cầu Rồng Đà Nẵng phun nước: trải nghiệm ướt vui nhất",
+    "link": "https://www.tiktok.com/@thanh.reviewnhanh/video/7651257335247047952",
+    "snippet": "Những gì bạn sẽ thấy - Cầu Rồng phun nước mạnh vào phía khán đài, khiến người đứng gần bị ướt. - Khung cảnh vui nhộn: nhiều người bất ngờ, bật ...",
+    "position": 5
+   },
+   {
+    "title": "Chụp ảnh Cầu Rồng Đà Nẵng sao cho nét",
+    "link": "https://www.tiktok.com/@ptbdanang/video/7686788204325850388",
+    "snippet": "Bài viết này gợi ý góc, phong cách và hashtag để có loạt ảnh photobooth đẹp ở Cầu Rồng. Gợi ý vị trí và góc chụp - Chọn thời điểm: hoàng hôn đến ...",
+    "position": 6
+   },
+   {
+    "title": "Các cây cầu nổi tiếng ở Đà Nẵng — Top 1 Cầu Rồng",
+    "link": "https://vt.tiktok.com/ZSbmjduuE/",
+    "snippet": "Thành phố được gọi là \"Thành phố của những cây cầu\" nhờ nhiều công trình kiến trúc cầu nổi bật. Trong đó, Cầu Rồng được xếp hạng Top 1 về mức độ ...",
+    "position": 7
+   },
+   {
+    "title": "Review Đà Nẵng Cầu Rồng - HatinhNho",
+    "link": "https://www.tiktok.com/@hatinhnho/video/7687872265790311701",
+    "snippet": "22 Lượt thích,Video TikTok từ HatinhNho (@hatinhnho): \"Xem review Đà Nẵng và Cầu Rồng.\".",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

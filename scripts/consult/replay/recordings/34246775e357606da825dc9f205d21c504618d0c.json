@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "AirPods Pro 2 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:16:06.406Z",
+ "body": {
+  "searchParameters": {
+   "q": "AirPods Pro 2 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "airpods pro 2เคส",
+    "link": "https://shop.tiktok.com/vn/k/airpods-pro-2-ekhs",
+    "snippet": "Khám phá airpods pro 2เคส mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất hôm nay.",
+    "position": 1
+   },
+   {
+    "title": "จุกหูฟังairpods pro 1",
+    "link": "https://shop.tiktok.com/vn/k/chuk-hufang-airpods-pro-1",
+    "snippet": "Vỏ Ốp Airpods Pro 2, Nút Nhấn, Thiết Kế Hoạt Hình Trò Chơi, Ốp Bảo Vệ Cứng, Tương Thích Với Airpods Pro 3 Thế Hệ Thứ 2, Ốp 3. 4.4. 1572 sold. ₫105.980.",
+    "position": 2
+   },
+   {
+    "title": "airpod pro 2 type c",
+    "link": "https://shop.tiktok.com/vn/k/airpod-pro-2-type-c",
+    "snippet": "The AirPods Pro 2 Type C are the latest in wireless earbud technology, designed to provide an unparalleled listening experience.",
+    "date": "5 ngày trước",
+    "position": 3
+   },
+   {
+    "title": "airpods pro 2 foam ear tip",
+    "link": "https://shop.tiktok.com/vn/k/airpods-pro-2-foam-ear-tip",
+    "snippet": "Khám phá airpods pro 2 foam ear tip mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất ...",
+    "position": 4
+   },
+   {
+    "title": "Airpods pro 2 orange casw",
+    "link": "https://shop.tiktok.com/vn/k/airpods-pro-2-orange-casw",
+    "snippet": "Khám phá Airpods pro 2 orange casw mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất ...",
+    "position": 5
+   },
+   {
+    "title": "apple airpod pro 2 right side only buy",
+    "link": "https://shop.tiktok.com/vn/k/apple-airpod-pro-2-right-side-only-buy",
+    "snippet": "apple airpod pro 2 right side only buy ; 4.6. 276 sold · 24.650. ₫29.000 ; 4.3. 939 sold · 34.999. ₫38.000 ; 5. 20 sold · 54.999. ₫66.000 ...",
+    "position": 6
+   },
+   {
+    "title": "Original airpods pro 2 gen - TikTok Shop Vietnam",
+    "link": "https://shop.tiktok.com/vn/k/original-airpods-pro-2-gen",
+    "snippet": "Tai nghe AirPods Pro (Thế hệ 2) – Đỉnh cao của âm thanh không dây 1. Thiết kế cải tiến: AirPods Pro Gen 2 giữ nguyên thiết kế in-ear nhỏ gọn, ...",
+    "position": 7
+   },
+   {
+    "title": "airpods pro 2 hổ vằn",
+    "link": "https://shop.tiktok.com/vn/k/airpods-pro-2-ho-van",
+    "snippet": "Khám phá airpods pro 2 hổ vằn mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất hôm ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

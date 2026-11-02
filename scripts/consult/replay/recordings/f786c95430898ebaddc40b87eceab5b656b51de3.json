@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Xóm Chợ Cũ Restaurant\" OR \"Quán Bụi Original\" OR \"Viet Kitchen\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:01:17.815Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Xóm Chợ Cũ Restaurant\" OR \"Quán Bụi Original\" OR \"Viet Kitchen\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "The Timeless Joy of Pho Pours at Gao Viet Kitchen",
+    "link": "https://www.tiktok.com/@mr.gaoviet/video/7609564445445999902",
+    "snippet": "At Gao Viet Kitchen, the art of pouring pho never gets old. Each bowl is crafted with the same passion and dedication, showcasing the love ...",
+    "position": 1
+   },
+   {
+    "title": "Discover NK Viet Kitchen: A Vietnamese Gem in Hollywood",
+    "link": "https://www.tiktok.com/@treatyoselfeverywhere/video/7503929972520701214",
+    "snippet": "This new restaurant in South Florida is a true gem Name: NK Viet Kitchen- Cơm Gà Ninh Kiều 3373 Sheridan St, Hollywood, FL 33021 # ...",
+    "position": 2
+   },
+   {
+    "title": "🍤🍜 JAM VIET KITCHEN 🍜🍤 is a delicious modern style ...",
+    "link": "https://www.tiktok.com/@chrristiinnee/video/7678845896053886239",
+    "snippet": "JAM VIET KITCHEN is a delicious modern style Vietnamese restaurant that you definitely need to check out! Think creative cocktails ...",
+    "position": 3
+   },
+   {
+    "title": "Epic Phozilla Bowl at Gao Viet Kitchen",
+    "link": "https://www.tiktok.com/@getrevi/video/7549301849958993165",
+    "snippet": "Discover the massive Phozilla bowl packed with lobster and beef rib at Gao Viet Kitchen. Perfect for hungry diners! #Phozilla #GaoVietKitchen.",
+    "position": 4
+   },
+   {
+    "title": "Viet Kitchen Tampa FL — 3698 W Waters Ave Vietnamese ...",
+    "link": "https://www.tiktok.com/@chubbysoupdumpling/video/7688179114162883853",
+    "snippet": "Viet Kitchen is located at 3698 W Waters Ave, Tampa, FL 33614. The video notes that staff did not bring a menu to the table.",
+    "position": 5
+   },
+   {
+    "title": "Video sponsored by @Viet Kitchen Lakewood One of my ...",
+    "link": "https://www.tiktok.com/@erika.taste.test/video/7580219334304304414",
+    "snippet": "11101 Pacific Hwy SW Suite 1, Lakewood, WA 98499 LET'S EAT! . Video sponsored by @Viet Kitchen Lakewood One of my favorite Vietnamese ...",
+    "position": 6
+   },
+   {
+    "title": "Viet Kitchen. The newest Vietnamese restaurant in Grand ...",
+    "link": "https://www.tiktok.com/@eatgr/video/7652023618104200461",
+    "snippet": "323 Likes, TikTok video from EatGR (@eatgr): “Viet Kitchen. The newest Vietnamese restaurant in Grand Rapids.",
+    "position": 7
+   },
+   {
+    "title": "Best Pho & Wings at Viet Kitchen in Tampa | Taste Test",
+    "link": "https://www.tiktok.com/@foodiejustice/video/7629415810351631646",
+    "snippet": "Everybody's been asking where the best pho is, and today I'm at Viet Kitchen to find out. This spot is known for having some of the best wings, ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"iPhone 15 Pro 256GB\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:09:02.750Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"iPhone 15 Pro 256GB\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "iPhone 15 Pro 256gb giá mới T10/2026, trả góp 12 tháng",
+    "link": "https://cellphones.com.vn/iphone-15-pro-256gb.html",
+    "snippet": "iPhone 15 Pro 256GB là sự kết hợp hoàn hảo giữa thiết kế đẹp mắt, hiệu năng mạnh mẽ và camera hàng đầu. iPhone 15 Pro mang lại cho người dùng sự sang trọng từ ...",
+    "rating": 5,
+    "ratingCount": 7,
+    "position": 1
+   },
+   {
+    "title": "iPhone 15 Pro 256GB - Cũ Đẹp | Giá rẻ",
+    "link": "https://cellphones.com.vn/iphone-15-pro-256gb-cu-dep.html",
+    "snippet": "Mua Điện thoại iPhone 15 Pro (256GB) cũ giá rẻ - Nguồn gốc rõ ràng, bảo hành 6-12 tháng, đổi mới 30 ngày, luôn xuất bán đầy đủ VAT.",
+    "rating": 4.7,
+    "ratingCount": 3,
+    "position": 2
+   },
+   {
+    "title": "iPhone 15 Pro 256GB - Cũ Trầy Xước | Giá rẻ",
+    "link": "https://cellphones.com.vn/iphone-15-pro-256gb-cu-tray-xuoc.html",
+    "snippet": "Chào Anh Phi! Dạ APPLE IPHONE 15 PRO 256GB TITAN TỰ NHIÊN CŨ - TRẦY XƯỚC Giá thời điểm hiện tại 19.490.000 còn khu vực phía nam.",
+    "position": 3
+   },
+   {
+    "title": "iPhone 15 Pro 256GB - Đã Kích Hoạt | Giá rẻ",
+    "link": "https://cellphones.com.vn/iphone-15-pro-256gb-da-kich-hoat.html",
+    "snippet": "iPhone 15 Pro 256GB - Đã Kích Hoạt ; HSSV, Giáo viên đến 700.000đ ; Smember Giảm thêm đến 241.000đ ; Trả góp 0% ; Giá sản phẩm. 31.990.000đ 24.090.000đ ; Danh sách ...",
+    "position": 4
+   },
+   {
+    "title": "iPhone 15 Pro Max 256GB - Cũ Xước Cấn | Giá rẻ",
+    "link": "https://cellphones.com.vn/iphone-15-pro-max-256gb-cu-xuoc-can.html",
+    "snippet": "iPhone 15 Pro 256GB - Cũ Đẹp. Trả góp 0%. : 19.890.000đ. 31.990.000đ. Giảm 38%. Trả góp 0% lãi suất, tối đa 6 tháng, trả trước từ ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 5
+   },
+   {
+    "title": "Vén màn bật mí những thông tin về iPhone 15 Pro Max ...",
+    "link": "https://cellphones.com.vn/sforum/iphone-15-pro-max-titan-xanh",
+    "snippet": "iPhone 15 Pro 256GB: 30.890.000 VNĐ; iPhone 15 Pro 512GB: 36.490.000 VNĐ; iPhone 15 Pro 1TB: 42.590.000 VNĐ; iPhone 15 Pro Max 256GB: 34.990 ...",
+    "date": "16 thg 10, 2023",
+    "position": 6
+   },
+   {
+    "title": "Tất tần tật giá bán chính thức của iPhone 15 Series tại Việt ...",
+    "link": "https://cellphones.com.vn/sforum/gia-ban-chinh-thuc-cua-iphone-15-series-tai-viet-nam",
+    "snippet": "iPhone 15 Pro 256GB: 31,999,000 đồng; iPhone 15 Pro 512GB: 37,999,000 đồng; iPhone 15 Pro 1TB: 43,999,000 đồng; Màu sắc: Titan Tự Nhiên, Titan Xanh, Titan ...",
+    "position": 7
+   },
+   {
+    "title": "iPhone 15 Series cũ, trả góp 0%, chính hãng, đủ màu",
+    "link": "https://cellphones.com.vn/hang-cu/iphone/iphone-15.html",
+    "snippet": "... iPhone 15 Pro 256GB - Cũ Trầy Xước. Trả góp 0%. : 18.890.000đ. 31.990.000đ. Giảm 41%. Smember giảm đến 189.000đ. S-Student giảm ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

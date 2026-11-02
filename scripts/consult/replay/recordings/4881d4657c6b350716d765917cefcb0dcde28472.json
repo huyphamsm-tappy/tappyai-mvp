@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"JBL Endurance Pace\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:26:54.905Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"JBL Endurance Pace\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe Bluetooth JBL Endurance Pace | Giá rẻ, ưu đãi tốt",
+    "link": "https://cellphones.com.vn/tai-nghe-bluetooth-jbl-endurance-pace.html",
+    "snippet": "Tai nghe Bluetooth JBL Endurance Pace là dòng tai nghe thể thao, được tích hợp công nghệ JBL OpenSound tăng cường âm bass và mang đến chất âm sống động. Với ...",
+    "position": 1
+   },
+   {
+    "title": "Tai nghe truyền xương không dây, nhiều mẫu giá rẻ, góp 0%",
+    "link": "https://cellphones.com.vn/bo-loc/tai-nghe-truyen-xuong",
+    "snippet": "... Tai nghe Bluetooth JBL Endurance Pace. Sắp về hàng. Trả góp 0%. : 1.990.000đ. Smember giảm đến 20.000đ. S-Student giảm thêm 99.500đ.",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -21,7 +21,9 @@ export type ProviderId = 'claude' | 'openai' | 'gemini' | 'grok' | 'deepseek'
  * `consult` and `intent` resolve to the default provider unless LLM_CONSULT_PROVIDER /
  * LLM_INTENT_PROVIDER route them elsewhere (registry.ts), with the default provider as fallback.
  */
-export type ModelRole = 'fast' | 'smart' | 'planning' | 'vision' | 'consult' | 'intent' | 'plan'
+// agent: a step of the Phase 8 agent runtime (TAPPY_AGENT=2). A RUNTIME role, not another model — it resolves to the same Luna model
+// as every other role and only carries its own timeout + abort-before-retry policy (registry.ts / fallback.ts).
+export type ModelRole = 'fast' | 'smart' | 'planning' | 'vision' | 'consult' | 'intent' | 'plan' | 'agent'
 
 /**
  * Reasoning effort for a model that reasons (owner 2026-09-30: always explicit — a vendor default of
@@ -56,12 +58,52 @@ export interface AIGenerateOptions {
    * pays the +25% write premium on that prefix and never reads it back.
    */
   cacheHistory?: boolean
+  /**
+   * The call is made by the Phase 8 agent runtime (src/lib/ai/agent/runtime). Only read by the registry under AGENT_MODEL=haiku55,
+   * where it routes the runtime's non-`agent` role (its final `plan` step) to the agent model too. No effect otherwise.
+   */
+  agentRuntime?: boolean
+  /** C2_REQUEST_BUDGET: who is calling ('aux' = may be skipped when the request budget is short; 'guard' = must fail closed). Default 'main'. */
+  budgetKind?: 'main' | 'aux' | 'guard'
+  /**
+   * How many times the SDK may re-send a failed request. `2` means up to three
+   * attempts in total.
+   *
+   * ── Why this is an option at all (P2 cost safeguard) ─────────────────────
+   * It was never passed anywhere, so every call ran at the AI SDK's own default
+   * — which is 2. That is a defensible number, but it was not a DECISION: it
+   * was a default nobody had read, sitting under the most expensive call in the
+   * product. A provider 5xx therefore multiplies input tokens by three, and
+   * nothing in the telemetry can see it: `llmCalls` counts STEPS, not attempts,
+   * and `usage` reports only the attempt that succeeded. So a retry storm looks
+   * exactly like ordinary traffic on the cost dashboard, at three times the
+   * price.
+   *
+   * Naming it changes no behaviour today and is not meant to. What it changes
+   * is that the ceiling is now reviewable, and an SDK upgrade that moves the
+   * default cannot move our spend without a diff — the same class of silent
+   * drift the removed `prepareStep` note in this file describes.
+   */
+  maxRetries?: number
 }
 
 export interface AIStreamOptions extends AIGenerateOptions {
   /** AI-SDK tool set (zod-defined) — provider-neutral by construction. */
   tools?: Parameters<typeof streamText>[0]['tools']
   maxSteps?: number
+  /** N2 (30/10): allow several tool calls in one step (sent only with tools, like AIStepOptions.parallelTools). Unset = one call per step. */
+  parallelTools?: boolean
+  /**
+   * 31/10 (mode "Suy nghĩ"): reasoning effort for THIS call, sent through the OpenAI Responses API (the only one that reasons WITH tools) and
+   * streamed. Unset = the role's configured path and effort, unchanged. Other providers ignore it.
+   */
+  thinkEffort?: ReasoningEffort
+  /**
+   * 01/11 (mode "Tự động"): a switch the caller turns on during the turn (the model's think_deeper tool). streamText hands the SAME provider
+   * options to every step, so each step after it is switched on asks for the Responses API at `effort` (as thinkEffort does for a whole
+   * turn); the steps before it run as Chat. Ignored when thinkEffort is set.
+   */
+  autoThink?: { on: boolean; effort: ReasoningEffort }
   // REMOVED (C2): a `prepareStep` option forwarded as experimental_prepareStep.
   // streamText in ai@4.3.19 does not accept it — only generateText does — so it
   // was silently discarded on every call while its @ts-ignore claimed the
@@ -112,10 +154,14 @@ export interface AIStepOptions extends AIGenerateOptions {
   abortSignal?: AbortSignal
   /** Allow several read-only tool calls in one step (the loop runs them concurrently, each counted against the turn budget). */
   parallelTools?: boolean
+  /** C2_TOOL_ROUND_EFFORT: reasoning effort for THIS step only (honoured by the Responses adapter; other providers ignore it). */
+  effort?: ReasoningEffort
 }
 
 export interface AIVisionOptions {
   role?: ModelRole
+  /** C2_REQUEST_BUDGET: see AIGenerateOptions.budgetKind. Default 'main'. */
+  budgetKind?: 'main' | 'aux' | 'guard'
   /** Base64 string, URL, or raw bytes — normalized by the AI SDK. */
   image: string | URL | Uint8Array | ArrayBuffer
   mimeType?: string

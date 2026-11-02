@@ -211,7 +211,7 @@ Không có nút tự xoá trong app: đường xoá duy nhất là vận hành v
 
 Emulator `Pixel_8_uat`, bản debug trỏ `http://localhost:3007/` qua `adb reverse`. Link share trên Android luôn là `www.tappyai.com/…` (F-078): mở **cùng id** trên `http://localhost:3007/…`.
 
-- [ ] 🚨 **Bố cục trước/sau đăng nhập:** `pm clear` → mở app (khách) → chụp màn Home → đăng nhập `manual.uat.user` bằng email + mật khẩu → chụp lại Home. Bố cục **phải giống nhau** (Home V3). Ảnh tham chiếu **trước** đăng nhập: `docs/uat/evidence/uat-prep-2026-09-26/android-guest-home-before-login.png`. Nếu sau đăng nhập ra giao diện "cũ hơn" → **F-107 chưa sửa**: Android không phát hành (session Zalo đang xử lý; bạn chỉ cần ghi lại còn hay hết). (F-107, d7a830d)
+- [ ] 🚨 **Bố cục trước/sau đăng nhập:** `pm clear` → mở app (khách) → chụp màn Home → đăng nhập `manual.uat.user` bằng email + mật khẩu → chụp lại Home. Bố cục **phải giống nhau** (Home V3). Ảnh tham chiếu **trước** đăng nhập: `docs/uat/evidence/uat-prep-2026-09-26/android-guest-home-before-login.png`. *F-107 không tái hiện sau khi gỡ và cài lại (chủ dự án, 27/09 — lần cài đầu điện thoại bị treo, nghi do bản cài hỏng); lượt này kiểm lại để theo dõi.* Nếu trên bản cài sạch vẫn ra giao diện "cũ hơn" → **mở lại F-107**: Android không phát hành. (F-107, d7a830d)
 - [ ] **F-070 — chia sẻ lịch trình:** Chat → "Lên lịch trình 1 ngày ở Đà Lạt cho 2 người" → 📤 Chia sẻ lịch trình → sheet hiện link `…/plan/<id>` trong vài giây, **không** kẹt ở "Đang tạo kế hoạch chia sẻ…". Mở `http://localhost:3007/plan/<id>` → brochure, không "chưa có giá". (F-070, 2153944)
 - [ ] **Share từ thanh dưới tin nhắn có thẻ địa điểm:** hỏi "Quán phở ngon ở Quận 3" → nút share ở thanh dưới câu trả lời → phải ra brochure gợi ý có tiêu đề là câu bạn hỏi, **không** phải chỉ đoạn văn. *Chưa ai bấm thử trên thiết bị.* (F-070, 2153944)
 - [ ] **Thẻ địa điểm Android:** cùng câu Quận 3 → thẻ có ảnh, địa chỉ Quận 3; "Vì sao: đánh giá 4.x · cách x km · N lượt đánh giá" (tiếng Việt); dải giá "dưới 100.000 ₫" hoặc "100.000–200.000 ₫"; **không** có "price_search_results"; tối đa 8 thẻ. "Xem bản đồ" mở Google Maps đúng quán. (F-050, F-052, F-060)
@@ -359,7 +359,7 @@ Emulator `Pixel_8_uat`, bản debug trỏ `http://localhost:3007/` qua `adb reve
 **Chặn launch, hoặc cần bạn quyết:**
 - **F-061 (P0):** giá trị secret đã lộ trong một phiên Claude → phải **rotate** (danh sách ở `PRELAUNCH-REPORT.md` Part 2).
 - **F-064 (P1):** token PAT Supabase nằm trong file local. **F-062 (P1):** Preview của Vercel mang key production.
-- **Android release blockers (DEPLOY-CHECKLIST):** **F-107** bố cục khác nhau trước/sau đăng nhập (session Zalo xử lý; §9 kiểm còn hay hết) và **F-098** bản minified thiếu keep rules R8. Nếu thấy ở §9, chỉ cần xác nhận, không cần mô tả lại.
+- **Android release blockers (DEPLOY-CHECKLIST):** **F-107** bố cục khác nhau trước/sau đăng nhập (không tái hiện sau khi cài lại ngày 27/09, vẫn theo dõi ở §9; tái hiện trên bản cài sạch thì mở lại); **F-098** bản minified thiếu keep rules R8. Nếu thấy ở §9, chỉ cần xác nhận, không cần mô tả lại.
 - **Merge `a6ca9f0` chưa được audit toàn bộ.** Nó đã làm mất dây nối share Android (F-070, đã sửa); có thể còn chỗ khác.
 - **iOS:** F-101 (clip 422) + UI music-reuse. Không phát hành iOS.
 - **F-002:** Next 14.2.35 — đã giảm thiểu trên Vercel, nâng cấp sau launch.

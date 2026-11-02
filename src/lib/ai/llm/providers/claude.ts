@@ -1,7 +1,8 @@
 import { createAnthropic } from '@ai-sdk/anthropic'
-import type { CoreMessage } from 'ai'
-import type { AIProvider } from '../provider'
+import type { CoreMessage, LanguageModelV1, LanguageModelV1StreamPart } from 'ai'
+import type { AIProvider, CallCost } from '../provider'
 import type { ModelOverrides, ModelRole } from '../types'
+import { agentTransport, type FetchLike } from './anthropicTransport'
 
 // ── Claude (Anthropic) adapter ───────────────────────────────────────────────
 // THE ONLY file in the codebase allowed to import an Anthropic SDK, mention a
@@ -37,6 +38,7 @@ const DEFAULT_MODELS: Record<ModelRole, string> = {
   consult:  'claude-haiku-4-5-20251001',
   intent:   'claude-haiku-4-5-20251001',
   plan:     'claude-haiku-4-5-20251001',
+  agent:    'claude-haiku-4-5-20251001',
 }
 
 /** The resolved default model id per role. Exported for the identity test, which
@@ -89,17 +91,127 @@ export function createClaudeProvider(overrides: ModelOverrides): AIProvider {
     // second step. A one-step turn pays the premium and gains nothing — accepted:
     // ~65% of measured turns call a tool. Anthropic allows four breakpoints, so
     // the two never conflict, and responses stay identical either way.
-    decorateMessages: (messages: CoreMessage[], opts?: { cacheHistory?: boolean }) => {
-      let marked = false
-      const lastUser = opts?.cacheHistory === false ? -1 : messages.reduce((idx, m, i) => (m.role === 'user' ? i : idx), -1)
-      return messages.map((m, i) => {
-        if (i === lastUser) {
-          return { ...m, providerOptions: { anthropic: { cacheControl: { type: 'ephemeral' as const } } } }
-        }
-        if (m.role !== 'system' || marked) return m
-        marked = true
-        return { ...m, providerOptions: { anthropic: { cacheControl: { type: 'ephemeral' as const } } } }
-      })
+    decorateMessages: claudeDecorateMessages,
+  }
+}
+
+/** The two cache breakpoints described above (first system message, last user message). Shared by the agent model. */
+export function claudeDecorateMessages(messages: CoreMessage[], opts?: { cacheHistory?: boolean }): CoreMessage[] {
+  let marked = false
+  const lastUser = opts?.cacheHistory === false ? -1 : messages.reduce((idx, m, i) => (m.role === 'user' ? i : idx), -1)
+  return messages.map((m, i) => {
+    if (i === lastUser) {
+      return { ...m, providerOptions: { anthropic: { cacheControl: { type: 'ephemeral' as const } } } }
+    }
+    if (m.role !== 'system' || marked) return m
+    marked = true
+    return { ...m, providerOptions: { anthropic: { cacheControl: { type: 'ephemeral' as const } } } }
+  })
+}
+
+// ── Agent runtime model: Claude Haiku 5.5 (AGENT_MODEL=haiku55, owner 2026-10-11) ──────────────────────────────────────
+// Chosen by registry.ts for the agent runtime's calls when AGENT_MODEL=haiku55; Luna stays the default. Thinking is off
+// (anthropicTransport.ts says why); the prompt and tools are the runtime's own, unchanged; prompt caching is the two
+// breakpoints above (Anthropic renders tools → system → messages, so the first-system breakpoint caches the tool
+// definitions and the static system block together; the per-turn system block and the data block sit after it).
+export const HAIKU55_MODEL_ID = 'claude-haiku-5-5'
+
+/**
+ * List prices, USD per million tokens — platform.claude.com/docs/en/about-claude/pricing (read 2026-10-11).
+ * Claude Haiku 5.5 has two rate cards chosen by the request's PROMPT length (input + cache reads + cache writes):
+ *   ≤ 100,000 tokens: input $0.10 · 5-min cache write $0.125 · cache read $0.01 · output $0.50
+ *   > 100,000 tokens: input $0.50 · 5-min cache write $0.625 · cache read $0.05 · output $2.50
+ * Only the 5-minute cache is used (the SDK's `ephemeral` marker carries no ttl).
+ */
+interface Rates { in: number; cacheWrite: number; cacheRead: number; out: number }
+const CLAUDE_PRICES: Array<[RegExp, { tierAbove?: number; low: Rates; high?: Rates }]> = [
+  [/^claude-haiku-5-5/, { tierAbove: 100_000, low: { in: 0.10, cacheWrite: 0.125, cacheRead: 0.01, out: 0.50 }, high: { in: 0.50, cacheWrite: 0.625, cacheRead: 0.05, out: 2.50 } }],
+]
+
+/** Anthropic usage semantics: `input` is the UNCACHED input only; cache reads and writes are reported beside it. */
+export interface AnthropicUsage { input: number; cacheRead: number; cacheWrite: number; output: number }
+
+/** USD of one Anthropic call at list price, or null for a model with no price row. */
+export function claudeCallCost(modelId: string, u: AnthropicUsage): CallCost | null {
+  const row = CLAUDE_PRICES.find(([re]) => re.test(modelId))?.[1]
+  if (!row) return null
+  const prompt = u.input + u.cacheRead + u.cacheWrite
+  const r = row.high && row.tierAbove != null && prompt > row.tierAbove ? row.high : row.low
+  const usd = (u.input * r.in + u.cacheWrite * r.cacheWrite + u.cacheRead * r.cacheRead + u.output * r.out) / 1e6
+  return {
+    provider: 'anthropic', model: modelId, effort: 'thinking_off',
+    inputTokens: prompt, cachedInputTokens: u.cacheRead, cacheWriteTokens: u.cacheWrite,
+    outputTokens: u.output, reasoningTokens: 0,
+    usd: Math.round(usd * 1e7) / 1e7,
+  }
+}
+
+/** True when the agent model can be called (the key is present). Never reveals the key. */
+export const anthropicConfigured = (): boolean => !!process.env.ANTHROPIC_API_KEY
+
+/** The NAME of the variable to set (for the config log and the error line) — never its value. */
+export const AGENT_MODEL_KEY_NAME = 'ANTHROPIC_API_KEY'
+
+const usageFrom = (usage: { promptTokens: number; completionTokens: number } | undefined, meta: Record<string, Record<string, unknown>> | undefined): AnthropicUsage => {
+  const a = meta?.anthropic ?? {}
+  const num = (v: unknown) => (typeof v === 'number' && Number.isFinite(v) ? v : 0)
+  return { input: usage?.promptTokens ?? 0, cacheRead: num(a.cacheReadInputTokens), cacheWrite: num(a.cacheCreationInputTokens), output: usage?.completionTokens ?? 0 }
+}
+
+/** One log line per priced call: model, tokens in/out, cache read/write, USD (never prompt text, never the key). */
+function logCost(c: CallCost, label: string): void {
+  console.log(JSON.stringify({ type: 'tappyai_agent_model_cost', label, model: c.model, tokens_in: c.inputTokens - c.cachedInputTokens - c.cacheWriteTokens, tokens_out: c.outputTokens, cache_read: c.cachedInputTokens, cache_write: c.cacheWriteTokens, usd: c.usd }))
+}
+
+/** A failed call, logged by status and vendor error type only (the response body can echo the request; it is not logged). */
+function logError(e: unknown, label: string): void {
+  const err = e as { statusCode?: number; responseBody?: string; name?: string }
+  let kind: string | null = null
+  try { kind = (JSON.parse(err.responseBody ?? '') as { error?: { type?: string } }).error?.type ?? null } catch { kind = null }
+  console.warn(JSON.stringify({ type: 'tappyai_agent_model_error', label, model: HAIKU55_MODEL_ID, status: err.statusCode ?? null, error_type: kind, name: err.name ?? null }))
+}
+
+/**
+ * The agent runtime's Claude Haiku 5.5 model. Prices every call into `providerMetadata.tappy.cost` (the neutral key the
+ * route and the runtime trace already read) and logs it. `fetchImpl` is for tests only.
+ */
+export function createHaiku55AgentModel(o: { label?: string; fetchImpl?: FetchLike } = {}): LanguageModelV1 {
+  const anthropic = createAnthropic({
+    apiKey: process.env.ANTHROPIC_API_KEY ?? '',
+    headers: { 'anthropic-beta': 'prompt-caching-2024-07-31' },
+    fetch: agentTransport(HAIKU55_MODEL_ID, o.fetchImpl) as never,
+  })
+  const inner = anthropic(HAIKU55_MODEL_ID)
+  const label = o.label ?? 'agent'
+  const withCost = (usage: { promptTokens: number; completionTokens: number } | undefined, meta: Record<string, Record<string, unknown>> | undefined) => {
+    const cost = claudeCallCost(HAIKU55_MODEL_ID, usageFrom(usage, meta))
+    if (!cost) return meta
+    logCost(cost, label)
+    return { ...(meta ?? {}), tappy: { ...((meta?.tappy as Record<string, unknown>) ?? {}), cost: cost as unknown as Record<string, unknown> } }
+  }
+  return {
+    ...inner,
+    specificationVersion: 'v1',
+    provider: inner.provider,
+    modelId: inner.modelId,
+    defaultObjectGenerationMode: inner.defaultObjectGenerationMode,
+    supportsStructuredOutputs: inner.supportsStructuredOutputs,
+    // 🔑 SSRF (imageUrlSsrfGuardrail.test.ts): a prototype getter on the SDK model, lost by the spread above.
+    supportsImageUrls: inner.supportsImageUrls,
+    async doGenerate(opts) {
+      try {
+        const r = await inner.doGenerate(opts)
+        return { ...r, providerMetadata: withCost(r.usage, r.providerMetadata as never) as never }
+      } catch (e) { logError(e, label); throw e }
+    },
+    async doStream(opts) {
+      try {
+        const r = await inner.doStream(opts)
+        const stream = r.stream.pipeThrough(new TransformStream<LanguageModelV1StreamPart, LanguageModelV1StreamPart>({
+          transform(part, c) { c.enqueue(part.type === 'finish' ? { ...part, providerMetadata: withCost(part.usage, part.providerMetadata as never) as never } : part) },
+        }))
+        return { ...r, stream }
+      } catch (e) { logError(e, label); throw e }
     },
   }
 }

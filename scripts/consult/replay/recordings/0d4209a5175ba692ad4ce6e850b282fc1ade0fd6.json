@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "iPhone 15 vs Samsung Galaxy S24 so sánh giá (site:shopee.vn OR site:tiki.vn OR site:lazada.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T01:57:32.587Z",
+ "body": {
+  "searchParameters": {
+   "q": "iPhone 15 vs Samsung Galaxy S24 so sánh giá (site:shopee.vn OR site:tiki.vn OR site:lazada.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Có nên mua điện thoại trên Shopee không? 7 shop uy tín ...",
+    "link": "https://shopee.vn/blog/co-nen-mua-dien-thoai-tren-shopee-khong/",
+    "snippet": "100% Đánh giá: 4.8 sao Người. Galaxy S24 Ultra, iPhone 15 Series, iPhone 14 hay các dòng SE với mức giá cực kỳ cạnh tranh. 100% Đánh giá: 4.9 ...",
+    "date": "18 thg 4, 2026",
+    "position": 1
+   },
+   {
+    "title": "Samsung galaxy a15 - Giá Tốt, Sale Tháng 10, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/%C4%91i%E1%BB%87n%20tho%E1%BA%A1i/samsung/galaxy%20a15",
+    "snippet": "Điện thoại Samsung Galaxy A15 mang lại sự hỗ trợ tuyệt vời giúp bạn sở hữu màn hình Super AMOLED rực rỡ và hiệu năng ổn định hằng ngày.",
+    "position": 2
+   },
+   {
+    "title": "Samsung galaxy 22 - Giá Tốt, Sale Tháng 08, Freeship 0Đ",
+    "link": "https://shopee.vn/list/%C4%91i%E1%BB%87n%20tho%E1%BA%A1i/samsung/galaxy%2022",
+    "snippet": "Ốp điện thoại kính họa tiết thời trang phù hợp cho Samsung Galaxy s25 / s24 / s23 / s22 / s21 / s20 / a70 / a56 / a55 / a54 / a53 / a52 / a36 / a35 / 33 ...",
+    "position": 3
+   },
+   {
+    "title": "Mua Iphone 15 Plus Giảm Giá Giá Tốt, Giao Nhanh",
+    "link": "https://www.lazada.vn/tag/iphone-15-plus-gi%E1%BA%A3m-gi%C3%A1/?srsltid=AU7gw4V1T3_ZWvFk_g-NPFRAaGKvdjJgZBvssZ3S9Xy2ro7cWG6X6pa6",
+    "snippet": "Hiệu năng mạnh mẽ: Được trang bị chip A16 Bionic, đảm bảo tốc độ xử lý nhanh chóng và hiệu quả trong mọi tác vụ. Camera cải tiến: Camera hệ thống tiên tiến với ...",
+    "rating": 5,
+    "ratingCount": 541,
+    "position": 4
+   },
+   {
+    "title": "sony zve10 quay 4K, Eye AF nhanh",
+    "link": "https://shopee.vn/list/sony/zve10",
+    "snippet": "Sức mạnh của ZV-E10 đến từ cảm biến APS-C Exmor CMOS 24.2MP, lớn hơn nhiều so với cảm biến trên điện thoại thông minh. Điều này có thể hỗ trợ máy thu được nhiều ...",
+    "position": 5
+   },
+   {
+    "title": "Mua Apple Iphone 17 Giảm Giá Giá Tốt, Giao Nhanh",
+    "link": "https://www.lazada.vn/tag/apple-iphone-17-gi%E1%BA%A3m-gi%C3%A1/?srsltid=AU7gw4WQkQPHVuS4roESCRWbda2aNYsXSkiDUiCj7paFOGa5d9nZ5HOb",
+    "snippet": "Thiết kế sang trọng: Với thiết kế tinh tế, iPhone luôn là lựa chọn hàng đầu cho những ai muốn sở hữu một chiếc điện thoại đẹp mắt và đẳng cấp. Hệ sinh thái ...",
+    "rating": 5,
+    "ratingCount": 1961,
+    "position": 6
+   },
+   {
+    "title": "Ốp lưng samsung note 9 - Giá Tốt, Miễn Phí Vận Chuyển, ...",
+    "link": "https://shopee.vn/list/%E1%BB%91p%20l%C6%B0ng/samsung/note%209",
+    "snippet": "Mua online ốp lưng samsung note 9 chất lượng, mới nhất, giảm tới 50% tại Shopee Việt Nam. Khuyến mãi tháng 09. Miễn phí vận chuyển. Mua ngay!",
+    "position": 7
+   },
+   {
+    "title": "Neewer Official Shop",
+    "link": "https://shopee.vn/neewer168.vn",
+    "snippet": "... iPhone 1615 Pro Max Plus 14 13 Samsung S24 S23 Ultra. 246.021₫. -10 ... iPhone 15 14 13 Pro Plus Max Mini Galaxy S20 + / S20. 192.530₫. -7%. voucher ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

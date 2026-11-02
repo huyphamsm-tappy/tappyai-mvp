@@ -1,6 +1,7 @@
 import { normalizeVN } from './intent'
 import { buildShoppingLinks, type PlatformLink } from '@/lib/platformLinks/shopping'
 import { safeInline } from './placeRelax'
+import { isUserDerived, logSearchKeywordDropped } from './security/searchKeyword'
 
 // ── «Only another phone model was found» (A3, owner 2026-10-02) ────────────────────────────────────────────────────────
 //
@@ -74,9 +75,16 @@ export function rightKeyword(query: string, requested: DeviceRef): string {
 export interface WrongModelBlock { text: string; links: PlatformLink[]; keyword: string }
 
 
-/** The code-built reply block: what was (not) found, and one search link per marketplace for the right keyword. */
-export function wrongModelBlock(w: WrongModel, query: string, lang: string): WrongModelBlock {
-  const keyword = rightKeyword(query, w.requested)
+/**
+ * The code-built reply block: what was (not) found, and one search link per marketplace for the right keyword.
+ * Gate 2 S5, Q2 (PROPOSAL): with `sources` (the user's texts), a keyword with a word the user never gave -- other than the device label, a
+ * slot code extracted from those texts -- falls back to the device label alone. Without `sources` it is unchanged.
+ */
+export function wrongModelBlock(w: WrongModel, query: string, lang: string, sources?: ReadonlyArray<string>): WrongModelBlock {
+  const built = rightKeyword(query, w.requested)
+  const keywordOk = !sources || isUserDerived(built, [...sources, deviceLabel(w.requested)])
+  if (!keywordOk) logSearchKeywordDropped('q2')
+  const keyword = keywordOk ? built : deviceLabel(w.requested)
   const links = buildShoppingLinks(keyword)
   const shownKeyword = safeInline(keyword)
   const asked = deviceLabel(w.requested)

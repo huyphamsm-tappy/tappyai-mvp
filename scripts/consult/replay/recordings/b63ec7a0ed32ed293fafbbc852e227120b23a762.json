@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com AirPods Pro (2nd generation) listening time single charge charging case hours",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:45:39.379Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com AirPods Pro (2nd generation) listening time single charge charging case hours",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "AirPods Pro 3 - Technical Specifications",
+    "link": "https://www.apple.com/airpods-pro/specs/",
+    "snippet": "Up to 8 hours of listening time on a single charge with Active Noise Cancellation enabled (up to 7.5 hours with Spatial Audio and Head Tracking enabled) · Up to ...",
+    "position": 1
+   },
+   {
+    "title": "AirPods Pro 2 - Tech Specs",
+    "link": "https://support.apple.com/en-us/111851",
+    "snippet": "Up to 6 hours of listening time with a single charge (up to 5.5 hours with Spatial Audio and Head Tracking enabled)4. AirPods Pro with MagSafe Charging Case.",
+    "position": 2
+   },
+   {
+    "title": "Compare AirPods models",
+    "link": "https://www.apple.com/airpods/compare/",
+    "snippet": "Up to 30 hours of listening time with charging case and Active Noise Cancellation.",
+    "position": 3
+   },
+   {
+    "title": "AirPods Pro 2 with MagSafe Charging Case (USB-C)",
+    "link": "https://support.apple.com/en-us/111834",
+    "snippet": "Up to 6 hours of listening time on a single charge (up to 5.5 hours with Spatial Audio and Head Tracking enabled) · Up to 4 hours of Lossless Audio listening ...",
+    "position": 4
+   },
+   {
+    "title": "AirPods gen 2 lasts 15-20 mins listening …",
+    "link": "https://discussions.apple.com/thread/254525461",
+    "snippet": "I've had them since Dec '19 so it has been a while, but is there anything I can do to extend their battery life? I've also noticed that the battery levels ...",
+    "date": "4 thg 1, 2023",
+    "position": 5
+   },
+   {
+    "title": "AirPods Pro 1 with Wireless Charging Case - Tech Specs",
+    "link": "https://support.apple.com/en-us/111861",
+    "snippet": "Battery. AirPods Pro. Up to 4.5 hours of listening time with a single charge ... case provides around 1 hour of listening time6. Connectivity. Bluetooth 5.0. In ...",
+    "position": 6
+   },
+   {
+    "title": "AirPods Pro 3",
+    "link": "https://www.apple.com/airpods-pro/",
+    "snippet": "Get up to 8 hours of listening time with Active Noise Cancellation on a single charge.",
+    "position": 7
+   },
+   {
+    "title": "AirPods 2 - Tech Specs",
+    "link": "https://support.apple.com/en-us/111856",
+    "snippet": "AirPods. Up to 5 hours of listening time with a single charge2. AirPods with Lightning Charging Case or Wireless Charging Case. More than 24 hours of listening ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

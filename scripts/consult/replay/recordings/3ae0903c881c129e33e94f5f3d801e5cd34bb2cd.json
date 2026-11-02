@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Xiaomi Redmi Buds 6 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:19:31.641Z",
+ "body": {
+  "searchParameters": {
+   "q": "Xiaomi Redmi Buds 6 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "หูฟังบลูทูธไร้สาย redmi buds 6 play",
+    "link": "https://shop.tiktok.com/vn/k/hufang-bluthuth-airsay-redmi-buds-6-play",
+    "snippet": "... Xiaomi Redmi Buds 6 Play Version Có Micro Giảm Tiếng ồn Nhét Tai. 0 sold. ₫689.000 ...",
+    "position": 1
+   },
+   {
+    "title": "เคสหูฟัง redmi buds 6 active",
+    "link": "https://shop.tiktok.com/vn/k/ekhs-hufang-redmi-buds-6-active",
+    "snippet": "Tai nghe Xiaomi Buds 6 - Bluetooth 5.4 - Hộp sạc tiện lợi · Tai nghe Xiaomi Buds 6 - Bluetooth 5.4 - Hộp sạc tiện lợi · [KOL] Tai nghe Xiaomi Redmi Buds 6 Active ...",
+    "position": 2
+   },
+   {
+    "title": "Redmi bud 6 lite",
+    "link": "https://shop.tiktok.com/vn/k/redmi-bud-6-lite",
+    "snippet": "Khám phá Redmi bud 6 lite mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất hôm nay.",
+    "position": 3
+   },
+   {
+    "title": "หูฟัง redmi buds 6 เชื่อมกับไอโฟน",
+    "link": "https://shop.tiktok.com/vn/k/hufang-redmi-buds-6-echueom-kab-aioofn",
+    "snippet": "หูฟัง redmi buds 6 เชื่อมกับไอโฟน ; Tai nghe Xiaomi Buds 6 - Bluetooth 5.4 - Hộp sạc tiện lợi · 5. 23 sold · 3.078.179. ₫3.690.000 ; Tai nghe Bluetooth Redmi Buds 6 ...",
+    "position": 4
+   },
+   {
+    "title": "redmi buds 6 play singapore",
+    "link": "https://shop.tiktok.com/vn/k/redmi-buds-6-play-singapore",
+    "snippet": "Tai Nghe Bluetooth Xiaomi Redmi Buds 6 PLay - Pin lên đến 36h - Kết nối Bluetooth 5.4 - Chống nước IPX4* - Bảo hành 12 tháng - Hàng chính hãng.",
+    "position": 5
+   },
+   {
+    "title": "thay pin tai nghe xiaomi redmi buds 6",
+    "link": "https://shop.tiktok.com/vn/k/thay-pin-tai-nghe-xiaomi-redmi-buds-6",
+    "snippet": "Tai Nghe Bluetooth Xiaomi Redmi Buds 6 PLay - Pin lên đến 36h - Kết nối Bluetooth 5.4 - Chống nước IPX4* - Bảo hành 12 tháng - Hàng chính hãng.",
+    "position": 6
+   },
+   {
+    "title": "หูฟัง redmi buds 6 lite ออกข้างเดียว",
+    "link": "https://shop.tiktok.com/vn/k/hufang-redmi-buds-6-lite-ook-khangediyw",
+    "snippet": "หูฟัง redmi buds 6 lite ออกข้างเดียว ; 9 sold · 137.707 ; 15 sold · 3.039.999. ₫3.690.000 ; 106 sold · 482.159. ₫690.000 ...",
+    "position": 7
+   },
+   {
+    "title": "tai nghe bluetooth true wireless xiaomi redmi buds 6 play",
+    "link": "https://shop.tiktok.com/vn/k/tai-nghe-bluetooth-true-wireless-xiaomi-redmi-buds-6-play",
+    "snippet": "Tai nghe Bluetooth True Wireless Xiaomi Redmi Buds 6 Play. 4.9. 45 sold · 390.000 ; Tai nghe Bluetooth Redmi Buds 6 Play Chính hãng [Viettel Store] · 4.7. 2807 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

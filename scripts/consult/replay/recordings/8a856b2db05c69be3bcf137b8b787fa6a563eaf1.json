@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook Air M1 used price Vietnam 2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:15:27.732Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Air M1 used price Vietnam 2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Macbook Air Cũ Giá tốt | Mua Macbook cũ chính hãng tại ...",
+    "link": "https://mac24h.vn/macbook-air-cu/",
+    "snippet": "Macbook Air M1 13 inch - 2020 - USED. 12,300,000 ; Macbook Air 13 inch - 2019 - USED. 7,800,000 ; Macbook Air 13 inch - 2017 - USED. 7,400,000 ; Macbook Air M2 15 ...",
+    "position": 1
+   },
+   {
+    "title": "MacBook Air M1 - Used",
+    "link": "https://macmall.vn/macbook-air-m1-used?srsltid=AU7gw4VLcl65GkzEJHGqF5SHCkFGeg2Gvf80QvQ6024uqWwIVrP5tU9_",
+    "snippet": "MacBook Air M1 - Used ; Tình Trạng. Like new 98%. 14,800,000 đ. Like New 99% | Pin Cao | Phím Chuẩn US | No MDM. 15,800,000 đ ; Cấu Hình. Apple M1 | 8GB | 256GB.",
+    "rating": 5,
+    "ratingCount": 82970,
+    "position": 2
+   },
+   {
+    "title": "MacBook Air M1",
+    "link": "https://macone.vn/macbook-air-m1/?srsltid=AU7gw4XjLV1x_7VPyyFJL2bjzSLeu_-87CjYfolNXmA2hHJT1BgjN1pX",
+    "snippet": "MacBook Air M1 năm 2026 vẫn là lựa chọn tối ưu nhất trong phân khúc 13-16 triệu đồng khi mang đến sự cân bằng hoàn hảo giữa hiệu năng, ...",
+    "date": "23 thg 1, 2026",
+    "position": 3
+   },
+   {
+    "title": "In 2026, you can still use the Macbook Air M1",
+    "link": "https://www.youtube.com/watch?v=l9wMnrapOMk&vl=vi",
+    "snippet": "In 2026, you can still use the Macbook Air M1: Price dropped by 14 million VND but it's on par wi... @relab2015193 likes11K views5 months ...",
+    "position": 4
+   },
+   {
+    "title": "Where to find a good price for an M1 MacBook Air in Hanoi",
+    "link": "https://www.facebook.com/groups/789908834478207/posts/3837364426399284/",
+    "snippet": "I have a Mac Pro M1 with 8GB RAM and 256GB storage in excellent condition. Price: 12 million VND. No photo description available.",
+    "date": "19 thg 12, 2025",
+    "position": 5
+   },
+   {
+    "title": "MacBook cũ | Mac cũ uy tín, trả góp 0%, giảm đến 7 triệu",
+    "link": "https://cellphones.com.vn/hang-cu/mac.html",
+    "snippet": "... Apple MacBook Air M1 256GB 2020 - Cũ xước cấn. Trả góp 0%. : 12.290.000đ. 22.990.000đ. Giảm 47%. Smember giảm đến 123.000 ...",
+    "position": 6
+   },
+   {
+    "title": "MacBook Air 13 inch Apple M1 - Like New FullBox Tầm giá hơn ...",
+    "link": "https://www.facebook.com/Mac24h/videos/macbook-air-13-inch-apple-m1-like-new-fullboxt%E1%BA%A7m-gi%C3%A1-h%C6%A1n-10-tri%E1%BB%87u-cho-%C4%91a-d%E1%BA%A1ng-nh/1228533325419511/",
+    "snippet": "MacBook Air 13 inch Apple M1 - Like New FullBox Tầm giá hơn 10 triệu ... vn/macbook-air-chinh-hang-gia- re/. Trần Tình and 3 others · 4 · 1 · 1.",
+    "position": 7
+   },
+   {
+    "title": "MacBook Air M1 prices up by over $40 in Vietnam",
+    "link": "https://e.vnexpress.net/news/companies/macbook-air-m1-prices-up-by-over-40-in-vietnam-4535561.html",
+    "snippet": "In late July, the laptop's selling prices were VND21.7-23 million, lower than the list price in the U.S. market. Now, the selling prices are ...",
+    "date": "13 thg 11, 2022",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,8 +1,10 @@
-import { getCache, setCache, sanitizeUrlForMarkdown } from './common'
+import { getCache, getCacheAt, setCache, sanitizeUrlForMarkdown, serperFlight } from './common'
 import { serperPost } from './serperClient'
+import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 import { serperPlacesCacheKey } from './cacheKeys'
-import { serperCacheGet, serperCacheSet } from './serperCache'
-import { recordSerperCacheHit } from './serperMeter'
+import { serperCacheGetMeta, serperCacheSet } from './serperCache'
+import { noteRetrieval } from './retrievalClock'
+import { recordSerperCacheHit, recordSerperL1Hit } from './serperMeter'
 
 // ── SERPER /maps — THE STRUCTURED PLACE SOURCE ───────────────────────────────
 //
@@ -117,19 +119,32 @@ export async function serperPlaces(
 ): Promise<SerperPlaceRecord[] | null> {
   const cacheKey = serperPlacesCacheKey(query, ll ?? null)
   const cached = getCache(cacheKey)
-  if (Array.isArray(cached) && cached.length > 0) return cached as SerperPlaceRecord[]
+  if (Array.isArray(cached) && cached.length > 0) { recordSerperL1Hit('maps'); noteRetrieval(getCacheAt(cacheKey)); return cached as SerperPlaceRecord[] }
 
   const apiKey = process.env.SERPER_API_KEY
   if (!apiKey || !query.trim()) return null
 
+  // One in-flight /maps request per (query, area, retry mode): the price retry changes the result, so it is part of the key.
+  return serperFlight(`maps:${cacheKey}:${opts.priceRetry === false ? 'p0' : 'p1'}`, () => serperPlacesPaid(query, ll, opts, cacheKey, apiKey), null)
+}
+
+async function serperPlacesPaid(
+  query: string,
+  ll: { lat: number; lng: number; zoom?: number } | null | undefined,
+  opts: { priceRetry?: boolean },
+  cacheKey: string,
+  apiKey: string,
+): Promise<SerperPlaceRecord[] | null> {
   // L2: the shared 24 h cache (serperCache.ts) — owner-requested TTL; see the Maps/Serper terms
   // caveat there and in the header above (hard EX TTL, nothing persisted beyond it). Keyed on the
   // ORIGINAL query + `ll` (2-decimal area); the price retry below never changes the key.
-  const shared = await serperCacheGet<SerperPlaceRecord>('maps', query, ll ?? null)
+  const shared = await serperCacheGetMeta<SerperPlaceRecord>('maps', query, ll ?? null)
   if (shared) {
     recordSerperCacheHit('maps')
-    setCache(cacheKey, shared, 30 * 60 * 1000)
-    return shared
+    const sharedAt = shared.at ? Date.parse(shared.at) : null
+    setCache(cacheKey, shared.rows, 30 * 60 * 1000, sharedAt)
+    noteRetrieval(sharedAt)
+    return shared.rows
   }
 
   const body: Record<string, unknown> = { q: query, gl: 'vn', hl: 'vi' }
@@ -165,6 +180,7 @@ export async function serperPlaces(
     // The FINAL answer (after any price retry) is shared, under the original query + area.
     await serperCacheSet('maps', query, ll ?? null, out)
   }
+  noteRetrieval(Date.now())
   return out
 }
 
@@ -212,7 +228,8 @@ async function fetchSerperMaps(apiKey: string, body: Record<string, unknown>): P
         const website = str(r.website)
         if (website) rec.website = sanitizeUrlForMarkdown(website)
         const thumb = str(r.thumbnailUrl)
-        if (thumb) rec.thumbnailUrl = sanitizeUrlForMarkdown(thumb)
+        // Gate 2 N1 (S-4, proposal): the place thumbnail is carried only as a safe https URL.
+        if (thumb && isSafeHttpsUrl(thumb)) rec.thumbnailUrl = sanitizeUrlForMarkdown(thumb)
         if (Array.isArray(r.bookingLinks)) {
           const links = (r.bookingLinks as unknown[])
             .map(l => (typeof l === 'string' ? l : (l as { link?: string })?.link))

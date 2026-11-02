@@ -14,6 +14,10 @@ export const ALLOWED_MEDIA_PREFIXES = [
   'thumbnails',
   'music',
   'deals',
+  // Tappy Business product images. Keys are `products/{merchantPublicId}/…`,
+  // so a product's image carries its owner in the path — which is what lets
+  // src/lib/business/schema.ts refuse a key belonging to another shop.
+  'products',
 ] as const
 
 export type MediaPrefix = (typeof ALLOWED_MEDIA_PREFIXES)[number]

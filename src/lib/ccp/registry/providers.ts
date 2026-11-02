@@ -437,8 +437,8 @@ export const PROVIDER_REGISTRY: readonly ProviderRegistryEntry[] = [
     tracking: { network: 'accesstrade', campaignId: '5222734619328835827', approval: 'approved', safeWrapper: 'deep_link', unsafeWrappers: [] },
     enabledFlag: 'CCP_ADAPTER_VEXERE',
     tier: 'mvp',
-    notes: ['Route pages (/vi-VN/ve-xe-khach-tu-<from>-di-<to>-<ids>.html) are DISCOVERED — the ids are Vexere\'s; the adapter appends the date and checks the slug names both places.', 'No composable search grammar (verified 404); the landing page is the fallback.', 'ACCESSTRADE campaign approved (portal 27 Sep 2026).'],
-    discovery: { site: 'vexere.com/vi-VN', subjectKind: 'route' },
+    notes: ['Route pages (/vi-VN/ve-xe-khach-tu-<from>-di-<to>-<ids>.html) are DISCOVERED — the ids are Vexere\'s; the adapter appends the date and checks the slug names both places.', 'No composable search grammar (verified 404); the landing page is the fallback.', 'ACCESSTRADE campaign approved (portal 27 Sep 2026; still offered in the Deep Link tool 29 Oct 2026).', 'Trains (29 Oct 2026): rail route pages /vn/ve-tau-hoa/tu-<from>-di-<to>.<id>.<id>.vi are DISCOVERED; their area ids compose the dated train list dat-ve-tau.vi (date + adults, DSVN fares).'],
+    discovery: { site: 'vexere.com/vi-VN', subjectKind: 'route', railSite: 'vexere.com/vn/ve-tau-hoa' },
   },
   {
     providerId: 'booking',
@@ -480,30 +480,36 @@ export const PROVIDER_REGISTRY: readonly ProviderRegistryEntry[] = [
     domains: ['travel'],
     intents: ['book_hotel'],
     allowedHosts: ['www.agoda.com', 'agoda.com'],
-    capabilities: ['search', 'details', 'configure', 'resolveDeepLink', 'transactionBoundary'],
+    capabilities: ['search', 'details', 'configure', 'resolveDeepLink', 'transactionBoundary', 'tracking'],
     commerce: ['hotel_discovery', 'hotel_detail', 'hotel_booking', 'commerce_handoff'],
     depth: {
       book_hotel: {
+        // 29 Oct 2026: the property URL with checkIn + los + adults + rooms opened with the stay applied, priced room rows and book
+        // buttons (L4) — see the grammar. The audit lines below are the earlier state, kept for the record.
         // Audit 13 Sep 2026: direct property URL with dates loads (L3, untracked); the room list did
         // not render in that session, so nothing deeper is claimed. 14 Sep 2026 (read-only browser):
         // the property page shows the occupancy from the URL; /vi-vn/search?q= and ?textToSearch=
         // both DROP the query and land on the homepage — Agoda has no composable search grammar.
-        guestDepth: 3,
+        guestDepth: 4,
         authenticatedDepth: null,
         bestPossibleDepth: 5,
         authRequiredAt: 'none',
         verifiedOn: COMPLETION_VERIFIED,
         evidence: COMPLETION_EVIDENCE,
-        reason: 'Trang khách sạn Agoda mở với ngày/số khách từ URL; bảng phòng và bước đặt chưa xác minh.',
+        reason: 'Trang khách sạn Agoda mở với ngày nhận phòng, số đêm và số khách từ URL; bảng phòng có giá và nút đặt (kiểm 29/10/2026); bước nhập thông tin chưa thực thi.',
       },
     },
-    linkStrategy: { book_hotel: ['detail', 'handoff'] },
+    linkStrategy: { book_hotel: ['tracked', 'detail', 'handoff'] },
     freshness: { identity: { freshnessType: 'static', ttlMs: 30 * DAY, note: 'property slugs' } },
     // Agoda programme terms: no price comparison, no coupons (same class as Booking.com).
     rights: { displayOk: true, priceOk: false, imageOk: false, comparisonOk: false, couponOk: false },
+    // Partner portal 29 Oct 2026 (owner's account): site 1974819 APPROVED; Agoda's own programme, not Accesstrade (no Agoda campaign in
+    // the AT Deep Link tool). Agoda's FAQ names partnersearch.aspx links as the tracked form and says property pages are not a supported
+    // link target, so a cid on a property page is BEST EFFORT: the owner chose depth first, affiliate when possible (29 Oct 2026).
+    tracking: { network: 'param', param: { name: 'cid', value: '1974819' }, approval: 'approved', safeWrapper: 'deep_link', unsafeWrappers: [] },
     enabledFlag: 'CCP_ADAPTER_AGODA',
     tier: 'mvp',
-    notes: ['Direct property links only; the Agoda programme is pending and its tools issue search-result links only — never used for a property (monetisation only).', 'No composable search grammar (query dropped, verified 14 Sep 2026); the landing page is the fallback.', 'Discovery: the hotel tool\'s own OTA search returns Agoda property rows (no extra CCP scope).'],
+    notes: ['Direct property links with the stay applied (L4, 29 Oct 2026), carrying the partner cid.', 'Agoda partner site 1974819 approved (portal 29 Oct 2026); the tracked form Agoda documents is partnersearch.aspx?pcs=1&cid=&hid=<hotel id> — Tappy holds no Agoda hotel ids yet (Lite API / hotel data file).', 'No composable search grammar (query dropped, verified 14 Sep 2026); the landing page is the fallback.', 'Discovery: the hotel tool\'s own OTA search returns Agoda property rows (no extra CCP scope).'],
   },
   {
     providerId: 'traveloka',

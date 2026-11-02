@@ -12,8 +12,8 @@ import { FREE_DAILY_LIMIT, ANON_LIFETIME_LIMIT } from '@/lib/config/product'
 // that /api/chat and /api/scam-shield/analyze SPEND from. This route reads it without spending.
 // The contract it must report:
 //
-//   anonymous  → ANON_LIFETIME_LIMIT (5), period 'lifetime' — five, once
-//   registered → FREE_DAILY_LIMIT (10), period 'day'
+//   anonymous  → ANON_LIFETIME_LIMIT (10), period 'lifetime' — ten, once
+//   registered → FREE_DAILY_LIMIT (300, a hidden anti-abuse ceiling), period 'day'
 //   Pro        → exempt; nothing used
 //
 // and, when the store cannot say how much was used, it reports the limit as USED (fail closed).
@@ -22,7 +22,7 @@ const h = vi.hoisted(() => {
   const state = {
     user: { id: 'u1', is_anonymous: true } as Record<string, unknown> | null,
     sub: null as Record<string, unknown> | null,
-    peek: { limit: 5, period: 'lifetime', used: 0, remaining: 5 } as Record<string, unknown>,
+    peek: { limit: 10, period: 'lifetime', used: 0, remaining: 10 } as Record<string, unknown>,
     peekCalls: [] as unknown[],
     rpcCalls: [] as string[],
     tables: [] as string[],
@@ -85,23 +85,24 @@ describe('the limit reported is the one enforced — from the ONE authority', ()
 
   it('a registered account gets the daily allowance, keyed by the account', async () => {
     h.state.user = { id: 'u1', is_anonymous: false }
-    h.state.peek = { limit: FREE_DAILY_LIMIT, period: 'day', used: 6, remaining: 4 }
+    // owner 01/11/2026: 10 -> 300 (accounts have no visible limit; hidden anti-abuse ceiling)
+    h.state.peek = { limit: FREE_DAILY_LIMIT, period: 'day', used: 6, remaining: FREE_DAILY_LIMIT - 6 }
     const { body } = await get()
-    expect(body).toMatchObject({ freeDailyLimit: FREE_DAILY_LIMIT, quotaPeriod: 'day', todayMessageCount: 6, remaining: 4, isAnonymous: false })
+    expect(body).toMatchObject({ freeDailyLimit: FREE_DAILY_LIMIT, quotaPeriod: 'day', todayMessageCount: 6, remaining: FREE_DAILY_LIMIT - 6, isAnonymous: false })
     expect(h.state.peekCalls[0]).toEqual({ kind: 'user', id: 'u1' })
   })
 
   it('🚨 the COUNT comes from the shared quota, never from conversations rows or the old anon RPC', async () => {
-    h.state.peek = { limit: 5, period: 'lifetime', used: 4, remaining: 1 }
+    h.state.peek = { limit: ANON_LIFETIME_LIMIT, period: 'lifetime', used: ANON_LIFETIME_LIMIT - 1, remaining: 1 }
     const { body } = await get()
     expect(body.remaining).toBe(1)
-    expect(body.todayMessageCount).toBe(4)
+    expect(body.todayMessageCount).toBe(ANON_LIFETIME_LIMIT - 1)
     expect(h.state.tables).not.toContain('conversations')
     expect(h.state.rpcCalls).toEqual([])
   })
 
   it('at the cap, remaining is 0 — never negative', async () => {
-    h.state.peek = { limit: 5, period: 'lifetime', used: 5, remaining: 0 }
+    h.state.peek = { limit: ANON_LIFETIME_LIMIT, period: 'lifetime', used: ANON_LIFETIME_LIMIT, remaining: 0 }
     expect((await get()).body.remaining).toBe(0)
   })
 
@@ -118,7 +119,7 @@ describe('the limit reported is the one enforced — from the ONE authority', ()
 
 describe('a store that cannot report FAILS CLOSED', () => {
   it('an unknown count is shown as the limit used, not as plenty left', async () => {
-    h.state.peek = { limit: 5, period: 'lifetime', used: null, remaining: null }
+    h.state.peek = { limit: ANON_LIFETIME_LIMIT, period: 'lifetime', used: null, remaining: null }
     const { body } = await get()
     expect(body.todayMessageCount).toBe(ANON_LIFETIME_LIMIT)
     expect(body.remaining).toBe(0)

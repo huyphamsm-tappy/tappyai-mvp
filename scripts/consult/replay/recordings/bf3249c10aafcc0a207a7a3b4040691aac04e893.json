@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "tai nghe chống ồn chủ động ANC dưới 3 triệu earbuds chụp tai (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:21:53.233Z",
+ "body": {
+  "searchParameters": {
+   "q": "tai nghe chống ồn chủ động ANC dưới 3 triệu earbuds chụp tai (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe chụp tai | Headphone - Giá rẻ, có trả góp 0%",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe/headphones.html",
+    "snippet": "Tai nghe Bluetooth chụp tai Alpha Works Lite 500 · Chống ồn · Có mic đàm thoại · Điều khiển giọng nói · Sạc không dây · Xuyên âm · Có app phiên dịch · Chống ồn chủ ...",
+    "position": 1
+   },
+   {
+    "title": "Tai nghe chính hãng từ 50K - Mẫu mới, giá giảm sâu 10/2026",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe.html",
+    "snippet": "Tai nghe chính hãng Apple, Sony, JBL giảm sốc đến 66%. Trải nghiệm âm thanh đỉnh cao cùng đặc quyền: Trả góp 0%, freeship 2H, bảo hành đến 2 năm.",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe ANC chống ồn đỉnh cao, chính hãng, giá rẻ từ 300k",
+    "link": "https://cellphones.com.vn/bo-loc/tai-nghe-chong-on-chu-dong-anc",
+    "snippet": "Có mic đàm thoại; Chống ồn; Điều khiển giọng nói; Xuyên âm; Sạc không dây; Chống nước; Có app phiên dịch; Chống ồn chủ động ANC. Cổng kết nối.",
+    "position": 3
+   },
+   {
+    "title": "Top 5 tai nghe chống ồn tốt nhất dưới 1 triệu mới 2026",
+    "link": "https://cellphones.com.vn/sforum/tai-nghe-chong-on-tot-nhat",
+    "snippet": "Tai nghe không dây Xiaomi Redmi Buds 3 · Tai nghe không dây Soundpeats Mini · Tai nghe chống ồn tốt nhất - OPPO Enco Buds 2 · Tai nghe không dây Earbuds Cowin Apex ...",
+    "rating": 2,
+    "ratingCount": 1,
+    "position": 4
+   },
+   {
+    "title": "99+ Tai nghe bluetooth giá rẻ dưới 2 triệu | Nên mua ngay",
+    "link": "https://cellphones.com.vn/bo-loc/tai-nghe-gia-duoi-2-trieu",
+    "snippet": "Có mic đàm thoại; Chống ồn; Điều khiển giọng nói; Xuyên âm; Sạc không dây; Chống nước; Có app phiên dịch; Chống ồn chủ động ANC. Cổng kết nối.",
+    "position": 5
+   },
+   {
+    "title": "TOP 10+ Tai nghe Bluetooth màu đen, pin trâu, giá tốt",
+    "link": "https://cellphones.com.vn/sforum/tai-nghe-bluetooth-mau-den",
+    "snippet": "JBL Tune 770NC cân bằng giữa pin dài, ANC và thiết kế gập gọn. Với thời lượng lên đến 70 giờ khi không dùng chống ồn, sản phẩm phù hợp người ít ...",
+    "date": "27 thg 9, 2026",
+    "position": 6
+   },
+   {
+    "title": "Tai nghe chống nước chơi thể thao, bơi lội [BỀN RẺ]",
+    "link": "https://cellphones.com.vn/bo-loc/tai-nghe-chong-nuoc",
+    "snippet": "Tai nghe Sony không dây chống ồn WF-1000XM6. Trả góp 0%. : 7.490.000đ. 8.300 ... Chống nước; Có app phiên dịch; Chống ồn chủ động ANC. Cổng kết nối. 3.5mm; Type C",
+    "position": 7
+   },
+   {
+    "title": "Top những tai nghe true wireless chống ồn chủ động, đáng ...",
+    "link": "https://cellphones.com.vn/sforum/tu-van-top-nhung-tai-nghe-true-wireless-chong-on-chu-dong-dang-lua-chon-nhat-dau-2020",
+    "snippet": "Ausounds AU-Stream ANC là sản phẩm của công ty khởi nghiệp Ausound, tai nghe với mức giá khá tốt chỉ từ 150 $ (khoảng hơn 3 triệu đồng). AU- ...",
+    "date": "4 thg 1, 2020",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

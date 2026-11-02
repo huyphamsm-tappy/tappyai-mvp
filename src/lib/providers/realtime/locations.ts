@@ -24,9 +24,27 @@ const fold = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,
  *   agoda / Đà Lạt = 15932 — read from the redirect of Agoda's own partner link generator (partners.agoda.com, tools/textLink,
  *   hotel "The Luxe Hotel Da Lat" → …/search?…&selectedproperty=4942635&city=15932), opened live on 06/10/2026.
  * Booking.com has NO verified id yet: its city ids come from the Demand API locations endpoint (access pending).
+ *
+ *   agoda / the rest (30/10/2026): read from each city's OWN public page, https://www.agoda.com/vi-vn/city/<slug>.html, field
+ *   `defaultSearchURL":"/vi-vn/search?city=<id>` (one city= per page). Đà Lạt read the same way gives 15932, the id verified above.
+ *   Evidence and slugs: D:/TappyAI-review-artifacts/agoda/city-ids-20261030.md. Quy Nhơn and Hải Phòng: no page found, so no row.
  */
+const agoda = (cityRef: string) => ({ agoda: { cityRef } })
 const VERIFIED_IDS: Readonly<Record<string, Partial<Record<RealtimeProviderId, { cityRef: string }>>>> = {
-  dalat: { agoda: { cityRef: '15932' } },
+  dalat: agoda('15932'),
+  hanoi: agoda('2758'),
+  hochiminh: agoda('13170'), tphochiminh: agoda('13170'), thanhphohochiminh: agoda('13170'), hochiminhcity: agoda('13170'), saigon: agoda('13170'),
+  danang: agoda('16440'),
+  hoian: agoda('16552'),
+  nhatrang: agoda('2679'),
+  phuquoc: agoda('17188'),
+  hue: agoda('3738'),
+  sapa: agoda('17160'),
+  halong: agoda('17182'),
+  vungtau: agoda('17190'),
+  phanthiet: agoda('16264'),
+  cantho: agoda('16079'),
+  ninhbinh: agoda('17245'),
 }
 
 export function verifiedRefsFor(destination: string | undefined): ProviderRefs | undefined {

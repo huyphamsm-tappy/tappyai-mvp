@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "deal.tappy-eval.test/airpods-pro-2-gia-soc AirPods Pro 2 1,99 triệu",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:38:00.280Z",
+ "body": {
+  "searchParameters": {
+   "q": "deal.tappy-eval.test/airpods-pro-2-gia-soc AirPods Pro 2 1,99 triệu",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "MY FIRST EXPERIENCE WITH AIRPODS PRO 2",
+    "link": "https://www.youtube.com/watch?v=GWEW2q5oK3I",
+    "snippet": "LẦN ĐẦU TRẢI NGHIỆM AIRPODS PRO 2 - CŨNG NGON ĐẤY, NHƯNG KHÔNG HỀ RẺ Nếu bạn đang muốn tìm cho mình một chiếc tai nghe ANC với giá phải ...",
+    "position": 1
+   },
+   {
+    "title": "Dùng vẫn quá ngon, đáng mua hơn cả AirPods Pro 3?",
+    "link": "https://www.youtube.com/watch?v=hUfwBGkrZ3A",
+    "snippet": "Review AirPods Pro 2 trong 2026: Giờ dùng vẫn quá ngon, giá rẻ mà tốt hơn Pro 3? ▻ Nếu anh em đang có nhu cầu sửa điện thoại, tablet, ...",
+    "position": 2
+   },
+   {
+    "title": "So Sánh Các Phiên Bản AirPods",
+    "link": "https://www.apple.com/vn/airpods/compare/",
+    "snippet": "Thời lượng pin lên đến 8 giờ với một lần sạc khi bật tính năng Chủ Động Khử Tiếng Ồn (lên đến 7,5 giờ khi bật Âm Thanh Không Gian và Theo Dõi Chuyển Động ...",
+    "position": 3
+   },
+   {
+    "title": "Hội Tai Nghe AirPods Việt Nam",
+    "link": "https://www.facebook.com/groups/utcshop/?locale=vi_VN",
+    "snippet": "AirPods Pro 2 Lightning 99% Body ✨ Giá chỉ 2trX Pin sử dụng 5–6 giờ Chống ồn siêu kín – nghe nhạc, gọi điện cực đã ✓ Hàng chính hãng, ngoại hình đẹp ...",
+    "position": 4
+   },
+   {
+    "title": "🔥 Apple AirPods Pro Gen 2 - Đỉnh cao chống ồn",
+    "link": "https://www.facebook.com/mobilebachlong/videos/-apple-airpods-pro-gen-2-%C4%91%E1%BB%89nh-cao-ch%E1%BB%91ng-%E1%BB%93n-mua-ngay-v%E1%BB%9Bi-gi%C3%A1-ch%E1%BB%89-5350000-httpsbac/700603972647848/",
+    "snippet": "2️⃣ AirPods Pro 2 (Bản 1563E) ✔️ Chất âm: Bass cực chắc và sâu, đánh lực nghe Remix, EDM, giống như Pro3 ✔️ Đàm thoại: Mic lọc ồn ổn định, ...",
+    "position": 5
+   },
+   {
+    "title": "Compare AirPods 4 vs AirPods Pro 2",
+    "link": "https://www.youtube.com/watch?v=u4MLvmoC8wM",
+    "snippet": "Mình làm video so sánh này vì giờ giá của AirPods Pro 2 và AirPods 4 bản chống ồn chủ động thật ra cũng không lệch nhiều.",
+    "position": 6
+   },
+   {
+    "title": "AirPods Pro 2 giá bao nhiêu? Có chống nước không ...",
+    "link": "https://www.thegioididong.com/hoi-dap/airpods-pro-2-bao-nhieu-tien-co-chong-nuoc-khong-1466037",
+    "snippet": "Về giá bán, tai nghe Apple mới có giá khởi điểm là 249 USD. Tại Thế Giới Di Động hiện tại đang kinh doanh dòng AirPods Pro 2 với mức giá 6.490.000 đồng (giảm 6% ...",
+    "position": 7
+   },
+   {
+    "title": "Đánh Giá AirPods Pro 2 của Apple - Từ Góc Nhìn ...",
+    "link": "https://www.reddit.com/r/headphones/comments/xnccoz/apple_airpods_pro_2_review_from_a_consumers/?tl=vi",
+    "snippet": "AirPods Pro được chế tạo thực sự tốt, chúng không có cảm giác quá nặng nhưng đồng thời, chất lượng nhựa rất tốt và có khả năng chống mồ hôi. Sau ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

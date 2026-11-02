@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hàng cũ Apple MacBook Air M1 256GB 2020\" OR \"Macbook Air M1 2020 (8GB/256GB)\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T09:52:27.970Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hàng cũ Apple MacBook Air M1 256GB 2020\" OR \"Macbook Air M1 2020 (8GB/256GB)\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "MacBook Air M1 2020 8gb/256gb SSD Lightweight and ...",
+    "link": "https://www.tiktok.com/@officialdevices/video/7532460190684204293",
+    "snippet": "MacBook Air M1 2020 8gb/256gb SSD Lightweight and sleek Comment M1 for price. @Official Devices | Phone store.",
+    "position": 1
+   },
+   {
+    "title": "MacBook Air M1 2020 (8GB/256GB) for Sale: Last Price 60k!",
+    "link": "https://www.tiktok.com/@xdealsgadgets0/video/7674240576002313492",
+    "snippet": "MacBook Air M1 2020 (8GB/256GB) for Sale: Last Price 60k! ### MacBook Air M1 2020: A Rare Find at an Unbeatable Price For those searching ...",
+    "position": 2
+   },
+   {
+    "title": "MacBook Air M1 2020 8GB/256GB - HN Laptops",
+    "link": "https://www.tiktok.com/@h.n_laptops/video/7664823388380106005",
+    "snippet": "... MacBook Air M1 2020 8GB/256GB in Lahore. Call 0324-9482373. # ... MacBook Air M1 2020 (8GB/256GB) listed at 97,999/-. Hashtags ...",
+    "position": 3
+   },
+   {
+    "title": "MacBook Air M1 (2020) 8gb /256gb 13.3 inch 98% battery health ...",
+    "link": "https://www.tiktok.com/@sellanyphone/video/7671583212958911762",
+    "snippet": "MacBook Air M1 (2020) 8gb /256gb 13.3 inch 98% battery health it's in excellent condition price 1200aed if you want to buy call us on 0555320982#fyp #dubai # ...",
+    "position": 4
+   },
+   {
+    "title": "Macbook Air M1 2020 8GB/256GB Cũ Đẹp",
+    "link": "https://www.tiktok.com/@ko220189/photo/7660335658870918420",
+    "snippet": "Macbook Air M1 2020 8GB/256GB Cũ Đẹp. Bán Macbook Air M1 8GB/256GB 2020 mới về, máy đẹp full hộp sạc, pin 96% màu xám. #airm1 #macbookair #macbook ...",
+    "position": 5
+   },
+   {
+    "title": "MacBook Air M1 2020 8GB/256GB for sale in Dubai — AED 1200",
+    "link": "https://www.tiktok.com/@laxmi.thapa1637/video/7671583879123291399",
+    "snippet": "MacBook Air M1 2020 8gb/256gb 13.3 inch 98% battery health price 1200aed it's in excellent condition if you want to buy call us on 0555320982#macbookair ...",
+    "position": 6
+   },
+   {
+    "title": "MacBook Air M1 2020 8GB 256GB — $399 Deal",
+    "link": "https://www.tiktok.com/@distore54/video/7681562398628662546",
+    "snippet": "MacBook Air 2020(13inch) M1 | 8GB | 256GB 399$ #macbook #distore. MacBook Air M1 2020 8GB 256GB — $399 Deal. Lead A MacBook Air 2020 (13-inch) ...",
+    "position": 7
+   },
+   {
+    "title": "MacBook Air M1 2020 8GB/256GB — Sold to Happy Buyer",
+    "link": "https://www.tiktok.com/@hazeegadgets/video/7640093530433539335",
+    "snippet": "TikTok video from Hazee Gadgets (@hazeegadgets): “MacBook Air M1 2020 (8GB/256GB) sold — quick unboxing and customer thanks. See the purchase details and ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

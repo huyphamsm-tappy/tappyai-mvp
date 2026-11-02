@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple AirPods Pro 2 tech specs up to 6 hours listening time 30 hours MagSafe Charging Case",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:23:25.206Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple AirPods Pro 2 tech specs up to 6 hours listening time 30 hours MagSafe Charging Case",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "AirPods Pro 2 - Tech Specs",
+    "link": "https://support.apple.com/en-vn/111851",
+    "snippet": "Up to 6 hours of listening time with a single charge (up to 5.5 hours with Spatial Audio and Head Tracking enabled)4. AirPods Pro with MagSafe Charging Case.",
+    "position": 1
+   },
+   {
+    "title": "AirPods Pro 3 - Technical Specifications",
+    "link": "https://www.apple.com/airpods-pro/specs/",
+    "snippet": "AirPods Pro 3 with MagSafe Charging Case (USB‑C) · Up to 24 hours of listening time with Active Noise Cancellation enabled · 5 minutes in the case provides around ...",
+    "position": 2
+   },
+   {
+    "title": "AirPods Pro 2 with MagSafe Charging Case (USB-C)",
+    "link": "https://support.apple.com/en-vn/111834",
+    "snippet": "Up to 6 hours of listening time on a single charge (up to 5.5 hours with Spatial Audio and Head Tracking enabled) · Up to 4 hours of Lossless Audio listening ...",
+    "position": 3
+   },
+   {
+    "title": "AirPods Pro 2 Features and Specs | PDF | Ios | I Phone",
+    "link": "https://www.scribd.com/document/662907000/AirPods-Pro-2nd-generation-Apple",
+    "snippet": "... up to 6 hours of listening time per charge and up to 30 hours with the charging case. The MagSafe charging case is also water and sweat resistant and offers ...",
+    "position": 4
+   },
+   {
+    "title": "Apple AirPods Pro 2 USB-C - Noise Cancelling Earbuds ...",
+    "link": "https://www.ad-hoc-news.de/wirtschaft/produkte/apple-airpods-pro-2-usb-c-noise-cancelling-earbuds-with-30-hours-of/70080538",
+    "snippet": "Apple AirPods Pro 2 USB-C deliver up to 6 hours of listening time per charge and up to 30 hours with the MagSafe Charging Case (USB-C).",
+    "date": "10 thg 9, 2026",
+    "position": 5
+   },
+   {
+    "title": "AirPods Pro 3 - Technical Specifications",
+    "link": "https://www.apple.com/au/airpods-pro/specs/",
+    "snippet": "AirPods Pro 3 with MagSafe Charging Case (USB‑C) · Up to 24 hours of listening time with Active Noise Cancellation enabled · 5 minutes in the case provides around ...",
+    "position": 6
+   },
+   {
+    "title": "Apple AirPods Pro 2 True wireless earbuds with active ...",
+    "link": "https://www.crutchfield.com/p_472APPRO2/Apple-AirPods-Pro-2.html",
+    "snippet": "The AirPods Pro 2 provide up to 6 hours of listening (up to 5.5 hours with ... 30 hours of listening time and up to 24 hours of talk time. The LED ...",
+    "rating": 5,
+    "ratingCount": 41,
+    "position": 7
+   },
+   {
+    "title": "Apple AirPods Pro 2 Technical Specifications Official",
+    "link": "https://www.facebook.com/fb-answers/apple-airpods-pro-2-technical-specifications-official/",
+    "snippet": "You get up to 6 hours of listening time on a single charge, or up to 30 hours total with the MagSafe Charging Case. A 5- minute charge provides around 1 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

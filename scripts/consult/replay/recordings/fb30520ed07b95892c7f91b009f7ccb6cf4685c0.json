@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Tai nghe Apple AirPods Pro 3 USB-C | Giá tốt, trả góp 0%",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:12:45.159Z",
+ "body": {
+  "searchParameters": {
+   "q": "Tai nghe Apple AirPods Pro 3 USB-C | Giá tốt, trả góp 0%",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Tai nghe Bluetooth Apple AirPods Pro 3 2025 Type-C | Chính hãng (MFHP4ZP/A)",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/a/i/airpods_pro_3_sep25_pdp_image_position_2__vn-vi_1.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4jLAct97ptG4QQZMSJq1woxwpU3R4gIVDiQ5HfPujkw&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/apple-airpods-pro-3.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fa%2Fi%2Fairpods_pro_3_sep25_pdp_image_position_2__vn-vi_1.png&tbnid=JHZ0fMMACdub0M&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fapple-airpods-pro-3.html&docid=Y5puQAAD4v_uJM&w=358&h=358",
+    "position": 1
+   },
+   {
+    "title": "Tai nghe Apple AirPods Pro 3 USB-C | Giá tốt, trả góp 0%",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/g/r/group_111_1_1.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAEmI907Tpygz-fylmYjP2dnGTl5Oe5x7CiUeA0_mKkQ&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/apple-airpods-pro-3.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fg%2Fr%2Fgroup_111_1_1.png&tbnid=iONdFj9XTdqmeM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fapple-airpods-pro-3.html&docid=Y5puQAAD4v_uJM&w=358&h=358",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe Bluetooth Apple AirPods Pro 3 Trắng MFHP4",
+    "imageUrl": "https://cdnv2.tgdd.vn/mwg-static/topzone/Products/Images/54/344776/airpods-pro-3-100925-025234-544-650x650.png",
+    "imageWidth": 650,
+    "imageHeight": 650,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRF3HOzYCy0XDaRHEea-dmE_yP_-5lL__AknnwLr8NvOQ&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "TopZone",
+    "domain": "www.topzone.vn",
+    "link": "https://www.topzone.vn/tai-nghe/tai-nghe-bluetooth-apple-airpods-pro-3-trang-mfhp4",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdnv2.tgdd.vn%2Fmwg-static%2Ftopzone%2FProducts%2FImages%2F54%2F344776%2Fairpods-pro-3-100925-025234-544-650x650.png&tbnid=_JXHqFpuqt3KjM&imgrefurl=https%3A%2F%2Fwww.topzone.vn%2Ftai-nghe%2Ftai-nghe-bluetooth-apple-airpods-pro-3-trang-mfhp4&docid=mr7iRmkOjkqevM&w=650&h=650",
+    "position": 3
+   },
+   {
+    "title": "Tai nghe Bluetooth Apple AirPods Pro 3 2025 Type-C | Chính hãng (MFHP4ZP/A)",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/a/i/airpods_pro_3_sep25_pdp_image_position_1__vn-vi_1.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFpiLMnWDNuMSe-2-2rVMQjXNnijNkGMn8Vn9GRqHP_w&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/apple-airpods-pro-3.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fa%2Fi%2Fairpods_pro_3_sep25_pdp_image_position_1__vn-vi_1.png&tbnid=KGQ8ECgUcORNhM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fapple-airpods-pro-3.html&docid=Y5puQAAD4v_uJM&w=358&h=358",
+    "position": 4
+   },
+   {
+    "title": "Tai nghe Bluetooth Apple AirPods Pro 3 2025 Type-C | Chính hãng (MFHP4ZP/A)",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/a/i/airpods_pro_3_sep25_pdp_image_position_4__vn-vi_1.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtmW1TbXqp5B6Cs0qkR_Os20WW426uMIyrNVU7S_nCHA&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/apple-airpods-pro-3.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fa%2Fi%2Fairpods_pro_3_sep25_pdp_image_position_4__vn-vi_1.png&tbnid=o4mO75rgrIAaBM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fapple-airpods-pro-3.html&docid=Y5puQAAD4v_uJM&w=358&h=358",
+    "position": 5
+   },
+   {
+    "title": "Tai nghe Bluetooth Apple AirPods Pro 3 2025 Type-C | Chính hãng (MFHP4ZP/A)",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/a/i/airpods_pro_3_sep25_pdp_image_position_8__vn-vi_1.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyqpShUcRFpwy8wmJhmQIeF9TzUPEEZ_c5l1uHuDNK_g&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/apple-airpods-pro-3.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fa%2Fi%2Fairpods_pro_3_sep25_pdp_image_position_8__vn-vi_1.png&tbnid=FQ4EMPbiCTXv6M&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fapple-airpods-pro-3.html&docid=Y5puQAAD4v_uJM&w=358&h=358",
+    "position": 6
+   },
+   {
+    "title": "Tai nghe Bluetooth Apple AirPods Pro 3 2025 (USB-C) | Chính Hãng Apple Việt  Nam",
+    "imageUrl": "https://dienthoaigiakho.vn/_next/image?url=https%3A%2F%2Fcdn.dienthoaigiakho.vn%2Fphotos%2F1760682613057-Airpods-pro3.jpg&w=3840&q=75",
+    "imageWidth": 1200,
+    "imageHeight": 1200,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTncykP5Id1NVN0jQtnLJ8T3yjDZN09AJv87Envkdsh8Q&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Dienthoaigiakho",
+    "domain": "dienthoaigiakho.vn",
+    "link": "https://dienthoaigiakho.vn/airpods-pro-3-2025-1757492985",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdienthoaigiakho.vn%2F_next%2Fimage%3Furl%3Dhttps%253A%252F%252Fcdn.dienthoaigiakho.vn%252Fphotos%252F1760682613057-Airpods-pro3.jpg%26w%3D3840%26q%3D75&tbnid=SP58ytl6dzebeM&imgrefurl=https%3A%2F%2Fdienthoaigiakho.vn%2Fairpods-pro-3-2025-1757492985&docid=crtv0APJaWF2wM&w=1200&h=1200",
+    "position": 7
+   },
+   {
+    "title": "Tai nghe Bluetooth Apple AirPods Pro 3 2025 (USB-C) | Chính Hãng Apple Việt  Nam",
+    "imageUrl": "https://dienthoaigiakho.vn/_next/image?url=https%3A%2F%2Fcdn.dienthoaigiakho.vn%2Fphotos%2F1757493404746-airpods-pro3.jpg&w=3840&q=75",
+    "imageWidth": 1200,
+    "imageHeight": 1200,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjR0lsEoFe6pxsfmy3dVZVsmZnepVjKwBFWSHvMsd3Cg&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Dienthoaigiakho",
+    "domain": "dienthoaigiakho.vn",
+    "link": "https://dienthoaigiakho.vn/airpods-pro-3-2025-1757492985",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdienthoaigiakho.vn%2F_next%2Fimage%3Furl%3Dhttps%253A%252F%252Fcdn.dienthoaigiakho.vn%252Fphotos%252F1757493404746-airpods-pro3.jpg%26w%3D3840%26q%3D75&tbnid=c-2U6FGUbf3abM&imgrefurl=https%3A%2F%2Fdienthoaigiakho.vn%2Fairpods-pro-3-2025-1757492985&docid=crtv0APJaWF2wM&w=1200&h=1200",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

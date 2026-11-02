@@ -1,0 +1,46 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "không dây Jabra Elite Active 45e site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:14:35.575Z",
+ "body": {
+  "searchParameters": {
+   "q": "không dây Jabra Elite Active 45e site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Lenovo ERAZER XF26 Al Dịch thuật thời gian thực thông ...",
+    "link": "https://shopee.vn/Lenovo-ERAZER-XF26-Al-D%E1%BB%8Bch-thu%E1%BA%ADt-th%E1%BB%9Di-gian-th%E1%BB%B1c-th%C3%B4ng-minh-Tai-nghe-Bluetooth-lo%E1%BA%A1i-b%E1%BB%8F-ti%E1%BA%BFng-%E1%BB%93n-Tai-nghe-kh%C3%B4ng-d%C3%A2y-Bluetooth-6.0-c%C3%B3-m%C3%A0n-h%C3%ACnh-c%E1%BA%A3m-%E1%BB%A9ng-LED-Tai-nghe-kh%C3%B4ng-d%C3%A2y-%C3%A2m-thanh-n%E1%BB%95i-HiFi-Bone-Condu-i.987831414.45863140914",
+    "snippet": "... không dây Bluetooth 6.0 có màn hình cảm ứng LED Tai nghe không dây âm thanh nổi HiFi Bone Condu giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo ...",
+    "position": 1
+   },
+   {
+    "title": "Không Dây Bluetooth 5.4, Màn Hình LED,Chống Nước IPX5",
+    "link": "https://shopee.vn/Tai-nghe-ERAZER-X5-D%E1%BB%8Bch-Thu%E1%BA%ADt-Th%E1%BB%9Di-Gian-Th%E1%BB%B1c-%E2%80%93-Kh%C3%B4ng-D%C3%A2y-Bluetooth-5.4-M%C3%A0n-H%C3%ACnh-LED-Ch%E1%BB%91ng-N%C6%B0%E1%BB%9Bc-IPX5-i.1797622898.28745320569?extraParams=%7B%22display_model_id%22%3A396221074347%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "Mua Tai nghe ERAZER X5 Dịch Thuật Thời Gian Thực – Không Dây Bluetooth 5.4, Màn Hình LED,Chống Nước IPX5 giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.9,
+    "ratingCount": 54,
+    "position": 2
+   },
+   {
+    "title": "Lenovo ERAZER XF26 Al dịch Tai nghe không dây móc ...",
+    "link": "https://shopee.vn/Lenovo-ERAZER-XF26-Al-d%E1%BB%8Bch-Tai-nghe-kh%C3%B4ng-d%C3%A2y-m%C3%B3c-tai-Bluetooth-6.0-c%C3%B3-m%C3%A0n-h%C3%ACnh-c%E1%BA%A3m-%E1%BB%A9ng-LED-Tai-nghe-th%E1%BB%83-thao-c%C3%B3-micr%C3%B4-nghe-OWS-ch%E1%BB%91ng-n%C6%B0%E1%BB%9Bc-N%C3%BAt-IPX5-i.854443946.51213110786",
+    "snippet": "Lenovo ERAZER XF26 Al dịch Tai nghe không dây móc tai Bluetooth 6.0 có màn hình cảm ứng LED Tai nghe thể thao có micrô nghe OWS chống nước Nút IPX5.",
+    "rating": 5,
+    "ratingCount": 23,
+    "position": 3
+   }
+  ],
+  "credits": 1
+ }
+}

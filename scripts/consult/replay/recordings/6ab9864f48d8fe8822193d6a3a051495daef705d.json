@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Tám Riêu\" OR \"Lẩu dê Trương Định.\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:49:35.215Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Tám Riêu\" OR \"Lẩu dê Trương Định.\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tám Riêu (@amthuctamrieu)",
+    "link": "https://www.tiktok.com/@amthuctamrieu",
+    "snippet": "Tám Riêu (@amthuctamrieu) trên TikTok |201K Lượt thích.14.9K Follower.235 Phan Xích Long, Phú Nhuận 140A Lý Chính Thắng, Q3 Sdt: 033 4626060.",
+    "position": 1
+   },
+   {
+    "title": "Thưởng Thức Lẩu Cua Đồng Tại Tám Riêu",
+    "link": "https://www.tiktok.com/@amthuctamrieu/video/7492388600605150485",
+    "snippet": "Ngồi ở Tám Riêu ăn Gánh Lẩu Cua Đồng chill chill, thoải mái với cách phục vụ tận tình, chu đáo mà giá cả cũng hợp ví nữa.",
+    "position": 2
+   },
+   {
+    "title": "Lẩu cua đồng Tám Riêu – Địa điểm 2/9 tụ tập bạn bè",
+    "link": "https://www.tiktok.com/@amthuctamrieu/video/7679033916849769736",
+    "snippet": "Khi 2/9 sắp đến mà chưa biết đi đâu, Tám Riêu là gợi ý đơn giản và dễ chiều: gọi một gánh lẩu cua đồng nóng hổi, thêm vài món quê, ...",
+    "position": 3
+   },
+   {
+    "title": "Nghe danh Tám Riêu đã lâu, hôm nay Tông chủ đích thân ...",
+    "link": "https://www.tiktok.com/@amthuctamrieu/video/7687957755147160850",
+    "snippet": "Nghe danh Tám Riêu đã lâu, hôm nay Tông chủ đích thân hạ phàm… xem thử có gì mà chúng sinh truyền tai! #tamrieu #laucuadong #laurieutuoi # ...",
+    "position": 4
+   },
+   {
+    "title": "LẨU CUA TÁM RIÊU CÓ NGỌT ĐƯỜNG KHÔNG? 🦀🍲 ...",
+    "link": "https://www.tiktok.com/@amthuctamrieu/video/7676051534098058503",
+    "snippet": "LẨU CUA TÁM RIÊU CÓ NGỌT ĐƯỜNG KHÔNG? Có nha, nhưng là cái ngọt thanh tự nhiên từ cua đồng tươi, ăn cùng phần riêu béo nhẹ, ...",
+    "position": 5
+   },
+   {
+    "title": "Giờ cao điểm tại Tám Riêu: Náo nhiệt lau cuội và lau riêu",
+    "link": "https://www.tiktok.com/@amthuctamrieu/video/7651591022199246098",
+    "snippet": "Tại Tám Riêu, giờ cao điểm mang đến không khí sôi động và náo nhiệt. Những tiếng gọi bán hàng, tiếng cười nói của người dân và mùi vị đặc trưng của các món ...",
+    "position": 6
+   },
+   {
+    "title": "Ghé Tám Riêu ăn ngon có quà — Trung thu thêm vui",
+    "link": "https://www.tiktok.com/@amthuctamrieu/video/7686071623484640530",
+    "snippet": "Nội dung cho biết quán Tám Riêu đang khuyến mãi dịp Trung thu với thông điệp “Ghé Tám Riêu ăn ngon có quà, Trung thu thêm vui”. Cover video có ...",
+    "position": 7
+   },
+   {
+    "title": "Mẹt Đồng Quê Tám Riêu - Trải Nghiệm Ẩm Thực Dân Dã",
+    "link": "https://www.tiktok.com/@amthuctamrieu/video/7521738840684514567",
+    "snippet": "Mẹt đồng quê Tám Riêu có gì mà khách mê mẩn vậy ta? Thì ra là combo 5 món dân dã nhà Tám, kèm với 3 loại sốt chấm đặc biệt Hấp dẫn quá!",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

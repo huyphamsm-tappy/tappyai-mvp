@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Work'in Saigon Cafe\" OR \"Sori cafe & more\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:38:57.310Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Work'in Saigon Cafe\" OR \"Sori cafe & more\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "A soft night. A beautiful table. A birthday that feels like ...",
+    "link": "https://www.tiktok.com/@sori.tuxuong/video/7624882539269786887",
+    "snippet": "41 Lượt thích,Video TikTok từ SORI CAFE & MORE (@sori.tuxuong): \"A soft night. A beautiful table. A birthday that feels like yours.",
+    "position": 1
+   },
+   {
+    "title": "Review Sori Cafe & More 20 Tú Xương Quận 3",
+    "link": "https://www.tiktok.com/@yangho0910/video/7345003979996187906",
+    "snippet": "Nếu bạn đang tìm Sori Cafe & More, quán nằm tại 20 Tú Xương, Quận 3, menu giá từ 90k, decor đỏ nổi bật và đồ uống ngon nhưng lượng có thể hơi ít ...",
+    "position": 2
+   },
+   {
+    "title": "Sori Cafe & More Quận 3 Review - Tinhtungtang Boxstudio ...",
+    "link": "https://www.tiktok.com/@tinhtungtangvn/video/7096165486223772955",
+    "snippet": "Discover the flavors of Sori Cafe & More in District 3 with this enticing review. @TÍNH TUNG TĂNG.",
+    "position": 3
+   },
+   {
+    "title": "A whimsical life 🪄🥂💐 #sorieatery #birthday #hcmc",
+    "link": "https://www.tiktok.com/@sori.tuxuong/video/7638270439608896775",
+    "snippet": "51 Lượt thích,Video TikTok từ SORI CAFE & MORE (@sori.tuxuong): \"A whimsical life #sorieatery #birthday #hcmc\".âm thanh gốc - SORI CAFE & MORE.",
+    "position": 4
+   },
+   {
+    "title": "Sori Eatery: Elegant Birthday Photoshoot with Flowers & ...",
+    "link": "https://www.tiktok.com/@sori.tuxuong/photo/7662357936584412423",
+    "snippet": "43 Likes, TikTok video from SORI CAFE & MORE (@sori.tuxuong): “Sori Eatery offers a luxurious vintage space perfect for birthday photoshoots ...",
+    "position": 5
+   },
+   {
+    "title": "âm thanh gốc - SORI CAFE & MORE",
+    "link": "https://www.tiktok.com/music/%C3%A2m-thanh-g%E1%BB%91c-SORI-CAFE-MORE-7620439585213991698",
+    "snippet": "âm thanh gốc - SORI CAFE & MORE. SORI CAFE & MORE. 1 video. Thịnh hành. Mới. Đi ăn tối thôi… mà thành một buổi hẹn đáng nhớ lúc nào không hay.",
+    "position": 6
+   },
+   {
+    "title": "Combo Lily tại Sori: bánh Lily, bó hoa và set đá DIY",
+    "link": "https://www.tiktok.com/@sori.tuxuong/video/7688326967984262421",
+    "snippet": "Video TikTok từ SORI CAFE & MORE (@sori.tuxuong): \"Giới thiệu Combo Lily tại Sori: bánh Lily xinh, bó hoa Lily tươi và set đá mini DIY để ...",
+    "position": 7
+   },
+   {
+    "title": "A year older, a year more glamorous ✨🥂 Khởi đầu tuổi mới thật ...",
+    "link": "https://www.tiktok.com/@sori.tuxuong/video/7645655266578533650",
+    "snippet": "56 Lượt thích,Video TikTok từ SORI CAFE & MORE (@sori.tuxuong): \"A year older, a year more glamorous ✨ Khởi đầu tuổi mới thật rực rỡ khi khoác lên mình ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

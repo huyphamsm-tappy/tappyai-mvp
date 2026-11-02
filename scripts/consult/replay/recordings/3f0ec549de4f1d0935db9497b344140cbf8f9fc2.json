@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "iPhone 16 Pro Max giá giảm đến 4,5 triệu, đủ hàng mới",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:44:00.545Z",
+ "body": {
+  "searchParameters": {
+   "q": "iPhone 16 Pro Max giá giảm đến 4,5 triệu, đủ hàng mới",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Điện thoại iPhone 16 Pro Max 256GB",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-16-pro-max.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrdXDhBixVFzQGv7mogmxdaqwA8eRb0HYp3yVkRcpPDQ&s=10",
+    "thumbnailWidth": 358,
+    "thumbnailHeight": 358,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/iphone-16-pro-max.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fi%2Fp%2Fiphone-16-pro-max.png&tbnid=_CADXAU12aUi7M&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fiphone-16-pro-max.html&docid=NCMkbrTIe-PeZM&w=358&h=358",
+    "position": 1
+   },
+   {
+    "title": "iPhone 16 Pro Max giá giảm đến 4,5 triệu, đủ hàng mới",
+    "imageUrl": "https://media-asset.cellphones.com.vn/dashboard-v2/uploads/content-uploads/dien-thoai-iphone-16-pro-max-256gb-255983.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 675,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf4E4bkUHhXllVWi2Oq2J6hYSVxQSG3l0XDds-MLm8ZQ&s",
+    "thumbnailWidth": 299,
+    "thumbnailHeight": 168,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/iphone-16-pro-max.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia-asset.cellphones.com.vn%2Fdashboard-v2%2Fuploads%2Fcontent-uploads%2Fdien-thoai-iphone-16-pro-max-256gb-255983.jpg&tbnid=7WsWP942elteOM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fiphone-16-pro-max.html&docid=NCMkbrTIe-PeZM&w=1200&h=675",
+    "position": 2
+   },
+   {
+    "title": "Điện thoại iPhone 16 Pro Max 256GB",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-16-pro-max-2.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSC6VbISI5aFN9kV2zNoSPib0x2KEQ_GLUUn5COQcj1lQ&s=10",
+    "thumbnailWidth": 358,
+    "thumbnailHeight": 358,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/iphone-16-pro-max.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fi%2Fp%2Fiphone-16-pro-max-2.png&tbnid=d8_xina0lptnaM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fiphone-16-pro-max.html&docid=NCMkbrTIe-PeZM&w=358&h=358",
+    "position": 3
+   },
+   {
+    "title": "Điện thoại iPhone 16 Pro Max 256GB",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-16-pro-max-3.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSV2WmFy-LkNrOb3HqqaruVxH2fs65-edBd0ybfMjWLqg&s=10",
+    "thumbnailWidth": 358,
+    "thumbnailHeight": 358,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/iphone-16-pro-max.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fi%2Fp%2Fiphone-16-pro-max-3.png&tbnid=53ElLRJX9uUn7M&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fiphone-16-pro-max.html&docid=NCMkbrTIe-PeZM&w=358&h=358",
+    "position": 4
+   },
+   {
+    "title": "iPhone 16 Pro Max giá giảm đến 4,5 triệu, đủ hàng mới",
+    "imageUrl": "https://media-asset.cellphones.com.vn/dashboard-v2/uploads/content-uploads/dien-thoai-iphone-16-pro-max-256gb-217142.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 675,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxp87tsN99lD83WuYfBMlkXeJ8suFC8aP1G0sJ7hKylw&s",
+    "thumbnailWidth": 299,
+    "thumbnailHeight": 168,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/iphone-16-pro-max.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia-asset.cellphones.com.vn%2Fdashboard-v2%2Fuploads%2Fcontent-uploads%2Fdien-thoai-iphone-16-pro-max-256gb-217142.jpg&tbnid=GGeIbsujezghkM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fiphone-16-pro-max.html&docid=NCMkbrTIe-PeZM&w=1200&h=675",
+    "position": 5
+   },
+   {
+    "title": "iPhone 16",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:100/plain/https://cellphones.com.vn/media/wysiwyg/Phone/Apple/iPhone-16/cate-iphone-16-series-38.jpg",
+    "imageWidth": 810,
+    "imageHeight": 456,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPi9n4hyhWIBzLk6e202da38D7HP80kguS67Vwoafyng&s",
+    "thumbnailWidth": 299,
+    "thumbnailHeight": 168,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/mobile/apple/iphone-16.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A0%2Fq%3A100%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fwysiwyg%2FPhone%2FApple%2FiPhone-16%2Fcate-iphone-16-series-38.jpg&tbnid=SRO7RV1Wtekb6M&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fmobile%2Fapple%2Fiphone-16.html&docid=jT_ySHW53RjW1M&w=810&h=456",
+    "position": 6
+   },
+   {
+    "title": "iPhone 16 Pro Max giá giảm đến 4,5 triệu, đủ hàng mới",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-16-pro-max-10.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCWAtVQooV9XqwW_xO5XkNGx4tqLRprVctftwCb4fFmw&s=10",
+    "thumbnailWidth": 358,
+    "thumbnailHeight": 358,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/iphone-16-pro-max.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fi%2Fp%2Fiphone-16-pro-max-10.png&tbnid=4sIhvwvn9_Y-bM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fiphone-16-pro-max.html&docid=NCMkbrTIe-PeZM&w=358&h=358",
+    "position": 7
+   },
+   {
+    "title": "iPhone 16 Pro Max (VN/A) | Giá tốt giảm đến 6 triệu, trả góp 0%",
+    "imageUrl": "https://cdn1.viettelstore.vn/Images/Product/ProductImage/400291111.jpeg",
+    "imageWidth": 500,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStE5-40Zy-PuMwExX5XybgqyZMd4hFYPdhcmHS4iXyqQ&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Viettel Store",
+    "domain": "viettelstore.vn",
+    "link": "https://viettelstore.vn/dien-thoai/iphone-16-pro-max-pid339630.html?srsltid=AU7gw4X4GPicFJ1eJUvX374SA_1J56FmiyYGpSq_KtO9W67R28ZkE1P4",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn1.viettelstore.vn%2FImages%2FProduct%2FProductImage%2F400291111.jpeg&tbnid=v6ArbR5yGaWSGM&imgrefurl=https%3A%2F%2Fviettelstore.vn%2Fdien-thoai%2Fiphone-16-pro-max-pid339630.html%3Fsrsltid%3DAU7gw4X4GPicFJ1eJUvX374SA_1J56FmiyYGpSq_KtO9W67R28ZkE1P4&docid=I-ZPGrNSGTzHkM&w=500&h=500",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

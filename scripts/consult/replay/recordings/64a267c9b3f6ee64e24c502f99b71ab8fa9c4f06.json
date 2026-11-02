@@ -1,0 +1,59 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:hoian.danang.gov.vn phí tham quan phố cổ Hội An 2026 vé",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:16:01.704Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:hoian.danang.gov.vn phí tham quan phố cổ Hội An 2026 vé",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Miễn vé tham quan đô thị cổ Hội An trong ngày 4/12",
+    "link": "https://hoian.danang.gov.vn/thong-bao/chi-tiet.html?id=691bdd7981b39a37eab30d54&p_id=426",
+    "snippet": "Du khách sẽ được miễn vé tham quan đô thị cổ Hội An trong ngày 4/12 nhân dịp 26 năm đô thị cổ Hội An được UNESCO công nhận Di sản văn hóa ...",
+    "date": "17 thg 11, 2025",
+    "position": 1
+   },
+   {
+    "title": "Giới thiệu du lịch Hội An - phường Hội An",
+    "link": "https://hoian.danang.gov.vn/tin-tuc/chi-tiet.html?id=68df52a751f7f62cb86fd08f&p_id=371",
+    "snippet": "Xe máy: đây là phương tiện cá nhân được bạn ưu tiên lựa chọn. Với 120.000 - 150.000 VNĐ/ ngày, bạn đã có thể làm một tour du lịch phố cổ Hội An ...",
+    "date": "2 thg 10, 2025",
+    "position": 2
+   },
+   {
+    "title": "Thông tin cần biết - phường Hội An",
+    "link": "https://hoian.danang.gov.vn/tin-tuc/cai-cach-hanh-chinh.html?id=68df548a51f7f62cb86fd096&p_id=371",
+    "snippet": "Xe máy: bạn sẽ dễ dàng thuê được xe máy để thuận tiện di chuyển đến các địa điểm tham quan ở Hội An với giá từ 120.000 - 150.000 VNĐ/ngày. Xích ...",
+    "date": "2 thg 10, 2025",
+    "position": 3
+   },
+   {
+    "title": "Gìn giữ và phát huy di sản Hội An - phường Hội An",
+    "link": "https://hoian.danang.gov.vn/tin-tuc/van-hoa-xa-hoi/chi-tiet.html?id=68d3708151f7f62cb86f29b7&p_id=385",
+    "snippet": "Từ một thương cảng quốc tế sầm uất hàng trăm năm trước, Hội An hiện còn giữ được 27 di tích cấp quốc gia, 49 di tích cấp tỉnh và hơn 1.330 di ...",
+    "date": "23 thg 9, 2025",
+    "position": 4
+   },
+   {
+    "title": "Mở rộng không gian đô thị, cơ sở hạ tầng và kinh tế Đà Nẵng",
+    "link": "https://hoian.danang.gov.vn/tin-tuc/kinh-te-ha-tang-do-thi/chi-tiet.html?id=68d36b3851f7f62cb86f29ad&p_id=384",
+    "snippet": "Theo quy hoạch tỉnh Quảng Nam thời kỳ 2021 - 2030, tầm nhìn đến năm 2050, thành phố Hội An sẽ phát triển trở thành đô thị loại II thuộc cụm đô ...",
+    "date": "23 thg 9, 2025",
+    "position": 5
+   }
+  ],
+  "credits": 1
+ }
+}

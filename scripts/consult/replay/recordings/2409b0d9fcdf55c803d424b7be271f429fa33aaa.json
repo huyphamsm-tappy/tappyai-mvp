@@ -1,0 +1,82 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hội An Ancient Town ticket prices opening hours official 2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T09:55:14.950Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hội An Ancient Town ticket prices opening hours official 2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hoi An Old Town 2026: Full Guide for First-Time Visitors",
+    "link": "https://lasiestaresorts.com/first-time-visit-hoi-an-old-town.html",
+    "snippet": "Tickets are best purchased at official counters around the Old Town ... Opening Hours: 17:00-22:00. Hoi An Night Market comes alive after dusk with ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 1
+   },
+   {
+    "title": "Hoi An Ancient Town: The ULTIMATE guide for travelers ...",
+    "link": "https://vinpearl.com/en/hoi-an-ancient-town-time-travel-to-the-traditional-land-of-vietnam",
+    "snippet": "The ticket prices for Vietnamese and foreigners differ, which are 80,000 VND/person and 120,000 VND/person respectively. Don't hesitate to buy ...",
+    "date": "13 thg 12, 2025",
+    "rating": 5,
+    "ratingCount": 999,
+    "position": 2
+   },
+   {
+    "title": "Announcement of the visiting in Hoi An Ancient Town",
+    "link": "https://hoianheritage.danang.gov.vn/en/news/news-events/announcement-of-the-visiting-in-hoi-an-ancient-town-125.html",
+    "snippet": "We kindly ask visitors to purchase tickets before entering the ancient town. 1. Tourist's benefits: - Entrance ticket price 80.000 VND: + Visit ...",
+    "date": "28 thg 1, 2026",
+    "position": 3
+   },
+   {
+    "title": "Hoi An Old Town Tickets [2026] - Promos, Prices, Reviews ...",
+    "link": "https://www.trip.com/travel-guide/attraction/da-nang/hoi-an-old-town-84669?poiType=3&rankingId=100000007653&locale=en-XX",
+    "snippet": "According to the latest Trip.com data, today's ticket price for Hoi An Old Town is $4.66. How can I buy tickets for Hoi An Old Town? You can book Hoi An Old ...",
+    "rating": 4.4,
+    "ratingCount": 1184,
+    "position": 4
+   },
+   {
+    "title": "Hoi An Ancient Town Entrance Tickets - Đà Nẵng",
+    "link": "https://danangfantasticity.com/vi/news/hoi-an-ancient-town-entrance-tickets-2026",
+    "snippet": "Within the Ancient Town area, pedestrian hours are from 09:00 to 21:30 in summer and 09:00 to 21:00 in winter. On Phan Chau Trinh Street, ...",
+    "date": "6 thg 3, 2026",
+    "position": 5
+   },
+   {
+    "title": "Hoi An Old Town Ticket: Price, Offices, Attractions & More",
+    "link": "https://hoiandaytrip.com/hoi-an-old-town-ticket/",
+    "snippet": "Ticket offices at the Hoi An Ancient Town open from 7:30 am to 8-9 pm (some of them may be closed before 7 pm). Visitors can understand that if walk into the ...",
+    "position": 6
+   },
+   {
+    "title": "Hoi An Ancient Town: Ticket Price, Hours & What to See",
+    "link": "https://www.lanytrip.com/en/blogs/central-vietnam-attractions/hoi-an-ancient-town-guide",
+    "snippet": "Entrance ticket:120,000 VND for foreign visitors, which admits you to a set number of designated heritage sites. Time needed:4–6 hours; on a ...",
+    "date": "17 thg 8, 2026",
+    "position": 7
+   },
+   {
+    "title": "Latest 2026 Hoi An Ancient Town Entrance Ticket Prices ...",
+    "link": "https://sovaba.travel/en/blog/article-latest-2026-hoi-an-ancient-town-entrance-ticket-prices-for-domestic-and-international-tourists",
+    "snippet": "General opening hours: From 7:00 AM to 9:30 PM (some spots like the Japanese Covered Bridge stay open until 10:00 PM during festival times). · Ticket sales hours ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

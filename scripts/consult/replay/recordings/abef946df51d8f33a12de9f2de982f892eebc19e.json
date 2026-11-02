@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Quán Đo Đo\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:16:49.675Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Quán Đo Đo\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khám Phá Đồ Ăn Ở Đà Lạt Tại Quán Đo Đo",
+    "link": "https://www.tiktok.com/@moingaymotquan.dalat/video/7505983236196027655",
+    "snippet": "Tìm hiểu về trải nghiệm thú vị tại quán Đo Đo, nơi bạn có thể thưởng thức đồ ăn và thưởng thức không khí thư giãn. #moingaymotquan #dalat # ...",
+    "position": 1
+   },
+   {
+    "title": "Đo Đo Đà Lạt — Quán nước trong rừng: nằm là niềm đam ...",
+    "link": "https://www.tiktok.com/@dodo.quannuoctrongrung/video/7677820537959173383",
+    "snippet": "Q: Quán Đo Đo có những hoạt động gì? A: Video cho thấy khung cảnh thư giãn tại quán, với sự hiện diện của chú mèo và không gian thiên nhiên. Q: ...",
+    "position": 2
+   },
+   {
+    "title": "Đo Đo ngày mưa Đà Lạt — quán nước trong rừng vibes ...",
+    "link": "https://www.tiktok.com/@dodo.quannuoctrongrung/video/7645145254588452114",
+    "snippet": "Khám Phá Đồ Ăn Ở Đà Lạt Tại Quán Đo Đo. Tìm hiểu về trải nghiệm thú vị tại quán Đo Đo, nơi bạn có thể thưởng thức đồ ăn và thưởng thức không ...",
+    "position": 3
+   },
+   {
+    "title": "Đo Đo quán nước trong rừng ở Đà Lạt",
+    "link": "https://www.tiktok.com/@dodo.quannuoctrongrung/video/7677409112342269192",
+    "snippet": "Điều cần biết khi đến - Vị trí: Đà Lạt (tên quán: Đo Đo, gọi tắt là dodo). - Không gian: quán giữa rừng, yên tĩnh, thích hợp cho ai muốn tìm ...",
+    "position": 4
+   },
+   {
+    "title": "Quán ăn Quảng Ngãi của NHÀ VĂN NỔI TIẾNG bạn ...",
+    "link": "https://www.tiktok.com/@ducdi_dau/video/7199865927913966875",
+    "snippet": "Quán ăn Quảng Ngãi của NHÀ VĂN NỔI TIẾNG bạn ăn chưa? #AnCungTikTok #. @Đức Đi Đâu · nhạc nền - Caibung_doi · Quán Đo Đo · author. 11.3K · 165.",
+    "position": 5
+   },
+   {
+    "title": "Đo Đo Quán Nước Trong Rừng Đà Lạt",
+    "link": "https://www.tiktok.com/discover/%C4%91o-%C4%91o-qu%C3%A1n-n%C6%B0%E1%BB%9Bc-trong-r%E1%BB%ABng-%C4%91%C3%A0-l%E1%BA%A1t",
+    "snippet": "Khám phá Quán Đo Đo ở Đà Lạt - quán cafe trong rừng với vô vàn mèo xinh xắn, view núi rừng lãng mạn và góc sống ảo cực chất. Ghé ngay! 35.3K Likes, 123 ...",
+    "position": 6
+   },
+   {
+    "title": "Đo Đo Quán: Cafe Mèo Giữa Rừng Đà Lạt Siêu Chill",
+    "link": "https://www.tiktok.com/@tony_khoa/video/7568156348173602066",
+    "snippet": "Tìm kiếm một không gian cà phê độc đáo tại Đà Lạt? Quán Đo Đo chính là điểm đến lý tưởng dành cho bạn, một quán nước ẩn mình giữa rừng xanh ...",
+    "position": 7
+   },
+   {
+    "title": "Một buổi chụp ảnh tại quán Đo Đo cảm ơn ...",
+    "link": "https://www.tiktok.com/@bernie_an/video/7670081918548921621",
+    "snippet": "21 Lượt thích,Video TikTok từ HongAn (@bernie_an): \"Một buổi chụp ảnh tại quán Đo Đo cảm ơn buổi chụp từ anh @henry.dalat® #đođo_quannuoctrongrung #đođo ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

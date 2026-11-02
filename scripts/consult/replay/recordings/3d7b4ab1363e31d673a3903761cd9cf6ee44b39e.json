@@ -1,0 +1,86 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Pro3 Hổ Vằn 1563E site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T17:17:03.472Z",
+ "body": {
+  "searchParameters": {
+   "q": "Pro3 Hổ Vằn 1563E site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai Nghe Pro3 Hổ Vằn 1563E – ANC Chủ Động, Đo Nhịp ...",
+    "link": "https://shopee.vn/Tai-Nghe-Pro3-H%E1%BB%95-V%E1%BA%B1n-1563E-%E2%80%93-ANC-Ch%E1%BB%A7-%C4%90%E1%BB%99ng-%C4%90o-Nh%E1%BB%8Bp-Tim-Pin-Tr%C3%A2u-i.370349157.53954392999",
+    "snippet": "Mua Tai Nghe Pro3 Hổ Vằn 1563E – ANC Chủ Động, Đo Nhịp Tim, Pin Trâu giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn ...",
+    "rating": 4.4,
+    "ratingCount": 21,
+    "position": 1
+   },
+   {
+    "title": "Tai Nghe Pro3 Chip Hổ Vằn 1563E | Phiên Bản 2026",
+    "link": "https://shopee.vn/Tai-Nghe-Pro3-Chip-H%E1%BB%95-V%E1%BA%B1n-1563E-Phi%C3%AAn-B%E1%BA%A3n-2026-%C4%90o-Nh%E1%BB%8Bp-Tim-i.565283660.57654383550",
+    "snippet": "Mua Tai Nghe Pro3 Chip Hổ Vằn 1563E | Phiên Bản 2026 | Đo Nhịp Tim giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại ...",
+    "position": 2
+   },
+   {
+    "title": "Tai Nghe Pro 3 Hổ Vằn 1563E ANC Pin 8h | Chống Ồn 40DB",
+    "link": "https://shopee.vn/Tai-Nghe-Pro-3-H%E1%BB%95-V%E1%BA%B1n-1563E-ANC-Pin-8h-Ch%E1%BB%91ng-%E1%BB%92n-40DB-B%E1%BA%A3n-N%C3%A2ng-C%E1%BA%A5p-M%E1%BB%9Bi-Nh%E1%BA%A5t-i.405865370.21986852322",
+    "snippet": "Mua Tai Nghe Pro 3 Hổ Vằn 1563E ANC Pin 8h | Chống Ồn 40DB | Bản Nâng Cấp Mới Nhất giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "rating": 4.9,
+    "ratingCount": 57,
+    "position": 3
+   },
+   {
+    "title": "Tai Nghe Hổ Vằn 1563E, Tai Nghe Bluetooth MTS-Pro 3 ...",
+    "link": "https://shopee.vn/Tai-Nghe-H%E1%BB%95-V%E1%BA%B1n-1563E-Tai-Nghe-Bluetooth-MTS-Pro-3-ANC-40DB-Xuy%C3%AAn-%C3%82m-T%C4%83ng-Gi%E1%BA%A3m-%C3%82m-L%C6%B0%E1%BB%A3ng-i.51435233.45153486967",
+    "snippet": "Mua Tai Nghe Hổ Vằn 1563E, Tai Nghe Bluetooth MTS-Pro 3 ANC 40DB - Xuyên Âm, Tăng Giảm Âm Lượng giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 2,
+    "position": 4
+   },
+   {
+    "title": "Tai Nghe Hổ Vằn PRO 3 1563E GOLDEN BUDS UF",
+    "link": "https://shopee.vn/Tai-Nghe-H%E1%BB%95-V%E1%BA%B1n-PRO-3-1563E-GOLDEN-BUDS-UF-M%E1%BA%ABu-M%E1%BB%9Bi-2026-l-Ch%E1%BB%91ng-%E1%BB%93n-40dB-l-Xuy%C3%AAn-%C3%82m-%C3%82m-V%C3%B2m-i.1059758481.24814902470",
+    "snippet": "Mua Tai Nghe Hổ Vằn PRO 3 1563E GOLDEN BUDS UF - Mẫu Mới 2026 l Chống ồn 40dB l Xuyên Âm - Âm Vòm giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 56,
+    "position": 5
+   },
+   {
+    "title": "[ Pro 3 1563E ] Tai Nghe Bluetooth Hổ Vằn ...",
+    "link": "https://shopee.vn/-Pro-3-1563E-Tai-Nghe-Bluetooth-H%E1%BB%95-V%E1%BA%B1n-1563E-Ch%E1%BB%91ng-%E1%BB%92n-ANC-40DB-Xuy%C3%AAn-%C3%82m-T%C4%83ng-Gi%E1%BA%A3m-%C3%82m-L%C6%B0%E1%BB%A3ng-i.1076108314.29694229238",
+    "snippet": "[ Pro 3 1563E ] Tai Nghe Bluetooth Hổ Vằn 1563E, Chống Ồn ANC 40DB - Xuyên Âm - Tăng Giảm Âm Lượng ; Chọn loại hàng. Bảo. Hành 1 Tháng. Bảo. Hành 3 Tháng. +1 ...",
+    "rating": 4.8,
+    "ratingCount": 41,
+    "position": 6
+   },
+   {
+    "title": "[ PRO 3 - 1563E ] Tai Nghe Bluetooth Pro3 - Hổ Vằn ...",
+    "link": "https://shopee.vn/-PRO-3-1563E-Tai-Nghe-Bluetooth-Pro3-H%E1%BB%95-V%E1%BA%B1n-1563E-Ch%E1%BB%91ng-%E1%BB%92n-Xuy%C3%AAn-%C3%82m-45Db-M%C3%A8o-M%E1%BA%ADp-Store-i.1023984014.56255093932",
+    "snippet": "Mua [ PRO 3 - 1563E ] Tai Nghe Bluetooth Pro3 - Hổ Vằn 1563E - Chống Ồn Xuyên Âm 45Db - Mèo Mập Store giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 3.2,
+    "ratingCount": 5,
+    "position": 7
+   },
+   {
+    "title": "Tai Nghe Hổ Vằn Pro 3 1563E - Mẫu Mới 2026 l Chống ồn ...",
+    "link": "https://shopee.vn/Tai-Nghe-H%E1%BB%95-V%E1%BA%B1n-Pro-3-1563E-M%E1%BA%ABu-M%E1%BB%9Bi-2026-l-Ch%E1%BB%91ng-%E1%BB%93n-40dB-l-C%E1%BA%A3m-Bi%E1%BA%BFn-H%E1%BB%93ng-Ngo%E1%BA%A1i-i.1059758481.48806935315",
+    "snippet": "Mua Tai Nghe Hổ Vằn Pro 3 1563E - Mẫu Mới 2026 l Chống ồn 40dB l Cảm Biến Hồng Ngoại giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "rating": 5,
+    "ratingCount": 13,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "hồ sơ cấp hộ chiếu trực tuyến cần căn cước ảnh chân dung số điện thoại email công an xuất nhập cảnh",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:12:20.237Z",
+ "body": {
+  "searchParameters": {
+   "q": "hồ sơ cấp hộ chiếu trực tuyến cần căn cước ảnh chân dung số điện thoại email công an xuất nhập cảnh",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp tỉnh)",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=29497",
+    "snippet": "Bước 1: Chuẩn bị hồ sơ theo quy định của pháp luật. Bước 2: Nộp hồ sơ * Người đề nghị cấp hộ chiếu phổ thông không gắn chíp điện tử trực tiếp nộp hồ sơ vào ...",
+    "position": 1
+   },
+   {
+    "title": "Thủ tục làm hộ chiếu phổ thông online",
+    "link": "https://www.xuatnhapcanh.com.vn/c11t80-thu-tuc-lam-ho-chieu-online.htm",
+    "snippet": "Trường hợp khai tờ khai online và mang trực tiếp hồ sơ đến Phòng xuất nhập cảnh hoặc cục quản lý xuất nhập cảnh để nộp. Bước 1: Truy cập và nhập ...",
+    "date": "24 thg 12, 2024",
+    "position": 2
+   },
+   {
+    "title": "HƯỚNG DẪN THAO TÁC ĐĂNG KÝ CẤP HỘ CHIẾU PHỔ ...",
+    "link": "https://www.facebook.com/xuatnhapcanhhanoi/posts/h%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-thao-t%C3%A1c-%C4%91%C4%83ng-k%C3%BD-c%E1%BA%A5p-h%E1%BB%99-chi%E1%BA%BFu-ph%E1%BB%95-th%C3%B4ng-tr%C3%AAn-c%E1%BB%95ng-d%E1%BB%8Bch-v%E1%BB%A5-c%C3%B4ng-b%E1%BB%99-c%C3%B4ng/765553852792615/",
+    "snippet": "Tại màn hình nhập số định danh là số thẻ căn cước và mật khẩu của ứng dụng VNEID. Hoặc mở ứng dụng VNED trên điện thoại chọn quét mã QR code sau ...",
+    "position": 3
+   },
+   {
+    "title": "Tờ khai điện tử đề nghị cấp hộ chiếu",
+    "link": "https://hochieu.xuatnhapcanh.gov.vn/faces/faq.jspx",
+    "snippet": "Chứng minh nhân dân hoặc Thẻ căn cước công dân hoặc hộ chiếu còn giá trị sử dụng (xuất trình khi nộp hồ sơ để cơ quan Quản lý xuất nhập cảnh kiểm tra, đối chiếu);",
+    "position": 4
+   },
+   {
+    "title": "Thủ tục làm hộ chiếu: Hướng dẫn làm trực tiếp và online",
+    "link": "https://luatvietnam.vn/tin-phap-luat/thu-tuc-lam-ho-chieu-230-18795-article.html",
+    "snippet": "- Nộp hồ sơ tại cơ quan quản lý xuất nhập cảnh cấp tỉnh (nơi thường trú, tạm trú hoặc nơi thuận lợi): Công dân cấp hộ chiếu lần đầu, cấp hộ ...",
+    "date": "5 thg 8, 2025",
+    "position": 5
+   },
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp tỉnh)",
+    "link": "https://vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh-doc.html?ma_thu_tuc=1.001456",
+    "snippet": "Bước 1: Chuẩn bị hồ sơ theo quy định của pháp luật. Bước 2: Nộp hồ sơ * Người đề nghị cấp hộ chiếu phổ thông không gắn chíp điện tử trực tiếp nộp hồ sơ vào ...",
+    "position": 6
+   },
+   {
+    "title": "Hướng dẫn người dân đăng ký làm hộ chiếu trên ứng ...",
+    "link": "https://congan.hungyen.gov.vn/huong-dan-nguoi-dan-dang-ky-lam-ho-chieu-tren-ung-dung-vneid-c231845.html",
+    "snippet": "1. Điều kiện để đăng ký hộ chiếu qua VNeID. - Công dân Việt Nam có tài khoản định danh điện tử mức độ 2 (đã xác thực tại Công an cấp xã, phòng). · 2. Các bước ...",
+    "position": 7
+   },
+   {
+    "title": "Hướng dẫn làm hộ chiếu online (passport online), nhận tại ...",
+    "link": "https://quephong.nghean.gov.vn/tin-noi-bat/huong-dan-lam-ho-chieu-online-passport-online-nhan-tai-nha-633365",
+    "snippet": "Giấy tờ cần chuẩn bị khi làm passport online. Khi làm passport online, bạn cần chuẩn bị trước các hồ sơ giấy tờ sau: 01 ảnh chân dung và 01 ảnh ...",
+    "date": "19 thg 4, 2024",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

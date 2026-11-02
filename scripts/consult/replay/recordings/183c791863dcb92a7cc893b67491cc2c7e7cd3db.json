@@ -1,0 +1,54 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hoff Coffee Brewers by BeanHop\" OR \"Bãi Gửi Xe Phố Đi Bộ\" OR \"The Coffee Bean & Tea Leaf Han Thuyen\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:11:50.565Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hoff Coffee Brewers by BeanHop\" OR \"Bãi Gửi Xe Phố Đi Bộ\" OR \"The Coffee Bean & Tea Leaf Han Thuyen\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khám Phá Thiết Kế Mới Của The Coffee Bean & Tea Leaf",
+    "link": "https://www.tiktok.com/@tn.thanh0101/video/7385151615147232530",
+    "snippet": "... thiết kế mới của The Coffee Bean & Tea Leaf dưới sự quản. @Ong Nhật Thành · reckless · The Coffee Bean & Tea Leaf Han Thuyen · author. 22 · 6.",
+    "position": 1
+   },
+   {
+    "title": "#ninaho #trend #dating #hochiminhcity #xuhuong",
+    "link": "https://www.tiktok.com/@ho.nina6/video/7679696315525238037",
+    "snippet": "#ninaho #trend #dating #hochiminhcity #xuhuong. @Nina Ho · original sound - Nina Ho · The Coffee Bean & Tea Leaf Han Thuyen · author · 36 · 2.",
+    "position": 2
+   },
+   {
+    "title": "Cuộc sống và Coffee ở Thuận An",
+    "link": "https://www.tiktok.com/@changchang090387/video/7674102910745201928",
+    "snippet": "... đẹp của cuộc sống, cà phê và Thuận An với những khung. @Chang Chang · suara asli - fein1206 · The Coffee Bean & Tea Leaf Han Thuyen · author.",
+    "position": 3
+   },
+   {
+    "title": "Hướng Dẫn Gửi Xe Đến Phố Đi Bộ Nguyễn Huệ",
+    "link": "https://www.tiktok.com/@99bynightnguyenhue/video/7238223638888058117",
+    "snippet": "Keywords: bãi gửi xe phố đi bộ Nguyễn Huệ,bãi đậu xe gần phố đi bộ hướng dẫn,giữ xe ở phố đi bộ Nguyễn Huệ,gửi xe qua đêm phố đi bộ Nguyễn ...",
+    "position": 4
+   },
+   {
+    "title": "Cơ hội xem Diễu Binh 30/4/2025 tại Sài Gòn",
+    "link": "https://www.tiktok.com/@caichanthichdi/video/7491320918203993362",
+    "snippet": "**Bãi Gửi Xe Phố Đi Bộ** Đ. Tôn Thất Thiệp, Bến Nghé, Quận 1 Khoảng cách: 5,2 km. 2. **Takashimaya** 92-94 Nam Kỳ Khởi Nghĩa, Bến ...",
+    "position": 5
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,81 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple iPhone 15 giá bán Việt Nam bảo hành (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:37:23.068Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple iPhone 15 giá bán Việt Nam bảo hành (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Apple iPhone 15 giá giảm thêm 6 triệu, trả góp 0% 12 tháng",
+    "link": "https://cellphones.com.vn/mobile/apple/iphone-15.html",
+    "snippet": "iPhone 15 128GB | Chính hãng VN/A. 19.990.000đ. 17.990.000đ ; iPhone 15 256GB | Chính hãng VN/A. 24.990.000đ. 22.990.000đ ; iPhone 15 512GB | Chính hãng VN/A.",
+    "position": 1
+   },
+   {
+    "title": "iPhone 15 thường 128GB chính hãng VN/A, giá tốt T10/2026",
+    "link": "https://cellphones.com.vn/iphone-15.html",
+    "snippet": "iPhone 15 128GB | Chính hãng VN/A ; Lên đời chỉ từ 16.790.000đ ; Trợ giá đến 3.000.000đ ; Trả góp 0% ; Hiệu năng. 5/5. (56 đánh giá) ; Thời lượng pin. 4.9/5. (56 ...",
+    "rating": 4.9,
+    "ratingCount": 102,
+    "position": 2
+   },
+   {
+    "title": "Điện thoại iPhone 15 Plus 128GB giá rẻ, chính hãng ...",
+    "link": "https://cellphones.com.vn/iphone-15-plus.html",
+    "snippet": "Tên sản phẩm. Giá bán. Giá thu cũ lên đời ; iPhone 15 Plus 128GB | Chính hãng VN/A. 17.690.000đ. 15.690.000đ ; iPhone 15 Plus 256GB | Chính hãng VN/A. 21.290.000đ.",
+    "rating": 4.8,
+    "ratingCount": 72,
+    "position": 3
+   },
+   {
+    "title": "Bảng giá iPhone hiện nay 10/2026 - Hàng mới VN/A",
+    "link": "https://cellphones.com.vn/sforum/bang-gia-cac-dong-dien-thoai-iphone-hien-nay",
+    "snippet": "Bảng giá iPhone 15 hiện nay - Tháng 10/2026 ; iPhone 15 Pro Max, 256GB, 24.990.000đ ; iPhone 15 Pro Max, 512GB, 28.490.000đ ; iPhone 15 Pro Max, 1TB, 31.990.000đ.",
+    "rating": 4.2,
+    "ratingCount": 5,
+    "position": 4
+   },
+   {
+    "title": "iPhone cũ giá rẻ tháng 10/2026, trả góp 0Đ, 0% lãi suất",
+    "link": "https://cellphones.com.vn/hang-cu/iphone.html",
+    "snippet": "iPhone 16 Pro Max 1TB - Cũ Đẹp. 31.790.000đ. 30.790.000đ ; iPhone 17 Pro Max 1TB - Cũ Đẹp. 38.190.000đ. 37.190.000đ ; iPhone 15 Pro Max 1TB - Cũ Đẹp. 24.790.000đ.",
+    "position": 5
+   },
+   {
+    "title": "iPhone trả bảo hành là gì? Có nên mua không? Cách phân ...",
+    "link": "https://cellphones.com.vn/sforum/iphone-tra-bao-hanh-la-gi",
+    "snippet": "Bảng giá iPhone trả bảo hành hiện tại ; Model. Giá tham khảo ; iPhone 13. 6 - 9 triệu ; iPhone 14. 9 - 13 triệu ; iPhone 15. 13 - 17 triệu ; iPhone ...",
+    "date": "6 thg 5, 2026",
+    "position": 6
+   },
+   {
+    "title": "iPhone 15 Pro Max 256GB giá rẻ, mua online giảm thêm 5%",
+    "link": "https://cellphones.com.vn/iphone-15-pro-max.html",
+    "snippet": "iPhone 15 Pro Max giá bao nhiêu? Bảng giá mới nhất tháng 10/2026 ; iPhone 15 Pro Max 256GB | Chính hãng VN/A. 24.990.000đ. 22.990.000đ ; iPhone 15 Pro Max 512GB | ...",
+    "rating": 4.9,
+    "ratingCount": 199,
+    "position": 7
+   },
+   {
+    "title": "Giá iPhone 15 ở Việt Nam có mắc hơn so với thế giới?",
+    "link": "https://cellphones.com.vn/sforum/gia-iphone-15-o-viet-nam-co-mac-hon-so-voi-the-gioi",
+    "snippet": "Xếp ở vị trí phía sau Anh Quốc là thị trường tỷ dân - Ấn Độ với mức giá báo iPhone 15 và 15 Plus dao động từ 23.3 - 26.2 triệu đồng. Dù không phải là quốc gia ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

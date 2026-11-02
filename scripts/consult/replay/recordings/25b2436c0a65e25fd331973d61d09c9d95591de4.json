@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "iPhone 15 giá Việt Nam 2026 Samsung Galaxy S24 giá Việt Nam",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:39:42.468Z",
+ "body": {
+  "searchParameters": {
+   "q": "iPhone 15 giá Việt Nam 2026 Samsung Galaxy S24 giá Việt Nam",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Samsung Galaxy S24 Ultra vs iPhone 15 Pro Max",
+    "link": "https://tuoitre.vn/plo/samsung-galaxy-s24-ultra-vs-iphone-15-pro-max-tran-chien-cua-nhung-nguoi-khong-lo-post772811.html",
+    "snippet": "Samsung Galaxy S24 Ultra (6,8 inch) có màn hình rộng hơn iPhone 15 Pro Max (6,7 inch), giúp người dùng có trải nghiệm tốt hơn. Về độ phân giải, ...",
+    "date": "20 thg 1, 2024",
+    "position": 1
+   },
+   {
+    "title": "So sánh Samsung Galaxy S24 và iPhone 15",
+    "link": "https://www.chotot.com/kinh-nghiem/so-sanh-samsung-galaxy-s24-va-iphone-15.html",
+    "snippet": "iPhone 15 và Samsung S24 giá bán chênh lệch bao nhiêu? ; iPhone 15 128GB, 22,99 triệu, 10,08 triệu – 12,32 triệu ; iPhone 15 256GB, 25,99 triệu, 10,98 triệu – 13, ...",
+    "position": 2
+   },
+   {
+    "title": "So sánh iPhone 15 Pro Max và Galaxy S24 Ultra: Máy nào ...",
+    "link": "https://24hstore.vn/review-san-pham/so-sanh-iphone-15-pro-max-va-galaxy-s24-ultra-n8169?srsltid=AU7gw4V8oRfiVjqm73I5KKOnI4z9avC6gRz9JYbcYZGn34OTXwKwbT8c",
+    "snippet": "So sánh iPhone 15 Pro Max và Galaxy S24 Ultra: 15 Pro Max có A17 Pro mạnh, màn hình 2000 nit, S24 Ultra vượt trội về AI, zoom quang 10x, ...",
+    "date": "24 thg 8, 2026",
+    "position": 3
+   },
+   {
+    "title": "iPhone 15 - Galaxy S24: Đặt lên bàn cân, đâu mới thực sự ...",
+    "link": "https://vneconomy.vn/iphone-15-galaxy-s24-dat-len-ban-can-dau-moi-thuc-su-la-sieu-pham.htm",
+    "snippet": "Xét về mức giá, Galaxy S24 có phần “dễ thở” hơn so với iPhone 15. Giá bán thấp nhất của mẫu Galaxy S24 là khoảng 18 triệu đồng cho phiên bản S24 ...",
+    "date": "11 thg 4, 2024",
+    "position": 4
+   },
+   {
+    "title": "iPhone 15 Pro Max bằng tiền S24 Ultra thì mua máy nào?",
+    "link": "https://www.youtube.com/watch?v=aM_LqJics-0",
+    "snippet": "... iphone-15.html_23062024 Dương Dê - Đánh giá các sản phẩm ... Go to channel Dương Dê · Tư vấn điện thoại: Sao giá iPhone ở Việt Nam cao thế?",
+    "position": 5
+   },
+   {
+    "title": "Tin công nghệ hot 17/1: Bảng giá iPhone 15 Series ...",
+    "link": "https://www.techz.vn/209-126-5-tin-cong-nghe-hot-17-1-bang-gia-iphone-15-series-bang-gia-galaxy-s24-series-iphone-16-ha-gia-galaxy-a16-5g-hap-dan-ylt675987.html",
+    "snippet": "Galaxy S24 FE - 8/256GB: 11.19 triệu;; Galaxy S24 FE - 8/512GB: 11.89 triệu. Galaxy S24 FE là chiếc flagship giá rẻ hấp dẫn bậc nhất của Samsung ...",
+    "date": "17 thg 1, 2026",
+    "position": 6
+   },
+   {
+    "title": "So sánh Samsung Galaxy S24 và iPhone 15: Chọn iOS ổn ...",
+    "link": "https://cellphones.com.vn/sforum/so-sanh-samsung-s24-va-iphone-15",
+    "snippet": "Galaxy S24 tự hào với những trang bị phần cứng đỉnh cao như màn hình 120Hz và camera tele zoom quang, iPhone 15 lại tiếp tục đặt cược vào sức ...",
+    "date": "7 thg 8, 2025",
+    "position": 7
+   },
+   {
+    "title": "Samsung Galaxy S24 Ultra Chính Hãng Mới Cũ, Giá Rẻ",
+    "link": "https://www.duchuymobile.com/samsung-galaxy-s24-ultra-5g?srsltid=AU7gw4Xr_kN2sg31opyZceR4-vS3H94PQnM0b68YAq0eESmIK-HYNaZw",
+    "snippet": "Samsung Galaxy S24 Ultra có giá là 21.999.000 ₫ tại Đức Huy Mobile cho phiên bản chính hãng dung lượng 256GB, đây là mức giá rất tốt tại thị trường Việt Nam.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

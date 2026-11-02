@@ -109,12 +109,15 @@ const logged = new Set<string>()
  *  - row, deeplink off → undefined (direct), whatever the code says
  *  - row, deeplink on  → Accesstrade with the row's campaign id (falling back to the code's id),
  *                        or a template wrapper; neither present ⇒ error logged, direct
+ *  - row, deeplink on, no network, code `param` (Agoda's cid) → the code's param config
  */
 export function effectiveTracking(entry: Pick<ProviderRegistryEntry, 'providerId' | 'tracking'>): TrackingConfig | undefined {
   const o = providerOverride(entry.providerId)
   // A merchant whose campaign does not credit the Deep Link has no usable tracking config at all.
   if (!o) return entry.tracking?.unsafeWrappers.includes('deep_link') ? undefined : entry.tracking
   if (!o.active || !o.deeplinkEnabled) return undefined
+  // A merchant's own partner id (`param`, Agoda's cid) lives in code: a row that enables the deeplink without naming a network turns it on.
+  if (o.network === null && entry.tracking?.network === 'param') return entry.tracking
   if (o.network === 'template') {
     if (o.wrapperTemplate && /^https:\/\/.+\{url\}/.test(o.wrapperTemplate)) return { network: 'template', template: o.wrapperTemplate, approval: 'approved', safeWrapper: 'deep_link', unsafeWrappers: [] } as unknown as TrackingConfig
   } else {

@@ -30,11 +30,24 @@ interface SignalResult {
 
 // ── Individual signal scorers (pure functions) ───────────────────────────────
 
-function scoreAffinity(tags: string[], profile: AIContext): SignalResult {
+function scoreAffinity(candidate: CandidatePlace, profile: AIContext): SignalResult {
   const favorites = new Set(
     [...profile.favoriteFoods, ...profile.favoriteCategories].map(f => f.toLowerCase())
   )
-  const matched = tags.filter(t => favorites.has(t.toLowerCase()))
+  const matched = candidate.tags.filter(t => favorites.has(t.toLowerCase()))
+
+  // An explicit save is the user stating a preference outright — stronger
+  // evidence than any tag overlap we infer, so it scores full affinity.
+  // Without this the favourites fallback in /api/recommendations was dead:
+  // it seeds candidates with reviewCount 0 / averageRating 0 for a user whose
+  // profile is empty (that's *why* it fires), leaving freshness as the only
+  // non-zero signal. Freshness is 1 - days/90, always < 1, weighted at 0.05 —
+  // so the total was always < MIN_SCORE_THRESHOLD (0.05) and every favourite
+  // was filtered out. Even one saved seconds earlier scored 0.049 and vanished.
+  if (candidate.savedByUser) {
+    return { score: 1.0, matched: ['Saved', ...matched] }
+  }
+
   return {
     score: matched.length > 0 ? Math.min(matched.length / MAX_AFFINITY_TAG_MATCHES, 1.0) : 0,
     matched,
@@ -151,7 +164,7 @@ export function rankCandidates(
   const scored: RankedRecommendation[] = []
 
   for (const candidate of candidates) {
-    const affinity       = scoreAffinity(candidate.tags, profile)
+    const affinity       = scoreAffinity(candidate, profile)
     const location       = scoreLocation(candidate.city, profile)
     const budget         = scoreBudget(candidate.priceLevel, profile)
     const recentInterest = scoreRecentInterests(candidate.tags, profile)

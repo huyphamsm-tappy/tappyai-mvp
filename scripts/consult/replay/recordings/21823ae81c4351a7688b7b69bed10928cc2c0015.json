@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Sea Near Me Hotel\" Đà Nẵng site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:11:36.633Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Sea Near Me Hotel\" Đà Nẵng site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn Sea Near Me Đà Nẵng - Giá cả và Ưu đãi 2026, ...",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-117039155/sea-near-me-hotel-danang/",
+    "snippet": "Khách sạn Sea Near Me Đà Nẵng. Sea Near Me Hotel Danang. 42 An Thượng 26, Ngũ Hành Sơn, Đà ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

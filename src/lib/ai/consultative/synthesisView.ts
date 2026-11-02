@@ -5,6 +5,7 @@ import { buildSynthesisPayload, entityName } from './synthesis'
 // Types + the row guard only (src/lib/ccp/row has no server-only import); this module is client-bundled.
 import { COMMERCE_LINKS_KEY, isCommerceLinkRow, requiresMerchantLogin, type CommerceLinkRow } from '@/lib/ccp/row'
 import { resolveActionLabel } from '@/lib/recommendation/actionLabel'
+import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 
 // ── Universal Plan — Phase 9: SYNTHESIS → CLIENT DISPLAY VIEW ────────────────
 //
@@ -186,24 +187,66 @@ function nn<T>(v: T | typeof UNKNOWN): T | null {
  * The seam attaches at most one link per provider per row and marks the requested capability
  * as primary; a primary link is preferred, else the first valid one. Nothing is repaired.
  */
-function entityCommerceLinks(e: Entity): SynthesisCommerceView[] {
+/** Lower-case letters and digits only, so "Shopee Mall - ADATA" and "shopee" compare. */
+const shopKey = (s: string): string => s.normalize('NFKD').replace(/\p{M}+/gu, '').toLowerCase().replace(/[^a-z0-9]+/g, '')
+
+/**
+ * Owner UAT 02/11: does this marketplace link belong to the shop that sells this offer? A row's links are looked up by the product's
+ * title, so a store's offer (Tin Học Ngôi Sao, 990.000₫) came back with a Shopee link to ANOTHER listing (512GB, not the 256GB asked) and
+ * the card read "990.000₫ · Mua trên Shopee". Only the offer's own shop (its seller name, or the host of its own link) LEADS the card;
+ * another shop's product page stays beside it only when the product's identity is certain (so the same product, not another variant);
+ * a search page ("Tìm trên Lazada") states no price and no product, and always stays.
+ */
+function sameShop(offerSeller: string | null | undefined, offerUrl: string | null | undefined, r: CommerceLinkRow): boolean {
+  const seller = shopKey(offerSeller ?? '')
+  const names = [r.providerId, r.merchantName].map(shopKey).filter(n => n.length >= 3)
+  // a seller name that is only a piece of a marketplace's ("Shop" in "shopee") is not that marketplace: the reverse containment needs a real name
+  if (seller && names.some(n => seller.includes(n) || (seller.length >= 5 && n.includes(seller)))) return true
+  let host = ''
+  try { host = shopKey(new URL(offerUrl ?? '').hostname.replace(/^www\./, '').split('.')[0]) } catch { /* no own link */ }
+  return !!host && names.some(n => host === n || host.includes(n))
+}
+
+/** The capacities a text names ("256GB", "1 TB", "8gb-256gb"), in GB. */
+const capacities = (s: string): number[] =>
+  [...s.matchAll(/(\d{1,4})\s*-?\s*(gb|tb)(?![a-z])/gi)].map(m => (m[2].toLowerCase() === 'tb' ? Number(m[1]) * 1024 : Number(m[1])))
+
+const decodeURIComponentSafe = (s: string): string => { try { return decodeURIComponent(s) } catch { return s } }
+
+/**
+ * Can another shop's product page be the same product as this entity? Only when the entity's own title names its capacity and the page
+ * names no other one - the SSD card "SU650 SATA" (no capacity) got a Shopee 512GB page for a 256GB ask. Numbers, not words.
+ */
+function sameVariant(e: Entity, url: string): boolean {
+  const own = capacities(entityName(e))
+  if (own.length === 0) return false
+  const page = capacities(decodeURIComponentSafe(url))
+  return page.length === 0 || page.every(c => own.includes(c))
+}
+
+function entityCommerceLinks(e: Entity): { links: SynthesisCommerceView[]; ownShop: Set<string> } {
   const out: SynthesisCommerceView[] = []
   const seen = new Set<string>()
+  const ownShop = new Set<string>()
   for (const o of e.offers) {
     const rows = (o.evidence.raw as Record<string, unknown>)[COMMERCE_LINKS_KEY]
     if (!Array.isArray(rows)) continue
     for (const r of rows) {
       if (!isCommerceLinkRow(r) || seen.has(r.providerId)) continue
+      const own = sameShop(o.seller, o.url, r)
+      if (!own && r.kind !== 'SEARCH_HANDOFF' && !sameVariant(e, r.destinationUrl)) continue
+      if (own) ownShop.add(r.providerId)
       seen.add(r.providerId)
       out.push(projectCommerce(r))
     }
   }
-  return out
+  return { links: out, ownShop }
 }
 
-/** The entity's leading handoff: the first DETAIL-level link (a search page is never "the" handoff). */
-function entityCommerce(links: SynthesisCommerceView[]): SynthesisCommerceView | undefined {
-  return links.find(l => l.kind !== 'SEARCH_HANDOFF' && l.primary) ?? links.find(l => l.kind !== 'SEARCH_HANDOFF')
+/** The entity's leading handoff: the first DETAIL-level link of the offer's OWN shop (a search page, or another shop, never leads). */
+function entityCommerce(links: SynthesisCommerceView[], ownShop: Set<string>): SynthesisCommerceView | undefined {
+  const own = links.filter(l => l.kind !== 'SEARCH_HANDOFF' && ownShop.has(l.providerId))
+  return own.find(l => l.primary) ?? own[0]
 }
 
 function projectCommerce(r: CommerceLinkRow): SynthesisCommerceView {
@@ -239,7 +282,8 @@ function entityImage(e: Entity): string | null {
   for (const o of e.offers) {
     const raw = o.evidence.raw
     const url = raw.photo_url ?? raw.imageUrl
-    if (typeof url === 'string' && url.startsWith('http')) return url
+    // Gate 2 N2 (R-1, proposal): `startsWith('http')` admitted http: and any "http…" scheme; a cached row skips the source check.
+    if (typeof url === 'string' && isSafeHttpsUrl(url)) return url
   }
   return null
 }
@@ -257,6 +301,23 @@ export const SHOPPING_MARKER_CLOSE = '[/TAPPY_SHOPPING]'
 /** Server: the marker block carrying the view as compact JSON. */
 export function renderShoppingMarker(view: SynthesisView): string {
   return `${SHOPPING_MARKER_OPEN}${JSON.stringify(view)}${SHOPPING_MARKER_CLOSE}`
+}
+
+/**
+ * One brain: the model searches more than once in a turn (a first query, then one for the model it settled on), and the card was built from the FIRST
+ * search only — measured 29/10: the text recommended the Xiaomi 4 Lite found by the second search, the card showed the first search's filter. The later
+ * search's entities join the first's (a listing of the same name once, its key made unique); the first marker's recommendation and the rest stay as they were.
+ * A marker that does not parse leaves `a` as it is.
+ */
+export function mergeShoppingMarkers(a: string, b: string): string {
+  const x = parseShoppingMarker(a).view, y = parseShoppingMarker(b).view
+  if (!x || !y) return a
+  const nameOf = (e: SynthesisEntityView): string => (e.name ?? e.config ?? '').trim().toLowerCase()
+  const seen = new Set(x.entities.map(nameOf))
+  const keys = new Set(x.entities.map(e => e.key))
+  const added = y.entities.filter(e => { const n = nameOf(e); if (!n || seen.has(n)) return false; seen.add(n); return true })
+    .map(e => { let key = e.key, i = 1; while (keys.has(key)) key = `${e.key}#${i++}`; keys.add(key); return { ...e, key, recommended: false } })
+  return added.length === 0 ? a : renderShoppingMarker({ ...x, entities: [...x.entities, ...added] })
 }
 
 /**
@@ -310,8 +371,8 @@ export function buildSynthesisView(s: ShoppingSynthesis): SynthesisView {
     if (id.storageGb !== UNKNOWN) specs.push({ key: 'storage', value: id.storageGb })
     if (id.size !== UNKNOWN) specs.push({ key: 'size', value: id.size })
     const conditionLabel = id.condition === UNKNOWN ? null : String(id.condition)
-    const commerceLinks = entityCommerceLinks(e)
-    const commerce = entityCommerce(commerceLinks)
+    const { links: commerceLinks, ownShop } = entityCommerceLinks(e)
+    const commerce = entityCommerce(commerceLinks, ownShop)
     return {
       key: e.entityKey,
       name: entityName(e),

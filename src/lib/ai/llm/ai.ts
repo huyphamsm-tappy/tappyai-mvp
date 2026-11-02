@@ -1,6 +1,7 @@
 import { generateObject, generateText, streamText, type CoreMessage } from 'ai'
 import type { z } from 'zod'
-import { getProvider, modelForRole, roleServing } from './registry'
+import { decoratorFor, getProvider, modelForRole, roleServing, usesAnthropicAgentModel } from './registry'
+import type { ModelRole } from './types'
 import { repairToolCall } from './toolCallRepair'
 import type { AIGenerateOptions, AIStepOptions, AIStreamOptions, AIVisionOptions } from './types'
 
@@ -21,14 +22,36 @@ import type { AIGenerateOptions, AIStepOptions, AIStreamOptions, AIVisionOptions
  * the model, but they reach the provider as two separately addressable
  * segments — which is what lets an adapter treat the stable one differently
  * from the request-shaped one. Splitting is inert for providers that don't. */
-function buildMessages(opts: { systemShared?: string; system?: string; prompt?: string; messages?: CoreMessage[]; cacheHistory?: boolean }): CoreMessage[] {
+function buildMessages(opts: { systemShared?: string; system?: string; prompt?: string; messages?: CoreMessage[]; cacheHistory?: boolean }, call?: { role: ModelRole; agentRuntime?: boolean }): CoreMessage[] {
   const messages: CoreMessage[] = []
   if (opts.systemShared) messages.push({ role: 'system', content: opts.systemShared })
   if (opts.system) messages.push({ role: 'system', content: opts.system })
   if (opts.messages) messages.push(...opts.messages)
   if (opts.prompt) messages.push({ role: 'user', content: opts.prompt })
+  // AGENT_MODEL=haiku55: an agent-runtime call is shaped for the model that serves it (registry.decoratorFor); every other
+  // call — and every call with the flag unset — gets the default provider's shaping, as before.
+  if (call && usesAnthropicAgentModel(call.role, call)) return decoratorFor(call.role, call)!(messages, { cacheHistory: opts.cacheHistory })
   const provider = getProvider()
   return provider.decorateMessages ? provider.decorateMessages(messages, { cacheHistory: opts.cacheHistory }) : messages
+}
+
+/** AGENT_MODEL=haiku55: no SDK-level retry on the Anthropic agent model (a failed paid call is not repeated). undefined = SDK default. */
+const retriesFor = (role: ModelRole, agentRuntime?: boolean): number | undefined => (usesAnthropicAgentModel(role, { agentRuntime }) ? 0 : undefined)
+
+/**
+ * The `tappy` provider options of a streamed answer: several tool calls per step (N2) and, 31/10, the mode "Suy nghĩ" (the Responses API at
+ * `thinkEffort`). Nothing asked → no providerOptions at all (the call is unchanged). Pure; exported for tests.
+ */
+export function streamProviderOptions(o: { parallelTools?: boolean; tools?: unknown; thinkEffort?: string; autoThink?: { on: boolean; effort: string } }): { providerOptions: { tappy: Record<string, string | boolean> } } | Record<string, never> {
+  const tappy: Record<string, string | boolean> = { ...(o.parallelTools && o.tools ? { parallelTools: true } : {}), ...(o.thinkEffort ? { api: 'responses', effort: o.thinkEffort } : {}) }
+  // 01/11 (mode "Tự động"): read at each step's call - streamText passes this same object to every step - so the steps after the switch
+  // is turned on ask for the Responses API at its effort, and the steps before it ask for nothing (Chat).
+  const sw = o.autoThink
+  if (sw && !o.thinkEffort) {
+    Object.defineProperty(tappy, 'api', { enumerable: true, get: () => (sw.on ? 'responses' : undefined) })
+    Object.defineProperty(tappy, 'effort', { enumerable: true, get: () => (sw.on ? sw.effort : undefined) })
+  }
+  return Object.keys(tappy).length ? { providerOptions: { tappy } } : {}
 }
 
 export const AI = {
@@ -48,10 +71,11 @@ export const AI = {
   /** Single-shot text generation (no tools, no streaming). */
   generate(opts: AIGenerateOptions) {
     return generateText({
-      model: modelForRole(opts.role ?? 'fast'),
+      model: modelForRole(opts.role ?? 'fast', { budgetKind: opts.budgetKind }),
       messages: buildMessages(opts),
       maxTokens: opts.maxTokens,
       temperature: opts.temperature,
+      maxRetries: opts.maxRetries,
     })
   },
 
@@ -60,24 +84,55 @@ export const AI = {
    * (arguments validated against the schema, shape mistakes repaired) and runs nothing — the agent executes them under its budget.
    */
   step(opts: AIStepOptions) {
+    const role = opts.role ?? 'consult'
     return generateText({
-      model: modelForRole(opts.role ?? 'consult'),
-      messages: buildMessages(opts),
+      model: modelForRole(role, { agentRuntime: opts.agentRuntime, budgetKind: opts.budgetKind }),
+      messages: buildMessages(opts, { role, agentRuntime: opts.agentRuntime }),
+      maxRetries: retriesFor(role, opts.agentRuntime),
       maxTokens: opts.maxTokens,
       maxSteps: 1,
       tools: opts.tools,
       abortSignal: opts.abortSignal,
-      ...(opts.parallelTools && opts.tools ? { providerOptions: { tappy: { parallelTools: true } } } : {}),
+      ...((opts.parallelTools && opts.tools) || opts.effort ? { providerOptions: { tappy: { ...(opts.parallelTools && opts.tools ? { parallelTools: true } : {}), ...(opts.effort ? { effort: opts.effort } : {}) } } } : {}),
       experimental_repairToolCall: repairToolCall as never,
     })
+  },
+
+  /**
+   * C2 P2 (C2_STREAM_DATASTREAM): ONE model step like `step`, but streamed — every text delta is handed to `onTextDelta` as it arrives. The
+   * resolved value has the fields the agent reads from `step` (text, toolCalls, finishReason, usage, providerMetadata, response). A terminal
+   * error part (a provider failure mid-stream) is thrown, so the caller sees the call fail exactly as a failed `step` would.
+   * Same model, retry policy, tool repair and cancellation as `step`.
+   */
+  async stepStream(opts: AIStepOptions & { onTextDelta: (delta: string) => void }) {
+    const role = opts.role ?? 'consult'
+    const r = streamText({
+      model: modelForRole(role, { agentRuntime: opts.agentRuntime, budgetKind: opts.budgetKind }),
+      messages: buildMessages(opts, { role, agentRuntime: opts.agentRuntime }),
+      maxRetries: retriesFor(role, opts.agentRuntime),
+      maxTokens: opts.maxTokens,
+      maxSteps: 1,
+      tools: opts.tools as never,
+      abortSignal: opts.abortSignal,
+      ...((opts.parallelTools && opts.tools) || opts.effort ? { providerOptions: { tappy: { ...(opts.parallelTools && opts.tools ? { parallelTools: true } : {}), ...(opts.effort ? { effort: opts.effort } : {}) } } } : {}),
+      experimental_repairToolCall: repairToolCall as never,
+    })
+    for await (const part of r.fullStream) {
+      if (part.type === 'text-delta' && part.textDelta) opts.onTextDelta(part.textDelta)
+      else if (part.type === 'error') throw part.error instanceof Error ? part.error : new Error(String(part.error))
+    }
+    const [text, toolCalls, finishReason, usage, providerMetadata, response] = await Promise.all([r.text, r.toolCalls, r.finishReason, r.usage, r.providerMetadata, r.response])
+    return { text, toolCalls, finishReason, usage, providerMetadata, response }
   },
 
   /** Streaming generation with optional multi-step tool calling. Returns the
    * AI SDK stream result (use .toDataStreamResponse() for HTTP streaming). */
   stream(opts: AIStreamOptions) {
     return streamText({
-      model: modelForRole(opts.role ?? 'smart'),
+      model: modelForRole(opts.role ?? 'smart', { budgetKind: opts.budgetKind }),
       messages: buildMessages(opts),
+      // Undefined leaves the SDK default in place, so every existing caller is unchanged; the chat route names it explicitly.
+      maxRetries: opts.maxRetries,
       maxTokens: opts.maxTokens,
       maxSteps: opts.maxSteps,
       tools: opts.tools,
@@ -86,6 +141,7 @@ export const AI = {
       onError: opts.onError,
       onStepFinish: opts.onStepFinish,
       abortSignal: opts.abortSignal,
+      ...streamProviderOptions(opts),
       // A shape mistake in the model's tool arguments (null, number-as-string…) is repaired from
       // the tool's own schema instead of ending the stream (toolCallRepair.ts; every repair logged).
       experimental_repairToolCall: repairToolCall as never,
@@ -96,12 +152,15 @@ export const AI = {
    * Structured output: the model returns an object matching `schema` (vendor strict JSON-schema mode where
    * available, tool mode otherwise). Throws when the output does not validate — callers fail open.
    */
-  extract<T>(opts: AIGenerateOptions & { schema: z.ZodType<T>; schemaName?: string }) {
+  extract<T>(opts: AIGenerateOptions & { schema: z.ZodType<T>; schemaName?: string; abortSignal?: AbortSignal }) {
+    const role = opts.role ?? 'intent'
     return generateObject({
-      model: modelForRole(opts.role ?? 'intent', { structured: true }),
+      abortSignal: opts.abortSignal,
+      model: modelForRole(role, { structured: true, agentRuntime: opts.agentRuntime, budgetKind: opts.budgetKind }),
       schema: opts.schema,
       schemaName: opts.schemaName,
-      messages: buildMessages(opts),
+      messages: buildMessages(opts, { role, agentRuntime: opts.agentRuntime }),
+      maxRetries: retriesFor(role, opts.agentRuntime),
       maxTokens: opts.maxTokens,
       temperature: opts.temperature,
     })
@@ -110,7 +169,7 @@ export const AI = {
   /** Image + instruction → text (OCR, image analysis). */
   vision(opts: AIVisionOptions) {
     return generateText({
-      model: modelForRole(opts.role ?? 'vision'),
+      model: modelForRole(opts.role ?? 'vision', { budgetKind: opts.budgetKind }),
       messages: buildMessages({
         messages: [{
           role: 'user',

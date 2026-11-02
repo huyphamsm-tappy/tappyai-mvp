@@ -228,6 +228,23 @@ export async function peekAiQuestionQuota(identity: AiQuotaIdentity): Promise<Ai
   return { limit: b.limit, period: b.period, used, remaining: used === null ? null : Math.max(0, b.limit - used) }
 }
 
+// ── Deep Research runs per VN calendar month (owner 01/11/2026: Coco/Pro 10, Tappy/Promax 69) ──────────────────────────────────────────────
+// The same store, the same atomic admit-and-record, the same refund and fail-closed rules as the question pool above; its own key per
+// account and month (`ai:dr:u:<id>:<YYYY-MM>` in Vietnam time), a 32-day window so the key's month is the whole window.
+const MONTH_WINDOW_MS = 32 * ONE_DAY_MS
+
+export async function consumeDeepResearch(userId: string, limit: number): Promise<AiQuotaSpend> {
+  const key = `ai:dr:u:${userId}:${vnToday().slice(0, 7)}`
+  if (limit <= 0) return { ok: false, limit: 0, period: 'day', used: 0, remaining: 0, scope: 'instance', refund: null }
+  if (!isDistributedStoreConfigured()) {
+    const r = localSpend(key, MONTH_WINDOW_MS, limit)
+    return { ok: r.ok, limit, period: 'day', used: r.used, remaining: Math.max(0, limit - r.used), scope: 'instance', refund: r.ok && r.member !== undefined ? { scope: 'instance', key, member: String(r.member) } : null }
+  }
+  const r = await distributedRateLimit(key, limit, MONTH_WINDOW_MS)
+  const used = await distributedCountInWindow(key, MONTH_WINDOW_MS)
+  return { ok: r.ok, limit, period: 'day', used, remaining: used === null ? null : Math.max(0, limit - used), scope: 'distributed', refund: r.ok && r.member ? { scope: 'distributed', key, member: r.member } : null }
+}
+
 /**
  * What a signed-in account's entitlement means for the quota — the ONE rule every metered route uses.
  *

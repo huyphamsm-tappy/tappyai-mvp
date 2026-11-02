@@ -1,0 +1,349 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "iPhone 15 vs Samsung Galaxy S24 giá Việt Nam",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:39:15.534Z",
+ "body": {
+  "searchParameters": {
+   "q": "iPhone 15 vs Samsung Galaxy S24 giá Việt Nam",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Samsung Galaxy S24",
+    "source": "Viettablet",
+    "link": "https://www.google.com/search?ibp=oshop&q=iPhone+15+vs+Samsung+Galaxy+S24+gi%C3%A1+Vi%E1%BB%87t+Nam&prds=localAnnotatedOfferId:1,catalogid:1055997563012900246,gpcid:4807686127672394528,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "11.299.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTflBfUuww2HSXHiMdrtOktCnA3S6pGBwxtv7ljqSPWq_l_ErDXE4Zxh0iuK5rPM1rMdfIRrQrX-ymuYmXjuLeslbSpmRx6rZMwuKxlD06MGyv7V8wcCEPq",
+    "productId": "1055997563012900246",
+    "position": 1
+   },
+   {
+    "title": "Samsung Galaxy S24 Ultra 5G",
+    "source": "didong3a.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=iPhone+15+vs+Samsung+Galaxy+S24+gi%C3%A1+Vi%E1%BB%87t+Nam&prds=localAnnotatedOfferId:1,catalogid:7391814718029502424,gpcid:16284344484270141109,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "15.590.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSrNZLPBYF5rYPMdQVgU4c5y5OPUMRFU71ywClaHn79pUC9QYrB0Byf34BV0XfU6IxnwIZJqdJ26xbA7qjcAnEWZWLCsgwvY_9K542hqJSi5k2DvPJO_Ek9",
+    "productId": "7391814718029502424",
+    "position": 2
+   },
+   {
+    "title": "Samsung Galaxy S24 5G (8GB - 256GB) - Chính Hãng Like New",
+    "source": "Viettablet",
+    "price": "10.099.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTflBfUuww2HSXHiMdrtOktCnA3S6pGBwxtv7ljqSPWq_l_ErDXE4Zxh0iuK5rPM1rMdfIRrQrX-ymuYmXjuLeslbSpmRx6rZMwuKxlD06MGyv7V8wcCEPq",
+    "rating": 4.8,
+    "ratingCount": 63,
+    "productId": "10293039883514572323",
+    "position": 3
+   },
+   {
+    "title": "Samsung S24+",
+    "source": "MobileWorld.com.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=iPhone+15+vs+Samsung+Galaxy+S24+gi%C3%A1+Vi%E1%BB%87t+Nam&prds=localAnnotatedOfferId:1,catalogid:12223480313974253788,gpcid:9135522382799816843,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "13.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTiUI8QyO3TkEcKa83kWg3NGuHu_1eip7S6_Th3QpLH11w1ky3i-dF-FD-PyOlafRuH0u96c8dOrRnXqOtw_wDztWUBzAt5TsmnMOdAGWUtlNukjLkK5UJ1",
+    "productId": "12223480313974253788",
+    "position": 4
+   },
+   {
+    "title": "Samsung Galaxy S24 (5G) Cũ Đẹp 99% ( 2sim) - Không zin tặng máy",
+    "source": "clickbuy.com.vn",
+    "price": "9.790.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSKuBQRsoP22JL1JTlKEOpblzs6veFeC5S5GMD-cV3-o_9qPbKXqZeplu3W9rguVWiwwsEtdy2DT_xjZbE3QQlGyqGIUo_EYpWK7LRz5GDIgOXu_wWxJIhNvA",
+    "productId": "18381670372131076032",
+    "position": 5
+   },
+   {
+    "title": "Điện thoại Samsung Galaxy S24 5G - RAM 8GB - 128GB - 99%",
+    "source": "Oneway Mobile",
+    "price": "9.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQtyefMfzOoIXFcRSVMGOG2DwqGn48DrnI31zAp_GUEgV3lllnWhufZYesF5FTq6_ejHaWnkLcaThBDh_Bau_FBnQw4GPPkPKFGmGCtFV1xWtDEP9ada4i9Xw",
+    "productId": "4016013518775837197",
+    "position": 6
+   },
+   {
+    "title": "Điện thoại Samsung Galaxy S24 256GB Đen",
+    "source": "pgluxury.com",
+    "link": "https://www.google.com/search?ibp=oshop&q=iPhone+15+vs+Samsung+Galaxy+S24+gi%C3%A1+Vi%E1%BB%87t+Nam&prds=localAnnotatedOfferId:1,catalogid:4921499606242702185,gpcid:2480769422155580266,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "14.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRcO8xqSyVkODMA2fzXYDFDX2gMduHITfHdm-CXvRA7yIjeqn2yL__sDXvVAA2GUT9PQPlcX15HQDkbopB2NRdwaO_ZK89Xsg",
+    "rating": 4.6,
+    "ratingCount": 19,
+    "productId": "4921499606242702185",
+    "position": 7
+   },
+   {
+    "title": "Samsung Galaxy S24 5G",
+    "source": "Viettablet",
+    "link": "https://www.google.com/search?ibp=oshop&q=iPhone+15+vs+Samsung+Galaxy+S24+gi%C3%A1+Vi%E1%BB%87t+Nam&prds=localAnnotatedOfferId:1,catalogid:17850832785406017656,gpcid:13829224190112497174,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "13.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTx5Dmqv95PX7iUDdFLuaexG5Ri9JmFNVqel2Jggtlt504CmJjcWxIbk19U1cw5z8G2YX_CW0-QPKqRvReSFGAzAgPlt-mISNjy4dtYjKlVCBfvvkW2IW01Dg",
+    "rating": 4.1,
+    "ratingCount": 203,
+    "productId": "17850832785406017656",
+    "position": 8
+   },
+   {
+    "title": "Galaxy S24 Ultra Cam Titan",
+    "source": "Showroom123",
+    "link": "https://www.google.com/search?ibp=oshop&q=iPhone+15+vs+Samsung+Galaxy+S24+gi%C3%A1+Vi%E1%BB%87t+Nam&prds=localAnnotatedOfferId:1,catalogid:13118091190693302148,gpcid:16734341519995466847,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "13.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTyDjLiw00cbZTbY7VlLvR2HC7amB3mGFp_xeIQkzBSItxy5HwjaiEE6FtiP0687fN0OpjD1PP28IRByW8oQ1C236CN7IpcLLHbVazXjjElqxyMuaCzXk5JVQ",
+    "productId": "13118091190693302148",
+    "position": 9
+   },
+   {
+    "title": "Samsung Galaxy S24 Ultra",
+    "source": "sonpixel.vn",
+    "price": "15.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQRUyn4H0nFB0lgiqakIFIJc_RMQvSykNzXFWZF2kapVRoCOLtsysgMplpazB3kVb5fGo-nFLL_RgtAFptI6BDtDZO9uRjlouL6E8vOTL3zY-5X_dQRESwt",
+    "productId": "17331876245429945490",
+    "position": 10
+   },
+   {
+    "title": "Samsung Galaxy S24 128GB bản Mỹ cũ likenew | Trả góp 0%",
+    "source": "XTmobile",
+    "price": "9.599.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTQnsZ3UQqFP8kz8cF0ZuBRTpFARz3HWpy3Zt4AJWX79JiBaRqVuw_gxaNmjcqCoIZ3mjU0sSAzV37iW5jM3HJOqE0nXgA57w",
+    "productId": "16405750377106968758",
+    "position": 11
+   },
+   {
+    "title": "Samsung Galaxy S26 Ultra 5G",
+    "source": "Điện Máy Chợ Lớn",
+    "link": "https://www.google.com/search?ibp=oshop&q=iPhone+15+vs+Samsung+Galaxy+S24+gi%C3%A1+Vi%E1%BB%87t+Nam&prds=localAnnotatedOfferId:1,catalogid:11937985825371927216,gpcid:16418233158843180078,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "29.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRjlkqtC0jQl7MZ_SAbj1IztdmdqpAJ3wPx7E-PZFM6WU7KYEkEwf7DiudTMVoVL-K079s3NwMBPHbFjtAMZ_50RR-bK-O242vnrj2RggqpfNrWa9cJ_gWpKg",
+    "productId": "11937985825371927216",
+    "position": 12
+   },
+   {
+    "title": "Điện thoại Samsung Galaxy S24 Ultra 5G - RAM 12GB - 256GB - 99%",
+    "source": "Oneway Mobile",
+    "price": "16.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRAZdzJjxm_MwAsFdeiQwOQDFk5hqozy6sdy_Be1LlsOZA1kL_1nuv9yQu_lel61gaI4fAFrP812Fb1o9gBNIHYP0NUrPJEj0Fzn72_IvKR-8pqkd-61dauhg",
+    "productId": "848767528446942805",
+    "position": 13
+   },
+   {
+    "title": "Samsung Galaxy S26 Ultra 5G 12GB 256GB",
+    "source": "Điện Thoại Giá Kho",
+    "link": "https://www.google.com/search?ibp=oshop&q=iPhone+15+vs+Samsung+Galaxy+S24+gi%C3%A1+Vi%E1%BB%87t+Nam&prds=localAnnotatedOfferId:1,catalogid:11726982196198657244,gpcid:2535520959248489467,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "23.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQQmgwduOh0WH9N1mSdKcKREmSMJC1ow5YwEgzg9WPnDUOCnRmCd7M0JkyOUaxlN9iN_wuywZXbHdfP1lnZGWD7oLZm3CXdK0bTj26xfKUfwVwCOOv4lTVtDQ",
+    "productId": "11726982196198657244",
+    "position": 14
+   },
+   {
+    "title": "Samsung Galaxy S24 Ultra 512GB Cũ 99% - Chính hãng Samsung Việt Nam",
+    "source": "TheTekCoffee",
+    "price": "18.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSf3WOcm-1TEXPT2-R7ymVVuPfI-291talUwO2tYzW1E-60_TBrHmRer7DlPNldLycD8s2JT1cPXHqQeB7Ta1_uLXdDBMt-Aq3tAWKdBC6ZwbCp9WsZ6gns_A",
+    "productId": "8490456775850105597",
+    "position": 15
+   },
+   {
+    "title": "Samsung Galaxy S24 Ultra 12GB | 256GB Like New -Tím Titan",
+    "source": "pgluxury.com",
+    "price": "16.590.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTCODcG9qySc0he6Hdur1mpY5FHQL-5g8AhkFODP8gbvfJ6vxQX0CmKB7qBkUl2ocIA4S1badS1pOf-1OB_hn8OrIi8vMGO",
+    "productId": "423365530283159458",
+    "position": 16
+   },
+   {
+    "title": "SAMSUNG Galaxy S24 Ultra (12GB | 512GB) Quốc Tế Mới Fullbox",
+    "source": "digiphone",
+    "price": "19.390.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcT48PXB7HoYJ_HMXiZYl2NsXf0npC72hritkdQn-RfCsFuW-IOOtmacuReC1EFY_1iGyLXfwusgOrBzMsg_ZMyCqqp494y4T425mum6ogbGxgaFASZ21Z9tMg",
+    "productId": "1476992604296008454",
+    "position": 17
+   },
+   {
+    "title": "Điện thoại Samsung Galaxy S24 Ultra 5G - RAM 12GB - 512GB - 99%",
+    "source": "Oneway Mobile",
+    "price": "17.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQA9pqG067YxAJ0kkZANjMBXf0g3qfQLgGWcuDekvcfJkxkdA6sB-0CdEjGjgQV2gSbYCk9dOPQHwqmclEGr57ebHkO0iwBJpj959KKtU6vBiP77t538M-0",
+    "productId": "181708773163242315",
+    "position": 18
+   },
+   {
+    "title": "Galaxy S24 Ultra - Hàn Quốc - ( 12GB / 512GB )",
+    "source": "didong3a.vn",
+    "price": "16.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSrNZLPBYF5rYPMdQVgU4c5y5OPUMRFU71ywClaHn79pUC9QYrB0Byf34BV0XfU6IxnwIZJqdJ26xbA7qjcAnEWZWLCsgwvY_9K542hqJSi5k2DvPJO_Ek9",
+    "productId": "8726482979912080296",
+    "position": 19
+   },
+   {
+    "title": "Samsung S24 256GB ( Tặng Samsung Care+ )",
+    "source": "TheTekCoffee",
+    "price": "14.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQfTo5iVBRag0VENF4sPjtZpxV7uwWioxcmijofjMpPECw9O-m7Ld3u0ldvidt74hZcqvMCTZU8pV7BmaXJYZgjRXVb8tgISfOanK6iBo3BqdDguNB93Q8C",
+    "productId": "6565084162697883638",
+    "position": 20
+   },
+   {
+    "title": "Samsung Galaxy S24 8GB | 256GB -Xám Marble",
+    "source": "pgluxury.com",
+    "price": "15.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSuCsSJQV-Vt915uzUnD15EGAugeF6p_0JHKa3pTlNb6N-W4hWI1uhSitBOt4f9lJSl6cLncc7ruqn1RoAUF2S-sQDVoiLOKw",
+    "productId": "10278900322450776247",
+    "position": 21
+   },
+   {
+    "title": "Samsung Galaxy S24 Ultra 5G -Tím / 1TB",
+    "source": "Viễn Tin",
+    "price": "30.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTGAw5BEUQrRw-Pl3BaVkZIAQvtVJKuOatAVvEIuQOqYscztpr9uxICnNEXiJMJ9rh-SRYixZbREKW-SRo2pYm6QaNJx-j1GoZ5TEMbhPWR-mWetDr99ZKt",
+    "productId": "9870754454985453915",
+    "position": 22
+   },
+   {
+    "title": "Samsung S24 Ultra Titanium Yellow Chính Hãng VN – Fullbox 98.5%",
+    "source": "Quang Minh Mobile",
+    "price": "15.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSG3EhRv4WlKrhugnu80zN2wOKtsKrkiLGLdPYG0v2Z7jbWLVxpp3TpJyiD1WuijxZgFyax98hHCJeSbF4IXeR5mvOEdQh777a3SABSt8MTF02KDjDfQVhfFg",
+    "productId": "15792009804301494694",
+    "position": 23
+   },
+   {
+    "title": "Samsung Galaxy S24 Ultra 12GB | 256GB -Đen Titan",
+    "source": "pgluxury.com",
+    "price": "20.790.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTbhhaN4Sb79EecUBNHSlKs1iXd88cMf7P98Wq3A46HDmzkZMHNOV4ahkRBvd7-YAG6XM0pi_soSUQ3oX79zTbBNrrt-lzj",
+    "productId": "10647461380411643625",
+    "position": 24
+   },
+   {
+    "title": "Samsung Galaxy S24 Ultra Hàn Quốc 1TB",
+    "source": "TheTekCoffee",
+    "price": "19.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRrJgMwfdj5kVY_VcYjQXRh48oo_JMp044T2L0aZFA1V9xzVaA2V0lai_l9MR9cg5rFJ6RLkfuUvZMu9u0dC0zgrnQ_Od5YANR-bLwLDLE5k7Vre-0mFFhn",
+    "productId": "13833928314751004615",
+    "position": 25
+   },
+   {
+    "title": "Samsung Galaxy S24 Ultra 12GB | 512GB Like New -Vàng Titan",
+    "source": "pgluxury.com",
+    "price": "16.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSrqUQFwoRhpavJPXPgWxk20EaPHBwpjDd9t-Fr_y-PR-tUavt3-u-nqFF8iHLrauM0hS3NY2rnOOZxpUh4eygliA0OMyh9-g",
+    "productId": "14585976692076255192",
+    "position": 26
+   },
+   {
+    "title": "Samsung S24 Xám 8GB/256GB Cũ - Máy thanh lý",
+    "source": "Tuấn Nguyễn Mobile",
+    "price": "11.200.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQe8_DqnJXsjWgbbeyh9kesoCKuvVOvoVXbrjthFFytPmZJeL-o0dzZoK5QFPDhfoWS0P1BFcUCK34sgq5Xtn30KONBzLMU3Avu8DOras0",
+    "productId": "10773546169608599699",
+    "position": 27
+   },
+   {
+    "title": "Samsung Galaxy S24 5G (8GB/256GB) -Tím Titan",
+    "source": "quochung.com.vn",
+    "price": "17.600.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQd2wUplEbRNsnGMpaX35Ag6e1kmyb-tlB1F5npU8sKvEEFnyvTYBocuMmoOiN2McPlI0dr_N-s6OHtq_3kEfY5pPmW0v2tBOZRgkMYxn8v6YbzmDZ3Y-1Dlw",
+    "productId": "1302407748116456524",
+    "position": 28
+   },
+   {
+    "title": "Điện thoại Samsung S24 ultra - Bản hàn - 8gen3 - Ram 12gb/256gb - Màu tím - Ngoại hình: 97% - Màn xướt mèo, cấn 2 góc đít máy - Body",
+    "source": "2handland",
+    "price": "15.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRCWIXqWFS3u9oS7nXaFAPKWpa4buDkOLjjxCA9kqdbUrfmFmlJ-Mook5i5NkQoyk-xvBYOy9pkvrxiGZzd3NAjerVN-LWcFeJ2lQZzGfrRdOEExF9iNh0gKw",
+    "rating": 5,
+    "ratingCount": 93,
+    "productId": "14933580922686314702",
+    "position": 29
+   },
+   {
+    "title": "Samsung Galaxy S24 Ultra 5G (12GB|512GB) USA New Fullbox",
+    "source": "NT Store",
+    "price": "20.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSkn8yr_jwxEeoA1s3M0Mfag2K1GqzL0QSz2yAlLyz0XtrOSNYjak-CEqiXqHy4NolvVJy7YpN7QY03Qrc31yzG0EC9BABUfgbbkmL0ewXl",
+    "productId": "9505662658215869182",
+    "position": 30
+   },
+   {
+    "title": "Samsung Galaxy S24 Ultra 5G (12GB/512GB) -Màu Tím",
+    "source": "quochung.com.vn",
+    "price": "30.700.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRtsjSMU2wphooqnyu3gA7zvD5adC6ZI-uwJk-st0J_ZPBXqa4LCZtKxdr2aneKpAnKjdD-NyaO9u04o507IhFJhxV4wPW8C0EfJb3UxvkQBdI44ekQ8j46OQ",
+    "productId": "16248268857060388143",
+    "position": 31
+   },
+   {
+    "title": "Điện thoại Samsung Galaxy S24 Ultra - 12/512GB - Màu đen - Ngoại hình: 97% - Màn trầy nhẹ, viền trầy xướt - Body",
+    "source": "2handland",
+    "price": "16.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTyUOk_swCBp9zg4j4N-ZZEm5042MOft4J885814EvIuJ5Otb6x8ZbaUXid9cT64D7pk-HauY_-5nQveTiZbgrz33MMnimoXS5N2rwmWSqaU8Un5naknJwO",
+    "rating": 5,
+    "ratingCount": 1,
+    "productId": "1273355374941142448",
+    "position": 32
+   },
+   {
+    "title": "Samsung S24 Ultra Tím Ram 12GB|256G Cũ",
+    "source": "Tuấn Nguyễn Mobile",
+    "price": "20.300.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQSXWQbTOhD2VEYD-EUQRA_s6-Yw7jnAuFQtiFAV2L_O8BkFRW3KdAempviyalwq3G7q79GqIkwMQYk1z8ynTdJjb-GUHrxGsarEx-_vUum",
+    "productId": "12627130535975654564",
+    "position": 33
+   },
+   {
+    "title": "Samsung Galaxy S24 Pro Max 64GB",
+    "source": "ABPC",
+    "price": "8.940.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQJR6RhfnFxRsyKzBReLqhKqp4XuOKtuI0xgKs858wDC7bOCSIBN9imilOQekVYitxilBJo51YSaRWD7h0BhbnV8e3fiR449b8nyiG-LCAOsYq6H5mo-H2xfg",
+    "productId": "5244175772471238585",
+    "position": 34
+   },
+   {
+    "title": "Điện thoại Samsung Galaxy S24 Ultra - Bản Mỹ - Ram 12/256GB - Màu tím - Ngoại hình 97% - Kèm Spen",
+    "source": "2handland",
+    "price": "15.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSbiQR9pGP7skRlYRhtuG4JQX2HbML0YrOBMT5CNw5aarEag8DoPLCsEu0AueEJyQLufIi2j6GmPBIVrYtEEKrD3NjVP-qma9z3NZRLRhj1",
+    "productId": "7776321115450334352",
+    "position": 35
+   },
+   {
+    "title": "Điện thoại Samsung Galaxy S24 Ultra - Model: SM-S928U - Bản Mỹ - 12/256GB - Màu xám - Ngoại hình 98% - Kèm SPen",
+    "source": "2handland",
+    "price": "15.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQG2BquCyHrA3bFtdtldTJ9iyo3ZcPCvQmqeLgtkoAeUp5W6big0NekS8e4V5MOmZBw6jzZ0hx2WFyda7GU_QaKP41Mmni1Hw-TLBAmy_Dl10u54oxDFFJG",
+    "rating": 4.8,
+    "ratingCount": 7,
+    "productId": "3426600160671176632",
+    "position": 36
+   },
+   {
+    "title": "Điện thoại Samsung S24 Ultra - Mã Hàn - 12/256GB - Pin bình thường - Ngoại hình 97% - Body",
+    "source": "2handland",
+    "price": "16.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQBzuSyH7otcZpuB_OlUfiGHLxr0756n3mHtqeJKmppixlbsHkBLpbSg4j098q3xdE1CYZrXgbjrdaajKdDwgjXafkMpWwMBh6NS8ev9jaE2StWk_Lf1pUwhA",
+    "productId": "2289565444495884638",
+    "position": 37
+   },
+   {
+    "title": "Samsung Galaxy S24 5G 8GB 256GB Chính Hãng",
+    "source": "TYMO",
+    "price": "13.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSj_jlFzyF0ucPjGPOBRsgO675zyqGQjq66uywhBN1blTlsNcIkJruZZqNf0LADhZKrhihePZGuRrHEFsaZ3yigQ1Z-NyQ69eUZ9FDmxiN-PU7nbReLabuA4DM",
+    "productId": "5828727455671456532",
+    "position": 38
+   }
+  ],
+  "credits": 2
+ }
+}

@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Anker Tai nghe Bluetooth Soundcore Liberty 4 NC\" OR \"Tai nghe Bluetooth Anker Soundcore Spirit Pro\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:14:58.386Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Anker Tai nghe Bluetooth Soundcore Liberty 4 NC\" OR \"Tai nghe Bluetooth Anker Soundcore Spirit Pro\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

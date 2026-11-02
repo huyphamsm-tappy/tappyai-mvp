@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Samsung Galaxy S24 official battery capacity typical 4000 mAh",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:05:15.975Z",
+ "body": {
+  "searchParameters": {
+   "q": "Samsung Galaxy S24 official battery capacity typical 4000 mAh",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Galaxy S24 Series Battery Capacity and Charging Speed",
+    "link": "https://www.samsung.com/ae/support/mobile-devices/what-is-the-battery-capacity-and-its-speed-in-the-galaxy-s24-series/",
+    "snippet": "Galaxy S24+: 4,900 mAh (Typical) with 45W charging speed. Galaxy S24: 4,000 mAh (Typical) with 25W charging speed. 2. Why does the Galaxy S24 ...",
+    "date": "30 thg 6, 2026",
+    "position": 1
+   },
+   {
+    "title": "base model gets slightly larger battery (4000 mAh) : r/Android",
+    "link": "https://www.reddit.com/r/Android/comments/15yae61/samsung_galaxy_s24_base_model_gets_slightly/",
+    "snippet": "Should be sitting around 4200-4300mah in this form factor. I bet most would take the added weight for 4500mah.",
+    "position": 2
+   },
+   {
+    "title": "Original Battery For Samsung Galaxy S24 (EB-BS921ABE) ...",
+    "link": "https://www.zeposhop.com/mobile-and-tablets/mobile-spareparts/batteries/original-battery-for-samsung-galaxy-s24-eb-bs921abe-4000mah/?srsltid=AU7gw4VT00omtH6fyk_5UlO5RzDaqwLNkNDX6oe1PUdGL0A5OCBcS4yE",
+    "snippet": "Original Battery For Samsung Galaxy S24 (EB-BS921ABE) 4000mAh ; Battery Type: Lithium-ion / Lithium-polymer ; Capacity: 4000mAh ; Trusted Brand: Samsung is known ...",
+    "position": 3
+   },
+   {
+    "title": "4000mAh lags far behind competitors, Samsung Galaxy ...",
+    "link": "https://www.sensor360.org/news/detail/253136",
+    "snippet": "Including Galaxy S24,S24+ and S24 Ultra,the layout is not much different from previous Samsung phones. The battery capacity of Samsung Galaxy S24 is 4000mAh.",
+    "position": 4
+   },
+   {
+    "title": "Samsung Galaxy S24 Series Battery Capacity: Official mAh Specs",
+    "link": "https://www.tiktok.com/@sammobileofficial/video/7327035414525578514",
+    "snippet": "### Galaxy S24 Battery Capacity The standard Galaxy S24 is equipped with a 4,000 mAh battery. This represents an increase from the 3,900 mAh ...",
+    "position": 5
+   },
+   {
+    "title": "Genuine Samsung Galaxy S24 Battery 4000mAh EB- ...",
+    "link": "https://www.ebay.co.uk/itm/197291760929",
+    "snippet": "Battery Details. Manufacture: Samsung. Compatibility: Samsung S24 S921. Samsung Part Number: EB-BS921ABY. Capacity: 4000 mAh. Type: Li-ion.",
+    "position": 6
+   },
+   {
+    "title": "Galaxy S24",
+    "link": "https://www.samsungmobilepress.com/media-assets/galaxy-s24?tab=specs",
+    "snippet": "Battery, 4,000mAh ; Battery · Typical value tested under third-party laboratory condition. Typical value is the estimated average value considering the deviation ...",
+    "position": 7
+   },
+   {
+    "title": "Choosing The Best Battery Life Mobile Phone",
+    "link": "https://www.samsung.com/nz/mobile/mobile-phone-buying-guide/best-battery-life-samsung/?srsltid=AU7gw4UZvn04cCC-z55gi02TCkcBaDmdHFRhKyFbnR__RfxoWff7mrnO",
+    "snippet": "Rated capacity is 3880mAh for Galaxy S24, 4755mAh for Galaxy S24+ and 4855mAh for Galaxy S24 Ultra. Actual battery life may vary depending on network ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -44,7 +44,7 @@ for (const backend of ['in-process fallback', 'shared store'] as const) {
     })
     afterEach(() => { __resetRateLimitStore(); vi.unstubAllEnvs() })
 
-    it('A. 10/10 -> logout (new anonymous session) -> login again -> still 0 left', async () => {
+    it(`A. ${FREE_DAILY_LIMIT}/${FREE_DAILY_LIMIT} -> logout (new anonymous session) -> login again -> still 0 left`, async () => {
       for (let i = 0; i < FREE_DAILY_LIMIT; i++) expect((await spend(ACCOUNT)).ok).toBe(true)
       // logout: the browser now holds a brand-new anonymous Supabase session with its own id
       const anonAfterLogout = { id: 'anon-after-logout', is_anonymous: true }
@@ -92,9 +92,11 @@ for (const backend of ['in-process fallback', 'shared store'] as const) {
       expect((await consumeAiQuestion(aiQuotaIdentity(ACCOUNT as never, '9.9.9.9', plan))).ok).toBe(false)
     })
 
-    it('concurrency: 25 parallel requests for one free account admit exactly 10', async () => {
-      const results = await Promise.all(Array.from({ length: 25 }, () => spend(ACCOUNT)))
+    it(`concurrency: ${FREE_DAILY_LIMIT + 15} parallel requests for one free account admit exactly ${FREE_DAILY_LIMIT}`, async () => {
+      // owner 01/11/2026: 10 -> 300 (accounts have no visible limit; hidden anti-abuse ceiling)
+      const results = await Promise.all(Array.from({ length: FREE_DAILY_LIMIT + 15 }, () => spend(ACCOUNT)))
       expect(results.filter(r => r.ok)).toHaveLength(FREE_DAILY_LIMIT)
+      expect(results.filter(r => !r.ok)).toHaveLength(15)
       expect((await peek(ACCOUNT)).used).toBe(FREE_DAILY_LIMIT)
     })
   })

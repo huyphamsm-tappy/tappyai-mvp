@@ -3,7 +3,8 @@
 // monetisation weight is CAPPED at 0.05: it can break a tie, never outrank a
 // deeper, fresher or more exact link (Plan §9–10).
 
-export const RANKING_VERSION = 'v1-2026-09-13'
+// v2 (29 Oct 2026): same weights; monetisation became a pure tie-breaker in rankLinks (score.ts).
+export const RANKING_VERSION = 'v2-2026-10-29'
 
 export const RANKING_WEIGHTS = Object.freeze({
   intentExactness: 0.3,

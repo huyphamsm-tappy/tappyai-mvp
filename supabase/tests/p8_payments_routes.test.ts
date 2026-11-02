@@ -108,7 +108,7 @@ describe('POST /api/payments/sepay', () => {
 
   it('full amount (code found in the content, lower-case) → 200 {success:true}, paid, plan granted, mail sent', async () => {
     const o = await order('momo')
-    const res = await hook(tx(o.code.toLowerCase(), 179_000))
+    const res = await hook(tx(o.code.toLowerCase(), 175_000)) // Owner 01/11/2026: momo = 175 000 VND
     expect(res.status).toBe(200)
     expect(await res.json()).toEqual({ success: true })
     expect((await orderRow(o.id)).status).toBe('paid')
@@ -118,7 +118,7 @@ describe('POST /api/payments/sepay', () => {
 
   it('the same transaction again → 200, granted once', async () => {
     const o = await order('pip')
-    const body = tx(o.code, 29_000)
+    const body = tx(o.code, 25_000) // Owner 01/11/2026: pip = 25 000 VND
     await hook(body)
     const once = await expiry(BOB)
     const again = await hook(body)
@@ -130,7 +130,7 @@ describe('POST /api/payments/sepay', () => {
   it('a second purchase while paid STACKS on the current expiry', async () => {
     const before = await expiry(BOB)
     const o = await order('pip')
-    await hook(tx(o.code, 29_000, { code: o.code }))
+    await hook(tx(o.code, 25_000, { code: o.code }))
     expect((await expiry(BOB)) - before).toBeCloseTo(7 * DAY, -4)
   })
 
@@ -147,7 +147,7 @@ describe('POST /api/payments/sepay', () => {
     const before = await expiry(BOB)
     const o = await order('pip')
     await t.db.query(`UPDATE public.payment_orders SET expires_at = now() - interval '1 hour' WHERE id = $1`, [o.id])
-    await hook(tx(o.code, 29_000))
+    await hook(tx(o.code, 25_000))
     expect((await orderRow(o.id)).status).toBe('paid')
     expect((await expiry(BOB)) - before).toBeCloseTo(7 * DAY, -4)
   })
@@ -155,16 +155,16 @@ describe('POST /api/payments/sepay', () => {
   it('a failing mail never fails the webhook', async () => {
     h.mailThrows = true
     const o = await order('pip')
-    const res = await hook(tx(o.code, 29_000))
+    const res = await hook(tx(o.code, 25_000))
     expect(res.status).toBe(200)
     expect((await orderRow(o.id)).status).toBe('paid')
   })
 
   it('outgoing, unknown code, or another account → 200, nothing paid', async () => {
     const o = await order('pip')
-    expect((await hook(tx(o.code, 29_000, { transferType: 'out' }))).status).toBe(200)
-    expect((await hook(tx('TAPPYZZZZZZ', 29_000))).status).toBe(200)
-    expect((await hook(tx(o.code, 29_000, { accountNumber: '9999999999' }))).status).toBe(200)
+    expect((await hook(tx(o.code, 25_000, { transferType: 'out' }))).status).toBe(200)
+    expect((await hook(tx('TAPPYZZZZZZ', 25_000))).status).toBe(200)
+    expect((await hook(tx(o.code, 25_000, { accountNumber: '9999999999' }))).status).toBe(200)
     expect((await orderRow(o.id)).status).toBe('pending')
   })
 
@@ -178,11 +178,13 @@ describe('POST /api/payments/sepay', () => {
 describe('POST /api/payments/orders', () => {
   it('answers the code, amount, account and a SePay QR', async () => {
     await t.db.query(`UPDATE public.payment_orders SET status = 'expired' WHERE status = 'pending'`)
-    const res = await createOrder(new Request('https://t.test/x', { method: 'POST', body: '{"plan":"sunny"}' }))
+    // Owner 01/11/2026: Sunny is no longer sold; Coco 3 months = 472 500 VND.
+    const res = await createOrder(new Request('https://t.test/x', { method: 'POST', body: '{"plan":"coco"}' }))
+    expect(res.status).toBe(201)
     const body = await res.json()
-    expect(body.order.amountVnd).toBe(1_719_000)
+    expect(body.order.amountVnd).toBe(472_500)
     expect(body.bank).toEqual({ accountNumber: ACCOUNT, accountName: 'PHAM HUY', bankCode: 'MBBank' })
-    expect(body.qrUrl).toBe(`https://qr.sepay.vn/img?acc=${ACCOUNT}&bank=MBBank&amount=1719000&des=${body.order.code}`)
+    expect(body.qrUrl).toBe(`https://qr.sepay.vn/img?acc=${ACCOUNT}&bank=MBBank&amount=472500&des=${body.order.code}`)
   })
 
   it('the client cannot choose the price; unknown plans are refused', async () => {

@@ -158,10 +158,10 @@
       "intentType": "book_hotel",
       "action": {
         "kind": "booking", "urlKind": "direct", "url": "https://www.agoda.com/vi-vn/bed-station-hostel/hotel/hoi-an-vn.html?checkIn=2026-10-10&los=2&adults=2&rooms=1",
-        "labelKey": "v3.action.viewOn", "platform": "Agoda",
-        "commerce": { "linkId": "3a4b5c6d7e8f900112233445", "requestId": "9c0d1e2f-3a4b-4c5d-8e7f-809102132435", "providerId": "agoda", "depth": 3, "guestDepth": 3, "authRequiredAt": "none", "loginRequired": false, "handoff": "guest", "authenticatedDepth": null, "freshnessType": "session", "expiresAt": "2026-10-10T00:00:00.000Z", "tracked": false, "capability": "hotel_detail", "primary": true }
+        "labelKey": "v3.action.bookingOn", "platform": "Agoda",
+        "commerce": { "linkId": "3a4b5c6d7e8f900112233445", "requestId": "9c0d1e2f-3a4b-4c5d-8e7f-809102132435", "providerId": "agoda", "depth": 4, "guestDepth": 4, "authRequiredAt": "none", "loginRequired": false, "handoff": "guest", "authenticatedDepth": null, "freshnessType": "session", "expiresAt": "2026-10-10T00:00:00.000Z", "tracked": false, "capability": "hotel_detail", "primary": true }
       },
-      "expect": { "host": "www.agoda.com", "providerId": "agoda", "capability": "hotel_detail", "labelKey": "v3.action.viewOn", "labelVi": "Xem trên Agoda", "labelEn": "View on Agoda", "depth": 3, "loginRequired": false, "handoffBody": { "linkId": "3a4b5c6d7e8f900112233445", "requestId": "9c0d1e2f-3a4b-4c5d-8e7f-809102132435" }, "forbiddenHosts": ["www.booking.com"], "params": ["adults=2", "rooms=1"] }
+      "expect": { "host": "www.agoda.com", "providerId": "agoda", "capability": "hotel_detail", "labelKey": "v3.action.bookingOn", "labelVi": "Đặt phòng trên Agoda", "labelEn": "Book on Agoda", "depth": 4, "loginRequired": false, "handoffBody": { "linkId": "3a4b5c6d7e8f900112233445", "requestId": "9c0d1e2f-3a4b-4c5d-8e7f-809102132435" }, "forbiddenHosts": ["www.booking.com"], "params": ["adults=2", "rooms=1"] }
     },
     {
       "id": "T4-traveloka-hotel-observed",

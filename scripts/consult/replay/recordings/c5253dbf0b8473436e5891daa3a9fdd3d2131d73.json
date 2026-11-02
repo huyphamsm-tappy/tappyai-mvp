@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "hồ sơ cấp hộ chiếu phổ thông online công dân Việt Nam ảnh căn cước tờ khai lệ phí 2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:24:42.759Z",
+ "body": {
+  "searchParameters": {
+   "q": "hồ sơ cấp hộ chiếu phổ thông online công dân Việt Nam ảnh căn cước tờ khai lệ phí 2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp tỉnh)",
+    "link": "https://vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh-doc.html?ma_thu_tuc=1.001456",
+    "snippet": "Thành phần hồ sơ ; Ảnh mới chụp không quá 06 tháng, cỡ 4cm x 6cm, mặt nhìn thẳng, đầu để trần, rõ mặt, rõ hai tai, không đeo kính, trang phục lịch sự, phông ảnh ...",
+    "position": 1
+   },
+   {
+    "title": "Thủ tục làm hộ chiếu phổ thông online",
+    "link": "https://www.xuatnhapcanh.com.vn/c11t80-thu-tuc-lam-ho-chieu-online.htm",
+    "snippet": "... chiếu các giấy tờ gốc tại cơ quan Quản lý xuất nhập cảnh. - Tờ khai xin cấp hộ chiếu in ra từ bản online. - Thẻ căn cước công dân (Để đối chiếu).",
+    "date": "24 thg 12, 2024",
+    "position": 2
+   },
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước",
+    "link": "https://conganthanhhoa.gov.vn/dich-vu-cong/quan-ly-xuat-nhap-canh/cap-ho-chieu-pho-thong.html",
+    "snippet": "- Thông tư số 31/2023/TT-BCA ngày 20/7/2023 của Bộ Công an quy định về mẫu hộ chiếu, giấy thông hành và các biểu mẫu liên quan. - Thông tư số 28/2026/TT-BTC ...",
+    "position": 3
+   },
+   {
+    "title": "Từ 15/8/2026, miễn lệ phí cấp hộ chiếu phổ thông trong ...",
+    "link": "https://luatvietnam.vn/tin-van-ban-moi/mien-le-phi-cap-ho-chieu-pho-thong-trong-nuoc-cho-nguoi-co-vneid-muc-2-186-111583-article.html",
+    "snippet": "Để được miễn lệ phí, công dân phải tích hợp thành công thông tin hộ chiếu và 05 loại thông tin, giấy tờ cơ bản theo Phụ lục I của Nghị quyết ...",
+    "date": "18 thg 8, 2026",
+    "position": 4
+   },
+   {
+    "title": "Hướng dẫn đăng ký thủ tục Cấp hộ chiếu phổ thông TẠI NHÀ",
+    "link": "https://sonmai.quangngai.gov.vn/video-clip/truyen-thong-ve-cai-cach-hanh-chinh/huong-dan-dang-ky-thu-tuc-cap-ho-chieu-pho-thong-tai-nha.html",
+    "snippet": "... CÔNG DÂN NHẬP NGŨ VÀ THỰC HIỆN NGHĨA VỤ CÔNG AN NHÂN DÂN NĂM 2027 ... SƠN MAI KHAI MẠC ...",
+    "date": "12 thg 1, 2026",
+    "position": 5
+   },
+   {
+    "title": "Toàn Bộ Quy Trình Làm Hộ Chiếu Online Và Trực Tiếp 2026",
+    "link": "https://fisc.com.vn/lam-ho-chieu/",
+    "snippet": "Nộp trực tiếp · Tờ khai đề nghị cấp hộ chiếu phổ thông theo mẫu quy định · Ảnh hộ chiếu: 02 ảnh 4cm x 6cm, chụp không quá 06 tháng, mặt nhìn thẳng, đầu để trần, ...",
+    "position": 6
+   },
+   {
+    "title": "Thủ tục cấp hộ chiếu phổ thông ở trong nước (tại Công an cấp ...",
+    "link": "https://xaydungchinhsach.chinhphu.vn/thu-tuc-cap-ho-chieu-pho-thong-o-trong-nuoc-tai-cong-an-cap-tinh-119260714162349301.htm",
+    "snippet": "Tờ khai đề nghị cấp hộ chiếu phổ thông ở trong nước (mẫu TK01 dành cho người từ 14 tuổi trở lên; mẫu TK01a dành cho người chưa đủ 14 tuổi) ban ...",
+    "date": "14 thg 7, 2026",
+    "position": 7
+   },
+   {
+    "title": "Hướng dẫn đăng ký thủ tục Cấp hộ chiếu phổ thông TẠI NHÀ",
+    "link": "https://www.youtube.com/watch?v=UTS8NrG8fys",
+    "snippet": "Share your videos with friends, family, and the world.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

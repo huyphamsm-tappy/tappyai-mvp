@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com/newsroom AirPods Pro second generation 6 hours 30 hours listening time",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:09:47.170Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com/newsroom AirPods Pro second generation 6 hours 30 hours listening time",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Apple announces the next generation of AirPods Pro",
+    "link": "https://www.apple.com/newsroom/2022/09/apple-announces-the-next-generation-of-airpods-pro/",
+    "snippet": "Using the case for four additional charges, users can enjoy up to 30 hours of total listening time with Active Noise Cancellation — a full six ...",
+    "date": "7 thg 9, 2022",
+    "position": 1
+   },
+   {
+    "title": "Introducing the next generation of AirPods",
+    "link": "https://www.apple.com/newsroom/2021/10/introducing-the-next-generation-of-airpods/",
+    "snippet": "The extended battery life enables up to six hours of listening time1 and up to 30 hours of total listening time with the convenient charging ...",
+    "date": "18 thg 10, 2021",
+    "position": 2
+   },
+   {
+    "title": "Apple introduces AirPods 4 and a hearing health ...",
+    "link": "https://www.apple.com/newsroom/2024/09/apple-introduces-airpods-4-and-a-hearing-health-experience-with-airpods-pro-2/",
+    "snippet": "... 30 hours of battery life. ... After taking the Hearing Test, users can also use their hearing profile to personalize the AirPods Pro listening ...",
+    "date": "9 thg 9, 2024",
+    "position": 3
+   },
+   {
+    "title": "Apple introduces AirPods Max 2",
+    "link": "https://www.apple.com/newsroom/2026/03/apple-introduces-airpods-max-2-powered-by-h2/",
+    "snippet": "Thanks to H2 and new computational audio algorithms, AirPods Max 2 deliver ANC that's up to 1.5x more effective than the previous generation.",
+    "date": "16 thg 3, 2026",
+    "position": 4
+   },
+   {
+    "title": "Apple upgrades AirPods Pro (2nd generation) with USB‐C ...",
+    "link": "https://www.apple.com/newsroom/2023/09/apple-upgrades-airpods-pro-2nd-generation-with-usb-c-charging/",
+    "snippet": "AirPods Pro (2nd generation) are upgraded with USB‑C charging capabilities, additional dust resistance, and Lossless Audio with Apple Vision Pro ...",
+    "date": "12 thg 9, 2023",
+    "position": 5
+   },
+   {
+    "title": "Get ready to experience iPhone 18 Pro, the new ...",
+    "link": "https://www.apple.com/newsroom/2026/09/get-ready-to-experience-iphone-18-pro-the-new-apple-watch-lineup-and-airpods-5/",
+    "snippet": "AirPods 5 deliver the industry's best Active Noise Cancellation (ANC) in an open-ear design and even better sound quality, at an outstanding ...",
+    "date": "11 thg 9, 2026",
+    "position": 6
+   },
+   {
+    "title": "Apple debuts iPhone 18 Pro and iPhone 18 Pro Max",
+    "link": "https://www.apple.com/newsroom/2026/09/apple-debuts-iphone-18-pro-and-iphone-18-pro-max/",
+    "snippet": "eSIM-only models deliver up to 36 hours of video playback on iPhone 18 Pro and up to 45 hours of video playback on iPhone 18 Pro Max. iPhone 18 ...",
+    "date": "9 thg 9, 2026",
+    "position": 7
+   },
+   {
+    "title": "Introducing Apple Watch Series 12, with the all-new Health ...",
+    "link": "https://www.apple.com/newsroom/2026/09/introducing-apple-watch-series-12-with-the-all-new-health-sensing-system/",
+    "snippet": "All-day battery life testing includes 300 time checks, 90 notifications, 15 minutes of app use, a 60-minute workout with music playback from ...",
+    "date": "9 thg 9, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

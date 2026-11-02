@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Bảo tàng Điêu khắc Chăm Đà Nẵng\" OR \"Cầu Rồng\" OR \"Bảo tàng 3D Art In Paradise\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T17:16:24.782Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Bảo tàng Điêu khắc Chăm Đà Nẵng\" OR \"Cầu Rồng\" OR \"Bảo tàng 3D Art In Paradise\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Lưu Ý Quan Trọng Khi Xem Cầu Rồng Phun Lửa",
+    "link": "https://www.tiktok.com/@insightdanang/video/7691603474605264148",
+    "snippet": "Cầu Rồng là một biểu tượng kiến trúc độc đáo của thành phố biển Đà Nẵng. Điểm đặc biệt nhất là vào các tối thứ Bảy và Chủ Nhật hàng tuần, con ...",
+    "position": 1
+   },
+   {
+    "title": "Photobooth Cầu Rồng Đà Nẵng",
+    "link": "https://www.tiktok.com/@ptbbaochidanang/video/7675296200626670868",
+    "snippet": "Tọa lạc trên vỉa hè, sát bờ sông và ngay dưới chân Cầu Rồng biểu tượng, nơi đây mang đến một không gian chụp ảnh mới lạ và ấn tượng. Điểm đặc ...",
+    "position": 2
+   },
+   {
+    "title": "Cầu Rồng Đà Nẵng Phun Lửa Lúc Mấy Giờ? Lịch Trình & ...",
+    "link": "https://www.tiktok.com/@nhungdanang43/video/7507491855471283478",
+    "snippet": "Cầu Rồng sẽ thực hiện màn trình diễn phun lửa và nước vào lúc **21 giờ hàng đêm**. Tuy nhiên, lịch trình này chỉ diễn ra vào các ngày **Thứ 6, ...",
+    "position": 3
+   },
+   {
+    "title": "Khám Phá Bảo Tàng Điêu Khắc Chăm Đà Nẵng",
+    "link": "https://www.tiktok.com/@checkin_danang/video/7326942183376964865",
+    "snippet": "Khám Phá Bảo Tàng Điêu Khắc Chăm Đà Nẵng. Cùng Trà Mi tham quan Bảo Tàng Điêu Khắc Chăm Đà Nẵng, nơi có bảo vật quốc gia và nhiều mẫu cổ vật đẹp ...",
+    "position": 4
+   },
+   {
+    "title": "Cầu Rồng Đà Nẵng phun lửa nước 6 ngày mừng Quốc ...",
+    "link": "https://www.tiktok.com/@vivudanang243/video/7677565973016235285",
+    "snippet": "Cầu Rồng Đà Nẵng sẽ phun lửa phun nước liên tục 6 ngày mừng lễ Quốc Khánh 2/9 #danang #dulichdanang #caurongdanang #duthuyendanang # ...",
+    "position": 5
+   },
+   {
+    "title": "Các cây cầu nổi tiếng ở Đà Nẵng — Top 1 Cầu Rồng",
+    "link": "https://vt.tiktok.com/ZSbmjduuE/",
+    "snippet": "Thành phố được gọi là \"Thành phố của những cây cầu\" nhờ nhiều công trình kiến trúc cầu nổi bật. Trong đó, Cầu Rồng được xếp hạng Top 1 về mức độ ...",
+    "position": 6
+   },
+   {
+    "title": "📍PTB BÁO CHÍ CẦU RỒNG 📸 (@ptbbaochidanang)",
+    "link": "https://www.tiktok.com/@ptbbaochidanang",
+    "snippet": "đối diện Highland 517 Trần Hưng Đạo,trên vỉa hè sát bờ sông dưới chân cầu Rồng ⁉️Lưu ý: Máy bên shop có chữ VietNam News ✓ · Khám phá địa chỉ mới photobooth ...",
+    "position": 7
+   },
+   {
+    "title": "hirono behind time china",
+    "link": "https://shop.tiktok.com/vn/k/hirono-behind-time-china",
+    "snippet": "Đồng hồ hanboro cơ địa cầu rồng · 6 sold · 4.390.000 ; đồng hồ cơ automatic hanboro full đá dáng mule · 9 sold · 4.090.000 ; PHUỘC NHÚN (GIẢM XÓC) TRƯỚC FORD TRANSIT.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

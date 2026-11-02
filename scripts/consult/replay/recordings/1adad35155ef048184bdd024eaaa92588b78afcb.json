@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Bluetooth chụp tai JBL Tune 530BT\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:21:57.121Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Bluetooth chụp tai JBL Tune 530BT\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe JBL Tune 530BT | Giá rẻ, ưu đãi tốt",
+    "link": "https://cellphones.com.vn/tai-nghe-bluetooth-chup-tai-jbl-tune-530bt.html",
+    "snippet": "Tai nghe Bluetooth chụp tai JBL Tune 530BT mang đến âm thanh sống động với JBL Pure Bass Sound mạnh mẽ, tái hiện giai điệu chi tiết và đầy sâu lắng. Sản phẩm ...",
+    "position": 1
+   },
+   {
+    "title": "Tai nghe JBL chính hãng, bass căng, chống ồn [GIẢM 45%]",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe/jbl.html",
+    "snippet": "Bảng giá tai nghe JBL chính hãng cập nhật 2026 ; Tai nghe Bluetooth chụp tai JBL Tune 530BT. 1.090.000đ ; Tai nghe Bluetooth True Wireless JBL Live Beam 3. 3.590.",
+    "position": 2
+   },
+   {
+    "title": "Trên tay JBL Tune 530BT: Chất âm JBL Pure Bass, pin tới ...",
+    "link": "https://cellphones.com.vn/sforum/tren-tay-jbl-tune-530bt",
+    "snippet": "Tai nghe Bluetooth chụp tai JBL Tune 530BT. 1.190.000đ. HSSV chỉ còn 1.130.500đSmember giảm thêm ...",
+    "date": "5 thg 8, 2026",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 3
+   },
+   {
+    "title": "So sánh Tai nghe chụp tai Motorola Pulse Bass 200 (Có dây) và ...",
+    "link": "https://cellphones.com.vn/so-sanh/tai-nghe-chup-tai-motorola-pulse-bass-200-vs-tai-nghe-chup-tai-jbl-tune-510bt",
+    "snippet": "... Tai nghe Bluetooth chụp tai JBL Tune 530BT. Giá niêm yết: 1.190.000. + Chọn để so sánh.",
+    "position": 4
+   },
+   {
+    "title": "JBL mở bán bộ tứ tai nghe Tune mới với giá hấp dẫn",
+    "link": "https://cellphones.com.vn/sforum/jbl-mo-ban-jbl-tune-780nc-nc-730bt-530bt",
+    "snippet": "Tai nghe Bluetooth chụp tai JBL Tune 530BT. 1.190.000đ. HSSV chỉ còn 1.130.500đSmember giảm thêm ...",
+    "date": "9 thg 7, 2026",
+    "position": 5
+   },
+   {
+    "title": "So sánh Tai nghe chụp tai Rapoo VH160 và ...",
+    "link": "https://cellphones.com.vn/so-sanh/tai-nghe-chup-tai-rapoo-vh160-vs-tai-nghe-chup-tai-jbl-tune-510bt",
+    "snippet": "... Tai nghe Bluetooth chụp tai JBL Tune 530BT. Giá niêm yết: 1.190.000. + Chọn để so sánh.",
+    "position": 6
+   },
+   {
+    "title": "So sánh Tai nghe Bluetooth chụp tai SoundPEATS A6 và ...",
+    "link": "https://cellphones.com.vn/so-sanh/tai-nghe-chup-tai-soundpeats-a6-chong-on-vs-tai-nghe-bluetooth-jbl-t450bt",
+    "snippet": "... Tai nghe Bluetooth chụp tai JBL Tune 530BT. Giá niêm yết: 1.190.000. + Chọn để so sánh.",
+    "position": 7
+   },
+   {
+    "title": "Cách kết nối tai nghe JBL với điện thoại Android và iPhone",
+    "link": "https://cellphones.com.vn/sforum/cach-ket-noi-tai-nghe-jbl",
+    "snippet": "Tai nghe Bluetooth chụp tai JBL Tune 530BT. 1.090.000đ 1.190.000đ. Smember giảm đến 11.000đ. S ...",
+    "date": "8 thg 9, 2025",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

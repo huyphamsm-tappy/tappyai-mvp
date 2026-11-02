@@ -1,0 +1,60 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"M Hotel\" Đà Nẵng, khách sạn yên tĩnh khoảng 1 triệu đồng mỗi đêm site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:21:48.903Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"M Hotel\" Đà Nẵng, khách sạn yên tĩnh khoảng 1 triệu đồng mỗi đêm site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Các khách sạn nổi tiếng ở gần Chợ đêm Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/da-nang-danang-night-market/hotels-c1356m23136554/",
+    "snippet": "M Hotel Danang Các khách sạn gần Chợ đêm Đà Nẵng. M Hotel Danang. Bãi biển Mỹ ... Nó nằm ở một vị trí khá hẻo lánh, nên có thể hơi đáng sợ đối với một số người, ...",
+    "position": 1
+   },
+   {
+    "title": "Các khách sạn ở gần Công viên Bắc Tượng đài 2 Tháng 9 ...",
+    "link": "https://vn.trip.com/hotels/da-nang-cng-vin-bc-tng-i-2-thng-9/hotels-c1356m39873163/",
+    "snippet": "Khách sạn sang trọng nào ở gần Công viên Bắc Tượng đài 2 Tháng 9? TMS Hotel Da Nang Beach (từ 1.704.554₫),TUI BLUE Han River (từ 1.952.489₫)vàM Hotel Danang ...",
+    "position": 2
+   },
+   {
+    "title": "Quảng trường Nguyễn Văn Thoại - Khách sạn tại Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/da-nang-qung-trng-nguyn-vn-thoi/hotels-c1356m31940281/",
+    "snippet": "Khách sạn Mường Thanh Luxury Đà Nẵng (từ 1.294.965₫),TMS Hotel Da Nang Beach (từ 1.705.942₫)vàM Hotel Danang (từ 2.725.630₫) là những khách sạn sang trọng với ...",
+    "position": 3
+   },
+   {
+    "title": "Top 10 khách sạn tại Singapore, Singapore",
+    "link": "https://vn.trip.com/hotels/singapore-hotels-list-73/",
+    "snippet": "Studio M Hotel Singapore. \"StudioM nổi bật với thiết kế gác xép và vị trí đắc địa. Nơi đây mang đến trải nghiệm vừa phong cách vừa nhỏ gọn với ...",
+    "position": 4
+   },
+   {
+    "title": "Các khách sạn ở gần Vườn cây cảnh Thiên Vân, Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/da-nang-vn-cy-cnh-thin-vn/hotels-c1356m31281361/",
+    "snippet": "... Đà Nẵng (từ 4.198.943₫)vàM Hotel Danang (từ 2.473.616₫) là những khách sạn sang trọng với giá cả phải chăng phổ biến. Giá trung bình của khách sạn ở gần ...",
+    "position": 5
+   },
+   {
+    "title": "Các khách sạn ở gần Bãi biển Non Nước, Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/da-nang-china-beach/hotels-c1356m6743671/",
+    "snippet": "/đêm. M Hotel Danang. 9,4/10. Đáng Kinh Ngạc. 421 đánh giá. Bãi biển Mỹ Khê | Cách Bãi biển Non Nước 6.82km. Tọa lạc tại Đà Nẵng, M Hotel Danang là ...",
+    "position": 6
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "https://shop-c.tappy-eval.test/sony-wh-1000xm5 Sony WH-1000XM5 giá",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T16:55:56.551Z",
+ "body": {
+  "searchParameters": {
+   "q": "https://shop-c.tappy-eval.test/sony-wh-1000xm5 Sony WH-1000XM5 giá",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Sony WH-1000XM5 Premium Wireless Noise Cancelling ...",
+    "link": "https://electronics.sony.com/audio/headphones/headband/p/wh1000xm5-b?srsltid=AU7gw4VnSgLvtUBEbO6G8E6XIPahn5pXOHFzTop4M5jC5Ls7972AGpkY",
+    "snippet": "The WH-1000XM5 headphones rewrite the rules for distraction-free listening. 2 processors control 8 microphones for unprecedented noise cancellation and ...",
+    "position": 1
+   },
+   {
+    "title": "Sony WH-1000XM5 Review: Two Steps Forward, One ...",
+    "link": "https://www.youtube.com/watch?v=6CsJZxfZsL0",
+    "snippet": "Just got these for $200 on Prime Day. Just had to wait 4 years. 9:17. Go to channel Marques Brownlee · Sony WH-1000XM6 Review: Back on the ...",
+    "position": 2
+   },
+   {
+    "title": "Sony - WH-1000XM5 Wireless Noise Cancelling Over-the- ...",
+    "link": "https://www.bestbuy.com/product/sony-wh-1000xm5-wireless-noise-cancelling-over-the-ear-headphones-black/J7XSRH5CXG",
+    "snippet": "Customers praise the impeccable sound quality, exceptional comfort, and impressive battery life that make these headphones a standout choice.",
+    "position": 3
+   },
+   {
+    "title": "Sony WH-1000XM5 review",
+    "link": "https://www.soundguys.com/sony-wh-1000xm5-review-71783/",
+    "snippet": "The Sony WH-1000XM5 headphones offer decent sound quality with strong bass and treble emphasis. However, they have a somewhat recessed midrange, ...",
+    "date": "20 thg 5, 2022",
+    "position": 4
+   },
+   {
+    "title": "Sony WH-1000XM5 Wireless Industry Leading Noise ...",
+    "link": "https://www.buydig.com/shop/product/SNWH1000XM5B/Sony-WH-1000XM5-Wireless-Industry-Leading-Noise-Canceling-Headphones-Black?srsltid=AU7gw4UuAEonFg4zoSAEOwwlzSOpJpOop7VaJ6ASwHOfkKjbh9_kn3C-",
+    "snippet": "The WH-1000XM5 headphones rewrite the rules for distraction-free listening. Two processors control 8 microphones for unprecedented noise cancellation and ...",
+    "position": 5
+   },
+   {
+    "title": "Sony WH-1000XM5 wireless headphones review",
+    "link": "https://www.whathifi.com/reviews/sony-wh-1000xm5",
+    "snippet": "What Hi-Fi? Awards 2024 winner. New design, same result for Sony's superb premium noise-cancelling headphones Tested at £380 / $399 / AU$550.",
+    "date": "18 thg 7, 2025",
+    "position": 6
+   },
+   {
+    "title": "WH-1000XM5 Specifications",
+    "link": "https://www.sony.com/electronics/support/wireless-headphones-bluetooth-headphones/wh-1000xm5/specifications",
+    "snippet": "Get the detailed list of (technical) specifications for the Sony WH-1000XM5.",
+    "position": 7
+   },
+   {
+    "title": "Sony WH-1000XM5 ANC Headphones Review - The Best I' ...",
+    "link": "https://www.youtube.com/watch?v=jx5i0FXuyRA",
+    "snippet": "Sony WH1000XM5 Headphones Review. The best ANC wireless headphones on the market. Buy it here: https://amzn.to/4gtrbgS @Sony @sonycanada ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

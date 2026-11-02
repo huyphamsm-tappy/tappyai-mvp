@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "MacBook Air M4 13 inch 2025 10CPU 8GPU 16GB 256GB",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:11:34.888Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Air M4 13 inch 2025 10CPU 8GPU 16GB 256GB",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Macbook Air M4 2025 | Chính hãng Apple, trả góp 0%",
+    "imageUrl": "https://cdn2.fptshop.com.vn/unsafe/macbook_air_13_m4_2025_xanh_1_16309323fd.jpg",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeyjGWeJCrqeR05RgAhpOTXg1DRPnwDcrbZ0wMO3zI7A&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "FPT Shop",
+    "domain": "fptshop.com.vn",
+    "link": "https://fptshop.com.vn/may-tinh-xach-tay/macbook-air-13-m4-2025-10cpu-8gpu-16gb-256gb",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.fptshop.com.vn%2Funsafe%2Fmacbook_air_13_m4_2025_xanh_1_16309323fd.jpg&tbnid=DQ3sz7rI3GGGaM&imgrefurl=https%3A%2F%2Ffptshop.com.vn%2Fmay-tinh-xach-tay%2Fmacbook-air-13-m4-2025-10cpu-8gpu-16gb-256gb&docid=0nOvF53wXjW_oM&w=800&h=800",
+    "position": 1
+   },
+   {
+    "title": "Macbook Air M4 2025 | Chính hãng Apple, trả góp 0%",
+    "imageUrl": "https://cdn2.fptshop.com.vn/unsafe/828x0/filters:format(webp):quality(75)/macbook_air_m4_slide_ff0abbf769.jpg",
+    "imageWidth": 828,
+    "imageHeight": 466,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkFGwkuiaVGSzXYdnbl_pCnhNyR30_WGfky3ItutlADA&s",
+    "thumbnailWidth": 299,
+    "thumbnailHeight": 168,
+    "source": "FPT Shop",
+    "domain": "fptshop.com.vn",
+    "link": "https://fptshop.com.vn/may-tinh-xach-tay/macbook-air-13-m4-2025-10cpu-8gpu-16gb-256gb",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.fptshop.com.vn%2Funsafe%2F828x0%2Ffilters%3Aformat(webp)%3Aquality(75)%2Fmacbook_air_m4_slide_ff0abbf769.jpg&tbnid=Ljd5zKEK4CsX2M&imgrefurl=https%3A%2F%2Ffptshop.com.vn%2Fmay-tinh-xach-tay%2Fmacbook-air-13-m4-2025-10cpu-8gpu-16gb-256gb&docid=0nOvF53wXjW_oM&w=828&h=466",
+    "position": 2
+   },
+   {
+    "title": "Macbook Air 13'6 inch 2025 M4 -10CPU / 8GPU / Ram 16Gb / 256Gb Likenew",
+    "imageUrl": "https://bizweb.dktcdn.net/thumb/1024x1024/100/444/581/products/44-b624593c-3efc-43dd-8271-5346b37bcfed-5a952272-f37b-409b-a9ff-3a81223a6624.png?v=1764748642890",
+    "imageWidth": 640,
+    "imageHeight": 640,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXX2A4e3FYKPuCU6yMk9WQAajD9znwqLur9dCg3nWwtg&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Macshop24h",
+    "domain": "macshop24h.vn",
+    "link": "https://macshop24h.vn/macbook-air-13-6-inch-2025-m4-10cpu-8gpu-ram-16gb-256gb-likenew?srsltid=AU7gw4X5eGi947-j8AmPTNBmJ6T9zgSqwjliRuRK9DLudI87HXO5QcvC",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbizweb.dktcdn.net%2Fthumb%2F1024x1024%2F100%2F444%2F581%2Fproducts%2F44-b624593c-3efc-43dd-8271-5346b37bcfed-5a952272-f37b-409b-a9ff-3a81223a6624.png%3Fv%3D1764748642890&tbnid=YhS_RLwHO-ZbsM&imgrefurl=https%3A%2F%2Fmacshop24h.vn%2Fmacbook-air-13-6-inch-2025-m4-10cpu-8gpu-ram-16gb-256gb-likenew%3Fsrsltid%3DAU7gw4X5eGi947-j8AmPTNBmJ6T9zgSqwjliRuRK9DLudI87HXO5QcvC&docid=gALRCIqdpMd-UM&w=640&h=640",
+    "position": 3
+   },
+   {
+    "title": "MacBook Air M4 2025 13 inch 10CPU 8GPU (16GB - 256GB) - Chính hãng Apple  Việt Nam",
+    "imageUrl": "https://cdn.viettablet.com/images/detailed/67/macbook-air-m4-2025-13-inch-10cpu-8gp16gb-256gb-anh-6.webp",
+    "imageWidth": 1080,
+    "imageHeight": 1080,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDeYtqZfIGDdOjWv__zfQZBZAbVn6dRkdPkKwyIP-BYg&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Viettablet",
+    "domain": "www.viettablet.com",
+    "link": "https://www.viettablet.com/macbook-air-m4-2025-13-inch-10cpu-8gp16gb-256gb?srsltid=AU7gw4WTEwwEjuH45JBG1cTSQJvNVc1EqPocFLSRT3B-jkTry0S1i8DI",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.viettablet.com%2Fimages%2Fdetailed%2F67%2Fmacbook-air-m4-2025-13-inch-10cpu-8gp16gb-256gb-anh-6.webp&tbnid=7d3X7Hx_lCzTYM&imgrefurl=https%3A%2F%2Fwww.viettablet.com%2Fmacbook-air-m4-2025-13-inch-10cpu-8gp16gb-256gb%3Fsrsltid%3DAU7gw4WTEwwEjuH45JBG1cTSQJvNVc1EqPocFLSRT3B-jkTry0S1i8DI&docid=-6ueHdwV3jFmkM&w=1080&h=1080",
+    "position": 4
+   },
+   {
+    "title": "MacBook Air 2025 13 inch M4 10CPU/8GPU/16GB/256GB Mới - Á Châu Mobile",
+    "imageUrl": "https://achaumobile.com/wp-content/uploads/2025/03/MBA-13-M4-ACHAU-COLOR111.png",
+    "imageWidth": 2572,
+    "imageHeight": 2572,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSd32sbig7VJICJkIVRfV86hBMJpXHAtduFjsy2fxA2KA&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Á Châu Mobile",
+    "domain": "achaumobile.com",
+    "link": "https://achaumobile.com/san-pham/macbook-air-2025-13-inch-m4-10cpu-8gpu-16gb-256gb-moi-dang-cap-nhat-gia-lien-he/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fachaumobile.com%2Fwp-content%2Fuploads%2F2025%2F03%2FMBA-13-M4-ACHAU-COLOR111.png&tbnid=uZzDTepFdBvljM&imgrefurl=https%3A%2F%2Fachaumobile.com%2Fsan-pham%2Fmacbook-air-2025-13-inch-m4-10cpu-8gpu-16gb-256gb-moi-dang-cap-nhat-gia-lien-he%2F&docid=KpS8oTp-GD61dM&w=2572&h=2572",
+    "position": 5
+   },
+   {
+    "title": "New Full Box] Macbook Air 13 M4 2025| 10CPU 8GPU| 16GB RAM| 256GB SSD| 13.6 inch Retina 2,5K| Starlight (Màu Ánh Sao) - Laptop cũ Hải Phòng",
+    "imageUrl": "https://maytinhquanganh.com/wp-content/uploads/2025/09/z6975552035121_5f65b746eecaa781181bd3508c172889.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 1200,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjWDC3xKQLwrpp09YN5ulHk_Dt3fb6K38ik3eV9S_Kpw&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Laptop cũ Hải Phòng",
+    "domain": "maytinhquanganh.com",
+    "link": "https://maytinhquanganh.com/sp/new-full-box-macbook-air-13-m4-2025-10cpu-8gpu-16gb-ram-256gb-ssd-13-6inch-retina-25k-storage/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmaytinhquanganh.com%2Fwp-content%2Fuploads%2F2025%2F09%2Fz6975552035121_5f65b746eecaa781181bd3508c172889.jpg&tbnid=hPDtnw2gt9DSHM&imgrefurl=https%3A%2F%2Fmaytinhquanganh.com%2Fsp%2Fnew-full-box-macbook-air-13-m4-2025-10cpu-8gpu-16gb-ram-256gb-ssd-13-6inch-retina-25k-storage%2F&docid=5nptCkiXhaxHSM&w=1200&h=1200",
+    "position": 6
+   },
+   {
+    "title": "MacBook Air M4 13 inch 2025 10CPU 8GPU 16GB 256GB Sạc 70W | Giá rẻ, trả góp  0%",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/m/a/macbook_11_1_2.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNYKiF-VPjsk-aHBXCqOOE9X6CQkcJECfPleiyAnnVVw&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/apple-macbook-air-13-m4-10cpu-8gpu-16gb-256gb-2025-sac-70w.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fm%2Fa%2Fmacbook_11_1_2.png&tbnid=ON4QWHN16B2y7M&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fapple-macbook-air-13-m4-10cpu-8gpu-16gb-256gb-2025-sac-70w.html&docid=I9OWSRbGnyE9fM&w=358&h=358",
+    "position": 7
+   },
+   {
+    "title": "Macbook Air 13'6 inch 2025 M4 -10CPU / 8GPU / Ram 16Gb / 256Gb Likenew",
+    "imageUrl": "https://bizweb.dktcdn.net/thumb/1024x1024/100/444/581/products/1-ebfc3af4-8545-4ae4-89f7-4b2354b80e51-06e07325-992b-4008-a9b7-19798024721b.png?v=1764748642890",
+    "imageWidth": 640,
+    "imageHeight": 640,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtaSgmgBO45qdqpb7jHlioLCQaH-y3oUECDuyzLSLF-g&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Macshop24h",
+    "domain": "macshop24h.vn",
+    "link": "https://macshop24h.vn/macbook-air-13-6-inch-2025-m4-10cpu-8gpu-ram-16gb-256gb-likenew?srsltid=AU7gw4UDuF__U0WWWBZ5w0sBM7r5D-nawepqXjzGD_jhJdpllKNAay2n",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbizweb.dktcdn.net%2Fthumb%2F1024x1024%2F100%2F444%2F581%2Fproducts%2F1-ebfc3af4-8545-4ae4-89f7-4b2354b80e51-06e07325-992b-4008-a9b7-19798024721b.png%3Fv%3D1764748642890&tbnid=zt3qF1nWMK9MsM&imgrefurl=https%3A%2F%2Fmacshop24h.vn%2Fmacbook-air-13-6-inch-2025-m4-10cpu-8gpu-ram-16gb-256gb-likenew%3Fsrsltid%3DAU7gw4UDuF__U0WWWBZ5w0sBM7r5D-nawepqXjzGD_jhJdpllKNAay2n&docid=gALRCIqdpMd-UM&w=640&h=640",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

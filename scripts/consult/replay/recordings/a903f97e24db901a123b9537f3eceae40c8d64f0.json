@@ -1,0 +1,48 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Taiyo Hotel & Apartment\" Đà Nẵng site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:32:13.797Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Taiyo Hotel & Apartment\" Đà Nẵng site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Taiyo Hotel & Apartment - Giá cả và Ưu đãi 2026, Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-117491646/taiyo-hotel-apartment/",
+    "snippet": "Taiyo Hotel & Apartment. 44-46-48 An Thượng 31, Phường Ngũ Hành Sơn, Thành phố Đà Nẵng, Việt Nam, Ngũ Hành Sơn, Đà NẵngXem Bản Đồ ... Đà NẵngSea Vibe Boutique ...",
+    "position": 1
+   },
+   {
+    "title": "Taiyo Hotel & Apartment - Xem 100 Ảnh & Đánh giá",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-117491646/taiyo-hotel-apartment/photo.html",
+    "snippet": "Khám phá 100 ảnh của Taiyo Hotel & Apartment, bao gồm phòng ốc, tiện nghi, cơ sở vật chất và khu vực xung quanh. Sử dụng hình ảnh khách sạn thực tế để hiểu ...",
+    "position": 2
+   },
+   {
+    "title": "Các khách sạn nổi tiếng ở gần Chợ đêm Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/da-nang-danang-night-market/hotels-c1356m23136554/",
+    "snippet": "Taiyo Hotel & Apartment Các khách sạn gần Chợ đêm Đà Nẵng. Taiyo Hotel & Apartment. Bãi biển Mỹ Khê, Đà Nẵng | Cách Chợ đêm Đà Nẵng 0.13KM. 9,5/10. Đáng Kinh ...",
+    "position": 3
+   },
+   {
+    "title": "Khách sạn được đề xuất tại Bãi biển Mỹ Khê, Đà Nẵng ...",
+    "link": "https://vn.trip.com/hotels/da-nang-hotels-list-1356/zone112214482/",
+    "snippet": "Taiyo Hotel & Apartment. 9,5/10Đáng Kinh Ngạc. Tài khoản khách“We have already stayed at this hotel 5–6 times, each time for about 3–5 nights. If possible, I ...",
+    "position": 4
+   }
+  ],
+  "credits": 1
+ }
+}

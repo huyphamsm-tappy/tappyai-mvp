@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:mof.gov.vn \"cấp hộ chiếu\" \"lệ phí\" 2025",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:34:20.394Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:mof.gov.vn \"cấp hộ chiếu\" \"lệ phí\" 2025",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cổng thông tin điện tử Bộ Tài Chính",
+    "link": "https://www.mof.gov.vn/bo-tai-chinh/dong-gop-y-kien-du-thao-van-ban/du-thao-thong-tu-quy-dinh-muc-thu-che-do-thu-nop-phi-le-phi-trong-linh-vuc-xuat-canh-nhap-canh-qua-canh-cu-tru-tai-viet-nam-lan-2",
+    "snippet": "... lệ phí trong lĩnh vực xuất cảnh, nhập cảnh, quá cảnh, cư trú tại Việt Nam ... cấp hộ chiếu đối với: Người Việt Nam ở nước ngoài có quyết định trục xuất ...",
+    "position": 1
+   },
+   {
+    "title": "Hàng loạt phí, lệ phí được miễn, giảm cho công dân số đến ...",
+    "link": "https://www.mof.gov.vn/cong-nghe-thong-tin-va-chuyen-doi-so/tin-tuc-su-kien-3/hang-loat-phi-le-phi-duoc-mien-giam-cho-cong-dan-so-den-het-thang-22027",
+    "snippet": "Theo đó, công dân được miễn lệ phí cấp hộ chiếu phổ thông trong nước. Các trường hợp cấp giấy thông hành cũng thuộc diện miễn, gồm giấy thông ...",
+    "date": "24 thg 8, 2026",
+    "position": 2
+   },
+   {
+    "title": "Hạnh phúc Số: 63/2023/TT-BTC Hà N",
+    "link": "https://vbpq.mof.gov.vn/DKC.FileManagement/FileStorage/File/179486",
+    "snippet": "Trường hợp công dân Việt Nam nộp hồ sơ đề nghị cấp hộ chiếu theo ... thu, nộp lệ phí cấp giấy phép hoạt động xây dựng, lệ phí cấp chứng chỉ.",
+    "date": "16 thg 10, 2023",
+    "position": 3
+   },
+   {
+    "title": "Hà Nội, ngày 34 thủng Ị^nảm 2025 Căn cứ Luật Quản lý thuế ...",
+    "link": "https://vbpq.mof.gov.vn/DKC.FileManagement/FileStorage/File/468129",
+    "snippet": "Đối với biên lai do cơ quan thu phí, lệ phí đặt in, tự in thì 02 ... Ngày cấp hộ chiếu (Date of issue)/Giíy tờ nhập xuẩt cảnh (Entry or ...",
+    "date": "5 thg 6, 2025",
+    "position": 4
+   },
+   {
+    "title": "Cổng thông tin điện tử Bộ Tài Chính",
+    "link": "https://www.mof.gov.vn/bo-tai-chinh/dong-gop-y-kien-du-thao-van-ban/du-thao-thong-tu-quy-dinh-che-do-cong-tac-phi-di-cong-tac-ngan-han-o-nuoc-ngoai-do-ngan-sach-nha-nuoc-bao-dam-kinh-phi",
+    "snippet": "e) Lệ phí thịthực, lệ phí cấp hộ chiếu.g) Tiền đóng góp tham gia (tham dự) hội nghị, hội thảo (bao gồm cả tiền mua tài liệu nếu có).h) Tiền ...",
+    "date": "28 thg 7, 2025",
+    "position": 5
+   },
+   {
+    "title": "phần ii. nội dung cụ thể của từng thủ tục hành chính",
+    "link": "https://vbpq.mof.gov.vn/DKC.FileManagement/FileStorage/File/499194",
+    "snippet": "- Đã nộp lệ phí đăng ký kinh doanh, trừ trường hợp được miễn lệ phí đăng ký ... cấp Hộ chiếu nước ngoài hoặc giấy tờ có giá trị thay thế hộ chiếu nước ...",
+    "position": 6
+   },
+   {
+    "title": "phần ii. nội dung cụ thể của từng thủ tục hành chính được",
+    "link": "https://vbpq.mof.gov.vn/DKC.FileManagement/FileStorage/File/611803",
+    "snippet": "d) Đã nộp lệ phí đăng ký kinh doanh, trừ trường hợp được miễn lệ phí đăng ký ... cấp Hộ chiếu nước ngoài hoặc giấy tờ có giá trị thay thế hộ chiếu nước ...",
+    "position": 7
+   },
+   {
+    "title": "55/2023/TT-BTC CỘNG HOÀ XÃ HỘI CHỦ NGHĨA ...",
+    "link": "https://vbpq.mof.gov.vn/DKC.FileManagement/FileStorage/File/179476",
+    "snippet": "+ Lệ phí cấp hộ chiếu, giấy thông hành, giấy phép xuất cảnh: mức chi thực hỉện theo quy định tại Thông tư số 25/2021/TT-BTC ngày 07 tháng 04 ...",
+    "date": "16 thg 8, 2023",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

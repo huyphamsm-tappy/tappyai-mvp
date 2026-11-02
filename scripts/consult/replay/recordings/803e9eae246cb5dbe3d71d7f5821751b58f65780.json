@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook Air site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:09:36.639Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Air site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Máy tính xách tay Apple MacBook Air 13.6 inch, M5, 16GB ...",
+    "link": "https://shopee.vn/M%C3%A1y-t%C3%ADnh-x%C3%A1ch-tay-Apple-MacBook-Air-13.6-inch-M5-16GB-ram-10-core-CPU-8-core-GPU-512GB-s%E1%BA%A1c-30W-i.88201679.56557772159",
+    "snippet": "Mua Máy tính xách tay Apple MacBook Air 13.6 inch, M5, 16GB ram, 10-core CPU, 8-core GPU, 512GB, sạc 30W giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.8,
+    "ratingCount": 85,
+    "position": 1
+   },
+   {
+    "title": "Máy tính xách tay Apple MacBook Air 13.6 inch, M4, 10- ...",
+    "link": "https://shopee.vn/M%C3%A1y-t%C3%ADnh-x%C3%A1ch-tay-Apple-MacBook-Air-13.6-inch-M4-10-core-CPU-10-core-GPU-16GB-512GB-SSD-s%E1%BA%A1c-35W-USB-C-i.88201679.28282845818",
+    "snippet": "Mua Máy tính xách tay Apple MacBook Air 13.6 inch, M4, 10-core CPU, 10-core GPU, 16GB, 512GB SSD, sạc 35W USB-C giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.8,
+    "ratingCount": 22,
+    "position": 2
+   },
+   {
+    "title": "Máy tính xách tay Apple MacBook Air 15 inch, M5, 16GB ...",
+    "link": "https://shopee.vn/M%C3%A1y-t%C3%ADnh-x%C3%A1ch-tay-Apple-MacBook-Air-15-inch-M5-16GB-ram-10-core-CPU-10-core-GPU-512GB-i.88201679.54758284069",
+    "snippet": "Mua Máy tính xách tay Apple MacBook Air 15 inch, M5, 16GB ram, 10-core CPU, 10-core GPU, 512GB giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.9,
+    "ratingCount": 18,
+    "position": 3
+   },
+   {
+    "title": "Túi đựng bảo vệ cho Macbook Air Pro Asus Acer 11.6\" / 13.3\" ...",
+    "link": "https://shopee.vn/S%E1%BA%B5n-VN-T%C3%BAi-%C4%91%E1%BB%B1ng-b%E1%BA%A3o-v%E1%BB%87-cho-Macbook-Air-Pro-Asus-Acer-11.6-13.3-14-14.6-Da-cao-c%E1%BA%A5p-nhi%E1%BB%81u-m%C3%A0u-Bao-Laptop-i.410243380.15456794533?extraParams=%7B%22display_model_id%22%3A125937127843%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "Mua Sẵn VN - Túi đựng bảo vệ cho Macbook Air Pro Asus Acer 11.6\" / 13.3\" / 14\" / 14.6\" Da cao cấp nhiều màu Bao Laptop giá tốt. Mua hàng qua mạng uy tín, ...",
+    "position": 4
+   },
+   {
+    "title": "Miếng Dán Macbook Mẫu Luxury - Đủ Dòng Cho Macbook Air",
+    "link": "https://shopee.vn/Mi%E1%BA%BFng-D%C3%A1n-Macbook-M%E1%BA%ABu-Luxury-%C4%90%E1%BB%A7-D%C3%B2ng-Cho-Macbook-Air-Macbook-Pro-i.721675047.21481046477",
+    "snippet": "Mua Miếng Dán Macbook Mẫu Luxury - Đủ Dòng Cho Macbook Air/ Macbook Pro giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "position": 5
+   },
+   {
+    "title": "Phủ phím macbook air, pro. Lót bàn ...",
+    "link": "https://shopee.vn/Ph%E1%BB%A7-ph%C3%ADm-macbook-air-pro.-L%C3%B3t-b%C3%A0n-ph%C3%ADm-macbook-ch%E1%BB%91ng-b%E1%BB%A5i-b%E1%BA%A9n-ch%E1%BB%91ng-n%C6%B0%E1%BB%9Bc-b%E1%BA%A3o-v%E1%BB%87-b%C3%A0n-ph%C3%ADm-PM02-i.193661567.3837819328",
+    "snippet": "Mua Phủ phím macbook air, pro. Lót bàn phím macbook chống bụi bẩn, chống nước, bảo vệ bàn phím - PM02 giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.9,
+    "ratingCount": 33,
+    "position": 6
+   },
+   {
+    "title": "Ốp Lưng Đỉnh Vàng Cho Macbook Air M5 M4 M3 M2 M1 Pro 13 ...",
+    "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-%C4%90%E1%BB%89nh-V%C3%A0ng-Cho-Macbook-Air-M5-M4-M3-M2-M1-Pro-13-14-15-16-inch-NEO-2026-V%E1%BB%8F-Laptop-B%E1%BA%A3o-V%E1%BB%87-V%E1%BB%8F-C%E1%BB%A9ng-i.586918470.49816248781",
+    "snippet": "Mua Ốp Lưng Đỉnh Vàng Cho Macbook Air M5 M4 M3 M2 M1 Pro 13 14 15 16 inch NEO 2026 Vỏ Laptop Bảo Vệ Vỏ Cứng giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 7
+   },
+   {
+    "title": "Laptop Mới Nửa / Toàn Thân Da Cho 2025 Macbook Air 13 ...",
+    "link": "https://shopee.vn/Laptop-M%E1%BB%9Bi-N%E1%BB%ADa-To%C3%A0n-Th%C3%A2n-Da-Cho-2025-Macbook-Air-13-15-inch-M4-M3-M2-B%E1%BA%A7u-Tr%E1%BB%9Di-Xanh-N%E1%BB%ADa-%C4%90%C3%AAm-Kh%C3%B4ng-Gian-X%C3%A1m-B%E1%BA%A1c-Mi%E1%BA%BFng-D%C3%A1n-Ch%E1%BB%91ng-Tr%E1%BA%A7y-X%C6%B0%E1%BB%9Bc-i.586918470.24992913365",
+    "snippet": "Laptop Mới Nửa / Toàn Thân Da Cho 2025 Macbook Air 13 15 inch M4 M3 M2 Bầu Trời Xanh / Nửa Đêm / Không Gian Xám / Bạc Miếng Dán Chống Trầy Xước.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Samsung Inverter 236 lít RT22M4032BU/SV\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:03:10.207Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Samsung Inverter 236 lít RT22M4032BU/SV\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tủ Lạnh Samsung 236L 2020 (RT22M4032BU/SV) | Giá tốt",
+    "link": "https://cellphones.com.vn/tu-lanh-samsung-inverter-236-lit-rt22m4032bu-sv.html",
+    "snippet": "Tủ lạnh Samsung Inverter 236 lít RT22M4032BU/SV có dung tích thực 236 lít, sử dụng công nghệ làm lạnh vòm và Digital Inverter tiết kiệm điện hiệu quả. Tủ có ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

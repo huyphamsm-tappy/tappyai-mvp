@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "lệ phí cấp hộ chiếu trực tuyến 2026 Việt Nam 200.000 90% thông tư 2025",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:02:25.746Z",
+ "body": {
+  "searchParameters": {
+   "q": "lệ phí cấp hộ chiếu trực tuyến 2026 Việt Nam 200.000 90% thông tư 2025",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Applying for a Passport Online in 2026: Just a Few Clicks ...",
+    "link": "https://www.youtube.com/watch?v=URQ-DCcLfH8",
+    "snippet": "Làm hộ chiếu online 2026: Chỉ vài thao tác, nhận tại nhà Trong bối cảnh nhiều thủ tục hành chính được đẩy mạnh số hóa, việc đăng ký làm hộ ...",
+    "position": 1
+   },
+   {
+    "title": "Ai làm hộ chiếu trong năm 2026 nhớ kỹ những điều sau",
+    "link": "https://cafef.vn/ai-lam-ho-chieu-trong-nam-2026-nho-ky-nhung-dieu-sau-188260312090951702.chn",
+    "snippet": "Theo quy định nêu trên, đến hết ngày 31/12/2026, khi làm hộ chiếu (passport) người dân sẽ được giảm 50% mức thu lệ phí theo Thông tư số 25/2021/ ...",
+    "date": "12 thg 3, 2026",
+    "position": 2
+   },
+   {
+    "title": "Mức thu lệ phí cấp hộ chiếu, giấy thông hành, giấy phép xuất ...",
+    "link": "https://xaydungchinhsach.chinhphu.vn/muc-thu-le-phi-cap-ho-chieu-giay-thong-hanh-giay-phep-xuat-canh-tem-ab-119260401102312629.htm",
+    "snippet": "Lệ phí cấp hộ chiếu, giấy thông hành, giấy phép xuất cảnh, tem \"AB\" được quy định như sau: ; a. Cấp giấy phép xuất cảnh. 200.000 ; b. Cấp công hàm ...",
+    "date": "1 thg 4, 2026",
+    "position": 3
+   },
+   {
+    "title": "Lưu ý thời gian được giảm lệ phí hộ chiếu online",
+    "link": "https://laodong.vn/xa-hoi/luu-y-thoi-gian-duoc-giam-le-phi-ho-chieu-online-1280308.ldo",
+    "snippet": "Cấp giấy xác nhận yếu tố nhân sự: 100.000 đồng/lần. Hình thức trực tuyến. Đối với việc nộp hồ sơ đề nghị cấp hộ chiếu trực tuyến của công dân ...",
+    "date": "15 thg 12, 2023",
+    "position": 4
+   },
+   {
+    "title": "Từ 1/1/2026, bạn sẽ mất quyền lợi này nếu chưa làm hộ ...",
+    "link": "https://cafef.vn/tu-1-1-2026-ban-se-mat-quyen-loi-nay-neu-chua-lam-ho-chieu-188251223210128572.chn",
+    "snippet": "Tuy nhiên, kể từ ngày 01/01/2026, toàn bộ lệ phí cấp hộ chiếu sẽ quay trở lại mức thu ban đầu theo Thông tư 25/2021/TT-BTC. Điều này đồng nghĩa ...",
+    "date": "23 thg 12, 2025",
+    "position": 5
+   },
+   {
+    "title": "Quy định mới về thu phí, lệ phí xuất nhập cảnh",
+    "link": "https://www.facebook.com/qlxnctphcm/posts/quy-%C4%91%E1%BB%8Bnh-m%E1%BB%9Bi-v%E1%BB%81-thu-ph%C3%AD-l%E1%BB%87-ph%C3%AD-xu%E1%BA%A5t-nh%E1%BA%ADp-c%E1%BA%A3nh-th%C3%B4ng-t%C6%B0-n%C3%A0y-quy-%C4%91%E1%BB%8Bnh-ng%C6%B0%E1%BB%9Di-n%E1%BB%99p-ph/972685138608157/",
+    "snippet": "✨️Cấp lại hộ chiếu (do bị hỏng hoặc mất): 400.000 đồng/lần cấp. ✨️Giấy thông hành biên giới Việt Nam - Campuchia: 50.000 đồng/lần cấp. ✨️ ...",
+    "position": 6
+   },
+   {
+    "title": "Biểu phí và lệ phí | Đại sứ quán Việt Nam tại Hoa Kỳ",
+    "link": "https://vietnamembassy-usa.org/vi/basic-page/bieu-phi-va-le-phi",
+    "snippet": "Biểu phí và lệ phí · 1. Thông tư 113 của Bộ Tài chính · 2. Thông tư 264 của Bộ Tài chính · 3. Nội Quy tiếp nhận và Trả kết quả Hồ sơ.",
+    "position": 7
+   },
+   {
+    "title": "Từ 15/8/2026, miễn lệ phí cấp hộ chiếu phổ thông trong ...",
+    "link": "https://luatvietnam.vn/tin-van-ban-moi/mien-le-phi-cap-ho-chieu-pho-thong-trong-nuoc-cho-nguoi-co-vneid-muc-2-186-111583-article.html",
+    "snippet": "Từ 15/8/2026, miễn lệ phí cấp hộ chiếu phổ thông trong nước cho người có VNeID mức 2 · Ngày 14/8/2026, Bộ Tài chính ban hành Thông tư 117/2026/TT ...",
+    "date": "18 thg 8, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

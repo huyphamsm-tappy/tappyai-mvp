@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Dream Kids Vạn Hạnh Mall\" OR \"DONNA Kidsplay Cafe | Khu vui chơi quanh đây | Khu vui chơi trẻ em quận 8 | Quán cafe có khu vui chơi cho bé\" OR \"Khu Vui chơi Trẻ em\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T09:50:29.385Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Dream Kids Vạn Hạnh Mall\" OR \"DONNA Kidsplay Cafe | Khu vui chơi quanh đây | Khu vui chơi trẻ em quận 8 | Quán cafe có khu vui chơi cho bé\" OR \"Khu Vui chơi Trẻ em\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Dream Kids Sư Vạn Hạnh | Ho Chi Minh City",
+    "link": "https://www.facebook.com/dreamkidsvietnam/?locale=vi_VN",
+    "snippet": "... DREAM KIDS VẠN HẠNH MALL Tầng B, TTTM Vạn Hạnh Mall, Số 11, Sư Vạn Hạnh, Phường Hòa Hưng, TPHCM. ☎ LIÊN HỆ ĐỂ ỨNG TUYỂN Zalo 077.761.0034 (Uri Lê) · Có thể ...",
+    "rating": 4.2,
+    "ratingCount": 42,
+    "position": 1
+   },
+   {
+    "title": "Khu vui chơi trẻ em mới 2026 : r/sixflagsgreatamerica",
+    "link": "https://www.reddit.com/r/sixflagsgreatamerica/comments/1lrm8sc/new_kids_area_2026/?tl=vi",
+    "snippet": "Có thông báo rằng một khu vui chơi trẻ em mới sẽ ra mắt vào năm 2026. Bạn có ý tưởng nào về địa điểm không? Họ có làm lại khu Camp Cartoon ...",
+    "position": 2
+   },
+   {
+    "title": "Khu vui chơi trẻ em Wonder Kids Tickets [2026]",
+    "link": "https://www.trip.com/travel-guide/attraction/da-nang/khu-vui-chi-tr-em-wonder-kids-146664714/",
+    "snippet": "1. SOHO Buffet & Alacarte, 839m from Khu vui chơi trẻ em Wonder Kids · 2. The Golden Dragon, 803m from Khu vui chơi trẻ em Wonder Kids · 3. Orange Hotel ...",
+    "position": 3
+   },
+   {
+    "title": "30 khu vui chơi trẻ em vui chơi thả ga, an toàn tại TPHCM",
+    "link": "https://zalopay.vn/khu-vui-choi-tre-em-6119",
+    "snippet": "30 khu vui chơi trẻ em trong nhà và ngoài trời: Jump Arena, Thảo Cầm Viên, Snow Town, Happy Kids, Family Garden, Nông Trại Ong Vàng, ...",
+    "date": "29 thg 9, 2025",
+    "position": 4
+   },
+   {
+    "title": "Khu Vui Chơi Trẻ Em HAPPY KIDS Đ/c: Số 17, Đ. ...",
+    "link": "https://www.facebook.com/hungthinh.ho.5454/videos/khu-vui-ch%C6%A1i-tr%E1%BA%BB-em-happy-kids%C4%91c-s%E1%BB%91-17-%C4%91-ph%C3%A2n-khu-nam-kdc-%C4%91%E1%BB%93ng-t%C3%A2m-p6-t%C3%A2n-an-k%E1%BA%BF-/985563820794700/",
+    "snippet": "Với hơn là hai mươi gian hàng trò chơi đa dạng cho các bé nè. Từ các trò chơi trí tuệ cho tới là vận động. Giúp cho bé nhà mình tự do chạy nhảy, ...",
+    "position": 5
+   },
+   {
+    "title": "Ba mẹ checklist ngay 5 quán cafe đẹp có khu vui chơi trẻ em",
+    "link": "https://homecaresausinh.com/quan-cafe-dep-co-khu-vui-choi-tre-em/",
+    "snippet": "Babiland Kidsplay and Cafe gây chú ý nhờ mô hình vui chơi kết hợp cafe với diện tích khu vui chơi được giới thiệu hơn 500 m². Không gian được thiết kế theo ...",
+    "position": 6
+   },
+   {
+    "title": "Khu Vui Chơi Trẻ Em | Emerald Bay Hotel & Spa Nha Trang",
+    "link": "https://www.emeraldbayhotelnhatrang.com/vi/tien-ich/khu-vui-choi-tre-em/",
+    "snippet": "Khu vui chơi trẻ em. Thời gian hoạt động: 08:00 AM - 09:30 PM. Khu vui chơi trẻ em nằm tại tầng 28, ngay cạnh phòng GYM, giúp bố mẹ dễ dàng quan sát con trẻ ...",
+    "position": 7
+   },
+   {
+    "title": "Khu vui chơi trẻ em tiNiWorld",
+    "link": "https://tiniworld.com/",
+    "snippet": "Cầu trượt xuyên tầng: Trượt siêu dài, cực đã tại khu vui chơi tiNiWorld. Nhà banh: Nhảy vào nhà banh tại khu vui chơi tiNiWorld! Biển bóng rực.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

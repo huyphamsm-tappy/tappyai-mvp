@@ -16,11 +16,17 @@
 // alert as `scope`). Counting is by credits AS BILLED (`SERPER_CREDITS`), added BEFORE the call
 // so a burst cannot slip past the ceiling between the read and the write.
 
-import { recordSerperCall, SERPER_CREDITS, type SerperEndpoint } from './serperMeter'
+import { recordSerperCall, recordSerperOutcome, recordSerperRefused, SERPER_COST, SERPER_CREDITS, type SerperEndpoint } from './serperMeter'
 import { sanitizeSerperJson } from './serperUntrusted'
 import { incrDailyCounter } from '@/lib/security/kvCounter'
+import { reserveSpend, SERPER_MIN_USD_PER_CREDIT, SpendRefusal, type SpendHandle } from '@/lib/ai/budget/spendGate'
+import { reserveRequest } from './serperRequestCap'
+import { serperUsdPerCredit } from '@/lib/ai/turnCost'
 import { vnToday } from '@/lib/config/product'
-import { admitWithinToolBudget } from './serperToolBudget'
+import {
+  admitWithinToolBudget, currentSerperSignal, haltSerperScope, releaseToolBudget, serperHaltedReason,
+  markTurnWebTicketSent, noteTurnWebTicketDenied, peekTurnWebTicket, refundTurnWebTicket, takeTurnWebTicket, turnWebTicketOn, type TicketEntry,
+} from './serperToolBudget'
 
 export const SERPER_CEILING_KEY = 'serper:credits'
 const DEFAULT_CEILING = 15_000
@@ -60,7 +66,8 @@ export async function serperAdmit(endpoint: SerperEndpoint, env: NodeJS.ProcessE
   const credits = SERPER_CREDITS[endpoint]
   // Bounded agent: the per-tool-invocation cap (serperToolBudget.ts) — inert outside an agent tool call.
   if (!admitWithinToolBudget(credits)) {
-    console.log(JSON.stringify({ type: 'tappyai_serper_tool_budget', endpoint, refused: true }))
+    console.log(JSON.stringify({ type: 'tappyai_serper_tool_budget', endpoint, refused: true, credits, ...(serperHaltedReason() ? { halted: serperHaltedReason() } : {}) }))
+    recordSerperRefused(endpoint)
     return false
   }
   const { count, scope } = await incrDailyCounter(SERPER_CEILING_KEY, credits, env)
@@ -73,6 +80,9 @@ export async function serperAdmit(endpoint: SerperEndpoint, env: NodeJS.ProcessE
     console.error(JSON.stringify({ type: 'tappyai_alert', alert: 'serper_ceiling_store_down', note: 'counting per instance until the store answers; per-instance outage ceiling applies', count, ceiling, dailyCeiling: serperDailyCeiling(env) }))
   }
   if (count > ceiling) {
+    // Reserved on the turn / tool scope above but never sent: nothing can be billed, so the reservation goes back.
+    releaseToolBudget(credits)
+    recordSerperRefused(endpoint)
     if (alerted.ceiling !== today) {
       alerted.ceiling = today
       console.error(JSON.stringify({ type: 'tappyai_alert', alert: 'serper_daily_ceiling', endpoint, count, ceiling, scope, action: 'refusing further Serper calls today' }))
@@ -90,27 +100,195 @@ export async function serperAdmit(endpoint: SerperEndpoint, env: NodeJS.ProcessE
 export function __resetSerperAlerts(): void { alerted.warn = ''; alerted.ceiling = ''; alerted.storeDown = '' }
 
 /**
+ * What a REJECTED request was, kept apart in the ledger: our own time limit (`timeout`), a cancellation (`aborted`), anything else that
+ * stopped it before an answer (`network_error`: DNS, reset, `fetch failed`). The credit estimate does not depend on this label.
+ */
+export function classifyThrown(e: unknown): 'timeout' | 'aborted' | 'network_error' {
+  if (e instanceof Error) {
+    if (e.name === 'AbortError') return 'aborted'
+    if (e.message === 'timeout') return 'timeout'
+    if (/abort/i.test(e.message)) return 'aborted'
+  }
+  return 'network_error'
+}
+
+/** How a serperPost request ended (SENT = fetch was called). `ticket_denied` = a W request refused because the turn's web ticket is spent: nothing was sent. */
+export type SerperPostState = 'not_sent' | 'ticket_denied' | 'sent_error' | 'sent_ok'
+export interface SerperPostOpts {
+  /** 'W' = web research that shares the turn's one-request ticket (TURN_WEB_TICKET). Absent = a vertical's own request: not limited by it. */
+  purpose?: 'W'
+  /** Called once per request with how it ended; `entry` is the ticket entry when a ticket was taken. Reporting only: it never changes the request. */
+  report?: (state: SerperPostState, entry?: TicketEntry) => void
+}
+
+/** The request parameters the observed credit figures (serperMeter SERPER_COST) were taken with. Anything else may change what a request costs. */
+const BOUNDED_PARAMS: ReadonlySet<string> = new Set(['q', 'gl', 'hl', 'll', 'num'])
+/** The largest `num` the credit figures cover: /search 1 credit up to 10 results; /shopping 2 credits (owner's Activity Log, Num=40); /maps takes none. */
+const MAX_NUM: Partial<Record<SerperEndpoint, number>> = { search: 10, shopping: 40 }
+
+/**
+ * BENCH_SPEND_GATE: the most USD one request can cost, or null when that cannot be bounded from what was observed — then the gate refuses it
+ * (reason `no_bound`) and the caller gives back what it held. Null for an endpoint whose credits are only 'unverified' (images), for a request
+ * parameter outside BOUNDED_PARAMS (page, autocorrect, tbs, type, location…), and for a `num` above what the credit figures cover.
+ */
+export function serperSpendBoundUsd(endpoint: SerperEndpoint, body: Record<string, unknown>, perCredit: number): number | null {
+  if (SERPER_COST[endpoint].basis !== 'activity_log') return null
+  for (const k of Object.keys(body)) if (!BOUNDED_PARAMS.has(k)) return null
+  if ('num' in body) {
+    const max = MAX_NUM[endpoint]
+    const n = body.num
+    if (max === undefined || typeof n !== 'number' || !Number.isInteger(n) || n < 1 || n > max) return null
+  }
+  return SERPER_CREDITS[endpoint] * perCredit
+}
+
+/** When the provider last refused a request at ACCOUNT level (401 / 402 / 403 / credits). Read by the one-brain turn (route.ts) so the model is told that a
+ *  lookup FAILED rather than came back empty (measured 28/10: a revoked key answered 403 on every endpoint and the replies said "no reliable result"). */
+let lastAccountErrorAt = 0
+export function serperLastAccountErrorAt(): number { return lastAccountErrorAt }
+export function __resetSerperAccountError(): void { lastAccountErrorAt = 0 }
+
+/**
  * One Serper request. `null` when refused by the ceiling; otherwise the Response (a timeout
  * rejects, exactly as the inlined `Promise.race` did at every call site before).
  */
-export async function serperPost(endpoint: SerperEndpoint, apiKey: string, body: Record<string, unknown>, timeoutMs: number): Promise<Response | null> {
-  if (!(await serperAdmit(endpoint))) return null
+export async function serperPost(endpoint: SerperEndpoint, apiKey: string, body: Record<string, unknown>, timeoutMs: number, opts?: SerperPostOpts): Promise<Response | null> {
+  const report = (s: SerperPostState, e?: TicketEntry) => { try { opts?.report?.(s, e) } catch { /* reporting only */ } }
+  // TURN_WEB_TICKET (default OFF, read now): only a W request is limited, and only inside a ticket scope.
+  const gated = opts?.purpose === 'W' && turnWebTicketOn()
+  // Phase 8 runtime: a cancelled tool invocation sends nothing more (no credit spent) and its in-flight request is aborted.
+  const signal = currentSerperSignal()
+  if (signal?.aborted) { console.log(JSON.stringify({ type: 'tappyai_serper_cancelled', endpoint, at: 'before_admit' })); recordSerperRefused(endpoint); report('not_sent'); return null }
+  // A spent ticket stops the request BEFORE any credit is reserved (peek only; the ticket itself is taken just before fetch, below).
+  if (gated && peekTurnWebTicket() === 'exhausted') {
+    console.log(JSON.stringify({ type: 'tappyai_web_ticket', step: 'denied', endpoint, at: 'before_admit' }))
+    noteTurnWebTicketDenied(`serper:${endpoint}`)
+    report('ticket_denied')
+    return null
+  }
+  // REQUEST CAP (CONSULT_REQUEST_CAP, default OFF → a no-op, read now): ONE request is reserved on the turn (L1) and the bench run (L2), synchronously,
+  // before the first await — so parallel requests cannot all pass a check before any of them counts. Fail-closed (serperRequestCap.ts). Each later
+  // refusal below that proves the request was NOT sent gives the reservation back (serperAdmit, ticket after admit, spend gate, cancelled before send,
+  // body not built); a sent request (even a timed-out one) never does. A throw from serperAdmit itself (documented as never) is not covered: it would
+  // over-count, which is the safe direction.
+  const cap = reserveRequest(endpoint)
+  if (!cap.ok) { recordSerperRefused(endpoint); report('not_sent'); return null }
+  if (!(await serperAdmit(endpoint))) { cap.release(); report('not_sent'); return null }
+  // The ticket is taken here, in one synchronous step, right before the request is sent (never before a cache hit or a single-flight join:
+  // only the leader of a flight ever reaches this line).
+  let entry: TicketEntry | undefined
+  if (gated) {
+    const t = takeTurnWebTicket(`serper:${endpoint}`)
+    if (t === 'exhausted') {
+      // Another W request took the last ticket while this one waited on the daily counter: nothing is sent, so the credits reserved above go
+      // back — on the turn / tool scope AND on the shared daily counter (it was added before the call; this request provably never left).
+      releaseToolBudget(SERPER_CREDITS[endpoint])
+      cap.release()
+      try { await incrDailyCounter(SERPER_CEILING_KEY, -SERPER_CREDITS[endpoint]) } catch { /* the counter only ever over-counts then */ }
+      recordSerperRefused(endpoint)
+      console.log(JSON.stringify({ type: 'tappyai_web_ticket', step: 'denied', endpoint, at: 'after_admit' }))
+      report('ticket_denied')
+      return null
+    }
+    if (t) entry = t
+  }
+  // BENCH_SPEND_GATE (default OFF, read now): the request's worst-case cost (credits × price per credit) is reserved HERE, the last check before
+  // the request can leave. A request that cannot be bounded (`images` is "unverified"; a parameter or `num` the credit figures do not cover) has
+  // no cost to reserve and is refused (`no_bound`). A refusal gives back exactly what the steps above held: the ticket (refunded — it was never
+  // sent), the scope credits and the daily-counter credits.
+  const perCredit = Math.max(serperUsdPerCredit(), SERPER_MIN_USD_PER_CREDIT)
+  let spend: SpendHandle | null = null
+  // The detail (the body's real `num`, the query, W/V) goes ONLY to the gate the benchmark injected: with the flag OFF reserveSpend returns before it looks at it.
+  const detail = { endpoint, ...(typeof body.num === 'number' ? { num: body.num } : {}), ...(typeof body.q === 'string' ? { q: body.q } : {}), purpose: opts?.purpose === 'W' ? 'W' as const : 'V' as const }
+  try { spend = reserveSpend(`serper:${endpoint}`, serperSpendBoundUsd(endpoint, body, perCredit), detail) } catch (e) {
+    if (!(e instanceof SpendRefusal)) { cap.release(); throw e } // an unexpected throw before the send: nothing was sent, so the reservation goes back
+    if (entry) refundTurnWebTicket(entry)
+    releaseToolBudget(SERPER_CREDITS[endpoint])
+    cap.release()
+    try { await incrDailyCounter(SERPER_CEILING_KEY, -SERPER_CREDITS[endpoint]) } catch { /* the counter only ever over-counts then */ }
+    recordSerperRefused(endpoint)
+    console.log(JSON.stringify({ type: 'tappyai_spend_gate', step: 'refused', endpoint, reason: e.reason }))
+    report('not_sent')
+    return null
+  }
+  let spendDone = false
+  const settleSpend = (reportedCredits: number) => { if (!spend || spendDone) return; spendDone = true; spend.settle(reportedCredits * perCredit, { credits: reportedCredits }) }
+  // Wave 4 fix (E18, Owner option A): a request that was SENT but whose charge the provider did not state (a timeout or network error after the send, an HTTP error,
+  // a 200 without `credits`, an unreadable 200) is settled at the RESERVED worst case - the endpoint's fixed credits × the price per credit, which is the most this
+  // one request can cost - instead of "unknown" (which stopped the whole benchmark run on one slow Serper answer). Over-counts, never under-counts; the caps still apply.
+  // Only with BENCH_SPEND_GATE on (no handle otherwise: nothing below runs and nothing is logged). A model call's unknown cost is untouched (meteredModel.ts).
+  const assumeWorstCase = (why: 'thrown_after_send' | 'http_error' | 'no_credits' | 'unreadable_body') => {
+    if (!spend || spendDone) return
+    spendDone = true
+    spend.settle(spend.reservation.maxUsd)
+    console.log(JSON.stringify({ type: 'tappyai_serper_spend', endpoint, assumed: 'worst_case', why, usd: spend.reservation.maxUsd }))
+  }
+  const unknownSpend = () => assumeWorstCase('no_credits')
+  if (signal?.aborted) {
+    // Reserved, never sent — the one case where a reservation may be given back (and a ticket with it).
+    if (entry) refundTurnWebTicket(entry)
+    if (spend) { spendDone = true; spend.release() }
+    releaseToolBudget(SERPER_CREDITS[endpoint])
+    cap.release()
+    recordSerperRefused(endpoint)
+    console.log(JSON.stringify({ type: 'tappyai_serper_cancelled', endpoint, at: 'before_send' }))
+    report('not_sent')
+    return null
+  }
+  // From here on the request is SENT: a timeout / abort below does NOT release the reservation (the provider may have processed it).
   recordSerperCall(endpoint)
-  const res = await Promise.race([
-    fetch(`https://google.serper.dev/${endpoint}`, {
+  let res: Response
+  let fetched = false
+  try {
+    const init = {
       method: 'POST',
       headers: { 'X-API-KEY': apiKey, 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
-    }),
-    new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), timeoutMs)),
-  ])
+      ...(signal ? { signal } : {}),
+    }
+    // SENT = the next line calls fetch. Until the outcome is known the ticket entry is `sent_error` (never refundable).
+    fetched = true
+    if (entry) markTurnWebTicketSent(entry)
+    res = await Promise.race([
+      fetch(`https://google.serper.dev/${endpoint}`, init),
+      new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), timeoutMs)),
+    ])
+  } catch (e) {
+    recordSerperOutcome(endpoint, classifyThrown(e))
+    if (fetched) { assumeWorstCase('thrown_after_send'); report('sent_error', entry) } // sent: what was billed is not stated - counted at the reserved worst case
+    else { if (entry) refundTurnWebTicket(entry); if (spend && !spendDone) { spendDone = true; spend.release() }; cap.release(); report('not_sent') } // the body could not even be built: fetch was never called
+    throw e
+  }
+  if (!res.ok) {
+    assumeWorstCase('http_error') // sent, refused or failed by the provider: not provably unbilled - counted at the reserved worst case
+    report('sent_error', entry)
+    // 🚨 An ACCOUNT-level failure (out of credits, bad key, forbidden) is the same answer for every further request of the turn:
+    // halt the scope so the parallel requests that have not started yet are never sent (only inside a turn / tool scope).
+    let account: string | null = null
+    if (res.status === 401 || res.status === 402 || res.status === 403) account = `http_${res.status}`
+    else if (res.status === 400) {
+      try { if (/credit/i.test(await res.clone().text())) account = 'http_400_credits' } catch { /* classification only */ }
+    }
+    recordSerperOutcome(endpoint, account ? 'account_error' : 'http_error')
+    if (account) { lastAccountErrorAt = Date.now(); haltSerperScope(account) }
+    return res
+  }
+  report('sent_ok', entry)
   // Search data is untrusted (owner 30/09): URLs and planted instructions leave its free-text fields before any tool
   // reads them — always, not only under CONSULT_LUNA (serperUntrusted.ts). An unchanged answer is returned as is.
-  if (!res.ok) return res
+  let recorded = false
   try {
-    const cleaned = sanitizeSerperJson(await res.clone().json())
+    const raw = await res.clone().json()
+    // The provider states what it charged for this response (`credits`) — recorded beside the estimate, never used as a refund.
+    recorded = true
+    const reportedCredits = typeof (raw as { credits?: unknown })?.credits === 'number' ? (raw as { credits: number }).credits : undefined
+    recordSerperOutcome(endpoint, 'ok', reportedCredits)
+    // What the provider says it charged; above the reservation → the gate stops the run. An answer that does not say what it charged is counted at the
+    // reserved worst case (an endpoint without a bound, `images`, is never reserved at all: the gate refuses it before the send).
+    if (reportedCredits === undefined) unknownSpend(); else settleSpend(reportedCredits)
+    const cleaned = sanitizeSerperJson(raw)
     if (cleaned.changed === 0) return res
     console.log(JSON.stringify({ type: 'tappyai_serper_untrusted_cleaned', endpoint, fields: cleaned.changed }))
     return new Response(JSON.stringify(cleaned.body), { status: res.status, headers: { 'content-type': 'application/json' } })
-  } catch { return res }
+  } catch { if (!recorded) recordSerperOutcome(endpoint, 'ok'); assumeWorstCase('unreadable_body'); return res } // an unreadable 200 was processed: counted at the reserved worst case
 }

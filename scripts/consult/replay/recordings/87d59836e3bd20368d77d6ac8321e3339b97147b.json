@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Tiệm cà phê Cư Xá 30\" quan 3 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:59:58.944Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Tiệm cà phê Cư Xá 30\" quan 3 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tiệm Cà Phê Cư Xá 30 (@cuxa.30)",
+    "link": "https://www.tiktok.com/@cuxa.30",
+    "snippet": "Tiệm Cà Phê Cư Xá 30 · @cuxa.30 · IG:@tiemcaphecuxa30 FB:TiệmCàPhêCưXá30 Xá Nhiệm: 30/1F Ngô Thời Nhiệm,Q.3 Xá Thanh: 74/34 Thạch Thị Thanh, Q1 🕰️ 7:30-22: ...",
+    "position": 1
+   },
+   {
+    "title": "Random morning at Lô B 🌿☕️ 📍Tiệm Cà Phê Cư Xá 30",
+    "link": "https://www.tiktok.com/@cuxa.30/video/7686370545201368327",
+    "snippet": "Random morning at Lô B ☕️ Tiệm Cà Phê Cư Xá 30 - CN2: 74/34 Thạch Thị Thanh Phường Tân Định Quận 1 ⏰ Giờ mở cửa: 7:30AM - 10:00PM ...",
+    "position": 2
+   },
+   {
+    "title": "Tiệm Cà Phê Cư Xá 30 Quận 3",
+    "link": "https://www.tiktok.com/discover/ti%E1%BB%87m-c%C3%A0-ph%C3%AA-c%C6%B0-x%C3%A1-30-qu%E1%BA%ADn-3",
+    "snippet": "Chốn hoài niệm về một tiệm cà phê Sài Gòn xưa… TIỆM CÀ PHÊ CƯ XÁ 30 7:30 - 22:30. Menu ~30 cá #caphecuxa30 ...",
+    "date": "21 thg 9, 2026",
+    "position": 3
+   },
+   {
+    "title": "Tiệm Cà Phê Cư Xá 30: Quán cafe cũ kỹ ở Sài Gòn",
+    "link": "https://www.tiktok.com/@trungthao252/photo/7664573945068260629",
+    "snippet": "Khám phá Tiệm Cà Phê Cư Xá 30, một quán cafe nhỏ, cũ kỹ đầy chất riêng tại hẻm 74/34 Thạch Thị Thanh, Tân Định, Quận 1, TP.HCM. Keywords: Tiệm ...",
+    "position": 4
+   },
+   {
+    "title": "Hiếm hoi cuối tuần thời tiết êm dịu để đi cà phê chill ...",
+    "link": "https://www.tiktok.com/@cuxa.30/video/7687110033657695506",
+    "snippet": "... Tiệm Cà Phê Cư Xá 30 - CN1: 30/1F Ngô Thời Nhiệm Phường Võ Thị Sáu Quận 3 ⏰ Giờ mở cửa: 7:30AM - 10:00PM #TiemCaPheCuXa30 #CuXa30 ...",
+    "position": 5
+   },
+   {
+    "title": "tiemcafecuxa30",
+    "link": "https://www.tiktok.com/tag/tiemcafecuxa30",
+    "snippet": "Tiệm Cà Phê Cư Xá 30. Đi cà phê hong? ☕️ . Tiệm Cà Phê Cư Xá 30: 30/1F Ngô Thời Nhiệm Phường Võ Thị Sáu Quận 3 ⏰ Giờ mở cửa: 7:30AM ...",
+    "position": 6
+   },
+   {
+    "title": "Trải Nghiệm Cà Phê Tuyệt Vời Tại Tiệm Cà Phê Cư Xá 30",
+    "link": "https://www.tiktok.com/@phtrquanh/photo/7550598403059764498",
+    "snippet": "Tiệm Cà Phê Cư Xá 30, 30/1F Ngô Thời Nhiệm, Quận 3 #phtrqanh #saigon #coffee #review #quan3 ... Khám phá tiệm cà phê Cư Xá 30 ở Quận 3 với không ...",
+    "position": 7
+   },
+   {
+    "title": "caphecuxa30",
+    "link": "https://www.tiktok.com/tag/caphecuxa30",
+    "snippet": "Tiệm Cà Phê Cư Xá 30. Đi cà phê hong? ☕️ . Tiệm Cà Phê Cư Xá 30: 30/1F Ngô Thời Nhiệm Phường Võ Thị Sáu Quận 3 ⏰ Giờ mở cửa: 7:30AM ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

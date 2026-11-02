@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Chụp Tai PG580 Wireless - Tai Nghe Gaming Không Dây ,Âm Thanh 360o Sống Động,Chống Ồn, Led RGB 7 Chế Độ,Pin 70h site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:03:25.290Z",
+ "body": {
+  "searchParameters": {
+   "q": "Chụp Tai PG580 Wireless - Tai Nghe Gaming Không Dây ,Âm Thanh 360o Sống Động,Chống Ồn, Led RGB 7 Chế Độ,Pin 70h site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

@@ -1,0 +1,55 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "Hoff Coffee Brewers by BeanHop chỗ đậu ô tô Quận 1 Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:10:49.363Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hoff Coffee Brewers by BeanHop chỗ đậu ô tô Quận 1 Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7771605,106.6975799,18.0536z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Hoff Coffee Brewers by BeanHop",
+    "address": "42bis Lý Tự Trọng, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.777160499999999,
+    "longitude": 106.70015479999999,
+    "rating": 4.8,
+    "ratingCount": 361,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "phoneNumber": "+84 989 984 506",
+    "openingHours": {
+     "Thứ Năm": "07:30–21:00",
+     "Thứ Sáu": "07:30–21:00",
+     "Thứ Bảy": "07:30–21:00",
+     "Chủ Nhật": "07:30–21:00",
+     "Thứ Hai": "07:30–21:00",
+     "Thứ Ba": "07:30–21:00",
+     "Thứ Tư": "07:30–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn8YbBS2_yrCakvK_423qtgR52z_EQeFdZ4JT4tvBn0EZ8OozFLSgAyMT8P4H6vHedw9rvlIlPiWzcKe1DJIEY3O7B3e0UC-6dccKgY6D1FEnfM0jxU9rXoMZrxa22H4NxoRZgf9KXSRqXS",
+    "cid": "2382170101620030993",
+    "fid": "0x31752fae900322dd:0x210f2b160d9e3e11",
+    "placeId": "ChIJ3SIDkK4vdTERET6eDRYrDyE"
+   }
+  ],
+  "credits": 3
+ }
+}

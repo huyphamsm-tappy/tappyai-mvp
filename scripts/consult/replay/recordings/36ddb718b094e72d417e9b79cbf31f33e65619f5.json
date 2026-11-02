@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Xóm Chợ Cũ Restaurant\" OR \"Quán Bụi\" OR \"NHÀ HÀNG NGON\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:37:30.593Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Xóm Chợ Cũ Restaurant\" OR \"Quán Bụi\" OR \"NHÀ HÀNG NGON\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quán Bụi Group (@quanbui_group)",
+    "link": "https://www.tiktok.com/@quanbui_group",
+    "snippet": "Những cảm nhận khách quan, chi tiết từ khách luôn là điều Quán Bụi trân · Bữa cơm tối chuẩn vị Việt tại Quán Bụi central #quanbuigroup #vietnamesefood # ...",
+    "position": 1
+   },
+   {
+    "title": "Khám Phá Quán Bụi: Hương Vị Cơm Nhà Việt Nam",
+    "link": "https://www.tiktok.com/@nguyencongnuongw_/video/7535335656923335944",
+    "snippet": "Khám Phá Quán Bụi: Hương Vị Cơm Nhà Việt Nam. Trải nghiệm ẩm thực Việt Nam tại Quán Bụi, nơi mang đậm hương vị cơm nhà. Đừng bỏ lỡ! #review ...",
+    "position": 2
+   },
+   {
+    "title": "Combo ăn sáng Việt tại Quán Bụi Sài Gòn chỉ 99k++",
+    "link": "https://www.tiktok.com/@quanbui_group/video/7303400928680447250",
+    "snippet": "Quán Bụi Sài Gòn ăn sáng ngon 99k, combo ăn sáng Việt tại Quán Bụi, không gian thoải mái Quán Bụi, thực đơn ăn sáng tại Quán Bụi, địa điểm ...",
+    "position": 3
+   },
+   {
+    "title": "Một đám cưới nhỏ xinh tại Quán Bụi Garden 3, nơi từng ...",
+    "link": "https://www.tiktok.com/@quanbui_group/video/7594683262455319828",
+    "snippet": "Một đám cưới nhỏ xinh tại Quán Bụi Garden 3, nơi từng bữa ăn, từng khoảnh khắc đều đủ đầy yêu thương. #vietnameserestaurant #amthuc #wedding # ...",
+    "position": 4
+   },
+   {
+    "title": "QUÁN BỤI & STIICKY THAI Toàn món ăn ngon! #quanbui ...",
+    "link": "https://www.tiktok.com/@diancungneenha/video/7676785732567977236",
+    "snippet": "3157 Lượt thích,29 Bình luận.Video TikTok từ Đi ăn cùng Nee nha ￼ (@diancungneenha): \"QUÁN BỤI & STIICKY THAI Toàn món ăn ngon!",
+    "position": 5
+   },
+   {
+    "title": "Phong cách quán bụi bặm vỉa hè chill nhất",
+    "link": "https://www.tiktok.com/@tuannuocep1996/video/7603231109345807636",
+    "snippet": "Phong cách quán bụi bặm vỉa hè chill nhất. Khám phá phong cách quán vỉa hè với thức uống thú vị. Chịu không? #xuhuongtiktok #nuocepnguyenchat ...",
+    "position": 6
+   },
+   {
+    "title": "Quán Bụi Heritage: Món Ngon Đậm Phong Cách Việt Nam",
+    "link": "https://www.tiktok.com/@htvtintuc/video/7674865991259622677",
+    "snippet": "Quán Bụi Heritage giới thiệu set menu đặc biệt nhân dịp kỷ niệm 15 năm hoạt động, mang đến những trải nghiệm ẩm thực độc đáo đậm phong cách Việt Nam.",
+    "position": 7
+   },
+   {
+    "title": "Nhà Hàng Ngon: Trải Nghiệm Ẩm Thực Tại TP.HCM",
+    "link": "https://www.tiktok.com/@anchimihe/video/7121950658047135019",
+    "snippet": "Nhà Hàng Ngon | 160 Pasteur, Bến Nghé, Quận 1, Thành phố Hồ Chí Minh ... Nhà Hàng Ngon: Trải Nghiệm Ẩm Thực Tại TP.HCM. Khám phá Nhà ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

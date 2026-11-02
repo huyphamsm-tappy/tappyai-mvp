@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook Air M1 256GB 2020 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:09:03.253Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Air M1 256GB 2020 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "MacBook Air 2020 13.3 inch M1- Hàng Chính Hãng",
+    "link": "https://www.lazada.vn/products/pdp-i1040858590.html?srsltid=AU7gw4UwZNn9P9hthQWpKPTeHgIojAXk11J4QGOVCwkih8Bw6lm9W7Or",
+    "snippet": "Chip M1 tạo ra một cú nhảy vọt về hiệu năng máy học, CPU và GPU Tăng thời gian sử dụng với thời lượng pin lên đến 18 giờ1 CPU 8 lõi cho hiệu năng nhanh hơn ...",
+    "position": 1
+   },
+   {
+    "title": "MacBook Air 2020 13.3 inch M1- Hàng Chính Hãng",
+    "link": "https://www.lazada.vn/products/macbook-air-2020-133-inch-m1-hang-chinh-hang-i1040858590.html?srsltid=AU7gw4XItcHdsvpisuU2RCHlAZOJUURkHEZWz-M6QQfX-KG1r9fm041f",
+    "snippet": "Thông số. Thương hiệu,Loạt thẻ đồ họa,Loại bộ xử lý ; Trả góp. Trả góp trong 6 tháng, chỉ với 2.998.333 ₫ mỗi tháng. ; Giao hàng. Thành phố Hồ Chí Minh, Phường ...",
+    "position": 2
+   },
+   {
+    "title": "Ốp LAUT HUEX For MacBook Air 13-inches (2019-2020-M1) ...",
+    "link": "https://www.lazada.vn/products/p-laut-huex-for-macbook-air-13inches-20192020m1--phn-phi-chnh-hng-i2125125156.html?srsltid=AU7gw4U4_XYw8wiBXMsc7vywtNwwgsjmaMSgZchACEa0yIVyRkTatW4Z",
+    "snippet": "Ốp LAUT HUEX For MacBook Air 13-inches (2019-2020-M1) · Chống trầy xước, siêu bền đẹp · HUEX For Macbook Air có trọng lượng siêu nhẹ · Lớp phủ cao su bóng mượt, ...",
+    "position": 3
+   },
+   {
+    "title": "Miếng Dán PPF Bảo Vệ Màn Hình Macbook Air M1",
+    "link": "https://www.lazada.vn/products/mieng-dan-ppf-bao-ve-man-hinh-macbook-air-m1-i2306569984.html?srsltid=AU7gw4Vt7UGGNMPkN8ZuzRnx0oLv8cK9iCcQgkzC5_gbCPoqPDHZvghf",
+    "snippet": "Miếng dán PPF bảo vệ màn hình Macbook Air M1 có những ưu điểm như sau: Giúp bảo vệ bề mặt thiết bị như màn hình không bị trầy ...",
+    "position": 4
+   },
+   {
+    "title": "Máy tính xách tay Apple MacBook Neo 13 inch",
+    "link": "https://www.lazada.vn/products/may-tinh-xach-tay-apple-macbook-neo-13-inch-hang-chinh-hang-i13335434012.html?srsltid=AU7gw4XuLcRG3kzO-TOvZb6bE2WsQixtgPmHOe5DjHt57-rfRcIW1ZOy",
+    "snippet": "Máy tính xách tay Apple MacBook Air 13 inch M5 - Hàng Chính Hãng. 35.999.000 ₫. MacBook Air 2020 13.3 inch M1- Hàng Chính Hãng. 28.990.000 ₫. Máy tính bảng ...",
+    "rating": 5,
+    "ratingCount": 9,
+    "position": 5
+   },
+   {
+    "title": "For MacBook Air/Pro 2025 Máy tính xách tay bảo vệ phim ...",
+    "link": "https://www.lazada.vn/products/for-macbook-airpro-2025-may-tinh-xach-tay-bao-ve-phim-stickercho-m4m3m2m1a3240a2681a2337a2941a3241a3112a2338chong-tray-xuocchong-dau-van-taykhong-can-catmay-tinh-xach-tay-skin-i3133878000.html?srsltid=AU7gw4X6OxM1EoHSjSdlgTTtEq5TL4KTT6PGdCQ8PuKVO1q6u0usjoWH",
+    "snippet": "Đặc điểm nổi bật · Phù hợp cho: · Macbook Air 13.6【 A3240】 M4 · Macbook Air 13.6【 A2681/A3113】 M2/M3 · Macbook Air 13.3【 A2179/A2337】 M1 · Macbook Air 15.3【 ...",
+    "rating": 4.1,
+    "ratingCount": 9,
+    "position": 6
+   },
+   {
+    "title": "Laptop Apple Macbook Neo A18 PRO 8GB 256GB SSD",
+    "link": "https://www.lazada.vn/products/laptop-apple-macbook-neo-a18-pro-8gb-256gb-ssd-hang-chinh-hang-i13381128377-s116970112873.html?srsltid=AU7gw4UBwrGW0A8yIKH5eGNUVXTknMO7M_pd0tuc4f6Vylqb-XzlV73Z",
+    "snippet": "Với 8GB RAM unified, MacBook Neo tối ưu khả năng xử lý đa nhiệm, giúp chuyển đổi ứng dụng mượt mà và tiết kiệm năng lượng. Đi kèm tùy chọn lưu trữ:.",
+    "position": 7
+   },
+   {
+    "title": "Phụ kiện Apple USB-C TO LIGHTNING CABLE (1 M) Chính ...",
+    "link": "https://www.lazada.vn/products/phu-kien-apple-usb-c-to-lightning-cable-1-m-chinh-hang-fea-viettel-store-i1836597961.html?srsltid=AU7gw4XnJxLR7XaXGyxNiR-WFp21QODk7A-euygYVLd57hdAwxaq0JxC",
+    "snippet": "Các dòng máy Mac tương thích với cáp sạc: • MacBook Air (M2, 2022), MacBook Air (M1, 2020), MacBook Air ...",
+    "rating": 4.9,
+    "ratingCount": 48,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

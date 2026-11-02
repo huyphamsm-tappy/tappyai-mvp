@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "iPhone 15 vs Samsung Galaxy S24 so sánh giá gia Shopee Tiki Lazada",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T01:57:32.848Z",
+ "body": {
+  "searchParameters": {
+   "q": "iPhone 15 vs Samsung Galaxy S24 so sánh giá gia Shopee Tiki Lazada",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "So sánh iPhone 15 và Galaxy S24: thích nhỏ gọn thì chọn máy ...",
+    "link": "https://www.youtube.com/watch?v=iSVTqjQmTI4",
+    "snippet": "So sánh iPhone 15 và Galaxy S24: thích nhỏ gọn thì chọn máy nào? Sắm iPhone, iPad, Samsung & Xiaomi MỚI chính hãng GIÁ TỐT tại #OneWay nè ...",
+    "position": 1
+   },
+   {
+    "title": "So sánh iPhone 15 Pro Max vs Galaxy S24 Ultra",
+    "link": "https://www.youtube.com/watch?v=-bYfFLJjSFM",
+    "snippet": "So sánh iPhone 15 Pro Max vs Galaxy S24 Ultra : MỨC GIÁ QUYẾT ĐỊNH! - Tham khảo 15 Pro Max giá tốt tại Oneway: ...",
+    "position": 2
+   },
+   {
+    "title": "So sánh iPhone 15 Pro Max vs Galaxy S24 Ultra, cùng hơn 30 ...",
+    "link": "https://www.tiktok.com/@duyyy.real.channel/video/7326892496548678914",
+    "snippet": "iphone đc cái giữ giá lâu. còn SS rớt giá nhanh lắm. 2024-1-22Trả lời.",
+    "position": 3
+   },
+   {
+    "title": "So sánh Samsung Galaxy S24 và iPhone 15",
+    "link": "https://www.chotot.com/kinh-nghiem/so-sanh-samsung-galaxy-s24-va-iphone-15.html",
+    "snippet": "Bảng so sánh thông số iPhone 15 và Samsung S24 ; Tiêu chí, iPhone 15, Samsung Galaxy S24 ; Kích thước màn hình, 6.1 inch, 6.2 inch ; Công nghệ tấm nền, Super ...",
+    "position": 4
+   },
+   {
+    "title": "So sánh Samsung Galaxy S24 và iPhone 15 Pro",
+    "link": "https://viettelstore.vn/tin-tuc/so-sanh-samsung-galaxy-s24-va-iphone-15-pro?srsltid=AU7gw4WETP5rmjfoykiulw6-V-yr2FyizSdFJizznpUxMrNOQldyhvFv",
+    "snippet": "Trong khi đó Galaxy S24 được đồn đoán sử dụng màn hình 6.1 inch, tấm nền Dynamic AMOLED 2X, độ phân giải full HD+ và cũng hỗ trợ tần số quét ...",
+    "date": "19 thg 12, 2023",
+    "position": 5
+   },
+   {
+    "title": "Galaxy S24 Ultra tiếp tục giảm giá, rẻ hơn cả iPhone 15 Plus!",
+    "link": "https://www.youtube.com/watch?v=Ow2PO8I93jc",
+    "snippet": "Galaxy S24 Ultra : https://clickbuy.com.vn/samsung-galaxy-s24 ... Go to channel Dương Dê · So sánh iPhone 15 Pro Max vs Galaxy S24 Ultra : MỨC GIÁ ...",
+    "position": 6
+   },
+   {
+    "title": "【So sánh】 iPhone 15 Pro Max vs Samsung Galaxy S24 Ultra",
+    "link": "https://clickbuy.com.vn/so-sanh-iphone-15-pro-max-2025-vs-15-pro-14-pro-max-16-pro-max-s24-ultra.html?srsltid=AU7gw4XTDUiUxAZqGABMdjHwaA_cBRy0QN-CvTBdtVufTKxLQwpgyDRa",
+    "snippet": "【So sánh chi tiết】iPhone 15 Pro Max với iPhone 15 Pro, 14 Pro Max, 16 Pro Max và Samsung S24 Ultra. 4 bảng so sánh + 25 FAQ. Cập nhật giá ...",
+    "date": "29 thg 12, 2025",
+    "position": 7
+   },
+   {
+    "title": "So sánh Samsung Galaxy S24 và iPhone 15",
+    "link": "https://didongviet.vn/dchannel/so-sanh-samsung-galaxy-s24-va-iphone-15/",
+    "snippet": "So sánh iPhone 15 và Samsung Galaxy S24 về giá bán khởi điểm: Samsung Galaxy S24 256GB: 22.990.000 đồng; Samsung Galaxy S24 512GB: 26.490.000 ...",
+    "date": "26 thg 1, 2024",
+    "rating": 3.7,
+    "ratingCount": 3,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

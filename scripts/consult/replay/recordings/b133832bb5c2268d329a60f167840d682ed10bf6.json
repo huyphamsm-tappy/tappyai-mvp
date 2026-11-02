@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "giờ tham quan phố cổ Hội An nên đi buổi sáng chiều lưu ý vé",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:12:37.982Z",
+ "body": {
+  "searchParameters": {
+   "q": "giờ tham quan phố cổ Hội An nên đi buổi sáng chiều lưu ý vé",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Phố cổ hội an thì nên đi ban ngày hay buổi tối hả mọi người",
+    "link": "https://www.facebook.com/groups/2292208260990538/posts/2730039320540761/",
+    "snippet": "Phố cổ hội an thì nên đi ban ngày hay buổi tối hả mọi người · Lavila Hội An. Nên buổi sáng thì đi sớm 6h , chiều tối 19h30. · ThanhLoan Phạm. Chụp ...",
+    "position": 1
+   },
+   {
+    "title": "Phố cổ Hội An: giá vé, giờ mở cửa, kinh nghiệm tham quan ...",
+    "link": "https://danangbest.com/pho-co-hoi-an-tinh-hoa-van-hoa-xu-quang.html",
+    "snippet": "Sáng sớm (7:00 – 9:00): Ánh sáng vàng ấm, ít khách du lịch, phù hợp chụp ảnh kiến trúc và khám phá các di tích. · Buổi chiều (16:00 – 18:00): ...",
+    "date": "18 thg 7, 2026",
+    "position": 2
+   },
+   {
+    "title": "Lịch Trình Đi Phố Cổ Hội An Chi Tiết Cho Người Đi Lần Đầu",
+    "link": "https://vuivivudanang.vn/blogs/tin-tuc-hoi-an/lich-trinh-di-pho-co-hoi-an-chi-tiet-cho-nguoi-di-lan-dau",
+    "snippet": "Nếu buổi chiều Hội An mang vẻ đẹp yên bình thì buổi tối lại trở nên rực rỡ và sống động. Đây cũng là thời điểm mà nhiều du khách yêu thích nhất ...",
+    "date": "7 thg 6, 2026",
+    "position": 3
+   },
+   {
+    "title": "Thời điểm lý tưởng nhất để tham quan Phố cổ Hội An vào ...",
+    "link": "https://danangtohoian.com/vi/thoi-diem-ly-tuong-nhat-de-tham-quan-pho-co-hoi-an-vao-mua-he/",
+    "snippet": "Thời điểm lý tưởng nhất để tham quan Phố cổ Hội An vào mùa hè năm 2026 · Thời điểm tốt nhất trong ngày6:00–10:00 sáng · và 4:30–10:00 tối (chiều muộn + tối).",
+    "position": 4
+   },
+   {
+    "title": "Có nên dành một ngày để khám phá phố cổ Hội An?",
+    "link": "https://tourdulichgiare.com.vn/co-nen-danh-mot-ngay-de-kham-pha-pho-co-hoi-an/",
+    "snippet": "Vì thực chất, Hội An chỉ là một địa điểm tham quan, chủ yếu là đi bộ nhiều. Thường thì khách sẽ chọn đi vào buổi sáng, hoặc đi vào buổi chiều chứ không phải đi ...",
+    "position": 5
+   },
+   {
+    "title": "DU LỊCH HỘI AN và Khám phá Phố Cổ tuyệt đẹp bình yên vào ...",
+    "link": "https://www.youtube.com/watch?v=UCDpvFt-w1k",
+    "snippet": "Nếu để nói Du lịch Phố cổ Hội An đẹp nhất vào lúc nào, thì câu trả lời của chúng tôi đó là vào lúc sáng sớm. Thời điểm khách du lịch chưa đổ ...",
+    "position": 6
+   },
+   {
+    "title": "Kinh nghiệm du lịch Hội An 1 ngày: Lịch trình chi tiết từ ...",
+    "link": "https://sovaba.travel/blog/bai-viet-kinh-nghiem-du-lich-hoi-an-1-ngay",
+    "snippet": "Sáng (7h-11h: Khám phá phố cổ và di sản). Bắt đầu bằng việc đến phố cổ Hội An (khoảng 45 phút từ Đà Nẵng). Tham quan Chùa Cầu – biểu tượng của Hội ...",
+    "position": 7
+   },
+   {
+    "title": "Đi Hội An giờ nào để chụp ảnh đẹp và tránh đông người?",
+    "link": "https://www.facebook.com/groups/112342708883282/posts/24774307122260165/",
+    "snippet": "Nên đi từ 6h30 - 8h30 Đây là khung giờ vàng vì các hàng quán vẫn chưa mở cửa, rất vắng khách du lịch, các bạn có thể thoải mái chụp ảnh mà không ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

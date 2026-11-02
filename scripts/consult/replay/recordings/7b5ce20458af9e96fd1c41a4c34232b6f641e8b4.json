@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Samsung Galaxy S24 FE 5G 8GB 128GB site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:02:20.937Z",
+ "body": {
+  "searchParameters": {
+   "q": "Samsung Galaxy S24 FE 5G 8GB 128GB site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "galaxys25fe ซูม - TikTok Shop Vietnam",
+    "link": "https://shop.tiktok.com/vn/k/galaxys25fe-sum",
+    "snippet": "Samsung Galaxy S25 FE 5G 8GB 128GB. 0 sold. ₫16.690.000. [Nhận vân tay] Kính cường lực cho ...",
+    "position": 1
+   },
+   {
+    "title": "samsung s25fe 5g",
+    "link": "https://shop.tiktok.com/vn/k/samsung-s25fe-5g",
+    "snippet": "Samsung Galaxy S25 FE 8GB/128GB chính hãnġ. 24 sold. ₫16.690.000. Điện thoại Samsung Galaxy S25 Ultra 5G 12GB 512GB.",
+    "position": 2
+   },
+   {
+    "title": "Điện thoại Samsung Galaxy S24 Ultra 12GB/512GB",
+    "link": "https://shop.tiktok.com/vn/pdp/samsung-galaxy-s24-ultra-12gb-512gb-thiet-ke-titan-ai/1729923372020828487",
+    "snippet": "- Galaxy S24 Ultra được nâng cấp với chất liệu Titanium chỉ sử dụng cho khung thiết bị. Khung không bao gồm phím âm lượng và phím phụ. - Galaxy S24 Ultra được ...",
+    "position": 3
+   },
+   {
+    "title": "olympus fe fe 25",
+    "link": "https://shop.tiktok.com/vn/k/olympus-fe-fe-25",
+    "snippet": "Samsung Galaxy S25 FE 8GB/128GB chính hãnġ. 26 sold. ₫13.790.000. ₫16.690.000 ...",
+    "position": 4
+   },
+   {
+    "title": "op lung samsung a56 giong iphone 17",
+    "link": "https://shop.tiktok.com/vn/k/op-lung-samsung-a56-giong-iphone-17",
+    "snippet": "Vị trí lỗ chính xác,Ốp điện thoại mờ, cho Samsung Galaxy A57 A56 A37 A36 A26 A55 A54 A16 A25 A35 S25 S26 Ultra. 4.7. 3939 sold. ₫134.750. ₫245.000 ...",
+    "position": 5
+   },
+   {
+    "title": "samsungs25fe ซูม - TikTok Shop Vietnam",
+    "link": "https://shop.tiktok.com/vn/k/samsungs25fe-sum",
+    "snippet": "Samsung Galaxy S25 FE 5G 8GB 128GB. Free shipping. Samsung Galaxy S25 FE 5G 8GB 128GB. 0 sold. ₫16.690.000. Samsung Galaxy S25 ...",
+    "position": 6
+   },
+   {
+    "title": "ban phim samsung tab s10 lite",
+    "link": "https://shop.tiktok.com/vn/k/ban-phim-samsung-tab-s10-lite",
+    "snippet": "Free shipping. Máy tính bảng Samsung Galaxy Tab S10 FE Wifi 128GB. 4.9. 200 sold. ₫11.630.500. ₫13.690.000. Máy ...",
+    "position": 7
+   },
+   {
+    "title": "[Live] Điện Thoại Xiaomi Redmi 15 6/128GB Bản Quốc Tế",
+    "link": "https://shop.tiktok.com/vn/pdp/xiaomi-redmi-15-6-128gb-man-hinh-6-9-inch-chip-snapdragon-685-camera-50mp-bao-hanh-18-thang/1732270876743403483",
+    "snippet": "Độ rõ nét của ống kính: sản phẩm đẹp chụp ảnh rõ nét ra ảnh màu sắc tươi sáng bắt mắt thu hút Chất lượng hoàn thiện: chất lượng đẹp máy cầm chắc tay dùng ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

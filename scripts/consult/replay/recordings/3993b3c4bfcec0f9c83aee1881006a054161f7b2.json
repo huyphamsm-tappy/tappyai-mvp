@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Pizza 4P's giá món menu TP.HCM gia menu thuc don",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:11:43.156Z",
+ "body": {
+  "searchParameters": {
+   "q": "Pizza 4P's giá món menu TP.HCM gia menu thuc don",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Menu",
+    "link": "https://pizza4ps.com/vn/menu/",
+    "snippet": "Menu ; Spicy Garlic Shrimp Pizza. 274,000 vnd ; Burrata Parma Ham. 298,000 vnd ; Extra Parma Ham Margherita. 331,000 vnd ; Milano Salami & Chorizo Margherita Pizza.",
+    "position": 1
+   },
+   {
+    "title": "Menu",
+    "link": "https://pizza4ps.com/vn/menu/?lang=vietnamese",
+    "snippet": "Menu ; Các loại phô mai nhà làm (S). 114,000 vnd ; Các loại phô mai nhà làm (L). 208,000 vnd ; Set thịt nguội và phô mai (Nhỏ). 181,000 vnd ; Set thịt nguội và phô ...",
+    "position": 2
+   },
+   {
+    "title": "[SEASONAL MENU - THỰC ĐƠN THEO MÙA] TASTE THE ...",
+    "link": "https://www.facebook.com/Pizza4Ps/posts/seasonal-menu-th%E1%BB%B1c-%C4%91%C6%A1n-theo-m%C3%B9ataste-the-difference-tr%E1%BA%A3i-nghi%E1%BB%87m-h%C6%B0%C6%A1ng-v%E1%BB%8B-kh%C3%A1c-bi/1071749431662475/",
+    "snippet": "Pizza 4P's mời bạn ghé thăm hai chi nhánh Xuân Thuỷ và Hai Bà Trưng (TP. HCM) để trải nghiệm thực đơn đặc biệt với năm món ăn độc đáo, nơi ...",
+    "position": 3
+   },
+   {
+    "title": "PIZZA 4P'S MENU | AEON MALL Tân Phú Celadon",
+    "link": "https://aeonmall-tanphuceladon-en.com/bo-suu-tap/thuc-don-pizza-4p-s",
+    "snippet": "Không chỉ làm nên thương hiệu bởi những chiếc pizza “xịn sò”, Pizza 4P's còn nổi đình đám bởi các món ăn kèm: salad, mì Ý, các loại soup khai vị.",
+    "position": 4
+   },
+   {
+    "title": "Pizza 4P's Vincom: Menu, Bảng Giá và Khuyến Mãi Mới Nhất",
+    "link": "https://vincom.com.vn/brand/pizza-4ps",
+    "snippet": "Không chỉ làm nên thương hiệu bởi những chiếc pizza “xịn sò”, Pizza 4P's còn nổi đình đám bởi các món ăn kèm: salad, mì Ý, các loại soup khai vị.",
+    "position": 5
+   },
+   {
+    "title": "4p's pizza địa điểm hẹn hò sang-rẻ cho lễ 2/9",
+    "link": "https://www.lemon8-app.com/@datdidaudoo/7273313675824628225?region=vn",
+    "snippet": "Tổng hợp các món ăn và đồ uống đa dạng tại 4P's Pizza, bao gồm pizza hai vị, salad, mỳ ý, và set thịt nguội phô mai, tạo không gian hẹn hò sang ...",
+    "position": 6
+   },
+   {
+    "title": "Pizza 4P's Grand Menu Overview | PDF",
+    "link": "https://www.scribd.com/document/781332890/Pizza4Ps-Grand-Menu",
+    "snippet": "Pizza 4P's Grand Menu 1. Pizza 4P's Grand Menu 2. Pizza 4P's Grand Menu 3. Assorted House-made Cheese. Say Các loại phô mai nhà làm dairy nuts. 88,000 vnđ",
+    "position": 7
+   },
+   {
+    "title": "Pizza 4P's - Pizza Kiểu Nhật - Lê Thánh Tôn ở TP. HCM",
+    "link": "https://www.foody.vn/ho-chi-minh/pizza-4p-s-pizza-kieu-nhat-le-thanh-ton",
+    "snippet": "0707894444 ; Pizza 4P's - Pizza Kiểu Nhật -*** · 523 ; Pizza 4P's - Pizza Kiểu Nhật -*** · 464 ; Pizza 4P · 590 ; Ngon · 1k ; Pizza 4P's - Pizza Kiểu Nhật -*** · 2k ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

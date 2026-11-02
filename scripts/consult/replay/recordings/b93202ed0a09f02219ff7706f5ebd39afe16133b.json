@@ -1,0 +1,81 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple kiểm tra Mac Activation Lock Find My Mac serial number bảo hành MacBook cũ",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T09:54:48.330Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple kiểm tra Mac Activation Lock Find My Mac serial number bảo hành MacBook cũ",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tìm tên kiểu máy và số sê-ri của máy Mac",
+    "link": "https://support.apple.com/vi-vn/102767",
+    "snippet": "Từ menu Apple ở góc màn hình, hãy chọn Giới thiệu về máy Mac này. Cửa sổ mở ra sẽ hiển thị hình ảnh của máy Mac, theo sau là tên kiểu máy. Ví dụ dưới đây ...",
+    "position": 1
+   },
+   {
+    "title": "Kiểm tra xuất xứ MacBook: 5 Bước Chính Xác Trong 10 Phút",
+    "link": "https://macone.vn/tin-tuc/kiem-tra-xuat-xu-macbook/?srsltid=AU7gw4WWKxR6jWcSpb1vaxPa_1fdG1SxnX3MOXYEf3kjL5xWm6-HBGbJ",
+    "snippet": "Hướng dẫn kiểm tra xuất xứ MacBook chi tiết từng bước: check serial, verify chính hãng, phát hiện MDM Lock và iCloud Lock. Tránh mua phải máy dựng/fake.",
+    "position": 2
+   },
+   {
+    "title": "Xem phạm vi bảo hành – AppleCare & Bảo hành",
+    "link": "https://checkcoverage.apple.com/?locale=vi_VN",
+    "snippet": "Check your Apple warranty status. Enter a serial number to review your eligibility for support and extended coverage.",
+    "position": 3
+   },
+   {
+    "title": "3 Cách Check iCloud MacBook Chi Tiết 2025 - SoundHub",
+    "link": "https://soundhub.vn/3-cach-check-icloud-macbook-chi-tiet-2025/",
+    "snippet": "Lấy Serial Number hoặc IMEI của MacBook: Vào Apple Menu → About This Mac để xem. · Truy cập sickw.com. · Nhập số Serial/IMEI → nhấn Check. · Hệ ...",
+    "date": "15 thg 8, 2025",
+    "position": 4
+   },
+   {
+    "title": "MacBook bị khóa mật khẩu – Nguyên nhân và cách mở ...",
+    "link": "https://suamacbook.vn/macbook-bi-khoa-mat-khau-nguyen-nhan-va-cach-mo-hieu-qua/?srsltid=AU7gw4VdDACdSKFOcupZnijwqr1N9HeztIU8fgcvILRj4HW7uSO3T9iH",
+    "snippet": "+ Nếu MacBook có bật Find My, và chủ máy khóa từ xa, sẽ hiện thông báo “Activation Lock”, yêu cầu đăng nhập Apple ID. → Đây là dạng khóa bảo ...",
+    "date": "21 thg 10, 2025",
+    "position": 5
+   },
+   {
+    "title": "Top 4 cách check bảo hành Apple chính xác nhất hiện nay",
+    "link": "https://baohanhone.com/blogs/thu-thuat-cong-nghe/check-bao-hanh-apple?srsltid=AU7gw4VRjbFlLOTnxNlR935rOLeleg82_SDvGklQUD0JD6GWubeiOxJz",
+    "snippet": "Checkcoverage là một website chính thức của Apple hỗ trợ kiểm tra phạm vi bảo hành của các thiết bị như iPhone, iPad và Macbook. Các bước check ...",
+    "date": "21 thg 3, 2024",
+    "rating": 5,
+    "ratingCount": 456,
+    "position": 6
+   },
+   {
+    "title": "Cách Kiểm Tra Số Serial Number (S/N) Trên Sản Phẩm ...",
+    "link": "https://techcare.vn/thu-thuat-dien-thoai/cach-kiem-tra-so-serial-number-s-n-tren-san-pham-apple-chuan-chinh-xac-2026/?srsltid=AU7gw4WppTgtYQkfXolX-wbHBk-WbayZ1la44f-JvqAGbB5JCtjm2lR0",
+    "snippet": "Trong bài viết này, TechCare sẽ hướng dẫn cách kiểm tra số Serial Number (S/N) cho các sản phẩm Apple theo đúng công cụ chính thức, ...",
+    "date": "13 thg 7, 2026",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 7
+   },
+   {
+    "title": "Check serial MacBook chính xác để biết máy có chính hãng",
+    "link": "https://clickbuy.com.vn/check-serial-macbook.html?srsltid=AU7gw4UeuNIGxxErcKEbHXlH6a8OC42tGPLWBlRMZaSAhzOgNkgPduXf",
+    "snippet": "Check serial Macbook ngay trên thân máy · Tra cứu trong phần giới thiệu “About This Mac” · Xem mã serial từ tài khoản Apple ID đã đăng nhập · Check ...",
+    "date": "19 thg 7, 2025",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

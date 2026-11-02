@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vanban.chinhphu.vn lệ phí cấp hộ chiếu phổ thông thông tư 2",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:54:29.131Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vanban.chinhphu.vn lệ phí cấp hộ chiếu phổ thông thông tư 2",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Thông tư số 66/2009/TT-BTC của Bộ Tài chính",
+    "link": "https://vanban.chinhphu.vn/default.aspx?pageid=27160&docid=84925",
+    "snippet": "Thông tư này quy định đối với khoản lệ phí cấp hộ chiếu, thị thực và các loại giấy tờ cho người Việt Nam và người nước ngoài nhập cảnh, xuất cảnh, quá cảnh ...",
+    "position": 1
+   },
+   {
+    "title": "Thông tư số 97/2011/TT-BTC của Bộ Tài chính",
+    "link": "https://vanban.chinhphu.vn/default.aspx?pageid=27160&docid=151483",
+    "snippet": "“Mức thu lệ phí xuất nhập cảnh được quy định cụ thể tại Biểu mức thu lệ phí ban hành kèm theo Thông tư này, đơn vị tính là 01 quyển hộ chiếu, 01 thị thực, 01 ...",
+    "position": 2
+   },
+   {
+    "title": "Thông tư số 88/2007/TT-BTC của Bộ Tài chính",
+    "link": "https://vanban.chinhphu.vn/default.aspx?pageid=27160&docid=32620",
+    "snippet": "... Thông tư số 37/2003/TT-BTC ngày 24/4/2003 của Bộ Tài chính quy định chế độ thu, nộp và quản lý sử dụng lệ phí cấp hộ chiếu, thị thực và giấy tờ về nhập cảnh ...",
+    "position": 3
+   },
+   {
+    "title": "Thông tư liên tịch số 08/2009/TTLT/BCA-BNG của Bộ Công an ...",
+    "link": "https://vanban.chinhphu.vn/default.aspx?pageid=27160&docid=91760",
+    "snippet": "Thông tư liên tịch số 08/2009/TTLT/BCA-BNG của Bộ Công an, Bộ Ngoại giao: Hướng dẫn việc cấp hộ chiếu phổ thông và giấy thông hành ở nước ngoài theo Nghị ...",
+    "position": 4
+   },
+   {
+    "title": "Quyết định số 2135/QĐ-TTG của Thủ tướng Chính phủ",
+    "link": "https://vanban.chinhphu.vn/default.aspx?pageid=27160&docid=97874",
+    "snippet": "Quyết định số 2135/QĐ-TTG của Thủ tướng Chính phủ: Phê duyệt Đề án \"Sản xuất và phát hành hộ chiếu điện tử Việt Nam\"",
+    "date": "22 thg 11, 2010",
+    "position": 5
+   },
+   {
+    "title": "Số: 15/2012/TTLT-BLĐTBXH-BCA-BNG - Hệ thống văn bản",
+    "link": "https://vanban.chinhphu.vn/default.aspx?pageid=27160&docid=162694",
+    "snippet": "g) Thông báo về trình tự; mức lệ phí cấp, cấp lại giấy phép; số lượng giấy phép đã được cấp; các trường hợp giấy phép hết hiệu lực hoặc vô hiệu và các thông tin ...",
+    "position": 6
+   },
+   {
+    "title": "Thông tư số 102/2012/TT-BTC của Bộ Tài chính",
+    "link": "https://vanban.chinhphu.vn/?pageid=27160&docid=163560",
+    "snippet": "vii) Lệ phí visa, lệ phí cấp hộ chiếu: Thanh toán theo phiếu thu hợp pháp của cơ quan lãnh sự trong và ngoài nước;. viii) Tiền đóng góp tham gia (tham dự) hội ...",
+    "position": 7
+   },
+   {
+    "title": "Nghị định số 65/2012/NĐ-CP của Chính phủ - Hệ thống văn bản",
+    "link": "http://vanban.chinhphu.vn/portal/page/portal/chinhphu/hethongvanban?class_id=1&amp;_page=1&amp;mode=detail&amp;document_id=163509",
+    "snippet": "- Hộ chiếu ngoại giao, hộ chiếu công vụ có giá trị không quá 5 năm tính từ ngày cấp. Hộ chiếu ngoại giao, hộ chiếu công vụ còn giá trị dưới 6 tháng thì được gia ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

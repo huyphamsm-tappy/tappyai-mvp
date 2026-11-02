@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Bluetooth True Wireless SoundPeats T3 Pro site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:58:23.742Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bluetooth True Wireless SoundPeats T3 Pro site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe True Wireless SoundPEATS T3 Pro Chống Ồn ...",
+    "link": "https://shop.tiktok.com/vn/pdp/tai-nghe-true-wireless-soundpeats-t3-pro-bluetooth-5-4-anc-35db-7hbobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobobo/1732255766700526207",
+    "snippet": "Tai nghe chống ồn ở mức độ trung bình.khá có app kết nối Nói chung là cũng ổn trong tầm giá. Pin nghe liên tục tầm 4h nếu bật chống ồn âm lượng ở mức 70-80% ...",
+    "rating": 4.7,
+    "ratingCount": 167,
+    "position": 1
+   },
+   {
+    "title": "soundpeats t3 pro realdrum",
+    "link": "https://shop.tiktok.com/vn/k/soundpeats-t3-pro-realdrum",
+    "snippet": "Tai nghe True Wireless SoundPEATS T3 Pro Chống Ồn Chủ Động Bluetooth 5.4. 4.7. 1759 sold. ₫389.999. ₫690.000. Tai nghe True Wireless SoundPEATS T3 Pro Chống ...",
+    "position": 2
+   },
+   {
+    "title": "หูฟังบลูทูธ soundpeats t3",
+    "link": "https://shop.tiktok.com/vn/k/hufang-bluthuth-soundpeats-t3",
+    "snippet": "SoundPEATS H3 Siêu phẩm Tai nghe Bluetooth âm thanh đỉnh cao cho người yêu nhạc. Bảo hành 12 tháng, 1 đổi 1 30 ngày. 2 sold. ₫2.719.000. ₫3.289.000 ...",
+    "position": 3
+   },
+   {
+    "title": "app chính thức của tai nghe soundpeats t3 pro",
+    "link": "https://shop.tiktok.com/vn/k/app-chinh-thuc-cua-tai-nghe-soundpeats-t3-pro",
+    "snippet": "Tai nghe Bluetooth Air Pros5 chính hãng không dây với công nghệ giảm tiếng ồn ANC, dành cho iOS; hộp bảo vệ 4D làm quà tặng; sạc không dây; chơi game không ...",
+    "position": 4
+   },
+   {
+    "title": "soundpeats t3 pro สีขาว",
+    "link": "https://shop.tiktok.com/vn/k/soundpeats-t3-pro-si-khaw",
+    "snippet": "Audio Pro T3+ Nhập Khẩu Thụy Điển Loa Bluetooth Cao Cấp Thiết Kế Sang Trọng, Âm Thanh Cao Cấp, Pin 30 Giờ. Phù Hợp Nhiều Không Gian Sống.",
+    "position": 5
+   },
+   {
+    "title": "soundcore r50i nc soundpeats t3 pro",
+    "link": "https://shop.tiktok.com/vn/k/soundcore-r50i-nc-soundpeats-t3-pro",
+    "snippet": "soundcore r50i nc soundpeats t3 pro ; 4.9. 530 sold · 599.000. ₫749.000 ; 4.8. 2322 sold · 579.000. ₫899.000 ; 4.8. 582 sold · 579.000. ₫749.000 ...",
+    "position": 6
+   },
+   {
+    "title": "soundpeats ปรับเสียง t3 pro",
+    "link": "https://shop.tiktok.com/vn/k/soundpeats-prab-esiyng-t3-pro",
+    "snippet": "Tai nghe True Wireless SoundPEATS T3 Pro Chống Ồn Chủ Động Bluetooth 5.4. 4.7. 1752 sold. ₫389.999. ₫690.000. Tai nghe True Wireless SoundPEATS T3 Pro Chống ...",
+    "position": 7
+   },
+   {
+    "title": "tai nghe bluetooth true wireless soundpeats h3 ốp",
+    "link": "https://shop.tiktok.com/vn/k/tai-nghe-bluetooth-true-wireless-soundpeats-h3-op",
+    "snippet": "Tai Nghe Bluetooth AT A3 Âm Thanh Hay,Tặng Ốp , Cảm Ứng Chạm Kết Nối Với Mọi Dòng Máy -Earphone tai nghe không dây. 4.7. 4797 sold. ₫229.000. ₫350.000 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

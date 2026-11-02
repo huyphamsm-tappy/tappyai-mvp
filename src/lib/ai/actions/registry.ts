@@ -81,10 +81,23 @@ export const AI_TOOLS: readonly AiToolDescriptor[] = [
   { tool: 'search_products', effect: 'external_read', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
   { tool: 'web_search', effect: 'external_read', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
   { tool: 'get_weather', effect: 'external_read', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
+  // CONSULT_ONE_BRAIN only: daily forecast up to 10 days (Open-Meteo, no key, only the place name leaves the server)
+  { tool: 'get_weather_forecast', effect: 'external_read', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
+  // CONSULT_ONE_BRAIN only: the model hands its day-by-day plan to the plan card; nothing leaves the server, nothing is stored by the tool
+  { tool: 'present_plan', effect: 'deterministic', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
+  // CONSULT_ONE_BRAIN, mode Tự động only (01/11): the model turns thinking on for the rest of its answer; nothing leaves the server
+  { tool: 'think_deeper', effect: 'deterministic', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
+  // CONSULT_ONE_BRAIN only (31/10): the model hands the options of a recommendation to the option cards; nothing leaves the server
+  { tool: 'present_options', effect: 'deterministic', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
   { tool: 'get_gold_price', effect: 'external_read', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
   { tool: 'get_flight_prices', effect: 'external_read', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
   { tool: 'get_hotel_prices', effect: 'external_read', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
   { tool: 'get_transport_options', effect: 'external_read', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
+  // Wave 3 consult tools, each declared only behind its own default-OFF flag (a flag-off turn never sees them; the registry lists what the route CAN expose):
+  //   calculate - W4 CONSULT_DETERMINISTIC_MATH: an exact calculator over the expression the model sends (pure computation, no I/O, no state).
+  //   read_page - W1 CONSULT_RESEARCH_LOOP: reads one public page the turn already saw (SSRF-safe fetch, robots.txt honoured, no crawling); changes no state.
+  { tool: 'calculate', effect: 'deterministic', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
+  { tool: 'read_page', effect: 'external_read', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
   {
     tool: 'save_price_watch',
     effect: 'write',

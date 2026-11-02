@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Quán ăn ngon Sài Gòn\" OR \"MEAT & MEET\" OR \"Buffet Gánh Khách Sạn Palace\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:31:08.812Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Quán ăn ngon Sài Gòn\" OR \"MEAT & MEET\" OR \"Buffet Gánh Khách Sạn Palace\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "MEAT & MEET BBQ (@meatandmeetbbq)",
+    "link": "https://www.tiktok.com/@meatandmeetbbq",
+    "snippet": "Khám phá buffet nướng Hàn Quốc 219k tại Meat and Meet (quận 2): · Thông tin khai trương chi nhánh Meat & Meet Parc Mall, buffet BBQ thịt nướng.",
+    "position": 1
+   },
+   {
+    "title": "Review Buffet BBQ tại Meat & Meet — ăn lại vẫn thấy vui",
+    "link": "https://www.tiktok.com/@dadaykhongday95/video/7686364406598503698",
+    "snippet": "Quá trời kỷ niệm ở Meat & Meet nên cứ đi ăn lại là thấy mắc cười , mà nay ăn thấy ngon lắm nhen, duyệt nè #dadaykhongday #koreanbbq # ...",
+    "position": 2
+   },
+   {
+    "title": "Canh giờ săn deal Happy Hour tại Meat & Meet nha #bbq ...",
+    "link": "https://www.tiktok.com/@meatandmeetbbq/video/7686346543460355348",
+    "snippet": "Video TikTok từ MEAT & MEET BBQ (@meatandmeetbbq): \"Canh giờ săn deal Happy Hour tại Meat & Meet nha #bbq #nhahangthitnuong #meatandmeet ...",
+    "position": 3
+   },
+   {
+    "title": "Buffet Thịt Nướng MEAT & MEET Lê Thị Riêng Chỉ 189k",
+    "link": "https://www.tiktok.com/@meatandmeetbbq/video/7690787994650807572",
+    "snippet": "Buffet Thịt Nướng MEAT & MEET Lê Thị Riêng Chỉ 189k | Ưu Đãi Trưa. Bạn đang tìm kiếm một địa điểm ăn trưa ngon, nhẹ và tiết kiệm cho team văn ...",
+    "position": 4
+   },
+   {
+    "title": "Pov: Cầm 219 cành đi ăn thả ga ở buffet Meat & Meet 😋 ...",
+    "link": "https://www.tiktok.com/@didauanngon/video/7685607116152786197",
+    "snippet": "205 Lượt thích,Video TikTok từ Đi Đâu Ăn Ngon (@didauanngon): \"Pov: Cầm 219 cành đi ăn thả ga ở buffet Meat & Meet #meatandmeet #bbq ...",
+    "position": 5
+   },
+   {
+    "title": "5 ưu điểm khi đến MEAT & MEET, bạn đã biết chưa? #bbq ...",
+    "link": "https://www.tiktok.com/@meatandmeetbbq/video/7686706576681356565",
+    "snippet": "29 Lượt thích,Video TikTok từ MEAT & MEET BBQ (@meatandmeetbbq): \"5 ưu điểm khi đến MEAT & MEET, bạn đã biết chưa?",
+    "position": 6
+   },
+   {
+    "title": "Delicious BBQ with a Top View at Meat & Meet",
+    "link": "https://www.tiktok.com/@meatandmeetbbq/video/7666312092827274517",
+    "snippet": "Discover delicious grilled meat at Meat & Meet, offering a stunning top-tier view. Perfect for all meat lovers looking for a great dining ...",
+    "position": 7
+   },
+   {
+    "title": "Buffet thịt nướng Meat & Meet ưu đãi 20% nè mọi người ơi ...",
+    "link": "https://www.tiktok.com/@vyvivuuu/video/7669677120246861064",
+    "snippet": "Buffet thịt nướng Meat & Meet ưu đãi 20% nè mọi người ơi #vincomdongkhoi #meatandmeet #buffet #xuhuong #vyvivuuu. Buffet thịt nướng Meat & ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

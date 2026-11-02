@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { mkdtempSync, writeFileSync, rmSync } from 'node:fs'
 import { join } from 'node:path'
 import { tmpdir } from 'node:os'
@@ -9,6 +9,11 @@ import { scanDir, scanFile } from './controlBytes.mjs'
  * The control-byte guard must FAIL on a raw 0x08 / 0x00 and pass on the escapes — proven on
  * fixtures, not on the (now clean) repo. It also runs the real tree: src/ and scripts/ clean.
  */
+// Timeout: the last test reads every file of src/ and scripts/ synchronously and another spawns node. Measured 2026-10-10: in isolation these take 1-3 s; with the CPU saturated (12 busy loops on 12 cores) the same tests took 5-9 s and
+// failed with 'Test timed out in 5000ms' (vitest default) while their assertions were never reached. The full runner saturates the machine the same way, so
+// the two files failed intermittently there and passed alone. A longer timeout changes no assertion.
+vi.setConfig({ testTimeout: 30_000 })
+
 const ROOT = join(import.meta.dirname, '..')
 
 describe('control-byte guard', () => {

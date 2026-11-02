@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Cơm Bắc Làng Cua Đồng\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:08:21.667Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Cơm Bắc Làng Cua Đồng\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "TUẦN NÀO CŨNG PHẢI 1-2 lần ăn cơm canh cua Làng ...",
+    "link": "https://www.tiktok.com/@com_bac_lang_cua_dong/video/7648453441626459400",
+    "snippet": "Video TikTok từ Cơm Bắc Làng Cua Đồng 18A NTMK (@com_bac_lang_cua_dong): \"TUẦN NÀO CŨNG PHẢI 1-2 lần ăn cơm canh cua Làng Cua Đồng em ấy mới chịu.",
+    "position": 1
+   },
+   {
+    "title": "Chúng tôi mang lại cho bạn một bữa cơm gia đình đúng ...",
+    "link": "https://www.tiktok.com/@com_bac_lang_cua_dong/video/7678913574143528200",
+    "snippet": "Chúng tôi mang lại cho bạn một bữa cơm gia đình đúng nghĩa thực. Có. @Cơm Bắc Làng Cua Đồng 18A NTMK.",
+    "position": 2
+   },
+   {
+    "title": "Mọi người nghĩ em này làm món gì ngon?",
+    "link": "https://www.tiktok.com/@com_bac_lang_cua_dong/video/7655547258074713352",
+    "snippet": "20 Lượt thích,Video TikTok từ Cơm Bắc Làng Cua Đồng 18A NTMK (@com_bac_lang_cua_dong): \"Mọi người nghĩ em này làm món gì ngon?",
+    "position": 3
+   },
+   {
+    "title": "Trải Nghiệm Bữa Cơm Quê Đậm Chất Việt",
+    "link": "https://www.tiktok.com/@com_bac_lang_cua_dong/photo/7627797409162202386?image_index=2",
+    "snippet": "32 Likes, TikTok video from Cơm Bắc Làng Cua Đồng 18A NTMK (@com_bac_lang_cua_dong): “Ghé qua để thưởng thức bữa cơm quê đặc sắc, giúp bạn bớt nhớ nhà.",
+    "position": 4
+   },
+   {
+    "title": "âm thanh gốc - Cơm Bắc Làng Cua Đồng 18A NTMK",
+    "link": "https://www.tiktok.com/music/%C3%A2m-thanh-g%E1%BB%91c-C%C6%A1m-B%E1%BA%AFc-L%C3%A0ng-Cua-%C4%90%E1%BB%93ng-18A-NTMK-7690568800556665620",
+    "snippet": "Bài hát âm thanh gốc - Cơm Bắc Làng Cua Đồng 18A NTMK do Cơm Bắc Làng Cua Đồng 18A NTMK sáng tác. Xem video mới nhất về âm thanh gốc - Cơm ...",
+    "date": "27 thg 9, 2026",
+    "position": 5
+   },
+   {
+    "title": "âm thanh gốc - Cơm Bắc Làng Cua Đồng 18A NTMK",
+    "link": "https://www.tiktok.com/music/%C3%A2m-thanh-g%E1%BB%91c-C%C6%A1m-B%E1%BA%AFc-L%C3%A0ng-Cua-%C4%90%E1%BB%93ng-18A-NTMK-7633048568236509953",
+    "snippet": "Bài hát âm thanh gốc - Cơm Bắc Làng Cua Đồng 18A NTMK do Cơm Bắc Làng Cua Đồng 18A NTMK sáng tác. Xem video mới nhất về âm thanh gốc - Cơm Bắc Làng Cua Đồng 18A",
+    "position": 6
+   },
+   {
+    "title": "tiktoklive #livehighlights",
+    "link": "https://www.tiktok.com/@com_bac_lang_cua_dong/video/7629656163444985106",
+    "snippet": "20 Lượt thích,Video TikTok từ Cơm Bắc Làng Cua Đồng 18A NTMK (@com_bac_lang_cua_dong): \"#tiktoklive #livehighlights\".âm thanh gốc - Cơm Bắc Làng Cua Đồng ...",
+    "position": 7
+   },
+   {
+    "title": "Oiran Show, Oiran = kỹ nữ cao cấp thời edo ( 1603-1868). Vậy ...",
+    "link": "https://www.tiktok.com/@com_bac_lang_cua_dong/video/7634162091267542280",
+    "snippet": "... nhưng ở tầng lớp “quý tộc hóa”」。âm thanh gốc - Cơm Bắc Làng Cua Đồng 18A NTMK。",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

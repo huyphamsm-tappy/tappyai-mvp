@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vanban.chinhphu.vn Thông tư 28/2026/TT-BTC hộ chiếu lệ phí",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:05:23.333Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vanban.chinhphu.vn Thông tư 28/2026/TT-BTC hộ chiếu lệ phí",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cổng thông tin điện tử Chính phủ - Hệ thống văn bản",
+    "link": "https://vanban.chinhphu.vn/he-thong-van-ban?classid=1&mode=1&typegroupid=6",
+    "snippet": "142/2026/TT-BTC 29/09/2026, 29/09/2026, Sửa đổi, bổ sung một số điều của các Thông tư quy định thủ tục hải quan đối với hàng hóa xuất khẩu, nhập khẩu, quá cảnh ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

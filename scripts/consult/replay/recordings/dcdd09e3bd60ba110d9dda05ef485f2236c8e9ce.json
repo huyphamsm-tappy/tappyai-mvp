@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Mỹ Khê Beach Hotel\" OR \"Bella Merry\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:38:50.188Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Mỹ Khê Beach Hotel\" OR \"Bella Merry\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Bella Merry",
+    "link": "https://www.tiktok.com/discover/bella-merry",
+    "snippet": "Khách sạn Bella Merry: Giá rẻ, gần biển Đà Nẵng. Khám phá Bella Merry Hotel - nơi lưu trú tuyệt vời với giá rẻ, gần biển tại Đà Nẵng. Đặt phòng ...",
+    "date": "31 thg 8, 2026",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn Bella Merry: Giá rẻ, gần biển Đà Nẵng",
+    "link": "https://www.tiktok.com/@anhtraidanangoffical/video/7373642762983410960",
+    "snippet": "Khách sạn Bella Merry: Giá rẻ, gần biển Đà Nẵng. Khám phá Bella Merry Hotel - nơi lưu trú tuyệt vời với giá rẻ, gần biển tại Đà Nẵng. Đặt ...",
+    "position": 2
+   },
+   {
+    "title": "Bella Merry Hotel: A Great Stay in Da Nang, Vietnam",
+    "link": "https://www.tiktok.com/@roseannemalinog/video/7595625206169799944",
+    "snippet": "Enjoy a fantastic experience at Bella Merry Hotel in Da Nang, with accessible, affordable options, great service, and delicious food. #travel # ...",
+    "position": 3
+   },
+   {
+    "title": "bella merry (@bellamerry23)",
+    "link": "https://www.tiktok.com/@bellamerry23",
+    "snippet": "bella merry (@bellamerry23) on TikTok | life is good .Watch the latest video from bella merry (@bellamerry23).",
+    "position": 4
+   },
+   {
+    "title": "bella Merry Christmas | #SJS #fyppp #willsmithhockey #ed...",
+    "link": "https://www.tiktok.com/@thadz_musicz/video/7626038188099898655",
+    "snippet": "169 Likes, TikTok video from Thad (@thadz_musicz): “#WILLSMITH | @bella Merry Christmas | #SJS #fyppp #willsmithhockey #edit”. original sound - Thad.",
+    "position": 5
+   },
+   {
+    "title": "Asian Girl Bella's Merry Christmas Dress Smile",
+    "link": "https://www.tiktok.com/@itsmejjeal/video/7179989659785760043",
+    "snippet": "Asian Girl Bella's Merry Christmas Dress Smile. Watch Asian girl Bella show off her festive Christmas dress with a beautiful smile in this adorable video ...",
+    "position": 6
+   },
+   {
+    "title": "Chiquita Bella Merry - sonido original",
+    "link": "https://www.tiktok.com/music/sonido-original-7648515872570510087",
+    "snippet": "Canción sonido original creada por Chiquita Bella Merry. Mira los vídeos más recientes de sonido original en TikTok.",
+    "position": 7
+   },
+   {
+    "title": "recuerdos",
+    "link": "https://www.tiktok.com/@maykibella81/video/7630594184369540372?lang=ar",
+    "snippet": "فيديو TikTok(تيك توك) من Bella Merry (@maykibella81): \"#recuerdos\".Recuerdos | 19 abr 2021‏sonido original - Bella Merry.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

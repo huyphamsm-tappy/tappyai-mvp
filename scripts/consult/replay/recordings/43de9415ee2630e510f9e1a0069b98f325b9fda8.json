@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Bluetooth chụp tai JBL Tune 530BT site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:03:25.857Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bluetooth chụp tai JBL Tune 530BT site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe chụp tai Bluetooth JBL Tune 530BT JBLT530BT",
+    "link": "https://shop.tiktok.com/vn/pdp/1736008830241441245",
+    "snippet": "Tai nghe JBL Tune 530BT JBLT530BT là mẫu tai nghe không dây on-ear nổi bật với công nghệ JBL Pure Bass Sound, thời lượng pin dài và thiết kế gọn nhẹ, ...",
+    "position": 1
+   },
+   {
+    "title": "JBL Tune 720BT-Over Ear Headphones",
+    "link": "https://shop.tiktok.com/vn/k/jbl-tune-720bt-over-ear-headphones",
+    "snippet": "Tai Nghe Chụp Tai Không Dây JBL Tune 530BT - Bluetooth 6.0 | Pin Khủng 76 Giờ | Âm Bass Đỉnh Cao, Hàng Chính Hãng. 1 sold. ₫1.500.000. ₫1.790.000 ...",
+    "position": 2
+   },
+   {
+    "title": "JBL 637",
+    "link": "https://shop.tiktok.com/vn/k/jbl-637",
+    "snippet": "Tai Nghe Chụp Tai Không Dây JBL Tune 530BT - Bluetooth 6.0 | Pin Khủng 76 Giờ | Âm Bass Đỉnh Cao, Hàng Chính Hãng. Deal. 8 sold. ₫1.200.000. ₫1.790.000 ...",
+    "position": 3
+   },
+   {
+    "title": "jbl earbuds on tiktok shop",
+    "link": "https://shop.tiktok.com/vn/k/jbl-earbuds-on-tiktok-shop",
+    "snippet": "Tai nghe Bluetooth chụp tai JBL Tune 530BT - Chính hãng. 0 sold. ₫1.540.000. ₫1.990.000 ...",
+    "position": 4
+   },
+   {
+    "title": "JBL JR320BT - TikTok Shop Vietnam",
+    "link": "https://shop.tiktok.com/vn/k/jbl-jr320bt",
+    "snippet": "Tai Nghe JBL Tune 520BT Chụp Tai Bluetooth 5.3 Pin 57h chống nước nhẹ đeo êm ái dùng học tập nghe nhạc làm việc hiệu quả BH 12 tháng.",
+    "position": 5
+   },
+   {
+    "title": "Nippon jb - TikTok Shop Vietnam",
+    "link": "https://shop.tiktok.com/vn/k/nippon-jb",
+    "snippet": "Tai Nghe Chụp Tai Không Dây JBL Tune 530BT - Bluetooth 6.0 | Pin Khủng 76 Giờ | Âm Bass Đỉnh Cao, Hàng Chính Hãng · Tai Nghe Chụp Tai Không Dây JBL Tune 530BT - ...",
+    "position": 6
+   },
+   {
+    "title": "Jbl tune 720 purple",
+    "link": "https://shop.tiktok.com/vn/k/jbl-tune-720-purple",
+    "snippet": "Tai Nghe Chụp Tai Không Dây JBL Tune 530BT - Bluetooth 6.0 | Pin Khủng 76 Giờ | Âm ...",
+    "position": 7
+   },
+   {
+    "title": "jbl studio 530 - TikTok Shop Vietnam",
+    "link": "https://shop.tiktok.com/vn/k/jbl-studio-530",
+    "snippet": "Tai nghe chụp tai Bluetooth JBL Tune 530BT JBLT530BT - Hàng chính hãng. 0 sold. ₫1.449.000. Tai nghe chụp tai Bluetooth JBL Tune 530BT JBLT530BT - Hàng ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

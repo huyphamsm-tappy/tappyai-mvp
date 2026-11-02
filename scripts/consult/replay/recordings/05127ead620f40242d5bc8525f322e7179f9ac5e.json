@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Samsung Galaxy S24 thông số chính thức màn hình chip camera pin cập nhật phần mềm",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:11:15.272Z",
+ "body": {
+  "searchParameters": {
+   "q": "Samsung Galaxy S24 thông số chính thức màn hình chip camera pin cập nhật phần mềm",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Samsung Galaxy S24 sử dụng chip gì? Hiệu năng vận ...",
+    "link": "https://viettelstore.vn/tin-tuc/samsung-galaxy-s24-su-dung-chip-gi?srsltid=AU7gw4VQhYkLPAybaAAfPuUqgLR-o7p0wv4cYjvpJtNmyyS3NzWjwyOL",
+    "snippet": "Màn hình hiển thị ... Chiếc điện thoại Samsung S24 tiêu chuẩn rất có thể sẽ được trang bị màn hình đến 6.2inch, độ phân giải 2K+, sử dụng tấm nền ...",
+    "date": "23 thg 1, 2024",
+    "position": 1
+   },
+   {
+    "title": "Samsung Galaxy S24 Series có gì mới: Giá từ 22.99 triệu ...",
+    "link": "https://www.thegioididong.com/tin-tuc/galaxy-s24-co-gi-moi-1474482",
+    "snippet": "Về khả năng hiển thị, Galaxy S24+ được trang bị một màn hình rộng 6.7 inch, sử dụng tấm nền Dynamic AMOLED 2X độ phân giải QHD+ (3.120 x 1.440 ...",
+    "date": "18 thg 1, 2024",
+    "position": 2
+   },
+   {
+    "title": "Galaxy S24: Thông số kỹ thuật, thiết kế, pin và hơn thế",
+    "link": "https://minhtuanmobile.com/tin-tuc/galaxy-s24-thong-so-ky-thuat-thiet-ke-pin-va-hon-the/",
+    "snippet": "Hệ thống camera sau của Samsung Galaxy S24 bao gồm 4 ống kính: camera chính 50MP, camera góc siêu rộng 12MP, camera tele 10MP hỗ trợ zoom quang ...",
+    "date": "27 thg 12, 2023",
+    "position": 3
+   },
+   {
+    "title": "Samsung Galaxy S24 5G ở thời điểm hiện tại có đáng mua?",
+    "link": "https://www.youtube.com/watch?v=Kj3rra_9S_Y&xstg=CAMSBhUD-7L2Hw%3D%3D",
+    "snippet": "Chúng ta sẽ có một thiết bị với thiết kế sang trọng, màn hình có chất lượng hiển thị đẹp, trải nghiệm phần mềm tốt cùng hệ thống camera đa ...",
+    "position": 4
+   },
+   {
+    "title": "Samsung S24 FE ra mắt: Chip Exynos 2400e, hỗ trợ ...",
+    "link": "https://www.xtmobile.vn/galaxy-s24-fe-ra-mat",
+    "snippet": "Một trong những điểm gây ấn tượng nhất khi Samsung S24 FE ra mắt chính là kích thước màn hình được nâng lên mức 6.7 inch. Việc sử dụng tấm nền ...",
+    "date": "27 thg 9, 2024",
+    "position": 5
+   },
+   {
+    "title": "Samsung Galaxy S24, S24+, thanh toán trước giảm 1 triệu",
+    "link": "https://www.samsung.com/vn/smartphones/galaxy-s24/?srsltid=AU7gw4XK4RGsHNa1v2PH8oIFvWJBXufhxMFOiDZMyOR68OW2dG3wLkJP",
+    "snippet": "Nhờ kích cỡ cải tiến và phần viền siêu mỏng, Galaxy S24 màn hình FHD+ 6.2\" và Galaxy S24+ màn hình QHD+ 6.7\" trở nên nổi bật với màn hình lớn hơn bao giờ hết, ...",
+    "position": 6
+   },
+   {
+    "title": "Đánh giá Samsung Galaxy S24: Flagship Android nhỏ gọn ...",
+    "link": "https://tinhte.vn/thread/danh-gia-samsung-galaxy-s24-flagship-android-nho-gon-cuc-chat-luong-o-thoi-diem-hien-tai.3791734/",
+    "snippet": "Galaxy S24 sở hữu màn hình kích thước 6.2 inch với tấm nền Dynamic AMOLED 2X cùng độ phân giải FHD+. tinhte-galaxy-s24-54.jpg tinhte-galaxy-s24- ...",
+    "date": "1 thg 6, 2024",
+    "rating": 4.5,
+    "ratingCount": 16,
+    "position": 7
+   },
+   {
+    "title": "Samsung Galaxy S24 – Wikipedia tiếng Việt",
+    "link": "https://vi.wikipedia.org/wiki/Samsung_Galaxy_S24",
+    "snippet": "Samsung Galaxy S24 · Màn hình. Dynamic AMOLED 2X, Infinity-O, màn hình cảm ứng điện dung, HDR10+, 1 tỉ màu sắc, độ sáng tối đa 2600 nits · Màn hình ngoài, Always ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

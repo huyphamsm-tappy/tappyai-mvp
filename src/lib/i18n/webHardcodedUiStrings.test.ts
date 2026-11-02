@@ -91,11 +91,40 @@ function rel(p: string): string {
   return relative(ROOT, p).replace(/\\/g, '/')
 }
 
-/** Vietnamese-bearing lines in a file, ignoring comments (they are never rendered). */
+/**
+ * Text written for the MODEL inside an API route — a tool's `description:` and its parameters' `.describe(…)` — is prompt text,
+ * the class this guard leaves to src/lib (owner C2, 29 Oct 2026): it never renders. Only under src/app/api, where no page metadata
+ * `description:` lives.
+ */
+const MODEL_FACING = /\.describe\(|^\s*description:\s*['"`]/
+/** A `/*` opens a comment only where code can start one: line start, whitespace, `{` (JSX), `(`, `;` — never `image/*` in a string. */
+const OPENS_COMMENT = /(^|[\s{(;])\/\*/
+
+/** Vietnamese-bearing lines in a file, ignoring comments — `//`, and `/* … *\/` blocks across lines (owner C2) — which never render. */
 function vietnameseLines(file: string): { line: number; text: string }[] {
   const hits: { line: number; text: string }[] = []
+  const modelFacing = rel(file).startsWith('src/app/api/')
+  let inBlock = false
   readFileSync(file, 'utf8').split(/\r?\n/).forEach((raw, i) => {
-    const code = raw.replace(/\/\/.*$/, '').replace(/\/\*.*?\*\//g, '')
+    let code = ''
+    let rest = raw
+    while (rest) {
+      if (inBlock) {
+        const end = rest.indexOf('*/')
+        if (end < 0) { rest = ''; break }
+        rest = rest.slice(end + 2)
+        inBlock = false
+      } else {
+        const m = OPENS_COMMENT.exec(rest)
+        if (!m) { code += rest; break }
+        const at = m.index + m[1].length
+        code += rest.slice(0, at)
+        rest = rest.slice(at + 2)
+        inBlock = true
+      }
+    }
+    code = code.replace(/\/\/.*$/, '')
+    if (modelFacing && MODEL_FACING.test(code)) return
     if (VIETNAMESE.test(code)) hits.push({ line: i + 1, text: raw.trim().slice(0, 100) })
   })
   return hits
@@ -146,7 +175,10 @@ describe('B07 — the rest of the Web surface only gets better', () => {
   // "Tiếng Việt" (the same hardcoded label LanguagePicker already carries).
   // 498 → 466 when the Home hero greeting pools moved out of `(home)/page.tsx` into the one
   // shared engine under src/lib/home (heroGreeting.ts), where product copy is allowed to live.
-  const BASELINE = 466
+  // 466 → 432 (owner C2, 29 Oct 2026): the count stopped including the inside of multi-line `/* … */` comments and the
+  // model-facing tool text of src/app/api (`description:` / `.describe(…)`). Same ratchet, a truer measure, locked at the
+  // new real number. (The old measure had reached 473 with those lines.)
+  const BASELINE = 432
 
   it(`carries at most ${BASELINE} Vietnamese UI lines outside the sealed screens`, () => {
     const sealed = new Set([...SEALED, ...Object.keys(SEALED_WITH_PERSISTED_VALUES)])

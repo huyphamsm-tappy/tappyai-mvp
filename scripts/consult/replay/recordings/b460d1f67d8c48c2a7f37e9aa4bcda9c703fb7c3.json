@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Tiếng Mỹ Phản Xạ Không Gian Cơ sở 01\" OR \"Anh Ngữ Dreams Academy | Tiếng Anh Giao Tiếp • Học Thuật • IELTS • CELPIP\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:39:29.722Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Tiếng Mỹ Phản Xạ Không Gian Cơ sở 01\" OR \"Anh Ngữ Dreams Academy | Tiếng Anh Giao Tiếp • Học Thuật • IELTS • CELPIP\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

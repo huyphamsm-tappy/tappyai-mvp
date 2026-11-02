@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Tai nghe Asus Rog Cetra True\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:32:32.912Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Tai nghe Asus Rog Cetra True\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Asus Rog Cetra True Wireless Speednova Gaming Earbuds",
+    "link": "https://www.tiktok.com/discover/asus-rog-cetra-true-wireless-speednova-gaming-earbuds",
+    "snippet": "33631w ago. lakmobile. Lakmobile. Tai nghe ASUS ROG Cetra True Wireless SpeedNova. Open box BH 3/2026. Tai nghe siêu lướt xài cực ít. Giá : 3.350k Fullbox đủ đồ ...",
+    "position": 1
+   },
+   {
+    "title": "ASUS ROG CETRA: True Wireless Earbuds Unboxing",
+    "link": "https://www.tiktok.com/@dr3amfearless/video/7503199153879567632",
+    "snippet": "Vũng Tàu ship tận nhà trong nội ô. Tai nghe ASUS ROG Cetra True Wireless bán giá rẻ. Khám phá tai nghe ASUS ROG Cetra True Wireless siêu lướt, giá 3.350k.",
+    "position": 2
+   },
+   {
+    "title": "ROG Cetra True Wireless SpeedNova",
+    "link": "https://www.tiktok.com/@digitalifemx/video/7533336244374293765",
+    "snippet": "Tai nghe ASUS ROG Cetra True Wireless bán giá rẻ. Khám phá tai nghe ASUS ROG Cetra True Wireless siêu lướt, giá 3.350k. Gọi ngay để nhận máy ...",
+    "position": 3
+   },
+   {
+    "title": "Asus Rog Cetra Open Wireless Open Ear Earbuds",
+    "link": "https://www.tiktok.com/content/asus-rog-cetra-open-wireless-open-ear-earbuds?lang=km-KH",
+    "snippet": "Tai nghe ASUS ROG Cetra True Wireless SpeedNova. Open box BH 3/2026. Tai nghe siêu lướt xài cực ít. Giá : 3.350k Fullbox đủ đồ zin. Call : 0935 917 917 -052 88 ...",
+    "position": 4
+   },
+   {
+    "title": "Thay Pin Tai Nghe Bluetooth JBL Live Pro Khi 1 Bên ...",
+    "link": "https://www.tiktok.com/@diytuan/video/7383986703955938561",
+    "snippet": "Mình có con Tai nghe Asus ROG Cetra True Wireless hư bên phải sửa đc kh ad. 2025-3-23Trả lời. Đã thích bởi nhà sáng tạo. 1. Tuan d.i.y · Tác giả.",
+    "position": 5
+   },
+   {
+    "title": "lamkimobile",
+    "link": "https://www.tiktok.com/tag/lamkimobile",
+    "snippet": "Tai nghe ASUS ROG Cetra True Wireless SpeedNova Open box BH 3/2026 Tai nghe · ඔයාලාත් කරලා බලන්න #lakimobile #Samsung #theteddyhouse ...",
+    "position": 6
+   },
+   {
+    "title": "lakmobile",
+    "link": "https://www.tiktok.com/tag/lakmobile",
+    "snippet": "Tai nghe ASUS ROG Cetra True Wireless SpeedNova Open box BH 3/2026 Tai nghe · Blackberry Bold 9900 creato da Lakmobile con Spirit di MIDYTUNES · Huawei Porsche ...",
+    "position": 7
+   },
+   {
+    "title": "Mua Huawei Pura 80 Ultra Mới Chất Lượng Tại Hồ Chí Minh",
+    "link": "https://www.tiktok.com/@lakmobile/photo/7565713001014168850",
+    "snippet": "Tai nghe ASUS ROG Cetra True Wireless SpeedNova Open box BH 3/2026 Tai nghe siêu lướt xài cực ít Giá : 3.350k Fullbox đủ đồ zin Call : 0935 917 917 -052 88 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

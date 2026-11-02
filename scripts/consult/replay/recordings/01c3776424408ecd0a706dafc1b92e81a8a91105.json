@@ -1,0 +1,85 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "iPhone 16 Pro 256GB giá CellphoneS",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:14:10.514Z",
+ "body": {
+  "searchParameters": {
+   "q": "iPhone 16 Pro 256GB giá CellphoneS",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "iPhone 16 Pro 256GB chính hãng | Mua ngay ưu đãi 4 triệu",
+    "link": "https://cellphones.com.vn/iphone-16-pro-256gb.html",
+    "snippet": "Mua điện thoại iPhone 16 Pro 256GB chính hãng nhận ưu đãi 4 triệu, thu cũ lên đời, trả góp 0% - sẵn hàng nhiều màu tại CellphoneS.",
+    "rating": 4.8,
+    "ratingCount": 40,
+    "position": 1
+   },
+   {
+    "title": "Điện thoại Apple iPhone 16 Pro 256GB - Likenew",
+    "link": "https://onewaymobile.vn/dien-thoai-apple-iphone-16-pro-256gb-99",
+    "snippet": "Điện thoại Apple iPhone 16 Pro 256GB - Likenew ; Mới 97% 20.190.000đ ; Mới 99% 21.390.000đ ; Kích thước màn hình. 6.3 inches ; Công nghệ màn hình. Super Retina XDR ...",
+    "rating": 4.4,
+    "ratingCount": 11776,
+    "position": 2
+   },
+   {
+    "title": "🥁 iPhone 16 Pro: Chuẩn Pro. Đỉnh mọi trải nghiệm. 💯 Sắm ...",
+    "link": "https://www.facebook.com/CellphoneSVietnam/posts/-iphone-16-pro-chu%E1%BA%A9n-pro-%C4%91%E1%BB%89nh-m%E1%BB%8Di-tr%E1%BA%A3i-nghi%E1%BB%87m-s%E1%BA%AFm-ngay-c%E1%BA%A3-nh%C3%A0-m%C3%AA-iphone-x%E1%BB%8Bn-s%C3%B2-t/1341969434622813/",
+    "snippet": "CellphoneS xin chào Chị Thuỷ ạ! Dạ APPLE IPHONE 16 PRO 128GB TITAN TỰ NHIÊN CHÍNH HÃNG VN/A (MYNG3) Giá ở thời điểm hiện tại: 26.590.000 giá ...",
+    "position": 3
+   },
+   {
+    "title": "iPhone 16 Pro 256GB (VN/A) - Giá tốt, thu cũ trợ giá đến 2 ...",
+    "link": "https://www.thegioididong.com/dtdd/iphone-16-pro-256gb",
+    "snippet": "iPhone 16 Pro 256GB chính hãng, giá tốt, thu cũ trợ giá đến 2 triệu, giảm giá các sản phẩm Apple mua kèm, đặc biệt giảm đến 500k khi mua kèm ...",
+    "date": "10 thg 9, 2024",
+    "position": 4
+   },
+   {
+    "title": "iPhone 16 Pro 256GB - Chính Hãng Cũ Like New",
+    "link": "https://www.viettablet.com/iphone-16-pro-256gb-cu?srsltid=AU7gw4VKSJaCgnM-rpR3n8JLJP5nSO6tWGTeTBemyHaCfJvgrd0ADHEn",
+    "snippet": "iPhone 16 Pro 256GB - Chính Hãng Cũ Like New · Đen 95% 20.799.000đ · Titan Tự Nhiên 99% 21.299.000đ · Titan Trắng 99% 21.299.000đ · Titan Đen 99% 21.299.000đ · Titan ...",
+    "rating": 4.4,
+    "ratingCount": 11776,
+    "position": 5
+   },
+   {
+    "title": "iPhone 16 Pro 256GB Cũ (Trầy Đẹp)",
+    "link": "https://www.xtmobile.vn/iphone-16-pro-256gb-cu-97",
+    "snippet": "iPhone 16 Pro 256GB Cũ (Trầy Đẹp) ; GIẢM THÊM đến 150.000đ Áp dụng cho HSSV Xem chi tiết › ; Giảm 30% khi nâng cấp bảo hành mở rộng 1 đổi 1 (bảo hành pin 3 năm) ...",
+    "rating": 4.4,
+    "ratingCount": 11776,
+    "position": 6
+   },
+   {
+    "title": "iPhone 16 Pro 256GB VN/A – Chính Hãng",
+    "link": "https://www.techone.vn/iphone-16-pro-256gb-chinh-hang.html?srsltid=AU7gw4WxOyjPH7DwxIXUevVOOJI1fAvVxN6oZzbYaYEPXBPwRbo6ep16",
+    "snippet": "iPhone 16 Pro 256GB VN/A – Chính Hãng · White Titanium. 29.590.000₫ · Natural Titanium. 29.590.000₫ · Desert Titanium. 29.590.000₫ · Black Titanium. 29.590.000₫.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 7
+   },
+   {
+    "title": "Cập nhật liên tục - Giá bán iPhone 16 Series chính hãng ...",
+    "link": "https://cellphones.com.vn/sforum/gia-ban-chinh-thuc-tai-viet-nam-cua-iphone-16-series",
+    "snippet": "Hiện tại, mẫu iPhone này có giá khởi điểm chỉ từ 25.09 triệu đồng cho bản bộ nhớ trong 128GB. Phiên bản 256GB của điện thoại hiện có giá 28.09 triệu đồng, bản ...",
+    "rating": 4.5,
+    "ratingCount": 2,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

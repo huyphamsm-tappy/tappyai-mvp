@@ -20,7 +20,9 @@ import { q } from '../validation/url'
 
 const entry = getProvider('dmx')!
 
-const PRODUCT_PATH = /^\/[a-z0-9-]+\/[a-z0-9-]+\/?$/
+// Two path segments is a product page ONLY outside the site's editorial / utility sections: /kinh-nghiem-hay/<article> and the like
+// share the shape (seen on a real `site:` search, 30/10/2026) and are not something a person can buy.
+const PRODUCT_PATH = /^\/(?!(?:kinh-nghiem-hay|tin-tuc|khuyen-mai|may-doi-tra|tim-kiem|ho-tro|cua-hang|bai-viet)\/)[a-z0-9-]+\/[a-z0-9-]+\/?$/
 // Search grammar verified read-only 14 Sep 2026: /tim-kiem?key=<q> → "Kết quả tìm kiếm <q> | DienmayXanh.com".
 // The honest fallback when no product page for the subject was discovered (a user who names DMX
 // always has a DMX path); recorded as a search — productRef dropped — so it ranks below any detail.

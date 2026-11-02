@@ -1,0 +1,345 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "Phở Hòa Pasteur giờ mở cửa còn chỗ tối nay Quận 1 Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:13:52.348Z",
+ "body": {
+  "searchParameters": {
+   "q": "Phở Hòa Pasteur giờ mở cửa còn chỗ tối nay Quận 1 Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7768941,106.7008997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Phở Hòa Pasteur",
+    "address": "260C Pasteur, Phường, Xuân Hòa, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.786690499999999,
+    "longitude": 106.6892627,
+    "rating": 4.2,
+    "ratingCount": 6179,
+    "type": "Nhà hàng phở",
+    "types": [
+     "Nhà hàng phở",
+     "Quán mì"
+    ],
+    "phoneNumber": "+84 28 3829 7943",
+    "openingHours": {
+     "Thứ Năm": "05:30–22:30",
+     "Thứ Sáu": "05:30–22:30",
+     "Thứ Bảy": "05:30–22:30",
+     "Chủ Nhật": "05:30–22:30",
+     "Thứ Hai": "05:30–22:30",
+     "Thứ Ba": "05:30–22:30",
+     "Thứ Tư": "05:30–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnkaX1k8eLCPgx8R3cAd9k-XI6ZgzIpvx-MCdduGrMJtldEexAxv173wniO7raoZ4NQgZII24NdKDmy6KKbf3oQMczYhx72rBd_PshgEnxHstbDjZ5Qsm2VskYeOLWBKgBdBPoFNg",
+    "cid": "15021671463455039530",
+    "fid": "0x31752f26344ef6ef:0xd077b29b97dc202a",
+    "placeId": "ChIJ7_ZONCYvdTERKiDcl5uyd9A"
+   },
+   {
+    "position": 2,
+    "title": "PHỞ 24 - 158D PASTEUR",
+    "address": "158D Pasteur, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.777163999999999,
+    "longitude": 106.69965599999999,
+    "rating": 4,
+    "ratingCount": 1216,
+    "type": "Nhà hàng phở",
+    "types": [
+     "Nhà hàng phở"
+    ],
+    "website": "https://www.pho-24.com/",
+    "phoneNumber": "+84 28 3521 8518",
+    "openingHours": {
+     "Thứ Năm": "06:00–22:00",
+     "Thứ Sáu": "06:00–22:00",
+     "Thứ Bảy": "06:00–22:00",
+     "Chủ Nhật": "06:00–22:00",
+     "Thứ Hai": "06:00–22:00",
+     "Thứ Ba": "06:00–22:00",
+     "Thứ Tư": "06:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkXOrxZ6aLauPPXL4ibjFa_OjoW7MJ5E5TQAU1Xw6OjjcP6SAssyWpP6bNjKTN46kPuQqM3hTvXJvseFQmq1w7dAbUm5RjoultP0w_ffBhDfzgAFiN61NwpA-jLPEZT3HjYy5Kg",
+    "cid": "12373079878354704157",
+    "fid": "0x31752f3648071ad5:0xabb602980edd971d",
+    "placeId": "ChIJ1RoHSDYvdTERHZfdDpgCtqs"
+   },
+   {
+    "position": 3,
+    "title": "Viện Pasteur Thành phố Hồ Chí Minh",
+    "address": "167 Pasteur, Xuân Hòa, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7859193,
+    "longitude": 106.6886442,
+    "rating": 4.2,
+    "ratingCount": 1294,
+    "type": "Viện nghiên cứu",
+    "types": [
+     "Viện nghiên cứu"
+    ],
+    "website": "http://www.pasteurhcm.gov.vn/",
+    "phoneNumber": "+84 28 3823 0352",
+    "openingHours": {
+     "Thứ Năm": "06:30–19:00",
+     "Thứ Sáu": "06:30–19:00",
+     "Thứ Bảy": "07:00–11:00, 13:00–16:00",
+     "Chủ Nhật": "07:00–11:00, 13:00–16:00",
+     "Thứ Hai": "06:30–19:00",
+     "Thứ Ba": "06:30–19:00",
+     "Thứ Tư": "06:30–19:00"
+    },
+    "bookingLinks": [
+     "http://tiemchung.pasteurhcm.gov.vn/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn9032jC47T7zrQ__6TvDqHWtBkV-b6lsdZJ36HY9FhNvgI4Qv9APGC-8nwoL62zsyztXjbzTFQIt--PGgVJUd4JThW86emafMkv8ArXkBz5LJDc0VdZRkyY5a3mBv87DmR5p2V",
+    "cid": "17565400577109019381",
+    "fid": "0x31752f327035e16b:0xf3c4d6c268064af5",
+    "placeId": "ChIJa-E1cDIvdTER9UoGaMLWxPM"
+   },
+   {
+    "position": 4,
+    "title": "Phở Minh - Pasteur - Saigon",
+    "address": "63/6 Pasteur, Sài Gòn, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.774811,
+    "longitude": 106.700278,
+    "rating": 4.4,
+    "ratingCount": 851,
+    "type": "Nhà hàng phở",
+    "types": [
+     "Nhà hàng phở",
+     "Nhà hàng chuyên phục vụ bữa sáng"
+    ],
+    "website": "https://www.facebook.com/share/1YcTGTwpai/?mibextid=wwXIfr",
+    "phoneNumber": "+84 942 221 945",
+    "openingHours": {
+     "Thứ Năm": "06:30–10:30",
+     "Thứ Sáu": "06:30–10:30",
+     "Thứ Bảy": "06:30–10:30",
+     "Chủ Nhật": "06:30–10:30",
+     "Thứ Hai": "06:30–10:30",
+     "Thứ Ba": "06:30–10:30",
+     "Thứ Tư": "06:30–10:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWktKWDugl0GkLhT7pAYEKW7wmCSVB_bFTzjjg8JCjOFpQnHKNEuzvLEbDQRzqPqMdJdz0WZ240ZMwhzikWCfoitS-PWbu49GEJd4QZ5HYWyg7aIt13h5gHwmqw4VccUT7QMv3eG",
+    "cid": "17049522516850958243",
+    "fid": "0x31752f4764af0cbf:0xec9c126596ecdfa3",
+    "placeId": "ChIJvwyvZEcvdTERo9_slmUSnOw"
+   },
+   {
+    "position": 5,
+    "title": "PHỞ HÀ",
+    "address": "19 Đ. Hải Triều, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.771965699999999,
+    "longitude": 106.7052281,
+    "rating": 4,
+    "ratingCount": 1058,
+    "type": "Nhà hàng phở",
+    "types": [
+     "Nhà hàng phở"
+    ],
+    "phoneNumber": "+84 333 135 797",
+    "openingHours": {
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnTKKZn_A5oshfuXY5esb5vsRx5QgFb1t1DrD_OqmvdUocZLR1FFFqOsyuHo2fc2E8iJC5Lm8nMHIY4gAWThESo1HIGcMmIZp1WjSjYTsg7bv_8lsHSHs5Bj8o2tsobDIz8KSuK",
+    "cid": "9423037160852756111",
+    "fid": "0x31752f38e1a83783:0x82c55a5f55ef168f",
+    "placeId": "ChIJgzeo4TgvdTERjxbvVV9axYI"
+   },
+   {
+    "position": 6,
+    "title": "Pasteur Street Craft Beer Hoàng Sa - Premium Local Craft Beer in HCMC",
+    "address": "221 Hoàng Sa, Tân Định, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.795121499999999,
+    "longitude": 106.68912399999999,
+    "rating": 4.9,
+    "ratingCount": 2052,
+    "type": "Quán bia",
+    "types": [
+     "Quán bia",
+     "Quán bar",
+     "Nhà hàng"
+    ],
+    "website": "https://pasteurstreet.com/",
+    "phoneNumber": "+84 799 229 978",
+    "openingHours": {
+     "Thứ Năm": "11:00–23:00",
+     "Thứ Sáu": "11:00–00:00",
+     "Thứ Bảy": "11:00–00:00",
+     "Chủ Nhật": "11:00–23:00",
+     "Thứ Hai": "11:00–23:00",
+     "Thứ Ba": "11:00–23:00",
+     "Thứ Tư": "11:00–23:00"
+    },
+    "bookingLinks": [
+     "https://pasteurstreet.com/make-a-reservation/",
+     "https://book.chope.co/booking?source=google_dining&rid=pasteurstreeths2604vn&rwg_token=AE37R_h4BZAjAnW0yFO-D4RWJdgum8JqQl9ZtUSr2Daq27GXv8JKXELHHBMg3uU1IAra6xbTkFSlvs6bMbLKss2xheIlViY0KYSX_DPyesno1KD5zDIaYVY%3D",
+     "https://www.google.com/maps/reserve/v/dine/c/Cj6z7Gl9Duo?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkiRl_Y43kjC1p2f9fflfCBGnNtd-orDqk-ANx8zhVDy5_KsCYG2-k0CMZUl7LuLmhzcFkNgT1scx5-CP3Na79KBYdH6hkXhxah2Y4-wBBsyyc9VHneISviTfnZFTyFNGza8d7U",
+    "cid": "10154092177132889443",
+    "fid": "0x317529ec2c2b80b5:0x8cea950952942563",
+    "placeId": "ChIJtYArLOwpdTERYyWUUgmV6ow"
+   },
+   {
+    "position": 7,
+    "title": "Mr Mì",
+    "address": "63 Pasteur, 2ndFloor, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7749521,
+    "longitude": 106.70060799999999,
+    "rating": 4.5,
+    "ratingCount": 163,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam"
+    ],
+    "website": "https://www.foody.vn/ho-chi-minh/mr-mi",
+    "phoneNumber": "+84 906 386 138",
+    "openingHours": {
+     "Thứ Năm": "11:00–21:00",
+     "Thứ Sáu": "11:00–21:00",
+     "Thứ Bảy": "11:00–21:00",
+     "Chủ Nhật": "11:00–21:00",
+     "Thứ Hai": "11:00–21:00",
+     "Thứ Ba": "11:00–21:00",
+     "Thứ Tư": "11:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlcnGam9WWgAV7p1FGjgkrwdT3vYI3V2dIPko_TbkzAneu_6xBaod3jaYFRB-Zu1r07aqZXo8VrZQBRP69RICf4jUfHjzSWxhLlOjvZyQlA4kELJ8o9YzqUR55_gjQiYiFSoLZK",
+    "cid": "10368285372953639385",
+    "fid": "0x317528ca55555555:0x8fe38c9cf8c7b9d9",
+    "placeId": "ChIJVVVVVcoodTER2bnH-JyM448"
+   },
+   {
+    "position": 8,
+    "title": "The Street Pasteur",
+    "address": "260A Pasteur, Xuân Hòa, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7866631,
+    "longitude": 106.6893881,
+    "rating": 4.7,
+    "ratingCount": 2843,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam"
+    ],
+    "website": "http://thestreetsg.vn/",
+    "phoneNumber": "+84 28 3824 1246",
+    "openingHours": {
+     "Thứ Năm": "16:15–23:30",
+     "Thứ Sáu": "16:15–23:30",
+     "Thứ Bảy": "16:15–23:30",
+     "Chủ Nhật": "16:15–23:30",
+     "Thứ Hai": "16:15–23:30",
+     "Thứ Ba": "16:15–23:30",
+     "Thứ Tư": "16:15–23:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlrK9JCrWQQ8PP1cfjO_SXgRq9gSPpYrzl9pStPggy0AM4SesUDYHdfaWX3fUJ4-TyVX3vmxTWPIQfjcoCoP3Gj39yOTrGskR8896KPUJQy6qgnt0jpETAMvcGG2N40YXvsdu_z9Q",
+    "cid": "1766477234093420473",
+    "fid": "0x31752f34fce2b367:0x1883c9af69f3efb9",
+    "placeId": "ChIJZ7Pi_DQvdTERue_zaa_Jgxg"
+   },
+   {
+    "position": 9,
+    "title": "Phở Cao Vân",
+    "address": "25 Mạc Đĩnh Chi, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.784743299999999,
+    "longitude": 106.6992982,
+    "rating": 4.2,
+    "ratingCount": 1216,
+    "type": "Nhà hàng phở",
+    "types": [
+     "Nhà hàng phở"
+    ],
+    "website": "https://www.foody.vn/ho-chi-minh/pho-cao-van",
+    "phoneNumber": "+84 28 3822 0509",
+    "openingHours": {
+     "Thứ Năm": "05:30–22:00",
+     "Thứ Sáu": "05:30–22:00",
+     "Thứ Bảy": "05:30–22:00",
+     "Chủ Nhật": "05:30–22:00",
+     "Thứ Hai": "05:30–22:00",
+     "Thứ Ba": "05:30–22:00",
+     "Thứ Tư": "05:30–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl5tczaHjrCs00ImsHxGhABbuJamagOlvpfPVzgQUeJ1yXFezQ7u3aqqcBbzcMS7vzXKyKiPs4bCsrKNY86O5JTEESFIO_2Dro8ooG9gzrCm0INCCzNNqZyTUPg0OBgt5467vYerQM1tzE",
+    "cid": "6398210000077558661",
+    "fid": "0x31752f35f19a3ecd:0x58cb02188cf99385",
+    "placeId": "ChIJzT6a8TUvdTERhZP5jBgCy1g"
+   },
+   {
+    "position": 10,
+    "title": "Phở Hùng",
+    "address": "241 - 243 Nguyễn Trãi, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7648891,
+    "longitude": 106.6877054,
+    "rating": 4.3,
+    "ratingCount": 4348,
+    "type": "Nhà hàng phở",
+    "types": [
+     "Nhà hàng phở"
+    ],
+    "website": "https://www.phohung.vn/",
+    "phoneNumber": "+84 28 3838 5089",
+    "openingHours": {
+     "Thứ Năm": "06:00–01:00",
+     "Thứ Sáu": "06:00–01:00",
+     "Thứ Bảy": "06:00–01:00",
+     "Chủ Nhật": "06:00–01:00",
+     "Thứ Hai": "06:00–01:00",
+     "Thứ Ba": "06:00–01:00",
+     "Thứ Tư": "06:00–01:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkXh-og2ryz0iLyjzpQGyCLrU3ZWeJrqfK0IVsYD22TTuy-eiGCoEPiJPWP77hgwESnIbnoovk-Yzwk4DOKLrsU2m5_T7v8lFNEIZZpOOavin1qNWI0I6aTnLuEVzoy_IAaatm-",
+    "cid": "15913313759659625096",
+    "fid": "0x31752f19d15e3a81:0xdcd7728d53d90a88",
+    "placeId": "ChIJgTpe0RkvdTERiArZU41y19w"
+   },
+   {
+    "position": 11,
+    "title": "NHÀ HÀNG NGON",
+    "address": "160 Pasteur, Quận 1, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7774178,
+    "longitude": 106.6996655,
+    "rating": 4,
+    "ratingCount": 11443,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam"
+    ],
+    "website": "https://nhahangngon.com.vn/",
+    "phoneNumber": "+84 28 3827 7131",
+    "openingHours": {
+     "Thứ Năm": "07:30–22:30",
+     "Thứ Sáu": "07:30–22:30",
+     "Thứ Bảy": "07:30–22:30",
+     "Chủ Nhật": "07:30–22:30",
+     "Thứ Hai": "07:30–22:30",
+     "Thứ Ba": "07:30–22:30",
+     "Thứ Tư": "07:30–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnxolr6I6zAOAD2nAsLDBlw_omAF_j-3m4XHz_cDB2qrSUEwcqY8BcKzJwzJtpqC1-dN2JXDcxxYXvduj9VawGaYOYfNhZIfkasFo3sBJq7kqYx2omaqnhp6XmXYMxaBi5_B2yxNzd5HKKk",
+    "cid": "13622103453648835628",
+    "fid": "0x31752f48d88c3da3:0xbd0b6eeb085c542c",
+    "placeId": "ChIJoz2M2EgvdTERLFRcCOtuC70"
+   }
+  ],
+  "credits": 3
+ }
+}

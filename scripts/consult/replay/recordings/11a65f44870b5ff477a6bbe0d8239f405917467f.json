@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com/vn AirPods Pro 2 lên đến 6 giờ nghe nhạc hộp sạc tổng cộng 30 giờ",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:12:28.750Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com/vn AirPods Pro 2 lên đến 6 giờ nghe nhạc hộp sạc tổng cộng 30 giờ",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "AirPods Pro 3 - Thông Số Kỹ Thuật",
+    "link": "https://www.apple.com/vn/airpods-pro/specs/",
+    "snippet": "Thời gian nghe lên đến 24 giờ khi bật tính năng Chủ Động Khử Tiếng Ồn; 5 phút để trong hộp sạc có thể tăng thời gian nghe khoảng 1 giờ. Kết Nối. Công ...",
+    "position": 1
+   },
+   {
+    "title": "So Sánh Các Phiên Bản AirPods",
+    "link": "https://www.apple.com/vn/airpods/compare/",
+    "snippet": "Khi tắt tính năng Kiểm Soát Tiếng Ồn, thời gian nghe lên đến 6 giờ. Thử nghiệm được thực hiện bằng cách xả toàn bộ pin AirPods khi phát âm thanh cho đến khi ...",
+    "position": 2
+   },
+   {
+    "title": "Apple công bố thế hệ AirPods Pro tiếp theo",
+    "link": "https://www.apple.com/vn/newsroom/2022/09/apple-announces-the-next-generation-of-airpods-pro/",
+    "snippet": "AirPods Pro có thêm thời gian nghe là 1,5 giờ so với thế hệ đầu tiên, như vậy tổng thời gian nghe lên tới 6 giờ với công nghệ khử tiếng ồn chủ ...",
+    "date": "7 thg 9, 2022",
+    "position": 3
+   },
+   {
+    "title": "Apple ra mắt iPhone 18 Pro và iPhone 18 Pro Max",
+    "link": "https://www.apple.com/vn/newsroom/2026/09/apple-debuts-iphone-18-pro-and-iphone-18-pro-max/",
+    "snippet": "iPhone 18 Pro cũng có thể sạc lên đến 50% trong khoảng 15 phút hoặc sạc không dây lên đến 50% trong 30 phút.5 Trên iPhone 18 Pro Max, sạc có ...",
+    "date": "10 thg 9, 2026",
+    "position": 4
+   },
+   {
+    "title": "iPhone Duo - Thông Số Kỹ Thuật",
+    "link": "https://www.apple.com/vn/iphone-duo/specs/",
+    "snippet": "Công nghệ ProMotion với tốc độ làm mới thích ứng lên đến 120Hz; Màn hình ... Sạc lên đến 50% trong khoảng 30 phút với bộ tiếp hợp 35W trở lên sử dụng ...",
+    "position": 5
+   },
+   {
+    "title": "AirPods 5 - Thông Số Kỹ Thuật",
+    "link": "https://www.apple.com/vn/airpods-5/specs/",
+    "snippet": "Thời lượng pin lên đến 6 giờ với một lần sạc khi tắt kiểm soát tiếng ồn. Thời lượng pin với hộp sạc. Thời lượng pin lên đến 20 giờ khi bật tính năng Chủ Động ...",
+    "position": 6
+   },
+   {
+    "title": "iPhone - Apple (VN)",
+    "link": "https://www.apple.com/vn/iphone/",
+    "snippet": "Nay với loa có âm thanh lớn hơn 50% và phạm vi Tìm Chính Xác rộng hơn đến 1,5 lần, bạn có thể theo dõi những thứ quan trọng dễ dàng hơn bao giờ hết.",
+    "position": 7
+   },
+   {
+    "title": "iPhone 17e - Thông Số Kỹ Thuật",
+    "link": "https://www.apple.com/vn/iphone-17e/specs/",
+    "snippet": "Lên đến 21 giờ. Khả năng sạc nhanh. Sạc lên đến 50% trong 30 phút với bộ tiếp hợp 20W trở lên (được bán riêng) sử dụng cáp sạc USB‑C. Tích hợp pin sạc lithium‑ ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

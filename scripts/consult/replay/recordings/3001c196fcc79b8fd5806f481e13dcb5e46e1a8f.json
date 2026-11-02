@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Work'in Saigon Cafe\" OR \"Café Slow\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:20:43.335Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Work'in Saigon Cafe\" OR \"Café Slow\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Café Slow - Quán cà phê ẩn mình ở Sài Gòn",
+    "link": "https://www.tiktok.com/@dailycafe.hcmc/photo/7682365643185868052",
+    "snippet": "Café Slow - Quán cà phê ẩn mình ở Sài Gòn. Quán cà phê có không gian đèn vàng ấm cúng, dễ chịu với các món bánh và nước uống ngon. Quán còn ...",
+    "position": 1
+   },
+   {
+    "title": "Bespoke Café: Slow Food That Looks This Good",
+    "link": "https://www.tiktok.com/@bespokelaunion/video/7666035114757033236",
+    "snippet": "Bespoke Café: Slow Food That Looks This Good. At Bespoke Café, the dining experience is intentionally unhurried, allowing each culinary creation to be ...",
+    "position": 2
+   },
+   {
+    "title": "📍Café Slow Hội An A work-friendly cafe hidden in Tra Que ...",
+    "link": "https://www.tiktok.com/@bybellenotbell/photo/7683872405680409874",
+    "snippet": "Café Slow Hội An A work-friendly cafe hidden in Tra Que Village, a peaceful vegetable village in Hoi An. #vietnam #hoian #traquevillage ...",
+    "position": 3
+   },
+   {
+    "title": "Bistro 25 Café: Slow Moments, Pastries & Connection",
+    "link": "https://www.tiktok.com/@bistro_24hr/video/7679037801416936725",
+    "snippet": "Bistro 25 Café: Slow Moments, Pastries & Connection. Lead Bistro 25 Café is described as more than just a place to eat — it's a space for ...",
+    "position": 4
+   },
+   {
+    "title": "College Town Café Slow Season: No Business for 3 Months",
+    "link": "https://www.tiktok.com/@honeydcafe/video/7653259942715018509",
+    "snippet": "College Town Café Slow Season: No Business for 3 Months. That time of the year again: no business until school starts in 3 months. For a cafe located in a ...",
+    "position": 5
+   },
+   {
+    "title": "Timorina Café: Slow Mornings With Good Coffee",
+    "link": "https://www.tiktok.com/@timorinacaffee.id/photo/7649589710683196679",
+    "snippet": "Slow mornings, good coffee, and timeless moments. Welcome to Timorina Café. Timorina Café: Slow Mornings With Good Coffee. Enjoy slow mornings filled with good ...",
+    "position": 6
+   },
+   {
+    "title": "Seaside Penarik Café: Slow Coffee Moments by the Sea",
+    "link": "https://www.tiktok.com/@seasidecafe_/video/7658678518548647189",
+    "snippet": "Keywords: seaside penarik café, slow coffee by the sea, Penarik coastal café experience, seaside café slow living, sipping coffee at ...",
+    "position": 7
+   },
+   {
+    "title": "Pandyshadd Café: Slow Mornings & Strong Brews",
+    "link": "https://www.tiktok.com/@jack.mangilit.07/video/7509387837280619794",
+    "snippet": "Pandyshadd Café: Slow Mornings & Strong Brews. Pandyshadd Café offers a tranquil escape for those seeking slow mornings and strong brews ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

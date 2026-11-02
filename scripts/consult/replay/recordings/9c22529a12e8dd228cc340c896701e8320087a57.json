@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:chotot.com/mua-ban-laptop-apple-macbook \"MacBook Air M1\" 9.000.000",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:33:17.649Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:chotot.com/mua-ban-laptop-apple-macbook \"MacBook Air M1\" 9.000.000",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Mua bán MacBook Air cũ Bình Dương giá rẻ 05/10/2026",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-macbook-air-binh-duong-sdpb3pm5",
+    "snippet": "Apple MacBook Air M1 ram 16gb. Mua bán Laptop tại Thành phố Dĩ An Bình. 4 tuần trước. 4. Apple MacBook Air M1 ram 16gb. 16 GB256 GBSSD. 12.000.000 đ. Thành phố ...",
+    "position": 1
+   },
+   {
+    "title": "0 Apple Macbook Air M4 cũ tốt Huyện Long Thành, Đồng Nai",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-macbook-air-m4-huyen-long-thanh-dong-nai-sdpb3pm1023",
+    "snippet": "9.000.000 đ. Phường Tây Thạnh. Huy Lê. 4.5. 62 đã bán · NHÂN ... MacBook ProMacBook AirMacBook Pro M1MacBook Air M1MacBook Air M2MacBook Pro ...",
+    "position": 2
+   },
+   {
+    "title": "Mua bán MacBook Pro cũ tại Hà Nội đẹp, giá rẻ 10/2026",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-macbook-pro-ha-noi-sdpb3pm6",
+    "snippet": "9.000.000 đ. Q. Hai Bà Trưng (P. Vĩnh Tuy mới). 5.0. 24 đã bán ... MacBook AirMacBook Pro M1MacBook Air M1MacBook Air M2MacBook Air M4MacBook ...",
+    "position": 3
+   },
+   {
+    "title": "Mua bán MacBook Air M1 cũ giá rẻ, máy like new, đẹp 99%",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-macbook-air-m1-sdpb3pm141",
+    "snippet": "Giá MacBook Air M1 cũ vào ngày 08/10/2026 dao động khoảng 10,35 triệu - 12,65 triệu, tuỳ dung lượng RAM (8GB hoặc 16GB), SSD (256GB hoặc 512GB), ...",
+    "position": 4
+   },
+   {
+    "title": "153 Apple Macbook Pro cũ đẹp Quận Gò Vấp 10/2026",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-macbook-pro-quan-go-vap-tp-ho-chi-minh-sdpb3pm6",
+    "snippet": "9.000.000 đ. Phường 3. Apple MacBook Pro 2012 Bạc Retina 49 lượt xem save ... MacBook AirMacBook Pro M1MacBook Air M1MacBook Air M2MacBook Air M4MacBook ...",
+    "position": 5
+   },
+   {
+    "title": "0 Apple Macbook Pro M4 Max cũ đẹp Tây Ninh 09/2026",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-macbook-pro-m4-max-tay-ninh-sdpb3pm1026",
+    "snippet": "RAM T-CREATE EXPERT DDR5 6000 CL30 16gb x2. Đã sử dụng (chưa sửa chữa). 9.000.000 đ ... MacBook ProMacBook AirMacBook Pro M1MacBook Air M1MacBook Air M2MacBook ...",
+    "position": 6
+   },
+   {
+    "title": "208 MacBook Air M1 cũ tại TPHCM like new, giá rẻ 10/2026",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-macbook-air-m1-tp-ho-chi-minh-sdpb3pm141",
+    "snippet": "Giá laptop Macbook Air M1 cũ tại Tp Hồ Chí Minh khoảng 11,3 triệu, tùy thuộc vào cấu hình, đời máy và tình trạng sử dụng thực tế. Người mua tại Tp Hồ Chí Minh ...",
+    "position": 7
+   },
+   {
+    "title": "0 Apple Macbook Neo cũ tốt Huyện Đắk Song, Đắk Nông",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-macbook-neo-huyen-dak-song-dak-nong-sdpb3pm1126",
+    "snippet": "9.000.000 đ. Phường 11 (P. Nhiêu Lộc mới). Hoa mười giờ · koi ... MacBook ProMacBook AirMacBook Pro M1MacBook Air M1MacBook Air M2MacBook Air ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,5 +1,6 @@
 import { normalizeVN } from './intent'
 import { sentenceSpans } from './moneyGuard'
+import { evidenceSegments, isBlockStart, namedInSegments, stripPickPhrase } from './entityNameGuard'
 
 // ── THE GROUNDING GATE — detection turned into enforcement ───────────────────
 //
@@ -217,6 +218,22 @@ export interface GroundingGateOptions {
    * is that no option in the results was a close enough match. Undefined = unknown = as before.
    */
   cardRenders?: boolean
+  /** CONSULTATIVE_IN_AGENT: no card of any kind accompanies this reply (a text plan) — write no "the options are on the card" / "no match" line when rows were retrieved. */
+  noCardLine?: boolean
+  /** CONSULTATIVE_IN_AGENT: a bold "Ngày N …" line is a plan day heading, not a venue (live log samples: day headings cut as "ungrounded venues"). */
+  dayHeadings?: boolean
+  /**
+   * CONSULT_V3 (A/B eval 17/10): "**Cá nhân mình chọn Huawei FreeBuds SE 4** nếu …" was cut as an ungrounded venue although the listing
+   * "Tai nghe Bluetooth True Wireless Huawei Freebuds SE 4 (ANC)" was retrieved — the pick phrase made it no substring of any row. The
+   * heading is read without its pick phrase, and a product name also matches order-free (entityNameGuard.namedInSegments).
+   */
+  pickAndOrderFree?: boolean
+  /**
+   * RETRIEVAL_V5 lần 2c (B3, owner 20/10): an ungrounded venue heading is LABELLED once — "(chưa xác minh)" right after its name — instead of
+   * its sentence being cut. Cổng 1 measured the cuts on V4: names + addresses of real venues (4An, iVegan, K-Grill), three train-time lines
+   * (u26), and a cut inside an already-streamed prefix made the whole reply repeat. Nothing is deleted, no "not found" line is added.
+   */
+  labelUngrounded?: boolean
 }
 
 export function suppressUngroundedVenues(
@@ -243,9 +260,11 @@ export function suppressUngroundedVenues(
   const limit = proseEnd(text)
   const prose = text.slice(0, limit)
   const tail = text.slice(limit)
+  let segs: string[][] | null = null
+  const knownSegs = () => (segs ??= evidenceSegments(knownNames))
 
   // Every heading with its offset, in order — the block boundaries.
-  const heads: { shown: string; at: number; start: number; end: number; grounded: boolean; label: boolean }[] = []
+  const heads: { shown: string; at: number; start: number; end: number; grounded: boolean; label: boolean; len: number }[] = []
   for (const m of prose.matchAll(HEADING)) {
     const at = m.index ?? 0
     // A block starts at the beginning of the heading's own line, so the removal
@@ -265,11 +284,28 @@ export function suppressUngroundedVenues(
     // whatever its spelling ("**bún bò Huế cô Ba**" lowercase is still the row). Only an
     // UNMATCHED bold is judged by the presentation shape — and a bold that is not presented as a
     // venue is prose: it still ends the block before it and is never cut.
-    const grounded = isGrounded(normalizeHeading(m[1]), knownNorm)
-    heads.push({ shown: m[1], at, start: lineStart, end: prose.length, grounded, label: !grounded && !isVenueHeading(m[1], restOfLine, nextLine) })
+    const grounded = isGrounded(normalizeHeading(m[1]), knownNorm) || (opts.pickAndOrderFree === true && (() => {
+      const bare = stripPickPhrase(m[1])
+      return (bare !== m[1].trim() && isGrounded(normalizeHeading(bare), knownNorm)) || namedInSegments(bare, knownSegs()) === true
+    })())
+    const dayHeading = opts.dayHeadings === true && /^(?:ngay|day|buoi)\s*\d/.test(normalizeHeading(m[1]))
+    heads.push({ shown: m[1], at, start: lineStart, end: prose.length, grounded, label: !grounded && (dayHeading || !isVenueHeading(m[1], restOfLine, nextLine)), len: m[0].length })
   }
   for (let i = 0; i < heads.length - 1; i++) heads[i].end = heads[i + 1].start
   if (heads.length === 0) return { text, suppressed: [] }
+  if (opts.labelUngrounded) {
+    const tag = lang === 'en' ? ' (unverified)' : ' (chưa xác minh)'
+    const seen = new Set<string>()
+    const targets = heads.filter(h => !h.label && !h.grounded && !seen.has(normalizeHeading(h.shown)) && (seen.add(normalizeHeading(h.shown)), true))
+    if (!targets.length) return { text, suppressed: [] }
+    let out = prose
+    for (const h of [...targets].reverse()) {
+      const p = h.at + h.len
+      if (out.slice(p, p + tag.length + 2).includes(tag.trim())) continue
+      out = out.slice(0, p) + tag + out.slice(p)
+    }
+    return { text: out + tail, suppressed: targets.map(h => h.shown.trim()) }
+  }
 
   /**
    * 🚨 THE ACTION IS PROPORTIONAL (owner 2026-09-19, after three fixes of the same bug): an
@@ -296,7 +332,20 @@ export function suppressUngroundedVenues(
     // The carrying sentence, from the start of its line (a list bullet goes with it) to its end —
     // and never past the block boundary the next heading starts.
     const lineStart = prose.lastIndexOf('\n', span[0]) + 1
-    cuts.push({ start: Math.min(h.start, lineStart), end: Math.min(span[1], h.end) })
+    let end = Math.min(span[1], h.end)
+    // CONSULT_V3 (A/B rerun 17/10, sh-2): a cut LIST ITEM takes its own continuation lines ("Đánh đổi: …" under "- **Tên**") with it.
+    if (opts.pickAndOrderFree === true && /^\s*(?:[-*+•]|\d+[.)])\s/.test(prose.slice(Math.min(h.start, lineStart), h.at))) {
+      let at = prose.indexOf('\n', h.at)
+      while (at !== -1 && at < h.end) {
+        const next = prose.indexOf('\n', at + 1)
+        const line = prose.slice(at + 1, next === -1 ? prose.length : next)
+        if (!line.trim() || /^\s*(?:[-*+•]|\d+[.)])\s/.test(line) || isBlockStart(line)) break
+        at = next
+        end = Math.max(end, Math.min(next === -1 ? prose.length : next, h.end))
+        if (next === -1) break
+      }
+    }
+    cuts.push({ start: Math.min(h.start, lineStart), end })
   }
   if (suppressed.length === 0) return { text, suppressed: [] }
 
@@ -347,8 +396,13 @@ export function suppressUngroundedVenues(
   // but the tool DID return venues, "found nothing" contradicts the card rendered right under
   // it. The truthful line is then that the verified places are on the card — the not-found
   // line is kept for the case it was written for: retrieval came back empty.
-  const fallback = knownNorm.length > 0 ? (opts.cardRenders === false ? noMatchLine(lang) : seeCardLine(lang)) : notFoundLine(lang)
-  const body = groundedRemain === 0 ? `${withoutLeadIn}\n\n${fallback}`.trim() : withoutLeadIn
+  //
+  // 🚨 CONSULTATIVE_IN_AGENT (`noCardLine`, 2026-10-10 UAT): a trip plan answered in TEXT renders no card at all (the standalone cards are cleared
+  // for a plan turn), but `cardRenders` was read off the retrieved recommendations — so the reply ended "Những lựa chọn mình xác minh được cho yêu
+  // cầu này nằm ở thẻ bên dưới." under nothing. With `noCardLine` and rows retrieved, the line is simply not written (an empty retrieval keeps
+  // its own not-found line, which points at nothing).
+  const fallback = knownNorm.length > 0 ? (opts.noCardLine ? '' : opts.cardRenders === false ? noMatchLine(lang) : seeCardLine(lang)) : notFoundLine(lang)
+  const body = groundedRemain === 0 ? (fallback ? `${withoutLeadIn}\n\n${fallback}` : withoutLeadIn).trim() : withoutLeadIn
   return { text: `${body}${cleanedTail}`, suppressed }
 }
 

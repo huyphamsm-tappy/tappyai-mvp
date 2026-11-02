@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Anker Soundcore Liberty 4 NC Sony WH-CH720N Soundcore Space One giá dưới 3 triệu chạy bộ chống nước IPX5 (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:44:01.600Z",
+ "body": {
+  "searchParameters": {
+   "q": "Anker Soundcore Liberty 4 NC Sony WH-CH720N Soundcore Space One giá dưới 3 triệu chạy bộ chống nước IPX5 (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

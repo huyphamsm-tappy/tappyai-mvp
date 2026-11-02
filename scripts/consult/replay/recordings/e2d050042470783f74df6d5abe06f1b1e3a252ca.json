@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Nguyên Lý Kế Toán site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:03:10.029Z",
+ "body": {
+  "searchParameters": {
+   "q": "Nguyên Lý Kế Toán site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Sách - Nguyên Lý Kế Toán (KT) - Newshop",
+    "link": "https://www.lazada.vn/products/sach-nguyen-ly-ke-toan-kt-newshop-i1717818866.html?srsltid=AU7gw4U8Sf5XDyd8nM5koqCmjHms-O8Eyw30axqeQ3Yqm50MvNRBKpZE",
+    "snippet": "Nguyên Lý Kế Toán sẽ rất bổ ích cho những ai muốn tìm hiểu, nghiên cứu về kế toán. Cuốn sách này được chúng tôi biên soạn với mục tiêu đáp ứng yêu cầu tìm hiểu ...",
+    "position": 1
+   },
+   {
+    "title": "Sách Nguyên lý kế toán (bộ 2 cuốn)",
+    "link": "https://www.lazada.vn/products/pdp-i3191778021.html?srsltid=AU7gw4V8NRRFriX2kvGdmwmZWRreDk2VMGA5Gj9v6Yyx_w23zIcPzHYE",
+    "snippet": "Nội dung cơ bản của môn Nguyên Lý Kế Toán bao gồm việc trình bày và giải thích đối tượng của kế toán, các phương pháp kế toán được sử dụng để thu thập, xử lý, ...",
+    "position": 2
+   },
+   {
+    "title": "Fahasa - Sách - Nguyên Lý Kế Toán (Tái Bản 2026)",
+    "link": "https://www.lazada.vn/products/fahasa-sach-nguyen-ly-ke-toan-tai-ban-2026-i13384350102.html?srsltid=AU7gw4WU76GVWnKaC4-YQzFmT-UCW8aI3vJKkoi1kYSpUhW5k4hS2_di",
+    "snippet": "LazMall Fahasa - Sách - Nguyên Lý Kế Toán (Tái Bản 2026) · 100% chính hãng · 30 ngày miễn phí trả hàng · Không áp dụng chính sách bảo hành.",
+    "position": 3
+   },
+   {
+    "title": "Nguyên lý kế toán - Lý thuyết và bài tập - 2 cuốn",
+    "link": "https://www.lazada.vn/products/nguyen-ly-ke-toan-ly-thuyet-va-bai-tap-2-cuon-i1321341464.html?srsltid=AU7gw4XqucjtFIwlUW3e7ndXaXYsAmmAGo1f4k2wO4fp2oAX_Oq1uE7m",
+    "snippet": "Nội dung cơ bản của môn Nguyên lý kế toán bao gồm việc trình bày và giải thích đối tượng của kế toán, các phương pháp kế toán được sử dụng để thu thập, xử lý, ...",
+    "rating": 5,
+    "ratingCount": 12,
+    "position": 4
+   },
+   {
+    "title": "Sách Fahasa - Nguyên Lý Kế Toán",
+    "link": "https://www.lazada.vn/products/sach-fahasa-nguyen-ly-ke-toan-i2513429576.html?srsltid=AU7gw4UzD1d9vkdzKbRg1EtDIjDjSuCygeVYtqu-DZCmxWhhvs6vh2L8",
+    "snippet": "Sách Fahasa Nguyên Lý Kế Toán 2021 - ấn bản mới nhất, bìa mềm, 319 trang, ngôn ngữ Tiếng Việt. Sản phẩm top 3 bán chạy nhất tháng 12-2023 tại Fahasa, ...",
+    "position": 5
+   },
+   {
+    "title": "Sách - Combo Nguyên Lý Kế Toán + Hệ Thống Bài Tập & ...",
+    "link": "https://www.lazada.vn/products/sach-combo-nguyen-ly-ke-toan-he-thong-bai-tap-cau-hoi-trac-nghiem-nguyen-ly-ke-toan-phan-tich-tai-chinh-doanh-nghiep-bo-3-cuon-kt-newshop-i2299010301.html?srsltid=AU7gw4VJm3YH0PAsuloruyVe2Ox45f72p-V1Fq4Smzc1GJRy6JVOfuk-",
+    "snippet": "Nâng cao kiến thức tài toán của bạn với bộ 'Combo Nguyên Lý Kế Toán' toàn diện, bao gồm 'Hệ Thống Bài Tập & Câu Hỏi Trắc Nghiệm' và 'Phân Tích Tài Chính ...",
+    "position": 6
+   },
+   {
+    "title": "Nguyên lý kế toán TBL9 | Lazada Việt Nam",
+    "link": "https://h5.lazada.vn/products/nguyen-ly-ke-toan-tbl9-i2480593275-s12148638385.html",
+    "snippet": "Nguyên lý kế toán TBL9. 5(5). Tuỳ chọn sản phẩm ... Môn nguyên lý kế toán sẽ rất bổ ích cho những ai muốn tìm hiểu, nghiên cứu về kế toán. Cuốn sách này được ...",
+    "position": 7
+   },
+   {
+    "title": "Nguyên Lý Kế Toán - PGS.TS. Võ Văn Nhị",
+    "link": "https://www.lazada.vn/products/nguyen-ly-ke-toan-pgsts-vo-van-nhi-i270620399.html?srsltid=AU7gw4WN14btSnrcF_-9eMZTSk-jtAA-jqhNEpndYVE1plh79ocOoKJV",
+    "snippet": "Tan Viet. Công ty phát hành Hương Huy. Tác giả Nhiều Tác Giả. Ngày xuất bản 10-2018. Nhà xuất bản Nhà Xuất Bản Tài Chính. Loại bìa Bìa mềm. Số trang 328.",
+    "rating": 5,
+    "ratingCount": 6,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

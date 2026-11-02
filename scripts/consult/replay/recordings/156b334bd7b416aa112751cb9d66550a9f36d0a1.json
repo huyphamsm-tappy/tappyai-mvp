@@ -1,0 +1,55 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "Phở Nhất Vị - Nguyễn Thị Minh Khai Quận 1 Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T16:57:07.054Z",
+ "body": {
+  "searchParameters": {
+   "q": "Phở Nhất Vị - Nguyễn Thị Minh Khai Quận 1 Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7709177,106.6844511,18.0536z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Phở Nhất Vị - Nguyễn Thị Minh Khai",
+    "address": "149A Nguyễn Thị Minh Khai, Quận 1, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7709177,
+    "longitude": 106.68702599999999,
+    "rating": 4.9,
+    "ratingCount": 1133,
+    "type": "Nhà hàng phở",
+    "types": [
+     "Nhà hàng phở"
+    ],
+    "website": "https://phonhatvi.vn/",
+    "phoneNumber": "+84 862 600 339",
+    "openingHours": {
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLcOYUr6ajp7JCTOezW-5tGRt2M5Ft1QRCFWbGLt4dMlhDZwFh775_74R6mil89H3Fc0dTc4BL92_sAsVQSlidjj1CJBk9KWKj3VUk0wUsqqK68YpzyhVTdqSnRi5JwmLUBy4J5Qm2-nCGGq",
+    "cid": "6767320232680193506",
+    "fid": "0x31752f595f8cb0d9:0x5dea59e596377de2",
+    "placeId": "ChIJ2bCMX1kvdTER4n03luVZ6l0"
+   }
+  ],
+  "credits": 3
+ }
+}

@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Axcela Vietnam\" OR \"WESET ENGLISH CENTER\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:17:16.358Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Axcela Vietnam\" OR \"WESET ENGLISH CENTER\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hành trình đến với tiếng Anh tại WESET của Á Hậu Hạnh ...",
+    "link": "https://www.tiktok.com/@wesetenglishcenter/video/7691966691173076232",
+    "snippet": "Video TikTok từ WESET ENGLISH CENTER (@wesetenglishcenter): \"Hành trình đến với tiếng Anh tại WESET của Á Hậu Hạnh Nguyên như thế nào #WESET ...",
+    "position": 1
+   },
+   {
+    "title": "WESET ENGLISH CENTER (@wesetenglishcenter)",
+    "link": "https://www.tiktok.com/@wesetenglishcenter",
+    "snippet": "WESET ENGLISH CENTER (@wesetenglishcenter) on TikTok | 639.3K Likes. 55.8K Followers. WESET ENGLISH CENTER Đồng hành cùng thế hệ trẻ vươn ra biển lớn.",
+    "position": 2
+   },
+   {
+    "title": "Kim Yến's English Learning Journey at WESET",
+    "link": "https://www.tiktok.com/@wesetenglishcenter/video/7685718553101683976",
+    "snippet": "Kim Yến shares her positive experience with WESET's English learning path, facilities, and teaching. @WESET ENGLISH CENTER.",
+    "position": 3
+   },
+   {
+    "title": "Can đảm bước qua nỗi sợ mang tên speaking #WESET ...",
+    "link": "https://www.tiktok.com/@wesetenglishcenter/video/7691164476560739591",
+    "snippet": "Video TikTok từ WESET ENGLISH CENTER (@wesetenglishcenter): \"Can đảm bước qua nỗi sợ mang tên speaking #WESET #learnontiktok #tiktokgiaitri ...",
+    "position": 4
+   },
+   {
+    "title": "Ấn tượng sâu sắc của Á Hậu Hellen khi học tiếng Anh tại ...",
+    "link": "https://www.tiktok.com/@wesetenglishcenter/video/7685325567733927176",
+    "snippet": "Video TikTok từ WESET ENGLISH CENTER (@wesetenglishcenter): \"Ấn tượng sâu sắc của Á Hậu Hellen khi học tiếng Anh tại WESET #WESET ...",
+    "position": 5
+   },
+   {
+    "title": "Hà Trúc Linh chọn học tiếng Anh tại WESET",
+    "link": "https://www.tiktok.com/@wesetenglishcenter/video/7689316666471107858",
+    "snippet": "Hà Trúc Linh đã chọn học tại WESET English Center. Cô ấy đánh giá rất cao hệ thống học online, cũng như sự hỗ trợ tận tình từ các anh chị ...",
+    "position": 6
+   },
+   {
+    "title": "Tiếng Anh Junior tại WESET English Center",
+    "link": "https://www.tiktok.com/@wesetenglishcenter/video/7687985946335235335",
+    "snippet": "Tiếng Anh Junior tại WESET English Center. Học viên nhí tại WESET Junior có những trải nghiệm học tập vui vẻ và bổ ích. Các em được học từ mới, ...",
+    "position": 7
+   },
+   {
+    "title": "Học tiếng Anh tại WESET để tốt nghiệp đúng hạn",
+    "link": "https://www.tiktok.com/@wesetenglishcenter/video/7691308514412662037",
+    "snippet": "Video TikTok từ WESET ENGLISH CENTER (@wesetenglishcenter): \"Tìm hiểu cách WESET giúp sinh viên năm tư Đại học Công nghiệp TP.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Macbook Air M1 2020 (8GB/256GB)\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:48:48.378Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Macbook Air M1 2020 (8GB/256GB)\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "MacBook Air M1 2020 8gb/256gb SSD Lightweight and ...",
+    "link": "https://www.tiktok.com/@officialdevices/video/7532460190684204293",
+    "snippet": "MacBook Air M1 2020 8gb/256gb SSD Lightweight and sleek Comment M1 for price. @Official Devices | Phone store.",
+    "position": 1
+   },
+   {
+    "title": "MacBook Air M1 2020 8GB/256GB - HN Laptops",
+    "link": "https://www.tiktok.com/@h.n_laptops/video/7664823388380106005",
+    "snippet": "MacBook Air M1 2020 8GB/256GB – Price, Specs & Where to Buy. Lead MacBook Air M1 2020 (Apple M1 chip, 8‑core CPU) available for 97,999/-. This ...",
+    "position": 2
+   },
+   {
+    "title": "#macbook #m1 #2020 #retina #osaka",
+    "link": "https://www.tiktok.com/@phamduong.laptop/video/7689376725427342610",
+    "snippet": "Macbook Air M1 2020 8GB/256GB — unit dijelaskan sebagai Macbook Air M1 2020 dengan Apple M1 Chip, RAM 8GB Unified Memory, dan SSD 256GB original ...",
+    "position": 3
+   },
+   {
+    "title": "MacBook Air M1 2020 (8GB/256GB) for Sale: Last Price 60k!",
+    "link": "https://www.tiktok.com/@xdealsgadgets0/video/7674240576002313492",
+    "snippet": "MacBook Air M1 2020 (8GB/256GB) for Sale: Last Price 60k! ### MacBook Air M1 2020: A Rare Find at an Unbeatable Price For those searching ...",
+    "position": 4
+   },
+   {
+    "title": "MacBook Air M1 2020 8GB/256GB with Original Charger",
+    "link": "https://www.tiktok.com/@hamdan_k7777/video/7643520802985512212",
+    "snippet": "MacBook Air M1 2020 8GB/256GB with Original Charger - UAE Sale. For sale: MacBook Air M1 2020 model with original charger. Specs: 8GB RAM and 256GB SSD ...",
+    "position": 5
+   },
+   {
+    "title": "MacBook Air M1 2020 8GB 1TB — Storage Available",
+    "link": "https://www.tiktok.com/@laptop.heaven/video/7687133140279725319",
+    "snippet": "Macbook Air M1 2020 8GB/256GB — unit dijelaskan sebagai Macbook Air M1 2020 dengan Apple M1 Chip, RAM 8GB Unified Memory, dan SSD 256GB original ...",
+    "position": 6
+   },
+   {
+    "title": "Pre-Loved MacBook Air M1 2020 for Sale – Great Condition",
+    "link": "https://www.tiktok.com/@jiafindstech/photo/7660407679457791252?image_index=1",
+    "snippet": "MacBook Air M1 (2020) – 8GB / 256GB SSD Purchased: March 2025 Specs: • Apple M1 Chip • 8GB Unified Memory • 256GB SSD • 13.3” Retina Display ...",
+    "position": 7
+   },
+   {
+    "title": "MacBook Air M1 2020 8GB/256GB for sale in Dubai — AED 1200",
+    "link": "https://www.tiktok.com/@laxmi.thapa1637/video/7671583879123291399",
+    "snippet": "MacBook Air M1 2020 8gb/256gb 13.3 inch 98% battery health price 1200aed it's in excellent condition if you want to buy call us on 0555320982#macbookair ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

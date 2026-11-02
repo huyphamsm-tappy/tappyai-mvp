@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Aniki Nhà Hàng Nhật Quận 1\" OR \"Japan Eats\" OR \"izakaya Matsuki\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T17:15:33.888Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Aniki Nhà Hàng Nhật Quận 1\" OR \"Japan Eats\" OR \"izakaya Matsuki\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Izakaya Matsuki - Chi nhánh mới trung tâm Q1",
+    "link": "https://www.tiktok.com/@thphg__/video/7631200566013660436",
+    "snippet": "Chi nhánh mới của Izakaya Matsuki vibe đẹp cực, nằm ngay trung tâm Q1 luôn ✨ #henho #nhahang #izakaya #japanesefood #IzakayaMATSUKI. Izakaya ...",
+    "position": 1
+   },
+   {
+    "title": "Izakaya Matsuki: Quán Nhật Mở Cửa Đến 4h Sáng",
+    "link": "https://www.tiktok.com/@vine.2905/video/7588025629925313812",
+    "snippet": "Izakaya Matsuki: Quán Nhật Mở Cửa Đến 4h Sáng. Khám phá Izakaya ... izakaya Matsuki, món sò điệp nướng bơ, mì ý sốt trứng cá tuyết, ẩm ...",
+    "position": 2
+   },
+   {
+    "title": "Izakaya Matsuki Quận 1 - Quán lai rai sang, đồ ăn Nhật ngon",
+    "link": "https://www.tiktok.com/@thongdongdoday/video/7667531161605917960",
+    "snippet": "Lead Izakaya Matsuki ở Quận 1 là lựa chọn lý tưởng để “lai rai” chill: không gian sang, thiết kế mang phong cách Nhật, đồ ăn ngon và nhiều ...",
+    "position": 3
+   },
+   {
+    "title": "Izakaya Matsuki quận 1 – review quán Nhật vibe sang xịn",
+    "link": "https://www.tiktok.com/@dichoimoingay/video/7644536263168675093",
+    "snippet": "Lead Izakaya Matsuki là một quán Nhật mang vibe sang xịn, nằm ngay trung tâm quận 1. Review này tập trung vào không gian tone đen, ...",
+    "position": 4
+   },
+   {
+    "title": "mê quán izakaya lowkey này mãi thoaiii📍izakaya matsuki",
+    "link": "https://www.tiktok.com/@bachuareview/video/7402577127196888336",
+    "snippet": "mê quán izakaya lowkey này mãi thoaiii izakaya matsuki - 26 linh lang, ba đình #vtmgr #bachuareview #ancungtiktok #learnontiktok Aya Matsuki ...",
+    "position": 5
+   },
+   {
+    "title": "USED-Japan Eats!: An Explorer's Guide to Japanese Food by ...",
+    "link": "https://shop.tiktok.com/us/pdp/japan-eats-exploring-japanese-cuisine-culture-hardcover/1731919136063525578",
+    "snippet": "Buy USED-Japan Eats!: An Explorer's Guide to Japanese Food by Reynolds, Betty (Hardcover) on TikTok Shop. Discover great prices on and get free shipping on ...",
+    "position": 6
+   },
+   {
+    "title": "JAPAN EATS (@japan.eats8386)",
+    "link": "https://www.tiktok.com/@japan.eats8386",
+    "snippet": "Nhà hàng Nhật JAPAN EATS 5/70 Nguyễn Trung Ngạn,Bến Nghé,Q1,HCM ☎️0903636940. Ở ngay trung tâm quận 1 có một quán Nhật siêu Hidden giữa lòng Sài Gòn.",
+    "position": 7
+   },
+   {
+    "title": "Best cafes and sushi spots (Kirby, Miffy, JJK, Go Go Curry)",
+    "link": "https://www.tiktok.com/@unlovebot/video/7656417775501561110",
+    "snippet": "Lead Japan eats: a quick, flavorful tour of themed cafes and popular sushi and curry chains you can visit while traveling in Japan.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

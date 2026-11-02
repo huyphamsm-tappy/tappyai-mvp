@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "tai nghe chống ồn chủ động ANC dưới 3 triệu Việt Nam Sony JBL Anker Soundcore (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:38:53.779Z",
+ "body": {
+  "searchParameters": {
+   "q": "tai nghe chống ồn chủ động ANC dưới 3 triệu Việt Nam Sony JBL Anker Soundcore (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe chính hãng từ 50K - Mẫu mới, giá giảm sâu 10/2026",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe.html",
+    "snippet": "Tai nghe chính hãng Apple, Sony, JBL giảm sốc đến 66%. Trải nghiệm âm thanh đỉnh cao cùng đặc quyền: Trả góp 0%, freeship 2H, bảo hành đến 2 năm.",
+    "position": 1
+   },
+   {
+    "title": "Tai nghe bluetooth không dây bền rẻ, chính hãng, giao 2h",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe/tai-nghe-bluetooth.html",
+    "snippet": "Các dòng sản phẩm phổ biến như Redmi Buds 4 và Xiaomi Buds 3T Pro mang đến trải nghiệm âm thanh tuyệt vời, cùng với tính năng chống ồn giúp nâng cao chất lượng ...",
+    "position": 2
+   },
+   {
+    "title": "TOP 10+ Tai nghe Bluetooth màu đen, pin trâu, giá tốt",
+    "link": "https://cellphones.com.vn/sforum/tai-nghe-bluetooth-mau-den",
+    "snippet": "JBL Tune 770NC cân bằng giữa pin dài, ANC và thiết kế gập gọn. Với thời lượng lên đến 70 giờ khi không dùng chống ồn, sản phẩm phù hợp người ít ...",
+    "date": "27 thg 9, 2026",
+    "position": 3
+   },
+   {
+    "title": "Tai nghe chống nước chơi thể thao, bơi lội [BỀN RẺ]",
+    "link": "https://cellphones.com.vn/bo-loc/tai-nghe-chong-nuoc",
+    "snippet": "Có mic đàm thoại; Chống ồn; Điều khiển giọng nói; Xuyên âm; Sạc không dây; Chống nước; Có app phiên dịch; Chống ồn chủ động ANC. Cổng kết nối.",
+    "position": 4
+   },
+   {
+    "title": "Tai nghe Anker Soundcore Liberty 4 NC | Giá rẻ 10/2026",
+    "link": "https://cellphones.com.vn/tai-nghe-bluetooth-anker-soundcore-liberty-4.html",
+    "snippet": "Trải nghiệm không gián đoạn với thời lượng pin đến 28 giờ kèm hộp sạc · Đắm chìm trong không gian âm nhạc với công nghệ âm thanh vòm 360° · Âm thanh sắc nét, rõ ...",
+    "rating": 4.9,
+    "ratingCount": 13,
+    "position": 5
+   },
+   {
+    "title": "TOP 7+ Tai nghe màu vàng đẹp, âm thanh hay nên mua ...",
+    "link": "https://cellphones.com.vn/sforum/tai-nghe-mau-vang",
+    "snippet": "Công nghệ âm thanh: Màng loa 10mm JBL Pro Sound, chống ồn chủ động True Adaptive ANC. Thời lượng pin: 10 giờ (tắt ANC), tối đa 40 giờ với hộp ...",
+    "date": "29 thg 9, 2026",
+    "position": 6
+   },
+   {
+    "title": "SOUNDPEATS là thương hiệu của nước nào?",
+    "link": "https://cellphones.com.vn/sforum/soundpeats-la-cua-nuoc-nao",
+    "snippet": "Tai nghe Bluetooth True Wireless SoundPeats T3 Pro (ANC). 290.000đ500.000đ. Smember giảm thêm 3.000đ. Đặc điểm nổi bật. Chống ồn chủ động ANC ...",
+    "date": "3 thg 9, 2025",
+    "position": 7
+   },
+   {
+    "title": "Đánh giá JBL Tour Pro 2 sau 1 tháng sử dụng",
+    "link": "https://cellphones.com.vn/sforum/danh-gia-jbl-tour-pro-2",
+    "snippet": "JBL Tour Pro 2 là chiếc tai nghe true wireless đầu tiên trên thế giới được trang bị màn hình cảm ứng bên ngoài hộp sạc.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

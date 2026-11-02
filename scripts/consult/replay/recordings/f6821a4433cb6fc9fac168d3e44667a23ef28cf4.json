@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "MacBook Air M1 2020 (8 core CPU| 7 core GPU| 8GB RAM",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:44:11.986Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Air M1 2020 (8 core CPU| 7 core GPU| 8GB RAM",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "MacBook Air 13 inch M1 2020 8-core CPU/8GB/256GB/7-core GPU cũ",
+    "imageUrl": "https://bachlongstore.vn/vnt_upload/product/07_2023/432532_1.png",
+    "imageWidth": 650,
+    "imageHeight": 650,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrrPVohC97LeLZI8UwlVx03k7TcjnKJ7g_dkIVHJuk7g&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Bạch Long Store",
+    "domain": "bachlongstore.vn",
+    "link": "https://bachlongstore.vn/macbook-air-13-inch-m1-2020-8-core-cpu-8gb-256gb-7-core-gpu-cu.html?srsltid=AU7gw4XOwvGZaLffS43ks_md8isFhX80tQxppGyE3yZQGGggR2aKnN95",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbachlongstore.vn%2Fvnt_upload%2Fproduct%2F07_2023%2F432532_1.png&tbnid=iDSj8V4f0mymtM&imgrefurl=https%3A%2F%2Fbachlongstore.vn%2Fmacbook-air-13-inch-m1-2020-8-core-cpu-8gb-256gb-7-core-gpu-cu.html%3Fsrsltid%3DAU7gw4XOwvGZaLffS43ks_md8isFhX80tQxppGyE3yZQGGggR2aKnN95&docid=oYDYMHf1R9lInM&w=650&h=650",
+    "position": 1
+   },
+   {
+    "title": "MacBook Air 13 inch 2020 M1 (8C CPU / 7C GPU) 8GB 256GB",
+    "imageUrl": "https://cdn.qmacstore.com/mba132020gray-1-640x640.webp",
+    "imageWidth": 640,
+    "imageHeight": 640,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZ-jNTdG3yqfzKwdPD1y91XoZtn-BpMGpU6gvJgxcu5g&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "QMac Store",
+    "domain": "qmacstore.com",
+    "link": "https://qmacstore.com/macbook-air-13-inch-2020-m1-8c-cpu-7c-gpu-8gb-256gb.html?srsltid=AU7gw4WeLFBaNvL3oEHvubqzTKbIW8saciS7Al6_gfQN9K74JNjdN1mK",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.qmacstore.com%2Fmba132020gray-1-640x640.webp&tbnid=VWeiQfC-cSd3vM&imgrefurl=https%3A%2F%2Fqmacstore.com%2Fmacbook-air-13-inch-2020-m1-8c-cpu-7c-gpu-8gb-256gb.html%3Fsrsltid%3DAU7gw4WeLFBaNvL3oEHvubqzTKbIW8saciS7Al6_gfQN9K74JNjdN1mK&docid=L_NpI3Oczl36EM&w=640&h=640",
+    "position": 2
+   },
+   {
+    "title": "MacBook Air 13 inch M1 | 8 core CPU | 7 core GPU | SSD 512GB | RAM 8GB",
+    "imageUrl": "https://shopdunk.com/images/thumbs/0039719_macbook-air-13-inch-m1-8-core-cpu-7-core-gpu-ssd-512gb-ram-8gb-cu-dep-95.png",
+    "imageWidth": 650,
+    "imageHeight": 650,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqGBdfgem4gScSTIYJrDa3ZobQjdaGWpzDKk7iZo7exg&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "ShopDunk",
+    "domain": "shopdunk.com",
+    "link": "https://shopdunk.com/macbook-air-13-inch-m1-8-core-cpu-7-core-gpu-ssd-512gb-ram-8gb-cu-%C4%91ep-95",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fshopdunk.com%2Fimages%2Fthumbs%2F0039719_macbook-air-13-inch-m1-8-core-cpu-7-core-gpu-ssd-512gb-ram-8gb-cu-dep-95.png&tbnid=jy9pvbnkzW-TGM&imgrefurl=https%3A%2F%2Fshopdunk.com%2Fmacbook-air-13-inch-m1-8-core-cpu-7-core-gpu-ssd-512gb-ram-8gb-cu-%25C4%2591ep-95&docid=EBco_R4-vyuY_M&w=650&h=650",
+    "position": 3
+   },
+   {
+    "title": "Máy tính xách tay Apple Macbook Air MGN93SA/A (M1 8 Cores CPU/ 8Gb/ 256GB/ 7",
+    "imageUrl": "https://tanphat.com.vn/media/lib/22-11-2023/applemacbookairmgn93sa-a-1.jpg",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiBeuiTZyyw3sM6bBEQwznDpUGC7aF9T4FTlB5QTASKA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Tân Phát",
+    "domain": "tanphat.com.vn",
+    "link": "https://tanphat.com.vn/may-tinh-xach-tay-apple-macbook-air-mgn93sa/a-m1-8-cores-cpu-8gb-256gb-7-core-gpu-silver.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Ftanphat.com.vn%2Fmedia%2Flib%2F22-11-2023%2Fapplemacbookairmgn93sa-a-1.jpg&tbnid=5MOlIcxqbxzjlM&imgrefurl=https%3A%2F%2Ftanphat.com.vn%2Fmay-tinh-xach-tay-apple-macbook-air-mgn93sa%2Fa-m1-8-cores-cpu-8gb-256gb-7-core-gpu-silver.html&docid=3mAI7A_m0m8KBM&w=600&h=600",
+    "position": 4
+   },
+   {
+    "title": "Macbook Air M1 13 inch 2020 8-Core CPU Ram 8GB SSD 256GB MGN63 A2337 EMC  3598",
+    "imageUrl": "https://ycom.vn/uploads/1429/product/2023/05/15/b676a9f4-0cd6-4cc4-827c-7ca5d64ffb9b-1684152567.jpeg",
+    "imageWidth": 800,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUtXFok5TELdSvzPQbBd-xAyCIkovCNzBFHKkkwKko0A&s=10",
+    "thumbnailWidth": 515,
+    "thumbnailHeight": 388,
+    "source": "CÔNG TY TNHH YCOM",
+    "domain": "ycom.vn",
+    "link": "https://ycom.vn/macbook-air-m1-13-inch-2020-8-core-cpu-ram-8gb-ssd-256gb-mgn63-a2337-emc-3598-b2075273",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fycom.vn%2Fuploads%2F1429%2Fproduct%2F2023%2F05%2F15%2Fb676a9f4-0cd6-4cc4-827c-7ca5d64ffb9b-1684152567.jpeg&tbnid=qeYWbyug9Nth8M&imgrefurl=https%3A%2F%2Fycom.vn%2Fmacbook-air-m1-13-inch-2020-8-core-cpu-ram-8gb-ssd-256gb-mgn63-a2337-emc-3598-b2075273&docid=w01Eu3bYSJG4vM&w=800&h=600",
+    "position": 5
+   },
+   {
+    "title": "Macbook Air M1 13 inch 2020 - Apple M1 8-Core CPU / 8GB / 256GB SSD 【Like  New - OPENBOX】 ( Trắng )",
+    "imageUrl": "https://muabandienthoai24h.vn/storage/images/5D7ZA4WnwM_1684901741.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSl7zmKeku4ErtlD0fQ3HNhk3cPp8MiyHeDAyLZZR4gVA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Mua Bán Điện Thoại 24H",
+    "domain": "muabandienthoai24h.vn",
+    "link": "https://muabandienthoai24h.vn/macbook-air-m1-13-inch-2020-apple-m1-8-core-cpu-8gb-256gb-ssd-like-new-openbox-trang-sku-19516847462061",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmuabandienthoai24h.vn%2Fstorage%2Fimages%2F5D7ZA4WnwM_1684901741.jpg&tbnid=9kKwWpulJND4bM&imgrefurl=https%3A%2F%2Fmuabandienthoai24h.vn%2Fmacbook-air-m1-13-inch-2020-apple-m1-8-core-cpu-8gb-256gb-ssd-like-new-openbox-trang-sku-19516847462061&docid=ezuT51RFSaP0OM&w=1000&h=1000",
+    "position": 6
+   },
+   {
+    "title": "MacBook Air M1 2020 8-core GPU - Chính hãng, mua trả chậm",
+    "imageUrl": "https://cdn.tgdd.vn/Products/Images/44/264420/Slider/vi-vn-apple-macbook-air-m1-2020-8-core-gpu-1.jpg",
+    "imageWidth": 1020,
+    "imageHeight": 570,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3V8aOg7mx__DHuBmD5VrXXb_Pjd0MosmELAEmAGzO-w&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 411,
+    "source": "Điện máy XANH",
+    "domain": "www.dienmayxanh.com",
+    "link": "https://www.dienmayxanh.com/laptop/apple-macbook-air-m1-2020-8-core-gpu?srsltid=AU7gw4WXebF7XFwFvC0nVSS2dxXYVZd5YgjKBRUcTrKxNN7Rxv7FB-5_",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.tgdd.vn%2FProducts%2FImages%2F44%2F264420%2FSlider%2Fvi-vn-apple-macbook-air-m1-2020-8-core-gpu-1.jpg&tbnid=C86464QcLQwbNM&imgrefurl=https%3A%2F%2Fwww.dienmayxanh.com%2Flaptop%2Fapple-macbook-air-m1-2020-8-core-gpu%3Fsrsltid%3DAU7gw4WXebF7XFwFvC0nVSS2dxXYVZd5YgjKBRUcTrKxNN7Rxv7FB-5_&docid=ziJXa5zNtb6xOM&w=1020&h=570",
+    "position": 7
+   },
+   {
+    "title": "📌 MacBook Air 2020 13\" – Chip M1 💻 CPU 8-core | GPU 7-core ⚡ RAM 8GB |  SSD 256GB ✨ Máy 99% – Màu Space Gray 🔥 Giá chỉ 12.990.000₫ 📦 Máy đẹp –  hoạt động mượt – pin trâu 🚚 Sẵn hàng, giao ngay 🏪 zShop",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=1289834339846613",
+    "imageWidth": 2048,
+    "imageHeight": 1491,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMwubHggyeHpwcdJ9Vu2mitpLea_sDJtrzl5iLgwx3Sw&s=10",
+    "thumbnailWidth": 649,
+    "thumbnailHeight": 472,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/zshopdanang/posts/-macbook-air-2020-13-chip-m1-cpu-8-core-gpu-7-core-ram-8gb-ssd-256gb-m%C3%A1y-99-m%C3%A0u-/1289834363179944/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D1289834339846613&tbnid=q-vNSxhQbkkRuM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fzshopdanang%2Fposts%2F-macbook-air-2020-13-chip-m1-cpu-8-core-gpu-7-core-ram-8gb-ssd-256gb-m%25C3%25A1y-99-m%25C3%25A0u-%2F1289834363179944%2F&docid=PaBAdw79j3H9WM&w=2048&h=1491",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

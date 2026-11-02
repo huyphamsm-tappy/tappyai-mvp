@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook Air M1 cũ 8GB 256GB (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:32:51.652Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Air M1 cũ 8GB 256GB (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "MacBook cũ | Mac cũ uy tín, trả góp 0%, giảm đến 7 triệu",
+    "link": "https://cellphones.com.vn/hang-cu/mac.html",
+    "snippet": "... Apple MacBook Air M1 256GB 2020 - Cũ xước cấn. Sắp về hàng. Trả góp 0%. : 12.290.000đ. 22.990.000đ. Giảm 47%. Smember giảm ...",
+    "position": 1
+   },
+   {
+    "title": "Apple MacBook Air M1 256GB 2020 - Cũ đẹp",
+    "link": "https://cellphones.com.vn/macbook-air-2020-m1-cu-dep.html",
+    "snippet": "Apple MacBook Air M1 256GB 2020 - Cũ đẹp ; Smember Giảm thêm đến 143.000đ ; Trả góp 0% ; Trả góp 0% ; Giá sản phẩm. 22.990.000đ 14.290.000đ ; Danh sách Cookies. Việc ...",
+    "rating": 4.8,
+    "ratingCount": 5,
+    "position": 2
+   },
+   {
+    "title": "Apple MacBook Air M1 16GB 256GB 2020 - Cũ Trầy Xước",
+    "link": "https://cellphones.com.vn/macbook-air-2020-m1-16gb-cu-tray-xuoc.html",
+    "snippet": "Mua Macbook Air 2020 M1 (8GB - 256GB) cũ giá rẻ - Nguồn gốc rõ ràng, bảo hành 6-12 tháng, đổi mới 30 ngày, luôn xuất bán đầy đủ VAT.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 3
+   },
+   {
+    "title": "Macbook Air cũ giá rẻ | Trả góp 0%, 0Đ trả trước, phụ phí",
+    "link": "https://cellphones.com.vn/hang-cu/mac/macbook-air.html",
+    "snippet": "Ổ cứng. 256GB; 512GB ; Tình trạng máy. Trầy xước; Xước cấn; Cũ đẹp; Đã kích hoạt ; Độ phân giải. Retina; 2K (Quad HD); 3K ; Dung lượng RAM. 8GB; 16GB; 24GB ; CPU.",
+    "position": 4
+   },
+   {
+    "title": "Hàng cũ Apple MacBook Air M1 256GB 2020 | Giá rẻ",
+    "link": "https://cellphones.com.vn/macbook-air-2020-m1-cu-xuoc-can.html",
+    "snippet": "Lên đời chỉ từ 10.167.000đ ; Trợ giá đến 2.000.000đ ; Trả góp 0% ; Trả góp 0% ; Giá sản phẩm. 22.990.000đ 12.290.000đ.",
+    "rating": 5,
+    "ratingCount": 4,
+    "position": 5
+   },
+   {
+    "title": "Apple MacBook Air M1 16GB 256GB 2020 - Cũ đẹp",
+    "link": "https://cellphones.com.vn/macbook-air-2020-m1-16gb-cu-dep.html",
+    "snippet": "Apple MacBook Air M1 16GB 256GB 2020 - Cũ đẹp ; Smember Giảm thêm đến 163.000đ ; Trả góp 0% ; Trả góp 0% ; Giá sản phẩm. 16.290.000đ ; Danh sách Cookies. Việc từ ...",
+    "position": 6
+   },
+   {
+    "title": "Macbook Air | Chính hãng, thu cũ lên đời giá tốt 10/2026",
+    "link": "https://cellphones.com.vn/laptop/mac/macbook-air.html",
+    "snippet": "Laptop Macbook Air chính hãng Apple Việt Nam giá rẻ, có thu cũ. Trả góp 0% - Không phụ phí - Không trả trước. Mua ngay Mac Air tại CellphoneS.",
+    "position": 7
+   },
+   {
+    "title": "Apple MacBook Air M1 16GB 256GB 2020 - Cũ Xước Cấn",
+    "link": "https://cellphones.com.vn/macbook-air-2020-m1-16gb-cu-xuoc-can.html",
+    "snippet": "Mua Macbook Air 2020 M1 (8GB - 256GB) cũ giá rẻ - Nguồn gốc rõ ràng, bảo hành 6-12 tháng, đổi mới 30 ngày, luôn xuất bán đầy đủ VAT.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

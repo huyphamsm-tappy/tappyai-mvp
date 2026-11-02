@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple iPhone 15 thông số kỹ thuật màn hình camera pin chính thức Việt Nam",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T09:58:53.350Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple iPhone 15 thông số kỹ thuật màn hình camera pin chính thức Việt Nam",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "iPhone 15 - Thông số kỹ thuật - Bộ phận hỗ trợ của ...",
+    "link": "https://support.apple.com/vi-vn/111831",
+    "snippet": "Màn Hình · Màn hình Super Retina XDR · Màn hình toàn phần OLED 6,1 inch (theo đường chéo) · Độ phân giải 2556x1179 pixel với mật độ điểm ảnh 460 ppi · Dynamic ...",
+    "position": 1
+   },
+   {
+    "title": "iPhone - Apple (VN)",
+    "link": "https://www.apple.com/vn/iphone/",
+    "snippet": "Các tính năng Thông Suốt cũng giúp bạn trả lời cuộc gọi hoặc tin nhắn từ iPhone ngay trên máy Mac. Bạn thậm chí còn có thể sao chép hình ảnh, video hoặc văn bản ...",
+    "position": 2
+   },
+   {
+    "title": "iPhone 15 thông số kỹ thuật cập nhật mới theo Apple",
+    "link": "https://shopdunk.com/iphone-15-thong-so-ky-thuat",
+    "snippet": "1. Bảng thông số kỹ thuật iPhone 15 chi tiết · Camera góc rộng: cảm biến 48MP, khẩu độ f/1.6 · Camera góc siêu rộng: cảm biến 12MP, khẩu độ f/2.4.",
+    "date": "11 thg 9, 2023",
+    "position": 3
+   },
+   {
+    "title": "iPhone 15 thường 128GB chính hãng VN/A, giá tốt T10/2026",
+    "link": "https://cellphones.com.vn/iphone-15.html",
+    "snippet": "Thông số kỹ thuật ; Độ phân giải màn hình. 2556 x 1179 pixels ; Tính năng màn hình. Dynamic Island HDR display. True Tone Wide color (P3) Haptic Touch Lớp phủ ...",
+    "rating": 4.9,
+    "ratingCount": 102,
+    "position": 4
+   },
+   {
+    "title": "[FULL] Thông số iPhone 15 của 4 phiên bản",
+    "link": "https://viettelstore.vn/tin-tuc/thong-so-iphone-15?srsltid=AU7gw4UsOjajGhsyZrNT7YdEnux9d0A4cQZHIr2os7czuwmGWbZTKoH8",
+    "snippet": "Công nghệ màn hình & hiển thị, Super Retina XDR OLED Dynamic Island, Super Retina XDR OLED Dynamic Island ; Tần số quét, 60 Hz, 60 Hz ; Độ sáng ...",
+    "date": "13 thg 9, 2023",
+    "position": 5
+   },
+   {
+    "title": "Cấu hình iPhone 15 chi tiết: Có còn đáng mua trong năm ...",
+    "link": "https://didongviet.vn/dchannel/cau-hinh-iphone-15/",
+    "snippet": "Cấu hình iPhone 15 được định hình bởi vi xử lý Apple A16 Bionic (tiến trình 4nm), RAM 6GB, màn hình Super Retina XDR 6.1 inch độ sáng 2.000 nits ...",
+    "date": "16 thg 4, 2026",
+    "rating": 5,
+    "ratingCount": 3,
+    "position": 6
+   },
+   {
+    "title": "Apple ra mắt iPhone 15 và iPhone 15 Plus",
+    "link": "https://www.apple.com/vn/newsroom/2023/09/apple-debuts-iphone-15-and-iphone-15-plus/",
+    "snippet": "Sở hữu kích thước màn hình 6.1-inch và 6.7-inch,1 iPhone 15 và iPhone 15 Plus được trang bị Dynamic Island, một cách thức sáng tạo nhằm tương ...",
+    "date": "13 thg 9, 2023",
+    "position": 7
+   },
+   {
+    "title": "iPhone 15 128GB - Chính hãng VN/A",
+    "link": "https://hoanghamobile.com/dien-thoai-di-dong/apple-iphone-15-128gb-chinh-hang-vn-a?srsltid=AU7gw4VedRtjsyFjeN0inNP1Y4EVEmRuKi2XKMIQeKrhkzi4nSVDYRof",
+    "snippet": "Máy còn có màn hình Super Retina XDR OLED 6,1 inch cho chất lượng hiển thị rực rỡ, hệ thống camera 48MP (chính) và 12MP (góc siêu rộng) cùng khả năng quay video ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "iPhone 15 giá Việt Nam Samsung Galaxy S24 giá Việt Nam hiện nay",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:54:34.027Z",
+ "body": {
+  "searchParameters": {
+   "q": "iPhone 15 giá Việt Nam Samsung Galaxy S24 giá Việt Nam hiện nay",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "So sánh Samsung Galaxy S24 và iPhone 15",
+    "link": "https://www.chotot.com/kinh-nghiem/so-sanh-samsung-galaxy-s24-va-iphone-15.html",
+    "snippet": "Dưới đây là bảng tổng hợp giá iPhone 15 và Samsung Galaxy S24 niêm yết lúc mới ra mắt và mức giá máy cũ tham khảo trên thị trường hiện nay: Phiên bản bộ nhớ ...",
+    "position": 1
+   },
+   {
+    "title": "iPhone 15 Pro Max bằng tiền S24 Ultra thì mua máy nào?",
+    "link": "https://www.youtube.com/watch?v=aM_LqJics-0",
+    "snippet": "... iphone-15.html_23062024 Dương Dê - Đánh giá các sản phẩm ... Go to channel Dương Dê · Tư vấn điện thoại: Sao giá iPhone ở Việt Nam cao thế?",
+    "position": 2
+   },
+   {
+    "title": "Galaxy S24 Plus vs. iPhone 15 Pro: Chênh lệch 6 triệu ...",
+    "link": "https://24hstore.vn/review-san-pham/so-sanh-galaxy-s24-plus-vs-iphone-15-pro-n8514?srsltid=AU7gw4UmYZseN8nbKzmfr6T-gut0qjEYcTnFb2Hy8hDgQvJyIeLBqCrx",
+    "snippet": "Galaxy S24 Plus vs. iPhone 15 Pro có giá thành chênh lệch khoảng 6 triệu, lựa chọn nào phù hợp với bạn hơn? Cùng theo dõi những đánh giá chi ...",
+    "date": "15 thg 4, 2026",
+    "position": 3
+   },
+   {
+    "title": "So sánh Samsung Galaxy S24 và iPhone 15 Plus",
+    "link": "https://fptshop.com.vn/tin-tuc/danh-gia/so-sanh-samsung-galaxy-s24-va-iphone-15-plus-174926",
+    "snippet": "Samsung Galaxy S24 và iPhone 15 Plus đều là những flagship mạnh mẽ và toàn năng đại diện cho Android và iOS hiện nay. Vậy nên chọn Galaxy S24 ...",
+    "date": "2 thg 5, 2026",
+    "position": 4
+   },
+   {
+    "title": "So sánh Samsung Galaxy S24 và iPhone 15: Chọn iOS ổn ...",
+    "link": "https://cellphones.com.vn/sforum/so-sanh-samsung-s24-va-iphone-15",
+    "snippet": "Samsung S24 phiên bản 256GB hiện có giá khoảng gần 17 triệu ... Ở thị trường Việt Nam Galaxy S24 được trang bị con chip hàng đầu của ...",
+    "date": "7 thg 8, 2025",
+    "position": 5
+   },
+   {
+    "title": "So sánh iPhone 15 và Galaxy S24: Ai mới thực sự là \"siêu ...",
+    "link": "https://mhm.vn/blogs/tin-cong-nghe/so-sanh-iphone-15-va-galaxy-s24-ai-moi-thuc-su-la-sieu-pham?srsltid=AU7gw4V3a41CBw0Y42HDYB0izGL-OEa_jX-pIM7Cm9cnBiXcQ6VoUrbE",
+    "snippet": "Nếu xét về mức giá, Galaxy S24 có mức khởi điểm thấp hơn so với iPhone 15, với mức giá khoảng 17 triệu đồng cho phiên bản S24 8GB - 256GB, trong ...",
+    "date": "12 thg 4, 2024",
+    "position": 6
+   },
+   {
+    "title": "So sánh Samsung Galaxy S24 và Apple iPhone 15",
+    "link": "https://clickbuy.com.vn/so-sanh-samsung-galaxy-s24-va-apple-iphone-15.html?srsltid=AU7gw4VsynlQKWx3xEynjCoMeYhBM_mCqynjC5LikIX7_Wee37FYQpe1",
+    "snippet": "So sánh chi tiết giữa Samsung Galaxy S24 và iPhone 15, hai smartphone hàng đầu với các tính năng độc đáo.",
+    "date": "15 thg 4, 2024",
+    "position": 7
+   },
+   {
+    "title": "iPhone 15 hay Galaxy S24?",
+    "link": "https://www.youtube.com/watch?v=9EvJzYStpiI",
+    "snippet": "... iPhone 15 cũ giá tốt: https://www.xtmobile.vn/iphone-15?utm_source=youtube&utm_medium=vatvostudio&utm_campaign=iphone-15-12-2024 ▻ Hoặc Galaxy ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -58,6 +58,8 @@ export async function GET(req: Request) {
        */
       source: ent.paid ? (ent.source === 'apple_iap' ? 'apple' : 'external') : null,
       status: sub?.status ?? null,
+      /** The raw grant behind the plan ('web_sepay', 'google_play', 'apple_iap', 'manual', …). Additive; `source` above is the store contract. */
+      entitlementSource: ent.source,
       currentPeriodEnd: sub?.current_period_end ?? null,
       /** The limit that is actually enforced for THIS caller — the ONE shared AI pool. */
       freeDailyLimit: dailyLimit,

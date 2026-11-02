@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "tai nghe chống ồn chủ động ANC dưới 3 triệu Sony Anker Soundcore Edifier (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:06:25.324Z",
+ "body": {
+  "searchParameters": {
+   "q": "tai nghe chống ồn chủ động ANC dưới 3 triệu Sony Anker Soundcore Edifier (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe ANC chống ồn đỉnh cao, chính hãng, giá rẻ từ 300k",
+    "link": "https://cellphones.com.vn/bo-loc/tai-nghe-chong-on-chu-dong-anc",
+    "snippet": "Có mic đàm thoại; Chống ồn; Điều khiển giọng nói; Xuyên âm; Sạc không dây; Chống nước; Có app phiên dịch; Chống ồn chủ động ANC. Cổng kết nối.",
+    "position": 1
+   },
+   {
+    "title": "Tai nghe giá rẻ dưới 5 triệu | Đa dạng mẫu mã, trả góp 0%",
+    "link": "https://cellphones.com.vn/bo-loc/tai-nghe-gia-duoi-5-trieu",
+    "snippet": "Có mic đàm thoại; Chống ồn; Điều khiển giọng nói; Xuyên âm; Sạc không dây; Chống nước; Có app phiên dịch; Chống ồn chủ động ANC. Cổng kết nối.",
+    "position": 2
+   },
+   {
+    "title": "99+ Tai nghe bluetooth giá rẻ dưới 2 triệu | Nên mua ngay",
+    "link": "https://cellphones.com.vn/bo-loc/tai-nghe-gia-duoi-2-trieu",
+    "snippet": "Có mic đàm thoại; Chống ồn; Điều khiển giọng nói; Xuyên âm; Sạc không dây; Chống nước; Có app phiên dịch; Chống ồn chủ động ANC. Cổng kết nối.",
+    "position": 3
+   },
+   {
+    "title": "Tai nghe Edifier ES850NB giá rẻ 10/2026 | Nhiều ưu đãi",
+    "link": "https://cellphones.com.vn/tai-nghe-chup-tai-edifier-es850nb.html",
+    "snippet": "Trọng lượng. 265g. Công nghệ âm thanh. Chống ồn chủ động ANC Hi-Res Audio Hi-Res Audio Wireless. Micro. Có. Thời lượng sử dụng Pin. 55 giờ (Tắt ANC). Phương ...",
+    "position": 4
+   },
+   {
+    "title": "TOP 5 tai nghe Bluetooth chống ồn chủ động đáng mua 2026",
+    "link": "https://cellphones.com.vn/sforum/tai-nghe-bluetooth-chong-chu-dong-dang-mua",
+    "snippet": "Công nghệ chống ồn chủ động (ANC) giúp hạn chế tiếng ồn từ môi trường, tạo không gian nghe yên tĩnh hơn, trong khi kết nối Bluetooth mang đến sự ...",
+    "date": "15 thg 8, 2026",
+    "rating": 4,
+    "ratingCount": 1,
+    "position": 5
+   },
+   {
+    "title": "Tai nghe Edifier WH700NB | Giá rẻ 10/2026, nhiều ưu đãi",
+    "link": "https://cellphones.com.vn/tai-nghe-bluetooth-edifier-wh700.html",
+    "snippet": "Đặc điểm nổi bật ... Tai nghe bluetooth Edifier WH700NB là tai nghe chụp tai sở hữu chất lượng âm thanh với độ trễ thấp chỉ 0.08 giây cùng công nghệ chống ồn ANC.",
+    "rating": 5,
+    "ratingCount": 11,
+    "position": 6
+   },
+   {
+    "title": "Tai nghe Edifier Atom Max | Giá rẻ, ưu đãi tốt",
+    "link": "https://cellphones.com.vn/tai-nghe-chup-tai-edifier-atom-max.html",
+    "snippet": "Với khả năng phát nhạc lên đến 45 giờ khi tắt chống ồn chủ động (ANC) và 26 giờ khi bật ANC, sản phẩm mang đến trải nghiệm âm thanh không gián đoạn. Đặc biệt, ...",
+    "rating": 4.5,
+    "ratingCount": 2,
+    "position": 7
+   },
+   {
+    "title": "Tai nghe chống nước chơi thể thao, bơi lội [BỀN RẺ]",
+    "link": "https://cellphones.com.vn/bo-loc/tai-nghe-chong-nuoc",
+    "snippet": "Có mic đàm thoại; Chống ồn; Điều khiển giọng nói; Xuyên âm; Sạc không dây; Chống nước; Có app phiên dịch; Chống ồn chủ động ANC. Cổng kết nối.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

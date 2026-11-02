@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:support.apple.com vi-vn kiểm tra MacBook cũ Activation Lock Find My erase Mac",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:04:19.653Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:support.apple.com vi-vn kiểm tra MacBook cũ Activation Lock Find My erase Mac",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Xóa máy Mac - Bộ phận hỗ trợ của Apple (VN)",
+    "link": "https://support.apple.com/vi-vn/guide/mac-help/mchl7676b710/mac",
+    "snippet": "Đi tới ứng dụng Cài đặt hệ thống trên máy Mac của bạn. · Bấm vào Cài đặt chung trong thanh bên. · Bấm vào Chuyển hoặc đặt lại. · Bấm vào Xóa tất cả nội dung và cài ...",
+    "position": 1
+   },
+   {
+    "title": "Xóa iPhone - Bộ phận hỗ trợ của Apple (VN)",
+    "link": "https://support.apple.com/vi-vn/guide/iphone/iph7a2a9399b/ios",
+    "snippet": "Kết nối iPhone với máy tính của bạn bằng cáp USB hoặc USB-C. · Trên máy Mac của bạn, bấm vào · Bấm vào biểu tượng iPhone trong thanh bên Finder (ở bên dưới Vị trí) ...",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,82 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "ve xe khach tu Sài Gòn di Đà Nẵng gia bao nhieu vexere futa phuong trang",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T16:56:38.991Z",
+ "body": {
+  "searchParameters": {
+   "q": "ve xe khach tu Sài Gòn di Đà Nẵng gia bao nhieu vexere futa phuong trang",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "FUTA Bus Lines",
+    "link": "https://futabus.vn/",
+    "snippet": "Đặt vé xe Phương Trang đi liên tỉnh trực tuyến. Số điện thoại tổng đài đặt vé xe phương trang: 1900 6067.",
+    "position": 1
+   },
+   {
+    "title": "Xe Phương Trang đi Đà Nẵng từ Sài Gòn | Lịch chạy, SĐT ...",
+    "link": "https://blog.vexere.com/xe-phuong-trang-di-da-nang-tu-sai-gon/",
+    "snippet": "Giá vé xe Phương Trang Sài Gòn Đà Nẵng bao nhiêu? Trả lời: Giá vé Phương Trang TPHCM Đà Nẵng hiện đang ở mức 510.000 VNĐ/khách cho dòng xe ...",
+    "date": "13 thg 1, 2026",
+    "position": 2
+   },
+   {
+    "title": "Đặt vé xe Phương Trang đi Đà Nẵng từ Sài Gòn giá tốt nhất",
+    "link": "https://vexere.com/vi-VN/ve-xe-khach-phuong-trang-tu-sai-gon-di-da-nang-129t1151-11071.html",
+    "snippet": "Đang chuyển đến trang thanh toán. Việc này không quá 15 giây, bạn đợi chút nhé! loading.",
+    "rating": 4.8,
+    "ratingCount": 5041,
+    "position": 3
+   },
+   {
+    "title": "Xe Phương Trang | Đặt Vé Online, Giá Vé 2026 & Số điện ...",
+    "link": "https://www.redbus.vn/ve-xe-khach/nha-xe/phuong-trang",
+    "snippet": "Giá vé xe : từ 260.000 VNĐ đến 460.000 VNĐ. Điểm đón khách: Bến xe phương trang Sài Gòn bao gồm: : Bến xe An Sương, Bến xe Miền Tây, Bến xe Miền ...",
+    "rating": 4.3,
+    "ratingCount": 3837,
+    "position": 4
+   },
+   {
+    "title": "Phương Trang - FUTA Bus Lines",
+    "link": "https://www.facebook.com/xephuongtrang/posts/ho%C3%A1n-%C4%91%E1%BB%95i-d%C3%B2ng-xe-tp-hcm-%C4%91%C3%A0-n%E1%BA%B5ng-n%C3%A2ng-t%E1%BA%A7m-tr%E1%BA%A3i-nghi%E1%BB%87m-v%E1%BB%9Bi-d%C3%B2ng-vip-34-gi%C6%B0%E1%BB%9Dng-n%E1%BA%B1m-/547346044555669/",
+    "snippet": "⏰ Ngày khai trương: 15/01/2025 Giá vé hấp dẫn: 360.000đ/vé Lộ trình chi tiết: Bến xe Phía Nam Đà Nẵng ⇔ QL1A ⇔ VP Nam Phước ⇔ VP Tam ...",
+    "position": 5
+   },
+   {
+    "title": "Xe Phương Trang – Giá vé, số điện thoại, lịch trình",
+    "link": "https://vexere.com/vi-VN/xe-phuong-trang",
+    "snippet": "d. Giá vé giá xe Phương Trang tuyến Hồ Chí Minh - Lâm Đồng của nhà xe · Xe giường nằm đi Lâm Đồng từ Hồ Chí Minh của Phương Trang: 240,000đ · Xe limousine đi Lâm ...",
+    "rating": 4.8,
+    "ratingCount": 5041,
+    "position": 6
+   },
+   {
+    "title": "Đặt vé xe Phương Trang đi Sài Gòn từ Đà Nẵng giá tốt nhất",
+    "link": "https://vexere.com/vi-VN/ve-xe-khach-phuong-trang-tu-da-nang-di-sai-gon-115t1291-11071.html",
+    "snippet": "Chuyến xe Phương Trang sớm nhất đi Sài Gòn xuất phát vào lúc 09:45 là của hãng xe Phương Trang. Nhà xe Phương Trang sẽ bắt đầu xuất phát ở Đà Nẵng lúc 09:45 và ...",
+    "rating": 4.8,
+    "ratingCount": 4974,
+    "position": 7
+   },
+   {
+    "title": "Xe Phương Trang đi Đà Nẵng từ Sài Gòn",
+    "link": "https://blog.vexere.com/xe-phuong-trang-di-da-nang-tu-sai-gon-2/",
+    "snippet": "Cập nhật giá vé xe Phương Trang đi Đà Nẵng từ Sài Gòn, lịch trình xuất bến, điểm đón trả và xe trung chuyển tận nơi. Đặt vé ngay tại Vexere!",
+    "date": "10 thg 9, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

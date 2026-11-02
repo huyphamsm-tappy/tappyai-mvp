@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Top 10 tai nghe Bluetooth có Mic chống ồn tốt nhất 2023",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:02:57.844Z",
+ "body": {
+  "searchParameters": {
+   "q": "Top 10 tai nghe Bluetooth có Mic chống ồn tốt nhất 2023",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Top 10 tai nghe Bluetooth có Mic chống ồn tốt nhất 2023",
+    "imageUrl": "https://cdn.tgdd.vn//News/Thumb/1470631/thumb-tn-bt-760x368.jpg",
+    "imageWidth": 760,
+    "imageHeight": 368,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFH2APgZdQT6O4fg6O37t25TGQHA5knEShpfv0JEfMUA&s=10",
+    "thumbnailWidth": 642,
+    "thumbnailHeight": 311,
+    "source": "Điện máy XANH",
+    "domain": "www.dienmayxanh.com",
+    "link": "https://www.dienmayxanh.com/kinh-nghiem-hay/xx-mau-tai-nghe-bluetooth-co-mic-hot-nhat-trong-1470631?srsltid=AU7gw4XTqR1RftamaHifZJhtZqr-gMqI9a0kWUUQJuF7ZS9osw3y7h82",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.tgdd.vn%2F%2FNews%2FThumb%2F1470631%2Fthumb-tn-bt-760x368.jpg&tbnid=eDwcPqAuK8Tu6M&imgrefurl=https%3A%2F%2Fwww.dienmayxanh.com%2Fkinh-nghiem-hay%2Fxx-mau-tai-nghe-bluetooth-co-mic-hot-nhat-trong-1470631%3Fsrsltid%3DAU7gw4XTqR1RftamaHifZJhtZqr-gMqI9a0kWUUQJuF7ZS9osw3y7h82&docid=wD7x2JqlkOs6qM&w=760&h=368",
+    "position": 1
+   },
+   {
+    "title": "Mách bạn top 10 tai nghe Bluetooth chống ồn chuẩn xịn",
+    "imageUrl": "https://soundpeatsvietnam.com/wp-content/uploads/2022/09/top-10-tai-nghe-bluetooth-chong-on.jpg",
+    "imageWidth": 1280,
+    "imageHeight": 720,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQs3Em4O7kGPsLfqHTfGa3MdvqFdLoQPgk7V8gHFuL1WQ&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 414,
+    "source": "tai nghe SoundPEATS",
+    "domain": "soundpeatsvietnam.com",
+    "link": "https://soundpeatsvietnam.com/tai-nghe-bluetooth-chong-on/?srsltid=AU7gw4W15w_ftVJ3tqG4nUz9UTOt8FrafyCihPvVeOm7vYx1z32re_M1",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fsoundpeatsvietnam.com%2Fwp-content%2Fuploads%2F2022%2F09%2Ftop-10-tai-nghe-bluetooth-chong-on.jpg&tbnid=h_xzG8LPpqSRjM&imgrefurl=https%3A%2F%2Fsoundpeatsvietnam.com%2Ftai-nghe-bluetooth-chong-on%2F%3Fsrsltid%3DAU7gw4W15w_ftVJ3tqG4nUz9UTOt8FrafyCihPvVeOm7vYx1z32re_M1&docid=LCj7nyGyWfWu8M&w=1280&h=720",
+    "position": 2
+   },
+   {
+    "title": "TOP 10 tai nghe bluetooth cao cấp có âm thanh tuyệt đỉnh - Thegioididong.com",
+    "imageUrl": "https://cdn.tgdd.vn/Products/Images/54/260096/chup-tai-bluetooth-sony-wh-xb910n-den-thumb-1-600x600.jpg",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3LU1viAYpOA2bJr5d6CQB_3f-FDHbOGoRwA2OHd0Ypw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Thegioididong.com",
+    "domain": "www.thegioididong.com",
+    "link": "https://www.thegioididong.com/hoi-dap/top-10-tai-nghe-bluetooth-cao-cap-nhat-co-am-1466020",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.tgdd.vn%2FProducts%2FImages%2F54%2F260096%2Fchup-tai-bluetooth-sony-wh-xb910n-den-thumb-1-600x600.jpg&tbnid=V6wCP4sRYrW9NM&imgrefurl=https%3A%2F%2Fwww.thegioididong.com%2Fhoi-dap%2Ftop-10-tai-nghe-bluetooth-cao-cap-nhat-co-am-1466020&docid=vsuqaif4RJ92xM&w=600&h=600",
+    "position": 3
+   },
+   {
+    "title": "TOP 10 tai nghe Bluetooth bán chạy nhất năm 2023 tại Thế Giới Di Động -  Thegioididong.com",
+    "imageUrl": "https://cdn.tgdd.vn/Products/Images/54/230363/tai-nghe-bluetooth-true-wireless-mozard-ts13-thumb-2-600x600.jpeg",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRv1ezIhPO2wXn2GoZAZiJ4J-7sgH-Job9tJTH1D4Xjcw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Thegioididong.com",
+    "domain": "www.thegioididong.com",
+    "link": "https://www.thegioididong.com/hoi-dap/top-10-tai-nghe-bluetooth-ban-chay-nhat-nam-2022-tai-the-1433037",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.tgdd.vn%2FProducts%2FImages%2F54%2F230363%2Ftai-nghe-bluetooth-true-wireless-mozard-ts13-thumb-2-600x600.jpeg&tbnid=dlZE4BpuRVhsgM&imgrefurl=https%3A%2F%2Fwww.thegioididong.com%2Fhoi-dap%2Ftop-10-tai-nghe-bluetooth-ban-chay-nhat-nam-2022-tai-the-1433037&docid=iXeROXxtj6fqhM&w=600&h=600",
+    "position": 4
+   },
+   {
+    "title": "10 tai nghe chống ồn Bluetooth chất lượng giá cực sốc 2023",
+    "imageUrl": "https://hongnhan.com.vn/wp-content/uploads/2022/12/tai-nghe-bluetooth-chong-on-2.jpeg",
+    "imageWidth": 800,
+    "imageHeight": 482,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqNHxj7Z5670k2ZTzqJpYU1lrFZ5Rf215DqHjXOmktpQ&s=10",
+    "thumbnailWidth": 714,
+    "thumbnailHeight": 430,
+    "source": "Màn hình LED Hồng Nhân",
+    "domain": "hongnhan.com.vn",
+    "link": "https://hongnhan.com.vn/tai-nghe-chong-on-bluetooth/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fhongnhan.com.vn%2Fwp-content%2Fuploads%2F2022%2F12%2Ftai-nghe-bluetooth-chong-on-2.jpeg&tbnid=o82Ulzb65LLkEM&imgrefurl=https%3A%2F%2Fhongnhan.com.vn%2Ftai-nghe-chong-on-bluetooth%2F&docid=HiYGz1S-PvBzpM&w=800&h=482",
+    "position": 5
+   },
+   {
+    "title": "Top 10 tai nghe Bluetooth có Mic chống ồn tốt nhất 2023",
+    "imageUrl": "https://cdnv2.tgdd.vn/mwg-static/tgdd/Products/Images/54/342638/tai-nghe-bluetooth-true-wireless-oppo-enco-buds-3-eteg1-thumb-2-638960566326933296-600x600.jpg",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScaBhRYhVGmpe23tD-XZ0AHRJSZ29r6BRuIEC7XeCT5g&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Điện máy XANH",
+    "domain": "www.dienmayxanh.com",
+    "link": "https://www.dienmayxanh.com/kinh-nghiem-hay/xx-mau-tai-nghe-bluetooth-co-mic-hot-nhat-trong-1470631?srsltid=AU7gw4W7w6vxhOxFIT-Ln2BwDqrqo-ZSSuD0UPhj7osdPRPtCZVYQmV6",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdnv2.tgdd.vn%2Fmwg-static%2Ftgdd%2FProducts%2FImages%2F54%2F342638%2Ftai-nghe-bluetooth-true-wireless-oppo-enco-buds-3-eteg1-thumb-2-638960566326933296-600x600.jpg&tbnid=4IgfYNdPD-UmQM&imgrefurl=https%3A%2F%2Fwww.dienmayxanh.com%2Fkinh-nghiem-hay%2Fxx-mau-tai-nghe-bluetooth-co-mic-hot-nhat-trong-1470631%3Fsrsltid%3DAU7gw4W7w6vxhOxFIT-Ln2BwDqrqo-ZSSuD0UPhj7osdPRPtCZVYQmV6&docid=wD7x2JqlkOs6qM&w=600&h=600",
+    "position": 6
+   },
+   {
+    "title": "Top 5 tai nghe chống ồn tốt nhất dưới 1 triệu mới 2026",
+    "imageUrl": "https://cdn-media.sforum.vn/storage/app/media/wp-content/uploads/2023/02/tai-nghe-chong-on-tot-nhat-1.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 563,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkskNbcxffhsDLQgcDR6S9lnS4Vl6Vg4OqemvBC2BCYg&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 414,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/sforum/tai-nghe-chong-on-tot-nhat",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn-media.sforum.vn%2Fstorage%2Fapp%2Fmedia%2Fwp-content%2Fuploads%2F2023%2F02%2Ftai-nghe-chong-on-tot-nhat-1.jpg&tbnid=5GN97-HCu9jClM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fsforum%2Ftai-nghe-chong-on-tot-nhat&docid=nIt9UP6gww3ddM&w=1000&h=563",
+    "position": 7
+   },
+   {
+    "title": "10 tai nghe chống ồn Bluetooth chất lượng giá cực sốc 2023",
+    "imageUrl": "https://hongnhan.com.vn/wp-content/uploads/2022/10/tai-nghe-chong-on-bluetooth-18.jpg",
+    "imageWidth": 700,
+    "imageHeight": 700,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6N_tWw2DtxtNaxZaknLQ-OGLIAYOBTMnIWYXieRLUHw&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Màn hình LED Hồng Nhân",
+    "domain": "hongnhan.com.vn",
+    "link": "https://hongnhan.com.vn/tai-nghe-chong-on-bluetooth/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fhongnhan.com.vn%2Fwp-content%2Fuploads%2F2022%2F10%2Ftai-nghe-chong-on-bluetooth-18.jpg&tbnid=knzh7KKeSJuYlM&imgrefurl=https%3A%2F%2Fhongnhan.com.vn%2Ftai-nghe-chong-on-bluetooth%2F&docid=HiYGz1S-PvBzpM&w=700&h=700",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

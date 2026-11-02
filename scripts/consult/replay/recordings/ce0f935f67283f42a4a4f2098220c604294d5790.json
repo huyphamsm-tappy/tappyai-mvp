@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Bluetooth True Wireless Huawei Freebuds SE 4 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:34:12.105Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bluetooth True Wireless Huawei Freebuds SE 4 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai Nghe Bluetooth HUAWEI FreeBuds SE 4 ANC",
+    "link": "https://www.lazada.vn/products/tai-nghe-bluetooth-huawei-freebuds-se-4-anc-sac-nhanh-thoi-luong-su-dung-len-den-50-gio-chong-on-chu-dong-da-che-do-anc-thiet-ke-nho-gon-i3162735114.html?srsltid=AU7gw4VkHuNyyajPU2IBtXjGZL9i6ct6I9n0yYwxhgIiaR_pPyj4oK4l",
+    "snippet": "Tai nghe Bluetooth HUAWEI FreeBuds SE 4 ANC với chống ồn chủ động đa chế độ ANC, sạc nhanh và thời lượng sử dụng lên đến 50 giờ. Thiết kế nhỏ gọn, ...",
+    "rating": 5,
+    "ratingCount": 234,
+    "position": 1
+   },
+   {
+    "title": "Tai Nghe Bluetooth HUAWEI FreeBuds SE 3 | 42 Giờ Phát ...",
+    "link": "https://www.lazada.vn/products/tai-nghe-bluetooth-huawei-freebuds-se-3-42-gio-phat-nhac-nhe-va-nho-gon-sac-nhanh-i3005744519.html?srsltid=AU7gw4Wkd7L3HIbE4eC5QuTb45YFwmqWITLuJmWIcHFZurI6RrQsEloJ",
+    "snippet": "Tai nghe Bluetooth HUAWEI FreeBuds SE 3 với thời gian phát nhạc lên đến 42 giờ, thiết kế nhẹ và nhỏ gọn. Tích hợp công nghệ sạc nhanh, có sẵn màu Be và Đen, ...",
+    "rating": 5,
+    "ratingCount": 678,
+    "position": 2
+   },
+   {
+    "title": "Tai Nghe Bluetooth True Wireless Huawei FreeBuds SE 2",
+    "link": "https://h5.lazada.vn/products/tai-nghe-bluetooth-true-wireless-huawei-freebuds-se-2-khang-nuoc-ip54-bluetooth-53-pin-40h-i13329991428.html",
+    "snippet": "Về chất âm, âm thanh của FreeBuds SE 2 khá mượt mà và trung tính nhờ trình điều khiển động 10 mm. HUAWEI cũng trang bị 3 bộ EQ như gồm tăng âm trầm, tăng âm ...",
+    "position": 3
+   },
+   {
+    "title": "Tai nghe Bluetooth True Wireless Huawei Freebuds 6i",
+    "link": "https://www.lazada.vn/products/tai-nghe-bluetooth-true-wireless-huawei-freebuds-6i-chinh-hang-i2720679146.html?srsltid=AU7gw4Xst5OElGNxv7qdxHpAOMRgkwGdOsXeOG9eOl7tsLKnZn21ocQW",
+    "snippet": "Tai nghe Bluetooth True Wireless Huawei Freebuds 6i mang lại âm thanh 8 giờ sử dụng và thời gian pin 35 giờ cho hộp sạc. Với công nghệNoise cancellation và ...",
+    "position": 4
+   },
+   {
+    "title": "HUAWEI FreeBuds SE 3 Tai nghe Bluetooth",
+    "link": "https://h5.lazada.vn/products/huawei-freebuds-se-3-tai-nghe-bluetooth-i2960374408.html",
+    "snippet": "HUAWEI FreeBuds SE 3 Bluetooth - tai nghe không dây chất lượng cao với Bluetooth 5.2 và công nghệ chống ồn. Thiết kế nhỏ gọn, màu trắng đen sang trọng, ...",
+    "position": 5
+   },
+   {
+    "title": "Tai nghe không dây HUAWEI FreeBuds SE, Chất lượng ...",
+    "link": "https://www.lazada.vn/products/tai-nghe-khong-day-huawei-freebuds-se-chat-luong-am-thanh-ro-net-khu-tieng-on-cuoc-goi-thoi-gian-choi-24-gio-i2313009728.html?srsltid=AU7gw4VUL4RlZ54ORbVmJpnIc0biBmnEOISue6LJVD19gNRbSR0tAP5f",
+    "snippet": "Tai nghe không dây HUAWEI FreeBuds SE với âm thanh rạch ròi và khử tiếng ồn cuộc gọi hiệu quả. Thiết kế nhỏ gọn, thời gian sử dụng lên đến 24 giờ, ...",
+    "position": 6
+   },
+   {
+    "title": "Bao da tai nghe HUAWEI FREEBUDS PRO 3, Pro 4, Pro 5 ...",
+    "link": "https://www.lazada.vn/products/bao-da-tai-nghe-huawei-freebuds-pro-3-pro-4-pro-5-nut-nam-cham-da-that-handmade-i2909142287.html?srsltid=AU7gw4UBt8JgimU44QpiaAacNTDNHeWzBMnjyjBBJxR2N2_2yeFvzJ4l",
+    "snippet": "Được gia công hoàn toàn bằng tay từ tấm, mỗi chiếc bao da đều được làm tỉ mỉ với các nút trên ví được sử dụng đồng không gỉ sét. Bên trong ví cũng được dán các ...",
+    "position": 7
+   },
+   {
+    "title": "HUAWEI Freebuds 6i Không dây Bluetooth Tai nghe Flagship- ...",
+    "link": "https://www.lazada.vn/products/pdp-i13376908657.html?srsltid=AU7gw4U6w2mnZE__J2I27mCLHiAYfBnaMHxj1XV-nAhgwNjDWmwqXUxx",
+    "snippet": "Được trả hàng với lý do \"Không vừa ý\". Sản phẩm chưa qua sử dụng và còn nguyên tem mạc, nguyên seal (nếu có). service. Không áp dụng chính sách bảo hành.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

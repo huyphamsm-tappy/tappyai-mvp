@@ -384,10 +384,53 @@ export function detectExplicitLangRequest(text: string): ExplicitLang | null {
   return null
 }
 
-export function detectForcedTool(text: string): 'search_places' | 'get_news' | 'search_products' | 'web_search' | 'get_weather' | 'get_gold_price' | 'get_flight_prices' | 'get_hotel_prices' | 'get_transport_options' | 'save_price_watch' | null {
+/**
+ * ROUTE_FLIGHT_HANG_KHONG_GUARD (round 3b-1, default OFF). Read at call time, like TURN_WEB_TICKET (serperToolBudget.ts flagIsOn).
+ * Covers detectForcedTool and detectTravelIntent in this file. NOT covered: src/lib/recommendation/slotAdmission.ts:75 still matches the
+ * bare "hang khong" (it sees normalized text only), so with the flag ON "còn hàng không" can still admit the 'flight' slot.
+ */
+export function routeFlightGuardOn(env: Record<string, string | undefined> = process.env): boolean {
+  const v = (env.ROUTE_FLIGHT_HANG_KHONG_GUARD ?? '').trim().toLowerCase()
+  return v === '1' || v === 'on' || v === 'true'
+}
+
+/**
+ * ROUTE_TOOL_OFFER_GUARD (round 3h, default OFF). Read at call time, like routeFlightGuardOn. ON: the bare buy verb "mua" only OFFERS shopping
+ * (the domain lexicons still see it); it no longer FORCES search_products, so the specific rules below it run (a price question with a buy verb
+ * reaches the price rule). The strong product signals (sản phẩm, shopee, tiki, lazada, đặt hàng, order hàng) still force, as before.
+ * Round 3h-3 production lock: the flag alone is not enough. It is effective only inside a bench run that holds the spend gate and its
+ * confirmation (BENCH_SPEND_GATE=1 and BENCH_CONFIRM_SPEND set, as liveRunner requires), and never on a production host. A lock on
+ * configuration, not a proof of production safety: a host that sets all three variables would still get it (see the round 3h-3 report).
+ */
+export function routeToolOfferOn(env: Record<string, string | undefined> = process.env): boolean {
+  const v = (env.ROUTE_TOOL_OFFER_GUARD ?? '').trim().toLowerCase()
+  if (!(v === '1' || v === 'on' || v === 'true')) return false
+  if (env.VERCEL_ENV === 'production' || env.NODE_ENV === 'production') return false
+  // The confirmation must be exactly the run cap, as preflightReport and liveTrial require (a stray value does not count).
+  const run = (env.BENCH_SPEND_RUN_CAP_USD ?? '').trim()
+  const confirm = (env.BENCH_CONFIRM_SPEND ?? '').trim()
+  return (env.BENCH_SPEND_GATE ?? '').trim() === '1' && run !== '' && confirm === run
+}
+
+/**
+ * With the guard ON, "hàng không" counts as aviation only in phrases that name flying: "hãng hàng không" (the airline), "bằng hàng không"
+ * (by air), "đường hàng không" (air route), or a bare "hàng không" next to a flight word typed with its diacritics (vé, máy bay, sân bay, chuyến bay).
+ * The bare phrase alone decides nothing: "còn hàng không" (in stock) and "chính hãng không" (a genuine brand) carry no flight word.
+ * Diacritic-free input is NOT matched by this rule (known limitation, see the test table); normalizeVN is not used here because it folds "về" into
+ * "ve" and "bay màu" (to fade) into "bay". Pure. `raw` is the message as typed.
+ */
+function airlineWordIsFlight(raw: string): boolean {
+  const r = raw.normalize('NFC').toLowerCase()
+  if (/hãng hàng không|bằng hàng không|đường hàng không/.test(r)) return true
+  return /hàng không/.test(r) && /vé|máy bay|sân bay|chuyến bay/.test(r)
+}
+
+export function detectForcedTool(text: string):'search_places' | 'get_news' | 'search_products' | 'web_search' | 'get_weather' | 'get_gold_price' | 'get_flight_prices' | 'get_hotel_prices' | 'get_transport_options' | 'save_price_watch' | null {
   const t = normalizeVN(text.toLowerCase().trim())
   if (/theo doi gia|bao minh khi gia|alert gia|gia xuong|theo doi san pham|khi gia duoi|khi gia ve|when price|price alert/.test(t)) return 'save_price_watch'
-  if (/ve may bay|chuyen bay|bay tu|bay den|hang khong|gia ve bay|dat ve bay|vietjet|bamboo airways|pacific airlines|vietnam airlines/.test(t)) return 'get_flight_prices'
+  if (/ve may bay|chuyen bay|bay tu|bay den|gia ve bay|dat ve bay|vietjet|bamboo airways|pacific airlines|vietnam airlines/.test(t)) return 'get_flight_prices'
+  // "hàng không" (aviation) — OFF: the old bare-word match. ON: only phrases that name flying (airlineWordIsFlight).
+  if (routeFlightGuardOn() ? airlineWordIsFlight(text) : /hang khong/.test(t)) return 'get_flight_prices'
   if (/gia phong|gia khach san|dat phong|booking\.com|\bagoda\b|(khach san|hotel|resort).*gia|gia.*(khach san|hotel|resort)/.test(t)) return 'get_hotel_prices'
   if (/xe khach|ve xe (khach|do)|limousine|tau hoa|tau lua|duong sat|\btaxi\b|\bgrab\b|xanh sm|\bxe om\b|di chuyen (tu|den|toi|trong|quanh)|gia ve xe|tu .* den .* (bao nhieu|het|gia|bang gi)/.test(t)) return 'get_transport_options'
   // Phase D (2026-09-20): a named cinema ("rạp CGV Vincom Đồng Khởi"), karaoke, a water park, an
@@ -400,10 +443,14 @@ export function detectForcedTool(text: string): 'search_places' | 'get_news' | '
   // "mua" = buy — but after normalizeVN "nhảy múa" (dance) is also "nhay mua",
   // and it used to route an evening-out request to shopping. A negative
   // lookbehind on "nhay " keeps the verb and drops the dance.
-  if (/(?<!nhay )\bmua\b|san pham|shopee|tiki|lazada|dat hang|order hang/.test(t)) return 'search_products'
+  if (routeToolOfferOn() ? /san pham|shopee|tiki|lazada|dat hang|order hang/.test(t) : /(?<!nhay )\bmua\b|san pham|shopee|tiki|lazada|dat hang|order hang/.test(t)) return 'search_products'
   if (/gia vang|vang sjc|vang 9999|vang mieng|vang nhan|gia vang the gioi|xau\s*\/?\s*usd/.test(t)) return 'get_gold_price'
   if (/thoi tiet|du bao|nhiet do|troi mua|troi nang|troi co lanh|may co|nang khong|mua khong/.test(t)) return 'get_weather'
-  if (/ty gia|hoi suat|gia xang|gia dau|ket qua|\bti so\b|diem so|ai la|tong thong|thu tuong|chu tich|vn-index|chung khoan|xo so|lich am|ngay bao nhieu|\?|nghia la|nhu the nao|khi nao|vi sao|tai sao|moi nhat|cap nhat|hien nay|hien tai/.test(t)) return 'web_search'
+  // round 3h (ROUTE_TOOL_OFFER_GUARD, ON): a buy-verb question ("nên mua laptop nào cho sinh viên?") is not forced to web_search by the bare "?".
+  // The specific lookup words still force it; the model is offered both shopping and web tools for that turn.
+  const WEB_WORDS = /ty gia|hoi suat|gia xang|gia dau|ket qua|\bti so\b|diem so|ai la|tong thong|thu tuong|chu tich|vn-index|chung khoan|xo so|lich am|ngay bao nhieu|nghia la|nhu the nao|khi nao|vi sao|tai sao|moi nhat|cap nhat|hien nay|hien tai/
+  const offerBuyTurn = routeToolOfferOn() && /(?<!nhay )\bmua\b/.test(t)
+  if (offerBuyTurn ? WEB_WORDS.test(t) : /ty gia|hoi suat|gia xang|gia dau|ket qua|\bti so\b|diem so|ai la|tong thong|thu tuong|chu tich|vn-index|chung khoan|xo so|lich am|ngay bao nhieu|\?|nghia la|nhu the nao|khi nao|vi sao|tai sao|moi nhat|cap nhat|hien nay|hien tai/.test(t)) return 'web_search'
   return null
 }
 
@@ -418,7 +465,9 @@ export function detectForcedTool(text: string): 'search_places' | 'get_news' | '
  */
 export function detectTravelIntent(text: string): boolean {
   const t = normalizeVN(text.toLowerCase().trim())
-  if (/ve may bay|chuyen bay|bay tu|bay den|hang khong|\bmay bay\b|vietjet|bamboo|pacific airlines|vietnam airlines|gia phong|gia ve|khach san|resort|dat phong|homestay|nha nghi|du lich|flight|airfare|\bhotel\b|xe khach|tau hoa|tau lua|duong sat|ve xe|ve tau|di chuyen (tu|den|toi)/.test(t)) return true
+  if (/ve may bay|chuyen bay|bay tu|bay den|\bmay bay\b|vietjet|bamboo|pacific airlines|vietnam airlines|gia phong|gia ve|khach san|resort|dat phong|homestay|nha nghi|du lich|flight|airfare|\bhotel\b|xe khach|tau hoa|tau lua|duong sat|ve xe|ve tau|di chuyen (tu|den|toi)/.test(t)) return true
+  // "hàng không" — the same flag as detectForcedTool: OFF the bare word counts (old behaviour); ON only the phrases airlineWordIsFlight keeps.
+  if (routeFlightGuardOn() ? airlineWordIsFlight(text) : /hang khong/.test(t)) return true
   // A route: "(đi) từ X đi/đến/tới/ra/sang Y", or English "from X to Y".
   if (/\btu\b .+ \b(di|den|toi|ra|sang|ve)\b .+/.test(t)) return true
   if (/\bfrom\b .+ \bto\b .+/.test(t)) return true
@@ -910,6 +959,41 @@ const purchaseRe = /\bmua\b|\bco ban\b|san pham|dat hang|order hang|\bbuy\b|\bpu
 export function isPurchaseShaped(text: string): boolean {
   const t = normalizeVN(text.toLowerCase().trim())
   return purchaseRe.test(t) || /\bcua\s*hang\b|\btiem\b|\bshop\b|\bsieu\s*thi\b|\bmall\b|\bplaza\b|\bchi\s*nhanh\b/.test(t)
+}
+
+/** Planning conversations span turns: the user states the trip ("du lịch Đà Nẵng
+ * 3 ngày 2 đêm"), Tappy asks a clarifying question, and the user's ANSWER
+ * ("cuối tuần này, ngân sách 8 triệu, cặp đôi...") usually contains no
+ * destination/day/trip keyword of its own. Detecting on the last message alone
+ * dropped planning mode on exactly the turn the plan gets generated — the
+ * flagship brochure ([TAPPY_PLAN] → TripPlanCard) degraded to plain markdown.
+ *
+ * Walk the recent turns newest-first: the nearest user message with a planning
+ * intent wins, but an assistant message that already delivered a [TAPPY_PLAN]
+ * block ends the search — follow-up chat about a delivered plan ("tìm quán ăn
+ * cụ thể") must not force a whole new plan. The lookback window keeps a trip
+ * asked long ago from resurrecting into an unrelated conversation. */
+const PLANNING_LOOKBACK_MESSAGES = 6
+
+type ConversationMessage = { role: string; content: unknown }
+
+function messageText(content: unknown): string {
+  if (typeof content === 'string') return content
+  if (Array.isArray(content)) return content.map(c => (c as { text?: string })?.text || '').join(' ')
+  return ''
+}
+
+export function detectPlanningIntentFromConversation(messages: ConversationMessage[]): 'trip' | 'evening' | null {
+  const recent = messages.slice(-PLANNING_LOOKBACK_MESSAGES)
+  for (let i = recent.length - 1; i >= 0; i--) {
+    const text = messageText(recent[i].content)
+    if (recent[i].role === 'assistant' && text.includes('[TAPPY_PLAN]')) return null
+    if (recent[i].role === 'user') {
+      const found = detectPlanningIntent(text)
+      if (found) return found
+    }
+  }
+  return null
 }
 
 export function detectLocationIntent(text: string): 'offline' | 'online' | 'unknown' {

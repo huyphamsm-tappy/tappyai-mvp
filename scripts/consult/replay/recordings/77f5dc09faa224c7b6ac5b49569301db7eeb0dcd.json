@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "tai nghe chống ồn ANC chạy bộ chống mồ hôi dưới 3 triệu Việt Nam gia Shopee Tiki Lazada",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:02:55.670Z",
+ "body": {
+  "searchParameters": {
+   "q": "tai nghe chống ồn ANC chạy bộ chống mồ hôi dưới 3 triệu Việt Nam gia Shopee Tiki Lazada",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe chống ồn chủ động anc - Giá Tốt, Sale Tháng 10, ...",
+    "link": "https://shopee.vn/list/tai%20nghe/ch%E1%BB%91ng%20%E1%BB%93n%20ch%E1%BB%A7%20%C4%91%E1%BB%99ng%20anc",
+    "snippet": "Tai nghe Bluetooth không dây GOOJODOQ có chức năng giảm tiếng ồn dịch thuật và phiên âm AI tiên tiến. 133.600₫. 168.000₫. -20%. voucher-icon. #ShopThinhHanh.",
+    "position": 1
+   },
+   {
+    "title": "Tai nghe 2-3 triệu nào ổn cho chạy bộ và có chống ồn ...",
+    "link": "https://www.facebook.com/groups/cuongsac/posts/1499219045508407/",
+    "snippet": "2. Mục tiêu: tai Bluetooth đi thể thao, không chú trọng chất âm, chú trọng việc khó rớt, rớt ko hỏng. Tầm tiền: 300k.",
+    "position": 2
+   },
+   {
+    "title": "Top 10 tai nghe chống ồn tốt, chất lượng, đáng mua hiện nay",
+    "link": "https://gearvn.com/blogs/danh-gia-tu-van/top-tai-nghe-chong-on-tot?srsltid=AU7gw4XvRUNGCIIB2CThT0rlQ85WhzZDEq7DdXQiCYAv659m9u_dHR0e",
+    "snippet": "2.1. SoundPEATS Mini Pro HS · 2.2. Edifier W820NB Plus · 2.3. Tai nghe Bluetooth SoundPeats Air 3 Pro · 2.4. Samsung Galaxy Buds2 Pro · 2.5. JBL ...",
+    "date": "20 thg 5, 2026",
+    "position": 3
+   },
+   {
+    "title": "Top 10 tai nghe Bluetooth có Mic chống ồn tốt nhất 2023",
+    "link": "https://www.dienmayxanh.com/kinh-nghiem-hay/xx-mau-tai-nghe-bluetooth-co-mic-hot-nhat-trong-1470631?srsltid=AU7gw4W2rKpdZPFE2essjFtdgAV1LQ-mBec3hNVyRBg1pCAOqWK6Xq4r",
+    "snippet": "Tai nghe Samsung Galaxy Buds 2 Pro R510N được hỗ trợ công nghệ chống ồn chủ động ANC loại bỏ các tiếng ồn xung quanh người đeo ngay cả khi ở ...",
+    "date": "30 thg 5, 2023",
+    "position": 4
+   },
+   {
+    "title": "Khám phá Top 3 tai nghe chuyên dụng dành cho dân chạy ...",
+    "link": "https://shokz.com.vn/blog/top-3-tai-nghe-chay-bo-chuyen-dung",
+    "snippet": "Khả năng chống nước và mồ hôi Tai nghe nên được thiết kế chống nước và mồ hôi để bạn có thể sử dụng trong điều kiện thời tiết khắc nghiệt hoặc khi bạn đổ mồ hôi ...",
+    "position": 5
+   },
+   {
+    "title": "TOP 11 tai nghe chống ồn dưới 2 triệu chơi game tốt 2024",
+    "link": "https://www.thegioididong.com/game-app/top-12-tai-nghe-chong-on-duoi-2-trieu-choi-game-tot-nhat-2022-1411329",
+    "snippet": "1. Tai nghe Bluetooth True Wireless LG TONE-FP5 · 2. Tai nghe Bluetooth True Wireless Jabra Elite 2 · 3. Tai nghe chụp tai Gaming Corsair HS50 PRO ...",
+    "date": "17 thg 1, 2022",
+    "position": 6
+   },
+   {
+    "title": "Top 5 Tai Nghe True Wireless Chống Ồn ANC Cực Gắt",
+    "link": "https://www.youtube.com/watch?v=F7gSo-zeJ0Q",
+    "snippet": "0:00 Sai lầm tai nghe 2026: Đừng để mất tiền! · 0:40 #5 Sony WF-C510: Nhẹ tênh, pin trâu · 2:27 #4 Huawei FreeBuds 7i: Chống ồn ấn tượng · 3:59 #3 ...",
+    "position": 7
+   },
+   {
+    "title": "Tai nghe thao chạy bộ - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/tai%20nghe/thao%20ch%E1%BA%A1y%20b%E1%BB%99",
+    "snippet": "... Dây FIIL C1 | Kẹp Tai Open Ear Bluetooth 5.4 | Tai Nghe Thể Thao Chạy Bộ Chống Mồ Hôi. 731.500₫. 770.000₫. -5%. Hàng mới về. rating-star 4.9 Đánh giá shop.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

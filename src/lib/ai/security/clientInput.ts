@@ -42,6 +42,10 @@ export const CLIENT_INPUT_LIMITS = {
    *  them into the text budget would make that budget meaningless. */
   maxImagePartsPerMessage: 4,
   maxImageDataUrlChars: 8_000_000,
+  /** 31/10: PDFs attached on a user turn (web `experimental_attachments`). The bytes never reach a model: the server reads their text layer
+   *  (pdfAttachments.ts) with the page reader's own caps. 3 MB of PDF ≈ 4 000 000 base64 characters plus the data-URL header. */
+  maxPdfPartsPerMessage: 2,
+  maxPdfDataUrlChars: 4_100_000,
 } as const
 
 /** Roles a CLIENT may send. `system` and `tool` are application-owned and can
@@ -56,7 +60,9 @@ const FORBIDDEN_MESSAGE_KEYS = ['providerOptions', 'experimental_providerMetadat
 
 export type TextPart = { type: 'text'; text: string }
 export type ImagePart = { type: 'image'; image: string }
-export type ValidatedPart = TextPart | ImagePart
+/** A PDF the person attached: a data URL the server turns into fenced text before any model call (pdfAttachments.ts); never forwarded as is. */
+export type FilePart = { type: 'file'; data: string; mimeType: 'application/pdf'; name: string }
+export type ValidatedPart = TextPart | ImagePart | FilePart
 
 /**
  * Role-aware by design. An image may only appear on a USER turn: an assistant
@@ -77,6 +83,8 @@ export type RejectCode =
   | 'message_too_long'
   | 'too_many_images'
   | 'image_too_large'
+  | 'too_many_files'
+  | 'file_too_large'
   | 'invalid_preferences'
   | 'preference_too_long'
   | 'too_many_preferences'
@@ -143,6 +151,32 @@ function validatePart(part: unknown): ValidatedPart | RejectCode {
   return 'invalid_content'
 }
 
+/** The image types an attachment may declare; the data URL must carry the SAME type (a renamed file cannot pass as another kind). */
+const IMAGE_ATTACHMENT_TYPES = ['image/png', 'image/jpeg', 'image/webp', 'image/gif'] as const
+
+/**
+ * 31/10: the web client's attachments. useChat sends a file the person picked as `experimental_attachments: [{ url: <data URL>, contentType,
+ * name }]` beside the text - and this boundary rebuilt every message from `content` alone, so a picture sent from the web was DROPPED before
+ * the model (measured 31/10: "ảnh này là gì" reached the model with no image). An attachment becomes a part here, under the same rules as a
+ * part a client sends directly: data URLs only, the declared type must match the data URL's own, bounded size; images and PDFs only.
+ */
+function validateAttachment(raw: unknown): ImagePart | FilePart | RejectCode {
+  if (!isRecord(raw)) return 'invalid_content'
+  const { url, contentType, name } = raw
+  if (typeof url !== 'string' || typeof contentType !== 'string') return 'invalid_content'
+  if ((IMAGE_ATTACHMENT_TYPES as readonly string[]).includes(contentType)) {
+    if (!url.startsWith(`data:${contentType};base64,`)) return 'invalid_content'
+    if (url.length > CLIENT_INPUT_LIMITS.maxImageDataUrlChars) return 'image_too_large'
+    return { type: 'image', image: url }
+  }
+  if (contentType === 'application/pdf') {
+    if (!url.startsWith('data:application/pdf;base64,')) return 'invalid_content'
+    if (url.length > CLIENT_INPUT_LIMITS.maxPdfDataUrlChars) return 'file_too_large'
+    return { type: 'file', data: url, mimeType: 'application/pdf', name: typeof name === 'string' && name.trim() ? toSingleLine(name).slice(0, 120) : 'tai-lieu.pdf' }
+  }
+  return 'invalid_content'
+}
+
 export function validateClientInput(body: unknown): ValidationResult {
   const L = CLIENT_INPUT_LIMITS
 
@@ -172,6 +206,27 @@ export function validateClientInput(body: unknown): ValidationResult {
 
     const isUser = role === 'user'
     const content = raw.content
+    // 31/10: the web client's attachments (see validateAttachment) - a user turn only, bounded in count per kind.
+    const attachments: Array<ImagePart | FilePart> = []
+    if (raw.experimental_attachments !== undefined && raw.experimental_attachments !== null) {
+      const atts = raw.experimental_attachments
+      if (!Array.isArray(atts)) return reject('invalid_content', 'experimental_attachments must be an array')
+      if (atts.length > 0 && !isUser) return reject('invalid_content', 'only a user message may carry an attachment')
+      for (const a of atts) {
+        const part = validateAttachment(a)
+        if (typeof part === 'string') return reject(part, 'unsupported attachment')
+        attachments.push(part)
+      }
+      if (attachments.filter(p => p.type === 'file').length > L.maxPdfPartsPerMessage) return reject('too_many_files', `at most ${L.maxPdfPartsPerMessage} PDF files per message`)
+    }
+    if (typeof content === 'string' && attachments.length > 0) {
+      const textParts: TextPart[] = content.trim() ? [{ type: 'text', text: content }] : []
+      const images = attachments.filter(p => p.type === 'image').length
+      if (images > L.maxImagePartsPerMessage) return reject('too_many_images', `at most ${L.maxImagePartsPerMessage} images per message`)
+      messageChars += content.length
+      messages.push({ role: 'user', content: [...textParts, ...attachments] })
+      continue
+    }
     if (typeof content === 'string') {
       /**
        * 🚨 C04. An empty string used to reach the provider and throw there, surfacing as
@@ -204,7 +259,7 @@ export function validateClientInput(body: unknown): ValidationResult {
       return reject('invalid_content', 'content must be a non-empty string or parts array')
     }
 
-    const imageCount = content.filter(p => isRecord(p) && p.type === 'image').length
+    const imageCount = content.filter(p => isRecord(p) && p.type === 'image').length + attachments.filter(p => p.type === 'image').length
     if (imageCount > L.maxImagePartsPerMessage) {
       return reject('too_many_images', `at most ${L.maxImagePartsPerMessage} images per message`)
     }
@@ -219,6 +274,7 @@ export function validateClientInput(body: unknown): ValidationResult {
       if (part.type === 'text') messageChars += part.text.length
       parts.push(part)
     }
+    parts.push(...attachments)
     messages.push(isUser
       ? { role: 'user', content: parts }
       : { role: 'assistant', content: parts as TextPart[] })
@@ -271,6 +327,19 @@ export function validateClientInput(body: unknown): ValidationResult {
   }
 
   return { ok: true, messages, preferences, totalChars }
+}
+
+/**
+ * 31/10 (owner: ChatGPT-style modes). The mode the person picked in the composer: 'chat' (default - answer from knowledge, at most one quick
+ * search), 'web' (look things up properly), 'think' (reason longer). Shape only: anything else - absent, misspelt, another type - is 'chat',
+ * the cheapest and fastest, so a client cannot buy a dearer mode by sending junk. Whether the account may USE a mode is the route's decision.
+ */
+// 01/11 (owner chose "C", like ChatGPT Go): 'auto' - Chat that the model itself may turn into Thinking for the rest of the turn (think_deeper).
+// The web composer sends it by default; a request without a mode stays 'chat' (apps and older clients unchanged).
+export type ChatMode = 'chat' | 'web' | 'think' | 'deep' | 'auto'
+export function readChatMode(body: unknown): ChatMode {
+  const m = isRecord(body) ? body.mode : undefined
+  return m === 'web' || m === 'think' || m === 'deep' || m === 'auto' ? m : 'chat'
 }
 
 /** A canonical UUID. Anything else is not a key we minted. */

@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "laptop macbook (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:59:05.619Z",
+ "body": {
+  "searchParameters": {
+   "q": "laptop macbook (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Macbook | Laptop Apple giá tốt, góp 0% 12T, giảm 5% HSSV",
+    "link": "https://cellphones.com.vn/laptop/mac.html",
+    "snippet": "Macbook chính hãng, trả góp 0% 12 tháng, phụ phí 0Đ, trả trước 0Đ, giảm thêm 500K HSSV. Mua ngay laptop Apple giá rẻ, trợ giá lên đời 2 triệu.",
+    "position": 1
+   },
+   {
+    "title": "MacBook cũ | Mac cũ uy tín, trả góp 0%, giảm đến 7 triệu",
+    "link": "https://cellphones.com.vn/hang-cu/mac.html",
+    "snippet": "Macbook cũ giá rẻ, giảm 2tr lên đời, HSSV giảm 700k, trả góp 0%, 0 phụ phí, 0 trả trước, bảo hành lên đến 6 tháng. Mua ngay Macbook cũ uy tín.",
+    "position": 2
+   },
+   {
+    "title": "giá laptop surface- Giá Tốt & Ưu Đãi | Lazada Việt Nam",
+    "link": "https://www.lazada.vn/tag/gi%C3%A1-laptop-surface/?srsltid=AU7gw4WvHtI9hHwmk-34rUHdP5v8-KF_667KJNmjcRetKTiNg0W4TAjz",
+    "snippet": "... Laptop Macbook máy tính bảng Ipad Surface bằng nhôm nguyên khối. ₫299,881. 12% Off. Vietnam.",
+    "position": 3
+   },
+   {
+    "title": "MacBook Air M5 13 inch 2026 10CPU 8GPU 16GB 512GB",
+    "link": "https://cellphones.com.vn/macbook-air-13-m5-10-cpu-8-gpu-16gb-512gb.html",
+    "snippet": "MacBook Air M5 13 inch 2026 10CPU 8GPU 16GB 512GB | Chính hãng Apple Việt Nam ; Dán màn hình Apple Macbook Air 13 (M2/M3/M4/M5) Innostyle · 18.000đ. 351.000đ.",
+    "rating": 5,
+    "ratingCount": 12,
+    "position": 4
+   },
+   {
+    "title": "Apple MacBook Neo ra mắt: Chạy chip A18 Pro, pin 16 tiếng",
+    "link": "https://cellphones.com.vn/sforum/macbook-neo-ra-mat",
+    "snippet": "Mẫu MacBook giá rẻ mới của Apple có giá bán 15,990,000đ cho phiên bản 6CPU 5GPU 8GB 256GB và tương tự là 18,490,000đ cho phiên bản 6CPU 5GPU 8GB 512GB Touch ID.",
+    "rating": 5,
+    "ratingCount": 3,
+    "position": 5
+   },
+   {
+    "title": "Tấm che màn hình chống nhìn trộm Laptop Macbook cao ...",
+    "link": "https://shopee.vn/T%E1%BA%A5m-che-m%C3%A0n-h%C3%ACnh-ch%E1%BB%91ng-nh%C3%ACn-tr%E1%BB%99m-Laptop-Macbook-cao-c%E1%BA%A5p-b%E1%BA%A3o-v%E1%BB%87-s%E1%BB%B1-ri%C3%AAng-t%C6%B0-b%E1%BA%A3o-m%E1%BA%ADt-d%E1%BB%AF-li%E1%BB%87u-th%C3%B4ng-tin-i.932914507.18182616859",
+    "snippet": "Mua Tấm che màn hình chống nhìn trộm Laptop Macbook cao cấp bảo vệ sự riêng tư, bảo mật dữ liệu, thông tin giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 6
+   },
+   {
+    "title": "Tổng hợp các dòng MacBook từ trước tới hiện nay",
+    "link": "https://cellphones.com.vn/sforum/cac-dong-macbook",
+    "snippet": "Ra mắt cùng lúc với MacBook Pro 13 inch M1, là MacBook Air đầu tiên dùng chip Apple M1 8 nhân. Hiệu năng nhanh hơn 3.5 lần, đồ họa mạnh hơn 5 lần các phiên bản ...",
+    "position": 7
+   },
+   {
+    "title": "Đế tản nhiệt kê laptop có thể gấp gọn CT8-01 kích thước lớn",
+    "link": "https://shopee.vn/Gi%C3%A1-%C4%91%E1%BB%A1-Laptop-Macbook-Ipad-%C4%90%E1%BA%BF-t%E1%BA%A3n-nhi%E1%BB%87t-k%C3%AA-laptop-c%C3%B3-th%E1%BB%83-g%E1%BA%A5p-g%E1%BB%8Dn-CT8-01-k%C3%ADch-th%C6%B0%E1%BB%9Bc-l%E1%BB%9Bn-i.338344025.2998357314",
+    "snippet": "Mua Giá đỡ Laptop, Macbook, Ipad - Đế tản nhiệt kê laptop có thể gấp gọn CT8-01 kích thước lớn giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.9,
+    "ratingCount": 677,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -48,6 +48,8 @@ export interface ConsultDecision {
   reprioritize?: boolean
   /** For `followup` / `compare`: `refers` was resolved from an ordinal ("quán thứ hai") against the cards the user was shown. */
   ordinalRef?: boolean
+  /** CONSULT_THREAD_AWARE_ASK (Wave 2D · A): the decision was read from the names of the product card the thread showed ("shown_card"), not from the wording alone. Absent otherwise. */
+  evidence?: 'shown_card'
 }
 
 /** The fixed part of the brain prompt — byte-identical on every call (prompt-cache friendly). */
@@ -100,6 +102,31 @@ export function wasAskReply(assistantText: string | null | undefined): boolean {
 }
 
 const str = (v: unknown, max = 200): string => (typeof v === 'string' ? v.trim().slice(0, max) : '')
+
+/** P0-1 closeout: why a brain answer that ARRIVED cannot be used (as opposed to a call that failed or returned nothing). */
+export type ConsultInvalidReason = 'free_text' | 'bad_json' | 'bad_shape' | 'bad_domain'
+
+/**
+ * P0-1 closeout (owner decision 16/10): an answer that arrived is either a usable decision or INVALID — free text where the JSON
+ * structure was required, broken JSON, no valid turn, or a domain outside the catalogue. An invalid answer is never used in part
+ * (no slot, query or text of it) and never sends the turn to free generation: the route answers with its own fallback. An EMPTY
+ * answer is "no decision" (a failure), like an error or a timeout.
+ */
+export function classifyConsultOutput(raw: string): { decision: ConsultDecision } | { invalid: ConsultInvalidReason } | { empty: true } {
+  if (!raw || !raw.trim()) return { empty: true }
+  const start = raw.indexOf('{')
+  const end = raw.lastIndexOf('}')
+  if (start === -1) return { invalid: 'free_text' }
+  if (end <= start) return { invalid: 'bad_json' } // an object begun and never closed (a cut-off answer)
+  let j: unknown
+  try { j = JSON.parse(raw.slice(start, end + 1)) } catch { return { invalid: 'bad_json' } }
+  if (!j || typeof j !== 'object' || Array.isArray(j)) return { invalid: 'bad_shape' }
+  const o = j as Record<string, unknown>
+  if (!TURNS.includes(o.turn as ConsultTurn)) return { invalid: 'bad_shape' }
+  if (o.domains !== undefined && (!Array.isArray(o.domains) || o.domains.some(d => !CONSULT_DOMAINS.includes(d as ConsultDomain)))) return { invalid: 'bad_domain' }
+  const decision = parseConsultDecision(raw)
+  return decision ? { decision } : { invalid: 'bad_shape' }
+}
 
 /** Parses and validates the brain's JSON; null when it cannot be trusted (the route then falls back). */
 export function parseConsultDecision(raw: string): ConsultDecision | null {
@@ -193,14 +220,15 @@ export function consultV2Enabled(env: Record<string, string | undefined> = proce
 export interface BrainRun { decision: ConsultDecision; usage: { promptTokens: number; completionTokens: number }; ms: number }
 
 /**
- * One Haiku call (role `fast`). Returns null on timeout, provider error or an untrustworthy answer —
- * the route then keeps the previous pipeline for this turn (fail open to the old behaviour, never to
- * a refusal).
+ * One Haiku call (role `fast`). Returns null on timeout, provider error, an empty answer or an INVALID one.
+ *  - timeout / error / empty = the brain FAILED: the route keeps the previous (guarded) pipeline for this turn.
+ *  - invalid (classifyConsultOutput) = an answer arrived but cannot be used: `ctx.onInvalid` is told why, and the route answers with
+ *    its own server-built fallback instead (P0-1 closeout, owner decision 16/10). Nothing of the invalid answer is used.
  */
 export async function runConsultBrain(
   generate: (opts: { role: 'fast'; systemShared: string; messages: CoreMessage[]; maxTokens: number; temperature: number }) => Promise<{ text: string; usage?: { promptTokens?: number; completionTokens?: number } }>,
   messages: Array<{ role: string; content: unknown }>,
-  ctx: { hasGps: boolean; previousWasAsk: boolean; deterministicDomain?: ConsultDomain | null; storedNames?: string[]; timeoutMs?: number },
+  ctx: { hasGps: boolean; previousWasAsk: boolean; deterministicDomain?: ConsultDomain | null; storedNames?: string[]; timeoutMs?: number; onInvalid?: (reason: ConsultInvalidReason) => void },
 ): Promise<BrainRun | null> {
   const t0 = Date.now()
   const timeout = new Promise<null>(res => setTimeout(() => res(null), ctx.timeoutMs ?? 8000))
@@ -210,8 +238,10 @@ export async function runConsultBrain(
       timeout,
     ])
     if (!out) return null
-    const parsed = parseConsultDecision(out.text)
-    if (!parsed) return null
+    const c = classifyConsultOutput(typeof out.text === 'string' ? out.text : '')
+    if ('empty' in c) return null
+    if ('invalid' in c) { try { ctx.onInvalid?.(c.invalid) } catch { /* reporting only */ } return null }
+    const parsed = c.decision
     return {
       decision: enforceConsultRules(parsed, { previousWasAsk: ctx.previousWasAsk, deterministicDomain: ctx.deterministicDomain }),
       usage: { promptTokens: out.usage?.promptTokens ?? 0, completionTokens: out.usage?.completionTokens ?? 0 },

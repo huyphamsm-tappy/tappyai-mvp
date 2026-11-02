@@ -65,8 +65,9 @@ describe('the request body carries the clip reference', () => {
     render(<ChatInterface initialContext={{ kind: 'explore_clip', reviewId: REVIEW }} />)
     const keys = Object.keys(lastBody())
     // Everything else is conditional (GPS, prefs, style) and absent in this render; `chatSessionId` (R14) is
-    // sent on every turn.
-    expect(keys).toEqual(['chatSessionId', 'context'])
+    // sent on every turn. 01/11 (owner chose the Auto mode): `mode` is sent on every turn too, 'auto' by default.
+    expect(keys).toEqual(['chatSessionId', 'context', 'mode'])
+    expect(lastBody().mode).toBe('auto')
     expect(lastBody().chatSessionId).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/)
   })
 })

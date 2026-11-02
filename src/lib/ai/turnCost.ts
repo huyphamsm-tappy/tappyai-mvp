@@ -62,7 +62,8 @@ export interface TurnCostInfo {
  * frame) and logs it as `tappyai_turn_cost`. Clients ignore unknown annotation kinds; the UAT
  * measurement reads it. `info()` is called at the end of the stream, when usage is known.
  */
-export function turnCostStream(body: ReadableStream<Uint8Array>, info: () => TurnCostInfo | null): ReadableStream<Uint8Array> {
+/** `sink` (01/11): also handed the turn's cost once it is known (the usage ledger); it must not throw, and is never awaited. */
+export function turnCostStream(body: ReadableStream<Uint8Array>, info: () => TurnCostInfo | null, sink?: (i: TurnCostInfo) => void): ReadableStream<Uint8Array> {
   const dec = new TextDecoder(), enc = new TextEncoder()
   let rest = ''
   const held: string[] = []
@@ -78,6 +79,7 @@ export function turnCostStream(body: ReadableStream<Uint8Array>, info: () => Tur
       try { i = info() } catch { i = null }
       if (i) {
         console.log(JSON.stringify({ type: 'tappyai_turn_cost', ...i }))
+        try { sink?.(i) } catch { /* the ledger never breaks a turn */ }
         c.enqueue(enc.encode(`8:${JSON.stringify([{ kind: 'tappy.turn.v1', ...i }])}\n`))
       }
       for (const l of held) c.enqueue(enc.encode(l + '\n'))

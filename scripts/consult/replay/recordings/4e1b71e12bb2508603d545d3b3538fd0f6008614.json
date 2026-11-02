@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"GEEK Hub Nguyen Dinh Chieu\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:39:28.125Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"GEEK Hub Nguyen Dinh Chieu\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Flexible Event Space at GEEK Hub",
+    "link": "https://www.tiktok.com/@geekhubvn/video/7579237458303257877",
+    "snippet": "Situated in the heart of Ho Chi Minh City, GEEK Hub comprises two locations: - GEEK Hub Nguyen Dinh Chieu: 27B/9 Nguyen Dinh Chieu, Sai Gon Ward ...",
+    "position": 1
+   },
+   {
+    "title": "GEEK Hub: Không Gian Cafe Học Tập và Làm Việc",
+    "link": "https://www.tiktok.com/@didauvaychau/video/7307634388026559746",
+    "snippet": "... #cafe. Khám phá GEEK Hub, quán cafe lý tưởng cho việc học và làm việc ở. @Đi đâu vậy Châu ? Đá tan · GEEK Hub Nguyen Dinh Chieu · author · 81.",
+    "position": 2
+   },
+   {
+    "title": "GEEK Hub Nguyen Dinh Chieu Cafe in Saigon",
+    "link": "https://www.tiktok.com/@saotroimuaha/photo/7611041148202667285",
+    "snippet": "GEEK Hub Nguyen Dinh Chieu Cafe in Saigon. A young woman shares her 3-month part-time experience at GEEK Hub Nguyen Dinh Chieu cafe in Ho Chi Minh City ...",
+    "position": 3
+   },
+   {
+    "title": "Coworking space siêu chill cho cộng đồng freelancers đây ròiii ...",
+    "link": "https://www.tiktok.com/@budicafehehe_/video/7666824707332771090",
+    "snippet": "GEEK Hub Nguyen Dinh Chieu: 27B/9 Nguyen Dinh Chieu, Sai Gon Ward. . GEEK Hub Huynh Van Banh: 244/31 Huynh Van Banh, Phu Nhuan Ward. ☎️ Hotline: 028.2200 ...",
+    "position": 4
+   },
+   {
+    "title": "GEEK Hub Nguyen Dinh Chieu Cafe in Saigon",
+    "link": "https://www.tiktok.com/@saotroimuaha/photo/7611041148202667285?image_index=4",
+    "snippet": "GEEK Hub Nguyen Dinh Chieu Cafe in Saigon. A young woman shares her 3-month part-time experience at GEEK Hub Nguyen Dinh Chieu cafe in Ho Chi ...",
+    "position": 5
+   },
+   {
+    "title": "Chốn Riêng Café #chonrieng #chonriengcafe #hidden # ...",
+    "link": "https://www.tiktok.com/@chonriengcafe/video/7309680734472539410",
+    "snippet": "GEEK Hub Nguyen Dinh Chieu: 27B/9 Nguyen Dinh Chieu, Sai Gon Ward. . GEEK Hub Huynh Van Banh: 244/31 Huynh Van Banh, Phu Nhuan Ward. ☎️ ...",
+    "position": 6
+   },
+   {
+    "title": "☕️Đi cafe tập thuyết trình cùng tui nhé! #cafe #lzuiquy #geekhub ...",
+    "link": "https://www.tiktok.com/@lzuiquy/video/7304997961472199937",
+    "snippet": "... #thuyettrinh. ☕️Đi cafe tập thuyết trình cùng tui nhé! #cafe #lzuiquy #geekhub. @Luôn Vui Quý · Em Trang Trí · GEEK Hub Nguyen Dinh Chieu · author · 795.",
+    "position": 7
+   },
+   {
+    "title": "Ngoài nhiều loại đồ uống, menu GEEK Hub còn có ...",
+    "link": "https://www.tiktok.com/@geekhubvn/video/7253758434133216514",
+    "snippet": "GEEK Hub Nguyen Dinh Chieu: 27B/9 Nguyen Dinh Chieu, D1. . GEEK Hub Huynh Van Banh: 244/31 Huynh Van Banh, Phu Nhuan District. ☎️ Hotline: ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

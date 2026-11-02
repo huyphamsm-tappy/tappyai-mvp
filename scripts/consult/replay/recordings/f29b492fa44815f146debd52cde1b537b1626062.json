@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:dichvucong.bocongan.gov.vn cấp hộ chiếu phổ thông trong nước trực tuyến hồ sơ lệ phí 2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:50:50.351Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:dichvucong.bocongan.gov.vn cấp hộ chiếu phổ thông trong nước trực tuyến hồ sơ lệ phí 2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp tỉnh)",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=29497",
+    "snippet": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp tỉnh). Nộp hồ sơ. Đăng nhập tài khoản khai báo tạm trú. Tên đăng nhập. Mật khẩu. Tỉnh thành.",
+    "position": 1
+   },
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước - Dịch vụ công",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=26270",
+    "snippet": "Bước 1: Chuẩn bị hồ sơ theo quy định của pháp luật. Bước 2: Nộp hồ sơ * Người đề nghị cấp hộ chiếu phổ thông không gắn chíp điện tử từ lần thứ hai hoặc lần ...",
+    "position": 2
+   },
+   {
+    "title": "Hướng dẫn về dịch vụ công trực tuyến Cấp hộ chiếu phổ ...",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/tintuc/chitiet?matin=42",
+    "snippet": "Giấy tờ liên quan đến việc cấp hộ chiếu phổ thông ờ trong nước bao gồm: Hộ chiếu phổ thông cấp lần gần nhất đối với người đã được cấp hộ chiếu; trường hợp hộ ...",
+    "position": 3
+   },
+   {
+    "title": "Trang chủ Cấp hộ chiếu phổ thông có gắn chíp ... - Dịch vụ công",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=35572",
+    "snippet": "Bước 1: Chuẩn bị hồ sơ theo quy định của pháp luật. Bước 2: Nộp hồ sơ * Người đề nghị cấp hộ chiếu phổ thông có gắn chíp điện tử trực tiếp nộp hồ sơ vào giờ ...",
+    "position": 4
+   },
+   {
+    "title": "Trình báo mất hộ chiếu phổ thông (thực hiện tại cấp tỉnh)",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=35714",
+    "snippet": "* Thời gian tiếp nhận hồ sơ: Từ thứ 2 đến thứ 6 hàng tuần và sáng thứ 7 (đối với các đơn vị bố trí tiếp nhận hồ sơ vào sáng thứ 7); trừ ngày Tết, ngày lễ. * Cán ...",
+    "position": 5
+   },
+   {
+    "title": "Trình báo mất hộ chiếu phổ thông (thực hiện tại cấp trung ương)",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=26256",
+    "snippet": "Bước 1: Chuẩn bị hồ sơ theo quy định của pháp luật. Bước 2: Nộp hồ sơ * Công dân Việt Nam bị mất hộ chiếu phổ thông ở trong nước thực hiện việc trình báo ...",
+    "position": 6
+   },
+   {
+    "title": "Gia hạn tạm trú cho người nước ngoài tại Việt Nam",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=26283",
+    "snippet": "+ Số 333-335-337 đường Nguyễn Trãi, Quận 1, Thành phố Hồ Chí Minh. Hoặc nộp hồ sơ trực tuyến qua Cổng dịch vụ công quốc gia hoặc Cổng dịch vụ công Bộ Công an và ...",
+    "position": 7
+   },
+   {
+    "title": "Cấp phiếu lý lịch tư pháp cho công dân Việt Nam, người nước ...",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=61555",
+    "snippet": "- Bước 1: Người có yêu cầu cấp Phiếu Lý lịch tư pháp (sau đây gọi tắt là Người yêu cầu) đăng nhập bằng tài khoản định danh mức độ 2 trên cổng dịch vụ công hoặc ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

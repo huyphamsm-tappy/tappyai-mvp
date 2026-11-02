@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Tai nghe Sony WH-1000XM5",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:03:10.171Z",
+ "body": {
+  "searchParameters": {
+   "q": "Tai nghe Sony WH-1000XM5",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "WH-1000XM5 | Tai nghe không dây có công nghệ chống ồn | Sony Vietnam",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0298/6259/2571/files/1_WH-1000XM5_standard_smokypink-Large_5962ba0f-1174-432b-8339-762283eec17e.jpg?v=1766480286",
+    "imageWidth": 3000,
+    "imageHeight": 3000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7Ueh6LPTtWLj7fdgN8JefcNdEBVyXRx8YwOxOR4zpfw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Sony",
+    "domain": "www.sony.com.vn",
+    "link": "https://www.sony.com.vn/electronics/tai-nghe-choang-dau-tai-nghe/wh-1000xm5",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.shopify.com%2Fs%2Ffiles%2F1%2F0298%2F6259%2F2571%2Ffiles%2F1_WH-1000XM5_standard_smokypink-Large_5962ba0f-1174-432b-8339-762283eec17e.jpg%3Fv%3D1766480286&tbnid=36CQ-QCHUeYfOM&imgrefurl=https%3A%2F%2Fwww.sony.com.vn%2Felectronics%2Ftai-nghe-choang-dau-tai-nghe%2Fwh-1000xm5&docid=5CiBXePQtyowjM&w=3000&h=3000",
+    "position": 1
+   },
+   {
+    "title": "Tai nghe Sony WH-1000XM5 (Nobox | Bluetooth 5.2 | Pin 30h | Chống ồn ANC |  Dolby Atmos | DSEE Extreme | Fast Pair | LDAC)",
+    "imageUrl": "https://songlongmedia.com/media/product/3574_tai_nghe_sony_wh_1000xm5_like_new_99_songlongmedia__2_.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1CyAzHPCjTfy7fyUCEBACbOJtv-6ZHqDYCkA_qa_vSQ&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "SongLong Media",
+    "domain": "songlongmedia.com",
+    "link": "https://songlongmedia.com/tai-nghe-sony-wh-1000xm5-likenew.html?srsltid=AU7gw4V8YFqpBt_8BXtTw5y0yuplD1gmCaYLAIeH0mTZ8idgvdCiWe-A",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fsonglongmedia.com%2Fmedia%2Fproduct%2F3574_tai_nghe_sony_wh_1000xm5_like_new_99_songlongmedia__2_.jpg&tbnid=aq08VO3LQQD7MM&imgrefurl=https%3A%2F%2Fsonglongmedia.com%2Ftai-nghe-sony-wh-1000xm5-likenew.html%3Fsrsltid%3DAU7gw4V8YFqpBt_8BXtTw5y0yuplD1gmCaYLAIeH0mTZ8idgvdCiWe-A&docid=xKfxaPAGBDrA8M&w=1000&h=1000",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe Sony WH-1000XM5 chính hãng giá tốt nhất",
+    "imageUrl": "https://antien.vn/uploaded/Tai%20nghe%20Sony%20WH-1000XM5/tai-nghe-chup-tai-sony-wh-1000xm5-trang-chinh-hang.jpg",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTI3Yszlwl5ttD6Jk7nJv3zhfrS3FC6K8ixqkS-5I3tSQ&s=10",
+    "thumbnailWidth": 358,
+    "thumbnailHeight": 358,
+    "source": "Antien.vn",
+    "domain": "antien.vn",
+    "link": "https://antien.vn/tai-nghe/tai-nghe-sony-wh-1000xm5.html?srsltid=AU7gw4V1seusrUVa6qBcP_m4vRSdZcuvFTTXKNpXfSVVOusCqkwy0mYS",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fantien.vn%2Fuploaded%2FTai%2520nghe%2520Sony%2520WH-1000XM5%2Ftai-nghe-chup-tai-sony-wh-1000xm5-trang-chinh-hang.jpg&tbnid=Rec5PoB_GNnlfM&imgrefurl=https%3A%2F%2Fantien.vn%2Ftai-nghe%2Ftai-nghe-sony-wh-1000xm5.html%3Fsrsltid%3DAU7gw4V1seusrUVa6qBcP_m4vRSdZcuvFTTXKNpXfSVVOusCqkwy0mYS&docid=GLp-VbHmIon0gM&w=358&h=358",
+    "position": 3
+   },
+   {
+    "title": "Tai nghe Sony WH-1000XM5 | Chống Ồn, Pin 30H, Giá Rẻ",
+    "imageUrl": "https://baochauelec.com/upload/original-image/tai-nghe-sony-wh-1000xm5.png",
+    "imageWidth": 504,
+    "imageHeight": 504,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRORJ9a3stXUBrzR3heNSf4DdInNySaB0AsDXGMxxsVpA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Bảo Châu Elec",
+    "domain": "baochauelec.com",
+    "link": "https://baochauelec.com/tai-nghe-sony-wh-1000xm5?srsltid=AU7gw4XQGAHrAin2xdm2NLeZkENBpT08l06fm5pSdHXNTqy1aSgCUqzA",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbaochauelec.com%2Fupload%2Foriginal-image%2Ftai-nghe-sony-wh-1000xm5.png&tbnid=kkM9MxWrd8PMGM&imgrefurl=https%3A%2F%2Fbaochauelec.com%2Ftai-nghe-sony-wh-1000xm5%3Fsrsltid%3DAU7gw4XQGAHrAin2xdm2NLeZkENBpT08l06fm5pSdHXNTqy1aSgCUqzA&docid=tL-LRvTzgLJKuM&w=504&h=504",
+    "position": 4
+   },
+   {
+    "title": "Tai nghe choàng đầu Sony WH-1000XM5 | Chống ồn hiệu quả",
+    "imageUrl": "https://cdn2.fptshop.com.vn/unsafe/tai_nghe_bluetooth_choang_dau_wh_1000xm5_den_5_aa59ca5fc1.jpg",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfh5REhrwQEtozZgEmDEC-SSfOMc8t1Mid0uCBvkKZsQ&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "FPT Shop",
+    "domain": "fptshop.com.vn",
+    "link": "https://fptshop.com.vn/phu-kien/tai-nghe-bluetooth-choang-dau-wh-1000xm5",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.fptshop.com.vn%2Funsafe%2Ftai_nghe_bluetooth_choang_dau_wh_1000xm5_den_5_aa59ca5fc1.jpg&tbnid=Rc5qsooshtgiiM&imgrefurl=https%3A%2F%2Ffptshop.com.vn%2Fphu-kien%2Ftai-nghe-bluetooth-choang-dau-wh-1000xm5&docid=NlQeDx_27EDa7M&w=800&h=800",
+    "position": 5
+   },
+   {
+    "title": "Tai nghe chống ồn Sony WH-1000XM5 chính hãng giá rẻ",
+    "imageUrl": "https://bizweb.dktcdn.net/100/479/913/products/tai-nghe-sony-wh1000xm5-blue.jpg?v=1681816669527",
+    "imageWidth": 977,
+    "imageHeight": 1500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTK8b4qSedkyaVM0WoUYDp8kiDroUPCUJY-Xfl77kqiMQ&s=10",
+    "thumbnailWidth": 360,
+    "thumbnailHeight": 555,
+    "source": "Tín Đồ Tai Nghe",
+    "domain": "tindotainghe.com",
+    "link": "https://tindotainghe.com/tai-nghe-sony-wh-1000xm5",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbizweb.dktcdn.net%2F100%2F479%2F913%2Fproducts%2Ftai-nghe-sony-wh1000xm5-blue.jpg%3Fv%3D1681816669527&tbnid=8cYX6ihl-pU13M&imgrefurl=https%3A%2F%2Ftindotainghe.com%2Ftai-nghe-sony-wh-1000xm5&docid=rA6v3ivR7ofHhM&w=977&h=1500",
+    "position": 6
+   },
+   {
+    "title": "Tai nghe bluetooth Sony WH-1000XM5 màng loa 30mm chuẩn Hi-Res, công nghệ  Auto NC Optimizer chống ồn | Shopee Việt Nam",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mp3oydn3e51p9e",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnxPY4VRUubCNF9Usce5pN5mZrjvLlN0ApNgFgDHcn6g&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/Tai-nghe-bluetooth-Sony-WH-1000XM5-m%C3%A0ng-loa-30mm-chu%E1%BA%A9n-Hi-Res-c%C3%B4ng-ngh%E1%BB%87-Auto-NC-Optimizer-ch%E1%BB%91ng-%E1%BB%93n-i.1152330179.25364859955",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-81ztc-mp3oydn3e51p9e&tbnid=_LQraKZMIwVTlM&imgrefurl=https%3A%2F%2Fshopee.vn%2FTai-nghe-bluetooth-Sony-WH-1000XM5-m%25C3%25A0ng-loa-30mm-chu%25E1%25BA%25A9n-Hi-Res-c%25C3%25B4ng-ngh%25E1%25BB%2587-Auto-NC-Optimizer-ch%25E1%25BB%2591ng-%25E1%25BB%2593n-i.1152330179.25364859955&docid=DILKRocj8G2wiM&w=1024&h=1024",
+    "position": 7
+   },
+   {
+    "title": "Tai nghe Sony WH-1000XM5 Like New giá rẻ, trả góp 0%",
+    "imageUrl": "https://bizweb.dktcdn.net/100/479/913/products/tai-nghe-sony-wh-1000xm5-like-new-anh-thuc-te-5.jpg?v=1744882107733",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgGqyWtIIZjhUa7qQsmfBcYdEdUB0eyTxJ2THcJPJbMg&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Tín Đồ Tai Nghe",
+    "domain": "tindotainghe.com",
+    "link": "https://tindotainghe.com/tai-nghe-sony-wh-1000xm5-like-new",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbizweb.dktcdn.net%2F100%2F479%2F913%2Fproducts%2Ftai-nghe-sony-wh-1000xm5-like-new-anh-thuc-te-5.jpg%3Fv%3D1744882107733&tbnid=EE7MCDW4R42vcM&imgrefurl=https%3A%2F%2Ftindotainghe.com%2Ftai-nghe-sony-wh-1000xm5-like-new&docid=LUzqhuTlKywJAM&w=1000&h=1000",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

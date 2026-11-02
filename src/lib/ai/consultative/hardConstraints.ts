@@ -175,10 +175,15 @@ export function classifyHardGaps(
  * tool runs (its gap line is always empty), so this string is the only deterministic channel that
  * reaches the model with the gap known. One sentence for all gaps, one for contrary evidence.
  */
-export function evidenceNote(rep: HardGapReport, lang: string): string | null {
+export function evidenceNote(rep: HardGapReport, lang: string, opts: { verifyFirst?: boolean } = {}): string | null {
   const w = (h: Hard) => HARD_GAP_WORDS[h]?.[lang === 'en' ? 1 : 0] ?? h
   const parts: string[] = []
-  if (rep.gaps.length > 0) {
+  if (rep.gaps.length > 0 && opts.verifyFirst) {
+    // One brain: a field missing from the map rows is not an answer. The model looks it up (reviews, the venue's page) before it says anything about it.
+    parts.push(lang === 'en'
+      ? `These rows carry no field about: ${rep.gaps.map(w).join(', ')}. That is NOT evidence either way. Check it with web_search or read_page on the best candidates first; only if the pages you read say nothing, say so plainly.`
+      : `Cac dong ket qua khong co truong nao ve: ${rep.gaps.map(w).join(', ')}. Day KHONG phai bang chung co hay khong. Hay kiem tra bang web_search hoac read_page tren cac ung vien tot nhat truoc; chi khi trang da doc cung khong noi gi thi moi noi thang la chua thay.`)
+  } else if (rep.gaps.length > 0) {
     parts.push(lang === 'en'
       ? `No result carries evidence about: ${rep.gaps.map(w).join(', ')}. Say in ONE sentence that you could not confirm it and suggest calling ahead; never assert it.`
       : `KHONG quan nao trong ket qua co bang chung ve: ${rep.gaps.map(w).join(', ')}. Noi ro trong MOT cau "minh chua xac nhan duoc X, nen goi hoi truoc"; KHONG khang dinh co.`)

@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Phở Hòa Pasteur còn chỗ ngồi tối nay",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:56:09.981Z",
+ "body": {
+  "searchParameters": {
+   "q": "Phở Hòa Pasteur còn chỗ ngồi tối nay",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Qua laị ăn thử quán phở bán hơn 50 năm nay ở trung tâm ...",
+    "link": "https://www.facebook.com/groups/anginhi/posts/25702614499344303/",
+    "snippet": "Không gian địa điểm • Phở Hoà nằm ngay mặt đường Pasteur (260C Pasteur, P.8, Q.3 cũ) đi đến là thấy liền. Không gian 2 tầng, bày trí bàn ghế ...",
+    "position": 1
+   },
+   {
+    "title": "Phở Hòa Pasteur — Tô Phở Vỉa Hè Quận 3",
+    "link": "https://vnguide.vn/restaurant/pho-hoa-pasteur",
+    "snippet": "Địa chỉ: 260C Pasteur, Phường 8, Quận 3, TP.HCM · Giờ mở cửa: Sáng sớm đến đêm muộn (nhiều ca trong ngày) · Món: Phở bò các kiểu — tái, chín, nạm, gân, kết hợp ...",
+    "position": 2
+   },
+   {
+    "title": "HẾT HỒN! Phở Hoà Pasteur Nổi Tiếng Sài Gòn (Giá TẾT 110k",
+    "link": "https://www.youtube.com/watch?v=5ySfrtj8FhI",
+    "snippet": "... hôm nay để không bỏ lỡ Video mới vào ngày mai nhé! https://goo.gl/lli7gm © Bản quyền thuộc về VINH LAM TV © Copyright by VINH LAM TV. ☞ Do ...",
+    "position": 3
+   },
+   {
+    "title": "Phở Hòa Pasteur - Hồ Chí Minh - Tripadvisor",
+    "link": "https://www.tripadvisor.com.vn/Restaurant_Review-g293925-d1232846-Reviews-Pho_Hoa_Pasteur-Ho_Chi_Minh_City.html",
+    "snippet": "Phở này tôi đã ăn vài lần, và tôi thấy phở này chỉ phù hợp với người chưa ăn phở bao giờ, phở này ngày xưa rất ổn, còn bây giờ thì không. Hương vị phở: dường ...",
+    "rating": 4.3,
+    "ratingCount": 1153,
+    "position": 4
+   },
+   {
+    "title": "Cầm 100.000 đồng thưởng thức phở Hòa Pasteur được ...",
+    "link": "https://voz.vn/t/cam-100-000-dong-thuong-thuc-pho-hoa-pasteur-duoc-michelin-de-xuat.1015999/",
+    "snippet": "Nằm trên con đường đắc địa Pasteur (Phường 8, Quận 3), phở Hòa Pasteur đã tạo nhiều dấu ấn với thực khách bởi món phở bò gia truyền thơm ...",
+    "date": "27 thg 9, 2024",
+    "position": 5
+   },
+   {
+    "title": "Anh Bi lăn đi ăn phở Phở Hoà Pasteur 260c ...",
+    "link": "https://www.instagram.com/reel/DAK5OLJgD3k/",
+    "snippet": "Phở Hoà Pasteur 260c Pasteur, Phường 8, Quận 3, Hồ Chí Minh mọi người thấy quán Phở nào tại Sài Gòn là ngon nhất dạ? ngày nào Phở Hoà khá đông ...",
+    "position": 6
+   },
+   {
+    "title": "Quán phở trứ danh hơn 50 năm giữa trung tâm Sài Gòn",
+    "link": "https://sakos.vn/pho-hoa-pasteur-quan-pho-tru-danh-hon-50-nam-giua-trung-tam-sai-gon/",
+    "snippet": "Phở Hòa Pasteur không chỉ là một quán ăn, mà còn là một phần ký ức ... Quán phục vụ từ 5:30 sáng đến khoảng 22:30–23:30 tối.",
+    "date": "17 thg 11, 2025",
+    "position": 7
+   },
+   {
+    "title": "Cầm 100.000 đồng thưởng thức phở Hòa Pasteur được ...",
+    "link": "https://vtcnews.vn/cam-100-000-dong-thuong-thuc-pho-hoa-pasteur-duoc-michelin-de-xuat-ar898474.html",
+    "snippet": "Mỗi ngày, phở Hòa Pasteur bán từ 5h30 - 22h30. Món được nhiều thực khách ưa chuộng là phở nạm, gầu, vè. Tô thường có giá 90.000 đồng, tô đặc ...",
+    "date": "27 thg 9, 2024",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

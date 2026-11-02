@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Baseus Tai nghe Không Dây TWS Baseus Inspire XP1 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:34:12.214Z",
+ "body": {
+  "searchParameters": {
+   "q": "Baseus Tai nghe Không Dây TWS Baseus Inspire XP1 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "baseus x bose headphone",
+    "link": "https://shop.tiktok.com/vn/k/baseus-x-bose-headphone",
+    "snippet": "Tai Nghe Không Dây TWS Baseus Inspire XP1 (Bluetooth v6.1, 8H, Dolby Audio, Sound by BOSE, Adaptive ANC, 360° Sound Reality, SuperBass 3.0, SuperBalance 3.0).",
+    "position": 1
+   },
+   {
+    "title": "Baseus xh1 - TikTok Shop Vietnam",
+    "link": "https://shop.tiktok.com/vn/k/baseus-xh1",
+    "snippet": "Baseus xh1 · [HOT] BASEUS Tai nghe không dây Baseus BP1 Pro ANC -50dB Giảm tiếng ồn Hi-Res Bluetooth 6.0 IPX55 Chống nước 55Hr · [HOT] BASEUS Tai nghe không dây ...",
+    "position": 2
+   },
+   {
+    "title": "vws x1 headphone - TikTok Shop Vietnam",
+    "link": "https://shop.tiktok.com/vn/k/vws-x1-headphone",
+    "snippet": "Tai Nghe Không Dây TWS Baseus Inspire XP1 (Bluetooth v6.1, 8H, Dolby Audio, Sound by BOSE, Adaptive ANC, 360° Sound Reality, SuperBass 3.0, SuperBalance 3.0).",
+    "position": 3
+   },
+   {
+    "title": "baseus replacement headband",
+    "link": "https://shop.tiktok.com/vn/k/baseus-replacement-headband",
+    "snippet": "Tai Nghe Không Dây TWS Baseus Inspire XP1 (Bluetooth v6.1, 8H, Dolby Audio, Sound by BOSE ...",
+    "position": 4
+   },
+   {
+    "title": "Headphone Baseus H1 - TikTok Shop Vietnam",
+    "link": "https://shop.tiktok.com/vn/k/headphone-baseus-h1",
+    "snippet": "Tai nghe Bluetooth chụp tai Baseus Bowie H1i, Kiểu dáng năng động, chống ồn thông minh, Bluetooth 5.3, Bảo hành 12 tháng. 0 sold. ₫1.198.919. ₫2.179.852 ...",
+    "position": 5
+   },
+   {
+    "title": "baseus primetrip vh1 breathable",
+    "link": "https://shop.tiktok.com/vn/k/baseus-primetrip-vh1-breathable",
+    "snippet": "Tai Nghe Không Dây TWS Baseus Inspire XP1 (Bluetooth v6.1, 8H, Dolby Audio, Sound by BOSE ...",
+    "position": 6
+   },
+   {
+    "title": "weebass hybrid dcx",
+    "link": "https://shop.tiktok.com/vn/k/weebass-hybrid-dcx",
+    "snippet": "Tai Nghe Không Dây TWS Baseus Inspire XP1 (Bluetooth v6.1, 8H, Dolby Audio, Sound by BOSE ...",
+    "position": 7
+   },
+   {
+    "title": "beseus headphone - TikTok Shop Vietnam",
+    "link": "https://shop.tiktok.com/vn/k/beseus-headphone",
+    "snippet": "Tai Nghe Không Dây TWS Baseus Inspire XP1 (Bluetooth v6.1, 8H, Dolby Audio, Sound by BOSE ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

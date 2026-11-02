@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Cao lầu Dì Hát 55 năm\" OR \"Quán Ăn Tuấn Lợi\" OR \"Bánh Canh Ghẹ\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:49:07.035Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Cao lầu Dì Hát 55 năm\" OR \"Quán Ăn Tuấn Lợi\" OR \"Bánh Canh Ghẹ\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Bánh canh ghẹ chăm vợ thế này thì ai rửa chén đây ...",
+    "link": "https://www.tiktok.com/@genjadao/video/7402948683630775560",
+    "snippet": "Bánh canh ghẹ chăm vợ thế này thì ai rửa chén đây #onganhthichnauan #cooking #fyp #Knorrvietnam #thaydoitotlanh Bánh Canh Ghẹ 69thái Nguyên ...",
+    "position": 1
+   },
+   {
+    "title": "Bánh canh ghẹ ngon #vrmgr #hanoiangi #xuhuong ...",
+    "link": "https://www.tiktok.com/@hanoiangi/video/7514276654265404679",
+    "snippet": "Bánh canh ghẹ ngon #vrmgr #hanoiangi #xuhuong #banhcanhghe #banhcanhghelongminh Cách Nấu Bánh Canh Mặn Tại NhậtCách Làm Bánh Nổi Ăn Chung ...",
+    "position": 2
+   },
+   {
+    "title": "Cách Nấu Bánh Canh Ghẹ Khu Vực Hoà Thành",
+    "link": "https://www.tiktok.com/@lengochieuu/video/7470879097632345352",
+    "snippet": "Khám phá cách nấu Bánh Canh Ghẹ ngon tuyệt từ Hoà Thành. Tham gia cùng chúng tôi và thưởng thức! #xuhuongtiktok #ancungtiktok. Đây là bản tóm ...",
+    "position": 3
+   },
+   {
+    "title": "Bánh Canh Ghẹ Hoàng Bến Lức - Đặc Sản Nổi Tiếng",
+    "link": "https://www.tiktok.com/@tt.i.n/video/7579419005849455893",
+    "snippet": "Khám phá món Bánh Canh Ghẹ Hoàng Bến Lức ngon miệng, nổi bật trong ẩm thực Việt Nam. Trải nghiệm hương vị tuyệt vời ngay hôm nay! #benluc # ...",
+    "position": 4
+   },
+   {
+    "title": "Bánh canh ghẹ 69 Hạ Long — trải nghiệm và kết quả",
+    "link": "https://www.tiktok.com/@ghienanvathalong/video/7692328853766737160",
+    "snippet": "Bánh canh ghẹ 69 ở Hạ Long: video mô tả trải nghiệm chủ đạo là ăn bánh canh ghẹ 69 ở Hạ Long và kết quả phải đi thử theo cơn FOMO.",
+    "position": 5
+   },
+   {
+    "title": "Bánh canh ghẹ Giảng Võ: review bát 280k ăn sáng",
+    "link": "https://www.tiktok.com/@banhudaayyy/video/7681639382566112533",
+    "snippet": "Thứ bạn sẽ thấy - Món: bánh canh ghẹ. - Địa điểm tham chiếu: Giảng Võ. - Giá: 280k cho một bát. - Nội dung đánh giá: hương vị, topping, độ no và ...",
+    "position": 6
+   },
+   {
+    "title": "Bánh canh ghẹ 69 ✨#daudauangi #ktnetvn #banhcanhghe ...",
+    "link": "https://www.tiktok.com/@daudauangi/video/7502750701857066258",
+    "snippet": "6177 Lượt thích,54 Bình luận.Video TikTok từ Đậu Đậu ăn gì (@daudauangi): \"Bánh canh ghẹ 69 ✨#daudauangi #ktnetvn #banhcanhghe ...",
+    "position": 7
+   },
+   {
+    "title": "Bánh Canh Ghẹ Nam Định",
+    "link": "https://www.tiktok.com/@mynamdinh/video/7688713030137384200",
+    "snippet": "Bánh Canh Ghẹ Nam Định. Video giới thiệu món Bánh Canh Ghẹ Nam Định, kèm các hashtag #mynamdinh, #banhcanhghe và #anvatnamdinh.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

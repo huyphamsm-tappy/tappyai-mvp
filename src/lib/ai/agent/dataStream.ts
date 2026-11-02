@@ -6,6 +6,8 @@
 // once the loop ends. `toDataStreamResponse()` / `steps` / `text` mirror the parts of the streamText result the route reads.
 
 import type { AgentRun, AgentStep } from './loop'
+import { remainderAfter } from './runtime/answerStream'
+import { turnStatusFrame } from '@/lib/recommendation/progressAnnotation'
 
 export interface AgentStreamResult {
   toDataStreamResponse(): Response
@@ -40,7 +42,7 @@ export function belowAnswerFrame(items: readonly BelowAnswerItem[]): string {
   return items.length ? `8:${JSON.stringify([{ kind: 'tappy.sponsored.v1', items }])}\n` : ''
 }
 
-export function agentStreamResult(start: (emit: (line: string) => void) => Promise<AgentRun>, onFinish?: (o: { usage: { promptTokens: number; completionTokens: number; totalTokens: number }; finishReason: string; text: string; steps: Array<{ providerMetadata?: Record<string, unknown>; usage?: { promptTokens: number; completionTokens: number }; toolCalls: unknown[]; toolResults: unknown[]; text: string }> }) => unknown): AgentStreamResult {
+export function agentStreamResult(start: (emit: (line: string) => void) => Promise<Pick<AgentRun, 'text' | 'steps'>>, onFinish?: (o: { usage: { promptTokens: number; completionTokens: number; totalTokens: number }; finishReason: string; text: string; steps: Array<{ providerMetadata?: Record<string, unknown>; usage?: { promptTokens: number; completionTokens: number }; toolCalls: unknown[]; toolResults: unknown[]; text: string }> }) => unknown): AgentStreamResult {
   let resolveSteps!: (s: Awaited<AgentStreamResult['steps']>) => void
   let resolveText!: (t: string) => void
   const steps = new Promise<Awaited<AgentStreamResult['steps']>>(r => { resolveSteps = r })
@@ -50,16 +52,31 @@ export function agentStreamResult(start: (emit: (line: string) => void) => Promi
   const make = () => new ReadableStream<Uint8Array>({
     async start(controller) {
       const emit = (line: string) => { try { controller.enqueue(enc.encode(line.endsWith('\n') ? line : `${line}\n`)) } catch { /* closed */ } }
-      let run: AgentRun | null = null
+      let run: Pick<AgentRun, 'text' | 'steps'> | null = null
       try {
         run = await start(emit)
       } catch (e) {
         console.error('[agent] run failed:', e)
       }
-      const finalText = run?.text ?? 'Xin lỗi, mình chưa trả lời được lúc này. Bạn thử lại sau ít phút nhé.'
+      let finalText = run?.text ?? 'Xin lỗi, mình chưa trả lời được lúc này. Bạn thử lại sau ít phút nhé.'
       const sdkSteps = (run?.steps ?? []).map((s: AgentStep) => ({ providerMetadata: s.providerMetadata, usage: s.usage, toolCalls: s.toolCalls, toolResults: [], text: s.text }))
       const usage = sdkSteps.reduce((a, s) => ({ promptTokens: a.promptTokens + (s.usage?.promptTokens ?? 0), completionTokens: a.completionTokens + (s.usage?.completionTokens ?? 0) }), { promptTokens: 0, completionTokens: 0 })
-      emit(textFrames(finalText))
+      // C2 P2 (C2_STREAM_DATASTREAM): part of the answer already went out as it was written. Only what comes AFTER it is sent now; the final
+      // text must begin with what streamed — if it does not, nothing more is sent (never a second, different copy) and the turn is marked
+      // interrupted. An interrupted run (an error after streaming began) sends nothing more either: what the user has stays as is.
+      const streamed = (run as { streamed?: { released: string } } | null)?.streamed?.released ?? ''
+      const interrupted = (run as { interrupted?: boolean } | null)?.interrupted === true
+      let tail = finalText
+      if (streamed.trim() || interrupted) {
+        const rest = interrupted ? '' : remainderAfter(finalText, streamed)
+        if (rest === null) {
+          try { console.log(JSON.stringify({ type: 'tappyai_stream_divergence', released_chars: streamed.length, final_chars: finalText.length })) } catch { /* log only */ }
+          emit(turnStatusFrame('interrupted', 'stream_divergence'))
+          tail = ''
+        } else tail = rest
+        finalText = streamed + tail
+      }
+      emit(textFrames(tail))
       try { await onFinish?.({ usage: { ...usage, totalTokens: usage.promptTokens + usage.completionTokens }, finishReason: 'stop', text: finalText, steps: sdkSteps }) } catch (e) { console.error('[agent] onFinish failed:', e) }
       emit(finishFrames(usage))
       resolveSteps(sdkSteps)

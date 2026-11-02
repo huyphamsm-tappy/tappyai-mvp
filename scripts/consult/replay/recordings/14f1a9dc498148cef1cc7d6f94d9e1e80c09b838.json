@@ -1,0 +1,54 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:support.apple.com/vi-vn AirPods Pro 2 \"6 giờ\" \"30 giờ\"",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:05:02.128Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:support.apple.com/vi-vn AirPods Pro 2 \"6 giờ\" \"30 giờ\"",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "AirPods Pro 2 với Hộp sạc MagSafe (USB-C)",
+    "link": "https://support.apple.com/vi-vn/111834",
+    "snippet": "Hộp Sạc. Tương thích với bộ sạc MagSafe, bộ sạc Apple Watch, bộ sạc chuẩn Qi hoặc đầu nối USB‑C. Pin. AirPods Pro 2. Thời gian nghe lên đến 6 giờ ... 30 giờ11.",
+    "position": 1
+   },
+   {
+    "title": "AirPods Pro 2 - Thông số kỹ thuật",
+    "link": "https://support.apple.com/vi-vn/111851",
+    "snippet": "AirPods Pro. Thời gian nghe lên đến 6 giờ với một lần sạc (lên đến 5,5 giờ khi bật Âm Thanh Không Gian và Theo Dõi Đầu)4. AirPods Pro với Hộp Sạc MagSafe. Thời ...",
+    "position": 2
+   },
+   {
+    "title": "AirPods 3 - Thông số kỹ thuật - Bộ phận hỗ trợ của ...",
+    "link": "https://support.apple.com/vi-vn/111863",
+    "snippet": "Thời gian nghe lên đến 6 giờ với một lần sạc (lên đến 5 giờ khi bật Âm Thanh ... Thời gian nghe lên đến 30 giờ. 5 phút để trong hộp sạc có thể tăng thời ...",
+    "position": 3
+   },
+   {
+    "title": "Apple Watch Series 11 - Thông số kỹ thuật",
+    "link": "https://support.apple.com/vi-vn/125093",
+    "snippet": "... 6 giờ theo dõi giấc ngủ trong chu kỳ 24 giờ; mức sử dụng Apple Watch Series ... 30 giờ kết nối với iPhone qua Bluetooth trong chu kỳ 38 giờ. Thử nghiệm ...",
+    "position": 4
+   },
+   {
+    "title": "Apple Watch Series 12 - Thông số kỹ thuật",
+    "link": "https://support.apple.com/vi-vn/148589",
+    "snippet": "... 6 giờ theo dõi giấc ngủ trong chu kỳ 24 giờ; mức sử dụng Apple Watch Series ... 30 giờ kết nối với iPhone qua Bluetooth trong chu kỳ 38 giờ. Thử nghiệm ...",
+    "position": 5
+   }
+  ],
+  "credits": 1
+ }
+}

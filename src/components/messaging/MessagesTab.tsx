@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { Plus, MessageCircle, Loader2 } from 'lucide-react'
 import { useMessages } from './MessagesProvider'
@@ -23,9 +23,19 @@ import NewMessageSheet from './NewMessageSheet'
  * step — the same state that highlights a row on desktop is what replaces the
  * screen on mobile.
  */
-export default function MessagesTab({ signedIn }: { signedIn: boolean }) {
+export default function MessagesTab({ signedIn, initialThreadId }: { signedIn: boolean; initialThreadId?: string }) {
   const { t } = useTranslation()
-  const { threads, loading, meId } = useMessages()
+  const { threads, loading, error, meId, refetch } = useMessages()
+  const [retrying, setRetrying] = useState(false)
+
+  /**
+   * Open a conversation by id. The list is re-read FIRST: a thread that was just created is not in `threads` yet, and the
+   * "a thread that disappeared" guard below would clear the selection at once, so the new conversation never opened.
+   */
+  const openThread = useCallback(async (id: string) => {
+    await refetch()
+    setActiveId(id)
+  }, [refetch])
   const [activeId, setActiveId] = useState<string | null>(null)
   const [composing, setComposing] = useState(false)
 
@@ -36,6 +46,13 @@ export default function MessagesTab({ signedIn }: { signedIn: boolean }) {
   useEffect(() => {
     if (activeId && !threads.some(thread => thread.id === activeId) && !loading) setActiveId(null)
   }, [activeId, threads, loading])
+
+  const opened = useRef(false)
+  useEffect(() => {
+    if (!signedIn || !initialThreadId || opened.current) return
+    opened.current = true
+    void openThread(initialThreadId)
+  }, [signedIn, initialThreadId, openThread])
 
   if (!signedIn) {
     return (
@@ -82,9 +99,22 @@ export default function MessagesTab({ signedIn }: { signedIn: boolean }) {
             </button>
           </div>
           <div className="min-h-0 flex-1 px-2 pt-2">
-            {loading && threads.length === 0 ? (
+            {(loading || retrying) && threads.length === 0 ? (
               <div className="flex justify-center py-10">
                 <Loader2 size={22} className="animate-spin" style={{ color: 'var(--v3-accent)' }} />
+              </div>
+            ) : error && threads.length === 0 ? (
+              // The list could not be read and there is nothing older to show: say so, and let the user try again.
+              <div role="alert" className="flex flex-col items-center gap-3 px-4 py-10 text-center">
+                <p className="text-[13px]" style={{ color: 'var(--v3-fg-muted)' }}>{t('v3.msg.error')}</p>
+                <button
+                  type="button"
+                  onClick={() => { setRetrying(true); void refetch().finally(() => setRetrying(false)) }}
+                  className="min-h-[38px] rounded-xl px-4 text-[13px] font-semibold"
+                  style={{ background: 'var(--v3-accent-fill)', color: 'var(--v3-on-accent)' }}
+                >
+                  {t('v3.msg.retry')}
+                </button>
               </div>
             ) : (
               <ThreadList threads={threads} activeId={activeId} meId={meId} onSelect={setActiveId} />
@@ -113,7 +143,7 @@ export default function MessagesTab({ signedIn }: { signedIn: boolean }) {
           onClose={() => setComposing(false)}
           onStarted={threadId => {
             setComposing(false)
-            setActiveId(threadId)
+            void openThread(threadId)
           }}
         />
       )}

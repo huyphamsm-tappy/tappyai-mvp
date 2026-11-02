@@ -1,0 +1,253 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "tai nghe chống ồn chạy bộ dưới 3 triệu Sony WH-CH720N Soundcore Liberty 4 NC JBL Tune Beam",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:37:18.537Z",
+ "body": {
+  "searchParameters": {
+   "q": "tai nghe chống ồn chạy bộ dưới 3 triệu Sony WH-CH720N Soundcore Liberty 4 NC JBL Tune Beam",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Tai Nghe Sony WH-CH720N - Màu xanh - Ngoại hình: 98% - FullBox",
+    "source": "2handland",
+    "price": "1.650.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcR2dK6Lx9TPjn0cFpAII2yUuYT8nS9Y8T5HBTeeNXrq4ODU8d_KB_-B39FqciAllfmLpe6s9jJN4otFnH4BbjBPSIn0TYar1CoCU4KBQmUQTRQ8JkoVVyqexQ",
+    "productId": "10131787172584040556",
+    "position": 1
+   },
+   {
+    "title": "Tai nghe không dây choàng đầu Sony WH-CH720N",
+    "source": "dienmaytructuyen.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+Sony+WH-CH720N+Soundcore+Liberty+4+NC+JBL+Tune+Beam&prds=localAnnotatedOfferId:1,catalogid:11068168838809888464,gpcid:551968522992611298,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "2.190.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQlqNYkjnUjfqb42ZG_KbI34H46yREUQT9QD9hjxLSUEKQqXfJsw_jJtmPqMRyn6m2S2CMRhr_zr5M5RbwEhgDq9KgJya2d15JYM5oES2BHY6htMbKVRHZHTA",
+    "productId": "11068168838809888464",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe Bluetooth chụp Tai Sony WH-CH720N",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+Sony+WH-CH720N+Soundcore+Liberty+4+NC+JBL+Tune+Beam&prds=localAnnotatedOfferId:1,catalogid:17355758935316592975,gpcid:12497064220288536128,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "2.080.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRmUPt_F-rfHq3M9k1uoE33XLBqX16-Cmbu6s0h_mXHlw59M7weP4mBD7vJPVDjd3u25MbdMUdxZTRE9Sf73OXWNnKwC652W6LbLk6qNFBhyarMYv9GeyjP_Q",
+    "productId": "17355758935316592975",
+    "position": 3
+   },
+   {
+    "title": "Tai nghe Bluetooth choàng đầu Sony WH-CH720N",
+    "source": "Fptshop.com.vn",
+    "price": "2.190.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQk56qHgeoP_Gu_jcdqYbcDo2lviUPx30A5rlD_V59qk_bRr7-476G-2unwItJ_jQAVzECrDwlPBlMYhTOBp6EuT0QvxLpvilwBFBJRVcIMLQpSAD48P2hJm5g",
+    "productId": "7976117516666106821",
+    "position": 4
+   },
+   {
+    "title": "Tai nghe chống ồn Sony WH-CH720N",
+    "source": "dienmaytructuyen.vn",
+    "price": "2.190.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSsAfZoJPRAPQplafRbJR1QpA10anrTguts9L8pShR6DotWewwlQQjlMf2d-CJ9ZY6F5F1UAq_YIBADnAbN87lPYnca4K-RCKczrAWOXkYVpDXdDhJ9BycvOQ",
+    "productId": "1847498632611966589",
+    "position": 5
+   },
+   {
+    "title": "Tai nghe chụp tai (Không dây) SONY WH-CH720N - Chính Hãng",
+    "source": "Hoàng Hà Mobile",
+    "price": "2.190.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQRHG2EAGsqRSBn1p1xDiQu8mCwbwtHIit4lJmsghYS1g-nn0oHDhSaMdHg-ssvlB0htRAqZXpGK4_n3-_-xE2hsX6QS3n00M_SkJUFSlajeP_w-UdjQ56cpyk",
+    "rating": 4.9,
+    "ratingCount": 199,
+    "productId": "1643329879334268343",
+    "position": 6
+   },
+   {
+    "title": "Tai nghe không dây chống ồn SONY WH-CH720N màu Xanh | Hàng chính hãng",
+    "source": "Công ty TNHH NexShop",
+    "price": "2.850.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRWVGTyVuvduuqZmLpf4GJvdT4qigRLSz47iX5ocTgh0K9xUMedsxLVbQxNVQcOIWdbYV3psCCyPZz6eW-bhLk5-9agzo4k1bzGGl0TqSlu1JH7qsTjqJAi7A",
+    "productId": "6522817926448867339",
+    "position": 7
+   },
+   {
+    "title": "Tai nghe chụp tai Bluetooth SONY WH-CH720N - Hàng chính hãng - Màu Đen",
+    "source": "tiki.vn",
+    "price": "2.241.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRYhmfuJiHsr30b83Qyxiil9R8YarHAeGGivbvFlS70lySmR3d7-axmiOZVOWHAgUMG-w-kdRI308UmpAO4GmglMbc9BK1n9R9ag9VoLx_d",
+    "productId": "11729845291987840237",
+    "position": 8
+   },
+   {
+    "title": "Tai nghe Sony WH-CH720N Extrabass Chính Hãng [Likenew]",
+    "source": "Tainghetot.com",
+    "price": "1.590.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcT3cVn_hZkBKDQPhnsTwuBKiRMdppYhBKxrUDykJ1Ym63YSfPeme2H81g9GDQ4MH9JgzCL590ASJl3Tb4ekCLvH1t2_MdhQMEfCshJL8jof",
+    "productId": "10337114354823059937",
+    "position": 9
+   },
+   {
+    "title": "Tai Nghe Sony WH-CH720N (Chụp Tai, Chống Ồn, Pin 50 Giờ, Bluetooth 5.2)",
+    "source": "HDRadio.vn",
+    "price": "2.080.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQwRPfrxVslpkKxWqqw162pmHLb2YLYAthaj4s7ib5eTjwpQiZlBLI0STmXzoaBl97azdpHF1BEBi-2-pNTUb6oL3x-iw6MnoL7kuFiDEMgJL3HHyqF1vREAw",
+    "productId": "12901457884210237970",
+    "position": 10
+   },
+   {
+    "title": "Tai nghe không dây chống ồn Sony WH-CH720N",
+    "source": "Logico Trading",
+    "price": "2.935.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTvcP7z0s1gVrKuhVpfkm2Xl0xRNerMcUpEYp-ONp6Za13IMmkBwP2KAW5fvf_2Dyco-R8i66qVEAbjU6Lif_Jx5e9t15TITZ9gfGcAPZAxeNB2N88tqaR4",
+    "productId": "16428000376563378399",
+    "position": 11
+   },
+   {
+    "title": "Tai nghe over-ear không dây chống ồn Sony WH CH720N -Hàng Chính Hãng",
+    "source": "PhuQuangKTS",
+    "price": "2.430.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQiDT0Q09FPMciXEfQ-XrFNMn4Q_uM7OlJy1hMPznoSo1UI3kzIHGr27bfnSb4MBLaCFRHzcBzbMSqAALItZasY_fe2CZjK5m1EZndl1hBGX4b8mt6EeNcwuw",
+    "rating": 4.9,
+    "ratingCount": 199,
+    "productId": "967050190812852352",
+    "position": 12
+   },
+   {
+    "title": "Tai nghe chụp tai Sony WH-CH720N",
+    "source": "clickbuy.com.vn",
+    "price": "2.390.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQqI8F4_NKo_XLMAGRHWEpvNIShI1soSUwmbQ5Sps4rG_u_UpE1bXGO2fnzb4Qt8oUkYexHdKwJ8PpZVaL4QpozO9lPsnHtOBgTNB0MSJB2AyQspPuuHIBH",
+    "productId": "10531180587716103444",
+    "position": 13
+   },
+   {
+    "title": "Tai nghe thay thế trái và phải Liberty 4 NC - Trắng trong",
+    "source": "soundcore NA",
+    "price": "1.774.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTsHKVUUhNQqTaTzPM5uSCRDiMS0-FC71ZGOCQtv9os86nKPKDFUWMOju84W0kP6KG2T3DNE8gxW7aqXmb4OLYyTLVj0PrAfH8RQY0sIJI6VL2czVDkFyj_",
+    "productId": "1554646561848557608",
+    "position": 14
+   },
+   {
+    "title": "Tai nghe Sony không dây có công nghệ chống ồn WH-CH720N",
+    "source": "OhZui",
+    "price": "1.902.441 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQebB-c6EnkIQIJG_ZLNGMkT3Qk5kyVYAoTWNdfIQO1uOFyX3XrWJdyyCV3BwqJzXtL90-S75g1d3Dg6C_1hL2pcJMF7ztOZ97QphDO5ZmA1VocATndqsqOBg",
+    "productId": "14329119108823928215",
+    "position": 15
+   },
+   {
+    "title": "Tai nghe Bluetooth chụp tai SONY WH-CH720N - Chống ồn chủ động ANC, Pin 35H, Chính Hãng",
+    "source": "Techgrocery",
+    "price": "2.300.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQK1DgZOryZHKZ4upOSkRIY-DBrMpmpdxY-Nm022UnpwbZGSvwqvU3sn5385UEs2wnYi2Yf-pHcnKCOaW49yUbwKAX4ueEIuObrByYAR-wm2vX6-B02WtbuNA",
+    "rating": 4.9,
+    "ratingCount": 199,
+    "productId": "13452923962208100991",
+    "position": 16
+   },
+   {
+    "title": "Tai nghe Over-ear không dây Sony WH-CH730N",
+    "source": "Sony Store Online",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+Sony+WH-CH720N+Soundcore+Liberty+4+NC+JBL+Tune+Beam&prds=localAnnotatedOfferId:1,catalogid:16691497635953394867,gpcid:6785733210478049512,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "2.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcThv21hoHnrCVL943Tza2H-I_PPfW9COQjjZ2Jmz_whCV5lpRGulF_IrQ5OalhOsW2BaBwqUYsrHMTvGddq78edyR8S1IE-Sg",
+    "productId": "16691497635953394867",
+    "position": 17
+   },
+   {
+    "title": "Tai nghe chụp tai Sony WH-CH720N - WH-CH720N/LCE",
+    "source": "minhtuanmobile.com",
+    "price": "2.210.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTHn22Vm_l_FZEI9VpzN1mB5ujMpp2aixZBdTO8OU3yAV2pjTMS7UCtlZygqdzdCr8uHv5bq53CAOv89FBi1VIYyVvsI80cBx8s-uZGdaQdq1IN4Qy8JJHx",
+    "productId": "17699577090621580652",
+    "position": 18
+   },
+   {
+    "title": "Tai nghe không dây Sony WH-CH720N WH-CH720N/LCE (Xanh dương)",
+    "source": "Hugotech.vn",
+    "price": "2.930.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRe3chgXLCRetMdYYrNt8FNFjSH-LV9kF2zmMOBOFYOHvTiXzPlwZN64ai2y74RVTFU0G_wWWTwGXSuoGOzXTLilHdP6tsXchLBbSXkhtSHj5S2bjJNdS8E",
+    "productId": "9984167636619337264",
+    "position": 19
+   },
+   {
+    "title": "Tai nghe không dây Sony WH-CH720N (Black)",
+    "source": "Thành Nhân TNC",
+    "price": "2.190.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTP2y1kbGtWVVohzGj75GHr8ZUa9CJfdxrWwhK8z3W5NTvCHp5kSk40azbbaIj02_Lr47W8boBxjCm7hjApVVuAC9wOi1obzCqL_6N7cis993EHrLmBmAlV",
+    "productId": "14653293723074439796",
+    "position": 20
+   },
+   {
+    "title": "Sony WH-CH720N,Tai Nghe Trùm Tai Chống Ồn Chủ Động, Pin Kh",
+    "source": "cuongphan.vn",
+    "price": "2.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcR6_EUdA2G-XU_4lPQFQ7RIHXdchzpT4zHOTOo5lrBouvpqxOO82SOhn_t23gfdy3c5E8zQAPGe2DYEgi8xCty4b4vz48z0F1NZK9UFas8AGTKPTNzBQR8ODQ",
+    "productId": "124593077261932114",
+    "position": 21
+   },
+   {
+    "title": "Joyus Sony WH-CH720N Noise Canceling Headphones",
+    "source": "Công Ty Cổ Phần Pico Retail",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+Sony+WH-CH720N+Soundcore+Liberty+4+NC+JBL+Tune+Beam&prds=localAnnotatedOfferId:1,catalogid:1738870055795276626,gpcid:17058754602605093721,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "2.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTAWx43N96N-pwAr0ON9s5YuDUp6VUIoE-4Is2m5dWHjNj8oRP3LyVjYpcl0TuQRGah1B3MFIWwxPnVLStON_UJOVXmYhna81bv3FHiU5BQlMR6qt5_dyea",
+    "rating": 4.9,
+    "ratingCount": 199,
+    "productId": "1738870055795276626",
+    "position": 22
+   },
+   {
+    "title": "Tai nghe không dây Sony WH-CH720N (Blue)",
+    "source": "Thành Nhân TNC",
+    "price": "2.190.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTbMzbPxPL1eb9zS5MD7j92bUu3Dtlgepsl7VwnIkafvtUkkTjiQS_1xXE8nQab8aJvJCgqbWU9QugVLmN2nK8vJS5m6bsu5WWorp7rKzXDrYPdAqP1gb52",
+    "productId": "10101122742820742779",
+    "position": 23
+   },
+   {
+    "title": "Tai Nghe Chụp Tai Bluetooth Chống Ồn Chủ Động Sony WH-CH720N, Pin Khỏe 50H - Tai Nghe Nhẹ Và Đeo Thoải Mái, Âm Bass Mạnh Mẽ - Đen",
+    "source": "cuongphan.vn",
+    "price": "2.150.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTlIPf5lQXhLu2WTQxWz8xe6WHmsW7GAkELSrGq4PqqYiv2Yme3wPrM-my9_6J3AWBsFgMm21-f77JEj096CAINFRqAUkf2SxS1VzgUm4jaeg4t4KX8rXpexA",
+    "productId": "11288031055821043584",
+    "position": 24
+   },
+   {
+    "title": "노이즈캔슬링 헤드폰(WH-CH720N/블랙/SONY)",
+    "source": "코스코엠알오",
+    "price": "4.439.808 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTvjwR5vE3Dxoc7tVRMY2zUJICEt0a3Dsa3oOU49FroFe8KPaXInGQMUo8yXqryAEcRLU_5QIMjmF6Pc_6ttnoOnFIeYAs1eRrMmZVrisiGFP5mlMVumKE9",
+    "productId": "6309152424194017396",
+    "position": 25
+   },
+   {
+    "title": "Sony Tai nghe không dây WH-CH520",
+    "source": "Techgrocery",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+Sony+WH-CH720N+Soundcore+Liberty+4+NC+JBL+Tune+Beam&prds=localAnnotatedOfferId:1,catalogid:9722426720167881162,gpcid:7451359503992031879,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRRprLBdNYdMZshkEnORGvfb-boqDTBp3vEtDdpXCrf9zQNEKH1zGjNZfXIYxgjjXSNZrPR0hc7LgxZxMdf5ewVPp7MYYzTFWh0-vsK-NmdU800N75_p1lA",
+    "productId": "9722426720167881162",
+    "position": 26
+   },
+   {
+    "title": "노이즈캔슬링 헤드폰(WH-CH720N/화이트/SONY)",
+    "source": "코스코엠알오",
+    "price": "4.439.808 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRJniEBXQ4nVY6QJilgrNxeM6U5rgRCD4chHDz7OxF9eK0idlOtxGAHMpD09VdT88_zBKfee1KBrRFcOz_6B2zfKtatCtUZ-eHNTW1bCNqzqS3p59Zz1CyG",
+    "productId": "7851868301723074569",
+    "position": 27
+   }
+  ],
+  "credits": 2
+ }
+}

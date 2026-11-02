@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Samsung Galaxy S24 Ultra 12GB 256GB",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:37:24.631Z",
+ "body": {
+  "searchParameters": {
+   "q": "Samsung Galaxy S24 Ultra 12GB 256GB",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Samsung Galaxy S24 Ultra ưu đãi đến 9.000.000đ, góp 0%",
+    "imageUrl": "https://cdn1.viettelstore.vn/Images/Product/ProductImage/629692939.jpeg",
+    "imageWidth": 500,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSleWg0YMNfMkMQ40dlWFPaktEI7kWQo2Wp_ZwCKWxNIA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Viettel Store",
+    "domain": "viettelstore.vn",
+    "link": "https://viettelstore.vn/dien-thoai/samsung-galaxy-s24-ultra-5g-12gb-256gb-pid326813.html?srsltid=AU7gw4WIdol3m5El7ZLn30CNSbqpCdHVS6jp1-4r5LGxmqpS_XiLElLX",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn1.viettelstore.vn%2FImages%2FProduct%2FProductImage%2F629692939.jpeg&tbnid=bXgdluj0Vl_PRM&imgrefurl=https%3A%2F%2Fviettelstore.vn%2Fdien-thoai%2Fsamsung-galaxy-s24-ultra-5g-12gb-256gb-pid326813.html%3Fsrsltid%3DAU7gw4WIdol3m5El7ZLn30CNSbqpCdHVS6jp1-4r5LGxmqpS_XiLElLX&docid=RLPTgINs7m37MM&w=500&h=500",
+    "position": 1
+   },
+   {
+    "title": "Samsung S24 Ultra 5G giảm đến 7Tr, lên đời trợ giá 1Tr",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-galaxy-s24-ultra_6_.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmSZVimb6pxT-mKtyBEbFPwNkpsJAEsl7xgyVOzeoUzw&s=10",
+    "thumbnailWidth": 358,
+    "thumbnailHeight": 358,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/samsung-galaxy-s24-ultra.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fs%2Fa%2Fsamsung-galaxy-s24-ultra_6_.png&tbnid=vUPL808EVTZtgM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fsamsung-galaxy-s24-ultra.html&docid=8-dPZSmir6w7jM&w=358&h=358",
+    "position": 2
+   },
+   {
+    "title": "Samsung S24 Ultra | Giá tốt nhất, trả trước 0 đồng",
+    "imageUrl": "https://cdn2.fptshop.com.vn/unsafe/512x0/filters:format(webp):quality(75)/2024_1_17_638410793333120339_samsung-galaxy-s24-ultra-vang-1.png",
+    "imageWidth": 512,
+    "imageHeight": 512,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqWUypHIbCoa01YvDuLNq62aTH9r6jVmKAJI776FMdkw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "FPT Shop",
+    "domain": "fptshop.com.vn",
+    "link": "https://fptshop.com.vn/dien-thoai/samsung-galaxy-s24-ultra",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.fptshop.com.vn%2Funsafe%2F512x0%2Ffilters%3Aformat(webp)%3Aquality(75)%2F2024_1_17_638410793333120339_samsung-galaxy-s24-ultra-vang-1.png&tbnid=3X8a3YrClavZyM&imgrefurl=https%3A%2F%2Ffptshop.com.vn%2Fdien-thoai%2Fsamsung-galaxy-s24-ultra&docid=5pHk5XHy9H6G-M&w=512&h=512",
+    "position": 3
+   },
+   {
+    "title": "Samsung Galaxy S24 Ultra - Giảm ngay 4tr, thu cũ trợ giá đến 2tr",
+    "imageUrl": "https://cdn.tgdd.vn/Products/Images/42/307174/Slider/samsung-galaxy-s24-ultra-5g-thumb-youtube-1020x570.jpg",
+    "imageWidth": 1020,
+    "imageHeight": 570,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzrk_OQIn0BTyM54_Jl-vN6sOOJ5gSsP_0wwEdL1XkPA&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 411,
+    "source": "Điện máy XANH",
+    "domain": "www.dienmayxanh.com",
+    "link": "https://www.dienmayxanh.com/dien-thoai/samsung-galaxy-s24-ultra-5g?srsltid=AU7gw4Vfh0lDDC90VAj_3U48CU4iJIT61MN7KMrcmwuwG18Em5qdTgv9",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.tgdd.vn%2FProducts%2FImages%2F42%2F307174%2FSlider%2Fsamsung-galaxy-s24-ultra-5g-thumb-youtube-1020x570.jpg&tbnid=j6CqRgfmHkU9RM&imgrefurl=https%3A%2F%2Fwww.dienmayxanh.com%2Fdien-thoai%2Fsamsung-galaxy-s24-ultra-5g%3Fsrsltid%3DAU7gw4Vfh0lDDC90VAj_3U48CU4iJIT61MN7KMrcmwuwG18Em5qdTgv9&docid=7Ed6O3_cootKKM&w=1020&h=570",
+    "position": 4
+   },
+   {
+    "title": "Samsung S24 Ultra 5G giảm đến 7Tr, lên đời trợ giá 1Tr",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung_galaxy_s24_ultra_256gb_-_1.png",
+    "imageWidth": 678,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQt-gm6fBIKsBFHBpLnHubq8nGNVTl0NZy3HNBgwLPGNw&s=10",
+    "thumbnailWidth": 614,
+    "thumbnailHeight": 325,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/samsung-galaxy-s24-ultra.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fs%2Fa%2Fsamsung_galaxy_s24_ultra_256gb_-_1.png&tbnid=e-U4lCLX9xaXsM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fsamsung-galaxy-s24-ultra.html&docid=8-dPZSmir6w7jM&w=678&h=358",
+    "position": 5
+   },
+   {
+    "title": "Điện thoại Samsung Galaxy S24 Ultra - Hàng trưng bày giá sốc (12Gb/ 256GB/  Xám)",
+    "imageUrl": "https://phucanhcdn.com/media/product/54242_dien_thoai_thong_minh_samsung_galaxy_s24_ultra_xam_3.jpg",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdKnStbftT8sboPqsjn7CA4Wb7e04kj2b8nMFWn4NmvA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Phucanh.vn",
+    "domain": "www.phucanh.vn",
+    "link": "https://www.phucanh.vn/dien-thoai-thong-minh-samsung-galaxy-s24-ultra-12gb-256gb-xam.html?srsltid=AU7gw4UBjAiibqrfhho3c2l1DjOHS24KXOQP77tbSX0H_5-kekxzXIQD",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fphucanhcdn.com%2Fmedia%2Fproduct%2F54242_dien_thoai_thong_minh_samsung_galaxy_s24_ultra_xam_3.jpg&tbnid=qFJCB8bgxqfrEM&imgrefurl=https%3A%2F%2Fwww.phucanh.vn%2Fdien-thoai-thong-minh-samsung-galaxy-s24-ultra-12gb-256gb-xam.html%3Fsrsltid%3DAU7gw4UBjAiibqrfhho3c2l1DjOHS24KXOQP77tbSX0H_5-kekxzXIQD&docid=z4T7GO3-lvNOkM&w=600&h=600",
+    "position": 6
+   },
+   {
+    "title": "Điện Thoại AI - Samsung Galaxy S24 Ultra - 12GB/256GB - Chính hãng",
+    "imageUrl": "https://cdn.hoanghamobile.vn/i/preview-np-V2/Uploads/ImageHightlight/4039_samsung-galaxy-s24-ultra-chinh-hang/samsung-galaxy-s24-ultra-1tb-5g638417937313687483.jpg",
+    "imageWidth": 715,
+    "imageHeight": 400,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJUZBCM3lDqjaOB43csXXyG_rjHokoYEt8TuXzxXpMsw&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "Hoàng Hà Mobile",
+    "domain": "hoanghamobile.com",
+    "link": "https://hoanghamobile.com/dien-thoai/samsung-galaxy-s24-ultra-chinh-hang?srsltid=AU7gw4VsUDCACB4HLL6VM4Im1SGyWdWPsjW45iNgw0JqCSYtbVnubSEu",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.hoanghamobile.vn%2Fi%2Fpreview-np-V2%2FUploads%2FImageHightlight%2F4039_samsung-galaxy-s24-ultra-chinh-hang%2Fsamsung-galaxy-s24-ultra-1tb-5g638417937313687483.jpg&tbnid=4tCdq9WuwelqPM&imgrefurl=https%3A%2F%2Fhoanghamobile.com%2Fdien-thoai%2Fsamsung-galaxy-s24-ultra-chinh-hang%3Fsrsltid%3DAU7gw4VsUDCACB4HLL6VM4Im1SGyWdWPsjW45iNgw0JqCSYtbVnubSEu&docid=8Rtop7mOmQ64PM&w=715&h=400",
+    "position": 7
+   },
+   {
+    "title": "Samsung Galaxy S24 Ultra (5G) 12GB 256GB - 1 đổi 1 12 tháng",
+    "imageUrl": "https://cdn.clickbuy.com.vn/uploads/pro/2_52709.jpg",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSz-6n3V5Zp2B6QTSecB-yG39kZOfXKAWiLLvci5iZX9g&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Clickbuy",
+    "domain": "clickbuy.com.vn",
+    "link": "https://clickbuy.com.vn/samsung-galaxy-s24-ultra.html?srsltid=AU7gw4VZAvxYMnu7NfvInewo0MD6kvG3QLsKZjPiyaY-Cy8-ZwkF-76o",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.clickbuy.com.vn%2Fuploads%2Fpro%2F2_52709.jpg&tbnid=cbfoqa7rY2tVnM&imgrefurl=https%3A%2F%2Fclickbuy.com.vn%2Fsamsung-galaxy-s24-ultra.html%3Fsrsltid%3DAU7gw4VZAvxYMnu7NfvInewo0MD6kvG3QLsKZjPiyaY-Cy8-ZwkF-76o&docid=AeAauqGT77pUcM&w=600&h=600",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

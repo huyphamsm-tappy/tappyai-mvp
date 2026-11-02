@@ -199,6 +199,26 @@ describe('a REMOVED provider never returns through the model (cross-platform UAT
   it('unlinks a prose link to Tiki', () => {
     expect(unlinkMislabelledMerchantLinks('Bạn có thể xem trên [Tiki](https://tiki.vn/dien-thoai) nữa.')).toBe('Bạn có thể xem trên Tiki nữa.')
   })
+  // B1 (owner 01/11/2026: "mở lại tất cả, chỉ ở dạng link tới đúng trang sản phẩm"; the egress guard already admits only links the turn's
+  // search returned): a removed merchant's OWN product page keeps its link; its front door, sections, categories and search pages do not,
+  // a label naming one removed merchant on another's page is still unmade, and model-written buttons stay forbidden.
+  it('B1: a removed merchant\'s own product page keeps its link in the prose', () => {
+    for (const [label, url] of [
+      ['Tiki', 'https://tiki.vn/dien-thoai-iphone-15-128gb-p271234567.html'],
+      ['Thế Giới Di Động', 'https://www.thegioididong.com/dtdd/iphone-15-128gb'],
+      ['iPhone 15 128GB', 'https://www.thegioididong.com/dtdd/iphone-15-128gb'],
+      ['Sendo', 'https://www.sendo.vn/op-lung-iphone-15-12345678.html'],
+    ]) expect(unlinkMislabelledMerchantLinks(`Xem [${label}](${url}).`)).toBe(`Xem [${label}](${url}).`)
+  })
+  it('B1: never the front door, a section, a category, a search page, or another merchant\'s name', () => {
+    expect(unlinkMislabelledMerchantLinks('[Tiki](https://tiki.vn/)')).toBe('Tiki')
+    expect(unlinkMislabelledMerchantLinks('[TGDD](https://www.thegioididong.com/dtdd)')).toBe('TGDD')
+    expect(unlinkMislabelledMerchantLinks('[Tiki](https://tiki.vn/search?q=iphone-15)')).toBe('Tiki')
+    expect(unlinkMislabelledMerchantLinks('[Tiki](https://tiki.vn/danh-muc/dien-thoai-123)')).toBe('Tiki')
+    expect(unlinkMislabelledMerchantLinks('[Tiki](https://www.thegioididong.com/dtdd/iphone-15-128gb)')).toBe('Tiki')
+    expect(unlinkMislabelledMerchantLinks('[Tiki](https://shopee.vn/iphone-15-i.1.2)')).toBe('Tiki')
+    expect(isMisleadingModelCta({ label: '📦 Tiki', type: 'website', url: 'https://tiki.vn/dien-thoai-iphone-15-p271234567.html' })).toBe(true)
+  })
   it('does not touch a legitimate registry merchant PRODUCT page (Shopee); its search page is dropped since A3.3 (2026-09-20)', () => {
     expect(isMisleadingModelCta({ label: '🛒 Shopee', type: 'website', url: 'https://shopee.vn/Tai-nghe-X-i.1.2' })).toBe(false)
     expect(isMisleadingModelCta({ label: '🛒 Shopee', type: 'search', url: 'https://shopee.vn/search?keyword=x' })).toBe(true)

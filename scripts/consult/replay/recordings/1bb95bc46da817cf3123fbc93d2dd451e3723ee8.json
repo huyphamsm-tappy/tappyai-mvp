@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Cầu Rồng\" OR \"Ngũ Hành Sơn\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:17:00.314Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Cầu Rồng\" OR \"Ngũ Hành Sơn\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cầu Rồng Đà Nẵng Phun Lửa Lúc Mấy Giờ? Lịch Trình & ...",
+    "link": "https://www.tiktok.com/@nhungdanang43/video/7507491855471283478",
+    "snippet": "Cầu Rồng sẽ thực hiện màn trình diễn phun lửa và nước vào lúc **21 giờ hàng đêm**. Tuy nhiên, lịch trình này chỉ diễn ra vào các ngày **Thứ 6, ...",
+    "position": 1
+   },
+   {
+    "title": "Cầu Rồng Đà Nẵng phun lửa nước 6 ngày mừng Quốc ...",
+    "link": "https://www.tiktok.com/@vivudanang243/video/7677565973016235285",
+    "snippet": "Cầu Rồng, biểu tượng nổi tiếng của thành phố, sẽ có màn trình diễn phun lửa và phun nước liên tục trong suốt 6 ngày để chào mừng ngày lễ lớn của ...",
+    "position": 2
+   },
+   {
+    "title": "Lưu Ý Quan Trọng Khi Xem Cầu Rồng Phun Lửa",
+    "link": "https://www.tiktok.com/@insightdanang/video/7691603474605264148",
+    "snippet": "Cầu Rồng là một biểu tượng kiến trúc độc đáo của thành phố biển Đà Nẵng. Điểm đặc biệt nhất là vào các tối thứ Bảy và Chủ Nhật hàng tuần, con ...",
+    "position": 3
+   },
+   {
+    "title": "Cầu Rồng Đà Nẵng: Phun Lửa và Phun Nước Độc Đáo",
+    "link": "https://www.tiktok.com/@danang.gov.vn3/video/7680837215076814101",
+    "snippet": "Màn trình diễn phun lửa và phun nước của Cầu Rồng thường bắt đầu vào lúc 21 giờ tối. Tiếng reo hò, cổ vũ vang dội khi rồng bắt đầu phun ra những ...",
+    "position": 4
+   },
+   {
+    "title": "Trời mưa thì cầu Rồng có phun lửa không ...",
+    "link": "https://www.tiktok.com/@thuexemaydanang43hovy/video/7662348175075773717",
+    "snippet": "1391 Lượt thích,25 Bình luận.Video TikTok từ Thuê xe máy Đà Nẵng Hồ Vỹ (@thuexemaydanang43hovy): \"Trời mưa thì cầu Rồng có phun lửa không ...",
+    "position": 5
+   },
+   {
+    "title": "Tham Quan Ngũ Hành Sơn Đà Nẵng: Động Âm Phủ & 5 Núi",
+    "link": "https://www.tiktok.com/@mc.hienvinh/video/7535008488053902610",
+    "snippet": "Ngũ Hành Sơn ở Đà Nẵng là một trong những điểm tham quan nổi tiếng với cảnh quan hang động, núi đá và suối nước tự nhiên.",
+    "position": 6
+   },
+   {
+    "title": "Cầu Rồng có bao nhiêu màu?",
+    "link": "https://www.tiktok.com/@marina.restaurantdn/video/7692427771179437319",
+    "snippet": "Cầu Rồng ở TP Đà Nẵng có nhiều màu sắc thay đổi, không chỉ một màu cố định. Cầu được chiếu sáng với ánh đèn đổi màu, tạo ra các tông màu ...",
+    "position": 7
+   },
+   {
+    "title": "Các cây cầu nổi tiếng ở Đà Nẵng — Top 1 Cầu Rồng",
+    "link": "https://vt.tiktok.com/ZSbmjduuE/",
+    "snippet": "Thành phố được gọi là \"Thành phố của những cây cầu\" nhờ nhiều công trình kiến trúc cầu nổi bật. Trong đó, Cầu Rồng được xếp hạng Top 1 về mức độ ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

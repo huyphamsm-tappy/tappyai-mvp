@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "AirPods Pro site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:02:10.582Z",
+ "body": {
+  "searchParameters": {
+   "q": "AirPods Pro site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai Nghe Không Dây Apple AirPods Pro 3 (MFHP4ZP/A)",
+    "link": "https://www.lazada.vn/products/tai-nghe-khong-day-apple-airpods-pro-3-mfhp4zpa-hang-chinh-hang-i3189311229.html?srsltid=AU7gw4W40IOJkrxyUG1dPanrGGaxapKdlp6w5rWkcGpjARVSWmmmI8IZ",
+    "snippet": "Tai nghe Bluetooth Apple AirPods Pro 3 chính hãng ZP/A với công nghệ chống ồn tiên tiến. Tích hợp Bluetooth 5.3, giao hàng nhanh miễn phí, bảo hành 1 năm, ...",
+    "rating": 5,
+    "ratingCount": 92,
+    "position": 1
+   },
+   {
+    "title": "[Trả góp 0%] Phụ kiện AirPods Pro (2nd Gen) USB-C ...",
+    "link": "https://www.lazada.vn/products/tra-gop-0-phu-kien-airpods-pro-2nd-gen-usb-c-mtjv3zpa-chinh-hang-i2486642523.html?srsltid=AU7gw4X-ED3DKl7ZMT3Q92ogFzs01FkYCYRQMe6MGnHxcejGYd34U5KI",
+    "snippet": "Chủ Động Khử Tiếng Ồn cao hơn đến 2x so với AirPods Pro thế hệ trước, vì vậy bạn sẽ nghe thấy ít tiếng ồn hơn hẳn trong khi đang di chuyển và khi cần tập trung.",
+    "position": 2
+   },
+   {
+    "title": "Tai Nghe Dùng Cho AirPods Pro 3rd Gen",
+    "link": "https://h5.lazada.vn/products/tai-nghe-dung-cho-airpods-pro-3rd-gen-i13452412671-s117286854309.html",
+    "snippet": "LazMall Tai Nghe Dùng Cho AirPods Pro 3rd Gen · 100% chính hãng · 30 ngày miễn phí trả hàng · Không áp dụng chính sách bảo hành.",
+    "position": 3
+   },
+   {
+    "title": "Vỏ Bảo Vệ Tai Nghe AirPods Pro 3, ...",
+    "link": "https://h5.lazada.vn/products/vo-bao-ve-tai-nghe-airpods-pro-3-bao-ve-toan-than-chong-soc-co-moc-khoa-an-toan-gia-do-dien-thoai-tuong-thich-sac-khong-day-i3279641356.html",
+    "snippet": "Vỏ tai nghe này cung cấp khả năng bảo vệ toàn thân cho Airpod Pro 3 của bạn, đảm bảo nó vẫn an toàn trước các va đập và rơi.",
+    "position": 4
+   },
+   {
+    "title": "Vỏ Silicon Siêu Mỏng Cho AirPods Pro 2 Hộp Đựng Tai ...",
+    "link": "https://h5.lazada.vn/products/vo-silicon-sieu-mong-cho-airpods-pro-2-hop-dung-tai-nghe-bluetooth-khong-day-bluetooth-vo-bao-ve-da-tach-roi-cho-apple-airpod-pro-2-i2615569179.html",
+    "snippet": "Vỏ bảo vệ này bảo vệ AirPods Pro 2 của bạn khỏi trầy xước, rơi và hao mòn hàng ngày, giữ cho chúng luôn ở tình trạng nguyên sơ.",
+    "rating": 5,
+    "ratingCount": 29,
+    "position": 5
+   },
+   {
+    "title": "Ốp Lưng Airpods pro 3 Ốp Lưng Bluetooth Không Dây 3D Vỏ ...",
+    "link": "https://www.lazada.vn/products/op-lung-airpods-pro-3-op-lung-bluetooth-khong-day-3d-vo-bao-ve-cho-tai-nghe-apple-pro-2-vo-tai-nghe-airpod-4-vo-tai-nghe-i3253187311-s15689225749.html?from_gmc=1&fl_tag=1&srsltid=AU7gw4U1n0m-moLnk0vvaocSSXmRq1jBjaKwyjsk32zEpQsPZAmtfHvU",
+    "snippet": "Thông số. Chất liệu,Loại Bảo Hành ; Giao hàng. Thành phố Hồ Chí Minh, Phường Bến Thành. Giao tiêu chuẩn , Nhận vào 3-7 thg 8. 32.700 ₫. Hãy chi ít nhất 263.000 ₫ ...",
+    "position": 6
+   },
+   {
+    "title": "Vỏ Bảo Vệ AirPods Silicone Tương Thích với AirPods Pro Các ...",
+    "link": "https://www.lazada.vn/products/vo-bao-ve-airpods-silicone-tuong-thich-voi-airpods-pro-cac-the-he-i13403573992.html?srsltid=AU7gw4XP_PCy0NqnrzEFmICCrxt9Cb5IEChSOtkWwlc0Vz3XJkt_lIRT",
+    "snippet": "Ốp Lưng Airpods pro 3 Ốp Lưng Airpods 4 Ốp Lưng Airpods pro 2 Ốp Lưng. 201.000 ₫ · Ốp Lưng Silicon Bảo Vệ Sáng Tạo Cho AirPods pro 3 AirPods pro 2 AirPods 4.",
+    "position": 7
+   },
+   {
+    "title": "Ốp Lưng Bảo Vệ AirPods pro 3 AirPods 4 Apple Headset Daisy ...",
+    "link": "https://www.lazada.vn/products/op-lung-bao-ve-airpods-pro-3-airpods-4-apple-headset-daisy-bluetooth-op-lung-mem-thoi-trang-chong-soc-cho-apple-airpods-pro-2-i2836624855-s15195151489.html?srsltid=AU7gw4V0DS_F11iAaTfJMDUpeuxeNP4xcgix1swjuVutSHnwdGdUEel_",
+    "snippet": "201.000 ₫354.000 ₫-43%. badge Ốp Lưng Bảo Vệ AirPods pro 3 AirPods 4 Apple Headset Daisy Bluetooth Ốp Lưng Mềm Thời Trang Chống Sốc Cho Apple AirPods pro 2. 5( ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

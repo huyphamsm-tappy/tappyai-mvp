@@ -1,0 +1,138 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Hana Hotel Da Nang",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T09:51:40.737Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hana Hotel Da Nang",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Khách sạn Hana Đà Nẵng, Phước Mỹ, Đà Nẵng",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/582/5828738/5828738_18092720230068212019.jpg?ca=7&ce=1&s=414x232",
+    "imageWidth": 208,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGkedvArY73cuE4WmE8DxMgi10HePbRJTAJgLnDX5Fyg&s=10",
+    "thumbnailWidth": 208,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/hana-hotel-da-nang/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F582%2F5828738%2F5828738_18092720230068212019.jpg%3Fca%3D7%26ce%3D1%26s%3D414x232&tbnid=WLU3F8BIPV2TtM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fhana-hotel-da-nang%2Fhotel%2Fda-nang-vn.html&docid=t7gbuZ_HHFEulM&w=208&h=232",
+    "position": 1
+   },
+   {
+    "title": "Hana Hotel & Apartment Da Nang Reviews, Deals & Photos 2026 - vrbo.com",
+    "imageUrl": "https://media.vrbo.com/lodging/97000000/96830000/96825100/96825095/faa5e82b.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 575,
+    "imageHeight": 767,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSfjNdriVrnbu1jazUg3lPC02-gqRk8I79MRXzT7obCw&s",
+    "thumbnailWidth": 194,
+    "thumbnailHeight": 259,
+    "source": "Vrbo",
+    "domain": "www.vrbo.com",
+    "link": "https://www.vrbo.com/en-gb/pdp/lo/96825095",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.vrbo.com%2Flodging%2F97000000%2F96830000%2F96825100%2F96825095%2Ffaa5e82b.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=6E7l0yh4aOpMDM&imgrefurl=https%3A%2F%2Fwww.vrbo.com%2Fen-gb%2Fpdp%2Flo%2F96825095&docid=asDAy-40L_BqzM&w=575&h=767",
+    "position": 2
+   },
+   {
+    "title": "Hana Hotel & Apartment Da Nang (@HanaApartmentDaNang) • Facebook",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=840762195739537",
+    "imageWidth": 1086,
+    "imageHeight": 1448,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHjgdWVruUZF3cZwNKpk-n7KZHI_HKVClyYxO8TS_1uw&s=10",
+    "thumbnailWidth": 387,
+    "thumbnailHeight": 516,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/HanaApartmentDaNang/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D840762195739537&tbnid=u83dVQ-0YdwJ8M&imgrefurl=https%3A%2F%2Fwww.facebook.com%2FHanaApartmentDaNang%2F&docid=_OAy2w84QA2ADM&w=1086&h=1448",
+    "position": 3
+   },
+   {
+    "title": "Khách sạn Hana Đà Nẵng, Phước Mỹ, Đà Nẵng",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/5828738/0/5aad7feef3dda3af45e0490ce3404a28.jpeg?ce=0&s=414x232",
+    "imageWidth": 347,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVlbPCVcR9UiWADOtz7o_YY1R-AQucNoZZpxeUrwXiZw&s",
+    "thumbnailWidth": 275,
+    "thumbnailHeight": 183,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/hana-hotel-da-nang/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F5828738%2F0%2F5aad7feef3dda3af45e0490ce3404a28.jpeg%3Fce%3D0%26s%3D414x232&tbnid=BCLQ5NVoYjNinM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fhana-hotel-da-nang%2Fhotel%2Fda-nang-vn.html&docid=t7gbuZ_HHFEulM&w=347&h=232",
+    "position": 4
+   },
+   {
+    "title": "HANA HOTEL (Đà Nẵng) - Đánh giá Khách sạn & So sánh giá - Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1b/3e/13/34/hana-hotel.jpg?w=1100&h=1100&s=1",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQj-04fvEjqmcM8FiNEX5E43h_gVMX7-EFPBK4ZUlLE2g&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g298085-d12723831-Reviews-Hana_Hotel-Da_Nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F1b%2F3e%2F13%2F34%2Fhana-hotel.jpg%3Fw%3D1100%26h%3D1100%26s%3D1&tbnid=hk3eD6RUw2s-fM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g298085-d12723831-Reviews-Hana_Hotel-Da_Nang.html&docid=avhlpRCw6eL3DM&w=1024&h=683",
+    "position": 5
+   },
+   {
+    "title": "Hana Hotel & Apartment Da Nang, Giá giảm 30%, Ảnh & Review chân thật",
+    "imageUrl": "https://ik.imagekit.io/tvlk/apr-asset/TzEv3ZUmG4-4Dz22hvmO9NUDzw1DGCIdWl4oPtKumOg=/lodging/97000000/96830000/96825100/96825095/7ed0c336_z.jpg?_src=imagekit&tr=c-at_max,fo-auto,h-203,q-80,w-300",
+    "imageWidth": 300,
+    "imageHeight": 203,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQa2tWs0XTDPTxUO1tiMAfqtJkVgV5qFXMxpaL468D3Rw&s",
+    "thumbnailWidth": 273,
+    "thumbnailHeight": 185,
+    "source": "Traveloka",
+    "domain": "www.traveloka.com",
+    "link": "https://www.traveloka.com/vi-vn/hotel/vietnam/hana-hotel--apartment-da-nang-9000002446898",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fik.imagekit.io%2Ftvlk%2Fapr-asset%2FTzEv3ZUmG4-4Dz22hvmO9NUDzw1DGCIdWl4oPtKumOg%3D%2Flodging%2F97000000%2F96830000%2F96825100%2F96825095%2F7ed0c336_z.jpg%3F_src%3Dimagekit%26tr%3Dc-at_max%2Cfo-auto%2Ch-203%2Cq-80%2Cw-300&tbnid=dQN-zUKKXW4VKM&imgrefurl=https%3A%2F%2Fwww.traveloka.com%2Fvi-vn%2Fhotel%2Fvietnam%2Fhana-hotel--apartment-da-nang-9000002446898&docid=7RH764nizlVQTM&w=300&h=203",
+    "position": 6
+   },
+   {
+    "title": "Hana Hotel Da Nang | Da Nang",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=441746157973165",
+    "imageWidth": 2048,
+    "imageHeight": 1365,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrPvmuEoX-rkXhSgCnJtgrzi0Ha2ODptUErVsioEzt4g&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/p/Hana-Hotel-Da-Nang-100064133525194/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D441746157973165&tbnid=ZybkWXcyg1F2HM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fp%2FHana-Hotel-Da-Nang-100064133525194%2F&docid=JPDYyAJ0Wz2kcM&w=2048&h=1365",
+    "copyright": "0905311322",
+    "creator": "Le Duc Nha",
+    "position": 7
+   },
+   {
+    "title": "Hana Hotel & Apartment Da Nang, Đà Nẵng | Hotels.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/97000000/96830000/96825100/96825095/7647c4d6.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 767,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiCWJGarc4r4AR_YtORhBwHkEDVHvxZGWkJ9gkHvWhug&s",
+    "thumbnailWidth": 259,
+    "thumbnailHeight": 194,
+    "source": "hotels",
+    "domain": "vi.hotels.com",
+    "link": "https://vi.hotels.com/ho3099403040/hana-hotel-apartment-da-nang-a-nang-viet-nam/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F97000000%2F96830000%2F96825100%2F96825095%2F7647c4d6.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=fn8BYxt1qeHMiM&imgrefurl=https%3A%2F%2Fvi.hotels.com%2Fho3099403040%2Fhana-hotel-apartment-da-nang-a-nang-viet-nam%2F&docid=Iaee214CV0q3NM&w=767&h=575",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

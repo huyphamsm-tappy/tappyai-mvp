@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Tai nghe Edifier WH700NB",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:06:27.011Z",
+ "body": {
+  "searchParameters": {
+   "q": "Tai nghe Edifier WH700NB",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Tai nghe Bluetooth choàng đầu EDIFIER WH700NB",
+    "imageUrl": "https://cdn2.fptshop.com.vn/unsafe/tai_nghe_bluetooth_choang_dau_edifier_wh700nb_den_1_2c6edf82c1.jpg",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlcqX39Uh11pYMRMpGjhPGSp5-Hcgj2_DTTliQOEQ-xw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "FPT Shop",
+    "domain": "fptshop.com.vn",
+    "link": "https://fptshop.com.vn/phu-kien/tai-nghe-bluetooth-choang-dau-edifier-wh700nb",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.fptshop.com.vn%2Funsafe%2Ftai_nghe_bluetooth_choang_dau_edifier_wh700nb_den_1_2c6edf82c1.jpg&tbnid=AheuS-H3NtZ6fM&imgrefurl=https%3A%2F%2Ffptshop.com.vn%2Fphu-kien%2Ftai-nghe-bluetooth-choang-dau-edifier-wh700nb&docid=4nwSOEE89RpFYM&w=800&h=800",
+    "position": 1
+   },
+   {
+    "title": "Tai nghe Edifier WH700NB Pro chính hãng, giá tốt nhất thị trường |",
+    "imageUrl": "https://bizweb.dktcdn.net/thumb/1024x1024/100/451/485/products/edifier-wh700nb-pro-diem-noi-bat.jpg?v=1785923543903",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKapsiXqNdZAb7J3FM2HNhCq1UfkB6AMwxCAE2lT7rWw&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Điện tử Linh Anh",
+    "domain": "dientulinhanh.com",
+    "link": "https://dientulinhanh.com/tai-nghe-edifier-wh700nb-pro",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbizweb.dktcdn.net%2Fthumb%2F1024x1024%2F100%2F451%2F485%2Fproducts%2Fedifier-wh700nb-pro-diem-noi-bat.jpg%3Fv%3D1785923543903&tbnid=CsVGpOEIOAeUbM&imgrefurl=https%3A%2F%2Fdientulinhanh.com%2Ftai-nghe-edifier-wh700nb-pro&docid=QX8WOceSRrDXZM&w=800&h=800",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe Edifier WH700NB Bluetooth (Black/ Gray/ Navy/ Ivory) - Ocean Blue  ( Xanh )",
+    "imageUrl": "https://nvs.tn-cdn.net/2024/03/tai-nghe-edifier-wh700nb-bluetooth-9.jpg",
+    "imageWidth": 850,
+    "imageHeight": 850,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScbDMLHRJSrycn8Llt9W6XejD3osI2rTyOhD0abxCLyg&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Nguyễn Vũ Store",
+    "domain": "nguyenvu.store",
+    "link": "https://nguyenvu.store/san-pham/tai-nghe-edifier-wh700nb-bluetooth/?srsltid=AU7gw4WdQ5KLdn9mF4XaivP0ty4JMIc3IxuG7oktoP-3qCKU1Nwxtjc5",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fnvs.tn-cdn.net%2F2024%2F03%2Ftai-nghe-edifier-wh700nb-bluetooth-9.jpg&tbnid=JA7iBmmh_OlSQM&imgrefurl=https%3A%2F%2Fnguyenvu.store%2Fsan-pham%2Ftai-nghe-edifier-wh700nb-bluetooth%2F%3Fsrsltid%3DAU7gw4WdQ5KLdn9mF4XaivP0ty4JMIc3IxuG7oktoP-3qCKU1Nwxtjc5&docid=06-OZBZVwZKLDM&w=850&h=850",
+    "position": 3
+   },
+   {
+    "title": "Tai nghe không dây Edifier WH700NB Pro | Black (Chính hãng)",
+    "imageUrl": "https://image.anhducdigital.vn/di-dong/tai-nghe/tai-nghe-earphone/edifier/wh700nb/tai-nghe-khong-day-edifier-wh700-1-500x500.jpg",
+    "imageWidth": 500,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGSTgLZonj8HBGAbQO38-dY-c13m9sidirFYD-kHdwcg&s=10",
+    "thumbnailWidth": 500,
+    "thumbnailHeight": 500,
+    "source": "Anh Đức Digital",
+    "domain": "anhducdigital.vn",
+    "link": "https://anhducdigital.vn/tai-nghe-khong-day-edifier-wh700nb-pro-black-chinh-hang-p24611.html?srsltid=AU7gw4WCXNkwLJiff3n3ISIfCsWU1dRJi-Uwhrm6meoLMG-5Dg8FBMG_",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimage.anhducdigital.vn%2Fdi-dong%2Ftai-nghe%2Ftai-nghe-earphone%2Fedifier%2Fwh700nb%2Ftai-nghe-khong-day-edifier-wh700-1-500x500.jpg&tbnid=pz5pvad-QzgrxM&imgrefurl=https%3A%2F%2Fanhducdigital.vn%2Ftai-nghe-khong-day-edifier-wh700nb-pro-black-chinh-hang-p24611.html%3Fsrsltid%3DAU7gw4WCXNkwLJiff3n3ISIfCsWU1dRJi-Uwhrm6meoLMG-5Dg8FBMG_&docid=94j5MhuBqB-8JM&w=500&h=500",
+    "position": 4
+   },
+   {
+    "title": "Tai nghe Bluetooth chụp tai Edifier WH700NB",
+    "imageUrl": "https://product.hstatic.net/200000680839/product/8180189_collage_1094063e5a894292bd532e6e18a300cd.jpg",
+    "imageWidth": 2048,
+    "imageHeight": 2048,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3vEUxb-pqBSrUPnNpx7GNOzCsvTldq-i1iFYT19vlrg&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "THẾ GIỚI MÁY TÍNH",
+    "domain": "thegioimaytinh.net.vn",
+    "link": "https://thegioimaytinh.net.vn/products/tai-nghe-bluetooth-chup-tai-edifier-wh700nb",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fproduct.hstatic.net%2F200000680839%2Fproduct%2F8180189_collage_1094063e5a894292bd532e6e18a300cd.jpg&tbnid=ESWwqyc_p_ogSM&imgrefurl=https%3A%2F%2Fthegioimaytinh.net.vn%2Fproducts%2Ftai-nghe-bluetooth-chup-tai-edifier-wh700nb&docid=q6N6F4soA5tYBM&w=2048&h=2048",
+    "position": 5
+   },
+   {
+    "title": "Tai nghe Edifier WH700NB chính hãng, cam kết giá rẻ nhất thị trường |",
+    "imageUrl": "https://bizweb.dktcdn.net/100/451/485/products/tai-nghe-edifier-wh700nb-17.jpg?v=1756700910377",
+    "imageWidth": 850,
+    "imageHeight": 850,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqQ6zL4W8bEvHw36V2pFLtfhJjgF4At3kxGMiwCEt4cA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Điện tử Linh Anh",
+    "domain": "dientulinhanh.com",
+    "link": "https://dientulinhanh.com/tai-nghe-edifier-wh700nb",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbizweb.dktcdn.net%2F100%2F451%2F485%2Fproducts%2Ftai-nghe-edifier-wh700nb-17.jpg%3Fv%3D1756700910377&tbnid=hhiEVIJni98K9M&imgrefurl=https%3A%2F%2Fdientulinhanh.com%2Ftai-nghe-edifier-wh700nb&docid=ZVqkusJoULtSMM&w=850&h=850",
+    "position": 6
+   },
+   {
+    "title": "Tai nghe Edifier WH700NB | Giá rẻ 10/2026, nhiều ưu đãi",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/t/a/tai-nghe-bluetooth-edifier-wh700-0_5_.png",
+    "imageWidth": 716,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtlLKYHDzCnIoqQ4JkZu1zPNt0ddiOTnws23zRUvCuRw&s=10",
+    "thumbnailWidth": 632,
+    "thumbnailHeight": 316,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/tai-nghe-bluetooth-edifier-wh700.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Ft%2Fa%2Ftai-nghe-bluetooth-edifier-wh700-0_5_.png&tbnid=lK75kS-YnhjdvM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Ftai-nghe-bluetooth-edifier-wh700.html&docid=s51RV4MUTdEtDM&w=716&h=358",
+    "position": 7
+   },
+   {
+    "title": "Tai nghe Edifier WH700NB Pro Chính Hãng, Giá Sốc",
+    "imageUrl": "https://images.hdradio.vn/hang/edifier/wh700nb-pro/tai-nghe-edifier-wh700nb-pro-2.webp",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTb0qkkivpFxweYM8Hi3tDeGMUFY6FUKb-QAcpYnn3UQA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "HDRadio.vn",
+    "domain": "hdradio.vn",
+    "link": "https://hdradio.vn/tai-nghe-edifier-wh700nb-pro.html?srsltid=AU7gw4V0VF8DJFI7gbTHoO8e1zDhYkL8Eg2DDY_mZG9lEIMlGjOb20DN",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.hdradio.vn%2Fhang%2Fedifier%2Fwh700nb-pro%2Ftai-nghe-edifier-wh700nb-pro-2.webp&tbnid=6NIKfcHUAeojkM&imgrefurl=https%3A%2F%2Fhdradio.vn%2Ftai-nghe-edifier-wh700nb-pro.html%3Fsrsltid%3DAU7gw4V0VF8DJFI7gbTHoO8e1zDhYkL8Eg2DDY_mZG9lEIMlGjOb20DN&docid=kJXEi0uiIPU-SM&w=800&h=800",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

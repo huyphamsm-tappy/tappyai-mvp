@@ -1,0 +1,59 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:hoianworldheritage.org.vn \"09:00\" \"21:00\" phố cổ Hội An mùa đông vé tham quan",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:22:20.928Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:hoianworldheritage.org.vn \"09:00\" \"21:00\" phố cổ Hội An mùa đông vé tham quan",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cập nhật vé tham quan Khu phố cổ Hội An – Hành trình chạm ...",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Du-lich-Hoi-An/cap-nhat-ve-tham-quan-khu-pho-co-hoi-an-hanh-trinh-cham-ve-nguyen-ban-giua-long-di-san-3033.hwh",
+    "snippet": "... vé tham quan mệnh giá 120.000 đồng. ... Tại Khu phố cổ, không gian này được áp dụng từ 09:00 đến 21:30 vào mùa hè và 09:00 đến 21:00 vào mùa đông.",
+    "date": "16 thg 3, 2026",
+    "position": 1
+   },
+   {
+    "title": "Lễ hội ẩm thực hàn quốc tại Hội An 2025",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Thong-bao/le-hoi-am-thuc-han-quoc-tai-hoi-an-2025-2957.hwh",
+    "snippet": "09:00 - 21:00: Check-in sự kiện & nhận quà; Dùng thử món ăn - Tham quan mua hàng tại các gian hàng; Trải nghiệm chế biến các món chuẩn Hàn ...",
+    "date": "5 thg 9, 2025",
+    "position": 2
+   },
+   {
+    "title": "Chương trình Hội An chào năm mới 2022 và hội đèn lồng",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Thong-bao/chuong-trinh-hoi-an-chao-nam-moi-2022-va-hoi-den-long-hoi-an-2022-2097.hwh",
+    "snippet": "09:00-10:00 01/01/2022, Đón đoàn khách đầu tiên tham quan. Đô thị cổ ... 17:00-21:00. Từ 24/12/2021 đến 02/01/2022, Chợ phiên Hội An, Đường ...",
+    "date": "29 thg 11, 2021",
+    "position": 3
+   },
+   {
+    "title": "\"Giao lưu văn hóa Hội An-Nhật Bản” lần thứ 17, 2019 ...",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Le-hoi-su-kien/giao-luu-van-hoa-hoi-an-nhat-ban-lan-thu-17-2019-festival-to-lua-tho-cam-viet-nam-the-gioi-2019-1814.hwh",
+    "snippet": "09:00-11:00, - Thi lắc thúng chai - Đua ghe “Hội An-Nhật Bản và du ... 19:30-21:00, Bế mạc sự kiện “Giao lưu văn hóa Hội An-Nhật Bản” lần ...",
+    "date": "31 thg 7, 2019",
+    "position": 4
+   },
+   {
+    "title": "\"Những ngày văn hóa Nhật Bản tại Quảng Nam” & “Giao lưu ...",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Le-hoi-su-kien/nhung-ngay-van-hoa-nhat-ban-tai-quang-nam-giao-luu-van-hoa-hoi-an-nhat-ban-lan-thu-16-2018-1701.hwh",
+    "snippet": "09:00-21:00, Trình nghề dệt lụa truyền thống Việt Nam - Nhật Bản, Số 28 đường Nguyễn Tất Thành. Vẽ và giới thiệu sản phẩm lụa Hội An, Số 23 ...",
+    "date": "19 thg 7, 2018",
+    "position": 5
+   }
+  ],
+  "credits": 1
+ }
+}

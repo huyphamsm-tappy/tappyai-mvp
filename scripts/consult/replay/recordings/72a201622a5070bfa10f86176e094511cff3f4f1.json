@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "tai nghe chống ồn chủ động ANC dưới 3 triệu đồng Việt Nam (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:02:41.339Z",
+ "body": {
+  "searchParameters": {
+   "q": "tai nghe chống ồn chủ động ANC dưới 3 triệu đồng Việt Nam (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe chính hãng từ 50K - Mẫu mới, giá giảm sâu 10/2026",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe.html",
+    "snippet": "Tai nghe chính hãng Apple, Sony, JBL giảm sốc đến 66%. Trải nghiệm âm thanh đỉnh cao cùng đặc quyền: Trả góp 0%, freeship 2H, bảo hành đến 2 năm.",
+    "position": 1
+   },
+   {
+    "title": "Tai nghe ANC chống ồn đỉnh cao, chính hãng, giá rẻ từ 300k",
+    "link": "https://cellphones.com.vn/bo-loc/tai-nghe-chong-on-chu-dong-anc",
+    "snippet": "Có mic đàm thoại; Chống ồn; Điều khiển giọng nói; Xuyên âm; Sạc không dây; Chống nước; Có app phiên dịch; Chống ồn chủ động ANC. Cổng kết nối.",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe chụp tai | Headphone - Giá rẻ, có trả góp 0%",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe/headphones.html",
+    "snippet": "Tai nghe chụp tai giá bao nhiêu? ; Bose. Thường hơn 6 triệu đồng. Cao cấp ; Marshall. Từ khoảng 3 triệu đồng trở lên. Trung đến cao cấp ; Edifier. Trải dài từ 500 ...",
+    "position": 3
+   },
+   {
+    "title": "99+ Tai nghe bluetooth giá rẻ dưới 2 triệu | Nên mua ngay",
+    "link": "https://cellphones.com.vn/bo-loc/tai-nghe-gia-duoi-2-trieu",
+    "snippet": "Tai nghe Bluetooth True Wireless Havit TW972 · Có mic đàm thoại · Chống ồn · Điều khiển giọng nói · Xuyên âm · Sạc không dây · Chống nước",
+    "position": 4
+   },
+   {
+    "title": "Top 5 tai nghe chống ồn tốt nhất dưới 1 triệu mới 2026",
+    "link": "https://cellphones.com.vn/sforum/tai-nghe-chong-on-tot-nhat",
+    "snippet": "Tai nghe không dây Xiaomi Redmi Buds 3 · Tai nghe không dây Soundpeats Mini · Tai nghe chống ồn tốt nhất - OPPO Enco Buds 2 · Tai nghe không dây Earbuds Cowin Apex ...",
+    "rating": 2,
+    "ratingCount": 1,
+    "position": 5
+   },
+   {
+    "title": "Tai nghe bluetooth không dây bền rẻ, chính hãng, giao 2h",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe/tai-nghe-bluetooth.html",
+    "snippet": "Tai nghe Bluetooth True Wireless Havit TW972 · Chống ồn · Điều khiển giọng nói · Xuyên âm · Có mic đàm thoại · Sạc không dây · Chống nước · Có app phiên dịch · Chống ồn ...",
+    "position": 6
+   },
+   {
+    "title": "Top 99+ Tai nghe bluetooth, không dây giá dưới 1 triệu",
+    "link": "https://cellphones.com.vn/bo-loc/tai-nghe-gia-duoi-1-trieu",
+    "snippet": "Tính năng. Có mic đàm thoại; Chống ồn; Điều khiển giọng nói; Xuyên âm; Sạc không dây; Chống nước; Có app phiên dịch; Chống ồn chủ động ANC ; Cổng kết nối. 3.5mm",
+    "position": 7
+   },
+   {
+    "title": "Tai nghe Apple AirPods 4 ANC chống ồn | Giá tốt 10/2026",
+    "link": "https://cellphones.com.vn/apple-airpods-4-chong-on-chu-dong.html",
+    "snippet": "Tai nghe Apple AirPods 4 ANC chính hãng - Thiết kế mới, chủ động khử ồn, cải thiện âm thanh với chip H2, sạc USB C tiện lợi. Mua ngay tại đây.",
+    "rating": 4.9,
+    "ratingCount": 43,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

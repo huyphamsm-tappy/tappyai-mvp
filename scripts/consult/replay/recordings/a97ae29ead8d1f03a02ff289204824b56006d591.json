@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Bluetooth thể thao Anker Soundcore V40i site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:06:29.097Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bluetooth thể thao Anker Soundcore V40i site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe Bluetooth thể thao Anker Soundcore V40i",
+    "link": "https://shopee.vn/Tai-nghe-Bluetooth-th%E1%BB%83-thao-Anker-Soundcore-V40i-A3878-thi%E1%BA%BFt-k%E1%BA%BF-trong-su%E1%BB%91t-ch%E1%BB%91ng-n%C6%B0%E1%BB%9Bc-IP55-v%E1%BB%ABa-v%E1%BA%B7n-tho%E1%BA%A3i-m%C3%A1i-i.2849999.40157675700",
+    "snippet": "Mua Tai nghe Bluetooth thể thao Anker Soundcore V40i - A3878, thiết kế trong suốt, chống nước IP55, vừa vặn, thoải mái giá tốt. Mua hàng qua mạng uy tín, ...",
+    "position": 1
+   },
+   {
+    "title": "Tai Nghe Bluetooth Thể Thao Anker Soundcore V40i ...",
+    "link": "https://shopee.vn/Tai-Nghe-Bluetooth-Th%E1%BB%83-Thao-Anker-Soundcore-V40i-A3878-K%E1%BA%B9p-Tai-Ch%E1%BA%AFc-Ch%E1%BA%AFn-Ch%E1%BB%91ng-N%C6%B0%E1%BB%9Bc-IP55-Pin-21H-i.105971151.53204836750",
+    "snippet": "Mua Tai Nghe Bluetooth Thể Thao Anker Soundcore V40i A3878 Kẹp Tai Chắc Chắn, Chống Nước IP55, Pin 21H giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 3,
+    "position": 2
+   },
+   {
+    "title": "Tai nghe Bluetooth Thể thao Anker Soundcore V40i A3878 ...",
+    "link": "https://shopee.vn/Tai-nghe-Bluetooth-Th%E1%BB%83-thao-Anker-Soundcore-V40i-A3878-%C4%90i%E1%BB%81u-ch%E1%BB%89nh-k%C3%ADch-c%E1%BB%A1-%C3%82m-tr%E1%BA%A7m-m%E1%BA%A1nh-m%E1%BA%BD-i.1241978649.40962105663",
+    "snippet": "Mua Tai nghe Bluetooth Thể thao Anker Soundcore V40i A3878, Điều chỉnh kích cỡ, Âm trầm mạnh mẽ giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.8,
+    "ratingCount": 5,
+    "position": 3
+   },
+   {
+    "title": "Tai nghe Bluetooth không dây Anker Soundcore V40i móc ...",
+    "link": "https://shopee.vn/Tai-nghe-Bluetooth-kh%C3%B4ng-d%C3%A2y-Anker-Soundcore-V40i-m%C3%B3c-tai-th%E1%BB%83-thao-m%E1%BA%ABu-2026-m%E1%BB%9F-%C3%A2m-thanh-hay-b%C3%A1n-ch%E1%BA%A1y-i.1487238324.50318559517?extraParams=%7B%22display_model_id%22%3A336558965111%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "Mua Tai nghe Bluetooth không dây Anker Soundcore V40i móc tai thể thao mẫu 2026 mở âm thanh hay bán chạy giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 4
+   },
+   {
+    "title": "Tai nghe Bluetooth thể thao Anker Soundcore V40i",
+    "link": "https://shopee.vn/Tai-nghe-Bluetooth-th%E1%BB%83-thao-Anker-Soundcore-V40i-A3878-thi%E1%BA%BFt-k%E1%BA%BF-trong-su%E1%BB%91t-ch%E1%BB%91ng-n%C6%B0%E1%BB%9Bc-IP55-m%E1%BA%ABu-2025-i.758591190.42313869455",
+    "snippet": "Mua Tai nghe Bluetooth thể thao Anker Soundcore V40i - A3878, thiết kế trong suốt, chống nước IP55, mẫu 2025 giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 5
+   },
+   {
+    "title": "soundcore by anker - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/soundcore%20by%20anker",
+    "snippet": "Shopee cung cấp đầy đủ các sản phẩm soundcore by anker chính hãng với nhiều mức giá ưu đãi vô cùng hấp dẫn. Đặc biệt, các sản phẩm có sẵn và bạn dễ dàng tìm ...",
+    "position": 6
+   },
+   {
+    "title": "Tai nghe bluetooth giá tốt Tháng 7, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=Tai+nghe+bluetooth",
+    "snippet": "Tai nghe Bluetooth True Wireless Open-ear Anker Soundcore V40i A3878 - Hàng chính hãng ... Samsung dành riêng Tai nghe Bluetooth thể thao không dây - Âm ...",
+    "position": 7
+   },
+   {
+    "title": "m45 giá tốt Tháng 9, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=m45",
+    "snippet": "Tai nghe Bluetooth không dây pro 4 TWS 5.3\", chống ồn, phù hợp cho thể thao và chơi game. 59.350₫.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

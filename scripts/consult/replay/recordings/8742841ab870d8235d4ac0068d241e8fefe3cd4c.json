@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:hoianworldheritage.org.vn vé tham quan phố cổ Hội An 2026 giờ bán vé",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:44:00.889Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:hoianworldheritage.org.vn vé tham quan phố cổ Hội An 2026 giờ bán vé",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cập nhật vé tham quan Khu phố cổ Hội An – Hành trình chạm ...",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Du-lich-Hoi-An/cap-nhat-ve-tham-quan-khu-pho-co-hoi-an-hanh-trinh-cham-ve-nguyen-ban-giua-long-di-san-3033.hwh",
+    "snippet": "Với vé tham quan mệnh giá 80.000 đồng, du khách được dạo bước trong không gian chung của Khu phố cổ Hội An, nơi những con đường nhỏ rợp bóng đèn ...",
+    "date": "16 thg 3, 2026",
+    "position": 1
+   },
+   {
+    "title": "Phố cổ Hội An - Di sản văn hóa thế giới",
+    "link": "http://www.hoianworldheritage.org.vn/",
+    "snippet": "Thật dễ dàng để phải lòng thị trấn Hội An xinh đẹp như tranh vẽ, điểm du lịch nằm trên bờ biển Nam Trung Bộ của Việt Nam. Là một cảng thương mại được bảo tồn ...",
+    "position": 2
+   },
+   {
+    "title": "Hội An đông nghẹt khách dịp Tết: Trải nghiệm thực tế và lưu ý ...",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Du-lich-Hoi-An/hoi-an-dong-nghet-khach-dip-tet-trai-nghiem-thuc-te-va-luu-y-khi-tham-quan-pho-co-3024.hwh",
+    "snippet": "Cập nhật vé tham quan Khu phố cổ Hội An – Hành trình chạm về nguyên bản giữa lòng di sản (16/03/2026); Các hoạt động hưởng ứng Ngày Quốc tế ...",
+    "date": "23 thg 2, 2026",
+    "position": 3
+   },
+   {
+    "title": "Du lịch Hội An - Phố cổ Hội An - Di sản văn hóa thế giới",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Du-lich-Hoi-An.hwh",
+    "snippet": "Từ đầu năm 2026, thương hiệu du lịch Đà Nẵng và Hội An liên tục được các tổ chức, nền tảng du lịch uy tín quốc tế vinh danh ở nhiều hạng mục khác nhau.",
+    "position": 4
+   },
+   {
+    "title": "Thành phố cổ kính của Việt Nam đứng đầu bảng xếp hạng du ...",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Du-lich-Hoi-An/thanh-pho-co-kinh-cua-viet-nam-dung-dau-bang-xep-hang-du-lich-the-gioi-3041.hwh",
+    "snippet": "... Hội An (18/03/2026); Cập nhật vé tham quan Khu phố cổ Hội An – Hành trình chạm về nguyên bản giữa lòng di sản (16/03/2026); Lãnh đạo thành phố ...",
+    "date": "16 thg 4, 2026",
+    "position": 5
+   },
+   {
+    "title": "Hội An lọt Top 51 điểm đến đẹp nhất thế giới năm 2026",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Du-lich-Hoi-An/hoi-an-lot-top-51-diem-den-dep-nhat-the-gioi-nam-2026-3035.hwh",
+    "snippet": "Trong danh sách Top 51 điểm đến đẹp nhất thế giới năm 2026 do Time Out công bố, Hội An tiếp tục được xướng tên như một trong những điểm đến ...",
+    "date": "19 thg 3, 2026",
+    "position": 6
+   },
+   {
+    "title": "“Phủ sóng” vinh danh thương hiệu du lịch - Phố cổ Hội An",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Du-lich-Hoi-An/phu-song-vinh-danh-thuong-hieu-du-lich-3037.hwh",
+    "snippet": "Chuỗi danh hiệu quốc tế trong những tháng đầu năm 2026 phản ánh một bước chuyển rõ rệt trong việc định vị thương hiệu du lịch Đà Nẵng - Hội An.",
+    "date": "25 thg 3, 2026",
+    "position": 7
+   },
+   {
+    "title": "Các hoạt động hưởng ứng Ngày Quốc tế Hạnh phúc tại Hội An",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Du-lich-Hoi-An/cac-hoat-dong-huong-ung-ngay-quoc-te-hanh-phuc-tai-hoi-an-3034.hwh",
+    "snippet": "Tại số 106 đường Bạch Đằng sẽ có không gian chụp ảnh lưu niệm miễn phí “Hội An-Trạm Hạnh phúc” (các khung giờ 9:00 - 11:00, 15:00 - 17:00, 18:00 ...",
+    "date": "18 thg 3, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

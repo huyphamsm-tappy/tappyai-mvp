@@ -1,0 +1,24 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "MacBook ngân sách khoảng 25 triệu Việt Nam",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:32:33.633Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook ngân sách khoảng 25 triệu Việt Nam",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [],
+  "credits": 2
+ }
+}

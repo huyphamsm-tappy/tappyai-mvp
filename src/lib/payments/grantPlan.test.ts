@@ -3,6 +3,7 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 import { CHANNEL_SOURCE, EntitlementWriteError, grantPlan } from './grantPlan'
 import { entitlementFromRow } from '@/lib/plans/entitlement'
 import { aiQuotaFor, paymentsCatalog, planForStoreProduct } from '@/lib/plans/planConfig'
+import { PAID_DAILY_CEILING } from '@/lib/config/product'
 
 // PAYMENTS — grantPlan is a thin, exact caller of the SQL writer (the stacking and the
 // idempotency are proven on a real database in supabase/tests/p8_payments.test.ts).
@@ -56,19 +57,24 @@ describe('grantPlan', () => {
 
 describe('quota reads the entitlement only — the channel never matters', () => {
   const future = new Date(Date.now() + 5 * 86_400_000).toISOString()
-  it.each(['web_sepay', 'google_play', 'apple_iap', 'manual'])('a %s grant = paid, 30 AI questions a day', (source) => {
+  it.each(['web_sepay', 'google_play', 'apple_iap', 'manual'])(`a %s grant = paid, hidden ceiling of ${PAID_DAILY_CEILING} AI questions a day`, (source) => {
     const ent = entitlementFromRow({ plan: 'momo', status: 'active', current_period_end: future, source })
     expect(ent).toMatchObject({ paid: true, plan: 'momo', source })
-    expect(aiQuotaFor(ent.plan)).toEqual({ limit: 30, period: 'day' })
+    // owner 01/11/2026: 30 -> 1000 (accounts have no visible limit; hidden anti-abuse ceiling)
+    expect(PAID_DAILY_CEILING).toBe(1000)
+    expect(aiQuotaFor(ent.plan)).toEqual({ limit: PAID_DAILY_CEILING, period: 'day' })
   })
 })
 
 describe('catalog', () => {
   it('the web catalog has prices and per-day prices for long plans', () => {
     const c = paymentsCatalog()
-    expect(c.map((p) => p.id)).toEqual(['pip', 'momo', 'coco', 'milo', 'sunny'])
+    // Owner 01/11/2026: new plan catalog (SALE_PLAN_IDS order; Milo/Sunny not sold)
+    expect(c.map((p) => p.id)).toEqual(['pip', 'momo', 'coco', 'promax1m', 'promax3m'])
     expect(c.find((p) => p.id === 'pip')!.pricePerDayVnd).toBeUndefined()
-    expect(c.find((p) => p.id === 'sunny')!.pricePerDayVnd).toBe(Math.round(1_719_000 / 365))
+    expect(c.find((p) => p.id === 'promax1m')!.pricePerDayVnd).toBeUndefined()
+    expect(c.find((p) => p.id === 'coco')!.pricePerDayVnd).toBe(Math.round(472_500 / 90))
+    expect(c.find((p) => p.id === 'promax3m')!.pricePerDayVnd).toBe(Math.round(607_500 / 90))
   })
 
   it('the app catalog carries NO web price (Google Play policy)', () => {
@@ -81,6 +87,10 @@ describe('catalog', () => {
   it('maps store product ids, including the Play `product:baseplan` form', () => {
     expect(planForStoreProduct('tappy_coco_3m')).toBe('coco')
     expect(planForStoreProduct('tappy_momo_1m:monthly')).toBe('momo')
+    // Owner 01/11/2026: new plan catalog - Tappy store products; retired ids still map (stored purchases)
+    expect(planForStoreProduct('tappy_promax_1m')).toBe('promax1m')
+    expect(planForStoreProduct('tappy_promax_3m')).toBe('promax3m')
+    expect(planForStoreProduct('tappy_sunny_12m')).toBe('sunny')
     expect(planForStoreProduct('com.tappyai.ios.pro.monthly')).toBeNull()
     expect(planForStoreProduct(null)).toBeNull()
   })

@@ -1,0 +1,31 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:hoianworldheritage.org.vn thời gian áp dụng không gian phố cổ 9:00 21:00",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:08:03.785Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:hoianworldheritage.org.vn thời gian áp dụng không gian phố cổ 9:00 21:00",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "\"Giao lưu văn hóa Hội An-Nhật Bản” lần thứ 17, 2019 ...",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Le-hoi-su-kien/giao-luu-van-hoa-hoi-an-nhat-ban-lan-thu-17-2019-festival-to-lua-tho-cam-viet-nam-the-gioi-2019-1814.hwh",
+    "snippet": "09:00-21:30, Không gian văn hóa Việt Nam-Nhật Bản, Đường Nguyễn Thị Minh Khai ; Tour tham quan“Dấu xưa Nhật Bản”, Khu Phố cổ, các di tích Nhật ...",
+    "date": "31 thg 7, 2019",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

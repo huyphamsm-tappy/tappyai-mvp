@@ -14,13 +14,14 @@ import { AI } from '@/lib/ai/llm'
 import type { ModelRole } from '@/lib/ai/llm/types'
 import { withSerperToolBudget, withSerperTurnBudget } from '@/lib/ai/tools/serperToolBudget'
 import { redactForTrace, guardToolOutput } from './guards'
-import { searchingFrame } from '@/lib/ai/consultative/presearch'
+import { searchingFrame } from '@/lib/recommendation/progressAnnotation'
 import { runBoundedAgent, AGENT_LIMITS, type AgentStep, type AgentExecutableTool, type AgentRun } from './loop'
 import { toModelSchemas, nowShowingTool, movieShowtimesTool, labelFlightVerification, requestActionTool, SIDE_EFFECT_TOOLS, type PendingAction } from './agentTools'
 import { AGENT_SYSTEM, AGENT_SYSTEM_EN_NOTE } from './prompt'
 import { agentStreamResult, type AgentStreamResult } from './dataStream'
 
-export const tappyAgentEnabled = (env: Record<string, string | undefined> = process.env): boolean => env.TAPPY_AGENT === '1'
+/** Any agent runtime: '1' = the Phase 7 bounded agent, '2' = the Phase 8 runtime (runtime/index.ts). Unset = the legacy Consultative path. */
+export const tappyAgentEnabled = (env: Record<string, string | undefined> = process.env): boolean => env.TAPPY_AGENT === '1' || env.TAPPY_AGENT === '2'
 
 type RouteTool = { description?: string; parameters?: unknown; execute?: (args: Record<string, unknown>, ctx: { toolCallId: string; messages: unknown[] }) => unknown }
 
@@ -28,6 +29,8 @@ export interface AgentTurnInput {
   routeTools: Record<string, RouteTool> | undefined
   /** A plan-only turn: the model gets no tools (no retrieval, no cards). Set by the route from the user's own words. */
   noRetrieval?: boolean
+  /** CONSULTATIVE_IN_AGENT (discoveryGate.ts): a vague discovery question — ask first, run no lookup; the runtime also blocks any tool the model proposes anyway. */
+  discoveryAsk?: boolean
   /** Trusted context (system) + untrusted app-state DATA block (sent as a user-role message), from agentContext(). */
   context: { system: string; data: string | null }
   /** Serper credits the agent's tools may spend in this turn, all tools together (8 normal / 10 travel minus the photo reserve). */
@@ -45,6 +48,8 @@ export interface AgentTurnInput {
   sanitizeQuery: (q: string) => { query: string; cut: string[] }
   /** The code-resolved date of the user's relative-day words; overrides a model-written travel date. */
   codeDate?: string
+  /** LOC-CHIP-01: the request carried a valid current location (hasValidCurrentLocation). The "searching places around you" chip needs it. */
+  hasCurrentLocation?: boolean
   onFinish?: Parameters<typeof agentStreamResult>[1]
   /** Serper credits the agent's tools spent this turn (the card-photo lookup afterwards gets only what is left of the turn budget). */
   onSerperSpent?: (credits: number) => void
@@ -86,6 +91,8 @@ export type SubResultSink = (toolName: string, args: Record<string, unknown>, re
 
 /** Serper credits each part of the travel bundle may spend (3 parts × 3 = 9, the travel turn's tool budget). */
 export const TRIP_PART_CREDITS = 3
+/** POST-UAT B8: each part's own deadline, inside the runtime's 15 s per-tool timeout (the bundle answers before the loop cancels it). */
+export const TRIP_PART_TIMEOUT_MS = 11_000
 
 /**
  * ONE agent-level invocation for a trip plan's independent reads — hotels, sights, local food at the destination — fetched in PARALLEL through the
@@ -96,27 +103,61 @@ export function tripDataTool(base: Record<string, RouteTool>, sink: SubResultSin
     description: 'Gói dữ liệu cho KẾ HOẠCH DU LỊCH ở MỘT điểm đến: khách sạn + điểm tham quan + quán đặc sản, tra song song trong MỘT lần gọi. Chỉ gọi khi kế hoạch cần khách sạn / quán / điểm tham quan CỤ THỂ, giá hoặc giờ mở cửa; lịch trình tổng quát thì lập thẳng, không cần gọi. Vé máy bay: gọi get_flight_prices riêng khi người dùng hỏi vé.',
     parameters: z.object({
       destination: z.string().describe('Điểm đến, vd Đà Nẵng'),
-      interests: z.string().optional().describe('Sở thích ăn uống / vui chơi người dùng đã nói (vd hải sản, biển), nếu có'),
+      interests: z.string().optional().describe('Điều người dùng đã nói là họ thích cho chuyến đi này (vd hải sản, biển, leo núi, nghỉ dưỡng), nếu có'),
       why: z.string().max(160).optional(),
     }),
-    execute: async ({ destination, interests }) => {
+    execute: async ({ destination, interests, skipPlaces }: { destination: string; interests?: string; skipPlaces?: boolean }) => {
       const dest = destination.trim().slice(0, 60)
       const extra = (interests ?? '').trim().slice(0, 40)
+      // `skipPlaces` (CONSULTATIVE_IN_AGENT, set by the runtime for a destination the city table does not know): the two map searches would be
+      // centred on Ho Chi Minh City (food.ts defaultCentre) and return rows from the wrong province, so they are not made; the runtime fetches
+      // the landmarks from the web instead (tripLandmarks.ts).
       const parts: Array<[string, Record<string, unknown>]> = [
         ['get_hotel_prices', { location: dest }],
-        ['search_places', { query: `điểm tham quan nổi tiếng ${dest}`, location: dest, type: 'attraction' }],
-        ['search_places', { query: `${extra ? `${extra} ` : ''}quán đặc sản ngon ${dest}`.trim(), location: dest, type: 'restaurant' }],
+        ...(skipPlaces ? [] : [
+          ['search_places', { query: `điểm tham quan nổi tiếng ${dest}`, location: dest, type: 'attraction' }],
+          ['search_places', { query: `${extra ? `${extra} ` : ''}quán đặc sản ngon ${dest}`.trim(), location: dest, type: 'restaurant' }],
+        ] as Array<[string, Record<string, unknown>]>),
       ]
+      /**
+       * POST-UAT B8 (UAT-25, 2026-10-09): ONE SLOW PART LOST ALL THREE. `Promise.all` waited for the slowest part; with Serper out of
+       * credits one part hung past the runtime's 15 s tool timeout, the loop cancelled the whole call, and the parts that HAD finished
+       * (the sights, the food rows) were thrown away with it — the plan then had no data and no Make Plan card. Each part now has its own
+       * deadline inside the tool's budget: a part that misses it is reported as TIMEOUT (never as "none"), the others are returned and
+       * emitted as before, and a part that finishes late is dropped (never emitted after the tool has answered).
+       */
+      let closed = false
       const results = await Promise.all(parts.map(async ([name, args], k) => {
         const t = base[name]
-        if (!t?.execute) return { error: 'unavailable' }
+        if (!t?.execute) return { tool_state: 'UNAVAILABLE', error: 'unavailable' }
+        let timer: ReturnType<typeof setTimeout> | undefined
         try {
-          const r = await withSerperToolBudget(TRIP_PART_CREDITS, () => Promise.resolve(t.execute!(args, { toolCallId: `trip_${k}`, messages: [] })))
+          const r = await Promise.race([
+            withSerperToolBudget(TRIP_PART_CREDITS, () => Promise.resolve(t.execute!(args, { toolCallId: `trip_${k}`, messages: [] }))),
+            new Promise<never>((_, rej) => { timer = setTimeout(() => rej(new Error('part_timeout')), TRIP_PART_TIMEOUT_MS) }),
+          ])
+          if (closed) return { tool_state: 'TIMEOUT', error: 'part_timeout' }
           sink(name, args, r.value)
           return r.value
-        } catch { return { error: 'tool_failed' } }
+        } catch (e) {
+          return e instanceof Error && e.message === 'part_timeout' ? { tool_state: 'TIMEOUT', error: 'part_timeout' } : { tool_state: 'ERROR', error: 'tool_failed' }
+        } finally { clearTimeout(timer) }
       }))
-      return { destination: dest, hotels: results[0], attractions: results[1], food: results[2], note: 'Dữ liệu cho kế hoạch: chỉ dùng tên/giá/giờ có trong đây; phần không có ghi "chưa có thông tin".' }
+      closed = true
+      const names = skipPlaces ? (['hotels'] as const) : (['hotels', 'attractions', 'food'] as const)
+      const missing = names.filter((_, k) => {
+        const r = results[k] as Record<string, unknown> | undefined
+        return !r || typeof r.error === 'string'
+      })
+      const skippedNote = { results: [], note: 'Bản đồ không định vị được điểm đến này nên không tra địa điểm trên bản đồ; địa danh nằm ở mục landmarks_web (trang web đã đọc).' }
+      // All three failed: the bundle itself failed (TIMEOUT when every part ran out of time) — a failure is not an empty plan.
+      const allTimedOut = results.every(r => (r as Record<string, unknown>)?.error === 'part_timeout')
+      return {
+        ...(missing.length === parts.length ? { error: allTimedOut ? 'parts_timeout' : 'parts_failed' } : {}),
+        destination: dest, hotels: results[0], attractions: skipPlaces ? skippedNote : results[1], food: skipPlaces ? skippedNote : results[2],
+        note: 'Dữ liệu cho kế hoạch: chỉ dùng tên/giá/giờ có trong đây; phần không có ghi "chưa có thông tin".',
+        ...(missing.length ? { parts_missing: missing, parts_note: 'Một số phần không trả về kịp (lỗi/hết giờ ≠ không có). Vẫn lập kế hoạch đầy đủ bằng phần đã có và giả định nêu rõ; phần thiếu ghi "chưa có thông tin", không điền từ trí nhớ.' } : {}),
+      }
     },
   })
 }
@@ -194,7 +235,8 @@ export function startAgentTurn(i: AgentTurnInput): AgentStreamResult {
       deadlineAt: i.deadlineAt,
       signal: i.signal,
       lang: i.lang,
-      onToolStart: () => { if (!progressSent) { progressSent = true; emit(searchingFrame(i.lang)) } },
+      // LOC-CHIP-01: "Đang tìm chỗ quanh bạn…" only for a place search around a real current location.
+      onToolStart: call => { if (!progressSent && call.toolName === 'search_places' && i.hasCurrentLocation === true) { progressSent = true; emit(searchingFrame(i.lang)) } },
       onToolResult: (call, result, event) => {
         lastResults.set(`${event.round}:${call.toolName}`, result)
         if (call.toolName === 'get_trip_data' && event.outcome === 'ok') return // its parts already went out as their own frames

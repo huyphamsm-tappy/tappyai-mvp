@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Máy tính xách tay Apple MacBook Air 13 inch\" OR \"[Mỏng hơn 30%\" OR \"Laptop Mới Nửa / Toàn Thân Da Cho 2025 Macbook Air 13 ...\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:57:18.649Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Máy tính xách tay Apple MacBook Air 13 inch\" OR \"[Mỏng hơn 30%\" OR \"Laptop Mới Nửa / Toàn Thân Da Cho 2025 Macbook Air 13 ...\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Samsung Galaxy M56 5G ra mắt: Mỏng hơn 30%, Gorilla ...",
+    "link": "https://www.tiktok.com/@chienthandinhgiahcm/video/7494852571681606930",
+    "snippet": "Samsung Galaxy M56 5G ra mắt: Mỏng hơn 30%, Gorilla Glass cả 2 mặt, cập nhật đến 2030 #GalaxyM56 #Samsung2025 #Android13To2030 #Camera50MP # ...",
+    "position": 1
+   },
+   {
+    "title": "kayla - original sound",
+    "link": "https://www.tiktok.com/music/original-sound-7659812857370528520",
+    "snippet": "Samsung Galaxy M56 5G ra mắt: Mỏng hơn 30%, Gorilla Glass cả 2 mặt, cập nhật đến 2030 #GalaxyM56 #Samsung2025 #Android13To2030 #Camera50MP #Pin5000mAh ...",
+    "position": 2
+   },
+   {
+    "title": "iPhone 16 Pro Max 256GB Phiên bản Titan mới",
+    "link": "https://www.tiktok.com/@zinlstore_vn/photo/7674963395526855956?image_index=2",
+    "snippet": "NHÌN CẠNH VIỀN LÀ BIẾT ĐẲNG CẤP ✨ > iPhone 16 Pro Max 256GB - Phiên bản Titan mới: + Viền mỏng hơn 30% so với đời trước + Khung Titan siêu ...",
+    "position": 3
+   },
+   {
+    "title": "ابوصدام البدش🇾🇪 - الصوت الأصلي",
+    "link": "https://www.tiktok.com/music/%D8%A7%D9%84%D8%B5%D9%88%D8%AA-%D8%A7%D9%84%D8%A3%D8%B5%D9%84%D9%8A-7647601090003389185",
+    "snippet": "Samsung Galaxy M56 5G ra mắt: Mỏng hơn 30%, Gorilla Glass cả 2 mặt, cập nhật đến 2030 #GalaxyM56 #Samsung2025 #Android13To2030 #Camera50MP #Pin5000mAh ...",
+    "position": 4
+   },
+   {
+    "title": "NHÌN CẠNH VIỀN LÀ BIẾT ĐẲNG CẤP ✨ > iPhone 16 Pro ...",
+    "link": "https://www.tiktok.com/@zinlstore_vn/photo/7674963395526855956?image_index=1",
+    "snippet": "... mỏng hơn 30% so với đời trước + Khung Titan siêu bền, chống xước cực tốt + 2 màu trong ảnh: White Titanium và Desert Titanium - 2 màu bán ...",
+    "position": 5
+   },
+   {
+    "title": "where to find mofusand hipper in jb",
+    "link": "https://shop.tiktok.com/vn/k/where-to-find-mofusand-hipper-in-jb",
+    "snippet": "[CB3_Mua 6 gói_Tặng Túi du lịch] Combo 3 Tã/bỉm quần Molfix Thiên nhiên Super Jumbo Cho Bé Molfix - Organic & Sợi Tre - Thấm Hút Nhanh - Mỏng Hơn 30% - Chống ...",
+    "position": 6
+   },
+   {
+    "title": "Găng tay chơi Game, bao tay chơi Game sợi Nano thế hệ ...",
+    "link": "https://shop.tiktok.com/vn/pdp/1736216202638165927",
+    "snippet": "• Mỏng hơn 30% so với găng tay trên thị trường. • Đường khâu cực kỳ đàn hồi và mịn. • Vẫn có khả năng cảm biến nhạy trong điều kiện ẩm ướt. • Hấp thụ hiệu quả ...",
+    "rating": 3.8,
+    "ratingCount": 45,
+    "position": 7
+   },
+   {
+    "title": "[Tặng Bộ nhạc cụ 5 món] Combo 6 Tã/bỉm quần Thiên ...",
+    "link": "https://shop.tiktok.com/vn/pdp/ta-quan-molfix-thien-nhien-m60-l52-xl42-xxl38-mem-mai-tham-hut-nhanh-bao-ve-da-be/1731596700352087985",
+    "snippet": "Molfix cải tiến mới mỏng hơn 30% thoáng khi vượt trội. THÔNG TIN CHI TIẾT. + ... Mỏng Hơn 30% - Chống Hằn Đỏ 360 Độ. Deal. 4.7. 11880 sold. ₫525.120. ₫1.065 ...",
+    "rating": 4.6,
+    "ratingCount": 896,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

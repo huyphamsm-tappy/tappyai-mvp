@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "AirPods Pro site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:02:11.359Z",
+ "body": {
+  "searchParameters": {
+   "q": "AirPods Pro site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Dành cho iphone AirPods Pro AirPods 1 / 2 / 3 / 4 Vỏ tai nghe ...",
+    "link": "https://shopee.vn/D%C3%A0nh-cho-iphone-AirPods-Pro-AirPods-1-2-3-4-V%E1%BB%8F-tai-nghe-kh%C3%B4ng-d%C3%A2y-ho%E1%BA%A1t-h%C3%ACnh-i.323631163.45209600508",
+    "snippet": "Mua Dành cho iphone AirPods Pro AirPods 1 / 2 / 3 / 4 Vỏ tai nghe không dây hoạt hình giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "position": 1
+   },
+   {
+    "title": "Vỏ AirPods Pro Hình Vịt Dễ Thương Mũ Xanh",
+    "link": "https://shopee.vn/V%E1%BB%8F-AirPods-Pro-H%C3%ACnh-V%E1%BB%8Bt-D%E1%BB%85-Th%C6%B0%C6%A1ng-M%C5%A9-Xanh-%E1%BB%90p-Silicon-Trong-Su%E1%BB%91t-Khoen-Treo-Ch%E1%BB%AF-Full-will-make-you-happy-Cho-AirPods-Pro-2-3-4-Qu%C3%A0-T%E1%BA%B7ng-%C4%90%E1%BB%99c-%C4%90%C3%A1o-i.1500260278.40154033350",
+    "snippet": "Vỏ AirPods Pro Hình Vịt Dễ Thương Mũ Xanh - Ốp Silicon Trong Suốt + Khoen Treo, Chữ \"Full will make you happy\" Cho AirPods Pro 2/3/4, Quà Tặng Độc Đáo.",
+    "position": 2
+   },
+   {
+    "title": "Họa tiết da cho AirPods Pro 3 và AirPod 4 có chân đế điện ...",
+    "link": "https://shopee.vn/H%E1%BB%8Da-ti%E1%BA%BFt-da-cho-AirPods-Pro-3-v%C3%A0-AirPod-4-c%C3%B3-ch%C3%A2n-%C4%91%E1%BA%BF-%C4%91i%E1%BB%87n-tho%E1%BA%A1i-kh%C3%B3a-an-to%C3%A0n-V%E1%BB%8F-b%E1%BA%A3o-v%E1%BB%87-ch%E1%BB%91ng-b%E1%BB%A5i-ch%E1%BB%91ng-s%E1%BB%91c-to%C3%A0n-th%C3%A2n-T%C6%B0%C6%A1ng-th%C3%ADch-cho-AirPods-Pro-th%E1%BA%BF-h%E1%BB%87-th%E1%BB%A9-2-i.348526440.29029455641",
+    "snippet": "Họa tiết da cho AirPods Pro 3 và AirPod 4 có chân đế điện thoại, khóa an toàn Vỏ bảo vệ chống bụi chống sốc toàn thân Tương thích cho AirPods Pro thế hệ thứ 2.",
+    "rating": 4.9,
+    "ratingCount": 38,
+    "position": 3
+   },
+   {
+    "title": "AirPods 4/ AirPod Pro 2] Ốp tai nghe UAG – Chống sốc ...",
+    "link": "https://shopee.vn/-AirPods-Pro-3-AirPods-4-AirPod-Pro-2-%E1%BB%90p-tai-nghe-UAG-%E2%80%93-Ch%E1%BB%91ng-s%E1%BB%91c-chu%E1%BA%A9n-qu%C3%A2n-%C4%91%E1%BB%99i-h%E1%BB%97-tr%E1%BB%A3-s%E1%BA%A1c-kh%C3%B4ng-d%C3%A2y-i.898301886.43767315896",
+    "snippet": "Mua [AirPods Pro 3/ AirPods 4/ AirPod Pro 2] Ốp tai nghe UAG – Chống sốc chuẩn quân đội, hỗ trợ sạc không dây giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.9,
+    "ratingCount": 42,
+    "position": 4
+   },
+   {
+    "title": "Thiết kế đá cát Tương thích với vỏ AirPods Pro 3 và ...",
+    "link": "https://shopee.vn/Thi%E1%BA%BFt-k%E1%BA%BF-%C4%91%C3%A1-c%C3%A1t-T%C6%B0%C6%A1ng-th%C3%ADch-v%E1%BB%9Bi-v%E1%BB%8F-AirPods-Pro-3-v%C3%A0-AirPods-th%E1%BA%BF-h%E1%BB%87-th%E1%BB%A9-5-m%E1%BB%9Bi-Kh%C3%B3a-an-to%C3%A0n-t%E1%BB%AB-t%C3%ADnh-V%E1%BB%8F-b%E1%BA%A3o-v%E1%BB%87-%C4%91%C3%B4i-m%E1%BB%81m-c%E1%BB%A9ng-ch%E1%BB%91ng-s%E1%BB%91c-cho-AirPod-4-c%C3%B3-m%C3%B3c-kh%C3%B3a-i.348526440.25379341770",
+    "snippet": "Thiết kế đá cát Tương thích với vỏ AirPods Pro 3 và AirPods thế hệ thứ 5 mới, Khóa an toàn từ tính, Vỏ bảo vệ đôi mềm cứng chống sốc cho AirPod 4 có móc khóa.",
+    "position": 5
+   },
+   {
+    "title": "Ốp Lưng Trong Suốt Cho AirPods Pro Thế Hệ 2 / 1 (USB-C ...",
+    "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-Trong-Su%E1%BB%91t-Cho-AirPods-Pro-Th%E1%BA%BF-H%E1%BB%87-2-1-(USB-C)-%E1%BB%90p-Kh%C3%B3a-An-To%C3%A0n-T%C6%B0%C6%A1ng-Th%C3%ADch-Cho-Apple-Airpod-Pro-3-Gen-Cover-V%E1%BB%8F-M%E1%BB%81m-C%E1%BB%A9ng-Ch%E1%BB%91ng-S%E1%BB%91c-To%C3%A0n-Th%C3%A2n-C%C3%B3-M%C3%B3c-Kh%C3%B3a-i.348526440.24734810017",
+    "snippet": "Ốp Lưng Trong Suốt Cho AirPods Pro Thế Hệ 2 / 1 (USB-C), Ốp Khóa An Toàn Tương Thích Cho Apple Airpod Pro 3 Gen Cover, Vỏ Mềm Cứng Chống Sốc Toàn Thân Có Móc ...",
+    "rating": 4.9,
+    "ratingCount": 84,
+    "position": 6
+   },
+   {
+    "title": "Hộp đựng tai nghe công tắc khóa Sanptoch cho AirPods ...",
+    "link": "https://shopee.vn/H%E1%BB%99p-%C4%91%E1%BB%B1ng-tai-nghe-c%C3%B4ng-t%E1%BA%AFc-kh%C3%B3a-Sanptoch-cho-AirPods-Pro-3-2nd-M%C3%A0u-%C4%91%C6%A1n-gi%E1%BA%A3n-Silicone-Airpod-Pro-V%E1%BB%8F-ch%E1%BB%91ng-s%E1%BB%91c-qu%C3%A2n-s%E1%BB%B1-V%E1%BB%8F-b%E1%BA%A3o-v%E1%BB%87-to%C3%A0n-th%C3%A2n-c%C3%B3-m%C3%B3c-kh%C3%B3a-i.524325485.55105771597",
+    "snippet": "Hộp đựng tai nghe công tắc khóa Sanptoch cho AirPods Pro 3 / 2nd Màu đơn giản Silicone Airpod Pro Vỏ chống sốc quân sự Vỏ bảo vệ toàn thân có móc khóa.",
+    "position": 7
+   },
+   {
+    "title": "Vỏ Ốp Bảo Vệ Đính Kim Cương Chống Sốc Cho Airpods ...",
+    "link": "https://shopee.vn/V%E1%BB%8F-%E1%BB%90p-B%E1%BA%A3o-V%E1%BB%87-%C4%90%C3%ADnh-Kim-C%C6%B0%C6%A1ng-Ch%E1%BB%91ng-S%E1%BB%91c-Cho-Airpods-Pro-2-3-Airpods-1-2-3-4-H%E1%BB%99p-S%E1%BA%A1c-Tai-Nghe-Kh%C3%B4ng-D%C3%A2y-Sang-Tr%E1%BB%8Dng-i.1172624408.42921354416",
+    "snippet": "Mua Vỏ Ốp Bảo Vệ Đính Kim Cương Chống Sốc Cho Airpods Pro 2 3 Airpods 1 2 3 4 Hộp Sạc Tai Nghe Không Dây Sang Trọng giá tốt. Mua hàng qua mạng uy tín, ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

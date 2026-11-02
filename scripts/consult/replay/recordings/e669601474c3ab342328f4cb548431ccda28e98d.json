@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:dichvucong.gov.vn lệ phí cấp hộ chiếu phổ thông",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:16:15.106Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:dichvucong.gov.vn lệ phí cấp hộ chiếu phổ thông",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hiện nay, lệ phí cấp 01 cuốn hộ chiếu là 200.000 đồng ...",
+    "link": "https://vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=19738&row_limit=1",
+    "snippet": "Hiện nay, lệ phí cấp 01 cuốn hộ chiếu là 200.000 đồng, trường hợp người dân muốn cấp hộ chiếu sớm thì có phải nộp thêm phí hay không? Trả lời:.",
+    "position": 1
+   },
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp tỉnh)",
+    "link": "https://vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh-doc.html?ma_thu_tuc=1.001456",
+    "snippet": "Cách thức thực hiện ; Trực tiếp, 08 Ngày làm việc, Phí: 160000 ĐồngXem chi tiết; Phí: 200000 ĐồngXem chi tiết ; Trực tuyến, 08 Ngày làm việc, Phí: 160000 ĐồngXem ...",
+    "position": 2
+   },
+   {
+    "title": "Không có tiêu đề",
+    "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=19738&row_limit=1",
+    "snippet": "What code is in the image? ... Your support ID is: 844787499134479293 .",
+    "position": 3
+   },
+   {
+    "title": "Tôi cấp hộ chiếu lần đầu có được nộp hồ sơ tại Cục Quản lý ...",
+    "link": "https://vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=19725&row_limit=1",
+    "snippet": "Hiện nay, lệ phí cấp 01 cuốn hộ chiếu là 200.000 đồng, trường hợp ... Điều kiện để được cấp hộ chiếu phổ thông là gì? Trường hợp người đề nghị cấp ...",
+    "position": 4
+   },
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp trung ...",
+    "link": "https://vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh-doc.html?ma_thu_tuc=1.001471",
+    "snippet": "Cách thức thực hiện ; Trực tiếp, 03 Ngày làm việc, Phí: 200000 ĐồngXem chi tiết ; Trực tuyến, 05 Ngày làm việc, Phí: 200000 ĐồngXem chi tiết ...",
+    "position": 5
+   },
+   {
+    "title": "Biên lai thu lệ phí cấp hộ chiếu phổ thông trong nước",
+    "link": "https://vpcp.dichvucong.gov.vn/p/phananhkiennghi/pakn-detail.html?id=2D7B777ABD810CAAE063490AA8C07866",
+    "snippet": "Tuy nhiên, tại biên lai thu lệ phí lại ghi nội dung là lệ phí cấp hộ chiếu phổ thông không gắn chíp điện tử ở trong nước. Cơ quan chức năng trả lời: Ngày 25 ...",
+    "position": 6
+   },
+   {
+    "title": "Trẻ em dưới 14 tuổi khi làm thủ tục cấp hộ chiếu có cần phải ...",
+    "link": "https://vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=19735&row_limit=1",
+    "snippet": "Hiện nay, lệ phí cấp 01 cuốn hộ chiếu là 200.000 đồng, trường hợp người dân muốn cấp hộ chiếu sớm thì có phải nộp thêm phí hay không? Điều kiện để được cấp hộ ...",
+    "position": 7
+   },
+   {
+    "title": "đăng ký cấp hộ chiếu phổ thông trong nước lần đầu ( thực ...",
+    "link": "https://vpcp.dichvucong.gov.vn/p/phananhkiennghi/pakn-detail.html?id=2D7B777A8F520CAAE063490AA8C07866",
+    "snippet": "Cấp Đổi Giấp Phép Lái Xe Oto · Dịch vụ công trực tuyến · Về việc: Cấp hộ chiếu phổ thông trong nước (thực hiện tại cấp tỉnh) · Hồ sơ cấp Hộ chiếu · Bấm biển xe ô tô ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

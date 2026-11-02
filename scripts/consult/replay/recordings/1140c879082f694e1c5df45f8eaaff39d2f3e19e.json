@@ -1,0 +1,56 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Quán Ăn Tuấn Lợi\" OR \"Cao Lầu Hồng\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T09:53:26.380Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Quán Ăn Tuấn Lợi\" OR \"Cao Lầu Hồng\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cao lầu Hồng: những cánh hoa trước gió tập 2",
+    "link": "https://www.tiktok.com/@nhudaily2025/video/7670938389369179399",
+    "snippet": "Nội dung gợi sự tò mò về món cao lầu địa phương, khung cảnh hoa và phụ kiện thủ công. Nội dung chính - Món cao lầu Hồng: bài viết tập trung vào ...",
+    "position": 1
+   },
+   {
+    "title": "Top 10 Vietnam Meals I Still Dream About",
+    "link": "https://www.tiktok.com/@theworldsyourlobster/video/7676219764913605910",
+    "snippet": "Cao lầu Hồng, Hoi An Marinated pork, broth and thick, chewy noodles. Distinctive noodles and concentrated flavors make this ...",
+    "date": "7. Cao lầu",
+    "position": 2
+   },
+   {
+    "title": "𝓘𝓽𝓼 𝓶𝔂 𝓼𝓽𝔂𝓵𝓮✌️ - Flute music",
+    "link": "https://www.tiktok.com/music/Flute-music-6849033448666041089",
+    "snippet": "Cao lầu Hồng: những cánh hoa trước gió tập 2 | hoa mẫu đơn. |. Your Pet of the Month TikTok Filter. |. como-hacer-una-caldera-de-carton. |. Kun Fayakun Amin ...",
+    "position": 3
+   },
+   {
+    "title": "godreversecard",
+    "link": "https://www.tiktok.com/tag/godreversecard?lang=bn-IN",
+    "snippet": "Cao lầu Hồng: những cánh hoa trước gió tập 2 | hoa mẫu đơn. |. Adorable Cat Enjoys a Relaxing Bath. |. Embellecedores fibra de carbono Suzuki 2019+ — Venta en ...",
+    "position": 4
+   },
+   {
+    "title": "10000kflowers",
+    "link": "https://www.tiktok.com/discover/10000kflowers?lang=sl",
+    "snippet": "Cao lầu Hồng: những cánh hoa trước gió tập 2 | hoa mẫu đơn. |. 神级翻唱热门音乐推荐. |. L'anneau des Nibelungen — Artefact de Saint Seiya ...",
+    "date": "13 thg 6, 2026",
+    "position": 5
+   }
+  ],
+  "credits": 1
+ }
+}

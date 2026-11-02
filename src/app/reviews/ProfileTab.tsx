@@ -20,6 +20,7 @@ import LinkPoster from '@/components/LinkPoster'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { Post, CommentDrawer, ShareModal, isShareOnlyName, type Review } from './feedShared'
 import { loginPathFor, currentDestination } from '@/lib/auth/returnTo'
+import { SafetyMenu } from '@/components/safety/SafetyMenu'
 
 /* ─── Swipeable clip viewer — opens from the profile grid with the SAME UX as
    the main feed: swipe/arrow between clips, single-tap pause, double-tap like,
@@ -68,6 +69,23 @@ function PhoneClipViewer({ posts, startIndex, me, onClose, onDelete }: { posts: 
     const c = containerRef.current
     if (c) c.scrollTo({ top: startIndex * c.clientHeight, behavior: 'auto' })
   }, [startIndex])
+
+  // Deleting a clip shrinks `items` but never moves the scroll position, which is what
+  // `activeIndex` follows on scroll. If the removed clip was BEFORE the one in view, every later
+  // index shifts down by one while `activeIndex` and the physical scrollTop stay put — the wrong
+  // slide is then active (or none is, once activeIndex >= items.length), so the clip the user is
+  // looking at never plays: the black/frozen thumbnail. Clamp the index and re-snap the scroll so
+  // both agree again. Runs only when the count changes.
+  const prevLengthRef = useRef(items.length)
+  useEffect(() => {
+    if (items.length === prevLengthRef.current) return
+    prevLengthRef.current = items.length
+    const clamped = Math.min(activeIndex, Math.max(0, items.length - 1))
+    if (clamped !== activeIndex) setActiveIndex(clamped)
+    const c = containerRef.current
+    if (c) c.scrollTo({ top: clamped * c.clientHeight, behavior: 'auto' })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [items.length])
 
   // 🔑 The destination is the page we are ON, never a literal. This viewer is mounted by the
   // profile grid AND by `/reviews/[id]` — every share link and push notification lands there — so
@@ -375,6 +393,10 @@ export function ProfileTab({ userId, viewerId, showBackButton, onBack, variant =
             }`}>
             {followBusy ? <Loader2 size={15} className="animate-spin mx-auto" /> : following ? t('reviews.following') : t('reviews.follow')}
           </button>
+        )}
+        {/* WP-06 — report / block this person. Draws nothing while the flags are off or when nobody is signed in. */}
+        {!isOwnProfile && viewerId && (
+          <SafetyMenu tone="onMedia" report={{ target: 'user', id: userId }} user={{ id: userId, name: profile?.full_name }} onBlockedChange={(b) => { if (b) setFollowing(false) }} />
         )}
         </div>
       </div>

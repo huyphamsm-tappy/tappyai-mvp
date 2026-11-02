@@ -1,0 +1,44 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Bluetooth thể thao Anker Soundcore V40i site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:06:28.224Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bluetooth thể thao Anker Soundcore V40i site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "หูฟังบลูทูทไร้สาย vivo v40 แท้",
+    "link": "https://shop.tiktok.com/vn/k/hufang-bluthuth-airsay-vivo-v40-aeth",
+    "snippet": "หูฟังบลูทูทไร้สาย vivo v40 แท้ ; 5. 86 sold · 871.999. ₫1.490.000 ; 4.7. 1239 sold · 864.000. ₫999.000 ; 5. 2 sold · 563.570. ₫1.190.000 ...",
+    "position": 1
+   },
+   {
+    "title": "Anker Q11i A3005, Tai nghe qua tai, Âm trầm sâu, Thời gian ...",
+    "link": "https://shop.tiktok.com/vn/pdp/tai-nghe-bluetooth-khong-day-soundcore-anker-q11i-am-tram-sau/1731547191151265367?source=anchor",
+    "snippet": "·One-Touch Bass Boost: Với công nghệ BassUp, chỉ cần nhấn nút BassUp để tăng âm trầm ngay lập tức. Hoàn hảo cho các thể loại như EDM và hip-hop, nó đảm bảo âm ...",
+    "position": 2
+   },
+   {
+    "title": "Anker Q11i A3005, Tai nghe qua tai, Âm trầm sâu, Thời ...",
+    "link": "https://shop.tiktok.com/vn/pdp/1731185413417698903",
+    "snippet": "Hoàn hảo cho các thể loại như EDM và hip-hop, nó đảm bảo âm trầm sâu hơn, mạnh mẽ hơn để tạo ra trải nghiệm nhập vai.·Thời gian chơi 60 giờ: Tận hưởng thời gian ...",
+    "rating": 4.6,
+    "ratingCount": 61,
+    "position": 3
+   }
+  ],
+  "credits": 1
+ }
+}

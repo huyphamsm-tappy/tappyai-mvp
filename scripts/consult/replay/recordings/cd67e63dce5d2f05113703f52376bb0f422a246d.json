@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Macbook Air M3 13 inch 2024 8CPU\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:25:42.813Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Macbook Air M3 13 inch 2024 8CPU\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Macbook Air M3 13 inch 2024 16GB - 256GB",
+    "link": "https://cellphones.com.vn/macbook-air-m3-13-inch-2024-16gb-256gb.html",
+    "snippet": "MacBook Air M3 13 inch 2024 8CPU 8GPU 16GB - 256GB sạc 30W | Chính hãng Apple Việt Nam ; Smember Giảm thêm đến 242.000đ ; Trả góp 0% ; Thời lượng pin. 5/5. (2 đánh ...",
+    "rating": 4.3,
+    "ratingCount": 9,
+    "position": 1
+   },
+   {
+    "title": "Macbook Air M3 13 inch 2024 16GB - 256GB",
+    "link": "https://cellphones.com.vn/macbook-air-m3-13-inch-2024-16gb-256gb-10gpu.html",
+    "snippet": "MacBook Air M3 13 inch 2024 8CPU 10GPU 16GB - 256GB sạc 30W | Chính hãng Apple Việt Nam · Giảm đến 1 triệu đồng cho đơn hàng từ 10 triệu đồng · Giảm ngay 600K cho ...",
+    "rating": 5,
+    "ratingCount": 2,
+    "position": 2
+   },
+   {
+    "title": "Macbook Air M3 13 inch 2024 24GB - 512GB",
+    "link": "https://cellphones.com.vn/macbook-air-13-m3-24gb-512gb-2024-sac-35w.html",
+    "snippet": "MacBook Air M3 13 inch 2024 8CPU 10GPU 24GB - 512GB Sạc 35W | Chính hãng Apple Việt Nam ... Máy mới 100%, đầy đủ phụ kiện từ nhà sản xuất. Sản phẩm có mã SA/A ( ...",
+    "position": 3
+   },
+   {
+    "title": "MacBook Air M3 13 inch 2024 8CPU 8GPU 16GB",
+    "link": "https://cellphones.com.vn/macbook-air-m3-13-inch-2024-8cpu-8gpu-16gb-256gb-cu-xuoc-can.html",
+    "snippet": "MacBook Air M3 13 inch 2024 8CPU 8GPU 16GB - 256GB sạc 30W - Cũ Xước Cấn ; HSSV, Giáo viên đến 700.000đ ; Smember Giảm thêm đến 226.000đ ; Trả góp 0% ; Trả góp 0% ...",
+    "position": 4
+   },
+   {
+    "title": "MacBook Air M3 13 inch 2024 8CPU 10GPU 16GB 512GB",
+    "link": "https://cellphones.com.vn/macbook-air-m3-13-inch-2024-16gb-512gb-sac-70w.html",
+    "snippet": "MacBook Air M3 13 inch 2024 8CPU 10GPU 16GB 512GB | Chính hãng Apple Việt Nam ; HSSV, Giáo viên đến 500.000đ ; Smember Giảm thêm đến 270.000đ ; Trả góp 0% ; Giá sản ...",
+    "position": 5
+   },
+   {
+    "title": "Macbook Air M3 13 inch 2024 8CPU 10GPU 16GB",
+    "link": "https://cellphones.com.vn/macbook-air-m3-13-inch-2024-16gb-256gb-sac-70w.html",
+    "snippet": "Macbook Air M3 13 inch 2024 8CPU 10GPU 16GB - 256GB sạc 70W | Chính hãng Apple Việt Nam · Mới, đầy đủ phụ kiện từ nhà sản xuất · 1 ĐỔI 1 trong 30 ngày nếu có lỗi ...",
+    "position": 6
+   },
+   {
+    "title": "Top 5 laptop doanh nghiệp 30 triệu đáng mua 2025",
+    "link": "https://cellphones.com.vn/sforum/top-5-laptop-doanh-nghiep-duoi-30-trieu",
+    "snippet": "MacBook Air M3 13 inch 2024 8CPU 10GPU 24GB - 512GB Sạc 35W | Chính ...",
+    "date": "16 thg 7, 2025",
+    "position": 7
+   },
+   {
+    "title": "So sánh Apple MacBook Pro 15 inch MJLQ2 Cũ và ...",
+    "link": "https://cellphones.com.vn/so-sanh/macbook-pro-15-inch-mjlq2-cu-vs-apple-macbook-air-13-inch-128-gb-mqd32-chinh-hang-da-kich-hoat/",
+    "snippet": "... Macbook Air M3 13 inch 2024 8CPU 8GPU 8GB 256GB Sạc 30W - Cũ Trầy Xước. Giá niêm ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

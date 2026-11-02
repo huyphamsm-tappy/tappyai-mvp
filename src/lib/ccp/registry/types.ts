@@ -27,12 +27,17 @@ export interface FreshnessPolicyEntry {
 }
 
 export interface TrackingConfig {
-  /** `accesstrade` = the code wrapper (tracking/accesstrade.ts); `template` = a runtime-configured generic wrapper (A3.1). */
-  network: 'accesstrade' | 'template'
+  /**
+   * `accesstrade` = the code wrapper (tracking/accesstrade.ts); `template` = a runtime-configured generic wrapper (A3.1);
+   * `param` = the merchant's OWN partner id appended to its own page (tracking/param.ts) — no wrapper host at all (Agoda's `cid`).
+   */
+  network: 'accesstrade' | 'template' | 'param'
   /** ACCESSTRADE campaign id (public; appears in every generated link). Required for `accesstrade`. */
   campaignId?: string
   /** `template` network only: an https template with `{url}` where the encoded destination goes. */
   template?: string
+  /** `param` network only: the query parameter and the partner id it carries (public; it appears in every link). */
+  param?: { name: string; value: string }
   /** Approval state as last verified in the publisher portal. */
   approval: 'approved' | 'pending' | 'rejected' | 'parked'
   /** The ONLY wrapper endpoint verified to preserve this merchant's deep links. */
@@ -119,7 +124,7 @@ export interface ProviderRegistryEntry {
    * about. Registry DATA, so the query is composed outside CCP without spelling a host.
    * Absent = no discovery (handoff-only providers; CGV film pages have no film tool yet).
    */
-  discovery?: { site: string; subjectKind: DiscoverySubjectKind }
+  discovery?: { site: string; subjectKind: DiscoverySubjectKind; /** A second `site:` operand for the provider's RAIL route pages (Vexere sells train tickets too). */ railSite?: string }
   /**
    * Handoff-only providers with this flag get a generic PASSTHROUGH adapter: a
    * discovered page on an allow-listed host is emitted as a DETAIL_HANDOFF at

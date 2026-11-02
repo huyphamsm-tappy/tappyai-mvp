@@ -3,8 +3,16 @@ import { evidenceGapLine, styleLuna6On } from './consultative/styleLuna6'
 import { normalizeVN } from './intent'
 import { findPlaceOffset, proseHeaders, type Header } from './placeMatch'
 import type { EnrichmentCollector } from './toolResultSplit'
-import { extractMoneyClaims, guardMoneyClaimsInText, sentenceSpans, protectedSpans, type EvidenceRecord } from './moneyGuard'
-import { guardTravelClaimsInText, scheduleTimesIn } from './travelGuard'
+import { extractMoneyClaims, guardMoneyClaimsInText, sentenceSpans, protectedSpans, structuredPrice, type EvidenceRecord } from './moneyGuard'
+import { consultLunaOneEnabled } from './evidence/flag'
+import { createLegacyStreamTrace, legacyStreamTraceEnabled } from './legacyStreamTrace'
+import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
+import { outboundTextSanitizer, stripModelArtifacts, stripCitationMarkers } from './security/outputSanitizer'
+import { sanitizeMediaBlock } from '@/lib/media/mediaHosts'
+import { checkCitationSupport } from './citationSupport'
+import { cardsAllowed, stripTaskFrame } from './agent/runtime/taskFrame'
+import { guardTravelClaimsInText, journeyTimeOf, scheduleTimesIn } from './travelGuard'
+import { ENDS_SENTENCE } from './citationTail'
 import { guardHoursClaimsInText } from './hoursGuard'
 import { verificationLead } from './verificationLead'
 import { guardFormatClaimsInText } from './formatClaimGuard'
@@ -13,18 +21,40 @@ import { statedDistrict } from './districts'
 import { guardBudgetFitInText } from './budgetFitGuard'
 import { guardUnsupportedClaims } from './unsupportedClaimGuard'
 import { modelPickName, pickStillStated, ALT_SENTENCE } from './modelPick'
-import { extractBudget } from './budget'
+import { extractBudget, extractPlanTotalBudget } from './budget'
 import { guardSnippetPricesInText, pricesFromSnippets, type SnippetPriceScope } from './snippetPriceGuard'
+import { groundedCalcNumbers, numbersInText } from './tools/calculate'
+import { MAX_PASSENGERS_PER_BOOKING } from './tools/passengers'
+import { pageFigures, pageTexts } from './consultative/pageFigures'
+import { hasMarkdownStructure } from './consultative/answerStructure'
 import { guardPlaceClaimsInText, isDirectTicketUrl, mentionsTickets, dropUnbackedOrderingPossession } from './placeClaimGuard'
 import { guardPlanPrices, planPriceEvidenceFromRows } from './planPriceGuard'
 import { guardPlanLocalTips } from './planLocalTipsGuard'
-import { guardPlanItems, type PlanPlace } from './planItemGuard'
+import { guardPlanItems, wantsVegetarian, type PlanPlace } from './planItemGuard'
+import { directionsAppendix, productSearchAppendix } from './directionsAppendix'
 import { guardPlanTripFacts, guardUngivenTravelDate } from './planTripFactsGuard'
 import { repairPlanBlock } from './planJsonRepair'
 import { appendConsultPlanCost, appendPlanBudgetMath, partyCount, perPersonBudget } from './planBudgetMath'
 import { stripModelMediaInProse, dropEmptyMediaBlocks } from './modelMedia'
 import { insertBeforeMarkers } from './wrongModel'
+import { shieldSupported, pageGroundedNames, vnToday } from './guardEvidence'
+import { withUnverifiedFigureLine } from './unverifiedFigure'
+import { planPriceSources, collectSearchRows, figuresIn, type TextRow } from './consultative/priceProvenance'
+import { dropUnbackedOfferClaims, hasPressableLink, viewHasPrice } from './consultative/offerClaims'
+import { shapeCoachReply, splitCoachRanges, labelUndatedFareDates } from './consultative/coachFares'
+import { cutUnbackedRanges } from './consultative/rangeEvidence'
+import { stripSellerNames } from './agent/runtime/sourceType'
+import { bindCitationMarkers, enforceCitationIntegrity, dropBareListMarkers, dropOrphanLeadIns } from './citationIntegrity'
+import { renumberOrderedLists } from './listNumbering'
+import { noFabricationGate } from './noFabricationGate'
+import { softenDoseClaims, markUnverifiedClaims } from './answerV4/doseClaims'
+import { extractRanking, applyRankingToRecs, applyRankingToShoppingMarker, withoutRecommendation, type RankingContract } from './agent/runtime/rankingContract'
+import { rankingFromProse } from './consultative/proseRanking'
+import { labelUnbackedPrices } from './consultative/unbackedPrices'
+import { parseShoppingMarker } from './consultative/synthesisView'
 import { footerRemaining, CARDS_SHOWN as CARD_FOLD_SHOWN } from './cardCounts'
+import { groundEntityNames } from './entityNameGuard'
+import { classifyFramePrices } from './freshness'
 import { applyTripBudgetEstimate, dropEmptyModelBudget } from './tripBudgetEstimate'
 import { adviceEnabled, adviceApplies } from './consultative/adviceBlock'
 import { ensureAdviceFloor } from './consultative/adviceFloor'
@@ -35,19 +65,23 @@ import { LEAK_REPLACEMENT_EN, LEAK_REPLACEMENT_VI } from './consultative/lunaSaf
 import { restorePlanHeadings, hideEmptyPlanSections, missingStagesLine } from './consultative/domainFrames'
 import { stripStepNarration } from './consultative/stepNarration'
 import { buildActions } from '@/lib/recommendation/actions'
-import { safeFlushPoint, alignReleasedPrefix } from './progressiveFlush'
+import { safeFlushPoint, alignReleasedPrefix, agentSafeFlushPoint } from './progressiveFlush'
 import { normalizeReplyMarkdown, plainTextDeep } from '@/lib/chat/markdownNormalize'
 import { isValidTikTokContentUrl } from '@/lib/links/tiktokReview'
 import { guardSpecClaimsInText, type SpecEvidence } from './consultative/specGuard'
 import { sanitizeUrlForMarkdown, escapeMarkdownLabel } from './tools/common'
 import { riskBackstopEnabled, riskBackstopMode } from '@/lib/config/product'
+import { consultFinalSynthesisOn, consultUnwindS1cOn, consultUnwindS3bOn, consultUnwindS3cOn } from '@/lib/config/consultFlags'
+import { UNWIND_PICK_ALTERNATIVES, UNWIND_MAX_SENTENCES } from './consultative/unwindWriting'
 import { applyRiskBackstop, isSecondHandPurchaseAdvice } from './riskBackstop'
 import { EMIT_TAPPY_PLACES, EMIT_PLACES_ANNOTATION, SERVER_AUTHORED_CTA, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
 import { bandFromRow, type PriceBand } from '@/lib/recommendation/priceBand'
 import { renderPlacesMarker } from '@/lib/recommendation/marker'
-import { buildPlacesLiveView, alignEmphasisToModelPick, alignEmphasisToEnginePick, placesRenderOrder } from '@/lib/recommendation/liveView'
+import { buildPlacesLiveView, alignEmphasisToModelPick, alignEmphasisToEnginePick, placesRenderOrder, type PlacesLiveView } from '@/lib/recommendation/liveView'
 import { buildProgressAnnotation } from '@/lib/recommendation/progressAnnotation'
 import { SHOPPING_GAP_WORDS } from '@/lib/ai/consultative/shoppingConstraints'
+/** The tools whose call makes a one-brain turn a travel turn (P0-3). */
+const TRAVEL_TOOLS: ReadonlySet<string> = new Set(['get_flight_prices', 'get_transport_options', 'get_hotel_prices'])
 /** Item 2: cards above the fold — the model's picks (pick + alternatives) filled from the engine. */
 const CARDS_SHOWN = CARD_FOLD_SHOWN
 import { renderCtaBlock, stripModelCta } from '@/lib/recommendation/cta'
@@ -61,11 +95,18 @@ import { shoppingPickFromMarker } from './consultative/pickBackstop'
 import { appendFileSync } from 'fs'
 import { guardClarifications, answerFirst } from './clarificationGuard'
 import { guardSearchClaims } from './consultative/searchClaimGuard'
-import { extractAttributes, guardAtmosphereClaims, attributeForHard } from './consultative/reviewAttributes'
+import { extractAttributes, guardAtmosphereClaims, attributeForHard, foldWords } from './consultative/reviewAttributes'
 import { HARD_GAP_WORDS } from './consultative/hardConstraints'
 import { capHedges } from './consultative/hedgeCap'
 import type { Hard } from './consultative/situationFrame'
 import { guardProseShape } from './consultative/proseShape'
+import { compactSystemLinks } from './consultative/systemLinkRow'
+import { onlyMatchingCards, cardsConsistentWithAnswer } from './consultative/cardsMatchRequest'
+import { admitsUnverified, dedupeCaveats, stripOrphanSourceLabels } from './caveatDedupe'
+import { auditTrace } from './auditTrace'
+import { cardPathTrace } from './cardPathTrace'
+import { stripClosingInvite } from './closingInvite'
+import { appendPlanBudget, vndAmountsIn } from './planBudget'
 import type { Recommendation } from '@/lib/recommendation/recommendation'
 
 // The AI SDK data-stream protocol used by streamText().toDataStreamResponse():
@@ -504,6 +545,25 @@ function isGivenUrl(url: string, allowed: ReadonlySet<string>): boolean {
 }
 
 /**
+ * CONSULT_ONE_BRAIN (owner 31/10, ChatGPT's option cards): the options the model handed to present_options, as the [TAPPY_MEDIA] block the
+ * client renders. An option's link stays only when this turn handed it to the model (the same rule as a link in the prose); the block is then
+ * re-validated like every media block. Malformed or empty → ''. Pure.
+ */
+export function renderOptionsMedia(raw: string | undefined, allowed: ReadonlySet<string>): string {
+  if (!raw) return ''
+  let parsed: unknown
+  try { parsed = JSON.parse(raw) } catch { return '' }
+  const r = (parsed ?? {}) as { options?: unknown }
+  if (!Array.isArray(r.options)) return ''
+  const options = r.options.map(o => {
+    const x = (o ?? {}) as Record<string, unknown>
+    return typeof x.href === 'string' && isGivenUrl(x.href, allowed) ? x : { ...x, href: undefined, linkLabel: undefined }
+  })
+  const block = sanitizeMediaBlock({ ...(parsed as object), options })
+  return block?.kind === 'options' ? `\n\n[TAPPY_MEDIA]${JSON.stringify(block)}[/TAPPY_MEDIA]` : ''
+}
+
+/**
  * P3-F5 · where a model-CONSTRUCTED button or plan link may point. The original list (the
  * platforms the rulebook names) plus, since the shipping branch moved the hand-off set into the
  * CCP registry, every registry merchant host and every search template the prompt hands the
@@ -591,11 +651,27 @@ function guardCtaButtons(text: string, allowed: ReadonlySet<string>): string {
 function stripUnownedLinks(text: string, allowed?: ReadonlySet<string>): string {
   if (!allowed) return text
   const cut = earliestMarker(text)
-  const prose = text.slice(0, cut)
+  // 29/10 (live, a dated Vexere train link): the model copied a long link with a space inside it ("…passenger%5Bad t%5D=2"); the markdown no
+  // longer parsed and the reader saw a broken chip. A link whose target, with the whitespace taken out, is EXACTLY a link this turn gave the
+  // model is joined back; anything else is left to the rules below (label kept, link dropped). Nothing new can be produced this way.
+  const prose = text.slice(0, cut).replace(
+    /(?<!!)\[([^\]\n]*)\]\((https?:\/\/[^)\n]*?\s[^)\n]*)\)/g,
+    // The model's own token is kept and only its target's whitespace goes: no markdown is built here (retrievalArchitecture G1).
+    (whole: string, _label: string, url: string) => { const joined = url.replace(/\s+/g, ''); return isGivenUrl(joined, allowed) ? whole.replace(url, joined) : whole },
+  )
   const tail = text.slice(cut)
   const withLinks = prose.replace(
-    /(?<!!)\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/g,
-    (whole, label: string, url: string) => (isGivenUrl(url, allowed) ? whole : label),
+    /([ \t]*)(?<!!)\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/g,
+    (whole: string, space: string, label: string, url: string, at: number, all: string) => {
+      if (isGivenUrl(url, allowed)) return whole
+      // 30/10 (localhost, Hội An): a CITATION standing after its sentence ("… đừng cố đi thuyền. [Dự báo thời tiết](https://…)") whose
+      // link is not ours left its label as a line of its own ("Dự báo thời tiết"). Such a citation goes whole: a source name with
+      // nothing to open is not prose. Read from the line's structure only: a sentence stop before it, nothing but punctuation after it.
+      const lineStart = all.lastIndexOf('\n', at - 1) + 1
+      const lineEnd = (i => (i === -1 ? all.length : i))(all.indexOf('\n', at + whole.length))
+      const isTail = ENDS_SENTENCE.test(all.slice(lineStart, at)) && !/[\p{L}\p{N}]/u.test(all.slice(at + whole.length, lineEnd).replace(/(?<!!)\[[^\]]*\]\([^)]*\)/g, ' '))
+      return isTail ? '' : space + label
+    },
   )
   const guardedProse = withLinks.replace(
     /(\*\*|__)?(?<!\]\()(https?:\/\/[^\s<>()\\[\]]+)/g,
@@ -616,7 +692,11 @@ function stripUnownedLinks(text: string, allowed?: ReadonlySet<string>): string 
  * own photos and links, so nothing the server writes is judged by it.
  */
 function guardModelEgress(text: string, owned: Owned, allowed: ReadonlySet<string>): string {
-  return stripUnownedLinks(stripUnownedImages(text, owned), allowed)
+  // Gate 2 F-C (C1): the model's own [TAPPY_SHOPPING] / [TAPPY_PLACES] go first. Count only, never the text.
+  // CONSULT_V3 task frame: a [TAPPY_TASK] line the runtime did not already remove never reaches the client.
+  const clean = stripTaskFrame(stripForgedServerMarkers(text))
+  if (clean !== text) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'forged_server_marker', path: 'settle', removed: (text.match(SERVER_ONLY_TAG) ?? []).length }))
+  return stripUnownedLinks(stripUnownedImages(clean, owned), allowed)
 }
 
 /** Past this many characters an unclosed `[` / `![` / scheme is prose, not a token in flight. */
@@ -629,7 +709,9 @@ const FORMING_IMAGE_LIMIT = 2048
  */
 function formingStart(text: string): number {
   const marker = earliestMarker(text)
-  if (marker < text.length) return marker
+  // Gate 2 F-C (C1): a forged server-only marker in the prose is held whole, with no length limit (D-FC-3).
+  const forged = forgedServerMarkerHold(text.slice(0, marker))
+  if (marker < text.length) return forged === -1 ? marker : forged
 
   const candidates: number[] = []
   const bracket = text.lastIndexOf('[')
@@ -639,9 +721,10 @@ function formingStart(text: string): number {
   const scheme = Math.max(text.lastIndexOf('http://'), text.lastIndexOf('https://'))
   if (scheme !== -1 && !/[\s)]/.test(text.slice(scheme))) candidates.push(scheme)
 
-  if (candidates.length === 0) return -1
-  const from = Math.min(...candidates)
-  return text.length - from <= FORMING_IMAGE_LIMIT ? from : -1
+  const from = candidates.length === 0 ? -1 : Math.min(...candidates)
+  const forming = from !== -1 && text.length - from <= FORMING_IMAGE_LIMIT ? from : -1
+  if (forged === -1) return forming
+  return forming === -1 ? forged : Math.min(forming, forged)
 }
 
 /**
@@ -652,17 +735,30 @@ function formingStart(text: string): number {
  * token. With no `[`/`![`/scheme in the text the result is the input, byte for byte, so an
  * ordinary turn keeps its timing and frame count. Monotonic: what was releasable stays a prefix.
  */
+/**
+ * 30/10 (O-DEV30 Q09, B27): the model wrote "[ FOLLOWUPS ] 256GB|512GB[/FOLLOWUPS]"; every parser reads the marker exactly, so the line reached
+ * the user as text and no chips came. A marker name we know with only whitespace inside its brackets IS that marker. Applied where the model's
+ * text enters this filter (live release, buffered accumulation), before any parser or guard - a spaced server-only marker therefore meets the
+ * forged-marker rule like an unspaced one. Anything else is returned byte for byte.
+ */
+export function canonicalMarkers(text: string): string {
+  return text.indexOf('[') === -1 ? text : text.replace(/\[[ \t]*(\/?)[ \t]*(FOLLOWUPS|CTA_BUTTONS|TAPPY_[A-Z_]+)[ \t]*\]/g, (whole, slash: string, name: string) => (whole.length === name.length + slash.length + 2 ? whole : `[${slash}${name}]`))
+}
+
 export function releasableLiveText(
   text: string,
   endOfStream = false,
   allowedUrls?: ReadonlySet<string>,
 ): string {
+  text = canonicalMarkers(text)
   if (!endOfStream) {
     const from = formingStart(text)
     if (from !== -1) return releasableLiveText(text.slice(0, from), true, allowedUrls)
   }
+  // Gate 2 F-C (C1): the model's own server-only markers go before any other egress rule.
+  const clean = stripForgedServerMarkers(text)
   const stripped = stripUnownedLinks(
-    stripModelMediaInProse(text, earliestMarker(text)),
+    stripModelMediaInProse(clean, earliestMarker(clean)),
     allowedUrls,
   )
   const proseEnd = earliestMarker(stripped)
@@ -700,7 +796,8 @@ function placeContentLines(
   // builders. Both are encoded so a retrieved value can never close the token
   // it sits in. Encoding does not disturb the dedup below: imageUrlPresent
   // percent-decodes both sides, so the encoded and raw forms compare equal.
-  const rawPhotos = (p.photo_urls && p.photo_urls.length > 0 ? p.photo_urls : (p.photo_url ? [p.photo_url] : []))
+  // Gate 2 N2 (R-4, proposal): only a safe https photo becomes a markdown image (encoding alone admitted any scheme).
+  const rawPhotos = (p.photo_urls && p.photo_urls.length > 0 ? p.photo_urls : (p.photo_url ? [p.photo_url] : [])).filter(u => isSafeHttpsUrl(u))
   const photos = rawPhotos.map(sanitizeUrlForMarkdown)
   // Universal Plan (cross-domain): ONE representative photo per place, not a
   // per-place gallery. Several places EACH with a 3-photo gallery turns a food /
@@ -824,6 +921,72 @@ function boundaryAfter(ownIdx: number, mentionOffsets: number[], textEnd: number
 // [TAPPY_PLAN] JSON (breaking the trip brochure) or the CTA/followups markers.
 const STRUCTURED_MARKERS = ['[TAPPY_PLAN]', '[CTA_BUTTONS]', '[FOLLOWUPS]']
 
+/**
+ * Gate 2 F-C (C1, proposal): [TAPPY_SHOPPING] / [TAPPY_PLACES] are written by the SERVER only (early send, `markerSuffix`) and
+ * never pass through here. The model's own copy is removed from its text before anything is released: every client parser takes
+ * the first block, and the iOS / Android parsers match case-insensitively and read `[TAPPY_PLACES]{…}` with no closing tag.
+ */
+// CONSULT_V3 layouts (17/10): [TAPPY_MEDIA] (news pictures / Wikipedia card) is server-only too — the model's copy is removed the same way.
+const SERVER_ONLY_TAG = /\[\/?TAPPY_(?:SHOPPING|PLACES|MEDIA)\]/gi
+const SERVER_ONLY_TAGS = ['[tappy_shopping]', '[/tappy_shopping]', '[tappy_places]', '[/tappy_places]', '[tappy_media]', '[/tappy_media]']
+
+/** End (exclusive) of the one JSON object that starts at `from` (after whitespace) and balances, or -1. */
+function balancedObjectEnd(text: string, from: number): number {
+  let i = from
+  while (i < text.length && /\s/.test(text[i])) i++
+  if (text[i] !== '{') return -1
+  let depth = 0
+  let inString = false
+  let escaped = false
+  for (let j = i; j < text.length; j++) {
+    const c = text[j]
+    if (escaped) { escaped = false; continue }
+    if (c === '\\') { escaped = true; continue }
+    if (c === '"') { inString = !inString; continue }
+    if (inString) continue
+    if (c === '{') depth++
+    else if (c === '}' && --depth === 0) return j + 1
+  }
+  return -1
+}
+
+/**
+ * Where the live / progressive release must stop for a server-only marker in `prose`, or -1 (Gate 2 F-C, F3). From the FIRST
+ * server-only tag — opening or closing, any case — nothing is released until the stream ends, when the whole text is stripped
+ * once, as on the settle path (no length limit, D-FC-3). A released prefix therefore never holds part of a forged block, so a
+ * block closing later can neither leak its middle nor take back text already sent. Otherwise: a trailing prefix of a tag.
+ */
+function forgedServerMarkerHold(prose: string): number {
+  const lower = prose.toLowerCase()
+  const first = lower.search(/\[\/?tappy_(?:shopping|places|media)\]/)
+  if (first !== -1) return first
+  const lb = lower.lastIndexOf('[')
+  if (lb === -1) return -1
+  const tail = lower.slice(lb)
+  return SERVER_ONLY_TAGS.some(t => t.length > tail.length && t.startsWith(tail)) ? lb : -1
+}
+
+/**
+ * Remove every server-only marker the model wrote. In the prose (before the first structured block): a closed block goes whole;
+ * a lone closing tag goes; an unclosed opening goes with the one balanced JSON object after it, and when no such object bounds
+ * it, everything from the tag to the end of the model text goes (D-FC-1). Inside / after a structured block only the tags go —
+ * a tag holds no `"` or `\`, so a JSON string it sat in stays valid (D-FC-2).
+ */
+function stripForgedServerMarkers(text: string): string {
+  if (!/\[\/?tappy_(?:shopping|places|media)\]/i.test(text)) return text
+  const cut = earliestMarker(text)
+  let prose = text.slice(0, cut)
+  let tail = text.slice(cut)
+  prose = prose.replace(/\[(TAPPY_(?:SHOPPING|PLACES|MEDIA))\][\s\S]*?\[\/\1\]/gi, '')
+  prose = prose.replace(/\[\/TAPPY_(?:SHOPPING|PLACES|MEDIA)\]/gi, '')
+  for (let m = /\[TAPPY_(?:SHOPPING|PLACES|MEDIA)\]/i.exec(prose); m; m = /\[TAPPY_(?:SHOPPING|PLACES|MEDIA)\]/i.exec(prose)) {
+    const end = balancedObjectEnd(prose, m.index + m[0].length)
+    if (end === -1) { prose = prose.slice(0, m.index); tail = ''; break }
+    prose = prose.slice(0, m.index) + prose.slice(end)
+  }
+  return prose + tail.replace(SERVER_ONLY_TAG, '')
+}
+
 /** Letters and punctuation-free, so no sentence/clause/number guard can match or split it. */
 const PLAN_BODY_TOKEN = '⁣TAPPYPLANBODY⁣'
 
@@ -935,7 +1098,8 @@ function injectPlanPhotos(places: PlaceLike[], fullText: string): string {
   for (const p of places) {
     if (!p.name) continue
     const photo = (p.photo_urls && p.photo_urls.length > 0 ? p.photo_urls[0] : p.photo_url)
-    if (photo) photoByName.set(normName(p.name), photo)
+    // Gate 2 N2 (D-N2, proposal): a plan item's photo is written only as a safe https URL.
+    if (photo && isSafeHttpsUrl(photo)) photoByName.set(normName(p.name), photo)
   }
   if (photoByName.size === 0) return fullText
 
@@ -1083,7 +1247,10 @@ function visibleRest(
  * path below and for `renderedFoldNames` (the photo selection), so they cannot drift.
  */
 function cardFold(recs: Recommendation[], text: string): { named: Recommendation[]; picked: Recommendation[]; headers: ReturnType<typeof proseHeaders>; allNames: string[] } {
-  const folded = normName(text)
+  // A [TAPPY_PLAN] body is the plan's own deliverable (its items already carry their photos inside the JSON). A venue named THERE is
+  // part of the itinerary, not a pick the reply made — letting it count turned every Make Plan turn into "the reply named these places"
+  // and built a decision card from the plan's data (reproduced offline, makePlanCards.test.ts). Only the prose around the block names.
+  const folded = normName(text.replace(/\[TAPPY_PLAN\][\s\S]*?(?:\[\/TAPPY_PLAN\]|$)/g, ' '))
   const headers = proseHeaders(folded)
   const allNames = recs.map(r => r.entity.identity.name)
   const named = recs
@@ -1155,8 +1322,13 @@ function namesMatch(itemKey: string, placeKey: string): boolean {
   return placeKey.length >= 4 && (itemKey.includes(placeKey) || placeKey.includes(itemKey))
 }
 
-/** G3: `placement: 'v2'` = block-end insertion (MEDIA_PLACEMENT_V2); omitted ⇒ byte-identical v1. */
-export interface InjectPlaceEnrichmentOptions { placement?: 'v1' | 'v2' }
+/**
+ * G3: `placement: 'v2'` = block-end insertion (MEDIA_PLACEMENT_V2); omitted ⇒ byte-identical v1.
+ * `onlyMentioned` (TAPPY_ANSWER_V4): the photos / links describe only the places the answer NAMES. Without it, an answer that names none of the
+ * searched places got the first three search results appended under «📸 Hình ảnh & link review» (acceptance 19/10, u24: the answer named three
+ * Hồ Tây restaurants from the web, the block listed three other restaurants across Hà Nội).
+ */
+export interface InjectPlaceEnrichmentOptions { placement?: 'v1' | 'v2'; onlyMentioned?: boolean }
 
 export function injectPlaceEnrichment(places: PlaceLike[], fullText: string, lang = 'vi', opts: InjectPlaceEnrichmentOptions = {}): string {
   const v2 = opts.placement === 'v2'
@@ -1184,7 +1356,7 @@ export function injectPlaceEnrichment(places: PlaceLike[], fullText: string, lan
   // source char maps to exactly one char for precomposed input; if some exotic input ever
   // breaks that alignment, fall back to the legacy trailing block (images still show).
   const normRaw = normalizeVN(text.toLowerCase())
-  if (normRaw.length !== text.length) return appendTrailingBlock(usable, places, text, decodedText, lang)
+  if (normRaw.length !== text.length) return appendTrailingBlock(usable, places, text, decodedText, lang, opts.onlyMentioned === true)
 
   const textEnd = earliestMarker(text)
   // CTA_BUTTONS is a general block, not scoped to any one place — links inside it must never
@@ -1198,6 +1370,7 @@ export function injectPlaceEnrichment(places: PlaceLike[], fullText: string, lan
 
   const rivals = places.map(p => (p.name as string) || '').filter(Boolean)
   const mentioned = usable.filter(p => findPlaceOffset(p.name as string, dedupText, headers, rivals.filter(n => n !== p.name)) !== -1)
+  if (opts.onlyMentioned && mentioned.length === 0) return text
   const chosen = (mentioned.length > 0 ? mentioned : usable).slice(0, 3)
 
   const insertions: { offset: number; text: string; order: number }[] = []
@@ -1245,7 +1418,7 @@ export function injectPlaceEnrichment(places: PlaceLike[], fullText: string, lan
 // used when normalized/raw offsets can't be aligned for safe in-place insertion. Kept so
 // images still surface (grouped per place) even in that rare case. Only surfaces a place that
 // is missing at least one IMAGE — a name+link-only entry duplicates the rich main list.
-function appendTrailingBlock(usable: PlaceLike[], places: PlaceLike[], fullText: string, decodedText: string, lang = 'vi'): string {
+function appendTrailingBlock(usable: PlaceLike[], places: PlaceLike[], fullText: string, decodedText: string, lang = 'vi', onlyMentioned = false): string {
   const ctaIdx = decodedText.indexOf('[CTA_BUTTONS]')
   const dedupText = normalizeVN((ctaIdx === -1 ? decodedText : decodedText.slice(0, ctaIdx)).toLowerCase())
   const textEnd = dedupText.length
@@ -1253,6 +1426,7 @@ function appendTrailingBlock(usable: PlaceLike[], places: PlaceLike[], fullText:
   const mentionOffsets = placeMentionOffsets(places, dedupText, headers)
   const rivals = places.map(p => (p.name as string) || '').filter(Boolean)
   const mentioned = usable.filter(p => findPlaceOffset(p.name as string, dedupText, headers, rivals.filter(n => n !== p.name)) !== -1)
+  if (onlyMentioned && mentioned.length === 0) return fullText
   const chosen = (mentioned.length > 0 ? mentioned : usable).slice(0, 3)
 
   const parts: string[] = []
@@ -1486,13 +1660,69 @@ function withResolvedPhotos(recs: Recommendation[], resolved: PlaceLike[]): Reco
   const byName = new Map(resolved.map(p => [(p.name || '').trim().toLowerCase(), p]))
   return recs.map(r => {
     const hit = byName.get(r.entity.identity.name.trim().toLowerCase())
-    const urls = hit?.photo_urls?.length ? hit.photo_urls : (hit?.photo_url ? [hit.photo_url] : [])
+    // Gate 2 N2 (R-6, proposal): an unsafe resolved photo never replaces the card's own image.
+    const urls = (hit?.photo_urls?.length ? hit.photo_urls : (hit?.photo_url ? [hit.photo_url] : [])).filter(u => isSafeHttpsUrl(u))
     if (urls.length === 0) return r
     const gallery = urls.map(url => ({ url, source: 'serper_images' as const, stability: 'volatile' as const }))
     return { ...r, entity: { ...r.entity, images: { primary: gallery[0], gallery } } }
   })
 }
 
+
+/**
+ * Phase 8 M3 — the SEVENTH markdown-from-retrieval site (retrievalArchitecture.test.ts): source citations.
+ * The URL's origin is a page the agent READ this turn through the secure page fetch (security/safePageFetch.ts: every hop validated,
+ * DNS pinned) and it must also be in this turn's tool frames (`allowed`); the label is the source's host, never model text; both go
+ * through the sanitisers on the line that builds the link. Markers naming no such source are removed.
+ */
+export function citeSources(text: string, sources: ReadonlyArray<{ id: string; host: string; url: string }>, allowed: ReadonlySet<string>, lang: string): string {
+  return citeSourcesDetailed(text, sources, allowed, lang).text
+}
+
+/**
+ * Round 32 (CONSULTATIVE_IN_AGENT, price ↔ source): the same step, with the two things the reply's FIGURES decide when no marker survived.
+ *   `fallback`     the pages the "Nguồn:" line may name instead of every page read (those whose own passages state a figure of the reply);
+ *   `searchLinks`  search results whose own text states a figure no page states — shown as "Giá theo kết quả tìm kiếm của …", never as a verified page price.
+ * Without `opts` the behaviour is exactly the former one.
+ */
+export function citeSourcesDetailed(
+  text: string,
+  sources: ReadonlyArray<{ id: string; host: string; url: string }>,
+  allowed: ReadonlySet<string>,
+  lang: string,
+  opts?: { fallback?: ReadonlyArray<{ id: string; host: string; url: string }>; searchLinks?: ReadonlyArray<{ id: string; host: string; url: string }> },
+): { text: string; used: boolean } {
+  const eligible = (s: { url: string }) => /^https?:\/\//i.test(s.url) && allowed.has(normalizeUrl(s.url))
+  const ok = new Map(sources.filter(eligible).map(s => [s.id, s]))
+  const link = (s: { host: string; url: string }) => `[${escapeMarkdownLabel(s.host)}](${sanitizeUrlForMarkdown(s.url)})`
+  let used = 0
+  let out = text.replace(/\s?\[(S\d{1,2}(?:\s*,\s*S\d{1,2})*)\]/g, (_m, ids: string) => {
+    const ls = ids.split(/\s*,\s*/).map(id => ok.get(id)).filter((s): s is { id: string; host: string; url: string } => !!s)
+    if (!ls.length) return ''
+    used++
+    return ` (${ls.map(link).join(', ')})`
+  })
+  const en = /^en/i.test(lang)
+  if (!used && !opts && ok.size) {
+    const list = [...ok.values()].slice(0, 3).map(link).join(' · ')
+    const at = out.search(/\[(?:FOLLOWUPS|TAPPY_PLAN|CTA_BUTTONS)\]/)
+    const line = `${en ? 'Sources' : 'Nguồn'}: ${list}`
+    out = at < 0 ? `${out.replace(/\s+$/, '')}\n\n${line}` : `${out.slice(0, at).replace(/\s+$/, '')}\n\n${line}\n\n${out.slice(at)}`
+  } else if (!used && opts) {
+    const pages = (opts.fallback ?? []).filter(eligible).slice(0, 3)
+    const found = (opts.searchLinks ?? []).filter(eligible).slice(0, 3)
+    const lines = [
+      ...(pages.length ? [`${en ? 'Sources' : 'Nguồn'}: ${pages.map(link).join(' · ')}`] : []),
+      ...(found.length ? [`${en ? 'Prices as listed in the search results of' : 'Giá theo kết quả tìm kiếm của'}: ${found.map(link).join(' · ')}`] : []),
+    ]
+    if (lines.length) {
+      const at = out.search(/\[(?:FOLLOWUPS|TAPPY_PLAN|CTA_BUTTONS)\]/)
+      const block = lines.join('\n\n')
+      out = at < 0 ? `${out.replace(/\s+$/, '')}\n\n${block}` : `${out.slice(0, at).replace(/\s+$/, '')}\n\n${block}\n\n${out.slice(at)}`
+    }
+  }
+  return { text: out, used: used > 0 }
+}
 export function applyPlaceEnrichmentStreamFilter(
   response: Response,
   lang = 'vi',
@@ -1574,8 +1804,31 @@ export function applyPlaceEnrichmentStreamFilter(
   let mainText = '' // assistant text buffered AFTER a place-search tool call
   const toolNameByCallId = new Map<string, string>()
   const productQueries: string[] = []   // C3-B.10: what search_products was asked for
+  // CONSULTATIVE_IN_AGENT trip-plan turn: the destination the plan's tool calls were made for (get_trip_data.destination, else the first place tool's
+  // location) — the plan card keeps only retrieved places whose address names it (planItemGuard). Stays null when the flag is off.
+  let planDestination: string | null = null
+  // WS2 final: what the No-Fabrication Gate checks claims against (agent turns): raw tool results and the tools that ran.
+  const gateCorpus: string[] = []
+  // Round 32 (CONSULTATIVE_IN_AGENT): the search results (title + snippet + link) the tools returned this turn — the evidence a price may be tied back to (priceProvenance.ts).
+  const searchRows: TextRow[] = []
+  // …and the coach (bus) search results of get_transport_options alone: what a coach reply may say about operators and kinds of fare (coachFares.ts).
+  const coachRows: TextRow[] = []
+  // Round 42 round 3 (RANGE-27-33, rule R-B, both flags): the search results of the turn, read whatever the flag — the rows a price range must be stated by (rangeEvidence.ts).
+  const rangeRows: TextRow[] = []
+  // Freshness (freshness.ts): prices of tool rows by how fresh their source was; the gate keeps stale / unknown-time ones with a note.
+  const agedFramePrices: Array<{ amount: number; at: string | null }> = []
+  const freshFramePrices: number[] = []
+  const gateTools: string[] = []
+  // CONSULT_LUNA_ONE: the entity-name guard's strict model-name check (the G1 evidence binding is not integrated).
+  const lunaOne = consultLunaOneEnabled() && collector?.consultative === true
+  // The outbound text sanitizer applies to EVERY turn this filter serves (not only consultative ones) once the flag is on.
+  const outboundSanitize = consultLunaOneEnabled()
+  // CONSULT_UNWIND_S1C: without that flag, the citation part of the same sanitizer still runs on every turn (nothing else of it).
+  const citeOnly = !outboundSanitize && consultUnwindS1cOn()
   const productRecords: EvidenceRecord[] = [] // C3-B.10: structured evidence, price included
   let latestPlaces: PlaceLike[] = []
+  // CONSULT_ONE_BRAIN (P0-3): the route's keyword reading of the question ("a place question") does not switch the place guards or the hold on; the place TOOL the model called does.
+  if (collector?.oneBrain === true) placeIntent = false
   let bufferMode = false
   /** Live VND fares fetched by get_flight_prices this turn. Empty ⇒ every travel
    *  price the model states is unverifiable and gets redacted by the travel guard. */
@@ -1585,6 +1838,17 @@ export function applyPlaceEnrichmentStreamFilter(
   /** VND amounts that appeared in food/spa price snippets (search_places). A stated
    *  price must trace to one of these (A5); a number in no snippet is fabricated. */
   const snippetPrices: number[] = []
+  /** Wave 3 (W4): the results the exact calculator returned this turn (empty unless CONSULT_DETERMINISTIC_MATH put `calculate` in the tool set), and the numbers every OTHER tool result of the turn stated (the grounding of a calculator input). */
+  const calcResults: unknown[] = []
+  const groundNums: number[] = []
+  /** Wave 3 (W1): the amounts the pages `read_page` opened this turn state (empty unless CONSULT_RESEARCH_LOOP put `read_page` in the tool set). */
+  const pageNums: number[] = []
+  /** Wave 3 (W1): the text of those pages - the evidence an opening-hours claim may trace to, like a place row's own hours. */
+  const pageEvidenceTexts: string[] = []
+  /** Wave 3 (W1): amounts per page host, and the place each host is the website of: an amount on the venue's OWN site is evidence for that venue's entity-scoped price. */
+  const pageFiguresByHost = new Map<string, number[]>()
+  const placeSiteHosts = new Map<string, string>()
+  const hostOfUrl = (u: unknown): string => { try { return typeof u === 'string' ? new URL(u).hostname.toLowerCase().replace(/^www\./, '') : '' } catch { return '' } }
   /**
    * The same prices, but keyed by the place each snippet actually NAMED.
    *
@@ -1664,10 +1928,42 @@ export function applyPlaceEnrichmentStreamFilter(
   if (riskBackstopMode() === 'buffer' && isSecondHandPurchaseAdvice(collector?.userTexts ?? [userText])) bufferMode = true
   // Consultative V1: a decision turn buffers whether or not a tool runs, so the
   // search-claim guard can judge "mình đã kiểm tra" on a no-tool follow-up.
-  if (collector?.consultativeV1) bufferMode = true
+  // 31/10 (latency, one brain): the V1 frame is set by a keyword reading of the question and its prose guards are off on one brain (ce65ace), but this
+  // hold stayed - every one-brain answer reached the user in one block at the end (measured: T03 12 s, nothing shown while the model wrote 7.5 s). On one
+  // brain the TOOLS decide the hold (price, travel, place, product, plan and option turns still buffer below); the live egress filter covers the rest.
+  if (collector?.consultativeV1 && collector?.oneBrain !== true) bufferMode = true
   // TAPPY_AGENT (hardening C): every agent answer is held until the settle-path guards (evidence, price, place claims, leak check) have run on the
   // COMPLETE text — nothing reaches the user before it is checked (the guards cannot retract text already sent).
   if (collector?.agentMode) bufferMode = true
+  // Phase 8 (TAPPY_AGENT=2): every text change a settle-path stage makes goes to the run trace — observation only, never alters the text.
+  // LEGACY_STREAM_TRACE (default OFF): counts-only per-stage records on the default path. Created only with the flag on and no agent run trace.
+  // CONSULT_ONE_BRAIN (P0-2): the per-stage counters (sizes only, never text) are always on there, so a stage that cuts or would cut is visible without a flag.
+  const legacyTrace = !collector?.guardTrace && (legacyStreamTraceEnabled() || collector?.oneBrain === true) ? createLegacyStreamTrace(undefined, { always: collector?.oneBrain === true }) : null
+  const gt = (stage: string, before: string, after: string): void => {
+    if (collector?.guardTrace && before !== after) { try { collector.guardTrace(stage, before, after) } catch { /* trace only */ } }
+    else if (legacyTrace && before !== after) legacyTrace.stage(stage, before, after)
+  }
+  // TAPPY_ANSWER_V4 (owner 19/10): a QUALITY stage — one that deletes or rewrites a sentence because its claim is not in this turn's evidence — runs
+  // in shadow: what it would have changed is logged (and traced as `shadow:<stage>`), the text it was given goes on unchanged. Off the flag: its
+  // output is used, as before. Security / egress / leak / card / marker stages never go through this.
+  // CONSULT_ONE_BRAIN (localhost 29/10, 25-question run): the same holds for the one-brain model. These stages matched the model's wording against the
+  // rows by name and by number format, and a wording difference ("Mi" / "Smart", "–" / "-", "22:00, đánh giá") deleted a name, a table row or a
+  // whole bullet whose figures the tools had returned. What they would have changed is logged and traced as before; the text goes on unchanged.
+  const v4Shadow = (collector?.answerV4 === true && collector.consultV3 === true) || collector?.oneBrain === true
+  const qual =(stage: string, before: string, after: string): string => {
+    if (!v4Shadow || before === after) return after
+    try { console.log(JSON.stringify({ type: 'tappyai_guard_shadow', stage, before_len: before.length, after_len: after.length })) } catch { /* log only */ }
+    gt(`shadow:${stage}`, before, after)
+    return before
+  }
+  // Local UAT only, opt-in (TAPPY_UAT_STREAM_TRACE=1, never in production): the VERBATIM model chunks that arrive and the frames that leave.
+  const uatTrace = (ev: string, text: string): void => {
+    // Audit-only structured trace (auditTrace.ts): delta = model text arriving, final = the frame that leaves the server.
+    auditTrace(ev, ev === 'chunk_in' ? 'delta' : 'final', { text })
+    if (process.env.TAPPY_UAT_STREAM_TRACE === '1' && process.env.NODE_ENV !== 'production') {
+      try { console.log(JSON.stringify({ type: 'tappyai_uat_stream_trace', ev, text })) } catch { /* diagnostics only */ }
+    }
+  }
   /**
    * 🚨 A TICKET QUESTION MUST BE GUARDED EVEN WHEN NO PLACE TOOL RUNS.
    *
@@ -1695,9 +1991,12 @@ export function applyPlaceEnrichmentStreamFilter(
    * prose hygiene that unmakes a mislabelled or front-door merchant link runs at settle time —
    * a live-streamed "[Ticketbox.vn](https://ticketbox.vn/)" was measured getting through.
    */
-  const requestedProviderId = requestedProviderOf(userText)
+  // CONSULT_ONE_BRAIN (P0-3): a turn that names several merchants is a comparison and names none (requestedProviderOf `unambiguousOnly`).
+  const requestedProviderId = requestedProviderOf(userText, { unambiguousOnly: collector?.oneBrain === true })
   const commerceHandoffIntent = !!requestedProviderId || entertainmentCapabilityOf(userText) === 'event_ticket'
   if (commerceHandoffIntent) bufferMode = true
+  // 31/10 (latency): which start-of-turn reason holds a one-brain answer back (observation only; names, no text).
+  if (collector?.oneBrain === true) console.log(JSON.stringify({ type: 'tappyai_buffer_reasons', hold: bufferMode, travel: travelIntent, place: placeIntent, v1: !!collector.consultativeV1, agent: !!collector.agentMode, ticket: ticketIntent, commerce: commerceHandoffIntent }))
   /**
    * A5-P1. Buffering the WHOLE places reply was broader than the danger: measured on production
    * 63313d5, shopping showed content at 2.2s and food at 15.4s with the same pipeline and the same
@@ -1715,11 +2014,72 @@ export function applyPlaceEnrichmentStreamFilter(
   // atmosphere adjective, a card re-listing), so "provably not redactable" no longer holds for
   // a money-free sentence — the V1 turn keeps the whole reply until the guards have run.
   const progressive = (placeIntent || ticketIntent) && !travelIntent && !collector?.consultativeV1
+  /**
+   * C2 P2 · SafeFlush for an AGENT answer (progressiveFlush.ts agentSafeFlushPoint), both flags default OFF:
+   *   C2_SAFEFLUSH=1                      SHADOW — the point is computed and what WOULD have been released is checked against the settled text
+   *                                       (`tappyai_safeflush_shadow`); nothing is released early.
+   *   C2_SAFEFLUSH=1 + C2_AGENT_STREAM=1  LIVE — the provable paragraphs are released as they complete; at settle, a released prefix the settled
+   *                                       text does not begin with is a violation: nothing more is sent (never a second copy), the turn is
+   *                                       marked `interrupted` (tappy.turn_status.v1), and the violation is logged.
+   *   C2_AGENT_STREAM=1 without C2_SAFEFLUSH → unsupported: ignored (fail closed, logged once).
+   * Off for any turn whose guards rewrite prose wholesale (see agentFlushEligible).
+   */
+  const c2SafeFlush = (process.env.C2_SAFEFLUSH ?? '').trim() === '1'
+  const c2AgentStream = (process.env.C2_AGENT_STREAM ?? '').trim() === '1'
+  if (collector?.agentMode && c2AgentStream && !c2SafeFlush) console.log(JSON.stringify({ type: 'tappyai_safeflush', decision: 'unsupported_combo', detail: 'C2_AGENT_STREAM needs C2_SAFEFLUSH' }))
+  const agentFlushMode: 'off' | 'shadow' | 'live' = !collector?.agentMode || !c2SafeFlush ? 'off' : c2AgentStream ? 'live' : 'shadow'
+  const AGENT_FLUSH_TOOLS = new Set(['web_search', 'read_page', 'get_news', 'get_weather', 'get_gold_price'])
+  let agentFlushStop: string | null = null
+  let shadowReleased = ''
+  // whether THIS branch (the agent SafeFlush) released text — the legacy progressive release of the same turn is not ours to settle
+  let agentFlushReleased = false
+  // C2 P2 · step-finish frames (`e:`) that arrive AFTER the agent SafeFlush released text are held and re-emitted after the settle remainder:
+  // otherwise the remainder (sent at `d:`) lands after `e:`, and the downstream stepRepeatGuard treats it as a NEW step and drops its sentences
+  // that look like the released ones — a silent loss (history ≠ what the reply should be). Only in LIVE mode, only once text was released.
+  const agentHeldStepEnds: string[] = []
+  const releaseHeldStepEnds = (controller: TransformStreamDefaultController): void => {
+    for (const l of agentHeldStepEnds.splice(0)) controller.enqueue(new TextEncoder().encode(l + '\n'))
+  }
+  const riskHold = riskBackstopMode() === 'buffer' && isSecondHandPurchaseAdvice(collector?.userTexts ?? [userText])
+  const agentFlushEligible = (): boolean => {
+    if (agentFlushMode === 'off' || agentFlushStop) return false
+    const why = placeToolSeen ? 'place_tool' : collector?.consultativeV1 ? 'consultative_v1' : collector?.planTurn ? 'plan_turn' : travelIntent ? 'travel' : ticketIntent ? 'ticket' : commerceHandoffIntent ? 'commerce_handoff' : riskHold ? 'risk_backstop' : gateTools.find(t => !AGENT_FLUSH_TOOLS.has(t)) ? 'tool_not_allowed' : null
+    if (why) { agentFlushStop = why; console.log(JSON.stringify({ type: 'tappyai_safeflush', decision: 'off_for_turn', reason: why, mode: agentFlushMode })); return false }
+    return true
+  }
+  /**
+   * C2 P2 · the settle side of the agent SafeFlush, called once at the final send with the settled text and where the released prefix ends in it.
+   *   SHADOW: would the provable prefix have survived settle? — measured and logged (`tappyai_safeflush_shadow`), nothing changes.
+   *   LIVE:   a released prefix the settled text does not begin with is a VIOLATION → fail closed: returns true (the caller then sends nothing more —
+   *           never a second copy, never a different version), the turn is marked `interrupted` (tappy.turn_status.v1), the violation logged; the
+   *           stored reply is what the client received. Otherwise the stored reply is the released prefix + the rest the caller sends.
+   * The legacy progressive path (non-agent) is untouched: it never reaches this (agentFlushMode is 'off' there).
+   * Note: a released agent paragraph never ends in whitespace (agentHoldReason holds irregular whitespace), so the caller's alignment keeps the
+   * paragraph break that follows it in what it sends.
+   */
+  const agentSettle = (outText: string, releasedEnd: number | null, controller: TransformStreamDefaultController): boolean => {
+    if (agentFlushMode === 'shadow') {
+      const aligned = shadowReleased ? alignReleasedPrefix(outText, shadowReleased) !== null : true
+      console.log(JSON.stringify({ type: 'tappyai_safeflush_shadow', would_release_chars: shadowReleased.length, settled_chars: outText.length, survives: aligned, off_reason: agentFlushStop }))
+      return false
+    }
+    if (agentFlushMode !== 'live' || !agentFlushReleased || !flushedSent) return false
+    if (releasedEnd === null) {
+      console.warn(JSON.stringify({ type: 'tappyai_safeflush_violation', released_chars: flushedSent.length, settled_chars: outText.length }))
+      controller.enqueue(new TextEncoder().encode('8:' + JSON.stringify([{ kind: 'tappy.turn_status.v1', v: 1, status: 'interrupted', reason: 'safeflush_violation' }]) + '\n'))
+      finalReplyText = flushedSent
+      return true
+    }
+    finalReplyText = flushedSent + outText.slice(releasedEnd)
+    return false
+  }
   let placeToolSeen = false
   // A1(a)+(b): the row count of the place result just read (null = the result was not a place
   // search), and whether the turn's preliminary fold + "found" progress already went out.
   let lastPlaceRows: number | null = null
   let preliminarySent = false
+  // POST-UAT B5: whether a preliminary CARD frame actually went out (the decision must retract it when it has no card).
+  let preliminaryCardsSent = false
   /**
    * Defaults to `not_run` and only moves when a place tool result actually arrives, so a
    * recall turn or a non-place conversation is left exactly as it was before this existed.
@@ -1736,6 +2096,8 @@ export function applyPlaceEnrichmentStreamFilter(
   let flushedSent = ''
   /** True once the shopping decision has gone out early, so it is not sent twice. */
   let earlyShoppingMarkerSent = false
+  // The exact text the early shopping send put on the wire (the stored reply must be what the client received).
+  let earlyMarkerSentText = ''
   /**
    * A tool step has completed and the model has not spoken since — B12.
    *
@@ -1792,6 +2154,35 @@ export function applyPlaceEnrichmentStreamFilter(
    * it returns (an image becomes its alt).
    */
   let liveReleased = ''
+  /**
+   * The FILTERED text the last live release was cut from. Equal to `liveReleased` until a later egress decision removes bytes the
+   * client already has (30/10 P0: since 1552a18 an unowned tail citation goes with the whitespace before it, and that space was
+   * released while the `[` was still arriving). Those bytes cannot be taken back; the release resumes after them from where the
+   * filtered text and this string still agree — only filtered text is ever sent, never `liveText`.
+   */
+  let liveFiltered = ''
+
+  /**
+   * Sends what `filtered` (an egress-filtered view of `liveText`) adds to what was released. When it no longer extends the last
+   * filtered text, it resumes from their common prefix once that is settled: at the end of the stream, or when a line has ended after
+   * the point where they part (the tail-citation rule judges a link by its own line only). Before 30/10 this case returned for the
+   * rest of the turn — the answer stopped mid-way with no error (Q16: 1 753 characters written, 227 received).
+   */
+  const releaseFiltered = (controller: TransformStreamDefaultController, filtered: string, endOfStream: boolean) => {
+    let base = liveFiltered
+    if (!filtered.startsWith(base)) {
+      let k = 0
+      while (k < base.length && k < filtered.length && base[k] === filtered[k]) k++
+      if (!endOfStream && filtered.indexOf('\n', k) === -1) return
+      console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'live_prefix_resumed', dropped: base.length - k, formatting_only: /^[\s*_~]*$/.test(base.slice(k)) }))
+      base = filtered.slice(0, k)
+    }
+    liveFiltered = filtered
+    if (filtered.length === base.length) return
+    const slice = filtered.slice(base.length)
+    liveReleased += slice
+    controller.enqueue(encoder.encode('0:' + JSON.stringify(slice) + '\n'))
+  }
 
   /**
    * The one place live assistant text leaves this filter — the B12 step break and the model's
@@ -1806,11 +2197,7 @@ export function applyPlaceEnrichmentStreamFilter(
     // PHIÊN LUNA safety: stop releasing the moment the live text echoes the prompt / shows a secret shape.
     if (liveLeak) return
     if (collector?.leakCheck?.(liveText).leak) { liveLeak = true; console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'luna_leak', path: 'live' })); return }
-    const releasable = releasableLiveText(liveText, false, allowedUrls)
-    if (!releasable.startsWith(liveReleased) || releasable.length === liveReleased.length) return
-    const slice = releasable.slice(liveReleased.length)
-    liveReleased = releasable
-    controller.enqueue(encoder.encode('0:' + JSON.stringify(slice) + '\n'))
+    releaseFiltered(controller, releasableLiveText(liveText, false, allowedUrls), false)
   }
 
   /** End of stream: a still-forming token is no longer forming — release what it turned out to be, sanitised. */
@@ -1856,10 +2243,7 @@ export function applyPlaceEnrichmentStreamFilter(
     // cannot be rewritten: it applies only when the released bytes are untouched by it. Otherwise
     // the text goes out as before and the clients' render-time balancing covers the prefix.
     const normalized = normalizeReplyMarkdown(settled)
-    const final = normalized.startsWith(liveReleased) ? normalized : settled
-    if (!final.startsWith(liveReleased) || final.length === liveReleased.length) return
-    controller.enqueue(encoder.encode('0:' + JSON.stringify(final.slice(liveReleased.length)) + '\n'))
-    liveReleased = final
+    releaseFiltered(controller, normalized.startsWith(liveFiltered) ? normalized : settled, true)
   }
 
   /**
@@ -1913,6 +2297,12 @@ export function applyPlaceEnrichmentStreamFilter(
       .map(x => x.id)
   }
   let emitted = false
+  /** M5: Luna's ranking block was applied to the card data this turn (rankingContract.ts). */
+  let lunaRanked = false
+  /** M5: the cards shown under semantic ranking when there is no ranking line — the venues Luna named (null = not that case). */
+  let namedOnlyCards: string[] | null = null
+  /** M5: the cards above the fold under Luna's ranking — its ranked list, in its order. */
+  const lunaFold = (): string[] => (collector?.placesRecommendations ?? []).slice(0, CARD_FOLD_SHOWN).map(r => r.entity.identity.name).filter((n): n is string => !!n)
 
   const PLACE_TOOLS = new Set(['search_places', 'get_hotel_prices', 'search_products'])
 
@@ -2018,15 +2408,101 @@ export function applyPlaceEnrichmentStreamFilter(
     if (emitted) return
     emitted = true
     if (!bufferMode) return // nothing buffered — everything already streamed live
+    // CONSULT_ONE_BRAIN (P0-3): the tools the model called decide which turn this is; the keyword reading of the question is only the fallback. A travel tool makes it a travel
+    // turn even with no travel word; a shopping tool without a travel tool makes it a shopping turn ("tư vấn … dễ vệ sinh. Shopee hay … mua chỗ nào" matches the route pattern "tư … vệ").
+    if (collector?.oneBrain === true) {
+      const travelTool = gateTools.some(n => TRAVEL_TOOLS.has(n))
+      travelIntent = travelTool || (travelIntent && !gateTools.includes('search_products'))
+    }
+    // CONSULT_ONE_BRAIN: the plan the model handed to present_plan becomes the [TAPPY_PLAN] block (the brochure card and its share page),
+    // here, before the photo, link-egress, price and trip-fact guards below read the text. The model writes only the short summary around it.
+    if (collector?.oneBrain && collector.planBlock && !mainText.includes('[TAPPY_PLAN]')) mainText = `${mainText.trimEnd()}\n\n[TAPPY_PLAN]${collector.planBlock}[/TAPPY_PLAN]`
+    /**
+     * Phase 8 M5 (TAPPY_AGENT=2) — LUNA'S RANKING. The machine line Luna ends a recommendation with ([TAPPY_RANK]…) is removed from the
+     * reply here, before any guard reads it, and applied to the card data: only the candidates Luna ranked, in its order, its first pick
+     * recommended with its own (qualitative) reason; `none` → no card. Everything downstream (photos, fold, emphasis) then reads that.
+     * No block / no matching name → the pre-M5 behaviour (cards follow the venues the reply names). See rankingContract.ts.
+     */
+    // CONSULT_ONE_BRAIN: no ranking line is asked of the model; the cards follow the items its answer names (proseRanking.ts, below).
+    if (collector?.semanticRanking || collector?.oneBrain === true) {
+      const ex = collector.semanticRanking ? extractRanking(mainText) : { text: mainText, contract: null as RankingContract | null, malformed: false }
+      mainText = ex.text
+      const rt: Record<string, unknown> = { block: ex.contract ? 'ok' : ex.malformed ? 'malformed' : 'absent', via: ex.contract ? 'inline' : null }
+      // WS2: no valid inline block, and the turn has candidates → the decision is RECORDED from the final answer (one structured Luna
+      // call, validated by code — decisionRecord.ts). The answer is the decision; this is its machine-readable form.
+      let contract = ex.contract
+      // CONSULTATIVE_IN_AGENT (collector.planTurn, only set under the flag on a trip-plan turn): the plan is the whole answer. The venues in it
+      // are the itinerary, not a recommendation — ranking them (inline line or the recorder, which reads the reply WITH the plan) turned a plan
+      // into "plan + three Luna-ranked venue cards" and cost one extra model call (UAT 10/10, Đà Lạt 3 ngày, ranking via=structured cards=3).
+      // The ranking line is still stripped above; only its effect and the recorder are skipped. Flag off: unchanged.
+      const planOwnsAnswer = collector.planTurn === true
+      if (planOwnsAnswer) { contract = null; rt.block = 'skipped_plan'; rt.via = null }
+      let shoppingRanked = false // Luna's ranking reached the shopping card (otherwise the card is shown without a crowned option)
+      const candidateNames = [...(collector.placesRecommendations ?? []).map(r => r.entity.identity.name ?? ''), ...(collector.shoppingMarker ? (parseShoppingMarker(collector.shoppingMarker).view?.entities ?? []).map(e => e.name ?? e.config ?? '') : [])].filter(Boolean)
+      // CONSULT_ONE_BRAIN: the named items, in the order named, the first crowned; a card nobody named is not shown, and none named leaves the cards as they were.
+      if (!planOwnsAnswer && !contract && collector.oneBrain === true && !collector.semanticRanking && candidateNames.length) {
+        const fromProse = rankingFromProse(mainText, [
+          ...(collector.placesRecommendations ?? []).map(r => ({ name: r.entity.identity.name ?? '' })),
+          ...(collector.shoppingMarker ? (parseShoppingMarker(collector.shoppingMarker).view?.entities ?? []).map(e => ({ name: e.name ?? e.config ?? '', price: typeof e.priceLow === 'number' ? e.priceLow : null })) : []),
+        ].filter(c => c.name))
+        if (fromProse) { contract = fromProse; rt.block = 'prose'; rt.via = 'prose' }
+      }
+      // CONSULT_ONE_BRAIN: the answer named no listing (it may rest on store pages the model read), so the card is the tools' - but a listing that differs from what was asked for does not stand beside the ones that match.
+      if (!planOwnsAnswer && !contract && collector.oneBrain === true && collector.shoppingMarker) {
+        const cardCount = (m: string): number => parseShoppingMarker(m).view?.entities.length ?? 0
+        const m0 = collector.shoppingMarker
+        const m1 = onlyMatchingCards(m0)
+        const m2 = cardsConsistentWithAnswer(m1, mainText)
+        // counts only, never a name: how many cards each step left (the steps stay observable on a real turn)
+        console.log(JSON.stringify({ type: 'tappyai_one_brain_cards', before: cardCount(m0), after_match: cardCount(m1), after_answer: cardCount(m2) }))
+        collector.shoppingMarker = m2
+      }
+      // CONSULT_V3 task frame: no venue card will be shown for this task → the decision recorder (one structured call) is not needed for places.
+      const taskSkipsRecorder = collector.consultV3 === true && !!collector.taskFrame && !cardsAllowed(collector.taskFrame.kind).places && !collector.shoppingMarker
+      if (!planOwnsAnswer && !taskSkipsRecorder && !contract && collector.recordDecision && candidateNames.length) {
+        // Card-path diagnostics (flag + audit trace only; cardPathTrace.ts): every candidate the settle path offers the recorder, with its card id.
+        cardPathTrace(collector.diagTurnId, 'recorder_candidates', { count: candidateNames.length, list: (collector.placesRecommendations ?? []).slice(0, 60).map(r => ({ id: r.entity.id, name: r.entity.identity.name ?? null })) })
+        const rec = await collector.recordDecision(mainText, candidateNames)
+        Object.assign(rt, { recorder_ms: rec.ms, recorder_usd: rec.usd, ...(rec.error ? { recorder_error: rec.error } : {}) })
+        if (rec.contract) { contract = rec.contract; rt.block = 'ok'; rt.via = 'structured' }
+      }
+      if (contract) {
+        Object.assign(rt, { picks: contract.picks.length, none: contract.none, confidence: contract.confidence })
+        if (collector.placesRecommendations?.length) {
+          const a = applyRankingToRecs(collector.placesRecommendations, contract)
+          if (collector.diagTurnId) {
+            const before = collector.placesRecommendations
+            const idOf = (n: string) => { const r = before.find(x => (x.entity.identity.name ?? '') === n); return r ? r.entity.id : null }
+            cardPathTrace(collector.diagTurnId, 'ranking_applied', {
+              via: rt.via ?? null, none: contract.none, picks: contract.picks.map(p => ({ name: p.name, card_id: idOf(p.name) })),
+              cards_before: before.slice(0, 60).map(r => r.entity.id), cards_after: a ? a.items.map(r => r.entity.id) : null,
+              matched: a?.matched ?? 0, unmatched: a?.unmatched ?? contract.picks.length, outcome: a ? 'ranked' : 'unmatched_named_order_kept',
+            })
+          }
+          if (a) { collector.placesRecommendations = a.items; lunaRanked = true; Object.assign(rt, { cards: a.items.length, unmatched: a.unmatched }) } else rt.cards = 'unmatched_named_order_kept'
+        }
+        if (collector.shoppingMarker) {
+          const s = applyRankingToShoppingMarker(collector.shoppingMarker, contract)
+          if (s.applied) { collector.shoppingMarker = s.marker ?? undefined; lunaRanked = true; shoppingRanked = true; Object.assign(rt, { shopping: s.marker ? s.matched : 0, shopping_unmatched: s.unmatched }) } else rt.shopping = 'unmatched_kept'
+        }
+      }
+      // UAT-10 (2026-10-09): the engine's own pick is not Luna's decision. With no ranking of Luna's on the card, nothing is crowned — "NÊN CHỌN"
+      // must never sit next to a reply that says it cannot conclude.
+      if (collector.shoppingMarker && !shoppingRanked) { collector.shoppingMarker = withoutRecommendation(collector.shoppingMarker); Object.assign(rt, { shopping_label: 'withheld_no_ranking' }) }
+      try { collector.rankingTrace?.(rt) } catch { /* trace only */ }
+    }
     const places = resolvePlaces()
 
     // B7-A: photos are fetched HERE, not inside the tool, because only here do we
     // know which places the reply actually named. The tool used to resolve the
     // top 8 blind while the injector used at most 3.
-    if (resolvePhotos) {
+    // planTurn: photos are only worth fetching for the items of a [TAPPY_PLAN] block; a plain-text plan has no card or item to show them in.
+    if (resolvePhotos && !(collector?.planTurn && !mainText.includes('[TAPPY_PLAN]'))) {
       try {
         // The cards the client will actually render above the fold (see `renderedFoldNames`).
-        const cardNames = renderedFoldNames(collector?.placesRecommendations ?? [], mainText, collector?.consultBrief === true)
+        // M5: under Luna's ranking the fold IS its ranked list (no re-derivation from the prose order).
+        // planTurn: no standalone cards will render, so no card photos are fetched for them (the plan's own items still get theirs below).
+        const cardNames = collector?.planTurn ? [] : lunaRanked ? lunaFold() : renderedFoldNames(collector?.placesRecommendations ?? [], mainText, collector?.consultBrief === true)
         const needed = selectPlacesNeedingEnrichment(places, mainText, { cardNames })
         if (needed.length > 0) {
           const photos = await resolvePhotos(needed)
@@ -2053,6 +2529,8 @@ export function applyPlaceEnrichmentStreamFilter(
     const beforeEgress = mainText
     mainText = guardModelEgress(mainText, buildOwned(places), allowedUrls)
     logEgress('settle', beforeEgress, mainText)
+    gt('egress', beforeEgress, mainText)
+    const beforeMarketplace = mainText
     // 01/10 (owner, ca d): the model does not choose which shop to send the user to — only shops whose links this turn handed over.
     {
       // Only what has not reached the client yet: the released prefix must stay a prefix of the final text.
@@ -2064,6 +2542,8 @@ export function applyPlaceEnrichmentStreamFilter(
         if (noBare !== (scrubbed.removed.length ? scrubbed.text : mainText.slice(pre.length))) { console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'bare_photo_url' })); mainText = pre + noBare }
       }
     }
+    gt('marketplace', beforeMarketplace, mainText)
+    const beforePickSplit = mainText
     // PHIÊN LUNA (CONSULT_LUNA only): the pick sentence stands alone, so a guard that cuts an unbacked number or
     // atmosphere word from the reason cannot take the pick's NAME with it (replay 30/09 FOOD-1 t6: "**Mình chọn: Miya
     // Sushi** vì có **1.376 đánh giá** …" → place_claim removed the whole sentence, the reply had no pick).
@@ -2077,6 +2557,8 @@ export function applyPlaceEnrichmentStreamFilter(
         if (split !== rest) { console.log(JSON.stringify({ type: 'tappyai_consult_patch', turn: 'luna', patches: ['pick_sentence_split'] })); mainText = pre + split }
       }
     }
+    gt('pick_sentence_split', beforePickSplit, mainText)
+    const beforeLeak = mainText
     // PHIÊN LUNA safety: a reply that echoes the prompt or carries a secret shape is replaced (the released prefix, if
     // any, stays — it went out before the echo was complete).
     if (collector?.leakCheck) {
@@ -2087,6 +2569,8 @@ export function applyPlaceEnrichmentStreamFilter(
         mainText = pre + (pre ? '\n\n' : '') + (/^en/i.test(String(lang)) ? LEAK_REPLACEMENT_EN : LEAK_REPLACEMENT_VI)
       }
     }
+
+    gt('leak', beforeLeak, mainText)
 
     /**
      * The card's payload, built here rather than at the end, because whether it
@@ -2150,10 +2634,28 @@ export function applyPlaceEnrichmentStreamFilter(
         pickUnmatched: unmatched,
       }
     })()
+    // M5 (TAPPY_AGENT=2) without a ranking line: the cards are the venues Luna NAMED, in its order — never filler from the provider
+    // order (measured SR-G3: an honest "no Michelin place under 50k" came with eight unranked restaurant cards). Named none → no card.
+    if (collector?.semanticRanking && !lunaRanked) {
+      if (recsForCard.length !== namedRecs.length) console.log(JSON.stringify({ type: 'tappyai_cards', step: 'agent_named_only', named: namedRecs.length, rows: recsForCard.length }))
+      recsForCard = namedRecs
+      namedOnlyCards = namedRecs.map(r => r.entity.identity.name).filter((n): n is string => !!n)
+    }
+    // planTurn (CONSULTATIVE_IN_AGENT): the plan carries its own places — no standalone venue cards after it, even for names the prose repeats.
+    if (collector?.planTurn) { recsForCard = []; namedOnlyCards = [] }
+    // CONSULT_V3 task frame: a turn whose declared task does not use places (a recipe, an explanation, news) shows no venue cards, even when a
+    // search ran before the declaration (UAT 17/10: restaurant cards under a cook-at-home answer).
+    if (collector?.consultV3 === true && collector.taskFrame && !cardsAllowed(collector.taskFrame.kind).places && recsForCard.length) {
+      console.log(JSON.stringify({ type: 'tappyai_cards', step: 'task_frame_no_places', task_kind: collector.taskFrame.kind, rows: recsForCard.length }))
+      recsForCard = []; namedOnlyCards = []
+    }
     // COST (2026-09-29): the lookup is skipped only when every card above the fold already
     // carries a verified TikTok review — there is nothing left for it to attribute. Otherwise the
     // ONE batched request for the fold is unchanged (one credit whether it names one venue or three).
-    if (resolveTikTok && recsForCard.length > 0 && !pickedRecs.every(hasVerifiedTikTok)) {
+    // A finished plan asks for nothing more: the review-link lookup attributes TikTok posts to CARD venues, and a plan turn's deliverable
+    // is the [TAPPY_PLAN] block, so no extra provider request is sent after it (Phase 8 orchestration fix D).
+    const planDelivered = mainText.includes('[TAPPY_PLAN]')
+    if (resolveTikTok && !planDelivered && recsForCard.length > 0 && !pickedRecs.every(hasVerifiedTikTok)) {
       try {
         const cardNames = pickedRecs
           .map(r => r.entity.identity.name)
@@ -2173,11 +2675,18 @@ export function applyPlaceEnrichmentStreamFilter(
     // first changes neither (logged as `engine_kept`).
     const briefPickOn = collector?.consultBrief === true
     const engineRecForCard = recsForCard.find(r => r.recommended)
-    const aligned: { recs: typeof recsForCard; outcome: string } = briefPickOn
+    const aligned: { recs: typeof recsForCard; outcome: string } = lunaRanked
+      // M5: Luna's ranking already set the order, the emphasis and its reason — the card layer does not re-rank or re-home it.
+      ? { recs: recsForCard, outcome: 'luna_ranking' }
+      // M5 without a ranking line: Luna's choice is unknown — a venue named in bold may be the one it REJECTS (measured SR-G3: "Madame
+      // Lam … không khớp" became the recommended card). The named cards show, none carries the recommendation.
+      : collector?.semanticRanking
+      ? alignEmphasisToModelPick(recsForCard, null)
+      : briefPickOn
       ? alignEmphasisToEnginePick(recsForCard, namedRecs[0]?.entity.id ?? null)
       : alignEmphasisToModelPick(recsForCard, namedRecs[0]?.entity.id ?? null)
     if (briefPickOn && aligned.outcome === 'engine_kept') console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'engine_pick_authoritative', step: 'card_emphasis_kept', engine_pick: enginePickName, model_first: namedRecs[0]?.entity.identity.name ?? null }))
-    const cardPickedIds = briefPickOn && engineRecForCard
+    const cardPickedIds = lunaRanked ? recsForCard.map(r => r.entity.id) : briefPickOn && engineRecForCard
       ? [engineRecForCard.entity.id, ...namedRecs.map(r => r.entity.id).filter(id => id !== engineRecForCard.entity.id)]
       : namedRecs.map(r => r.entity.id)
     if (aligned.outcome === 'none' && enginePickName) console.error(JSON.stringify({ type: 'tappyai_cards_error', reason: 'emphasis_dropped_no_model_pick', engine_pick: enginePickName }))
@@ -2193,6 +2702,7 @@ export function applyPlaceEnrichmentStreamFilter(
       })
       : null)
     // UAT traceability (2026-09-19): the names are venue names from the provider rows, never user data.
+    if (placesView && collector?.diagTurnId) cardPathTrace(collector.diagTurnId, 'final_cards', { ids: recsForCard.map(r => r.entity.id), visible: placesRenderOrder(placesView).visible.map(v => v.name ?? null), shown: placesView.shown ?? null, picked: placesView.picked?.length ?? 0, items: placesView.items.length, emphasis: aligned.outcome })
     if (placesView) console.log(JSON.stringify({ type: 'tappyai_cards', shown: placesView.shown ?? null, picked: placesView.picked?.length ?? 0, items: placesView.items.length, named_in_prose: namedInProse, pick_unmatched: pickUnmatched, emphasis: aligned.outcome, card1: placesRenderOrder(placesView).visible[0]?.name ?? null, model_pick: namedRecs[0]?.entity.identity.name ?? null, engine_pick: enginePickName }))
 
     /**
@@ -2217,9 +2727,12 @@ export function applyPlaceEnrichmentStreamFilter(
      * iPhone question, directly above a card showing the same products. The
      * shopping marker is the shopping card's existence, so it counts here too.
      */
-    const decisionCardRenders = !!placesView || !!collector?.shoppingMarker
+    // planTurn: the plan is what renders and owns the places' photos / links — no loose per-venue link blocks are injected into its prose.
+    const decisionCardRenders = !!placesView || !!collector?.shoppingMarker || collector?.planTurn === true
     const cardOwnsEnrichment = decisionCardRenders && collector?.rendersDecisionCard === true
-    const injectedProse = cardOwnsEnrichment ? mainText : injectPlaceEnrichment(places, mainText, lang, { placement: mediaPlacementV2Enabled() ? 'v2' : 'v1' })
+    // TAPPY_ANSWER_V4: the media describe only the places the answer names (InjectPlaceEnrichmentOptions.onlyMentioned); V3 below, unchanged
+    const injectedProse = !cardOwnsEnrichment && collector?.answerV4 ? injectPlaceEnrichment(places, mainText, lang, { placement: mediaPlacementV2Enabled() ? 'v2' : 'v1', onlyMentioned: true })
+      : cardOwnsEnrichment ? mainText : injectPlaceEnrichment(places, mainText, lang, { placement: mediaPlacementV2Enabled() ? 'v2' : 'v1' })
     // A3 (owner 2026-10-02): images appear ONLY inside cards. A web turn with no card at all (a wrong-model shopping result, a hotel
     // listing the card could not carry) used to show one product thumbnail alone, injected into the prose. The order / review LINKS
     // the injector wrote stay; the pictures go. Clients that do not render cards (Android, iOS) keep their injected photos.
@@ -2241,10 +2754,14 @@ export function applyPlaceEnrichmentStreamFilter(
       userAmounts: extractMoneyClaims(userText || '').flatMap(c => [c.lo, c.hi]),
     }
     // R15: a plan body whose JSON does not parse (measured `{time":"10:00"`) is repaired before any plan guard.
-    const planRepair = enrichedProse.includes('[TAPPY_PLAN]') ? repairPlanBlock(enrichedProse) : { text: enrichedProse, repaired: false }
+    const planRepair = enrichedProse.includes('[TAPPY_PLAN]') ? repairPlanBlock(enrichedProse, collector?.consultative === true ? { balance: true } : {}) : { text: enrichedProse, repaired: false }
     if (planRepair.repaired) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'plan_json_repaired', repaired: 1 }))
+    // P0-2 rest (30/10): on the one-brain route the plan stages that DELETE (a price clause, a tip, a date sentence, the model's own date/origin question)
+    // run in shadow like the prose quality stages: logged and traced as `shadow:<stage>`, the text goes on unchanged. Measured 30/10: ~2 000 characters a run
+    // removed on trip answers by plan_local_tips / plan_trip_facts / plan_price. plan_items is not shadowed: it also carries the booking-link authority.
+    const oneBrainShadow = (stage: string, before: string, after: string): string => (collector?.oneBrain === true ? qual(stage, before, after) : after)
     const pricedPlan = planRepair.text.includes('[TAPPY_PLAN]')
-      ? guardPlanPrices(planRepair.text, planEvidence, lang).text
+      ? oneBrainShadow('plan_price', planRepair.text, guardPlanPrices(planRepair.text, planEvidence, lang, { keepModelBudget: collector?.oneBrain === true }).text)
       : planRepair.text
     // LOCAL TIPS (UAT3 P2, 2026-09-27): a tip survives only tied to a stop retrieved this turn,
     // or flagged general and naming no venue, price, hour or ticket — see planLocalTipsGuard.
@@ -2255,14 +2772,17 @@ export function applyPlaceEnrichmentStreamFilter(
     // PLAN ITEMS (UAT 2026-09-28): every venue stop is a place retrieved this turn, its booking link
     // comes from the action authority, never from the model; markdown leaves the JSON. The `a:` rows
     // carry the provider fields (booking_links, maps_link); the collector carries the Commerce Links.
-    const tipped = tips ? tips.text : pricedPlan
+    // CONSULT_ONE_BRAIN (localhost 29/10, "Đà Lạt 2 ngày 1 đêm", place search down): the strict mode dropped all 9 stops and the brochure showed
+    // empty days. The one-brain plan (present_plan) gets the consultative mode: known sights kept by name and marked unchecked, meals as plain
+    // slots, an invented venue still dropped.
+    const tipped = tips ? oneBrainShadow('plan_local_tips', pricedPlan, tips.text) : pricedPlan
     const planItems = tipped.includes('[TAPPY_PLAN]')
       ? guardPlanItems(tipped, latestPlaces.map(p => {
         const c = places.find(q => (q.name || '').trim().toLowerCase() === (p.name || '').trim().toLowerCase()) as { commerce_links?: PlanPlace['commerce_links'] } | undefined
         return { ...(p as PlanPlace), ...(c?.commerce_links ? { commerce_links: c.commerce_links } : {}) }
-      }))
+      }), { destination: collector?.planTurn ? planDestination : null, ...(collector?.consultative === true || collector?.oneBrain === true ? { keepSights: true, vegetarian: collector?.oneBrain === true ? false : wantsVegetarian(collector?.userTexts ?? [userText]) } : {}), ...(collector?.oneBrain === true ? { knownSightsUnlabelled: true, keepNamedVenues: true, topUpReturnDay: false } : {}) })
       : null
-    if (planItems && (planItems.replaced || planItems.dropped || planItems.linksSet || planItems.linksRemoved || planItems.timesMoved || planItems.timesCleared)) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'plan_items', matched: planItems.matched, replaced: planItems.replaced, dropped: planItems.dropped, links_set: planItems.linksSet, links_removed: planItems.linksRemoved, times_moved: planItems.timesMoved, times_cleared: planItems.timesCleared }))
+    if (planItems && (planItems.mealSlots || planItems.replaced || planItems.dropped || planItems.linksSet || planItems.linksRemoved || planItems.timesMoved || planItems.timesCleared || planItems.outOfArea)) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'plan_items', out_of_area: planItems.outOfArea ?? 0, matched: planItems.matched, replaced: planItems.replaced, dropped: planItems.dropped, links_set: planItems.linksSet, links_removed: planItems.linksRemoved, times_moved: planItems.timesMoved, times_cleared: planItems.timesCleared, ...(planItems.mealSlots ? { meal_slots: planItems.mealSlots, veg_slots: planItems.vegSlots ?? 0 } : {}) }))
     // 🚨 UAT 2026-09-28 (live, uat @ 062c7ec: every "Đà Nẵng 3 ngày 2 đêm" plan card broken). The
     // prose guards below cut SENTENCES and CLAUSES — hours ("mở cửa 10:00-21:00"), prices, formats —
     // and they ran over the [TAPPY_PLAN] JSON too: a cut took "lễ tân mở cửa 24/7, check-in từ
@@ -2273,21 +2793,90 @@ export function applyPlaceEnrichmentStreamFilter(
     // TRIP FACTS (owner 2026-09-28, B4): a trip plan never states a date, a departure city or an
     // inter-city leg the user did not give — the reply asks for them instead (planTripFactsGuard).
     const itemized = planItems ? planItems.text : tipped
-    const tripFacts = itemized.includes('[TAPPY_PLAN]') ? guardPlanTripFacts(itemized, collector?.userTexts ?? [userText]) : null
+    const tripFacts = itemized.includes('[TAPPY_PLAN]') ? guardPlanTripFacts(itemized, collector?.userTexts ?? [userText], collector?.consultative === true ? { assumeLegs: true } : {}) : null
     if (tripFacts && (tripFacts.labelsCleaned || tripFacts.stopsDropped || tripFacts.sentencesDropped || tripFacts.daysTrimmed)) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'plan_trip_facts', missing: tripFacts.missing, labels_cleaned: tripFacts.labelsCleaned, stops_dropped: tripFacts.stopsDropped, sentences_dropped: tripFacts.sentencesDropped, days_trimmed: tripFacts.daysTrimmed ?? 0 }))
     // A travel turn never states a travel DATE the user did not give (c40 O8: 'giả sử … hôm nay (28/9)'
     // while the fare links searched 05/10) — planTripFactsGuard.guardUngivenTravelDate.
-    const tripped = tripFacts ? tripFacts.text : itemized
-    const dated = travelIntent ? guardUngivenTravelDate(tripped, collector?.userTexts ?? [userText]) : null
+    const tripped = tripFacts ? oneBrainShadow('plan_trip_facts', itemized, tripFacts.text) : itemized
+    // CONSULTATIVE_IN_AGENT: the date in the reply is the system calendar's resolution of "cuối tuần sau" etc. (an assumption the reply states), not an invented one.
+    // CONSULT_ONE_BRAIN: the date the model states is the date it looked things up ("kết quả tra cứu ngày 29/10/2026"), which the prompt asks for; measured, this cut it.
+    const dated = travelIntent && collector?.consultative !== true && collector?.oneBrain !== true ? guardUngivenTravelDate(tripped, collector?.userTexts ?? [userText]) : null
     if (dated?.dropped) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'travel_ungiven_date', dropped: dated.dropped }))
+    gt('enrichment_inject', mainText, enrichedProse)
+    gt('plan_repair', enrichedProse, planRepair.text)
+    gt('plan_price', planRepair.text, pricedPlan)
+    gt('plan_local_tips', pricedPlan, tipped)
+    gt('plan_items', tipped, itemized)
+    gt('plan_trip_facts', itemized, tripped)
+    if (dated) gt('travel_ungiven_date', tripped, dated.text)
     const planMask = maskPlanBody(dated ? dated.text : tripped)
-    const enriched = planMask.text
+    /**
+     * Phase 8 M4 — EVIDENCE PROVENANCE BEFORE THE FACTUAL GUARDS. A sentence whose every value is stated by the page it cites
+     * (or by fresh task evidence) is held out of the heuristic guards below (money … unsupported_claim) and restored unchanged
+     * after them; everything else is judged exactly as before. Inert without `guardEvidence` (every non-agent turn). See guardEvidence.ts.
+     */
+    // WS2 citation integrity, step 1 (agent turns that read pages): a marker after a full stop is bound INTO its sentence before any
+    // guard runs, so removing the sentence removes its citation (citationIntegrity.ts).
+    const citeBoundRaw = collector?.citationSources?.length ? bindCitationMarkers(planMask.text) : planMask.text
+    // Round 42 round 3 (RANGE-27-33, rule R-B, both flags; turns without coach rows — a coach range is R-C's, in shapeFinalProse): a VND range no single row
+    // of the turn states loses only the part that carries it, when a safe cut keeps the sentence's other amounts; no safe cut ⇒ the sentence is not touched.
+    // Rows = the turn's search results + the passages of the pages it read. See rangeEvidence.ts.
+    const rangeEvRows = [...rangeRows.map(r => r.text), ...(collector?.guardEvidence?.sources ?? []).flatMap(s => s.passages)]
+    // CONSULT_ONE_BRAIN: the model cites the page right after each figure, so its sentences are not cut. Measured 28/10 on localhost: the sentence splitter broke a
+    // sentence at the dot of a source name inside a markdown link ("[Giaxe.2banh](…)"), the cut left "Giaxe.2banh)." at the top of a bullet and appended "not verified".
+    const rangeCut = coachRows.length === 0 && rangeEvRows.length > 0 && collector?.oneBrain !== true
+      ? cutUnbackedRanges(citeBoundRaw, {
+        rows: rangeEvRows,
+        hosts: [...rangeRows.map(r => r.host), ...(collector?.guardEvidence?.sources ?? []).map(s => s.host)],
+        consultative: collector?.consultative === true,
+        lang,
+        looked: gateTools.length > 0,
+        // flag OFF: the No-Fabrication Gate, called as a pure function on the sentence alone, with the evidence it will see below
+        gateDrops: collector?.semanticRanking
+          ? (sentence: string) => noFabricationGate(sentence, {
+            corpus: [...gateCorpus, ...(collector.gateContext ?? []), ...(collector.guardEvidence?.sources ?? []).map(s => s.passages.join('\n')), ...(collector.guardEvidence?.carried ?? []).map(r => `${r.title} ${r.claims.map(c => c.value).join(' · ')}`)],
+            userTexts: collector.userTexts ?? [userText],
+            tools: gateTools,
+            conflicts: collector.guardEvidence?.conflicts ?? [],
+            stalePrices: collector.guardEvidence?.stalePrices ?? [],
+            freshPrices: [...(collector.guardEvidence?.freshPrices ?? []), ...freshFramePrices],
+            agedPrices: agedFramePrices,
+          }, { lang, illustrations: collector?.consultative === true }).removedSentences > 0
+          : undefined,
+      })
+      : null
+    if (rangeCut?.changes.length) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'range_evidence', changes: rangeCut.changes }))
+    const citeBound = rangeCut?.changes.length ? rangeCut.text : citeBoundRaw
+    gt('range_evidence', citeBoundRaw, citeBound)
+    // CONSULTATIVE_IN_AGENT: the system clock's date ("hôm nay (11/10)") is framing, not a claim the page must repeat. Any other date is judged as before.
+    const todayVn = collector?.consultative ? vnToday() : undefined
+    const evShield = shieldSupported(citeBound, collector?.guardEvidence, { lang, cutUnsourcedMoney: collector?.consultative === true, canonMoney: collector?.consultative === true, retrievedTexts: gateCorpus, knownNames: [...places.map(p => p.name ?? ''), ...productRecords.map(r => (r.title || '').split(' - ')[0])].filter(Boolean), ...(todayVn ? { today: todayVn } : {}) })
+    gt('evidence_citation', citeBound, evShield.text)
+    const enriched = evShield.text
+    // Wave 3 (W4, R3-01): a calculator result is evidence of its arithmetic only when its expression follows, by VALUE, from numbers the turn already had - the user's (as written, and as amounts with their unit
+    // words read), a tool result's - or from an earlier calculator result. Empty without the flag (no calculate result then).
+    const calcOk = calcResults.length > 0
+      ? (() => {
+        const userNums = (collector?.userTexts ?? [userText]).flatMap(t => numbersInText(t))
+        return groundedCalcNumbers(calcResults, {
+          raw: [...groundNums, ...userNums],
+          money: (collector?.userTexts ?? [userText]).flatMap(t => extractMoneyClaims(t).flatMap(c => [c.lo, c.hi])),
+          derive: userNums, // a calendar multiple or a percentage is derived from what the USER wrote, not from the many numbers of a tool result
+        })
+      })()
+      : []
+    // Wave 3: what the turn established itself - grounded calculator results and the amounts of the pages it read. The three money-shaped guards below treat these as evidence. Empty (so no change) without the flags.
+    const ownValues = pageNums.length > 0 ? [...calcOk, ...pageNums] : calcOk
     // C3-B.10: the last server-side point at which the COMPLETE prose exists and
     // has not yet reached the client. A monetary claim the structured evidence
     // does not support is removed here — deterministically, with no model call,
     // no network call, and nothing written that was not already in the text.
     // Inert unless the evidence carries structured prices (see moneyGuard).
-    const guardedRaw = guardMoneyClaimsInText(enriched, productRecords, productQueries)
+    // WS2 (TAPPY_AGENT=2): the product a price is about is read from Luna's query WITHOUT the store names it added ("… Shopee Tiki") —
+    // a seller name is where to buy, not what the product is (sourceType.stripSellerNames). Legacy / Phase 7 unchanged.
+    const guardedRaw = collector?.semanticRanking
+      ? guardMoneyClaimsInText(enriched, productRecords, productQueries.map(stripSellerNames), { sellerAttribution: true, ...(ownValues.length > 0 ? { calcValues: ownValues } : {}), ...(collector?.consultative === true ? { decimalSafe: true } : {}), ...(collector?.consultV3 === true ? { namedListing: true, choiceOptions: true, userTexts: collector.userTexts ?? [userText] } : {}) })
+      : guardMoneyClaimsInText(enriched, productRecords, productQueries, ownValues.length > 0 ? { calcValues: ownValues } : {})
     /**
      * B3 (2026-09-20) — THE PRODUCT UNIT: a price that traces to no fetched row is HEDGED. The
      * money guard enforces only where a structured price exists (it is inert on organic rows, by
@@ -2317,16 +2906,40 @@ export function applyPlaceEnrichmentStreamFilter(
     // money runs first so the spec pass reads text whose prices are already
     // settled. Inert unless structured shopping records were collected, and
     // inert for every other domain.
-    const specGuarded = specRecords.length > 0
-      ? guardSpecClaimsInText(guarded.text, specRecords).text
-      : guarded.text
+    const moneyShadowText = qual('money', enriched, guarded.text)
+    // CONSULT_ONE_BRAIN (owner + review 30/10): the step above only logs in one brain, so a price no tool carried would reach the person as fact. It is
+    // LABELLED instead ("chưa xác minh", the figure only; the name, the bullet, the row and the rest of the line stay) - never cut. Evidence: every number a
+    // tool result carried this turn, the listing prices, the calculator and page figures, and the person's own amounts.
+    const moneyText = collector?.oneBrain === true && productRecords.length > 0 && !collector.planBlock && !collector.planTurn
+      ? (() => {
+        const userMoney = (collector?.userTexts ?? [userText]).flatMap(t => extractMoneyClaims(t).flatMap(c => [c.lo, c.hi]))
+        const listed = productRecords.flatMap(r => { const v = structuredPrice(r); return v === null ? [] : [v] })
+        const r = labelUnbackedPrices(moneyShadowText, [...groundNums, ...listed, ...ownValues, ...userMoney], lang === 'en' ? 'unverified' : 'chưa xác minh')
+        if (r.labelled > 0) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'money', step: 'labelled_unbacked', claims: r.claims, labelled: r.labelled }))
+        return r.text
+      })()
+      : moneyShadowText
+    gt('money', enriched, moneyText)
+    const specGuarded = qual('spec', moneyText, specRecords.length > 0
+      ? guardSpecClaimsInText(moneyText, specRecords, collector?.consultV3 === true ? { figuresOnly: true } : {}).text
+      : moneyText)
     // P0 FAIL-CLOSED TRAVEL GUARD. On a travel-intent turn, redact any fare/price/
     // schedule/availability the model asserted that no live fetched evidence backs
     // (empty travelFares ⇒ all of them). Only travel turns are touched, so shopping/
     // food/etc. are unaffected. Runs after the shopping guards so it reads prose
     // whose shopping prices are already settled.
-    const travelGuarded = travelIntent
-      ? guardTravelClaimsInText(specGuarded, travelFares, userText, { evidenceTimes: [...travelTimes], lang }).text
+    gt('spec', moneyText, specGuarded)
+    // CONSULT_V3: no travel-claims cut — it deleted the model's budget question and inserted "Giá vé cụ thể mình chưa xác nhận được…" (UAT
+    // 17/10). Fares stay under the No-Fabrication Gate (a stated figure needs a source, or an explicit estimate label).
+    // CONSULT_ONE_BRAIN (29/10): the pages the model read back a departure time, exactly as a fetched row does. (Their amounts already reach
+    // this guard as `ownValues`, the read pages' figures.)
+    const travelEvidenceTimes = collector?.oneBrain === true ? [...travelTimes, ...pageEvidenceTexts.flatMap(t => scheduleTimesIn(t))] : [...travelTimes]
+    // CONSULT_ONE_BRAIN: a price the shopping tool returned is evidence wherever it is said. Measured 29/10 ("Shopee hay Điện Máy Xanh mua chỗ nào lợi hơn?" read as a
+    // travel turn by the keyword detector on the question): "B.COOK 6 lít … 690.000 đồng", a Shopee listing the tool had returned, was cut and a "giá, giờ và tình trạng
+    // chỗ cụ thể mình chưa xác nhận được… trang đặt chỗ" line added under a fryer answer.
+    const travelOwnValues = collector?.oneBrain === true ? [...ownValues, ...productRecords.flatMap(r => { const v = structuredPrice(r); return v === null ? [] : [v] })] : ownValues
+    const travelGuarded = travelIntent && collector?.consultV3 !== true
+      ? guardTravelClaimsInText(specGuarded, travelFares, userText, { evidenceTimes: travelEvidenceTimes, lang, ...(travelOwnValues.length > 0 ? { calcValues: travelOwnValues } : {}), ...(collector?.oneBrain === true ? { availability: 'counted' as const, money: collector.planBlock ? 'keep' as const : 'annotate' as const, schedule: 'label' as const, notice: false } : {}) }).text
       : specGuarded
     // A5 EVIDENCE BOUNDARY for food/spa. Their menu/service prices exist only in
     // Serper snippets, so a stated price must TRACE to a retrieved snippet; a
@@ -2344,11 +2957,19 @@ export function applyPlaceEnrichmentStreamFilter(
      * attribute against. With no rows there is nothing a sentence could name,
      * and the guard keeps its existing area-level behaviour.
      */
+    // Wave 4 (B): a code pre-search's venue rows reach the stream slimmed (no website); their sites come from the full rows instead - an input only, a host already known keeps its venue.
+    for (const s of collector?.placeSites ?? []) { const site = hostOfUrl(s.website); if (site && !placeSiteHosts.has(site) && placeSiteHosts.size < 60) placeSiteHosts.set(site, s.name) }
+    // Wave 3 (W1): the amounts on a page of a venue's OWN website belong to that venue (inert when no page was read)
+    for (const [host, name] of placeSiteHosts) { const figs = pageFiguresByHost.get(host); if (figs && figs.length > 0) snippetPricesByEntity.set(name, [...(snippetPricesByEntity.get(name) ?? []), ...figs]) }
     const placeScope = (): SnippetPriceScope | undefined =>
       snippetPlaceNames.length > 0
         ? { byEntity: snippetPricesByEntity, placeNames: snippetPlaceNames }
         : undefined
-    const snippetV2 = snippetPriceGuardV2Enabled()
+    // WS2 (TAPPY_AGENT=2 only): the agent runtime judges food / spa prices with BAND evidence (G2 v2): a price equal to the named
+    // venue's own provider band (`price_range_text`) is entity evidence. Measured M5 SR-F2: v1 knows only snippet prices, so "giá tham
+    // khảo 100–200k/người" copied from Tám Riêu's own row band "100-200 N ₫" deleted the whole pick sentence. Unsupported prices are
+    // still removed (v2 is stricter on attribution: a stated amount must lie fully inside the band). Legacy / Phase 7 keep the env flag.
+    const snippetV2 = snippetPriceGuardV2Enabled() || collector?.semanticRanking === true
     // B3/B4 (2026-09-20): a SHOPPING turn ("máy lọc không khí phòng ngủ" reads as placeIntent
     // through "phòng") is not judged by the PLACE snippet guard — its prices are the product
     // unit's, judged by the money guard above and hedged when unverifiable. Only when no place
@@ -2373,18 +2994,25 @@ export function applyPlaceEnrichmentStreamFilter(
     if (ticketUnitGuarded && ticketUnitGuarded.redacted > 0) {
       console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'ticket_unit', redacted: ticketUnitGuarded.redacted, evidence_prices: snippetPrices.length }))
     }
-    const ticketGuarded = ticketUnitGuarded ? ticketUnitGuarded.text : travelGuarded
+    gt('travel', specGuarded, travelGuarded)
+    const ticketGuarded = qual('ticket_unit', travelGuarded, ticketUnitGuarded ? ticketUnitGuarded.text : travelGuarded)
+    gt('ticket_unit', travelGuarded, ticketGuarded)
+    // POST-UAT B3 (UAT-25 t3/t4, post-fix run): on agent turns the user's numbers are the whole conversation's — "giảm ngân sách xuống
+    // 700.000" (turn 2) is still the envelope at "bỏ điểm đến thứ hai" (turn 3). The No-Fabrication Gate already reads every user message.
+    const snippetUserText = collector?.agentMode && collector.userTexts?.length ? collector.userTexts.join('\n') : userText
     const snippetGuardResult = ((hadPlaceSearch || placeIntent) && !travelIntent && !shoppingTurn)
-      ? guardSnippetPricesInText(ticketGuarded, snippetPrices, userText, placeScope(), { v2: snippetV2, priceBandsByEntity })
+      ? guardSnippetPricesInText(ticketGuarded, ownValues.length > 0 ? [...snippetPrices, ...ownValues] : snippetPrices, snippetUserText, placeScope(), { v2: snippetV2, priceBandsByEntity })
       : null
-    const foodGuarded0 = snippetGuardResult ? snippetGuardResult.text : ticketGuarded
+    const foodGuarded0 = qual('snippet_price', ticketGuarded, snippetGuardResult ? snippetGuardResult.text : ticketGuarded)
     // Release gate (UAT-15): a comparative proximity claim about the pick must be backed by the rows' own distances (see proximityClaim.ts).
     const proximityChecked = hadPlaceSearch && (['pick', 'more', 'reject'].includes(collector?.consultTurn ?? '') || collector?.agentMode === true)
       ? dropUnsupportedProximityClaim(foodGuarded0, pickedNameIn(foodGuarded0, collector?.placesRecommendations?.find(r => r.recommended)?.entity.identity.name ?? null),
         (collector?.placesRecommendations ?? []).map(r => ({ name: r.entity.identity.name, distanceKm: r.entity.location?.distanceKm ?? null })))
       : null
     if (proximityChecked?.removed) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'proximity_comparative', removed: proximityChecked.removed }))
-    const foodGuarded = proximityChecked?.removed ? proximityChecked.text : foodGuarded0
+    const foodGuarded = qual('proximity', foodGuarded0, proximityChecked?.removed ? proximityChecked.text : foodGuarded0)
+    gt('snippet_price', ticketGuarded, foodGuarded0)
+    gt('proximity', foodGuarded0, foodGuarded)
     // G2 telemetry: counts only — never text, never a venue name (same rule as the place guard line).
     if (snippetGuardResult?.stats) {
       console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'snippet_price', v2: snippetV2, band_rows: priceBandsByEntity.size, ...snippetGuardResult.stats }))
@@ -2450,7 +3078,23 @@ export function applyPlaceEnrichmentStreamFilter(
      */
     const carriedPlaceFollowUp = !hadPlaceSearch && !shoppingTurn
       && (collector?.consultativeV1?.carried ?? []).some(c => !!c.name && (c.distanceKm !== null || !!c.hours))
-    const placeGuardResult = (hadPlaceSearch || placeIntent || travelIntent || ticketIntent || carriedPlaceFollowUp)
+    // CONSULT_V3 (UAT 17/10, "biết elon ko"): the place-claim cut ran on a reply about a PERSON and cut "nổi tiếng với Tesla" out of
+    // "doanh nhân công nghệ, nổi tiếng với Tesla và SpaceX" (→ "doanh nhân công nghệ và SpaceX"). Under V3 it runs on a turn that has place
+    // data to judge against (a place search, carried place facts, a ticket question) or that is a place-intent follow-up to a reply which
+    // talked about places (`priorPlaceContext`: "chỗ đầu tiên có chỗ đậu xe không?" after a rated, distanced pick); place-intent words in a
+    // conversation with no place context no longer trigger it. The figures of any reply are still judged by the No-Fabrication Gate.
+    // With a declared task (taskFrame.ts) the task decides: a knowledge / recipe / news turn is not a place turn even right after a place reply
+    // (eval 17/10 sw-3#2: "biết elon musk không" after a cơm tấm pick — the prior-context rule cut "nổi tiếng với Tesla" again).
+    const v3PlaceData = hadPlaceSearch || ticketIntent || carriedPlaceFollowUp || ((placeIntent || travelIntent) && collector?.priorPlaceContext === true)
+    // CONSULT_ONE_BRAIN (29/10): the place guard judges claims about the PLACES a place tool returned (or a carried place fact). A train / coach
+    // fare turn has none: its ticket and availability sentences ("đặt vé trên Vexere", even the hedge "chưa xác minh được còn chỗ") were deleted
+    // by rules that need no evidence at all (measured 29/10). Its fares stay under the travel guard, which now reads the pages the model read.
+    const placeGuardOn = collector?.consultV3 === true
+      ? (collector.taskFrame ? cardsAllowed(collector.taskFrame.kind).places && (v3PlaceData || collector.taskFrame.kind === 'place_followup') : v3PlaceData)
+      : collector?.oneBrain === true
+        ? (hadPlaceSearch || carriedPlaceFollowUp)
+        : (hadPlaceSearch || placeIntent || travelIntent || ticketIntent || carriedPlaceFollowUp)
+    const placeGuardResult = placeGuardOn
       ? guardPlaceClaimsInText(foodGuarded, {
         nowShowingListed: filmTitlesSeen.length > 0,
         ratings: placeRatings,
@@ -2465,16 +3109,16 @@ export function applyPlaceEnrichmentStreamFilter(
         ticketablePlaces,
         // CCP: sentences carrying a system-placed commerce link are never judged as claims.
         systemLinkUrls,
-      }, { scope: carriedPlaceFollowUp ? 'all' : placeClaimScope, attributionV2: guardV2, pickName })
+      }, { scope: carriedPlaceFollowUp ? 'all' : placeClaimScope, attributionV2: guardV2, pickName, verifiedPrices: productRecords.flatMap(r => { const value = structuredPrice(r); return value === null ? [] : [{ value, name: (r.title || '').split(' - ')[0] }] }) })
       : null
-    const placeGuardedRaw = placeGuardResult
+    const placeGuardedRaw = qual(placeGuardResult ? 'place_claim' : 'ordering_no_evidence', foodGuarded, placeGuardResult
       ? placeGuardResult.text
       : (() => {
         // UAT 2026-09-28: a follow-up that searched nothing may not say a venue takes orders.
         const d = dropUnbackedOrderingPossession(foodGuarded)
         if (d.removed) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'ordering_no_evidence', removed: d.removed }))
         return d.text
-      })()
+      })())
     /**
      * E1 (2026-09-20) — OPENING HOURS ARE A NUMBER. Every other figure a place reply states is
      * gated; "mở đến 3h sáng" / "mở cửa 08:30–18:00" were not (measured Phase D runs 24/28). The
@@ -2483,7 +3127,8 @@ export function applyPlaceEnrichmentStreamFilter(
      * goes, the rest of the sentence stays, one hedge line. Place turns only — a travel turn's
      * times are the travel guard's, a ticket turn's showtimes the ticket unit's.
      */
-    const hoursEvidence = [...placeTexts, ...(collector?.consultativeV1 && !hadPlaceSearch ? [...collector.consultativeV1.carried.map(c => c.hours ?? ''), ...(collector.consultativeV1.priorTimes ?? [])] : [])]
+    gt(placeGuardResult ? 'place_claim' : 'ordering_no_evidence', foodGuarded, placeGuardedRaw)
+    const hoursEvidence = [...placeTexts, ...pageEvidenceTexts, ...(collector?.consultativeV1 && !hadPlaceSearch ? [...collector.consultativeV1.carried.map(c => c.hours ?? ''), ...(collector.consultativeV1.priorTimes ?? [])] : [])]
     const hoursGuardResult = ((hadPlaceSearch || placeIntent) && !travelIntent && !shoppingTurn)
       ? guardHoursClaimsInText(placeGuardedRaw, hoursEvidence, {
         lang,
@@ -2503,7 +3148,8 @@ export function applyPlaceEnrichmentStreamFilter(
     if (hoursGuardResult && hoursGuardResult.redacted > 0) {
       console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'hours', redacted: hoursGuardResult.redacted, unsupported: hoursGuardResult.unsupported.length, evidence_texts: hoursEvidence.length }))
     }
-    const hoursGuarded = hoursGuardResult ? hoursGuardResult.text : placeGuardedRaw
+    const hoursGuarded = qual('hours', placeGuardedRaw, hoursGuardResult ? hoursGuardResult.text : placeGuardedRaw)
+    gt('hours', placeGuardedRaw, hoursGuarded)
     /**
      * E1 (2026-09-20) — P2 BUDGET-BAND OVERCLAIM. The band is the row's; the judgement that it
      * "vừa vặn ngân sách" is the model's. A fit phrase next to a band starting at or above the
@@ -2515,15 +3161,20 @@ export function applyPlaceEnrichmentStreamFilter(
     const fitBudget = collector?.consultativeV1?.budget
       ?? (collector?.userTexts ?? [userText]).slice().reverse().map(t => extractBudget(t)).find(b => b !== null)
       ?? null
-    const budgetFit = (hadPlaceSearch || placeIntent) && !travelIntent && !shoppingTurn
+    const budgetFit0 = (hadPlaceSearch || placeIntent) && !travelIntent && !shoppingTurn
       ? guardBudgetFitInText(hoursGuarded, fitBudget, { unpricedNames: [...unpricedRowNames] })
       : { text: hoursGuarded, redacted: 0 }
+    const budgetFit = { ...budgetFit0, text: qual('budget_fit', hoursGuarded, budgetFit0.text) }
+    gt('budget_fit', hoursGuarded, budgetFit.text)
     if (budgetFit.redacted > 0) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'budget_fit', redacted: budgetFit.redacted }))
     // Phase 7 group 1 (golden T2): a projection format the user asked for (IMAX, 4DX…) that no
     // retrieved row carries is unconfirmed — say so once, and call a screen a screen.
     const formatGuard = (hadPlaceSearch || placeIntent) && !shoppingTurn
       ? guardFormatClaimsInText(budgetFit.text, (collector?.userTexts ?? [userText]).join('\n'), [...places.map(p => p.name ?? ''), ...placeTexts], lang)
       : { text: budgetFit.text, hedged: [] as string[], reworded: 0 }
+    // CONSULT_ONE_BRAIN (P0-2): this and the next two stages rewrite the model's wording from the USER's words (a screen format, a district, an asked feature): shadow, like the other quality stages.
+    formatGuard.text = qual('format_claim', budgetFit.text, formatGuard.text)
+    gt('format_claim', budgetFit.text, formatGuard.text)
     if (formatGuard.hedged.length > 0 || formatGuard.reworded > 0) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'format_claim', hedged: formatGuard.hedged, reworded: formatGuard.reworded }))
     // PRELAUNCH 5b: a venue whose ADDRESS is in another district is never presented as being in the
     // district the user named — the requested district in that sentence becomes the real one.
@@ -2531,6 +3182,8 @@ export function applyPlaceEnrichmentStreamFilter(
     const districtGuard = (hadPlaceSearch || placeIntent) && !shoppingTurn && requestedDistrict
       ? guardDistrictClaims(formatGuard.text, requestedDistrict, places.map(p => ({ name: p.name, address: p.address })))
       : { text: formatGuard.text, rewritten: 0, venues: [] as string[] }
+    districtGuard.text = qual('district_claim', formatGuard.text, districtGuard.text)
+    gt('district_claim', formatGuard.text, districtGuard.text)
     if (districtGuard.rewritten > 0) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'district_claim', rewritten: districtGuard.rewritten, district: requestedDistrict?.label }))
     // Owner 2026-09-28 (round-5 blind grading, golden T2 / c40 F2 T1 P6): four unsupported-claim shapes
     // — an absolute "không có <asked feature>", a price ceiling read off a band, "trong ngân sách" about
@@ -2544,15 +3197,102 @@ export function applyPlaceEnrichmentStreamFilter(
         distancesKm: placeDistancesKm,
       })
       : { text: districtGuard.text, rewritten: [] as string[] }
+    unsupported.text = qual('unsupported_claim', districtGuard.text, unsupported.text)
+    gt('unsupported_claim', districtGuard.text, unsupported.text)
     if (unsupported.rewritten.length > 0) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'unsupported_claim', rewritten: unsupported.rewritten }))
     // Principle 7 (owner 2026-09-29): a plan the user budgeted shows the split as code-written arithmetic,
     // added AFTER the prose guards so no price guard reads the user's own total ÷ people as a claim.
-    const budgeted = appendPlanBudgetMath(planMask.restore(unsupported.text), collector?.userTexts ?? [userText], lang).text
+    /**
+     * WS2 final — THE NO-FABRICATION GATE (TAPPY_AGENT=2). After every specialised guard, before the M4-supported sentences are restored
+     * and before any code-written line (plan budget math, heads-ups) is added: each current / entity claim Luna stated (price, market /
+     * finance figure, hours, rating, review count, availability, dosage, distance, booking status) must be in the evidence the turn had,
+     * be derived from it, be disclosed as unverified, or be a labelled planning estimate — otherwise it is FABRICATED and its sentence
+     * goes, with one line saying what could not be verified. See noFabricationGate.ts.
+     */
+    const gateEvidenceCorpus: string[] = collector?.semanticRanking
+      ? [...gateCorpus, ...(collector.gateContext ?? []), ...(collector.guardEvidence?.sources ?? []).map(s => s.passages.join('\n')), ...(collector.guardEvidence?.carried ?? []).map(r => `${r.title} ${r.claims.map(c => c.value).join(' · ')}`)]
+      : []
+    const gate = collector?.semanticRanking
+      ? noFabricationGate(unsupported.text, {
+        corpus: gateEvidenceCorpus,
+        userTexts: collector.userTexts ?? [userText],
+        tools: gateTools,
+        conflicts: collector.guardEvidence?.conflicts ?? [],
+        stalePrices: collector.guardEvidence?.stalePrices ?? [],
+        freshPrices: [...(collector.guardEvidence?.freshPrices ?? []), ...freshFramePrices],
+        agedPrices: agedFramePrices,
+      }, { lang, illustrations: collector?.consultative === true, quietAged: collector?.consultV3 === true && (collector.citationSources?.length ?? 0) > 0, labelEstimates: collector?.consultV3 === true })
+      : null
+    if (gate && (gate.claims.length || gate.removedSentences)) {
+      const summary = { claims: gate.claims.length, ...gate.counts, removed_sentences: gate.removedSentences, note_added: gate.noteAdded, categories: [...new Set(gate.claims.map(c => c.category))], fabricated: gate.claims.filter(c => c.state === 'FABRICATED').map(c => c.category) }
+      console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'no_fabrication', ...summary }))
+      try { collector?.claimsTrace?.(summary) } catch { /* trace only */ }
+    }
+    if (gate) gt('no_fabrication', unsupported.text, gate.text)
+    // Audit servers only (TAPPY_UAT_GUARD_DIFF=1, same switch as `gt`): WHERE each price figure of the reply is stated — which tool result, which
+    // read page, which earlier reply. Public web text, ≤ 140 chars around the figure; never in production.
+    if (process.env.TAPPY_UAT_GUARD_DIFF === '1' && collector?.consultative && gateEvidenceCorpus.length) {
+      try {
+        const figs = [...new Set(unsupported.text.match(/\d{1,3}(?:[.,]\d{3})+/g) ?? [])].slice(0, 6)
+        const around = (s: string, f: string) => { const i = s.indexOf(f); return i < 0 ? null : s.slice(Math.max(0, i - 70), i + f.length + 70).replace(/\s+/g, ' ') }
+        const labelled: Array<[string, string]> = [
+          ...gateCorpus.map((s, i): [string, string] => [`tool_result_${i}`, s]),
+          ...(collector.gateContext ?? []).map((s, i): [string, string] => [`context_${i}`, s]),
+          ...(collector.guardEvidence?.sources ?? []).map((s): [string, string] => [`page_${s.id}_${s.host}`, s.passages.join('\n')]),
+        ]
+        console.log(JSON.stringify({ type: 'tappyai_uat_figure_probe', figs: figs.map(f => ({ f, found: labelled.flatMap(([k, s]) => { const c = around(s, f); return c ? [{ in: k, ctx: c }] : [] }).slice(0, 4) })) }))
+      } catch { /* diagnostics only */ }
+    }
+    /**
+     * Phase 8 UAT-10 — ENTITY NAME GROUNDING (entityNameGuard.ts): a bold model name that none of the turn's evidence (tool results, pages,
+     * the context Luna read, earlier replies, the user's words) contains is un-bolded and disclosed, never presented as a verified option.
+     * Only on a turn that had tool results; the name stays in the text (advice is not deleted).
+     */
+    // TAPPY_ANSWER_V4: the gate judges at CLAIM level and no sentence is cut. Its labels are kept when it removed nothing ("(ước tính)" on a
+    // generic cost); when it would have cut a sentence, the sentence stays (shadow) and each unsupported figure is marked "(chưa xác minh)"
+    // after it — except a medicine DOSE: that figure goes, the medicine and the advice stay, and the sentence points to the label / a pharmacist.
+    const afterGate = v4Shadow
+      ? (() => {
+        const cut = !!gate && gate.removedSentences > 0
+        const base = cut ? qual('no_fabrication', unsupported.text, gate!.text) : gate ? gate.text : unsupported.text
+        const fabricated = (gate?.claims ?? []).filter(c => c.state === 'FABRICATED')
+        const marked = cut ? markUnverifiedClaims(base, fabricated.filter(c => c.category !== 'dosage').map(c => c.value), lang, { sentenceEnd: collector?.retrievalV5 === true }) : { text: base, marked: 0 }
+        const soft = softenDoseClaims(marked.text, fabricated.filter(c => c.category === 'dosage').map(c => c.value), lang)
+        if (marked.marked || soft.softened) { console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'claim_marks_v4', marked: marked.marked, doses_softened: soft.softened })); gt('claim_marks_v4', base, soft.text) }
+        return soft.text
+      })()
+      : gate ? gate.text : unsupported.text
+    const entityGuard = collector?.semanticRanking && gateCorpus.length > 0
+      ? groundEntityNames(afterGate, { corpus: gateEvidenceCorpus, userTexts: collector.userTexts ?? [userText] }, lang, { skipAmounts: collector.consultative === true, labelFromText: collector.consultative === true, strictModelNames: lunaOne, ...(collector.consultV3 === true ? { orderFree: true, dropUnsupported: true } : {}) })
+      : null
+    if (entityGuard && entityGuard.ungrounded.length) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'entity_name', checked: entityGuard.checked, ungrounded: entityGuard.ungrounded.length }))
+    if (entityGuard) gt('entity_name', afterGate, entityGuard.text)
+    // TAPPY_ANSWER_V4: the entity-name check is a quality stage — shadow (its V3 `dropUnsupported` deletes the sentence of an unseen name).
+    if (entityGuard) entityGuard.text = qual('entity_name', afterGate, entityGuard.text)
+    const evRestored = evShield.restore(entityGuard ? entityGuard.text : afterGate)
+    if (collector?.evidenceTrace && evShield.report.sentences) { try { collector.evidenceTrace({ ...evShield.report }) } catch { /* trace only */ } }
+    // CONSULT_V3 (owner 17/10, UAT đợt A): the "30.000.000đ ÷ 2 người = …" line is not added — the budget table below already allocates the
+    // user's total (it stood next to the table as a duplicate). Off the flag: unchanged.
+    // CONSULT_ONE_BRAIN: the same (localhost 29/10: "💰 Ngân sách: 15.000.000đ ÷ 2 người = 7.500.000đ/người · ÷ 3 ngày…" was appended after the model's own split of the 15 triệu).
+    const budgeted0 = collector?.consultV3 === true || collector?.oneBrain === true ? planMask.restore(evRestored) : appendPlanBudgetMath(planMask.restore(evRestored), collector?.userTexts ?? [userText], lang).text
+    // The user's own trip total (nearest statement wins; a figure under 500.000đ is a slang misread, not a trip budget) — CONSULT_V3 allocates it.
+    const v3UserTotal = collector?.consultV3 === true
+      ? ((collector.userTexts ?? [userText]).slice().reverse().map(t => extractPlanTotalBudget(t)).find(v => v !== null && v >= 500_000) ?? null)
+      : null
+    // CONSULTATIVE_IN_AGENT: the model's `budget_lines` (unit prices) become the labelled whole-party budget, computed here (planBudget.ts).
+    const budgeted = collector?.consultative === true && budgeted0.includes('[TAPPY_PLAN]')
+      ? appendPlanBudget(budgeted0, [
+        ...[...planPriceEvidenceFromRows(latestPlaces as Record<string, unknown>[], snippetPricesByEntity).values()].flat(),
+        ...gateEvidenceCorpus.flatMap(vndAmountsIn),
+      ], vnToday(), lang, { allowEstimates: collector?.consultV3 === true, userTotal: v3UserTotal }).text
+      : budgeted0
     // Consult V2: the server's buttons replace whatever [FOLLOWUPS] the model wrote (web reads the FIRST block).
     // The "còn N lựa chọn" line is COUNTED here, not left to the model (replay 2026-09-29: the model
     // dropped it on every pick): N = candidates the search returned − the ones this reply names.
     // The pick sentence in the approved "**Mình chọn: X**" form (normalised by code; the model often
     // writes "Mình gợi ý **X**" — replay 2026-09-29).
+    gt('evidence_restore', unsupported.text, evRestored)
+    gt('plan_budget_math', planMask.restore(evRestored), budgeted)
     const consultPickTurn = ['pick', 'more', 'reject', 'compare'].includes(collector?.consultTurn ?? '')
     // Candidates = the card set (placesRecommendations — presearch rows reach it; latestPlaces does not,
     // because presearch frames are prefixed outside this filter), then the model's own rows, then products.
@@ -2670,9 +3410,15 @@ export function applyPlaceEnrichmentStreamFilter(
      */
     // Answer first, ask after (owner 2026-09-28; c40 P2): a question BEFORE the answer on a searched
     // turn moves to the end (or goes, when the reply already ends asking).
-    const answeredFirst = (hadPlaceSearch || travelIntent) ? answerFirst(placeGuarded) : { text: placeGuarded, moved: null }
+    gt('pick_sentence', budgeted, placeGuarded)
+    // CONSULTATIVE_IN_AGENT: these two are voice-shaping, not fact guards (they move or drop the model's own questions) — the model decides how to
+    // ask, and askGate.ts is the only rule about WHEN. Off under the flag; unchanged (byte for byte) without it. See docs/phase8/POST-MODEL-FILTERS.md.
+    if (collector?.consultative) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'filters_disabled_by_flag', filters: ['answer_first', 'clarification'] }))
+    // P0-2 rest (30/10): on one brain the model's question stays where it wrote it, and a second "?" (a heading "### Nên ở khu nào?") is not deleted.
+    const answeredFirst = (hadPlaceSearch || travelIntent) && !collector?.consultative && collector?.oneBrain !== true ? answerFirst(placeGuarded) : { text: placeGuarded, moved: null }
     if (answeredFirst.moved) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'answer_first', step: answeredFirst.moved }))
-    const clarifiedBase = guardClarifications(answeredFirst.text, collector?.clarificationPolicy ?? 'allow').text
+    // POST-UAT B7: on agent turns a requested information checklist ("mình cần biết:" + list) is one question unit.
+    const clarifiedBase = collector?.consultative || collector?.oneBrain === true ? answeredFirst.text : guardClarifications(answeredFirst.text, collector?.clarificationPolicy ?? 'allow', { checklist: collector?.agentMode === true }).text
     /**
      * Consultative V1 (flag): three prose guards, in this order, on prose only.
      *   search-claim  — "mình đã kiểm tra / tìm lại" on a turn that ran no tool.
@@ -2684,15 +3430,23 @@ export function applyPlaceEnrichmentStreamFilter(
      */
     // R7: the [TAPPY_PLAN] body stays masked through the V1 prose guards too — their line tidy dropped a JSON
     // line with more ")" than "(" as a "fragment", leaving an empty or headless plan block.
+    gt('answer_first', placeGuarded, answeredFirst.text)
+    gt('clarification', answeredFirst.text, clarifiedBase)
     const clarified = ((): string => {
       const v1PlanMask = maskPlanBody(clarifiedBase)
       return v1PlanMask.restore((() => {
       const v1 = collector?.consultativeV1
-      if (!v1) return v1PlanMask.text
+      // CONSULT_V3: the model's alternatives and wording are kept (the atmosphere cut turned a two-way answer into one pick, UAT 17/10).
+      // P0-2 rest (30/10): one brain too - the V1 prose guards delete ("mình đã kiểm tra…" on a no-tool turn) and reshape (≤ 6 sentences).
+      if (!v1 || collector?.consultV3 === true || collector?.oneBrain === true) return v1PlanMask.text
       const claims = guardSearchClaims(v1PlanMask.text, { madeToolCall: anyToolCalled || v1.namedRefetch.length > 0 })
       const v1Attrs = extractAttributes(placeEntityTexts)
       const gapAttributes = v1.hardGaps.map(g => attributeForHard(g as Hard)).filter((a): a is NonNullable<typeof a> => a !== null)
-      const atmosphere = guardAtmosphereClaims(claims.text, { attrs: v1Attrs, names: snippetPlaceNames, gapAttributes })
+      // Wave 3 (W3, R3-03): the post-processing that turns a consult answer into "a short pick" steps aside only for an answer that REALLY has a structure (a markdown table, or two headings) AND only on a turn that
+      // asked for one (the flag). A long simple pick keeps every guard it has always had.
+      const structuredAnswer = collector?.structuredSynthesis === true && hasMarkdownStructure(claims.text)
+      // (CONSULT_ONE_BRAIN never reaches this block since 30/10: the atmosphere cut measured 28/10 - a cafe reply shrunk to one line - is skipped with it.)
+      const atmosphere = guardAtmosphereClaims(claims.text, { attrs: v1Attrs, names: snippetPlaceNames, gapAttributes, agentHedges: collector?.semanticRanking === true, ...(structuredAnswer ? { labelWords: new Set(foldWords((collector?.userTexts ?? [userText]).join(' '))) } : {}) })
       // The shape rules are about a card-backed decision. A turn with no venues (a film
       // recommendation, a subject question) keeps its prose — measured E7: the cap dropped
       // films two and three as "least informative".
@@ -2705,9 +3459,10 @@ export function applyPlaceEnrichmentStreamFilter(
       // the previous turn's venues counted as `carried`. The claim guards below (search claims, atmosphere, budget-fit, evidence gaps)
       // still run on Agent prose.
       const agentOwnsProse = collector?.agentMode === true
-      const shape = !hasVenues || consultPlan || agentOwnsProse ? { text: atmosphere.text, stats: { sentences_in: 0, sentences_out: 0, listing_removed: 0, alternatives_removed: 0, capped: 0 } } : guardProseShape(atmosphere.text, {
+      const shape = !hasVenues || consultPlan || agentOwnsProse || structuredAnswer ? { text: atmosphere.text, stats: { sentences_in: 0, sentences_out: 0, listing_removed: 0, alternatives_removed: 0, capped: 0 } } : guardProseShape(atmosphere.text, {
         rendersCard: v1.rendersCard,
-        ...(collector?.consultTurn ? { maxAlternatives: 2, maxSentences: adviceEnabled() ? 13 : 9 } : {}),
+        // CONSULT_UNWIND_S3C: 3 alternatives (HEAD 2); CONSULT_UNWIND_S3B: a fuller answer is not cut back to the short pick (20 sentences, HEAD 9 / 13).
+        ...(collector?.consultTurn ? { maxAlternatives: consultUnwindS3cOn() ? UNWIND_PICK_ALTERNATIVES : 2, maxSentences: consultUnwindS3bOn() ? UNWIND_MAX_SENTENCES : adviceEnabled() ? 13 : 9 } : {}),
         venues: snippetPlaceNames.map(name => ({
           name,
           rating: ratingsByEntity.get(name)?.[0] ?? null,
@@ -2740,8 +3495,12 @@ export function applyPlaceEnrichmentStreamFilter(
       }
       // The line tidy exists to clean what the shape guard left behind; Agent prose was not shaped, so it is not "tidied" (it would drop
       // a recipe line that merely starts in lower case).
+      // Wave 3 (W3): a markdown table row ("| a | b |", its "|---|---|" rule included) is structure, not a stranded fragment: a structured answer keeps its tables whole.
+      // CONSULT_UNWIND_S3B asks for a table when options are compared; measured on localhost 28/10 (L2, a 3-bank rate comparison): the "|---|---|" rule has no letter or
+      // digit, so this tidy dropped it and the table reached the user as raw "|" lines. With S3B a table row is kept whole on every consult turn, as W3 keeps it.
+      const tableRow = (l: string) => (structuredAnswer || consultUnwindS3bOn()) && /^\s*\|.*\|\s*$/.test(l)
       const tidy = agentOwnsProse ? shape.text : shape.text.split('\n')
-        .filter(l => l.trim() === '' || machineLine(l) || (/[\p{L}\p{N}]/u.test(l) && !linkOnlyLine(l) && !fragmentLine(l)))
+        .filter(l => l.trim() === '' || machineLine(l) || tableRow(l) || (/[\p{L}\p{N}]/u.test(l) && !linkOnlyLine(l) && !fragmentLine(l)))
         .join('\n').replace(/\n{3,}/g, '\n\n')
       /**
        * The evidence gap, said out loud. The prompt asks the model to name a
@@ -2762,6 +3521,7 @@ export function applyPlaceEnrichmentStreamFilter(
        * the honest thing once).
        */
       const fitClaim = /\b(?:deu |hoan toan |chac chan |van )?(?:duoi|trong tam(?: gia)?|vua tam|nam trong|hop (?:tui tien|ngan sach)|vua (?:voi )?ngan sach|dung ngan sach|khong vuot|re hon ngan sach|within (?:your )?budget|under your budget)\b/
+      // (CONSULT_ONE_BRAIN never reaches this block since 30/10: the budget-fit cut that removed "Giá đang niêm yết 2.090.000₫, dưới ngân sách 3 triệu" on 29/10 is skipped with it.)
       const tidyBudget = !v1.budgetGap ? tidy : (() => {
         const protB = protectedSpans(tidy)
         const spansB = sentenceSpans(tidy)
@@ -2788,7 +3548,12 @@ export function applyPlaceEnrichmentStreamFilter(
       const contraryUnsaid = (v1.hardContrary ?? []).filter(g => gapWords[g] && !/khong (?:co|thay)|kem|lacks?|no (?:ac|air)/.test(said))
       const budgetUnsaid = v1.budgetGap && !/chua (?:co|thay|tim thay) (?:duoc )?(?:muc |thong tin )?gia|khong (?:co|tim thay) (?:muc |thong tin )?gia|no price/.test(said)
       const headsUp: string[] = []
-      if (unsaid.length > 0) {
+      // M7 (TAPPY_AGENT=2): Luna owns reading the user's needs and what to caution about. These lines come from the legacy situation
+      // frame, which parses the conversation itself and knows nothing of the task state — measured SR-G1: the user dropped "yên tĩnh" for
+      // "gần biển" and code still appended "chưa thấy bằng chứng về yên tĩnh". Facts stay protected by the guards; Phase 7 / legacy unchanged.
+      // (CONSULT_ONE_BRAIN never reaches this block since 30/10, so the appended caution measured 28/10 on a scooter comparison cannot come back.)
+      const runtimeOwnsCautions = collector?.semanticRanking === true
+      if (unsaid.length > 0 && !runtimeOwnsCautions) {
         // B1: a shopping turn's heads-up points at the seller page, not at a phone call.
         const shoppingGaps = unsaid.every(g => g in SHOPPING_GAP_WORDS)
         headsUp.push(lang === 'en'
@@ -2799,12 +3564,12 @@ export function applyPlaceEnrichmentStreamFilter(
             ? `Mình chưa xác nhận được ${unsaid.map(g => gapWords[g][0]).join(', ')} từ các listing — bạn kiểm tra trên trang bán trước khi đặt.`
             : `Mình chưa thấy bằng chứng về ${unsaid.map(g => gapWords[g][0]).join(', ')} ở các quán này — nên gọi hỏi trước khi đi.`))
       }
-      if (contraryUnsaid.length > 0) {
+      if (contraryUnsaid.length > 0 && !runtimeOwnsCautions) {
         headsUp.push(lang === 'en'
           ? `Some reviews say ${contraryUnsaid.map(g => gapWords[g][1]).join(', ')} is lacking here — worth checking before you go.`
           : `Có đánh giá nói ${contraryUnsaid.map(g => gapWords[g][0]).join(', ')} ở đây không tốt — nên hỏi trước khi đi.`)
       }
-      if (budgetUnsaid) {
+      if (budgetUnsaid && !runtimeOwnsCautions) {
         headsUp.push(lang === 'en'
           ? 'None of these results carries a price, so I cannot confirm they fit your budget.'
           : 'Kết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.')
@@ -2816,7 +3581,10 @@ export function applyPlaceEnrichmentStreamFilter(
         return `${head}${head ? '\n\n' : ''}${headsUp.join(' ')}${tail ? `\n\n${tail}` : ''}`
       })()
       // At most two hedges; beyond that they are merged into one sentence (hedgeCap.ts).
-      const hedged = capHedges(withHeadsUpRaw, { lang, pickNames: snippetPlaceNames })
+      // WS2 (TAPPY_AGENT=2): Luna's own hedges are its answer — not merged into one code-written sentence. Measured WS-L1: the merge
+      // removed 156 characters of Luna's reply (a hotel name, its honest budget caveat) and wrote "chưa xác nhận được dữ liệu xác nhận và …".
+      // Wave 3 (W3): a structured answer says "chưa xác minh" in each table cell and in its own section on purpose: merging those into one sentence would undo the table.
+      const hedged = runtimeOwnsCautions || structuredAnswer ? { text: withHeadsUpRaw, hedges: 0, merged: 0, unmergeable: 0 } : capHedges(withHeadsUpRaw, { lang, pickNames: snippetPlaceNames })
       const withHeadsUp = hedged.text
       console.log(JSON.stringify({
         type: 'tappyai_guard', guard: 'consultative_v1',
@@ -2852,18 +3620,33 @@ export function applyPlaceEnrichmentStreamFilter(
      * is only released while `!placeToolSeen`, so nothing naming a venue has
      * been streamed yet and there is nothing to retract.
      */
+    gt('consultative_v1', clarifiedBase, clarified)
+    gt('scaffold_links_cta', clarified, scaffoldStripped)
     const gatedRaw = suppressUngroundedVenues(
       scaffoldStripped,
       [
         ...places.map(p => p.name || ''),
         ...productRecords.map(r => r.title || ''),
         ...(seed?.heldCandidates ?? []).map(c => c.name),
+        // Phase 8 M4: a venue a page read this turn names is retrieved, not invented.
+        ...pageGroundedNames(scaffoldStripped, collector?.guardEvidence),
       ],
       lang,
       // The turn's retrieval verdict. Without it the gate cannot tell "nothing to check
       // against because nothing was retrieved" from "nothing to check against because this
       // is a recall turn" — and it stood down for both.
-      { placeSearch: placeSearchStatus, cardRenders: collector ? !!(collector.placesRecommendations?.length || collector.shoppingMarker) : undefined },
+      {
+        placeSearch: placeSearchStatus,
+        cardRenders: collector ? !!(collector.placesRecommendations?.length || collector.shoppingMarker) : undefined,
+        // CONSULTATIVE_IN_AGENT: a plan answered in text has no card at all (planTurn clears the standalone cards), so no line may point at one.
+        ...(collector?.planTurn && !scaffoldStripped.includes('[TAPPY_PLAN]') ? { noCardLine: true } : {}),
+        ...(collector?.consultative ? { dayHeadings: true } : {}),
+        // CONSULT_ONE_BRAIN: the model writes a place's name in its own order ("Bún chả Bà Thành" for the row "Bà Thành - Bún chả & Bún Hải Sản", measured 29/10)
+        ...(collector?.consultV3 === true || collector?.oneBrain === true ? { pickAndOrderFree: true } : {}),
+        // RETRIEVAL_V5 lần 2c (B3): label an unverified venue once, never cut its sentence
+        // CONSULT_ONE_BRAIN: the same (measured 29/10, a venue the model read on a page: its name and address went and "Mở 06:30–14:00…" stood alone)
+        ...(collector?.retrievalV5 === true || collector?.oneBrain === true ? { labelUngrounded: true } : {}),
+      },
     )
     // Phase 7: the guards above may have removed the sentence an injected photo/link block was
     // placed under. A block with no owner named beside it goes too — never an image without its
@@ -2871,6 +3654,8 @@ export function applyPlaceEnrichmentStreamFilter(
     const orphans = cardOwnsEnrichment ? { text: gatedRaw.text, dropped: 0 } : dropOrphanedEnrichment(places, gatedRaw.text)
     if (orphans.dropped > 0) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'orphaned_enrichment', dropped: orphans.dropped }))
     const gated = { ...gatedRaw, text: orphans.text }
+    gt('grounding_gate', scaffoldStripped, gatedRaw.text)
+    gt('orphaned_enrichment', gatedRaw.text, orphans.text)
     // AUDIT ONLY (env-gated, never in production): what the grounding gate cut and against which
     // names, plus the pre-gate prose — the one place a "0 rows" / "all cut" verdict can be checked.
     // Every guarded turn (B-phase, 2026-09-20): the RAW model text and the text after each guard
@@ -2937,7 +3722,11 @@ export function applyPlaceEnrichmentStreamFilter(
     // server-authored pick sentence names (`pickName` below).
     const modelPickRow = collector?.consultBrief === true ? null : modelPickName(mainText, places.map(p => p.name || '').filter(Boolean))
     const pickForFallback = modelPickRow && fallbackSentence(modelPickRow) ? modelPickRow : pickName
-    const g1bFallback = bodyLetters < 40 ? fallbackSentence(subjectOnly(pickForFallback)) : null
+    // M7 (agent path): Luna owns the answer — the evidence-only pick sentence is a BACKSTOP for a pick the guards cut, never a second
+    // "Mình chọn …" under a short reply that already states it (measured M6 route test: the pick appeared twice).
+    const pickAlreadyStated = !!collector?.agentMode && !!pickForFallback && pickStillStated(bodyAfterGuards, pickForFallback)
+    // N5 rest (30/10): on one brain no server-authored pick / "not found" sentence is added - the model wrote the answer (review 30/10).
+    const g1bFallback = collector?.oneBrain !== true && bodyLetters < 40 && !pickAlreadyStated ? fallbackSentence(subjectOnly(pickForFallback)) : null
     if (g1bFallback) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'place_claim_fallback', v2: guardV2, body_letters: bodyLetters, emitted: true }))
     /**
      * Consultative V1 backstop — THE PICK MUST BE STATED (rule 1). Measured 2026-09-18 on the
@@ -2949,7 +3738,7 @@ export function applyPlaceEnrichmentStreamFilter(
      */
     const v1PickBackstop = (() => {
       // The Agent chooses what to say: the code does not write a "Mình chọn **X** — 4.9⭐ (N đánh giá Google Maps)…" sentence on top of its answer.
-      if (g1bFallback || !collector?.consultativeV1?.on || collector.agentMode) return null
+      if (g1bFallback || !collector?.consultativeV1?.on || collector.agentMode || collector.oneBrain === true) return null
       const body = bodyAfterGuards.replace(/\[(?:CTA_BUTTONS|TAPPY_SHOPPING|TAPPY_PLACES|TAPPY_PLAN)\][\s\S]*?\[\/(?:CTA_BUTTONS|TAPPY_SHOPPING|TAPPY_PLACES|TAPPY_PLAN)\]/g, '').replace(/\[FOLLOWUPS\][^\n]*/g, '')
       const shopping = shoppingPickFromMarker(collector.shoppingMarker)
       const known = [...places.map(p => p.name || ''), ...(shopping ? [shopping.name] : [])]
@@ -3030,7 +3819,7 @@ export function applyPlaceEnrichmentStreamFilter(
      * name: what was searched found nothing the guards could keep, and what would help next.
      */
     const shoppingNoneBackstop = (() => {
-      if (g1bFallback || v1PickBackstop || !collector?.consultativeV1?.on) return null
+      if (g1bFallback || v1PickBackstop || !collector?.consultativeV1?.on || collector.oneBrain === true) return null
       if (bodyLetters >= 40 || collector.shoppingMarker || places.length > 0) return null
       if (productRecords.length === 0 && productQueries.length === 0) return null
       console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'consultative_v1_pick_backstop', kind: 'shopping_none', body_letters: bodyLetters, records: productRecords.length }))
@@ -3096,13 +3885,21 @@ export function applyPlaceEnrichmentStreamFilter(
       // sentence lacked evidence) — the user then sees only buttons. One honest sentence is put back.
       const proseOnly = withLine.replace(/\[(FOLLOWUPS|CTA_BUTTONS|TAPPY_[A-Z_]+)\][\s\S]*?\[\/\1\]/g, '')
       const emptyReply = !!collector?.consultTurn && !/[\p{L}\p{N}]/u.test(proseOnly)
+      // CONSULT_FINAL_SYNTHESIS (Wave 2, default OFF = `neutralGap` is always false and nothing changes): an answer with NO words that is not a places/shopping consult turn - a turn
+      // without a consult frame (it used to ship EMPTY), or a consult turn without a domain (it used to get the card-and-opening-hours sentence above) - gets one honest sentence that
+      // says plainly the evidence was not enough, in no place/shopping vocabulary.
+      const neutralGap = consultFinalSynthesisOn() && !/[\p{L}\p{N}]/u.test(proseOnly) && (!collector?.consultTurn || !collector?.consultDomain)
       const refs = collector?.consultRefers ?? []
       const honest = lang === 'en'
         ? 'I don\'t have checked details to answer this yet — open each card for rating, hours and price, or tap "See more".'
         : evidenceGapLine('vi', refs.length >= 2 ? refs.slice(0, 2).join(' và ') : null) ?? (refs.length >= 2
           ? `Mình chưa có đủ dữ liệu đã kiểm để so sánh ${refs.slice(0, 2).join(' và ')} — bạn mở từng thẻ để xem điểm, giờ mở và giá, hoặc bấm "Xem thêm".`
           : 'Mình chưa có đủ dữ liệu đã kiểm để trả lời câu này — bạn mở thẻ để xem điểm, giờ mở và giá, hoặc bấm "Xem thêm".')
-      const final = emptyReply ? `${honest}\n\n${withLine.replace(/^\s+/, '')}` : withLine
+      const neutralLine = lang === 'en'
+        ? 'I searched but did not find enough reliable evidence to answer this fully. Tell me more precisely what you need (the year, the source or the aspect) and I will search again.'
+        : 'Mình đã tìm nhưng chưa có đủ bằng chứng đáng tin để trả lời đầy đủ câu này. Bạn thử nói rõ hơn phạm vi (năm, nguồn hoặc khía cạnh cần biết) để mình tìm lại nhé.'
+      const final = neutralGap ? `${neutralLine}\n\n${withLine.replace(/^\s+/, '')}`.trimEnd() : emptyReply ? `${honest}\n\n${withLine.replace(/^\s+/, '')}` : withLine
+      if (neutralGap) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'empty_reply_neutral', consult_turn: collector?.consultTurn ?? null }))
       if (collector?.consultTurn) {
         const patches = [...consultPatches]
         if (narrated.removed) patches.push('step_narration')
@@ -3115,10 +3912,70 @@ export function applyPlaceEnrichmentStreamFilter(
         if (headed !== restored) patches.push('plan_cost')
         if (emptyFilled.filled.length) patches.push('plan_empty_sections')
         if (/Mình còn \d+ lựa chọn/.test(final) && !/Mình còn \d+ lựa chọn/.test(mainText)) patches.push('remaining_line')
-        if (emptyReply) patches.push('empty_reply_fallback')
+        if (neutralGap) patches.push('empty_reply_neutral')
+        else if (emptyReply) patches.push('empty_reply_fallback')
         console.log(JSON.stringify({ type: 'tappyai_consult_patch', turn: collector.consultTurn, patches }))
       }
-      return final
+      // Phase 8 M3 citations (TAPPY_AGENT=2 only): [S#] markers → links to the pages the agent read this turn; nothing cited → one
+      // sources line. Here, inside the grounded prose, so the TikTok fold and the grounding detector downstream see the final text.
+      // WS2 final (Bug 2): on agent turns (buffered — nothing has been released yet) a list marker a guard left without its item goes.
+      const bare0 = collector?.agentMode ? dropBareListMarkers(final) : { text: final, removed: 0 }
+      if (bare0.removed) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'bare_list_marker', removed: bare0.removed }))
+      // CONSULT_V3: a numbered list that lost an item is numbered 1, 2, 3 … again (listNumbering.ts).
+      const renum = collector?.consultV3 === true ? renumberOrderedLists(bare0.text) : null
+      if (renum?.renumbered) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'list_renumbered', lists: renum.renumbered }))
+      const bare = renum ? { ...bare0, text: renum.text } : bare0
+      // POST-UAT B3: a lead-in whose items a guard removed ("…như sau:" with nothing after it) goes too (agent turns only).
+      const listed = collector?.agentMode ? dropOrphanLeadIns(bare.text) : bare
+      if (listed.removed) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'orphan_lead_in', removed: listed.removed }))
+      // CONSULTATIVE_IN_AGENT: the guards cut EVERY figure the draft stated → one honest sentence instead of silence (the citation step below adds the source).
+      // (Not when a product / place card carries the prices: "chưa xác minh số này" next to a card full of prices contradicts it — live 2026-10-11, kettle.)
+      const figLine = collector?.consultative && !collector.consultV3 && collector.agentMode && !collector.consultTurn && !collector.shoppingMarker && !collector.placesRecommendations?.length ? withUnverifiedFigureLine(mainText, listed.text, lang) : { text: listed.text, added: false }
+      if (figLine.added) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'unverified_figure_line' }))
+      if (!collector?.citationSources?.length) {
+        // No page was read: the forced sentence still gets its source buttons — the search results the tool returned (held, never shown otherwise).
+        if (figLine.added && collector?.unverifiedSources?.length) {
+          const held = collector.unverifiedSources.filter(s => !/(?:^|\.)shopee\./i.test(s.host))
+          return citeSources(figLine.text, held, allowedUrls, lang)
+        }
+        // Round 32 (CONSULTATIVE_IN_AGENT): no page was read, but a figure the reply states may be one a SEARCH RESULT states: that result's own link, labelled as such.
+        if (collector?.consultative === true && collector.agentMode && !collector.shoppingMarker && !collector.placesRecommendations?.length) {
+          const plan = planPriceSources(figLine.text, [], searchRows)
+          if (plan.figures.length && plan.searchRows.length) {
+            console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'price_source', pages: 0, search_results: plan.searchRows.length, figures: plan.figures.length, unmatched: plan.unmatched.length }))
+            return citeSourcesDetailed(figLine.text, [], allowedUrls, lang, { fallback: [], searchLinks: plan.searchRows.map((r, i) => ({ id: `P${i + 1}`, host: r.host, url: r.url })) }).text
+          }
+        }
+        return figLine.text
+      }
+      // WS2 citation integrity, step 2: no orphan / duplicate marker reaches the link step.
+      const integrity0 = enforceCitationIntegrity(figLine.text)
+      if (integrity0.removed) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'citation_integrity', removed: integrity0.removed }))
+      // CONSULTATIVE_IN_AGENT: a Shopee page the agent read is not offered as a source button — opened without a login it is a "Login Required" page
+      // (checked 2026-10-11 in a browser with no session). The facts it gave were still read; only the button is dropped.
+      const buttonSources0 = collector.consultative ? collector.citationSources.filter(s => !/(?:^|\.)shopee\./i.test(s.host) && !/^https?:\/\/(?:[^/]*\.)?shopee\./i.test(s.url)) : collector.citationSources
+      // CONSULT_V3 (UAT 17/10, citationSupport.ts): a marker stays only where its page's passages hold the sentence's distinctive tokens; when the
+      // reply cited anything, only the sources still cited may become buttons (no "Nguồn:" fallback bringing an unsupported page back).
+      const support = collector.consultV3 === true
+        ? checkCitationSupport(integrity0.text, buttonSources0.map(s => ({ id: s.id, passages: collector.guardEvidence?.sources?.find(g => g.id === s.id)?.passages ?? [] })))
+        : null
+      if (support?.dropped.length) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'citation_support', dropped: support.dropped }))
+      const integrity = support ? { ...integrity0, text: support.text } : integrity0
+      const buttonSources = support?.hadMarkers ? buttonSources0.filter(s => support.keepIds.has(s.id)) : buttonSources0
+      // Round 32 (CONSULTATIVE_IN_AGENT, price ↔ source): when no marker survives, the "Nguồn:" line names only the pages whose own passages state a figure of the
+      // reply, and a figure only a search result states gets that result's link ("Giá theo kết quả tìm kiếm của …"). Live 2026-10-12: two snippet prices, source
+      // button = the page that stated neither. A figure nothing states gets no source (the guards above decide the sentence; a source is never invented for it).
+      if (collector.consultative === true && collector.agentMode) {
+        const ev = collector.guardEvidence?.sources ?? []
+        const pages = buttonSources.map(s => ({ ...s, passages: ev.find(g => g.id === s.id)?.passages ?? [] }))
+        const plan = planPriceSources(integrity.text, pages, searchRows)
+        if (plan.figures.length) {
+          const cited = citeSourcesDetailed(integrity.text, buttonSources, allowedUrls, lang, { fallback: plan.pageSources, searchLinks: plan.searchRows.map((r, i) => ({ id: `P${i + 1}`, host: r.host, url: r.url })) })
+          if (!cited.used) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'price_source', pages: plan.pageSources.length, search_results: plan.searchRows.length, figures: plan.figures.length, unmatched: plan.unmatched.length }))
+          return cited.text
+        }
+      }
+      return citeSources(integrity.text, buttonSources, allowedUrls, lang)
     })(settleMarkdown((() => {
       if (!fallback) return gated.text
       // V1 backstop: the pick is the FIRST sentence of the body; the model's text follows. The same
@@ -3224,14 +4081,68 @@ export function applyPlaceEnrichmentStreamFilter(
     // prose before anything is appended; without the flag, `prose` is untouched.
     // F-043 risk-first backstop (buffered path). The live path runs the same function on the
     // finish frame. Fixed text only; see `riskBackstop.ts`.
-    const ctaOwnedProseBase = riskBackstopped(serverCta ? stripModelCta(prose) : prose)
+    gt('fallback_narration_tidy', gated.text, groundedProse)
+    // CONSULTATIVE_IN_AGENT: several emitters (the model, the figure line, the gate) can each say "not verified"; the reply keeps the first.
+    // …and the generic closing invitation ("Nếu bạn thích mình có thể gợi ý thêm") is dropped (closingInvite.ts).
+    // (CONSULT_V3 keeps this step: it drops only a GENERIC last-sentence invitation; a specific decision question is not generic and stays.)
+    const ctaOwnedProseBase = collector?.consultative === true ? stripClosingInvite(dedupeCaveats(stripOrphanSourceLabels(riskBackstopped(serverCta ? stripModelCta(prose) : prose)))) : riskBackstopped(serverCta ? stripModelCta(prose) : prose)
+    gt('risk_backstop', serverCta ? stripModelCta(prose) : prose, ctaOwnedProseBase)
     // A3 (2026-10-02): the code-built block of the «only another model found» turn (wrongModel.ts): its sentence, then one search link per marketplace
     // (hosts and grammars from the CCP registry via buildShoppingLinks), each line through the sanitiser and the label escaper like every other site.
+    // CONSULTATIVE_IN_AGENT: "chỉ đường tới <a place the turn retrieved>" with no place card → the same Directions link as the card button, code-built
+    // (directionsAppendix.ts). First appendix wins, so the A3 block keeps priority; only when the user asked for directions and the row is verified.
+    if (collector?.consultative && !collector.appendix && groundedRecs.length === 0) {
+      const d = directionsAppendix({ userText: (collector.userTexts ?? [userText]).slice(-1)[0] ?? userText, rows: places as ReadonlyArray<{ name?: string; address?: string; place_id?: string }>, lang })
+      if (d) { collector.setAppendix(d); console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'directions_appendix', links: d.links.length })) }
+    }
+    // CONSULTATIVE_IN_AGENT: a product answer with prices but no shopping card and no purchase link (round 9: the deep merchant links were refused as
+    // shallow Google redirects) → one marketplace SEARCH link per registry marketplace for the keyword the model searched (productSearchAppendix).
+    if (collector?.consultative && !collector.appendix && productQueries.length > 0) {
+      const p = productSearchAppendix({ userText: (collector.userTexts ?? [userText]).slice(-1)[0] ?? userText, searchedQuery: productQueries[0], cardCarriesLinks: !!collector.shoppingMarker, lang })
+      if (p) { collector.setAppendix(p); console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'product_search_appendix', links: p.links.length })) }
+    }
     const appendixLines = collector?.appendix ? collector.appendix.links.map(l => `- [${escapeMarkdownLabel(l.name)}](${sanitizeUrlForMarkdown(l.url)})`) : []
-    const ctaOwnedProse = collector?.appendix
-      ? insertBeforeMarkers(ctaOwnedProseBase, [collector.appendix.text, appendixLines.join('\n')].filter(Boolean).join('\n\n'))
-      : ctaOwnedProseBase
     const ctaSuffix = serverCta ? `\n\n${serverCta}` : ''
+    // Round 32 (CONSULTATIVE_IN_AGENT): the reply may only point at prices and buttons the FINAL output has — after the card decision, the appendix and the system links —
+    // and a coach reply names operators and kinds of fare for what the rows show. Identity (the same string) without the flag.
+    // Live 2026-10-12 (hotel): "các mức tham khảo đi kèm …" and "nút đặt phòng bên dưới" after the engine's cards were cleared and the tool had returned no price at all.
+    // Round 42 round 3 (PRICE-DATE-01, both flags): a "từ" coach fare no row dates, tied to a date in the reply, is labelled and followed by one
+    // "not verified for that date" sentence (coachFares.labelUndatedFareDates). Identity without coach rows.
+    const dateChecked = (text: string): string => {
+      const r = labelUndatedFareDates(text, coachRows, lang)
+      if (r.labelled) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'coach_fare_date', labelled: r.labelled }))
+      gt('coach_fare_date', text, r.text)
+      return r.text
+    }
+    const shapeFinalProse = (raw: string): string => {
+      // N5 rest (30/10): on one brain the coach-fare rewrite and its "not verified for that date" sentence are not added; the model writes from the rows.
+      if (collector?.oneBrain === true) return raw
+      if (!(collector?.consultative === true && collector.agentMode)) {
+        // Round 42 round 3 (RANGE-27-33, rule R-C1, Huy 2026-10-13): the coach range step runs on this path too; the operator rule stays flag-on only.
+        const split = coachRows.length > 0 ? splitCoachRanges(raw, coachRows, lang) : null
+        if (split?.changes.length) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'coach_fares', changes: split.changes }))
+        const splitText = split?.changes.length ? split.text : raw
+        gt('coach_fares', raw, splitText)
+        return dateChecked(splitText)
+      }
+      const offerChecked = dropUnbackedOfferClaims(raw, {
+        hasPriceData: figuresIn(raw.split('\n').filter(l => !/^\s*(?:nguồn|sources?)\b/i.test(l)).join('\n')).length > 0 || !!collector.shoppingMarker || viewHasPrice(placesView),
+        hasAction: appendixLines.length > 0 || systemLinks.length > 0 || !!collector.shoppingMarker || !!placesSuffix || !!ctaSuffix || !!placesView || hasPressableLink(raw),
+        lang,
+      })
+      if (offerChecked.removed.length) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'unbacked_offer_claim', removed: offerChecked.removed.map(r => r.kind) }))
+      const afterOffer = offerChecked.removed.length ? offerChecked.text : raw
+      gt('unbacked_offer_claim', raw, afterOffer)
+      // coach: "tùy nhà xe" only when the rows name two operators; a range whose ends are different kinds of price is written as two named figures.
+      const coachShaped = coachRows.length > 0 ? shapeCoachReply(afterOffer, coachRows, lang) : null
+      if (coachShaped?.changes.length) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'coach_fares', changes: coachShaped.changes }))
+      const shaped = coachShaped?.changes.length ? coachShaped.text : afterOffer
+      gt('coach_fares', afterOffer, shaped)
+      return dateChecked(shaped)
+    }
+    const ctaOwnedProse = shapeFinalProse(collector?.appendix
+      ? insertBeforeMarkers(ctaOwnedProseBase, [collector.appendix.text, appendixLines.join('\n')].filter(Boolean).join('\n\n'))
+      : ctaOwnedProseBase)
     /**
      * Route / event / film handoffs the platform resolved (`_tappy_commerce`) reach the user through
      * the prose — and the model does not always copy them (Final local live UAT, 14 Sep 2026: "đã
@@ -3247,12 +4158,21 @@ export function applyPlaceEnrichmentStreamFilter(
       ? (lang === 'vi' ? '🔗 Liên kết đối tác:' : '🔗 Partner links:')
       : (lang === 'vi' ? '🔗 Liên kết chính thức:' : '🔗 Official links:')
     const systemLinksSuffix = systemLinks.length > 0 && missingSystemLinks.length === systemLinks.length
-      ? `\n\n${linksLabel} ${missingSystemLinks.map(l => `[${escapeMarkdownLabel(l.name)}](${sanitizeUrlForMarkdown(l.url)})`).join(' · ')}`
+      ? `\n\n${linksLabel} ${(collector?.oneBrain === true ? compactSystemLinks(missingSystemLinks) : missingSystemLinks).map(l => `[${escapeMarkdownLabel(l.name)}](${sanitizeUrlForMarkdown(l.url)})`).join(' · ')}`
       : ''
     // Phase 7 2B/2C: a flight / film fact no approved source returns is said to be unverified for exactly the dimension the user asked
     // (fare, flight times, flight status, showtime, ticket price) — the system's sentence leads unless the reply already says it.
-    const fareLead = verificationLead({ flight: flightFareUnverified, movie: movieFactsUnverified, userText, prose: ctaOwnedProse, lang })
-    const finalText = `${fareLead}${ctaOwnedProse}${systemLinksSuffix}${markerSuffix}${placesSuffix}${ctaSuffix}`
+    const fareLead0 = verificationLead({ flight: flightFareUnverified, movie: movieFactsUnverified, userText, prose: ctaOwnedProse, lang })
+    // CONSULTATIVE_IN_AGENT: the lead is dropped when the prose already carries a "not verified" sentence (the lead would be its twin).
+    // (audit trace, Snow Crash / flight turn 2026-10-11: the model's own "Chưa xác minh được giá vé …" and the code lead "Giá vé hiện chưa xác minh được …" stood
+    // back to back — the lead's `alreadySaid` wants "giá" BEFORE "chưa xác minh" and the model's sentence is > 160 characters, so neither dedupe saw it.)
+    // N5 rest (30/10): no code-written lead on one brain - the model states what it could not confirm (oneBrain.ts).
+    const fareLead = fareLead0 && (collector?.oneBrain === true || (collector?.consultative === true && (admitsUnverified(ctaOwnedProse) || dedupeCaveats(`${fareLead0}${ctaOwnedProse}`).length < `${fareLead0}${ctaOwnedProse}`.length))) ? '' : fareLead0
+    // CONSULT_ONE_BRAIN (31/10): the option cards ride in the message after every link guard (server-only block; its links checked against this turn's).
+    const optionsSuffix = collector?.oneBrain === true ? renderOptionsMedia(collector.optionsBlock, allowedUrls) : ''
+    const finalText = `${fareLead}${ctaOwnedProse}${systemLinksSuffix}${markerSuffix}${placesSuffix}${ctaSuffix}${optionsSuffix}`
+    if (fareLead) gt('verification_lead', ctaOwnedProse, `${fareLead}${ctaOwnedProse}`)
+    legacyTrace?.turn()
     finalReplyText = finalText
     // Record which candidates this reply actually named — the only reliable
     // answer to "which ones did the user see?".
@@ -3266,7 +4186,7 @@ export function applyPlaceEnrichmentStreamFilter(
     // A candidate is presented only if its name appears in the text the user
     // actually read; being in the pool, or considered by ranking, is not enough.
     presentedIds = namedHeldIds(finalText)
-    cardOrder = renderedFoldNames(collector?.placesRecommendations ?? [], mainText, collector?.consultBrief === true) ?? []
+    cardOrder = (lunaRanked ? lunaFold() : namedOnlyCards ? namedOnlyCards : renderedFoldNames(collector?.placesRecommendations ?? [], mainText, collector?.consultBrief === true)) ?? []
     // The gate removed these, so the detector can no longer see them in
     // `finalText`. Both are kept: the gate's own record is what shipped, and the
     // detector still runs as defence in depth against a shape the gate missed.
@@ -3280,7 +4200,10 @@ export function applyPlaceEnrichmentStreamFilter(
     // The SHOPPING marker is the only thing the early send delivered, so it is the only thing
     // subtracted here. `placesSuffix` has not been sent by anyone and must still ride out, or a
     // turn that searched both places and products would lose its place cards entirely.
-    const outText = earlyShoppingMarkerSent ? `${prose}${placesSuffix}` : finalText
+    const outText = earlyShoppingMarkerSent ? `${prose}${placesSuffix}${optionsSuffix}` : finalText
+    // After an early marker the client receives the marker, then `outText`, not `finalText` (which also holds the appendix, system links,
+    // CTA suffix and fare lead that this branch does not send). The stored reply follows what was SENT.
+    if (earlyShoppingMarkerSent) finalReplyText = `${earlyMarkerSentText}${outText}`
     // A5-P1: whatever was already released early must not be sent a second time. The released
     // prefix is money-free whole sentences taken from before any place tool, so neither the guard
     // (which only removes sentences carrying a money claim) nor the photo injector (which writes
@@ -3297,8 +4220,10 @@ export function applyPlaceEnrichmentStreamFilter(
     if (flushedSent && releasedEnd === null) {
       console.warn(JSON.stringify({ type: 'tappyai_guard', guard: 'progressive_flush', kind: 'released_prefix_mismatch', released_chars: flushedSent.length, settled_chars: outText.length }))
     }
+    const agentViolation = agentSettle(outText, releasedEnd, controller)
     const send = releasedEnd === null ? outText : outText.slice(releasedEnd)
-    if (send) controller.enqueue(encoder.encode('0:' + JSON.stringify(send) + '\n'))
+    uatTrace('final_out', send)
+    if (send && !agentViolation) controller.enqueue(encoder.encode('0:' + JSON.stringify(send) + '\n'))
 
     /**
      * The place decision, as a message ANNOTATION rather than as text.
@@ -3319,6 +4244,17 @@ export function applyPlaceEnrichmentStreamFilter(
     // few candidates. No card is the honest answer there, and the prose then keeps
     // its injected links because nothing else is going to carry them.
     if (placesView) controller.enqueue(encoder.encode('8:' + JSON.stringify([placesView]) + '\n'))
+    /**
+     * POST-UAT B5 (UAT-13 / 15 / 21 / 24 / 25, 2026-10-09): THE PRELIMINARY SET OUTLIVED THE DECISION. The engine's unranked rows go
+     * out at the tool result (`preliminary`) so the card area fills while Luna writes; when Luna then decided NONE of them fits (or the
+     * turn ended with no card for any other reason), nothing replaced that frame and the client kept painting "Tất cả (8)" — eight
+     * OpenStreetMap rows under a question about one museum's hours. The decision now always closes the preliminary: no card ⇒ an
+     * explicit `cleared` frame, and the client drops the view. A turn that never sent a preliminary sends nothing (unchanged).
+     */
+    else if (preliminaryCardsSent) {
+      controller.enqueue(encoder.encode('8:' + JSON.stringify([{ kind: 'tappy.places.v1', v: 1, items: [], cleared: true }]) + '\n'))
+      console.log(JSON.stringify({ type: 'tappyai_cards_cleared', reason: lunaRanked ? 'luna_none' : 'no_decision_card' }))
+    }
   }
 
   const transform = new TransformStream<any, any>({
@@ -3341,18 +4277,36 @@ export function applyPlaceEnrichmentStreamFilter(
             awaitingPostToolText = false
             try {
               const delta = JSON.parse(line.slice(2)) as string
-              mainText += delta
+              uatTrace('chunk_in', delta)
+              // a spaced marker ("[ FOLLOWUPS ]") is repaired in the part not released yet (canonicalMarkers); the released prefix is never rewritten
+              const released = mainText.startsWith(flushedText) ? flushedText : ''
+              mainText = released + canonicalMarkers(mainText.slice(released.length) + delta)
               assistantSoFar += delta
             } catch { /* skip malformed */ }
             // A5-P1: release the part that the guard provably cannot touch, instead of making the
             // user wait for the whole reply. Only before a place tool — see `progressive`.
             if (progressive && !placeToolSeen) {
-              const point = egressPoint(safeFlushPoint(mainText))
+              const point = egressPoint(safeFlushPoint(mainText, false, !!collector?.consultative))
               if (point > flushedText.length) {
                 const slice = unemphasizeLinks(egressSlice(mainText.slice(flushedText.length, point)))
                 flushedText = mainText.slice(0, point)
                 flushedSent += slice
+                uatTrace('flush_out', slice)
                 controller.enqueue(encoder.encode('0:' + JSON.stringify(slice) + '\n'))
+              }
+            } else if (agentFlushEligible()) {
+              // C2 P2 · agent SafeFlush: only provable whole paragraphs, and never one the leak rule flags (the released text must stay clean)
+              const leakOk = (s: string) => !collector?.leakCheck || !collector.leakCheck(s).leak
+              const point = egressPoint(agentSafeFlushPoint(mainText, leakOk))
+              if (agentFlushMode === 'live' && point > flushedText.length) {
+                const slice = unemphasizeLinks(egressSlice(mainText.slice(flushedText.length, point)))
+                flushedText = mainText.slice(0, point)
+                flushedSent += slice
+                agentFlushReleased = true
+                uatTrace('flush_out', slice)
+                controller.enqueue(encoder.encode('0:' + JSON.stringify(slice) + '\n'))
+              } else if (agentFlushMode === 'shadow' && point > shadowReleased.length) {
+                shadowReleased = unemphasizeLinks(egressSlice(mainText.slice(0, point)))
               }
             }
             // the rest stays buffered — re-emitted (repositioned) at 'd:'
@@ -3391,16 +4345,24 @@ export function applyPlaceEnrichmentStreamFilter(
           }
         } else if (line.startsWith('9:')) {
           try {
-            const call = JSON.parse(line.slice(2)) as { toolCallId?: string; toolName?: string; args?: { query?: string } }
+            const call = JSON.parse(line.slice(2)) as { toolCallId?: string; toolName?: string; args?: { query?: string; destination?: string; location?: string } }
             if (call.toolCallId && call.toolName) toolNameByCallId.set(call.toolCallId, call.toolName)
             anyToolCalled = true
+            // CONSULT_ONE_BRAIN: a present_plan turn is rebuilt at the end (the plan block is appended before the plan guards).
+            if ((call.toolName === 'present_plan' || call.toolName === 'present_options') && collector?.oneBrain) bufferMode = true
+            // CONSULT_ONE_BRAIN (P0-3): a fare / hotel / transport tool call holds the answer for the travel guard, whatever words the question used.
+            if (call.toolName && TRAVEL_TOOLS.has(call.toolName) && collector?.oneBrain) bufferMode = true
+            if (collector?.planTurn) {
+              const d = call.toolName === 'get_trip_data' ? call.args?.destination : call.toolName && PLACE_TOOLS.has(call.toolName) ? call.args?.location : undefined
+              if (typeof d === 'string' && d.trim() && (call.toolName === 'get_trip_data' || !planDestination)) planDestination = d.trim().slice(0, 60)
+            }
             if (call.toolName && PLACE_TOOLS.has(call.toolName)) {
               // The pre-tool segment is now COMPLETE, so its final sentence is a real sentence end
               // and may be released — the usual "the last one might still be arriving" caution no
               // longer applies. Without this the common "one opening sentence, then the tool" shape
               // released nothing and the user still stared at ~13.6s of blank screen.
               if (progressive && !placeToolSeen) {
-                const point = egressPoint(safeFlushPoint(mainText, true))
+                const point = egressPoint(safeFlushPoint(mainText, true, !!collector?.consultative))
                 if (point > flushedText.length) {
                   const slice = unemphasizeLinks(egressSlice(mainText.slice(flushedText.length, point)))
                   flushedText = mainText.slice(0, point)
@@ -3417,6 +4379,7 @@ export function applyPlaceEnrichmentStreamFilter(
             // where an accessory price is correct) from "WH-1000XM5".
             // De-duplicated: with the pre-search seed a query can arrive twice — once seeded,
             // once live — and the money guard treats a repeated query as a second entity.
+            if (call.toolName) gateTools.push(call.toolName)
             if (call.toolName === 'search_products' && call.args?.query && !productQueries.includes(call.args.query)) {
               productQueries.push(call.args.query)
             }
@@ -3428,6 +4391,9 @@ export function applyPlaceEnrichmentStreamFilter(
           // and a per-shape reader would miss the next one — failing CLOSED into deleting a
           // legitimate link. Scanning the JSON text catches all of them.
           for (const u of extractUrls(line)) allowUrl(u)
+          // WS2 final: every tool result of an agent turn is evidence the No-Fabrication Gate may check a claim against (bounded).
+          if (collector?.semanticRanking && gateCorpus.length < 120) gateCorpus.push(line.slice(2, 2 + 120_000))
+          if (collector?.semanticRanking && agedFramePrices.length + freshFramePrices.length < 800) { const fp = classifyFramePrices(line.slice(2)); agedFramePrices.push(...fp.aged); freshFramePrices.push(...fp.fresh) }
           try {
             const res = JSON.parse(line.slice(2)) as {
               toolCallId?: string
@@ -3447,6 +4413,10 @@ export function applyPlaceEnrichmentStreamFilter(
               }
             }
             const toolName = res.toolCallId ? toolNameByCallId.get(res.toolCallId) : undefined
+            if (collector?.consultative === true && collector.agentMode) collectSearchRows(res.result, searchRows)
+            collectSearchRows(res.result, rangeRows)
+            // Round 42 round 3: coach rows are read on both flags (PRICE-DATE-01 runs on both); the flag-only steps still check the flag themselves.
+            if (toolName === 'get_transport_options') collectSearchRows({ results: (res.result as { bus_search_results?: unknown } | undefined)?.bus_search_results }, coachRows)
             const filmList = (res.result as { _tappy_films?: { titles?: unknown } } | undefined)?._tappy_films?.titles
             if (toolName === 'get_flight_prices' && (res.result as { fare_status?: unknown } | undefined)?.fare_status === 'not_verified') flightFareUnverified = true
             if (toolName === 'get_movie_showtimes') { const m = (res.result as { _tappy_movie?: { showtimes?: unknown; ticketPrice?: unknown } } | undefined)?._tappy_movie; if (m && m.showtimes == null && m.ticketPrice == null) movieFactsUnverified = true }
@@ -3454,13 +4424,14 @@ export function applyPlaceEnrichmentStreamFilter(
             // CCP route / event / film projections (`_tappy_commerce` marks them): every URL the
             // platform validated for this turn, so the ticket guard can tell a system link from a claim.
             if (res.result && Array.isArray((res.result as { _tappy_commerce?: unknown })._tappy_commerce)) {
-              const r = res.result as { booking_links?: Array<{ url?: string }>; event_links?: Array<{ url?: string }>; film_links?: Array<{ url?: string }>; vexere_link?: string }
-              for (const l of [...(r.booking_links ?? []), ...(r.event_links ?? []), ...(r.film_links ?? [])] as Array<{ name?: string; platform?: string; url?: string }>) {
+              const r = res.result as { booking_links?: Array<{ url?: string }>; event_links?: Array<{ url?: string }>; film_links?: Array<{ url?: string }>; product_links?: Array<{ url?: string }>; vexere_link?: string; train_booking_link?: string }
+              for (const l of [...(r.booking_links ?? []), ...(r.event_links ?? []), ...(r.film_links ?? []), ...(r.product_links ?? [])] as Array<{ name?: string; platform?: string; url?: string }>) {
                 if (typeof l?.url !== 'string' || systemLinkUrls.has(l.url)) continue
                 systemLinkUrls.add(l.url)
                 systemLinks.push({ name: [l.name, l.platform].filter(Boolean).join(' · ') || l.url, url: l.url })
               }
               if (typeof r.vexere_link === 'string' && !systemLinkUrls.has(r.vexere_link)) { systemLinkUrls.add(r.vexere_link); systemLinks.push({ name: 'Vexere', url: r.vexere_link }) }
+              if (typeof r.train_booking_link === 'string' && !systemLinkUrls.has(r.train_booking_link)) { systemLinkUrls.add(r.train_booking_link); systemLinks.push({ name: 'Vexere', url: r.train_booking_link }) }
             }
             // Same rows, two more kinds of evidence — see placeClaimGuard. Shared with the hotel
             // branch below: a Serper `/maps` hotel row carries the same fields as a place row.
@@ -3474,6 +4445,8 @@ export function applyPlaceEnrichmentStreamFilter(
               const rating = typeof row.rating_value === 'number' ? row.rating_value : (row.rating ?? row.google_rating)
               const rowName = typeof row.name === 'string' ? row.name : ''
               if (rowName) snippetPlaceNames.push(rowName)
+              // Wave 3 (W1): a place's own website is where the amounts on a page of that host belong (see placeSiteHosts)
+              if (rowName) { const site = hostOfUrl(row.website_uri ?? row.website); if (site && placeSiteHosts.size < 60) placeSiteHosts.set(site, rowName) }
               if (typeof rating === 'number') placeRatings.push(rating)
               // The same facts, keyed by the venue they actually describe.
               if (rowName && typeof rating === 'number') {
@@ -3519,6 +4492,23 @@ export function applyPlaceEnrichmentStreamFilter(
               }
             }
             let newPlaces: PlaceLike[] = []
+            // Wave 3 (W4, CONSULT_DETERMINISTIC_MATH): a figure the exact calculator returned this turn (its result, its rounded forms, each step's result) is the turn's OWN evidence, like a figure a snippet carried:
+            // the snippet-price boundary must not cut the answer's arithmetic. Only a successful `calculate` result counts; the tool exists only with the flag on, so this is inert otherwise.
+            if (toolName === 'calculate') { if (calcResults.length < 40) calcResults.push((res as { result?: unknown }).result) }
+            else if (toolName !== undefined && groundNums.length < 20_000) groundNums.push(...numbersInText(line.slice(2, 2 + 120_000), 800))
+            if (toolName === 'read_page' && pageNums.length < 5000) { pageNums.push(...pageFigures((res as { result?: unknown }).result)); if (pageEvidenceTexts.length < 60) pageEvidenceTexts.push(...pageTexts((res as { result?: unknown }).result))
+              for (const p of ((res as { result?: { pages?: unknown } }).result?.pages as Array<{ url?: unknown }> | undefined) ?? []) { const host = hostOfUrl(p?.url); if (host && pageFiguresByHost.size < 30) pageFiguresByHost.set(host, [...(pageFiguresByHost.get(host) ?? []), ...pageFigures({ pages: [p] })]) } }
+            // CONSULT_ONE_BRAIN (29/10): a web_search that opened pages (S6 `pages_read`, and its follow-up's) carries the same page objects a
+            // read_page result does — the pages the model READ. They are this turn's evidence too (a train's fare and departure on the Vexere page
+            // were cut as invented, measured 29/10: 11 of 16 amounts). One-brain only, so the default path is unchanged.
+            if (collector?.oneBrain === true && toolName === 'web_search' && pageNums.length < 5000) {
+              const r = (res as { result?: { pages_read?: unknown; follow_up?: { pages_read?: unknown } } }).result
+              for (const pages of [r?.pages_read, r?.follow_up?.pages_read]) {
+                if (!Array.isArray(pages)) continue
+                pageNums.push(...pageFigures({ pages }))
+                if (pageEvidenceTexts.length < 60) pageEvidenceTexts.push(...pageTexts({ pages }))
+              }
+            }
             if (toolName === 'search_places') {
               const results = res.result?.results
               if (Array.isArray(results)) newPlaces = results
@@ -3588,6 +4578,20 @@ export function applyPlaceEnrichmentStreamFilter(
             // have. get_flight_prices returns `flights[].price_vnd` on success and
             // no price at all on error/missing-token, so an empty travelFares means
             // "no live fare" and the guard redacts every fare the model states.
+            // 29/10: the trains a rail route page states (`train_schedule`, get_transport_options) are structured fetched evidence like
+            // a flight's price: each train's lowest fare and its departure / arrival times may be restated. The party's total is that
+            // fare times the travellers (2–9, one booking's cap): "675.000đ/người — khoảng 1.350.000đ/2 người" was cut live on 29/10.
+            if (toolName === 'get_transport_options') {
+              const rows = (res.result as { train_schedule?: { rows?: Array<{ price_from_vnd?: unknown; depart?: unknown; arrive?: unknown }> } } | undefined)?.train_schedule?.rows
+              if (Array.isArray(rows)) {
+                for (const row of rows) {
+                  if (typeof row?.price_from_vnd === 'number') for (let k = 1; k <= MAX_PASSENGERS_PER_BOOKING; k++) travelFares.push(row.price_from_vnd * k)
+                  for (const t of [row?.depart, row?.arrive]) if (typeof t === 'string') for (const s of scheduleTimesIn(t)) travelTimes.add(s)
+                  // 30/10: the journey time the row implies ("mất khoảng 12h35"), which the guard reads as a clock-shaped token.
+                  if (typeof row?.depart === 'string' && typeof row?.arrive === 'string') { const d = journeyTimeOf(row.depart, row.arrive); if (d) travelTimes.add(d) }
+                }
+              }
+            }
             if (toolName === 'get_flight_prices') {
               const flights = (res.result as { flights?: Array<{ price_vnd?: number }> } | undefined)?.flights
               if (Array.isArray(flights)) {
@@ -3607,6 +4611,15 @@ export function applyPlaceEnrichmentStreamFilter(
               }
             }
             if (toolName === 'get_hotel_prices') {
+              // 29/10 (localhost, Agoda Lite ON): a nightly rate the realtime layer FETCHED for these dates (`realtime_results`, a fresh price
+              // only) is live structured evidence like a flight's price_vnd; the travel guard emptied the reply's price table and wrote "Giá
+              // phòng theo ngày mình chưa xác nhận được". The stay's total (the rate × its nights, `stay_nights`) is evidence too. Nothing is
+              // added when no realtime provider answered (every flag OFF by default).
+              for (const row of ((res.result as { realtime_results?: unknown } | undefined)?.realtime_results ?? []) as Array<Record<string, unknown>>) {
+                if (typeof row?.price !== 'number' || !(row.price > 0)) continue
+                travelFares.push(row.price)
+                if (typeof row.stay_nights === 'number' && row.stay_nights > 1 && row.stay_nights <= 30) travelFares.push(row.price * row.stay_nights)
+              }
               // A hotel's star class and its "cách X 900 m" come from the row's own
               // snippet, never a structured field — so the snippet IS the evidence
               // for those numbers. Without this the place guard would redact a
@@ -3680,11 +4693,15 @@ export function applyPlaceEnrichmentStreamFilter(
           if (lastPlaceRows !== null && !preliminarySent && bufferMode) {
             preliminarySent = true
             controller.enqueue(encoder.encode('8:' + JSON.stringify([buildProgressAnnotation('found', lang, lastPlaceRows)]) + '\n'))
-            const early = (EMIT_PLACES_ANNOTATION && !collector?.shoppingMarker && collector?.placesRecommendations?.length)
+            // CONSULT_V3 task frame: no preliminary venue cards for a task that does not use places (they would flash, then be retracted).
+            const taskNoPlaces = collector?.consultV3 === true && !!collector.taskFrame && !cardsAllowed(collector.taskFrame.kind).places
+            const earlyRaw = (EMIT_PLACES_ANNOTATION && !taskNoPlaces && !collector?.shoppingMarker && collector?.placesRecommendations?.length)
               ? buildPlacesLiveView(collector.placesRecommendations, { mapsSearchUrl: collector.placesMapsUrl, shown: CARDS_SHOWN, preliminary: true })
               : null
+            const early = earlyRaw
             if (early) {
               controller.enqueue(encoder.encode('8:' + JSON.stringify([early]) + '\n'))
+              preliminaryCardsSent = true
               console.log(JSON.stringify({ type: 'tappyai_cards_preliminary', items: early.items.length, card1: early.items[0]?.name ?? null, rows: lastPlaceRows }))
             }
           }
@@ -3707,9 +4724,12 @@ export function applyPlaceEnrichmentStreamFilter(
           //
           // Nothing model-authored rides along: this is the same server-built
           // object as before, emitted earlier and unchanged.
-          if (!earlyShoppingMarkerSent && collector?.shoppingMarker) {
+          // M5: under the agent's semantic ranking the card waits for Luna's order (it is sent with the reply).
+          // CONSULT_ONE_BRAIN: the same — the card waits for the answer, which names the item it recommends (proseRanking.ts); sent early it was the first search's engine pick.
+          if (!earlyShoppingMarkerSent && collector?.shoppingMarker && !collector.semanticRanking && collector.oneBrain !== true) {
             earlyShoppingMarkerSent = true
-            controller.enqueue(encoder.encode('0:' + JSON.stringify(collector.shoppingMarker + '\n\n') + '\n'))
+            earlyMarkerSentText = collector.shoppingMarker + '\n\n'
+            controller.enqueue(encoder.encode('0:' + JSON.stringify(earlyMarkerSentText) + '\n'))
           }
         } else if (line.startsWith('d:')) {
           // A1(b): the model is done; what follows is the guards, the photos and the card.
@@ -3717,16 +4737,36 @@ export function applyPlaceEnrichmentStreamFilter(
           // P3-F2: release the live tail (a held-back token, sanitised) before anything else.
           flushLive(controller)
           await emitReconstructed(controller)
+          // CONSULT_FINAL_SYNTHESIS (Wave 2, default OFF = this block never runs). A LIVE turn (nothing buffered, so no guard above ran) whose model stopped in the middle of its tool loop
+          // (finishReason "tool-calls": it used every step calling tools) and streamed NOT ONE word used to end with an empty reply. One honest sentence is sent as the reply, as a text
+          // frame like the F-043 tail below; no place or shopping vocabulary. A turn that streamed any text, or that ended for another reason, is not touched.
+          if (!bufferMode && consultFinalSynthesisOn() && !/[\p{L}\p{N}]/u.test(liveText) && !/[\p{L}\p{N}]/u.test(liveReleased)) {
+            let reason: unknown = null
+            try { reason = (JSON.parse(line.slice(2)) as { finishReason?: unknown }).finishReason } catch { reason = null }
+            if (reason === 'tool-calls') {
+              const tail = lang === 'en'
+                ? 'I searched but did not find enough reliable evidence to answer this fully. Tell me more precisely what you need (the year, the source or the aspect) and I will search again.'
+                : 'Mình đã tìm nhưng chưa có đủ bằng chứng đáng tin để trả lời đầy đủ câu này. Bạn thử nói rõ hơn phạm vi (năm, nguồn hoặc khía cạnh cần biết) để mình tìm lại nhé.'
+              controller.enqueue(encoder.encode('0:' + JSON.stringify(tail) + '\n'))
+              liveReleased += tail; liveText += tail; liveFiltered += tail
+              console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'empty_reply_neutral', live: true }))
+            }
+          }
           // Live path of the F-043 backstop: everything already streamed; only the appended
           // text is sent, as one frame, so the persisted message carries it too. Markers the
           // model already streamed sit above it — the client's parsers find them anywhere.
           if (!bufferMode && riskBackstopOn && !riskBackstopRan && liveText) {
             const after = riskBackstopped(liveText, true)
             if (after.length > liveText.length && after.startsWith(liveText.replace(/\s+$/, ''))) {
-              controller.enqueue(encoder.encode('0:' + JSON.stringify(after.slice(liveText.replace(/\s+$/, '').length)) + '\n'))
+              const tail = after.slice(liveText.replace(/\s+$/, '').length)
+              controller.enqueue(encoder.encode('0:' + JSON.stringify(tail) + '\n'))
+              liveReleased += tail // Gate 2 FC-R1: what the client received includes this tail
             }
           }
+          releaseHeldStepEnds(controller)
           controller.enqueue(encoder.encode(line + '\n'))
+        } else if (agentFlushReleased && line.startsWith('e:')) {
+          agentHeldStepEnds.push(line)
         } else {
           controller.enqueue(encoder.encode(line + '\n'))
         }
@@ -3736,6 +4776,7 @@ export function applyPlaceEnrichmentStreamFilter(
       // P3-F2: a stream with no `d:` frame still gets its held-back live tail, sanitised.
       flushLive(controller)
       await emitReconstructed(controller)
+      releaseHeldStepEnds(controller)
       if (lineRemainder) controller.enqueue(encoder.encode(lineRemainder + '\n'))
       if (onRawModelText) {
         captureRaw(lineRemainder)
@@ -3751,13 +4792,25 @@ export function applyPlaceEnrichmentStreamFilter(
           // resolved it from the reconstructed text above, live turns resolve
           // it here from what was actually streamed.
           if (presentedIds.length === 0) presentedIds = namedHeldIds(liveText)
-          await onEvidence({ places: resolvePlaces(), productRecords, productQueries, presentedNames: [...new Set(presentedNames)], cardOrder: [...cardOrder], presentedIds: [...new Set(presentedIds)], ungroundedNames, replyText: finalReplyText || liveText })
+          // The stored reply is what the client was sent: the same outbound sanitizer as the stream when the flag is on.
+          const keptReply = finalReplyText || liveText
+          await onEvidence({ places: resolvePlaces(), productRecords, productQueries, presentedNames: [...new Set(presentedNames)], cardOrder: [...cardOrder], presentedIds: [...new Set(presentedIds)], ungroundedNames, replyText: outboundSanitize ? stripModelArtifacts(keptReply) : citeOnly ? stripCitationMarkers(keptReply) : keptReply })
         } catch { /* state is best-effort; the reply already shipped */ }
       }
     },
   })
 
-  const readable = body.pipeThrough(transform)
+  /**
+   * CONSULT_LUNA_ONE — THE OUTBOUND TEXT SANITIZER (security/outputSanitizer.ts), the last step of THIS filter: every `0:` text frame
+   * this filter emits, from any of its emit sites, passes through it; every other frame passes byte for byte. All model text reaches the
+   * client through here. The route then adds its own code-built sentences after this point (askAfterStream, areaAskStream,
+   * emptyResultStream) — not model text, not filtered here. Live UAT 3 (14/10) M6.1: the model's own citation marker (U+E200 "cite"
+   * U+E202 "turn0search0" U+E201) reached the user as "citeturn0search0". The reply text kept in the session (`onEvidence` below)
+   * goes through the same `stripModelArtifacts`.
+   */
+  const readable = outboundSanitize ? body.pipeThrough(transform).pipeThrough(outboundTextSanitizer())
+    : citeOnly ? body.pipeThrough(transform).pipeThrough(outboundTextSanitizer(undefined, stripCitationMarkers))
+    : body.pipeThrough(transform)
   return new Response(readable, {
     headers: {
       'Content-Type': 'text/event-stream',

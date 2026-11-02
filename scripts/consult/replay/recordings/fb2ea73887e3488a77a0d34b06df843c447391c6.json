@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Wall Street English Lê Quý Đôn\" OR \"Axcela Vietnam\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:07:00.633Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Wall Street English Lê Quý Đôn\" OR \"Axcela Vietnam\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Đừng bỏ lỡ cơ hội tham gia các workshop miễn phí tại Wall ...",
+    "link": "https://www.tiktok.com/@wallstreetenglishvn/photo/7422539644929101077?image_index=2&lang=lv",
+    "snippet": "8/10/2024, 7PM - 8:30PM Wall Street English Lê Quý Đôn Soft Skills Workshop: Leadership: Trở thành nhà ...",
+    "position": 1
+   },
+   {
+    "title": "Đừng bỏ lỡ cơ hội tham gia các workshop miễn phí tại Wall ...",
+    "link": "https://www.tiktok.com/@wallstreetenglishvn/photo/7422539644929101077?lang=sq",
+    "snippet": "8/10/2024, 7PM - 8:30PM Wall Street English Lê Quý Đôn Soft Skills Workshop: Leadership: Trở thành nhà lãnh đạo tài năng ...",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

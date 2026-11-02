@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"ERAZER Tai nghe gaming không dây Lenovo ERAZER XT80Pro TWS bluetooth 5.4 Tai nghe 10mm\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:39:13.179Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"ERAZER Tai nghe gaming không dây Lenovo ERAZER XT80Pro TWS bluetooth 5.4 Tai nghe 10mm\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

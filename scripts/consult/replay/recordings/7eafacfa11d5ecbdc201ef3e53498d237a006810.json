@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site: apple.com/vn MacBook Pro M4 16GB giá",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:11:33.003Z",
+ "body": {
+  "searchParameters": {
+   "q": "site: apple.com/vn MacBook Pro M4 16GB giá",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "MacBook Pro - Apple (VN)",
+    "link": "https://www.apple.com/vn/macbook-pro/",
+    "snippet": "Tìm MacBook Pro phù hợp nhất với bạn với chip M5, M5 Pro hoặc M5 Max. Được thiết kế cho AI. Thời lượng pin lên đến 24 giờ. Màn hình Liquid Retina XDR.",
+    "position": 1
+   },
+   {
+    "title": "Mua MacBook Pro",
+    "link": "https://www.apple.com/vn/shop/buy-mac/macbook-pro",
+    "snippet": "Giới hạn sáu MacBook Pro 16” cho mỗi khách hàng. Từ 54.999.000đ hoặc 2.239.000đ/tháng ...",
+    "position": 2
+   },
+   {
+    "title": "MacBook Pro mới trang bị dòng chip M4 và ...",
+    "link": "https://www.apple.com/vn/newsroom/2024/10/new-macbook-pro-features-m4-family-of-chips-and-apple-intelligence/",
+    "snippet": "MacBook Pro 14 inch với M4 có mức giá từ 39.999.000đ và 37.499.000đ cho giáo dục; MacBook Pro 14 inch với M4 Pro có mức giá từ 49.999.000đ và ...",
+    "date": "30 thg 10, 2024",
+    "position": 3
+   },
+   {
+    "title": "Macbook Pro M4 (Pro, Max) 2024 | Giá tốt, trả góp 0%",
+    "link": "https://cellphones.com.vn/laptop/mac/macbook-pro/macbook-pro-2024.html",
+    "snippet": "MacBook Pro M4 Series hiện được phân phối tại thị trường Việt Nam với mức giá dao động từ 39.99 triệu VNĐ cho phiên bản cơ bản với chip M4, RAM 16GB và SSD ...",
+    "position": 4
+   },
+   {
+    "title": "MacBook Pro (14 inch, M4, 2024) - Thông số kỹ thuật",
+    "link": "https://support.apple.com/vi-vn/121552",
+    "snippet": "Màu. Đen Không Gian ; Chip · H.264, HEVC, ProRes, và ProRes RAW được tăng tốc phần cứng ; Màn Hình · Màn hình Nano-texture ; Bộ Nhớ. Bộ nhớ thống nhất 16GB hoặc 24GB.",
+    "position": 5
+   },
+   {
+    "title": "Buy MacBook Pro",
+    "link": "https://www.apple.com/shop/buy-mac/macbook-pro",
+    "snippet": "Get a new MacBook Pro laptop with M5, M5 Pro, or M5 Max from only $166.58 per month. Built for AI. Up to 24-hour battery life. Buy or lease now at ...",
+    "position": 6
+   },
+   {
+    "title": "Mac - Apple (VN)",
+    "link": "https://www.apple.com/vn/mac/",
+    "snippet": "MacBook Neo · Điều tuyệt diệu của Mac ở mức giá bất ngờ. Từ 19.499.000đ hoặc 794.000đ/th. trong 24 tháng** ; MacBook Air 13” và 15” · Mỏng. Nhanh. Mạnh mẽ và gọn ...",
+    "position": 7
+   },
+   {
+    "title": "Macbook Pro M4 14-inch 10-core CPU 10-core GPU 16GB ...",
+    "link": "https://www.facebook.com/uscom/posts/macbook-pro-m4-14-inch-10-core-cpu-10-core-gpu-16gb-ram-512gb-ch%C3%ADnh-h%C3%A3ng-apple-v/1119421020225124/",
+    "snippet": "Macbook Pro M4 14-inch 10-core CPU 10-core GPU 16GB RAM 512GB Chính hãng Apple Việt Nam GIÁ RẺ NHẤT Link truy cập : https://uscom.com.vn/macbook ...",
+    "date": "1 thg 6, 2025",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

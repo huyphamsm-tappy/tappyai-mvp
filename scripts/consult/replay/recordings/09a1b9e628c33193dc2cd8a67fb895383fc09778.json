@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Bãi Biển An Bàng\" OR \"Chùa Cầu\" OR \"cầu An Hội\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T01:55:14.617Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Bãi Biển An Bàng\" OR \"Chùa Cầu\" OR \"cầu An Hội\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Bãi biển An Bàng sau bão số 13",
+    "link": "https://www.tiktok.com/@sevenvietnam1/video/7571700249702550791",
+    "snippet": "Sau khi cơn bão số 13 quét qua, bãi biển An Bàng, Hội An hiện lên với một vẻ đẹp khác biệt, mang theo dấu ấn của thiên nhiên hùng vĩ và sức ...",
+    "position": 1
+   },
+   {
+    "title": "Khám phá Bãi Biển An Bàng ở Hội An",
+    "link": "https://www.tiktok.com/@byhwon/video/7343922127487126804",
+    "snippet": "Đi Hội An nhớ ghé qua bãi biển An Bàng xinh đẹp này nhé! ✨ Bãi biển ở đây thật sự rất đẹp. Đi dạo dọc bờ biển, ngắm nhìn view biển xanh mát ...",
+    "position": 2
+   },
+   {
+    "title": "Khám Phá Bãi Biển An Bàng ở Đà Nẵng",
+    "link": "https://www.tiktok.com/@_ngocphan/video/7348062598983732482",
+    "snippet": "Bãi biển An Bàng, Hội An đáng phải đến. Khám phá Đà Nẵng những nơi ít người biết đến #khamphadanang #baibienanbang #capcut # ...",
+    "position": 3
+   },
+   {
+    "title": "Truyền thuyết về Chùa Cầu và quái vật Namazu",
+    "link": "https://www.tiktok.com/@phenglish/video/7508176644264201479",
+    "snippet": "Truyền thuyết về Chùa Cầu và quái vật Namazu. Khám phá câu chuyện kỳ thú về Chùa Cầu ở Hội An và quái vật Namazu. Tìm hiểu văn hóa Việt Nam ...",
+    "position": 4
+   },
+   {
+    "title": "Chùa Cầu phố cổ Hoa Lư Ninh Bình",
+    "link": "https://www.tiktok.com/@phocohoalu.nb/video/7640470484953386258",
+    "snippet": "- Dễ kết hợp lịch trình: Chùa Cầu nằm gần các điểm tham quan khác trong khu phố cổ Hoa Lư nên thuận tiện khi tham quan nửa ngày hoặc cả ngày.",
+    "position": 5
+   },
+   {
+    "title": "Đi chùa cầu duyên để tìm được tình yêu",
+    "link": "https://www.tiktok.com/@duongdidaudo321/video/7599132985702583573",
+    "snippet": "Đi chùa cầu duyên để tìm được tình yêu. Khám phá điểm đến linh thiêng giúp bạn cầu duyên và tìm tình yêu. Đừng bỏ lỡ! #duongdidaudo ...",
+    "position": 6
+   },
+   {
+    "title": "Hội An Chìm Trong Nước Lũ: Cảnh Chùa Cầu Ngập",
+    "link": "https://www.tiktok.com/@vietizen/video/7566321427121442055",
+    "snippet": "Khám phá Hội An khi nước lũ dâng cao, chỉ còn mái Chùa Cầu lộ diện. Theo dõi để hiểu thêm về tình hình này! #vietizen #hoian. Keywords: Hội An ...",
+    "position": 7
+   },
+   {
+    "title": "Trải nghiệm cắm trại tại bãi biển An Bàng",
+    "link": "https://www.tiktok.com/@nguyen_hong_thu/video/7252680915128716550",
+    "snippet": "Khám phá bãi biển An Bàng ở Hội An, Đà Nẵng với các món ngon. @@nguyen hong thu.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

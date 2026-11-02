@@ -81,6 +81,12 @@ vi.mock('@/lib/ai/tools/food', async (importOriginal) => {
 })
 
 import { POST } from '@/app/api/chat/route'
+// R42 R3 (LOC-DEFAULT-HCM-01 regression run): no network, ever — a fetch the mocks above do not cover fails at once instead of going online.
+beforeEach(() => { vi.stubGlobal('fetch', async (input: unknown) => { throw new Error('network disabled in this test: ' + String(input).slice(0, 60)) }) })
+afterEach(() => { vi.unstubAllGlobals() })
+// R42 R4: the fixture rows carry website_uri, so the photo lookup reads the site's og:image over node:https (common.ts fetchOfficialWebsiteImage →
+// safeGetText, not fetch). That one read fails here like an unreachable site, which the lookup already treats as "no image" (common.ts catch → null).
+vi.mock('@/lib/security/safeFetch', async (importOriginal) => ({ ...(await importOriginal<typeof import('@/lib/security/safeFetch')>()), safeGetText: async () => { throw new Error('network disabled in this test: website image') } }))
 import { deriveNeedProfile } from '@/lib/ai/consultative/needProfile'
 import { rankCandidates } from '@/lib/ai/consultative/rank'
 import { derivePickOrState } from '@/lib/ai/consultative/pick'

@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"CAFE NGƯỜI SÀI GÒN\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:49:43.970Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"CAFE NGƯỜI SÀI GÒN\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Thuý An khoe kỷ niệm đẹp hát cùng band",
+    "link": "https://www.tiktok.com/@thuyanbolero/video/7624503272820280597",
+    "snippet": "Nếu bạn cho rằng tóm tắt có thể có lỗi, vui lòng báo cáo tại: Phản hồi và trợ giúp - TikTok · âm thanh gốc - Thuý An Bolero · CAFE NGƯỜI SÀI GÒN · author.",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

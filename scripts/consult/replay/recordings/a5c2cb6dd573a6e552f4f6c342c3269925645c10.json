@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Lil' Sago\" OR \"Năm Giờ Chiều\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:47:02.388Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Lil' Sago\" OR \"Năm Giờ Chiều\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Lil' Sago Hotpot & more (@lilsagoquanlaungon)",
+    "link": "https://www.tiktok.com/@lilsagoquanlaungon",
+    "snippet": "Lil' Sago Hotpot & more (@lilsagoquanlaungon) trên TikTok |214.2K Lượt thích.4787 Follower.299 Võ Văn Tần, P5, Q3 0️⃣9️⃣ 0️⃣8️⃣ 1️⃣0️⃣ ...",
+    "position": 1
+   },
+   {
+    "title": "Hẹn hò cuối tuần #lilsago #quan3 #hotpot #reviewanngon",
+    "link": "https://www.tiktok.com/@lilsagoquanlaungon/video/7635173293934349588",
+    "snippet": "347 Lượt thích,Video TikTok từ Lil' Sago Hotpot & more (@lilsagoquanlaungon): \"Hẹn hò cuối tuần #lilsago #quan3 #hotpot #reviewanngon\".âm ...",
+    "position": 2
+   },
+   {
+    "title": "ĐI 4 LỜI 🥢 Rủ hội bạn đi lẩu ngay hôm nay để nhận ưu đã...",
+    "link": "https://www.tiktok.com/@lilsagoquanlaungon/video/7686676676020899093",
+    "snippet": "ĐI 2 VUI – ĐI 4 LỜI Rủ hội bạn đi lẩu ngay hôm nay để nhận ưu đãi hấp dẫn tại Lil' Sago – Hotpot & More ❤️ Nhóm 2 người ✓ Hóa đơn ...",
+    "position": 3
+   },
+   {
+    "title": "Tại nhà hàng Lil' Sago Cơm & Lẩu, có một vòng quay mà người ...",
+    "link": "https://www.tiktok.com/@lilsagoquanlaungon/video/7484817470616898834",
+    "snippet": "Tại nhà hàng Lil' Sago Cơm & Lẩu, có một vòng quay mà người ta đồn là \"thần thánh\", có thể biến ước mơ thành hiện thực (hoặc chí ít là một bữa no say).",
+    "position": 4
+   },
+   {
+    "title": "Lil Sago (@lilsxgo)",
+    "link": "https://www.tiktok.com/@lilsxgo",
+    "snippet": "Lil Sago (@lilsxgo) on TikTok | 6281 Likes. 489 Followers. Music available on YouTube and Spotify Search “Lil Sago” #CAONTHEMAP.",
+    "position": 5
+   },
+   {
+    "title": "Mới cãi nhau xong, chưa kịp làm hoà… Bả thả nấm vô nồi rồi ...",
+    "link": "https://www.tiktok.com/@lilsagoquanlaungon/video/7560536198146493703",
+    "snippet": "Không chỉ là một bữa lẩu ngon, mà còn là trải nghiệm với nước lẩu đậm đà, nguyên liệu tươi ngon và không gian ấm cúng cho gia đình, bạn bè. Lil' Sago ...",
+    "position": 6
+   },
+   {
+    "title": "Năm giờ chiều rồi, tìm được một quán “núp hẻm” xanh mát ...",
+    "link": "https://www.tiktok.com/@baobaolovefood/video/7642281876312296724",
+    "snippet": "Năm giờ chiều rồi, tìm được một quán “núp hẻm” xanh mát, nhẹ nhàng, món ngon dân dã thiệt là đã #reviewanngon ##ancungtiktok #sinhtoluamach # ...",
+    "position": 7
+   },
+   {
+    "title": "Lil'Sago 👀 (@hildns_79)",
+    "link": "https://www.tiktok.com/@hildns_79",
+    "snippet": "Lil'Sago (@hildns_79) trên TikTok |46 Follower.em đợi ....anaxa.Xem video mới nhất từ Lil'Sago (@hildns_79).",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

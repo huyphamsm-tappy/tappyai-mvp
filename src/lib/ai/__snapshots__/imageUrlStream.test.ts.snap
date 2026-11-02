@@ -1,0 +1,23 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`NT-12 — control: an all-https turn is byte-identical to pk14 (snapshot taken at Step 0) > place card, prose photo lines, plan photos 1`] = `
+{
+  "cardRaw": "9:{"toolCallId":"t1","toolName":"search_places","args":{"query":"phở quận 1"}}
+a:{"toolCallId":"t1","result":{"source":"osm","count":2,"results":[{"place_id":"g-0","name":"Phở Lệ","address":"10 Lê Duẩn, Quận 1","rating_value":4,"rating_count":100,"maps_link":"https://www.google.com/maps?q=0","text_ranked":true,"photo_url":"https://cdn.example/resolved.jpg","photo_urls":["https://cdn.example/resolved.jpg"]},{"place_id":"g-1","name":"Cơm Tấm Ba Ghiền","address":"11 Lê Duẩn, Quận 1","rating_value":4.1,"rating_count":101,"maps_link":"https://www.google.com/maps?q=1","text_ranked":true,"photo_url":"https://cdn.example/resolved.jpg","photo_urls":["https://cdn.example/resolved.jpg"]}],"_tappy_place_domain":"food"}}
+8:[{"kind":"tappy.progress.v1","v":1,"stage":"found","count":2,"text":"Đã có 2 chỗ phù hợp — đang chọn cho bạn…"}]
+8:[{"kind":"tappy.places.v1","v":1,"domain":"food","ranked":false,"items":[{"id":"place:google:g-0","domain":"food","kind":"place","name":"Phở Lệ","image":"https://cdn.example/a.jpg","address":"10 Lê Duẩn, Quận 1","rating":4,"ratingCount":100,"rank":0,"actions":[{"kind":"maps","urlKind":"direct","url":"https://www.google.com/maps?q=0","labelKey":"v3.action.maps"},{"kind":"review","urlKind":"search","url":"https://www.youtube.com/results?search_query=Ph%E1%BB%9F%20L%E1%BB%87%20review","labelKey":"v3.action.reviewSearch","platform":"YouTube","attributed":false}]},{"id":"place:google:g-1","domain":"food","kind":"place","name":"Cơm Tấm Ba Ghiền","image":"https://cdn.example/a.jpg","address":"11 Lê Duẩn, Quận 1","rating":4.1,"ratingCount":101,"rank":1,"actions":[{"kind":"maps","urlKind":"direct","url":"https://www.google.com/maps?q=1","labelKey":"v3.action.maps"},{"kind":"review","urlKind":"search","url":"https://www.youtube.com/results?search_query=C%C6%A1m%20T%E1%BA%A5m%20Ba%20Ghi%E1%BB%81n%20review","labelKey":"v3.action.reviewSearch","platform":"YouTube","attributed":false}]}],"shown":2,"preliminary":true}]
+8:[{"kind":"tappy.progress.v1","v":1,"stage":"finishing","text":"Đang kiểm tra thông tin và lấy ảnh…"}]
+0:"Mình chọn **Phở Lệ** — gần và hợp bữa trưa."
+8:[{"kind":"tappy.places.v1","v":1,"domain":"food","ranked":true,"items":[{"id":"place:google:g-0","domain":"food","kind":"place","name":"Phở Lệ","image":"https://cdn.example/resolved.jpg","address":"10 Lê Duẩn, Quận 1","rating":4,"ratingCount":100,"rank":0,"shortlistPosition":1,"recommended":true,"reasons":[{"attribute":"rationale","evidence":"gần"}],"actions":[{"kind":"maps","urlKind":"direct","url":"https://www.google.com/maps?q=0","labelKey":"v3.action.maps"},{"kind":"review","urlKind":"search","url":"https://www.youtube.com/results?search_query=Ph%E1%BB%9F%20L%E1%BB%87%20review","labelKey":"v3.action.reviewSearch","platform":"YouTube","attributed":false}]}],"picked":["place:google:g-0"],"shown":1}]
+d:{"finishReason":"stop"}
+",
+  "plan": "Lịch nè.
+
+[TAPPY_PLAN]
+{"type":"trip","title":"Hà Nội","days":[{"label":"Ngày 1","items":[{"time":"12:00","category":"food","name":"Phở Thìn","description":"Ăn trưa","price":"","address":"13 Lò Đúc, Hà Nội","photo_url":"https://cdn.example/a.jpg"}]}]}
+[/TAPPY_PLAN]",
+  "prose": "Bạn thử **Phở Thìn** nhé, nước dùng đậm.
+
+![Ảnh địa điểm](https://cdn.example/a.jpg)",
+}
+`;

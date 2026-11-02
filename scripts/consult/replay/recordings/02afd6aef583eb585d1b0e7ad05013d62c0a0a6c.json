@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "iPhone 17 Pro Max giá bán Việt Nam 2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T16:56:22.513Z",
+ "body": {
+  "searchParameters": {
+   "q": "iPhone 17 Pro Max giá bán Việt Nam 2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "iPhone 17 Pro Max 256GB đủ màu hot, giá tốt, trả góp 0%",
+    "link": "https://www.thegioididong.com/dtdd/iphone-17-pro-max",
+    "snippet": "Giá iPhone 17 Pro Max tại Việt Nam dao động từ khoảng 37.990.000 VNĐ (phiên bản 256GB) đến 63.990.000 VNĐ (phiên bản 2TB). Tuy nhiên, giá bán thực tế tại ...",
+    "rating": 4.9,
+    "ratingCount": 313312,
+    "position": 1
+   },
+   {
+    "title": "iPhone 17 Pro Max giá tốt, thu cũ giảm đến 3tr, sẵn hàng",
+    "link": "https://viettelstore.vn/dien-thoai/iphone-17-pro-max-pid355086.html?srsltid=AU7gw4UlqO5uBjysHHmtyQ8EvIc43Ak9qxBtqFnvfG5NyFE_gASVMGqG",
+    "snippet": "iPhone 17 Pro Max 256GB 34.490.000 ₫ · iPhone 17 Pro Max 512GB 39.990.000 ₫ · iPhone 17 Pro Max 1TB 46.990.000 ₫ · iPhone 17 Pro Max 2TB 59.490.000 ₫.",
+    "rating": 5,
+    "ratingCount": 468,
+    "position": 2
+   },
+   {
+    "title": "iPhone 17 series giá giảm mạnh T10/2026, đủ màu",
+    "link": "https://cellphones.com.vn/mobile/apple/iphone-17.html",
+    "snippet": "iPhone 17 tiêu chuẩn : Khoảng từ 24.490.000 đồng đến 32.990.000đ. iPhone 17e: Khoảng từ 18.990.000 đồng đến 26.990.000 đồng. iPhone 17 Pro: Khoảng từ 29.990.000 ...",
+    "position": 3
+   },
+   {
+    "title": "iPhone 17 Pro Max (512GB) Chính Hãng, Bảng Giá 2026",
+    "link": "https://www.viettablet.com/iphone-17-pro-max-512gb?srsltid=AU7gw4VDfBLNsXV6yNK0D9QE0Tc3NGna6HbSwe-aFUHtgTEMrZ6zyMuo",
+    "snippet": "iPhone 17 Pro Max (512GB) Chính Hãng, Mới Nguyên Seal · Thu Cũ Đổi Mới 38.099.000đ · Bạc 39.799.000đ · Cam Vũ Trụ 39.099.000đ · Xanh Đậm 39.099.000đ.",
+    "position": 4
+   },
+   {
+    "title": "Bảng giá iPhone 17 Series tại Việt Nam hôm nay 07/10/2026",
+    "link": "https://hoanghamobile.com/tin-tuc/gia-iphone-17-tai-viet-nam/?srsltid=AU7gw4Vm6Ct2LaRiFELWExkAJMuAY9FSQ02yKTjeOIstPnCvwKk1_jJZ",
+    "snippet": "Giá bán thực tế iPhone 17 Series ngày 07/10/2026: iPhone 17 từ 25.490.000đ, iPhone Air 23.190.000đ, 17 Pro 31.490.000đ, 17 Pro Max 33.990.000đ.",
+    "position": 5
+   },
+   {
+    "title": "The surprising price of the iPhone 17 | THDT",
+    "link": "https://www.youtube.com/watch?v=w0UZ-E5G5is",
+    "snippet": "Western Morning - 10/1/2026 | Commune-level officials and civil ... Which iPhone Pro Max is the most worth buying? Dương Dê. Auto-dubbed.",
+    "position": 6
+   },
+   {
+    "title": "iPhone 17 Pro Max ở Việt Nam chạm mức giá thấp đáng ...",
+    "link": "https://laodong.vn/cong-nghe/iphone-17-pro-max-o-viet-nam-cham-muc-gia-thap-dang-chu-y-1725517.ldo",
+    "snippet": "Trên website ShopDunk cùng ngày, đại lý ủy quyền chính thức của Apple vẫn giữ nguyên mức giá niêm yết 37.990.000 đồng cho iPhone 17 Pro Max ...",
+    "date": "26 thg 6, 2026",
+    "position": 7
+   },
+   {
+    "title": "Mua iPhone 17 Series (Pro Max/ Pro/ Air) Chính Hãng",
+    "link": "https://clickbuy.com.vn/iphone-17-series?srsltid=AU7gw4Wrzr3FPL5OhWybWJXYmtW5TiUm3IebcdBpmD982XKgVELZTGFN",
+    "snippet": "Mua iPhone 17 Series CLICKBUY! Giá iPhone 17 Pro Max từ 36 triệu kèm ưu đãi độc quyền: Bảo hành 1 đổi 1, Trả góp 0%, Thu cũ đổi mới trợ giá đến 3 triệu.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

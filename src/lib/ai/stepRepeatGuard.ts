@@ -21,7 +21,8 @@ export { REPEAT_SIMILARITY, similarity, dropRepeatedReply }
 type Frame = { line: string; text: string | null }
 
 /** The stream guard. Frames are `<prefix>:<json>\n` lines (AI SDK data stream). */
-export function stepRepeatGuard(): TransformStream<Uint8Array, Uint8Array> {
+/** `oneBrain` (review 30/10): a held step loses only the sentences that repeat text already SENT, not a sentence repeated inside itself. */
+export function stepRepeatGuard(opts: { oneBrain?: boolean } = {}): TransformStream<Uint8Array, Uint8Array> {
   const dec = new TextDecoder()
   const enc = new TextEncoder()
   let carry = ''
@@ -45,7 +46,7 @@ export function stepRepeatGuard(): TransformStream<Uint8Array, Uint8Array> {
       if (repeat) console.warn(JSON.stringify({ type: 'tappyai_guard', guard: 'step_repeat', kind: 'dropped_step_text', chars: heldText.length }))
       // UAT4 P1-a: a step that repeats only SOME of what was already said (a shorter copy of the
       // clarify questions before the answer) keeps its new sentences and loses the repeated ones.
-      const kept = repeat ? '' : dedupeSentences(heldText, [sentProse])
+      const kept = repeat ? '' : dedupeSentences(heldText, [sentProse], { withinText: opts.oneBrain !== true })
       if (!repeat && kept !== heldText) {
         console.warn(JSON.stringify({ type: 'tappyai_guard', guard: 'step_repeat', kind: 'dropped_repeated_sentences', chars: heldText.length - kept.length }))
         let textOut = false

@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vbpl.mof.gov.vn Thông tư lệ phí xuất nhập cảnh giảm 20% hộ chiếu 2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:16:59.879Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vbpl.mof.gov.vn Thông tư lệ phí xuất nhập cảnh giảm 20% hộ chiếu 2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

@@ -1,0 +1,66 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Sony WH-CH720N specifications weight fit running sweat resistance official",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:49:44.231Z",
+ "body": {
+  "searchParameters": {
+   "q": "Sony WH-CH720N specifications weight fit running sweat resistance official",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "WH-CH720N Specifications | Sony USA",
+    "link": "https://www.sony.com/electronics/support/wireless-headphones-bluetooth-headphones/wh-ch720n/specifications",
+    "snippet": "Get the detailed list of (technical) specifications for the Sony WH-CH720N",
+    "position": 1
+   },
+   {
+    "title": "WH-CH720N | Help Guide | Specifications - Sony",
+    "link": "https://helpguide.sony.net/mdr/2966/v1/en/contents/TP1000783326.html",
+    "snippet": "WH-CH720N Specifications Headset Power source: DC 3.85 V: Built-in lithium-ion rechargeable battery DC 5 V: When charged using USB Operating temperature: 0 °C to 40 °C (32 °F to 104 °F) Charging time: Approx. 3.5 hours (About 60 minutes of music playback is possible after 3 minutes charging.",
+    "position": 2
+   },
+   {
+    "title": "WH-CH720N Specifications _ Sony Canada",
+    "link": "https://linqcdn.avbportal.com/documents/e5a2d9b9-5e07-4a83-b335-2f77068cd1b0.pdf",
+    "snippet": "https://www.sony.ca/en/electronics/support/wireless-headphones-bluetooth-headphones/wh-ch720n/specifications",
+    "position": 3
+   },
+   {
+    "title": "Sony WH-CH720N Specifications - FullSpecs.net",
+    "link": "https://fullspecs.net/wireless-headphone/sony/wh-ch720n-specifications/",
+    "snippet": "Sony WH-CH720N complete specifications and price. Frequency Range, Headphone Type, Sensitivity, Impedance, etc.",
+    "position": 4
+   },
+   {
+    "title": "WH-CH720N Specifications | Sony Canada",
+    "link": "https://www.sony.ca/en/electronics/support/wireless-headphones-bluetooth-headphones/wh-ch720n/specifications",
+    "snippet": "Get the detailed list of (technical) specifications for the Sony WH-CH720N",
+    "position": 5
+   },
+   {
+    "title": "Sony WH-CH720N Wireless Noise Cancelling Headphone | White",
+    "link": "https://electronics.sony.com/audio/headphones/headband/p/whch720n-w",
+    "snippet": "WH-CH720N Wireless Noise Cancelling Bluetooth Headphone. Turn down the world's noise with the long-lasting noise cancellation performance. Featuring Dual Noise Sensor technology and an Integrated Processor V1, the WH-CH720N allows you to fully immerse yourself in music without any distractions.",
+    "position": 6
+   },
+   {
+    "title": "WH-CH720N Specifications | Sony MY",
+    "link": "https://www.sony.com.my/electronics/support/wireless-headphones-bluetooth-headphones/wh-ch720n/specifications",
+    "snippet": "Get the detailed list of (technical) specifications for the Sony WH-CH720N",
+    "position": 7
+   }
+  ],
+  "credits": 1
+ }
+}

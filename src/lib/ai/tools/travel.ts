@@ -1,4 +1,5 @@
 import { getCache, setCache, serperSearch, webSearch, fetchPlacePhotosByName } from './common'
+import { withRetrievedAt } from './retrievalClock'
 import { normalizeVN } from '@/lib/ai/intent'
 import { cityInText, haversineKm } from './vietnamCities'
 import { LUXURY_KEYWORDS } from '@/lib/ai/budget'
@@ -104,7 +105,7 @@ export async function getFlightPrices(origin: string, destination: string, lang 
 }
 
 // ===== HOTEL PRICES: web search (Booking.com/Agoda snippets) + OSM hotel list (free, no API key) =====
-export async function getHotelPrices(location: string, checkIn?: string, checkOut?: string, maxBudgetVnd?: number, lang = 'vi') {
+async function getHotelPricesImpl(location: string, checkIn?: string, checkOut?: string, maxBudgetVnd?: number, lang = 'vi') {
   const cacheKey = hotelsCacheKey(location, checkIn, checkOut, maxBudgetVnd, lang)
   const cached = getCache(cacheKey)
   if (cached) return cached
@@ -240,7 +241,8 @@ export async function getHotelPrices(location: string, checkIn?: string, checkOu
      */
     let source: string = mapsRows.length > 0 ? SERPER_PLACES_SOURCE : messages.hotels.sourceSerperOsm()
     if (mapsRows.length === 0 && (!searchResults || searchResults.length === 0)) {
-      const ddg = await webSearch(searchQuery, lang) as { results?: Array<{ title: string; link: string; snippet: string }> }
+      // TURN_WEB_TICKET Plan B: the hotel tool's own fallback is a vertical ("V") search, not the model's web research: it does not take the web ticket.
+      const ddg = await webSearch(searchQuery, lang, { vertical: true }) as { results?: Array<{ title: string; link: string; snippet: string }> }
       searchResults = ddg?.results
       source = messages.hotels.sourceDdgOsm(lang)
     }
@@ -341,8 +343,10 @@ const RIDE_HAILING_APPS = [
 ]
 
 // mode: 'taxi' = uoc tinh gia trong thanh pho/quang duong ngan; khac (hoac khong co) = xe khach/tau lien tinh
-export async function getTransportOptions(origin: string, destination: string, mode?: string, lang = 'vi') {
-  const cacheKey = transportCacheKey(origin, destination, mode, lang)
+async function getTransportOptionsImpl(origin: string, destination: string, mode?: string, lang = 'vi', dateForQuery?: string) {
+  // Round 32 (CONSULTATIVE_IN_AGENT): the date the user named goes into the coach query — the SAME two requests, one of them worded with the day. Only a well-formed YYYY-MM-DD is used.
+  const dayText = dateForQuery && /^\d{4}-\d{2}-\d{2}$/.test(dateForQuery) ? `${dateForQuery.slice(8, 10)}/${dateForQuery.slice(5, 7)}/${dateForQuery.slice(0, 4)}` : ''
+  const cacheKey = transportCacheKey(origin, destination, mode, lang, dayText ? dateForQuery : undefined)
   const cached = getCache(cacheKey)
   if (cached) return cached
 
@@ -354,10 +358,11 @@ export async function getTransportOptions(origin: string, destination: string, m
     // (attachCommerceLinks → `vexere_link`); the railway has no route page to point at.
     void buildCoachLandingLink
     try {
-      const [busResults, trainResults] = await Promise.all([
-        serperSearch('ve xe khach tu ' + origin + ' di ' + destination + ' gia bao nhieu vexere futa phuong trang'),
-        serperSearch('ve tau ' + origin + ' ' + destination + ' duong sat viet nam gia'),
-      ])
+      const busQuery = 've xe khach tu ' + origin + ' di ' + destination + (dayText ? ' ngay ' + dayText : '') + ' gia bao nhieu vexere futa phuong trang'
+      const trainQuery = 've tau ' + origin + ' ' + destination + ' duong sat viet nam gia'
+      // Round 33: when the user's date went into the query (flag only), the two queries actually sent are logged — the proof that the day is in the request. No line without a date.
+      if (dayText) console.log(JSON.stringify({ type: 'tappyai_coach_query', queries: [busQuery, trainQuery] }))
+      const [busResults, trainResults] = await Promise.all([serperSearch(busQuery), serperSearch(trainQuery)])
       if ((busResults && busResults.length > 0) || (trainResults && trainResults.length > 0)) {
         result = {
           type: 'intercity',
@@ -431,3 +436,9 @@ export function routeInText(text: string): { origin: string; destination: string
   const codes = hits.sort((a, b) => a.at - b.at).map(h => h.code).filter((c, i, all) => all.indexOf(c) === i)
   return codes.length >= 2 ? { origin: codes[0], destination: codes[1] } : null
 }
+
+/** Stamps `retrieved_at` (the oldest real fetch time of the rows used) on the result — see retrievalClock.ts. */
+export function getHotelPrices(...args: Parameters<typeof getHotelPricesImpl>): ReturnType<typeof getHotelPricesImpl> { return withRetrievedAt(() => getHotelPricesImpl(...args)) }
+
+/** Stamps `retrieved_at` (the oldest real fetch time of the rows used) on the result — see retrievalClock.ts. */
+export function getTransportOptions(...args: Parameters<typeof getTransportOptionsImpl>): ReturnType<typeof getTransportOptionsImpl> { return withRetrievedAt(() => getTransportOptionsImpl(...args)) }

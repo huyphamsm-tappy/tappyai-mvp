@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "tai nghe chống ồn dưới 3 triệu chạy bộ thể thao chống nước Sony WH-CH720N Soundcore Liberty 4 NC (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:12:04.425Z",
+ "body": {
+  "searchParameters": {
+   "q": "tai nghe chống ồn dưới 3 triệu chạy bộ thể thao chống nước Sony WH-CH720N Soundcore Liberty 4 NC (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe bluetooth giá rẻ dưới 500K | Đa dạng mẫu mã",
+    "link": "https://cellphones.com.vn/bo-loc/tai-nghe-gia-re-duoi-500000",
+    "snippet": "Có mic đàm thoại; Chống ồn; Điều khiển giọng nói; Xuyên âm; Sạc không dây; Chống nước; Có app phiên dịch; Chống ồn chủ động ANC. Cổng kết nối.",
+    "position": 1
+   },
+   {
+    "title": "Sennheiser Momentum True Wireless 3",
+    "link": "https://shopee.vn/list/sennheiser/Momentum%20True%20Wireless%203",
+    "snippet": "Sennheiser Momentum True Wireless 3 là sản phẩm tai nghe cao cấp được nhiều người yêu thích. Chất lượng âm thanh tuyệt đỉnh cùng khả năng chống ồn tốt là ưu ...",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

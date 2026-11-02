@@ -9,10 +9,17 @@
 // here by fact, not by policy; its product pages reach the user as Commerce
 // Links. Tiki is not a CCP provider and is not reintroduced.
 import { marketplaceSearchTemplates } from '@/lib/ccp/adapters'
+import { shoppingMerchantNameRe } from '@/lib/ccp'
 
 export type PlatformLink = { name: string; url: string }
 
+/** A merchant's own name (registry data) is not part of a product search on a marketplace; a query that is ONLY a merchant name is kept as is. */
+export function withoutMerchantNames(query: string): string {
+  const cleaned = query.replace(shoppingMerchantNameRe(), ' ').replace(/\s+/g, ' ').trim()
+  return cleaned || query
+}
+
 export function buildShoppingLinks(productName: string): PlatformLink[] {
-  const q = encodeURIComponent(productName)
+  const q = encodeURIComponent(withoutMerchantNames(productName))
   return marketplaceSearchTemplates().map(t => ({ name: t.name, url: t.template.replace('{q}', q) }))
 }

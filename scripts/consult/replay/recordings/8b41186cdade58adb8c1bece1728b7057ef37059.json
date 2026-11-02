@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Tai nghe Apple AirPods Pro 2 2023 USB-C",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:16:04.487Z",
+ "body": {
+  "searchParameters": {
+   "q": "Tai nghe Apple AirPods Pro 2 2023 USB-C",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "AirPods Pro 2 (2023) USB-C",
+    "imageUrl": "https://cdn8.web4s.vn/media/products/2586/airpods-pro-2-usb-c-2023-1.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVXlyPORHAeJbn-acvbvuo4K02EybauoT2RCAxXkzILw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "9TECH",
+    "domain": "9tech.com.vn",
+    "link": "https://9tech.com.vn/airpods-pro-2-2023-usb-c",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn8.web4s.vn%2Fmedia%2Fproducts%2F2586%2Fairpods-pro-2-usb-c-2023-1.jpg&tbnid=r9sRzzi4g9kEdM&imgrefurl=https%3A%2F%2F9tech.com.vn%2Fairpods-pro-2-2023-usb-c&docid=UBe7VF43465X2M&w=1000&h=1000",
+    "position": 1
+   },
+   {
+    "title": "Tai Nghe AirPods Pro 2023 (USB-C) Giá Rẻ, Góp 0%, Chính Hãng",
+    "imageUrl": "https://24hstore.vn/images/products/2024/10/17/large/airpods-pro-2-2023.jpg",
+    "imageWidth": 400,
+    "imageHeight": 400,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyHiMM0y0zhOwwhTtoB26znnykg5M2hbaje-HBHwk0tA&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "24hStore.vn",
+    "domain": "24hstore.vn",
+    "link": "https://24hstore.vn/apple-airpods-pro-2-2023-moi/tai-nghe-apple-airpods-pro-2-2023-magsafe-p9050?srsltid=AU7gw4UvUo-EPfWGaou1z-VO-zbsAQ30IGFLRXr_Kg6SW6q3i2wzhwEK",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2F24hstore.vn%2Fimages%2Fproducts%2F2024%2F10%2F17%2Flarge%2Fairpods-pro-2-2023.jpg&tbnid=_xI40GU9pfQGCM&imgrefurl=https%3A%2F%2F24hstore.vn%2Fapple-airpods-pro-2-2023-moi%2Ftai-nghe-apple-airpods-pro-2-2023-magsafe-p9050%3Fsrsltid%3DAU7gw4UvUo-EPfWGaou1z-VO-zbsAQ30IGFLRXr_Kg6SW6q3i2wzhwEK&docid=eHY3pUWkP2A0FM&w=400&h=400",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe Bluetooth Apple AirPods Pro 2 2023 USB-C",
+    "imageUrl": "https://hoanghamobile.com/Uploads/2023/10/27/airpods-pro-2nd-gen-usb-c-1.png",
+    "imageWidth": 572,
+    "imageHeight": 572,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSwOsEpJ7oIYgKk7Ms0yG7d14DuQqEKt9SvWduB3t0cA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Hoàng Hà Mobile",
+    "domain": "hoanghamobile.com",
+    "link": "https://hoanghamobile.com/kho-san-pham-cu/tai-nghe-bluetooth-apple-airpods-pro-2-2023-usb-c-p72233?srsltid=AU7gw4Wby8viwxpB9e1n6b2RmlSh7zBAMj0DcPtKyqhp-Cuwp1I5Gyei",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fhoanghamobile.com%2FUploads%2F2023%2F10%2F27%2Fairpods-pro-2nd-gen-usb-c-1.png&tbnid=d1lZnNvBe-mP7M&imgrefurl=https%3A%2F%2Fhoanghamobile.com%2Fkho-san-pham-cu%2Ftai-nghe-bluetooth-apple-airpods-pro-2-2023-usb-c-p72233%3Fsrsltid%3DAU7gw4Wby8viwxpB9e1n6b2RmlSh7zBAMj0DcPtKyqhp-Cuwp1I5Gyei&docid=IuMqbrew5JlapM&w=572&h=572",
+    "position": 3
+   },
+   {
+    "title": "Tai nghe Apple Airpods Pro 2 2023 (USB-C) | Songlongmedia",
+    "imageUrl": "https://songlongmedia.com/media/product/3672_tai_nghe_apple_airpods_pro_2_2023_usb_c__1_.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3jvLcoVws6P5aZMqkY6Oc_4ICCmVwe76ut-RIzE8M8A&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "SongLong Media",
+    "domain": "songlongmedia.com",
+    "link": "https://songlongmedia.com/tai-nghe-apple-airpods-pro-2-2023-usb-c.html?srsltid=AU7gw4U2uvfMvltzI1jHUw5PPdDJfN8OQj3dVUyx3ZCAFlsvjrF2sRNq",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fsonglongmedia.com%2Fmedia%2Fproduct%2F3672_tai_nghe_apple_airpods_pro_2_2023_usb_c__1_.jpg&tbnid=eINpbt0azw4C-M&imgrefurl=https%3A%2F%2Fsonglongmedia.com%2Ftai-nghe-apple-airpods-pro-2-2023-usb-c.html%3Fsrsltid%3DAU7gw4U2uvfMvltzI1jHUw5PPdDJfN8OQj3dVUyx3ZCAFlsvjrF2sRNq&docid=sLIm5OzCSAczkM&w=1000&h=1000",
+    "position": 4
+   },
+   {
+    "title": "Tai nghe Apple AirPods Pro 2 USB-C - New - kokstore.vn",
+    "imageUrl": "https://kokstore.vn/wp-content/uploads/2025/08/airpods-pro-2-usb-c-2023-5.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwTw_XuE1CgUNoljmx9d02waonpAIQA0pwz5jBqeV4oQ&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "KokStore",
+    "domain": "kokstore.vn",
+    "link": "https://kokstore.vn/product/tai-nghe-apple-airpods-pro-2-2023-usb-c-new/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fkokstore.vn%2Fwp-content%2Fuploads%2F2025%2F08%2Fairpods-pro-2-usb-c-2023-5.jpg&tbnid=S7CWGP_ipIeHzM&imgrefurl=https%3A%2F%2Fkokstore.vn%2Fproduct%2Ftai-nghe-apple-airpods-pro-2-2023-usb-c-new%2F&docid=ErAbkUfb9_y4BM&w=1000&h=1000",
+    "position": 5
+   },
+   {
+    "title": "Tai nghe Bluetooth Apple AirPods Pro 2 2023 USB-C - Cũ Trầy Xước",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/a/p/apple-airpods-pro-2-usb-c_1__1_1_1.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNz7P0C1NS0XT4H7c4ExwwAqgTjfln25nUTh2MxjsAhA&s=10",
+    "thumbnailWidth": 358,
+    "thumbnailHeight": 358,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/apple-airpods-pro-2-usb-c-cu-tray-xuoc.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fa%2Fp%2Fapple-airpods-pro-2-usb-c_1__1_1_1.png&tbnid=GtiW41gV0ZUEuM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fapple-airpods-pro-2-usb-c-cu-tray-xuoc.html&docid=6nTRvntpSKwJDM&w=358&h=358",
+    "position": 6
+   },
+   {
+    "title": "Tai nghe AirPods Pro 2023",
+    "imageUrl": "https://cdn2.fptshop.com.vn/unsafe/828x0/filters:format(webp):quality(75)/airpods_pro_2_1_3fb12b30c5.jpg",
+    "imageWidth": 828,
+    "imageHeight": 466,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDNz7ZWgEYyZTc7pKjtmBquRKZqgTbcSOlr9c5jlh51w&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "FPT Shop",
+    "domain": "fptshop.com.vn",
+    "link": "https://fptshop.com.vn/phu-kien/tai-nghe-airpods-pro-2023-usb-c",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.fptshop.com.vn%2Funsafe%2F828x0%2Ffilters%3Aformat(webp)%3Aquality(75)%2Fairpods_pro_2_1_3fb12b30c5.jpg&tbnid=QWjXs_o2dAwZ4M&imgrefurl=https%3A%2F%2Ffptshop.com.vn%2Fphu-kien%2Ftai-nghe-airpods-pro-2023-usb-c&docid=lW_CucIdq0A_iM&w=828&h=466",
+    "position": 7
+   },
+   {
+    "title": "Tai nghe Airpods Pro 2 (2023) USB-C và Airpods Pro 2 (2022): Những đổi mới  mà chắc chắn bạn đang tìm kiếm",
+    "imageUrl": "https://www.didongmy.com/vnt_upload/news/10_2023/airpods-pro-2-2023-nang-cap-dang-gia-ve-chat-luong-am-thanh-didongmy.png",
+    "imageWidth": 680,
+    "imageHeight": 382,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvdvx-s4uJ1p6Eu827p37unIaCV0HqaVid7MaCK0ycEQ&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "didongmy.com",
+    "domain": "www.didongmy.com",
+    "link": "https://www.didongmy.com/tai-nghe-airpods-pro-2-2023-usb-c-va-airpods-pro-2-2022-nhung-doi-moi-ma-chac-chan-ban-dang-tim-kiem?srsltid=AU7gw4XlDGv2Lg9EJixam1fhNNP2tQgzNIFwO6htyVVsE0BzxssLGUuR",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.didongmy.com%2Fvnt_upload%2Fnews%2F10_2023%2Fairpods-pro-2-2023-nang-cap-dang-gia-ve-chat-luong-am-thanh-didongmy.png&tbnid=x31QTifhfuXPNM&imgrefurl=https%3A%2F%2Fwww.didongmy.com%2Ftai-nghe-airpods-pro-2-2023-usb-c-va-airpods-pro-2-2022-nhung-doi-moi-ma-chac-chan-ban-dang-tim-kiem%3Fsrsltid%3DAU7gw4XlDGv2Lg9EJixam1fhNNP2tQgzNIFwO6htyVVsE0BzxssLGUuR&docid=wRJkj3pGTeKTOM&w=680&h=382",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

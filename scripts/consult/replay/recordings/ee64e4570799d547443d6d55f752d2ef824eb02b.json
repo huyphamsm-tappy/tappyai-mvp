@@ -1,0 +1,82 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Samsung Galaxy S24 FE 5G 8GB 128GB site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:02:21.047Z",
+ "body": {
+  "searchParameters": {
+   "q": "Samsung Galaxy S24 FE 5G 8GB 128GB site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Điện Thoại Samsung Galaxy S24 FE (5G) 8GB 128GB",
+    "link": "https://shopee.vn/%C4%90i%E1%BB%87n-Tho%E1%BA%A1i-Samsung-Galaxy-S24-FE-(5G)-8GB-128GB-i.843645798.42472624991",
+    "snippet": "Samsung Galaxy S24 FE (5G) 8GB 128GB … 14.900.000₫ mall inline badge",
+    "rating": 5,
+    "ratingCount": 47,
+    "position": 1
+   },
+   {
+    "title": "Điện Thoại Samsung Galaxy S24 FE 5G 8GB/128GB",
+    "link": "https://shopee.vn/%C4%90i%E1%BB%87n-Tho%E1%BA%A1i-Samsung-Galaxy-S24-FE-5G-8GB-128GB-H%C3%A0ng-Ch%C3%ADnh-H%C3%A3ng-i.193124085.43161351212",
+    "snippet": "Samsung Galaxy S24 FE 5G 8GB/128GB - 16.990.000₫ mall inline badge",
+    "rating": 4.9,
+    "ratingCount": 8,
+    "position": 2
+   },
+   {
+    "title": "Samsung Galaxy S24 FE 5G Quốc Tế 2 SIM 8GB/128GB",
+    "link": "https://shopee.vn/Samsung-Galaxy-S24-FE-5G-Qu%E1%BB%91c-T%E1%BA%BF-2-SIM-8GB-128GB-Exynos-2400e-M%C3%A0n-H%C3%ACnh-120Hz-i.116172587.55666313865",
+    "snippet": "Samsung Galaxy S24 FE 5G Quốc Tế 2 SIM 8GB/128GB - Exynos 2400e, Màn Hình 120Hz. 1/9. 11.500.000₫. Samsung Galaxy S24 FE 5G Quốc Tế 2 SIM 8GB/128GB - Exynos ...",
+    "position": 3
+   },
+   {
+    "title": "[Đã qua sử dụng]Samsung Galaxy S24 FE 5G 8GB 128GB",
+    "link": "https://shopee.vn/-%C4%90%C3%A3-qua-s%E1%BB%AD-d%E1%BB%A5ng-Samsung-Galaxy-S24-FE-5G-8GB-128GB-i.1612780333.43233288542?extraParams=%7B%22display_model_id%22%3A277850729767%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "[Đã qua sử dụng]Samsung Galaxy S24 FE 5G 8GB 128GB. 1/5. 13.595.000₫. [Đã qua sử dụng]Samsung Galaxy S24 FE 5G 8GB 128GB.",
+    "rating": 5,
+    "ratingCount": 2,
+    "position": 4
+   },
+   {
+    "title": "[Likenew Fullbox] Điện Thoại SamSung Galaxy S24 FE 5G ...",
+    "link": "https://shopee.vn/-Likenew-Fullbox-%C4%90i%E1%BB%87n-Tho%E1%BA%A1i-SamSung-Galaxy-S24-FE-5G-(8GB-128GB)-%C4%90%E1%BA%B9p-Nh%C6%B0-M%E1%BB%9Bi-H%C3%A0ng-Ch%C3%ADnh-H%C3%A3ng-Samsung-Vi%E1%BB%87t-Nam-2-SIM-i.1793356640.53961708123",
+    "snippet": "Galaxy S24 FE 5G (8GB - 128GB) 9.831.800₫ 11.990.000₫ -18%",
+    "rating": 5,
+    "ratingCount": 13,
+    "position": 5
+   },
+   {
+    "title": "Điện thoại Samsung Galaxy S24 FE 8GB/128GB Xanh lá ...",
+    "link": "https://shopee.vn/%C4%90i%E1%BB%87n-tho%E1%BA%A1i-Samsung-Galaxy-S24-FE-8GB-128GB-Xanh-l%C3%A1-(SM-S721B-DS)-i.706762797.41275129250",
+    "snippet": "Điện thoại Samsung Galaxy S24 FE 8GB/128GB Xanh lá (SM-S721B/DS). 1/9. Đã bán hết. 16.690.000₫. mall inline badge. Điện thoại Samsung Galaxy S24 FE 8GB/128GB ...",
+    "position": 6
+   },
+   {
+    "title": "Samsung Galaxy S24 FE 5G 8GB/128GB",
+    "link": "https://shopee.vn/Samsung-Galaxy-S24-FE-5G-8GB-128GB-i.810331302.29412545377",
+    "snippet": "Mua Samsung Galaxy S24 FE 5G 8GB/128GB giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn Phí.",
+    "rating": 5,
+    "ratingCount": 4,
+    "position": 7
+   },
+   {
+    "title": "Samsung Galaxy S24 FE 5G 8GB/128GB 99% fullbox",
+    "link": "https://shopee.vn/Samsung-Galaxy-S24-FE-5G-8GB-128GB-99-fullbox-i.1426524134.42530984874?extraParams=%7B%22display_model_id%22%3A365938855402%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "Samsung Galaxy S24 FE 5G 8GB/128GB 99% fullbox. 1/2. 9.840.000₫. Samsung Galaxy S24 FE 5G 8GB/128GB 99% fullbox.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,281 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "nhà hàng dưới 300k/người có máy lạnh yên tĩnh, không gồm Xóm Chợ Cũ Restaurant Quận 1 Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:25:28.016Z",
+ "body": {
+  "searchParameters": {
+   "q": "nhà hàng dưới 300k/người có máy lạnh yên tĩnh, không gồm Xóm Chợ Cũ Restaurant Quận 1 Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7768941,106.7008997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Xóm Chợ Cũ Restaurant",
+    "address": "35 Lý Tự Trọng, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7794733,
+    "longitude": 106.7025477,
+    "rating": 4.4,
+    "ratingCount": 347,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam",
+     "Nhà hàng"
+    ],
+    "website": "https://www.facebook.com/XomChoCu76",
+    "phoneNumber": "+84 972 501 185",
+    "openingHours": {
+     "Thứ Năm": "10:00–21:30",
+     "Thứ Sáu": "10:00–21:30",
+     "Thứ Bảy": "10:00–21:30",
+     "Chủ Nhật": "10:00–21:30",
+     "Thứ Hai": "10:00–21:30",
+     "Thứ Ba": "10:00–21:30",
+     "Thứ Tư": "10:00–21:30"
+    },
+    "bookingLinks": [
+     "https://m.me/XomChoCu76"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlO0VO367EwFHVXNeLosGT1gE0GpFpCxGo1Ys2orJqYq33Wab73ws-sP_577Ub8Vg4oAXOh73a_ajQZAKvkyIlKl5Kn2qEInMAX5wfWB_lPU28YPlaZws7cqp0o8TolCgEJk-nVnA",
+    "cid": "17877838603436716993",
+    "fid": "0x31752f5272eddd43:0xf81ad77d2d9c73c1",
+    "placeId": "ChIJQ93tclIvdTERwXOcLX3XGvg"
+   },
+   {
+    "position": 2,
+    "title": "Chill Thái - Thai Food",
+    "address": "163 Cô Giang, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.762091999999999,
+    "longitude": 106.6939671,
+    "rating": 4.8,
+    "ratingCount": 4073,
+    "type": "Nhà hàng Thái Lan",
+    "types": [
+     "Nhà hàng Thái Lan"
+    ],
+    "website": "https://www.chillthai.vn/",
+    "phoneNumber": "+84 906 003 539",
+    "openingHours": {
+     "Thứ Năm": "11:00–22:00",
+     "Thứ Sáu": "11:00–22:00",
+     "Thứ Bảy": "11:00–22:00",
+     "Chủ Nhật": "11:00–22:00",
+     "Thứ Hai": "11:00–22:00",
+     "Thứ Ba": "11:00–22:00",
+     "Thứ Tư": "11:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnyZeazrp4ntl9nLFTVoEUkJcMTRkuH3Dwr6Yd4WLQEh5F42vBISKoNKKpLN9mQK3CoBYxrbisVRjMe-MVggLG1n69N8XnqQY4QgdPRniuhXz9onfTcsuHzndA40h0TnHVDcTfpOA",
+    "cid": "13057655073954600262",
+    "fid": "0x31752f2c7fccce15:0xb5361c1b7aa41546",
+    "placeId": "ChIJFc7MfywvdTERRhWkehscNrU"
+   },
+   {
+    "position": 3,
+    "title": "Ghiền Phở VN",
+    "address": "142/18 Cộng Hòa, Tân Sơn Nhất, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.8037345,
+    "longitude": 106.6558975,
+    "rating": 4.4,
+    "ratingCount": 811,
+    "type": "Nhà hàng phở",
+    "types": [
+     "Nhà hàng phở"
+    ],
+    "website": "https://www.facebook.com/dinky.com.vn",
+    "phoneNumber": "+84 934 636 307",
+    "openingHours": {
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00",
+     "Thứ Ba": "10:00–22:00",
+     "Thứ Tư": "10:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm7pFxlUmNIHThEqRZNbBRgKFB76ULgo3oueFHIUN8w2cPSsAYgwRZ3oxEVjoqJe7Xeqc61iwCVU8KXw4rtJ126hK2wDBxkzwR5E_6awI4MfIQ-OBK1e96c_XtB6q4wqvHZL7aA",
+    "cid": "10161585577510817504",
+    "fid": "0x3175294f47536fa3:0x8d05343e8e43cee0",
+    "placeId": "ChIJo29TR08pdTER4M5Djj40BY0"
+   },
+   {
+    "position": 4,
+    "title": "Nhà Hàng Maison Mận-Đỏ",
+    "address": "27J Đ. Trần Nhật Duật, Tân Định, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7931422,
+    "longitude": 106.69019499999999,
+    "rating": 4.6,
+    "ratingCount": 619,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam",
+     "Nhà hàng Pháp thượng hạng",
+     "Nhà hàng lai Á"
+    ],
+    "website": "http://maisonmando.com/",
+    "phoneNumber": "+84 933 774 487",
+    "openingHours": {
+     "Thứ Năm": "14:00–22:00",
+     "Thứ Sáu": "14:00–22:00",
+     "Thứ Bảy": "14:00–22:00",
+     "Chủ Nhật": "14:00–22:00",
+     "Thứ Hai": "14:00–22:00",
+     "Thứ Ba": "14:00–22:00",
+     "Thứ Tư": "14:00–22:00"
+    },
+    "bookingLinks": [
+     "https://maisonmando.com/lien-he",
+     "https://www.google.com/maps/reserve/v/dine/c/IhGMiC_RD1g?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnLK-inL0i2E3nVlt6A08ba3JX2bBpZXb5RB1jXc93ew8kYVDmm4qZzrjdryxotAvKgrktbJTg_zXBtKaqXD2PgfJadPvi01cWPTndWHT__D8sxB1en4mY6bXXpObAMFg6WIGM7",
+    "cid": "6400778564842628826",
+    "fid": "0x31752615cbb637cd:0x58d42231236126da",
+    "placeId": "ChIJzTe2yxUmdTER2iZhIzEi1Fg"
+   },
+   {
+    "position": 5,
+    "title": "D'Maris Cộng Hòa",
+    "address": "Tòa nhà PICO PLAZA, 20 Cộng Hòa, Bảy Hiền, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.8009497,
+    "longitude": 106.6535375,
+    "rating": 4.4,
+    "ratingCount": 3205,
+    "type": "Nhà hàng tiệc đứng",
+    "types": [
+     "Nhà hàng tiệc đứng",
+     "Nhà hàng"
+    ],
+    "website": "https://www.facebook.com/dmarisconghoa/",
+    "phoneNumber": "+84 1900 0010",
+    "openingHours": {
+     "Thứ Năm": "11:30–15:00, 17:00–22:00",
+     "Thứ Sáu": "11:30–15:00, 17:00–22:00",
+     "Thứ Bảy": "11:00–15:00, 17:00–22:00",
+     "Chủ Nhật": "11:00–15:00, 17:00–22:00",
+     "Thứ Hai": "11:30–15:00, 17:00–22:00",
+     "Thứ Ba": "11:30–15:00, 17:00–22:00",
+     "Thứ Tư": "11:30–15:00, 17:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlAcc09M1FtWr9lbjUNADAk_Nfn16-8N5s4g_cYHCk5-l9SIvaxtDRlsOrB43BZ_ezHrNlA_yioXU6Q74PtIIxGorSvrK-nc9gCjteDOn2habpJKpg0p01EPjXfIC9S_NM1iDucag",
+    "cid": "14575810302187692581",
+    "fid": "0x31752937de119023:0xca47ae3e6f606225",
+    "placeId": "ChIJI5AR3jcpdTERJWJgbz6uR8o"
+   },
+   {
+    "position": 6,
+    "title": "Secret Garden - Vietnamese Restaurant",
+    "address": "17-19 Lê Công Kiều, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7703653,
+    "longitude": 106.6996626,
+    "rating": 4.5,
+    "ratingCount": 1048,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam",
+     "Nhà hàng"
+    ],
+    "website": "https://secretgardensaigon.com/",
+    "phoneNumber": "+84 28 3620 5525",
+    "openingHours": {
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00",
+     "Thứ Ba": "10:00–22:00",
+     "Thứ Tư": "10:00–22:00"
+    },
+    "bookingLinks": [
+     "https://book.chope.co/booking?source=google_dining&rid=secretgarden2605vn&rwg_token=AE37R_iuRczhBSmsMfzu_m6akM8kszFij9Gj1MDL5SWF_jM91ieWG06pwACYhF43Mgj5Vovdasi4IIZ5uqSEzEe5iP8DI0ITvvsPok8eQmMieudikEiwT1E%3D",
+     "https://www.facebook.com/Secretgarden.19lecongkieu/",
+     "https://www.google.com/maps/reserve/v/dine/c/gPz2iQjDQ5I?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlNTAt3Mc0vQ7PC8KkYEX1_o0GvyG4kZY9nVYkv3XJzUslQ8lOfRLENRY8-yk3-9PP45TwleZ8heC9BFo2-VIBXxAs0EK0pRKLODyYi8zhLYWHv6vY3kxvgErrRAxL8_d84Hh94",
+    "cid": "17238344503562884473",
+    "fid": "0x31752fa911a01b27:0xef3ae6fe4aac5579",
+    "placeId": "ChIJJxugEakvdTEReVWsSv7mOu8"
+   },
+   {
+    "position": 7,
+    "title": "Hoang's Kitchen",
+    "address": "45 Thủ Khoa Huân, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.774218,
+    "longitude": 106.6966059,
+    "rating": 4.9,
+    "ratingCount": 21138,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam",
+     "Lớp học nấu ăn",
+     "Nhà hàng không có gluten",
+     "Nhà hàng phở",
+     "Nhà hàng",
+     "Nhà hàng cơm",
+     "Nhà hàng xúp",
+     "Nhà hàng món chay",
+     "Nhà hàng cho người ăn chay"
+    ],
+    "website": "https://hoangsrestaurant.com/",
+    "phoneNumber": "+84 912 993 203",
+    "openingHours": {
+     "Thứ Năm": "10:00–23:30",
+     "Thứ Sáu": "10:00–23:30",
+     "Thứ Bảy": "10:00–23:30",
+     "Chủ Nhật": "10:00–23:30",
+     "Thứ Hai": "10:00–23:30",
+     "Thứ Ba": "10:00–23:30",
+     "Thứ Tư": "10:00–23:30"
+    },
+    "bookingLinks": [
+     "https://hcmc.hoangsrestaurant.com/en",
+     "https://www.instagram.com/hoangskitchensg",
+     "https://www.facebook.com/hoangskitchensg/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk2KpbXEqtfrYGUEE4o92MR6IvAUUXVOF4Gmb0D_HSeKIYHiBfNhpkNds2HO1bg2Y5fTavXH_OXFE-jK6usut0GJvqmhgno3iZPuWbHEOw0iVYZzFOzLHNsVoOZ7Os324D8JonWvUM_qA1f",
+    "cid": "17650781498516863260",
+    "fid": "0x31752f7c28d2133d:0xf4f42c414b22791c",
+    "placeId": "ChIJPRPSKHwvdTERHHkiS0Es9PQ"
+   },
+   {
+    "position": 8,
+    "title": "The Log Restaurant",
+    "address": "Rooftop, Gem Center, 8 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.789937,
+    "longitude": 106.702344,
+    "rating": 4,
+    "ratingCount": 945,
+    "type": "Nhà hàng cao cấp",
+    "types": [
+     "Nhà hàng cao cấp"
+    ],
+    "website": "https://thelog.com.vn/",
+    "phoneNumber": "+84 975 002 288",
+    "openingHours": {
+     "Thứ Năm": "18:00–22:30",
+     "Thứ Sáu": "18:00–22:30",
+     "Thứ Bảy": "18:00–22:30",
+     "Chủ Nhật": "18:00–22:30",
+     "Thứ Hai": "18:00–22:30",
+     "Thứ Ba": "18:00–22:30",
+     "Thứ Tư": "18:00–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkB5uEoJ90hceYeHkpF3ncOIVpCnSqQ0poCcIQYzKHefkoh3vPdk4rt4eSBPnhXaLAyZlVepFh15w0GIsFAqQLuESzAhDR0LjMLOZXdpyHYdWuuuoEK_L68Hm5-ryLFjityDOuf",
+    "cid": "12370744325156664940",
+    "fid": "0x317528b527935a7f:0xabadb66bb424766c",
+    "placeId": "ChIJf1qTJ7UodTERbHYktGu2ras"
+   }
+  ],
+  "credits": 3
+ }
+}

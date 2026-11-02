@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "mức lệ phí cấp hộ chiếu phổ thông 2026 200. Bộ Tài chính Thông tư 25/2021/TT-BTC",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:35:54.664Z",
+ "body": {
+  "searchParameters": {
+   "q": "mức lệ phí cấp hộ chiếu phổ thông 2026 200. Bộ Tài chính Thông tư 25/2021/TT-BTC",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Lệ phí làm hộ chiếu là bao nhiêu? [Cập nhật mới nhất]",
+    "link": "https://luatvietnam.vn/thue-phi-le-phi/le-phi-lam-ho-chieu-565-24841-article.html",
+    "snippet": "Khi làm hộ chiếu, người có yêu cầu phải nộp lệ phí theo quy định. Tùy vào yêu cầu cấp mới, cấp lại mà lệ phí làm hộ chiếu sẽ khác nhau.",
+    "date": "18 thg 5, 2024",
+    "position": 1
+   },
+   {
+    "title": "Mức lệ phí làm hộ chiếu năm 2025 và năm 2026",
+    "link": "https://thuvienphapluat.vn/chinh-sach-phap-luat-moi/vn/ho-tro-phap-luat/tu-van-phap-luat/97284/muc-le-phi-lam-ho-chieu-nam-2025-va-nam-2026",
+    "snippet": "1. Lệ phí cấp hộ chiếu (bao gồm hộ chiếu gắn chíp điện tử và hộ chiếu không gắn chíp điện tử) ; a. Cấp mới. 100.000 ; b. Cấp lại do bị hỏng hoặc ...",
+    "date": "28 thg 10, 2025",
+    "position": 2
+   },
+   {
+    "title": "Quy định mới về phí, lệ phí xuất nhập cảnh theo hướng ...",
+    "link": "https://tapchihangkhong.vn/quy-dinh-moi-ve-phi-le-phi-xuat-nhap-canh-theo-huong-chuan-hoa-hoi-nhap-10191.html",
+    "snippet": "Đáng chú ý, lệ phí cấp thẻ ABTC cho doanh nhân Việt Nam được điều chỉnh giảm, còn 840.000 đồng đối với cấp mới và 700.000 đồng khi cấp lại, thấp ...",
+    "date": "3 thg 4, 2026",
+    "position": 3
+   },
+   {
+    "title": "TỪ NGÀY 1/1/2026, BẠN SẼ MẤT QUYỀN LỢI NÀY NẾU ...",
+    "link": "https://www.facebook.com/nhigia/posts/t%E1%BB%AB-ng%C3%A0y-112026-b%E1%BA%A1n-s%E1%BA%BD-m%E1%BA%A5t-quy%E1%BB%81n-l%E1%BB%A3i-n%C3%A0y-n%E1%BA%BFu-ch%C6%B0a-l%C3%A0m-h%E1%BB%99-chi%E1%BA%BFuch%E1%BB%89-c%C3%B2n-g%E1%BA%A7n-1-th%C3%A1ng/1185255553731683/",
+    "snippet": "Từ ngày 1/1/2026, người dân làm hộ chiếu online không còn được giảm 10% lệ phí và sẽ áp dụng mức thu theo quy định tại Thông tư 25/2021/TT-BTC.",
+    "position": 4
+   },
+   {
+    "title": "Lệ phí làm hộ chiếu hết bao nhiêu tiền 2026?",
+    "link": "https://aztax.com.vn/lam-ho-chieu-het-bao-nhieu-tien/",
+    "snippet": "Từ ngày 01/01/2024 đến 31/12/2025, lệ phí là 90% mức thu quy định trong Thông tư 25/2021/TT-BTC. Cấp mới: 180.000 VND/lần. Cấp lại do hỏng hoặc ...",
+    "date": "30 thg 7, 2024",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 5
+   },
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp tỉnh)",
+    "link": "https://xnc-congan.hochiminhcity.gov.vn/wps/portal/xnc/Home/xncvn?1dmy&page=chitiet&urile=wcm%3Apath%3A%2Fxnc-cms%2Fxnc%2Fxncvn%2Fhd-xncvn%2Fhcdt",
+    "snippet": "Phí : 160000 Đồng (+ 160.000/hộ chiếu, trường hợp cấp lại do bị hư hỏng hoặc bị mất: 320.000đ/hộ chiếu (áp dụng đến hết ngày 31/12/2023 theo Thông tư số 44/2023 ...",
+    "position": 6
+   },
+   {
+    "title": "Hết năm 2026, hàng triệu người làm hộ chiếu (passport) ...",
+    "link": "https://eva.vn/tin-tuc/het-nam-2026-hang-trieu-nguoi-lam-ho-chieu-passport-khong-con-duoc-huong-quyen-loi-dac-biet-nay-c73a663055.html",
+    "snippet": "Theo quy định nêu trên, đến hết ngày 31/12/2026, khi làm hộ chiếu (passport) người dân sẽ được giảm 50% mức thu lệ phí theo Thông tư số 25/2021/ ...",
+    "date": "21 thg 2, 2026",
+    "position": 7
+   },
+   {
+    "title": "Hộ chiếu là gì? Tất tần tật những thông tin về hộ chiếu Việt Nam",
+    "link": "https://visana.vn/ho-chieu-viet-nam/",
+    "snippet": "... TT-BTC và Thông tư số 25/2021/TT-BTC, cụ thể như sau: Nội dung, Mức thu(Đồng/lần cấp). Cấp mới hộ chiếu, 100.000. Cấp lại hộ chiếu do bị hỏng ...",
+    "date": "2 thg 7, 2025",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

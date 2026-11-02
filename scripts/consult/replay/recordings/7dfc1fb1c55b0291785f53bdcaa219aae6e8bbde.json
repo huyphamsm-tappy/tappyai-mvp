@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"MacBook Air 13\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:01:59.580Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"MacBook Air 13\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Macbook Air | Chính hãng, thu cũ lên đời giá tốt 10/2026",
+    "link": "https://cellphones.com.vn/laptop/mac/macbook-air.html",
+    "snippet": "Công nghệ True Tone tích hợp giúp tự động điều chỉnh màu sắc theo ánh sáng môi trường, giúp hiển thị chân thực và bảo vệ thị lực. MacBook Air 13 inch. Màn ...",
+    "position": 1
+   },
+   {
+    "title": "MacBook Air M5 13 inch 2026 10CPU 8GPU 16GB 512GB",
+    "link": "https://cellphones.com.vn/macbook-air-13-m5-10-cpu-8-gpu-16gb-512gb.html",
+    "snippet": "MacBook Air M5 13 inch 2026 10CPU 8GPU 16GB 512GB | Chính hãng Apple Việt Nam ; Dán màn hình Apple Macbook Air 13 (M2/M3/M4/M5) Innostyle · 18.000đ. 351.000đ.",
+    "rating": 5,
+    "ratingCount": 12,
+    "position": 2
+   },
+   {
+    "title": "Macbook Air M3 13 inch 2024 | Giá rẻ 10/2026, trả góp 0%",
+    "link": "https://cellphones.com.vn/macbook-air-m3-13-inch-2024.html",
+    "snippet": "Apple Macbook Air 13 M3 – Thiết kế mỏng nhẹ, hiệu năng vượt trội · RAM 8GB cùng dung lượng lưu trữ 256GB mượt mà · Thiết kế siêu mỏng, bàn phím Magic Keyboard.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 3
+   },
+   {
+    "title": "MacBook Air M5 13 inch 2026 10CPU 10GPU 16GB 1TB",
+    "link": "https://cellphones.com.vn/macbook-air-13-m5-10-cpu-10-gpu-16gb-1tb.html",
+    "snippet": "MacBook Air M5 13 inch 2026 10CPU 10GPU 16GB 1TB | Chính hãng Apple Việt Nam · Thông số kỹ thuật · Đặc điểm nổi bật · MacBook Air 13 M5 10 CPU 10 GPU 16GB 1TB - ...",
+    "position": 4
+   },
+   {
+    "title": "Applecare+ cho Macbook Air 13 inch (M4) | Giá rẻ",
+    "link": "https://cellphones.com.vn/dich-vu-apple-care-plus-macbook-air-m4-13-inch.html",
+    "snippet": "Mua Applecare+ cho Macbook Air 13 inch (M4) chính hãng - Giá rẻ, đảm bảo chất lượng, độ bền cao, hỗ trợ giao hàng tận nơi toàn quốc.",
+    "position": 5
+   },
+   {
+    "title": "So sánh MacBook Neo và Air M3",
+    "link": "https://cellphones.com.vn/sforum/so-sanh-macbook-neo-va-macbook-air-m3",
+    "snippet": "Trọng lượng của MacBook Air 13 inch M3 là 1.24kg, nặng hơn một chút so với con số 1.23kg của MacBook Neo. Còn khi xét về màu sắc dành cho người dùng trẻ ...",
+    "position": 6
+   },
+   {
+    "title": "So sánh Apple MacBook Air 13 inch MMGF2 cũ ...",
+    "link": "https://cellphones.com.vn/so-sanh/macbook-air-13-inch-mmgf2-cu-vs-apple-macbook-air-13-inch-128-gb-mqd32-chinh-hang-da-kich-hoat/",
+    "snippet": "So sánh chi tiết về giá, cấu hình, ưu nhược điểm giữa: Apple MacBook Air 13 inch MMGF2 cũ và Apple MacBook Air 13 inch 128GB MQD32 Chính hãng -Đã kích hoạt.",
+    "position": 7
+   },
+   {
+    "title": "So sánh Apple MacBook Air 13 256GB 2020 Cũ ...",
+    "link": "https://cellphones.com.vn/so-sanh/apple-macbook-air-13-2020-256-gb-cu-dep-vs-macbook-pro-13-i5-128gb-2019-cu-dep",
+    "snippet": "So sánh chi tiết về giá, cấu hình, ưu nhược điểm giữa: Apple MacBook Air 13 256GB 2020 Cũ và Macbook Pro 2019 13 inch i5 1.4 128GB - Cũ đẹp.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

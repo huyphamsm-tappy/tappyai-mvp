@@ -4651,3 +4651,30 @@
   .v3-pp-tile, .v3-pp-btn, .v3-pp-cover-btn { transition: none; }
   .v3-pp-tile:hover, .v3-pp-btn:active { transform: none; }
 }
+
+/* chat print */
+/* Owner 02/11: Ctrl+P on a chat printed ONE page. The chat page is one screen tall (`h-dvh`) and only its middle pane scrolls, so
+   the browser printed what that pane showed. On paper the frames grow to the whole conversation, the bars and the composer go, and
+   the dark chat prints as dark text on white (a dark page prints as faint grey on white with the background graphics off). */
+@media print {
+  html, body { height: auto !important; min-height: 0 !important; overflow: visible !important; background: #fff !important; }
+  [data-chat-page],
+  [data-chat-page] > div,
+  [data-chat-page] .h-full,
+  [data-chat-page] [data-chat-scroll],
+  [data-chat-page] [data-chat-scroll] > div {
+    display: block !important;
+    height: auto !important;
+    max-height: none !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+  [data-chat-page] > header,
+  [data-chat-page] nav,
+  [data-chat-page] > .h-16,
+  [data-print-hide] { display: none !important; }
+  [data-chat-page] { color-scheme: light; background: #fff !important; }
+  [data-chat-page] * { color: #111827 !important; background-color: transparent !important; box-shadow: none !important; text-shadow: none !important; }
+  [data-chat-page] a { color: #1d4ed8 !important; }
+  [data-chat-page] img, [data-chat-page] table, [data-chat-page] pre { break-inside: avoid; }
+}

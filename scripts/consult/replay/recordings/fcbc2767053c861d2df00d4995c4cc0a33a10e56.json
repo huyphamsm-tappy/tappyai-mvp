@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "https://deal.tappy-eval.test/airpods-pro-2-gia-soc AirPods Pro 2 1,99 triệu shop đánh giá",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:12:25.530Z",
+ "body": {
+  "searchParameters": {
+   "q": "https://deal.tappy-eval.test/airpods-pro-2-gia-soc AirPods Pro 2 1,99 triệu shop đánh giá",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "MY FIRST EXPERIENCE WITH AIRPODS PRO 2",
+    "link": "https://www.youtube.com/watch?v=GWEW2q5oK3I",
+    "snippet": "LẦN ĐẦU TRẢI NGHIỆM AIRPODS PRO 2 - CŨNG NGON ĐẤY, NHƯNG KHÔNG HỀ RẺ Nếu bạn đang muốn tìm cho mình một chiếc tai nghe ANC với giá phải ...",
+    "position": 1
+   },
+   {
+    "title": "Dùng vẫn quá ngon, đáng mua hơn cả AirPods Pro 3?",
+    "link": "https://www.youtube.com/watch?v=hUfwBGkrZ3A",
+    "snippet": "2024 mua con AirPods Pro 2 cũ giá 3 triệu, phải nói là đáng cmn tiền nhất luôn rồi. Chống ồn hay Xuyên âm thì nó vẫn cứ là ngon, ...",
+    "position": 2
+   },
+   {
+    "title": "So Sánh Các Phiên Bản AirPods",
+    "link": "https://www.apple.com/vn/airpods/compare/",
+    "snippet": "Các sản phẩm bao gồm hộp sạc đã qua kiểm nghiệm trong điều kiện phòng thí nghiệm có kiểm soát. AirPods 5 và AirPods Pro 3 đạt mức IP57 và AirPods Pro 2 đạt mức ...",
+    "position": 3
+   },
+   {
+    "title": "Đánh Giá AirPods Pro 2 của Apple - Từ Góc Nhìn ...",
+    "link": "https://www.reddit.com/r/headphones/comments/xnccoz/apple_airpods_pro_2_review_from_a_consumers/?tl=vi",
+    "snippet": "Thế hệ thứ hai của AirPods Pro có chip H2, kết nối Bluetooth 5.3, với những cải tiến về chất lượng âm thanh và khả năng Chống ồn chủ động (ANC) ...",
+    "position": 4
+   },
+   {
+    "title": "Đánh Giá Airpods Pro 2 sau gần 1 tháng sử dụng",
+    "link": "https://tinhte.vn/thread/danh-gia-airpods-pro-2-sau-gan-1-thang-su-dung.3608810/",
+    "snippet": "Treble của Airpods Pro 2 chắc mình không nói quá nhiều đâu, đây là một chiếc tai nghe với âm trường khá ổn, nhất là khi ae nghe với Spatial ...",
+    "date": "16 thg 12, 2022",
+    "rating": 4.8,
+    "ratingCount": 19,
+    "position": 5
+   },
+   {
+    "title": "Đánh Giá Tai Nghe AirPods 2 Năm 2025",
+    "link": "https://www.tiktok.com/@namkhanhstore09/video/7541405038380453136",
+    "snippet": "Năm 2025 rồi, liệu AirPods 2 còn đáng để sử dụng hay nên nâng cấp sang đời mới hơn? Cùng Nam Khánh chia sẻ ý kiến của bạn nhé! #AirPods2 # ...",
+    "position": 6
+   },
+   {
+    "title": "AirPods Pro 2 review: fantastic wireless earbuds for Apple ...",
+    "link": "https://www.techradar.com/reviews/airpods-pro-2",
+    "snippet": "A new H2 chip powers these true wireless earbuds bringing greater sonic performance and excellent noise cancellation, as well as improved ...",
+    "date": "26 thg 1, 2024",
+    "position": 7
+   },
+   {
+    "title": "Review AirPods Pro 2: Still worth buying for iDevice brothers",
+    "link": "https://www.youtube.com/watch?v=6FNhma5-7xc",
+    "snippet": "Tai nghe AirPods Pro 2 là chiếc tai nghe true wireless mà mình sẵn sàng recommend cho bạn bè khi cần tai nghe chống ồn chủ động (ANC) mà xài ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

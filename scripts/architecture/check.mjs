@@ -42,6 +42,16 @@ const SERVICE_ROLE_FLAG_READ = 'src/app/api/users/search/route.ts'
 /** The only module that may read a forwarded-IP header (P3-F1 / S-2). */
 const RATE_LIMIT = 'src/lib/security/rateLimit.ts'
 
+// Documented exception (owner B1, 29 Oct 2026), three TEST files by exact path, three rules only (model ids, facade bypass,
+// vendor keys). They prove the spend gate and the per-turn web ticket at the SDK seam the production code wraps: a fake
+// `streamText`/`generateText` model, a fake OpenAI completion carrying a model id, a dummy key. No production file is
+// exempt, no other test is, and no other rule is relaxed for them.
+const SPEND_GATE_SDK_FIXTURES = [
+  'src/lib/ai/budget/spendGate.llm.test.ts',
+  'src/lib/ai/budget/spendGate.openai.test.ts',
+  'src/lib/ai/tools/turnWebTicket.als.test.ts',
+]
+
 // ── Commerce Capability Platform (CCP) zones ─────────────────────────────────
 // Merchant URL grammars and affiliate-network knowledge live ONLY under
 // src/lib/ccp (adapters + registry + tracking). The AI layer, tools and clients
@@ -87,6 +97,51 @@ const CONTROLLER_ALLOWED_IMPORTS = /@\/(?:lib\/(?:admin|controller|security)\/|l
 // constant, so a permission no manifest declares cannot be referenced.
 const PERMISSION_REGISTRY = 'src/lib/admin/permissions/'
 
+// ── Tappy Business — the commerce data boundary ──────────────────────────────
+//
+// The nine tables below hold merchant catalogues and, in `business_orders`,
+// customers' real names, phone numbers and delivery addresses. All nine grant
+// privileges to `service_role` alone with RLS enabled and NO policies, which
+// means the database has no row-level opinion about who is asking: whatever the
+// application selects, it gets.
+//
+// So merchant isolation is entirely a property of the query, and a query that
+// forgets `merchant_id` returns another merchant's customers with no error. The
+// scoping lives in `src/lib/business/authz.ts`, but calling it was only ever a
+// convention — and a convention is not a boundary.
+//
+// This is the boundary: the table NAMES are reachable only from the data-access
+// layer, so a query written anywhere else in src/ fails CI. It is the same
+// shape as the messenger-table fence, and for the same reason — when a store
+// cannot defend itself, the fence goes around the name.
+//
+// The directory is `repositories/`, not the whole of `src/lib/business/`:
+// `authz.ts`, `ids.ts` and `money.ts` have no business reaching a table, and
+// allowing the parent directory would let a future file put a query beside the
+// authorization code that is supposed to gate it.
+const BUSINESS_DATA_LAYER = 'src/lib/business/repositories/'
+
+const BUSINESS_TABLES = [
+  'business_merchants',
+  'business_merchant_terms_acceptances',
+  'business_products',
+  'business_product_option_groups',
+  'business_product_option_values',
+  'business_orders',
+  'business_order_items',
+  'business_order_status_history',
+  'business_product_reports',
+]
+
+// Longest first. No current name is a prefix of another — `business_products`
+// needs the `s` that `business_product_option_groups` does not have — so today
+// this changes nothing. It is ordered anyway because the day someone adds
+// `business_order` beside `business_orders`, an unordered alternation would
+// match the short one first and quietly stop checking the long one.
+const BUSINESS_TABLE_ALTERNATION = [...BUSINESS_TABLES]
+  .sort((a, b) => b.length - a.length)
+  .join('|')
+
 // ── Rules ────────────────────────────────────────────────────────────────────
 // id/title show in the report; patterns run per source line (comments stripped);
 // allow = path prefixes exempt from the rule; hint = how to fix.
@@ -125,7 +180,7 @@ const RULES = [
       /\bllama-?\d/i,
       /\bmistral-(large|medium|small|\d)/i,
     ],
-    allow: [PROVIDER_LAYER],
+    allow: [PROVIDER_LAYER, ...SPEND_GATE_SDK_FIXTURES],
     hint: "pass a semantic role instead: AI.generate({ role: 'fast' | 'smart' | 'planning' | 'vision' }). Concrete ids belong in the adapter's DEFAULT_MODELS or LLM_*_MODEL env.",
   },
   {
@@ -134,7 +189,7 @@ const RULES = [
     patterns: [
       /\b(ANTHROPIC|OPENAI|GEMINI|GOOGLE_GENERATIVE_AI|XAI|GROK|DEEPSEEK|MISTRAL|TOGETHER|FIREWORKS)_API_KEY\b/,
     ],
-    allow: [PROVIDER_LAYER],
+    allow: [PROVIDER_LAYER, ...SPEND_GATE_SDK_FIXTURES],
     hint: 'use AI.isConfigured() to gate on credentials. Only the matching adapter may read its vendor key.',
   },
   {
@@ -162,7 +217,7 @@ const RULES = [
       /\bembed\s*\(/,
       /import\s*\{[^}]*\b(generateText|streamText|generateObject|streamObject|embedMany)\b[^}]*\}\s*from\s*['"]ai['"]/,
     ],
-    allow: [AI_LAYER],
+    allow: [AI_LAYER, ...SPEND_GATE_SDK_FIXTURES],
     hint: "business code reaches models only through AI.generate / AI.stream / AI.vision from '@/lib/ai/llm'. (Importing { tool } or types from 'ai' is fine — tool defs are neutral.)",
   },
   {
@@ -230,6 +285,15 @@ const RULES = [
     ],
     allow: [SUPABASE_ADMIN, SERVICE_ROLE_FLAG_READ],
     hint: 'import { createAdminClient } from "@/lib/supabase/admin". A hand-rolled client omits the auth hardening (autoRefreshToken:false, persistSession:false) and quietly becomes a second admin factory — Component 9a removed two of those.',
+  },
+  {
+    id: 'no-privileged-client-in-chat',
+    title: 'Service-role client inside the chat route',
+    patterns: [/\bcreateAdminClient\b/],
+    allow: [],
+    scope: ['src/app/api/chat/'],
+    exemptTests: true,
+    hint: 'use the request-scoped client `getRequestUser` already returned (held as `evidenceDb`). /api/chat is the most-attacked surface in the product and it no longer performs a privileged operation: memory writes go through the caller\'s own client, so RLS refuses a row that is not theirs even if updateMemory\'s user_id pinning were ever broken. Keeping it unprivileged is also what would let this route move to a deployment that does not hold the service-role key.',
   },
   {
     id: 'no-adhoc-forwarded-ip',
@@ -343,6 +407,24 @@ const RULES = [
     // Tests set/unset the publisher id as an env fixture; runtime reads stay in tracking/.
     exemptTests: true,
     hint: 'only src/lib/ccp/tracking/* may read affiliate credentials (mirrors no-vendor-api-keys for the AI layer). Gate on isAccesstradeConfigured() elsewhere.',
+  },
+
+  // ── Tappy Business — the commerce data boundary ────────────────────────────
+  {
+    id: 'no-business-tables-outside-data-layer',
+    title: 'Tappy Business tables reached outside the Business data layer',
+    patterns: [
+      // The Supabase call shape, named explicitly so the common violation
+      // reports against the line a reader expects.
+      new RegExp(`\\bfrom\\(\\s*['"\`](?:${BUSINESS_TABLE_ALTERNATION})['"\`]\\s*\\)`),
+      // And the table name in ANY string literal. Broader on purpose: a helper
+      // that builds the query one layer away, a `.rpc()` argument, or a raw SQL
+      // template would all slip past a call-shape-only pattern, and each of them
+      // reaches the same unguarded rows.
+      new RegExp(`['"\`](?:${BUSINESS_TABLE_ALTERNATION})['"\`]`),
+    ],
+    allow: [BUSINESS_DATA_LAYER],
+    hint: 'Business rows are reachable only from src/lib/business/repositories/. Add or extend a repository function there, taking MerchantContext as its first argument, and call that instead — the tables grant to service_role with RLS carrying no policies, so an unscoped query returns another merchant\'s customers with no error to notice. Prose in a comment is fine: comments are stripped before matching.',
   },
 ]
 

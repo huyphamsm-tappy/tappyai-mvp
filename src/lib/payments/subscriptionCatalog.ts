@@ -8,19 +8,23 @@
 // (the clients then draw the initial on the plan colour). Character names are never translated.
 // Internal notes, previous prices, targets: never here.
 
-import { PAID_PLAN_IDS, PLAN_CONFIG, aiQuotaFor, type PaidPlanId } from '@/lib/plans/planConfig'
+import { SALE_PLAN_IDS, PLAN_CONFIG, aiQuotaFor, type PaidPlanId } from '@/lib/plans/planConfig'
 import { monthlyApproxVnd } from '@/lib/plans/subscriptionPrices'
 import type { TappyPose } from '@/components/TappyMascot'
 
 /** Plan colour = the placeholder background until the character image exists. Design tokens, not hex. */
 // Plan colours follow Huy's mockup: Pip pink, Momo green, Coco blue, Milo violet, Sunny orange.
 // `pose` = the existing Tappy pose shown until Huy's character art for the plan exists.
-const CHARACTER: Readonly<Record<PaidPlanId, { color: string; pose: TappyPose; imageEnv: string }>> = Object.freeze({
-  pip: { color: 'pink', pose: 'searching', imageEnv: 'SUBSCRIPTION_IMAGE_PIP' },
-  momo: { color: 'green', pose: 'wave', imageEnv: 'SUBSCRIPTION_IMAGE_MOMO' },
-  coco: { color: 'blue', pose: 'travel', imageEnv: 'SUBSCRIPTION_IMAGE_COCO' },
-  milo: { color: 'violet', pose: 'reading', imageEnv: 'SUBSCRIPTION_IMAGE_MILO' },
-  sunny: { color: 'orange', pose: 'welcome', imageEnv: 'SUBSCRIPTION_IMAGE_SUNNY' },
+// Owner 01/11/2026: the character follows the name shown - plan `pip` is MoMo, `momo`/`coco` are Coco, `promax*` are Tappy
+// (`image` = the art file in /public/subscription).
+const CHARACTER: Readonly<Record<PaidPlanId, { color: string; pose: TappyPose; imageEnv: string; image: string }>> = Object.freeze({
+  pip: { color: 'green', pose: 'wave', imageEnv: 'SUBSCRIPTION_IMAGE_MOMO', image: 'momo' },
+  momo: { color: 'blue', pose: 'travel', imageEnv: 'SUBSCRIPTION_IMAGE_COCO', image: 'coco' },
+  coco: { color: 'blue', pose: 'travel', imageEnv: 'SUBSCRIPTION_IMAGE_COCO', image: 'coco' },
+  promax1m: { color: 'orange', pose: 'welcome', imageEnv: 'SUBSCRIPTION_IMAGE_TAPPY', image: 'tappy' },
+  promax3m: { color: 'orange', pose: 'welcome', imageEnv: 'SUBSCRIPTION_IMAGE_TAPPY', image: 'tappy' },
+  milo: { color: 'violet', pose: 'reading', imageEnv: 'SUBSCRIPTION_IMAGE_MILO', image: 'milo' },
+  sunny: { color: 'orange', pose: 'welcome', imageEnv: 'SUBSCRIPTION_IMAGE_SUNNY', image: 'sunny' },
 })
 
 export interface SubscriptionPlanCard {
@@ -55,14 +59,14 @@ export interface SubscriptionCatalog {
 }
 
 /** The character art: the owner-supplied images shipped in /public/subscription; an https env override wins (CDN swap, no redeploy of art). */
-function imageUrl(env: NodeJS.ProcessEnv, key: string, id: PaidPlanId): string {
+function imageUrl(env: NodeJS.ProcessEnv, key: string, image: string): string {
   const v = env[key]?.trim()
-  return v && /^https:\/\/[^\s"'<>]+$/.test(v) ? v : `/subscription/${id}.webp`
+  return v && /^https:\/\/[^\s"'<>]+$/.test(v) ? v : `/subscription/${image}.webp`
 }
 
 export function subscriptionCatalog(opts: { forApp?: boolean; env?: NodeJS.ProcessEnv } = {}): SubscriptionCatalog {
   const env = opts.env ?? process.env
-  const plans = PAID_PLAN_IDS.map((id): SubscriptionPlanCard => {
+  const plans = SALE_PLAN_IDS.map((id): SubscriptionPlanCard => {
     const p = PLAN_CONFIG[id]
     const card: SubscriptionPlanCard = {
       id,
@@ -71,7 +75,7 @@ export function subscriptionCatalog(opts: { forApp?: boolean; env?: NodeJS.Proce
       dailyAiQuestions: aiQuotaFor(id).limit,
       storeProductId: p.storeProductId!,
       storeAutoRenew: p.storeAutoRenew !== false,
-      character: { color: CHARACTER[id].color, pose: CHARACTER[id].pose, imageUrl: imageUrl(env, CHARACTER[id].imageEnv, id) },
+      character: { color: CHARACTER[id].color, pose: CHARACTER[id].pose, imageUrl: imageUrl(env, CHARACTER[id].imageEnv, CHARACTER[id].image) },
       badge: p.subscriptionBadge ?? null,
       priceUsd: p.priceUsd!,
       trialOnce: id === 'pip',

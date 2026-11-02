@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:moj.gov.vn lệ phí cấp hộ chiếu 2026 thông tư 2025 2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:03:17.306Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:moj.gov.vn lệ phí cấp hộ chiếu 2026 thông tư 2025 2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Trang chủ | CSDL quốc gia về pháp luật",
+    "link": "https://vbpl.moj.gov.vn/bogiaoducdaotao/Pages/vanban.aspx?cqbh=16",
+    "snippet": "65/2026/TT-BCT. Ngày ban hành:01/10/2026. Thông tư số 65/2026/TT-BCT Quy định chi tiết một số điều và biện pháp thi hành Nghị định số 365/2026/NĐ-CP ngày 23 ...",
+    "position": 1
+   },
+   {
+    "title": "Bộ Tư pháp tái cấu trúc thủ tục cấp chứng chỉ hành nghề ...",
+    "link": "https://dx.moj.gov.vn/portal/tin-tuc/chi-tiet/bo-tu-phap-tai-cau-truc-thu-tuc-cap-chung-chi-hanh-nghe-quan-tai-vien-dua-tren-du-lieu-so-tmj4e53fc7.html",
+    "snippet": "Tuy nhiên, nhằm hỗ trợ người dân và doanh nghiệp, mức phí thẩm định hiện được giảm 50%, chỉ còn 400.000 đồng/hồ sơ áp dụng từ ngày 01/7/2025 đến ...",
+    "date": "1 ngày trước",
+    "position": 2
+   },
+   {
+    "title": "Chi tiết văn bản",
+    "link": "https://moj.gov.vn/portal/thu-tuc-hanh-chinh/chi-tiet-2.002363.html",
+    "snippet": "... lệ phí do Hội đồng nhân dân cấp tỉnh quy định. - Miễn lệ phí cho người thuộc gia đình có công với cách mạng; người thuộc hộ nghèo; người khuyết tật. - Phí cấp ...",
+    "position": 3
+   },
+   {
+    "title": "CÔNG TY ĐẤU GIÁ HỢP DANH QUỐC GIA VIỆT NAM",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/thong-bao-quy-che-52-1-2026-01a08a6f3e427462a4c0129b38e0ba9e.pdf",
+    "snippet": "- Địa chỉ nơi thường trú;. - Giới tính;. - Số căn cước công dân/hộ chiếu; ngày cấp; nơi cấp. - Tải lên Trang thông tin điện tử đấu giá trực ...",
+    "date": "10 thg 9, 2026",
+    "position": 4
+   },
+   {
+    "title": "PHỤ LỤC THỦ TỤC HÀNH CHÍNH ĐƯỢC SỬA ĐỔI, BỔ ...",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/5-pl-1787627316430-01a06b91538f7499a5520b5afba61de9.pdf",
+    "snippet": "Phí, Lệ phí (nếu có): Thực hiện theo Điều 5 và 6 Thông tư số. 72/2026/TT ... - Thông tư số 06/2026/TT-BTP ngày 16/5/2026 của Bộ trưởng Bộ Tư pháp hướng ...",
+    "position": 5
+   },
+   {
+    "title": "Untitled - Đấu giá tài sản",
+    "link": "https://dgts.moj.gov.vn/du-lieu-dau-gia-truc-tuyen/thong-bao-lua-chon/3188/tep/12162",
+    "snippet": "giá tài sản cung cấp báo giá và hồ sơ liên quan phục vụ cho việc lựa chọn đơn vị cung cấp dịch vụ đấu giá gạo dự trữ quốc gia thuộc chỉ tiêu ...",
+    "date": "24 thg 9, 2026",
+    "position": 6
+   },
+   {
+    "title": "thành phố hồ chí minh trung tâm dịch vụ đấu giá tài sản",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/qc-14024-01a0f2be3b957532a2384b4c9c14c657.pdf",
+    "snippet": "Căn cứ Thông tư số 03/2025/TT-BTC ngày 22/01/2025 của Bộ Tài chính;. Căn cứ Hợp đồng dịch vụ đấu giá tài sản số 659/HĐ-ĐG ngày 24/8/2026 và.",
+    "date": "29 thg 9, 2026",
+    "position": 7
+   },
+   {
+    "title": "Căn cứ Điều 83 Luật Thi hành án dân sự số 106/2025/QH15",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/kv10-tb-2429-22-09-2026-tb-ban-tai-san-01a0c874ab677169a5272caeb271bce0.pdf",
+    "snippet": "✓ Địa chỉ theo hộ khẩu thường trú;. ✓ Giới tính;. ✓ Căn cước công dân/Căn cước/hộ chiếu; ngày cấp; nơi cấp. ✓ Tải lên Trang thông tin đấu ...",
+    "date": "22 thg 9, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

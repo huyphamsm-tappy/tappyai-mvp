@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "tai nghe chống ồn ANC thể thao chạy bộ dưới 3 triệu chống nước IPX (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:12:51.592Z",
+ "body": {
+  "searchParameters": {
+   "q": "tai nghe chống ồn ANC thể thao chạy bộ dưới 3 triệu chống nước IPX (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe chống nước chơi thể thao, bơi lội [BỀN RẺ]",
+    "link": "https://cellphones.com.vn/bo-loc/tai-nghe-chong-nuoc",
+    "snippet": "Có mic đàm thoại; Chống ồn; Điều khiển giọng nói; Xuyên âm; Sạc không dây; Chống nước; Có app phiên dịch; Chống ồn chủ động ANC. Cổng kết nối.",
+    "position": 1
+   },
+   {
+    "title": "Tạp hoá Công Nghệ NEW, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/taphoacongnghenew",
+    "snippet": "flag-label Tai Nghe Bluetooth 5.4 OWS Móc Tai Thể Thao ... 4. Tai Nghe Bluetooth 5.5 M76, Âm Thanh HiFi, Không Đau Tai, Chống Nước IPX, Bảo Hành 12 Tháng.",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe tai mở siêu nhẹ ASUS Adol OWS-J118 Dây nhớ ...",
+    "link": "https://shopee.vn/Tai-nghe-tai-m%E1%BB%9F-si%C3%AAu-nh%E1%BA%B9-ASUS-Adol-OWS-J118-D%C3%A2y-nh%E1%BB%9B-m%E1%BB%81m-C%C3%B4ng-th%C3%A1i-h%E1%BB%8Dc-Fit-IPX-Tai-nghe-th%E1%BB%83-thao-ch%E1%BB%91ng-n%C6%B0%E1%BB%9Bc-c%C3%B3-tu%E1%BB%95i-th%E1%BB%8D-pin-d%C3%A0i-%C4%91%E1%BB%83-ch%E1%BA%A1y-ph%C3%B2ng-t%E1%BA%ADp-th%E1%BB%83-d%E1%BB%A5c-i.768354594.57368506223",
+    "snippet": "Tai nghe tai mở siêu nhẹ ASUS Adol OWS-J118 Dây nhớ mềm Công thái học Fit IPX Tai nghe thể thao chống nước có tuổi thọ pin dài để chạy phòng tập thể dục.",
+    "position": 3
+   },
+   {
+    "title": "tai nghe chống ồn giá tốt Tháng 8, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=tai%20nghe%20ch%E1%BB%91ng%20%E1%BB%93n",
+    "snippet": "MINISO MS106 Tai Nghe Bluetooth Ko Dây Gian Thực Giảm Tiếng Ồn ANC Chơi Game Chống Nước IPX5 Âm Thanh Chính Hãng. 239.000₫. 350.000₫. -32%. Mua 2 & giảm 3%.",
+    "position": 4
+   },
+   {
+    "title": "Nothing ear - Giá Tốt, Sale Tháng 10, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/nothing%20ear",
+    "snippet": "Tai nghe bluetooth soundcore R50i NC | Chống ồn ANC | Chống nước và bụi IP54 ... Tai Nghe Bluetooth 1Hora ANC Tai Nghe Thể Thao Khử Tiếng Ồn - Trợ Lý AI.",
+    "position": 5
+   },
+   {
+    "title": "Tai nghe Sony bluetooth chống ồn, chính hãng [GIẢM 47%]",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe/sony.html",
+    "snippet": "Tai nghe Bluetooth chụp tai Sony WH-CH520 ; Hãng sản xuất. Sony ; Tính năng. Có mic đàm thoại; Điều khiển giọng nói; Chống ồn; Xuyên âm; Chống ồn chủ động ANC",
+    "position": 6
+   },
+   {
+    "title": "Tai nghe ip7 - Giá Tốt, Sale Tháng 10, Freeship 0Đ",
+    "link": "https://shopee.vn/list/tai%20nghe/ip7",
+    "snippet": "... Tai nghe âm trầm âm thanh nổi, Tai nghe lấy tai, Chống nước cấp độ IP7, Thích hợp cho thể thao / chạy bộ / tập thể dục. 990.000₫.",
+    "position": 7
+   },
+   {
+    "title": "Tai nghe In-ear vs Earbuds là gì? So sánh chi tiết ...",
+    "link": "https://cellphones.com.vn/sforum/in-ear-vs-earbuds",
+    "snippet": "Đặc điểm nhận diện của dòng Earbud là phần củ loa dạng tròn hoặc hình bán nguyệt, được thiết kế nguyên khối mà không có các đầu đệm cao su rời.",
+    "date": "3 thg 3, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

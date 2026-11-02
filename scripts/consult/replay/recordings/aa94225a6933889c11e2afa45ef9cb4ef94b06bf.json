@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "BBC Learning English English speaking practice daily lessons",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:34:23.649Z",
+ "body": {
+  "searchParameters": {
+   "q": "BBC Learning English English speaking practice daily lessons",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "BBC Learning English",
+    "link": "https://www.youtube.com/user/bbclearningenglish",
+    "snippet": "Learn English with the BBC. We publish new videos, shorts, podcasts, tutorials and lessons every week to help you learn and improve your English speaking, ...",
+    "position": 1
+   },
+   {
+    "title": "BBC Learning English - The English We Speak",
+    "link": "https://www.bbc.co.uk/learningenglish/features/the-english-we-speak",
+    "snippet": "In under 3 minutes, we help you stay ahead of the pack by giving you 'must have' phrases that you can use in your everyday conversation. Amaze your friends, ...",
+    "position": 2
+   },
+   {
+    "title": "BBC Learning English",
+    "link": "https://www.bbc.co.uk/learningenglish/",
+    "snippet": "Real Easy English. 6 Minute English. The English We Speak. Learning English from the News. New series: How we talk about the weather. Learn language to talk ...",
+    "position": 3
+   },
+   {
+    "title": "How to talk about your daily routine: Easy English ...",
+    "link": "https://www.youtube.com/watch?v=bq6GBbh3uhU",
+    "snippet": "What do our presenters do every day? What do they eat for breakfast? Learn some basic verbs in Easy English Conversations!",
+    "position": 4
+   },
+   {
+    "title": "BBC Learning English - Business English",
+    "link": "https://www.bbc.co.uk/learningenglish/business-english",
+    "snippet": "Learn English with these free learning English videos and materials from BBC Learning English. This site will help you learn English and improve your ...",
+    "position": 5
+   },
+   {
+    "title": "What to do when you forget the words: Live English Class",
+    "link": "https://www.youtube.com/watch?v=2VEyd3pL88Q",
+    "snippet": "Speaking practice: What to do when you forget the words: Live English Class ... BBC Learning English•122K views.",
+    "position": 6
+   },
+   {
+    "title": "BBC Learning English - Hard Courses",
+    "link": "https://www.bbc.co.uk/learningenglish/hard_course",
+    "snippet": "Learn about our world. Listen to authentic English on fascinating topics in 6 Minute English. Learn vocabulary from the news in Learning English from the News.",
+    "position": 7
+   },
+   {
+    "title": "Practise English speaking skills | LearnEnglish",
+    "link": "https://learnenglish.britishcouncil.org/free-resources/speaking",
+    "snippet": "Speaking practice to help you learn useful language for everyday communication. Situations include responding to news, meeting face-to-face and asking a favour.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

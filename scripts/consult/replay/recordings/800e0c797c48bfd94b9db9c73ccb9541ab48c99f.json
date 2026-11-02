@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hoff Coffee Brewers by BeanHop\" OR \"Mockingbird Cafe\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:28:43.373Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hoff Coffee Brewers by BeanHop\" OR \"Mockingbird Cafe\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Discover Local Flavors at Mockingbird Cafe in Long Beach ...",
+    "link": "https://www.tiktok.com/@mississippi_kween/video/7490987130953436447",
+    "snippet": "Discover Local Flavors at Mockingbird Cafe in Long Beach, MS. Join us on a food review of Mockingbird Cafe, highlighting the best dishes on the ...",
+    "position": 1
+   },
+   {
+    "title": "Mockingbird Cafe Birgunj — Visit Our Cafe",
+    "link": "https://www.tiktok.com/@mocking.bird80/video/7691301310943055110",
+    "snippet": "This video invites viewers to visit Mockingbird Cafe in Birgunj. The content centers on the cafe and includes clips or footage meant to ...",
+    "position": 2
+   },
+   {
+    "title": "faveeee😍🙌🏽 - @Mockingbird Cafe - #coffee - #baystlouis - #ms",
+    "link": "https://www.tiktok.com/@lacycavalier/video/7658703266296958239",
+    "snippet": "38 Likes, TikTok video from Lacy Cavalier (@lacycavalier): “faveeee @Mockingbird Cafe #coffee #baystlouis #ms #gulfcoast”. coffee shop. fav coffee ...",
+    "position": 3
+   },
+   {
+    "title": "Mockingbird Cafe (@mockingbirdcafebsl)",
+    "link": "https://www.tiktok.com/@mockingbirdcafebsl",
+    "snippet": "Mockingbird Cafe (@mockingbirdcafebsl) on TikTok | 599 Likes. 700 Followers. Watch the latest video from Mockingbird Cafe (@mockingbirdcafebsl).",
+    "position": 4
+   },
+   {
+    "title": "Discover My Poetry Vending Machine at Mockingbird Cafe",
+    "link": "https://www.tiktok.com/@239studios/video/7638256526330776845",
+    "snippet": "My vending machine has a home! If you're around the Mississippi gulf coast, go check it out at the Mockingbird Cafe in Bay St Louis! #whimsical ...",
+    "position": 5
+   },
+   {
+    "title": "Mockingbird Cafe Bay St. Louis — cutest little cafe",
+    "link": "https://www.tiktok.com/@kyliemikal/video/7657722724147612958",
+    "snippet": "Mockingbird Cafe sits at 110 S 2nd St, Bay St. Louis, MS 39520, and the moment you step inside you notice why locals call it the cutest little cafe.",
+    "position": 6
+   },
+   {
+    "title": "Must-Try Dishes at The Mockingbird Cafe in Bay St. Louis",
+    "link": "https://www.tiktok.com/@bayleehayes/video/7616541826480180494",
+    "snippet": "If you're in Bay St. Louis, The Mockingbird Cafe is a MUST try! I'm still thinking about the avacado toast and their biscuits and gravy #foodie #baystlouis ...",
+    "position": 7
+   },
+   {
+    "title": "Visit Mockingbird Cafe for a Cozy Experience",
+    "link": "https://www.tiktok.com/@mocking.bird80/video/7604721834696690962",
+    "snippet": "Mockingbird Cafe, located conveniently near the bus park in Birgunj, offers a cozy atmosphere perfect for those looking to relax and unwind.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -85,8 +85,9 @@ export function pickUrls(v: unknown, deepLinkField?: unknown): { web: unknown; a
 const KEY_ALIASES: Record<string, string[]> = {
   checkIn: ['checkin', 'checkIn', 'check_in', 'checkin_date'],
   checkOut: ['checkout', 'checkOut', 'check_out', 'checkout_date'],
-  adults: ['adults', 'group_adults', 'numberOfAdults', 'adult'],
-  rooms: ['rooms', 'no_rooms', 'numberOfRooms'],
+  // 30/10: the Agoda Lite API's landingURL writes "NumberofAdults" and "Rooms" (Affiliate_Lite_API_V2.0.pdf, response example).
+  adults: ['adults', 'group_adults', 'numberOfAdults', 'NumberofAdults', 'adult'],
+  rooms: ['rooms', 'no_rooms', 'numberOfRooms', 'Rooms'],
 }
 const FIELD_VALUE: Record<string, (c: BookingContext) => string | undefined> = {
   checkIn: c => c.checkIn,

@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "AirPods Pro 2 chính hãng Việt Nam (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:16:02.683Z",
+ "body": {
+  "searchParameters": {
+   "q": "AirPods Pro 2 chính hãng Việt Nam (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe Apple AirPods Pro 2 2023 USB-C | Giá rẻ, góp 0%",
+    "link": "https://cellphones.com.vn/apple-airpods-pro-2-usb-c.html",
+    "snippet": "Tai nghe Bluetooth Apple AirPods Pro 2 2023 USB-C | Chính hãng Apple Việt Nam ; Micro. Có ; Phương thức điều khiển. Cảm ứng chạm ; Giá sản phẩm. 6.190.000đ 4.990.",
+    "rating": 4.9,
+    "ratingCount": 50,
+    "position": 1
+   },
+   {
+    "title": "Tai nghe AirPods 2 giá rẻ | Tặng đến 3 tháng Apple Music",
+    "link": "https://cellphones.com.vn/apple-airpods-2.html",
+    "snippet": "Tai nghe Bluetooth Apple AirPods 2 | Chính hãng Apple Việt Nam ; Micro. Có ; Phương thức điều khiển. Chạm 2 lần ; Phạm vi kết nối. 10 m ; Giá sản phẩm. 3.990.000đ ...",
+    "rating": 4.9,
+    "ratingCount": 85,
+    "position": 2
+   },
+   {
+    "title": "Tai nghe Apple Airpods, Earpod | Giá rẻ 10/2026, Góp 0%",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe/apple.html",
+    "snippet": "Bảng giá AirPods mới 10/2026 ; Tai nghe Apple EarPods Lightning MWTY3ZA/A | Chính hãng Apple Việt Nam. 510.000đ ; Tai nghe Bluetooth Apple AirPods Pro 3 2025 Type ...",
+    "position": 3
+   },
+   {
+    "title": "Tai nghe Apple Airpods Pro chính hãng | Giá sốc 10/2026",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe/apple/airpods-pro.html",
+    "snippet": "Mua tai nghe Apple Airpods Pro giá rẻ - Trả góp 0%, Không phụ phí, Không trả trước, thu cũ đổi mới, giao nhanh 2h. Mua ngay Airpod Pro tại đây.",
+    "position": 4
+   },
+   {
+    "title": "Hướng dẫn cách sử dụng AirPods Pro 2 đơn giản chi tiết",
+    "link": "https://cellphones.com.vn/sforum/cach-su-dung-airpods-pro-2",
+    "snippet": "Tương tự AirPods Pro thế hệ đầu, AirPods Pro 2 sử dụng cảm biến lực ở thân tai nghe thay vì thao tác chạm/gõ như các dòng AirPods tiêu chuẩn cũ.",
+    "date": "3 thg 5, 2026",
+    "position": 5
+   },
+   {
+    "title": "Tai nghe Apple Airpods cũ đẹp | Hàng như mới, giá tốt",
+    "link": "https://cellphones.com.vn/hang-cu/tai-nghe/apple.html",
+    "snippet": "Xuyên âm; Có mic đàm thoại; Chống ồn chủ động ANC; Điều khiển giọng nói; Chống ồn; Sạc không dây. Nhu cầu sử dụng. Chơi Game; Nghe nhạc sôi động",
+    "position": 6
+   },
+   {
+    "title": "Airpod pro 2 - Giá Tốt, Miễn Phí Vận Chuyển, Đủ Loại",
+    "link": "https://shopee.vn/list/airpod/pro/2",
+    "snippet": "Mua online airpod pro 2 chất lượng, mới nhất, giảm tới 50% tại Shopee Việt Nam. Khuyến mãi tháng 10. Miễn phí vận chuyển. Mua ngay!",
+    "position": 7
+   },
+   {
+    "title": "DigiTimes: AirPods Pro thế hệ thứ hai sẽ được sản xuất tại ...",
+    "link": "https://cellphones.com.vn/sforum/digitimes-airpods-pro-the-he-thu-hai-se-duoc-san-xuat-tai-viet-nam-ra-mat-vao-nua-cuoi-nam-2021",
+    "snippet": "Cụ thể, nguồn tin từ DigiTimes cho biết sẽ có ít nhất một mẫu AirPods Pro thế hệ thứ 2 được lắp ráp tại Việt Nam, bởi đối tác chính của Apple là Inventec.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

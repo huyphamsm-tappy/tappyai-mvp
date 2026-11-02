@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple 2025 Apple Macbook Air 15 M4 Chip 512Gb site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:25:58.211Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple 2025 Apple Macbook Air 15 M4 Chip 512Gb site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Macbook air m4 - Giá Tốt, Sale Tháng 10, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/laptop/macbook/air%20m4",
+    "snippet": "Mua online macbook air m4 chất lượng, Voucher Shopee Live giảm tới 50% tại Shopee. Khuyến mãi tháng 10, 2026 . Miễn phí vận chuyển. Mua ngay!",
+    "position": 1
+   },
+   {
+    "title": "mac mini - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/mac%20mini",
+    "snippet": "Mua Online mac mini chất lượng, Freeship 0Đ, Voucher Shopee giảm tới 50% tại Shopee. Khuyến mãi tháng 09, 2026. Mua ngay!",
+    "position": 2
+   },
+   {
+    "title": "Shopee",
+    "link": "https://shopee.vn/collections/13299490?source=4",
+    "snippet": "Máy tính xách tay Apple MacBook Pro 14 inch, M5, 10 core CPU/10 core GPU, 16GB memory, 1TB SSD, sạc 70W USB-C. 54.890.000₫ · Máy tính xách tay Apple MacBook ...",
+    "position": 3
+   },
+   {
+    "title": "Macbook air m5 - Giá Tốt, Sale Tháng 10, Freeship 0Đ",
+    "link": "https://shopee.vn/list/macbook%20air/m5",
+    "snippet": "Shopee cung cấp đầy đủ các sản phẩm macbook air m5 chính hãng với nhiều mức giá ưu đãi vô cùng hấp dẫn. Bạn có thể thỏa thích tham khảo sản phẩm chính hãng từ ...",
+    "position": 4
+   },
+   {
+    "title": "25.9 Lương Về Sale To | Freeship 0Đ",
+    "link": "https://shopee.vn/m/25-luong-ve-sale-to?uls_trackid=569ql0p801ln&utm_content=2NJzTM4cbstsJmBZ7LhMmRbqkgM5",
+    "snippet": "Tưng bừng Shopee 25.9 lương về sale to. ShopeeVIP Triệu Phú Voucher - Giảm đến 50% mỗi ngày. SPayLater - Mua trước, trả sau 0% đến 6 kỳ. Shopee ngay!",
+    "position": 5
+   },
+   {
+    "title": "Mua và Bán Trên Ứng Dụng Di Động Hoặc Website",
+    "link": "https://shopee.vn/search?promotionId=1433041504342016&signature=52c12e93a320b5e423c8b40a55e7d8ee17eaf0ef2102abcd20e4d86714c000da&stm_medium=referral&stm_source=rw&uls_trackid=55qm6iun007g&voucherCode=ELHAJUNBU2",
+    "snippet": "Máy tính bảng Apple iPad Air M4 11 inch Wifi 128GB 2026 (Chip M4 |. custom ... flag-label Máy tính xách tay Apple MacBook Air M5 13.6 inch 2026 (10CPU ...",
+    "position": 6
+   },
+   {
+    "title": "Shopee Mall",
+    "link": "https://shopee.vn/mall?uls_trackid=52lb2d6c001e&utm_term=cz19yhvbqyzw",
+    "snippet": "Máy tính xách tay Apple MacBook Air 15 inch, M5, 24GB ram, 10. custom-overlay. flag-label Máy tính xách tay Apple MacBook Air 15 inch, M5, 24GB ram, 10-core ...",
+    "position": 7
+   },
+   {
+    "title": "Mã Giảm Giá Chính Thức 10.10 | Siêu Sale Thương Hiệu",
+    "link": "https://shopee.vn/m/ma-giam-gia",
+    "snippet": "Tham gia Shopee sale 10.10 săn ưu đãi khủng. Voucher Xtra giảm đến 10 triệu đồng. Shopee chính hãng giảm đến 50%. Ưu đãi freeship 0Đ. Shopee ngay!",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"The Workshop Coffee\" OR \"Soo Kafe Bến Thành\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:45:15.893Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"The Workshop Coffee\" OR \"Soo Kafe Bến Thành\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Review The Workshop Coffee Quận 1: Quán Cafe Nổi ...",
+    "link": "https://www.tiktok.com/@chamdidau/video/7345025504321244423",
+    "snippet": "The Workshop Coffee: Điểm Đến Lý Tưởng Tại Quận 1 Sài Gòn Nếu bạn đang tìm kiếm một quán cà phê nổi tiếng tại Sài Gòn, The Workshop Coffee ...",
+    "position": 1
+   },
+   {
+    "title": "Soo Kafe Bến Thành: quán cafe view chợ, cà phê trứng ngon",
+    "link": "https://www.tiktok.com/@tuananh.fancy/video/7344739093961510152",
+    "snippet": "Review Soo Kafe Bến Thành tại 35 Phan Chu Trinh: không gian vintage, giá. @Tuấn Anh Fancy · nhạc nền - Tuấn Anh Fancy · Soo Kafe (Soo Kafe Bến ...",
+    "position": 2
+   },
+   {
+    "title": "The Workshop Coffee",
+    "link": "https://www.tiktok.com/discover/the-workshop-coffee",
+    "snippet": "Khám phá The Workshop Coffee - quán cafe hợp lý cho làm việc và gặp gỡ bạn bè tại quận 1. Đến thưởng thức nước ngon và không gian đẹp ngay! 139 ...",
+    "date": "14 thg 9, 2026",
+    "position": 3
+   },
+   {
+    "title": "The Workshop Coffee 27 Ngô Đức Kế Quận 1 – Saigon Cafe",
+    "link": "https://www.tiktok.com/@davisitonguyen/video/7517147745224789278",
+    "snippet": "The Workshop Coffee at 27 Ngô Đức Kế, Bến Nghé, Quận 1 is a Saigon cafe spot known for coffee and Vietnamese food in the heart of Ho Chi ...",
+    "position": 4
+   },
+   {
+    "title": "Soo Kafe Bến Thành, không gian yên tĩnh rất có gu với đồ ...",
+    "link": "https://www.tiktok.com/@qmthau/video/7103863682043628826",
+    "snippet": "810 Lượt thích,Video TikTok từ Dưa Hấu Hấu (@qmthau): \"Soo Kafe Bến Thành, không gian yên tĩnh rất có gu với đồ uống chất lượng #qmhau ...",
+    "position": 5
+   },
+   {
+    "title": "Wrightsville Beach loop & The Workshop Coffee — why locals ...",
+    "link": "https://www.tiktok.com/@siennarealtor/video/7663523929763351838",
+    "snippet": "The Workshop Coffee: local café vibe The Workshop Coffee sits along the Loop and serves as a convenient stop for caffeine, casual conversation and a quick rest.",
+    "position": 6
+   },
+   {
+    "title": "The Workshop Coffee Roasters: Review sau nhiều năm",
+    "link": "https://www.tiktok.com/@hai.meca/photo/7661536948552535304",
+    "snippet": "TikTok video from Hải mê cà ☕ (@hai.meca): “Đánh giá The Workshop Coffee Roasters - một trong những nhà rang được nhắc đến nhiều trong cộng đồng specialty ...",
+    "position": 7
+   },
+   {
+    "title": "Exploring The Workshop Coffee Shop in Wilmington, NC",
+    "link": "https://www.tiktok.com/@sidneycorbin/video/7473646342024400174",
+    "snippet": "Exploring The Workshop Coffee Shop in Wilmington, NC. ☕️ Day 25 of exploring every coffee spot in Wilmington, North Carolina brought me ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

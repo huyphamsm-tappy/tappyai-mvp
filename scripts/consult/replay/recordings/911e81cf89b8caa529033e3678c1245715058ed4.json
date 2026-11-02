@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"miễn lệ phí cấp hộ chiếu phổ thông trong nước\" \"Thông tư 117/2026\"",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:10:31.876Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"miễn lệ phí cấp hộ chiếu phổ thông trong nước\" \"Thông tư 117/2026\"",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Thông tư 117/2026/TT-BTC: Miễn lệ phí cấp hộ chiếu phổ ...",
+    "link": "https://www.facebook.com/LuatVietnam.com.vn/posts/th%C3%B4ng-t%C6%B0-1172026tt-btc-mi%E1%BB%85n-l%E1%BB%87-ph%C3%AD-c%E1%BA%A5p-h%E1%BB%99-chi%E1%BA%BFu-ph%E1%BB%95-th%C3%B4ng-trong-n%C6%B0%E1%BB%9Bc-cho-ng%C6%B0%E1%BB%9Di-c/1499397185548506/",
+    "snippet": "Thông tư 117/2026/TT-BTC: Miễn lệ phí cấp hộ chiếu phổ thông trong nước cho người có VNeID mức 2 #Thongtinphapluat #reels #Luatvietnam.",
+    "position": 1
+   },
+   {
+    "title": "Từ 15/8/2026, miễn lệ phí cấp hộ chiếu phổ thông trong ...",
+    "link": "https://luatvietnam.vn/tin-van-ban-moi/mien-le-phi-cap-ho-chieu-pho-thong-trong-nuoc-cho-nguoi-co-vneid-muc-2-186-111583-article.html",
+    "snippet": "Từ 15/8/2026, miễn lệ phí cấp hộ chiếu phổ thông trong nước cho người có VNeID mức 2 · Ngày 14/8/2026, Bộ Tài chính ban hành Thông tư 117/2026/TT ...",
+    "date": "18 thg 8, 2026",
+    "position": 2
+   },
+   {
+    "title": "Miễn lệ phí cấp hộ chiếu phổ thông trong nước cho công ...",
+    "link": "https://congan.quangngai.gov.vn/danh-muc-san-pham/-tin-tuc-su-kien/mien-le-phi-cap-ho-chieu-pho-thong-trong-nuoc-cho-cong-dan-u-dieu-kien-tu-ngay-15-8-2026.html",
+    "snippet": "Miễn lệ phí cấp hộ chiếu phổ thông trong nước cho công dân đủ ... Thông tư 117/2026/TT-BTC · Xử lý dữ liệu cá nhân khi chưa có sự đồng ý ...",
+    "date": "28 thg 8, 2026",
+    "position": 3
+   },
+   {
+    "title": "TIN VUI: Từ 15/8/2026, miễn lệ phí cấp hộ chiếu phổ thông ...",
+    "link": "https://www.facebook.com/LuatVietnam.vn/posts/tin-vui-t%E1%BB%AB-1582026-mi%E1%BB%85n-l%E1%BB%87-ph%C3%AD-c%E1%BA%A5p-h%E1%BB%99-chi%E1%BA%BFu-ph%E1%BB%95-th%C3%B4ng-trong-n%C6%B0%E1%BB%9Bc-cho-ng%C6%B0%E1%BB%9Di-c%C3%B3-vn/1607561301157093/",
+    "snippet": "TIN VUI: Từ 15/8/2026, miễn lệ phí cấp hộ chiếu phổ thông trong nước ... Luật Việt Nam. Ngày 14/8/2026, Bộ Tài chính ban hành Thông tư 117/2026 ...",
+    "position": 4
+   },
+   {
+    "title": "Thông tư 117/2026/TT-BTC: Miễn giảm phí, lệ phí theo ...",
+    "link": "https://luatvietnam.vn/thue/thong-tu-117-2026-tt-btc-mien-giam-phi-le-phi-theo-nghi-quyet-66-22-2026-nq-cp-444351-d1.html",
+    "snippet": "Thông tư 117/2026/TT-BTC có hiệu lực từ 15/08/2026, quy định miễn ... Từ 15/8/2026, miễn lệ phí cấp hộ chiếu phổ thông trong nước cho ...",
+    "date": "18 thg 8, 2026",
+    "position": 5
+   },
+   {
+    "title": "Website Thuế Tỉnh, thành phố - Cục Thuế - Bộ Tài Chính",
+    "link": "https://vinhlong.gdt.gov.vn/wps/portal?1dmy&page=Z6_049IL8VSOJDB70IERMA7G920M6&urile=wcm%3Apath%3A%2Fvinhlong%2Fsite%2Fnews%2Fcucthue%2F54c42259-dbec-4002-8097-6bd912ae8d64",
+    "snippet": "... Thông tư 117/2026/TT-BTC có hiệu lực. - Số tiền LPTB được giảm tối đa không ... f) Miễn lệ phí cấp hộ chiếu phổ thông trong nước, giấy thông hành biên ...",
+    "position": 6
+   },
+   {
+    "title": "📣 Miễn lệ phí cấp hộ chiếu phổ thông trong nước cho ...",
+    "link": "https://www.facebook.com/LuatVietnam.com.vn/posts/-mi%E1%BB%85n-l%E1%BB%87-ph%C3%AD-c%E1%BA%A5p-h%E1%BB%99-chi%E1%BA%BFu-ph%E1%BB%95-th%C3%B4ng-trong-n%C6%B0%E1%BB%9Bc-cho-ng%C6%B0%E1%BB%9Di-c%C3%B3-vneid-m%E1%BB%A9c-2-t%E1%BB%AB-15820/1499361138885444/",
+    "snippet": "Miễn lệ phí cấp hộ chiếu phổ thông trong nước cho người có VNeID ... Thông tư 117/2026/TT-BTC quy định miễn, giảm một số khoản phí, lệ ...",
+    "position": 7
+   },
+   {
+    "title": "Từ 15/8/2026: Công dân số được miễn, giảm hàng loạt phí, ...",
+    "link": "https://congan.ninhbinh.gov.vn/tu-1582026-cong-dan-so-duoc-mien-giam-hang-loat-phi-le-phi",
+    "snippet": "Đối với lĩnh vực xuất cảnh, nhập cảnh, Thông tư quy định miễn lệ phí cấp hộ chiếu phổ thông trong nước ... Thông tư 117/2026/TT-BTC, vừa ...",
+    "date": "15 thg 8, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

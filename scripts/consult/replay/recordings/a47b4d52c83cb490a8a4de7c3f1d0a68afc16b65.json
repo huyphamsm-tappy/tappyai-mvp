@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "AirPods Pro 2 giá bán Việt Nam (site:shopee.vn OR site:tiki.vn OR site:lazada.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T16:56:15.992Z",
+ "body": {
+  "searchParameters": {
+   "q": "AirPods Pro 2 giá bán Việt Nam (site:shopee.vn OR site:tiki.vn OR site:lazada.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Airpod pro 2 - Giá Tốt, Miễn Phí Vận Chuyển, Đủ Loại",
+    "link": "https://shopee.vn/list/airpod/pro/2",
+    "snippet": "Tai Nghe Bluetooth EP01 Pro l Bản Nâng Cấp Chống Ồn Tốt l Bass Mạnh l Bản Đủ Loại 1 Có Sạc Ko Dây HOCOOTECH. 175.238₫. 300.000₫. -42%. rating-star 4.6.",
+    "position": 1
+   },
+   {
+    "title": "Apple airpods pro 2 - Giá Tốt, Sale Tháng 08, Freeship 0Đ",
+    "link": "https://shopee.vn/list/apple/airpods%20pro%202",
+    "snippet": "146.449 · 200.000₫. -27%. voucher-icon ; 6.799.000 ; 45.000 · 60.000₫. -25% ; 304.000 · 509.000₫. -40% ; 345.900 · 400.000₫. -14%.",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe AirPods Pro (thế hệ thứ 2) với Hộp Sạc MagSafe ...",
+    "link": "https://shopee.vn/Tai-nghe-AirPods-Pro-(th%E1%BA%BF-h%E1%BB%87-th%E1%BB%A9-2)-v%E1%BB%9Bi-H%E1%BB%99p-S%E1%BA%A1c-MagSafe-(USB-C)-i.88201679.21693729352",
+    "snippet": "Tai nghe AirPods Pro (thế hệ thứ 2) với Hộp Sạc MagSafe (USB-C). 1/6. Đã bán hết. 6.199.000₫. fbs-logo-vn. mall inline badge. Tai nghe AirPods Pro (thế hệ thứ 2) ...",
+    "rating": 4.9,
+    "ratingCount": 2309,
+    "position": 3
+   },
+   {
+    "title": "Vỏ airpods pro 2 - Giá Tốt, Sale Tháng 10, Freeship 0Đ",
+    "link": "https://shopee.vn/list/v%E1%BB%8F/airpods/pro%202",
+    "snippet": "Mua online vỏ airpods pro 2 chất lượng, Voucher Shopee Live giảm tới 50% tại Shopee. Khuyến mãi tháng 10, 2026 . Freeship 0Đ. Mua ngay!",
+    "position": 4
+   },
+   {
+    "title": "DRC_shop.vn, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/drc_shop.vn",
+    "snippet": "... Giả Cho Apple Airpods 1 2. Rẻ Vô Địch. 129.600₫. 2k+ đã bán · Ốp Điện Thoại ... Dành cho AirPods 1 2 3 4 ...",
+    "position": 5
+   },
+   {
+    "title": "So sánh AirPods 3 và AirPods Pro: Nên mua tai nghe nào? - Tiki",
+    "link": "https://tiki.vn/blog/airpod-3-va-airpod-pro/",
+    "snippet": "... AirPods 3(Nguồn: Internet). Giá bán. Giá bán của AirPods 3 và AirPods Pro ở thời điểm hiện tại như sau: Apple AirPods Pro – MLWK3: 4.390.000đ.",
+    "date": "30 thg 1, 2023",
+    "position": 6
+   },
+   {
+    "title": "Các Loại AirPods Hiện Nay - Cách Phân Biệt AirPods - Tiki",
+    "link": "https://tiki.vn/blog/cac-loai-airpods/",
+    "snippet": "Phiên bản tai nghe AirPods Pro và AirPods tiêu chuẩn có giá khoảng từ 5 triệu trở lại. Nếu bạn có điều kiện kinh tế cao hơn thì có thể chọn ...",
+    "date": "17 thg 3, 2023",
+    "position": 7
+   },
+   {
+    "title": "Vỏ đựng ốp CASE AIRPOD pro 2, case bảo vệ ốp tai nghe ...",
+    "link": "https://shopee.vn/V%E1%BB%8F-%C4%91%E1%BB%B1ng-%E1%BB%91p-CASE-AIRPOD-pro-2-case-b%E1%BA%A3o-v%E1%BB%87-%E1%BB%91p-tai-nghe-airpods-bluetooth-FETOV-i.1082422840.56767129419?extraParams=%7B%22display_model_id%22%3A341454479994%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "Giá bán buôn/ bán sỉ. Giá còn 39.800₫ khi mua ≥ 2 sản phẩm. icon arrow right. fetovaia. Online 3 phút trước. icon location Thành phố Hồ Chí Minh. Xem Shop. 879.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "giá xăng Việt Nam mới nhất kỳ điều chỉnh tháng 10 2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:33:14.106Z",
+ "body": {
+  "searchParameters": {
+   "q": "giá xăng Việt Nam mới nhất kỳ điều chỉnh tháng 10 2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Petrolimex điều chỉnh giá xăng dầu từ 15 giờ 00 phút ngày ...",
+    "link": "https://www.petrolimex.com.vn/ndi/thong-cao-bao-chi/petrolimex-dieu-chinh-gia-xang-dau-tu-15-gio-00-phut-ngay-01-10-2026.html",
+    "snippet": "Mức giá mới có hiệu lực từ thời điểm 15 giờ 00 phút ngày 01 tháng 10 năm 2026 cho đến kỳ điều hành giá xăng dầu tiếp theo của liên Bộ Công ...",
+    "date": "7 ngày trước",
+    "position": 1
+   },
+   {
+    "title": "Giá xăng dầu hôm nay 8/10, tin giá xăng mới nhất",
+    "link": "https://vnexpress.net/chu-de/gia-xang-dau-3026",
+    "snippet": "Giá xăng hôm nay ; Xăng E10 RON 95-III, 27.180, + 100 ; Xăng E5 RON 92, 26.560, + 170 ; Dầu Diesel, 29.710, - 780 ...",
+    "position": 2
+   },
+   {
+    "title": "Từ 15h ngày 01/10/2026, giá xăng E10 tăng lên 27.180 đồng/lít ...",
+    "link": "https://www.facebook.com/LuatVietnam.vn/posts/t%E1%BB%AB-15h-ng%C3%A0y-01102026-gi%C3%A1-x%C4%83ng-e10-t%C4%83ng-l%C3%AAn-27180-%C4%91%E1%BB%93ngl%C3%ADt-d%E1%BA%A7u-diesel-gi%E1%BA%A3m-780-%C4%91%E1%BB%93n/1647851890461367/",
+    "snippet": "Cập nhật giá xăng dầu đêm ngày 24/3/2026 ⛽ Chào các bạn, từ 23h00 ngày 24 tháng 3 năm 2026, giá bán lẻ xăng dầu tại Việt Nam đã có sự điều ...",
+    "position": 3
+   },
+   {
+    "title": "Giá xăng biến động từ 15h ngày 1.10",
+    "link": "https://laodong.vn/thi-truong/gia-xang-bien-dong-tu-15h-ngay-110-1775909.ldo",
+    "snippet": "- Xăng E5 RON92: không cao hơn 26.569 đồng/lít (tăng 172 đồng/lít so với giá bán tối đa hiện hành), thấp hơn xăng E10 RON95-III 620 đồng/lít;. - ...",
+    "date": "7 ngày trước",
+    "position": 4
+   },
+   {
+    "title": "Giá xăng E10, E5 nhích nhẹ, dầu diesel giảm 780 đồng/lít ...",
+    "link": "https://www.facebook.com/LuatVietnam.com.vn/posts/n%C3%B3ng-%C4%91i%E1%BB%81u-ch%E1%BB%89nh-gi%C3%A1-x%C4%83ng-d%E1%BA%A7u-chi%E1%BB%81u-01102026-gi%C3%A1-x%C4%83ng-e10-e5-nh%C3%ADch-nh%E1%BA%B9-d%E1%BA%A7u-diesel/1541027324718825/",
+    "snippet": "Nóng: Điều chỉnh giá xăng dầu chiều 01/10/2026 – Giá xăng E10, E5 nhích nhẹ, dầu diesel giảm 780 đồng/lít #Thongtinphapluat #reels ...",
+    "position": 5
+   },
+   {
+    "title": "Điều chỉnh giá bán xăng dầu trong nước từ 15h ngày 1/10",
+    "link": "https://tapchikinhtetaichinh.vn/dieu-chinh-gia-ban-xang-dau-trong-nuoc-tu-15h-ngay-1-10-168451.html",
+    "snippet": "Cụ thể, giá bán xăng dầu của các nước lân cận Việt Nam ngày 01/10/2026: (1) Về giá xăng: Thái Lan: 31.296 VNĐ/lít (Chính phủ trợ giá); Campuchia ...",
+    "date": "7 ngày trước",
+    "position": 6
+   },
+   {
+    "title": "Kỳ điều hành giá xăng dầu ngày 01/10/2026",
+    "link": "https://tapchicongthuong.vn/ky-dieu-hanh-gia-xang-dau-ngay-01-10-2026--gia-xang-tang--gia-dau-diezen-giam-gan-800-dong-lit-554394.htm",
+    "snippet": "Tại kỳ điều hành giá xăng dầu ngày 01/10/2026, giá xăng dầu tiếp tục tăng nhẹ, riêng dầu điêzen 0.05S giảm 780 đồng/lít, xuống mức 29.717 ...",
+    "date": "7 ngày trước",
+    "position": 7
+   },
+   {
+    "title": "Giá xăng dầu điều chỉnh giảm từ 15h ngày 27/8/2026 #shorts",
+    "link": "https://www.youtube.com/shorts/sTFC0bWM-GM",
+    "snippet": "Giá xăng dầu điều chỉnh giảm từ 15h ngày 27/8/2026 #shorts | LuatVietnam.vn Từ 15h hôm nay, 27/8/2026, giá xăng và dầu diesel trong nước ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

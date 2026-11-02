@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:mof.gov.vn \"miễn lệ phí cấp hộ chiếu phổ thông trong nước\" \"đến hết tháng 2/2027\" mức lệ phí hiện nay",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:25:45.560Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:mof.gov.vn \"miễn lệ phí cấp hộ chiếu phổ thông trong nước\" \"đến hết tháng 2/2027\" mức lệ phí hiện nay",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

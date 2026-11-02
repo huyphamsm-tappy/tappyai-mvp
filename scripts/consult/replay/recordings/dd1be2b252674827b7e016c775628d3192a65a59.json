@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Bluetooth chụp Tai Baseus Bass BH1 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:00:09.128Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bluetooth chụp Tai Baseus Bass BH1 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe Bluetooth Chụp Tai BASEUS BASS BH1, kết nối app ...",
+    "link": "https://www.lazada.vn/products/tai-nghe-bluetooth-chp-tai-baseus-bass-bh1-kt-ni-app-chnh-eq-i2123091669.html?srsltid=AU7gw4X82Bln8TQJu5uTTWE5MGPeuLcqnLfj7oHOB5qEBdertKP02QHz",
+    "snippet": "Chi tiết sản phẩm. Tai nghe Bluetooth chụp tai chính hãng BASEUS Pin trâu, dùng được vài ngày không cần sạc lại. Âm to, bass khoẻ, độ trễ thấp chỉ 38ms",
+    "position": 1
+   },
+   {
+    "title": "Tai nghe chụp tai Baseus Bass BH1 Lite Thuật toán âm ...",
+    "link": "https://www.lazada.vn/products/tai-nghe-chup-tai-baseus-bass-bh1-lite-thuat-toan-am-thanh-khong-gian-ai-enc-super-bass-i3222135687.html?srsltid=AU7gw4WhoNZnYpG6hxmiXUAVY5AIl4l7zbsqTS6SniJi_bdCjX7jjlVU",
+    "snippet": "Tai nghe chụp tai Baseus Bass BH1 Lite - giải pháp âm thanh siêu bass với công nghệ chống ồn AI. Thiết kế chống nước, chống mồ hôi, tương thích Bluetooth ...",
+    "position": 2
+   },
+   {
+    "title": "Tai Nghe Chụp Tai Baseus Bass BH1 NC - Chống Ồn Tuyệt Đối ...",
+    "link": "https://www.lazada.vn/products/pdp-i13450768365.html?srsltid=AU7gw4ViEPIxWw_mm90z7iheUf9lRowmIpiReOis_hSKFXf3CKmO-hRe",
+    "snippet": "Trang bị hệ thống khử ồn 4 lớp cùng công nghệ Adaptive Hybrid ANC tiên tiến, tai nghe giúp triệt tiêu hiệu quả tiếng ồn môi trường lên đến -45dB, trả lại cho ...",
+    "position": 3
+   },
+   {
+    "title": "Tai Nghe Không Dây Baseus ANC 80H Chống Ồn 95 ...",
+    "link": "https://www.lazada.vn/products/baseus-tai-nghe-khong-day-baseus-anc-80h-chong-on-95-bluetooth-60-voi-dem-da-thoai-mai-bh1-nc-lite-i13445525622.html?srsltid=AU7gw4Vsg0GgqYKnVqSh6c3Fy0Z7EnoV99BI-yohYgIkFYShBrFd3-wf",
+    "snippet": "1.073.000 ₫1.395.000 ₫-23%. LazMall BASEUS | Tai Nghe Không Dây Baseus ANC 80H Chống Ồn 95% Bluetooth 6.0 Với Đệm Da Thoải Mái BH1 NC LITE. Miễn phí vận chuyển.",
+    "position": 4
+   },
+   {
+    "title": "Tai Nghe Không Dây Baseus D02 Pro Bluetooth 5.3 ...",
+    "link": "https://www.lazada.vn/products/tai-nghe-khong-day-baseus-d02-pro-bluetooth-53-tai-nghe-co-the-gap-lai-phong-cach-the-thao-choi-game-dien-thoai-hifi-co-micro-i2523458897.html?srsltid=AU7gw4VxNscNhP-oYmXDotHKvSCyLUzCIR57fzPvZAEc8N8mMLl8Gmyx",
+    "snippet": "Tai Nghe Không Dây Baseus D02 Pro - tai nghe Bluetooth 5.3 chất lượng cao với âm thanh HIFI, chống ồn hiệu quả. Thiết kế gập lại tiện lợi, thời gian sử dụng ...",
+    "position": 5
+   },
+   {
+    "title": "Tai Nghe Không Dây Baseus BH1 Lite ENC Bluetooth 6.0 ...",
+    "link": "https://h5.lazada.vn/products/baseus-tai-nghe-khong-day-baseus-bh1-lite-enc-bluetooth-60-am-tram-sieu-manh-thoi-gian-choi-nhac-80-gio-dam-thoai-ro-net-danh-cho-nguoi-lon-namnu-i13445593086-s117250865927.html",
+    "snippet": "Kết nối Bluetooth 6.0 liền mạch Tận dụng độ trễ cực thấp và chất lượng âm thanh nâng cao với chip Bluetooth 6.0 mới nhất để truyền phát âm thanh liền mạch.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 6
+   },
+   {
+    "title": "Tai Nghe Baseus Bowie H1i Bluetooth 5.3 38db ANC Khử ...",
+    "link": "https://www.lazada.vn/products/tai-nghe-baseus-bowie-h1i-bluetooth-53-38db-anc-khu-tieng-on-hi-res-3d-am-thanh-thoi-gian-cho-100h-tai-nghe-khong-do-tre-tai-nghe-gaming-i2611200684.html?srsltid=AU7gw4WcQ6sh6GLZV12ansia9lyrs-Wu3OArvQ0KowGUPiFXeVhm4dZj",
+    "snippet": "LazMall Tai Nghe Baseus Bowie H1i Bluetooth 5.3 38db ANC Khử Tiếng Ồn Hi-Res 3D Âm Thanh thời gian chờ 100H tai nghe không độ trễ Tai nghe Gaming · 669.000 ₫.",
+    "rating": 4.8,
+    "ratingCount": 104,
+    "position": 7
+   },
+   {
+    "title": "BASEUS | Tai Nghe Hủy Tiếng Ồn cho PC Gaming và Nhạc 1",
+    "link": "https://www.lazada.vn/products/pdp-i13442630968.html?srsltid=AU7gw4WGyDqJGPIvLvkYRtdJu-HiKTQnYC_bQTbC5ETSs7ZCci2Aw1vA",
+    "snippet": "[Đen Ngân Hà] Hiệu ứng âm thanh vòm toàn cảnh ◇ Cuộn dây siêu lớn 40mm ◇ Khử tiếng ồn cuộc gọi ENC ◇ Mẫu mới 2025,Cấu hình tiêu chuẩn chính thức.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

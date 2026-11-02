@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook ngân sách khoảng 25 triệu Việt Nam (site:shopee.vn OR site:tiki.vn OR site:lazada.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:32:35.350Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook ngân sách khoảng 25 triệu Việt Nam (site:shopee.vn OR site:tiki.vn OR site:lazada.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "[2026] Top 10+ laptop cho học sinh sinh viên nên mua hiện ...",
+    "link": "https://shopee.vn/blog/laptop-cho-hoc-sinh-sinh-vien/",
+    "snippet": "Dòng máy gợi ý: Lenovo LOQ 15, MacBook Air M3, Lenovo IdeaPad 5 Pro 14. Laptop dùng cho học sinh sinh viên dưới 25 triệu Ở phân khúc dưới 25 ...",
+    "date": "29 thg 7, 2026",
+    "position": 1
+   },
+   {
+    "title": "Cách chọn laptop cho sinh viên Marketing cấu hình phù ...",
+    "link": "https://shopee.vn/blog/laptop-cho-sinh-vien-marketing/",
+    "snippet": "Khoảng 20–30 triệu đồng. Sáng tạo nội dung chuyên sâu, CPU hiệu năng cao, RAM 24–32GB, GPU phù hợp, Từ 25 triệu đồng. Mức giá có thể thay đổi ...",
+    "date": "11 thg 8, 2026",
+    "position": 2
+   },
+   {
+    "title": "Gợi ý 5+ dòng laptop cho sinh viên kiến trúc bền, tối ưu chi ...",
+    "link": "https://shopee.vn/blog/laptop-cho-sinh-vien-kien-truc/",
+    "snippet": "Giá tham khảo: Khoảng 25,5 triệu đồng · RAM: 16GB · GPU: NVIDIA GeForce RTX 4050 6GB · CPU: AMD Ryzen 7 7735HS · Mục đích phù hợp: Thiết kế 2D, dựng ...",
+    "date": "17 thg 8, 2026",
+    "position": 3
+   },
+   {
+    "title": "Cách mua trả góp trên Shopee lãi suất 0% đơn giản, an ...",
+    "link": "https://shopee.vn/blog/cach-mua-tra-gop-tren-shopee/",
+    "snippet": "Ngân hàng liên kết: Phải thuộc danh sách ngân hàng đối tác được Shopee áp dụng trả góp 0% (ngoại trừ thẻ OCB Installment Mastercard Platinum).",
+    "date": "21 thg 4, 2026",
+    "position": 4
+   },
+   {
+    "title": "Top 8 tai nghe bluetooth dưới 1 triệu đáng sở hữu",
+    "link": "https://shopee.vn/blog/tai-nghe-bluetooth-duoi-1-trieu/",
+    "snippet": "Nhờ thiết kế nhỏ gọn cùng khả năng truyền tải âm thanh tốt, tai nghe bluetooth đang được nhiều người sử dụng thay cho tai nghe có dây.",
+    "date": "20 thg 6, 2026",
+    "position": 5
+   },
+   {
+    "title": "Shopee Tech Zone | Khuyến Mãi Đồ Điện Tử",
+    "link": "https://shopee.vn/m/shopee-tech-zone",
+    "snippet": "Trải nghiệm mua sắm hàng công nghệ chính hãng: điện thoại, máy tính bảng, phụ kiện... với mã giảm giá điện tử Shopee, giá rẻ bất ngờ, miễn phí vận chuyển.",
+    "position": 6
+   },
+   {
+    "title": "ShopeeVIP là gì? Lợi ích và cách lên VIP Shopee",
+    "link": "https://shopee.vn/blog/shopee-vip-la-gi/",
+    "snippet": "Voucher giảm giá đến 20%, thêm mới mỗi ngày. · Hơn 150 voucher freeship nội địa/tháng, cùng 30 voucher freeship hỏa tốc. · Mã giảm giá lớn đến 1 ...",
+    "date": "21 thg 5, 2026",
+    "position": 7
+   },
+   {
+    "title": "Bật mí cách học online hiệu quả ở nhà trong mùa dịch",
+    "link": "https://shopee.vn/blog/cach-hoc-online-hieu-qua/",
+    "snippet": "Bạn không thể tập trung và ghi nhớ kiến thức khi học online. Đừng lo, Shopee sẽ mách bạn một số cách học online hiệu quả ngay sau đây.",
+    "date": "7 thg 11, 2024",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -60,6 +60,11 @@ export interface SearchResult {
   subtitle: string | null
   price: number | null
   currency: 'VND' | 'USD' | null
+  /**
+   * What `price` covers when it is not the whole stay: 'per_night' (Agoda Lite's dailyRate). Absent = the provider's total for the search
+   * (Booking / Agoda Demand). 29/10: unlabelled, a nightly rate was read and stated as the 2-night total.
+   */
+  priceUnit?: 'per_night'
   /** Rooms / seats left when the provider says so; null otherwise. */
   availability: number | null
   availabilityStatus: AvailabilityStatus

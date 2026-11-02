@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Tai nghe Bluetooth thể thao Anker Soundcore V40i\" OR \"Tai Nghe Louda Hổ Vằn Punki Pro 1563E Khử Ồn Chủ Động HiFi AI ENC Pin Trâu Bluetooth 5.3 Chính Hãng\" OR \"[ A4 ] Tai Nghe Hổ Vằn Louda 1571AM / 1563E Chống Ồn ANC 45DB\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:22:28.822Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Tai nghe Bluetooth thể thao Anker Soundcore V40i\" OR \"Tai Nghe Louda Hổ Vằn Punki Pro 1563E Khử Ồn Chủ Động HiFi AI ENC Pin Trâu Bluetooth 5.3 Chính Hãng\" OR \"[ A4 ] Tai Nghe Hổ Vằn Louda 1571AM / 1563E Chống Ồn ANC 45DB\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe Anker Soundcore V40i (A3878) | Giá rẻ, ưu đãi tốt",
+    "link": "https://cellphones.com.vn/tai-nghe-the-thao-anker-soundcore-v40i.html",
+    "snippet": "Tai nghe Bluetooth thể thao Anker Soundcore V40i (A3878) ; Micro. Có (4 mics) ; Thời lượng sử dụng Pin. Tai nghe: 6 giờ. Hộp sạc: 21 giờ ; Phương thức điều khiển.",
+    "position": 1
+   },
+   {
+    "title": "Tai nghe Bluetooth thể thao Anker Soundcore V40i",
+    "link": "https://shopee.vn/Tai-nghe-Bluetooth-th%E1%BB%83-thao-Anker-Soundcore-V40i-A3878-thi%E1%BA%BFt-k%E1%BA%BF-trong-su%E1%BB%91t-ch%E1%BB%91ng-n%C6%B0%E1%BB%9Bc-IP55-m%E1%BA%ABu-2025-i.758591190.42313869455",
+    "snippet": "Mua Tai nghe Bluetooth thể thao Anker Soundcore V40i - A3878, thiết kế trong suốt, chống nước IP55, mẫu 2025 giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe Bluetooth thể thao Anker Soundcore V40i",
+    "link": "https://www.facebook.com/TTeamBand/posts/tai-nghe-bluetooth-th%E1%BB%83-thao-anker-soundcore-v40i-a3878-thi%E1%BA%BFt-k%E1%BA%BF-trong-su%E1%BB%91t-ch%E1%BB%91ng/1492479896002476/",
+    "snippet": "Tai nghe Bluetooth thể thao Anker Soundcore V40i - A3878, thiết kế trong suốt, chống nước IP55, vừa vặn, thoải mái.",
+    "position": 3
+   },
+   {
+    "title": "Tai nghe Bluetooth thể thao Anker Soundcore V40i (A3878)",
+    "link": "https://edeal-affiliate.vercel.app/deal/cellphones%3A3049_144126",
+    "snippet": "Tai nghe Bluetooth thể thao Anker Soundcore V40i (A3878) - Cũ. Giá tham khảo từ 693.000đ. Mua trên CellphoneS.",
+    "position": 4
+   },
+   {
+    "title": "Tai nghe Bluetooth thể thao Anker Soundcore V40i",
+    "link": "https://fptshop.com.vn/phu-kien/tai-nghe-bluetooth-the-thao-anker-soundcore-v40i",
+    "snippet": "Tai nghe Bluetooth thể thao Anker Soundcore V40i với thiết kế open-ear, Bluetooth 5.3, chuẩn chống nước IPX5 và pin lên đến khoảng 40 giờ.",
+    "position": 5
+   },
+   {
+    "title": "#xuhuong #tai nghe Bluetooth Viewtech A4 tai nghe nhỏ ...",
+    "link": "https://www.tiktok.com/@n.shop799/video/7669647393872235794",
+    "snippet": "#xuhuong #tai nghe Bluetooth Viewtech A4 tai nghe nhỏ gọn âm thanh bass căng pin trâu #xuhuongtiktok ; nơ shop · mọi người tham khảo nhé.",
+    "position": 6
+   },
+   {
+    "title": "Tai Nghe Bt Không Dây Bán Sỉ A2 A3 A4 Tai Nghe Cho Ios ...",
+    "link": "https://vi.made-in-china.com/co_kronus/product_Factory-Wholesale-Wireless-Bt-Earphones-A2-A3-A4-Earbuds-for-Ios-Air-Headphone-for-Mobile-Phones-Clear-Sound-Quality-Tws-Type-C-Anc_yurhgorsyg.html",
+    "snippet": "Phong cách: Tai nghe in-ear ; Sử dụng: Điện thoại di động, Tổng đài, MP3 & MP4, Máy tính, Người chơi trò chơi, Hàng không, DJ ; Phiên bản Bluetooth: 5.0 ; Nhạc nền ...",
+    "position": 7
+   },
+   {
+    "title": "**✅0589.948.893 ib zalo mình ship-cod toàn quốc hoặc gd ...",
+    "link": "https://www.facebook.com/groups/246056265592021/posts/3016140151916938/",
+    "snippet": "... Tai nghe Bluetooth thể thao Anker Soundcore V40i. Tình trạng: Chính hãng, nguyên seal.**. Log in · **✓0589.948.893 ib zalo mình ship-cod toàn ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

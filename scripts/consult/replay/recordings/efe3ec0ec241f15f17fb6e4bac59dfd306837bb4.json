@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hội An vé tham quan phố cổ giá vé du khách Việt Nam giờ tham quan lưu ý",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:13:51.970Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hội An vé tham quan phố cổ giá vé du khách Việt Nam giờ tham quan lưu ý",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cập nhật vé tham quan Khu phố cổ Hội An – Hành trình chạm ...",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Du-lich-Hoi-An/cap-nhat-ve-tham-quan-khu-pho-co-hoi-an-hanh-trinh-cham-ve-nguyen-ban-giua-long-di-san-3033.hwh",
+    "snippet": "Tại Khu phố cổ, không gian này được áp dụng từ 09:00 đến 21:30 vào mùa hè và 09:00 đến 21:00 vào mùa đông. Riêng tuyến đường Phan Châu Trinh, ...",
+    "date": "16 thg 3, 2026",
+    "position": 1
+   },
+   {
+    "title": "Cập Nhật Giá Vé Tham Quan Phố Cổ Hội An 2026 & Mẹo ...",
+    "link": "https://phanvantravel.com/ve-tham-quan-pho-co-hoi-an",
+    "snippet": "Khách Việt Nam. 80.000 VNĐ/người/lượt. Người lớn và trẻ em cao từ 1m4 trở lên ; Khách quốc tế. 120.000 VNĐ/người/lượt. Người lớn và trẻ em nước ngoài cao từ 1m4 ...",
+    "position": 2
+   },
+   {
+    "title": "Bảng giá vé tham quan phố cổ Hội An 2026",
+    "link": "https://webdulichhoian.com/bang-gia-ve-tham-quan-pho-co-hoi-an.html",
+    "snippet": "Giá vé tham quan phố cổ Hội An 2026 · Giá vé dành cho khách Việt Nam: 80.000đ/người. Trẻ em dưới 1m: Miễn phí. Trẻ em từ 1m – 1m4: 50.000đ/người. · Giá vé dành ...",
+    "position": 3
+   },
+   {
+    "title": "Hội An có đánh mất mình từ việc bán vé tham quan?",
+    "link": "https://gialaitv.vn/hoi-an-co-danh-mat-minh-tu-viec-ban-ve-tham-quan/",
+    "snippet": "Giá vé này bao gồm cả tham quan khu phố cổ và một số điểm di tích trong khu phố cổ. Thời gian bán vé từ 7 giờ 30 phút đến 21 giờ 30 phút hàng ...",
+    "date": "5 thg 4, 2026",
+    "position": 4
+   },
+   {
+    "title": "[ English Below ] Những thông tin cần biết về vé tham quan ...",
+    "link": "https://www.facebook.com/VisitHoiAn/posts/-english-below-nh%E1%BB%AFng-th%C3%B4ng-tin-c%E1%BA%A7n-bi%E1%BA%BFt-v%E1%BB%81-v%C3%A9-tham-quan-%C4%91%C3%B4-th%E1%BB%8B-c%E1%BB%95-h%E1%BB%99i-an%C4%91%E1%BB%83-kh%C3%A1m-/956020783448194/",
+    "snippet": "Với mỗi vé, du khách có thể lựa chọn tham quan các điểm tiêu biểu như nhà cổ, hội quán, bảo tàng và những công trình kiến trúc giàu dấu ấn lịch ...",
+    "position": 5
+   },
+   {
+    "title": "Phố cổ Hội An miễn vé tham quan",
+    "link": "https://vietnamtourism.gov.vn/post/18151",
+    "snippet": "Cùng với việc miễn vé tham quan, dịp này, nhiều hoạt động du lịch thiết thực sẽ đến với du khách để giới thiệu và quảng bá những giá trị lịch sử, văn hóa hàng ...",
+    "position": 6
+   },
+   {
+    "title": "Vé Tham Quan Phố Cổ Hội An",
+    "link": "https://www.klook.com/vi/activity/72346-hoi-an-ancient-town-attractions-adminssion-ticket/",
+    "snippet": "Để được miễn phí giá vé tham quan phố cổ Hội An, du khách cần cung cấp chứng minh tuổi hoặc giấy tờ xác nhận về ngày tháng năm sinh của trẻ khi mua vé. Để ...",
+    "rating": 4,
+    "ratingCount": 691,
+    "position": 7
+   },
+   {
+    "title": "Kinh nghiệm Du lịch HỘI AN 2026 từ A-Z: lưu trú, ăn chơi, ...",
+    "link": "https://vnexpress.net/cam-nang-du-lich-hoi-an-4446174.html",
+    "snippet": "Với vé tham quan giá 80.000 đồng cho một người giá trị trong 24h bạn có cơ hội tham quan ba trong số những điểm di tích nổi bật nhất ở phố cổ. Đó là Chùa ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

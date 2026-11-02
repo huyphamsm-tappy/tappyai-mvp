@@ -1,0 +1,86 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Nguyên Lý Kế Toán site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:03:09.830Z",
+ "body": {
+  "searchParameters": {
+   "q": "Nguyên Lý Kế Toán site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Sách - Nguyên Lý Kế Toán",
+    "link": "https://shopee.vn/S%C3%A1ch-Nguy%C3%AAn-L%C3%BD-K%E1%BA%BF-To%C3%A1n-i.1095949439.23785528776",
+    "snippet": "Sách - Nguyên Lý Kế Toán. 1/5. 63.000₫. 90.000₫. -30%. mall inline badge. Sách - Nguyên Lý Kế Toán.",
+    "rating": 4.9,
+    "ratingCount": 44,
+    "position": 1
+   },
+   {
+    "title": "Sách - Nguyên Lý Kế Toán",
+    "link": "https://shopee.vn/S%C3%A1ch-Nguy%C3%AAn-L%C3%BD-K%E1%BA%BF-To%C3%A1n-i.210479007.22754533882",
+    "snippet": "Sách - Nguyên Lý Kế Toán. 1/5. Đã bán hết. 90.000₫. mall inline badge. Sách - Nguyên Lý Kế Toán.",
+    "rating": 5,
+    "ratingCount": 4,
+    "position": 2
+   },
+   {
+    "title": "Giáo Trình Nguyên Lý Kế Toán (Dùng Cho Sinh Viên Các ...",
+    "link": "https://shopee.vn/S%C3%A1ch-Gi%C3%A1o-Tr%C3%ACnh-Nguy%C3%AAn-L%C3%BD-K%E1%BA%BF-To%C3%A1n-(D%C3%B9ng-Cho-Sinh-Vi%C3%AAn-C%C3%A1c-Tr%C6%B0%E1%BB%9Dng-%C4%90%E1%BA%A1i-H%E1%BB%8Dc-Cao-%C4%90%E1%BA%B3ng-Kh%E1%BB%91i-Kinh-T%E1%BA%BF)-i.1003033449.23351214443",
+    "snippet": "Mua Sách - Giáo Trình Nguyên Lý Kế Toán (Dùng Cho Sinh Viên Các Trường Đại Học, Cao Đẳng Khối Kinh Tế) giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.7,
+    "ratingCount": 13,
+    "position": 3
+   },
+   {
+    "title": "Bài tập nguyên lý kế toán - Giá Tốt, Sale Tháng 10, Ship 0 ...",
+    "link": "https://shopee.vn/list/nguy%C3%AAn%20l%C3%BD%20k%E1%BA%BF%20to%C3%A1n",
+    "snippet": "Shopee cung cấp đầy đủ các sản phẩm nguyên lý kế toán chính hãng với nhiều mức giá ưu đãi vô cùng hấp dẫn. Đặc biệt, các sản phẩm có sẵn và bạn dễ dàng tìm thấy ...",
+    "position": 4
+   },
+   {
+    "title": "Sách - Nguyên Lý Kế Toán - Trần Văn Thuận ( Dùng Cho ...",
+    "link": "https://shopee.vn/S%C3%A1ch-Nguy%C3%AAn-L%C3%BD-K%E1%BA%BF-To%C3%A1n-Tr%E1%BA%A7n-V%C4%83n-Thu%E1%BA%ADn-(-D%C3%B9ng-Cho-C%C3%A1c-Ngh%C3%A0nh-K%E1%BA%BF-To%C3%A1n-Ki%E1%BB%83m-To%C3%A1n-Ng%C3%A2n-H%C3%A0ng-T%C3%A0i-Ch%C3%ADnh-Kinh-T%E1%BA%BF)-i.14390734.3042356808",
+    "snippet": "Mua Sách - Nguyên Lý Kế Toán - Trần Văn Thuận ( Dùng Cho Các Nghành Kế Toán, Kiểm Toán, Ngân Hàng, Tài Chính, Kinh Tế) giá tốt. Mua hàng qua mạng uy tín, ...",
+    "rating": 4.9,
+    "ratingCount": 67,
+    "position": 5
+   },
+   {
+    "title": "Sách Giáo trình Nguyên lý Kế toán",
+    "link": "https://shopee.vn/S%C3%A1ch-Gi%C3%A1o-tr%C3%ACnh-Nguy%C3%AAn-l%C3%BD-K%E1%BA%BF-to%C3%A1n-i.61897721.28788051538",
+    "snippet": "Sách Giáo trình Nguyên lý Kế toán. icon video play. button back to video. 1/10. 139.000₫. 145.000₫. -4%. Mua để nhận quà. mall inline badge ...",
+    "rating": 4.7,
+    "ratingCount": 3,
+    "position": 6
+   },
+   {
+    "title": "Sách - Nguyên Lý Kế Toán: Lý Thuyết - Bài Tập - Bài Giảng",
+    "link": "https://shopee.vn/S%C3%A1ch-Nguy%C3%AAn-L%C3%BD-K%E1%BA%BF-To%C3%A1n-L%C3%BD-Thuy%E1%BA%BFt-B%C3%A0i-T%E1%BA%ADp-B%C3%A0i-Gi%E1%BA%A3ng-PGS.TS.-Nguy%E1%BB%85n-Th%E1%BB%8B-Loan-T%C3%A1i-B%E1%BA%A3n-2018-i.14390734.22325196549",
+    "snippet": "Mua Sách - Nguyên Lý Kế Toán: Lý Thuyết - Bài Tập - Bài Giảng - PGS.TS. Nguyễn Thị Loan - Tái Bản 2018 giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.8,
+    "ratingCount": 8,
+    "position": 7
+   },
+   {
+    "title": "Sách - Giáo Trình Nguyên Lý Kế Toán - TS. Trần Thị Kim Anh",
+    "link": "https://shopee.vn/S%C3%A1ch-Gi%C3%A1o-Tr%C3%ACnh-Nguy%C3%AAn-L%C3%BD-K%E1%BA%BF-To%C3%A1n-TS.-Tr%E1%BA%A7n-Th%E1%BB%8B-Kim-Anh-i.14390734.12043766622",
+    "snippet": "Mua Sách - Giáo Trình Nguyên Lý Kế Toán - TS. Trần Thị Kim Anh giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại ...",
+    "rating": 5,
+    "ratingCount": 6,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

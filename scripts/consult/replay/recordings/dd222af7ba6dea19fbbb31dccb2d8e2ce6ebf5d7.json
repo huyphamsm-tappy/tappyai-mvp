@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Baseus Tai nghe Bluetooth TWS Baseus Eli Sport 2 -Đen\" OR \"Tai nghe Bluetooth chụp Tai Baseus Bass BH1 NC\" OR \"Polvcdg-X9 \"Run\" Tai nghe dẫn truyền xương thể thao IPX8 Tai nghe chạy bộ và đi xe đạp Bluetooth 6.0 chống nước có micrô\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:13:00.307Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Baseus Tai nghe Bluetooth TWS Baseus Eli Sport 2 -Đen\" OR \"Tai nghe Bluetooth chụp Tai Baseus Bass BH1 NC\" OR \"Polvcdg-X9 \"Run\" Tai nghe dẫn truyền xương thể thao IPX8 Tai nghe chạy bộ và đi xe đạp Bluetooth 6.0 chống nước có micrô\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe Baseus Bass BH1 NC | Giá rẻ, ưu đãi tốt",
+    "link": "https://cellphones.com.vn/tai-nghe-chup-tai-khong-day-baseus-bass-bh1-nc.html",
+    "snippet": "Tai nghe Bluetooth chụp tai Baseus Bass BH1 NC ; Thông số kỹ thuật · Chống ồn môi trường ENC Chống ồn chủ động ANC Hi-Res Audio Hi-Res Audio Wireless SuperBass ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 1
+   },
+   {
+    "title": "Tai nghe Chụp Tai Baseus Bass BH1 NC. chính hãng",
+    "link": "https://www.thegioididong.com/tai-nghe/tai-nghe-bluetooth-chup-tai-baseus-bass-bh1-nc",
+    "snippet": "Tai nghe Bluetooth Chụp Tai Baseus Bass BH1 NC ; Thời gian sử dụng: Khoảng 80 giờ (tắt ANC, âm lượng 50%) ; Thời gian sạc tai nghe: 1.5 giờ ; Cổng sạc: Type-C.",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe Bluetooth Chụp Tai Baseus Bass BH1 NC Lite",
+    "link": "https://www.dienmayxanh.com/tai-nghe/tai-nghe-bluetooth-chup-tai-baseus-bass-bh1-nc-lite?srsltid=AU7gw4W4yoUBdhPQr3c73nZSscyWdtVqbooenO2xeAKLCP5PzvilFg_x",
+    "snippet": "Tai nghe Bluetooth Chụp Tai Baseus Bass BH1 NC Lite giá rẻ, chính hãng, âm thanh chất lượng cao. Giao hàng tận nơi.",
+    "rating": 5,
+    "ratingCount": 19,
+    "position": 3
+   },
+   {
+    "title": "Dọn mặt bằng bán nhanh Tai nghe Bluetooth chụp ...",
+    "link": "https://www.facebook.com/groups/1875244252740003/posts/4489893027941766/",
+    "snippet": "Dọn mặt bằng bán nhanh Tai nghe Bluetooth chụp tai Baseus Bass BH1 NC nguyên seal.",
+    "position": 4
+   },
+   {
+    "title": "Quên tai nghe bluetooth chụp tai baseus bass bh1 nc đi ...",
+    "link": "https://www.youtube.com/watch?v=eNssAhMbnOY",
+    "snippet": "Quên tai nghe bluetooth chụp tai baseus bass bh1 nc đi, Top 5 này xịn hơn! · Comments.",
+    "position": 5
+   },
+   {
+    "title": "Dọn mặt bằng bán nhanh Tai nghe Bluetooth chụp ...",
+    "link": "https://www.facebook.com/groups/105522646909475/posts/2285692758892442/",
+    "snippet": "Dọn mặt bằng bán nhanh Tai nghe Bluetooth chụp tai Baseus Bass BH1 NC nguyên seal chính hãng.",
+    "position": 6
+   },
+   {
+    "title": "Phải mà xài tai nghe Bluetooth giá rẻ của Baseus mất đỡ tiếc rồi ...",
+    "link": "https://www.threads.com/@cosy.cosy18/post/DUKYC8tknsy/ph%E1%BA%A3i-m%C3%A0-x%C3%A0i-tai-nghe-bluetooth-gi%C3%A1-r%E1%BA%BB-c%E1%BB%A7a-baseus-m%E1%BA%A5t-%C4%91%E1%BB%A1-ti%E1%BA%BFc-r%E1%BB%93ihttpssshopeevn9p",
+    "snippet": "Mình có mua Tai nghe Bluetooth chụp tai Baseus Bass BH1 NC tại Cellphones vào ngày 12/6, nhưng khui ra form to quá không hợp mặt. Giá lúc mình mua là 785k, ...",
+    "position": 7
+   },
+   {
+    "title": "bh1 lite giá rẻ Tháng 9,2026 | BigGo Việt Nam",
+    "link": "https://vn.biggo.com/s/bh1%20lite",
+    "snippet": "Tai nghe Bluetooth chụp tai Baseus Bass BH1 NC Lite. ₫690.000. ₫100.000. CellphoneS icon. CellphoneS.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

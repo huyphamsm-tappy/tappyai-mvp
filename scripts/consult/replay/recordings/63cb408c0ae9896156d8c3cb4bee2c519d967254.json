@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Phở gà Phương Béo\" OR \"Phở Bắc Hải Gia Truyền\" OR \"Phở Ông Cát Gia Truyền Since 1988\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T01:53:27.751Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Phở gà Phương Béo\" OR \"Phở Bắc Hải Gia Truyền\" OR \"Phở Ông Cát Gia Truyền Since 1988\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khám Phá Quán Phở Bắc Hải Gia Truyền Tại Đà Lạt",
+    "link": "https://www.tiktok.com/@riviulamdong/video/7613327320035659016",
+    "snippet": "Thưởng thức phở Bắc Hải gia truyền ngon tuyệt tại Di Linh. Đừng bỏ lỡ. @Rì Viu Lâm Đồng. Di Linh có quán phở Bắc Hải gia truyền hấp dẫn lắm ...",
+    "position": 1
+   },
+   {
+    "title": "Phở Ông Cát Vietnam trip is not complete without trying ...",
+    "link": "https://www.tiktok.com/@beksherep/video/7560216291097709832",
+    "snippet": "... without trying their Pho Noodles #vacation #. @Panlasang Beki · original sound - Panlasang Beki · Phở Ông Cát Gia Truyền Since 1988 · author.",
+    "position": 2
+   },
+   {
+    "title": "Phở Bắc Hải: Khám Phá Ẩm Thực Gia Truyền",
+    "link": "https://www.tiktok.com/@voden.thichanngon/video/7566276879469120775",
+    "snippet": "... Hải truyền thống tại Đà Nẵng với hương vị đặc trưng và. @voden.thichanngon · nhạc nền - Mochiii · Phở Bắc Hải Gia Truyền Hà Nội · author.",
+    "position": 3
+   },
+   {
+    "title": "Team ăn khuya ko biết án gì ở Non Nước. #vợđen ...",
+    "link": "https://www.tiktok.com/@voden.thichanngon/video/7633119210213821716",
+    "snippet": "... gì ở Non Nước. #vợđen #vợddenthichănngon #. @voden.thichanngon · âm thanh gốc - voden.thichanngon · Phở Bắc Hải Gia Truyền Hà Nội · author · 69.",
+    "position": 4
+   },
+   {
+    "title": "Nâng niu từng nếp vải mềm mại, sạch sẽ, để bạn thực sự ...",
+    "link": "https://www.tiktok.com/@panasonic_vietnam/video/7657482394408176917",
+    "snippet": "âm thanh gốc - SHOP GIANG BI 888. 365Thích. 53Bình luận. 53Lượt chia sẻ. riviulamdong. Rì Viu Lâm Đồng. Di Linh có quán phở Bắc Hải gia truyền ...",
+    "position": 5
+   },
+   {
+    "title": "Phiên chợ Di Linh ngày Rằm mưa: chợ phiên tấp nập dưới ...",
+    "link": "https://www.tiktok.com/@tonquocbaotran/video/7678101163555736852",
+    "snippet": "Khám Phá Quán Phở Bắc Hải Gia Truyền Tại Đà Lạt. Thưởng thức phở Bắc Hải gia truyền ngon tuyệt tại Di Linh. Đừng bỏ lỡ trải nghiệm ẩm thực ...",
+    "position": 6
+   },
+   {
+    "title": "phobachaidilinh",
+    "link": "https://www.tiktok.com/tag/phobachaidilinh",
+    "snippet": "Di Linh có quán phở Bắc Hải gia truyền hấp dẫn lắm nha #riviulamdong #riviudilinh #dilinh #phobachaidilinh #phobachai · âm thanh gốc - Rì Viu Lâm Đồng. 1082 ...",
+    "position": 7
+   },
+   {
+    "title": "nbs_dil - original sound",
+    "link": "https://www.tiktok.com/music/original-sound-7659042262390721294",
+    "snippet": "Khám Phá Quán Phở Bắc Hải Gia Truyền Tại Đà Nẵng. |. Cara Efektif Memompa ASI Sehari. |. คัน MasterLight Bluesky รุ่นใหม่ 2025 พร้อมส่ง. |. 石巻 ワコー. |. Majd ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

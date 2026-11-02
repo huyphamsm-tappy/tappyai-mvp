@@ -1,0 +1,48 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Anio Boutique Hotel\" Hội An site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:02:31.934Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Anio Boutique Hotel\" Hội An site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Anio Boutique Hotel Hoian - Giá cả và Ưu đãi 2026, Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-41618776/anio-boutique-hotel-hoi-an/",
+    "snippet": "Anio Boutique Hotel Hoian ; Điểm tham quan: Phố cổ Hội An. 1,3km ; Điểm tham quan: Chùa Phổ Triêm. 170m ; Mua Sắm: Lobo Leather. <100m.",
+    "position": 1
+   },
+   {
+    "title": "Anio Boutique Hotel Hoian - Xem 102 Ảnh & Đánh giá",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-41618776/anio-boutique-hotel-hoi-an/photo.html",
+    "snippet": "Khám phá 102 ảnh của Anio Boutique Hotel Hoian, bao gồm phòng ốc, tiện nghi, cơ sở vật chất và khu vực xung quanh. Sử dụng hình ảnh khách sạn thực tế để ...",
+    "position": 2
+   },
+   {
+    "title": "Anio Boutique Hotel Hoian Đánh giá của khách",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-41618776/anio-boutique-hotel-hoi-an/review.html",
+    "snippet": "Anio Boutique Hotel Hoian. Các đánh giá Anio Boutique Hotel Hoian. 03 Lê Đình Thám, Cẩm Sơn, Phường Hội An Đông, Đà Nẵng. 9.2/10.",
+    "position": 3
+   },
+   {
+    "title": "10 Khách Sạn Tốt Nhất Gần ${{poiName}}, Đà Nẵng ...",
+    "link": "https://vn.trip.com/hotels/landmark/vn/an-bang-beach.5.html",
+    "snippet": "Wyndham Royal Beachfront Resort & Spa Danang (từ 3.011.523₫),Ally Beach Boutique Hotel Hoian (từ 801.266₫)vàAnio Boutique Hotel Hoian (từ 1.339.315₫) là một ...",
+    "position": 4
+   }
+  ],
+  "credits": 1
+ }
+}

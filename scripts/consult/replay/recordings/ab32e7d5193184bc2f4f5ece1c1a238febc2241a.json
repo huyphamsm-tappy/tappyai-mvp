@@ -1,0 +1,117 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "xe buýt từ Quận 1 đến Axcela Vietnam HM Town 412 Nguyễn Thị Minh Khai và YOLA Cống Quỳnh 246 Quận 1 Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,12z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:32:50.292Z",
+ "body": {
+  "searchParameters": {
+   "q": "xe buýt từ Quận 1 đến Axcela Vietnam HM Town 412 Nguyễn Thị Minh Khai và YOLA Cống Quỳnh 246 Quận 1 Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,12z",
+   "engine": "google"
+  },
+  "ll": "@10.7691738,106.6805197,17.0536z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Anh Ngữ YOLA Cống Quỳnh - Quận 1",
+    "address": "Tầng 2, Toà nhà Vimedimex 246, Cống Quỳnh, Bến Thành, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7671887,
+    "longitude": 106.68745229999999,
+    "rating": 4.6,
+    "ratingCount": 217,
+    "type": "Trung tâm trường học",
+    "types": [
+     "Trung tâm trường học",
+     "Trường dạy tiếng Anh",
+     "Trường ngoại ngữ"
+    ],
+    "website": "https://chuongtrinhuudai.yola.vn/ky-niem-yola-16-nam?utm_campaign=maps",
+    "phoneNumber": "+84 28 6285 8080",
+    "openingHours": {
+     "Thứ Năm": "09:30–21:00",
+     "Thứ Sáu": "09:30–21:00",
+     "Thứ Bảy": "08:00–21:00",
+     "Chủ Nhật": "08:00–21:00",
+     "Thứ Hai": "09:30–21:00",
+     "Thứ Ba": "09:30–21:00",
+     "Thứ Tư": "09:30–21:00"
+    },
+    "bookingLinks": [
+     "https://yola.vn/chuong-trinh-uu-dai/?utm_source=organic-google&utm_medium=search&utm_campaign=VN-Digital-Organic-GG-2022-Search-Promotion-GGBusiness&utm_content=&utm_term=VN-Digital-Organic-GG-2022-Search-Promotion-GGBusiness&Campaign_ID=VN-Digital-Organic-GG-2022-Search-Promotion-GGBusiness"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SOcOUllmFi829IKeSMWWS7Rx4Mlm54z5g8lvo2SSmnJbDT41EzQ0AxJtI5UAdd5ZKJotQyVwHpVj3iOwMb29cInspfL4mL3qwALjoeJ1vl-HBOK4A1oCY0Bo07DX6zP1uLoNDj",
+    "cid": "12138783206428932036",
+    "fid": "0x31752f181bdd392b:0xa8759f0320ac77c4",
+    "placeId": "ChIJKzndGxgvdTERxHesIAOfdag"
+   },
+   {
+    "position": 2,
+    "title": "Axcela Vietnam - Tiếng Anh Cho Người Đi Làm",
+    "address": "Lầu 14, HM Town, 412 Nguyễn Thị Minh Khai, Bàn Cờ, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.771158999999999,
+    "longitude": 106.6865409,
+    "rating": 5,
+    "ratingCount": 25,
+    "type": "Trường dạy tiếng Anh",
+    "types": [
+     "Trường dạy tiếng Anh"
+    ],
+    "website": "https://axcelavietnam.com/",
+    "phoneNumber": "+84 28 7302 2888",
+    "openingHours": {
+     "Thứ Năm": "09:00–18:00",
+     "Thứ Sáu": "09:00–18:00",
+     "Thứ Bảy": "09:00–12:00",
+     "Chủ Nhật": "Đóng cửa",
+     "Thứ Hai": "09:00–18:00",
+     "Thứ Ba": "09:00–18:00",
+     "Thứ Tư": "09:00–18:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9RWsiewUaIJxcftVFCCzHaaPjMNCopV6zHMaJhmhsnRs3eQf6d1GgHwHzU82tST19qMKS7RNWS9fa1TUMleWXFhyOrsreOYnNFc_rgzf4tBBx0xJuRd11OFDMLAMLF_Z0AiQcTCFQ",
+    "cid": "8475822895175050812",
+    "fid": "0x31752f33afdba7af:0x75a02c042e08263c",
+    "placeId": "ChIJr6fbrzMvdTERPCYILgQsoHU"
+   },
+   {
+    "position": 3,
+    "title": "Tòa nhà HM Town",
+    "address": "HM Tower, 412 Nguyễn Thị Minh Khai, Bàn Cờ, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7681275,
+    "longitude": 106.68388689999999,
+    "rating": 3.9,
+    "ratingCount": 45,
+    "type": "Tư vấn nguồn nhân lực",
+    "types": [
+     "Tư vấn nguồn nhân lực",
+     "Văn phòng công ty"
+    ],
+    "website": "https://www.thebutlerservice.com.vn/chuyen-muc/quan-gia-bao-mau---gia-su-tai-nha.html",
+    "phoneNumber": "+84 28 6684 5311",
+    "openingHours": {
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9TOrLv06m-xwaTMsNgUuHFTO8KcQ-FhFqyeGlnM7Ewp2tscl-R3VyJ9ZwVLq78xkUTwcgh_CrKHKuutFSMVzDyriIRdIvNn5VGJv4ar4hePeNEzbZZ3BYQAlbcxwNptmF6XANzJ4w",
+    "cid": "9336018198868286948",
+    "fid": "0x31752f07b3a24645:0x8190331668205de4",
+    "placeId": "ChIJRUaiswcvdTER5F0gaBYzkIE"
+   }
+  ],
+  "credits": 3
+ }
+}

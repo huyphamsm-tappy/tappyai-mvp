@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple kiểm tra MacBook cũ Activation Lock Find My serial number",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:03:22.869Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple kiểm tra MacBook cũ Activation Lock Find My serial number",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tìm tên kiểu máy và số sê-ri của máy Mac",
+    "link": "https://support.apple.com/vi-vn/102767",
+    "snippet": "Từ menu Apple ở góc màn hình, hãy chọn Giới thiệu về máy Mac này. Cửa sổ mở ra sẽ hiển thị hình ảnh của máy Mac, theo sau là tên kiểu máy. Ví dụ dưới đây ...",
+    "position": 1
+   },
+   {
+    "title": "Kiểm tra xuất xứ MacBook: 5 Bước Chính Xác Trong 10 Phút",
+    "link": "https://macone.vn/tin-tuc/kiem-tra-xuat-xu-macbook/?srsltid=AU7gw4WyZVVf56FE_SkCEQ-LPzjoc9o2DfgOObazx_Jv8kyMdFiJ3KFD",
+    "snippet": "Hướng dẫn kiểm tra xuất xứ MacBook chi tiết từng bước: check serial, verify chính hãng, phát hiện MDM Lock và iCloud Lock. Tránh mua phải máy dựng/fake.",
+    "position": 2
+   },
+   {
+    "title": "Hướng dẫn check iCloud MacBook bị dính không và cách ...",
+    "link": "https://cellphones.com.vn/sforum/check-icloud-macbook",
+    "snippet": "Bước 1: Trên MacBook, truy cập vào trang web Apple để khôi phục lại mật khẩu (https://iforgot.apple.com/) rồi nhấn chọn \"Đặt lại mật khẩu\". Cách xử lý khi ...",
+    "rating": 1,
+    "ratingCount": 1,
+    "position": 3
+   },
+   {
+    "title": "Check serial MacBook chính xác để biết máy có chính hãng",
+    "link": "https://clickbuy.com.vn/check-serial-macbook.html?srsltid=AU7gw4UlQSca2oh5ixM_pQfJlm_4uNQOYyuETFQxOItHx99asWD5piQj",
+    "snippet": "Check serial Macbook ngay trên thân máy · Tra cứu trong phần giới thiệu “About This Mac” · Xem mã serial từ tài khoản Apple ID đã đăng nhập · Check ...",
+    "date": "19 thg 7, 2025",
+    "position": 4
+   },
+   {
+    "title": "3 cách check iCloud MacBook - Làm gì khi MacBook dính ...",
+    "link": "https://fptshop.com.vn/tin-tuc/thu-thuat/cach-check-icloud-macbook-156427",
+    "snippet": "Truy cập trang iUnlocker ... Bước 2: Tại góc phía trên màn hình, nhấn vào mục APPLE CHECK, chọn tiếp Check iCloud. ... Bước 3: Nhập số seri hoặc ...",
+    "date": "2 thg 5, 2026",
+    "position": 5
+   },
+   {
+    "title": "MacBook bị khóa mật khẩu – Nguyên nhân và cách mở ...",
+    "link": "https://suamacbook.vn/macbook-bi-khoa-mat-khau-nguyen-nhan-va-cach-mo-hieu-qua/?srsltid=AU7gw4UXhl-hfd0AiTd_IzZ_phjLsZ1HUE8dCpss8b4w88J5WncYfoGP",
+    "snippet": "+ Hoặc liên hệ Apple Support để mở khóa bằng serial number và thông tin chủ sở hữu. + Ghé địa điểm chuyên sửa Macbook để kiểm tra có gỡ được ...",
+    "date": "21 thg 10, 2025",
+    "position": 6
+   },
+   {
+    "title": "Xem phạm vi bảo hành – AppleCare & Bảo hành",
+    "link": "https://checkcoverage.apple.com/?locale=vi_VN",
+    "snippet": "Check your Apple warranty status. Enter a serial number to review your eligibility for support and extended coverage.",
+    "position": 7
+   },
+   {
+    "title": "Kinh nghiệm mua MacBook cũ 2025: cách kiểm tra serial ...",
+    "link": "https://tinhte.vn/thread/kinh-nghiem-mua-macbook-cu-2025-cach-kiem-tra-serial-imei-tranh-mua-nham-hang-dung.4075525/",
+    "snippet": "2. Cách lấy serial MacBook cũ chính xác ; Cách 1: Lấy trực tiếp trong macOS. Bật máy lên, vào màn hình macOS. Click logo ở góc trên bên trái",
+    "date": "18 thg 11, 2025",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

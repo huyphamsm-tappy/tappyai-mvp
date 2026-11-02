@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hôm nay cafe\" OR \"The Workshop Coffee\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:23:53.523Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hôm nay cafe\" OR \"The Workshop Coffee\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "The Workshop Coffee",
+    "link": "https://www.tiktok.com/discover/the-workshop-coffee",
+    "snippet": "Khám phá The Workshop Coffee - quán cafe hợp lý cho làm việc và gặp gỡ bạn bè tại quận 1. Đến thưởng thức nước ngon và không gian đẹp ngay! 139 ...",
+    "date": "14 thg 9, 2026",
+    "position": 1
+   },
+   {
+    "title": "Review The Workshop Coffee Quận 1: Quán Cafe Nổi ...",
+    "link": "https://www.tiktok.com/@chamdidau/video/7345025504321244423",
+    "snippet": "The Workshop Coffee: Điểm Đến Lý Tưởng Tại Quận 1 Sài Gòn Nếu bạn đang tìm kiếm một quán cà phê nổi tiếng tại Sài Gòn, The Workshop Coffee ...",
+    "position": 2
+   },
+   {
+    "title": "The Workshop Coffee Roasters: Review sau nhiều năm",
+    "link": "https://www.tiktok.com/@hai.meca/photo/7661536948552535304",
+    "snippet": "TikTok video from Hải mê cà ☕ (@hai.meca): “Đánh giá The Workshop Coffee Roasters - một trong những nhà rang được nhắc đến nhiều trong cộng đồng specialty ...",
+    "position": 3
+   },
+   {
+    "title": "Exploring The Workshop Coffee Shop in Wilmington, NC",
+    "link": "https://www.tiktok.com/@sidneycorbin/video/7506351344945761582",
+    "snippet": "2162 Likes, TikTok video from Sidney Corbin (@sidneycorbin): “Discover the charm of The Workshop coffee shop in Wilmington, NC, with stunning ocean views.",
+    "position": 4
+   },
+   {
+    "title": "The Workshop Coffee 27 Ngô Đức Kế Quận 1 – Saigon Cafe",
+    "link": "https://www.tiktok.com/@davisitonguyen/video/7517147745224789278",
+    "snippet": "The Workshop Coffee at 27 Ngô Đức Kế, Bến Nghé, Quận 1 is a Saigon cafe spot known for coffee and Vietnamese food in the heart of Ho Chi ...",
+    "position": 5
+   },
+   {
+    "title": "Wrightsville Beach loop & The Workshop Coffee — why locals ...",
+    "link": "https://www.tiktok.com/@siennarealtor/video/7663523929763351838",
+    "snippet": "The Workshop Coffee: local café vibe The Workshop Coffee sits along the Loop and serves as a convenient stop for caffeine, casual conversation and a quick rest.",
+    "position": 6
+   },
+   {
+    "title": "Hôm Nay Cafe",
+    "link": "https://www.tiktok.com/discover/h%C3%B4m-nay-cafe",
+    "snippet": "Hôm Nay Cafe. Khám phá Nhà LÁ Cafe – điểm đến tuyệt vời để thưởng thức cà phê và thư giãn giữa thiên nhiên! Cập nhật lần cuối 2026-08-03. 137 Likes, 11 ...",
+    "position": 7
+   },
+   {
+    "title": "The Workshop Coffee Quận 1",
+    "link": "https://www.tiktok.com/discover/the-workshop-coffee-qu%E1%BA%ADn-1",
+    "snippet": "Cách phố đi bộ chỉ vài bước chân, The Workshop Coffee sở hữu một không gian rộng rãi, trần cao và view trung tâm đắt giá. Menu tại đây có phục ...",
+    "date": "28 thg 9, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

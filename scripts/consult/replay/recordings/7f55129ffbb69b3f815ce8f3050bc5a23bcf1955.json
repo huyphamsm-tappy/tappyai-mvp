@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple MacBook Air M1 thông số kỹ thuật 2020",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:43:33.765Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple MacBook Air M1 thông số kỹ thuật 2020",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "MacBook Air (M1, 2020) - Thông số kỹ thuật",
+    "link": "https://support.apple.com/vi-vn/111883",
+    "snippet": "Kích Thước Và Trọng Lượng · Dày: 0,41–1,61 cm · Dài: 30,41 cm · Rộng: 21,24 cm · Trọng lượng: 1,29 kg ...",
+    "position": 1
+   },
+   {
+    "title": "Macbook Air M1 2020 (8GB/256GB) | Giá rẻ, giảm sốc 2024",
+    "link": "https://cellphones.com.vn/macbook-air-2020-m1.html",
+    "snippet": "Thông số kỹ thuật ・ 7 nhân, 16 nhân Neural Engine Dung lượng RAM 8GB Loại RAM LPDDR4 Ổ cứng 256GB SSD Công nghệ màn hình ・ 720p FaceTime HD camera",
+    "rating": 4.9,
+    "ratingCount": 64,
+    "position": 2
+   },
+   {
+    "title": "Thông số kỹ thuật MacBook Air M1 chi tiết : Phù hợp với ai?",
+    "link": "https://didongviet.vn/dchannel/thong-so-ky-thuat-macbook-air-m1/",
+    "snippet": "RAM 8GB|16GB Tùy chọn dung lượng SSD 256GB|512GB Dung lượng pin và củ sạc",
+    "date": "9 thg 2, 2023",
+    "position": 3
+   },
+   {
+    "title": "Kích thước MacBook Air M1 bao nhiêu inch? Đánh giá ...",
+    "link": "https://www.thegioididong.com/hoi-dap/chon-mau-macbook-air-m1-gia-thanh-cuoi-nam-2022-1459240",
+    "snippet": "Màn hình: 13.3\", Retina (2560 x 1600) · CPU: Apple M1 · Card: 7 nhân GPU · Chất liệu: Vỏ kim loại nguyên khối · Khối lượng: 1.29 kg.",
+    "date": "14 thg 2, 2024",
+    "position": 4
+   },
+   {
+    "title": "Laptop Apple MacBook Air M1 2020 7GPU/8CPU/16GB ...",
+    "link": "https://maiphuong.vn/products/laptop-apple-macbook-air-m1-2020-7gpu-8cpu-16gb-256gb-13-3-inch?srsltid=AU7gw4WrVeg0DlidXSvwmH7-ydhaTOQVLpq0XyY1PR1UIJhL2tDGmePS",
+    "snippet": "Thông số kỹ thuật ; 8GB LPDDR4X · 256GB SSD · GPU 7 nhân. Neural Engine 16 nhân · 13.3 inch Retina (2560 x 1600) Tấm nền IPS, đèn nền LED Độ sáng 400 nits. Hỗ trợ ...",
+    "position": 5
+   },
+   {
+    "title": "Kích thước MacBook Air M1 bao nhiêu inch? Đánh giá chi tiết",
+    "link": "https://dienthoaivui.com.vn/tin-tuc/kich-thuoc-macbook-air-m1",
+    "snippet": "MacBook Air M1 có kích thước tổng thể cân đối với chiều dài 30.41 cm, chiều rộng 21.24 cm và độ dày chỉ 1.61 cm. Nhờ thiết kế mỏng nhẹ, chiếc ...",
+    "date": "2 thg 3, 2025",
+    "position": 6
+   },
+   {
+    "title": "Tổng hợp thông tin về máy Macbook Air M1 mà bạn cần biết",
+    "link": "https://suamacbook.vn/tong-hop-thong-tin-ve-may-macbook-air-m1-ma-ban-can-biet/?srsltid=AU7gw4WDS29mShi6ZMyH56sOncUaRH4NAw043oMUZy_7vTpy7pttux_h",
+    "snippet": "MacBook Air M1 có trọng lượng khoảng 1,29 kg, rất nhẹ và tiện lợi để mang theo hàng ngày. Kích thước của máy là 30,41 cm (dài) x 21,24 cm (rộng ...",
+    "date": "31 thg 7, 2025",
+    "position": 7
+   },
+   {
+    "title": "So sánh Macbook Air 2020 và M1, sự lựa chọn tốt nhất ...",
+    "link": "https://dienthoaigiakho.vn/tin-cong-nghe/so-sanh-macbook-air-2020-va-m1/",
+    "snippet": "Macbook Air 2020 và M1 các thông số kỹ thuật Air 2020 được trang bị GPU tích hợp Intel, cung cấp khả năng xử lý đồ họa cơ bản. Máy được hỗ trợ ...",
+    "date": "13 thg 3, 2024",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

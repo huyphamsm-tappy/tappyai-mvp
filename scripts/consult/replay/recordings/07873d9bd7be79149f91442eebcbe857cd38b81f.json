@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Máy tính Apple MacBook Pro 13.3 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:01:48.916Z",
+ "body": {
+  "searchParameters": {
+   "q": "Máy tính Apple MacBook Pro 13.3 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp lưng máy tính xách tay mờ mờ siêu mỏng cho Apple ...",
+    "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-m%C3%A1y-t%C3%ADnh-x%C3%A1ch-tay-m%E1%BB%9D-m%E1%BB%9D-si%C3%AAu-m%E1%BB%8Fng-cho-Apple-MacBook-Air-15-Pro-14-Air-13-M1-M2-M3-M4-M5-Pro-13-New-Pro-13.3-Air-13.3-13-6-M2-V%E1%BB%8F-b%E1%BA%A3o-v%E1%BB%87-m%C3%A1y-t%C3%ADnh-x%C3%A1ch-tay-i.86417183.14589709455",
+    "snippet": "Ốp lưng máy tính xách tay mờ mờ siêu mỏng cho Apple MacBook Air 15 Pro 14/Air 13 M1 M2 M3 M4 M5 Pro 13 New Pro 13.3 Air 13.3 / 13,6 M2 Vỏ bảo vệ máy tính ...",
+    "rating": 4.8,
+    "ratingCount": 1425,
+    "position": 1
+   },
+   {
+    "title": "Túi máy tính xách tay Ngang thẳng bảo vệ Túi lưu trữ nhẹ ...",
+    "link": "https://shopee.vn/T%C3%BAi-m%C3%A1y-t%C3%ADnh-x%C3%A1ch-tay-Ngang-th%E1%BA%B3ng-b%E1%BA%A3o-v%E1%BB%87-T%C3%BAi-l%C6%B0u-tr%E1%BB%AF-nh%E1%BA%B9-Th%C3%ADch-h%E1%BB%A3p-cho-Apple-Macbook-pro-14-16-air-13.3-Dell-HP-i.694808279.53306383048",
+    "snippet": "Mua Túi máy tính xách tay Ngang thẳng bảo vệ Túi lưu trữ nhẹ Thích hợp cho Apple Macbook pro 14 16 air 13.3 Dell HP giá tốt. Mua hàng qua mạng uy tín, ...",
+    "position": 2
+   },
+   {
+    "title": "1-2 Chiếc Siêu HD Kính Cường Lực Cho Apple MacBook ...",
+    "link": "https://shopee.vn/1-2-Chi%E1%BA%BFc-Si%C3%AAu-HD-K%C3%ADnh-C%C6%B0%E1%BB%9Dng-L%E1%BB%B1c-Cho-Apple-MacBook-Retina-Pro-13.3-M%C3%A1y-T%C3%ADnh-B%E1%BA%A3ng-B%E1%BA%A3o-V%E1%BB%87-M%C3%A0n-H%C3%ACnh-Cho-Apple-MacBook-Air-13.3-12-11.6-Phim-K%C3%ADnh-Ch%E1%BB%91ng-D%E1%BA%A7u-i.1267253778.51958393519",
+    "snippet": "1-2 Chiếc Siêu HD Kính Cường Lực Cho Apple MacBook Retina Pro 13.3 Máy Tính Bảng Bảo Vệ Màn Hình Cho Apple MacBook Air 13.3 12 11.6 Phim Kính Chống Dầu.",
+    "position": 3
+   },
+   {
+    "title": "laptop+apple giá tốt Tháng 9, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=laptop%2Bapple",
+    "snippet": "... Apple Macbook pro 14 16 air 13.3 Dell HP Ly hợp máy tính. 114.048₫. 132.840 ... flag-label Máy tính xách tay Apple MacBook Pro M5 14 inch 2025 (10 core ...",
+    "position": 4
+   },
+   {
+    "title": "Mô Hình Pro 13.3inch Tỉ Lệ (1:1) màu Trắng. ...",
+    "link": "https://shopee.vn/M%C3%B4-H%C3%ACnh-Pro-13.3inch-T%E1%BB%89-L%E1%BB%87-(1:1)-m%C3%A0u-Tr%E1%BA%AFng.-M%C3%B4-H%C3%ACnh-Tr%C6%B0ng-B%C3%A0y--%C4%90%E1%BA%A1o-C%E1%BB%A5-M%C3%B4-Ph%E1%BB%8Fng-M%C3%A1y-T%C3%ADnh-Mac-book-i.87050730.43108121648",
+    "snippet": "Mua Mô Hình Pro 13.3inch Tỉ Lệ (1:1) màu Trắng. Mô Hình Trưng Bày, Đạo Cụ Mô Phỏng Máy Tính Mac book giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 5
+   },
+   {
+    "title": "Ốp Máy Tính Bảng Tản Nhiệt Màu Macaron Cho Apple ...",
+    "link": "https://shopee.vn/%E1%BB%90p-M%C3%A1y-T%C3%ADnh-B%E1%BA%A3ng-T%E1%BA%A3n-Nhi%E1%BB%87t-M%C3%A0u-Macaron-Cho-Apple-Macbook-Pro16-M1-Pro15.4-Retina-Pro-13-Mac-Pro13.3-Retina-Mac-Pro-13.3-Mac-Pro-14-M1-Mac-Pro13-M1-i.86417183.16879183401",
+    "snippet": "Ốp Máy Tính Bảng Tản Nhiệt Màu Macaron Cho Apple Macbook Pro16 M1 / Pro15.4 Retina / Pro 13 / Mac Pro13.3 Retina / Mac Pro 13.3 / Pro 14 M1 / Mac Pro13 M1.",
+    "position": 6
+   },
+   {
+    "title": "Túi Máy Tính Mới Túi Bảo Quản Thích Hợp Cho Apple MacBook ...",
+    "link": "https://shopee.vn/T%C3%BAi-M%C3%A1y-T%C3%ADnh-M%E1%BB%9Bi-T%C3%BAi-B%E1%BA%A3o-Qu%E1%BA%A3n-Th%C3%ADch-H%E1%BB%A3p-Cho-Apple-MacBook-Air-13.3-T%C3%BAi-M%C3%A1y-T%C3%ADnh-X%C3%A1ch-Tay-Pro-14-inch-L%C3%B3t-15-inc-i.906201846.53004933441?extraParams=%7B%22display_model_id%22%3A420455644522%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "Túi Máy Tính Mới Túi Bảo Quản Thích Hợp Cho Apple MacBook Air 13.3 Túi Máy Tính Xách Tay Pro 14 inch Lót 15-inc ... Tặng Voucher 15.000₫ nếu đơn giao sau thời ...",
+    "position": 7
+   },
+   {
+    "title": "macbook pro - Giá Tốt, Sale Tháng 10, Freeship 0Đ",
+    "link": "https://shopee.vn/list/macbook/pro",
+    "snippet": "flag-label Máy tính xách tay Apple MacBook Pro 14 inch, M5, 10 core CPU/10 ... 13.3icnh FHD 1.1kg, ngon bổ rẻ - siêu bền. 4.540.000₫. 4.690.000₫. -3 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

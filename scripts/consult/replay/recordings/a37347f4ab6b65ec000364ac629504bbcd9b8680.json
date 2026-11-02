@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hoi An Ancient Town entrance ticket price 2026 official hours",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T09:56:41.949Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hoi An Ancient Town entrance ticket price 2026 official hours",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hoi An Ancient Town Entrance Tickets - Đà Nẵng",
+    "link": "https://danangfantasticity.com/vi/news/hoi-an-ancient-town-entrance-tickets-2026",
+    "snippet": "... Hoi An operates pedestrian and non-motorized vehicle zones during specific hours. Within the Ancient Town area, pedestrian hours are from 09 ...",
+    "date": "6 thg 3, 2026",
+    "position": 1
+   },
+   {
+    "title": "Hoi An Old Town 2026: Full Guide for First-Time Visitors",
+    "link": "https://lasiestaresorts.com/first-time-visit-hoi-an-old-town.html",
+    "snippet": "Yes, you do need a ticket to access certain cultural sites within Hoi An Old Town, though walking through the streets is free. The ticket includes entry to a ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 2
+   },
+   {
+    "title": "Announcement of the visiting in Hoi An Ancient Town",
+    "link": "https://hoianheritage.net/en/news/news-events/announcement-of-the-visiting-in-hoi-an-ancient-town-125.html",
+    "snippet": "- Entrance ticket price 80.000 VND: + Visit general landscape of the ancient town. + Visit 01 monument: Japanese Covered Bridge or Quan Công ...",
+    "date": "28 thg 1, 2026",
+    "position": 3
+   },
+   {
+    "title": "Updated Hoi An Ticket Price 2026: The Essential Visitor's ...",
+    "link": "https://huracars.com/hoi-an-ticket-price-2026/",
+    "snippet": "Huracars shares the updated Hoi An ticket price 2026, the 5 sites included, where to buy tickets, and helpful tips for exploring the UNESCO town.",
+    "position": 4
+   },
+   {
+    "title": "Hoi An Old Town Ticket: Price, Offices, Attractions & More",
+    "link": "https://hoiandaytrip.com/hoi-an-old-town-ticket/",
+    "snippet": "To enter it, all tourists need to pay an entrance fee and then get a ticket pass to visit attractions in it, such as old bridge, temples. The fee will fund the ...",
+    "position": 5
+   },
+   {
+    "title": "Hoi An Entrance Fee In 2026 - Latest Update",
+    "link": "https://culturephamtravel.com/hoi-an-entrance-fee/",
+    "snippet": "In this tour, the Hoi An Entrance Fee Ticket has been included, so that you don't have to wait in line to buy it. Hoi An Ancient Town Opening ...",
+    "date": "2 thg 1, 2026",
+    "position": 6
+   },
+   {
+    "title": "Hoi An Ancient Town: Ticket Price, Hours & What to See",
+    "link": "https://www.lanytrip.com/en/blogs/central-vietnam-attractions/hoi-an-ancient-town-guide",
+    "snippet": "You can enter from the Japanese Covered Bridge, Hoi An Market or around Tran Phu Street. Entrance ticket, 120,000 VND for foreign visitors ( ...",
+    "date": "17 thg 8, 2026",
+    "position": 7
+   },
+   {
+    "title": "Hoi An Ancient Town ticket: Where to buy and how much?",
+    "link": "https://hoabinhtourist.com/en/blog/hoi-an-ancient-town-ticket",
+    "snippet": "Ticket Prices and Opening Hours of Hoi An Ancient Town. Ticket price (2024): 120,000 VND (~$5) for international visitors; Includes: Admission ...",
+    "date": "28 thg 8, 2025",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "giá xăng dầu kỳ điều hành mới nhất Việt Nam",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:17:55.455Z",
+ "body": {
+  "searchParameters": {
+   "q": "giá xăng dầu kỳ điều hành mới nhất Việt Nam",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Giá xăng dầu hôm nay 8/10, tin giá xăng mới nhất",
+    "link": "https://vnexpress.net/chu-de/gia-xang-dau-3026",
+    "snippet": "Giá xăng hôm nay ; Xăng E10 RON 95-III, 27.180, + 100 ; Xăng E5 RON 92, 26.560, + 170 ; Dầu Diesel, 29.710, - 780 ...",
+    "position": 1
+   },
+   {
+    "title": "Giá xăng dầu hôm nay cập nhật mới nhất",
+    "link": "https://baomoi.com/tien-ich-gia-xang-dau.epi",
+    "snippet": "Giá xăng dầu hôm nay 8/10/2026: WTI vẫn dưới 90 USD/thùng, Brent quanh 101 USD; giá bán lẻ trong nước chờ kỳ điều hành mới lúc 15h chiều nay. Giá xăng dầu ...",
+    "position": 2
+   },
+   {
+    "title": "Tin giá xăng dầu",
+    "link": "https://www.pvoil.com.vn/tin-gia-xang-dau",
+    "snippet": "Bảng giá xăng dầu ; 1, Xăng E10 RON 95-III, 27.180 đ, +100.",
+    "position": 3
+   },
+   {
+    "title": "Thông cáo báo chí :: Petrolimex (PLX) - Tập đoàn Xăng ...",
+    "link": "https://www.petrolimex.com.vn/ndi/thong-cao-bao-chi.html",
+    "snippet": "Petrolimex điều chỉnh giá xăng dầu từ 15 giờ 00 phút ngày 01.10.2026 · Petrolimex điều chỉnh giá xăng dầu từ 15 giờ 00 phút ngày 24.9.2026 · Petrolimex và Sun ...",
+    "position": 4
+   },
+   {
+    "title": "Bảng giá xăng dầu hôm nay",
+    "link": "https://luatvietnam.vn/bang-gia-xang-dau-hom-nay.html",
+    "snippet": "Từ 15h ngày 01/10/2026, giá xăng E10 tăng lên 27.180 đồng/lít, dầu diesel giảm 780 đồng/lít ... Từ 15h ngày 1/10, giá xăng E10 và E5 tăng thêm 100-170 đồng/lít, ...",
+    "position": 5
+   },
+   {
+    "title": "Giá xăng dầu hôm nay bao nhiêu 1 lít mới nhất?",
+    "link": "https://topi.vn/gia-xang-dau-hom-nay.html",
+    "snippet": "1. Bảng giá xăng dầu Petrolimex mới nhất ; Xăng E10 RON 95-V · 28.180, 28.740 ; Xăng E10 RON 95-III, 27.180, 27.720 ; Xăng E5 RON 92-II, 26.560, 27.090 ; DO 0,001S-V ...",
+    "position": 6
+   },
+   {
+    "title": "Giá xăng dầu hôm nay bao nhiêu 1 lít mới nhất",
+    "link": "https://www.vcbs.com.vn/chi-tiet-kien-thuc-co-ban/gia-dau-hom-nay",
+    "snippet": "1.1. Cập nhật bảng giá xăng dầu Petrolimex hôm nay ; Xăng sinh học E10 RON 95-III. Đồng/lít. 25,630 ; Xăng sinh học E5 RON 92-II. Đồng/lít. 25,130.",
+    "date": "18 thg 9, 2026",
+    "position": 7
+   },
+   {
+    "title": "Giá xăng dầu hôm nay 24/3",
+    "link": "https://www.youtube.com/watch?v=Qx-v3uY6IIs",
+    "snippet": "Share your videos with friends, family, and the world.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -158,8 +158,12 @@ export function newsCacheKey(query: string, lang: string): string {
   return `news:${cacheKeyPart(query)}:${lang}`
 }
 
-export function webSearchCacheKey(query: string, lang: string): string {
-  return `websearch:${cacheKeyPart(query)}:${lang}`
+/** The country / language a Serper search was sent with. Vietnam / Vietnamese is the default and adds nothing to a key (every existing key stays as it was). */
+export interface SearchRegion { gl: string; hl: string }
+const regionSuffix = (r?: SearchRegion): string => (!r || (r.gl === 'vn' && r.hl === 'vi') ? '' : `:r=${r.gl}-${r.hl}`)
+
+export function webSearchCacheKey(query: string, lang: string, region?: SearchRegion): string {
+  return `websearch:${cacheKeyPart(query)}:${lang}${regionSuffix(region)}`
 }
 
 /**
@@ -172,8 +176,8 @@ export function webSearchCacheKey(query: string, lang: string): string {
  * it - `serperSearch` sends a fixed `gl: 'vn', hl: 'vi'` for every caller, so a
  * per-language key would split one upstream answer into two paid entries.
  */
-export function serperSearchCacheKey(query: string): string {
-  return `serpsearch:${cacheKeyPart(query)}`
+export function serperSearchCacheKey(query: string, region?: SearchRegion): string {
+  return `serpsearch:${cacheKeyPart(query)}${regionSuffix(region)}`
 }
 
 /**
@@ -231,6 +235,8 @@ export function transportCacheKey(
   destination: string,
   mode: string | undefined,
   lang: string,
+  /** Round 32 (CONSULTATIVE_IN_AGENT): the user's travel date when it goes into the search query; absent → the key is exactly the former one. */
+  dateForQuery?: string,
 ): string {
-  return `transport:${cacheKeyPart(origin)}:${cacheKeyPart(destination)}:${mode || 'auto'}:${lang}`
+  return `transport:${cacheKeyPart(origin)}:${cacheKeyPart(destination)}:${mode || 'auto'}:${lang}${dateForQuery ? `:d${dateForQuery}` : ''}`
 }

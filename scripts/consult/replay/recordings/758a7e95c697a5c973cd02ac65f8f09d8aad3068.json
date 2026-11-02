@@ -1,0 +1,42 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Anker Soundcore Liberty 4 NC tai nghe chạy bộ chống nước IPX4 Sony WH-CH720N chạy bộ chống nước (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:42:56.332Z",
+ "body": {
+  "searchParameters": {
+   "q": "Anker Soundcore Liberty 4 NC tai nghe chạy bộ chống nước IPX4 Sony WH-CH720N chạy bộ chống nước (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "tai nghe không dây anker - Giá Tốt, Sale Tháng 10, ...",
+    "link": "https://shopee.vn/list/tai%20nghe%20kh%C3%B4ng%20d%C3%A2y/anker",
+    "snippet": "Tai nghe bluetooth Anker soundcore R50i, thời lượng phát tới 30H, nghe gọi rõ ràng và âm trầm cao, chống nước IPX5. 415.768₫. 599.000₫. -31%. voucher-icon.",
+    "position": 1
+   },
+   {
+    "title": "Tai nghe anker soundcore r50i - Giá Tốt, Sale Tháng 10, ...",
+    "link": "https://shopee.vn/list/tai%20nghe/anker/soundcore%20r50i",
+    "snippet": "Tai nghe bluetooth Anker soundcore R50i, thời lượng phát tới 30H, nghe gọi rõ ràng và âm trầm cao, chống nước IPX5. 434.000₫. 599.000₫. -28%. voucher-icon.",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe bluetooth giá rẻ dưới 500K | Đa dạng mẫu mã",
+    "link": "https://cellphones.com.vn/bo-loc/tai-nghe-gia-re-duoi-500000",
+    "snippet": "Có mic đàm thoại; Chống ồn; Điều khiển giọng nói; Xuyên âm; Sạc không dây; Chống nước; Có app phiên dịch; Chống ồn chủ động ANC. Cổng kết nối.",
+    "position": 3
+   }
+  ],
+  "credits": 1
+ }
+}

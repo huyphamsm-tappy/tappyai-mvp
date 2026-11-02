@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hoff Coffee Brewers by BeanHop\" OR \"Cà phê Sài Gòn Ơi\" OR \"Bâng Khuâng Café\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:49:33.089Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hoff Coffee Brewers by BeanHop\" OR \"Cà phê Sài Gòn Ơi\" OR \"Bâng Khuâng Café\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cà phê Sài Gòn ơi ☕️🎶🌇#caphe #anhgiamdoc # ...",
+    "link": "https://www.tiktok.com/@anhgiamdoc79/video/7657923510001569031",
+    "snippet": "25 Lượt thích,Video TikTok từ ANH GIÁM ĐỐC (@anhgiamdoc79): \"Cà phê Sài Gòn ơi ☕️ #caphe #anhgiamdoc #creatorsearchinsights\".",
+    "position": 1
+   },
+   {
+    "title": "Físeán Thu Quyến (@nhim_404) le Cà Phê Sài Gòn Ơi",
+    "link": "https://www.tiktok.com/@nhim_404/photo/7625049330742742290?lang=ga",
+    "snippet": "Físeán Thu Quyến (@nhim_404) ó TikTok.Cà Phê Sài Gòn Ơi - Ken Quach.",
+    "position": 2
+   },
+   {
+    "title": "Cuc Nguyen (@nguyenthithucuc83)'s videos with Cà Phê Sài ...",
+    "link": "https://www.tiktok.com/@nguyenthithucuc83/photo/7633371695461453077",
+    "snippet": "43 Likes, TikTok video from Cuc Nguyen (@nguyenthithucuc83): “”. Cà Phê Sài Gòn Ơi - Ken Quach.",
+    "position": 3
+   },
+   {
+    "title": "trí thiện (@tr.thin923)'s videos with Cà Phê Sài Gòn Ơi - Ken Quach",
+    "link": "https://www.tiktok.com/@tr.thin923/video/7623288532953500948?lang=artiktok.com%2F%40abdulwahhab.alfatlawi%3Flang%3Dar",
+    "snippet": "59 Likes, TikTok video from trí thiện (@tr.thin923): “”. Cà Phê Sài Gòn Ơi - Ken Quach.",
+    "position": 4
+   },
+   {
+    "title": "Annie Nguyen (@annie.nguyen290)'s videos with Cà Phê Sài ...",
+    "link": "https://www.tiktok.com/@annie.nguyen290/video/7673269181285977365",
+    "snippet": "20 Likes, TikTok video from Annie Nguyen (@annie.nguyen290): “”. Cà Phê Sài Gòn Ơi - Ken Quach.",
+    "position": 5
+   },
+   {
+    "title": "Nguyễn Thanh sơn (@thienan1234556)'s videos with Cà ...",
+    "link": "https://www.tiktok.com/@thienan1234556/photo/7669595168399494418",
+    "snippet": "... Likes, TikTok video from Nguyễn Thanh sơn (@thienan1234556): “”. Cà Phê Sài Gòn Ơi - Ken Quach ... Cà Phê Sài Gòn Ơi · author. 44 · 5.",
+    "position": 6
+   },
+   {
+    "title": "Love your Anna ♥️ (@mai.tran2771)'s videos with Cà Phê ...",
+    "link": "https://www.tiktok.com/@mai.tran2771/video/7627420220352777492",
+    "snippet": "41 Likes, TikTok video from Love your Anna ♥️ (@mai.tran2771): “”. Cà Phê Sài Gòn Ơi - Ken Quach.",
+    "position": 7
+   },
+   {
+    "title": "Nguyễn Đình Thảo (@thaophucnhanduc)'s videos with Cà Phê ...",
+    "link": "https://www.tiktok.com/@thaophucnhanduc/photo/7660312508376370452",
+    "snippet": "TikTok video from Nguyễn Đình Thảo (@thaophucnhanduc): “”. Cà Phê Sài Gòn Ơi - Ken Quach.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

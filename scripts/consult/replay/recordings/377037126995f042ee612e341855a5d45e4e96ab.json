@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook khoảng 25 triệu lập trình không MacBook Air 13 inch (site:shopee.vn OR site:tiki.vn OR site:lazada.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:57:06.408Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook khoảng 25 triệu lập trình không MacBook Air 13 inch (site:shopee.vn OR site:tiki.vn OR site:lazada.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Gợi ý các dòng MacBook cho sinh viên",
+    "link": "https://shopee.vn/blog/macbook-cho-sinh-vien/",
+    "snippet": "MacBook Air M5 13 inch. Chip, Apple M5. CPU, 10 lõi. GPU, 8 / 10 lõi. RAM, 16GB / 24GB / 32GB. SSD, 512GB / 1TB / 2TB / 4TB. Màn hình, Liquid ...",
+    "date": "16 thg 8, 2026",
+    "position": 1
+   },
+   {
+    "title": "[Mỏng hơn 30%, Không Khoảng Cách] Ốp Pha Lê Siêu ...",
+    "link": "https://shopee.vn/-M%E1%BB%8Fng-h%C6%A1n-30-Kh%C3%B4ng-Kho%E1%BA%A3ng-C%C3%A1ch-%E1%BB%90p-Pha-L%C3%AA-Si%C3%AAu-M%E1%BB%8Fng-Cho-Macbook-Air-M4-M1-M2-M3-13-15-Inch-A3113-A3114-A2179-A3240-Pro-13-14-16-Inch-Retina-13-V%E1%BB%8F-B%E1%BA%A3o-V%E1%BB%87-Phim-M%C3%A0n-H%C3%ACnh-i.586918470.26629741955",
+    "snippet": "[Mỏng hơn 30%, Không Khoảng Cách] Ốp Pha Lê Siêu Mỏng Cho Macbook Air M4 M1 M2 M3 13 15 Inch A3113 A3114 A2179 A3240 Pro 13 14 16 Inch Retina 13 Vỏ Bảo Vệ ...",
+    "rating": 5,
+    "ratingCount": 4,
+    "position": 2
+   },
+   {
+    "title": "Macbook - Laptop Chính Hãng, Giá Tốt, Đảm Bảo",
+    "link": "https://shopee.vn/list/macbook",
+    "snippet": "Hai dòng MacBook này có những điểm khác biệt chính như sau: Hiệu suất: MacBook Pro có chip mạnh hơn, hệ thống tản nhiệt tốt hơn, phù hợp cho các tác vụ nặng.",
+    "position": 3
+   },
+   {
+    "title": "Laptop Mới Nửa / Toàn Thân Da Cho 2025 Macbook Air 13 ...",
+    "link": "https://shopee.vn/Laptop-M%E1%BB%9Bi-N%E1%BB%ADa-To%C3%A0n-Th%C3%A2n-Da-Cho-2025-Macbook-Air-13-15-inch-M4-M3-M2-B%E1%BA%A7u-Tr%E1%BB%9Di-Xanh-N%E1%BB%ADa-%C4%90%C3%AAm-Kh%C3%B4ng-Gian-X%C3%A1m-B%E1%BA%A1c-Mi%E1%BA%BFng-D%C3%A1n-Ch%E1%BB%91ng-Tr%E1%BA%A7y-X%C6%B0%E1%BB%9Bc-i.586918470.24992913365",
+    "snippet": "Laptop Mới Nửa / Toàn Thân Da Cho 2025 Macbook Air 13 15 inch M4 M3 M2 Bầu Trời Xanh / Nửa Đêm / Không Gian Xám / Bạc Miếng Dán Chống Trầy Xước.",
+    "position": 4
+   },
+   {
+    "title": "macbook air - Giá Tốt, Sale Tháng 10, Freeship 0Đ",
+    "link": "https://shopee.vn/list/macbook%20air",
+    "snippet": "Mua sắm tại Shopee Việt Nam ngay hôm nay để có cơ hội sở hữu sản phẩm macbook air chất lượng, giá ưu đãi và freeship. Hãy chọn Shopee để thỏa thích mua sắm hàng ...",
+    "position": 5
+   },
+   {
+    "title": "Máy tính xách tay Apple MacBook Air 13 inch, M5, 24GB ...",
+    "link": "https://shopee.vn/M%C3%A1y-t%C3%ADnh-x%C3%A1ch-tay-Apple-MacBook-Air-13-inch-M5-24GB-ram-10-core-CPU-10-core-GPU-1T-i.88201679.46308299197",
+    "snippet": "Mua Máy tính xách tay Apple MacBook Air 13 inch, M5, 24GB ram, 10-core CPU, 10-core GPU, 1T giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.9,
+    "ratingCount": 9,
+    "position": 6
+   },
+   {
+    "title": "mac mini - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/mac%20mini",
+    "snippet": "flag-label Máy tính xách tay Apple MacBook Air 13 inch, M5, 24GB ram, 10 ... không, trôi trễ thấ Cầm lâu không mỏip. 436.000₫. 520.000₫. -16%. Rẻ Vô Địch.",
+    "position": 7
+   },
+   {
+    "title": "Cách chọn laptop cho sinh viên Marketing cấu hình phù ...",
+    "link": "https://shopee.vn/blog/laptop-cho-sinh-vien-marketing/",
+    "snippet": "Thiết kế, dựng video ngắn, CPU dòng H hoặc chip Apple Silicon, RAM 16GB, màn hình đẹp, Khoảng 20–30 triệu đồng ; Sáng tạo nội dung chuyên sâu ...",
+    "date": "11 thg 8, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

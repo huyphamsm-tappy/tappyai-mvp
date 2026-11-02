@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Cơm Niêu Chú Chen\" OR \"Quán Bụi Central\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:53:41.634Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Cơm Niêu Chú Chen\" OR \"Quán Bụi Central\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cơm Niêu Chú Chen (@comnieuchuchen)",
+    "link": "https://www.tiktok.com/@comnieuchuchen",
+    "snippet": "Cơm Niêu Chú Chen (@comnieuchuchen) trên TikTok |288 Lượt thích.56 Follower.TRỌN VỊ TÌNH THÂN - NÂNG TẦM CƠM VIỆT.Xem video mới nhất từ Cơm Niêu Chú Chen ...",
+    "position": 1
+   },
+   {
+    "title": "full bàn từ bàn trưa",
+    "link": "https://www.tiktok.com/@comnieuchuchen/photo/7493406616990092562?lang=he-IL",
+    "snippet": "full bàn từ bàn trưa · recommend-cover. Cơm Niêu Chú Chen. 48 · recommend-cover. Cơm Niêu Chú Chen. 12 · recommend-cover. Cơm Niêu Chú Chen. 49.",
+    "position": 2
+   },
+   {
+    "title": "full bàn từ bàn trưa",
+    "link": "https://www.tiktok.com/@comnieuchuchen/photo/7493406616990092562?lang=bg",
+    "snippet": "TikTok видео от Cơm Niêu Chú Chen (@comnieuchuchen): „full bàn từ bàn trưa“.游山恋（戏腔剪辑版） - 海伦.",
+    "position": 3
+   },
+   {
+    "title": "Quán Bụi Group (@quanbui_group)",
+    "link": "https://www.tiktok.com/@quanbui_group",
+    "snippet": "Những cảm nhận khách quan, chi tiết từ khách luôn là điều Quán Bụi trân · Bữa cơm tối chuẩn vị Việt tại Quán Bụi central #quanbuigroup #vietnamesefood # ...",
+    "position": 4
+   },
+   {
+    "title": "Neu co them co hoi…??? #xhhhhhhhhhhhhhhhhhhhhhhh #dalat",
+    "link": "https://www.tiktok.com/@tks.tuw_06/video/7599352791433268501",
+    "snippet": "original sound - Cháo Sườn Chú Chen - Cháo Sườn Cơm Niêu Chú Chen · Làng quê tôi yên bình mộc mạc - Mộc Gtar · nhạc nền - T Á O ? · nhạc nền - PhNgNhuNgoc - ...",
+    "position": 5
+   },
+   {
+    "title": "Cơm Niêu Bình Dân: Review món ăn được tặng",
+    "link": "https://www.tiktok.com/@lamrangtragop_binhdan/video/7635918285598428432",
+    "snippet": "Cơm Niêu Chú Chen. Hãy để Cơm Niêu Chú Chen trở thành điểm đến lý tưởng cho những cuộc hội ngộ cuối năm của bạn. Cùng nhau thưởng thức những món ăn quen ...",
+    "position": 6
+   },
+   {
+    "title": "Video của Vui Vui ❤️❤️😜 (@hoanghn1) với bản nhạc âm thanh ...",
+    "link": "https://www.tiktok.com/@hoanghn1/video/7669290375219203349",
+    "snippet": "Cộng đồng video toàn cầu · Mở ứng dụng · @Vui Vui ❤️❤️ · âm thanh gốc - Vui Vui ❤️❤️ · Cơm Niêu Chú Chen - Quận 1 · author · 179 · 9.",
+    "position": 7
+   },
+   {
+    "title": "Ủng hộ tiệm xì ta up đi mấy mom ơi @Hè",
+    "link": "https://www.tiktok.com/@nhikhonglamcongty/video/7690972404369280263",
+    "snippet": "... Cơm Niêu Chú Chen #nhikhonglamcongty #chuchen #chaosuon #trasuadailoan #reviewfood · 天気のいい日 - めめ. 21Thích. 0Bình luận. 9Lượt chia sẻ.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

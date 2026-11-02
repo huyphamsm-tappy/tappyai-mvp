@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hội An phố cổ thời gian tham quan ban ngày buổi tối lưu ý khách du lịch",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T17:18:35.987Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hội An phố cổ thời gian tham quan ban ngày buổi tối lưu ý khách du lịch",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Mở rộng thời gian tham quan phố cổ Hội An vào ban đêm",
+    "link": "https://vietnamtourism.gov.vn/post/12460",
+    "snippet": "UBND TP. Hội An đã chính thức ban hành đề án “Mở rộng thời gian và nội dung phục vụ khách tham quan khu phố cổ Hội An vào ban đêm” sau 3 năm thử nghiệm.",
+    "position": 1
+   },
+   {
+    "title": "Phố cổ Hội An về đêm có gì chơi? 8 trải nghiệm không ...",
+    "link": "https://ohdidi.vn/blog/kinh-nghiem-du-lich/pho-co-hoi-an-ve-dem",
+    "snippet": "Phố cổ Hội An về đêm với loạt trải nghiệm check in \"triệu view\" · 1. Ngắm đèn lồng phố cổ · 2. Đi thuyền, thả đèn hoa đăng trên sông Hoài · 3. Khám ...",
+    "date": "24 thg 7, 2026",
+    "position": 2
+   },
+   {
+    "title": "Phố cổ Hội An Đà Nẵng: Hướng dẫn du lịch chi tiết và ...",
+    "link": "https://pystravel.vn/tin/17567-pho-co-hoi-an-da-nang.html?srsltid=AU7gw4XrJsPeP0xPIc3r9fP-MNqkldnjw3azJqpIUG1mO0gdEffjGIay",
+    "snippet": "Mùa khô tại phố cổ Hội An Đà Nẵng kéo dài từ tháng 1 đến tháng 8, là thời gian lý tưởng để du khách tham quan các di tích lịch sử, những ngôi nhà cổ, chùa chiền ...",
+    "position": 3
+   },
+   {
+    "title": "Phố cổ hội an thì nên đi ban ngày hay buổi tối hả mọi người",
+    "link": "https://www.facebook.com/groups/2292208260990538/posts/2730039320540761/",
+    "snippet": "Phố cổ hội an thì nên đi ban ngày hay buổi tối hả mọi người · Lavila Hội An. Nên buổi sáng thì đi sớm 6h , chiều tối 19h30. · ThanhLoan Phạm. Chụp ...",
+    "position": 4
+   },
+   {
+    "title": "Cẩm Nang Du Lịch Hội An Về Đêm - Bảng Giá Và Tour ...",
+    "link": "https://phanvantravel.com/hoi-an-ve-dem",
+    "snippet": "Thời điểm. Khung giờ. Ghi chú ; Phố đi bộ cấm xe (ngày thường). 15:00 - 21:30 ; Phố đi bộ cấm xe (cuối tuần). 15:00 - 22:00 ; Đèn lồng bắt đầu lên. Từ 18:00. Mùa ...",
+    "position": 5
+   },
+   {
+    "title": "HỘI AN ĐÊM RẰM PHỐ CỔ ĐẸP NHƯ CỔ TÍCH",
+    "link": "https://www.youtube.com/watch?v=S0hMVGy6p9s&xstg=CAMSBhUDze3xHw%3D%3D",
+    "snippet": "HỘI AN ĐÊM RẰM PHỐ CỔ ĐẸP NHƯ CỔ TÍCH - DU KHÁCH MÊ MẨN QUÊN LỐI VỀ || Nick Nguyen · Comments.",
+    "position": 6
+   },
+   {
+    "title": "Kinh nghiệm Du lịch HỘI AN 2026 từ A-Z: lưu trú, ăn chơi, ...",
+    "link": "https://vnexpress.net/cam-nang-du-lich-hoi-an-4446174.html",
+    "snippet": "Nằm bên bờ bắc hạ lưu sông Thu Bồn, Hội An là một đô thị cổ tại Quảng Nam, cách thành phố Đà Nẵng hơn 30 km, cách Huế 122 km. Nhắc tới Hội An là phải kể tới ...",
+    "position": 7
+   },
+   {
+    "title": "Phố cổ Hội An buổi tối – Trải nghiệm không thể bỏ qua",
+    "link": "https://vuivivudanang.vn/blogs/tin-tuc-hoi-an/pho-co-hoi-an-buoi-toi-trai-nghiem-khong-the-bo-qua",
+    "snippet": "Thông thường, khung giờ từ 17h đến 22h là lý tưởng nhất. Lúc này ánh sáng mặt trời đã dịu, đèn lồng bắt đầu được thắp sáng, tạo nên không gian ...",
+    "date": "13 thg 9, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

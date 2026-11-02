@@ -1,4 +1,6 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { publicRateLimit } from '@/lib/security/publicRateLimit'
+import { rateLimitedResponse } from '@/lib/security/rateLimitResponse'
 import { NextRequest, NextResponse } from 'next/server'
 import { getMediaProvider, putMedia, randomMediaSuffix } from '@/lib/media'
 import { sniffImageType, imageExt, imageMime } from '@/lib/security/imageType'
@@ -361,6 +363,10 @@ async function uploadCover(
 export async function POST(req: NextRequest) {
   const { user, supabase } = await getRequestUser(req)
   if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
+
+  // SEC4 slice 5a: a storage write + image decode had no limiter. 10 per hour per user, avatar and cover together; checked BEFORE the body is read.
+  const rl = await publicRateLimit(`profile-photo:${user.id}`, 10, 3_600_000)
+  if (!rl.ok) return rateLimitedResponse(req, rl, 'profile_photo')
 
   let formData: FormData
   try { formData = await req.formData() }

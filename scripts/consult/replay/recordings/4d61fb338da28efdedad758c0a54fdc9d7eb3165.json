@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "MacBook Neo 13 inch A18 Pro 2026 6CPU 5GPU 8GB",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:01:45.875Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Neo 13 inch A18 Pro 2026 6CPU 5GPU 8GB",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "MacBook Neo 13 inch A18 Pro 2026 6 CPU/5 GPU 8GB 256GB",
+    "imageUrl": "https://bizweb.dktcdn.net/thumb/1024x1024/100/625/402/products/31f50793-70e1-423e-a6b9-988e07d50e99.jpg?v=1776402189873",
+    "imageWidth": 750,
+    "imageHeight": 750,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxEhY4yvoGoga7X2TYbdauM7Haop53LlYUg9d58OP6Yw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Newtechshop",
+    "domain": "newtechshop.vn",
+    "link": "https://newtechshop.vn/apple-macbook-neo-13-inch-a18-pro-2026-6-cpu-5-gpu-8gb-256gb",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbizweb.dktcdn.net%2Fthumb%2F1024x1024%2F100%2F625%2F402%2Fproducts%2F31f50793-70e1-423e-a6b9-988e07d50e99.jpg%3Fv%3D1776402189873&tbnid=Ku22dRBSxdRIHM&imgrefurl=https%3A%2F%2Fnewtechshop.vn%2Fapple-macbook-neo-13-inch-a18-pro-2026-6-cpu-5-gpu-8gb-256gb&docid=qU91VRaejbhGPM&w=750&h=750",
+    "position": 1
+   },
+   {
+    "title": "MacBook Neo 13 inch A18 Pro 2026 6CPU 5GPU (8GB - 256GB) Chính Hãng",
+    "imageUrl": "https://cdn.viettablet.com/images/detailed/76/macbook-neo-13-a18-pro-6-cpu-5-gpu-8gb-256gb-anh-5.jpg",
+    "imageWidth": 1170,
+    "imageHeight": 780,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7NTkPPJ1DDGQVmftRYjjRc_zEDKjiKbblzyhBEW3AvQ&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Viettablet",
+    "domain": "www.viettablet.com",
+    "link": "https://www.viettablet.com/macbook-neo-13-a18-pro-6-cpu-5-gpu-8gb-256gb?srsltid=AU7gw4UYdHqzfG87ZSaiQAiTsfyh27g0Gcj_yaTWxZXEGrRAF_DyKAMk",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.viettablet.com%2Fimages%2Fdetailed%2F76%2Fmacbook-neo-13-a18-pro-6-cpu-5-gpu-8gb-256gb-anh-5.jpg&tbnid=LYTVDMrczSj-fM&imgrefurl=https%3A%2F%2Fwww.viettablet.com%2Fmacbook-neo-13-a18-pro-6-cpu-5-gpu-8gb-256gb%3Fsrsltid%3DAU7gw4UYdHqzfG87ZSaiQAiTsfyh27g0Gcj_yaTWxZXEGrRAF_DyKAMk&docid=1iBymjtQjocQbM&w=1170&h=780",
+    "position": 2
+   },
+   {
+    "title": "MacBook Neo 13 inch A18 Pro 2026 6CPU 5GPU 8GB 256GB - Đã Kích Hoạt | Giá rẻ",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/m/a/macbook_13_19_1.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvL8yMcsTfA7D7vIc1yaQd9y5HTQKvRrNBetMdykQpuA&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/macbook-neo-13-a18-pro-6-cpu-5-gpu-8gb-256gb-da-kich-hoat.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fm%2Fa%2Fmacbook_13_19_1.png&tbnid=hAp-VrCoxUWOsM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fmacbook-neo-13-a18-pro-6-cpu-5-gpu-8gb-256gb-da-kich-hoat.html&docid=HxUVlPh6_HUPjM&w=358&h=358",
+    "position": 3
+   },
+   {
+    "title": "MacBook Neo 13 inch A18 Pro 2026 6CPU 5GPU (8GB - 256GB) Chính Hãng",
+    "imageUrl": "https://cdn.viettablet.com/images/detailed/76/macbook-neo-13-a18-pro-6-cpu-5-gpu-8gb-256gb-anh-1.jpg",
+    "imageWidth": 1170,
+    "imageHeight": 780,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvLlwT739EAjxjaXuIJJkT4hcNnt2SbvJpAuAJK3a5tg&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Viettablet",
+    "domain": "www.viettablet.com",
+    "link": "https://www.viettablet.com/macbook-neo-13-a18-pro-6-cpu-5-gpu-8gb-256gb?srsltid=AU7gw4XIS29KAS8vitGAWLxyCL-Fq_tgbjaXl7vJn5oGCq7bvl54Nvki",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.viettablet.com%2Fimages%2Fdetailed%2F76%2Fmacbook-neo-13-a18-pro-6-cpu-5-gpu-8gb-256gb-anh-1.jpg&tbnid=CCcEbrK9trEJRM&imgrefurl=https%3A%2F%2Fwww.viettablet.com%2Fmacbook-neo-13-a18-pro-6-cpu-5-gpu-8gb-256gb%3Fsrsltid%3DAU7gw4XIS29KAS8vitGAWLxyCL-Fq_tgbjaXl7vJn5oGCq7bvl54Nvki&docid=1iBymjtQjocQbM&w=1170&h=780",
+    "position": 4
+   },
+   {
+    "title": "MacBook Neo 13 inch A18 Pro 2026 6CPU 5GPU 8GB 256GB - Đã Kích Hoạt",
+    "imageUrl": "https://cdn2.cellphones.com.vn/x/media/catalog/product/h/o/ho_1_5.png",
+    "imageWidth": 1200,
+    "imageHeight": 1200,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCdpdQ2WC7V4wsVoddoJZjxJn1ELbyZb2hgvWIQEsMAA&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/macbook-neo-13-a18-pro-6-cpu-5-gpu-8gb-256gb-da-kich-hoat.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Fx%2Fmedia%2Fcatalog%2Fproduct%2Fh%2Fo%2Fho_1_5.png&tbnid=Xys31wWEwu6ulM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fmacbook-neo-13-a18-pro-6-cpu-5-gpu-8gb-256gb-da-kich-hoat.html&docid=HxUVlPh6_HUPjM&w=1200&h=1200",
+    "position": 5
+   },
+   {
+    "title": "MacBook Neo 13 inch A18 Pro 2026 6CPU 5GPU 8GB 512GB Touch ID - Đã Kích Hoạt",
+    "imageUrl": "https://cdn2.cellphones.com.vn/x/media/catalog/product/m/a/ma429d_1_2_1.jpg",
+    "imageWidth": 4000,
+    "imageHeight": 4000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFNVKGmzo5KzC-hBjsWwxh77wCvJUjiN36tcuWrnogUg&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/macbook-neo-13-a18-pro-6-cpu-5-gpu-8gb-512gb-cu-da-kich-hoat.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Fx%2Fmedia%2Fcatalog%2Fproduct%2Fm%2Fa%2Fma429d_1_2_1.jpg&tbnid=puf8CbctNJzYXM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fmacbook-neo-13-a18-pro-6-cpu-5-gpu-8gb-512gb-cu-da-kich-hoat.html&docid=11NEpgYh2RBNxM&w=4000&h=4000",
+    "position": 6
+   },
+   {
+    "title": "MacBook Neo 13 A18 Pro 2026 - Mỏng nhẹ, Hiệu năng đỉnh cao",
+    "imageUrl": "https://khoavang.vn/resources/cache/800xx1/MacBook-Neo-13/DSC02779-1787798638.webp",
+    "imageWidth": 800,
+    "imageHeight": 601,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2cQsd2o9e0RIJ-eBSV3NiTSeRQx2LAGurpLZijlhuJg&s",
+    "thumbnailWidth": 259,
+    "thumbnailHeight": 195,
+    "source": "Máy tính Khóa Vàng",
+    "domain": "khoavang.vn",
+    "link": "https://khoavang.vn/macbook-neo-13-a18-pro-13-inch-2026-6cpu-5gpu-ram-8gb-ssd-256gb-new-fullbox-100-p5456.html?srsltid=AU7gw4UEjlzk4rpu_xFHrGJ-MX_8sczOhulDSQXvS8qdx9gnFszOHboI",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fkhoavang.vn%2Fresources%2Fcache%2F800xx1%2FMacBook-Neo-13%2FDSC02779-1787798638.webp&tbnid=UuBcO7nn9KJCnM&imgrefurl=https%3A%2F%2Fkhoavang.vn%2Fmacbook-neo-13-a18-pro-13-inch-2026-6cpu-5gpu-ram-8gb-ssd-256gb-new-fullbox-100-p5456.html%3Fsrsltid%3DAU7gw4UEjlzk4rpu_xFHrGJ-MX_8sczOhulDSQXvS8qdx9gnFszOHboI&docid=k-tIoItBE71CtM&w=800&h=601",
+    "position": 7
+   },
+   {
+    "title": "MacBook Neo 13 inch A18 Pro 2026 6CPU 5GPU (8GB - 256GB) | Chính hãng Apple  Việt Nam",
+    "imageUrl": "https://cdn.viettablet.com/images/companies/1/minh-duc-2026/macbook-neo-13-a18-pro-6-cpu-5-gpu-8gb-256gb/macbook-neo-13-a18-pro-6-cpu-5-gpu-8gb-256gb-1.jpg?1772694010251",
+    "imageWidth": 780,
+    "imageHeight": 520,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNxSCSLb0QEgvsQcvAYchuPfWjL7gPyxHRzzji86gm_g&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Viettablet",
+    "domain": "www.viettablet.com",
+    "link": "https://www.viettablet.com/macbook-neo-13-a18-pro-6-cpu-5-gpu-8gb-256gb?srsltid=AU7gw4XFhUx3ukokW8lgp_RzOipy2YEf-lO3JsTT7rWJMdCWim7iU1-F",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.viettablet.com%2Fimages%2Fcompanies%2F1%2Fminh-duc-2026%2Fmacbook-neo-13-a18-pro-6-cpu-5-gpu-8gb-256gb%2Fmacbook-neo-13-a18-pro-6-cpu-5-gpu-8gb-256gb-1.jpg%3F1772694010251&tbnid=EgaW7tcM22qJjM&imgrefurl=https%3A%2F%2Fwww.viettablet.com%2Fmacbook-neo-13-a18-pro-6-cpu-5-gpu-8gb-256gb%3Fsrsltid%3DAU7gw4XFhUx3ukokW8lgp_RzOipy2YEf-lO3JsTT7rWJMdCWim7iU1-F&docid=1iBymjtQjocQbM&w=780&h=520",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MEAT & MEET - SAIGON CENTRE Quận 1, TP.HCM gia menu thuc don",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:31:14.702Z",
+ "body": {
+  "searchParameters": {
+   "q": "MEAT & MEET - SAIGON CENTRE Quận 1, TP.HCM gia menu thuc don",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "MEAT & MEET BBQ | Ho Chi Minh City",
+    "link": "https://www.facebook.com/mnm.hcm/?locale=vi_VN",
+    "snippet": "MEAT & MEET BBQ · MEAT & MEET VINCOM ĐỒNG KHỞI TẠM NGƯNG HOẠT ĐỘNG ĐỂ NÂNG CẤP & SỬA CHỮA Meat & Meet xin thông báo đến Quý Khách hàng, từ 11/09/2026, chi ...",
+    "rating": 3.5,
+    "ratingCount": 185,
+    "position": 1
+   },
+   {
+    "title": "TIẾT KIỆM KHÔNG NGỪNG VỚI MENU BUFFET CHỈ 179K ...",
+    "link": "https://www.facebook.com/mnm.hcm/posts/%C4%83n-ngon-ti%E1%BA%BFt-ki%E1%BB%87m-kh%C3%B4ng-ng%E1%BB%ABng-v%E1%BB%9Bi-menu-buffet-ch%E1%BB%89-179k-t%E1%BA%A1i-meat-meet-n%C6%B0%E1%BB%9Bng-n%C6%B0%E1%BB%9Bng/3881664898579632/",
+    "snippet": "Giờ trưa ngắn mà vẫn muốn ăn cho đã miệng? Ghé MEAT & MEET là có ngay buffet thịt nướng chuẩn Hàn chỉ 189K/người - Thịt nướng xèo xèo – ăn là ...",
+    "position": 2
+   },
+   {
+    "title": "Giới Thiệu - Meat & Meet | – KOREAN BBQ CONTAINER",
+    "link": "https://meatandmeet.com.vn/vi/gioi-thieu/",
+    "snippet": "Mang đến trải nghiệm BBQ Hàn Quốc chất lượng cao với mức giá hợp lý, tạo nên những khoảnh khắc thưởng thức trọn vẹn cho thực khách.",
+    "position": 3
+   },
+   {
+    "title": "Meat & Meet Korean BBQ Container - Saigon Centre",
+    "link": "https://www.foody.vn/ho-chi-minh/meat-meet-korean-bbq-container-saigon-centre",
+    "snippet": "Xem tất cả. Tầng Hầm 2, Saigon Centre, 65 Lê Lợi, P. Bến Nghé , Quận 1 , TP. HCM. Nhà hàng. 199,000đ - 429,000đ. Thực đơn. Xem tất cả thông tin. Xong. Chia sẻ.",
+    "position": 4
+   },
+   {
+    "title": "💥💥💥MEAT & MEET - SAIGON CENTRE TRIỂN KHAI ...",
+    "link": "https://www.facebook.com/mnm.hcm/posts/meat-meet-saigon-centre-tri%E1%BB%83n-khai-ch%C6%B0%C6%A1ng-tr%C3%ACnh-si%C3%AAu-%C6%B0u-%C4%91%C3%A3i-gi%E1%BA%A3m-gi%C3%A1-nguy%C3%AAn-ng%C3%A0y/3596482827097842/",
+    "snippet": "Bến Nghé, Quận 1, TP.HCM Giờ mở cửa: 11:00 - 22:00 Hotline: 028 6650 5058 #meetandmeatbbq #amthucngon ...",
+    "position": 5
+   },
+   {
+    "title": "Meat and Meet - Xập xình nhà hàng buffet chuẩn vị Hàn ...",
+    "link": "https://mia.vn/cam-nang-du-lich/meat-and-meet-12565",
+    "snippet": "Meat & Meet. Số 8 đường Lê Thị Riêng, Phường Bến Thành, TP. HCM. (028) 6650 3355 ; Meat & Meet - Saigon Centre, Tầng B2, Gian 8-9-10 Tòa nhà ...",
+    "date": "3 thg 3, 2026",
+    "position": 6
+   },
+   {
+    "title": "MEAT & MEET BBQ | 🔥 THÔNG BÁO ĐỔI MENU – TRẢI ...",
+    "link": "https://www.instagram.com/p/DTeQOYMjbDf/",
+    "snippet": "Ưu đãi Premium Beef Combo chỉ 399K: - Combo Trưa: 359K (10h00 – 17h00) - Dinner : 379K (17h00 – 22h00) - Ăn chưa đã? Gọi thêm món đồng giá ...",
+    "position": 7
+   },
+   {
+    "title": "Meat & Meet BBQ - Buffet lẩu nướng Hàn Quốc, giá phải chăng",
+    "link": "https://digiticket.vn/blog/meat-meet-bbq/",
+    "snippet": "Tầng B2/gian 8-9-10 TTTM Saigon Centre, số 65 đường Lê Lợi, P. Bến Nghé, Q1 - 02866505058. 2. Không gian theo phong cách Hàn Quốc. Ngoài nền ...",
+    "date": "17 thg 1, 2024",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

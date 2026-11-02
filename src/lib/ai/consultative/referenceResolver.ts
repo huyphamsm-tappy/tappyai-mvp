@@ -70,8 +70,10 @@ export function priorVenuesIn(assistantText: string): PriorVenue[] {
   return out
 }
 
+// Gate 2 F-1 (PROPOSAL): on folded text "đậu" (park) and "đầu" (first) are both "dau" -- "chỗ đậu xe / ô tô / oto" is parking, never
+// the first venue, so the bare "<quán|chỗ> dau" form must not be followed by a vehicle word.
 const ORDINALS: Array<[RegExp, number]> = [
-  [/\b(?:quan|cho|tiem|nha hang|cai|option|place|khach san|spa)?\s*(?:dau tien|thu nhat|so 1|1st|first|so mot)\b|\b(?:quan|cho|tiem|nha hang) dau\b(?! tien)/, 1],
+  [/\b(?:quan|cho|tiem|nha hang|cai|option|place|khach san|spa)?\s*(?:dau tien|thu nhat|so 1|1st|first|so mot)\b|\b(?:quan|cho|tiem|nha hang) dau\b(?! tien| xe| o to| oto| may)/, 1],
   [/\b(?:thu hai|so 2|2nd|second|thu 2)\b/, 2],
   [/\b(?:thu ba|so 3|3rd|third|thu 3)\b/, 3],
   [/\b(?:thu tu|so 4|4th|fourth|thu 4)\b/, 4],
@@ -278,4 +280,43 @@ export function ordinalVenuesFromContext(text: string, orderedNames: readonly st
   const prior: PriorVenue[] = orderedNames.filter(n => typeof n === 'string' && n.trim()).map((name, i) => ({ index: i + 1, name }))
   return resolveReferences(text, prior).filter(r => r.kind === 'ordinal').flatMap(r => r.venues.map(v => v.name))
     .filter((n, i, a) => a.indexOf(n) === i)
+}
+
+/**
+ * Gate 2 L4 C5 (PROPOSAL): the venues a follow-up refers to, for the canned carried-fact reply and the V1 block. `priorVenuesIn` reads the
+ * previous reply's bold names and de-duplicates them by name, so with two cards of the same name (two branches of one chain) "quán thứ hai"
+ * became the next DIFFERENT name. When the state holds the cards the user saw AND the previous reply names one of them (cards are kept across
+ * turns without cards -- stale ones must not take over), an ORDINAL is read against the cards, by position; every other reference (a name,
+ * "cả hai", "quán này") still reads the prose. Without that, exactly `referencedVenues(resolveReferences(text, prior))`.
+ */
+export function referencedWithCards(text: string, prior: readonly PriorVenue[], cards: readonly string[] | null | undefined): PriorVenue[] {
+  const fromProse = resolveReferences(text, prior)
+  const cardVenues: PriorVenue[] = (cards ?? []).map((name, i) => ({ index: i + 1, name })).filter(v => typeof v.name === 'string' && v.name.trim() !== '')
+  const replyNamesACard = cardVenues.length > 0 && prior.some(p => cardVenues.some(c => fold(c.name) === fold(p.name)))
+  const byCard = replyNamesACard ? resolveReferences(text, cardVenues).filter(r => r.kind === 'ordinal') : []
+  if (byCard.length === 0) return referencedVenues(fromProse)
+  const out = referencedVenues(byCard)
+  for (const v of referencedVenues(fromProse.filter(r => r.kind !== 'ordinal'))) if (!out.some(o => fold(o.name) === fold(v.name))) out.push(v)
+  return out
+}
+
+/**
+ * Gate 2 6a (PROPOSAL): does this follow-up refer to a venue the server STORED for this conversation (the last place search's rows)?
+ * True when a stored row's name is in the message (whole folded phrase), or when a reference -- an ordinal ("quán đầu tiên"), "quán đó",
+ * "cả hai", "2 quán này" -- resolves, against the cards the user saw (else the stored rows, in order) or the previous reply's bold names,
+ * to a stored row. The route then gives the turn those stored rows as guard EVIDENCE (no provider call, no new card), whatever the router
+ * typed the turn: measured on pk18 (r6Measure S1B-FOLLOW) the router typed such follow-ups 'chat', so the hours of the stored row were
+ * replaced by "chưa xác nhận" and a plan stop on that venue was dropped. Evidence only: it never decides WHICH venue the reply is about.
+ */
+export function refersToStoredVenue(text: string, priorReplyText: string, cards: readonly string[] | null | undefined, rowNames: readonly string[]): boolean {
+  const rows = rowNames.filter(n => typeof n === 'string' && fold(n).length >= 3)
+  if (!text || rows.length === 0) return false
+  const f = ' ' + fold(text) + ' '
+  const isRow = (name: string) => rows.some(r => fold(r) === fold(name))
+  if (rows.some(r => f.includes(' ' + fold(r) + ' '))) return true
+  const ordered = (cards ?? []).filter(c => typeof c === 'string' && c.trim() !== '')
+  const positional: PriorVenue[] = (ordered.length ? ordered : rows).map((name, i) => ({ index: i + 1, name }))
+  const byPosition = referencedVenues(resolveReferences(text, positional))
+  const byProse = referencedVenues(resolveReferences(text, priorVenuesIn(priorReplyText)))
+  return [...byPosition, ...byProse].some(v => isRow(v.name))
 }

@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh-doc.html \"Cấp hộ chiếu phổ thông ở trong nước\" \"160000\"",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:52:47.247Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh-doc.html \"Cấp hộ chiếu phổ thông ở trong nước\" \"160000\"",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp tỉnh)",
+    "link": "https://vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh-doc.html?ma_thu_tuc=1.001456",
+    "snippet": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp tỉnh). Xem chi tiết ... Phí: 160000 ĐồngXem chi tiết; Phí: 200000 ĐồngXem chi tiết; nộp hồ sơ trực ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

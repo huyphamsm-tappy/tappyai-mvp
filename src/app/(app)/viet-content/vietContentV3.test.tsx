@@ -24,6 +24,11 @@ import { vi as viCopy } from '@/lib/i18n/w3/vietContent'
 // Hero, four cards (topic / platform / tone / length) and a gradient CTA. The
 // request body sent to /api/viet-content is unchanged; only the UI moved.
 
+// jsdom has no scrollIntoView. The form scrolls to its result on a 100 ms timer; on a loaded machine that timer fired after the test and
+// vitest reported "resultRef.current?.scrollIntoView is not a function" as an unhandled error of the whole run (30/10). Same stub as
+// chatExploreClipContextWiring.test.tsx.
+Element.prototype.scrollIntoView = vi.fn()
+
 let fetchMock: ReturnType<typeof vi.fn>
 beforeEach(() => {
   setLocale('vi')

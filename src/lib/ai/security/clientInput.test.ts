@@ -311,9 +311,10 @@ describe('E · injection-shaped strings remain data, never authority', () => {
 
 describe('F · one bounded, auditable client-input budget', () => {
   it('states every limit explicitly', () => {
+    // 31/10: + the two PDF attachment limits (count, size) - every limit is still named here, none removed
     expect(Object.keys(L).sort()).toEqual([
       'maxImageDataUrlChars', 'maxImagePartsPerMessage', 'maxMessageTextChars',
-      'maxMessages', 'maxPreferenceItemChars', 'maxPreferenceItems',
+      'maxMessages', 'maxPdfDataUrlChars', 'maxPdfPartsPerMessage', 'maxPreferenceItemChars', 'maxPreferenceItems',
       'maxPreferenceTotalChars', 'maxTotalClientTextChars',
     ])
   })

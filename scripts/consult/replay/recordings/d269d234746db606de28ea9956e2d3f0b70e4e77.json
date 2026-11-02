@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Soleil by Soluna | A Charming Touch of Hoi An's Heritage, formerly Hoi An Babylon Riverside Hotel & Spa\" Hội An site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:02:32.688Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Soleil by Soluna | A Charming Touch of Hoi An's Heritage, formerly Hoi An Babylon Riverside Hotel & Spa\" Hội An site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

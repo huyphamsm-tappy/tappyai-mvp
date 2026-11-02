@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "iPhone 15 Samsung Galaxy S24 giá Việt Nam so sánh mua (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:34:18.928Z",
+ "body": {
+  "searchParameters": {
+   "q": "iPhone 15 Samsung Galaxy S24 giá Việt Nam so sánh mua (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "So sánh Samsung Galaxy S24 Ultra và iPhone 15 Pro Max",
+    "link": "https://cellphones.com.vn/sforum/so-sanh-samsung-galaxy-s24-ultra-va-iphone-15-pro-max",
+    "snippet": "Cùng Sforum.vn tìm hiểu qua bài viết dưới đây. So sánh Galaxy S24 Ultra và iPhone 15 Pro Max. Màn so tài giữa hai chiếc flagship hàng đầu luôn ...",
+    "date": "18 thg 1, 2024",
+    "position": 1
+   },
+   {
+    "title": "So sánh Galaxy S24 Plus và iPhone 15 Plus",
+    "link": "https://cellphones.com.vn/sforum/so-sanh-galaxy-s24-plus-va-iphone-15-plus",
+    "snippet": "So sánh Galaxy S24 Plus và iPhone 15 Plus: Phiên bản “cộng” nào ngon hơn? · 1. Thiết kế Galaxy S24 Plus bắt mắt hơn · 2. Màn hình Galaxy S24 Plus ...",
+    "date": "18 thg 1, 2024",
+    "position": 2
+   },
+   {
+    "title": "Trên dưới 22 triệu, mua Galaxy S24 hay iPhone 15 hợp lý ...",
+    "link": "https://cellphones.com.vn/sforum/mua-galaxy-s24-hay-iphone-15-hop-ly-hon",
+    "snippet": "Cụ thể, Galaxy S24 được cung cấp sức mạnh đến từ con chip Exynos 2400, đi kèm dung lượng RAM 8GB và người dùng sẽ có 128GB/256GB bộ nhớ trong để ...",
+    "date": "18 thg 1, 2024",
+    "position": 3
+   },
+   {
+    "title": "So sánh Galaxy S24 Ultra và iPhone 15 Pro Max dựa trên ...",
+    "link": "https://cellphones.com.vn/sforum/so-sanh-galaxy-s24-ultra-va-iphone-15-pro-max",
+    "snippet": "Về bộ nhớ, Galaxy S24 Ultra dự kiến có bộ nhớ trong tối thiểu 256GB giống như iPhone 15 Pro Max. Mẫu flagship sắp tới của Samsung sẽ cung cấp cho người dùng RAM ...",
+    "position": 4
+   },
+   {
+    "title": "So sánh Samsung Galaxy S24 và iPhone 15: Chọn iOS ổn ...",
+    "link": "https://cellphones.com.vn/sforum/so-sanh-samsung-s24-va-iphone-15",
+    "snippet": "Cùng so sánh Samsung S24 và iPhone 15 để xem đâu sẽ là lựa chọn hợp lý hơn khi mỗi điện thoại lại có những điểm mạnh riêng.",
+    "date": "7 thg 8, 2025",
+    "position": 5
+   },
+   {
+    "title": "So sánh ngoại hình Galaxy S24 Ultra Titan xám và iPhone ...",
+    "link": "https://cellphones.com.vn/sforum/so-sanh-ngoai-hinh-galaxy-s24-ultra-titan-xam-va-iphone-15-pro-max-titan-tu-nhien-ban-thich-phien-ban-nao",
+    "snippet": "Trong bài viết này ta sẽ cùng nhau so sánh liệu giữa hai chiếc máy này có gì khác biệt và thú vị ra sao nhé! Galaxy S24 Ultra Xám Titan và iPhone 15 Pro Max ...",
+    "position": 6
+   },
+   {
+    "title": "So sánh OPPO Reno15 vs Samsung S24",
+    "link": "https://cellphones.com.vn/sforum/so-sanh-oppo-reno15-vs-samsung-s24",
+    "snippet": "Tại thời điểm ra mắt, giá niêm yết của Galaxy S24 khởi điểm từ khoảng 22.99 triệu đồng, định vị rõ ràng ở phân khúc cao cấp. So sánh OPPO Reno15 ...",
+    "date": "24 thg 1, 2026",
+    "position": 7
+   },
+   {
+    "title": "So sánh camera Samsung Galaxy S24 Ultra vs iPhone 15 ...",
+    "link": "https://cellphones.com.vn/sforum/so-sanh-camera-galaxy-s24-ultra-vs-iphone-15-pro-max",
+    "snippet": "Với những nâng cấp về khả năng chụp ảnh liệu Galaxy S24 Ultra có hạ bệ được iPhone 15 Pro Max để dành vị trí ông vua camera phone?",
+    "date": "18 thg 1, 2024",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

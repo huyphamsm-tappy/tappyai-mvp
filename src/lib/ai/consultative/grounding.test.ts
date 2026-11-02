@@ -28,6 +28,7 @@ function profile(over: Partial<NeedProfile> = {}): NeedProfile {
   return {
     domain: 'shopping', subject: 'laptop', budget: null, budgetStated: null,
     location: { text: null, gps: null },
+    partySize: null,
     useCases: ['coding', 'ai'], priorities: [], mustHave: [], avoid: [],
     turnsObserved: 1, changedAtTurn: {},
     ...over,

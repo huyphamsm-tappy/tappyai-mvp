@@ -37,6 +37,20 @@ export interface Pick {
   reason?: 'unique' | 'tie_rule' | 'conditional'
   /** Constraints that could not be confirmed from evidence. The reply must hedge. */
   unverified: string[]
+  /**
+   * Criteria the user DID state, which the ranker CAN score, and for which THIS
+   * candidate carries no evidence at all.
+   *
+   * `unverified` is the must-have/exclusion case — "you required wifi and the
+   * tag is missing". This is the softer and far commoner one: the user asked for
+   * a cheap, close or well-rated option and the winning row simply has no price,
+   * no distance or no rating. `rankCandidates` has always computed it (as
+   * `RankedEntry.missing`) and the route has always thrown it away, so a Pick
+   * that won on rating alone was presented against a `price` priority with
+   * nothing said about price. That absence is what a reply invents a number to
+   * fill.
+   */
+  cannotVerify: string[]
 }
 
 /**
@@ -233,6 +247,11 @@ export function derivePick(result: RankedResult, need: NeedProfile, signals?: Pi
     conditional: !tie && margin < PICK_MARGIN,
     reason: tie ? 'tie_rule' : margin < PICK_MARGIN ? 'conditional' : 'unique',
     unverified: [...top.unverifiedMustHave, ...top.unverifiedAvoid],
+    // Never anything already named by `unverified`: the two carry different
+    // instructions ("you REQUIRED this and it is unconfirmed" vs "you asked for
+    // this and this row does not say"), and listing a key under both would give
+    // the model two rules for one word.
+    cannotVerify: top.missing.filter(k => !top.unverifiedMustHave.includes(k) && !top.unverifiedAvoid.includes(k)),
   }
 }
 
@@ -303,6 +322,7 @@ export function buildPickPayload(pick: Pick): Record<string, unknown> {
     } : {}),
     ...(pick.conditional ? { conditional: true } : {}),
     ...(pick.unverified.length > 0 ? { unverified: pick.unverified } : {}),
+    ...(pick.cannotVerify.length > 0 ? { cannot_verify: pick.cannotVerify } : {}),
   }
 }
 
@@ -325,6 +345,7 @@ Neu ket qua tool co truong \`_tappy_ranking\`, nghia la HE THONG da loc va xep h
 - \`not_chosen\` la phuong an dung nhi; \`not_chosen_leads_on\` la diem ma no thuc su hon — dung dung cai do de noi DANH DOI, khong bia diem tru khac.
 - KHONG duoc noi pick la "NHAT" (gan nhat, re nhat, tot nhat...) o dung cai thuoc tinh ma \`not_chosen_leads_on\` dang noi phuong an khac hon. Vi du: pick 0.5km, \`not_chosen_leads_on\` = distance 0.3km => KHONG duoc viet "gan nhat"; phai viet la gan, roi noi ro cai kia gan hon.- \`conditional: true\` nghia la khoang cach rat nho: dien dat thanh cau NGHIENG VE co dieu kien, KHONG khang dinh tuyet doi.
 - \`unverified\` la nhung dieu du lieu KHONG xac nhan duoc: noi ro la chua chac, TUYET DOI KHONG khang dinh la co.
+- \`cannot_verify\` la nhung TIEU CHI user DA NEU ma rieng lua chon nay KHONG co du lieu (vd user quan tam gia nhung dong nay khong ghi gia). PHAI noi ro MOT cau ngan rang chua co du lieu ve dung tieu chi do, roi van giai thich bang nhung gi CO that. TUYET DOI KHONG doan, KHONG uoc luong, KHONG suy ra tu tieu chi khac.
 LUAT:
 - Viec cua ban la GIAI THICH lua chon nay, KHONG phai chon lai. KHONG doi sang ten khac.
 - KHONG bia them thuoc tinh nao khong co trong ket qua tool.
@@ -445,12 +466,16 @@ export function buildPickBlock(pick: Pick): string {
     ? `\nUNVERIFIED: ${pick.unverified.join(', ')} — du lieu KHONG xac nhan duoc dieu nay cho lua chon tren. Noi ro la chua chac (vd "minh chua chac quan nay co..."), TUYET DOI KHONG khang dinh la co.`
     : ''
 
+  const cannotVerifyLine = pick.cannotVerify.length > 0
+    ? `\nCANNOT VERIFY: ${pick.cannotVerify.join(', ')} — user CO neu tieu chi nay nhung lua chon tren KHONG co du lieu ve no. Noi ro mot cau ngan rang chua co thong tin, roi giai thich bang nhung gi CO that. KHONG doan, KHONG uoc luong.`
+    : ''
+
   return `\n\n===== TAPPY'S PICK — DA CHON SAN, BAN CHI GIAI THICH =====
 He thong da xep hang cac lua chon that tu ket qua tool va DA CHON. Viec cua ban la GIAI THICH lua chon nay bang ngon ngu tu nhien cua user, KHONG phai chon lai.
 TAPPY'S PICK: ${pick.candidate.name}
 DECIDED BY:
 ${reasonLines}
-${runnerLine}${conditionalLine}${unverifiedLine}
+${runnerLine}${conditionalLine}${unverifiedLine}${cannotVerifyLine}
 LUAT:
 - KHONG doi sang lua chon khac, KHONG tu chon mot cai ten khac.
 - KHONG bia them thuoc tinh nao khong co o tren.

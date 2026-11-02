@@ -69,6 +69,9 @@ vi.mock('@/lib/ai/tools/food', async (importOriginal) => {
 })
 
 import { POST } from '@/app/api/chat/route'
+// R42 R3 (LOC-DEFAULT-HCM-01 regression run): no network, ever — a fetch the mocks above do not cover fails at once instead of going online.
+beforeEach(() => { vi.stubGlobal('fetch', async (input: unknown) => { throw new Error('network disabled in this test: ' + String(input).slice(0, 60)) }) })
+afterEach(() => { vi.unstubAllGlobals() })
 
 const post = async (messages: unknown[], chatSessionId?: string) => {
   const req = {
@@ -227,10 +230,12 @@ describe('flag ON — secrets never reach a provider query or the logs (route le
 })
 
 describe('hardening D — one hard Serper budget per agent turn (tools + card photos)', () => {
-  it('route wiring: 8 normal / 10 travel; the photo lookup gets only what the tools left', async () => {
+  // Phase 8 M1 (lock change, docs/phase8/M1-REPORT.md §D): was `planningIntent === 'trip' ? 10 : 8` alone. TAPPY_AGENT=1 keeps exactly that;
+  // TAPPY_AGENT=2 takes the Phase 8 ceilings (8, 10 for a travel plan since 10/10/2026; was 12 / 15) from runtime/limits.ts.
+  it('route wiring: TAPPY_AGENT=1 8 normal / 10 travel; TAPPY_AGENT=2 reads the ceilings from runtime/limits.ts (8 / 10); the photo lookup gets only what the tools left', async () => {
     const { readFileSync } = await import('node:fs')
     const src = readFileSync('src/app/api/chat/route.ts', 'utf8')
-    expect(src).toContain("const agentSerperLimit = planningIntent === 'trip' ? 10 : 8")
+    expect(src).toContain("const agentSerperLimit = agentV2 ? serperCeiling(travelIntent || planningIntent === 'trip') : planningIntent === 'trip' ? 10 : 8")
     expect(src).toContain('serperTurnCredits: agentSerperLimit')
     expect(src).toContain('sharedSerperBudget(Math.max(0, agentSerperLimit - agentSerperSpent))')
     expect(src).toContain('await afterLoopSerper(() => enrichWithTikTok(')

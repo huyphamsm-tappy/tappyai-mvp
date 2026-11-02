@@ -1,0 +1,32 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:cellphones.com.vn/iphone-16-pro-256gb.html 27.990.000",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:14:16.233Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:cellphones.com.vn/iphone-16-pro-256gb.html 27.990.000",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "iPhone 16 Pro 256GB chính hãng | Mua ngay ưu đãi 4 triệu",
+    "link": "https://cellphones.com.vn/iphone-16-pro-256gb.html",
+    "snippet": "Hệ điều hành khi ra mắt. iOS 18. Chipset. Apple A18 Pro. Bộ nhớ trong. 256 GB. Loại CPU. CPU 6 lõi mới với 2 lõi hiệu năng và 4 lõi tiết kiệm điện.",
+    "rating": 4.8,
+    "ratingCount": 40,
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

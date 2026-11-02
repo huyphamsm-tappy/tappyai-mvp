@@ -66,10 +66,16 @@ export function scoreLink(request: CommerceRequest, link: CommerceLink, now: Dat
   return { link, score: Number(score.toFixed(6)), features }
 }
 
-/** Stable sort: higher score first; ties keep resolver order (which is the fallback ladder order). */
+/**
+ * Stable sort: higher score WITHOUT monetisation first; monetisation only breaks an exact tie there; remaining ties keep resolver
+ * order (the fallback ladder order). v2 (29 Oct 2026): ordering by the full score let the capped monetisation term (0.05) outrank
+ * one guest-depth level (0.03) — an affiliate L4 page led a direct L5 one, against D3's "can break a tie, never outrank a deeper,
+ * fresher or more exact link" and the owner's order of 29 Oct 2026 (depth first, affiliate when possible). `score` is unchanged.
+ */
 export function rankLinks(request: CommerceRequest, links: CommerceLink[], now: Date = new Date()): ScoredLink[] {
+  const base = (s: ScoredLink) => Number((s.score - RANKING_WEIGHTS.monetisation * Math.min(1, Math.max(0, s.features.monetisation))).toFixed(6))
   return links
     .map((l, i) => ({ ...scoreLink(request, l, now), i }))
-    .sort((a, b) => b.score - a.score || a.i - b.i)
+    .sort((a, b) => base(b) - base(a) || b.features.monetisation - a.features.monetisation || a.i - b.i)
     .map(({ link, score, features }) => ({ link, score, features }))
 }

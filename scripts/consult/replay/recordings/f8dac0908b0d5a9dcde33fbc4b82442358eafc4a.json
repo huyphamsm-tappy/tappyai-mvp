@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:moj.gov.vn lệ phí cấp hộ chiếu trực tuyến 2026 hộ chiếu phổ thông",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T17:14:32.944Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:moj.gov.vn lệ phí cấp hộ chiếu trực tuyến 2026 hộ chiếu phổ thông",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Căn cứ Điều 83 Luật Thi hành án dân sự số 106/2025/QH15",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/kv4-tb-2370-01a0b1f8e1477dc8b4769512c42b49df.pdf",
+    "snippet": "Căn cứ Điều 83 Luật Thi hành án dân sự số 106/2025/QH15;. Căn cứ Bản án số 18/2025/DSST ngày 08 tháng 9 năm 2025 của Tòa án.",
+    "date": "17 thg 9, 2026",
+    "position": 1
+   },
+   {
+    "title": "CÔNG TY ĐẤU GIÁ HỢP DANH MIỀN ĐÔNG",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/tb-125-16-ngay-02-10-2026-ban-dau-gia-vu-thang-thuy-kv-11-chv-tiep-01a108f38e7973959771cc588b430776.pdf",
+    "snippet": "Thời hạn và địa điểm xem tài sản: Từ 07 giờ 30 phút ngày 06/10/2026 đến 17 giờ 00 phút ngày 27/10/2026 (trong giờ hành chính các ngày làm việc, ...",
+    "date": "6 ngày trước",
+    "position": 2
+   },
+   {
+    "title": "nam giang",
+    "link": "https://dgts.moj.gov.vn/common/download?name=QUY%20CHE%20PLHD%2008326.24_PL10.pdf&path=TDNVd01TOWlkSEJrWjNSekwyWnBiR1Z6WDNWd2JHOWhaQzh5TURJMk1EWXhNeTlEVkZKZk5qYzBNalEzTVRreE1UYzFNRGd5T0RVek9DNWtZWFE3VkdoMUlFcDFiaUF5TlNBd09EbzBOam93TUNCSlExUWdNakF5Tmc9PQ%3D%3D",
+    "snippet": "sử dụng đối với tài sản đấu giá và phải chịu các loại thuế, phí, lệ phí và các chi phí khác (nếu có) phát sinh trong quá trình đăng ký ...",
+    "date": "1 thg 7, 2026",
+    "position": 3
+   },
+   {
+    "title": "CÔNG TY ĐẤU GIÁ HỢP DANH - LUẬT VIỆT",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/tb-loc-tien-01a0e7448d757140ac589ccb71b18b0a.pdf",
+    "snippet": "Thời gian, địa điểm bán hồ sơ mời tham gia đấu giá và tiếp nhận hồ sơ tham gia đấu giá: Từ 7h30' ngày 25/9/2026 đến 17h00 ngày 12/10/2026 tại ...",
+    "date": "25 thg 9, 2026",
+    "position": 4
+   },
+   {
+    "title": "Những quy định đáng chú ý có hiệu lực từ tháng 8",
+    "link": "https://htpldn.moj.gov.vn/Pages/chi-tiet-tin.aspx?ItemID=86&l=Vanbanchinhsachmoi",
+    "snippet": "Đối với thi sát hạch lái xe ô tô hạng B1, B2, C, D, E, F lần lượt lý thuyết 100.000 đồng/lần (tăng 10.000 đồng); thực hành trong hình 350.000 ...",
+    "date": "1 thg 8, 2023",
+    "position": 5
+   },
+   {
+    "title": "Căn cứ Quyết định số 36/2026/QDDST-DSST ngày ...",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/kv4-tb-2442-01a0c86e8f477865b742ea1ea3df207e.pdf",
+    "snippet": "✓ Căn cước công dân/Căn cước/hộ chiếu; ngày cấp; nơi cấp. ✓ Tải lên Trang thông tin đấu giá trực tuyến ảnh mặt trước và sau căn cước/căn cước công dân/hộ ...",
+    "position": 6
+   },
+   {
+    "title": "công ty đấu giá hợp danh - chính nghĩa",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/105-1-tb-ban-dau-gia-cty-chinh-nghia-01a0f4ff4d187b98aaf546198f1dd541.pdf",
+    "snippet": "+ Lệ phí công chứng hợp đồng mua bán; lệ phí, phí xóa thế chấp (nếu có) do người mua ... Địa điểm tổ chức phiên đấu giá: Tại trang thông tin đấu ...",
+    "date": "28 thg 9, 2026",
+    "position": 7
+   },
+   {
+    "title": "ÁO DANH AN - CÔNG TY ĐẤU GIÁ",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/qc-63-03-ngay-17-9-2026-ban-dau-gia-tai-san-vu-phan-nguyen-xuan-thien-kv-11-chv-tiep-01a0b212ee6573f0b67e4d972d175a58.pdf",
+    "snippet": "Trang thông tin điện tử đấu giá trực tuyến (Địa chỉ tên miền: https://daugiayna.vn). - Lưu: Hồ sơ. *. KT GIÁM ĐỐC. PHÓ GIÁM ĐỐC. 19201 0010032-C.",
+    "date": "17 thg 9, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

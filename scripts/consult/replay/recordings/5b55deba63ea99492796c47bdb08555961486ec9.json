@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Bộ Tài chính miễn lệ phí hộ chiếu phổ thông trong nước đến 28/2/2027",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:25:52.763Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bộ Tài chính miễn lệ phí hộ chiếu phổ thông trong nước đến 28/2/2027",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Miễn lệ phí cấp hộ chiếu phổ thông trong nước cho công ...",
+    "link": "https://congan.hungyen.gov.vn/mien-le-phi-cap-ho-chieu-pho-thong-trong-nuoc-cho-cong-dan-du-dieu-kien-tu-ngay-1582026-c239385.html",
+    "snippet": "Miễn lệ phí cấp hộ chiếu phổ thông trong nước cho công dân đủ điều kiện từ ngày 15/8/2026 · Điều kiện để được miễn lệ phí cấp hộ chiếu · Người dân cần làm gì?",
+    "position": 1
+   },
+   {
+    "title": "Miễn lệ phí cấp hộ chiếu phổ thông trong nước cho công ...",
+    "link": "https://congan.quangngai.gov.vn/danh-muc-san-pham/-tin-tuc-su-kien/mien-le-phi-cap-ho-chieu-pho-thong-trong-nuoc-cho-cong-dan-u-dieu-kien-tu-ngay-15-8-2026.html",
+    "snippet": "Miễn lệ phí cấp hộ chiếu phổ thông trong nước cho công dân đủ điều kiện từ ngày 15/8/2026 ... Ngày 09/7/2026, Chính phủ ban hành Nghị quyết số ...",
+    "date": "28 thg 8, 2026",
+    "position": 2
+   },
+   {
+    "title": "Miễn 100% lệ phí cấp hộ chiếu cho công dân đáp ứng đủ ...",
+    "link": "https://conganthanhhoa.gov.vn/de-an-06/mien-100-le-phi-cap-ho-chieu-cho-cong-dan-dap-ung-du-dieu-kien-tren-vneid.html",
+    "snippet": "Theo quy định hiện hành, lệ phí cấp hộ chiếu đang được giảm 50% đến hết ngày 31/12/2026. Cụ thể, mức thu đối với trường hợp cấp mới là 100.000 ...",
+    "date": "14 thg 9, 2026",
+    "position": 3
+   },
+   {
+    "title": "Miễn lệ phí cấp hộ chiếu phổ thông trong nước cho công ...",
+    "link": "https://www.facebook.com/61578188304971/posts/mi%E1%BB%85n-l%E1%BB%87-ph%C3%AD-c%E1%BA%A5p-h%E1%BB%99-chi%E1%BA%BFu-ph%E1%BB%95-th%C3%B4ng-trong-n%C6%B0%E1%BB%9Bc-cho-c%C3%B4ng-d%C3%A2n-%C4%91%E1%BB%A7-%C4%91i%E1%BB%81u-ki%E1%BB%87n-t%E1%BB%AB-ng%C3%A0y-/122193342440939610/",
+    "snippet": "Miễn lệ phí cấp hộ chiếu phổ thông trong nước cho công dân đủ điều kiện từ ngày 15/8/2026 Từ ngày 15/8/2026 đến hết ngày 28/02/2027, ...",
+    "position": 4
+   },
+   {
+    "title": "Ai chưa có hộ chiếu nên đi làm hộ chiếu ngay trước ngày ...",
+    "link": "https://luatvietnam.vn/hanh-chinh/ai-chua-co-ho-chieu-nen-di-lam-ho-chieu-ngay-truoc-ngay-01-3-2027-ly-do-la-gi-570-112088-article.html",
+    "snippet": "Theo Điều 2 Thông tư 117/2026/TT-BTC, chính sách miễn, giảm phí, lệ phí đối với cấp hộ chiếu chỉ được áp dụng đến hết ngày 28/02/2027. Từ ngày ...",
+    "date": "4 thg 9, 2026",
+    "position": 5
+   },
+   {
+    "title": "Bắt đầu từ hôm nay (15/8) đến hết ngày 28/2/2027, công dân ...",
+    "link": "https://www.facebook.com/tintucvtv24/posts/b%E1%BA%AFt-%C4%91%E1%BA%A7u-t%E1%BB%AB-h%C3%B4m-nay-158-%C4%91%E1%BA%BFn-h%E1%BA%BFt-ng%C3%A0y-2822027-c%C3%B4ng-d%C3%A2n-ho%C3%A0n-t%E1%BA%A5t-vi%E1%BB%87c-t%C3%ADch-h%E1%BB%A3p-5-lo/1395300906139110/",
+    "snippet": "Đáng chú ý, các thủ tục phổ biến gắn liền với đời sống như cấp biển số xe, giấy phép lái xe, căn cước, hộ chiếu hay đăng ký cư trú đều nằm trong ...",
+    "position": 6
+   },
+   {
+    "title": "MIỄN 100% LỆ PHÍ CẤP HỘ CHIẾU KHI ĐÁP ỨNG ĐỦ ĐIỀU ...",
+    "link": "https://www.facebook.com/xnctthue/posts/-mi%E1%BB%85n-100-l%E1%BB%87-ph%C3%AD-c%E1%BA%A5p-h%E1%BB%99-chi%E1%BA%BFu-khi-%C4%91%C3%A1p-%E1%BB%A9ng-%C4%91%E1%BB%A7-%C4%91i%E1%BB%81u-ki%E1%BB%87n-tr%C3%AAn-vneidth%E1%BB%B1c-hi%E1%BB%87n-ngh%E1%BB%8B-/1494413036056480/",
+    "snippet": "MIỄN 100% LỆ PHÍ CẤP HỘ CHIẾU KHI ĐÁP ỨNG ĐỦ ĐIỀU KIỆN TRÊN VNeID Thực hiện Nghị quyết số 66.22/2026/NQ-CP ngày 09/7/2026 của Chính phủ về ...",
+    "position": 7
+   },
+   {
+    "title": "Miễn, giảm lệ phí cấp hộ chiếu trực tuyến qua VNeID từ ngày ...",
+    "link": "https://congan.haiphong.gov.vn/Tin-hoat-dong-cua-CATP/Cai-cach-hanh-chinh/Mien-giam-le-phi-cap-ho-chieu-truc-tuyen-qua-VNeID-tu-ngay-1582026-189101.html",
+    "snippet": "Miễn, giảm lệ phí cấp hộ chiếu trực tuyến qua VNeID từ ngày 15/8/2026 ... Thực hiện Nghị quyết số 66.22/2026/NQ-CP, ngày 09/7/2026 của Chính phủ ...",
+    "date": "24 thg 8, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

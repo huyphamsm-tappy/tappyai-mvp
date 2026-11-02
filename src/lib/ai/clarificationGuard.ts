@@ -38,19 +38,58 @@ function isQuestion(sentence: string): boolean {
 }
 
 /**
+ * POST-UAT B7 (UAT-09 t1, 2026-10-09): AN INFORMATION CHECKLIST IS CONTENT, NOT A FORM. Asked "…và những thông tin bạn cần biết để ước
+ * tính vốn", Luna answered (the cost items) and then listed what it needs under "Để tính sát hơn, mình cần biết:" as numbered
+ * questions; the one-question cap cut the list to its first item. With `checklist` (agent turns), list-item questions under such a
+ * lead-in — in a reply that has already answered (≥ 3 statements) — are ONE question unit. Free-form questions keep the cap.
+ */
+const CHECKLIST_LEAD_RE = /(?:can|muon) (?:biet|them thong tin|ban cho biet|hoi them)|cho (?:minh|toi|em) (?:biet|them)|\bcho biet\s*:|thong tin (?:can|minh can|de)|need to know|i need\b|could you tell me/
+const LIST_ITEM_RE = /^\s*(?:[-*•+]|\d{1,2}[.)])\s/
+function checklistQuestions(text: string, spans: Array<[number, number]>, isMachine: (a: number, b: number) => boolean): Set<number> {
+  const out = new Set<number>()
+  // statements = real answer sentences (not questions, not a bare "1." marker the splitter cut off, not a ":" lead-in)
+  const statements = spans.filter(([a, b]) => {
+    const t = text.slice(a, b).trim()
+    return !isMachine(a, b) && t.length > 0 && !isQuestion(t) && !/^(?:[-*•+]|\d{1,2}[.)])$/.test(t) && !/:\s*(?:\*\*)?$/.test(t)
+  }).length
+  if (statements < 3) return out
+  // Line-based (the splitter cuts "1." off as its own sentence): the question's LINE is a list item, and the first non-item line
+  // above it is an information lead-in ending ":".
+  const lines = text.split('\n')
+  const lineStarts: number[] = []
+  lines.reduce((pos, l) => { lineStarts.push(pos); return pos + l.length + 1 }, 0)
+  const lineAt = (pos: number) => { let k = 0; while (k + 1 < lineStarts.length && lineStarts[k + 1] <= pos) k++; return k }
+  spans.forEach(([a, b], i) => {
+    const s = text.slice(a, b)
+    if (!s.trim() || !isQuestion(s)) return
+    const k = lineAt(a + (s.length - s.trimStart().length))
+    if (!LIST_ITEM_RE.test(lines[k])) return
+    for (let j = k - 1; j >= 0; j--) {
+      const p = lines[j]
+      if (!p.trim() || LIST_ITEM_RE.test(p)) continue
+      if (/:\s*(?:\*\*)?\s*$/.test(p.trim()) && CHECKLIST_LEAD_RE.test(normalizeVN(p.toLowerCase()))) out.add(i)
+      break
+    }
+  })
+  return out
+}
+
+/**
  * Apply the policy to the prose of a reply.
  *
  * `no_reflex`: reflex questions are removed; among the questions that remain
  * (decision-critical or unclassified) only the FIRST is kept. `allow`: only the
  * one-question cap applies, so a reply can never end in a form.
  */
-export function guardClarifications(text: string, policy: ClarificationPolicy): { text: string; removed: number } {
+export function guardClarifications(text: string, policy: ClarificationPolicy, opts: { checklist?: boolean } = {}): { text: string; removed: number } {
   if (!text) return { text, removed: 0 }
   const prot = protectedSpans(text)
   const spans = sentenceSpans(text)
   const isMachine = (a: number, b: number) => prot.some(([pa, pb]) => pa === a && pb === b)
+  const checklist = opts.checklist ? checklistQuestions(text, spans, isMachine) : new Set<number>()
   const doomed = new Set<number>()
   let kept = 0
+  let checklistCounted = false
   spans.forEach(([a, b], i) => {
     if (isMachine(a, b)) return
     const s = text.slice(a, b)
@@ -58,6 +97,11 @@ export function guardClarifications(text: string, policy: ClarificationPolicy): 
     const norm = normalizeVN(s.toLowerCase())
     const critical = CRITICAL_RE.test(norm)
     if (policy === 'no_reflex' && !critical && REFLEX_RE.test(norm)) { doomed.add(i); return }
+    // A requested information checklist is ONE question unit (all its items stay, or all go).
+    if (checklist.has(i)) {
+      if (!checklistCounted) { if (kept >= 1) { doomed.add(i); return } checklistCounted = true; kept++ }
+      return
+    }
     if (kept >= 1) { doomed.add(i); return }
     kept++
   })

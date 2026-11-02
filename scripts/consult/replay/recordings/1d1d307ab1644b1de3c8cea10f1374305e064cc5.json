@@ -1,0 +1,84 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Bluetooth chụp Tai Baseus Bass BH1 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:00:08.962Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bluetooth chụp Tai Baseus Bass BH1 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai Nghe Chụp Tai Không Dây Baseus Bass BH1 NC ...",
+    "link": "https://shopee.vn/Tai-Nghe-Ch%E1%BB%A5p-Tai-Kh%C3%B4ng-D%C3%A2y-Baseus-Bass-BH1-NC-(Bluetooth-v6.0-80H-600mAh-Smart-App-Control)-i.1583106641.58007594705",
+    "snippet": "Mua Tai Nghe Chụp Tai Không Dây Baseus Bass BH1 NC (Bluetooth v6.0, 80H, 600mAh, Smart App Control) giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.4,
+    "ratingCount": 5,
+    "position": 1
+   },
+   {
+    "title": "Tai Nghe Chụp Tai Bass BH1 Lite Baseus Tăng Cường ...",
+    "link": "https://shopee.vn/Tai-Nghe-Ch%E1%BB%A5p-Tai-Bass-BH1-Lite-Baseus-T%C4%83ng-C%C6%B0%E1%BB%9Dng-Bass-L%C3%AAn-%C4%90%E1%BA%BFn-200-Th%E1%BB%9Di-L%C6%B0%E1%BB%A3ng-Pin-Si%C3%AAu-Tr%C3%A2u-Nghe-G%E1%BB%8Di-R%C3%B5-N%C3%A9t-V%E1%BB%9Bi-AI-ENC-S%E1%BA%A1c-Nhanh-10-Ph%C3%BAt-%E2%80%93-Nghe-8-Gi%E1%BB%9D-i.131195741.40472213078",
+    "snippet": "Tai Nghe Chụp Tai Bass BH1 Lite Baseus Tăng Cường Bass Lên Đến 200% Thời Lượng Pin Siêu Trâu Nghe Gọi Rõ Nét Với AI ENC Sạc Nhanh 10 Phút – Nghe 8 Giờ.",
+    "rating": 4.9,
+    "ratingCount": 35,
+    "position": 2
+   },
+   {
+    "title": "Tai Nghe Chụp Tai Baseus Bass BH1 Bluetooth 6.0 Pin ...",
+    "link": "https://shopee.vn/Tai-Nghe-Ch%E1%BB%A5p-Tai-Baseus-Bass-BH1-Bluetooth-6.0-Pin-80H-SuperBass-2.0-AI-ENC-App-Control-Ch%C3%ADnh-H%C3%A3ng-i.1583106641.48701791134",
+    "snippet": "Mua Tai Nghe Chụp Tai Baseus Bass BH1 Bluetooth 6.0 Pin 80H SuperBass 2.0 AI ENC App Control Chính Hãng giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.7,
+    "ratingCount": 14,
+    "position": 3
+   },
+   {
+    "title": "Tai Nghe Chụp Tai Baseus Bass BH1 Air - Thiết Kế Retro ...",
+    "link": "https://shopee.vn/Tai-Nghe-Ch%E1%BB%A5p-Tai-Baseus-Bass-BH1-Air-Thi%E1%BA%BFt-K%E1%BA%BF-Retro-Si%C3%AAu-Nh%E1%BA%B9-90g-Pin-80h-Ch%E1%BB%91ng-%E1%BB%92n-ENC-Th%C3%B4ng-Minh-L%E1%BB%8Dc-S%E1%BA%A1ch-T%E1%BA%A1p-%C3%82m-i.1103428920.47552756252",
+    "snippet": "Shopee Thiết Bị Điện Tử Tai nghe nhét tai. Tai Nghe Chụp Tai Baseus Bass BH1 Air - Thiết Kế Retro Siêu Nhẹ 90g, Pin 80h, Chống Ồn ENC Thông Minh Lọc Sạch Tạp Âm.",
+    "rating": 4.8,
+    "ratingCount": 105,
+    "position": 4
+   },
+   {
+    "title": "Tai Nghe Chụp Tai Baseus Bass BH1 NC Bluetooth 6.0 5 ...",
+    "link": "https://shopee.vn/Tai-Nghe-Ch%E1%BB%A5p-Tai-Baseus-Bass-BH1-NC-Bluetooth-6.0-5-Micro-AI-Hi-Res-Audio-Wireless-SuperBass-2.0-i.928285061.51203257428",
+    "snippet": "Mua Tai Nghe Chụp Tai Baseus Bass BH1 NC Bluetooth 6.0 5 Micro AI Hi-Res Audio - Wireless SuperBass 2.0 giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.9,
+    "ratingCount": 36,
+    "position": 5
+   },
+   {
+    "title": "Tai nghe chụp tai Bluetooth Baseus Bass BH1 - Pin 50H",
+    "link": "https://shopee.vn/Tai-nghe-ch%E1%BB%A5p-tai-Bluetooth-Baseus-Bass-BH1-Pin-50H-Bass-Si%C3%AAu-Tr%E1%BA%A7m-Ch%E1%BB%91ng-%E1%BB%93n-ENC-Ch%C3%ADnh-h%C3%A3ng-B%E1%BA%A3o-h%C3%A0nh-12-th%C3%A1ng-2-i.358099576.50756906387",
+    "snippet": "Mua Tai nghe chụp tai Bluetooth Baseus Bass BH1 - Pin 50H - Bass Siêu Trầm - Chống ồn ENC - Chính hãng - Bảo hành 12 tháng 2 giá tốt.",
+    "position": 6
+   },
+   {
+    "title": "Tai nghe Bluetooth Chụp Tai BASEUS BASS BH1, kết nối ...",
+    "link": "https://shopee.vn/Tai-nghe-Bluetooth-Ch%E1%BB%A5p-Tai-BASEUS-BASS-BH1-k%E1%BA%BFt-n%E1%BB%91i-app-ch%E1%BB%89nh-EQ-i.85776939.1566808124",
+    "snippet": "Mua Tai nghe Bluetooth Chụp Tai BASEUS BASS BH1, kết nối app chỉnh EQ giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn ...",
+    "position": 7
+   },
+   {
+    "title": "Tai nghe chụp tai Bluetooth Baseus Bass BH1 NC",
+    "link": "https://shopee.vn/Tai-nghe-ch%E1%BB%A5p-tai-Bluetooth-Baseus-Bass-BH1-NC-Ch%E1%BB%91ng-%E1%BB%93n-ch%E1%BB%A7-%C4%91%E1%BB%99ng-ANC-Pin-50H-Bass-c%E1%BB%B1c-m%E1%BA%A1nh-B%E1%BA%A3o-h%C3%A0nh-12-th%C3%A1ng-i.358099576.57956898165",
+    "snippet": "Mua Tai nghe chụp tai Bluetooth Baseus Bass BH1 NC - Chống ồn chủ động ANC - Pin 50H - Bass cực mạnh - Bảo hành 12 tháng giá tốt. Mua hàng qua mạng uy tín, ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

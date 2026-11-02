@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Soleil by Soluna | A Charming Touch of Hoi An's Heritage, formerly Hoi An Babylon Riverside Hotel & Spa",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:02:36.084Z",
+ "body": {
+  "searchParameters": {
+   "q": "Soleil by Soluna | A Charming Touch of Hoi An's Heritage, formerly Hoi An Babylon Riverside Hotel & Spa",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Soleil by Soluna - A Charming Touch of Hoi An's Heritage - formerly Hoi An  Babylon Riverside, Vietnam - 2026 Reviews, Pictures & Deals",
+    "imageUrl": "https://pix10.agoda.net/property/38471593/0/00fa3b129666e33ecad6bdce4a72a36d.jpeg?ce=3&s=414x232",
+    "imageWidth": 348,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXd8CO5iNYdyOUT-Fzfhuw814MIEqbJMtEioWEe7eh0A&s=10",
+    "thumbnailWidth": 348,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/en-ie/hoi-an-babylon-riverside-hotel-spa/hotel/hoi-an-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2Fproperty%2F38471593%2F0%2F00fa3b129666e33ecad6bdce4a72a36d.jpeg%3Fce%3D3%26s%3D414x232&tbnid=Xqk0xOIwD8aGmM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fen-ie%2Fhoi-an-babylon-riverside-hotel-spa%2Fhotel%2Fhoi-an-vn.html&docid=f3lzIrZIqdESwM&w=348&h=232",
+    "position": 1
+   },
+   {
+    "title": "Soleil by Soluna - A Charming Touch of Hoi An's Heritage, Đà Nẵng | Hotels .com",
+    "imageUrl": "https://images.trvl-media.com/lodging/93000000/92350000/92345400/92345326/febd2fc6.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 862,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEiaNyGvDyWFdt6zPmIrQwvtc33WeY55HxhK4X8mupOQ&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "hotels",
+    "domain": "vi.hotels.com",
+    "link": "https://vi.hotels.com/ho2956050432/hoi-an-babylon-riverside-hotel-spa-hoi-an-viet-nam/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F93000000%2F92350000%2F92345400%2F92345326%2Ffebd2fc6.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=BmgFFUC_wCeC5M&imgrefurl=https%3A%2F%2Fvi.hotels.com%2Fho2956050432%2Fhoi-an-babylon-riverside-hotel-spa-hoi-an-viet-nam%2F&docid=ASQ1793UsJRYiM&w=862&h=575",
+    "position": 2
+   },
+   {
+    "title": "Soleil by Soluna - A Charming Touch of Hoi An's Heritage - formerly Hoi An  Babylon Riverside, Vietnam - 2026 Reviews, Pictures & Deals",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/38471593/0/a563d2d89c7b8e5fbf2269b400dc9d78.jpg?ce=3&s=414x232",
+    "imageWidth": 232,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxA-hq65WaZjr2NIwfN3n3G_tzo9CbTz7lxjqF5puYHQ&s=10",
+    "thumbnailWidth": 232,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/en-ie/hoi-an-babylon-riverside-hotel-spa/hotel/hoi-an-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F38471593%2F0%2Fa563d2d89c7b8e5fbf2269b400dc9d78.jpg%3Fce%3D3%26s%3D414x232&tbnid=AkSun2pAozZkrM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fen-ie%2Fhoi-an-babylon-riverside-hotel-spa%2Fhotel%2Fhoi-an-vn.html&docid=f3lzIrZIqdESwM&w=232&h=232",
+    "position": 3
+   },
+   {
+    "title": "Soleil by Soluna - A Charming Touch of Hoi An's Heritage - formerly Hoi An  Babylon Riverside, Vietnam - 2026 Reviews, Pictures & Deals",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/38471593/0/b0880f3bdf093c0ccfd18e0f3d2bb639.jpg?ce=3&s=414x232",
+    "imageWidth": 348,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4_Qz2LGQw-MZLgSkSMs84Knijyg8zl17oD4Ws2QheAg&s=10",
+    "thumbnailWidth": 348,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/en-ie/hoi-an-babylon-riverside-hotel-spa/hotel/hoi-an-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F38471593%2F0%2Fb0880f3bdf093c0ccfd18e0f3d2bb639.jpg%3Fce%3D3%26s%3D414x232&tbnid=cFPiBiMPiqs68M&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fen-ie%2Fhoi-an-babylon-riverside-hotel-spa%2Fhotel%2Fhoi-an-vn.html&docid=f3lzIrZIqdESwM&w=348&h=232",
+    "position": 4
+   },
+   {
+    "title": "Soleil by Soluna - A Charming Touch of Hoi An's Heritage - formerly Hoi An  Babylon Riverside, Vietnam - 2026 Reviews, Pictures & Deals",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/38471593/0/3af5836fde279fba7e4db71ed8210e13.jpg?ce=3&s=414x232",
+    "imageWidth": 348,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2sVTMjyhMh0xi0_YBjw2m2p3oP7hCSo4TXAbjBYEy-g&s=10",
+    "thumbnailWidth": 348,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/en-ie/hoi-an-babylon-riverside-hotel-spa/hotel/hoi-an-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F38471593%2F0%2F3af5836fde279fba7e4db71ed8210e13.jpg%3Fce%3D3%26s%3D414x232&tbnid=EXsOjIZ7k90LUM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fen-ie%2Fhoi-an-babylon-riverside-hotel-spa%2Fhotel%2Fhoi-an-vn.html&docid=f3lzIrZIqdESwM&w=348&h=232",
+    "position": 5
+   },
+   {
+    "title": "Soleil by Soluna - A Charming Touch of Hoi An's Heritage - formerly Hoi An  Babylon Riverside, Vietnam - 2026 Reviews, Pictures & Deals",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/38471593/0/89f26cc8a2f521b227e193f79264be26.jpg?ce=3&s=414x232",
+    "imageWidth": 348,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3gAl6iZmi_MkFzOH-RAvvLvulj_5I1sIzuoYvh1BVdQ&s=10",
+    "thumbnailWidth": 348,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/en-ie/hoi-an-babylon-riverside-hotel-spa/hotel/hoi-an-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F38471593%2F0%2F89f26cc8a2f521b227e193f79264be26.jpg%3Fce%3D3%26s%3D414x232&tbnid=6jcuEYpuLXtiMM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fen-ie%2Fhoi-an-babylon-riverside-hotel-spa%2Fhotel%2Fhoi-an-vn.html&docid=f3lzIrZIqdESwM&w=348&h=232",
+    "position": 6
+   },
+   {
+    "title": "Soleil by Soluna - A Charming Touch of Hoi An's Heritage - formerly Hoi An  Babylon Riverside, Vietnam - 2026 Reviews, Pictures & Deals",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/38471593/0/d244197b66a0094567176819c03eb6db.jpg?ce=3&s=414x232",
+    "imageWidth": 348,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxYnTiGTAymKMSo730bclQhb1NjeWbBwbd5h5GhiyBtw&s",
+    "thumbnailWidth": 275,
+    "thumbnailHeight": 183,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/en-ie/hoi-an-babylon-riverside-hotel-spa/hotel/hoi-an-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F38471593%2F0%2Fd244197b66a0094567176819c03eb6db.jpg%3Fce%3D3%26s%3D414x232&tbnid=RB7zZpahD5kvQM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fen-ie%2Fhoi-an-babylon-riverside-hotel-spa%2Fhotel%2Fhoi-an-vn.html&docid=f3lzIrZIqdESwM&w=348&h=232",
+    "position": 7
+   },
+   {
+    "title": "Soleil by Soluna - A Charming Touch of Hoi An's Heritage - formerly Hoi An  Babylon Riverside, Vietnam - 2026 Reviews, Pictures & Deals",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/38471593/635348015/603e66184fc3263f0c7358e12a9e6006.jpg?ce=3&s=414x232",
+    "imageWidth": 348,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtKOrI7HcO-2EWZ1-AUDwpzDVGgT6Mak1IQmPaqDc0EQ&s",
+    "thumbnailWidth": 275,
+    "thumbnailHeight": 183,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/en-ie/hoi-an-babylon-riverside-hotel-spa/hotel/hoi-an-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F38471593%2F635348015%2F603e66184fc3263f0c7358e12a9e6006.jpg%3Fce%3D3%26s%3D414x232&tbnid=BZ9Rav--B8utgM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fen-ie%2Fhoi-an-babylon-riverside-hotel-spa%2Fhotel%2Fhoi-an-vn.html&docid=f3lzIrZIqdESwM&w=348&h=232",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

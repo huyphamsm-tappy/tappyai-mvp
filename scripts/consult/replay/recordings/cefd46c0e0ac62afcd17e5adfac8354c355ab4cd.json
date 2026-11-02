@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Ăn Tiệm G\" OR \"Trần Ký Mì Gia | Tiệm Mì Quận 1 | Mì Người Hoa Quận 1\" OR \"Tiệm Ăn CÁT TƯỜNG\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:53:56.822Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Ăn Tiệm G\" OR \"Trần Ký Mì Gia | Tiệm Mì Quận 1 | Mì Người Hoa Quận 1\" OR \"Tiệm Ăn CÁT TƯỜNG\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ăn Tiệm G (@antiemg)",
+    "link": "https://www.tiktok.com/@antiemg",
+    "snippet": "Ăn Tiệm G · @antiemg · Cơm trưa bán từ thứ 2 đến thứ 6 (11h-15h) Các món đặc sản truyền thống vị Bắc menu trên IG:antiemg món sẽ được đặt trước. full tuần từ 11h- ...",
+    "position": 1
+   },
+   {
+    "title": "Khám Phá Ẩm Thực Tại Tiệm Ăn G Quận 1",
+    "link": "https://www.tiktok.com/@longnhongsaigon/video/7553490361033723143",
+    "snippet": "POV ăn cơm trưa @Ăn Tiệm G khu tài chính Q1 #longnhongsaigon #mcv ... @Long Nhong Sài Gòn · nhạc nền · Ăn Tiệm G Restaurant · author · 13.7K.",
+    "position": 2
+   },
+   {
+    "title": "cuối tuần ở Tiệm #fyppppppppppppppppppppppp # ...",
+    "link": "https://www.tiktok.com/@antiemg/video/7595814331753762066",
+    "snippet": "27 Lượt thích,Video TikTok từ Ăn Tiệm G (@antiemg): \"cuối tuần ở Tiệm #fyppppppppppppppppppppppp #monngonmoingay #nauan #antiemg\".nhạc nền - Ăn Tiệm G.",
+    "position": 3
+   },
+   {
+    "title": "mơ chín.. báo hiệu mùa hè rực rỡ nay tụi mình sắm sửa ...",
+    "link": "https://www.tiktok.com/@antiemg/video/7625937222319017236?lang=az",
+    "snippet": "Ăn Tiệm G (@antiemg) tərəfindən TikTok videosu: \"mơ chín.. báo hiệu mùa hè rực rỡ nay tụi mình sắm sửa mơ ngon cho một mùa...rựu mơ say nồng #xuhuong ...",
+    "position": 4
+   },
+   {
+    "title": "Phở Gà Xé Ngon Tại Tiệm Ăn Cát Tường",
+    "link": "https://www.tiktok.com/@truongcamcuong21051964/video/7605629828829547793",
+    "snippet": "Tiệm Ăn Cát Tường. Ở số 69 Thủ Khoa Huân phường Bến Thành quận 1, phở gà xé giá là 75k. Gà ở đây ăn ngon nhưng nước lèo thì hông đúng ý mình ...",
+    "position": 5
+   },
+   {
+    "title": "#antiemg #nauan #comnha #nâunngoncungtiktok",
+    "link": "https://www.tiktok.com/@antiemg/video/7637464223756471572",
+    "snippet": "20 Lượt thích,Video TikTok từ Ăn Tiệm G (@antiemg): \"#antiemg #nauan #comnha #nâunngoncungtiktok\".âm thanh gốc - Ăn Tiệm G.",
+    "position": 6
+   },
+   {
+    "title": "Đã có mồi ... Chỉ còn thiếu tay cụng , gục tại bàn 🤝 Ai hùn thì ...",
+    "link": "https://www.tiktok.com/@antiemg/video/7669333508141354248",
+    "snippet": "66 Lượt thích,Video TikTok từ Ăn Tiệm G (@antiemg): \"Đã có mồi ... Chỉ còn thiếu tay cụng , gục tại bàn Ai hùn thì vát bia qua đây , tui chịu mồi ...",
+    "position": 7
+   },
+   {
+    "title": "âm thanh gốc - Ăn Tiệm G",
+    "link": "https://www.tiktok.com/music/%C3%A2m-thanh-g%E1%BB%91c-%C4%82n-Ti%E1%BB%87m-G-7662214286922091285",
+    "snippet": "Bài hát âm thanh gốc - Ăn Tiệm G do Ăn Tiệm G sáng tác. Xem video mới nhất về âm thanh gốc - Ăn Tiệm G trên TikTok.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

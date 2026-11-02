@@ -54,6 +54,7 @@ export const UNTRUSTED_SOURCES = [
   'scam_message',        // a suspicious message the user pasted (or OCR'd from a screenshot) for Scam Shield to ANALYZE — by definition adversarial text
   'tool_result',         // A4 (2026-09-20): every tool result — third-party titles, snippets, names, descriptions (toolResultFence.ts)
   'explore_content',     // P3-F3 (a711181, restored 2026-09-25): caption/title a caller submits for extraction
+  'user_document',       // 31/10: the text layer of a PDF the person attached (pdfAttachments.ts) — anyone may have written it
 ] as const
 
 export type UntrustedSource = (typeof UNTRUSTED_SOURCES)[number]

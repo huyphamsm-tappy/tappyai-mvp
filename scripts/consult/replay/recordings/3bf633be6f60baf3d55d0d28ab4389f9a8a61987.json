@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "tai nghe chống ồn ANC chạy bộ dưới 3 triệu IPX4 tai nghe thể thao (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:22:33.769Z",
+ "body": {
+  "searchParameters": {
+   "q": "tai nghe chống ồn ANC chạy bộ dưới 3 triệu IPX4 tai nghe thể thao (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe thể thao, chạy bộ bluetooth | Giá tốt 10/2026",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe/the-thao.html",
+    "snippet": "Thiết kế nhỏ gọn, vừa vặn, tạo cảm giác thoải mái, không bị cộm khi đeo · Sử dụng công nghệ Quad Layer, giúp cân bằng 3 dải âm: bass – mid – treble, phát nhạc ...",
+    "position": 1
+   },
+   {
+    "title": "TOP 10+ Tai nghe Bluetooth màu đen, pin trâu, giá tốt",
+    "link": "https://cellphones.com.vn/sforum/tai-nghe-bluetooth-mau-den",
+    "snippet": "JBL Tune 770NC cân bằng giữa pin dài, ANC và thiết kế gập gọn. Với thời lượng lên đến 70 giờ khi không dùng chống ồn, sản phẩm phù hợp người ít ...",
+    "date": "27 thg 9, 2026",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe thao chạy bộ - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/tai%20nghe/thao%20ch%E1%BA%A1y%20b%E1%BB%99",
+    "snippet": "COD| Tai nghe có dây Sốt Hiệu ứng âm thanh Bass mạnh mẽ Công thái học 35mm Tai nghe nhét tai thể thao âm thanh nổi để chạy bộ. 67.228₫. 99.011₫.",
+    "position": 3
+   },
+   {
+    "title": "Tai nghe chống nước chơi thể thao, bơi lội [BỀN RẺ]",
+    "link": "https://cellphones.com.vn/bo-loc/tai-nghe-chong-nuoc",
+    "snippet": "Thiết bị thường đạt chuẩn IP từ IPX4 đến IPX8, giúp hạn chế hư hỏng khi gặp mưa, mồ hôi hoặc thậm chí ngâm nước ngắn hạn. Nhờ đó, tai nghe không chỉ hỗ trợ giải ...",
+    "position": 4
+   },
+   {
+    "title": "tai nghe funcl giá tốt Tháng 9, 2026 Tai nghe nhét tai",
+    "link": "https://shopee.vn/search?category=11036132&keyword=tai%20nghe%20funcl&page=0&sortBy=relevancy&subcategory=11036143",
+    "snippet": "Tai nghe không dây Bluetooth 5.3 Goojodoq có tính năng điều khiển cảm ứng, âm trầm và thời lượng pin cực dài Kênh đôi. 125.000₫. 208.000₫.",
+    "position": 5
+   },
+   {
+    "title": "Top những tai nghe true wireless chống ồn chủ động, đáng ...",
+    "link": "https://cellphones.com.vn/sforum/tu-van-top-nhung-tai-nghe-true-wireless-chong-on-chu-dong-dang-lua-chon-nhat-dau-2020",
+    "snippet": "Ausounds AU-Stream ANC là sản phẩm của công ty khởi nghiệp Ausound, tai nghe với mức giá khá tốt chỉ từ 150 $ (khoảng hơn 3 triệu đồng). AU- ...",
+    "date": "4 thg 1, 2020",
+    "position": 6
+   },
+   {
+    "title": "Tai nghe bluetooth chống ồn K68 chính hãng, kháng nước ...",
+    "link": "https://shopee.vn/Tai-nghe-bluetooth-ch%E1%BB%91ng-%E1%BB%93n-K68-ch%C3%ADnh-h%C3%A3ng-kh%C3%A1ng-n%C6%B0%E1%BB%9Bc-IPX4-bluetooth-v5.1-pin-6h-ch%E1%BB%91ng-%E1%BB%93n-ch%E1%BB%A7-%C4%91%E1%BB%99ng-ANC-bass-hay-i.546142695.20660366950",
+    "snippet": "Tai nghe bluetooth chống ồn K68 chính hãng, kháng nước IPX4 bluetooth v5.1, pin 6h, chống ồn chủ động ANC, bass hay. outline grey truck icon. Không hỗ trợ.",
+    "rating": 5,
+    "ratingCount": 13,
+    "position": 7
+   },
+   {
+    "title": "Tai nghe ANC chống ồn đỉnh cao, chính hãng, giá rẻ từ 300k",
+    "link": "https://cellphones.com.vn/bo-loc/tai-nghe-chong-on-chu-dong-anc",
+    "snippet": "Có mic đàm thoại; Chống ồn; Điều khiển giọng nói; Xuyên âm; Sạc không dây; Chống nước; Có app phiên dịch; Chống ồn chủ động ANC. Cổng kết nối.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

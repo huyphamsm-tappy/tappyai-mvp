@@ -131,15 +131,18 @@ describe('Travel — hotels: Trip.com · Booking.com · Agoda · Traveloka', () 
     expect(byProvider(r, 'tripcom')!.directUrl).toContain('hotelId=10569789&checkIn=2026-10-10&checkOut=2026-10-12&adult=2')
     expect(byProvider(r, 'booking')!.directUrl).toBe('https://www.booking.com/hotel/vn/muong-thanh-luxury-da-nang.vi.html?checkin=2026-10-10&checkout=2026-10-12&group_adults=2&no_rooms=1&group_children=0')
     expect(byProvider(r, 'booking')!.paramsPreserved).toEqual(['propertyRef', 'checkIn', 'checkOut', 'adults', 'rooms', 'children'])
-    expect(byProvider(r, 'agoda')!.directUrl).toBe('https://www.agoda.com/vi-vn/muong-thanh-luxury-da-nang-hotel/hotel/da-nang-vn.html?checkIn=2026-10-10&checkOut=2026-10-12&adults=2&rooms=1&children=0')
-    expect(byProvider(r, 'agoda')!.validation.status).toBe('grammar_unverified') // dates observed, not verified applied
+    // 29 Oct 2026 (owner-approved T1): checkIn + los verified live (stay applied, priced room rows); the link carries the partner cid.
+    expect(byProvider(r, 'agoda')!.directUrl).toBe('https://www.agoda.com/vi-vn/muong-thanh-luxury-da-nang-hotel/hotel/da-nang-vn.html?checkIn=2026-10-10&los=2&adults=2&rooms=1')
+    expect(byProvider(r, 'agoda')!.url).toBe('https://www.agoda.com/vi-vn/muong-thanh-luxury-da-nang-hotel/hotel/da-nang-vn.html?checkIn=2026-10-10&los=2&adults=2&rooms=1&cid=1974819')
+    expect(byProvider(r, 'agoda')!.validation.status).toBe('param_echo_ok')
     expect(byProvider(r, 'traveloka')!.directUrl).toBe('https://www.traveloka.com/vi-vn/hotel/vietnam/muong-thanh-luxury-da-nang-hotel-1000000254912')
   })
 
-  it('Trip.com (guest L5, dated grammar) leads; Booking.com (L4) precedes the L3 property pages', () => {
+  it('Trip.com (guest L5, dated grammar) leads; Agoda and Booking.com (both L4) precede the L3 property page, the tracked one first (T2, 29 Oct 2026)', () => {
     const order = links(r).map(l => l.providerId)
     expect(order[0]).toBe('tripcom')
-    expect(order.indexOf('booking')).toBeLessThan(order.indexOf('agoda'))
+    expect(order.indexOf('agoda')).toBeLessThan(order.indexOf('booking'))
+    expect(order.indexOf('booking')).toBeLessThan(order.indexOf('traveloka'))
   })
 
   it('without a property: Booking.com composes a dated results page; Agoda / Traveloka fall back to their front doors (query dropped — verified); Trip.com composes nothing', () => {

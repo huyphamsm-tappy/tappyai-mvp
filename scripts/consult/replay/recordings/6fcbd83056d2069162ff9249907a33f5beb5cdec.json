@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "So sánh Samsung Galaxy S24 và iPhone 15 Pro",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T01:57:37.807Z",
+ "body": {
+  "searchParameters": {
+   "q": "So sánh Samsung Galaxy S24 và iPhone 15 Pro",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "So sánh Samsung Galaxy S24 và iPhone 15 Pro qua các nguồn tin rò rỉ",
+    "imageUrl": "https://news.vio.vn/wp-content/uploads/2023/12/so-sanh-samsung-galaxy-s24-va-iphone-15-pro.jpg",
+    "imageWidth": 600,
+    "imageHeight": 351,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFq1w1-4v9mAFKmWwdYcPbbSLs65hGcg-AFlRzXSgDOw&s=10",
+    "thumbnailWidth": 584,
+    "thumbnailHeight": 342,
+    "source": "Viettel Store",
+    "domain": "viettelstore.vn",
+    "link": "https://viettelstore.vn/tin-tuc/so-sanh-samsung-galaxy-s24-va-iphone-15-pro?srsltid=AU7gw4U7se9LkDA3MvKnuHbEq0NBF_FwK4H1QftlqmgAPSJSiP1G9B4d",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fnews.vio.vn%2Fwp-content%2Fuploads%2F2023%2F12%2Fso-sanh-samsung-galaxy-s24-va-iphone-15-pro.jpg&tbnid=qgHu7PjLcU_MaM&imgrefurl=https%3A%2F%2Fviettelstore.vn%2Ftin-tuc%2Fso-sanh-samsung-galaxy-s24-va-iphone-15-pro%3Fsrsltid%3DAU7gw4U7se9LkDA3MvKnuHbEq0NBF_FwK4H1QftlqmgAPSJSiP1G9B4d&docid=qDWkOQM0TB5CJM&w=600&h=351",
+    "position": 1
+   },
+   {
+    "title": "Samsung Galaxy S24 Ultra vs iPhone 15 Pro Max: Trận chiến của những người  khổng lồ | Báo Pháp Luật TP. Hồ Chí Minh",
+    "imageUrl": "https://image.plo.vn/w1000/Uploaded/2026/vrwqqxjwp/2024_01_19/so-sanh-samsung-galaxy-s24-ultra-va-iphone-15-pro-max-8791-5678.jpeg.webp",
+    "imageWidth": 1000,
+    "imageHeight": 1080,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGe-eU-wBXNPw94XJMWT5UR-Dfzalb6g5uS9sX9aP64g&s=10",
+    "thumbnailWidth": 533,
+    "thumbnailHeight": 576,
+    "source": "Báo Tuổi Trẻ",
+    "domain": "tuoitre.vn",
+    "link": "https://tuoitre.vn/plo/ky-nguyen-so/samsung-galaxy-s24-ultra-vs-iphone-15-pro-max-tran-chien-cua-nhung-nguoi-khong-lo-post772811.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimage.plo.vn%2Fw1000%2FUploaded%2F2026%2Fvrwqqxjwp%2F2024_01_19%2Fso-sanh-samsung-galaxy-s24-ultra-va-iphone-15-pro-max-8791-5678.jpeg.webp&tbnid=uWPf2-mAkOUe3M&imgrefurl=https%3A%2F%2Ftuoitre.vn%2Fplo%2Fky-nguyen-so%2Fsamsung-galaxy-s24-ultra-vs-iphone-15-pro-max-tran-chien-cua-nhung-nguoi-khong-lo-post772811.html&docid=eimNkyGVhVZSeM&w=1000&h=1080",
+    "position": 2
+   },
+   {
+    "title": "So sánh Galaxy S24 và iPhone 15 Pro Max - Sự nâng cấp AI liệu có thắng thế?",
+    "imageUrl": "https://cdn11.dienmaycholon.vn/filewebdmclnew/DMCL21/Picture/News/News_expe_9916/9916.png?version=260459",
+    "imageWidth": 800,
+    "imageHeight": 418,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcSuvrDHJzWO7xfL6QXpseDQ0aATQr2-C9iH5TGPqEKQ&s=10",
+    "thumbnailWidth": 619,
+    "thumbnailHeight": 323,
+    "source": "Dienmaycholon",
+    "domain": "dienmaycholon.com",
+    "link": "https://dienmaycholon.com/kinh-nghiem-mua-sam/so-sanh-galaxy-s24-va-iphone-15-pro-max-dau-moi-la-chiec-dien-thoai-dang-so-huu",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn11.dienmaycholon.vn%2Ffilewebdmclnew%2FDMCL21%2FPicture%2FNews%2FNews_expe_9916%2F9916.png%3Fversion%3D260459&tbnid=9huy-CJSIf5GTM&imgrefurl=https%3A%2F%2Fdienmaycholon.com%2Fkinh-nghiem-mua-sam%2Fso-sanh-galaxy-s24-va-iphone-15-pro-max-dau-moi-la-chiec-dien-thoai-dang-so-huu&docid=wf0rrZsphq_21M&w=800&h=418",
+    "position": 3
+   },
+   {
+    "title": "So sánh Galaxy S24 Ultra và iPhone 15 Pro Max dựa trên tin đồn: Siêu phẩm  nào đáng mua hơn?",
+    "imageUrl": "https://cellphones.com.vn/sforum/wp-content/uploads/2024/01/so-sanh-galaxy-s24-ultra-va-iphone-15-pro-max-cover.jpeg",
+    "imageWidth": 1280,
+    "imageHeight": 720,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIS0CoxHwNqjos8j3j4HYmMS9LVTzviCgpG6IkbORC7w&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 414,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/sforum/so-sanh-galaxy-s24-ultra-va-iphone-15-pro-max",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcellphones.com.vn%2Fsforum%2Fwp-content%2Fuploads%2F2024%2F01%2Fso-sanh-galaxy-s24-ultra-va-iphone-15-pro-max-cover.jpeg&tbnid=9ipUfO7Ap4PqFM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fsforum%2Fso-sanh-galaxy-s24-ultra-va-iphone-15-pro-max&docid=5IOCpVRhVgllTM&w=1280&h=720",
+    "position": 4
+   },
+   {
+    "title": "So sánh Samsung Galaxy S24 Ultra và iPhone 15 Pro Max: Nên mua siêu phẩm  nào hợp lý hơn?",
+    "imageUrl": "https://cellphones.com.vn/sforum/wp-content/uploads/2024/01/galaxy-s24-ulta-vs-iphone-15-pro-max.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 675,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSo_xskdiqQTWPafDBmPFrELIE8p9duVTRO6QfJh0c9WA&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 414,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/sforum/so-sanh-samsung-galaxy-s24-ultra-va-iphone-15-pro-max",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcellphones.com.vn%2Fsforum%2Fwp-content%2Fuploads%2F2024%2F01%2Fgalaxy-s24-ulta-vs-iphone-15-pro-max.jpg&tbnid=qwCkjIAesHs-6M&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fsforum%2Fso-sanh-samsung-galaxy-s24-ultra-va-iphone-15-pro-max&docid=TBRZUq1agjY7KM&w=1200&h=675",
+    "position": 5
+   },
+   {
+    "title": "So sánh Samsung S24 và iPhone 15: Nên mua smartphone nào?",
+    "imageUrl": "https://cdn11.dienmaycholon.vn/filewebdmclnew/DMCL21/Picture/News/News_expe_9948/9948.png",
+    "imageWidth": 800,
+    "imageHeight": 418,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJ4ZqJ5a8e2tJdW3at502NyyO0a4lo8giIDTAcU_cGVA&s=10",
+    "thumbnailWidth": 619,
+    "thumbnailHeight": 323,
+    "source": "Dienmaycholon",
+    "domain": "dienmaycholon.com",
+    "link": "https://dienmaycholon.com/kinh-nghiem-mua-sam/so-sanh-samsung-s24-va-iphone-15-smartphone-nao-dang-mua-hon",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn11.dienmaycholon.vn%2Ffilewebdmclnew%2FDMCL21%2FPicture%2FNews%2FNews_expe_9948%2F9948.png&tbnid=gF9FBNk3aVN0PM&imgrefurl=https%3A%2F%2Fdienmaycholon.com%2Fkinh-nghiem-mua-sam%2Fso-sanh-samsung-s24-va-iphone-15-smartphone-nao-dang-mua-hon&docid=985dkj7D_dVoSM&w=800&h=418",
+    "position": 6
+   },
+   {
+    "title": "So sánh Samsung Galaxy S24 Plus và iPhone 15 Pro Max: Căng!",
+    "imageUrl": "https://didongviet.vn/dchannel/wp-content/uploads/2024/12/so-sanh-samsung-galaxy-s24-plus-va-iphone-15-pro-max-di-dong-viet-1068x601.jpg",
+    "imageWidth": 1068,
+    "imageHeight": 601,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjdjBRgv8zPVwjP8AsUqi3DS94Rcr9h6RSuQKNotBXjA&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 414,
+    "source": "Didongviet",
+    "domain": "didongviet.vn",
+    "link": "https://didongviet.vn/dchannel/so-sanh-samsung-galaxy-s24-plus-va-iphone-15-pro-max/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdidongviet.vn%2Fdchannel%2Fwp-content%2Fuploads%2F2024%2F12%2Fso-sanh-samsung-galaxy-s24-plus-va-iphone-15-pro-max-di-dong-viet-1068x601.jpg&tbnid=641OShn3aUPUcM&imgrefurl=https%3A%2F%2Fdidongviet.vn%2Fdchannel%2Fso-sanh-samsung-galaxy-s24-plus-va-iphone-15-pro-max%2F&docid=7tm9DZuAbBylSM&w=1068&h=601",
+    "position": 7
+   },
+   {
+    "title": "So sánh Samsung Galaxy S24 và iPhone 15 Pro: Chọn model nào?",
+    "imageUrl": "https://cdn2.fptshop.com.vn/unsafe/1920x0/filters:format(webp):quality(75)/2024_2_5_638427157767625966_so-sanh-galaxy-s24-va-iphone-15-pro.png",
+    "imageWidth": 1920,
+    "imageHeight": 1280,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5Gb-P-x3YnroYtuhZtgW0bUTlE0Wg7NzNVf7xCZOn-Q&s",
+    "thumbnailWidth": 275,
+    "thumbnailHeight": 183,
+    "source": "FPT Shop",
+    "domain": "fptshop.com.vn",
+    "link": "https://fptshop.com.vn/tin-tuc/danh-gia/so-sanh-samsung-galaxy-s24-va-apple-iphone-15-pro-175161",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.fptshop.com.vn%2Funsafe%2F1920x0%2Ffilters%3Aformat(webp)%3Aquality(75)%2F2024_2_5_638427157767625966_so-sanh-galaxy-s24-va-iphone-15-pro.png&tbnid=8V0mqy4toV9ZhM&imgrefurl=https%3A%2F%2Ffptshop.com.vn%2Ftin-tuc%2Fdanh-gia%2Fso-sanh-samsung-galaxy-s24-va-apple-iphone-15-pro-175161&docid=e6_CLiSGcWHtZM&w=1920&h=1280",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

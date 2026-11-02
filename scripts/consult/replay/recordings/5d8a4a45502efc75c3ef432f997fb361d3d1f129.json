@@ -1,0 +1,138 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Mangata Beachfront Hotel",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:09:57.668Z",
+ "body": {
+  "searchParameters": {
+   "q": "Mangata Beachfront Hotel",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Mangata Beachfront Hotel, Đà Nẵng",
+    "imageUrl": "https://mangatahotel.vn/uploads/photos/slider-1683276352_2711_708096eb122361fe73823fd79600a2ef.jpg",
+    "imageWidth": 1178,
+    "imageHeight": 646,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSoNi-fCtufmWlXdkLMhzZS9v6S8ap1z2M9N8ZYNVXGqQ&s=10",
+    "thumbnailWidth": 603,
+    "thumbnailHeight": 331,
+    "source": "mangatahotel.vn",
+    "domain": "mangatahotel.vn",
+    "link": "https://mangatahotel.vn/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmangatahotel.vn%2Fuploads%2Fphotos%2Fslider-1683276352_2711_708096eb122361fe73823fd79600a2ef.jpg&tbnid=-CDsRmeqjNX-GM&imgrefurl=https%3A%2F%2Fmangatahotel.vn%2F&docid=vmyk0YNQ3M5EIM&w=1178&h=646",
+    "position": 1
+   },
+   {
+    "title": "Mangata Beachfront Hotel, Đà Nẵng",
+    "imageUrl": "https://mangatahotel.vn/uploads/photos/slider-1683276342_2711_b60fffc46758d579bb58a7a526f2428a.jpg",
+    "imageWidth": 1178,
+    "imageHeight": 646,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0mkCkX6PSuW6XQeAC0jPCO6n0V8J54UJu0LIqrSNN7A&s=10",
+    "thumbnailWidth": 603,
+    "thumbnailHeight": 331,
+    "source": "mangatahotel.vn",
+    "domain": "mangatahotel.vn",
+    "link": "https://mangatahotel.vn/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmangatahotel.vn%2Fuploads%2Fphotos%2Fslider-1683276342_2711_b60fffc46758d579bb58a7a526f2428a.jpg&tbnid=IWT8CHNg5tpJ1M&imgrefurl=https%3A%2F%2Fmangatahotel.vn%2F&docid=vmyk0YNQ3M5EIM&w=1178&h=646",
+    "position": 2
+   },
+   {
+    "title": "Mangata Beachfront Hotel, Đà Nẵng",
+    "imageUrl": "https://mangatahotel.vn/uploads/photos/slider-1683276347_2711_64569f226ef33b7c38361e6ff2308b51.jpg",
+    "imageWidth": 1178,
+    "imageHeight": 646,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRs20uGm-hlsFBtDAIG2FmrqVgynnjWglkwN5dqyxqZ6Q&s=10",
+    "thumbnailWidth": 603,
+    "thumbnailHeight": 331,
+    "source": "mangatahotel.vn",
+    "domain": "mangatahotel.vn",
+    "link": "https://mangatahotel.vn/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmangatahotel.vn%2Fuploads%2Fphotos%2Fslider-1683276347_2711_64569f226ef33b7c38361e6ff2308b51.jpg&tbnid=jmPxwUdWouGbFM&imgrefurl=https%3A%2F%2Fmangatahotel.vn%2F&docid=vmyk0YNQ3M5EIM&w=1178&h=646",
+    "position": 3
+   },
+   {
+    "title": "Mangata Beachfront Hotel, Đà Nẵng",
+    "imageUrl": "https://mangatahotel.vn/uploads/photos/slider-1683274271_2711_defb147ceb7f5d7bb3ff2d8ca137926e.jpg",
+    "imageWidth": 1178,
+    "imageHeight": 646,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyfIdOqYNFhSVvY7A-QxdpwT6-UsGACMbluMaHyjbTqQ&s=10",
+    "thumbnailWidth": 603,
+    "thumbnailHeight": 331,
+    "source": "mangatahotel.vn",
+    "domain": "mangatahotel.vn",
+    "link": "https://mangatahotel.vn/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmangatahotel.vn%2Fuploads%2Fphotos%2Fslider-1683274271_2711_defb147ceb7f5d7bb3ff2d8ca137926e.jpg&tbnid=Svxl1ePfOj73yM&imgrefurl=https%3A%2F%2Fmangatahotel.vn%2F&docid=vmyk0YNQ3M5EIM&w=1178&h=646",
+    "position": 4
+   },
+   {
+    "title": "Mangata Beachfront Hotel - Rooftop Bar Sea View, Đà Nẵng (cập nhật giá năm  2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/606753697.jpg?k=6e688f2773c693acb654e85e7a230b178d0d6eac7a49d7ed3425c794bab5eabe&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT89JgKunZIihFVSf7QORHqi2QqkmgcGL4_VvBcXSmUJw&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/mangata-beachfront.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F606753697.jpg%3Fk%3D6e688f2773c693acb654e85e7a230b178d0d6eac7a49d7ed3425c794bab5eabe%26o%3D&tbnid=6lv7evc3HDz7KM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fmangata-beachfront.vi.html&docid=LppvsHZ5pWSTNM&w=1024&h=683",
+    "position": 5
+   },
+   {
+    "title": "Mangata Beachfront Hotel, Đà Nẵng",
+    "imageUrl": "https://mangatahotel.vn/uploads/article/large-suite-double-1681181454.jpg",
+    "imageWidth": 1178,
+    "imageHeight": 646,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcxGsWvA10XW4G_9ZomM3Hn4oSc8dyNftz0INfdngZRg&s=10",
+    "thumbnailWidth": 603,
+    "thumbnailHeight": 331,
+    "source": "mangatahotel.vn",
+    "domain": "mangatahotel.vn",
+    "link": "https://mangatahotel.vn/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmangatahotel.vn%2Fuploads%2Farticle%2Flarge-suite-double-1681181454.jpg&tbnid=CHj8S6HD4ye31M&imgrefurl=https%3A%2F%2Fmangatahotel.vn%2F&docid=vmyk0YNQ3M5EIM&w=1178&h=646",
+    "position": 6
+   },
+   {
+    "title": "Mangata Beachfront Hotel | Quận Sơn Trà",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=516074011432866",
+    "imageWidth": 1365,
+    "imageHeight": 2048,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQp1ROeI59TqPLHr3h7D1mB-G3ZpC_So8QTA_1ChgA79w&s=10",
+    "thumbnailWidth": 365,
+    "thumbnailHeight": 547,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/mangatabeachfronthotel/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D516074011432866&tbnid=kfnMSa7jFAnmWM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fmangatabeachfronthotel%2F&docid=MFmBU8SqEktm6M&w=1365&h=2048",
+    "copyright": "goku.agency",
+    "creator": "gokuagency",
+    "position": 7
+   },
+   {
+    "title": "Mangata Beachfront Hotel, Đà Nẵng",
+    "imageUrl": "https://mangatahotel.vn/uploads/article/large-mangata-suite-double-1681181841.jpg",
+    "imageWidth": 1178,
+    "imageHeight": 646,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRr1sPHggnAf75nM7oE-BnJ_GxlBF4HyGjaxzo7v61Khw&s=10",
+    "thumbnailWidth": 603,
+    "thumbnailHeight": 331,
+    "source": "mangatahotel.vn",
+    "domain": "mangatahotel.vn",
+    "link": "https://mangatahotel.vn/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmangatahotel.vn%2Fuploads%2Farticle%2Flarge-mangata-suite-double-1681181841.jpg&tbnid=U_d5WkD5E5R4wM&imgrefurl=https%3A%2F%2Fmangatahotel.vn%2F&docid=vmyk0YNQ3M5EIM&w=1178&h=646",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

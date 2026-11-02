@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Samsung Galaxy S24 thông số chính thức Galaxy AI màn hình camera pin",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:01:50.293Z",
+ "body": {
+  "searchParameters": {
+   "q": "Samsung Galaxy S24 thông số chính thức Galaxy AI màn hình camera pin",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tiến bước vào kỷ nguyên quyền năng AI mới cùng ...",
+    "link": "https://news.samsung.com/vn/tien-buoc-vao-ky-nguyen-quyen-nang-ai-moi-cung-samsung-galaxy-s24-series",
+    "snippet": "*Được đo theo đường chéo, kích thước màn hình của Galaxy S24 Ultra là 6,8 inch trên hình chữ nhật đầy đủ và 6,8 inch tính cả các góc được bo ...",
+    "date": "18 thg 1, 2024",
+    "position": 1
+   },
+   {
+    "title": "Đánh giá Galaxy S24 Ultra: AI tiện lợi, camera xịn sò, hiệu ...",
+    "link": "https://www.thegioididong.com/tin-tuc/danh-gia-galaxy-s24-ultra-1560290",
+    "snippet": "Galaxy S24 Ultra nhận được bản cập nhật bổ sung tính năng điều chỉnh độ Sinh động cho màn hình (cập nhật: 24/02/2024). Theo thông tin do trang ...",
+    "date": "26 thg 1, 2024",
+    "position": 2
+   },
+   {
+    "title": "Galaxy S24: Thông số kỹ thuật, thiết kế, pin và hơn thế",
+    "link": "https://minhtuanmobile.com/tin-tuc/galaxy-s24-thong-so-ky-thuat-thiet-ke-pin-va-hon-the/",
+    "snippet": "Hệ thống camera sau của Samsung Galaxy S24 bao gồm 4 ống kính: camera chính 50MP, camera góc siêu rộng 12MP, camera tele 10MP hỗ trợ zoom quang ...",
+    "date": "27 thg 12, 2023",
+    "position": 3
+   },
+   {
+    "title": "Galaxy S24 series chính thức ra mắt S24 FE: Trải nghiệm ...",
+    "link": "https://viettelstore.vn/tin-tuc/chinh-thuc-ra-mat-s24-fe?srsltid=AU7gw4XiJ5xIoqrjKNkV9lvaN-HTc_sYRzzgHcMVRJmrLiWIqE2FcfJC",
+    "snippet": "Không chỉ sở hữu khả năng nhiếp ảnh vượt trội, Galaxy S24 FE còn là lựa chọn hoàn hảo cho các game thủ nhờ màn hình Dynamic AMOLED 2X 6.7-inch, ...",
+    "date": "27 thg 9, 2024",
+    "position": 4
+   },
+   {
+    "title": "Đánh giá nhanh Samsung Galaxy S24 - trải nghiệm Galaxy AI",
+    "link": "https://www.youtube.com/watch?v=HIIdCCvBp78",
+    "snippet": "Samsung Galaxy S24 Series đã chính thức được ra mắt trong sự kiện Unpacked 2024 ... hình, nhưng những thứ nhỏ nhất như các đướng nét ghép ...",
+    "position": 5
+   },
+   {
+    "title": "Công nghệ Galaxy AI là gì? Điện thoại Galaxy S24 có ...",
+    "link": "https://www.phucanh.vn/galaxy-ai-la-gi-galaxy-s24-co-galaxy-ai-khong.html?srsltid=AU7gw4UQZwFustAE7QUtWtgFl2FazrkXE1Yza9KhKpKENUZIUhAoCd9D",
+    "snippet": "Galaxy AI được tích hợp sâu vào các ứng dụng gốc của dòng Samsung Galaxy S24, mang đến những thay đổi cho trải nghiệm cơ bản của điện thoại ...",
+    "date": "18 thg 1, 2024",
+    "position": 6
+   },
+   {
+    "title": "Đánh giá Samsung Galaxy S24: Điểm nhấn AI, Exynos 2400",
+    "link": "https://didongviet.vn/dchannel/danh-gia-samsung-galaxy-s24/",
+    "snippet": "S24 sở hữu cụm camera có thông số lần lượt là: 50MP (camera chính), 12MP (camera góc siêu rộng) và 10MP (camera tele). Đánh giá Samsung Galaxy ...",
+    "date": "27 thg 11, 2023",
+    "rating": 4.8,
+    "ratingCount": 5,
+    "position": 7
+   },
+   {
+    "title": "Giá Samsung Galaxy S24 series cập nhật mới, ưu đãi sốc",
+    "link": "https://cellphones.com.vn/mobile/samsung/galaxy-s/s24-series.html",
+    "snippet": "Đi kèm với đó là thông số RAM 8GB/ 12GB đảm bảo hoạt động mượt mà khi đối mặt với nhiều tác vụ đa dạng cùng lúc. Ngoài ra, S24 Series còn có 2 phiên bản bộ nhớ ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

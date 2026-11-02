@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "chụp Tai Gaming Sony INZONE H3 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:21:55.045Z",
+ "body": {
+  "searchParameters": {
+   "q": "chụp Tai Gaming Sony INZONE H3 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai Nghe Chụp Tai Có Micro Sony INZONE H3 (MDR- ...",
+    "link": "https://shopee.vn/Tai-Nghe-Ch%E1%BB%A5p-Tai-C%C3%B3-Micro-Sony-INZONE-H3-(MDR-G300)-M%C3%A0u-Tr%E1%BA%AFng-B%E1%BA%A3o-H%C3%A0nh-12-Th%C3%A1ng-To%C3%A0n-Qu%E1%BB%91c-i.296204790.12095718174",
+    "snippet": "Mua Tai Nghe Chụp Tai Có Micro Sony INZONE H3 (MDR-G300) Màu Trắng | Bảo Hành 12 Tháng Toàn Quốc giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 2,
+    "position": 1
+   },
+   {
+    "title": "Tai nghe chụp tai Gaming Sony Inzone H3 , hàng cũ giá tốt",
+    "link": "https://shopee.vn/Tai-nghe-ch%E1%BB%A5p-tai-Gaming-Sony-Inzone-H3-h%C3%A0ng-c%C5%A9-gi%C3%A1-t%E1%BB%91t-i.40180096.51912666966",
+    "snippet": "Tai nghe chụp tai Gaming Sony Inzone H3 , hàng cũ giá tốt. 1/4. Đã bán hết. 1.100.000₫. Tai nghe chụp tai Gaming Sony Inzone H3 , hàng cũ giá tốt.",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe chụp tai có dây Gaming Sony INZONE H3 MDR- ...",
+    "link": "https://shopee.vn/Tai-nghe-ch%E1%BB%A5p-tai-c%C3%B3-d%C3%A2y-Gaming-Sony-INZONE-H3-MDR-G300-H%C3%A0ng-ch%C3%ADnh-h%C3%A3ng-i.331695868.21931427242",
+    "snippet": "Mua Tai nghe chụp tai có dây Gaming Sony INZONE H3 MDR-G300 - Hàng chính hãng giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "position": 3
+   },
+   {
+    "title": "Tai Nghe Chụp Tai Gaming Sony INZONE H3 MDR-G300",
+    "link": "https://shopee.vn/Tai-Nghe-Ch%E1%BB%A5p-Tai-Gaming-Sony-INZONE-H3-MDR-G300-%C3%82m-Thanh-V%C3%B2m-360-B%E1%BA%A3o-H%C3%A0nh-Ch%C3%ADnh-H%C3%A3ng-12-Th%C3%A1ng-i.1733906029.57263421570?extraParams=%7B%22display_model_id%22%3A326162038892%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "Mua Tai Nghe Chụp Tai Gaming Sony INZONE H3 MDR-G300 - Âm Thanh Vòm 360 - Bảo Hành Chính Hãng 12 Tháng giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 4
+   },
+   {
+    "title": "Tai nghe chụp tai có dây Gaming Sony INZONE H3 MDR ...",
+    "link": "https://shopee.vn/Tai-nghe-ch%E1%BB%A5p-tai-c%C3%B3-d%C3%A2y-Gaming-Sony-INZONE-H3-MDR-G300-H%C3%A0ng-ch%C3%ADnh-h%C3%A3ng-%C3%82m-thanh-v%C3%B2m-7.1-360-Spatial-Sound-i.40757878.18231420067?extraParams=%7B%22display_model_id%22%3A201619055463%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "Mua Tai nghe chụp tai có dây Gaming Sony INZONE H3 MDR-G300 - Hàng chính hãng - Âm thanh vòm 7.1, 360 Spatial Sound giá tốt. Mua hàng qua mạng uy tín, ...",
+    "position": 5
+   },
+   {
+    "title": "Tai nghe chụp tai Gaming Sony Inzone H3",
+    "link": "https://shopee.vn/Tai-nghe-ch%E1%BB%A5p-tai-Gaming-Sony-Inzone-H3-i.487028617.51410593768",
+    "snippet": "Mua Tai nghe chụp tai Gaming Sony Inzone H3 giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn ...",
+    "position": 6
+   },
+   {
+    "title": "(Cũ) Tai nghe (gãy mic) gaming chụp tai Sony Inzone H3",
+    "link": "https://shopee.vn/(C%C5%A9)-Tai-nghe-(g%C3%A3y-mic)-gaming-ch%E1%BB%A5p-tai-Sony-Inzone-H3-i.1458393643.41428169881",
+    "snippet": "(Cũ) Tai nghe (gãy mic) gaming chụp tai Sony Inzone H3. 1/8. Đã bán hết. 400.000₫. (Cũ) Tai nghe (gãy mic) gaming chụp tai Sony Inzone H3.",
+    "position": 7
+   },
+   {
+    "title": "Tai nghe có dây Gaming Sony MDR-G300 INZONE H3 ...",
+    "link": "https://shopee.vn/Tai-nghe-c%C3%B3-d%C3%A2y-Gaming-Sony-MDR-G300-INZONE-H3-360-Spatial-Sound-micro-boom-%C4%91%C6%A1n-h%C6%B0%E1%BB%9Bng-i.1152330179.28755537987",
+    "snippet": "Mua Tai nghe có dây Gaming Sony MDR-G300 INZONE H3, 360 Spatial Sound, micro boom đơn hướng giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 78,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

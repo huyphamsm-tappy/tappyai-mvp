@@ -3,7 +3,9 @@ import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { refuseIneligible } from '@/lib/account/requireEligibleUser'
 import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
-import { rateLimit } from '@/lib/security/rateLimit'
+import { refuseWithoutAiConsent } from '@/lib/ai/consent/aiConsentGuard'
+import { publicRateLimit } from '@/lib/security/publicRateLimit'
+import { rateLimitedResponse } from '@/lib/security/rateLimitResponse'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { NextRequest, NextResponse } from 'next/server'
@@ -54,12 +56,13 @@ export async function POST(req: NextRequest) {
   const ageRefusal = await refuseIneligible(req, supabase)
   if (ageRefusal) return ageRefusal
 
-  if (!rateLimit(`explore-process:${user.id}`, 20, 60_000).ok) {
-    return NextResponse.json(
-      { error: 'rate_limit', message: serverMessage('rate.tooFast', requestLocale(req)) },
-      { status: 429 },
-    )
-  }
+  const rl = await publicRateLimit(`explore-process:${user.id}`, 20, 60_000)
+  if (!rl.ok) return rateLimitedResponse(req, rl, 'explore_process')
+
+  // App Review 5.1.2(i): an account that uses the iOS app sends its caption and thumbnail to the AI provider only
+  // with a current agreement. Checked before processContent, which is the first AI call on this path.
+  const aiConsentRefusal = await refuseWithoutAiConsent(user.id, requestLocale(req))
+  if (aiConsentRefusal) return aiConsentRefusal
 
   let thumbnail_url = '', caption = '', title = ''
   try {
@@ -83,6 +86,9 @@ export async function POST(req: NextRequest) {
   // description / hashtags. The code below stays, but this switch (default OFF) makes it unreachable
   // for link posts; the upload flow (no title) is unchanged.
   if (title && process.env.EXPLORE_LINK_AI_ENABLED !== 'true') return NextResponse.json(EMPTY)
+  // 29/10 (owner): no AI-written caption, hashtags or area for ANY post — the poster writes their own, and the API is not paid
+  // for it. Default OFF, checked before the model call, so every client (web composer, iOS, an older app build) gets EMPTY.
+  if (process.env.EXPLORE_CAPTION_AI_ENABLED !== 'true') return NextResponse.json(EMPTY)
 
   const result = await processContent({
     thumbnailUrl: thumbnail_url || undefined,

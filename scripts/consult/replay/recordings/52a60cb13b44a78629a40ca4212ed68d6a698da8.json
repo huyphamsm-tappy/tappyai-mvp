@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com/vn AirPods Pro (thế hệ 2) thời gian nghe 6 giờ hộp sạc 30 giờ",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:33:07.877Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com/vn AirPods Pro (thế hệ 2) thời gian nghe 6 giờ hộp sạc 30 giờ",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "So Sánh Các Phiên Bản AirPods",
+    "link": "https://www.apple.com/vn/airpods/compare/?modelList=airpods-pro,airpods-3rd-gen-lightning",
+    "snippet": "Khi tắt tính năng Kiểm Soát Tiếng Ồn, thời gian nghe lên đến 6 giờ. Thử nghiệm được thực hiện bằng cách xả toàn bộ pin AirPods khi phát âm thanh cho đến khi ...",
+    "position": 1
+   },
+   {
+    "title": "AirPods Pro 3 - Thông Số Kỹ Thuật",
+    "link": "https://www.apple.com/vn/airpods-pro/specs/",
+    "snippet": "Thời gian nghe lên đến 8 giờ với một lần sạc khi bật tính năng Chủ Động Khử Tiếng Ồn (lên đến 7,5 giờ khi bật Âm Thanh Không Gian và Theo Dõi Chuyển Động Đầu) ...",
+    "position": 2
+   },
+   {
+    "title": "Apple công bố thế hệ AirPods Pro tiếp theo",
+    "link": "https://www.apple.com/vn/newsroom/2022/09/apple-announces-the-next-generation-of-airpods-pro/",
+    "snippet": "Chất lượng âm thanh tuyệt đỉnh, công nghệ khử tiếng ồn chủ động tiên tiến, và nhiều tính năng mới giúp sử dụng thuận tiện hơn nữa.",
+    "date": "7 thg 9, 2022",
+    "position": 3
+   },
+   {
+    "title": "Mua iPhone 18 Pro 256GB Đen - Giáo Dục - Apple (VN)",
+    "link": "https://www.apple.com/vn-edu/shop/buy-iphone/iphone-18-pro/m%C3%A0n-h%C3%ACnh-6,3-inch-256gb-%C4%91en",
+    "snippet": "Sửa chữa không giới hạn cho các sự cố như rơi vỡ và đổ chất lỏng; Ưu tiên hỗ trợ từ các chuyên gia của Apple; Dịch Vụ Thay Thế Nhanh — chúng tôi sẽ gửi ...",
+    "position": 4
+   },
+   {
+    "title": "Mua iPhone 18 Pro 256GB Bạc - Giáo Dục - Apple (VN)",
+    "link": "https://www.apple.com/vn-edu/shop/buy-iphone/iphone-18-pro/m%C3%A0n-h%C3%ACnh-6,3-inch-256gb-b%E1%BA%A1c",
+    "snippet": "Mới. Mua sắm iPhone 18 Pro. Đặt trước từ 19:00 ngày 12 tháng 9, giờ Việt Nam. Có hàng từ ngày 18 tháng 9. Giới hạn hai iPhone 18 Pro và hai iPhone 18 Pro ...",
+    "position": 5
+   },
+   {
+    "title": "Apple Watch Ultra và AirPods Pro thế hệ mới sẽ lên kệ tại ...",
+    "link": "https://www.apple.com/vn/newsroom/2022/09/apple-watch-ultra-and-next-generation-airpods-pro-available-in-stores-friday/",
+    "snippet": "Được trang bị chip H2 mới, AirPods Pro (2nd generation) mở khóa hiệu suất âm thanh đột phá, bao gồm những cải thiện đáng kể cho chế độ Khử tiếng ...",
+    "date": "22 thg 9, 2022",
+    "position": 6
+   },
+   {
+    "title": "AirPods 5 - Thông Số Kỹ Thuật",
+    "link": "https://www.apple.com/vn/airpods-5/specs/",
+    "snippet": "Thời lượng pin lên đến 4 giờ với một lần sạc khi bật tính năng Chủ Động Khử Tiếng Ồn · Thời lượng pin lên đến 6 giờ với một lần sạc khi tắt kiểm soát tiếng ồn.",
+    "position": 7
+   },
+   {
+    "title": "Ưu Đãi Tiết Kiệm Cho Ngành Giáo Dục",
+    "link": "https://www.apple.com/vn-edu/store",
+    "snippet": "... AirPods 5. Khám phá sự kỳ diệu của Chủ Động Khử Tiếng Ồn. Từ 3.799.000đ. iPhone 17. Đa tài, đa sắc. Từ 28.999.000đ. KHẮC MIỄN PHÍ. AirPods Max 2. Các tính năng ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

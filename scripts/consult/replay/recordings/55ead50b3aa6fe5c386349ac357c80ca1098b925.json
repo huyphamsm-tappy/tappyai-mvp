@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:chotot.com mua bán MacBook Air M1 cũ giá 9.000.000",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:34:59.101Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:chotot.com mua bán MacBook Air M1 cũ giá 9.000.000",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "208 MacBook Air M1 cũ tại TPHCM like new, giá rẻ 10/2026",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-macbook-air-m1-tp-ho-chi-minh-sdpb3pm141",
+    "snippet": "Giá laptop Macbook Air M1 cũ tại Tp Hồ Chí Minh khoảng 11,3 triệu, tùy thuộc vào cấu hình, đời máy và tình trạng sử dụng thực tế. Người mua tại Tp Hồ Chí Minh ...",
+    "position": 1
+   },
+   {
+    "title": "75 Laptop Apple cũ Thành phố Biên Hòa, Đồng Nai uy tín",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-thanh-pho-bien-hoa-dong-nai-sdpb3",
+    "snippet": "75 Laptop Apple cũ Thành phố Biên Hòa, Đồng Nai uy tín ; Apple MacBook Air M1 2020 8GB/256GB Xám · 8 GB256 GB. 10.300.000 đ ; Apple MacBook Air 13 inch 2017 i5 8GB ...",
+    "position": 2
+   },
+   {
+    "title": "Mua bán MacBook cũ tại Hà Nội đẹp, giá rẻ 10/2026",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-macbook-ha-noi-sdpb3pm4",
+    "snippet": "Giá laptop Macbook cũ tại Hà Nội khoảng 5,95 triệu, tùy thuộc vào cấu hình, đời máy và tình trạng sử dụng thực tế. Người mua tại Hà Nội có thể dễ dàng so sánh ...",
+    "position": 3
+   },
+   {
+    "title": "90 Laptop Apple cũ Quận 7 đẹp 10/2026",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-quan-7-tp-ho-chi-minh-sdpb3",
+    "snippet": "90 Laptop Apple cũ Quận 7 uy tín ; MacBook Air 2020 13\" 2K 8GB/256GB 98-99%-Góp 0Đ. Intel Core i38 GB256 GBSSD. 5.900.000 đ ; MacBook Air 13\" M1 8Gb/256Gb 98%-Góp ...",
+    "position": 4
+   },
+   {
+    "title": "103 Macbook cũ Đồng Nai đẹp giá rẻ, chính hãng - Apple",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-dong-nai-sdpb3",
+    "snippet": "103 Macbook cũ Đồng Nai đẹp giá rẻ, chính hãng ; Apple MacBook Air M1 2020 8GB/256GB Xám. M18 GB256 GB. 10.300.000 đ ; Apple MacBook Air 13 inch 2017 i5 8GB/128GB ...",
+    "position": 5
+   },
+   {
+    "title": "Mua bán MacBook Air cũ Bình Dương giá rẻ 05/10/2026",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-macbook-air-binh-duong-sdpb3pm5",
+    "snippet": "Giá laptop Macbook Air cũ tại Bình Dương khoảng 5,75 triệu, tùy thuộc vào cấu hình, đời máy và tình trạng sử dụng thực tế. Người mua tại Bình Dương có thể dễ ...",
+    "position": 6
+   },
+   {
+    "title": "Mua bán MacBook Air M1 cũ giá rẻ, máy like new, đẹp 99%",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-macbook-air-m1-sdpb3pm141",
+    "snippet": "Giá MacBook Air M1 cũ vào ngày 08/10/2026 dao động khoảng 10,35 triệu - 12,65 triệu, tuỳ dung lượng RAM (8GB hoặc 16GB), SSD (256GB hoặc 512GB), ...",
+    "position": 7
+   },
+   {
+    "title": "Mua bán MacBook Pro cũ tại Hà Nội đẹp, giá rẻ 10/2026",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-macbook-pro-ha-noi-sdpb3pm6",
+    "snippet": "Giá laptop Macbook Pro cũ tại Hà Nội khoảng 8,6 triệu, tùy thuộc vào cấu hình, đời máy và tình trạng sử dụng thực tế. Người mua tại Hà Nội có thể dễ dàng so ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site: dichvucong.bocongan.gov.vn lệ phí cấp hộ chiếu phổ thông",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:35:45.786Z",
+ "body": {
+  "searchParameters": {
+   "q": "site: dichvucong.bocongan.gov.vn lệ phí cấp hộ chiếu phổ thông",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp tỉnh)",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=29497",
+    "snippet": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp tỉnh). Nộp hồ sơ. Đăng nhập tài khoản khai báo tạm trú. Tên đăng nhập. Mật khẩu. Tỉnh thành.",
+    "position": 1
+   },
+   {
+    "title": "CỔNG DỊCH VỤ CÔNG TRỰC TUYẾN - Bộ Công an",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=26691",
+    "snippet": "Cán bộ thu lệ phí thu tiền, giao biên lai thu tiền cho người đề nghị cấp hộ chiếu phổ thông hoặc thông báo trên Cổng dịch vụ công quốc gia hoặc Cổng dịch vụ ...",
+    "position": 2
+   },
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước - Dịch vụ công",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=26270",
+    "snippet": "Cán bộ thu lệ phí thu tiền, giao biên lai thu tiền cho người đề nghị cấp hộ chiếu phổ thông hoặc thông báo trên Cổng dịch vụ công quốc gia hoặc Cổng dịch vụ ...",
+    "position": 3
+   },
+   {
+    "title": "CỔNG DỊCH VỤ CÔNG TRỰC TUYẾN",
+    "link": "https://dichvucong.bocongan.gov.vn/",
+    "snippet": "Giới thiệu thủ tục hành chính mới · Lý lịch tư pháp · Sát hạch, cấp giấy phép lái xe · Đảm bảo an ninh hàng không · Đảm bảo an toàn thông tin, an ninh mạng · Tổ chức ...",
+    "position": 4
+   },
+   {
+    "title": "HƯỚNG DẪN THAO TÁC ĐĂNG KÝ CẤP HỘ CHIẾU PHỔ ...",
+    "link": "https://www.facebook.com/xuatnhapcanhhanoi/posts/h%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-thao-t%C3%A1c-%C4%91%C4%83ng-k%C3%BD-c%E1%BA%A5p-h%E1%BB%99-chi%E1%BA%BFu-ph%E1%BB%95-th%C3%B4ng-tr%C3%AAn-c%E1%BB%95ng-d%E1%BB%8Bch-v%E1%BB%A5-c%C3%B4ng-b%E1%BB%99-c%C3%B4ng/765553852792615/",
+    "snippet": "Truy cập đường link dịch vụ công chấm bộ công an chấm GOV chấm VN. Tại màn hình trang chủ, chọn vào đăng nhập tài khoản. Chọn vào đăng nhập ...",
+    "position": 5
+   },
+   {
+    "title": "Từ 1/6, Bộ Công an cấp hộ chiếu online",
+    "link": "https://baodautu.vn/tu-16-bo-cong-an-cap-ho-chieu-online-d166889.html",
+    "snippet": "Từ ngày 1/6, người dân có thể khai cấp hộ chiếu phổ thông qua Cổng Dịch vụ công Bộ Công an, thanh toán trực tuyến, nhận hộ chiếu qua bưu ...",
+    "date": "31 thg 5, 2022",
+    "position": 6
+   },
+   {
+    "title": "Bộ Công an hướng dẫn đăng ký cấp hộ chiếu trên Cổng dịch ...",
+    "link": "https://xaydungchinhsach.chinhphu.vn/bo-cong-an-huong-dan-dang-ky-ho-so-de-nghi-cap-ho-chieu-pho-thong-tren-cong-dich-vu-cong-quoc-gia-119220824133047664.htm",
+    "snippet": "Bộ Công an hướng dẫn đăng ký hồ sơ đề nghị cấp hộ chiếu phổ thông. Truy cập đường link https://dichvucong.bocongan.gov.vn/dich-vu-cong/cong-dan/ ...",
+    "date": "24 thg 8, 2022",
+    "position": 7
+   },
+   {
+    "title": "Triển khai cấp hộ chiếu phổ thông không gắn chíp điện tử ...",
+    "link": "https://bocongan.gov.vn/bai-viet/trien-khai-cap-ho-chieu-pho-thong-khong-gan-chip-dien-tu-qua-cong-dich-vu-cong-bo-cong-an-tu-0162022-d2-t31753",
+    "snippet": "Từ ngày 01/6/2022, người dân cả nước có thể khai cấp hộ chiếu phổ thông (không gắn chíp điện tử) qua Cổng Dịch vụ công Bộ Công an. Trường hợp ...",
+    "date": "17 thg 5, 2022",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

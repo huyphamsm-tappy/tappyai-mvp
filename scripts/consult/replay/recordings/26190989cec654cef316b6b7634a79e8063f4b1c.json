@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Phở Hòa Pasteur\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:43:51.888Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Phở Hòa Pasteur\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Phở Hòa Pasteur Ho Chi Minh — second-time pho ...",
+    "link": "https://www.tiktok.com/@theres.food.at.home/video/7687032965754408205",
+    "snippet": "The video documents a visit to Phở Hòa Pasteur in Ho Chi Minh, Vietnam, where the creator tried pho for only the second time and described ...",
+    "position": 1
+   },
+   {
+    "title": "Pho in Vietnam: Best Phở Hòa Pasteur Review",
+    "link": "https://www.tiktok.com/@rushdytiblani_/video/7673461730302758165",
+    "snippet": "Where and when to go Phở Hòa Pasteur is located on Pasteur Street in Ho Chi Minh City and is popular during meal times. Expect a bustling ...",
+    "position": 2
+   },
+   {
+    "title": "Phở Hòa Pasteur: Authentic Vietnamese Pho in Ho Chi ...",
+    "link": "https://www.tiktok.com/@sgadventurousduo/video/7619325653887814932",
+    "snippet": "Phở Hòa Pasteur, located at 260C Pasteur, Phường, Xuân Hòa, Hồ Chí Minh 70000, Vietnam, is a highly recommended destination for authentic ...",
+    "position": 3
+   },
+   {
+    "title": "We tried the famous Phở Hòa Pasteur and it did not ...",
+    "link": "https://www.tiktok.com/@seanandjoo/video/7517836457839430920",
+    "snippet": "... #phohoapasteur. We tried the famous Phở Hòa Pasteur and it did not dissapoint. Pho hits different. @seanandjoo · luther · Phở Hòa Pasteur.",
+    "position": 4
+   },
+   {
+    "title": "Phở Hòa Pasteur — Saigon's iconic phở spot",
+    "link": "https://www.tiktok.com/@traveling.beancou/video/7685849144375741709",
+    "snippet": "Phở Hòa Pasteur is an old-school Saigon phở spot in Ho Chi Minh City that has been doing the same thing for decades.",
+    "position": 5
+   },
+   {
+    "title": "Experience Authentic Southern Phở at Pho Hoa Pasteur",
+    "link": "https://www.tiktok.com/@thenoble.nonsense/video/7643278628192783637",
+    "snippet": "... Phở Hòa Pasteur, 260C Pasteur, Phường 8, Quận 3, Hồ Chí Minh 70000, Vietnam⁣ ⁣⁣ #pho #bestpho #phohoapasteur #foodreview #vietnamesefood #hcmfood ...",
+    "position": 6
+   },
+   {
+    "title": "Phở Hòa Pasteur បេីកតាំងពីឆ្នាំ 1968! #pho #vietnamtrip # ...",
+    "link": "https://www.tiktok.com/@monicaaaamax/video/7498577628492877072",
+    "snippet": "Phở Hòa Pasteur បេីកតាំងពីឆ្នាំ 1968! #pho #vietnamtrip #saigon #whattodoinvietnam #vietnamesefood · original ...",
+    "position": 7
+   },
+   {
+    "title": "Quán phở ngon nhất Sài Gòn: review quán Phở Hòa và trải ...",
+    "link": "https://www.tiktok.com/@tt.i.n/video/7668600936054541576",
+    "snippet": "... giúp - TikTok. Đánh giá quán phở ngon nhất Sài Gòn, món phở gà và phở bò,. @Tất Đi Ăn · âm thanh gốc - Tất Đi Ăn · Phở Hòa Pasteur · author. 573.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -33,6 +33,15 @@ export function isNearEnd(m: ScrollMetrics, threshold: number = STICK_THRESHOLD_
   return distanceFromEnd(m) <= threshold
 }
 
+/**
+ * Owner 02/11: which jump buttons a long chat shows - "to the top" once the reader is a screen away from it, "to the end" once they are
+ * away from the end, and on that one the typing dots while Tappy is still answering (the reply is being written below). Pure.
+ */
+export function jumpButtons(m: ScrollMetrics, answering: boolean): { top: boolean; end: boolean; answering: boolean } {
+  const end = distanceFromEnd(m) > 200
+  return { top: m.scrollTop > 400, end, answering: end && answering }
+}
+
 export function useStickToBottom<S extends HTMLElement = HTMLDivElement, C extends HTMLElement = HTMLDivElement>() {
   const scrollRef = useRef<S>(null)
   const contentRef = useRef<C>(null)

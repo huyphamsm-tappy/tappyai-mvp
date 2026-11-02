@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:mof.gov.vn \"cấp hộ chiếu phổ thông\" \"160.000\" 2026 lệ phí",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:13:02.108Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:mof.gov.vn \"cấp hộ chiếu phổ thông\" \"160.000\" 2026 lệ phí",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

@@ -1,0 +1,393 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "Pizza 4P's menu giá pizza pasta Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:41:30.693Z",
+ "body": {
+  "searchParameters": {
+   "q": "Pizza 4P's menu giá pizza pasta Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7768941,106.7008997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Pizza 4P's Bến Thành",
+    "address": "8 Thủ Khoa Huân, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.773361,
+    "longitude": 106.69761729999999,
+    "rating": 4.9,
+    "ratingCount": 31689,
+    "type": "Nhà hàng pizza",
+    "types": [
+     "Nhà hàng pizza",
+     "Nhà hàng gia đình",
+     "Nhà hàng cao cấp",
+     "Nhà hàng hỗn hợp",
+     "Nhà hàng Nhật Bản",
+     "Nhà hàng thực phẩm hữu cơ",
+     "Cửa hàng bán pizza mang về"
+    ],
+    "website": "http://pizza4ps.com/",
+    "phoneNumber": "+84 1900 6043",
+    "openingHours": {
+     "Thứ Năm": "11:00–00:00",
+     "Thứ Sáu": "11:00–00:00",
+     "Thứ Bảy": "11:00–00:00",
+     "Chủ Nhật": "11:00–23:00",
+     "Thứ Hai": "11:00–00:00",
+     "Thứ Ba": "11:00–00:00",
+     "Thứ Tư": "11:00–00:00"
+    },
+    "bookingLinks": [
+     "https://booking.pizza4ps.com/?restaurants=5fa9d115e1ce4f0015b0a406&getLatLng=hcm&utm_source=tkh",
+     "https://www.tablecheck.com/pizza-4ps-hcm-ben-thanh/reserve?utm_source=google&rwg_token=AE37R_iWeR1TG0VKbM5C5oDLE-LLPWOVVtDGeCCrKzFtDcp3dccUJLSxNAfsQWTpoGesdam5RCe4PeZPnk9sBHBPfNKZKOplCz_0dOLs331PcrY1FOEf69g%3D",
+     "https://www.google.com/maps/reserve/v/dine/c/FDTXdTZ9Pfk?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnVjIU7PM3D29fbci704FGUC6ldLJAJz17O6gC4IKuz_V-rnorXWl_nhYkqMK8jsoIraofJhqd8-tMOxRW-4u7pHBl0AjRB0D03Lq8EFZGuQiWQaS4pye6IFMGCPFGNCaHUzKr9qeZ9gevG",
+    "cid": "10323362865545159556",
+    "fid": "0x31752f7998588b7d:0x8f43f3d4a8472384",
+    "placeId": "ChIJfYtYmHkvdTERhCNHqNTzQ48"
+   },
+   {
+    "position": 2,
+    "title": "Pizza 4P’s Lê Thánh Tôn",
+    "address": "Hẻm 8/15 Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7818886,
+    "longitude": 106.7051243,
+    "rating": 4.9,
+    "ratingCount": 22079,
+    "type": "Nhà hàng pizza",
+    "types": [
+     "Nhà hàng pizza",
+     "Nhà hàng gia đình",
+     "Nhà hàng cao cấp",
+     "Nhà hàng hỗn hợp",
+     "Nhà hàng Nhật Bản",
+     "Nhà hàng thực phẩm hữu cơ",
+     "Cửa hàng bán pizza mang về"
+    ],
+    "website": "http://pizza4ps.com/",
+    "phoneNumber": "+84 28 3622 0500",
+    "openingHours": {
+     "Thứ Năm": "11:00–23:00",
+     "Thứ Sáu": "11:00–23:00",
+     "Thứ Bảy": "11:00–23:00",
+     "Chủ Nhật": "11:00–23:00",
+     "Thứ Hai": "11:00–23:00",
+     "Thứ Ba": "11:00–23:00",
+     "Thứ Tư": "11:00–23:00"
+    },
+    "bookingLinks": [
+     "https://booking.pizza4ps.com/?restaurants=5fa94af065cd6517b1971d4c&getLatLng=hcm&utm_source=ltt",
+     "https://www.tablecheck.com/pizza-4ps-hcm-le-thanh-ton/reserve?utm_source=google&rwg_token=AE37R_h-GrXHjsScae7jIAUWWFLVOuqdmjlhRVOuztU2m3zgCHTQSsQO9-oPj5uccVOr3NPdJc-nqDLHvJ6p8Gnt-QtRMs811hll2pdDYJd2CGTPR2tnyh0%3D",
+     "https://www.google.com/maps/reserve/v/dine/c/Kmk1MOqW8cw?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlyl8TC4rX91WnED0Pk_-9jQN-IsUTT_6a6nE13xztJILH77_0dnZvH_nBcjJ0t_Hy4_bGj9WHacVuBiJLdcIhTnoeI0qY9tW41wIWnit2UbtyR42pdVl-KqgkT3lfE8sKqnas",
+    "cid": "10978371161374556473",
+    "fid": "0x31752f4937cb401d:0x985b0267c61f8139",
+    "placeId": "ChIJHUDLN0kvdTEROYEfxmcCW5g"
+   },
+   {
+    "position": 3,
+    "title": "Pizza 4P’s Võ Văn Kiệt",
+    "address": "608 Võ Văn Kiệt, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.755108199999999,
+    "longitude": 106.6876645,
+    "rating": 4.9,
+    "ratingCount": 13015,
+    "type": "Nhà hàng pizza",
+    "types": [
+     "Nhà hàng pizza",
+     "Nhà hàng gia đình",
+     "Nhà hàng cao cấp",
+     "Nhà hàng hỗn hợp",
+     "Nhà hàng Nhật Bản",
+     "Nhà hàng thực phẩm hữu cơ",
+     "Cửa hàng bán pizza mang về"
+    ],
+    "website": "https://pizza4ps.com/",
+    "phoneNumber": "+84 1900 6043",
+    "openingHours": {
+     "Thứ Năm": "11:00–23:00",
+     "Thứ Sáu": "11:00–23:00",
+     "Thứ Bảy": "11:00–23:00",
+     "Chủ Nhật": "11:00–23:00",
+     "Thứ Hai": "11:00–23:00",
+     "Thứ Ba": "11:00–23:00",
+     "Thứ Tư": "11:00–23:00"
+    },
+    "bookingLinks": [
+     "https://booking.pizza4ps.com/?restaurants=5fa93e43dac1cd0015043a5c&getLatLng=hcm&utm_source=vvk",
+     "https://www.tablecheck.com/pizza-4ps-hcm-vo-van-kiet/reserve?utm_source=google&rwg_token=AE37R_iTiagBW4O_VvTFRShvqgLqS2kWieYXfDH9t0LI8m8N4oYovmF2rBQxMhyDQykzid3m-DbpHWFdLYStibtI2Cd8HlU4SVdyPI_2a6Ponmrf_tXvCZs%3D",
+     "https://www.google.com/maps/reserve/v/dine/c/6lHoUg_dxrg?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlJH5u8RI_KgmOmIP4fOpUk6c37-Z7Y0rwFsYYSwDB9H2l_5-ixgfVbzloMRpztvybYjDA-JQqcu3uSChBdN4-sTQ1Ty7Aq8V2eo166A4BzC0F4gq5-EiELx8ZV2HDTFa1Xqz4",
+    "cid": "7868101658221260271",
+    "fid": "0x31752f50232239cb:0x6d311cc56af0adef",
+    "placeId": "ChIJyzkiI1AvdTER763wasUcMW0"
+   },
+   {
+    "position": 4,
+    "title": "Pizza 4P's Hai Bà Trưng",
+    "address": "151A-151B, Hai Bà Trưng, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.783116,
+    "longitude": 106.69706769999999,
+    "rating": 4.9,
+    "ratingCount": 24538,
+    "type": "Nhà hàng pizza",
+    "types": [
+     "Nhà hàng pizza",
+     "Nhà hàng gia đình",
+     "Nhà hàng cao cấp",
+     "Nhà hàng hỗn hợp",
+     "Nhà hàng Nhật Bản",
+     "Nhà hàng thực phẩm hữu cơ",
+     "Cửa hàng bán pizza mang về"
+    ],
+    "website": "http://pizza4ps.com/",
+    "phoneNumber": "+84 28 3622 0500",
+    "openingHours": {
+     "Thứ Năm": "11:00–23:00",
+     "Thứ Sáu": "11:00–23:00",
+     "Thứ Bảy": "10:00–23:00",
+     "Chủ Nhật": "10:00–23:00",
+     "Thứ Hai": "11:00–23:00",
+     "Thứ Ba": "11:00–23:00",
+     "Thứ Tư": "11:00–23:00"
+    },
+    "bookingLinks": [
+     "https://booking.pizza4ps.com/?restaurants=5fa9505b813c2e003d7fa612&getLatLng=hcm&utm_source=hbt",
+     "https://www.tablecheck.com/pizza-4ps-hcm-hai-ba-trung/reserve?utm_source=google&rwg_token=AE37R_ieyF8pBKC5yvonbhEQZi_L1WBN33hBy9U458ZvPKWwGSsPRfmrL1NBI7pqdwzGjUcN1BjiHwSa0saCKpjHiut3bjXpDHK59MzTDYICOQr4srz8-LY%3D",
+     "https://www.google.com/maps/reserve/v/dine/c/_yyvjO_2Ck0?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmR_enNb0n2jX0myJIxjFNje-Nl_MCnUG0SWBmgrZydeMWh9YuJuH99f2WA5YAbLX3WOI30VnGFe_UhDS3jAbptKCbArLYXp1aX28agNyuK_QwCViuQYrQW-K5W3_ekvWygby6L_FBwKn26",
+    "cid": "18363736624924181016",
+    "fid": "0x31752f3689d6e90b:0xfed9192a456fc218",
+    "placeId": "ChIJC-nWiTYvdTERGMJvRSoZ2f4"
+   },
+   {
+    "position": 5,
+    "title": "Pizza 4P's Saigon Pearl",
+    "address": "Ruby Home 1, 92 Nguyễn Hữu Cảnh, Saigon Pearl, Thạnh Mỹ Tây, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7895881,
+    "longitude": 106.7207971,
+    "rating": 5,
+    "ratingCount": 17698,
+    "type": "Nhà hàng pizza",
+    "types": [
+     "Nhà hàng pizza",
+     "Nhà hàng gia đình",
+     "Nhà hàng cao cấp",
+     "Nhà hàng hỗn hợp",
+     "Nhà hàng Nhật Bản",
+     "Nhà hàng thực phẩm hữu cơ",
+     "Cửa hàng bán pizza mang về"
+    ],
+    "website": "http://pizza4ps.com/",
+    "phoneNumber": "+84 28 3622 0500",
+    "openingHours": {
+     "Thứ Năm": "11:00–23:00",
+     "Thứ Sáu": "11:00–23:00",
+     "Thứ Bảy": "11:00–23:00",
+     "Chủ Nhật": "11:00–23:00",
+     "Thứ Hai": "11:00–23:00",
+     "Thứ Ba": "11:00–23:00",
+     "Thứ Tư": "11:00–23:00"
+    },
+    "bookingLinks": [
+     "https://booking.pizza4ps.com/?restaurants=5fa09da4345f950041f51250&getLatLng=hcm&utm_source=sgp",
+     "https://www.tablecheck.com/pizza-4ps-hcm-saigon-pearl/reserve?utm_source=google&rwg_token=AE37R_i1YPS4dC4kkFAy2phxQGy4FLHFkotjPWVoTcM2xWfKHO9UEsm4u2tD8wAvqBTDcUotsVH4urpGpsD3S8B5zcmFuzE7Nq32IqM8rSTVcXENJiBBMlo%3D",
+     "https://www.google.com/maps/reserve/v/dine/c/316iuCjhQOg?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl3Xlrv-cVtYfpM1GDFzVgDVQ6BVvLJfZD_2Zf9tbQGEHUtZWmw0iPuY58OBqqg-boUjdC-n5T40ufqw4NB-VyZIGIHOftQ4DEDdIWVRagOgzUXQ4e2f-F8EypaavM9fvl-z-OUnLXR_vI4",
+    "cid": "4166881912523809792",
+    "fid": "0x317529cbd33b4df9:0x39d3bd05b8fb6400",
+    "placeId": "ChIJ-U0708spdTERAGT7uAW90zk"
+   },
+   {
+    "position": 6,
+    "title": "Pizza 4P's Thiso Mall",
+    "address": "10 Mai Chí Thọ, An Khánh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.772146699999999,
+    "longitude": 106.7228724,
+    "rating": 5,
+    "ratingCount": 13386,
+    "type": "Nhà hàng pizza",
+    "types": [
+     "Nhà hàng pizza",
+     "Nhà hàng gia đình",
+     "Nhà hàng cao cấp",
+     "Nhà hàng hỗn hợp",
+     "Nhà hàng Nhật Bản",
+     "Nhà hàng thực phẩm hữu cơ",
+     "Cửa hàng bán pizza mang về"
+    ],
+    "website": "http://pizza4ps.com/",
+    "phoneNumber": "+84 1900 6043",
+    "openingHours": {
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00",
+     "Thứ Ba": "10:00–22:00",
+     "Thứ Tư": "10:00–22:00"
+    },
+    "bookingLinks": [
+     "https://booking.pizza4ps.com/?restaurants=63873f3c384e3f000f599c96&getLatLng=hcm&utm_source=tsm"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlbCA8oeKG9caKKB5bnaPmAj2i60siK0T8blVnWybM-LJ4NEOaxV7FXW2_yMmfTJoCQ2rQC011QGi5ZxYit3gmZDMNIgiwyqfelTxZUxT1a9On-di7DdyU3hKCtcy6MMp-kGoFyDQL57V5q",
+    "cid": "18278629611239821794",
+    "fid": "0x31752fe6a892f76b:0xfdaabcc97ee2d1e2",
+    "placeId": "ChIJa_eSqOYvdTER4tHifsm8qv0"
+   },
+   {
+    "position": 7,
+    "title": "Pizza 4P's Lê Đại Hành",
+    "address": "The Emporium Building, 184 Lê Đại Hành, Phú Thọ, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.765068,
+    "longitude": 106.655374,
+    "rating": 4.9,
+    "ratingCount": 9052,
+    "type": "Nhà hàng pizza",
+    "types": [
+     "Nhà hàng pizza",
+     "Nhà hàng gia đình",
+     "Nhà hàng cao cấp",
+     "Nhà hàng hỗn hợp",
+     "Nhà hàng Nhật Bản",
+     "Nhà hàng thực phẩm hữu cơ",
+     "Cửa hàng bán pizza mang về"
+    ],
+    "website": "https://pizza4ps.com/",
+    "phoneNumber": "+84 1900 6043",
+    "openingHours": {
+     "Thứ Năm": "11:00–22:00",
+     "Thứ Sáu": "11:00–22:00",
+     "Thứ Bảy": "11:00–22:00",
+     "Chủ Nhật": "11:00–22:00",
+     "Thứ Hai": "11:00–22:00",
+     "Thứ Ba": "11:00–22:00",
+     "Thứ Tư": "11:00–22:00"
+    },
+    "bookingLinks": [
+     "https://booking.pizza4ps.com/?restaurants=5fa95d36dac1cd003f043c9c&getLatLng=hcm&utm_source=ldh",
+     "https://www.tablecheck.com/pizza-4ps-hcm-le-dai-hanh/reserve?utm_source=google&rwg_token=AE37R_iLoNsYITi1VW1A18BhaW9WKNDUZcA9ZNdnXKjgeRSKTH2enQbHlTxDdduPuZ6S8l_sPFSuKyusKnclBbmLiNOhOJQKry3yGyeHz5kd6W_OpbQV_cg%3D",
+     "https://www.google.com/maps/reserve/v/dine/c/uwm7jE_jjNY?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkituTZ_Iem2969POCD2kHTB8DxrG_dAWi2dIbfVe91vhLmDqv5gfVc0aYQFERvbIB15uBBIhzguBnbJSDWezakQlMb28Ltx89OolXPf1pVXBW-4XjU8o9Hu340LK100SvZEtjgbQ",
+    "cid": "5052349736793305663",
+    "fid": "0x31752f0cd6a048fd:0x461d8d512e9a723f",
+    "placeId": "ChIJ_Uig1gwvdTERP3KaLlGNHUY"
+   },
+   {
+    "position": 8,
+    "title": "Pizza 4P's Estella Place",
+    "address": "TTTM Estella Place, 88 Song Hành, Bình Trưng, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.8018374,
+    "longitude": 106.7484399,
+    "rating": 5,
+    "ratingCount": 8896,
+    "type": "Nhà hàng pizza",
+    "types": [
+     "Nhà hàng pizza",
+     "Nhà hàng gia đình",
+     "Nhà hàng cao cấp",
+     "Nhà hàng hỗn hợp",
+     "Nhà hàng Nhật Bản",
+     "Nhà hàng thực phẩm hữu cơ",
+     "Cửa hàng bán pizza mang về"
+    ],
+    "website": "https://pizza4ps.com/",
+    "phoneNumber": "+84 1900 6043",
+    "openingHours": {
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00",
+     "Thứ Ba": "10:00–22:00",
+     "Thứ Tư": "10:00–22:00"
+    },
+    "bookingLinks": [
+     "https://booking.pizza4ps.com/?restaurants=5fa9cc28813c2e00157fae1c&getLatLng=hcm&utm_source=est",
+     "https://www.tablecheck.com/pizza-4ps-hcm-estella-place/reserve?utm_source=google&rwg_token=AE37R_j4XMM4u8VshP-adthuYPpXw0IfVXRhLqZYLyxqMsbr9hjrYFLZTOkinQyFKouizo13FHlcMGbVZ93QmJgTmGAUv8lXik0jen0JTxNwkTfakfJwdzs%3D",
+     "https://www.google.com/maps/reserve/v/dine/c/DjOo1jcDuwE?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmE8wGSzyaQ7UbFoKhNQ0QT37Ba6NcF1Qj75OpQCp0gMkTKo2NdYIOImVteG0UBQM42jValBYVu0TdDLfvPQGSno_cZ40BIM7T6w4LL0LNVPBN6uOGxGOhhyv-BVVdMGHrgefGaaQ",
+    "cid": "7407772127094560700",
+    "fid": "0x3175279bb37b9a01:0x66cdb1806482d7bc",
+    "placeId": "ChIJAZp7s5sndTERvNeCZICxzWY"
+   },
+   {
+    "position": 9,
+    "title": "Pizza 4P's Delivery Hub Lý Chính Thắng",
+    "address": "127 Lý Chính Thắng, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.786727299999999,
+    "longitude": 106.68519549999999,
+    "rating": 4.6,
+    "ratingCount": 59,
+    "type": "Cửa hàng giao pizza",
+    "types": [
+     "Cửa hàng giao pizza"
+    ],
+    "website": "https://delivery.pizza4ps.com/",
+    "phoneNumber": "+84 1900 6043",
+    "openingHours": {
+     "Thứ Năm": "09:30–22:00",
+     "Thứ Sáu": "09:00–22:00",
+     "Thứ Bảy": "09:00–22:00",
+     "Chủ Nhật": "09:30–22:00",
+     "Thứ Hai": "09:30–22:00",
+     "Thứ Ba": "09:30–22:00",
+     "Thứ Tư": "09:30–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlSFSfFPtSSyCzsranaEWLw7ah-LzjECYkbBCOcr0Fe0W1RxpgtjSEXtKWguihD9zD074Mt0v4v4qjkUOJiKVQhkj4YeCNQDI9ip9K_xv8cjlKXvjXZbNxrBnM3ZqwujeITp3NRHKEbASzQ",
+    "cid": "12539711006669438676",
+    "fid": "0x31752fc69e29aded:0xae0600b8ea967ed4",
+    "placeId": "ChIJ7a0pnsYvdTER1H6W6rgABq4"
+   },
+   {
+    "position": 10,
+    "title": "Pizza 4P's",
+    "address": "12 Đường 26, Bình Trưng, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7868889,
+    "longitude": 106.7568828,
+    "rating": 4.5,
+    "ratingCount": 28,
+    "type": "Cửa hàng giao pizza",
+    "types": [
+     "Cửa hàng giao pizza"
+    ],
+    "website": "https://delivery.pizza4ps.com/",
+    "phoneNumber": "+84 903 892 560",
+    "openingHours": {
+     "Thứ Năm": "10:00–21:30",
+     "Thứ Sáu": "10:00–21:30",
+     "Thứ Bảy": "10:00–21:30",
+     "Chủ Nhật": "10:00–21:30",
+     "Thứ Hai": "10:00–21:30",
+     "Thứ Ba": "10:00–21:30",
+     "Thứ Tư": "10:00–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlvtdSgqCiCOYZSaFk3tDBikcpzmuZv-C9dJtq0yFNhwtosLVN77vwMnKjYMkFDlFgdWzL05ugNoNK82ZOeBQDI7rLwa_pY8yuHPt2BFC-TcAtB83vOqXjOaVQrwWcmuWmlstPmQ9gfmEJV",
+    "cid": "6044619128653669927",
+    "fid": "0x3175276aabb90549:0x53e2cd125deee627",
+    "placeId": "ChIJSQW5q2ondTERJ-buXRLN4lM"
+   }
+  ],
+  "credits": 3
+ }
+}

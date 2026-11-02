@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Baseus Tai nghe Không Dây TWS Baseus Inspire XP1 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:34:13.842Z",
+ "body": {
+  "searchParameters": {
+   "q": "Baseus Tai nghe Không Dây TWS Baseus Inspire XP1 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai Nghe Không Dây TWS Baseus Inspire XP1 (Bluetooth v6.1, ...",
+    "link": "https://shopee.vn/Tai-Nghe-Kh%C3%B4ng-D%C3%A2y-TWS-Baseus-Inspire-XP1-%28Bluetooth-v6.1-8H-Dolby-Audio-Sound-by-BOSE-Adaptive-ANC-360%C2%B0-Sound-Real-i.485835282.45161484901",
+    "snippet": "Mua Tai Nghe Không Dây TWS Baseus Inspire XP1 (Bluetooth v6.1, 8H, Dolby Audio, Sound by BOSE, Adaptive ANC, 360° Sound Real giá tốt.",
+    "position": 1
+   },
+   {
+    "title": "[MUA 1 TẶNG 2] Tai Nghe Không Dây Baseus Inspire XP1 ...",
+    "link": "https://shopee.vn/-MUA-1-T%E1%BA%B6NG-2-Tai-Nghe-Kh%C3%B4ng-D%C3%A2y-Baseus-Inspire-XP1-Pin-45H-Sound-by-Bose-Bluetooth-6.1-Dolby-Audio-i.1103428920.52656852885",
+    "snippet": "[MUA 1 TẶNG 2] Tai Nghe Không Dây Baseus Inspire XP1 Pin 45H, Sound by Bose, Bluetooth 6.1, Dolby Audio. outline grey truck icon. Không hỗ trợ.",
+    "rating": 4.8,
+    "ratingCount": 5,
+    "position": 2
+   },
+   {
+    "title": "MUA 1 TẶNG 2] Tai Nghe Không Dây Baseus Inspire XP1 ...",
+    "link": "https://shopee.vn/-25.8-MUA-1-T%E1%BA%B6NG-2-Tai-Nghe-Kh%C3%B4ng-D%C3%A2y-Baseus-Inspire-XP1-Pin-45H-Sound-by-Bose-Bluetooth-6.1-Dolby-Audio-i.1103428920.52656852885?extraParams=%7B%22display_model_id%22%3A330613359109%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "Mua [25.8 - MUA 1 TẶNG 2] Tai Nghe Không Dây Baseus Inspire XP1 Pin 45H, Sound by Bose, Bluetooth 6.1, Dolby Audio giá tốt. Mua hàng qua mạng uy tín, ...",
+    "rating": 4.8,
+    "ratingCount": 5,
+    "position": 3
+   },
+   {
+    "title": "Tai nghe True Wireless Baseus Inspire XP1, Dolby Audio ...",
+    "link": "https://shopee.vn/Tai-nghe-True-Wireless-Baseus-Inspire-XP1-Dolby-Audio-Sound-by-BOSE-Adaptive-ANC-Bluetooth-6.1-i.628049927.51453153083",
+    "snippet": "Mua Tai nghe True Wireless Baseus Inspire XP1, Dolby Audio, Sound by BOSE, Adaptive ANC, Bluetooth 6.1 giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 4
+   },
+   {
+    "title": "kone2025.vn, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/kone2025.vn",
+    "snippet": "Dành Cho Anker Soundcore R60i NC / R50i / P20i / P25i K20i Vỏ Gấu Dễ Thương / Động Vật Hoạt Hình Vỏ Silicon Trong Suốt Tai Nghe Có Móc Khóa. 80.932₫.",
+    "position": 5
+   },
+   {
+    "title": "xc1 giá tốt Tháng 8, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=xc1",
+    "snippet": "Cao su giảm sóc đồng tiền Hyundai 3t5,2t5,hd450,hd500,hd65;hd72;hd78;hd79;n250 xịn( KT lỗ trong 1cm x ngoài 3cm xc1,5cm. 10.000₫. Mua giá bán buôn/ bán sỉ.",
+    "position": 6
+   },
+   {
+    "title": "Baseus - Giá Tốt, Miễn Phí Vận Chuyển, Đủ Loại",
+    "link": "https://shopee.vn/list/baseus",
+    "snippet": "[HCM Hoả tốc] Tai Nghe Không Dây Bluetooth 5.3 Baseus WM02 / BD1 Sạc Nhanh Trong Vòng 25 Giờ Số Cảm ứng. 499.000₫. 618.000₫. -19%. voucher-icon.",
+    "position": 7
+   },
+   {
+    "title": "Nút tai thay thế cho QCY MeloBuds N60, tai nghe ...",
+    "link": "https://shopee.vn/N%C3%BAt-tai-thay-th%E1%BA%BF-cho-QCY-MeloBuds-N60-tai-nghe-Bluetooth-kh%C3%B4ng-d%C3%A2y-th%E1%BB%B1c-s%E1%BB%B1-ch%E1%BA%A5t-li%E1%BB%87u-silicone-m%E1%BB%81m-d%E1%BB%85-thay-th%E1%BA%BF-i.1863331487.29745186507?extraParams=%7B%22display_model_id%22%3A326137162785%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "Nút tai thay thế cho QCY MeloBuds N60, tai nghe Bluetooth không dây thực sự, chất liệu silicone mềm, dễ thay thế ... Tặng Voucher 15.000₫ nếu đơn giao sau thời ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:moj.gov.vn lệ phí hộ chiếu trực tuyến 2 00",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:16:44.815Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:moj.gov.vn lệ phí hộ chiếu trực tuyến 2 00",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "18C-118.27 tên chủ xe Trần Văn Phúc) Công ty Đấu",
+    "link": "https://dgts.moj.gov.vn/common/download?name=TB%C4%90G+l%E1%BA%A7n+4+xe+18C-118.27.pdf&path=TDNVd01TOWlkSEJrWjNSekwyWnBiR1Z6WDNWd2JHOWhaQzh5TURJME1URXlPUzlEVkZKZk5qRXhNamN3TURZMk9USXdOREF4TlRneU1DNWtZWFE3Um5KcElFUmxZeUF3TmlBeE5qbzFOam8wTlNCSlExUWdNakF5TkE9PQ==",
+    "snippet": "Công ty Đấu giá hợp danh Bảo Minh thông báo tiến hành đấu giá tài sản như sau: 1. Tài sản đấu giá: 01 xe ô tô, BKS: 18C-118.27. Giấy chứng nhận đăng ký xe ô ...",
+    "position": 1
+   },
+   {
+    "title": "nam giang",
+    "link": "https://dgts.moj.gov.vn/common/download?name=QUY%20CHE%20PLHD%2008326.24_PL10.pdf&path=TDNVd01TOWlkSEJrWjNSekwyWnBiR1Z6WDNWd2JHOWhaQzh5TURJMk1EWXhNeTlEVkZKZk5qYzBNalEzTVRreE1UYzFNRGd5T0RVek9DNWtZWFE3VkdoMUlFcDFiaUF5TlNBd09EbzBOam93TUNCSlExUWdNakF5Tmc9PQ%3D%3D",
+    "snippet": "sử dụng đối với tài sản đấu giá và phải chịu các loại thuế, phí, lệ phí và các chi phí khác (nếu có) phát sinh trong quá trình đăng ký ...",
+    "date": "1 thg 7, 2026",
+    "position": 2
+   },
+   {
+    "title": "CÔNG TY ĐẤU GIÁ HỢP DANH TRƯỜNG SƠN -------------- ...",
+    "link": "https://dgts.moj.gov.vn/common/download?name=Th%C3%B4ng%20b%C3%A1o%20c%C3%B4ng%20khai%20-%20NHL279.pdf&path=TDNVd01TOWlkSEJrWjNSekwyWnBiR1Z6WDNWd2JHOWhaQzh5TURJMk1EWXhOUzlEVkZKZk16VTFNelkyTVRRME9UQXlNRGd6TmpZNExtUmhkRHRUWVhRZ1NuVnVJREkzSURJek9qUTFPakV3SUVsRFZDQXlNREky",
+    "snippet": "Hình thức đăng ký trực tuyến. Thực hiện đăng ký tài khoản, mua hồ sơ và thanh toán phí, nộp tiền đặt trước trực tuyến tại website: https ...",
+    "date": "30 thg 6, 2026",
+    "position": 3
+   },
+   {
+    "title": "CÔNG TY ĐẤU GIÁ HỢP DANH MIỀN ĐÔNG",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/thong-bao-bdg-so-117-05-ngay-18-8-2026-ba-tinh-01a0224881547cf8943822713758f6b6.pdf",
+    "snippet": "Giá này chưa bao gồm các loại thuế, phí, lệ phí (nếu có). 5. Thời hạn và địa điểm xem tài sản: Từ 07 giờ 30 phút ngày 21/8/2026 đến 17 giờ 00 ...",
+    "date": "18 thg 8, 2026",
+    "position": 4
+   },
+   {
+    "title": "CÔNG TY ĐẤU GIÁ HỢP DANH MIỀN ĐÔNG",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/tb-125-16-ngay-02-10-2026-ban-dau-gia-vu-thang-thuy-kv-11-chv-tiep-01a108f38e7973959771cc588b430776.pdf",
+    "snippet": "Thời gian, địa điểm tổ chức phiên đấu giá: Bắt đầu từ 09 giờ 00 phút ngày. 30/10/2026 (các cuộc đấu giá được tổ chức lần lượt) tại Phòng đấu giá ...",
+    "date": "6 ngày trước",
+    "position": 5
+   },
+   {
+    "title": "CÔNG TY ĐẤU GIÁ HỢP DANH",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/kv7-tb383da-01a0ec7b79b77bfa8a2a8da3683b9292.pdf",
+    "snippet": "tài liệu sai sự thật; sử dụng giấy tờ giả mạo để đăng ký tài khoản, tham dự phiên đấu giá thì sẽ bị xử lý theo quy định của pháp luật.",
+    "date": "28 thg 9, 2026",
+    "position": 6
+   },
+   {
+    "title": "CÔNG TY ĐẤU GIÁ HỢP DANH - LUẬT VIỆT",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/tb-loc-tien-01a0e7448d757140ac589ccb71b18b0a.pdf",
+    "snippet": "Thuế thu nhập cá nhân, lệ phí trước bạ do người có tài sản trích từ tiền bán tài sản để nộp. 5. Thời gian, địa điểm bán hồ sơ mời tham gia đấu ...",
+    "date": "25 thg 9, 2026",
+    "position": 7
+   },
+   {
+    "title": "PAC VIỆT NAM",
+    "link": "https://dgts.moj.gov.vn/common/download?name=05-10+TB%C4%90G+la%CC%82%CC%80n+5.pdf&path=TDNVd01TOWlkSEJrWjNSekwyWnBiR1Z6WDNWd2JHOWhaQzh5TURJME1UQXlNaTlEVkZKZk16ZzVPVGs0Tmprd05ETXhNek01TVRVek9DNWtZWFE3Um5KcElFOWpkQ0F5TlNBd05qb3pOam8xTXlCSlExUWdNakF5TkE9PQ==",
+    "snippet": "loại phí, lệ phí và chi phí này Người mua được tài sản chịu trách nhiệm nộp. 2. Tiền mua hồ sơ tham gia đấu giá: 500.000 VND/hồ sơ (Bằng chữ: Năm trăm nghìn.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

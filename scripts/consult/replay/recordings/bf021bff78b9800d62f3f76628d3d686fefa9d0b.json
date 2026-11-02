@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple kiểm tra MacBook cũ Activation Lock serial battery cycle count",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:21:42.396Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple kiểm tra MacBook cũ Activation Lock serial battery cycle count",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Kiểm tra xuất xứ MacBook: 5 Bước Chính Xác Trong 10 Phút",
+    "link": "https://macone.vn/tin-tuc/kiem-tra-xuat-xu-macbook/?srsltid=AU7gw4VBdYlFozCWqnWJLLdPo3MifSeBgJJx-kHqeVa-VFst2rFes2yK",
+    "snippet": "Cách kiểm tra battery cycle count? Trên macOS Ventura trở lên: Click logo Apple > System Settings; Chọn Battery > Battery Health; Xem “Cycle Count”. Trên macOS ...",
+    "position": 1
+   },
+   {
+    "title": "11 Cách kiểm tra Pin Macbook cũ đã qua sử dụng",
+    "link": "https://laptoptrieuphat.com/11-cach-kiem-tra-pin-macbook-cu-da-qua-su-dung/?srsltid=AU7gw4U8Ky8HDtWIqSIbKpoJ5Tjw3awRfek-Suvsy_I_1ILzV7Pda69w",
+    "snippet": "Do đó, khi mua macbook cũ bạn nên kiểm tra chi tiết số lần sạc bằng cách nhấn và giữ nút About this Mac=>System Report =>Chọn mục Power. Trong ...",
+    "date": "9 thg 6, 2025",
+    "position": 2
+   },
+   {
+    "title": "Hướng dẫn cách kiểm tra Macbook cũ chuẩn nhất!",
+    "link": "https://hnmac.vn/blogs/tin-tuc/cach-test-macbook-cu?srsltid=AU7gw4XefqNBZAjnv0dZgx3IN4FuNOy67nYbzKD4vB8yBNffyl9tm7eV",
+    "snippet": "2.1 Kiểm tra serial macbook · 2.2 Kiểm tra hình thức bên ngoài · 2.3 Camera, mic, cảm biến, đèn phím · 2.4 Kiểm tra màn hình · 2.5 Bàn phím – Touch ...",
+    "date": "3 thg 8, 2018",
+    "position": 3
+   },
+   {
+    "title": "Hướng dẫn kiểm tra MacBook cũ, test máy chi tiết trước khi mua.",
+    "link": "https://thumacbook.com/huong-dan-kiem-tra-macbook-cu-test-may-chi-tiet-truoc-khi-mua/",
+    "snippet": "Kiểm tra số lần sạc (cycle count). Vào menu Apple → About This Mac → System ... Sau khi máy khởi động lại sẽ xuất hiện màn hình kiểm tra Activation Lock.",
+    "position": 4
+   },
+   {
+    "title": "Determine battery cycle count for Mac laptops",
+    "link": "https://support.apple.com/en-vn/102888",
+    "snippet": "Find your battery's cycle count · Hold the Option key and click the Apple menu , then choose System Information. · Under the Hardware section of ...",
+    "date": "10 thg 3, 2026",
+    "position": 5
+   },
+   {
+    "title": "Cycle count là gì? Cách kiểm tra số lần sạc trên Macbook",
+    "link": "https://2tmobile.com/cycle-count-macbook-la-gi/?srsltid=AU7gw4XlkJ3mn3GLvNeXb1MMW99pQiqF7uUBsyDGgVI2Dk0k3CNUjdG0",
+    "snippet": "Trong cửa sổ “System Information” (Thông tin hệ thống) hiển thị, tìm và chọn “Power” (Nguồn) → Trong phần “Battery Information” (Thông tin pin) ...",
+    "date": "11 thg 8, 2023",
+    "rating": 4.8,
+    "ratingCount": 89,
+    "position": 6
+   },
+   {
+    "title": "Tìm tên kiểu máy và số sê-ri của máy Mac",
+    "link": "https://support.apple.com/vi-vn/102767",
+    "snippet": "Từ menu Apple ở góc màn hình, hãy chọn Giới thiệu về máy Mac này. Cửa sổ mở ra sẽ hiển thị hình ảnh của máy Mac, theo sau là tên kiểu máy. Ví dụ dưới đây ...",
+    "position": 7
+   },
+   {
+    "title": "Cách kiểm tra MacBook cũ, xem tình trạng máy chi tiết nhất ...",
+    "link": "https://phongvu.vn/cong-nghe/kiem-tra-macbook-cu/?srsltid=AU7gw4VeR7nhW3hWqBSYgArhbVTfYsYpu9ciertIDW-lYIkbeLAJ7y5B",
+    "snippet": "Truy cập vào Apple Menu > About This Mac để xem thông tin chi tiết về model, năm sản xuất, cấu hình và số serial. Số serial này cần khớp với ...",
+    "date": "3 thg 6, 2025",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

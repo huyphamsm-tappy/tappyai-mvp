@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com/vn AirPods Pro 2 chuẩn chống nước IP54",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:06:43.870Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com/vn AirPods Pro 2 chuẩn chống nước IP54",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "So Sánh Các Phiên Bản AirPods",
+    "link": "https://www.apple.com/vn/airpods/compare/",
+    "snippet": "AirPods 5 và AirPods Pro 3 đạt mức IP57 và AirPods Pro 2 đạt mức IP54 theo tiêu chuẩn IEC 60529. Khả năng chống bụi, chống mồ hôi và chống nước không phải ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

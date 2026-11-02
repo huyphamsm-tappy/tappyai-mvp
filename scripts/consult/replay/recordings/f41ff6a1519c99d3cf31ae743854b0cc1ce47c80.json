@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"BẢN Cà Phê\" OR \"Soo Kafe Bến Thành\" OR \"Oromia Coffee & Lounge\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:40:04.469Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"BẢN Cà Phê\" OR \"Soo Kafe Bến Thành\" OR \"Oromia Coffee & Lounge\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Soo Kafe Bến Thành: quán cafe view chợ, cà phê trứng ngon",
+    "link": "https://www.tiktok.com/@tuananh.fancy/video/7344739093961510152",
+    "snippet": "900 Lượt thích,Video TikTok từ Tuấn Anh Fancy (@tuananh.fancy): \"Review Soo Kafe Bến Thành tại 35 Phan Chu Trinh: không gian vintage, ...",
+    "position": 1
+   },
+   {
+    "title": "Oromia Coffee & Lounge Phan Kế Bính",
+    "link": "https://www.tiktok.com/@oromialounge/video/7640121714239671572",
+    "snippet": "Không gian và vị trí Oromia Coffee & Lounge nằm trên đường Phan Kế Bính, khu Tân Định — một điểm thuận tiện để tản bộ và dừng chân. Quán tận ...",
+    "position": 2
+   },
+   {
+    "title": "4 công thức cà phê cơ bản: Cà phê đen, sữa, bạc xỉu, cà ...",
+    "link": "https://www.tiktok.com/@xiubancaphe/video/7668315135370398994",
+    "snippet": "4 công thức cà phê cơ bản: Cà phê đen, sữa, bạc xỉu, cà phê muối. Lead Nếu bạn mới khởi nghiệp quán cà phê hoặc bị bối rối vì quá nhiều món mới, ...",
+    "position": 3
+   },
+   {
+    "title": "Oromia Coffee & Lounge Trung Thu decor Quận 1",
+    "link": "https://www.tiktok.com/@bacxiuneee_/photo/7674859476037405972?image_index=3",
+    "snippet": "Oromia Coffee & Lounge Trung Thu decor Quận 1. Ảnh chụp không gian Trung Thu lấp lánh đèn lồng, thưởng thức trà sen nóng tại Oromia Coffee & ...",
+    "position": 4
+   },
+   {
+    "title": "Bản Cà Phê (@bancaphevn)",
+    "link": "https://www.tiktok.com/@bancaphevn",
+    "snippet": "Bản Cà Phê (@bancaphevn) on TikTok | 39.3K Likes. 906 Followers. Bản SG : Lầu 2, 38/7 Lê Lợi, Q.1 Nhà Bản ĐL: 29/39 đường 3/4, P.3, Tp. ĐL.",
+    "position": 5
+   },
+   {
+    "title": "Oromia Coffee & Lounge, Hồ Chí Minh",
+    "link": "https://www.tiktok.com/@saotroimuaha/photo/7660872572594097415",
+    "snippet": "Khẩu phần ăn khá ít, giá khá nhỉnh do nằm ở trung tâm, không gian oke để làm việc. Oromia Coffee & Lounge, Hồ Chí Minh. Oromia Coffee & Lounge ở ...",
+    "position": 6
+   },
+   {
+    "title": "Cơm tấm tân bản cà phê phin 🍲🍲🍲",
+    "link": "https://www.tiktok.com/@tudongnai4/video/7680145176295197973",
+    "snippet": "97 Lượt thích,Video TikTok từ Tú Đồng Nai (@tudongnai4): \"Cơm tấm tân bản cà phê phin \".âm thanh gốc - Tú Đồng Nai.",
+    "position": 7
+   },
+   {
+    "title": "Cà phê B52 phiên bản cà phê thế hệ mới",
+    "link": "https://www.tiktok.com/@homnayphagi/video/7659316605796617492",
+    "snippet": "Giới thiệu Cà phê B52 - phiên bản cà phê thế hệ mới là biến thể sáng tạo của thức uống quen thuộc, được nhắc trực tiếp trong mô tả.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

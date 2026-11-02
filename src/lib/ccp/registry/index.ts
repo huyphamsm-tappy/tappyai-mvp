@@ -35,6 +35,25 @@ export function isRemovedMerchant(label: string, host: string): boolean {
   return inactiveMerchants().some(m => m.hosts.includes(h) || m.nameRe.test(label))
 }
 
+/** The removed providers one by one (hosts + name), so a label and a host can be told to name the SAME one. */
+const REMOVED_MERCHANTS: ReadonlyArray<{ id: string; hosts: string[]; nameRe: RegExp }> = [
+  { id: 'tiki', hosts: ['tiki.vn'], nameRe: /(?<![\p{L}\p{N}])tiki(?![\p{L}\p{N}])/iu },
+  { id: 'pasgo', hosts: ['pasgo.vn'], nameRe: /(?<![\p{L}\p{N}])pasgo(?![\p{L}\p{N}])/iu },
+  { id: 'tgdd', hosts: ['thegioididong.com', 'dienthoai.thegioididong.com'], nameRe: /(?<![\p{L}\p{N}])(th[eế] gi[oớ]i di đ[oộ]ng|tgdd)(?![\p{L}\p{N}])/iu },
+  { id: 'sendo', hosts: ['sendo.vn'], nameRe: /(?<![\p{L}\p{N}])sendo(?![\p{L}\p{N}])/iu },
+  { id: 'californiafitness', hosts: ['californiafitness.com.vn', 'cthesports.com'], nameRe: /(?<![\p{L}\p{N}])california fitness(?![\p{L}\p{N}])/iu },
+]
+/**
+ * B1 (owner 01/11/2026): does the label name a removed / switched-off merchant OTHER than the one the host belongs to? ("[Tiki](tgdd url)")
+ * A label naming no removed merchant, or the host's own, is false. Pure over the registry (and the runtime overlay).
+ */
+export function namesAnotherRemovedMerchant(label: string, host: string): boolean {
+  const h = host.toLowerCase().replace(/^www\./, '')
+  const all = [...REMOVED_MERCHANTS, ...inactiveMerchants().map(m => ({ id: m.providerId, hosts: m.hosts, nameRe: m.nameRe }))]
+  const own = all.find(m => m.hosts.includes(h))
+  return all.some(m => m.nameRe.test(label) && m.id !== own?.id)
+}
+
 const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 /** The registry providers the runtime overlay has switched OFF, with their hosts and a name matcher. */
 export function inactiveMerchants(): Array<{ providerId: string; hosts: string[]; nameRe: RegExp }> {
@@ -43,6 +62,11 @@ export function inactiveMerchants(): Array<{ providerId: string; hosts: string[]
     hosts: e.allowedHosts.map(h => h.toLowerCase().replace(/^www\./, '')),
     nameRe: new RegExp(`(?<![\\p{L}\\p{N}])(?:${[e.merchantName, ...merchantAliases(e.providerId)].map(escapeRe).join('|')})(?![\\p{L}\\p{N}])`, 'iu'),
   }))
+}
+/** Matches the name of any shopping merchant in the registry (active or not), with the spellings the model uses. Global, for removing a merchant's name from a product query. */
+export function shoppingMerchantNameRe(): RegExp {
+  const names = PROVIDER_REGISTRY.filter(e => e.domains.includes('shopping')).flatMap(e => [e.merchantName, ...merchantAliases(e.providerId)])
+  return new RegExp(`(?<![\\p{L}\\p{N}])(?:${names.map(escapeRe).join('|')})(?![\\p{L}\\p{N}])`, 'giu')
 }
 /** Spellings the model uses for a merchant beyond `merchantName` (the intent module keeps the AI layer's list; these are the registry's). */
 function merchantAliases(providerId: string): string[] {
@@ -155,8 +179,13 @@ export function validateRegistry(entries: readonly ProviderRegistryEntry[] = PRO
     }
     if (!e.commerce.includes('commerce_handoff')) problems.push(`${e.providerId}: a registry provider hands off to a merchant and must declare commerce_handoff`)
     if (e.tracking) {
-      if (e.tracking.network !== 'accesstrade') problems.push(`${e.providerId}: the code registry declares only accesstrade tracking (templates are runtime rows)`)
-      if (!/^\d{10,25}$/.test(e.tracking.campaignId ?? '')) problems.push(`${e.providerId}: campaignId not numeric`)
+      // A merchant's own partner id on its own page (`param`, Agoda's cid) is code data too; templates stay runtime rows.
+      if (e.tracking.network === 'param') {
+        if (!e.tracking.param || !/^[a-z][a-z0-9_]{0,15}$/i.test(e.tracking.param.name) || !/^[A-Za-z0-9_-]{1,40}$/.test(e.tracking.param.value)) problems.push(`${e.providerId}: param tracking needs a plain name and value`)
+      } else {
+        if (e.tracking.network !== 'accesstrade') problems.push(`${e.providerId}: the code registry declares only accesstrade or param tracking (templates are runtime rows)`)
+        if (!/^\d{10,25}$/.test(e.tracking.campaignId ?? '')) problems.push(`${e.providerId}: campaignId not numeric`)
+      }
       if (e.tracking.safeWrapper !== 'deep_link') problems.push(`${e.providerId}: only the deep_link wrapper is verified safe`)
       if (!e.capabilities.includes('tracking')) problems.push(`${e.providerId}: tracking config without tracking capability`)
     }

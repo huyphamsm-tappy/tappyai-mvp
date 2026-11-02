@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Louda Hổ Vằn Punki Pro 1563E Khử Ồn Chủ Động HiFi AI ENC Pin Trâu Bluetooth 5.3 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:12:36.917Z",
+ "body": {
+  "searchParameters": {
+   "q": "Louda Hổ Vằn Punki Pro 1563E Khử Ồn Chủ Động HiFi AI ENC Pin Trâu Bluetooth 5.3 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

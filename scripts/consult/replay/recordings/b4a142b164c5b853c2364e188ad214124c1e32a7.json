@@ -1,0 +1,82 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Samsung Galaxy S24 thông số chính thức Galaxy AI 120Hz camera pin",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:39:42.425Z",
+ "body": {
+  "searchParameters": {
+   "q": "Samsung Galaxy S24 thông số chính thức Galaxy AI 120Hz camera pin",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tiến bước vào kỷ nguyên quyền năng AI mới cùng ...",
+    "link": "https://news.samsung.com/vn/tien-buoc-vao-ky-nguyen-quyen-nang-ai-moi-cung-samsung-galaxy-s24-series",
+    "snippet": "Bộ 4 ống kính Tele (Quad Tele System) của Galaxy S24 Ultra với zoom quang học 5x mới kết hợp cùng cảm biến 50MP nâng cấp hiệu năng chất lượng ...",
+    "date": "18 thg 1, 2024",
+    "position": 1
+   },
+   {
+    "title": "Galaxy S24: Thông số kỹ thuật, thiết kế, pin và hơn thế",
+    "link": "https://minhtuanmobile.com/tin-tuc/galaxy-s24-thong-so-ky-thuat-thiet-ke-pin-va-hon-the/",
+    "snippet": "Hệ thống camera sau của Samsung Galaxy S24 bao gồm 4 ống kính: camera chính 50MP, camera góc siêu rộng 12MP, camera tele 10MP hỗ trợ zoom quang ...",
+    "date": "27 thg 12, 2023",
+    "position": 2
+   },
+   {
+    "title": "Đánh giá Galaxy S24 Ultra: AI tiện lợi, camera xịn sò, hiệu ...",
+    "link": "https://www.thegioididong.com/tin-tuc/danh-gia-galaxy-s24-ultra-1560290",
+    "snippet": "Galaxy S24 Ultra nhận được bản cập nhật bổ sung tính năng điều chỉnh độ Sinh động cho màn hình (cập nhật: 24/02/2024). Theo thông tin do trang ...",
+    "date": "26 thg 1, 2024",
+    "position": 3
+   },
+   {
+    "title": "Đánh giá nhanh Samsung Galaxy S24 - trải nghiệm Galaxy AI",
+    "link": "https://www.youtube.com/watch?v=HIIdCCvBp78",
+    "snippet": "Samsung Galaxy S24 Series đã chính thức được ra mắt trong sự kiện Unpacked 2024. Với sự xuất hiện của Samsung Galaxy S24 Series gồm Samsung ...",
+    "position": 4
+   },
+   {
+    "title": "Cấu Hình Samsung Galaxy S24: Màn 120Hz, Exynos 2400 ...",
+    "link": "https://didongviet.vn/dchannel/cau-hinh-samsung-galaxy-s24/",
+    "snippet": "Thông số cấu hình Samsung Galaxy S24 có gì HOT: Exynos 2400, pin 4000mAH · 3 Camera sau: Cảm biến chính 50 MP (f/1.8, OIS chống rung quang học), ...",
+    "date": "23 thg 11, 2023",
+    "rating": 4.9,
+    "ratingCount": 7,
+    "position": 5
+   },
+   {
+    "title": "Galaxy S24 series chính thức ra mắt S24 FE: Trải nghiệm ...",
+    "link": "https://viettelstore.vn/tin-tuc/chinh-thuc-ra-mat-s24-fe?srsltid=AU7gw4U2aG7y4CqsQaoldY3NDm1M0ccGqL4hYXYPmjos30bDRfPjnrqs",
+    "snippet": "Galaxy S24 FE mang đến khả năng chụp ảnh và quay video một cách dễ dàng nhờ vào hệ thống camera cao cấp được trang bị ống kính góc rộng 50MP và ...",
+    "date": "27 thg 9, 2024",
+    "position": 6
+   },
+   {
+    "title": "Samsung Galaxy S24 Ultra 12GB 256GB",
+    "link": "https://cellphones.com.vn/samsung-galaxy-s24-ultra.html",
+    "snippet": "Thông số kỹ thuật ; Kích thước màn hình. 6.8 inches ; Công nghệ màn hình. Dynamic AMOLED 2X ; Camera sau. Camera chính: 200MP, Laser AF, OIS Camera: 50MP, PDAF, ...",
+    "rating": 4.9,
+    "ratingCount": 59,
+    "position": 7
+   },
+   {
+    "title": "Đánh giá Samsung Galaxy S24: Liệu có đáng tiền để sở ...",
+    "link": "https://www.xtmobile.vn/danh-gia-samsung-galaxy-s24",
+    "snippet": "Trọng lượng, 168 gram ; Màu sắc, Tím Cobalt, Vàng Amber, Đen Onyx và Xám Marble ; Màn hình. Dynamic LTPO AMOLED 2X. 6.2 inch. 2340 x 1080 pixel.",
+    "date": "23 thg 1, 2024",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

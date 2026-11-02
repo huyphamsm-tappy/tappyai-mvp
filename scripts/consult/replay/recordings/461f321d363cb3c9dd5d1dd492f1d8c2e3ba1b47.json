@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Quán ăn ngon Sài Gòn\" OR \"Quán Bụi Original\" OR \"Quán Bụi Central\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:49:26.031Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Quán ăn ngon Sài Gòn\" OR \"Quán Bụi Original\" OR \"Quán Bụi Central\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Mâm Đồ Ăn Chee Bee Burger Review - Quán Ăn Ngon Sài ...",
+    "link": "https://www.tiktok.com/@cheebeesosweet/video/7418469162802007304",
+    "snippet": "Mâm Đồ Ăn Chee Bee Burger Review - Quán Ăn Ngon Sài Gòn. Khám phá mâm đồ ăn Chee Bee Burger tại quán ăn ngon Sài Gòn. Review chân thực về ...",
+    "position": 1
+   },
+   {
+    "title": "Quán ăn ngon Sài Gòn",
+    "link": "https://www.tiktok.com/@saigonvui0/photo/7690860748167286024",
+    "snippet": "Mưa gì thì mưa chứ mấy quán này vẫn phải đi ăn bằng được #gsm164 #gsm205 #ghiensaigon #saigonangi #quananngonsaigon. Quán ăn ngon Sài Gòn. Mưa ...",
+    "position": 2
+   },
+   {
+    "title": "Quán ăn ngon Sài Gòn: Phở, Cơm Tấm, Bánh Mì & Hơn Thế",
+    "link": "https://www.tiktok.com/@appletaous/photo/7689964078483262734",
+    "snippet": "Quán ăn ngon Sài Gòn: Phở, Cơm Tấm, Bánh Mì & Hơn Thế. Danh sách quán ăn ngon ở Sài Gòn với đủ món phở, bún bò, cơm tấm, bánh mì, hủ tiếu ...",
+    "position": 3
+   },
+   {
+    "title": "Danh sách quán ăn ngon Sài Gòn giá từ 25k đến 600k",
+    "link": "https://www.tiktok.com/@mammamcungtui/photo/7679289531748584725",
+    "snippet": "#saigonangi #monngonsaigon #foodsaigon #ancungtiktok #xuhuong. Danh sách quán ăn ngon Sài Gòn giá từ 25k đến 600k. Tổng hợp các quán bánh mì, ...",
+    "position": 4
+   },
+   {
+    "title": "Tổng hợp quán ăn ngon Sài Gòn Vĩnh thích ăn ngon",
+    "link": "https://www.tiktok.com/@vinhthichanngon/video/7402208670282566919",
+    "snippet": "Tổng hợp quán ăn ngon Sài Gòn Vĩnh thích ăn ngon. Xôi gà, Cao ... Keywords: quán ăn ngon Sài Gòn, xôi gà, Cao lầu, bún bò, Sài Gòn ăn ...",
+    "position": 5
+   },
+   {
+    "title": "Quán ăn ngon Sài Gòn: Danh sách địa điểm phải thử",
+    "link": "https://www.tiktok.com/@sg.didau_/photo/7660376981418036481",
+    "snippet": "Quán ăn ngon Sài Gòn: Danh sách địa điểm phải thử. Khám phá danh sách các quán ăn ngon tại Sài Gòn mà bạn nhất định phải thử, theo gợi ý từ ...",
+    "position": 6
+   },
+   {
+    "title": "Quán ăn ngon Sài Gòn nhất định phải thử",
+    "link": "https://www.tiktok.com/@vivu_saigon/photo/7662020759279193352",
+    "snippet": "Quán ăn ngon Sài Gòn nhất định phải thử. Chia sẻ những quán ăn ngon tại Sài Gòn mà bạn nhất định phải thử. Gợi ý các địa điểm ăn uống hấp dẫn ...",
+    "position": 7
+   },
+   {
+    "title": "Quán ăn ngon Sài Gòn",
+    "link": "https://www.tiktok.com/@user5u70oo2c80/photo/7665939519794941204",
+    "snippet": "Quán ăn ngon Sài Gòn. Chia sẻ quán ăn ngon Sài Gòn được bạn bè giới thiệu, kèm biểu tượng cảm xúc đáng yêu và hoa hồng. Keywords: quán ăn ngon,Sài Gòn,ẩm ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

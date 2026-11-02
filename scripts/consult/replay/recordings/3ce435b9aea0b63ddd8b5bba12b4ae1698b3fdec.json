@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:mof.gov.vn mức thu lệ phí cấp hộ chiếu phổ thông thông tư 2025 2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:16:15.101Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:mof.gov.vn mức thu lệ phí cấp hộ chiếu phổ thông thông tư 2025 2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cổng thông tin điện tử Bộ Tài Chính",
+    "link": "https://www.mof.gov.vn/bo-tai-chinh/dong-gop-y-kien-du-thao-van-ban/du-thao-thong-tu-quy-dinh-muc-thu-che-do-thu-nop-phi-le-phi-trong-linh-vuc-xuat-canh-nhap-canh-qua-canh-cu-tru-tai-viet-nam-lan-2",
+    "snippet": "Địa chỉ: số 28 phố Trần Hưng Đạo, phường Cửa Nam, thành phố Hà Nội. Điện thoại Cổng thông tin điện tử: (84-24)2220.2828-2888. Fax: (84-24)2220.8091. Email ...",
+    "position": 1
+   },
+   {
+    "title": "Hàng loạt phí, lệ phí được miễn, giảm cho công dân số đến ...",
+    "link": "https://www.mof.gov.vn/cong-nghe-thong-tin-va-chuyen-doi-so/tin-tuc-su-kien-3/hang-loat-phi-le-phi-duoc-mien-giam-cho-cong-dan-so-den-het-thang-22027",
+    "snippet": "Một nhóm chính sách đáng chú ý khác là miễn lệ phí trong lĩnh vực xuất cảnh, nhập cảnh. Theo đó, công dân được miễn lệ phí cấp hộ chiếu phổ ...",
+    "date": "24 thg 8, 2026",
+    "position": 2
+   },
+   {
+    "title": "Hỏi đáp CSTC",
+    "link": "https://portal.mof.gov.vn/hoidapcstc/home/cthoidap/155962",
+    "snippet": "(2). ... Giảm phí thẩm định theo thông tư 64/2025/TT-BTC ngày 30/6/2025, mức thu phí thẩm định là 150.000.000 (đồng)*50%=75.000.000 đồng. - Cách 2: Tính theo nội ...",
+    "position": 3
+   },
+   {
+    "title": "phần ii. nội dung cụ thể của từng thủ tục hành chính",
+    "link": "https://vbpq.mof.gov.vn/DKC.FileManagement/FileStorage/File/611799",
+    "snippet": "Lĩnh vực thành lập và hoạt động của doanh nghiệp. 1. Đăng ký thành lập doanh nghiệp tư nhân (Mã hồ sơ TTHC: 2.001610) a) Trình tự thực hiện:.",
+    "position": 4
+   },
+   {
+    "title": "Hỏi đáp CSTC",
+    "link": "https://portal.mof.gov.vn/hoidapcstc/home/cthoidap/157075",
+    "snippet": "- Tại khoản 1 Điều 3 Thông tư số 281/2016/TT-BTC ngày 14/11/2016 của Bộ Tài chính về mức thu, chế độ thu, nộp, quản lý và sử dụng phí khai thác, sử dụng thông ...",
+    "position": 5
+   },
+   {
+    "title": "Hạnh phúc Số: 63/2023/TT-BTC Hà N",
+    "link": "https://vbpq.mof.gov.vn/DKC.FileManagement/FileStorage/File/179486",
+    "snippet": "a) Kể từ ngày 01 tháng 01 năm 2024 đến hết ngày 31 tháng 12 năm 2025, áp dụng mức thu phí bằng 90% (chín mươi phần trăm) mức thu phí quy định ...",
+    "date": "16 thg 10, 2023",
+    "position": 6
+   },
+   {
+    "title": "Hỏi đáp CSTC",
+    "link": "https://portal.mof.gov.vn/hoidapcstc/home/cthoidap/116954",
+    "snippet": "Căn cứ quy định nêu trên, tổ chức thu lệ phí (lệ phí đăng ký cư trú) phải nộp 100% lệ phí thu được vào NSNN (ngân sách địa phương), nguồn chi phí trang trải cho ...",
+    "position": 7
+   },
+   {
+    "title": "phần ii. nội dung cụ thể của từng thủ tục hành chính",
+    "link": "https://vbpq.mof.gov.vn/DKC.FileManagement/FileStorage/File/514479",
+    "snippet": "BTC thì lệ phí bằng 50% mức thu lệ phí quy định tại điểm 1 Biểu phí, lệ phí đăng ... Biểu phí, lệ phí đăng ký doanh nghiệp ban hành kèm theo Thông tư số. 47/2019 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "lệ phí cấp hộ chiếu phổ thông 2026 site:mof.gov.vn OR site: dichvucong.gov.vn OR site:congbao.chinhphu.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:06:10.406Z",
+ "body": {
+  "searchParameters": {
+   "q": "lệ phí cấp hộ chiếu phổ thông 2026 site:mof.gov.vn OR site: dichvucong.gov.vn OR site:congbao.chinhphu.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Không có tiêu đề",
+    "link": "https://dichvucong.gov.vn/p/home/dvc-trang-chu.html",
+    "snippet": "What code is in the image? ... Your support ID is: 844787498956258237 .",
+    "position": 1
+   },
+   {
+    "title": "Hướng dẫn đăng ký cấp hộ chiếu trên Cổng dịch vụ công Bộ ...",
+    "link": "https://vietyen.hungyen.gov.vn/huong-dan-dang-ky-cap-ho-chieu-tren-cong-dich-vu-cong-bo-cong-an-c2439.html",
+    "snippet": "- Người sử dụng tích chọn vào Nộp hồ sơ để bắt đầu khai báo thông tin đăng ký cấp Hộ chiếu phổ thông ở trong nước. Nhấn nút Nộp hồ sơ. Bước 2: ...",
+    "date": "16 thg 6, 2026",
+    "position": 2
+   },
+   {
+    "title": "Hướng dẫn đăng ký cấp hộ chiếu qua Cổng dịch vụ ...",
+    "link": "https://congan.hochiminhcity.gov.vn/wps/portal/Home/trang-chu/noi-dung-chi-tiet/thutuchanhchinh/cai+cach+hanh+chinh/huong+dan+dang+ky+cap+ho+chieu+qua+cong+dich+vu+cong+truc+tuyen+muc+do+4",
+    "snippet": "Bước 1: Đăng ký tài khoản tại Cổng dịch vụ công quốc gia tại địa chỉ https://dichvucong.gov.vn. Bước 2: Sử dụng tài khoản đã đăng ký để đăng ...",
+    "date": "28 thg 7, 2022",
+    "position": 3
+   },
+   {
+    "title": "HƯỚNG DẪN ĐĂNG KÝ CẤP HỘ CHIẾU QUA CỔNG ...",
+    "link": "https://congan.gialai.gov.vn/vi/news/xuat-nhap-canh/huong-dan-dang-ky-cap-ho-chieu-qua-cong-dich-vu-cong-truc-tuyen-muc-do-4-2012.html",
+    "snippet": "HƯỚNG DẪN ĐĂNG KÝ CẤP HỘ CHIẾU QUA CỔNG DỊCH VỤ CÔNG TRỰC TUYẾN MỨC ĐỘ 4 · - Truy cập cổng dịch vụ công quốc gia: https://dichvucong.gov.vn; · - ...",
+    "date": "12 thg 9, 2022",
+    "rating": 1.6,
+    "ratingCount": 14,
+    "position": 4
+   },
+   {
+    "title": "Hướng dẫn người dân đăng ký làm hộ chiếu trên ứng ...",
+    "link": "https://congan.hungyen.gov.vn/huong-dan-nguoi-dan-dang-ky-lam-ho-chieu-tren-ung-dung-vneid-c231845.html",
+    "snippet": "Miễn lệ phí cấp hộ chiếu phổ thông trong nước cho công dân đủ điều kiện từ ngày 15/8/2026.",
+    "position": 5
+   },
+   {
+    "title": "Hướng dẫn tra cứu mã hồ sơ trên cổng Dịch vụ công quốc gia ...",
+    "link": "https://phurieng.dongnai.gov.vn/vi/news/thu-tuc-hanh-chinh/huong-dan-tra-cuu-ma-ho-so-tren-cong-dich-vu-cong-quoc-gia-va-cong-dich-vu-cong-bo-cong-an-242.html",
+    "snippet": "Địa chỉ truy cập: dichvucong.gov.vn. Tại màn hình chính sau khi đăng nhập thành công: Chọn vào Họ tên → Chọn Thông tin cá nhân.",
+    "date": "31 thg 1, 2026",
+    "position": 6
+   },
+   {
+    "title": "Chứng thực bản sao từ bản chính giấy tờ, văn bản do cơ quan ...",
+    "link": "https://vpcp.dichvucong.gov.vn/p/home/dvc-tthc-thu-tuc-hanh-chinh-chi-tiet.html?ma_thu_tuc=2630",
+    "snippet": "(Tại UBND cấp xã, Phòng Tư pháp, Tổ chức hành nghề công chứng: 2.000 đồng/trang; từ trang thứ 3 trở lên thu 1.000 đồng/trang, tối đa thu không quá 200.000 đồng/ ...",
+    "position": 7
+   },
+   {
+    "title": "Chậm trễ xử lý \"Thu hồi giấy chứng nhận đăng ký xe, biển số ...",
+    "link": "https://vpcp.dichvucong.gov.vn/p/phananhkiennghi/pakn-detail.html?id=2D7B777BDF380CAAE063490AA8C07866",
+    "snippet": "Cấp căn cước cho người dưới 6 tuổi · Chậm xử lý hồ sơ · Nộp phạt hành chính xử lí vi phạm giao thông · đăng ký biển số xe máy điện đã có kết quả ngày 02/03/2026 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

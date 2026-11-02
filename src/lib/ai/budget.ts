@@ -310,17 +310,94 @@ export function applyBudgetFilter(result: unknown, budget: Budget, category: str
   return r
 }
 
-function filterLuxuryBrands(text: string): string {
-  let out = text
-  for (const brand of LUXURY_BRANDS_FILTER) {
-    if (out.includes(brand)) {
-      out = out.split(brand).join('khách sạn')
+/**
+ * A URL as it appears in a text frame: up to whitespace, a quote (JSON) or a bracket. Gate 2 S5, L3 (PROPOSAL): any case of the
+ * scheme ("HTTPS://"), a bare "www." start, and parentheses inside the span ("/a(Hilton)/") -- a brand there is part of the URL.
+ */
+const URL_SPAN = /(?:https?:\/\/|www\.)[^\s"'<>[\]\\]+/gi
+
+/**
+ * Renames luxury brands OUTSIDE URLs. Closeout round 3 (owner contract, PROPOSAL): no step after egress may change a URL that
+ * egress checked -- the old pass rewrote brands inside links too ("https://www.khách sạn.com/…", a dead link the egress never saw).
+ * Exported so the route can store the SAME renamed names (pick / shown / cards) the client was shown.
+ * Gate 1 M3 (PROPOSAL, owner 15/10): a brand in `keep` (lower case, from luxuryKeepBrands) is not renamed -- it names one of this turn's
+ * card candidates, so the prose, the card and the state call that place the same way. Without `keep` every brand is renamed, as before.
+ */
+export function filterLuxuryBrands(text: string, keep?: ReadonlySet<string>): string {
+  const renameIn = (part: string) => {
+    let out = part
+    for (const brand of LUXURY_BRANDS_FILTER) {
+      if (keep?.has(brand.toLowerCase())) continue
+      if (out.includes(brand)) out = out.split(brand).join('khách sạn')
+    }
+    return out
+  }
+  let out = ''
+  let last = 0
+  for (const m of text.matchAll(URL_SPAN)) {
+    out += renameIn(text.slice(last, m.index)) + m[0]
+    last = (m.index ?? 0) + m[0].length
+  }
+  return out + renameIn(text.slice(last))
+}
+
+/**
+ * Gate 1 M3 (PROPOSAL, owner 15/10, direction i): the luxury brands (lower case) that occur in the names THIS turn's card is built from --
+ * the recommendations the route hands to the collector (placeRecommendations / stayRecommendations / productRecommendations, i.e. after
+ * the card's own admission such as admitStays), not every row of the tool results.
+ */
+export function luxuryKeepBrands(cardNames: readonly string[] | undefined): Set<string> {
+  const keep = new Set<string>()
+  for (const n of cardNames ?? []) {
+    if (typeof n !== 'string' || !n) continue
+    const low = n.toLowerCase()
+    for (const brand of LUXURY_BRANDS_FILTER) if (low.includes(brand.toLowerCase())) keep.add(brand.toLowerCase())
+  }
+  return keep
+}
+
+/**
+ * CONSULT_V3 (owner 17/10, Đợt 2 review: "bỏ luật đổi tên không được khiến Tappy đánh đồng khách sạn sang với phương án vừa ngân sách
+ * thấp"): instead of renaming a luxury brand to "khách sạn", its FIRST mention keeps its real name and is labelled with its segment against
+ * the user's own figure: "**Hilton Đà Nẵng** (phân khúc cao cấp, khó vừa mức dưới 1.000.000đ bạn nêu)". The figure is the user's, the
+ * segment is the brand list's — no price is stated. Outside URLs and machine blocks; a brand in `keep` (one of this turn's card candidates,
+ * which passed the card's own admission) is not labelled. `labelled` carries the brands already labelled across frames. Pure.
+ */
+export function labelLuxuryBrands(text: string, budgetMax: number, keep?: ReadonlySet<string>, labelled: Set<string> = new Set()): string {
+  const BRANDS = [...new Set(LUXURY_BRANDS_FILTER.map(b => b.toLowerCase()))]
+  const money = `${Math.round(budgetMax).toLocaleString('vi-VN')}đ`
+  const note = ` (phân khúc cao cấp, khó vừa mức dưới ${money} bạn nêu)`
+  // spans that are never touched: URLs, and the machine blocks the clients parse ([TAPPY_PLAN] JSON, buttons, follow-ups)
+  const shielded: Array<[number, number]> = []
+  for (const m of text.matchAll(URL_SPAN)) shielded.push([m.index ?? 0, (m.index ?? 0) + m[0].length])
+  for (const m of text.matchAll(/\[(TAPPY_[A-Z]+|FOLLOWUPS|CTA_BUTTONS)\][\s\S]*?\[\/\1\]/g)) shielded.push([m.index ?? 0, (m.index ?? 0) + m[0].length])
+  const inShield = (i: number) => shielded.some(([a, b]) => i >= a && i < b)
+  const inserts: Array<[number, string]> = []
+  const low = text.toLowerCase()
+  for (const brand of BRANDS) {
+    if (labelled.has(brand) || keep?.has(brand)) continue
+    const re = new RegExp(`(?<![\\p{L}\\p{N}])${brand.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![\\p{L}\\p{N}])`, 'gu')
+    for (const m of low.matchAll(re)) {
+      const at = m.index ?? 0
+      if (inShield(at)) continue
+      // after the bold name that contains the brand ("**Hilton Đà Nẵng**"), else right after the brand word
+      const open = text.lastIndexOf('**', at)
+      const close = open >= 0 ? text.indexOf('**', at) : -1
+      const boldCount = open >= 0 ? (text.slice(0, open).match(/\*\*/g) ?? []).length : 1
+      const end = open >= 0 && close > at && boldCount % 2 === 0 && !text.slice(open, close).includes('\n') ? close + 2 : at + brand.length
+      inserts.push([end, note])
+      labelled.add(brand)
+      break
     }
   }
+  let out = text
+  for (const [i, s] of inserts.sort((a, b) => b[0] - a[0])) if (!out.slice(i, i + s.length).startsWith(' (phân khúc cao cấp')) out = out.slice(0, i) + s + out.slice(i)
   return out
 }
 
-export function applyLuxuryStreamFilter(response: Response): Response {
+/** Gate 1 M3: `keep` is read for EVERY text frame, so a frame that passes before this turn's candidates exist is renamed (owner O1).
+ *  `rewrite` (CONSULT_V3): the text step to apply instead of the rename — `labelLuxuryBrands` bound to the user's figure. */
+export function applyLuxuryStreamFilter(response: Response, keep?: () => ReadonlySet<string>, rewrite: (text: string, keep?: ReadonlySet<string>) => string = filterLuxuryBrands): Response {
   const body = response.body
   if (!body) return response
 
@@ -338,7 +415,7 @@ export function applyLuxuryStreamFilter(response: Response): Response {
         if (line.startsWith('0:')) {
           try {
             const text = JSON.parse(line.slice(2)) as string
-            const filtered = filterLuxuryBrands(text)
+            const filtered = rewrite(text, keep?.())
             controller.enqueue(encoder.encode('0:' + JSON.stringify(filtered) + '\n'))
           } catch {
             controller.enqueue(encoder.encode(line + '\n'))
@@ -353,7 +430,7 @@ export function applyLuxuryStreamFilter(response: Response): Response {
         if (lineRemainder.startsWith('0:')) {
           try {
             const text = JSON.parse(lineRemainder.slice(2)) as string
-            const filtered = filterLuxuryBrands(text)
+            const filtered = rewrite(text, keep?.())
             controller.enqueue(encoder.encode('0:' + JSON.stringify(filtered) + '\n'))
           } catch {
             controller.enqueue(encoder.encode(lineRemainder + '\n'))

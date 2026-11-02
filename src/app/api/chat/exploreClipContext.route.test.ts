@@ -74,6 +74,8 @@ vi.mock('@/lib/security/rateLimit', () => ({
 vi.mock('@/lib/ai/llm', () => ({
   AI: {
     isConfigured: () => true,
+    // Read only when a test consumes the response body (TEST 5 reads the final message): the turn's cost line names the provider.
+    providerId: () => 'mock',
     stream: (opts: Record<string, unknown>) => {
       h.state.streamOptions = opts
       return { toDataStreamResponse: () => new Response('', { status: 200, headers: { 'content-type': 'text/plain' } }) }
@@ -101,6 +103,7 @@ vi.mock('@/lib/ai/tools/food', async (importOriginal) => {
 })
 
 import { POST } from '@/app/api/chat/route'
+import { AREA_ASK_VI } from '@/lib/ai/consultative/areaAsk'
 
 const ROW = {
   id: REVIEW,
@@ -136,6 +139,9 @@ beforeEach(() => {
   h.state.placeCalls = []
   h.state.providerRows = []
   h.state.upserts = []
+  // No network, ever (LOC-DEFAULT-HCM-01, Round 42): anything the mocks above do not cover fails at once instead of going online.
+  vi.unstubAllGlobals()
+  vi.stubGlobal('fetch', async (input: unknown) => { throw new Error('network disabled in this test: ' + String(input).slice(0, 60)) })
 })
 
 // ── Venue fixtures for the narrowing tests ─────────────────────────────────
@@ -222,14 +228,18 @@ describe('TEST 3 + 4 · the clip address reaches the existing place tool as `loc
 })
 
 describe('TEST 5 · an empty address leaves the legitimate clarification reachable', () => {
-  it('search_places receives no location, so the existing location_required path is untouched', async () => {
+  // LOC-DEFAULT-HCM-01 (phương án a, Round 42): with no clip address, no GPS and no area named, the place search is NOT run (it would be
+  // centred on the default TP.HCM centre) — the tool answers `no_current_location` and the code asks for the area in the final message.
+  it('search_places is not called: the tool says the location is missing and the final message asks for the area', async () => {
     h.state.reviewRow = { ...ROW, place_name: 'Cô Ba', place_address: '' }
-    await post({ messages: [{ role: 'user', content: 'Cho mình biết thêm về Cô Ba' }], context: { kind: 'explore_clip', reviewId: REVIEW } })
+    const res = await post({ messages: [{ role: 'user', content: 'Cho mình biết thêm về Cô Ba' }], context: { kind: 'explore_clip', reviewId: REVIEW } })
     expect(system()).toContain('Cô Ba')
     expect(system()).not.toContain('Dia chi (theo clip)')
     expect(system()).toMatch(/hoi MOT cau ngan de user xac nhan khu vuc — do la hop le/)
-    await runPlaceTool({ query: 'Cô Ba' })
-    expect(h.state.placeCalls[0].location).toBeUndefined()
+    const result = await toolResult({ query: 'Cô Ba' })
+    expect(h.state.placeCalls).toEqual([])
+    expect(result.error).toBe('no_current_location')
+    expect(await res.text()).toContain(AREA_ASK_VI)
   })
 })
 

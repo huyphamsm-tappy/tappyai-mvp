@@ -39,6 +39,7 @@ function shoppingNeed(over: Partial<NeedProfile> = {}): NeedProfile {
   return {
     domain: 'shopping', subject: 'macbook', budget: null, budgetStated: null,
     location: { text: null, gps: null },
+    partySize: null,
     useCases: [], priorities: [], mustHave: [], avoid: [],
     turnsObserved: 1, changedAtTurn: {},
     ...over,

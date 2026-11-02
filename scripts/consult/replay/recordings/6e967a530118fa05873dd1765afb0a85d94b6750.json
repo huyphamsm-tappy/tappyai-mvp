@@ -1,0 +1,64 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vietcombank.com.vn \"ATM ngoài hệ thống VCB\" \"Phí rút\" 2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T16:55:19.664Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vietcombank.com.vn \"ATM ngoài hệ thống VCB\" \"Phí rút\" 2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cập nhật Biểu phí dịch vụ thẻ",
+    "link": "https://www.vietcombank.com.vn/vi-VN/KHCN/Truy-cap-nhanh/Tin-noi-bat/Articles/2026/01/14/Cap-nhat-bieu-phi-dich-vu-the-ghi-no",
+    "snippet": "Phí rút tiền mặt tại ATM ngoài lãnh thổ Việt Nam. 3,64% số tiền giao ... Phí rút tiền mặt tại ATM ngoài hệ thống VCB, trong lãnh thổ Việt Nam ...",
+    "date": "14 thg 1, 2026",
+    "position": 1
+   },
+   {
+    "title": "BIỂU PHÍ DỊCH VỤ THẺ GHI NỢ ÁP DỤNG CHO KHÁCH ...",
+    "link": "https://www.vietcombank.com.vn/-/media/Project/VCB-Sites/VCB/KHCN/Bieu-mau-Bieu-phi-KHCN/Bieu-phi-the-GN-012026/Bieu-phi-The-GN_KHCN-0126.pdf?ts=20260122063129",
+    "snippet": "10 Phí giao dịch tại ATM ngoài hệ thống VCB. 10.1 Rút tiền mặt ... 18 Phí rút tiền mặt tại quầy ngoài hệ thống VCB. 3,64% số tiền giao ...",
+    "date": "22 thg 1, 2026",
+    "position": 2
+   },
+   {
+    "title": "BIỂU PHÍ DỊCH VỤ VÀ LÃI SUẤT THẺ ÁP DỤNG CHO ...",
+    "link": "https://portal.vietcombank.com.vn/content/personal/BieuPhi/Th%E1%BA%BB/Th%E1%BA%BB%20t%C3%ADn%20d%E1%BB%A5ng%20qu%E1%BB%91c%20t%E1%BA%BF/BIEU%20PHI%20THE%20TIN%20DUNG%20QUOC%20TE%20CHUNG/20200120%20Bieu%20phi%20the%20tong%20hop%20up%20web%20(bieu%20phi%20khong%20VAT).pdf",
+    "snippet": "7 Phí giao dịch tại ATM ngoài hệ thống VCB. 7.1 Rút tiền mặt. 7.1.1 Mức ... 13 Phí rút tiền mặt tại quầy ngoài hệ thống VCB. 3,64% số tiền giao dịch. III ...",
+    "position": 3
+   },
+   {
+    "title": "BIỂU PHÍ DỊCH VỤ THẺ GHI NỢ ÁP DỤNG CHO KHÁCH ...",
+    "link": "https://www.vietcombank.com.vn/-/media/Project/VCB-Sites/VCB/KHCN/San-pham-Dich-vu/The/Tai-lieu-THE/02102024---UPDATE-BIEU-PHI-THE-GHI-NO/20241001Bieu-phi-the-ghi-no-VNI.pdf?ts=20241002033526",
+    "snippet": "11 Phí giao dịch tại ATM ngoài hệ thống VCB. 11.1 Rút tiền mặt ... 19 Phí rút tiền mặt tại quầy ngoài hệ thống VCB. 3,64% số tiền giao ...",
+    "date": "10 thg 1, 2025",
+    "position": 4
+   },
+   {
+    "title": "BIỂU PHÍ DỊCH VỤ THẺ GHI NỢ QUỐC TẾ ÁP DỤNG ...",
+    "link": "https://portal.vietcombank.com.vn/content/personal/BieuPhi/Th%E1%BA%BB/Th%E1%BA%BB%20phi%20v%E1%BA%ADt%20l%C3%BD/Bieu%20phi%20the%20ghi%20no%20quoc%20te.pdf",
+    "snippet": "10 Phí giao dịch tại ATM ngoài hệ thống VCB. 10.1 RTM trong lãnh thổ ... 14 Phí rút tiền mặt tại quầy ngoài hệ thống VCB. 3,64% số tiền giao dịch. GHI ...",
+    "position": 5
+   },
+   {
+    "title": "BIỂU PHÍ DỊCH VỤ THẺ GHI NỢ ÁP DỤNG CHO KHÁCH ...",
+    "link": "https://www.vietcombank.com.vn/-/media/Project/VCB-Sites/VCB/KHCN/Bieu-mau-Bieu-phi-KHCN/Update-30062026/BP-dich-vu-the-ghi-no.pdf?ts=20260630031254",
+    "snippet": "11 Phí giao dịch tại ATM ngoài hệ thống VCB. 11.1 Rút tiền mặt ... 18 Phí rút tiền mặt tại quầy ngoài hệ thống VCB. 3,64% số tiền giao ...",
+    "date": "6 thg 7, 2026",
+    "position": 6
+   }
+  ],
+  "credits": 1
+ }
+}

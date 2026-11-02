@@ -146,6 +146,13 @@ export function cityInText(text: string | null | undefined): VietnamCity | null 
   return alias ? CITIES[alias] : null
 }
 
+/** Does the text name this city (any of its aliases, same whole-token rule as cityInText)? A text may name several cities; cityInText returns only one. */
+export function textNamesCity(text: string | null | undefined, city: VietnamCity): boolean {
+  const hay = normalizeVN((text ?? '').toLowerCase())
+  if (!hay) return false
+  return ALIASES_BY_LENGTH.some((a) => CITIES[a] === city && aliasPattern(a).test(hay))
+}
+
 /**
  * Great-circle distance in kilometres.
  *

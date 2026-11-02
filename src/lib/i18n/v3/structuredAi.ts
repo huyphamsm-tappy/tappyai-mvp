@@ -49,6 +49,36 @@ export const vi: Record<string, string> = {
   // ── Offline (P4-15) ─────────────────────────────────────────────────────
   // Plain language, no status code, and it says what is still possible.
   'offline.composer': 'Đang mất kết nối. Bạn vẫn đọc được đoạn chat; tin nhắn sẽ gửi được khi có mạng lại.',
+
+  // ── Attachments (31/10): images and PDFs ────────────────────────────────
+  'attach.pdfTooLarge': 'Tệp PDF lớn hơn 3 MB, Tappy chưa đọc được. Bạn thử gửi tệp nhỏ hơn hoặc chỉ các trang cần hỏi.',
+  'attach.unsupported': 'Tappy đọc được ảnh (PNG, JPG, WEBP, GIF) và tệp PDF.',
+  'attach.drop': 'Thả ảnh hoặc PDF vào đây để gửi cho Tappy',
+  'attach.remove': 'Bỏ tệp đính kèm',
+
+  // ── Composer modes (31/10, ChatGPT-style "+" menu) ──────────────────────
+  'composer.plus': 'Thêm tệp hoặc chọn chế độ',
+  'composer.attach': 'Thêm ảnh & tệp PDF',
+  'composer.attachHint': 'Ảnh chụp, ảnh màn hình, PDF tới 3 MB',
+  'mode.chat': 'Trả lời nhanh',
+  'mode.chatHint': 'Trả lời ngay, không suy nghĩ lâu',
+  'mode.web': 'Tìm web',
+  'mode.webHint': 'Tra cứu nhiều nguồn, có link và ngày',
+  'mode.think': 'Suy nghĩ',
+  'mode.thinkHint': 'Trả lời kỹ cho câu khó, chậm hơn',
+  'mode.deep': 'Nghiên cứu sâu',
+  'mode.deepHint': 'Lập kế hoạch, đọc nhiều nguồn, viết báo cáo (1–3 phút)',
+  'mode.off': 'Tắt chế độ',
+  'chat.scrollTop': 'Lên đầu cuộc trò chuyện',
+  'chat.scrollEnd': 'Xuống tin nhắn mới nhất',
+  'chat.stillAnswering': 'Tappy đang trả lời',
+  'research.planning': 'Đang lập kế hoạch nghiên cứu…',
+  'research.researching': 'Đang nghiên cứu · {sources} nguồn',
+  'research.writing': 'Đang viết báo cáo · {sources} nguồn',
+  'research.done': 'Đã nghiên cứu xong · {sources} nguồn',
+  'research.failed': 'Không hoàn thành được nghiên cứu',
+  'research.sources': 'Nguồn',
+  'research.download': 'Tải báo cáo:',
 }
 
 export const en: Record<string, string> = {
@@ -93,4 +123,34 @@ export const en: Record<string, string> = {
 
   // ── Offline (P4-15) ─────────────────────────────────────────────────────
   'offline.composer': 'You are offline. You can still read this chat; your message will send once you are back online.',
+
+  // ── Attachments (31/10): images and PDFs ────────────────────────────────
+  'attach.pdfTooLarge': 'This PDF is larger than 3 MB, so Tappy cannot read it yet. Try a smaller file or only the pages you need.',
+  'attach.unsupported': 'Tappy can read images (PNG, JPG, WEBP, GIF) and PDF files.',
+  'attach.drop': 'Drop an image or PDF here to send it to Tappy',
+  'attach.remove': 'Remove attachment',
+
+  // ── Composer modes (31/10, ChatGPT-style "+" menu) ──────────────────────
+  'composer.plus': 'Add a file or choose a mode',
+  'composer.attach': 'Add photos & PDF files',
+  'composer.attachHint': 'Photos, screenshots, PDFs up to 3 MB',
+  'mode.chat': 'Quick answer',
+  'mode.chatHint': 'Answers at once, without long thinking',
+  'mode.web': 'Web search',
+  'mode.webHint': 'Look things up across sources, with links and dates',
+  'mode.think': 'Thinking',
+  'mode.thinkHint': 'A thorough answer for hard questions, slower',
+  'mode.deep': 'Deep research',
+  'mode.deepHint': 'Plans, reads many sources, writes a report (1–3 minutes)',
+  'mode.off': 'Turn the mode off',
+  'chat.scrollTop': 'To the top of the chat',
+  'chat.scrollEnd': 'To the latest message',
+  'chat.stillAnswering': 'Tappy is answering',
+  'research.planning': 'Planning the research…',
+  'research.researching': 'Researching · {sources} sources',
+  'research.writing': 'Writing the report · {sources} sources',
+  'research.done': 'Research complete · {sources} sources',
+  'research.failed': 'The research could not be completed',
+  'research.sources': 'Sources',
+  'research.download': 'Download report:',
 }

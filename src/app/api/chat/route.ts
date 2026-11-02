@@ -6,8 +6,9 @@ import { goldenCaptureSink } from '@/lib/ai/goldenCapture'
 import { serperSnapshot, serperDelta } from '@/lib/ai/tools/serperMeter'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { refuseWithoutAiConsent } from '@/lib/ai/consent/aiConsentGuard'
+import { memoryMessageText } from '@/lib/p8/costWins'
 import { timeClientEmit } from './emitTiming'
-import { createAdminClient } from '@/lib/supabase/admin'
 import { getAccountRestriction, accountRestrictionMessage, accountRestrictionCode, accountRestrictionStatus } from '@/lib/account/accountStatus'
 import { getAgeEligibility, ageEligibilityCode } from '@/lib/account/ageEligibility'
 import { readGuestAgeDeclaration, GUEST_AGE_DECLARATION_REQUIRED } from '@/lib/account/guestAgeDeclaration'
@@ -19,7 +20,7 @@ import { getNews, searchPlaces } from '@/lib/ai/tools/food'
 import { getFlightPrices, getHotelPrices, getTransportOptions } from '@/lib/ai/tools/travel'
 import { createTurnEditorial, editorialGate, withTravelEditorial, type TravelEditorialItem } from '@/lib/ai/tools/vnexpressTravel'
 import { AI, type ModelRole, type CallCost } from '@/lib/ai/llm'
-import { validateClientInput, readDecisionEvidenceId, readExploreClipContext } from '@/lib/ai/security/clientInput'
+import { validateClientInput, readDecisionEvidenceId, readExploreClipContext, readChatMode } from '@/lib/ai/security/clientInput'
 import { loadExploreClipContext, buildExploreClipBlock, exploreClipLocationHint, type ExploreClipContext } from '@/lib/ai/exploreClipContext'
 import { applyClipTarget, applyClipAlternatives, asksForAlternatives, type ClipTargetStatus } from '@/lib/ai/exploreClipTarget'
 import { withPlacesVerification, clipTargetMetric, askTappyPlaceEvent } from '@/lib/explore/clipVenueEvidence'
@@ -27,7 +28,10 @@ import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { fenceUntrusted } from '@/lib/ai/security/fence'
 import { wrapToolResultAsData } from '@/lib/ai/security/toolResultFence'
-import { classifyIntent, detectLang, detectLangConfident, detectExplicitLangRequest, detectForcedTool, detectTravelIntent, detectLocationIntent, detectPlanningIntent, detectPlanActivities, detectTripLength, isPlanningRefinement, defaultTransportFor, detectMovieRecommendationIntent, isSimpleQuery, normalizeVN, isPurchaseShaped } from '@/lib/ai/intent'
+import { pdfPartsToText } from '@/lib/ai/attachments/pdfAttachments'
+import { deepResearchResponse } from '@/lib/ai/research/deepResearchResponse'
+import { createDeepResearchDeps, deepResearchParallel, PARALLEL_PRICE } from '@/lib/ai/research/deepResearchDeps'
+import { classifyIntent, detectLang, detectLangConfident, detectExplicitLangRequest, detectForcedTool, detectTravelIntent, detectLocationIntent, detectPlanningIntent, detectPlanningIntentFromConversation, detectPlanActivities, detectTripLength, isPlanningRefinement, defaultTransportFor, detectMovieRecommendationIntent, isSimpleQuery, normalizeVN, isPurchaseShaped, routeToolOfferOn } from '@/lib/ai/intent'
 import { deriveNeedProfile, type StoredPreferences } from '@/lib/ai/consultative/needProfile'
 import { resolveDecisionStage, taskSwitched, consultationUserTexts } from '@/lib/ai/consultative/refinement'
 import { normalizePlaces, normalizeHotels, normalizeShopping, type Candidate } from '@/lib/ai/consultative/candidate'
@@ -38,10 +42,23 @@ import { deriveDecisionFrame, qualifiesFor, missingFor, evidenceGap, evidenceSum
 import { voiceLayerBlock, styleLuna6On } from '@/lib/ai/consultative/styleLuna6'
 import { wantsFilmTitles, movieTitlesReply } from '@/lib/links/movieTitles'
 import { filmQueries, extractFilmEvidence, filmEvidencePayload, FILM_ENOUGH } from '@/lib/ai/searchIntel/filmSearch'
-import { sharedSerperBudget } from '@/lib/ai/tools/serperToolBudget'
+import { sharedSerperBudget, withSerperToolBudget, turnCreditsRemaining, createTurnWebTicket, turnWebTicketOn, wrapToolsWithTurnWebTicket } from '@/lib/ai/tools/serperToolBudget'
+import { closeRequestCapTurn, createRequestCapTurn, runWithRequestCapTurn, wrapToolsWithRequestCap } from '@/lib/ai/tools/serperRequestCap'
+import { productEnrichmentFor, optionalEnrichmentBudget, worstCaseSearchProductsCredits } from '@/lib/ai/tools/enrichmentPolicy'
 import { cardEvidence, mergeCarried } from '@/lib/ai/agent/carriedEvidence'
 import { plannerNeedsDestination, plannerDestinationQuestion, planNeedsNoRetrieval } from '@/lib/ai/agent/plannerGate'
-import { tappyAgentEnabled, startAgentTurn, agentContext, codeResolvedDate, priorDateFromHistory, cityFromGps, followUpContextLines, confirmationOf, isRejectionTurn, actionOutcomeText, revalidatePendingAction, claimActionExecution, AGENT_SYSTEM, AGENT_LIMITS } from '@/lib/ai/agent'
+import { agentRuntimeV2Enabled, startAgentRuntimeTurn } from '@/lib/ai/agent/runtime'
+import type { AgentTurnInput } from '@/lib/ai/agent'
+import { auditTrace, auditTraceOn } from '@/lib/ai/auditTrace'
+import { cardPathTrace, briefRows } from '@/lib/ai/cardPathTrace'
+import { discoveryGate } from '@/lib/ai/agent/runtime/discoveryGate'
+import { AgentRunTrace, traceTailStream } from '@/lib/ai/agent/runtime/trace'
+import { RUNTIME_LIMITS, serperCeiling } from '@/lib/ai/agent/runtime/limits'
+import { consultativeInAgentEnabled } from '@/lib/ai/consultative/consultativeAgentFlag'
+import { agentSystemV2For, consultMemoryLines } from '@/lib/ai/agent/runtime/consultativeVoice'
+import { conversationIdOf, loadTask, mergeForSave, taskContextLines, validStoredTask } from '@/lib/ai/agent/runtime/task'
+import type { TaskBox } from '@/lib/ai/agent/runtime'
+import { tappyAgentEnabled, startAgentTurn, agentContext, codeResolvedDate, priorDateFromHistory, cityFromGps, followUpContextLines, confirmationOf, isRejectionTurn, actionOutcomeText, revalidatePendingAction, claimActionExecution, AGENT_SYSTEM } from '@/lib/ai/agent'
 import { detectWrongModel, wrongModelBlock, deviceLabel } from '@/lib/ai/wrongModel'
 import { gatePlacesByActivity, agencyRowsToDrop } from '@/lib/ai/consultative/placeTypeGate'
 import { deriveShoppingConstraints, budgetFromHistory, validateShoppingCandidates, unmetConstraintPayload } from '@/lib/ai/consultative/shoppingConstraints'
@@ -56,7 +73,8 @@ import { placeRecommendations, productRecommendations, stayRecommendations } fro
 import { producerSubject } from '@/lib/recommendation/slotAdmission'
 import { enrichWithTikTok } from '@/lib/links/tiktokEnrichment'
 import { serperSearch } from '@/lib/ai/tools/common'
-import { dropInactiveMerchantRows, attachCommerceLinks } from '@/lib/ai/tools/commerce'
+import { dropInactiveMerchantRows, attachCommerceLinks as attachCommerceLinksBase } from '@/lib/ai/tools/commerce'
+import { dropLoginWallRows } from '@/lib/ai/tools/loginWallHosts'
 import { commerceActorHash } from '@/lib/ccp'
 import { sealIdentity } from '@/lib/ccp/tracking/clickLink'
 import { rendersDecisionCard as rendersDecisionCardFor, rendersAskBlock } from '@/lib/ai/decisionSurface'
@@ -64,10 +82,10 @@ import { normalizePwLang } from '@/lib/priceWatch/messages'
 import { runAiWriteAction } from '@/lib/ai/actions/runAction'
 import { savePriceWatchPolicy } from '@/lib/ai/actions/savePriceWatch'
 import { type Budget, extractBudget, extractPlanTotalBudget, applyBudgetFilter, LUXURY_PRICE_FLOOR, applyLuxuryStreamFilter } from '@/lib/ai/budget'
-import { detectPlaceConstraints, applyPlaceConstraints } from '@/lib/ai/placeConstraintFilter'
+import { detectPlaceConstraints, applyPlaceConstraints, NO_PLACE_CONSTRAINTS } from '@/lib/ai/placeConstraintFilter'
 import { usesEveningFrame, eveningLocation, eveningStagesFor, pickStageStop, buildEveningPlanBlock, eveningIntroInstruction, eveningIntro, fixedPlanStream, type EveningStop } from '@/lib/ai/eveningPlan'
 import { buildSystem, buildSystemSimple, buildPrefBlock, buildRenderedDecisionBlock, buildPlanningBlock } from '@/lib/ai/promptBuilder'
-import { buildLeanConsultSystem, consultCacheLibraryEnabled, consultTools, recentTurns } from '@/lib/ai/consultative/leanConsultPrompt'
+import { buildLeanConsultSystem, consultCacheLibraryEnabled, consultTools, KNOWLEDGE_TURN_TOOL_RULE, CALCULATE_DESCRIPTION, WEB_SEARCH_DESCRIPTION_BY_NEED, recentTurns } from '@/lib/ai/consultative/leanConsultPrompt'
 import { applyPlaceEnrichmentStreamFilter, type TurnEvidence } from '@/lib/ai/streamEnrichment'
 import { splitToolResult, createEnrichmentCollector } from '@/lib/ai/toolResultSplit'
 import { shouldExtractMemory } from '@/lib/ai/memoryGate'
@@ -80,12 +98,35 @@ import { guardShareFollowUp } from '@/lib/share/followUpGuard'
 import { readZaloIdentity, zaloIdentitySecret } from '@/lib/zalo/identity'
 import { flushPending, recordEvent, type UsageEvent } from '@/lib/observability'
 import { FREE_DAILY_LIMIT, ANON_LIFETIME_LIMIT } from '@/lib/config/product'
-import { accountQuotaFor, aiQuotaIdentity, consumeAiQuestion, refundAiQuestion, type AiQuotaRefund } from '@/lib/ai/quota/aiQuestionQuota'
+import { accountQuotaFor, aiQuotaIdentity, consumeAiQuestion, consumeDeepResearch, refundAiQuestion, type AiQuotaRefund } from '@/lib/ai/quota/aiQuestionQuota'
+import { tierOf, modeForTier, DEEP_RESEARCH_MONTHLY } from '@/lib/plans/tiers'
+import { wrapToolsWithoutAiSources } from '@/lib/security/aiSourcePolicy'
+import { subscriptionsEnabled } from '@/lib/payments/flags'
 import { entitlementFromRow, type SubscriptionRow } from '@/lib/plans/entitlement'
 import { PLAN_CONFIG, type PlanId } from '@/lib/plans/planConfig'
-import { createPlacesBudget, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
+import { recordDecision, DECISION_RECORD_TIMEOUT_MS } from '@/lib/ai/agent/runtime/decisionRecord'
+import { createPlacesBudget, PLACES_BUDGET_AGENT, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_ONE_BRAIN, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
 // Consultative V1 (flag CONSULTATIVE_V1, default OFF — see docs/audit/consultative-v1-design.md).
 import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
+import { isProductionRuntime, consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, consultReadPageLateOn, consultPickPageReadOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn, consultUnwindS1aOn, consultUnwindS1bOn, consultUnwindS1dOn, consultUnwindS2aOn, consultUnwindS2bOn, consultUnwindS2cOn, consultUnwindS3aOn, consultUnwindS3bOn, consultUnwindS3cOn, consultUnwindS4aOn, consultUnwindS4bOn, consultUnwindS5On, consultUnwindS6aOn, consultUnwindS6bOn, consultUnwindS6cOn, consultOneBrainOn, consultOneBrainMediaOn, consultParallelOn } from '@/lib/config/consultFlags'
+import { createParallelTurnBudget, parallelExtract, parallelSearch } from '@/lib/ai/tools/parallelClient'
+import { searchWithReads, createOnce, FOLLOW_UP_SYSTEM, S6_MAX_READS } from '@/lib/ai/consultative/searchReads'
+import { ONE_BRAIN_CORE, PRESENT_PLAN_DESCRIPTION, PRESENT_PLAN_FIELD_NOTES, THINK_DEEPER_DESCRIPTION, THINK_DEEPER_NOTE, ONE_BRAIN_CHAT_CAP_NOTE, ONE_BRAIN_FARE_NOTE, ONE_BRAIN_WEB_FALLBACK_NOTE, CHAT_SEARCH_BUDGET, SEARCH_DEPTH_DESCRIPTION, searchDepthOf, type SearchDepth, ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, oneBrainDynamic } from '@/lib/ai/consultative/oneBrain'
+import { oneBrainMediaStream } from '@/lib/ai/consultative/oneBrainMedia'
+import { oneBrainTurnTrace } from '@/lib/ai/consultative/turnTrace'
+import { serperLastAccountErrorAt } from '@/lib/ai/tools/serperClient'
+import { getWeatherForecast } from '@/lib/ai/tools/weatherForecast'
+import { understandTurn } from '@/lib/ai/answerV4/understand'
+import { deepResearch, exaSearch, deepEvidenceForModel, GAP_SYSTEM, EXA_PRICE } from '@/lib/ai/consultative/deepSearch'
+import { unwindWritingBlock, unwindToolHint, UNWIND_PICK_ROWS, UNWIND_MAX_TOKENS } from '@/lib/ai/consultative/unwindWriting'
+import { answerInsteadOfAsk, unwoundAskLine } from '@/lib/ai/consultative/answerInsteadOfAsk'
+import { checkToolLocation, locationRefusal, HOTEL_CALL_CREDIT_CAP } from '@/lib/ai/consultative/toolLocation'
+import { referTitlesForPrompt } from '@/lib/ai/consultative/referTitles'
+import { createLeanResearch, readVenuePages, PICK_PAGE_READ_MAX } from '@/lib/ai/consultative/researchLoop'
+import { logText } from '@/lib/ai/logSafeText'
+import { wave3PromptLines, PICK_TURN_TOOL_NAMES } from '@/lib/ai/consultative/wave3PromptLines'
+import { calculate } from '@/lib/ai/tools/calculate'
+import { createTurnTrace, traceCallBy, traceToolsInner, traceToolsOuter } from '@/lib/ai/consultative/traceDiagnostics'
 import { deriveSituation, type SituationFrame } from '@/lib/ai/consultative/situationFrame'
 import { buildConsultativeV1Block } from '@/lib/ai/consultative/consultativeV1Prompt'
 import { scheduleTimesIn } from '@/lib/ai/travelGuard'
@@ -97,33 +138,54 @@ import { closesLate } from '@/lib/ai/consultative/hardConstraints'
 import { assessActionability, isClarifyReply, memorySignal, mergeClarifyAnswer, collapseClarifyTurns, turnStartsNewConsultation, turnDomain } from '@/lib/ai/consultative/actionability'
 import { currentSubjectMessages, currentSubjectUserTexts, inheritedPlanningIntent as inheritPlanningIntent } from '@/lib/ai/consultative/subjectScope'
 import { statedDistrict } from '@/lib/ai/districts'
+import { cityForName, cityInText } from '@/lib/ai/tools/vietnamCities'
+import { hasValidCurrentLocation } from '@/lib/location/currentLocation'
+import { areaAskStream, areaFromAnswer, mergeAreaAnswer, ONE_BRAIN_NO_LOCATION_NOTE } from '@/lib/ai/consultative/areaAsk'
+import { maskStreetNames } from '@/lib/ai/streetNames'
+import { createTurnPlaceOwner } from '@/lib/ai/consultative/turnPlaceState'
+
+/** Tools whose lookup goes through the search provider (Serper) - the only ones an account-level refusal can have failed. */
+const SEARCH_BACKED_TOOLS = new Set(['web_search', 'search_places', 'search_products', 'get_news', 'get_flight_prices', 'get_hotel_prices', 'get_transport_options'])
 import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilter'
 import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/memoryTopic'
 import { deriveSearchNow, SPECIFIC_DATE, type SearchNow } from '@/lib/ai/consultative/searchNow'
+import { searchNowIntentGate, applySearchNowGate, cityStatedAsPlace, rulesReadVenueRequest, rulesReadPlaceOrTripRequest, streetNameUsedAsPlace, wardStatedAsPlace, gateAreaFacts } from '@/lib/ai/consultative/searchNowIntentGate'
+import { reconcileAsk, settleNarrowedCard } from '@/lib/ai/consultative/askReconcile'
+import { currentConsultationTexts, subjectAssistantTexts } from '@/lib/ai/consultative/consultationWindow'
 import { tripAskAfter, missingTripFacts } from '@/lib/ai/consultative/tripFacts'
 import { buildDomainFrame, frameDomainOf, frameLibrary, frameRef, PLAN_HEADINGS, FRAME_CORE } from '@/lib/ai/consultative/domainFrames'
-import { runConsultBrain, consultV2Enabled, wasAskReply, buildAskReply, placeTypeFor, latestShoppingPickPrice, shoppingMarkerRecords } from '@/lib/ai/consultative/consultBrain'
-import { routeConsult } from '@/lib/ai/consultative/consultRouter'
+import { type ConsultDecision, type ConsultDomain, runConsultBrain, consultV2Enabled, wasAskReply, buildAskReply, placeTypeFor, latestShoppingPickPrice, shoppingMarkerRecords } from '@/lib/ai/consultative/consultBrain'
+import { routeConsult, catalogueAsk, isAnswerToAsk, labelAskReply, recentShownNames } from '@/lib/ai/consultative/consultRouter'
+import { startRequestBudget, currentBudget, requestBudgetOn } from '@/lib/ai/budget/requestBudget'
+import { agentPromptVersion, consultV3Enabled, CONSULT_V3_SYSTEM } from '@/lib/ai/agent/runtime/consultV3'
+import { closingQuestion, issueClarifyCredit, peekClarifyCredit, takeClarifyCredit } from '@/lib/ai/quota/clarifyCredit'
+import { carriedFromStoredCandidates, storedStates, shoppingPickPriceStoredFirst, shoppingRecordsStoredFirst } from '@/lib/ai/consultative/serverCarried'
 import { promoteTripPlan } from '@/lib/ai/consultative/planIntent'
 import { adviceBlock, adviceEnabled, adviceApplies } from '@/lib/ai/consultative/adviceBlock'
-import { rejectModifierOf, withoutQuotedNames, isFixedPhrase, searchableAsPick } from '@/lib/ai/consultative/consultRouter'
-import { consultLunaEnabled, consultLunaFastEnabled, skipLunaIntent, consultLunaPlanEnabled, LUNA_PLAN_RULE, isLunaAnswerTurn, runLunaIntent, mergeIntentWithRules, lunaTurnFacts, withoutReferenceTurns, LUNA_CORE, INTENT_SYSTEM } from '@/lib/ai/consultative/luna'
+import { rejectModifierOf, withoutQuotedNames, isFixedPhrase, searchableAsPick, validShownTitles } from '@/lib/ai/consultative/consultRouter'
+import { consultLunaEnabled, consultLunaFastEnabled, skipLunaIntent, consultLunaPlanEnabled, LUNA_PLAN_RULE, isLunaAnswerTurn, runLunaIntent, mergeIntentWithRules, agreedChatDecision, lunaTurnFacts, withoutReferenceTurns, LUNA_CORE, INTENT_SYSTEM } from '@/lib/ai/consultative/luna'
 import { lunaDataMessage, buildLeakDetector, sanitizeSearchQuery } from '@/lib/ai/consultative/lunaSafety'
 import { asksOtherDestination, eventPreCall, nearbyDestination, nearbyTurnedDown, onlyRowsNamed, slimResultForModel, travelPreCall, unshownRows, withoutShownRows } from '@/lib/ai/consultative/consultTravel'
 import { geoGuardArea, guardPlaceGeography } from '@/lib/ai/tools/placeGeoGuard'
 import { compactCandidates, compactProducts, loadChatSessionState, nextChatSessionState, readChatSessionId, saveChatSessionState, type ChatSessionState } from '@/lib/ai/consultative/chatSessionState'
-import { turnUsd, sumCounts, turnCostStream } from '@/lib/ai/turnCost'
-import { planPresearch, planFlightPresearch, type FlightPresearchPlan, presearchMessages, presearchFrames, prefixBody, deferredBody, searchingFrame, type PresearchOutcome, type PresearchPlan } from '@/lib/ai/consultative/presearch'
+import { turnUsd, sumCounts, turnCostStream, type TurnCostInfo } from '@/lib/ai/turnCost'
+import { recordAiUsage, ledgerMode, usageSplit } from '@/lib/ai/usage/usageLedger'
+import { logSessionCost } from '@/lib/ai/sessionCost'
+import { responsesConfigured } from '@/lib/ai/llm/providers/openai'
+import { coveringQuery, planPresearch, planFlightPresearch, type FlightPresearchPlan, presearchMessages, presearchFrames, presearchPlaceSites, prefixBody, deferredBody, searchingFrame, type PresearchOutcome, type PresearchPlan } from '@/lib/ai/consultative/presearch'
 import { wantsMoreFromSet, reusablePlaceSearch, type PlaceSearchEvidence } from '@/lib/ai/consultative/moreFromSet'
 import { coercePlaceType } from '@/lib/ai/tools/placeType'
 import { coerceTransportMode } from '@/lib/ai/tools/transportMode'
 import { clampPassengers } from '@/lib/ai/tools/passengers'
+import { fetchRailSchedule } from '@/lib/ai/tools/railSchedule'
 import { trimPlacesForModel } from '@/lib/ai/consultative/modelPayload'
-import { compactHistory } from '@/lib/ai/historyCompaction'
+import { agentCandidateSet } from '@/lib/ai/agent/runtime/candidateSet'
+import { compactHistory as compactHistoryTail, compactHistoryToBudget } from '@/lib/ai/historyCompaction'
 import { compactRequestMessages } from '@/lib/chat/requestHistory'
 import { readCappedBody, exceedsTextCeiling } from '@/lib/http/readCappedBody'
 import { stepRepeatGuard } from '@/lib/ai/stepRepeatGuard'
 import { planCompletionStream, toolResultDigest, completionInstruction } from '@/lib/ai/planCompletion'
+import { finalWriteStream, finalWriteInstruction, finalWriteSystem } from '@/lib/ai/finalWrite'
 import { askAfterStream, endsWithQuestion } from '@/lib/ai/consultative/askAfter'
 import { deriveLocalShopSearch } from '@/lib/ai/consultative/localShop'
 import { assistantAskedBack, wantsWiderArea, refineAsk } from '@/lib/ai/consultative/echoQuestion'
@@ -131,12 +193,15 @@ import { emptyResultStream } from '@/lib/ai/consultative/emptyResultStream'
 import { relaxEmptyPlaces, widenLocation } from '@/lib/ai/placeRelax'
 import { resolveReplyLanguage } from '@/lib/ai/replyLanguage'
 import type { CoreMessage } from 'ai'
-import { cannedChitchat, cannedCarriedFact, cannedDataStreamResponse } from '@/lib/ai/cannedReply'
+import { cannedChitchat, cannedCarriedFact, cannedDataStreamResponse, isAckOnly, isThanksOnly } from '@/lib/ai/cannedReply'
+import { turnSignal } from '@/lib/chat/turnDeadline'
 
 // Owner decision 28 Sep 2026: 3-day plan turns measured 61–89 s locally, over the old 60 s cap. The
 // project runs on Fluid compute (verified read-only: fluid=true, default timeout 300 s), so 120 s needs no
 // plan change. TURN_DEADLINE_MS keeps 10 s of headroom for the finish frame and post-stream guards.
-export const maxDuration = 120
+// 01/11 (owner approved: "nâng giới hạn thời gian lên 300 giây chỉ riêng cho Nghiên cứu sâu"; was 120, owner decision 28/09): the platform
+// ceiling is 300 s for the Deep Research turn (lib/ai/research DEEP_RESEARCH_LIMITS); every other turn still ends by TURN_DEADLINE_MS (110 s).
+export const maxDuration = 300
 const TURN_DEADLINE_MS = 110_000
 
 /** A travel turn that is a TRIP (going somewhere), not a single hotel or ticket lookup. Folded text. */
@@ -148,6 +213,10 @@ export async function POST(req: Request) {
   /** Audit cost sink (env `AUDIT_USAGE_LOG_FILE`): Serper calls attributed to this turn. */
   const serperAtStart = serperSnapshot()
   const auditTurn = req.headers.get('x-audit-turn')
+  // CONSULT_TRACE_DIAGNOSTICS (Wave 2C, default OFF): null unless the flag is exactly "1" outside a production runtime. Observability only - see traceDiagnostics.ts. Every use below is `trace?.…`
+  // or a wrapper that returns its input untouched when `trace` is null.
+  const trace = createTurnTrace(req.headers)
+  trace?.emit('turn_start', { idSource: trace.idSource, flags: { CONSULT_FINAL_SYNTHESIS: consultFinalSynthesisOn(), CONSULT_ANSWER_ATTRIBUTION: consultAnswerAttributionOn(), CONSULT_GENERAL_ASSISTANT: consultGeneralAssistantOn() } })
 
   // ── P1-3: deliver whatever the previous request buffered ───────────────────
   //
@@ -231,6 +300,7 @@ export async function POST(req: Request) {
       || validated.code === 'preference_budget_exceeded'
       || validated.code === 'input_budget_exceeded'
       || validated.code === 'image_too_large'
+      || validated.code === 'file_too_large'
     return new Response(
       JSON.stringify(isSize
         ? { error: validated.code, message: serverMessage('chat.tooLong', requestLocale(req)) }
@@ -239,6 +309,12 @@ export async function POST(req: Request) {
     )
   }
 
+  // 31/10: an attached PDF becomes its fenced text layer here, as the last step of the validated result and before anything reads the turn
+  // (pdfAttachments.ts); the model never gets the bytes. The person's own words are kept apart (typedMessages) for every reader of "what they asked".
+  const typedMessages = validated.messages
+  const pdfRead = await pdfPartsToText(typedMessages)
+  if (pdfRead.docs.length) console.log(JSON.stringify({ type: 'tappyai_pdf_attachments', docs: pdfRead.docs }))
+  validated.messages = pdfRead.messages
   const messages = validated.messages
   const rawUserPrefs = validated.preferences
   const { userLocation: rawUserLocation, responseStyle: rawResponseStyle, shareSlug: rawShareSlug } = (rawBody ?? {}) as {
@@ -247,6 +323,10 @@ export async function POST(req: Request) {
     /** G1: set only by the public shared-result page's follow-up box. Validated in the guard. */
     shareSlug?: unknown
   }
+
+  // 31/10: the composer mode (chat / web / think), shape-checked; it acts on one-brain turns only (below).
+  // the composer mode the client asked for; the plan's tier may run a lower one (below, once the account's plan is known)
+  let chatMode = readChatMode(rawBody)
 
   // User-controlled response style (Personalization — MFS 2.6: lets the user shape tone).
   // Sent from the client (localStorage); no persistence needed. Validated to a small enum.
@@ -273,7 +353,8 @@ export async function POST(req: Request) {
   /** Who pressed the button, for the `ask_tappy_place` metric row. Null for a guest. */
   let clipUserId: string | null = null
 
-  const lastUserMsg = [...messages].reverse().find((m: { role: string }) => m.role === 'user')
+  // the person's own words: read from the turn BEFORE a PDF became text, so a document's text never passes for what they typed
+  const lastUserMsg = [...typedMessages].reverse().find((m: { role: string }) => m.role === 'user')
   const rawContent = lastUserMsg?.content
   const lastText = typeof rawContent === 'string'
     ? rawContent
@@ -316,6 +397,15 @@ export async function POST(req: Request) {
   const replyLanguage = resolveReplyLanguage({ lastText, priorUserTexts: earlierUserTexts, clientLocale })
   const lang = replyLanguage.lang
   const forcedTool = detectForcedTool(lastText)
+  // CONSULT_UNWIND_S4A: the keyword reading no longer DECIDES (domain, pre-search, decision frame, actionability); it reaches the model as a hint
+  // only (unwindToolHint, below). Memory scoping and the logs keep reading `forcedTool`. Measured 28/10: "tiệm vàng" forced search_places, "mua" forced
+  // search_products, "trời mưa" was read as "mua". OFF: `forcedToolDecides` is `forcedTool`, as at HEAD.
+  // CONSULT_ONE_BRAIN (oneBrain.ts): the answer model is the only reader of the question - no rules router, intent call, code question, pre-search, plan frame
+  // or keyword tool decides the turn; it gets the whole conversation, every tool and one general instruction. An image / clip turn and the agent keep their own path.
+  // 31/10: a turn with a picture runs on one brain too (gpt-6-luna reads images with tools defined - probe 31/10); before, it fell back to the
+  // old 3-step, 1 024-token path with the old rulebook.
+  const oneBrain = consultOneBrainOn() && !tappyAgentEnabled() && !clipRef
+  const forcedToolDecides = consultUnwindS4aOn() ? null : forcedTool && !oneBrain ? forcedTool : null
   // P0: a travel turn buffers and runs the fail-closed dynamic-fact guard, so no
   // fabricated fare/price/schedule/availability can reach the user.
   const travelIntent = detectTravelIntent(lastText)
@@ -342,6 +432,8 @@ export async function POST(req: Request) {
   // A district the USER named (never the model's own location string, which it fills from the GPS).
   // It centres the place search and constrains the rows by address (placeConstraintFilter.ts).
   const statedArea = wantsWiderArea(lastText) ? null : statedDistrict(lastText)
+  /** The same district under a second name: the one-brain place search shadows `statedArea` with what it decides (review 30/10). */
+  const userStatedArea = statedArea
     ?? subjectUserTexts.slice(0, -1).reverse().map(t => statedDistrict(t)).find(d => d !== null)
     ?? null
   // Phase 7 group 4 (golden T1/G4a): a plan is built across turns. The planning block used to be
@@ -355,7 +447,8 @@ export async function POST(req: Request) {
   // in the reply, budget_max 2,000,000 on the place rows) — the fold read the last 3 user turns
   // whatever their subject.
   const priorUserTexts: string[] = subjectUserTexts.slice(-4, -1)
-  const ownPlanningIntent = detectPlanningIntent(lastText)
+  // Conversation-scoped, not lastText: after Tappy's clarifying question the user's answer alone rarely re-states the trip (intent.ts).
+  const ownPlanningIntent = detectPlanningIntentFromConversation(messages)
   // UAT3 P0: the nearest plan, but never across a purchase or another tool subject (subjectScope.ts).
   const inheritedPlanningIntent = ownPlanningIntent === null && isPlanningRefinement(lastText)
     ? inheritPlanningIntent(priorUserTexts, { hasGps: !!userLocation, lang })
@@ -368,11 +461,29 @@ export async function POST(req: Request) {
    * pipeline for this turn (never a refusal).
    */
   const priorAssistantText = (() => { const m = [...messages].reverse().find((x: { role: string }) => x.role === 'assistant'); return typeof m?.content === 'string' ? m.content : '' })()
+  // LOC-DEFAULT-HCM-01 (phương án b): a reply that is ONLY an area ("ở Đà Nẵng"), right after the code's area question, is ROUTED as the
+  // missing part of the request it answers — the router never sees the bare city (it read it as a new trip). Routing inputs only; the
+  // model's thread and everything else read `messages` as before (areaAsk.ts mergeAreaAnswer).
+  const routingMessages = mergeAreaAnswer(messages)
+  const areaAnswerMerged = routingMessages !== messages
+  const routingLastUserMsg = areaAnswerMerged ? [...routingMessages].reverse().find((m: { role: string }) => m.role === 'user') : lastUserMsg
+  const routingPriorAssistantText = areaAnswerMerged ? (() => { const m = [...routingMessages].reverse().find((x: { role: string }) => x.role === 'assistant'); return typeof m?.content === 'string' ? m.content : '' })() : priorAssistantText
+  if (areaAnswerMerged) console.log(JSON.stringify({ type: 'tappyai_area_ask', step: 'answer_merged_for_routing' }))
   // Owner §6: the ASK turn and the button turns are decided by CODE (consultRouter.ts: rules per area +
   // question/button templates) — 0 LLM, 0 Serper. The LLM brain runs ONLY when the rules are unsure.
   // TAPPY_AGENT (default OFF): the bounded agent decides the turn (src/lib/ai/agent). OFF = the Consultative path below, unchanged.
   const agentOn = tappyAgentEnabled() && !hasImage && !clipRef
-  const consultOn = consultV2Enabled() && !hasImage && !clipRef
+  // Phase 8 (TAPPY_AGENT=2): the new agent runtime. Shares every agent-path step below; differs only where marked `agentV2`.
+  const agentV2 = agentOn && agentRuntimeV2Enabled()
+  // CONSULTATIVE_IN_AGENT (default OFF, TAPPY_AGENT=2 only): consultative voice + advice principles in the agent prompt, memory / preferences
+  // as fenced DATA (runtime/consultativeVoice.ts). Off = every line it guards below is skipped and the request is unchanged.
+  const consultativeAgent = agentV2 && consultativeInAgentEnabled()
+  // C2_REQUEST_BUDGET (default off): one token/time ledger for every model call of this request, ONLY when the turn runs the CONSULT_V3
+  // prompt; every other prompt keeps the legacy path. Classified by the same function the runtime picks its prompt with. Flag off: nothing.
+  const c2PromptVersion = agentV2 ? agentPromptVersion(consultativeAgent) : agentOn ? 'agent_v1' : 'legacy'
+  if (c2PromptVersion === 'consult_v3') startRequestBudget(startTime)
+  if (requestBudgetOn()) console.log(JSON.stringify({ type: 'tappyai_request_budget_scope', prompt_version: c2PromptVersion, ledger: !!currentBudget() }))
+  const consultOn = consultV2Enabled() && !hasImage && !clipRef && !oneBrain
   // R14 (UAT 9644d8e): the stored state must be known BEFORE routing — a client whose history does not show
   // the consultation ("xem thêm" alone) was routed as a fresh chat. The request user is looked up ONCE; this
   // promise is the same one the account branch awaits below (a failure surfaces there, as before).
@@ -382,7 +493,23 @@ export async function POST(req: Request) {
   const earlyChatState = consultOn && chatSessionId
     ? await requestUserP.then(r => loadChatSessionState(r.user?.id ?? null, chatSessionId)).catch(() => null)
     : null
-  const routedRaw = consultOn ? routeConsult(messages, { hasGps: !!userLocation, lang }) : null
+  // CONSULT_ANSWER_ATTRIBUTION (default OFF = `wasAskReply`, exactly as before): is this message the ANSWER to the question just asked, or a request of its own?
+  // One shared function (consultRouter.isAnswerToAsk) so the router, the brain's "never ask twice" rule and the route below read a reply identically.
+  const attributionCtx = { hasGps: !!userLocation, lang }
+  const attributionDomain = (earlyChatState?.domains?.[0] ?? null) as ConsultDomain | null
+  const routingUserText = typeof routingLastUserMsg?.content === 'string' ? routingLastUserMsg.content : lastText
+  const routingAnswersAsk = isAnswerToAsk(routingPriorAssistantText, routingUserText, attributionCtx, attributionDomain, recentShownNames(routingMessages.slice(0, -1)))
+  const answersAsk = isAnswerToAsk(priorAssistantText, lastText, attributionCtx, attributionDomain, recentShownNames(messages.slice(0, -1)))
+  // App Review 5.1.2(i): an account that uses the iOS app sends its content to the AI provider only with a current
+  // agreement. Checked before ANY model call in this request (the intent read below included), on the server, so a
+  // direct API call is held too. Web-only accounts are unaffected. An identity failure is handled where it is awaited
+  // (the age gate fails closed there), so a missing user here skips this check only.
+  const aiConsentUser = (await requestUserP.catch(() => null))?.user ?? null
+  if (aiConsentUser) {
+    const aiConsentRefusal = await refuseWithoutAiConsent(aiConsentUser.id, clientLocale)
+    if (aiConsentRefusal) return aiConsentRefusal
+  }
+  const routedRaw = consultOn ? routeConsult(routingMessages, { hasGps: !!userLocation, lang, ...(consultUnwindS2bOn() ? { unwindFollowup: true } : {}), ...(trace ? { trace: (e: Record<string, unknown>) => { const { ev, ...rest } = e; trace.emit(String(ev), rest) } } : {}) }) : null
   // A continuing turn (a button, "xem thêm", "chỗ đó…") that the visible history cannot place takes the
   // stored consultation's area and slots, decided by code (no brain call).
   const routed = routedRaw && earlyChatState?.domains?.length && routedRaw.decision.domains.length === 0
@@ -395,7 +522,7 @@ export async function POST(req: Request) {
   const lunaOn = consultOn && consultLunaEnabled()
   // Checked on the user's OWN words: names copied back from our cards are references, not requirements (replay 30/09
   // FOOD-2 t4: "… hay Ẩm thực sân vườn Mái Lá?" became a garden-seating constraint).
-  const lunaOwnWords = withoutReferenceTurns(withoutQuotedNames(messages), earlyChatState?.shown ?? [])
+  const lunaOwnWords = withoutReferenceTurns(withoutQuotedNames(routingMessages), earlyChatState?.shown ?? [])
   const lunaUserTexts = lunaOwnWords.filter((m: { role: string }) => m.role === 'user').map((m: { content: unknown }) => typeof m.content === 'string' ? m.content : Array.isArray(m.content) ? m.content.map((p: { type?: string; text?: string }) => p?.type === 'text' ? p.text ?? '' : '').join(' ') : '').slice(-7)
   // CONSULT_LUNA_FAST (default OFF): a SURE continuing turn keeps the rules' decision (no intent call, ~1.9 s saved —
   // luna.ts skipLunaIntent). Slots = the stored consultation (last turn's checked facts) + only what THIS message adds:
@@ -404,8 +531,11 @@ export async function POST(req: Request) {
   const lunaSkipped = lunaOn && consultLunaFastEnabled() && skipLunaIntent(routed, earlyChatState?.domains, lastText)
   const lunaLastOwn = lunaOwnWords.filter((m: { role: string }) => m.role === 'user').slice(-1)
   const lunaSkipDecision = lunaSkipped && routed ? { ...routed.decision, known: { ...(earlyChatState?.known ?? {}), ...routeConsult(lunaLastOwn, { hasGps: !!userLocation, lang }).decision.known } } : null
+  // P0-1 closeout (owner decision 16/10): an intent / brain answer that ARRIVED but is invalid (free text, broken JSON, no valid turn,
+  // a domain outside the catalogue) is recorded here. A FAILED call (error, timeout, empty) is not: that turn continues as before.
+  const consultInvalid: { reason: string | null } = { reason: null }
   const lunaIntentRun = !agentOn && lunaOn && !lunaSkipped && AI.isConfigured() && !(routed?.confidence === 'rule' && isFixedPhrase(lastText))
-    ? await runLunaIntent(o => AI.extract(o) as never, messages, { hasGps: !!userLocation, previousWasAsk: wasAskReply(priorAssistantText), deterministicDomain: lastUserMsg ? turnDomain(lastUserMsg, { hasGps: !!userLocation, lang }) : null, userTexts: lunaUserTexts, storedNames: earlyChatState?.shown?.slice(-8) })
+    ? await runLunaIntent(o => AI.extract(o) as never, routingMessages, { hasGps: !!userLocation, previousWasAsk: routingAnswersAsk, deterministicDomain: routingLastUserMsg ? turnDomain(routingLastUserMsg, { hasGps: !!userLocation, lang }) : null, userTexts: lunaUserTexts, storedNames: earlyChatState?.shown?.slice(-8), onInvalid: r => { consultInvalid.reason = `intent:${r}` }, ...(consultUnwindS4bOn() ? { knowledgeDomainless: true } : {}) })
     : null
   if (lunaIntentRun) console.log(JSON.stringify({ type: 'tappyai_luna_intent', rules: routed?.confidence ?? null, rulesTurn: routed?.decision.turn ?? null, turn: lunaIntentRun.decision.turn, domains: lunaIntentRun.decision.domains, difficulty: lunaIntentRun.difficulty, served: lunaIntentRun.served, ms: lunaIntentRun.ms, usd: lunaIntentRun.costUsd, dropped: lunaIntentRun.check.dropped, corrected: lunaIntentRun.check.corrected }))
   // A continuing turn the intent could not place keeps the stored consultation's area (same rule as the router's).
@@ -413,25 +543,103 @@ export async function POST(req: Request) {
     ? { ...lunaIntentRun, decision: { ...lunaIntentRun.decision, domains: earlyChatState.domains as typeof lunaIntentRun.decision.domains, known: { ...(earlyChatState.known ?? {}), ...lunaIntentRun.decision.known } } }
     : lunaIntentRun
   // The turn type stays with the code router when it is sure (owner: Luna reads areas / goal / constraints / difficulty).
-  const lunaMerged = lunaStated ? mergeIntentWithRules(lunaStated.decision, routed, routeConsult(lunaOwnWords, { hasGps: !!userLocation, lang }).decision.known) : null
+  // CONSULT_THREAD_AWARE_ASK (Wave 2D · A, default OFF): the evidence the thread holds - the user's words of this consultation and the product names of the card it showed. OFF = undefined: the
+  // merge below and the card step further down read nothing of it and behave as before (askReconcile.ts, shownProductRef.ts).
+  const threadAwareAsk = consultThreadAwareAskOn() && !agentOn
+  const threadAskEvidence = threadAwareAsk
+    // Wave 2E: the user's words count only inside the CURRENT consultation (after the last reply that was not a clarifying question), and the card that counts is the newest one of this subject, restricted to
+    // the product family of this message - the same scope the router uses (consultationWindow.ts, consultRouter.ts validShownTitles).
+    ? { userTexts: currentConsultationTexts(messages, subjectUserTexts.length), shownTitles: validShownTitles(subjectAssistantTexts(messages, subjectUserTexts.length), lastText), establishedTexts: subjectUserTexts.slice(0, -1), gps: !!userLocation }
+    : undefined
+  const lunaOwnKnown = lunaStated ? routeConsult(lunaOwnWords, { hasGps: !!userLocation, lang }).decision.known : {}
+  // Wave 4 · C-PRE-2 (CONSULT_CHAT_DOMAIN_AGREEMENT, OFF = the merge as it was): a free-chat turn keeps only the domains BOTH readers named.
+  const lunaMerged = lunaStated ? (m => consultChatDomainAgreementOn() ? agreedChatDecision(m, lunaStated.decision, routed) : m)(mergeIntentWithRules(lunaStated.decision, routed, lunaOwnKnown, threadAskEvidence)) : null
   const lunaRun = lunaStated && lunaMerged ? { ...lunaStated, decision: lunaMerged.decision, mode: lunaMerged.mode } : null
-  const consultRun = lunaRun ?? (!agentOn && consultOn && routed?.confidence === 'unsure' && AI.isConfigured()
-    ? await runConsultBrain(o => AI.generate(o), messages, { hasGps: !!userLocation, previousWasAsk: wasAskReply(priorAssistantText), deterministicDomain: lastUserMsg ? turnDomain(lastUserMsg, { hasGps: !!userLocation, lang }) : null })
+  // An invalid intent answer is not retried through the brain (one model decision per turn; the fallback below answers instead).
+  const consultRun = lunaRun ?? (!agentOn && consultOn && routed?.confidence === 'unsure' && AI.isConfigured() && !consultInvalid.reason
+    ? await runConsultBrain(o => AI.generate(o), routingMessages, { hasGps: !!userLocation, previousWasAsk: routingAnswersAsk, deterministicDomain: routingLastUserMsg ? turnDomain(routingLastUserMsg, { hasGps: !!userLocation, lang }) : null, onInvalid: r => { consultInvalid.reason = `brain:${r}` } })
     : null)
+  // P0-1 closeout: the SERVER fallback for an invalid model decision, when the rules themselves were not sure (a 'rule' decision is
+  // code's own and stands). An ask card from the catalogue of the domain code reads, in the user's words; none -> the domain question.
+  // Nothing of the invalid answer is used.
+  const consultFallbackState = subjectUserTexts.slice(-5).join(' . ')
+  const consultDomainQuestion = (): ConsultDecision => ({ domains: [], turn: 'ask', known: {}, assumptions: [], ask: catalogueAsk({ domains: [], questionIds: [] }, consultFallbackState, !!userLocation, lang).ask })
+  const consultFallback: ConsultDecision | null = consultInvalid.reason && !consultRun && routed?.confidence !== 'rule' ? (() => {
+    const det = routingLastUserMsg ? turnDomain(routingLastUserMsg, { hasGps: !!userLocation, lang }) : null
+    const built = det ? catalogueAsk({ domains: [det], questionIds: [] }, consultFallbackState, !!userLocation, lang) : null
+    console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'consult_decision_invalid', reason: consultInvalid.reason, fallback: built?.ask ? built.source : 'domain_question' }))
+    return built?.ask ? { domains: [det!], turn: 'ask' as const, known: {}, assumptions: [], ask: built.ask } : consultDomainQuestion()
+  })() : null
+  if (consultInvalid.reason && !consultFallback) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'consult_decision_invalid', reason: consultInvalid.reason, fallback: 'rules_decision' }))
   // A4 (02/10): "lập kế hoạch …" is answered with the PLAN, not a hotel pick (planIntent.ts) — the ask card stays the first step.
-  const consultDecided = consultRun?.decision ?? lunaSkipDecision ?? (routed ? routed.decision : null)
+  const consultDecidedRaw = consultRun?.decision ?? consultFallback ?? lunaSkipDecision ?? (routed ? routed.decision : null)
+  // P0-1 trust boundary (G2 package 1): an ask card whose text a MODEL wrote (brain JSON, or the intent call) is rebuilt from the router's
+  // code-written catalogue — the model keeps only its domain and question ids. The router's own card is code text and is left as is.
+  const consultDecided = (() => {
+    const d = consultDecidedRaw
+    // Wave 2E: a card the evidence merge trimmed to its still-open questions is the router's own (code-written) card minus answered questions; rebuilding it from the catalogue would bring the answered
+    // questions back or, with one question left, turn it into a pick with no query (the open question silently lost).
+    if (!d || d.turn !== 'ask' || !d.ask || d.ask === routed?.decision.ask || d === consultFallback || (threadAwareAsk && lunaMerged?.rule === 'evidence_partial')) return d
+    const built = catalogueAsk({ domains: d.domains, questionIds: d.ask.questions.map(q => q.id) }, subjectUserTexts.slice(-5).join(' . '), !!userLocation, lang)
+    console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'consult_ask_catalogue', source: built.source, unknown_ids: built.unknownIds, model_questions: d.ask.questions.length }))
+    // Nothing the catalogue can ask -> no card (the same rule enforceConsultRules applies to a card with too few questions).
+    return built.ask ? { ...d, ask: built.ask } : { ...d, turn: 'pick' as const, ask: undefined }
+  })()
   const consultPlanPromoted = adviceEnabled() ? promoteTripPlan(consultDecided, messages, wasAskReply) : { decision: consultDecided, promoted: false }
   // chat2 A2: the ask card never asks what the request already says (area, or the request itself) and never fires for a local shop/repair request.
-  const consult = agentOn ? null : refineAsk((consultPlanPromoted.decision ? searchableAsPick(consultPlanPromoted.decision, subjectUserTexts, !!userLocation) : null) ?? consultPlanPromoted.decision, subjectUserTexts, { localShop: !!deriveLocalShopSearch(subjectUserTexts.join(' ')) })
+  // P0-1 closeout: the server fallback stays a server answer. If the card steps turned it into a search turn, the domain question is
+  // asked instead (never a free model answer on an invalid decision).
+  const keepServerFallback = (c: ConsultDecision | null): ConsultDecision | null => consultFallback && c && (c.turn !== 'ask' || !c.ask) ? consultDomainQuestion() : c
+  // CONSULT_THREAD_AWARE_ASK (Wave 2D · A): before the card is cut down to its one question, every question on it is checked against what the thread holds (askReconcile.ts); an answered one is dropped,
+  // and a card with nothing left open becomes a pick. OFF = `askReconciled` is null and the decision goes on untouched.
+  const askReconciled = threadAskEvidence && consultPlanPromoted.decision ? reconcileAsk(consultPlanPromoted.decision, { ...threadAskEvidence, lunaKnown: lunaStated?.decision.known ?? {} }) : null
+  const refineOpts = { localShop: !!deriveLocalShopSearch(subjectUserTexts.join(' ')) }
+  // Wave 2E (F-R3): narrowing a card of two or more questions down to ONE (by the merge or by the reconcile) must not turn the old gate round: refineAsk calls a multi-question card that filtering cut below
+  // two "not worth asking" (the state was already sufficient) and searches. When the card as it stood BEFORE the narrowing is judged a pick by that gate, the pick stands (= flag OFF).
+  const cardBeforeNarrowing = !threadAwareAsk ? null : lunaStated && lunaMerged?.rule === 'evidence_partial' ? mergeIntentWithRules(lunaStated.decision, routed, lunaOwnKnown, undefined).decision : consultPlanPromoted.decision
+  const narrowedCard = askReconciled?.decision ?? consultPlanPromoted.decision
+  const { card: consultToCard, notWorthAsking } = settleNarrowedCard(cardBeforeNarrowing, narrowedCard, subjectUserTexts, refineOpts)
+  const consultCarded = keepServerFallback(refineAsk((consultToCard ? searchableAsPick(consultToCard, subjectUserTexts, !!userLocation) : null) ?? consultToCard, subjectUserTexts, refineOpts))
+  // CONSULT_UNWIND_S2A (answerInsteadOfAsk.ts): a card on a decision that already holds enough becomes an answer with stated assumptions and one question at
+  // the end (a travel plan request: the plan turn). Flag OFF: `unwoundAsk` is null and the decision is untouched.
+  const unwindAsk = consultUnwindS2aOn() && !agentOn ? answerInsteadOfAsk(consultCarded, { serverFallback: consultCarded === consultFallback || (consultCarded?.domains.length ?? 0) === 0 }) : null
+  const unwoundAsk = unwindAsk?.unwound ?? null
+  const consult = agentOn ? null : unwindAsk && unwoundAsk ? (adviceEnabled() ? promoteTripPlan(unwindAsk.decision, messages, wasAskReply).decision : unwindAsk.decision) : consultCarded
+  if (unwoundAsk) console.log(JSON.stringify({ type: 'tappyai_unwind_ask', open_questions: unwoundAsk.questions.length, known_slots: Object.keys(consult?.known ?? {}).length, turn: consult?.turn ?? null }))
+  if (threadAwareAsk && (askReconciled?.report.applicable || lunaMerged?.rule)) trace?.emit('ask_reconcile', { mergeRule: lunaMerged?.rule ?? null, shownProducts: threadAskEvidence?.shownTitles.length ?? 0, ...(askReconciled ? { reference: askReconciled.report.reference, asked: askReconciled.report.asked, resolved: askReconciled.report.resolved, kept: askReconciled.report.kept, outcome: askReconciled.report.outcome, lunaValuesCounted: askReconciled.report.lunaCounted, lunaValuesNotGrounded: askReconciled.report.lunaNotGrounded } : {}), notWorthAsking, finalTurn: consult?.turn ?? null, finalAskIds: consult?.ask?.questions.map(q => q.id) ?? [] })
   if (consultPlanPromoted.promoted) console.log(JSON.stringify({ type: 'tappyai_plan_promoted', domain: 'travel', from: 'pick' }))
   // Measurement only (CONSULT_DECISION_LOG=1, off by default — replay sets it): the full decision, to check intent reading.
-  if (process.env.CONSULT_DECISION_LOG === '1' && consult) console.log(JSON.stringify({ type: 'tappyai_consult_decision', by: lunaRun ? `luna-${lunaRun.mode}` : consultRun ? 'brain' : lunaSkipped ? 'rules-fast' : 'rules', turn: consult.turn, domains: consult.domains, known: consult.known, area: consult.area ?? null }))
+  // S4 (J): a debug line, never in a production runtime; it keeps the KEY NAMES of what is known and whether an area was given, not the values (the user's words).
+  if (process.env.CONSULT_DECISION_LOG === '1' && consult && !isProductionRuntime()) console.log(JSON.stringify({ type: 'tappyai_consult_decision', by: lunaRun ? `luna-${lunaRun.mode}` : consultRun ? 'brain' : lunaSkipped ? 'rules-fast' : 'rules', turn: consult.turn, domains: consult.domains, known: Object.keys(consult.known), hasArea: !!consult.area }))
   console.log(JSON.stringify({ type: 'tappyai_consult', by: consultRun ? 'brain' : routed ? 'rules' : 'off', turn: consult?.turn ?? 'fallback', domains: consult?.domains ?? [], ms: consultRun?.ms ?? null, known: consult ? Object.keys(consult.known) : [], brain_in: consultRun?.usage.promptTokens ?? 0, brain_out: consultRun?.usage.completionTokens ?? 0 }))
+  // CONSULT_TRACE_DIAGNOSTICS (Wave 2C): the intent decision at every stage, side by side - the rules' reading, Luna's reading (after her own "no second ask" rule), the merge and its mode, the brain,
+  // and what the later card / plan steps turned it into. Reading only: nothing above or below depends on it.
+  if (trace) {
+    const sum = (d: ConsultDecision | null | undefined) => d ? { turn: d.turn, domains: d.domains, askIds: d.ask?.questions.map(q => q.id) ?? [], knownKeys: Object.keys(d.known) } : null
+    const rulesTurn = routed?.decision.turn ?? null, lunaTurn = lunaStated?.decision.turn ?? null, mergedTurn = lunaMerged?.decision.turn ?? null
+    const turnWinner = !lunaMerged ? null : routed?.confidence !== 'rule' ? 'luna_rules_unsure' : mergedTurn === rulesTurn && mergedTurn !== lunaTurn ? 'rules' : mergedTurn === lunaTurn && mergedTurn !== rulesTurn ? 'luna' : mergedTurn === rulesTurn ? 'agree' : 'neither'
+    const asked = wasAskReply(priorAssistantText)
+    const attributionRead = asked ? labelAskReply(priorAssistantText, lastText, attributionCtx, attributionDomain, recentShownNames(messages.slice(0, -1))) : null
+    trace.emit('intent', {
+      by: lunaRun ? `luna-${lunaRun.mode}` : consultRun ? 'brain' : lunaSkipped ? 'rules-fast' : routed ? 'rules' : 'off',
+      previousWasAsk: { routing: routingAnswersAsk, route: answersAsk, wasAskReply: asked, routeLabel: attributionRead?.label ?? null, routeSignal: attributionRead?.signal ?? null },
+      rules: routed ? { ...sum(routed.decision), confidence: routed.confidence, storedDomainAdopted: routed !== routedRaw } : null,
+      luna: lunaIntentRun ? { ...sum(lunaIntentRun.decision), difficulty: lunaIntentRun.difficulty } : null, lunaOn, lunaSkipped,
+      merge: lunaMerged ? { mode: lunaMerged.mode, ...sum(lunaMerged.decision), rulesTurn, lunaTurn, turnWinner, rule: lunaMerged.rule ?? null } : null,
+      brain: consultRun && !lunaRun ? sum(consultRun.decision) : null,
+      invalid: consultInvalid.reason, serverFallback: !!consultFallback,
+      decidedRaw: sum(consultDecidedRaw), decided: sum(consultDecided), final: sum(consult),
+    })
+  }
   // Under Consult V2 a plan is built ONLY when the user accepts (turn "plan"); a trip plan keeps the
   // [TAPPY_PLAN] payload, every other area's plan is the prose plan frame (domainFrames.ts).
-  const planningIntent = consult
+  // CONSULTATIVE_IN_AGENT: the trip may be spread over turns ("… muốn đi du lịch có gợi ý gì ko" then "chưa biết đi đâu, … tầm 3 ngày"): neither text alone
+  // reads as a trip, so the last 3 user texts together decide. Without this the plan was cut to its first sentence and venue cards stood in for it (live 2026-10-11).
+  const consultThreadTrip = consultativeAgent && !consult && ownPlanningIntent === null && inheritedPlanningIntent === null
+    && detectPlanningIntent(subjectUserTexts.slice(-3).join(' \n ')) === 'trip' ? 'trip' as const : null
+  const planningIntent = oneBrain ? null : consult
     ? (consult.turn === 'plan' && consult.domains[0] === 'travel' ? 'trip' as const : null)
-    : ownPlanningIntent ?? inheritedPlanningIntent
+    : ownPlanningIntent ?? inheritedPlanningIntent ?? consultThreadTrip
   // A plan's budget is the WHOLE envelope, and its searches are the activities
   // the user named — both decided here, deterministically, so the planning block
   // can state the total and list exactly the searches to run (see promptBuilder).
@@ -439,10 +647,11 @@ export async function POST(req: Request) {
   // the thread to that one line, so the trip block said "user chưa nêu" the city, dates and origin the
   // user HAD given (UAT: an evening plan in Omaha/Seattle). Under Consult V2 the router decides whether a
   // turn continues the consultation; a continuing turn keeps the whole thread (up to 6 user turns).
-  const consultContinues = !!consult && (['followup', 'compare', 'more', 'reject', 'plan'].includes(consult.turn) || (consult.turn === 'pick' && wasAskReply(priorAssistantText)))
+  const consultContinues = !!consult && (['followup', 'compare', 'more', 'reject', 'plan'].includes(consult.turn) || (consult.turn === 'pick' && answersAsk))
   const consultThreadTexts = consultContinues
     ? messages.filter((m: { role: string }) => m.role === 'user').map((m: { content: unknown }) => typeof m.content === 'string' ? m.content : Array.isArray(m.content) ? m.content.map((p: { type?: string; text?: string }) => p?.type === 'text' ? p.text ?? '' : '').join(' ') : '').slice(-7, -1)
     : null
+  trace?.emit('continuation', { consultContinues, consultTurn: consult?.turn ?? null, pickContinuesBecauseAnswer: !!consult && consult.turn === 'pick' && answersAsk, threadTextsKept: consultThreadTexts ? consultThreadTexts.length : 0 })
   const planning = planningIntent
     ? (() => {
         const thread = [...(consultThreadTexts ?? priorUserTexts), lastText]
@@ -555,6 +764,53 @@ export async function POST(req: Request) {
   // null for an exempt turn (canned / clarify) and for Pro (metered by the daily cap, not here).
   let quotaRefund: AiQuotaRefund | null = null
   let quotaRefunded = false
+  // ── CONSULT_V3 turn contract (clarifyCredit.ts) and Q-03 pending actions ────────────────────────────────────────────
+  // Every rule below is inert with CONSULT_V3 off: no credit is taken, issued or kept, and no "ok" is free. The stored chat state is read
+  // once here for both the pending-action rules and the carried facts (P0-2).
+  let clarifyIdentity: ReturnType<typeof aiQuotaIdentity> | null = null
+  let clarifyFree = false
+  const clarifyPriorAssistant = (() => {
+    const at = messages.map(m => m.role).lastIndexOf('user')
+    const prev = messages.slice(0, Math.max(0, at)).reverse().find(m => m.role === 'assistant')
+    if (!prev) return null
+    const c = (prev as { content?: unknown }).content
+    return typeof c === 'string' ? c : Array.isArray(c) ? c.map(p => (p && typeof p === 'object' && 'text' in p ? String((p as { text?: unknown }).text ?? '') : '')).join('') : null
+  })()
+  /** Called after the spend, on every metered turn. A direct answer to Tappy's last question is free: the credit is taken (one-shot). */
+  const clarifyFreeTurn = async (identity: ReturnType<typeof aiQuotaIdentity>): Promise<boolean> => {
+    if (!consultV3Enabled()) return false
+    // Q-03: while an action waits, the next turn is the agent's (a confirmation or a normal charged turn). Its question is not a clarify
+    // question, so no free answer is taken here and no credit is issued for the waiting turn.
+    if (storedEarly?.pendingAction && agentOn) return false
+    clarifyIdentity = identity
+    const d = await takeClarifyCredit(identity, clarifyPriorAssistant, lastText)
+    console.log(JSON.stringify({ type: 'tappyai_clarify_credit', step: 'take', free: d.free, ...(d.free ? {} : { reason: d.reason }) }))
+    if (d.free) clarifyFree = true
+    return d.free
+  }
+  const storedEarly = earlyChatState ?? (chatSessionId && !consultOn ? await requestUserP.then(r => loadChatSessionState(r.user?.id ?? null, chatSessionId)).catch(() => null) : null)
+  // Q-01/Q-03: an "ok" answering Tappy's closing question is read in context only when the turn is certainly free (peek, read-only).
+  const ackAnswersTappy = consultV3Enabled() && intent === 'chitchat' && isAckOnly(lastText) && !!clarifyPriorAssistant && !!closingQuestion(clarifyPriorAssistant)
+    && await peekClarifyCredit(aiQuotaIdentity((await requestUserP.catch(() => null))?.user ?? null, clientIp(req)), clarifyPriorAssistant, lastText)
+  // Q-03 (owner 18/10): a pending side-effecting action is answered in the very next turn by the agent, never by a canned reply. Only a clear
+  // thanks right after the request ends the wait for free. An image / clip turn is never the free canned reply while an action waits.
+  const pendingWaiting = agentOn && !!storedEarly?.pendingAction
+  const pendingEndsByThanks = pendingWaiting && intent === 'chitchat' && isThanksOnly(lastText) && confirmationOf(lastText) === null
+  const pendingWithMedia = !!storedEarly?.pendingAction && (hasImage || !!clipRef)
+  // P0-2: ONE carried-fact source for every reader of "what was already said about a venue". The server-stored rows of this consultation are
+  // used when they exist (values and the matching check); without stored rows the canonical client-history rule stays (owner 2026-09-18).
+  // The value and the check always come from the same source, so a fact is never read from one place and verified against the other.
+  const carriedFrom = (storedVenues: Parameters<typeof carriedFacts>[1], textVenues: Parameters<typeof carriedFacts>[1]) => {
+    const stored = carriedFromStoredCandidates(storedEarly, storedVenues)
+    const useStored = stored.carried.length > 0
+    return {
+      useStored,
+      carried: useStored ? stored.carried : carriedFacts(lastAssistantText, textVenues),
+      provenance: useStored ? stored.provenance : null,
+      known: (v: Parameters<typeof priorTextStates>[1], f: Parameters<typeof priorTextStates>[2]) =>
+        useStored ? storedStates(stored.carried, v, f) : priorTextStates(lastAssistantText, v, f, textVenues),
+    }
+  }
   /**
    * A turn the server answers WITHOUT a model (cost item 8: greetings / thanks, and a follow-up
    * asking hours / phone / address of ONE venue the previous reply already stated) costs $0 and is
@@ -563,14 +819,24 @@ export async function POST(req: Request) {
    * reuses this value, so "not charged" and "not modelled" can never disagree.
    */
   const cannedEarly: string | null = (() => {
-    if (intent === 'chitchat') return cannedChitchat(lastText, lang)
+    if (oneBrain) return null
+    if (pendingWaiting && !pendingEndsByThanks) return null
+    if (pendingWithMedia) return null
+    if (intent === 'chitchat') return ackAnswersTappy ? null : cannedChitchat(lastText, lang)
     if (!consultativeV1Enabled() || clipContext || decisionStage === 'confirmation') return null
+    // Q-01: under the agent a carried-fact answer is never served, so it must not be free either (the model runs and is charged).
+    if (agentOn) return null
+    // P0-2: an image / clip turn is about what it shows, never a previous reply.
+    if (hasImage || clipRef) return null
     const priorVenues = priorVenuesIn(lastAssistantText)
     if (priorVenues.length === 0) return null
     const referenced = referencedVenues(resolveReferences(lastText, priorVenues))
     const facts = factsAsked(lastText)
-    if (referenced.some(v => facts.some(f => !priorTextStates(lastAssistantText, v, f, priorVenues)))) return null
-    return cannedCarriedFact(facts, referenced, carriedFacts(lastAssistantText, priorVenues), lang)
+    // P0-2: when the server stored the rows of this consultation, the facts come from THEM (never the client's copy). Without stored rows the
+    // canonical rule stays (owner 2026-09-18: a follow-up about a venue the previous reply stated is free).
+    const src = carriedFrom([...priorVenues, ...referenced.filter(v => !priorVenues.some(p => p.name === v.name))], priorVenues)
+    if (referenced.some(v => facts.some(f => !src.known(v, f)))) return null
+    return cannedCarriedFact(facts, referenced, src.carried, lang, src.provenance)
   })()
   /**
    * Item 1 (owner decision 2026-09-19): a request too broad to advise on is answered with ONE
@@ -582,14 +848,14 @@ export async function POST(req: Request) {
   let gateAskAfter: { q: string; options: string[] } | null = null
   let gateDomain: string | null = null
   let clarifyGate = (() => {
-    if (agentOn || cannedEarly !== null || intent === 'chitchat' || !consultativeV1Enabled() || clipRef || hasImage || decisionStage === 'confirmation') return null
+    if (agentOn || oneBrain || cannedEarly !== null || intent === 'chitchat' || !consultativeV1Enabled() || clipRef || hasImage || decisionStage === 'confirmation') return null
     // A turn that starts a new consultation is gated on its own words (see ownDomainSwitch).
     const gateMessages = ownDomainSwitch ? messages.slice(-1) : messages
-    const a = assessActionability({ messages: gateMessages, hasGps: !!userLocation, lang, lastAssistantText: ownDomainSwitch ? null : lastAssistantText, planningIntent, forcedTool, movieRecommend })
+    const a = assessActionability({ messages: gateMessages, hasGps: !!userLocation, lang, lastAssistantText: ownDomainSwitch ? null : lastAssistantText, planningIntent, forcedTool: forcedToolDecides, movieRecommend })
     console.log(JSON.stringify({ type: 'tappyai_clarify_gate', actionable: a.actionable, domain: a.domain, missing: a.missing, signals: a.signals, questions: a.questions.map(q => q.q), scope: ownDomainSwitch ? 'turn' : 'thread' }))
     // UAT 2026-09-28: the question belongs to THIS turn's domain. A shopping turn in a thread that began
     // on food ("tìm giùm cái ốp 17 promax uag") was asked "dưới 100k/người" — the thread's food buckets.
-    const own = ownDomainSwitch ? a : assessActionability({ messages: messages.slice(-1), hasGps: !!userLocation, lang, lastAssistantText: null, planningIntent, forcedTool, movieRecommend })
+    const own = ownDomainSwitch ? a : assessActionability({ messages: messages.slice(-1), hasGps: !!userLocation, lang, lastAssistantText: null, planningIntent, forcedTool: forcedToolDecides, movieRecommend })
     const ask = own.domain && own.domain !== a.domain ? (own.askAfter ?? null) : (a.askAfter ?? null)
     gateDomain = own.domain ?? a.domain
     // One question per consultation: a reply that already ended by asking is not followed by another.
@@ -602,8 +868,8 @@ export async function POST(req: Request) {
    * a travel turn was asked a hotel budget instead. The one closing question names exactly what the
    * thread still lacks (tripFacts.ts); it replaces the gate's budget question on a trip.
    */
-  if (consultativeV1Enabled() && !(lastAssistantText && endsWithQuestion(lastAssistantText))) {
-    const threadUser = messages.filter(m => m.role === 'user' && typeof m.content === 'string').map(m => normalizeVN((m.content as string).toLowerCase())).join(' \n ')
+  if (consultativeV1Enabled() && !oneBrain && !(lastAssistantText && endsWithQuestion(lastAssistantText))) {
+    const threadUser =messages.filter(m => m.role === 'user' && typeof m.content === 'string').map(m => normalizeVN((m.content as string).toLowerCase())).join(' \n ')
     const lastFolded = normalizeVN(lastText.toLowerCase())
     // Origin / transport belong to an inter-city or abroad TRIP only — never to an evening out.
     const tripTurn = planningIntent === 'trip' || (planningIntent !== 'evening' && gateDomain === 'travel' && TRIP_WORDS.test(lastFolded))
@@ -618,8 +884,8 @@ export async function POST(req: Request) {
   // code — honest, with the cinemas' own pages — and NO search runs (no Serper, no Places, no card of cinemas).
   // AI-Hay pass (04/10): the data IS one query away (a web search returns Moveek's / the chains' now-showing lists) — a film question now SEARCHES
   // (searchIntel/filmSearch.ts) and the model answers from the extracted titles. FILM_SEARCH=0 restores the canned reply.
-  const filmAsk = !agentOn && process.env.FILM_SEARCH !== '0' && wantsFilmTitles(lastText) && (!consult || consult.domains.includes('entertainment') || consult.domains.length === 0)
-  const cannedMovie = !agentOn && !filmAsk && wantsFilmTitles(lastText) && (!consult || consult.domains.includes('entertainment') || consult.domains.length === 0) ? movieTitlesReply(lang) : null
+  const filmAsk = !agentOn && !oneBrain && process.env.FILM_SEARCH !== '0' && wantsFilmTitles(lastText) && (!consult || consult.domains.includes('entertainment') || consult.domains.length === 0)
+  const cannedMovie = !agentOn && !oneBrain && !filmAsk && wantsFilmTitles(lastText) && (!consult || consult.domains.includes('entertainment') || consult.domains.length === 0) ? movieTitlesReply(lang) : null
   const consultAskReply = !cannedMovie && !filmAsk && consult?.turn === 'ask' && consult.ask
     ? buildAskReply(consult.ask, { lang, structured: rendersAskBlock(req.headers.get('x-tappy-surface'), req.headers.get('x-tappy-caps')) })
     : null
@@ -647,9 +913,9 @@ export async function POST(req: Request) {
 
 ===== DA HIEU (bo nao tu van) =====
 - User da noi: ${Object.entries(consult.known).map(([k, v]) => `${k}: ${v}`).join(' · ') || '(chua ro)'}
-- Gia dinh cho phan con thieu (${styleLuna6On() ? 'dung ngam, KHONG nhac voi user tru khi no doi lua chon' : 'noi ro trong cau xac nhan'}): ${consult.assumptions.join(' · ') || '(khong)'}${consult.rejectReason ? `
+- Gia dinh cho phan con thieu (${styleLuna6On() ? 'dung ngam, KHONG nhac voi user tru khi no doi lua chon' : 'noi ro trong cau xac nhan'}): ${consult.assumptions.join(' · ') || '(khong)'}${unwoundAsk ? unwoundAskLine(unwoundAsk, lang) : ''}${consult.rejectReason ? `
 - User da BAC: ${consult.rejectReason} — KHONG nhac lai cho da bac.` : ''}${consult.refers?.length ? `
-- User dang noi toi: ${consult.refers.join(' | ')}${consult.ordinalRef ? ' (day la quan user goi theo thu tu tren the da hien: tra loi thang ve quan nay, KHONG noi khong co quan thu N)' : ''}` : ''}${(() => { const m = latestConsultPick(messages); return m ? `
+- User dang noi toi: ${referTitlesForPrompt(consult.refers, consultThreadAwareAskOn())}${consult.ordinalRef ? ' (day la quan user goi theo thu tu tren the da hien: tra loi thang ve quan nay, KHONG noi khong co quan thu N)' : ''}` : ''}${(() => { const m = latestConsultPick(messages); return m ? `
 - LUA CHON DA CHOT gan nhat: ${m}` : '' })()}${consultShownEver.length ? `
 - Da gioi thieu (dung cho "xem them"/"bac": KHONG chon lai): ${consultShownEver.slice(0, 12).join(' | ')}` : ''}${(() => {
     // Replay r6: 6/11 plans ASKED instead of planning — the no-ask rule sat mid-prompt, under blocks that
@@ -684,14 +950,22 @@ export async function POST(req: Request) {
       : Array.isArray(m.content) ? (m.content as Array<{ text?: string }>).map(c => c.text || '').join(' ') : '').filter((x: string) => x.trim())
     return texts.length && texts[texts.length - 1] === lastText ? texts : [...texts, lastText].filter(x => x.trim())
   })()
-  const plannerNeedsDest = agentOn && planningIntent === 'trip' && plannerNeedsDestination(plannerUserTexts)
+  // Phase 8: the runtime asks through Luna's ask_user action instead of this regex gate.
+  // Q-03: while an action waits, the next turn reaches the agent; the planner's destination question must not take it over.
+  const plannerNeedsDest = agentOn && !agentV2 && !pendingWaiting && planningIntent === 'trip' && plannerNeedsDestination(plannerUserTexts)
   const plannerAsk = plannerNeedsDest ? plannerDestinationQuestion(lastText, lang) : null
   // A trip plan whose destination is known and whose own words ask for NO concrete data (a named hotel/restaurant, a price, opening
   // hours, "near me", a ticket) is answered from the model's general knowledge: no retrieval tool is offered this turn, so no search runs
   // and no venue card can exist. A specific follow-up ("chỗ ăn nào ngon?") is a new turn and gets its tools.
-  const planOnlyTurn = agentOn && planningIntent === 'trip' && !plannerAsk && planNeedsNoRetrieval(lastText)
+  // Phase 8 WS2: on the runtime (TAPPY_AGENT=2) LUNA decides whether a plan needs current data (weather, opening hours, prices) — research
+  // is optional, never forced and never forbidden by a keyword gate. This regex gate stays for the Phase 7 agent (TAPPY_AGENT=1) only.
+  const planOnlyTurn = agentOn && !agentV2 && planningIntent === 'trip' && !plannerAsk && planNeedsNoRetrieval(lastText)
   // Counts only — never the user's words.
   if (agentOn && planningIntent === 'trip') console.log(JSON.stringify({ type: 'tappyai_planner_gate', asked: plannerAsk ? 'destination' : null, plan_only: planOnlyTurn, user_turns: plannerUserTexts.length, external_calls_before_destination: plannerAsk ? 0 : null }))
+  // CONSULTATIVE_IN_AGENT (discoveryGate.ts): a vague discovery question ("nay có gì dzui ko pa") is asked about BEFORE any lookup — no retrieval tool is offered this turn and the
+  // runtime blocks any the model proposes anyway; after two questions with no activity it searches with the assumption said out loud. Counts only in the log, never the user's words.
+  const discovery = consultativeAgent && agentV2 ? discoveryGate({ userTexts: plannerUserTexts, hasGps: !!userLocation, planningIntent, lang }) : null
+  if (discovery) console.log(JSON.stringify({ type: 'tappyai_discovery_gate', action: discovery.action, kind: discovery.kind, thread_turns: discovery.threadTurns, has_gps: !!userLocation }))
   // Re-evaluated with memory in the account branch (memory is a signal); a `let` for that reason.
   // An ASK turn is not charged (like the old clarify): it costs one small brain call and no search.
   let quotaExempt = cannedEarly !== null || clarifyGate !== null || consultAskReply !== null || cannedMovie !== null || plannerAsk !== null
@@ -808,6 +1082,8 @@ export async function POST(req: Request) {
         quotaMetered = true
       } else {
         const spend = await consumeAiQuestion(aiQuotaIdentity(user, clientIp(req)))
+        // Owner 29/10 (D2): a guest has five questions for life, once. No free clarify answer here, not even under CONSULT_V3:
+        // past the five, the guest signs in. No clarify credit is taken or issued for a guest identity.
         if (!spend.ok) {
           return new Response(
             JSON.stringify({
@@ -939,7 +1215,9 @@ export async function POST(req: Request) {
         quotaMetered = true
       } else {
         const spend = await consumeAiQuestion(aiQuotaIdentity(user, clientIp(req), quotaPlan))
-        if (!spend.ok) {
+        // CONSULT_V3 turn contract: after the spend (R-3); a direct answer to Tappy's question is free and passes when the quota is spent.
+        const freeClarify = await clarifyFreeTurn(aiQuotaIdentity(user, clientIp(req), quotaPlan))
+        if (!spend.ok && !freeClarify) {
           // A PAID plan that spent its 30 is not told to upgrade: its own code and sentence.
           const paid = quotaPlan !== 'free'
           return new Response(
@@ -951,6 +1229,7 @@ export async function POST(req: Request) {
         }
         quotaMetered = true
         quotaRefund = spend.refund
+        if (freeClarify) { if (spend.ok) await refundAiQuestion(spend.refund); quotaRefund = null }
       }
       // A2: Pro was UNLIMITED — one paid account could run the model and Serper all day. A daily
       // ceiling far above any real use (PRO_DAILY_CHAT_CAP, default 300 model turns) bounds the
@@ -1080,6 +1359,7 @@ export async function POST(req: Request) {
   // previous cookie counter is gone — a counter the client carries is a counter the client resets.
   if (!quotaMetered) {
     const spend = quotaExempt ? { ok: true, refund: null } : await consumeAiQuestion(aiQuotaIdentity(null, clientIp(req)))
+    // Owner 29/10 (D2): the same five, once — no free clarify answer for a guest (see the anonymous-session branch).
     if (!spend.ok) {
       return new Response(
         JSON.stringify({
@@ -1208,7 +1488,7 @@ export async function POST(req: Request) {
     messages: framingMessages,
     need: needProfile,
     planningIntent,
-    forcedTool,
+    forcedTool: forcedToolDecides,
     hasGps: !!userLocation,
     storedPreferences: storedPrefs,
     now: new Date(),
@@ -1256,25 +1536,70 @@ export async function POST(req: Request) {
   const moreTurn = consultativeV1 && !ownDomainSwitch && !clipContext && !planningIntent && !consult?.reprioritize && (wantsMoreFromSet(lastText) || consult?.turn === 'more' || consult?.turn === 'reject') && (priorVenuesIn(lastAssistantText).length > 0 || consultShownEver.length > 0)
   // Consult V2: a pick / reject searches the brain's query (what the user actually wants, e.g. "tiệm nail
   // sơn gel", "karaoke phòng lớn") — never a generic "spa massage" / "khu vui chơi" rewrite.
-  const consultSearch = consult && (consult.turn === 'pick' || consult.turn === 'reject') && consult.query
-    ? (() => { const t = consult.domains[0] === 'shopping' ? 'product' : placeTypeFor(consult.domains[0]); return t ? ({ query: consult.query as string, type: t, exact: true } as SearchNow) : null })()
+  // CONSULT_UNWIND_S2C (presearch.coveringQuery): a place pick searches the first query - the rules', then the intent layer's - that covers the request (the area the
+  // intent layer read counts as covered); none covers it → no code pre-search, the model searches. Shopping keeps its query. OFF: the rules' query, as at HEAD.
+  const s2cArea = consultUnwindS2cOn() ? (consult?.area ?? consult?.known.khu_vuc ?? null) : null
+  const consultQuery = consult && consultUnwindS2cOn() && consult.domains[0] !== 'shopping'
+    ? coveringQuery([consult.query, lunaStated?.decision.query], framingText, s2cArea ?? statedArea?.label ?? null)
+    : consult?.query
+  if (consult && consultUnwindS2cOn() && consult.domains[0] !== 'shopping' && (consult.turn === 'pick' || consult.turn === 'reject')) console.log(JSON.stringify({ type: 'tappyai_unwind_presearch_query', rules_query: !!consult.query, intent_query: !!lunaStated?.decision.query, chosen: consultQuery === null ? 'none' : consultQuery === consult.query?.trim() ? 'rules' : 'intent', area_from_intent: !!s2cArea }))
+  const consultSearch = consult && (consult.turn === 'pick' || consult.turn === 'reject') && consultQuery
+    ? (() => { const t = consult.domains[0] === 'shopping' ? 'product' : placeTypeFor(consult.domains[0]); return t ? ({ query: consultQuery as string, type: t, exact: true } as SearchNow) : null })()
     : null
   // A follow-up / comparison / non-trip plan works from what is already known: no "search now" order.
   const consultNoSearchNow = !!consult && (consult.turn === 'followup' || consult.turn === 'compare' || (consult.turn === 'plan' && consult.domains[0] !== 'travel'))
   // chat2 A2 (loop guard): the assistant asked back, showed no venue, and the user answered or repeated — search now.
   const askedBack = assistantAskedBack(lastAssistantText, priorVenuesIn(lastAssistantText).length > 0 || consultShownEver.length > 0)
   const localShopAsked = !!deriveLocalShopSearch(consultationUserTexts(framingMessages).join(' '))
-  const searchNow = consultNoSearchNow ? null : (localShopAsked ? null : consultSearch) ?? (situation ? deriveSearchNow({ text: framingText, situation, frame: decisionFrame, need: needProfile, forcedTool, isFirstReply: isFirstReply || afterClarify || moreTurn, movieRecommend, afterClarify, askedBack, consultationText: consultationUserTexts(framingMessages).join(' ') }) : null)
+  // CONSULT_SEARCH_NOW_INTENT_GATE (Wave 2D · C, default OFF): a turn the intent layer read as plain conversation / knowledge and that states no place never starts a place lookup
+  // by code (the named-venue pre-search, the directive a "gần đây" word forces). OFF = `searchGate` is null and nothing below differs from before (searchNowIntentGate.ts).
+  // Wave 2G (F-2): a trip / lodging request is still one with its city word taken out of it - the rules router reads the message again without the city (searchNowIntentGate.ts, cityStatedAsPlace).
+  const gateStatedCity = consultSearchNowIntentGateOn() && !agentOn
+    ? cityStatedAsPlace(lastText, rulesReadVenueRequest(routed), cityFree => rulesReadPlaceOrTripRequest(routeConsult([{ role: 'user', content: cityFree }], { hasGps: !!userLocation, lang })))
+    : false
+  // Wave 2H (F4-3): a ward / commune / town the user names ("phường Bến Nghé") is a stated place, read like the city one (searchNowIntentGate.ts, wardStatedAsPlace). `statedArea` is NOT widened: it also steers the search centre.
+  const gateStatedWard = consultSearchNowIntentGateOn() && !agentOn
+    ? wardStatedAsPlace(lastText, rulesReadVenueRequest(routed), wardFree => rulesReadPlaceOrTripRequest(routeConsult([{ role: 'user', content: wardFree }], { hasGps: !!userLocation, lang })))
+    : false
+  const searchGate = consultSearchNowIntentGateOn() && !agentOn && !oneBrain ? searchNowIntentGate({ consult, statedArea: statedArea?.label ?? null, statedCity: gateStatedCity, statedStreet: streetNameUsedAsPlace(lastText), statedWard: gateStatedWard }) : null
+  const searchNowDerived = consultNoSearchNow ? null : (localShopAsked ? null : consultSearch) ?? (situation ? deriveSearchNow({ text: framingText, situation, frame: decisionFrame, need: needProfile, forcedTool: forcedToolDecides, isFirstReply: isFirstReply || afterClarify || moreTurn, movieRecommend, afterClarify, askedBack, consultationText: consultationUserTexts(framingMessages).join(' ') }) : null)
+  const searchNow = applySearchNowGate(searchGate, searchNowDerived)
+  if (searchGate) trace?.emit('search_now_gate', { blocked: searchGate.blocked, reason: searchGate.reason, consultTurn: searchGate.consultTurn, statedPlaceFrom: searchGate.statedPlaceFrom, droppedType: searchGate.blocked && searchNowDerived && !searchNow ? searchNowDerived.type : null, forcedToolIgnored: searchGate.blocked && forcedTool === 'search_places', hasValidGps: hasValidCurrentLocation(userLocation), rulesTurn: routed?.decision.turn ?? null, rulesConfidence: routed?.confidence ?? null, rulesDomains: routed?.decision.domains ?? [],
+    // Wave 2F (M6): the intent layer's own label and which stated places existed - booleans and labels only, never a word of the user.
+    // Wave 2G (F-5): `lunaArea` was the MERGED area (rules + intent layer + the code's correction), not what the intent layer wrote: renamed `mergedAreaKind`, with `lunaAreaRawKind` (what it wrote) and `areaSource` (who the merged one is from).
+    lunaTurn: lunaStated?.decision.turn ?? null, lunaDomains: lunaStated?.decision.domains ?? [], statedDistrict: !!statedArea, statedWard: gateStatedWard, statedCity: gateStatedCity,
+    ...gateAreaFacts({ mergedArea: consult?.area, lunaDecisionArea: lunaIntentRun?.decision.area, lunaCheck: lunaIntentRun?.check, rulesArea: routed?.decision.area }) })
+  // Wave 2F (M7): what the turn ended up doing, written once at the end (writeGateOutcome) for a turn the gate BLOCKED
+  const gateTraceFacts = searchGate?.blocked ? { droppedType: searchNowDerived && !searchNow ? searchNowDerived.type : null, forcedToolIgnored: forcedTool === 'search_places' } : null
+  // Wave 2I (B) / Wave 2J (CONSULT_KNOWLEDGE_TURN_TOOLS - needs the gate): on a turn the gate blocked the model also gets web_search and chooses. Nothing else changes: the area question
+  // works exactly as with the gate alone (the Wave 2I rule that dropped it was removed after review). OFF = false and nothing below differs from before.
+  const knowledgeTurnTools = !!searchGate?.blocked && consultKnowledgeTurnToolsOn()
+  // Wave 3 (W2, CONSULT_TOOL_BY_NEED - needs the gate): EVERY lean consult turn is offered web_search and one general line about needs; the model chooses. OFF = false and nothing below differs from before.
+  const toolByNeed = consultToolByNeedOn()
+  // Wave 3 (W4, CONSULT_DETERMINISTIC_MATH): every lean consult turn is also offered the exact calculator and one general line; the model chooses. OFF = false and nothing below differs from before.
+  const deterministicMath = consultDeterministicMathOn()
+  // Wave 3 (W3, CONSULT_STRUCTURED_SYNTHESIS): the writing step of a lean consult turn gets a shape block for a multi-part request and a larger output ceiling. OFF = false and nothing below differs from before.
+  const structuredSynth = consultStructuredSynthesisOn() && !!consult && consult.domains.length > 0
+  // Wave 3 (W6): the limits that depend on the capability level (L4: eight steps, six pages, the full 4.000-token output ceiling of a structured answer). Level 0 / production: the Wave 3 defaults.
+  const levelLimits = capabilityLimits()
+  // Wave 3-FIX (R3-03/R3-04): set once the turn's real tool set is known (just before the stream is built). null / false = the turn runs exactly as with every Wave 3 flag off.
+  let w3Prompt: string | null = null
+  let w3Structured = false
+  // CONSULT_UNWIND_S3B: set with the turn's tool set (below); null = the HEAD output ceiling.
+  let unwindToolTurnCeiling: number | null = null
+  let traceFinishReason: string | null = null
+  let traceAreaAsk: { appended: boolean | null; reason: string | null } | null = null
   // Owner 2026-09-28 (c40 T7): a flight search runs without a date; the date is asked at the END.
-  if (!consult && searchNow?.type === 'flight' && !SPECIFIC_DATE.test(normalizeVN(lastText.toLowerCase())) && !(lastAssistantText && endsWithQuestion(lastAssistantText))) {
+  // N5 rest (30/10): not on one brain - the model asks for the date itself when it needs it (no code question after its answer).
+  if (!consult && !oneBrain && searchNow?.type === 'flight' && !SPECIFIC_DATE.test(normalizeVN(lastText.toLowerCase())) && !(lastAssistantText && endsWithQuestion(lastAssistantText))) {
     gateAskAfter = { q: lang === 'en' ? 'Which date?' : 'Ngày bay?', options: [] }
   }
-  let presearchPlan = consultativeV1 && !agentOn ? planPresearch(searchNow, situation, { clip: !!clipContext, planning: !!planningIntent, movie: movieRecommend || filmAsk, more: moreTurn, statedArea: statedArea?.label ?? null, userText: framingText }) : null
+  let presearchPlan = consultativeV1 && !agentOn ? planPresearch(searchNow, situation, { clip: !!clipContext, planning: !!planningIntent, movie: movieRecommend || filmAsk, more: moreTurn, statedArea: statedArea?.label ?? s2cArea ?? null, userText: framingText }) : null
   // A1(d): "gợi ý thêm" — the same search again (the 30-minute cache answers it on a warm instance),
   // the model told which venues were already shown. moreFromSet.ts. The stored search (signed-in
   // users) is exact; without a row the directive's call stands in and the prior reply's names do.
   const priorPlaceSearch = reusablePlaceSearch(loadedEvidenceRow, !ownDomainSwitch)
-  if (consultativeV1 && priorPlaceSearch && wantsMoreFromSet(lastText) && !clipContext && !planningIntent) {
+  if (consultativeV1 && !oneBrain && priorPlaceSearch && wantsMoreFromSet(lastText) && !clipContext && !planningIntent) {
     presearchPlan = { toolName: 'search_places', args: priorPlaceSearch.args, exact: true, reuse: { shown: priorPlaceSearch.shown } }
   } else if (presearchPlan && moreTurn) {
     presearchPlan = { ...presearchPlan, reuse: { shown: (consultShownBefore.length ? consultShownBefore : priorVenuesIn(lastAssistantText).map(v => v.name)).slice(0, 12) } }
@@ -1296,6 +1621,8 @@ export async function POST(req: Request) {
   const consultFollowReuse = followFromState || !!(process.env.CONSULT_FOLLOW_REUSE === '1' && consultativeV1 && (consult?.turn === 'followup' || consult?.turn === 'compare') && !presearchPlan && priorPlaceSearch && ['food', 'entertainment', 'spa'].includes(consult?.domains[0] ?? ''))
   if (followFromState && chatState?.candidates) presearchPlan = { toolName: 'search_places', args: chatState.candidates.args, exact: true }
   else if (consultFollowReuse && priorPlaceSearch) presearchPlan = { toolName: 'search_places', args: priorPlaceSearch.args, exact: true }
+  // CONSULT_ONE_BRAIN: no place search runs before the model; the model decides whether and what to search.
+  if (oneBrain) presearchPlan = null
   // Owner 2026-09-28 (c40 T7): a flight request naming two airports runs its fare call before the model.
   // Consult V2: a shopping pick runs the product search before the model (one model step, like a place pick).
   // "xem thêm" on shopping searches again from the carried product slots (replay SHOP-2/3: with no search the
@@ -1348,7 +1675,7 @@ export async function POST(req: Request) {
     ? (() => { const c = travelPreCall(consult.known, [...(consultThreadTexts ?? []), lastText].join(' . ')); return c?.name === 'get_flight_prices' ? c : null })()
     : null
   const consultTravelCall = consult && (consult.turn === 'pick' || consult.turn === 'reject' || consult.turn === 'more') && consult.domains[0] === 'travel'
-    ? (stayOverride ? storedStayCall : travelPreCall(consult.known, consult.turn === 'pick' && wasAskReply(priorAssistantText) ? [...(consultThreadTexts ?? []), lastText].join(' . ') : lastText, new Date(), travelThreadUsers) ?? (destinationChange?.turnedDown.length ? null : storedStayCall))
+    ? (stayOverride ? storedStayCall : travelPreCall(consult.known, consult.turn === 'pick' && answersAsk ? [...(consultThreadTexts ?? []), lastText].join(' . ') : lastText, new Date(), travelThreadUsers) ?? (destinationChange?.turnedDown.length ? null : storedStayCall))
     : consultFlightPlanCall
   // R11 (Android 29/09): "vé concert tháng 10" → ask card → answer → a VENUE ("Nhà hát…", "CHÀO SHOW") with no
   // Ticketbox button: the entertainment pick pre-searched places. An event consultation (concert / show /
@@ -1356,7 +1683,7 @@ export async function POST(req: Request) {
   const consultEventCall = consult && (consult.turn === 'pick' || consult.turn === 'reject' || consult.turn === 'more') && consult.domains[0] === 'entertainment'
     ? eventPreCall([...(consultThreadTexts ?? []), lastText].join(' . '), consult.known)
     : null
-  const flightPresearch = consultativeV1 && !agentOn && !presearchPlan && !clipContext ? planFlightPresearch(searchNow, lastText, new Date(), { planning: !!planningIntent }) : null
+  const flightPresearch = consultativeV1 && !agentOn && !oneBrain && !presearchPlan && !clipContext ? planFlightPresearch(searchNow, lastText, new Date(), { planning: !!planningIntent }) : null
 
   /**
    * VnExpress Travel — the LIMITED editorial supplement (see vnexpressTravel.ts).
@@ -1512,6 +1839,12 @@ export async function POST(req: Request) {
       candidates = kept
     }
 
+    // Phase 8 M5 (TAPPY_AGENT=2): code applies the HARD constraints only; Luna ranks the valid set (no score, no Pick, provider order).
+    if (agentV2) {
+      const set = agentCandidateSet(toolName, r, candidates, needProfile, lang)
+      if (set.removed.length) console.log(JSON.stringify({ type: 'tappyai_agent_candidates', tool: toolName, hard_removed: set.removed.length, reasons: set.removed.map(x => x.why), kept: candidates.length - set.removed.length }))
+      return { result: set.result, pick: null, shortlistedCandidates: set.shortlisted }
+    }
     if (candidates.length < 2) return { result: r, pick: null }
 
     const ranked = rankCandidates(candidates, needProfile)
@@ -1725,7 +2058,7 @@ export async function POST(req: Request) {
   const lunaAnswer = lunaOn && !hasImage && isLunaAnswerTurn(consult, !!planningIntent)
   // CONSULT_LUNA_PLAN: the detailed plan (a consult "plan" turn, or a trip / evening plan) runs on role `plan`.
   const lunaPlan = consultLunaPlanEnabled() && !hasImage && (consult?.turn === 'plan' || !!planningIntent)
-  const role: ModelRole = lunaAnswer ? 'consult' : lunaPlan ? 'plan' : (planningIntent || hasImage) ? 'planning' : isSimpleQuery(lastText, isFirstReply) ? 'fast' : 'smart'
+  const role: ModelRole = oneBrain || lunaAnswer ? 'consult' : lunaPlan ? 'plan' : (planningIntent || hasImage) ? 'planning' : isSimpleQuery(lastText, isFirstReply) ? 'fast' : 'smart'
   const roleServed = lunaOn ? AI.serving(role) : null
   // PHIÊN LUNA safety (owner 30/09): untrusted text — what users wrote, names and snippets from search, memory, shared
   // context — leaves the system prompt; it goes to the model as ONE marked data message (lunaSafety.ts).
@@ -1758,7 +2091,11 @@ export async function POST(req: Request) {
   // The Agent decides what is relevant itself and keeps the thread (UAT 2026-10-07: "đi Đà Lạt nên ăn gì" → "lập kế hoạch ăn chơi 3 ngày 2 đêm"
   // was cut to one message by ownDomainSwitch, so the plan was written for the GPS city and the destination was lost): the legacy
   // new-subject cut applies to the legacy path only.
-  const trimmedMessages = ownDomainSwitch && !agentOn ? messages.slice(-1) : consult ? recentTurns(messages, 3) : messages.length > 10 ? messages.slice(-10) : messages
+  // CONSULT_ONE_BRAIN (P0-1, 29/10 audit): the one-brain model reads the conversation and decides for itself whether the message continues it or starts a new subject
+  // (oneBrain.ts, "Understand the request yourself"). The keyword reading of the turn's domain no longer cuts the thread to one message there: "đi Đà Lạt 3 ngày…"
+  // then "gợi ý quán cà phê view đẹp" lost the trip, the budget and the people. `ownDomainSwitch` itself is unchanged: it still isolates the application's own state
+  // (situation frame, evidence reuse). The ten-message window stays; its compaction is by budget, below.
+  const trimmedMessages = ownDomainSwitch && !agentOn && !oneBrain ? messages.slice(-1) : consult ? recentTurns(messages, 3) : messages.length > 10 ? messages.slice(-10) : messages
 
   // V2 highlighted regression: on a tool-less follow-up ("Giá cả thế nào?",
   // "cụ thể hơn", "chọn giúp tôi"), no PLACE_TOOL runs so bufferMode stays
@@ -1780,6 +2117,8 @@ export async function POST(req: Request) {
   // provider rejects a whitespace-only text block ("text content blocks must contain non-whitespace text":
   // replay 29/09, the turn AFTER an empty compare crashed). It becomes a short neutral stand-in instead.
   const nonEmpty = (t: string) => (t.trim() ? t : '(Tappy đã trả lời bằng thẻ/nút, không có chữ.)')
+  // CONSULT_ONE_BRAIN: compaction by budget (every message whole while the thread fits the request budget; the oldest assistant replies give way first when it does not).
+  const compactHistory = <M extends { role: string; content: unknown }>(ms: M[]): M[] => (oneBrain ? compactHistoryToBudget(ms) : compactHistoryTail(ms))
   const modelMessages = compactHistory(collapseClarifyTurns(trimmedMessages).map((m) => {
     if (m.role !== 'assistant') return m
     if (typeof m.content === 'string') {
@@ -1810,7 +2149,9 @@ export async function POST(req: Request) {
   // A clip question is a place question by construction — the button exists only
   // on an item with a place — so it is never a no-tool turn even when the short
   // bridge text alone would have read as chitchat.
-  const noToolTurn = !clipContext && (intent === 'chitchat' || decisionStage === 'confirmation' || ((consult?.turn === 'followup' || consult?.turn === 'compare') && !consultFollowReuse))
+  // CONSULT_UNWIND_S2B: a follow-up / compare turn keeps its tools (the model decides whether the question needs a lookup); OFF: no tool, one step, as at HEAD.
+  const s2bFollowTools = consultUnwindS2bOn() && (consult?.turn === 'followup' || consult?.turn === 'compare') && intent !== 'chitchat' && decisionStage !== 'confirmation'
+  const noToolTurn = !clipContext && (intent === 'chitchat' || decisionStage === 'confirmation' || ((consult?.turn === 'followup' || consult?.turn === 'compare') && !consultFollowReuse)) && !s2bFollowTools && !oneBrain
   // The ranking instruction is only carried on turns that can actually produce a
   // ranked result — Places and Hotel are the two domains with structured
   // candidate attributes today. A weather or gold lookup pays nothing for it.
@@ -1833,7 +2174,7 @@ export async function POST(req: Request) {
   // sends no header - iOS, an older Android build, a script - keeps today's
   // prose (and, with MEDIA_PLACEMENT_V2, the G3 block placement).
   const surfaceHeader = req.headers.get('x-tappy-surface')
-  const rendersDecisionCard = rendersDecisionCardFor(surfaceHeader)
+  const rendersDecisionCard = rendersDecisionCardFor(surfaceHeader, req.headers.get('x-tappy-caps'))
   // CommerceContext for the CCP seam: the surface header is the only platform signal the route
   // has, and the response language is what the merchant page should open in. No raw user identifier:
   // attribution travels only as the keyed hash below.
@@ -1855,7 +2196,7 @@ export async function POST(req: Request) {
   // The plan's cost line prices the pick the conversation settled on (replay ENT-1/ENT-2/SPA-2 30/09: another venue's).
   if (consult?.turn === 'plan') enrichment.setConsultPick(latestConsultPick(null))
   // Shopping plan: the "Tổng chi phí" line is computed from the chosen product's listed price (appendConsultPlanCost).
-  if (consult?.turn === 'plan' && consult.domains[0] === 'shopping') enrichment.consultPlanPrice = latestShoppingPickPrice(assistantTexts, latestConsultPick(null))
+  if (consult?.turn === 'plan' && consult.domains[0] === 'shopping') enrichment.consultPlanPrice = shoppingPickPriceStoredFirst(chatState, latestConsultPick(null), () => latestShoppingPickPrice(assistantTexts, latestConsultPick(null)))
   // Consult V2: after a pick the server offers the next steps (owner Phần 3.3).
   if (consult && (consult.turn === 'pick' || consult.turn === 'more' || consult.turn === 'reject' || consult.turn === 'compare')) enrichment.setConsultButtons(lang === 'en' ? ['See more', 'Plan it in detail'] : ['Xem thêm', 'Lên kế hoạch chi tiết'])
 
@@ -1889,7 +2230,7 @@ export async function POST(req: Request) {
   const v1Active = !!situation && !noToolTurn && (
     isDecisionDomain
     || decisionFrame.goal === 'recommend' || decisionFrame.goal === 'compare' || decisionFrame.goal === 'decide' || decisionFrame.goal === 'plan'
-    || forcedTool === 'search_places'
+    || (forcedToolDecides === 'search_places' && !searchGate?.blocked)
     || frameSaysDecision
     || v1PriorVenues.length > 0
     || searchNow?.type === 'flight'
@@ -1902,24 +2243,27 @@ export async function POST(req: Request) {
     const refs = resolveReferences(lastText, priorVenues)
     const referenced = referencedVenues(refs)
     const facts = factsAsked(lastText)
-    const refetch = referenced.filter(v => facts.some(f => !priorTextStates(lastAssistantText, v, f, priorVenues)))
+    // P0-2: the same carried-fact source as cannedEarly; the named re-fetch check reads the same source as the value it guards.
+    const src = carriedFrom([...priorVenues, ...referenced.filter(v => !priorVenues.some(p => p.name === v.name))], priorVenues)
+    const refetch = referenced.filter(v => facts.some(f => !src.known(v, f)))
     if (refetch.length === 0 && !clipContext) {
-      cannedFollowUp = cannedCarriedFact(facts, referenced, carriedFacts(lastAssistantText, priorVenues), lang)
+      cannedFollowUp = cannedCarriedFact(facts, referenced, src.carried, lang, src.provenance)
     }
     console.log(JSON.stringify({
       type: 'tappyai_consultative_v1', step: 'frame',
       who: situation.who, occasion: situation.occasion, time: situation.time, mood: situation.mood, hard: situation.hard,
       assumptions: situation.assumptions.length, confidence: situation.confidence,
       prior_venues: priorVenues.length, referenced: referenced.length, facts, named_refetch: refetch.length,
-      // Where the search is centred and why (UAT 29/09: "Nguyễn Huệ" read as Huế) — labels only, no GPS.
-      place: situation.place.text, stated_area: statedArea?.label ?? null, near_me: situation.place.nearMe,
+      // Where the search is centred and why (UAT 29/09: "Nguyễn Huệ" read as Huế) — labels only, no GPS. S4 (F): the place the user named is kept as its length, not its words.
+      place: logText(situation.place.text, 'user_words'), stated_area: statedArea?.label ?? null, near_me: situation.place.nearMe,
     }))
     enrichment.setConsultativeV1({
       on: true, rendersCard: rendersDecisionCard, namedRefetch: refetch.map(v => v.name),
       referenced: referenced.map(v => v.name),
-      carried: carriedFacts(lastAssistantText, priorVenues), hardGaps: [], budgetGap: false,
+      // P0-2: the guards' evidence is the server-stored rows when they exist; the client's copy of the reply is evidence only without them.
+      carried: src.carried, hardGaps: [], budgetGap: false,
       budget: needProfile.budget,
-      priorTimes: scheduleTimesIn(lastAssistantText ?? ''),
+      priorTimes: src.useStored ? [] : scheduleTimesIn(lastAssistantText ?? ''),
     })
     const refetchLines = refetch.length > 0
       ? `\n- THIEU DU LIEU: user hoi ${facts.join('/')} cua ${refetch.map(v => `"${v.name}"`).join(', ')} ma luot truoc chua co. GOI search_places DUNG MOT LAN voi query = ten quan do (location = thanh pho da biet) roi tra loi tu dong ket qua co ten khop. Neu khong co dong nao khop: noi "minh khong tim thay", KHONG bia.`
@@ -1999,29 +2343,58 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     planning,
   )
   const legacyShared = built?.shared
-  const legacyPrompt = (built ? built.dynamic : buildSystemSimple(lang, memoryBlock)) + styleBlock + voiceLayerBlock() + shareContextBlock
+  // CONSULT_UNWIND_S3A..S3C (unwindWriting.ts): one block after the voice layer, on both prompt builds; '' with every flag OFF.
+  const unwindWriting = unwindWritingBlock({
+    ...(consultUnwindS3aOn() ? { freshToday: new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Ho_Chi_Minh' }) } : {}),
+    writing: consultUnwindS3bOn(),
+    nonPick: !consult || consult.turn === 'chat',
+    wideShortlist: consultUnwindS3cOn() && !!consult && ['pick', 'more', 'reject'].includes(consult.turn),
+    lang,
+  }) + (consultUnwindS4aOn() && forcedTool ? unwindToolHint(forcedTool, lang) : '')
+  const legacyPrompt = (built ? built.dynamic : buildSystemSimple(lang, memoryBlock)) + styleBlock + voiceLayerBlock() + shareContextBlock + unwindWriting
   // Consult V2 lean prompt: small fixed core + this area's tool rules + the frame/state (leanConsultPrompt.ts).
   // Measured on uat 70667d3: the full rulebook made one pick turn 34k input tokens ($0.049).
   // An in-area knowledge question ("chốt, cần kiểm tra gì khi mua") is lean too — measured 30,970 input
   // tokens on the legacy rulebook (replay SHOP-3 t7). A chat turn with no area keeps the full prompt.
-  const lean = consult && consult.domains.length > 0
-    ? (() => {
-        const now = new Date()
-        return buildLeanConsultSystem({
-          lang, langName: lang === 'en' ? 'English' : 'Vietnamese',
-          vnDateTime: now.toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', dateStyle: 'full', timeStyle: 'short' }),
-          vnDateISO: now.toLocaleDateString('en-CA', { timeZone: 'Asia/Ho_Chi_Minh' }),
-          domains: consult.domains,
-          consultBlock: consultativeBlock,
-          ...(consultLibraryOn ? { library: frameLibrary(consultLibraryDomain) } : {}),
-          ...(lunaAnswer && process.env.CONSULT_LUNA_PROMPT !== '0' ? { core: LUNA_CORE } : {}),
-          extra: [lunaData ? '' : memoryBlock ?? '', prefBlock, planningIntent ? buildPlanningBlock(planningIntent, lang, planning ?? {}) : '', lunaPlan ? LUNA_PLAN_RULE : '', styleBlock, voiceLayerBlock(), lunaData ? '' : shareContextBlock],
-          tail: [adviceEnabled() && adviceApplies(consult.domains[0], consultTravelCall?.name === 'get_flight_prices') ? adviceBlock({ turn: consult.turn, domain: consult.domains[0], flight: consultTravelCall?.name === 'get_flight_prices', days: Number(consult.known.so_ngay?.match(/\d+/)?.[0]) || null }) : ''],
-        })
-      })()
+  // Wave 3-FIX (R3-04): the Wave 3 rule lines (tool by need, calculator, research, shape) are NOT part of this first build: they name a tool or ask for a shape, so they are added only at the moment the stream is
+  // assembled, when the tools the turn REALLY carries are known (a turn the code pre-searched, or a follow-up, carries none and must not be told to use one). With every Wave 3 flag off `w3` is empty and this is the
+  // very same build as before.
+  const buildLean = (w3: { extra: readonly string[]; tail: readonly string[] }) => {
+    const now = new Date()
+    return buildLeanConsultSystem({
+      lang, langName: lang === 'en' ? 'English' : 'Vietnamese',
+      vnDateTime: now.toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', dateStyle: 'full', timeStyle: 'short' }),
+      vnDateISO: now.toLocaleDateString('en-CA', { timeZone: 'Asia/Ho_Chi_Minh' }),
+      domains: consult!.domains,
+      consultBlock: consultativeBlock,
+      ...(consultLibraryOn ? { library: frameLibrary(consultLibraryDomain) } : {}),
+      ...(lunaAnswer && process.env.CONSULT_LUNA_PROMPT !== '0' ? { core: LUNA_CORE } : {}),
+      extra: [lunaData ? '' : memoryBlock ?? '', prefBlock, planningIntent ? buildPlanningBlock(planningIntent, lang, planning ?? {}) : '', lunaPlan ? LUNA_PLAN_RULE : '', styleBlock, voiceLayerBlock(), lunaData ? '' : shareContextBlock, ...(knowledgeTurnTools ? [KNOWLEDGE_TURN_TOOL_RULE] : []), ...w3.extra, unwindWriting],
+      tail: [adviceEnabled() && adviceApplies(consult!.domains[0], consultTravelCall?.name === 'get_flight_prices') ? adviceBlock({ turn: consult!.turn, domain: consult!.domains[0], flight: consultTravelCall?.name === 'get_flight_prices', days: Number(consult!.known.so_ngay?.match(/\d+/)?.[0]) || null }) : '', ...w3.tail],
+    })
+  }
+  const lean = consult && consult.domains.length > 0 ? buildLean({ extra: [], tail: [] }) : null
+  // CONSULT_ONE_BRAIN: one general instruction in place of the rulebook (legacy / lean / Wave 3 lines); the person's own blocks (memory, preferences, style, shared page) stay.
+  // Owner 01/11/2026 (plan tiers, lib/plans/tiers.ts): with the plans on sale (SUBSCRIPTIONS_ENABLED) a mode the account's tier does not
+  // have runs as Chat - Pip (Free) and visitors chat with Luna 6.0; Coco / MoMo / Tappy have every mode. Off: every mode, as before.
+  const planTier = tierOf(quotaPlan)
+  if (subscriptionsEnabled()) {
+    const asked = chatMode
+    chatMode = modeForTier(chatMode, planTier)
+    if (asked !== chatMode) console.log(JSON.stringify({ type: 'tappyai_mode_tier', asked, ran: chatMode, tier: planTier }))
+  }
+  // 01/11 (mode "Tự động", owner chose "C"): the switch the model turns on with think_deeper; every later step of the stream reasons at medium
+  // (AI.stream autoThink) and the lookups follow the Thinking mode. Off for the whole turn = exactly Chat.
+  const autoThink: { on: boolean; effort: 'medium' } = { on: false, effort: 'medium' }
+  const chatLike = () => chatMode === 'chat' || (chatMode === 'auto' && !autoThink.on)
+  const oneBrainPrompt = oneBrain ? { shared: ONE_BRAIN_CORE, dynamic: oneBrainDynamic({ lang, now: new Date(), address: userLocation?.address ?? null, hasLocation: hasValidCurrentLocation(userLocation), blocks: [memoryBlock ?? '', prefBlock, styleBlock, shareContextBlock], latestLang: detectLangConfident(lastText), mode: chatMode === 'deep' ? 'think' : chatMode }) } : null
+  if (oneBrain) console.log(JSON.stringify({ type: 'tappyai_chat_mode', mode: chatMode }))
+  // CONSULT_ONE_BRAIN_MEDIA: what the pictures should show is read beside the answer (never before it, never for the answer) and used when the answer ends.
+  const oneBrainUnderstanding = oneBrain && consultOneBrainMediaOn()
+    ? understandTurn({ userText: lastText, previousUser: (() => { const u = userMessages[userMessages.length - 2] as { content?: unknown } | undefined; return typeof u?.content === 'string' ? u.content : null })(), previousReply: priorAssistantText ?? null })
     : null
-  const systemShared = lean ? lean.shared : legacyShared
-  const systemPrompt = lean ? lean.dynamic : legacyPrompt
+  const systemShared = oneBrainPrompt ? oneBrainPrompt.shared : lean ? lean.shared : legacyShared
+  const systemPrompt = oneBrainPrompt ? oneBrainPrompt.dynamic : lean ? lean.dynamic : legacyPrompt
 
   // ── Model timing instrumentation ────────────────────────────────────────
   //
@@ -2077,9 +2450,26 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       const orig = def.execute
       if (typeof orig !== 'function') continue
       def.execute = async (...a: unknown[]) => {
-        const out = await orig(...a)
+        const startedAt = Date.now()
+        const raw = await orig(...a)
+        // CONSULT_ONE_BRAIN: a lookup the search provider refused at account level is a FAILED lookup, not an empty one - the model is told so.
+        // Review 30/10: the account error is one timestamp for the whole server, so it also marked a lookup that DID return rows (Parallel after a
+        // refused Serper, the cache) and tools that never call the provider. Only a search-backed tool that came back with no rows is marked.
+        const rowsIn = (o: Record<string, unknown>) => ['results', 'organic', 'rows', 'products', 'items', 'articles', 'news'].some(k => Array.isArray(o[k]) && (o[k] as unknown[]).length > 0)
+        const out = oneBrain && SEARCH_BACKED_TOOLS.has(name) && serperLastAccountErrorAt() >= startedAt && raw && typeof raw === 'object' && !Array.isArray(raw) && !rowsIn(raw as Record<string, unknown>)
+          // the tool's own "no result" note is replaced: measured 28/10, a place search refused by the provider kept its "ask for a narrower area" note and the model asked the person instead of saying the lookup failed
+          ? { ...(raw as Record<string, unknown>), provider_error: 'search_provider_refused', note: 'The search provider refused this request (account or key error). This lookup FAILED; it is not an empty result and the person does not need to narrow anything. Say plainly that the lookup did not work this time, give what you know from general knowledge marked as not checked, and do not ask the person to change the request.' }
+          // One brain (31/10): a fare tool with no fare source points the model at the web for a reference price, instead of forbidding any price.
+          : oneBrain && raw && typeof raw === 'object' && !Array.isArray(raw) && (raw as Record<string, unknown>).fare_status === 'not_verified'
+            ? { ...(raw as Record<string, unknown>), note: ONE_BRAIN_FARE_NOTE }
+            // One brain (31/10): a news lookup, or any other search-backed lookup that found nothing (and says nothing itself), is not the last
+            // word while web_search is in the turn - the result carries the next step (ONE_BRAIN_WEB_FALLBACK_NOTE).
+            : oneBrain && name !== 'web_search' && SEARCH_BACKED_TOOLS.has(name) && 'web_search' in tools && raw && typeof raw === 'object' && !Array.isArray(raw)
+                && (name === 'get_news' || (!rowsIn(raw as Record<string, unknown>) && !(raw as Record<string, unknown>).note))
+              ? { ...(raw as Record<string, unknown>), next_step: ONE_BRAIN_WEB_FALLBACK_NOTE }
+              : raw
         // B1 (2026-09-20): the product unit is judged too — against the shopping constraints.
-        const gate = applyHardConstraintGate(name, out, situation, lang, { shopping: shoppingConstraints })
+        const gate = applyHardConstraintGate(name, out, situation, lang, { shopping: shoppingConstraints, verifyFirst: oneBrain })
         const ctx = enrichment.consultativeV1
         if (gate.applicable && gate.report && ctx) {
           ctx.hardGaps = [...gate.report.gaps]
@@ -2108,6 +2498,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // PHIÊN LUNA: the answer model's cost per vendor (only filled when CONSULT_LUNA is on).
   // PHIÊN LUNA: the plan-completion call (a second model call on some plan turns) is priced too (Phase 7 never counted it).
   let planCompletionUsd = 0
+  // Wave 4 fix G3: the final writing call's own tokens, counted into the turn cost line whether Luna is on or off (zero unless that call ran, so a turn without it is unchanged).
+  const finalWriteTokens = { in: 0, out: 0 }
   let lunaAnswerCost: { usd: number; reasoningTokens: number; cachedInputTokens: number; cacheWriteTokens: number; served: string[]; fellBack: boolean } | null = null
   let usageAcct: {
     finishReason: string
@@ -2130,7 +2522,12 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
    * other turn is answering one question and gets one. Request-scoped, exactly like the enrichment
    * collector, so one conversation can never spend another's allowance.
    */
-  const placesBudget = createPlacesBudget(agentOn ? AGENT_LIMITS.maxToolCalls : planningIntent ? PLACES_BUDGET_PLANNING : PLACES_BUDGET_DEFAULT)
+  // CONSULT_ONE_BRAIN (P0-3): a question that names several merchants ("Shopee hay Lazada…") is a comparison; the keyword reading must not pick the first as "the" requested merchant.
+  const attachCommerceLinks: typeof attachCommerceLinksBase = (toolName, result, ctx = {}) => attachCommerceLinksBase(toolName, result, oneBrain ? { ...ctx, unambiguousMerchantOnly: true } : ctx)
+  // Google Places safety quota (provider layer, placesBudget.ts) — never an orchestration constant of either agent loop.
+  // CONSULT_ONE_BRAIN: the model plans its own searches (restaurants, then attractions, ...), so it gets the agent's budget, not one place search a turn.
+  const placeOwner = createTurnPlaceOwner(oneBrain)
+  const placesBudget = createPlacesBudget(agentOn ? PLACES_BUDGET_AGENT : oneBrain ? PLACES_BUDGET_ONE_BRAIN : planningIntent ? PLACES_BUDGET_PLANNING : PLACES_BUDGET_DEFAULT, { byQuery: oneBrain, namedCentre: oneBrain })
   // chat2 A2 + security review 02/10: the one extra "widen" retrieval after an empty search is paid from ITS OWN one-call allowance per request
   // (not a fresh budget per tool step), and never runs when the turn's Places budget was already refused.
   const widenBudget = createPlacesBudget(1)
@@ -2143,10 +2540,11 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
    * usage line records `llmCalls: 0` so the saving is visible. Everything else — including a
    * fact the prior prose lacks — still reaches the model, which may re-search by name.
    */
-  const canned = agentOn ? (intent === 'chitchat' ? cannedEarly : plannerAsk) : cannedMovie ?? consultAskReply ?? cannedEarly ?? clarifyGate?.reply ?? cannedFollowUp
+  const canned = agentOn ? (intent === 'chitchat' ? cannedEarly : plannerAsk) : oneBrain ? null : cannedMovie ?? consultAskReply ?? cannedEarly ?? clarifyGate?.reply ?? cannedFollowUp
   if (canned) {
     const kind = plannerAsk && canned === plannerAsk ? 'planner_destination' : cannedMovie ? 'movie_titles' : consultAskReply ? 'consult_ask' : intent === 'chitchat' ? 'chitchat' : clarifyGate ? 'clarify' : 'carried_fact'
     console.log(JSON.stringify({ type: 'tappyai_canned_reply', kind, elapsedMs: Date.now() - startTime }))
+    trace?.emit('path_cut', { kind: 'canned_reply', cannedKind: kind, modelCalled: false, toolsRun: trace.counters.executed, consultTurn: consult?.turn ?? null })
     const auditFile = process.env.AUDIT_USAGE_LOG_FILE
     if (auditFile) {
       try {
@@ -2157,6 +2555,12 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           flags: { consultativeV1: consultativeV1Enabled(), v1Active }, sections: { sharedChars: 0, dynamicChars: 0, consultativeChars: 0, v1Chars: 0, memoryChars: 0, prefChars: 0, historyChars: 0, lastUserChars: lastText.length, toolResultChars: 0 },
         }) + '\n')
       } catch { /* audit only */ }
+    }
+    // Q-03 (owner 18/10, R2 scope): the free thanks reply right after a confirmation request ends that request. Stored now, since a canned
+    // turn writes no state otherwise. Only the pending action changes.
+    if (pendingEndsByThanks && chatSessionId && commerceIdentityId) {
+      await saveChatSessionState(commerceIdentityId, chatSessionId, nextChatSessionState(chatState, { pendingAction: null }))
+      console.log(JSON.stringify({ type: 'tappyai_agent_action', tool: chatState?.pendingAction?.tool ?? null, confirmed: false, superseded: true, via: 'canned' }))
     }
     const cannedRes = cannedDataStreamResponse(canned, { 'X-Decision-Evidence-Id': evidenceId })
     if (!consult || !cannedRes.body) return cannedRes
@@ -2198,7 +2602,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   /** A1(d): the place search this turn ran — saved with the names shown, for a "gợi ý thêm" follow-up. */
   let lastPlaceSearch: PlaceSearchEvidence | null = null
   // chat2 A2: set when a place search came back empty after every relaxation (placeRelax.ts) — the reply is then the honest block.
-  let emptyPlaceSearch: { query: string; area: string | null } | null = null
+  let emptyPlaceSearch: { query: string; area: string | null; widenCity?: string | null } | null = null
+  // LOC-DEFAULT-HCM-01: set when search_places refused for want of a location (no valid GPS, no area named) — the code then asks for the area (areaAsk.ts).
+  let noCurrentLocationAsked = false
   // Owner 29/09 (design): "xem thêm" / "bác" continue from the candidates kept in the chat-session state —
   // 0 Serper. When set, search_places runs its whole pipeline (constraints, ranking, cards) on these stored
   // rows instead of calling the provider. The ranked rows of a real search are captured for the state.
@@ -2210,6 +2616,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // search. Fewer left → search again (the candidates ran out).
   // Consult pick / "xem thêm" / "bác": the model reads the engine's top 3 only (trimPlacesForModel consultTop).
   const consultTopTurn = !!consult && ['pick', 'more', 'reject'].includes(consult.turn) && process.env.CONSULT_TOP3 !== '0'
+  // CONSULT_UNWIND_S3C: the model sees UNWIND_PICK_ROWS rows of a pick (HEAD: 3).
+  const consultTopRows = consultUnwindS3cOn() ? UNWIND_PICK_ROWS : 3
   const storedCandidates = chatState?.candidates
   // Follow-up / compare: the guards' EVIDENCE for the venues being discussed comes from the stored candidates
   // (stream-filter seed) — no tool call, no provider call, nothing new for the model to read. r14: the guards
@@ -2219,7 +2627,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     : undefined
   // A shopping PLAN calls no tool: the newest card's prices are its money evidence, so the money guard is active and
   // an amount no source carries ("Giấy gói quà ~20.000đ", replay SHOP-2 level A) is removed, the product's own kept.
-  const shopPlanRecords = consult?.turn === 'plan' && consult.domains[0] === 'shopping' ? shoppingMarkerRecords(assistantTexts) : []
+  const shopPlanRecords = consult?.turn === 'plan' && consult.domains[0] === 'shopping' ? shoppingRecordsStoredFirst(chatState, () => shoppingMarkerRecords(assistantTexts)) : []
   // The requested entity the guard binds prices to: the product the conversation settled on, else the card's first.
   const shopPlanQuery = shopPlanRecords.length ? (latestConsultPick(null) ?? shopPlanRecords[0].title) : null
   const followSeed: TurnEvidence | undefined = followPlaceSeed ?? (shopPlanRecords.length ? { places: [], productRecords: shopPlanRecords, productQueries: shopPlanQuery ? [shopPlanQuery] : [] } : undefined)
@@ -2242,11 +2650,57 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     }
     console.log(JSON.stringify({ type: 'tappyai_consult_candidates', turn: consult.turn, stored: storedCandidates.rows.length, remaining: remaining.length, reused: remaining.length >= 2 }))
   }
+  // TURN_WEB_TICKET (default OFF, read per request): ONE web-research request may be sent for this user turn, shared by every W path
+  // (serperToolBudget.ts). Legacy path only: an agent turn (TAPPY_AGENT) keeps its own credit scope.
+  const turnWebTicket = turnWebTicketOn() && !agentOn ? createTurnWebTicket() : null
+  // CONSULT_REQUEST_CAP (default OFF → null, read per request): the turn's Serper REQUEST budget (serperRequestCap.ts). Legacy path only: an agent
+  // turn is bounded by its own credit scope. The object travels with the tools' execute() and the after-loop lookups; serperPost refuses without it.
+  const requestCapTurn = !agentOn ? createRequestCapTurn() : null
+  // Wave 4 · C2 (CONSULT_KNOWLEDGE_PATH, Owner Q1): the knowledge path (R3) - a consult turn with NO domain that is not a planning, image, evening, agent or no-tool turn. Identified by the code's own
+  // state only (no word of the message is read). It keeps every old tool and also gets the page reader, the calculator and the by-need web_search description; steps follow knowledgeDepth.
+  // OFF = false, read first, and nothing below differs from before.
+  const knowledgeTurn = consultKnowledgePathOn() && !lean && !!consult && !noToolTurn && !planningIntent && !hasImage && !eveningFrame && !agentOn
+  // Wave 3 (W1, CONSULT_RESEARCH_LOOP): a lean consult turn may open the pages its own results point to (robots.txt honoured, pages budgeted). OFF = null and nothing below differs from before.
+  // Wave 4 · C2: the knowledge path reuses the very same reader (createLeanResearch, robots on every hop, the page budget of the level).
+  // Wave 4 · C3 (CONSULT_PICK_TURN_TOOLS, Owner Q2): a lean Luna answer turn MAY turn out to be pre-searched by the code (R2) - known only after the pre-search below - so the reader and the
+  // calculator are DECLARED for it here; they are OFFERED only when the turn really was pre-searched (`pickTools`), and the turn is otherwise exactly the turn without the flag. OFF = false.
+  const pickCandidate = consultPickTurnToolsOn() && !!lean && lunaAnswer && !noToolTurn && !planningIntent && !agentOn
+  // Wave 4 (B): the FULL row set of the last place search, kept only on a pick candidate (the pre-search's rows, before the model's copy is slimmed). OFF = never set.
+  let lastFullPlaceResult: unknown = null
+  // CONSULT_PARALLEL (localhost only, one brain): Parallel reads a page the reader could not and searches when Serper gives no rows - one turn
+  // budget for both (1 search + 3 reads), 5 USD a day. The logs carry counts only (no query, no URL). OFF = null, nothing changes.
+  const parallel = oneBrain && consultParallelOn() ? (() => {
+    const apiKey = process.env.PARALLEL_API_KEY!.trim()
+    const budget = createParallelTurnBudget()
+    const log = (kind: string, d: Record<string, unknown>) => console.log(JSON.stringify({ type: 'tappyai_parallel', kind, ...d }))
+    return {
+      search: async (q: string) => {
+        if (!budget.take('search')) { log('search', { refused: true }); return { ok: false as const, rows: [] as [], reason: 'budget' } }
+        const r = await parallelSearch(q, { apiKey })
+        log('search', { ok: r.ok, rows: r.rows.length, ...(r.ok ? {} : { reason: r.reason }) })
+        return r
+      },
+      extract: async (url: string, focus: string, signal?: AbortSignal) => {
+        if (!budget.take('extract')) { log('extract', { refused: true }); return { ok: false as const, reason: 'budget' } }
+        const r = await parallelExtract(url, focus, { apiKey, signal })
+        log('extract', { ok: r.ok, ...(r.ok ? { chars: r.text.length } : { reason: r.reason }) })
+        return r
+      },
+    }
+  })() : null
+  const researchReader = (consultResearchLoopOn() && lean) || knowledgeTurn || pickCandidate || oneBrain ? createLeanResearch({ lang, userTexts: recentUserTexts, maxReads: consultUnwindS6aOn() ? Math.max(S6_MAX_READS, levelLimits.researchMaxReads) : levelLimits.researchMaxReads, ...(consultUnwindS6cOn() ? { v5Reading: true } : {}), emit: trace ? (ev, d) => trace.emit(ev, d) : undefined, ...(parallel ? { extractFallback: parallel.extract } : {}) }) : null
+  // 01/11 (owner: "bảng thống kê chi phí - làm ngay"): one ledger row per turn of a signed-in account (lib/ai/usage, AI_USAGE_LEDGER=1):
+  // plan, mode, the deepest web lookup, the turn's price and counts - never a word of the conversation. Reporting only; fire and forget.
+  const turnSearch: { depth: 'none' | SearchDepth } = { depth: 'none' }
+  const usageSink = (i: TurnCostInfo, extra: { parallelCalls?: number; ok?: boolean } = {}) => {
+    logSessionCost(i) // 02/11: outside production, one readable line with the running total of the testing session (never in production)
+    void recordAiUsage({ userId: authedUserId ?? null, plan: quotaPlan, mode: ledgerMode(chatMode, autoThink.on, responsesConfigured()), searchDepth: turnSearch.depth, costUsd: i.usd, tokensIn: i.tokensIn, tokensOut: i.tokensOut, serperCalls: i.serperCalls, ...usageSplit(i), ...extra })
+  }
   const tools = noToolTurn && !agentOn ? undefined : gateTools(timeTools({
       // A movie/show RECOMMENDATION turn drops the place search entirely, so the
       // model can't answer "recommend a movie" with a list of cinemas — it
       // recommends titles from film knowledge instead (see detectMovieRecommendationIntent).
-      ...(((movieRecommend && !agentOn) || filmAsk) ? {} : { search_places: tool({
+      ...(!oneBrain && ((movieRecommend && !agentOn) || filmAsk) ? {} : { search_places: tool({
         description: 'Tim dia diem, nha hang, cafe, spa, khach san, diem tham quan/du lich (thang canh, bao tang, cong vien, danh lam), benh vien, giai tri (rap phim, karaoke, gym, bar...) tai Viet Nam. Voi quan an/nha hang/cafe/spa/giai tri se kem gia mon/dich vu/ve tham khao tu Google Search (Serper)',
         parameters: z.object({
           query: z.string().describe('Tu khoa tim kiem (vd: pho ngon, cafe dep, spa tot, diem tham quan)'),
@@ -2267,11 +2721,40 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // the area — the author wrote it, and `searchPlaces` already knows how to
           // read a city out of free text and how to refuse when it cannot. A
           // location the model DID name still wins; this only fills a blank.
-          const location = modelLocation ?? exploreClipLocationHint(clipContext)
-          console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', query, location, placeType: type, hasLocationBias: !!userLocation, locationFromClip: modelLocation === undefined && location !== undefined }))
+          // LOC-DEFAULT-HCM-01: with no valid current location, the area the user gave IN ANSWER to the area question fills the blank
+          // too — "ở Đà Nẵng" must not be searched around the default TP.HCM centre (food.ts defaultCentre) when the model names no location.
+          const modelOrClip = modelLocation ?? exploreClipLocationHint(clipContext)
+          // Review 30/10 (one brain): with no location argument the search was centred on the GPS, the default TP.HCM centre or nothing (Serper then answers
+          // from New York) although the model's own query named the city ("cà phê đẹp chụp ảnh Đà Lạt"). The city the query names - else the one the
+          // question names - fills the blank; a dish or street named after a city is not that city (maskStreetNames: "bún bò Huế").
+          const cityOf = (s: string) => cityInText(maskStreetNames(normalizeVN((s || '').toLowerCase())))
+          const oneBrainCity = oneBrain && !modelOrClip?.trim() ? (cityOf(query) ?? cityOf(lastText)) : null
+          const location = oneBrainCity ? oneBrainCity.query : (modelOrClip?.trim() || hasValidCurrentLocation(userLocation)) ? modelOrClip : (areaFromAnswer(lastAssistantText, lastText) ?? modelOrClip)
+          // Review 30/10 (one brain): "Mình ở Quận 3, tháng sau đi Đà Lạt" - the model asked for Đà Lạt, the district read from the user's words centred the
+          // search on Quận 3 and its filter then kept Quận 3 rows. The place the model asked for wins; the district stays only when that place IS the district.
+          const statedArea = oneBrain && location?.trim() && userStatedArea && statedDistrict(location)?.label !== userStatedArea.label ? null : userStatedArea
+          // S4 (C): the query and the location are the user's words (or the model's copy of them): a length and whether a location was set, never the text
+          console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', query: logText(query, 'tool_arg'), hasLocation: !!location, placeType: type, hasLocationBias: !!userLocation, locationFromClip: modelLocation === undefined && location !== undefined }))
           // Item 5: the `/maps` price-band retry is paid only when price is part of this decision —
           // a stated budget (this turn or the thread) or a price word in the request.
           const priceRetry = !!budget || !!needProfile.budget || /\b(gia|re|dat|bao nhieu|budget|price|cheap|expensive)\b/.test(normalizeVN(lastText.toLowerCase()))
+          // Round 42 (D1, then LOC-DEFAULT-HCM-01): no valid current location and no place named anywhere — do not search around a default
+          // centre (TP.HCM), "gần tôi" or not; tell the model the location is missing, and the code asks for the area (areaAsk.ts).
+          if (!placesOverride && !hasValidCurrentLocation(userLocation) && !statedArea
+            // review 30/10 (one brain): a place the model names that the city list does not know (Côn Đảo) is searched around its own coordinates (food.ts)
+            && !(oneBrain ? cityOf(lastText) : cityInText(lastText)) && !(location && (oneBrain || cityForName(location) || cityInText(location) || statedDistrict(location))) &&!(oneBrain ? cityOf(query) : cityInText(query)) && !statedDistrict(query)) {
+            // Wave 2E (C1): this lookup is the MODEL's own (the gate dropped the code pre-search, so a lookup that reaches here was asked for by the model): it needs a place, so the user is asked for the area
+            // exactly as before - the gate never says "no place needed" for the model.
+            // N5 (30/10): on the one-brain route the code writes nothing into the answer - the model, which read the whole request, decides whether
+            // it can answer without an area (ideas, destinations) or must ask, in its own words. Still no search around a default city.
+            noCurrentLocationAsked = !oneBrain
+            console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', step: 'no_current_location' }))
+            if (searchGate?.blocked) trace?.emit('search_now_gate_model_lookup', { by: traceCallBy(), outcome: 'no_current_location', asked: !oneBrain, hasValidGps: false })
+            if (oneBrain) return { error: 'no_current_location', note: ONE_BRAIN_NO_LOCATION_NOTE }
+            return { error: 'no_current_location', note: 'Chưa có vị trí hiện tại của người dùng (thiết bị không gửi vị trí) và người dùng chưa nêu khu vực. Không đoán khu vực, không tìm quanh một thành phố mặc định, không gợi ý quán nào. Hệ thống sẽ tự thêm câu hỏi khu vực vào cuối câu trả lời — KHÔNG tự đặt câu hỏi khu vực, chỉ trả lời ngắn (hoặc không viết gì).' }
+          }
+          // Wave 2F (M2): on a turn the gate blocked, a place search that goes on to the provider is counted too (by = who started it: the answer model, or the code). Trace only.
+          if (searchGate?.blocked) trace?.emit('search_now_gate_model_lookup', { by: traceCallBy(), outcome: 'proceeded', asked: false, hasValidGps: hasValidCurrentLocation(userLocation) })
           // The editorial supplement runs beside the live search, not after it.
           const [placesResult, editorial] = placesOverride
             ? [{ source: 'chat_state', count: placesOverride.results.length, location: placesOverride.location ?? location ?? '', results: placesOverride.results }, [] as Awaited<ReturnType<typeof travelEditorialFor>>] as const
@@ -2315,7 +2798,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
             // server's answer, joined by review_id. Same taxonomy and same table as
             // `/api/track`; fire-and-forget, and nothing here may fail the turn.
             try {
-              void createAdminClient()
+              // Least privilege: the caller's own client. RLS (user_events "Users manage own events")
+              // admits a row only when user_id = auth.uid(), so a guest (no user_id) writes nothing here
+              // rather than falling back to the service role.
+              if (clipUserId && evidenceDb) void evidenceDb
                 .from('user_events')
                 .upsert({
                   event_id: randomUUID(),
@@ -2344,24 +2830,31 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // "now") shape the ROWS here, before ranking, so the set the model reads and the card
           // the client renders are the same set. `applyBudgetFilter` above only ever touched web
           // snippets; the place rows were never constrained (`placeConstraintFilter.ts`).
-          const constraints = { ...detectPlaceConstraints(lastText, budget ?? needProfile.budget, recentSubjectUserTexts.slice(0, -1)), ...(wantsWiderArea(lastText) ? { district: null } : {}) }
+          // review 30/10 (one brain): rows are not dropped by a keyword reading of the user's words ("đang mở", "dưới …k", "không muốn nhà hàng", a district)
+          const constraints = oneBrain ? NO_PLACE_CONSTRAINTS : { ...detectPlaceConstraints(lastText, budget ?? needProfile.budget, recentSubjectUserTexts.slice(0, -1), new Date(), { explicitOnly: agentV2 }), ...(wantsWiderArea(lastText) || (userStatedArea && !statedArea) ? { district: null } : {}) }
           const constrained0 = applyPlaceConstraints(budgeted, constraints, lang === 'en' ? 'en' : 'vi')
           // chat2 A2: price and distance are SOFT — when the hard filters leave nothing, drop the price ceiling, then widen the
           // area (one more provider call), and say what was relaxed (placeRelax.ts). Still nothing → the honest no-result block.
-          const relax = await relaxEmptyPlaces({
+          // Phase 8 M5 (TAPPY_AGENT=2): a stated budget / district is a HARD constraint — never relaxed by code. Nothing left → the honest
+          // no-result path below, and Luna offers to widen it (the user's call).
+          let widenTried = false
+          const relax = agentV2 ? { result: constrained0.result, relaxed: [] as string[], empty: ((constrained0.result as { results?: unknown[] })?.results ?? []).length === 0 } : await relaxEmptyPlaces({
             budgeted, constrained: constrained0, constraints, lang,
             applyConstraints: (res, cc) => applyPlaceConstraints(res, cc, lang === 'en' ? 'en' : 'vi'),
             widen: placesOverride || clipContext ? undefined : async () => {
               const city = widenLocation(statedArea)
               if (!city) return null
               if ((budgeted as { source?: string }).source === 'budget') return null
+              widenTried = true
               // A deliberate second retrieval, only after an empty first one: its own one-call budget (the turn budget is spent by the empty search).
               const wide = await searchPlaces(query, city, type, lang, userLocation, widenBudget, { priceRetry: false })
               return guardPlaceGeography(wide, geoGuardArea(city, userLocation)).result
             },
           })
           if (relax.relaxed.length > 0 || relax.empty) console.log(JSON.stringify({ type: 'tappyai_place_relax', relaxed: relax.relaxed, empty: relax.empty, budget_max: constraints.budgetMax, district: constraints.district?.label ?? null, query }))
-          emptyPlaceSearch = relax.empty ? { query, area: statedArea?.label ?? location ?? null } : null
+          // CONSULT_UNWIND_S1B: the wider-search chip only for the city of the district the user stated, and only when that wider search has not just run.
+          // CONSULT_ONE_BRAIN: the model read the empty result and wrote its own answer; no code block is appended after it.
+          emptyPlaceSearch = relax.empty && !oneBrain ? { query, area: statedArea?.label ?? location ?? null, ...(consultUnwindS1bOn() ? { widenCity: statedArea && !widenTried ? (statedArea.city === 'hn' ? 'Hà Nội' : 'TP.HCM') : null } : {}) } : null
           const constrained = relax.relaxed.length > 0 ? { ...constrained0, result: relax.result } : constrained0
           if (constrained.dropped.length > 0 || constrained.demotedClosed > 0 || constrained.priceUnknown > 0 || constraints.district) {
             console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', step: 'constraint_filter', budget_max: constraints.budgetMax, exclude: constraints.exclude, open_now: constraints.openNow, district: constraints.district?.label ?? null, dropped: constrained.dropped, demoted_closed: constrained.demotedClosed, price_unknown: constrained.priceUnknown, price_fits: constrained.priceFits }))
@@ -2376,10 +2869,12 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const { result, pick } = clipTarget === 'ambiguous'
             ? { result: filtered, pick: null }
             : rankForModel('search_places', filtered, query)
-          if (pick) turnPick = pick
           // The ranked candidate set of a REAL search goes to the chat-session state ("xem thêm" / "bác" reuse it).
           const rankedRows = (result as { results?: unknown }).results
-          if (!placesOverride && Array.isArray(rankedRows)) lastPlaceRowsForState = { args: { query, ...(type ? { type } : {}), ...(location ? { location } : {}) }, rows: rankedRows }
+          // review 30/10 (one brain, several searches in one step): the first search with rows owns the turn's place state (turnPlaceState.ts)
+          const ownsPlaceState = placeOwner.mayWrite(Array.isArray(rankedRows) ? rankedRows.length : 0)
+          if (pick && ownsPlaceState) turnPick = pick
+          if (!placesOverride && Array.isArray(rankedRows) && ownsPlaceState) lastPlaceRowsForState ={ args: { query, ...(type ? { type } : {}), ...(location ? { location } : {}) }, rows: rankedRows }
           // CCP (Phase 6, owner decision P6-B): Commerce Links ride the ranked rows as
           // `commerce_links`, read by buildActions below and carved from the model by forModel.
           // Identity-preserving and a no-op while CCP_ENABLED is false.
@@ -2390,23 +2885,40 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // keeps the data layer exercised (and its tests honest) while the
           // emission flag stays off; the collector holds them until the stream
           // filter has photos to fold in.
-          turnPlaceLocation = location
+          if (ownsPlaceState) turnPlaceLocation = location
+          const builtRecs = placeRecommendations(result, location, pickContext(pick))
           enrichment.setPlacesRecommendations(
-            placeRecommendations(result, location, pickContext(pick)),
+            builtRecs,
             producerSubject('search_places', (result as Record<string, unknown>)._tappy_place_domain),
           )
           // The map destination the provider itself returned for this search.
           const mapsUrl = (result as Record<string, unknown>).google_maps_search
             ?? (result as Record<string, unknown>).search_url
-          enrichment.setPlacesMapsUrl(typeof mapsUrl === 'string' ? mapsUrl : undefined)
+          if (ownsPlaceState) enrichment.setPlacesMapsUrl(typeof mapsUrl === 'string' ? mapsUrl : undefined)
           // The model reads the decision set only (cost optimization item 4); the card above
           // was built from the full result and is unaffected. Trimmed AFTER `forModel` carved the
           // enrichment (photos, links) off the FULL row set — trimming first starved the collector
           // of photos and the late resolver bought five /images calls per turn (measured). See
           // `modelPayload.ts`.
-          return trimPlacesForModel(forModel('search_places', withTravelEditorial(pick
+          if (pickCandidate) lastFullPlaceResult = result
+          const modelView = trimPlacesForModel(forModel('search_places', withTravelEditorial(pick
             ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }
-            : result, editorial)), 'results', { rendersCard: rendersDecisionCard, modelChooses: v1Active, ...(consultTopTurn ? { consultTop: 3 } : {}) })
+            : result, editorial)), 'results', { rendersCard: rendersDecisionCard, modelChooses: v1Active || agentV2, ...(consultTopTurn ? { consultTop: consultTopRows } : {}) })
+          // CONSULTATIVE_IN_AGENT + audit trace only (cardPathTrace.ts): which rows the provider returned, which the MODEL reads, which became card candidates.
+          if (enrichment.diagTurnId) {
+            const foldName = (s: unknown) => String(s ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/gi, 'd').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
+            const fullRows = briefRows((result as { results?: unknown }).results, 60)
+            const seenByModel = briefRows((modelView as { results?: unknown } | null)?.results, 60)
+            const recNames = new Set(builtRecs.map(r => foldName(r.entity.identity.name)))
+            cardPathTrace(enrichment.diagTurnId, 'rows_and_recs', {
+              provider_rows: fullRows.length, provider_row_list: fullRows,
+              model_rows: seenByModel.length, model_row_list: seenByModel,
+              recs: builtRecs.length, rec_list: builtRecs.slice(0, 60).map(r => ({ id: r.entity.id, name: r.entity.identity.name ?? null })),
+              rows_without_rec: fullRows.filter(r => !recNames.has(foldName(r.name))).map(r => r.name),
+              model_rows_without_rec: seenByModel.filter(r => !recNames.has(foldName(r.name))).map(r => r.name),
+            })
+          }
+          return modelView
         }
       }) }),
       get_news: tool({
@@ -2414,15 +2926,20 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         parameters: z.object({ query: z.string().describe('Tu khoa tin tuc can tim') }),
         execute: async ({ query }) => getNews(query, lang)
       }),
-      ...(locationIntent !== 'offline' ? { search_products: tool({
+      ...(locationIntent !== 'offline' || oneBrain ? { search_products: tool({
         description: 'Tim san pham/shop mua sam: gia tren Shopee/Tiki/Lazada, website rieng cua shop, dia chi cua hang vat ly (neu co), Facebook cua shop - tat ca tu Google Search (Serper)',
-        parameters: z.object({ query: z.string().describe('Ten san pham can tim mua') }),
-        execute: async ({ query }) => {
+        parameters: z.object({ query: z.string().describe('Ten san pham can tim mua'), ...(agentV2 ? { purchase_links: z.boolean().optional().describe('true CHI KHI nguoi dung hoi mua o dau / xin link mua / the hien ro y dinh mua. Tu van, tieu chi, so sanh, danh gia: bo trong (khong tra link mua)') } : {}) }),
+        execute: async ({ query, purchase_links }: { query: string; purchase_links?: unknown }) => {
+          // Enrichment policy (enrichmentPolicy.ts): the Agent Runtime fetches purchase links only when Luna declared purchase intent.
+          const enrichmentMode = productEnrichmentFor({ agentRuntime: agentV2, purchaseLinks: purchase_links })
+          const enrichmentBefore = serperSnapshot()
           const stored = productsOverride
           productsOverride = null
           if (stored) console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_products', step: 'from_chat_state', rows: stored.length }))
-          const r = stored ? { query, source: 'chat_state', search_results: stored } : await searchProducts(query, lang)
-          const filtered = await dropInactiveMerchantRows(budget ? applyBudgetFilter(r, budget, query) : r, 'search_results')
+          const r = stored ? { query, source: 'chat_state', search_results: stored } : await searchProducts(query, lang, { merchantLinks: enrichmentMode === 'links' })
+          const filteredAll = await dropInactiveMerchantRows(budget ? applyBudgetFilter(r, budget, query) : r, 'search_results')
+          // CONSULTATIVE_IN_AGENT: no product row whose link ends on a login wall (Shopee product pages, checked logged-out) — loginWallHosts.ts.
+          const filtered = consultativeAgent ? dropLoginWallRows(filteredAll, 'search_results') : filteredAll
           const { result, pick, shortlistedCandidates } = rankForModel('search_products', filtered)
           // Kept for "xem thêm" / "bác": the RANKED rows, shortlist first — not the raw search (replay SHOP-3: the raw
           // rows held chargers and laptop stands the ranker had set aside, and "xem thêm" reached exactly those).
@@ -2431,7 +2948,14 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const keepRows = shortRaw.length >= 2 ? [...shortRaw, ...(Array.isArray(rankedRows) ? rankedRows.filter(r => !shortRaw.includes(r)) : [])] : rankedRows
           if (!stored && Array.isArray(keepRows) && keepRows.length) lastProductsForState = { query, rows: compactProducts(keepRows) }
           if (pick) turnPick = pick
-          await attachCommerceLinks('search_products', result, { location: needProfile.location.text ?? undefined, query, platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, actorSeal: commerceActorSealValue, userText: lastText, userTexts: recentUserTexts })
+          // Vendor-link searches (up to two products × several marketplaces) are OPTIONAL: none without purchase intent; with it they may only
+          // spend what is left after a reserve kept for the verification the answer still needs (never the whole turn budget).
+          const optionalBudget = enrichmentMode === 'links' ? (agentV2 ? optionalEnrichmentBudget(turnCreditsRemaining()) : Number.POSITIVE_INFINITY) : 0
+          if (optionalBudget > 0) {
+            if (Number.isFinite(optionalBudget)) await withSerperToolBudget(optionalBudget, async () => { await attachCommerceLinks('search_products', result, { location: needProfile.location.text ?? undefined, query, platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, actorSeal: commerceActorSealValue, userText: lastText, userTexts: recentUserTexts }) })
+            else await attachCommerceLinks('search_products', result, { location: needProfile.location.text ?? undefined, query, platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, actorSeal: commerceActorSealValue, userText: lastText, userTexts: recentUserTexts })
+          }
+          if (agentV2) console.log(JSON.stringify({ type: 'tappyai_product_enrichment', mode: enrichmentMode, purchase_links: purchase_links === true, optional_budget: Number.isFinite(optionalBudget) ? optionalBudget : null, worst_case: worstCaseSearchProductsCredits(enrichmentMode), requests: serperDelta(enrichmentBefore).calls, credits: serperDelta(enrichmentBefore).credits }))
           enrichment.setPlacesRecommendations(productRecommendations(result), producerSubject('search_products'))
           /**
            * THE DECISION SURFACE DOES NOT DEPEND ON A WINNER EXISTING.
@@ -2489,11 +3013,25 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         }
       }) } : {}),
       web_search: tool({
-        description: 'Tim kiem tong quat tren internet de lay thong tin moi nhat (ty gia, gia xang, su kien, kien thuc can xac thuc...) khi cac tool khac khong phu hop',
-        parameters: z.object({ query: z.string().describe('Tu khoa can tim kiem (vd: ty gia USD hom nay)') }),
-        execute: async ({ query }) => {
+        description: (toolByNeed && lean) || knowledgeTurn ? WEB_SEARCH_DESCRIPTION_BY_NEED : 'Tim kiem tong quat tren internet de lay thong tin moi nhat (ty gia, gia xang, su kien, kien thuc can xac thuc...) khi cac tool khac khong phu hop',
+        // CONSULT_ONE_BRAIN: the model may name the country and the language of the search (two letters each; anything else falls back to Vietnam / Vietnamese). Other routes keep the one-field schema.
+        parameters: z.object({
+          query: z.string().describe('Tu khoa can tim kiem (vd: ty gia USD hom nay)'),
+          ...(oneBrain ? {
+            country: z.string().optional().describe('Optional two-letter country code of the sources you want (e.g. us, jp, th, fr). Omit for Vietnam.'),
+            language: z.string().optional().describe('Optional two-letter language code of the sources you want (e.g. en, ja, th). Omit for Vietnamese.'),
+            // 01/11: the model chooses how deep the lookup goes (Chat mode turns it into a budget; Web / Thinking are always thorough)
+            depth: z.enum(['quick', 'thorough']).optional().describe(SEARCH_DEPTH_DESCRIPTION),
+          } : {}),
+        }),
+        execute: async (args) => {
+          const { query } = args
+          const { country, language } = args as { country?: string; language?: string }
           // A travel turn that reaches for the general search still gets the editorial supplement.
-          const [r, editorial] = await Promise.all([webSearch(query, lang), travelEditorialFor(null)])
+          const searchRegion = oneBrain ? { gl: country, hl: language } : null
+          // CONSULT_PARALLEL: no Serper rows -> Parallel Search once (the turn's Parallel budget). OFF: parallel is null, nothing added.
+          if (searchRegion && parallel) Object.assign(searchRegion, { parallelSearch: parallel.search })
+          const [r, editorial] = await Promise.all([searchRegion ? webSearch(query, lang, searchRegion) : webSearch(query, lang), travelEditorialFor(null)])
           // Completion Pass (14 Sep 2026): an EVENT question is answered here, not by the places
           // tool — Ticketbox listings are discovered and validated by CCP and projected as
           // `event_links` (when CCP is on); the result is untouched otherwise.
@@ -2501,18 +3039,102 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           return withTravelEditorial(r, editorial)
         }
       }),
+      // Wave 3 (W4): only defined on a lean consult turn with the flag ON; the filter below offers it only to a lean turn. Deterministic: a typed refusal comes back as a result, never as a thrown error.
+      // Wave 3 (W1): the reader's own tool definition (description, schema, execute), declared here like every other tool so the AI tool registry and its boundary test see it.
+      ...(researchReader ? { read_page: tool({ ...researchReader.tool }) } : {}),
+      // Wave 4 · C2 / C3: the knowledge path and a possible pre-searched pick get the same calculator.
+      ...((deterministicMath && lean) || knowledgeTurn || pickCandidate || oneBrain ? {
+        calculate: tool({
+          description: CALCULATE_DESCRIPTION,
+          parameters: z.object({ expression: z.string().describe('Bieu thuc so hoc can tinh, vd: pmt(0.01, 12, 1000)') }),
+          execute: async ({ expression }) => ({ ...calculate(expression), _tappy_calc: true }),
+        }),
+      } : {}),
       get_weather: tool({
         description: 'Lay thong tin thoi tiet hien tai va du bao hom nay (nhiet do, tinh trang troi, do am, gio) cho mot dia diem tai Viet Nam, du lieu realtime tu wttr.in',
         parameters: z.object({ location: z.string().describe('Ten thanh pho/tinh can xem thoi tiet (vd: Ha Noi, Da Nang, TP HCM)') }),
         execute: async ({ location }) => getWeather(location, lang)
       }),
+      // 01/11 (mode "Tự động"): the model's own decision to think for the rest of this answer (oneBrain.ts THINK_DEEPER_DESCRIPTION). Nothing
+      // leaves the server; the reason is counted, never logged.
+      ...(oneBrain && chatMode === 'auto' ? { think_deeper: tool({
+        description: THINK_DEEPER_DESCRIPTION,
+        parameters: z.object({ reason: z.string().describe('In a few words, what in this request needs the thinking') }),
+        execute: async ({ reason }) => {
+          autoThink.on = true
+          console.log(JSON.stringify({ type: 'tappyai_auto_think', on: true, reason_chars: typeof reason === 'string' ? reason.length : 0 }))
+          return { ok: true, note: THINK_DEEPER_NOTE }
+        },
+      }) } : {}),
+      // CONSULT_ONE_BRAIN: a daily forecast up to 10 days (weatherForecast.ts, Open-Meteo, no key) - get_weather gives today only.
+      ...(oneBrain ? { get_weather_forecast: tool({
+        description: 'Weather for a city or place anywhere, from one call: the conditions NOW, the next 12 hours hour by hour (rain chance and amount, sky, temperature, local time), and a daily forecast for 1-10 days (min/max temperature, rain chance and amount, wind, sky). Use it for now, tonight, the next hours, the weekend, a trip date or next week.',
+        parameters: z.object({ location: z.string().describe('City or place name, e.g. Da Nang, Quy Nhon, Tokyo'), days: z.number().describe('How many days to return, counting TODAY as day 1, 1-10. To reach a date, count it in: from a Wednesday, the coming Sunday needs 5') }),
+        execute: async ({ location, days }) => getWeatherForecast(location, days, lang),
+      }) } : {}),
+      // CONSULT_ONE_BRAIN: the plan card / brochure (TripPlanCard, the shared plan page). Before, code decided a "trip turn" and wrote the
+      // [TAPPY_PLAN] spec into the prompt; with one brain the model decides to present a day-by-day plan and passes it here (TappyPlan shape,
+      // components/TripPlanCard.tsx). The block is appended in streamEnrichment, where the photo, link and price guards still run on it.
+      ...(oneBrain ? { present_plan: tool({
+        description: PRESENT_PLAN_DESCRIPTION,
+        parameters: z.object({
+          type: z.enum(['trip', 'evening']),
+          title: z.string().describe('e.g. "Quy Nhơn 3 ngày 2 đêm"'),
+          people: z.number().optional(),
+          budget_total: z.string().optional().describe('only when the person gave a budget or the tools gave prices'),
+          days: z.array(z.object({
+            label: z.string().describe('e.g. "Ngày 1 — Kỳ Co, Eo Gió"; each day has 3-6 items (morning, lunch, afternoon, dinner, evening)'),
+            items: z.array(z.object({
+              time: z.string().describe('e.g. "07:00" or "Sáng"'),
+              emoji: z.string(),
+              category: z.string().describe('food | sightseeing | hotel | transport | activity | rest'),
+              name: z.string().describe(PRESENT_PLAN_FIELD_NOTES.name),
+              description: z.string().optional().describe(PRESENT_PLAN_FIELD_NOTES.description),
+              price: z.string().optional().describe('only from the tool results'),
+              address: z.string().optional().describe('only from the tool results'),
+            })).min(1),
+          })).min(1),
+          cost_breakdown: z.record(z.string()).optional(),
+          local_tips: z.array(z.object({ text: z.string(), basis: z.enum(['tool', 'general']) })).optional(),
+        }),
+        execute: async (plan) => {
+          enrichment.planBlock = JSON.stringify(plan)
+          return { ok: true, note: 'The app shows this plan as a card BELOW your text, and it can be shared as a brochure. Write only a short summary and the key tips; do not repeat the plan, and do not say the card is above.' }
+        },
+      }) } : {}),
+      // Owner 31/10 (ChatGPT's option cards): a recommendation of things that have no place or product card (tours, services, plans, courses, tools)
+      // becomes one card per option. The model fills the fields; the server keeps only links this turn's tools returned (streamEnrichment).
+      ...(oneBrain ? { present_options: tool({
+        description: 'Show the options of a recommendation as cards, one per option: tours, services, packages, plans, courses, apps or tools, routes. Not for places or products (search_places / search_products make their own cards). Call it once, after looking things up, when you recommend 2-6 options; then write the lead, your pick and the comparison table around it, not every detail again.',
+        parameters: z.object({
+          title: z.string().optional().describe('e.g. "3 tour Thái Lan 7 ngày đáng cân nhắc"'),
+          options: z.array(z.object({
+            name: z.string(),
+            badge: z.string().optional().describe('who or what it suits best, a few words, e.g. "Rẻ nhất", "Hợp lần đầu đi"'),
+            figure: z.string().optional().describe('the one figure to compare by, e.g. "7.990.000đ/người"; only a figure from the tool results or one you reliably know'),
+            figure_note: z.string().optional().describe('what the figure is and its date or source, e.g. "giá niêm yết, cập nhật 30/10/2026"'),
+            verdict: z.string().optional().describe('one sentence: who it suits and why'),
+            highlights: z.array(z.string()).describe('2-5 key facts'),
+            extras: z.array(z.string()).optional().describe('costs or conditions on top of the figure'),
+            caveat: z.string().optional().describe('its limit, or what to check before choosing it'),
+            link: z.string().optional().describe('a URL from this turn\'s tool results where the person can act on it (book, read, buy); never invent one'),
+            link_label: z.string().optional(),
+          })).min(1),
+        }),
+        execute: async ({ title, options }) => {
+          enrichment.optionsBlock = JSON.stringify({ v: 1, kind: 'options', ...(title ? { title } : {}), options: options.map(o => ({ name: o.name, badge: o.badge, figure: o.figure, figureNote: o.figure_note, verdict: o.verdict, highlights: o.highlights, extras: o.extras, caveat: o.caveat, href: o.link, linkLabel: o.link_label })) })
+          return { ok: true, note: 'The app shows these options as cards BELOW your text. Write the lead (what you chose by), your pick and why, and a short table mapping each need to an option; do not repeat each card, and do not say the cards are above.' }
+        },
+      }) } : {}),
       get_gold_price: tool({
         description: 'Lay gia vang SJC, PNJ, DOJI, vang the gioi (XAU/USD) realtime, cap nhat moi 5 phut tu vang.today',
         parameters: z.object({ query: z.string().optional().describe('Loai vang user hoi, vd: SJC, PNJ, vang the gioi (khong bat buoc)') }),
         execute: async ({ query }) => getGoldPrice(query || '', lang)
       }),
       get_flight_prices: tool({
-        description: 'Ve may bay giua 2 thanh pho/san bay: link dat ve theo dung chang/ngay (Trip.com, Traveloka, hang bay). Gia, gio bay, tinh trang chuyen: CHUA XAC MINH (chua co nguon) — khong neu gia/gio.',
+        description: oneBrain
+          ? 'Flight booking pages between two cities or airports for the route and date (Trip.com, Traveloka, airlines), shown as buttons. It has NO fare, time or status data: for a reference price, web_search current fares instead.'
+          : 'Ve may bay giua 2 thanh pho/san bay: link dat ve theo dung chang/ngay (Trip.com, Traveloka, hang bay). Gia, gio bay, tinh trang chuyen: CHUA XAC MINH (chua co nguon) — khong neu gia/gio.',
         parameters: z.object({
           origin: z.string().describe('Diem di (ten thanh pho hoac ma san bay IATA, vd: Ha Noi, HAN)'),
           destination: z.string().describe('Diem den (ten thanh pho hoac ma san bay IATA, vd: TP HCM, SGN)'),
@@ -2546,7 +3168,20 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const stored = stayOverride
           stayOverride = null
           if (stored) console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'get_hotel_prices', step: 'from_chat_state', rows: stored.length }))
-          const [r, editorial] = await Promise.all([stored ? Promise.resolve({ location, source: 'chat_state', hotel_list: stored }) : getHotelPrices(location, checkIn, checkOut, budget?.max, lang), travelEditorialFor(location)])
+          // CONSULT_UNWIND_S1D (toolLocation.ts): a location that clearly contradicts the stated area is sent back to the model as a structured
+          // error, and one call spends at most HOTEL_CALL_CREDIT_CAP Serper credits (on top of the turn cap). Flag OFF: neither runs.
+          const s1d = !stored && consultUnwindS1dOn()
+          if (s1d) {
+            const verdict = checkToolLocation(location, consult?.known.diem_den ?? consult?.area ?? null, recentUserTexts)
+            console.log(JSON.stringify({ type: 'tappyai_tool_location', tool: 'get_hotel_prices', ok: verdict.ok, reason: verdict.reason, ...(verdict.ok ? {} : { km: verdict.km }) }))
+            if (!verdict.ok) return locationRefusal(verdict, lang)
+          }
+          const cappedHotels = async () => {
+            const capped = await withSerperToolBudget(HOTEL_CALL_CREDIT_CAP, () => getHotelPrices(location, checkIn, checkOut, budget?.max, lang))
+            console.log(JSON.stringify({ type: 'tappyai_tool_call_cap', tool: 'get_hotel_prices', limit: HOTEL_CALL_CREDIT_CAP, spent: capped.spent, refused: capped.refused }))
+            return capped.value
+          }
+          const [r, editorial] = await Promise.all([stored ? Promise.resolve({ location, source: 'chat_state', hotel_list: stored }) : s1d ? cappedHotels() : getHotelPrices(location, checkIn, checkOut, budget?.max, lang), travelEditorialFor(location)])
           // A travel "bác": hotels already offered leave the list BEFORE ranking (replay r19 TRAVEL-2 re-picked one).
           const unseen = travelMoreTurn ? withoutShownRows(r, [...consultShownEver, ...(chatState?.shown ?? [])]) : r
           const filtered = budget ? applyBudgetFilter(unseen as typeof r, budget, 'khach san') : unseen as typeof r
@@ -2561,7 +3196,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // from the full list above. Same trim as places (cost item 4).
           return trimPlacesForModel(forModel('get_hotel_prices', withTravelEditorial(pick
             ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }
-            : result, editorial)), 'hotel_list', { modelChooses: v1Active, ...(consultTopTurn && consult?.domains[0] === 'travel' ? { consultTop: 3 } : {}) })
+            : result, editorial)), 'hotel_list', { modelChooses: v1Active || agentV2, ...(consultTopTurn && consult?.domains[0] === 'travel' ? { consultTop: consultTopRows } : {}) })
         }
       }),
       get_transport_options: tool({
@@ -2573,8 +3208,11 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // an off-enum value ("bus", "grab") used to fail SDK validation and end the whole turn.
           mode: z.string().optional().describe('"intercity" cho xe khach/tau giua 2 tinh thanh, "taxi" cho di chuyen trong thanh pho/quang duong ngan bang taxi/xe cong nghe. Bo trong neu khong ro.'),
           date: z.string().optional().describe('Ngay di dang YYYY-MM-DD neu user noi ro (chi cho xe khach/tau, khong bat buoc)'),
+          // 29 Oct 2026: the dated train list takes the adult count (Vexere passenger[adt]); same field and clamp as get_flight_prices.
+          passengers: z.number().optional().describe('So hanh khach nguoi lon neu user noi ro (khong bat buoc; toi da 9 tren mot ve le)'),
         }),
-        execute: async ({ origin, destination, mode: rawMode, date }) => {
+        execute: async ({ origin, destination, mode: rawMode, date, passengers: rawPassengers }) => {
+          const { passengers } = clampPassengers(rawPassengers, lang)
           const m = coerceTransportMode(rawMode)
           if (m.coerced) console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'get_transport_options', step: 'mode_coerced', from: String(m.raw).slice(0, 40), to: m.mode }))
           if (m.mode === 'unknown') {
@@ -2590,9 +3228,24 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
             }
           }
           const mode = m.mode
-          const [r, editorial] = await Promise.all([getTransportOptions(origin, destination, mode === 'taxi' ? 'taxi' : undefined, lang), travelEditorialFor(destination)])
+          const [r, editorial] = await Promise.all([getTransportOptions(origin, destination, mode === 'taxi' ? 'taxi' : undefined, lang, consultativeAgent && mode !== 'taxi' ? date : undefined), travelEditorialFor(destination)])
           // Completion Pass (14 Sep 2026): the Vexere link is CCP-resolved (route page + date) when CCP is on.
-          await attachCommerceLinks('get_transport_options', r, { origin, destination, departDate: date, transportMode: mode === 'taxi' ? 'taxi' : 'intercity', platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, actorSeal: commerceActorSealValue, userText: lastText, userTexts: recentUserTexts })
+          await attachCommerceLinks('get_transport_options', r, { origin, destination, departDate: date, passengers, transportMode: mode === 'taxi' ? 'taxi' : 'intercity', platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, actorSeal: commerceActorSealValue, userText: lastText, userTexts: recentUserTexts })
+          // 29/10 (owner: "quan trọng là lấy được giá"): the trains and lowest fares the rail route page behind the train link states.
+          // A reference (the page's own day); the dated link is where the day's fare is confirmed. No page / unreadable / no row: no field.
+          const railPage = r && typeof r === 'object' ? (r as { _tappy_rail_page?: unknown })._tappy_rail_page : undefined
+          if (typeof railPage === 'string') {
+            const schedule = await fetchRailSchedule(railPage)
+            if (schedule) {
+              (r as Record<string, unknown>).train_schedule = {
+                page_url: schedule.page_url,
+                rows: schedule.rows,
+                note: lang === 'en'
+                  ? 'Trains and the lowest fare of each (cheapest class) as the Vexere route page shows them (DSVN data), read today; the fare for the chosen day is on train_booking_link.'
+                  : 'Cac chuyen tau va gia thap nhat moi chuyen (hang re nhat) theo trang tuyen Vexere (du lieu DSVN), doc hom nay; gia dung ngay da chon xem o train_booking_link.',
+              }
+            }
+          }
           return withTravelEditorial(r, editorial)
         }
       }),
@@ -2629,6 +3282,120 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         }),
       } : {}),
   }))
+  // The ticket is the current one inside every tool.execute() — the model's calls, the pre-search and the trip pre-fetch all run these same wrapped objects.
+  // 01/11 (owner: another AI product is never a source): innermost, so the rows leave before the reader, the link guard or the model see them.
+  if (tools) wrapToolsWithoutAiSources(tools as unknown as Record<string, unknown>)
+  if (tools && turnWebTicket) wrapToolsWithTurnWebTicket(tools as unknown as Record<string, unknown>, turnWebTicket)
+  if (tools && requestCapTurn) wrapToolsWithRequestCap(tools as unknown as Record<string, unknown>, requestCapTurn)
+  // CONSULT_UNWIND_S6A / S6B (searchReads.ts): the model's web_search also reads its top pages - through the turn's OWN read_page tool (after the request-cap / trace
+  // wrappers above, so robots.txt, the safe fetch, the page budget and the bench wall all apply), and once per turn one follow-up search through the same web_search.
+  // The links are registered with the reader first (the outer collectUrls wrapper adds them only after this returns). No read_page tool on the turn: nothing changes.
+  if (tools && researchReader && consultUnwindS6aOn()) {
+    const tt = tools as unknown as Record<string, { execute?: (a: unknown, o: unknown) => Promise<unknown> }>
+    const ws = tt.web_search, rp = tt.read_page
+    if (ws?.execute && rp?.execute) {
+      const innerSearch = ws.execute.bind(ws), innerRead = rp.execute.bind(rp)
+      const followUpOnce = createOnce()
+      ws.execute = async (a: unknown, o: unknown) => {
+        const base = await innerSearch(a, o)
+        const q = typeof (a as { query?: unknown })?.query === 'string' ? (a as { query: string }).query.trim() : ''
+        if (!q) return base
+        researchReader.collectFrom(base)
+        const withGap = consultUnwindS6bOn() && followUpOnce()
+        const r = await searchWithReads({
+          query: q,
+          base,
+          read: (urls, focus) => innerRead({ urls, focus, kind: 'other' }, { toolCallId: `search_read_${randomUUID().slice(0, 6)}`, messages: [] }),
+          // 31/10 (Chat mode): the search still reads its top pages, but no follow-up search (it costs a model call and a second search).
+          // Measured: snippets only lost 0.85 points against the pre-mode default (T01 news: 357 characters), so the reads stay.
+          // 01/11: unless the model asked for a thorough lookup (CHAT_SEARCH_BUDGET.thorough.followUp).
+          gap: withGap && !(oneBrain && chatLike() && !CHAT_SEARCH_BUDGET[searchDepthOf(a)].followUp) ? {
+            find: async titles => {
+              // The outcome of the gap call is logged as counts / a reason only (no query, no user words): a follow-up that never runs must be visible.
+              try {
+                const out = await AI.extract({ role: 'intent', systemShared: FOLLOW_UP_SYSTEM, messages: [{ role: 'user', content: `CAU HOI:\n${lastText.slice(0, 600)}\n\nTRUY VAN DA DUNG:\n${q.slice(0, 200)}\n\nTIEU DE TRANG DA CO:\n${titles.map(t => `- ${t}`).join('\n').slice(0, 1500)}` }], schema: z.object({ query: z.string().nullable() }), schemaName: 'tappy_follow_up', maxTokens: 120 } as never) as { object?: { query?: string | null } } | null
+                const gq = out?.object?.query ?? null
+                console.log(JSON.stringify({ type: 'tappyai_follow_up_gap', ok: true, has_query: !!(gq && gq.trim()), titles: titles.length }))
+                return gq
+              } catch (e) {
+                console.log(JSON.stringify({ type: 'tappyai_follow_up_gap', ok: false, error: e instanceof Error ? e.name : 'unknown', message_chars: e instanceof Error ? e.message.length : 0 }))
+                return null
+              }
+            },
+            search: async q2 => { const b2 = await innerSearch({ query: q2 }, o); researchReader.collectFrom(b2); return b2 },
+          } : null,
+        })
+        console.log(JSON.stringify({ type: 'tappyai_search_reads', pages_read: r.pagesRead, follow_up: r.followUp, follow_up_pages: r.followUpPages }))
+        return r.result
+      }
+    }
+  }
+  // 01/11 (usage ledger): the deepest web lookup this turn made - quick / thorough in Chat (the model's choice), thorough in Web / Thinking.
+  if (tools && oneBrain && chatMode !== 'chat' && chatMode !== 'auto') {
+    const ws = (tools as unknown as Record<string, { execute?: (a: unknown, o: unknown) => Promise<unknown> }>).web_search
+    if (ws?.execute) { const inner = ws.execute.bind(ws); ws.execute = async (a: unknown, o: unknown) => { turnSearch.depth = 'thorough'; return inner(a, o) } }
+  }
+  // 31/10 (mode Chat): a budget of web searches and page reads per turn; a further call is answered with a note, never run.
+  // 01/11: the budget is the one of the depth the model chose (CHAT_SEARCH_BUDGET): quick = 1 search / 1 read, and once any web_search of
+  // the turn asked for "thorough", 3 / 3 for the rest of the turn. One line per search says which depth was chosen (counts only).
+  // 01/11 (mode "Tự động"): the same budget until the model turns thinking on; after it, no budget (the Thinking mode's lookups).
+  if (tools && oneBrain && (chatMode === 'chat' || chatMode === 'auto')) {
+    const tt = tools as unknown as Record<string, { execute?: (a: unknown, o: unknown) => Promise<unknown> }>
+    let depth: SearchDepth = 'quick'
+    for (const name of ['web_search', 'read_page'] as const) {
+      const t = tt[name]
+      if (!t?.execute) continue
+      const inner = t.execute.bind(t)
+      let used = 0
+      t.execute = async (a: unknown, o: unknown) => {
+        if (autoThink.on) {
+          if (name === 'web_search') turnSearch.depth = 'thorough'
+          return inner(a, o)
+        }
+        if (name === 'web_search') {
+          if (searchDepthOf(a) === 'thorough') depth = 'thorough'
+          turnSearch.depth = depth
+          console.log(JSON.stringify({ type: 'tappyai_search_depth', asked: searchDepthOf(a), turn_depth: depth, n: used + 1 }))
+        }
+        const budget = CHAT_SEARCH_BUDGET[depth]
+        if (used >= (name === 'web_search' ? budget.searches : budget.reads)) {
+          console.log(JSON.stringify({ type: 'tappyai_chat_mode_cap', tool: name, depth }))
+          return { error: 'chat_mode_budget_used', note: ONE_BRAIN_CHAT_CAP_NOTE }
+        }
+        used++
+        return inner(a, o)
+      }
+    }
+  }
+  // CONSULT_UNWIND_S5 (deepSearch.ts, LOCALHOST ONLY): the model's FIRST web_search of the turn also carries two Exa deep-search rounds as `deep_evidence`.
+  // No key on the server: nothing changes (= flag OFF) and one count line says so. The key is never logged.
+  if (tools && consultUnwindS5On()) {
+    const exaKey = process.env.EXA_API_KEY ?? ''
+    const ws = (tools as unknown as Record<string, { execute?: (a: unknown, o: unknown) => Promise<unknown> }>).web_search
+    if (!exaKey) console.log(JSON.stringify({ type: 'tappyai_deep_search', skipped: 'no_key' }))
+    else if (ws?.execute) {
+      const inner = ws.execute.bind(ws)
+      let deepDone = false
+      ws.execute = async (a: unknown, o: unknown) => {
+        const base = await inner(a, o)
+        const q = typeof (a as { query?: unknown })?.query === 'string' ? (a as { query: string }).query.trim() : ''
+        if (deepDone || !q || !base || typeof base !== 'object') return base
+        deepDone = true
+        const r = await deepResearch({
+          firstQuery: q,
+          search: query => exaSearch(query, { apiKey: exaKey }),
+          findGap: async pages => {
+            const out = await AI.extract({ role: 'intent', systemShared: GAP_SYSTEM, messages: [{ role: 'user', content: `CAU HOI:\n${lastText.slice(0, 600)}\n\nTIEU DE TRANG DA CO:\n${pages.map(p => `- ${p.title}${p.publishedDate ? ` (${p.publishedDate})` : ''}`).join('\n').slice(0, 1500)}` }], schema: z.object({ query: z.string().nullable() }), schemaName: 'tappy_deep_gap', maxTokens: 120 } as never) as { object?: { query?: string | null } } | null
+            return out?.object?.query ?? null
+          },
+        })
+        console.log(JSON.stringify({ type: 'tappyai_deep_search', rounds: r.rounds, pages: r.pages.length, usd: Number(r.usd.toFixed(6)), price_confirmed: EXA_PRICE.confirmed, stopped: r.stopped }))
+        return r.pages.length ? { ...(base as Record<string, unknown>), deep_evidence: deepEvidenceForModel(r) } : base
+      }
+    }
+  }
+  // CONSULT_TRACE_DIAGNOSTICS (Wave 2C): in place, like the wrappers above (returns `tools` untouched when the trace is off): proves a tool body RAN and reads its result.
+  traceToolsInner(tools, trace, () => { const s = serperSnapshot(); return s.maps + s.search + s.shopping + s.images })
 
   /**
    * A1(b) THE SEARCH IS NOT SILENT. The pre-search below is the slowest thing before the first byte
@@ -2705,7 +3472,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       }
       if (pick) { stops.push({ stage, place: pick }); used.add(pick.place_id || normalizeVN((pick.name ?? '').toLowerCase())) }
     }
-    console.log(JSON.stringify({ type: 'tappyai_evening_frame', location: location ?? null, searches: eveningOutcomes.map(o => (o.args as { query: string }).query), stops: stops.map(s => s.stage.key) }))
+    // S4 (G): how many stage searches ran and whether a location was set - not the area or the queries
+    console.log(JSON.stringify({ type: 'tappyai_evening_frame', hasLocation: !!location, searches: eveningOutcomes.length, stops: stops.map(s => s.stage.key) }))
     if (stops.length > 0) {
       eveningBlock = buildEveningPlanBlock(stops, { lang, area: location, people: situation?.partySize ?? null, budgetTotal: planning?.totalBudget ?? null })
       eveningAddendum = eveningIntroInstruction(stops, lang)
@@ -2771,8 +3539,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     }
     presearchOutcome = { toolCallId, toolName: preCall.name, args: preCall.args as PresearchOutcome['args'], result, ms: Date.now() - t0 }
     const error = (result as { error?: unknown })?.error ? true : false
-    if (presearchPlan) console.log(JSON.stringify({ type: 'tappyai_presearch', reuse: !!presearchPlan.reuse, exact: presearchPlan.exact, query: presearchPlan.args.query, location: presearchPlan.args.location ?? null, placeType: presearchPlan.args.type, ms: presearchOutcome.ms, rows: Array.isArray((result as { results?: unknown[] })?.results) ? (result as { results: unknown[] }).results.length : null, error }))
-    else if (flightPresearch) console.log(JSON.stringify({ type: 'tappyai_presearch', tool: 'get_flight_prices', origin: flightPresearch.args.origin, destination: flightPresearch.args.destination, departDate: flightPresearch.args.departDate ?? null, ms: presearchOutcome.ms, fares: Array.isArray((result as { flights?: unknown[] })?.flights) ? (result as { flights: unknown[] }).flights.length : null, error }))
+    // S4 (A, B): the code's pre-search query is built from the user's words, and a flight's origin, destination and date are what the user said: lengths and yes/no only
+    if (presearchPlan) console.log(JSON.stringify({ type: 'tappyai_presearch', reuse: !!presearchPlan.reuse, exact: presearchPlan.exact, query: logText(presearchPlan.args.query, presearchPlan.reuse ? 'stored' : 'code'), hasLocation: !!presearchPlan.args.location, placeType: presearchPlan.args.type, ms: presearchOutcome.ms, rows: Array.isArray((result as { results?: unknown[] })?.results) ? (result as { results: unknown[] }).results.length : null, error }))
+    else if (flightPresearch) console.log(JSON.stringify({ type: 'tappyai_presearch', tool: 'get_flight_prices', hasOrigin: !!flightPresearch.args.origin, hasDestination: !!flightPresearch.args.destination, departDateKind: flightPresearch.args.departDate ? 'given' : 'none', ms: presearchOutcome.ms, fares: Array.isArray((result as { flights?: unknown[] })?.flights) ? (result as { flights: unknown[] }).flights.length : null, error }))
   }
   // R15 (29/09): a trip plan fetched its data itself, over up to 3 sequential model steps — 39–68 s per turn,
   // past Vercel's 60 s on the slow ones, which is when the [TAPPY_PLAN] block went missing (Android trip-full).
@@ -2818,22 +3587,112 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     console.warn(JSON.stringify({ type: 'tappyai_quota_refund', reason, scope: quotaRefund.scope }))
     await refundAiQuestion(quotaRefund)
   }
+  // 31/10 (mode "Nghiên cứu sâu", owner): plan → parallel research branches → one report (lib/ai/research). Here, after the identity, consent,
+  // age and quota checks every turn passes, and in place of the single answer call. A run that produces nothing gives the question back.
+  if (oneBrain && chatMode === 'deep') {
+    // Owner 01/11/2026: Deep Research runs per VN month by tier (Coco 10, Tappy 69) on the quota store, with the plans on sale; a run that
+    // produces nothing gives the run back with the question.
+    let deepRefund: Awaited<ReturnType<typeof consumeDeepResearch>>['refund'] = null
+    if (subscriptionsEnabled() && authedUserId) {
+      const limit = DEEP_RESEARCH_MONTHLY[planTier]
+      const spent = await consumeDeepResearch(authedUserId, limit)
+      if (!spent.ok) {
+        await refundQuotaOnFailure('deep_research_month_used')
+        return new Response(JSON.stringify({ error: 'deep_research_limit_reached', message: serverMessage('chat.deepResearchLimit', requestLocale(req), { n: limit }) }), { status: 429, headers: { 'Content-Type': 'application/json' } })
+      }
+      deepRefund = spent.refund
+    }
+    const recent = typedMessages.slice(-7, -1).map(m => `${m.role}: ${typeof m.content === 'string' ? m.content : m.content.map(p => (p.type === 'text' ? p.text : '')).join(' ')}`).join('\n').slice(-2500)
+    const cost = { usd: 0, calls: 0 }
+    // 01/11 (owner approved): Parallel's search beside Serper for every query - its own budget for the run (16 searches), the same daily cap
+    const par = consultParallelOn() ? deepResearchParallel() : null
+    // review 02/11: the person closed the page - the run stops (the model call in flight too) and is given back
+    const deepStop = new AbortController()
+    if (req.signal?.aborted) deepStop.abort(); else req.signal?.addEventListener('abort', () => deepStop.abort(), { once: true })
+    return deepResearchResponse({
+      question: lastText, context: recent, lang, cost, stop: deepStop,
+      deps: createDeepResearchDeps({ lang, userTexts: recentUserTexts, cost, questionLang: detectLangConfident(lastText), signal: deepStop.signal, ...(par ? { parallelSearch: par } : {}) }),
+      // the searches' price: Serper's credits plus the Parallel searches sent
+      serperUsd: () => {
+        const d = serperDelta(serperAtStart)
+        return { usd: Math.round((turnUsd({ promptTokens: 0, completionTokens: 0, serperCredits: d.credits }) + (par?.sent() ?? 0) * PARALLEL_PRICE.searchFastUsd) * 1e6) / 1e6, calls: sumCounts(d.calls) + (par?.sent() ?? 0) }
+      },
+      onFailed: async reason => { await refundQuotaOnFailure(`deep_research_${reason}`); await refundAiQuestion(deepRefund) },
+      onUsage: u => { turnSearch.depth = 'thorough'; usageSink({ domain: null, turnType: 'deep_research', model: 'luna', tokensIn: 0, tokensOut: 0, serperCalls: u.searchCalls - (par?.sent() ?? 0), cacheHits: 0, usd: u.usd, answerUsd: u.llmUsd, serperUsd: u.serperUsd }, { parallelCalls: par?.sent() ?? 0, ok: u.ok }) },
+    })
+  }
   // ── TAPPY_AGENT: the bounded agent turn (src/lib/ai/agent) ──────────────────────────────────────────────────────────────
   let agentPendingAction: { id: string; tool: string; args: Record<string, unknown>; argsHash: string; summary: string; at: string; expiresAt: string } | null | undefined
   let agentExecuted: string[] = []
   // Hardening D: hard Serper budget per agent turn (tools + card photos together).
-  const agentSerperLimit = planningIntent === 'trip' ? 10 : 8
+  // Phase 8 runtime: 8 credits, 10 for a travel plan (hard ceilings, runtime/limits.ts — the one place they are set).
+  const agentSerperLimit = agentV2 ? serperCeiling(travelIntent || planningIntent === 'trip') : planningIntent === 'trip' ? 10 : 8
   let agentSerperSpent = 0
   // The after-loop lookups (card photos + TikTok review search) share ONE scope holding what the tools left (created on first use, after the loop).
   let agentAfterBudget: ReturnType<typeof sharedSerperBudget> | null = null
   const afterLoopSerper = <T,>(fn: () => Promise<T>): Promise<T> => {
-    if (!agentOn) return fn()
+    if (!agentOn) return requestCapTurn ? runWithRequestCapTurn(requestCapTurn, fn) : fn()
     agentAfterBudget ??= sharedSerperBudget(Math.max(0, agentSerperLimit - agentSerperSpent))
     return agentAfterBudget.run(fn)
   }
   let agentStatePatch: { flight?: NonNullable<ChatSessionState['flight']>; movie?: NonNullable<ChatSessionState['movie']>; plan?: NonNullable<ChatSessionState['plan']> } = {}
   let agentRejected: string[] = []
   if (agentOn) enrichment.agentMode = true
+  // CONSULT_ONE_BRAIN: the model's own prose is not reshaped (sentence cap, alternatives cap) or line-tidied; the claim guards still run.
+  if (oneBrain) enrichment.oneBrain = true
+  // Phase 8: one structured trace per run (runtime/trace.ts) — every settle-path guard that changes the reply reports to it.
+  const agentRunTrace = agentV2 ? new AgentRunTrace({ chatSessionId, messageCount: messages.length, provider: AI.serving('agent').provider, serperLimit: agentSerperLimit, deadlineMs: RUNTIME_LIMITS.deadlineMs, flag: 'TAPPY_AGENT=2' }) : null
+  if (agentRunTrace) enrichment.guardTrace = (stage, before, after) => {
+    agentRunTrace.guard(stage, before, after)
+    auditTrace('guard', 'guard', { stage, before, after })
+    // Local UAT only, opt-in (never in production): the VERBATIM text before and after each stage that changed the reply.
+    if (process.env.TAPPY_UAT_STREAM_TRACE === '1' && process.env.NODE_ENV !== 'production') {
+      try { console.log(JSON.stringify({ type: 'tappyai_uat_stream_trace', ev: 'guard', stage, before, after })) } catch { /* diagnostics only */ }
+    }
+    // POST-UAT diagnostics (local UAT only, opt-in): which sentences a guard removed — reply text, so never in production.
+    if (process.env.TAPPY_UAT_GUARD_DIFF === '1' && process.env.NODE_ENV !== 'production') {
+      try {
+        const removed = before.split(/(?<=[.!?…:])\s+|\n+/).map(s => s.trim()).filter(s => s && !after.includes(s)).slice(0, 12)
+        if (removed.length) console.log(JSON.stringify({ type: 'tappyai_uat_guard_diff', stage, removed }))
+      } catch { /* diagnostics only */ }
+    }
+  }
+  // Phase 8 M4: the reply's provenance verdicts (counts and closed reasons only).
+  if (agentRunTrace) enrichment.evidenceTrace = summary => agentRunTrace.add('evidence_guard', summary)
+  // Phase 8 M5: Luna owns the semantic ranking; its ranking line orders the cards.
+  if (agentV2) enrichment.semanticRanking = true
+  // CONSULTATIVE_IN_AGENT: on a trip-plan turn the plan is the whole answer (no ranking call, no standalone venue cards after it).
+  const consultTripThread = consultativeAgent && planningIntent === 'trip'
+  if (consultTripThread) enrichment.planTurn = true
+  // CONSULTATIVE_IN_AGENT: the settle-path precision fixes (worked examples, amount phrases, plan-card area, "card below" line) are keyed on this.
+  if (consultativeAgent) enrichment.consultative = true
+  // CONSULTATIVE_IN_AGENT + audit trace only: one id that ties this turn's card-path diagnostics together (cardPathTrace.ts). Never set otherwise.
+  if (consultativeAgent && auditTraceOn()) { enrichment.diagTurnId = randomUUID().slice(0, 8); cardPathTrace(enrichment.diagTurnId, 'turn', { agent_trace_id: agentRunTrace?.traceId ?? null }) }
+  if (agentRunTrace) enrichment.rankingTrace = summary => agentRunTrace.add('ranking', summary)
+  if (agentRunTrace) enrichment.claimsTrace = summary => agentRunTrace.add('claims', summary)
+  // WS2: the structured decision record (decisionRecord.ts) — only when Luna wrote no valid inline block on a turn with candidates.
+  // Its cost is the turn's cost (same trace counter as every other Luna call); bounded by its own short timeout.
+  if (agentV2) enrichment.recordDecision = async (answer, candidates) => {
+    const diagTurn = enrichment.diagTurnId
+    const r = await recordDecision({ answer, candidates, signal: AbortSignal.timeout(DECISION_RECORD_TIMEOUT_MS), ...(diagTurn ? { diag: e => cardPathTrace(diagTurn, String(e.stage ?? 'recorder'), e) } : {}) })
+    if (agentRunTrace) agentRunTrace.counters.usd += r.usd
+    return r
+  }
+  // Phase 8 M2: the persistent TASK of this conversation (runtime/task.ts), stored with the chat-session state under (owner, chatSessionId).
+  // No chatSessionId (or no owner) → the task lives for this turn only; nothing is guessed from the request.
+  const taskConversationId = agentV2 ? conversationIdOf(chatSessionId) : null
+  const loadedTask = agentV2 ? loadTask(chatState?.task, chatState?.taskHistory, { conversationId: taskConversationId, now: new Date() }) : null
+  const previousReply = (() => {
+    const a = [...messages].reverse().find((m: { role?: string }) => m.role === 'assistant') as { content?: unknown } | undefined
+    return typeof a?.content === 'string' ? a.content : Array.isArray(a?.content) ? (a.content as Array<{ text?: string }>).map(p => p.text ?? '').join(' ') : null
+  })()
+  const agentTaskBox: TaskBox | null = loadedTask ? { task: loadedTask.task, history: loadedTask.history, conversationId: taskConversationId, persisted: !!(chatSessionId && commerceIdentityId), turn: { userText: lastText, previousReply, cards: chatState?.cards ?? [] } } : null
+  const agentTaskBase = loadedTask?.task ?? null
+  if (agentRunTrace && loadedTask) {
+    agentRunTrace.taskId = loadedTask.task.task_id
+    agentRunTrace.add('task', { decision: loadedTask.outcome, ...(loadedTask.problem ? { problem: loadedTask.problem } : {}), persisted: agentTaskBox!.persisted, turns: loadedTask.task.turns, status: loadedTask.task.status })
+    if (loadedTask.outcome === 'invalid_discarded' || loadedTask.outcome === 'foreign_discarded') console.warn(JSON.stringify({ type: 'tappyai_agent_task', step: loadedTask.outcome, problem: loadedTask.problem ?? null }))
+  }
   const agentTurn = async (onFinish: unknown) => {
     // A pending side-effecting action is executed ONLY on the user's explicit confirmation, by code, through the tool's own action boundary.
     let actionOutcome: string | null = null
@@ -2863,6 +3722,11 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           actionOutcome = actionOutcomeText('cancelled', pending.summary)
           console.log(JSON.stringify({ type: 'tappyai_agent_action', tool: pending.tool, confirmed: false }))
         }
+      } else {
+        // Q-03 (owner 18/10): any other answer — another question, small talk, a changed request — ends the wait. A confirmation is valid only
+        // in the turn right after the request; "có" / "được" / "ok" later on is about something else, never this action.
+        agentPendingAction = null
+        console.log(JSON.stringify({ type: 'tappyai_agent_action', tool: pending.tool, confirmed: false, superseded: true }))
       }
     }
     const cards = chatState?.cards ?? []
@@ -2874,22 +3738,31 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     const cardEv = cardEvidence(cards, rows, { now: new Date(), verifiedAt: chatState?.candidates?.at ?? null })
     const facts = cardEv.facts
     if (enrichment.consultativeV1 && cardEv.carried.length) enrichment.consultativeV1.carried = mergeCarried(enrichment.consultativeV1.carried, cardEv.carried)
+    // CONSULTATIVE_IN_AGENT + audit trace only: did remembered-preference lines reach the data block, and does one mention walking (counts / booleans, never the text).
+    if (enrichment.diagTurnId) { const ml = consultMemoryLines(existingMemory, storedPrefs); cardPathTrace(enrichment.diagTurnId, 'memory_context', { memory_lines: ml.length, mentions_walking: ml.some(l => /đi bộ/i.test(l)) }) }
     const context = agentContext({
-      now: new Date(), userText: lastText, departDate: chatState?.flight?.departDate ?? priorDateFromHistory(lunaUserTexts, new Date()), lang, gps: !!userLocation, address: userLocation?.address ?? null, gpsCity: userLocation ? cityFromGps(userLocation.lat, userLocation.lng) : null, statedArea: statedArea?.label ?? null,
-      state: { extra: followUpContextLines(chatState), cards, facts, pick: currentPick, rejected: [...new Set([...(chatState?.rejected ?? []), ...agentRejected])], known: chatState?.known, pendingAction: pending && !actionOutcome ? { summary: pending.summary } : null, actionOutcome },
+      ...(discovery ? { turnNote: discovery.note } : {}),
+      stableClock: consultativeAgent, // CONSULTATIVE_IN_AGENT: the minute-level clock goes to the DATA block so the cached system prefix stays stable (prompt.ts)
+      now: new Date(), userText: consultativeAgent ? lunaUserTexts.slice(-3).join(' \n ') : lastText, departDate: chatState?.flight?.departDate ?? priorDateFromHistory(lunaUserTexts, new Date()), lang, gps: !!userLocation, address: userLocation?.address ?? null, gpsCity: userLocation ? cityFromGps(userLocation.lat, userLocation.lng) : null, statedArea: statedArea?.label ?? null,
+      state: { extra: [...followUpContextLines(chatState), ...(agentTaskBox ? taskContextLines(agentTaskBox.task, agentTaskBox.history, new Date()) : []), ...(consultativeAgent ? consultMemoryLines(existingMemory, storedPrefs) : [])], cards, facts, pick: currentPick, rejected: [...new Set([...(chatState?.rejected ?? []), ...agentRejected])], known: chatState?.known, pendingAction: pending && !actionOutcome ? { summary: pending.summary } : null, actionOutcome },
     })
+    // WS2 final: what the No-Fabrication Gate may accept as given this turn — the DATA context Luna read (card facts, task evidence,
+    // follow-up state), the user's saved memory, and the conversation's earlier replies (each passed the gate when it was shown).
+    if (agentV2) enrichment.gateContext = [context.data ?? '', memoryBlock ?? '', ...(modelMessages as Array<{ role: string; content: unknown }>).filter(m => m.role === 'assistant').map(m => typeof m.content === 'string' ? m.content : JSON.stringify(m.content))]
     const privateTexts = [memoryBlock, userLocation?.address ?? '']
     const ownWords = lunaUserTexts.join(' ')
-    return startAgentTurn({
+    const turnInput: AgentTurnInput = {
       routeTools: tools as never,
-      noRetrieval: planOnlyTurn,
+      noRetrieval: planOnlyTurn || discovery?.action === 'ask',
+      ...(discovery?.action === 'ask' ? { discoveryAsk: true } : {}),
       context,
       messages: modelMessages as never,
       lang,
       deadlineAt: startTime + Math.min(TURN_DEADLINE_MS - 25_000, 85_000),
       signal: req.signal,
       finalRole: planningIntent === 'trip' ? 'plan' : 'consult',
-      maxTokens: planningIntent ? 4096 : 1500,
+      // CONSULTATIVE_IN_AGENT: a full day-by-day plan with flights / stay / budget does not fit 4096 tokens (days 2–3 ended after two items).
+      maxTokens: consultTripThread ? 7000 : planningIntent ? 4096 : 1500,
       // Serper per TURN, all agent tools together: 8 normal / 10 travel plan. The card-photo lookup after the loop spends only what is left.
       serperTurnCredits: agentSerperLimit,
       onSerperSpent: n => { agentSerperSpent = n },
@@ -2898,17 +3771,24 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       onState: p => { agentStatePatch = p },
       sanitizeQuery: q => sanitizeSearchQuery(q, { privateTexts, ownWords }),
       codeDate: codeResolvedDate(lastText, new Date(), chatState?.flight?.departDate ?? priorDateFromHistory(lunaUserTexts, new Date())),
+      hasCurrentLocation: hasValidCurrentLocation(userLocation),
       onFinish: onFinish as never,
-    })
+    }
+    return agentRunTrace
+      ? startAgentRuntimeTurn({ ...turnInput, trace: agentRunTrace, consultative: consultativeAgent, ...(agentTaskBox ? { taskBox: agentTaskBox } : {}), onCitationSources: s => { enrichment.citationSources = s }, onUnverifiedSources: s => { enrichment.unverifiedSources = s }, onGuardEvidence: ev => { enrichment.guardEvidence = ev }, deadlineAt: startTime + RUNTIME_LIMITS.deadlineMs, finalRole: planningIntent === 'trip' || consultTripThread ? 'plan' : 'agent' })
+      : startAgentTurn(turnInput)
   }
   let result
+  // Wave 4 (C-PRE-1): what the stream was built from, kept for the final writing call (the stream options live inside the try block below).
+  let streamedWith: { opts: Parameters<typeof AI.stream>[0]; noTools: boolean } | null = null
   try {
   // Provider-specific optimizations (e.g. prompt caching of this large system
   // prompt) are applied inside the active provider adapter — not here.
   // PHIÊN LUNA safety: every reply under the flag is checked for a prompt echo / secret shape before it leaves.
   // STATIC prompt text only — the per-turn prompt carries product/place names a normal reply repeats (final none 30/09:
   // 3 shopping replies naming a 12-word product title were replaced).
-  if (lunaOn || agentOn) enrichment.setLeakCheck(buildLeakDetector([...(agentOn ? [AGENT_SYSTEM] : []), systemShared ?? '', INTENT_SYSTEM, FRAME_CORE, ...(['food', 'shopping', 'travel', 'entertainment', 'spa'] as const).map(d => frameLibrary(d))]))
+  console.log(JSON.stringify({ type: 'tappyai_turn_path', path: agentV2 ? 'agent_v2' : agentOn ? 'agent_v1' : consult ? 'consult' : 'legacy', consultative_in_agent: consultativeAgent }))
+  if (lunaOn || agentOn) enrichment.setLeakCheck(buildLeakDetector([...(agentOn ? [AGENT_SYSTEM] : []), ...(consultativeAgent ? [agentSystemV2For(true)] : []), ...(consultativeAgent && consultV3Enabled() ? [CONSULT_V3_SYSTEM] : []), systemShared ?? '', INTENT_SYSTEM, FRAME_CORE, ...(['food', 'shopping', 'travel', 'entertainment', 'spa'] as const).map(d => frameLibrary(d))], consultativeAgent ? { runs: true } : undefined))
   // The one targeted extra search a Luna answer may make: its query is cut of private data before Serper (owner rule 3).
   if (lunaPlan) console.log(JSON.stringify({ type: 'tappyai_luna_plan_data', presearch: presearchAll.map(o => o.toolName), planningIntent: planningIntent ?? null }))
   // A Luna PLAN turn with tools (non-trip) gets ONE search (owner: at most one targeted extra search). Replay 30/09
@@ -2936,6 +3816,85 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       },
     }])) as T
   }
+  // Wave 4 · C3: the turn really was pre-searched by the code (R2) - only then are the model's tools offered. The code's own pre-search above is unchanged.
+  const pickTools = pickCandidate && presearchAll.length > 0 && !lunaPlan && !consultFollowReuse && !consultTripPrefetch && !eveningBlock
+  // The reader is IN EFFECT (read_page offered, URLs collected, the writing step reserved) on a W1 lean turn, the knowledge path, or a pre-searched pick with the flag; a declared-only reader is not.
+  const research = (consultResearchLoopOn() && lean) || knowledgeTurn || pickTools || oneBrain ? researchReader : null
+  // Wave 4 · C3: the code's pre-search results are this turn's results too: a link they carry may be opened, exactly as if the model had searched (the same "only this turn's links" rule; a
+  // slimmed place result that carries no link adds nothing - the model then searches the web first).
+  if (pickTools && research) for (const o of presearchAll) research.collectFrom(o.result)
+  // Wave 4 (B, Owner option a): the price guard learns the venue websites of the pre-search from its FULL rows (the stream only carries the slimmed copy), for the venues the model saw.
+  // An input only: an amount read on venue X's own site is evidence for X; any other amount is judged exactly as before (still cut when it belongs to no venue it is said of).
+  const pickPlaceSites = pickTools && presearchOutcome?.toolName === 'search_places' ? presearchPlaceSites(lastFullPlaceResult, presearchOutcome.result) : null
+  if (pickPlaceSites) enrichment.placeSites = pickPlaceSites
+  // Wave 5 · W5-2 (CONSULT_PICK_PAGE_READ, default OFF = nothing here runs). Measured (W4-R2, 28/10): on R2 the model called no tool in 4/5 turns and lost 5/5 - those venue pages were never opened. With the flag
+  // the CODE opens up to three of those venue websites once, through this turn's own read_page reader (robots.txt, safe fetch, page budget), and the result reaches the model as a completed read_page
+  // call before it writes: the same messages and the same leading frames as the pre-search, so the price / hours guards see the page evidence exactly as when the model reads. No model call, no
+  // search request (the model's own stream stays the one metered call). Fail-open: nothing read, or an error, leaves the turn exactly as with the flag OFF.
+  // W5-2b: the read runs through the turn's OWN read_page tool (`tools.read_page`, after the request-cap / tool-call trace wrappers of line `wrapToolsWithRequestCap` above), the very object the
+  // model's read_page runs, exactly as the pre-search runs `tools[name].execute` - never the reader's bare tool (measured W5-R2: outside any tool call, the bench wall blocked every venue page).
+  let pickPageRead: PresearchOutcome | null = null
+  if (pickPlaceSites && research && consultPickPageReadOn()) {
+    const t0 = Date.now()
+    const read = await readVenuePages(research, (tools as Record<string, { execute?: (args: never, ctx: never) => unknown }> | undefined)?.read_page, pickPlaceSites, lang)
+    if (read) pickPageRead = { toolCallId: 'pick_read_' + randomUUID().slice(0, 6), toolName: 'read_page', args: read.args as unknown as PresearchOutcome['args'], result: read.result, ms: Date.now() - t0 }
+    console.log(JSON.stringify({ type: 'tappyai_pick_page_read', sites: Math.min(pickPlaceSites.length, PICK_PAGE_READ_MAX), read: pickPageRead !== null, ms: Date.now() - t0 }))
+  }
+  // The read joins the pre-search outcomes AFTER the model's copy of them was built (modelMessagesWithPresearch): from here on presearchAll only gives the leading frames (and `.length > 0`
+  // checks, which a read cannot change - it exists only on a pre-searched turn). Its model copy is added once, unslimmed, just below.
+  if (pickPageRead) presearchAll.push(pickPageRead)
+  const modelMessagesForStream = pickPageRead ? [...modelMessagesWithPresearch, ...presearchMessages(pickPageRead)] : modelMessagesWithPresearch
+  // CONSULT_UNWIND_S3B: a turn that carries tools may write up to UNWIND_MAX_TOKENS (HEAD 2048); null = the HEAD ceiling.
+  unwindToolTurnCeiling = consultUnwindS3bOn() && !!tools ? UNWIND_MAX_TOKENS : null
+  // The step budget of this turn, named once (the very expression the stream used inline: same value). CONSULT_FINAL_SYNTHESIS needs it to reserve the last step.
+  const streamMaxSteps = oneBrain ? ONE_BRAIN_MAX_STEPS : lunaPlan && planningIntent !== 'trip' ? 3 : pickTools ? knowledgeDepth().steps : consultFollowReuse || consultTripPrefetch || (lean && presearchAll.length > 0 && !planningIntent && !noToolTurn && !eveningBlock) ? 2 : noToolTurn || eveningBlock ? 1 : planningIntent ? (lean ? 3 : 8) : hasImage ? 3 : lean ? (research ? levelLimits.researchSteps : 3) : knowledgeTurn ? knowledgeDepth().steps : 5
+  // CONSULT_FINAL_SYNTHESIS (Wave 2, default OFF = nothing below runs). Baseline: a tool loop used EVERY step calling web_search, the model never wrote a word (finishReason "tool-calls"), and the
+  // user got a canned gap sentence or nothing. With the flag ON the LAST step is kept for writing: a tool call made when only the last step is left is answered by code, without running the
+  // tool (no search, no Serper request, no cost), telling the model to write now from what it already has. The step budget is unchanged; a turn of one or two steps is not touched.
+  let stepsFinishedN = 0
+  // Wave 3 (W1): with the research loop on, every URL a tool result carries becomes a link read_page may open this turn (nothing else may be). Identity when it is off.
+  const withResearchUrls = <T,>(set: T): T => (research ? research.collectUrls(set) : set)
+  const finalSynthesisGuard = <T,>(set: T): T => {
+    // Wave 3 (W1): a research turn keeps its own writing step reserved (the flag does not depend on CONSULT_FINAL_SYNTHESIS).
+    if (!(consultFinalSynthesisOn() || research) || !set || streamMaxSteps < 3) return set
+    // Wave 5 · W5-1 (CONSULT_READ_PAGE_LATE, OFF = the two-step reserve for every tool): a page read may still run in the step before the last.
+    const readPageLate = consultReadPageLateOn()
+    return Object.fromEntries(Object.entries(set as Record<string, { execute?: (args: Record<string, unknown>, ctx: unknown) => unknown }>).map(([name, t]) => [name, !t?.execute ? t : {
+      ...t,
+      execute: (args: Record<string, unknown>, ctx: unknown) => {
+        if (reserveHoldsToolCall(name, stepsFinishedN, streamMaxSteps, readPageLate)) {
+          console.log(JSON.stringify({ type: 'tappyai_final_synthesis_guard', tool: name, stepsFinished: stepsFinishedN, maxSteps: streamMaxSteps }))
+          // A Promise like every tool result (the wrapped tool chains .then on execute()).
+          return Promise.resolve({ error: 'search_budget_used', note: lang === 'en' ? 'No more tool calls this turn. Write the answer now from the data you already have; say plainly what you could not confirm, and do not invent it.' : 'Hết lượt tìm của lượt này. Viết ngay câu trả lời từ dữ liệu đã có; phần nào chưa xác nhận được thì nói rõ là chưa có, không bịa.' })
+        }
+        return t.execute!(args, ctx)
+      },
+    }])) as T
+  }
+  // Wave 3-FIX (R3-04): the tools this turn REALLY carries, decided once and used both for the `tools:` option and for which Wave 3 rule lines the prompt gets. A turn the code pre-searched (Luna answer),
+  // a Luna trip plan and a no-tool turn carry none - and are not told to call one or to write a sectioned answer.
+  // Wave 4 · C3: a pre-searched pick with the flag carries exactly web_search, read_page and calculate (the place search already ran in code).
+  const leanToolSet = pickTools && tools ? Object.fromEntries(Object.entries(tools).filter(([k]) => PICK_TURN_TOOL_NAMES.includes(k))) as typeof tools : lean && tools ? Object.fromEntries(Object.entries(tools).filter(([k]) => consultTools(consult!.domains, { shoppingWebSearch: routeToolOfferOn(), ...(knowledgeTurnTools ? { knowledgeTurnWebSearch: true } : {}), ...(toolByNeed ? { toolByNeed: true } : {}), ...(deterministicMath ? { math: true } : {}), ...(research ? { research: true } : {}) }).includes(k))) as typeof tools : tools
+  const turnHasNoTools = (lunaAnswer && presearchAll.length > 0 && !pickTools) || (lunaPlan && planningIntent === 'trip')
+  const offeredToolNames = turnHasNoTools || !leanToolSet ? [] : Object.keys(leanToolSet)
+  if (lean && (toolByNeed || deterministicMath || research || structuredSynth || pickTools)) {
+    // A request with several parts (Luna: not an easy turn; or two or more stated constraints) or a research turn gets the sectioned shape and the full ceiling; a simple pick keeps the ordinary short answer.
+    // Luna's own reading of the request decides when it ran; without it, three or more stated constraints.
+    const multiPart = lunaIntentRun ? lunaIntentRun.difficulty !== 'easy' : Object.keys(consult!.known).length >= 3
+    const structured = structuredSynth && offeredToolNames.length > 0 && multiPart
+    w3Structured = structured
+    if (structured) enrichment.setStructuredSynthesis(true) // the prose-shape sentence cap is stepped aside only for an answer that is really sectioned (streamEnrichment checks the text)
+    w3Prompt = buildLean(wave3PromptLines({ offeredToolNames, structured, toolByNeed: toolByNeed || pickTools, math: deterministicMath || pickTools, research: !!research })).dynamic
+  } else if (knowledgeTurn) {
+    // Wave 4 · C2: the knowledge path gets the same lines from the same function, appended to its own (legacy) prompt - each line only when its tool is in the turn's real tool set, the shape block
+    // only with W3 on, tools offered and a request with several parts (the A3 rule of the lean path).
+    const multiPart = lunaIntentRun ? lunaIntentRun.difficulty !== 'easy' : Object.keys(consult!.known).length >= 3
+    const structured = consultStructuredSynthesisOn() && offeredToolNames.length > 0 && multiPart
+    w3Structured = structured
+    if (structured) enrichment.setStructuredSynthesis(true)
+    const w3 = wave3PromptLines({ offeredToolNames, structured, toolByNeed: true, math: true, research: !!research })
+    w3Prompt = [systemPrompt, ...w3.extra, ...w3.tail].join('\n\n')
+  }
   const streamOpts: Parameters<typeof AI.stream>[0] = {
     role,
     // First text delta only. Tool-call and reasoning chunks are deliberately
@@ -2956,14 +3915,15 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // only step on a chitchat turn). Diagnostic — nothing branches on it.
     onStepFinish: () => {
       if (firstStepFinishMs === null) firstStepFinishMs = Date.now() - startTime
+      stepsFinishedN++ // read only by finalSynthesisGuard
     },
     // Cancel the upstream generation (and skip the onFinish memory-extraction
     // call) if the client disconnects — otherwise it runs to maxDuration billing
-    // tokens for a response nobody is receiving.
-    abortSignal: req.signal,
+    // tokens for a response nobody is receiving. Review 02/11: also at the turn's deadline (maxDuration is 300 s for Deep Research only).
+    abortSignal: turnSignal(req.signal, startTime, TURN_DEADLINE_MS),
     systemShared,
-    system: eveningAddendum ? systemPrompt + eveningAddendum : systemPrompt,
-    messages: (lunaData ? (() => { const at = modelMessagesWithPresearch.map((m: { role: string }) => m.role).lastIndexOf('user'); return at < 0 ? modelMessagesWithPresearch : [...modelMessagesWithPresearch.slice(0, at), { role: 'user' as const, content: lunaData }, ...modelMessagesWithPresearch.slice(at)] })() : modelMessagesWithPresearch) as typeof modelMessages,
+    system: eveningAddendum ? (w3Prompt ?? systemPrompt) + eveningAddendum : (w3Prompt ?? systemPrompt),
+    messages: (lunaData ? (() => { const at = modelMessagesForStream.map((m: { role: string }) => m.role).lastIndexOf('user'); return at < 0 ? modelMessagesForStream : [...modelMessagesForStream.slice(0, at), { role: 'user' as const, content: lunaData }, ...modelMessagesForStream.slice(at)] })() : modelMessagesForStream) as typeof modelMessages,
     // Completion cap. Place/product replies previously hit finishReason:"length"
     // at 2048 (deterministic image/review/order URLs are token-heavy). Those are
     // now injected by streamEnrichment instead of written by the LLM (see prompt),
@@ -2973,7 +3933,12 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // with [CTA_BUTTONS] + [FOLLOWUPS]); 2048 is 2.5× that. Planning stays at 4096 (a
     // [TAPPY_PLAN] block is long by design) and image turns at 1024. Output is billed as
     // generated, so this changes no cost on a normal reply — it bounds a runaway one.
-    maxTokens: noToolTurn ? (consult ? 600 : 300) : eveningBlock ? 350 : planningIntent ? 4096 : hasImage ? 1024 : 2048,
+    maxTokens: oneBrain ? ONE_BRAIN_MAX_TOKENS : noToolTurn ? (consult ? 600 : 300) : eveningBlock ? 350 : planningIntent ? 4096 : hasImage ? 1024 : (w3Structured ? levelLimits.structuredMaxTokens : unwindToolTurnCeiling ?? 2048),
+    // 31/10 (mode think): the one-brain answer reasons at medium WITH its tools (Responses API, streamed). Measured on 11 hard turns:
+    // 7.32 vs ChatGPT Think 6.64 (none: 6.80 vs 7.00), ~20 s slower, +34 % per hard turn.
+    ...(oneBrain && chatMode === 'think' ? { thinkEffort: 'medium' as const } : {}),
+    // 01/11 (mode "Tự động"): Chat until the model calls think_deeper, then every later step at medium (streamProviderOptions reads the switch per step).
+    ...(oneBrain && chatMode === 'auto' ? { autoThink } : {}),
     // Consult V2: a pick whose search already ran (presearch) answers in ONE step — no second full pass.
     // A follow-up/compare that re-reads its evidence keeps a second step: a stray tool call must still end in text.
     // R15: a pre-fetched trip plan writes in ONE step (a second only if it still reaches for a tool).
@@ -2981,7 +3946,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // step budget ended on the tool call and the reply stopped at "mình sẽ tìm…". It keeps a second step: a turn
     // that writes straight away is unchanged (no second pass is made), a stray tool call now ends in text.
     // Luna non-trip plan: one search step + a step that must write (the second search is answered by code, above).
-    maxSteps: lunaPlan && planningIntent !== 'trip' ? 3 : consultFollowReuse || consultTripPrefetch || (lean && presearchAll.length > 0 && !planningIntent && !noToolTurn && !eveningBlock) ? 2 : noToolTurn || eveningBlock ? 1 : planningIntent ? (lean ? 3 : 8) : hasImage ? 3 : lean ? 3 : 5,
+    maxSteps: streamMaxSteps,
+    // N2 (30/10): the one-brain model may look up several things in ONE step (a question about four companies looked them up one per step, ran out of
+    // its eight steps and answered about one). The old rule "one call per step" (30/09) stays for every other route; the reserve and the final write still end a turn in text.
+    parallelTools: oneBrain,
     // A one-step consult turn never reads the history breakpoint back — skip its +25% write (claude.ts).
     // A/B 29/09: a consult plan that is not a multi-step trip wrote ~4.2k tokens of history to the cache (1.25×)
     // and read back ~20% — a net loss. The history breakpoint stays only where a second model step is likely.
@@ -3016,8 +3984,13 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // call with tools). A TRIP plan has the code's full presearch (hotels, places, weather) → no tools, the plan effort
     // applies. Every other plan keeps its tools (replay 30/09: without them E1-G5 planned only the dinner, R16 named no
     // venue) and so runs at 'none'.
-    tools: (lunaAnswer && presearchAll.length > 0) || (lunaPlan && planningIntent === 'trip') ? undefined : lunaGuardTools(lean && tools ? Object.fromEntries(Object.entries(tools).filter(([k]) => consultTools(consult!.domains).includes(k))) as typeof tools : tools),
+    tools: turnHasNoTools ? undefined : traceToolsOuter(finalSynthesisGuard(lunaGuardTools(withResearchUrls(leanToolSet))), trace),
     onFinish: async ({ usage, finishReason, text, steps }) => {
+      // P2-8: one line per one-brain turn - model, effort, steps run vs the cap, tools by name, how it ended (counts and names only; never text or arguments).
+      if (oneBrain) { try { console.log(JSON.stringify(oneBrainTurnTrace({ serving: AI.serving(role), finishReason, maxSteps: streamMaxSteps, maxTokens: ONE_BRAIN_MAX_TOKENS, text, usage, steps: steps as never }))) } catch { /* trace only */ } }
+      // CONSULT_TRACE_DIAGNOSTICS (Wave 2C): how the tool loop ended. `requested` includes the code's own pre-search; `blocked` = answered search_budget_used (never counted as a provider request).
+      trace?.emit('loop', { stepsRun: steps?.length ?? null, maxSteps: streamMaxSteps, finishReason, modelTextChars: text.length, tools: { ...trace.counters }, ...(searchGate ? { toolsOffered: trace.facts.toolsOffered } : {}) })
+      if (trace) traceFinishReason = typeof finishReason === 'string' ? finishReason : null
       // Prompt-cache accounting. `usage` is already the SUM across steps, but
       // cache counters live in per-step providerMetadata (the top-level
       // providerMetadata only carries the LAST step), so they are summed here.
@@ -3034,7 +4007,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         if (typeof meta.cacheReadInputTokens === 'number') { cacheReadTokens += meta.cacheReadInputTokens; sawCacheMetadata = true }
         if (typeof meta.cacheCreationInputTokens === 'number') { cacheCreationTokens += meta.cacheCreationInputTokens; sawCacheMetadata = true }
       }
-      if (lunaOn) {
+      // CONSULT_ONE_BRAIN: the answer model is the vendor's (no Luna), so its steps are priced the same way, from the call's own cost.
+      if (lunaOn || oneBrain) {
         const acc = { usd: 0, reasoningTokens: 0, cachedInputTokens: 0, cacheWriteTokens: 0, served: [] as string[], fellBack: false }
         for (const step of steps ?? []) {
           const tp = step.providerMetadata?.tappy as { cost?: CallCost; fellBack?: boolean } | undefined
@@ -3077,7 +4051,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const convMessages = [
             ...trimmedMessages.map((m: { role: string; content: unknown }) => ({
               role: m.role,
-              content: typeof m.content === 'string' ? m.content : JSON.stringify(m.content),
+              // Task 02: with p8_cost_memory_text an image part's base64 no longer goes into the prompt as text.
+              content: memoryMessageText(m.content),
             })),
             { role: 'assistant', content: text },
           ]
@@ -3099,10 +4074,16 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
               return memory
             })()
             : extractedRaw
-          if (Object.keys(extracted).length > 0) {
-            // Write with the admin client (pinned user_id) so the upsert works
-            // under Bearer-token (native) auth — a fresh cookie client would
-            // have no session and RLS would silently drop the write.
+          if (Object.keys(extracted).length > 0 && evidenceDb) {
+            // ── Least privilege: the CALLER's client, not the service role ───
+            //
+            // `evidenceDb` is the REQUEST-SCOPED client `getRequestUser` already built. It carries the
+            // caller's session on both the cookie and the Bearer path, so it is not the sessionless
+            // client the old comment warned about. Under it RLS refuses a row that is not the caller's,
+            // even if updateMemory's user_id pinning were ever broken — a second layer, not the only one.
+            //
+            // Skipped rather than downgraded when there is no request client: falling back would either
+            // write with elevated privileges or with a sessionless client whose failure updateMemory swallows.
             await updateMemory(authedUserId, {
               location_base: extracted.location_base ?? existingMemory?.location_base ?? null,
               discovery_city: extracted.discovery_city ?? existingMemory?.discovery_city ?? null,
@@ -3112,7 +4093,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
               preferences: { ...(existingMemory?.preferences || {}), ...(extracted.preferences || {}) },
               budget: { ...(existingMemory?.budget || {}), ...(extracted.budget || {}) },
               history: extracted.history ?? existingMemory?.history ?? [],
-            }, createAdminClient())
+            }, evidenceDb)
           }
         } catch (e) {
           console.error('Memory extract/save error:', e)
@@ -3123,7 +4104,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         const topic = plainRequestTopic({ text: lastText, intent, isFirstReply })
         if (topic) {
           try {
-            await updateMemory(authedUserId, { history: appendHistoryTopic(existingMemory, topic) }, createAdminClient())
+            // Least privilege: the caller's own client (see the extraction write above). No client, no write.
+            if (evidenceDb) await updateMemory(authedUserId, { history: appendHistoryTopic(existingMemory, topic) }, evidenceDb)
           } catch (e) {
             console.error('Memory history save error:', e)
           }
@@ -3132,6 +4114,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     },
   }
   result = agentOn ? await agentTurn(streamOpts.onFinish) : AI.stream(streamOpts)
+  streamedWith = { opts: streamOpts, noTools: turnHasNoTools }
   } catch (e) {
     // Log the real error server-side, but NEVER return String(e) to the client:
     // the AI registry's own error text enumerates provider/model names, which the
@@ -3155,6 +4138,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   let photoMaxPlaceMs = 0
 
   const streamed = result.toDataStreamResponse()
+  // Wave 4 (C-PRE-1): the final writing call is armed only with CONSULT_FINAL_SYNTHESIS on (read now) outside a production runtime (fix N1), never for an agent turn, a planning turn (it has its own completion), an evening plan or a turn with no tools.
+  const finalWriteOn = consultFinalWriteOn() && !agentOn && !planningIntent && !eveningBlock && streamedWith !== null && !streamedWith.noTools
   // UAT4 P1-f: a planning turn that announced its plan and stopped gets the block from one extra
   // call, streamed before the finish frame so every plan guard below still runs (planCompletion.ts).
   const sdkResponse = eveningBlock && streamed.body
@@ -3188,6 +4173,37 @@ ${completionInstruction(lang)}` },
         })
         if (lunaOn) { const c = (done.providerMetadata as { tappy?: { cost?: { usd?: number } } } | undefined)?.tappy?.cost; planCompletionUsd += typeof c?.usd === 'number' ? c.usd : turnUsd({ promptTokens: done.usage?.promptTokens ?? 0, completionTokens: done.usage?.completionTokens ?? 0 }) }
         return done.text.trimStart().startsWith('[TAPPY_PLAN]') ? done.text : `[TAPPY_PLAN]${done.text}`
+      },
+    }), { status: streamed.status, headers: streamed.headers })
+    : finalWriteOn && streamed.body
+    // Wave 4 (C-PRE-1, CONSULT_FINAL_SYNTHESIS): a tool loop that ended without one word of text (every step was a tool call) gets ONE extra call with NO tools, written from the tool results
+    // as plain text, streamed before the finish frame so every guard below still runs (finalWrite.ts). Flag OFF: this branch is not taken and the stream is the one the SDK built.
+    ? new Response(finalWriteStream(streamed.body, {
+      needed: true,
+      deadlineAt: startTime + TURN_DEADLINE_MS,
+      // review 30/10: on one brain a short intro followed by a loop that ran out on tool calls still gets the answer
+      ...(oneBrain ? { afterShortIntro: 300 } : {}),
+      complete: async () => {
+        const steps = await result.steps
+        const toolResults = steps.flatMap(st => ((st.toolResults ?? []) as unknown as Array<{ toolName: string; result?: unknown }>).map(r => ({ toolName: r.toolName, result: r.result })))
+        if (toolResults.length === 0) return null
+        const so = streamedWith!.opts
+        const done = await AI.generate({
+          role: so.role,
+          systemShared,
+          system: finalWriteSystem(so.system, lang),
+          messages: [
+            ...(so.messages as CoreMessage[]),
+            { role: 'assistant', content: '…' },
+            { role: 'user', content: `${toolResultDigest(toolResults)}
+
+${finalWriteInstruction(lang)}` },
+          ],
+          maxTokens: so.maxTokens,
+        })
+        if (lunaOn) { const c = (done.providerMetadata as { tappy?: { cost?: { usd?: number } } } | undefined)?.tappy?.cost; planCompletionUsd += typeof c?.usd === 'number' ? c.usd : turnUsd({ promptTokens: done.usage?.promptTokens ?? 0, completionTokens: done.usage?.completionTokens ?? 0 }) }
+        finalWriteTokens.in += done.usage?.promptTokens ?? 0; finalWriteTokens.out += done.usage?.completionTokens ?? 0
+        return done.text
       },
     }), { status: streamed.status, headers: streamed.headers })
     : streamed
@@ -3234,13 +4250,32 @@ ${completionInstruction(lang)}` },
     // `needProfile.domain` is already derived above and is task-scoped, so a follow-up that carries
     // no place word of its own is still recognised; nothing new is persisted.
   }, async (evidence) => {
+    // CONSULT_V3 turn contract: a CHARGED turn whose SENT reply ends with a question gives the user one free direct answer to it. A free
+    // turn issues none (chain cap); a canned or Pro turn is not metered, so it has no identity here; a refunded turn was not a charged question.
+    // A turn that parks a pending action asks a confirmation, not a clarify question: no credit for it.
+    if (clarifyIdentity && !clarifyFree && !quotaExempt && !quotaRefunded && !agentPendingAction && evidence.replyText) {
+      const issued = await issueClarifyCredit(clarifyIdentity, evidence.replyText)
+      console.log(JSON.stringify({ type: 'tappyai_clarify_credit', step: 'issue', issued: !!issued }))
+    }
     // A1(d): carry this turn's place search (args + the venues shown) under this turn's evidence id.
     const row = lastPlaceSearch ? { ...(turnEvidenceRow ?? loadedEvidenceRow ?? { v: 1 }), placeSearch: { ...lastPlaceSearch, shown: [...(evidence.presentedNames ?? [])].slice(0, 8) } } : null
     // R14: the same row + the consult slots and the stated pick, under (owner, chatSessionId).
     if (chatSessionId && commerceIdentityId) {
+      // Phase 8 M2: the task is merged against what is stored NOW (a concurrent turn of the same conversation may have written a newer
+      // revision) — never a silent overwrite.
+      // Latency pass: the task tracker's delta lands off the reply's path; wait for it here (after the last byte) before persisting.
+      if (agentTaskBox?.settled) await agentTaskBox.settled
+      const taskSave = agentTaskBox?.persisted && agentTaskBase ? await (async () => {
+        const latest = await loadChatSessionState(commerceIdentityId, chatSessionId)
+        const m = mergeForSave(agentTaskBase, agentTaskBox.task, validStoredTask(latest?.task, agentTaskBox.conversationId))
+        agentRunTrace?.add('task', { decision: 'persist', merge: m.outcome, rev: m.task.rev })
+        return { task: m.task as unknown as Record<string, unknown>, taskHistory: agentTaskBox.history as unknown as Array<Record<string, unknown>> }
+      })() : null
       const saved = await saveChatSessionState(commerceIdentityId, chatSessionId, nextChatSessionState(chatState, {
+        ...(taskSave ?? {}),
         domains: consult?.domains, known: consult?.known, replyText: evidence.replyText, presentedNames: evidence.presentedNames, cardOrder: evidence.cardOrder,
-        ...(agentOn ? { pendingAction: agentPendingAction, rejected: agentRejected, executedActions: agentExecuted, agentState: agentStatePatch } : {}),
+        // Q-03: a turn the agent does not run (an image / clip turn) still ends a pending action's wait.
+        ...(agentOn ? { pendingAction: agentPendingAction, rejected: agentRejected, executedActions: agentExecuted, agentState: agentStatePatch } : chatState?.pendingAction ? { pendingAction: null } : {}),
         ...(lastPlaceRowsForState ? { candidates: { args: lastPlaceRowsForState.args, rows: compactCandidates(lastPlaceRowsForState.rows), at: new Date().toISOString() } } : {}),
         ...(lastStayForState ? { stay: lastStayForState } : {}),
         ...(lastProductsForState ? { products: lastProductsForState } : {}),
@@ -3251,12 +4286,14 @@ ${completionInstruction(lang)}` },
     if (!row || !evidenceDb) return
     try {
       await evidenceDb.rpc('decision_evidence_save', { p_id: evidenceId, p_evidence: row })
-      console.log(JSON.stringify({ type: 'tappyai_place_evidence', step: 'saved', shown: row.placeSearch.shown.length, query: lastPlaceSearch?.args.query ?? null }))
+      // S4 (E): the length of the saved search's query, never its words
+      console.log(JSON.stringify({ type: 'tappyai_place_evidence', step: 'saved', shown: row.placeSearch.shown.length, query: logText(lastPlaceSearch?.args.query, 'tool_arg') }))
     } catch (e) {
       console.error('[chat] place evidence save failed (the next "more" turn will search afresh):', e)
     }
   // A trip PLAN holds the whole reply too (owner 2026-09-28, B4): on uat @ 444774d a released prefix
   // carried the model's own "bay hay đi xe khách từ thành phố nào?" past planTripFactsGuard.
+  // (CONSULT_ONE_BRAIN, P0-3: the stream filter ignores this keyword reading of the question there; the place guards follow the place TOOL the model called.)
   }, followSeed, travelIntent || planningIntent === 'trip', lastText, needProfile.domain === 'places',
   /**
    * 🚨 TIKTOK REVIEW DISCOVERY — THE V1/V2 CAPABILITY, RESTORED WITH A QUERY
@@ -3299,6 +4336,9 @@ ${completionInstruction(lang)}` },
   // Not a capability: decision_evidence_load() still refuses it unless the
   // caller's auth.uid() owns the row, so holding the id grants nothing.
   finalResponse.headers.set('X-Decision-Evidence-Id', evidenceId)
+  // CONSULTATIVE_IN_AGENT: ask the web client to reveal the (already settled) reply progressively — display only. Emergency off: CONSULT_REVEAL=off
+  // on the server (read per request); a user can also opt out on the client (localStorage tappy_reveal=off, or reduced motion).
+  if (consultativeAgent && !/^(?:off|0|false|no)$/i.test((process.env.CONSULT_REVEAL ?? '').trim())) finalResponse.headers.set('x-tappy-reveal', '1')
 
   // Phase-0: emit the single tappyai_usage record once the LAST byte has left, so
   // a buffered turn's client-emit side (TTUA, enrichment tail, true total) rides
@@ -3343,6 +4383,10 @@ ${completionInstruction(lang)}` },
       toolMs: toolMs > 0 ? toolMs : null,
       providerId: AI.providerId(),
       modelRole: role,
+      // Cost per FEATURE (P2). `intent` only distinguishes chitchat from tool, so a
+      // weather lookup and a laptop comparison — which differ by thousands of tokens
+      // and by whether the ranking pipeline runs at all — were the same bucket.
+      decisionDomain: needProfile.domain,
     }
 
     // Buffered for delivery by a LATER request's flushPending (see the top of this handler).
@@ -3410,7 +4454,7 @@ ${completionInstruction(lang)}` },
             lastUserChars: lastText.length,
             toolResultChars: auditToolResultChars,
             noToolTurn,
-            maxTokens: noToolTurn ? (consult ? 600 : 300) : planningIntent ? 4096 : hasImage ? 1024 : 2048,
+            maxTokens: oneBrain ? ONE_BRAIN_MAX_TOKENS : noToolTurn ? (consult ? 600 : 300) : planningIntent ? 4096 : hasImage ? 1024 : (w3Structured ? levelLimits.structuredMaxTokens : unwindToolTurnCeiling ?? 2048),
           },
         }) + '\n')
       } catch { /* audit only */ }
@@ -3421,26 +4465,42 @@ ${completionInstruction(lang)}` },
   // end asking. It runs after every guard — measured on Android: the model asked about ticket prices
   // and the entertainment price guard (downstream) removed that sentence, leaving no question at all.
   const timedBody = finalResponse.body
-    ? turnCostStream(emptyResultStream(askAfterStream(finalResponse.body, agentOn ? null : gateAskAfter, lang), { getEmpty: () => (agentOn ? null : emptyPlaceSearch), bufferText: askedBack && presearchPlan === null, userTexts: subjectUserTexts, lang }).pipeThrough(stepRepeatGuard()), () => {
+    ? turnCostStream(areaAskStream(emptyResultStream(askAfterStream(finalResponse.body, agentOn ? null : gateAskAfter, lang), { getEmpty: () => (agentOn ? null : emptyPlaceSearch), bufferText: askedBack && presearchPlan === null, userTexts: subjectUserTexts, lang, ...(consultUnwindS1aOn() ? { appendOnly: true } : {}) }), () => noCurrentLocationAsked, lang, trace ? (e: Record<string, unknown>) => { console.log(JSON.stringify(e)); trace.emit('path_cut', { kind: 'area_ask', appended: e.appended ?? null, reason: e.reason ?? null, emptyBody: e.empty_body ?? null, ...(searchGate ? { source: trace.facts.noLocationBy } : {}) }); traceAreaAsk = { appended: typeof e.appended === 'boolean' ? e.appended : null, reason: typeof e.reason === 'string' ? e.reason : null } } : undefined).pipeThrough(stepRepeatGuard({ oneBrain })), () => {
+        // Wave 2F (M7, CONSULT_TRACE_DIAGNOSTICS=1 + CONSULT_SEARCH_NOW_INTENT_GATE=1 only): ONE line for a turn the gate blocked - what the turn ended up doing. Names, booleans and counts only.
+        if (trace && gateTraceFacts) {
+          const f = trace.facts
+          trace.emit('search_now_gate_outcome', {
+            blocked: true, droppedType: gateTraceFacts.droppedType, forcedToolIgnored: gateTraceFacts.forcedToolIgnored, toolsOffered: f.toolsOffered, modelCalledPlaceTool: f.modelPlaceCalls > 0, modelPlaceCalls: f.modelPlaceCalls, codePlaceCalls: f.codePlaceCalls,
+            areaAskAppended: traceAreaAsk?.appended === true, areaAskSource: traceAreaAsk?.appended === true ? f.noLocationBy : null, serperRequestsByModel: f.serperRequestsByModel, serperRequestsByCode: f.serperRequestsByCode, finishReason: traceFinishReason,
+            // Wave 2I (B): only with CONSULT_KNOWLEDGE_TURN_TOOLS on (so the line is byte-for-byte the run-4 line when it is off). Two booleans; never a word of the user.
+            ...(consultKnowledgeTurnToolsOn() ? { knowledgeToolsApplied: knowledgeTurnTools, webSearchOffered: !!f.toolsOffered?.includes('web_search') } : {}),
+            // Wave 3 (W2): only with CONSULT_TOOL_BY_NEED on (so the line is byte-for-byte the Wave 2J line when it is off). Booleans and a count; never a word of the user.
+            ...(toolByNeed ? { toolByNeedApplied: true, webSearchOffered: !!f.toolsOffered?.includes('web_search') } : {}),
+          })
+        }
         // Owner Phần 6: one cost line per turn (brain call + answer model + Serper).
+        if (requestCapTurn) closeRequestCapTurn(requestCapTurn) // the turn is over: a request that starts after this is refused
         const d = serperDelta(serperAtStart)
-        const tokensIn = (usageAcct?.promptTokens ?? 0) + (usageAcct?.cacheReadTokens ?? 0) + (usageAcct?.cacheCreationTokens ?? 0) + (consultRun?.usage.promptTokens ?? 0)
-        const tokensOut = (usageAcct?.completionTokens ?? 0) + (consultRun?.usage.completionTokens ?? 0)
-        const usd = turnUsd({ promptTokens: (usageAcct?.promptTokens ?? 0) + (consultRun?.usage.promptTokens ?? 0), completionTokens: tokensOut, cacheReadTokens: usageAcct?.cacheReadTokens ?? 0, cacheCreationTokens: usageAcct?.cacheCreationTokens ?? 0, serperCredits: d.credits })
+        const tokensIn = (usageAcct?.promptTokens ?? 0) + (usageAcct?.cacheReadTokens ?? 0) + (usageAcct?.cacheCreationTokens ?? 0) + (consultRun?.usage.promptTokens ?? 0) + finalWriteTokens.in
+        const tokensOut = (usageAcct?.completionTokens ?? 0) + (consultRun?.usage.completionTokens ?? 0) + finalWriteTokens.out
+        const usd = turnUsd({ promptTokens: (usageAcct?.promptTokens ?? 0) + (consultRun?.usage.promptTokens ?? 0) + finalWriteTokens.in, completionTokens: tokensOut, cacheReadTokens: usageAcct?.cacheReadTokens ?? 0, cacheCreationTokens: usageAcct?.cacheCreationTokens ?? 0, serperCredits: d.credits })
         const base = { domain: consult?.domains[0] ?? decisionFrame.domains[0] ?? null, turnType: consult?.turn ?? (planningIntent ? 'plan' : 'legacy'), model: 'haiku-4.5', tokensIn, tokensOut, serperCalls: sumCounts(d.calls), cacheHits: sumCounts(d.hits), promptCacheRead: usageAcct?.cacheReadTokens ?? 0, promptCacheWrite: usageAcct?.cacheCreationTokens ?? 0, usd }
-        if (!lunaOn) return base
+        // CONSULT_ONE_BRAIN (localhost 29/10): the line said model 'haiku-4.5' and priced the vendor's tokens at the Haiku list price.
+        if (!lunaOn && !oneBrain) return base
         // PHIÊN LUNA: each part at its own vendor's price — intent call + answer steps (reasoning tokens are in
         // the output count) + Serper. The Haiku brain, when it ran instead, keeps the Haiku price.
         const intentUsd = lunaRun?.costUsd ?? turnUsd({ promptTokens: consultRun?.usage.promptTokens ?? 0, completionTokens: consultRun?.usage.completionTokens ?? 0 })
         const answerUsd = (lunaAnswerCost?.usd ?? 0) + planCompletionUsd
         const serperUsd = turnUsd({ promptTokens: 0, completionTokens: 0, serperCredits: d.credits })
         return { ...base, model: [...new Set(lunaAnswerCost?.served ?? [])].join('+') || base.model, intent: lunaRun?.served ?? (consultRun ? 'haiku' : null), intentUsd, answerUsd, serperUsd, reasoningTokens: lunaAnswerCost?.reasoningTokens ?? 0, lunaCachedIn: lunaAnswerCost?.cachedInputTokens ?? 0, lunaCacheWrite: lunaAnswerCost?.cacheWriteTokens ?? 0, fellBack: lunaAnswerCost?.fellBack ?? false, usd: Math.round((intentUsd + answerUsd + serperUsd) * 1e6) / 1e6 }
-      }).pipeThrough(timeClientEmit(startTime, Date.now, (t) => logUsage(t.ttuaMs)))
+      }, usageSink).pipeThrough(timeClientEmit(startTime, Date.now, (t) => logUsage(t.ttuaMs))).pipeThrough(traceTailStream(agentRunTrace))
     : finalResponse.body
-  return new Response(timedBody, { status: finalResponse.status, headers: finalResponse.headers })
+  // CONSULT_ONE_BRAIN_MEDIA: the pictures go out last, before the finish frame, once every guard and frame above has run on the answer.
+  const pictured = oneBrainUnderstanding && timedBody ? oneBrainMediaStream(timedBody, { understanding: oneBrainUnderstanding, cardTurn: () => !!(enrichment.placesRecommendations?.length || enrichment.shoppingMarker), log: l => console.log(JSON.stringify(l)) }) : timedBody
+  return new Response(pictured, { status: finalResponse.status, headers: finalResponse.headers })
   }
   if (willPresearch) {
-    return new Response(deferredBody(searchingFrame(lang), finishTurn), {
+    return new Response(deferredBody(hasValidCurrentLocation(userLocation) ? searchingFrame(lang) : '', finishTurn), {
       status: 200,
       headers: { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache', 'Connection': 'keep-alive', 'X-Decision-Evidence-Id': evidenceId },
     })

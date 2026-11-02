@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Madame Lam\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:10:17.049Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Madame Lam\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Madame Lam: Nhà hàng Việt Nam đương đại tại Thảo Điền",
+    "link": "https://www.tiktok.com/@chang.jany/video/7413191150837730567",
+    "snippet": "Ở Madame Lam toát lên sự tinh tế, sang trọng, quý phái của người phụ nữ Việt Nam thời 1950. Menu đặc sắc đa dạng kết hợp nét tinh túy của ẩm ...",
+    "position": 1
+   },
+   {
+    "title": "Madame Lam: Ẩm thực Việt đương đại tại Sài Gòn",
+    "link": "https://www.tiktok.com/@theochanhenry/photo/7686463291320831239",
+    "snippet": "Madame Lam đi theo hướng ẩm thực Việt đương đại: lấy cảm hứng từ tinh thần Đông Dương và văn hóa Việt, sau đó làm mới những món quen thuộc bằng ...",
+    "position": 2
+   },
+   {
+    "title": "Michelin Series: Madame Lam Restaurant in Ho Chi Minh",
+    "link": "https://www.tiktok.com/@maya_reco/video/7541329963736206600",
+    "snippet": "Explore the exquisite flavors at Madame Lam Restaurant, a Michelin-starred destination in Ho Chi Minh. Discover authentic Vietnamese cuisine! # ...",
+    "position": 3
+   },
+   {
+    "title": "Menu Mới Ocean Elegance Từ Madame Lam",
+    "link": "https://www.tiktok.com/@chang.jany/video/7547206437504552200",
+    "snippet": "Đợt này Madame Lam có menu mới Ocean Elegence kết hợp tôm hùm Mỹ kết hợp với nguyên liệu Việt Nam truyền thống, tạo nên một dấu ấn mới lạ và ...",
+    "position": 4
+   },
+   {
+    "title": "Madame Lam Michelin guide restaurant review ...",
+    "link": "https://www.tiktok.com/@meganoffany/video/7503450260979633426",
+    "snippet": "Madame Lam Michelin guide restaurant review! #vietnamesefood #tiktokviral #foodreview. Madame Lam Michelin guide restaurant review! #vietnamesefood# ...",
+    "position": 5
+   },
+   {
+    "title": "Thực đơn không phải để “cố định”, mà để kể chuyện về ...",
+    "link": "https://www.tiktok.com/@travelsig.vn/video/7610606514314693909",
+    "snippet": "Thực đơn không phải để “cố định”, mà để kể chuyện về mùa. Ở Madame Lam, mỗi món ăn là khoảnh khắc nguyên liệu chín muồi nhất được đặt lên bàn, ...",
+    "position": 6
+   },
+   {
+    "title": "Madame Lam🥰 (@user4220144695585)",
+    "link": "https://www.tiktok.com/@user4220144695585",
+    "snippet": "Madame Lam (@user4220144695585) on TikTok | 34 Followers. Watch the latest video from Madame Lam (@user4220144695585).",
+    "position": 7
+   },
+   {
+    "title": "Madame Lam: Michelin Vietnamese Fusion in Saigon",
+    "link": "https://www.tiktok.com/@banocnochannah/photo/7665341024574704917",
+    "snippet": "okay this is officially my favorite restaurant in Saigon so far Madame Lam is Michelin Selected Vietnamese fusion and the depth of ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

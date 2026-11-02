@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook Air M1 cũ dưới 12 triệu pin tốt bảo hành (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:30:58.891Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Air M1 cũ dưới 12 triệu pin tốt bảo hành (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "MacBook cũ | Mac cũ uy tín, trả góp 0%, giảm đến 7 triệu",
+    "link": "https://cellphones.com.vn/hang-cu/mac.html",
+    "snippet": "Macbook cũ giá rẻ, giảm 2tr lên đời, HSSV giảm 700k, trả góp 0%, 0 phụ phí, 0 trả trước, bảo hành lên đến 6 tháng. Mua ngay Macbook cũ uy tín.",
+    "position": 1
+   },
+   {
+    "title": "Macbook Air cũ giá rẻ | Trả góp 0%, 0Đ trả trước, phụ phí",
+    "link": "https://cellphones.com.vn/hang-cu/mac/macbook-air.html",
+    "snippet": "Ổ cứng. 256GB; 512GB ; Tình trạng máy. Trầy xước; Xước cấn; Cũ đẹp; Đã kích hoạt ; Độ phân giải. Retina; 2K (Quad HD); 3K ; Dung lượng RAM. 8GB; 16GB; 24GB ; CPU.",
+    "position": 2
+   },
+   {
+    "title": "MacBook cũ giá dưới 10 triệu: Liệu có đáng đầu tư?",
+    "link": "https://cellphones.com.vn/sforum/macbook-cu-gia-duoi-10-trieu-lieu-co-dang-dau-tu",
+    "snippet": "Với ngân sách dưới 10 triệu, bạn hoàn toàn có thể sở hữu một chiếc MacBook cũ chất lượng, đặc biệt nếu chọn đúng dòng và kiểm tra kỹ lưỡng trước khi mua. Một số ...",
+    "position": 3
+   },
+   {
+    "title": "Macbook | Laptop Apple giá tốt, góp 0% 12T, giảm 5% HSSV",
+    "link": "https://cellphones.com.vn/laptop/mac.html",
+    "snippet": "Trang bị Apple Intelligence tích hợp AI hiện đại 3.6. Hệ điều hành macOS trực quan, dễ sử dụng 3.7. Hệ thống tản nhiệt tiên tiến, vận hành êm ái 3.8. Cấu hình ...",
+    "position": 4
+   },
+   {
+    "title": "Macbook Air M1 2020 (8GB/256GB) | Giá rẻ, giảm sốc 2024",
+    "link": "https://cellphones.com.vn/macbook-air-2020-m1.html",
+    "snippet": "Mua Macbook Air M1 (8GB/256GB) năm 2020 chính hãng - Giá rẻ, thu cũ đổi mới, bảo hành 12 tháng, trả góp 0%. Mua ngay Mac Air M1 tại đây.",
+    "rating": 4.9,
+    "ratingCount": 64,
+    "position": 5
+   },
+   {
+    "title": "Hàng cũ Apple MacBook Air M1 256GB 2020 | Giá rẻ",
+    "link": "https://cellphones.com.vn/macbook-air-2020-m1-cu-xuoc-can.html",
+    "snippet": "Apple MacBook Air M1 256GB 2020 - Cũ xước cấn ; Trả góp 0% ; Giá sản phẩm. 22.990.000đ 12.290.000đ ; Lưu ý · Giá thu mua áp dụng cho dung lượng pin >= 90% & số lần ...",
+    "rating": 5,
+    "ratingCount": 4,
+    "position": 6
+   },
+   {
+    "title": "Apple MacBook Air M1 256GB 2020 Đã kích hoạt bảo hành",
+    "link": "https://cellphones.com.vn/macbook-air-2020-m1-da-kich-hoat.html",
+    "snippet": "Apple MacBook Air M1 256GB 2020 Đã kích hoạt bảo hành · Giảm đến 1 triệu đồng cho đơn hàng từ 10 triệu đồng · Giảm ngay 600K cho đơn hàng từ 4 triệu đồng · Giảm ...",
+    "position": 7
+   },
+   {
+    "title": "Apple MacBook Air M1 16GB 256GB 2020 - Cũ Trầy Xước",
+    "link": "https://cellphones.com.vn/macbook-air-2020-m1-16gb-cu-tray-xuoc.html",
+    "snippet": "Mua Macbook Air 2020 M1 (8GB - 256GB) cũ giá rẻ - Nguồn gốc rõ ràng, bảo hành 6-12 tháng, đổi mới 30 ngày, luôn xuất bán đầy đủ VAT.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

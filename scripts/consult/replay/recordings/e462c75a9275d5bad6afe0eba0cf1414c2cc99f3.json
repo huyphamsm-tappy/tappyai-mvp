@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Bluetooth chụp Tai Sony WH-CH720N site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:58:40.371Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bluetooth chụp Tai Sony WH-CH720N site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Kết quả cho \"Tai nghe chụp sony\"",
+    "link": "https://shop.tiktok.com/vn/k/tai-nghe-chup-sony",
+    "snippet": "Tai nghe chụp tai Bluetooth Sony WH-CH720N - Hàng chính hãng. 0 sold. ₫3.590.000 ...",
+    "position": 1
+   },
+   {
+    "title": "Sony headphones cover",
+    "link": "https://shop.tiktok.com/vn/k/sony-headphones-cover",
+    "snippet": "Tai nghe chụp tai Sony WH-1000XM6 - Bảo hành chính hãng 12 tháng. 1 sold. ₫11.650.000. ₫11.990 ...",
+    "position": 2
+   },
+   {
+    "title": "SONY WI-C100 Tai Nghe Nhét Tai Bluetooth Không Dây, Chống ...",
+    "link": "https://shop.tiktok.com/vn/pdp/sony-wi-c100-tai-nghe-bluetooth-khong-day-chong-nuoc-pin-lau/1729911100135934953",
+    "snippet": "Sản phẩm rất tốt. Nhận hộp còn nguyên seal, tai nghe rất đẹp. Dễ sử dụng lắm, kết nối bluetooth với điện thoại rất nhanh. Shop tư vấn nhiệt tình nữa.",
+    "position": 3
+   },
+   {
+    "title": "Ống kính FE 24-70mm F2.8 GM II / SEL2470GM2",
+    "link": "https://shop.tiktok.com/vn/pdp/ong-kinh-fe-24-70mm-f2-8-gm-ii-cho-sony-alpha-series/1731657120846153510",
+    "snippet": "Tiêu cự24 đến 70mmKhẩu độ tối đaF/2.8Khẩu độ tối thiểuF/22Khoảng cách lấy nét tối thiểu21 cmĐộ phóng đại tối đa0,32xKích thước bộ lọc82 mmKích thước (ø x ...",
+    "position": 4
+   },
+   {
+    "title": "Vòng cổ hỗ trợ Reon Pocket 5-Cỡ nhỏ | RNPB-N4S",
+    "link": "https://shop.tiktok.com/vn/pdp/vong-co-reon-pocket-5-co-nho-sony-day-deo-co-gian-phu-hop-moi-kich-co/1731794412417878822?source=anchor",
+    "snippet": "Dây đeo co giãn, phù hợp với mọi kích cỡ cổ, từ 29cm đến 35cm.Vòng cổ là phụ kiện đi kèm với REON POCKET 5, hoặc bạn có thể mua riêng.",
+    "position": 5
+   },
+   {
+    "title": "Máy ảnh vlog ZV-E10 II | Thân máy",
+    "link": "https://shop.tiktok.com/vn/pdp/1731010788973710118?source=anchor",
+    "snippet": "NỔI BẬT:- Cảm biến Exmor R CMOS định dạng APS-C với 26,0 triệu điểm ảnh. Loại cảm biến: Cảm biến Exmor R CMOS, loại APS-C (23,3 x 15,5 mm)- Bộ xử lý hình ...",
+    "position": 6
+   },
+   {
+    "title": "Tai Nghe Samsung Galaxy Buds 3 Pro chính hãnġ",
+    "link": "https://shop.tiktok.com/vn/pdp/tai-nghe-samsung-galaxy-buds-3-pro-chinh-hang-ket-noi-bluetooth-5-4-khang-nuoc-ip57-thoi-gian-su-dun/1733348400998483838",
+    "snippet": "Tai nghe SamSung Galaxy Buds 3 Pro trang bị dải tần âm rộng từ 2.4GHz đến 2.48GHz và phạm vi kết nối lên đến ⑴⒪-⑴⑵ mét giúp đảm bảo kết nối ổn định hơn.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 7
+   },
+   {
+    "title": "Máy ảnh kỹ thuật số Sony ZV-1",
+    "link": "https://shop.tiktok.com/vn/pdp/may-anh-sony-zv-1-quay-vlog-4k-cam-bien-20mp-man-hinh-lat-180/1731010760575847206",
+    "snippet": "Tai nghe bluetooth Sony WH-CH520 siêu nhẹ 147g đeo thoải mái, chỉnh EQ qua ... Tai nghe Chống ồn không dây WH-CH720N (màu hồng). Free shipping. Tai nghe ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

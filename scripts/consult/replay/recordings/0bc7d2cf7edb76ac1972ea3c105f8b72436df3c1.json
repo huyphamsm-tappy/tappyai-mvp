@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hội An phố cổ giờ tham quan mùa hè 9:00 21:30 mùa đông 2026 giờ phố đi bộ chính thức",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T09:55:23.126Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hội An phố cổ giờ tham quan mùa hè 9:00 21:30 mùa đông 2026 giờ phố đi bộ chính thức",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Thời điểm lý tưởng nhất để tham quan Phố cổ Hội An vào ...",
+    "link": "https://danangtohoian.com/vi/thoi-diem-ly-tuong-nhat-de-tham-quan-pho-co-hoi-an-vao-mua-he/",
+    "snippet": "Thời điểm lý tưởng nhất để tham quan Phố cổ Hội An vào mùa hè năm 2026 · Thời điểm tốt nhất trong ngày6:00–10:00 sáng · và 4:30–10:00 tối (chiều muộn + tối).",
+    "position": 1
+   },
+   {
+    "title": "Cập nhật vé tham quan Khu phố cổ Hội An – Hành trình chạm ...",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Du-lich-Hoi-An/cap-nhat-ve-tham-quan-khu-pho-co-hoi-an-hanh-trinh-cham-ve-nguyen-ban-giua-long-di-san-3033.hwh",
+    "snippet": "Tại Khu phố cổ, không gian này được áp dụng từ 09:00 đến 21:30 vào mùa hè và 09:00 đến 21:00 vào mùa đông. Riêng tuyến đường Phan Châu Trinh, ...",
+    "date": "16 thg 3, 2026",
+    "position": 2
+   },
+   {
+    "title": "Đi vào phố cổ Hội An bắt buộc phải mua vé, người địa ...",
+    "link": "https://langsontv.vn/news/460/53612/di-vao-pho-co-hoi-an-bat-buoc-phai-mua-ve-nguoi-dia-phuong-co-loi-di-rieng",
+    "snippet": "Không gian thực hiện gồm toàn bộ khu vực I - Khu phố cổ Hội An, thời gian thực hiện tắt đầu từ ngày 15-5. Thời gian hoạt động bán vé tham quan Khu phố cổ từ 7 ...",
+    "position": 3
+   },
+   {
+    "title": "[2026 Đồng Hương Điểm tham quan] Hướng Dẫn Du Lịch ...",
+    "link": "https://vn.trip.com/moments/poi-city-152884741/",
+    "snippet": "⏰ Giờ mở cửa: 9:00–22:00 (Kéo dài đến 22:30 vào mùa hè; vào cửa lần cuối lúc 21:30) ⏱ Thời gian tham quan khuyến nghị: Một ngày là đủ; nếu ...",
+    "date": "20 thg 9, 2026",
+    "position": 4
+   },
+   {
+    "title": "Cập Nhật Giá Vé Tham Quan Phố Cổ Hội An 2026 & Mẹo ...",
+    "link": "https://phanvantravel.com/ve-tham-quan-pho-co-hoi-an",
+    "snippet": "Không gian phố bộ về đêm đem lại nhiều hoạt động giải trí bổ sung hoàn toàn miễn phí từ 19h00 - 20h30. Du khách dạo phố có thể tự do hòa mình vào các trò chơi ...",
+    "position": 5
+   },
+   {
+    "title": "Từ 15/5, du khách tham quan phố cổ Hội An phải mua vé",
+    "link": "https://nguoihanoi.vn/tu-15-5-du-khach-tham-quan-pho-co-hoi-an-phai-mua-ve-68785.html",
+    "snippet": "Thời gian hoạt động bán vé tham quan khu phố cổ từ 7 giờ 30 phút đến 21 giờ 30 phút hàng ngày vào mùa hè; đến 21 giờ vào mùa đông. Theo lãnh đạo ...",
+    "date": "4 thg 4, 2023",
+    "position": 6
+   },
+   {
+    "title": "Kinh nghiệm Du lịch HỘI AN 2026 từ A-Z: lưu trú, ăn chơi, ...",
+    "link": "https://vnexpress.net/cam-nang-du-lich-hoi-an-4446174.html",
+    "snippet": "Nằm bên bờ bắc hạ lưu sông Thu Bồn, Hội An là một đô thị cổ tại Quảng Nam, cách thành phố Đà Nẵng hơn 30 km, cách Huế 122 km. Nhắc tới Hội An là phải kể tới ...",
+    "position": 7
+   },
+   {
+    "title": "Du lịch Hội An có gì chơi? Kinh nghiệm đi phố cổ Hội An A ...",
+    "link": "https://blog.vexere.com/du-lich-hoi-an-co-gi-choi-kinh-nghiem-di-pho-co-hoi-an-a-den-z/",
+    "snippet": "Ngoài ra, bạn cũng có thể ghé Hội An vào mùa thu từ tháng 8 đến tháng 10. Thời tiết bấy giờ thoáng đãng, trời trong, nắng đẹp. Là thời điểm lý tưởng để tham ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "LUNAR HOTEL",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:48:05.155Z",
+ "body": {
+  "searchParameters": {
+   "q": "LUNAR HOTEL",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Lunar Hotel Danang Đánh giá của khách: Xếp hạng thực tế, Hình ảnh & Phản  hồi | Trip.com",
+    "imageUrl": "https://aw-d.tripcdn.com/images/1mc5f12000eo0h21i3F5B.jpg",
+    "imageWidth": 1440,
+    "imageHeight": 1920,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-ZLlwPDFSTXPKRiA7c4gBedu5Gea0umjW5Zt7Y7HcZA&s",
+    "thumbnailWidth": 194,
+    "thumbnailHeight": 259,
+    "source": "Trip.com",
+    "domain": "vn.trip.com",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-5611245/lunar-hotel-danang/review.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Faw-d.tripcdn.com%2Fimages%2F1mc5f12000eo0h21i3F5B.jpg&tbnid=7SkTu2b90sJLrM&imgrefurl=https%3A%2F%2Fvn.trip.com%2Fhotels%2Fda-nang-hotel-detail-5611245%2Flunar-hotel-danang%2Freview.html&docid=VHe-aWVJnCkSfM&w=1440&h=1920",
+    "position": 1
+   },
+   {
+    "title": "Lunar Hotel Danang, Đà Nẵng (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/580296702.jpg?k=9fdc372e6c6b1ad0dbdde97fbc08b8539ba74007c065e96a2deb43debc0c4ed9&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5WIeDez2k6wOvLK3_scloR_5H1Zev_h0fz8kuUBB-Jg&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/golden-sea-3.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F580296702.jpg%3Fk%3D9fdc372e6c6b1ad0dbdde97fbc08b8539ba74007c065e96a2deb43debc0c4ed9%26o%3D&tbnid=A00dJtK6UR-czM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fgolden-sea-3.vi.html&docid=xyt4W8rqsKvEMM&w=1024&h=683",
+    "position": 2
+   },
+   {
+    "title": "Lunar Hotel Da Nang",
+    "imageUrl": "https://www.lunarhoteldanang.com/uploads/product/ex17pp42-1393-phong-deluxe-balcony-ocean-sea-double.jpg",
+    "imageWidth": 1600,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRbpPzysaNU__9DmdOyOlEu7aTY1BK17FxsxizaDfOWw&s=10",
+    "thumbnailWidth": 632,
+    "thumbnailHeight": 316,
+    "source": "www.lunarhoteldanang.com",
+    "domain": "www.lunarhoteldanang.com",
+    "link": "https://www.lunarhoteldanang.com/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.lunarhoteldanang.com%2Fuploads%2Fproduct%2Fex17pp42-1393-phong-deluxe-balcony-ocean-sea-double.jpg&tbnid=2lWGfy1y3fqtoM&imgrefurl=https%3A%2F%2Fwww.lunarhoteldanang.com%2F&docid=pQUJutysG6hquM&w=1600&h=800",
+    "position": 3
+   },
+   {
+    "title": "Nhận xét về Lunar Hotel Danang, ưu đãi & hình ảnh 2026 - Expedia",
+    "imageUrl": "https://images.trvl-media.com/lodging/16000000/15970000/15967800/15967731/5f24de27.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 575,
+    "imageHeight": 863,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5yotMetPMUsMYjOX52bfXcEW2Rwo40hZVw5NU9jY1jw&s=10",
+    "thumbnailWidth": 364,
+    "thumbnailHeight": 549,
+    "source": "Expedia",
+    "domain": "www.expedia.com.vn",
+    "link": "https://www.expedia.com.vn/Da-Nang-Khach-San-Golden-Sea-3-Hotel.h15967731.Thong-tin-khach-san",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F16000000%2F15970000%2F15967800%2F15967731%2F5f24de27.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=nRZ74ITQQDYjEM&imgrefurl=https%3A%2F%2Fwww.expedia.com.vn%2FDa-Nang-Khach-San-Golden-Sea-3-Hotel.h15967731.Thong-tin-khach-san&docid=0OZx6l03ltRr7M&w=575&h=863",
+    "position": 4
+   },
+   {
+    "title": "Lunar Hotel Da Nang",
+    "imageUrl": "https://www.lunarhoteldanang.com/uploads/product/qyc9npe8-1397-superior-triple.jpg",
+    "imageWidth": 1600,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvtBrjew9nN_fB1_v1r4GyQhzheuAADXNkFQR7DKTJvQ&s=10",
+    "thumbnailWidth": 632,
+    "thumbnailHeight": 316,
+    "source": "www.lunarhoteldanang.com",
+    "domain": "www.lunarhoteldanang.com",
+    "link": "https://www.lunarhoteldanang.com/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.lunarhoteldanang.com%2Fuploads%2Fproduct%2Fqyc9npe8-1397-superior-triple.jpg&tbnid=1LPtF4RVwPF8AM&imgrefurl=https%3A%2F%2Fwww.lunarhoteldanang.com%2F&docid=pQUJutysG6hquM&w=1600&h=800",
+    "position": 5
+   },
+   {
+    "title": "Lunar Hotel Danang, Đà Nẵng (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/580296700.jpg?k=04d5bc3b1cb6a2909629f4ed39287bad144a6515aa56ebee753eaa0f5bafda04&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwxNcrXI4rYhl7QqSGDtdJJvcHJgBRm64jTf1EnHPrKg&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/golden-sea-3.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F580296700.jpg%3Fk%3D04d5bc3b1cb6a2909629f4ed39287bad144a6515aa56ebee753eaa0f5bafda04%26o%3D&tbnid=0ASywuitIeuqgM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fgolden-sea-3.vi.html&docid=xyt4W8rqsKvEMM&w=1024&h=683",
+    "position": 6
+   },
+   {
+    "title": "Đặt Khách sạn Lunar Đà Nẵng 4 sao gần biển | Giá cập nhật 2026",
+    "imageUrl": "https://cdn.vivutour.vn/2026/3/khach-san-lunar-hotel-da-nang.webp",
+    "imageWidth": 559,
+    "imageHeight": 900,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRcrgvz10U0N8-0uMaisdkPQfbp3dJS1JRBUdW6HIS6A&s",
+    "thumbnailWidth": 177,
+    "thumbnailHeight": 285,
+    "source": "Vivu Tour",
+    "domain": "vivutour.vn",
+    "link": "https://vivutour.vn/trip/khach-san-lunar-da-nang?srsltid=AU7gw4UJoBrSD6QmxWvvNVNTTwt9bYrqssPbiI0XlTuw1Smq34J7lF8J",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.vivutour.vn%2F2026%2F3%2Fkhach-san-lunar-hotel-da-nang.webp&tbnid=sNAjXvIddDMUoM&imgrefurl=https%3A%2F%2Fvivutour.vn%2Ftrip%2Fkhach-san-lunar-da-nang%3Fsrsltid%3DAU7gw4UJoBrSD6QmxWvvNVNTTwt9bYrqssPbiI0XlTuw1Smq34J7lF8J&docid=-dSxrx_8QTgXvM&w=559&h=900",
+    "position": 7
+   },
+   {
+    "title": "Lunar Hotel Da Nang, Da Nang | 2026 Updated Prices, Deals",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/1265819/-1/935733bb470bf9efbf9354fc4c196548.jpg?ce=0&s=414x232",
+    "imageWidth": 348,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_dAsAlA_gneR-vUBrFc2eFXPkq0MN0VvQBIa8Cl4cBg&s=10",
+    "thumbnailWidth": 348,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/golden-sea-3-hotel/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F1265819%2F-1%2F935733bb470bf9efbf9354fc4c196548.jpg%3Fce%3D0%26s%3D414x232&tbnid=oI-Tt9PttI5VWM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fgolden-sea-3-hotel%2Fhotel%2Fda-nang-vn.html&docid=kvq6Ep1z1wtjkM&w=348&h=232",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

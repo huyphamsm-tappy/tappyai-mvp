@@ -12,6 +12,7 @@ import {
   discoveryScopeForProvider,
   getProvider,
   providerOwning,
+  railDiscoveryScopes,
   type DiscoveryHint,
   type DiscoveryScope,
   type IntentType,
@@ -96,6 +97,8 @@ export interface CommerceAttachContext {
   transportMode?: 'intercity' | 'taxi'
   platform?: 'web' | 'android' | 'ios'
   locale?: 'vi' | 'en'
+  /** One brain (P0-3): a turn that names several merchants names none (requestedProviderOf `unambiguousOnly`). */
+  unambiguousMerchantOnly?: boolean
   /**
    * Pseudonymous attribution id (24 hex) for the affiliate `sub1` — the keyed hash the route derives
    * from the verified identity via `commerceActorHash`. Never a raw id, e-mail, name or phone.
@@ -156,7 +159,7 @@ const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/
 const MAX_LINKS_PER_ROW = 2
 /** Shopping (14 Sep 2026): one handoff per provider — Shopee, TikTok Shop, Lazada, DMX, CellphoneS side by side. */
 const MAX_SHOPPING_LINKS_PER_ROW = 5
-const MAX_SHOPPING_QUERIES = 8
+export const MAX_SHOPPING_QUERIES = 8
 const MAX_LINKS_PER_PROVIDER = 1
 const MAX_EXPERIENCE_ROWS = 2
 const DEFAULT_ADULTS = 2
@@ -209,7 +212,7 @@ function rowInactiveOwner(row: Record<string, unknown>, off: ReturnType<typeof i
 const rowBelongsToInactive = (row: Record<string, unknown>, off: ReturnType<typeof inactiveMerchants>): boolean => off.length > 0 && rowInactiveOwner(row, off) !== null
 
 function requestedProvider(ctx: CommerceAttachContext): RequestedProvider | null {
-  const providerId = requestedProviderOf(userTurns(ctx))
+  const providerId = requestedProviderOf(userTurns(ctx), { unambiguousOnly: ctx.unambiguousMerchantOnly === true })
   const entry = providerId ? getProvider(providerId) : null
   if (!providerId || !entry) return null
   // A3.1: naming a provider the runtime registry switched OFF (DMX) does not make it the request —
@@ -916,6 +919,15 @@ async function attachRouteLinks(toolName: 'get_flight_prices' | 'get_transport_o
     const requested = requestedProvider(ctx)
     const request: CommerceRequest = { domain: 'travel', intentType, capability: capabilityForIntent(intentType), subject, configuration, ...(requested ? { constraints: { merchantAllowList: requested.merchantAllowList } } : {}), context }
     const out = (ctx.resolve ?? resolveCommerce)(request, { hints, now, enabled: true })
+    // Trains (29 Oct 2026): the coach turn also asks for the dated train list of the same two places. Its own result, its own field.
+    const rail = flight ? { rows: [], page: null } : await railRouteRows(r, ctx, { configuration, subject, context, requested, assumed, now })
+    const railRows = rail.rows
+    if (railRows.length > 0) {
+      r.train_booking_link = railRows[0].url
+      r._tappy_commerce = railRows.map(routeFacts)
+      // The merchant's own route page behind that link (CCP's canonical, untracked): the transport tool reads its trains and fares.
+      if (rail.page) r._tappy_rail_page = rail.page
+    }
     if (!('links' in out) || out.links.length === 0) return r
     // A3.3: the dated route page or nothing — a merchant's front door with the route to be typed is not a route link.
     const rows = dedupeLinks([], out.links.filter(l => l.depth >= MIN_ROUTE_LINK_DEPTH).map(l => projectCommerceLinkRow(l, out.requestId, intentType, assumed, { primary: true })), flight ? 4 : 1)
@@ -926,13 +938,58 @@ async function attachRouteLinks(toolName: 'get_flight_prices' | 'get_transport_o
     const projected = rows.map(l => ({ name: flight ? (/^en/i.test(ctx.locale ?? '') ? `See prices on ${l.merchantName}` : `Xem giá trên ${l.merchantName}`) : l.merchantName, url: l.url }))
     if (flight) r.booking_links = projected
     else r.vexere_link = projected[0].url
-    r._tappy_commerce = rows.map((l): RouteHandoffFacts => ({
-      merchantName: l.merchantName, providerId: l.providerId, kind: l.kind, depth: l.depth, guestDepth: l.guestDepth, authRequiredAt: l.authRequiredAt,
-      linkId: l.linkId, requestId: l.requestId, assumedParams: l.assumedParams, limitations: l.limitations,
-    }))
+    r._tappy_commerce = [...rows.map(routeFacts), ...railRows.map(routeFacts)]
     return r
   } catch {
     return r
+  }
+}
+
+const routeFacts = (l: CommerceLinkRow): RouteHandoffFacts => ({
+  merchantName: l.merchantName, providerId: l.providerId, kind: l.kind, depth: l.depth, guestDepth: l.guestDepth, authRequiredAt: l.authRequiredAt,
+  linkId: l.linkId, requestId: l.requestId, assumedParams: l.assumedParams, limitations: l.limitations,
+})
+
+/**
+ * The dated train list for the coach turn's two places (owner 29 Oct 2026: "vé xe vé tàu thì chúng ta có vexere").
+ * The rail route page carries Vexere's own area ids, so it is DISCOVERED, never composed: first among the train rows the
+ * transport tool already fetched (no extra request); when none of them is a rail route page of the two places, one scoped
+ * search on the registry's `railSite`. No page, no link. `page` is the route page behind the link (CCP's canonical).
+ */
+async function railRouteRows(
+  r: Row,
+  ctx: CommerceAttachContext,
+  base: { configuration: NonNullable<CommerceRequest['configuration']>; subject: string; context: NonNullable<CommerceRequest['context']>; requested: ReturnType<typeof requestedProvider>; assumed: string[]; now: Date },
+): Promise<{ rows: CommerceLinkRow[]; page: string | null }> {
+  const none = { rows: [], page: null }
+  try {
+    const scopes = railDiscoveryScopes()
+    if (scopes.length === 0 || base.configuration.kind !== 'transport') return none
+    const wanted = new Set(scopes.map(s => s.providerId))
+    const request: CommerceRequest = {
+      domain: 'travel', intentType: 'book_transport', capability: capabilityForIntent('book_transport'), subject: base.subject,
+      configuration: { ...base.configuration, mode: 'train' },
+      ...(base.requested ? { constraints: { merchantAllowList: base.requested.merchantAllowList } } : {}), context: base.context,
+    }
+    const resolveFrom = (hints: DiscoveryHint[]): { rows: CommerceLinkRow[]; page: string | null } => {
+      if (hints.length === 0) return none
+      const out = (ctx.resolve ?? resolveCommerce)(request, { hints, now: base.now, enabled: true })
+      if (!('links' in out)) return none
+      const rows = dedupeLinks([], out.links.filter(l => l.depth >= MIN_ROUTE_LINK_DEPTH).map(l => projectCommerceLinkRow(l, out.requestId, 'book_transport', base.assumed, { primary: true })), 1)
+      const offers = (out as { offers?: Array<{ providerId?: string; canonicalUrl?: string }> }).offers ?? []
+      const page = rows.length > 0 ? offers.find(o => o.providerId === rows[0].providerId && typeof o.canonicalUrl === 'string')?.canonicalUrl ?? null : null
+      return { rows, page }
+    }
+    const fetched = (Array.isArray(r.train_search_results) ? r.train_search_results : [])
+      .map(x => (isRecord(x) && typeof x.link === 'string' ? { url: x.link, title: typeof x.title === 'string' ? x.title : base.subject } : null))
+      .filter((h): h is { url: string; title: string } => !!h && wanted.has(providerOwning(h.url) ?? ''))
+    const fromFetched = resolveFrom(fetched)
+    if (fromFetched.rows.length > 0) return fromFetched
+    const origin = str(ctx.origin), destination = str(ctx.destination)
+    const hits = await discoverBySubject('travel', 'book_transport', `tàu ${origin} ${destination}`, undefined, { search: ctx.search, perScope: 3, scopes })
+    return resolveFrom(hits.map(h => ({ url: h.url, title: h.title ?? base.subject })))
+  } catch {
+    return none
   }
 }
 
@@ -963,6 +1020,45 @@ async function eventScheduleOf(url: string, ctx: CommerceAttachContext, now: Dat
   return scheduleFacts(stated, now)
 }
 
+/** Product pages the platform offers from one web search. */
+const MAX_WEB_PRODUCT_LINKS = 3
+
+/**
+ * A web result that IS a product page of a registry shopping merchant (the model searched `site:<store> <product>` itself, in
+ * whatever language the person wrote) becomes a validated Commerce Link under `product_links`. Decided by the result's HOST and
+ * the merchant adapter's product-page shape - never by words in the question. A category page, an article, a search page, or a
+ * host the registry does not own gives nothing. The web results themselves are left as they are.
+ */
+function attachProductHandoffs(r: Row, ctx: CommerceAttachContext, now: Date): Row {
+  const results = Array.isArray(r.results) ? (r.results as Array<{ title?: unknown; link?: unknown }>) : []
+  const context = { ...(ctx.platform ? { platform: ctx.platform } : {}), ...(ctx.locale ? { locale: ctx.locale } : {}), ...(ctx.actorHash ? { actorHash: ctx.actorHash } : {}), ...(ctx.actorSeal ? { actorSeal: ctx.actorSeal } : {}), allowTracking: true }
+  const rows: CommerceLinkRow[] = []
+  const names: string[] = []
+  for (const h of results) {
+    if (rows.length >= MAX_WEB_PRODUCT_LINKS) break
+    const url = str(h?.link)
+    const title = str(h?.title)
+    if (!url || !title) continue
+    const owner = providerOwning(url)
+    const entry = owner ? getProvider(owner) : null
+    if (!entry || !entry.domains.includes('shopping') || !entry.intents.includes('buy_product')) continue
+    const request: CommerceRequest = { domain: 'shopping', intentType: 'buy_product', capability: capabilityForIntent('buy_product'), subject: title.slice(0, 200), constraints: { merchantAllowList: [entry.merchantId] }, context }
+    const out = (ctx.resolve ?? resolveCommerce)(request, { hints: [{ url, title }], now, enabled: true })
+    const detail = 'links' in out ? out.links.find(l => l.kind !== 'SEARCH_HANDOFF') : undefined
+    if (!('links' in out) || !detail) continue
+    if (rows.some(x => x.destinationUrl === detail.directUrl)) continue
+    rows.push(projectCommerceLinkRow(detail, out.requestId, 'buy_product', [], { primary: true }))
+    names.push(title)
+  }
+  if (rows.length === 0) return r
+  r.product_links = rows.map((l, i) => ({ name: names[i], platform: l.merchantName, url: l.url }))
+  r._tappy_commerce = rows.map((l): RouteHandoffFacts => ({
+    merchantName: l.merchantName, providerId: l.providerId, kind: l.kind, depth: l.depth, guestDepth: l.guestDepth, authRequiredAt: l.authRequiredAt,
+    linkId: l.linkId, requestId: l.requestId, assumedParams: l.assumedParams, limitations: l.limitations,
+  }))
+  return r
+}
+
 async function attachWebHandoffs(r: Row, ctx: CommerceAttachContext): Promise<unknown> {
   try {
     const capability = entertainmentCapabilityOf(userTurns(ctx))
@@ -972,7 +1068,7 @@ async function attachWebHandoffs(r: Row, ctx: CommerceAttachContext): Promise<un
     // is the boundary — showtimes are never composed.
     const film = capability === 'cinema_ticket' ? filmTitleOf(userTurns(ctx)) : null
     const event = capability === 'event_ticket'
-    if (!event && !film) return r
+    if (!event && !film) return attachProductHandoffs(r, ctx, now)
     const subject = event ? str(ctx.query) : film
     if (!subject) return r
     const intentType: IntentType = event ? 'buy_event_ticket' : 'buy_ticket'

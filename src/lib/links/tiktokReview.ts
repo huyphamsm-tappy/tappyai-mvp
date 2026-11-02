@@ -49,6 +49,35 @@ export function isValidTikTokContentUrl(value: string | null | undefined): boole
   return CONTENT_PATH.test(url.pathname) || SHORT_PATH.test(url.pathname)
 }
 
+/** `/t/<code>` — the only short-code form a CONTENT host serves (a bare `/<word>` there is a section: `/discover`, `/explore`). */
+const CONTENT_SHORT_PATH = /^\/t\/[A-Za-z0-9]{5,}\/?$/
+
+/**
+ * Closeout round 6 (owner decision, PROPOSAL): the URL shape a TikTok ACTION grant needs — `isValidTikTokContentUrl` AND, on a content
+ * host, a post path (`/@handle/video|photo/<digits>`) or `/t/<code>`. `isValidTikTokContentUrl` alone also accepts `/<5+ letters>` on
+ * www.tiktok.com, so `https://www.tiktok.com/discover` passed it (measured round 6). Kept separate so the validator's other callers
+ * are unchanged.
+ */
+export function isTikTokPostUrl(value: string | null | undefined): boolean {
+  if (!isValidTikTokContentUrl(value)) return false
+  const url = new URL(value as string)
+  const host = url.hostname.toLowerCase()
+  if (SHORT_HOSTS.has(host)) return true
+  return CONTENT_PATH.test(url.pathname) || CONTENT_SHORT_PATH.test(url.pathname)
+}
+
+/** A URL on TikTok's own hosts (exact host or a subdomain) — classification only, never a validity check. */
+export function isTikTokHost(value: string | null | undefined): boolean {
+  if (typeof value !== 'string') return false
+  try {
+    // Gate 2 S5, L1 (PROPOSAL): a fully-qualified host ("www.tiktok.com.") is the same site -- classified as TikTok too.
+    const host = new URL(value).hostname.toLowerCase().replace(/\.$/, '')
+    return host === 'tiktok.com' || host.endsWith('.tiktok.com')
+  } catch {
+    return false
+  }
+}
+
 /**
  * The one TikTok review link for a place, chosen from what a provider actually returned.
  *

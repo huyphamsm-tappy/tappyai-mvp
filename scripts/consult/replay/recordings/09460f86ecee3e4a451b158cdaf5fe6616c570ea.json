@@ -1,0 +1,31 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:hoianworldheritage.org.vn \"80.000\" vé tham quan Hội An 2026 \"120.000\"",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:25:24.167Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:hoianworldheritage.org.vn \"80.000\" vé tham quan Hội An 2026 \"120.000\"",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cập nhật vé tham quan Khu phố cổ Hội An – Hành trình chạm ...",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Du-lich-Hoi-An/cap-nhat-ve-tham-quan-khu-pho-co-hoi-an-hanh-trinh-cham-ve-nguyen-ban-giua-long-di-san-3033.hwh",
+    "snippet": "Với vé tham quan mệnh giá 80.000 đồng, du khách ... Nếu muốn khám phá sâu hơn, du khách có thể chọn vé tham quan mệnh giá 120.000 đồng.",
+    "date": "16 thg 3, 2026",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

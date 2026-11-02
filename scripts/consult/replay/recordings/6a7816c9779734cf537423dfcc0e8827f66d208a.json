@@ -1,0 +1,82 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "JBL Endurance Pace site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:26:55.219Z",
+ "body": {
+  "searchParameters": {
+   "q": "JBL Endurance Pace site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai Nghe Thể Thao Open-ear JBL ENDURANCE PACE ...",
+    "link": "https://shopee.vn/Tai-Nghe-Th%C3%AA%CC%89-Thao-Open-ear-JBL-ENDURANCE-PACE-Nghe-Nha%CC%A3c-T%C6%A1%CC%81i-10-Gi%C6%A1%CC%80-Kha%CC%81ng-Bu%CC%A3i-N%C6%B0%C6%A1%CC%81c-IP68-i.64903618.57952130875",
+    "snippet": "Mua Tai Nghe Thể Thao Open-ear JBL ENDURANCE PACE Nghe Nhạc Tới 10 Giờ Kháng Bụi Nước IP68 giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 17,
+    "position": 1
+   },
+   {
+    "title": "Tai Nghe Thể Thao Open-ear JBL ENDURANCE PACE ...",
+    "link": "https://shopee.vn/Tai-Nghe-Th%C3%AA%CC%89-Thao-Open-ear-JBL-ENDURANCE-PACE-PIN-l%C3%AAn-t%C6%A1%CC%81i-10-Gi%C6%A1%CC%80-B%E1%BA%A3o-h%C3%A0nh-ch%C3%ADnh-h%C3%A3ng-12-th%C3%A1ng-i.628613599.54002939579",
+    "snippet": "Mua Tai Nghe Thể Thao Open-ear JBL ENDURANCE PACE PIN lên tới 10 Giờ - Bảo hành chính hãng 12 tháng giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 2
+   },
+   {
+    "title": "Tai nghe Bluetooth JBL Endurance Pace",
+    "link": "https://shopee.vn/Tai-nghe-Bluetooth-JBL-Endurance-Pace-Ch%E1%BB%91ng-n%C6%B0%E1%BB%9Bc-IPX5-Pin-10H-C%E1%BA%A3m-%E1%BB%A9ng-BH-12-th%C3%A1ng-PGI-1-%C4%91%E1%BB%95i-1-15-ng%C3%A0y-i.358099576.43077034712",
+    "snippet": "Mua Tai nghe Bluetooth JBL Endurance Pace | Chống nước IPX5, Pin 10H | BH 12 tháng PGI, 1 đổi 1 15 ngày giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 5,
+    "position": 3
+   },
+   {
+    "title": "Tai nghe Bluetooth JBL Endurance Pace",
+    "link": "https://shopee.vn/Tai-nghe-Bluetooth-JBL-Endurance-Pace-Ch%E1%BB%91ng-n%C6%B0%E1%BB%9Bc-IPX5-Pin-10H-C%E1%BA%A3m-%E1%BB%A9ng-BH-12-th%C3%A1ng-PGI-1-%C4%91%E1%BB%95i-1-15-ng%C3%A0y-i.365019927.49352715099",
+    "snippet": "Tai nghe Bluetooth JBL Endurance Pace | Chống nước IPX5, Pin 10H, Cảm ứng | BH 12 tháng PGI, 1 đổi 1 15 ngày. outline grey truck icon. Không hỗ trợ.",
+    "rating": 5,
+    "ratingCount": 5,
+    "position": 4
+   },
+   {
+    "title": "#JBL giá tốt Tháng 9, 2026 | Mua ngay",
+    "link": "https://shopee.vn/JBL-tag",
+    "snippet": "Loa Bluetooth JBL Partybox On The Go Essential , Công suất 100w Là Bản Mới 2024 Kèm Sẵn 1 Micro Chính Hãng. 7.290.000₫. 7.990.000₫. -9%. rating-star 4.9.",
+    "position": 5
+   },
+   {
+    "title": "endurance giá tốt Tháng 9, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=endurance",
+    "snippet": "Tai Nghe Thể Thao Open-ear JBL ENDURANCE PACE Nghe Nhạc Tới 10 Giờ Kháng ... flag-label Tai nghe Bluetooth JBL Endurance Pace | Chống nước IPX5, Pin 10H ...",
+    "position": 6
+   },
+   {
+    "title": "Tai Nghe Không Dây TWS JBL Endurance Peak Cũ Đã ...",
+    "link": "https://shopee.vn/Tai-Nghe-Kh%C3%B4ng-D%C3%A2y-TWS-JBL-Endurance-Peak-C%C5%A9-%C4%90%C3%A3-Qua-S%E1%BB%AD-D%E1%BB%A5ng-i.68837237.22468423048",
+    "snippet": "Tai Nghe Không Dây TWS JBL Endurance Peak Cũ Đã Qua Sử Dụng. 1/4. 399.000₫. Tai Nghe Không Dây TWS JBL Endurance Peak Cũ Đã Qua Sử Dụng.",
+    "rating": 4.5,
+    "ratingCount": 2,
+    "position": 7
+   },
+   {
+    "title": "open giá tốt Tháng 9, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=open",
+    "snippet": "Tai Nghe Thể Thao Open-ear JBL ENDURANCE PACE Nghe Nhạc Tới 10 Giờ Kháng. custom-overlay. flag-label Tai Nghe Thể Thao Open-ear JBL ENDURANCE PACE Nghe Nhạc Tới ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

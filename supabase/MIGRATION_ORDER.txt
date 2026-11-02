@@ -100,7 +100,11 @@ supabase/migrations/20260901_marketing_governance_foundation.sql
 supabase/migrations/20260904_group_read_boundary.sql
 supabase/migrations/20260905_chat_messaging_phase1.sql
 supabase/migrations/20260906_phase6_messenger_reachability.sql
+supabase/migrations/20260908_tappy_business_p0.sql
 supabase/migrations/20260908_user_demographics_foundation.sql
+supabase/migrations/20260909_tappy_business_p2_order_invariants.sql
+supabase/migrations/20260910_tappy_business_p3_order_transitions.sql
+supabase/migrations/20260911_tappy_business_p4_order_immutability.sql
 supabase/migrations/20260911_user_memory_discovery_city.sql
 supabase/migrations/20260911b_user_memory_auth_fk.sql
 supabase/migrations/20260913_g1_growth_foundation.sql
@@ -138,6 +142,7 @@ supabase/migrations/20261001c_commerce_providers_cinemas.sql
 supabase/migrations/20261001d_moderation_standards.sql
 supabase/migrations/20261001e_banned_identity_hash.sql
 supabase/migrations/20261005_account_deletion_cleanup.sql
+supabase/migrations/20261005_p8_cost_indexes.sql
 supabase/migrations/20261009_content_reports_to_queue.sql
 supabase/migrations/20261010_content_reports_flood_guard.sql
 supabase/migrations/20261011_p8_payments.sql
@@ -145,4 +150,7 @@ supabase/migrations/20261015_p8_subscriptions.sql
 supabase/migrations/20261016_p7_pip_one_time.sql
 supabase/migrations/20261017_p7_pip_trial_any_source.sql
 supabase/migrations/20261018_ai_data_consent.sql
+supabase/migrations/20261018_chat_honours_user_blocks.sql
 supabase/migrations/20261019_ai_data_consent_client_acl.sql
+supabase/migrations/20261101_ai_usage_events.sql
+supabase/migrations/20261102_plans_promax.sql

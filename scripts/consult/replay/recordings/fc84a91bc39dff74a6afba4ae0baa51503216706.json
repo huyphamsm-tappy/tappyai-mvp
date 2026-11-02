@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com/vn AirPods Pro 2 thời lượng pin nghe nhạc 6 giờ hộp sạc 30 giờ",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:14:43.695Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com/vn AirPods Pro 2 thời lượng pin nghe nhạc 6 giờ hộp sạc 30 giờ",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "AirPods Pro 3 - Thông Số Kỹ Thuật",
+    "link": "https://www.apple.com/vn/airpods-pro/specs/",
+    "snippet": "Thời gian nghe lên đến 8 giờ với một lần sạc khi bật tính năng Chủ Động Khử Tiếng Ồn (lên đến 7,5 giờ khi bật Âm Thanh Không Gian và Theo Dõi Chuyển Động Đầu) ...",
+    "position": 1
+   },
+   {
+    "title": "So Sánh Các Phiên Bản AirPods",
+    "link": "https://www.apple.com/vn/airpods/compare/?modelList=airpods-pro,airpods-3rd-gen-lightning",
+    "snippet": "Thời lượng pin lên đến 22 giờ với hộp sạc và bật tính năng Chủ Động Khử Tiếng Ồn. Thời gian nghe lên đến 30 giờ với hộp sạc. Thời lượng pin lên đến 20 ...",
+    "position": 2
+   },
+   {
+    "title": "Apple công bố thế hệ AirPods Pro tiếp theo",
+    "link": "https://www.apple.com/vn/newsroom/2022/09/apple-announces-the-next-generation-of-airpods-pro/",
+    "snippet": "Chất lượng âm thanh tuyệt đỉnh, công nghệ khử tiếng ồn chủ động tiên tiến, và nhiều tính năng mới giúp sử dụng thuận tiện hơn nữa.",
+    "date": "7 thg 9, 2022",
+    "position": 3
+   },
+   {
+    "title": "AirPods 5 - Thông Số Kỹ Thuật",
+    "link": "https://www.apple.com/vn/airpods-5/specs/",
+    "snippet": "Thời lượng pin lên đến 20 giờ khi bật tính năng Chủ Động Khử Tiếng Ồn; 5 phút để trong hộp sạc có thể cung cấp thời lượng pin khoảng 1 giờ. AirPods 5 ...",
+    "position": 4
+   },
+   {
+    "title": "Ưu Đãi Tiết Kiệm Cho Ngành Giáo Dục",
+    "link": "https://www.apple.com/vn-edu/store",
+    "snippet": "Học sinh/sinh viên và nhà giáo đủ điều kiện sẽ tiết kiệm được tối đa đến 10% khi sử dụng gói hỗ trợ bảo hành AppleCare+ cho Mac hoặc iPad.",
+    "position": 5
+   },
+   {
+    "title": "Apple ra mắt iPhone 18 Pro và iPhone 18 Pro Max",
+    "link": "https://www.apple.com/vn/newsroom/2026/09/apple-debuts-iphone-18-pro-and-iphone-18-pro-max/",
+    "snippet": "Tổng thể cả hai phiên bản đều được làm từ 40% vật liệu tái chế,7 bao gồm 100% cô-ban trong pin là cô-ban tái chế và 85% nhôm trong vỏ máy là ...",
+    "date": "10 thg 9, 2026",
+    "position": 6
+   },
+   {
+    "title": "Apple Watch Ultra 4",
+    "link": "https://www.apple.com/vn/apple-watch-ultra-4/",
+    "snippet": "Thời lượng pin và sạc nhanh. Thời lượng pin và sạc nhanh. Sở hữu thời lượng pin bền bỉ với thời gian sử dụng bình thường lên đến 50 giờ. Sạc nhanh chỉ ...",
+    "position": 7
+   },
+   {
+    "title": "iPhone Duo - Thông Số Kỹ Thuật",
+    "link": "https://www.apple.com/vn/iphone-duo/specs/",
+    "snippet": "Lên đến 37 giờ khi sử dụng màn hình ngoài. Lên đến 26 giờ khi sử dụng màn hình trong. Tích hợp hai pin sạc lithium-ion. Khả năng sạc nhanh: Sạc lên đến 50 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

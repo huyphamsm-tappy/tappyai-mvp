@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Nhà Hàng Lúa Đại Việt\" OR \"Quán Bụi Central\" OR \"Quán Bụi\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:15:26.423Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Nhà Hàng Lúa Đại Việt\" OR \"Quán Bụi Central\" OR \"Quán Bụi\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quán Bụi Group (@quanbui_group)",
+    "link": "https://www.tiktok.com/@quanbui_group",
+    "snippet": "Những cảm nhận khách quan, chi tiết từ khách luôn là điều Quán Bụi trân · Bữa cơm tối chuẩn vị Việt tại Quán Bụi central #quanbuigroup #vietnamesefood # ...",
+    "position": 1
+   },
+   {
+    "title": "Review Quán Bụi: Ẩm Thực Việt Tại Quận 1 Sài Gòn",
+    "link": "https://www.tiktok.com/@ryan.di.tum.lum/video/7274894315871046930",
+    "snippet": "quán bụi nằm ở ngay Quận một Hồ Chí Minh. bạn nào hay đi cà phê casino. ngoài Nhật Bản á. thì quán này nằm ngay trong con đường. sát vách ...",
+    "position": 2
+   },
+   {
+    "title": "Khám Phá Quán Bụi: Hương Vị Cơm Nhà Việt Nam",
+    "link": "https://www.tiktok.com/@nguyencongnuongw_/video/7535335656923335944",
+    "snippet": "Khám Phá Quán Bụi: Hương Vị Cơm Nhà Việt Nam. Trải nghiệm ẩm thực Việt Nam tại Quán Bụi, nơi mang đậm hương vị cơm nhà. Đừng bỏ lỡ! #review ...",
+    "position": 3
+   },
+   {
+    "title": "QUÁN BỤI & STIICKY THAI Toàn món ăn ngon! #quanbui ...",
+    "link": "https://www.tiktok.com/@diancungneenha/video/7676785732567977236",
+    "snippet": "3157 Lượt thích,29 Bình luận.Video TikTok từ Đi ăn cùng Nee nha ￼ (@diancungneenha): \"QUÁN BỤI & STIICKY THAI Toàn món ăn ngon!",
+    "position": 4
+   },
+   {
+    "title": "Quán Bụi Heritage: Món Ngon Đậm Phong Cách Việt Nam",
+    "link": "https://www.tiktok.com/@htvtintuc/video/7674865991259622677",
+    "snippet": "Quán Bụi Heritage giới thiệu set menu đặc biệt nhân dịp kỷ niệm 15 năm hoạt động, mang đến những trải nghiệm ẩm thực độc đáo đậm phong cách Việt Nam.",
+    "position": 5
+   },
+   {
+    "title": "Combo ăn sáng Việt tại Quán Bụi Sài Gòn chỉ 99k++",
+    "link": "https://www.tiktok.com/@quanbui_group/video/7303400928680447250",
+    "snippet": "Combo ăn sáng Việt tại Quán Bụi Sài Gòn chỉ 99k++. Trải nghiệm combo ăn sáng tuyệt vời tại Quán Bụi Sài Gòn với không gian thoải mái và món ăn ...",
+    "position": 6
+   },
+   {
+    "title": "Một đám cưới nhỏ xinh tại Quán Bụi Garden 3, nơi từng ...",
+    "link": "https://www.tiktok.com/@quanbui_group/video/7594683262455319828",
+    "snippet": "Một đám cưới nhỏ xinh tại Quán Bụi Garden 3, nơi từng bữa ăn, từng khoảnh khắc đều đủ đầy yêu thương. #vietnameserestaurant #amthuc #wedding # ...",
+    "position": 7
+   },
+   {
+    "title": "Quán Bụi Phố: Lẩu, Nướng, và Ốc Ngon Tại Tây Ninh",
+    "link": "https://www.tiktok.com/@mrhi1905/video/7594436856524197127",
+    "snippet": "Quán Bụi Phố: Lẩu, Nướng, và Ốc Ngon Tại Tây Ninh. Khám phá Quán Bụi Phố với lẩu cá tằm, ốc, và món nướng ngon miệng. Giá cả hợp lý và phục ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

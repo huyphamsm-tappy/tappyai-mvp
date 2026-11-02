@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com/vn MacBook Pro M4 16GB giá",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:53:43.359Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com/vn MacBook Pro M4 16GB giá",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Mua MacBook Pro - Giáo Dục",
+    "link": "https://www.apple.com/vn-edu/shop/buy-mac/macbook-pro",
+    "snippet": "Giới hạn sáu MacBook Pro 14” cho mỗi khách hàng. Từ 52.249.000đ.",
+    "position": 1
+   },
+   {
+    "title": "Mua MacBook Pro",
+    "link": "https://www.apple.com/vn/shop/buy-mac/macbook-pro",
+    "snippet": "Giới hạn sáu MacBook Pro 16” cho mỗi khách hàng. Từ 54.999.000đ hoặc 2.239.000đ/tháng ...",
+    "position": 2
+   },
+   {
+    "title": "MacBook Pro mới trang bị dòng chip M4 và ...",
+    "link": "https://www.apple.com/vn/newsroom/2024/10/new-macbook-pro-features-m4-family-of-chips-and-apple-intelligence/",
+    "snippet": "... M4 và ba cổng Thunderbolt 4, bộ nhớ từ 16GB, tất cả với mức giá chỉ từ 39.999.000đ. Các phiên bản 14 inch và 16 inch với M4 Pro và M4 Max ...",
+    "date": "30 thg 10, 2024",
+    "position": 3
+   },
+   {
+    "title": "So Sánh Các Phiên Bản MacBook Pro",
+    "link": "https://www.apple.com/vn/macbook-pro/compare/",
+    "snippet": "CPU 12 lõi với 2 lõi siêu xử lý, 4 lõi hiệu năng và 6 lõi tiết kiệm điện. GPU 12 lõi. Neural Accelerators Công nghệ dò tia tốc độ cao bằng phần cứng",
+    "position": 4
+   },
+   {
+    "title": "MacBook Pro - Thông Số Kỹ Thuật",
+    "link": "https://www.apple.com/vn/macbook-pro/specs/",
+    "snippet": "Giá. 54.999.000đ (Bộ nhớ thống nhất 16GB). 60.499.000đ (Bộ nhớ thống nhất ... 16GB, 24GB hoặc 32GB. Bộ nhớ thống nhất 16GB, 24GB hoặc 32GB. Có thể nâng cấp ...",
+    "position": 5
+   },
+   {
+    "title": "So Sánh Các Phiên Bản Mac",
+    "link": "https://www.apple.com/vn/mac/compare/?modelList=MacBook-Pro-14-M4,MacBook-Air-M4",
+    "snippet": "Chip M4 CPU 10 lõi với 4 lõi hiệu năng và 6 lõi tiết kiệm điện. GPU lên đến 10 lõi. Công nghệ dò tia tốc độ cao bằng phần cứng. Neural Engine 16 lõi. Băng thông ...",
+    "position": 6
+   },
+   {
+    "title": "Mua MacBook Air - Giáo Dục",
+    "link": "https://www.apple.com/vn-edu/shop/buy-mac/macbook-air",
+    "snippet": "MacBook Air. Nay với chip M5. Được thiết kế cho AI. Gọn nhẹ, với thời lượng pin dùng cả ngày. Mua ngay với giao hàng nhanh, miễn phí tại apple.com.",
+    "position": 7
+   },
+   {
+    "title": "Apple giới thiệu MacBook Air mới với chip M4 và có màu ...",
+    "link": "https://www.apple.com/vn/newsroom/2025/03/apple-introduces-the-new-macbook-air-with-the-m4-chip-and-a-sky-blue-color/",
+    "snippet": "Apple giới thiệu MacBook Air mới với chip M4 có hiệu năng vượt trội, màu xanh da trời tuyệt đẹp và mức giá khởi điểm thấp hơn chỉ từ 26.999.000đ.",
+    "date": "5 thg 3, 2025",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

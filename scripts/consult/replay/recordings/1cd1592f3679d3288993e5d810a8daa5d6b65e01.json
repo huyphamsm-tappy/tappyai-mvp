@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook lập trình khoảng 25 triệu MacBook Air M-series 16GB RAM (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:17:24.506Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook lập trình khoảng 25 triệu MacBook Air M-series 16GB RAM (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Macbook | Laptop Apple giá tốt, góp 0% 12T, giảm 5% HSSV",
+    "link": "https://cellphones.com.vn/laptop/mac.html",
+    "snippet": "Giá MacBook Air bao nhiêu? Giá MacBook Air phổ biến từ 34.69 triệu đến 60.99 triệu đồng tùy vào từng cấu hình cũng như dòng đời máy. Trong đó các thế hệ mớ ...",
+    "position": 1
+   },
+   {
+    "title": "Macbook Air M4 2025 | Chính hãng Apple, giảm đến 3 triệu",
+    "link": "https://cellphones.com.vn/bo-loc/macbook-air-m4",
+    "snippet": "MacBook Air M4 13 inch 2025 10CPU 8GPU 16GB 256GB Sạc 70W | Chính hãng Apple Việt Nam. 25.890.000đ. 23.890.000đ ; MacBook Air M4 15 inch 2025 10CPU 10GPU 16GB ...",
+    "position": 2
+   },
+   {
+    "title": "Top 4 MacBook cho sinh viên theo từng phân khúc 2025",
+    "link": "https://cellphones.com.vn/sforum/macbook-cho-sinh-vien-theo-tung-phan-khuc",
+    "snippet": "Ở tầm giá dưới 20 triệu, máy Macbook Neo chính là lựa chọn \"entry level\" cho phần lớn học sinh, sinh viên. Máy sử dụng chip A18 với CPU 6 nhân và GPU 5 nhân, ...",
+    "position": 3
+   },
+   {
+    "title": "MacBook cũ | Mac cũ uy tín, trả góp 0%, giảm đến 7 triệu",
+    "link": "https://cellphones.com.vn/hang-cu/mac.html",
+    "snippet": "Máy thực hiện hiệu quả các tính toán chỉnh sửa hình ảnh hay lập trình chuyên sâu, giúp hoàn thành công việc nhanh chóng mà không cần tốn nhiều thời gian.",
+    "position": 4
+   },
+   {
+    "title": "MacBook Air M5 13 inch 2026 10CPU 8GPU 16GB 512GB",
+    "link": "https://cellphones.com.vn/macbook-air-13-m5-10-cpu-8-gpu-16gb-512gb.html",
+    "snippet": "Dung lượng RAM. 16GB ; Ổ cứng. 512GB ; Công nghệ màn hình. Màn hình Liquid Retina Màn hình có đèn nền LED với công nghệ IPS Độ sáng 500 nit. Hỗ trợ một tỷ màu",
+    "rating": 5,
+    "ratingCount": 12,
+    "position": 5
+   },
+   {
+    "title": "MacBook Air M1 16GB sau 5 năm: Vẫn vượt mặt nhiều đối ...",
+    "link": "https://cellphones.com.vn/sforum/danh-gia-macbook-air-m1-16gb-ram-sau-5-nam",
+    "snippet": "Máy được trang bị 16GB RAM, mang lại khả năng đa nhiệm ấn tượng, cho phép mở cùng lúc nhiều tab Chrome, ứng dụng văn phòng và phần mềm lập trình ...",
+    "date": "5 thg 5, 2025",
+    "position": 6
+   },
+   {
+    "title": "MacBook Air M4 13 inch 2025 10CPU 10GPU 16GB 512GB",
+    "link": "https://cellphones.com.vn/apple-macbook-air-13-m4-10cpu-10gpu-16gb-512gb-2025.html",
+    "snippet": "Mua ngay MacBook Air M4 13 inch 2025 10CPU 10GPU 16GB 512GB giá rẻ - Hỗ trợ trả góp 0%, đổi mới 30 ngày, bảo hành chính hãng, giao hàng tận nơi miễn phí.",
+    "rating": 5,
+    "ratingCount": 3,
+    "position": 7
+   },
+   {
+    "title": "Đánh giá Macbook Air M4: Laptop toàn diện cho sinh viên",
+    "link": "https://cellphones.com.vn/sforum/danh-gia-macbook-air-m4-13-inch",
+    "snippet": "Với mức RAM bản base đã được nâng cấp lên 16GB và khả năng tối ưu của macOS, MacBook Air M4 là lựa chọn đủ mạnh để sinh viên sử dụng ổn định trong suốt 4 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

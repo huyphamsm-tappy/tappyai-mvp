@@ -1,0 +1,42 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"MelyFood Hàm Nghi\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:49:18.470Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"MelyFood Hàm Nghi\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hệ thống MelyFood - Cơm Niêu Mely đậm vị Việt",
+    "link": "https://www.tiktok.com/@com.nieu.melyfood/video/7684487770999491858",
+    "snippet": "... vị Việt - Không gian ấm cúng cho. @Cơm Niêu Melyfood · âm thanh gốc - Cơm Niêu Melyfood · MelyFood Hàm Nghi - Cơm Niêu MeLy - Ngon MeLy · author.",
+    "position": 1
+   },
+   {
+    "title": "🤵🏻 “Xin chào, rất hân hạnh được phục vụ Quý khách thân ...",
+    "link": "https://www.tiktok.com/@com.nieu.melyfood/video/7614518697369160968",
+    "snippet": "... vụ Quý khách thân thương. @Cơm Niêu Melyfood · My Process Doesn't Need Approval · MelyFood Hàm Nghi - Cơm Niêu MeLy - Ngon MeLy · author · 9 · 0.",
+    "position": 2
+   },
+   {
+    "title": "Sài Gòn thiếu gì quán ăn, nhưng tìm được nồi cơm niêu ...",
+    "link": "https://www.tiktok.com/@com.nieu.melyfood/video/7683381475911273736",
+    "snippet": "... tìm được nồi cơm niêu chuẩn vị nhà. @Cơm Niêu Melyfood · âm thanh gốc - Cơm Niêu Melyfood · MelyFood Hàm Nghi - Cơm Niêu MeLy - Ngon MeLy.",
+    "position": 3
+   }
+  ],
+  "credits": 1
+ }
+}

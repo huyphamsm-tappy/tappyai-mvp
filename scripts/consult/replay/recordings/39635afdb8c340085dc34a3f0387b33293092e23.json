@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook Air khoảng 25 triệu lập trình 16GB RAM Việt Nam (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:32:52.480Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Air khoảng 25 triệu lập trình 16GB RAM Việt Nam (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Macbook | Laptop Apple giá tốt, góp 0% 12T, giảm 5% HSSV",
+    "link": "https://cellphones.com.vn/laptop/mac.html",
+    "snippet": "Giá MacBook Air bao nhiêu? Giá MacBook Air phổ biến từ 34.69 triệu đến 60.99 triệu đồng tùy vào từng cấu hình cũng như dòng đời máy. Trong đó các thế hệ mớ chạy ...",
+    "position": 1
+   },
+   {
+    "title": "Top 3 Laptop Ultrabook đáng mua nhất phân khúc 25 triệu",
+    "link": "https://cellphones.com.vn/sforum/top-3-laptop-ultrabook-25-trieu",
+    "snippet": "Tầm 25 triệu nên mua Ultrabook nào? Cùng mình xem 3 mẫu laptop mỏng nhẹ nổi bật, từ MacBook Neo, ASUS ExpertBook P1 đến VivoBook 16.",
+    "date": "22 thg 9, 2026",
+    "position": 2
+   },
+   {
+    "title": "Macbook Air M4 2025 | Chính hãng Apple, giảm đến 3 triệu",
+    "link": "https://cellphones.com.vn/bo-loc/macbook-air-m4",
+    "snippet": "MacBook Air M4 13 inch 2025 10CPU 8GPU 16GB 256GB | Chính hãng Apple Việt Nam. 24.990.000đ. 22.990.000đ ; MacBook Air M4 13 inch 2025 10CPU 10GPU 16GB 512GB | ...",
+    "position": 3
+   },
+   {
+    "title": "MacBook Air hay MacBook Pro: Đâu là lựa chọn hợp lý cho ...",
+    "link": "https://cellphones.com.vn/sforum/macbook-air-vs-macbook-pro-cho-sinh-vien",
+    "snippet": "MacBook Air có hiệu năng rất tốt cho nhu cầu học tập phổ thông. Máy xử lý mượt các tác vụ văn phòng, học online, làm slide, chỉnh sửa ảnh cơ bản, thậm chí lập ...",
+    "position": 4
+   },
+   {
+    "title": "MacBook Air M5 13 inch 2026 10CPU 10GPU 16GB ...",
+    "link": "https://cellphones.com.vn/macbook-air-13-inch-m5-10-cpu-10-gpu-16gb-512gb-2026-sac-30w.html",
+    "snippet": "Apple Intelligence và Siri thông minh · RAM lớn 16GB cùng SSD 512GB · Thiết kế sang trọng cùng 4 lựa chọn màu · Chip M5 mạnh mẽ, xử lý mượt nhiều tác vụ · Pin 53,8 ...",
+    "position": 5
+   },
+   {
+    "title": "Laptop dưới 30 triệu | Thiết kế mỏng nhẹ, hiệu năng khủng",
+    "link": "https://cellphones.com.vn/bo-loc/laptop-tu-25-30-trieu",
+    "snippet": "Nếu bạn đang tìm kiếm một mẫu laptop cao cấp, vượt trội về mọi thông số thì thế hệ laptop 25 tới 30 triệu sẽ là lựa chọn hoàn hảo không nên bỏ qua nhé! Nội dung ...",
+    "position": 6
+   },
+   {
+    "title": "MacBook Air M1 16GB sau 5 năm: Vẫn vượt mặt nhiều đối ...",
+    "link": "https://cellphones.com.vn/sforum/danh-gia-macbook-air-m1-16gb-ram-sau-5-nam",
+    "snippet": "Đánh giá MacBook Air M1 được trang bị vi xử lý Apple M1 với 8 nhân CPU và 7 nhân GPU tích hợp, mang lại hiệu suất mạnh mẽ và khả năng xử lý mượt ...",
+    "date": "5 thg 5, 2025",
+    "position": 7
+   },
+   {
+    "title": "Top 4 MacBook cho sinh viên theo từng phân khúc 2025",
+    "link": "https://cellphones.com.vn/sforum/macbook-cho-sinh-vien-theo-tung-phan-khuc",
+    "snippet": "1. Từ 20 triệu: MacBook Neo - Tân binh đáng chú ý nhất của Apple trong năm 2026 · 2. Từ 30 triệu: MacBook Air M5 13 inch - Kích thước nhỏ, hiệu năng mạnh · 3. Từ ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

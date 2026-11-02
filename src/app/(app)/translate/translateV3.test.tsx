@@ -87,7 +87,8 @@ describe('what the page claims is what the code does', () => {
     render(<TranslatePage />)
     expect(API).toContain('const DAILY_LIMIT = 30')
     expect(document.querySelector('[data-tr-tip]')!.textContent).toMatch(/30/)
-    expect(API).not.toContain('getRequestUser')
+    // Signed-out callers still need no account: the only account check is the iOS consent refusal (403), never a 401.
+    expect(API).not.toMatch(/status:\s*401/)
   })
 
   it('says the source language is detected, and offers no source selector', () => {

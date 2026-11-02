@@ -194,7 +194,8 @@ describe('end to end — the fallback chain on the owner fixtures', () => {
     const r = await resolveBooking(stay, { env: { ...BOOKING_ENV, ...AGODA_ENV }, http, now })
     expect(r.level).toBe('REALTIME_API')
     expect(r.realtime.map(x => x.provider).sort()).toEqual(['agoda', 'booking', 'booking']) // Booking: the available property + the sold-out one
-    expect(r.statuses.filter(s => s.provider !== 'traveloka').every(s => s.state === 'READY' && s.reason === null)).toBe(true)
+    // A1 (owner-approved 30/10): the Agoda Lite adapter is listed too and, its own flag unset, stays OFF; the two switched-on adapters are READY.
+    expect(r.statuses.map(s => `${s.provider}:${s.state}:${s.reason}`).sort()).toEqual(['agoda:OFF:off', 'agoda:READY:null', 'booking:READY:null', 'traveloka:OFF:off'])
     expect(r.statuses.find(s => s.provider === 'traveloka')?.state).toBe('OFF')
     expect(r.links.length).toBeGreaterThan(0)
   })
@@ -203,7 +204,8 @@ describe('end to end — the fallback chain on the owner fixtures', () => {
     const r = await resolveBooking(stay, { env: {}, now })
     expect(r.level).toBe('DYNAMIC_DEEPLINK')
     expect(r.realtime).toEqual([])
-    expect(r.statuses.map(s => `${s.provider}:${s.state}`).sort()).toEqual(['agoda:OFF', 'booking:OFF', 'traveloka:OFF'])
+    // A2 (owner-approved 30/10): two Agoda adapters (Demand, Lite), both OFF.
+    expect(r.statuses.map(s => `${s.provider}:${s.state}`).sort()).toEqual(['agoda:OFF', 'agoda:OFF', 'booking:OFF', 'traveloka:OFF'])
     const b = links(r).booking
     expect(b.level).toBe('DYNAMIC_DEEPLINK')
     const bq = new URL(b.directUrl).searchParams
@@ -220,7 +222,8 @@ describe('end to end — the fallback chain on the owner fixtures', () => {
     expect(links(withHotel).agoda.depth).toBe(3)
     const verified = await resolveBooking({ ...stay, context: { ...stay.context, providerRefs: undefined } }, { env: {}, now })
     expect(links(verified).agoda.directUrl).toContain('city=15932') // Đà Lạt is in the verified table
-    const unknownCity = await resolveBooking({ ...stay, context: { ...stay.context, destination: 'Vũng Tàu', providerRefs: undefined } }, { env: {}, now })
+    // A3 (owner-approved 30/10): Vũng Tàu now has a verified Agoda id (17190, its own city page); Quy Nhơn has none, so it is the unknown city.
+    const unknownCity = await resolveBooking({ ...stay, context: { ...stay.context, destination: 'Quy Nhơn', providerRefs: undefined } }, { env: {}, now })
     expect(links(unknownCity).agoda).toMatchObject({ directUrl: 'https://www.agoda.com/vi-vn/', level: 'PROVIDER_PAGE' })
   })
 

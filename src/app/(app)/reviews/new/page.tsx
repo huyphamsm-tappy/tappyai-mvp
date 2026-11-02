@@ -21,6 +21,7 @@ import {
   type MusicSelection,
 } from '@/modules/music'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { isAnonymousUser } from '@/lib/auth/socialWriteAccess'
 import { detectSource, placeholderFor, SUPPORTED_LINK_SOURCES, type LinkSource } from '@/lib/links/platforms'
 import { mergeHashtags, parseHashtags } from '@/lib/reviews/hashtags'
 
@@ -28,6 +29,9 @@ import { mergeHashtags, parseHashtags } from '@/lib/reviews/hashtags'
 // The title and cover still come from the allowed source (POST /api/links/resolve = oEmbed). The old
 // suggestion code is kept but unreachable unless this flag is set at build time (default OFF).
 const LINK_AI_SUGGEST_ENABLED = process.env.NEXT_PUBLIC_POST_LINK_AI_ENABLED === 'true'
+// 29/10 (owner): the video upload no longer asks a model for a caption, hashtags or an area — the poster writes them. Same shape
+// as the link switch above: the code stays, unreachable unless this is set at build time (default OFF). The server is off too.
+const UPLOAD_AI_SUGGEST_ENABLED = process.env.NEXT_PUBLIC_POST_UPLOAD_AI_ENABLED === 'true'
 
 // Display label per provider. Only entries in SUPPORTED_LINK_SOURCES are rendered.
 const LINK_SOURCE_LABEL: Record<LinkSource, string> = { youtube: '▶ YouTube' }
@@ -76,6 +80,9 @@ const MODES = [
 ] as const
 /** The body's existing ceiling - the same 1000 the textarea and its counter always used. */
 const BODY_MAX = 1000
+/** A visitor's unposted review, kept across the trip to /login (owner C1 = b). */
+const REVIEW_DRAFT_KEY = 'tappy_review_draft_v1'
+const REVIEW_DRAFT_TTL_MS = 24 * 60 * 60 * 1000
 
 /* ─── helpers ─── */
 
@@ -289,6 +296,9 @@ export default function NewReviewPage() {
   // the last-resolved memo stops the SAME url being resolved twice when the user pastes, edits
   // and reverts, or when a re-render replays the value.
   const urlDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  // Monotonic token: every change to the URL field bumps it, so a resolve or AI response for an older URL is
+  // dropped instead of overwriting the preview and suggestions of the current one.
+  const urlReqSeqRef = useRef(0)
   const lastResolvedUrlRef = useRef<string>('')
   const supabase = createClient()
 
@@ -384,11 +394,50 @@ export default function NewReviewPage() {
     if (areaFromAi) { setPlaceArea(''); setAreaFromAi(false) }
   }
 
+  /* ─── Session check for uploads ───
+     Every upload mints a server token that 401s for an anonymous or expired session. Without a
+     re-check, that 401 surfaces as "Lỗi tải video" — a dead end that reads as a broken uploader.
+     Re-validating here routes the user to login instead. The form itself is unchanged. */
+  const loginHref = () => `/login?returnTo=${encodeURIComponent('/reviews/new' + window.location.search)}`
+  const ensureSession = async () => {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (user && !isAnonymousUser(user)) return true
+    saveDraft()
+    router.replace(loginHref())
+    return false
+  }
+
+  /* ─── Draft (owner C1 = b, 29 Oct 2026) ───
+     A visitor may write before signing in; login is asked at the first upload or at Post. What was typed is
+     kept in this browser across that trip to /login and restored here, then cleared once the review is posted.
+     Text fields only: media needs a signed-in upload, so none exists yet. 24 h, then dropped. */
+  const saveDraft = () => {
+    try {
+      localStorage.setItem(REVIEW_DRAFT_KEY, JSON.stringify({ at: Date.now(), mediaMode, body, placeName, placeArea, rating, source_url }))
+    } catch { /* storage blocked: the trip to login simply starts over */ }
+  }
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(REVIEW_DRAFT_KEY)
+      if (!raw) return
+      const d = JSON.parse(raw) as Partial<{ at: number; mediaMode: typeof mediaMode; body: string; placeName: string; placeArea: string; rating: number; source_url: string }>
+      if (typeof d.at !== 'number' || Date.now() - d.at > REVIEW_DRAFT_TTL_MS) { localStorage.removeItem(REVIEW_DRAFT_KEY); return }
+      if (d.mediaMode === 'photo' || d.mediaMode === 'video' || d.mediaMode === 'url') setMediaMode(d.mediaMode)
+      if (typeof d.body === 'string') setBody(d.body)
+      if (typeof d.placeName === 'string') setPlaceName(d.placeName)
+      if (typeof d.placeArea === 'string') setPlaceArea(d.placeArea)
+      if (typeof d.rating === 'number') setRating(d.rating)
+      if (typeof d.source_url === 'string' && d.source_url) handleUrlChange(d.source_url)
+    } catch { /* a malformed draft is ignored */ }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   /* ─── Photo upload ─── */
   const handlePhotoSelect = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || [])
     if (!files.length) return
     if (photos.length + files.length > MAX_PHOTOS) { setError(t('reviewNew.maxPhotos', { n: String(MAX_PHOTOS) })); return }
+    if (!(await ensureSession())) return
     setPhotoUploading(true); setError('')
     try {
       const uploaded: string[] = []
@@ -443,6 +492,8 @@ export default function NewReviewPage() {
       setError(t('reviewNew.videoTooLong')); return
     }
 
+    // Pre-upload: an expired or anonymous session goes to login rather than 401ing mid-upload.
+    if (!(await ensureSession())) return
     resetVideoState()
     setVideoDuration(duration) // keep the measured length for the original-sound track
 
@@ -501,28 +552,30 @@ export default function NewReviewPage() {
       setMedia_url(result.url)
       vok('video-upload', tVideo, { url: result.url })
 
-      /* 3. AI processing (non-blocking — failure is OK) */
-      setUploadStep('ai')
-      const tAi = vstart('ai-process')
-      try {
-        const aiRes = await apiFetch('/api/explore/process', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            thumbnail_url: thumbUrl,
-            caption: body.trim() || undefined,
-          }),
-        })
-        if (aiRes.ok) {
-          const ai = await aiRes.json()
-          if (Array.isArray(ai.hashtags) && ai.hashtags.length > 0) setAiHashtags(mergeHashtags(ai.hashtags.map(String)))
-          if (!bodyNow.current.trim() && typeof ai.caption === 'string' && ai.caption) setBody(ai.caption)
-          suggestArea(ai)
-          vok('ai-process', tAi, { hashtags: Array.isArray(ai.hashtags) ? ai.hashtags.length : 0, area: typeof ai.location === 'string' && !!ai.location })
-        } else {
-          vfail('ai-process', tAi, new Error(`HTTP ${aiRes.status}`), { note: 'non-blocking' })
-        }
-      } catch (e) { vfail('ai-process', tAi, e, { note: 'non-blocking' }) }
+      /* 3. AI processing (non-blocking — failure is OK). Off by default since 29/10 (owner). */
+      if (UPLOAD_AI_SUGGEST_ENABLED) {
+        setUploadStep('ai')
+        const tAi = vstart('ai-process')
+        try {
+          const aiRes = await apiFetch('/api/explore/process', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              thumbnail_url: thumbUrl,
+              caption: body.trim() || undefined,
+            }),
+          })
+          if (aiRes.ok) {
+            const ai = await aiRes.json()
+            if (Array.isArray(ai.hashtags) && ai.hashtags.length > 0) setAiHashtags(mergeHashtags(ai.hashtags.map(String)))
+            if (!bodyNow.current.trim() && typeof ai.caption === 'string' && ai.caption) setBody(ai.caption)
+            suggestArea(ai)
+            vok('ai-process', tAi, { hashtags: Array.isArray(ai.hashtags) ? ai.hashtags.length : 0, area: typeof ai.location === 'string' && !!ai.location })
+          } else {
+            vfail('ai-process', tAi, new Error(`HTTP ${aiRes.status}`), { note: 'non-blocking' })
+          }
+        } catch (e) { vfail('ai-process', tAi, e, { note: 'non-blocking' }) }
+      }
 
       setUploadStep('done')
     } catch (e) {
@@ -554,7 +607,9 @@ export default function NewReviewPage() {
         setError(t('reviewNew.videoUploadUnavailable'))
       } else {
         vfail('video-upload', tVideo, e)
-        setError(t('reviewNew.videoUploadError'))
+        // The upload token 401s if the session died mid-upload. Re-checking auth tells that apart
+        // from a genuine upload failure: an expired session routes to login, not "Lỗi tải video".
+        if (await ensureSession()) setError(t('reviewNew.videoUploadError'))
       }
       resetVideoState()
     } finally {
@@ -565,7 +620,7 @@ export default function NewReviewPage() {
   const cancelUpload = () => uploadControllerRef.current?.abort()
 
   /* ─── URL source ─── */
-  const triggerUrlAI = async (thumbnail_url: string, title: string) => {
+  const triggerUrlAI = async (thumbnail_url: string, title: string, seq: number) => {
     if (!thumbnail_url && !title) return
     try {
       const aiRes = await apiFetch('/api/explore/process', {
@@ -579,6 +634,7 @@ export default function NewReviewPage() {
       })
       if (aiRes.ok) {
         const ai = await aiRes.json()
+        if (urlReqSeqRef.current !== seq) return // stale: the URL changed while this was in flight
         if (Array.isArray(ai.hashtags) && ai.hashtags.length > 0) setAiHashtags(mergeHashtags(ai.hashtags.map(String)))
         if (!bodyNow.current.trim() && typeof ai.caption === 'string' && ai.caption) setBody(ai.caption)
         suggestArea(ai)
@@ -595,15 +651,21 @@ export default function NewReviewPage() {
    * pair is deferred until the user stops typing. See the refs above for what this cost.
    */
   const handleUrlChange = (val: string) => {
+    const seq = ++urlReqSeqRef.current
     setSource_url(val); setUrlMeta(null); setAiHashtags([]); setUrlUnsupported(false)
     if (areaFromAi) { setPlaceArea(''); setAreaFromAi(false) }
     if (urlDebounceRef.current) clearTimeout(urlDebounceRef.current)
     const trimmed = val.trim()
     if (!trimmed) { lastResolvedUrlRef.current = ''; return }
-    urlDebounceRef.current = setTimeout(() => { void resolveUrl(trimmed) }, URL_RESOLVE_DEBOUNCE_MS)
+    // The source is a pure function of the text: set it now, not after the resolve debounce.
+    // Post is enabled as soon as the link is recognised, so a submit inside that window must save
+    // the right source_type (and the matching placeholder), not the previous one.
+    const detectedNow = detectSource(trimmed)
+    if (detectedNow) setSource_type(detectedNow)
+    urlDebounceRef.current = setTimeout(() => { void resolveUrl(trimmed, seq) }, URL_RESOLVE_DEBOUNCE_MS)
   }
 
-  const resolveUrl = async (trimmed: string) => {
+  const resolveUrl = async (trimmed: string, seq: number) => {
     const detected = detectSource(trimmed)
     // Unsupported provider (TikTok/Facebook/Instagram/other) → show a hint and
     // do not resolve. canPost stays false, so the post can't be created.
@@ -624,16 +686,18 @@ export default function NewReviewPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url: trimmed }),
       })
+      if (urlReqSeqRef.current !== seq) return // stale: the user has moved on to another URL
       if (!res.ok) { setUrlMeta({ thumbnail_url: placeholderFor(detected), title: '' }); return }
       const { data } = await res.json()
+      if (urlReqSeqRef.current !== seq) return
       const thumb = data?.thumbnail || placeholderFor(detected)
       const title = data?.title || ''
       setUrlMeta({ thumbnail_url: thumb, title })
-      if (LINK_AI_SUGGEST_ENABLED) triggerUrlAI(thumb, title)
+      if (LINK_AI_SUGGEST_ENABLED) triggerUrlAI(thumb, title, seq)
     } catch {
-      setUrlMeta({ thumbnail_url: placeholderFor(detected), title: '' })
+      if (urlReqSeqRef.current === seq) setUrlMeta({ thumbnail_url: placeholderFor(detected), title: '' })
     } finally {
-      setFetchingMeta(false)
+      if (urlReqSeqRef.current === seq) setFetchingMeta(false) // a newer URL owns the spinner now
     }
   }
 
@@ -668,7 +732,8 @@ export default function NewReviewPage() {
     setError(''); setSubmitting(true)
     try {
       const { data: { user } } = await supabase.auth.getUser()
-      if (!user) { router.push('/login?returnTo=/reviews/new'); return }
+      // A visitor (no session, or the anonymous chat session) signs in here; what they wrote waits in the draft.
+      if (!user || isAnonymousUser(user)) { saveDraft(); router.push(loginHref()); return }
 
       const placeId = mediaMode === 'photo' && placeName.trim()
         ? 'community_' + placeName.trim().toLowerCase().replace(/\s+/g, '_')
@@ -727,6 +792,7 @@ export default function NewReviewPage() {
       const data = await res.json()
       if (!res.ok) { vfail('submit-review', tSubmit, new Error(data.error || `HTTP ${res.status}`)); throw new Error(data.message || data.error || t('reviewNew.postError')) }
       vok('submit-review', tSubmit)
+      try { localStorage.removeItem(REVIEW_DRAFT_KEY) } catch { /* nothing kept */ }
 
       // The server decides whether this was published. Saving the row is not the
       // same as publishing it, and reporting success for content the gate has

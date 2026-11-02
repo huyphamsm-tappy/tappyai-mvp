@@ -1,0 +1,209 @@
+// ── Phase 8 — ANSWER BEFORE LOOKUP (UAT-10) ───────────────────────────────────────────────────────────────────────────────
+//
+// Measured (model-only probe, 15 calls, model-probe/REPORT.md): with every prompt wording tried, Luna either asks first (c497dd8: 5/5) or
+// goes straight to a lookup with NO text in the same response (de8710d: 5/5, attempt 2: 5/5). The instruction "write the part you can
+// already answer, then look up" is not followed on the tool-calling step, and the runtime used to throw away any text that did come with
+// a tool call (the final answer was the LAST step's text only). Two bounded, code-owned pieces fix the contract without a second agent:
+//
+//   1. PRESERVE — text a step writes next to a tool call (or next to ask_user) is kept and shown BEFORE the rest of the answer.
+//   2. CHECK    — one extra Luna call, only when the first step of a turn is a lookup-only step with no text, and only for the research
+//                 tools (web_search / search_products / read_page — advice-type lookups; place, travel, news, price-of-the-day tools are
+//                 pure data and never asked): "you chose to look up X before writing anything; write the part of the request that
+//                 stable knowledge and the user's stated priorities already answer, or say NOTHING_YET". Luna decides; code only
+//                 carries the text. No keyword rule, no classifier, no second agent.
+// Both go through the same settle path (guards, No-Fabrication Gate) as any answer text.
+
+import type { AgentToolCall } from '../loop'
+
+/** Lookups whose result feeds advice. Data tools (places, hotels, flights, weather, gold, news, showtimes…) never trigger the check. */
+export const ANSWER_FIRST_TOOLS: ReadonlySet<string> = new Set(['web_search', 'search_products', 'read_page'])
+
+export const NOTHING_YET = 'NOTHING_YET'
+
+/** True when EVERY (resolved) lookup of the step is an advice-type research tool. */
+export function checkApplies(names: readonly string[]): boolean {
+  return names.length > 0 && names.every(n => ANSWER_FIRST_TOOLS.has(n))
+}
+
+/** Luna's reply to the check → the text to keep, or null when it said it has nothing to write yet (or wrote nothing). */
+export function parseCheck(text: string): string | null {
+  const t = (text ?? '').trim()
+  if (!t) return null
+  if (/^\W*NOTHING[_ ]YET\W*$/i.test(t) || /^\W*NOTHING[_ ]YET\b/i.test(t)) return null
+  return t.replace(/\bNOTHING[_ ]YET\b/gi, '').trim() || null
+}
+
+const brief = (calls: ReadonlyArray<Pick<AgentToolCall, 'toolName' | 'args'>>): string => calls.map(c => {
+  const a = c.args ?? {}
+  const q = Array.isArray(a.queries) ? (a.queries as unknown[]).filter(x => typeof x === 'string').join(' | ') : typeof a.query === 'string' ? a.query : ''
+  return `${c.toolName}${q ? `("${q.slice(0, 160)}")` : ''}`
+}).join('; ')
+
+/** Appended to the system text of the check call (the call carries no tools). */
+export function checkNote(calls: ReadonlyArray<Pick<AgentToolCall, 'toolName' | 'args'>>, lang: string): string {
+  const what = brief(calls)
+  return lang === 'en'
+    ? `\n\nPRE-LOOKUP CHECK. You just chose to look something up (${what}) without writing anything to the user. If the request has a part that stable knowledge and the priorities the user already stated answer RIGHT NOW (e.g. explaining the selection criteria and the trade-offs between them, how to weigh options, what to check), write exactly that part now, in Tappy's voice. Do NOT name specific products or places, prices, specs or dates: those wait for the lookup. Do not say you will look things up. Do not repeat what you said in earlier turns. Do NOT ask the user anything in this text: a refinement question, if any, goes at the very end of the answer after the lookup. If nothing can be answered yet (a purely current-data question), reply with exactly one word: ${NOTHING_YET}.`
+    : `\n\nBƯỚC KIỂM TRA TRƯỚC KHI TRA CỨU. Bạn vừa chọn tra cứu (${what}) mà chưa viết gì cho người dùng. Nếu yêu cầu có một phần trả lời được NGAY bằng kiến thức ổn định và những ưu tiên người dùng đã nêu — ví dụ giải thích tiêu chí chọn và đánh đổi giữa chúng, cách cân nhắc, những điều cần kiểm tra — thì viết đúng phần đó bây giờ, đúng giọng Tappy. TUYỆT ĐỐI không nêu tên sản phẩm / địa điểm cụ thể, giá, thông số hay ngày tháng: những thứ đó chờ kết quả tra cứu. Không viết "mình sẽ tra cứu". Không lặp lại điều bạn đã nói ở các lượt trước. KHÔNG đặt câu hỏi nào trong phần này: câu hỏi tinh chỉnh (nếu cần) chỉ nằm ở cuối câu trả lời sau tra cứu. Nếu chưa có phần nào trả lời được (câu hỏi thuần dữ liệu hiện hành), trả lời đúng một từ: ${NOTHING_YET}.`
+}
+
+/** Appended on every later step once a preface exists: it is kept and shown first, so the answer after the lookup must not restate it. */
+export function prefaceNote(lang: string, shown: readonly string[] = [], noRestate = false): string {
+  const quoted = shown.map(s => s.trim()).filter(Boolean).join('\n\n').slice(0, 1800)
+  // CONSULTATIVE_IN_AGENT (`dedupeParaphrase`): passport, live 2026-10-11 — the answer after the lookup repeated the documents, where to submit and the
+  // "not verified" caveat the reader had just seen (two model calls joined, no guard involved). The instruction is explicit about those three kinds.
+  const strict = !noRestate ? '' : lang === 'en'
+    ? '\n\nDo not repeat the documents, the place to submit, the steps or the "not verified" caveat already shown above, not even in other words. Write only what the lookup ADDED or CHANGED (a confirmed source, a corrected rule, a figure) and, if something above could not be confirmed, say that ONCE in a single sentence. Do not refer to "the earlier part" by quoting figures that are not in the text shown above.'
+    : '\n\nĐừng nhắc lại hồ sơ, nơi nộp, các bước hay câu "chưa xác minh" đã hiển thị ở trên, kể cả bằng lời khác. Chỉ viết điều tra cứu BỔ SUNG hoặc SỬA (nguồn đã xác nhận, quy định chính xác hơn, con số) và, nếu có điều ở trên chưa xác nhận được, nói đúng MỘT lần trong một câu. Đừng nhắc "phần trước" bằng cách trích con số không có trong văn bản đã hiển thị ở trên.'
+  const tail = quoted
+    ? (lang === 'en' ? `\n\nAlready shown to the user, verbatim:\n"""\n${quoted}\n"""` : `\n\nĐã hiển thị cho người dùng, nguyên văn:\n"""\n${quoted}\n"""`)
+    : ''
+  return prefaceCore(lang) + tail + strict
+}
+
+function prefaceCore(lang: string): string {
+  return lang === 'en'
+    ? '\n\nThe user has ALREADY read the advice you wrote before the lookup (criteria, trade-offs). Do not explain or list those criteria again, not even in other words: start from what the lookup found — names, prices, specs and sources that are verified, compared by the names of the criteria — state what could not be verified, then conclude. Name only products that appear in the results. At most ONE question, only at the very end, only if it is needed.'
+    : '\n\nNgười dùng ĐÃ đọc phần tư vấn bạn viết trước khi tra cứu (tiêu chí, đánh đổi). Đừng giải thích hay liệt kê lại các tiêu chí đó, kể cả bằng lời khác: bắt đầu từ điều tra cứu tìm được — tên, giá, thông số, nguồn đã xác minh, so sánh theo tên các tiêu chí — nói rõ phần chưa xác minh được, rồi kết luận. Chỉ nêu tên sản phẩm có trong kết quả. Tối đa MỘT câu hỏi, chỉ ở cuối cùng, chỉ khi thật cần.'
+}
+
+const norm = (s: string) => s.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim()
+const STRUCTURAL = /^\s*(?:\[|\||#|```)/
+const splitSentences = (line: string): string[] => line.split(/(?<=[.!?…])\s+/).filter(s => s.length > 0)
+const endsWithQuestion = (s: string) => /[?？]["')\]*_]*\s*$/.test(s.replace(/\*+/g, '').trim())
+
+/**
+ * A preface never carries a question: the single closing question belongs to the end of the answer. A question sentence is dropped; a
+ * sentence of the form "statement; question?" keeps its statement. (Nothing else is touched.)
+ */
+// A sentence that continues the one before it ("Còn 'hiện ứng dụng được bao nhiêu'…"): without its predecessor it dangles.
+const CONTINUATION = /^[\s*_"'“‘(]*(?:còn|và|nhưng|thì|vậy thì|hay là|tức là|nghĩa là|and|but|so|then)(?![\p{L}\p{N}])/iu
+
+/**
+ * `keepWhole` (CONSULTATIVE_IN_AGENT): a dropped question takes the continuation sentence right after it (it started "Còn …", "Và …") along,
+ * so no opener is left without its first half (live 2026-10-11, Tesla: "Còn 'hiện ứng dụng được bao nhiêu'…").
+ */
+export function withoutQuestions(text: string, o: { keepWhole?: boolean } = {}): string {
+  return text.split('\n').map(line => {
+    if (STRUCTURAL.test(line)) return line
+    const kept: string[] = []
+    let droppedQuestion = false
+    for (const s of splitSentences(line)) {
+      if (o.keepWhole && droppedQuestion && CONTINUATION.test(s)) { continue }
+      droppedQuestion = false
+      if (!endsWithQuestion(s)) { kept.push(s); continue }
+      droppedQuestion = true
+      const semi = s.lastIndexOf(';')
+      if (semi > 0) { const head = s.slice(0, semi).trim(); if (head.length >= 12) { kept.push(`${head}.`); droppedQuestion = false } }
+    }
+    return kept.join(' ')
+  }).join('\n').replace(/\n{3,}/g, '\n\n').trim()
+}
+
+const contentTokens = (s: string) => new Set(norm(s).split(' ').filter(t => t.length > 2))
+const jaccard = (a: Set<string>, b: Set<string>) => { let i = 0; for (const t of a) if (b.has(t)) i++; return i / (a.size + b.size - i || 1) }
+
+/** Sentences of the final text that merely echo (near-verbatim: token overlap ≥ 0.75, ≥ 6 words) a sentence the preface already said. */
+function withoutEchoes(final: string, prefaces: readonly string[], contained = false): string {
+  const seenAll = prefaces.flatMap(p => p.split('\n').flatMap(l => (STRUCTURAL.test(l) ? [] : splitSentences(l)))).map(contentTokens)
+  const seen = seenAll.filter(t => t.size >= 6)
+  // CONSULTATIVE_IN_AGENT (`contained`): a SHORT final sentence whose content words (≥ 60 %) all sit inside one preface sentence only restates it
+  // ("Đúng tên là Snow Crash của Neal Stephenson." after "À, bạn đang nói tới Snow Crash của Neal Stephenson — tiểu thuyết …"): it goes, the preface
+  // sentence (which says more) stays. Live 2026-10-11: two model calls (answer-first + final) both opened with the same answer.
+  const containedIn = (t: Set<string>) => contained && t.size >= 4 && seenAll.some(p => p.size >= t.size && (() => { let h = 0; for (const w of t) if (p.has(w)) h++; return h / t.size >= 0.6 })())
+  if (!seen.length && !(contained && seenAll.length)) return final
+  return final.split('\n').map(line => {
+    if (STRUCTURAL.test(line)) return line
+    const lead = line.match(/^\s*(?:[-*•+]|\d{1,2}[.)])?\s*/)?.[0] ?? ''
+    const kept = splitSentences(line.slice(lead.length)).filter(s => { const t = contentTokens(s); return !containedIn(t) && (t.size < 6 || !seen.some(p => jaccard(t, p) >= 0.75)) })
+    return kept.length ? lead + kept.join(' ') : ''
+  }).join('\n').replace(/\n{3,}/g, '\n\n').trim()
+}
+
+/**
+ * The text of the turn: the prefaces (text written before/next to a lookup or an ask) WITHOUT questions, then the final text with
+ * near-verbatim echoes of the prefaces removed. A preface the final text already contains (the model repeated itself) is not shown
+ * twice. A PARAPHRASE of the same advice is not detected here (no deterministic test exists); that is the instruction's job.
+ */
+/**
+ * CONSULTATIVE_IN_AGENT (`dedupeParaphrase`): a preface PARAGRAPH whose content the research answer restates in other words is dropped, so the
+ * reader gets the researched version once. Measured live (passport, 2026-10-11): the pre-lookup advice said "nộp tại cấp tỉnh … 8 ngày làm
+ * việc" and the answer after the lookup said the same in new words (and then called the 8 days unverified). Deliberately narrow: a preface
+ * paragraph of ≥ 12 content words, ≥ 60 % of whose words occur in ONE paragraph of the final text that is ≥ 12 words and either cites a source
+ * ([S#]) or says it could not verify. Preface text is never dropped because of an unsourced, unrelated or short final paragraph.
+ */
+/** The quantities a paragraph states ("8 ngày", "28.250 đồng"): a number and the word after it, folded. */
+const figuresOf = (s: string): Set<string> => new Set([...norm(s).matchAll(/(?<![\p{L}\d])(\d+(?: \d+)*) (\p{L}{2,})/gu)].map(m => `${m[1]} ${m[2]}`))
+
+/** "I found no evidence / source for that" in its common Vietnamese and English shapes. */
+const NOT_FOUND = /chưa (?:thấy|tìm thấy|có (?:bằng chứng|nguồn|dữ liệu)|xác minh|kiểm chứng|xác nhận)|không (?:thấy|tìm thấy) (?:bằng chứng|nguồn)|(?:no|not) (?:evidence|reliable source)|could(?:n't| not) find/iu
+
+/**
+ * The researched answer DENIES something about named subjects ("chưa tìm thấy nguồn … xác nhận **Bill Gates** cũng giới thiệu …"). A preface paragraph written
+ * before the lookup that mentions ≥ 2 of those same names asserted what is now denied: showing both is a contradiction (Round 21 trace, Snow Crash turn 2:
+ * preface "Bill Gates cũng từng giới thiệu Snow Crash", answer "chưa tìm thấy nguồn … Bill Gates cũng giới thiệu chính cuốn này"). A preface that does not
+ * mention the denied names (a plain description of the book) stays.
+ */
+const DENIES = /(?:chưa|không) (?:tìm )?thấy nguồn|chưa có nguồn|(?:chưa|không) có căn cứ|chưa (?:tìm thấy|có) bằng chứng|(?:no|not) (?:reliable )?(?:source|evidence)/iu
+
+/** The capitalised names inside the clause that carries the denial (up to the next ';' or sentence end), lower-cased. */
+export function deniedNames(paragraph: string): Set<string> {
+  const out = new Set<string>()
+  for (const sentence of paragraph.split(/(?<=[.!?…])\s+/)) {
+    const m = DENIES.exec(sentence)
+    if (!m) continue
+    const clause = sentence.slice(m.index).split(/[;:]/)[0]
+    for (const n of clause.matchAll(/(?<![\p{L}\d])\p{Lu}[\p{L}]{2,}/gu)) out.add(n[0].toLowerCase())
+  }
+  return out
+}
+
+export function withoutParaphrasedPrefaceParagraphs(prefaces: readonly string[], final: string): string[] {
+  // Second signal (passport, live 2026-10-11, "8 ngày làm việc" said twice at only 42 % word overlap): a lower overlap (≥ 35 %) counts when the
+  // two paragraphs state the SAME quantity. An unrelated paragraph reached 30 % without sharing one.
+  const finals = final.split(/\n{2,}/).map(p => p.trim()).filter(p => p).map(p => ({ t: contentTokens(p), q: figuresOf(p), cited: /\[S\d/.test(p) || /chưa (?:được )?(?:xác minh|kiểm)/i.test(p), says: NOT_FOUND.test(p), denied: deniedNames(p) })).filter(f => f.t.size >= 12)
+  if (!finals.length) return [...prefaces]
+  return prefaces.map(pref => pref.split(/\n{2,}/).filter(par => {
+    if (STRUCTURAL.test(par)) return true
+    const t = contentTokens(par)
+    if (t.size < 12) return true
+    const q = figuresOf(par)
+    const says = NOT_FOUND.test(par)
+    const lowered = par.toLowerCase()
+    // An uncited / unhedged final paragraph counts only for a near-restatement (≥ 75 %: Snow Crash 2026-10-11, caveat in both calls).
+    // Third signal (Snow Crash again, live 2026-10-11: "chưa thấy bằng chứng … cùng đọc" in the preface AND "chưa tìm thấy nguồn … cùng đọc" after the
+    // lookup, ~35 % word overlap, neither cited): both paragraphs say "no evidence found" and share ≥ 30 % of the preface's words.
+    return !finals.some(f => { let hit = 0; for (const w of t) if (f.t.has(w)) hit++; const r = hit / t.size; return (f.denied.size >= 2 && [...f.denied].filter(n => lowered.includes(n)).length >= 2) || (says && f.says && r >= 0.3) || (f.cited ? (r >= 0.6 || (r >= 0.35 && [...q].some(x => f.q.has(x)))) : r >= 0.75) })
+  }).join('\n\n')).filter(p => p.trim())
+}
+
+/**
+ * A turn that asks to VERIFY a claim ("nghe nói … đúng không", "có thật không") or for an exact figure ("bao nhiêu", "mấy …"): the lookup IS the answer,
+ * so no answer-first guess is written before it (flag only).
+ */
+export function isVerifyTurn(text: string): boolean {
+  const f = ` ${(text ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/gi, 'd').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()} `
+  return /(?: )(?:nghe noi|co that|co dung|that khong|dung (?:ko|khong|k|chu|hong|hok)|bao nhieu|may (?:nguoi|cai|lan|nam|nuoc))(?: )/.test(f)
+}
+
+/** A final text that goes on from the preface ("Nhưng mình cần đính chính: …") reads as the same answer: it is joined with a space, not a paragraph break. */
+const GOES_ON = /^[\s*_"'“‘(]*(?:nhưng|tuy nhiên|tuy vậy|còn|và|song|however|but)(?![\p{L}\p{N}])/iu
+
+export function composeFinal(prefaces: readonly string[], final: string, o: { dedupeParaphrase?: boolean; trace?: (stage: string, value: unknown) => void } = {}): string {
+  const dedupedP = o.dedupeParaphrase ? withoutParaphrasedPrefaceParagraphs(prefaces, final ?? '') : [...prefaces]
+  o.trace?.('after_paraphrase_dedupe', dedupedP)
+  const cleaned = dedupedP.map(p => withoutQuestions(p, { keepWhole: o.dedupeParaphrase === true })).filter(Boolean)
+  o.trace?.('after_without_questions', cleaned)
+  const body0 = (final ?? '').trim()
+  const nBody = norm(body0)
+  const keep = cleaned.filter(p => {
+    const key = norm(p).slice(0, 80)
+    return !(key.length >= 24 && nBody.includes(key))
+  })
+  o.trace?.('keep', keep)
+  const body = withoutEchoes(body0, keep, o.dedupeParaphrase === true)
+  o.trace?.('body', body)
+  // one preface paragraph + a final that continues it (after restated sentences were dropped) = ONE paragraph
+  if (o.dedupeParaphrase && keep.length === 1 && body && !/\n/.test(keep[0]) && GOES_ON.test(body)) return `${keep[0]} ${body}`
+  return [...keep, body].filter(Boolean).join('\n\n')
+}

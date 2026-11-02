@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hanami Hotel Danang\" OR \"Khách Sạn Parosand\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:17:23.122Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hanami Hotel Danang\" OR \"Khách Sạn Parosand\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn Parosand Đà Nẵng gần My Khe",
+    "link": "https://www.tiktok.com/@vivudanang243/video/7684608514567720212",
+    "snippet": "Khách sạn Parosand Đà Nẵng gần My Khe: Review nhanh cho chuyến đi. Tổng quan nhanh Bạn đang tham khảo căn phòng tại Parosand Hotel để quyết ...",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn Parosand Đà Nẵng: Sang trọng và Tiện Lợi",
+    "link": "https://www.tiktok.com/@thoitietdanang.tiktok/video/7569812041976810759",
+    "snippet": "Khách sạn Parosand Đà Nẵng: Sang trọng và Tiện Lợi. Khám phá khách sạn 4 sao Parosand với view đẹp và phòng nghỉ sang trọng tại Đà Nẵng. Tận ...",
+    "position": 2
+   },
+   {
+    "title": "mahamat bechir mahamat - son original",
+    "link": "https://www.tiktok.com/music/son-original-7679872444152302354",
+    "snippet": "Khách sạn Parosand Đà Nẵng gần My Khe: Review nhanh cho chuyến đi. |. Ash Greninja: A Tough Childhood Companion. |. douglas road bristol bad. |. منيو-مطعم-علي ...",
+    "position": 3
+   },
+   {
+    "title": "HANAMI HOTEL | TikTok Places",
+    "link": "https://www.tiktok.com/place/Hanami-Hotel-Danang-22535865207437556?language=en",
+    "snippet": "HANAMI HOTEL. 14 videos. 61-63 Hoàng Kế Viêm, Ngũ Hành Sơn, Da Nang 550000, Vietnam. add_to_favorite. 17.9K. ใครไปดานัง นี่คืออีกร้านที่ควรค่าแก่การไปลอง.",
+    "position": 4
+   },
+   {
+    "title": "NGOCTHO - nhạc nền - NThơ 767",
+    "link": "https://www.tiktok.com/music/nh%E1%BA%A1c-n%E1%BB%81n-NTh%C6%A1-767-7589885509117414164",
+    "snippet": "Khách sạn Parosand Đà Nẵng gần My Khe: Review nhanh cho chuyến đi. |. maqueta plantel avicola 0987984014 #galponesdepollos #pollos #maquetascreativas ...",
+    "position": 5
+   },
+   {
+    "title": "user60343690144 - son original",
+    "link": "https://www.tiktok.com/music/son-original-7682438540106074901",
+    "snippet": "Khách sạn Parosand Đà Nẵng gần My Khe: Review nhanh cho chuyến đi. |. Exploring the Mysteries of Life | #discover #featureme. |. jakota brown bmw with 20 window ...",
+    "position": 6
+   },
+   {
+    "title": "$47/night in Da Nang: 2 Balconies, King Bed & Partial Ocean View",
+    "link": "https://www.tiktok.com/@jackexploretheworld/video/7658876272935701778",
+    "snippet": "... Discover a Da Nang stay with 2 balconies, king bed, full kitchen, and. @ Jack Explore The World · original sound · Hanami Hotel Danang · author · 114.",
+    "position": 7
+   },
+   {
+    "title": "Adridanidoll - original sound",
+    "link": "https://www.tiktok.com/music/original-sound-7638595753221016334",
+    "snippet": "Khách sạn Parosand Đà Nẵng gần My Khe: Review nhanh cho chuyến đi. |. Fractura de rodilla: 19 días y contando. |. Sarraf Olmaya Gerek Yok Sticker - İnsanın ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

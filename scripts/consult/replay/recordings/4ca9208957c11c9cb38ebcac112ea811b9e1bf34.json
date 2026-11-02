@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook Air M1 cũ dưới 12 triệu pin tốt tình trạng pin (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:12:53.585Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Air M1 cũ dưới 12 triệu pin tốt tình trạng pin (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "MacBook cũ giá dưới 10 triệu: Liệu có đáng đầu tư?",
+    "link": "https://cellphones.com.vn/sforum/macbook-cu-gia-duoi-10-trieu-lieu-co-dang-dau-tu",
+    "snippet": "Với ngân sách dưới 10 triệu, bạn hoàn toàn có thể sở hữu một chiếc MacBook cũ chất lượng, đặc biệt nếu chọn đúng dòng và kiểm tra kỹ lưỡng trước khi mua. Một số ...",
+    "position": 1
+   },
+   {
+    "title": "MacBook cũ | Mac cũ uy tín, trả góp 0%, giảm đến 7 triệu",
+    "link": "https://cellphones.com.vn/hang-cu/mac.html",
+    "snippet": "Macbook cũ giá rẻ, giảm 2tr lên đời, HSSV giảm 700k, trả góp 0%, 0 phụ phí, 0 trả trước, bảo hành lên đến 6 tháng. Mua ngay Macbook cũ uy tín.",
+    "position": 2
+   },
+   {
+    "title": "Chỉ còn 19 triệu, chiếc MacBook 3 năm tuổi này vẫn quá ...",
+    "link": "https://cellphones.com.vn/sforum/chi-con-19-trieu-macbook-air-m1-2020-van-qua-hap-dan-trong-nam-2023",
+    "snippet": "1. Bộ xử lý Apple M1 vẫn quá mạnh mẽ · 2. Mát mẻ, yên tĩnh và thời lượng pin không đối thủ · 3. Màn hình xuất sắc · 4. Trackpad 'out trình' · 5. Bàn ...",
+    "date": "30 thg 3, 2023",
+    "position": 3
+   },
+   {
+    "title": "Top 6 mẫu Macbook màu hồng đẹp được chị em ưa chuộng",
+    "link": "https://cellphones.com.vn/sforum/macbook-mau-hong",
+    "snippet": "Màn hình: MacBook Air M1 sở hữu màn hình Retina 13.3 inch với độ phân giải 2560 x 1600 pixel, mang lại hình ảnh rõ nét và màu sắc phong phú hơn 25% (so với sRGB) ...",
+    "rating": 3,
+    "ratingCount": 1,
+    "position": 4
+   },
+   {
+    "title": "Cách kiểm tra MacBook cũ để tránh ''tiền mất tật mang''",
+    "link": "https://cellphones.com.vn/sforum/cach-kiem-tra-macbook-cu",
+    "snippet": "Trong bài viết dưới đây, Sforum sẽ gợi ý một số cách kiểm tra MacBook cũ phổ biến và dễ thực hiện nhất cho quý đọc giả tham khảo.",
+    "position": 5
+   },
+   {
+    "title": "Top 4 MacBook cho sinh viên theo từng phân khúc 2025",
+    "link": "https://cellphones.com.vn/sforum/macbook-cho-sinh-vien-theo-tung-phan-khuc",
+    "snippet": "Tư vấn chọn MacBook phù hợp cho sinh viên theo từng phân khúc giá và nhu cầu. Gợi ý 5 mẫu MacBook đáng mua nhất năm 2025.",
+    "position": 6
+   },
+   {
+    "title": "Nguyên nhân và cách khắc phục MacBook nhanh hết pin",
+    "link": "https://cellphones.com.vn/sforum/macbook-nhanh-het-pin",
+    "snippet": "Bước 1: Nhấn vào biểu tượng Apple ở góc trên bên trái màn hình. Sau đó, chọn About This Mac. Cách kiểm tra tình trạng pin MacBook nhanh hết pin - bước 1.",
+    "position": 7
+   },
+   {
+    "title": "Macbook Air cũ giá rẻ | Trả góp 0%, 0Đ trả trước, phụ phí",
+    "link": "https://cellphones.com.vn/hang-cu/mac/macbook-air.html",
+    "snippet": "Hãng sản xuất. Apple ; Ổ cứng. 256GB; 512GB ; Tình trạng máy. Trầy xước; Xước cấn; Cũ đẹp; Đã kích hoạt ; Độ phân giải. Retina; 2K (Quad HD); 3K ; Dòng máy. Apple ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

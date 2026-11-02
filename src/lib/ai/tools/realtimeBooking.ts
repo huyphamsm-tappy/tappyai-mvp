@@ -147,13 +147,20 @@ function describe(o: SearchResult, now: Date, assumedAdults: boolean, c: SearchC
   const avail = claimableAvailability(o, now)
   const provider = MERCHANT[o.provider]
   const fresh = price !== null && o.currency !== null && o.lastCheckedAt !== null
-  const priceText = fresh ? vnd(price as number, o.currency as 'VND' | 'USD') : null
+  // 29/10: a per-night rate says so ("…đ/đêm") and carries the stay's total for the nights searched; live, the unlabelled Agoda Lite rate
+  // was stated as "tổng cộng … cho kỳ nghỉ 2 đêm". A provider total (Booking / Agoda Demand) stays as it was: no unit, no multiplication.
+  const perNight = o.priceUnit === 'per_night'
+  const nightsRaw = c.vertical === 'hotel' && c.context.checkIn && c.context.checkOut ? Math.round((Date.parse(c.context.checkOut) - Date.parse(c.context.checkIn)) / 86_400_000) : null
+  const nights = perNight && nightsRaw !== null && nightsRaw >= 1 && nightsRaw <= 30 ? nightsRaw : null
+  const priceText = fresh ? `${vnd(price as number, o.currency as 'VND' | 'USD')}${perNight ? '/đêm' : ''}` : null
   const checkedAt = fresh ? hhmm(o.lastCheckedAt as string) : null
   const guests = c.context.adults !== undefined ? `${c.context.adults} người${assumedAdults ? ' (mặc định)' : ''}` : null
   return {
     provider,
     name: o.title,
     ...(fresh ? { price, currency: o.currency, price_text: priceText } : {}),
+    ...(fresh && perNight ? { price_unit: 'mỗi đêm, chưa gồm thuế và phí' } : {}),
+    ...(fresh && nights !== null ? { stay_nights: nights, stay_total: (price as number) * nights, stay_total_text: `${vnd((price as number) * nights, o.currency as 'VND' | 'USD')} cho ${nights} đêm, chưa gồm thuế và phí` } : {}),
     ...(fresh && avail === 'available' && o.availability !== null ? { rooms_left: o.availability } : {}),
     availability_status: avail,
     ...(checkedAt ? { checked_at: checkedAt } : {}),
@@ -173,6 +180,8 @@ function noteFor(rows: Row[], assumedAdults: boolean, c: SearchCriteria): string
       : 'realtime_results: kết quả không còn mới nên KHÔNG có giá — không nêu giá; nói giá và tình trạng được kiểm tra trên trang nhà cung cấp khi người dùng mở trang.',
     'Dẫn nguyên văn các link trong booking_links.',
   ]
+  // 29/10: a per-night price is never a total; the total for the stay is stay_total / stay_total_text.
+  if (rows.some(r => typeof r.price_unit === 'string')) parts.push('Giá có price_unit "mỗi đêm" là giá MỘT ĐÊM, chưa gồm thuế và phí — không gọi là tổng; tổng cả kỳ ở là stay_total_text.')
   if (assumedAdults && c.vertical === 'hotel') parts.push(`Số khách chưa được nêu: giá tính cho ${c.context.adults} người lớn (mặc định) — nói rõ để người dùng đổi trên trang.`)
   if (rows.some(r => Array.isArray(r.context_missing_in_url))) parts.push('Một số link không mang đủ ngày/số khách (context_missing_in_url): nói người dùng chọn lại các mục đó trên trang.')
   return parts.join(' ')

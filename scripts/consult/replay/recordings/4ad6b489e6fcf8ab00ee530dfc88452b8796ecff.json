@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Quán Ăn Tuấn Lợi\" OR \"Quán nướng Bình Dân\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:29:21.812Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Quán Ăn Tuấn Lợi\" OR \"Quán nướng Bình Dân\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Thêm một quán nướng bình dân mà team ghiền ...",
+    "link": "https://www.tiktok.com/@maibodidau/video/7679699529767161095",
+    "snippet": "Thêm một quán nướng bình dân mà team ghiền nướng siuu mê #maibodidau #. @Mai Bơ Đi Đâu? âm thanh gốc - Mai Bơ Đi Đâu? Cạp Nướng 2 - Tân Hoá.",
+    "position": 1
+   },
+   {
+    "title": "Quán nướng bình dân Bảo Bảo ở Bình Tân — review món ...",
+    "link": "https://www.tiktok.com/@baobaolovefood/video/7664922538794945812",
+    "snippet": "184 Lượt thích,Video TikTok từ Bảo Bảo Love Food (@baobaolovefood): \"Review quán nướng bình dân ở Bình Tân: không gian quê rộng rãi, đồ ...",
+    "position": 2
+   },
+   {
+    "title": "Thèm Nướng ngon rẻ, rau tráng miệng thả ga",
+    "link": "https://www.tiktok.com/@hoaoididau/video/7650352251633978644",
+    "snippet": "Lead Quán nướng bình dân Thèm Nướng ở Tân Phú nổi bật với thịt nướng thơm, rau ăn thả ga và tráng miệng đa dạng — lựa chọn phù hợp khi tìm ...",
+    "position": 3
+   },
+   {
+    "title": "安安 - Quán Nướng Bình Dân tuyệt ngon tại Nhật Bản",
+    "link": "https://www.tiktok.com/@heomapdangxink/video/7346186843202817281",
+    "snippet": "Tập 66: 安安 (AnAn) - Hệ thống Quán nướng bình dân của Nhật. Trời lạnh cỡ này thì phải đi ăn thịt nướng mới đúng bài nèeeee!!! #reviewanngon ...",
+    "position": 4
+   },
+   {
+    "title": "+1 quán nướng bình dân ngon Galbi House",
+    "link": "https://www.tiktok.com/@nguyenthai.story/video/7689422890541812998",
+    "snippet": "+1 quán nướng bình dân ngon Galbi House - 37 Huỳnh Tấn Phát #danangangi. @Nguyên Thái.",
+    "position": 5
+   },
+   {
+    "title": "Quán nướng bình dân mở đến 2h sáng ở Đống Đa, Hà Nội",
+    "link": "https://www.tiktok.com/@domdophn/video/7670129997532630292",
+    "snippet": "Tóm tắt: Quán nướng bình dân ở Đống Đa, Hà Nội được giới thiệu là mở đến 2h sáng, phù hợp cho ăn khuya với giá cả phải chăng và không gian ...",
+    "position": 6
+   },
+   {
+    "title": "Quán nướng bình dân ở Tân Phú mà tui vừa tìm thấy nè! ...",
+    "link": "https://www.tiktok.com/@zackiee.m/video/7650811872215616789",
+    "snippet": "420 Lượt thích,Video TikTok từ Ăn Quài z Zackie❓ (@zackiee.m): \"Quán nướng bình dân ở Tân Phú mà tui vừa tìm thấy nè! #AnCungTikTok ...",
+    "position": 7
+   },
+   {
+    "title": "trải nghiệm quán nướng bình dân 131 Cao Bá Quát của tui ...",
+    "link": "https://www.tiktok.com/@giangthichanhang/video/7674602862202244359",
+    "snippet": "591 Lượt thích,40 Bình luận.Video TikTok từ thích ăn hàng (@giangthichanhang): \"trải nghiệm quán nướng bình dân 131 Cao Bá Quát của tui nha ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

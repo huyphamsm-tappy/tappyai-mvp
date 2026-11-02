@@ -42,9 +42,11 @@ describe('the consultative fields the user acts on are still emitted', () => {
   // Commerce Link with the stay applied. Superseded here: PHASE 1C's "every branch hands back the
   // booking links".
   const hotelBody = () => {
-    const start = source.indexOf('export async function getHotelPrices')
+    const start = source.indexOf('async function getHotelPricesImpl')
     expect(start, 'getHotelPrices not found').toBeGreaterThan(-1)
-    const next = source.indexOf('\nexport async function', start + 1)
+    // getHotelPrices is a thin wrapper (retrieved_at stamp) around getHotelPricesImpl: the body ends at the next top-level function
+    const nexts = [source.indexOf('\nexport async function', start + 1), source.indexOf('\nasync function', start + 1), source.indexOf('\nexport function', start + 1)].filter(i => i > -1)
+    const next = nexts.length ? Math.min(...nexts) : -1
     return source.slice(start, next === -1 ? undefined : next)
   }
   for (const field of ['booking_link', 'agoda_link', 'search_url']) {

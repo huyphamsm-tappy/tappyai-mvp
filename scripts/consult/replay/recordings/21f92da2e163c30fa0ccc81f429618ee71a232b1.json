@@ -1,0 +1,641 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "nhà hàng dưới 300k một người món Việt, món Hoa, món Nhật Quận 1 Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T17:15:12.761Z",
+ "body": {
+  "searchParameters": {
+   "q": "nhà hàng dưới 300k một người món Việt, món Hoa, món Nhật Quận 1 Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7768941,106.7008997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Aniki Nhà Hàng Nhật Quận 1",
+    "address": "112 Trần Khắc Chân, Quận 1, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7951202,
+    "longitude": 106.6909026,
+    "rating": 4.9,
+    "ratingCount": 494,
+    "type": "Nhà hàng Nhật Bản",
+    "types": [
+     "Nhà hàng Nhật Bản"
+    ],
+    "website": "https://www.aniki.vn/",
+    "phoneNumber": "+84 944 665 407",
+    "openingHours": {
+     "Thứ Sáu": "10:00–14:00, 17:00–22:00",
+     "Thứ Bảy": "10:00–14:00, 17:00–22:00",
+     "Chủ Nhật": "10:00–14:00, 17:00–22:00",
+     "Thứ Hai": "10:00–14:00, 17:00–22:00",
+     "Thứ Ba": "10:00–14:00, 17:00–22:00",
+     "Thứ Tư": "10:00–14:00, 17:00–22:00",
+     "Thứ Năm": "10:00–14:00, 17:00–22:00"
+    },
+    "bookingLinks": [
+     "https://www.aniki.vn/reservation"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkc6k3mkr4iyvTdUex2u5b2RpPL_lHByjUgw0eF7xpD55CcbvafH4Z_e14uoUG3QrV6KNT7YYDq_OmS6BUJdzjQZXtqHnsuJIzO8F-g5pA8MYzOnkawC0K-hBotOV8SO9lu9kH4QZVQLmre",
+    "cid": "16756436020149602015",
+    "fid": "0x31752929a3242bbd:0xe88ad1c7ea93c6df",
+    "placeId": "ChIJvSskoykpdTER38aT6sfRiug"
+   },
+   {
+    "position": 2,
+    "title": "Nori - Modern Izakaya",
+    "address": "114 - 114A Lý Tự Trọng, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7739962,
+    "longitude": 106.6969123,
+    "rating": 4.8,
+    "ratingCount": 2337,
+    "type": "Nhà hàng Nhật Bản",
+    "types": [
+     "Nhà hàng Nhật Bản"
+    ],
+    "website": "https://bio.link/norisgn",
+    "phoneNumber": "+84 798 777 779",
+    "openingHours": {
+     "Thứ Năm": "18:00–01:00",
+     "Thứ Sáu": "18:00–01:00",
+     "Thứ Bảy": "18:00–01:00",
+     "Chủ Nhật": "18:00–01:00",
+     "Thứ Hai": "18:00–01:00",
+     "Thứ Ba": "18:00–01:00",
+     "Thứ Tư": "18:00–01:00"
+    },
+    "bookingLinks": [
+     "https://book.chope.co/booking?source=google_dining&rid=norimodernizakaya2607vn&rwg_token=AE37R_ilkPsadXETyLPf7wWTnY3tHnKLhcR0Sib7ZCxILV1tp4rRn2RCr49xoEemgv5CPHQB4uOtZO6E_1tfMQMYRWZMbg3bbW9phjZ_lvkOFIxiZ60W1y8%3D",
+     "https://www.google.com/maps/reserve/v/dine/c/EKNxa5RsiVw?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmP_7bRmvusDUNpPgLoQg9po6qLFLC3A1PG90YUgws9mOhIrWTPV4aQiU_6jPnkkFwVJoP-4UzTqm_021F775oMMBFlqAEQzjNVyp5UZUGHugC5_uPr1S5Y9h51-IJCTTLq1ShSuzDrGUww",
+    "cid": "3421613120693832923",
+    "fid": "0x31752f3f52ce6b9d:0x2f7c030139c58cdb",
+    "placeId": "ChIJnWvOUj8vdTER24zFOQEDfC8"
+   },
+   {
+    "position": 3,
+    "title": "寿司と天ぷら居酒屋かむら- Izakaya Kamura",
+    "address": "8A/A14 Thái Văn Lung, Sài Gòn, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.779655799999999,
+    "longitude": 106.70512319999999,
+    "rating": 4.9,
+    "ratingCount": 4050,
+    "type": "Nhà hàng Nhật Bản",
+    "types": [
+     "Nhà hàng Nhật Bản",
+     "Nhà hàng Nhật Bản chính cống",
+     "Nhà hàng"
+    ],
+    "website": "https://izakayakamura.vn/",
+    "phoneNumber": "+84 28 3535 7098",
+    "openingHours": {
+     "Thứ Năm": "11:00–02:00",
+     "Thứ Sáu": "11:00–02:00",
+     "Thứ Bảy": "11:00–02:00",
+     "Chủ Nhật": "11:00–00:00",
+     "Thứ Hai": "11:00–00:00",
+     "Thứ Ba": "11:00–00:00",
+     "Thứ Tư": "11:00–02:00"
+    },
+    "bookingLinks": [
+     "https://mmenufood.com/vi/v2/reservation/unatoto"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlLAW2QKQWPtI6xF_gjnbrknmhKpk4vEfNPDSwLXCMqgNy49mVMMpYjPaGgmVKlB4FBHCaxFEoj9RTdaBoxiYaxJgFeFKhuLaIiFVdZgsLHablucHaTWbRv84zWi3SMkY2vvSe8wDAmtinj",
+    "cid": "3700468258469518959",
+    "fid": "0x31752f58467e70a7:0x335ab44670af1e6f",
+    "placeId": "ChIJp3B-RlgvdTERbx6vcEa0WjM"
+   },
+   {
+    "position": 4,
+    "title": "SORAE - MODERN JAPANESE RESTAURANT",
+    "address": "Tòa nhà tài chính Bitexco, 36 Hồ Tùng Mậu, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.771433499999999,
+    "longitude": 106.7042231,
+    "rating": 4.5,
+    "ratingCount": 1373,
+    "type": "Nhà hàng Nhật Bản",
+    "types": [
+     "Nhà hàng Nhật Bản"
+    ],
+    "website": "http://www.soraesushi.com/",
+    "phoneNumber": "+84 28 3827 2372",
+    "openingHours": {
+     "Thứ Sáu": "11:00–14:00, 17:00–23:00",
+     "Thứ Bảy": "11:00–14:00, 17:00–23:00",
+     "Chủ Nhật": "11:00–14:00, 17:00–23:00",
+     "Thứ Hai": "11:00–14:00, 17:00–23:00",
+     "Thứ Ba": "11:00–14:00, 17:00–23:00",
+     "Thứ Tư": "11:00–14:00, 17:00–23:00",
+     "Thứ Năm": "11:00–14:00, 17:00–23:00"
+    },
+    "bookingLinks": [
+     "https://www.d1-concepts.com/dat-ban"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlhw9CSIOhMVrC3oIao-4_WaauyskFRYvP_xfMk4x_vfaLOg7phRwIM29ZbXlxpFKM2PH63caFfAjoa9Mz7O-4SjFDaap8Zmn3N4wp20bfhxmhC8V5XH2aFprT2yKe26rh73QuW",
+    "cid": "8304403063391064834",
+    "fid": "0x31752f3e7ddd7ba5:0x733f2a9669171302",
+    "placeId": "ChIJpXvdfT4vdTERAhMXaZYqP3M"
+   },
+   {
+    "position": 5,
+    "title": "Haru Sushi Quận 1",
+    "address": "93 Nguyễn Thái Học, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.767149999999999,
+    "longitude": 106.69566499999999,
+    "rating": 4.5,
+    "ratingCount": 546,
+    "type": "Nhà hàng Nhật Bản",
+    "types": [
+     "Nhà hàng Nhật Bản",
+     "Nhà hàng sushi"
+    ],
+    "website": "https://harusushi.com.vn/",
+    "phoneNumber": "+84 1900 555506",
+    "openingHours": {
+     "Thứ Sáu": "10:30–13:30, 16:00–21:30",
+     "Thứ Bảy": "10:30–13:30, 16:00–21:30",
+     "Chủ Nhật": "10:30–13:30, 16:00–21:30",
+     "Thứ Hai": "10:30–13:30, 16:00–21:30",
+     "Thứ Ba": "10:30–13:00, 16:00–21:30",
+     "Thứ Tư": "10:30–13:30, 16:00–21:30",
+     "Thứ Năm": "10:30–13:30, 16:00–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmpeM6u_Vq43e-Jm1WHq-JjEChU3oUPF_UNlLftotNIkF0eQuJrnwCP-RgYFH_ePn80z7IYUHvA4X-N074507Lk8W3dq-7bdM3i1DYM_-xBDfiRZRQttVRlRlWcurjZmA5n06IQzFczqLI_",
+    "cid": "3280406051911200147",
+    "fid": "0x31752fc053ff709f:0x2d8657ec83356d93",
+    "placeId": "ChIJn3D_U8AvdTERk201g-xXhi0"
+   },
+   {
+    "position": 6,
+    "title": "Nhà hàng Thịt Nướng Nhật NIKUTARO",
+    "address": "2B1 Chu Mạnh Trinh, Bến Nghé, Quận 1, Hồ Chí Minh 80000, Việt Nam",
+    "latitude": 10.7817036,
+    "longitude": 106.70501039999999,
+    "rating": 4.7,
+    "ratingCount": 520,
+    "type": "Nhà hàng món Yakiniku",
+    "types": [
+     "Nhà hàng món Yakiniku",
+     "Nhà hàng Nhật Bản",
+     "Nhà hàng"
+    ],
+    "website": "https://nikutarosaigon.com/en",
+    "phoneNumber": "+84 28 3822 6441",
+    "openingHours": {
+     "Thứ Năm": "11:00–02:00",
+     "Thứ Sáu": "11:00–02:00",
+     "Thứ Bảy": "11:00–02:00",
+     "Chủ Nhật": "11:00–22:00",
+     "Thứ Hai": "11:00–02:00",
+     "Thứ Ba": "11:00–02:00",
+     "Thứ Tư": "11:00–02:00"
+    },
+    "bookingLinks": [
+     "https://www.google.com/maps/reserve/v/dine/c/GDe3tA43UX8?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkpmpbWqMIp4v6tQIUrK5Xh7cp6i3uZ1p3YkirZ1q3Ut7YR5aXXhyeG7xVqowIN95V4MzH6j0rEKry_0uln0znqTobQwgfZPOKM1j_Z61DvcFFA7zDSeGCg2MrqZlKGxmbIOKyX",
+    "cid": "13322067257092342768",
+    "fid": "0x31752fca71a6c3a1:0xb8e17d9644da03f0",
+    "placeId": "ChIJocOmccovdTER8APaRJZ94bg"
+   },
+   {
+    "position": 7,
+    "title": "izakaya Matsuki",
+    "address": "8A/A20 Thái Văn Lung, P, Sài Gòn, Hồ Chí Minh 718500, Việt Nam",
+    "latitude": 10.779496199999999,
+    "longitude": 106.70536229999999,
+    "rating": 4.8,
+    "ratingCount": 2931,
+    "type": "Nhà hàng Izakaya",
+    "types": [
+     "Nhà hàng Izakaya",
+     "Nhà hàng Nhật Bản",
+     "Nhà hàng món Yakitori"
+    ],
+    "website": "https://www.facebook.com/@izakayaMATSUKI",
+    "phoneNumber": "+84 703 838 955",
+    "openingHours": {
+     "Thứ Năm": "17:00–01:30",
+     "Thứ Sáu": "17:00–01:30",
+     "Thứ Bảy": "17:00–01:30",
+     "Chủ Nhật": "17:00–01:30",
+     "Thứ Hai": "17:00–01:30",
+     "Thứ Ba": "17:00–01:30",
+     "Thứ Tư": "17:00–01:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkaN3xwof0IK9yEFKcqTRJQXI4EDehrezoh_hSxpwuekie9YPRKNiUuLC7M0kpE2EnzY_wN1LOy7r0SVEhmB_PQndIEEVc1HKjWEXXJWHkBYkWPzx4SNQpwSYzPdh_KGlfiOpCQ",
+    "cid": "8690081171043535829",
+    "fid": "0x3175297a45ca06b7:0x78995ec8755c4bd5",
+    "placeId": "ChIJtwbKRXopdTER1UtcdchemXg"
+   },
+   {
+    "position": 8,
+    "title": "Nhà Hàng Hương Vị Nhật",
+    "address": "171/16 Cô Bắc, P, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7624108,
+    "longitude": 106.69265589999999,
+    "rating": 4.6,
+    "ratingCount": 65,
+    "type": "Nhà hàng món Yakiniku",
+    "types": [
+     "Nhà hàng món Yakiniku"
+    ],
+    "website": "https://www.foody.vn/ho-chi-minh/nha-hang-huong-vi-nhat",
+    "phoneNumber": "+84 833 300 660",
+    "openingHours": {
+     "Thứ Sáu": "11:00–14:00, 16:00–22:00",
+     "Thứ Bảy": "11:00–14:00, 16:00–22:00",
+     "Chủ Nhật": "16:00–22:00",
+     "Thứ Hai": "11:00–14:00, 16:00–22:00",
+     "Thứ Ba": "11:00–14:00, 16:00–22:00",
+     "Thứ Tư": "11:00–14:00, 16:00–22:00",
+     "Thứ Năm": "11:00–14:00, 16:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWld-GY-kATUrXMhRdSvmBXCzLKIm8d6i-zLKN1uviFxG7IuWTvfwR_baT5BtKkEMzPVAM1a3t4URG8gKR0YcNNupSM1zHMMd9DemP3_JQAh_ZDlcG_lRF3JYJDizzAtzZ9Mb8sR",
+    "cid": "15817461701734184168",
+    "fid": "0x31752f16b4da7ee9:0xdb82e99cfc3634e8",
+    "placeId": "ChIJ6X7atBYvdTER6DQ2_Jzpgts"
+   },
+   {
+    "position": 9,
+    "title": "Naked Sushi - Xuân Hòa",
+    "address": "193A/6, Nam Kỳ Khởi Nghĩa, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7862048,
+    "longitude": 106.6871086,
+    "rating": 4.9,
+    "ratingCount": 2612,
+    "type": "Nhà hàng Nhật Bản",
+    "types": [
+     "Nhà hàng Nhật Bản"
+    ],
+    "website": "https://m.facebook.com/100064694408540/",
+    "phoneNumber": "+84 936 711 013",
+    "openingHours": {
+     "Thứ Sáu": "11:00–21:15",
+     "Thứ Bảy": "11:00–21:15",
+     "Chủ Nhật": "11:00–21:15",
+     "Thứ Hai": "11:00–21:15",
+     "Thứ Ba": "11:00–21:15",
+     "Thứ Tư": "11:00–21:15",
+     "Thứ Năm": "11:00–21:15"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk5bCR2YLKtKKkriaenmI7gfsjwVqBDGE17NI8N4oWMhfuA9cJvnh3uoRw0lfWtCS_XtDEMPvq2Xcn8kOrGpykqLQezXp3eSeU9TCV8Fm4wEnAUOz9VXA4HxgG0wiqFmE-cf1uOo8nX20uZ",
+    "cid": "877973113959025869",
+    "fid": "0x31752f830bef1f27:0xc2f2fe53bdf0ccd",
+    "placeId": "ChIJJx_vC4MvdTERzQzfO-UvLww"
+   },
+   {
+    "position": 10,
+    "title": "Bợm Sushi - Izakaya",
+    "address": "Hẽm 69/30, Nguyễn Gia Trí, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.8036572,
+    "longitude": 106.71469409999999,
+    "rating": 4.9,
+    "ratingCount": 1187,
+    "type": "Nhà hàng Nhật Bản",
+    "types": [
+     "Nhà hàng Nhật Bản"
+    ],
+    "phoneNumber": "+84 938 395 617",
+    "openingHours": {
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00",
+     "Thứ Ba": "10:00–22:00",
+     "Thứ Tư": "10:00–22:00",
+     "Thứ Năm": "10:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnwrix25hYoL1T_Iq22WB3tQ_ynnEeVRBPm-c-nJa0dP_QXZ7oQMnlHq39Rfg_d9YeEHk6_xBkF35JdUIbo7qyw30vo3KzRqIPPc8-GbO0nktXl6eP2NfWOTebN2AZ_aLbTttbO",
+    "cid": "17469484882611241303",
+    "fid": "0x317527c5b26e104d:0xf27013f185198157",
+    "placeId": "ChIJTRBussUndTERV4EZhfETcPI"
+   },
+   {
+    "position": 11,
+    "title": "Gyu Shige - Ngưu Phồn - Đông Du",
+    "address": "48-50 Đông Du, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.77643,
+    "longitude": 106.7047508,
+    "rating": 4.6,
+    "ratingCount": 1758,
+    "type": "Nhà hàng món Yakiniku",
+    "types": [
+     "Nhà hàng món Yakiniku"
+    ],
+    "website": "https://gyushige.com.vn/reservation/",
+    "phoneNumber": "+84 28 3915 1627",
+    "openingHours": {
+     "Thứ Sáu": "10:30–23:00",
+     "Thứ Bảy": "10:30–23:00",
+     "Chủ Nhật": "10:30–23:00",
+     "Thứ Hai": "10:30–23:00",
+     "Thứ Ba": "10:30–23:00",
+     "Thứ Tư": "10:30–23:00",
+     "Thứ Năm": "10:30–23:00"
+    },
+    "bookingLinks": [
+     "https://gyushige.com.vn/en/reservation/",
+     "https://www.google.com/maps/reserve/v/dine/c/kkM76CNTjRM?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl6F2HQl1jbkowBn5mR1mEeZu8vSSJUXEh1XedxcbXb5ymCxRp9mrjdQrShfvuEEXwP4_8xvsMzEcoAJFLDpqr0VFck7ATMbsobSgWim2H6p7doYzkht4KQZifqUvojBw0xLxu3YD6UJq8v",
+    "cid": "11600847656449004116",
+    "fid": "0x31752fd7dfc260a3:0xa0fe7d7ac810d254",
+    "placeId": "ChIJo2DC39cvdTERVNIQyHp9_qA"
+   },
+   {
+    "position": 12,
+    "title": "Matsuri Japanese Restaurant - Nguyễn Huệ",
+    "address": "3 Nguyễn Huệ, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.771649,
+    "longitude": 106.7058812,
+    "rating": 4.8,
+    "ratingCount": 1430,
+    "type": "Nhà hàng Nhật Bản",
+    "types": [
+     "Nhà hàng Nhật Bản",
+     "Nhà hàng sushi"
+    ],
+    "website": "https://matsurirestaurant.com.vn/",
+    "phoneNumber": "+84 968 708 812",
+    "openingHours": {
+     "Thứ Sáu": "11:00–22:00",
+     "Thứ Bảy": "11:00–22:00",
+     "Chủ Nhật": "11:00–22:00",
+     "Thứ Hai": "11:00–22:00",
+     "Thứ Ba": "11:00–22:00",
+     "Thứ Tư": "11:00–22:00",
+     "Thứ Năm": "11:00–22:00"
+    },
+    "bookingLinks": [
+     "https://matsurirestaurant.com.vn/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkFjPmQQa2eQ5xo-2ckI4v5Qe3ScLMk9aOAjvD4NVHWF9iJzNKhTmHHApYMcc4BAj16yUYaR_P616_0l-s2XLegK19AB4wlMRYx5_VsM_E4TUiXK7pHVsdNNkf0Y_If9z4CDxWkhtbVe9RE",
+    "cid": "10213303710468026843",
+    "fid": "0x31752f36e59dafeb:0x8dbcf19cbda031db",
+    "placeId": "ChIJ66-d5TYvdTER2zGgvZzxvI0"
+   },
+   {
+    "position": 13,
+    "title": "Izakaya MATSUKI 18A Thai Van Lung",
+    "address": "18 Thái Văn Lung, Bến Nghé, Quận 1, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.780078999999999,
+    "longitude": 106.703907,
+    "rating": 4.9,
+    "ratingCount": 1576,
+    "type": "Nhà hàng Nhật Bản",
+    "types": [
+     "Nhà hàng Nhật Bản",
+     "Nhà hàng"
+    ],
+    "website": "https://www.facebook.com/izakayaMATSUKI",
+    "phoneNumber": "+84 703 838 955",
+    "openingHours": {
+     "Thứ Năm": "17:00–01:30",
+     "Thứ Sáu": "17:00–01:30",
+     "Thứ Bảy": "17:00–01:30",
+     "Chủ Nhật": "17:00–01:30",
+     "Thứ Hai": "17:00–01:30",
+     "Thứ Ba": "17:00–01:30",
+     "Thứ Tư": "17:00–01:30"
+    },
+    "bookingLinks": [
+     "https://www.facebook.com/izakayaMATSUKI?mibextid=LQQJ4d"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk_9FCsyYA88EAsnByLNSVkSJzF3-OniAcE-sEvhUd0DhAiwdZRIdyRpqnAyMIzCt8Pe9TdgCNcXxiVb5-oZRY0rC_OuNLByrtRuFqwj1glMQ6lzIS8lD_94Uze_BykzVkejfbolKuLEsXF",
+    "cid": "4790017852003369032",
+    "fid": "0x31752fc2db0d769d:0x42798fdb9870c048",
+    "placeId": "ChIJnXYN28IvdTERSMBwmNuPeUI"
+   },
+   {
+    "position": 14,
+    "title": "Sushi Cô Bông - Tôn Thất Tùng",
+    "address": "27ab Tôn Thất Tùng, Bến Thành, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7705776,
+    "longitude": 106.68778479999999,
+    "rating": 4.9,
+    "ratingCount": 1253,
+    "type": "Nhà hàng Nhật Bản",
+    "types": [
+     "Nhà hàng Nhật Bản"
+    ],
+    "website": "https://sushicobong.com/",
+    "phoneNumber": "+84 902 848 838",
+    "openingHours": {
+     "Thứ Sáu": "10:30–22:00",
+     "Thứ Bảy": "10:30–22:00",
+     "Chủ Nhật": "10:30–22:00",
+     "Thứ Hai": "10:30–22:00",
+     "Thứ Ba": "10:30–22:00",
+     "Thứ Tư": "10:30–22:00",
+     "Thứ Năm": "10:30–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm6HCo3t2fzkIaGGTA0X5IK_Z-48z6jrIz_aELUM5_aer6PaWZ2ctBge5dKIGcIxCs7g10KU3mD_sGRJ1_ilPWxC_wV7TfM0MrqCDRpNLmHsIUttj5TafkC5mf1m7_WwHzYGWZ7RRklTmhD",
+    "cid": "10303647473348068315",
+    "fid": "0x31752f004e709ae3:0x8efde8c933c343db",
+    "placeId": "ChIJ45pwTgAvdTER20PDM8no_Y4"
+   },
+   {
+    "position": 15,
+    "title": "Sushi Nishitsugu Omakase",
+    "address": "108 Pasteur, Sài Gòn, Hồ Chí Minh 72914, Việt Nam",
+    "latitude": 10.7727842,
+    "longitude": 106.7017116,
+    "rating": 4.9,
+    "ratingCount": 149,
+    "type": "Nhà hàng sushi",
+    "types": [
+     "Nhà hàng sushi"
+    ],
+    "website": "https://gfcapital-vn.com/nishitsugu/",
+    "phoneNumber": "+84 862 058 800",
+    "openingHours": {
+     "Thứ Sáu": "17:30–22:30",
+     "Thứ Bảy": "17:30–22:30",
+     "Chủ Nhật": "17:30–22:30",
+     "Thứ Hai": "17:30–22:30",
+     "Thứ Ba": "Đóng cửa",
+     "Thứ Tư": "17:30–22:30",
+     "Thứ Năm": "17:30–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmz1PJupeVIkdenrKdBGu3WNDq6ANLt6NSz2qQXbpz_pWNQ3e8Jvdr3hJCfd7lrjqQrK3tcphQQkMeHUgkKkWjpdQSfvmf3ts-yYHib7rTo1I6GcIvXSmJg1UoQyMBg6Hhing9iRg",
+    "cid": "15719036978386423710",
+    "fid": "0x317525aec7379a0d:0xda253cd94bf3cf9e",
+    "placeId": "ChIJDZo3x64ldTERns_zS9k8Jdo"
+   },
+   {
+    "position": 16,
+    "title": "Gyu Shige - Ngưu Phồn",
+    "address": "L5 - 02,03, Saigon Centre, 65 Lê Lợi, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7732879,
+    "longitude": 106.70079799999999,
+    "rating": 4.1,
+    "ratingCount": 760,
+    "type": "Nhà hàng món Yakiniku",
+    "types": [
+     "Nhà hàng món Yakiniku"
+    ],
+    "website": "https://gyushige.com.vn/reservation/",
+    "phoneNumber": "+84 911 073 873",
+    "openingHours": {
+     "Thứ Sáu": "10:30–22:00",
+     "Thứ Bảy": "10:30–22:00",
+     "Chủ Nhật": "10:30–22:00",
+     "Thứ Hai": "10:30–22:00",
+     "Thứ Ba": "10:30–22:00",
+     "Thứ Tư": "10:30–22:00",
+     "Thứ Năm": "10:30–22:00"
+    },
+    "bookingLinks": [
+     "https://gyushige.com.vn/reservation/",
+     "https://www.google.com/maps/reserve/v/dine/c/Aa0jGJMUy1I?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWla5pC4i63m7SZjFZjstNBvivxvcXcdrTZNuo__p1O9wVNYC-KNQi7-ojJZECxShYptaPdCMslm6mgzil7hCMpMGVbjDVDEN95NvxlqBfFdYWwuZ-pnAIVAygCoDUHMP4OJFDnKpNJZqT7j",
+    "cid": "12413895137967076366",
+    "fid": "0x31752f47681328ff:0xac4703db3979f40e",
+    "placeId": "ChIJ_ygTaEcvdTERDvR5OdsDR6w"
+   },
+   {
+    "position": 17,
+    "title": "Quán Sushi Cô Chủ Nhỏ 57 Thành Thái",
+    "address": "57 Đ. Thành Thái, Diên Hồng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7726736,
+    "longitude": 106.6649717,
+    "rating": 4.1,
+    "ratingCount": 754,
+    "type": "Nhà hàng Nhật Bản",
+    "types": [
+     "Nhà hàng Nhật Bản"
+    ],
+    "phoneNumber": "+84 969 205 238",
+    "description": "Nhà hàng bình dân, nhộn nhịp này phục vụ nhiều món ngon của Nhật Bản.",
+    "openingHours": {
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00",
+     "Thứ Ba": "10:00–22:00",
+     "Thứ Tư": "10:00–22:00",
+     "Thứ Năm": "10:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlnJ8wdmqhT23GUxQizqpmWjAVdn7WmFROq0Lt90GejSPHNwinhuLCcwzebZfjA9Cw8hC_TUGi72xDwVgCc2dIOW2orj06KkDkHYpk7s8xtFn4vRIvhEv9RT-FqZ-4Cd4j7bgejXQ",
+    "cid": "8652362542440413509",
+    "fid": "0x31752ee7aab63033:0x78135de3e20e7945",
+    "placeId": "ChIJMzC2qucudTERRXkO4uNdE3g"
+   },
+   {
+    "position": 18,
+    "title": "Miya Sushi",
+    "address": "150/43A Nguyễn Trãi, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7703084,
+    "longitude": 106.6897623,
+    "rating": 4.7,
+    "ratingCount": 1403,
+    "type": "Nhà hàng Nhật Bản",
+    "types": [
+     "Nhà hàng Nhật Bản",
+     "Nhà hàng món nướng",
+     "Nhà hàng Nhật Bản chính cống",
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 909 347 544",
+    "openingHours": {
+     "Thứ Sáu": "10:00–14:00, 17:00–22:00",
+     "Thứ Bảy": "10:00–14:00, 17:00–22:00",
+     "Chủ Nhật": "10:00–14:00, 17:00–22:00",
+     "Thứ Hai": "10:00–14:00, 17:00–22:00",
+     "Thứ Ba": "Đóng cửa",
+     "Thứ Tư": "10:00–14:00, 17:00–22:00",
+     "Thứ Năm": "10:00–14:00, 17:00–22:00"
+    },
+    "bookingLinks": [
+     "https://book.chope.co/booking?source=google_dining&rid=miyasushibbq2604vn&rwg_token=AE37R_iHZKbwin37GeNGTrjPDIrZFimR3irCrJR9A__kAudCJYNLGpMgvVDFtuRrAtxNe7fBM7sg3rjTq9HNKq01xn4JYc_9sg11j3m_LL-uzzZoRE9NGIU%3D",
+     "https://www.google.com/maps/reserve/v/dine/c/d1RtbQOahc0?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnIUNNUBM-XwNDEHbKi2GFEaR2Dt_RrGbuX_kguEnRuPStN4KjiVMbFZKUHUlSH3j2ODVoF4bcWoJVFhNax2FuNqjBV2FozSSNpf7QMeletYcE1qawB6cYtQ5sdU8HlEI1DOGi6",
+    "cid": "2983575383374917013",
+    "fid": "0x31752f3d1af6b647:0x2967ca00e6a96d95",
+    "placeId": "ChIJR7b2Gj0vdTERlW2p5gDKZyk"
+   },
+   {
+    "position": 19,
+    "title": "Mo Mo Paradise",
+    "address": "96 Nguyễn Thị Minh Khai, Xuân Hòa, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7804139,
+    "longitude": 106.6953853,
+    "rating": 4.3,
+    "ratingCount": 1152,
+    "type": "Nhà hàng Nhật Bản",
+    "types": [
+     "Nhà hàng Nhật Bản",
+     "Nhà hàng Nhật Bản chính cống",
+     "Nhà hàng Sukiyaki",
+     "Nhà hàng món Sukiyaki và Shabu Shabu"
+    ],
+    "website": "http://www.momoparadise.com.vn/",
+    "phoneNumber": "+84 906 116 060",
+    "openingHours": {
+     "Thứ Sáu": "11:00–22:00",
+     "Thứ Bảy": "11:00–22:00",
+     "Chủ Nhật": "11:00–22:00",
+     "Thứ Hai": "11:00–22:00",
+     "Thứ Ba": "11:00–22:00",
+     "Thứ Tư": "11:00–22:00",
+     "Thứ Năm": "11:00–22:00"
+    },
+    "bookingLinks": [
+     "https://www.facebook.com/momoparadisevietnam/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlBX3nbmPrdHOGtQRcIbJuLYQ_6hE1LvBJWHiVYBc2DCbF5V1oNUktu_ry_isOhf2_N7wL2J_LhFBiWqhQgLrsl4BLagjf0kxJOkY_O4Cqx6EfGsH8WlFmTG9oDxjrXEBQGcNpe",
+    "cid": "5171151247237808677",
+    "fid": "0x31752f37162b578b:0x47c39ea9536d8225",
+    "placeId": "ChIJi1crFjcvdTERJYJtU6mew0c"
+   },
+   {
+    "position": 20,
+    "title": "MAGURO Studio",
+    "address": "19 Đông Du, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.77618,
+    "longitude": 106.704937,
+    "rating": 4.7,
+    "ratingCount": 342,
+    "type": "Nhà hàng Nhật Bản",
+    "types": [
+     "Nhà hàng Nhật Bản"
+    ],
+    "website": "https://magurostudio.com.vn/",
+    "phoneNumber": "+84 907 521 017",
+    "openingHours": {
+     "Thứ Sáu": "11:00–14:00, 18:00–22:00",
+     "Thứ Bảy": "11:00–14:00, 18:00–22:00",
+     "Chủ Nhật": "Đóng cửa",
+     "Thứ Hai": "11:00–14:00, 18:00–22:00",
+     "Thứ Ba": "11:00–14:00, 18:00–22:00",
+     "Thứ Tư": "11:00–14:00, 18:00–22:00",
+     "Thứ Năm": "11:00–14:00, 18:00–22:00"
+    },
+    "bookingLinks": [
+     "https://www.tablecheck.com/maguro-studio/reserve?utm_source=google&rwg_token=AE37R_i5gY3IPt80MHWdbhGYkoawtpAIr2tO5heHWlplKU36Fo2wAM26yTLGn6GyN9UviT_UomEN86Pu-yyQi188RvbErsyEqv-FNLVYOx_SVgx3Gx25WhE%3D",
+     "https://www.google.com/maps/reserve/v/dine/c/m3i6EYOvu_U?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkozUJfjxnRE5nx7Av1nsZPc9jgLTkzqmX__YDX-K3DLYxgrr5JBMi8gRCbZqcIb8q88fM5nJcHjx1aYOpJWT5U1g7SSU5Lr6TKW_NiHMM8S5HpF_gfPSleM9QWoBeDrrPKs74x",
+    "cid": "10728735167539608207",
+    "fid": "0x31752fb3d78f4021:0x94e41fcaa6707a8f",
+    "placeId": "ChIJIUCP17MvdTERj3pwpsof5JQ"
+   }
+  ],
+  "credits": 3
+ }
+}

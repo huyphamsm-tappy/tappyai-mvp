@@ -30,20 +30,27 @@ describe('the chat route still makes exactly one model call', () => {
   // announced its plan and stopped may make at most one extra call, from inside the plan-completion
   // wrapper's `complete` callback (planCompletion.ts calls it at most once, only when the block is
   // missing). Any other AI.generate() in the route is still forbidden.
-  it('no AI.generate() was introduced for ranking, need extraction or the Pick — only the plan completion and the consult brain', () => {
+  // Wave 4 (C-PRE-1, Owner decision 27/10 "chạy A→Z"): ONE more narrow exception of the same kind - a tool loop that ended with NO text (every step a tool call) gets at most one extra call
+  // with NO tools from inside the final-write wrapper's `complete` callback (finalWrite.ts calls it at most once, only when the turn streamed no text and ran tools; under CONSULT_FINAL_SYNTHESIS).
+  it('no AI.generate() was introduced for ranking, need extraction or the Pick — only the plan completion, the final write and the consult brain', () => {
     const src = code(ROUTE)
     const calls = [...src.matchAll(/AI\.generate\(/g)].map(m => m.index!)
     // Owner 2026-09-29 ("LÀM LẠI AI TƯ VẤN"): the consult brain is ONE small classification call
     // (runConsultBrain, consultBrain.ts) — the only addition; ranking / need extraction / the pick stay out.
-    expect(calls.length).toBeLessThanOrEqual(2)
+    expect(calls.length).toBeLessThanOrEqual(3)
+    let underFinalWrite = 0
     for (const at of calls) {
       const brain = src.lastIndexOf('runConsultBrain(', at)
       if (brain > -1 && at - brain < 200) continue
-      const wrap = src.lastIndexOf('planCompletionStream(', at)
+      const plan = src.lastIndexOf('planCompletionStream(', at)
+      const fin = src.lastIndexOf('finalWriteStream(', at)
+      const wrap = Math.max(plan, fin) // the nearest wrapper before the call
       expect(wrap).toBeGreaterThan(-1)
+      if (wrap === fin) underFinalWrite++
       expect(src.slice(wrap, at)).toMatch(/complete: async/)
       expect(at - wrap).toBeLessThan(1200)
     }
+    expect(underFinalWrite).toBeLessThanOrEqual(1)
   })
 })
 

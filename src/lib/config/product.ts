@@ -16,14 +16,21 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 // knowledge library — never touches it. Enforced server-side in `lib/ai/quota/aiQuestionQuota.ts`;
 // clients read these numbers via GET /api/config and /api/subscription for DISPLAY only.
 //
-/** Logged-in free tier: AI questions per VN day, across the whole product (Phase 7 canonical catalog: Free = 10/day). */
-export const FREE_DAILY_LIMIT = 10
+/**
+ * Owner 01/11/2026: a signed-in account has NO question limit (every plan, Free included) - shown as "Không giới hạn câu hỏi AI".
+ * These two numbers are only the HIDDEN anti-abuse ceilings per VN day (owner approved: 300 Free, 1000 paid), never advertised;
+ * real use is far below them. (Was Free = 10/day, paid = 30/day.)
+ */
+export const FREE_DAILY_LIMIT = 300
+export const PAID_DAILY_CEILING = 1000
+/** For display: accounts have no question limit (the ceilings above are anti-abuse only). Read by the clients via GET /api/config. */
+export const ACCOUNT_QUESTIONS_UNLIMITED = true
 /**
  * Anonymous visitors: AI questions for the LIFETIME of the anonymous identity — a one-time trial,
- * not a daily allowance. Five, once; then an account. Not per day, not per session, not per
- * return visit. (Was `ANON_DAILY_LIMIT`, five per VN day, until 2026-09-15.)
+ * not a daily allowance. Ten, once (owner 01/11/2026: "10 câu hỏi đầu, câu 11 bắt tạo account"; was five); then an account.
+ * Not per day, not per session, not per return visit. (Was `ANON_DAILY_LIMIT`, five per VN day, until 2026-09-15.)
  */
-export const ANON_LIFETIME_LIMIT = 5
+export const ANON_LIFETIME_LIMIT = 10
 
 // ── G1 growth: share-out + anonymous follow-up policy ───────────────────────
 //

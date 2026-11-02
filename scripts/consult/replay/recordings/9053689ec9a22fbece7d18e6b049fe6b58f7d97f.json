@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com/vn AirPods Pro 2 thời lượng pin nghe nhạc hộp sạc giờ",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:20:26.395Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com/vn AirPods Pro 2 thời lượng pin nghe nhạc hộp sạc giờ",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "AirPods Pro 3 - Thông Số Kỹ Thuật",
+    "link": "https://www.apple.com/vn/airpods-pro/specs/",
+    "snippet": "Thời gian nghe lên đến 8 giờ với một lần sạc khi bật tính năng Chủ Động Khử Tiếng Ồn (lên đến 7,5 giờ khi bật Âm Thanh Không Gian và Theo Dõi Chuyển Động Đầu) ...",
+    "position": 1
+   },
+   {
+    "title": "So Sánh Các Phiên Bản AirPods",
+    "link": "https://www.apple.com/vn/airpods/compare/",
+    "snippet": "Thời lượng pin lên đến 8 giờ với một lần sạc khi bật tính năng Chủ Động Khử Tiếng Ồn (lên đến 7,5 giờ khi bật Âm Thanh Không. Đầu) Thời lượng pin lên đến 5 giờ ...",
+    "position": 2
+   },
+   {
+    "title": "Apple giới thiệu AirPods 5 với tính năng Chủ Động Khử ...",
+    "link": "https://www.apple.com/vn/newsroom/2026/09/apple-introduces-airpods-5-featuring-best-in-class-open-ear-active-noise-cancellation/",
+    "snippet": "AirPods 5 với Hộp Sạc Không Dây mang lại thời lượng pin dài hơn cùng khả năng điều chỉnh âm lượng ngay trên thân tai nghe, với mức giá 4.299. ...",
+    "date": "10 thg 9, 2026",
+    "position": 3
+   },
+   {
+    "title": "AirPods Max 2",
+    "link": "https://www.apple.com/vn/airpods-max/",
+    "snippet": "Thời lượng pin đáng kể. Thời gian nghe lên đến 20 giờ Pin. Thời gian nghe nhạc hoặc xem phim lên đến 20 giờ khi bật tính năng Chủ Động Khử Tiếng Ồn và Âm Thanh ...",
+    "position": 4
+   },
+   {
+    "title": "Apple công bố thế hệ AirPods Pro tiếp theo",
+    "link": "https://www.apple.com/vn/newsroom/2022/09/apple-announces-the-next-generation-of-airpods-pro/",
+    "snippet": "Thời lượng pin dài hơn AirPods Pro có thêm thời gian nghe là 1,5 giờ so với thế hệ đầu tiên, như vậy tổng thời gian nghe lên tới 6 giờ với công ...",
+    "date": "7 thg 9, 2022",
+    "position": 5
+   },
+   {
+    "title": "Mua AirPods Pro 3",
+    "link": "https://www.apple.com/vn/shop/buy-airpods/airpods-pro-3",
+    "snippet": "Hộp Sạc MagSafe (USB-C) nay có thời lượng pin lên đến 10 giờ ở chế độ Xuyên Âm. Sạc MagSafe (USB-C)",
+    "position": 6
+   },
+   {
+    "title": "Mua AirPods Max 2 - Đêm Xanh Thẳm",
+    "link": "https://www.apple.com/vn-edu/shop/buy-airpods/airpods-max-2/%C4%91%C3%AAm-xanh-th%E1%BA%B3m",
+    "snippet": "AirPods Max 2. Âm thanh có độ trung thực cao, Chủ Động Khử Tiếng Ồn cải tiến, các tính năng thông minh mới. Miễn phí vận chuyển và khắc hình khi mua tại ...",
+    "position": 7
+   },
+   {
+    "title": "AirPods Pro 3 - Sức Khỏe Thính Giác",
+    "link": "https://www.apple.com/vn/airpods-pro/hearing-health/",
+    "snippet": "AirPods Pro 2 cung. Nay tăng thêm 67% thời lượng pin ở chế độ Xuyên Âm chỉ với một lần sạc trên AirPods Pro 3. 2 Chỉ cần bật lên và nghe rõ ràng mọi âm thanh.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

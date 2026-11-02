@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Samsung Galaxy Buds 3 Pro site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:11:04.554Z",
+ "body": {
+  "searchParameters": {
+   "q": "Samsung Galaxy Buds 3 Pro site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Galaxy buds 3 pro - Giá Tốt, Sale Tháng 10, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/tai%20nghe%20bluetooth/samsung/galaxy%20buds%203%20pro",
+    "snippet": "Tai Nghe Bluetooth Không Dây Cao Cấp,Chống Ồn Chủ Động,Âm Thanh HiFi Sống Động Tự Động Kết Nối Cảm Ứng Mượt. 329.000₫. 499.000₫.",
+    "position": 1
+   },
+   {
+    "title": "Ốp Từ Tính Cho Galaxy Buds 3 Pro Có Chân Đế Điện ...",
+    "link": "https://shopee.vn/%E1%BB%90p-T%E1%BB%AB-T%C3%ADnh-Cho-Galaxy-Buds-3-Pro-C%C3%B3-Ch%C3%A2n-%C4%90%E1%BA%BF-%C4%90i%E1%BB%87n-Tho%E1%BA%A1i-V%C3%B4-H%C3%ACnh-T%C6%B0%C6%A1ng-Th%C3%ADch-Cho-Samsung-Galaxy-Buds-3-FE-Kh%C3%B3a-An-To%C3%A0n-To%C3%A0n-To%C3%A0n-Th%C3%A2n-V%E1%BB%8F-B%E1%BA%A3o-V%E1%BB%87-Ch%E1%BB%91ng-S%E1%BB%91c-C%C3%B3-Carabiner-i.348526440.25092191607",
+    "snippet": "Ốp Từ Tính Cho Galaxy Buds 3 Pro Có Chân Đế Điện Thoại Vô Hình, Tương Thích Cho Samsung Galaxy Buds 3 FE, Khóa An Toàn Toàn Toàn Thân Vỏ Bảo Vệ Chống Sốc Có ...",
+    "rating": 4.9,
+    "ratingCount": 587,
+    "position": 2
+   },
+   {
+    "title": "Cặp Nút Đệm Tai Nghe Silicone Thay Thế Cho Samsung ...",
+    "link": "https://shopee.vn/C%E1%BA%B7p-N%C3%BAt-%C4%90%E1%BB%87m-Tai-Nghe-Silicone-Thay-Th%E1%BA%BF-Cho-Samsung-Galaxy-Buds-3-Pro-Buds-3-FE-Galaxy-Buds-4-Pro-i.241693511.42409203028",
+    "snippet": "Mua Cặp Nút Đệm Tai Nghe Silicone Thay Thế Cho Samsung Galaxy Buds 3 Pro / Buds 3 FE / Galaxy Buds 4 Pro giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.8,
+    "ratingCount": 12,
+    "position": 3
+   },
+   {
+    "title": "Tai Nghe Không Dây Bluetooth Samsung Galaxy Buds 3 ...",
+    "link": "https://shopee.vn/Tai-Nghe-Kh%C3%B4ng-D%C3%A2y-Bluetooth-Samsung-Galaxy-Buds-3-Pro-R630-Phi%C3%AAn-D%E1%BB%8Bch-Tr%E1%BB%B1c-Ti%E1%BA%BFp-Tr%C3%AAn-Cu%E1%BB%99c-G%E1%BB%8Di-Ch%C3%ADnh-H%C3%A3ng-i.1388358182.28077431384",
+    "snippet": "Tai Nghe Không Dây Bluetooth Samsung Galaxy Buds 3 Pro R630 | Phiên Dịch Trực Tiếp Trên Cuộc Gọi - Chính Hãng. outline grey truck icon. Không hỗ trợ.",
+    "rating": 5,
+    "ratingCount": 7,
+    "position": 4
+   },
+   {
+    "title": "【Hot sale】Cho Samsung Galaxy Buds 3 Pro ốp tai ng Case phim ...",
+    "link": "https://shopee.vn/%E3%80%90Hot-sale%E3%80%91Cho-Samsung-Galaxy-Buds-3-Pro-%E1%BB%91p-tai-ng-Case-phim-ho%E1%BA%A1t-h%C3%ACnh-%C4%90%E1%BB%99c-%C4%91%C3%A1o-V%E1%BB%8F-B%E1%BA%A3o-V%E1%BB%87-H%E1%BB%99p-S%E1%BA%A1c-NO.2-i.744965948.29772249847",
+    "snippet": "【Hot sale】Cho Samsung Galaxy Buds 3 Pro ốp tai ng Case phim hoạt hình Độc đáo Vỏ Bảo Vệ Hộp Sạc NO.2 ... Tặng Voucher 15.000₫ nếu đơn giao sau thời gian trên.",
+    "position": 5
+   },
+   {
+    "title": "Dành Cho Samsung Galaxy Buds 3 Fe / Buds3 / nụ 3 Pro Vỏ Tai ...",
+    "link": "https://shopee.vn/D%C3%A0nh-Cho-Samsung-Galaxy-Buds-3-Fe-Buds3-n%E1%BB%A5-3-Pro-V%E1%BB%8F-Tai-Nghe-Ch%E1%BB%91ng-S%E1%BB%91c-Galaxy-Buds-3-Pro-V%E1%BB%8F-Silicon-Ch%E1%BB%91ng-S%E1%BB%91c-i.1682061767.54853106480?extraParams=%7B%22display_model_id%22%3A345299472176%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "Dành Cho Samsung Galaxy Buds 3 Fe / Buds3 / nụ 3 Pro Vỏ Tai Nghe Chống Sốc Galaxy Buds 3 Pro Vỏ Silicon Chống Sốc ... Tặng Voucher 15.000₫ nếu đơn giao sau thời ...",
+    "position": 6
+   },
+   {
+    "title": "Ốp Lưng Hoạt Hình KT Cho Samsung Galaxy Buds 3 Pro Trong ...",
+    "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-Ho%E1%BA%A1t-H%C3%ACnh-KT-Cho-Samsung-Galaxy-Buds-3-Pro-Trong-Su%E1%BB%91t-Hoa-Tai-Nghe-Kh%C3%B4ng-D%C3%A2y-Cho-Samsung-Buds3-V%E1%BB%8F-B%E1%BA%A3o-V%E1%BB%87-i.344803939.29084157490",
+    "snippet": "Ốp Lưng Hoạt Hình KT Cho Samsung Galaxy Buds 3 Pro Trong Suốt Hoa Tai Nghe Không Dây Cho Samsung Buds3 Vỏ Bảo Vệ ... Tặng Voucher 15.000₫ nếu đơn giao sau thời ...",
+    "position": 7
+   },
+   {
+    "title": "Dành Cho Samsung Galaxy Buds 3 / 3 Pro R630N R530N Case ...",
+    "link": "https://shopee.vn/D%C3%A0nh-Cho-Samsung-Galaxy-Buds-3-3-Pro-R630N-R530N-Case-%E1%BB%91p-tai-ng-Tai-Nghe-Hoa-D%E1%BB%85-Th%C6%B0%C6%A1ng-%C4%90%E1%BB%99ng-V%E1%BA%ADt-Hoa-Tulip-M%E1%BA%B7t-C%C6%B0%E1%BB%9Di-i.1006251176.26481317710",
+    "snippet": "Dành Cho Samsung Galaxy Buds 3 / 3 Pro R630N R530N Case ốp tai ng Tai Nghe Hoa Dễ Thương Động Vật Hoa Tulip Mặt Cười ... Tặng Voucher 15.000₫ nếu đơn giao sau ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Apple MacBook Air 13 inch\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:56:55.072Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Apple MacBook Air 13 inch\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Apple Macbook Air 13 Inch M4 Midnight Vs Sky Blue",
+    "link": "https://www.tiktok.com/discover/apple-macbook-air-13-inch-m4-midnight-vs-sky-blue",
+    "snippet": "11.3M posts. Discover videos related to Apple Macbook Air 13 Inch M4 Midnight Vs Sky Blue on TikTok. See more videos about Macbook Air 13 ...",
+    "date": "28 thg 9, 2026",
+    "position": 1
+   },
+   {
+    "title": "Apple Macbook Air 13 Inch Laptop Apple M4 Chip Case",
+    "link": "https://www.tiktok.com/shop/product/apple-macbook-air-13-inch-laptop-apple-m4-chip-case",
+    "snippet": "Check out Apple Macbook Air 13 Inch Laptop Apple M4 Chip Case selection on TikTok Shop and get free shipping on eligible items. Discover trending items and ...",
+    "position": 2
+   },
+   {
+    "title": "13 Inch Macbook Air Vs 15 Inch Macbook Air Sound Test",
+    "link": "https://www.tiktok.com/discover/13-inch-macbook-air-vs-15-inch-macbook-air-sound-test",
+    "snippet": "Apple Macbook Air 13 Inch Sky Blue. 899Likes. 13Comments. 76Shares. 13インチ vs 15インチ MacBook Air: 比較動画と大きさ - マックブックエア. どちらを選ぶ？13 ...",
+    "position": 3
+   },
+   {
+    "title": "Apple MacBook Air 13-inch M4",
+    "link": "https://shop.tiktok.com/my/pdp/apple-macbook-air-13-inci-m4-papan-kekal-ringan/1731071684011394539",
+    "snippet": "Apple MacBook Air 13-inch M4. 7 / 11. Apple MacBook Air 13-inch M4. 8 / 11. Apple MacBook Air 13-inch M4. 9 / 11. Sky Blue. 10 / 11. RM4,499.00. Apple MacBook ...",
+    "position": 4
+   },
+   {
+    "title": "How to Use The Apple Macbook Air 13 Inch M4 Woth My ...",
+    "link": "https://www.tiktok.com/discover/how-to-use-the-apple-macbook-air-13-inch-m4-woth-my-cricut-xtra-joy-machine",
+    "snippet": "25.8M posts. Discover videos related to How to Use The Apple Macbook Air 13 Inch M4 Woth My Cricut Xtra Joy Machine on TikTok.",
+    "date": "28 thg 9, 2026",
+    "position": 5
+   },
+   {
+    "title": "2025 Apple Macbook Air 13 Inch with M4 Review",
+    "link": "https://www.tiktok.com/discover/2025-apple-macbook-air-13-inch-with-m4-review",
+    "snippet": "Explore the 2025 Apple MacBook Air 13 inch with M4 chip review, highlighting key features and performance. Last updated 2026-07-27.",
+    "position": 6
+   },
+   {
+    "title": "apple macbook air 13 inch m3 review",
+    "link": "https://shop.tiktok.com/us/k/apple-macbook-air-13-inch-m3-review",
+    "snippet": "The Apple MacBook Air 13-inch M3 is a remarkable laptop that combines efficiency with portability, making it a favorite among students and...",
+    "position": 7
+   },
+   {
+    "title": "Apple MacBook Air (13-inch, M2)",
+    "link": "https://shop.tiktok.com/my/pdp/apple-macbook-air-13-inci-m2-chip-bateri-tahan-lama-layar-retina/1729606174846191083",
+    "snippet": "The MacBook Air M2 offers the best performance for a mid-range laptop.\" Product Review of Apple MacBook Air (13-inch, M2) from S*.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

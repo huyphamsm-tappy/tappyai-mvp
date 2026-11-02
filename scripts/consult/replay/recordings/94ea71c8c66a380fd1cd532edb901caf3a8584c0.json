@@ -1,0 +1,58 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:mof.gov.vn 25/2021/TT-BTC hộ chiếu lệ phí 2",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:04:41.502Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:mof.gov.vn 25/2021/TT-BTC hộ chiếu lệ phí 2",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Bộ TÀI CHÍNH CỘNG HÒA XẴ HỘI CHỦ NGHĨA VIỆT NAM Độc lập ...",
+    "link": "https://vbpq.mof.gov.vn/DKC.FileManagement/FileStorage/File/107847",
+    "snippet": "2. Chi phí làm hộ chiếu, visa: Thanh toán theo mức quy định của Nhà nước đối với chi phí làm hộ chiếu và theo hóa đơn lệ phí visa thực tế của các nước nơi.",
+    "position": 1
+   },
+   {
+    "title": "Hạnh phúc Số: 63/2023/TT-BTC Hà N",
+    "link": "https://vbpq.mof.gov.vn/DKC.FileManagement/FileStorage/File/179486",
+    "snippet": "Mức thu phí, lệ phí trong lĩnh vực năng lượng nguyên tử thực hiện theo quy định tại Biểu mức thu phí, lộ phí ban hành kèm theo Thông tư này. 2.",
+    "date": "16 thg 10, 2023",
+    "position": 2
+   },
+   {
+    "title": "Tự do - Hạnh phúc Số: 47/2021/TT-BTC Hà N",
+    "link": "https://vbpq.mof.gov.vn/DKC.FileManagement/FileStorage/File/104271",
+    "snippet": "21 Lệ phí cấp hộ chiếu, giấy thông hành, giấy phép xuất cảnh, tem AB. Bằng 80% mức thu lệ phí quy định tại Mục I. Biểu mức thu phí, lệ phí ban ...",
+    "date": "6 thg 5, 2021",
+    "position": 3
+   },
+   {
+    "title": "Tự do - Hạnh phúc Số: 44/2023/ IT-BTC Hà N",
+    "link": "https://vbpq.mof.gov.vn/DKC.FileManagement/FileStorage/File/179454",
+    "snippet": "lực của Băng bảo hộ. 207/2016/TT-BTC. 21 Lệ phí cấp hộ chiếu, giấy thông hành, giấy phép xuất cảnh, tem AB. Bằng 80% mức thu lệ phí quy định tại ...",
+    "date": "29 thg 6, 2023",
+    "position": 4
+   },
+   {
+    "title": "55/2023/TT-BTC CỘNG HOÀ XÃ HỘI CHỦ NGHĨA ...",
+    "link": "https://vbpq.mof.gov.vn/DKC.FileManagement/FileStorage/File/179476",
+    "snippet": "- Chi phí làm thủ tục đối với người lao động đi làm việc ở nước ngoài: + Lệ phí cấp hộ chiếu, giấy thông hành, giấy phép xuất cảnh: mức chi.",
+    "date": "16 thg 8, 2023",
+    "position": 5
+   }
+  ],
+  "credits": 1
+ }
+}

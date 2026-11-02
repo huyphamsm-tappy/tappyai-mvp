@@ -1,0 +1,42 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Baseus Tai nghe Bluetooth TWS Baseus Eli Sport 2 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:20:09.049Z",
+ "body": {
+  "searchParameters": {
+   "q": "Baseus Tai nghe Bluetooth TWS Baseus Eli Sport 2 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Baseus Eli 10i Fit Open-Ear TWS Earbuds Bluetooth 5.4 ...",
+    "link": "https://shop.tiktok.com/vn/pdp/open-ear-tws-earbuds-baseus-eli-10i-bluetooth-5-4-waterproof-12h-playtime/1731159545574623784",
+    "snippet": "Mô tả sản phẩm ; Bluetooth Version · V5.4 ; Communication Distance · 10 meters ; Music Playback Time · Approximately 12 hours ; Battery Capacity · 65 mAh / 0.193 Wh( ...",
+    "position": 1
+   },
+   {
+    "title": "huawei beatle - TikTok Shop Vietnam",
+    "link": "https://shop.tiktok.com/vn/k/huawei-beatle",
+    "snippet": "Tai Nghe Bluetooth TWS Baseus Eli Sport 2 (Bluetooth v6.0, 8H, IP57, SuperBass 2.0, Hi-Res ...",
+    "position": 2
+   },
+   {
+    "title": "TikTok Shop Vietnam",
+    "link": "https://shop.tiktok.com/vn/pdp/tai-nghe-bluetooth-tws-5-3-am-thanh-hifi-den-cho-xiaomi-huawei/1731359426409302355",
+    "snippet": "( LUX-A3 ) Tai Nghe Bluetooth Không Dây LUX A3 , Âm Thanh Hay, Êm Ái. Có MICRO Nghe Gọi ,Tặng Ốp-Cảm Ứng Chạm, Kết Nối Mọi Dòng Máy- tai nghe không dây , Hiệu ...",
+    "position": 3
+   }
+  ],
+  "credits": 1
+ }
+}

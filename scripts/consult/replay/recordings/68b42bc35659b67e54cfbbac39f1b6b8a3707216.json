@@ -1,0 +1,48 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com \"AirPods Pro 2\" \"30 hours\" listening",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:47:27.783Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com \"AirPods Pro 2\" \"30 hours\" listening",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "AirPods Pro 2 - Tech Specs",
+    "link": "https://support.apple.com/en-us/111851",
+    "snippet": "AirPods Pro 2 - Tech Specs. ... Up to 30 hours of listening time5. 5 minutes in the case provides around 1 ...",
+    "position": 1
+   },
+   {
+    "title": "AirPods Pro 2 with MagSafe Charging Case (USB-C)",
+    "link": "https://support.apple.com/en-us/111834",
+    "snippet": "AirPods Pro 2 with MagSafe Charging Case (USB-C) - Tech Specs. ... Up to 30 hours of listening time14. 5 minutes in the case provides around 1 ...",
+    "position": 2
+   },
+   {
+    "title": "Airpods Pro 2nd gen case battery drain",
+    "link": "https://discussions.apple.com/thread/254459124?page=5",
+    "snippet": "With this pace, I can never reach the advertised 30 hours of play time even without ANC. ... airpods-pro-2-case-battery-drain.2363995/. 􁾨Helpful. Upvote if ...",
+    "position": 3
+   },
+   {
+    "title": "Airpods Pro 2nd gen case battery drain",
+    "link": "https://discussions.apple.com/thread/254459124?page=10",
+    "snippet": "With this pace, I can never reach the advertised 30 hours of play time even without ANC. ... Try to charge your AirPods Pro 2 at 85%-90% but never at 100% !!!",
+    "position": 4
+   }
+  ],
+  "credits": 1
+ }
+}
