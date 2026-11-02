@@ -169,7 +169,7 @@ import { asksOtherDestination, eventPreCall, nearbyDestination, nearbyTurnedDown
 import { geoGuardArea, guardPlaceGeography } from '@/lib/ai/tools/placeGeoGuard'
 import { compactCandidates, compactProducts, loadChatSessionState, nextChatSessionState, readChatSessionId, saveChatSessionState, type ChatSessionState } from '@/lib/ai/consultative/chatSessionState'
 import { turnUsd, sumCounts, turnCostStream, type TurnCostInfo } from '@/lib/ai/turnCost'
-import { recordAiUsage, ledgerMode } from '@/lib/ai/usage/usageLedger'
+import { recordAiUsage, ledgerMode, usageSplit } from '@/lib/ai/usage/usageLedger'
 import { responsesConfigured } from '@/lib/ai/llm/providers/openai'
 import { coveringQuery, planPresearch, planFlightPresearch, type FlightPresearchPlan, presearchMessages, presearchFrames, presearchPlaceSites, prefixBody, deferredBody, searchingFrame, type PresearchOutcome, type PresearchPlan } from '@/lib/ai/consultative/presearch'
 import { wantsMoreFromSet, reusablePlaceSearch, type PlaceSearchEvidence } from '@/lib/ai/consultative/moreFromSet'
@@ -2692,7 +2692,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // plan, mode, the deepest web lookup, the turn's price and counts - never a word of the conversation. Reporting only; fire and forget.
   const turnSearch: { depth: 'none' | SearchDepth } = { depth: 'none' }
   const usageSink = (i: TurnCostInfo, extra: { parallelCalls?: number; ok?: boolean } = {}) => {
-    void recordAiUsage({ userId: authedUserId ?? null, plan: quotaPlan, mode: ledgerMode(chatMode, autoThink.on, responsesConfigured()), searchDepth: turnSearch.depth, costUsd: i.usd, tokensIn: i.tokensIn, tokensOut: i.tokensOut, serperCalls: i.serperCalls, ...extra })
+    void recordAiUsage({ userId: authedUserId ?? null, plan: quotaPlan, mode: ledgerMode(chatMode, autoThink.on, responsesConfigured()), searchDepth: turnSearch.depth, costUsd: i.usd, tokensIn: i.tokensIn, tokensOut: i.tokensOut, serperCalls: i.serperCalls, ...usageSplit(i), ...extra })
   }
   const tools = noToolTurn && !agentOn ? undefined : gateTools(timeTools({
       // A movie/show RECOMMENDATION turn drops the place search entirely, so the
@@ -3616,7 +3616,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         return { usd: Math.round((turnUsd({ promptTokens: 0, completionTokens: 0, serperCredits: d.credits }) + (par?.sent() ?? 0) * PARALLEL_PRICE.searchFastUsd) * 1e6) / 1e6, calls: sumCounts(d.calls) + (par?.sent() ?? 0) }
       },
       onFailed: async reason => { await refundQuotaOnFailure(`deep_research_${reason}`); await refundAiQuestion(deepRefund) },
-      onUsage: u => { turnSearch.depth = 'thorough'; usageSink({ domain: null, turnType: 'deep_research', model: 'luna', tokensIn: 0, tokensOut: 0, serperCalls: u.searchCalls - (par?.sent() ?? 0), cacheHits: 0, usd: u.usd }, { parallelCalls: par?.sent() ?? 0, ok: u.ok }) },
+      onUsage: u => { turnSearch.depth = 'thorough'; usageSink({ domain: null, turnType: 'deep_research', model: 'luna', tokensIn: 0, tokensOut: 0, serperCalls: u.searchCalls - (par?.sent() ?? 0), cacheHits: 0, usd: u.usd, answerUsd: u.llmUsd, serperUsd: u.serperUsd }, { parallelCalls: par?.sent() ?? 0, ok: u.ok }) },
     })
   }
   // ── TAPPY_AGENT: the bounded agent turn (src/lib/ai/agent) ──────────────────────────────────────────────────────────────

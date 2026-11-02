@@ -1,6 +1,6 @@
 // 01/11 (owner: "bảng thống kê chi phí - làm ngay"): the usage ledger writes one row per turn of a signed-in account, reporting only.
 import { describe, it, expect, vi, afterEach } from 'vitest'
-import { usageRow, recordAiUsage, aiUsageLedgerOn, ledgerMode, type AiUsageEvent } from './usageLedger'
+import { usageRow, recordAiUsage, aiUsageLedgerOn, ledgerMode, usageSplit, type AiUsageEvent } from './usageLedger'
 import { turnCostStream, type TurnCostInfo } from '@/lib/ai/turnCost'
 
 const USER = '0b9a5c1e-2f3d-4a6b-8c7d-1e2f3a4b5c6d'
@@ -10,8 +10,19 @@ afterEach(() => vi.restoreAllMocks())
 
 describe('usageRow', () => {
   it('the row the table takes: counts and the price, rounded and bounded; never a word of the conversation', () => {
-    expect(usageRow(EV)).toEqual({ user_id: USER, plan: 'promax', mode: 'chat', search_depth: 'thorough', cost_usd: 0.012346, tokens_in: 1200, tokens_out: 300, serper_calls: 3, parallel_calls: 0, ok: true })
+    expect(usageRow(EV)).toEqual({ user_id: USER, plan: 'promax', mode: 'chat', search_depth: 'thorough', cost_usd: 0.012346, tokens_in: 1200, tokens_out: 300, serper_calls: 3, parallel_calls: 0, ok: true, llm_usd: 0, serper_usd: 0, cached_tokens_in: 0, reasoning_tokens: 0, serper_cache_hits: 0, turn_type: '' })
     expect(Object.keys(usageRow(EV)!)).not.toContain('question')
+  })
+  // 02/11 (owner: "bật bảng đo để coi chi phí câu thường, web search, nghiên cứu sâu"): the split the cost decisions need - model price vs
+  // search price, the tokens served from the provider's cache, the thinking tokens, the Serper cache hits, and the kind of turn.
+  it('the cost split: model price, search price, cached input, thinking tokens, Serper cache hits and the turn type', () => {
+    const r = usageRow({ ...EV, llmUsd: 0.0045678, serperUsd: 0.008, cachedTokensIn: 52000, reasoningTokens: 734, serperCacheHits: 2, turnType: 'one_brain' })!
+    expect(r).toMatchObject({ llm_usd: 0.004568, serper_usd: 0.008, cached_tokens_in: 52000, reasoning_tokens: 734, serper_cache_hits: 2, turn_type: 'one_brain' })
+  })
+  it('the split is clamped like the rest: negatives and junk become 0, the turn type is a short word', () => {
+    const r = usageRow({ ...EV, llmUsd: -1, serperUsd: NaN, cachedTokensIn: -5, reasoningTokens: 1.9, serperCacheHits: Infinity, turnType: 'Deep Research!! with a very long name indeed' })!
+    expect(r).toMatchObject({ llm_usd: 0, serper_usd: 0, cached_tokens_in: 0, reasoning_tokens: 1, serper_cache_hits: 0 })
+    expect(r.turn_type).toMatch(/^[a-z0-9_-]{0,24}$/)
   })
   it('no signed-in account (a guest, an anonymous id that is not a uuid) → no row', () => {
     expect(usageRow({ ...EV, userId: null })).toBeNull()
@@ -36,6 +47,22 @@ describe('ledgerMode (review 02/11: the mode that really served the turn)', () =
   })
   it('the other modes are what was asked', () => {
     for (const m of ['chat', 'web', 'deep'] as const) for (const r of [true, false]) expect(ledgerMode(m, false, r)).toBe(m)
+  })
+})
+
+describe('usageSplit (the turn\'s cost info → the ledger fields)', () => {
+  it('a chat turn: the model price, the search price, cached input, thinking tokens, Serper cache hits, the turn type', () => {
+    const i: TurnCostInfo = { domain: null, turnType: 'one_brain', model: 'luna', tokensIn: 73000, tokensOut: 1700, serperCalls: 6, cacheHits: 2, usd: 0.0125, answerUsd: 0.0045, serperUsd: 0.008, reasoningTokens: 734, lunaCachedIn: 52000 }
+    expect(usageSplit(i)).toEqual({ llmUsd: 0.0045, serperUsd: 0.008, cachedTokensIn: 52000, reasoningTokens: 734, serperCacheHits: 2, turnType: 'one_brain' })
+  })
+  it('a turn that did not report the split (an older path): the model price is what is left after the search price, never negative', () => {
+    const i: TurnCostInfo = { domain: null, turnType: 'ask', model: 'haiku-4.5', tokensIn: 100, tokensOut: 20, serperCalls: 0, cacheHits: 0, usd: 0.003 }
+    expect(usageSplit(i)).toMatchObject({ llmUsd: 0.003, serperUsd: 0, cachedTokensIn: 0, reasoningTokens: 0, serperCacheHits: 0, turnType: 'ask' })
+    expect(usageSplit({ ...i, usd: 0.001, serperUsd: 0.002 }).llmUsd).toBe(0)
+  })
+  it('a Deep Research run: the split is passed through as given', () => {
+    const i: TurnCostInfo = { domain: null, turnType: 'deep_research', model: 'luna', tokensIn: 0, tokensOut: 0, serperCalls: 14, cacheHits: 0, usd: 0.02, answerUsd: 0.009, serperUsd: 0.011 }
+    expect(usageSplit(i)).toMatchObject({ llmUsd: 0.009, serperUsd: 0.011, turnType: 'deep_research' })
   })
 })
 

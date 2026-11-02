@@ -5,6 +5,7 @@
 // person wrote or read is stored. Written by the server with the service role, after the turn, never awaited by the answer: a failed
 // write costs one log line (counts only) and nothing else. Behind AI_USAGE_LEDGER=1 (off until the migration is applied).
 import { createAdminClient } from '@/lib/supabase/admin'
+import type { TurnCostInfo } from '@/lib/ai/turnCost'
 
 /** 01/11: 'auto' = a Tự động turn that stayed Chat; 'auto_think' = one where the model turned thinking on. */
 export type UsageMode = 'chat' | 'web' | 'think' | 'deep' | 'auto' | 'auto_think'
@@ -20,6 +21,29 @@ export interface AiUsageEvent {
   serperCalls?: number
   parallelCalls?: number
   ok?: boolean
+  // 02/11 (cost split): what the cost decisions need beyond the total. All counts or prices, never a word of the conversation.
+  /** the model's part of `costUsd` (tokens at list price) */
+  llmUsd?: number
+  /** the search part of `costUsd` (Serper credits, plus Parallel for Deep Research) */
+  serperUsd?: number
+  /** input tokens the provider served from its prompt cache */
+  cachedTokensIn?: number
+  /** thinking tokens (already inside `tokensOut`) */
+  reasoningTokens?: number
+  /** Serper lookups answered from our own cache (no credit spent) */
+  serperCacheHits?: number
+  /** the kind of turn the server logged: one_brain | ask | plan | deep_research | … */
+  turnType?: string
+}
+
+/**
+ * The cost split of a turn, read from the cost info the server already logs as `tappyai_turn_cost`. A turn that did not report the split
+ * (an older path) gets the model price as what is left after the search price, never negative. Pure.
+ */
+export function usageSplit(i: TurnCostInfo): Pick<AiUsageEvent, 'llmUsd' | 'serperUsd' | 'cachedTokensIn' | 'reasoningTokens' | 'serperCacheHits' | 'turnType'> {
+  const serperUsd = typeof i.serperUsd === 'number' && i.serperUsd > 0 ? i.serperUsd : 0
+  const llmUsd = typeof i.answerUsd === 'number' ? i.answerUsd : Math.max(0, i.usd - serperUsd)
+  return { llmUsd, serperUsd, cachedTokensIn: i.lunaCachedIn ?? i.promptCacheRead ?? 0, reasoningTokens: i.reasoningTokens ?? 0, serperCacheHits: i.cacheHits, turnType: i.turnType }
 }
 
 /**
@@ -36,6 +60,7 @@ export const aiUsageLedgerOn = (env: Record<string, string | undefined> = proces
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 const count = (n: unknown) => (typeof n === 'number' && Number.isFinite(n) && n > 0 ? Math.min(Math.floor(n), 2_000_000_000) : 0)
+const usd = (n: unknown) => (typeof n === 'number' && Number.isFinite(n) && n > 0 ? Math.min(Math.round(n * 1e6) / 1e6, 99.999999) : 0)
 
 /** The row as the table takes it (the table's own checks, applied here first); no signed-in account → null. Pure. */
 export function usageRow(e: AiUsageEvent): Record<string, unknown> | null {
@@ -52,6 +77,12 @@ export function usageRow(e: AiUsageEvent): Record<string, unknown> | null {
     serper_calls: count(e.serperCalls),
     parallel_calls: count(e.parallelCalls),
     ok: e.ok !== false,
+    llm_usd: usd(e.llmUsd),
+    serper_usd: usd(e.serperUsd),
+    cached_tokens_in: count(e.cachedTokensIn),
+    reasoning_tokens: count(e.reasoningTokens),
+    serper_cache_hits: count(e.serperCacheHits),
+    turn_type: String(e.turnType ?? '').toLowerCase().replace(/[^a-z0-9_-]/g, '').slice(0, 24),
   }
 }
 

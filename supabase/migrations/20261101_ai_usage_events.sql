@@ -26,6 +26,16 @@ CREATE TABLE IF NOT EXISTS public.ai_usage_events (
   ok BOOLEAN NOT NULL DEFAULT true
 );
 
+-- 02/11 (owner: "bật bảng đo để coi chi phí câu thường, web search, nghiên cứu sâu"): the cost split the decisions need. Added with
+-- IF NOT EXISTS so the file applies the same on a fresh table and on one created from the first version of this file. Counts and prices only.
+ALTER TABLE public.ai_usage_events ADD COLUMN IF NOT EXISTS llm_usd NUMERIC(10, 6) NOT NULL DEFAULT 0 CHECK (llm_usd >= 0 AND llm_usd < 100);
+ALTER TABLE public.ai_usage_events ADD COLUMN IF NOT EXISTS serper_usd NUMERIC(10, 6) NOT NULL DEFAULT 0 CHECK (serper_usd >= 0 AND serper_usd < 100);
+ALTER TABLE public.ai_usage_events ADD COLUMN IF NOT EXISTS cached_tokens_in INTEGER NOT NULL DEFAULT 0 CHECK (cached_tokens_in >= 0);
+ALTER TABLE public.ai_usage_events ADD COLUMN IF NOT EXISTS reasoning_tokens INTEGER NOT NULL DEFAULT 0 CHECK (reasoning_tokens >= 0);
+ALTER TABLE public.ai_usage_events ADD COLUMN IF NOT EXISTS serper_cache_hits INTEGER NOT NULL DEFAULT 0 CHECK (serper_cache_hits >= 0);
+-- the kind of turn the server logged (one_brain, ask, plan, deep_research, ...): short lowercase word
+ALTER TABLE public.ai_usage_events ADD COLUMN IF NOT EXISTS turn_type TEXT NOT NULL DEFAULT '' CHECK (char_length(turn_type) <= 24);
+
 CREATE INDEX IF NOT EXISTS ai_usage_events_user_time ON public.ai_usage_events (user_id, created_at);
 CREATE INDEX IF NOT EXISTS ai_usage_events_time ON public.ai_usage_events (created_at);
 
