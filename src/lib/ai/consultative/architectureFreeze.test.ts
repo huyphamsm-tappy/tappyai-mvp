@@ -99,6 +99,13 @@ describe('architecture freeze, second (after the review of 01/11)', () => {
     expect(rendersDecisionCard('ios', null)).toBe(false)
     expect(ROUTE).toContain("rendersDecisionCardFor(surfaceHeader, req.headers.get('x-tappy-caps'))")
   })
+  it('production opens a consult flag only by name in CONSULT_PRODUCTION_ALLOW; nothing is open by default; Parallel never opens this way', () => {
+    const FLAGS = readFileSync(join(process.cwd(), 'src/lib/config/consultFlags.ts'), 'utf8')
+    expect(FLAGS).toContain("(env.CONSULT_PRODUCTION_ALLOW ?? '').split(/[\\s,]+/).includes(name)")
+    expect(FLAGS).toContain("name === 'CONSULT_PARALLEL' || !productionAllows(env, name)")
+    expect(FLAGS).not.toMatch(/exactlyOne\([^)]*\) && !isProductionRuntime\(env\)/)
+    expect(FREEZE_DOC).toContain('Mở khóa production theo tên')
+  })
   it('the freeze document has its second and third sections', () => {
     expect(FREEZE_DOC).toContain('## 5. Đóng băng lần 2')
     expect(FREEZE_DOC).toContain('## 6. Đóng băng lần 3')

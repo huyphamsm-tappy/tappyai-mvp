@@ -60,27 +60,42 @@ const exactlyOne = (v: string | undefined): boolean => v === '1'
 /** A production runtime: Vercel production, or a production build (which a Vercel preview also is). Local dev (`next dev`), the bench and tests are not. */
 export const isProductionRuntime = (env: Env = process.env): boolean => env.NODE_ENV === 'production' || env.VERCEL_ENV === 'production'
 
+/**
+ * 02/11 (owner: deploy the one brain to production). The consult flags are locked OFF in a production runtime; the owner opens one THERE by
+ * name, in CONSULT_PRODUCTION_ALLOW (names separated by commas or whitespace; exact and case-sensitive; no wildcard, no prefix), and sets the flag
+ * itself to "1". Nothing is open by default, so deploying this code changes no behaviour; taking a name out of the variable closes the flag again
+ * without a redeploy. Pure.
+ */
+export function productionAllows(env: Env, name: string): boolean {
+  return (env.CONSULT_PRODUCTION_ALLOW ?? '').split(/[\s,]+/).includes(name)
+}
+/**
+ * True when `name` is locked in this runtime: a production runtime, and the owner has not listed the name. Parallel (a new data processor, see
+ * CONSULT_PARALLEL below) is never opened this way: it waits for the owner's decision on the privacy page, whatever the variable says. Pure.
+ */
+export const lockedInProduction = (env: Env, name: string): boolean => isProductionRuntime(env) && (name === 'CONSULT_PARALLEL' || !productionAllows(env, name))
+
 export function consultFinalSynthesisOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_FINAL_SYNTHESIS_FLAG]) }
 /** Wave 4 fix N1: the final writing call C-PRE-1 added (a new paid model call) runs only outside a production runtime. The flag's older behaviour (the reserve guard) is untouched. */
-export function consultFinalWriteOn(env: Env = process.env): boolean { return consultFinalSynthesisOn(env) && !isProductionRuntime(env) }
+export function consultFinalWriteOn(env: Env = process.env): boolean { return consultFinalSynthesisOn(env) && !lockedInProduction(env, CONSULT_FINAL_SYNTHESIS_FLAG) }
 export function consultAnswerAttributionOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_ANSWER_ATTRIBUTION_FLAG]) }
 export function consultGeneralAssistantOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_GENERAL_ASSISTANT_FLAG]) }
 /** ON only for the exact value "1" AND only outside a production runtime (local, dev-multi bench, tests). */
-export function consultTraceDiagnosticsOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_TRACE_DIAGNOSTICS_FLAG]) && !isProductionRuntime(env) }
+export function consultTraceDiagnosticsOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_TRACE_DIAGNOSTICS_FLAG]) && !lockedInProduction(env, CONSULT_TRACE_DIAGNOSTICS_FLAG) }
 /** Wave 2D · C. ON only for the exact value "1" AND only outside a production runtime (the Owner has not approved it for production). */
-export function consultSearchNowIntentGateOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_SEARCH_NOW_INTENT_GATE_FLAG]) && !isProductionRuntime(env) }
+export function consultSearchNowIntentGateOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_SEARCH_NOW_INTENT_GATE_FLAG]) && !lockedInProduction(env, CONSULT_SEARCH_NOW_INTENT_GATE_FLAG) }
 /** Wave 2D · A. ON only for the exact value "1" AND only outside a production runtime (the Owner has not approved it for production). */
-export function consultThreadAwareAskOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_THREAD_AWARE_ASK_FLAG]) && !isProductionRuntime(env) }
+export function consultThreadAwareAskOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_THREAD_AWARE_ASK_FLAG]) && !lockedInProduction(env, CONSULT_THREAD_AWARE_ASK_FLAG) }
 /** Wave 2I · A. ON only for the exact value "1" AND only outside a production runtime. */
-export function consultAbortAbandonedFirstPartOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_ABORT_ABANDONED_FIRST_PART_FLAG]) && !isProductionRuntime(env) }
+export function consultAbortAbandonedFirstPartOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_ABORT_ABANDONED_FIRST_PART_FLAG]) && !lockedInProduction(env, CONSULT_ABORT_ABANDONED_FIRST_PART_FLAG) }
 /** Wave 2I · B. ON only for the exact value "1", only outside a production runtime, and only together with the search-now gate (C). */
-export function consultKnowledgeTurnToolsOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_KNOWLEDGE_TURN_TOOLS_FLAG]) && !isProductionRuntime(env) && consultSearchNowIntentGateOn(env) }
+export function consultKnowledgeTurnToolsOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_KNOWLEDGE_TURN_TOOLS_FLAG]) && !lockedInProduction(env, CONSULT_KNOWLEDGE_TURN_TOOLS_FLAG) && consultSearchNowIntentGateOn(env) }
 /**
  * Wave 4 · C-PRE-2. ON only for the exact value "1" AND only outside a production runtime. NOT tied to the capability level (a product decision for the Owner): on a turn the intent layer reads as free
  * chat, a domain reaches the lean (venue) path only when BOTH readers - the intent layer and the rules - named it (see agreedChatDecision in consultative/luna.ts).
  */
 export const CONSULT_CHAT_DOMAIN_AGREEMENT_FLAG = 'CONSULT_CHAT_DOMAIN_AGREEMENT'
-export function consultChatDomainAgreementOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_CHAT_DOMAIN_AGREEMENT_FLAG]) && !isProductionRuntime(env) }
+export function consultChatDomainAgreementOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_CHAT_DOMAIN_AGREEMENT_FLAG]) && !lockedInProduction(env, CONSULT_CHAT_DOMAIN_AGREEMENT_FLAG) }
 // ── Wave 3 · W6 · capability levels L0-L4 ───────────────────────────────────────────────────────────────────────────────────────────────────────────
 //
 // CONSULT_CAPABILITY_LEVEL is one number that switches the Wave 3 capabilities on together, so a paid run can be priced level by level:
@@ -100,7 +115,7 @@ export const CAPABILITY_FLAG_LEVELS: Readonly<Record<string, CapabilityLevel>> =
 }
 /** Pure. The capability level: a single character 0-4, never in a production runtime; anything else is 0. */
 export function capabilityLevel(env: Env = process.env): CapabilityLevel {
-  if (isProductionRuntime(env)) return 0
+  if (lockedInProduction(env, CONSULT_CAPABILITY_LEVEL_FLAG)) return 0
   const v = env[CONSULT_CAPABILITY_LEVEL_FLAG]
   return v !== undefined && /^[0-4]$/.test(v) ? (Number(v) as CapabilityLevel) : 0
 }
@@ -120,7 +135,7 @@ export function finalSynthesisReserveReached(stepsFinished: number, maxSteps: nu
  * The writing guarantee holds: the last step still refuses every tool, and a turn that ends without a word gets the final write (C-PRE-1) - which is why the flag needs it.
  */
 export const CONSULT_READ_PAGE_LATE_FLAG = 'CONSULT_READ_PAGE_LATE'
-export function consultReadPageLateOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_READ_PAGE_LATE_FLAG]) && !isProductionRuntime(env) && consultFinalWriteOn(env) }
+export function consultReadPageLateOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_READ_PAGE_LATE_FLAG]) && !lockedInProduction(env, CONSULT_READ_PAGE_LATE_FLAG) && consultFinalWriteOn(env) }
 /**
  * A tool whose call IS part of writing the answer, not a lookup: `present_plan` lays out the brochure the reply describes (no search,
  * no provider, no cost). Held back only in the LAST step, like a late read_page. Measured live 29/10 (one brain, six steps): the
@@ -140,7 +155,7 @@ export function reserveHoldsToolCall(tool: string, stepsFinished: number, maxSte
  * With this flag the CODE opens up to three venue websites of the pre-search once, through the turn's own read_page reader, before the model writes (route.ts, researchLoop.readVenuePages).
  */
 export const CONSULT_PICK_PAGE_READ_FLAG = 'CONSULT_PICK_PAGE_READ'
-export function consultPickPageReadOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_PICK_PAGE_READ_FLAG]) && !isProductionRuntime(env) }
+export function consultPickPageReadOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_PICK_PAGE_READ_FLAG]) && !lockedInProduction(env, CONSULT_PICK_PAGE_READ_FLAG) }
 /**
  * Wave 4 · C-PRE-3. Pure. The depth of a turn that carries the page reader but is NOT on the lean path (the knowledge path, C2), by capability level: below L2 the previous five steps, L2-L3 six, L4 eight
  * (the research loop's own budget). `toolRounds` is what the reserve leaves for tools: at five steps the guard allowed THREE lookups and cut the fourth (measured B2 27/10: E18, E22, X2 - four web_search
@@ -164,20 +179,20 @@ export function capabilityFlags(env: Env = process.env): { level: CapabilityLeve
  * Wave 4 · Q1 (R3, the knowledge path). ON by "1" (or, unset, by level 2+), and only outside a production runtime. A free-chat consult turn that is NOT lean (no domain) and not a planning, image, evening,
  * agent or no-tool turn keeps its old tools and also gets the page reader, the calculator and the by-need search description; steps follow knowledgeDepth (C2).
  */
-export function consultKnowledgePathOn(env: Env = process.env): boolean { return waveFlag(env, CONSULT_KNOWLEDGE_PATH_FLAG) && !isProductionRuntime(env) }
+export function consultKnowledgePathOn(env: Env = process.env): boolean { return waveFlag(env, CONSULT_KNOWLEDGE_PATH_FLAG) && !lockedInProduction(env, CONSULT_KNOWLEDGE_PATH_FLAG) }
 /**
  * Wave 4 · Q2 (R2, the pre-searched pick). ON by "1" (or, unset, by level 2+), and only outside a production runtime. A lean turn the code pre-searched also offers the model web_search, read_page and
  * calculate (the code's own pre-search is unchanged) (C3).
  */
-export function consultPickTurnToolsOn(env: Env = process.env): boolean { return waveFlag(env, CONSULT_PICK_TURN_TOOLS_FLAG) && !isProductionRuntime(env) }
+export function consultPickTurnToolsOn(env: Env = process.env): boolean { return waveFlag(env, CONSULT_PICK_TURN_TOOLS_FLAG) && !lockedInProduction(env, CONSULT_PICK_TURN_TOOLS_FLAG) }
 /** Wave 3 · W3. ON by "1" (or, unset, by level 3+), and only outside a production runtime. */
-export function consultStructuredSynthesisOn(env: Env = process.env): boolean { return waveFlag(env, CONSULT_STRUCTURED_SYNTHESIS_FLAG) && !isProductionRuntime(env) }
+export function consultStructuredSynthesisOn(env: Env = process.env): boolean { return waveFlag(env, CONSULT_STRUCTURED_SYNTHESIS_FLAG) && !lockedInProduction(env, CONSULT_STRUCTURED_SYNTHESIS_FLAG) }
 /** Wave 3 · W1. ON by "1" (or, unset, by level 2+), and only outside a production runtime. It carries its own reserved writing step (it does not need CONSULT_FINAL_SYNTHESIS). */
-export function consultResearchLoopOn(env: Env = process.env): boolean { return waveFlag(env, CONSULT_RESEARCH_LOOP_FLAG) && !isProductionRuntime(env) }
+export function consultResearchLoopOn(env: Env = process.env): boolean { return waveFlag(env, CONSULT_RESEARCH_LOOP_FLAG) && !lockedInProduction(env, CONSULT_RESEARCH_LOOP_FLAG) }
 /** Wave 3 · W4. ON by "1" (or, unset, by level 1+), and only outside a production runtime. */
-export function consultDeterministicMathOn(env: Env = process.env): boolean { return waveFlag(env, CONSULT_DETERMINISTIC_MATH_FLAG) && !isProductionRuntime(env) }
+export function consultDeterministicMathOn(env: Env = process.env): boolean { return waveFlag(env, CONSULT_DETERMINISTIC_MATH_FLAG) && !lockedInProduction(env, CONSULT_DETERMINISTIC_MATH_FLAG) }
 /** Wave 3 · W2. ON by "1" (or, unset, by level 1+), only outside a production runtime, and only together with the search-now gate (C). */
-export function consultToolByNeedOn(env: Env = process.env): boolean { return waveFlag(env, CONSULT_TOOL_BY_NEED_FLAG) && !isProductionRuntime(env) && consultSearchNowIntentGateOn(env) }
+export function consultToolByNeedOn(env: Env = process.env): boolean { return waveFlag(env, CONSULT_TOOL_BY_NEED_FLAG) && !lockedInProduction(env, CONSULT_TOOL_BY_NEED_FLAG) && consultSearchNowIntentGateOn(env) }
 
 // ── Unwind (28/10/2026) · the code stops deciding in the model's place ──────────────────────────────────────────────────────────────────────────
 //
@@ -191,7 +206,7 @@ export const CONSULT_UNWIND_S1A_FLAG = 'CONSULT_UNWIND_S1A'
 export const CONSULT_UNWIND_S1B_FLAG = 'CONSULT_UNWIND_S1B'
 export const CONSULT_UNWIND_S1C_FLAG = 'CONSULT_UNWIND_S1C'
 export const CONSULT_UNWIND_S1D_FLAG = 'CONSULT_UNWIND_S1D'
-const unwindOn = (env: Env, name: string): boolean => exactlyOne(env[name]) && !isProductionRuntime(env)
+const unwindOn = (env: Env, name: string): boolean => exactlyOne(env[name]) && !lockedInProduction(env, name)
 export function consultUnwindS1aOn(env: Env = process.env): boolean { return unwindOn(env, CONSULT_UNWIND_S1A_FLAG) }
 export function consultUnwindS1bOn(env: Env = process.env): boolean { return unwindOn(env, CONSULT_UNWIND_S1B_FLAG) }
 export function consultUnwindS1cOn(env: Env = process.env): boolean { return unwindOn(env, CONSULT_UNWIND_S1C_FLAG) }
