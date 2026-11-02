@@ -50,3 +50,6 @@ Lượt chat đầu tiên trên production (13:30) báo `Your API key has expire
 
 ### 6.2. Khóa Serper của production (02/11)
 Sau khi khóa OpenAI chạy (14:07), chat trả lời bằng bộ não (`tappyai_one_brain_turn`, `gpt-6-luna`) nhưng công cụ tìm địa điểm trả về rỗng gần như ngay (`places_provider: serper` rồi `osm_fallback_used`, `no_google_result`, 0 dòng): khóa `SERPER_API_KEY` của production (thêm 13/6) bị Serper từ chối, không thấy yêu cầu nào trong nhật ký tài khoản Serper của chủ lúc đó. Chủ đã đặt khóa Serper đang dùng được vào `SERPER_API_KEY` (Production); bản này là bản deploy áp khóa đó. Khóa không có trong mã hay tài liệu.
+
+### 6.3. Giá phòng thật từ Agoda Lite (02/11)
+Chủ đã thêm `AGODA_LITE_SITE_ID` và `AGODA_LITE_API_KEY` (Production, kiểu Secret, nhập bởi chủ) và em đã thêm cờ `CCP_REALTIME_AGODA_LITE=1` (Config, Production; cờ này không bị khóa ở production, `providers/realtime/common.ts`). Bản này là bản deploy áp ba biến đó. Cách kiểm sau deploy: một câu hỏi khách sạn có ngày và số người; log `tappyai_*` của adapter Agoda và trang Serper/Agoda; không có giá trị khóa nào trong mã hay tài liệu. Chưa biết khóa đúng hay sai cho tới khi có giá phòng thật.
