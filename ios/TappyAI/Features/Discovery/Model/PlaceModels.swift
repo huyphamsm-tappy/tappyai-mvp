@@ -55,8 +55,24 @@ struct Recommendation: Identifiable, Codable {
     let placeName: String
     let finalScore: Double
     let matchedSignals: [String]
+    /// Additive place facts (server 2026-09-28) from the place's community reviews; absent on older
+    /// servers, in which case the matching chip is simply not drawn.
+    var address: String? = nil
+    var photoUrl: String? = nil
+    var averageRating: Double? = nil
+    var reviewCount: Int? = nil
+    var latestReviewAt: String? = nil
 
     var id: String { placeId }
+
+    /// A community review in the last 14 days — the web's `isRecentlyActive` (a real date, never a guess).
+    var isRecentlyActive: Bool {
+        guard let iso = latestReviewAt else { return false }
+        let f = ISO8601DateFormatter()
+        f.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        guard let date = f.date(from: iso) ?? ISO8601DateFormatter().date(from: iso) else { return false }
+        return Date().timeIntervalSince(date) < 14 * 24 * 3600
+    }
 }
 
 struct Booking: Identifiable, Codable {
@@ -109,6 +125,75 @@ struct CategoryMeta {
 
     static func get(_ type: String) -> CategoryMeta {
         map[type] ?? CategoryMeta(emoji: "🍜", label: "Ăn uống")
+    }
+}
+
+// MARK: - Lenient decoding (see LenientDecoding.swift) — only the identity fields are required.
+
+extension Favorite {
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id = try c.requiredId(forKey: .id)
+        placeId = c.lenient(String.self, forKey: .placeId) ?? id
+        placeName = c.lenient(String.self, forKey: .placeName, default: "")
+        placeAddress = c.lenient(String.self, forKey: .placeAddress, default: "")
+        placeType = c.lenient(String.self, forKey: .placeType, default: "")
+        createdAt = c.lenient(String.self, forKey: .createdAt, default: "")
+    }
+}
+
+extension SavedReview {
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id = try c.requiredId(forKey: .id)
+        placeName = c.lenient(String.self, forKey: .placeName)
+        body = c.lenient(String.self, forKey: .body)
+        photos = c.lenient([String].self, forKey: .photos)
+        thumbnail = c.lenient(String.self, forKey: .thumbnail)
+        contentType = c.lenient(String.self, forKey: .contentType)
+        savedAt = c.lenient(String.self, forKey: .savedAt, default: "")
+    }
+}
+
+extension Recommendation {
+    enum CodingKeys: String, CodingKey {
+        case placeId, placeName, finalScore, matchedSignals, address, photoUrl, averageRating, reviewCount, latestReviewAt
+    }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        placeId = try c.requiredId(forKey: .placeId)
+        placeName = c.lenient(String.self, forKey: .placeName, default: "")
+        finalScore = c.lenientDouble(forKey: .finalScore) ?? 0
+        matchedSignals = c.lossyArray(String.self, forKey: .matchedSignals)
+        address = c.lenient(String.self, forKey: .address)
+        photoUrl = c.lenient(String.self, forKey: .photoUrl)
+        averageRating = c.lenientDouble(forKey: .averageRating)
+        reviewCount = c.lenientInt(forKey: .reviewCount)
+        latestReviewAt = c.lenient(String.self, forKey: .latestReviewAt)
+    }
+}
+
+extension Booking {
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id = try c.requiredId(forKey: .id)
+        date = c.lenient(String.self, forKey: .date, default: "")
+        time = c.lenient(String.self, forKey: .time)
+        guests = c.lenientInt(forKey: .guests) ?? 1
+        status = c.lenient(String.self, forKey: .status, default: "pending")
+        createdAt = c.lenient(String.self, forKey: .createdAt, default: "")
+    }
+}
+
+extension TappyReview {
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id = try c.requiredId(forKey: .id)
+        rating = c.lenientInt(forKey: .rating) ?? 0
+        body = c.lenient(String.self, forKey: .body, default: "")
+        createdAt = c.lenient(String.self, forKey: .createdAt, default: "")
+        photos = c.lenient([String].self, forKey: .photos)
     }
 }
 

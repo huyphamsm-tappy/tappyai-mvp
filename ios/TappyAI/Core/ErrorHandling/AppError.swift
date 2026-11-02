@@ -26,6 +26,22 @@ enum AppError: Error, Equatable {
         case forbidden              // authenticated but not allowed
         case anonLimitReached       // backend 401 anon_limit_reached
         case freeLimitReached       // backend 429 free_limit_reached
+        /// backend 429 `plan_limit_reached`: a PAID plan spent its daily questions. Not «upgrade» copy;
+        /// `message` is the server's localized sentence for that plan, when present.
+        case planLimitReached(message: String?)
+        /// backend 429 `deep_research_limit_reached`: the plan's Deep Research reports for the month are spent.
+        /// `message` is the server's sentence in the request language.
+        case deepResearchLimitReached(message: String?)
+        /// backend 429 `pro_daily_limit_reached`: the hidden daily ceiling of a paid account. `message` as above.
+        case proDailyLimitReached(message: String?)
+        /// backend 429 `rate_limit` on the chat path: too many requests in a minute. `message` as above.
+        case rateLimited(message: String?)
+        /// backend 403 `ai_consent_required`: the server holds no current AI-sharing agreement for this
+        /// account (disclosure version 2). NOT a sign-in problem; the remedy is the consent sheet.
+        case aiConsentRequired(message: String?)
+        /// backend 403 from the 18+ gate (`age_declaration_required` | `age_verification_required`
+        /// | `age_ineligible`); `message` is the server's localized sentence, when present.
+        case ageGate(code: String, message: String?)
     }
 
     /// Whether the UI should offer a "Retry" affordance (see docs/ios/06 error states).

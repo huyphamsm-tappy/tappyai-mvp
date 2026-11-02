@@ -11,8 +11,32 @@ import Foundation
 /// file and Android `ChatResponseParser` are part of that change, not a follow-up to it.
 enum ContentParser {
 
-    static func parse(_ content: String) -> ParsedContent {
-        let (textAfterPlan, plan, planJSON) = parsePlanBlock(content)
+    /// Each pattern is compiled once: a reply is parsed up to 20 times a second while it streams, and `stripMarkerResidue` alone ran
+    /// three patterns for every marker name on every pass.
+    private final class RegexCache: @unchecked Sendable {
+        private let lock = NSLock()
+        private var compiled: [String: NSRegularExpression] = [:]
+
+        func regex(_ pattern: String, _ options: NSRegularExpression.Options = .caseInsensitive) -> NSRegularExpression? {
+            let key = "\(options.rawValue)|\(pattern)"
+            lock.lock(); defer { lock.unlock() }
+            if let hit = compiled[key] { return hit }
+            guard let made = try? NSRegularExpression(pattern: pattern, options: options) else { return nil }
+            compiled[key] = made
+            return made
+        }
+    }
+
+    private static let regexCache = RegexCache()
+
+    static func parse(_ rawContent: String) -> ParsedContent {
+        // One place for «no literal ** in any answer» (web `normalizeReplyMarkdown`): prose bold balanced, markdown stripped
+        // from the strings inside the marker blocks, before any card sees them.
+        let content = MarkdownNormalize.normalizeReply(rawContent)
+        // `[TAPPY_MEDIA]` (news pictures / subject card): host-checked and removed before anything else reads the text.
+        // (`[TAPPY_ASK]` has no card any more; an older server's block is only hidden, by `stripMarkerResidue`.)
+        let mediaResult = MediaBlocks.parse(content)
+        let (textAfterPlan, plan, planJSON) = parsePlanBlock(mediaResult.text)
         let (textAfterCta, buttons) = parseCTA(textAfterPlan)
         let (textAfterFollowups, followups) = parseFollowups(textAfterCta)
         // D1 — decode the shopping decision instead of discarding it. Decode and strip stay
@@ -24,7 +48,9 @@ enum ContentParser {
         // so an end-anchored removal here would take the rest of the reply with it (rule 3/4 of the
         // shared fixture contract, and the shape `[CTA_BUTTONS]` leaked through once already).
         let (textAfterPlaces, places) = parsePlaces(textAfterFollowups)
-        let clean = stripMarkerResidue(textAfterPlaces)
+        // Owner 01/11: a link to another AI product's page is never shown (label stays, link goes). Only the prose, after every
+        // marker block is out, so a URL inside a block's JSON is never cut by this pass.
+        let clean = AiSourcePolicy.stripAiLinks(stripMarkerResidue(textAfterPlaces))
         let images = extractImages(clean)
         let text = stripImages(clean)
         return ParsedContent(
@@ -35,7 +61,9 @@ enum ContentParser {
             images: images,
             shopping: shopping,
             planJSON: planJSON,
-            places: places
+            places: places,
+            media: mediaResult.blocks,
+            segments: replySegments(clean)
         )
     }
 
@@ -47,10 +75,7 @@ enum ContentParser {
     /// decision is not a decision. It never mutates the text — stripping remains the residue pass's
     /// job, so a payload that fails to decode still cannot reach the user.
     static func decodeShoppingDecision(_ content: String) -> ShoppingDecisionView? {
-        guard let regex = try? NSRegularExpression(
-            pattern: #"\[TAPPY_SHOPPING\]([\s\S]*?)\[/TAPPY_SHOPPING\]"#,
-            options: .caseInsensitive
-        ) else { return nil }
+        guard let regex = regexCache.regex(#"\[TAPPY_SHOPPING\]([\s\S]*?)\[/TAPPY_SHOPPING\]"#) else { return nil }
 
         let range = NSRange(content.startIndex..., in: content)
         guard let m = regex.firstMatch(in: content, range: range),
@@ -79,10 +104,7 @@ enum ContentParser {
     /// is the answer Web's `parsePlacesMarker` gives — a turn cannot show a card on one platform
     /// and a blank frame on another.
     static func parsePlaces(_ content: String) -> (text: String, places: [PersistedPlace]) {
-        let withTag = try? NSRegularExpression(
-            pattern: #"\[TAPPY_PLACES\]([\s\S]*?)\[/TAPPY_PLACES\]"#,
-            options: .caseInsensitive
-        )
+        let withTag = regexCache.regex(#"\[TAPPY_PLACES\]([\s\S]*?)\[/TAPPY_PLACES\]"#)
         let range = NSRange(content.startIndex..., in: content)
 
         var text: String
@@ -177,7 +199,7 @@ enum ContentParser {
         // the message and swallows trailing prose. Web settled on brace matching after hitting both
         // failures; Android and iOS now use the same algorithm, pinned by the shared fixtures in
         // shared/structured-content/marker-fixtures.json.
-        let withTag = try? NSRegularExpression(pattern: #"\[CTA_BUTTONS\]([\s\S]*?)\[/CTA_BUTTONS\]"#, options: .caseInsensitive)
+        let withTag = regexCache.regex(#"\[CTA_BUTTONS\]([\s\S]*?)\[/CTA_BUTTONS\]"#)
         let range = NSRange(content.startIndex..., in: content)
 
         var text: String
@@ -212,11 +234,46 @@ enum ContentParser {
             guard let label = dict["label"] as? String,
                   let type = dict["type"] as? String,
                   let url = dict["url"] as? String else { return nil }
+            // Web parity: a button the Web would drop is dropped here too (see `isAllowedCTAURL`).
+            guard isAllowedCTAURL(url) else { return nil }
+            // Owner 01/11: a button to another AI product's page is not shown.
+            guard !AiSourcePolicy.isAiProductSource(url) else { return nil }
             let primary = dict["primary"] as? Bool ?? false
             return CTAButton(label: label, type: type, url: url, primary: primary)
         }
 
         return (text, buttons)
+    }
+
+    /// Which CTA button URLs may be shown and opened. A direct port of the filter in Web `parseCTA`
+    /// (`src/lib/structuredContent/parseCta.ts`, Web commits bb09167 / 4601184, present in the Web final a43948d):
+    /// a button is a link to `http(s)`, a phone / mail link (`tel:`, `mailto:`) or a same-site path
+    /// (`/…`, but not `//…` or `/\…`) — never `javascript:`, `data:` or any other scheme — and the URL carries no
+    /// whitespace or control character (`[\u0000- \u007f]`, tested after a trim). Matching is case-insensitive.
+    static func isAllowedCTAURL(_ raw: String) -> Bool {
+        let t = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !t.isEmpty else { return false }
+        if t.unicodeScalars.contains(where: { $0.value <= 0x20 || $0.value == 0x7f }) { return false }
+        let lower = t.lowercased()
+        if lower.hasPrefix("https://") || lower.hasPrefix("http://") || lower.hasPrefix("tel:") || lower.hasPrefix("mailto:") {
+            return true
+        }
+        if t.hasPrefix("/") {
+            let next = t.dropFirst().first
+            return next != "/" && next != "\\"
+        }
+        return false
+    }
+
+    /// The address a CTA button may OPEN: the web's policy (`isAllowedCTAURL`) narrowed to what a phone opens from a chat — http(s)
+    /// (never another AI product's page), `tel:` and `mailto:`. A same-site path is not opened from here, and `javascript:`, `intent:`,
+    /// `file:`, `itms-apps:` and every other scheme never are.
+    static func ctaOpenURL(_ raw: String) -> URL? {
+        guard isAllowedCTAURL(raw) else { return nil }
+        let t = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+        let lower = t.lowercased()
+        if lower.hasPrefix("tel:") || lower.hasPrefix("mailto:") { return URL(string: t) }
+        return safeWebURL(t)
     }
 
     // MARK: - Trip Plan
@@ -228,7 +285,7 @@ enum ContentParser {
 
     /// `parsePlan`, plus the block itself — kept verbatim for the share (see `ParsedContent.planJSON`).
     static func parsePlanBlock(_ content: String) -> (text: String, plan: TappyPlan?, planJSON: String?) {
-        guard let regex = try? NSRegularExpression(pattern: #"\[TAPPY_PLAN\]([\s\S]*?)\[/TAPPY_PLAN\]"#, options: .caseInsensitive) else {
+        guard let regex = regexCache.regex(#"\[TAPPY_PLAN\]([\s\S]*?)\[/TAPPY_PLAN\]"#) else {
             return (content, nil, nil)
         }
         let range = NSRange(content.startIndex..., in: content)
@@ -245,13 +302,14 @@ enum ContentParser {
               !plan.days.isEmpty else {
             return (text, nil, nil)
         }
-        return (text, plan, jsonStr)
+        // The decoder cannot keep the order the server wrote the cost lines in; the raw block can.
+        return (text, plan.withCostLinesOrdered(byRawJSON: jsonStr), jsonStr)
     }
 
     // MARK: - Follow-up suggestions
 
     static func parseFollowups(_ content: String) -> (text: String, followups: [String]) {
-        guard let regex = try? NSRegularExpression(pattern: #"\[FOLLOWUPS\]([^\n]*?)(?:\[/FOLLOWUPS\]|\n|$)"#, options: .caseInsensitive) else {
+        guard let regex = regexCache.regex(#"\[FOLLOWUPS\]([^\n]*?)(?:\[/FOLLOWUPS\]|\n|$)"#) else {
             return (content, [])
         }
         let range = NSRange(content.startIndex..., in: content)
@@ -269,7 +327,7 @@ enum ContentParser {
         }
 
         // Strip stray/orphan markers
-        if let orphan = try? NSRegularExpression(pattern: #"\[/?FOLLOWUPS\]"#, options: .caseInsensitive) {
+        if let orphan = regexCache.regex(#"\[/?FOLLOWUPS\]"#) {
             text = orphan.stringByReplacingMatches(in: text, range: NSRange(text.startIndex..., in: text), withTemplate: "")
         }
         return (text.trimmingCharacters(in: .whitespacesAndNewlines), followups)
@@ -284,7 +342,15 @@ enum ContentParser {
     /// what produced this bug: `[TAPPY_SHOPPING]` was added server-side and taught to the web
     /// only, and iOS rendered its JSON as message body. When the server gains a marker, it is
     /// added here.
-    static let markerNames = ["TAPPY_PLAN", "CTA_BUTTONS", "FOLLOWUPS", "TAPPY_SHOPPING", "TAPPY_PLACES"]
+    ///
+    /// Phase K: `TAPPY_MEDIA` (news pictures / Wikipedia subject card, persisted with the message
+    /// behind CONSULT_V3 / TAPPY_ANSWER_V4) and the model's control lines `TAPPY_TASK` /
+    /// `TAPPY_RANK` (removed server-side, dropped here again as a backstop). Nothing renders
+    /// them yet; what matters is that their raw JSON never reaches a user.
+    static let markerNames = [
+        "TAPPY_PLAN", "CTA_BUTTONS", "FOLLOWUPS", "TAPPY_SHOPPING", "TAPPY_PLACES", "TAPPY_ASK",
+        "TAPPY_MEDIA", "TAPPY_TASK", "TAPPY_RANK",
+    ]
 
     /// Removes every marker block the decode steps did not consume.
     ///
@@ -312,7 +378,7 @@ enum ContentParser {
                 #"\[/?\#(name)\]"#,
             ]
             for pattern in patterns {
-                guard let regex = try? NSRegularExpression(pattern: pattern, options: .caseInsensitive) else { continue }
+                guard let regex = regexCache.regex(pattern) else { continue }
                 text = regex.stringByReplacingMatches(
                     in: text,
                     range: NSRange(text.startIndex..., in: text),
@@ -325,8 +391,12 @@ enum ContentParser {
 
     // MARK: - Extract markdown images
 
+    /// A markdown image: its address may hold one level of brackets ("…/Foo_(bar).jpg") — the first ")" is not its end — and
+    /// every http(s) image is removed from the text, but only an https one is drawn (`extractImages`).
+    private static let imageSyntax = #"!\[([^\]]*)\]\((https?://(?:[^()\s]|\([^()\s]*\))+)\)"#
+
     static func extractImages(_ content: String) -> [ParsedImage] {
-        guard let regex = try? NSRegularExpression(pattern: #"!\[([^\]]*)\]\((https?://[^\s)]+)\)"#) else {
+        guard let regex = regexCache.regex(imageSyntax) else {
             return []
         }
         let range = NSRange(content.startIndex..., in: content)
@@ -335,7 +405,11 @@ enum ContentParser {
             guard let m = match,
                   let altRange = Range(m.range(at: 1), in: content),
                   let urlRange = Range(m.range(at: 2), in: content) else { return }
-            images.append(ParsedImage(alt: String(content[altRange]), url: String(content[urlRange])))
+            let url = String(content[urlRange])
+            // only https is drawn (an http picture is dropped, never left in the text), and never a picture a page of another
+            // AI product serves (owner 01/11)
+            if !url.lowercased().hasPrefix("https://") || AiSourcePolicy.isAiProductSource(url) { return }
+            images.append(ParsedImage(alt: String(content[altRange]), url: url))
         }
         return images
     }
@@ -343,12 +417,72 @@ enum ContentParser {
     // MARK: - Strip markdown images
 
     static func stripImages(_ content: String) -> String {
-        guard let regex = try? NSRegularExpression(pattern: #"!\[([^\]]*)\]\(https?://[^\s)]+\)"#) else {
+        guard let regex = regexCache.regex(imageSyntax) else {
             return content
         }
         let range = NSRange(content.startIndex..., in: content)
-        let result = regex.stringByReplacingMatches(in: content, range: range, withTemplate: "$1")
+        // The picture is drawn by the image strip; its alt text is not a caption, so it must not be left behind as a stray line.
+        let result = regex.stringByReplacingMatches(in: content, range: range, withTemplate: "")
+            .replacingOccurrences(of: #"\n{3,}"#, with: "\n\n", options: .regularExpression)
         return result.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    // MARK: - Prose and pictures in the order written
+
+    /// A text piece ready to show: no run of blank lines, no list mark left alone on its last line (the picture that followed it was the item's
+    /// content), trimmed.
+    private static func tidySegmentText(_ raw: String) -> String {
+        var t = raw.replacingOccurrences(of: #"\n{3,}"#, with: "\n\n", options: .regularExpression)
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        var lines = t.components(separatedBy: "\n")
+        if let last = lines.last, last.trimmingCharacters(in: .whitespaces).range(of: #"^(?:[-*+•>]|\d{1,3}[.)])$"#, options: .regularExpression) != nil {
+            lines.removeLast()
+            t = lines.joined(separator: "\n").trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+        return t
+    }
+
+    /// The prose and the pictures in reading order: a picture sits between the words before and after it, and pictures with only blank space
+    /// between them are one run. Same rules as `extractImages` for which picture is drawn (https only, never another AI product's page);
+    /// a picture that is not drawn is removed from the text without breaking it.
+    static func replySegments(_ content: String) -> [ReplySegment] {
+        guard let regex = regexCache.regex(imageSyntax) else {
+            let only = tidySegmentText(content)
+            return only.isEmpty ? [] : [.text(only)]
+        }
+        let ns = content as NSString
+        var out: [ReplySegment] = []
+        var pending: [ParsedImage] = []
+        var textBuf = ""
+        func flushText() {
+            let t = tidySegmentText(textBuf)
+            if !t.isEmpty { out.append(.text(t)) }
+            textBuf = ""
+        }
+        func flushImages() {
+            if !pending.isEmpty { out.append(.images(pending)); pending = [] }
+        }
+        func addText(_ piece: String) {
+            if !piece.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                flushImages()
+                textBuf += piece
+            } else if pending.isEmpty {
+                textBuf += piece
+            }
+        }
+        var at = 0
+        for m in regex.matches(in: content, range: NSRange(location: 0, length: ns.length)) {
+            addText(ns.substring(with: NSRange(location: at, length: m.range.location - at)))
+            at = m.range.location + m.range.length
+            let url = ns.substring(with: m.range(at: 2))
+            if !url.lowercased().hasPrefix("https://") || AiSourcePolicy.isAiProductSource(url) { continue }
+            flushText()
+            pending.append(ParsedImage(alt: ns.substring(with: m.range(at: 1)), url: url))
+        }
+        addText(ns.substring(from: at))
+        flushImages()
+        flushText()
+        return out
     }
 
     // MARK: - Parse place from internal_booking URL
@@ -372,12 +506,28 @@ enum ContentParser {
            let name = comps.queryItems?.first(where: { $0.name == "name" })?.value, !name.isEmpty {
             return name
         }
-        if let regex = try? NSRegularExpression(pattern: #"\*\*([^*]{3,40})\*\*"#),
+        if let regex = regexCache.regex(#"\*\*([^*]{3,40})\*\*"#, []),
            let m = regex.firstMatch(in: text, range: NSRange(text.startIndex..., in: text)),
            let r = Range(m.range(at: 1), in: text) {
             return String(text[r])
         }
         return ""
+    }
+
+    // MARK: - Does the reply carry a place worth saving?
+
+    /// A bold name that reads like a venue: followed, in the same paragraph, by a rating, an address or hours (web `replyHasSavablePlace`).
+    private static let venueLine: NSRegularExpression? = regexCache.regex(
+        #"\*\*[^*\n]{3,60}\*\*[^\n]{0,80}(?:⭐|★|đánh giá|reviews?|\d+\s*(?:đường|street|quận|q\.|phường|district)|\bmở\b|\bopen\b|\d{1,2}[:h]\d{2})"#)
+
+    /// Web `replyHasSavablePlace`: a rendered place card, a maps / booking / internal-booking button, or — with no card — a bold name
+    /// that reads like a venue. A bold phrase alone is not a place ("**cần check kỹ**" in a shopping checklist offered «Lưu địa điểm»),
+    /// and neither is a button that only opens a shop or a link.
+    static func replyHasSavablePlace(text: String, buttons: [CTAButton], hasPlaceCards: Bool) -> Bool {
+        if hasPlaceCards { return true }
+        if buttons.contains(where: { $0.type == "maps" || $0.type == "booking" || $0.type == "internal_booking" }) { return true }
+        guard let venueLine else { return false }
+        return venueLine.firstMatch(in: text, range: NSRange(text.startIndex..., in: text)) != nil
     }
 
     // MARK: - Markdown → AttributedString
@@ -386,7 +536,14 @@ enum ContentParser {
         do {
             var options = AttributedString.MarkdownParsingOptions()
             options.interpretedSyntax = .inlineOnlyPreservingWhitespace
-            return try AttributedString(markdown: text, options: options)
+            var rendered = try AttributedString(markdown: text, options: options)
+            // A link opens only as http(s) and never to another AI product's page; any other scheme keeps its label as plain text.
+            let unsafe = rendered.runs.compactMap { run -> Range<AttributedString.Index>? in
+                guard let link = run.link else { return nil }
+                return safeWebURL(link.absoluteString) == nil ? run.range : nil
+            }
+            for range in unsafe { rendered[range].link = nil }
+            return rendered
         } catch {
             return AttributedString(text)
         }

@@ -251,12 +251,17 @@ describe('MUST MATCH — the assistant comes first on every platform (DD-002 / P
   it('ios puts the assistant and Continue above the tools', () => {
     const src = read('ios/TappyAI/Features/Home/UI/HomeView.swift')
     const body = src.slice(src.indexOf('HomeGreetingSection('))
+    // UAT round 2 deleted HomeSuggestedPromptsSection (the old quick-suggestion section; 16b587b, d043af3).
+    // Like Android's `V3AskBar(`, the assistant is now the ask bar under the greeting (`HomeAskBar`); Continue is
+    // `HomeRecentConversationsSection(`; the tools are `HomeQuickActionsSection`, last.
     const [suggestions, cont, tools] = order(body, [
-      'HomeSuggestedPromptsSection(',
+      'HomeAskBar',
       'HomeRecentConversationsSection(',
       'HomeQuickActionsSection',
     ])
     expect(suggestions).toBeGreaterThan(-1)
+    expect(cont).toBeGreaterThan(-1)
+    expect(tools).toBeGreaterThan(-1)
     expect(suggestions).toBeLessThan(tools)
     expect(cont).toBeLessThan(tools)
   })

@@ -26,7 +26,10 @@ struct TappyShareSheet: View {
     let onDismiss: () -> Void
 
     @State private var image: UIImage? = nil
+    /// The PNG the preview shows — the SAME file Save, TikTok and "More" hand over (one file rule).
+    @State private var cardFile: URL? = nil
     @State private var feedback: String? = nil
+    private let cardFiles = ShareCardFiles()
 
     // ── A PLAN SHARES ITS PUBLISHED PAGE, NEVER THE TEXT ─────────────────────────────────
     //
@@ -82,8 +85,8 @@ struct TappyShareSheet: View {
                     if isPlan { planLinkStatus }
 
                     row(.inbox, system: "tray.and.arrow.down")
-                    // A published plan lives on its page; there is nothing to save to the device.
-                    if !delivered.isPlanLink { row(.save, system: "square.and.arrow.down") }
+                    // "Lưu về máy" saves the card image shown above (a published plan keeps its page too).
+                    if image != nil { row(.save, system: "square.and.arrow.down") }
                     row(.copy, system: "doc.on.doc")
                     row(.native, system: "square.and.arrow.up")
 
@@ -106,11 +109,30 @@ struct TappyShareSheet: View {
                 }
             }
         }
-        .task(id: artifact.id) {
-            // Rendered with the built-in ImageRenderer; a nil image never blocks any target.
-            image = ShareCardRenderer.render(artifact)
+        .task(id: "\(artifact.id)|\(delivered.url)") {
+            // Rendered with the built-in ImageRenderer in the approved layout (suggestion = sample #1,
+            // plan = sample #7); a nil image never blocks any target. Falls back to the legacy card.
+            if let card = await cardFiles.card(cardInput()) {
+                image = card.image
+                cardFile = card.fileURL
+            } else {
+                image = ShareCardRenderer.render(artifact)
+                cardFile = nil
+            }
         }
         .task(id: artifact.planJSON) { await publishPlan() }
+    }
+
+    /// What the card is drawn from: the plan (decoded from the verbatim block) or the places.
+    private func cardInput() -> ShareCardInput {
+        let a = delivered
+        if isPlan {
+            let plan = artifact.planJSON
+                .flatMap { try? JSONDecoder().decode(TappyPlan.self, from: Data($0.utf8)) }
+                .flatMap { PlanCardData(plan: $0) }
+            return ShareCardInput(layout: .plan, url: a.url, subject: a.subject, plan: plan, lang: lang)
+        }
+        return ShareCardInput(layout: .suggestion, url: a.url, subject: a.title, places: a.places, lang: lang)
     }
 
     // MARK: - Preview
@@ -130,8 +152,9 @@ struct TappyShareSheet: View {
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFit()
-                    .frame(maxHeight: 220)
+                    .frame(maxHeight: 420)
                     .clipShape(RoundedRectangle(cornerRadius: Radius.sm))
+                    .accessibilityIdentifier("share-card-preview")
             }
             ForEach(Array(artifact.places.prefix(3).enumerated()), id: \.offset) { i, p in
                 Text(previewLine(i, p)).font(TappyFont.caption).foregroundStyle(TappyColor.textSecondary).lineLimit(1)
@@ -313,9 +336,15 @@ struct TappyShareSheet: View {
             }
 
         case .tiktok:
-            // No text or link endpoint exists; say so.
-            copy(body)
-            feedback = String(format: String(localized: "share.appNotOpened"), label(t))
+            // TikTok has no text or link endpoint, but it receives FILES through the system share
+            // sheet: hand it the card image (the very file shown above). Without an image, say so.
+            if let cardFile {
+                present(items: [cardFile])
+                feedback = String(localized: "share.tiktokFile")
+            } else {
+                copy(body)
+                feedback = String(format: String(localized: "share.appNotOpened"), label(t))
+            }
 
         case .email:
             if let s = TappyShare.buildTextShareURL(.email, subject: a.subject, text: body), let url = URL(string: s) {
@@ -350,9 +379,9 @@ struct TappyShareSheet: View {
             feedback = a.isPlanLink ? String(localized: "share.copiedLink") : String(localized: "share.copiedContent")
 
         case .native:
-            // A published plan is a LINK: the page carries the photos, so no rendered card rides along.
+            // The text (or the plan link) plus the card FILE — the one file the preview shows.
             var items: [Any] = [a.text]
-            if let image, !a.isPlanLink { items.append(image) }
+            if let cardFile { items.append(cardFile) } else if let image { items.append(image) }
             present(items: items)
         }
     }

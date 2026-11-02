@@ -7,6 +7,8 @@ final class ScanViewModel: AppObservableObject {
     @AppPublished var extractedText = ""
     @AppPublished var loading = false
     @AppPublished var error: String?
+    /// Web `copied` (scan.copied for two seconds after Copy).
+    @AppPublished var copied = false
 
     private let service: UtilityToolsService
     private let maxDimension: CGFloat = 2048
@@ -15,11 +17,19 @@ final class ScanViewModel: AppObservableObject {
         self.service = service
     }
 
+    /// Web `FORMATS` (scan/page.tsx:79).
+    static let supportedFormats = ["JPG", "PNG", "WEBP"]
+
     var hasImage: Bool { selectedImage != nil }
     var hasResult: Bool { !extractedText.isEmpty }
+    /// Web keeps the scan button under the preview for as long as an image is selected (also after a result, so the user can scan again);
+    /// while a scan runs it is disabled and shows the spinner with `scan.scanning`.
+    var showsScanButton: Bool { hasImage }
+    var canScan: Bool { hasImage && !loading }
 
     func setImage(_ image: UIImage) {
         selectedImage = image
+        copied = false
         extractedText = ""
         error = nil
     }
@@ -56,7 +66,13 @@ final class ScanViewModel: AppObservableObject {
         loading = false
     }
 
+    func copyResult(write: (String) -> Void = { UIPasteboard.general.string = $0 }, delay: Double = CopyFeedback.seconds) {
+        guard hasResult else { return }
+        CopyFeedback.copy(extractedText, write: write, flag: { [weak self] in self?.copied = $0 }, delay: delay)
+    }
+
     func clear() {
+        copied = false
         selectedImage = nil
         extractedText = ""
         error = nil

@@ -187,13 +187,23 @@ final class TTSManager: NSObject, AppObservableObject, AVSpeechSynthesizerDelega
         timer = nil
     }
 
-    static func stripMarkdown(_ text: String) -> String {
+    /// The text without its markdown marks. For SPEECH (the default) a link is its label and a bare address is dropped (nobody wants a
+    /// URL read aloud); for COPYING plain text (`keepLinkAddresses`) an address stays ("label (https://…)"), because losing it loses
+    /// the source. Emphasis follows CommonMark in short: no space inside its edges and not inside a word, so "5 * 3 * 2", "2*3*4"
+    /// and a "* " bullet keep their stars. Review 02/11.
+    static func stripMarkdown(_ text: String, keepLinkAddresses: Bool = false) -> String {
         var s = text
-        s = s.replacingOccurrences(of: "\\*\\*(.*?)\\*\\*", with: "$1", options: .regularExpression)
-        s = s.replacingOccurrences(of: "\\*(.*?)\\*", with: "$1", options: .regularExpression)
-        s = s.replacingOccurrences(of: "#{1,3}\\s", with: "", options: .regularExpression)
-        s = s.replacingOccurrences(of: "\\[([^\\]]+)\\]\\([^)]+\\)", with: "$1", options: .regularExpression)
-        s = s.replacingOccurrences(of: "https?://\\S+", with: "", options: .regularExpression)
+        s = s.replacingOccurrences(of: #"\*\*(?!\s)(.+?)(?<!\s)\*\*"#, with: "$1", options: .regularExpression)
+        s = s.replacingOccurrences(of: #"(?<![\w*])\*(?![\s*])([^*\n]+?)(?<!\s)\*(?![\w*])"#, with: "$1", options: .regularExpression)
+        s = s.replacingOccurrences(of: #"(?m)^#{1,6}[ \t]+"#, with: "", options: .regularExpression)
+        // an address may hold one level of brackets ("…/Foo_(bar)")
+        s = s.replacingOccurrences(
+            of: #"\[([^\]]+)\]\(((?:[^()\s]|\([^()\s]*\))+)\)"#,
+            with: keepLinkAddresses ? "$1 ($2)" : "$1",
+            options: .regularExpression)
+        if !keepLinkAddresses {
+            s = s.replacingOccurrences(of: #"https?://\S+"#, with: "", options: .regularExpression)
+        }
         s = s.replacingOccurrences(of: "\\[CTA_BUTTONS\\][\\s\\S]*?\\[/CTA_BUTTONS\\]", with: "", options: [.regularExpression, .caseInsensitive])
         return s.trimmingCharacters(in: .whitespacesAndNewlines)
     }

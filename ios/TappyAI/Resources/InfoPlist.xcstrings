@@ -1,0 +1,48 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "NSCameraUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "TappyAI uses the camera to take photos and record videos for your posts, and to scan menus, receipts and QR codes. Photos are only used when you post or scan." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "TappyAI dùng camera để chụp ảnh, quay video cho bài đăng của bạn và quét thực đơn, hoá đơn, mã QR. Ảnh chỉ được dùng khi bạn đăng bài hoặc quét." } }
+      }
+    },
+    "NSMicrophoneUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "TappyAI uses the microphone for voice input in chat and to record the sound of videos you post." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "TappyAI dùng micro để nhập giọng nói khi trò chuyện và ghi âm thanh cho video bạn đăng." } }
+      }
+    },
+    "NSSpeechRecognitionUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "TappyAI turns what you say into a chat message. Your voice is transcribed by Apple speech recognition and is not stored by TappyAI." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "TappyAI chuyển lời bạn nói thành tin nhắn. Giọng nói được Apple nhận dạng và TappyAI không lưu lại." } }
+      }
+    },
+    "NSPhotoLibraryUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "TappyAI reads the photos and videos you choose to post, set as your avatar or cover, or send to be scanned. Nothing else in your library is read." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "TappyAI chỉ đọc ảnh và video bạn chọn để đăng bài, đặt ảnh đại diện, ảnh bìa hoặc quét. Không đọc phần còn lại của thư viện." } }
+      }
+    },
+    "NSPhotoLibraryAddUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "TappyAI saves the share cards and images you choose to save to your photos." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "TappyAI lưu vào thư viện ảnh những thẻ chia sẻ và hình ảnh bạn chọn lưu về máy." } }
+      }
+    },
+    "NSLocationWhenInUseUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "TappyAI uses your precise location, only while the app is open and only if you allow it, to find places around you. It is never used in the background." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "TappyAI dùng vị trí chính xác của bạn, chỉ khi đang mở app và chỉ khi bạn cho phép, để tìm địa điểm quanh bạn. Không bao giờ dùng ở chế độ nền." } }
+      }
+    }
+  },
+  "version" : "1.0"
+}

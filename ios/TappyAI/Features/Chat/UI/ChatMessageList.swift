@@ -25,6 +25,33 @@ struct ChatMessageList: View {
     let onSavePlaceManual: (String) -> Void
     let onSavePlaceFavorite: (String, String, String, String) -> Void
     let onZoomImage: (String) -> Void
+    /// 18+ gate (see `ChatViewModel.declareGuestAge` / `submitDateOfBirth`).
+    var ageSubmitting: Bool = false
+    var ageFormError: String? = nil
+    var onDeclareAge: (String) -> Void = { _ in }
+    var onSubmitDateOfBirth: (_ day: String, _ month: String, _ year: String) -> Void = { _, _, _ in }
+    var onEditDateOfBirth: () -> Void = {}
+    var ageBlocked = AgeBlockedState()
+    var onStartAgeCorrection: () -> Void = {}
+    var onCancelAgeCorrection: () -> Void = {}
+    /// `403 ai_consent_required` bubble: opens the AI-sharing consent sheet (see `ChatViewModel.reviewAIConsent`).
+    var onReviewAIConsent: () -> Void = {}
+    /// How the last reply ended when it was not a clean finish (see `ChatEndNotice`); nil = clean.
+    var endNotice: ChatEndNotice? = nil
+    /// The server's progress sentence for the thinking indicator (see `ThinkingIndicator.progressHint`).
+    var progressHint: String? = nil
+    /// Publishes a plan for «Xem kế hoạch đầy đủ trên Tappy» on the plan card (nil = the button stays inert).
+    var planShare: PlanSharing? = nil
+    /// The running turn's Deep Research card (`ChatViewModel.liveResearch`). The reply bubble being built carries the same card; this is
+    /// the fallback for the one frame where the bubble has none yet, and it is never drawn next to the bubble's own.
+    var liveResearch: ResearchStatus? = nil
+    /// The running turn's charts (`ChatViewModel.liveCharts`), with the same fallback rule as `liveResearch`.
+    var liveCharts: [ResearchChart] = []
+
+    /// What the parser made of each reply (see `ParsedContentCache`); a reference, so reading it in `body` costs no redraw.
+    @State private var parseCache = ParsedContentCache()
+    /// Bumped to draw again when a streaming reply's last words were held back by the parse throttle.
+    @State private var parseTick = 0
 
     var body: some View {
         ScrollViewReader { proxy in
@@ -46,29 +73,46 @@ struct ChatMessageList: View {
 
                     ForEach(Array(messages.enumerated()), id: \.element.id) { index, msg in
                         if msg.isUser {
-                            UserBubble(content: msg.content)
+                            UserBubble(content: msg.content, attachment: msg.attachment)
                         } else {
                             let isLast = index == messages.count - 1
-                            let parsed = ContentParser.parse(msg.content)
+                            // Parsed once per finished reply; the reply being written at most every ~50 ms (`ParsedContentCache`), so a long
+                            // streaming report does not re-parse the whole conversation on every token. `parseTick` is read so a throttled
+                            // pass is drawn again once the words pause.
+                            let _ = parseTick
+                            let parsed = parseCache.parsed(id: msg.id, content: msg.content, isStreaming: isStreaming && isLast,
+                                                           now: ProcessInfo.processInfo.systemUptime)
                             AssistantBubble(
                                 msgId: msg.id,
                                 messageIndex: index,
                                 conversationId: conversationId,
                                 content: parsed.text,
                                 images: parsed.images,
+                                // the Deep Research card: the reply's own, or the running turn's while this is the reply being built
+                                research: msg.research ?? (isLast && isStreaming ? liveResearch : nil),
+                                charts: msg.charts.isEmpty && isLast && isStreaming ? liveCharts : msg.charts,
+                                docMedia: msg.docMedia,
+                                segments: parsed.segments,
+                                chartLang: locale == "vi" ? "vi" : "en",
                                 isStreaming: isStreaming && isLast,
                                 status: msg.status,
                                 ctaButtons: parsed.ctaButtons,
                                 plan: parsed.plan,
+                                planJSON: parsed.planJSON,
+                                planShare: planShare,
                                 shopping: parsed.shopping,
                                 // LIVE first, DURABLE as the fallback — and never both, or the
                                 // turn would show the same places twice. The live annotation is
                                 // the richer projection and exists for the session that produced
                                 // the turn; it is never persisted, so a reopened conversation has
                                 // only the durable block, which is what that block is for.
-                                places: msg.livePlaces.map { $0.items.map { $0.toCardView() } }
+                                // The server's places show as sent: the web draws them all (it has no itinerary filter).
+                                places: msg.livePlaces.map { $0.renderOrder().map { $0.toCardView() } }
                                     ?? parsed.places.compactMap { $0.toCardView() },
+                                placesMapsURL: msg.livePlaces?.mapsSearchUrl,
+                                placesShown: msg.livePlaces?.shown,
                                 followups: isLast && !isStreaming ? parsed.followups : [],
+                                media: parsed.media,
                                 isLastMessage: isLast,
                                 tts: tts,
                                 onRegenerate: isLast ? onRegenerate : nil,
@@ -90,7 +134,8 @@ struct ChatMessageList: View {
                         ThinkingIndicator(
                             activeTool: activeTool,
                             thinkHintIndex: thinkHintIndex,
-                            locale: locale
+                            locale: locale,
+                            progressHint: progressHint
                         )
                     }
 
@@ -100,8 +145,23 @@ struct ChatMessageList: View {
                             error: error,
                             isAuthenticated: isAuthenticated,
                             onRetry: onRetry,
-                            onLogin: onLogin
+                            onLogin: onLogin,
+                            ageSubmitting: ageSubmitting,
+                            ageFormError: ageFormError,
+                            onDeclareAge: onDeclareAge,
+                            onSubmitDateOfBirth: onSubmitDateOfBirth,
+                            onEditDateOfBirth: onEditDateOfBirth,
+                            ageBlocked: ageBlocked,
+                            onStartAgeCorrection: onStartAgeCorrection,
+                            onCancelAgeCorrection: onCancelAgeCorrection,
+                            onReviewAIConsent: onReviewAIConsent
                         )
+                    }
+
+                    // A reply that did not finish cleanly says so under itself (web `chat.streamCut` /
+                    // `chat.turnIncomplete` / `chat.turnInterrupted`); a cut reply also offers «answer again».
+                    if let endNotice, error == nil, !isStreaming {
+                        ChatEndNoticeView(notice: endNotice, onRegenerate: onRegenerate)
                     }
 
                     // Read-aloud notice. Deliberately NOT folded into ChatErrorBanner: that models
@@ -121,12 +181,24 @@ struct ChatMessageList: View {
                 .padding(.horizontal, Spacing.md)
                 .padding(.vertical, Spacing.md)
             }
-            .onChange(of: messages.count) {
+            .onChange(of: messages.count) { _ in
                 withAnimation(.easeOut(duration: 0.2)) {
                     proxy.scrollTo("bottom", anchor: .bottom)
                 }
             }
-            .onChange(of: messages.last?.content) {
+            // The error card is not a message: bring it into view when it appears (it sat below the fold, behind the keyboard).
+            .onChange(of: error) { newError in
+                if newError != nil {
+                    withAnimation(.easeOut(duration: 0.2)) { proxy.scrollTo("bottom", anchor: .bottom) }
+                }
+            }
+            .scrollDismissesKeyboard(.interactively)
+            // The parse throttle holds back words that arrived inside its interval; when the tokens pause, draw once more so they show.
+            .task(id: messages.last?.content.utf8.count ?? 0) { @MainActor in
+                try? await Task.sleep(nanoseconds: 80_000_000)
+                if parseCache.hasPendingRefresh { parseTick &+= 1 }
+            }
+            .onChange(of: messages.last?.content) { _ in
                 if isStreaming {
                     proxy.scrollTo("bottom", anchor: .bottom)
                 }
@@ -145,17 +217,31 @@ struct ChatMessageList: View {
 
 private struct UserBubble: View {
     let content: String
+    var attachment: ChatAttachment? = nil
 
     var body: some View {
         HStack {
             Spacer(minLength: Spacing.xxl)
-            Text(content)
-                .font(TappyFont.body)
-                .foregroundStyle(.white)
-                .padding(.horizontal, Spacing.md)
-                .padding(.vertical, Spacing.sm)
-                .background(TappyColor.primary)
-                .clipShape(RoundedRectangle(cornerRadius: Radius.lg, style: .continuous))
+            VStack(alignment: .trailing, spacing: Spacing.xxs) {
+                // The photo or PDF sent with the question (web: above the text, which is hidden when empty).
+                if let attachment {
+                    switch attachment.kind {
+                    case .image: AttachmentPhotoView(attachment: attachment)
+                    case .pdf: AttachmentPdfChip(name: attachment.name)
+                    }
+                }
+                if attachment == nil || !content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                    Text(content)
+                        .font(TappyFont.body)
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, Spacing.md)
+                        .padding(.vertical, Spacing.sm)
+                        .background(TappyColor.primary)
+                        .clipShape(RoundedRectangle(cornerRadius: Radius.lg, style: .continuous))
+                }
+                // the answers have their action bar; the question has its copy button (web UserMessageCopy)
+                UserMessageCopyButton(text: content)
+            }
         }
     }
 }
@@ -168,18 +254,36 @@ private struct AssistantBubble: View {
     let conversationId: String?
     let content: String
     let images: [ParsedImage]
+    /// The Deep Research card of this reply; drawn above its text (nil on every other reply).
+    var research: ResearchStatus? = nil
+    /// The report's charts (empty on every other reply): each drawn under the section it names, the rest after the text (`ArticleLayout`).
+    var charts: [ResearchChart] = []
+    /// The pictures that go under the answer's headings / list items (`tappy.doc_media.v1`; empty on every other reply).
+    var docMedia: [DocMediaItem] = []
+    /// The reply's prose and pictures in the order written (`ParsedContent.segments`).
+    var segments: [ReplySegment] = []
+    /// "vi" or "en": the language the charts' figures are written in.
+    var chartLang: String = "en"
     let isStreaming: Bool
     let status: MessageStatus
     let ctaButtons: [CTAButton]
     let plan: TappyPlan?
+    /// The `[TAPPY_PLAN]` block verbatim and the publisher, for the plan card's full-plan button.
+    var planJSON: String? = nil
+    var planShare: PlanSharing? = nil
     /// D1 — the shopping decision for this turn, when the reply carried one.
     /// Defaulted so existing call sites keep compiling unchanged.
     var shopping: ShoppingDecisionView? = nil
     /// The turn's place cards, already projected from whichever payload was available.
     var places: [PlaceCardView] = []
+    /// The «Xem tất cả trên bản đồ» link and the fold size, from the live annotation only.
+    var placesMapsURL: String? = nil
+    var placesShown: Int? = nil
     /// Whether the comparison sheet is open for this row.
     @State private var showComparison = false
     let followups: [String]
+    /// The turn's news pictures / subject cards (`[TAPPY_MEDIA]`, already host-checked).
+    var media: [MediaBlock] = []
     let isLastMessage: Bool
     let tts: TTSManager
     var onRegenerate: (() -> Void)?
@@ -196,28 +300,40 @@ private struct AssistantBubble: View {
     var body: some View {
         HStack(alignment: .top, spacing: Spacing.xs) {
             // Avatar
-            Text("🤖")
-                .font(.system(size: 24))
-                .frame(width: 32, height: 32)
+            TappyAvatar()
 
             VStack(alignment: .leading, spacing: Spacing.xs) {
-                // Message text
-                if !content.isEmpty {
-                    Text(attributedContent)
-                        .font(TappyFont.body)
-                        .foregroundStyle(TappyColor.textPrimary)
-                        .textSelection(.enabled)
-                        .fixedSize(horizontal: false, vertical: true)
+                // Deep Research: the card above its report (web: the card before the message content)
+                if let research {
+                    ResearchCardView(status: research, report: isStreaming ? nil : content, charts: charts, lang: chartLang,
+                                     onOpenLink: { UIApplication.shared.open($0) })
                 }
 
-                // Inline image strip
-                if !images.isEmpty {
-                    ChatImageStrip(images: images, onZoom: onZoomImage)
+                if let parts = articleParts {
+                    // An answer with structure (heading, list, table, ...), charts or section pictures, or a picture in the middle of its text:
+                    // drawn block by block, each chart / picture right under the section it names (web ArticleAnswer, Android ArticleViews)
+                    ForEach(Array(parts.enumerated()), id: \.offset) { _, part in
+                        articlePartView(part)
+                    }
+                } else {
+                    // Message text
+                    if !content.isEmpty {
+                        Text(attributedContent)
+                            .font(TappyFont.body)
+                            .foregroundStyle(TappyColor.textPrimary)
+                            .textSelection(.enabled)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+
+                    // Inline image strip
+                    if !images.isEmpty {
+                        ChatImageStrip(images: images, onZoom: onZoomImage)
+                    }
                 }
 
                 // Plan card
                 if let plan {
-                    TripPlanCardView(plan: plan)
+                    ChatPlanCardView(plan: plan, planJSON: planJSON, planShare: planShare, onShare: onShare)
                 }
 
                 // D1 — the shopping DECISION. Rendered only once streaming ends, like every other
@@ -227,7 +343,13 @@ private struct AssistantBubble: View {
                 // structured block: a half-arrived card is not a card, and showing one mid-stream
                 // is how partial JSON reached users in the first place.
                 if !places.isEmpty, !isStreaming {
-                    PlaceCardsView(places: places)
+                    PlaceCardsView(places: places, mapsSearchURL: placesMapsURL, shown: placesShown)
+                }
+
+                // News pictures / Wikipedia subject cards (CONSULT_V3 / ANSWER_V4): only validated blocks, only
+                // once the reply is complete. Empty on every default turn.
+                if !media.isEmpty, !isStreaming {
+                    MediaBlocksView(blocks: media)
                 }
 
                 if let shopping, !isStreaming {
@@ -285,7 +407,7 @@ private struct AssistantBubble: View {
                 }
 
                 // Save place button
-                if !isStreaming && !ctaButtons.isEmpty {
+                if !isStreaming, ContentParser.replyHasSavablePlace(text: content, buttons: ctaButtons, hasPlaceCards: !places.isEmpty) {
                     SavePlaceButton(
                         text: content,
                         buttons: ctaButtons,
@@ -295,7 +417,7 @@ private struct AssistantBubble: View {
 
                 // CTA buttons with favorite toggle
                 if !ctaButtons.isEmpty {
-                    FlowLayout(spacing: Spacing.xs) {
+                    ChatFlowLayout(spacing: Spacing.xs) {
                         ForEach(ctaButtons) { btn in
                             HStack(spacing: 4) {
                                 CTAButtonView(button: btn)
@@ -316,8 +438,8 @@ private struct AssistantBubble: View {
 
                 // Follow-up chips
                 if !followups.isEmpty {
-                    FlowLayout(spacing: Spacing.xs) {
-                        ForEach(followups, id: \.self) { f in
+                    ChatFlowLayout(spacing: Spacing.xs) {
+                        ForEach(Array(followups.enumerated()), id: \.offset) { _, f in
                             Button { onFollowup(f) } label: {
                                 Text(f)
                                     .font(TappyFont.caption)
@@ -338,6 +460,26 @@ private struct AssistantBubble: View {
     private var attributedContent: AttributedString {
         ContentParser.renderMarkdown(content)
     }
+
+    /// The laid-out answer, or nil when the reply is plain prose (then the single text view above draws it, as it always did).
+    private var articleParts: [ArticlePart]? {
+        ArticleLayout.layout(segments: segments, media: docMedia, charts: charts)
+    }
+
+    @ViewBuilder
+    private func articlePartView(_ part: ArticlePart) -> some View {
+        switch part {
+        case .blocks(let blocks):
+            MarkdownBlocksView(blocks: blocks)
+        case .chart(let chart):
+            // Deep Research: the report's chart under the section it names
+            ResearchChartView(chart: chart, lang: chartLang)
+        case .picture(let item):
+            ArticlePictureView(item: item, onZoom: onZoomImage)
+        case .images(let pictures):
+            ChatImageStrip(images: pictures, onZoom: onZoomImage)
+        }
+    }
 }
 
 // MARK: - Thinking Indicator
@@ -346,15 +488,13 @@ private struct ThinkingIndicator: View {
     let activeTool: String?
     let thinkHintIndex: Int
     let locale: String
-
-    private let thinkHintsVi = ["Tappy đang suy nghĩ…", "Đang tìm thông tin…", "Đang tổng hợp câu trả lời…"]
-    private let thinkHintsEn = ["Tappy is thinking…", "Looking things up…", "Putting it together…"]
+    /// The server's own sentence for what the pipeline is doing now (`tappy.progress.v1`), in the turn's
+    /// language. Shown in place of the rotating generic hint while it is set.
+    var progressHint: String? = nil
 
     var body: some View {
         HStack(alignment: .top, spacing: Spacing.xs) {
-            Text("🤖")
-                .font(.system(size: 24))
-                .frame(width: 32, height: 32)
+            TappyAvatar()
 
             HStack(spacing: Spacing.xs) {
                 HStack(spacing: 3) {
@@ -376,11 +516,43 @@ private struct ThinkingIndicator: View {
     }
 
     private var hintText: String {
+        if let progressHint { return progressHint }
         if let tool = activeTool, let hint = ToolHints.hint(for: tool, locale: locale) {
             return hint
         }
-        let hints = locale == "en" ? thinkHintsEn : thinkHintsVi
+        let hints = ToolHints.waitHints(locale: locale)
         return hints[thinkHintIndex % hints.count]
+    }
+}
+
+// MARK: - End notice
+
+private struct ChatEndNoticeView: View {
+    let notice: ChatEndNotice
+    let onRegenerate: () -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: Spacing.xs) {
+            Text(LocalizedStringKey(notice.messageKey))
+                .font(.footnote)
+                .foregroundColor(.secondary)
+            if notice == .cut {
+                Button(action: onRegenerate) {
+                    HStack(spacing: Spacing.xxs) {
+                        Image(systemName: "arrow.counterclockwise")
+                            .font(.caption)
+                        Text("chat.streamCutRetry")
+                            .font(TappyFont.caption)
+                    }
+                }
+                .buttonStyle(.plain)
+                .foregroundColor(TappyColor.primary)
+                .accessibilityIdentifier("chat-stream-cut-retry")
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.vertical, Spacing.xs)
+        .accessibilityIdentifier("chat-end-notice")
     }
 }
 
@@ -391,22 +563,48 @@ private struct ChatErrorBanner: View {
     let isAuthenticated: Bool
     let onRetry: () -> Void
     let onLogin: () -> Void
+    let ageSubmitting: Bool
+    let ageFormError: String?
+    let onDeclareAge: (String) -> Void
+    let onSubmitDateOfBirth: (String, String, String) -> Void
+    let onEditDateOfBirth: () -> Void
+    let ageBlocked: AgeBlockedState
+    let onStartAgeCorrection: () -> Void
+    let onCancelAgeCorrection: () -> Void
+    let onReviewAIConsent: () -> Void
 
     var body: some View {
         HStack(alignment: .top, spacing: Spacing.xs) {
-            Text("🤖")
-                .font(.system(size: 24))
-                .frame(width: 32, height: 32)
+            TappyAvatar()
 
             VStack(alignment: .leading, spacing: Spacing.xs) {
                 switch error {
+                case .ageDeclarationRequired(let message):
+                    GuestAgeDeclarationPrompt(serverMessage: message, onDeclare: onDeclareAge)
+
+                case .ageVerificationRequired(let message):
+                    DateOfBirthPrompt(serverMessage: message, submitting: ageSubmitting,
+                                      formError: ageFormError, onSubmit: onSubmitDateOfBirth,
+                                      onEdit: onEditDateOfBirth)
+
+                case .ageIneligible(let message):
+                    if ageBlocked.correcting {
+                        DateOfBirthPrompt(serverMessage: nil, submitting: ageSubmitting,
+                                          formError: ageFormError, onSubmit: onSubmitDateOfBirth,
+                                          onEdit: onEditDateOfBirth,
+                                          mode: .correction, onCancel: onCancelAgeCorrection)
+                    } else {
+                        AgeBlockedPanel(message: message, state: ageBlocked,
+                                        onCorrect: onStartAgeCorrection)
+                    }
+
                 case .authRequired, .anonLimitReached:
                     VStack(alignment: .leading, spacing: Spacing.xs) {
                         Text(error == .anonLimitReached
                              ? NSLocalizedString("chat.error.anonLimit", comment: "")
                              : NSLocalizedString("chat.error.authRequired", comment: ""))
                             .font(TappyFont.callout)
-                            .foregroundStyle(TappyColor.primary)
+                            .foregroundStyle(TappyColor.textPrimary)
                         Button(action: onLogin) {
                             Text("chat.signInToContinue")
                                 .font(TappyFont.caption)
@@ -417,6 +615,46 @@ private struct ChatErrorBanner: View {
                                 .clipShape(RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
                         }
                         .buttonStyle(.plain)
+                        .accessibilityIdentifier("chat-signin")
+                    }
+                    .padding(Spacing.sm)
+                    .background(TappyColor.primary.opacity(0.08))
+                    .clipShape(RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
+
+                case .planLimitReached(let message):
+                    // A paid plan that spent its day: the server's sentence, never «sign in» or «upgrade».
+                    Text(message ?? NSLocalizedString("chat.planLimitReached", comment: ""))
+                        .font(TappyFont.callout)
+                        .foregroundStyle(TappyColor.secondary)
+                        .padding(Spacing.sm)
+                        .background(TappyColor.secondary.opacity(0.08))
+                        .clipShape(RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
+
+                case .deepResearchLimit, .proDailyLimit, .rateLimited:
+                    // A spent allowance or a burst limit: the server's sentence, no retry button (repeating changes nothing).
+                    Text(error.limitSentence ?? "")
+                        .font(TappyFont.callout)
+                        .foregroundStyle(TappyColor.secondary)
+                        .padding(Spacing.sm)
+                        .background(TappyColor.secondary.opacity(0.08))
+                        .clipShape(RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
+
+                case .aiConsentRequired(let message):
+                    VStack(alignment: .leading, spacing: Spacing.xs) {
+                        Text(message ?? NSLocalizedString("chat.error.aiConsentRequired", comment: ""))
+                            .font(TappyFont.callout)
+                            .foregroundStyle(TappyColor.textPrimary)
+                        Button(action: onReviewAIConsent) {
+                            Text("chat.error.reviewAIConsent")
+                                .font(TappyFont.caption)
+                                .foregroundStyle(.white)
+                                .padding(.horizontal, Spacing.sm)
+                                .padding(.vertical, Spacing.xs)
+                                .background(TappyColor.primary)
+                                .clipShape(RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("chat-review-ai-consent")
                     }
                     .padding(Spacing.sm)
                     .background(TappyColor.primary.opacity(0.08))
@@ -451,6 +689,7 @@ private struct ChatErrorBanner: View {
                             .clipShape(RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
                         }
                         .buttonStyle(.plain)
+                        .accessibilityIdentifier("chat-retry")
                     }
                     .padding(Spacing.sm)
                     .background(TappyColor.danger.opacity(0.08))
@@ -468,7 +707,8 @@ private struct CTAButtonView: View {
 
     var body: some View {
         Button {
-            guard let url = URL(string: button.url) else { return }
+            // tel / mailto / http(s) as the web allows; never another AI product's page or a stray scheme (itms-apps:, file:, intent:…)
+            guard let url = ContentParser.ctaOpenURL(button.url) else { return }
             if button.type != "internal_booking" {
                 UIApplication.shared.open(url)
             }
@@ -490,57 +730,7 @@ private struct CTAButtonView: View {
     }
 }
 
-// MARK: - Trip Plan Card
-
-private struct TripPlanCardView: View {
-    let plan: TappyPlan
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: Spacing.sm) {
-            ForEach(Array(plan.days.enumerated()), id: \.offset) { _, day in
-                VStack(alignment: .leading, spacing: Spacing.xs) {
-                    if let title = day.title {
-                        Text(title)
-                            .font(TappyFont.bodyEmphasis)
-                            .foregroundStyle(TappyColor.textPrimary)
-                    }
-                    if let activities = day.activities {
-                        ForEach(Array(activities.enumerated()), id: \.offset) { _, activity in
-                            HStack(alignment: .top, spacing: Spacing.xs) {
-                                if let time = activity.time {
-                                    Text(time)
-                                        .font(TappyFont.caption)
-                                        .foregroundStyle(TappyColor.textSecondary)
-                                        .frame(width: 50, alignment: .leading)
-                                }
-                                VStack(alignment: .leading, spacing: 2) {
-                                    if let title = activity.title {
-                                        Text(title)
-                                            .font(TappyFont.callout)
-                                            .foregroundStyle(TappyColor.textPrimary)
-                                    }
-                                    if let desc = activity.description {
-                                        Text(desc)
-                                            .font(TappyFont.caption)
-                                            .foregroundStyle(TappyColor.textSecondary)
-                                    }
-                                    if let cost = activity.cost {
-                                        Text(cost)
-                                            .font(TappyFont.caption)
-                                            .foregroundStyle(TappyColor.primary)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        .padding(Spacing.sm)
-        .background(TappyColor.surface)
-        .clipShape(RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
-    }
-}
+// The trip plan card now lives in `ChatPlanCardView` (Features/Chat/UI/PlanCardView.swift, plan card v2).
 
 // MARK: - Streaming Cursor
 
@@ -560,9 +750,9 @@ private struct StreamingCursor: View {
     }
 }
 
-// MARK: - FlowLayout
+// MARK: - ChatFlowLayout
 
-struct FlowLayout: Layout {
+struct ChatFlowLayout: Layout {
     var spacing: CGFloat = 8
 
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {

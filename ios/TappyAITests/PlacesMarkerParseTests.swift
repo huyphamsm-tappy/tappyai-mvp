@@ -183,8 +183,8 @@ final class PlacesMarkerParseTests: XCTestCase {
     }
 
     func testThePriceBandMirrorsWebAndAnOutOfRangeLevelShowsNothing() {
-        XCTAssertEqual(placePriceBand(1), "đ")
-        XCTAssertEqual(placePriceBand(4), "đđđđ")
+        XCTAssertEqual(placePriceBand(1), "₫")
+        XCTAssertEqual(placePriceBand(4), "₫₫₫₫")
         XCTAssertNil(placePriceBand(0))
         XCTAssertNil(placePriceBand(5))
         XCTAssertNil(placePriceBand(nil))

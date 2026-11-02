@@ -11,6 +11,8 @@ struct UserDefaultsStore {
         case theme = "theme"
         case responseStyle = "tappy_response_style"
         case hasSeenLanguagePicker = "tappy_seen_language_picker"
+        /// Terms version accepted before the first review/comment (`TermsConsent`).
+        case ugcTermsAccepted = "tappy_ugc_terms_accepted"
     }
 
     func string(_ key: Key) -> String? { defaults.string(forKey: key.rawValue) }

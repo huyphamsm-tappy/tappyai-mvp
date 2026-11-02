@@ -184,21 +184,55 @@ final class CommerceActionContractTests: XCTestCase {
     }
 
     func testTheBeaconIsOpaqueIdsOnlyAndNeverBlocksTheTap() {
+        /// Parks the beacon's POST until the test opens it, without blocking a thread.
+        final class Gate: @unchecked Sendable {
+            private let lock = NSLock()
+            private var open = false
+            private var waiters: [CheckedContinuation<Void, Never>] = []
+            func pass() async {
+                await withCheckedContinuation { (c: CheckedContinuation<Void, Never>) in
+                    lock.lock()
+                    if open { lock.unlock(); c.resume() } else { waiters.append(c); lock.unlock() }
+                }
+            }
+            func release() {
+                lock.lock(); open = true; let parked = waiters; waiters = []; lock.unlock()
+                parked.forEach { $0.resume() }
+            }
+        }
+        /// Fulfils its expectations when the call actually arrives — the beacon is a detached Task, so
+        /// a fixed sleep raced it on a loaded CI runner (run 36317237681 saw `posted == []`).
         final class Recorder: CommerceHandoffTransport, CommerceEventSink, @unchecked Sendable {
             var posted: [CommerceHandoffBody] = []
             var events: [(CommerceHandoffEvent, String?)] = []
             var fail = false
+            var gate: Gate?
+            var didPost: XCTestExpectation?
+            var didFailBeacon: XCTestExpectation?
             let lock = NSLock()
-            func post(_ body: CommerceHandoffBody) async throws { lock.lock(); posted.append(body); lock.unlock(); if fail { throw URLError(.notConnectedToInternet) } }
-            func record(_ event: CommerceHandoffEvent, providerId: String, capability: String?, depth: Int, loginRequired: Bool, reason: String?) { lock.lock(); events.append((event, reason)); lock.unlock() }
+            func post(_ body: CommerceHandoffBody) async throws {
+                await gate?.pass()
+                lock.lock(); posted.append(body); lock.unlock()
+                didPost?.fulfill()
+                if fail { throw URLError(.notConnectedToInternet) }
+            }
+            func record(_ event: CommerceHandoffEvent, providerId: String, capability: String?, depth: Int, loginRequired: Bool, reason: String?) {
+                lock.lock(); events.append((event, reason)); lock.unlock()
+                if event == .failed, reason == "beacon" { didFailBeacon?.fulfill() }
+            }
         }
         let facts = LiveCommerceFacts(linkId: "b2c3d4e5f60718293a4b5c6d", requestId: "1a2b3c4d-5e6f-4a7b-8c9d-0e1f2a3b4c5d", providerId: "tiktokshop", depth: 3, guestDepth: 3, authRequiredAt: "before_checkout", loginRequired: true, handoff: "merchant_login", capability: "product_detail")
 
         let ok = Recorder()
+        let gate = Gate(); ok.gate = gate
+        let posted = expectation(description: "beacon posted")
+        ok.didPost = posted
         CommerceHandoffReporter.tapped(facts, opened: true, transport: ok, sink: ok)
-        let e1 = expectation(description: "posted")
-        DispatchQueue.global().asyncAfter(deadline: .now() + 0.3) { e1.fulfill() }
-        wait(for: [e1], timeout: 2)
+        // The tap has returned while the beacon is still parked at the gate: it never waits on the network.
+        XCTAssertEqual(ok.events.map(\.0), [.tapped, .attempted])
+        XCTAssertTrue(ok.posted.isEmpty)
+        gate.release()
+        wait(for: [posted], timeout: 5)
         XCTAssertEqual(ok.posted, [CommerceHandoffBody(linkId: facts.linkId, requestId: facts.requestId, platform: "ios")])
         XCTAssertEqual(ok.events.map(\.0), [.tapped, .attempted])
 
@@ -209,10 +243,11 @@ final class CommerceActionContractTests: XCTestCase {
         XCTAssertTrue(none.posted.isEmpty)
 
         let dead = Recorder(); dead.fail = true
+        let failed = expectation(description: "beacon failure recorded")
+        dead.didFailBeacon = failed
         CommerceHandoffReporter.tapped(facts, opened: true, transport: dead, sink: dead)
-        let e2 = expectation(description: "failed")
-        DispatchQueue.global().asyncAfter(deadline: .now() + 0.3) { e2.fulfill() }
-        wait(for: [e2], timeout: 2)
+        wait(for: [failed], timeout: 5)
+        XCTAssertEqual(dead.posted.count, 1)
         XCTAssertEqual(dead.events.map(\.0), [.tapped, .attempted, .failed])
         XCTAssertEqual(dead.events.last?.1, "beacon")
 

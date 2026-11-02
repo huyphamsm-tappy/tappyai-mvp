@@ -143,13 +143,15 @@ final class ShoppingComparisonTests: XCTestCase {
     // MARK: - The honesty rule at its most breakable point
 
     func testPriceRangeRendersBothBoundsOneBoundOrAnExplicitUnknown() {
-        XCTAssertEqual(shoppingPriceRangeText(low: 18_990_000, high: 20_490_000, unknown: "chưa rõ"), "18.9 triệu – 20.4 triệu")
-        XCTAssertEqual(shoppingPriceRangeText(low: 24_990_000, high: nil, unknown: "chưa rõ"), "24.9 triệu")
-        XCTAssertEqual(shoppingPriceRangeText(low: nil, high: 24_990_000, unknown: "chưa rõ"), "24.9 triệu")
+        // 02/11 review: the compact price is ROUNDED to a decimal (it used to cut: 24.990.000 read "24.9 triệu", a price the shop never
+        // asked) and written with a comma as Vietnamese reads it (see CompactVndTests; same values as Android ShoppingDecisionParseTest)
+        XCTAssertEqual(shoppingPriceRangeText(low: 18_990_000, high: 20_490_000, unknown: "chưa rõ"), "19 triệu – 20,5 triệu")
+        XCTAssertEqual(shoppingPriceRangeText(low: 24_990_000, high: nil, unknown: "chưa rõ"), "25 triệu")
+        XCTAssertEqual(shoppingPriceRangeText(low: nil, high: 24_990_000, unknown: "chưa rõ"), "25 triệu")
         XCTAssertEqual(shoppingPriceRangeText(low: nil, high: nil, unknown: "chưa rõ"), "chưa rõ")
     }
 
     func testSinglePointPriceIsNotAFakeRange() {
-        XCTAssertEqual(shoppingPriceRangeText(low: 18_990_000, high: 18_990_000, unknown: "chưa rõ"), "18.9 triệu")
+        XCTAssertEqual(shoppingPriceRangeText(low: 18_990_000, high: 18_990_000, unknown: "chưa rõ"), "19 triệu")
     }
 }

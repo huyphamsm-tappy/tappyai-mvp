@@ -29,7 +29,7 @@
     <key>NSPrivacyCollectedDataTypes</key>
     <array>
 
-        <!-- Name: full name from profile / OAuth sign-in. -->
+        <!-- Name: full name from the profile; from Google / Zalo / Sign in with Apple at first sign-in. -->
         <dict>
             <key>NSPrivacyCollectedDataType</key>
             <string>NSPrivacyCollectedDataTypeName</string>
@@ -71,7 +71,8 @@
             </array>
         </dict>
 
-        <!-- User content: chat messages, place reviews, uploaded video/sound. -->
+        <!-- User content: chat messages, place reviews, comments, bio, text sent to translate / write /
+             scam-check. -->
         <dict>
             <key>NSPrivacyCollectedDataType</key>
             <string>NSPrivacyCollectedDataTypeOtherUserContent</string>
@@ -86,7 +87,8 @@
             </array>
         </dict>
 
-        <!-- Photos & videos: uploaded for place reviews; stored in Supabase Storage. -->
+        <!-- Photos & videos: uploaded for reviews, clips, avatar and cover, and scanned documents;
+             stored in Google Cloud Storage (publicly readable URLs). -->
         <dict>
             <key>NSPrivacyCollectedDataType</key>
             <string>NSPrivacyCollectedDataTypePhotosOrVideos</string>
@@ -100,10 +102,11 @@
             </array>
         </dict>
 
-        <!-- Audio: original sounds recorded and uploaded by users. -->
+        <!-- Phone number: the contact number a user types into a booking request
+             (Discovery BookingFormView -> bookings.customer_phone), shown back in Bookings. -->
         <dict>
             <key>NSPrivacyCollectedDataType</key>
-            <string>NSPrivacyCollectedDataTypeAudioData</string>
+            <string>NSPrivacyCollectedDataTypePhoneNumber</string>
             <key>NSPrivacyCollectedDataTypeLinked</key>
             <true/>
             <key>NSPrivacyCollectedDataTypeTracking</key>
@@ -114,12 +117,13 @@
             </array>
         </dict>
 
-        <!-- Coarse location: sent with AI queries to find nearby places; not stored as a profile field. -->
+        <!-- Date of birth: the 18+ age gate (PATCH /api/profile {dateOfBirth}). Apple has no
+             dedicated type for it, so it is declared as Other Data Types. -->
         <dict>
             <key>NSPrivacyCollectedDataType</key>
-            <string>NSPrivacyCollectedDataTypeCoarseLocation</string>
+            <string>NSPrivacyCollectedDataTypeOtherDataTypes</string>
             <key>NSPrivacyCollectedDataTypeLinked</key>
-            <false/>
+            <true/>
             <key>NSPrivacyCollectedDataTypeTracking</key>
             <false/>
             <key>NSPrivacyCollectedDataTypePurposes</key>
@@ -128,7 +132,77 @@
             </array>
         </dict>
 
-        <!-- Product interaction: conversation history, feature usage, personalization signals. -->
+        <!-- Audio data is deliberately NOT declared (30/09 review, was declared before). The only code
+             that sends audio to TappyAI is the Music upload (POST /api/upload/audio), and Music is
+             hidden by the COMPILE-TIME constant ProductFlags.showMusic = false: it cannot be turned on
+             by a server flag, only by a new app build, which must re-add this entry (PrivacyManifestTests
+             fails until it does). Voice input is not audio collection: SFSpeechRecognizer audio is
+             transcribed by the OS and the app sends TappyAI's servers text only — the same finding as
+             the Android Data safety row "Ghi âm giọng nói: Không" (docs/release/PLAY-LISTING.md §1). -->
+
+        <!-- Precise location: LocationCoordinator asks for kCLLocationAccuracyHundredMeters and the
+             chat request carries the unrounded lat/lng (userLocation) in a signed-in request, so it
+             is declared as precise and linked. Only while the user's location toggle is on. -->
+        <dict>
+            <key>NSPrivacyCollectedDataType</key>
+            <string>NSPrivacyCollectedDataTypePreciseLocation</string>
+            <key>NSPrivacyCollectedDataTypeLinked</key>
+            <true/>
+            <key>NSPrivacyCollectedDataTypeTracking</key>
+            <false/>
+            <key>NSPrivacyCollectedDataTypePurposes</key>
+            <array>
+                <string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
+            </array>
+        </dict>
+
+        <!-- Device ID: the Firebase Cloud Messaging registration token, stored server-side so push
+             notifications can be delivered (Data safety: "Mã thiết bị", purpose app functionality). -->
+        <dict>
+            <key>NSPrivacyCollectedDataType</key>
+            <string>NSPrivacyCollectedDataTypeDeviceID</string>
+            <key>NSPrivacyCollectedDataTypeLinked</key>
+            <true/>
+            <key>NSPrivacyCollectedDataTypeTracking</key>
+            <false/>
+            <key>NSPrivacyCollectedDataTypePurposes</key>
+            <array>
+                <string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
+            </array>
+        </dict>
+
+        <!-- Search history: search terms the assistant and the places search send to Google / Serper (and to the AI
+             model, when the person has agreed). Linked to the account; app functionality only. -->
+        <dict>
+            <key>NSPrivacyCollectedDataType</key>
+            <string>NSPrivacyCollectedDataTypeSearchHistory</string>
+            <key>NSPrivacyCollectedDataTypeLinked</key>
+            <true/>
+            <key>NSPrivacyCollectedDataTypeTracking</key>
+            <false/>
+            <key>NSPrivacyCollectedDataTypePurposes</key>
+            <array>
+                <string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
+            </array>
+        </dict>
+
+        <!-- Coarse location: the same nearby-places context; kept alongside precise. -->
+        <dict>
+            <key>NSPrivacyCollectedDataType</key>
+            <string>NSPrivacyCollectedDataTypeCoarseLocation</string>
+            <key>NSPrivacyCollectedDataTypeLinked</key>
+            <true/>
+            <key>NSPrivacyCollectedDataTypeTracking</key>
+            <false/>
+            <key>NSPrivacyCollectedDataTypePurposes</key>
+            <array>
+                <string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
+            </array>
+        </dict>
+
+        <!-- Product interaction: the watch time / completion rate a clip reports (POST
+             /api/reviews/{id}/interact), likes, saves, follows, and the conversation history. There is no
+             analytics SDK in the iOS app (only FirebaseMessaging). -->
         <dict>
             <key>NSPrivacyCollectedDataType</key>
             <string>NSPrivacyCollectedDataTypeProductInteraction</string>
@@ -143,7 +217,9 @@
             </array>
         </dict>
 
-        <!-- Purchase history: Pro subscription status. -->
+        <!-- Purchase history: the StoreKit transaction sent to POST /api/iap/apple/verify. The Pro screen
+             is hidden by the RUNTIME server flag showProUpgrade (off), so a server change can show it
+             without an app release — which is why this stays declared while the code path exists. -->
         <dict>
             <key>NSPrivacyCollectedDataType</key>
             <string>NSPrivacyCollectedDataTypePurchaseHistory</string>
