@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "son (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:27:04.579Z",
+ "body": {
+  "searchParameters": {
+   "q": "son (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Son Ink Phù Hợp Làm Son Base, INK 30 Classic Nude, INK 24 ...",
+    "link": "https://shopee.vn/Son-Ink-Ph%C3%B9-H%E1%BB%A3p-L%C3%A0m-Son-Base-INK-30-Classic-Nude-INK-24-Milky-Nude-INK-45-Pink-beige-nude-i.12964260.19103392195?extraParams=%7B%22display_model_id%22%3A222751020825%2C%22model_selection_logic%22%3A3%7D&rModelId=222751020825&vItemId=25898126437&vModelId=360821932796&vShopId=1506174776",
+    "snippet": "Mua Son Ink Phù Hợp Làm Son Base, INK 30 Classic Nude, INK 24 Milky Nude, INK 45 Pink beige nude giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 1
+   },
+   {
+    "title": "Buồng Sấy Ophir Cho Sơn Mô Hình, Sấy Gunpla Resin Figure ...",
+    "link": "https://shopee.vn/Bu%E1%BB%93ng-S%E1%BA%A5y-Ophir-Cho-S%C6%A1n-M%C3%B4-H%C3%ACnh-S%E1%BA%A5y-Gunpla-Resin-Figure-Arttoy-Gi%E1%BA%A3m-%E1%BA%A8m-Kh%C3%B4-Nhanh-H%E1%BA%A1n-Ch%E1%BA%BF-L%E1%BB%97i-S%C6%A1n-i.1171933204.57352171249",
+    "snippet": "Mua Buồng Sấy Ophir Cho Sơn Mô Hình, Sấy Gunpla Resin Figure Arttoy, Giảm Ẩm, Khô Nhanh, Hạn Chế Lỗi Sơn giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 2
+   },
+   {
+    "title": "BB-10 | sơn lắc, sơn phun, sơn xịt xe dream màu tím nho ...",
+    "link": "https://shopee.vn/BB-10-s%C6%A1n-l%E1%BA%AFc-s%C6%A1n-phun-s%C6%A1n-x%E1%BB%8Bt-xe-dream-m%C3%A0u-t%C3%ADm-nho-chu%E1%BA%A9n-m%E1%BA%ABu-zin-i.182693739.26490285917",
+    "snippet": "Mua BB-10 | sơn lắc, sơn phun, sơn xịt xe dream màu tím nho chuẩn mẫu zin giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "position": 3
+   },
+   {
+    "title": "Dao Nạo Sơn Bộ 3 Cây UNCLE BILLS HP0021 | Shopee Việt ...",
+    "link": "https://shopee.vn/Dao-N%E1%BA%A1o-S%C6%A1n-B%E1%BB%99-3-C%C3%A2y-UNCLE-BILLS-HP0021-i.6766899.177931651",
+    "snippet": "Mua Dao Nạo Sơn Bộ 3 Cây UNCLE BILLS HP0021 giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn ...",
+    "position": 4
+   },
+   {
+    "title": "Sơn màu trắng sứ tải isuzu - Sơn ô tô 1K | Shopee Việt Nam",
+    "link": "https://shopee.vn/S%C6%A1n-m%C3%A0u-tr%E1%BA%AFng-s%E1%BB%A9-t%E1%BA%A3i-isuzu-S%C6%A1n-%C3%B4-t%C3%B4-1K-i.685760381.29131168096",
+    "snippet": "Mua Sơn màu trắng sứ tải isuzu - Sơn ô tô 1K giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn ...",
+    "position": 5
+   },
+   {
+    "title": "Son Kem Lì Entropy Charm Tint 3g | Shopee Việt Nam",
+    "link": "https://shopee.vn/Son-Kem-L%C3%AC-Entropy-Charm-Tint-3g-i.193849872.43084305843",
+    "snippet": "Mua Son Kem Lì Entropy Charm Tint 3g giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn Phí. XEM ...",
+    "position": 6
+   },
+   {
+    "title": "Sơn Kẻ Chỉ Gạch Nền Nhà Keo Chà Ron Sứ Đa Năng Công ...",
+    "link": "https://www.lazada.vn/tag/son-nen-gach/?srsltid=AU7gw4Ukc2fmJGXQszJCoyAAynUujTE51OMicIndZzBTmMIDPPLtRNCA",
+    "snippet": "Sơn Kẻ Chỉ Gạch Nền Nhà, Làm Trắng Ron Gạch Nền Nhà, Keo Chà Ron Sứ Đa Năng Công Nghệ Hàn Quốc Tile Reform Chai 300g. ₫85,000. 5.0·44 sold. Vietnam.",
+    "position": 7
+   },
+   {
+    "title": "Son Kem Lì Dạng Bùn ART VALUE, Son Kem 6 màu Độ bão ...",
+    "link": "https://shopee.vn/Son-Kem-L%C3%AC-D%E1%BA%A1ng-B%C3%B9n-ART-VALUE-Son-Kem-6-m%C3%A0u-%C4%90%E1%BB%99-b%C3%A3o-h%C3%B2a-th%E1%BA%A5p-Trang-%C4%91i%E1%BB%83m-l%C3%A2u-tr%C3%B4i-Tone-Da-3g*1-i.1624567156.44270447029",
+    "snippet": "Mua Son Kem Lì Dạng Bùn ART VALUE, Son Kem 6 màu Độ bão hòa thấp Trang điểm lâu trôi Tone Da 3g*1 giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

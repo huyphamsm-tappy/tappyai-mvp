@@ -1,0 +1,48 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"The Legend Hanoi Hotel\" Hà Nội site:www.traveloka.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:13:58.208Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"The Legend Hanoi Hotel\" Hà Nội site:www.traveloka.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "The Legend Hanoi Hotel",
+    "link": "https://www.traveloka.com/vi-vn/hotel/vietnam/the-legend-hanoi-hotel-9000005576342",
+    "snippet": "The Legend Hanoi Hotel ; Thời gian nhận/trả phòng. Từ 14:00 - đến 12:00 ; Cách khu trung tâm. 772 m ; Địa danh nổi tiếng lân cận. Phố Đường Tàu Hà Nội, Nhà thờ Lớn ...",
+    "position": 1
+   },
+   {
+    "title": "Best Hotels Near & Closest To Hanhsilk - Hoa Lư, Vietnam from ...",
+    "link": "https://www.traveloka.com/en-en/hotel/vietnam/landmark/hanhsilk---hoa-l-91789362103074/6",
+    "snippet": "PRIMARY_IMAGE 1 The Legend Hanoi Hotel, Hanhsilk - Hoa Lư Hotels ... Bedroom 1 Mai Hotel Ha Noi, Hanhsilk - Hoa Lư Hotels Lobby 2 Mai Hotel Ha Noi ...",
+    "position": 2
+   },
+   {
+    "title": "Khách sạn gần Meliá Hanoi, Discount tới 30%",
+    "link": "https://www.traveloka.com/vi-vn/hotel/vietnam/landmark/meli-hanoi-91663067490720/5",
+    "snippet": "Chắc chắn sẽ quay lại khách sạn này nếu tôi có dịp ghé thăm Hà Nội lần nữa. ... The Legend Hanoi Hotel, Suddha Boutique Hotel, Hanoi Royal Premium Hotel ...",
+    "position": 3
+   },
+   {
+    "title": "Khách sạn gần HA NOI MOTOR OIL, Discount tới 30%",
+    "link": "https://www.traveloka.com/vi-vn/hotel/vietnam/landmark/ha-noi-motor-oil-91728023285143/29",
+    "snippet": "Other Hotel Photo 1 Cloud Homestay Hà Nội, Khách sạn HA NOI MOTOR OIL ... Other Hotel Photo 2 The Legend Hanoi Hotel, Khách sạn HA NOI MOTOR OIL Lobby ...",
+    "position": 4
+   }
+  ],
+  "credits": 1
+ }
+}

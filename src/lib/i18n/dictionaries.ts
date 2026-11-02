@@ -37,6 +37,8 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     // (R.string.settings_delete_account), which Google Play requires to be
     // discoverable in-app as well as on the open web.
     'settings.deleteAccount': 'Yêu cầu xóa tài khoản',
+    'settings.mic': 'Micrô',
+    'settings.mic.desc': 'Cho phép nói để nhập trong chat. Micrô chỉ bật khi bạn bấm.',
 
     // Common
     'common.or': 'hoặc',
@@ -256,7 +258,7 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'video.mute': 'Tắt tiếng',
 
     // Scam Shield
-    'scamShield.title': 'Kiểm Tra An Toàn',
+    'scamShield.title': 'Kiểm tra kỹ',
     'scamShield.subtitle': 'Kiểm tra liên kết, website, mã QR',
     'scamShield.urlPlaceholder': 'Nhập URL hoặc tên miền...',
     'scamShield.check': 'Kiểm tra',
@@ -264,21 +266,18 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'scamShield.qrUpload': 'Quét mã QR',
     'scamShield.qrCamera': 'Chụp ảnh QR',
     'scamShield.orScanQr': 'hoặc quét mã QR',
-    'scamShield.result.safe': 'An toàn',
-    'scamShield.result.low': 'Nguy cơ thấp',
-    'scamShield.result.medium': 'Cần cẩn thận',
-    'scamShield.result.high': 'Nguy cơ cao',
-    'scamShield.result.critical': 'Rất nguy hiểm',
+    'scamShield.result.safe': 'Chưa nhận ra dấu hiệu quen thuộc',
+    'scamShield.result.low': 'Chưa nhận ra dấu hiệu quen thuộc',
+    'scamShield.result.medium': 'Có một số dấu hiệu đáng ngờ',
+    'scamShield.result.high': 'Có dấu hiệu lừa đảo quen thuộc',
+    'scamShield.result.critical': 'Có dấu hiệu lừa đảo quen thuộc',
     // F-024 — the 'use this sound' music-reuse feature was removed; these pages show a notice.
     'musicRemoved.title': 'Tính năng âm thanh không còn khả dụng',
     'musicRemoved.body': 'Tappy đã gỡ bỏ tính năng “Dùng âm thanh này”. Các video vẫn phát âm thanh của chính chúng.',
     'musicRemoved.back': 'Quay lại',
     // Không phải một mức trên thang đo — là lời nói rằng chưa có kết luận. Tuyệt đối không được
     // dịch thành một biến thể của "An toàn".
-    'scamShield.result.inconclusive': 'Chưa kết luận được',
-    'scamShield.confidence.high': 'Độ tin cậy cao',
-    'scamShield.confidence.medium': 'Dữ liệu hạn chế',
-    'scamShield.confidence.low': 'Dữ liệu không đủ',
+    'scamShield.result.inconclusive': 'Chưa nhận ra dấu hiệu quen thuộc',
     'scamShield.evidence': 'Chi tiết phân tích',
     'scamShield.actions': 'Khuyến nghị',
     'scamShield.official': 'Thông tin chính thức',
@@ -297,7 +296,7 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'nav.home': 'Trang chủ',
     'nav.chat': 'Chat',
     'nav.explore': 'Khám phá',
-    'nav.deals': 'Deals',
+    'nav.deals': 'Deal',
     'nav.profile': 'Tôi',
   },
   en: {
@@ -329,6 +328,8 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'settings.version': 'Current version: {v}',
     'settings.signOut': 'Sign out',
     'settings.deleteAccount': 'Request Account Deletion',
+    'settings.mic': 'Microphone',
+    'settings.mic.desc': 'Allow speaking to type in chat. The mic only turns on when you tap it.',
 
     // Common
     'common.or': 'or',
@@ -538,7 +539,7 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'video.mute': 'Mute',
 
     // Scam Shield
-    'scamShield.title': 'Safety Check',
+    'scamShield.title': 'Check it first',
     'scamShield.subtitle': 'Check links, websites, QR codes',
     'scamShield.urlPlaceholder': 'Enter URL or domain...',
     'scamShield.check': 'Check',
@@ -546,21 +547,18 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'scamShield.qrUpload': 'Scan QR',
     'scamShield.qrCamera': 'Capture QR',
     'scamShield.orScanQr': 'or scan a QR code',
-    'scamShield.result.safe': 'Safe',
-    'scamShield.result.low': 'Low risk',
-    'scamShield.result.medium': 'Use caution',
-    'scamShield.result.high': 'High risk',
-    'scamShield.result.critical': 'Very dangerous',
+    'scamShield.result.safe': 'No familiar signs recognised',
+    'scamShield.result.low': 'No familiar signs recognised',
+    'scamShield.result.medium': 'Some suspicious signs found',
+    'scamShield.result.high': 'Familiar scam signs found',
+    'scamShield.result.critical': 'Familiar scam signs found',
     // F-024 — the 'use this sound' music-reuse feature was removed; these pages show a notice.
     'musicRemoved.title': 'This sound feature is no longer available',
     'musicRemoved.body': 'Tappy has removed the “use this sound” feature. Videos still play their own audio.',
     'musicRemoved.back': 'Back',
     // Not a point on the scale — a statement that there is no verdict. It must never be worded
     // as a variant of "Safe".
-    'scamShield.result.inconclusive': 'Could not be checked',
-    'scamShield.confidence.high': 'High confidence',
-    'scamShield.confidence.medium': 'Limited data',
-    'scamShield.confidence.low': 'Insufficient data',
+    'scamShield.result.inconclusive': 'No familiar signs recognised',
     'scamShield.evidence': 'Analysis details',
     'scamShield.actions': 'Recommendations',
     'scamShield.official': 'Official information',
@@ -579,7 +577,7 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'nav.home': 'Home',
     'nav.chat': 'Chat',
     'nav.explore': 'Explore',
-    'nav.deals': 'Deals',
+    'nav.deals': 'Deal',
     'nav.profile': 'Me',
   },
 }

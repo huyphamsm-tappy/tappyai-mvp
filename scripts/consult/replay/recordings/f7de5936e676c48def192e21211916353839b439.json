@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Ốp lưng iPhone 17 Pro Max 17 pro max UAG Monarch hoặc Pathfinder Có MagSafe (site:shopee.vn OR site:tiki.vn OR site:lazada.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:40:50.032Z",
+ "body": {
+  "searchParameters": {
+   "q": "Ốp lưng iPhone 17 Pro Max 17 pro max UAG Monarch hoặc Pathfinder Có MagSafe (site:shopee.vn OR site:tiki.vn OR site:lazada.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "[iPhone 17 Pro Max] UAG Chính Hãng",
+    "link": "https://shopee.vn/-iPhone-17-Pro-Max-UAG-Ch%C3%ADnh-H%C3%A3ng-Monarch-Pro-Pathfinder-Plasma-Ch%E1%BB%91ng-S%E1%BB%91c-Chu%E1%BA%A9n-Qu%C3%A2n-%C4%90%E1%BB%99i-S%E1%BA%A1c-Magnet-i.898301886.41068409513",
+    "snippet": "... Ốp lưng, bao da, miếng dán mặt lưng cho Điện thoại. [iPhone 17 Pro Max] UAG Chính Hãng - Monarch Pro, Pathfinder, Plasma - Chống Sốc Chuẩn Quân Đội, Sạc Magnet.",
+    "rating": 4.9,
+    "ratingCount": 44,
+    "position": 1
+   },
+   {
+    "title": "[iPhone 17 Pro/17 Pro Max] Ốp lưng UAG Pathfinder ...",
+    "link": "https://shopee.vn/-iPhone-17-Pro-17-Pro-Max-%E1%BB%90p-l%C6%B0ng-UAG-Pathfinder-Civilian-Monarch-Pro-Orange-phi%C3%AAn-b%E1%BA%A3n-cam-%C4%91%E1%BA%B7c-bi%E1%BB%87t-i.898301886.50000977503",
+    "snippet": "Mua [iPhone 17 Pro/17 Pro Max] Ốp lưng UAG Pathfinder/Civilian/Monarch Pro Orange phiên bản cam đặc biệt giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 25,
+    "position": 2
+   },
+   {
+    "title": "bao da uag giá tốt Tháng 8, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=bao%20da%20uag&urlold=bao-da-uag-folio-cho-ipad-air-2/6579101440646904629/877968015750663345/%20",
+    "snippet": "Ốp điện thoại uag có Magsafe CASE cho iPhone 17 16 15 14 13 pro max 16PLUS Ốp điện thoại chống va đập.",
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng UAG Pathfinder / Civilian / Monarch Pro cho ...",
+    "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-UAG-Pathfinder-Civilian-Monarch-Pro-cho-iPhone-17-Pro-17-Pro-Max-%E2%80%93-b%E1%BA%A3n-cam-ch%E1%BB%91ng-s%E1%BB%91c-chu%E1%BA%A9n-qu%C3%A2n-%C4%91%E1%BB%99i-i.65304483.53902423205",
+    "snippet": "Ốp lưng UAG Pathfinder / Civilian / Monarch Pro cho iPhone 17 Pro / 17 Pro Max – bản cam chống sốc, chuẩn quân đội. outline grey truck icon. Không hỗ trợ.",
+    "rating": 5,
+    "ratingCount": 3,
+    "position": 4
+   },
+   {
+    "title": "Ốp lưng UAG Pathfinder SE chính hãng với Magsafe cho iPhone ...",
+    "link": "https://www.lazada.vn/products/op-lung-uag-pathfinder-se-chinh-hang-voi-magsafe-cho-iphone-17-pro-max-iphone-17-air-iphone-16-pro-max-iphone-15-14-13-12-pro-max-vo-dien-thoai-cap-bac-quan-su-go-ghe-chong-roi-dap-bao-ve-trong-suot-i13404795989.html?srsltid=AU7gw4Vm3L34yjkcWYUSC6cXKmpBYuqtXSScODqi5Uib8rsBlVFTH8qP",
+    "snippet": "Ốp lưng dân sự UAG chính hãng có Magsafe cho iPhone 17 Pro Max / iPhone. 443.000 ₫ · Ban Đầu UAG Monarch Pro Da Trường Hợp Với Magsafe Cho iPhone 17 Pro Max /.",
+    "position": 5
+   },
+   {
+    "title": "bao da uag giá tốt Tháng 7, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=bao%20da%20uag&urlold=bao-da-uag-iphone-xsmax/1873995943246618333/877968015750663345/%20",
+    "snippet": "UAG explorer thế hệ thứ hai phù hợp cho iPhone 16 pro max iPhone 15 14 Pro MAX iPhone 16 15 12 và giá đỡ Samsung s25ultra S24 S23, có vỏ bảo vệ chống rơi mạnh.",
+    "position": 6
+   },
+   {
+    "title": "【100% Chính Hãng】Ốp Lưng UAG Pathfinder Clear ...",
+    "link": "https://shopee.vn/%E3%80%90100-Ch%C3%ADnh-H%C3%A3ng%E3%80%91%E1%BB%90p-L%C6%B0ng-UAG-Pathfinder-Clear-MagSafe-Ch%E1%BB%91ng-S%E1%BB%91c-iPhone-17-17-Pro-17-Air-17-Pro-Max-i.1825445142.43682433117?extraParams=%7B%22display_model_id%22%3A441184287229%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "Mua 【100% Chính Hãng】Ốp Lưng UAG Pathfinder Clear MagSafe Chống Sốc iPhone 17/17 Pro/17 Air/17 Pro Max giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 7
+   },
+   {
+    "title": "Ốp lưng UAG Pathfinder Pro chính hãng với Magsafe cho ...",
+    "link": "https://h5.lazada.vn/products/op-lung-uag-pathfinder-pro-chinh-hang-voi-magsafe-cho-iphone-17-pro-max-iphone-17-air-iphone-16-pro-max-iphone-16e-iphone-15-14-13-12-pro-max-vo-dien-thoai-cap-bac-quan-su-go-ghe-chong-roi-dap-bao-ve-trong-suot-i13402969951-s117063711354.html",
+    "snippet": "Độ bền chắc chắn: vỏ của chúng tôi có cấu trúc hỗn hợp lông vũ có vỏ giáp ngoài cứng được cấp bằng sáng chế, lõi mềm chống va đập và chi tiết vít xoắn.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

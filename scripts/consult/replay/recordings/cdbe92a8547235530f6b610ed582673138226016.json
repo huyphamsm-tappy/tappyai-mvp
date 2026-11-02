@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Izakaya Unatoto Nguyễn Thị Thập\" OR \"Wok of love Quận 7\" OR \"Gogi House Huỳnh Tấn Phát\" Quận 7 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:22:18.652Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Izakaya Unatoto Nguyễn Thị Thập\" OR \"Wok of love Quận 7\" OR \"Gogi House Huỳnh Tấn Phát\" Quận 7 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nhà hàng Wok of Love Quận 7: Không gian ấm áp, đồ ăn ...",
+    "link": "https://www.tiktok.com/@cuavivuvlog/video/7647136451221671176",
+    "snippet": "Nhà hàng Wok of Love Quận 7: Không gian ấm áp, đồ ăn chỉnh chu. Wok of Love ở Quận 7 mang đến trải nghiệm ẩm thực hợp cho các buổi gặp gỡ gia ...",
+    "position": 1
+   },
+   {
+    "title": "Đi ăn theo anh Trấn Thành là chỉ có ngon xuất sắc !!! ...",
+    "link": "https://www.tiktok.com/@huyduc446/video/7645707216795946258",
+    "snippet": "... Đi ăn theo anh Trấn Thành là chỉ có ngon xuất sắc !!! #. @Huy Huỳnh · original sound - Huy Huỳnh · Wok of love Quận 7 Restaurant · author. 1537.",
+    "position": 2
+   },
+   {
+    "title": "Phải thêm 2 người nữa mới phụ tụi tui ăn hếttttt #wokoflove ...",
+    "link": "https://www.tiktok.com/@wangka04/video/7682631015025610002",
+    "snippet": "... tui ăn hếttttt #wokoflove #reviewsaigon #. @TRẦN HOÀNG KHÁ · Boccherini / Minuet / Violin(813507) · Wok of love Quận 7 Restaurant · author. 854.",
+    "position": 3
+   },
+   {
+    "title": "Thịt vừa chạm vỉ mềm mọng, béo ngậy, thơm phức, nướng xèo ...",
+    "link": "https://www.tiktok.com/@ggh.huynhtanphat/video/7565964424167656721",
+    "snippet": "... Gogi House Huỳnh Tấn Phát 713-713A Huỳnh Tấn Phát, khu phố 1, phường Phú Thuận, quận 7 ☎️ 028 7300 5900 #gogihouse #gogingonso1 #thitnuonghanquoc ...",
+    "position": 4
+   },
+   {
+    "title": "Wok Of Love & Làng Mỳ Quận 7",
+    "link": "https://www.tiktok.com/@wok.of.love.q7.pm",
+    "snippet": "Wok Of Love & Làng Mỳ Quận 7 · @wok.of.love.q7.pm · 기름진멜로 7군- Wok Of Love quận 7 48 Hưng Phước 2 Tân Phong SĐT-Zalo : 0815 528 166.",
+    "position": 5
+   },
+   {
+    "title": "Mì Tương Đen: Khám Phá Hương Vị Hoàn Hảo",
+    "link": "https://www.tiktok.com/@vuvicungyuhi/video/7557955771183484168",
+    "snippet": "... Khám phá mì tương đen trấn thành với nhiều biến tấu hấp dẫn. Tìm hiểu. @vuvicungyuhi · nhạc nền - vuvicungyuhi · Wok of love Quận 7 · author.",
+    "position": 6
+   },
+   {
+    "title": "Nhà hàng xuất hiện trên Siêu Thực Thành - review nhanh ...",
+    "link": "https://www.tiktok.com/@nngdzip/video/7680440464616475925",
+    "snippet": "... Wok of Love quận 7, xuất hiện trên Siêu Thực Thành, review nhà hàng ... Wok of love Quận 7 Restaurant · author. 95 · 0.",
+    "position": 7
+   },
+   {
+    "title": "Trải Nghiệm Ẩm Thực Hàn Quốc Tại Wok Of Love",
+    "link": "https://www.tiktok.com/@rico.toi.ne/photo/7608419319663349006",
+    "snippet": "If you think it may contain an error, please report at: Feedback and help - TikTok · nhạc nền - CHILLMOTCHUT · Wok of love Quận 7 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

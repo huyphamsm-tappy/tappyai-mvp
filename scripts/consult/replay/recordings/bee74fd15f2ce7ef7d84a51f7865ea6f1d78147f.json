@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Khách sạn Vườn Cau Tây Ninh\" OR \"Meliá Vinpearl Tây Ninh\" OR \"Khách sạn Hoàng Mai\" chưa muốn đi Tây Ninh site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:26:47.065Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Khách sạn Vườn Cau Tây Ninh\" OR \"Meliá Vinpearl Tây Ninh\" OR \"Khách sạn Hoàng Mai\" chưa muốn đi Tây Ninh site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Review Meliá Vinpearl Tây Ninh: Giá phòng, view núi Bà Đen",
+    "link": "https://www.tiktok.com/@nhandian/video/7552193592375119111",
+    "snippet": "Meliá Vinpearl Tây Ninh là khách sạn 5 sao nằm ngay trung tâm thành phố Tây Ninh, tại số 90 đường Lê Dũng. Từ đây chỉ khoảng 10 km và đi xe ...",
+    "position": 1
+   },
+   {
+    "title": "Trải nghiệm 5🌟 ở Tây Ninh @Meliá Vinpearl ...",
+    "link": "https://www.tiktok.com/@toiyeutayninh.ttn/video/7667194774918679828",
+    "snippet": "Trải nghiệm 5 ở Tây Ninh @Meliá Vinpearl Tây Ninh #xuhuong #hoteltayninh #tayninh #fyp #toiyeutayninh. Trải nghiệm 5 ở Tây Ninh @Meliá Vinpearl Tây Ninh # ...",
+    "position": 2
+   },
+   {
+    "title": "Giữa những ngày hè đầy nắng, tìm về một hành trình nhẹ nhàng ...",
+    "link": "https://www.tiktok.com/@mhi.meliavinpearltayninh/video/7641474363220528391",
+    "snippet": "Meliá Vinpearl Tây Ninh. Đón mùa Phật Đản an lành tại nóc nhà Nam Bộ. Khám phá Vườn Ưu Đàm, kiệt tác tâm linh cách Meliá Vinpearl Tây Ninh 15 phút di chuyển.",
+    "position": 3
+   },
+   {
+    "title": "Khách sạn Vườn Cau Tây Ninh (@khachsanvuoncau)",
+    "link": "https://www.tiktok.com/@khachsanvuoncau",
+    "snippet": "Đặt phòng liên hệ zeplao @84864sáu566. s.net.vn/X3xK · Một ngày đi bay ở sala do Khách sạn Vườn Cau Tây Ninh tạo với bản.",
+    "position": 4
+   },
+   {
+    "title": "Nhà Hàng Vinpearl Tây Ninh",
+    "link": "https://www.tiktok.com/discover/nh%C3%A0-h%C3%A0ng-vinpearl-t%C3%A2y-ninh",
+    "snippet": "Buffet Hải Sản & BBQ tháng 8 này tại khách sạn Meliá Vinpearl Tây Ninh (mặt sau Vincom Tây Ninh) - nhà hàng Garbo 986, tầng 6. Quầy line đa dạng các món từ ...",
+    "position": 5
+   },
+   {
+    "title": "meliavinpearlhoteltayninh",
+    "link": "https://www.tiktok.com/tag/meliavinpearlhoteltayninh",
+    "snippet": "Monthly Buffet Experience 22/8 tại Meliá Vinpearl Tây Ninh #iam #TD # · Trải ... Chuẩn bị đi Tây Ninh ibx em gửi combo nhé ạ #dulichtayninh · #nuibaden",
+    "position": 6
+   },
+   {
+    "title": "Hẹn Hò View Núi Tại Nhà Hàng Garbo 986",
+    "link": "https://www.tiktok.com/@motchuttayninhh/video/7538696954482674952",
+    "snippet": "... Meliá Vinpearl Tây Ninh Giữa không gian sang trọng, ánh đèn ấm áp, nhìn ra thành phố Tây Ninh lung linh về đêm Mỗi món ăn là một hương ...",
+    "position": 7
+   },
+   {
+    "title": "Chốn yên tĩnh này từng rất ồn ào – vì tiếng súng, và cả ...",
+    "link": "https://www.tiktok.com/@duyen5522/video/7517536645374053639",
+    "snippet": "- Ghé Thinh Coffee Tây Ninh nếu muốn thử quán cà phê được gợi ý trong video. ... Khách sạn Hoàng Mai - Chốn dừng chân lý tưởng tại Tây Ninh. Khách ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -234,7 +234,7 @@ describe('link-check history is the device store, and says so', () => {
     localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify([entry({ level: 'HIGH', url: 'https://vcb-secure-login.net/' })]))
     renderHistory()
     expect(screen.getByText('https://vcb-secure-login.net/')).toBeTruthy()
-    expect(screen.getByText(/nguy cơ cao|high risk/i)).toBeTruthy()
+    expect(screen.getByText(/đặc điểm link giả mạo|fake-link traits|dấu hiệu lừa đảo quen thuộc|familiar scam signs/i)).toBeTruthy()
   })
 
   it('states that the list is device-local rather than implying it syncs', () => {
@@ -344,16 +344,17 @@ describe('"see all" is the tab, never a second list', () => {
 })
 
 describe('the rail', () => {
-  it('links the Premium card to the subscription route the sidebar already uses, with the plan’s own benefit lines', () => {
+  it('links the Premium card to the subscription route the sidebar already uses, with benefit lines true of the canonical plans', () => {
     renderHistory({ conversations: [conv()] })
     // The shell's pinned sidebar upsell also says "TappyAI Premium"; aim at the rail card itself.
     const premium = document.querySelector('[aria-labelledby="history-premium-title"]') as HTMLElement
     expect(premium).toBeTruthy()
     expect(within(premium).getByRole('link').getAttribute('href')).toBe('/subscription')
-    // Real `sub.pro.*` copy, not a benefit list written for the mockup.
-    expect(within(premium).getByText(/lưu lịch sử không giới hạn|unlimited history/i)).toBeTruthy()
-    expect(within(premium).getByText(/ai nhớ sở thích|remembers your preferences/i)).toBeTruthy()
-    expect(within(premium).getByText(/tin nhắn không giới hạn|unlimited messages/i)).toBeTruthy()
+    // Phase 7: lines TRUE of the canonical catalog (30/day, 7 days–12 months, VietQR) — never "unlimited".
+    expect(within(premium).getByText(/30 câu hỏi AI mỗi ngày|30 AI questions a day/i)).toBeTruthy()
+    expect(within(premium).getByText(/7 ngày đến 12 tháng|7 days to 12 months/i)).toBeTruthy()
+    expect(within(premium).getByText(/VietQR/)).toBeTruthy()
+    expect(premium.textContent ?? '').not.toMatch(/không giới hạn|unlimited/i)
     // No invented ones.
     expect(premium.textContent ?? '').not.toMatch(/đồng bộ trên mọi thiết bị|sync across|truy cập tính năng sớm|early access/i)
   })

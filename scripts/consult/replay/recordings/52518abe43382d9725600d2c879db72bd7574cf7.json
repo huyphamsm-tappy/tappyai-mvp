@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quà tặng thích cà phê 40 tuổi (site:shopee.vn OR site:tiki.vn OR site:lazada.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:11:25.862Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà tặng thích cà phê 40 tuổi (site:shopee.vn OR site:tiki.vn OR site:lazada.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quà sinh nhật cho mẹ 40 tuổi - Giá Tốt, Sale Tháng 09, ...",
+    "link": "https://shopee.vn/list/qu%C3%A0/sinh%20nh%E1%BA%ADt/cho%20m%E1%BA%B9%2040%20tu%E1%BB%95i",
+    "snippet": "Set quà SWEET EMBRACE tặng bạn nữ, hộp quà tặng sinh nhật 5 món kèm · Set quà tặng cho nữ cốc sứ nến thơm, làm quà tặng sinh nhật, · Hộp quà tặng cao cấp màu ...",
+    "position": 1
+   },
+   {
+    "title": "Chân váy len dài mùa đông - Giá Tốt, Sale Tháng 09, Ship 0 ...",
+    "link": "https://shopee.vn/list/ch%C3%A2n%20v%C3%A1y/len/d%C3%A0i%20m%C3%B9a%20%C4%91%C3%B4ng",
+    "snippet": "Chân Váy Midi Chữ A Vải Len Lông Thỏ Dáng Dài 88cm Xẻ Sau Cạp Chun Basic Dễ Mặc Phong Cách Đi Làm Đi Chơi. 89.000₫. 140.000₫. -36%. rating-star 4.9.",
+    "position": 2
+   },
+   {
+    "title": "Máy xay cà phê thủ công, 40 cài đặt điều chỉnh ...",
+    "link": "https://www.lazada.vn/products/may-xay-ca-phe-thu-cong-40-cai-dat-dieu-chinh-may-xay-ca-phe-cam-tay-may-xay-ca-phe-cam-tay-may-pha-ca-phe-conicalburr-i13329250796.html?srsltid=AU7gw4WHfDgFatHZPk9BdNrnuuMa_ENU3psnanqcaDaXC5FCt9gIgqVs",
+    "snippet": "5. Quà tặng tốt: Máy xay cà phê thủ công của chúng tôi cung cấp niềm vui mài tuyệt vời với thanh lịch và thiết kế sành điệu của nó, hoàn hảo như một món quà cho ...",
+    "position": 3
+   },
+   {
+    "title": "cà phê giá tốt Tháng 9, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=c%C3%A0%20ph%C3%AA",
+    "snippet": "Gờ cafe gu HIỆN ĐẠI (đắng dịu) ROBUSTA& ARABICA, cà phê mộc, · Gờ cafe gu TRUYỀN THỐNG (đắng vừa)- 100% ROBUSTA RANG VỪA, · Cà Phê Truyền Thống PHIN ĐẬM 500g, ...",
+    "position": 4
+   },
+   {
+    "title": "Nên mua quà gì tặng thầy giáo nhân ngày 20/11 thật ý ...",
+    "link": "https://shopee.vn/blog/nen-mua-qua-gi-tang-thay-giao/",
+    "snippet": "Nên lưu ý màu sắc và ưu tiên những tone màu trầm để hợp với thầy hơn nhé. cà vạt Tặng cà vạt bày tỏ lòng thành kính đến người thầy mà mình quý ...",
+    "date": "9 thg 6, 2026",
+    "position": 5
+   },
+   {
+    "title": "【Vận chuyển nội địa】Máy xay cà phê bằng tay, 40 cài đặt có thể ...",
+    "link": "https://h5.lazada.vn/products/pdp-i3075909399.html",
+    "snippet": "5. Quà tặng tốt: Máy xay cà phê bằng tay của chúng tôi mang lại niềm vui nghiền tuyệt vời với thiết kế thanh lịch và phong cách, hoàn hảo làm quà tặng cho những ...",
+    "position": 6
+   },
+   {
+    "title": "mua tặng cà phê hạt - Giá Tốt, Sale Tháng 08, Freeship 0Đ",
+    "link": "https://shopee.vn/list/mua%20t%E1%BA%B7ng/c%C3%A0%20ph%C3%AA%20h%E1%BA%A1t",
+    "snippet": "COD【Cà phê giảm cân】Cà phê đen không đường giúp kiểm soát cân nặng và lượng đường trong máu, không cần tập thể dục. 69.000₫. 138.000₫.",
+    "position": 7
+   },
+   {
+    "title": "55x40cm Đồ Chơi Sang Trọng Hình Con Ngựa Mềm Mại Quà ...",
+    "link": "https://www.lazada.vn/products/55x40cm-do-choi-sang-trong-hinh-con-ngua-mem-mai-qua-tang-nam-moi-am-lich-le-hoi-nam-ngua-goi-thu-nhoi-bong-cho-moi-lua-tuoi-i13352427762.html?srsltid=AU7gw4U9k1KjPVt47HzdEaQ19f-88c6ICYiO627OdnNGRyrI8YczL1Bl",
+    "snippet": "55x40cm Đồ Chơi Sang Trọng Hình Con Ngựa Mềm Mại Quà Tặng Năm Mới Âm Lịch Lễ Hội Năm Ngựa Gối Thú Nhồi Bông Cho Mọi Lứa Tuổi ; Dịch vụ · 30 ngày miễn phí trả hàng.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,86 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "xe khách TP.HCM Tây Ninh site:vexere.com/vi-VN",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:24:36.227Z",
+ "body": {
+  "searchParameters": {
+   "q": "xe khách TP.HCM Tây Ninh site:vexere.com/vi-VN",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Đặt vé xe từ Sài Gòn đi Tây Ninh",
+    "link": "https://vexere.com/vi-VN/ve-xe-khach-tu-sai-gon-di-tay-ninh-tay-ninh-129t26011.html",
+    "snippet": "Tư vấn TOP 7 xe khách đi Tây Ninh - Tây Ninh từ Sài Gòn chất lượng cao, uy tín, giá rẻ nhất 09/2026 · 1. Xe Thảo Kim Ngân khởi hành tại 85 Nguyễn Kim (Phòng ...",
+    "rating": 4.6,
+    "ratingCount": 5198,
+    "position": 1
+   },
+   {
+    "title": "Đặt vé xe từ Tây Ninh đi Sài Gòn 12 hãng xe",
+    "link": "https://vexere.com/vi-VN/ve-xe-khach-tu-tay-ninh-di-sai-gon-153t1291.html",
+    "snippet": "Số điện thoại đặt mua vé xe Tây Ninh Sài Gòn: 1900 888684. 7. Xe Huệ Nghĩa Limousine khởi hành tại 65A đường Xuyên Á (Văn phòng Gò Dầu) ...",
+    "rating": 4.6,
+    "ratingCount": 10797,
+    "position": 2
+   },
+   {
+    "title": "Đặt vé xe từ Sài Gòn đi Tây Ninh 12 hãng xe",
+    "link": "https://vexere.com/vi-VN/ve-xe-khach-tu-sai-gon-di-tay-ninh-129t1531.html",
+    "snippet": "Hiện tại, theo cập nhật mới nhất của Vexere.com, giá vé xe khách đi Tây Ninh từ Sài Gòn có mức giá dao động từ 117000 đồng - 550000 đồng. Trong đó, nhà xe Đồng ...",
+    "rating": 4.7,
+    "ratingCount": 10913,
+    "position": 3
+   },
+   {
+    "title": "Đặt vé xe từ Sài Gòn đi Núi Bà Đen - Tây Ninh 3 hãng xe",
+    "link": "https://vexere.com/vi-VN/ve-xe-khach-tu-sai-gon-di-nui-ba-den-tay-ninh-129t21142621.html",
+    "snippet": "Hiện tại, theo cập nhật mới nhất của Vexere.com, giá vé xe khách đi Núi Bà Đen - Tây Ninh từ Sài Gòn có mức giá dao động từ 117000 đồng - 330000 đồng. Trong đó, ...",
+    "rating": 4.5,
+    "ratingCount": 3039,
+    "position": 4
+   },
+   {
+    "title": "Đặt vé xe từ Tây Ninh - Tây Ninh đi Sài Gòn 7 hãng xe",
+    "link": "https://vexere.com/vi-VN/ve-xe-khach-tu-tay-ninh-tay-ninh-di-sai-gon-2601t1291.html",
+    "snippet": "Hiện tại, theo cập nhật mới nhất của Vexere.com, giá vé xe khách đi Sài Gòn từ Tây Ninh - Tây Ninh có mức giá dao động từ 99000 đồng - 500000 đồng. Trong đó, ...",
+    "rating": 4.4,
+    "ratingCount": 5212,
+    "position": 5
+   },
+   {
+    "title": "Đặt vé xe từ Bến Cầu - Tây Ninh đi Sài Gòn 4 hãng xe",
+    "link": "https://vexere.com/vi-VN/ve-xe-khach-tu-ben-cau-tay-ninh-di-sai-gon-2594t1291.html",
+    "snippet": "Hiện tại, theo cập nhật mới nhất của Vexere.com, giá vé xe khách đi Sài Gòn từ Bến Cầu - Tây Ninh có mức giá dao động từ 117000 đồng - 550000 đồng. Trong đó, ...",
+    "rating": 4.7,
+    "ratingCount": 3344,
+    "position": 6
+   },
+   {
+    "title": "Vé xe Thảo Kim Ngân từ Sài Gòn đi Trảng Bàng - Tây Ninh",
+    "link": "https://vexere.com/vi-VN/ve-xe-khach-thao-kim-ngan-tu-sai-gon-di-trang-bang-tay-ninh-129t26021-29065.html",
+    "snippet": "Với 1502 đánh giá với điểm trung bình là 4.8/5 xe Thảo Kim Ngân được đánh giá là xe khách có chất lượng Trung bình tuyến Sài Gòn đi Trảng Bàng - Tây Ninh dựa ...",
+    "position": 7
+   },
+   {
+    "title": "Đặt vé xe từ Sài Gòn đi Dương Minh Châu - Tây Ninh 6 ...",
+    "link": "https://vexere.com/vi-VN/ve-xe-khach-tu-sai-gon-di-duong-minh-chau-tay-ninh-129t25961.html",
+    "snippet": "Hiện tại, theo cập nhật mới nhất của Vexere.com, giá vé xe khách đi Dương Minh Châu - Tây Ninh từ Sài Gòn có mức giá dao động từ 117000 đồng - 330000 đồng.",
+    "rating": 4.4,
+    "ratingCount": 4896,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

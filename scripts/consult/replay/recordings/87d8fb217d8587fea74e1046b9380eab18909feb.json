@@ -1,0 +1,60 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quà tặng nam, quà sinh nhật cho nam ý nghĩa - set quà tặng bạn trai gấu bông, nước hoa, ví, đồng hồ site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:35:56.279Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà tặng nam, quà sinh nhật cho nam ý nghĩa - set quà tặng bạn trai gấu bông, nước hoa, ví, đồng hồ site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hộp quà tặng ví nam nước hoa tặng sinh nhật bạn trai, bộ quà ...",
+    "link": "https://shop.tiktok.com/vn/pdp/hop-qua-tang-sang-trong-vi-nam-nuoc-hoa-qua-sinh-nhat-ban-trai/1729605199995570622",
+    "snippet": "Combo 1 gồm: 1. Ví da 2. Nước hoa 3. Thiệp + hộp quà fullbox Combo 2 gồm: 1. Ví da nam 2. Nước hoa, móc khoá gấu 3. Thiệp + hộp quà fullbox Combo 3 gồm 1.",
+    "position": 1
+   },
+   {
+    "title": "barang birthday untuk lelaki - TikTok Shop Vietnam",
+    "link": "https://shop.tiktok.com/vn/k/barang-birthday-untuk-lelaki",
+    "snippet": "Quà tặng nam MANIN BLACK - Bộ quà tặng sinh nhật thời trang cho nam (Sét 3 sản phẩm: Ví da - Đồng hồ - Nước Hoa). 4.2. 92 sold. ₫550.000. Quà tặng nam MANIN ...",
+    "position": 2
+   },
+   {
+    "title": "Set quà tặng nam",
+    "link": "https://shop.tiktok.com/vn/k/set-qua-tang-nam",
+    "snippet": "Set quà tặng nam · Set quà Gấu bông Mèo Đen, Cá Mập, Gấu Phi Công kèm bánh kẹo và thiệp tặng bạn trai, bạn nam Toodee Gift Box · Set quà Gấu bông Mèo Đen, Cá Mập, ...",
+    "position": 3
+   },
+   {
+    "title": "ขิงขวัญวันวาเลนไทน์ให้แฟนผู้ชาย",
+    "link": "https://shop.tiktok.com/vn/k/khing-khway-wan-waelnaithn-aih-aefn-phuchay",
+    "snippet": "ขิงขวัญวันวาเลนไทน์ให้แฟนผู้ชาย · Quà tặng bạn trai, quà tặng nam ý nghĩa - set quà gấu bông, nước hoa, ví nam · Quà tặng bạn trai, quà tặng nam ý nghĩa - set quà ...",
+    "position": 4
+   },
+   {
+    "title": "Sét hộp quà - Nến thơm kèm phụ kiện 200gam",
+    "link": "https://shop.tiktok.com/vn/pdp/set-qua-tang-nen-thom-lavender-200g-thu-gian-sang-trong/1730670710184315557?source=anchor",
+    "snippet": "Mua Sét hộp quà - Nến thơm kèm phụ kiện 200gam - Quà tặng giáng sinh, sinh nhật,bạn gái,ngày lễ 20/10, 8/3 ý nghĩa Decor Decor Phòng Đồng Trang Trí Nhà trên ...",
+    "position": 5
+   },
+   {
+    "title": "ของขวัญวันวาเลนไทน์ให้แฟนผู้ชายน่ารัก",
+    "link": "https://shop.tiktok.com/vn/k/khongkhway-wan-waelnaithn-aih-aefn-phuchay-narak",
+    "snippet": "Quà tặng bạn trai, quà tặng nam ý nghĩa - set quà gấu bông, nước hoa, ví nam ... Nước hoa 10ml, set quà tặng bạn trai, quà sinh nhật ý nghĩa. 5. 23 sold.",
+    "position": 6
+   }
+  ],
+  "credits": 1
+ }
+}

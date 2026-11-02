@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "tiệm nail sơn gel vẽ móng đẹp giá 300k Quận 10 site:klook.com/vi/activity",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T06:00:51.211Z",
+ "body": {
+  "searchParameters": {
+   "q": "tiệm nail sơn gel vẽ móng đẹp giá 300k Quận 10 site:klook.com/vi/activity",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

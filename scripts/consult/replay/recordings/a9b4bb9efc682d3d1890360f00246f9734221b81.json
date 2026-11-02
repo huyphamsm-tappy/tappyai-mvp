@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Dell Inspiron 15 3520 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:46:14.231Z",
+ "body": {
+  "searchParameters": {
+   "q": "Dell Inspiron 15 3520 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop Dell Inspiron 15 3520 i5 1235U/16GB/512GB/15.6\" ...",
+    "link": "https://shopee.vn/Laptop-Dell-Inspiron-15-3520-i5-1235U-16GB-512GB-15.6-FHD-Win11-Office-HS24-OS365-i.1431261217.43562718937",
+    "snippet": "Mua Laptop Dell Inspiron 15 3520 i5 1235U/16GB/512GB/15.6\"FHD/Win11/Office HS24/OS365 giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "position": 1
+   },
+   {
+    "title": "Máy tính xách tay/ Laptop Dell Inspiron 15 3520 ...",
+    "link": "https://shopee.vn/M%C3%A1y-t%C3%ADnh-x%C3%A1ch-tay-Laptop-Dell-Inspiron-15-3520-(3520-71003262)-(i7-1255U)-(%C4%90en)-B%E1%BA%A3o-ahfnh-12-th%C3%A1ng-i.469040198.27903609274",
+    "snippet": "Mua Máy tính xách tay/ Laptop Dell Inspiron 15 3520 (3520-71003262) (i7-1255U) (Đen) - Bảo ahfnh 12 tháng giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 2
+   },
+   {
+    "title": "Laptop Dell Inspiron 15 3520 - 25P2312 (i5-1235U/RAM ...",
+    "link": "https://shopee.vn/Laptop-Dell-Inspiron-15-3520-25P2312-(i5-1235U-RAM-16GB-512GB-SSD-Windows-11-Office)-B%E1%BA%A3o-h%C3%A0nh-12-th%C3%A1ng-i.469040198.28462918320",
+    "snippet": "Mua Laptop Dell Inspiron 15 3520 - 25P2312 (i5-1235U/RAM 16GB/512GB SSD/ Windows 11 + Office) - Bảo hành 12 tháng giá tốt. Mua hàng qua mạng uy tín, ...",
+    "rating": 4.8,
+    "ratingCount": 16,
+    "position": 3
+   },
+   {
+    "title": "Laptop Dell Inspiron 15 3520 i3-1215U/8GB/512GB/Win11 ...",
+    "link": "https://shopee.vn/Laptop-Dell-Inspiron-15-3520-i3-1215U-8GB-512GB-Win11-(71003264)-i.706762797.14897605485",
+    "snippet": "Laptop Dell Inspiron 15 3520 i3-1215U/8GB/512GB/Win11 (71003264). 1/8. Đã bán hết. 15.990.000₫. mall inline badge. Laptop Dell Inspiron 15 3520 i3-1215U/8GB/ ...",
+    "position": 4
+   },
+   {
+    "title": "Pin Sạc Dell Inspiron 15 3520",
+    "link": "https://shopee.vn/Pin-S%E1%BA%A1c-Dell-Inspiron-15-3520-i.69674709.22611485686",
+    "snippet": "Mua Pin Sạc Dell Inspiron 15 3520 giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn Phí. XEM ...",
+    "rating": 5,
+    "ratingCount": 3,
+    "position": 5
+   },
+   {
+    "title": "LapTop Dell Inspiron 15 3520 (71001747) | i7 _ 1255U |8GB",
+    "link": "https://shopee.vn/LapTop-Dell-Inspiron-15-3520-(71001747)-i7-_-1255U-8GB-512GB-SSD-Win-11-_-Office-2021-15.6-FHD-120Hz-i.258564417.19961490911",
+    "snippet": "Mua LapTop Dell Inspiron 15 3520 (71001747) | i7 _ 1255U |8GB |512GB SSD| Win 11 _ Office 2021 |15.6\" FHD 120Hz giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 6
+   },
+   {
+    "title": "Thay Vỏ Laptop Dell Inspiron 15 3510 3511 3515 3520 ...",
+    "link": "https://shopee.vn/Thay-V%E1%BB%8F-Laptop-Dell-Inspiron-15-3510-3511-3515-3520-3521-3525-i.326104176.17367398568",
+    "snippet": "Thay Vỏ Laptop Dell Inspiron 15 3510 3511 3515 3520 3521 3525 ; Chọn loại hàng. Vỏ. B · Mặt. C đen Ko type C · +7 ; Vỏ. B ; Mặt. C đen Ko type C.",
+    "rating": 4.9,
+    "ratingCount": 35,
+    "position": 7
+   },
+   {
+    "title": "Laptop Dell Inspiron 15 3520-70296960 (i5-1235U)",
+    "link": "https://shopee.vn/Laptop-Dell-Inspiron-15-3520-70296960-(i5-1235U)-B%E1%BA%A3o-h%C3%A0nh-12-th%C3%A1ng-i.469040198.14199000701",
+    "snippet": "Mua Laptop Dell Inspiron 15 3520-70296960 (i5-1235U) - Bảo hành 12 tháng giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

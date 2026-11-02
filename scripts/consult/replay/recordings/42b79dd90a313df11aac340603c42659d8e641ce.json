@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "RO > Điện Thoại Đa Năng Camera Phía Sau Selfie Viewer HD Màn Hình Hiển Thị Trong Suốt Di Động Cho Du Lịch Vlogging Phát Trực Tiếp Mới site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:53:01.074Z",
+ "body": {
+  "searchParameters": {
+   "q": "RO > Điện Thoại Đa Năng Camera Phía Sau Selfie Viewer HD Màn Hình Hiển Thị Trong Suốt Di Động Cho Du Lịch Vlogging Phát Trực Tiếp Mới site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "RO > Điện Thoại Đa Năng Camera Phía Sau Selfie Viewer ...",
+    "link": "https://shopee.vn/RO-%C4%90i%E1%BB%87n-Tho%E1%BA%A1i-%C4%90a-N%C4%83ng-Camera-Ph%C3%ADa-Sau-Selfie-Viewer-HD-M%C3%A0n-H%C3%ACnh-Hi%E1%BB%83n-Th%E1%BB%8B-Trong-Su%E1%BB%91t-Di-%C4%90%E1%BB%99ng-Cho-Du-L%E1%BB%8Bch-Vlogging-Ph%C3%A1t-Tr%E1%BB%B1c-Ti%E1%BA%BFp-M%E1%BB%9Bi-i.1263497513.52516101192",
+    "snippet": "Mua RO > Điện Thoại Đa Năng Camera Phía Sau Selfie Viewer HD Màn Hình Hiển Thị Trong Suốt Di Động Cho Du Lịch Vlogging Phát Trực Tiếp Mới giá tốt.",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

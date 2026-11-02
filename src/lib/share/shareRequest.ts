@@ -37,6 +37,8 @@ export function parseShareRequest(body: unknown): ShareRequestBody | 'invalid_re
   return { conversationId: b.conversationId, messageIndex: b.messageIndex, title, locale, ...(isValidSlug(b.parentSlug) ? { parentSlug: b.parentSlug } : {}) }
 }
 
+import { ASK_EMPTY_ANSWER } from '@/lib/structuredContent/askCardModel'
+
 export type ResolveResult =
   | { ok: true; payload: SharedResultPayload; domain: string }
   | { ok: false; code: 'not_found' | 'not_an_answer' }
@@ -50,7 +52,11 @@ export function pickShareSource(messages: StoredMessage[], messageIndex: number)
   let question = ''
   for (let i = messageIndex - 1; i >= 0; i--) {
     const m = messages[i]
-    if (m?.role === 'user' && typeof m.content === 'string') { question = m.content; break }
+    if (m?.role !== 'user' || typeof m.content !== 'string') continue
+    // The ask card's empty submit ("Tìm cho tôi") says nothing about the topic: the question that
+    // started the exchange is the title/query of the page, not the button label.
+    if (m.content.trim().toLowerCase() === ASK_EMPTY_ANSWER.toLowerCase() && i > 0) { question = m.content; continue }
+    question = m.content; break
   }
   return { answer: target.content, question }
 }

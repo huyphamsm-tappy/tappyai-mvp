@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Microsoft Surface Laptop Go 2 i5 RAM 8GB site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:20:06.954Z",
+ "body": {
+  "searchParameters": {
+   "q": "Microsoft Surface Laptop Go 2 i5 RAM 8GB site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Microsoft Surface Laptop Go 2 Full Cảm Ứng | i5 11Th | Ram 8GB",
+    "link": "https://www.lazada.vn/products/microsoft-surface-laptop-go-2-full-cam-ung-i5-11th-ram-8gb-ssd-128-gb256gb-sieu-nhe-11kg-moi-99-may-zin-i3290986252.html?srsltid=AU7gw4Vf_CIG9vEZulGwuxfpazlwJo6aeAO8s-TkKUxaQTitcBOZoo_e",
+    "snippet": "Microsoft Surface Laptop Go 2 Full Cảm Ứng | i5 11Th | Ram 8GB | SSD 128-GB256GB | Siêu Nhẹ 1.1kg | Mới 99% | Máy Zin ; Giao hàng. Thành phố Hồ Chí Minh, Phường ...",
+    "position": 1
+   },
+   {
+    "title": "Microsoft Surface Laptop Go 2 12.4'' Intel Core i5-1135G7 , Nhập ...",
+    "link": "https://www.lazada.vn/products/pdp-i13462268733.html?srsltid=AU7gw4VgwVvHxdl6g8XHltePkO3kLh6BR0HRVEUjmiAvp5Q_JAnG1Ibf",
+    "snippet": "Phiên bản cơ bản sẽ có bộ nhớ RAM 8GB và 16GB SSD 128GB -256GB . Trong 3 phiên bản, 2 phiên bản nâng cao sẽ có cảm biến vân tay ở nút nguồn, phiên bản cơ bản sẽ ...",
+    "position": 2
+   },
+   {
+    "title": "Microsoft Surface Laptop Go 1 Cảm Ứng | i5-1035G1 | Ram 8GB",
+    "link": "https://h5.lazada.vn/products/microsoft-surface-laptop-go-1-cam-ung-i5-1035g1-ram-8gb-ssd-256gb-man-124-sieu-nhe-11kg-ngoai-hinh-9397-i3290995156.html",
+    "snippet": "Microsoft Surface Laptop Go 1 Cảm Ứng | i5-1035G1 | Ram 8GB | SSD 256GB | Màn 12.4” | Siêu Nhẹ 1.1kg | Ngoại Hình 93–97% · Đặc điểm nổi bật · Mô tả sản phẩm.",
+    "position": 3
+   },
+   {
+    "title": "Laptop Surface Laptop Go 3 | Core i5 | Ram 16GB | SSD 512GB",
+    "link": "https://h5.lazada.vn/products/laptop-surface-laptop-go-3-core-i5-ram-16gb-ssd-512gb-nhe-manh-gon-9397-man-124-pixelsense-cam-ung-i3321951754.html",
+    "snippet": "Microsoft Surface Laptop 3 Cấu Hình Khủng Chip | i7 | 16GB | SSD 256GB–. 10.400.000 ₫ · Microsoft Surface Go 2 Cảm Ứng 10.5” | M3-8100Y | Ram 8GB |. 4.250.000 ...",
+    "position": 4
+   },
+   {
+    "title": "Microsoft Surface Laptop Go 1 Full Cảm Ứng I Ram 8 GB Hiệu ...",
+    "link": "https://h5.lazada.vn/products/microsoft-surface-laptop-go-1-full-cam-ung-i-ram-8-gb-hieu-nang-cao-l-chip-i5-10th-l-ssd-128gb-l-moi-95-nguyen-ban-i3290953557-s15971703995.html",
+    "snippet": "Microsoft Surface Laptop Go 1 Full Cảm Ứng I Ram 8 GB Hiệu Năng Cao l Chip i5 10Th l SSD 128Gb l MỚI 95% Nguyên Bản. Tuỳ chọn sản phẩm. Bạc Platinum.",
+    "position": 5
+   },
+   {
+    "title": "2K cảm ứng - Intel Core I5/I7 RAM 8GB/16GB SSD 128 ...",
+    "link": "https://h5.lazada.vn/products/microsoft-surface-laptop-2-135-inch-nhap-khau-my-2k-cam-ung-intel-core-i5i7-ram-8gb16gb-ssd-128256512gb-tang-kem-sac-theo-may-chinh-hang-i2262675911.html",
+    "snippet": "1/8. 7.709.770 ₫8.090.000 ₫-5%. Kết thúc trong 6 ngày 15:12:33. Microsoft Surface Laptop 2 13.5 inch Nhập Khẩu Mỹ/ 2K cảm ứng - Intel Core I5/I7 RAM 8GB/16GB ...",
+    "rating": 5,
+    "ratingCount": 3,
+    "position": 6
+   },
+   {
+    "title": "Surface Laptop Go Core i5-10310U, 8gb ram, 128gb SSD ...",
+    "link": "https://www.lazada.vn/products/surface-laptop-go-core-i5-10310u-8gb-ram-128gb-ssd-133-cam-ung-nguyen-hop-i2540174859.html?srsltid=AU7gw4VHgjZWdg_XH_yHsx6P6l7BcQnV4NASq-74ZNtFXSqHl03J8NjF",
+    "snippet": "Surface Laptop Go Core i5-10310U, 8gb ram, 128gb SSD, 13.3” cảm ứng, nguyên hộp ; Giao hàng. Thành phố Hồ Chí Minh, Phường Bến Thành. Giao tiêu chuẩn , Đảm bảo ...",
+    "position": 7
+   },
+   {
+    "title": "Surface Laptop 5 – 13.5 Inch Intel i5 Ram 8GB SSD 512GB",
+    "link": "https://www.lazada.vn/products/surface-laptop-5-135-inch-intel-i5-ram-8gb-ssd-512gb-i2535920462.html?srsltid=AU7gw4WhAld0RVXjR-h_rWUKwcxCQSErUjFcTew0Ur79XGApDx3YmEn_",
+    "snippet": "Mô tả sản phẩm · Màn hình 13.5 inch PixelSense™ Display, tỉ lệ 3:2, độ phân giải 2256 x 1504 (201 PPI) sRGB & Vivid, cảm ứng đa điểm 10 ngón, hỗ trợ Surface Pen ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

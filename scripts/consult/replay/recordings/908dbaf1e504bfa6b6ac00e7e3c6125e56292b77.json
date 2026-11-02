@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Microsoft Surface Laptop Go 2 i5 RAM 8GB site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:20:08.225Z",
+ "body": {
+  "searchParameters": {
+   "q": "Microsoft Surface Laptop Go 2 i5 RAM 8GB site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Microsoft Surface Laptop Go 2 Full Cảm Ứng | i5 Th11",
+    "link": "https://shopee.vn/Microsoft-Surface-Laptop-Go-2-Full-C%E1%BA%A3m-%E1%BB%A8ng-i5-Th11-Ram-8GB-16GB-SSD-128-256GB-Si%C3%AAu-Nh%E1%BA%B9-1.1kg-M%E1%BB%9Bi-92-99--i.829234931.40168075268",
+    "snippet": "Mua Microsoft Surface Laptop Go 2 Full Cảm Ứng | i5 Th11 | Ram 8GB/16GB | SSD 128/256GB | Siêu Nhẹ 1.1kg | Mới 92-99% giá tốt. Mua hàng qua mạng uy tín, ...",
+    "rating": 5,
+    "ratingCount": 7,
+    "position": 1
+   },
+   {
+    "title": "Microsoft Surface Laptop Go 2 Full Cảm Ứng | i5 11Th",
+    "link": "https://shopee.vn/Microsoft-Surface-Laptop-Go-2-Full-C%E1%BA%A3m-%E1%BB%A8ng-i5-11Th-Ram-8GB-SSD-128-GB256GB-Si%C3%AAu-Nh%E1%BA%B9-1.1kg-M%E1%BB%9Bi-92-99-M%C3%A1y-Zin-i.1776636024.53557302404",
+    "snippet": "Microsoft Surface Laptop Go 2 Full Cảm Ứng | i5 11Th | Ram 8GB | SSD 128-GB256GB | Siêu Nhẹ 1.1kg | Mới 92-99% | Máy Zin ; Chọn loại hàng. NVMe. 128GB. NVMe.",
+    "position": 2
+   },
+   {
+    "title": "laptop microsoft giá tốt Tháng 9, 2026 Laptop",
+    "link": "https://shopee.vn/search?category=11035954&keyword=laptop%20microsoft&page=0&sortBy=relevancy&subcategory=11036015",
+    "snippet": "Microsoft Surface Laptop Go 2 Full Cảm Ứng | i5 Th11 | Ram 8GB/16GB | SSD 128/256GB | Siêu Nhẹ 1.1kg | Mới 92-99% 9.400.000₫ 9.???.??0₫",
+    "position": 3
+   },
+   {
+    "title": "Microsoft Surface Laptop Go Nhập Khẩu Mỹ - Core i5 Ram ...",
+    "link": "https://shopee.vn/Microsoft-Surface-Laptop-Go-Nh%E1%BA%ADp-Kh%E1%BA%A9u-M%E1%BB%B9-Core-i5-Ram-8GB-16gb-SSD-256GB-H%C3%80NG-D%E1%BB%B0-%C3%81N-M%E1%BB%B8-M%E1%BB%9AI-98-99--i.1048448109.43480079685",
+    "snippet": "Core i5 Ram 8GB/16gb SSD 256GB - 12.500.000₫-15.500.000₫ 12.900.000₫ - 16.000.000₫",
+    "position": 4
+   },
+   {
+    "title": "Microsoft Surface Laptop Go Nhập Khẩu Mỹ - Core i5 Gen ...",
+    "link": "https://shopee.vn/Microsoft-Surface-Laptop-Go-Nh%E1%BA%ADp-Kh%E1%BA%A9u-M%E1%BB%B9-Core-i5-Gen-1035G1-Ram-8GB-128GB-256GB-Playmobile-i.118122501.16785154817",
+    "snippet": "Core i5 Gen 1035G1 Ram 8GB 128GB/256GB / 9.640.000₫ final price",
+    "rating": 4.9,
+    "ratingCount": 22,
+    "position": 5
+   },
+   {
+    "title": "laptop microsoft giá tốt Tháng 8, 2026 Laptop",
+    "link": "https://shopee.vn/search?category=11035954&keyword=laptop%20microsoft&page=0&subcategory=11036015",
+    "snippet": "Microsoft Surface Laptop Go 2 Full Cảm Ứng | i5 Th11 | Ram 8GB/16GB custom-overlay ・ | SSD 128/256GB ・ 9.400.000₫ rating-star",
+    "position": 6
+   },
+   {
+    "title": "Surface Laptop Go 3 Intel Core i5 gen 12th Ram 8GB Ổ ...",
+    "link": "https://shopee.vn/Surface-Laptop-Go-3-Intel-Core-i5-gen-12th-Ram-8GB-%E1%BB%94-c%E1%BB%A9ng-256GB-M%E1%BB%9Bi-Nguy%C3%AAn-Seal-Ch%C3%ADnh-H%C3%A3ng-Microsoft-Nh%C3%A2p-M%E1%BB%B9-i.90565355.20395416931",
+    "snippet": "4 phân loại có sẵn. 19.500.000₫. Surface Laptop Go 3 Intel Core i5 gen 12th Ram 8GB Ổ cứng 256GB Mới Nguyên Seal Chính Hãng Microsoft Nhâp Mỹ.",
+    "rating": 5,
+    "ratingCount": 6,
+    "position": 7
+   },
+   {
+    "title": "SurfaceLab_Trần Anh, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/shop/829234931",
+    "snippet": "Microsoft Surface Laptop Go 2 Full Cảm Ứng | i5 Th11 | Ram 8GB/16GB | SSD 128/256GB | Siêu Nhẹ 1.1kg | Mới 92-99%. 9.400.000₫. 9.???.??0₫. Thêm vào giỏ hàng.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

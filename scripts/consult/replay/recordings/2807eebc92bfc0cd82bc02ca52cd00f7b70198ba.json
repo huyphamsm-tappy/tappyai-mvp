@@ -1,0 +1,92 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hapaku Combo 3 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:09:34.439Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hapaku Combo 3 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Combo quà tặng sức khỏe 20/11 từ thảo dược thiên nhiên Hapaku ...",
+    "link": "https://www.lazada.vn/products/combo-qua-tang-suc-khoe-2011-tu-thao-duoc-thien-nhien-hapaku-doc-dao-y-nghia-danh-tang-thay-co-nhan-dat-theo-yeu-cau-i2065043174.html",
+    "snippet": "Combo quà tặng sức khỏe 20/11 từ thảo dược thiên nhiên Hapaku độc đáo, ý nghĩa dành tặng thầy cô - Nhận Đặt Theo Yêu Cầu",
+    "position": 1
+   },
+   {
+    "title": "Combo Giá Tốt Gối Thảo Dược Đa Năng Hapaku Và Túi Chườm ...",
+    "link": "https://www.lazada.vn/products/combo-gia-tot-goi-thao-duoc-da-nang-hapaku-va-tui-chuom-mat-giam-dau-nhuc-mat-i2435200042.html",
+    "snippet": "Combo Giá Tốt Gối Thảo Dược Đa Năng Hapaku Và Túi Chườm Mắt Giảm Đau Nhức Mắt",
+    "position": 2
+   },
+   {
+    "title": "Combo Giá Tốt Túi Chườm Giảm Đau Mỏi Vai Gáy Hapaku Làm Nóng ...",
+    "link": "https://h5.lazada.vn/products/combo-gia-tot-tui-chuom-giam-dau-moi-vai-gay-hapaku-lam-nong-bang-lo-vi-song-va-tui-chuom-mat-giam-dau-nhuc-mat-i384342425.html",
+    "snippet": "Hapaku Việt Nam. Phù hợp với người bị thoái hoá đốt sống cổ, thoát vị đĩa đệm đốt sống C6, C7, đau dây thần kinh toạ, đau vai gáy do nằm sai tư thế, ít vận động. Thành phần 100 thảo dược truyền thống. nóng nhanh bằng lò vi sóng hoặc lò hấp khăn.",
+    "position": 3
+   },
+   {
+    "title": "Combo Giá Tốt Túi Chườm Thảo Dược Hapaku ... - Lazada",
+    "link": "https://www.lazada.vn/products/combo-gia-tot-tui-chuom-thao-duoc-hapaku-giam-dau-moi-lam-nong-bang-lo-vi-song-va-tinh-dau-tram-i2434804873.html",
+    "snippet": "Hapaku Việt Nam. Phù hợp với người bị thoái hoá đốt sống cổ, thoát vị đĩa đệm đốt sống C6, C7, đau dây thần kinh toạ, đau vai gáy do nằm sai tư thế, ít vận động. Thành phần 100 thảo dược truyền thống. Làm nóng nhanh bằng lò vi sóng hoặc lò hấp khăn.",
+    "position": 4
+   },
+   {
+    "title": "COMBO Tinh Dầu Tự Nhiên HAPAKU nguyên chất ... - Lazada",
+    "link": "https://www.lazada.vn/products/combo-tinh-dau-tu-nhien-hapaku-nguyen-chat-dam-dac-10ml-huong-thom-mat-diu-cho-phong-tu-chon-mui-dien-trong-ghi-chu-i2491516695.html",
+    "snippet": "Hapaku Việt Nam. Gồm mùi hương: Sả Chanh, Bưởi, Quýt, Quế, Tràm. Tinh dầu tự nhiên nguyên chất được chiết xuất từ 100 nguyên liệu tự nhiên, sử dụng phương pháp chưng cất lôi cuốn hơi nước giúp giữ nguyên tinh chất, tốt cho sức khoẻ",
+    "position": 5
+   },
+   {
+    "title": "Combo Giá Tốt Túi Chườm Giảm Đau Mỏi Vai Gáy Hapaku Làm Nóng ...",
+    "link": "https://www.lazada.vn/products/combo-gia-tot-tui-chuom-giam-dau-moi-vai-gay-hapaku-lam-nong-bang-lo-vi-song-va-tui-chuom-mat-giam-dau-nhuc-mat-i384342425.html",
+    "snippet": "Hapaku Việt Nam. Phù hợp với người bị thoái hoá đốt sống cổ, thoát vị đĩa đệm đốt sống C6, C7, đau dây thần kinh toạ, đau vai gáy do nằm sai tư thế, ít vận động.",
+    "position": 6
+   },
+   {
+    "title": "Combo 03 Túi Rác Tự Phân Hủy MÀU ĐEN - 3 Cuộn/1kg - Nhiều ...",
+    "link": "https://www.lazada.vn/products/combo-03-tui-rac-tu-phan-huy-mau-den-3-cuon1kg-nhieu-size-i3110292127.html",
+    "snippet": "Đặc điểm nổi bật Combo 03 Túi Rác Tự Phân Hủy MÀU ĐEN - 3 Cuộn/1kg chất lượng cao - không hôi - số cái nhiều - không nhám - không loang màu đủ 3 size size tiểu 445cm*55cm size trung 55cm*65cm size đại 64cm*78cm khuyên dùng phân loại rác hữu cơ và vô cơ theo từng túi",
+    "position": 7
+   }
+  ],
+  "relatedSearches": [
+   {
+    "query": "hapaku combo 3 site:lazada.vn/products 1"
+   },
+   {
+    "query": "hapaku combo 3 site:lazada.vn/products download"
+   },
+   {
+    "query": "hapaku combo 3 site:lazada.vn/products 2"
+   },
+   {
+    "query": "combat 3"
+   },
+   {
+    "query": "hapaku combo 3 site:lazada.vn/products game"
+   },
+   {
+    "query": "hapaku combo 3 site:lazada.vn/products 4"
+   },
+   {
+    "query": "hapaku combo 3 site:lazada.vn/products pc"
+   },
+   {
+    "query": "hapaku combo 3 site:lazada.vn/products code"
+   }
+  ],
+  "credits": 1
+ }
+}

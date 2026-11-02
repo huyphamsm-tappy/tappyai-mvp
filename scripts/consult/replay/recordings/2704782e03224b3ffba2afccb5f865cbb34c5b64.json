@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"MerPerle Dalat Hotel\" OR \"Golden Sun Hotel\" OR \"Colline Dalat\" Đà Lạt site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:53:09.529Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"MerPerle Dalat Hotel\" OR \"Golden Sun Hotel\" OR \"Colline Dalat\" Đà Lạt site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Colline Dalat Hotel: Góc Đà Lạt Chill, View Đẹp",
+    "link": "https://www.tiktok.com/@nhaphuong.didau/video/7687452652975934740",
+    "snippet": "Colline Dalat Hotel mang đến một không gian sang trọng và hiện đại tại trung tâm Đà Lạt. Khách sạn có vị trí thuận tiện, dễ dàng đi bộ đến Hồ ...",
+    "position": 1
+   },
+   {
+    "title": "Hội Nghị Khách Hàng 2025 tại Khách Sạn MerPerle Đà Lạt",
+    "link": "https://www.tiktok.com/@merperledalathotel/video/7541337645146819848",
+    "snippet": "Video TikTok từ MerPerle Dalat Hotel (@merperledalathotel): \"Khám phá không gian sang trọng của Hội nghị Khách hàng 2025 tại MerPerle Dalat ...",
+    "position": 2
+   },
+   {
+    "title": "Đại Tiệc Buffet Cuối Năm Tại MerPerle Dalat Hotel",
+    "link": "https://www.tiktok.com/@merperledalathotel/video/7593264894598810898",
+    "snippet": "Video TikTok từ MerPerle Dalat Hotel (@merperledalathotel): \"Khám phá không khí ấm áp với buffet cuối năm tại MerPerle Dalat Hotel.",
+    "position": 3
+   },
+   {
+    "title": "MerPerle Dalat Hotel (@merperledalathotel)",
+    "link": "https://www.tiktok.com/@merperledalathotel",
+    "snippet": "MerPerle Dalat Hotel (@merperledalathotel) trên TikTok |7292 Lượt thích ... Khách sạn kiểu tân cổ điển 389 phòng- 01 Hùng Vương, Phường Xuân Hương - Đà Lạt.",
+    "position": 4
+   },
+   {
+    "title": "Khám Phá MERPERLE DALAT HOTEL",
+    "link": "https://www.tiktok.com/@merperledalathotel/video/7506074915972402439",
+    "snippet": "Khám Phá MERPERLE DALAT HOTEL - Thiên Đường Tình Yêu. MERPERLE DALAT HOTEL là nơi lý tưởng cho tình yêu và hạnh phúc của bạn. Tìm hiểu vị trí ...",
+    "position": 5
+   },
+   {
+    "title": "Golden Sun Hotel Đà Lạt — Trải nghiệm sang trọng đẳng ...",
+    "link": "https://www.tiktok.com/@alotravel.231/video/7675987404741758228",
+    "snippet": "Vị trí và ấn tượng ban đầu Golden Sun Hotel Đà Lạt tọa lạc ở vị trí thuận tiện cho các điểm tham quan nổi tiếng, giúp tiết kiệm thời gian di ...",
+    "position": 6
+   },
+   {
+    "title": "MerPerle Dalat Hotel: Elegant Venue for Long An Pesticide ...",
+    "link": "https://www.tiktok.com/@merperledalathotel/video/7593255283539856647",
+    "snippet": "The MerPerle Dalat Hotel provided an elegant and refined setting for the recent 2025–2026 Customer Conference hosted by Long An Pesticide ...",
+    "position": 7
+   },
+   {
+    "title": "Experience the Heart of Hotel Lobby Life in Đà Lạt",
+    "link": "https://www.tiktok.com/@collinedalat/video/7519782352072035602",
+    "snippet": "Discover the vibrant lobby life in Đà Lạt hotels, where every arrival tells a story. @Colline Dalat.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

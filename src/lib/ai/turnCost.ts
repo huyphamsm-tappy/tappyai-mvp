@@ -46,6 +46,15 @@ export interface TurnCostInfo {
   promptCacheRead?: number
   promptCacheWrite?: number
   usd: number
+  /** PHIÊN LUNA (CONSULT_LUNA only): the turn split by part and vendor. `reasoningTokens` are inside tokensOut. */
+  intent?: string | null
+  intentUsd?: number
+  answerUsd?: number
+  serperUsd?: number
+  reasoningTokens?: number
+  lunaCachedIn?: number
+  lunaCacheWrite?: number
+  fellBack?: boolean
 }
 
 /**

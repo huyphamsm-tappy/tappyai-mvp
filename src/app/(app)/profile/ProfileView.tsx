@@ -4,7 +4,6 @@ import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from '@/components/media/SafeImage'
 import UserAvatar from '@/components/UserAvatar'
-import QRProfileButton from '@/components/QRProfileButton'
 import V3Shell, { V3Footer } from '@/components/v3/V3Shell'
 import {
   Pencil, Play, Heart, MessageCircle, MapPin, Camera,
@@ -13,6 +12,7 @@ import {
 } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { AccountSettingsHub } from './ProfileRows'
+import AccountPlanCard from '@/components/subscription/AccountPlanCard'
 import { postsInState } from './ownPostStates'
 
 // ── V3 Web · Profile / Me — the personal hub ────────────────────────────────
@@ -177,6 +177,7 @@ export default function ProfileView({
 
             {/* "Tài khoản & Cài đặt" — owner reference 2026-09-22. Cards sit side by side only at
                 2xl here, because the personal rail already takes 320px from `xl` up. */}
+            <AccountPlanCard />
             <AccountSettingsHub wideAt="2xl" />
           </div>
 
@@ -307,11 +308,11 @@ function HeroActions({ userId, displayName }: { userId: string; displayName: str
         <Pencil size={14} aria-hidden="true" />
         {t('v3.profile.editProfile')}
       </Link>
-      {/* The existing share affordance, reused verbatim: an on-device QR of /users/{id}
-          plus the Web Share / copy fallback it already implements. */}
-      <span className="v3-profile-btn inline-flex min-h-[44px] items-center justify-center rounded-xl px-1">
-        <QRProfileButton userId={userId} name={displayName} />
-      </span>
+      {/* Phase 7: every QR entry point opens the ONE canonical QR page (branded card, share, download). */}
+      <Link href="/profile/qr" aria-label={t('v3.nav.qr')} className="v3-profile-btn inline-flex min-h-[44px] items-center justify-center gap-2 rounded-xl px-4 text-[13px] font-semibold">
+        <QrCode size={14} aria-hidden="true" />
+        {t('v3.nav.qr')}
+      </Link>
     </>
   )
 }
@@ -379,11 +380,13 @@ function ProfileContent() {
 
   return (
     <section className="v3-profile-card" data-profile-content aria-label={t('v3.profile.contentTitle')}>
-      {/* Below `sm` the tabs take a full row of their own and the toolbar drops beneath them —
-          sharing one row squeezed the scroller to a few pixels on a phone. */}
-      <div className="flex flex-col gap-3 border-b px-4 py-3 sm:flex-row sm:items-center sm:px-5" style={{ borderColor: 'var(--v3-border)' }}>
+      {/* 🚨 B2 (2026-10-02): the six tabs used to sit in a horizontal scroller beside the grid /
+          list switch and the New post button — in the narrow content column only two tabs fit, the
+          rest were silently clipped (the owner could not find the Restricted tab). The tabs now WRAP, so
+          every tab is visible with its full label, and the toolbar is a row of its own beneath. */}
+      <div className="flex flex-col gap-3 border-b px-4 py-3 sm:px-5" style={{ borderColor: 'var(--v3-border)' }}>
         {/* 🔑 The tabs keep the shared `.v3-chip` class: it is the page's tab contract. */}
-        <div className="v3-scroll-x -mx-1 flex w-full min-w-0 gap-2 px-1 sm:w-auto sm:flex-1" role="group" aria-label={t('v3.profile.contentTitle')}>
+        <div className="flex w-full min-w-0 flex-wrap gap-2" data-profile-tabs role="group" aria-label={t('v3.profile.contentTitle')}>
           {TABS.map((item, i) => (
             <button
               key={item.id}
@@ -391,7 +394,7 @@ function ProfileContent() {
               data-profile-tab={item.id}
               aria-pressed={i === tab}
               onClick={() => setTab(i)}
-              className={`v3-chip v3-profile-tab flex-shrink-0 ${i === tab ? 'v3-chip-active' : ''}`}
+              className={`v3-chip v3-profile-tab ${i === tab ? 'v3-chip-active' : ''}`}
             >
               <item.icon size={15} aria-hidden="true" />
               {t(item.key)}
@@ -399,8 +402,8 @@ function ProfileContent() {
           ))}
         </div>
 
-        <div className="flex flex-shrink-0 items-center justify-between gap-2 sm:justify-end">
-          {!isPlaces && (
+        <div className="flex flex-wrap items-center justify-between gap-2" data-profile-toolbar>
+          {!isPlaces ? (
             <div className="flex items-center gap-1 rounded-xl p-1" style={{ background: 'var(--v3-panel)' }} role="group" aria-label={`${t('v3.profile.viewGrid')} / ${t('v3.profile.viewList')}`}>
               <button
                 type="button"
@@ -410,8 +413,7 @@ function ProfileContent() {
                 className="v3-profile-seg inline-flex min-h-[36px] items-center gap-1.5 rounded-lg px-2.5 text-[12.5px] font-semibold"
               >
                 <LayoutGrid size={14} aria-hidden="true" />
-                <span className="hidden sm:inline">{t('v3.profile.viewGrid')}</span>
-                <span className="sr-only sm:hidden">{t('v3.profile.viewGrid')}</span>
+                <span>{t('v3.profile.viewGrid')}</span>
               </button>
               <button
                 type="button"
@@ -421,14 +423,13 @@ function ProfileContent() {
                 className="v3-profile-seg inline-flex min-h-[36px] items-center gap-1.5 rounded-lg px-2.5 text-[12.5px] font-semibold"
               >
                 <List size={14} aria-hidden="true" />
-                <span className="hidden sm:inline">{t('v3.profile.viewList')}</span>
-                <span className="sr-only sm:hidden">{t('v3.profile.viewList')}</span>
+                <span>{t('v3.profile.viewList')}</span>
               </button>
             </div>
-          )}
+          ) : <span />}
           <Link
             href="/reviews/new"
-            className="v3-profile-brand v3-profile-cta inline-flex min-h-[40px] flex-shrink-0 items-center gap-1.5 rounded-xl px-3.5 text-[12.5px] font-semibold"
+            className="v3-profile-brand v3-profile-cta inline-flex min-h-[40px] flex-shrink-0 items-center gap-1.5 whitespace-nowrap rounded-xl px-3.5 text-[12.5px] font-semibold"
           >
             {t('v3.profile.postAction')}
           </Link>
@@ -790,9 +791,6 @@ function QRCard({ userId, displayName }: { userId: string; displayName: string }
     <RailCard id="qr" title={t('v3.profile.qrTitle')} icon={QrCode}>
       <p className="text-[12.5px]" style={{ color: 'var(--v3-fg-muted)' }}>{t('v3.profile.qrHint')}</p>
       <div className="mt-3 flex flex-wrap items-center gap-2">
-        <span className="v3-profile-btn inline-flex min-h-[44px] items-center justify-center rounded-xl px-1">
-          <QRProfileButton userId={userId} name={displayName} />
-        </span>
         <Link href="/profile/qr" className="v3-profile-btn inline-flex min-h-[44px] items-center gap-2 rounded-xl px-4 text-[13px] font-semibold">
           {t('v3.profile.qrOpen')}
           <ArrowRight size={14} aria-hidden="true" />

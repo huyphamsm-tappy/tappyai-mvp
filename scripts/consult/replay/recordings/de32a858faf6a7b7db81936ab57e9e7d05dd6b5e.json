@@ -1,0 +1,66 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "HP ZBook Firefly 14 G7 i7-10510U Máy trạm di động 35,6 cm (14 ) Full HD Intel Core i7 16 GB DDR4-SDRAM 512 GB SSD NVIDIA Quadro P520 Wi-Fi 6 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:13:56.129Z",
+ "body": {
+  "searchParameters": {
+   "q": "HP ZBook Firefly 14 G7 i7-10510U Máy trạm di động 35,6 cm (14 ) Full HD Intel Core i7 16 GB DDR4-SDRAM 512 GB SSD NVIDIA Quadro P520 Wi-Fi 6 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "HP Zbook G8 i7-1185G7 RAM 32GB-dòng máy Trạm Di Động-CHỈ 8.2 ...",
+    "link": "https://www.lazada.vn/products/hp-zbook-g8-i7-1185g7-ram-32gb-dong-may-tram-di-dong-chi-82-trieu-i3168132974.html",
+    "snippet": "HP Zbook G8 i7-1185G7 RAM 32GB-dòng máy Trạm Di Động-CHỈ 8.2 TRIỆU App Thương hiệu: HP Xem thêm Laptop của HP 8.200.000₫ Số lượng: Mua ngay",
+    "position": 1
+   },
+   {
+    "title": "Đồ Chơi Xe Điều Khiển 1:14 BMW I8 Mở ... - Lazada",
+    "link": "https://www.lazada.vn/products/do-choi-xe-dieu-khien-114-bmw-i8-mo-cua-duoc-trang-rastar-ra71010whi-i3288741559.html",
+    "snippet": "+ Tỉ lệ 1:14 chân thực (là phiên bản thu nhỏ 14 lần so với xe thật) + Đa dạng chức năng: Tiến, lùi, rẽ trái, rẽ phải. + Hệ thống đèn chiếu sáng bắt mắt, hệ chống xóc giúp xe chạy êm hơn. + Vẻ ngoài sắc xảo: Xe có thiết kế tinh tế, tỉ mỉ trong từng chi tiết.",
+    "position": 2
+   },
+   {
+    "title": "Màn hình di động GOOJODOQ 15.6 14 Inch 1920*1080P FHD IPS USB ...",
+    "link": "https://h5.lazada.vn/products/free-giftman-hinh-di-dong-goojodoq-156-14-inch-19201080p-fhd-ips-usb-c-hdmi-portable-monitor-cho-laptop-may-tinh-dien-thoai-may-choi-game-ps4-i2478628024.html",
+    "snippet": "Có 2 cổng USB-C, cổng Mini-HDMI ở một bên của màn hình di động, có thể sử dụng với nhiều thiết bị như laptop, smartphone, PC, PS4, XBOX hoặc Nintendo Switch.",
+    "position": 3
+   },
+   {
+    "title": "Bút bi nước MG GP1163 ngòi mảnh 0.5mm (Hộp 12c) - Lazada",
+    "link": "https://www.lazada.vn/products/but-bi-nuoc-mg-gp1163-ngoi-manh-05mm-hop-12c-dong-but-bi-cao-cap-xanh-den-do-i1757002631.html",
+    "snippet": "Tất cả hình ảnh của Shop đều là hình sản phẩm thật Shop tự chụp 100%. Liên hệ sỉ thông qua SĐT trên hình ảnh để được giá tốt nhất. Bút MG chính hãng. Mã sản phẩm: GP-1163. Nét bút siêu mảnh với đầu ngòi nhỏ 0.5mm. Tay cầm cao su mềm cao cấp bằng vật liệu TPR giúp êm tay và chống trơn tuột khi sử dụng ...",
+    "position": 4
+   },
+   {
+    "title": "Bóng golf Bridgestone Be12, Be6, B Soft... Chính Hãng Chất ...",
+    "link": "https://www.lazada.vn/products/bong-golf-bridgestone-be12-be6-b-soft-chinh-hang-chat-luong-tot-da-qua-su-dung-bong-golf-cu-gia-recombo-10-qua-i2678892411.html",
+    "snippet": "Bóng golf Bridgestone Be12, Be6, B Soft... Chính Hãng Chất Lượng Tốt đã Qua Sử Dụng. Bóng Golf Cũ, Giá Rẻ. (Combo 10 quả) App 4.8(16) 209.000₫ Thương hiệu: B hỗn hợp",
+    "position": 5
+   },
+   {
+    "title": "[CHỈ 20H 10.11-2H 11.11-MUA 3 GIẢM 50%] adidas Running ...",
+    "link": "https://www.lazada.vn/products/chi-39-mua-2-giam-10voucher-15-adidas-chay-giay-chay-bo-ultrarun-5-nam-den-ie8794-i3069445237.html",
+    "snippet": "Giày chạy bộ adidas Ultrarun 5 đen cho nam, giảm 30% trong 20h 11.11. Chất liệu mesh thoáng khí, trọng lượng nhẹ 324g, thiết kế thoải mái với midsole 10mm, phù hợp cho vận động viên chạy bộ chuyên nghiệp. - Lazada",
+    "position": 6
+   },
+   {
+    "title": "Vikye máy tính xách tay CPU và quạt làm mát ... - Lazada",
+    "link": "https://www.lazada.vn/products/vikye-may-tinh-xach-tay-cpu-va-quat-lam-mat-gpu-quat-kep-thay-the-thiet-lap-voi-hoat-dong-yen-tinh-cho-studio-zbook-15-g5-g6-loat-l30894001-l30895001-i3199319813.html",
+    "snippet": "Làm mát hiệu quả: nâng cao hiệu suất máy tính xách tay của bạn với CPU và quạt làm mát GPU của chúng tôi, được thiết kế để tản nhiệt hiệu quả, cho phép máy tính xách tay của bạn hoạt động ở nhiệt độ thấp hơn.",
+    "position": 7
+   }
+  ],
+  "credits": 1
+ }
+}

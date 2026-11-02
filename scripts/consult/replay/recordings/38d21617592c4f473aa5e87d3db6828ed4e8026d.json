@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Tràng An Quán (site:food.grab.com/vn OR site:shopeefood.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:57:44.087Z",
+ "body": {
+  "searchParameters": {
+   "q": "Tràng An Quán (site:food.grab.com/vn OR site:shopeefood.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tràng An Quán - Đặc Sản Dê Núi Ninh Bình",
+    "link": "https://shopeefood.vn/ho-chi-minh/trang-an-quan-dac-san-de-nui-ninh-binh",
+    "snippet": "Tràng An Quán - Đặc Sản Dê Núi Ninh Bình. 283 Bình Quới, P. 28, Bình Thạnh, TP. HCM. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán ...",
+    "position": 1
+   },
+   {
+    "title": "Bún Thang, Phở Gà - 34 Đặng Ngọc Chinh, p... ⭐ 3.7",
+    "link": "https://food.grab.com/vn/vi/restaurant/tr%C3%A0ng-an-qu%C3%A1n-b%C3%BAn-thang-ph%E1%BB%9F-g%C3%A0-34-%C4%91%E1%BA%B7ng-ng%E1%BB%8Dc-chinh-ph%C6%B0%E1%BB%9Dng-t%C3%A2n-ninh-delivery/5-C8DVAY6FDFNJSE",
+    "snippet": "GrabFood - Dịch vụ giao đồ ăn trực tuyến giúp bạn thỏa mãn cơn thèm ăn với hàng vạn quán ăn.",
+    "rating": 3.7,
+    "ratingCount": 20,
+    "position": 2
+   },
+   {
+    "title": "Food Delivery - Tràng An Coffee - Điện Biên Phủ",
+    "link": "https://shopeefood.vn/khanh-hoa/trang-an-coffee-dien-bien-phu",
+    "snippet": "2 Điện Biên Phủ, P. Vĩnh Hòa, Tp. Nha Trang, Khánh Hoà. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng dịch vụ vượt ...",
+    "position": 3
+   },
+   {
+    "title": "Bún Đậu Tràng An",
+    "link": "https://shopeefood.vn/da-nang/bun-dau-trang-an",
+    "snippet": "140 Khúc Hạo, P. Nại Hiên Đông, Quận Sơn Trà, Đà Nẵng. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng dịch vụ vượt ...",
+    "position": 4
+   },
+   {
+    "title": "Tràng An - Bún Cá Quả, Hải Sản & Cơm Văn Phòng",
+    "link": "https://shopeefood.vn/ha-noi/trang-an-bun-ca-qua-hai-san-com-van-phong?source_url=foody_ordernow_mobile",
+    "snippet": "Tràng An - Bún Cá Quả, Hải Sản & Cơm Văn Phòng. A2 Ngõ 193 Trung Kính, P.Yên Hòa, Cầu Giấy, Hà Nội. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, ...",
+    "position": 5
+   },
+   {
+    "title": "Bún Đậu Tràng An - Đường 2 Tháng 9",
+    "link": "https://shopeefood.vn/da-nang/bun-dau-trang-an-duong-2-thang-9?source_url=foody_ordernow_mobile",
+    "snippet": "126B đường 2 Tháng 9, P. Bình Thuận, Quận Hải Châu, Đà Nẵng. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng dịch vụ ...",
+    "position": 6
+   },
+   {
+    "title": "Bún Đậu, Lẩu Chua Cay & Ăn Vặt - 108 Mai Thúc Lân",
+    "link": "https://shopeefood.vn/da-nang/bun-dau-trang-an-mai-thuc-lan-bun-dau-lau-chua-cay-an-vat-108-mai-thuc-lan",
+    "snippet": "Bún Đậu Tràng An Mai Thúc Lân - Bún Đậu, Lẩu Chua Cay & Ăn Vặt - 108 Mai Thúc Lân. 108 Mai Thúc Lân, P. Mỹ An, Quận Ngũ Hành Sơn, Đà Nẵng. Đã đóng. Quán ...",
+    "position": 7
+   },
+   {
+    "title": "Phở Gà Mộc - Mộc Mạc Tràng An - KĐT Văn Quán",
+    "link": "https://shopeefood.vn/ha-noi/pho-ga-moc-moc-mac-trang-an-kdt-van-quan",
+    "snippet": "40-BT4 Khu Đô Thị Văn Quán, P. Văn Quán, Hà Đông, Hà Nội. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng dịch vụ ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

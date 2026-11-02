@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"The Nail\" OR \"ME IN NAIL\" OR \"Tiệm Nail Quận 10\" Quận 10 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:21:49.181Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"The Nail\" OR \"ME IN NAIL\" OR \"Tiệm Nail Quận 10\" Quận 10 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "ME IN NAIL (@mein.nail)",
+    "link": "https://www.tiktok.com/@mein.nail",
+    "snippet": "... Quận Bình Thạnh ☎️0867.960.979 ME IN NAIL QUẬN 10: 218 Nguyễn Tiểu La, Phường 8, Quận 10 ☎️0867.984.979 ME IN NAIL HIM LAM QUẬN ...",
+    "position": 1
+   },
+   {
+    "title": "Manifest các anh thấy được bài này, để các chị em mình ...",
+    "link": "https://www.tiktok.com/@mein.nail/video/7690517763185593607",
+    "snippet": "... ☎️0867.960.979 ME IN NAIL QUẬN 10: 218 Nguyễn Tiểu La, Phường 8, Quận 10 ☎️0867.984.979 ME IN NAIL HIM LAM QUẬN.",
+    "position": 2
+   },
+   {
+    "title": "Mùa Xuân rực rỡ cùng ME IN NAIL",
+    "link": "https://www.tiktok.com/@mein.nail/video/7607000781446827282",
+    "snippet": "... ME IN NAIL BÌNH THẠNH: 156 Nguyễn Văn Thương (D1 cũ), Phường 25, Quận Bình Thạnh ☎️0867.960.979 ME IN NAIL QUẬN 10: 218 Nguyễn ...",
+    "position": 3
+   },
+   {
+    "title": "Tiệm Nail Quận 10 - Mở Cửa Hàng Ngày",
+    "link": "https://www.tiktok.com/@meinail98/video/7657058810376326420",
+    "snippet": "Video TikTok từ Tiệm Nail Quận 10 (@meinail98): \"Khám phá tiệm nail tại Quận 10, mở cửa hàng ngày từ 9 giờ sáng đến 8 giờ tối.",
+    "position": 4
+   },
+   {
+    "title": "Me In Nail: Trải Nghiệm Làm Nail Chuẩn Hàn tại TP.HCM",
+    "link": "https://www.tiktok.com/@mein.nail/video/7656791764661161223",
+    "snippet": "Liên hệ: 0867.960.979 * **ME IN NAIL QUẬN 10:** 218 Nguyễn Tiểu La, Phường 8, Quận 10. Liên hệ: 0867.984.979 * **ME IN NAIL HIM LAM QUẬN 7:** 39 ...",
+    "position": 5
+   },
+   {
+    "title": "Review tiệm nail quận 10: làm móng đẹp, có quà khai trương",
+    "link": "https://www.tiktok.com/@nghihaydii/video/7642696834481179924",
+    "snippet": "review tiệm nails quận 10, tiệm nail quận 10 đánh giá, làm nail ... thẻ nail quận 10, workshop làm túi thơm miễn phí. Đây là bản tóm tắt ...",
+    "position": 6
+   },
+   {
+    "title": "Elegant Nail Designs for March at ME IN NAIL",
+    "link": "https://www.tiktok.com/@mein.nail/video/7616004103344377096",
+    "snippet": "Book your appointment today at any of our locations: - ME IN NAIL QUẬN 10: 218 Nguyễn Tiểu La, Phường 8, Quận 10, ☎️ 0867.984.979 - ME IN NAIL ...",
+    "position": 7
+   },
+   {
+    "title": "Đặt lịch trước giúp e nha khách iu ơi ✿ 𝘖𝘱𝘦𝘯 𝘥𝘢𝘪𝘭𝘺",
+    "link": "https://www.tiktok.com/@meinail98/video/7669326971620347157?lang=ceb-PH",
+    "snippet": "TikTok nga video gikan kang Tiệm Nail Quận 10 (@meinail98): \"Đặt lịch trước giúp e nha khách iu ơi ✿ Open daily : 9am - 20pm ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

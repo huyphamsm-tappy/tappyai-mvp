@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "20+ Quà Tặng Sinh Nhật Sếp Dưới 1 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:03:46.758Z",
+ "body": {
+  "searchParameters": {
+   "q": "20+ Quà Tặng Sinh Nhật Sếp Dưới 1 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Đồ chơi trẻ em sơ sinh dưới 1 tuổi hình chú ong an toàn cho bé",
+    "link": "https://h5.lazada.vn/products/do-choi-tre-em-so-sinh-duoi-1-tuoi-hinh-chu-ong-an-toan-cho-be-con-lat-dat-luc-lac-phat-nhac-the-gioi-do-choi-qua-tang-sinh-nhat-thoi-noi-day-thang-do-choi-chu-ong-tinh-nghich-i2204341116-s10530580334.html",
+    "snippet": "Đồ chơi trẻ em sơ sinh dưới 1 tuổi hình chú ong an toàn cho bé - Con lật đật - Lục lạc phát nhạc - Thế giới đồ chơi - Quà tặng sinh nhật thôi nôi đầy tháng ...",
+    "position": 1
+   },
+   {
+    "title": "Váy áo chống nắng toàn thân 3 lớp vải lanh chất xịn mềm êm ...",
+    "link": "https://www.lazada.vn/products/vay-ao-chong-nang-toan-than-3-lop-vai-lanh-chat-xin-mem-em-nhe-thoang-mat-tang-kem-khau-trang-vai-i1367337365.html?srsltid=AU7gw4V5i5QPW5lvW22OtpqKfDqss24lL7KdvQ3hGIPuCqlHIVYmRPXs",
+    "snippet": "Chất liệu: Vải LANH. Ưu điểm làm mát, thoáng khí, thấm hút mồ hôi và đặc biệt không phai màu. Được may bằng 2 lớp đảm bảo độ dày lẫn độ bền cho chị em thoải ...",
+    "position": 2
+   },
+   {
+    "title": "Set hộp túi giấy cửa sổ trong suốt đựng quà tặng sang ...",
+    "link": "https://www.lazada.vn/products/set-hop-tui-giay-cua-so-trong-suot-dung-qua-tang-sang-trong-tang-sinh-nhat-ban-gai-ban-trai-doi-tac-valentine-ngay-le-i1639226689.html?srsltid=AU7gw4WM2B44it6HVcO7ST_Lvy1ETCGNyK4fC4_y2Ntu66r3dBXI1o1i",
+    "snippet": "Set hộp túi giấy cửa sổ trong suốt đựng quà tặng sang trọng tặng sinh nhật bạn gái bạn trai đối tác valentine ngày lễ.",
+    "rating": 4.7,
+    "ratingCount": 27,
+    "position": 3
+   },
+   {
+    "title": "Hộp Quà Phụ Kiện Tóc Cho Bé Gái – Set Dễ Thương Tặng ...",
+    "link": "https://www.lazada.vn/products/hop-qua-phu-kien-toc-cho-be-gai-set-de-thuong-tang-qua-sinh-nhat-qua-quoc-te-thieu-nhi-16-i13388220296.html?srsltid=AU7gw4WTkFVJxhr_P0GDhLjI7dyNo2EhLw7jgPOwYlxc3HlMUc7rSk3y",
+    "snippet": "Set quà tặng phụ kiện tóc My Melody là lựa chọn hoàn hảo cho bé gái yêu thích phong cách dễ thương. Với thiết kế hộp xô độc đáo cùng nhiều phụ kiện xinh xắn bên ...",
+    "position": 4
+   },
+   {
+    "title": "Tranh Cá Chép Hoa Mộc Lan Mẫu 2-ACT Gold",
+    "link": "https://www.lazada.vn/products/tranh-ca-chep-hoa-moc-lan-mau-2-act-gold-qua-tang-chinh-hang-qua-tang-doanh-nghiep-qua-tang-doi-tac-qua-tang-khach-hang-qua-tang-sinh-nhat-qua-mung-khai-truong-qua-tang-sep-qua-tang-dong-nghiep-i1530716080-s6432892965.html?from_gmc=1&fl_tag=1&srsltid=AU7gw4XcshJb7Ie6kTzNw0M8k95n4dd7jQuISxXt3L6xOAjbH2wF_7HD",
+    "snippet": "Bức tranh đôi cá chép và hoa mộc lan sẽ là một món quà rất ý nghĩa nếu bạn dành tặng cho mẹ, vợ, những người bạn thân yêu, hoặc tặng cho sếp nữ,… Bức tranh sẽ ...",
+    "position": 5
+   },
+   {
+    "title": "Combo 3 con quay chong chóng dính tường - Đồ chơi cho ...",
+    "link": "https://www.lazada.vn/products/combo-3-con-quay-chong-chong-dinh-tuong-do-choi-cho-be-so-sinh-duoi-3-tuoi-do-choi-dan-tuong-hinh-thu-cho-tre-em-qua-tang-sinh-nhat-cho-be-trai-be-gai-cute-i1354571346.html?srsltid=AU7gw4UaggnEA0-ZY7N9kyN4wT88Gvaw6r_vYfzAJ8BG-Gj0WpOyWkXB",
+    "snippet": "Đặc điểm nổi bật · Chất liệu nhựa ABS cao cấp, an toàn không độc hại · Bộ gồm 3 con quay dán tường hình con ong, con bướm, con ốc sơn · Màu sắc sặc sỡ sẽ kích ...",
+    "rating": 5,
+    "ratingCount": 5,
+    "position": 6
+   },
+   {
+    "title": "Hộp Đựng Bút Gỗ Trang Trí Cao Cấp - Quà Tặng Sinh Nhật",
+    "link": "https://www.lazada.vn/products/hop-dung-but-go-trang-tri-cao-cap-qua-tang-sinh-nhat-i13413384281-s117292873077.html?from_gmc=1&fl_tag=1&srsltid=AU7gw4Uef5d9UcMblCZ_P7WnAH_3gkpAqevixIeAnhbW3u8vnh9ao_ib",
+    "snippet": "LazMall Hộp Đựng Bút Gỗ Trang Trí Cao Cấp - Quà Tặng Sinh Nhật ; Giá Đựng Dây Cáp Chống Rối Dưới Bàn. 223.000 ₫ ; XUNHUAI | Tổ Chức Bàn Làm Việc Đa Cấp. 371.000 ₫.",
+    "position": 7
+   },
+   {
+    "title": "[tặng sinh nhật] Đồ chơi mô hình lắp ráp 12 con giáp 3D ...",
+    "link": "https://www.lazada.vn/products/tang-sinh-nhat-do-choi-mo-hinh-lap-rap-12-con-giap-3d-mini-bo-xep-hinh-12-linh-thu-ngo-nghinh-dang-yeu-cho-be-tre-em-thong-minh-i2273045302-s10988490084.html?&search=pdp_same_store?mp=1&scm=1007.16389.286994.0&clickTrackInfo=32fdeeb0-8dbc-4598-8667-4b3ed7a2bcf2__2273045302__10347__trigger2i__286923__0.047__0.047__0.0__0.0__0.0__0.047__0__null__null__null__null__null__null____28727.0__0.4565391443589655__1.0__1__15612.0__1002842,522838,1295846,1379925,1332832,1359914,1469056,1243125,1469057,1468246,1019849,1498937,1244095,1176961,807104,1242190,1148817,289600,113326,1519921,1519920,1294841,1333836,1002838,1019852,1019851,1019850,1378940,1003848,1377856,1243777,1363899,1175849,1175922,1036810,1363937,1293905,1241045,1022835,1022832,1469275,1021825,1243983,523824,1331880,1334873,1044902,517939,1175850,1036809,1470220,1294848,1292886,1293810,1001842,1241177,1295910,1331879,1292885,1021830,1331878,1334825,1332885,1332883,1001844,1379932,1359942,1379933,1470979,1243030,846864,845851__null__null__null__3650.16536_955.3630__null__32104__null__0.0__0.0________null__null__0&spm=a211g0.pdp.middle_recommend.1&srsltid=AU7gw4XGWbvuDQrC-SwlhWwQPTyVarkszv-WLJCX1jKPsPazdxFQKU_R",
+    "snippet": "[tặng sinh nhật] Đồ chơi mô hình lắp ráp 12 con giáp 3D mini bộ xếp hình 12 linh thú ngộ nghĩnh đáng yêu cho bé trẻ em thông minh. 1(1). Tuỳ chọn sản phẩm.",
+    "rating": 1,
+    "ratingCount": 1,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

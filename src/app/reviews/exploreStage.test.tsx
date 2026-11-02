@@ -4,6 +4,8 @@ import { setLocale } from '@/lib/i18n/useTranslation'
 import { render, screen, cleanup, waitFor, fireEvent, act } from '@testing-library/react'
 import { readFileSync, existsSync } from 'node:fs'
 
+// Phase 7 8A hides the button by default (SHOW_ASK_ABOUT_CLIP=false); these tests exercise the capability itself, so it is on here.
+vi.mock('@/lib/config/product', async (orig) => ({ ...(await orig<typeof import('@/lib/config/product')>()), SHOW_ASK_ABOUT_CLIP: true }))
 vi.mock('next/navigation', () => ({
   useRouter: () => ({ push: vi.fn(), replace: vi.fn(), back: vi.fn(), refresh: vi.fn() }),
   usePathname: () => '/reviews',

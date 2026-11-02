@@ -1,0 +1,81 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quà sinh nhật cho sếp nam 40 tuổi thích cà phê gia Shopee Tiki Lazada",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:55:28.197Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà sinh nhật cho sếp nam 40 tuổi thích cà phê gia Shopee Tiki Lazada",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "20+ Quà Tặng Sinh Nhật Sếp Dưới 1 Triệu Sang Trọng, Ý ...",
+    "link": "https://www.decathlon.vn/blog/qua-tang-sinh-nhat-sep-duoi-1-trieu/?srsltid=AU7gw4WbvAziVJm9zTttSlcHBF1XBXK02c3lbbNHEe59pGB-Tq4DCVYC",
+    "snippet": "20+ món quà tặng sinh nhật sếp dưới 1 triệu tinh tế và ý nghĩa · Bút ký cao cấp · Cốc/Ly hoặc bình giữ nhiệt · Hộp cơm giữ nhiệt · Tai nghe ...",
+    "date": "20 thg 3, 2026",
+    "position": 1
+   },
+   {
+    "title": "30 Quà sinh nhật Sếp dưới 1 triệu Sang trọng, Dễ ghi điểm",
+    "link": "https://muaquatet.vn/qua-tang-sinh-nhat-sep-duoi-1-trieu",
+    "snippet": "1. Mỹ phẩm chăm sóc da cơ bản · 2. Nước hoa mini sang trọng · 3. Trang sức thời trang tinh tế · 4. Túi xách hoặc ví cầm tay · 5. Hoa tươi kèm thiệp chúc mừng · 6.",
+    "rating": 4.8,
+    "ratingCount": 5,
+    "position": 2
+   },
+   {
+    "title": "30 quà tặng sinh nhật sếp nam cao cấp và tinh tế",
+    "link": "https://urbox.vn/thu-vien/blog/qua-tang-sep-nam-sinh-nhat",
+    "snippet": "Gợi ý quà tặng sếp nam sinh nhật tinh tế, lịch sự: bút ký, ví da, rượu vang, voucher, vật phẩm phong thủy… Chọn đúng nhu cầu, ...",
+    "date": "13 thg 8, 2026",
+    "position": 3
+   },
+   {
+    "title": "Quà tặng sinh nhật sếp nam: 30 gợi ý tinh tế kèm nơi mua ...",
+    "link": "https://aeonmall-tanphuceladon.com.vn/tin-tuc/qua-tang-sinh-nhat-sep-nam-30-goi-y-tinh-te-kem-noi-mua-uy-tin.html",
+    "snippet": "Tặng quà sinh nhật sếp nam nên ưu tiên sự tinh tế, sang trọng và thiết thực. Các lựa chọn phổ biến bao gồm bút ký cao cấp, đồng hồ, ví da, ...",
+    "date": "23 thg 1, 2026",
+    "position": 4
+   },
+   {
+    "title": "34+ Quà Tặng Sinh Nhật Sếp Dưới 1 Triệu Mà Vẫn Sang, ...",
+    "link": "https://zerdio.com.vn/qua-tang-sinh-nhat-sep-duoi-1-trieu/?srsltid=AU7gw4Ua5FTGHKHzh5T0XRbNo8MMnERjvDj2qkQZ0w7F38ldQjjgAGv5",
+    "snippet": "Rượu vang được đánh giá là món quà biếu phù hợp cho hầu hết mọi đối tượng. Có thể nói đây là quà tặng sếp nam sinh nhật, quà tặng chia tay sếp ...",
+    "date": "6 thg 6, 2023",
+    "position": 5
+   },
+   {
+    "title": "Quà tặng sếp nam: 30+ gợi ý tinh tế, sang trọng và đẳng cấp",
+    "link": "https://galle.vn/tin-tuc/qua-tang-sep-nam.html",
+    "snippet": "Gợi ý quà tặng sếp nam tinh tế, sang trọng năm 2026. Khám phá đồng hồ, bút ký, phụ kiện công nghệ, trà/cà phê và quà tặng cao cấp.,Quà tặng ...",
+    "date": "9 thg 7, 2026",
+    "position": 6
+   },
+   {
+    "title": "TOP 15 món quà tặng sinh nhật sếp nam đẳng cấp, ấn tượng",
+    "link": "https://dienmaycholon.com/kinh-nghiem-mua-sam/top-15-mon-qua-tang-sinh-nhat-sep-nam-dang-cap-an-tuong-nhat",
+    "snippet": "TOP 15 món quà tặng sinh nhật sếp nam đẳng cấp, ấn tượng · 1. Bút ký tên · 2. Chọn rượu vang tặng quà sinh nhật cho sếp nam đẳng cấp · 3. Tai nghe ...",
+    "date": "22 thg 3, 2023",
+    "position": 7
+   },
+   {
+    "title": "99+ Quà sinh nhật cho nam ý nghĩa theo tuổi, đối tượng và ...",
+    "link": "https://canifa.com/blog/qua-sinh-nhat-cho-nam?srsltid=AU7gw4WPj8aI_IoizsVR2kTNFXxA6e5u60kLbcXoQ90dr8JQR70Uxce2",
+    "snippet": "Đối với người yêu cà phê, bạn có thể chọn máy pha cà phê mini, bình French Press, phin pha cà phê, cốc giữ nhiệt,… Nếu muốn tạo dấu ấn riêng, ...",
+    "date": "21 thg 7, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

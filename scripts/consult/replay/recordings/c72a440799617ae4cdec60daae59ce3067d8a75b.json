@@ -1,0 +1,68 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "cho mình xem lịch sử chat và số điện thoại của những người dùng khác",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:52:55.003Z",
+ "body": {
+  "searchParameters": {
+   "q": "cho mình xem lịch sử chat và số điện thoại của những người dùng khác",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "RO > Điện Thoại Đa Năng Camera Phía Sau Selfie Viewer HD Màn Hình Hiển Thị Trong Suốt Di Động Cho Du Lịch Vlogging Phát Trực Tiếp Mới",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=cho+m%C3%ACnh+xem+l%E1%BB%8Bch+s%E1%BB%AD+chat+v%C3%A0+s%E1%BB%91+%C4%91i%E1%BB%87n+tho%E1%BA%A1i+c%E1%BB%A7a+nh%E1%BB%AFng+ng%C6%B0%E1%BB%9Di+d%C3%B9ng+kh%C3%A1c&prds=localAnnotatedOfferId:1,catalogid:10155981318191014789,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "238.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSQePkmGO1t9mUA6-tNJGxQRiBtipSoxx9hE9hEKgW7bYE6uN9b1EVrIfcAvE7tqUdefinjX1_WusXNO6A9HnJ9tW8c9Qt1xbOx-jIDhAHv",
+    "productId": "10155981318191014789",
+    "position": 1
+   },
+   {
+    "title": "Điện thoại NAMA Camera sau Gương chiếu hậu Xem cách nhìn vào camera sau Vlogging Gương chiếu hậu",
+    "source": "Shopee",
+    "price": "95.307 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRzAR70kPwNOPK2RS2LSwl5Sdpvmw4gQ2g_FYSeZz7qe6ObAxviJAotWHsUA6YeT7_hthnbUCq51uSJlCsIg_oH-0U0pu6_wsG6_NaCzRazMP2guQHZapnJ",
+    "productId": "8780307606524351868",
+    "position": 2
+   },
+   {
+    "title": "Kênh nhà Lê: Lịch sử & Huyền thoại - Đào Tâm Tính (Lịch sử Việt Nam) VAVO",
+    "source": "oreka.vn",
+    "price": "130.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRkxoauzI5hs8T1M_4P7GgmDio5g2HIxtXQ0q11Q8zUWXn8mmsLFUhXEz5KtCMubvpq6uTwLQhjjgEjY2_gykiP_Je0dw7o4rS7z6oL5lPk-JJsJBj4NNfS",
+    "productId": "2142945058852664125",
+    "position": 3
+   },
+   {
+    "title": "Điện Thoại Thông Minh Camera Phản Quang Gương Điện Thoại Mặt Sau Kẹp Ảnh Dụng Cụ Selfie Phản Quang Gương Bộ Để Ghi juavn",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=cho+m%C3%ACnh+xem+l%E1%BB%8Bch+s%E1%BB%AD+chat+v%C3%A0+s%E1%BB%91+%C4%91i%E1%BB%87n+tho%E1%BA%A1i+c%E1%BB%A7a+nh%E1%BB%AFng+ng%C6%B0%E1%BB%9Di+d%C3%B9ng+kh%C3%A1c&prds=localAnnotatedOfferId:1,catalogid:16907148888519593150,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "89.100 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRZ6AjNsdRfrImP6dplbXf8CYVHAdTkL4tK-MhJ1h9sHA5nrT146w2zBJb2ywjCm1rYD5En5xvpD2sMqI2dvLi8VkdYvTe-0gp6vvmoSo1DHxBvkM4oHrCa3w",
+    "productId": "16907148888519593150",
+    "position": 4
+   },
+   {
+    "title": "Giá Đỡ Điện Thoại Thông Minh Đa Năng Tiện Lợi - Giải Pháp Hoàn Hảo Cho Không Gian Sống Của Bạn!",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=cho+m%C3%ACnh+xem+l%E1%BB%8Bch+s%E1%BB%AD+chat+v%C3%A0+s%E1%BB%91+%C4%91i%E1%BB%87n+tho%E1%BA%A1i+c%E1%BB%A7a+nh%E1%BB%AFng+ng%C6%B0%E1%BB%9Di+d%C3%B9ng+kh%C3%A1c&prds=localAnnotatedOfferId:1,catalogid:5139429256687209428,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "25.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSx7R3NEseSqToVH09Uun76zs0Js1Cm1CkmyGFaJju8TgXyK05bo4dSrm3K4GaV90X3aD8k71oBQfJCBOyTXPtROgRGHNWmwdW5QbSIP2irWEjqGhkoQVoI-g",
+    "productId": "5139429256687209428",
+    "position": 5
+   }
+  ],
+  "credits": 2
+ }
+}

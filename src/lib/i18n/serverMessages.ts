@@ -44,6 +44,11 @@ const MESSAGES = {
     vi: 'Hôm nay bạn đã dùng tới {n} lượt hỏi Tappy — mức trần để giữ dịch vụ ổn định cho mọi người. Hẹn gặp lại bạn vào ngày mai nhé!',
     en: "You've reached today's ceiling of {n} Tappy turns — a limit that keeps the service steady for everyone. See you again tomorrow!",
   },
+  // P7 closeout (02/10): a PAID plan that used its daily allowance — no upgrade nag, it resets at 00:00 Vietnam time.
+  'chat.planLimit': {
+    vi: 'Bạn đã dùng hết {n} câu hỏi AI hôm nay của gói {plan}. Lượt hỏi được làm mới lúc 00:00 (giờ Việt Nam).',
+    en: "You've used all {n} of today's AI questions on the {plan} plan. They refresh at 00:00 (Vietnam time).",
+  },
   'chat.tooLong': {
     vi: 'Tin nhắn quá dài. Vui lòng rút gọn.',
     en: 'That message is too long. Please shorten it.',
@@ -190,6 +195,18 @@ const MESSAGES = {
   'rate.uploadLimit': { vi: 'Bạn đã tải lên {n} ảnh hôm nay. Thử lại vào ngày mai nhé.', en: "You've uploaded {n} images today. Please try again tomorrow." },
   'rate.scanLimit': { vi: 'Bạn đã quét quá {n} tài liệu hôm nay. Thử lại vào ngày mai nhé.', en: "You've scanned {n} documents today. Please try again tomorrow." },
 
+  // UAT3 P0 · in-app account deletion (/api/account/delete). The first four are the p7 wording unchanged; the Apple ones say that the
+  // account was NOT deleted, because for an Apple account that is the true state whenever revocation did not complete.
+  'account.deleteUnavailable': { vi: 'Chức năng tự xóa tài khoản chưa được bật. Hãy gửi yêu cầu xóa qua trang hướng dẫn.', en: 'Self-service deletion is not available here. Please send a deletion request instead.' },
+  'account.deleteConfirmRequired': { vi: 'Hãy gõ từ xác nhận để xóa tài khoản.', en: 'Type the confirmation word to delete your account.' },
+  'account.deleteStaff': { vi: 'Tài khoản có quyền quản trị không thể tự xóa. Vui lòng liên hệ bộ phận hỗ trợ.', en: 'An account with admin access cannot be deleted from here. Please contact support.' },
+  'account.deleteFailed': { vi: 'Chưa xóa được tài khoản. Tài khoản của bạn vẫn còn nguyên — vui lòng thử lại.', en: 'Your account was not deleted and is unchanged. Please try again.' },
+  'account.appleAuthorizationRequired': { vi: 'Hãy xác nhận lại bằng Đăng nhập với Apple để xóa tài khoản. Tài khoản của bạn chưa bị xóa.', en: 'Confirm again with Sign in with Apple to delete your account. Your account has not been deleted.' },
+  'account.appleAuthorizationInvalid': { vi: 'Xác nhận Apple đã hết hạn hoặc không hợp lệ. Hãy thử lại — tài khoản của bạn chưa bị xóa.', en: 'The Apple confirmation expired or is not valid. Please try again — your account has not been deleted.' },
+  'account.appleIdentityMismatch': { vi: 'Tài khoản Apple vừa xác nhận không khớp với tài khoản này. Hãy dùng đúng Apple ID đã đăng nhập; tài khoản của bạn chưa bị xóa.', en: 'The Apple account you confirmed does not match this account. Use the Apple ID you signed in with; your account has not been deleted.' },
+  'account.appleRevokeUnavailable': { vi: 'Hiện chưa thể gỡ liên kết Apple nên chưa xóa tài khoản. Tài khoản của bạn vẫn còn nguyên — vui lòng thử lại sau.', en: 'Apple sign-in cannot be unlinked right now, so your account was not deleted. It is unchanged — please try again later.' },
+  'account.appleRevokeFailed': { vi: 'Chưa gỡ được liên kết Apple nên chưa xóa tài khoản. Tài khoản của bạn vẫn còn nguyên — hãy thử lại.', en: 'We could not unlink Apple sign-in, so your account was not deleted. It is unchanged — please try again.' },
+
   // Reviews / media, remaining cases
   'review.signInToReview': { vi: 'Cần đăng nhập để đánh giá', en: 'Please sign in to write a review' },
   'review.alreadyReviewed': { vi: 'Bạn đã đánh giá địa điểm này rồi.', en: "You've already reviewed this place." },
@@ -281,6 +298,7 @@ const MESSAGES = {
   // Scam Shield · Analyze Message.
   'scam.analyzeEmpty': { vi: 'Hãy dán tin nhắn, thêm liên kết hoặc tải ảnh chụp màn hình.', en: 'Paste a message, add a link, or upload a screenshot.' },
   'scam.analyzeInvalidImage': { vi: 'Ảnh không hợp lệ hoặc quá lớn (tối đa 5 MB, JPEG/PNG/WebP).', en: 'The image is not valid or too large (max 5 MB, JPEG/PNG/WebP).' },
+  'scam.screenshotUnavailable': { vi: 'Hiện chưa đọc được ảnh chụp màn hình. Hãy dán nội dung tin nhắn vào ô chữ.', en: 'Screenshots cannot be read right now. Please paste the message text instead.' },
   'scam.analyzeFailed': { vi: 'Chưa phân tích được tin nhắn này. Vui lòng thử lại.', en: "Couldn't analyze this message. Please try again." },
 
 
@@ -295,13 +313,33 @@ const MESSAGES = {
   'links.urlRequired': { vi: 'Vui lòng nhập đường liên kết.', en: 'Please enter a link.' },
   'links.unsupportedSource': { vi: 'Nguồn liên kết này chưa được hỗ trợ.', en: 'That kind of link is not supported yet.' },
 
-  // ── UAT3 P0 · in-app account deletion (/api/account/delete) ─────────────────
-  'account.deleteUnavailable': { vi: 'Chức năng tự xóa tài khoản chưa được bật. Hãy gửi yêu cầu xóa qua trang hướng dẫn.', en: 'Self-service deletion is not available here. Please send a deletion request instead.' },
-  'account.deleteConfirmRequired': { vi: 'Hãy gõ từ xác nhận để xóa tài khoản.', en: 'Type the confirmation word to delete your account.' },
-  'account.deleteStaff': { vi: 'Tài khoản có quyền quản trị không thể tự xóa. Vui lòng liên hệ bộ phận hỗ trợ.', en: 'An account with admin access cannot be deleted from here. Please contact support.' },
-  'account.deleteFailed': { vi: 'Chưa xóa được tài khoản. Tài khoản của bạn vẫn còn nguyên — vui lòng thử lại.', en: 'Your account was not deleted and is unchanged. Please try again.' },
-
   'notif.markReadFailed': { vi: 'Không thể đánh dấu đã đọc.', en: "Couldn't mark these as read." },
+
+  // ── PAYMENTS (docs/phase8/PAYMENTS.md) ───────────────────────────────────────
+  'payments.invalidPlan': { vi: 'Gói bạn chọn không còn nữa. Vui lòng chọn lại.', en: 'That plan is no longer available. Please choose again.' },
+  'payments.tooManyPending': {
+    vi: 'Bạn đang có vài đơn chờ thanh toán. Hãy hoàn tất một đơn, hoặc đợi 15 phút rồi thử lại.',
+    en: 'You already have a few orders waiting for payment. Finish one, or try again in 15 minutes.',
+  },
+  'payments.slowDown': { vi: 'Bạn thao tác hơi nhanh. Đợi một chút rồi thử lại nhé.', en: 'That was a bit fast. Please wait a moment and try again.' },
+  'payments.unavailable': {
+    vi: 'Thanh toán đang tạm dừng. Vui lòng thử lại sau.',
+    en: 'Payments are paused right now. Please try again later.',
+  },
+  'payments.failed': { vi: 'Chưa tạo được đơn. Vui lòng thử lại.', en: "Couldn't create your order. Please try again." },
+  // SUBSCRIPTIONS (docs/payments/PLAN.md)
+  'payments.alreadyActive': {
+    vi: 'Bạn đang có gói còn hạn. Khi gói hết hạn, bạn có thể mua lại.',
+    en: 'You already have an active plan. You can buy again once it ends.',
+  },
+  'payments.pipUsed': {
+    vi: 'Bạn đã sử dụng gói Pip. Gói dùng thử này chỉ có thể mua một lần cho mỗi tài khoản.',
+    en: 'You have already used the Pip plan. This trial plan can only be bought once per account.',
+  },
+  'payments.manageInStore': {
+    vi: 'Gói này được quản lý trong cửa hàng ứng dụng nơi bạn đã mua.',
+    en: 'This plan is managed in the app store where you bought it.',
+  },
 } as const satisfies Record<string, Message>
 
 export type ServerMessageKey = keyof typeof MESSAGES

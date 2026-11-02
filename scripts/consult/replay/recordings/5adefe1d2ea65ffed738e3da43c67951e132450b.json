@@ -1,0 +1,597 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "tiệm nail sơn gel vẽ đẹp giá 300k Quận 10",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.773,106.668,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:21:40.938Z",
+ "body": {
+  "searchParameters": {
+   "q": "tiệm nail sơn gel vẽ đẹp giá 300k Quận 10",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.773,106.668,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7729941,106.6679997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "The Nail",
+    "address": "517/15 Nguyễn Tri Phương, quận 10, Hồ Chí Minh 72513, Việt Nam",
+    "latitude": 10.765915,
+    "longitude": 106.6671607,
+    "rating": 5,
+    "ratingCount": 94,
+    "type": "Tiệm chăm sóc móng",
+    "types": [
+     "Tiệm chăm sóc móng"
+    ],
+    "website": "http://thenail.vn/",
+    "phoneNumber": "+84 931 415 099",
+    "openingHours": {
+     "Thứ Tư": "09:00–22:00",
+     "Thứ Năm": "09:00–22:00",
+     "Thứ Sáu": "09:00–22:00",
+     "Thứ Bảy": "09:00–22:00",
+     "Chủ Nhật": "09:00–22:00",
+     "Thứ Hai": "09:00–22:00",
+     "Thứ Ba": "09:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk0at8lJCCvxk_3QevNf5PhbPobNgpkIsx0FQlTR1vk6ijjeB6dluv3pK0lZ37Y_C3Rr6HFi8EHXbMfDMxnaY3c2MoE2XshJf_cQzUtyczteKCNGS8wkss5NNoy2wDkoCyJzXujLepF24rG",
+    "cid": "14939363904641253184",
+    "fid": "0x31752fbaf35ecb5b:0xcf534851b26f3f40",
+    "placeId": "ChIJW8te87ovdTERQD9vslFIU88"
+   },
+   {
+    "position": 2,
+    "title": "ME IN NAIL - Quận 10",
+    "address": "218 Nguyễn Tiểu La, Diên Hồng, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.764652499999999,
+    "longitude": 106.6662001,
+    "rating": 4.8,
+    "ratingCount": 306,
+    "type": "Tiệm chăm sóc móng",
+    "types": [
+     "Tiệm chăm sóc móng"
+    ],
+    "website": "https://www.facebook.com/meinnail/",
+    "phoneNumber": "+84 867 984 979",
+    "openingHours": {
+     "Thứ Tư": "09:00–21:00",
+     "Thứ Năm": "09:00–21:00",
+     "Thứ Sáu": "09:00–21:00",
+     "Thứ Bảy": "09:00–21:00",
+     "Chủ Nhật": "09:00–21:00",
+     "Thứ Hai": "09:00–21:00",
+     "Thứ Ba": "09:00–21:00"
+    },
+    "bookingLinks": [
+     "https://www.instagram.com/meinnail/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlFC7cTJVNLi_XiFSUomTc4mvWyo-LoFkXR51NMG1SRwzxqx5xHpImpCjCv1pmG4hya7r1tsX0eVtMnM-AYMiTBjx_kJZ2gVUObQpIxD_lsVzqg1xJ_mxYIVgKV04pRfTn1xUn7",
+    "cid": "1826622780293774732",
+    "fid": "0x31752fa27df73f37:0x195977bda60bfd8c",
+    "placeId": "ChIJNz_3faIvdTERjP0Lpr13WRk"
+   },
+   {
+    "position": 3,
+    "title": "Tiệm Nail Quận 10",
+    "address": "124 Đ. Đồng Nai, Cư xá Bắc Hải, Hòa Hưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.781375899999999,
+    "longitude": 106.66139249999999,
+    "rating": 3.9,
+    "ratingCount": 14,
+    "type": "Tiệm chăm sóc móng",
+    "types": [
+     "Tiệm chăm sóc móng"
+    ],
+    "phoneNumber": "+84 936 345 918",
+    "openingHours": {
+     "Thứ Tư": "09:00–20:00",
+     "Thứ Năm": "09:00–20:00",
+     "Thứ Sáu": "09:00–20:00",
+     "Thứ Bảy": "09:00–20:00",
+     "Chủ Nhật": "09:00–20:00",
+     "Thứ Hai": "09:00–20:00",
+     "Thứ Ba": "09:00–20:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmyCCvovTuLbZ3ULZopDMd5Z1_uMK4cH3aLD8LrMPIt7EaVq6TxciLaNSAYpvTYOob2iyNHY15iQXDMIhQh29YExpLgjDkbYaznl8or343SlU3_e4Q-vbCAcsUUCY70khFi47kNWg",
+    "cid": "17694090477457001493",
+    "fid": "0x31752f23c5d8e181:0xf58e098abc724c15",
+    "placeId": "ChIJgeHYxSMvdTERFUxyvIoJjvU"
+   },
+   {
+    "position": 4,
+    "title": "Iris Nailbar SGN - Chuyên Nails - Mi design",
+    "address": "780/7 Sư Vạn Hạnh, Phường 12, Quận 10, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7739183,
+    "longitude": 106.6690198,
+    "rating": 4.8,
+    "ratingCount": 544,
+    "type": "Tiệm chăm sóc móng",
+    "types": [
+     "Tiệm chăm sóc móng"
+    ],
+    "phoneNumber": "+84 337 979 106",
+    "openingHours": {
+     "Thứ Tư": "09:00–21:00",
+     "Thứ Năm": "09:00–21:00",
+     "Thứ Sáu": "09:00–21:00",
+     "Thứ Bảy": "09:00–21:00",
+     "Chủ Nhật": "09:00–21:00",
+     "Thứ Hai": "09:00–21:00",
+     "Thứ Ba": "09:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn-KBPW1wvEN0yiIyOTRnPK7dtxCXPBcmNRyVhVyiL51DUFYlIyZRs4os10JsKDSGp-fhyKAtMP-G6fZVP_gnDqvqWFWXeM_4YIDlA1YGCfTTScdzRbdnyv0APkhxFkbZ4Ve59k",
+    "cid": "14902539945079217498",
+    "fid": "0x31752f3a6510a76f:0xced0751f7d841d5a",
+    "placeId": "ChIJb6cQZTovdTERWh2EfR910M4"
+   },
+   {
+    "position": 5,
+    "title": "Tiệm Nail Quận 10 - Nail Sumi",
+    "address": "285/68 Cách Mạng Tháng Tám, Hòa Hưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.777552799999999,
+    "longitude": 106.6779129,
+    "rating": 5,
+    "ratingCount": 80,
+    "type": "Tiệm chăm sóc móng",
+    "types": [
+     "Tiệm chăm sóc móng",
+     "Tiệm cắt tóc",
+     "Quầy làm lông mày"
+    ],
+    "website": "https://www.facebook.com/kimchee.nailsworkspace",
+    "phoneNumber": "+84 343 512 811",
+    "openingHours": {
+     "Thứ Tư": "09:00–20:00",
+     "Thứ Năm": "09:00–20:00",
+     "Thứ Sáu": "09:00–20:00",
+     "Thứ Bảy": "09:00–20:00",
+     "Chủ Nhật": "09:00–20:00",
+     "Thứ Hai": "09:00–20:00",
+     "Thứ Ba": "09:00–20:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmzRaTq2K9YRB052S3dkQgheY5OiVrpv2KOfNbR9c9BTeC4JKKCeak7oAtLBCR6J-m1vN1EFSeTe9xhqQbkpEM6lxN5dX2QQCyibG2eY36spt0OHoGB0reJQ157KjOV81nqg_Xy3w",
+    "cid": "3695183567930058065",
+    "fid": "0x31752972df9df51b:0x3347ede08a54e551",
+    "placeId": "ChIJG_Wd33IpdTERUeVUiuDtRzM"
+   },
+   {
+    "position": 6,
+    "title": "Three House Nails - Tiệm Nails Đẹp Diên Hồng Quận 10",
+    "address": "515 Bà Hạt, Diên Hồng, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.76525,
+    "longitude": 106.6662238,
+    "rating": 5,
+    "ratingCount": 16,
+    "type": "Tiệm chăm sóc móng",
+    "types": [
+     "Tiệm chăm sóc móng"
+    ],
+    "website": "https://threehousenails.com/",
+    "phoneNumber": "+84 703 994 683",
+    "openingHours": {
+     "Thứ Tư": "09:00–21:00",
+     "Thứ Năm": "09:00–21:00",
+     "Thứ Sáu": "09:00–21:00",
+     "Thứ Bảy": "09:00–21:00",
+     "Chủ Nhật": "09:00–21:00",
+     "Thứ Hai": "09:00–21:00",
+     "Thứ Ba": "09:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkWU8pN39rErMVu7fTVK6lMNtMnxnLOav1KLv_oVYFXafGR8FCSlCSro9bwECcr2uCr8ggR4lQH3qbQZk5irE_D2hVAXwZa0NpGxZfb0yU3fvwGl9f9-y5T8kbE9xSZyieQC7-Hv5uzmPaF",
+    "cid": "17820423546330111233",
+    "fid": "0x31752f22555f5433:0xf74edccc7a035d01",
+    "placeId": "ChIJM1RfVSIvdTERAV0DeszcTvc"
+   },
+   {
+    "position": 7,
+    "title": "Honey Nails",
+    "address": "254 Tô Hiến Thành, Cư xá Bắc Hải, Hòa Hưng, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7786358,
+    "longitude": 106.6663069,
+    "rating": 4.9,
+    "ratingCount": 204,
+    "type": "Tiệm chăm sóc móng",
+    "types": [
+     "Tiệm chăm sóc móng"
+    ],
+    "website": "https://honeynails.com.vn/",
+    "phoneNumber": "+84 924 646 969",
+    "openingHours": {
+     "Thứ Tư": "09:00–21:00",
+     "Thứ Năm": "09:00–21:00",
+     "Thứ Sáu": "09:00–21:00",
+     "Thứ Bảy": "09:00–21:00",
+     "Chủ Nhật": "09:00–21:00",
+     "Thứ Hai": "09:00–21:00",
+     "Thứ Ba": "09:00–21:00"
+    },
+    "bookingLinks": [
+     "http://honeynails.com.vn/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn0OuWoTz8G0YrwL-m6WFR3BA_fcIOWnVFrtWxmbhPJR6hOFz2ZYmD8Hv2dqavYSCjn4jyf0dts-lCs774nkcAvvotS14JSB_vgkUKBkGWabYpqiIMXtSgTWNxL96ah7v69wpU",
+    "cid": "1134905966688830231",
+    "fid": "0x317529b1353dfc7b:0xfbffef6b5f58317",
+    "placeId": "ChIJe_w9NbEpdTERF4P1tfb-vw8"
+   },
+   {
+    "position": 8,
+    "title": "NAMII nail stu",
+    "address": "541/30 Sư Vạn Hạnh, Hòa Hưng, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.775742,
+    "longitude": 106.66646089999999,
+    "rating": 5,
+    "ratingCount": 27,
+    "type": "Tiệm chăm sóc móng",
+    "types": [
+     "Tiệm chăm sóc móng"
+    ],
+    "website": "https://www.facebook.com/namiinailstu.0888221097",
+    "phoneNumber": "+84 888 221 097",
+    "openingHours": {
+     "Thứ Tư": "09:00–20:30",
+     "Thứ Năm": "09:00–20:30",
+     "Thứ Sáu": "09:00–20:30",
+     "Thứ Bảy": "09:00–20:30",
+     "Chủ Nhật": "09:00–20:30",
+     "Thứ Hai": "09:00–20:30",
+     "Thứ Ba": "09:00–20:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmizIfkxXt4cB60sUeRk-ol49GkeQCctMPEPmU85kgGq8W8KF24WtB3YtAtDVrSenDPYGSWRup5iOVGe76u3VHP94d-d-KOS5jXj3kjFtXCgxJ1qkZYGhUMdpVNjx7Z7XBW30WI4ST5v4VV",
+    "cid": "16923440689457540351",
+    "fid": "0x31752fa25bc0c977:0xeadc23a490822cff",
+    "placeId": "ChIJd8nAW6IvdTER_yyCkKQj3Oo"
+   },
+   {
+    "position": 9,
+    "title": "NAIL ĐẸP QUẬN 10 | TRỊ MỤN NÁM QUẬN 10 | Hoàng Anh Nguyễn | TIÊM FILLER BOXTOX QUẬN 10 | XÓA NHĂN XÓA XĂM QUẬN 10",
+    "address": "74 Nguyễn Tiểu La, Diên Hồng, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.761766399999999,
+    "longitude": 106.6668954,
+    "rating": 5,
+    "ratingCount": 16,
+    "type": "Spa",
+    "types": [
+     "Spa"
+    ],
+    "website": "https://hoanganhnguyenbeauty.com/",
+    "phoneNumber": "+84 948 673 168",
+    "openingHours": {
+     "Thứ Tư": "09:00–21:00",
+     "Thứ Năm": "09:00–21:00",
+     "Thứ Sáu": "09:00–21:00",
+     "Thứ Bảy": "09:00–21:00",
+     "Chủ Nhật": "09:00–21:00",
+     "Thứ Hai": "09:00–21:00",
+     "Thứ Ba": "09:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkBZ4BmMKKnzPesrEC30ESUpk-j7HXwGeMaYDy9loZZs3wf1CuJy1a5idux94uI8BHf1Ltcq_ZKm17P-7Z7SXaaY4ENo6OUzp1U_9FKtXxrYzXSjA-9a4CJePkVS17oioUMfCozXIc19XrX",
+    "cid": "5564727403322985667",
+    "fid": "0x31752fc4c98aeda9:0x4d39e21712f2ccc3",
+    "placeId": "ChIJqe2KycQvdTERw8zyEhfiOU0"
+   },
+   {
+    "position": 10,
+    "title": "Lana Beauty | GỘI ĐẦU QUẬN 10 | LÀM NAIL QUẬN 10",
+    "address": "249/6 Đ. Ngô Quyền, Diên Hồng, Hồ Chí Minh 00700, Việt Nam",
+    "latitude": 10.7653539,
+    "longitude": 106.6639663,
+    "rating": 5,
+    "ratingCount": 125,
+    "type": "Spa sức khỏe",
+    "types": [
+     "Spa sức khỏe"
+    ],
+    "website": "http://nailgoiquan10.com/",
+    "phoneNumber": "+84 903 376 479",
+    "openingHours": {
+     "Thứ Tư": "09:00–22:00",
+     "Thứ Năm": "09:00–22:00",
+     "Thứ Sáu": "09:00–22:00",
+     "Thứ Bảy": "09:00–22:00",
+     "Chủ Nhật": "09:00–22:00",
+     "Thứ Hai": "09:00–22:00",
+     "Thứ Ba": "09:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl4jywBMLcoEzs9toddEE_aXZjRBIrhv0kkmZ59m2ptRGrmZiFGzfjP8wIJOhgVoiWjtjynyjG4JJV_5rVXVOTPO0A9YegYEutDzelkYfFQIpIQ5u838zftbXoO0ECr240FkJvuNIAtUWRN",
+    "cid": "18430122288108101160",
+    "fid": "0x31752fe01daea571:0xffc4f292f5b15e28",
+    "placeId": "ChIJcaWuHeAvdTERKF6x9ZLyxP8"
+   },
+   {
+    "position": 11,
+    "title": "Jelly Nails & Spa Sư Vạn Hạnh",
+    "address": "796/10 Sư Vạn Hạnh, Hòa Hưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7741563,
+    "longitude": 106.6689188,
+    "rating": 4.9,
+    "ratingCount": 288,
+    "type": "Tiệm chăm sóc móng",
+    "types": [
+     "Tiệm chăm sóc móng"
+    ],
+    "website": "https://www.facebook.com/NailJellybeautyroom?mibextid=LQQJ4d",
+    "phoneNumber": "+84 933 015 535",
+    "openingHours": {
+     "Thứ Tư": "09:00–21:00",
+     "Thứ Năm": "09:00–21:00",
+     "Thứ Sáu": "09:00–21:00",
+     "Thứ Bảy": "09:00–21:00",
+     "Chủ Nhật": "09:00–21:00",
+     "Thứ Hai": "09:00–21:00",
+     "Thứ Ba": "09:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk2E5IOb0qDRK-U3g6Fn6PaYiL84TcnPlmD3O85C2AargsmFCaXLAMd1sZ5OYNc2pVS0CFKUWWdFXY-Wl-D2HnTbCJt9xFoVFGG-ByZN9g1IeIKNCD7du3rlCilxhfyN9g2Pp21zw",
+    "cid": "15295613332275149059",
+    "fid": "0x31752f007c54f2e5:0xd444ef493bfd3903",
+    "placeId": "ChIJ5fJUfAAvdTERAzn9O0nvRNQ"
+   },
+   {
+    "position": 12,
+    "title": "Sunnie Nailroom",
+    "address": "66/15 Hùng Vương, Vườn Lài, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.763623599999999,
+    "longitude": 106.67702899999999,
+    "rating": 5,
+    "ratingCount": 44,
+    "type": "Tiệm chăm sóc móng",
+    "types": [
+     "Tiệm chăm sóc móng"
+    ],
+    "website": "https://www.facebook.com/share/1ZDUEZb2Bw/?mibextid=wwXIfr",
+    "phoneNumber": "+84 339 331 328",
+    "openingHours": {
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmL7Gj2z0CZsH8WyME6xnFNmbzHxDvi-MyjlkYFdxPl0E2iPbMPOEU7o7XM_2iyV4_iS0dC-uVH9yPY5WNdMcw2NRGfvOJeicG15QEuOuMOxmNrmoh8GdAF4MeJrZhP-BvdwoxiUgXoi8b_",
+    "cid": "2514342163619287875",
+    "fid": "0x31752d0009bcd805:0x22e4bce052509343",
+    "placeId": "ChIJBdi8CQAtdTERQ5NQUuC85CI"
+   },
+   {
+    "position": 13,
+    "title": "The Lab Nail Bar",
+    "address": "13 Sư Vạn Hạnh, Hòa Hưng, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7705121,
+    "longitude": 106.6695261,
+    "rating": 4.7,
+    "ratingCount": 117,
+    "type": "Tiệm chăm sóc móng",
+    "types": [
+     "Tiệm chăm sóc móng"
+    ],
+    "website": "https://www.facebook.com/thelab.nailbar/",
+    "phoneNumber": "+84 386 982 130",
+    "openingHours": {
+     "Thứ Tư": "09:30–21:00",
+     "Thứ Năm": "09:30–21:00",
+     "Thứ Sáu": "09:30–21:00",
+     "Thứ Bảy": "09:30–21:00",
+     "Chủ Nhật": "09:30–21:00",
+     "Thứ Hai": "09:30–21:00",
+     "Thứ Ba": "09:30–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnCosmWaO_rKW6BBoAjO_Goo0DUVbHI0MxBoMCyRfnxllHXNDkVqOB-IGvR-s-UV3JvY12SkbL12xE8T0MQTTLt04yAlyauhvvD0rH2Iupl9FFPr1fP3LtqBPMXG6cjJZUCDIMJ",
+    "cid": "6774853247741768120",
+    "fid": "0x31752fd90c69bdf3:0x5e051d22550cb1b8",
+    "placeId": "ChIJ871pDNkvdTERuLEMVSIdBV4"
+   },
+   {
+    "position": 14,
+    "title": "Tesee Nails Town",
+    "address": "506/1 3 Tháng 2, Diên Hồng, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.766993699999999,
+    "longitude": 106.6652927,
+    "rating": 5,
+    "ratingCount": 133,
+    "type": "Tiệm chăm sóc móng",
+    "types": [
+     "Tiệm chăm sóc móng"
+    ],
+    "phoneNumber": "+84 935 323 624",
+    "openingHours": {
+     "Thứ Tư": "09:30–20:00",
+     "Thứ Năm": "09:30–20:00",
+     "Thứ Sáu": "09:30–20:00",
+     "Thứ Bảy": "09:30–20:00",
+     "Chủ Nhật": "09:30–20:00",
+     "Thứ Hai": "09:30–20:00",
+     "Thứ Ba": "09:30–20:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk3TNwh0F3Q-h0UFoDDYxxytljrz_0sNByw5Qy7mEueaaYPNFaFSfRf_-WlCN91h1RbaskXFT_i6AjI_lsIIDgDrMweZbZHjb4bJeY2h7_88ExnmI01eR7P5Fa-xcZHUkfLNPkVQQ",
+    "cid": "6141873164239564979",
+    "fid": "0x31752f78916b7bf3:0x553c511a1200f0b3",
+    "placeId": "ChIJ83trkXgvdTERs_AAEhpRPFU"
+   },
+   {
+    "position": 15,
+    "title": "A+ Nail Studio Quận 1",
+    "address": "55/8 Lê Thị Hồng Gấm, Bến Thành, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.768552999999999,
+    "longitude": 106.69782699999999,
+    "rating": 4.8,
+    "ratingCount": 675,
+    "type": "Tiệm chăm sóc móng",
+    "types": [
+     "Tiệm chăm sóc móng"
+    ],
+    "website": "https://acongstudio.wordpress.com/",
+    "phoneNumber": "+84 565 195 109",
+    "openingHours": {
+     "Thứ Tư": "09:00–21:00",
+     "Thứ Năm": "09:00–21:00",
+     "Thứ Sáu": "09:00–21:00",
+     "Thứ Bảy": "09:00–21:00",
+     "Chủ Nhật": "09:00–21:00",
+     "Thứ Hai": "09:00–21:00",
+     "Thứ Ba": "09:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmlDGV_MKCmU2aYH9japufalsdOQ1VS__k4Zqu1fjPXAOsrHHAKM3vicGTyB1OGpIH1WafEIiLBGXhpOL84Gmlr98CSqtvbI7K_XOAdgLjE5Z34gM66AU04vpQP3yQWiDexNhYcW9DR4m_Q",
+    "cid": "7476777043089721610",
+    "fid": "0x31752fcaa41f758b:0x67c2d91b6628890a",
+    "placeId": "ChIJi3UfpMovdTERCokoZhvZwmc"
+   },
+   {
+    "position": 16,
+    "title": "Diễm Nails & Mi - Vĩnh Hội",
+    "address": "Q4 cũ, 107 Đ. Vĩnh Hội, P, Khánh Hội, Hồ Chí Minh 740000, Việt Nam",
+    "latitude": 10.7562088,
+    "longitude": 106.704639,
+    "rating": 5,
+    "ratingCount": 207,
+    "type": "Tiệm chăm sóc móng",
+    "types": [
+     "Tiệm chăm sóc móng",
+     "Tiệm làm mi"
+    ],
+    "website": "https://www.diemnails.com/",
+    "phoneNumber": "+84 965 230 994",
+    "openingHours": {
+     "Thứ Tư": "09:00–21:30",
+     "Thứ Năm": "09:00–21:30",
+     "Thứ Sáu": "09:00–21:30",
+     "Thứ Bảy": "09:00–21:30",
+     "Chủ Nhật": "09:00–21:30",
+     "Thứ Hai": "09:00–21:30",
+     "Thứ Ba": "09:00–21:30"
+    },
+    "bookingLinks": [
+     "https://www.diemnails.com/booking"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnbaSxGfbwH5M9r5sKqF3-VJdcOmy-UCl3qMHP5P_tDUWbooGVlw5uOJRyivd3j8iog3ToCenyo7UKwFZEaljskZ8z0MEXCiuJpiskS0uHPP5C8y8DhAewfy7re3l8pbad-G9aaQY3zZxXl",
+    "cid": "6074465825940787023",
+    "fid": "0x31752f4c477e14ad:0x544cd67c1b734f4f",
+    "placeId": "ChIJrRR-R0wvdTERT09zG3zWTFQ"
+   },
+   {
+    "position": 17,
+    "title": "Posy Nail & Beauty Spa",
+    "address": "278/1 Tô Hiến Thành, Cư xá Bắc Hải, Hòa Hưng, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.777828699999999,
+    "longitude": 106.6649642,
+    "rating": 5,
+    "ratingCount": 1,
+    "type": "Spa",
+    "types": [
+     "Spa"
+    ],
+    "website": "https://posynail.com/",
+    "phoneNumber": "+84 378 773 199",
+    "openingHours": {
+     "Thứ Tư": "10:00–22:00",
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00",
+     "Thứ Ba": "10:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkQKDHgeW2Dxc0EQSOhRKJ0DiFEIIPfN7kG02lnubLw7F_4i4QF64zNuPI23TI-BjPYqNLD2NxRxqJISROPQDKk5v_g9ysh13Dq4UZVkmXbriPQQ8EVTozFRay7Jcx3YKbSSJxELvif9eU",
+    "cid": "11581231040622820517",
+    "fid": "0x31752f128436f513:0xa0b8cc457e0cfca5",
+    "placeId": "ChIJE_U2hBIvdTERpfwMfkXMuKA"
+   },
+   {
+    "position": 18,
+    "title": "Lisa Nail & Spa - Nail Salon - Head Spa - Foot Scrub - Massage - 네일 살롱",
+    "address": "219 Lê Thánh Tôn, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7724075,
+    "longitude": 106.69661889999999,
+    "rating": 4.9,
+    "ratingCount": 3777,
+    "type": "Tiệm chăm sóc móng",
+    "types": [
+     "Tiệm chăm sóc móng",
+     "Spa sức khỏe",
+     "Spa"
+    ],
+    "website": "https://lisanail.vn/en/",
+    "phoneNumber": "+84 777 776 988",
+    "openingHours": {
+     "Thứ Tư": "09:00–00:00",
+     "Thứ Năm": "09:00–00:00",
+     "Thứ Sáu": "09:00–00:00",
+     "Thứ Bảy": "09:00–00:00",
+     "Chủ Nhật": "09:00–00:00",
+     "Thứ Hai": "09:00–00:00",
+     "Thứ Ba": "09:00–00:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlf4I03STspG6smynYSnYabkMVLT1BSsEGmzKYFgbTArDQKGuh7ijdqLdG9ScQrscgYe1gKTIyWD4-bXxfjJQNtkvhwy1tXEBZ-c-_j0xPxiUA--TJGGjBlI2L4mSSMfrRAaA0pjeWB6x7j",
+    "cid": "11138942339161997473",
+    "fid": "0x31752ffe630201c7:0x9a95790a734f40a1",
+    "placeId": "ChIJxwECY_4vdTERoUBPcwp5lZo"
+   },
+   {
+    "position": 19,
+    "title": "Morri Nailroom",
+    "address": "463B/6G Cách Mạng Tháng Tám, Hòa Hưng, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.781554,
+    "longitude": 106.674201,
+    "rating": 4.9,
+    "ratingCount": 116,
+    "type": "Tiệm chăm sóc móng",
+    "types": [
+     "Tiệm chăm sóc móng"
+    ],
+    "phoneNumber": "+84 372 939 846",
+    "openingHours": {
+     "Thứ Tư": "09:30–21:30",
+     "Thứ Năm": "09:30–21:30",
+     "Thứ Sáu": "09:30–21:30",
+     "Thứ Bảy": "09:30–21:30",
+     "Chủ Nhật": "09:30–21:30",
+     "Thứ Hai": "09:30–21:30",
+     "Thứ Ba": "09:30–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlBaFrco752DujJKTLDEKyDWKHrR7Ue43TRLBBAC3X0B-Heq842YGzmmi0rw4ZG0WoW_hWq583lXUfo4c3hSMq4B-z_n2htIbwSMyF2_UxW_PU8l-WyibKn58TytvcIEDb6HF4zHTKPy0Hf",
+    "cid": "17840453999047815449",
+    "fid": "0x868ab69222751b01:0xf7960663acf13119",
+    "placeId": "ChIJARt1IpK2ioYRGTHxrGMGlvc"
+   },
+   {
+    "position": 20,
+    "title": "YiYi's Nail & Spa",
+    "address": "59/8 Hồ Hảo Hớn, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.761809999999999,
+    "longitude": 106.691543,
+    "rating": 4.9,
+    "ratingCount": 111,
+    "type": "Tiệm chăm sóc móng",
+    "types": [
+     "Tiệm chăm sóc móng"
+    ],
+    "website": "https://www.facebook.com/profile.php?id=61567537018472",
+    "phoneNumber": "+84 947 700 095",
+    "openingHours": {
+     "Thứ Tư": "09:30–21:00",
+     "Thứ Năm": "09:30–21:00",
+     "Thứ Sáu": "09:30–21:00",
+     "Thứ Bảy": "09:30–21:00",
+     "Chủ Nhật": "09:30–21:00",
+     "Thứ Hai": "09:30–21:00",
+     "Thứ Ba": "09:30–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmrr7zDipIyWbswiYIp-IAdmuJXti2oReO8AA14Fubsmp5NyqUacjoCnsO8w1uUqbnGF7qczOnYZQNpYXfLW1VP0yGUO1Qu9l7Q0mc9h9wU97chCDhvnXmBVFf_amlVifZHNS8pGw",
+    "cid": "16682513109588665289",
+    "fid": "0x31752f7a2bccab5f:0xe784314911d463c9",
+    "placeId": "ChIJX6vMK3ovdTERyWPUEUkxhOc"
+   }
+  ],
+  "credits": 3
+ }
+}

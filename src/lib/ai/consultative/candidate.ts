@@ -57,7 +57,34 @@ export interface CandidateAttrs {
    * time would be a fabricated claim, so the name says what it is.
    */
   etaMinutes?: number
+  // ── Phase 3B.1: supplied attributes the decision state can name (decisionState.ts registry). Each is present ONLY when the provider row
+  //    carried a real boolean for it: absent = UNKNOWN, never `false`, never inferred from a name, a snippet or the user's request.
+  /** Evidence that the venue suits children. Never inferred from "family" in a title or from the user saying they have a child. */
+  familyFriendly?: boolean
+  /** Evidence about spicy food (true = the dish / venue is spicy). */
+  spicy?: boolean
+  /** Evidence that a helmet is included (rentals). */
+  helmetIncluded?: boolean
 }
+
+/** One supplied attribute with its provenance, so UNKNOWN stays distinguishable from FACT downstream. */
+export interface EvidenceEntry {
+  id: 'family_friendly' | 'spicy' | 'helmet_included'
+  value: boolean
+  /** Where the value came from: the provider row field it was read from. */
+  source: string
+  kind: 'FACT'
+}
+
+/**
+ * Provider row field -> attribute. The ONE place a provider-specific name is mapped (the ranker reads `CandidateAttrs` only). A row key
+ * that is absent, or not a boolean, yields nothing.
+ */
+const EVIDENCE_FIELDS: ReadonlyArray<[field: string, attr: 'familyFriendly' | 'spicy' | 'helmetIncluded', id: EvidenceEntry['id']]> = [
+  ['family_friendly', 'familyFriendly', 'family_friendly'],
+  ['spicy', 'spicy', 'spicy'],
+  ['helmet_included', 'helmetIncluded', 'helmet_included'],
+]
 
 export interface Candidate {
   /** Stable identity: place_id, link, or name. Used for tie-breaking and dedup. */
@@ -65,6 +92,8 @@ export interface Candidate {
   name: string
   domain: 'places' | 'hotel' | 'shopping' | 'transport'
   attrs: CandidateAttrs
+  /** Phase 3B.1: the supplied decision-relevant facts with their source (additive; absent when the row supplied none). */
+  evidence?: EvidenceEntry[]
   /** The real provider link. Never synthesised. */
   link: string | null
   /** The original record, carried through so links/photos can never detach. */
@@ -141,9 +170,17 @@ function priceBandHigh(r: Record<string, unknown>): number | undefined {
   if (range && typeof range.high === 'number' && range.high > 0 && (range.currency === undefined || range.currency === 'VND')) return range.high
   const text = str(r.price_range_text)
   if (!text || !/₫|đ|vnd/i.test(text)) return undefined
-  const nums = text.match(/\d[\d.]*/g)
+  // An open-ended band ("Trên 1 Tr ₫" = over 1 million) has no upper end — it is a floor, never a ceiling.
+  if (/^\s*(?:tr[eê]n|over|above|from|t[uừ])\b/i.test(text)) return undefined
+  const nums = text.match(/\d[\d.,]*/g)
   if (!nums) return undefined
-  const last = parseInt(nums[nums.length - 1].replace(/\./g, ''), 10)
+  const raw = nums[nums.length - 1]
+  // Serper writes a unit after the band: "100-200 N ₫" = 100–200 nghìn, "1-2 Tr ₫" = 1–2 triệu. Without a unit the numbers are full dong ("1-100.000 ₫").
+  const unit = text.slice(text.lastIndexOf(raw) + raw.length).match(/^\s*(n|k|ngh[iì]n|ng[aà]n|tr|tri[eệ]u|m)(?![a-zà-ỹ])/i)?.[1]?.toLowerCase()
+  const scale = !unit ? 1 : /^(?:n|k|ngh|ng)/.test(unit) ? 1_000 : 1_000_000
+  // With a unit a single separator before 1–2 digits is a decimal ("1,5 Tr"); a 3-digit group stays a thousands group.
+  const n = scale > 1 && /^\d+[.,]\d{1,2}$/.test(raw) ? parseFloat(raw.replace(',', '.')) : parseInt(raw.replace(/[.,]/g, ''), 10)
+  const last = Math.round(n * scale)
   return Number.isFinite(last) && last > 1000 ? last : undefined
 }
 
@@ -182,11 +219,20 @@ export function normalizePlaces(toolResult: unknown): Candidate[] {
       if (list.length) put(attrs, 'cuisine', list)
     }
 
+    const evidence: EvidenceEntry[] = []
+    for (const [field, attr, id] of EVIDENCE_FIELDS) {
+      const v = r[field]
+      if (typeof v !== 'boolean') continue
+      attrs[attr] = v
+      evidence.push({ id, value: v, source: `row.${field}`, kind: 'FACT' })
+    }
+
     out.push({
       id: str(r.place_id) || str(r.maps_link) || name,
       name,
       domain: 'places',
       attrs,
+      ...(evidence.length ? { evidence } : {}),
       link: str(r.maps_link) || null,
       raw: r,
     })

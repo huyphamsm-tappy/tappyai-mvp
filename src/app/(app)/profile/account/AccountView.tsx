@@ -6,6 +6,8 @@ import UserAvatar from '@/components/UserAvatar'
 import V3Shell, { V3Footer } from '@/components/v3/V3Shell'
 import Panel from '@/components/v3/Panel'
 import { Mail, User as UserIcon, Calendar, Edit3, Camera, Contact, Pencil } from 'lucide-react'
+import { ProfileRowList, accountMoreRows } from '../ProfileRows'
+import { LayoutGrid } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 
 // C14 + C15 — the page next door was a server component, so its copy was written in Vietnamese and
@@ -85,6 +87,14 @@ export default function AccountView({ userInfo, firstName: rawFirstName, joinDat
         <Panel title={t('account.section.edit')} tone="violet" icon={<Pencil size={16} />} bodyClassName="p-0">
           <div className="divide-y" style={{ borderColor: 'var(--v3-border)' }}>
             <MenuItem icon={Edit3} label={t('account.editProfile')} description={t('account.editProfile.desc')} href="/profile/edit" />
+          </div>
+        </Panel>
+
+        {/* The compact /profile hub folds the other eight account rows in here (owner 2026-10-02):
+            same inventory, order, names and icons as the old nine-row card and as Android. */}
+        <Panel title={t('profile.account.moreTitle')} tone="accent" icon={<LayoutGrid size={16} />} bodyClassName="p-3">
+          <div data-account-more>
+            <ProfileRowList rows={accountMoreRows()} />
           </div>
         </Panel>
       </div>

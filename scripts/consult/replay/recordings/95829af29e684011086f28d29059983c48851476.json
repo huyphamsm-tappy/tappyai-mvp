@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hanoi Ngon\" OR \"Popeyes Nguyễn Thị Thập\" OR \"Bếp Chú Đào\" Quận 7 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:19:20.016Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hanoi Ngon\" OR \"Popeyes Nguyễn Thị Thập\" OR \"Bếp Chú Đào\" Quận 7 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quận 7 ăn gì đây ta Ghé Bếp Chú Đào Ăn Đặc sản Đà ...",
+    "link": "https://www.tiktok.com/@chudaolochi/video/7487523267671117061",
+    "snippet": "... Quận 7Lẩu Chay Thảo Quận 6. Quận 7 ăn gì đây ta Ghé Bếp Chú Đào Ăn Đặc sản Đà Nẵng nhe. @BẾP CHÚ ĐÀO- đặc sản Đà Nẵng · nhạc nền - Kỳ Phong ...",
+    "position": 1
+   },
+   {
+    "title": "Hanoi Ngon - Chi nhánh mới ở Quận 7",
+    "link": "https://www.tiktok.com/@daitiengnoianuong/video/7538447495752437000",
+    "snippet": "Hanoi Ngon - Chi nhánh mới ở Quận 7. Khám phá chi nhánh mới của Hanoi Ngon tại Quận 7 với nhiều món ăn ngon đặc trưng. Hãy đến thưởng thức nhé!",
+    "position": 2
+   },
+   {
+    "title": "Đơn lớn cho Văn Phòng thì nhớ Hanoi Ngon nha ✨🫶🏻 ...",
+    "link": "https://www.tiktok.com/@hanoingon/video/7689072032092474642",
+    "snippet": "22 Lượt thích,Video TikTok từ Hanoi Ngon (@hanoingon): \"Đơn lớn cho Văn Phòng thì nhớ Hanoi Ngon nha ✨ #anvatsaigon #vanphonggenz ...",
+    "position": 3
+   },
+   {
+    "title": "Bánh đập cuốn Bếp Chú Đào Quận 7 | Nhiều rau tươi ngon",
+    "link": "https://www.tiktok.com/@chudaolochi/video/7582933225903787271",
+    "snippet": "Bánh đập cuốn tại Bếp Chú Đào Quận 7 luôn được phục vụ với thật nhiều rau tươi ngon. \"Dạ món nhà em cứ phải thật nhiều rau tươi mới ngon.",
+    "position": 4
+   },
+   {
+    "title": "Bếp Chú Đào: Nem Nướng & Bún Mắm Nêm Quận 7",
+    "link": "https://www.tiktok.com/@chudaolochi/video/7659760067612282119",
+    "snippet": "Chào mừng bạn đến với Bếp Chú Đào, điểm đến lý tưởng cho những ai yêu thích ẩm thực đường phố Sài Gòn, đặc biệt là các món ngon tại Quận 7.",
+    "position": 5
+   },
+   {
+    "title": "Mắm thơm nức mũi. Đúng điệu mắm nêm Đà Nẵng. Bếp ...",
+    "link": "https://www.tiktok.com/@chudaolochi/video/7685685891204943112",
+    "snippet": "Nếu bạn còn phân vân chưa biết ăn gì thì ghé ngay Bếp Chú Đào - một quán bán đồ miền Trung núp hẻm Q7 nho nhỏ xinh xinh nhưng đồ ăn thì ngon ...",
+    "position": 6
+   },
+   {
+    "title": "Thịt quay cuốn bánh tráng gì không người đẹp ơi! Ac văn ...",
+    "link": "https://www.tiktok.com/@chudaolochi/video/7686470084323233032",
+    "snippet": "Nếu bạn là một tín đồ của ẩm thực miền Trung, hay đơn giản là muốn khám phá những món ăn mới lạ, thì Bếp Chú Đào chắc chắn là điểm đến lý tưởng.",
+    "position": 7
+   },
+   {
+    "title": "BẾP CHÚ ĐÀO- đặc sản Đà Nẵng (@chudaolochi)",
+    "link": "https://www.tiktok.com/@chudaolochi",
+    "snippet": "Bếp CHÚ ĐÀO Bánh tráng cuốn thịt heo Bún mắm nêm Đà Nẵng Nem nướng-bánh lọc. Bún mắm nêm Chú Đào ngon quá à ! Thơm phức !",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

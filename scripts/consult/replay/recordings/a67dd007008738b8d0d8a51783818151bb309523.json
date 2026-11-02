@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"MSI Modern 15 F1MG-1225VN\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:46:06.021Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"MSI Modern 15 F1MG-1225VN\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop MSI Modern 15 F1MG-1225VN | Giá rẻ, trả góp 0%",
+    "link": "https://cellphones.com.vn/laptop-msi-modern-15-f1mg-1225vn.html",
+    "snippet": "Laptop MSI Modern 15 F1MG-1225VN ; Giá hàng mới: 21.990.000 ; Trả góp 0% ; Giá sản phẩm. 21.990.000đ 19.190.000đ ; Lưu ý · Giá thu mua áp dụng cho dung lượng pin >= ...",
+    "position": 1
+   },
+   {
+    "title": "Laptop MSI Modern 15 F1MG-1225VN - Cũ Đẹp | Giá rẻ",
+    "link": "https://cellphones.com.vn/laptop-msi-modern-15-f1mg-1225vn-cu-dep.html",
+    "snippet": "Laptop MSI Modern 15 F1MG-1225VN - Cũ Đẹp ; Smember Giảm thêm đến 164.000đ ; Trả góp 0% ; Trả góp 0% ; Giá sản phẩm. 21.990.000đ 16.390.000đ ; Danh sách Cookies.",
+    "position": 2
+   },
+   {
+    "title": "MSI Modern 15 | Thiết kế sang trọng, giảm đến 2 triệu",
+    "link": "https://cellphones.com.vn/laptop/msi/modern/modern-15.html",
+    "snippet": "... Laptop MSI Modern 15 F1MG-1225VN. Trả góp 0%. : 19.190.000đ. 21.990.000đ. Giảm 13%. Smember giảm đến 192.000đ. S-Student giảm thêm ...",
+    "position": 3
+   },
+   {
+    "title": "Laptop MSI Modern 14 - 15 | Tinh tế, giảm sâu 3 triệu đồng",
+    "link": "https://cellphones.com.vn/laptop/msi/modern.html",
+    "snippet": "... Laptop MSI Modern 15 F1MG-1225VN. Trả góp 0%. : 19.190.000đ. 21.990.000đ. Giảm 13%. Smember giảm đến 192.000đ. S-Student giảm thêm ...",
+    "position": 4
+   },
+   {
+    "title": "So sánh Laptop MSI Modern 15 A5M",
+    "link": "https://cellphones.com.vn/so-sanh/laptop-msi-modern-15-a5m-048vn",
+    "snippet": "... Laptop MSI Modern 15 F1MG-1225VN. Giá niêm yết: 21.990.000. Giá khuyến mãi: 18.990.000. + Chọn để so sánh.",
+    "position": 5
+   },
+   {
+    "title": "Đa nhiệm cực mượt, đa nhiệm đến trường cùng MSI Modern",
+    "link": "https://cellphones.com.vn/sforum/khuyen-mai-msi-modern",
+    "snippet": "Laptop MSI Modern 15 F1MG-1225VN. 19.190.000đ21.990.000đ. HSSV chỉ còn 18.230.500đSmember giảm thêm 192.000đ.",
+    "date": "14 thg 7, 2026",
+    "position": 6
+   },
+   {
+    "title": "Laptop MSI | Máy tính xách tay MSI giá rẻ, giảm đến 6 triệu",
+    "link": "https://cellphones.com.vn/laptop/msi.html",
+    "snippet": "... Laptop MSI Modern 15 F1MG-1225VN. Trả góp 0%. : 19.190.000đ. 21.990.000đ. Giảm 13%. 16GB. 512GB. 15.6 inches. Smember giảm đến 192.000đ.",
+    "position": 7
+   },
+   {
+    "title": "Laptop MSI Modern 14 F1MG-432VN | Giá rẻ, trả góp 0%",
+    "link": "https://cellphones.com.vn/laptop-msi-modern-14-f1mg-432vn.html",
+    "snippet": "0%. Laptop MSI Modern 15 F1MG-1225VN. Trả góp 0%. : 19.190.000đ. 21.990.000đ. Giảm 13%. trả góp 0% lãi suất, tối đa 12 tháng ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Dell Precision 7750 Core i7 10850H 16GB SSD 512GB RTX 4000 17.3 inch FHD Windows 10 pro\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:23:10.460Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Dell Precision 7750 Core i7 10850H 16GB SSD 512GB RTX 4000 17.3 inch FHD Windows 10 pro\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

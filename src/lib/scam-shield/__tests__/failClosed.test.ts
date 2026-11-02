@@ -176,15 +176,15 @@ describe('the recommended action agrees with the level', () => {
 
   it('INCONCLUSIVE says so in both languages, and neither says "safe"', () => {
     const [primary] = getRecommendedActions('INCONCLUSIVE', NO_EVIDENCE, null, 0)
-    expect(primary.label_vi).toContain('chưa thể kết luận')
-    expect(primary.label_en).toContain('cannot be confirmed safe')
+    expect(primary.label_vi).toContain('Chưa nhận ra dấu hiệu quen thuộc')
+    expect(primary.label_en).toContain('does NOT mean it is safe')
     // The Vietnamese must not read as reassurance either — "an toàn" alone would.
     expect(primary.label_vi.startsWith('Liên kết có vẻ an toàn')).toBe(false)
   })
 
-  it('a level that IS supported by evidence still reassures', () => {
+  it('02/10: even a level supported by full evidence never offers the reassuring action', () => {
     const actions = getRecommendedActions('SAFE', NO_EVIDENCE, null, 100)
-    expect(actions.map(a => a.action)).toContain('LIKELY_SAFE')
+    expect(actions.map(a => a.action)).not.toContain('LIKELY_SAFE')
   })
 
   it('the engine and the action engine cannot disagree', () => {

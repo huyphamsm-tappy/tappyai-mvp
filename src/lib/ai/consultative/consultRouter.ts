@@ -15,6 +15,8 @@
 import { normalizeVN } from '../intent'
 import { maskStreetNames } from '../streetNames'
 import { SPECIFIC_DATE } from './searchNow'
+import { deriveNeedProfile } from './needProfile'
+import { hasExplicitPriorityState } from './decisionState'
 import { wasAskReply, type AskQuestion, type ConsultDecision, type ConsultDomain, type ConsultTurn } from './consultBrain'
 
 export type RouteConfidence = 'rule' | 'unsure'
@@ -288,6 +290,14 @@ const FAMILIES: Family[] = [
   { id: 'case', label: 'ốp lưng', re: /(?<![\p{L}\p{N}])ốp(?![\p{L}\p{N}])|\bop lung\b/u, on: 'lo',
     line: { known: W('chong soc|trong suot|op da|silicon|magsafe|spigen|uag|esr'), q: q('line', 'Kiểu ốp nào?', 'Which case style?', ['Chống sốc', 'Trong suốt', 'Ốp da', 'Chưa biết'], ['Rugged', 'Clear', 'Leather', 'Not sure']) },
     budget: B_CHEAP, must: { known: W('magsafe'), q: q('must', 'Cần MagSafe không?', 'Need MagSafe?', ['Có MagSafe', 'Không cần'], ['Yes', 'No']) } },
+  // 01/10 (owner, ca d): the thing BOUGHT is the accessory; the phone only says what it must fit. These sit before the phone
+  // families so «kính cường lực cho iphone» is never a «which iPhone?» question.
+  { id: 'glass', label: 'kính cường lực', re: W('cuong luc|dan man hinh|mieng dan|kinh bao ve|ppf'),
+    line: { known: W('thuong|full man|full vien|chong nhin trom|chong van tay|nham|trong suot|hydrogel|chong xuoc'), q: q('line', 'Loại kính nào?', 'Which type?', ['Kính thường', 'Full màn hình', 'Chống nhìn trộm', 'Chống vân tay'], ['Standard', 'Full screen', 'Privacy', 'Anti-fingerprint']) },
+    budget: B_CHEAP },
+  { id: 'charger', label: 'sạc', re: W('cu sac|sac nhanh|cap sac|day sac|sac du phong|pin du phong|cap lightning|cap type c|sac khong day|sac magsafe'),
+    line: { known: W('cu sac|cap sac|day sac|sac du phong|pin du phong|sac khong day|magsafe'), q: q('line', 'Bạn cần loại nào?', 'Which kind?', ['Củ sạc', 'Cáp sạc', 'Sạc không dây', 'Sạc dự phòng'], ['Wall charger', 'Cable', 'Wireless', 'Power bank']) },
+    budget: B_CHEAP },
   { id: 'iphone', label: 'iPhone', re: W('iphone|ip \\d{2}'),
     line: { known: /\b(?:iphone|ip)\s?\d{2}\s?(?:pro max|pro|plus|mini|e)\b|\b\d{2}\s?(?:pro max|pro|plus)\b/, q: q('line', 'Bản nào?', 'Which model?', ['Bản thường', 'Plus', 'Pro', 'Pro Max'], ['Base', 'Plus', 'Pro', 'Pro Max']) },
     budget: B_IPHONE, must: { known: /\b\d{3}\s?gb\b|\b1\s?tb\b/, q: q('must', 'Dung lượng bao nhiêu?', 'Storage?', ['128GB', '256GB', '512GB+'], ['128GB', '256GB', '512GB+']) }, condition: true },
@@ -342,6 +352,8 @@ const FAMILIES: Family[] = [
     line: { known: W('thich [a-z ]{2,}|me (?:ca phe|tra|doc sach|cong nghe|the thao)|nghien \\w+'), q: q('line', 'Người nhận thích gì?', 'What do they like?', ['Cà phê/trà', 'Đồ công nghệ', 'Làm đẹp', 'Chưa biết'], ['Coffee/tea', 'Tech', 'Beauty', 'Not sure']) },
     budget: B_GIFT, must: { known: W('thiet thuc|ky niem|trai nghiem|y nghia|sang trong|handmade'), q: q('must', 'Quà kiểu nào?', 'What kind of gift?', ['Thiết thực', 'Kỷ niệm', 'Trải nghiệm'], ['Practical', 'Keepsake', 'Experience']) } },
 ]
+/** Families that are an accessory FOR a device: the device is `cho_may`, never the thing being bought. */
+const ACCESSORY_FAMILY_IDS = new Set(['case', 'case_uag', 'glass', 'charger'])
 const GENERIC_FAMILY: Family = {
   id: 'generic', label: 'món đồ', re: /$^/,
   line: { known: /$^/, q: q('line', 'Bạn cần món gì cụ thể?', 'What exactly do you need?', ['Đồ công nghệ', 'Thời trang', 'Gia dụng', 'Làm đẹp'], ['Tech', 'Fashion', 'Home', 'Beauty']) },
@@ -372,6 +384,8 @@ function purposeOf(t: Txt): string | null { return label(t, PURPOSE) }
 type TravelKind = 'flight' | 'ticket' | 'hotel' | 'trip'
 function travelKindOf(t: Txt): TravelKind {
   if (W('ve may bay|chuyen bay|flight|bay thang|hang bay').test(t.f)) return 'flight'
+  // 01/10 (owner, ca f): «bay từ HCM» / «đi máy bay từ TP.HCM» is a FLIGHT request, not a tour — unless the user is planning a trip.
+  if (W('may bay|bay tu|di bay').test(t.f) && !W('du lich|lich trinh|ke hoach|khach san|\\d+ ?ngay|\\d ?n ?\\d ?d').test(t.f)) return 'flight'
   if (W('ve xe|xe khach|xe giuong nam|limousine|ve tau|tau hoa|tau lua').test(t.f)) return 'ticket'
   if (W('khach san|homestay|resort|villa|hostel|book phong|dat phong|hotel').test(t.f) && !W('du lich|lich trinh|\\d+ ngay').test(t.f)) return 'hotel'
   return 'trip'
@@ -381,6 +395,9 @@ export function routeOf(t: Txt): { origin: string | null; dest: string | null } 
   let origin: string | null = null, dest: string | null = null
   const from = new RegExp(`\\b(?:tu|xuat phat(?: tu)?|khoi hanh(?: tu)?|from|gan|quanh|o)\\s+(${CITY_ALT})\\b`).exec(t.fc)
   if (from) origin = cityAt(from[1])
+  // 01/10 (owner, ca a): a quick-ask card answer reads «3N2Đ · TP.HCM · 2 người». A segment that is ONLY a city answers the
+  // «Xuất phát từ đâu?» question: it is where the trip STARTS, never where it goes.
+  if (!origin && t.fc.includes(' · ')) for (const seg of t.fc.split(' · ')) { const m = new RegExp(`^\\s*(${CITY_ALT})\\s*$`).exec(seg); if (m) { origin = cityAt(m[1]); break } }
   const pair = new RegExp(`\\b(${CITY_ALT})\\s*(?:di|->|-|den|toi|ra|vao|to|–)\\s*(${CITY_ALT})\\b`).exec(t.fc)
   if (pair) { origin = origin ?? cityAt(pair[1]); dest = cityAt(pair[2]) }
   if (!dest) {
@@ -416,6 +433,8 @@ export function tripDatesOf(t: Txt): { date: string | null; days: string | null;
 const STYLE: Array<[RegExp, string]> = [
   [W('bien|tam bien|view bien|gan bien|beach'), 'biển'], [W('nui|san may|trekking|leo nui|mountain'), 'núi'], [W('an uong|hai san|am thuc|food tour'), 'ăn uống'],
   [W('nghi duong|resort|thu gian|chill'), 'nghỉ dưỡng'], [W('kham pha|phuot|mao hiem'), 'khám phá'], [W('lang man|honeymoon|trang mat'), 'lãng mạn'],
+  // 01/10: the destination-kind card offers these two.
+  [W('thanh pho(?! ho chi minh)|city break'), 'thành phố'], [W('nuoc ngoai|quoc te|abroad|overseas'), 'nước ngoài'],
 ]
 const TRANSPORT: Array<[RegExp, string]> = [
   [W('may bay|bay (?:sang|trua|chieu|toi|dem|thang|tu|ra|vao)|flight|fly'), 'máy bay'], [W('xe rieng|tu lai|lai xe|o to|oto|xe hoi'), 'xe riêng'], [W('xe may|phuot'), 'xe máy'],
@@ -436,11 +455,11 @@ function activityOf(t: Txt): string | null { return label(t, ACTIVITIES) ?? (N('
 
 interface Service { label: string; re: RegExp; vague?: boolean; variant?: { known: RegExp; q: Q } }
 const SERVICES: Service[] = [
-  { label: 'massage', re: W('massage|mat xa|foot massage'), variant: { known: W('toan than|body|chan|foot|co vai gay|vai gay|da nong|thai|nhat|bam huyet|mat'), q: q('style', 'Massage kiểu nào?', 'Which massage?', ['Toàn thân', 'Chân', 'Cổ vai gáy', 'Đá nóng'], ['Full body', 'Foot', 'Neck & shoulders', 'Hot stone']) } },
+  { label: 'massage', re: W('massage|mat xa|foot massage'), variant: { known: W('toan than|body|chan|foot|co vai gay|vai gay|da nong|thai|nhat|bam huyet|mat'), q: q('service', 'Massage kiểu nào?', 'Which massage?', ['Toàn thân', 'Chân', 'Cổ vai gáy', 'Đá nóng'], ['Full body', 'Foot', 'Neck & shoulders', 'Hot stone']) } },
   { label: 'gội đầu dưỡng sinh', re: W('goi dau|duong sinh') }, { label: 'xông hơi', re: W('xong hoi|sauna|tam hoi') },
-  { label: 'làm nail', re: W('nail|lam mong|son mong|son gel|ve mong|dap bot'), variant: { known: W('son gel|gel|ve|dinh da|dap bot|cham soc mong|combo|son thuong'), q: q('style', 'Làm kiểu nào?', 'Which service?', ['Sơn gel', 'Vẽ/đính đá', 'Đắp bột', 'Chăm sóc móng'], ['Gel polish', 'Nail art', 'Acrylic', 'Manicure']) } },
+  { label: 'làm nail', re: W('nail|lam mong|son mong|son gel|ve mong|dap bot'), variant: { known: W('son gel|gel|ve|dinh da|dap bot|cham soc mong|combo|son thuong'), q: q('service', 'Làm kiểu nào?', 'Which service?', ['Sơn gel', 'Vẽ/đính đá', 'Đắp bột', 'Chăm sóc móng'], ['Gel polish', 'Nail art', 'Acrylic', 'Manicure']) } },
   { label: 'cắt tóc', re: W('cat toc|barber|toc nam|hot toc') },
-  { label: 'làm tóc', re: W('uon toc|nhuom toc|duoi toc|lam toc|salon|hair|toc nu'), variant: { known: W('uon|nhuom|duoi|cat|phuc hoi|goi'), q: q('style', 'Làm tóc gì?', 'Which hair service?', ['Cắt', 'Uốn', 'Nhuộm', 'Phục hồi'], ['Cut', 'Perm', 'Color', 'Treatment']) } },
+  { label: 'làm tóc', re: W('uon toc|nhuom toc|duoi toc|lam toc|salon|hair|toc nu'), variant: { known: W('uon|nhuom|duoi|cat|phuc hoi|goi'), q: q('service', 'Làm tóc gì?', 'Which hair service?', ['Cắt', 'Uốn', 'Nhuộm', 'Phục hồi'], ['Cut', 'Perm', 'Color', 'Treatment']) } },
   { label: 'chăm sóc da', re: W('cham soc da|tri mun|nan mun|lay mun|facial') }, { label: 'waxing', re: W('waxing|wax long|triet long') },
   { label: 'nối mi', re: W('noi mi|uon mi') }, { label: 'phun xăm', re: W('phun may|phun moi|xam may') }, { label: 'tắm trắng', re: W('tam trang') },
   { label: 'yoga', re: W('yoga|pilates') }, { label: 'phòng gym', re: W('gym|phong tap') }, { label: 'bấm huyệt', re: W('bam huyet|giac hoi|cao gio') },
@@ -490,7 +509,7 @@ function foodView(t: Txt, gps: boolean): SlotView {
     missing.push(breakfast ? q('dish', 'Ăn sáng món gì?', 'What for breakfast?', ['Phở/bún', 'Bánh mì', 'Cơm tấm', 'Chưa biết'], ['Pho/noodles', 'Banh mi', 'Broken rice', 'Not sure'])
       : q('dish', 'Món gì / kiểu quán?', 'What kind of food?', ['Món Việt', 'Nhật/Hàn', 'Lẩu/nướng', 'Chưa biết'], ['Vietnamese', 'Japanese/Korean', 'Hotpot/BBQ', 'Not sure']))
   } else if (dish.variant && !dish.variant.known.test(t.f) && !(dish.label === 'cà phê' && vibe)) {
-    missing.push(q('style', dish.variant.q, dish.variant.qEn, dish.variant.opts, dish.variant.optsEn))
+    missing.push(q('dish', dish.variant.q, dish.variant.qEn, dish.variant.opts, dish.variant.optsEn))
   }
   if (!party) missing.push(PARTY_Q)
   if (!budget) missing.push(q('budget', 'Tầm bao nhiêu mỗi người?', 'Budget per person?', ['Dưới 100k', '100-300k', '300-500k', 'Trên 500k'], ['Under 100k', '100-300k', '300-500k', 'Over 500k']))
@@ -507,7 +526,9 @@ function foodView(t: Txt, gps: boolean): SlotView {
   if (!mode) assumptions.push('Ăn tại quán')
   if (!area) assumptions.push(gps ? 'Gần vị trí của bạn' : 'Khu trung tâm')
   const what = dish ? `quán ${dish.place ? dish.label.replace(/^quán /, '') : dish.label}` : 'quán'
-  return { known, count, enough: count >= 3, missing, queryParts, area: area && area !== 'gần bạn' ? area : undefined, assumptions,
+  // AI-Hay pass: a place to look (GPS or a named area) plus any ONE criterion is enough to search — "trưa nay có món gì ngon", "100k quận 1", "quán bún bò ở quận 3".
+  const searchable = !!(area || gps) && !!(dish || budget || time || vibe)
+  return { known, count, enough: count >= 3 || searchable, missing, queryParts, area: area && area !== 'gần bạn' ? area : undefined, assumptions,
     lead: { vi: `Để chọn đúng ${what}${area && area !== 'gần bạn' ? ` ở ${area}` : ''} cho bạn:`, en: 'To pick the right place for you:' } }
 }
 
@@ -520,7 +541,7 @@ function shoppingView(t: Txt): SlotView {
   const purposeKnown = fam.purpose ? (grab(t, fam.purpose.known) ?? (fam.id === 'laptop' ? null : purpose)) : purpose
   const model = /\b(?:iphone|ip|galaxy|pixel)?\s?(\d{2})\s?(pro max|pro|plus|ultra|mini)?\b/.exec(t.f)
   const known: Record<string, string> = { san_pham: fam.label }
-  if (fam.id.startsWith('case') && model) known.cho_may = `${model[1]}${model[2] ? ` ${model[2]}` : ''}`
+  if (ACCESSORY_FAMILY_IDS.has(fam.id) && model) known.cho_may = `${model[1]}${model[2] ? ` ${model[2]}` : ''}`
   if (lineKnown) known.dong = lineKnown
   if (budget) known.ngan_sach = budget
   if (mustKnown) known.yeu_cau = mustKnown
@@ -530,6 +551,8 @@ function shoppingView(t: Txt): SlotView {
   const missing: Q[] = []
   if (fam.id === 'iphone' && !lineKnown && !/\b(?:iphone|ip)\s?\d{2}\b/.test(t.f)) missing.push(q('line', 'Đời nào?', 'Which generation?', ['iPhone 14', 'iPhone 15', 'iPhone 16', 'iPhone 17'], ['iPhone 14', 'iPhone 15', 'iPhone 16', 'iPhone 17']))
   else if (fam.line && !lineKnown && fam.id !== 'laptop') missing.push(fam.line.q)
+  // The device an accessory must FIT is asked when the user named a brand but not the model («kính cường lực cho iphone»).
+  if ((fam.id === 'glass' || fam.id === 'charger') && !known.cho_may && /iphone/.test(t.f)) missing.unshift(q('device', 'Dùng cho iPhone nào?', 'Which iPhone is it for?', ['iPhone 17', 'iPhone 16', 'iPhone 15', 'iPhone đời khác'], ['iPhone 17', 'iPhone 16', 'iPhone 15', 'Another iPhone']))
   // Laptop: the use decides everything; the brand is only a preference (never asked first).
   if (fam.purpose && !purposeKnown && fam.id === 'laptop') missing.unshift(fam.purpose.q)
   if (!budget) missing.push(fam.budget)
@@ -540,7 +563,7 @@ function shoppingView(t: Txt): SlotView {
   const recipient = grab(t, /\b(?:cho|tang) (me|bo|sep|ban gai|ban trai|vo|chong|nguoi yeu|dong nghiep)\b/, 1) ?? grab(t, /\b(sep|ban gai|ban trai|me|bo)\b/, 1)
   const queryParts = fam.id === 'gift'
     ? ['quà tặng', recipient ?? '', interest ? `thích ${interest}` : '']
-    : [fam.id === 'case_uag' ? 'ốp UAG' : fam.label, fam.id.startsWith('case') && known.cho_may ? `iPhone ${cap(known.cho_may)}` : '', lineKnown ?? '', mustKnown ?? '', condition === 'cũ' ? 'cũ' : '', fam.id === 'laptop' && purposeKnown ? purposeKnown : '']
+    : [fam.id === 'case_uag' ? 'ốp UAG' : fam.label, ACCESSORY_FAMILY_IDS.has(fam.id) && known.cho_may ? `iPhone ${cap(known.cho_may)}` : '', lineKnown ?? '', mustKnown ?? '', condition === 'cũ' ? 'cũ' : '', fam.id === 'laptop' && purposeKnown ? purposeKnown : '']
   const assumptions: string[] = []
   if (!budget) assumptions.push('Tầm giá phổ biến')
   if (fam.condition && !condition) assumptions.push('Hàng mới chính hãng')
@@ -572,11 +595,26 @@ function travelView(t: Txt): SlotView {
   const DATE_Q = q('date', kind === 'flight' ? 'Ngày bay?' : 'Đi ngày nào?', kind === 'flight' ? 'Flight date?' : 'When are you going?', ['Cuối tuần này', 'Tuần sau', 'Tháng sau', 'Chưa chốt'], ['This weekend', 'Next week', 'Next month', 'Not fixed'])
   const PARTY_T = q('party', 'Mấy người?', 'How many people?', ['1 người', '2 người', 'Gia đình', 'Nhóm bạn'], ['1', '2', 'Family', 'Friends'])
   if (kind === 'flight' || kind === 'ticket') {
-    count = [date, flightTime, party].filter(Boolean).length
-    enough = !!date
+    // R25 (owner 30/09): a fare link is route + date, and the ask never asked where from — TP.HCM was assumed for everyone.
+    // A ticket to somewhere the user never left from is now ASKED, in the same card (the new frame, the `origin` question of
+    // the trip ask). "Từ …" options read back as "từ Hà Nội" (routeOf). The card holds 3 questions: date, origin, party first;
+    // the time of day cannot change a fare link, so it is asked last (and dropped when the card is full).
+    const needOrigin = kind === 'flight' && !origin
+    // 01/10 (owner, ca f): «bay từ HCM» names no destination — a ticket cannot be searched without one, so it is ASKED first.
+    const needDest = kind === 'flight' && !dest
+    count = [date, flightTime, party, kind === 'flight' ? origin : 'x', kind === 'flight' ? dest : 'x'].filter(Boolean).length
+    enough = !!date && !needOrigin && !needDest
+    if (needDest) {
+      const to = [['Đà Nẵng', 'Da Nang'], ['Hà Nội', 'Hanoi'], ['Phú Quốc', 'Phu Quoc'], ['TP.HCM', 'HCMC']].filter(([vi]) => vi !== origin).slice(0, 3)
+      missing.push(q('dest', 'Bay đến đâu?', 'Flying to?', [...to.map(([vi]) => `Đến ${vi}`), 'Đến nơi khác'], [...to.map(([, en]) => `To ${en}`), 'Somewhere else']))
+    }
     if (!date) missing.push(DATE_Q)
-    if (!flightTime) missing.push(q('time', kind === 'flight' ? 'Bay buổi nào?' : 'Đi buổi nào?', 'What time of day?', ['Sáng', 'Chiều', 'Tối'], ['Morning', 'Afternoon', 'Evening']))
+    if (needOrigin) {
+      const from = [['TP.HCM', 'HCMC'], ['Hà Nội', 'Hanoi'], ['Đà Nẵng', 'Da Nang']].filter(([vi]) => vi !== dest)
+      missing.push(q('origin', 'Bay từ đâu?', 'Flying from?', [...from.map(([vi]) => `Từ ${vi}`), 'Từ nơi khác'], [...from.map(([, en]) => `From ${en}`), 'Somewhere else']))
+    }
     if (!party) missing.push(PARTY_T)
+    if (!flightTime) missing.push(q('time', kind === 'flight' ? 'Bay buổi nào?' : 'Đi buổi nào?', 'What time of day?', ['Sáng', 'Chiều', 'Tối'], ['Morning', 'Afternoon', 'Evening']))
   } else if (kind === 'hotel') {
     count = [date || days, party, budget, style].filter(Boolean).length
     enough = !!(date || days) && count >= 3
@@ -587,13 +625,16 @@ function travelView(t: Txt): SlotView {
   } else {
     const others = [party, budget, style, transport].filter(Boolean).length
     count = [date || days, origin].filter(Boolean).length + others
-    enough = !!(date || days) && !!origin && (!!dest || others >= 2)
+    // 01/10 (owner, ca a): «Mùa này đi du lịch ở đâu» asks the KIND of destination first (sea / mountains / city / abroad);
+    // with neither a place nor a kind there is nothing to search, so no search runs (A2: no Serper/Places on an open question).
+    enough = !!(date || days) && !!origin && (!!dest || !!style)
+    if (!dest && !style) missing.push(q('style', 'Bạn thích kiểu điểm đến nào?', 'What kind of destination?', ['Biển', 'Núi', 'Thành phố', 'Nước ngoài'], ['Beach', 'Mountains', 'City', 'Abroad']))
     if (!date) missing.push(days ? q('date', 'Đi ngày nào?', 'When are you going?', ['Cuối tuần này', 'Tuần sau', 'Tháng sau', 'Chưa chốt'], ['This weekend', 'Next week', 'Next month', 'Not fixed'])
       : q('date', 'Đi khi nào, mấy ngày?', 'When and how long?', ['Cuối tuần 2N1Đ', '3N2Đ', '4-5 ngày', 'Chưa chốt'], ['Weekend 2D1N', '3D2N', '4-5 days', 'Not fixed']))
     if (!origin) missing.push(q('origin', 'Xuất phát từ đâu?', 'Leaving from?', ['TP.HCM', 'Hà Nội', 'Đà Nẵng', 'Nơi khác'], ['HCMC', 'Hanoi', 'Da Nang', 'Elsewhere']))
     if (!party) missing.push(PARTY_T)
     if (!budget) missing.push(q('budget', 'Ngân sách cả chuyến?', 'Total budget?', ['Dưới 3tr', '3-7tr', '7-15tr', 'Trên 15tr'], ['Under 3M', '3-7M', '7-15M', 'Over 15M']))
-    if (!style) missing.push(q('style', 'Thích kiểu gì?', 'What style?', ['Biển', 'Núi', 'Ăn uống', 'Nghỉ dưỡng'], ['Beach', 'Mountains', 'Food', 'Resort']))
+    if (!style && dest) missing.push(q('style', 'Thích kiểu gì?', 'What style?', ['Biển', 'Núi', 'Ăn uống', 'Nghỉ dưỡng'], ['Beach', 'Mountains', 'Food', 'Resort']))
     if (!transport) missing.push(q('transport', 'Đi bằng gì?', 'How will you travel?', ['Máy bay', 'Xe khách', 'Xe riêng'], ['Fly', 'Bus', 'Drive']))
     // A trip with a set destination needs dates before the rest; an open "đi đâu" ask leads with taste.
   }
@@ -694,6 +735,20 @@ function spaView(t: Txt, gps: boolean): SlotView {
     lead: { vi: svcKnown ? `Để chọn đúng chỗ ${svc!.label} cho bạn:` : 'Để chọn đúng chỗ thư giãn cho bạn:', en: 'To pick the right place for you:' } }
 }
 
+/**
+ * AI-Hay pass: the intent model (not the rules) decided "ask" for a request the rules did not recognise ("trưa nay có món gì ngon", "100k quận 1"). The same sufficiency
+ * the rules use now decides it: a place to look (GPS / named area) + one criterion is enough, so the turn becomes a pick and the search runs. Null = keep the ask.
+ */
+export function searchableAsPick(d: ConsultDecision, userTexts: readonly string[], hasGps: boolean): ConsultDecision | null {
+  if (d.turn !== 'ask' || !d.ask || d.ask.questions[0]?.id === 'domain') return null
+  const domain = d.domains[0]
+  if (domain !== 'food' && domain !== 'entertainment' && domain !== 'spa') return null
+  const text = userTexts.slice(-4).join(' . ')
+  const view = slotView(domain, text, hasGps)
+  if (!view.enough) return null
+  return { ...d, turn: 'pick', ask: undefined, known: { ...d.known, ...view.known }, assumptions: view.assumptions, query: joinQuery(view.queryParts), ...(view.area ? { area: view.area } : {}) }
+}
+
 export function slotView(domain: ConsultDomain, text: string, gps: boolean): SlotView {
   const t = prep(text)
   switch (domain) {
@@ -717,6 +772,15 @@ const QUESTION_RE = /\?|\b(?:khong|ko|hong|chua|bao lau|bao nhieu|may|gi|sao|nao
 
 const BUTTON_MORE = new Set(['xem them', 'goi y them', 'con cho nao khac', 'show more', 'more'])
 const BUTTON_PLAN = new Set(['len ke hoach chi tiet', 'len ke hoach', 'ok chot', 'chot', 'plan it', 'make a detailed plan'])
+
+/**
+ * A UI contract text — a quick-reply button ("Xem thêm", "Lên kế hoạch chi tiết"), a greeting or thanks.
+ * These stay on code under CONSULT_LUNA (no model reads a button press).
+ */
+export function isFixedPhrase(raw: string): boolean {
+  const fq = prep(raw).f.replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim()
+  return BUTTON_MORE.has(fq) || BUTTON_PLAN.has(fq) || GREETING.test(fq)
+}
 
 const GENERIC_NAME_PREFIX = /^(?:karaoke|quan|nha hang|spa|khach san|tiem|salon|cafe|ca phe|hotel|resort|homestay|chuyen bay|hang|cua hang|shop|bar|pub|rap|cgv|trung tam|tiem nail|nail|barber|op|vietjet|vietnam airlines|bamboo)\s+/
 
@@ -774,8 +838,67 @@ function namesIn(t: Txt, names: string[]): string[] {
 
 // ── The router ─────────────────────────────────────────────────────────────────────────────────
 
+// ── Phase 3A / D9: a message that is ONLY decision state names no domain — ask which one, never guess ─────────
+// Contract: docs/audit/PHASE-3-IMPLEMENTATION-SPECIFICATION.md 3A.9 ("D9 rule text"). A message is *state-only* when it carries decision
+// state (budget, priority, dismissed priority, balance, mandatory / avoid wording) and EVERY word of it is state vocabulary. Anything that
+// carries a content word this vocabulary does not know is left to the existing path: the router invents nothing.
+const STATE_WORDS = new Set((
+  // budget
+  // "không quá 500k" (a hard-ceiling phrase `extractBudget` itself reads) was missing: `qua`
+  'ngan sach duoi tren khoang tam toi da qua thieu tang giam len xuong co the tong cong moi nguoi k tr m trieu nghin vnd dong ' +
+  // priority / importance / balance
+  'gia re tiet kiem quan trong uu tien can bang chat luong ngon tot nhat rat cung hon kha khong chang ko chua phai la va nhung muon minh toi em anh cho thi hay ' +
+  // mandatory / avoid wording and the registry constraint words
+  'bat buoc co mu cay chay an the thieu nhat dinh chap nhan neu wifi ' +
+  // english
+  'price budget cheap quality important matters matter balance balanced under around about and but not the is are must have need want prefer priority').split(' '))
+
+function stateOnlyNoDomain(t: Txt, userText: string): boolean {
+  const need = deriveNeedProfile([{ role: 'user', content: userText }])
+  const hasState = need.budget !== null || need.priorities.length > 0 || !!need.dismissed || !!need.tradeoff || !!need.constraints
+    || need.mustHave.length > 0 || need.avoid.length > 0
+  if (!hasState) return false
+  const words = t.f.replace(/[^a-z0-9 ]+/g, ' ').split(/\s+/).filter(Boolean)
+  return words.length > 0 && words.every(w => /^\d+(?:k|tr|m|trieu|nghin|ngan)?$/.test(w) || STATE_WORDS.has(w))
+}
+
+/**
+ * SUFFICIENCY (Phase 3A, owner confirmation): the clarification gate measures whether there is enough decision information to proceed, not only
+ * whether the old fixed slots are filled. An EXPLICIT user-stated priority is a valid decision criterion: "ưu tiên tiết kiệm", "ưu tiên chất
+ * lượng", "giá quan trọng", a comparative ("rẻ hơn"), or a balance statement ("cân bằng giá và chất lượng"). Not counted: a bare descriptive
+ * mention (weight 1), a damped comparative loser, a stored preference, and a DISMISSED priority ("giá không quan trọng" is not a positive
+ * criterion). The existing `enough` rule is untouched — this only adds a second way to be sufficient; the threshold is not lowered for anything else.
+ */
+export function hasExplicitPriority(userText: string): boolean {
+  const need = deriveNeedProfile([{ role: 'user', content: userText }])
+  return hasExplicitPriorityState(need)
+}
+
+/**
+ * Release-gate fix (UAT-29/61/62): a message that (re)states or dismisses a decision priority is a new decision, not a question about the shown picks.
+ * "Thôi giá không quan trọng, ưu tiên chất lượng." contains "không", which QUESTION_RE reads as a question, so it was routed as a follow-up with no
+ * re-ranking and the old priority stayed active.
+ */
+function changesPriority(userText: string): boolean {
+  const need = deriveNeedProfile([{ role: 'user', content: userText }])
+  return hasExplicitPriorityState(need) || (need.dismissed?.length ?? 0) > 0
+}
+
+function domainAsk(lang: string): NonNullable<ConsultDecision['ask']> {
+  const en = lang === 'en'
+  return {
+    lead: '',
+    questions: [en
+      ? { id: 'domain', q: 'What are you looking for?', options: ['Food', 'Shopping', 'Travel', 'Entertainment / Spa'] }
+      : { id: 'domain', q: 'B\u1ea1n \u0111ang mu\u1ed1n t\u00ecm g\u00ec?', options: ['\u0102n u\u1ed1ng', 'Mua s\u1eafm', 'Du l\u1ecbch', 'Gi\u1ea3i tr\u00ed / Spa'] }],
+  }
+}
+
 function toAsk(view: SlotView, lang: string, domains: ConsultDomain[]): ConsultDecision['ask'] | undefined {
   const en = lang === 'en'
+  // The router still ranks up to three open questions (its existing order, and the gate: a card needs two). Phase 3A / D2: the card that is
+  // finally SHOWN carries exactly one — the first of them — and `refineAsk` (echoQuestion.ts) is the single place that enforces it, whoever
+  // produced the card (router, intent call or brain).
   const qs: AskQuestion[] = view.missing.slice(0, 3).map(m => ({ id: m.id, q: en ? m.en : m.vi, options: (en ? m.oEn : m.o).slice(0, 4) }))
   if (qs.length < 2) return undefined
   let lead = en ? view.lead.en : view.lead.vi
@@ -872,7 +995,16 @@ function routeTurn(turns: Msg[], ui: number, thread: Thread, ctx: RouteCtx): Tur
     // A sentence that POINTS at something in this thread ("Cái thứ hai có bao gồm ăn sáng không?") is about it, never a new
     // request — UAT §10 T3 (30/09, level B): "ăn sáng" read as the food area and a hotel question got a restaurant.
     const fresh = cur.domains.length > 0 && !thread.domains.some(d => cur.domains.includes(d)) && cur.hits.some(h => h.w >= 3) && !(inThread && DEICTIC_RE.test(t.f))
-    if (fresh) return { result: pickFrom(cur.domains, userText, 'pick'), thread: { domains: cur.domains, start: ui } }
+    if (fresh) {
+      // D9: the answer to the domain question ("an uong") is read together with the state-only message it answered, so the
+      // budget / priority the user stated is not lost to the slot reader.
+      let askAt = -1
+      for (let i = ui - 1; i >= 0; i--) if (turns[i].role === 'assistant') { askAt = i; break }
+      let priorUser = ''
+      for (let i = askAt - 1; i >= 0; i--) if (turns[i].role === 'user') { priorUser = stripMarkers(textOf(turns[i].content)).trim(); break }
+      const carry = !inThread && priorUser !== '' && detectAreas(priorUser).domains.length === 0 && stateOnlyNoDomain(prep(priorUser), priorUser)
+      return { result: pickFrom(cur.domains, carry ? `${priorUser} . ${userText}` : userText, 'pick'), thread: { domains: cur.domains, start: ui } }
+    }
     if (!inThread) return keep({ turn: 'pick', domains: cur.domains }, 'unsure')
     return { result: pickFrom(thread.domains, threadText(thread.start), 'pick'), thread }
   }
@@ -894,6 +1026,10 @@ function routeTurn(turns: Msg[], ui: number, thread: Thread, ctx: RouteCtx): Tur
       const refers = refs.length >= 2 ? refs : refs.length === 1 ? [refs[0], ...names.filter(n => n !== refs[0]).slice(0, 1)] : pairRefs.length ? pairRefs : names.slice(0, 2)
       return keep({ domains, turn: 'compare', refers })
     }
+    // A restated / dismissed priority about no particular shown pick re-decides the same thread (the profile reads every user turn; the latest wins).
+    // "không cần rẻ" is a DISMISSAL (it trips NEGATIVE_RE through "không cần"); "không thích / không hợp" is a rejection of a pick and keeps the reject path.
+    const dismissalIdiom = negative && /(?:^|\s)(?:khong|ko|k) can\b/.test(t.f) && !/(?:^|\s)(?:khong|ko|k|hong) (?:thich|hop|ung|muon)\b/.test(t.f)
+    if (!refs.length && !deictic && (!negative || dismissalIdiom) && !newArea && changesPriority(userText)) return { result: pickFrom(domains, threadText(thread.start), 'reject', { reprioritize: true }), thread }
     if ((refs.length || deictic) && isQ && !negative) return keep({ domains, turn: 'followup', refers: refs.length ? refs : names.slice(0, 1) })
     if (negative) return { result: pickFrom(domains, threadText(thread.start), 'reject', { rejectReason: userText.slice(0, 160) }), thread }
     if (refs.length) return keep({ domains, turn: 'followup', refers: refs })
@@ -908,13 +1044,22 @@ function routeTurn(turns: Msg[], ui: number, thread: Thread, ctx: RouteCtx): Tur
   // 4. A new request.
   if (!cur.domains.length) {
     if (GREETING.test(fq) || OUT_OF_SCOPE.test(t.f)) return keep({ turn: 'chat' })
+    // D9: decision state with no domain — one deterministic question, no retrieval, nothing invented.
+    if (!inThread && !KNOWLEDGE.test(t.f) && stateOnlyNoDomain(t, userText)) return keep({ turn: 'ask', domains: [], known: {}, ask: domainAsk(lang) })
     return keep({ turn: 'chat' }, 'unsure')
   }
   const domains = cur.domains
   const conf: RouteConfidence = cur.conflict ? 'unsure' : 'rule'
   if (KNOWLEDGE.test(t.f)) return start({ domains, turn: 'chat', known: slotView(domains[0], userText, ctx.hasGps).known }, conf)
-  const view = slotView(domains[0], userText, ctx.hasGps)
-  const ask = view.enough ? undefined : toAsk(view, lang, domains)
+  // Final fix (benchmark H04): when the FIRST turn that names a domain follows earlier turns that stated slots ("Đi 4 người." / "Có 2 trẻ em." /
+  // then "Ngân sách khoảng 1 triệu, muốn món Việt."), sufficiency was measured on the last message alone and the router asked again for what the
+  // user had already said. Outside a thread no earlier turn named a domain, so every earlier user turn is plain state the user stated; their own words
+  // (never an assistant name) join the slot reader. Nothing is invented and the sufficiency rule itself is unchanged.
+  const priorState = !inThread ? turns.slice(0, ui).filter(m => m.role === 'user').map(m => unquote(stripMarkers(textOf(m.content))).trim()).filter(Boolean).slice(-4) : []
+  const stateText = [...priorState, userText].join(' . ')
+  const view = slotView(domains[0], stateText, ctx.hasGps)
+  // Owner (3A): a stated explicit priority is a valid decision criterion for sufficiency (see `hasExplicitPriority`).
+  const ask = view.enough || hasExplicitPriority(stateText) ? undefined : toAsk(view, lang, domains)
   if (!ask) return start({ domains, turn: 'pick', known: view.known, assumptions: view.assumptions, query: joinQuery(view.queryParts), ...(view.area ? { area: view.area } : {}) }, conf)
   return start({ domains, turn: 'ask', known: view.known, ask, ...(view.area ? { area: view.area } : {}) }, conf)
 }

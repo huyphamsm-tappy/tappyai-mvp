@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"ViDa Cafe | CÀ PHÊ NGON QUẬN 3 | CÀ PHÊ SÀI GÒN QUẬN 3\" OR \"Café Slow\" OR \"Cooku’s nest café\" quan 3 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:53:46.082Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"ViDa Cafe | CÀ PHÊ NGON QUẬN 3 | CÀ PHÊ SÀI GÒN QUẬN 3\" OR \"Café Slow\" OR \"Cooku’s nest café\" quan 3 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Café Slow: Nơi Thư Giãn Tại Quận 3, TP.HCM",
+    "link": "https://www.tiktok.com/@duhichuyen/video/7341036724841123079",
+    "snippet": "CAFÉ SLOW • 7:00 - 19:00 • 27/63A Huỳnh Tịnh Của, Phường 8, Quận 3, TP.HCM. Café Slow: Nơi Thư Giãn Tại Quận 3, TP.HCM. Khám phá Café Slow ở ...",
+    "position": 1
+   },
+   {
+    "title": "Café Slow",
+    "link": "https://www.tiktok.com/discover/caf%C3%A9-slow",
+    "snippet": "Khám phá Café Slow, quán cà phê yên tĩnh lý tưởng cho thư giãn giữa phố Sài Gòn. Thưởng thức không gian đẹp và dịch vụ tận tình!",
+    "position": 2
+   },
+   {
+    "title": "Review Quán Cà Phê SLOW ở Quận 2, Sài Gòn",
+    "link": "https://www.tiktok.com/@foodbyphuc/video/7450122204798373128",
+    "snippet": "✨CAFÉ SLOW✨ Chung cư Estella 1, Phường An Phú, Quận 2 ----------------------- Một chiếc quán nhỏ nhắn xinh xắn ở Quận 2.",
+    "position": 3
+   },
+   {
+    "title": "Café Slow - Quán cà phê ẩn mình ở Sài Gòn",
+    "link": "https://www.tiktok.com/@dailycafe.hcmc/photo/7682365643185868052",
+    "snippet": "Quán còn có những chú chó Pug đáng yêu. Keywords: Café Slow,quán cà phê ẩn mình,cà phê Sài Gòn,bánh ngon,không gian ấm cúng,chó Pug. This is ...",
+    "position": 4
+   },
+   {
+    "title": "Café Slow Hội An: Quán Cà Phê Chill Ở Thôn Trà Quế",
+    "link": "https://www.tiktok.com/@dailangthangart/video/7289763793104653573",
+    "snippet": "Quán nằm ở thôn Trà Quế, mang lại cảm giác yên bình và khác biệt so với những quán cà phê trung tâm. Không gian của Café Slow Hội An được nhiều ...",
+    "position": 5
+   },
+   {
+    "title": "Café Slow - Estella 📍 The Estella 1, đường 25, phường An Phú, ...",
+    "link": "https://www.tiktok.com/@cafehoppersg/photo/7387232592321350930?image_index=4&lang=ro-RO",
+    "snippet": "Café Slow - Estella The Estella 1, đường 25, phường An Phú, Thủ Đức, TpHCM 6:30 am - 6 pm Nằm ngay tầng trệt khu căn hộ cao cấp Estella 1, ...",
+    "position": 6
+   },
+   {
+    "title": "Cafe Slow Thảo Điền Quận 2: Review Quán Chill Làm Việc",
+    "link": "https://www.tiktok.com/@dichoicunghong/video/7400004452784147713",
+    "snippet": "Café Slow Thao Dien nằm tại Chung cư Estella 1, Phường An Phú, Quận 2 là một quán nhỏ nhắn nhưng rất dễ thương. Không gian gọn gàng, ấm cúng nên ...",
+    "position": 7
+   },
+   {
+    "title": "Café Slow - Estella 📍 The Estella 1, đường 25, phường An Phú, ...",
+    "link": "https://www.tiktok.com/@cafehoppersg/photo/7387232592321350930?image_index=1&lang=uk-UA",
+    "snippet": "Café Slow - Estella The Estella 1, đường 25, phường An Phú, Thủ Đức, TpHCM 6:30 am - 6 pm Nằm ngay tầng trệt khu căn hộ cao cấp Estella 1, ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"INE TEPPANYAKI & SUSHI\" OR \"Haru Sushi Quận 1\" OR \"MAGURO Studio\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:00:24.225Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"INE TEPPANYAKI & SUSHI\" OR \"Haru Sushi Quận 1\" OR \"MAGURO Studio\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ine Teppanyaki & Sushi - Omakase chỉ từ 549k ...",
+    "link": "https://www.tiktok.com/@journeyswithrosie/video/7650117707370630420",
+    "snippet": "Ine Teppanyaki & Sushi - Omakase chỉ từ 549k @Ine Teppanyaki & Sushi 87 Yersin, Phường Cầu Ông Lãnh, Quận 1, TP.HCM 11:30 – 14:00 ...",
+    "position": 1
+   },
+   {
+    "title": "Ine Teppanyaki & Sushi – Omakase dưới 1 triệu đồng ...",
+    "link": "https://www.tiktok.com/@journeyswithrosie/video/7565875008015306002",
+    "snippet": "Ine Teppanyaki & Sushi – Omakase dưới 1 triệu đồng @ine.teppanyaki_sushi 87 Yersin, Phường Cầu Ông Lãnh, Quận 1, TP.HCM 11:30 – 14 ...",
+    "position": 2
+   },
+   {
+    "title": "Trải Nghiệm Omakase Tại Ine Teppanyaki & Sushi",
+    "link": "https://www.tiktok.com/@_rosiethefoodie_/photo/7582946757319986440",
+    "snippet": "... Ine Teppanyaki & Sushi 87 Yersin, Phường Cầu Ông Lãnh, Quận 1, TP. ... Ôi quán ruột, một quán mà nhiều người khen, ngon, ấm cúng và tử tế ...",
+    "position": 3
+   },
+   {
+    "title": "Khám Phá Món Ngon tại INE Teppanyaki & Sushi",
+    "link": "https://www.tiktok.com/@chang.jany/video/7587304738375486738",
+    "snippet": "Khám Phá Món Ngon tại INE Teppanyaki & Sushi. Đến INE Teppanyaki & Sushi để thưởng thức set menu hảo hạng với sự kết hợp hoàn hảo giữa ...",
+    "position": 4
+   },
+   {
+    "title": "Trải nghiệm hải sản Nhật thú vị tại Ine - Teppanyaki & Sushi",
+    "link": "https://www.tiktok.com/@dancychun/video/7562480080375532808",
+    "snippet": "Trải nghiệm hải sản Nhật thú vị tại Ine - Teppanyaki & Sushi. Khám phá hải sản Nhật với màn trình diễn hấp dẫn tại Ine - Teppanyaki & Sushi!",
+    "position": 5
+   },
+   {
+    "title": "Haru Sushi Quận 1 (@harusushinguyenthaihoc)",
+    "link": "https://www.tiktok.com/@harusushinguyenthaihoc",
+    "snippet": "Haru Sushi Quận 1 (@harusushinguyenthaihoc) trên TikTok |6090 Lượt thích.91 Follower.HARU SUSHI - 93 NGUYỄN THÁI HỌC, PHƯỜNG CẦU ÔNG LÃNH, QUẬN 1.",
+    "position": 6
+   },
+   {
+    "title": "📍Shio Omakase Saigon Marina IFC ❤️ # ...",
+    "link": "https://www.tiktok.com/@mommi.sushi/video/7578368021102595348",
+    "snippet": "Nhà hàng Ine Teppanyaki & Sushi nằm tại địa chỉ 87 Yersin, Phường Cầu Ông Lãnh, Quận 1, TP.HCM, mở cửa phục vụ từ 11:30 đến 14:00 và từ 18 ...",
+    "position": 7
+   },
+   {
+    "title": "Bữa Trưa Chuẩn Nhật Tại Ine Teppanyaki & Sushi",
+    "link": "https://www.tiktok.com/@hakhoicouple/video/7459264549938564370",
+    "snippet": "Ẩm thực Nhật Bản đích thực tại INE Teppanyaki & Sushi ! Hôm nay mình và người yêu đã có một buổi hẹn hò ăn trưa siêu chất lượng tại INE ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Massage Tĩnh Viên\" OR \"Trải nghiệm Ha Spa & Massage tại Quận 1\" OR \"La Maison Spa Sài Gòn\" sai gon site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:28:39.568Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Massage Tĩnh Viên\" OR \"Trải nghiệm Ha Spa & Massage tại Quận 1\" OR \"La Maison Spa Sài Gòn\" sai gon site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Massage Tĩnh Viên #theotheoriviu #vtmgr #Learnontiktok ...",
+    "link": "https://www.tiktok.com/@theotheoriviu/video/7641437053804186900",
+    "snippet": "Tất Physio Massage Trị Liệu · Massage Healing · Massage Trị Liệu Đà Lạt. Massage Tĩnh Viên #theotheoriviu #vtmgr #Learnontiktok #massage.",
+    "position": 1
+   },
+   {
+    "title": "Playlist Massage n Nails 👩🏻‍🦰 created by @theotheoriviu",
+    "link": "https://www.tiktok.com/@theotheoriviu/playlist/Massage%20n%20Nails%20%F0%9F%91%A9%F0%9F%8F%BB%E2%80%8D%F0%9F%A6%B0-7614088064235539221",
+    "snippet": "Massage Tĩnh Viên #theotheoriviu #vtmgr #Learnontiktok #massage. 23K views.",
+    "position": 2
+   },
+   {
+    "title": "Review Massage Từ A Đến Z Sài Gòn",
+    "link": "https://www.tiktok.com/discover/review-massage-t%E1%BB%AB-a-%C4%91%E1%BA%BFn-z-s%C3%A0i-g%C3%B2n",
+    "snippet": "Khám phá các video liên quan đến Review Massage Từ A Đến Z Sài Gòn trên TikTok. ... Massage Tĩnh Viên #theotheoriviu #vtmgr #Learnontiktok # ...",
+    "date": "14 thg 9, 2026",
+    "position": 3
+   },
+   {
+    "title": "tỉnhspa",
+    "link": "https://www.tiktok.com/tag/t%E1%BB%89nhspa",
+    "snippet": "#massagetherapy #massage #Massage Tĩnh Viên #viraltiktok do Thanh Nhàn tạo với bản ... Trải Nghiệm Spa Massage Dưỡng Sinh Tân Bình - Sài Gòn HCM #1phutsaigon # ...",
+    "position": 4
+   },
+   {
+    "title": "Massage O Sai Gon",
+    "link": "https://www.tiktok.com/discover/massage-o-sai-gon",
+    "snippet": "Massage Tĩnh Viên #theotheoriviu #vtmgr #Learnontiktok · âm thanh gốc - Thẻo Thẻo · Massage Trị Liệu Thuần Việt Mỹ Tho · Massage Trị Liệu Đà ...",
+    "date": "7 thg 9, 2026",
+    "position": 5
+   },
+   {
+    "title": "Massage Cổ Truyền Sài Gòn",
+    "link": "https://www.tiktok.com/discover/massage-c%E1%BB%95-truy%E1%BB%81n-s%C3%A0i-g%C3%B2n",
+    "snippet": "TikTok video from Massage Tĩnh Viên (@massagetinhvien). 253.1K1 tuần trước. massagetinhvien. Massage Tĩnh Viên. \"NGHIỆN\" ẤN HUYỆT, \"MÊ\" MIẾT CƠ ...",
+    "date": "17 thg 8, 2026",
+    "position": 6
+   },
+   {
+    "title": "Một chiếc clip sẽ hữu ích cho những ai hay đau cổ vai gáy ...",
+    "link": "https://www.tiktok.com/@chamdidau/video/7256401642579381510",
+    "snippet": "Massage Tĩnh Viên. 190 · recommend-cover. sức khoẻ của bạn. 471 · recommend ... Khám phá một trong những spa tuyệt nhất tại Sài Gòn với dịch vụ ...",
+    "position": 7
+   },
+   {
+    "title": "Massage Vip Hcmc Review",
+    "link": "https://www.tiktok.com/discover/massage-vip-hcmc-review",
+    "snippet": "Khám phá trải nghiệm spa VIP sang trọng tại Sài Gòn với liệu pháp massage và ẩm thực bổ dưỡng! ... Massage Tĩnh Viên #theotheoriviu · âm thanh gốc ...",
+    "date": "24 thg 8, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

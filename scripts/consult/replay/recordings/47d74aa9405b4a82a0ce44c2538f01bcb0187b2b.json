@@ -1,0 +1,303 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "điểm tham quan du lịch Núi Ba Vì Núi Ba Vì Ha Noi",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@21.0285,105.8542,12z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:58:55.215Z",
+ "body": {
+  "searchParameters": {
+   "q": "điểm tham quan du lịch Núi Ba Vì Núi Ba Vì Ha Noi",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@21.0285,105.8542,12z",
+   "engine": "google"
+  },
+  "ll": "@21.0283289,105.8541957,12z",
+  "places": [
+   {
+    "position": 1,
+    "title": "KARAOKE OCD GROUP",
+    "address": "33 La Thành, Ô Chợ Dừa, Hà Nội, Việt Nam",
+    "latitude": 21.019321599999998,
+    "longitude": 105.8292085,
+    "rating": 4.9,
+    "ratingCount": 133,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn16etJeKgBo83Kk_7Z_6xKqedxXx_W3xg4w53oKv0tKQ1Z6bzi5yOHZt5tHVvr_SRTBAu30qi3wSfpCR1zLKfGfKbfGjX_HDgkIwidFPHiCHrVO_xjJt7clQ6ATJSt_0xzug-F",
+    "cid": "8358360908876835025",
+    "fid": "0x314a89b2c18ad487:0x73fedcf64e1d68d1",
+    "placeId": "ChIJh9SKwbKJSjER0WgdTvbc_nM"
+   },
+   {
+    "position": 2,
+    "title": "Bãi Đá Sông Hồng",
+    "address": "Ngõ 264 Âu Cơ, Hồng Hà, Hà Nội 100000, Việt Nam",
+    "latitude": 21.078522,
+    "longitude": 105.8352668,
+    "rating": 4.3,
+    "ratingCount": 6912,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Vườn cộng đồng"
+    ],
+    "website": "https://baidasonghong.com/",
+    "phoneNumber": "+84 902 558 899",
+    "description": "Vườn hoa ven sông này là điểm đến yêu thích của nhiếp ảnh gia, nơi có hoa nở thường xuyên và một cối xay gió.",
+    "openingHours": {
+     "Thứ Tư": "07:00–23:00",
+     "Thứ Năm": "07:00–23:00",
+     "Thứ Sáu": "07:00–23:00",
+     "Thứ Bảy": "07:00–23:00",
+     "Chủ Nhật": "07:00–23:00",
+     "Thứ Hai": "07:00–23:00",
+     "Thứ Ba": "07:00–23:00"
+    },
+    "bookingLinks": [
+     "https://giaitriktv.com/san-pham/karaoke-bolero-148-nghi-tam/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnTxCbl5GZzqsRrmWp0dem_lEiHHjOOsKOXhQL8HhXyUbzxN5KgaeVrBpsjv-sdE6lKqDr1sPsOo0zOCdZ3X0GVhmtQ4DSNkL9eFaEs5w_2cQAYPDmEr3aD306xAfaIQaET30eQwA",
+    "cid": "14369368226010147160",
+    "fid": "0x3135aa6755e18ac1:0xc76a4044f61ea958",
+    "placeId": "ChIJwYrhVWeqNTERWKke9kRAasc"
+   },
+   {
+    "position": 3,
+    "title": "Cột cờ Hà Nội",
+    "address": "28A Điện Biên Phủ, Ba Đình, Hà Nội, Việt Nam",
+    "latitude": 21.0325556,
+    "longitude": 105.83980389999999,
+    "rating": 4.5,
+    "ratingCount": 2658,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Điểm mốc lịch sử"
+    ],
+    "website": "http://hoangthanhthanglong.com/",
+    "phoneNumber": "+84 848 455 222",
+    "description": "Công trình di tích lịch sử chiến tranh gồm tháp đá và lá cờ Việt Nam trong bảo tàng quân đội.",
+    "openingHours": {
+     "Thứ Tư": "08:00–17:00",
+     "Thứ Năm": "08:00–17:00",
+     "Thứ Sáu": "08:00–17:00",
+     "Thứ Bảy": "08:00–17:00",
+     "Chủ Nhật": "08:00–17:00",
+     "Thứ Hai": "08:00–17:00",
+     "Thứ Ba": "08:00–17:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlTmVnWsNKzpDqSi-woqgSmb_8WUxBJ849KCy-pBBrlJcCg4tcW6SDQ-CiotWVHHaWzpZxBE9AyGcq2bpngufgWeBkMbyoafeI8eTLeaveOEzdhVYzah1EOuGKsuP6ri231kIQXMQ",
+    "cid": "13289261682784701920",
+    "fid": "0x3135aba2ba5b95c5:0xb86cf11749978de0",
+    "placeId": "ChIJxZVbuqKrNTER4I2XSRfxbLg"
+   },
+   {
+    "position": 4,
+    "title": "Núi Trầm",
+    "address": "Chương Mỹ, Hà Nội, Việt Nam",
+    "latitude": 20.9402837,
+    "longitude": 105.6947787,
+    "rating": 4.4,
+    "ratingCount": 534,
+    "type": "Đỉnh núi",
+    "types": [
+     "Đỉnh núi"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk40YH8Vq3USibQBBW7NjFELjakjFROruA2KzbSquEmbVk3yoH41cGvtPUZlgNAPh_JffPIPFNy7aDzK_2d-146ue-IJxHptuyV36yQykyuzixSMxu9sEmmvmAYj2Q8nm40C89XNQ",
+    "cid": "14030235804922044319",
+    "fid": "0x31345204c1786aab:0xc2b5692113585f9f",
+    "placeId": "ChIJq2p4wQRSNDERn19YEyFptcI"
+   },
+   {
+    "position": 5,
+    "title": "Chùa Vô Vi",
+    "address": "WMRV+R5V, Chương Mỹ, Hà Nội, Việt Nam",
+    "latitude": 20.942100999999997,
+    "longitude": 105.69291969999999,
+    "rating": 4.6,
+    "ratingCount": 222,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Chùa phật giáo"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnV8WwCeE_ln1liPyZf3WmGk8AUAZGRG83npFvq4e8GqDcGDZee0Io6tFLJPhh-jr_WJP2YBEEj4mWNJgPnWd3YOHTFUhip1BAsmI5IYI6TQgqOZMP5lEQAG-42I1p1MoyuUh8DOA",
+    "cid": "4798739813611085090",
+    "fid": "0x3134521cc6d4e4f9:0x42988c6f87d01d22",
+    "placeId": "ChIJ-eTUxhxSNDERIh3Qh2-MmEI"
+   },
+   {
+    "position": 6,
+    "title": "Di tích lịch sử Cổ Loa",
+    "address": "Thôn Cổ Loa, Đông Anh, Hà Nội, Việt Nam",
+    "latitude": 21.112187499999997,
+    "longitude": 105.8714375,
+    "rating": 4.5,
+    "ratingCount": 3551,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Điện thờ",
+     "Điểm mốc lịch sử"
+    ],
+    "website": "https://thanhcoloa.vn/",
+    "phoneNumber": "+84 24 3295 9507",
+    "description": "Thành lũy kiên cố có tàn tích của đền thờ, tường thành và cung điện cổ xưa.",
+    "openingHours": {
+     "Thứ Tư": "07:30–11:30, 13:30–17:30",
+     "Thứ Năm": "07:30–11:30, 13:30–17:30",
+     "Thứ Sáu": "07:30–11:30, 13:30–17:30",
+     "Thứ Bảy": "07:30–11:30, 13:30–17:30",
+     "Chủ Nhật": "07:30–11:30, 13:30–17:30",
+     "Thứ Hai": "07:30–11:30, 13:30–17:30",
+     "Thứ Ba": "07:30–11:30, 13:30–17:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnJmu9lTDEczYdoAdpoSrcnwEGzePzdwZLjOg10hK3O6uT11bl8Z0ox62P8qWE59ipUBxz7PIPHXhVmoy-Nwjdr4v4mpG8gAz9B6K3wBWreaXOEc8XJfImywLDyODQ8Ssy34n5IuQ",
+    "cid": "10748477588497970910",
+    "fid": "0x313500b2ffacb0a3:0x952a436b3aab36de",
+    "placeId": "ChIJo7Cs_7IANTER3jarOmtDKpU"
+   },
+   {
+    "position": 7,
+    "title": "Đền Bà Kiệu",
+    "address": "59 Đinh Tiên Hoàng, French Quarter, Hoàn Kiếm, Hà Nội, Việt Nam",
+    "latitude": 21.031225799999998,
+    "longitude": 105.85351879999999,
+    "rating": 4.5,
+    "ratingCount": 218,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Nơi thờ cúng"
+    ],
+    "openingHours": {
+     "Thứ Tư": "08:00–11:30, 13:30–16:30",
+     "Thứ Năm": "08:00–11:30, 13:30–16:30",
+     "Thứ Sáu": "08:00–11:30, 13:30–16:30",
+     "Thứ Bảy": "08:00–11:30, 13:30–16:30",
+     "Chủ Nhật": "08:00–11:30, 13:30–16:30",
+     "Thứ Hai": "08:00–11:30, 13:30–16:30",
+     "Thứ Ba": "08:00–11:30, 13:30–16:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnGkTA6r3_VtW7iGjiNOGrdwDZ2oM-MBH6ymZ9Aktq1SVpXETDHF-BlAqEo9UAKuEpDZq4rtokibm_RwFk0G2zHcDqmF93VDsI5dnDH2DkKii90O7-0Kun_4o8bt4slvE3JwR4q",
+    "cid": "5077618054553636269",
+    "fid": "0x3135abc0109a1963:0x467752b7dec78dad",
+    "placeId": "ChIJYxmaEMCrNTERrY3H3rdSd0Y"
+   },
+   {
+    "position": 8,
+    "title": "Top One KTV",
+    "address": "168 P. Ngọc Khánh, Giảng Võ, Hà Nội 100000, Việt Nam",
+    "latitude": 21.0251537,
+    "longitude": 105.81870479999999,
+    "rating": 4.4,
+    "ratingCount": 3064,
+    "type": "Quán bar karaoke",
+    "types": [
+     "Quán bar karaoke"
+    ],
+    "website": "https://toponektv.com.vn/",
+    "phoneNumber": "+84 936 386 116",
+    "openingHours": {
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnzX5Z0SvOYi-mSQFrAYuInTYbSNQJXMEswNeJAjm49aZCErchY0w6VEdyflkPGy_gZpPmPGvwKZbWl-L3NKANaxhELJUiQ6Bu598Bn_5CJah4gEjoOsYuObUacC5hYakdMXnX0yt-HDztO",
+    "cid": "18130214214856611662",
+    "fid": "0x3134f5bd11ccd161:0xfb9b75c53a44174e",
+    "placeId": "ChIJYdHMEb31NDERThdEOsV1m_s"
+   },
+   {
+    "position": 9,
+    "title": "Xe 2 tầng Hà Nội - Hop on hop off bus Vietnam Sightseeing",
+    "address": "1 Tràng Tiền, Cửa Nam, Hà Nội, Việt Nam",
+    "latitude": 21.0237437,
+    "longitude": 105.85713919999999,
+    "rating": 4.8,
+    "ratingCount": 724,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "website": "https://vn-sightseeing.com/",
+    "phoneNumber": "+84 828 605 096",
+    "openingHours": {
+     "Thứ Tư": "09:00–20:00",
+     "Thứ Năm": "09:00–20:00",
+     "Thứ Sáu": "09:00–20:00",
+     "Thứ Bảy": "09:00–20:00",
+     "Chủ Nhật": "09:00–20:00",
+     "Thứ Hai": "09:00–00:00",
+     "Thứ Ba": "00:00–08:00, 09:00–20:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk2PMGxLi6Ugo9K4b4aLOqC4Lqs0Y-tlzeQfPcxfUnTyncsS0bCaT1bKeB9QRt5mIHVXnpNVH3Ioy4SoAhfyYLHiTvLXp1-Ra8cszVBJJ_bmCrfLsUfFsvPDUQUC89KBLxF8hzphA",
+    "cid": "12033859087941341133",
+    "fid": "0x3135ab006cd54b55:0xa700db1515d98fcd",
+    "placeId": "ChIJVUvVbACrNTERzY_ZFRXbAKc"
+   },
+   {
+    "position": 10,
+    "title": "Làng gốm Bát Tràng",
+    "address": "Đ. Bát Tràng, Bát Tràng, Hà Nội, Việt Nam",
+    "latitude": 20.974631499999997,
+    "longitude": 105.9133896,
+    "rating": 4.5,
+    "ratingCount": 1838,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "openingHours": {
+     "Thứ Tư": "08:30–18:00",
+     "Thứ Năm": "08:30–18:00",
+     "Thứ Sáu": "08:30–18:00",
+     "Thứ Bảy": "08:30–18:00",
+     "Chủ Nhật": "08:30–18:00",
+     "Thứ Hai": "08:30–18:00",
+     "Thứ Ba": "08:30–18:00"
+    },
+    "bookingLinks": [
+     "https://zalo.me/0971912404"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk32SNv8OZmw0r54_AN0kV4zh9KWZ1hu2Xbyd63piQCMGEkR1ob77KhyuhBB1H3hq7iLFNe6vRGUmO3VnhY6QO_VyftsdNYx8d0K76gnQ1kyG7IKpF7ABYeUbe1wEraeZIfIOBxpQ",
+    "cid": "843006742961621040",
+    "fid": "0x3135afa57ac82a29:0xbb2f62a917c8830",
+    "placeId": "ChIJKSrIeqWvNTERMIh8kSr2sgs"
+   },
+   {
+    "position": 11,
+    "title": "Đền Voi Phục",
+    "address": "362 P. Kim Mã, Giảng Võ, Hà Nội, Việt Nam",
+    "latitude": 21.030660599999997,
+    "longitude": 105.8042492,
+    "rating": 4.7,
+    "ratingCount": 427,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Điểm đến tôn giáo"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkboo8hAjSU8wN0-wpYi_ZORfjOk_7FPGfo4guMEl80mEyv3pxBFbhK_DF1Fm0tcUvro7ZcEIL_GKfkcfnsZUP-ON5q4WG5JzrgWx6UjmFhQ1L1BLFQyBxW9Yjho7gnUOJ1MI4T",
+    "cid": "15077190001394203006",
+    "fid": "0x3135ab69f884c831:0xd13cf06c842c397e",
+    "placeId": "ChIJMciE-GmrNTERfjkshGzwPNE"
+   }
+  ],
+  "credits": 3
+ }
+}

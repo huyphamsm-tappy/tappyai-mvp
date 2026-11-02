@@ -59,7 +59,10 @@ const FEATURES: ReadonlyArray<{ re: RegExp; label: string }> = [
 
 const NEG_RE = /(?:^|[\s,(*_])(khong|chua)\s+(co|cung cap|ho tro|phuc vu|kinh doanh)\s+((?:cong nghe|dich vu|phong|khu|cho|rap|phong chieu)\s+)?/g
 const CONFIRMED_NEG_RE = /(?:da |vua )?xac nhan\s+(?:la |rang )?/
-const CONDITIONAL_RE = /(?:^|[\s*_(])(?:neu|khi|hoi|xem|goi|kiem tra|chua (?:duoc )?xac nhan|khong (?:chac|xac nhan)|de chac chan)(?=\s)/
+// Already hedged by the model itself — "chưa cho biết X có …", "chưa có thông tin (xác nhận) X có …" (UAT Luna 30/09
+// ENT-1 t3 / SPA-1 t3: R4 turned them into "…chưa cho biết Karaoke Avatar mình chưa xác nhận được có phòng VIP").
+const HEDGE_SAME_CLAUSE = /(?:^|[\s*_(])(?:chua|khong) (?:co (?:thong tin|du lieu|bang chung)|cho biet|xac nhan|ro|thay|biet)[^,;.!?\n]{0,90}$/
+const CONDITIONAL_RE = /(?:^|[\s*_(])(?:neu|khi|hoi|xem|goi|kiem tra|chua (?:duoc )?xac nhan|khong (?:chac|xac nhan)|de chac chan|chua (?:cho biet|ro|thay|biet)|(?:chua|khong) co (?:thong tin|du lieu|bang chung)(?: (?:xac nhan|ve|cho biet))?)(?=\s)/
 /**
  * An indirect question, not a claim: "rạp NÀO có phòng IMAX" (measured round 6, golden T2 t2 — R4
  * turned "kết quả không xác nhận rõ rạp nào có phòng IMAX" into "rạp nào mình chưa xác nhận được có …").
@@ -174,7 +177,12 @@ export function guardUnsupportedClaims(text: string, ev: ClaimEvidence): Unsuppo
         if (!fm || fm.index! > 25) continue
         // The hedge must govern THIS claim (just before it) — measured round 6, c40 F8: "cũng có phòng
         // riêng nhưng chưa xác nhận được giá" hedges the PRICE; a sentence-wide check let the room pass.
-        if (CONDITIONAL_RE.test(f.slice(Math.max(0, start - 40), start))) continue
+        // …only within the claim's own sentence: a hedge in the sentence BEFORE says nothing about this one.
+        const sentenceTail = (w: string) => w.slice(Math.max(w.lastIndexOf('. '), w.lastIndexOf('! '), w.lastIndexOf('? '), w.lastIndexOf('; '), w.lastIndexOf('\n')) + 1)
+        if (CONDITIONAL_RE.test(sentenceTail(f.slice(Math.max(0, start - 40), start)))) continue
+        // A long venue name pushes the model's own hedge past 40 chars ("chưa có thông tin xác nhận QUÁN NHẬU NĂM ZUI có phòng
+        // riêng", UAT Luna 01/10 FOOD-3 t3): a hedge verb with NO clause break before the claim still hedges it.
+        if (HEDGE_SAME_CLAUSE.test(sentenceTail(f.slice(Math.max(0, start - 110), start)))) continue
         if (WHICH_BEFORE_RE.test(f.slice(0, verbStart))) continue
         // "cũng có X" → "mình chưa xác nhận được có X" (not "cũng mình chưa …").
         if (f.slice(Math.max(0, start - 5), start) === 'cung ') start -= 5
@@ -183,6 +191,17 @@ export function guardUnsupportedClaims(text: string, ev: ClaimEvidence): Unsuppo
         // Cut from the claim to the end of its clause; the conditional replaces it.
         const clauseEnd = (() => { const r = f.slice(start).search(/[,;.!?\n]|\s(?:va|nhung|hoac)\s/); return r === -1 ? f.length : start + r })()
         const claimed = s.slice(verbStart, verbEnd + fm.index! + fm[0].length)
+        // A PURPOSE clause ("Nên đến 19:00 để có phòng riêng") is not rewritten in place — that read "…để mình chưa
+        // xác nhận được có phòng riêng" (Luna 30/09 §7 b, FOOD-3 plan). The clause goes; the hedge is its own sentence.
+        if (f.slice(Math.max(0, start - 3), start) === 'de ') {
+          const head = s.slice(0, start - 3).replace(/[\s,]+$/, '')
+          const rest = s.slice(clauseEnd).replace(/^\s*(?:👍|🙂|😊)/u, '')
+          const end = /[.!?…]\s*$/.test(rest) ? '' : '.'
+          s = `${head}${rest}${end} Mình chưa xác nhận được ${claimed.replace(/^(?:có|cung cấp|chuyên)\s+/u, 'có ')}.`
+          rewritten.push('service')
+          f = foldAligned(s)
+          break
+        }
         s = `${s.slice(0, start)}mình chưa xác nhận được ${claimed.replace(/^(?:có|cung cấp|chuyên)\s+/u, 'có ')}${s.slice(clauseEnd).replace(/^\s*(?:👍|🙂|😊)/u, '')}`
         rewritten.push('service')
         f = foldAligned(s)

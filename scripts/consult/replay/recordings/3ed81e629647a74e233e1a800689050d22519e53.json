@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Khách sạn Novotel\" Đà Nẵng site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:05:55.434Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Khách sạn Novotel\" Đà Nẵng site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn Novotel tại Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/da-nang-novotel/hotels-c1356b5/",
+    "snippet": "Đặt khách sạn Novotel tại Đà Nẵng với giá từ 398.345₫ trên Trip.com. So sánh 1 chỗ nghỉ dựa trên vị trí, phòng ốc và đánh giá của khách.",
+    "position": 1
+   },
+   {
+    "title": "Novotel Danang Premier Han River Đánh giá của khách",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-1963544/novotel-danang-premier-han-river/review.html",
+    "snippet": "... khách sạn Novotel Danang Premier Han River.Chúng tôi vô cùng biết ơn khi biết được Quý khách đã có một kỳ nghỉ tuyệt vời và hài lòng với chất lượng dịch vụ ...",
+    "position": 2
+   },
+   {
+    "title": "Khách sạn Novotel Suites Hanoi - Giá cả và Ưu đãi 2026, ...",
+    "link": "https://vn.trip.com/hotels/hanoi-hotel-detail-5498372/novotel-suites-hanoi/",
+    "snippet": "Giờ nhận phòng tại Khách sạn Novotel Suites Hanoi bắt đầu từ 14:00, và giờ trả phòng là 12:00. Khách sạn Novotel Suites Hanoi có hồ bơi không? Có, Khách sạn ...",
+    "position": 3
+   },
+   {
+    "title": "Novotel Living Saigon South - Giá cả và Ưu đãi 2026, TP. ...",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-111586313/novotel-living-saigon-south/",
+    "snippet": "... khách sạn Novotel Living Saigon South). Giường cỡ lớn trong phòng chúng tôi khá rộng rãi và thoải mái. Tôi rất thích việc khách sạn này thân thiện với môi ...",
+    "position": 4
+   },
+   {
+    "title": "Các đánh giá Khách sạn Sun River",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-713702/sun-river-hotel/review.html",
+    "snippet": "Các đánh giá Khách sạn Sun River. 134-136 Bạch Đằng, Hải Châu, Đà Nẵng. 7 ... khách sạn Novotel Barcelona CornellaĐánh giá Premier Inn Dubai Dragon Mart ...",
+    "position": 5
+   },
+   {
+    "title": "Khách sạn Novotel Hanoi Thai Ha - Giá cả và Ưu đãi 2026, ...",
+    "link": "https://vn.trip.com/hotels/hanoi-hotel-detail-29630821/novotel-hanoi-thai-ha/",
+    "snippet": "Giờ nhận phòng tại Khách sạn Novotel Hanoi Thai Ha bắt đầu từ 14:00, và giờ trả phòng là 12:00. Khách sạn Novotel Hanoi Thai Ha có hồ bơi không? Có, Khách sạn ...",
+    "position": 6
+   },
+   {
+    "title": "Khách sạn Four Points tại Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/da-nang-four-points/hotels-c1356b1162/",
+    "snippet": "... Đà NẵngCác khách sạn gần Trường Đại học Đông Á. Các thương hiệu khách sạn. Khách Sạn JI Hotel Ở Hán TrungKhách Sạn Novotel Ở MelbourneKhách Sạn Hampton by ...",
+    "position": 7
+   },
+   {
+    "title": "Top khách sạn Novotel tốt nhất tại Rome với giá từ 2.688.474",
+    "link": "https://vn.trip.com/hotels/rome-novotel/hotels-c343b5/",
+    "snippet": "Đặt khách sạn Novotel tại Rome với giá từ 2.688.474₫ trên Trip.com. So sánh 2 chỗ nghỉ dựa trên vị trí, phòng ốc và đánh giá của khách.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

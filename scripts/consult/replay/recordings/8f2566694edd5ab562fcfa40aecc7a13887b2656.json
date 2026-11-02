@@ -1,0 +1,84 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hapaku Set 2 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:09:31.890Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hapaku Set 2 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "COMBO Tinh Dầu Tự Nhiên HAPAKU nguyên chất đậm đặc ...",
+    "link": "https://www.lazada.vn/products/combo-tinh-dau-tu-nhien-hapaku-nguyen-chat-dam-dac-10ml-huong-thom-mat-diu-cho-phong-tu-chon-mui-dien-trong-ghi-chu-i2491516695.html?srsltid=AU7gw4WwZ3FLlh6HH5cNW0h_EHJ2RlMib-_Y-khGBv9ZoDQRYKgk9_FP",
+    "snippet": "Tinh Dầu Bưởi: Kích thích mọc tóc, trị hói đầu giúp tóc dài bóng mượt hiệu quả; Giúp da căng mịn, chống lão hóa; Đặc biệt trị nám má hiệu quả; Trị đau đầu, viêm ...",
+    "position": 1
+   },
+   {
+    "title": "Combo quà tặng sức khỏe 20/11 từ thảo dược thiên nhiên ...",
+    "link": "https://www.lazada.vn/products/combo-qua-tang-suc-khoe-2011-tu-thao-duoc-thien-nhien-hapaku-doc-dao-y-nghia-danh-tang-thay-co-nhan-dat-theo-yeu-cau-i2065043174.html?srsltid=AU7gw4VQ6xOb9CbNEd0ViBARhgIhd8XFLU_WMm0q8P7ZS6_qgszKsGQy",
+    "snippet": "LazMall Combo quà tặng sức khỏe 20/11 từ thảo dược thiên nhiên Hapaku độc đáo, ý nghĩa dành tặng thầy cô - Nhận Đặt Theo Yêu Cầu.",
+    "rating": 5,
+    "ratingCount": 3,
+    "position": 2
+   },
+   {
+    "title": "Combo Túi Chườm Thảo Dược Hapaku Giảm Đau Mỏi ...",
+    "link": "https://www.lazada.vn/products/combo-tui-chuom-thao-duoc-hapaku-giam-dau-moi-lam-nong-bang-lo-vi-song-va-tinh-dau-tram-i2611250283.html?srsltid=AU7gw4WucDNvVWU9ds_No8AHXe1Thiyw2DuK1_0oAplLa5sYoAncTYvG",
+    "snippet": "Túi chườm thảo dược Vai gáy cổ Hapaku giúp nhanh chóng: Giảm đau, giảm căng cứng cơ, giảm co thắt trong các chứng bệnh mãn tính như: ...",
+    "position": 3
+   },
+   {
+    "title": "Túi Thơm Thảo Dược Tự Nhiên Hapaku Khử Mùi Phòng ...",
+    "link": "https://www.lazada.vn/products/tui-thom-thao-duoc-tu-nhien-hapaku-khu-mui-phong-ngu-tu-quan-ao-giup-thu-gian-i2568298005.html?srsltid=AU7gw4VtIrRI2lEGvsze9W6cIbZU-llEjw0f0a6-nVMA0BeT4LsRb2zE",
+    "snippet": "Túi thơm thảo dược tự nhiên Hapaku 500g, đa năng khử mùi phòng ngủ và tủ quần áo. Với hương thơm thảo dược đặc trưng, than ốp từ Việt Nam giúp thư giãn, ...",
+    "rating": 5,
+    "ratingCount": 8,
+    "position": 4
+   },
+   {
+    "title": "Đai Chườm Nóng Thảo Dược Hapaku Dùng Điện Giảm ...",
+    "link": "https://www.lazada.vn/products/dai-chuom-nong-thao-duoc-hapaku-dung-dien-giam-dau-vai-gay-co-gian-co-tang-tuan-hoan-mau-i991136680.html?srsltid=AU7gw4UbRkokIVT6lIzOEWcdUO0udxZmfvKvrIgWYmmznsb3dqNgU8u7",
+    "snippet": "Đai chườm nóng thảo dược Hapaku - giải pháp giảm đau vai gáy hiệu quả từ thảo dược truyền thống. Sản phẩm an toàn với nguồn điện 24V, bảo hành 6 tháng, ...",
+    "rating": 5,
+    "ratingCount": 62,
+    "position": 5
+   },
+   {
+    "title": "Đai Quấn Nóng Giảm Mỡ Bụng - Hapaku Giảm Béo Nhiệt ...",
+    "link": "https://www.lazada.vn/products/dai-quan-nong-giam-mo-bung-hapaku-giam-beo-nhiet-hong-ngoai-co-muc-chinh-nhiet-do-i2565952317.html?srsltid=AU7gw4XPEQMbX5x83ajYP1w_i3okzm69lY5cIVPgn0U3BAGFRy09bxLH",
+    "snippet": "Việt Nam. Phù hợp với người bị thừa cân, béo phì hoặc bị béo phần bụng, muốn lấy lại vóc dáng thon gọn. Thành phần 100 thảo dược truyền thống.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 6
+   },
+   {
+    "title": "Gối Nóng Kê Cổ Gáy Thảo Mộc HAPAKU Giảm Đau Mỏi ...",
+    "link": "https://www.lazada.vn/products/goi-nong-ke-co-gay-thao-moc-hapaku-giam-dau-moi-gay-giup-thu-gian-giam-dau-bung-kinh-i1259354927.html?srsltid=AU7gw4V1RvAaKpubhGVgsfxKsN3q9HCgjTGIuTu7KqHaWlL-NCJe9aB6",
+    "snippet": "Giảm đau lưng, vai gáy, giảm co thắt trong các chứng bệnh mãn tính như: Đau thắt lưng, thoái hóa, thoái vị đĩa đệm, đau thần kinh tọa, thần kinh liên sườn, ...",
+    "rating": 4.9,
+    "ratingCount": 106,
+    "position": 7
+   },
+   {
+    "title": "Muối khoáng thảo dược Hapaku 450g - Muối ngân chân ...",
+    "link": "https://www.lazada.vn/products/muoi-khoang-thao-duoc-hapaku-450g-muoi-ngan-chan-thao-duoc-giam-nhuc-moi-ban-chan-tay-da-chet-hapaku-i1866002345.html?srsltid=AU7gw4UZGmXZuvcIVJdOPodp99nkQyptSJiqH-Vg_qp1UPh-25Dy7Ret",
+    "snippet": "Hapaku. Phù hợp với người bị đau mỏi, tê buốt bàn chân. Thành phần 100 thảo dược truyền thống Việt Nam. Có tác dụng giảm đau mỏi, thư giãn, tăng cường sức ...",
+    "rating": 5,
+    "ratingCount": 20,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

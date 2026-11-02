@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Paragon Saigon Hotel\" Gần Sài Gòn site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:45:16.343Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Paragon Saigon Hotel\" Gần Sài Gòn site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn Paragon Saigon - Giá cả và Ưu đãi 2026, TP. ...",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-1315886/paragon-saigon-hotel/",
+    "snippet": "Khách sạn Paragon Saigon. Paragon Saigon Hotel. 22-24 Thi Sách, P.Bến Nghé, Q.1, Sài Gòn, TP. ... Vị trí rất tuyệt vời, và các điểm tham quan chính đều ở gần đó.",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

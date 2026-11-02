@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"LAPTOP NEW HP 14-DQ2032 (i3-1115G4/ 256GB SSD/ 8GB/ 14\" HD Touch/ WIN11S/ BẠC)\" OR \"Dell Latitude 14 7420 (2021) Core i5-1145G7\" OR \"Laptop Lenovo V15 G4 IRU 83A100PMVN\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:13:49.658Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"LAPTOP NEW HP 14-DQ2032 (i3-1115G4/ 256GB SSD/ 8GB/ 14\" HD Touch/ WIN11S/ BẠC)\" OR \"Dell Latitude 14 7420 (2021) Core i5-1145G7\" OR \"Laptop Lenovo V15 G4 IRU 83A100PMVN\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

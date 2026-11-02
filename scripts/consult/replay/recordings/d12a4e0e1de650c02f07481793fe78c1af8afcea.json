@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"MSI Modern 14 F1MG-432VN\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:36:32.773Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"MSI Modern 14 F1MG-432VN\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop MSI Modern 14 F1MG-432VN | Giá rẻ, trả góp 0%",
+    "link": "https://cellphones.com.vn/laptop-msi-modern-14-f1mg-432vn.html",
+    "snippet": "Laptop MSI Modern 14 F1MG-432VN mang đến hiệu năng xử lý mượt mà nhờ bộ vi xử lý Intel Core 5 120U kết hợp với card đồ họa tích hợp Intel Graphics. Thiết bị ...",
+    "position": 1
+   },
+   {
+    "title": "Laptop MSI Modern 14 - 15 | Tinh tế, giảm sâu 3 triệu đồng",
+    "link": "https://cellphones.com.vn/laptop/msi/modern.html",
+    "snippet": "... Laptop MSI Modern 14 F1MG-432VN. Trả góp 0%. : 19.190.000đ. 21.990.000đ. Giảm 13%. Smember giảm đến 192.000đ. S-Student giảm thêm 959.500 ...",
+    "position": 2
+   },
+   {
+    "title": "MSI Modern 14 | Thiết kế nhỏ gọn, giảm đến 4 triệu đồng",
+    "link": "https://cellphones.com.vn/laptop/msi/modern/modern-14.html",
+    "snippet": "Laptop MSI Modern 14 F1MG-432VN · 19.190.000đ. 21.990.000đ. Giảm 13%. Smember giảm đến 192.000đ. S-Student giảm thêm 959.500đ ; Laptop MSI Modern 14 H1M-014VN.",
+    "position": 3
+   },
+   {
+    "title": "Đa nhiệm cực mượt, đa nhiệm đến trường cùng MSI Modern",
+    "link": "https://cellphones.com.vn/sforum/khuyen-mai-msi-modern",
+    "snippet": "Laptop MSI Modern 14 F1MG-432VN Core 5-120U/16GB/512GB PCIE/14.0 FHD ... Giá khuyến mãi: 18,990,000đ. Trả góp 0%.",
+    "date": "14 thg 7, 2026",
+    "position": 4
+   },
+   {
+    "title": "So sánh Laptop MSI Modern 14 B4MW và MacBook Pro 14 ...",
+    "link": "https://cellphones.com.vn/so-sanh/laptop-msi-modern-14-b4mw-029vn-vs-macbook-pro-14-inch-m2-pro-2023",
+    "snippet": "... Laptop MSI Modern 14 F1MG-432VN. Giá niêm yết: 21.990.000. Giá khuyến mãi: 19.990.000. + Chọn để so sánh. Hỏi và đáp. cps ant icon.",
+    "position": 5
+   },
+   {
+    "title": "So sánh Laptop MSI Modern 14 B10MW",
+    "link": "https://cellphones.com.vn/so-sanh/laptop-msi-modern-14-b10mw-635vn",
+    "snippet": "... Laptop MSI Modern 14 F1MG-432VN. Giá niêm yết: 21.990.000. + Chọn để so sánh. Hỏi và đáp. cps ant icon. Hãy đặt câu hỏi cho chúng tôi.",
+    "position": 6
+   },
+   {
+    "title": "So sánh Laptop MSI Modern 14 B5M 202VN và ...",
+    "link": "https://cellphones.com.vn/so-sanh/laptop-msi-modern-14-b5m-202vn-vs-laptop-msi-modern-14-b5m-202vn",
+    "snippet": "... Laptop MSI Modern 14 F1MG-432VN. Giá niêm yết: 21.990.000. Giá khuyến mãi: 18.990.000. + Chọn để so sánh. Hỏi và đáp. cps ant icon. Hãy ...",
+    "position": 7
+   },
+   {
+    "title": "So sánh Laptop MSI Modern 14 B11MOU-1027VN và ...",
+    "link": "https://cellphones.com.vn/so-sanh/laptop-msi-modern-14-b11mou-1027vn-vs-laptop-msi-modern-14-b11mou-1027vn",
+    "snippet": "... Laptop MSI Modern 14 F1MG-432VN. Giá niêm yết: 21.990.000. Giá khuyến mãi: 18.990.000. + Chọn để so sánh.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

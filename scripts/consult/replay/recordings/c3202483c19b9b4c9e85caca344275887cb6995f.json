@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "set cafe phố tặng 1 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:22:52.585Z",
+ "body": {
+  "searchParameters": {
+   "q": "set cafe phố tặng 1 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cafe phố tặng ly - Giá Tốt, Sale Tháng 09, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/c%C3%A0%20ph%C3%AA/ph%E1%BB%91/t%E1%BA%B7ng%20ly",
+    "snippet": "Combo 1 Hộp Cà Phê Phố Sữa Nóng MacCoffee 3in1 (10 Gói x 16g) - Mua 1 Tặng Kèm 1 Ly Thủy Tinh Cao Cấp Tiện Lợi. 45.000₫. 75.000₫. -40%. rating-star 5.0.",
+    "position": 1
+   },
+   {
+    "title": "Tặng kèm ly thủy tinh dày dặn có quai 360ml",
+    "link": "https://shopee.vn/-MUA-1-T%E1%BA%B6NG-1-COMBO-3-S%C3%89T-C%C3%80-PH%C3%8A-PH%E1%BB%90-N%C3%93NG-H%E1%BB%98P-10-G%C3%93I%C3%9716G%E2%80%93-T%E1%BA%B7ng-k%C3%A8m-ly-th%E1%BB%A7y-tinh-d%C3%A0y-d%E1%BA%B7n-c%C3%B3-quai-360ml--i.166124476.44264982638",
+    "snippet": "{MUA 1 TẶNG 1}COMBO 3 SÉT CÀ PHÊ PHỐ NÓNG HỘP 10 GÓI×16G– { Tặng kèm ly thủy tinh dày dặn có quai 360ml} ; Chọn loại hàng. 1. set. Combo. 2 sét. +1 ; 1. set.",
+    "position": 2
+   },
+   {
+    "title": "Set Cafe Phố Ly Lớn tặng ca giữ nhiệt như hình (Dây 10 ...",
+    "link": "https://shopee.vn/Set-Cafe-Ph%E1%BB%91-Ly-L%E1%BB%9Bn-t%E1%BA%B7ng-ca-gi%E1%BB%AF-nhi%E1%BB%87t-nh%C6%B0-h%C3%ACnh-(D%C3%A2y-10-g%C3%B3i-x-26g-).-i.242349650.40262382500",
+    "snippet": "Mua Set Cafe Phố Ly Lớn tặng ca giữ nhiệt như hình (Dây 10 gói x 26g ). giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 3
+   },
+   {
+    "title": "Set 2 hộp Cà phê Phố tặng ly thủy tinh, cà phê sữa và đen ...",
+    "link": "https://shopee.vn/Set-2-h%E1%BB%99p-C%C3%A0-ph%C3%AA-Ph%E1%BB%91-t%E1%BA%B7ng-ly-th%E1%BB%A7y-tinh-c%C3%A0-ph%C3%AA-s%E1%BB%AFa-v%C3%A0-%C4%91en-h%E1%BB%99p-10-g%C3%B3i-i.39364770.28980057512",
+    "snippet": "Mua Set 2 hộp Cà phê Phố tặng ly thủy tinh, cà phê sữa và đen hộp 10 gói giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "rating": 4.9,
+    "ratingCount": 52,
+    "position": 4
+   },
+   {
+    "title": "Ly cà phê phố - Giá Tốt, Sale Tháng 09, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/ly%20c%C3%A0%20ph%C3%AA/ph%E1%BB%91",
+    "snippet": "Top Bán Chạy Sản Phẩm ly cà phê phố. 1. Set 3 ly thủy tinh sọc quà tặng Cafe Phố 360ml60.000₫ · 2. Ly Kim cương cà phê phố35.000₫ · 3. Ly Kim Cương, Bình Giữ ...",
+    "position": 5
+   },
+   {
+    "title": "Set 3 ly thủy tinh sọc quà tặng Cafe Phố 360ml",
+    "link": "https://shopee.vn/Set-3-ly-th%E1%BB%A7y-tinh-s%E1%BB%8Dc-qu%C3%A0-t%E1%BA%B7ng-Cafe-Ph%E1%BB%91-360ml-i.121540672.53811693562",
+    "snippet": "Mua Set 3 ly thủy tinh sọc quà tặng Cafe Phố 360ml giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng ...",
+    "rating": 4.8,
+    "ratingCount": 48,
+    "position": 6
+   },
+   {
+    "title": "CÀ PHÊ PHỐ ĐEN ĐÁ BỊCH 30 GÓI TẶNG 1 NÓN BẢO HIỂM",
+    "link": "https://shopee.vn/C%C3%80-PH%C3%8A-PH%E1%BB%90-%C4%90EN-%C4%90%C3%81-B%E1%BB%8ACH-30-G%C3%93I-T%E1%BA%B6NG-1-N%C3%93N-B%E1%BA%A2O-HI%E1%BB%82M-i.1372310859.45760133803",
+    "snippet": "Mua CÀ PHÊ PHỐ ĐEN ĐÁ BỊCH 30 GÓI TẶNG 1 NÓN BẢO HIỂM giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao ...",
+    "position": 7
+   },
+   {
+    "title": "COMBO 3 Sét Cà Phê Phố Tặng Ly Thủy Tinh SIÊUHOT",
+    "link": "https://shopee.vn/COMBO-3-S%C3%A9t-C%C3%A0-Ph%C3%AA-Ph%E1%BB%91-T%E1%BA%B7ng-Ly-Th%E1%BB%A7y-Tinh-SI%C3%8AUHOT-i.974577526.24992986864",
+    "snippet": "Mua COMBO 3 Sét Cà Phê Phố Tặng Ly Thủy Tinh SIÊUHOT giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

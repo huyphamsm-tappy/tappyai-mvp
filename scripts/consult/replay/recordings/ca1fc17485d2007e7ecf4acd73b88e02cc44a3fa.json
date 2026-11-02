@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"GRAND HOTEL du LAC Boutique Saigon\" OR \"La Siesta Premium Saigon\" OR \"Hotel Majestic Saigon\" gần Sài Gòn site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:37:14.803Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"GRAND HOTEL du LAC Boutique Saigon\" OR \"La Siesta Premium Saigon\" OR \"Hotel Majestic Saigon\" gần Sài Gòn site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hotel Majestic Saigon 100 Năm Trước | TikTok",
+    "link": "https://www.tiktok.com/discover/hotel-majestic-saigon-100-n%C4%83m-tr%C6%B0%E1%BB%9Bc",
+    "snippet": "Hotel Majestic Saigon 100 Năm Trước. Khám phá lịch sử 100 năm của ... Grand Hotel Du Lac Boutique Saigon · La Vela Saigon Hotel · Ngo Spa ...",
+    "date": "31 thg 8, 2026",
+    "position": 1
+   },
+   {
+    "title": "La Siesta Premium Saigon",
+    "link": "https://www.tiktok.com/discover/la-siesta-premium-saigon",
+    "snippet": "Khám phá La Siesta Premium Saigon với những trải nghiệm lưu trú tuyệt vời và cảnh đẹp. Đặt phòng ngay để không bỏ lỡ! Last updated 2026-08-24.",
+    "position": 2
+   },
+   {
+    "title": "La Siesta Premium Saigon: Khách Sạn 4 Sao Sang Trọng",
+    "link": "https://www.tiktok.com/@phaplybds_tandaiduong/photo/7547320789125565704",
+    "snippet": "Khách sạn 4 La Siesta Premium Saigon • Địa chỉ: 180-182-184-186-188 Lý Tự Trọng, Phường Bến Thành, Quận 1 • Diện tích: 19 ...",
+    "position": 3
+   },
+   {
+    "title": "Khách Sạn Riverside - Gợi Ý Tuyệt Vời Cho Cặp Tình Nhân",
+    "link": "https://www.tiktok.com/@huynhhongocduc/video/7528357846891891975",
+    "snippet": "nhạc nền - LU EATING · Hotel Majestic Saigon · Paragon Hotel and ... Grand Hotel Du Lac Boutique Saigon · Phốt Khách Sạn 5 Sao Imperial ...",
+    "position": 4
+   },
+   {
+    "title": "Nhà hàng mới toanh nằm trong khách sạn La Siesta ngay ...",
+    "link": "https://www.tiktok.com/@thphg__/video/7633004910820330772",
+    "snippet": "... La Siesta ngay trung tâm Q1 vibe cực. @Phương đi date · âm thanh gốc - Phương đi date ✨ · La Siesta Premium Saigon Central Hotel · author · 698.",
+    "position": 5
+   },
+   {
+    "title": "El Where Hotel Ho Chi Minh | TikTok",
+    "link": "https://www.tiktok.com/discover/el-where-hotel-ho-chi-minh",
+    "snippet": "... Sài Gòn với tui nha. 61.2K1w ago. mutchut. Đi dạo Sài Gòn với tui nha ... Grand Hotel Du Lac Boutique Saigon · Saigon Cafe San Diego · Sai Gon ...",
+    "date": "14 thg 9, 2026",
+    "position": 6
+   },
+   {
+    "title": "Buổi bắn pháo hoa tại công viên Bến Bạch Đằng ngày 26 ...",
+    "link": "https://www.tiktok.com/@kenh14official/video/7497634683463683336",
+    "snippet": "SÀI GÒN gợi ý những điểm xem phaohoa mãn nhãn view đẹp bao quát ... Hotel Majestic Saigon · Düsseldorf Airport Victoria Secret · Ocean ...",
+    "position": 7
+   },
+   {
+    "title": "Lý Thanh Ý (@ly.thanhy)",
+    "link": "https://www.tiktok.com/@ly.thanhy",
+    "snippet": "Grand Hotel Du Lac Boutique Saigon · Saigon Vien Dong Hotel Spa · Saltline Hotel Seaside Oregon · Paragon Hotel and Suites Baguio · Hotel Majestic Saigon. 3667 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

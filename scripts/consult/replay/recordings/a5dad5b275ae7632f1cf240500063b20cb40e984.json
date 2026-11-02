@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Beefsteak 100gram CN Quận 7\" OR \"King Bò Né\" OR \"Lẩu bò Tiến Dương\" quan 7 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:01:07.727Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Beefsteak 100gram CN Quận 7\" OR \"King Bò Né\" OR \"Lẩu bò Tiến Dương\" quan 7 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Beefsteak 100g chỉ 59k tại Quận 7 siêu hời!",
+    "link": "https://www.tiktok.com/@changcheps/video/7596665198828653832",
+    "snippet": "Khám phá bò beefsteak 100g giá chỉ 59k tại Quận 7, hoàn hảo cho cặp. @Chang Chép · nhạc nền - Chang Chép · Beefsteak 100gram CN Quận 7 · author.",
+    "position": 1
+   },
+   {
+    "title": "Lẩu bò Tiến Dương siêu rẻ lâu đời ở quận 7 # ...",
+    "link": "https://www.tiktok.com/@lunmango/video/7620669909067992328",
+    "snippet": "Quán Ăn Ngon Sài Gòn. Lẩu bò Tiến Dương siêu rẻ lâu đời ở quận 7 #anngonquan7 #quan7 #. @Linh Chóp Chép · Matcha Boba · Lẩu bò Tiến Dương.",
+    "position": 2
+   },
+   {
+    "title": "Beefsteak 100g: Món Ăn Đúng Gu Trong Mọi Dịp",
+    "link": "https://www.tiktok.com/@bobittet100g/video/7611446684647918869",
+    "snippet": "Beefsteak 100gram CN Quận 7 · author. 10 · 0 ... 48k Beefsteak 100G Quận 7. 632 · recommend-cover. Solana Vlogs. 1189 · recommend-cover.",
+    "position": 3
+   },
+   {
+    "title": "Khám Phá Lẩu Bò Tiến Dương Quận 7 Siêu Ngon",
+    "link": "https://www.tiktok.com/@livinpmh/video/7579300254256745745",
+    "snippet": "Khám Phá Lẩu Bò Tiến Dương Quận 7 Siêu Ngon. Thưởng thức lẩu bò chất lượng với topping phong phú tại Tiến Dương, Quận 7. Hãy ghé thăm ngay ...",
+    "position": 4
+   },
+   {
+    "title": "Lẩu Bò Tiến Dương Quận 7: Review Ngon & Rẻ Chỉ 120k ...",
+    "link": "https://www.tiktok.com/@dicungphuc/video/7168397273339022618",
+    "snippet": "Lẩu Bò Tiến Dương Quận 7: Món Ngon Giá Rẻ Chỉ 120K Cho 2 Người Nếu bạn đang tìm kiếm một quán lẩu bò ngon và rẻ tại Quận 7, lẩu bò Tiến ...",
+    "position": 5
+   },
+   {
+    "title": "Sinh viên cuối tháng muốn ăn sang giá rẻ thì nhào dzô, mì ...",
+    "link": "https://www.tiktok.com/@nhandian/video/7292007918063422722",
+    "snippet": "Sinh viên cuối tháng muốn ăn sang giá rẻ thì nhào dzô, mì Ý 29k. @NHÂN ĐI ĂN · nhạc nền - NHÂN ĐI ĂN · Beefsteak 100gram CN Quận 7 · author.",
+    "position": 6
+   },
+   {
+    "title": "Review Lẩu Bò Tiến Dương Quận 7 - Sài Gòn Đỉnh Cao!",
+    "link": "https://www.tiktok.com/@choisanh.zalanh/video/7431210665639038226",
+    "snippet": "Review Lẩu Bò Tiến Dương Quận 7, Review Quán Lẩu Bò Ngon Ở Sài Gòn, Quận 7 ăn gì, Review Địa Điểm Ăn Ngon Ở Quận 7, Review Ẩm Thực Ở Quận 7 ...",
+    "position": 7
+   },
+   {
+    "title": "Đi ăn beefsteak záa hạt dẻ đông khách ở Quận 7 nè mấy ...",
+    "link": "https://www.tiktok.com/@tuhoangdethuong/video/7602501508302654738",
+    "snippet": "Beefsteak 100gram CN Quận 7 · author · 3301 · 50 ... @Khi nào giàu mở quán cà phê có q7 lum. 2-4Trả lời. 1. Xem thêm câu trả lời khác (2). Tun.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

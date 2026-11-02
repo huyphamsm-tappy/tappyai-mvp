@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Acer Aspire Lite 14 AL14-44P - AMD Ryzen 7 - 7730U / up to 4.5 GHz - Win 11 Home - Radeon Graphics - 8 GB RAM - 512 GB SSD - 14.5  IPS 1920 x 1200\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:56:14.816Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Acer Aspire Lite 14 AL14-44P - AMD Ryzen 7 - 7730U / up to 4.5 GHz - Win 11 Home - Radeon Graphics - 8 GB RAM - 512 GB SSD - 14.5  IPS 1920 x 1200\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

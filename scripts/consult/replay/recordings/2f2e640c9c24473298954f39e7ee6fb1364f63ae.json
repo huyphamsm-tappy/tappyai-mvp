@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Acer Aspire Lite 14 AL14-44P - AMD Ryzen 7 - 7730U / up to 4.5 GHz - Win 11 Home - Radeon Graphics - 8 GB RAM - 512 GB SSD - 14.5  IPS 1920 x 1200 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:56:16.325Z",
+ "body": {
+  "searchParameters": {
+   "q": "Acer Aspire Lite 14 AL14-44P - AMD Ryzen 7 - 7730U / up to 4.5 GHz - Win 11 Home - Radeon Graphics - 8 GB RAM - 512 GB SSD - 14.5  IPS 1920 x 1200 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-44P-R0SP (Ryzen 7 7730U/ 8GB",
+    "link": "https://www.lazada.vn/products/laptop-acer-aspire-lite-14-al14-44p-r0sp-ryzen-7-7730u-8gb-512gb-windows-11-home-sl-bao-hanh-12-thang-i13423724166-s117165285530.html?from_gmc=1&fl_tag=1&srsltid=AU7gw4UY7BDnZn64-ObvXj_VbGPTh7d34jLfcIMyWjwFu4_QUIr42NYv",
+    "snippet": "Laptop Acer Aspire Lite 14 AL14-44P-R0SP được trang bị vi xử lý AMD Ryzen 7 7730U với 8 nhân, 16 luồng và xung nhịp tối đa lên đến 4.5GHz, mang lại hiệu năng ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

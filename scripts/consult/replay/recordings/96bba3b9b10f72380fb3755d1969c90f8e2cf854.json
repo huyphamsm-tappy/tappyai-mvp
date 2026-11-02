@@ -1,0 +1,54 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MSI GF63 Thin i7-11800H/8GB/512GB/Win11 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:04:35.803Z",
+ "body": {
+  "searchParameters": {
+   "q": "MSI GF63 Thin i7-11800H/8GB/512GB/Win11 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop MSI GF63 Thin i7-11800H/8GB/512GB/Win11 ...",
+    "link": "https://shopee.vn/Laptop-MSI-GF63-Thin-i7-11800H-8GB-512GB-Win11-(11UC-1228VN)-i.706762797.25987155174",
+    "snippet": "Laptop MSI GF63 Thin i7-11800H/8GB/512GB/Win11 (11UC-1228VN). 1/8. Đã bán hết. 20.990.000₫. mall inline badge. Laptop MSI GF63 Thin i7-11800H/8GB/512GB/Win11 ( ...",
+    "position": 1
+   },
+   {
+    "title": "Shopee Tech Zone | Khuyến Mãi Đồ Điện Tử",
+    "link": "https://shopee.vn/m/shopee-tech-zone-2811",
+    "snippet": "Laptop Gaming MSI GF63 12UC-887VN i7-12650H | 8GB | 512GB | RTX. Bán hết ... Laptop MSI GF63 Thin 12VE-460VN (i5-12450H | 8GB | 512GB |. Bán hết. custom ...",
+    "position": 2
+   },
+   {
+    "title": "Msi gf63 - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/msi/gf63",
+    "snippet": "2026 Intel Core i7 15.6 inch Màn hình IPS 16+1TBSSD Chơi game Văn phòng Máy tính xách tay Vân tay Mở khóaWindows 11. 8.199.000₫. 15.000.000₫.",
+    "position": 3
+   },
+   {
+    "title": "Shopee",
+    "link": "https://shopee.vn/collections/4337006?source=4",
+    "snippet": "... 8GB | 512GB | 14' FHD | Win 11. 12.990.000₫ · Laptop MSI GF63 Thin 12VE-460VN (i5-12450H | 8GB | 512GB |. Bán hết. custom-overlay. Laptop MSI GF63 Thin 12VE- ...",
+    "position": 4
+   },
+   {
+    "title": "Asus tuf gaming a15 - Giá Tốt, Sale Tháng 09, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/m%C3%A1y%20t%C3%ADnh/asus/tuf%20gaming%20a15",
+    "snippet": "Mua online asus tuf gaming a15 chất lượng, Voucher Shopee Live giảm tới 50% tại Shopee. Khuyến mãi tháng 09, 2026 . Miễn phí vận chuyển. Mua ngay!",
+    "position": 5
+   }
+  ],
+  "credits": 1
+ }
+}

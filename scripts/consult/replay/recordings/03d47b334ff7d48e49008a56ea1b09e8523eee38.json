@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Lanita Hotel - Bà Đen Tây Ninh",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:17:06.751Z",
+ "body": {
+  "searchParameters": {
+   "q": "Lanita Hotel - Bà Đen Tây Ninh",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Lanita Hotel – Bà Đen, Tây Ninh | Về tìm lại những điều thân thương",
+    "imageUrl": "https://lanitahotel.com/assets/hero-hotel-CZdhYQJa.jpg",
+    "imageWidth": 1280,
+    "imageHeight": 960,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkcwT4a8w9c1X5YbLSikYteXLUHciUpAaAJCHeRXxPlw&s",
+    "thumbnailWidth": 259,
+    "thumbnailHeight": 194,
+    "source": "lanitahotel.com",
+    "domain": "lanitahotel.com",
+    "link": "http://lanitahotel.com/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flanitahotel.com%2Fassets%2Fhero-hotel-CZdhYQJa.jpg&tbnid=fItj9dvTTgmLpM&imgrefurl=http%3A%2F%2Flanitahotel.com%2F&docid=1A_LjXJzkfr9CM&w=1280&h=960",
+    "position": 1
+   },
+   {
+    "title": "Lanita Hotel - Bà Đen Tây... - Lanita Hotel - Bà Đen Tây Ninh",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=122107418787266313",
+    "imageWidth": 678,
+    "imageHeight": 528,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTo9QVKFnZ4mfgdQ3zLrs-qvAym5M5tHrXWk9tu-u-qtQ&s",
+    "thumbnailWidth": 254,
+    "thumbnailHeight": 198,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/Lanitahotel/photos/122107418787266313/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D122107418787266313&tbnid=rd-rD8UUn4ldTM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2FLanitahotel%2Fphotos%2F122107418787266313%2F&docid=fyXm8dmOruDvuM&w=678&h=528",
+    "position": 2
+   },
+   {
+    "title": "Lanita Hotel - Bà Đen Tây Ninh (@Lanitahotel) • Facebook",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=122099370891266313",
+    "imageWidth": 2048,
+    "imageHeight": 1362,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaKMFrNh7UVux5L-Ktoe52PqAHDDHSCZvN2H4XNyxa9w&s",
+    "thumbnailWidth": 275,
+    "thumbnailHeight": 183,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/Lanitahotel/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D122099370891266313&tbnid=0iwfWj-QxMI3JM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2FLanitahotel%2F&docid=PDI1Qnk_hj_3cM&w=2048&h=1362",
+    "position": 3
+   },
+   {
+    "title": "Feedback dễ thương từ khách tại Lanita Hotel Bà Đen Tây Ninh | TikTok",
+    "imageUrl": "https://www.tiktok.com/api/img/?itemId=7637499824996158728&location=0&aid=1988",
+    "imageWidth": 976,
+    "imageHeight": 1302,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKlhPGaZVOImLRwtQHhCznOh9eJoCpRjai4wuRUWyPdQ&s=10",
+    "thumbnailWidth": 479,
+    "thumbnailHeight": 640,
+    "source": "TikTok",
+    "domain": "www.tiktok.com",
+    "link": "https://www.tiktok.com/@lanitahotel/video/7637499824996158728",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.tiktok.com%2Fapi%2Fimg%2F%3FitemId%3D7637499824996158728%26location%3D0%26aid%3D1988&tbnid=URel1YAWCdV8AM&imgrefurl=https%3A%2F%2Fwww.tiktok.com%2F%40lanitahotel%2Fvideo%2F7637499824996158728&docid=NROASwNb_6VIpM&w=976&h=1302",
+    "position": 4
+   },
+   {
+    "title": "Lanita Hotel - Bà Đen Tây Ninh (@Lanitahotel) • Facebook",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=122099370855266313",
+    "imageWidth": 1280,
+    "imageHeight": 960,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIwvdD20pd8Fpq8LBPu5AamR-MEtK-R_z38LZNJCTWtA&s",
+    "thumbnailWidth": 259,
+    "thumbnailHeight": 194,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/Lanitahotel/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D122099370855266313&tbnid=0TZIIoxmCUAdMM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2FLanitahotel%2F&docid=PDI1Qnk_hj_3cM&w=1280&h=960",
+    "position": 5
+   },
+   {
+    "title": "Lanita Hotel - Bà Đen Tây Ninh (@Lanitahotel) • Facebook",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=61587989411178",
+    "imageWidth": 675,
+    "imageHeight": 674,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT76shMqh61WV98O7Ew_DoM94EJTE8OstcetSRcZloTSg&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/Lanitahotel/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D61587989411178&tbnid=c6ml5HWdoa8DfM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2FLanitahotel%2F&docid=PDI1Qnk_hj_3cM&w=675&h=674",
+    "position": 6
+   },
+   {
+    "title": "Lanita Hotel không tăng giá phòng dịp lễ 2/9 Tây Ninh | TikTok",
+    "imageUrl": "https://www.tiktok.com/api/img/?itemId=7677579732354862344&location=3&aid=1988&index=0",
+    "imageWidth": 3704,
+    "imageHeight": 2084,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6IA-bDDVj4vQDbUSLTsUYEM7kWuat-z3MYtbe-DU86w&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 414,
+    "source": "TikTok",
+    "domain": "www.tiktok.com",
+    "link": "https://www.tiktok.com/@lanitahotel/photo/7677579732354862344",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.tiktok.com%2Fapi%2Fimg%2F%3FitemId%3D7677579732354862344%26location%3D3%26aid%3D1988%26index%3D0&tbnid=i1Gb2QwKsZ-sHM&imgrefurl=https%3A%2F%2Fwww.tiktok.com%2F%40lanitahotel%2Fphoto%2F7677579732354862344&docid=DLAQDO0-qPxYfM&w=3704&h=2084",
+    "position": 7
+   },
+   {
+    "title": "Cẩm Nang Check-In Núi Bà Đen: Ảnh Đẹp & Trải Nghiệm Tuyệt Vời | TikTok",
+    "imageUrl": "https://www.tiktok.com/api/img/?itemId=7659642467708407047&location=3&aid=1988&index=4",
+    "imageWidth": 1800,
+    "imageHeight": 1012,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXOXIwvY6OeXiM9qUv_y7sXoN-WnYytlp2dOgu-oJOMw&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 414,
+    "source": "TikTok",
+    "domain": "www.tiktok.com",
+    "link": "https://www.tiktok.com/@lanitahotel/photo/7659642467708407047",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.tiktok.com%2Fapi%2Fimg%2F%3FitemId%3D7659642467708407047%26location%3D3%26aid%3D1988%26index%3D4&tbnid=1LOHBzmUH_B00M&imgrefurl=https%3A%2F%2Fwww.tiktok.com%2F%40lanitahotel%2Fphoto%2F7659642467708407047&docid=TizIs8txzpuCdM&w=1800&h=1012",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

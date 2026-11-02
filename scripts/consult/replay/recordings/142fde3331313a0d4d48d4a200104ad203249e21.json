@@ -1,0 +1,56 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Gogi House Huỳnh Tấn Phát Huỳnh Tấn Phát (site:food.grab.com/vn OR site:shopeefood.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:22:15.965Z",
+ "body": {
+  "searchParameters": {
+   "q": "Gogi House Huỳnh Tấn Phát Huỳnh Tấn Phát (site:food.grab.com/vn OR site:shopeefood.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "GoGi House - Quán Thịt Nướng Hàn Quốc - Huỳnh Tấn Phát",
+    "link": "https://shopeefood.vn/ho-chi-minh/gogi-house-quan-thit-nuong-han-quoc-huynh-tan-phat",
+    "snippet": "GoGi House - Quán Thịt Nướng Hàn Quốc - Huỳnh Tấn Phát. 713 - 713A Huỳnh Tấn Phát, Khu Phố 1, P. Phú Nhuận, Quận 7, TP. HCM.",
+    "position": 1
+   },
+   {
+    "title": "Quán Thịt Nướng Hàn Quốc - Huỳnh Tấn Phát ⭐ 4.8",
+    "link": "https://food.grab.com/vn/vi/restaurant/restaurant/5-C4J3V743R7LYEJ",
+    "snippet": "Món Hàn.",
+    "rating": 4.8,
+    "ratingCount": 59,
+    "position": 2
+   },
+   {
+    "title": "Gogi House - Quán Nướng Hàn Quốc - HCM",
+    "link": "https://shopee.shopeefood.vn/thuong-hieu/gogi-house-quan-nuong-han-quoc-hcm",
+    "snippet": "GoGi House - Quán Thịt Nướng Hàn Quốc - Huỳnh Tấn Phát. 713 - 713A Huỳnh Tấn Phát, Khu Phố 1, P. Phú Nhuận, Quận 7, TP. HCM. Tối thiểu 20k Giá 0. Mã giảm 11 ...",
+    "position": 3
+   },
+   {
+    "title": "Vô vàn ưu đãi, hàng vạn món ngon | GrabFood VN",
+    "link": "https://food.grab.com/vn/vi/",
+    "snippet": "GrabFood - Dịch vụ giao đồ ăn trực tuyến giúp bạn thỏa mãn cơn thèm ăn với hàng vạn quán ăn.",
+    "position": 4
+   },
+   {
+    "title": "Giao món trực tuyến - Vô vàn ưu đãi, hàng vạn món ngon",
+    "link": "https://food.grab.com/vn/vi//",
+    "snippet": "Đáp ứng mọi nhu cầu - Từ món ăn đặc sản địa phương đến các nhà hàng được ưa thích, nhiều lựa chọn đa dạng chắc chắn sẽ luôn làm hài lòng khẩu vị của bạn.",
+    "position": 5
+   }
+  ],
+  "credits": 1
+ }
+}

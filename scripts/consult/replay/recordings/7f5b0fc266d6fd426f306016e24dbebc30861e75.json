@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "La Maison Spa Sài Gòn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:28:37.571Z",
+ "body": {
+  "searchParameters": {
+   "q": "La Maison Spa Sài Gòn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "La Maison Spa Sài Gòn: - Klook",
+    "imageUrl": "https://res.klook.com/images/fl_lossy.progressive,q_65/c_fill,w_1295,h_862/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/lvqrpqpk0sggzikfceff/LaMaisonSaigonSpa:M%E1%BB%99tn%C6%A1i%E1%BA%A9nm%C3%ACnhy%C3%AAnb%C3%ACnhgi%E1%BB%AFal%C3%B2ngS%C3%A0iG%C3%B2n.jpg",
+    "imageWidth": 1295,
+    "imageHeight": 862,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSImCXLKo5QtF6i4hFe6hA97K6R2HLlQcAqcGDV5Ew_Qw&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/182710-la-maison-spa-saigon/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Ffl_lossy.progressive%2Cq_65%2Fc_fill%2Cw_1295%2Ch_862%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Flvqrpqpk0sggzikfceff%2FLaMaisonSaigonSpa%3AM%25E1%25BB%2599tn%25C6%25A1i%25E1%25BA%25A9nm%25C3%25ACnhy%25C3%25AAnb%25C3%25ACnhgi%25E1%25BB%25AFal%25C3%25B2ngS%25C3%25A0iG%25C3%25B2n.jpg&tbnid=qphXyj7wy4EJIM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F182710-la-maison-spa-saigon%2F&docid=8wmIo4w4HB3qjM&w=1295&h=862",
+    "position": 1
+   },
+   {
+    "title": "La Maison Spa - Sai Gon",
+    "imageUrl": "https://lamaisonspa.com.vn/UploadFile/Spa-signature-saigon/2.jpg",
+    "imageWidth": 1280,
+    "imageHeight": 887,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtJf8BDRXSqeG_DPXzI-PiZcOh2O8qnAdiQbNpCd43Ig&s=10",
+    "thumbnailWidth": 536,
+    "thumbnailHeight": 373,
+    "source": "La Maison Spa Vietnam",
+    "domain": "lamaisonspa.com.vn",
+    "link": "https://lamaisonspa.com.vn/saigon.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flamaisonspa.com.vn%2FUploadFile%2FSpa-signature-saigon%2F2.jpg&tbnid=uevlc_x6uigbyM&imgrefurl=https%3A%2F%2Flamaisonspa.com.vn%2Fsaigon.html&docid=f9rFu6R85eD6_M&w=1280&h=887",
+    "position": 2
+   },
+   {
+    "title": "La Maison Saigon Spa (Thành phố Hồ Chí Minh, Việt Nam) - Đánh giá -  Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/31/85/53/66/spa.jpg?w=900&h=500&s=1",
+    "imageWidth": 900,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXXZMKv5D-xcZwxWEYx5tusCd908hOokkyaD9MLxW_Vw&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 411,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Attraction_Review-g293925-d33972276-Reviews-La_Maison_Spa_Saigon-Ho_Chi_Minh_City.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F31%2F85%2F53%2F66%2Fspa.jpg%3Fw%3D900%26h%3D500%26s%3D1&tbnid=zwqI622Ur7GExM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FAttraction_Review-g293925-d33972276-Reviews-La_Maison_Spa_Saigon-Ho_Chi_Minh_City.html&docid=yHpvDgSchBEm-M&w=900&h=500",
+    "position": 3
+   },
+   {
+    "title": "LA MAISON SPA Sài Gòn - Dịch vụ massage và thư giãn cao cấp - KKday",
+    "imageUrl": "https://image.kkday.com/v2/image/get/c_fill%2Cq_55%2Ct_webp%2Cw_960/s1.kkday.com/product_scm_6425/20251014091152_cucyr/jpg",
+    "imageWidth": 960,
+    "imageHeight": 720,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhETFi4y_NiLlkezZiUKS4QrHHj7IBhbWA2i6jdCuYYQ&s=10",
+    "thumbnailWidth": 515,
+    "thumbnailHeight": 388,
+    "source": "KKday",
+    "domain": "www.kkday.com",
+    "link": "https://www.kkday.com/vi/product/535906?srsltid=AU7gw4V7lKVAujODXxsWcLOIz39FmdTIsdeUc-3Ijjl-q2u2x3kU7-m-",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimage.kkday.com%2Fv2%2Fimage%2Fget%2Fc_fill%252Cq_55%252Ct_webp%252Cw_960%2Fs1.kkday.com%2Fproduct_scm_6425%2F20251014091152_cucyr%2Fjpg&tbnid=sYT8ib_HL6XcbM&imgrefurl=https%3A%2F%2Fwww.kkday.com%2Fvi%2Fproduct%2F535906%3Fsrsltid%3DAU7gw4V7lKVAujODXxsWcLOIz39FmdTIsdeUc-3Ijjl-q2u2x3kU7-m-&docid=eFgSAH_DIzU3rM&w=960&h=720",
+    "position": 4
+   },
+   {
+    "title": "La Maison Spa Sài Gòn: - Klook",
+    "imageUrl": "https://res.klook.com/images/fl_lossy.progressive,q_65/c_fill,w_1295,h_864/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/ycpskpldbreevpx2rzgd/LaMaisonSaigonSpa:M%E1%BB%99tn%C6%A1i%E1%BA%A9nm%C3%ACnhy%C3%AAnb%C3%ACnhgi%E1%BB%AFal%C3%B2ngS%C3%A0iG%C3%B2n.jpg",
+    "imageWidth": 1295,
+    "imageHeight": 864,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQThbLZvJUCua7Elum1PjMpZyiK3Epx90HYWOpq7jwI5Q&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/182710-la-maison-spa-saigon/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Ffl_lossy.progressive%2Cq_65%2Fc_fill%2Cw_1295%2Ch_864%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fycpskpldbreevpx2rzgd%2FLaMaisonSaigonSpa%3AM%25E1%25BB%2599tn%25C6%25A1i%25E1%25BA%25A9nm%25C3%25ACnhy%25C3%25AAnb%25C3%25ACnhgi%25E1%25BB%25AFal%25C3%25B2ngS%25C3%25A0iG%25C3%25B2n.jpg&tbnid=anMQUjmySLEKIM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F182710-la-maison-spa-saigon%2F&docid=8wmIo4w4HB3qjM&w=1295&h=864",
+    "position": 5
+   },
+   {
+    "title": "🌿 La Maison Spa Saigon - Welcoming guests from July 20! 🌿 Step into a  sanctuary of calm, where every service is designed to soothe your body and  soul. From rejuvenating massages",
+    "imageUrl": "https://lookaside.instagram.com/seo/google_widget/crawler/?media_id=3974104295964267087",
+    "imageWidth": 720,
+    "imageHeight": 1280,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSK8SMebZthLV7JSXPLUYrr386WOQ8Po3GTWOXI-iF5Rw&s=10",
+    "thumbnailWidth": 335,
+    "thumbnailHeight": 597,
+    "source": "Instagram",
+    "domain": "www.instagram.com",
+    "link": "https://www.instagram.com/p/DMVQ9ZCuKru/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.instagram.com%2Fseo%2Fgoogle_widget%2Fcrawler%2F%3Fmedia_id%3D3974104295964267087&tbnid=VJSx0IastbrXUM&imgrefurl=https%3A%2F%2Fwww.instagram.com%2Fp%2FDMVQ9ZCuKru%2F&docid=TB2pjpXFqp3byM&w=720&h=1280",
+    "position": 6
+   },
+   {
+    "title": "La Maison Saigon Spa (Thành phố Hồ Chí Minh, Việt Nam) - Đánh giá -  Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/31/85/53/66/spa.jpg?w=1200&h=1200&s=1",
+    "imageWidth": 1200,
+    "imageHeight": 1200,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS67ZvljNBuvY-KTLo3st17ipWf0JmhJOsZv6gc6R-dzA&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Attraction_Review-g293925-d33972276-Reviews-La_Maison_Spa_Saigon-Ho_Chi_Minh_City.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F31%2F85%2F53%2F66%2Fspa.jpg%3Fw%3D1200%26h%3D1200%26s%3D1&tbnid=BIuktNeB30mp9M&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FAttraction_Review-g293925-d33972276-Reviews-La_Maison_Spa_Saigon-Ho_Chi_Minh_City.html&docid=yHpvDgSchBEm-M&w=1200&h=1200",
+    "position": 7
+   },
+   {
+    "title": "🌿 La Maison Spa Saigon - Welcoming guests from July 20! 🌿 Step into a  sanctuary of calm, where every service is designed to soothe your body and  soul. From rejuvenating massages",
+    "imageUrl": "https://lookaside.instagram.com/seo/google_widget/crawler/?media_id=3680922857966709486",
+    "imageWidth": 1081,
+    "imageHeight": 1351,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxF1TnMeoOAXTqnQfZ_81946ybL7buzo1eoPCppaDbmQ&s",
+    "thumbnailWidth": 201,
+    "thumbnailHeight": 251,
+    "source": "Instagram",
+    "domain": "www.instagram.com",
+    "link": "https://www.instagram.com/p/DMVQ9ZCuKru/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.instagram.com%2Fseo%2Fgoogle_widget%2Fcrawler%2F%3Fmedia_id%3D3680922857966709486&tbnid=mEUXsamoXrl55M&imgrefurl=https%3A%2F%2Fwww.instagram.com%2Fp%2FDMVQ9ZCuKru%2F&docid=TB2pjpXFqp3byM&w=1081&h=1351",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Macbook Air 13'' -2015- MJVE2 I5 4GB 128GB SSD New 97% site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:05:08.245Z",
+ "body": {
+  "searchParameters": {
+   "q": "Macbook Air 13'' -2015- MJVE2 I5 4GB 128GB SSD New 97% site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

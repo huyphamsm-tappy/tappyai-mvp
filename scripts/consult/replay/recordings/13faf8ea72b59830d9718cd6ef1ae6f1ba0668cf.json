@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Ốp lưng Zagg iPhone 16 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:56:01.929Z",
+ "body": {
+  "searchParameters": {
+   "q": "Ốp lưng Zagg iPhone 16 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp lưng ZAGG chống sốc bảo vệ dành cho iPhone 16/ 16 Plus",
+    "link": "https://shop.tiktok.com/vn/pdp/op-lung-zagg-cho-iphone-16-series-chong-soc-1-5m-ho-tro-magsafe/1731219084224858631",
+    "snippet": "Ốp lưng ZAGG ESNTL Hampton Snap là dòng ốp lưng thiết kế đặc biệt cho iPhone 16 series, bao gồm các phiên bản iPhone 16, iPhone 16 Plus, iPhone 16 Pro và iPhone ...",
+    "position": 1
+   },
+   {
+    "title": "Ốp lưng ZAGG Crystal Palace Snap Clear dành cho iPhone 16 ...",
+    "link": "https://shop.tiktok.com/vn/pdp/op-lung-zagg-crystal-palace-snap-clear-cho-iphone-16-series/1730823719355976199",
+    "snippet": "Tính năng:Mỏng nhẹ, trong suốt và siêu bềnKhả năng chống sốc lên đến 4m, bảo vệ điện thoại an toàn khi va đậpTăng cường bảo vệ với vật liệu Graphene Ốp lưng ...",
+    "position": 2
+   },
+   {
+    "title": "[iPhone 16 ProMax] Tổng hợp ốp lưng chống sốc ZAGG ...",
+    "link": "https://shop.tiktok.com/vn/pdp/op-lung-chong-soc-zagg-cho-iphone-16-pro-max-tang-kinh-camera/1731390969297077799",
+    "snippet": "Mua [iPhone 16 ProMax] Tổng hợp ốp lưng chống sốc ZAGG bảo vệ điện thoại bảo hành 1 năm ứng dụng vật liệu Graphene trên TikTok Shop.",
+    "rating": 4.8,
+    "ratingCount": 23,
+    "position": 3
+   },
+   {
+    "title": "zagg-cases-essential hampton snap lite iphone 17 pro max ...",
+    "link": "https://shop.tiktok.com/vn/k/zagg-cases-essential-hampton-snap-lite-iphone-17-pro-max-clear",
+    "snippet": "Ốp Lưng Trong Suốt ZAGG cho iPhone 16 Pro Max / 16 Pro, ESNTL Snap Clear, Chống Sốc, Thời ...",
+    "position": 4
+   },
+   {
+    "title": "op lung zagg clear 17 pro max",
+    "link": "https://shop.tiktok.com/vn/k/op-lung-zagg-clear-17-pro-max",
+    "snippet": "[iPhone 17/16/15 Series] Ốp lưng trong ZAGG Clear / Clear Magsafe / Smoky Magsafe chống sốc 1.5m.",
+    "position": 5
+   },
+   {
+    "title": "ốp lưng zagg milan magsafe iphone 17",
+    "link": "https://shop.tiktok.com/vn/k/op-lung-zagg-milan-magsafe-iphone-17",
+    "snippet": "Ốp lưng MagSafe cho iPhone 17/16/15/14/13/12/11 Pro Max, chống sốc, bề mặt nhám thân thiện với da, chống vân tay, viền mềm, lưng cứng, bảo vệ toàn diện.",
+    "position": 6
+   },
+   {
+    "title": "ốp lưng magsafe iphone 17 pro max zagg crystal palace camera ...",
+    "link": "https://shop.tiktok.com/vn/k/op-lung-magsafe-iphone-17-pro-max-zagg-crystal-palace-camera-button",
+    "snippet": "Ốp lưng MagSafe, màu pastel sang trọng, tương thích với iPhone 17, Air 16, 15, 14 Plus, 13, 12, Pro Max, 11; trong suốt, nam tính, mềm mại; hỗ trợ sạc không dây ...",
+    "position": 7
+   },
+   {
+    "title": "[iPhone 17 series] Ốp lưng chống sốc ZAGG chống sốc tới 5mét ...",
+    "link": "https://shop.tiktok.com/vn/pdp/op-lung-iphone-17-series-zagg-chong-soc-den-5-met/1732480627860735527?source=anchor",
+    "snippet": "Ốp lưng chống sốc iPhone 17 series - ZAGG ESNTL ClearTính năng:Khả năng chống sốc 1.5 m tiêu chuẩn Mil Std 810h 516 Công nghệ hạn chế ố vàng ClearGuardThiết ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

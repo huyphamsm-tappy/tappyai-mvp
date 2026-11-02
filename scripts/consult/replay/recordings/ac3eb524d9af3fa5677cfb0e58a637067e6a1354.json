@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Laptop Mới (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:10:14.396Z",
+ "body": {
+  "searchParameters": {
+   "q": "Laptop Mới (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop | Máy tính xách tay giá rẻ, trả góp 0%, giảm 15 triệu",
+    "link": "https://cellphones.com.vn/laptop.html",
+    "snippet": "Laptop, máy tính xách tay giá rẻ, trả góp 0%, đổi điểm giảm thêm tới 10%. Mua online laptop giảm thêm đến 5 triệu, giao hàng miễn phí tận nhà.",
+    "position": 1
+   },
+   {
+    "title": "Laptop dưới 10 triệu cấu hình mạnh mẽ, hiệu năng vượt trội",
+    "link": "https://cellphones.com.vn/bo-loc/laptop-duoi-10-trieu",
+    "snippet": "MacBook Air M5 13 inch 2026 10CPU 8GPU 16GB 512GB | Chính hãng Apple Việt Nam · Laptop Acer Gaming Nitro ProPanel ANV15-52-50VA · Laptop ASUS Vivobook 14 X1404VA- ...",
+    "position": 2
+   },
+   {
+    "title": "Giải đáp khi mua laptop mới cần làm gì? 11 lưu ý QUAN ...",
+    "link": "https://cellphones.com.vn/sforum/khi-mua-laptop-moi-can-lam-gi",
+    "snippet": "Giải đáp khi mua laptop mới cần làm gì? 11 lưu ý QUAN TRỌNG · 1. Đăng ký bảo hành cho máy · 2. Đặt tên cho máy tính của bạn · 3. Loại bỏ các phần mềm từ nhà sản ...",
+    "rating": 3.5,
+    "ratingCount": 2,
+    "position": 3
+   },
+   {
+    "title": "Laptop đồ hoạ giá rẻ | Cấu hình mạnh, màu sắc chân thật",
+    "link": "https://cellphones.com.vn/laptop/do-hoa.html",
+    "snippet": "- Laptop ASUS TUF Dash F15 FX517ZC-HN077W - Giá từ 23.990.000 đồng. - Laptop Asus Rog Strix G15 G513IM HN008W - Giá từ 28.490.000 đồng. - Laptop Lenovo Thinkpad ...",
+    "position": 4
+   },
+   {
+    "title": "Cài đặt máy tính sau khi mua chi tiết từ A–Z cho người mới",
+    "link": "https://cellphones.com.vn/sforum/cai-dat-may-tinh",
+    "snippet": "Cách cài đặt máy tính chuẩn và đầy đủ khi mua về · Cập nhật Windows phiên bản mới nhất · Cập nhật Driver đầy đủ cho máy · Dọn dẹp bloatware không cần thiết · Cài ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 5
+   },
+   {
+    "title": "Laptop cũ giá rẻ, uy tín, trả góp 0%, dùng thử 7 ngày",
+    "link": "https://cellphones.com.vn/hang-cu/laptop.html",
+    "snippet": "Laptop cũ giá rẻ, giảm HSSV 700k, trả góp 0%, trả trước 0đ, phụ phí 0đ, 7 ngày dùng thử miễn phí, giảm 2tr lên đời. Mua ngay laptop cũ uy tín.",
+    "position": 6
+   },
+   {
+    "title": "Laptop cảm ứng 2 in 1 giá rẻ | Màn hình nhạy, chất lượng ...",
+    "link": "https://cellphones.com.vn/laptop/cam-ung.html",
+    "snippet": "Laptop HP ProBook 4 G1I 16 BQ5D8PT ; Hãng sản xuất. Lenovo; Dell; HP; ASUS; Microsoft; MSI ; Nhu cầu sử dụng. Học tập - Văn phòng; Mỏng nhẹ; Cao cấp - Sang trọng",
+    "position": 7
+   },
+   {
+    "title": "Top 5 laptop mới \"ngon - bổ - rẻ\" cho tân sinh viên 2026",
+    "link": "https://cellphones.com.vn/sforum/top-5-laptop-cho-tan-sinh-vien-gia-re",
+    "snippet": "Acer Aspire Lite 14 Gen 2 · Trang bị bộ vi xử lý Intel Core i3-1305U, mang lại hiệu suất ổn định cho các tác vụ văn phòng và giải trí cơ bản.",
+    "date": "29 thg 6, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

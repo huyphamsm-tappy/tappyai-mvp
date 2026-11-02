@@ -1,0 +1,67 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Wok of love (site:food.grab.com/vn OR site:shopeefood.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:22:15.563Z",
+ "body": {
+  "searchParameters": {
+   "q": "Wok of love (site:food.grab.com/vn OR site:shopeefood.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "WOK OF LOVE - ẨM THỰC TRUNG HÀN - Đường Số 5",
+    "link": "https://shopeefood.vn/ho-chi-minh/wok-of-love-am-thuc-trung-han-duong-so-5",
+    "snippet": "311/I32 Đường Số 5, P. An Phú, Thành Phố Thủ Đức, TP. HCM. Mở cửa. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng dịch vụ ...",
+    "position": 1
+   },
+   {
+    "title": "Wok Of Love - Phú Mỹ Hưng - Nội Khu Hưng Phước 2",
+    "link": "https://shopeefood.vn/ho-chi-minh/wok-of-love-phu-my-hung-noi-khu-hung-phuoc-2",
+    "snippet": "Số 48, Đường Nội Khu Hưng Phước 2, P. Tân Phong, Quận 7, TP. HCM. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng ...",
+    "position": 2
+   },
+   {
+    "title": "WOK OF LOVE Q2 - ẨM THỰC TRUNG HÀN",
+    "link": "https://food.grab.com/vn/vi/restaurant/wok-of-love-%E1%BA%A9m-th%E1%BB%B1c-trung-h%C3%A0n-qu%E1%BA%ADn-2-delivery/5-C4CWPAABRNJ2V6",
+    "snippet": "Món Hoa,Súp.",
+    "rating": 4.7,
+    "ratingCount": 943,
+    "position": 3
+   },
+   {
+    "title": "Indian Ganga Restaurant & Lounge ⭐ 4.2",
+    "link": "https://food.grab.com/vn/en/restaurant/restaurant/5-C4BBTT5JJJBCCE",
+    "snippet": "Chicken Biryani is a delicious savory rice dish that is loaded with spicy marinated chicken, caramelized onions, and flavorful saffron rice.",
+    "date": "7 thg 9, 2026",
+    "rating": 4.2,
+    "ratingCount": 1573,
+    "position": 4
+   },
+   {
+    "title": "Trọ - Matcha Latte & Coffee - Đường Số 15 ⭐ 5",
+    "link": "https://food.grab.com/vn/en/restaurant/tr%E1%BB%8D-matcha-latte-coffee-%C4%91%C6%B0%E1%BB%9Dng-s%E1%BB%91-15-delivery/5-C7LFGYTVE3A3A2",
+    "snippet": "Made With Coconut For A Naturally Sweet And Refreshing Taste (The Top Layer Is Matcha Whipped Cream Blended With Chilled Fresh Milk, Unless You Prefer It Hot ...",
+    "rating": 5,
+    "ratingCount": 646,
+    "position": 5
+   },
+   {
+    "title": "Cháo Dinh Dưỡng Việt Soup - Nguyễn Thị Tần",
+    "link": "https://shopeefood.vn/ho-chi-minh/chao-dinh-duong-viet-soup-nguyen-thi-tan",
+    "snippet": "23F' Hẻm 101 Nguyễn Thị Tần, P. 2, Quận 8, TP. HCM. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng dịch vụ vượt trội ...",
+    "position": 6
+   }
+  ],
+  "credits": 1
+ }
+}

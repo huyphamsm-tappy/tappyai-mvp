@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Michi Sushi\" OR \"寿司と天ぷら居酒屋かむら- Izakaya Kamura\" OR \"Haru Sushi Quận 1\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:00:39.628Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Michi Sushi\" OR \"寿司と天ぷら居酒屋かむら- Izakaya Kamura\" OR \"Haru Sushi Quận 1\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Michi Sushi (@michi_sushi_42nguyenhue)",
+    "link": "https://www.tiktok.com/@michi_sushi_42nguyenhue",
+    "snippet": "Michi Sushi Chung cư 42 Nguyễn huệ-lầu 7, Bến Nghé, Q.1 Đặt món tại đây ... Dạ Michi rất xin lỗi Quý Khách vì hôm nay bên em hết cá đột xuất.",
+    "position": 1
+   },
+   {
+    "title": "Michi Sushi Nguyễn Huệ",
+    "link": "https://www.tiktok.com/discover/michi-sushi-nguy%E1%BB%85n-hu%E1%BB%87",
+    "snippet": "MICHI SUSHI – ƯU ĐÃI CỰC HẤP DẪN Team mê sushi đâu rồi ơi! Ghé Michi Sushi thưởng thức sashimi tươi ngon và đừng bỏ lỡ những ưu đãi ...",
+    "date": "14 thg 9, 2026",
+    "position": 2
+   },
+   {
+    "title": "Haru Sushi Quận 1 (@harusushinguyenthaihoc)",
+    "link": "https://www.tiktok.com/@harusushinguyenthaihoc",
+    "snippet": "Haru Sushi Quận 1 · @harusushinguyenthaihoc · HARU SUSHI - 93 NGUYỄN THÁI HỌC, PHƯỜNG CẦU ÔNG LÃNH, QUẬN 1.",
+    "position": 3
+   },
+   {
+    "title": "Sơn Tùng M-TP Đếm Ngược Đón 2025 Tại Phố Đi Bộ",
+    "link": "https://www.tiktok.com/@michi_sushi_42nguyenhue/video/7449321349237017863",
+    "snippet": "Tham gia cùng Sơn Tùng M-TP đếm ngược đón năm mới 2025 tại phố. @Michi Sushi. Sơn Tùng ...",
+    "position": 4
+   },
+   {
+    "title": "Khám Phá Sushi Ngon Tại Haru Sushi Quận 1",
+    "link": "https://www.tiktok.com/@winter290796/photo/7658315768630709524",
+    "snippet": "Đánh giá: 4.5/5⭐️ Đc: 93 Nguyễn Thái Học, Cầu Ông Lãnh, Hồ Chí Minh #shushi #shushiharu #hcm #quan1. Khám Phá Sushi Ngon Tại Haru Sushi Quận 1.",
+    "position": 5
+   },
+   {
+    "title": "Review Michi Sushi Nguyễn Huệ Tuy Hòa Phú Yên",
+    "link": "https://www.tiktok.com/discover/review-michi-sushi-nguy%E1%BB%85n-hu%E1%BB%87-tuy-h%C3%B2a-ph%C3%BA-y%C3%AAn",
+    "snippet": "Khám phá review nhà hàng Michi Sushi tại Nguyễn Huệ Tuy Hòa. Trải nghiệm ẩm thực Nhật Bản hấp dẫn tại HCM! Nhấn vào để biết thêm!",
+    "date": "27 thg 7, 2026",
+    "position": 6
+   },
+   {
+    "title": "Full video kết thúc đại nhạc hội của Sơn Tùng 🔥👏🏻❤️‍🔥 ...",
+    "link": "https://www.tiktok.com/@michi_sushi_42nguyenhue/video/7238436709782867205",
+    "snippet": "1247 Lượt thích,Video TikTok từ Michi Sushi (@michi_sushi_42nguyenhue): \"Full video kết thúc đại nhạc hội của Sơn Tùng ...",
+    "position": 7
+   },
+   {
+    "title": "Đại Tiệc Âm Nhạc Galaxy AI Immersive Tại Việt Nam",
+    "link": "https://www.tiktok.com/@michi_sushi_42nguyenhue/video/7399514433657097488",
+    "snippet": "635 Lượt thích,158 Bình luận.Video TikTok từ Michi Sushi (@michi_sushi_42nguyenhue): \"Chơi nhạc sôi động với dàn sao V-biz vào 09.08.2024!",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

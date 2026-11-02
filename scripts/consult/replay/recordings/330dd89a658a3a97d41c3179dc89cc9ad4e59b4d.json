@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "NEW HP 14-DQ2032 (i3-1115G4/ 256GB SSD/ 8GB/ 14  HD Touch/ WIN11S/ site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:13:45.838Z",
+ "body": {
+  "searchParameters": {
+   "q": "NEW HP 14-DQ2032 (i3-1115G4/ 256GB SSD/ 8GB/ 14  HD Touch/ WIN11S/ site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

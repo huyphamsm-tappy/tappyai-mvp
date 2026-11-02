@@ -1,0 +1,60 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"GRAND HOTEL du LAC\" TP.HCM site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:26:32.538Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"GRAND HOTEL du LAC\" TP.HCM site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn được đề xuất tại Khu chợ Bến Thành, TP. Hồ ...",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotels-list-301/zone2958/",
+    "snippet": "“Gần đây chúng tôi đã nghỉ tại GRAND HOTEL du LAC Boutique Saigon hoàn toàn mới và có một trải nghiệm thực sự tuyệt vời. Vị trí này là không thể đánh bại, n*** ...",
+    "position": 1
+   },
+   {
+    "title": "Các khách sạn ở gần Trường Đại học Khoa học Xã hội và ...",
+    "link": "https://vn.trip.com/hotels/hanoi-vnu-university-of-social-sciences-and-humanities/hotels-c286m11012224/",
+    "snippet": "Tiện nghi phòng bao gồm điện thoại, cùng két bảo mật và bàn. No. 10. GRAND HOTEL du LAC Hanoi Các khách sạn ở Hà Nội ...",
+    "position": 2
+   },
+   {
+    "title": "Các khách sạn ở gần TokyoLife - Hồ Tùng Mậu, Hà Nội",
+    "link": "https://vn.trip.com/hotels/hanoi-tokyolife-h-tng-mu/hotels-c286m28799827/",
+    "snippet": "GRAND HOTEL du LAC Hanoi Các khách sạn ở Hà Nội. GRAND HOTEL du LAC Hanoi. Khách Sạn Ở Quận Hoàn Kiếm, Hà Nội. 9,4/10. Đáng Kinh Ngạc 61 đánh giá. Tọa lạc tại ...",
+    "position": 3
+   },
+   {
+    "title": "Tòa HH2K, Chung Cư Xuân Mai Complex - Khách sạn",
+    "link": "https://vn.trip.com/hotels/hanoi-ta-hh2k-chung-c-xun-mai-complex/hotels-c286m30351295/",
+    "snippet": "GRAND HOTEL du LAC Hanoi Các khách sạn ở Hà Nội. GRAND HOTEL du LAC Hanoi. Khách Sạn Ở Quận Hoàn Kiếm, Hà Nội. 9,4/10. Đáng Kinh Ngạc 63 đánh giá. Tọa lạc tại ...",
+    "position": 4
+   },
+   {
+    "title": "Các khách sạn ở gần Học viện Múa Việt Nam, Hà Nội",
+    "link": "https://vn.trip.com/hotels/hanoi-college-of-dance/hotels-c286m10927457/",
+    "snippet": "GRAND HOTEL du LAC Hanoi Các khách sạn ở Hà Nội. GRAND HOTEL du LAC Hanoi. Khách Sạn Ở Quận Hoàn Kiếm, Hà Nội. 9,5/10. Đáng Kinh Ngạc 60 đánh giá. Tọa lạc tại ...",
+    "position": 5
+   },
+   {
+    "title": "Các khách sạn ở gần Chùa Láng, Hà Nội",
+    "link": "https://vn.trip.com/hotels/hanoi-lang-pagoda/hotels-c286m9012632/",
+    "snippet": "GRAND HOTEL du LAC Hanoi Các khách sạn ở Hà Nội. GRAND HOTEL du LAC Hanoi. Khách Sạn Ở Quận Hoàn Kiếm, Hà Nội. 9,4/10. Đáng Kinh Ngạc 64 đánh giá. Tọa lạc tại ...",
+    "position": 6
+   }
+  ],
+  "credits": 1
+ }
+}

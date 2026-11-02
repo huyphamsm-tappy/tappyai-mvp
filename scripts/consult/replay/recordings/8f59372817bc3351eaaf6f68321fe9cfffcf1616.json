@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Thông Minh Camera Phản Quang Gương Điện Thoại Mặt Sau Kẹp Ảnh Dụng Cụ Selfie Phản Quang Gương Bộ Để Ghi juavn site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:53:00.529Z",
+ "body": {
+  "searchParameters": {
+   "q": "Thông Minh Camera Phản Quang Gương Điện Thoại Mặt Sau Kẹp Ảnh Dụng Cụ Selfie Phản Quang Gương Bộ Để Ghi juavn site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Điện Thoại Thông Minh Camera Phản Quang Gương ...",
+    "link": "https://shopee.vn/product/127914290/51466613001?gads_t_sig=gqRjZGVrxHCFomtpsTE0MjUxOnRzc19zZGtfa2V5omt20QACpGFsZ2_SAAAAZKNkZWvAomN0xEAAAAAMaaRlZwa4TmRr35EbRKe45opqqWzquDpxLoPl6a_nP90XlrFndAmj-Eti4LViLnnfxaArnW_92wfHWioVqmNpcGhlcnRleHTEbgAAAAxX7T64sGq-u8o1SvYzmPcqfe8arI4J2IIAlGPbQ--pMfDJhxal1gjtufJptediQayt3-gfMbYlHsMBTgpb2GIO8jBOChlWgCdwIX5oLa5RezAJiQn4MVcIsVQEe-02XvErsmqcMFFzpRLd",
+    "snippet": "Điện Thoại Thông Minh Camera Phản Quang Gương Điện Thoại Mặt Sau Kẹp Ảnh Dụng Cụ Selfie Phản Quang Gương Bộ Để Ghi juavn ... Tặng Voucher 15.000₫ nếu đơn giao sau ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

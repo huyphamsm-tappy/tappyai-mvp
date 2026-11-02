@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Set Đồ Jean Nam Lunary site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:19:55.777Z",
+ "body": {
+  "searchParameters": {
+   "q": "Set Đồ Jean Nam Lunary site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Set Đồ Jean Nam ICONDENIM Lunary Form Boxy SEID0104",
+    "link": "https://shopee.vn/Set-%C4%90%E1%BB%93-Jean-Nam-ICONDENIM-Lunary-Form-Boxy-SEID0104-i.238618977.40278707212",
+    "snippet": "Mua Set Đồ Jean Nam ICONDENIM Lunary Form Boxy SEID0104 giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao ...",
+    "position": 1
+   },
+   {
+    "title": "Mua và Bán Trên Ứng Dụng Di Động Hoặc Website",
+    "link": "https://shopee.vn/search?promotionId=1022773355384832&signature=780a4dc9959566cd23c4619223aab9e3280e315dcfb12cb3b21eec9769576df4&voucherCode=ICON111K5&ref=sansandeals",
+    "snippet": "Set Đồ Jean Nam ICONDENIM Lunary Form Boxy SEID0104. custom-overlay. flag-label Set Đồ Jean Nam ICONDENIM Lunary Form Boxy SEID0104. 379.000₫. 399.000₫. -5 ...",
+    "position": 2
+   },
+   {
+    "title": "Mua và Bán Trên Ứng Dụng Di Động Hoặc Website",
+    "link": "https://shopee.vn/search?promotionId=1140906089418752&signature=18260735bc6cae7df851a994f14bdf92daf231b06ef93c72b2168620473586b6&voucherCode=ICON144K&ref=sansandeals",
+    "snippet": "Set Đồ Jean Nam ICONDENIM Lunary Form Boxy SEID0104. custom-overlay. flag-label Set Đồ Jean Nam ICONDENIM Lunary Form Boxy SEID0104. 359.000₫. 399.000₫. -10 ...",
+    "position": 3
+   },
+   {
+    "title": "Kill system - Giá Tốt, Sale Tháng 09, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/kill%20system",
+    "snippet": "[CÓ TÁCH LẺ] Set bộ áo khoác form boxy quần dài và quần short. custom-overlay ... flag-label Quần Jean Dáng Y2K, Quần Short Jean Nữ Cạp Thấp, Dáng Siêu ...",
+    "position": 4
+   },
+   {
+    "title": "Chân váy jean phối ren - Giá Tốt, Sale Tháng 09, Ship 0 ...",
+    "link": "https://shopee.vn/list/ch%C3%A2n%20v%C3%A1y/jean/ph%E1%BB%91i%20ren",
+    "snippet": "Đặc biệt, chân váy jean phối ren sẽ luôn được tìm thấy dễ dàng với mức giá ưu đãi cùng với đa dạng kiểu dáng, màu sắc độc đáo. Là một kênh mua sắm online uy tín ...",
+    "position": 5
+   },
+   {
+    "title": "Dexus - Giá Tốt, Sale Tháng 09, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/dexus",
+    "snippet": "Mua online dexus chất lượng, Voucher Shopee Live giảm tới 50% tại Shopee. Khuyến mãi tháng 09, 2026 . Miễn phí vận chuyển. Mua ngay!",
+    "position": 6
+   },
+   {
+    "title": "Sao lại “hổng có gì để mặc hết” #99ShopeeOrange!",
+    "link": "https://shopee.vn/blog/sao-lai-hong-co-gi-de-mac-het-99shopeeorange/",
+    "snippet": "Tham khảo gợi ý từ Shopee nhé: Cả chàng và nàng sẽ cùng diện áo thun màu cam in hình, nhưng nàng sẽ dịu dàng nữ tính khi kết hợp cùng chân váy.",
+    "date": "5 thg 6, 2022",
+    "position": 7
+   },
+   {
+    "title": "linn giá tốt Tháng 9, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=linn",
+    "snippet": "[ Sẵn M-L ]Set Jeans Áo & Quần Giả Váy Dày Dặn Siu Xinh. custom-overlay. [ Sẵn M-L ]Set Jeans Áo & Quần Giả Váy Dày Dặn Siu Xinh. 249.000₫. 280.000₫. -11%.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

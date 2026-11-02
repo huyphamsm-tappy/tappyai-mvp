@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Itel P55 Plus NFC 8GB 256GB\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:54:33.685Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Itel P55 Plus NFC 8GB 256GB\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Điện thoại Itel P55 Plus NFC 8GB 256GB | Giá rẻ, trả góp 0%",
+    "link": "https://cellphones.com.vn/dien-thoai-itel-p55-plus-8gb-256gb.html",
+    "snippet": "Dạ ĐIỆN THOẠI ITEL P55 PLUS NFC 8GB 256GB XANH LÁ giá thời điểm hiện tại là 3.590.000đ ạ,. Hiện sản phẩm không sẵn ở Tây Ninh, dự kiến giao hàng về cho mình từ ...",
+    "rating": 5,
+    "ratingCount": 6,
+    "position": 1
+   },
+   {
+    "title": "Điện thoại Itel P55 Plus NFC 8GB 256GB - Đã Kích Hoạt",
+    "link": "https://cellphones.com.vn/dien-thoai-itel-p55-plus-8gb-256gb-cu-da-kich-hoat.html",
+    "snippet": "Mua Điện thoại Itel P55 Plus NFC 8GB 256GB cũ giá rẻ - Nguồn gốc rõ ràng, bảo hành 6-12 tháng, đổi mới 30 ngày, luôn xuất bán đầy đủ VAT.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 2
+   },
+   {
+    "title": "Điện thoại Itel P55 Plus NFC 8GB 256GB - Cũ Trầy Xước",
+    "link": "https://cellphones.com.vn/dien-thoai-itel-p55-plus-8gb-256gb-cu-tray-xuoc.html",
+    "snippet": "Sản phẩm ĐIỆN THOẠI ITEL P55 PLUS NFC 8GB 256GB ĐEN CŨ - TRẦY XƯỚC- Giá thời điểm hiện tại 1.790.000đ. Khu vực miền Nam. Sản phẩm thu lại từ khách hàng không ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 3
+   },
+   {
+    "title": "Điện thoại Itel P55 Plus NFC 8GB 256GB - Cũ Đẹp | Giá rẻ",
+    "link": "https://cellphones.com.vn/dien-thoai-itel-p55-plus-8gb-256gb-cu-dep.html",
+    "snippet": "Điện thoại Itel P55 Plus NFC 8GB 256GB - Cũ Đẹp ; HSSV, Giáo viên đến 99.500đ ; Smember Giảm thêm đến 20.000đ ; Giá sản phẩm. 3.990.000đ 1.990.000đ ; Danh sách ...",
+    "position": 4
+   },
+   {
+    "title": "Điện thoại Itel P55 Plus NFC 8GB 256GB - Cũ Xước Cấn",
+    "link": "https://cellphones.com.vn/dien-thoai-itel-p55-plus-8gb-256gb-cu-xuoc-can.html",
+    "snippet": "Mua Điện thoại Itel P55 Plus NFC 8GB 256GB cũ giá rẻ - Nguồn gốc rõ ràng, bảo hành 6-12 tháng, đổi mới 30 ngày, luôn xuất bán đầy đủ VAT.",
+    "position": 5
+   },
+   {
+    "title": "Trên tay Itel P55 Plus: Giá rẻ có sạc nhanh 45W, 256GB ...",
+    "link": "https://cellphones.com.vn/sforum/tren-tay-itel-p55-plus",
+    "snippet": "Điện thoại Itel P55 Plus NFC 8GB 256GB. 3.590.000đ3.990.000đ. HSSV chỉ còn 3.410.500đSmember giảm thêm ...",
+    "date": "23 thg 5, 2025",
+    "position": 6
+   },
+   {
+    "title": "Điện thoại iTel [P, S, RS] Giảm đến 40%, Góp 0%, Tặng Sim",
+    "link": "https://cellphones.com.vn/mobile/itel.html",
+    "snippet": "... Điện thoại Itel P55 Plus NFC 8GB 256GB. Trả góp 0%. : 3.590.000đ. 3.990.000đ. Giảm 10%. 6.6 inches. 8 GB. 256 GB. Smember giảm đến ...",
+    "position": 7
+   },
+   {
+    "title": "Điện thoại iTel Đà Nẵng | Giá tốt 09/2026, Sẵn hàng, Góp 0%",
+    "link": "https://cellphones.com.vn/khu-vuc/dien-thoai-itel-da-nang",
+    "snippet": "... Điện thoại Itel P55 Plus NFC 8GB 256GB. Trả góp 0%. : 3.590.000đ. 3.990.000đ. Giảm 10%. 6.6 inches. 8 GB. 256 GB. Smember giảm đến ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

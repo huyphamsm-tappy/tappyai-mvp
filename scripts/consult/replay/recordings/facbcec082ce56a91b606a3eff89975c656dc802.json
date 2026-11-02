@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Bánh Mì Chảo Anh Mập\" OR \"Banh Mi Chad\" OR \"Mì ốc hến Má Lan (CN Q.7)\" Quận 7 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:25:32.872Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Bánh Mì Chảo Anh Mập\" OR \"Banh Mi Chad\" OR \"Mì ốc hến Má Lan (CN Q.7)\" Quận 7 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Banh Mi Chad Team is the best!!! And we are doing cool ...",
+    "link": "https://www.tiktok.com/@chadkubanoff/video/7688900416825838861",
+    "snippet": "Bánh Mì Chad phục vụ theo giờ: Mon – Thurs @ 8:30 AM ICT (tương ứng Sun – Wed @ 9:30 PM EST). VIP CKSK Dinner diễn ra mỗi Thứ Bảy @ 7:00 PM ICT ...",
+    "position": 1
+   },
+   {
+    "title": "We ran out of cilantro. Thang saved our day 🅰️ 📍 Banh Mi ...",
+    "link": "https://www.tiktok.com/@chadkubanoff/video/7677396649005616397",
+    "snippet": "Bánh Mì Chad Hours: Mon – Thurs @ 8:30 AM ICT (Sun – Wed @ 9:30 ... Bánh mì chảo Anh Mập quận 7: ăn ngon, rẻ và không gian thoáng Tóm ...",
+    "position": 2
+   },
+   {
+    "title": "Bánh Mì Chad — giờ mở cửa và địa điểm ở Quận 7",
+    "link": "https://www.tiktok.com/@chadkubanoff/video/7685375468987518221",
+    "snippet": "giờ mở cửa và địa điểm ở Quận 7. Bánh Mì Chad mở cửa: Mon – Thurs @ 8:30 AM ICT (tương đương Sun – Wed @ 9:30 PM EST).",
+    "date": "Bánh Mì Chad",
+    "position": 3
+   },
+   {
+    "title": "Banh Mi Chad is upgrading every day! We found 2 new ...",
+    "link": "https://www.tiktok.com/@chadkubanoff/video/7689459153365961998",
+    "snippet": "Bánh Mì Chad Hours: Mon – Thurs @ 8:30 AM ICT (Sun – Wed @ 9:30 PM EST) 2. VIP CKSK Dinner: Every Saturday @ 7:00 PM ICT (Sat @ 8:00 AM EST) ...",
+    "position": 4
+   },
+   {
+    "title": "Bánh Mì Chad review — Banh Mi Chad hours & location",
+    "link": "https://www.tiktok.com/@chadkubanoff/video/7680736704839372045",
+    "snippet": "Location & contact - Address: 94P, Đường số 25, KDC An Phú Hưng, Tân Hưng, Quận 7, Ho Chi Minh City. ... Keywords: Bánh Mì Chad hours, Banh Mi ...",
+    "position": 5
+   },
+   {
+    "title": "Bánh mì chảo Anh Mập - Khám phá hương vị Quận 7",
+    "link": "https://www.tiktok.com/@fulinguyen/video/7486075116648942869",
+    "snippet": "Bánh mì chảo Anh Mập - Khám phá hương vị Quận 7. Khám phá bánh mì chảo Anh Mập ở Quận 7 với giá chỉ 29k! Thực đơn hấp dẫn, không gian vintage, ...",
+    "position": 6
+   },
+   {
+    "title": "1. Bánh Mì Chad Hours: Mon – Thurs @ 8:30 AM ICT (Sun...",
+    "link": "https://www.tiktok.com/@chadkubanoff/video/7688345610973498637",
+    "snippet": "Bánh Mì Chad phục vụ theo giờ: Mon – Thurs @ 8:30 AM ICT (tương ứng Sun – Wed @ 9:30 PM EST). VIP CKSK Dinner diễn ra mỗi Thứ Bảy @ 7:00 PM ICT ...",
+    "position": 7
+   },
+   {
+    "title": "Bánh Mì Chad location & hours — Banh Mi Chad Ho Chi ...",
+    "link": "https://www.tiktok.com/@chadkubanoff/video/7682591815991659789",
+    "snippet": "Close / CTA Visit Bánh Mì Chad at 94P Đường số 25, KDC An Phú Hưng, Q7 — or tune into the listed live stream times for updates and special VIP ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

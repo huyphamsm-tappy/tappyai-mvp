@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Dell Precision 5530 Core i9-8950HK RAM 16G SSD 512GB Quadro P2000 4G 4K site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:05:09.563Z",
+ "body": {
+  "searchParameters": {
+   "q": "Dell Precision 5530 Core i9-8950HK RAM 16G SSD 512GB Quadro P2000 4G 4K site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

@@ -54,7 +54,8 @@ describe('the route drops search_places for a movie recommendation turn', () => 
   it('computes the intent and gates search_places on it', () => {
     expect(route).toContain('detectMovieRecommendationIntent(lastText)')
     // search_places is included only when NOT a movie-recommendation turn.
-    expect(route).toMatch(/movieRecommend \? \{\} : \{ search_places: tool\(/)
+    // TAPPY_AGENT (04/10): an agent turn keeps search_places (the agent decides; a film turn has get_now_showing).
+    expect(route).toMatch(/\(\(movieRecommend && !agentOn\) \|\| filmAsk\) \? \{\} : \{ search_places: tool\(/)
   })
   it('adds a grounded movie block instead of inventing showtimes/platforms', () => {
     expect(route).toContain('GOI Y PHIM (KHONG PHAI TIM RAP)')

@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quà sinh nhật cho sếp nam thích cà phê 1-2 triệu gia Shopee Tiki Lazada",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:03:40.962Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà sinh nhật cho sếp nam thích cà phê 1-2 triệu gia Shopee Tiki Lazada",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Top 30+ quà tặng sinh nhật sếp dưới 1 triệu tinh tế & ý nghĩa",
+    "link": "https://aeonmall-tanphuceladon.com.vn/tin-tuc/top-30-qua-tang-sinh-nhat-sep-duoi-1-trieu.html",
+    "snippet": "Top 30+ quà tặng sinh nhật sếp dưới 1 triệu tinh tế & ý nghĩa · 1.1. Bút ký kim loại khắc tên · 1.2. Sổ tay · 1.3. Cà vạt · 1.4. Bộ kẹp cà vạt và ...",
+    "date": "5 thg 5, 2026",
+    "position": 1
+   },
+   {
+    "title": "20+ Quà Tặng Sinh Nhật Sếp Dưới 1 Triệu Sang Trọng, Ý ...",
+    "link": "https://www.decathlon.vn/blog/qua-tang-sinh-nhat-sep-duoi-1-trieu/?srsltid=AU7gw4Utr_TUx97Lb1_l7EI0ZDB7-FRXWfPOmpcMx12Yox9p3SHQlZLl",
+    "snippet": "Quà tặng phù hợp cho cả sếp nam và nữ · Bút ký cao cấp · Cốc/Ly hoặc bình giữ nhiệt · Hộp cơm giữ nhiệt · Tai nghe Bluetooth thể thao · Nước hoa mini ...",
+    "date": "20 thg 3, 2026",
+    "position": 2
+   },
+   {
+    "title": "30 Quà sinh nhật Sếp dưới 1 triệu Sang trọng, Dễ ghi điểm",
+    "link": "https://muaquatet.vn/qua-tang-sinh-nhat-sep-duoi-1-trieu",
+    "snippet": "Một chai rượu vang nhập khẩu hoặc rượu mạnh có giá dưới 1 triệu đồng là gợi ý được nhiều người ưa chuộng khi tìm kiếm quà tặng sinh nhật sếp dưới 1 triệu. Một ...",
+    "rating": 4.8,
+    "ratingCount": 5,
+    "position": 3
+   },
+   {
+    "title": "Khám phá 10+ quà tặng sinh nhật sếp dưới 1 triệu sang trọng ...",
+    "link": "https://butparkerkhacten.com/qua-tang-sinh-nhat-sep-duoi-1-trieu/",
+    "snippet": "Set bút ký, sổ tay và hộp đựng namecard là lựa chọn phù hợp dành cho sếp thường xuyên làm việc, ghi chú và gặp gỡ khách hàng, đối tác. Bộ quà ...",
+    "date": "3 thg 9, 2026",
+    "position": 4
+   },
+   {
+    "title": "Mọi ng ơi gợi ý giúp em quà sinh nhật tặng sếp với ạ(Kinh ...",
+    "link": "https://www.facebook.com/groups/834058550598705/posts/1811053819565835/",
+    "snippet": "Mọi ng ơi gợi ý giúp em quà sinh nhật tặng sếp với ạ(Kinh phí 3tr đổ lại ạ) · Hằng Bùi. Sếp nam tặng áo sơ mi giovani hoặc thắt lưng valentino, ...",
+    "position": 5
+   },
+   {
+    "title": "Top 30 quà tặng sinh nhật cho nam ý nghĩa, thiết thực nhất",
+    "link": "https://matviet.vn/blogs/lifestyle/qua-tang-sinh-nhat-cho-nam?srsltid=AU7gw4UT--ovmTSSe-WJKbH-13wPURJMn-G2VG9V-Dkr2vkXA4k-jc0d",
+    "snippet": "Nếu bạn muốn kết hợp nhiều món nhỏ thì có thể tự tay chuẩn bị một hộp quà gồm vài món anh ấy thích như snack, cà phê, vớ, móc khóa, ảnh nhỏ, ...",
+    "date": "18 thg 4, 2026",
+    "position": 6
+   },
+   {
+    "title": "Quà Tặng Sinh Nhật Sếp Dưới 1 Triệu Ghi Điểm Ấn Tượng",
+    "link": "https://cufflinks.vn/qua-tang-sinh-nhat-sep-duoi-1-trieu/",
+    "snippet": "20+ Món Quà Tặng Sinh Nhật Sếp Dưới 1 Triệu Ấn Tượng · 1. Đồng Hồ Đeo Tay · 2. Áo Sơ Mi · 3. Cà Vạt · 4. Khăn Cài Túi Áo Vest · 5. Khuy Măng Sét · 6.",
+    "date": "3 thg 1, 2025",
+    "position": 7
+   },
+   {
+    "title": "Top 10 Quà Tặng Sếp Ý Nghĩa Nhân Dịp Sinh Nhật ...",
+    "link": "https://vn.my-best.com/36278",
+    "snippet": "Top 5 Quà Tặng Sinh Nhật Ý Nghĩa Dành Cho Sếp Nam tốt nhất được ưa chuộng (Tư vấn mua) · Yến Sào Trung NamTổ Yến Sào Tinh Chế · Trà ViệtHộp Trà Tri Ân · HarioBình ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

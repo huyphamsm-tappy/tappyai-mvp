@@ -2,6 +2,7 @@ import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { getAgeEligibility, ageEligibilityCode } from '@/lib/account/ageEligibility'
 import { buildAIContext } from '@/lib/ai/contextBuilder'
 import { publishableFilter } from '@/lib/safety/gate/publicationAccess'
+import { pickReviewImage } from '@/lib/recommendation/placeImage'
 import { rankCandidates } from '@/lib/recommendation/recommendationEngine'
 import type { AIContextResult } from '@/types/aiContext'
 import type { CandidatePlace } from '@/types/recommendation'
@@ -64,7 +65,7 @@ export async function GET(req: NextRequest) {
   // 2. Candidate places: aggregate visible community reviews by place.
   const { data: reviewRows } = await supabase
     .from('reviews')
-    .select('place_id, place_name, place_address, rating, hashtags, created_at, photos')
+    .select('place_id, place_name, place_address, rating, hashtags, created_at, photos, thumbnail')
     .eq('is_hidden', false)
     // Content safety gate. Exclusion only — no ranking or recommendation penalty
     // is introduced here; unpublishable rows simply are not candidates.
@@ -87,7 +88,7 @@ export async function GET(req: NextRequest) {
     if (isShareOnlyPlace(r.place_name as string | null)) continue // skip place-less "sharing" posts
     const e: PlaceAgg = byPlace.get(pid) ?? { name: r.place_name ?? '', address: r.place_address ?? null, ratings: [], tags: new Set<string>(), latest: r.created_at as string, photo: null }
     // Rows arrive newest first: the first public https photo is the place's most recent one.
-    if (!e.photo) { const ph = (Array.isArray(r.photos) ? r.photos : []).find((u: unknown): u is string => typeof u === 'string' && /^https:\/\//.test(u)); if (ph) e.photo = ph }
+    if (!e.photo) e.photo = pickReviewImage(r)
     if (typeof r.rating === 'number') e.ratings.push(r.rating)
     for (const t of (r.hashtags ?? [])) if (t) e.tags.add(String(t))
     if ((r.created_at as string) > e.latest) e.latest = r.created_at as string

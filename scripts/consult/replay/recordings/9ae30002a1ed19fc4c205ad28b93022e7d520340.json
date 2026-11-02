@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Top 30+ quà tặng sinh nhật sếp dưới 1 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:03:46.386Z",
+ "body": {
+  "searchParameters": {
+   "q": "Top 30+ quà tặng sinh nhật sếp dưới 1 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hoa Sáp Đẹp - TikTok Shop Vietnam",
+    "link": "https://shop.tiktok.com/vn/k/hoa-sap-dep",
+    "snippet": "Bó Hoa Sáp Thơm Cao Cấp Mix Dáng Tròn Giấy Trắng Hoa Hồng Kích Thước 40cm x 23cm Màu Trắng Hồng Nhẹ Nhàng Sang Trọng. 4.8. 3024 sold. ₫139.000. ₫159.000 ...",
+    "position": 1
+   },
+   {
+    "title": "Mộc gems - TikTok Shop Vietnam",
+    "link": "https://shop.tiktok.com/vn/k/moc-gems",
+    "snippet": "Vòng Tay Đá Tự Nhiên Mộc Gems Mix Charm May Mắn, Lắc Tay Nữ Đá Năng Lượng Phong Thuỷ, Quà Tặng Sinh Nhật Valentine Bracelet Đeo Tay.",
+    "position": 2
+   },
+   {
+    "title": "[ TRÀ LOẠI 1 ] (TRÀ SÂM DỨA HIỆP THÀNH), PHA TRÀ ĐÁ ...",
+    "link": "https://shop.tiktok.com/vn/pdp/tra-sam-dua-hiep-thanh-pha-tra-da-duong-thom-ngon-chuan-mien-tay/1730642722238335495",
+    "snippet": "Chất lượng sản phẩm: Ok Trà sâm sứa vị uống thơm đậm đà,mùi thơm dễ uống,hết sẽ quay lại ủng hộ shop tiếp,giá cả hợp lý,mọi người nên mua,pha uống trà đường ...",
+    "position": 3
+   },
+   {
+    "title": "Set quà sinh nhật đẹp",
+    "link": "https://shop.tiktok.com/vn/k/set-qua-sinh-nhat-dep",
+    "snippet": "Khám phá Set quà sinh nhật đẹp mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất hôm ...",
+    "position": 4
+   },
+   {
+    "title": "Gối cao su non xuất Hàn cho bé thêu hoạ tiết cực xinh vỏ tháo ...",
+    "link": "https://shop.tiktok.com/vn/pdp/1729591734929951089?m=GYML&p=p&i=3&c=6666666",
+    "snippet": "CHIẾC GỐI CAO SU NON ĐẸP XINH LẮM ẠVải trần bông xuất Hàn, mặt dưới là lưới thoáng + cao su non có kết cấu lỗ thoáng. ƯU ĐIỂM SẢN PHẨM:️ - Ruột gối được ...",
+    "position": 5
+   },
+   {
+    "title": "Bình Xăng Con MITSUYAMA Bộ Chế Hoà Khí Máy Xăng Sử ...",
+    "link": "https://shop.tiktok.com/vn/pdp/binh-xang-con-mitsuyama-5-5hp-7-5hp-tiet-kiem-xang-dong-co-ben/1731819128484169152",
+    "snippet": "Thương Hiệu : - MITSUYAMA • Nội Dung : * Sản phẩm: Bình Xăng Con MITSUYAMA Bộ Chế Hoà Khí Máy Xăng. Dùng để gắn cho máy 5.5Hp, 6.5Hp, 7.5Hp.• Phạm Vi Ứng ...",
+    "position": 6
+   },
+   {
+    "title": "Set quà tặng sinh nhật cho bạn bè",
+    "link": "https://shop.tiktok.com/vn/k/set-qua-tang-sinh-nhat-cho-ban-be",
+    "snippet": "Set quà tặng sinh nhật cho bạn bè · Set quà tặng 1 NẾN + 1 ĐÔI VỚ cho bạn trai, bạn gái, người yêu, cặp đôi, đồng nghiệp - tặng sinh nhật, kỉ niệm - BoxGift · Set ...",
+    "position": 7
+   },
+   {
+    "title": "TikTok Shop Vietnam",
+    "link": "https://shop.tiktok.com/vn/pdp/tem-xe-dien-v1-c1-dks1-model-sonic-ngau-tuy-chinh-mau/1732734941950084300",
+    "snippet": "Mua {product_name} trên TikTok Shop. Săn giá siêu hời cho và được freeship mặt hàng đủ điều kiện. Mua sắm ngay để nhận ưu đãi độc quyền!",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

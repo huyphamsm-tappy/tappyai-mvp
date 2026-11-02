@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Son Kem Lì Merzy Bite The Beat Mellow Tint Quận 10 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:27:08.579Z",
+ "body": {
+  "searchParameters": {
+   "q": "Son Kem Lì Merzy Bite The Beat Mellow Tint Quận 10 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Merzy - Son Chất Lượng, Giá Tốt, Đảm Bảo",
+    "link": "https://shopee.vn/list/merzy",
+    "snippet": "Bite The Beat là một bộ sưu tập son kem lì đặc biệt với thiết kế vỏ đơn giản nhưng màu sắc cuốn hút. Vỏ son được thiết kế cùng màu với bên trong, tạo nên sự ...",
+    "position": 1
+   },
+   {
+    "title": "Son Merzy màu nào đẹp? Review 7+ dòng son trendy của ...",
+    "link": "https://shopee.vn/blog/son-merzy-mau-nao-dep-nhat/",
+    "snippet": "Merzy Watery Dew Tint có chất son tint bóng dạng thạch mỏng nhẹ, ẩm mượt và không gây bết dính. Son dễ tán và che vân môi tốt, càng thoa nhiều ...",
+    "date": "12 thg 7, 2026",
+    "position": 2
+   },
+   {
+    "title": "Son merzy noir - Giá Tốt, Miễn Phí Vận Chuyển, Đủ Loại",
+    "link": "https://shopee.vn/list/son%20kem%20l%C3%AC/merzy/noir",
+    "snippet": "[M13 GLam Vỏ Bạc] Son Kem Lì Merzy Hàn Quốc Mịn Mướt Noir In The Mellow Tint 4g. 270.000₫ · Son Kem Lì Merzy Cyber Mellow Tint. custom-overlay. Son Kem Lì ...",
+    "position": 3
+   },
+   {
+    "title": "Son dưỡng merzy - Giá Tốt, Sale Tháng 09, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/son%20d%C6%B0%E1%BB%A1ng/merzy",
+    "snippet": "Một số dòng nổi bật có thể kể đến như Merzy Academia Mellow Tint, Merzy Bite The Beat Mellow Tint, hoặc các dòng son dưỡng có màu nhẹ nhàng, giúp đôi môi căng ...",
+    "position": 4
+   },
+   {
+    "title": "Son merzy vỏ đen - Giá Tốt, Miễn Phí Vận Chuyển, Đủ Loại",
+    "link": "https://shopee.vn/list/son/merzy/v%E1%BB%8F%20%C4%91en",
+    "snippet": "Son Kem Lì Merzy The Glam Mellow Tint Hàn Quốc 4g Mềm Mịn Môi Bền Màu · 229.000 ; Son kem lì Merzy V6 Another Me The First Velvet Tint Ver 1 và Ver 2 · 160.704 ; ( ...",
+    "position": 5
+   },
+   {
+    "title": "vT9 giá tốt Tháng 9, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=vT9",
+    "snippet": "VT9 Son Kem Lì, Siêu Mịn Merzy Bite The Beat Mellow Tint 4g 4 2. 149.000₫. location-icon Thành phố Hồ Chí Minh.",
+    "position": 6
+   },
+   {
+    "title": "Top 5+ son màu đỏ mận đẹp quyến rũ cá tính, không kén da",
+    "link": "https://shopee.vn/blog/son-mau-do-man-dep/",
+    "snippet": "Chất son: Dạng kem tint mềm như nhung, lên môi mượt mà không bị bột hay vón cục. Son tiệp môi sau vài giây, để lại lớp màu bền đến 6–8 tiếng.",
+    "date": "22 thg 7, 2025",
+    "position": 7
+   },
+   {
+    "title": "Son Hàn Quốc tốt hiện nay, lên màu đẹp như idol",
+    "link": "https://shopee.vn/blog/son-han-quoc-tot-nhat-hien-nay/",
+    "snippet": "Peripera Ink Airy Velvet có chất son tint dạng mousse xốp mịn, khi tán lên môi cho cảm giác mềm mịn như lớp kem nhung tan chảy nhẹ nhàng. Son ...",
+    "date": "12 thg 7, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

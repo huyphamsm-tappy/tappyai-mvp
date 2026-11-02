@@ -1,0 +1,66 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quà tặng thích cà phê Sếp thích cà phê (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:16:02.381Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà tặng thích cà phê Sếp thích cà phê (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Set quà tặng 3 món cà phê - trà - đồ ăn vặt ý nghĩa cho thầy ...",
+    "link": "https://shopee.vn/Set-qu%C3%A0-t%E1%BA%B7ng-3-m%C3%B3n-c%C3%A0-ph%C3%AA-tr%C3%A0-%C4%91%E1%BB%93-%C4%83n-v%E1%BA%B7t-%C3%BD-ngh%C4%A9a-cho-th%E1%BA%A7y-c%C3%B4-s%E1%BA%BFp-v%C3%A0-%C4%91%E1%BB%93ng-nghi%E1%BB%87p-C%E1%BB%99ng-C%C3%A0-Ph%C3%AA-i.354028981.54406709356",
+    "snippet": "Mua Set quà tặng 3 món cà phê - trà - đồ ăn vặt ý nghĩa cho thầy cô, sếp và đồng nghiệp - Cộng Cà Phê giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn Phí. XEM NGAY!",
+    "position": 1
+   },
+   {
+    "title": "Hộp Quà Cà Phê Cao Cấp Đặc Sản Việt CTG339, Cafe Rang Xay Kèm ...",
+    "link": "https://shopee.vn/Set-C%C3%A0-Ph%C3%AA-Qu%C3%A0-Bi%E1%BA%BFu-T%E1%BA%B7ng-Cao-C%E1%BA%A5p-Qu%C3%A0-T%E1%BA%B7ng-Kh%C3%A1ch-H%C3%A0ng-%C4%90%E1%BB%91i-T%C3%A1c-Qu%C3%A0-T%E1%BA%B7ng-Cho-S%E1%BA%BFp-Nam-i.394342126.22339287308",
+    "snippet": "Set cà phê Việt Nam là những sản phẩm chất lượng cao, và nếu bạn chọn một set quà cà phê Việt Nam mà đặc biệt là cà phê đặc sản rang xay, đây sẽ là món quà hữu ích mà rất nhiều người yêu thích.",
+    "position": 2
+   },
+   {
+    "title": "Cà phê Chồn nguyên chất 100% Hương Mai Cafe ... - Lazada",
+    "link": "https://www.lazada.vn/products/ca-phe-chon-nguyen-chat-100-huong-mai-cafe-weasel-coffee-gift-box-intense-aroma-huong-thom-dam-da-thich-hop-lam-qua-bieu-tang-gom-01-goi-ca-phe-dang-bot-250g-01-phin-inox-cao-cap-i1285662859.html",
+    "snippet": "Hộp cà phê Chồn nguyên chất 100% Hương Mai, volume 250g, hương thơm đậm đà cho người sành cà phê. Sản phẩm cao cấp này không chỉ thích hợp làm quà tặng mà còn giúp thưởng thức trọn vẹn hương vị cà phê Việt Nam bằng phin inox cao cấp đi kèm.",
+    "position": 3
+   },
+   {
+    "title": "Set Quà Tặng Cafe Cao Cấp, Hương Vị Đậm Đà, Sang Trọng | tiki.vn",
+    "link": "https://tiki.vn/search?q=set%20qu%C3%A0%20t%E1%BA%B7ng%20cafe",
+    "snippet": "Top Bán Chạy Sản Phẩm set quà tặng cafe [ ĐƠN 399K TẶNG 1 BÌNH NƯỚC HIGHLANDS] Cà Phê Hạt Full City Roast Highlands Coffee 200g114.000 [ĐƠN 399K TẶNG 1 BÌNH NƯỚC HIGHLANDS] Cà phê sữa hòa tan 3in1 Highlands Coffee (50 gói x 17g)156.000",
+    "position": 4
+   },
+   {
+    "title": "Trung Nguyên Legend - Hộp Quà Tặng Cà Phê Sáng Tạo 8 - Bộ Quà ...",
+    "link": "https://www.lazada.vn/products/trung-nguyen-legend-hop-qua-tang-ca-phe-sang-tao-8-bo-qua-tang-giau-co-i2115448139.html",
+    "snippet": "Hộp quà tặng cà phê Trung Nguyên Legend 0.8 kg với 8 sản phẩm, là lựa chọn hoàn hảo cho những người yêu thích cà phê quality cao. Bộ quà tặng sáng tạo này bao gồm cà phê Halal nhập khẩu từ Việt Nam, phù hợp cho mọi dịp tặng quà. - Lazada",
+    "position": 5
+   },
+   {
+    "title": "Quà Tết cho Sếp: 20+ gợi ý tinh tế khiến sếp phải \"gật gù\" khen",
+    "link": "https://cellphones.com.vn/qua-tang-tet/cho-sep",
+    "snippet": "Chọn quà Tết biếu sếp sao cho sang trọng, tinh tế mà không phô trương luôn là bài toán khó mỗi dịp cuối năm. Một món quà thực sự ý nghĩa phải là sự kết hợp giữa lòng tôn trọng và sự thấu hiểu sở thích của người nhận. Bạn đang băn khoăn giữa những lựa chọn đồ dùng cao cấp như đồng hồ, rượu vang ...",
+    "position": 6
+   },
+   {
+    "title": "Bộ Cà Phê Cao Cấp HALO BLEND Naba Coffee - Quà Tặng Sếp,Đối ...",
+    "link": "https://shopee.vn/B%E1%BB%99-C%C3%A0-Ph%C3%AA-Cao-C%E1%BA%A5p-HALO-BLEND-Naba-Coffee-Qu%C3%A0-T%E1%BA%B7ng-S%E1%BA%BFp-%C4%90%E1%BB%91i-T%C3%A1c-Sang-Tr%E1%BB%8Dng-450g-i.1803685143.48214671598",
+    "snippet": "Mua Bộ Cà Phê Cao Cấp HALO BLEND Naba Coffee - Quà Tặng Sếp,Đối Tác Sang Trọng 450g giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn Phí. XEM NGAY!",
+    "position": 7
+   }
+  ],
+  "credits": 1
+ }
+}

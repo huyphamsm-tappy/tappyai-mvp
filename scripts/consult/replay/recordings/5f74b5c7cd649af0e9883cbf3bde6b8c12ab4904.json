@@ -1,0 +1,85 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "set cafe phố tặng 1 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:22:53.385Z",
+ "body": {
+  "searchParameters": {
+   "q": "set cafe phố tặng 1 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "set 2 hộp cafe phố 290g (10 gói) tặng kèm ly kim cương ...",
+    "link": "https://www.lazada.vn/products/set-2-hop-cafe-pho-290g-10-goi-tang-kem-ly-kim-cuong-800ml-sang-chanh-i2629338012.html?srsltid=AU7gw4W4KJeJzf1GuYlRld0Un5BsR_mDZke67Qz1hXrMq7NEn-5mdory",
+    "snippet": "2 Hộp Cafe Phố tặng 1 Ly cafe Phố Gold 1 hộp 10 gói ( 1 gói 29gram). Hạn sử dụng: Tháng 3/2016. 2 hộp tặng ngay 1 ly gold xịn xò dung tích 800ml siêu sang chảnh.",
+    "rating": 5,
+    "ratingCount": 4,
+    "position": 1
+   },
+   {
+    "title": "[Tặng ly kim cương] Bộ x2 túi Cafe Phố đen đá 35gói x 16g ...",
+    "link": "https://www.lazada.vn/products/tang-ly-kim-cuong-bo-x2-tui-cafe-pho-den-da-35goi-x-16gtui-ca-phe-pho-cafe-den-da-maccoffee-cafe-pho-720g-cafe-pho-den-da-maccoffee-cafe-pho-coffee-trueme-truemilk-truemenews-lazadatrueme-phoden35-i2759015806.html?srsltid=AU7gw4Urgg7xrzfEufI-zisj1Sc0OmSrHgskeD4iPVJwgW5SkqxcCCKk",
+    "snippet": "Bộ x2 túi Cafe Phố đen đá 35g, mỗi túi 16g, kèm ly kim cương sang trọng 710ml. Combo tiện lợi 720g từ Maccoffee, lựa chọn cà phê đen đá chất lượng cao, ...",
+    "rating": 5,
+    "ratingCount": 3,
+    "position": 2
+   },
+   {
+    "title": "[Tặng ly khuấy tự động] Combo x2 Cà phê Sữa Đá Phố ...",
+    "link": "https://www.lazada.vn/products/tang-ly-khuay-tu-dong-combo-x2-ca-phe-sua-da-pho-gold-10-goi-x-29ghop-ca-phe-pho-cafe-sua-da-cafe-pho-maccoffee-cafe-pho-ca-phe-pho-ca-phe-hoa-tan-cafe-den-da-ca-phe-hoa-tan-coffee-trueme-phogold10-i2641340152.html?srsltid=AU7gw4XDFplD1_sHhxwidZWe0u7OKQjGL01dGDMyLd-CXtMUGg5m-Fzl",
+    "snippet": "Khách đã ủng hộ, hôm nay Giá Khuyến mãi: Combo x2 hộp Cafe Sữa Đá Phố Gold (10 gói x 29g/hộp) - Tặng kèm +1 Ly khuấy tự động cao cấp, nhanh gọn (ngẫu nhiên).",
+    "rating": 4.6,
+    "ratingCount": 7,
+    "position": 3
+   },
+   {
+    "title": "COMBO 2 HỘP CÀ PHÊ PHỐ SỮA ĐÁ ...",
+    "link": "https://www.lazada.vn/products/combo-2-hop-ca-phe-pho-sua-da-hop-den-da-tang-kem-binh-giu-nhiet-luu-y-chon-san-pham-theo-phan-loai-gio-hang-i2129917151.html?srsltid=AU7gw4USTPzRvwNbXiMh-jAbSo7STkIan2Y6SZOgx8fCGF6nLeLOOaHz",
+    "snippet": "COMBO 2 HỘP CÀ PHÊ PHỐ SỮA ĐÁ + HỘP ĐEN ĐÁ TẶNG KÈM BÌNH GIỮ NHIỆT ( lưu ý chọn sản phẩm theo phân loại giỏ hàng).",
+    "rating": 4.5,
+    "ratingCount": 48,
+    "position": 4
+   },
+   {
+    "title": "Mua 1 tặng 1 Cà phê phố - cà phê đá cà phê sữa đá ...",
+    "link": "https://www.lazada.vn/products/mua-1-tang-1-ca-phe-pho-ca-phe-da-ca-phe-sua-da-tang-kem-tra-sua-ly-thuy-tinh-sang-trong-i2853932403.html?srsltid=AU7gw4XDAf9eUkPbpotk9hgZQJZz_ROnxWOXy7ZU2pkSEXIE7KlIMex5",
+    "snippet": "Đặc biệt với combo 1 hộp cà phê phố + 1 hộp cà phê phố đen bạn sẽ được tặng 1 bình giữ nhiệt cao cấp trị giá 30K. Bình giữ nhiệt có thể giữ được ...",
+    "date": "7 thg 7, 2025",
+    "rating": 5,
+    "ratingCount": 8,
+    "position": 5
+   },
+   {
+    "title": "Cà Phê Phố Sữa Nóng Tặng 1 Nón Bảo Hiểm 40gói 16g",
+    "link": "https://www.lazada.vn/products/ca-phe-pho-sua-nong-tang-1-non-bao-hiem-40goi-16g-i13343561061.html?srsltid=AU7gw4U2oRUgf32wef_CvT2HqDqP1-cTijXHFL6fJzrxo5HgIhoFAHa0",
+    "snippet": "1. Cho 1 gói cà phê vào ly. · 2. Thêm khoảng 70–100ml nước nóng. · 3. Khuấy đều và thưởng thức (có thể thêm đá nếu thích uống lạnh).",
+    "position": 6
+   },
+   {
+    "title": "Combo 2 Hộp Cà phê Phố đá + sữa đá + tặng kèm 5 gói ...",
+    "link": "https://www.lazada.vn/products/combo-2-hop-ca-phe-pho-da-sua-da-tang-kem-5-goi-ca-phe-rang-xay-luu-y-chon-san-pham-theo-phan-loai-gio-hang-i2240380093.html?srsltid=AU7gw4WokZ-pCKBjbmLxziqSqZVXQrYm8TwIQ0W96VXir5qreGKk7Iu5",
+    "snippet": "Combo 2 Hộp Cà phê Phố đá + sữa đá + tặng kèm 5 gói cà phê rang xay ( lưu ý chọn sản phẩm theo phân loại giỏ hàng).",
+    "rating": 4.3,
+    "ratingCount": 33,
+    "position": 7
+   },
+   {
+    "title": "HỘP 160GR CAFE SỮA NÓNG CAFE PHỐ THƠM NGON TẶNG ...",
+    "link": "https://h5.lazada.vn/products/hop-160gr-cafe-sua-nong-cafe-pho-thom-ngon-tang-kem-ly-thuy-tinh-sang-trong-i3090795500-s14832632238.html",
+    "snippet": "HỘP 160GR CAFE SỮA NÓNG CAFE PHỐ THƠM NGON TẶNG KÈM LY THỦY TINH SANG TRỌNG. Tuỳ chọn sản phẩm. Thông số. Thương hiệu,Loại bao bì,Trọng lượng tịnh.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

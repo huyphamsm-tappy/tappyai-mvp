@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Tiệm Nail Quận 10\" OR \"ME IN NAIL\" OR \"NAIL ĐẸP QUẬN 10 | TRỊ MỤN NÁM QUẬN 10 | Hoàng Anh Nguyễn | TIÊM FILLER BOXTOX QUẬN 10 | XÓA NHĂN XÓA XĂM QUẬN 10\" quan 10 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:18:42.174Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Tiệm Nail Quận 10\" OR \"ME IN NAIL\" OR \"NAIL ĐẸP QUẬN 10 | TRỊ MỤN NÁM QUẬN 10 | Hoàng Anh Nguyễn | TIÊM FILLER BOXTOX QUẬN 10 | XÓA NHĂN XÓA XĂM QUẬN 10\" quan 10 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "ME IN NAIL (@meinnail)",
+    "link": "https://www.facebook.com/meinnail/?locale=vi_VN",
+    "snippet": "ME IN NAIL luôn theo đuổi vẻ đẹp được tạo nên từ chất lượng sản phẩm và sự hài lòng của khách hàng trong từng trải nghiệm dịch vụ.",
+    "position": 1
+   },
+   {
+    "title": "𝗠𝗘 𝗜𝗡 𝗡𝗔𝗜𝗟 [미인의 네일] (한국어로 문의 및 예약 가능 ...",
+    "link": "https://www.instagram.com/reel/DKVwQLlzvUx/",
+    "snippet": "ME IN NAIL QUẬN 10: 218 Nguyễn Tiểu La, Phường 8, Quận 10 ☎️0867.984.979 ME IN NAIL HIM LAM QUẬN 7: 39 Nguyễn Thị Thập, Phường ...",
+    "position": 2
+   },
+   {
+    "title": "𝗠𝗘 𝗜𝗡 𝗡𝗔𝗜𝗟 [미인의 네일] (한국어로 문의 및 예약 가능 ...",
+    "link": "https://www.instagram.com/reel/Dc3rhIzshtm/",
+    "snippet": "ME IN NAIL QUẬN 10: 218 Nguyễn Tiểu La, Phường 8, Quận 10 ☎️0867.984.979 ME IN NAIL HIM LAM QUẬN 7: 39 Nguyễn Thị Thập ...",
+    "position": 3
+   },
+   {
+    "title": "𝗠𝗘 𝗜𝗡 𝗡𝗔𝗜𝗟 [미인의 네일] (한국어로 문의 및 예약 가능 ...",
+    "link": "https://www.facebook.com/meinnail/posts/nail-artist-b%C3%ADch-tr%C3%A2m-me-in-nail-b%C3%ACnh-th%E1%BA%A1nh%F0%9D%97%A0%F0%9D%97%98-%F0%9D%97%9C%F0%9D%97%A1-%F0%9D%97%A1%F0%9D%97%94%F0%9D%97%9C%F0%9D%97%9F-%E1%84%86%E1%85%B5%E1%84%8B%E1%85%B5%E1%86%AB%EC%9D%98-%E1%84%82%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%AF%E1%84%92%E1%85%A1%E1%86%AB%E1%84%80%E1%85%AE%E1%86%A8%E1%84%8B%E1%85%A5%E1%84%85%E1%85%A9-%E1%84%86%E1%85%AE%E1%86%AB/1496533792474755/",
+    "snippet": "Lưu ý: Sản phẩm chỉ áp dụng ở chi nhánh ME IN NAIL QUẬN 10 Nail Artist: Thảo Nguyễn ME IN NAIL QUẬN 10 — ME IN NAIL [미인의 네일] ...",
+    "position": 4
+   },
+   {
+    "title": "ME IN NAIL (@mein.nail)",
+    "link": "https://www.tiktok.com/@mein.nail",
+    "snippet": "... Quận Bình Thạnh ☎️0867.960.979 ME IN NAIL QUẬN 10: 218 Nguyễn Tiểu La, Phường 8, Quận 10 ☎️0867.984.979 ME IN NAIL HIM LAM QUẬN ...",
+    "position": 5
+   },
+   {
+    "title": "Top 5 Tiệm Nail tại Quận 10 giá rẻ, dịch vụ chất lượng",
+    "link": "https://topaz.vn/toplist/tiem-nail-tai-quan-10",
+    "snippet": "... tiệm nail quận 10 để chăm sóc móng. Bài viết sau tổng hợp ra cho bạn 5 địa chỉ uy tín, chất lượng hàng đầu quận 10. 01The Lab Nail Bar; 02 ...",
+    "date": "19 thg 9, 2026",
+    "rating": 4.9,
+    "ratingCount": 28,
+    "position": 6
+   },
+   {
+    "title": "Tiệm Nail Quận 10 Được Nhiều Khách Hàng Yêu Thích",
+    "link": "https://threehousenails.com/top-10-tiem-nail-quan-10-duoc-nhieu-khach-hang-yeu-thich",
+    "snippet": "1. THREE HOUSE NAILS – Điểm đến lý tưởng cho vẻ đẹp tinh tế · 2. Top 10 Tiệm Nail Quận 10 Được Yêu Thích Nhất · 3. Tiêu chí chọn tiệm làm nail ...",
+    "date": "20 thg 7, 2026",
+    "position": 7
+   },
+   {
+    "title": "Top 10+ Tiệm Nail Quận 10 Làm Móng Đẹp Đông Khách ...",
+    "link": "https://lisanail.vn/tiem-nail-quan-10/",
+    "snippet": "Batibe Nail and beauty – Tiệm nail Quận 10 chất lượng · Nail Room Mit's House – Tiệm nail Quận 10 giá rẻ và uy tín bạn nên biết · Hebe Spa – Tiệm ...",
+    "date": "26 thg 10, 2023",
+    "rating": 5,
+    "ratingCount": 3,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

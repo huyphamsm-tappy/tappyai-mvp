@@ -1,0 +1,82 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Ốp lưng iPhone 16 Pro Max site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:19:37.113Z",
+ "body": {
+  "searchParameters": {
+   "q": "Ốp lưng iPhone 16 Pro Max site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp Lưng Trong Suốt KHÔNG VIỀN Iphone 16 Pro Max",
+    "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-Trong-Su%E1%BB%91t-KH%C3%94NG-VI%E1%BB%80N-Iphone-16-Pro-Max-16-Pro-16-Plus-16-IP-15-Pro-Max-Nh%E1%BB%B1a-PC-C%E1%BB%A9ng-M%E1%BB%8Fng-G%E1%BB%9D-B%E1%BA%A3o-V%E1%BB%87-Camera-i.113215104.28961407784",
+    "snippet": "Ốp Lưng Trong Suốt KHÔNG VIỀN Iphone 16 Pro Max/ 16 Pro/ 16 Plus 16, IP 15 Pro Max Nhựa PC Cứng Mỏng, Gờ Bảo Vệ Camera. outline grey truck icon. Không hỗ trợ.",
+    "rating": 4.8,
+    "ratingCount": 53,
+    "position": 1
+   },
+   {
+    "title": "Ốp Lưng cho IPHONE 16, 16 PRO, 16 PRO MAX, 16 PLUS ...",
+    "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-cho-IPHONE-16-16-PRO-16-PRO-MAX-16-PLUS-%E1%BB%90p-k%C3%ADnh-b%C3%B3ng-cao-c%E1%BA%A5p-Phi-H%C3%A0nh-Gia-i.72191461.26968031367",
+    "snippet": "Mua Ốp Lưng cho IPHONE 16, 16 PRO, 16 PRO MAX, 16 PLUS Ốp kính bóng cao cấp Phi Hành Gia giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 4,
+    "position": 2
+   },
+   {
+    "title": "Ốp Lưng Dẻo cho Iphone 16 Pro Max / ip16 ...",
+    "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-D%E1%BA%BBo-cho-Iphone-16-Pro-Max-ip16-Pro-Max-16promax-Lo%E1%BA%A1i-trong-su%E1%BB%91t-ch%E1%BB%91ng-s%E1%BB%91c-TSCS-i.358766851.27861808678",
+    "snippet": "Mua Ốp Lưng Dẻo cho Iphone 16 Pro Max / ip16 Pro Max / 16promax - Loại trong suốt chống sốc TSCS giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 3
+   },
+   {
+    "title": "[iPhone 16 ProMax] Tổng hợp ốp lưng chống sốc ZAGG ...",
+    "link": "https://shopee.vn/-iPhone-16-ProMax-T%E1%BB%95ng-h%E1%BB%A3p-%E1%BB%91p-l%C6%B0ng-ch%E1%BB%91ng-s%E1%BB%91c-ZAGG-b%E1%BA%A3o-v%E1%BB%87-%C4%91i%E1%BB%87n-tho%E1%BA%A1i-b%E1%BA%A3o-h%C3%A0nh-1-n%C4%83m-%E1%BB%A9ng-d%E1%BB%A5ng-v%E1%BA%ADt-li%E1%BB%87u-Graphene-i.164018338.29978056451",
+    "snippet": "Mua [iPhone 16 ProMax] Tổng hợp ốp lưng chống sốc ZAGG bảo vệ điện thoại bảo hành 1 năm ứng dụng vật liệu Graphene giá tốt. Mua hàng qua mạng uy tín, ...",
+    "rating": 4.9,
+    "ratingCount": 186,
+    "position": 4
+   },
+   {
+    "title": "Ốp lưng iphone 16 pro max - Giá Tốt, Sale Tháng 09, Ship ...",
+    "link": "https://shopee.vn/list/%E1%BB%91p%20l%C6%B0ng/iphone/16%20pro%20max",
+    "snippet": "Ốp lưng silicon lỏng cho iPhone | Tự Động Lấy Nét Bảo Vệ Ống Kính Nút AI Tương Thích Chống Sốc Cho iPhone 17 16 15 14 13 Pro Max. 129.240₫. 230.401₫.",
+    "position": 5
+   },
+   {
+    "title": "Dành Cho iPhone 16 Pro Max Ốp Lưng Điện Thoại Từ ...",
+    "link": "https://shopee.vn/D%C3%A0nh-Cho-iPhone-16-Pro-Max-%E1%BB%90p-L%C6%B0ng-%C4%90i%E1%BB%87n-Tho%E1%BA%A1i-T%E1%BB%AB-T%C3%ADnh-Si%C3%AAu-M%E1%BB%8Fng-Trong-Su%E1%BB%91t-C%E1%BB%A9ng-Cho-iPhone-13-12-14-15-Pro-Max-Ch%E1%BB%91ng-S%E1%BB%91c-i.1281169116.40775476059",
+    "snippet": "Dành Cho iPhone 16 Pro Max Ốp Lưng Điện Thoại Từ Tính Siêu Mỏng Trong Suốt Cứng Cho iPhone 13 12 14 15 Pro Max Chống Sốc ... Tặng Voucher 15.000₫ nếu đơn giao sau ...",
+    "rating": 5,
+    "ratingCount": 7,
+    "position": 6
+   },
+   {
+    "title": "Ốp lưng đựng thẻ iphone 16 Pro Max 15 ProMax 11 ...",
+    "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-%C4%91%E1%BB%B1ng-th%E1%BA%BB-iphone-16-Pro-Max-15-ProMax-11-pro-max-12-pro-max-13-promax-14-pro-max-xs-max-x-xr-7-plus-8-plus-i.449168894.18751555620",
+    "snippet": "Mua Ốp lưng đựng thẻ iphone 16 Pro Max 15 ProMax 11 pro max 12 pro max 13 promax 14 pro max xs max x xr 7 plus 8 plus giá tốt. Mua hàng qua mạng uy tín, ...",
+    "position": 7
+   },
+   {
+    "title": "Ốp lưng bốn góc chống rơi cho IPhone 16 Pro Max 11 12 ...",
+    "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-b%E1%BB%91n-g%C3%B3c-ch%E1%BB%91ng-r%C6%A1i-cho-IPhone-16-Pro-Max-11-12-13-14-15-Pro-Max-16-Plus-V%E1%BB%8F-trong-su%E1%BB%91t-V%E1%BB%8F-ch%E1%BB%91ng-s%E1%BB%91c-i.315408189.28862795590",
+    "snippet": "Ốp lưng bốn góc chống rơi cho IPhone 16 Pro Max 11 12 13 14 15 Pro Max 16 Plus Vỏ trong suốt Vỏ chống sốc. outline green truck icon.",
+    "rating": 4.8,
+    "ratingCount": 1542,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

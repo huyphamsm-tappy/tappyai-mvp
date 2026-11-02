@@ -17,6 +17,8 @@
 
 import { normalizeVN } from '../intent'
 import type { NeedProfile } from './needProfile'
+import { hasMandatoryHousehold } from './decisionState'
+import { styleLuna6On } from './styleLuna6'
 
 export type Who = 'solo' | 'couple' | 'friends' | 'family' | 'group' | 'colleagues'
 export type Occasion = 'date' | 'birthday' | 'business' | 'family_meal' | 'hangout' | 'quick_bite' | 'celebration'
@@ -50,7 +52,7 @@ const fold = (s: string) => ' ' + normalizeVN(s.toLowerCase()).replace(/\s+/g, '
 const WHO: Array<[Who, RegExp]> = [
   // Explicit "alone" first: "ăn trưa gần công ty 1 mình" is solo, not colleagues.
   ['solo', /\b(mot minh|1 minh|di minh|solo|alone|by myself|1 nguoi|1 ng)\b/],
-  ['family', /\b(gia dinh|ba me|bo me|ca nha|family|con nit|tre em|kids?|children|voi con|ong ba)\b/],
+  ['family', /\b(gia dinh|ba me|bo me|ca nha|family|con nit|tre em|kids?|children|voi con|ong ba|voi be|em be|be \d{1,2} ?tuoi|con \d{1,2} ?tuoi|di cung (?:con|be)|cung (?:con|be))\b/],
   ['colleagues', /\b(dong nghiep|sep|cong ty|team|coworkers?|colleagues?|khach hang|doi tac|tiep khach)\b/],
   ['couple', /\b(nguoi yeu|gau|crush|ban gai|ban trai|bx|ox|chong|2 dua|hai dua|couple|girlfriend|boyfriend|partner|wife|husband|hen ho|date)\b/],
   ['friends', /\b(ban be|hoi ban|dam ban|nhom ban|tui ban|friends?|nhau|bros?)\b/],
@@ -88,7 +90,8 @@ export const UPSCALE_RE = /\b(sang (?:trong|chanh|chut|xin|hon|mot chut|hon chut
 const HARD: Array<[Hard, RegExp]> = [
   ['quiet', /\b(yen tinh|im lang|quiet|khong on|it on|nhe nhang|tinh lang)\b/],
   ['parking', /\b(dau xe|do xe|giu xe|bai xe|parking|o to|xe hoi|xe oto)\b/],
-  ['kids', /\b(con nit|tre em|kids?|children|khu vui choi|tre nho|em be|baby)\b/],
+  // Owner (3A, D8): generic child / household mentions are CONTEXT (see `who`), never a hard `kids` constraint. `kids` is added below,
+  // and only on the user's own mandatory wording.
   ['vegetarian', /\b(chay|vegetarian|vegan|thuan chay|an chay)\b/],
   ['outdoor', /\b(ngoai troi|san vuon|outdoor|rooftop|san thuong|khong gian mo|open air)\b/],
   ['private_room', /\b(phong rieng|phong vip|private room|private)\b/],
@@ -152,6 +155,9 @@ export function deriveSituation(
   const mood = pick(MOOD)
   const hard: Hard[] = []
   for (const [h, re] of HARD) if (re.test(all) && !hard.includes(h)) hard.push(h)
+  // Phase 3A / D8: child context is context, not a requirement. It becomes a HARD constraint only on the user's own mandatory
+  // wording ("bat buoc phu hop cho be"), judged by the same predicate the need profile uses so the two can never disagree.
+  if (hasMandatoryHousehold(all) && !hard.includes('kids')) hard.push('kids')
   const nearMe = /\b(gan day|gan toi|gan minh|quanh day|near me|nearby|around here|gan cho|xung quanh)\b/.test(all) || !!opts.hasGps
 
   const assumptions: string[] = []
@@ -208,7 +214,7 @@ export function buildSituationBlock(frame: SituationFrame): string {
   if (frame.budget) lines.push('- Ngân sách: như user nói (xem khối nhu cầu)')
   if (frame.mood) lines.push(`- Không khí muốn: ${MOOD_VI[frame.mood]} (user nói)`)
   if (frame.hard.length > 0) lines.push(`- Điều kiện cứng: ${frame.hard.map(h => HARD_VI[h]).join(', ')} (user nói)`)
-  for (const a of frame.assumptions) lines.push(`- ${a} (giả sử — nêu ngắn "mình giả sử …" rồi TÌM NGAY; KHÔNG hỏi xác nhận, KHÔNG "phải không?")`)
+  for (const a of frame.assumptions) lines.push(styleLuna6On() ? `- ${a} (giả sử ngầm — KHÔNG nhắc với user trừ khi nó đổi lựa chọn; TÌM NGAY; KHÔNG hỏi xác nhận)` : `- ${a} (giả sử — nêu ngắn "mình giả sử …" rồi TÌM NGAY; KHÔNG hỏi xác nhận, KHÔNG "phải không?")`)
   // Measured 2026-09-18 (F7 "ăn gì ngon giờ", T5 "đi chơi ở đâu"): "nói rõ là giả sử, không hỏi lại" was
   // read as "state the assumption, then ask whether it is right" — one line ending in "phải không?"
   // and no tool ran. Low confidence is not a reason to ask: a wrong assumption costs the user one

@@ -1,0 +1,70 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Ốp lưng UAG Pathfinder SE chính hãng với Magsafe cho iPhone site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:08:16.952Z",
+ "body": {
+  "searchParameters": {
+   "q": "Ốp lưng UAG Pathfinder SE chính hãng với Magsafe cho iPhone site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "uag เคสสำหรับ iphone 16 pro 16 pro max รุ่น pathfinder se ...",
+    "link": "https://shop.tiktok.com/vn/k/uag-ekhs-samhrab-iphone-16-pro-16-pro-max-run-pathfinder-se-magsafe-by-vgadz",
+    "snippet": "Ốp iPhone 16 Pro Max, UAG Pathfinder, Ốp Trong Suốt, Tương Thích Với Magsafe, Tương Thích Với iPhone 16 Pro, 16Plus, iPhone 15 Pro Max, iPhone 14 Pro Max, ...",
+    "position": 1
+   },
+   {
+    "title": "Ốp lưng UAG Pathfinder SE MagSafe cho các mẫu iPhone ...",
+    "link": "https://shop.tiktok.com/vn/pdp/op-lung-uag-pathfinder-se-magsafe-cho-iphone-17-16-15-14-13-pro-max-chong-soc-hieu-qua-ho-tro-sac-kh/1734028380792587689",
+    "snippet": "Đặc điểm sản phẩm Ốp chống sốc của thương hiệu UAG có thiết kế độc đáo nổi bật, thu hút sự chú ý, và nhẹ nhưng chống sốc hiệu quả. Được làm từ Polycarbonate ...",
+    "position": 2
+   },
+   {
+    "title": "magsafe wallet 17 pro max",
+    "link": "https://shop.tiktok.com/vn/k/magsafe-wallet-17-pro-max",
+    "snippet": "Ốp lưng Magsafe iPhone 17 Pro Max UAG Pathfinder SE - Bảo hành 12 tháng chính hãng.",
+    "position": 3
+   },
+   {
+    "title": "airtag for luggage iphone",
+    "link": "https://shop.tiktok.com/vn/k/airtag-for-luggage-iphone",
+    "snippet": "[iPhone 16 Series] Ốp lưng UAG Pathfinder SE MagSafe – Chống sốc chuẩn quân đội ...",
+    "position": 4
+   },
+   {
+    "title": "Ốp điện thoại CASETiFY Ripple Case với MagSafe cho iPhone ...",
+    "link": "https://shop.tiktok.com/vn/pdp/1735935224527226281",
+    "snippet": "Điểm nổi bậtChống rơi từ 6,5 ft (2 lần MIL-STD-810G)【Silicone mềm cảm giác cao cấp】 - Nút bấm có độ nhạy xúc giác - Nút điều khiển máy ảnh tích hợp - Sạc ...",
+    "position": 5
+   },
+   {
+    "title": "Ốp lưng SPIGEN Series iPhone 17 [Nano Pop MagFit] ...",
+    "link": "https://shop.tiktok.com/vn/pdp/op-lung-spigen-nano-pop-magfit-cho-iphone-17-silicon-mem-nam-cham-tich-hop/1733770339135292841",
+    "snippet": "Ốp lưng mới UAG cho iPhone 17 Pro Max, 16 Pro Max, 15 Plus, 14 Pro, 13, 12, 11 Pro Max và Plus, cũng như mẫu Plasma XTE Pathfinder, với pin sạc lại được.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 6
+   },
+   {
+    "title": "Dây Đeo Chéo Dày, UAG Civilian, Dây Đeo Tiêu Chuẩn ...",
+    "link": "https://shop.tiktok.com/vn/pdp/day-%C4%91eo-cheo-day-uag-civilian-chong-soc-%C4%91ieu-chinh-%C4%91o-dai/1732282293748599264",
+    "snippet": "Ốp Pathfinder, UAG, với Magsafe, dành cho iPhone 16 pro, 15 Pro Max, 14 ProMax, 13 Pro ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 7
+   }
+  ],
+  "credits": 1
+ }
+}

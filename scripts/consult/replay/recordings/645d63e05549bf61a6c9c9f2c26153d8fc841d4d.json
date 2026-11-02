@@ -1,0 +1,61 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"QUÁN NHẬU NĂM ZUI | QUÁN NHẬU GẦN ĐÂY | QUÁN NHẬU BÌNH THẠNH | QUÁN ĂN GẦN ĐÂY\" OR \"QUÁN 366| QUÁN NHẬU BÙI ĐÌNH TUÝ| QUÁN NHẬU BÌNH THẠNH\" OR \"Quán Thu Hòa\" Bình Thạnh site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:07:45.632Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"QUÁN NHẬU NĂM ZUI | QUÁN NHẬU GẦN ĐÂY | QUÁN NHẬU BÌNH THẠNH | QUÁN ĂN GẦN ĐÂY\" OR \"QUÁN 366| QUÁN NHẬU BÙI ĐÌNH TUÝ| QUÁN NHẬU BÌNH THẠNH\" OR \"Quán Thu Hòa\" Bình Thạnh site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cho thuê Dài hạn Gần Quán Thu Hòa",
+    "link": "https://cozrum.com/cho-thue-dai-han-gan-quan-thu-hoa",
+    "snippet": "Cho thuê Dài hạn, Gần Quán Thu Hòa, đầy đủ nội thất, thông tin chính xác, công nghệ 3D mô phỏng trực quan và chân thực.",
+    "position": 1
+   },
+   {
+    "title": "82 Nguyễn Công Trứ",
+    "link": "https://cozrum.com/cho-thue-dai-han-can-ho-dich-vu-phuong-19/82-nguyen-cong-tru-47954",
+    "snippet": "Daiichi Ramen & Curry Bình Thạnh · Cháo lòng Bắc · Quán Thu Hòa · Zune.zx Tp Hồ Chí Minh · Lò Bánh Mì Đa Kao · In màu photocopy Phát · G-kitchen · Boom - Cà phê ...",
+    "position": 2
+   },
+   {
+    "title": "Các mệ đang có con dùng bỉm honey thì nhớ vào săn sale ...",
+    "link": "https://www.facebook.com/linh.siro.399/posts/c%C3%A1c-m%E1%BB%87-%C4%91ang-c%C3%B3-con-d%C3%B9ng-b%E1%BB%89m-honey-th%C3%AC-nh%E1%BB%9B-v%C3%A0o-s%C4%83n-sale-c%C3%B9ng-e-nha-b%C3%ACnh-th%C6%B0%E1%BB%9Dng-c%C3%A1/3118964721633433/",
+    "snippet": "Các mệ đang có con dùng bỉm honey thì nhớ vào săn sale cùng e nha. Bình thường các mẹ mua vs giá 270k/1b thì hnay chỉ còn 190k/1b thui các mẹ ...",
+    "position": 3
+   },
+   {
+    "title": "HỌA SĨ. VANKY NG. VÀ TÁC PHẨM \" TRÊN CÁNH ĐỒNG ...",
+    "link": "https://cauminhngoc.blogspot.com/2015/10/hs-vanky-ng-va-tac-pham-tren-canh-ong.html",
+    "snippet": "Một không gian theo chiều của sự bình ổn thơ mộng mang sắc thái trầm lắng của buổi bình ... Từ những yếu tố đã quán thu hòa nhịp cùng tâm thức ...",
+    "date": "16 thg 10, 2015",
+    "position": 4
+   },
+   {
+    "title": "CJ INN",
+    "link": "https://cozrum.com/cho-thue-dai-han-can-ho-dich-vu-phuong-19/cj-inn-56028",
+    "snippet": "Ngô Tất Tố, Phường 19, Bình Thạnh, Miễn phí điện,nước1 tuần dọn phòng ... Quán Thu Hòa · Ngân Hàng Tmcp Á Châu (Acb) - Pgd Ngô Tất Tố · Rửa Xe Tuấn Hậu ...",
+    "position": 5
+   },
+   {
+    "title": "Ngô Tất Tố, Thạnh Mỹ Tây",
+    "link": "https://cozrum.com/cho-thue-dai-han-can-ho-dich-vu-phuong-21/ngo-tat-to-thanh-my-tay-70670",
+    "snippet": "Ngô Tất Tố, phường 21, Bình Thạnh, Điện 4000/kwh Nước 100k ... Quán Thu Hòa · 8 PHỞ · Shop Thời Trang Buzz · Cửa Hàng Đồ Chơi Trẻ Em Khải Nguyên ...",
+    "position": 6
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,137 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Laptop Lenovo IdeaPad Slim 3 15IAH8 83ER000EVN",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:04:59.356Z",
+ "body": {
+  "searchParameters": {
+   "q": "Laptop Lenovo IdeaPad Slim 3 15IAH8 83ER000EVN",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Laptop Lenovo Ideapad Slim 3 15IAH8 i5 12450H (83ER000EVN) - mua trả chậm,  giá rẻ",
+    "imageUrl": "https://cdn.tgdd.vn/Products/Images/44/313333/lenovo-ideapad-slim-3-15iah8-i5-83er00evn-glr-1.jpg",
+    "imageWidth": 1020,
+    "imageHeight": 680,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPkip1Ti0kfptBSM0rTqz_FGQpVV935G_CyaxPNwjUOg&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Điện máy XANH",
+    "domain": "www.dienmayxanh.com",
+    "link": "https://www.dienmayxanh.com/laptop/lenovo-ideapad-slim-3-15iah8-i5-83er00evn?srsltid=AU7gw4WSp5TPkE4fxGskyVT6LVZ9SN16wgPUD4WcR8vH0A5bGB7SBmP0",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.tgdd.vn%2FProducts%2FImages%2F44%2F313333%2Flenovo-ideapad-slim-3-15iah8-i5-83er00evn-glr-1.jpg&tbnid=qW-giAAGE0wbrM&imgrefurl=https%3A%2F%2Fwww.dienmayxanh.com%2Flaptop%2Flenovo-ideapad-slim-3-15iah8-i5-83er00evn%3Fsrsltid%3DAU7gw4WSp5TPkE4fxGskyVT6LVZ9SN16wgPUD4WcR8vH0A5bGB7SBmP0&docid=a9ggoJ_6CcLcQM&w=1020&h=680",
+    "position": 1
+   },
+   {
+    "title": "Laptop Lenovo IdeaPad Slim 3 15IAH8 83ER000EVN| GIÁ RẺ QUÁ",
+    "imageUrl": "https://phucanhcdn.com/media/product/54507_1_n__.jpg",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYO0sY2DLAn_VHTbS2foY_OXNepLsuvfVtRwm8tnZ91g&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Phucanh.vn",
+    "domain": "www.phucanh.vn",
+    "link": "https://www.phucanh.vn/laptop-lenovo-ideapad-slim-3-15iah8-83er000evn.html?srsltid=AU7gw4UyCwhjRAmbQvduPUIgL2x8E6e6y9i5ghazjN-PZwIKlxZ1vqHz",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fphucanhcdn.com%2Fmedia%2Fproduct%2F54507_1_n__.jpg&tbnid=D6ySLYbo_QjnYM&imgrefurl=https%3A%2F%2Fwww.phucanh.vn%2Flaptop-lenovo-ideapad-slim-3-15iah8-83er000evn.html%3Fsrsltid%3DAU7gw4UyCwhjRAmbQvduPUIgL2x8E6e6y9i5ghazjN-PZwIKlxZ1vqHz&docid=hiHWQ1Avp_qmtM&w=600&h=600",
+    "position": 2
+   },
+   {
+    "title": "Laptop Lenovo Ideapad Slim 3 15IAH8 i5 (83ER000EVN) - Chính hãng, mua trả  chậm",
+    "imageUrl": "https://cdn.tgdd.vn/Products/Images/44/313333/lenovo-ideapad-slim-3-15iah8-i5-83er00evn-acv-2.jpg",
+    "imageWidth": 1020,
+    "imageHeight": 570,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS74XxsXJbTu26fj4PwyDWHP2ulUQRls1lIGvFsgTotBQ&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 411,
+    "source": "Thegioididong.com",
+    "domain": "www.thegioididong.com",
+    "link": "https://www.thegioididong.com/laptop/lenovo-ideapad-slim-3-15iah8-i5-83er00evn",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.tgdd.vn%2FProducts%2FImages%2F44%2F313333%2Flenovo-ideapad-slim-3-15iah8-i5-83er00evn-acv-2.jpg&tbnid=W9BYSI0OHBeTgM&imgrefurl=https%3A%2F%2Fwww.thegioididong.com%2Flaptop%2Flenovo-ideapad-slim-3-15iah8-i5-83er00evn&docid=yZDGMqq_lsAy3M&w=1020&h=570",
+    "position": 3
+   },
+   {
+    "title": "Laptop Lenovo IdeaPad Slim 3 15IAH8 83ER000FVN (Intel Core i5-12450H | 16GB  | 1TB | Intel UHD | 15.6 inch FHD | Win 11 | Xám)",
+    "imageUrl": "https://anphat.com.vn/media/product/47985_laptop_lenovo_ideapad_slim_3_15iah8_83er000fvn__2_.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCuLT9c04SLnuA71QQct2IJ-K9ooNOmzpfH5Y3WAVqxg&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "An Phát Computer",
+    "domain": "www.anphatpc.com.vn",
+    "link": "https://www.anphatpc.com.vn/laptop-lenovo-ideapad-slim-3-15iah8-83er000fvn.html?srsltid=AU7gw4V0otiDgJD1wT372SkgghJ-GmRQDUXi4ViSPIhRZlcC8zYFUHAP",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fanphat.com.vn%2Fmedia%2Fproduct%2F47985_laptop_lenovo_ideapad_slim_3_15iah8_83er000fvn__2_.jpg&tbnid=3sqy0a_A3-IdOM&imgrefurl=https%3A%2F%2Fwww.anphatpc.com.vn%2Flaptop-lenovo-ideapad-slim-3-15iah8-83er000fvn.html%3Fsrsltid%3DAU7gw4V0otiDgJD1wT372SkgghJ-GmRQDUXi4ViSPIhRZlcC8zYFUHAP&docid=RZzj0774ovS7QM&w=1000&h=1000",
+    "creator": "An Phát Computer",
+    "position": 4
+   },
+   {
+    "title": "Laptop Lenovo Ideapad Slim 3 15IAH8 i5 12450H (83ER000EVN) - mua trả chậm,  giá rẻ",
+    "imageUrl": "https://cdn.tgdd.vn/Products/Images/44/313333/Kit/lenovo-ideapad-slim-3-15iah8-i5-83er00evn-glr-note-1.jpg",
+    "imageWidth": 800,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKnxE9eJg6iR_Evsj6CVu5VXJDlW8EE_CeOau0iSeodQ&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "Điện máy XANH",
+    "domain": "www.dienmayxanh.com",
+    "link": "https://www.dienmayxanh.com/laptop/lenovo-ideapad-slim-3-15iah8-i5-83er00evn?srsltid=AU7gw4XKf5ZuJkgQxQG1JLy-ICBIeo1G0dWbzpYC_PlhYytSSSfkX_yY",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.tgdd.vn%2FProducts%2FImages%2F44%2F313333%2FKit%2Flenovo-ideapad-slim-3-15iah8-i5-83er00evn-glr-note-1.jpg&tbnid=EFYOm_ZpS1Oi9M&imgrefurl=https%3A%2F%2Fwww.dienmayxanh.com%2Flaptop%2Flenovo-ideapad-slim-3-15iah8-i5-83er00evn%3Fsrsltid%3DAU7gw4XKf5ZuJkgQxQG1JLy-ICBIeo1G0dWbzpYC_PlhYytSSSfkX_yY&docid=a9ggoJ_6CcLcQM&w=800&h=600",
+    "position": 5
+   },
+   {
+    "title": "Laptop Lenovo IdeaPad Slim 3 15IAH8 83ER000EVN - Cũ Xước Cấn | Giá rẻ",
+    "imageUrl": "https://cdn2.cellphones.com.vn/x/media/catalog/product/t/e/text_ng_n_23__1_7_1_1_2_1.png",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsCwb4uSmSH8lo8NmK_hEi3zf_kUe2JJePfNWspeN40w&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/laptop-lenovo-ideapad-slim-3-15iah8-83er000evn-16gb-cu-xuoc-can.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Fx%2Fmedia%2Fcatalog%2Fproduct%2Ft%2Fe%2Ftext_ng_n_23__1_7_1_1_2_1.png&tbnid=W55fcKl5dJ_YCM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Flaptop-lenovo-ideapad-slim-3-15iah8-83er000evn-16gb-cu-xuoc-can.html&docid=WzyXuTB-HtDjKM&w=600&h=600",
+    "position": 6
+   },
+   {
+    "title": "Laptop Lenovo Ideapad Slim 3 15IAH8 i5 (83ER000EVN) - Chính hãng, mua trả  chậm",
+    "imageUrl": "https://cdnv2.tgdd.vn/mwg-static/tgdd/Products/Images/44/313333/lenovo-ideapad-slim-3-15iah8-i5-83er00evn-thumb-638754848306439358-600x600.jpg",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7HyPpw39E086DzbyLWk4KUFuqohBeca9GQtoGj3Er3Q&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Thegioididong.com",
+    "domain": "www.thegioididong.com",
+    "link": "https://www.thegioididong.com/laptop/lenovo-ideapad-slim-3-15iah8-i5-83er00evn",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdnv2.tgdd.vn%2Fmwg-static%2Ftgdd%2FProducts%2FImages%2F44%2F313333%2Flenovo-ideapad-slim-3-15iah8-i5-83er00evn-thumb-638754848306439358-600x600.jpg&tbnid=667EYAJuGEQ05M&imgrefurl=https%3A%2F%2Fwww.thegioididong.com%2Flaptop%2Flenovo-ideapad-slim-3-15iah8-i5-83er00evn&docid=yZDGMqq_lsAy3M&w=600&h=600",
+    "position": 7
+   },
+   {
+    "title": "Laptop Lenovo Ideapad Slim 3 15IAH8 i5 12450H (83ER000EVN) - mua trả chậm,  giá rẻ",
+    "imageUrl": "https://cdn.tgdd.vn/Products/Images/44/313333/Slider/vi-vn-lenovo-ideapad-slim-3-15iah8-i5-83er00evn-thumbvideo.jpg",
+    "imageWidth": 780,
+    "imageHeight": 433,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRd2sphL_s8DxZWOGxXCZ1sF3y-uGpLmA9d3FoNYWB90A&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 408,
+    "source": "Điện máy XANH",
+    "domain": "www.dienmayxanh.com",
+    "link": "https://www.dienmayxanh.com/laptop/lenovo-ideapad-slim-3-15iah8-i5-83er00evn?srsltid=AU7gw4XkaYI-UVoioH0Vd5blp9XqE5lKq4F9yxsmW0ye1NkWv0LkkJjx",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.tgdd.vn%2FProducts%2FImages%2F44%2F313333%2FSlider%2Fvi-vn-lenovo-ideapad-slim-3-15iah8-i5-83er00evn-thumbvideo.jpg&tbnid=iX1aw60rlQvqnM&imgrefurl=https%3A%2F%2Fwww.dienmayxanh.com%2Flaptop%2Flenovo-ideapad-slim-3-15iah8-i5-83er00evn%3Fsrsltid%3DAU7gw4XkaYI-UVoioH0Vd5blp9XqE5lKq4F9yxsmW0ye1NkWv0LkkJjx&docid=a9ggoJ_6CcLcQM&w=780&h=433",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

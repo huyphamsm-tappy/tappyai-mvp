@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Top 30 quà tặng sinh nhật cho nam ý nghĩa, thiết thực nhất",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:03:42.346Z",
+ "body": {
+  "searchParameters": {
+   "q": "Top 30 quà tặng sinh nhật cho nam ý nghĩa, thiết thực nhất",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Top 30 quà tặng sinh nhật cho nam ý nghĩa, thiết thực nhất",
+    "imageUrl": "https://cdn.hstatic.net/files/200000689681/article/qua-tang-sinh-nhat-cho-nam-thumbnail_92683ea13bdc457ea82584a5e04758e0.jpg",
+    "imageWidth": 1424,
+    "imageHeight": 856,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTi9nryUtdl3coxnvMPBUvJXc0vb3zi1JBzd8Czmuso-A&s",
+    "thumbnailWidth": 289,
+    "thumbnailHeight": 174,
+    "source": "Mắt Việt",
+    "domain": "matviet.vn",
+    "link": "https://matviet.vn/blogs/lifestyle/qua-tang-sinh-nhat-cho-nam?srsltid=AU7gw4W4nYQLftP_O_SrCEacBwpIlQrQ7jEdbPAI5QT1rm3BlZ54ZPM-",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.hstatic.net%2Ffiles%2F200000689681%2Farticle%2Fqua-tang-sinh-nhat-cho-nam-thumbnail_92683ea13bdc457ea82584a5e04758e0.jpg&tbnid=xzPWFYLRb479eM&imgrefurl=https%3A%2F%2Fmatviet.vn%2Fblogs%2Flifestyle%2Fqua-tang-sinh-nhat-cho-nam%3Fsrsltid%3DAU7gw4W4nYQLftP_O_SrCEacBwpIlQrQ7jEdbPAI5QT1rm3BlZ54ZPM-&docid=vYTDLByPvL_fmM&w=1424&h=856",
+    "position": 1
+   },
+   {
+    "title": "Top 40 Quà Sinh Nhật Cho Nam Giới Theo Tuổi Hợp Ý, Chuẩn Gu",
+    "imageUrl": "https://img.vuahanghieu.com/unsafe/0x0/left/top/smart/filters:quality(90)/https://admin.vuahanghieu.com/upload/news/content/2025/02/qua-sinh-nhat-cho-nam-gioi-1-jpg-1739266121-11022025162841.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFqoELWk66PMXj11ndXMOAl1orSDXF8QIgJsLvzFVqfA&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Vua Hàng Hiệu",
+    "domain": "vuahanghieu.com",
+    "link": "https://vuahanghieu.com/tin-tuc/top-30-qua-sinh-nhat-cho-nam-gioi-theo-tuoi-y-nghia-nhat-ai-cung-me?srsltid=AU7gw4XFqHhTskfpm1moMY0ZIp5ZCIZq-0Ae2VKntPAFAF_VoXbQn9zt",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimg.vuahanghieu.com%2Funsafe%2F0x0%2Fleft%2Ftop%2Fsmart%2Ffilters%3Aquality(90)%2Fhttps%3A%2F%2Fadmin.vuahanghieu.com%2Fupload%2Fnews%2Fcontent%2F2025%2F02%2Fqua-sinh-nhat-cho-nam-gioi-1-jpg-1739266121-11022025162841.jpg&tbnid=dAWL0KPYIKF9rM&imgrefurl=https%3A%2F%2Fvuahanghieu.com%2Ftin-tuc%2Ftop-30-qua-sinh-nhat-cho-nam-gioi-theo-tuoi-y-nghia-nhat-ai-cung-me%3Fsrsltid%3DAU7gw4XFqHhTskfpm1moMY0ZIp5ZCIZq-0Ae2VKntPAFAF_VoXbQn9zt&docid=XP5kByGu2IDA1M&w=1000&h=1000",
+    "position": 2
+   },
+   {
+    "title": "Gợi ý 100+ quà sinh nhật cho nam ý nghĩa và thiết thực nhất",
+    "imageUrl": "https://www.tierra.vn/wp-content/uploads/2025/08/tang-qua-sinh-nhat-cho-nam-gioi.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfA8Gm2Ha_IerMGcBAhz2jj5fVU2LoDnPu053hXliYAg&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Tierra Diamond Jewelry",
+    "domain": "www.tierra.vn",
+    "link": "https://www.tierra.vn/tin-tuc/qua-sinh-nhat-cho-nam",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.tierra.vn%2Fwp-content%2Fuploads%2F2025%2F08%2Ftang-qua-sinh-nhat-cho-nam-gioi.jpg&tbnid=gkKpR5YyXJHgpM&imgrefurl=https%3A%2F%2Fwww.tierra.vn%2Ftin-tuc%2Fqua-sinh-nhat-cho-nam&docid=V-5e8ZrBcaXjeM&w=1000&h=1000",
+    "position": 3
+   },
+   {
+    "title": "Gợi ý 100+ quà sinh nhật cho nam ý nghĩa và thiết thực nhất",
+    "imageUrl": "https://www.tierra.vn/wp-content/uploads/2025/08/qua-sinh-nhat-cho-nam-30-tuoi.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 625,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2Ra2HxteuzYhwRD7s0hhVoYFlXiATaOFmekqh7BMU2w&s=10",
+    "thumbnailWidth": 700,
+    "thumbnailHeight": 438,
+    "source": "Tierra Diamond Jewelry",
+    "domain": "www.tierra.vn",
+    "link": "https://www.tierra.vn/tin-tuc/qua-sinh-nhat-cho-nam",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.tierra.vn%2Fwp-content%2Fuploads%2F2025%2F08%2Fqua-sinh-nhat-cho-nam-30-tuoi.jpg&tbnid=-9nsq04YVzgPUM&imgrefurl=https%3A%2F%2Fwww.tierra.vn%2Ftin-tuc%2Fqua-sinh-nhat-cho-nam&docid=V-5e8ZrBcaXjeM&w=1000&h=625",
+    "position": 4
+   },
+   {
+    "title": "TOP 25+ món quà sinh nhật cho nam 30 tuổi tinh tế, ý nghĩa nhất",
+    "imageUrl": "https://cdn.chiaki.vn/unsafe/0x800/left/top/smart/filters:quality(75)/https://chiaki.vn/upload/news/2025/08/goi-y-30-mon-qua-sinh-nhat-cho-nam-30-tuoi-tinh-te-va-y-nghia-nhat-18082025062040.jpg",
+    "imageWidth": 1422,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmFtSB_nG7Z7UPeqk0Cwm4mDB7n6I9DrZdgueJXRMJ8Q&s",
+    "thumbnailWidth": 299,
+    "thumbnailHeight": 168,
+    "source": "Chiaki.vn",
+    "domain": "chiaki.vn",
+    "link": "https://chiaki.vn/tin-tuc/tang-qua-sinh-nhat-cho-nam-30-tuoi",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.chiaki.vn%2Funsafe%2F0x800%2Fleft%2Ftop%2Fsmart%2Ffilters%3Aquality(75)%2Fhttps%3A%2F%2Fchiaki.vn%2Fupload%2Fnews%2F2025%2F08%2Fgoi-y-30-mon-qua-sinh-nhat-cho-nam-30-tuoi-tinh-te-va-y-nghia-nhat-18082025062040.jpg&tbnid=Jt2Nhzv8cFLh9M&imgrefurl=https%3A%2F%2Fchiaki.vn%2Ftin-tuc%2Ftang-qua-sinh-nhat-cho-nam-30-tuoi&docid=FiLszIY8q4TWVM&w=1422&h=800",
+    "position": 5
+   },
+   {
+    "title": "60 Món quà sinh nhật cho nam ý nghĩa, thiết thực, được yêu thích nhất 2024  | TIKI",
+    "imageUrl": "https://tiki.vn/blog/wp-content/uploads/2023/02/qua-sinh-nhat-cho-nam.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 860,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsv_zz90nutZt8xVUkegqUnWPEMlw176BFwERqYN8d9g&s=10",
+    "thumbnailWidth": 654,
+    "thumbnailHeight": 468,
+    "source": "Tiki",
+    "domain": "tiki.vn",
+    "link": "https://tiki.vn/blog/qua-sinh-nhat-cho-nam/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Ftiki.vn%2Fblog%2Fwp-content%2Fuploads%2F2023%2F02%2Fqua-sinh-nhat-cho-nam.jpg&tbnid=tyigCkr36-y3OM&imgrefurl=https%3A%2F%2Ftiki.vn%2Fblog%2Fqua-sinh-nhat-cho-nam%2F&docid=o7_md3SW-ePJvM&w=1200&h=860",
+    "position": 6
+   },
+   {
+    "title": "Gợi ý 100+ quà sinh nhật cho nam ý nghĩa và thiết thực nhất",
+    "imageUrl": "https://www.tierra.vn/wp-content/uploads/2025/08/chon-nhung-mon-qua-tang-sinh-nhat-cho-nam.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 625,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR67iJ03WIHZMfJs7CQTwcv-MFPa3ALSQaO3q3sVOD8OA&s=10",
+    "thumbnailWidth": 700,
+    "thumbnailHeight": 438,
+    "source": "Tierra Diamond Jewelry",
+    "domain": "www.tierra.vn",
+    "link": "https://www.tierra.vn/tin-tuc/qua-sinh-nhat-cho-nam",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.tierra.vn%2Fwp-content%2Fuploads%2F2025%2F08%2Fchon-nhung-mon-qua-tang-sinh-nhat-cho-nam.jpg&tbnid=D1CQFbWXY2pIuM&imgrefurl=https%3A%2F%2Fwww.tierra.vn%2Ftin-tuc%2Fqua-sinh-nhat-cho-nam&docid=V-5e8ZrBcaXjeM&w=1000&h=625",
+    "position": 7
+   },
+   {
+    "title": "Tặng quà sinh nhật cho nam 30 tuổi với 45+ món quà ý nghĩa",
+    "imageUrl": "https://tamanh.net/wp-content/uploads/2023/06/qua-sinh-nhat-cho-nam-30-tuoi.jpg",
+    "imageWidth": 800,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0IHRSiGvZcS0npYTbWC_rjpde8dw5GbV3y_hhhMVOdQ&s=10",
+    "thumbnailWidth": 700,
+    "thumbnailHeight": 438,
+    "source": "Đồ Da Tâm Anh",
+    "domain": "tamanh.net",
+    "link": "https://tamanh.net/tang-qua-sinh-nhat-cho-nam-30-tuoi.html?srsltid=AU7gw4Wi3gcRHd3cV4m_vQFhBnrlUdyBSR4Fn0NW8XmOBTdCJvfFBiPd",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Ftamanh.net%2Fwp-content%2Fuploads%2F2023%2F06%2Fqua-sinh-nhat-cho-nam-30-tuoi.jpg&tbnid=PchWYceuPKGRpM&imgrefurl=https%3A%2F%2Ftamanh.net%2Ftang-qua-sinh-nhat-cho-nam-30-tuoi.html%3Fsrsltid%3DAU7gw4Wi3gcRHd3cV4m_vQFhBnrlUdyBSR4Fn0NW8XmOBTdCJvfFBiPd&docid=kCrKWwDN69awaM&w=800&h=500",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

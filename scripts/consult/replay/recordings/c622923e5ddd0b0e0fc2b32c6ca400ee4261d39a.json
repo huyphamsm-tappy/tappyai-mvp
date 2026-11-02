@@ -1,0 +1,390 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "ốp lưng iPhone 16 trong suốt magsafe",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:55:55.497Z",
+ "body": {
+  "searchParameters": {
+   "q": "ốp lưng iPhone 16 trong suốt magsafe",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Ốp lưng iPhone 16 Apple With Magsafe Clear",
+    "source": "Điện Máy Chợ Lớn",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+l%C6%B0ng+iPhone+16+trong+su%E1%BB%91t+magsafe&prds=localAnnotatedOfferId:1,catalogid:17778640280395246010,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "850.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSOJFtlKyxdVnocGMuHXv3zggKKw-PWdc5MXdWtO-quvXQN38js5J7qskQtzIwd8Jy1NYh3iVprUc1YC94siO9ZUQuh0HQGTEyrxwFCsmVrvMLkdU9fbTDh",
+    "rating": 4.8,
+    "ratingCount": 39,
+    "productId": "17778640280395246010",
+    "position": 1
+   },
+   {
+    "title": "Ốp lưng Slimcase iPhone 16",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+l%C6%B0ng+iPhone+16+trong+su%E1%BB%91t+magsafe&prds=localAnnotatedOfferId:1,catalogid:1334250788352423063,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "540.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcT0M13xgUy61s370ee13crsY3kPJ9XCZycgSrKIAfn-IG_iINENfF4kWNhwpsGHEaRndAYqiVikouWCijB4MZoIau6qjne_N8Ad9RDUG22mxWbMMKioldMb",
+    "productId": "1334250788352423063",
+    "position": 2
+   },
+   {
+    "title": "Ốp Lưng Trong Suốt MagSafe cho iPhone 16 - Chính hãng Apple",
+    "source": "Hoàng Hà Mobile",
+    "price": "690.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRpAbC_QgV-fMn6TWE7c3yY9x8cs64xp2z8_P-HaembrCyUgd2gQYvzNB9yKP0baAeUwO51A0-GmlFnUmYXMmzTan9G3YjQaAqxpcVcwgM",
+    "productId": "10545275785390013826",
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng iPhone 16 Plus Apple With Magsafe Clear",
+    "source": "Viettel Store",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+l%C6%B0ng+iPhone+16+trong+su%E1%BB%91t+magsafe&prds=localAnnotatedOfferId:1,catalogid:5609489541246902532,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "590.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTLu4Hb6gKCYykrKizFPHY-4czZPCV-Gk4zAzD_9jJDIupYQR3XazObxz86PQy9co_cVEGQi18KX0Ncl2-3LpfsmFq_oakeuLSXC4JJuLO0c9ytM2tQ82hM",
+    "rating": 4.8,
+    "ratingCount": 55,
+    "productId": "5609489541246902532",
+    "position": 4
+   },
+   {
+    "title": "Ốp lưng MagSafe iPhone 16 Nhựa Trong Apple",
+    "source": "Thế Giới Di Động",
+    "price": "890.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRfAQVlrOIwXlKIS0BM5YCKkupBJS5E6x5oxMQdtyLIX-XJ3cKhB5BgUC8gnv4HNTp7obkhS6ahkG1FjemV84JQhoe6VkSl1qL2_quqOaunsvrU8_fb_EzZdA",
+    "productId": "15358470398390007909",
+    "position": 5
+   },
+   {
+    "title": "Ốp Lưng Clear Case Magsafe iPhone 16 Chính Hãng",
+    "source": "clickbuy.com.vn",
+    "price": "999.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcS5oXSskaEVd3bgkmL8YIawFxH9Pdq_m65eceBJcHlNKlmJfVN430Q5XQSrsAO02ZiveLMo4bcnpsM4ThRMVMuWPvS7tT_XFsn_P870G1q88gk9mZps0-S6xA",
+    "productId": "13501919283986378343",
+    "position": 6
+   },
+   {
+    "title": "Ốp lưng Mipow Magsafe trong suốt iPhone 16 6.1",
+    "source": "Hoàng Phát 360",
+    "price": "550.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcR49Z5ti9ejUZLTwMI5uQg4c0JZpWWaI3hmEC75e4FVZ2ALydREsgm_LbHVH_adYz9hBlaEEUR1EKuiFRr26tZavljyWuowupVitePzYAYu05Ij-yCvwL1t4g",
+    "productId": "6183259540609989407",
+    "position": 7
+   },
+   {
+    "title": "Ốp MagSafe Trong Suốt Chống Sốc Cho iPhone 17 Pro Max 16 15 14 13 12 11 Clear / iPhone 16 Pro",
+    "source": "Njoyvn",
+    "price": "49.200 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRJbld4HUqN6F2GIFyVjj6WnAjyKGABllGAb8RsyUubxrwBarAMzvFJ1BR70_aWHADSd0ngGxL9J8qjt-Eh2LOZvuz0wJ2Yu4jd2U__1OrbiMsk0ruoTV4B",
+    "productId": "5443905971541155856",
+    "position": 8
+   },
+   {
+    "title": "Ốp lưng MagSafe iPhone 16 PC TPU DEKEY Crystal case",
+    "source": "Thế Giới Di Động",
+    "price": "252.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRUc69av-yqZ2wlxeFEkWZGnOTM4ZSHfOSY-rf5lKwEbsp27sNpA_a8Eej2hfG8vQfMDEyeDiEqfozBhbWOaeM2zOBYdhng3M3rbr2XS86r9S28SPWzR5H1",
+    "productId": "2295355788829389057",
+    "position": 9
+   },
+   {
+    "title": "Ốp lưng iPhone 16 Memumi With Magsafe",
+    "source": "CellphoneS",
+    "price": "405.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQY8RMMXrT7vigmvLd3F75a2APzZqC4bKj4Nn6k_PNdiiec0l3Gd6Tni2uXONG7kjcU4G1TTyfDoQyiEqoGJEiy1P5VMOmVEHXDarfDyudHxaXBjwCh_nF2Kw",
+    "rating": 5,
+    "ratingCount": 1,
+    "productId": "4259312460434549895",
+    "position": 10
+   },
+   {
+    "title": "Ốp lưng nhựa Apple MagSafe iPhone 16 Pro",
+    "source": "clickbuy.com.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+l%C6%B0ng+iPhone+16+trong+su%E1%BB%91t+magsafe&prds=localAnnotatedOfferId:1,catalogid:3152534636104911371,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "1.090.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQ9tFvPTDRs29FWG7XwerIpQeaqN1_RXjoMbPGQ8EN0mZ7CfG-KkSAqqe4Of4vSjFNa3_kp9-tqWvcBX-CrxG1V2soKMN-X5GYGJlrE0HnSw8BXjRTKhfpqlg",
+    "rating": 4.5,
+    "ratingCount": 641,
+    "productId": "3152534636104911371",
+    "position": 11
+   },
+   {
+    "title": "Ốp Lưng Trong Suốt MagSafe cho iPhone 16 Plus Chính Hãng",
+    "source": "Táo Đen Shop",
+    "price": "1.290.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQpSzI4oPFoq5TGNGxwYwg-GqttB52JDyBJzpERDGAX_CSwpnUWsGfeHrzmBdawD59aA37qxM-prB-sM9W82L7dLxV4oK605H58B7Sp7rsl4hNinhfTY68G",
+    "productId": "7766278522173345645",
+    "position": 12
+   },
+   {
+    "title": "Ốp lưng Zagg iPhone 16",
+    "source": "Phong Vũ",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+l%C6%B0ng+iPhone+16+trong+su%E1%BB%91t+magsafe&prds=localAnnotatedOfferId:1,catalogid:15175507275773968173,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "290.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQxk8xDlpyBk-q5IhKVcFSeAhy2U_9XAu_jXWLHabyyYoBO6ZsieFmOL1LsN5_pQapS46rNCM_5BDF0yCekzY0QPUeJYHLWJ5xus2njIgy7Vu9E-ON6cd3X",
+    "rating": 5,
+    "ratingCount": 1,
+    "productId": "15175507275773968173",
+    "position": 13
+   },
+   {
+    "title": "Ốp lưng MagSafe iPhone 16 nhựa cứng PC AVA+ JM Thin 1.2mm",
+    "source": "Thế Giới Di Động",
+    "price": "180.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTKhDya6oDFfHiTZKM2NF_NkrmMGvWo9tWsKRQCpR8E3CeEWHfWMgR-N2ymwv7urFHmchs5c29T2uj-gL4bzPzPYRRbbVkVxEqnKz-Rnq4T3L_4MTps2jLT",
+    "productId": "18176455974713774577",
+    "position": 14
+   },
+   {
+    "title": "Ốp Lưng Trong Suốt MagSafe cho iPhone 16 Plus - Chính hãng Apple",
+    "source": "Hoàng Hà Mobile",
+    "price": "690.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcT5PaYzBCAv_8DoLxRfxuvnI9WS_8cCvnm1Yklj0U7Hv83iNmDF-hdNvFztNC_qlrp3I3tZNm60OvRf6qgjrvsmrbNEo4Io23KwptHidxJH",
+    "rating": 4.5,
+    "ratingCount": 205,
+    "productId": "2832934321225587275",
+    "position": 15
+   },
+   {
+    "title": "Ốp Lưng Beats MagSafe cho iPhone 16 –",
+    "source": "Hugotech.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+l%C6%B0ng+iPhone+16+trong+su%E1%BB%91t+magsafe&prds=localAnnotatedOfferId:1,catalogid:16064982603530583925,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "1.290.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSEMuh3ScuxRxOeG580zSwDVGmEy0W20nHSDdnzThn8iikLPxwiPXkTAAQwZNFWT1Cp-sIsRyfyes67RMiCVhaVzmTxr4a58Fgso7vnLu4wP37VbPuluhGUEg",
+    "rating": 4.9,
+    "ratingCount": 26,
+    "productId": "16064982603530583925",
+    "position": 16
+   },
+   {
+    "title": "Ốp lưng MagSafe iPhone 16 Nhựa cứng viền dẻo LAUT Crystal-M",
+    "source": "TopZone",
+    "price": "552.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSM-yGNa7tpSJ7Jy5HD-TCm12vZ1wfKt_ROYwfGz-DJRUr_aXnBG3Iq54PhyPYyQPQ5HD4CPI_bhCS7ay7xent3xl9vuCvsvxF4f8hDW1IA2VAV3vsK-MKapA",
+    "rating": 4.9,
+    "ratingCount": 15,
+    "productId": "13535822233137035954",
+    "position": 17
+   },
+   {
+    "title": "Apple Ốp lưng Silicon MagSafe cho iPhone 16",
+    "source": "Thế Giới Di Động",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+l%C6%B0ng+iPhone+16+trong+su%E1%BB%91t+magsafe&prds=localAnnotatedOfferId:1,catalogid:7872339524694743048,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "890.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQbcTKGCoZ0QZaIRClBnsL2G8T7EXXOh802HeUPkoSt_ZTnaaPPJ7_E9R9XeTxcjJRT1OxrCPOrOCFCRtyORyJUrU5_nL6amcCPGzR2dGa89O0fcMJ24yNi",
+    "rating": 4.7,
+    "ratingCount": 723,
+    "productId": "7872339524694743048",
+    "position": 18
+   },
+   {
+    "title": "Ốp lưng iPhone 16 Zoda MagSafe",
+    "source": "Di Động Việt",
+    "price": "250.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSeQVf5i9J27qannLTEPKFRR4xB7jjBCm07P4iHjBWVYsUzDPJ1ajtokH2W3CcKfAaFASzSynld7gUto7Q_zo5Wy6A3zQe5pTqpK-AugWWoYgykevJakM3ExA",
+    "productId": "433972581848330599",
+    "position": 19
+   },
+   {
+    "title": "ốp lưng mipow magsafe cho iPhone 16 promax transparent",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+l%C6%B0ng+iPhone+16+trong+su%E1%BB%91t+magsafe&prds=localAnnotatedOfferId:1,catalogid:18005354776537539031,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "495.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSY-S-NhP3K7tuJxqynBBbFNEAA8tnR3GENyRPYjW5QtjKIIaAeoomxxynK6oGfjrWpmZ9x2-ha4AkzWosY0kdN0ucMhWwQsDbhVd1C3ECsLQRGK-v-VVvo",
+    "productId": "18005354776537539031",
+    "position": 20
+   },
+   {
+    "title": "Ốp Lưng Trong Suốt MagSafe cho iPhone 16 Pro Chính Hãng",
+    "source": "Táo Đen Shop",
+    "price": "1.290.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRew1R7FH34CUFZA_al9RoKnCF4207w7yAq9-6QC1fEYxy2MiDLiESbv1jE2Q_-Dv1PcszvCGGBi7I4_CXPDT8-4EPGF9LVHGaHRSOt01hzeeAdEUcw8npiew",
+    "rating": 4.5,
+    "ratingCount": 641,
+    "productId": "9846234376663388866",
+    "position": 21
+   },
+   {
+    "title": "Ốp lưng MagSafe iPhone 16 PC TPU AVA+ OC Crystal Hook",
+    "source": "Thế Giới Di Động",
+    "price": "135.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQyrSCXo7fNVTKkNzBiX_tdFXUmt7LSRosMkDnnxNMoC0Ek3fR2ic5vV2rvAGPvhBQI0wiSmoxONNmIDuGf-fJpuuCRqj__Byp2eH8_gq7zznWXFYrh1E-FvXA",
+    "productId": "10211519070834768283",
+    "position": 22
+   },
+   {
+    "title": "Ốp lưng iPhone 16 tích hợp MagSafe Momax CaseForm CPAP24S",
+    "source": "Momax Việt Nam",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+l%C6%B0ng+iPhone+16+trong+su%E1%BB%91t+magsafe&prds=localAnnotatedOfferId:1,catalogid:3904611148329485649,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "349.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQLjQi-LMCNeAOk5j2zKFCwInGWpOB-8XKC5JM-OCJZw_9zrUN9xSn4PW-l3TjcjYZjubQpa2WarqBt5EmjhH4VYyYKx2v6DYWgpsam_M-8ho4IWSS5eAVh-Q",
+    "productId": "3904611148329485649",
+    "position": 23
+   },
+   {
+    "title": "Ốp Lưng ZAGG Crystal Palace Snap Trong Suốt iPhone 16 Series Chính Hãng - Trả Góp 0%",
+    "source": "Điện Thoại Giá Kho",
+    "price": "450.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQjoV4F5Tfzx4T9ups9WI1SOhK4YbfDMhPLx2vjqpKSwxHiTNDFgLLNgUt1Yqi6Lkbhp1db8FTnFXdFeiiQEa1A9xywVO1oJ5W-EkAbWP1mUzKGial_TJN7mA",
+    "rating": 3,
+    "ratingCount": 1,
+    "productId": "12264849897645047131",
+    "position": 24
+   },
+   {
+    "title": "Ốp lưng MagSafe iPhone 16 JC PC AVA+ Slim 1mm YF1182",
+    "source": "Thế Giới Di Động",
+    "price": "180.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQhciUcv8YYbd9By0bYRUvEmgDDc9DH14Lrz4Ouw6y212PurrDtCllVgJ-XIj_5Hjz0g02dfCgb6yrVD5xD6mLSZbVPEJJxIz0yq83pPsfUgJNUHZksXjuboQw",
+    "productId": "3587445835495358896",
+    "position": 25
+   },
+   {
+    "title": "Ốp lưng Mipow MagSafe Case for iPhone 16 Series Transparent + white magsafe",
+    "source": "apple8",
+    "price": "350.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQR3Io2alGzeUJyv3Y0HVt_p6M6k__o2bH_3rqOlIxBaR_f9jdFzoCma2wThUv4Bk0yztNlo_ZvziC2RCKCVAvk1oAd4-UtlWKj5foaRb0Lc215gsM5-9bv",
+    "productId": "3581806644558938247",
+    "position": 26
+   },
+   {
+    "title": "Ốp lưng iPhone 16 Zagg Engravedart With Magsafe",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+l%C6%B0ng+iPhone+16+trong+su%E1%BB%91t+magsafe&prds=localAnnotatedOfferId:1,catalogid:3143802679342998728,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "711.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTOuBU-j5AWQHgHGh18q2aJxWU3RUH6yAuW2H_GEeiBGRHxWdJZ6F9z2JX1OTsxlCd-BR14VZCezrrQsnn1VrRL--5fjpKeCxYAtF17iQ8g1vNBMp6zXnWosQ",
+    "rating": 4.8,
+    "ratingCount": 21,
+    "productId": "3143802679342998728",
+    "position": 27
+   },
+   {
+    "title": "Ốp Magsafe Trong Suốt Likgus Cho iPhone 17 Pro Max 16 15 14 13 12 Clear / iPhone 16",
+    "source": "Njoyvn",
+    "price": "124.200 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQsxoJmbiodut2CN10vSfIWpz9Y0yz_SOzDmLwG79il8C9NW9eMJac9a00vbyG6oNYuVmLBYAgpdvtp12Ckk0mMYvI5Lvc747IQyAodrclINX7aBuYPDXIh",
+    "productId": "12783747317304950719",
+    "position": 28
+   },
+   {
+    "title": "Ốp lưng MagSafe iPhone 16 Nhựa cứng PC LAUT Crystal Matter X",
+    "source": "Thế Giới Di Động",
+    "price": "688.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRIiZLZS4R6isKZBOS1Yllsbvbb_AYE2noLEF8MNua3dxaI5TinRLI6wVOQof3FMSyD8qFrUH5BOtGWdZa5jYcPO_sp-TF5YF5tB3AQIyshZm7Mu6hLNVo4",
+    "rating": 5,
+    "ratingCount": 1,
+    "productId": "8481637815089802174",
+    "position": 29
+   },
+   {
+    "title": "Ốp Lưng ESR Classic Hybrid HaloLock iPhone 16 Series Chính Hãng - Trả Góp 0%",
+    "source": "Điện Thoại Giá Kho",
+    "price": "290.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRgrnDdMaqrknXMvvK9TMugM-C-zi_pVaLhENAC9fy6QoFd3_ZwQUcv4OM7WPqEKIqUpboBxhoF6wghFo6G91FSIGU-mdGRGd2238vzZ4gY2lWps_3HN4D-",
+    "productId": "15798749276053781573",
+    "position": 30
+   },
+   {
+    "title": "Apple Ốp lưng iPhone 16 Promax Silicone",
+    "source": "Hugotech.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+l%C6%B0ng+iPhone+16+trong+su%E1%BB%91t+magsafe&prds=localAnnotatedOfferId:1,catalogid:17586006991004656610,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "1.250.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTrLBqHZfMxaxKHq4ygHOruuwGmaZftTKOpSyVsMcvPjYDqF3B1IxccA7V7aCkUQ7DjP0Rl4pDEj5haTVywADxWiHG7CB6s9Pn3EkQNLorVF83JjY9AgIq2kw",
+    "productId": "17586006991004656610",
+    "position": 31
+   },
+   {
+    "title": "Ốp lưng iPhone 16 - UAG Pathfinder Clear Magsafe - Black / iPhone 16",
+    "source": "Dâu Đen",
+    "price": "1.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQNfGRJnqF0vhxvd2upp-2zc9J-MEPn4TfHQqS3748uET6tVlZajnyMR_EQOQOY8i3LzxpCR_VmvXJI9Pqmcz1SSkaHs5HcPEfM4pqOK9H9kQ4Sk_BEt0jB",
+    "productId": "15929631835508005121",
+    "position": 32
+   },
+   {
+    "title": "Ốp lưng MagSafe iPhone 16 Silicone Apple Đen",
+    "source": "Thế Giới Di Động",
+    "price": "890.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQnF7N9bTn0XErIQhoobrFdds0G8vIccdojrQUdE0NXcKuGRMV3zIChXjWFuwDfLU3lde4AktKSdFTsnrVBhU4XCdPYCj-vYgHqpJG90bQ7Pi7ZVLYY0Vc84O4",
+    "productId": "17858843362670578588",
+    "position": 33
+   },
+   {
+    "title": "Ốp lưng iPhone 16 Wiwu YXK-207 Clear",
+    "source": "CellphoneS",
+    "price": "243.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTG7wbZCXbGoB4JUhn5-GZePbPXOGKLQTTkEsuh9OdJRpIWNYXuCMuUng1VtWdqiJDJiyJOSduElYp7e1sLM0m59XUrE9rDlncvrlqPukk08k02pljjxVPT",
+    "rating": 5,
+    "ratingCount": 1,
+    "productId": "7966038766192899823",
+    "position": 34
+   },
+   {
+    "title": "Vỏ ốp Bao fa & Dán màn hình ốp Lưng Apple Clear Case Kèm Magsafe Cho iPhone 16",
+    "source": "uscom.com.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+l%C6%B0ng+iPhone+16+trong+su%E1%BB%91t+magsafe&prds=localAnnotatedOfferId:1,catalogid:8577174035028084778,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "1.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQTEBR3QrWpqVlS7JvvFhqHhHNm5H0bnrt4QdkOSOvkOsqYUU6rH6U2E9AvBzISy0lqyiB3mVFNXUkVknmCZQ9wteSHWkP3BZHef39REk5NDhZXAMtIGbmc",
+    "rating": 4.5,
+    "ratingCount": 467,
+    "productId": "8577174035028084778",
+    "position": 35
+   },
+   {
+    "title": "Ốp lưng Mipow Magsafe trong suốt iPhone 16 Plus 6.7",
+    "source": "Hoàng Phát 360",
+    "price": "550.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQ5stfzUVkp8OlxCt-FsRruOuCeFOcXOT8TRauD9PgjDT5dQzxMSrp74fXg-2g67MfrkbmtKfqZfjWQLoPcnOXupD6K_eT3v2Z8_C5C4gYm7-SgqaS9Ekyc",
+    "productId": "3097667406553826073",
+    "position": 36
+   },
+   {
+    "title": "Ốp lưng MagSafe iPhone 16 Nhựa cứng viền dẻo LAUT Crystal Matter",
+    "source": "Thế Giới Di Động",
+    "price": "768.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSiEo-fQPYOMAkvR17Vd-xLtrJyz_ZBGyUBGMRTr57bpJfbWoukGs7Ya7YlKm4bZIyBy-W3m7OEJmTsopwqfIWMjB7TSbBYAyPsuoE9-rEBSUA6UQMSec3vHFY",
+    "rating": 5,
+    "ratingCount": 1,
+    "productId": "5831220896671410186",
+    "position": 37
+   },
+   {
+    "title": "Ốp Trong Suốt Magsafe Có Nút AI Chống Sốc Cho Điện Thoại iPhone Matte / iPhone 16 Pro",
+    "source": "Njoyvn",
+    "price": "171.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQ_oiwmIp4y92SMyya_H5wNEzdthBdJb7QvIc0ZtWL01Esg8S5mRyLlS6EB6gymcDAaD1hFQJIHKliS8eUfxa_GzWnv6em8COoUYWiSDEM",
+    "productId": "1274485929958702580",
+    "position": 38
+   },
+   {
+    "title": "Ốp lưng Magsafe iPhone 16 Pro Max PC TPU Innostyle MPC-PK02-16PM",
+    "source": "Điện máy XANH",
+    "price": "197.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTkSdhg35ClbV-vSdjDY3nmCqEovYYf0aIMwt2IiV3PnVqWgvmkzxMeSS6WHIgOxLJn4aefM7wAkVTk3H9WptCDrWJxMh_imv5duqaye5AQq_ANNU1jS9GnKg",
+    "productId": "9163336717394182091",
+    "position": 39
+   },
+   {
+    "title": "ốp lưng mipow magsafe cho iPhone 16 pro transparent",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+l%C6%B0ng+iPhone+16+trong+su%E1%BB%91t+magsafe&prds=localAnnotatedOfferId:1,catalogid:8716481403759359333,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "495.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcROV-Jr6X_T1pUucd-FcIw6MfiuWdRkcx3Gte_sVPwGJv1VrxPVjIK4OzWXQs8Gk8DDjTx8__xQnRRvyDMjV6pXM0O8osrFsq3KEucY-0A598JtVO_1CKDQ",
+    "productId": "8716481403759359333",
+    "position": 40
+   }
+  ],
+  "credits": 2
+ }
+}

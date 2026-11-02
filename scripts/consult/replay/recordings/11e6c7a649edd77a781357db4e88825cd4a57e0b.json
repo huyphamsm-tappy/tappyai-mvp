@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Combo quà tặng thời trang cho nam 5 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:16:06.127Z",
+ "body": {
+  "searchParameters": {
+   "q": "Combo quà tặng thời trang cho nam 5 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "làm thiếp | Shopee Việt Nam",
+    "link": "https://shopee.vn/list/l%C3%A0m%20thi%E1%BA%BFp",
+    "snippet": "Mua Online làm thiếp chất lượng, Freeship 0Đ, Voucher Shopee giảm tới 50% tại Shopee. Khuyến mãi tháng 09, 2026. Mua ngay!",
+    "position": 1
+   },
+   {
+    "title": "50+ Set cà vạt quà tặng combo 5 món dành cho nam giới ...",
+    "link": "https://shopee.vn/50-Set-c%C3%A0-v%E1%BA%A1t-qu%C3%A0-t%E1%BA%B7ng-combo-5-m%C3%B3n-d%C3%A0nh-cho-nam-gi%E1%BB%9Bi-ng%C6%B0%E1%BB%9Di-y%C3%AAu-ng%C3%A0y-valentine-14-2-i.705608846.25236504061",
+    "snippet": "Mua 50+ Set cà vạt quà tặng combo 5 món dành cho nam giới, người yêu ngày valentine 14/2 giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 2
+   },
+   {
+    "title": "box quà tặng cho nam tinh tế",
+    "link": "https://shopee.vn/list/box%20qu%C3%A0%20t%E1%BA%B7ng/cho%20nam",
+    "snippet": "box quà tặng cho nam đa dạng cho mọi dịp: combo 2–3 món tiện dụng, ví da thật và thắt lưng đồng bộ, thêm lựa chọn nước hoa/grooming.",
+    "position": 3
+   },
+   {
+    "title": "thời trang quà tặng - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/th%E1%BB%9Di%20trang/qu%C3%A0%20t%E1%BA%B7ng",
+    "snippet": "Set Thắt Lưng Nam Nước Hoa Nam Combo Dây Nịt Nam Dầu Thơm Làm Quà Tặng ... Quà tặng cho Nam giới full túi hộp quà theo kèm - Ví da nam thời. custom ...",
+    "position": 4
+   },
+   {
+    "title": "Quà tặng sinh nhật cho nam - Giá Tốt, Sale Tháng 09, ...",
+    "link": "https://shopee.vn/list/qu%C3%A0%20t%E1%BA%B7ng%20sinh%20nh%E1%BA%ADt/cho%20nam",
+    "snippet": "Dây Nịt Da Bò Thật Cao Cấp Chính Hãng THIENDI LUXURY Quà Tặng Bố Sinh Nhật Thắt Lưng Nam Trung Niên. 1.850.000₫. 3.700.000₫. -50%. Mua để nhận quà.",
+    "position": 5
+   },
+   {
+    "title": "Cà vạt Ties.vn, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/tiesvn",
+    "snippet": "19+ Mẫu set quà tặng cà vạt 4 món thời trang cho nam giới lịch lãm, phong cách nhân ngày quan trọng. 525.000₫. rating-star 4.9. 143 đã bán.",
+    "position": 6
+   },
+   {
+    "title": "Quà tặng nam tinh tế - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/qu%C3%A0%20t%E1%BA%B7ng/nam/tinh%20t%E1%BA%BF",
+    "snippet": "Áo polo nam cao cấp DAVIN EAGLE [Tặng Kèm Hộp Quà Xịn] Vải FeelMax · Áo Polo nam LISTAR cao cấp cổ bẻ [Tặng Hộp Gói Quà Xịn] vải · Áo Polo Nam Cao Cấp GALIO ...",
+    "position": 7
+   },
+   {
+    "title": "GenZ - Phụ Kiện & Quà Tặng, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/coop_accessories",
+    "snippet": "PHỤ KIỆN NAM. SET 5 ĐÔI TẤT KHỦNG LONG SIÊU CƯNG CHO BÉ 5–8 TUỔI – MỀM, THOÁNG, CHỐNG TRƠN, DỄ MẶC MỖI NGÀY.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

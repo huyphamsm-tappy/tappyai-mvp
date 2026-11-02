@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"[iPhone 17 Pro Max] UAG Chính Hãng\" OR \"Ốp lưng UAG Pathfinder SE chính hãng với Magsafe cho iPhone\" OR \"Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:35:20.346Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"[iPhone 17 Pro Max] UAG Chính Hãng\" OR \"Ốp lưng UAG Pathfinder SE chính hãng với Magsafe cho iPhone\" OR \"Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

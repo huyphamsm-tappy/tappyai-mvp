@@ -18,10 +18,10 @@ const NOW = new Date('2026-09-14T08:00:00Z')
 const links = (r: ReturnType<typeof resolveCommerce>): CommerceLink[] => ('links' in r ? r.links : [])
 const byProvider = (r: ReturnType<typeof resolveCommerce>, id: string) => links(r).find(l => l.providerId === id)
 
-const FROZEN = ['shopee', 'tiktokshop', 'lazada', 'dmx', 'cellphones', 'grabfood', 'shopeefood', 'tripcom', 'booking', 'agoda', 'traveloka', 'vexere', 'vietnamairlines', 'vietjet', 'klook', 'cgv', 'ticketbox']
+const FROZEN = ['shopee', 'tiktokshop', 'lazada', 'dmx', 'cellphones', 'grabfood', 'shopeefood', 'tripcom', 'booking', 'agoda', 'traveloka', 'vexere', 'vietnamairlines', 'vietjet', 'klook', 'cgv', 'ticketbox', 'galaxy', 'lotte', 'bhd', 'beta']
 
 describe('the frozen provider list is the registry, exactly', () => {
-  it('names the 17 approved providers and nobody else — PasGo, Tiki, TGDD, California Fitness stay out', () => {
+  it('names the 17 approved providers plus the four cinema chains the owner added on 01/10 (Galaxy, Lotte, BHD, Beta) and nobody else — PasGo, Tiki, TGDD, California Fitness stay out', () => {
     expect(PROVIDER_REGISTRY.map(p => p.providerId).sort()).toEqual([...FROZEN].sort())
     for (const gone of ['pasgo', 'tiki', 'tgdd', 'californiafitness', 'befood']) expect(getProvider(gone)).toBeNull()
     expect(validateRegistry()).toEqual([])

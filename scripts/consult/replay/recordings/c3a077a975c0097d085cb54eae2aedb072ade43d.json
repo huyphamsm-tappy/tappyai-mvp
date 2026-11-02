@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "SET QUÀ TẶNG BẠN NỮ, HỘP QUÀ TẶNG VALENTINE, SINH NHẬT, 8-3 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:21:52.634Z",
+ "body": {
+  "searchParameters": {
+   "q": "SET QUÀ TẶNG BẠN NỮ, HỘP QUÀ TẶNG VALENTINE, SINH NHẬT, 8-3 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hộp Quà Dễ Thương Tặng Sinh Nhật Bạn Gái, 8/3 ...",
+    "link": "https://shop.tiktok.com/vn/pdp/set-qua-tang-cinnamroll-trang-xanh-sinh-nhat-le-tinh-nhan/1732210541235570110",
+    "snippet": "[Set quà tặng 8/3 happy wonmen's ] Set Quà Tặng Sinh Nhật, Trang Sức Dây Chuyền ,Lắc Tay, Nhẫn Đôi, Gấu, Hoa, Thiệp , Pc ,Đèn Led ,",
+    "rating": 4.7,
+    "ratingCount": 12,
+    "position": 1
+   },
+   {
+    "title": "Set quà tặng hoạt hình trắng xanh tặng sinh nhật, 8/3, 20 ...",
+    "link": "https://shop.tiktok.com/vn/pdp/set-qua-tang-hoat-hinh-trang-xanh-danh-cho-phu-nu-qt14/1733552731663599038",
+    "snippet": "[Set quà tặng 8/3 happy wonmen's ] Set Quà Tặng Sinh Nhật, Trang Sức Dây Chuyền ,Lắc Tay, Nhẫn Đôi, Gấu, Hoa, Thiệp , Pc ,Đèn Led , Hộp Đựng , Thiệp Tặng Người ...",
+    "rating": 4.6,
+    "ratingCount": 10,
+    "position": 2
+   },
+   {
+    "title": "Túi xách nữ quà tặng người yêu",
+    "link": "https://shop.tiktok.com/vn/k/tui-xach-nu-qua-tang-nguoi-yeu",
+    "snippet": "Set quà tặng bạn gái túi xách nữ ngày sinh nhật valentine 20/10 8/3 ý nghĩa cho người yêu GIZEN SET26. 4.6. 16720 sold. ₫229.000. ₫350.000 ...",
+    "position": 3
+   },
+   {
+    "title": "Hộp quà nữ",
+    "link": "https://shop.tiktok.com/vn/k/hop-qua-nu",
+    "snippet": "Bộ Trang điểm 11 món YOULIYOULA nội địa Trung chính hãng, hộp Hươu Hồng Trái tim Tặng kèm túi đựng đẹp - Quà tặng người yêu Noel, Valentine, 8/3.",
+    "position": 4
+   },
+   {
+    "title": "set quà 20 10 cho vợ",
+    "link": "https://shop.tiktok.com/vn/k/set-qua-20-10-cho-vo",
+    "snippet": "Hộp Quà Tặng Valentine, Sinh Nhật, 8/3, 20/10, Kỷ Niệm - Bao Gồm 2 Cây Son Môi, Gấu Bông, Bó Hoa, Tấm Thiệp - Quà Tặng Đáng Yêu Và Ý Nghĩa.",
+    "position": 5
+   },
+   {
+    "title": "Set hộp quà cute hello kitty cho các bạn nữ, cho bé ...",
+    "link": "https://shop.tiktok.com/vn/pdp/set-qua-hello-kitty-cute-cho-be-va-nu-qua-sinh-nhat-14-2-8-3/1732192933120739777",
+    "snippet": "Sản phẩm mèo ngọt ngào có kích thước 20x13x3cm là một bộ quà tặng đáng yêu dành cho nữ và các bé nhỏ. Với thiết kế đáng yêu, sản phẩm này sẽ là món quà ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 6
+   },
+   {
+    "title": "ysl pouch gift valentine 2026",
+    "link": "https://shop.tiktok.com/vn/k/ysl-pouch-gift-valentine-2026",
+    "snippet": "YADASI Bộ Quà Tặng Bạn Gái Túi Xách Nữ Ngày 8/3 Sinh Nhật Valentine 20/10 Ý Nghĩa Chất ...",
+    "position": 7
+   },
+   {
+    "title": "box setของขวัญให้แฟนวันครบรอบ",
+    "link": "https://shop.tiktok.com/vn/k/box-set-khongkhway-aih-aefn-wan-khrbrob",
+    "snippet": "Set hộp quà tặng sinh nhật anni valentine 8/3 quà tốt nghiệp cho bạn gái bff 11 món ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

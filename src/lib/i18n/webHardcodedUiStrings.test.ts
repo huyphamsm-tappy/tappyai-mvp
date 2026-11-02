@@ -40,9 +40,6 @@ const SEALED = [
   // Now a LegalDocument like /privacy and /terms, so it follows the LanguagePicker.
   'src/app/copyright/page.tsx',
   'src/app/(app)/subscription/page.tsx',
-  'src/app/(app)/subscription/SubscriptionView.tsx',
-  'src/components/StripeCheckoutButton.tsx',
-  'src/components/ManageSubscriptionButton.tsx',
   'src/app/(app)/profile/tappy-knows/page.tsx',
   'src/app/(app)/profile/integrations/page.tsx',
   'src/app/(app)/profile/edit/page.tsx',

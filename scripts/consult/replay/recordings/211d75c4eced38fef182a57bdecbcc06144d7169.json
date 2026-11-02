@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Khách sạn Le Marais Đà Lạt Hotel\" OR \"Colline Dalat\" OR \"Khách Sạn Dalat Palace\" Đà Lạt site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:13:19.855Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Khách sạn Le Marais Đà Lạt Hotel\" OR \"Colline Dalat\" OR \"Khách Sạn Dalat Palace\" Đà Lạt site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Colline Dalat Hotel: Góc Đà Lạt Chill, View Đẹp",
+    "link": "https://www.tiktok.com/@nhaphuong.didau/video/7687452652975934740",
+    "snippet": "Colline Dalat Hotel mang đến một không gian sang trọng và hiện đại tại trung tâm Đà Lạt. Khách sạn có vị trí thuận tiện, dễ dàng đi bộ đến Hồ ...",
+    "position": 1
+   },
+   {
+    "title": "Experience the Heart of Hotel Lobby Life in Đà Lạt",
+    "link": "https://www.tiktok.com/@collinedalat/video/7519782352072035602",
+    "snippet": "Discover the vibrant lobby life in Đà Lạt hotels, where every arrival tells a story. @Colline Dalat.",
+    "position": 2
+   },
+   {
+    "title": "Khách sạn ở Đà Lạt: trai xinh gái đẹp và thông minh thế lày",
+    "link": "https://www.tiktok.com/@collinedalat/video/7676817925566713096",
+    "snippet": "43 Lượt thích,Video TikTok từ Colline Dalat (@collinedalat): \"Khám phá khách sạn ở Đà Lạt đầy trai xinh gái đẹp cùng khoảnh khắc thông minh, ...",
+    "position": 3
+   },
+   {
+    "title": "Connecting Room Premier Twin x Premier Double tại ...",
+    "link": "https://www.tiktok.com/@collinedalat/video/7678163581866872082",
+    "snippet": "Giới thiệu Connecting Room giữa Premier Twin và Premier Double tại Colline Dalat mang đến giải pháp lưu trú liền mạch cho gia đình hoặc nhóm bạn ...",
+    "position": 4
+   },
+   {
+    "title": "N.4686 - Colline Dalat Hotel, 10 Phan Bội Châu, Đà Lạt ...",
+    "link": "https://www.tiktok.com/@nghiennhatrang/video/7671460686039452936",
+    "snippet": "Video TikTok từ Nghiện Nha Trang (@nghiennhatrang): \"N.4686 - Colline Dalat Hotel, 10 Phan Bội Châu, Đà Lạt #NhaTrang #travel #DuLich ...",
+    "position": 5
+   },
+   {
+    "title": "01 NGÀY NỮA – CÙNG ĐẾM NGƯỢC ĐẾN CỘT MỐC 7...",
+    "link": "https://www.tiktok.com/@collinedalat/video/7686668428651793672",
+    "snippet": "“WOW” 7 YEARS | 01 NGÀY NỮA – CÙNG ĐẾM NGƯỢC ĐẾN CỘT MỐC 7 NĂM Chỉ còn 01 ngày nữa, Colline Dalat sẽ chính thức bước sang tuổi thứ 7 ...",
+    "position": 6
+   },
+   {
+    "title": "Cô Liên và Tiệc Cưới Tại Colline Dalat",
+    "link": "https://www.tiktok.com/@collinedalat/video/7570946940570045717",
+    "snippet": "Khám phá vẻ đẹp và không gian tiệc cưới tại Colline Dalat thông qua chân dung. @Colline Dalat.",
+    "position": 7
+   },
+   {
+    "title": "Colline Đà Lạt: Trọn Vẹn Ngày Lễ Quốc Khánh 2/9",
+    "link": "https://www.tiktok.com/@collinedalat/video/7680915186890345735",
+    "snippet": "Trong không khí sắc đỏ tự hào của ngày Quốc khánh Việt Nam 2/9, Colline Dalat vinh dự là điểm đến lý tưởng cho Quý khách trong dịp nghỉ lễ ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

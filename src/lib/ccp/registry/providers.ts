@@ -32,6 +32,45 @@ const LINK_ONLY_RIGHTS: RightsFlags = { displayOk: true, priceOk: false, imageOk
 
 const DAY = 86_400_000
 
+
+// ── Cinema chains linked by their own «now showing» page (owner 01/10: Galaxy · Lotte · BHD · Beta join CGV) ──
+// Opened without login (HTTP 200 / real browser) on 2026-10-01; nothing deeper is claimed: the film list is L2, the
+// showtime picker and seats stay on the chain's page. Passthrough only — a discovered page on the chain's own host
+// is handed off; no URL is composed here and no price, showtime or availability is ever shown (rights: link only).
+const CINEMA_VERIFIED = '2026-10-01'
+function cinemaChain(providerId: string, merchantName: string, hosts: string[], listPage: string): ProviderRegistryEntry {
+  return {
+    providerId,
+    merchantId: providerId,
+    merchantName,
+    domains: ['entertainment'],
+    intents: ['buy_ticket'],
+    allowedHosts: hosts,
+    capabilities: ['transactionBoundary'],
+    commerce: ['cinema_ticket', 'commerce_handoff'],
+    depth: {
+      buy_ticket: {
+        guestDepth: 2,
+        authenticatedDepth: null,
+        bestPossibleDepth: 2,
+        authRequiredAt: 'none',
+        verifiedOn: CINEMA_VERIFIED,
+        evidence: listPage,
+        reason: 'Trang phim đang chiếu mở được không cần đăng nhập (01/10/2026); chọn suất chiếu và ghế làm trên trang của rạp.',
+      },
+    },
+    linkStrategy: { buy_ticket: ['handoff'] },
+    freshness: { identity: { freshnessType: 'near_realtime', ttlMs: DAY, note: 'film pages; showtimes live on the chain page' } },
+    rights: LINK_ONLY_RIGHTS,
+    enabledFlag: 'CCP_HANDOFF_ONLY',
+    tier: 'handoff_only',
+    notes: ['Cinema chain added by owner decision 01/10/2026 (provider list was frozen at 17); passthrough of a discovered film page only.'],
+    handoffPassthrough: true,
+    // No `discovery`: a film-page search per chain would multiply the Serper cost of every film question; the chain is linked
+    // through its now-showing page (nowShowing.ts) and passes a page it is HANDED through unchanged.
+  }
+}
+
 export const PROVIDER_REGISTRY: readonly ProviderRegistryEntry[] = [
   {
     providerId: 'dmx',
@@ -671,4 +710,8 @@ export const PROVIDER_REGISTRY: readonly ProviderRegistryEntry[] = [
     handoffPassthrough: true,
     discovery: { site: 'shopeefood.vn', subjectKind: 'restaurant' },
   },
+  cinemaChain('galaxy', 'Galaxy Cinema', ['www.galaxycine.vn', 'galaxycine.vn'], 'https://www.galaxycine.vn/phim-dang-chieu/'),
+  cinemaChain('lotte', 'Lotte Cinema', ['www.lottecinemavn.com', 'lottecinemavn.com'], 'https://www.lottecinemavn.com/LCHS/Contents/Movie/Movie-List.aspx'),
+  cinemaChain('bhd', 'BHD Star', ['www.bhdstar.vn', 'bhdstar.vn'], 'https://www.bhdstar.vn/phim/'),
+  cinemaChain('beta', 'Beta Cinemas', ['www.betacinemas.vn', 'betacinemas.vn'], 'https://www.betacinemas.vn/phim.htm'),
 ]

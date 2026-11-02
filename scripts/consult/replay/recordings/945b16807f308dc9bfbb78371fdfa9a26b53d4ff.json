@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Nhà hàng Hoàng Tâm (site:food.grab.com/vn OR site:shopeefood.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:45:40.948Z",
+ "body": {
+  "searchParameters": {
+   "q": "Nhà hàng Hoàng Tâm (site:food.grab.com/vn OR site:shopeefood.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "心悦餐馆 - Nhà Hàng Duyệt Tâm - DT747",
+    "link": "https://shopeefood.vn/binh-duong/%E5%BF%83%E6%82%A6%E9%A4%90%E9%A6%86-nha-hang-duyet-tam-dt747",
+    "snippet": "心悦餐馆 - Nhà Hàng Duyệt Tâm - DT747. Căn C13-C14-C15, Khu Nhà Ở Thương Mại Hoàng Mai, Đường DT 747, P. Uyên Hưng, Tân Uyên, Bình ...",
+    "position": 1
+   },
+   {
+    "title": "Nhà Hàng AROMA - Cơm Tấm - Hoàng Minh Giám",
+    "link": "https://shopeefood.vn/ha-noi/nha-hang-aroma-com-tam-hoang-minh-giam.k3vllj",
+    "snippet": "Tầng 1, Nhà N2B, Hoàng Minh Giám, Cầu Giấy, Hà Nội. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng dịch vụ vượt trội ...",
+    "position": 2
+   },
+   {
+    "title": "Giao món trực tuyến - Vô vàn ưu đãi, hàng vạn món ngon",
+    "link": "https://food.grab.com/vn/vi//",
+    "snippet": "Tìm và đặt món ăn yêu thích trên khắp Việt Nam - đặt đồ ăn trực tuyến chỉ bằng vài thao tác, từ món Lifted Coffee & Brunch cho bữa sáng, đến Maazi Indian – Nhà ...",
+    "position": 3
+   },
+   {
+    "title": "Cơm Tấm Nữ Hoàng 24h - Trần Hoàng Na ⭐ 4.5",
+    "link": "https://food.grab.com/vn/vi/restaurant/c%C6%A1m-t%E1%BA%A5m-n%E1%BB%AF-ho%C3%A0ng-24h-tr%E1%BA%A7n-ho%C3%A0ng-na-delivery/5-C8CGE6L2MBCTVE",
+    "snippet": "Cơm Tấm Nữ Hoàng 24h - Trần Hoàng Na. Cơm Tấm Nữ Hoàng 24h - Trần Hoàng Na. Món Miền Tây,Cơm Tấm. 4.5. Giờ mở cửa. Hôm nay 00:00-23:59. Ưu đãi hôm nay.",
+    "rating": 4.5,
+    "ratingCount": 11,
+    "position": 4
+   },
+   {
+    "title": "Bún Đậu Tâm An - Tu Hoàng ⭐ 1",
+    "link": "https://food.grab.com/vn/vi/restaurant/b%C3%BAn-%C4%91%E1%BA%ADu-t%C3%A2m-an-tu-ho%C3%A0ng-delivery/5-C7WHE7EDEADHEE",
+    "snippet": "BÚN TRỘN ; Bún Đậu Tâm An - Tu Hoàng : Bún trộn heo quay. Bún trộn heo quay ; Bún Đậu Tâm An - Tu Hoàng : Bún trộn gà quay. Bún trộn gà quay ; Bún Đậu Tâm An - Tu ...",
+    "rating": 1,
+    "ratingCount": 2,
+    "position": 5
+   },
+   {
+    "title": "CƠM TẤM HOÀNG YẾN ⭐ 4.3",
+    "link": "https://food.grab.com/vn/vi/restaurant/c%C6%A1m-t%E1%BA%A5m-ho%C3%A0ng-y%E1%BA%BFn-delivery/5-C8B3KFDKLXV2TJ",
+    "snippet": "Cơm tấm xíu mại trứng muối thơm ngon, đậm đà, ăn kèm cà chua, dưa leo và mắm ngon. 49.000. CƠM TẤM HOÀNG YẾN : CƠM CÁ HỘP XÀO CỦ HÀNH.",
+    "rating": 4.3,
+    "ratingCount": 6,
+    "position": 6
+   },
+   {
+    "title": "CÔNG BỐ KẾT QUẢ CHUỖI HOẠT ĐỘNG MỪNG THÁNG ...",
+    "link": "https://driver.shopeefood.vn/tin-tuc/cong-bo-ket-qua-chuoi-hoat-dong-mung-thang-chi-em-8-3-san-them-thuong-nong/",
+    "snippet": "Thứ 2, 25/03/2024 ; 40926363. Đỗ Văn Tuyền 1790. Đơn hàng nhiều món. 183,000 ₫ ; 15222807. Đinh Quang Huy 900. Đơn hàng nhiều món. 183,000 ₫.",
+    "date": "25 thg 3, 2024",
+    "position": 7
+   },
+   {
+    "title": "Lò Quay Tâm Hoàng Phát - Vịt Quay, Heo Quay",
+    "link": "https://food.grab.com/vn/vi/restaurant/l%C3%B2-quay-t%C3%A2m-ho%C3%A0ng-ph%C3%A1t-v%E1%BB%8Bt-quay-heo-quay-delivery/5-C7CWCYJETJECA2",
+    "snippet": "Lò Quay Tâm Hoàng Phát - Vịt Quay, Heo Quay. Vịt Quay. Giờ mở cửa. Hôm nay 08:00-22:00. We've updated the menu according to your selected delivery arrival ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -131,7 +131,9 @@ describe('layer 1 — execute() with off-enum values', () => {
     for (const v of ODD) {
       h.state.placeCalls = []
       const r = (await t.execute({ query: 'quán ăn', location: 'Quận 1', type: v }, {})) as Record<string, unknown>
-      expect(h.state.placeCalls, `type=${String(v)}`).toHaveLength(1)
+      // chat2 A2 (02/10): an EMPTY result is retried once with the wider area, so 1-2 provider calls; the first one carries the model type.
+      expect(h.state.placeCalls.length, `type=${String(v)}`).toBeGreaterThanOrEqual(1)
+      expect(h.state.placeCalls.length, `type=${String(v)}`).toBeLessThanOrEqual(2)
       expect(h.state.placeCalls[0].type, `type=${String(v)}`).toBe(expectType[String(v)])
       const unknownGiven = v !== null && v !== '' && expectType[String(v)] === undefined
       if (unknownGiven) expect(String(r._tappy_type_note), `type=${String(v)}`).toContain(`type "${String(v)}"`)

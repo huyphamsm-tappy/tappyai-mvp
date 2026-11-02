@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Rong Chơi Coffee Van Garden\" OR \"Xào Xạc cafe & plants\" OR \"Time House\" quan 3 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:26:28.033Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Rong Chơi Coffee Van Garden\" OR \"Xào Xạc cafe & plants\" OR \"Time House\" quan 3 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Xào xạc cafe & plants 📍 453/15 Nguyễn Đình Chiểu ...",
+    "link": "https://www.tiktok.com/@cafehoppersg/photo/7482220926134750471?lang=ro-RO",
+    "snippet": "Xào xạc cafe & plants 453/15 Nguyễn Đình Chiểu, phường 5, quận 3, TpHCM 7:30 am - 10 pm #xaoxac #xaoxaccafe #xaoxaccafeplants #cafe # ...",
+    "position": 1
+   },
+   {
+    "title": "Xào xạc cafe & plants 📍 453/15 Nguyễn Đình Chiểu, phường 5, ...",
+    "link": "https://www.tiktok.com/@cafehoppersg/photo/7482220926134750471?image_index=8&lang=et",
+    "snippet": "Xào xạc cafe & plants 453/15 Nguyễn Đình Chiểu, phường 5, quận 3, TpHCM 7:30 am - 10 pm #xaoxac #xaoxaccafe #xaoxaccafeplants #cafe #saigon ...",
+    "position": 2
+   },
+   {
+    "title": "Xào xạc cafe & plants 📍 453/15 Nguyễn Đình Chiểu, phường 5 ...",
+    "link": "https://www.tiktok.com/@cafehoppersg/photo/7482220926134750471?image_index=1&lang=fi-FI",
+    "snippet": "Xào xạc cafe & plants 453/15 Nguyễn Đình Chiểu, phường 5, quận 3, TpHCM 7:30 am - 10 pm #xaoxac #xaoxaccafe #xaoxaccafeplants #cafe #saigon ...",
+    "position": 3
+   },
+   {
+    "title": "Xào xạc cafe & plants 📍 453/15 Nguyễn Đình Chiểu, phường 5 ...",
+    "link": "https://www.tiktok.com/@cafehoppersg/photo/7482220926134750471?image_index=6&lang=sk",
+    "snippet": "Xào xạc cafe & plants 453/15 Nguyễn Đình Chiểu, phường 5, quận 3, TpHCM 7:30 am - 10 pm #xaoxac #xaoxaccafe #xaoxaccafeplants #cafe #saigon ...",
+    "position": 4
+   },
+   {
+    "title": "Xào xạc cafe & plants 📍 453/15 Nguyễn Đình Chiểu, phường 5, ...",
+    "link": "https://www.tiktok.com/@cafehoppersg/photo/7482220926134750471?lang=ko-KR",
+    "snippet": "Xào xạc cafe & plants 453/15 Nguyễn Đình Chiểu, phường 5, quận 3, TpHCM 7:30 am - 10 pm #xaoxac #xaoxaccafe #xaoxaccafeplants #cafe #saigon ...",
+    "position": 5
+   },
+   {
+    "title": "Xào xạc cafe & plants 📍 453/15 Nguyễn Đình Chiểu, phường 5 ...",
+    "link": "https://www.tiktok.com/@cafehoppersg/photo/7482220926134750471?lang=pl-PL",
+    "snippet": "Xào xạc cafe & plants 453/15 Nguyễn Đình Chiểu, phường 5, quận 3, TpHCM 7:30 am - 10 pm #xaoxac #xaoxaccafe #xaoxaccafeplants #cafe #saigon ...",
+    "position": 6
+   },
+   {
+    "title": "Xào xạc cafe & plants 📍 453/15 Nguyễn Đình Chiểu ...",
+    "link": "https://www.tiktok.com/@cafehoppersg/photo/7482220926134750471?lang=et",
+    "snippet": "Xào xạc cafe & plants 453/15 Nguyễn Đình Chiểu, phường 5, quận 3, TpHCM 7:30 am - 10 pm #xaoxac #xaoxaccafe #xaoxaccafeplants #cafe # ...",
+    "position": 7
+   },
+   {
+    "title": "Xào xạc cafe & plants 📍 453/15 Nguyễn Đình Chiểu, phường 5, ...",
+    "link": "https://www.tiktok.com/@cafehoppersg/photo/7482220926134750471?lang=zh-Hans",
+    "snippet": "Xào xạc cafe & plants 453/15 Nguyễn Đình Chiểu, phường 5, quận 3, TpHCM 7:30 am - 10 pm #xaoxac #xaoxaccafe #xaoxaccafeplants #cafe #saigon ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

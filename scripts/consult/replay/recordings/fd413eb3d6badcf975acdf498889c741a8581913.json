@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Sala Danang Beach Hotel\" OR \"Hanami Hotel Danang\" OR \"M Hotel Da Nang\" Đà Nẵng site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:36:11.259Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Sala Danang Beach Hotel\" OR \"Hanami Hotel Danang\" OR \"M Hotel Da Nang\" Đà Nẵng site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Sala Danang Beach Hotel (@saladanangbeachhotel)",
+    "link": "https://www.tiktok.com/@saladanangbeachhotel",
+    "snippet": "Sala Danang Beach Hotel (@saladanangbeachhotel) trên TikTok |1060 Lượt thích.227 Follower.36 - 38 Lam Hoang Street, Son Tra District, Danang City, Viet Nam.",
+    "position": 1
+   },
+   {
+    "title": "SALA DANANG BEACH HOTEL: Lý tưởng tại Đà Nẵng gần ...",
+    "link": "https://www.tiktok.com/@bigonetravel/photo/7655784608008572180",
+    "snippet": "Khám phá Sala Danang Beach Hotel, điểm dừng chân lý tưởng tại Đà Nẵng với nhiều hạng phòng từ tiêu chuẩn đến suite cao cấp, chỉ vài phút tới ...",
+    "position": 2
+   },
+   {
+    "title": "Khám Phá Rooftop Mới Tại Đà Nẵng - Sala Danang Beach ...",
+    "link": "https://www.tiktok.com/@saigoncityview/video/7358804491241639169",
+    "snippet": "Khám phá một rooftop mới tuyệt đẹp với view toàn cảnh Đà Nẵng và đường ven biển tại Sala Danang Beach Hotel. Đến với Đà Nẵng để trải nghiệm hành ...",
+    "position": 3
+   },
+   {
+    "title": "Sala Danang Beach Hotel",
+    "link": "https://www.tiktok.com/@sala.danang.beach",
+    "snippet": "Kênh Tiktok chính thức của Sala Danang Beach Hotel Hotline đặt phòng: 0236//3658//555. Buffet sáng tại Khách sạn Sala Danang Beach sẽ có gì?",
+    "position": 4
+   },
+   {
+    "title": "Trải nghiệm dịch vụ đưa/đón sân bay miễn phí của Sala ...",
+    "link": "https://www.tiktok.com/@sala.danang.beach/video/7689332810422865158",
+    "snippet": "Sala Danang Beach Hotel. Đến Khách sạn Sala Đà Nẵng Beach mà chưa check-in ở đây thì hơi bị phí nhé mọi người #saladanang #khachsandanang ...",
+    "position": 5
+   },
+   {
+    "title": "サラ ダナン ビーチ ホテル Sala Danang Beach Hotel",
+    "link": "https://www.tiktok.com/discover/%E3%82%B5%E3%83%A9-%E3%83%80%E3%83%8A%E3%83%B3-%E3%83%93%E3%83%BC%E3%83%81-%E3%83%9B%E3%83%86%E3%83%AB-sala-danang-beach-hotel",
+    "snippet": "SALA DANANG BEACH HOTEL – ĐIỂM DỪNG CHÂN LÝ TƯỞNG TẠI ĐÀ NẴNG ... Khám phá khách sạn 4 sao tại Đà Nẵng với view biển tuyệt đẹp, chỉ từ 2 triệu đồng.",
+    "position": 6
+   },
+   {
+    "title": "Sala Danang Beach Hotel Breakfast",
+    "link": "https://www.tiktok.com/discover/sala-danang-beach-hotel-breakfast",
+    "snippet": "Experience the incredible breakfast buffet at Sala Danang Beach Hotel! Discover tropical flavors and breathtaking sea views during your stay in Da Nang.",
+    "position": 7
+   },
+   {
+    "title": "Sala Beach Hotel",
+    "link": "https://www.tiktok.com/discover/sala-beach-hotel",
+    "snippet": "Discover the Beauty of Sala Danang Beach Hotel. Explore the stunning Sala Suite with balcony sea view at Sala Danang Beach Hotel in Vietnam.",
+    "date": "13 thg 7, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

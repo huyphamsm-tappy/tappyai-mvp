@@ -1,0 +1,396 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "khách sạn nhà nghỉ gần núi Bà Đen Tây Ninh Tây Ninh",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:24:30.043Z",
+ "body": {
+  "searchParameters": {
+   "q": "khách sạn nhà nghỉ gần núi Bà Đen Tây Ninh Tây Ninh",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7768941,106.7008997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Khách sạn Hoàng Tây",
+    "address": "152/22 Đ. Thành Thái, Hòa Hưng, Hồ Chí Minh 008484, Việt Nam",
+    "latitude": 10.7755947,
+    "longitude": 106.6645988,
+    "rating": 3.7,
+    "ratingCount": 140,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://khachsangiaretphcm.com/",
+    "phoneNumber": "+84 886 339 944",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl-lUazjgUaPzYkhU2eB6Jz_NiDJ_Mnzhev0_U7JJY7ceDckEyap4vptJh1Pn-TS5KVQf7cnsKZ-SsiH58CDmFH73lyxV_dqDMKwBFDDT2sIHyPQ7KWltL_egfwxcURSCcb67vGQB6BYEY",
+    "cid": "8826719992299702058",
+    "fid": "0x31752ec4ad475ed1:0x7a7ecf1128dcc72a",
+    "placeId": "ChIJ0V5HrcQudTERKsfcKBHPfno"
+   },
+   {
+    "position": 2,
+    "title": "RedDoorz Plus near Hoang Van Thu Park 1",
+    "address": "16 Đ. Ba Vì, Tân Sơn Nhất, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.803412,
+    "longitude": 106.66000109999999,
+    "rating": 3.2,
+    "ratingCount": 37,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 1900 638099",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWncLnL11zMTPpMWT39_Rs_728FHWo0ixuKYExwb-wdkmsENgL7w4Q_LJ3uAQGuz8bKJ72T3EaBMlqNk30Sno2oL1vNNYii9aQNswB3whTfo0TGKx-Mp4jrcEXuBVYfTqfidGBAcyg",
+    "cid": "15808627177259080155",
+    "fid": "0x3175293a14dce60b:0xdb6386a8f71d19db",
+    "placeId": "ChIJC-bcFDopdTER2xkd96iGY9s"
+   },
+   {
+    "position": 3,
+    "title": "Nhà Khách Người Có Công Tại Thành phố Hồ Chí Minh",
+    "address": "168 Hai Bà Trưng, Tân Định, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7854338,
+    "longitude": 106.6956024,
+    "rating": 3.9,
+    "ratingCount": 775,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Nhà khách"
+    ],
+    "phoneNumber": "+84 28 3824 1688",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlpr-unjWD67NTgesx3GnSM9PIou5e8feaO1foL_PSdjAQ9v1lvvvuzP8ZXnJakQ0nJe6aFSg254epDukQvQbQZ_TOg-oQ5WqkoUv97acW1CiTO7kYNMKNSjC8z1n9cx1qXsInkQg",
+    "cid": "17191243023788155256",
+    "fid": "0x31752f34150062c7:0xee939072704e2178",
+    "placeId": "ChIJx2IAFTQvdTEReCFOcHKQk-4"
+   },
+   {
+    "position": 4,
+    "title": "Nhà Nghỉ Minh Phương",
+    "address": "262BIS Lạc Long Quân, Bình Thới, Hồ Chí Minh 10000, Việt Nam",
+    "latitude": 10.7658487,
+    "longitude": 106.6423696,
+    "rating": 4.7,
+    "ratingCount": 14,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 856 160 160",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlLZ5u9cl9ASD_4Fjy0JHmkro2AMBSa2Su9PzKEUnZ8h2Rl0co5Tbq3_pP_eSeZEoq_xwcCs2sqmP3SLXxZNoDfPfVN1Bg_BLM9w9VeHCXQqrEin_N9hLu9gX5cV1NMm08EJznHew",
+    "cid": "13012568921296482705",
+    "fid": "0x31752f0041ee757f:0xb495ee7d892a3191",
+    "placeId": "ChIJf3XuQQAvdTERkTEqiX3ulbQ"
+   },
+   {
+    "position": 5,
+    "title": "Phòng Cho Thuê Thanh Châu",
+    "address": "149 Lê Hồng Phong, Chợ Quán, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.757762999999999,
+    "longitude": 106.67785219999999,
+    "rating": 4.9,
+    "ratingCount": 59,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 909 491 902",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkFjGR_DyokC_uuVwSh1Gjn_J2a5-9-SU5ElB_gTNc6ImedsE9yKwmsHOku6C4UIz-IyDXamz8ZMf6qJ5Ydg6hbQjMK3JnpATmWi84LC-CpxhltwDNLWWqw8o4rI1CF3_q6fEM",
+    "cid": "18247526017963649546",
+    "fid": "0x31752f1d34ddf865:0xfd3c3c3bda6bea0a",
+    "placeId": "ChIJZfjdNB0vdTERCupr2js8PP0"
+   },
+   {
+    "position": 6,
+    "title": "PHIIULINH SKYGON Hostel",
+    "address": "Copac Square, 12 Tôn Đản, Xóm Chiếu, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.762285,
+    "longitude": 106.70772699999999,
+    "rating": 4.5,
+    "ratingCount": 73,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 933 878 968",
+    "description": "Nhà nghỉ bình dị, có phòng riêng và phòng tập thể đơn giản, bếp chung và Wi-Fi miễn phí.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlcD075USvrbEVSKXZORP25MHuHZstB-Rq3cTVIFgWeBP5ZbhPS1511VgBvY-b97ivyn3jILewHQXu0aNnWcIohKmVOTgt3Xmv9AaikYFeNYaMFdYbkeHruetB2aIX-s9TQsdPzeA",
+    "cid": "16112036243790696662",
+    "fid": "0x31752f3db78da3b1:0xdf997399375d10d6",
+    "placeId": "ChIJsaONtz0vdTER1hBdN5lzmd8"
+   },
+   {
+    "position": 7,
+    "title": "Homestay & Hotel Hoàng Anh Anh",
+    "address": "17 Bàu Cát 7, Tân Bình, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7905442,
+    "longitude": 106.6416553,
+    "rating": 3.6,
+    "ratingCount": 93,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Khách sạn lưu trú dài hạn"
+    ],
+    "phoneNumber": "+84 365 549 269",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn-2C9Om5FlyinnEOuZuE1VXFf4bUIL1uPir0p_tEgb2Q_SyxnchdKNqbjvtcLutGYIHErjn0VUTfw0CJ6m2BlTqTIEsuOwi6nS3hgcP7qUuFLRZHRKs865EwMTCuH2Z743bK9ZLCpKpKQa",
+    "cid": "8294309295534116446",
+    "fid": "0x31752eb28c477a6d:0x731b4e5bf1880e5e",
+    "placeId": "ChIJbXpHjLIudTERXg6I8VtOG3M"
+   },
+   {
+    "position": 8,
+    "title": "Khách sạn Mai Tuấn Huy",
+    "address": "279 3 Tháng 2, Vườn Lài, Hồ Chí Minh 72500, Việt Nam",
+    "latitude": 10.770249399999999,
+    "longitude": 106.6721182,
+    "rating": 4.8,
+    "ratingCount": 308,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 903 144 926",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlPPG6DnoCEoBH9Hwv_06tThOZCsLh4ewll2sOzgzx2tsqlwhUIQE1nxzJ-MAiSdHkI_6y2H3BHmmkSTDL9Kb3lZsOcj3pWoRBNk-6MnQzL84maMjfRLXWx8KAMDqEbHEkbwGgK",
+    "cid": "8720009995447656178",
+    "fid": "0x31752feb66ffa27b:0x7903b2e3e8835ef2",
+    "placeId": "ChIJe6L_ZusvdTER8l6D6OOyA3k"
+   },
+   {
+    "position": 9,
+    "title": "Khách sạn bảo an",
+    "address": "141 Đ. Đào Duy Từ, Diên Hồng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7600141,
+    "longitude": 106.6656368,
+    "rating": 3.2,
+    "ratingCount": 22,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 343 303 039",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnGTLFlNvuucfEsbJtBTwWeJJ57zBZ3y0GY4aeDpxDao4Q23rVdivBZXM1R5ESt3Z9MPAscOMj9uWsBph0-gPiCpwt8Wcl1_MzUFCMf3WijL_px8-EEHcy4jhCp7x0Oe4syBxSD",
+    "cid": "12851240117146348250",
+    "fid": "0x31752f4bfe437efb:0xb258c6cc39c1eada",
+    "placeId": "ChIJ-35D_ksvdTER2urBOczGWLI"
+   },
+   {
+    "position": 10,
+    "title": "Khách Sạn Núi Thành",
+    "address": "3 Đ. Núi Thành, Tân Bình, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.8006593,
+    "longitude": 106.64184089999999,
+    "rating": 3.8,
+    "ratingCount": 173,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 28 3810 9668",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWle5dz33R-F_h9i1gHNH_bggyP4ofvmS3J11B_X9Jut6V8WR5Pgfw3g5guUGeQPHAuzH7fhHlZ3WPfw0nsbaqYAR9Phaw8KKS5vbBoEC7QXEXyDE8EpC_I5os9ddXRVXzIx-kZG",
+    "cid": "6802183382160932336",
+    "fid": "0x3175294fccf4b3bb:0x5e6635bf1ec47df0",
+    "placeId": "ChIJu7P0zE8pdTER8H3EHr81Zl4"
+   },
+   {
+    "position": 11,
+    "title": "Cong ty TNHH Khách sạn Nhà hàng Cầu Vồng",
+    "address": "618 Nguyễn Chí Thanh, Minh Phụng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.758186799999999,
+    "longitude": 106.6590197,
+    "rating": 3.2,
+    "ratingCount": 180,
+    "type": "Khách sạn lưu trú dài hạn",
+    "types": [
+     "Khách sạn lưu trú dài hạn"
+    ],
+    "website": "http://rainbowhotelvn.com/",
+    "phoneNumber": "+84 938 755 618",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmceUoMjpmyhAO_tClBPwdybH026Fb2ih3mqClJqrgeAEJeEhf9ruEriJEcahsQa_bXd1CtDDnbkSWbFqXZ9J6NwB88hY9U2YiuVqt3dPtDaiFWCK3jjR6OwyEirDQO3qLCN291tQ",
+    "cid": "3033835293757667329",
+    "fid": "0x31752ef1f10c6699:0x2a1a59202f77f801",
+    "placeId": "ChIJmWYM8fEudTERAfh3LyBZGio"
+   },
+   {
+    "position": 12,
+    "title": "Khách sạn kim long",
+    "address": "335 Âu Cơ, Tân Phú, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.776398799999999,
+    "longitude": 106.6466129,
+    "rating": 3.4,
+    "ratingCount": 33,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 772 231 975",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkuySUO9AvpdUT7n29D4Aum3lCJk26dxUSBPgH-qGIKMCE1FjEMMx_JlCIeTmulGkP9ys3j8QpZmZCK63N49iyaHNZsza-RUhA5qLZZp-8tFiVFPhMfi_tmL76jTWbXlh5IxC-4",
+    "cid": "4321198343347542299",
+    "fid": "0x31752fef54e869df:0x3bf7faffa33c991b",
+    "placeId": "ChIJ32noVO8vdTERG5k8o__69zs"
+   },
+   {
+    "position": 13,
+    "title": "Tân Thành hotel",
+    "address": "12 Tân Thành, Chợ Lớn, Hồ Chí Minh 749000, Việt Nam",
+    "latitude": 10.7564722,
+    "longitude": 106.6576638,
+    "rating": 3.6,
+    "ratingCount": 104,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 28 6271 3233",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmsJhmYBDZKyK-pY78F9WL1YajksyYqAvuowYx6ZC7l8JkQaZY4cqxDpEJuaE7FcjxfQchm7fe_xx294tTvTidepOHf2mGfoLf5l8xhid_Dui7X60jtbRl558ZEuZH2o3xfytP-_1NjAi4a",
+    "cid": "6170064528301841898",
+    "fid": "0x31752f6fc6064629:0x55a078ff82ab5dea",
+    "placeId": "ChIJKUYGxm8vdTER6l2rgv94oFU"
+   },
+   {
+    "position": 14,
+    "title": "Nhà Nghỉ Hoàng Kim",
+    "address": "19 Mạc Thiên Tích, Chợ Lớn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7550148,
+    "longitude": 106.6656146,
+    "rating": 2.7,
+    "ratingCount": 128,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://www.bsmartvina.com/",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn678_U11OTrfhvEPAytqdj7WaYg02TPxUQ-WDsSVcLzGQwgvEahwzNIBWviHF0sDMxQQDFQl8BrRVhMRYkR0_NBAjqWWfNw3-x721bpI2Eu1stDbIeUlF8azecvKC5eygG6pj-KjsLBEku",
+    "cid": "9912439336067014792",
+    "fid": "0x31752efa65c67359:0x89900f0ecbe22088",
+    "placeId": "ChIJWXPGZfoudTERiCDiyw4PkIk"
+   },
+   {
+    "position": 15,
+    "title": "RedDoorz Plus @ Ung Van Khiem Street",
+    "address": "288 Đ. Ung Văn Khiêm, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.8031902,
+    "longitude": 106.7219083,
+    "rating": 3.7,
+    "ratingCount": 61,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://www.reddoorz.com/vi-vn/hotel/vietnam/ho-chi-minh-city/binh-thanh-district/reddoorz-plus-ung-van-khiem-street?utm_campaign=webclick&utm_medium=mybusiness&utm_source=google",
+    "phoneNumber": "+84 1900 638099",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnwMcISQkHgyI1ZdH4LZpuslhSN_pj0j1IwAZT37UMpLIwnzagAJtl_OAd_FKJcOyEZWz2mmTU-PZkepW2VXiK0xmbI59BHyYK5U00LfLAHehEjK9cXOt3SPzsvTwZ3Ek0O3zM",
+    "cid": "6327331182993964170",
+    "fid": "0x3175297afafb358b:0x57cf322ff29b7c8a",
+    "placeId": "ChIJizX7-nopdTERinyb8i8yz1c"
+   },
+   {
+    "position": 16,
+    "title": "Khách sạn Ngọc Trinh",
+    "address": "107 Đ. Hồ Bá Kiện, Street, Hòa Hưng, Hồ Chí Minh 119415, Việt Nam",
+    "latitude": 10.7826501,
+    "longitude": 106.6668497,
+    "rating": 3.5,
+    "ratingCount": 99,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://www.traveloka.com/vi-vn/hotel/vietnam/ngoc-trinh-hotel-3000010036699",
+    "phoneNumber": "+84 28 3865 4271",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-proxy/ALd4DhH7PLi6G4qWtKvg5C3NRXUHCG-7se_MyWj_MYez3f0zZpS4SQRPSm8NTDS5AEwYL1ZbzdkYGccA9cLanBv9W-xEjm0_zPO7zVRX_U6d3tWDMzxwuTaBcPHKFIgDKs9i5HNrDfWxJOv8ufgb9H5mYrUkLSZtnhEhYD9byK2sWreNVshFuZeN22Pg",
+    "cid": "13547439660263475291",
+    "fid": "0x31752ed1b19a9af9:0xbc022c97f60b085b",
+    "placeId": "ChIJ-ZqasdEudTERWwgL9pcsArw"
+   },
+   {
+    "position": 17,
+    "title": "A25 Premium Hotel - 55 Cách Mạng Tháng Tám",
+    "address": "55 Cách Mạng Tháng Tám, Bến Thành, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7718083,
+    "longitude": 106.69228079999999,
+    "rating": 4.4,
+    "ratingCount": 150,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://a25hotel.com/khach-san-tai-phuong-ben-thanh/a25-premium%C2%A0-hotel-55-cach-mang-thang-8-p2151.html",
+    "phoneNumber": "+84 788 441 725",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm-DQZXxeYrsIlhqGuoJ7UxPYYh6QrvzA9NyxNm_N7FxzK7yHFVhHkCJnvgoNm0QcWYu6x2Z4zS-J5jbmz3K7fsYXBrri1RiXpw30aJK9yT0EuZvXO_S_Ra8p5wrU6vPfjz_EKtNfiNDfD8",
+    "cid": "3675977233798009274",
+    "fid": "0x31752ffc5ca3a4bf:0x3303b1d166f411ba",
+    "placeId": "ChIJv6SjXPwvdTERuhH0ZtGxAzM"
+   },
+   {
+    "position": 18,
+    "title": "Khách sạn Hà Bảo Châu",
+    "address": "1101 36/6 Tự Lập, Tân Sơn Nhất, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.792691399999999,
+    "longitude": 106.6558357,
+    "rating": 3.3,
+    "ratingCount": 222,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 28 3811 4177",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-proxy/ALd4DhHuj6PZ-7gPhAu6QdJSUFiODyOfc48fRh8GP7Gn9ctvnpltKikvGTMCrOW-VmQO1NpCNgMjAWUmielufDhKMmnb3wX7YGeYKkSLI0QsgVAjWMxFkEGxPHHcSO8jqFmjhyJicPIRptW7S7HUzYlnih5nAYx3fW6WCUoXcPK-WjumBbgQkj1hRKc",
+    "cid": "13018719289513677096",
+    "fid": "0x31752934dec40051:0xb4abc837b9fd1128",
+    "placeId": "ChIJUQDE3jQpdTERKBH9uTfIq7Q"
+   },
+   {
+    "position": 19,
+    "title": "Hotel gia huyên",
+    "address": "41a ba tháng hai, phường 11, quận 10, Vườn Lài, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.774638,
+    "longitude": 106.679374,
+    "rating": 3.7,
+    "ratingCount": 66,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 28 3832 7655",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlh3FhagtlAkWR2c2Ro-aBvxEkEYU72jA_Bxu5SAOJyqSspGn81g5IpPkYltYgOf8WlmQLHNNnKnHakz_GKe5aYi8UhXsB0gYAFnONpZ7CobdvaM7Mz763IJRjIBYhTNnWyMZeb",
+    "cid": "7403815768136986742",
+    "fid": "0x31752f26f3a36b41:0x66bfa336ca3db076",
+    "placeId": "ChIJQWuj8yYvdTERdrA9yjajv2Y"
+   },
+   {
+    "position": 20,
+    "title": "RedDoorz near Gia Dinh International Hospital",
+    "address": "23 Đ. Vạn Kiếp, Street, Gia Định, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.8011307,
+    "longitude": 106.69393799999999,
+    "rating": 3.3,
+    "ratingCount": 41,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://www.reddoorz.com/en-vn/hotel/vietnam/ho-chi-minh-city/Binh-Thanh-District/reddoorz-near-gia-dinh-church?utm_campaign=webclick&utm_medium=mybusiness&utm_source=google",
+    "phoneNumber": "+84 1900 638099",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnhfgn_a6DWjg3bKREBuVC8Xpz7MFLGYi2FUhE8urXlssZ_iUpfDwWbdQiUp5yT2uioi2RDJv8o41BYcxk_DOlEe6-JnZ3HRn3xXyPZBZ0cPPJB44pz5aXdv7Yhflc3xueaqfDU",
+    "cid": "16804366444532379537",
+    "fid": "0x3175294983038c19:0xe9351a3f79d8af91",
+    "placeId": "ChIJGYwDg0kpdTERka_YeT8aNek"
+   }
+  ],
+  "credits": 3
+ }
+}

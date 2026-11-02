@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"The Nail\" OR \"Hani's Nail\" OR \"ME IN NAIL\" quan 10 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:42:19.086Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"The Nail\" OR \"Hani's Nail\" OR \"ME IN NAIL\" quan 10 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Manifest các anh thấy được bài này, để các chị em mình ...",
+    "link": "https://www.tiktok.com/@mein.nail/video/7690517763185593607",
+    "snippet": "Để chào đón BST mới, ME IN NAIL áp dụng ưu đãi giảm giá 10% cho tất cả các dịch vụ đặt lịch trong khung giờ vàng từ 9:30 AM đến 12:30 PM, áp ...",
+    "position": 1
+   },
+   {
+    "title": "Trải nghiệm thúc đẩy sắc đẹp tại ME IN NAIL",
+    "link": "https://www.tiktok.com/@mein.nail/video/7595229720925555975",
+    "snippet": "... Quận Bình Thạnh ☎️0867.960.979 ME IN NAIL QUẬN ... Khám phá sự xinh đẹp tại ME IN NAIL với ưu đãi 10%! Đặt lịch ngay để ...",
+    "position": 2
+   },
+   {
+    "title": "ME IN NAIL (@mein.nail)",
+    "link": "https://www.tiktok.com/@mein.nail",
+    "snippet": "... Quận Bình Thạnh ☎️0867.960.979 ME IN NAIL QUẬN 10: 218 Nguyễn Tiểu La, Phường 8, Quận 10 ☎️0867.984.979 ME IN NAIL HIM LAM QUẬN ...",
+    "position": 3
+   },
+   {
+    "title": "Elegant Nail Designs for March at ME IN NAIL",
+    "link": "https://www.tiktok.com/@mein.nail/video/7616004103344377096",
+    "snippet": "Book your appointment today at any of our locations: - ME IN NAIL QUẬN 10: 218 Nguyễn Tiểu La, Phường 8, Quận 10, ☎️ 0867.984.979 - ME IN NAIL ...",
+    "position": 4
+   },
+   {
+    "title": "Hoài niệm về nghề cũ xíu 🥹 Dòng đời đưa đẩy từ tiệm cafe ...",
+    "link": "https://www.tiktok.com/@mein.nail/video/7517629057459113224",
+    "snippet": "... ME IN NAIL BÌNH THẠNH: 156 Nguyễn Văn Thương (D1 cũ), Phường 25, Quận Bình Thạnh ☎️0867.960.979 ME IN NAIL QUẬN 10: 218 Nguyễn ...",
+    "position": 5
+   },
+   {
+    "title": "Nail Artist: Bảo Trâm 📍ME IN NAIL HIM LAM Q7",
+    "link": "https://www.tiktok.com/@mein.nail/video/7595440119159508242",
+    "snippet": "... ME IN NAIL HIM LAM Q7 — ME IN NAIL [미인의 네일] (한국어로 문의 및 예약 가능) ⭕️ GIẢM 10 ... Quận Bình Thạnh ☎️0867 ...",
+    "position": 6
+   },
+   {
+    "title": "Nail Art by Kim Trúc - Stunning Designs in Bình Thạnh",
+    "link": "https://www.tiktok.com/@mein.nail/video/7601889573500652818",
+    "snippet": "... ME IN NAIL BÌNH THẠNH với Kim Trúc. Giảm giá 10%! ... Quận Bình Thạnh ☎️0867.960.979 ME IN NAIL QUẬN 10: 218 ...",
+    "position": 7
+   },
+   {
+    "title": "The Nail Chic - Tiệm nail mới tại 193 Nguyễn Lâm, P. Diên Hồng ...",
+    "link": "https://www.tiktok.com/@thuy.chung.ly/video/7651110247737740564",
+    "snippet": "The Nail Chic vừa bố trí lại không gian tiệm với hy vọng khách hàng sẽ thích phong cách mới. Địa chỉ: 193 Nguyễn Lâm, Phường Diên Hồng, TP.HCM (Quận 10).",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

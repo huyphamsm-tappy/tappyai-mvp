@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Boardwalk Resort and Villas",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:20:42.225Z",
+ "body": {
+  "searchParameters": {
+   "q": "Boardwalk Resort and Villas",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Virginia Beach Resort | Boardwalk Resort & Villas",
+    "imageUrl": "https://image-tc.galaxy.tf/wijpeg-57hpr0r0bqvzs2yywa1caik6y/hero-bwr-ext-aerial-shot-opt.jpg",
+    "imageWidth": 1920,
+    "imageHeight": 1078,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeh3-NVLzM0MKZrir1HiSLHZkRIgNK1yzJDi1dVGWUKg&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "Top Hotel Reservations",
+    "domain": "www.tophotelreservations.com",
+    "link": "https://www.tophotelreservations.com/boardwalk-resort-and-villas",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimage-tc.galaxy.tf%2Fwijpeg-57hpr0r0bqvzs2yywa1caik6y%2Fhero-bwr-ext-aerial-shot-opt.jpg&tbnid=cv0-1DhFXNApvM&imgrefurl=https%3A%2F%2Fwww.tophotelreservations.com%2Fboardwalk-resort-and-villas&docid=_-f-DU-ofC4zbM&w=1920&h=1078",
+    "position": 1
+   },
+   {
+    "title": "Boardwalk Resort and Villas, Virginia Beach (updated prices 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/81416146.jpg?k=1f3a5739b5e53e9013b9a6fb524eb3351d5d80f0922cd989a21ed6c622cb6d4c&o=",
+    "imageWidth": 1024,
+    "imageHeight": 684,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkn2U1wihrsH7YRqzsT7yGkR9UtrmhFReJ7EE_-QxpyQ&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/us/the-boardwalk-resort.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F81416146.jpg%3Fk%3D1f3a5739b5e53e9013b9a6fb524eb3351d5d80f0922cd989a21ed6c622cb6d4c%26o%3D&tbnid=3kzvtxuf1kj9LM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fus%2Fthe-boardwalk-resort.html&docid=ff3ZciEBcub2aM&w=1024&h=684",
+    "position": 2
+   },
+   {
+    "title": "Boardwalk Resort and Villas, Virginia Beach (updated prices 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/81416065.jpg?k=f1c768750fc4b386b08cd686d80cf053455a4ce44c265ed6b7a52b015257e87f&o=",
+    "imageWidth": 1024,
+    "imageHeight": 586,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6KQsOSIu1VHeiB3lki6Jwxd1LvqA7mGBfgYIVuxTibQ&s=10",
+    "thumbnailWidth": 731,
+    "thumbnailHeight": 419,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/us/the-boardwalk-resort.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F81416065.jpg%3Fk%3Df1c768750fc4b386b08cd686d80cf053455a4ce44c265ed6b7a52b015257e87f%26o%3D&tbnid=xMBFRnfu83oEEM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fus%2Fthe-boardwalk-resort.html&docid=ff3ZciEBcub2aM&w=1024&h=586",
+    "position": 3
+   },
+   {
+    "title": "Boardwalk Resort and Villas Reviews, Deals & Photos 2026 - Expedia",
+    "imageUrl": "https://images.trvl-media.com/lodging/1000000/920000/910400/910351/7bb2cf2f.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 861,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzQZaMw9Wh3N4DEmvRRaqDFd8nwfRQxJ6nysjBHl73XA&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Expedia",
+    "domain": "www.expedia.com",
+    "link": "https://www.expedia.com/Virginia-Beach-Hotels-Boardwalk-Resort-And-Villas.h910351.Hotel-Information",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F1000000%2F920000%2F910400%2F910351%2F7bb2cf2f.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=TThX_NSHNpT51M&imgrefurl=https%3A%2F%2Fwww.expedia.com%2FVirginia-Beach-Hotels-Boardwalk-Resort-And-Villas.h910351.Hotel-Information&docid=E_7mDomBcIgN-M&w=861&h=575",
+    "position": 4
+   },
+   {
+    "title": "Boardwalk Resort and Villas, Virginia Beach: Hotel Reviews, Rooms & Prices  | Hotels.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/1000000/920000/910400/910351/4f90a79f.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 831,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQxcdF5-V1_NvyktxbsJurzHhfhEBGf_bjM_Hn7pAQag&s=10",
+    "thumbnailWidth": 538,
+    "thumbnailHeight": 371,
+    "source": "Hotels.com",
+    "domain": "www.hotels.com",
+    "link": "https://www.hotels.com/ho212634/boardwalk-by-diamond-resorts-virginia-beach-united-states-of-america/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F1000000%2F920000%2F910400%2F910351%2F4f90a79f.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=d74FVWfoCa4drM&imgrefurl=https%3A%2F%2Fwww.hotels.com%2Fho212634%2Fboardwalk-by-diamond-resorts-virginia-beach-united-states-of-america%2F&docid=XV9E0j8e1-7wfM&w=831&h=575",
+    "position": 5
+   },
+   {
+    "title": "BOARDWALK RESORT AND VILLAS - 2026 Reviews (Virginia Beach)",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/33/4c/de/ee/exterior-view-of-the.jpg?w=900&h=-1&s=1",
+    "imageWidth": 900,
+    "imageHeight": 506,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIzIGwfaNrKW8JQlHLYO5dHxR8idhy0tiU9x4q74aoxA&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com",
+    "link": "https://www.tripadvisor.com/Hotel_Review-g58277-d268331-Reviews-Boardwalk_Resort_and_Villas-Virginia_Beach_Virginia.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F33%2F4c%2Fde%2Fee%2Fexterior-view-of-the.jpg%3Fw%3D900%26h%3D-1%26s%3D1&tbnid=0HEP_Y6JAX5ReM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com%2FHotel_Review-g58277-d268331-Reviews-Boardwalk_Resort_and_Villas-Virginia_Beach_Virginia.html&docid=wqGqmOiUWgPbrM&w=900&h=506",
+    "position": 6
+   },
+   {
+    "title": "BOARDWALK RESORT AND VILLAS - 2026 Reviews (Virginia Beach)",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/33/4c/de/ef/exterior-view-of-the.jpg?w=900&h=500&s=1",
+    "imageWidth": 900,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLGxqfpcNYuQe1n6Zz7kkaN__isUsTim9QQ2YU2QwgGw&s=10",
+    "thumbnailWidth": 599,
+    "thumbnailHeight": 333,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com",
+    "link": "https://www.tripadvisor.com/Hotel_Review-g58277-d268331-Reviews-Boardwalk_Resort_and_Villas-Virginia_Beach_Virginia.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F33%2F4c%2Fde%2Fef%2Fexterior-view-of-the.jpg%3Fw%3D900%26h%3D500%26s%3D1&tbnid=KOUezRQT4vzBxM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com%2FHotel_Review-g58277-d268331-Reviews-Boardwalk_Resort_and_Villas-Virginia_Beach_Virginia.html&docid=wqGqmOiUWgPbrM&w=900&h=500",
+    "position": 7
+   },
+   {
+    "title": "Disney's BoardWalk Villas",
+    "imageUrl": "https://cdn1.parksmedia.wdprapps.disney.com/resize/mwImage/1/560/316/75/dam/disney-world/resorts/bay-lake-tower-at-contemporary/boardwalk-16x9.jpg?1790086921964",
+    "imageWidth": 600,
+    "imageHeight": 338,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiymAxy3vGtkEK0_4xOrsXZV6o8hfhOCHsyBITv-A1bg&s=10",
+    "thumbnailWidth": 594,
+    "thumbnailHeight": 336,
+    "source": "Disney World",
+    "domain": "disneyworld.disney.go.com",
+    "link": "https://disneyworld.disney.go.com/resorts/boardwalk-villas/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn1.parksmedia.wdprapps.disney.com%2Fresize%2FmwImage%2F1%2F560%2F316%2F75%2Fdam%2Fdisney-world%2Fresorts%2Fbay-lake-tower-at-contemporary%2Fboardwalk-16x9.jpg%3F1790086921964&tbnid=JBVJdxaSka7rXM&imgrefurl=https%3A%2F%2Fdisneyworld.disney.go.com%2Fresorts%2Fboardwalk-villas%2F&docid=lQu9KjmwzTzdrM&w=600&h=338",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "ốp UAG monarch magsafe (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:19:33.112Z",
+ "body": {
+  "searchParameters": {
+   "q": "ốp UAG monarch magsafe (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "(THANH LÝ) Ốp Lưng UAG MONARCH Pro Magsafe Cho ...",
+    "link": "https://shopee.vn/(THANH-L%C3%9D)-%E1%BB%90p-L%C6%B0ng-UAG-MONARCH-Pro-Magsafe-Cho-iPhone-14-Pro-Max-14-Pro-14-Plus-14-%E1%BB%90p-%C4%91i%E1%BB%87n-tho%E1%BA%A1i-ch%E1%BB%91ng-s%E1%BB%91c-i.241319331.21047685382",
+    "snippet": "Mua (THANH LÝ) Ốp Lưng UAG MONARCH Pro Magsafe Cho iPhone 14 Pro Max 14 Pro 14 Plus 14 Ốp điện thoại chống sốc giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.8,
+    "ratingCount": 109,
+    "position": 1
+   },
+   {
+    "title": "Ốp lưng iPhone 15 Pro Max UAG Chống Sốc Monarch ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-15-pro-max-uag-monarch-with-magsafe-more-color.html",
+    "snippet": "Ốp lưng iPhone 15 Pro Max UAG Monarch With MagSafe More Color nổi bật với kết cấu bảo vệ nhiều lớp, hỗ trợ sạc không dây MagSafe, trọng lượng khoảng 59g.",
+    "position": 2
+   },
+   {
+    "title": "Ốp lưng UAG Monarch Pro w Magsafe cho iPhone 17 ...",
+    "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-UAG-Monarch-Pro-w-Magsafe-cho-iPhone-17-Pro-6.3-inch--i.241319331.41468510915",
+    "snippet": "Mua Ốp lưng UAG Monarch Pro w Magsafe cho iPhone 17 Pro [6.3 inch] giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại ...",
+    "position": 3
+   },
+   {
+    "title": "Ốp Lưng Chống Sốc UAG Monarch Pro Hỗ Trợ Sạc ...",
+    "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-Ch%E1%BB%91ng-S%E1%BB%91c-UAG-Monarch-Pro-H%E1%BB%97-Tr%E1%BB%A3-S%E1%BA%A1c-Magsafe-Cho-iPhone-15-Pro-Max-6.7-INCH--i.241319331.23455095937",
+    "snippet": "Mua Ốp Lưng Chống Sốc UAG Monarch Pro Hỗ Trợ Sạc Magsafe Cho iPhone 15 Pro Max [6.7 INCH] giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 38,
+    "position": 4
+   },
+   {
+    "title": "Ốp lưng UAG Monarch Pro w Magsafe cho iPhone 16 Pro [6.3 inch]",
+    "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-UAG-Monarch-Pro-w-Magsafe-cho-iPhone-16-Pro-6.3-inch--i.16461019.29379155821",
+    "snippet": "Mua Ốp lưng UAG Monarch Pro w Magsafe cho iPhone 16 Pro [6.3 inch] giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại ...",
+    "position": 5
+   },
+   {
+    "title": "So sánh Ốp lưng iPhone 14 Uag Monarch hỗ trợ sạc Magsafe và ...",
+    "link": "https://cellphones.com.vn/so-sanh/op-lung-iphone-14-uag-monarch-with-magsafe-vs-op-lung-iphone-14-pro-max-spigen-hybrid-zero-one-magfit",
+    "snippet": "So sánh chi tiết về giá, cấu hình, ưu nhược điểm giữa: Ốp lưng iPhone 14 Uag Monarch hỗ trợ sạc Magsafe và Ốp lưng iPhone 14 Pro Max Spigen Hybrid Zero One ...",
+    "position": 6
+   },
+   {
+    "title": "Ốp lưng iPhone 14 Pro Max UAG Monarch With Magsafe",
+    "link": "https://cellphones.com.vn/op-lung-iphone-14-pro-max-uag-monarch-with-magsafe.html",
+    "snippet": "Ốp lưng iPhone 14 Pro Max UAG Monarch hỗ trợ sạc Magsafe · Mới, đầy đủ phụ kiện từ nhà sản xuất · - Bảo hành 12 tháng lỗi do nhà sản xuất - Riêng ốp trong không ...",
+    "rating": 4,
+    "ratingCount": 1,
+    "position": 7
+   },
+   {
+    "title": "So sánh Ốp lưng iPhone 14 Uag Monarch hỗ trợ sạc Magsafe và ...",
+    "link": "https://cellphones.com.vn/so-sanh/op-lung-iphone-14-uag-monarch-with-magsafe-vs-tai-nghe-khong-day-xiaomi-buds-3",
+    "snippet": "Dòng sản phẩm. iPhone 14 ; Phân loại ốp. Chống sốc ; Tính năng. Hỗ trợ sạc MagSafe, Chống sốc, va đập ; Dùng được cho. iPhone 13 ; Hãng sản xuất. UAG. Xiaomi.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

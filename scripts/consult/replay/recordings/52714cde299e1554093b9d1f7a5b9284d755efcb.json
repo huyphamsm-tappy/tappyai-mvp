@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quà sinh nhật cho sếp nam thích cà phê 1-2 triệu (site:shopee.vn OR site:tiki.vn OR site:lazada.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:03:40.296Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà sinh nhật cho sếp nam thích cà phê 1-2 triệu (site:shopee.vn OR site:tiki.vn OR site:lazada.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "15+ món quà Tết tặng đối tác trang trọng, phù hợp nhiều ...",
+    "link": "https://shopee.vn/blog/qua-tet-tang-doi-tac/",
+    "snippet": "Các sản phẩm bổ dưỡng cho sức khỏe như Saffron, đông trùng hạ thảo, nhân sâm, tổ yến,… sẽ là món quà sức khỏe ý nghĩa trao gửi đến đối tác của ...",
+    "date": "21 thg 1, 2026",
+    "position": 1
+   },
+   {
+    "title": "Cách giữ hoa tươi lâu không bị thối cực đơn giản, hiệu quả - Tiki",
+    "link": "https://tiki.vn/blog/cach-giu-hoa-tuoi-lau/",
+    "snippet": "Bạn có thể thêm một vài giọt rượu Vodka và một muỗng cà phê đường vào nước bình để ngăn chặn sự phát triển vi khuẩn. Hãy thay nước hàng ngày và ...",
+    "date": "19 thg 12, 2023",
+    "position": 2
+   },
+   {
+    "title": "Nằm mơ thấy bạn học cũ là điềm gì? Giải mã chi tiết giấc mơ",
+    "link": "https://shopee.vn/blog/nam-mo-thay-ban-hoc-cu/",
+    "snippet": "Bài viết này của Shopee Blog sẽ giúp bạn giải mã ý nghĩa, dự đoán hên hay xui, và gợi ý con số may mắn cho từng tình huống. Ngoài ra, bạn cũng ...",
+    "date": "2 thg 9, 2025",
+    "position": 3
+   },
+   {
+    "title": "Máy lọc nước ion kiềm panasonic - Giá Tốt, Sale Tháng 09, ...",
+    "link": "https://shopee.vn/list/m%C3%A1y%20l%E1%BB%8Dc%20n%C6%B0%E1%BB%9Bc/panasonic/ion%20ki%E1%BB%81m",
+    "snippet": "Đặc biệt, máy lọc nước ion kiềm panasonic sẽ luôn được tìm thấy dễ dàng với mức giá ưu đãi cùng với đa dạng kiểu dáng, màu sắc độc đáo. Là một kênh mua sắm ...",
+    "position": 4
+   },
+   {
+    "title": "Sách Hay Về Quản Trị Nhân Sự: Chìa Khóa Xây Dựng Đội ...",
+    "link": "https://tiki.vn/blog/sach-hay-ve-quan-tri-nhan-su/",
+    "snippet": "Bài viết này Tiki Blog sẽ gợi ý cho bạn những cuốn sách đáng đọc, trở thành chìa khóa mở ra cánh cửa xây dựng một tập thể vững chắc và gắn kết.",
+    "date": "10 thg 5, 2026",
+    "position": 5
+   },
+   {
+    "title": "Đầu tư tài chính - Giá Tốt, Miễn Phí Vận Chuyển, Đủ Loại",
+    "link": "https://shopee.vn/list/%C4%91%E1%BA%A7u%20t%C6%B0%20t%C3%A0i%20ch%C3%ADnh",
+    "snippet": "Sách Tài Chính Dành Cho Sếp: Từ Tài Chính Cá Nhân Đến Quản Trị Tài Sản Và Danh Mục Đầu Tư IHbrbooks330.000₫ · 6. Sách - Ứng Dụng AI Trong Đầu Tư Tài Chính ...",
+    "position": 6
+   },
+   {
+    "title": "viên uống tiền mãn kinh kobayashi 840 viên",
+    "link": "https://shopee.vn/list/vi%C3%AAn%20u%E1%BB%91ng/ti%E1%BB%81n%20m%C3%A3n%20kinh/kobayashi%20840%20vi%C3%AAn",
+    "snippet": "Viên Uống Tiền Mãn Kinh Kobayashi Nhật Bản Hỗ Trợ Cân Bằng Nội Tiết Tố Làm Chậm Quá Trình Lão Hóa Hộp 840 Viên. 920.000₫. rating-star 5.0.",
+    "position": 7
+   },
+   {
+    "title": "Mua Ống Heo Tiết Kiệm Hình Xe Hơi Có Đèn Và Nhạc Cho Bé",
+    "link": "https://tiki.vn/ong-heo-tiet-kiem-hinh-xe-hoi-co-den-va-nhac-cho-be-pin-sac-co-san-p180990328.html",
+    "snippet": "Ống Heo Tiết Kiệm Hình Xe Hơi Có Đèn Và Nhạc Cho Bé -PIN SẠC CÓ SẴN - Màu đen tại khanhchaudigital giá cực tốt, hoàn tiền 111% nếu hàng giả, nhiều mã giảm ...",
+    "rating": 3,
+    "ratingCount": 1,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

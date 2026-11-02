@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Khách sạn LOTTE\" gần Sài Gòn site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:37:19.209Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Khách sạn LOTTE\" gần Sài Gòn site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn Lotte Saigon - Giá cả và Ưu đãi 2026, TP. Hồ ...",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-19551830/lotte-legend-hotel-saigon/",
+    "snippet": "Khách sạn Lotte Saigon ; Điểm tham quan: Phố Nhật Sài Gòn. 710m ; Điểm tham quan: Chợ Bến Thành. 1,6km ; Điểm tham quan: Nhà hát Thành phố Hồ Chí Minh. 780m.",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn Lotte tại TP. Hồ Chí Minh",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-lotte-hotel/hotels-c301b917/",
+    "snippet": "Đặt khách sạn Lotte tại TP. Hồ Chí Minh với giá từ 461.255₫ trên Trip.com. So sánh 1 chỗ nghỉ dựa trên vị trí, phòng ốc và đánh giá của khách.",
+    "position": 2
+   },
+   {
+    "title": "Lotte Hotel Hanoi Đánh giá của khách",
+    "link": "https://vn.trip.com/hotels/hanoi-hotel-detail-96297576/lotte-hotel-hanoi/review.html",
+    "snippet": "Kỳ nghỉ của chúng tôi tại Khách sạn Lotte Hà Nội thật sự tuyệt vời từ đầu đến cuối và xứng đáng nhận điểm 6/5. Chúng tôi ở phòng King Deluxe, rộng rãi, ...",
+    "position": 3
+   },
+   {
+    "title": "Các đánh giá Khách sạn Sài Gòn - Vĩnh Long",
+    "link": "https://vn.trip.com/hotels/long-chau-hotel-detail-35103817/saigon-vinh-long-hotel/review.html",
+    "snippet": "Đánh giá Khách sạn Sài Gòn - Vĩnh Long, Khách sạn Sài Gòn - Vĩnh Long ... khách sạn Lotte Hotel SeoulĐánh giá Corendon Amsterdam New-West, a Tribute ...",
+    "position": 4
+   },
+   {
+    "title": "Tìm Khách Sạn 5 Sao Tại TP. Hồ Chí Minh",
+    "link": "https://vn.trip.com/hotels/star5/city/vn/ho-chi-minh-city.html",
+    "snippet": "Khách sạn Lotte Saigon - 5 Sao. 9,5. Đáng Kinh Ngạc. 144 đánh giá. 99+. Khách sạn Lotte Saigon. Khách Sạn Gần Lê Thánh Tôn,TP. Hồ Chí Minh. Tiện nghi nổi bật: ...",
+    "position": 5
+   },
+   {
+    "title": "Các khách sạn ở gần Phố Nhật Sài Gòn, TP. Hồ Chí Minh",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-saigon-japan-town/hotels-c301m28409387/",
+    "snippet": "Khách sạn Lotte Saigon Các khách sạn gần Phố Nhật Sài Gòn. Khách sạn Lotte Saigon. Lê Thánh Tôn, TP. Hồ Chí Minh | Cách Phố Nhật Sài Gòn 0.25KM. 9,5/10. Đáng ...",
+    "position": 6
+   },
+   {
+    "title": "Các khách sạn ở gần Landmark 81 Sky View Observatory ...",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-landmark-81-skyview/hotels-c301m24786931/",
+    "snippet": "Signature Lê Thánh Tôn, a brand of Modern Village Lifestyle (từ 2.407.144₫),Vinpearl Landmark 81, Autograph Collection (từ 4.736.764₫)vàKhách sạn Lotte Saigon ...",
+    "position": 7
+   },
+   {
+    "title": "Legend Hotel Đánh giá của khách",
+    "link": "https://vn.trip.com/hotels/cologne-hotel-detail-96211974/legend-hotel/review.html",
+    "snippet": "... khách sạn Lotte Hotel GuamĐánh giá Grand Wailea Resort Hotel & Spa, A Waldorf Astoria Resort, Grand Wailea Resort Hotel & Spa, A Waldorf Astoria Resort đánh ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

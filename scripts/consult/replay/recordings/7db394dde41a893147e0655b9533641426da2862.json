@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Ốp lưng iPhone 17 Pro Max 17 pro max UAG Monarch hoặc Pathfinder Có MagSafe (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:46:09.486Z",
+ "body": {
+  "searchParameters": {
+   "q": "Ốp lưng iPhone 17 Pro Max 17 pro max UAG Monarch hoặc Pathfinder Có MagSafe (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp lưng UAG cho iPhone 17 Series",
+    "link": "https://cellphones.com.vn/phu-kien/bao-da-op-lung/iphone/iphone-17/uag.html",
+    "snippet": "Ốp lưng UAG iPhone 17 Series · Hỗ trợ sạc không dây/MagSafe · Mỏng nhẹ · Chống sốc, va đập · Chống trầy xước · Có chân đứng · Hạn chế ngã màu.",
+    "position": 1
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Pathfinder ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-pathfinder-with-magsafe.html",
+    "snippet": "Dùng được cho. iPhone 17 Pro Max. Tính năng. Tương thích với MagSafe. Chống rơi từ độ cao 5.5m. Kết cấu nhẹ với lõi mềm chống va đập, bảo vệ đáng tin cậy",
+    "position": 2
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Pathfinder ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-pathfinder-clear-with-magsafe.html",
+    "snippet": "Dùng được cho. iPhone 17 Pro Max. Tính năng. Tương thích với MagSafe. Kết cấu nhẹ với lõi mềm chống va đập, bảo vệ đáng tin cậy lưng TPU gia cố hấp thụ và ...",
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Monarch ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-monarch-pro-exclusive-cap-carbon-fiber.html",
+    "snippet": "Dùng được cho. iPhone 17 Pro Max. Tính năng. Lõi Chống Sốc Lớp đệm bảo vệ chống va chạm và sốc. Tương thích MagSafe. Bảo vệ chống va đập từ độ cao 7,6 mét",
+    "position": 4
+   },
+   {
+    "title": "[iPhone 17 Pro/17 Pro Max] Ốp lưng UAG Pathfinder ...",
+    "link": "https://shopee.vn/-iPhone-17-Pro-17-Pro-Max-%E1%BB%90p-l%C6%B0ng-UAG-Pathfinder-Civilian-Monarch-Pro-Orange-phi%C3%AAn-b%E1%BA%A3n-cam-%C4%91%E1%BA%B7c-bi%E1%BB%87t-i.898301886.50000977503",
+    "snippet": "Mua [iPhone 17 Pro/17 Pro Max] Ốp lưng UAG Pathfinder/Civilian/Monarch Pro Orange phiên bản cam đặc biệt giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 25,
+    "position": 5
+   },
+   {
+    "title": "Ốp lưng UAG Pathfinder SE chính hãng với Magsafe cho iPhone ...",
+    "link": "https://www.lazada.vn/products/op-lung-uag-pathfinder-se-chinh-hang-voi-magsafe-cho-iphone-17-pro-max-iphone-17-air-iphone-16-pro-max-iphone-15-14-13-12-pro-max-vo-dien-thoai-cap-bac-quan-su-go-ghe-chong-roi-dap-bao-ve-trong-suot-i13404795989.html?srsltid=AU7gw4UAhukub7vq-jAkzU3DoDZznLhnJdbocEmbKZAnxYR3hwYEOTLw",
+    "snippet": "Ốp lưng dân sự UAG chính hãng có Magsafe cho iPhone 17 Pro Max / iPhone. 443.000 ₫ · Ban Đầu UAG Monarch Pro Da Trường Hợp Với Magsafe Cho iPhone 17 Pro Max /.",
+    "position": 6
+   },
+   {
+    "title": "Các hãng ốp lưng nổi tiếng được yêu thích hiện nay",
+    "link": "https://cellphones.com.vn/sforum/cac-hang-op-lung-noi-tieng",
+    "snippet": "Tổng hợp các hãng ốp lưng nổi tiếng, từ các hãng ốp lưng điện thoại nổi tiếng đến các thương hiệu ốp lưng nổi tiếng cho iPhone, Samsung.",
+    "date": "20 thg 4, 2026",
+    "position": 7
+   },
+   {
+    "title": "bao da uag giá tốt Tháng 7, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=bao%20da%20uag&urlold=bao-da-uag-iphone-xsmax/1873995943246618333/877968015750663345/%20",
+    "snippet": "UAG explorer thế hệ thứ hai phù hợp cho iPhone 16 pro max iPhone 15 14 Pro MAX iPhone 16 15 12 và giá đỡ Samsung s25ultra S24 S23, có vỏ bảo vệ chống rơi mạnh.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

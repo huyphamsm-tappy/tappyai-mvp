@@ -79,6 +79,11 @@ export async function POST(req: NextRequest) {
 
   if (!thumbnail_url && !caption && !title) return NextResponse.json(EMPTY)
 
+  // 02/10: the LINK flow (the composer sends `title`, read from oEmbed) no longer gets an AI-written
+  // description / hashtags. The code below stays, but this switch (default OFF) makes it unreachable
+  // for link posts; the upload flow (no title) is unchanged.
+  if (title && process.env.EXPLORE_LINK_AI_ENABLED !== 'true') return NextResponse.json(EMPTY)
+
   const result = await processContent({
     thumbnailUrl: thumbnail_url || undefined,
     caption: caption || undefined,

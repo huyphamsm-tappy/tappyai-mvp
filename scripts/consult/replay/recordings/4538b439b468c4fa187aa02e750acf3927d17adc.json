@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hotel\" Gần Sài Gòn site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:38:01.939Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hotel\" Gần Sài Gòn site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn giá rẻ gần GA SÀI GÒN - CỔNG CHÍNH, TP. Hồ ...",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-saigon-train-station/hotels-c301r4328735/",
+    "snippet": "Tọa lạc tại trung tâm Thành phố Hồ Chí Minh, JW Marriott Hotel & Suites Saigon cách Nhà thờ Đức Bà Sài Gòn và Đường Đồng Khởi 5 phút đi bộ. Khách sạn phù hợp ...",
+    "position": 1
+   },
+   {
+    "title": "Các khách sạn ở gần Sài Gòn Square, TP. Hồ Chí Minh",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-saigon-square-shopping-mall/hotels-c301m19948910/",
+    "snippet": "Các khách sạn nổi tiếng ở gần Sài Gòn Square · Khách sạn KAS Dilly Luxury · Nicecy Hotel Pham Ngu Lao · Khách sạn Saigonciti · Dream Palace Ben Thanh Grand Hotel.",
+    "position": 2
+   },
+   {
+    "title": "Các khách sạn ở gần Cao Đẳng Sài Gòn, TP. Hồ Chí Minh",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-truong-cao-dang-nghe-sai-gon/hotels-c301m11072529/",
+    "snippet": "Các khách sạn nổi tiếng ở gần Cao Đẳng Sài Gòn · Atana Saigon Boutique Hotel II · Khách Sạn Lá Đường Số 21 · Cera Hotel · S79 Hotel T68 · Secret Garden Hotel Gò Vấp.",
+    "position": 3
+   },
+   {
+    "title": "Trường Đại học Sài Gòn - Khách sạn tại TP. Hồ Chí Minh",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-saigon-university/hotels-c301m13135555/",
+    "snippet": "Tọa lạc tại trung tâm Thành phố Hồ Chí Minh, JW Marriott Hotel & Suites Saigon cách Nhà thờ Đức Bà Sài Gòn và Đường Đồng Khởi 5 phút đi bộ. Khách sạn phù hợp ...",
+    "position": 4
+   },
+   {
+    "title": "Đặt khách sạn giá rẻ & chỗ ở, giảm giá 50%",
+    "link": "https://vn.trip.com/hotels/",
+    "snippet": "The Crown Airport Hotel ở Tân Sơn Hòa, Thành phố Hồ Chí Minh, cách Chợ Bến Thành và Đường Đồng Khởi 10 phút lái xe. Khách sạn này cách Sài Gòn Square 7,3 km và ...",
+    "position": 5
+   },
+   {
+    "title": "Nhà thờ Hạnh Thông Tây - Khách sạn tại TP. Hồ Chí Minh",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hanh-thong-tay-church/hotels-c301m12004677/",
+    "snippet": "Nằm tại vị trí thuận tiện ở Quận Gò Vấp, TP. Hồ Chí Minh, Centoria Hotel nằm cách Bảo tàng lịch sử Việt Nam 9.2 km, Trung Tâm Thương Mại Diamond Plaza 10 km ...",
+    "position": 6
+   },
+   {
+    "title": "Trụ sở Giáo phận Long Xuyên tại Sài Gòn - Khách sạn",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-tr-s-gio-phn-long-xuyn-ti-si-gn/hotels-c301m36354105/",
+    "snippet": "Các khách sạn nổi tiếng ở gần Trụ sở Giáo phận Long Xuyên tại Sài Gòn · Babylon Signature · Linh Dan Hotel Phan Xich Long By Urban B · SECRET GARDEN HOTEL - PHAN ...",
+    "position": 7
+   },
+   {
+    "title": "Khách sạn nghỉ dưỡng Sài Gòn - Ba Bể (Sai Gon",
+    "link": "https://vn.trip.com/hotels/ba-be-hotel-detail-45743673/a-member-of-saigontourist-group/",
+    "snippet": "... Sài Gòn - Ba Bể (Sai Gon - Ba Be resort)An Thảo Ba Bể HotelHoang Hop Homestay - HostelBa Be Jungle HousesNHÀ NGHỈ THƯ NHẠCNhà Nghỉ Sơn Lâm Ba Bể PanoramaNhà ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

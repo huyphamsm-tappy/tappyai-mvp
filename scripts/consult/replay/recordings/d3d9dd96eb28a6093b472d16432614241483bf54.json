@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Ốp lưng iPhone 16 Pro Max site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:19:37.167Z",
+ "body": {
+  "searchParameters": {
+   "q": "Ốp lưng iPhone 16 Pro Max site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "16 pro max iphone case with pop socket",
+    "link": "https://shop.tiktok.com/vn/k/16-pro-max-iphone-case-with-pop-socket",
+    "snippet": "Ốp Điện Thoại Thích Hợp Cho Apple iPhone 16 Pro Max, Chất Liệu Lì Tương Thích Với 16 Plus, Siêu Mỏng 15 Pro Max, Không Viền 14 Pro, Ốp Cứng Cho 12 Pro Max, ...",
+    "position": 1
+   },
+   {
+    "title": "case 16 pro max iphone original",
+    "link": "https://shop.tiktok.com/vn/k/case-16-pro-max-iphone-original",
+    "snippet": "Ốp lưng iPhone17/16/15/14/13/17 Pro/17 Pro Max thiết kế thỏ in toàn thân cao cấp cá tính phiên bản mới cho iPhone16/16 Plus/16 Pro. 0 sold. ₫19.500. ₫55.000 ...",
+    "position": 2
+   },
+   {
+    "title": "16 pro max iphone case with card holder",
+    "link": "https://shop.tiktok.com/vn/k/16-pro-max-iphone-case-with-card-holder",
+    "snippet": "Ốp lưng đựng thẻ ・ 21873 sold ₫25.900 ₫51.800 ・ 1152 sold ₫41.250 ₫75.000. Ốp lưng iPhone 16 Pro Max / 4.7 695 sold ₫23.748 ・ 4.2 608 sold ₫49.000",
+    "position": 3
+   },
+   {
+    "title": "Case iphone 16 pro max pink color",
+    "link": "https://shop.tiktok.com/vn/k/case-iphone-16-pro-max-pink-color",
+    "snippet": "Ốp lưng iPhone17/16/15/14/13/17 Pro/17 Pro Max thiết kế bình hoa và hoa nhiều màu cao cấp cá tính phiên bản mới cho iPhone16/16 Plus/16 Pro.",
+    "position": 4
+   },
+   {
+    "title": "16 pro max phone case casetify",
+    "link": "https://shop.tiktok.com/vn/k/16-pro-max-phone-case-casetify",
+    "snippet": "Ốp lưng Casetify kiểu rippled với MagSafe dành cho iPhone 16 Pro Max / iPhone ・ ₫285.600 ₫476.000 ・ 4.9 376 sold ₫236.502 ₫525.397",
+    "position": 5
+   },
+   {
+    "title": "Elegant Case iphone 16 pro max",
+    "link": "https://shop.tiktok.com/vn/k/elegant-case-iphone-16-pro-max",
+    "snippet": "Khám phá Elegant Case iphone 16 pro max mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành ...",
+    "position": 6
+   },
+   {
+    "title": "back protector iphone 16 pro max",
+    "link": "https://shop.tiktok.com/vn/k/back-protector-iphone-16-pro-max",
+    "snippet": "Ốp lưng bảo vệ toàn diện dành cho iPhone 16 Pro Max/14/13 Pro/12 Pro Max/11/X/8/7 Plus/17 Pro/15 Plus và SE (thế hệ 2/3), chống trầy xước mọi mặt, ...",
+    "position": 7
+   },
+   {
+    "title": "torros iphone 16 pro max cases",
+    "link": "https://shop.tiktok.com/vn/k/torros-iphone-16-pro-max-cases",
+    "snippet": "Ốp lưng iPhone17/16/15/14/13/17 Pro/17 Pro Max thiết kế thỏ và gấu trái tim phong cách thuần ngọt cá tính phiên bản mới cho iPhone16/16 Plus/16 Pro.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

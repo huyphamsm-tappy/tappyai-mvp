@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Dell Precision 7750 Core i7 10850H 16GB SSD 512GB RTX 4000 17.3 inch FHD Windows 10 pro site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:23:02.118Z",
+ "body": {
+  "searchParameters": {
+   "q": "Dell Precision 7750 Core i7 10850H 16GB SSD 512GB RTX 4000 17.3 inch FHD Windows 10 pro site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "dell precision - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/dell%20precision",
+    "snippet": "... 16GB | SSD 512GB | Màn FHD Chuẩn Màu14.300.000₫ · 6. Máy Laptop Dell Precision 5560 Core i7 11850H, 16GB RAM, 512GB SSD, VGA NVIDIA T1200 4GB GDDR6, 15.6 inch ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

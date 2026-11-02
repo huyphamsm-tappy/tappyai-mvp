@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Sách Fahasa - Súng, Vi Trùng Và Thép (Tái Bản)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:52:59.212Z",
+ "body": {
+  "searchParameters": {
+   "q": "Sách Fahasa - Súng, Vi Trùng Và Thép (Tái Bản)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Súng, Vi Trùng Và Thép (Tái Bản)",
+    "imageUrl": "https://cdn1.fahasa.com/media/catalog/product/8/9/8935270703837.jpg",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNGLcodCWuTvc_LYm3qsFeq6cZNOzR-t87hvRes5ADxw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Fahasa",
+    "domain": "www.fahasa.com",
+    "link": "https://www.fahasa.com/sung-vi-trung-va-thep-tai-ban-411812.html?srsltid=AU7gw4XWnBLyqCcTVJnoonDji8MSmQl03RRagb9asNOxgKzAUARbBpA9",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn1.fahasa.com%2Fmedia%2Fcatalog%2Fproduct%2F8%2F9%2F8935270703837.jpg&tbnid=UrJknmpDth_rcM&imgrefurl=https%3A%2F%2Fwww.fahasa.com%2Fsung-vi-trung-va-thep-tai-ban-411812.html%3Fsrsltid%3DAU7gw4XWnBLyqCcTVJnoonDji8MSmQl03RRagb9asNOxgKzAUARbBpA9&docid=CD3qSnIORN_VpM&w=600&h=600",
+    "position": 1
+   },
+   {
+    "title": "Súng, Vi Trùng Và Thép (Tái Bản 2018)",
+    "imageUrl": "https://cdn1.fahasa.com/media/catalog/product/i/m/image_172259.jpg",
+    "imageWidth": 628,
+    "imageHeight": 956,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZcr53FvfhHJpwoNKC7PsiwXLI26VqW-zsPBviD8hdtA&s=10",
+    "thumbnailWidth": 362,
+    "thumbnailHeight": 552,
+    "source": "Fahasa",
+    "domain": "www.fahasa.com",
+    "link": "https://www.fahasa.com/sung-vi-trung-va-thep-tai-ban-2018.html?srsltid=AU7gw4X93OPXw35Lu6Pp1o_ye1QKkfFxSVySP8l-YSb34ohNJsfNi6hj",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn1.fahasa.com%2Fmedia%2Fcatalog%2Fproduct%2Fi%2Fm%2Fimage_172259.jpg&tbnid=5BP5JZgPmS4dFM&imgrefurl=https%3A%2F%2Fwww.fahasa.com%2Fsung-vi-trung-va-thep-tai-ban-2018.html%3Fsrsltid%3DAU7gw4X93OPXw35Lu6Pp1o_ye1QKkfFxSVySP8l-YSb34ohNJsfNi6hj&docid=aMG8ROzRDNs1jM&w=628&h=956",
+    "position": 2
+   },
+   {
+    "title": "[Phiên chợ sách cũ] Súng, Vi Trùng Và Thép (Tái Bản 2020)",
+    "imageUrl": "https://cdn1.fahasa.com/media/catalog/product/i/m/image_195509_1_29802_thanh_ly.jpg",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSob8pZWTBkgQQFuzueyXoAXFubwR2ocd_chQYN5-t5Pg&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Fahasa",
+    "domain": "www.fahasa.com",
+    "link": "https://www.fahasa.com/phien-cho-sach-cu-sung-vi-trung-va-thep-tai-ban-2020.html?srsltid=AU7gw4WdOOlFw79-Vw9r1OZ_ckThrHBqUokc_40pA70JWE7Zs6lhmtpa",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn1.fahasa.com%2Fmedia%2Fcatalog%2Fproduct%2Fi%2Fm%2Fimage_195509_1_29802_thanh_ly.jpg&tbnid=Y1zPoe2WNzV3XM&imgrefurl=https%3A%2F%2Fwww.fahasa.com%2Fphien-cho-sach-cu-sung-vi-trung-va-thep-tai-ban-2020.html%3Fsrsltid%3DAU7gw4WdOOlFw79-Vw9r1OZ_ckThrHBqUokc_40pA70JWE7Zs6lhmtpa&docid=2uqGSQ0jCxlbmM&w=600&h=600",
+    "position": 3
+   },
+   {
+    "title": "Sách - Súng, Vi Trùng Và Thép (Tái Bản )",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/sg-11134253-825au-ms3mhecrijus7f",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRznozL8Mx5g6L0ZyR5zeDNHNP-ewSAFYBpmXqWmgzbpQ&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/S%C3%A1ch-S%C3%BAng-Vi-Tr%C3%B9ng-V%C3%A0-Th%C3%A9p-(T%C3%A1i-B%E1%BA%A3n-)-i.142856269.16290883965?extraParams=%7B%22display_model_id%22%3A203429184289%2C%22model_selection_logic%22%3A3%7D&rModelId=203429184289&vItemId=46261304533&vModelId=430983105236&vShopId=1506174776",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fsg-11134253-825au-ms3mhecrijus7f&tbnid=o1e-KXLyjGbi6M&imgrefurl=https%3A%2F%2Fshopee.vn%2FS%25C3%25A1ch-S%25C3%25BAng-Vi-Tr%25C3%25B9ng-V%25C3%25A0-Th%25C3%25A9p-(T%25C3%25A1i-B%25E1%25BA%25A3n-)-i.142856269.16290883965%3FextraParams%3D%257B%2522display_model_id%2522%253A203429184289%252C%2522model_selection_logic%2522%253A3%257D%26rModelId%3D203429184289%26vItemId%3D46261304533%26vModelId%3D430983105236%26vShopId%3D1506174776&docid=HyamSI-V9K_DVM&w=1024&h=1024",
+    "position": 4
+   },
+   {
+    "title": "Mua Sách Súng, Vi Trùng Và Thép (Tái bản) tại Tiki Trading | Tiki",
+    "imageUrl": "https://salt.tikicdn.com/cache/280x280/ts/product/68/5a/37/716d0d72c7655bb9d6d9ad209b3f6347.jpg",
+    "imageWidth": 280,
+    "imageHeight": 280,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMaqxCOrcRf0if9P3-a2Kkglib99h3zb-ZoUdf5qvR4Q&s=10",
+    "thumbnailWidth": 280,
+    "thumbnailHeight": 280,
+    "source": "Tiki",
+    "domain": "tiki.vn",
+    "link": "https://tiki.vn/sach-sung-vi-trung-va-thep-tai-ban-p201845361.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fsalt.tikicdn.com%2Fcache%2F280x280%2Fts%2Fproduct%2F68%2F5a%2F37%2F716d0d72c7655bb9d6d9ad209b3f6347.jpg&tbnid=WBseZDEfHWtrCM&imgrefurl=https%3A%2F%2Ftiki.vn%2Fsach-sung-vi-trung-va-thep-tai-ban-p201845361.html&docid=fqBuR-NlAE7yzM&w=280&h=280",
+    "position": 5
+   },
+   {
+    "title": "Súng, Vi Trùng Và Thép (Tái Bản)",
+    "imageUrl": "https://cdn1.fahasa.com/media/flashmagazine/images/page_images/sung__vi_trung_va_thep_tai_ban/2022_03_29_10_52_04_1-390x510.gif",
+    "imageWidth": 800,
+    "imageHeight": 1246,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkiaCNu-_9q42YfJCWyj16-IJ-jfRByrauN4rViJRBfw&s=10",
+    "thumbnailWidth": 358,
+    "thumbnailHeight": 558,
+    "source": "Fahasa",
+    "domain": "www.fahasa.com",
+    "link": "https://www.fahasa.com/sung-vi-trung-va-thep-tai-ban.html?srsltid=AU7gw4UoYgcAsoR5uKppfKblITGOOSKo_yxgXzQ4QBh5MZsleuadCG6o",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn1.fahasa.com%2Fmedia%2Fflashmagazine%2Fimages%2Fpage_images%2Fsung__vi_trung_va_thep_tai_ban%2F2022_03_29_10_52_04_1-390x510.gif&tbnid=yEYkZMgI6GfNTM&imgrefurl=https%3A%2F%2Fwww.fahasa.com%2Fsung-vi-trung-va-thep-tai-ban.html%3Fsrsltid%3DAU7gw4UoYgcAsoR5uKppfKblITGOOSKo_yxgXzQ4QBh5MZsleuadCG6o&docid=mgaVlTtAjX-4rM&w=800&h=1246",
+    "position": 6
+   },
+   {
+    "title": "Mua Súng, Vi Trùng Và Thép (Tái Bản) tại Nhà sách Fahasa | Tiki",
+    "imageUrl": "https://salt.tikicdn.com/cache/280x280/ts/product/39/1f/5b/2e44655bd4a76bd0033c023ebf163804.jpg",
+    "imageWidth": 280,
+    "imageHeight": 280,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQraG3pdRZTJLu1uHUG6XzIBP8wmFDcihgEBsTRoZi1lA&s",
+    "thumbnailWidth": 224,
+    "thumbnailHeight": 224,
+    "source": "Tiki",
+    "domain": "tiki.vn",
+    "link": "https://tiki.vn/sung-vi-trung-va-thep-tai-ban-p208097075.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fsalt.tikicdn.com%2Fcache%2F280x280%2Fts%2Fproduct%2F39%2F1f%2F5b%2F2e44655bd4a76bd0033c023ebf163804.jpg&tbnid=piFJUzYu2HgAJM&imgrefurl=https%3A%2F%2Ftiki.vn%2Fsung-vi-trung-va-thep-tai-ban-p208097075.html&docid=TqbEOKx3ZvVBHM&w=280&h=280",
+    "position": 7
+   },
+   {
+    "title": "Súng, vi trùng và thép: Định mệnh của các xã hội loài người",
+    "imageUrl": "https://bizweb.dktcdn.net/thumb/grande/100/197/269/products/sg-11134201-22120-eehyyvqzpzkv7d.jpg?v=1704250130910",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQp10W_jU5bDouKcM15WTOo3ywHz_uJAiAmTXhB5vIa0A&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Alpha Books",
+    "domain": "www.alphabooks.vn",
+    "link": "https://www.alphabooks.vn/sung-vi-trung-va-thep",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbizweb.dktcdn.net%2Fthumb%2Fgrande%2F100%2F197%2F269%2Fproducts%2Fsg-11134201-22120-eehyyvqzpzkv7d.jpg%3Fv%3D1704250130910&tbnid=Q6pm2pHY0pdnPM&imgrefurl=https%3A%2F%2Fwww.alphabooks.vn%2Fsung-vi-trung-va-thep&docid=a4J_9dP6XVqb1M&w=600&h=600",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

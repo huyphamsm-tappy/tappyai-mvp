@@ -187,8 +187,28 @@ const agoda: HandoffGrammar = {
     // The occupancy from the URL was seen applied (14 Sep 2026); date application was not confirmed in that session.
     return { url: `${canonical}?${p}`, depth: 3, preserved: ['propertyRef', 'adults', 'rooms', 'children'], pageOnly: ['checkIn', 'checkOut'], dropped: [], expiresAt: isoDay(s.checkIn), grammar: 'observed' }
   },
-  search() {
-    // /vi-vn/search?q= and ?textToSearch= drop the query (verified 14 Sep 2026): the landing page is the truth.
+  search(request) {
+    // Agoda's own results grammar takes NUMERIC ids, never a name (verified 06 Oct 2026 from the partner link generator + a live open, no CID needed):
+    //   /search?city=<cityId>[&selectedproperty=<hotelId>]&checkin=&checkout=&adults=&rooms=&los=<nights>
+    // so it is composed ONLY when the request carries AGODA's own ids in constraints.providerRefs.agoda — never the shared hotel cityRef (that one is Trip.com's), never an id guessed from a name.
+    const c = request.configuration
+    const own = request.constraints?.providerRefs?.agoda
+    if (c?.kind === 'hotel' && own?.cityRef && /^\d{1,12}$/.test(own.cityRef)) {
+      const nights = Math.round((Date.parse(c.checkOut) - Date.parse(c.checkIn)) / 86_400_000)
+      if (nights >= 1 && nights <= 90) {
+        const hotel = own.propertyRef && /^\d{1,12}$/.test(own.propertyRef) ? own.propertyRef : null
+        const p = new URLSearchParams({ city: own.cityRef, checkin: c.checkIn, checkout: c.checkOut, adults: String(c.adults), rooms: String(c.rooms ?? 1), los: String(nights) })
+        if (hotel) p.set('selectedproperty', hotel)
+        const children = (c.children ?? 0) > 0
+        return {
+          url: `https://www.agoda.com/search?${p}`, depth: hotel ? 3 : 2,
+          preserved: ['cityRef', 'checkIn', 'checkOut', 'adults', 'rooms', ...(hotel ? ['propertyRef'] : [])],
+          pageOnly: children ? ['children'] : [], dropped: hotel ? [] : ['propertyRef'], expiresAt: isoDay(c.checkIn), grammar: 'verified',
+          limitation: hotel ? 'Trang Agoda với khách sạn, ngày và số khách đã chọn — xem phòng và giá trên trang.' : 'Kết quả Agoda cho điểm đến, ngày và số khách đã chọn — bạn chọn khách sạn trên trang.',
+        }
+      }
+    }
+    // /vi-vn/search?q= and ?textToSearch= drop the query (verified 14 Sep 2026): without ids the landing page is the truth.
     return { url: 'https://www.agoda.com/vi-vn/', depth: 0, preserved: [], pageOnly: [], dropped: ['propertyRef', 'checkIn', 'checkOut', 'adults', 'rooms', 'children'], expiresAt: null, grammar: 'verified', limitation: 'Agoda không nhận điểm đến qua URL — nhập điểm đến và ngày trên trang Agoda.' }
   },
   detailDepth: 3,

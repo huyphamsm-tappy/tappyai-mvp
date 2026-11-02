@@ -1,0 +1,48 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MSI Modern 15 F1MG-1225VN site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:46:06.236Z",
+ "body": {
+  "searchParameters": {
+   "q": "MSI Modern 15 F1MG-1225VN site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop Msi Modern 15 F1MG-1225VN (Core 5 120U/ 16GB",
+    "link": "https://shopee.vn/Laptop-Msi-Modern-15-F1MG-1225VN-(Core-5-120U-16GB-512GB-Windows-11-Home)-B%E1%BA%A3o-h%C3%A0nh-24-th%C3%A1ng-i.646318024.55610403230",
+    "snippet": "Mua Laptop Msi Modern 15 F1MG-1225VN (Core 5 120U/ 16GB/ 512GB/ Windows 11 Home) - Bảo hành 24 tháng giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 1
+   },
+   {
+    "title": "Laptop MSI Modern 15 F1MG-1225VN",
+    "link": "https://shopee.vn/Laptop-MSI-Modern-15-F1MG-1225VN-i.1594927314.53110970284",
+    "snippet": "Laptop MSI Modern 15 F1MG-1225VN. 1/9. Đã bán hết. 24.628.800₫. mall inline badge. Laptop MSI Modern 15 F1MG-1225VN.",
+    "position": 2
+   },
+   {
+    "title": "Laptop MSI Modern 15 F1MG-1225VN Core 5 120U (Xám)",
+    "link": "https://shopee.vn/Laptop-MSI-Modern-15-F1MG-1225VN-Core-5-120U-(X%C3%A1m)-16GB-512GB-SSD-Win-11-B%E1%BA%A3o-h%C3%A0nh-24-th%C3%A1ng-i.1256164758.43881744944",
+    "snippet": "Mua Laptop MSI Modern 15 F1MG-1225VN Core 5 120U (Xám) - 16GB - 512GB SSD - Win 11 - Bảo hành 24 tháng giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 3
+   },
+   {
+    "title": "Laptop MSI Modern 15 F1MG-1225VN (Core 5-120U | 16GB",
+    "link": "https://shopee.vn/Laptop-MSI-Modern-15-F1MG-1225VN-(Core-5-120U-16GB-512GB-Intel-Graphics-15.6'-FHD-Win-11)-i.32486783.52161512837",
+    "snippet": "Mua Laptop MSI Modern 15 F1MG-1225VN (Core 5-120U | 16GB | 512GB | Intel Graphics | 15.6' FHD | Win 11) giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 4
+   }
+  ],
+  "credits": 1
+ }
+}

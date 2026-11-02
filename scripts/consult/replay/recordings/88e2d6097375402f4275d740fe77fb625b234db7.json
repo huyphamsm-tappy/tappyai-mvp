@@ -1,0 +1,407 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "Laptop Aspire Lite 14 và Laptop DEEQ RAM 8GB, SSD 128GB Mới",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:56:12.609Z",
+ "body": {
+  "searchParameters": {
+   "q": "Laptop Aspire Lite 14 và Laptop DEEQ RAM 8GB, SSD 128GB Mới",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-45P-R7Z3 - NX.DPESV.002 (R3 5400U, 8GB, 512GB, Full HD+, Win11)",
+    "source": "Thế Giới Di Động",
+    "price": "15.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcT8bp3iBG_Une34s8qng7eN3cWgCU91xNP8Z-4EzYXXfQD26KcKHghSLZQsHdCUQ909lGqZdzv7oRrq2S14qA4_XHFI4Vdaq3wmRq713c8FRejNEcCYMeaY",
+    "rating": 5,
+    "ratingCount": 55,
+    "productId": "3055318320412724491",
+    "position": 1
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-44P-R0SP",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Aspire+Lite+14+v%C3%A0+Laptop+DEEQ+RAM+8GB%2C+SSD+128GB+M%E1%BB%9Bi&prds=localAnnotatedOfferId:1,catalogid:17981272645546013178,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "19.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcT1oRX_Edb6WdvR-s-KfpNESaTFcACIM8Js_QFPeuipv8at0pXYjcXuoPdLZvn_jFw8kAi7lntqpEfKogenLrDxBIzO7LWLi0wkykm1p9VeGF-gEBgfY4I0",
+    "productId": "17981272645546013178",
+    "position": 2
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-47P-R0TR",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Aspire+Lite+14+v%C3%A0+Laptop+DEEQ+RAM+8GB%2C+SSD+128GB+M%E1%BB%9Bi&prds=localAnnotatedOfferId:1,catalogid:15877219894923611637,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "17.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQh8vSWpuKlDmCpenSj8r6EoC6eJiHszXw43ewf_RlgVn6MaOOX5gloF4ScPdIRHgxBrRzqDmkpPG4KW7W9cGGl5f69ifGw15cqorDnSQL2DiLiKNfQtWplhA",
+    "productId": "15877219894923611637",
+    "position": 3
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-44P-R0SP - NX.DMCSV.003 (R7 7730U, 8GB, 512GB, Full HD+, Win11)",
+    "source": "Thế Giới Di Động",
+    "price": "19.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTcCGPorclgvxvs5mlsjsSXOaxWPi14Jy2AgCK_pvdOHjZ4AxWId9m5XCW-Y4-Kb4fxho9SW2GDsIbSNTaT5aUvpBErv0P5fHNGgcSZxuo2TZwJ87Pi13JG",
+    "rating": 4.9,
+    "ratingCount": 77,
+    "productId": "8817872040175046152",
+    "position": 4
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-53M-53E8",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Aspire+Lite+14+v%C3%A0+Laptop+DEEQ+RAM+8GB%2C+SSD+128GB+M%E1%BB%9Bi&prds=localAnnotatedOfferId:1,catalogid:14399217758502929927,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "22.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTZeC-63UADS9eodPRUX6nsuRBJyESbs1_jlDmzQENyLcch55cdJPE6qsPY3e6iQcmo0-d6fg4JGLe9l8CW2c9TfaY1bPsDjn-7oT4ZbJg3gfcEa_tJe8OOwg",
+    "rating": 5,
+    "ratingCount": 12,
+    "productId": "14399217758502929927",
+    "position": 5
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-57P-59HB",
+    "source": "Thế Giới Di Động",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Aspire+Lite+14+v%C3%A0+Laptop+DEEQ+RAM+8GB%2C+SSD+128GB+M%E1%BB%9Bi&prds=localAnnotatedOfferId:1,catalogid:13021286972001984512,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "22.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTsqHvAaaETOk2nwN87zYsF62KiEHQtdM23y8rgNjVpqfodzCN6nrsQcX2EDEiYzX_BlYgq1lUQpdhjMtQMqVsgzwAw2tpHA3Xx4cy9L-nbGtzEA_K5G3z9",
+    "productId": "13021286972001984512",
+    "position": 6
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-52M-52UU",
+    "source": "phuongnamec.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Aspire+Lite+14+v%C3%A0+Laptop+DEEQ+RAM+8GB%2C+SSD+128GB+M%E1%BB%9Bi&prds=localAnnotatedOfferId:1,catalogid:6888413884195075301,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "18.699.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTYKZ7cM6XaFVBZrivcmqTkVr9JyOnk8vUBk2bsmMXKZ3cuDOkzwZ480_VmUSKyO3cLcRnrgdSNpT7BYzogqwxw3kwnR5xzDZNCOiCD_1c-dWIK9LeVdP71CA",
+    "rating": 5,
+    "ratingCount": 1,
+    "productId": "6888413884195075301",
+    "position": 7
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 Gen2 AL14-52M-32KV /i3-1305U/8G/256GSSD/14W11H",
+    "source": "MediaMart",
+    "price": "13.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQEOzw8_RiCB4uqwQ3KvV8gwsulgkUczcDkGqiWxDNahB3kqh6lSCGx98gfYpH9qHdyfkwXj0iXLhvOAB6IcgXdJcxEp9vQr_-cRga8_pjR0WlAjpQNNqi83Q",
+    "rating": 4.9,
+    "ratingCount": 24,
+    "productId": "13614285979027385978",
+    "position": 8
+   },
+   {
+    "title": "Acer Aspire Lite 14 (AL14-52M-32KV NX.J38SV.003) - i3 1305U/8GB/256GB SSD/14.0WUXGA/Win 11Xám",
+    "source": "lapvip.com.vn",
+    "price": "10.099.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQJslJDNQ4Qv-jz5TwHbAyEFapVD9j6dFIeHUhzjduoAvEJ7nfuAGxVbIouf0k57hB6_lwZfMKshSP9HnGMFFeH7eiFTHru",
+    "rating": 5,
+    "ratingCount": 125,
+    "productId": "11487924468773029152",
+    "position": 9
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-45P-R7Z3 (Ryzen 3-5400U/ 8GB DDR4/ 512GB SSD/ AMD Radeon Graphics/ 14\" FHD+/ Windows 11 Home/ 1Y/ Bạc)",
+    "source": "Hugotech.vn",
+    "price": "15.690.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRsZYmJEkqsfCsAKMIRKzWi9KyU08yMzXDhb09rqy8d2QI7zOQOplqvH2-n1edVgU7195Fjs3yIdEC7Ult4cUeLiMKxduFVxQe0R5iCSkxhkRGUlPqtIoCWZQ",
+    "rating": 5,
+    "ratingCount": 55,
+    "productId": "5105892337548838260",
+    "position": 10
+   },
+   {
+    "title": "Acer Aspire Lite 14",
+    "source": "Fptshop.com.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Aspire+Lite+14+v%C3%A0+Laptop+DEEQ+RAM+8GB%2C+SSD+128GB+M%E1%BB%9Bi&prds=localAnnotatedOfferId:1,catalogid:7100984107270383616,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "19.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRLOxCQQLh-H2jvecNEP63QJAy-fMEm4TyXjc9ghsAxVbxJ561_rTco5PXcPsSk_sXVLpyrxbwjtaOdqZdYEUEBS6-pVIEmzuT7G7Jhs_T15INy2j9JpB9Q",
+    "rating": 4.9,
+    "ratingCount": 21,
+    "productId": "7100984107270383616",
+    "position": 11
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 Gen2 AL14-52M-32KV /i3-1305U/8G/256GSSD/14\"W11H giá rẻ nhất, hàng chính hãng 100%",
+    "source": "MediaMart",
+    "price": "13.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTZXP_5d9Z3JGZ4TAfF8y0W7ubir7P-nbsmfymN2gwxXx1cucS9GDmuG7lEpTWhYvGg3chWIWNeuK8l3_7DqjnCIJqer8tOEk7zmrW3cu3XXgbSRzDoFGy6bQ",
+    "rating": 4.9,
+    "ratingCount": 24,
+    "productId": "13127902694414004236",
+    "position": 12
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-71P-55P9 (NX.D7USV.001) (i5-13500H/1*16GB/512GB SSD/14 inch FHD+/Win11/Bạc)",
+    "source": "Hacom.vn",
+    "price": "19.499.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTYGdenbkG65iPzIoDLyGvHHk7lLqLrFEgbKzDt_7A4x2jbYnQKdi15vr83b8rJQnL8fkoMZmtrKXNdWFo-EUgbwpvo5A6SkmZFJVlb0j9uU7Q54gmILihr",
+    "rating": 4.9,
+    "ratingCount": 34,
+    "productId": "12962972029942651730",
+    "position": 13
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AI AL14-53P-5387 (NX.DJ4SV.001) (Ultra 5-115U/ 16GB DDR5/ 512GB SSD/ Intel Graphics/ 14\" WUXGA/ Windows 11 Home/ 1Y/ Bạc)",
+    "source": "Hugotech.vn",
+    "price": "24.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQfxEWqp_L1CiZsr2txU5fIlBB02902fCg41ii3Xjh-YlwmFUaBgmSr4Ke0_xNs6-lV4wdI4KG_y_ye2HYGIyIFzU7ZZAkp77BNDdfm6LsgC_wIio4ivoLA",
+    "rating": 5,
+    "ratingCount": 10,
+    "productId": "4189309170088583934",
+    "position": 14
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-44P-R0SP Ryzen 7 7730U RAM 8GB SSD 512GB 14.5 FHD+ Win 11 Home Single Language",
+    "source": "mygear.com.vn",
+    "price": "20.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRx4C04N_BTgjZ6QFhYAl3KxNWh1yoMwBmg5xE8eKcfvV_JBKc8J3Bc3jbU6Pzv7T_HIerEVDqEuKGJub_NHu74Kdo4QfqYrVHSZNK0e7UR9R8pIfTiIYoN_A",
+    "rating": 4.9,
+    "ratingCount": 77,
+    "productId": "7733616934465645708",
+    "position": 15
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-52P-309T /i3-1305U/8GB/512GB/14 FHD+/Win11",
+    "source": "MediaMart",
+    "price": "14.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQewEnHf15AiV1UGKBNotxPUn3aHLwcLrOm16q2rrOmiJtJFMxVlsmavmRrOaM3MTzs1v2Y1Bwe7OEX18wNhI1IeIIWmjZNX4T87Ni6z6n2Y1935s3SsIFoRg",
+    "productId": "7860472060381480751",
+    "position": 16
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 15 AL15-48P-R86Q",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Aspire+Lite+14+v%C3%A0+Laptop+DEEQ+RAM+8GB%2C+SSD+128GB+M%E1%BB%9Bi&prds=localAnnotatedOfferId:1,catalogid:14678922601589334824,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "18.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQtEFx8CYUVmpglEAYHEcSXDRVrc1WXzdvGXRJ_IlU2tDm4vdUzGwfOV8swFJOGD4_uOhFVY5aT0-4mT0u7KZayfaYHeCEoZNybsaSR_voZTbRwkWpPGGjyzg",
+    "productId": "14678922601589334824",
+    "position": 17
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-52P-309T NX.D7ESV.001",
+    "source": "Trường Phát PC",
+    "price": "15.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQJVLGdfJnRbxGCQfTAbPGy_mE180O9uxlNo5jqqhsYtRO6r-5INTVgk1JzHDcMZX0tfizlofAfEbHKsUUUSZ9QdhC3ZXp8WHp0JAlskBZ_PCqTCF8ogtqC",
+    "productId": "262801717148249330",
+    "position": 18
+   },
+   {
+    "title": "Máy tính xách tay/ Laptop Acer Aspire 14 AI A14-52M-71YQ (Core Ultra 7-256V) (Xám)",
+    "source": "Phong Vũ",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Aspire+Lite+14+v%C3%A0+Laptop+DEEQ+RAM+8GB%2C+SSD+128GB+M%E1%BB%9Bi&prds=localAnnotatedOfferId:1,catalogid:3628956710801638724,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "27.090.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRdjbLwOIojVbxdiwk_whVzoD3vysgnf_s8IRNiCqwYhIPhZTCW4Y_wDC6iB6ELtWqmKxbNkXXZCXJ9JUBb8-8G2Rxa-OqYkrwQW1MSSW7tzc-hrtvv09kozg",
+    "productId": "3628956710801638724",
+    "position": 19
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-52P-309T /i3-1305U/8GB/512GB/14\" FHD+/Win11 giá rẻ nhất, hàng chính hãng 100%",
+    "source": "MediaMart",
+    "price": "14.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTjwQO9wtDfs5_qLBuPZaIW4h3nOOpNLEUPYYjpO1ut83rLMOB_Ok_tbqsp_apZO8C4hdD9DcZ94wcghrpfJBEk9AsKczJELkf-kd8p8b7ZI3yXti-s563_",
+    "productId": "15714067115428378170",
+    "position": 20
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-53M-53E8 NX.DEFSV.001 Bạc",
+    "source": "MEGA Technology",
+    "price": "22.290.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcR_yDaUWB97jsZG_rgKcMe9Yoy1xM9dVSPCbXIzOKbbohqYub-j9AocBzyuR0STRCgq7f0hcmsI9nrCr5j9SHCilSsoXKPwuSXOj2R_oMYHgsvrlEdNwDeP",
+    "productId": "6431748238274420896",
+    "position": 21
+   },
+   {
+    "title": "Laptop New Acer Aspire Lite AL14 - 52M - 54CJ (I5 - 1334U/ 16GB/ 512GB/ 14 \"Fhd)",
+    "source": "Cuongcomputer.com",
+    "price": "13.690.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTDNML09iBSv9G04VviQOph9tyVkbTc2CSm6oetCfdv8Ue46FsPFMPrcJk_VdhlAMy7yxL8TZCIxit7RefNt691DiOyVvH73WDOdQJGJ5llDXfBCVvOsHVRYw",
+    "productId": "11498422127918895853",
+    "position": 22
+   },
+   {
+    "title": "Laptop ACER Aspire Lite 14 AL14-45P-R7Z3 Ryzen 3 5400U| 8GB| 512GB| OB| 14\"FHD+| Win11",
+    "source": "CTy Máy Tính Vinh Hiển Lộc Tài",
+    "price": "14.790.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQn_9xmTFWbap2ZcV9B_rKq3IE8yuB8_km5ESLX7EL4e__LufayjfTmUls_urE-anenNevufGHoVj-_2zqVRbgkgu1SnTwZ1megli4k2YPcvJauAQhuyKOEIQ",
+    "rating": 5,
+    "ratingCount": 55,
+    "productId": "252487346102439129",
+    "position": 23
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14 45P R7Z3 (R3 5400U/ 8GB/ 512GB SSD/ 14 inch FHD/ Win11/ Silver/ Vỏ nhôm/ 1Y)",
+    "source": "Khánh Hân PC",
+    "price": "15.400.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcS0ZenpQOw9smkdTBxhgLi5XCRyap1ePv6m1mU0f5zLNF0i_040v-3Q2wqeV_O60NWW9abu8Z1qu791BoS3wtftTTsBAMNNZ8s_1HnFwwocGE8JsK_aA-Sx",
+    "rating": 5,
+    "ratingCount": 55,
+    "productId": "1319113399720922288",
+    "position": 24
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 16 AI AL16-71P-582Q",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Aspire+Lite+14+v%C3%A0+Laptop+DEEQ+RAM+8GB%2C+SSD+128GB+M%E1%BB%9Bi&prds=localAnnotatedOfferId:1,catalogid:15982135293075714875,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "24.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQ0oWM14Q1HxvBdK413zARPD_0X8FYyKZf5Uqr90vAFhMaCbalZyVfg-A-CbBO0SOAue5O5pGQVgQGUgeta61OssEkWOJSliswx6iXm6UQs9Zssi5Qmw4QOrA",
+    "rating": 4.9,
+    "ratingCount": 30,
+    "productId": "15982135293075714875",
+    "position": 25
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14 52P 309T (i3 1305U/ 8GB/ 512GB SSD/ 14 inch FHD/ Win11/ Silver/ Vỏ nhôm/ 1Y)",
+    "source": "Manosa VN",
+    "price": "15.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQ9ynemMMyi9xhevO6Lbr0Cuf_AgR6OHI9X1wLzUoqoeYW84RPZuw-KSmqwwyu-iqRGcChQLWjtO2v_Kyj3_YO6TtHNIfPIkyrKZFDlAALP55RqiMMpkzJYwA",
+    "productId": "6353155358833375862",
+    "position": 26
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-53M-53E8 (Core 5 120U | 16GB | 512GB | Intel Graphics | 14' WUXGA | Win 11) -Hàng Chính Hãng",
+    "source": "Hangchinhhieu.vn",
+    "price": "22.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSWGPfFmJoSyvT07-BZARfvuH1GBbXj_DVZCDhrZqvsOUNelHVpoFkBuyJPNBzlVKn3apLT-yspYzxVG6pwzFvpfaWYVwq6unboB7r1_84hM3ol6UtX8oYb",
+    "productId": "8808595413679701750",
+    "position": 27
+   },
+   {
+    "title": "Laptop New Acer Aspire Lite AL14 52M 54CJ (I5 1334U/ 16GB/ 512GB/ 14'' Fhd)",
+    "source": "Cuongcomputer.com",
+    "price": "13.390.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTr6d2heFnuSJdw4mdIEhAcVteAjBI93QGEAEeL4np495TRyehOyx3kuQ4YOwfU8dTf42NzIw7t5p9AxOSg3ImT6br4aKGx2bZZghRMTQgbnEn01e2YcaL8_w",
+    "productId": "11843698980089611525",
+    "position": 28
+   },
+   {
+    "title": "Laptop Acer Aspire Go 14 AG14-72P-563L",
+    "source": "Vua Thợ Mall",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Aspire+Lite+14+v%C3%A0+Laptop+DEEQ+RAM+8GB%2C+SSD+128GB+M%E1%BB%9Bi&prds=localAnnotatedOfferId:1,catalogid:3318920949115780534,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "19.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSye8LbICz5DSNVfqxqVyT2oiWVyK2iP8UsvkCGBxVIwqyqKvS4mUXtvP3a35fVV1BTT2jjmswV5UviQxEb-sNexaIfEV1VCoyWpUTV7uEQm8v4B88gOxnZ",
+    "rating": 4.9,
+    "ratingCount": 52,
+    "productId": "3318920949115780534",
+    "position": 29
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-71P-55P9 (Intel Core i5-13500H, 16GB, 512GB, 14'' FHD+) -Bảo hành 24 tháng",
+    "source": "Sintech",
+    "price": "18.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSlDrXkDwNQQ8sCUxYogC_SaUa3qSChqB9NDutAaZybc_B0fsk2evQXBwYTvl4Gd1JXzXxnaFOH1OVLlXFADK61oWSolTBzVsxsXfBOjG6DoYkqNZKB18us",
+    "rating": 4.9,
+    "ratingCount": 34,
+    "productId": "4571618125963150267",
+    "position": 30
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14 71P 55P9 (i5 13500H/ 16GB/ 512GB/ 14 inch WUXGA/ Win11/ Silver)",
+    "source": "Han Computer",
+    "price": "18.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTjo6bqezpvERjLeXGUgWmxueJDXqatYbEsnGQ_8sZqCvTYMGKXawMiwVGJzcuhYpBEoZObGs5x7uo0kdBdq34mW4qQ9dbJ0R8TDLF6QXoctUKN1gcIxVNtTQ",
+    "rating": 4.9,
+    "ratingCount": 34,
+    "productId": "1023410687633528060",
+    "position": 31
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-53M-53E8 (Core 5-120U/ 16GB/ 512GB/ 14\" FHD+ IPS/ Win 11)",
+    "source": "Gearvn",
+    "price": "22.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRzOWtmkIrgpDfd3wrtMlZqO7pXN8d6XZlGsmAcIUHOR4VAVPxSSuga6FPJt_AMU1_MLgpnwFsV7HppnFu3piFwugaBUq4FqTbT2icNm_5L3CBwRF8WjztZ",
+    "productId": "580061564120788351",
+    "position": 32
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14 71P 55P9 (i5 13500H/ 16GB/ 512GB SSD/ 14 inch WUXGA/ Win11/ Silver/ Vỏ nhôm/ 2Y)",
+    "source": "Manosa VN",
+    "price": "18.700.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQB7J-8RI4orCAQFcgQIpWwjR7H4tyko4sJtlw6J2p3fIe2C-uV8K4LZGLgR08bk73YmMvlhUvHLveVk8w8O2QOaA4NG7G3hUlZR9tIOWzMKgBuUlXZY04h",
+    "productId": "7958499685778960849",
+    "position": 33
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-45P-R7Z3 R3 5400U/8GB/512GB/14\" FHD+/Win11",
+    "source": "Fptshop.com.vn",
+    "price": "15.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQrmMlwlSPUpDYgJCthqK3Y5rWPLfP6YzJUfjQO1QMbEm71zlY1iPksZX7MbfKoY9mDDPRnpzyrRcoBdQzdVx-pD4QiPL7ut9KxLIXO482FHSItjNcqTwa9ASk",
+    "rating": 5,
+    "ratingCount": 55,
+    "productId": "18256131115356255970",
+    "position": 34
+   },
+   {
+    "title": "Laptop Acer Aspire Lite Gen 2 AL14-52M-32KV Core i3-1305U/ 8GB/ 256GB/ 14.0 Inch WUXGA/ Win 11/ Xám",
+    "source": "TNC Store",
+    "price": "11.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRQCcyojPnye1xvCLRfjyiy8CqWkB6P7UIo_H53JgLufFIeE3XQ0Dakis7kN2S2JWXXHGX2iKEdp65g4-WP2_lWE02aF5QZPOx0nsawax8MPfPrTva1HmRq",
+    "rating": 4.9,
+    "ratingCount": 24,
+    "productId": "1958917866715614322",
+    "position": 35
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-45P-R7Z3 (Ryzen 3 5400U/ Ram 8GB/ SSD 512GB/ Windows 11 Home/ 14 inch/ 1Y)",
+    "source": "Thành Nhân TNC",
+    "price": "15.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRytmYlwS7ADdizfjLJb5N1BFn1cFAQqkxQXhdKUjWu33NBHTkpiOoXGYLaE-_u7PNcnlUPp9kIeKxWWZXnXAUg5VXBUMeR",
+    "rating": 4.9,
+    "ratingCount": 24,
+    "productId": "3548631307544561011",
+    "position": 36
+   },
+   {
+    "title": "Acer Aspire Lite 14 AL14-44P - AMD Ryzen 7 - 7730U / up to 4.5 GHz - Win 11 Home - Radeon Graphics - 8 GB RAM - 512 GB SSD - 14.5\" IPS 1920 x 1200 - W",
+    "source": "Fptshop.com.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Aspire+Lite+14+v%C3%A0+Laptop+DEEQ+RAM+8GB%2C+SSD+128GB+M%E1%BB%9Bi&prds=localAnnotatedOfferId:1,catalogid:2760561511550391983,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "19.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRtwVz0XAEDFCXk1X_Td20HaTbjYd6YypkZgtEl9ilFajB0o3H6YVTUChUkzhHkDdOWkQrerqXJFYqtlopWrcISCGYHEz7EGNwaCjGcJjNJo4X-xFCWzYjR",
+    "rating": 4.9,
+    "ratingCount": 77,
+    "productId": "2760561511550391983",
+    "position": 37
+   },
+   {
+    "title": "VuTech - Laptop Acer Aspire Lite 14 (AMD Ryzen 3 5400U, 8GB RAM DDR4, 512GB SSD NVMe, 14\" FHD+ (NX.DPESV.002), Màu Bạc) -Bạc",
+    "source": "VuTech",
+    "price": "15.704.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRrii18Yh4PHhy0Qqvf5kUcAqg1puMJZzUcbfQkklRsxt2e1MroszQhth4r19hu3Mdo9t0rhL_p6uhx--EAZv1COmvB88GQH9wQWvplPqk07HEOXzFAYFp7",
+    "rating": 4.9,
+    "ratingCount": 24,
+    "productId": "12526738489654673786",
+    "position": 38
+   },
+   {
+    "title": "Laptop Acer Aspire Lite 14 AL14-44P-R0SP R7 7730U/8GB/512GB/14.5\" FHD/Win11",
+    "source": "Fptshop.com.vn",
+    "price": "19.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTbon37l55i7GnRg-Uyi94Qf488SuPOFSdvF6ks0CUVMG7dhdf7U9QG2i413x0_R2zYQsgP_ougDE0lMYpRqi-4d8ykTzod9oL4xYiJ4a4MniXWlyVZ1KMIyQ",
+    "rating": 4.9,
+    "ratingCount": 77,
+    "productId": "11581287749943342472",
+    "position": 39
+   },
+   {
+    "title": "Acer AL14-45P-R2PL",
+    "source": "Thành Nhân TNC",
+    "link": "https://www.google.com/search?ibp=oshop&q=Laptop+Aspire+Lite+14+v%C3%A0+Laptop+DEEQ+RAM+8GB%2C+SSD+128GB+M%E1%BB%9Bi&prds=localAnnotatedOfferId:1,catalogid:14250522910545360294,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "15.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRytmYlwS7ADdizfjLJb5N1BFn1cFAQqkxQXhdKUjWu33NBHTkpiOoXGYLaE-_u7PNcnlUPp9kIeKxWWZXnXAUg5VXBUMeR",
+    "rating": 5,
+    "ratingCount": 1,
+    "productId": "14250522910545360294",
+    "position": 40
+   }
+  ],
+  "credits": 2
+ }
+}

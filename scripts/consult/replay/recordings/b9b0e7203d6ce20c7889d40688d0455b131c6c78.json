@@ -1,0 +1,24 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "Sếp nam, 40 tuổi, thích cà phê Cà phê quà tặng thích cà phê",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:45:16.080Z",
+ "body": {
+  "searchParameters": {
+   "q": "Sếp nam, 40 tuổi, thích cà phê Cà phê quà tặng thích cà phê",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [],
+  "credits": 2
+ }
+}

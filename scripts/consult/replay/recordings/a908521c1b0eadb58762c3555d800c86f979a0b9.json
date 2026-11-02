@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "SET QUÀ TẶNG BẠN NỮ, HỘP QUÀ TẶNG VALENTINE, SINH NHẬT, 8-3 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:21:52.762Z",
+ "body": {
+  "searchParameters": {
+   "q": "SET QUÀ TẶNG BẠN NỮ, HỘP QUÀ TẶNG VALENTINE, SINH NHẬT, 8-3 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "[Tặng kèm thiệp] SET QUÀ TẶNG BẠN NỮ, HỘP ...",
+    "link": "https://shopee.vn/-T%E1%BA%B7ng-k%C3%A8m-thi%E1%BB%87p-SET-QU%C3%80-T%E1%BA%B6NG-B%E1%BA%A0N-N%E1%BB%AE-H%E1%BB%98P-QU%C3%80-T%E1%BA%B6NG-VALENTINE-SINH-NH%E1%BA%ACT-8-3-C%C3%81C-D%E1%BB%8AP-L%E1%BB%84-SI%C3%8AU-%C4%90%C3%81NG-Y%C3%8AU-i.360719706.48452045001",
+    "snippet": "Mua [Tặng kèm thiệp] SET QUÀ TẶNG BẠN NỮ, HỘP QUÀ TẶNG VALENTINE, SINH NHẬT, 8-3, CÁC DỊP LỄ SIÊU ĐÁNG YÊU giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 1
+   },
+   {
+    "title": "Quà 8 3 cho người yêu - Giá Tốt, Miễn Phí Vận Chuyển, Đủ ...",
+    "link": "https://shopee.vn/list/qu%C3%A0%208%203/cho%20ng%C6%B0%E1%BB%9Di%20y%C3%AAu",
+    "snippet": "1. Nến thơm tinh dầu thư giãn · 2. Đèn ngủ trang trí 3D tùy chỉnh · 3. Bộ chăn ga gối lụa tencel cao cấp · 4. Máy xông tinh dầu siêu âm · 5. Cốc sứ in hình hoặc ...",
+    "position": 2
+   },
+   {
+    "title": "Set quà tặng bạn gái - Giá Tốt, Sale Tháng 09, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/set%20qu%C3%A0%20t%E1%BA%B7ng/b%E1%BA%A1n%20g%C3%A1i",
+    "snippet": "Set Quà Tặng Dễ Thương – Cốc Sứ, Khăn Tắm, Băng Đô Tai Thỏ, Gấu Bông, Quạt Mini – Quà Sinh Nhật, Giáng Sinh, Kỷ Niệm. 110.670₫. 119.000₫.",
+    "position": 3
+   },
+   {
+    "title": "Quà Tặng Bạn Gái, Người Yêu, Sinh Nhật, 8/3, Valentine",
+    "link": "https://shopee.vn/Combo-Qu%C3%A0-T%E1%BA%B7ng-Sang-Tr%E1%BB%8Dng-T%C3%BAi-X%C3%A1ch-B%C3%A1n-Nguy%E1%BB%87t-Set-H%E1%BB%99p-Qu%C3%A0-%E2%80%93-Qu%C3%A0-T%E1%BA%B7ng-B%E1%BA%A1n-G%C3%A1i-Ng%C6%B0%E1%BB%9Di-Y%C3%AAu-Sinh-Nh%E1%BA%ADt-8-3-Valentine-i.944699819.24643253493",
+    "snippet": "Mua Combo Quà Tặng Sang Trọng: Túi Xách Bán Nguyệt + Set Hộp Quà – Quà Tặng Bạn Gái, Người Yêu, Sinh Nhật, 8/3, Valentine giá tốt. Mua hàng qua mạng uy tín, ...",
+    "rating": 4.7,
+    "ratingCount": 11,
+    "position": 4
+   },
+   {
+    "title": "(Kèm Hộp+Túi) Set quà tặng sinh nhật bạn gái noel ...",
+    "link": "https://shopee.vn/(K%C3%A8m-H%E1%BB%99p-T%C3%BAi)-Set-qu%C3%A0-t%E1%BA%B7ng-sinh-nh%E1%BA%ADt-b%E1%BA%A1n-g%C3%A1i-noel-valentine-14-2-qu%E1%BB%91c-t%E1%BA%BF-ph%E1%BB%A5-n%E1%BB%AF-8-3-20-10-WANHY-i.115564343.57501793144",
+    "snippet": "Mua (Kèm Hộp+Túi) Set quà tặng sinh nhật bạn gái noel valentine 14/2, quốc tế phụ nữ 8/3 20/10 WANHY giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 5
+   },
+   {
+    "title": "Set quà tặng 8/3 - Giá Tốt, Sale Tháng 09, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/set%20qu%C3%A0%20t%E1%BA%B7ng/8%203",
+    "snippet": "Shopee cung cấp đầy đủ các sản phẩm set quà tặng 8 3 chính hãng với nhiều mức giá ưu đãi vô cùng hấp dẫn. Bạn có thể thỏa thích tham khảo sản phẩm chính hãng từ ...",
+    "position": 6
+   },
+   {
+    "title": "HỘP QUÀ Set Quà tặng bạn gái valentine 8 3 2011 kỉ ...",
+    "link": "https://shopee.vn/H%E1%BB%98P-QU%C3%80-Set-Qu%C3%A0-t%E1%BA%B7ng-b%E1%BA%A1n-g%C3%A1i-valentine-8-3-2011-k%E1%BB%89-ni%E1%BB%87m-sinh-nh%E1%BA%ADt-ng%C6%B0%E1%BB%9Di-y%C3%AAu-cho-n%E1%BB%AF-WANHY-i.115564343.25314437875",
+    "snippet": "Mua HỘP QUÀ Set Quà tặng bạn gái valentine 8 3 2011 kỉ niệm sinh nhật người yêu cho nữ WANHY giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 7
+   },
+   {
+    "title": "Set quà túi chườm 350ml tặng bạn gái, hộp quà tặng sinh ...",
+    "link": "https://shopee.vn/Set-qu%C3%A0-t%C3%BAi-ch%C6%B0%E1%BB%9Dm-350ml-t%E1%BA%B7ng-b%E1%BA%A1n-g%C3%A1i-h%E1%BB%99p-qu%C3%A0-t%E1%BA%B7ng-sinh-nh%E1%BA%ADt-ng%C6%B0%E1%BB%9Di-y%C3%AAu-valentine-14-2-8-3-20-10-c%E1%BB%B1c-%C3%BD-ngh%C4%A9a-ALI-CARE-i.660098169.23326224753",
+    "snippet": "Mua Set quà túi chườm 350ml tặng bạn gái, hộp quà tặng sinh nhật người yêu, valentine 14/2, 8/3, 20/10 cực ý nghĩa ALI CARE giá tốt.",
+    "rating": 5,
+    "ratingCount": 10,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

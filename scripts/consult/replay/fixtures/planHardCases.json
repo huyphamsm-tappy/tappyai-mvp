@@ -1,0 +1,13 @@
+{
+  "note": "PHIÊN LUNA 30/09 — hard plan cases Haiku already ran during the Phase 7 fixes (androidRegressions R9/R12/R12b/R13/R15/R16), exactly as recorded, plus two the owner named that have no recorded Haiku run (E1-G5 group of 5 in Quận 1 tonight; DN-1510 Đà Nẵng 3N2Đ from Sài Gòn by plane on 15/10) — those two are run on Haiku once for the baseline.",
+  "items": [
+    { "id": "R13", "domain": "travel", "turns": [{ "text": "Lên kế hoạch đi Đà Nẵng 3 ngày 2 đêm tuần sau cho 2 người, ngân sách 10 triệu, bay từ TP.HCM, thích biển và ăn hải sản", "expect": null }, { "text": "Lên kế hoạch chi tiết", "expect": "plan" }] },
+    { "id": "R12", "domain": "travel", "turns": [{ "text": "đi du lịch Đà Nẵng 3 ngày 2 đêm", "expect": null }, { "text": "Tuần này", "expect": null }, { "text": "Lên kế hoạch chi tiết", "expect": "plan" }] },
+    { "id": "R12b", "domain": "travel", "turns": [{ "text": "đi du lịch Đà Nẵng 3 ngày 2 đêm", "expect": null }, { "text": "Tuần này · 2 người · 5-10 triệu", "expect": null }, { "text": "Lên kế hoạch chi tiết", "expect": "plan" }] },
+    { "id": "R9", "domain": "travel", "turns": [{ "text": "đi du lịch Đà Nẵng 3 ngày 2 đêm", "expect": null }, { "text": "Tuần sau · 2 người · 5-10 triệu", "expect": null }, { "text": "Lên kế hoạch chi tiết", "expect": "plan" }] },
+    { "id": "R15-1", "domain": "travel", "turns": [{ "text": "Lên kế hoạch đi Đà Nẵng 3 ngày 2 đêm tuần sau cho 2 người, ngân sách 10 triệu, bay từ TP.HCM, thích biển và ăn hải sản", "expect": null }, { "text": "Lên kế hoạch chi tiết", "expect": "plan" }] },
+    { "id": "R16", "domain": "food", "turns": [{ "text": "Lên kế hoạch tối nay ở Quận 1 cho 2 người: ăn tối món Việt, dạo phố đi bộ Nguyễn Huệ, rồi cà phê view đẹp", "expect": null }, { "text": "Lên kế hoạch chi tiết luôn nhé, 2 người, khoảng 500k/người", "expect": "plan" }] },
+    { "id": "E1-G5", "domain": "entertainment", "turns": [{ "text": "Tối nay đi chơi gì với hội bạn 5 người ở Quận 1", "expect": null }, { "text": "ăn tối rồi đi chơi rồi đi uống, sôi động, tầm 300k/người", "expect": null }, { "text": "Lên kế hoạch chi tiết", "expect": "plan" }] },
+    { "id": "DN-1510", "domain": "travel", "turns": [{ "text": "đi Đà Nẵng 3 ngày 2 đêm từ Sài Gòn, đi máy bay ngày 15/10, 2 người, thích biển", "expect": null }, { "text": "Lên kế hoạch chi tiết", "expect": "plan" }] }
+  ]
+}

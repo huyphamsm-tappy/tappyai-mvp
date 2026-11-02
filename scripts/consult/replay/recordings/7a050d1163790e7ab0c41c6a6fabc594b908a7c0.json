@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Khách sạn LUXURY",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:16:57.353Z",
+ "body": {
+  "searchParameters": {
+   "q": "Khách sạn LUXURY",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Dalat Luxury Hotel, Đà Lạt (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/159361040.jpg?k=c6332c2f16461afc65076fe23188b98792bb5ca166553a7b714b8e2a9768fd14&o=",
+    "imageWidth": 512,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAp_3-fXTcFjvuxYIGYxxArpjW0lpbq5ZeIx4smxSwvg&s=10",
+    "thumbnailWidth": 452,
+    "thumbnailHeight": 678,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/dalat-luxury.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F159361040.jpg%3Fk%3Dc6332c2f16461afc65076fe23188b98792bb5ca166553a7b714b8e2a9768fd14%26o%3D&tbnid=NTqug_Nksb7YYM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fdalat-luxury.vi.html&docid=wjqegnXlVYd92M&w=512&h=768",
+    "position": 1
+   },
+   {
+    "title": "Golden Lotus Luxury Hotel Da Nang - Khách sạn 4 sao ven biển Mỹ Khê",
+    "imageUrl": "https://luxury.goldenlotushotel.vn/uploads/gal/image_869-new.jpg",
+    "imageWidth": 1882,
+    "imageHeight": 2560,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSCx6eSFq6Er06xqGgaOFFY3dgE4_zzOJ6623cai6zYg&s=10",
+    "thumbnailWidth": 383,
+    "thumbnailHeight": 522,
+    "source": "luxury.goldenlotushotel.vn",
+    "domain": "luxury.goldenlotushotel.vn",
+    "link": "https://luxury.goldenlotushotel.vn/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fluxury.goldenlotushotel.vn%2Fuploads%2Fgal%2Fimage_869-new.jpg&tbnid=HwvJ00w0tiEtzM&imgrefurl=https%3A%2F%2Fluxury.goldenlotushotel.vn%2F&docid=o9yQfc9_x686cM&w=1882&h=2560",
+    "position": 2
+   },
+   {
+    "title": "Khách sạn Luxury, Thúc Phán | Hotels.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/79000000/78320000/78313500/78313401/870103c1.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 863,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQakCg6Ajscw3caMHMakrRAu3tKYqE7DW_egrTgZ6e5Q&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "hotels",
+    "domain": "vi.hotels.com",
+    "link": "https://vi.hotels.com/ho2507028832/luxury-hotel-cao-bang-viet-nam/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F79000000%2F78320000%2F78313500%2F78313401%2F870103c1.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=duk9PFcGEd4MDM&imgrefurl=https%3A%2F%2Fvi.hotels.com%2Fho2507028832%2Fluxury-hotel-cao-bang-viet-nam%2F&docid=yv2mP6u66ewvlM&w=863&h=575",
+    "position": 3
+   },
+   {
+    "title": "KHÁCH SẠN LUXURY (Hà Nội) - Đánh giá Khách sạn & So sánh giá - Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/07/29/1d/03/kha-ch-sa-n-luxury.jpg?w=900&h=500&s=1",
+    "imageWidth": 900,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxSJfwytETzSpIJG_MDclkBSShMsJ_2SH-WP9lwCTkUg&s=10",
+    "thumbnailWidth": 599,
+    "thumbnailHeight": 333,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g293924-d1132098-Reviews-Luxury_Hotel-Hanoi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F07%2F29%2F1d%2F03%2Fkha-ch-sa-n-luxury.jpg%3Fw%3D900%26h%3D500%26s%3D1&tbnid=I4AEVJO5PfOInM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g293924-d1132098-Reviews-Luxury_Hotel-Hanoi.html&docid=JNuaNERc0ccqdM&w=900&h=500",
+    "position": 4
+   },
+   {
+    "title": "Giới thiệu",
+    "imageUrl": "https://www.luxuryhotel75caobang.com/images/users/images/30b6b46b6e96aec8f787%20(1).jpg",
+    "imageWidth": 960,
+    "imageHeight": 1280,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9BnPt_QmIpvlEwdVsnroTpCSRwT9gQW5GW9-NT7xeTQ&s=10",
+    "thumbnailWidth": 387,
+    "thumbnailHeight": 516,
+    "source": "Luxury Hotel 75 Cao Bằng",
+    "domain": "www.luxuryhotel75caobang.com",
+    "link": "https://www.luxuryhotel75caobang.com/gioi-thieu/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.luxuryhotel75caobang.com%2Fimages%2Fusers%2Fimages%2F30b6b46b6e96aec8f787%2520(1).jpg&tbnid=E7W5O7mKUJBClM&imgrefurl=https%3A%2F%2Fwww.luxuryhotel75caobang.com%2Fgioi-thieu%2F&docid=I1tmbQ5sjYXH3M&w=960&h=1280",
+    "position": 5
+   },
+   {
+    "title": "Khách Sạn Luxury Hotel - Ecopark | Hung Yen",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=100063764727117",
+    "imageWidth": 1499,
+    "imageHeight": 1499,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtTjOA7TejsR97vjgzsANCTdkPv-pfOHtEkn48jFy-jA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/luxuryhotelecopark/?locale=vi_VN",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D100063764727117&tbnid=hIFKeGA-4K5PaM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fluxuryhotelecopark%2F%3Flocale%3Dvi_VN&docid=qgLDcIadZJ-KcM&w=1499&h=1499",
+    "position": 6
+   },
+   {
+    "title": "Luxury Halong Hotel, Hạ Long, Hạ Long",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/126/1266265/1266265_16072015080044796449.jpg?ca=6&ce=1&s=414x232",
+    "imageWidth": 309,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5M2FAUqapJyi_Hu8CIO66OoD9rTgGEuAv8CQd1wkcLg&s=10",
+    "thumbnailWidth": 308,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/luxury-halong-hotel/hotel/halong-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F126%2F1266265%2F1266265_16072015080044796449.jpg%3Fca%3D6%26ce%3D1%26s%3D414x232&tbnid=HeN_smWxvX-7nM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fluxury-halong-hotel%2Fhotel%2Fhalong-vn.html&docid=uv9XdDySIIHwmM&w=309&h=232",
+    "position": 7
+   },
+   {
+    "title": "Khách sạn Luxury Hậu Giang (Luxury Hotel) Hồ Chí Minh, Việt Nam: Agoda.com  có giá rẻ nhất",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/35773691/0/e3e859d8326ae49a86e6976514ce704d.jpg?ce=2&s=414x232",
+    "imageWidth": 348,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSv1IFK8XvMTRDwdEZMIO4FwRN8Jmjz_cT_jU2d7w8Z_A&s=10",
+    "thumbnailWidth": 348,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/luxury-hotel-h35773691/hotel/ho-chi-minh-city-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F35773691%2F0%2Fe3e859d8326ae49a86e6976514ce704d.jpg%3Fce%3D2%26s%3D414x232&tbnid=rsAHcJNO8dHKLM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fluxury-hotel-h35773691%2Fhotel%2Fho-chi-minh-city-vn.html&docid=G8nssbROhgnEPM&w=348&h=232",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

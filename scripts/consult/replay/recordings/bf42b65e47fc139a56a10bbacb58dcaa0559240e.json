@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Cà phê Chồn nguyên chất 100% site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:16:05.963Z",
+ "body": {
+  "searchParameters": {
+   "q": "Cà phê Chồn nguyên chất 100% site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nhật Nguyên Cafe Hương Chồn Nhật ...",
+    "link": "https://shop.tiktok.com/vn/pdp/ca-phe-nguyen-huong-chon-nhat-ban-huong-thom-dam-da-an-toan-cho-suc-khoe/1731459700562167986",
+    "snippet": "Cafe hương chồn Nhật nguyên là một sản phẩm cà phê đặc biệt đến từ buôn mê thuộc. Với hương vị đặc trưng thơm ngon, sản phẩm này sẽ mang đến cho bạn một ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 1
+   },
+   {
+    "title": "kopi original tanpa campuran",
+    "link": "https://shop.tiktok.com/vn/k/kopi-original-tanpa-campuran",
+    "snippet": "NGUYÊN CHẤT 100% 1KG. Cà Phê Nguyên Chất Baka - Robusta (Hộp 250g) ) - Không chất độn, không chất bảo quản, không chất tạo màu, mùi hóa chất Coffee Cafe",
+    "position": 2
+   },
+   {
+    "title": "(Số 4 ) (100% Trái chín) Cà Phê ROBUSTA RED HONEY ...",
+    "link": "https://shop.tiktok.com/vn/pdp/ca-phe-robusta-red-honey-rang-moc-huong-vi-dang-diu-ngon/1729543750161893701",
+    "snippet": "Với trọng lượng 2 gói 500G, sản phẩm có thể sử dụng trong thời gian dài và tiết kiệm chi phí so với việc mua từng gói nhỏ. Sản phẩm có thể bảo quản ở nơi khô ...",
+    "position": 3
+   },
+   {
+    "title": "apcel cafe original hq",
+    "link": "https://shop.tiktok.com/vn/k/apcel-cafe-original-hq",
+    "snippet": "1KG = 2 GÓI x 500G : HƯƠNG CHỒN BAN MÊ SỐ 2 vị cafe nguyên chất cao chính hãng AROMA :( KHUYẾN MÃI MUA 10KG TẶNG 1KG).",
+    "position": 4
+   },
+   {
+    "title": "cà phê tây nguyên",
+    "link": "https://shop.tiktok.com/vn/k/ca-phe-tay-nguyen",
+    "snippet": "1 Kg Cà Phê Robusta Nguyên Chất - Coffee Tây nguyên · 9734 sold · 320.000 ; 1Kg Cà Phê Tổng Hợp Mix 3 Loại Hạt - Robusta+ Culi +Arabica- Coffee Tây Nguyên · 6666 ...",
+    "position": 5
+   },
+   {
+    "title": "กาแฟแสนรักของแท้",
+    "link": "https://shop.tiktok.com/vn/k/kaaef-aesn-rak-khongaeth",
+    "snippet": "Cà Phê Nguyên Chất LOVE COFFEE 500g, cafe đậm đà, thơm ngon, Phương Vy Coffee. 4.7. 669 sold · 171.000 ; Cà Phê Nguyên Hạt LÀ VIỆT RICH 100% Arabica 250gr Vị sô- ...",
+    "position": 6
+   },
+   {
+    "title": "กาแฟมีแฮงคอฟฟี่50ซองของแท้",
+    "link": "https://shop.tiktok.com/vn/k/kaaef-mi-aeh-ng-kho-f-fi-50-song-khongaeth",
+    "snippet": "กาแฟมีแฮงคอฟฟี่50ซองของแท้. 2 bịch King Coffee Cà Phê Sữa 50 Gói Siêu Ngon - Hương Vị Đậm Đà & Thơm Ngon. 4.5. 24 sold. ₫599.000. 2 bịch King Coffee Cà Phê ...",
+    "position": 7
+   },
+   {
+    "title": "กาแฟสุภาพโอสถของแท้",
+    "link": "https://shop.tiktok.com/vn/k/kaaef-suphaph-oosth-khongaeth",
+    "snippet": "Ore Coffee - Cà Phê Sấy Lạnh 100% Robusta Nguyên Chất. 4.9. 150 sold · 138.600. ₫154.000 ; 500gr Cà Phê Robusta Đặc Sản - Coffee Tây Nguyên · 5. 19 sold · 350.000.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

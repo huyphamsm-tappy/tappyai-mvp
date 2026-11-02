@@ -1,0 +1,651 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "spa massage kỹ thuật viên nữ Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:28:14.898Z",
+ "body": {
+  "searchParameters": {
+   "q": "spa massage kỹ thuật viên nữ Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7768941,106.7008997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Massage Tĩnh Viên",
+    "address": "Hòa Hưng, Hồ Chí Minh 72523, Việt Nam",
+    "latitude": 10.7780413,
+    "longitude": 106.67136339999999,
+    "rating": 5,
+    "ratingCount": 261,
+    "type": "Spa sức khỏe",
+    "types": [
+     "Spa sức khỏe"
+    ],
+    "website": "https://massagetinhvien.com/",
+    "phoneNumber": "+84 927 717 717",
+    "openingHours": {
+     "Thứ Tư": "09:30–21:30",
+     "Thứ Năm": "09:30–21:30",
+     "Thứ Sáu": "09:30–21:30",
+     "Thứ Bảy": "09:30–21:30",
+     "Chủ Nhật": "09:30–21:30",
+     "Thứ Hai": "09:30–21:30",
+     "Thứ Ba": "09:30–21:30"
+    },
+    "bookingLinks": [
+     "https://massagetinhvien.com/",
+     "https://www.fresha.com/book-now/tinh-vien-spa-zx1v1f49/all-offer?id=3119615&pId=3018519&rwg_token=AE37R_jJbrgiXvLJUka5gLWzxbWYPI3xk7N1cVvQ1-kshMS6LedOZqtW2xDx9tIEJp-nS9pPbESb7vH_tv491IKUXdIwrXTvqriWBEi0wCviQVLeNt8cOds%3D"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOclFI6uOvBpSKd8D9unnxOQRIrRccJ_ZqcWhLkk36RXJ9C14kLX6CQTzPRX9-ssIHG8fnjfx5pGrU0vKO1_Mkwy5G8NrwqVKoJ8HXsqhcJUniYqV-sBHIE-N5Jo6D26eF-USb0zOEkE0Tp",
+    "cid": "2894546619042347014",
+    "fid": "0x31752f4c361eadc7:0x282b7ed065d3b806",
+    "placeId": "ChIJx60eNkwvdTERBrjTZdB-Kyg"
+   },
+   {
+    "position": 2,
+    "title": "MASSAGE VENUS",
+    "address": "359 Phạm Ngũ Lão, Bến Thành, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.767178999999999,
+    "longitude": 106.68962719999999,
+    "rating": 4.9,
+    "ratingCount": 436,
+    "type": "Mát-xa khiêu dâm",
+    "types": [
+     "Mát-xa khiêu dâm",
+     "Spa ban ngày",
+     "Phòng xông hơi đồng tính nam",
+     "Spa mát xa",
+     "Bác sĩ trị liệu xoa bóp",
+     "Nhân viên trị liệu mát-xa kiểu Thái"
+    ],
+    "website": "https://venusmassagepnl.com/",
+    "phoneNumber": "+84 931 867 968",
+    "openingHours": {
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmO7lIvD_02iXF0hM8jG33TTcWvsrLDUNOeMpWgREuvy8w8T9qQExa6Ty0T7WwprdHhq0CD4F1RzVgainCRn7W5YqQRh3yn8P_L9uOdOEsfXtzsN0ercnO6vcq7Y0k4b1eJ_XcfcxNqhYUCs",
+    "cid": "10504257832695909083",
+    "fid": "0x31752f17c3b1aaab:0x91c69ed84af44adb",
+    "placeId": "ChIJq6qxwxcvdTER20r0StiexpE"
+   },
+   {
+    "position": 3,
+    "title": "Massage tận nơi Sài Gòn",
+    "address": "212B/D72 Nguyễn Trãi, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7653562,
+    "longitude": 106.6844421,
+    "rating": 5,
+    "ratingCount": 1,
+    "type": "Spa mát xa",
+    "types": [
+     "Spa mát xa"
+    ],
+    "website": "http://congdongmassage.com/",
+    "phoneNumber": "+84 938 443 514",
+    "openingHours": {
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày"
+    },
+    "bookingLinks": [
+     "https://zalo.me/0938443514",
+     "https://wa.me/84938443514"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmO6QdKfHo1MoNwfAtn-LpCCitJxOe5RfFwf0rHuPwD_A4XKpXtvnnwN-CxfW-imv5cDt7yP2WqhbO7DfVCM5RqdoXHTx7rU5xb27SPs-3GBaFo72TWX84nvwhJL2MpaDL912SOJpkc36T8",
+    "cid": "13647210188948325472",
+    "fid": "0x31752f0060066ca7:0xbd64a15c5f5b4460",
+    "placeId": "ChIJp2wGYAAvdTERYERbX1yhZL0"
+   },
+   {
+    "position": 4,
+    "title": "New Sunny Spa",
+    "address": "256 Đề Thám, Bến Thành, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7681578,
+    "longitude": 106.69367589999999,
+    "rating": 4.7,
+    "ratingCount": 133,
+    "type": "Spa mát xa",
+    "types": [
+     "Spa mát xa"
+    ],
+    "website": "https://www.facebook.com/share/1Cw92Yheh5/?mibextid=wwXIfr",
+    "phoneNumber": "+84 909 331 313",
+    "openingHours": {
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMwGliqJpXwRX1HVWLEahVulBdV7e6JAGdywvt8GQUT2TRbYmMVmyRsJtM_nzdYMGBmKazTd9NVjmW03cZhckPsrKpqow0kn_DSsIsMjVHIAu6ixd6FNurZ-WgGnkUTN2Kmg3qj3w",
+    "cid": "5037189907404627132",
+    "fid": "0x31752f005c285773:0x45e7b18859091cbc",
+    "placeId": "ChIJc1coXAAvdTERvBwJWYix50U"
+   },
+   {
+    "position": 5,
+    "title": "Spa Việt - Massage Cổ Vai Gáy & Gội Đầu Dưỡng Sinh",
+    "address": "79/1 Đ. Trần Huy Liệu, Phú Nhuận, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7927229,
+    "longitude": 106.6778887,
+    "rating": 4.9,
+    "ratingCount": 494,
+    "type": "Spa mát xa",
+    "types": [
+     "Spa mát xa",
+     "Phòng mát-xa chân",
+     "Spa sức khỏe"
+    ],
+    "website": "https://spaviet.com.vn/",
+    "phoneNumber": "+84 908 379 558",
+    "openingHours": {
+     "Thứ Tư": "09:00–21:00",
+     "Thứ Năm": "09:00–21:00",
+     "Thứ Sáu": "09:00–21:00",
+     "Thứ Bảy": "09:00–21:00",
+     "Chủ Nhật": "09:00–21:00",
+     "Thứ Hai": "09:00–21:00",
+     "Thứ Ba": "09:00–21:00"
+    },
+    "bookingLinks": [
+     "https://www.fresha.com/book-now/spa-viet-professional-foot-body-massage-fyibu6kf/all-offer?id=2674128&pId=2588526&rwg_token=AE37R_hmnQPtJtp6fx6ktdp61zd5_yhnGp7U1QtkU0zzey4Nk0xmU66n03P7wf8x4CdVgI2JxWp7OqsrN_vI8ABI2Kc77DS44gzQa8zChoAD7pAikREA78A%3D",
+     "https://www.messenger.com/t/308613172341117/",
+     "https://www.gowabi.com/en/provider/spa-viet-ho-chi-minh-city?utm_medium=shop_link&utm_source=rwg&rwg_token=AE37R_iRxebuynt_WjY952rU7HAynqH4RsxhjPZIQYpJKIYNLTQOm0bAZNn_EPyfZ_NWh9IQcJzqpVIQPylmEAKkZS9tcyLiqD1lejiLFPpC97o5o3CMfvo%3D"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNU5Rdgx8nTtj5B01EY6B8agsNQThYBDijaX-8CQStVMZ1kFI7tMIMZGLWi2g5-hHFzkGpAnVisRQaDXdyMhyfgMfWLwctcJKRgCtOzZ9qzM_ISRJQllvTdAjYyJHnUwESLDGUeivyAOnr8",
+    "cid": "13645714215807590790",
+    "fid": "0x317529dfd1255f8b:0xbd5f50c7fbb5a186",
+    "placeId": "ChIJi18l0d8pdTERhqG1-8dQX70"
+   },
+   {
+    "position": 6,
+    "title": "Mộc Kim Spa 2 - Ben Thanh Branch - Massage Near Me, Head Spa & Facial District 1",
+    "address": "143 Lê Thị Hồng Gấm, Bến Thành, Hồ Chí Minh 00700, Việt Nam",
+    "latitude": 10.7676041,
+    "longitude": 106.6962839,
+    "rating": 4.8,
+    "ratingCount": 632,
+    "type": "Spa mát xa",
+    "types": [
+     "Spa mát xa",
+     "Spa mặt",
+     "Spa sức khỏe",
+     "Spa"
+    ],
+    "website": "https://duongsinhspa.vn/en/ben-thanh-branch/",
+    "phoneNumber": "+84 968 459 618",
+    "openingHours": {
+     "Thứ Tư": "08:30–21:30",
+     "Thứ Năm": "08:30–21:30",
+     "Thứ Sáu": "08:30–21:30",
+     "Thứ Bảy": "08:30–21:30",
+     "Chủ Nhật": "08:30–21:30",
+     "Thứ Hai": "08:30–21:30",
+     "Thứ Ba": "08:30–21:30"
+    },
+    "bookingLinks": [
+     "https://duongsinhspa.vn/en/service-price-list/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMEk43eiJZKR63D5eek21O0qpOqqtU59K_sIxEom9fvF6dmec73jqAuMdg57XC2HxiWJZqgmLPPqz1ZqetJeHWBkh6EG-wpnog7nAtHoh4drjU-2LaseeAx0UZERbvmGQy_jObI7huDV8E",
+    "cid": "14433527728175362007",
+    "fid": "0x31752f2a109c5f0d:0xc84e30ff25a4afd7",
+    "placeId": "ChIJDV-cECovdTER16-kJf8wTsg"
+   },
+   {
+    "position": 7,
+    "title": "Yuan Spa",
+    "address": "15B5 Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7804968,
+    "longitude": 106.7047511,
+    "rating": 4.3,
+    "ratingCount": 227,
+    "type": "Spa",
+    "types": [
+     "Spa",
+     "Nhân viên trị liệu mát-xa kiểu Thái"
+    ],
+    "website": "https://www.facebook.com/yuanspavietnam",
+    "phoneNumber": "+84 28 3823 5794",
+    "openingHours": {
+     "Thứ Tư": "10:00–02:00",
+     "Thứ Năm": "10:00–02:00",
+     "Thứ Sáu": "10:00–02:00",
+     "Thứ Bảy": "10:00–02:00",
+     "Chủ Nhật": "10:00–02:00",
+     "Thứ Hai": "10:00–02:00",
+     "Thứ Ba": "10:00–02:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmP2BWUPVh5Jkhh5ak6P1rLDbeG5fHAJz1CACsbaQh_tJa7ld5FLHQzQC2YAC1ujjJ4JfZdXy3KehnDAdHGMarpJ5GKT7Ubk02Nt-OTgUAllnwJoDdqsgAgy709WE8P2OTamEmg",
+    "cid": "1549841789418767276",
+    "fid": "0x31752f48d858caed:0x158224e5645c83ac",
+    "placeId": "ChIJ7cpY2EgvdTERrINcZOUkghU"
+   },
+   {
+    "position": 8,
+    "title": "F-You 81 Massage",
+    "address": "81-83 Cách Mạng Tháng Tám, Bến Thành, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.772061599999999,
+    "longitude": 106.6919539,
+    "rating": 4.9,
+    "ratingCount": 795,
+    "type": "Spa mát xa",
+    "types": [
+     "Spa mát xa"
+    ],
+    "website": "https://fyou81massage.com/",
+    "phoneNumber": "+84 767 027 678",
+    "openingHours": {
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPngK_-JwhO5wVYpB5AWQxFaFl8oPgYplHFZbMTipjx0pxCHoBT2kVKgnyV4CfcIP7HcHkU3etKV6MTHsezzavEAVIqrOY_txB49POiCsHiSOTq0wJV17UdiO6ntFJo2hJ2hHK1fg",
+    "cid": "14313189501816651680",
+    "fid": "0x31752f005a1dc523:0xc6a2aa0472a1bfa0",
+    "placeId": "ChIJI8UdWgAvdTERoL-hcgSqosY"
+   },
+   {
+    "position": 9,
+    "title": "Paradise spa",
+    "address": "39 Đ. Trần Huy Liệu, Phú Nhuận, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7914662,
+    "longitude": 106.6779291,
+    "rating": 4.8,
+    "ratingCount": 634,
+    "type": "Spa",
+    "types": [
+     "Spa"
+    ],
+    "website": "http://paradisebeauty.vn/",
+    "phoneNumber": "+84 949 794 536",
+    "openingHours": {
+     "Thứ Tư": "09:00–20:00",
+     "Thứ Năm": "09:00–20:00",
+     "Thứ Sáu": "09:00–20:00",
+     "Thứ Bảy": "09:00–20:00",
+     "Chủ Nhật": "09:00–20:00",
+     "Thứ Hai": "09:00–20:00",
+     "Thứ Ba": "09:00–20:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNI1uewoxJfrmRxjK2hI9zkZwTWnV1FcTsbtiTrLK9pnwF9tT7q_qwdE9wC7YmQ7DoS1badvIw_dIN3o0f81ss9IQ5hywoOh2gPv_kcZ1qEC7RFWcl5BeRrR9X1baMQwMdBdzI",
+    "cid": "3464077391380467820",
+    "fid": "0x317528d56be02ddd:0x3012e008b3b1d06c",
+    "placeId": "ChIJ3S3ga9UodTERbNCxswjgEjA"
+   },
+   {
+    "position": 10,
+    "title": "Spa Núp Hẻm",
+    "address": "109 Đồng Đen, Tân Bình, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7926706,
+    "longitude": 106.64441509999999,
+    "rating": 4.8,
+    "ratingCount": 343,
+    "type": "Spa sức khỏe",
+    "types": [
+     "Spa sức khỏe"
+    ],
+    "website": "https://spanuphem.vn/",
+    "phoneNumber": "+84 706 078 516",
+    "openingHours": {
+     "Thứ Tư": "09:00–21:00",
+     "Thứ Năm": "09:00–21:00",
+     "Thứ Sáu": "09:00–21:00",
+     "Thứ Bảy": "09:00–21:00",
+     "Chủ Nhật": "09:00–21:00",
+     "Thứ Hai": "09:00–21:00",
+     "Thứ Ba": "09:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOojquRm38Kfr7mjVoPZZQbzEuheXMv8uCcX7_bz0nypPtfRVHonU-kMlPWuyzdE_BmvEuhHnAQtjQqML9Md_h6yshZv_QeuiwxSZYM4ZsurzdrG_hZ4S4lw5-zFlvhO3KgyKUvKysqgDI",
+    "cid": "5668331248333154452",
+    "fid": "0x3175290ac23188ed:0x4ea9f53cfe24e894",
+    "placeId": "ChIJ7YgxwgopdTERlOgk_jz1qU4"
+   },
+   {
+    "position": 11,
+    "title": "Massage Tân Thủ Đô Hai",
+    "address": "97A Nguyễn Duy Dương, An Đông, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7594282,
+    "longitude": 106.67106439999999,
+    "rating": 4.8,
+    "ratingCount": 111,
+    "type": "Spa mát xa",
+    "types": [
+     "Spa mát xa"
+    ],
+    "website": "https://massagetanthudo.com/",
+    "phoneNumber": "+84 909 573 339",
+    "openingHours": {
+     "Thứ Tư": "09:00–03:00",
+     "Thứ Năm": "09:00–03:00",
+     "Thứ Sáu": "09:00–03:00",
+     "Thứ Bảy": "09:00–03:00",
+     "Chủ Nhật": "09:00–03:00",
+     "Thứ Hai": "09:00–03:00",
+     "Thứ Ba": "09:00–03:00"
+    },
+    "bookingLinks": [
+     "https://t.me/minhquantanthudo3979?fbclid=IwY2xjawJQurRleHRuA2FlbQIxMAABHU9CX_nEAuDHemEfBcPYaOr0HrcLwkfAoSRSyuZYky435oIPhjbvhrBnqw_aem_RpoxsYHyrTfl4tnVpzGNOg",
+     "https://zalo.me/0909573339",
+     "https://line.me/ti/p/Fzp5kNdvwS"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmO3MWyCo0x0BefulUDMT6-mClvryL8BdAIz8tnE6ipdKAP0fPb9ZGQ8hUEwt7uSvGc2P3oFl79bFBJY4Mnz_S4rMVGMmxl1qd7BEj7D1ItAjnpY4Dyx56XrNkyJePQwqhO6bFSSMYv1UDVa",
+    "cid": "366782660128893484",
+    "fid": "0x31752fdee5342dfb:0x51712e2d6c16a2c",
+    "placeId": "ChIJ-y005d4vdTERLGrB1uISFwU"
+   },
+   {
+    "position": 12,
+    "title": "Win Win Spa | Dưỡng Sinh Đông Y Quận 3 | Massage Body Quận 3",
+    "address": "222 Lý Chính Thắng, Nhiêu Lộc, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7793096,
+    "longitude": 106.6819883,
+    "rating": 4.8,
+    "ratingCount": 667,
+    "type": "Spa sức khỏe",
+    "types": [
+     "Spa sức khỏe"
+    ],
+    "website": "http://winwinspa.com/",
+    "phoneNumber": "+84 332 640 156",
+    "openingHours": {
+     "Thứ Tư": "09:00–21:00",
+     "Thứ Năm": "09:00–21:00",
+     "Thứ Sáu": "09:00–21:00",
+     "Thứ Bảy": "09:00–21:00",
+     "Chủ Nhật": "09:00–21:00",
+     "Thứ Hai": "09:00–21:00",
+     "Thứ Ba": "09:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmN_P8AE0CK_bl5DqTXdR3nawzdCVaqdb0Qsyzx8FUj72Y2bSYAyWmGUtSkBYfEBh8RwLwKSLR5SYviRQhS7GJnTxIq2G5aBu16QSPJzyZIec1KWK8vrA5ff2Nke6qj3c-JbhswuejQ9gt5E",
+    "cid": "14932093717601110897",
+    "fid": "0x31752f0051c45565:0xcf39741f5e74cb71",
+    "placeId": "ChIJZVXEUQAvdTERcct0Xh90Oc8"
+   },
+   {
+    "position": 13,
+    "title": "Onyx Spa - Gội Đầu Dưỡng Sinh & Massage Quận 1",
+    "address": "159 Điện Biên Phủ, Tân Định, Hồ Chí Minh 71007, Việt Nam",
+    "latitude": 10.788146699999999,
+    "longitude": 106.6954701,
+    "rating": 4.9,
+    "ratingCount": 553,
+    "type": "Spa mát xa",
+    "types": [
+     "Spa mát xa",
+     "Spa mặt",
+     "Bồn ngâm chân",
+     "Chăm sóc chân",
+     "Phòng mát-xa chân",
+     "Spa sức khỏe",
+     "Spa đá nóng",
+     "Tiệm chăm sóc móng",
+     "Spa"
+    ],
+    "website": "https://www.facebook.com/OnyxSpa159DienBienPhuQuan1",
+    "phoneNumber": "+84 909 857 191",
+    "openingHours": {
+     "Thứ Tư": "09:00–19:45",
+     "Thứ Năm": "09:00–19:45",
+     "Thứ Sáu": "09:00–19:45",
+     "Thứ Bảy": "09:00–19:45",
+     "Chủ Nhật": "09:00–19:45",
+     "Thứ Hai": "09:00–19:45",
+     "Thứ Ba": "09:00–19:45"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMkLZO-jhmkK6OLK5F2_Kz1beLnop5SBpPL4uHcJ_BA7wTakJAoYTcP6So3QOMtuM3XPmNG_aohteO8BWCun_WC_MckuGFZpx6YeBrmvZ6iuromZOYwaw9TaYBf896LAvQVByac",
+    "cid": "4185721875638423516",
+    "fid": "0x31752fa097b2ccb5:0x3a16abde76028fdc",
+    "placeId": "ChIJtcyyl6AvdTER3I8Cdt6rFjo"
+   },
+   {
+    "position": 14,
+    "title": "Hoa Kiều Spa",
+    "address": "192 Trần Quý, Minh Phụng, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.75879,
+    "longitude": 106.65364299999999,
+    "rating": 3.9,
+    "ratingCount": 188,
+    "type": "Spa mát xa",
+    "types": [
+     "Spa mát xa",
+     "Spa ban ngày",
+     "Spa sức khỏe",
+     "Spa"
+    ],
+    "website": "http://hoakieu.vn/",
+    "phoneNumber": "+84 28 3535 0611",
+    "openingHours": {
+     "Thứ Tư": "10:00–02:00",
+     "Thứ Năm": "10:00–02:00",
+     "Thứ Sáu": "10:00–02:00",
+     "Thứ Bảy": "10:00–02:00",
+     "Chủ Nhật": "10:00–02:00",
+     "Thứ Hai": "10:00–02:00",
+     "Thứ Ba": "10:00–02:00"
+    },
+    "bookingLinks": [
+     "https://www.hoakieu.vn/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmONpS-s5xkdptG8CXEXEzQKi3JhLT4k3uzRP00rlj4vSX1pACW_g3HzrPvowuz1K13w_fsC2IyuWllJNPguDQkt5viUWVBrB4UfLveYULG9cldXDTFr4FXKcpLWpab206N9jxZAPA",
+    "cid": "18070439449241222043",
+    "fid": "0x31752f23f906f13f:0xfac718f0133a7b9b",
+    "placeId": "ChIJP_EG-SMvdTERm3s6E_AYx_o"
+   },
+   {
+    "position": 15,
+    "title": "Massage Dubai Luxury Phúc An Khang",
+    "address": "1 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7650714,
+    "longitude": 106.6820525,
+    "rating": 4.8,
+    "ratingCount": 441,
+    "type": "Spa mát xa",
+    "types": [
+     "Spa mát xa"
+    ],
+    "phoneNumber": "+84 764 070 101",
+    "openingHours": {
+     "Thứ Tư": "09:00–03:00",
+     "Thứ Năm": "09:00–03:00",
+     "Thứ Sáu": "09:00–03:00",
+     "Thứ Bảy": "09:00–03:00",
+     "Chủ Nhật": "09:00–03:00",
+     "Thứ Hai": "09:00–03:00",
+     "Thứ Ba": "09:00–03:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmN8GSLny4sknTBhNT1X1xkQKikFvMWoWM7TcmfFuJPxMKmUmUUTiHZXol0wxx1hnZETparQSxOxWd-HfismZ-gOtHrH7MVcphuwdekHL37ebaGCk1QS6u5ffb4h5-M2yn2UTJyO5h3SYIkk",
+    "cid": "17895917405375832921",
+    "fid": "0x31752f8e53d7069f:0xf85b121045282359",
+    "placeId": "ChIJnwbXU44vdTERWSMoRRASW_g"
+   },
+   {
+    "position": 16,
+    "title": "Massage Spa Yoni HCM - Bảo Lâm 100k/ suất",
+    "address": "B7 Nguyễn Thị Nhỏ, Phú Thọ, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.769648199999999,
+    "longitude": 106.6534928,
+    "rating": 4.9,
+    "ratingCount": 51,
+    "type": "Spa",
+    "types": [
+     "Spa"
+    ],
+    "website": "https://dichvumassageyoni.blogspot.com/?m=1",
+    "phoneNumber": "+84 775 601 463",
+    "openingHours": {
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMP_xrwicnZpcTEuuT0zHUOAGi2BiN9SlshA32iKilsUFhnd_XySZWaCi48aBrHvh9_pht1PXskJQvT79j6ffdwDCJ9zmBHjmwZFaT9PsI_YUUBhzbm72JTS6lqVtILDvMQ2Q",
+    "cid": "3993154099681142724",
+    "fid": "0x31752fa22e05275f:0x376a887f3ce3a7c4",
+    "placeId": "ChIJXycFLqIvdTERxKfjPH-Iajc"
+   },
+   {
+    "position": 17,
+    "title": "Massage Yoni TPHCM - Phan Anh Spa",
+    "address": "22 Thái Văn Lung, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7800998,
+    "longitude": 106.7038821,
+    "rating": 4.5,
+    "ratingCount": 17,
+    "type": "Spa mát xa",
+    "types": [
+     "Spa mát xa"
+    ],
+    "website": "https://massageyoniphananh.vn/",
+    "phoneNumber": "+84 909 888 976",
+    "openingHours": {
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày"
+    },
+    "bookingLinks": [
+     "https://zalo.me/84908868708",
+     "https://wa.me/84909888976"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNC7vEGh8iB_eaRcNtJgPsud92eX8Sv6_T8Zf8SsSjFZDU-L1cQ8azKW4INHOa79Xboah3EEKmJNAkTTqybnUlJfNkXNPvtaAqvOKUBw2yjwoBtRbMd3zwRo6qJRgghpMehWcKhZsAMh7Mu",
+    "cid": "303457064762534583",
+    "fid": "0x314a89db12b311d3:0x4361897b5c0eab7",
+    "placeId": "ChIJ0xGzEtuJSjERt-rAtZcYNgQ"
+   },
+   {
+    "position": 18,
+    "title": "Mộc Kim Spa - Massage & Facial Ho Chi Minh",
+    "address": "12 L Nguyễn Thị Minh Khai, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.788419,
+    "longitude": 106.702479,
+    "rating": 4.9,
+    "ratingCount": 3053,
+    "type": "Spa mặt",
+    "types": [
+     "Spa mặt",
+     "Thẩm mỹ viện",
+     "Spa ban ngày",
+     "Spa mát xa",
+     "Cơ sở chăm sóc da",
+     "Spa"
+    ],
+    "website": "https://duongsinhspa.vn/en/all-services/?utm_source=GoogleMap&utm_medium=HomePage",
+    "phoneNumber": "+84 968 459 618",
+    "openingHours": {
+     "Thứ Tư": "08:30–21:30",
+     "Thứ Năm": "08:30–21:30",
+     "Thứ Sáu": "08:30–21:30",
+     "Thứ Bảy": "08:30–21:30",
+     "Chủ Nhật": "08:30–21:30",
+     "Thứ Hai": "08:30–21:30",
+     "Thứ Ba": "08:30–21:30"
+    },
+    "bookingLinks": [
+     "https://duongsinhspa.vn/en/",
+     "https://wa.me/+84934193758",
+     "https://www.gowabi.com/en/provider/moc-kim-spa-best-massage-facial-ho-chi-minh?utm_medium=shop_link&utm_source=rwg&rwg_token=AE37R_jPXeV7uexcHapKC22anDoSi0aKdMdq0RqpsD_8qrHTANUXzFqu7mLotpDzp-0S09EeDliYCtl2TcFOVSDryNga8_zuK-baJ1XDG9LU2GXhwrH2PQo%3D"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOohJGydywTbNT9xAurp1nP7ceGnRkpoFYvp26Xuo-sL5lX5W1q1KySBXdPdHH-0sGplIDCVV-gqEov6dWjGPQv5qi1v00tNjE8pnw1bpTGAiuJYqOh_rbxnGQ4ZCSbrW4ifcg5l-as_YQW",
+    "cid": "13126041632094594030",
+    "fid": "0x31752f5fd202a35d:0xb6291151d3fca3ee",
+    "placeId": "ChIJXaMC0l8vdTER7qP801ERKbY"
+   },
+   {
+    "position": 19,
+    "title": "Nhà Spa",
+    "address": "3 Nguyễn Huy Tưởng, Gia Định, Hồ Chí Minh 718130, Việt Nam",
+    "latitude": 10.804053999999999,
+    "longitude": 106.689279,
+    "rating": 5,
+    "ratingCount": 357,
+    "type": "Bác sĩ trị liệu xoa bóp",
+    "types": [
+     "Bác sĩ trị liệu xoa bóp",
+     "Spa sức khỏe",
+     "Spa mát xa"
+    ],
+    "website": "https://tisoda.com/place/1053-nha-spa-ve-nha-goi-dau-duong-da-cn-binh-thanh",
+    "phoneNumber": "+84 372 915 617",
+    "openingHours": {
+     "Thứ Tư": "09:00–20:00",
+     "Thứ Năm": "09:00–20:00",
+     "Thứ Sáu": "09:00–20:00",
+     "Thứ Bảy": "09:00–20:00",
+     "Chủ Nhật": "09:00–20:00",
+     "Thứ Hai": "09:00–20:00",
+     "Thứ Ba": "09:00–20:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMqlq_71o2VVCqokX5wowNnM0uU6zyLbaCjFPnh2BLcqroGfT-rMoYYrbrJu4WF0rWzuxro5lRTrMeMRw1X8xoPMIJdc3WmCCiPCUrRsvr1xmbzNE0MFIG4oGlxVdDGi3WFvSad",
+    "cid": "4314327358313040792",
+    "fid": "0x317529c38d1506cd:0x3bdf91dfc4ff8b98",
+    "placeId": "ChIJzQYVjcMpdTERmIv_xN-R3zs"
+   },
+   {
+    "position": 20,
+    "title": "Sunyata Retreat Hill Spa",
+    "address": "12a Bùi Viện, Bến Thành, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.76797,
+    "longitude": 106.6950852,
+    "rating": 4.9,
+    "ratingCount": 3578,
+    "type": "Spa mát xa",
+    "types": [
+     "Spa mát xa"
+    ],
+    "website": "https://www.facebook.com/SunyataSpa",
+    "phoneNumber": "+84 917 757 509",
+    "openingHours": {
+     "Thứ Tư": "10:00–01:00",
+     "Thứ Năm": "10:00–01:00",
+     "Thứ Sáu": "10:00–01:00",
+     "Thứ Bảy": "10:00–01:00",
+     "Chủ Nhật": "10:00–01:00",
+     "Thứ Hai": "10:00–01:00",
+     "Thứ Ba": "10:00–01:00"
+    },
+    "bookingLinks": [
+     "https://www.klook.com/en-US/activity/47092-sunyata-retreat-hill-spa-ho-chi-minh/?source_channel=googlettd&aid=84101&package_id=1&rwg_token=AE37R_hbBRp3_rDeah1i8ih7cKqDA_UfAiBQTr08Xe59mA2ifsCvaLXhuvIU9sjyZ5vLIF2qZVz3EJ3zshFmk_Z9r9brtLqKeNsmdBWgxqtsruPiig-mP9E%3D"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNKd_OFLAk7GNgejPmKx8PCblaK-IAa593LW1NwJdNnaVDXOFZh8bKRVtEcerZcDiTXJqJTmS3hqbtC_ClDegoYqtcqknNF4H4HgIEVJuXrCnQb0CHoeh25H6A3uKAdGBCUi3FK",
+    "cid": "15695213086533120568",
+    "fid": "0x31752fff8fe0280f:0xd9d0992538de7238",
+    "placeId": "ChIJDyjgj_8vdTEROHLeOCWZ0Nk"
+   }
+  ],
+  "credits": 3
+ }
+}

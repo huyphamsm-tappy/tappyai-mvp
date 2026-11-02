@@ -25,6 +25,9 @@ const ROW_KEEP = [
   'google_rating', 'rating_value', 'rating_count', 'rating', 'user_ratings_total', 'review_count',
   'price_range_text', 'price_range', 'price_level', 'price',
   'distance_km', 'open_now', 'opening_hours', 'place_types', 'cuisine', 'attributes', 'stars',
+  // Supplied amenity booleans the ranker already reads (candidate.ts: wifi / outdoor_seating / vegetarian). Present ONLY when the provider row carried the
+  // tag; before the final fix they reached the ranker but not the model that writes the reason (benchmark attribute-flow audit).
+  'wifi', 'outdoor_seating', 'vegetarian',
   // Row flags the hard-constraint gate vouches from (A.3: the gate reads THIS copy).
   'has_delivery', 'has_order',
   'tappy_rating', 'tappy_rating_count',
@@ -106,7 +109,10 @@ export function trimPlacesForModel(result: unknown, key: 'results' | 'hotel_list
       [key]: all.map(compactRow),
       results_note: total > all.length
         ? `Hien thi ${all.length}/${total} ket qua theo thu tu nha cung cap, KHONG phai thu tu uu tien (rut gon: chi cac truong de chon); the (card) cua user co day du.`
-        : `Day la TOAN BO ${all.length} ket qua theo thu tu nha cung cap, KHONG phai thu tu uu tien — ban tu chon cho dung tinh huong (rut gon: chi cac truong de chon); the (card) cua user hien anh/dia chi/SDT/nut hanh dong.`,
+        // Phase 3C: with the Brief on the result, the decision is already made (pick.name in _tappy_brief) — the note must not tell the model to choose.
+        : r._tappy_brief
+          ? `Day la TOAN BO ${all.length} ket qua theo thu tu nha cung cap, KHONG phai thu tu uu tien — lua chon chinh la pick.name trong _tappy_brief, ban giai thich lua chon do (rut gon: chi cac truong de chon); the (card) cua user hien anh/dia chi/SDT/nut hanh dong.`
+          : `Day la TOAN BO ${all.length} ket qua theo thu tu nha cung cap, KHONG phai thu tu uu tien — ban tu chon cho dung tinh huong (rut gon: chi cac truong de chon); the (card) cua user hien anh/dia chi/SDT/nut hanh dong.`,
     }
   }
   const shortlist = Array.isArray(r._tappy_shortlist) ? (r._tappy_shortlist as Array<{ id?: unknown; name?: unknown }>) : []
@@ -138,7 +144,7 @@ function consultRow(row: unknown): unknown {
   const x = row as Record<string, unknown>
   const out: Record<string, unknown> = {}
   for (const k of ['name', 'google_rating', 'rating_value', 'rating_count', 'rating', 'user_ratings_total', 'review_count',
-    'price_range_text', 'price_level', '_tappy_price_unconfirmed', 'opening_hours', 'open_now', 'distance_km', 'has_delivery'] as const) {
+    'price_range_text', 'price_level', '_tappy_price_unconfirmed', 'opening_hours', 'open_now', 'distance_km', 'has_delivery', 'wifi', 'outdoor_seating', 'vegetarian'] as const) {
     if (x[k] !== undefined && x[k] !== null && x[k] !== '') out[k] = x[k]
   }
   if (typeof x.address === 'string') out.address = x.address.split(',').slice(0, 2).join(',').trim()

@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Khách sạn Sammy",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:12:38.605Z",
+ "body": {
+  "searchParameters": {
+   "q": "Khách sạn Sammy",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Sammy Dalat Hotel | Đà Lạt",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=100063691446129",
+    "imageWidth": 2048,
+    "imageHeight": 1366,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJjdn4soiUCmm7O9BlRwSyJpmeCXFnjmzT9-aSCIOaaQ&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/sammyhotel/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D100063691446129&tbnid=wbZYea3iEdkk9M&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fsammyhotel%2F&docid=c0BoFoWbzSdS6M&w=2048&h=1366",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn Sammy Vũng Tàu - Chudu24",
+    "imageUrl": "http://du-lich.chudu24.com/f/m/1603/21/khach-san-sammy-vung-tau-18.jpg",
+    "imageWidth": 960,
+    "imageHeight": 639,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1yQSmL0vZhvxHJ0VIwu5sKOt1g8Q4UYTtl_yJNuFzdQ&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Đặt Phòng Khách Sạn - Chudu24",
+    "domain": "khachsan.chudu24.com",
+    "link": "https://khachsan.chudu24.com/ks.80.khach-san-sammy-vung-tau.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=http%3A%2F%2Fdu-lich.chudu24.com%2Ff%2Fm%2F1603%2F21%2Fkhach-san-sammy-vung-tau-18.jpg&tbnid=OcnMXSGhV9-C6M&imgrefurl=https%3A%2F%2Fkhachsan.chudu24.com%2Fks.80.khach-san-sammy-vung-tau.html&docid=WlQftz7PvSXHCM&w=960&h=639",
+    "position": 2
+   },
+   {
+    "title": "SAMMY Hotel - Khách sạn SAMMY, Giáp Vinh Yên (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/544103271.jpg?k=9f316e47d96198735a2787547d6efc7f1fb74f699b99b9352bcb3010ad64a42c&o=",
+    "imageWidth": 513,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7oZmf3C8pJwb8vWiskCJgT2QrNzMLY4bOhREl_pOQmA&s=10",
+    "thumbnailWidth": 452,
+    "thumbnailHeight": 678,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/sammy-khach-san-sammy.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F544103271.jpg%3Fk%3D9f316e47d96198735a2787547d6efc7f1fb74f699b99b9352bcb3010ad64a42c%26o%3D&tbnid=pv1Ra3YyXyTfgM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fsammy-khach-san-sammy.vi.html&docid=VN4gJe0ByS9R1M&w=513&h=768",
+    "position": 3
+   },
+   {
+    "title": "Khách sạn Sammy Vũng Tàu - Điểm đến ấn tượng giữa phố biển",
+    "imageUrl": "https://imagevietnam.vnanet.vn//MediaUpload/Org/2024/07/30/leminh-130-15-30-43.jpg",
+    "imageWidth": 1920,
+    "imageHeight": 1280,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTl4e42c1qZpgrEZ3fjtVgwwanWoNA42vMPXuRm4HVkow&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "TTXVN-vietnam.vnanet.vn",
+    "domain": "vietnam.vnanet.vn",
+    "link": "https://vietnam.vnanet.vn/vietnamese/tin-tuc/khach-san-sammy-vung-tau-diem-den-an-tuong-giua-pho-bien-373005.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimagevietnam.vnanet.vn%2F%2FMediaUpload%2FOrg%2F2024%2F07%2F30%2Fleminh-130-15-30-43.jpg&tbnid=zu91J43jd1BAeM&imgrefurl=https%3A%2F%2Fvietnam.vnanet.vn%2Fvietnamese%2Ftin-tuc%2Fkhach-san-sammy-vung-tau-diem-den-an-tuong-giua-pho-bien-373005.html&docid=QVSw7qM5qsv5SM&w=1920&h=1280",
+    "position": 4
+   },
+   {
+    "title": "KHÁCH SẠN SAMMY VŨNG TÀU - Đánh giá Khách sạn & So sánh giá - Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/08/f3/c5/66/sammy-hotel-vung-tau.jpg?w=1200&h=1200&s=1",
+    "imageWidth": 1200,
+    "imageHeight": 1200,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIbn4-cX8dYGuswIl5U9K2a8LuXqXMto6dFM9PusgrtQ&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g303946-d633677-Reviews-Sammy_Hotel_Vung_Tau-Vung_Tau_Ba_Ria_Vung_Tau_Province.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F08%2Ff3%2Fc5%2F66%2Fsammy-hotel-vung-tau.jpg%3Fw%3D1200%26h%3D1200%26s%3D1&tbnid=KuUWlze9GI4SQM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g303946-d633677-Reviews-Sammy_Hotel_Vung_Tau-Vung_Tau_Ba_Ria_Vung_Tau_Province.html&docid=q69JmUG7O6KZLM&w=1200&h=1200",
+    "position": 5
+   },
+   {
+    "title": "SAMMY DALAT HOTEL (Đà Lạt) - Đánh giá Khách sạn & So sánh giá - Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0d/da/f9/6d/entrance-to-the-hotel.jpg?w=900&h=500&s=1",
+    "imageWidth": 900,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6wVhoHKLbNH3dsGbfgoIfGXGOgkaZrUOXp2b_LZHyxw&s=10",
+    "thumbnailWidth": 599,
+    "thumbnailHeight": 333,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g293922-d1553456-Reviews-Sammy_Dalat_Hotel-Da_Lat_Lam_Dong_Province.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F0d%2Fda%2Ff9%2F6d%2Fentrance-to-the-hotel.jpg%3Fw%3D900%26h%3D500%26s%3D1&tbnid=XAMpeAqen-bhAM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g293922-d1553456-Reviews-Sammy_Dalat_Hotel-Da_Lat_Lam_Dong_Province.html&docid=3j4kxEbbuG0FTM&w=900&h=500",
+    "position": 6
+   },
+   {
+    "title": "Sammy Hotel, Vũng Tàu (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/650735665.jpg?k=45ec86b5af806cf4b24d8c7e7a890c70f3fe0f3618e51c3c0cfa09b3fb2cc069&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6sYB4qfqekJfQph8HtSR5OViGgNdubvY2aTkHllPqjg&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/sammy.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F650735665.jpg%3Fk%3D45ec86b5af806cf4b24d8c7e7a890c70f3fe0f3618e51c3c0cfa09b3fb2cc069%26o%3D&tbnid=jj6KiT73stuJmM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fsammy.vi.html&docid=YV5waN2aFkfb6M&w=1024&h=683",
+    "position": 7
+   },
+   {
+    "title": "Khách sạn Sammy Vũng Tàu",
+    "imageUrl": "https://bazantravel.com/cdn/medias/uploads/30/30803-khach-san-sammy-vung-tau-1.jpg",
+    "imageWidth": 1600,
+    "imageHeight": 1064,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSiqencm7c1cnkRILVxsbz8165UdIhSSzuDKh1GylZquQ&s=10",
+    "thumbnailWidth": 549,
+    "thumbnailHeight": 364,
+    "source": "Bazan Travel",
+    "domain": "bazantravel.com",
+    "link": "https://bazantravel.com/khach-san-sammy-vung-tau/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbazantravel.com%2Fcdn%2Fmedias%2Fuploads%2F30%2F30803-khach-san-sammy-vung-tau-1.jpg&tbnid=iinvLooVu2BVcM&imgrefurl=https%3A%2F%2Fbazantravel.com%2Fkhach-san-sammy-vung-tau%2F&docid=_KqMvMso_fpHxM&w=1600&h=1064",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

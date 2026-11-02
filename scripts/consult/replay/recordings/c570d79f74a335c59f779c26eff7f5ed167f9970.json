@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Quà Tặng Kèm - Quà Tặng 0đ - Quà Tặng Đơn Đủ Điều Kiện Nhận Quà - Đơn 29k - 39k - 59k - 99k - 129k site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:55:19.744Z",
+ "body": {
+  "searchParameters": {
+   "q": "Quà Tặng Kèm - Quà Tặng 0đ - Quà Tặng Đơn Đủ Điều Kiện Nhận Quà - Đơn 29k - 39k - 59k - 99k - 129k site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

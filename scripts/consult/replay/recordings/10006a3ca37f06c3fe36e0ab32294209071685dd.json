@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"PHÚ THẮNG GRAND HOTEL\" Tây Ninh site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:25:06.603Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"PHÚ THẮNG GRAND HOTEL\" Tây Ninh site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nhà hàng Trung Hoa Tân Đô Đức Hòa Long An",
+    "link": "https://www.tiktok.com/@thanhphong68m1/video/7639958044025310484",
+    "snippet": "Khám phá nhà hàng Trung Hoa Tân Đô tại cổng Tân Đô, Đức Hòa,. @PHONG 68 REVIEW · Nhạc Nghèo Hot Tiktok · PHÚ THẮNG GRAND HOTEL - LONG AN.",
+    "position": 1
+   },
+   {
+    "title": "Nhà Nghỉ Đức Hoà Long An",
+    "link": "https://www.tiktok.com/discover/nh%C3%A0-ngh%E1%BB%89-%C4%91%E1%BB%A9c-ho%C3%A0-long-an",
+    "snippet": "Discover Phú Thắng Grand Hotel in Đức Hòa, Long An. Explore Phú Thắng Grand ... Khu nghỉ dưỡng tại Đức Lập, Đức Hòa, Long An cũ, Tây Ninh mới. Có những ...",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

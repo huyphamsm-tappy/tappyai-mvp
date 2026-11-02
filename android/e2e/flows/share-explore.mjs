@@ -1,37 +1,38 @@
-// (i) Sharing an Explore clip hands the real FILE (video/photo) to the system share sheet; picking
-// Zalo or TikTok there delivers it — proven with stand-in apps under the real package names
-// (android/e2e/share-stub), which log exactly what they received. Opening the real apps is left to
-// the owner's phone. Web twin: the clip's share menu (tiles + copy).
+// (i) Sharing an Explore post goes through the approved sheet #6 (share layouts, owner 29/09): the
+// file-taking apps (TikTok) get the ONE card file — proven in share-cards, incl. an uploaded clip going as
+// its own video — and the link-only apps (Zalo, Facebook, Messenger: LINK_ONLY_TARGETS) get the post's
+// LINK. Here: Zalo from Explore, via the stand-in app under the real package (android/e2e/share-stub),
+// which logs exactly what it received. Opening the real apps is left to the owner's phone.
 export const webAccount = 'e2e.android.pro@example.com'
+
+/** Scroll INSIDE the bottom sheet: up only — a downward drag at its top would dismiss the sheet. */
+async function sheetScrollTo(a, q, max = 8) {
+  for (let i = 0; i <= max; i++) {
+    const n = a.find(q)
+    if (n && n.y1 > 200 && n.y2 < 2150) return n
+    a.sh('input', 'swipe', '540', '1700', '540', '900', '500'); await a.sleep(900)
+  }
+  return null
+}
 
 export async function android({ a, shot, check, seeded }) {
   a.installShareStubs()
   await a.signIn(seeded.users.pro.email)
-  for (const [label, pkg] of [['E2E TikTok', 'com.zhiliaoapp.musically'], ['E2E Zalo', 'com.zing.zalo']]) {
-    await a.tap('Khám phá', { after: 5000 })
-    a.clearLog()
-    // The clip's real file is fetched first (a video can take a while), THEN the system sheet opens.
-    await a.tap('Chia sẻ', { after: 1500 })
-    const t0 = Date.now()
-    while (Date.now() - t0 < 90000 && !a.foreground().includes('intentresolver') && !a.foreground().includes('Chooser')) await a.sleep(1500)
-    await a.sleep(2000)
-    shot(`sheet-${label}`)
-    const sheet = a.texts().join(' | ')
-    // The chooser words a single file by kind ("Sharing image"/"Sharing video") or by count
-    // ("Sharing 1 file") depending on the Android build; what the app receives is checked below.
-    check(`share sheet hệ thống mở với 1 FILE (${label})`, /Sharing (image|video|1 file)|Chia sẻ (hình ảnh|video|1 tệp)/.test(sheet), sheet.slice(0, 120))
-    // The chooser animates in; a dump taken mid-animation can miss the row — wait for it first.
-    const target = (await a.waitFor(label, { timeout: 15000 }).catch(() => null)) || await a.scrollTo(label, { max: 6 }).catch(() => null)
-    check(`${label} có trong share sheet`, !!target)
-    if (!target) { await a.back(); continue }
-    await a.tap(target, { after: 4000 })
-    const got = a.receivedShares().find((s) => s.receiver === pkg)
-    shot(`received-${label}`)
-    check(`${label} nhận ACTION_SEND`, got?.action === 'android.intent.action.SEND', JSON.stringify(got || {}).slice(0, 160))
-    check(`${label} nhận FILE (video/ảnh), đọc được`, !!got && /^(video|image)\//.test(got.streamMime || got.type || '') && got.streamBytes > 10000, got ? `${got.streamMime} ${got.streamBytes}B` : '')
-    check(`${label} nhận kèm link bài (text)`, !!got?.text && /https:\/\/uat\.tappyai\.com\/reviews\//.test(got.text), got?.text?.slice(0, 80))
-    await a.launch()
-  }
+  await a.tap('Khám phá', { after: 5000 })
+  a.clearLog()
+  await a.tap('Chia sẻ', { after: 4000 })
+  shot('sheet')
+  check('Khám phá → «Chia sẻ» mở sheet mẫu #6', a.visible('Chia sẻ với mọi người'))
+  const zalo = await sheetScrollTo(a, /^Zalo$/)
+  check('sheet có ô Zalo', !!zalo)
+  if (!zalo) return
+  await a.tap(zalo, { after: 4000 })
+  let got = null
+  for (let i = 0; i < 15 && !got; i++) { got = a.receivedShares().find((r) => r.receiver === 'com.zing.zalo'); if (!got) await a.sleep(1000) }
+  shot('received-zalo')
+  check('Zalo nhận ACTION_SEND', got?.action === 'android.intent.action.SEND', JSON.stringify(got || {}).slice(0, 160))
+  check('Zalo nhận LINK bài (ứng dụng chỉ-link — không gửi file)', !!got?.text && /https:\/\/uat\.tappyai\.com\/reviews\//.test(got.text), got?.text?.slice(0, 80))
+  await a.launch()
 }
 
 export async function web({ w, page, shot, check }) {

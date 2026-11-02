@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Karaoke Avatar\" OR \"NOVA SG Music Box\" OR \"Karaoke Crystal KTV\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:14:55.112Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Karaoke Avatar\" OR \"NOVA SG Music Box\" OR \"Karaoke Crystal KTV\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Karaoke Avatar Quận 1: Công Nghệ 3D Đột Phá, Giảm 30 ...",
+    "link": "https://www.tiktok.com/@avatarkaraokesg/video/7423246235756203272",
+    "snippet": "Karaoke Avatar Quận 1: Công Nghệ 3D Đột Phá, Giảm 30% Giờ Hát. ### Avatar Karaoke: Trải Nghiệm Hát Karaoke Đột Phá Tại Quận 1 Nếu bạn đang ...",
+    "position": 1
+   },
+   {
+    "title": "Phòng karaoke Avatar - Giá hấp dẫn tại quận 1 Sài Gòn",
+    "link": "https://www.tiktok.com/@avatarkaraokesg/video/7270370684478557446",
+    "snippet": "Khám phá không gian karaoke Avatar độc đáo tại Q1 Saigon, với giá cả phải. @Avatar Karaoke Saigon.",
+    "position": 2
+   },
+   {
+    "title": "Khám Phá AVATAR KARAOKE: Địa Điểm Tiệc Tùng Đỉnh ...",
+    "link": "https://www.tiktok.com/@avatarkaraokesg/video/7536174017997180178",
+    "snippet": "Karaoke Avatar · Avatar Kataang Kiss · Kai Avatar · Tuki Avatar · Aang Vrchat Avatar · Avatar Nhóm Hát · Avatar Nghệ Thuật · Avatar Decoration.",
+    "position": 3
+   },
+   {
+    "title": "Vui chơi ca hát chỉ từ 15ka/1 người tại Nova SG Music Box ...",
+    "link": "https://www.tiktok.com/@phat_su/video/7583550268646706440",
+    "snippet": "2953 Lượt thích,59 Bình luận.Video TikTok từ Lang Thang With Phát (@phat_su): \"Vui chơi ca hát chỉ từ 15ka/1 người tại Nova SG Music Box ...",
+    "position": 4
+   },
+   {
+    "title": "Karaoke Avatar: Đón Tết Với Tiệc Hát Tưng Bừng",
+    "link": "https://www.tiktok.com/@avatarkaraokesg/video/7607411551993171218",
+    "snippet": "___ ▪️ 63 - 65 Phạm Viết Chánh, phường Nguyễn Cư Trinh, Quận 1, HCM. #karaokesaigon #karaoke #avatarkaraoke #KTV #nightlife. Karaoke Avatar: ...",
+    "position": 5
+   },
+   {
+    "title": "Khám Phá Nova SG Music Box: Karaoke Chỉ 12K",
+    "link": "https://www.tiktok.com/@hungoididau/video/7569833532399406356",
+    "snippet": "Tìm hiểu Nova SG Music Box tại TPHCM với giá hát karaoke chỉ 12.000đ. @Hưng Ơi Đi Đâu.",
+    "position": 6
+   },
+   {
+    "title": "Khách Avatar Karaoke Xinh Như Diễn Viên Điện Ảnh",
+    "link": "https://www.tiktok.com/@avatarkaraokesg/video/7594617628606385428",
+    "snippet": "Karaoke AVATAR: Trải nghiệm ca hát đỉnh cao! Hãy đến AVATAR KARAOKE để trở thành ca sĩ. Giảm 30% từ 12:00 - 22:00! Đặt phòng ngay! # ...",
+    "position": 7
+   },
+   {
+    "title": "Karaoke AVATAR Cần Thơ",
+    "link": "https://www.tiktok.com/@honghotcantho65ct/video/7686689936371666197",
+    "snippet": "Karaoke AVATAR Cần Thơ là chủ đề của video. Nội dung liên quan tới Karaoke AVATAR Cần Thơ và sử dụng các hashtag: #KaraokeAVATAR, ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

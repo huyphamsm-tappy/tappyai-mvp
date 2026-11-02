@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Meliá Vinpearl Tây Ninh\" chưa muốn đi Tây Ninh site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:26:32.236Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Meliá Vinpearl Tây Ninh\" chưa muốn đi Tây Ninh site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Top khách sạn Melia tốt nhất tại Tân Ninh với giá từ 334.695₫",
+    "link": "https://vn.trip.com/hotels/tan-ninh-melia/hotels-c807297b618/",
+    "snippet": "Đặt khách sạn Melia tại Tân Ninh với giá từ 334.695₫ trên Trip.com. So sánh 1 chỗ nghỉ dựa trên vị trí, phòng ốc và đánh giá của khách.",
+    "position": 1
+   },
+   {
+    "title": "Top khách sạn tốt nhất tại Tây Ninh, Việt Nam",
+    "link": "https://vn.trip.com/hotels/tay-ninh-hotels-list-61683/",
+    "snippet": "Gợi ý nơi lưu trú lân cận ; Như Ý Hotel Tây Ninh. 153 Đường Số 5 Bời Lời, Ninh Tân, Bình Minh · 630.712₫ ; Khách sạn Melia Vinpearl Tây Ninh · 90 Lê Duẩn, Tân ...",
+    "position": 2
+   },
+   {
+    "title": "Top 10 khách sạn tại Lộc Thành, Việt Nam với giá từ",
+    "link": "https://vn.trip.com/hotels/lc-thnh-hotels-list-808013/",
+    "snippet": "\"Khách sạn này nằm cạnh khu công nghiệp Thành phố Mới Bình Dương, cách sân bay Tân Sơn Nhất khoảng 1 tiếng rưỡi đi taxi. Xung quanh khá yên tĩnh và trong lành.",
+    "position": 3
+   },
+   {
+    "title": "Top 10 khách sạn tại Bình Minh, Việt Nam với giá từ 723.595₫",
+    "link": "https://vn.trip.com/hotels/binh-minh-hotels-list-808085/",
+    "snippet": "Thêm thông tin về khách sạn tại Bình Minh ; Số Đánh Giá. 9 ; Số Khách Sạn. 3 ; Giá Ngày Trong Tuần. 781.949₫ ; Giá Cuối Tuần. 784.556₫ ; Khách sạn thịnh hành. Như Ý ...",
+    "position": 4
+   },
+   {
+    "title": "Top khách sạn tốt nhất tại Chantrea, Campuchia",
+    "link": "https://vn.trip.com/hotels/chanthrea-hotels-list-90434/",
+    "snippet": "Như Ý Hotel Tây Ninh ... \"Khách sạn rất mới và rộng rãi. Nhân viên phục vụ tốt. Chỉ có điều là máy lạnh rất yếu và mất nhiều thời gian mới làm mát được.\".",
+    "position": 5
+   },
+   {
+    "title": "Top 10 khách sạn tại Hoà Thành, Việt Nam với giá từ",
+    "link": "https://vn.trip.com/hotels/hoa-thanh-hotels-list-807873/",
+    "snippet": "Khách sạn Melia Vinpearl Tây Ninh. 90 Lê Duẩn, Tân Ninh ; Bavet Yong Yuan Casino& Hotel. National Road No. 1, Bavet ; Khách sạn Arina Luxury - Vincom Tay ...",
+    "position": 6
+   },
+   {
+    "title": "Top khách sạn tốt nhất tại Suối Ngô, Việt Nam",
+    "link": "https://vn.trip.com/hotels/suoi-ngo-hotels-list-458152/",
+    "snippet": "Gợi ý nơi lưu trú lân cận ; Bavet Yong Yuan Casino& Hotel · NR1, Krong, Bavet · 2.094.257₫ ; Khách sạn Melia Vinpearl Tây Ninh · 90 Lê Duẩn, Tân Ninh · 1.264.",
+    "position": 7
+   },
+   {
+    "title": "Khách sạn giá rẻ gần Lotte Cinema Tây Ninh, Tân Ninh",
+    "link": "https://vn.trip.com/hotels/landmark/vn/lotte-cinema-tay-ninh.html",
+    "snippet": "Khách sạn Melia Vinpearl Tây Ninh ở Tây Ninh, cách Tòa thánh Cao Đài 14 phút lái xe. Khách sạn 4.5 sao này cách Black Virgin Mountain 7,9 mi (12,7 km) và Sông ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

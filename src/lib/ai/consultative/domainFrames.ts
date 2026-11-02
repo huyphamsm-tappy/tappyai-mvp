@@ -9,6 +9,8 @@
 // hour, price, rating or venue the evidence does not carry. Unaccented like the rulebook; the
 // headings and examples carry diacritics because the user reads them.
 
+import { voicePickShape } from './styleLuna6'
+
 export type FrameDomain = 'food' | 'shopping' | 'travel' | 'entertainment' | 'spa' | 'main'
 export type FrameTurn = 'pick' | 'followup' | 'compare' | 'more' | 'reject' | 'plan'
 
@@ -65,7 +67,7 @@ export const PLAN_HEADINGS: Record<Exclude<FrameDomain, 'main'>, string[]> = {
 const PLAN_NOTES: Record<Exclude<FrameDomain, 'main'>, string> = {
   food: 'Gio nen den / dat ban truoc bao lau · goi mon gi cho SO NGUOI do, khau phan · tong chi phi co phep tinh · gui xe/di lai · meo (mon nen thu, gio tranh dong, mon khong nen goi) · phuong an du phong neu het cho.',
   shopping: 'Mua o dau (online/cua hang, nut he thong) · checklist kiem truoc khi tra tien · cach so gia, thoi diem nen mua (sale) · bao hanh/doi tra · cam bay thuong gap · tong chi phi.',
-  travel: 'Lich tung ngay nam trong khoi [TAPPY_PLAN] (theo khung gio, thoi gian di chuyen thuc te khi tool co). Phan chu theo cac tieu de: tom tat chuyen · an o dau goi mon gi tam gia · meo & cam bay · khi troi mua · ngan sach VND theo nguoi va theo ngay CO PHEP TINH · viec can lam truoc khi di · link ve/khach san ghi ro la TIM KIEM. CONG CU: goi TAT CA trong MOT buoc (song song), toi da 3 lan goi: get_hotel_prices (chi khi chua chot noi o) + search_places MOT truy van quan an dac san + get_weather; roi VIET NGAY, KHONG goi them. CHI DAT VE MAY BAY (khong co noi o/lich trinh): van dung DU tieu de — Tóm tắt chuyến = chuyen bay (tuyen, ngay, so nguoi); Ăn ở đâu, gọi món gì = an o san bay/diem den ngan gon; Mẹo & cạm bẫy = hanh ly, gio check-in, phi an; Khi trời mưa = tre chuyen/doi gio; Ngân sách = gia CHI tu tool (khong co → "chưa có giá vé — Xem giá trên Traveloka" + link Traveloka); Việc cần làm trước khi đi = cac buoc dat ve tren link da dua (1..5), giay to. KHONG hoi lai, KHONG bia chuyen bay/gio bay/gia. SAU KHOI [TAPPY_PLAN]: moi tieu de TOI DA 2 dong ngan (rieng Mẹo & cạm bẫy: DUNG 2 gach dau dong, moi gach mot meo) — lich tung ngay DA nam trong khoi, KHONG viet lai.',
+  travel: 'Lich tung ngay nam trong khoi [TAPPY_PLAN] (theo khung gio, thoi gian di chuyen thuc te khi tool co). Phan chu theo cac tieu de: tom tat chuyen · an o dau goi mon gi tam gia · meo & cam bay · khi troi mua · ngan sach VND theo nguoi va theo ngay CO PHEP TINH · viec can lam truoc khi di · link ve/khach san ghi ro la TIM KIEM. CONG CU: goi TAT CA trong MOT buoc (song song), toi da 3 lan goi: get_hotel_prices (chi khi chua chot noi o) + search_places MOT truy van quan an dac san + get_weather; roi VIET NGAY, KHONG goi them. CHI DAT VE MAY BAY (khong co noi o/lich trinh): van dung DU tieu de — Tóm tắt chuyến = chuyen bay (tuyen, ngay, so nguoi); Ăn ở đâu, gọi món gì = an o san bay/diem den ngan gon; Mẹo & cạm bẫy = hanh ly, gio check-in, phi an; Khi trời mưa = tre chuyen/doi gio; Ngân sách = gia CHI tu tool (khong co → "chưa có giá vé — Xem giá trên Traveloka" + link Traveloka); Việc cần làm trước khi đi = cac buoc dat ve tren link da dua (1..5), giay to. KHONG hoi lai, KHONG bia chuyen bay/gio bay/gia. SAU KHOI [TAPPY_PLAN]: moi tieu de 2-4 dong ngan (rieng Mẹo & cạm bẫy: 3-4 gach dau dong, moi gach mot meo) — lich tung ngay DA nam trong khoi, KHONG viet lai.',
   entertainment: 'Lich buoi theo gio (an → choi → uong neu hop) · dat phong/ve truoc ra sao · di chuyen giua cac chang · meo tung cho (gio vang giam gia, goi gi, luu y) · tong chi phi nhom va theo nguoi CO PHEP TINH.',
   spa: 'Goi/dich vu nen chon · dat lich luc nao · chuan bi gi truoc khi den · thoi luong · tong chi phi · luu y (phu thu, tip, chong chi dinh chung — ghi ro la luu y chung).',
 }
@@ -94,7 +96,7 @@ export function buildDomainFrame(domain: FrameDomain, turn: FrameTurn = 'pick'):
   let body: string
   if (domain === 'main') body = MAIN
   else if (turn === 'plan') body = `${PLAN_HEAD}\nTIEU DE BAT BUOC — ${domain.toUpperCase()}: ${PLAN_HEADINGS[domain].map(h => `"${h}"`).join(' · ')}\nNOI DUNG: ${PLAN_NOTES[domain]}`
-  else if (turn === 'pick') body = `${PICK_SHAPE}\n${PICK[domain]}`
+  else if (turn === 'pick') body = `${voicePickShape(PICK_SHAPE)}\n${PICK[domain]}`
   else body = `${FOLLOW[turn]}\n${PICK[domain].split('\n')[0]}`
   return `\n\n===== KHUNG TU VAN — ${domain.toUpperCase()} / ${turn.toUpperCase()} =====\n${body}\n${FRAME_CORE}\n=====================================`
 }
@@ -109,7 +111,7 @@ export function frameLibrary(domain: FrameDomain): string {
   const D = domain.toUpperCase()
   return [
     `===== THU VIEN KHUNG TU VAN — ${D} (luot nay chi dung MOT khung: xem dong "KHUNG AP DUNG" o cuoi) =====`,
-    `--- ${D} / PICK ---\n${PICK_SHAPE}\n${PICK[domain]}`,
+    `--- ${D} / PICK ---\n${voicePickShape(PICK_SHAPE)}\n${PICK[domain]}`,
     ...(['followup', 'compare', 'more', 'reject'] as const).map(t => `--- ${D} / ${t.toUpperCase()} ---\n${FOLLOW[t]}\n${PICK[domain].split('\n')[0]}`),
     `--- ${D} / PLAN ---\n${PLAN_HEAD}\nTIEU DE BAT BUOC — ${D}: ${PLAN_HEADINGS[domain].map(h => `"${h}"`).join(' · ')}\nNOI DUNG: ${PLAN_NOTES[domain]}`,
     FRAME_CORE,
@@ -163,6 +165,53 @@ export function restorePlanHeadings(original: string, guarded: string): string {
     present.add(h.key)
   })
   return out.join('\n').replace(/\n{3,}/g, '\n\n')
+}
+
+/** A line that only says "no information" — a placeholder, not content (the model's own or an older guard's). */
+const PLACEHOLDER_LINE = /^\s*[-*•]?\s*(?:chưa có (?:thông tin|dữ liệu)(?: đã kiểm)?(?: cho mục này)?|không có (?:thông tin|dữ liệu)(?: cho mục này)?|no (?:checked )?information(?: for this part)?(?: yet)?)\s*[.!…]?\s*$/iu
+const STRUCTURED_LINE = /^\s*\[(?:FOLLOWUPS|CTA_BUTTONS|TAPPY_[A-Z_]+)\]/
+
+/**
+ * No empty section in a detailed plan (owner 30/09: a section with no data is HIDDEN — no heading, no "Chưa có thông tin đã
+ * kiểm cho mục này"). Luna §7 c / §13: SPA-1 "Thời lượng" held only that sentence; bare headings came from a guard cutting
+ * every sentence under them. A section whose lines are all blank or placeholders is removed with its heading. Only
+ * approved plan headings count; structured blocks end a section.
+ */
+export function hideEmptyPlanSections(text: string): { text: string; hidden: string[] } {
+  const lines = text.split('\n')
+  const out: string[] = []
+  const hidden: string[] = []
+  for (let i = 0; i < lines.length; i++) {
+    const key = headingKey(lines[i])
+    if (!key) { out.push(lines[i]); continue }
+    let k = i + 1
+    while (k < lines.length && !headingKey(lines[k]) && !STRUCTURED_LINE.test(lines[k])) k++
+    const body = lines.slice(i + 1, k)
+    if (body.every(l => !/[\p{L}\p{N}]/u.test(l) || PLACEHOLDER_LINE.test(l))) { hidden.push(key); i = k - 1; continue }
+    out.push(lines[i])
+  }
+  return { text: out.join('\n').replace(/\n{3,}/g, '\n\n'), hidden }
+}
+
+/**
+ * The stages the user asked for that the plan gives no place for (owner 30/09, E1-G5: "ăn tối rồi đi chơi rồi đi uống" →
+ * a plan with dinner and karaoke and no drinking venue). One short sentence at the END says which — never a filler section.
+ * Folded, whole-word; a stage counts as covered only when the plan names a place of that kind.
+ */
+const STAGES: Array<{ label: string; asked: RegExp; covered: RegExp }> = [
+  { label: 'đi uống', asked: /\b(?:di uong|uong tiep|nhau|bar|pub|beer|cocktail)\b/, covered: /\b(?:[a-z]*bar|pub|beer|bia|rooftop|lounge|cocktail|quan nhau|club)\b/ },
+  { label: 'đi chơi', asked: /\b(?:di choi|karaoke|xem phim|bida|bowling)\b/, covered: /\b(?:karaoke|xem phim|rap phim|cgv|lotte cinema|galaxy cinema|bida|billiards?|bowling|khu vui choi)\b/ },
+]
+const foldStage = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/gi, 'd').toLowerCase()
+export function missingStagesLine(planText: string, userTexts: readonly string[], lang = 'vi'): string | null {
+  // A stage the user turned DOWN is not a request (UAT 30/09 ENT-2: "không thích bar" → "Chặng đi uống bạn muốn…").
+  const asked = foldStage(userTexts.join(' \n ')).replace(/\b(?:khong|ko|chang|cha|thoi|bo|dung|het)\s+(?:thich|muon|can|di|choi|uong|vao|ra)?\s*(?:\S+\s+)?(?:di uong|uong tiep|nhau|bar|pub|beer|cocktail|di choi|karaoke|xem phim|bida|bowling)\b/g, ' ')
+  const plan = foldStage(planText.replace(/\[(TAPPY_PLAN|CTA_BUTTONS|FOLLOWUPS)\][\s\S]*?\[\/\1\]/g, ''))
+  const missing = STAGES.filter(s => s.asked.test(asked) && !s.covered.test(plan)).map(s => s.label)
+  if (missing.length === 0) return null
+  return lang === 'en'
+    ? `The ${missing.join(' and ')} part you asked for is not in this plan yet — I have no checked place for it; want me to look?`
+    : `Chặng ${missing.join(' và ')} bạn muốn chưa có trong kế hoạch vì mình chưa có địa điểm đã kiểm — bạn muốn mình tìm thêm không?`
 }
 
 

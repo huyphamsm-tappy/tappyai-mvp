@@ -1,0 +1,148 @@
+{
+ "items": [
+  {
+   "id": "ADDR-01",
+   "domain": "food",
+   "kind": "không có tín hiệu",
+   "turns": [
+    {
+     "text": "tìm quán phở ngon quận 1 cho 2 người tầm 100k",
+     "expect": null
+    }
+   ]
+  },
+  {
+   "id": "ADDR-02",
+   "domain": "food",
+   "kind": "tôi",
+   "turns": [
+    {
+     "text": "tôi muốn tìm quán phở ngon quận 1, đi 2 người, tầm 100k",
+     "expect": null
+    }
+   ]
+  },
+  {
+   "id": "ADDR-03",
+   "domain": "food",
+   "kind": "tui",
+   "turns": [
+    {
+     "text": "tui muốn tìm quán phở ngon quận 1, đi 2 người, tầm 100k",
+     "expect": null
+    }
+   ]
+  },
+  {
+   "id": "ADDR-04",
+   "domain": "food",
+   "kind": "mình",
+   "turns": [
+    {
+     "text": "mình muốn tìm quán phở ngon quận 1, đi 2 người, tầm 100k",
+     "expect": null
+    }
+   ]
+  },
+  {
+   "id": "ADDR-05",
+   "domain": "food",
+   "kind": "gọi Tappy anh / tự xưng em",
+   "turns": [
+    {
+     "text": "anh ơi em muốn tìm quán phở ngon quận 1, đi 2 người, tầm 100k, anh chọn giúp em nhé",
+     "expect": null
+    }
+   ]
+  },
+  {
+   "id": "ADDR-06",
+   "domain": "spa",
+   "kind": "gọi Tappy em / tự xưng chị",
+   "turns": [
+    {
+     "text": "em ơi chị muốn tìm chỗ massage thư giãn quận 1, tầm 500k, em chọn giúp chị nhé",
+     "expect": null
+    }
+   ]
+  },
+  {
+   "id": "ADDR-07",
+   "domain": "food",
+   "kind": "chú / cháu",
+   "turns": [
+    {
+     "text": "cháu ơi chú muốn tìm quán phở ngon quận 1, đi 2 người, tầm 100k, cháu chọn giúp chú nhé",
+     "expect": null
+    }
+   ]
+  },
+  {
+   "id": "ADDR-08",
+   "domain": "food",
+   "kind": "chỉ nói em, không rõ giới tính",
+   "turns": [
+    {
+     "text": "em muốn tìm quán phở ngon quận 1, đi 2 người, tầm 100k",
+     "expect": null
+    }
+   ]
+  },
+  {
+   "id": "ADDR-09",
+   "domain": "food",
+   "kind": "mày/tao do người dùng mở trước",
+   "turns": [
+    {
+     "text": "mày chọn giùm tao quán phở ngon quận 1 đi, 2 đứa, tầm 100k",
+     "expect": null
+    }
+   ]
+  },
+  {
+   "id": "ADDR-10",
+   "domain": "spa",
+   "kind": "mày/tao nhưng ngữ cảnh sức khoẻ",
+   "turns": [
+    {
+     "text": "mày ơi tao đau vai gáy vì ngồi máy tính nhiều, muốn đi massage ở quận 1 tầm 500k",
+     "expect": null
+    }
+   ]
+  },
+  {
+   "id": "ADDR-11",
+   "domain": "food",
+   "kind": "đổi xưng hô giữa chừng",
+   "turns": [
+    {
+     "text": "tôi muốn tìm quán phở ngon quận 1, 2 người, tầm 100k",
+     "expect": null
+    },
+    {
+     "text": "tui đổi ý, cho tui quán lẩu quận 1 đi, 4 người, tầm 200k",
+     "expect": null
+    }
+   ]
+  },
+  {
+   "id": "ADDR-12",
+   "domain": "food",
+   "kind": "nhất quán nhiều lượt",
+   "turns": [
+    {
+     "text": "tôi muốn tìm quán nhật quận 1, 2 người, tầm 300k",
+     "expect": null
+    },
+    {
+     "text": "còn chỗ nào khác không",
+     "expect": null
+    },
+    {
+     "text": "so với chỗ đầu thì chỗ nào đáng hơn",
+     "expect": null
+    }
+   ]
+  }
+ ]
+}

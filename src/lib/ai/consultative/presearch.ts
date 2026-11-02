@@ -34,7 +34,7 @@ export interface PresearchPlan {
   reuse?: { shown: string[] }
 }
 
-const PLACE_TYPES = new Set(['restaurant', 'cafe', 'spa', 'bar', 'attraction', 'cinema'])
+const PLACE_TYPES = new Set(['shop', 'restaurant', 'cafe', 'spa', 'bar', 'attraction', 'cinema'])
 
 // UAT4 consultative-40 A/B (27 Sep 2026, flags ON, head vs 19 Sep): the pre-search ran the SUGGESTED
 // query too — `exact: false` means "the model may sharpen it" — so a specified request lost its
@@ -51,7 +51,7 @@ export function planPresearch(searchNow: SearchNow | null, situation: SituationF
   if (!PLACE_TYPES.has(searchNow.type)) return null
   if (!searchNow.query.trim()) return null
   const location = situation.place.text?.trim() || opts.statedArea?.trim() || undefined
-  return { toolName: 'search_places', args: { query: searchNow.query.trim(), type: searchNow.type, ...(location ? { location } : {}) }, exact: searchNow.exact }
+  return { toolName: 'search_places', args: { query: searchNow.query.trim(), ...(searchNow.type === 'shop' ? {} : { type: searchNow.type }), ...(location ? { location } : {}) }, exact: searchNow.exact }
 }
 
 /**

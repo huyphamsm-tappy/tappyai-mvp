@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hải Sản Ku Tom Đà Nẵng\" OR \"Hải Sản Đà Nẵng Bé Biển\" OR \"Mộc quán Seafood Đà Nẵng\" Đà Nẵng site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:01:19.260Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hải Sản Ku Tom Đà Nẵng\" OR \"Hải Sản Đà Nẵng Bé Biển\" OR \"Mộc quán Seafood Đà Nẵng\" Đà Nẵng site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Garlic Butter Shrimp at Viral Mộc Quán Seafood Đà Nẵng",
+    "link": "https://www.tiktok.com/@stephany1_/video/7682925350069800205",
+    "snippet": "Mộc Quán Seafood Đà Nẵng 26 Tô Hiến Thành, An Hải, Đà Nẵng 550000, Vietnam #danang #seafoodboil #garlicbuttershrimp #shrimpbutter #vietnam.",
+    "position": 1
+   },
+   {
+    "title": "Cẩn thận sau lưng kìa bé iu!",
+    "link": "https://www.tiktok.com/@haisanmocquan/video/7687828398873333010",
+    "snippet": "40 Lượt thích,Video TikTok từ Mộc Quán Seafood Đà Nẵng (@haisanmocquan): \"Cẩn thận sau lưng kìa bé iu!. Careful behind your back, ...",
+    "position": 2
+   },
+   {
+    "title": "Mộc Quán Seafood Đà Nẵng (@haisanmocquan)",
+    "link": "https://www.tiktok.com/@haisanmocquan",
+    "snippet": "Mộc Quán Seafood Đà Nẵng (@haisanmocquan) trên TikTok |32.1K Lượt thích.4919 Follower.Contact for work: 0905665058 or 0964531153.Xem video phổ biến của Mộc ...",
+    "position": 3
+   },
+   {
+    "title": "Cứu tinh cho hội lười nghĩ món: Lịch trình 7 ngày càn quét ...",
+    "link": "https://www.tiktok.com/@haisanmocquan/video/7682662495768595719",
+    "snippet": "Video TikTok từ Mộc Quán Seafood Đà Nẵng (@haisanmocquan): \"Cứu tinh cho hội lười nghĩ món: Lịch trình 7 ngày càn quét tại Mộc Quán!",
+    "position": 4
+   },
+   {
+    "title": "TÍN ĐỒ “NGHIỆN HẢI SẢN” ĐÂU RỒI, BƠI VÀO ĐÂY, MỘC ...",
+    "link": "https://www.tiktok.com/@haisanmocquan/video/7680005917370338578",
+    "snippet": "Video TikTok từ Mộc Quán Seafood Đà Nẵng (@haisanmocquan): \"TÍN ĐỒ “NGHIỆN HẢI SẢN” ĐÂU RỒI, BƠI VÀO ĐÂY, MỘC CHIỀU TẤT TẦN TẬT LUÔN NÈ!",
+    "position": 5
+   },
+   {
+    "title": "Dạ vậy được chưa sếp 😂😂😂 #haisandanang #haisan # ...",
+    "link": "https://www.tiktok.com/@haisanmocquan/video/7684095987991743751",
+    "snippet": "81 Lượt thích,Video TikTok từ Mộc Quán Seafood Đà Nẵng (@haisanmocquan): \"Dạ vậy được chưa sếp #haisandanang #haisan #mocquan ...",
+    "position": 6
+   },
+   {
+    "title": "Góc \"rì viu\" chân thực: Ở Đà Nẵng thèm hải sản tươi rói mà ...",
+    "link": "https://www.tiktok.com/@haisanmocquan/video/7678531885219187988",
+    "snippet": "Góc \"rì viu\" chân thực: Ở Đà Nẵng thèm hải sản tươi rói. @Mộc Quán Seafood Đà Nẵng.",
+    "position": 7
+   },
+   {
+    "title": "05:30 SÁNG Ở MỘC CÓ GÌ? ⏰🦐 Khi thành phố còn chưa ...",
+    "link": "https://www.tiktok.com/@haisanmocquan/video/7683714889231273223",
+    "snippet": "Video TikTok từ Mộc Quán Seafood Đà Nẵng (@haisanmocquan): \"05:30 SÁNG Ở MỘC CÓ GÌ? ⏰ Khi thành phố còn chưa thức giấc, Mộc đã đỏ đèn.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quà tặng áp dụng riêng khách mua hoa tại Shop mình site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:55:19.598Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà tặng áp dụng riêng khách mua hoa tại Shop mình site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Gấu bông con rồng cute thịnh vượng quà tặng rồng thú nhồi ...",
+    "link": "https://www.lazada.vn/products/gau-bong-con-rong-cute-thinh-vuong-qua-tang-rong-thu-nhoi-bong-hinh-con-rong-y-nghia-nhieu-size-chon-lua-i2530252228.html?srsltid=AU7gw4WLhCPjuBcGJQemEDiVHseYl_vmwBNz7LvB9A8qcqVJy29kQv8d",
+    "snippet": "Gấu bông con rồng cute thịnh vượng quà tặng rồng thú nhồi bông hình con rồng ý nghĩa nhiều size chọn lựaChất liệu: Vải thun mềm da lộn, bông PP, ...",
+    "position": 1
+   },
+   {
+    "title": "Hoa Tulip chất liệu PU siêu xinh, hoa trang trí decor, phụ kiện ...",
+    "link": "https://www.lazada.vn/products/hoa-tulip-chat-lieu-pu-sieu-xinh-hoa-trang-tri-decor-phu-kien-chup-anh-i1800118002.html?srsltid=AU7gw4U81Ud_med-rytxfH2hwEi17OvuTncyI5raeL0uU_Fyo69Xxjbz",
+    "snippet": "- Thân được làm bằng chất liệu lõi thép bọc nhựa nên cành hoa mềm quý khách hàng có thể thoải mái uốn, cắt cho phù hợp với mục đích trang trí của mình.",
+    "position": 2
+   },
+   {
+    "title": "Hoa baby ướp siêu đẹp siêu bền siêu rẻ cắm bình trang trí ...",
+    "link": "https://www.lazada.vn/products/hoa-baby-uop-sieu-dep-sieu-ben-sieu-re-cam-binh-trang-tri-hoac-trang-tri-chup-anh-san-pham-lam-qua-tang-lam-bo-hoa-mini-de-hop-qua-hoa-kho-lavan-home-i1104418988.html?srsltid=AU7gw4VTYXgAyrretION_wd8U6_ccJcxvbE549HpJM-rrJzQ32voc2hH",
+    "snippet": "Bạn có thể cắm bình hoa, loại bình cao hoặc cắt ngắn để cắm bình thấp hoặc bó thành bó hoa làm quà tặng. Bạn mua nhiều hơn 5 set thì bạn nhắn shop để được hỗ ...",
+    "rating": 1,
+    "ratingCount": 1,
+    "position": 3
+   },
+   {
+    "title": "Hoa tặng mẹ 20/10, 8/3,quà tặng bạn gái valentine, sinh nhật",
+    "link": "https://www.lazada.vn/products/qua-tang-sinh-nhat-qua-tang-vo-bo-hoa-hong-sap-thom-3-bongnhieu-mau-hoa-tang-me-2010-83qua-tang-ban-gai-valentine-sinh-nhat-i2432722303.html?srsltid=AU7gw4WKlLy_uIbMuyvqCgpsEuFbdCxoFWfZXuUuGS3-24M_boeuJWjb",
+    "snippet": "ô ụ: Hoa sáp được sử dụng để làm quà kỷ niệm, quà cưới hay quà tặng bạn gái, tặng mẹ, đồng nghiệp vào những ngày lễ Valentine 14/2, 8/3, 20/10, tặng sinh nhật ...",
+    "position": 4
+   },
+   {
+    "title": "Hoa baby bó sẵn ❤️ Quà tặng bạn nữ HOA KHÔ ❤️ ...",
+    "link": "https://www.lazada.vn/products/hoa-baby-bo-san-qua-tang-ban-nu-hoa-kho-hoa-kho-litty-hoa-baby-kho-hoa-kho-trang-tri-de-ban-trang-tri-phong-ngu-decor-phong-khach-bo-hoa-phu-kien-chup-anh-i2039373960.html?srsltid=AU7gw4WXqSKrNtcC4csJBDkxhWAZ8_2a2eRM51Y09ntse2fBQNYC14gN",
+    "snippet": "Mô tả sản phẩm ❤️Tên: Hoa khô baby cao cấp (Bó sẵn)✪ Màu sắc: nhiều màu✪ Chất Liệu: Hoa thật sấy khô theo công nghệ châu Âu✪ Định lượng: 01 bó ✪ Kích ...",
+    "position": 5
+   },
+   {
+    "title": "Bộ Xe Hoa Trang Trí Cực Đẹp Giá Cả Hợp Lý",
+    "link": "https://www.lazada.vn/products/bo-xe-hoa-trang-tri-cuc-dep-gia-ca-hop-ly-i1917454331.html?srsltid=AU7gw4XI66W66nJmO_CQQdiD40-BGYqaj5LofeZAs-bccH9_cMhjhzaL",
+    "snippet": "Bộ xe hoa trang trí hiện đại làm từ chất liệu acrylic, mang đến vẻ đẹp tinh tế cho không gian. Sản phẩm phù hợp cho việc trang trí nhà cửa, với thiết kế đẹp ...",
+    "position": 6
+   },
+   {
+    "title": "Thắt lưng, dây nịt nam hàng độc lạ chất liệu cao cấp",
+    "link": "https://www.lazada.vn/products/that-lung-day-nit-nam-hang-doc-la-chat-lieu-cao-cap-i479698860.html?srsltid=AU7gw4X2Znm5p-vcDnJD3FZyw-un10XHxt9YBMOjjvMaqe5Q2L_WtfZf",
+    "snippet": "Đặc điểm nổi bật. THẮT LƯNG NAM THỜI TRANG CÓ HỘP TÚI ĐỰNG THEO KÈM. Mặt thắt lưng: Làm bằng kim loại hợp kim chống gỉ cao cấp (rộng 6,5cm x dài 12cm).",
+    "rating": 4.5,
+    "ratingCount": 4,
+    "position": 7
+   },
+   {
+    "title": "Hỏa tốc - Bộ quà tặng nam giới ví nam da thật loại 1",
+    "link": "https://www.lazada.vn/products/hoa-toc-bo-qua-tang-nam-gioi-vi-nam-da-that-loai-1-bao-hanh-3-nam-full-tui-hop-y-hinh-anh-chup-that-i2295713304.html?srsltid=AU7gw4UuyulsPh0YHCcZ9i-A51ddBLvyAWD1n4Ja7QA000iuRiTAnIxA",
+    "snippet": "1. Bộ quà tặng nhẫn đôi cho các cặp đôi/ couple đang yêu Full túi hộp · 2. Combo hộp 05 tất/ vớ nam nữ FULL Túi hộp phù hợp làm quà tặng · 3. Bộ ...",
+    "date": "3 thg 5, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

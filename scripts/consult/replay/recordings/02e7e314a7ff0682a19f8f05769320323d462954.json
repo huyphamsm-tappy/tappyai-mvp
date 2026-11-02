@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Cà Phê G7 Gu Mạnh X2 300g site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:22:04.368Z",
+ "body": {
+  "searchParameters": {
+   "q": "Cà Phê G7 Gu Mạnh X2 300g site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Trung Nguyên Cà phê hòa tan rang xay Legend Special Edition ...",
+    "link": "https://shop.tiktok.com/vn/pdp/1734222046541546788",
+    "snippet": "·Giảm stress, bớt căng thẳng, giúp bạn tập trung hơn.·Tốt cho não và kéo dài tuổi thọ.·Giảm nguy cơ trầm cảm.·Phòng ngừa các bệnh tim mạch và các bệnh suy giảm ...",
+    "position": 1
+   },
+   {
+    "title": "Archcafé Chocolate sữa 240g",
+    "link": "https://shop.tiktok.com/vn/pdp/1734449569697596708",
+    "snippet": "Cà phê G7 Gu Mạnh X2 300g. Flash sale. 5 sold. ₫84.000. ₫120.000. Cà phê G7 Gu Mạnh X2 300g. 5 sold. ₫84.000.",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

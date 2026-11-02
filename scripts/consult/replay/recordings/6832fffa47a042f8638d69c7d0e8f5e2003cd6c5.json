@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Le House Da Lat\" OR \"Grand Mercure Dalat\" OR \"Golden Sun Hotel\" Đà Lạt site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:12:40.595Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Le House Da Lat\" OR \"Grand Mercure Dalat\" OR \"Golden Sun Hotel\" Đà Lạt site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Golden Sun Hotel Đà Lạt: Phòng ấm, decor xinh",
+    "link": "https://www.tiktok.com/@icungbaynhatrangdalat/video/7628599640945921301",
+    "snippet": "“Đà Lạt lạnh vậy, chỉ muốn trốn ở Golden Sun Hotel thôi… Phòng ấm, decor xinh xắn kiểu nhẹ nhàng Sáng mở cửa là thấy trời Đà Lạt mờ sương ...",
+    "position": 1
+   },
+   {
+    "title": "Golden Sun Hotel Đà Lạt — Trải nghiệm sang trọng đẳng ...",
+    "link": "https://www.tiktok.com/@alotravel.231/video/7675987404741758228",
+    "snippet": "Vị trí và ấn tượng ban đầu Golden Sun Hotel Đà Lạt tọa lạc ở vị trí thuận tiện cho các điểm tham quan nổi tiếng, giúp tiết kiệm thời gian di ...",
+    "position": 2
+   },
+   {
+    "title": "Golden Sun Hotel - Dalat (@goldensunhotel.dalat)",
+    "link": "https://www.tiktok.com/@goldensunhotel.dalat",
+    "snippet": "Chào mừng bạn đến với Golden Sun Hotel – Dalat. Nghỉ dưỡng đẳng cấp chuẩn 5⭐. EVERY KIND WORD MEANS A LOT Mỗi trải nghiệm được sẻ ...",
+    "position": 3
+   },
+   {
+    "title": "Trải Nghiệm Golden Sun Hotel Đà Lạt Hè Này",
+    "link": "https://www.tiktok.com/@checkincungnhu/video/7613072377458609416",
+    "snippet": "Keywords: Golden Sun Hotel Đà Lạt trải nghiệm sang trọng, view Hồ Xuân Hương tuyệt đẹp, dịch vụ khách sạn Đà Lạt, phòng nghỉ tinh tế Đà Lạt ...",
+    "position": 4
+   },
+   {
+    "title": "Khách Sạn Golden Imperial Đà Lạt - Địa Điểm Nghỉ Dưỡng ...",
+    "link": "https://www.tiktok.com/@resortdalat/video/7377949712172715281",
+    "snippet": "Review Golden Sun Hotel Đà Lạt · Hotel Golden Sunset Dakhla · Luxury ... Khám phá khách sạn Golden Imperial tại Đà Lạt với view hồ Xuân Hương ...",
+    "position": 5
+   },
+   {
+    "title": "Golden Sun Hotel Đà Lạt - Stay & Review",
+    "link": "https://www.tiktok.com/@yen_truong79/photo/7681850584349248789",
+    "snippet": "Golden Sun Hotel Đà Lạt - Stay & Review. Experience Golden Sun Hotel Đà Lạt with spacious rooms, warm decor, and amenities like breakfast, pool, ...",
+    "position": 6
+   },
+   {
+    "title": "Khách sạn bình dân ngay trung tâm Đà Lạt #thodandalad ...",
+    "link": "https://www.tiktok.com/@sanmay_dalat/video/7676363886504840456",
+    "snippet": "Roy Dala Hotel Đà Lạt · De Ma at Hotel Đà Lạt Thu Nhi · Review Golden Sun Hotel Đà Lạt · Hotel Colline Đà Lạt Studio King · Review Nature Hotel ...",
+    "position": 7
+   },
+   {
+    "title": "Khách Sạn Vừa Tiện Nghi Vừa Hiện Đại Tại Đà Lạt",
+    "link": "https://www.tiktok.com/@khachsandalatviewdep/video/7576488270146637074",
+    "snippet": "... Golden Sun Hotel Đà Lạt, trải nghiệm du lịch Đà Lạt, lựa chọn khách sạn Đà Lạt, khám phá Đà Lạt qua nghỉ dưỡng, khách sạn 5 sao Đà Lạt ... Đà Lạt ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

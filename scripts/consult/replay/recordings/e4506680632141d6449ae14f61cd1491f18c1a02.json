@@ -1,0 +1,82 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "món đồ (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:19:52.430Z",
+ "body": {
+  "searchParameters": {
+   "q": "món đồ (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tổng Hợp 50 Món Đồ Ăn Vặt Trung Quốc Tự Chọn ...",
+    "link": "https://shopee.vn/T%E1%BB%95ng-H%E1%BB%A3p-50-M%C3%B3n-%C4%90%E1%BB%93-%C4%82n-V%E1%BA%B7t-Trung-Qu%E1%BB%91c-T%E1%BB%B1-Ch%E1%BB%8Dn-YUDOFOOD-N%E1%BB%99i-%C4%90%E1%BB%8Ba-i.273139028.17381536952",
+    "snippet": "Mua Tổng Hợp 50 Món Đồ Ăn Vặt Trung Quốc Tự Chọn YUDOFOOD Nội Địa giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại ...",
+    "rating": 4.6,
+    "ratingCount": 319,
+    "position": 1
+   },
+   {
+    "title": "Bộ 6 món đồ dùng truyền thống làm thủ công trang trí ...",
+    "link": "https://shopee.vn/B%E1%BB%99-6-m%C3%B3n-%C4%91%E1%BB%93-d%C3%B9ng-truy%E1%BB%81n-th%E1%BB%91ng-l%C3%A0m-th%E1%BB%A7-c%C3%B4ng-trang-tr%C3%AD-tr%C6%B0ng-b%C3%A0y-i.152795496.57815668336",
+    "snippet": "Mua Bộ 6 món đồ dùng truyền thống làm thủ công trang trí, trưng bày giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn ...",
+    "position": 2
+   },
+   {
+    "title": "Top 7+ những món đồ đôi với người yêu tạo kỷ niệm mùa ...",
+    "link": "https://shopee.vn/blog/nhung-mon-do-doi-voi-nguoi-yeu/",
+    "snippet": "Gợi ý những món đồ đôi với người yêu mà bạn nên có · Ví đôi · Ly đôi · Áo đôi · Đồng hồ · Giày đôi · Lắc tay · Nhẫn đôi · Dây chuyền đôi. Nếu ...",
+    "date": "8 thg 2, 2026",
+    "position": 3
+   },
+   {
+    "title": "Top 10 món đồ đi mưa cần thiết chuẩn bị khi mùa mưa về",
+    "link": "https://shopee.vn/blog/do-di-mua-can-thiet/",
+    "snippet": "#1 List đồ đi mưa cần thiết khi lưu thông ngoài trời · Trang phục đi mưa · Giày dép đi mưa · Dù đi mưa · Kính đi mưa · Túi đựng đồ đi mưa · Bọc ...",
+    "date": "12 thg 9, 2023",
+    "position": 4
+   },
+   {
+    "title": "18 Món ngon ngày hè nắng nóng cho gia đình, đãi khách ...",
+    "link": "https://cellphones.com.vn/sforum/mon-ngon-ngay-he",
+    "snippet": "Cháo đậu xanh thịt gà · Đậu cô ve xào lòng gà · Thịt luộc rau sống · Nộm đu đủ tai heo · Hến xào hoa thiên lý · Salad bơ · Sườn chiên nước mắm · Canh rau ngót nấu tôm ...",
+    "rating": 4,
+    "ratingCount": 4,
+    "position": 5
+   },
+   {
+    "title": "Top 5 món đồ bạn nên \"chốt\" ngay để làm quà 20/10 cho ...",
+    "link": "https://cellphones.com.vn/sforum/top-5-mon-do-ban-nen-chot-ngay-de-lam-qua-20-10-cho-nguoi-yeu",
+    "snippet": "Top 5 món đồ bạn nên 'chốt' ngay để làm quà 20/10 cho người yêu · Tai nghe Bluetooth Apple AirPods 2 VN/A · Cân điện tử thông minh Eufy Smart Scale C1 · Đồng hồ ...",
+    "position": 6
+   },
+   {
+    "title": "TOP 10 app đặt đồ ăn online phổ biến ưa chuộng hiện nay",
+    "link": "https://cellphones.com.vn/sforum/top-5-app-dat-do-an-online-duoc-su-dung-nhieu-nhat-hien-nay",
+    "snippet": "Các app đặt đồ ăn online giúp bạn nhanh chóng đặt được món mình yêu thích một cách nhanh chóng. Xem ngay các app đặt đồ ăn phổ biến tại đây!",
+    "rating": 1,
+    "ratingCount": 2,
+    "position": 7
+   },
+   {
+    "title": "Gợi ý 13 món ăn sáng cho bé đi học đủ dinh dưỡng và dễ ...",
+    "link": "https://cellphones.com.vn/sforum/mon-an-sang-cho-be",
+    "snippet": "Tổng hợp 13 những món ăn sáng cho bé như cơm chiên, các món bánh như bánh kếp lành mạnh,..., dành cho bé 2 tuổi, 3 tuổi, bé lớn đi học.",
+    "rating": 3.7,
+    "ratingCount": 3,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

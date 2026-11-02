@@ -1,0 +1,368 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "laptop mới học thiết kế đồ họa dưới 20 triệu",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:22:58.888Z",
+ "body": {
+  "searchParameters": {
+   "q": "laptop mới học thiết kế đồ họa dưới 20 triệu",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Địa Chỉ Sửa Laptop Uy Tín HCM",
+    "source": "Laptop Thiên Ân",
+    "price": "150.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTi3yAK_wEgkT2ZrJQEmEBsveEWDv_D2GcMUwbxYIVaLrmZAK_Yu623eVlEI-CDNfAmWaM0ZiEP7WsT3S4QV_AyWap5LcTz6qAI-LjYiDz3",
+    "productId": "5251478027309808362",
+    "position": 1
+   },
+   {
+    "title": "Dell Precision 7750 Core i7 10850H 16GB SSD 512GB RTX 4000 17.3 inch FHD Windows 10 pro",
+    "source": "Laptop Lê Sơn",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+m%E1%BB%9Bi+h%E1%BB%8Dc+thi%E1%BA%BFt+k%E1%BA%BF+%C4%91%E1%BB%93+h%E1%BB%8Da+d%C6%B0%E1%BB%9Bi+20+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:17928275141093641914,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "17.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTHBqDO6AOwCJQBVKjDmRUr2ztz951V9BWnKZ6Txwf-maMEL2SDU5CBZqlgNvavBo3B1ThxzLGmW4a0t4GCua9ynC_hjffP",
+    "rating": 3.7,
+    "ratingCount": 3,
+    "productId": "17928275141093641914",
+    "position": 2
+   },
+   {
+    "title": "Địa Chỉ Sửa Laptop Khởi Động Chậm TPHCM | Giá Rẻ, Gần Đây",
+    "source": "Trường Thịnh Group",
+    "price": "150.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQZA8FmVt2zn6TpwIMyyPFYptlZMep9_sYTkV7F-PoBwRqSPYKO11-2knMi5OSFctsNKDgx-d1AoUT_QoO-1I1llwctVQ879s614Z1h86UK6Zju00QYPHL6NA",
+    "productId": "7183095848054414710",
+    "position": 3
+   },
+   {
+    "title": "Sửa 01 bản lề laptop thông thường",
+    "source": "Phong Vũ",
+    "price": "250.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTRXQG6lnveHBv2FGoYNRjzkolhAraou5elc6tk-MzRy2_G4ikgzf2IY66H3vC6PponcagZZOgtnH2e23yxoUetQCb8yExoZGxXsEUXZ6qB",
+    "productId": "11054237005439670708",
+    "position": 4
+   },
+   {
+    "title": "TÚI CẶP ĐI LÀM ĐI HỌC UNISEX – TÚI LAPTOP 15.9 INCH CAO CẤP",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+m%E1%BB%9Bi+h%E1%BB%8Dc+thi%E1%BA%BFt+k%E1%BA%BF+%C4%91%E1%BB%93+h%E1%BB%8Da+d%C6%B0%E1%BB%9Bi+20+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:822634611619969252,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "420.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQ8mPbFTPBswT5n6wuGXPl-yYoF4z4LBzZ7yq7f8rfeR6DJKm8ALGnAwVRQzaqIAXphr9cM1RyjsMzsuX_5Tt5qe8ivN5P_NTaKtUIpcZrL",
+    "productId": "822634611619969252",
+    "position": 5
+   },
+   {
+    "title": "Sửa Main Laptop - Laptop văn phòng, Gaming, Máy trạm CPU gen 1, gen 2, gen 3",
+    "source": "Lapvip",
+    "price": "300.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTylV2ndFYfbqiWqaqaRq549EQCaDMwtrC7KjeAWfiWrEfASys8_kz6CDC4O99Ae3pQv6MJXWcyP7yVnvEcRDIbi8aVVFDauQ2biUzMl20W",
+    "productId": "5109391995091316777",
+    "position": 6
+   },
+   {
+    "title": "Lenovo ThinkPad P15 Gen 2 Mobile Workstation",
+    "source": "Vi tính Gia Lộc",
+    "price": "33.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSxoxtNRazqxgkLonqIs3tHPZSY7dEatfY8QFOtQChtncGxha07ka5lyZj9b31n9OVBku6I9AUPf1q4nP7gw6fpmpXuZQkryLKdG2hpxbTU",
+    "rating": 4.6,
+    "ratingCount": 339,
+    "productId": "1695669244666326802",
+    "position": 7
+   },
+   {
+    "title": "Laptop văn phòng giá rẻ bảo hành 3 tháng|Vietspace",
+    "source": "Không Gian Việt - Vietspace Store",
+    "price": "2.400.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTfksQfwBKvVwqj0eIypuXY7aGKOtdMqtabSmvWe9KkcgeABoJ4qhmsTZu_tJuVbK7PjM2ZtLVDIC96jgAq_svy--8qnQMCGcDob-x4Czm_",
+    "productId": "12355757400927639882",
+    "position": 8
+   },
+   {
+    "title": "Bộ Pc gaming cấu hình khủng - Máy Tính Quảng Ninh - Laptop, Linh Kiện & Sửa Chữa Giá Tốt | Toàn Phương Computer",
+    "source": "Toàn Phương Computer",
+    "price": "24.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRkDpy-qw2FxWa_ybCK83CAVe3XzeD-x0GvKB6cSSOLh_XCc8XfdPHev8jluE5yQRTBBoBNuz_uljxGSTz88HEMrU0nwcMDlG0G_TC4Iro",
+    "productId": "3475166772841718762",
+    "position": 9
+   },
+   {
+    "title": "Laptop Gaming",
+    "source": "Tinhocngoisao.com",
+    "price": "24.790.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSgcRDTf1up8UBQuTTC41tbhmNDGroo0xUP3y5gDJqM3rhz3_PqIkAKpgAOJPM7ZBRjRkpHCoGtQMxYe5Y1TTQwMv3yd6pXxunQEblCvBXnfQAJbfDihMOg",
+    "productId": "4098455957589556688",
+    "position": 10
+   },
+   {
+    "title": "Laptop/Máy Tính Xách Tay Khủng Long Học Tập Cho Bé Yêu – Giúp Bé tránh xa điện thoại",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+m%E1%BB%9Bi+h%E1%BB%8Dc+thi%E1%BA%BFt+k%E1%BA%BF+%C4%91%E1%BB%93+h%E1%BB%8Da+d%C6%B0%E1%BB%9Bi+20+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:16734956128021322086,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "110.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTlhksODGU8uUsR0-zLBZBP6JgPeEOGZY3qzhp0N2WHLgjVC5yeaQElliArq1AJJUI_WuRQMpVhExd8eEJTPmi9HDZhV9Z3inE7zVXpfzLQAbAr-nYt6rHV",
+    "productId": "16734956128021322086",
+    "position": 11
+   },
+   {
+    "title": "Túi Xách Tay Nam Công Sở Da Thật Đựng Laptop Chống Sốc Có Dây Đeo Chéo Màu Đen",
+    "source": "188.com.vn",
+    "price": "1.420.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTeuMgme6EdYEQpto6SU9CHteWUJxUoRFdQkSIvX_-bvGus3YEI5chNa3v83pRWU4JXl1ikgrrag8GLFE5jv_bBPyLITUCslfbpb73ojoZp_8JppRUmdm38kQ",
+    "productId": "11761350556558388120",
+    "position": 12
+   },
+   {
+    "title": "Lenovo ThinkPad T1g Gen 8 Core Ultra 7 265H, RAM 32GB, SSD 512GB, RTX 5060 8GB, 16 inch 4K+, Windows 11",
+    "source": "Lapvip",
+    "price": "105.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRjfEN856xCeWtV8Jg666g96qVX3r5VrsYFI4TkZTJnPjCpaFwF1WnV12noB2bJzLgWtctZ9TBo-ynclAe-pPSHy6sAYkkU3A38xeGUJtUKnvhveqEHh_Gf_A",
+    "rating": 3.8,
+    "ratingCount": 12,
+    "productId": "5167117948615268258",
+    "position": 13
+   },
+   {
+    "title": "Sửa Laptop Không Lên Hình Phường An Phú Đông - Quận 12 Cũ",
+    "source": "Trường Thịnh Group",
+    "price": "150.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSDENwuJ94mXIZx-2-6SzWg5M25IXD1cAvVVa0csrt9STWHcDHkMeN231Gn5zvF3ps3bTZh9Z_c5xUSmYAhpmUJ1D8JoJKFLriMtIlU_ft-9Fm3m_spUpQtpA",
+    "productId": "2452503656457673228",
+    "position": 14
+   },
+   {
+    "title": "Dell Precision 5680",
+    "source": "OnlyLap",
+    "price": "31.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTZn2yjMc3OckDxFARo7Q48vAORmX3-Fjh0kw7VXRhOw8P5I509clh-_LtACjCXFgrWKHWesUxk_5xE4-am_bUOpbzloz-fw-yg2BNklEiyKbfObOVydzP9",
+    "productId": "17148474459662630119",
+    "position": 15
+   },
+   {
+    "title": "Máy Học KORYES, Máy Tính Laptop Điện Tử Giáo Dục Trẻ Em, Phát Triển Kỹ Năng Nhận Thức Học Tiếng Anh Với Chuột Đồ Chơi Laptop Tiếng Anh Mầm Non",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+m%E1%BB%9Bi+h%E1%BB%8Dc+thi%E1%BA%BFt+k%E1%BA%BF+%C4%91%E1%BB%93+h%E1%BB%8Da+d%C6%B0%E1%BB%9Bi+20+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:11780527016550019828,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "119.493 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTv0mo54PFosX8LeoBDddu3fIpPh2lBRfoHEufL7rjlbUi7OJ0BnpDZvkUjtb3b5fMh89UeJoiwJ_jNYPad18DnHwXPx2j5f-4Mx_UtVhod",
+    "productId": "11780527016550019828",
+    "position": 16
+   },
+   {
+    "title": "Dịch vụ lắp ráp cài đặt Laptop/ PC",
+    "source": "Xgear",
+    "price": "200.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSAbabqo16i3gxdr-7R1cF9P8eYPkurkd5-ovLMJb5bfvpE-r0jiTRgen7jeRgNz8fKGKurK-8Wv9sBYEW_I4R4Kvb8kGFb",
+    "productId": "10486743251764571098",
+    "position": 17
+   },
+   {
+    "title": "Dell Precision 17 7760 2021 Laptop Workstation 17 inch, Core i9-11950H, 32GB RAM, 512GB SSD, RTX A4000, FHD",
+    "source": "Lapvip",
+    "price": "27.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQ03Fg5tL0gET-n7C7WTCH3_XXC-lEoPCV-aA_GhG3b4i01V81Z4sW30nLMTC6aJ02NYQ4n12m4TMTjDf6Zhfl7zJOJ5q6TCzKG36Ya9_jFns0IdOf1xX8oiw",
+    "rating": 4.7,
+    "ratingCount": 3,
+    "productId": "18220996968270196461",
+    "position": 18
+   },
+   {
+    "title": "ThinkBook 16P 2025 2.5k 240Hz (R9-8945HX| 32GB RAM| 1TB SSD| RTX 5060)",
+    "source": "SAZO",
+    "price": "49.200.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSLigyZwF9H4ySsu3OPG1Nvy_YdUbQgsLl_WTtIMEtTBIMzkp5jngZwrNGGORlC2ync26bAZ2O2gPi1hzYOVr2sbdFGdHHIjLzzktTbMW4BJkTPrq9FcbHFFQ",
+    "rating": 3.7,
+    "ratingCount": 3,
+    "productId": "7459367977683252081",
+    "position": 19
+   },
+   {
+    "title": "【Giá Rẻ】Sửa Máy Tính Quận 11 - Pc Laptop Macbook Surface",
+    "source": "Trường Thịnh Group",
+    "price": "150.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTxEp64QZBVkOelUH1zA64TT4qNJroAuf2Gj31tMbF4aEFl1vhxTxnPqwtopSTIufVC2bFEn9J58OpFqnlBhfyfWZpGj0iLlPcadtdMMEU",
+    "productId": "7905958128492647751",
+    "position": 20
+   },
+   {
+    "title": "Laptop 3 màn hình MAX16, chính 16 inch & 2 phụ 10.5 inch Intel Core i7-12TH Windows 11 Pro Máy mới 100%, chính hãng",
+    "source": "Shopee",
+    "price": "28.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSInwAakVLWy4Jeo1k_HB_kMYkM9ny2czsiOfY_mPhV9FUc8ka-92kXh8tx9s1iqlCKRysOcDB6pDjcq42Gc7wpB9lZVNReRMt4KbN3M1U",
+    "productId": "15473424511725447842",
+    "position": 21
+   },
+   {
+    "title": "Laptop SingPC M16-i595 (i5 1235U, 16GB, 512GB, WUXGA, Win11 Pro)",
+    "source": "Thế Giới Di Động",
+    "price": "17.390.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRz3W8tElTStNQTV6O1w-zGGkWhO7SVASm1Lp2IB7hvrxC42aS4vynh084N5nU0e9usOM6yraGjk5xJGfO9Tz-KKL-fXOP_n4XBGyeg0Z3k",
+    "productId": "505514102083996754",
+    "position": 22
+   },
+   {
+    "title": "ThinkPad P1 Gen 7 16 inch 2024 – Core Ultra 9-185H Ram 64GB SSD 2TB UHD OLED RTX 3000 Ada",
+    "source": "Macstore",
+    "price": "69.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQQNv4Lqn8T3IjqagkP8igLeK6rVOA2cHWOQqOv9BMloV9xHMds1A5a2HZP3_q6JnM9tgJBTtFle5__71BmBByf4id1EsRV15Oes_x59rDtJTnADfRu2AvYwA",
+    "rating": 4.2,
+    "ratingCount": 61,
+    "productId": "14655372247900511889",
+    "position": 23
+   },
+   {
+    "title": "【Dịch Vụ Vệ Sinh Laptop Quận Tân Bình】 - Hiển Laptop",
+    "source": "Shop Linh Kiện",
+    "price": "149.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSSOkWBBlQk1cZcsHbJggnCoHTLUM2fI-h27ZuTXcjC0QyDe90VMLmyv0Cr7zgyz_4b9WV1pNvA7AoSR25pkqxXLHmzU6d2LxuqmZ8V0JhU",
+    "productId": "4268101047071539969",
+    "position": 24
+   },
+   {
+    "title": "FIRE LIMIT Máy Học, Máy Tính Laptop Trẻ Em Điện Tử Giáo Dục, Máy Giáo Dục Sớm Học Tiếng Anh Mini Tiếng Anh Đồ Chơi Laptop Phát Triển",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+m%E1%BB%9Bi+h%E1%BB%8Dc+thi%E1%BA%BFt+k%E1%BA%BF+%C4%91%E1%BB%93+h%E1%BB%8Da+d%C6%B0%E1%BB%9Bi+20+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:12834996395720145505,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "121.200 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcR4etbFTVksmGiYA9xyMq7K4Mtaye2ggBHKyAAoTnk-r9cvOB3f4M7Cb_8mWtdvmFRgC21d20A1XoR0Nya4OKNLlo9uXo1jfC1Z5UUMoaolrCxwM7FKdpZOVw",
+    "productId": "12834996395720145505",
+    "position": 25
+   },
+   {
+    "title": "Sửa Laptop Bị Vỡ Màn Hình Phường An Phú Đông - Quận 12 Cũ",
+    "source": "Trường Thịnh Group",
+    "price": "150.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTcX278HNeZnh1o6wtrwZmIdjiM7tUnp7MnC1gTTDgt4yjKQVdRQzpkXQk8qgb3-ejVdV3ygXgy60PkCgYjIy5oWkCTys2fcq6VXlYW27pylh0qKC7iNHCJqA",
+    "productId": "8849268168935613816",
+    "position": 26
+   },
+   {
+    "title": "Laptop văn phòng",
+    "source": "Tinhocngoisao.com",
+    "price": "15.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRlGQKcrvooxbMfQ9tAgwdeOrzAkTrUTDyJwyhvW0zBxLGF_gEz8XbGzN4M9rrfAfDEsQH6tniM0i3LZYJXzzRiZ3E9x8fZUrjahdaibso",
+    "productId": "18265764714858910334",
+    "position": 27
+   },
+   {
+    "title": "TGMT - Laptop HP AI 15-fd2050wm | Core Ultra 5 225U | RAM 8GB | SSD 512GB | 15.6 inch | FHD | Cảm ứng | Win 11 -Mới",
+    "source": "thegioimaytinh.net.vn",
+    "price": "17.580.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcT-jivGgtJxfk1qhfm5Y4FIy-UdqwJo2OlsPjiCPCdzsTLpz_AA7-nVNTX63Jt0cMRuuqMciKiyuIDy_WbCJQ6smqdatR1KtyTSbUHVidxOwJ77n8XqzUWMgw",
+    "productId": "12600286220924307002",
+    "position": 28
+   },
+   {
+    "title": "ThinkBook 16P 2025 2.5k (Ultra 9-275HX| 32GB RAM| 1TB SSD| RTX 5060)",
+    "source": "SAZO",
+    "price": "57.700.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSOV3kHIuKufkbX0MP40wO9VSQp1esWrKbeercy23IKiCtDazphkMxe5HQgJQdZJTRdAv0JzTV1LX9A9O24H8WZaby6UuPxz8nWHKUBdYHiAAxXDLxIgnFs",
+    "rating": 5,
+    "ratingCount": 2,
+    "productId": "12315631494160037352",
+    "position": 29
+   },
+   {
+    "title": "TÚI LAPTOP NỮ DAREA",
+    "source": "Aldo VN",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+m%E1%BB%9Bi+h%E1%BB%8Dc+thi%E1%BA%BFt+k%E1%BA%BF+%C4%91%E1%BB%93+h%E1%BB%8Da+d%C6%B0%E1%BB%9Bi+20+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:17774955615947035645,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "2.550.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRwfvaXB6_BFLVS-Qfnfc4HIgPrDxBpZVXOxyngOrMjX3BYC_uul1zCUWVQ-zuMLTDZTEVFlavdc15TrfGOk2rECqH5kQveuknNz74bpGnISezePmMS6yZznQ",
+    "productId": "17774955615947035645",
+    "position": 30
+   },
+   {
+    "title": "Túi Đựng Laptop Mỏng Nhẹ 13-15.6 inch, Chống Nước và Trầy Xước",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+m%E1%BB%9Bi+h%E1%BB%8Dc+thi%E1%BA%BFt+k%E1%BA%BF+%C4%91%E1%BB%93+h%E1%BB%8Da+d%C6%B0%E1%BB%9Bi+20+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:17606024062012196759,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "374.388 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQQCmnM2z1jvKjFYYUkIa0rM4xtsKbszImIbcf4mVJ9uDrqM0d1m4lKxycHZBqMmL24l0dg_KvxS83QYWVFEysGaWmgIFRgeucPQIBAwPSmABjjh9iEO7eL",
+    "rating": 4.8,
+    "ratingCount": 8,
+    "productId": "17606024062012196759",
+    "position": 31
+   },
+   {
+    "title": "Laptop N-ONE Nbook Pro, 32GB+1TB, Màn hình kép 16 inch 2 màn hình Windows 11 Pro Intel Core i7-1260P 12 nhân – Dt24h",
+    "source": "dt24h Store",
+    "price": "23.855.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTpbsN47P4r1VoG2RCTGrOrwIJkdrKpOwI4paVPYjH7QnALryJ3gF891JqCsePJXe2_jsJi4OWgZRZhFTa_fOv0plP-BBQYQiKBCxqYM34CseqMCUvjF6Ro",
+    "productId": "13576294128602807611",
+    "position": 32
+   },
+   {
+    "title": "Laptop viamei 16 inch 2 màn hình cảm ứng DS16-PLUS, Intel Core i7-1360P, RAM DDR4, Win 11 Máy mới 100%, chính hãng",
+    "source": "Máy tính AOC",
+    "price": "20.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQws_XRPbS1h1ZSWKGA4EEEkVr1BanGnrplIu9ULYMOuP2Yd9F05H3atIn5Pk1GRw9tX2Oa2e4zGR79sfvBGHvXPdUhYl5CiyPQLM8F1eMJPAT7VFIR9kJtVg",
+    "productId": "13418322815571331477",
+    "position": 33
+   },
+   {
+    "title": "Vệ Sinh Laptop Quận Bình Tân - Địa Chỉ Vệ Sinh Máy Tính PC Laptop Lấy Liền Uy Tín Giá Rẻ",
+    "source": "Trường Thịnh Group",
+    "price": "150.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQtN0YXVkElcVXT2NYuhDvWcFO9chVsCEfDCuAo6QkrHCN649qI_cN9AjO5EaNSIm2IKOvkhwbHlEVFAE8O2azoK5hdq3ba-U2ZM1_S_AJ1MzwvAfocrJue",
+    "productId": "2065586989962036630",
+    "position": 34
+   },
+   {
+    "title": "Laptop Gaming VIAMEI D16G01 (i7 - 8750H/16GB DDR4/512GB SSD/GTX 1050/16\" FHD/TPM/Windows 11 Pro/1Y)",
+    "source": "Hugotech.vn",
+    "price": "10.480.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRzXgllfptEvB-v6IZWewAhWmm8DMs_B7AEUE-FiUM6ZFKBJC3LmnEYoc2AiO9XhC8NXJ-xG1L11BbfPTMz59KJxfVVcJsISR930DEU8wtOwtdWrvMyBY1GnQ",
+    "productId": "18167465036610042136",
+    "position": 35
+   },
+   {
+    "title": "Laptop 14in Core i5-1030NG7 mỏng nhẹ văn phòng thiết kế chơi game hiệu năng cao",
+    "source": "shopee.vn",
+    "price": "26.910.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQCVFwN57I3QijwNGGPTYXQEJr349Nm8QjQ-AM2XamVVyOqbD7WQimdRLdrmtWtflDoN9JXCEQw8FVVyExbWs666XBfTvKa7g",
+    "productId": "6915403336740179551",
+    "position": 36
+   },
+   {
+    "title": "Lenovo ThinkPad P1 Gen 7 (2024) - Core Ultra 9 185H, RAM 64GB, SSD 2TB, RTX A3000, 4K OLED",
+    "source": "Lapvip",
+    "price": "69.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRHAysorlJL3XB-skuAb531FFnSS8l3MxNF1yJ8zNvg7G8tuxnEEOHFaNwVJBuc4M1L662xRWUuPdZPVx6Ahi-q7ZWGJbWwmJGSDjIYekLVli5wNRa_OhwK2w",
+    "productId": "312483518021155270",
+    "position": 37
+   },
+   {
+    "title": "Sửa Laptop Hư Màn Hình Quận Gò Vấp Giá Rẻ - Ko phát sinh thêm phí",
+    "source": "Bảo Hành One",
+    "price": "370.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcS5Q3Ho1hnaadU8-hjrKd0cZcBM38gMicTgjJhQLVg7JdcWlTC1B2w7tp_FjXIt-9kDEj7IQYYrxA4L2ddiTYiwJv9f9HUtIFaL_6qTZuw",
+    "productId": "3253120436359778698",
+    "position": 38
+   },
+   {
+    "title": "Địa Chỉ Sửa Laptop Không Nhận Màn Hình Ngoài Phường An Phú Đông",
+    "source": "Trường Thịnh Group",
+    "price": "150.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSeXwRyLeY-ZW_zzTZQX-UxWrT8MbxaqPAGrQPF5UldFbPqo4UxU9C7TugW_EQr6iwGjG9DsyhqGjZCVOOIes2AQi6_MysVG9U90GVQAOuW709LE78ZccgfmA",
+    "productId": "17839310398235273979",
+    "position": 39
+   },
+   {
+    "title": "laptop xem phim nghe nhạc",
+    "source": "shopee.vn",
+    "price": "850.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcT8O_QF1_YpMhgKmxKpFIj4xqEIH-NAElAhodXMSD92f-mQ8CAgvP3q7C7Oz2MpjPzgI0uz9oWKgmyRstscu-il1dVLbkcq",
+    "productId": "843069607505021272",
+    "position": 40
+   }
+  ],
+  "credits": 2
+ }
+}

@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Khách sạn Green Eco\" Đà Lạt site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:12:46.714Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Khách sạn Green Eco\" Đà Lạt site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn Green Eco Đà Lạt - Giá cả và Ưu đãi 2026, Đà Lạt",
+    "link": "https://vn.trip.com/hotels/dalat-hotel-detail-102414602/greeneco-a-lat-hotel/",
+    "snippet": "Khách sạn Green Eco Đà Lạt · 53m² | Tầng: B1 · Không có cửa sổ · Không hút thuốc · Wi-Fi miễn phí.",
+    "position": 1
+   },
+   {
+    "title": "Các đánh giá Khách sạn Green Eco Đà Lạt",
+    "link": "https://vn.trip.com/hotels/dalat-hotel-detail-102414602/greeneco-a-lat-hotel/review.html",
+    "snippet": "Khám phá đánh giá Khách sạn Green Eco Đà Lạt thực tế từ khách du lịch. Với 44 đánh giá đã được xác thực và xếp hạng 8.9/10, bạn có thể đặt phòng với sự an ...",
+    "position": 2
+   },
+   {
+    "title": "Các khách sạn nổi tiếng ở gần Thiền Viện Trúc lâm Đà Lạt",
+    "link": "https://vn.trip.com/hotels/dalat-truc-lam-temple/hotels-c5204m6790992/",
+    "snippet": "Sân bay Liên Khương cách 26 km. Từ. 155.054₫. /đêm. Khách sạn Green Eco Đà Lạt. 8,9/10. Rất Tốt. 45 đánh giá. Cách Thiền Viện Trúc lâm Đà Lạt 1.74km.",
+    "position": 3
+   },
+   {
+    "title": "Các khách sạn ở gần Hoàng Long Ohayo, Đà Lạt",
+    "link": "https://vn.trip.com/hotels/dalat-que-garden/hotels-c5204m22695191/",
+    "snippet": "Khách sạn Green Eco Đà Lạt. 8,9/10. Rất Tốt. 45 đánh giá. Cách Hoàng Long Ohayo 2.81km. Tọa lạc ở Xuân Hương - Đà Lạt, GreenEco Da Lat ...",
+    "position": 4
+   },
+   {
+    "title": "Tìm Khách Sạn Khách sạn giá rẻ Tại Đà Lạt",
+    "link": "https://vn.trip.com/hotels/cheap/city/vn/dalat.html",
+    "snippet": "Khách sạn nào tại Đà Lạt cho phép mang theo thú cưng? Khách sạn Green Eco Đà Lạt (từ 538.784₫), Rin Bon Home (từ 325.596₫) và Căn hộ Khách sạn La Fleur ...",
+    "position": 5
+   },
+   {
+    "title": "Tìm Khách Sạn 3 Sao Tại Đà Lạt",
+    "link": "https://vn.trip.com/hotels/star3/city/vn/dalat.html",
+    "snippet": "Ở Đà Lạt có khách sạn 3 sao nào cho phép mang theo thú cưng? Khách sạn Green Eco Đà Lạt (từ 537.732₫) cho phép mang theo thú cưng. Hãy mang theo thú cưng đi ...",
+    "position": 6
+   },
+   {
+    "title": "Khách sạn giá rẻ gần Sân Golf Đà Lạt Palace, Đà Lạt",
+    "link": "https://vn.trip.com/hotels/dalat-sn-golf-lt/hotels-c5204m40344935/",
+    "snippet": "Khách sạn nào tại Đà Lạt cho phép mang theo thú cưng? Khách sạn Green Eco Đà Lạt (từ 537.686₫), Rin Bon Home (từ 324.932₫) và Căn hộ Khách sạn La Fleur ...",
+    "position": 7
+   },
+   {
+    "title": "Khách Sạn Thân Thiện Với Thú Cưng Tại Đà Lạt",
+    "link": "https://vn.trip.com/hotels/pet-friendly/city/vn/dalat.html",
+    "snippet": "Ở Đà Lạt có khách sạn Pet friendly nào phổ biến? ... Dù bạn đi Đà Lạt để công tác hay du lịch, Khách sạn Green Eco Đà Lạt (từ 538.784₫) , Rin Bon Home (từ 325.596 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Karaoke Eden Paradise KTV\" OR \"Kingdom Karaoke\" OR \"Karaoke Nnice 121 Võ Thị Sáu\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:15:12.450Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Karaoke Eden Paradise KTV\" OR \"Kingdom Karaoke\" OR \"Karaoke Nnice 121 Võ Thị Sáu\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Em có rồi - Kingdom Karaoke Quận 1 Phạm Viết Chanh",
+    "link": "https://www.tiktok.com/@karaoke.kingdom/video/7430847353332026631",
+    "snippet": "Em có rồi - Kingdom Karaoke Quận 1 Phạm Viết Chanh. Enjoy singing Em có rồi at Kingdom Karaoke in Quận 1 by Phạm Viết Chanh. Entertainment at ...",
+    "position": 1
+   },
+   {
+    "title": "🔜 Nghe nói hôm nay trời trở gió Anh đi đâu đó nhớ ghé ...",
+    "link": "https://www.tiktok.com/@diadiemgiaitri/video/7570418955181935892",
+    "snippet": "Karaoke Kingdom Quận 1 · Kingdom Karaoke Từ Sơn · Karaoke Lập Xuân · Karaoke Kingdom Nha Trang · Karaoke Phượng Hoàng Cần Thơ · Karaoke Hong ...",
+    "position": 2
+   },
+   {
+    "title": "Karaoke Kingdom Quận 1",
+    "link": "https://www.tiktok.com/discover/karaoke-kingdom-qu%E1%BA%ADn-1",
+    "snippet": "Địa điểm Karaoke và Buffet Siêu Đẹp tại Quận 1 | Review Kingdom Karaoke. Khám phá địa điểm Karaoke kết hợp Buffet đẳng cấp tại quận 1 với phòng decor siêu đẹp.",
+    "position": 3
+   },
+   {
+    "title": "Buffet Karaoke Tại Kingdom: Ăn Uống & Giải Trí Đỉnh Cao",
+    "link": "https://www.tiktok.com/@linhphamm27/video/7307984399084145927",
+    "snippet": "Trải nghiệm Buffet Karaoke siêu chất tại Kingdom Karaoke Quận 1! ✨ Bạn đã từng thử vừa ăn uống vừa hát karaoke thả ga chưa?",
+    "position": 4
+   },
+   {
+    "title": "Karaoke Chào Cao Hơn Mâm Cỗ: Hài Hước Quận 1",
+    "link": "https://www.tiktok.com/@karaoke.kingdom/video/7384766283448896769",
+    "snippet": "1330 Lượt thích,23 Bình luận.Video TikTok từ Karaoke Kingdom (@karaoke.kingdom): \"Khám phá buổi karaoke vui nhộn với lời chào độc đáo!",
+    "position": 5
+   },
+   {
+    "title": "Kingdom Karaoke",
+    "link": "https://www.tiktok.com/discover/kingdom-karaoke",
+    "snippet": "Join us at Kingdom Karaoke for an unforgettable solo experience. Enjoy singing, fun moments, and friendly service!",
+    "date": "13 thg 7, 2026",
+    "position": 6
+   },
+   {
+    "title": "Khám Phá Kingdom Karaoke Đà Lạt: Địa Điểm Chất Chơi",
+    "link": "https://www.tiktok.com/@nam.ben.tre.07/video/7365878987047963905",
+    "snippet": "... Kingdom Karaoke Đà Lạt Phone: 0939.373.507 Address: 35D Phan Chu ... Xem thêm câu trả lời khác (1). Tony nguyễn1985. đẹp a nam. 2024-5-6 ...",
+    "position": 7
+   },
+   {
+    "title": "Đi hát với tui nà ❤️ #KingdomKaraoke #LostinKingdom ...",
+    "link": "https://www.tiktok.com/@lethao6996/video/7374748623080262919",
+    "snippet": "Đi hát với tui nà ❤️ #KingdomKaraoke #LostinKingdom #Kingdom #Karaoke #KaraokeQuan1 @Karaoke Kingdom · recommend-cover. ☘ Phương Thảo ☘️.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

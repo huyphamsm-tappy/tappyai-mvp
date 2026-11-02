@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Dell Inspiron 15 3520 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:46:12.916Z",
+ "body": {
+  "searchParameters": {
+   "q": "Dell Inspiron 15 3520 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop Dell Inspiron 15 3520 i5 1235U/16GB/512GB ...",
+    "link": "https://h5.lazada.vn/products/laptop-dell-inspiron-15-3520-i5-1235u16gb512gb120hzofficehskyhdwin11-25p231-bac-i2680334583.html",
+    "snippet": "Laptop Dell Inspiron được gắn vi xử lý Intel Core i5 1235U cùng card tích hợp Intel Iris Xe Graphics, mang đến hiệu suất ổn định, mượt mà vượt trội khi bạn thao ...",
+    "position": 1
+   },
+   {
+    "title": "Laptop Dell Inspiron 15 3520 i7 1255U/16GB/512GB/15.6\" ...",
+    "link": "https://www.lazada.vn/products/laptop-dell-inspiron-15-3520-i7-1255u16gb512gb156f120hzofficehskyhdwin11n5i7125w1bac-i3067811538.html?srsltid=AU7gw4UBylduFaUdtYSZnqLHgb7opGeACftwpoctLZuzWWovgxQcT-06",
+    "snippet": "Laptop Dell Inspiron 15 3520 được trang bị bộ vi xử lý Intel Core i7 Alder Lake - 1255U, với 10 nhân 12 luồng, tốc độ xung nhịp tối đa lên đến 4.7GHz. Điều này ...",
+    "position": 2
+   },
+   {
+    "title": "Laptop Dell Inspiron 15 3520 i7 1255U/16GB/512GB ...",
+    "link": "https://www.lazada.vn/products/laptop-dell-inspiron-15-3520-i7-1255u16gb512gb120hzofficehskyhdwin11-25p2315-i2993583104.html?srsltid=AU7gw4XOtf2RjskkXncnJ3r6Zjt8QMn83HF1aGFOyxx2KJxXHEzcUYoD",
+    "snippet": "Bộ nhớ và lưu trữ: Với 16GB RAM DDR4 (2 khe, mỗi khe 8GB), laptop này hỗ trợ đa nhiệm hiệu quả và giúp bạn làm việc với nhiều ứng dụng cùng lúc mà không bị gián ...",
+    "position": 3
+   },
+   {
+    "title": "Laptop Dell Inspiron 15 3520 i5 1235U/8GB/512GB/120Hz ...",
+    "link": "https://www.lazada.vn/products/laptop-dell-inspiron-15-3520-i5-1235u8gb512gb120hzofficehskyhdwin11-71027003-i2659354410.html?srsltid=AU7gw4U5AYS7twD4hTc3mxk_l4ITF2ES51R87iuFczPI5qUpQ8BG9Gvk",
+    "snippet": "Laptop Dell Inspiron 15 3520 i5 1235U/8GB/512GB/120Hz/OfficeHS/. 1/6. 15.490.000 ₫. LazMall Laptop Dell Inspiron 15 3520 i5 1235U/8GB/512GB/120Hz/OfficeHS/KYHD ...",
+    "position": 4
+   },
+   {
+    "title": "(NEW) Cáp màn hình laptop Dell Inspiron 15 3511 3515 ...",
+    "link": "https://h5.lazada.vn/products/new-cap-man-hinh-laptop-dell-inspiron-15-3511-3515-3510-3520-3525-i2158706283-s10177776989.html",
+    "snippet": "Tình trạng: Mới · Xuất xứ: China · Bảo hành: BH 1 tháng · Mã cáp: (DC02003X500) 08DCFG - (30pin) FHD · Tương Thích: Dell Inspiron 15 3511 3515 3510 3520 3525.",
+    "position": 5
+   },
+   {
+    "title": "Sạc laptop Dell Inspiron 15 3520 3521, 15R 5520 5521 ...",
+    "link": "https://www.lazada.vn/products/sac-laptop-dell-inspiron-15-3520-3521-15r-5520-5521-7520-17-3721-17r-5720-5721-vostro-2420-2510-2520-3300-3400-3500-i2254453583.html?srsltid=AU7gw4VBBulr3NJP3E2birBlO3XQOGRHPJexO-h6lBQYGsJCQz6iZ0wl",
+    "snippet": "- Kiểm tra sạc cũ hoặc thông số nhà sản xuất ghi ở sau máy xem laptop dùng sạc công suất bao nhiêu W. Sau đó bạn chọn mua sạc có công suất bằng hoặc lớn hơn.",
+    "position": 6
+   },
+   {
+    "title": "Vỏ laptop Dell Inspiron 15 3510 3511 3515 3520, Vostro ...",
+    "link": "https://www.lazada.vn/products/vo-laptop-dell-inspiron-15-3510-3511-3515-3520-vostro-15-3510-3520-3525-gen-11-the-he-11-i2197139266.html?srsltid=AU7gw4XDmOQ3_GawcEUZtZa7_vgggBL-nW9KBd_Osr3CoKEBZG2NsNMx",
+    "snippet": "Vỏ laptop Dell Inspiron 15 3510 3511 3515 3520, Vostro 15 3510 3520 3525 -. 1/9. 584.773 ₫. Vỏ laptop ...",
+    "position": 7
+   },
+   {
+    "title": "[HCM] Cáp Pin Laptop Dell Inspiron 15 3511 3510 3515 ...",
+    "link": "https://www.lazada.vn/products/hcm-cp-pin-laptop-dell-inspiron-15-3511-3510-3515-3520-3521-3525-4ndw9-new-i3140350738.html?srsltid=AU7gw4VjPa5gINFyLry6wQtIOZmFW9wdWCR5FYAIsDLztiDF6J7GE3ae",
+    "snippet": "[HCM] Cáp Pin Laptop Dell Inspiron 15 3511 3510 3515 3520 3521 3525 4NDW9 (New) · Dây Nguồn 1m dùng cho các sạc Laptop các loại Giá Rẻ · [HCM] Jack Nguồn-Chân ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

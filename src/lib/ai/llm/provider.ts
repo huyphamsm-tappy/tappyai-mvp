@@ -24,3 +24,23 @@ export interface AIProvider {
    */
   decorateMessages?(messages: CoreMessage[], opts?: { cacheHistory?: boolean }): CoreMessage[]
 }
+
+/**
+ * One priced model call, attached by an adapter to the call's provider metadata under the neutral key
+ * `tappy.cost` (owner 2026-09-30: cost per turn per vendor, reasoning tokens included). Tokens are the
+ * vendor's own counts: `inputTokens` INCLUDES cached and cache-write tokens; `outputTokens` INCLUDES
+ * reasoning tokens (both are billed at the output rate).
+ */
+export interface CallCost {
+  provider: string
+  model: string
+  effort?: string
+  inputTokens: number
+  cachedInputTokens: number
+  cacheWriteTokens: number
+  outputTokens: number
+  reasoningTokens: number
+  usd: number
+  /** Set by the registry's fallback wrapper when the routed model failed and the default one answered. */
+  fellBack?: boolean
+}

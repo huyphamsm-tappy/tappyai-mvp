@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hana Dalat Hotel\" OR \"Golden Sun Hotel\" OR \"Colline Dalat\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:12:16.496Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hana Dalat Hotel\" OR \"Golden Sun Hotel\" OR \"Colline Dalat\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Colline Dalat Hotel: Góc Đà Lạt Chill, View Đẹp",
+    "link": "https://www.tiktok.com/@nhaphuong.didau/video/7687452652975934740",
+    "snippet": "Colline Dalat Hotel mang đến một không gian sang trọng và hiện đại tại trung tâm Đà Lạt. Khách sạn có vị trí thuận tiện, dễ dàng đi bộ đến Hồ ...",
+    "position": 1
+   },
+   {
+    "title": "Đây là Renzo trước trận bóng của Colline Dalat… ảnh kiểu",
+    "link": "https://www.tiktok.com/@collinedalat/video/7688616351832771847",
+    "snippet": "13.2K Lượt thích,37 Bình luận.Video TikTok từ Colline Dalat (@collinedalat): \"Đây là Renzo trước trận bóng của Colline Dalat… ảnh kiểu: ...",
+    "position": 2
+   },
+   {
+    "title": "Colline Dalat (@collinedalat)",
+    "link": "https://www.tiktok.com/@collinedalat",
+    "snippet": "Kênh Tiktok Official của Colline Dalat 10 Phan Boi Chau, Xuan Huong - Da Lat Ward, Lam Dong. facebook.com/HotelColline · Chị dâu đi với Colline kiểu:…",
+    "position": 3
+   },
+   {
+    "title": "Anh phải nhường em: Colline ngoại truyện outing hố hố",
+    "link": "https://www.tiktok.com/@collinedalat/video/7688731128596909313",
+    "snippet": "8346 Lượt thích,Video TikTok từ Colline Dalat (@collinedalat): \"Video Colline ngoại truyện outing hố hố với caption “Anh phải nhường em…",
+    "position": 4
+   },
+   {
+    "title": "Chị dâu đi với Colline kiểu:… #CollineDalat ...",
+    "link": "https://www.tiktok.com/@collinedalat/video/7689667959370894598",
+    "snippet": "The Colline Dalat offers a versatile accommodation solution with its Connecting Room, expertly linking a Superior Room and a Studio Room. This ...",
+    "position": 5
+   },
+   {
+    "title": "Một góc Trung Thu tại Colline Dalat",
+    "link": "https://www.tiktok.com/@collinedalat/video/7689317138854612231",
+    "snippet": "Colline Moonlight Carousel mô tả một góc Trung Thu tại Colline Dalat. Lồng đèn đã lên và sắc màu mùa trăng được bày trang trí đầy không gian ...",
+    "position": 6
+   },
+   {
+    "title": "Golden Sun Hotel - Dalat (@goldensunhotel.dalat)",
+    "link": "https://www.tiktok.com/@goldensunhotel.dalat",
+    "snippet": "Chào mừng bạn đến với Golden Sun Hotel – Dalat. Nghỉ dưỡng đẳng cấp chuẩn 5⭐. EVERY KIND WORD MEANS A LOT Mỗi trải nghiệm được sẻ ...",
+    "position": 7
+   },
+   {
+    "title": "Colline Dalat",
+    "link": "https://www.tiktok.com/@collinedalat/video/7687205174095531284",
+    "snippet": "The Colline Dalat offers a versatile accommodation solution with its Connecting Room, expertly linking a Superior Room and a Studio Room. This ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

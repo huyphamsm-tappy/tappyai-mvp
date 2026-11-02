@@ -44,6 +44,10 @@ export interface ConsultDecision {
   refers?: string[]
   /** For `reject`: what the user did not like, as a constraint for the next search. */
   rejectReason?: string
+  /** For `reject` only: the user re-stated / dismissed a decision PRIORITY — the same candidates are re-decided, nothing shown is excluded. */
+  reprioritize?: boolean
+  /** For `followup` / `compare`: `refers` was resolved from an ordinal ("quán thứ hai") against the cards the user was shown. */
+  ordinalRef?: boolean
 }
 
 /** The fixed part of the brain prompt — byte-identical on every call (prompt-cache friendly). */
@@ -86,12 +90,13 @@ DAU RA — CHI MOT JSON, khong giai thich:
 - Cau hoi va lua chon viet TIENG VIET CO DAU (tieng Anh neu user viet tieng Anh), ngan, than thien, xung "mình"/"bạn".`
 
 /** The ask reply ends with this sentence — how the next turn recognises that Tappy just asked. */
+import { styleLuna6On, ASK_TAIL_VI_LUNA6, ASK_TAIL_EN_LUNA6, remainingLine } from './styleLuna6'
 export const ASK_TAIL_VI = 'Bạn chọn nhanh bên dưới hoặc gõ tự do nhé — trả lời một phần cũng được.'
 export const ASK_TAIL_EN = 'Tap an answer below or just type — a partial answer is fine.'
 
 export function wasAskReply(assistantText: string | null | undefined): boolean {
   if (!assistantText) return false
-  return assistantText.includes(ASK_TAIL_VI) || assistantText.includes(ASK_TAIL_EN) || assistantText.includes('[TAPPY_ASK]')
+  return assistantText.includes(ASK_TAIL_VI) || assistantText.includes(ASK_TAIL_EN) || assistantText.includes(ASK_TAIL_VI_LUNA6) || assistantText.includes(ASK_TAIL_EN_LUNA6) || assistantText.includes('[TAPPY_ASK]')
 }
 
 const str = (v: unknown, max = 200): string => (typeof v === 'string' ? v.trim().slice(0, max) : '')
@@ -136,7 +141,7 @@ export function parseConsultDecision(raw: string): ConsultDecision | null {
 
 /**
  * Code-enforced rules on top of the model's decision:
- *  - an ask needs ≥ 2 usable questions, else it becomes a pick (never an empty question);
+ *  - an ask needs ≥ 2 usable questions, else it becomes a pick (never an empty question); Phase 3A / D2: the card finally SHOWN carries exactly one (refineAsk);
  *  - never two asks in a row (the previous Tappy turn already asked → pick);
  *  - a request in one of the five areas is never "chat" when the deterministic reader also sees the
  *    area (the karaoke refusal must not come back through the brain).
@@ -163,7 +168,8 @@ export function brainMessages(messages: Array<{ role: string; content: unknown }
 
 /** Builds the ask reply: readable text for every client + a structured block for clients that render it. */
 export function buildAskReply(ask: NonNullable<ConsultDecision['ask']>, opts: { lang: string; structured: boolean }): string {
-  const tail = opts.lang === 'en' ? ASK_TAIL_EN : ASK_TAIL_VI
+  const lunaVoice = styleLuna6On()
+  const tail = opts.lang === 'en' ? (lunaVoice ? ASK_TAIL_EN_LUNA6 : ASK_TAIL_EN) : (lunaVoice ? ASK_TAIL_VI_LUNA6 : ASK_TAIL_VI)
   const lead = ask.lead || (opts.lang === 'en' ? 'To pick the right one for you:' : 'Để mình chọn đúng cho bạn:')
   if (opts.structured) {
     const block = JSON.stringify({ v: 1, questions: ask.questions })
@@ -228,6 +234,20 @@ export function placeTypeFor(domain: ConsultDomain | undefined): 'restaurant' | 
 }
 
 /**
+ * The same line with N given by the CARD SET (A3, owner 2026-10-02): `footerRemaining(placesView)` — hidden cards, 0 when no card
+ * is shown. The model's own count line in any wording is removed; the server's line is added only when n > 0. The line goes
+ * before the first structured block even when that block follows the prose on the same line.
+ */
+export function consultRemainingLineN(text: string, n: number, lang: string, opts: { add?: boolean } = {}): string {
+  const vi = /(?:Mình\s+)?[Cc]òn(?:\s+khoảng)?\s+\d+\s+lựa chọn[^\n]*/g, en = /I have \d+ more option[^\n]*/g
+  const stripped = text.replace(vi, '').replace(en, '').replace(/\n{3,}/g, '\n\n').trimEnd()
+  if (!(n > 0) || opts.add === false) return stripped
+  const line = remainingLine(n, lang) ?? (lang === 'en' ? `I have ${n} more option${n > 1 ? 's' : ''} — want to see more?` : `Mình còn ${n} lựa chọn nữa, muốn xem thêm không?`)
+  const m = /\[(?:CTA_BUTTONS|FOLLOWUPS|TAPPY_[A-Z_]+)\]/.exec(stripped)
+  return m ? `${stripped.slice(0, m.index).trimEnd()}\n\n${line}\n\n${stripped.slice(m.index)}` : `${stripped}\n\n${line}`
+}
+
+/**
  * "Mình còn N lựa chọn nữa, muốn xem thêm không?" — counted by code (owner §5.3): N = candidates the
  * search returned that this reply does not name. A model-written count is corrected; none → removed.
  */
@@ -244,7 +264,7 @@ export function consultRemainingLine(text: string, candidateNames: readonly stri
   const vi = /(?:Mình\s+)?[Cc]òn(?:\s+khoảng)?\s+\d+\s+lựa chọn[^\n]*/g, en = /I have \d+ more option[^\n]*/g
   const stripped = text.replace(vi, '').replace(en, '').replace(/\n{3,}/g, '\n\n').trimEnd()
   if (n <= 0 || shown === 0) return stripped
-  const line = lang === 'en' ? `I have ${n} more option${n > 1 ? 's' : ''} — want to see more?` : `Mình còn ${n} lựa chọn nữa, muốn xem thêm không?`
+  const line = remainingLine(n, lang) ?? (lang === 'en' ? `I have ${n} more option${n > 1 ? 's' : ''} — want to see more?` : `Mình còn ${n} lựa chọn nữa, muốn xem thêm không?`)
   // Before any trailing marker block, after the prose.
   const m = stripped.match(/\n\s*\[(?:CTA_BUTTONS|FOLLOWUPS|TAPPY_[A-Z_]+)\]/)
   return m && m.index !== undefined ? `${stripped.slice(0, m.index).trimEnd()}\n\n${line}${stripped.slice(m.index)}` : `${stripped}\n\n${line}`
@@ -277,6 +297,23 @@ export function normalizePickSentence(text: string, fallbackPick?: string | null
     return first ? `${first[0]} ${line}${text.slice(first[0].length)}` : `${line}\n\n${text}`
   }
   return text
+}
+
+/**
+ * PHASE 3C / D7 — the pick sentence names the ENGINE's Pick. When the reply's "**Mình chọn: X**" names a different venue, the name is
+ * rewritten to the engine's and the divergence is returned (so it is logged, never silent). The same pick sentence form, the same single
+ * bold, nothing else in the reply is touched; a reply without that form is untouched (the existing backstop supplies it from the engine pick).
+ */
+export function enforceEnginePickSentence(text: string, enginePick: string | null | undefined): { text: string; diverged: string | null } {
+  const engine = (enginePick ?? '').trim()
+  if (!engine) return { text, diverged: null }
+  const m = /\*\*Mình chọn:\s*([^*\n]+)\*\*/.exec(text)
+  if (!m) return { text, diverged: null }
+  const f = (s: string) => s.normalize('NFC').toLowerCase().replace(/\s+/g, ' ').trim()
+  const named = f(m[1]), eng = f(engine)
+  // The same venue written head-only ("Béo Ơi Quán" for "Béo Ơi Quán - Món ngon Hà Nội") is the same Pick.
+  if (named === eng || (named.length >= 4 && eng.includes(named)) || (eng.length >= 4 && named.includes(eng))) return { text, diverged: null }
+  return { text: text.replace(m[0], `**Mình chọn: ${engine}**`), diverged: m[1].trim() }
 }
 
 /** The shopping card's recommended product name, from its [TAPPY_SHOPPING] marker (or null). */

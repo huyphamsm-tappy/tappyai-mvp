@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "【Vận chuyển nội địa】Máy xay cà phê bằng tay, 40 cài đặt có thể ...",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:11:28.386Z",
+ "body": {
+  "searchParameters": {
+   "q": "【Vận chuyển nội địa】Máy xay cà phê bằng tay, 40 cài đặt có thể ...",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Máy Xay Cà Phê Tự Động Lamvita MX",
+    "imageUrl": "https://ficoffeeshop.vn/wp-content/uploads/2023/07/May-xay-ca-phe-lamvita-mx-1-4.jpg",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQG06s_mWtko-x84DmfQZ18IT1ePI5Wen_cTLdYr8yZ4w&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Fi Coffee Shop",
+    "domain": "ficoffeeshop.vn",
+    "link": "https://ficoffeeshop.vn/may-xay-ca-phe-tu-dong-lamvita-mx/?srsltid=AU7gw4WV5UM95lxfWuMzrYGVU1W2h5YE0k7nGegkDTmFWGrMAm018J-N",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fficoffeeshop.vn%2Fwp-content%2Fuploads%2F2023%2F07%2FMay-xay-ca-phe-lamvita-mx-1-4.jpg&tbnid=9ZdK0WbO2j0CtM&imgrefurl=https%3A%2F%2Fficoffeeshop.vn%2Fmay-xay-ca-phe-tu-dong-lamvita-mx%2F%3Fsrsltid%3DAU7gw4WV5UM95lxfWuMzrYGVU1W2h5YE0k7nGegkDTmFWGrMAm018J-N&docid=KUL5fv69vmmR6M&w=1024&h=1024",
+    "position": 1
+   },
+   {
+    "title": "Máy Xay Cà Phê Tự Động Lamvita MX",
+    "imageUrl": "https://ficoffeeshop.vn/wp-content/uploads/2023/07/May-xay-ca-phe-lamvita-mx-3-1.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 1160,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRblASBHDhLzuf4XC1SLEiu9StGH9CP7nEd6NiqNtQZBA&s=10",
+    "thumbnailWidth": 514,
+    "thumbnailHeight": 595,
+    "source": "Fi Coffee Shop",
+    "domain": "ficoffeeshop.vn",
+    "link": "https://ficoffeeshop.vn/may-xay-ca-phe-tu-dong-lamvita-mx/?srsltid=AU7gw4U3FU9S2mMNO_3xi5N-UbrZWdU4G-Q0HxLoRU_V8XncpWw_rL1g",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fficoffeeshop.vn%2Fwp-content%2Fuploads%2F2023%2F07%2FMay-xay-ca-phe-lamvita-mx-3-1.jpg&tbnid=C6uEPEvM6MAtmM&imgrefurl=https%3A%2F%2Fficoffeeshop.vn%2Fmay-xay-ca-phe-tu-dong-lamvita-mx%2F%3Fsrsltid%3DAU7gw4U3FU9S2mMNO_3xi5N-UbrZWdU4G-Q0HxLoRU_V8XncpWw_rL1g&docid=KUL5fv69vmmR6M&w=1000&h=1160",
+    "position": 2
+   },
+   {
+    "title": "Máy xay cà phê cầm tay Dalat Retro x Langfarm",
+    "imageUrl": "https://prod-langfarm-bucketstack-bucketd7feb781-f2iejaoup3ga.s3.amazonaws.com/images/1727754882745_May_xay_ca_phe_cam_tay_Dalat_Retro_x_Langfarm___00001.jpg",
+    "imageWidth": 1080,
+    "imageHeight": 1080,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-UVJlkwe_AKw0-0qj1K0BMJqGCqkXKJIvj6ZtZ4W5pQ&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Langfarm",
+    "domain": "langfarm.com",
+    "link": "https://langfarm.com/products/may-xay-ca-phe-cam-tay-dalat-retro-x-langfarm",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fprod-langfarm-bucketstack-bucketd7feb781-f2iejaoup3ga.s3.amazonaws.com%2Fimages%2F1727754882745_May_xay_ca_phe_cam_tay_Dalat_Retro_x_Langfarm___00001.jpg&tbnid=9UU7MnJyXPXh8M&imgrefurl=https%3A%2F%2Flangfarm.com%2Fproducts%2Fmay-xay-ca-phe-cam-tay-dalat-retro-x-langfarm&docid=zo_qBMrDUBm_UM&w=1080&h=1080",
+    "position": 3
+   },
+   {
+    "title": "Máy xay cà phê chạy pin sạc cầm tay Timemore Whirly 01S - iCup",
+    "imageUrl": "https://icup.vn/wp-content/uploads/2025/04/May-xay-dien-cam-tay-TImemore-Whirly-co-the-nghien-40-45g-ca-phe-trong-1-lan-500x500.webp",
+    "imageWidth": 500,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTx99AXUucRiXenlY4zBd0EPYCUUdCv8EGKyx_4_OooAg&s=10",
+    "thumbnailWidth": 500,
+    "thumbnailHeight": 500,
+    "source": "iCup.vn",
+    "domain": "icup.vn",
+    "link": "https://icup.vn/san-pham/may-xay-ca-phe-chay-pin-sac-cam-tay-timemore-whirly-01s/?srsltid=AU7gw4V5_TWAabojWhQw5dVXEkpbrh0EeRF4Oz-zITbkFF7D0vU6yUN-",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Ficup.vn%2Fwp-content%2Fuploads%2F2025%2F04%2FMay-xay-dien-cam-tay-TImemore-Whirly-co-the-nghien-40-45g-ca-phe-trong-1-lan-500x500.webp&tbnid=hN6L0QStWj9QnM&imgrefurl=https%3A%2F%2Ficup.vn%2Fsan-pham%2Fmay-xay-ca-phe-chay-pin-sac-cam-tay-timemore-whirly-01s%2F%3Fsrsltid%3DAU7gw4V5_TWAabojWhQw5dVXEkpbrh0EeRF4Oz-zITbkFF7D0vU6yUN-&docid=jM3f7HGYfWVe3M&w=500&h=500",
+    "position": 4
+   },
+   {
+    "title": "Máy Xay Cà Phê Cầm Tay - Bánh Xe Đứng Lớn",
+    "imageUrl": "https://bizweb.dktcdn.net/thumb/grande/100/351/280/products/may-xay-ca-phe-thu-cong.jpg?v=1755160867010",
+    "imageWidth": 551,
+    "imageHeight": 550,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZqa0oqmwjWzpu6dZ58qiBvFcI1me6AzEdhtIdXSTAzA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Sửa Máy Cafe",
+    "domain": "suamaycafe.com",
+    "link": "https://suamaycafe.com/may-xay-ca-phe-cam-tay-banh-xe-dung-lon",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbizweb.dktcdn.net%2Fthumb%2Fgrande%2F100%2F351%2F280%2Fproducts%2Fmay-xay-ca-phe-thu-cong.jpg%3Fv%3D1755160867010&tbnid=yElK5LYDmpWvOM&imgrefurl=https%3A%2F%2Fsuamaycafe.com%2Fmay-xay-ca-phe-cam-tay-banh-xe-dung-lon&docid=GFLVqWmJzk1rPM&w=551&h=550",
+    "position": 5
+   },
+   {
+    "title": "Máy Xay Cà Phê Bằng Tay Thép Không Gỉ 420 Lưỡi 7 Cạnh - THIẾT BỊ GIA PHÚC",
+    "imageUrl": "https://giadunggiaphuc.com/wp-content/uploads/2024/09/Brown-and-White-Modern-Coffee-Promotion-LinkedIn-Post-19.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 1200,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTia8RYUoQDJFaP9CkpGFUvSIf-Eh6_myPzyIBuG5M6FA&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "thiết bị gia phúc",
+    "domain": "giadunggiaphuc.com",
+    "link": "https://giadunggiaphuc.com/san-pham/may-xay-ca-phe-bang-tay-thep-mcg01/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fgiadunggiaphuc.com%2Fwp-content%2Fuploads%2F2024%2F09%2FBrown-and-White-Modern-Coffee-Promotion-LinkedIn-Post-19.jpg&tbnid=cRdKxqF-BLyfEM&imgrefurl=https%3A%2F%2Fgiadunggiaphuc.com%2Fsan-pham%2Fmay-xay-ca-phe-bang-tay-thep-mcg01%2F&docid=FRZ0zBMzcrEBWM&w=1200&h=1200",
+    "position": 6
+   },
+   {
+    "title": "Máy xay cà phê bằng tay/Manual coffee grinder (MX616) - Bảo tàng Thế giới Cà  phê",
+    "imageUrl": "https://baotangthegioicaphe.com/Data/Sites/1/News/2988/mx616.jpg_thumb.png",
+    "imageWidth": 636,
+    "imageHeight": 772,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuIjOt7SFXIRT4F5JN8xluwwEZPNkifmKYMZdvND61Dg&s=10",
+    "thumbnailWidth": 406,
+    "thumbnailHeight": 492,
+    "source": "Bảo tàng Thế giới Cà phê",
+    "domain": "baotangthegioicaphe.com",
+    "link": "https://baotangthegioicaphe.com/may-xay-ca-phe-bang-taymanual-coffee-grinder-mx616",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbaotangthegioicaphe.com%2FData%2FSites%2F1%2FNews%2F2988%2Fmx616.jpg_thumb.png&tbnid=Iki2vEz-N5HumM&imgrefurl=https%3A%2F%2Fbaotangthegioicaphe.com%2Fmay-xay-ca-phe-bang-taymanual-coffee-grinder-mx616&docid=Oq4Iss3a-68FaM&w=636&h=772",
+    "position": 7
+   },
+   {
+    "title": "Hướng Dẫn Sử Dụng Máy Xay Cà Phê Winci CG9406B",
+    "imageUrl": "https://winci.com.vn/wp-content/uploads/2023/10/May-xay-ca-phe-Winci-CG9406B-1.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLXuYtjiprVJ0UPcZBi4KpfNfhQqao1SjM9YPUOk7H3w&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Winci",
+    "domain": "winci.com.vn",
+    "link": "https://winci.com.vn/huong-dan-su-dung-may-xay-ca-phe-winci-cg9406b/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwinci.com.vn%2Fwp-content%2Fuploads%2F2023%2F10%2FMay-xay-ca-phe-Winci-CG9406B-1.jpg&tbnid=9lqJiYTqQk64dM&imgrefurl=https%3A%2F%2Fwinci.com.vn%2Fhuong-dan-su-dung-may-xay-ca-phe-winci-cg9406b%2F&docid=i5WbzZ5XQu3N4M&w=1000&h=1000",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

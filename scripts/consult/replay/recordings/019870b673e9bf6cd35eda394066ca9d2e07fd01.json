@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Sếp nam, 40 tuổi, thích cà phê Cà phê quà tặng thích cà phê shop website địa chỉ facebook",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:45:17.999Z",
+ "body": {
+  "searchParameters": {
+   "q": "Sếp nam, 40 tuổi, thích cà phê Cà phê quà tặng thích cà phê shop website địa chỉ facebook",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nonla Coffee Vietnam",
+    "link": "https://www.facebook.com/nonlacoffeevietnam/posts/-set-qu%C3%A0-nonla-coffee-m%C3%B3n-qu%C3%A0-cu%E1%BB%91i-n%C4%83m-%C4%91%E1%BA%A7y-tinh-t%E1%BA%BF-gi%C3%A1ng-sinh-year-end-t%E1%BA%A5t-ni%C3%AAn-/122115882225010468/",
+    "snippet": "Sản phẩm từ NONLA Coffee mang phong vị mộc mạc – ấm áp – sang trọng, là lựa chọn hoàn hảo để làm quà cho mọi đối tượng: bạn bè, đồng nghiệp, ...",
+    "position": 1
+   },
+   {
+    "title": "Cà Phê Muối Chú Long",
+    "link": "https://www.facebook.com/caphemuoichulong/posts/ch%C3%BA-%C4%91%C3%A3-ph%E1%BA%A3i-m%E1%BA%A5t-%C4%91%E1%BA%BFn-40-n%C4%83m-%C4%91%E1%BB%83-l%E1%BB%B1a-ch%E1%BB%8Dn-kh%E1%BB%9Fi-nghi%E1%BB%87p-m%C3%B4-h%C3%ACnh-c%C3%A0-ph%C3%AAn%C4%83m-16-tu%E1%BB%95i-ch%C3%BA/169792372716260/",
+    "snippet": "Chú đã phải mất đến 40 năm để lựa chọn khởi nghiệp mô hình cà phê Năm 16 tuổi chú là một cậu chạy việc ở quán cà phê của người cô ở cổng Xí ...",
+    "position": 2
+   },
+   {
+    "title": "Flex chiếc em dâu tặng quà lúc nửa đêm ❤️ Gần 11h ...",
+    "link": "https://www.facebook.com/groups/groupyeubep/posts/2070297513354393/",
+    "snippet": "Cành cà phê có quả to quả nhỏ, màu xanh, màu vàng, màu đỏ rất đẹp mắt. Cắm xong là nửa đêm mà mình cứ ngồi ngắm em ấy thấy thật là ưng cái vẻ ...",
+    "position": 3
+   },
+   {
+    "title": "Cách tặng cà phê cho sếp hoặc người ngoại quốc",
+    "link": "https://dacsangialaitoi.com/tang-ca-phe-cho-sep-hoac-nguoi-ngoai-quoc/",
+    "snippet": "Tặng cà phê cho sếp hoặc người ngoại quốc, món quà tinh tế và đầy sức hút. Bạn đang cân nhắc mua quà tặng cho sếp/người ngoại quốc. Một trong những món quà ...",
+    "position": 4
+   },
+   {
+    "title": "Hội cà phê Việt Nam",
+    "link": "https://www.facebook.com/groups/3270118393010313/",
+    "snippet": "Hạt rang thơm, phối vị hài hòa ☕ Vị cà phê rõ, đậm vừa, hậu vị dễ uống ✨ Lên nước đẹp, hương thơm rõ khi pha Pha nóng hay pha đá vẫn giữ được độ thơm ...",
+    "position": 5
+   },
+   {
+    "title": "Sau 40 tuổi, đàn ông bắt đầu thích ngồi uống cafe một ...",
+    "link": "https://www.facebook.com/DongHoHaiTrieu/posts/sau-40-tu%E1%BB%95i-%C4%91%C3%A0n-%C3%B4ng-b%E1%BA%AFt-%C4%91%E1%BA%A7u-th%C3%ADch-ng%E1%BB%93i-u%E1%BB%91ng-cafe-m%E1%BB%99t-m%C3%ACnhkh%C3%B4ng-h%E1%BA%B3n-v%C3%AC-c%C3%B4-%C4%91%C6%A1n-c%C5%A9n/1099041282330504/",
+    "snippet": "Sau 40 tuổi, đàn ông bắt đầu thích ngồi uống cafe một mình… Không hẳn vì cô đơn, cũng không phải để trốn tránh điều gì.",
+    "position": 6
+   },
+   {
+    "title": "BIẾT ƠN ĐỜI ĐỜI ÔNG CHA ĐÃ ĐỂ LẠI DI SẢN TO ...",
+    "link": "https://www.facebook.com/MaiCafe1936/videos/bi%E1%BA%BFt-%C6%A1n-%C4%91%E1%BB%9Di-%C4%91%E1%BB%9Di-%C3%B4ng-cha-%C4%91%C3%A3-%C4%91%E1%BB%83-l%E1%BA%A1i-di-s%E1%BA%A3n-to-l%E1%BB%9Bn-cho-mu%C3%B4n-%C4%91%E1%BB%9Di-sau-caf%C3%A9-mai-ch%C3%A0o-b/1045880015036756/",
+    "snippet": "CAFÉ MAI Chào Bạn! Bạn vui lòng đặt hàng tại đây hoặc gọi số 0988.068.988 để được tư vấn thêm nhé. Kindly place your order here or contact our ...",
+    "position": 7
+   },
+   {
+    "title": "Hộp quà cà phê nào sang trọng và ý nghĩa nhất để biếu tặng?",
+    "link": "https://chus.vn/hop-qua-ca-phe-nao-sang-trong-va-y-nghia-nhat-de-bieu-tang/?srsltid=AU7gw4Vyda491eQXmtCW_WN6jIgWvYwgGIIy-SBDP4mxQQtYRAym36Z9",
+    "snippet": "Gợi ý 5 hộp quà cà phê tinh tế với những dòng cà phê, phụ kiện cao cấp. Thiết kế sang trọng, ý nghĩa cho doanh nghiệp lẫn cá nhân.",
+    "date": "7 thg 4, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

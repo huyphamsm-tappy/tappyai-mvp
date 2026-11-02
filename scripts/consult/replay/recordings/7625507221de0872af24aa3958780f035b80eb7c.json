@@ -1,0 +1,63 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Microsoft Surface Laptop Go\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:20:07.412Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Microsoft Surface Laptop Go\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Đánh giá Microsoft Surface Laptop Go: Ngoại hình cao cấp ...",
+    "link": "https://cellphones.com.vn/sforum/danh-gia-microsoft-surface-laptop-go-ngoai-hinh-cao-cap-mong-nhe-gia-14-69-trieu-dong",
+    "snippet": "Về hiệu năng, Microsoft Surface Laptop Go được trang bị CPU Intel Core i5-1035G1 đi kèm với đó 4GB/8GB RAM và 64GB/128GB/256GB SSD. Một điều cần lưu ý đó chính ...",
+    "position": 1
+   },
+   {
+    "title": "Trên tay Microsoft Surface Laptop Go: Mỏng nhẹ, phù hợp ...",
+    "link": "https://cellphones.com.vn/sforum/tren-tay-microsoft-surface-laptop-go-mong-nhe-phu-hop-voi-hoc-sinh-gia-tu-14-trieu-dong",
+    "snippet": "Trên tay Microsoft Surface Laptop Go: Mỏng nhẹ, phù hợp với học sinh, giá từ 14 triệu đồng · 4GB RAM + 64GB bộ nhớ trong được bán với giá là 14,690,000 đồng.",
+    "position": 2
+   },
+   {
+    "title": "Surface Laptop Go 3 ra mắt: Intel Core i5 thế hệ 12, màn ...",
+    "link": "https://cellphones.com.vn/sforum/surface-laptop-go-3-ra-mat",
+    "snippet": "... Nâng cấp Laptop - PC lên Windows 11 Pro chỉ với 1,690,000đ (DV.PM.41/DV.PM.42) và 1 km khác. Thẻ: MicrosoftMicrosoft Surface Laptop Go 3. danh-gia-bai-viet. (0 ...",
+    "position": 3
+   },
+   {
+    "title": "Top 4 mẫu laptop mỏng nhẹ đáng mua nhất hiện nay",
+    "link": "https://cellphones.com.vn/sforum/top-nhung-mau-laptop-mong-nhe-dang-mua-nhat-hien-nay",
+    "snippet": "... Asus Expertbook B5302CEAHPHP Envy 13-BA1020CAMicrosoftMicrosoft Surface Laptop GoUniversity Campus Tour 2022. danh-gia-bai-viet. (0 lượt ...",
+    "date": "15 thg 9, 2022",
+    "position": 4
+   },
+   {
+    "title": "Top laptop màu xanh mint đẹp và thời trang đáng mua",
+    "link": "https://cellphones.com.vn/sforum/laptop-mau-xanh-mint",
+    "snippet": "Microsoft Surface Laptop Go 2 Sage. Surface Laptop Go 2 là lựa chọn nhỏ gọn hơn cho người ưu tiên trọng lượng nhẹ. Phiên bản Sage có thiết kế ...",
+    "date": "2 ngày trước",
+    "position": 5
+   },
+   {
+    "title": "Microsoft ra mắt Surface Laptop Go: Intel Core i5 thế hệ 10 ...",
+    "link": "https://cellphones.com.vn/sforum/microsoft-ra-mat-surface-laptop-go-intel-core-i5-the-he-10-man-hinh-12-4-inch-gia-tu-12-8-trieu-dong",
+    "snippet": "8GB RAM + 128GB SSD: 699.99 USD; 8GB RAM + 256GB SSD: 899.99 USD. MUA LAPTOP MICROSOFT CHÍNH HÃNG. Thẻ: MicrosoftMicrosoft Surface Laptop Go ...",
+    "date": "6 thg 10, 2020",
+    "position": 6
+   }
+  ],
+  "credits": 1
+ }
+}

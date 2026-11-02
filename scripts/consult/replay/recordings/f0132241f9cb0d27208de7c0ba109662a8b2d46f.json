@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Wink Saigon Centre\" OR \"Khách Sạn Núi Thành\" OR \"Khách Sạn Hạnh Phúc\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:24:21.356Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Wink Saigon Centre\" OR \"Khách Sạn Núi Thành\" OR \"Khách Sạn Hạnh Phúc\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Wink Hotel Saigon: Stay in the Heart of Ho Chi Minh City",
+    "link": "https://www.tiktok.com/@sey.duarte/video/7568721165435309326",
+    "snippet": "... Ho Chi Minh City. Perfect. @Sey | Food & Travel · original sound - user8273334485369 · Wink Saigon Centre, part of Unscripted by Hyatt · author.",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn Hạnh Phúc Hà Tiên: Trải nghiệm đêm đẹp",
+    "link": "https://www.tiktok.com/@davi170703/video/7359960137999731986",
+    "snippet": "Khách sạn Hạnh Phúc Hà Tiên: Trải nghiệm đêm đẹp. Khám phá khách sạn Hạnh Phúc Hà Tiên với view cầu Tô Châu về đêm! Trải nghiệm tuyệt vời cho ...",
+    "position": 2
+   },
+   {
+    "title": "khách sạn hạnh phúc oiii ,đội iemm tới đâyyy 😋#xuhuong #tiktok",
+    "link": "https://www.tiktok.com/@_ueik.nqnaa_/video/7575828134843403528",
+    "snippet": "34 Lượt thích,Video TikTok từ bunny (@_ueik.nqnaa_): \"khách sạn hạnh phúc oiii ,đội iemm tới đâyyy #xuhuong #tiktok\"..",
+    "position": 3
+   },
+   {
+    "title": "Khách sạn ở Hà Tiên. Khách sạn Hạnh Phúc Hà ...",
+    "link": "https://www.tiktok.com/@mikacantho/video/7465319963755171079",
+    "snippet": "1760 Lượt thích,229 Bình luận.Video TikTok từ Mika Cần Thơ (@mikacantho): \"Khách sạn ở Hà Tiên. Khách sạn Hạnh Phúc Hà Tiên #mikacantho ...",
+    "position": 4
+   },
+   {
+    "title": "Khách Sạn Hạnh Phúc - Review Địa Điểm Đi Chợ Hà Tiên",
+    "link": "https://www.tiktok.com/@lunglunglx/video/7385433769144044807",
+    "snippet": "Khách Sạn Hạnh Phúc - Review Địa Điểm Đi Chợ Hà Tiên. ### Chợ Hải Sản Hà Tiên: Địa Điểm Lý Tưởng Cho Các Tín Đồ Ẩm Thực 🍽️ Nếu bạn đang tìm ...",
+    "position": 5
+   },
+   {
+    "title": "Game Vô Tri: Khách Sạn Hạnh Phúc - Trải Nghiệm Vui Vẻ",
+    "link": "https://www.tiktok.com/@gamevotri94/video/7453259738210520338",
+    "snippet": "Game Vô Tri: Khách Sạn Hạnh Phúc - Trải Nghiệm Vui Vẻ. Khám phá game vui nhộn 'Khách Sạn Hạnh Phúc', nơi anime và hài hước kết hợp thú vị! Chơi ...",
+    "position": 6
+   },
+   {
+    "title": "Khách sạn Hạnh Phúc Hà Tiên - Địa chỉ, review và hướng dẫn đi",
+    "link": "https://www.tiktok.com/@davi170703/video/7655553818880412935",
+    "snippet": "- Cách tìm: tra cứu bằng cụm từ “khách sạn hạnh phúc hà tiên” hoặc “nhà nghỉ hạnh phúc hà tiên” trên Google Maps hoặc ứng dụng đặt phòng để có chỉ đường và số ...",
+    "position": 7
+   },
+   {
+    "title": "Khách Sạn Hạnh Phúc Phú Quý: Nếu Nói Nhớ Em, Em Có ...",
+    "link": "https://www.tiktok.com/@chungtinhpq/video/7675724816845933832",
+    "snippet": "Keywords: khách sạn hạnh phúc phú quý, du lịch đảo phú quý, tâm trạng hoàng hôn phú quý, câu nói về hạnh phúc và tình yêu, nếu nói nhớ em em có ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

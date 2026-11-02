@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "tiệm nail sơn gel vẽ móng đẹp giá 300k Quận 10 gia dich vu bang gia spa massage",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T06:00:47.891Z",
+ "body": {
+  "searchParameters": {
+   "q": "tiệm nail sơn gel vẽ móng đẹp giá 300k Quận 10 gia dich vu bang gia spa massage",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Top 5 Tiệm Nail tại Quận 10 giá rẻ, dịch vụ chất lượng",
+    "link": "https://topaz.vn/toplist/tiem-nail-tai-quan-10",
+    "snippet": "Top 5 Tiệm Nail tại Quận 10 giá rẻ, dịch vụ chất lượng ; 1, The Lab Nail Bar ; 2, Tesee Nails Town ; 3, Tiệm nhà MIN ; 4, Lisa Nail & Spa.",
+    "date": "19 thg 9, 2026",
+    "rating": 4.9,
+    "ratingCount": 28,
+    "position": 1
+   },
+   {
+    "title": "Khám phá dịch vụ làm nail tại nhà Quận 10 giá ưu đãi - Bworkee",
+    "link": "https://bworkee.com/news/dich-vu-lam-nail-tai-nha-quan-10",
+    "snippet": "Bảng giá dịch vụ làm nail tại nhà quận 10 uy tín tại Bworkee ; 14, Vẽ nổi, 30.000 VNĐ / Người ; 15, Sơn Gel + Cắt Da, 195.000 VNĐ / Người ; 16, Đá ...",
+    "date": "13 thg 11, 2025",
+    "position": 2
+   },
+   {
+    "title": "Top 10+ Tiệm Nail Quận 10 Làm Móng Đẹp Đông Khách ...",
+    "link": "https://lisanail.vn/tiem-nail-quan-10/",
+    "snippet": "Địa chỉ: 618 Sư Vạn Hạnh, Phường 10, Quận 10, TP.HCM. chỉ: 01 Trần Minh Quyền, P.10, Q.10, TP.HCM. chỉ: 124A Đồng Nai, P. 15 Quận 10 TP.",
+    "date": "26 thg 10, 2023",
+    "rating": 5,
+    "ratingCount": 3,
+    "position": 3
+   },
+   {
+    "title": "Tiệm nail gội đầu ở quận 10 giá mềm chỉ 75K sơn gel mà sử ...",
+    "link": "https://www.tiktok.com/@thudidaurua/video/7534663646899719431",
+    "snippet": "Tiệm nail gội đầu ở quận 10 giá mềm chỉ 75K sơn gel mà sử dụng. @Thư Thư nè · Cute.",
+    "position": 4
+   },
+   {
+    "title": "Cho em xin vài tiệm nail quận 10 giá rẻ ạ",
+    "link": "https://www.facebook.com/groups/364963477265197/posts/2346818149079710/",
+    "snippet": "Cho em xin vài tiệm nail quận 10 giá rẻ ạ · Hồng Gấm · Tuyết Ngân. Ib em ạ, em nhận làm tại nhà ạ · Lương Ngọc Như Thường. Có dịp ghé phú nhuận ...",
+    "position": 5
+   },
+   {
+    "title": "Làm Nail Tận Nơi Quận 10: Nhanh Chóng, Uy Tín, Tiện Lợi",
+    "link": "https://netdepthammy.com/lam-nail-tan-noi-quan-10/",
+    "snippet": "Đắp Móng Bột/Gel, Đắp bột/gel, nối móng, tạo form chuẩn, 300.000 – 450.000 ; Chăm Sóc Móng Cơ Bản, Cắt da, sửa móng, dũa form, sơn dưỡng, 150.000 ; Thiết Kế, Vẽ ...",
+    "position": 6
+   },
+   {
+    "title": "TOP 10 TIỆM NAIL UY TÍN, CHẤT LƯỢNG VÀ ĐƯỢC YÊU ...",
+    "link": "https://www.facebook.com/saigonreview.vn/videos/-top-10-ti%E1%BB%87m-nail-uy-t%C3%ADn-ch%E1%BA%A5t-l%C6%B0%E1%BB%A3ng-v%C3%A0-%C4%91%C6%B0%E1%BB%A3c-y%C3%AAu-th%C3%ADch-nh%E1%BA%A5t-t%E1%BA%A1i-qu%E1%BA%ADn-1m%E1%BB%99t-b%E1%BB%99-m%C3%B3ng/1444761957540255/",
+    "snippet": "Thùy Thỏ Nail Room (218B Nguyễn Cư Trinh, P. Nguyễn Cư Trinh): Địa chỉ làm đẹp giá rẻ chỉ từ 120k/bộ, sở hữu đội ngũ 15 thợ tay nghề cao không ...",
+    "position": 7
+   },
+   {
+    "title": "[Báo Giá] Làm nail TPHCM, Làm móng Sài Gòn tại nhà",
+    "link": "https://sanazubeauty.com/lam-nail-tphcm.html?srsltid=AU7gw4X1py4WpYRfZS17HFx266P5At2qscHn4G8EDbMQ0nJFllJjEIRr",
+    "snippet": "3.1 Dịch vụ chăm sóc móng cơ bản ; Cắt da, dũa móng tay/chân, 50.000 – 80.000 VNĐ ; Sơn thường (tay/chân), 40.000 – 60.000 VNĐ ; Sơn gel (tay/chân), 100.000 – ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

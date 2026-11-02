@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Beefsteak 100gram CN (site:food.grab.com/vn OR site:shopeefood.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:00:50.124Z",
+ "body": {
+  "searchParameters": {
+   "q": "Beefsteak 100gram CN (site:food.grab.com/vn OR site:shopeefood.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Beefsteak 100G Chi Nhánh Q7 - Đường Số 49",
+    "link": "https://shopeefood.vn/ho-chi-minh/beefsteak-100g-chi-nhanh-q7-duong-so-49",
+    "snippet": "Xem menu & đặt món trực tuyến từ Beefsteak 100G Chi Nhánh Q7 - Đường Số 49 rất dễ dàng. Giao hàng tận nơi trong vòng ít phút.",
+    "position": 1
+   },
+   {
+    "title": "Beefsteak 100g - CN Quận 12",
+    "link": "https://shopeefood.vn/ho-chi-minh/beefsteak-100g-cn-quan-12",
+    "snippet": "Beefsteak 100g - CN Quận 12. 206 Đông Bắc, P. Tân Chánh Hiệp, Quận 12, TP. HCM. Mở cửa.",
+    "position": 2
+   },
+   {
+    "title": "Beefsteak 100G ⭐ 4.8",
+    "link": "https://food.grab.com/vn/vi/restaurant/beefsteak-100g-delivery/5-C8B3HEKCTCNDBA",
+    "snippet": "Món Âu,Bít Tết,Mì Ý,Cá Hồi Nướng.",
+    "rating": 4.8,
+    "ratingCount": 73,
+    "position": 3
+   },
+   {
+    "title": "BeefSteak 100G | Mua online tại ShopeeFood.vn",
+    "link": "https://shopeefood.vn/thuong-hieu/beefsteak-100g",
+    "snippet": "BeefSteak 100G. Đã đóng. Hẹn giao vào 02/10. Beefsteak 100G Chi Nhánh Q7 - Đường Số 49. Số 110 Đường Số 49, P. Tân Quy, Quận 7, TP. HCM. Tối thiểu 20k Giá 0. Mã ...",
+    "position": 4
+   },
+   {
+    "title": "Beefsteak 100G ⭐ 4.9",
+    "link": "https://food.grab.com/vn/vi/restaurant/beefsteak-100gram-delivery/5-C8B3HEKCTCNDBA",
+    "snippet": "79.000. Beefsteak 100G : Mỳ Ý Xào Bò Úc. Mỳ Ý Xào Bò Úc. Mỳ ý xào cùng với bò thơm ngon ,hoà quyện rau củ hấp dẫn ! 89.000. Beefsteak 100G : Cá hồi áp chảo. Cá ...",
+    "rating": 4.9,
+    "ratingCount": 69,
+    "position": 5
+   },
+   {
+    "title": "Beefsteak 100G Chi Nhánh Q7 - Đường Số 49",
+    "link": "https://shopeefood.vn/ho-chi-minh/beefsteak-100g-chi-nhanh-q7-duong-so-49?fbclid=IwAR22hOSwRxaNISXUXInIXIYh4UYwrVtUSozC7a3g3mkl4Bec1-XalRGNnAM_aem_Aepk7_QBw49FhbNUJ493J5TBxK6N6fGr0uj_R9v_KU-ZrrUHmpxAc7n1N7xt6P_vdyibiiegrduwCJGsCEXyRfR5",
+    "snippet": "Xem menu & đặt món trực tuyến từ Beefsteak 100G Chi Nhánh Q7 - Đường Số 49 rất dễ dàng. Giao hàng tận nơi trong vòng ít phút.",
+    "position": 6
+   },
+   {
+    "title": "OLIVA - STEAK ⭐ 4.6",
+    "link": "https://food.grab.com/vn/en/restaurant/oliva-steak-delivery/5-C76YVGDYTCLVAA",
+    "snippet": "150G steak mỹ , tặng 1 trứng , ăn kèm salad bánh mỳ đặc ruột nóng, kèm khoai tây chiên hoặc khoai tây nướng bơ tỏi , có 4 loại sốt tuỳ chọn sốt tiêu đen ...",
+    "rating": 4.6,
+    "ratingCount": 56,
+    "position": 7
+   },
+   {
+    "title": "Kobe Steak House - Premium Beef Quality ⭐ 4.7",
+    "link": "https://food.grab.com/vn/vi/restaurant/kobe-steak-house-premium-beef-quality-delivery/5-C741UBCBN6AAHE",
+    "snippet": "Late Night Combo - Beef Steak Don 150g , Unagi Don 100g + salad . Ăn sang - nhẹ bụng - chuẩn nhật - Tiết kiệm lớn - đêm cực hời. 399.000.",
+    "rating": 4.7,
+    "ratingCount": 641,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

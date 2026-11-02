@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Comfort Suites Chesapeake - Norfolk",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:20:42.584Z",
+ "body": {
+  "searchParameters": {
+   "q": "Comfort Suites Chesapeake - Norfolk",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Comfort Suites Chesapeake - Norfolk, Chesapeake (updated prices 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/624545343.jpg?k=9fe169ae892e1fcbf1cda3c06a1c2fbcfc08c8e61d5d8b1b5a51bcef164bca6e&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTA3JG78Aev8gJ4fu2yzheDbTSt-fBLt_fd6FTEigqx8g&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/us/hotel-crossways-blvd-chesapeake.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F624545343.jpg%3Fk%3D9fe169ae892e1fcbf1cda3c06a1c2fbcfc08c8e61d5d8b1b5a51bcef164bca6e%26o%3D&tbnid=30AKxJIPYBEmmM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fus%2Fhotel-crossways-blvd-chesapeake.html&docid=4qticLjeh1O-VM&w=1024&h=683",
+    "position": 1
+   },
+   {
+    "title": "COMFORT SUITES CHESAPEAKE - NORFOLK - 2026 Reviews (VA)",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2c/c1/9a/bc/caption.jpg?w=900&h=500&s=1",
+    "imageWidth": 900,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDNzoKUGFJsUHX7qsQc5bEDStuQL3KKfl2o7xiswzWbw&s=10",
+    "thumbnailWidth": 599,
+    "thumbnailHeight": 333,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com",
+    "link": "https://www.tripadvisor.com/Hotel_Review-g57597-d110723-Reviews-Comfort_Suites_Chesapeake_Norfolk-Chesapeake_Virginia.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F2c%2Fc1%2F9a%2Fbc%2Fcaption.jpg%3Fw%3D900%26h%3D500%26s%3D1&tbnid=ZjNWsysUAE8a2M&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com%2FHotel_Review-g57597-d110723-Reviews-Comfort_Suites_Chesapeake_Norfolk-Chesapeake_Virginia.html&docid=OtR0Tjb6C3xyHM&w=900&h=500",
+    "position": 2
+   },
+   {
+    "title": "Comfort Suites Chesapeake - Norfolk €75. Chesapeake Hotel Deals & Reviews -  KAYAK",
+    "imageUrl": "https://www.kayak.ie/rimg/himg/c8/78/a0/ice-155790-119819533-763455.jpg?width=836&height=607&crop=true",
+    "imageWidth": 836,
+    "imageHeight": 607,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRk4Ce75oa0xQZZihzsyx3oocK4c393NeI7474q0EaIhg&s",
+    "thumbnailWidth": 264,
+    "thumbnailHeight": 191,
+    "source": "KAYAK.ie",
+    "domain": "www.kayak.ie",
+    "link": "https://www.kayak.ie/Chesapeake-Hotels-Comfort-Suites.155790.ksp",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.kayak.ie%2Frimg%2Fhimg%2Fc8%2F78%2Fa0%2Fice-155790-119819533-763455.jpg%3Fwidth%3D836%26height%3D607%26crop%3Dtrue&tbnid=vo1hZ_sz16PyeM&imgrefurl=https%3A%2F%2Fwww.kayak.ie%2FChesapeake-Hotels-Comfort-Suites.155790.ksp&docid=FcR1vm_5gi-MrM&w=836&h=607",
+    "position": 3
+   },
+   {
+    "title": "Comfort Suites Chesapeake - Norfolk, Chesapeake (updated prices 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/624548895.jpg?k=bd419dcd98f9921b304e8294810eede0bf0d2db171d2c68383205066f2cfc0e9&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDa4CRVqycOeNXA8Fb21GEXX93EDhN6t0yKfqFXBlIYQ&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/us/hotel-crossways-blvd-chesapeake.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F624548895.jpg%3Fk%3Dbd419dcd98f9921b304e8294810eede0bf0d2db171d2c68383205066f2cfc0e9%26o%3D&tbnid=neRxbbAQ7RywhM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fus%2Fhotel-crossways-blvd-chesapeake.html&docid=4qticLjeh1O-VM&w=1024&h=683",
+    "position": 4
+   },
+   {
+    "title": "Hotel in Chesapeake, VA | Comfort Suites Chesapeake - Norfolk",
+    "imageUrl": "https://www.choicehotels.com/hoteldam/va/va122/images/2048/VA122Exterior1_1.jpg?webp=true",
+    "imageWidth": 2048,
+    "imageHeight": 1365,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjGZEFLwtKcoYNuYTmECuwk66m-TvXB5Sm_ujxnm14Kg&s",
+    "thumbnailWidth": 275,
+    "thumbnailHeight": 183,
+    "source": "Choice Hotels",
+    "domain": "www.choicehotels.com",
+    "link": "https://www.choicehotels.com/virginia/chesapeake/comfort-suites-hotels/va122",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.choicehotels.com%2Fhoteldam%2Fva%2Fva122%2Fimages%2F2048%2FVA122Exterior1_1.jpg%3Fwebp%3Dtrue&tbnid=fnRtJ53WIequbM&imgrefurl=https%3A%2F%2Fwww.choicehotels.com%2Fvirginia%2Fchesapeake%2Fcomfort-suites-hotels%2Fva122&docid=cAXMpx_i4odAxM&w=2048&h=1365",
+    "position": 5
+   },
+   {
+    "title": "Comfort Suites Chesapeake - Norfolk, Chesapeake (VA) | 2026 Updated Prices,  Deals",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/100560/0/5faf8b151ad801699fb8d95d78477174.jpg?va=1&ca=13&ce=1&s=414x232",
+    "imageWidth": 348,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3KLjl4mgeTGWVi_OzhpMejuvsUOru5Vl0_RD8-M28Mw&s",
+    "thumbnailWidth": 275,
+    "thumbnailHeight": 183,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/comfort-suites/hotel/chesapeake-va-us.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F100560%2F0%2F5faf8b151ad801699fb8d95d78477174.jpg%3Fva%3D1%26ca%3D13%26ce%3D1%26s%3D414x232&tbnid=9W3NwUevtxrJGM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fcomfort-suites%2Fhotel%2Fchesapeake-va-us.html&docid=h_JyrMl_6w_WLM&w=348&h=232",
+    "position": 6
+   },
+   {
+    "title": "Comfort Suites Chesapeake - Check Latest Reviews 2026 - Expedia",
+    "imageUrl": "https://images.trvl-media.com/lodging/1000000/10000/6600/6570/d11ae589.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 863,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTRF-3SGfWe1OtPJxRpBIP6rKW7l5PZ_haGwB2TmX2JTQ&s",
+    "thumbnailWidth": 275,
+    "thumbnailHeight": 183,
+    "source": "Expedia",
+    "domain": "www.expedia.com",
+    "link": "https://www.expedia.com/Chesapeake-Hotels-Comfort-Suites-Chesapeake-Norfolk.h6570.Hotel-Information",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F1000000%2F10000%2F6600%2F6570%2Fd11ae589.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=m7DyEjw-wOuUdM&imgrefurl=https%3A%2F%2Fwww.expedia.com%2FChesapeake-Hotels-Comfort-Suites-Chesapeake-Norfolk.h6570.Hotel-Information&docid=FMvQr40xumfyMM&w=863&h=575",
+    "position": 7
+   },
+   {
+    "title": "Comfort Suites Chesapeake - Norfolk, Chesapeake (updated prices 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/624546066.jpg?k=a987084e5e4338ed5a0c082bd9e717b99033a34da8c4686e0bf0ed32adef24d9&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5iTfV3gpdhybKXToL6_witMORuXySx1Imd_YqjrktrQ&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/us/hotel-crossways-blvd-chesapeake.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F624546066.jpg%3Fk%3Da987084e5e4338ed5a0c082bd9e717b99033a34da8c4686e0bf0ed32adef24d9%26o%3D&tbnid=EOyHnxXsCzWIqM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fus%2Fhotel-crossways-blvd-chesapeake.html&docid=4qticLjeh1O-VM&w=1024&h=683",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

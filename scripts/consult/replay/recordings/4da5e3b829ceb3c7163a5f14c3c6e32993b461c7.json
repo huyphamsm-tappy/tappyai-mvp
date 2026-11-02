@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Miya Sushi\" OR \"La Phong Sushi House\" OR \"Haru Sushi Quận 1\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:52:50.156Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Miya Sushi\" OR \"La Phong Sushi House\" OR \"Haru Sushi Quận 1\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Miya Sushi: Tiệm Sushi Ngon Ở Quận 1 Để Hẹn Hò",
+    "link": "https://www.tiktok.com/@toiladansaigon/video/7481613174857354503",
+    "snippet": "Miya Sushi: Tiệm Sushi Ngon Ở Quận 1 Để Hẹn Hò. Khám phá Miya Sushi – tiệm sushi tuyệt vời tại quận 1, hoàn hảo cho buổi hẹn hò của bạn!",
+    "position": 1
+   },
+   {
+    "title": "Miya Sushi: Tiệm Sushi Ngon Núp Hẻm Quận 1",
+    "link": "https://www.tiktok.com/@loveoffoods/video/7493880324817046802",
+    "snippet": "Khám phá Miya Sushi, tiệm sushi chất lượng tại quận 1 với sashimi tươi ngon và không gian thoải mái. Chắc chắn bạn sẽ hài lòng! #mammamcungzit # ...",
+    "position": 2
+   },
+   {
+    "title": "MIYA SUSHI: Tiệm Sushi Ngon Núp Hẻm Hẹn Hò Quận 1",
+    "link": "https://www.tiktok.com/@toiladansaigon/video/7461992108774149394",
+    "snippet": "MIYA SUSHI: Tiệm Sushi Ngon Núp Hẻm Tại Quận 1, Điểm Hẹn Lý Tưởng Nếu bạn đang tìm kiếm một quán sushi ngon tại Quận 1, đặc biệt là một ...",
+    "position": 3
+   },
+   {
+    "title": "Tiệm sushi ngon rẻ khu Bình Thạnh nhiều bạn sinh viên ...",
+    "link": "https://www.tiktok.com/@toiladansaigon/video/7368090102658043143",
+    "snippet": "### Món Sushi Ngon Tại MIYA SUSHI Với tư cách là một quán ăn Nhật Bản (Japanese food) uy tín, MIYA SUSHI tự hào mang đến những món sushi tươi ...",
+    "position": 4
+   },
+   {
+    "title": "miyasushi",
+    "link": "https://www.tiktok.com/tag/miyasushi",
+    "snippet": "We didnt win but this is actually one · Một tiệm sushi ngon núp hẻm quận 1 đáng để lưu lại hẹn hò nè · Miya sushi jacksonville florida #sushi # ...",
+    "position": 5
+   },
+   {
+    "title": "Haru Sushi Quận 1 (@harusushinguyenthaihoc)",
+    "link": "https://www.tiktok.com/@harusushinguyenthaihoc",
+    "snippet": "Haru Sushi Quận 1 (@harusushinguyenthaihoc) trên TikTok |6090 Lượt thích.91 Follower.HARU SUSHI - 93 NGUYỄN THÁI HỌC, PHƯỜNG CẦU ÔNG LÃNH, QUẬN 1.",
+    "position": 6
+   },
+   {
+    "title": "Miya Sushi 🍣 (@miya_ss_bbq)",
+    "link": "https://www.tiktok.com/@miya_ss_bbq",
+    "snippet": "Miya Sushi · @miya_ss_bbq · CN1 : 150/43A Nguyễn Trãi, Bến Thành, Q1 Hotline: 02839259908 CN2: 48A Huỳnh Mẫn Đạt, p.19,Bình Thạnh Hotline : 0777200985.",
+    "position": 7
+   },
+   {
+    "title": "Khám Phá Sushi Ngon Tại Haru Sushi Quận 1",
+    "link": "https://www.tiktok.com/@winter290796/photo/7658315768630709524",
+    "snippet": "Đánh giá: 4.5/5⭐️ Đc: 93 Nguyễn Thái Học, Cầu Ông Lãnh, Hồ Chí Minh #shushi #shushiharu #hcm #quan1. Khám Phá Sushi Ngon Tại Haru Sushi Quận 1.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

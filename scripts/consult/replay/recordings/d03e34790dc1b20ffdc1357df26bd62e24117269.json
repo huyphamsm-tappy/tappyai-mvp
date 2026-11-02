@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Máy xay cà phê thủ công, 40 cài đặt điều chỉnh ...",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:11:27.583Z",
+ "body": {
+  "searchParameters": {
+   "q": "Máy xay cà phê thủ công, 40 cài đặt điều chỉnh ...",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Máy xay hạt cà phê thủ công 40 cấp độ cài đặt mài Điều chỉnh độ thô Lõi mài  gốm (KMDJ-KCT-W2) | Shopee Việt Nam",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/cn-11134207-820l4-mlq6lv4erbb40f",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_hADJPm7C04peEvE9AtxW_td6Ez0D-9PwPt5QDRyvYQ&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/M%C3%A1y-xay-h%E1%BA%A1t-c%C3%A0-ph%C3%AA-th%E1%BB%A7-c%C3%B4ng-40-c%E1%BA%A5p-%C4%91%E1%BB%99-c%C3%A0i-%C4%91%E1%BA%B7t-m%C3%A0i-%C4%90i%E1%BB%81u-ch%E1%BB%89nh-%C4%91%E1%BB%99-th%C3%B4-L%C3%B5i-m%C3%A0i-g%E1%BB%91m-(KMDJ-KCT-W2)-i.1031871809.46152922021",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fcn-11134207-820l4-mlq6lv4erbb40f&tbnid=_i86lThZN9PKMM&imgrefurl=https%3A%2F%2Fshopee.vn%2FM%25C3%25A1y-xay-h%25E1%25BA%25A1t-c%25C3%25A0-ph%25C3%25AA-th%25E1%25BB%25A7-c%25C3%25B4ng-40-c%25E1%25BA%25A5p-%25C4%2591%25E1%25BB%2599-c%25C3%25A0i-%25C4%2591%25E1%25BA%25B7t-m%25C3%25A0i-%25C4%2590i%25E1%25BB%2581u-ch%25E1%25BB%2589nh-%25C4%2591%25E1%25BB%2599-th%25C3%25B4-L%25C3%25B5i-m%25C3%25A0i-g%25E1%25BB%2591m-(KMDJ-KCT-W2)-i.1031871809.46152922021&docid=pfnPG6KLWhGTeM&w=1024&h=1024",
+    "position": 1
+   },
+   {
+    "title": "Máy xay cà phê thủ công Kiti-VN với 40 cài đặt có thể điều chỉnh bên ngoài  Cối xay bằng thủy tinh trong suốt lõi gốm 2.0 Hộp đựng Máy xay cầm",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/sg-11134201-8258e-mrqvqkfxp62p40",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlgy9ZR1zaBZSvCBfypODaz7vTZABpir0L9BJ1BhJMiQ&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/M%C3%A1y-xay-c%C3%A0-ph%C3%AA-th%E1%BB%A7-c%C3%B4ng-Kiti-VN-v%E1%BB%9Bi-40-c%C3%A0i-%C4%91%E1%BA%B7t-c%C3%B3-th%E1%BB%83-%C4%91i%E1%BB%81u-ch%E1%BB%89nh-b%C3%AAn-ngo%C3%A0i-C%E1%BB%91i-xay-b%E1%BA%B1ng-th%E1%BB%A7y-tinh-trong-su%E1%BB%91t-l%C3%B5i-g%E1%BB%91m-2.0-H%E1%BB%99p-%C4%91%E1%BB%B1ng-M%C3%A1y-xay-c%E1%BA%A7m-tay-c%E1%BA%A7m-tay-c%C3%B3-th%E1%BB%83-gi%E1%BA%B7t-%C4%91%C6%B0%E1%BB%A3c-%C4%91%E1%BB%83-r%C3%B3t-nh%E1%BB%8F-gi%E1%BB%8Dt-French-Press-Moka-Pot-i.1122835748.40433453716?extraParams=%7B%22display_model_id%22%3A292866070737%2C%22model_selection_logic%22%3A3%7D",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fsg-11134201-8258e-mrqvqkfxp62p40&tbnid=CvOY15vEYndqlM&imgrefurl=https%3A%2F%2Fshopee.vn%2FM%25C3%25A1y-xay-c%25C3%25A0-ph%25C3%25AA-th%25E1%25BB%25A7-c%25C3%25B4ng-Kiti-VN-v%25E1%25BB%259Bi-40-c%25C3%25A0i-%25C4%2591%25E1%25BA%25B7t-c%25C3%25B3-th%25E1%25BB%2583-%25C4%2591i%25E1%25BB%2581u-ch%25E1%25BB%2589nh-b%25C3%25AAn-ngo%25C3%25A0i-C%25E1%25BB%2591i-xay-b%25E1%25BA%25B1ng-th%25E1%25BB%25A7y-tinh-trong-su%25E1%25BB%2591t-l%25C3%25B5i-g%25E1%25BB%2591m-2.0-H%25E1%25BB%2599p-%25C4%2591%25E1%25BB%25B1ng-M%25C3%25A1y-xay-c%25E1%25BA%25A7m-tay-c%25E1%25BA%25A7m-tay-c%25C3%25B3-th%25E1%25BB%2583-gi%25E1%25BA%25B7t-%25C4%2591%25C6%25B0%25E1%25BB%25A3c-%25C4%2591%25E1%25BB%2583-r%25C3%25B3t-nh%25E1%25BB%258F-gi%25E1%25BB%258Dt-French-Press-Moka-Pot-i.1122835748.40433453716%3FextraParams%3D%257B%2522display_model_id%2522%253A292866070737%252C%2522model_selection_logic%2522%253A3%257D&docid=vMvkGC1dtOTAaM&w=1024&h=1024",
+    "position": 2
+   },
+   {
+    "title": "Máy xay cà phê thủ công cầm tay 40 cấp độ điều chỉnh, lưỡi gốm cao cấp,  không cần điện, nhỏ gọn mang theo",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-monr1903d2bxf5",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_Uad0YpQOz-mxZjZhqvXzYmtSTNQrKvbklCY3K3_CLQ&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/M%C3%A1y-xay-c%C3%A0-ph%C3%AA-th%E1%BB%A7-c%C3%B4ng-c%E1%BA%A7m-tay-40-c%E1%BA%A5p-%C4%91%E1%BB%99-%C4%91i%E1%BB%81u-ch%E1%BB%89nh-l%C6%B0%E1%BB%A1i-g%E1%BB%91m-cao-c%E1%BA%A5p-kh%C3%B4ng-c%E1%BA%A7n-%C4%91i%E1%BB%87n-nh%E1%BB%8F-g%E1%BB%8Dn-mang-theo-i.1708207737.46711113523",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-81ztc-monr1903d2bxf5&tbnid=uqiApzYGfu9z5M&imgrefurl=https%3A%2F%2Fshopee.vn%2FM%25C3%25A1y-xay-c%25C3%25A0-ph%25C3%25AA-th%25E1%25BB%25A7-c%25C3%25B4ng-c%25E1%25BA%25A7m-tay-40-c%25E1%25BA%25A5p-%25C4%2591%25E1%25BB%2599-%25C4%2591i%25E1%25BB%2581u-ch%25E1%25BB%2589nh-l%25C6%25B0%25E1%25BB%25A1i-g%25E1%25BB%2591m-cao-c%25E1%25BA%25A5p-kh%25C3%25B4ng-c%25E1%25BA%25A7n-%25C4%2591i%25E1%25BB%2587n-nh%25E1%25BB%258F-g%25E1%25BB%258Dn-mang-theo-i.1708207737.46711113523&docid=7cUN3xnVVyav6M&w=1024&h=1024",
+    "position": 3
+   },
+   {
+    "title": "Máy xay cà phê thủ công cầm tay 40 cấp độ điều chỉnh, lưỡi gốm cao cấp,  không cần điện, nhỏ gọn mang theo",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-monraxrx0jkf61",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-qZF30WZQQGKH8jhAwd9H6eTncm3KVul1APMaXIC24Q&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/M%C3%A1y-xay-c%C3%A0-ph%C3%AA-th%E1%BB%A7-c%C3%B4ng-c%E1%BA%A7m-tay-40-c%E1%BA%A5p-%C4%91%E1%BB%99-%C4%91i%E1%BB%81u-ch%E1%BB%89nh-l%C6%B0%E1%BB%A1i-g%E1%BB%91m-cao-c%E1%BA%A5p-kh%C3%B4ng-c%E1%BA%A7n-%C4%91i%E1%BB%87n-nh%E1%BB%8F-g%E1%BB%8Dn-mang-theo-i.1708207737.46711113523",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-81ztc-monraxrx0jkf61&tbnid=HZkacHdAu0jK4M&imgrefurl=https%3A%2F%2Fshopee.vn%2FM%25C3%25A1y-xay-c%25C3%25A0-ph%25C3%25AA-th%25E1%25BB%25A7-c%25C3%25B4ng-c%25E1%25BA%25A7m-tay-40-c%25E1%25BA%25A5p-%25C4%2591%25E1%25BB%2599-%25C4%2591i%25E1%25BB%2581u-ch%25E1%25BB%2589nh-l%25C6%25B0%25E1%25BB%25A1i-g%25E1%25BB%2591m-cao-c%25E1%25BA%25A5p-kh%25C3%25B4ng-c%25E1%25BA%25A7n-%25C4%2591i%25E1%25BB%2587n-nh%25E1%25BB%258F-g%25E1%25BB%258Dn-mang-theo-i.1708207737.46711113523&docid=7cUN3xnVVyav6M&w=800&h=800",
+    "position": 4
+   },
+   {
+    "title": "máy xay cà phê thủ công nhỏ Độc đáo và Hiệu suất Cao - Alibaba.com",
+    "imageUrl": "https://s.alicdn.com/@sc04/kf/Hd9ea2aa1269541f6884d556f55676e7aS/Mini-Manual-Coffee-Grinder-with-40-Adjustable-Settings-Black-Portable-Hand-Bean-Grinder-with-Ceramic-Conical-Burrs.jpg_300x300.jpg",
+    "imageWidth": 300,
+    "imageHeight": 300,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYhPxc4tAii9teq0m3mxAUsh4nWEDRZ0-zLEriQdd2qg&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Alibaba",
+    "domain": "vietnamese.alibaba.com",
+    "link": "https://vietnamese.alibaba.com/g/small-manual-coffee-grinder.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fs.alicdn.com%2F%40sc04%2Fkf%2FHd9ea2aa1269541f6884d556f55676e7aS%2FMini-Manual-Coffee-Grinder-with-40-Adjustable-Settings-Black-Portable-Hand-Bean-Grinder-with-Ceramic-Conical-Burrs.jpg_300x300.jpg&tbnid=NPi5dbz3akhaMM&imgrefurl=https%3A%2F%2Fvietnamese.alibaba.com%2Fg%2Fsmall-manual-coffee-grinder.html&docid=nGff9k027ofhIM&w=300&h=300",
+    "position": 5
+   },
+   {
+    "title": "Máy xay cà phê thủ công cầm tay 40 cấp độ điều chỉnh, lưỡi gốm cao cấp,  không cần điện, nhỏ gọn mang theo",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-monrb2utt159f7",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGJVJrNeRjMgOhbVUq8Lnj6AVnN3qoCo4Ly95DLVPGKg&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/M%C3%A1y-xay-c%C3%A0-ph%C3%AA-th%E1%BB%A7-c%C3%B4ng-c%E1%BA%A7m-tay-40-c%E1%BA%A5p-%C4%91%E1%BB%99-%C4%91i%E1%BB%81u-ch%E1%BB%89nh-l%C6%B0%E1%BB%A1i-g%E1%BB%91m-cao-c%E1%BA%A5p-kh%C3%B4ng-c%E1%BA%A7n-%C4%91i%E1%BB%87n-nh%E1%BB%8F-g%E1%BB%8Dn-mang-theo-i.1708207737.46711113523",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-81ztc-monrb2utt159f7&tbnid=GvX5TsqWvA2UIM&imgrefurl=https%3A%2F%2Fshopee.vn%2FM%25C3%25A1y-xay-c%25C3%25A0-ph%25C3%25AA-th%25E1%25BB%25A7-c%25C3%25B4ng-c%25E1%25BA%25A7m-tay-40-c%25E1%25BA%25A5p-%25C4%2591%25E1%25BB%2599-%25C4%2591i%25E1%25BB%2581u-ch%25E1%25BB%2589nh-l%25C6%25B0%25E1%25BB%25A1i-g%25E1%25BB%2591m-cao-c%25E1%25BA%25A5p-kh%25C3%25B4ng-c%25E1%25BA%25A7n-%25C4%2591i%25E1%25BB%2587n-nh%25E1%25BB%258F-g%25E1%25BB%258Dn-mang-theo-i.1708207737.46711113523&docid=7cUN3xnVVyav6M&w=800&h=800",
+    "position": 6
+   },
+   {
+    "title": "Máy xay cà phê thủ công cầm tay 40 cấp độ điều chỉnh, lưỡi gốm cao cấp,  không cần điện, nhỏ gọn mang theo",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-monrh43hw5c1da",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZFHDdHzWlZZ_hUqrBjDyZmOBf_q4cqTIkUL79GjtjqQ&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/M%C3%A1y-xay-c%C3%A0-ph%C3%AA-th%E1%BB%A7-c%C3%B4ng-c%E1%BA%A7m-tay-40-c%E1%BA%A5p-%C4%91%E1%BB%99-%C4%91i%E1%BB%81u-ch%E1%BB%89nh-l%C6%B0%E1%BB%A1i-g%E1%BB%91m-cao-c%E1%BA%A5p-kh%C3%B4ng-c%E1%BA%A7n-%C4%91i%E1%BB%87n-nh%E1%BB%8F-g%E1%BB%8Dn-mang-theo-i.1708207737.46711113523",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-81ztc-monrh43hw5c1da&tbnid=Z3ayvizFLXjVdM&imgrefurl=https%3A%2F%2Fshopee.vn%2FM%25C3%25A1y-xay-c%25C3%25A0-ph%25C3%25AA-th%25E1%25BB%25A7-c%25C3%25B4ng-c%25E1%25BA%25A7m-tay-40-c%25E1%25BA%25A5p-%25C4%2591%25E1%25BB%2599-%25C4%2591i%25E1%25BB%2581u-ch%25E1%25BB%2589nh-l%25C6%25B0%25E1%25BB%25A1i-g%25E1%25BB%2591m-cao-c%25E1%25BA%25A5p-kh%25C3%25B4ng-c%25E1%25BA%25A7n-%25C4%2591i%25E1%25BB%2587n-nh%25E1%25BB%258F-g%25E1%25BB%258Dn-mang-theo-i.1708207737.46711113523&docid=7cUN3xnVVyav6M&w=800&h=800",
+    "position": 7
+   },
+   {
+    "title": "Máy xay cà phê thủ công cầm tay 40 cấp độ điều chỉnh, lưỡi gốm cao cấp,  không cần điện, nhỏ gọn mang theo",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-monrb74qxkhs9e",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwB-s6jsDg4WyVIEwbxY2qHv4CFvfhKg3oxaYjBGR6Uw&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/M%C3%A1y-xay-c%C3%A0-ph%C3%AA-th%E1%BB%A7-c%C3%B4ng-c%E1%BA%A7m-tay-40-c%E1%BA%A5p-%C4%91%E1%BB%99-%C4%91i%E1%BB%81u-ch%E1%BB%89nh-l%C6%B0%E1%BB%A1i-g%E1%BB%91m-cao-c%E1%BA%A5p-kh%C3%B4ng-c%E1%BA%A7n-%C4%91i%E1%BB%87n-nh%E1%BB%8F-g%E1%BB%8Dn-mang-theo-i.1708207737.46711113523",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-81ztc-monrb74qxkhs9e&tbnid=svSeUV5P66KYSM&imgrefurl=https%3A%2F%2Fshopee.vn%2FM%25C3%25A1y-xay-c%25C3%25A0-ph%25C3%25AA-th%25E1%25BB%25A7-c%25C3%25B4ng-c%25E1%25BA%25A7m-tay-40-c%25E1%25BA%25A5p-%25C4%2591%25E1%25BB%2599-%25C4%2591i%25E1%25BB%2581u-ch%25E1%25BB%2589nh-l%25C6%25B0%25E1%25BB%25A1i-g%25E1%25BB%2591m-cao-c%25E1%25BA%25A5p-kh%25C3%25B4ng-c%25E1%25BA%25A7n-%25C4%2591i%25E1%25BB%2587n-nh%25E1%25BB%258F-g%25E1%25BB%258Dn-mang-theo-i.1708207737.46711113523&docid=7cUN3xnVVyav6M&w=800&h=800",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

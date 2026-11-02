@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "ve tau TP.HCM Tây Ninh duong sat viet nam gia",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:24:34.161Z",
+ "body": {
+  "searchParameters": {
+   "q": "ve tau TP.HCM Tây Ninh duong sat viet nam gia",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tập đoàn Đường sắt Quốc gia Việt Nam - Bán vé tàu trực tuyến",
+    "link": "https://dsvn.vn/",
+    "snippet": "Tìm vé tàu, Đường sắt Việt Nam sẽ chính. Điện thoại: 19006469. Email: dsvn@vr.com.vn",
+    "position": 1
+   },
+   {
+    "title": "Vé Tàu Đường Sắt Việt Nam - Lịch Tàu, Giá Vé & Đặt Vé Online",
+    "link": "https://vetauduongsat.vn/",
+    "snippet": "Cập nhật lịch tàu, giá vé đường sắt Việt Nam và các tuyến tàu hỏa Bắc – Nam. Tra cứu chuyến tàu, chọn ghế, đặt vé tàu online và nhận vé điện tử nhanh chóng, ...",
+    "position": 2
+   },
+   {
+    "title": "Đặt vé tàu hỏa online tại Vexere - Đại lý uy tín DSVN",
+    "link": "https://vexere.com/vn/ve-tau-hoa.vi",
+    "snippet": "Giá vé tàu hỏa các tuyến phổ biến ... Giá vé tàu hỏa trên Vexere hiện từ 81.000đ đến 993.000đ/chiều cho một người lớn, tùy chặng và hạng chỗ (cập nhật tháng 9/ ...",
+    "rating": 4.8,
+    "ratingCount": 24000,
+    "position": 3
+   },
+   {
+    "title": "Bán vé tàu trực tuyến: Tổng công ty đường sắt Việt Nam",
+    "link": "https://vetau.com.vn/",
+    "snippet": "- Trả vé: + Vé cá nhân: Trả vé trước giờ tàu chạy từ 4 giờ đến dưới 24 giờ, lệ phí là 20% giá vé; từ 24 giờ trở lên lệ phí là 10% giá vé. + Vé tập thể: Trả vé ...",
+    "position": 4
+   },
+   {
+    "title": "Vé Tàu Từ Ga Hà Nội đi Sài Gòn",
+    "link": "https://vetau.alltours.vn/dai-ly/ve-tau-ha-noi-sai-gon.html",
+    "snippet": "Bạn có thể chọn các giá vé khác nhau, tùy vào từng loại ghế, loại tàu và từng thời điểm. Giá vé tàu dao động khoảng 1,078,000 đồng Với 5 chuyến tàu chạy từ Hà ...",
+    "rating": 4.3,
+    "ratingCount": 102,
+    "position": 5
+   },
+   {
+    "title": "Đường sắt Việt Nam (@vetauduongsat)",
+    "link": "https://www.facebook.com/vetauduongsat/",
+    "snippet": "CÁCH MUA VÉ NHÓM Tại nhà ga: Hành khách có thể mua vé nhóm trực tiếp tại các nhà ga. Mua vé online: Truy cap dsvn.vn → chọn đối tượng “ ...",
+    "position": 6
+   },
+   {
+    "title": "Vé tàu Sài Gòn đi Hà Nội - Atrip.vn",
+    "link": "https://atrip.vn/ve-tau-sai-gon-di-ha-noi",
+    "snippet": "Giá vé từ Sài Gòn đến Hà Nội (ĐVT: vnđ) ; KHOANG NẰM. Nằm khoang 4 điều hòa T1. 1.476.000 ; KHOANG NẰM · Nằm khoang 4 điều hòa T1. 1.511.000 ; KHOANG NẰM · Nằm ...",
+    "position": 7
+   },
+   {
+    "title": "Bảng Giá Vé, Lịch Chạy Tàu Thống Nhất Hà Nội - Sài Gòn ...",
+    "link": "https://vetau247.vn/tau-ha-noi-sai-gon",
+    "snippet": "2.1. Bảng giá Tàu Nhanh chất lượng cao (SE1, SE3) ; Nằm khoang 6 (Tầng 3), 1.950.000, 1.900.000 ; Nằm khoang 6 (Tầng 2), 2.150.000, 2.100.000 ; Nằm khoang 6 (Tầng ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

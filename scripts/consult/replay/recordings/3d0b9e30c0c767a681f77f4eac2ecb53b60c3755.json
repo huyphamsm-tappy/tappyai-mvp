@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Tràng An Quán\" OR \"Nhà Hàng 39 | Nhà Hàng Đặc Sản Quận 7\" OR \"Ẩm thực sân vườn Mái Lá Quận 7\" quan 7 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:07:36.521Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Tràng An Quán\" OR \"Nhà Hàng 39 | Nhà Hàng Đặc Sản Quận 7\" OR \"Ẩm thực sân vườn Mái Lá Quận 7\" quan 7 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Trải nghiệm ẩm thực mang hương vị quê nhà tại Tràng An ...",
+    "link": "https://www.tiktok.com/@duynhatng113/video/7546226434705083656",
+    "snippet": "4577 Lượt thích,58 Bình luận.Video TikTok từ Duy Nhất (@duynhatng113): \"Trải nghiệm ẩm thực mang hương vị quê nhà tại Tràng An Quán ở Quận 7 ...",
+    "position": 1
+   },
+   {
+    "title": "Tràng An Quán: Ẩm Thực Đồng Quê Ngon Quận 7",
+    "link": "https://www.tiktok.com/@angimayoi/video/7519095713175751954",
+    "snippet": "Đất Ốc Quán Quận 7. Tràng An Quán: Ẩm Thực Đồng Quê Ngon Quận 7. Khám phá Tràng An Quán với món ăn đồng quê ấm áp, không gian thân thuộc giúp ...",
+    "position": 2
+   },
+   {
+    "title": "Tràng An Quán-Ẩm Thực Đồng Quê (@tranganquanquan7)",
+    "link": "https://www.tiktok.com/@tranganquanquan7",
+    "snippet": "Tràng An Quán- Ẩm thực đồng Quê 131 Đường 47, P. Tân Quy, Quận 7 0969.273.254. Khi hương Tết nhẹ nhàng len lỏi qua từng góc Tràng An❤️ #tranganquanquan7 #.",
+    "position": 3
+   },
+   {
+    "title": "Tràng An Quán Quận 7: Nhà Hàng Ẩm Thực Đồng Quê Ngon",
+    "link": "https://www.tiktok.com/@tranliendoanh_99/video/7454168839086132498",
+    "snippet": "Tràng An Quán ở Quận 7 được biết đến là nhà hàng ẩm thực đồng quê với không gian rộng rãi, thoáng mát và đậm chất quê hương giữa lòng Sài ...",
+    "position": 4
+   },
+   {
+    "title": "Tràng An Quán Quận 7: Ẩm Thực Đồng Quê Bắc Bộ Giữa ...",
+    "link": "https://www.tiktok.com/@ngocduy_diachianuong/video/7257482106287230213",
+    "snippet": "quán mình nói đến là Tràng An. quán nằm tại địa chỉ 131 đường 4 7 phường Tân quy. Quận 7. nơi đây rất phù hợp Cho nhóm khách 2 5 đến 60 ...",
+    "position": 5
+   },
+   {
+    "title": "Tràng An Quán (@tranganquan.sg)",
+    "link": "https://www.tiktok.com/@tranganquan.sg",
+    "snippet": "Tràng An Quán (@tranganquan.sg) trên TikTok |15.7K Lượt thích.10.2K Follower.Một thoáng Tràng An- Nơi ai nhớ những món ăn đồng quê tìm về.",
+    "position": 6
+   },
+   {
+    "title": "Trải nghiệm ẩm thực vùng cao tại Tràng An Quán",
+    "link": "https://www.tiktok.com/@saigonmap/video/7313887929854741767",
+    "snippet": "Khám phá văn hóa ẩm thực Tây Bắc tại Tràng An Quán với menu đa dạng và đặc biệt. Hãy thưởng thức những món ngon chuẩn vị ngay! #saigonmap # ...",
+    "position": 7
+   },
+   {
+    "title": "Ở Tràng An Quán, mỗi buổi tiệc sinh nhật là một kỷ niệm ngọt ...",
+    "link": "https://www.tiktok.com/@tranganquanquan7/video/7506557995237526791",
+    "snippet": "Ở Tràng An Quán, mỗi buổi tiệc sinh nhật là một kỷ niệm ngọt ngào, ấm áp bên gia đình và bạn bè. Dù là những bữa tiệc nhỏ hay buổi tụ họp lớn, ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,4 +1,4 @@
-import type { CoreMessage, streamText } from 'ai'
+import type { CoreMessage, streamText, generateText } from 'ai'
 
 // ── Provider-neutral types for the AI layer ──────────────────────────────────
 // Business code imports ONLY from '@/lib/ai/llm'. Nothing here (or anywhere
@@ -15,8 +15,20 @@ export type ProviderId = 'claude' | 'openai' | 'gemini' | 'grok' | 'deepseek'
  *  - smart:    standard quality (main chat, content generation, translate)
  *  - planning: multi-step/agentic turns (itineraries, tool-heavy chats)
  *  - vision:   image understanding (OCR, thumbnail analysis)
+ *  - consult:  a consultation answer turn (pick / follow-up / compare / more / reject) — Luna session
+ *  - intent:   reading the user's turn into a structured decision (the consult brain) — Luna session
+ *  - plan:     the detailed plan of a consultation ("Lên kế hoạch chi tiết") — Luna session, CONSULT_LUNA_PLAN
+ * `consult` and `intent` resolve to the default provider unless LLM_CONSULT_PROVIDER /
+ * LLM_INTENT_PROVIDER route them elsewhere (registry.ts), with the default provider as fallback.
  */
-export type ModelRole = 'fast' | 'smart' | 'planning' | 'vision'
+export type ModelRole = 'fast' | 'smart' | 'planning' | 'vision' | 'consult' | 'intent' | 'plan'
+
+/**
+ * Reasoning effort for a model that reasons (owner 2026-09-30: always explicit — a vendor default of
+ * `medium` bills reasoning tokens on every turn). Set per role with LLM_<ROLE>_REASONING; adapters whose
+ * models do not reason ignore it.
+ */
+export type ReasoningEffort = 'none' | 'low' | 'medium' | 'high' | 'xhigh'
 
 /** Per-role model-id overrides (sourced from env; ids never appear in code). */
 export type ModelOverrides = Partial<Record<ModelRole, string>>
@@ -89,6 +101,17 @@ export interface AIStreamOptions extends AIGenerateOptions {
    * (client disconnect). Wire the route's `req.signal` here so a dropped
    * connection stops billing tokens instead of running to completion. */
   abortSignal?: AbortSignal
+}
+
+/**
+ * One model step of the bounded agent (src/lib/ai/agent): tools are declared as SCHEMAS (no execute) so the CALLER runs them under its own budget,
+ * timeout and dedupe. The forced final answer step is a step with NO tools.
+ */
+export interface AIStepOptions extends AIGenerateOptions {
+  tools?: Parameters<typeof generateText>[0]['tools']
+  abortSignal?: AbortSignal
+  /** Allow several read-only tool calls in one step (the loop runs them concurrently, each counted against the turn budget). */
+  parallelTools?: boolean
 }
 
 export interface AIVisionOptions {

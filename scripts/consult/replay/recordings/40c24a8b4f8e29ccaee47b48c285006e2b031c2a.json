@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "30 Quà sinh nhật Sếp dưới 1 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:55:32.967Z",
+ "body": {
+  "searchParameters": {
+   "q": "30 Quà sinh nhật Sếp dưới 1 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "mornenjoy | Bộ Trà Cao Cấp Trung Quốc",
+    "link": "https://www.lazada.vn/products/mornenjoy-bo-tra-cao-cap-trung-quoc-i3283857462-s15888622638.html?from_gmc=1&fl_tag=1&srsltid=AU7gw4Vo-FShWkJLzGV-p1ytiS82LkHC8Iim6NLOM9A0yQx7P2D2ezsy",
+    "snippet": "Với thiết kế tinh tế và tính thực tế, bộ trà này là một món quà lý tưởng cho ngày sinh nhật, đám cưới hoặc như một món quà đặc biệt cho những người thân yêu của ...",
+    "position": 1
+   },
+   {
+    "title": "Gối Đệm Dày Mới Cho Việc Ngồi Lâu",
+    "link": "https://www.lazada.vn/products/gi-m-dy-mi-cho-vic-ngi-lu-i13352770068.html?srsltid=AU7gw4UWqr2S4qPltrnnpbO89yRdsQhZ85LLFWBT88y7Dd0aRDedLkuy",
+    "snippet": "Mẫu mới có thiết kế dày, mang lại thêm lớp đệm cho phần dưới của bạn, giảm bớt sự khó chịu khi ngồi nhiều giờ. Dễ dàng vệ ...",
+    "position": 2
+   },
+   {
+    "title": "Bó hoa hồng 6 bông dát vàng- Hàng chính hãng, trang trí ...",
+    "link": "https://h5.lazada.vn/products/bo-hoa-hong-6-bong-dat-vang-hang-chinh-hang-trang-tri-nha-cua-phong-lam-viec-qua-tang-sep-doi-tac-khach-hang-tan-gia-khai-truong-i1469542911.html",
+    "snippet": "Hoa hồng dát vàng – là một món quà độc đáo và đầy ý nghĩa để bạn dành tặng cho ngày lễ tình nhân, hoặc bạn cũng có thể dành tặng cho người mẹ yêu thương của ...",
+    "position": 3
+   },
+   {
+    "title": "Ví da nam WilliamPOLO ví nam cao cấp full hộp ROYAL. ...",
+    "link": "https://www.lazada.vn/products/vi-da-nam-williampolo-vi-nam-cao-cap-full-hop-royalartducdo-art11-i2428388169.html?srsltid=AU7gw4X9kD1deN8OToE1C3ELWAvOP_H7T194CJwLiQXjicY6hc7TMy2D",
+    "snippet": "◾ Bộ sản phẩm bao gồm: Ví da , hộp đựng , túi xách đi kèm làm quà tặng . SẢN PHẨM ĐẸP NHỎ GỌN THÍCH HỢP LÀM QUÀ TẶNG SẾP , NGƯỜI YÊU , SINH NHẬT. IN THIỆP ...",
+    "rating": 5,
+    "ratingCount": 23,
+    "position": 4
+   },
+   {
+    "title": "Đĩa xoài trang trí dáng bầu dục trắng trơn nhiều kích cỡ",
+    "link": "https://www.lazada.vn/products/dia-xoai-trang-tri-dang-bau-duc-trang-tron-nhieu-kich-co-i2827270167.html?srsltid=AU7gw4UTT-OSILQO_-Zr263PmD4gSOzahFHN6Ec4l7tOCuswle7LUpvB",
+    "snippet": "Sản phẩm có màu trắng sang trọng, phù hợp dùng để làm quà tặng tân gia, quà sinh nhật, quà tặng sếp, quà tặng bố mẹ, quà tặng lễ tết hay dùng để in logo làm quà ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 5
+   },
+   {
+    "title": "Đĩa Xoài Viền Vàng Họa Tiết Hoa Dây Hồng Cao Cấp",
+    "link": "https://www.lazada.vn/products/dia-xoai-vien-vang-hoa-tiet-hoa-day-hong-cao-cap-i2422197618.html?srsltid=AU7gw4UXdKiK5di4x7vyt_L1cDBR5KrgZntHQHq57lTlxt1JIWrp1O3B",
+    "snippet": "Đĩa xoài viền vàng cao cấp với hoa văn hoa dây hồng tinh tế, làm từ chất liệu ceramic bền bỉ. Thiết kế trang trí đẹp mắt, phù hợp cho bữa ...",
+    "date": "24 thg 9, 2023",
+    "position": 6
+   },
+   {
+    "title": "Bộ 6 ly vang pha lê 250ml Pháp Cristal d'Arque: Allure-21710",
+    "link": "https://www.lazada.vn/products/bo-6-ly-vang-pha-le-250ml-phap-cristal-darque-allure-21710-i2901434982.html?srsltid=AU7gw4XlAx9yH1mlRI0MkbF2bNFgMj14RORYJsmCYclAX-4FdMB7S0l_",
+    "snippet": "MÓN QUÀ ĐẲNG CẤP: Một bộ ly gồm 6 chiếc trong hộp rất thích hợp để làm quà tặng biếu sếp vào những dịp sinh nhật hoặc lễ kỷ niệm. Chắc hẳn ai cũng sẽ cảm ...",
+    "position": 7
+   },
+   {
+    "title": "Combo 3 Chai Rượu Whisky Sâm Ngọc Linh Trà My",
+    "link": "https://www.lazada.vn/products/combo-3-chai-ruou-whisky-sam-ngoc-linh-tra-my-chai-100ml-qua-tang-cao-cap-qua-tang-doanh-nghiep-qua-bieu-i3132471609.html?srsltid=AU7gw4We3EtV1ZzubxZfeLlZbFWMPIlwgDBDin0jalu2TNvODst8tSyw",
+    "snippet": "Combo 3 chai rượu whisky sâm Ngọc Linh 100ml Trà My - quà tặng cao cấp, sang trọng cho doanh nghiệp và khách hàng. Sản phẩm thiết kế sang trọng, ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

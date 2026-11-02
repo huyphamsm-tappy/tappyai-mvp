@@ -20,7 +20,7 @@ import { classifyIntent, detectForcedTool, detectLang, detectLocationIntent } fr
 //   get_news         VnExpress / Tuoi Tre / Dan Tri RSS
 //   web_search       Serper, falling back to html.duckduckgo.com when SERPER_API_KEY is absent
 //   search_products  deterministic Shopee/Tiki/Lazada link builders (+ Serper when present)
-//   transport/hotel  OpenStreetMap / Nominatim (Travelpayouts and Serper add data when keyed)
+//   transport/hotel  OpenStreetMap / Nominatim (Serper adds data when keyed)
 //
 // search_places is deliberately NOT asserted here: without GOOGLE_PLACES_API_KEY it falls through
 // to Overpass, which returned 0 rows on this machine, so a local result would say nothing about

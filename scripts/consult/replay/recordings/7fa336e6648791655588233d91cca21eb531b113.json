@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"My Khe Beach\" OR \"Công ty du lịch Đà Nẵng Best\" OR \"Du Thuyền Sông Hàn Đà Nẵng (2Da Tickets)\" Đà Nẵng site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:05:37.186Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"My Khe Beach\" OR \"Công ty du lịch Đà Nẵng Best\" OR \"Du Thuyền Sông Hàn Đà Nẵng (2Da Tickets)\" Đà Nẵng site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "My mind is already on airplane mode. 🌊 My Khe Beach, Da ...",
+    "link": "https://www.tiktok.com/@trip.best_official/video/7690485810986257671",
+    "snippet": "My Khe Beach, Da Nang. No. 2 on Trip.Best's Cool Water Escapes in Vietnam — already daydreaming about a spot on the sand. Follow us for more ...",
+    "position": 1
+   },
+   {
+    "title": "Trời ơi đẹp ngỡ ngàng: review My Khe Beach Đà Nẵng",
+    "link": "https://www.tiktok.com/@tadicungnguoi/video/7651081858398178567",
+    "snippet": "- Mang theo đồ bơi, kem chống nắng và mũ rộng vành. - Giữ vệ sinh bãi biển để bảo vệ vẻ đẹp tự nhiên. Kết thúc và kêu gọi tương tác My Khe Beach ...",
+    "position": 2
+   },
+   {
+    "title": "📍Da Nang, Vietnam 📌My Khe Beach .. ...",
+    "link": "https://www.tiktok.com/@longterm_traveler/video/7508942744153328918",
+    "snippet": "Da Nang, Vietnam My Khe Beach On a random Monday afternoon last March around 4 PM, this was the view at My Khe Beach.",
+    "position": 3
+   },
+   {
+    "title": "Healing by the sea: My Khe Beach Da Nang travel video",
+    "link": "https://www.tiktok.com/@linh.nng91/video/7663388356415327509",
+    "snippet": "My Khe Beach, Da Nang Experience calm coastal moments from Da Nang's My Khe Beach. This short travel clip frames ...",
+    "date": "Healing by the sea",
+    "position": 4
+   },
+   {
+    "title": "My Khe Beach Da Nang: Vietnam's Best Clean Beach",
+    "link": "https://www.tiktok.com/@whereistejuan/video/7632392590913998111",
+    "snippet": "When visiting Da Nang, a trip to My Khe Beach is highly recommended. Its cleanliness and tranquility are frequently praised, solidifying its ...",
+    "position": 5
+   },
+   {
+    "title": "My Khe Beach Đà Nẵng: Luợt sóng, thuê ván và kinh nghiệm ...",
+    "link": "https://www.tiktok.com/@danasurfrental.lessons/video/7666801810249665812",
+    "snippet": "My Khe Beach Đà Nẵng: lướt sóng, thuê ván và cách biến hôm nay thành kỷ niệm My Khe Beach là điểm đến mùa hè nổi tiếng ở Đà Nẵng, thu hút người thích lướt ...",
+    "position": 6
+   },
+   {
+    "title": "Experience the Sunrise at My Khe Beach, Da Nang",
+    "link": "https://www.tiktok.com/@quinquin81822/video/7661300940669979925",
+    "snippet": "My Khe Beach in Da Nang, Vietnam, is renowned as one of the most beautiful beaches in the world, and experiencing the sunrise here is an ...",
+    "position": 7
+   },
+   {
+    "title": "My Khe Beach, Da Nang 📍 #vietnam #travelvlog #danang ...",
+    "link": "https://www.tiktok.com/@howtotravelfulltime/video/7516037118469229846",
+    "snippet": "My Khe Beach, Da Nang #vietnam #travelvlog #danang #asia. My Khe Beach, Da Nang #vietnam #travelvlog #danang #asia ... Linh ở Đà Nẵng ‍ ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

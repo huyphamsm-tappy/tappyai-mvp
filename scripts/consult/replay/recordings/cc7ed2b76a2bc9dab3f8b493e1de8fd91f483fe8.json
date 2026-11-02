@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Karaoke MEI\" OR \"Kingdom Karaoke\" OR \"Karaoke SAFARI\" Quận 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:26:44.107Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Karaoke MEI\" OR \"Kingdom Karaoke\" OR \"Karaoke SAFARI\" Quận 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Karaoke Mei Quận 1: Tiếng Đá Rơi Vào Ly Khó Nha Bro",
+    "link": "https://www.tiktok.com/@mei.karaoke/video/7577767144100875538",
+    "snippet": "Karaoke Mei Quận 1 được biết đến là nơi tụ tập bạn bè, thư giãn và hát hò. Không gian thoải mái, âm thanh vui nhộn và những tình huống bất ngờ ...",
+    "position": 1
+   },
+   {
+    "title": "Còn ai nghĩ karaoke quận 1 rổ rá trên trời nữa thì bước tới ...",
+    "link": "https://www.tiktok.com/@reviewsaigon.59/video/7593323014628986129",
+    "snippet": "Còn ai nghĩ karaoke quận 1 rổ rá trên trời nữa thì bước tới đây ... Karaoke MEI. 38 · recommend-cover. Dạ Dày Không Đáy. 1126 · recommend-cover.",
+    "position": 2
+   },
+   {
+    "title": "Em có rồi - Kingdom Karaoke Quận 1 Phạm Viết Chanh",
+    "link": "https://www.tiktok.com/@karaoke.kingdom/video/7430847353332026631",
+    "snippet": "Em có rồi - Kingdom Karaoke Quận 1 Phạm Viết Chanh. Enjoy singing Em có rồi at Kingdom Karaoke in Quận 1 by Phạm Viết Chanh. Entertainment at ...",
+    "position": 3
+   },
+   {
+    "title": "Mei Karaoke",
+    "link": "https://www.tiktok.com/@mei.karaoke/video/7689052000020860180",
+    "snippet": "Mei Karaoke. Mei Karaoke offers a karaoke experience. Keywords: mei karaoke,karaoke mei,karaoke mie,hát karaoke,karaoke.",
+    "position": 4
+   },
+   {
+    "title": "Mách bạn khu Karaoke xịn ngay Quận 1 mà zá siêu hạt dẻ ...",
+    "link": "https://www.tiktok.com/@reviewsaigon.59/video/7625152515004288276",
+    "snippet": "Karaoke Hàn Quốc Quận 1. Mách bạn khu Karaoke xịn ngay Quận 1 mà zá siêu hạt dẻ lunn!! ... Karaoke MEI. Đặt trước để được free 1h nha mấy mom. 4-6 ...",
+    "position": 5
+   },
+   {
+    "title": "Karaoke MEI",
+    "link": "https://www.tiktok.com/@mei.karaoke",
+    "snippet": "Karaoke MEI · @mei.karaoke · Follow, đặt trước - Giảm 30% giá giờ 159-161-163 Hàm Nghi, Bến Thành, HCM 0364180486.",
+    "position": 6
+   },
+   {
+    "title": "Karaoke Xịn Sò Tại Quận Nhất Chỉ 80k/giờ",
+    "link": "https://www.tiktok.com/@duckim90/video/7593335608710417685",
+    "snippet": "Karaoke Kingdom Quận 1 · Karaoke Bareng Di Tempat Karaoke · Karaoke Chong Oi ... Karaoke MEI. 289. recommend-cover. Gia-Bảo96. 79 · recommend- ...",
+    "position": 7
+   },
+   {
+    "title": "#j4f #karaoke #friends #karaokemei #fyp",
+    "link": "https://www.tiktok.com/@mei.karaoke/video/7650095197254176020",
+    "snippet": "Video TikTok từ Karaoke MEI (@mei.karaoke): \"#j4f #karaoke #friends #karaokemei #fyp\".Đừng ai dạy con này cách “tiêu tiền”Thế Mà Lại Hay - Guxxi.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

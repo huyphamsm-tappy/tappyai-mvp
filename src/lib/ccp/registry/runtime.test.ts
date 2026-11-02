@@ -139,11 +139,11 @@ describe('the code registry still validates with the widened tracking type', () 
 
 describe('the seed migration carries the owner\'s list', () => {
   it('every registry provider has a seed row; the eight Tier 1 names are deeplink_enabled; Traveloka / Vietnam Airlines have no campaign on file', () => {
-    const sql = readFileSync('supabase/migrations/20260920100000_commerce_providers.sql', 'utf8')
+    const sql = readFileSync('supabase/migrations/20260920100000_commerce_providers.sql', 'utf8') + readFileSync('supabase/migrations/20261001c_commerce_providers_cinemas.sql', 'utf8')
     for (const p of PROVIDER_REGISTRY) expect(sql, p.providerId).toMatch(new RegExp(`\\('${p.providerId}',`))
     const tier1 = ['lazada', 'cellphones', 'tripcom', 'traveloka', 'vexere', 'vietnamairlines', 'klook', 'tiktokshop']
     for (const id of tier1) expect(sql).toMatch(new RegExp(`\\('${id}',\\s+true,\\s+true,\\s+1,`))
-    for (const id of ['shopee', 'vietjet', 'booking', 'agoda', 'grabfood', 'shopeefood', 'ticketbox', 'cgv']) expect(sql).toMatch(new RegExp(`\\('${id}',\\s+true,\\s+false,\\s+2,`))
+    for (const id of ['shopee', 'vietjet', 'booking', 'agoda', 'grabfood', 'shopeefood', 'ticketbox', 'cgv', 'galaxy', 'lotte', 'bhd', 'beta']) expect(sql).toMatch(new RegExp(`\\('${id}',\\s+true,\\s+false,\\s+2,`))
     expect(sql).toMatch(/\('traveloka',\s+true,\s+true,\s+1,\s+null,\s+null/)
     expect(sql).toMatch(/\('vietnamairlines',\s+true,\s+true,\s+1,\s+null,\s+null/)
     expect(sql).toMatch(/revoke all on public\.commerce_providers from anon, authenticated/)

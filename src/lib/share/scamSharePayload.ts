@@ -21,24 +21,26 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { CheckResult, RiskLevel } from '@/lib/scam-shield/types'
+import { linkVerdict } from '@/lib/scam-shield/verdict'
+import { scamVerdictText } from '@/lib/i18n/scamVerdict'
 import { SHARED_RESULT_PAYLOAD_VERSION, isPublicActionUrl, type PublicButton, type SharedResultPayload } from './sharedResult'
 
 export const SCAM_SHARE_DOMAIN = 'scam' as const
 
-const LEVEL_LABEL: Record<'vi' | 'en', Record<RiskLevel, string>> = {
-  vi: { SAFE: 'An toàn', LOW: 'Nguy cơ thấp', MEDIUM: 'Cần cẩn thận', HIGH: 'Nguy cơ cao', CRITICAL: 'Rất nguy hiểm', INCONCLUSIVE: 'Chưa kết luận được' },
-  en: { SAFE: 'Safe', LOW: 'Low risk', MEDIUM: 'Use caution', HIGH: 'High risk', CRITICAL: 'Very dangerous', INCONCLUSIVE: 'Could not be checked' },
+/** 02/10: the same three link states as the app — never a safety word, never a number. */
+function stateLabel(locale: 'vi' | 'en', result: CheckResult): string {
+  return scamVerdictText(locale, `scamVerdict.link.${result.verdict ?? linkVerdict(result.risk.level)}.title`)
 }
 
 const COPY = {
   vi: {
     title: (host: string, level: string) => `Kiểm tra lừa đảo: ${host} — ${level}`,
     query: (host: string) => `Link ${host} có lừa đảo không?`,
-    verdict: (level: string, score: number, confidence: number) => `**Kết luận: ${level}** (điểm rủi ro ${score}/100, độ tin cậy ${confidence}%).`,
+    verdict: (level: string) => `**${level}.**`,
+    disclaimer: 'TappyAI không thay thế cơ quan chức năng.',
     sources: (responded: number, total: number) => `Tappy đã đối chiếu ${responded}/${total} nguồn kiểm tra độc lập.`,
     critical: (n: number) => `${n} dấu hiệu nguy hiểm`,
     warning: (n: number) => `${n} dấu hiệu cần lưu ý`,
-    safe: (n: number) => `${n} nguồn xác nhận an toàn`,
     official: (brand: string) => `Trang chính thức của **${brand}** là địa chỉ bên dưới — hãy so sánh kỹ trước khi đăng nhập hay chuyển tiền.`,
     officialButton: (brand: string) => `🌐 Trang chính thức ${brand}`,
     evidenceHeading: 'Bằng chứng',
@@ -48,11 +50,11 @@ const COPY = {
   en: {
     title: (host: string, level: string) => `Scam check: ${host} — ${level}`,
     query: (host: string) => `Is ${host} a scam?`,
-    verdict: (level: string, score: number, confidence: number) => `**Verdict: ${level}** (risk score ${score}/100, confidence ${confidence}%).`,
+    verdict: (level: string) => `**${level}.**`,
+    disclaimer: 'TappyAI does not replace the authorities.',
     sources: (responded: number, total: number) => `Tappy cross-checked ${responded}/${total} independent sources.`,
     critical: (n: number) => `${n} critical signal(s)`,
     warning: (n: number) => `${n} warning(s)`,
-    safe: (n: number) => `${n} source(s) reported safe`,
     official: (brand: string) => `The official **${brand}** site is linked below — compare carefully before signing in or sending money.`,
     officialButton: (brand: string) => `🌐 Official ${brand} site`,
     evidenceHeading: 'Evidence',
@@ -79,17 +81,16 @@ export function publicUrlForm(raw: string): { host: string; display: string } {
 
 export function buildScamSharePayload(result: CheckResult, locale: 'vi' | 'en' = 'vi', now: Date = new Date()): SharedResultPayload {
   const c = COPY[locale]
-  const level = LEVEL_LABEL[locale][result.risk.level]
+  const level = stateLabel(locale, result)
   const { host, display } = publicUrlForm(result.url)
   const s = result.evidence.summary
 
   const lines: string[] = [
-    c.verdict(level, Math.round(result.risk.score), Math.round(result.risk.confidence)),
+    c.verdict(level),
     '',
     c.sources(s.respondedSources, s.totalSources),
     `- ${c.critical(s.criticalCount)}`,
     `- ${c.warning(s.warningCount)}`,
-    `- ${c.safe(s.safeCount)}`,
   ]
   // Evidence: source + the short summary the engine already wrote. `detail` and
   // `dataPoints` stay private — they can carry raw provider payloads.
@@ -103,7 +104,7 @@ export function buildScamSharePayload(result: CheckResult, locale: 'vi' | 'en' =
     lines.push('', c.official(result.officialMatch.brand))
     buttons.push({ label: c.officialButton(result.officialMatch.brand), type: 'website', url: result.officialMatch.website, primary: true })
   }
-  lines.push('', `_${c.footer}_`)
+  lines.push('', `_${c.footer}_`, `_${c.disclaimer}_`)
 
   return {
     v: SHARED_RESULT_PAYLOAD_VERSION,

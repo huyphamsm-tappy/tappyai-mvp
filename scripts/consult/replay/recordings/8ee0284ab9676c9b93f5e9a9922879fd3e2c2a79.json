@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Khách sạn LOTTE Sài Gòn\" OR \"Hotel Majestic Saigon\" OR \"Fusion Original Saigon Centre\" Gần Sài Gòn site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:45:22.791Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Khách sạn LOTTE Sài Gòn\" OR \"Hotel Majestic Saigon\" OR \"Fusion Original Saigon Centre\" Gần Sài Gòn site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hotel Majestic Saigon 100 Năm Trước | TikTok",
+    "link": "https://www.tiktok.com/discover/hotel-majestic-saigon-100-n%C4%83m-tr%C6%B0%E1%BB%9Bc",
+    "snippet": "Hotel Majestic Saigon 100 Năm Trước. Khám phá lịch sử 100 năm của ... Fusion Original Saigon Centre · Vintage Culture Saigon Bar · Athena ...",
+    "date": "31 thg 8, 2026",
+    "position": 1
+   },
+   {
+    "title": "Khám Phá Fusion Original Saigon Centre Độc Đáo",
+    "link": "https://www.tiktok.com/@mason.booking.trav/photo/7606945132851776788?image_index=7",
+    "snippet": "Keywords: Fusion Original Saigon Centre,vẻ đẹp độc đáo tại Sài Gòn,khám phá nghệ thuật hiện đại,trải nghiệm ẩm thực Sài Gòn,không gian táo bạo Sài Gòn,du lịch ...",
+    "position": 2
+   },
+   {
+    "title": "Khách Sạn 5 Sao Fusion Original Saigon Centre Tại TP.HCM",
+    "link": "https://www.tiktok.com/@tasteinframe_/photo/7569227203674737928?image_index=11",
+    "snippet": "FUSION ORIGINAL SAIGON CENTRE 65 Lê Lợi, phường Sài Gòn, TPHCM #learnontiktok #fusionoriginalsaigoncentre #reviewkhachsan #hcmc # ...",
+    "position": 3
+   },
+   {
+    "title": "Hotel Fusion",
+    "link": "https://www.tiktok.com/discover/hotel-fusion?lang=en",
+    "snippet": "khách sạn Fusion Original Saigon Centre, review khách sạn Sài Gòn, trải nghiệm khách sạn 5 sao, dịch vụ miễn phí Fusion, địa điểm lưu trú đẹp Sài Gòn, hotel ...",
+    "position": 4
+   },
+   {
+    "title": "Khám Phá Ẩm Thực Ý Tại Ottimo House - Lotte Sài Gòn",
+    "link": "https://www.tiktok.com/@whynotchaooo/video/7395171620215704833",
+    "snippet": "Trải nghiệm ẩm thực Ý đỉnh cao tại Ottimo House – Khách sạn Lotte Sài Gòn ✨ Hôm nay, cùng Chao khám phá bữa tối sang trọng và ấm cúng tại ...",
+    "position": 5
+   },
+   {
+    "title": "Địa điểm xem pháo hoa tầm cao đẹp nhất sông Sài Gòn",
+    "link": "https://www.tiktok.com/@lacasaigon.vn/video/7678667867566492942",
+    "snippet": "Hotel Majestic Saigon · Tàu Metro Sài Gòn Quay Đầu Như Thế Nào · The Goc ... Kết luận Paradise Coffee Homestay Quận 9 là lựa chọn hợp lý để cảm ...",
+    "position": 6
+   },
+   {
+    "title": "Khách Sạn Lotte Saigon Quận 1",
+    "link": "https://www.tiktok.com/discover/kh%C3%A1ch-s%E1%BA%A1n-lotte-saigon-qu%E1%BA%ADn-1",
+    "snippet": "Khách Sạn LOTTE Sài Gòn: Địa Chỉ Sang Trọng. Khám phá khách sạn LOTTE Sài Gòn, một trong những điểm đến tuyệt vời tại Quận 1. 1607 Likes, 19 ...",
+    "date": "21 thg 9, 2026",
+    "position": 7
+   },
+   {
+    "title": "Review Hotel Sài Gòn Quận 1 Gia Đình Lê Lợi",
+    "link": "https://www.tiktok.com/discover/review-hotel-s%C3%A0i-g%C3%B2n-qu%E1%BA%ADn-1-gia-%C4%91%C3%ACnh-l%C3%AA-l%E1%BB%A3i",
+    "snippet": "Khám Phá Fusion Original Saigon Centre: Review Khách Sạn. Trải nghiệm khách sạn Fusion Original ở Sài Gòn với dịch vụ miễn phí ấn tượng và cảnh đẹp. Cám ơn ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Miya Sushi\" OR \"Izakaya Unatoto Việt Nam\" OR \"FEN Izakaya\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:33:37.631Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Miya Sushi\" OR \"Izakaya Unatoto Việt Nam\" OR \"FEN Izakaya\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Miya Sushi: Tiệm Sushi Ngon Ở Quận 1 Để Hẹn Hò",
+    "link": "https://www.tiktok.com/@toiladansaigon/video/7481613174857354503",
+    "snippet": "Miya Sushi: Tiệm Sushi Ngon Ở Quận 1 Để Hẹn Hò. Khám phá Miya Sushi – tiệm sushi tuyệt vời tại quận 1, hoàn hảo cho buổi hẹn hò của bạn!",
+    "position": 1
+   },
+   {
+    "title": "Miya Sushi: Tiệm Sushi Ngon Núp Hẻm Quận 1",
+    "link": "https://www.tiktok.com/@loveoffoods/video/7493880324817046802",
+    "snippet": "Khám phá Miya Sushi, tiệm sushi chất lượng tại quận 1 với sashimi tươi ngon và không gian thoải mái. Chắc chắn bạn sẽ hài lòng! #mammamcungzit # ...",
+    "position": 2
+   },
+   {
+    "title": "Miya Sushi 🍣 (@miya_ss_bbq)",
+    "link": "https://www.tiktok.com/@miya_ss_bbq",
+    "snippet": "Miya Sushi · @miya_ss_bbq · CN1 : 150/43A Nguyễn Trãi, Bến Thành, Q1 Hotline: 02839259908 CN2: 48A Huỳnh Mẫn Đạt, p.19,Bình Thạnh Hotline : 0777200985.",
+    "position": 3
+   },
+   {
+    "title": "MIYA SUSHI: Tiệm Sushi Ngon Núp Hẻm Hẹn Hò Quận 1",
+    "link": "https://www.tiktok.com/@toiladansaigon/video/7461992108774149394",
+    "snippet": "MIYA SUSHI: Tiệm Sushi Ngon Núp Hẻm Tại Quận 1, Điểm Hẹn Lý Tưởng Nếu bạn đang tìm kiếm một quán sushi ngon tại Quận 1, đặc biệt là một ...",
+    "position": 4
+   },
+   {
+    "title": "miyasushi",
+    "link": "https://www.tiktok.com/tag/miyasushi",
+    "snippet": "We didnt win but this is actually one · Một tiệm sushi ngon núp hẻm quận 1 đáng để lưu lại hẹn hò nè · Miya sushi jacksonville florida #sushi # ...",
+    "position": 5
+   },
+   {
+    "title": "Tiệm sushi ngon rẻ khu Bình Thạnh nhiều bạn sinh viên ...",
+    "link": "https://www.tiktok.com/@toiladansaigon/video/7368090102658043143",
+    "snippet": "### MIYA SUSHI: Tiệm Sushi Ngon Núp Hẻm Tại Quận 1, Điểm Hẹn Lý Tưởng Nếu bạn đang tìm kiếm một quán sushi ngon tại Quận 1, đặc biệt là một ...",
+    "position": 6
+   },
+   {
+    "title": "Miya Sushi Jacksonville",
+    "link": "https://www.tiktok.com/discover/miya-sushi-jacksonville",
+    "snippet": "Miya Sushi - Quán Sushi Ngon Rẻ tại Bình Thạnh. Khám phá điểm đến sushi ngon và rẻ mà nhiều bạn sinh viên ghé thăm tại Miya Sushi, một địa ...",
+    "date": "20 thg 7, 2026",
+    "position": 7
+   },
+   {
+    "title": "Tình cờ biết đến Fen Izakaya ở 240 Lý Tự Trọng Q1. Quán ...",
+    "link": "https://www.tiktok.com/@ghithichnhau/video/7674929044164480276",
+    "snippet": "Tình cờ biết đến Fen Izakaya ở 240 Lý Tự Trọng Q1. Quán nhậu kiểu Nhật... không ồn ào như mô hình trẻ trung... nhưng cũng không củ kỹ với ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

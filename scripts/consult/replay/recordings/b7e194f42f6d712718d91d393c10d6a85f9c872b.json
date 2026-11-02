@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Lash Artist - Tiệm Nail (Lan Kwai Fong)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:24:58.985Z",
+ "body": {
+  "searchParameters": {
+   "q": "Lash Artist - Tiệm Nail (Lan Kwai Fong)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Lash Artist - Tiệm Nail (Lan Kwai Fong) - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/jfnkm6z9eqmwron67hbk/Lash%20Artist%20-%20Ti%E1%BB%87m%20Nail%20(Lan%20Kwai%20Fong).jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ264VwTHoLB4zhK4zwhKMZk4tvlNXzCZTK8U6yWIu2jQ&s",
+    "thumbnailWidth": 310,
+    "thumbnailHeight": 163,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/60480-lash-artist-nail-salon-treatments-lan-kwai-fong-hong-kong/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fjfnkm6z9eqmwron67hbk%2FLash%2520Artist%2520-%2520Ti%25E1%25BB%2587m%2520Nail%2520(Lan%2520Kwai%2520Fong).jpg&tbnid=OldpsdeQVT_QSM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F60480-lash-artist-nail-salon-treatments-lan-kwai-fong-hong-kong%2F&docid=GOTdE16iP1KlBM&w=1200&h=630",
+    "position": 1
+   },
+   {
+    "title": "Lash Artist - Tiệm Nail (Lan Kwai Fong) - Klook",
+    "imageUrl": "https://res.klook.com/images/fl_lossy.progressive,q_65/c_fill,w_1295,h_863/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/dqetbwkiydfiwi4sgjxh/LashArtist-SalonL%C3%A0mM%C3%B3ngCaoC%E1%BA%A5p%7CLanQu%E1%BA%BFPh%C6%B0%E1%BB%9Dng(LanKwaiFong).jpg",
+    "imageWidth": 1295,
+    "imageHeight": 863,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw1-51j4fHoQCg2eNN4ZoeGDSp8vfFbx5USgN6bYBSyQ&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/60480-lash-artist-nail-salon-treatments-lan-kwai-fong-hong-kong/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Ffl_lossy.progressive%2Cq_65%2Fc_fill%2Cw_1295%2Ch_863%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fdqetbwkiydfiwi4sgjxh%2FLashArtist-SalonL%25C3%25A0mM%25C3%25B3ngCaoC%25E1%25BA%25A5p%257CLanQu%25E1%25BA%25BFPh%25C6%25B0%25E1%25BB%259Dng(LanKwaiFong).jpg&tbnid=_DaWM5EEtYVPhM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F60480-lash-artist-nail-salon-treatments-lan-kwai-fong-hong-kong%2F&docid=GOTdE16iP1KlBM&w=1295&h=863",
+    "position": 2
+   },
+   {
+    "title": "Lash Artist - Eyelash Salon (Lan Quế Phường) - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/jmlckumh3asxlcgdumyo/LashArtist-EyelashSalon(LanQu%E1%BA%BFPh%C6%B0%E1%BB%9Dng)-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5IPHiY6V1M0EcRWOCCQ6L4VamHyo51wyQKIVACK4Wyw&s",
+    "thumbnailWidth": 310,
+    "thumbnailHeight": 163,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/61768-lash-artist-eyelash-salon-treatments-lan-kwai-fong-hong-kong/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fjmlckumh3asxlcgdumyo%2FLashArtist-EyelashSalon(LanQu%25E1%25BA%25BFPh%25C6%25B0%25E1%25BB%259Dng)-Klook.jpg&tbnid=gRuY4jOysB-bVM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F61768-lash-artist-eyelash-salon-treatments-lan-kwai-fong-hong-kong%2F&docid=jXXbd4wgH2TERM&w=1200&h=630",
+    "position": 3
+   },
+   {
+    "title": "Lash Artist - Tiệm Nail (Lan Kwai Fong) - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/nosujczoaxhb8nes01jn.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbHGz-b1smvrQXBnVjY0uIa2bgRhJOhp-4Fp8K8AGSCw&s",
+    "thumbnailWidth": 284,
+    "thumbnailHeight": 177,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/60480-lash-artist-nail-salon-treatments-lan-kwai-fong-hong-kong/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fnosujczoaxhb8nes01jn.jpg&tbnid=UUrMwxg243NnzM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F60480-lash-artist-nail-salon-treatments-lan-kwai-fong-hong-kong%2F&docid=GOTdE16iP1KlBM&w=750&h=469",
+    "position": 4
+   },
+   {
+    "title": "Lash Artist - Tiệm Nail (Lan Kwai Fong) - Klook",
+    "imageUrl": "https://res.klook.com/images/fl_lossy.progressive,q_65/c_fill,w_1295,h_863/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/ezo2sglvrjb87fjjsnua/LashArtist-SalonL%C3%A0mM%C3%B3ngCaoC%E1%BA%A5p%7CLanQu%E1%BA%BFPh%C6%B0%E1%BB%9Dng(LanKwaiFong).jpg",
+    "imageWidth": 1295,
+    "imageHeight": 863,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4NtcrVbMfLoAUD70qCnk0R4WRwCMKjJfE8hrUQyu7lg&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/60480-lash-artist-nail-salon-treatments-lan-kwai-fong-hong-kong/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Ffl_lossy.progressive%2Cq_65%2Fc_fill%2Cw_1295%2Ch_863%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fezo2sglvrjb87fjjsnua%2FLashArtist-SalonL%25C3%25A0mM%25C3%25B3ngCaoC%25E1%25BA%25A5p%257CLanQu%25E1%25BA%25BFPh%25C6%25B0%25E1%25BB%259Dng(LanKwaiFong).jpg&tbnid=mlEbZ9oYIo94oM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F60480-lash-artist-nail-salon-treatments-lan-kwai-fong-hong-kong%2F&docid=GOTdE16iP1KlBM&w=1295&h=863",
+    "position": 5
+   },
+   {
+    "title": "Lash Artist - Eyelash Salon (Lan Quế Phường) - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/y9yk91momfh6ue5mpcjw/LashArtist-EyelashSalon(LanQu%E1%BA%BFPh%C6%B0%E1%BB%9Dng)-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOhvvJAoO5xHlbqhzuHqPwBEAyGkgbYiZ2FsESg47jgg&s",
+    "thumbnailWidth": 310,
+    "thumbnailHeight": 163,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/61768-lash-artist-eyelash-salon-treatments-lan-kwai-fong-hong-kong/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fy9yk91momfh6ue5mpcjw%2FLashArtist-EyelashSalon(LanQu%25E1%25BA%25BFPh%25C6%25B0%25E1%25BB%259Dng)-Klook.jpg&tbnid=3ggUlt_upEywPM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F61768-lash-artist-eyelash-salon-treatments-lan-kwai-fong-hong-kong%2F&docid=jXXbd4wgH2TERM&w=1200&h=630",
+    "position": 6
+   },
+   {
+    "title": "Lash Artist - Nail Salon (@nailsalonlkf) · Hong Kong, Hong Kong",
+    "imageUrl": "https://lookaside.instagram.com/seo/google_widget/crawler/?media_id=3499569323859817411",
+    "imageWidth": 1080,
+    "imageHeight": 1080,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwi8RJ7PxUy1K5BAG9E35JCJ3wKeOO1fUSN4-SQadXvA&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Instagram",
+    "domain": "www.instagram.com",
+    "link": "https://www.instagram.com/nailsalonlkf/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.instagram.com%2Fseo%2Fgoogle_widget%2Fcrawler%2F%3Fmedia_id%3D3499569323859817411&tbnid=XhBpadY7zpEu0M&imgrefurl=https%3A%2F%2Fwww.instagram.com%2Fnailsalonlkf%2F&docid=wYEEuZuNF0tI_M&w=1080&h=1080",
+    "position": 7
+   },
+   {
+    "title": "Lash Artist - Salon Chăm Sóc Lông Mi Chất Lượng Cao | Lan Kwai Fong",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/rogp36auuavwbpgy1vuf/LashArtist-EyelashSalon(LanQu%E1%BA%BFPh%C6%B0%E1%BB%9Dng)-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRI-nwMIm7bv3trDv42TT2viaxHRvpPSteAKHQuzeJG5A&s",
+    "thumbnailWidth": 310,
+    "thumbnailHeight": 163,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/61768-lash-artist-eyelash-salon-treatments-lan-kwai-fong-hong-kong/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Frogp36auuavwbpgy1vuf%2FLashArtist-EyelashSalon(LanQu%25E1%25BA%25BFPh%25C6%25B0%25E1%25BB%259Dng)-Klook.jpg&tbnid=COIDzScgNpMbnM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F61768-lash-artist-eyelash-salon-treatments-lan-kwai-fong-hong-kong%2F&docid=jXXbd4wgH2TERM&w=1200&h=630",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -274,3 +274,22 @@ export function receivedShares() {
   const out = adb(['logcat', '-d', '-s', 'E2E_SHARE:I'], { allowFail: true }) || ''
   return out.split(/\r?\n/).map((l) => l.slice(l.indexOf('{'))).filter((l) => l.startsWith('{')).map((l) => { try { return JSON.parse(l) } catch { return null } }).filter(Boolean)
 }
+
+/**
+ * Plan card v2: its share pill is the «Chia sẻ» in the card's own top bar, just above the «TAPPY PLAN»
+ * kicker (other «Chia sẻ» on screen belong to message actions). Scrolls the card into view first.
+ */
+export async function planShareButton({ max = 12 } = {}) {
+  for (let k = 0; k < max; k++) {
+    const nodes = dump()
+    const kicker = find('TAPPY PLAN', nodes)
+    if (kicker) {
+      const shares = nodes.filter((n) => (n.text || n.desc) === 'Chia sẻ' && n.y2 <= kicker.y1 && kicker.y1 - n.y1 < 700 && n.y1 > 150)
+      if (shares.length) return shares.sort((x, y) => y.y1 - x.y1)[0]
+      // Kicker visible but its top bar is above the screen: nudge the content down a little.
+      sh('input', 'swipe', '540', '900', '540', '1400', '400'); await sleep(800); continue
+    }
+    swipe(k < max / 2 ? 'up' : 'down'); await sleep(700)
+  }
+  return null
+}

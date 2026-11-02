@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Set Đồ Jean Nam Lunary site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:19:55.566Z",
+ "body": {
+  "searchParameters": {
+   "q": "Set Đồ Jean Nam Lunary site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Sỉ=lẻ đèn ông sao vui tết trung thu truyền thống",
+    "link": "https://www.lazada.vn/products/sile-den-ong-sao-vui-tet-trung-thu-truyen-thong-i1760118899.html?srsltid=AU7gw4XZGFs4DNhV1Fxd0WEb-q86AagL0COgFdPsCeqJp_NTcNAP6_Zg",
+    "snippet": "quần jean cạp cao nâng mông, thon gọn. 149.000 ₫ · Mặt nạ hình thú chất mềm có lông. 32.000 ₫ · Sỉ 1kg - 600 bông hoa mai, hoa đào giả đẹp trang trí tết 2022.",
+    "rating": 5,
+    "ratingCount": 9,
+    "position": 1
+   },
+   {
+    "title": "Móc khoá Rồng Tết cầm ngũ quả cute móc chìa khoá tết ...",
+    "link": "https://www.lazada.vn/products/moc-khoa-rong-tet-cam-ngu-qua-cute-moc-chia-khoa-tet-2024-de-thuong-qua-tang-phu-kien-tui-xach-balo-minkey-i2512521576.html?srsltid=AU7gw4VNw3v_r2h1FsYtXXFEoWxPQbOly58hgRsj_jRSn75PVhBVzk11",
+    "snippet": "MÓC KHÓA ĐẸP CUTE MẪU MỚI NHẤT TRÊN THỊ TRƯỜNG - GIÁ TỐT. ------ THÔNG TIN SẢN PHẨM ------. + Khóa treo bằng kim loại chắc chắn, bền đẹp, không dễ phai màu, ...",
+    "rating": 5,
+    "ratingCount": 16,
+    "position": 2
+   },
+   {
+    "title": "Bộ drap, áo gối kèm vỏ mền Cotton Jean Perry Coray",
+    "link": "https://www.lazada.vn/products/bo-drap-ao-goi-kem-vo-men-cotton-jean-perrycoray-i2773024650.html?srsltid=AU7gw4V2WlzhcZg6Ymtoq7z8a5yLnXcozntWmeNAaB9YC9TlZz68EgcS",
+    "snippet": "❏ Bộ 6 món: - 1 Drap bọc: 180x200cm | 200x200cm | 220x200cm - 2 Áo gối nằm: 50x76cm - 2 Áo gối ôm: 38x106cm - 1 Vỏ chăn: 250x215cm | 263x233cm | 284x233cm ...",
+    "position": 3
+   },
+   {
+    "title": "Hộp dụng cụ đựng kim chỉ gia đinh, Hộp có chỉ kéo kim và ...",
+    "link": "https://www.lazada.vn/products/hop-dung-cu-dung-kim-chi-gia-dinh-hop-co-chi-keo-kim-va-dung-cu-tien-ich-i2232719510.html?srsltid=AU7gw4UjoRhW5zKCLut5g8KKBdpDw1RYywfqFMdf73XwF39d3iQq5kBp",
+    "snippet": "Mô tả sản phẩm ... - Sản phẩm gồm : Kéo bấm chỉ, kim may tay, kim khâu, nút quần jean, thước dây, dây thun luồn quần, 12 suốt kèm chỉ, đê bảo vệ ngón tay, dao lam ...",
+    "rating": 4,
+    "ratingCount": 2,
+    "position": 4
+   },
+   {
+    "title": "3D Khám Phá Không Gian Mô Hình Xếp Hình DIY Thủ ...",
+    "link": "https://www.lazada.vn/products/pdp-i3289990521.html?srsltid=AU7gw4VU6Ml2z2y9UKKbo6FGKrke3nJPCjBnoWdotp-B0v7HpImu0waG",
+    "snippet": "Nâng cao kỹ năng nhận thức với Câu đố 3D này, được thiết kế dành cho thanh thiếu niên từ 7-14 tuổi, thúc đẩy khả năng sáng tạo và giải quyết vấn đề.",
+    "position": 5
+   },
+   {
+    "title": "Ô mai hoa đào, xí muội tuổi thơ gói 5g",
+    "link": "https://www.lazada.vn/products/o-mai-hoa-dao-xi-muoi-tuoi-tho-goi-5g-i2114122619.html?srsltid=AU7gw4XK-s1ufx9vGEipRVDDnG56qY5VJNV7aSMW82vdETEUHjE88kls",
+    "snippet": "Xi Muô i hoa đa o, ô mai hoa đào Tha i Lan go i 5g. Đă c điê m: Quy cách: gói 5g. Xuất xứ: Thái Lan. HSD: 18 tháng. Hướng dẫn sử dụng: Dùng ăn liền.",
+    "position": 6
+   },
+   {
+    "title": "[TẶNG LÌ XÌ] Dải Treo Thần Tài Lắc Đầu Gọi May Mắn ...",
+    "link": "https://h5.lazada.vn/products/tang-li-xi-dai-treo-than-tai-lac-dau-goi-may-man-tai-loc-chuc-mung-nam-moi-2024-do-trang-tri-tet-nhieu-mau-i2481834132.html",
+    "snippet": "☘ Thích hợp trang trí dịp Trung thu, Tết Nguyên Đán,khai trương... với ý nghĩa mang lại nhiều may mắn cho gia chủ.",
+    "rating": 4.8,
+    "ratingCount": 20,
+    "position": 7
+   }
+  ],
+  "credits": 1
+ }
+}

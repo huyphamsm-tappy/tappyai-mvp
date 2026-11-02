@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "ốp UAG iPhone 17 Pro Max không màu đen (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:58:17.778Z",
+ "body": {
+  "searchParameters": {
+   "q": "ốp UAG iPhone 17 Pro Max không màu đen (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp lưng iPhone 17 (Pro Max | Pro) chính hãng",
+    "link": "https://cellphones.com.vn/phu-kien/bao-da-op-lung/iphone/iphone-17.html",
+    "snippet": "Tổng hợp ốp lưng iPhone 17(Pro| Pro Max) đa dạng mẫu mã, cao cấp dao động 200.000 VNĐ đến hơn 1.500.000 VNĐ - Mua ốp iPhone 17 (Pro Max) tại CellphoneS.",
+    "position": 1
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Monarch ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-monarch-pro-exclusive-cap-carbon-fiber.html",
+    "snippet": "Dùng được cho. iPhone 17 Pro Max. Tính năng. Lõi Chống Sốc Lớp đệm bảo vệ chống va chạm và sốc. Tương thích MagSafe. Bảo vệ chống va đập từ độ cao 7,6 mét",
+    "position": 2
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Pathfinder ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-pathfinder-clear-with-magsafe.html",
+    "snippet": "Mẫu ốp 17 Pro Max này có 3 lựa chọn màu sắc, được làm từ 25% vật liệu tái chế, khả năng tháo lắp dễ dàng. Nội dung chính. 1. Ốp lưng iPhone 17 Pro Max UAG ...",
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Civilian With ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-civilian-with-magsafe.html",
+    "snippet": "Dùng được cho. iPhone 17 Pro Max. Tính năng. Tương thích MagSafe. Các điểm neo dây đeo tích hợp. Bảo vệ chống va đập Hypercush Bảo vệ khi rơi từ độ cao 6m",
+    "position": 4
+   },
+   {
+    "title": "[iPhone 17 Pro Max] Ốp lưng UAG/ ZAGG/ PITAKA chống ...",
+    "link": "https://shopee.vn/-iPhone-17-Pro-Max-%E1%BB%90p-l%C6%B0ng-UAG-ZAGG-PITAKA-ch%E1%BB%91ng-s%E1%BB%91c-b%E1%BA%A3o-h%C3%A0nh-ch%E1%BB%91ng-%E1%BB%91-v%C3%A0ng-H%C3%A0ng-ch%C3%ADnh-h%C3%A3ng-i.206824363.25796994129",
+    "snippet": "Mua [iPhone 17 Pro Max] Ốp lưng UAG/ ZAGG/ PITAKA chống sốc, bảo hành chống ố vàng - Hàng chính hãng giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 12,
+    "position": 5
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Plasma Xte ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-plasma-xte-with-magsafe.html",
+    "snippet": "Ốp lưng iPhone 17 Pro Max UAG Plasma XTE With Magsafe bảo vệ toàn diện, đạt chuẩn quân đội MIL-STD 810G 516.6, chống rơi ở độ cao lên đến 20ft (6m). Viền nhô ...",
+    "position": 6
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro UAG chống sốc Pathfinder Clear ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-uag-pathfinder-clear-with-magsafe.html",
+    "snippet": "Ốp lưng iPhone 17 Pro UAG Pathfinder Clear With Magsafe nổi bật với thiết kế mỏng nhẹ, chất liệu cao cấp, giúp hạn chế việc bị trầy xước một cách hiệu quả.",
+    "position": 7
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Metropolis Lt ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-metropolis-lt-with-magsafe-kevlar.html",
+    "snippet": "Dùng được cho. iPhone 17 Pro Max. Tính năng. Chống va đập vượt trội. Bảo vệ màn hình & camera. Tương thích MagSafe. Bảo vệ khi rơi từ độ cao 5.4m",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Son Kem Lì Merzy Bite The Beat Mellow Tint Quận 10 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:27:08.173Z",
+ "body": {
+  "searchParameters": {
+   "q": "Son Kem Lì Merzy Bite The Beat Mellow Tint Quận 10 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Son kem Merzy Dreamy Late Night / Bite The Beat Mellow ...",
+    "link": "https://www.lazada.vn/products/son-kem-merzy-dreamy-late-night-bite-the-beat-mellow-tint-m1-m2-m3-m4-m5-m6-m7-m8-m9-m10-m11-m12-m13-m14-i1539643984.html?srsltid=AU7gw4XEmhTH1nkj6UYVo_qUdczl4mlpBw7lgZJgLJj10YoJ7NwWH4JC",
+    "snippet": "- Màu của màn đêm êm dịu làm cho đôi môi ửng màu tự nhiên và mang lại lớp phủ mơ màng. - Kết cấu mịn mượt nhẹ tênh, chất son mịn mượt nhẹ nhàng ...",
+    "position": 1
+   },
+   {
+    "title": "Son kem Merzy Dreamy Late Night / Merzy Bite The Beat ...",
+    "link": "https://www.lazada.vn/products/son-kem-merzy-dreamy-late-night-merzy-bite-the-beat-mellow-tint-m5-m6-m11-m13-m15-m16-m17-i1602300719.html?srsltid=AU7gw4UKD5AQ-G1aQt_5uKZNfNWkHYgMeufpApCLPZQxRFXm938zkI-E",
+    "snippet": "Đặc điểm nổi bật · [NEW][MÀU MỚI M9-M14] Son Kem Lì Siêu Mịn Merzy Bite The Beat Mellow Tint 4g · Xuất xứ: Hàn Quốc · Thương Hiệu: Merzy · Trọng lượng: 4g · xxx Thế ...",
+    "position": 2
+   },
+   {
+    "title": "Son Kem Lì Merzy Noir In The Mellow Tint 4g M2 M4 M11 ...",
+    "link": "https://www.lazada.vn/products/son-kem-li-merzy-noir-in-the-mellow-tint-4g-m2-m4-m11-m13-m17-bebeauskinshop-i2315561873.html?srsltid=AU7gw4XssyuHEgBXVBHKALA9jgxxleb_8puWWqUoKc5yyUc-EPhTzlZF",
+    "snippet": "- Kết cấu mịn mượt nhẹ tênh, chất son mịn mượt nhẹ nhàng phủ khắp đôi môi căng đầy. - Độ bền màu hoàn hảo, giữ cho đôi môi luôn bền màu rạng rỡ kể cả giữ màng ...",
+    "position": 3
+   },
+   {
+    "title": "[NEW] [M13 GLAM Vỏ Bạc] Son Kem Lì Hàn Quốc Mịn ...",
+    "link": "https://www.lazada.vn/products/new-m13-glam-vo-bac-son-kem-li-han-quoc-min-muot-ton-da-merzy-noir-in-the-mellow-tint-4g-i2007605524.html?srsltid=AU7gw4VxaJytP012sParfjwwKOGwTgSPsLLsEXRR_57ihdl6l-gY5R_z",
+    "snippet": "Son Kem Siêu Lì, Mịn Môi Merzy Mellow Tint Red Edition Màu M13 Vapor Red có kết cấu chất son mịn lì, nhẹ nhàng lướt trên môi và giữ màu cả ngày dài. - ...",
+    "rating": 4.9,
+    "ratingCount": 883,
+    "position": 4
+   },
+   {
+    "title": "Son Kem Merzy Dreamy Late Night Mellow Tint",
+    "link": "https://www.lazada.vn/products/son-kem-merzy-dreamy-late-night-mellow-tint-i2037392785.html?srsltid=AU7gw4U7WVlEMHS-wluZebKSAoI9AHel1bTOxknSVfgh0LMlwFwqUnwA",
+    "snippet": "Kết cấu sản phẩm: Chất son mịn xốp, nhẹ môi và cực kì dễ tán. Lớp son ban đầu sẽ hơi bóng nhẹ và phai đi dần, để lại lớp mịn lì trên môi.",
+    "position": 5
+   },
+   {
+    "title": "Son kem siêu lì, chuẩn màu Merzy Academia Mellow Tint 4g",
+    "link": "https://www.lazada.vn/products/son-kem-sieu-li-chuan-mau-merzy-academia-mellow-tint-4g-i2355216668.html?srsltid=AU7gw4XlU1ZwMfPLnIfaTXrQ5dtZjF2qtEjFQhgUe1J9vYFIF-ceMIJb",
+    "snippet": "Son kem siêu lì Merzy Academia với công thức matte cao cấp, mang lại màu sắc chuẩn xác và độ bám lâu trôi. Diversi màu sắc từ đỏ cam đến nâu trầm, ...",
+    "position": 6
+   },
+   {
+    "title": "Son kem lì Merzy Noir In The Mellow Tint M13 Vapor red",
+    "link": "https://www.lazada.vn/products/merzy-m13-vo-do-red-edition-son-kem-li-merzy-noir-in-the-mellow-tint-m13-vapor-red-bebeau-i2284204407.html?srsltid=AU7gw4Vks299ThFmesHjxoRhOiC51CfyLEKRDlcT-CCwQOI9EQEtJFeM",
+    "snippet": "***Chất son được cải tiến rõ rệt so với dòng cũ khi kết cấu có dạng kem xốp mịn, không quá đặc, lướt nhẹ trên môi, cảm giác môi sẽ mịn mượt ngay khi chạm son.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 7
+   },
+   {
+    "title": "[Ver2] Son kem lì Romand Milk Tea Velvet Tint 4.4g",
+    "link": "https://www.lazada.vn/products/ver2-son-kem-li-romand-milk-tea-velvet-tint-44g-i2135045366.html?srsltid=AU7gw4XuqqHcUh3XDuzZfARMAWeq8oX4FQH6EoQVhzoi9aslb4WuaKn0",
+    "snippet": "- Son có kết cấu chất son milky velvet mịn mượt, nhẹ nhàng lướt mịn trên đôi môi, với công thức blur cover bao bọc lấy đôi môi mềm mại. - Đầu cọ son vát nhẹ ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vnexpress.net/du-lich Hà Nội",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:58:29.552Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vnexpress.net/du-lich Hà Nội",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tin tức Du lịch Hà Nội: Khám phá địa danh, văn hóa & ẩm ...",
+    "link": "https://vnexpress.net/du-lich/diem-den/viet-nam/ha-noi",
+    "snippet": "Thông tin Du lịch Hà Nội 2019 tại VnExpress, chia sẻ kinh nghiệm, hình ảnh, video về văn hóa, ẩm thực, con người, những địa điểm đẹp nhất ở Hà Nội.",
+    "position": 1
+   },
+   {
+    "title": "Hà Nội - một trong những thành phố hấp dẫn nhất châu Á",
+    "link": "https://video.vnexpress.net/du-lich/ha-noi-mot-trong-nhung-thanh-pho-hap-dan-nhat-chau-a-3237591.html",
+    "snippet": "Chính sự kết hợp giữa văn hóa Á Đông, dấu tích Pháp thuộc và nhịp sống hiện đại đã tạo nên nét đặc biệt cho thủ đô nghìn năm văn hiến này.",
+    "position": 2
+   },
+   {
+    "title": "Du lịch Hà Nội thu 110.000 tỷ đồng trong 10 tháng",
+    "link": "https://vnexpress.net/du-lich-ha-noi-thu-110-000-ty-dong-trong-10-thang-4960256.html",
+    "snippet": "Sở Du lịch Hà Nội đặt mục tiêu năm 2026 đón 35,8 triệu lượt khách (tăng 6% so với 2025), trong đó có 8,6 triệu lượt quốc tế (tăng 10%).",
+    "date": "6 thg 11, 2025",
+    "position": 3
+   },
+   {
+    "title": "Du lịch - Tin tức, cẩm nang khám phá văn hóa & ẩm thực",
+    "link": "https://vnexpress.net/du-lich",
+    "snippet": "Chuyên trang Du lịch tại Báo VnExpress - Cập nhập tin tức du lịch mới nhất Việt Nam và thế giới, chia sẻ kinh nghiệm, cẩm nang du lịch hữu ích cho mọi ...",
+    "position": 4
+   },
+   {
+    "title": "Ẩm thực Việt Nam: món ngon, địa chỉ, quán xá... 3 miền ...",
+    "link": "https://vnexpress.net/du-lich/am-thuc/viet-nam",
+    "snippet": "Hà NộiNgan cháy tỏi Thủy Lương, phở Khôi Hói, cà phê Giảng nằm trong số ... 5 nhà hàng chay với phong cách khác biệt cho mùa Vu Lan ở Hà Nội · Ăn chay ...",
+    "position": 5
+   },
+   {
+    "title": "Du lịch Việt Nam - Khám phá địa danh, văn hóa & ẩm thực",
+    "link": "https://vnexpress.net/du-lich/diem-den/viet-nam",
+    "snippet": "Du lịch Việt Nam - Tổng hợp tin tức, hình ảnh, video về những địa điểm du lịch Việt Nam đẹp & nổi tiếng khắp 3 miền Bắc - Trung - Nam - VnExpress Du Lịch.",
+    "position": 6
+   },
+   {
+    "title": "Biểu diễn Muay Thái tại Hà Nội",
+    "link": "https://video.vnexpress.net/du-lich/bieu-dien-muay-thai-tai-ha-noi-3117122.html",
+    "snippet": "Các vận động viên Thái Lan biểu diễn môn võ truyền thống Muay Thai tại Công viên Thống Nhất, Hà Nội, trong khuôn khổ chương trình Ngày Thái Lan (Thailand ...",
+    "position": 7
+   },
+   {
+    "title": "Mở cửa du lịch: Thông tin, địa điểm, hình ảnh",
+    "link": "https://vnexpress.net/du-lich/mo-cua-du-lich",
+    "snippet": "Tổng hợp toàn bộ tin tức, thông tin, hình ảnh, video về các điểm đến vô cùng HOT đang được người người mong đợi sau khi mở cửa du lịch.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Set quà tặng cho nam, quà sinh nhật cho bạn trai, đồng nghiệp/Gift box.Hộp quà tặng/Hộp quà sinh nhật site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:09:08.398Z",
+ "body": {
+  "searchParameters": {
+   "q": "Set quà tặng cho nam, quà sinh nhật cho bạn trai, đồng nghiệp/Gift box.Hộp quà tặng/Hộp quà sinh nhật site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Set quà tặng cho nam, quà sinh nhật cho bạn trai, đồng ...",
+    "link": "https://shopee.vn/Set-qu%C3%A0-t%E1%BA%B7ng-cho-nam-qu%C3%A0-sinh-nh%E1%BA%ADt-cho-b%E1%BA%A1n-trai-%C4%91%E1%BB%93ng-nghi%E1%BB%87p-Gift-box.H%E1%BB%99p-qu%C3%A0-t%E1%BA%B7ng-H%E1%BB%99p-qu%C3%A0-sinh-nh%E1%BA%ADt-i.145532413.25316452658",
+    "snippet": "Set quà tặng cho nam, quà sinh nhật cho bạn trai, đồng nghiệp/Gift box.Hộp quà tặng/Hộp quà sinh nhật. 1/3. 160.000₫. Set quà tặng cho ...",
+    "rating": 5,
+    "ratingCount": 6,
+    "position": 1
+   },
+   {
+    "title": "BoxGift - Hộp Quà Tặng, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/boxgift",
+    "snippet": "BoxGift - Hộp Quà Tặng. - Từ những chiếc hộp Vintage đến những chiếc thiệp tình cảm và những phụ kiện trang trí tinh tế - BoxGift chủ yếu tập trung vào việc ...",
+    "position": 2
+   },
+   {
+    "title": "Set quà tặng bạn trai sinh nhật - Giá Tốt, Sale Tháng 09 ...",
+    "link": "https://shopee.vn/list/set%20qu%C3%A0%20t%E1%BA%B7ng/b%E1%BA%A1n%20trai/sinh%20nh%E1%BA%ADt",
+    "snippet": "[Fullbox + Túi giấy] Set ví thắt lưng đồng hồ nam, quà tặng sinh nhật ý nghĩa cho bạn trai145.000₫. Mua online các sản phẩm set quà tặng bạn trai sinh nhật ...",
+    "position": 3
+   },
+   {
+    "title": "box quà tặng cho nam tinh tế",
+    "link": "https://shopee.vn/list/box%20qu%C3%A0%20t%E1%BA%B7ng/cho%20nam",
+    "snippet": "box quà tặng cho nam đa dạng cho mọi dịp: combo 2–3 món tiện dụng, ví da thật và thắt lưng đồng bộ, thêm lựa chọn nước hoa/grooming.",
+    "position": 4
+   },
+   {
+    "title": "chipchip_shop86, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/chipchip_shop86",
+    "snippet": "Chuyên set quà sang, xịn, mịn cho mọi lứa tuổi Giá vô cùng hạt dẻ Khám phá các ưu đãi sản phẩm và đánh giá về chipchip_shop86 online.",
+    "position": 5
+   },
+   {
+    "title": "thejoybox, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/thejoybox",
+    "snippet": "Không chỉ đẹp về hình thức xinh đẹp và một chủ đề ý nghĩa, mỗi món quà từ The Joy Box đều được đảm bảo về chất lượng. Đặc biệt, những món quà được làm thủ ...",
+    "position": 6
+   },
+   {
+    "title": "Set gói quà sinh nhật - Giá Tốt, Sale Tháng 09, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/set%20g%C3%B3i%20qu%C3%A0/sinh%20nh%E1%BA%ADt",
+    "snippet": "Set quà sinh nhật cho nam, quà tặng bạn trai, gồm cốc sứ, móc khóa gấu , thiệp và hộp quà tặng ,set quà tặng tốt nghiệp. 125.000₫. 189.000₫.",
+    "position": 7
+   },
+   {
+    "title": "set quà sinh nhật cho nữ giá rẻ",
+    "link": "https://shopee.vn/list/set%20qu%C3%A0%20sinh%20nh%E1%BA%ADt/cho%20n%E1%BB%AF%20gi%C3%A1%20r%E1%BA%BB",
+    "snippet": "Set quà sinh nhật cho nam, quà tặng bạn trai, gồm cốc sứ, móc khóa gấu , thiệp và hộp quà tặng ,set quà tặng tốt nghiệp. 125.000₫. 189.000₫.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

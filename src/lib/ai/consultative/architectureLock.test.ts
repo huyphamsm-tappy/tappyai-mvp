@@ -59,7 +59,9 @@ describe('no tool forcing, no step rewriting, no prefetch', () => {
 
   it('forcedTool is still computed but never handed to the model', () => {
     const src = code(ROUTE)
-    const call = src.slice(src.indexOf('AI.stream('), src.indexOf('onFinish:'))
+    // TAPPY_AGENT (04/10): the call options live in `streamOpts` (shared by AI.stream and the agent's onFinish).
+    const call = src.slice(src.indexOf('const streamOpts'), src.indexOf('onFinish:', src.indexOf('const streamOpts')))
+    expect(call.length).toBeGreaterThan(100)
     expect(call).not.toContain('forcedTool')
   })
 
@@ -72,8 +74,9 @@ describe('no tool forcing, no step rewriting, no prefetch', () => {
   // can reuse them, which is why the check strips that block before looking.
   it('the only tool invoked before generation is the pre-search, through the wrapped tool object', () => {
     const src = code(ROUTE)
-    const beforeStream = src.slice(0, src.indexOf('AI.stream('))
-    const toolsStart = beforeStream.indexOf('const tools = noToolTurn ? undefined : gateTools(timeTools({')
+    // TAPPY_AGENT (04/10): "before generation" = before the shared call options; an agent turn always has its tools (`&& !agentOn`).
+    const beforeStream = src.slice(0, src.indexOf('const streamOpts'))
+    const toolsStart = beforeStream.indexOf('const tools = noToolTurn && !agentOn ? undefined : gateTools(timeTools({')
     expect(toolsStart).toBeGreaterThan(0)
     const toolsEnd = beforeStream.indexOf('\n  }))', toolsStart)
     expect(toolsEnd).toBeGreaterThan(toolsStart)
@@ -89,7 +92,10 @@ describe('no tool forcing, no step rewriting, no prefetch', () => {
     // product searches once more with the core product (owner 2026-09-29, replay SHOP-1).
     const retries = (outsideTools.match(/search_products\.execute\(\{ query: core \}/g) || []).length
     expect(retries).toBeLessThanOrEqual(1)
-    expect((outsideTools.match(/\.execute\(/g) || []).length).toBe(1 + retries)
+    // + the film question's ONE budgeted second search (searchIntel/filmSearch.ts: search budget 2, used only when the first yields < 5 titles).
+    // + TAPPY_AGENT (04/10): the pending side-effecting action executed by CODE on the user's explicit confirmation turn (never by the model).
+    expect(outsideTools).toMatch(/if \(c === 'confirm' && t\?\.execute\)/)
+    expect((outsideTools.match(/\.execute\(/g) || []).length).toBe(1 + retries + 1 + 1)
     expect(outsideTools).toContain("name: 'search_places' | 'get_flight_prices'")
   })
 

@@ -62,23 +62,33 @@ export function buildLeanConsultSystem(o: {
   consultBlock: string
   /** Request blocks that must survive (decision evidence, memory, prefs, planning block…). */
   extra?: string[]
+  /** Blocks placed AFTER the frame (the last thing the model reads before the reminder) — the advice layer (adviceBlock.ts). */
+  tail?: string[]
   /**
    * Cost §6: the area's static text (its tool rules + every frame of the area, `frameLibrary`) goes in the
    * CACHED segment, so it clears Anthropic's minimum cacheable prefix and a session's later turns read it
    * at 10%. The consult block then carries only the frame pointer (`frameByRef`).
    */
   library?: string
+  /**
+   * PHIÊN LUNA: a replacement persona core (luna.ts LUNA_CORE). The area's tool rules then move into the shared
+   * (reused) segment right after it — static per area, so the vendor's prefix cache keeps them; only the
+   * per-turn blocks stay in the dynamic segment.
+   */
+  core?: string
 }): { shared: string; dynamic: string } {
   const langBlock = `CRITICAL: The user is writing in ${o.langName}. Your ENTIRE reply MUST be in ${o.langName}.`
   const tools = o.domains.map(d => TOOL_RULES[d]).filter(Boolean).join('\n')
   const dynamic = [
     langBlock,
     `THOI GIAN: ${o.vnDateTime} (GMT+7). Ngay: ${o.vnDateISO}. Dinh dang ngay dd/mm/yyyy, tien VND.`,
-    o.library ? '' : tools,
+    o.library || o.core ? '' : tools,
     ...(o.extra ?? []).filter(Boolean),
     o.consultBlock,
+    ...(o.tail ?? []).filter(Boolean),
     `REMINDER: reply in ${o.langName} only.`,
   ].filter(Boolean).join('\n\n')
+  if (o.core) return { shared: [o.core, tools, o.library ?? ''].filter(Boolean).join('\n\n'), dynamic }
   return { shared: o.library ? [LEAN_CORE, tools, o.library].filter(Boolean).join('\n\n') : LEAN_CORE, dynamic }
 }
 

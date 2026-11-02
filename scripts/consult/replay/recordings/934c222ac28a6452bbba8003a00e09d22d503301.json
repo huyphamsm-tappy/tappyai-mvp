@@ -1,0 +1,44 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Xôi Xéo Bà 3 Béo Trần Trọng Cung (site:food.grab.com/vn OR site:shopeefood.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:00:49.028Z",
+ "body": {
+  "searchParameters": {
+   "q": "Xôi Xéo Bà 3 Béo Trần Trọng Cung (site:food.grab.com/vn OR site:shopeefood.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Xôi Xéo Bà 3 Béo - Trần Trọng Cung",
+    "link": "https://shopeefood.vn/ho-chi-minh/xoi-xeo-ba-3-beo-tran-trong-cung",
+    "snippet": "Xôi Xéo Bà 3 Béo - Trần Trọng Cung. 103 Trần Trọng Cung, P. Tân Thuận Đông, Quận 7, TP. HCM. Đã đóng. Quán được gắn nhãn ...",
+    "position": 1
+   },
+   {
+    "title": "Vô vàn ưu đãi, hàng vạn món ngon | GrabFood VN",
+    "link": "https://food.grab.com/vn/vi/",
+    "snippet": "GrabFood - Dịch vụ giao đồ ăn trực tuyến giúp bạn thỏa mãn cơn thèm ăn với hàng vạn quán ăn.",
+    "position": 2
+   },
+   {
+    "title": "Cái Lò Nướng - Nguyễn Thị Minh Khai ⭐ 4.7",
+    "link": "https://food.grab.com/vn/vi/restaurant/restaurant/5-C64KE4KJFFAGC6",
+    "snippet": "Mousse nhãn mềm mát mịn vị ngọt thanh cùng với lớp nhân hạt dẻ béo bùi, bạt bánh bông lan choco. Bánh được tạo hình ly nước với lớp vỏ ly bằng chocolate.",
+    "rating": 4.7,
+    "ratingCount": 523,
+    "position": 3
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,8 +1,9 @@
 'use client'
 
+import AiDisclaimer from '@/components/AiDisclaimer'
 import { useChat } from 'ai/react'
 import type { Message } from 'ai'
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
 import { flushSync } from 'react-dom'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -12,12 +13,45 @@ import { useServerTTS } from '@/hooks/useServerTTS'
 import MessageActionBar from '@/components/chat/MessageActionBar'
 import { cn, CATEGORIES, type CategoryId } from '@/lib/utils'
 import { inlineLinkTap } from '@/lib/recommendation/handoff'
+import { parseRecheckHref, runRecheck } from '@/lib/providers/realtime/recheckLink'
 
-// A tap on a link inside the rendered reply text: a tracked affiliate link reports GA4
+// "Kiểm tra giá & tình trạng" (web): a realtime offer Tappy holds carries a recheck link. The tap re-asks the provider through
+// POST /api/booking/recheck and writes the answer BESIDE the link; the booking link next to it stays the CTA. The answer is plain text (never HTML),
+// and the only link it can add is the https booking page the SERVER returned.
+async function showRecheck(a: HTMLAnchorElement) {
+  if (a.dataset.rechecking === '1') return
+  a.dataset.rechecking = '1'
+  const label = a.textContent
+  a.textContent = 'Đang kiểm tra…'
+  const note = await runRecheck(a.href)
+  a.textContent = label
+  delete a.dataset.rechecking
+  if (!note) return
+  a.parentElement?.querySelectorAll('[data-recheck-note]').forEach(n => { if (n.previousElementSibling === a) n.remove() })
+  const span = document.createElement('span')
+  span.dataset.recheckNote = note.status
+  span.setAttribute('role', 'status')
+  span.className = note.status === 'unavailable' ? 'text-[13px] text-red-600 dark:text-red-400' : note.status === 'price_changed' ? 'text-[13px] text-amber-600 dark:text-amber-400' : 'text-[13px] text-gray-600 dark:text-gray-300'
+  span.textContent = ` ${note.sentence}`
+  if (note.bookingUrl && note.status !== 'unavailable') {
+    const open = document.createElement('a')
+    open.href = note.bookingUrl
+    open.target = '_blank'
+    open.rel = 'noopener noreferrer'
+    open.className = 'underline ml-1'
+    open.textContent = 'Mở trang đặt'
+    span.append(' ', open)
+  }
+  a.insertAdjacentElement('afterend', span)
+}
+
+// A tap on a link inside the rendered reply text: a recheck link runs the recheck in place; a tracked affiliate link reports GA4
 // `affiliate_click` (src/lib/recommendation/handoff.ts); every other link is untouched.
-function onMessageLinkClick(e: React.MouseEvent<HTMLDivElement>) {
+export function onMessageLinkClick(e: React.MouseEvent<HTMLDivElement>) {
   const a = (e.target as HTMLElement | null)?.closest?.('a')
-  if (a instanceof HTMLAnchorElement) inlineLinkTap(a.href)
+  if (!(a instanceof HTMLAnchorElement)) return
+  if (parseRecheckHref(a.href)) { e.preventDefault(); void showRecheck(a); return }
+  inlineLinkTap(a.href)
 }
 import { getDynamicPrompts } from '@/lib/suggestedPrompts'
 import TripPlanCard from '@/components/TripPlanCard'
@@ -26,6 +60,7 @@ import { parseCTA } from '@/lib/structuredContent/parseCta'
 import { parseFollowups } from '@/lib/structuredContent/parseFollowups'
 import { parseAsk } from '@/lib/structuredContent/parseAsk'
 import AskCard from '@/components/chat/AskCard'
+import VoiceOverlay from '@/components/chat/VoiceOverlay'
 import { classifyOutboundAction, emitQuery, emitResultAction, hostOf } from '@/lib/analytics/g1Events'
 import ShoppingDecision from '@/components/chat/ShoppingDecision'
 import ComparisonBlock from '@/components/chat/structured/ComparisonBlock'
@@ -38,16 +73,21 @@ import { readPlacesLiveView } from '@/lib/recommendation/liveView'
 import { readProgress } from '@/lib/recommendation/progressAnnotation'
 import { rememberPlacesView, recallPlacesView } from '@/lib/recommendation/liveViewCache'
 import PlaceDecision from '@/components/chat/PlaceDecision'
-import { useTranslation } from '@/lib/i18n/useTranslation'
+import { useTranslation, getStoredLocale } from '@/lib/i18n/useTranslation'
 import { validateModelCtaButtons } from '@/lib/recommendation/ctaValidation'
 import { requestedProviderOf } from '@/lib/ai/tools/commerceIntent'
 import { inputLocaleFor } from '@/lib/voice/config'
+import { readMicEnabled } from '@/lib/voice/micSetting'
 import { TappyMascot } from '@/components/TappyMascot'
 import { getTappyPose } from '@/lib/TappyMascotState'
 import { track } from '@/lib/tracking/tracker'
 import { ensureAnonymousSession } from '@/lib/auth/ensureAnonymousSession'
 import { attachSavedContext, type SavedMessage } from '@/lib/chat/savedContext'
 import { withCompactedHistory } from '@/lib/chat/requestHistory'
+import { withCutWatch } from '@/lib/chat/streamCut'
+import { stripRemainingFooter } from '@/lib/chat/footerLine'
+import MessageBoundary, { Deferred } from '@/components/chat/MessageBoundary'
+import { useStickToBottom } from '@/components/chat/useStickToBottom'
 import { balanceBoldPerLine } from '@/lib/chat/markdownNormalize'
 import { cleanRepeats } from '@/lib/chat/replyRepeat'
 import { isAgeGateMessage, redirectToAgeCheck } from '@/lib/account/ageGateClient'
@@ -500,9 +540,22 @@ export function linkLabelFor(url: string): string {
     return host.length > 28 ? `${host.slice(0, 26)}…` : host
   } catch { return 'Link' }
 }
+/**
+ * Tappy's own signed click redirect (`/go/at`) is built with the deployment's `NEXT_PUBLIC_SITE_URL` (https only) and signed with that
+ * environment's secret. Opened on a DIFFERENT origin (UAT / preview / localhost, whose site URL is the production host) it is rejected there and
+ * the button lands on a dead page (UAT 2026-10-07, "Xem giá trên Trip.com / Traveloka"). In the web chat it is therefore opened on the origin the
+ * person is on — a relative href. Every other link is untouched.
+ */
+export function sameSiteClickHref(url: string): string {
+  try {
+    const u = new URL(url.replace(/&amp;/g, '&'))
+    if (u.pathname !== '/go/at' || !/(^|\.)tappyai\.com$/i.test(u.hostname)) return url
+    return `${u.pathname}${u.search}`
+  } catch { return url }
+}
 /** One link, one chip: never glued to its neighbour, never a raw URL. */
 function linkChip(url: string, label: string): string {
-  return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center align-middle mx-0.5 my-0.5 px-2.5 py-0.5 rounded-full border border-primary-500/40 bg-primary-500/10 text-primary-600 dark:text-primary-300 text-[13px] font-medium no-underline hover:bg-primary-500/20 max-w-full truncate">${label}</a>`
+  return `<a href="${sameSiteClickHref(url)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center align-middle mx-0.5 my-0.5 px-2.5 py-0.5 rounded-full border border-primary-500/40 bg-primary-500/10 text-primary-600 dark:text-primary-300 text-[13px] font-medium no-underline hover:bg-primary-500/20 max-w-full truncate">${label}</a>`
 }
 
 export function formatMessage(content: string) {
@@ -679,7 +732,11 @@ export default function ChatInterface({
 }: ChatInterfaceProps) {
   const router = useRouter()
   const { t, locale } = useTranslation()
-  const bottomRef = useRef<HTMLDivElement>(null)
+  // A1 (2026-10-02): the thread stays pinned to its end while it grows (see useStickToBottom).
+  const { scrollRef, contentRef, pin } = useStickToBottom<HTMLDivElement, HTMLDivElement>()
+  // A reply stream that closed without its finish frame (streamCut.ts): the UI offers «answer again».
+  const [streamCut, setStreamCut] = useState(false)
+  const cutAwareFetch = useMemo(() => withCutWatch(withCompactedHistory, () => setStreamCut(true)), [])
   const inputRef = useRef<HTMLTextAreaElement>(null)
   // Tracks the in-flight save so internal_booking clicks can await it before
   // navigating — prevents the race where the user clicks before router.replace
@@ -733,13 +790,16 @@ export default function ChatInterface({
   const voiceSpokeRef = useRef(false)
 
   interface UserLocation { lat: number; lng: number; address: string; ts?: number }
-  const [userLocation, setUserLocation] = useState<UserLocation | null>(() => {
-    if (typeof window === 'undefined') return null
+  // A1 (2026-10-02): NOT read from localStorage during render. The server renders no location chip, so a client whose first render had one
+  // failed hydration on every reload of /chat/<id> (React #418/#423 on UAT: the server HTML is thrown away and the page re-rendered from scratch).
+  // The stored location is applied right after mount instead; nothing sends before then.
+  const [userLocation, setUserLocation] = useState<UserLocation | null>(null)
+  useEffect(() => {
     try {
       const s = localStorage.getItem('tappy_location')
-      return s ? (JSON.parse(s) as UserLocation) : null
-    } catch { return null }
-  })
+      if (s) setUserLocation(JSON.parse(s) as UserLocation)
+    } catch { /* storage unavailable / corrupt */ }
+  }, [])
 
   // User-chosen response style (Personalization — MFS 2.6). Set on /profile/tappy-knows,
   // stored in localStorage, sent with each chat request. Empty = adaptive default.
@@ -866,7 +926,7 @@ export default function ChatInterface({
     // blocks; over budget, the oldest turns go) so a long thread never hits the server's input
     // budget and 413s on every turn. Only the request body changes — see lib/chat/requestHistory.
     // Done in `fetch` rather than experimental_prepareRequestBody, which would drop `body` below.
-    fetch: withCompactedHistory,
+    fetch: cutAwareFetch,
     body: {
       ...(userLocation ? { userLocation: { lat: userLocation.lat, lng: userLocation.lng, address: userLocation.address } } : {}),
       ...(userPreferences.length > 0 ? { userPreferences } : {}),
@@ -996,8 +1056,51 @@ export default function ChatInterface({
     setPendingSend(false)
   }, [])
 
-  // Voice input (Web Speech API). Dictation fills the input box, then auto-sends
-  // after a short grace window the user can cancel (to review/edit first).
+  // Voice input (Web Speech API) — the voice SCREEN (owner 01/10, mockup 03). Recognition fills `voiceText`, NEVER the input box,
+  // and nothing is sent until the user taps «Gửi». The mic is a privacy surface: it opens only on a tap, and EVERY way out
+  // (Hủy, Gửi, back/route change, tab or app in the background, an error, 60 s without a result, unmount) detaches the
+  // handlers and aborts the session, so the browser's mic indicator goes away (iPhone Safari kept the orange dot after the
+  // user had stopped talking — owner 01/10, h).
+  const VOICE_IDLE_MS = 60_000 // no recognised text for this long → the mic is switched off and the screen closes
+  const [voiceOpen, setVoiceOpen] = useState(false)
+  const [voiceText, setVoiceText] = useState('')
+  const voiceIdleRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const voiceBaseTextRef = useRef('')
+  const [voiceFirstUse, setVoiceFirstUse] = useState(false)
+  const [micAllowed, setMicAllowed] = useState(true)
+  useEffect(() => { setMicAllowed(readMicEnabled()) }, [])
+  useEffect(() => {
+    if (!voiceOpen) return
+    try { if (!localStorage.getItem('tappy_mic_asked')) { setVoiceFirstUse(true); localStorage.setItem('tappy_mic_asked', '1') } } catch { /* storage blocked */ }
+  }, [voiceOpen])
+
+  const releaseRecognition = useCallback(() => {
+    if (voiceIdleRef.current) { clearTimeout(voiceIdleRef.current); voiceIdleRef.current = null }
+    const r = recognitionRef.current
+    recognitionRef.current = null
+    if (r) {
+      r.onstart = null; r.onend = null; r.onerror = null; r.onresult = null
+      try { r.abort() } catch { /* already stopped */ }
+    }
+    setIsListening(false)
+  }, [])
+
+  const closeVoice = useCallback(() => {
+    releaseRecognition()
+    setVoiceOpen(false)
+    setVoiceText('')
+    voiceBaseTextRef.current = ''
+    setVoiceError(null)
+  }, [releaseRecognition])
+
+  const armVoiceIdle = useCallback(() => {
+    if (voiceIdleRef.current) clearTimeout(voiceIdleRef.current)
+    voiceIdleRef.current = setTimeout(() => {
+      releaseRecognition()
+      setVoiceError(t('voice.overlay.timeout'))
+    }, VOICE_IDLE_MS)
+  }, [releaseRecognition, t])
+
   const startVoice = useCallback(() => {
     const SpeechRecognitionCtor = window.SpeechRecognition || window.webkitSpeechRecognition
     if (!SpeechRecognitionCtor) {
@@ -1013,35 +1116,25 @@ export default function ChatInterface({
     }
     setVoiceError(null)
     cancelAutoSend()
+    releaseRecognition()
     voiceSpokeRef.current = false
     posthog.capture('mic_used')
     const recognition = new SpeechRecognitionCtor()
     recognition.lang = inputLocale
-    recognition.interimResults = true // live transcript into the input as you speak
+    recognition.interimResults = true // the recognised text appears live on the voice screen
     recognition.continuous = false
     recognition.maxAlternatives = 1
     recognitionRef.current = recognition
-    // Preserve anything already typed; dictation appends after it.
-    voiceBaseRef.current = input ? input.replace(/\s+$/, '') + ' ' : ''
+    // Resuming after a pause keeps what was already recognised.
+    voiceBaseTextRef.current = voiceText ? voiceText.replace(/\s+$/, '') + ' ' : ''
+    setVoiceOpen(true)
 
     recognition.onstart = () => { setIsListening(true); setVoiceError(null) }
     recognition.onend = () => {
-      setIsListening(false)
-      // Auto-send with a 2s grace window (user's chosen behavior): only if real
-      // speech was captured. The status line lets them tap to cancel and edit.
-      if (voiceSpokeRef.current) {
-        setPendingSend(true)
-        autoSendTimerRef.current = setTimeout(() => {
-          autoSendTimerRef.current = null
-          setPendingSend(false)
-          const form = document.getElementById('chat-form') as HTMLFormElement | null
-          form?.requestSubmit()
-        }, 2000)
-      }
+      // The session is over: drop it completely so the browser can release the microphone.
+      if (recognitionRef.current === recognition) releaseRecognition()
     }
     recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
-      setIsListening(false)
-      cancelAutoSend()
       switch (event.error) {
         case 'not-allowed':
         case 'service-not-allowed':
@@ -1054,35 +1147,63 @@ export default function ChatInterface({
           setVoiceError(t('voice.audioCapture'))
           break
         case 'aborted':
-          break // user/unmount stopped — no message needed
+          break // we stopped it — no message needed
         default:
           setVoiceError(t('voice.recognitionError'))
       }
+      if (recognitionRef.current === recognition) releaseRecognition()
     }
     recognition.onresult = (event: SpeechRecognitionEvent) => {
       let transcript = ''
       for (let i = 0; i < event.results.length; i++) transcript += event.results[i][0].transcript
       if (transcript.trim()) voiceSpokeRef.current = true
-      // Fill the input live; onend then queues the auto-send (cancellable).
-      setInput(voiceBaseRef.current + transcript)
+      setVoiceText(voiceBaseTextRef.current + transcript)
+      armVoiceIdle()
     }
-    // Optimistic instant feedback: the button reacts the moment it's tapped,
-    // before the permission prompt / onstart resolves (onstart confirms it,
-    // onerror/onend reset it). Guarantees the user always sees an on/off change.
+    // Optimistic instant feedback before the permission prompt resolves (onstart confirms; onerror/onend reset).
     setIsListening(true)
+    armVoiceIdle()
     try {
       recognition.start()
     } catch {
       // start() throws if called while already running or blocked — never fail silently.
-      setIsListening(false)
+      releaseRecognition()
       setVoiceError(t('voice.startFailed'))
     }
-  }, [input, setInput, cancelAutoSend, t, locale])
+  }, [cancelAutoSend, releaseRecognition, armVoiceIdle, t, locale, voiceText])
 
-  const stopVoice = useCallback(() => {
-    recognitionRef.current?.stop() // lets the final result land, then onend fires
-    setIsListening(false)
-  }, [])
+  // The centre button: stop listening (the text stays) — and while stopped, listen again.
+  const toggleVoice = useCallback(() => {
+    if (recognitionRef.current) {
+      const r = recognitionRef.current
+      try { r.stop() } catch { /* already stopped */ }
+      // stop() lets the last result land; if the engine never reports the end (seen on iOS), abort it ourselves.
+      setTimeout(() => { if (recognitionRef.current === r) releaseRecognition() }, 1500)
+      setIsListening(false)
+    } else {
+      startVoice()
+    }
+  }, [releaseRecognition, startVoice])
+
+  const sendVoice = useCallback(() => {
+    const text = voiceText.trim()
+    if (!text) return
+    closeVoice()
+    append({ role: 'user', content: text })
+  }, [voiceText, closeVoice, append])
+
+  // Kept for the composer button's pressed state.
+  const stopVoice = useCallback(() => { closeVoice() }, [closeVoice])
+
+  // The mic must not stay on behind the user's back: background tab / app switch / navigation away.
+  useEffect(() => {
+    if (!voiceOpen) return
+    const hide = () => { if (document.visibilityState === 'hidden') closeVoice() }
+    const leave = () => closeVoice()
+    document.addEventListener('visibilitychange', hide)
+    window.addEventListener('pagehide', leave)
+    return () => { document.removeEventListener('visibilitychange', hide); window.removeEventListener('pagehide', leave) }
+  }, [voiceOpen, closeVoice])
 
   // Kill any live/dangling recognition on unmount so it can't fire callbacks
   // (or keep the mic open) after the component is gone.
@@ -1094,6 +1215,7 @@ export default function ChatInterface({
         try { r.abort() } catch { /* already stopped */ }
         recognitionRef.current = null
       }
+      if (voiceIdleRef.current) clearTimeout(voiceIdleRef.current)
       if (autoSendTimerRef.current) clearTimeout(autoSendTimerRef.current)
     }
   }, [])
@@ -1163,6 +1285,20 @@ export default function ChatInterface({
     tts.clearFailed()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tts.failed, tts.failedMessage])
+
+  // The first-run «Tappy muốn hiểu bạn hơn» modal must never stack over the language picker or cover a quick-ask card
+  // (owner 2026-10-01 item 2). It waits: language chosen, no ask card on screen, no reply streaming — then it shows once.
+  const [langChosen, setLangChosen] = useState(true)
+  useEffect(() => {
+    if (!showOnboarding) return
+    const check = () => setLangChosen(getStoredLocale() !== null)
+    check()
+    const id = setInterval(check, 400)
+    return () => clearInterval(id)
+  }, [showOnboarding])
+  const lastTurnMsg = messages[messages.length - 1]
+  const askOnScreen = !!lastTurnMsg && lastTurnMsg.role === 'assistant' && typeof lastTurnMsg.content === 'string' && parseAsk(lastTurnMsg.content).questions.length > 0
+  const onboardingReady = showOnboarding && langChosen && !askOnScreen && !isLoading
 
   useEffect(() => {
     fetch('/api/memory')
@@ -1242,9 +1378,12 @@ export default function ChatInterface({
     } catch { /* storage unavailable — nothing to restore */ }
   }
 
+  // A message the user just sent always brings the view to the end; the growth of the thread afterwards is followed by
+  // useStickToBottom's observer (not by a one-off smooth scroll aimed before the content had finished growing).
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages])
+    if (messages[messages.length - 1]?.role === 'user') pin()
+  }, [messages, pin])
+  useEffect(() => { if (isLoading) setStreamCut(false) }, [isLoading])
 
   // Auto-focus input on mount and when conversationId changes
   useEffect(() => {
@@ -1350,8 +1489,11 @@ export default function ChatInterface({
   }, [category, locale])
 
   return (
-    <div className="flex flex-col h-full">
-      {showOnboarding && (
+    <div className="relative flex flex-col h-full">
+      {voiceOpen && (
+        <VoiceOverlay listening={isListening} text={voiceText} error={voiceError} firstUse={voiceFirstUse} onToggle={toggleVoice} onCancel={closeVoice} onSend={sendVoice} />
+      )}
+      {onboardingReady && (
         <OnboardingModal
           onClose={(prefs) => {
             setShowOnboarding(false)
@@ -1359,8 +1501,8 @@ export default function ChatInterface({
           }}
         />
       )}
-      <div className="flex-1 overflow-y-auto">
-        <div className="max-w-container-content mx-auto w-full px-4 py-5">
+      <div ref={scrollRef} style={{ overflowAnchor: "none" }} className="flex-1 overflow-y-auto">
+        <div ref={contentRef} className="max-w-container-content mx-auto w-full px-4 py-5">
           {messages.length === 0 && (
             <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 animate-fade-in">
               <div className="text-center">
@@ -1441,6 +1583,17 @@ export default function ChatInterface({
           >
             {messages.map((msg, msgIdx) => {
               if (msg.role === 'assistant') {
+                // A1 (2026-10-02): every assistant message renders inside its OWN error boundary, parsing included
+                // (Deferred runs the callback inside the boundary), so one broken message can never blank the chat frame.
+                return (
+                  <MessageBoundary
+                    key={msg.id}
+                    resetKey={typeof msg.content === 'string' ? msg.content.length : 0}
+                    rawText={typeof msg.content === 'string' ? msg.content : ''}
+                    labels={{ title: t('chat.messageBroken'), retry: t('chat.messageRetry'), copy: t('chat.messageCopy'), copied: t('chat.messageCopied') }}
+                    onError={(e) => { console.error('chat message render failed:', e); try { posthog.capture('chat_message_render_failed', { message: String(e?.message).slice(0, 120) }) } catch { /* analytics only */ } }}
+                  >
+                    <Deferred render={() => {
                 const { text: textAfterPlan, plan } = parsePlan(msg.content)
                 // Validated, not raw: a model-authored purchase promise backed by a
                 // homepage or a search page is downgraded to the honest search label.
@@ -1502,9 +1655,12 @@ export default function ChatInterface({
                 // also strip the injected product-image flood (keeping the first as
                 // the hero) so the decision replaces the raw grid.
                 const rawBody = isLoading && isLastMessage ? parsePlacesMarker(parseShoppingMarker(smoothedLastText).text).text : text
-                const { text: bodyText, firstImage: heroImage } = shopView
+                const { text: bodyTextRaw, firstImage: heroImage } = shopView
                   ? stripProductImages(rawBody)
                   : { text: rawBody, firstImage: null }
+                // A3: «Còn N lựa chọn nữa» is shown only under a place card (the cards behind «Xem thêm N chỗ»). No card (a reloaded thread, whose card
+                // annotation is not stored) or a shopping decision (every product is already a card): the line would offer options that are not there.
+                const bodyText = placeView && !shopView ? bodyTextRaw : stripRemainingFooter(bodyTextRaw)
                 return (
                   <div key={msg.id} data-msg-id={msg.id} className="animate-slide-up flex gap-3">
                     <TappyAvatar category={category} active={isLoading && isLastMessage} searching={!!(isLoading && isLastMessage && activeTool)} />
@@ -1607,7 +1763,7 @@ export default function ChatInterface({
                             return (
                               <div key={i} className="inline-flex items-center gap-1">
                                 <a
-                                  href={btn.url}
+                                  href={sameSiteClickHref(btn.url)}
                                   data-cta-type={btn.type}
                                   target={btn.type === 'internal_booking' ? undefined : '_blank'}
                                   rel={btn.type === 'internal_booking' ? undefined : 'noopener noreferrer'}
@@ -1680,6 +1836,9 @@ export default function ChatInterface({
                     </div>
                   </div>
                 )
+                    }} />
+                  </MessageBoundary>
+                )
               }
               const msgAttachments = (msg as any).experimental_attachments as Array<{ url: string; name?: string; contentType?: string }> | undefined
               return (
@@ -1727,6 +1886,22 @@ export default function ChatInterface({
                   <span key={progress ? `p:${progress.stage}` : toolHint ? activeTool : thinkHintIdx} className="text-xs text-gray-400 dark:text-gray-500 animate-fade-in" data-testid="turn-progress" data-stage={progress?.stage}>
                     {progress ? progress.text : toolHint ? toolHint[locale === 'en' ? 1 : 0] : THINK_HINTS[thinkHintIdx % THINK_HINTS.length]}
                   </span>
+                </div>
+              </div>
+            )}
+            {/* A reply whose stream closed without its finish frame is half an answer: say so and offer to answer again. */}
+            {streamCut && !error && !isLoading && (
+              <div role="status" data-testid="stream-cut" className="flex gap-3 animate-fade-in">
+                <TappyAvatar category={category} error />
+                <div className="flex-1 min-w-0 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/40 px-4 py-3 text-sm text-amber-800 dark:text-amber-200">
+                  <p className="leading-relaxed">{t('chat.streamCut')}</p>
+                  <button
+                    type="button"
+                    onClick={() => { setStreamCut(false); reload() }}
+                    className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-medium transition-colors"
+                  >
+                    <RotateCcw size={13} /> {t('chat.streamCutRetry')}
+                  </button>
                 </div>
               </div>
             )}
@@ -1818,7 +1993,6 @@ export default function ChatInterface({
               </div>
             )}
           </div>
-          <div ref={bottomRef} />
         </div>
       </div>
       <div className="flex-shrink-0 px-4 pb-4 pt-2 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-950">
@@ -1930,12 +2104,6 @@ export default function ChatInterface({
             </div>
           )}
           {/* Voice status — user always knows the state (listening / auto-sending / error) */}
-          {isListening && (
-            <div role="status" aria-live="polite" className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs self-start max-w-full bg-orange-50 dark:bg-orange-900/20 text-[#FF9500]">
-              <span className="w-2 h-2 rounded-full bg-[#FF9500] animate-pulse flex-shrink-0" />
-              <span>Đang nghe… nói xong Tappy tự gửi (bạn có 2 giây để sửa trước).</span>
-            </div>
-          )}
           {!isListening && pendingSend && (
             <button
               type="button"
@@ -1946,7 +2114,7 @@ export default function ChatInterface({
               <span>Đang gửi trong giây lát… chạm để sửa trước khi gửi.</span>
             </button>
           )}
-          {!isListening && !pendingSend && voiceError && (
+          {!voiceOpen && !isListening && !pendingSend && voiceError && (
             <div role="status" aria-live="polite" className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs self-start max-w-full bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400">
               <span>{voiceError}</span>
             </div>
@@ -2003,8 +2171,8 @@ export default function ChatInterface({
               </div>
             )}
           </div>
-          {/* Nút microphone màu cam #FF9500 */}
-          <button
+          {/* Nút microphone màu cam #FF9500 — hidden when the user switched the microphone off in Settings */}
+          {micAllowed && <button
             type="button"
             onClick={isListening ? stopVoice : startVoice}
             disabled={isLoading}
@@ -2022,7 +2190,7 @@ export default function ChatInterface({
                tap to stop"). Previously used MicOff (a slashed mic), which reads as
                "mic disabled" and confused users about the on/off state. */}
             <Mic size={18} className={isListening ? 'text-white' : 'text-[#FF9500]'} />
-          </button>
+          </button>}
           {isLoading ? (
             <button type="button" onClick={() => stop()} aria-label="Dừng trả lời" className="w-11 h-11 rounded-2xl bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 flex items-center justify-center transition-all flex-shrink-0">
               <Square size={15} className="text-gray-700 dark:text-gray-200 fill-current" />
@@ -2034,6 +2202,7 @@ export default function ChatInterface({
           )}
           </div>
         </form>
+        <AiDisclaimer className="mt-1.5" />
       </div>
       {/* Image zoom lightbox — opens on click for any place photo or uploaded attachment */}
       {zoomedImage && (

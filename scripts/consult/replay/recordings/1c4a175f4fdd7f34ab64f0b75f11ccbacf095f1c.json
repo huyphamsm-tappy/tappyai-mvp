@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "BÒ NÉ 3 NGON Lê Văn Lương (site:food.grab.com/vn OR site:shopeefood.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:01:22.592Z",
+ "body": {
+  "searchParameters": {
+   "q": "BÒ NÉ 3 NGON Lê Văn Lương (site:food.grab.com/vn OR site:shopeefood.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Bò Né 3 Ngon - 72 Lê Thanh Nghị",
+    "link": "https://shopeefood.vn/da-nang/bo-ne-3-ngon-72-le-thanh-nghi",
+    "snippet": "72 Lê Thanh Nghị, P. Hòa Cường Bắc, Quận Hải Châu, Đà Nẵng. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng dịch vụ ...",
+    "position": 1
+   },
+   {
+    "title": "Tuấn Nguyễn - Bò Né 3 Ngon - Thống Nhất",
+    "link": "https://shopeefood.vn/ho-chi-minh/tuan-nguyen-bo-ne-3-ngon-thong-nhat",
+    "snippet": "398 Lê Văn Thọ, P. 16, Gò Vấp, TP. HCM. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng dịch vụ vượt trội và được ...",
+    "position": 2
+   },
+   {
+    "title": "Bò Né 3 Ngon - 177 Lê Thanh Nghị",
+    "link": "https://shopeefood.vn/da-nang/bo-ne-3-ngon-177-le-thanh-nghi",
+    "snippet": "177 Lê Thanh Nghị, P. Hòa Cường Bắc, Quận Hải Châu, Đà Nẵng. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng dịch vụ ...",
+    "position": 3
+   },
+   {
+    "title": "Bò Né 3 Ngon - Lê Duẩn",
+    "link": "https://shopeefood.vn/binh-thuan/bo-ne-3-ngon-le-duan",
+    "snippet": "22 Lê Duẩn, P. Phú Trinh, Tp. Phan Thiết, Bình Thuận. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng dịch vụ vượt ...",
+    "position": 4
+   },
+   {
+    "title": "Hàu Né 3 Ngon - Hàu Né & Bò Bít Tết - Lê Văn Sỹ",
+    "link": "https://shopeefood.vn/ho-chi-minh/hau-ne-3-ngon-hau-ne-bo-bit-tet-le-van-sy",
+    "snippet": "Hàu Né 3 Ngon - Hàu Né & Bò Bít Tết - Lê Văn Sỹ. Số 349, Đường Lê Văn Sỹ, Tân Bình, TP. HCM. Mở cửa. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, ...",
+    "position": 5
+   },
+   {
+    "title": "Bò Né 3 Ngon Plus - Lê Hồng Phong",
+    "link": "https://shopeefood.vn/binh-duong/bo-ne-3-ngon-plus-le-hong-phong?source_url=foody_ordernow_mobile",
+    "snippet": "335 Lê Hồng Phong, P. Phú Hòa, Thị xã Thủ Dầu Một, Bình Dương. Mở cửa. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng dịch vụ ...",
+    "position": 6
+   },
+   {
+    "title": "Bò Né & Bò Bít Tết 3 Ngon - Lê Đại Hành",
+    "link": "https://shopeefood.vn/ho-chi-minh/bo-ne-bo-bit-tet-3-ngon-le-dai-hanh",
+    "snippet": "Bò Né & Bò Bít Tết 3 Ngon - Lê Đại Hành. 12 Lê Đại Hành, P. 15, Quận 11, TP. HCM. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán ...",
+    "position": 7
+   },
+   {
+    "title": "Bò Né 3 Ngon - Cơm Chiên & Bún Chả",
+    "link": "https://shopeefood.vn/da-nang/bo-ne-3-ngon-com-chien-dao-gion",
+    "snippet": "Bò Né 3 Ngon - Cơm Chiên & Bún Chả. 237 Văn Tiến Dũng, P. Hòa Xuân, Quận Cẩm Lệ, Đà Nẵng ... lượng dịch vụ vượt trội và được nhiều khách hàng ưa chuộng.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

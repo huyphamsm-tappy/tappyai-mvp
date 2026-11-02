@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Mộc quán Seafood Đà Nẵng\" OR \"NGON DA NANG\" OR \"Quán Cô Hồng\" Đà Nẵng site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:57:51.227Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Mộc quán Seafood Đà Nẵng\" OR \"NGON DA NANG\" OR \"Quán Cô Hồng\" Đà Nẵng site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Mộc Quán Seafood Đà Nẵng (@haisanmocquan)",
+    "link": "https://www.tiktok.com/@haisanmocquan",
+    "snippet": "Mộc Quán Seafood Đà Nẵng (@haisanmocquan) trên TikTok |32.1K Lượt thích.4919 Follower.Contact for work: 0905665058 or 0964531153.Xem video phổ biến của Mộc ...",
+    "position": 1
+   },
+   {
+    "title": "Đánh Giá Hải Sản Mộc Quán: Dịch Vụ Tốt Từ Cổng Đến Bàn",
+    "link": "https://www.tiktok.com/@haisanmocquan/video/7532835931938688263",
+    "snippet": "... Lượt thích,Video TikTok từ Mộc Quán Seafood Đà Nẵng ... review ăn ngon Đà Nẵng, cách đặt bàn tại Mộc Quán, số chờ tại Mộc ...",
+    "position": 2
+   },
+   {
+    "title": "Cẩn thận sau lưng kìa bé iu!",
+    "link": "https://www.tiktok.com/@haisanmocquan/video/7687828398873333010",
+    "snippet": "40 Lượt thích,Video TikTok từ Mộc Quán Seafood Đà Nẵng (@haisanmocquan): \"Cẩn thận sau lưng kìa bé iu!. Careful behind your back, ...",
+    "position": 3
+   },
+   {
+    "title": "Garlic Butter Shrimp at Viral Mộc Quán Seafood Đà Nẵng",
+    "link": "https://www.tiktok.com/@stephany1_/video/7682925350069800205",
+    "snippet": "Mộc Quán Seafood Đà Nẵng 26 Tô Hiến Thành, An Hải, Đà Nẵng 550000, Vietnam #danang #seafoodboil #garlicbuttershrimp #shrimpbutter #vietnam.",
+    "position": 4
+   },
+   {
+    "title": "4 món \"ngon quên lối về\" tại Mộc thử một lần là dính liền! 🥗 ...",
+    "link": "https://www.tiktok.com/@haisanmocquan/video/7681585687698738440",
+    "snippet": "25 Lượt thích,Video TikTok từ Mộc Quán Seafood Đà Nẵng (@haisanmocquan): \"4 món \"ngon quên lối về\" tại Mộc thử một lần là dính liền!",
+    "position": 5
+   },
+   {
+    "title": "Đặc sản Đà Nẵng tại quán cô Hồng ở Sài Gòn",
+    "link": "https://www.tiktok.com/@hungbabyngo/video/7493464808981908744",
+    "snippet": "Đặc sản Đà Nẵng tại quán cô Hồng ở Sài Gòn. Hãy đến quán cô Hồng để thưởng thức cá nục hấp cuốn rau muống và nhiều món ngon đặc sản Đà Nẵng khác ...",
+    "position": 6
+   },
+   {
+    "title": "Cứu tinh cho hội lười nghĩ món: Lịch trình 7 ngày càn quét ...",
+    "link": "https://www.tiktok.com/@haisanmocquan/video/7682662495768595719",
+    "snippet": "Video TikTok từ Mộc Quán Seafood Đà Nẵng (@haisanmocquan): \"Cứu tinh cho hội lười nghĩ món: Lịch trình 7 ngày càn quét tại Mộc Quán!",
+    "position": 7
+   },
+   {
+    "title": "Mấy bạn mà mê món đặc sản Đà Nẵng thì nhất định phải ...",
+    "link": "https://www.tiktok.com/@phuocdidaudo/video/7560638402790542599",
+    "snippet": "Mấy bạn mà mê món đặc sản Đà Nẵng thì nhất định phải ghé Quán Cô Hồng ở ngay Bình Thạnh nha. ... Quán Cô Hồng - Đặc Sản Đà Nẵng · author. 8148.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Máy Tính Xách Tay Apple Apple Macbook Neo 13-Inch Mới\" OR \"Laptop Dell Inspiron 15 3520\" OR \"HP ZBook Firefly 14 G7 i7-10510U Máy trạm di động 35\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:59:35.383Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Máy Tính Xách Tay Apple Apple Macbook Neo 13-Inch Mới\" OR \"Laptop Dell Inspiron 15 3520\" OR \"HP ZBook Firefly 14 G7 i7-10510U Máy trạm di động 35\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop Dell Inspiron 15 3520: Deal Hời Black Friday",
+    "link": "https://www.tiktok.com/@hoanghamobileoffical/video/7577635574564097301",
+    "snippet": "Khám phá deal laptop Dell Inspiron 15 3520 siêu hấp dẫn với cấu hình mạnh, giá chỉ dưới 15 triệu! #hoanghamobile #yeucongnghe #review # ...",
+    "position": 1
+   },
+   {
+    "title": "Review Laptop Dell Inspiron 15 3520 Cảm Ứng Mới Nhất",
+    "link": "https://www.tiktok.com/@laptop24h/video/7477880626218126600",
+    "snippet": "Review Laptop Dell Inspiron 15 3520 Cảm Ứng Mới Nhất. Khám phá Dell Inspiron 15 3520 i5 gen 12 với màn hình cảm ứng. Đánh giá chi tiết và ...",
+    "position": 2
+   },
+   {
+    "title": "Laptop Dell Inspiron 15 3520 - Giá Rẻ với Hiệu Suất Cao",
+    "link": "https://www.tiktok.com/@n.trungdinh/photo/7542365327041056021",
+    "snippet": "Laptop Dell Inspiron 15 3520 - Giá Rẻ với Hiệu Suất Cao. Mua ngay laptop Dell Inspiron 15 3520 đẹp 99% với CPU i5, RAM 8GB và SSD 512GB. Hỗ trợ trả góp 0% và ...",
+    "position": 3
+   },
+   {
+    "title": "Laptop Dell Inspiron 15 3520 của khách bị lỗi cắm sạc ...",
+    "link": "https://www.tiktok.com/@sualaptopphunggia79/video/7655619347678760210",
+    "snippet": "Laptop Dell Inspiron 15 3520 của khách bị lỗi cắm sạc không nhận. Nhận sửa các lỗi: ○Laptop không lên nguồn ○Sạc không vào pin ○Màn hình ...",
+    "position": 4
+   },
+   {
+    "title": "Que Tan Buena Es La Laptop Dell Inspiron 15 3520 Y Con ...",
+    "link": "https://www.tiktok.com/discover/que-tan-buena-es-la-laptop-dell-inspiron-15-3520-y-con-intel-irisx",
+    "snippet": "... Laptop Dell Inspiron 15 3520 I3 1215u 512gb 16gb Ram, Dell Inspiron 15 3520 I5 Review, Laptop Dell Inspiron 15 3535 Ryzen 5 7530u, Laptop ...",
+    "date": "31 thg 8, 2026",
+    "position": 5
+   },
+   {
+    "title": "Đánh giá Dell Inspiron Plus 7440 cho sinh viên Ngôn ngữ",
+    "link": "https://www.tiktok.com/@laptopchaywin/video/7531316281136434450",
+    "snippet": "Laptop Dell Inspiron 15 3520 I3 1215u 512gb 16gb Ram · Laptop Reviews · Rekomendasi Laptop Jurusan Sistem Informasi · Laptop Lap Desk. Đánh giá ...",
+    "position": 6
+   },
+   {
+    "title": "Laptop Dell Inspiron 15 3520: Estudios y Oficina",
+    "link": "https://www.tiktok.com/@emmtec_/video/7630921771704716551",
+    "snippet": "Contáctanos: JR AYACUCHO 455, INT 205 973721124 #laptops #trujillo #dell #pc. Laptop Dell Inspiron 15 3520: Estudios y Oficina. Descubre ...",
+    "position": 7
+   },
+   {
+    "title": "Bài học đắt giá khi dùng laptop Dell",
+    "link": "https://www.tiktok.com/@laptopchaywin/video/7632662035368660245",
+    "snippet": "Laptop Dell Inspiron 15 3520 I3 1215u 512gb 16gb Ram · Pap Laptop · The Best Laptop · Laptop Dell Inspiron 3520 Review Teclado Iluminado · Dell ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

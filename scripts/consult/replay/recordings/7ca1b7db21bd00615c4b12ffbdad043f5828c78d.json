@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Nori - Modern Izakaya\" OR \"Michi Sushi\" OR \"FEN Izakaya\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:30:18.560Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Nori - Modern Izakaya\" OR \"Michi Sushi\" OR \"FEN Izakaya\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nori Modern Izakaya Quận 1: Review quán Nhật Lý Tự Trọng",
+    "link": "https://www.tiktok.com/@lulureview_/video/7517598383498890514",
+    "snippet": "Nori Modern Izakaya nằm ngay mặt tiền đường Lý Tự Trọng, Quận 1 là một quán izakaya Nhật Bản thu hút nhiều người tìm đến nhờ không gian hiện ...",
+    "position": 1
+   },
+   {
+    "title": "Nori Modern Izakaya: Trải nghiệm ẩm thực Nhật Bản hiện đại",
+    "link": "https://www.tiktok.com/@norisaigon/video/7355480358286085393",
+    "snippet": "Nori Modern Izakaya - Kết hợp giữa văn hóa ẩm thực truyền thống Nhật Bản và phong cách hiện đại.",
+    "position": 2
+   },
+   {
+    "title": "Tình cờ biết đến Fen Izakaya ở 240 Lý Tự Trọng Q1. Quán ...",
+    "link": "https://www.tiktok.com/@ghithichnhau/video/7674929044164480276",
+    "snippet": "Tình cờ biết đến Fen Izakaya ở 240 Lý Tự Trọng Q1. Quán nhậu kiểu Nhật... không ồn ào như mô hình trẻ trung... nhưng cũng không củ kỹ với ...",
+    "position": 3
+   },
+   {
+    "title": "Trải Nghiệm Izakaya Thú Vị Tại Fen",
+    "link": "https://www.tiktok.com/@vuvicungyuhi/video/7529149203030052103",
+    "snippet": "Keywords: trải nghiệm izakaya thú vị, ẩm thực Nhật tại Fen Izakaya, quán ăn chill ở quận 1, món ăn ngon tại izakaya, địa điểm ăn uống cho ...",
+    "position": 4
+   },
+   {
+    "title": "Trải nghiệm izakaya phong cách Nhật Bản và đường phố ...",
+    "link": "https://www.tiktok.com/@longnhongsaigon/video/7666774273159122194",
+    "snippet": "Giới thiệu nhanh Lần đầu trải nghiệm mô hình Fen Izakaya — một izakaya pha trộn yếu tố Nhật Bản và hương vị, không khí đường phố Hà Nội.",
+    "position": 5
+   },
+   {
+    "title": "𝑵𝒐𝒓𝒊 𝑴𝒐𝒅𝒆𝒓𝒏 𝑰𝒛𝒂𝒌𝒂𝒚𝒂~~~~~ ☎️ 079 877 7779 📍 ...",
+    "link": "https://www.tiktok.com/@norisaigon/video/7497425605114350856?lang=ms-MY",
+    "snippet": "... Nori Modern Izakaya~~~~~ ☎️ 079 877 7779 Open: 6pm-2am 114-114A Ly Tu Trong, Ben Thanh Ward, Dist 1, HCM City #Nori ...",
+    "position": 6
+   },
+   {
+    "title": "MÓN ĂN MANG HƯƠNG VỊ TINH TÚY BIỂN CẢ TẠI NORI ...",
+    "link": "https://www.tiktok.com/@norisaigon/video/7529008714666282258?lang=is",
+    "snippet": "Nếu bạn đang tìm kiếm nhà hàng sushi Quận 1 vừa sang trọng vừa chuẩn vị Nhật, NORI – Modern Izakaya tại 114 – 114A Lý Tự Trọng, P. Bến Thành ...",
+    "position": 7
+   },
+   {
+    "title": "NORI (@norisaigon)",
+    "link": "https://www.tiktok.com/@norisaigon",
+    "snippet": "NORI Modern Izakaya ▫ 114 - 114A Ly Tu Trong, Ben Thanh Ward, HCM ▫ Call ... Giờ mới phát hiện ra có 1 quán izakaya ngay trung tâm quận 1 vui quá.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

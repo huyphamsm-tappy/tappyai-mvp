@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "【Vận chuyển nội địa】Máy xay cà phê bằng tay, 40 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:11:30.114Z",
+ "body": {
+  "searchParameters": {
+   "q": "【Vận chuyển nội địa】Máy xay cà phê bằng tay, 40 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "【Vận chuyển nội địa】Máy làm kem ốc quế điện với ...",
+    "link": "https://www.lazada.vn/products/pdp-i3245882758-s15636766582.html?priceCompare=skuId%3A15636766582%3Bsource%3Alzd-shop-center%3Bip%3A11.95.130.196%3Bsn%3A83398f13148514d8d4d7ced61e05ec39%3BunionTrace%3A2ff6179717862291910765575e%3BoriginPrice%3A381709%3BsubsidyPrice%3A381709%3BacrossSubsidyPrice%3A366259%3BshopPrice%3A366259%3BvoucherPrice%3A366259%3BdisplayPrice%3A366259%3BisGray%3Atrue%3BsinglePromotionId%3A900001098208321%3BsingleToolCode%3ApromPrice%3BvoucherPricePlugin%3A1%3BbuyerId%3A0%3BnewBuyer%3Afalse%3Btimestamp%3A1786229191452%3BisPreHeat%3Afalse%3BisPreHeat%3Afalse%3BitemType%3A0%3BsearchDisctDet%3A%5B%7B%22discountValue%22%3A15450%2C%22endTime%22%3A1786381199000%2C%22newUserVoucher%22%3Afalse%2C%22param%22%3A%7B%22algo%22%3Afalse%2C%22dT%22%3A1%2C%22dV%22%3A15450%7D%2C%22toolCode%22%3A%22shopCoupon%22%2C%22voucherChannelId%22%3A1%2C%22voucherId%22%3A900001154532045%7D%5D&search=store&mp=3&srsltid=AU7gw4W_CvrdcaYQ5wTtJB4YJzfQ0betLOipOGLdcQ5A7X8nRq09rRAl",
+    "snippet": "Loại sản phẩm: Máy làm bánh quế hình nón; Chất liệu: ABS, hợp kim nhôm, thép không gỉ; Trọng lượng: Xấp xỉ.1440g / 3,2lb; Điện áp: 220V EU; Công suất: 1200W ...",
+    "position": 1
+   },
+   {
+    "title": "【Vận chuyển nội địa】Bình xịt dầu bếp dung tích lớn chai ...",
+    "link": "https://www.lazada.vn/products/binh-xit-dau-bep-dung-tich-lon-chai-dung-cu-chiet-dau-2-trong-1-voi-thiet-ke-khong-nho-giot-dung-cu-nau-an-da-chuc-nang-de-su-dung-tai-nha-i3061739746.html?srsltid=AU7gw4WE0gt95ZzkZbdbCBu_PQuVvljaGkm1j3WSElWsjwjZRl0UGHhp",
+    "snippet": "【Vận chuyển nội địa】Máy xay cà phê bằng tay, 40 cài đặt. 193.000 ₫. 【Vận ... 【Vận chuyển nội địa】Máy xay cà phê bên ngoài bằng tay, máy. 206.000 ₫. Ưu ...",
+    "rating": 4.7,
+    "ratingCount": 12,
+    "position": 2
+   },
+   {
+    "title": "Melodrip Đầu Vòi Sen Bằng Nhựa PC Sản Xuất Tại Trung Quốc ...",
+    "link": "https://www.lazada.vn/products/melodrip-dau-voi-sen-bang-nhua-pc-san-xuat-tai-trung-quoc-bo-dung-cu-pha-ca-phe-bang-thep-khong-gi-trung-tinh-khong-co-phu-kien-i3253031929.html?srsltid=AU7gw4V1cmVztjCBHFJJcffL6rGnwCT7Uk1adH4kxLFKWD7mbYBfHEON",
+    "snippet": "Melodrip Đầu Vòi Sen Bằng Nhựa PC Sản Xuất Tại Trung Quốc Bộ Dụng Cụ Pha Cà Phê Bằng Thép Không Gỉ Trung Tính Không Có Phụ Kiện.",
+    "position": 3
+   },
+   {
+    "title": "Xiaomi Mijia Máy xay cà phê điện cầm tay nâng cấp mới ...",
+    "link": "https://www.lazada.vn/products/xiaomi-mijia-may-xay-ca-phe-dien-cam-tay-nang-cap-moi-type-c-may-xay-hat-ca-phe-bang-gom-chuyen-nghiep-sac-usb-mi-smart-life-i2219149092.html?srsltid=AU7gw4VMxjpvONX6RbSHy25ojfA6qC0i2ta7L6wgwY0S6jYQkQlsatPR",
+    "snippet": "Hãy chi ít nhất 890.000 ₫ để được hưởng chiết khấu vận chuyển 11.000 ₫. Dịch vụ. service. 15 Ngày Trả Hàng Miễn Phí. Áp dụng trả hàng nếu không ưng ý. service.",
+    "rating": 4.9,
+    "ratingCount": 167,
+    "position": 4
+   },
+   {
+    "title": "Máy xay cà phê Delonghi KG.521 - BH 12 tháng, lỗi 1 đổi ...",
+    "link": "https://www.lazada.vn/products/may-xay-ca-phe-delonghi-kg521-bh-12-thang-loi-1-doi-1-trong-3-thang-may-ben-dep-ca-phe-xay-min-moby-dick-store-i2141526834.html?srsltid=AU7gw4WpKNflvNPRjfYfl-j7mk1jLid0laegSYaf_bga9oEnTu4xU4qF",
+    "snippet": "Đầu tiên bạn đổ hạt cà phê vào bình chứa (nếu bạn không biết đo bao nhiêu, bạn có thể sử dụng hệ số chuyển đổi một muỗng canh = 1 tách cà phê) đóng hộp chứa và ...",
+    "position": 5
+   },
+   {
+    "title": "Breville BES870XL – Máy pha cà phê Espresso bán tự ...",
+    "link": "https://www.lazada.vn/products/breville-bes870xl-may-pha-ca-phe-espresso-ban-tu-dong-cong-nghe-pre-infusion-hieu-suat-1040-lyngay-voi-tao-hoi-chuyen-nghiep-de-ve-sinh-su-dung-i3201200242.html?srsltid=AU7gw4Uapv9DEyiABUWJuZzSJKvdlcZDBLTt6g-XEcxwdJrQN57kUHJo",
+    "snippet": "Tích hợp máy xay Buzz-Grinder tiện lợi, giữ trọn độ tươi ngon của hạt cà phê. Hệ thống cấp nhiệt Thermocoil 1600W kiểm soát nhiệt độ nước chính xác.",
+    "position": 6
+   },
+   {
+    "title": "☸◘♤ Máy Pha Cà Phê Bear Tự Động Đa Năng Pha Cafe ...",
+    "link": "https://h5.lazada.vn/products/may-pha-ca-phe-bear-tu-dong-da-nang-pha-cafe-pha-espresso-phu-hop-voi-gia-dinh-cong-ty-cf-b15v1-i2060324751-s9624324776.html",
+    "snippet": "✓ Xoay vòi phun để tạo bọt sữa cho cappuccino chuẩn. ✓ Phần đo lường dễ dàng cà phê. ✓ Có van an toàn. ✓ Chức năng chọn chuyển đổi chế độ.",
+    "position": 7
+   },
+   {
+    "title": "[Trả góp 0%]Máy pha cà phê tự động Philips Series 2200 ...",
+    "link": "https://www.lazada.vn/products/tra-gop-0may-pha-ca-phe-tu-dong-philips-series-2200-ep222140-man-hinh-cam-ung-i362742877.html?srsltid=AU7gw4W-bp_gB_Dx4BwUqnXfKUg-g5-qpsLuulYOLcb6NmDLm-FuhEnR",
+    "snippet": "Miễn phí vận chuyển tối đa 100.000 ₫ khi mua từ 2 sản phẩm. Dịch vụ. service. 15 Ngày Trả Hàng Miễn Phí. Áp dụng trả hàng nếu không ưng ý. service. Bảo hành ...",
+    "rating": 4.5,
+    "ratingCount": 11,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

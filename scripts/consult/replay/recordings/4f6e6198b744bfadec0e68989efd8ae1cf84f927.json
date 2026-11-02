@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Laptop Lenovo V15 G4 IRU 83A100PMVN mới (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:04:57.750Z",
+ "body": {
+  "searchParameters": {
+   "q": "Laptop Lenovo V15 G4 IRU 83A100PMVN mới (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop Lenovo V15 G4 IRU 83A100PMVN - Cũ Đẹp | Giá rẻ",
+    "link": "https://cellphones.com.vn/laptop-lenovo-v15-g4-iru-83a100pmvn-cu-dep.html",
+    "snippet": "Trang bị bộ vi xử lý i5-13420H, RAM 16GB và ổ cứng 512GB PCIe, mang đến hiệu suất ổn định cho công việc và giải trí hàng ngày.",
+    "position": 1
+   },
+   {
+    "title": "Laptop Lenovo V15 G4 IRU 83A100PMVN | Giá rẻ, trả góp ...",
+    "link": "https://cellphones.com.vn/laptop-lenovo-v15-g4-iru-83a100pmvn.html",
+    "snippet": "Laptop Lenovo V15 G4 IRU 83A100PMVN được tích hợp CPU Intel Core i5-13420H kết hợp với RAM 16GB DDR4-3200, hỗ trợ xử lý các tác vụ nhanh chóng hơn. Kích thước ...",
+    "position": 2
+   },
+   {
+    "title": "Laptop Lenovo V15 G4 IRU 83A100PMVN - Cũ Trầy Xước",
+    "link": "https://cellphones.com.vn/laptop-lenovo-v15-g4-iru-83a100pmvn-cu-tray-xuoc.html",
+    "snippet": "Trang bị bộ vi xử lý i5-13420H, RAM 16GB và ổ cứng 512GB PCIe, mang đến hiệu suất ổn định cho công việc và giải trí hàng ngày. · Màn hình 15.6 inch FHD cung cấp ...",
+    "position": 3
+   },
+   {
+    "title": "Laptop Lenovo V15 G4 IRU 83A100FYVN | Giá rẻ, trả góp ...",
+    "link": "https://cellphones.com.vn/laptop-lenovo-v15-g4-iru-83a100fyvn.html",
+    "snippet": "Laptop Lenovo V15 G4 IRU 83A100FYVN trang bị Intel Core i5-13420H, 16GB RAM DDR4-3200 (có thể nâng lên 16GB) và ổ cứng SSD M.2 2242 PCIe 4.0x4 512GB. Máy có màn ...",
+    "rating": 5,
+    "ratingCount": 3,
+    "position": 4
+   },
+   {
+    "title": "Mua Lenovo Gaming Laptop Giá Tốt, Giao Nhanh",
+    "link": "https://www.lazada.vn/tag/lenovo-gaming-laptop/?srsltid=AU7gw4Ws3L7cPKW_W7bL_VZV4D74PLk_PljNlBYtFYXAWH_ah6es3hTa",
+    "snippet": "Laptop Lenovo V15 G4 IRU - 83A100PMVN (Core i5-13420H/ Onboard graphics/ 16GB ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 5
+   },
+   {
+    "title": "Laptop Lenovo IdeaPad Slim 3 15IAH8 83ER000EVN",
+    "link": "https://cellphones.com.vn/laptop-lenovo-ideapad-slim-3-15iah8-83er000evn-16gb-cu-tray-xuoc.html",
+    "snippet": "CPU Intel Core i5-12450H xử lý từ những tác vụ văn phòng đơn giản tới những công việc thiết kế đồ họa đơn giản. · 8GB RAM đa nhiệm, mở nhiều tab hay làm việc ...",
+    "position": 6
+   },
+   {
+    "title": "Mua Dell Venue 11 7130 Giá Tốt, Giao Nhanh",
+    "link": "https://www.lazada.vn/tag/dell-venue-11-7130/?srsltid=AU7gw4XrlWZlxFjRZvGzOAZNv_CsZgF-C_g09kw5NqS6nbQVfCcxuYom",
+    "snippet": "Laptop Lenovo V15 G4 IRU - 83A100PMVN (Core i5-13420H/ Onboard graphics/ 16GB ...",
+    "rating": 5,
+    "ratingCount": 3,
+    "position": 7
+   },
+   {
+    "title": "Laptop Lenovo Thinkbook 14 G2 ITL | Giá rẻ, trả góp 0%",
+    "link": "https://cellphones.com.vn/laptop-lenovo-thinkbook-14-g2-itl-20vd00y0vn.html",
+    "snippet": "Loại card đồ họa. Intel Iris Xe Graphics functions as UHD Graphics. Dung lượng RAM. 8GB. Loại RAM. DDR4-3200. Ổ cứng. 512GB SSD. Kích thước màn hình.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

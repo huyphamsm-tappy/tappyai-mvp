@@ -43,6 +43,8 @@ export async function POST(
     return NextResponse.json({ following: false, follower_count: profile?.follower_count ?? 0 })
   }
 
+  // 42501 = refused by row-level security (a block between the two accounts): a plain 403, never a server error, and it says nothing about who blocked whom.
+  if (error?.code === '42501') return NextResponse.json({ error: 'follow_forbidden', message: serverMessage('social.followFailed', requestLocale(req)) }, { status: 403 })
   if (error) return NextResponse.json({ error: 'follow_failed', message: serverMessage('social.followFailed', requestLocale(req)) }, { status: 500 })
 
   // Insert succeeded → new follow: rebuild profile + fetch + notify

@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"GRAND HOTEL du LAC Boutique Saigon\" OR \"Hotel Majestic Saigon\" OR \"Fusion Original Saigon Centre\" gần Sài Gòn site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:47:46.739Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"GRAND HOTEL du LAC Boutique Saigon\" OR \"Hotel Majestic Saigon\" OR \"Fusion Original Saigon Centre\" gần Sài Gòn site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hotel Majestic Saigon 100 Năm Trước | TikTok",
+    "link": "https://www.tiktok.com/discover/hotel-majestic-saigon-100-n%C4%83m-tr%C6%B0%E1%BB%9Bc",
+    "snippet": "... Grand Hotel Du Lac Boutique Saigon · La Vela Saigon Hotel · Ngo Spa ... Fusion Original Saigon Centre · Vintage Culture Saigon Bar · Athena ...",
+    "date": "31 thg 8, 2026",
+    "position": 1
+   },
+   {
+    "title": "Hotel Fusion",
+    "link": "https://www.tiktok.com/discover/hotel-fusion?lang=en",
+    "snippet": "Khám Phá Fusion Original Saigon Centre: Review Khách Sạn. Trải nghiệm khách sạn Fusion Original ở Sài Gòn với dịch vụ miễn phí ấn tượng và cảnh đẹp. Cám ơn ...",
+    "position": 2
+   },
+   {
+    "title": "Khám Phá Fusion Original Saigon Centre Độc Đáo",
+    "link": "https://www.tiktok.com/@mason.booking.trav/photo/7606945132851776788?image_index=2",
+    "snippet": "Mọi thứ đều Original, hiện đại - nghệ thuật và táo bạo. #fusionoriginalsaigoncentre #tphcm #saigon #fusion #dulichsaigon. Khám Phá Fusion Original Saigon Centre ...",
+    "position": 3
+   },
+   {
+    "title": "Khách Sạn 5 Sao Fusion Original Saigon Centre Tại TP.HCM",
+    "link": "https://www.tiktok.com/@tasteinframe_/photo/7569227203674737928?image_index=11",
+    "snippet": "FUSION ORIGINAL SAIGON CENTRE 65 Lê Lợi, phường Sài Gòn, TPHCM #learnontiktok #fusionoriginalsaigoncentre #reviewkhachsan #hcmc # ...",
+    "position": 4
+   },
+   {
+    "title": "El Where Hotel Ho Chi Minh | TikTok",
+    "link": "https://www.tiktok.com/discover/el-where-hotel-ho-chi-minh",
+    "snippet": "... Sài Gòn với tui nha. 61.2K1w ago. mutchut. Đi dạo Sài Gòn với tui nha ... Grand Hotel Du Lac Boutique Saigon · Saigon Cafe San Diego · Sai Gon ...",
+    "date": "14 thg 9, 2026",
+    "position": 5
+   },
+   {
+    "title": "Khách Sạn Riverside - Gợi Ý Tuyệt Vời Cho Cặp Tình Nhân",
+    "link": "https://www.tiktok.com/@huynhhongocduc/video/7528357846891891975",
+    "snippet": "nhạc nền - LU EATING · Hotel Majestic Saigon · Paragon Hotel and ... Grand Hotel Du Lac Boutique Saigon · Phốt Khách Sạn 5 Sao Imperial ...",
+    "position": 6
+   },
+   {
+    "title": "Buổi bắn pháo hoa tại công viên Bến Bạch Đằng ngày 26 ...",
+    "link": "https://www.tiktok.com/@kenh14official/video/7497634683463683336",
+    "snippet": "Kết thúc Những địa điểm trên đều mang lại view đẹp, phù hợp cho người muốn có góc nhìn bao quát pháo hoa ở Sài Gòn. ... Hotel Majestic Saigon.",
+    "position": 7
+   },
+   {
+    "title": "Lý Thanh Ý (@ly.thanhy)",
+    "link": "https://www.tiktok.com/@ly.thanhy",
+    "snippet": "Grand Hotel Du Lac Boutique Saigon · Saigon Vien Dong Hotel Spa · Saltline Hotel Seaside Oregon · Paragon Hotel and Suites Baguio · Hotel Majestic Saigon. 3667 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

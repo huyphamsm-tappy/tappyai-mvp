@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Khách Sạn The Sum Núi Bà Đen",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:20:26.081Z",
+ "body": {
+  "searchParameters": {
+   "q": "Khách Sạn The Sum Núi Bà Đen",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Khách Sạn The Sum - Núi Bà Đen, Tây Ninh (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/826313579.jpg?k=abd0acb383e3bd919923584565c561b783709efb6e8c6117a7f723dff3e3a18b&o=",
+    "imageWidth": 512,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR83US-1l5WsurYTVNx40RbSfiN-eCWaQ5j6CRAeMWTRQ&s=10",
+    "thumbnailWidth": 452,
+    "thumbnailHeight": 678,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/khach-san-the-sum.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F826313579.jpg%3Fk%3Dabd0acb383e3bd919923584565c561b783709efb6e8c6117a7f723dff3e3a18b%26o%3D&tbnid=ldWR2n_qmIziaM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fkhach-san-the-sum.vi.html&docid=Y7mMDErY9TtRVM&w=512&h=768",
+    "position": 1
+   },
+   {
+    "title": "Khách Sạn The Sum - Núi Bà Đen, Tây Ninh (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/912865370.jpg?k=1fde31ddafe688badce4ba9c3ef4231b302229bd1df4725d9fd3fe804bd9f52c&o=",
+    "imageWidth": 576,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYlKe8mEM3nCcvwvgtJWmJhteD7dt1Dtp-_qWvHsmxBQ&s=10",
+    "thumbnailWidth": 480,
+    "thumbnailHeight": 640,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/khach-san-the-sum.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F912865370.jpg%3Fk%3D1fde31ddafe688badce4ba9c3ef4231b302229bd1df4725d9fd3fe804bd9f52c%26o%3D&tbnid=B1Fug8dAMUWe1M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fkhach-san-the-sum.vi.html&docid=Y7mMDErY9TtRVM&w=576&h=768",
+    "position": 2
+   },
+   {
+    "title": "🧧Tết này đi Núi Bà Bạn đang tìm điểm lưu trú ngay Núi Bà; 🌄 Tại Dưới chân  Núi Cổng Trước,ngay bải xe, bước vào ngay nhà ga tiện lợi quá lý",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=1482314920130482",
+    "imageWidth": 1366,
+    "imageHeight": 2048,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSguO6DX5_xFIaOz8q8MdBB8yMnBPGTlEWhb98QbbKRTA&s=10",
+    "thumbnailWidth": 365,
+    "thumbnailHeight": 547,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/tayninhngonbore/posts/t%E1%BA%BFt-n%C3%A0y-%C4%91i-n%C3%BAi-b%C3%A0-b%E1%BA%A1n-%C4%91ang-t%C3%ACm-%C4%91i%E1%BB%83m-l%C6%B0u-tr%C3%BA-ngay-n%C3%BAi-b%C3%A0-t%E1%BA%A1i-d%C6%B0%E1%BB%9Bi-ch%C3%A2n-n%C3%BAi-c%E1%BB%95ng-t/1482024273492880/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D1482314920130482&tbnid=wsMIpk_jeqn-LM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Ftayninhngonbore%2Fposts%2Ft%25E1%25BA%25BFt-n%25C3%25A0y-%25C4%2591i-n%25C3%25BAi-b%25C3%25A0-b%25E1%25BA%25A1n-%25C4%2591ang-t%25C3%25ACm-%25C4%2591i%25E1%25BB%2583m-l%25C6%25B0u-tr%25C3%25BA-ngay-n%25C3%25BAi-b%25C3%25A0-t%25E1%25BA%25A1i-d%25C6%25B0%25E1%25BB%259Bi-ch%25C3%25A2n-n%25C3%25BAi-c%25E1%25BB%2595ng-t%2F1482024273492880%2F&docid=pT7OrTbSe60n7M&w=1366&h=2048",
+    "position": 3
+   },
+   {
+    "title": "Khách Sạn The Sum - Núi Bà Đen, Tây Ninh (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/826344939.jpg?k=cd1b6e923188b132f6a6df3c4ab2e5c5bc8f547dd5521a76f1ab149cbb581931&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkTD2arxjJ5BkhUr8QTUPn926acWj4_jBC_msY480Ftg&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/khach-san-the-sum.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F826344939.jpg%3Fk%3Dcd1b6e923188b132f6a6df3c4ab2e5c5bc8f547dd5521a76f1ab149cbb581931%26o%3D&tbnid=YL-czPdcGdoT9M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fkhach-san-the-sum.vi.html&docid=Y7mMDErY9TtRVM&w=1024&h=683",
+    "position": 4
+   },
+   {
+    "title": "Khách Sạn The Sum - Núi Bà Đen (Khach San The Sum - Nui Ba Đen) Tây Ninh,  Việt Nam: Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max300/826320998.jpg?k=1d08a01fe914d6d330013f37deb1d080229bf1c9ca964c40bcfaed594b190fc4&o=",
+    "imageWidth": 300,
+    "imageHeight": 200,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOkxSZg7mFZi1IezhxW99MK10Fy48epSUsdPIQgkxYxg&s=10",
+    "thumbnailWidth": 300,
+    "thumbnailHeight": 200,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/khach-san-the-sum/hotel/tay-ninh-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax300%2F826320998.jpg%3Fk%3D1d08a01fe914d6d330013f37deb1d080229bf1c9ca964c40bcfaed594b190fc4%26o%3D&tbnid=QaqIQ6SMwA2saM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fkhach-san-the-sum%2Fhotel%2Ftay-ninh-vn.html&docid=8XxHyZz2nT-2fM&w=300&h=200",
+    "position": 5
+   },
+   {
+    "title": "Khách Sạn The Sum - Núi Bà Đen (Khach San The Sum - Nui Ba Đen) Tây Ninh,  Việt Nam: Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/826345375.jpg?k=1b2e8e6b7a12345cd074abcade5a2f77effdb48ca5679e8b786edea951d02b61&o=",
+    "imageWidth": 500,
+    "imageHeight": 333,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTU6xD7jZj57Q9IwAT7V86D3ZyL-7R3I8m_w3CtzQYzFA&s=10",
+    "thumbnailWidth": 500,
+    "thumbnailHeight": 333,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/khach-san-the-sum/hotel/tay-ninh-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F826345375.jpg%3Fk%3D1b2e8e6b7a12345cd074abcade5a2f77effdb48ca5679e8b786edea951d02b61%26o%3D&tbnid=cu-e1jT-gLRZcM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fkhach-san-the-sum%2Fhotel%2Ftay-ninh-vn.html&docid=8XxHyZz2nT-2fM&w=500&h=333",
+    "position": 6
+   },
+   {
+    "title": "Khách Sạn The Sum - Núi Bà Đen, Tây Ninh (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/826344941.jpg?k=26abaf3c25ae766b4c739a53ff1e7e26b3b16fd676f96c9dbf98cbe4a9c7995a&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRo1TFJD2HzGhaR7O6vrlHXF7suMdAHOorJEuXZV3NGug&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/khach-san-the-sum.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F826344941.jpg%3Fk%3D26abaf3c25ae766b4c739a53ff1e7e26b3b16fd676f96c9dbf98cbe4a9c7995a%26o%3D&tbnid=ZVlVCdI__KcfyM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fkhach-san-the-sum.vi.html&docid=Y7mMDErY9TtRVM&w=1024&h=683",
+    "position": 7
+   },
+   {
+    "title": "Trên đỉnh núi Bà Đen có khách sạn không? Gợi ý lưu trú lý tưởng!",
+    "imageUrl": "https://sun-ecommerce-cdn.azureedge.net/ecommerce/service-sites/thumbnail/SunParadiseLandTayNinh/google-doc/post_id_13467/66404/image-thumb__66404__640/AD_4nXeknyw3HZEZxnx9UoOhSiTpUZaZi615y6le6G1fgLj974sYEoPdw37ODh_lgCyj95Bu-dmve74_gbVXoELc25lJg1_MODu963vjzFx8E_Mz-cl_prMeF5eHn9iedVeW5LjodvDqhEGKNaoH7dlUC3ve9YGWYQ.webp",
+    "imageWidth": 640,
+    "imageHeight": 360,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5jNzj1cvOHSqDqhigYxkjmXjR6qvwOgxR9GmQimF8Mw&s",
+    "thumbnailWidth": 299,
+    "thumbnailHeight": 168,
+    "source": "Sun Paradise Land",
+    "domain": "sunparadiseland.com",
+    "link": "https://sunparadiseland.com/SunParadiseLandTayNinh/tin-tuc/tren-dinh-nui-ba-den-co-khach-san-khong-goi-y-luu-tru-ly-tuong-13467",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fsun-ecommerce-cdn.azureedge.net%2Fecommerce%2Fservice-sites%2Fthumbnail%2FSunParadiseLandTayNinh%2Fgoogle-doc%2Fpost_id_13467%2F66404%2Fimage-thumb__66404__640%2FAD_4nXeknyw3HZEZxnx9UoOhSiTpUZaZi615y6le6G1fgLj974sYEoPdw37ODh_lgCyj95Bu-dmve74_gbVXoELc25lJg1_MODu963vjzFx8E_Mz-cl_prMeF5eHn9iedVeW5LjodvDqhEGKNaoH7dlUC3ve9YGWYQ.webp&tbnid=5vwgcysMyRAlkM&imgrefurl=https%3A%2F%2Fsunparadiseland.com%2FSunParadiseLandTayNinh%2Ftin-tuc%2Ftren-dinh-nui-ba-den-co-khach-san-khong-goi-y-luu-tru-ly-tuong-13467&docid=vYFGp_7lHIsYSM&w=640&h=360",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

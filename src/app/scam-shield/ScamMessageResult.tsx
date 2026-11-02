@@ -2,9 +2,9 @@
 
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import type { MessageAnalysisResult, MessageSignal, AdviceItem, UrlCheckSummary } from '@/lib/scam-shield/message/types'
-import { Ban, CheckCircle2, Crosshair, Globe, Info, ScanText, Sparkles } from 'lucide-react'
-import { LEVEL_TONE, LEVEL_KEY, ConfidenceBadge } from './ScamShieldResult'
-import { FREE_DAILY_LIMIT } from '@/lib/config/product'
+import { Ban, CheckCircle2, Crosshair, Globe, Info, ScanText, BookOpenCheck, ExternalLink } from 'lucide-react'
+import { LEVEL_TONE, linkBadgeKey, VerdictDisclaimer } from './ScamShieldResult'
+import { messageVerdict, type Verdict, type ScenarioBlock } from '@/lib/scam-shield/verdict'
 
 // ── Scam Shield · the message verdict card ──────────────────────────────────
 //
@@ -80,98 +80,89 @@ function LinkRow({ check }: { check: UrlCheckSummary }) {
         {hostOf(check.url)}
       </span>
       <span className="flex-shrink-0 rounded-full px-2.5 py-1 text-[11px] font-semibold" style={{ background: tone.soft, color: tone.fg, border: `1px solid ${tone.border}` }}>
-        {check.status === 'checked' ? t(LEVEL_KEY[level]) : t('v3.scam.msg.linkUnchecked')}
+        {check.status === 'checked' ? t(linkBadgeKey(level)) : t('v3.scam.msg.linkUnchecked')}
       </span>
     </li>
   )
 }
 
 /**
- * The one line that says how the verdict was reached — and, when the shared allowance is spent,
- * why the model was not consulted — plus the GLOBAL counter (remaining-of-limit for a guest's
- * lifetime trial, used-of-limit for an account's day), so nobody reads Scam Alerts as having an
- * allowance of its own. (The ratchet counts block comments, so the labels are not quoted here.)
+ * The matched official scenario (familiar / suspicious states): which one, the signs from the
+ * article, and the source block. Static, sourced text — a model never authored any of it.
  */
-function AnalysisNote({ result }: { result: MessageAnalysisResponse }) {
+function ScenarioCard({ scenario }: { scenario: ScenarioBlock }) {
   const { t } = useTranslation()
-  const status = result.analysis.aiStatus
-  const q = result.quota
-  const key =
-    status === 'used' ? 'v3.scam.msg.aiUsed'
-    : status === 'not_needed' ? 'v3.scam.msg.aiNotNeeded'
-    : status === 'quota_exhausted' ? 'v3.scam.msg.aiQuota'
-    : status === 'unavailable' ? 'v3.scam.msg.aiUnavailable'
-    : 'v3.scam.msg.aiFailed'
-  const vars = q
-    ? { n: String(q.limit), used: String(q.used ?? q.limit), period: t(q.period === 'lifetime' ? 'v3.scam.msg.perLifetime' : 'v3.scam.msg.perDay') }
-    : { n: '', used: '', period: '' }
-  const counter = !q ? null
-    : q.pro ? t('v3.scam.msg.aiPro')
-    : q.period === 'lifetime'
-      ? t('v3.scam.msg.aiLeft', { remaining: String(q.remaining ?? 0), n: String(q.limit) })
-      : t('v3.scam.msg.aiToday', { used: String(q.used ?? q.limit), n: String(q.limit) })
   return (
-    <div className="mt-4 space-y-1 text-[12px] leading-snug" style={{ color: 'var(--v3-fg-muted)' }} data-scam-ai-note={status}>
-      <p className="flex items-start gap-2">
-        <Sparkles size={13} className="mt-0.5 flex-shrink-0" aria-hidden="true" />
-        <span>{t(key, vars)}</span>
-      </p>
-      {counter && (
-        <p className="pl-5 font-semibold" style={{ color: q?.exhausted ? 'var(--v3-rose)' : 'var(--v3-fg-secondary)' }} data-scam-ai-counter>
-          {counter}
-          {q?.exhausted && q.period === 'lifetime' && <span className="ml-1 font-normal">· {t('v3.scam.msg.aiQuotaGuest', { n: String(FREE_DAILY_LIMIT) })}</span>}
-        </p>
+    <div className="mt-4 rounded-xl p-3.5" style={{ background: 'var(--v3-panel)' }} data-scam-scenario={scenario.id}>
+      <Heading icon={BookOpenCheck}>{t('scamVerdict.scenario.heading')}</Heading>
+      <p className="text-[14.5px] font-bold" style={{ color: 'var(--v3-fg)' }}>{scenario.title}</p>
+      <p className="mt-0.5 text-[12px]" style={{ color: 'var(--v3-fg-muted)' }}>{t('scamVerdict.scenario.number', { n: String(scenario.officialNumber) })}</p>
+      <p className="mt-2 text-[13px] leading-snug" style={{ color: 'var(--v3-fg-secondary)' }}>{scenario.summary}</p>
+      {scenario.warningSigns.length > 0 && (
+        <div className="mt-3">
+          <p className="mb-1 text-[12.5px] font-semibold" style={{ color: 'var(--v3-fg-secondary)' }}>{t('scamVerdict.scenario.signs')}</p>
+          <ul className="list-disc space-y-1 pl-5 text-[12.5px] leading-snug" style={{ color: 'var(--v3-fg)' }}>
+            {scenario.warningSigns.map((w, i) => <li key={i}>{w}</li>)}
+          </ul>
+        </div>
       )}
+      <div className="mt-3 rounded-lg p-2.5" style={{ background: 'var(--v3-panel-elevated)' }} data-scam-source>
+        <p className="text-[12.5px] font-semibold" style={{ color: 'var(--v3-fg-secondary)' }}>{t('scamVerdict.scenario.source')}</p>
+        <p className="mt-0.5 text-[12.5px]" style={{ color: 'var(--v3-fg)' }}>{scenario.source.organization} — {scenario.source.title}</p>
+        <a href={scenario.source.url} target="_blank" rel="noopener noreferrer" className="mt-1 inline-flex items-center gap-1 text-[12.5px] font-semibold underline" style={{ color: 'var(--v3-accent)' }}>
+          <ExternalLink size={13} aria-hidden="true" />{t('scamVerdict.scenario.sourceOpen')}
+        </a>
+        <p className="mt-1.5 text-[11.5px] leading-snug" style={{ color: 'var(--v3-fg-muted)' }}>{t('scamVerdict.scenario.guidanceNote')}</p>
+      </div>
+      <p className="mt-3 text-[12.5px] font-semibold" style={{ color: 'var(--v3-rose)' }}>{t('scamVerdict.scenario.report')}</p>
     </div>
   )
 }
 
 export default function ScamMessageResult({ result }: { result: MessageAnalysisResponse }) {
   const { t, locale } = useTranslation()
-  const tone = LEVEL_TONE[result.risk.level]
+  // Three states only. `verdict` is the server's; the fallback keeps an older payload readable.
+  const verdict: Verdict = result.verdict ?? messageVerdict(result.risk.level, null)
+  const tone = LEVEL_TONE[verdict === 'familiar' ? 'HIGH' : verdict === 'suspicious' ? 'MEDIUM' : 'INCONCLUSIVE']
   const Icon = tone.icon
-  const dangerous = result.risk.level === 'MEDIUM' || result.risk.level === 'HIGH' || result.risk.level === 'CRITICAL'
+  const dangerous = verdict !== 'unrecognized'
 
   return (
     <section
       className="v3-panel overflow-hidden"
       style={{ background: tone.soft, borderColor: tone.border }}
       aria-live="polite"
-      data-scam-message-result={result.risk.level}
+      data-scam-message-result={verdict}
     >
       <div className="flex items-center gap-3.5 p-4 sm:p-5">
         <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl" style={{ background: 'var(--v3-panel)', color: tone.fg }} aria-hidden="true">
           <Icon size={26} strokeWidth={2.2} />
         </span>
         <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="text-[17px] font-extrabold leading-tight" style={{ color: tone.fg }}>
-              {t(LEVEL_KEY[result.risk.level])}
-            </span>
-            <ConfidenceBadge confidence={result.risk.confidence} />
-          </div>
-          {result.scamType && (
+          <span className="block text-[17px] font-extrabold leading-tight" style={{ color: tone.fg }}>
+            {t(`scamVerdict.${verdict}.title`)}
+          </span>
+          {result.scamType && dangerous && (
             <p className="mt-0.5 text-[12.5px] font-semibold" style={{ color: 'var(--v3-fg-secondary)' }}>
               {t(`v3.scam.msg.type.${result.scamType}`)}
             </p>
           )}
         </div>
-        <div className="flex-shrink-0 text-right">
-          <div className="text-[24px] font-extrabold leading-none" style={{ color: tone.fg }}>{result.risk.score}</div>
-          <div className="mt-1 text-[9.5px] font-semibold uppercase tracking-[0.11em]" style={{ color: 'var(--v3-fg-muted)' }}>
-            {/* Language-neutral; the same word in both dictionaries. */}
-            Score
-          </div>
-        </div>
       </div>
 
       <div className="px-4 pb-4 sm:px-5 sm:pb-5">
-        {/* The plain-language summary — the model's, or the server's deterministic fallback. */}
-        {result.reasoningSummary && (
-          <p className="rounded-xl p-3.5 text-[13.5px] leading-relaxed" style={{ background: 'var(--v3-panel)', color: 'var(--v3-fg)' }}>
+        <p className="rounded-xl p-3.5 text-[13.5px] leading-relaxed" style={{ background: 'var(--v3-panel)', color: 'var(--v3-fg)' }}>
+          {t(`scamVerdict.${verdict}.body`)}
+        </p>
+
+        {/* Only a model-written summary (AI switch ON) is shown here; the static wording is the body above. */}
+        {result.analysis.aiStatus === 'used' && result.reasoningSummary && (
+          <p className="mt-3 rounded-xl p-3.5 text-[13.5px] leading-relaxed" style={{ background: 'var(--v3-panel)', color: 'var(--v3-fg)' }}>
             {result.reasoningSummary}
           </p>
         )}
+
+        {result.scenario && <ScenarioCard scenario={result.scenario} />}
 
         {result.attackGoal && (
           <div className="mt-4">
@@ -182,9 +173,9 @@ export default function ScamMessageResult({ result }: { result: MessageAnalysisR
 
         {result.signals.length > 0 && (
           <div className="mt-4">
-            <Heading icon={Info}>{t('v3.scam.msg.why')}</Heading>
+            <Heading icon={Info}>{t('scamVerdict.msg.why')}</Heading>
             <ul className="space-y-2">
-              {result.signals.map((s, i) => (
+              {result.signals.filter(s => !(result.scenario && s.type === 'other' && s.source === 'rule')).map((s, i) => (
                 <li key={`${s.type}-${i}`} className="flex items-start gap-2.5 rounded-lg p-2.5" style={{ background: 'var(--v3-panel-elevated)' }}>
                   <span className="mt-1.5 inline-block h-2 w-2 flex-shrink-0 rounded-full" style={{ background: SEVERITY_COLOR[s.severity] }} aria-hidden="true" />
                   <span className="text-[12.5px] leading-snug" style={{ color: 'var(--v3-fg)' }}>{s.explanation}</span>
@@ -238,7 +229,7 @@ export default function ScamMessageResult({ result }: { result: MessageAnalysisR
           </details>
         )}
 
-        <AnalysisNote result={result} />
+        <VerdictDisclaimer />
       </div>
     </section>
   )

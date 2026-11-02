@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Khách Sạn Song Nhật\" núi gần Sài Gòn site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:24:14.655Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Khách Sạn Song Nhật\" núi gần Sài Gòn site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách Sạn Song Nhật - Giá cả và Ưu đãi 2026, TP. Hồ Chí ...",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-5467581/song-nhat-hotel/",
+    "snippet": "Giờ nhận phòng tại Khách Sạn Song Nhật bắt đầu từ 14:00, và giờ trả phòng là 12:00. Khách Sạn Song Nhật có hồ bơi không?",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

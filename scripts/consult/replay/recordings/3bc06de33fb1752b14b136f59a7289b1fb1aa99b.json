@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "điện thoại (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:54:29.684Z",
+ "body": {
+  "searchParameters": {
+   "q": "điện thoại (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Điện thoại thông minh | Smartphone chính hãng, giá rẻ",
+    "link": "https://cellphones.com.vn/mobile.html",
+    "snippet": "Các thương hiệu điện thoại phổ biến · iPhone · Samsung · Xiaomi - Redmi · Oppo · Realme · Vivo · Nokia · Honor. Honor là thương hiệu công nghệ dành cho giới trẻ ...",
+    "position": 1
+   },
+   {
+    "title": "Smartphone từ 2-3-4 triệu | Có thu cũ, trả góp 0%",
+    "link": "https://cellphones.com.vn/bo-loc/dien-thoai-tu-2-4-trieu",
+    "snippet": "Mua smartphone thông minh giá cực rẻ chỉ từ 2-3-4 triệu, thiết kế đơn giản dễ sử dụng, hiệu năng ổn định, bền bỉ - có thu cũ, trả góp 0% tại CellphoneS!",
+    "position": 2
+   },
+   {
+    "title": "Tin tức công nghệ cập nhật 24h mới nhất - Sforum",
+    "link": "https://cellphones.com.vn/sforum",
+    "snippet": "Tin tức công nghệ cập nhật về điện thoại, laptop, máy tính bảng được cập nhật 24h. Thông tin đánh giá, tư vấn và hướng dẫn sử dụng sản phẩm...",
+    "position": 3
+   },
+   {
+    "title": "Điện thoại cũ giá rẻ T09/2026, đẹp như mới",
+    "link": "https://cellphones.com.vn/hang-cu.html",
+    "snippet": "Mua điện thoại iPhone, Samsung cũ đến Xiaomi, Oppo, Vivo cũ... giá mới tháng [variable_currentmonth] máy đẹp như mới - trả góp 0% 12 tháng tại CellphoneS.",
+    "position": 4
+   },
+   {
+    "title": "CellphoneS - Điện thoại, laptop, tablet, phụ kiện chính hãng",
+    "link": "https://cellphones.com.vn/",
+    "snippet": "Hệ thống 184 cửa hàng bán lẻ điện thoại, máy tính laptop, smartwatch, gia dụng, thiết bị IT, phụ kiện chính hãng - Giá tốt, trả góp 0%, giao miễn phí.",
+    "position": 5
+   },
+   {
+    "title": "HMD 106 2G ra mắt: Điện thoại giúp cai nghiện smartphone",
+    "link": "https://cellphones.com.vn/sforum/hmd-106-2g-ra-mat",
+    "snippet": "Chiếc điện thoại mới mang tên HMD 106 2G được định hình là một thiết bị chuyên dụng cho các nhu cầu cơ bản nhất của người dùng di động hiện nay.",
+    "date": "5 thg 9, 2026",
+    "position": 6
+   },
+   {
+    "title": "Smartphone là gì? Các tính năng của điện thoại thông minh",
+    "link": "https://cellphones.com.vn/sforum/smartphone-la-gi",
+    "snippet": "Smartphone là một loại điện thoại di động có tích hợp nhiều tính năng và khả năng xử lý thông minh. Để giới thiệu về điện thoại thông minh, phải kể đến khả năng ...",
+    "position": 7
+   },
+   {
+    "title": "Top 9 mẫu điện thoại tầm trung đáng mua nhất năm 2026",
+    "link": "https://cellphones.com.vn/sforum/dien-thoai-tam-trung-dang-mua-nhat",
+    "snippet": "Tổng hợp 9 mẫu điện thoại tầm trung đáng mua nhất năm 2026 với hiệu năng ổn định , pin bền và camera chất lượng, phù hợp với nhiều nhu cầu khác nhau.",
+    "rating": 5,
+    "ratingCount": 2,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

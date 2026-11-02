@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hapaku Set 2 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:09:31.726Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hapaku Set 2 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Gối Thảo Dược Đa Năng Hapaku -Túi Chườm Ấm Nóng Giảm ...",
+    "link": "https://shop.tiktok.com/vn/pdp/goi-thao-duoc-da-nang-hapaku-giam-dau-moi-co-than-bo/1731150024948745283",
+    "snippet": "Gối size nhỏ 22s12 cmGối size vừa 27×17 cmGối size lớn 38×18 cm------------------------Nếu bạn đang đau mỏi cơ thể do thoái hoá, thoát vị hoặc ít vận động ...",
+    "position": 1
+   },
+   {
+    "title": "Túi Chườm Mắt Thảo Dược HAPAKU Làm Nóng Bằng Lò Vi ...",
+    "link": "https://shop.tiktok.com/vn/pdp/1729498602954131523",
+    "snippet": "Túi chườm thảo dược dùng cho vùng mắt là sản phẩm kết hợp các loại thảo dược tự nhiên truyền thống, có tác dụng làm giảm nhức mỏi mắt do làm việc nhiều với ...",
+    "position": 2
+   },
+   {
+    "title": "BOX QUÀ TẶNG CHO NHỮNG NGƯỜI PHỤ NỮ THÂN YÊU",
+    "link": "https://shop.tiktok.com/vn/pdp/hop-%C4%91ung-qua-tang-hapaku-cho-phu-nu-than-yeu-qua-y-nghia-14-2-8-3/1731025726485071939",
+    "snippet": "Mua HỘP ĐỰNG QUÀ TẶNG 14/2 Tặng - BOX QUÀ TẶNG CHO NHỮNG NGƯỜI PHỤ NỮ THÂN YÊU trên TikTok Shop. Săn giá siêu hời cho và được freeship mặt hàng đủ điều kiện ...",
+    "position": 3
+   },
+   {
+    "title": "Gối Thảo Dược Chườm Nóng Đa Năng Hapaku Làm ...",
+    "link": "https://shop.tiktok.com/vn/pdp/goi-thao-duoc-chuom-nong-hapaku-giam-%C4%91au-moi-thu-gian/1731314721320437827",
+    "snippet": "Mua Gối Thảo Dược Chườm Nóng Đa Năng Hapaku Làm Nóng Bằng Điện - Giảm Đau Mỏi, Căng Cứng Cơ Nhiều Vùng Trên Cơ Thể Giúp Thư Giãn & Ngủ Ngon Hơn - Quà Tặng ...",
+    "position": 4
+   },
+   {
+    "title": "box lalagyan nag gamot",
+    "link": "https://shop.tiktok.com/vn/k/box-lalagyan-nag-gamot",
+    "snippet": "Combo Túi Chườm Mắt và Bóng Matxa Thảo Dược 2 quả 300g Hapaku. 5. 14 sold. ₫445.000. ₫590.000 ...",
+    "position": 5
+   },
+   {
+    "title": "box full of gifts for gf",
+    "link": "https://shop.tiktok.com/vn/k/box-full-of-gifts-for-gf",
+    "snippet": "Set quà NẾN THƠM-GĂNG TAY NAM cho người yêu, bạn gái, bạn trai, cặp đôi, đồng nghiệp - Box Gift. 5. 17 sold. ₫78.200. ₫115.000. Set quà NẾN THƠM-GĂNG TAY ...",
+    "position": 6
+   },
+   {
+    "title": "Paking hadiah dlm kotak hdiah perpisahan",
+    "link": "https://shop.tiktok.com/vn/k/paking-hadiah-dlm-kotak-hdiah-perpisahan",
+    "snippet": "Khám phá Paking hadiah dlm kotak hdiah perpisahan mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm ...",
+    "position": 7
+   },
+   {
+    "title": "hadiah habib anniversary untuk wife",
+    "link": "https://shop.tiktok.com/vn/k/hadiah-habib-anniversary-untuk-wife",
+    "snippet": "Thiệp Chúc Mừng Kỷ Niệm 3D Có Đèn & Nhạc + Thẻ Viết Riêng + Số Kỷ Niệm Ả Rập Đặc Biệt Vợ Chồng, Bạn Bè Kèm Số Năm. Flash sale. 18 sold. ₫62.000. ₫96.550 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

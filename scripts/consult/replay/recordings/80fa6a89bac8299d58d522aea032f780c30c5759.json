@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hộp Quà Tặng Linh Vật Mèo 16 x 16cm Mạ Vàng 24k site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:10:54.213Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hộp Quà Tặng Linh Vật Mèo 16 x 16cm Mạ Vàng 24k site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Mèo chiêu tài - Giá Tốt, Miễn Phí Vận Chuyển, Đủ Loại",
+    "link": "https://shopee.vn/list/m%C3%A8o%20chi%C3%AAu%20t%C3%A0i",
+    "snippet": "Top Bán Chạy Sản Phẩm mèo chiêu tài. 1. Mèo thần tài mạ vàng 24k,Linh phù Mèo Thần Tài chiêu tài hút lộc gia tăng may mắn tài lộc cho chủ nhân dán được6.000₫.",
+    "position": 1
+   },
+   {
+    "title": "Mèo thần tài - Giá Tốt, Miễn Phí Vận Chuyển, Đủ Loại",
+    "link": "https://shopee.vn/list/m%C3%A8o%20th%E1%BA%A7n%20t%C3%A0i",
+    "snippet": "Mèo Thần Tài Vẫy Tay Phong Thuỷ Gốm Sứ Cao Cấp ( Size 18-33 cm). 429.000₫. 510.000₫. -16%. rating-star 4.9 · Mèo Thần Tài Vẫy Tay Cầm Hồ Lô Sử Dụng Năng ...",
+    "position": 2
+   },
+   {
+    "title": "Lì xì ngày tết - Giá Tốt, Sale Tháng 09, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/l%C3%AC%20x%C3%AC/ng%C3%A0y%20t%E1%BA%BFt",
+    "snippet": "Các mẫu bao lì xì hiện đại đã được nâng cấp bằng chất liệu giấy nhung hoặc giấy mỹ thuật định lượng cao, bề mặt mịn màng và sang trọng. Điểm nhấn của dòng sản ...",
+    "position": 3
+   },
+   {
+    "title": "Mô hình thần tài mini - Giá Tốt, Sale Tháng 09, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/m%C3%B4%20h%C3%ACnh/th%E1%BA%A7n%20t%C3%A0i/mini",
+    "snippet": "flag-label [Kèm Hộp Quà] Mèo Thần Tài Hồng Đào 20cm Mèo Hũ Tiết Kiệm Tài ... Mạ Vàng 24K, Pha Lê K9, Quà Lưu Niệm, Quà Sang Trọng. 1.022.000₫. 1.750.000 ...",
+    "position": 4
+   },
+   {
+    "title": "Garfield - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/Garfield",
+    "snippet": "Molutian mô phỏng con dấu đồ chơi sang trọng dễ thương đại dương Gối thú cưng nhồi bông búp bê trẻ em Đồ chơi búp bê con dấu. 302.500₫. rating-star 4.8.",
+    "position": 5
+   },
+   {
+    "title": "10.10 Đón Chờ Siêu Sale | Freeship 0Đ",
+    "link": "https://shopee.vn/m/1010",
+    "snippet": "Tại Shopee 10.10, bạn thỏa thích mua sắm với vô vàn deals hấp dẫn, giá tốt, đặc biệt là voucher Xtra giảm đến 10 triệu đồng và ưu đãi freeship 0Đ. Ngoài ra, mua ...",
+    "position": 6
+   },
+   {
+    "title": "Liễn cửu huyền thất tổ - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/li%E1%BB%85n/c%E1%BB%ADu%20huy%E1%BB%81n%20th%E1%BA%A5t%20t%E1%BB%95",
+    "snippet": "Shopee cung cấp đầy đủ các sản phẩm liễn cửu huyền thất tổ chính hãng với nhiều mức giá ưu đãi vô cùng hấp dẫn. Bạn có thể thỏa thích tham khảo sản phẩm chính ...",
+    "position": 7
+   },
+   {
+    "title": "Buka - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/buka",
+    "snippet": "Sang Trọng Đựng Thẻ Con Chó Con Lông Tơ Dễ Thương 3 Inch Photocard Giá Đỡ Xe Buýt Thẻ Trường Thẻ Hiển Thị Ảnh Bảo Vệ Đồ Dùng Học Tập. 38.951₫. 40.120₫.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

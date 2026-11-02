@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Top 30+ quà tặng sinh nhật sếp dưới 1 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:03:45.432Z",
+ "body": {
+  "searchParameters": {
+   "q": "Top 30+ quà tặng sinh nhật sếp dưới 1 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "[HCM]Set 5 Tấm lót chống thấm lót cotton cho bé kích thước ...",
+    "link": "https://www.lazada.vn/products/hcmset-5-tam-lot-chong-tham-lot-cotton-cho-be-kich-thuoc-30x30cm-i314862300.html?srsltid=AU7gw4Uq64qHiToXCvfP2ITxTEHGXROjk1umaJ2_XbN3Sov1eCZlHY-w",
+    "snippet": "Set 5 tấm lót chống thấm cotton cao cấp kích thước 30x30cm phù hợp cho trẻ sơ sinh, có nhiều màu sắc dễ thương. Chất liệu cotton và nylon bền bỉ, ...",
+    "position": 1
+   },
+   {
+    "title": "Sách Ngoại Văn - Fahasa - Wuthering Heights | Lazada Việt ...",
+    "link": "https://www.lazada.vn/products/sach-ngoai-van-fahasa-wuthering-heights-i473464699.html?srsltid=AU7gw4UjMCRCdV4wJfFEfti4fGAf-SqhdTWFdTGzLYLGH_5x8q6sRsJV",
+    "snippet": "FAHASA. Tên Nhà Cung Cấp: Penguin Books. Tác giả: Emily Bronte, Pauline Nestor, Lucasta Miller. Nhà xuất bản: Penguin Books Ltd. Năm xuất bản: 11/11/2004.",
+    "position": 2
+   },
+   {
+    "title": "[HSD 2027] Serum Tinh Chất Dưỡng Da Chống Lão Hoá ...",
+    "link": "https://h5.lazada.vn/products/hsd-2027-serum-tinh-chat-duong-da-chong-lao-hoa-nmn-contour-essence-30ml-i2440635202.html",
+    "snippet": "TINH CHẤT DƯỠNG DA NMN CONTOUR ESSENCE 30ML. ○ Thành phần nổi bật của sản phẩm Gik NMN là Nicotinamide Mononucleotide (NMN) giúp đảo ngược quá trình lão ...",
+    "position": 3
+   },
+   {
+    "title": "Sách - Tôi Yêu Nữ Phản Diện - Tập 3 | Lazada Việt Nam",
+    "link": "https://www.lazada.vn/products/sach-toi-yeu-nu-phan-dien-tap-3-i2485756531.html?srsltid=AU7gw4XX-bCzrv9rUmmfglwD4KGV0vjGNjP2Vu4aNYS5ADhocAxv0r2d",
+    "snippet": "... Top bán chạy. 5 Centimet Trên Giây. 65.000 ₫ · Sách - Tôi là Bêtô (Nguyễn Nhật Ánh). 95.000 ₫ · Mùa đông dài. 158.000 ₫ · Thôi, đừng nói chuyện ngày mai. 89.000 ...",
+    "position": 4
+   },
+   {
+    "title": "Gấu bông con rồng cute thịnh vượng quà tặng rồng thú nhồi ...",
+    "link": "https://www.lazada.vn/products/gau-bong-con-rong-cute-thinh-vuong-qua-tang-rong-thu-nhoi-bong-hinh-con-rong-y-nghia-nhieu-size-chon-lua-i2530252228.html?srsltid=AU7gw4WpLTnySjwHeFz7GumcdsuudUODWBqqPxIjbVrxtZ6m3arcYmuz",
+    "snippet": "Gấu bông con rồng cute thịnh vượng quà tặng rồng thú nhồi bông hình con rồng ý nghĩa nhiều size chọn lựaChất liệu: Vải thun mềm da lộn, bông PP, ...",
+    "position": 5
+   },
+   {
+    "title": "Lồng gà vuông sắt to 2,7li _ 4,5 - 5,5kg ( không khay ...",
+    "link": "https://www.lazada.vn/products/long-ga-vuong-sat-to-27li-_-45-55kg-khong-khay-i1786097565.html?srsltid=AU7gw4XCC4BKZT7ruyAZvYbeYuPX0-TJUavSIzSqXJYKYlFuR8Vu3GSd",
+    "snippet": "Loại vuông 1M có trọng lượng 5,5kg/bộ , kích thước thực: dài 1M + rộng 1M + cao 80cm. Loại vuông 80 có trọng lượng 4,5kg/bộ , kích thước thực: dài 80cm + ...",
+    "position": 6
+   },
+   {
+    "title": "Combo 8 Tương Ớt CHIN-SU 250G (Bao bì có thể thay đổi ...",
+    "link": "https://h5.lazada.vn/products/combo-8-tuong-ot-chin-su-250g-bao-bi-co-the-thay-doi-theo-dot-nhap-hang-i2426478454.html",
+    "snippet": "Bao bì: đẹp mắt, gọn gàng, dễ cầm nắm, dùng rất tiện ạ Hương vị: Thơm ngon, người lớn và trẻ em đều dùng được, rất tuyệt Chất lượng: hàng Việt nam yên tâm ...",
+    "position": 7
+   },
+   {
+    "title": "Sò lạnh tủ lạnh TOSHIBA, sensor cảm biến, sò nóng và lạnh ...",
+    "link": "https://www.lazada.vn/products/so-lanh-tu-lanh-toshiba-sensor-cam-bien-so-nong-va-lanh-cac-loai-dien-lanh-thuan-dung-i2299936487.html?srsltid=AU7gw4U4rAC2ltBcuhssHDx7GLLw9Iv0hUtVJAz4lLb2BP5uWyrzlk4g",
+    "snippet": "Sò lạnh tủ lạnh TOSHIBA, sensor cảm biến, sò nóng và lạnh các loại-Điện Lạnh Thuận Dung. Sử dụng cho tủ lạnh TOSHIBA. Bộ phận không kém phần quan trọng của ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

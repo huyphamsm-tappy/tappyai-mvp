@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Level Saigon Hotel",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:38:06.943Z",
+ "body": {
+  "searchParameters": {
+   "q": "Level Saigon Hotel",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Level Hotel Sai Gon - by BAY LUXURY, TP. Hồ Chí Minh (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/855599170.jpg?k=50d2a716df030cc57c0753e08546472f5f61efecd751b67be778c18a44db4d49&o=",
+    "imageWidth": 512,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQz1XszPUQFUTqjmqf2W8U2GuNQ_9DCxn_p83pcQPJkgw&s=10",
+    "thumbnailWidth": 452,
+    "thumbnailHeight": 678,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/level-sai-gon-by-bay-luxury.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F855599170.jpg%3Fk%3D50d2a716df030cc57c0753e08546472f5f61efecd751b67be778c18a44db4d49%26o%3D&tbnid=NtOSiLIPIPE3pM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Flevel-sai-gon-by-bay-luxury.vi.html&docid=yWVs4LsStuSpcM&w=512&h=768",
+    "position": 1
+   },
+   {
+    "title": "Best Price on Level SaiGon Hotel in Ho Chi Minh City + Reviews!",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/59484518/0/584e96d0df731040a59d2a91d11f3c0f.jpg?va=1&ce=0&s=414x232",
+    "imageWidth": 154,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-sKCsfhUrrHKjGR8gRgrf624J_lylq2mOJpcEwwEIfg&s=10",
+    "thumbnailWidth": 154,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/level-saigon-hotel/hotel/ho-chi-minh-city-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F59484518%2F0%2F584e96d0df731040a59d2a91d11f3c0f.jpg%3Fva%3D1%26ce%3D0%26s%3D414x232&tbnid=Q6ltKAdgZKtMSM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Flevel-saigon-hotel%2Fhotel%2Fho-chi-minh-city-vn.html&docid=9SYsczsmIzbARM&w=154&h=232",
+    "position": 2
+   },
+   {
+    "title": "Level Saigon Hotel, Thành phố Hồ Chí Minh | Hotels.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/108000000/107220000/107211400/107211328/bf2ebc6b.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 863,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZ7RwR4jNun_A51hGTKVd4-yYh-1ZYd414QD-tYnr-mg&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "hotels",
+    "domain": "vi.hotels.com",
+    "link": "https://vi.hotels.com/ho3431762496/level-saigon-hotel/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F108000000%2F107220000%2F107211400%2F107211328%2Fbf2ebc6b.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=XCfm9pBMKxwAgM&imgrefurl=https%3A%2F%2Fvi.hotels.com%2Fho3431762496%2Flevel-saigon-hotel%2F&docid=9oW0YNrWfwzmPM&w=863&h=575",
+    "position": 3
+   },
+   {
+    "title": "Trang chủ - Level Saigon Hotel",
+    "imageUrl": "http://levelsaigonhotel.com/wp-content/uploads/2024/07/HAU09051.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 667,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUwnew1MBJd9qcYhkEGP2GCAsfgGDT03H053Z-0Y2iuQ&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "levelsaigonhotel.com",
+    "domain": "levelsaigonhotel.com",
+    "link": "http://levelsaigonhotel.com/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=http%3A%2F%2Flevelsaigonhotel.com%2Fwp-content%2Fuploads%2F2024%2F07%2FHAU09051.jpg&tbnid=zEKi3SLokMTdsM&imgrefurl=http%3A%2F%2Flevelsaigonhotel.com%2F&docid=t2zLM6Ivu7VkxM&w=1000&h=667",
+    "position": 4
+   },
+   {
+    "title": "Level Saigon hotel, Ho Chi Minh City: Reviews & Hotel Deals | Book at Hotels .com",
+    "imageUrl": "https://images.trvl-media.com/lodging/108000000/107220000/107211400/107211328/d9d5e5b0.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 575,
+    "imageHeight": 863,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCAQs6d4tM2nz79cx2ERYyYcNxnIhp7HxYsh5cTpi23w&s=10",
+    "thumbnailWidth": 364,
+    "thumbnailHeight": 549,
+    "source": "Hotels.com Australia",
+    "domain": "au.hotels.com",
+    "link": "https://au.hotels.com/ho3431762496/level-saigon-hotel/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F108000000%2F107220000%2F107211400%2F107211328%2Fd9d5e5b0.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=BAFGtFloVPROKM&imgrefurl=https%3A%2F%2Fau.hotels.com%2Fho3431762496%2Flevel-saigon-hotel%2F&docid=hD6OIKToBkipvM&w=575&h=863",
+    "position": 5
+   },
+   {
+    "title": "Trang chủ - Level Saigon Hotel",
+    "imageUrl": "http://levelsaigonhotel.com/wp-content/uploads/2024/08/bn-2.png",
+    "imageWidth": 1920,
+    "imageHeight": 850,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRh9_CuhLM-c5M3eH1u1NKXP_f1pga5eagoHT1LRRWD1g&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 327,
+    "source": "levelsaigonhotel.com",
+    "domain": "levelsaigonhotel.com",
+    "link": "http://levelsaigonhotel.com/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=http%3A%2F%2Flevelsaigonhotel.com%2Fwp-content%2Fuploads%2F2024%2F08%2Fbn-2.png&tbnid=M_YpI4qKIZiwxM&imgrefurl=http%3A%2F%2Flevelsaigonhotel.com%2F&docid=t2zLM6Ivu7VkxM&w=1920&h=850",
+    "position": 6
+   },
+   {
+    "title": "Level Saigon hotel Reviews, Deals & Photos 2026 - Expedia.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/108000000/107220000/107211400/107211328/755d4aee.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 575,
+    "imageHeight": 863,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxX9xs5_2IxxZ0TlmBRPyGC2ZBkbB-caIYuhv8YIZPxA&s=10",
+    "thumbnailWidth": 364,
+    "thumbnailHeight": 549,
+    "source": "Expedia",
+    "domain": "www.expedia.com",
+    "link": "https://www.expedia.com/Ho-Chi-Minh-City-Hotels-Level-Saigon-Hotel.h107211328.Hotel-Information",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F108000000%2F107220000%2F107211400%2F107211328%2F755d4aee.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=v4LqgmeX8w3AmM&imgrefurl=https%3A%2F%2Fwww.expedia.com%2FHo-Chi-Minh-City-Hotels-Level-Saigon-Hotel.h107211328.Hotel-Information&docid=FzJNUkwV3YjK_M&w=575&h=863",
+    "position": 7
+   },
+   {
+    "title": "Level Hotel Sai Gon - by BAY LUXURY, TP. Hồ Chí Minh (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/594699681.jpg?k=b28d66dd37f36b0b725378a1e68378ad9464d80eebaed88ed810b74fe09da044&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7Lo-xm6j33XslkowOG5g0oqRVWbS2mnp_AdW2mxpmkg&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/level-sai-gon-by-bay-luxury.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F594699681.jpg%3Fk%3Db28d66dd37f36b0b725378a1e68378ad9464d80eebaed88ed810b74fe09da044%26o%3D&tbnid=rU-epkHESWo6RM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Flevel-sai-gon-by-bay-luxury.vi.html&docid=yWVs4LsStuSpcM&w=1024&h=683",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

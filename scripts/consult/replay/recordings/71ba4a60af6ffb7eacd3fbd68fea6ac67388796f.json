@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Tiệm ăn Lồng Bàn (site:food.grab.com/vn OR site:shopeefood.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:25:27.363Z",
+ "body": {
+  "searchParameters": {
+   "q": "Tiệm ăn Lồng Bàn (site:food.grab.com/vn OR site:shopeefood.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tiệm Ăn Lồng Bàn - Bún Mắm Nêm & Cơm Nhà",
+    "link": "https://shopeefood.vn/ho-chi-minh/tiem-an-long-ban-bun-mam-nem-com-nha-69-duong-14a",
+    "snippet": "Tiệm Ăn Lồng Bàn - Bún Mắm Nêm & Cơm Nhà - 69 Đường 14A. 69 Đường Số 14A, Quận 7, TP. HCM. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, ...",
+    "position": 1
+   },
+   {
+    "title": "Tiệm Ăn Lồng Bàn ⭐ 5",
+    "link": "https://food.grab.com/vn/en/restaurant/ti%E1%BB%87m-%C4%83n-l%E1%BB%93ng-b%C3%A0n-delivery/5-C7UZC7NWJEJBJE",
+    "snippet": "Bun Rieu,Vietnamese Spring Roll,Fermented Fish Vermicelli Soup.",
+    "rating": 5,
+    "ratingCount": 15,
+    "position": 2
+   },
+   {
+    "title": "TIỆM ĂN SỐ 1 - CƠM TRỘN, CƠM NHẬT BẢN & SALAD ...",
+    "link": "https://shopeefood.vn/ha-noi/tiem-an-so-1-com-tron-com-tho-banh-my-bo-nuong?source_url=foody_ordernow_mobile",
+    "snippet": "TIỆM ĂN SỐ 1 - CƠM TRỘN, CƠM NHẬT BẢN & SALAD HEALTHY. Số 9D Ngách 19 Ngõ 68 Triều Khúc, Thanh Xuân, Hà Nội. Đã đóng. Quán được gắn nhãn Yêu thích là Quán ...",
+    "position": 3
+   },
+   {
+    "title": "Tiệm Ăn Đêm - Đói Không",
+    "link": "https://shopeefood.vn/ha-noi/tiem-an-dem-doi-khong?source_url=foody_ordernow_mobile",
+    "snippet": "Số 8, Hẻm 175/42/30 Lạc Long Quân, P. Nghĩa Đô, Cầu Giấy, Hà Nội. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng ...",
+    "position": 4
+   },
+   {
+    "title": "Tiệm Ăn Gì Cũng Được - Nam Hưng",
+    "link": "https://shopeefood.vn/hai-phong/tiem-an-gi-cung-duoc-37-nguyen-binh",
+    "snippet": "7 Ngõ 6 Nam Hưng, P. Nam Hải, Quận Hải An, Hải Phòng. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng dịch vụ vượt ...",
+    "position": 5
+   },
+   {
+    "title": "Tiệm Ăn Bông Bướm - Nguyễn Văn Thương, Bình Thạnh",
+    "link": "https://shopeefood.vn/ho-chi-minh/tiem-an-bong-buom-nguyen-van-thuong-binh-thanh",
+    "snippet": "Tiệm Ăn Bông Bướm - Nguyễn Văn Thương, Bình Thạnh. 4A/4 Nguyễn Văn Thương, P. 25, Bình Thạnh, TP. HCM. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu ...",
+    "position": 6
+   },
+   {
+    "title": "Tiệm Ăn Mama Mai - Cơm Gà & Phở Gà - Bát Khối",
+    "link": "https://shopeefood.vn/ha-noi/tiem-an-mama-mai-com-ga-pho-ga-bat-khoi.pd22ja",
+    "snippet": "Chung Cư CT2A Thạch Bàn Bát Khối, P. Thạch Bàn, Long Biên, Hà Nội. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng ...",
+    "position": 7
+   },
+   {
+    "title": "Một Tô Thái By Cicimi - Tiệm Ăn Vị Thái",
+    "link": "https://shopeefood.vn/ha-noi/mot-to-thai-by-cicimi-tiem-an-vi-thai",
+    "snippet": "22 Giang Văn Minh, P. Kim Mã, Ba Đình, Hà Nội. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng dịch vụ vượt trội và ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

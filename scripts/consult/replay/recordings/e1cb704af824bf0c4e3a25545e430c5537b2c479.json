@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Nhu Minh Plaza Danang Hotel\" OR \"Hanami Hotel Danang\" Đà Nẵng site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:06:01.136Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Nhu Minh Plaza Danang Hotel\" OR \"Hanami Hotel Danang\" Đà Nẵng site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nhu Minh Plaza Danang hotel (@nmpdananghotel)",
+    "link": "https://www.tiktok.com/@nmpdananghotel",
+    "snippet": "Nhu Minh Plaza Danang hotel · @nmpdananghotel · Phòng khách sạn biển - sảnh sự kiện 4 ⭐️ 0947.04.00.11 41 Phạm Văn Đồng, Tp Đà Nẵng.",
+    "position": 1
+   },
+   {
+    "title": "[Room tour] Superior Twin - khách sạn gần biển Mỹ Khê ...",
+    "link": "https://www.tiktok.com/@nmpdananghotel/video/7433283679100751112",
+    "snippet": "Video TikTok từ Nhu Minh Plaza Danang hotel (@nmpdananghotel): \"[Room tour] Superior Twin - khách sạn gần biển Mỹ Khê Đà Nẵng. #xuhuong2023 ...",
+    "position": 2
+   },
+   {
+    "title": "Chúng tôi làm tất cả là vì… #onlyforyou #tiktokviral #khachsan # ...",
+    "link": "https://www.tiktok.com/@nmpdananghotel/video/7645259372666375444",
+    "snippet": "24 Lượt thích,Video TikTok từ Nhu Minh Plaza Danang hotel (@nmpdananghotel): \"Chúng tôi làm tất cả là vì… #onlyforyou #tiktokviral #khachsan #honeymoon\".",
+    "position": 3
+   },
+   {
+    "title": "Nhu Minh Plaza Danang Hotel Ktv",
+    "link": "https://www.tiktok.com/discover/nhu-minh-plaza-danang-hotel-ktv",
+    "snippet": "10.3M bài đăng. Hãy khám phá video liên quan đến Nhu Minh Plaza Danang Hotel Ktv trên TikTok. Xem thêm video về Centre Point Danang Hotel, Nhu Minh Plaza Đà ...",
+    "position": 4
+   },
+   {
+    "title": "Lịch lễ hội pháo hoa quốc tế Đà Nẵng 2026 từ 30/5-11/7 ...",
+    "link": "https://www.tiktok.com/@nmpdananghotel/video/7638463919052377365",
+    "snippet": "35 Lượt thích,Video TikTok từ Nhu Minh Plaza Danang hotel (@nmpdananghotel): \"Lịch lễ hội pháo hoa quốc tế Đà Nẵng 2026 từ 30/5-11/7/2026.",
+    "position": 5
+   },
+   {
+    "title": "Video thực tế phòng dành cho 4 người lớn, phù hợp với ...",
+    "link": "https://www.tiktok.com/@nmpdananghotel/video/7650052081889414420",
+    "snippet": "Video TikTok từ Nhu Minh Plaza Danang hotel (@nmpdananghotel): \"Video thực tế phòng dành cho 4 người lớn, phù hợp với gia đình và nhóm bạn.",
+    "position": 6
+   },
+   {
+    "title": "Nhu Minh Plaza Đà Nẵng Hotel Spa",
+    "link": "https://www.tiktok.com/discover/nhu-minh-plaza-%C4%91%C3%A0-n%E1%BA%B5ng-hotel-spa",
+    "snippet": "Vô tình bắt gặp buồng phòng chuẩn bị phòng SUPERIOR DOUBLE / TWIN. #fyp #housekeeping · original sound - Nhu Minh Plaza Danang hotel.",
+    "date": "14 thg 9, 2026",
+    "position": 7
+   },
+   {
+    "title": "Kỷ niệm 50 năm giải phóng thành phố Đà Nẵng ❤️🇻🇳 ...",
+    "link": "https://www.tiktok.com/@nmpdananghotel/video/7487271441520430341",
+    "snippet": "46 Lượt thích,Video TikTok từ Nhu Minh Plaza Danang hotel (@nmpdananghotel): \"Kỷ niệm 50 năm giải phóng thành phố Đà Nẵng ❤️ #50namgiaiphongdanang ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

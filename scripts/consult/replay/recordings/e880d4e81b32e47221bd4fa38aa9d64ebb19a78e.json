@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Khách sạn THANH PHƯỚC (Hotel) Tây Ninh\" OR \"Maison Camellia Hotel ở TN\" OR \"RUBY HOTEL TÂY NINH\" Tây Ninh site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:38:32.147Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Khách sạn THANH PHƯỚC (Hotel) Tây Ninh\" OR \"Maison Camellia Hotel ở TN\" OR \"RUBY HOTEL TÂY NINH\" Tây Ninh site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ruby Hotel Tây Ninh (@hotelruby8)",
+    "link": "https://www.tiktok.com/@hotelruby8",
+    "snippet": "Ruby Hotel Tây Ninh · @hotelruby8 · Được phục vụ quý khách là sự hạnh phúc của chúng tôi. Hotline:0818.196.196 Zalo.",
+    "position": 1
+   },
+   {
+    "title": "Khách Sạn Ruby: Lựa Chọn Lý Tưởng Tại Tây Ninh",
+    "link": "https://www.tiktok.com/@hotelruby8/video/7633740514432437512",
+    "snippet": "... Tây Ninh, gần các điểm du lịch nổi bật. Gọi ngay 0818.196.196! #xuhuongtiktok #nuibaden #xh. Keywords: Ruby Hotel Tây Ninh, nghỉ dưỡng gần Tòa Thánh Tây Ninh ...",
+    "position": 2
+   },
+   {
+    "title": "𝐍𝐇𝐔̛̃𝐍𝐆 𝐍𝐆𝐀̀𝐘 𝐓𝐑𝐎̛̀𝐈 𝐍𝐇𝐈𝐄̂̀𝐔 𝐌𝐀̂𝐘☁️☁️☁️ Một...",
+    "link": "https://www.tiktok.com/@hotelruby8/video/7529406326171094290",
+    "snippet": "141 Lượt thích,Video TikTok từ Ruby Hotel Tây Ninh (@hotelruby8): \" NHỮNG NGÀY TRỜI NHIỀU MÂY☁️☁️☁️ ...",
+    "position": 3
+   },
+   {
+    "title": "Giá phòng chỉ từ 400k tại Ruby Hotel",
+    "link": "https://www.tiktok.com/@hotelruby8/video/7510795867822066962",
+    "snippet": "28 Lượt thích,Video TikTok từ Ruby Hotel Tây Ninh (@hotelruby8): \"Nhà nghỉ tuyệt vời với giá phòng chỉ từ 400k. Ib ngay để đặt phòng và trải ...",
+    "position": 4
+   },
+   {
+    "title": "Khám Phá Ruby Hotel - Điểm Lưu Trú Lý Tưởng Tại Tây ...",
+    "link": "https://www.tiktok.com/@hotelruby8/video/7622473832422493448",
+    "snippet": "Ruby Hotel Tây Ninh, nghỉ dưỡng gần Tòa Thánh Tây Ninh, khách sạn gần Núi Bà Đen, lưu trú thuận tiện tại Tây Ninh, khách sạn gần Vincom Plaza ...",
+    "position": 5
+   },
+   {
+    "title": "Khách Sạn Ruby Hotel - Nơi Dừng Chân Dưỡng Dàng",
+    "link": "https://www.tiktok.com/@hotelruby8/video/7484925406764600583",
+    "snippet": "Khám phá Ruby Hotel tại Tayninh với dịch vụ tuyệt vời và không gian thoải mái. @Ruby Hotel Tây Ninh.",
+    "position": 6
+   },
+   {
+    "title": "Nghỉ ngơi ở đâu khi leo núi Bà Đen, Tây Ninh?",
+    "link": "https://www.tiktok.com/@hotelruby8/photo/7640011774707780871",
+    "snippet": "TikTok video from Ruby Hotel Tây Ninh (@hotelruby8): “Tìm hiểu các lựa chọn nghỉ ngơi cho hành trình leo núi Bà Đen thêm trọn vẹn tại Tây ...",
+    "position": 7
+   },
+   {
+    "title": "Ăn Sáng Ngon Gần Ruby Hotel Tây Ninh",
+    "link": "https://www.tiktok.com/@antt1412/photo/7580561162195029256?image_index=5",
+    "snippet": "Ăn Sáng Ngon Gần Ruby Hotel Tây Ninh. Khám phá quán ăn sáng ngon gần Ruby Hotel tại Tây Ninh, nơi có giá cả hợp lý và đồ ăn hấp dẫn! #review ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,82 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Máy xay cà phê thủ công, 40 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:11:30.401Z",
+ "body": {
+  "searchParameters": {
+   "q": "Máy xay cà phê thủ công, 40 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Máy xay cà phê Winci CG5005 | công suất 150W, lưỡi xay 40mm ...",
+    "link": "https://shop.tiktok.com/vn/pdp/1733612997609162051",
+    "snippet": "Mua Máy xay cà phê Winci CG5005 | công suất 150W, lưỡi xay 40mm, xay 30 cấp độ, chống tĩnh điện, bảo hành 1 năm (tặng gói cà phê Robussta) trên TikTok Shop.",
+    "position": 1
+   },
+   {
+    "title": "Máy xay cà phê thủ công cầm tay 40 cấp độ điều chỉnh, lưỡi gốm ...",
+    "link": "https://shop.tiktok.com/vn/pdp/may-xay-ca-phe-mini-40-cap-do-luoi-gom-khong-can-dien/1735864136406959384",
+    "snippet": "Mua Máy xay cà phê thủ công cầm tay 40 cấp độ điều chỉnh, lưỡi gốm cao cấp, không cần điện, nhỏ gọn mang theo trên TikTok Shop. Săn giá siêu hời cho và được ...",
+    "position": 2
+   },
+   {
+    "title": "Máy Xay Cà Phê Bằng Tay Bincoo, Máy Xay Thủ Công Để ...",
+    "link": "https://shop.tiktok.com/vn/pdp/may-xay-ca-phe-tay-thu-cong-bincoo-cho-pha-tai-nha/1731076983914269657",
+    "snippet": "Máy Xay Hạt Cà Phê Bằng Điện, Có Thể Sạc Lại, Độ Thô Có Thể Điều Chỉnh 40 Cấp, Nghiền Một Chuột Nhấp, Thích Hợp Để Xay. 4.5. 283 sold. ₫529.000. ₫999.000 ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 3
+   },
+   {
+    "title": "Sản phẩm không có sẵn tại quốc gia hoặc khu vực này",
+    "link": "https://shop.tiktok.com/vn/pdp/may-xay-cafe-bang-tay-mini-cong-xay-ca-phe-nho-gon-tien-dung/1733893415160808605",
+    "snippet": "Máy xay hạt cà phê cầm tay,Xay thủ công màu Inox,cối xay cafe bằng tay. 4.9. 162 sold. ₫235.200. ₫280.000 ...",
+    "position": 4
+   },
+   {
+    "title": "máy pha cà phê espresso áp suất thủ công, màu đen ...",
+    "link": "https://shop.tiktok.com/vn/pdp/1733495818994616096",
+    "snippet": "Bộ sản phẩm bao gồm: 1 chiếc máy pha cà phê espressoMàu sắc: đenkích thước: 20*6cm (7.87*2.36 inch)Chất liệu: PPLoại: Máy pha cà phê espressoLưu ý:Do đo ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 5
+   },
+   {
+    "title": "Cối xay cà phê Comandante",
+    "link": "https://shop.tiktok.com/vn/pdp/coi-xay-ca-phe-comandante-c40-mk4-luoi-dao-sieu-ben-%C4%91o-chinh-xac-cao/1730332934975228437",
+    "snippet": "7.000.000₫ Cối xay cà phê Comandante. Comandante C40 MK4 được chế tác thủ công theo công nghệ cực kỳ chính xác của Đức, mọi sản phẩm đều được ・ 4 49 sold ₫148 ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 6
+   },
+   {
+    "title": "Máy Xay Cà Phê HB583,Xay Hạt Cafe Pha Espresso,tích ...",
+    "link": "https://shop.tiktok.com/vn/pdp/may-xay-ca-phe-hb583-25-muc-do-day-bot-tay-cam-inox/1730973961833515392",
+    "snippet": "Mua Máy Xay Cà Phê HB583,Xay Hạt Cafe Pha Espresso,tích hợp 25 chế độ xay, 2 in 1,thích hợp 51mm tay cầm Inox Pha Cafe cối coffee cối xay trên TikTok Shop.",
+    "rating": 4.5,
+    "ratingCount": 21,
+    "position": 7
+   },
+   {
+    "title": "Máy xay cà phê điện CircleJoy, Máy ...",
+    "link": "https://shop.tiktok.com/vn/pdp/1733290482526619450",
+    "snippet": "Sạc chuẩn Type C, hoạt động êm ái, đảm bảo sự thoải mái khi sử dụng.Tính năng nổi bật·Lưỡi dao gốm: Đảm bảo xay cà phê mịn màng.·Dừng tự động: Tự động dừng sau ...",
+    "rating": 4.4,
+    "ratingCount": 22,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

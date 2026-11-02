@@ -12,15 +12,17 @@
 // deliberately absent — NEXT_PUBLIC_POSTHOG_KEY is not set in production and a
 // full page load issues zero requests to any PostHog host.
 
+import { communityEn, communityVi } from './communityGuidelines'
+
 export const en: Record<string, string> = {
+  ...communityEn,
   // ---------------------------------------------------------------- privacy
   'legal.privacy.title': 'Privacy Policy',
-  'legal.privacy.effective': 'Effective Date: September 2026',
+  'legal.privacy.effective': 'Effective Date: October 2026',
 
   'legal.privacy.s1.heading': '1. Information We Collect',
   'legal.privacy.s1.lead': 'TappyAI may collect:',
-  'legal.privacy.s1.b1':
-    'Google account information (name, email address, profile photo) when you sign in with Google. TappyAI also supports signing in with Zalo.',
+  'legal.privacy.s1.b1': 'Account information when you sign in: with Google (name, email address, profile photo), with Zalo (name and profile photo), with Apple on iPhone, or with an email address and password.',
   'legal.privacy.s1.b2': 'Conversation history with the AI assistant.',
   'legal.privacy.s1.b3': 'Basic account information required to provide our services.',
   'legal.privacy.s1.b4':
@@ -33,10 +35,12 @@ export const en: Record<string, string> = {
     'Precise location (optional). Only if you allow it, the app sends your device’s precise coordinates with a request so it can find places near you. You can refuse or withdraw the permission at any time and keep using TappyAI; location is never collected in the background.',
   'legal.privacy.s1.b8':
     'Usage and device information — pages viewed, searches, the categories, places, deals and reviews you interact with, the features you use, plus device type, operating system, app version, language, a session identifier, and the country derived from your IP address.',
-  'legal.privacy.s1.b9':
-    'Your date of birth, to confirm you are 18 or older before using the AI assistant, recommendations and posting. Without an account it stays on your device and is sent with your requests.',
+  'legal.privacy.s1.b9': 'Your date of birth, to confirm you are 18 or older. TappyAI is for people aged 18 and over: you must be 18 or older to use the AI assistant, recommendations and posting. Without an account the date stays on your device and is sent with your requests.',
   'legal.privacy.s1.b10':
     'Content you create: reviews, photos and clips you post, comments, your profile bio, and messages you send to other users.',
+  'legal.privacy.s1.b11': 'Reports, blocks and moderation: when you report a post, comment or person we store the report (what was reported, the reason you chose and a short note if you add one); when you block someone we store the block; when we review content against the Community Guidelines we keep a record of the decision (the rule, the action, the date) and of any appeal you make.',
+  'legal.privacy.s1.b12': 'A notification token for your device — only if you turn notifications on (Firebase Cloud Messaging on Android, a push subscription in the browser).',
+  'legal.privacy.s1.b13': 'Photos you send to the assistant or to Scan, which are analysed to answer you (see “Third-Party Services”).',
   'legal.privacy.s1.note':
     'If you browse without signing in, usage events are recorded against a random anonymous identifier instead of an account.',
 
@@ -50,20 +54,21 @@ export const en: Record<string, string> = {
   'legal.privacy.s2.b5': 'Confirm and manage bookings you make.',
   'legal.privacy.s2.b6': 'Improve the quality and reliability of the service.',
   'legal.privacy.s2.b7': 'Protect platform security.',
-  'legal.privacy.s2.note': 'We use your personal information only for the purposes listed above.',
+  'legal.privacy.s2.b8': 'Review reports and enforce the Community Guidelines, and keep a permanently locked account from simply signing up again with the same email address.',
+  'legal.privacy.s2.note': 'We do not sell your personal information.',
 
   'legal.privacy.s3.heading': '3. Third-Party Services',
   'legal.privacy.s3.lead':
     'To provide AI responses, search and other core features, TappyAI may send relevant user requests to trusted providers, including:',
-  'legal.privacy.s3.b1': 'OpenAI (OpenAI OpCo, LLC) processes the content you send to our AI features to write the assistant’s answers, read photos, translate and write content, when you use those features. OpenAI receives: your name, city, age or age group, and gender, if you set them in your profile; your saved preferences and AI memory (which the AI model also updates from your chats); the messages you type; the search results and places the assistant looks up for you; your location (coordinates) only when you allow location sharing, so the answer fits you; photos and text you send to Scan, Translate and Viết content; and the photos in reviews you publish, which are checked for safety before publication when that check is running. Background messages (morning, weekly and deal) and price alerts use your personal details only if you agree in the TappyAI iPhone app (Profile > Settings > Privacy Policy, where you can also withdraw). Without agreement, those messages are sent without personal details, and price alerts are not sent. Group suggestions use only the details of members who have agreed themselves; other members are counted but not described. Under OpenAI’s Services Agreement, OpenAI uses API content only to provide its services, comply with law, enforce its policies and prevent abuse, and does not use it to develop or improve its services unless the customer explicitly agrees. Under OpenAI’s Data Processing Addendum, OpenAI keeps its personnel bound by confidentiality, applies appropriate security measures, notifies personal data breaches without undue delay, requires its sub-processors (listed at platform.openai.com/subprocessors) to meet comparable obligations, and returns or deletes customer data at the customer’s instruction when the contract ends, unless the law requires retention. OpenAI’s API documentation states that abuse-monitoring logs are kept for up to 30 days by default, unless the law requires longer or it is needed to protect services or third parties from harm, and that data sent to the API is not used to train or improve its models unless the customer explicitly opts in. We do not state that OpenAI keeps no copy of your content. We require OpenAI to protect this data to at least the same standard as this policy describes, under OpenAI’s Services Agreement and Data Processing Addendum.',
-  'legal.privacy.s3.b2': 'Google search services and Serper — retrieve search and place results.',
+  'legal.privacy.s3.b1': 'OpenAI (OpenAI OpCo, LLC) processes the content you send to our AI features to write the assistant’s answers, read photos, translate and write content, when you use those features. OpenAI receives: your name, city, age or age group, and gender, if you set them in your profile; your saved preferences and AI memory (which the AI model also updates from your chats); the messages you type; the search results and places the assistant looks up for you; your location (coordinates) only when you allow location sharing, so the answer fits you; photos and text you send to Scan, Translate and Viết content; and the photos in reviews you publish, which are checked for safety before publication when that check is running. Background messages (morning, deal and weekly recap) are written by OpenAI from your saved preferences and favourite cuisines, the home area or destination in your AI memory and, for the weekly recap, your recent chat topics, travel companions and number of chats; your name is not sent. Price alerts send the product name you watch to OpenAI. Group suggestions send the name, budget, food preferences, dietary needs and area of each member who has an account, as the member entered them when joining the group; a member without an account is never described and is only counted. If you use the TappyAI iPhone app and have not agreed to AI processing of your personal data there, none of these personal details is sent for you: background messages are plain, price alerts are not checked, and in a group suggestion you are only counted. To stop background messages on the web, turn off “Push notifications” in Inbox > Notification settings on each browser. To stop price alerts, delete the watch in Profile > Price tracking. To change what the assistant knows about you, edit “My preferences” and “What Tappy knows about you”. To withdraw your agreement in the iPhone app, turn off the AI-processing switch on the Privacy Policy screen. To remove your details from a group, delete your account. Under OpenAI’s Services Agreement, OpenAI uses API content only to provide its services, comply with law, enforce its policies and prevent abuse, and does not use it to develop or improve its services unless the customer explicitly agrees. Under OpenAI’s Data Processing Addendum, OpenAI keeps its personnel bound by confidentiality, applies appropriate security measures, notifies personal data breaches without undue delay, requires its sub-processors (listed at platform.openai.com/subprocessors) to meet comparable obligations, and returns or deletes customer data at the customer’s instruction when the contract ends, unless the law requires retention. OpenAI’s API documentation states that abuse-monitoring logs are kept for up to 30 days by default, unless the law requires longer or it is needed to protect services or third parties from harm, and that data sent to the API is not used to train or improve its models unless the customer explicitly opts in. We do not state that OpenAI keeps no copy of your content.',
+  'legal.privacy.s3.b2': 'Google search and Google Maps Platform (Places) services, and Serper — retrieve search and place results. These receive the search text, not your account details.',
   'legal.privacy.s3.b3': 'Supabase — hosts our database, authentication and file storage.',
   'legal.privacy.s3.b4': 'Vercel — hosts the website.',
   'legal.privacy.s3.b8':
     'Google Cloud Storage — stores the photos, video and audio you upload.',
   'legal.privacy.s3.b5':
-    'OpenStreetMap Nominatim — turns coordinates into a place name when you share your location.',
-  'legal.privacy.s3.b6': 'Stripe — processes payment if you subscribe to a paid plan.',
+    'OpenStreetMap (Nominatim and Overpass) — turns coordinates into a place name when you share your location, and lists nearby places and hotels.',
+  'legal.privacy.s3.b6': 'Apple — handles sign-in when you choose Sign in with Apple in the iPhone app.',
   'legal.privacy.s3.b7': 'Google and Zalo — handle sign-in when you choose those options.',
   'legal.privacy.s3.b9':
     'Google Analytics (website) and Google Analytics for Firebase (Android app) — measure how the service is used, from usage events such as the screens and features you open. The Android app does not collect the advertising ID.',
@@ -71,43 +76,52 @@ export const en: Record<string, string> = {
     'Firebase Cloud Messaging (Google) — delivers push notifications to the Android app when you turn them on, using a device token.',
   'legal.privacy.s3.b11':
     'ACCESSTRADE — when you open a partner (affiliate) link, TappyAI attaches a new random code to that one click. The code is different on every click and the partner cannot tell who you are or link your clicks together. TappyAI keeps, on its own servers only, which account or guest session each code belongs to, together with the time, the partner and the link, for 12 months to reconcile partner commissions, then deletes it. The partner’s site then applies its own privacy policy.',
+  'legal.privacy.s3.b12': 'wttr.in — provides the weather for a place name; it receives only that name.',
+  'legal.privacy.s3.b13':
+    'Upstash Redis — keeps usage counters (daily question allowance, rate limits), short-lived cached search results, and the state of your current consultation (what you asked and the options shown) for up to 30 days, under a key that cannot be read back to your account.',
+  'legal.privacy.s3.b14': 'Brevo — sends the sign-in and account emails on our behalf.',
   'legal.privacy.s3.p1': 'These providers process data according to their own privacy policies.',
   'legal.privacy.s3.p2':
     'If you turn on notifications, your browser or device also creates a push subscription, which we store in order to deliver those notifications.',
-  'legal.privacy.s3.p3':
-    'If you use voice input, your speech is transcribed by your browser or device’s own speech service, which may process the audio on its provider’s servers. TappyAI receives only the resulting text and never records, stores or uploads the audio itself.',
+  'legal.privacy.s3.p3': 'If you use voice input, your speech is transcribed by your browser or device’s own speech service (for example Google on Android or Apple on iPhone), which may process the audio on its provider’s servers. TappyAI receives only the resulting text and never records, stores or uploads the audio itself.',
+  'legal.privacy.s3.p4': 'Scam Shield: a link you check is sent to our checking service, which looks it up with security and domain-information providers (which may include Google Web Risk). If you ask it about a message, the text is analysed by OpenAI unless the message is only a link; a screenshot you choose to analyse is sent to OpenAI to be read. A QR code is read on your device — the picture is not uploaded, only the link inside it is checked. We do not store the message, the screenshot or the QR picture, and we do not keep scammers’ phone numbers or accounts; your check history stays on your device.',
 
   'legal.privacy.s4.heading': '4. Data Storage and Security',
   'legal.privacy.s4.p1':
     'User data is securely stored using Supabase infrastructure with authentication and access controls. Photos, video and audio you upload are stored in Google Cloud Storage.',
   'legal.privacy.s4.p2':
     'Only authenticated users can access their own account information and conversation history.',
+  'legal.privacy.s4.p3': 'How long we keep data: your account data is kept while your account exists and is deleted when you delete it (see tappyai.com/delete-account). Specific periods: security logs of administrative actions up to 12 months, with the IP address and browser information in them deleted after 90 days; partner-link click records 12 months; the state of your current consultation up to 30 days. Reports and moderation records are kept for safety and legal compliance, without a link to your account once it is deleted.',
+  'legal.privacy.s4.p4': 'If an account that was permanently locked for serious violations is deleted, we keep only a one-way code (hash) of its email address so that the same address cannot simply sign up again. Nothing else about that person is kept.',
 
   'legal.privacy.s5.heading': '5. Your Rights',
   'legal.privacy.s5.lead': 'You may:',
   'legal.privacy.s5.b1': 'Sign out at any time.',
   'legal.privacy.s5.b2':
     'Review, correct or delete what the assistant remembers about you, under Settings → Memory.',
-  'legal.privacy.s5.b3':
-    'Request deletion of your account and associated data by contacting our support team.',
+  'legal.privacy.s5.b3': 'Delete your account yourself, at once, inside the app (Settings → Delete account) or on the web at tappyai.com/delete-account. Your data is removed right away; that page says exactly what is removed and what stays without a link to you.',
+  'legal.privacy.s5.b4': 'Report content or a person, block a user, and appeal a moderation decision about your own content once (see “Reports, blocking and moderation” below).',
+  'legal.privacy.s8.heading': '6. Reports, Blocking and Moderation',
+  'legal.privacy.s8.p1': 'You can report a post, comment or person and block a user from the app. A report only places the content in a review queue; it never removes anything by itself. A person reviews it against our Community Guidelines (tappyai.com/community-guidelines) and decides.',
+  'legal.privacy.s8.p2': 'If we take action on your content or account, you receive a notice that names the rule, the action and how to appeal. You can appeal each decision once within 30 days, on the web at tappyai.com/profile/notices or by email to support@tappyai.com.',
+  'legal.privacy.s8.p3': 'The person you report is never told who reported them. Your block list is visible only to you.',
 
-  'legal.privacy.s6.heading': '6. Changes to This Policy',
+  'legal.privacy.s6.heading': '7. Changes to This Policy',
   'legal.privacy.s6.p1': 'We may update this Privacy Policy from time to time.',
   'legal.privacy.s6.p2': 'The latest version will always be available on this page.',
 
-  'legal.privacy.s7.heading': '7. Contact',
+  'legal.privacy.s7.heading': '8. Contact',
 
   // ------------------------------------------------------------------ terms
   'legal.terms.title': 'Terms of Service',
-  'legal.terms.effective': 'Effective Date: August 2026',
+  'legal.terms.effective': 'Effective Date: 10 October 2026',
 
   'legal.terms.s1.heading': '1. Introduction',
   'legal.terms.s1.p1':
     'TappyAI is an AI assistant that helps you find places to eat, shop, relax and travel, along with related reference information. By using TappyAI, you agree to the terms below.',
 
   'legal.terms.s2.heading': '2. Your Account',
-  'legal.terms.s2.p1':
-    'You sign in with a Google or Zalo account to use TappyAI. You are responsible for keeping your account secure and for activity that happens under it.',
+  'legal.terms.s2.p1': 'You sign in with a Google, Zalo or Apple account, or with an email address and password, to use TappyAI. TappyAI is for people aged 18 and over; you confirm that you are 18 or older. You are responsible for keeping your account secure and for activity that happens under it.',
 
   'legal.terms.s3.heading': '3. Information Provided by the AI',
   'legal.terms.s3.p1':
@@ -116,6 +130,11 @@ export const en: Record<string, string> = {
   'legal.terms.s4.heading': '4. Acceptable Use',
   'legal.terms.s4.p1':
     'You agree not to use TappyAI for unlawful or harmful purposes, or in any way that infringes the rights of others.',
+  'legal.terms.s4.p2': 'Posts, comments, profiles and messages must follow our Community Guidelines. Content that breaks them can be removed, and accounts can be restricted or locked after a review. If we act against your content or account you will be told why and can appeal once.',
+  'legal.terms.s4.p3':
+    'TappyAI has zero tolerance for objectionable content and abusive users. You must not post content that is hateful, harassing, violent, sexual, endangers or exploits children, promotes self-harm, or is otherwise unlawful, and you must not abuse other users. You can report any post, comment or user, and block any user. A report asks us to review the content; it is not a finding that a rule was broken. We aim to review every report within 24 hours; this is a target, not a guarantee. We remove content that breaks the rules and restrict or remove the accounts responsible.',
+  'legal.terms.s4.link': 'Community Guidelines',
+  'legal.terms.s4.linkText': 'tappyai.com/community-guidelines',
 
   'legal.terms.s5.heading': '5. Changes to These Terms',
   'legal.terms.s5.p1':
@@ -169,14 +188,14 @@ export const en: Record<string, string> = {
 
 
   'legal.delete.title': 'Delete Your TappyAI Account',
-  'legal.delete.effective': 'Last updated: 28 September 2026',
+  'legal.delete.effective': 'Last updated: 2 October 2026',
   'legal.delete.s1.heading': '1. How to Delete Your Account',
   'legal.delete.s1.lead': 'You can delete your TappyAI account yourself, from inside the app (Android or web). Deletion happens immediately and cannot be undone.',
   'legal.delete.s1.step1': 'Open TappyAI and sign in.',
   'legal.delete.s1.step2': 'Go to Me → Settings.',
   'legal.delete.s1.step3': 'Choose Delete account.',
   'legal.delete.s1.step4': 'Type DELETE (XÓA in Vietnamese) to confirm. Your account is deleted at once and you are signed out.',
-  'legal.delete.s1.p2': 'If you can no longer sign in, email the support address at the bottom of this page from the email address of your account. We verify that the request comes from the owner of the account and delete it within 30 days.',
+  'legal.delete.s1.p2': 'If you can no longer sign in, email the support address at the bottom of this page from the email address of your account. We verify that the request comes from the owner of the account, and then delete the account.',
   'legal.delete.s2.heading': '2. What Happens Next',
   'legal.delete.s2.p1': 'Deleting the account removes your data from our database at once. The photos, videos and audio you uploaded are removed from our file storage within 48 hours after that.',
   'legal.delete.s2.p2': 'If you sign in again later with the same Google account or email address, you start with a new, empty account.',
@@ -197,9 +216,9 @@ export const en: Record<string, string> = {
   'legal.delete.s3b.b2': 'Reports and moderation decisions about content or accounts are kept for safety and legal compliance, without a link to your account.',
   'legal.delete.s4.heading': '5. Data We May Retain',
   'legal.delete.s4.p1': 'We keep a limited amount of information after deletion, only where the law or a legitimate obligation requires it:',
-  'legal.delete.s4.b1': 'Payment records held by our payment provider, for as long as tax and accounting law requires.',
+  'legal.delete.s4.b1': 'A one-way code (hash) of the email address of an account that was permanently locked for serious violations, so the same address cannot simply sign up again. Nothing else about that person is kept.',
   'legal.delete.s4.b2': 'Security logs of administrative actions, kept for up to 12 months. The IP address and browser information in them are deleted after 90 days, and these logs do not store email addresses.',
-  'legal.delete.s4.b3': 'Server logs used to keep the service running, kept for up to 30 days and then deleted.',
+  'legal.delete.s4.b3': 'Server logs used to keep the service running, kept for a short period and then deleted automatically.',
   'legal.delete.s4.p2': 'Some copies are outside our control and may remain for a while:',
   'legal.delete.s4.c1': 'A photo or video that someone already viewed can stay on their own device — in their browser or app — for up to one day after we remove it from our storage.',
   'legal.delete.s4.c2': 'Videos uploaded before 28 September 2026 may remain reachable through their old link for up to one year, because copies of them were stored in Google\'s network before we changed how videos are stored, and we cannot recall those copies.',
@@ -246,14 +265,14 @@ export const en: Record<string, string> = {
 }
 
 export const vi: Record<string, string> = {
+  ...communityVi,
   // ---------------------------------------------------------------- privacy
   'legal.privacy.title': 'Chính sách bảo mật',
-  'legal.privacy.effective': 'Ngày hiệu lực: Tháng 9 năm 2026',
+  'legal.privacy.effective': 'Ngày hiệu lực: Tháng 10 năm 2026',
 
   'legal.privacy.s1.heading': '1. Thông tin chúng tôi thu thập',
   'legal.privacy.s1.lead': 'TappyAI có thể thu thập:',
-  'legal.privacy.s1.b1':
-    'Thông tin tài khoản Google (tên, địa chỉ email, ảnh đại diện) khi bạn đăng nhập bằng Google. TappyAI cũng hỗ trợ đăng nhập bằng Zalo.',
+  'legal.privacy.s1.b1': 'Thông tin tài khoản khi bạn đăng nhập: bằng Google (tên, địa chỉ email, ảnh đại diện), bằng Zalo (tên và ảnh đại diện), bằng Apple trên iPhone, hoặc bằng địa chỉ email và mật khẩu.',
   'legal.privacy.s1.b2': 'Lịch sử trò chuyện với trợ lý AI.',
   'legal.privacy.s1.b3': 'Thông tin tài khoản cơ bản cần thiết để cung cấp dịch vụ.',
   'legal.privacy.s1.b4':
@@ -266,10 +285,12 @@ export const vi: Record<string, string> = {
     'Vị trí chính xác (tuỳ chọn). Chỉ khi bạn cho phép, ứng dụng gửi tọa độ chính xác của thiết bị kèm yêu cầu để tìm địa điểm quanh bạn. Bạn có thể từ chối hoặc thu hồi quyền bất cứ lúc nào mà vẫn dùng được TappyAI; ứng dụng không thu vị trí khi chạy nền.',
   'legal.privacy.s1.b8':
     'Thông tin sử dụng và thiết bị — các trang bạn xem, nội dung bạn tìm kiếm, các danh mục, địa điểm, ưu đãi và bài đánh giá bạn tương tác, các tính năng bạn dùng, cùng với loại thiết bị, hệ điều hành, phiên bản ứng dụng, ngôn ngữ, mã phiên và quốc gia được xác định từ địa chỉ IP của bạn.',
-  'legal.privacy.s1.b9':
-    'Ngày sinh của bạn, để xác nhận bạn đủ 18 tuổi trước khi dùng trợ lý AI, gợi ý và đăng bài. Khi chưa có tài khoản, ngày sinh được giữ trên thiết bị và gửi kèm yêu cầu của bạn.',
+  'legal.privacy.s1.b9': 'Ngày sinh của bạn, để xác nhận bạn đủ 18 tuổi. TappyAI dành cho người từ 18 tuổi trở lên: bạn cần đủ 18 tuổi để dùng trợ lý AI, gợi ý và đăng bài. Khi chưa có tài khoản, ngày sinh được giữ trên thiết bị và gửi kèm yêu cầu của bạn.',
   'legal.privacy.s1.b10':
     'Nội dung bạn tạo: bài review, ảnh và clip bạn đăng, bình luận, phần giới thiệu trên hồ sơ và tin nhắn bạn gửi cho người dùng khác.',
+  'legal.privacy.s1.b11': 'Báo cáo, chặn và kiểm duyệt: khi bạn báo cáo một bài, bình luận hoặc người dùng, chúng tôi lưu báo cáo (đối tượng bị báo, lý do bạn chọn và ghi chú ngắn nếu bạn thêm); khi bạn chặn ai đó, chúng tôi lưu việc chặn; khi chúng tôi xem xét nội dung theo Quy tắc cộng đồng, chúng tôi lưu quyết định (quy tắc, hành động, ngày) và kháng nghị của bạn nếu có.',
+  'legal.privacy.s1.b12': 'Mã thông báo của thiết bị — chỉ khi bạn bật thông báo (Firebase Cloud Messaging trên Android, đăng ký nhận thông báo đẩy trên trình duyệt).',
+  'legal.privacy.s1.b13': 'Ảnh bạn gửi cho trợ lý hoặc cho tính năng Scan, được phân tích để trả lời bạn (xem mục «Dịch vụ bên thứ ba»).',
   'legal.privacy.s1.note':
     'Nếu bạn sử dụng mà không đăng nhập, các sự kiện sử dụng được ghi nhận theo một mã ẩn danh ngẫu nhiên thay vì theo tài khoản.',
 
@@ -283,20 +304,21 @@ export const vi: Record<string, string> = {
   'legal.privacy.s2.b5': 'Xác nhận và quản lý các đặt chỗ bạn thực hiện.',
   'legal.privacy.s2.b6': 'Cải thiện chất lượng và độ tin cậy của dịch vụ.',
   'legal.privacy.s2.b7': 'Bảo vệ an toàn của nền tảng.',
-  'legal.privacy.s2.note': 'Chúng tôi chỉ dùng thông tin cá nhân của bạn cho các mục đích nêu trên.',
+  'legal.privacy.s2.b8': 'Xem xét báo cáo và thực thi Quy tắc cộng đồng, và ngăn tài khoản bị khoá vĩnh viễn đăng ký lại bằng chính địa chỉ email đó.',
+  'legal.privacy.s2.note': 'Chúng tôi không bán thông tin cá nhân của bạn.',
 
   'legal.privacy.s3.heading': '3. Dịch vụ bên thứ ba',
   'legal.privacy.s3.lead':
     'Để cung cấp câu trả lời AI, tìm kiếm và các tính năng cốt lõi khác, TappyAI có thể gửi các yêu cầu liên quan của người dùng tới những nhà cung cấp đáng tin cậy, bao gồm:',
-  'legal.privacy.s3.b1': 'OpenAI (OpenAI OpCo, LLC) xử lý nội dung bạn gửi cho tính năng AI của chúng tôi để viết câu trả lời của trợ lý, đọc ảnh, dịch và viết nội dung khi bạn dùng các tính năng đó. OpenAI nhận: tên, thành phố, tuổi (hoặc nhóm tuổi) và giới tính, nếu bạn đã điền trong hồ sơ; sở thích đã lưu và bộ nhớ AI (mô hình AI cũng cập nhật bộ nhớ này từ các cuộc trò chuyện); tin nhắn bạn gõ; kết quả tìm kiếm và địa điểm trợ lý tra cứu cho bạn; vị trí (tọa độ) chỉ khi bạn cho phép chia sẻ vị trí, để câu trả lời phù hợp với bạn; ảnh và văn bản bạn gửi cho Scan, Dịch và Viết content; và ảnh trong bài review bạn đăng, được kiểm tra an toàn trước khi đăng khi bước kiểm tra này đang chạy. Tin nhắn tự động (buổi sáng, tổng kết tuần, deal) và thông báo giá chỉ dùng thông tin cá nhân khi bạn đồng ý trong ứng dụng TappyAI trên iPhone (Cá nhân > Cài đặt > Chính sách bảo mật, nơi bạn cũng có thể thu hồi). Nếu chưa đồng ý, các tin nhắn đó được gửi không kèm thông tin cá nhân, và không có thông báo giá. Gợi ý cho nhóm chỉ dùng thông tin của thành viên đã tự đồng ý; thành viên khác chỉ được tính là số người. Theo Điều khoản dịch vụ của OpenAI, OpenAI chỉ dùng nội dung API để cung cấp dịch vụ, tuân thủ pháp luật, thực thi chính sách và ngăn lạm dụng, và không dùng để phát triển hoặc cải thiện dịch vụ trừ khi khách hàng đồng ý rõ ràng. Theo Thỏa thuận xử lý dữ liệu (DPA) của OpenAI, OpenAI giữ nhân sự trong nghĩa vụ bảo mật, áp dụng biện pháp bảo mật phù hợp, thông báo vi phạm dữ liệu cá nhân không chậm trễ quá mức, yêu cầu nhà xử lý phụ (liệt kê tại platform.openai.com/subprocessors) có nghĩa vụ tương đương, và trả hoặc xóa dữ liệu theo chỉ dẫn của khách hàng khi hợp đồng chấm dứt, trừ khi pháp luật yêu cầu giữ. Tài liệu API của OpenAI nêu rằng nhật ký giám sát lạm dụng được giữ tối đa 30 ngày theo mặc định, trừ khi pháp luật yêu cầu lâu hơn hoặc cần để bảo vệ dịch vụ hoặc bên thứ ba khỏi gây hại; và dữ liệu gửi qua API không được dùng để huấn luyện hoặc cải thiện mô hình, trừ khi khách hàng chủ động chọn chia sẻ. Chúng tôi không khẳng định OpenAI không giữ bản sao nội dung của bạn. Chúng tôi yêu cầu OpenAI bảo vệ dữ liệu này ít nhất ở mức tương đương với chính sách này, theo Điều khoản dịch vụ và DPA của OpenAI.',
-  'legal.privacy.s3.b2': 'Dịch vụ tìm kiếm của Google và Serper — lấy kết quả tìm kiếm và địa điểm.',
+  'legal.privacy.s3.b1': 'OpenAI (OpenAI OpCo, LLC) xử lý nội dung bạn gửi cho tính năng AI của chúng tôi để viết câu trả lời của trợ lý, đọc ảnh, dịch và viết nội dung khi bạn dùng các tính năng đó. OpenAI nhận: tên, thành phố, tuổi (hoặc nhóm tuổi) và giới tính, nếu bạn đã điền trong hồ sơ; sở thích đã lưu và bộ nhớ AI (mô hình AI cũng cập nhật bộ nhớ này từ các cuộc trò chuyện); tin nhắn bạn gõ; kết quả tìm kiếm và địa điểm trợ lý tra cứu cho bạn; vị trí (tọa độ) chỉ khi bạn cho phép chia sẻ vị trí, để câu trả lời phù hợp với bạn; ảnh và văn bản bạn gửi cho Scan, Dịch và Viết content; và ảnh trong bài review bạn đăng, được kiểm tra an toàn trước khi đăng khi bước kiểm tra này đang chạy. Tin nhắn tự động (buổi sáng, deal và tổng kết tuần) được OpenAI viết từ sở thích và món ăn yêu thích đã lưu, khu vực sinh sống hoặc điểm đến trong bộ nhớ AI, và với tổng kết tuần, thêm chủ đề trò chuyện gần đây, người đi cùng và số lần trò chuyện; tên của bạn không được gửi. Thông báo giá gửi tên sản phẩm bạn theo dõi cho OpenAI. Gợi ý nhóm gửi tên, ngân sách, sở thích ăn uống, yêu cầu ăn kiêng và khu vực của mỗi thành viên có tài khoản, đúng như thành viên đã điền khi tham gia nhóm; thành viên không có tài khoản không bao giờ được mô tả và chỉ được tính là số người. Nếu bạn dùng ứng dụng TappyAI trên iPhone và chưa đồng ý để AI xử lý dữ liệu cá nhân trong ứng dụng đó, các thông tin cá nhân trên sẽ không được gửi cho bạn: tin nhắn tự động là bản chung, thông báo giá không được kiểm tra, và trong gợi ý nhóm bạn chỉ được tính là một thành viên. Để dừng tin nhắn tự động trên web, tắt “Thông báo đẩy” trong Hộp thư > Cài đặt thông báo trên mỗi trình duyệt. Để dừng thông báo giá, xóa theo dõi trong Hồ sơ > Theo dõi giá. Để thay đổi những gì trợ lý biết về bạn, sửa “Sở thích của tôi” và “Tappy biết gì về bạn”. Để rút đồng ý trên iPhone, tắt công tắc xử lý AI trong màn hình Chính sách bảo mật. Để xóa thông tin của bạn khỏi một nhóm, hãy xóa tài khoản. Theo Điều khoản dịch vụ của OpenAI, OpenAI chỉ dùng nội dung API để cung cấp dịch vụ, tuân thủ pháp luật, thực thi chính sách và ngăn lạm dụng, và không dùng để phát triển hoặc cải thiện dịch vụ trừ khi khách hàng đồng ý rõ ràng. Theo Thỏa thuận xử lý dữ liệu (DPA) của OpenAI, OpenAI giữ nhân sự trong nghĩa vụ bảo mật, áp dụng biện pháp bảo mật phù hợp, thông báo vi phạm dữ liệu cá nhân không chậm trễ quá mức, yêu cầu nhà xử lý phụ (liệt kê tại platform.openai.com/subprocessors) cam kết các nghĩa vụ tương tự, và trả hoặc xóa dữ liệu theo chỉ dẫn của khách hàng khi hợp đồng chấm dứt, trừ khi pháp luật yêu cầu giữ. Tài liệu API của OpenAI nêu rằng nhật ký giám sát lạm dụng được giữ tối đa 30 ngày theo mặc định, trừ khi pháp luật yêu cầu lâu hơn hoặc cần để bảo vệ dịch vụ hoặc bên thứ ba khỏi gây hại; và dữ liệu gửi qua API không được dùng để huấn luyện hoặc cải thiện mô hình, trừ khi khách hàng chủ động chọn chia sẻ. Chúng tôi không khẳng định OpenAI không giữ bản sao nội dung của bạn.',
+  'legal.privacy.s3.b2': 'Dịch vụ tìm kiếm của Google, Google Maps Platform (Places) và Serper — lấy kết quả tìm kiếm và địa điểm. Các bên này nhận nội dung tìm kiếm, không nhận thông tin tài khoản của bạn.',
   'legal.privacy.s3.b3': 'Supabase — lưu trữ cơ sở dữ liệu, xác thực và tệp của chúng tôi.',
   'legal.privacy.s3.b4': 'Vercel — vận hành trang web.',
   'legal.privacy.s3.b8':
     'Google Cloud Storage — lưu trữ ảnh, video và âm thanh bạn tải lên.',
   'legal.privacy.s3.b5':
-    'OpenStreetMap Nominatim — chuyển tọa độ thành tên địa điểm khi bạn chia sẻ vị trí.',
-  'legal.privacy.s3.b6': 'Stripe — xử lý thanh toán nếu bạn đăng ký gói trả phí.',
+    'OpenStreetMap (Nominatim và Overpass) — chuyển tọa độ thành tên địa điểm khi bạn chia sẻ vị trí, và liệt kê địa điểm, khách sạn gần đó.',
+  'legal.privacy.s3.b6': 'Apple — xử lý đăng nhập khi bạn chọn Đăng nhập bằng Apple trong ứng dụng iPhone.',
   'legal.privacy.s3.b7': 'Google và Zalo — xử lý đăng nhập khi bạn chọn các phương thức đó.',
   'legal.privacy.s3.b9':
     'Google Analytics (trang web) và Google Analytics for Firebase (ứng dụng Android) — đo cách dịch vụ được sử dụng, qua các sự kiện sử dụng như màn hình và tính năng bạn mở. Ứng dụng Android không thu mã quảng cáo (advertising ID).',
@@ -304,43 +326,53 @@ export const vi: Record<string, string> = {
     'Firebase Cloud Messaging (Google) — gửi thông báo đẩy tới ứng dụng Android khi bạn bật thông báo, dùng một mã thiết bị (token).',
   'legal.privacy.s3.b11':
     'ACCESSTRADE — mỗi lần bạn mở link đối tác (affiliate), TappyAI gắn một mã ngẫu nhiên mới cho riêng lần bấm đó. Mã khác nhau ở mỗi lần bấm, đối tác không biết bạn là ai và không nối được các lần bấm của bạn với nhau. TappyAI chỉ lưu trên máy chủ của mình mã đó thuộc tài khoản hay phiên khách nào, kèm thời điểm, đối tác và đường link, trong 12 tháng để đối soát hoa hồng, sau đó xoá. Sau đó trang của đối tác áp dụng chính sách bảo mật riêng của họ.',
+  'legal.privacy.s3.b12': 'wttr.in — cung cấp thời tiết theo tên địa điểm; chỉ nhận tên địa điểm đó.',
+  'legal.privacy.s3.b13':
+    'Upstash Redis — lưu bộ đếm sử dụng (hạn mức câu hỏi mỗi ngày, giới hạn tần suất), kết quả tìm kiếm lưu đệm ngắn hạn, và trạng thái cuộc tư vấn hiện tại của bạn (bạn đã hỏi gì, các lựa chọn đã hiện) tối đa 30 ngày, dưới một khóa băm không đọc ngược ra được tài khoản.',
+  'legal.privacy.s3.b14': 'Brevo — thay mặt chúng tôi gửi email đăng nhập và email về tài khoản.',
   'legal.privacy.s3.p1': 'Các nhà cung cấp này xử lý dữ liệu theo chính sách bảo mật riêng của họ.',
   'legal.privacy.s3.p2':
     'Nếu bạn bật thông báo, trình duyệt hoặc thiết bị của bạn cũng tạo một đăng ký nhận thông báo đẩy, và chúng tôi lưu đăng ký đó để có thể gửi các thông báo này.',
   'legal.privacy.s3.p3':
     'Nếu bạn dùng nhập liệu bằng giọng nói, lời nói của bạn được chuyển thành văn bản bởi dịch vụ nhận dạng giọng nói của chính trình duyệt hoặc thiết bị, và dịch vụ đó có thể xử lý âm thanh trên máy chủ của họ. TappyAI chỉ nhận phần văn bản thu được, không ghi âm, không lưu và không tải lên âm thanh.',
+  'legal.privacy.s3.p4': 'Scam Shield: liên kết bạn kiểm tra được gửi tới dịch vụ kiểm tra của chúng tôi, nơi tra cứu với các nhà cung cấp dữ liệu bảo mật và tên miền (có thể gồm Google Web Risk). Nếu bạn hỏi về một tin nhắn, nội dung chữ được OpenAI phân tích, trừ khi tin nhắn chỉ là một liên kết; ảnh chụp màn hình bạn chọn phân tích được gửi tới OpenAI để đọc. Mã QR được đọc ngay trên thiết bị của bạn — ảnh không được tải lên, chỉ liên kết bên trong mới được kiểm tra. Chúng tôi không lưu tin nhắn, ảnh chụp màn hình hay ảnh mã QR, và không lưu số điện thoại hay tài khoản của kẻ lừa đảo; lịch sử kiểm tra nằm trên thiết bị của bạn.',
 
   'legal.privacy.s4.heading': '4. Lưu trữ và bảo mật dữ liệu',
   'legal.privacy.s4.p1':
     'Dữ liệu người dùng được lưu trữ an toàn trên hạ tầng Supabase với cơ chế xác thực và kiểm soát truy cập. Ảnh, video và âm thanh bạn tải lên được lưu trên Google Cloud Storage.',
   'legal.privacy.s4.p2':
     'Chỉ người dùng đã đăng nhập mới có thể truy cập thông tin tài khoản và lịch sử trò chuyện của chính mình.',
+  'legal.privacy.s4.p3': 'Thời hạn lưu: dữ liệu tài khoản được giữ trong khi tài khoản còn và bị xóa khi bạn xóa tài khoản (xem tappyai.com/delete-account). Một số thời hạn cụ thể: nhật ký bảo mật của thao tác quản trị tối đa 12 tháng, trong đó địa chỉ IP và thông tin trình duyệt bị xóa sau 90 ngày; bản ghi lượt bấm link đối tác 12 tháng; trạng thái cuộc tư vấn hiện tại tối đa 30 ngày. Báo cáo và quyết định kiểm duyệt được giữ để bảo đảm an toàn và tuân thủ pháp luật, không còn liên kết với tài khoản của bạn sau khi tài khoản bị xóa.',
+  'legal.privacy.s4.p4': 'Nếu một tài khoản bị khoá vĩnh viễn vì vi phạm nghiêm trọng rồi bị xóa, chúng tôi chỉ giữ một mã băm một chiều của địa chỉ email để cùng địa chỉ đó không thể đăng ký lại ngay. Không giữ gì khác về người đó.',
 
   'legal.privacy.s5.heading': '5. Quyền của bạn',
   'legal.privacy.s5.lead': 'Bạn có thể:',
   'legal.privacy.s5.b1': 'Đăng xuất bất kỳ lúc nào.',
   'legal.privacy.s5.b2':
     'Xem lại, chỉnh sửa hoặc xóa những gì trợ lý ghi nhớ về bạn, trong Cài đặt → Trí nhớ.',
-  'legal.privacy.s5.b3':
-    'Yêu cầu xóa tài khoản và dữ liệu liên quan bằng cách liên hệ đội ngũ hỗ trợ của chúng tôi.',
+  'legal.privacy.s5.b3': 'Tự xóa tài khoản của bạn ngay lập tức, trong ứng dụng (Cài đặt → Xóa tài khoản) hoặc trên web tại tappyai.com/delete-account. Dữ liệu của bạn bị xóa ngay; trang đó nói rõ cái gì bị xóa và cái gì còn lại nhưng không gắn với bạn.',
+  'legal.privacy.s5.b4': 'Báo cáo nội dung hoặc người dùng, chặn người dùng, và kháng nghị một lần với quyết định kiểm duyệt về nội dung của chính bạn (xem mục «Báo cáo, chặn và kiểm duyệt» bên dưới).',
+  'legal.privacy.s8.heading': '6. Báo cáo, chặn và kiểm duyệt',
+  'legal.privacy.s8.p1': 'Bạn có thể báo cáo một bài, bình luận hoặc người dùng và chặn người dùng từ ứng dụng. Báo cáo chỉ đưa nội dung vào hàng chờ xem xét, tự nó không gỡ gì cả. Một người sẽ xem xét theo Quy tắc cộng đồng của chúng tôi (tappyai.com/community-guidelines) rồi mới quyết định.',
+  'legal.privacy.s8.p2': 'Nếu chúng tôi xử lý nội dung hoặc tài khoản của bạn, bạn nhận được thông báo nêu rõ quy tắc, hành động và cách kháng nghị. Mỗi quyết định được kháng nghị một lần trong 30 ngày, trên web tại tappyai.com/profile/notices hoặc qua email support@tappyai.com.',
+  'legal.privacy.s8.p3': 'Người bị báo cáo không bao giờ được biết ai đã báo cáo. Danh sách chặn của bạn chỉ mình bạn nhìn thấy.',
 
-  'legal.privacy.s6.heading': '6. Thay đổi chính sách',
+  'legal.privacy.s6.heading': '7. Thay đổi chính sách',
   'legal.privacy.s6.p1': 'Chúng tôi có thể cập nhật Chính sách bảo mật này theo thời gian.',
   'legal.privacy.s6.p2': 'Phiên bản mới nhất sẽ luôn có trên trang này.',
 
-  'legal.privacy.s7.heading': '7. Liên hệ',
+  'legal.privacy.s7.heading': '8. Liên hệ',
 
   // ------------------------------------------------------------------ terms
   'legal.terms.title': 'Điều khoản dịch vụ',
-  'legal.terms.effective': 'Ngày hiệu lực: Tháng 8 năm 2026',
+  'legal.terms.effective': 'Ngày hiệu lực: 10 tháng 10 năm 2026',
 
   'legal.terms.s1.heading': '1. Giới thiệu',
   'legal.terms.s1.p1':
     'TappyAI là trợ lý AI giúp bạn tìm kiếm địa điểm ăn uống, mua sắm, spa, giải trí, du lịch và các thông tin tham khảo liên quan. Khi sử dụng TappyAI, bạn đồng ý với các điều khoản dưới đây.',
 
   'legal.terms.s2.heading': '2. Tài khoản',
-  'legal.terms.s2.p1':
-    'Bạn cần đăng nhập bằng tài khoản Google hoặc Zalo để sử dụng TappyAI. Bạn chịu trách nhiệm bảo mật tài khoản của mình và các hoạt động diễn ra dưới tài khoản đó.',
+  'legal.terms.s2.p1': 'Bạn đăng nhập bằng tài khoản Google, Zalo hoặc Apple, hoặc bằng email và mật khẩu, để sử dụng TappyAI. TappyAI dành cho người từ 18 tuổi trở lên; bạn xác nhận mình đủ 18 tuổi. Bạn chịu trách nhiệm bảo mật tài khoản của mình và các hoạt động diễn ra dưới tài khoản đó.',
 
   'legal.terms.s3.heading': '3. Thông tin do AI cung cấp',
   'legal.terms.s3.p1':
@@ -349,6 +381,11 @@ export const vi: Record<string, string> = {
   'legal.terms.s4.heading': '4. Sử dụng hợp lý',
   'legal.terms.s4.p1':
     'Bạn đồng ý không sử dụng TappyAI cho mục đích bất hợp pháp, gây hại hoặc vi phạm quyền của người khác.',
+  'legal.terms.s4.p2': 'Bài đăng, bình luận, hồ sơ và tin nhắn phải tuân theo Quy tắc cộng đồng của chúng tôi. Nội dung vi phạm có thể bị gỡ, và tài khoản có thể bị hạn chế hoặc khoá sau khi được xem xét. Nếu chúng tôi xử lý nội dung hoặc tài khoản của bạn, bạn được thông báo lý do và được kháng nghị một lần.',
+  'legal.terms.s4.p3':
+    'TappyAI không khoan nhượng với nội dung phản cảm và người dùng có hành vi lạm dụng. Bạn không được đăng nội dung thù ghét, quấy rối, bạo lực, khiêu dâm, gây nguy hiểm hoặc bóc lột trẻ em, cổ xúy tự hại hay vi phạm pháp luật, và không được lạm dụng người dùng khác. Bạn có thể báo cáo mọi bài đăng, bình luận hay người dùng và chặn bất kỳ người dùng nào. Báo cáo là yêu cầu chúng tôi xem xét nội dung, không phải kết luận rằng quy tắc đã bị vi phạm. Chúng tôi đặt mục tiêu xem xét mọi báo cáo trong vòng 24 giờ; đây là mục tiêu, không phải cam kết tuyệt đối. Chúng tôi gỡ nội dung vi phạm và hạn chế hoặc xoá tài khoản chịu trách nhiệm.',
+  'legal.terms.s4.link': 'Quy tắc cộng đồng',
+  'legal.terms.s4.linkText': 'tappyai.com/community-guidelines',
 
   'legal.terms.s5.heading': '5. Thay đổi điều khoản',
   'legal.terms.s5.p1':
@@ -396,14 +433,14 @@ export const vi: Record<string, string> = {
 
 
   'legal.delete.title': 'Xóa tài khoản TappyAI',
-  'legal.delete.effective': 'Cập nhật lần cuối: 28 tháng 9 năm 2026',
+  'legal.delete.effective': 'Cập nhật lần cuối: 2 tháng 10 năm 2026',
   'legal.delete.s1.heading': '1. Cách xóa tài khoản',
   'legal.delete.s1.lead': 'Bạn có thể tự xóa tài khoản TappyAI ngay trong ứng dụng (Android hoặc web). Tài khoản bị xóa ngay lập tức và không thể khôi phục.',
   'legal.delete.s1.step1': 'Mở TappyAI và đăng nhập.',
   'legal.delete.s1.step2': 'Vào Tôi → Cài đặt.',
   'legal.delete.s1.step3': 'Chọn Xóa tài khoản.',
   'legal.delete.s1.step4': 'Gõ XÓA (hoặc DELETE nếu dùng tiếng Anh) để xác nhận. Tài khoản bị xóa ngay và bạn được đăng xuất.',
-  'legal.delete.s1.p2': 'Nếu bạn không còn đăng nhập được, hãy gửi email tới địa chỉ hỗ trợ ở cuối trang này từ địa chỉ email của tài khoản. Chúng tôi xác minh yêu cầu đến từ chủ tài khoản và xóa tài khoản trong vòng 30 ngày.',
+  'legal.delete.s1.p2': 'Nếu bạn không còn đăng nhập được, hãy gửi email tới địa chỉ hỗ trợ ở cuối trang này từ địa chỉ email của tài khoản. Chúng tôi xác minh yêu cầu đến từ chủ tài khoản rồi xóa tài khoản.',
   'legal.delete.s2.heading': '2. Điều gì diễn ra sau đó',
   'legal.delete.s2.p1': 'Khi tài khoản bị xóa, dữ liệu của bạn được xóa khỏi cơ sở dữ liệu ngay; ảnh, video và âm thanh bạn đã tải lên được xóa khỏi kho lưu trữ tệp trong vòng 48 giờ sau đó.',
   'legal.delete.s2.p2': 'Nếu sau này bạn đăng nhập lại bằng cùng tài khoản Google hoặc địa chỉ email, bạn sẽ bắt đầu với một tài khoản mới, trống.',
@@ -424,9 +461,9 @@ export const vi: Record<string, string> = {
   'legal.delete.s3b.b2': 'Báo cáo vi phạm và quyết định kiểm duyệt liên quan đến nội dung hoặc tài khoản được giữ để bảo đảm an toàn và tuân thủ pháp luật, không còn liên kết với tài khoản của bạn.',
   'legal.delete.s4.heading': '5. Dữ liệu có thể được lưu lại',
   'legal.delete.s4.p1': 'Chúng tôi chỉ giữ lại một lượng thông tin hạn chế sau khi xóa, khi pháp luật hoặc nghĩa vụ hợp pháp yêu cầu:',
-  'legal.delete.s4.b1': 'Hồ sơ thanh toán do đơn vị xử lý thanh toán lưu giữ, trong thời hạn luật thuế và kế toán yêu cầu.',
+  'legal.delete.s4.b1': 'Mã băm một chiều của địa chỉ email của tài khoản đã bị khoá vĩnh viễn vì vi phạm nghiêm trọng, để cùng địa chỉ đó không thể đăng ký lại ngay. Không giữ gì khác về người đó.',
   'legal.delete.s4.b2': 'Nhật ký bảo mật về các thao tác quản trị, lưu tối đa 12 tháng. Địa chỉ IP và thông tin trình duyệt trong nhật ký được xóa sau 90 ngày, và nhật ký không lưu địa chỉ email.',
-  'legal.delete.s4.b3': 'Nhật ký máy chủ dùng để vận hành dịch vụ, lưu tối đa 30 ngày rồi xóa.',
+  'legal.delete.s4.b3': 'Nhật ký máy chủ dùng để vận hành dịch vụ, được giữ trong thời gian ngắn rồi tự động xóa.',
   'legal.delete.s4.p2': 'Một số bản sao nằm ngoài tầm kiểm soát của chúng tôi và có thể còn trong một thời gian:',
   'legal.delete.s4.c1': 'Ảnh hoặc video mà người khác đã xem có thể còn trên chính thiết bị của họ — trong trình duyệt hoặc ứng dụng — tối đa một ngày sau khi chúng tôi xóa tệp khỏi kho lưu trữ.',
   'legal.delete.s4.c2': 'Video tải lên trước ngày 28/09/2026 có thể vẫn mở được qua đường link cũ tối đa một năm, vì bản sao của chúng đã được lưu trong mạng của Google trước khi chúng tôi thay đổi cách lưu video, và chúng tôi không thể thu hồi các bản sao đó.',

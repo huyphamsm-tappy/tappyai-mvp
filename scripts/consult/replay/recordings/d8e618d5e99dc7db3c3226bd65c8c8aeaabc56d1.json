@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Khoai Lang Nướng\" OR \"Moon Fast Food\" OR \"Năm Giờ Chiều\" Núi khác ngoài núi Bà Đen, gần Sài Gòn site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:13:54.294Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Khoai Lang Nướng\" OR \"Moon Fast Food\" OR \"Năm Giờ Chiều\" Núi khác ngoài núi Bà Đen, gần Sài Gòn site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Mời mọi người tham quan KDL Nhà Mây....#suoithiennhien ...",
+    "link": "https://www.tiktok.com/@suoithiennhien/video/7590232697243553032",
+    "snippet": "Khoai Lang Nướng Phô Mai Tây Ninh · Phở Trộn Nguyễn Gia Đà Lạt · Hồng ... Bạn có dự định đến săn mây hay hành hương tại Núi Bà Đen trong tương lai ...",
+    "position": 1
+   },
+   {
+    "title": "Homestay Hồ Bơi View Núi Gần Núi Bà Đen - nhi.pharmacist",
+    "link": "https://www.tiktok.com/@nhi.pharmacist/video/7620268116831915272",
+    "snippet": "Khoai Lang Nướng Phô Mai Cần Thơ - Quán Ông Chú (52 Lý Tự Trọng). Khoai Lang Nướng Phô Mai nóng hổi, béo ngậy và kéo sợi đang là món ăn chiều ...",
+    "position": 2
+   },
+   {
+    "title": "xuhuongtiktok ##tayninh",
+    "link": "https://www.tiktok.com/@nam2051978/video/7685624884315082004",
+    "snippet": "Điểm nổi bật - Hương vị: khoai lang nướng thơm, ngọt nhẹ, kết hợp bánh tráng giòn. - Phù hợp: món ăn vặt muốn thử khi tham quan hoặc sống ở ...",
+    "position": 3
+   },
+   {
+    "title": "Dẫn hai đứa em đi du lịch nước ngoài mùa mưa. Địa điểm ...",
+    "link": "https://www.tiktok.com/@khoailangthang/video/7521003154209623313",
+    "snippet": "Khoai Lang Nướng Phô Mai Tây Ninh · Khoai Lang Nuong · Highland Coffee Long Xuyên · Khoai Lang Nướng Đà Lạt Menu · Khoai Lang Thang Và Thuỳ Bạn ...",
+    "position": 4
+   },
+   {
+    "title": "\"fan cứng\" của Khoai Lang Thang và mà...",
+    "link": "https://www.tiktok.com/@kenh14official/video/7600331070508223764",
+    "snippet": "Khoai Lang Nướng Đà Lạt Menu · Khoai Lang Nuong · Khoai Tây Ninh · Khoai Lang Thang Và Thuỳ Bạn Thân · Khoai Lang Thang Sinh Ngày Bao Nhiêu.",
+    "position": 5
+   },
+   {
+    "title": "Mê tôm tích tôm hùm chế biến đến ngay Phúc Sài Gòn nha ...",
+    "link": "https://www.tiktok.com/@anchoivungtau72/video/7312800108385520897",
+    "snippet": "Bánh mì Bà Huynh Vũng Tàu — Bánh mì drama Sài Gòn đã mở cửa. Bánh ... Khoai lang nướng phomai Thủ Dầu Một, quán ăn vặt: đậu hũ cá phomai ...",
+    "position": 6
+   },
+   {
+    "title": "Bắp nướng rưới đẫm mắm nêm - món ăn đặc sản của Đắk ...",
+    "link": "https://www.tiktok.com/@sau_trending/video/7535095738573901074",
+    "snippet": "- Khoai lang nướng phô mai: nhiều phô mai nhưng không quá ngọt, hương vị cân bằng. Ấn tượng chung Quán được mô tả là siêu ngon và rẻ. Cách phục ...",
+    "position": 7
+   },
+   {
+    "title": "Ăn Đồ Nướng Chill Chill Cùng Em Gái #QL66v1",
+    "link": "https://www.tiktok.com/@quanglinh_66/video/7674938489003150613",
+    "snippet": "Khoai Lang Nướng Bình Tân · Menu Juju Nướng Bình Tân · Gà Nướng Cơm Lam Tân Phú Hoà Bình · Tủy Bò Nướng Quận Tân Bình. 4690Thích. 185Bình luận.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

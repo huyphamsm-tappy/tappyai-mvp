@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "ốp lưng UAG MagSafe Monarch hoặc Pathfinder iPhone 17 Pro Max (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:44:39.262Z",
+ "body": {
+  "searchParameters": {
+   "q": "ốp lưng UAG MagSafe Monarch hoặc Pathfinder iPhone 17 Pro Max (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp lưng UAG cho iPhone 17 Series",
+    "link": "https://cellphones.com.vn/phu-kien/bao-da-op-lung/iphone/iphone-17/uag.html",
+    "snippet": "Ốp lưng UAG iPhone 17 Series · Hỗ trợ sạc không dây/MagSafe · Mỏng nhẹ · Chống sốc, va đập · Chống trầy xước · Có chân đứng · Hạn chế ngã màu.",
+    "position": 1
+   },
+   {
+    "title": "[iPhone 17 Pro Max] UAG Chính Hãng",
+    "link": "https://shopee.vn/-iPhone-17-Pro-Max-UAG-Ch%C3%ADnh-H%C3%A3ng-Monarch-Pro-Pathfinder-Plasma-Ch%E1%BB%91ng-S%E1%BB%91c-Chu%E1%BA%A9n-Qu%C3%A2n-%C4%90%E1%BB%99i-S%E1%BA%A1c-Magnet-i.898301886.41068409513",
+    "snippet": "[iPhone 17 Pro Max] UAG Chính Hãng - Monarch Pro, Pathfinder, Plasma - Chống Sốc Chuẩn Quân Đội, Sạc Magnet ... Ốp lưng, bao da, miếng dán mặt lưng cho Điện thoại.",
+    "rating": 4.9,
+    "ratingCount": 44,
+    "position": 2
+   },
+   {
+    "title": "So sánh Ốp lưng chống sốc UAG Monarch cho iPhone 12 Pro ...",
+    "link": "https://cellphones.com.vn/so-sanh/op-lung-chong-soc-uag-monarch-cho-iphone-12-pro-max-vs-op-lung-uag-chong-soc-pathfinder-cho-iphone-12-max-pro",
+    "snippet": "So sánh chi tiết về giá, cấu hình, ưu nhược điểm giữa: Ốp lưng chống sốc UAG Monarch cho iPhone 12 Pro Max và Ốp lưng UAG chống sốc Pathfinder cho Apple ...",
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Pathfinder ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-pathfinder-clear-with-magsafe.html",
+    "snippet": "Ốp lưng iPhone 17 Pro Max UAG Pathfinder Clear with MagSafe sở hữu thiết kế trong suốt, được gia cố thêm bằng viền TPU và mô-đun nam châm tích hợp. Sản phẩm có ...",
+    "position": 4
+   },
+   {
+    "title": "So sánh Ốp lưng iPhone 13 Pro Max UAG Pathfinder hỗ trợ sạc ...",
+    "link": "https://cellphones.com.vn/so-sanh/op-lung-iphone-13-pro-max-uag-pathfinder-with-magsafe-vs-op-lung-iphone-13-pro-max-uag-monarch",
+    "snippet": "So sánh chi tiết về giá, cấu hình, ưu nhược điểm giữa: Ốp lưng iPhone 13 Pro Max UAG Pathfinder hỗ trợ sạc Magsafe và Ốp lưng iPhone 13 Pro Max UAG Monarch ...",
+    "position": 5
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Monarch ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-monarch-pro-exclusive-cap-carbon-fiber.html",
+    "snippet": "Dùng được cho. iPhone 17 Pro Max. Tính năng. Lõi Chống Sốc Lớp đệm bảo vệ chống va chạm và sốc. Tương thích MagSafe. Bảo vệ chống va đập từ độ cao 7,6 mét",
+    "position": 6
+   },
+   {
+    "title": "bao da uag giá tốt Tháng 7, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=bao%20da%20uag&urlold=bao-da-uag-iphone-xsmax/1873995943246618333/877968015750663345/%20",
+    "snippet": "UAG explorer thế hệ thứ hai phù hợp cho iPhone 16 pro max iPhone 15 14 Pro MAX iPhone 16 15 12 và giá đỡ Samsung s25ultra S24 S23, có vỏ bảo vệ chống rơi mạnh.",
+    "position": 7
+   },
+   {
+    "title": "Ốp lưng UAG Pathfinder / Civilian / Monarch Pro cho ...",
+    "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-UAG-Pathfinder-Civilian-Monarch-Pro-cho-iPhone-17-Pro-17-Pro-Max-%E2%80%93-b%E1%BA%A3n-cam-ch%E1%BB%91ng-s%E1%BB%91c-chu%E1%BA%A9n-qu%C3%A2n-%C4%91%E1%BB%99i-i.65304483.53902423205",
+    "snippet": "Ốp lưng UAG Pathfinder / Civilian / Monarch Pro cho iPhone 17 Pro / 17 Pro Max – bản cam chống sốc, chuẩn quân đội. outline grey truck icon. Không hỗ trợ.",
+    "rating": 5,
+    "ratingCount": 3,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

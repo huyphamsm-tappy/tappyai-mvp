@@ -53,7 +53,7 @@ export function safeNext(value: string | null | undefined): string {
  */
 export async function zaloConfirmUrl(
   admin: ZaloAdminClient,
-  input: { profile: ZaloProfile; origin: string; next: string; platform: ZaloPlatform },
+  input: { profile: ZaloProfile; origin: string; next: string; platform: ZaloPlatform; appState?: string | null },
 ): Promise<string> {
   const { profile, origin, platform } = input
   const next = safeNext(input.next)
@@ -81,6 +81,6 @@ export async function zaloConfirmUrl(
 
   // The native apps come back through the same page and leave via their custom scheme.
   return `${origin}/auth/confirm?token_hash=${hashed}&type=magiclink&next=${encodeURIComponent(next)}${
-    platform !== 'web' ? `&platform=${platform}` : ''
+    platform !== 'web' ? `&platform=${platform}${input.appState ? `&app_state=${encodeURIComponent(input.appState)}` : ''}` : ''
   }`
 }

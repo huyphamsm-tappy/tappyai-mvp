@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Phê La\" OR \"Sài Gòn Đậm Đắng\" OR \"Time House\" quan 3 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:49:44.259Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Phê La\" OR \"Sài Gòn Đậm Đắng\" OR \"Time House\" quan 3 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Chi nhánh Phê La cực chill ngay tại Quận 3 ...",
+    "link": "https://www.tiktok.com/@saigondidautaaa/video/7330201421733776647",
+    "snippet": "Quán Cà Phê Ở Sea 3 Ở Đâu. Chi nhánh Phê La cực chill ngay tại Quận 3 #saigondidauta #diadiemsongao #phela.",
+    "position": 1
+   },
+   {
+    "title": "Chi nhánh Phê La mới toanh tại Hồ Con Rùa Quận 3 ...",
+    "link": "https://www.tiktok.com/@saigonbeoreview/video/7215572400639905050",
+    "snippet": "1581 Lượt thích,Video TikTok từ Sài Gòn Béo ☕️ (@saigonbeoreview): \"Chi nhánh Phê La mới toanh tại Hồ Con Rùa Quận 3 ...",
+    "position": 2
+   },
+   {
+    "title": "Phê La Trương Định Quận 3",
+    "link": "https://www.tiktok.com/discover/ph%C3%AA-la-tr%C6%B0%C6%A1ng-%C4%91%E1%BB%8Bnh-qu%E1%BA%ADn-3",
+    "snippet": "Phê La Có Hỷ: Trải Nghiệm Cà Phê Đậm Chất Cưới. Khám phá concept mới Phê La với không gian cà phê như đám cưới. Quán nằm tại 115 Trương Định Q3.",
+    "date": "21 thg 9, 2026",
+    "position": 3
+   },
+   {
+    "title": "Phê La: Quán Cà Phê Đẹp Ở Quận 3",
+    "link": "https://www.tiktok.com/@quiz_didaukhum/video/7154908789995556122",
+    "snippet": "Một Phê La mới với ngập tràn nắng, cây xanh tươi mát xinh tươi ngay tại Q3 @Phê La Xin Chào #master2022bytiktok #quizxtran #coffee #cafe # ...",
+    "position": 4
+   },
+   {
+    "title": "Liệu đây có phải là Phê La \"tệ\" nhất ?? 🤔 #LearnOnTikTok ...",
+    "link": "https://www.tiktok.com/@boytubynv02/video/7621524558629096705",
+    "snippet": "6470 Lượt thích,71 Bình luận.Video TikTok từ Duyệt Ăn Dặm (@boytubynv02): \"Liệu đây có phải là Phê La \"tệ\" nhất ?",
+    "position": 5
+   },
+   {
+    "title": "Phê La Quận 3",
+    "link": "https://www.tiktok.com/discover/ph%C3%AA-la-qu%E1%BA%ADn-3",
+    "snippet": "Quán cà phê Phê La đẹp nhất Sài Gòn. Khám phá quán cà phê Phê La tại quận 3, không gian thoáng đãng, góc sống ảo tuyệt đẹp. Thích hợp cho hẹn hò ...",
+    "date": "10 thg 8, 2026",
+    "position": 6
+   },
+   {
+    "title": "Phê La Có Hỷ, mời Đồng Chill ghé chốn ...",
+    "link": "https://www.tiktok.com/@phela_xinchaoo/video/7557396976418032904",
+    "snippet": "Phê La Có Hỷ, mời Đồng Chill ghé chốn chill Phê La 03 miền dự đám cưới nha #PheLa Campaign Có Hỷ Của Phê LaPhê La Có Hỷ Quận 12Phê La Có Hỷ ...",
+    "position": 7
+   },
+   {
+    "title": "Cà Phê Chill Tại Phê La: Nơi Đến Để Thư Giãn",
+    "link": "https://www.tiktok.com/@phela_xinchaoo/video/7575206750035479816",
+    "snippet": "189 Lượt thích,Video TikTok từ Phê La Xin Chào (@phela_xinchaoo): \"Khám phá không gian chill tại Phê La với cà phê 3 miền và menu hấp dẫn.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

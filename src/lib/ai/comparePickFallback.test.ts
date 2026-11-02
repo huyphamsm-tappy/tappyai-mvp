@@ -1,4 +1,7 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
+
+// Phase 7 path (Luna off / the claude rollback) — see pickBackstop.test.ts.
+vi.stubEnv('CONSULT_LUNA', '0')
 import { applyPlaceEnrichmentStreamFilter } from './streamEnrichment'
 import { createEnrichmentCollector } from './toolResultSplit'
 

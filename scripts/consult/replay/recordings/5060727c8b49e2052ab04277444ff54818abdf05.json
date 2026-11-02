@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"3Đ Chill Cafe\" OR \"Winnie Coffee & Tea | QUÁN CAFE ĐẸP QUẬN 3 | QUÁN CAFE CHECK IN QUẬN 3\" OR \"Quán cà phê đợi một người\" quan 3 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:39:54.961Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"3Đ Chill Cafe\" OR \"Winnie Coffee & Tea | QUÁN CAFE ĐẸP QUẬN 3 | QUÁN CAFE CHECK IN QUẬN 3\" OR \"Quán cà phê đợi một người\" quan 3 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quán Cà Phê Đợi Một Người Quận 3 – Góc Nhỏ Ấm Cúng ...",
+    "link": "https://www.tiktok.com/@duydayvlog/video/7367281162647096592",
+    "snippet": "Quán cà phê Đợi một người tại 136/5 Trần Quang Diệu, Q3, TP.HCM mang một không gian nhỏ xinh và cực ấm cúng, phù hợp cho \"Ai đó\" thích \"Trốn\" ...",
+    "position": 1
+   },
+   {
+    "title": "Quán Cà Phê Đợi Một Người Ở Quận 3",
+    "link": "https://www.tiktok.com/@chamdidau/video/7362067427053587730",
+    "snippet": "Quán Cà Phê Đợi Một Người Ở Quận 3: Một Điểm Hẹn Xinh Xắn. Khám phá ... Keywords: quán cà phê đợi một người, quán cafe quận 3, đường đi quán ...",
+    "position": 2
+   },
+   {
+    "title": "Quán cà phê đợi một người với không gian nhỏ xinh ...",
+    "link": "https://www.tiktok.com/@huongnoilamphim/video/7369082606933085460",
+    "snippet": "Quán cà phê đợi một người với không gian nhỏ xinh ấm cúng dành cho hệ lowkey thích đọc sách hay đi trốn ở Sài Gòn. #quancaphedoimotnguoi # ...",
+    "position": 3
+   },
+   {
+    "title": "Quán Cà Phê Đợi Một Người",
+    "link": "https://www.tiktok.com/discover/qu%C3%A1n-c%C3%A0-ph%C3%AA-%C4%91%E1%BB%A3i-m%E1%BB%99t-ng%C6%B0%E1%BB%9Di",
+    "snippet": "Quán cà phê Đợi một người tại 136/5 Trần Quang Diệu, Q3, TP.HCM mang một không gian nhỏ xinh và cực ấm cúng, phù hợp cho \"Ai đó\" thích ...",
+    "date": "24 thg 8, 2026",
+    "position": 4
+   },
+   {
+    "title": "quán cà phê đợi một người (@quancaphedoimotnguoi)",
+    "link": "https://www.tiktok.com/@quancaphedoimotnguoi",
+    "snippet": "quán cà phê đợi một người · @quancaphedoimotnguoi · Nếu bạn cần một nơi để ngồi yên - thì đây. Một chiếc quán không lớn, không vội, không ồn. ⏰10:00 - 22:00 (mỗi ...",
+    "position": 5
+   },
+   {
+    "title": "3Đ Chill Cafe: Góc Cà Phê Matcha & Bánh Ngọt Quận 3",
+    "link": "https://www.tiktok.com/@goc.sg/photo/7662273383438093589",
+    "snippet": "+1 không gian cho những buổi tối deep talk cùng tri kỷ #tphcm #saigon #coffeetime #coffee #quan3. 3Đ Chill Cafe: Góc Cà Phê Matcha & Bánh Ngọt ...",
+    "position": 6
+   },
+   {
+    "title": "Khám Phá Quán Cà Phê Đợi Một Người Tại Sài Gòn",
+    "link": "https://www.tiktok.com/@rongchoi.laca/video/7387409146896780545",
+    "snippet": "Khám Phá Quán Cà Phê Đợi Một Người Tại Sài Gòn. Tìm hiểu về quán cà phê Đợi Một Người với không gian yên tĩnh và menu hấp dẫn. Chọn nơi thư giãn ...",
+    "position": 7
+   },
+   {
+    "title": "3Đ Chill Cafe: Không Gian Vintage Xanh Mát Tại Quận 3",
+    "link": "https://www.tiktok.com/@tron.blog/photo/7660876501793000725",
+    "snippet": "HCM. Chi phí: 45k – 65k. Cuối tuần này, mang theo chiếc máy ảnh và ghé 3Đ Chill Cafe để sạc lại năng lượng thôi nào! —————————————— ©️ ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

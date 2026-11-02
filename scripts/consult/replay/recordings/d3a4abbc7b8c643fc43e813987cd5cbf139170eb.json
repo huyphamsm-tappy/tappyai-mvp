@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Quà tặng sinh nhật sếp nam: 30 gợi ý tinh tế kèm nơi mua ...",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:45:20.528Z",
+ "body": {
+  "searchParameters": {
+   "q": "Quà tặng sinh nhật sếp nam: 30 gợi ý tinh tế kèm nơi mua ...",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Quà tặng sinh nhật sếp nam: 30 gợi ý tinh tế kèm nơi mua uy tín | AEON MALL  Tân Phú Celadon - Điểm vui chơi và mua sắm tuyệt vời cho",
+    "imageUrl": "https://aeonmall-review-rikkei.cdn.vccloud.vn/public/wp/16/news/j4piznM9h2v51o7EvQtQypxh9Cdb23QWOJkt2EsS.png",
+    "imageWidth": 857,
+    "imageHeight": 528,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQx5sV1UfiHkSIrkcRG9YooCIABoRExCj7g8jTt-XyY9w&s=10",
+    "thumbnailWidth": 568,
+    "thumbnailHeight": 352,
+    "source": "AEON MALL Tân Phú Celadon",
+    "domain": "aeonmall-tanphuceladon.com.vn",
+    "link": "https://aeonmall-tanphuceladon.com.vn/tin-tuc/qua-tang-sinh-nhat-sep-nam-30-goi-y-tinh-te-kem-noi-mua-uy-tin.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Faeonmall-review-rikkei.cdn.vccloud.vn%2Fpublic%2Fwp%2F16%2Fnews%2Fj4piznM9h2v51o7EvQtQypxh9Cdb23QWOJkt2EsS.png&tbnid=AucYjQjnYPNzfM&imgrefurl=https%3A%2F%2Faeonmall-tanphuceladon.com.vn%2Ftin-tuc%2Fqua-tang-sinh-nhat-sep-nam-30-goi-y-tinh-te-kem-noi-mua-uy-tin.html&docid=mlHK0mS_zZ_4oM&w=857&h=528",
+    "position": 1
+   },
+   {
+    "title": "Quà tặng sinh nhật sếp nam: 30 gợi ý tinh tế kèm nơi mua uy tín | AEON MALL  Tân Phú Celadon - Điểm vui chơi và mua sắm tuyệt vời cho",
+    "imageUrl": "https://aeonmall-review-rikkei.cdn.vccloud.vn/public/wp/16/editors/dttJ4Nit8WRUFIX445zl7KbubUld1uxxI7i86qMy.jpg",
+    "imageWidth": 2048,
+    "imageHeight": 2048,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYrVAGLIOuM-Nj0_J3LanPnA9-B0Y-thxfe9e1RlBXZw&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "AEON MALL Tân Phú Celadon",
+    "domain": "aeonmall-tanphuceladon.com.vn",
+    "link": "https://aeonmall-tanphuceladon.com.vn/tin-tuc/qua-tang-sinh-nhat-sep-nam-30-goi-y-tinh-te-kem-noi-mua-uy-tin.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Faeonmall-review-rikkei.cdn.vccloud.vn%2Fpublic%2Fwp%2F16%2Feditors%2FdttJ4Nit8WRUFIX445zl7KbubUld1uxxI7i86qMy.jpg&tbnid=AW2JU067T0mIzM&imgrefurl=https%3A%2F%2Faeonmall-tanphuceladon.com.vn%2Ftin-tuc%2Fqua-tang-sinh-nhat-sep-nam-30-goi-y-tinh-te-kem-noi-mua-uy-tin.html&docid=mlHK0mS_zZ_4oM&w=2048&h=2048",
+    "position": 2
+   },
+   {
+    "title": "Quà tặng sinh nhật sếp nam: 30 gợi ý tinh tế kèm nơi mua uy tín | AEON MALL  Tân Phú Celadon - Điểm vui chơi và mua sắm tuyệt vời cho",
+    "imageUrl": "https://aeonmall-review-rikkei.cdn.vccloud.vn/public/wp/16/editors/lJLK7MFQmunTYSCl89HFXRuTseXihyFTW0DGN15F.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 1200,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhFOqwVQynsWBLSwKv4VSLaEZw3oLkzGFgfgXGOy8QuQ&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "AEON MALL Tân Phú Celadon",
+    "domain": "aeonmall-tanphuceladon.com.vn",
+    "link": "https://aeonmall-tanphuceladon.com.vn/tin-tuc/qua-tang-sinh-nhat-sep-nam-30-goi-y-tinh-te-kem-noi-mua-uy-tin.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Faeonmall-review-rikkei.cdn.vccloud.vn%2Fpublic%2Fwp%2F16%2Feditors%2FlJLK7MFQmunTYSCl89HFXRuTseXihyFTW0DGN15F.jpg&tbnid=dVl0B1fYQUwWyM&imgrefurl=https%3A%2F%2Faeonmall-tanphuceladon.com.vn%2Ftin-tuc%2Fqua-tang-sinh-nhat-sep-nam-30-goi-y-tinh-te-kem-noi-mua-uy-tin.html&docid=mlHK0mS_zZ_4oM&w=1200&h=1200",
+    "position": 3
+   },
+   {
+    "title": "Quà tặng sinh nhật sếp nam: 30 gợi ý tinh tế kèm nơi mua uy tín | AEON MALL  Tân Phú Celadon - Điểm vui chơi và mua sắm tuyệt vời cho",
+    "imageUrl": "https://aeonmall-review-rikkei.cdn.vccloud.vn/public/wp/16/editors/iHsoPHcZfIHUwwtgSoVi8xaCPPfqO4speKJkNEMW.png",
+    "imageWidth": 1344,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqtghDkAV3njXLBu6ia_d2Qsv1F3jlKrTOkWLfg-T5iA&s=10",
+    "thumbnailWidth": 592,
+    "thumbnailHeight": 337,
+    "source": "AEON MALL Tân Phú Celadon",
+    "domain": "aeonmall-tanphuceladon.com.vn",
+    "link": "https://aeonmall-tanphuceladon.com.vn/tin-tuc/qua-tang-sinh-nhat-sep-nam-30-goi-y-tinh-te-kem-noi-mua-uy-tin.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Faeonmall-review-rikkei.cdn.vccloud.vn%2Fpublic%2Fwp%2F16%2Feditors%2FiHsoPHcZfIHUwwtgSoVi8xaCPPfqO4speKJkNEMW.png&tbnid=4c1PNgrlpLUBqM&imgrefurl=https%3A%2F%2Faeonmall-tanphuceladon.com.vn%2Ftin-tuc%2Fqua-tang-sinh-nhat-sep-nam-30-goi-y-tinh-te-kem-noi-mua-uy-tin.html&docid=mlHK0mS_zZ_4oM&w=1344&h=768",
+    "position": 4
+   },
+   {
+    "title": "Quà tặng sinh nhật sếp nam: 30 gợi ý tinh tế kèm nơi mua uy tín | AEON MALL  Tân Phú Celadon - Điểm vui chơi và mua sắm tuyệt vời cho",
+    "imageUrl": "https://aeonmall-review-rikkei.cdn.vccloud.vn/public/wp/16/editors/YlM7zjuMouCMHRcJEM9XH7iAWRN5JRnExxHqrKwa.jpg",
+    "imageWidth": 1500,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEFZgEuYQ71MVMgsmypWIkN3eq5poKDBdmddbGs9rIIw&s",
+    "thumbnailWidth": 275,
+    "thumbnailHeight": 183,
+    "source": "AEON MALL Tân Phú Celadon",
+    "domain": "aeonmall-tanphuceladon.com.vn",
+    "link": "https://aeonmall-tanphuceladon.com.vn/tin-tuc/qua-tang-sinh-nhat-sep-nam-30-goi-y-tinh-te-kem-noi-mua-uy-tin.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Faeonmall-review-rikkei.cdn.vccloud.vn%2Fpublic%2Fwp%2F16%2Feditors%2FYlM7zjuMouCMHRcJEM9XH7iAWRN5JRnExxHqrKwa.jpg&tbnid=7uzZQhk_W_d0ZM&imgrefurl=https%3A%2F%2Faeonmall-tanphuceladon.com.vn%2Ftin-tuc%2Fqua-tang-sinh-nhat-sep-nam-30-goi-y-tinh-te-kem-noi-mua-uy-tin.html&docid=mlHK0mS_zZ_4oM&w=1500&h=1000",
+    "position": 5
+   },
+   {
+    "title": "Quà tặng sinh nhật sếp nam: 30 gợi ý tinh tế kèm nơi mua uy tín | AEON MALL  Tân Phú Celadon - Điểm vui chơi và mua sắm tuyệt vời cho",
+    "imageUrl": "https://aeonmall-review-rikkei.cdn.vccloud.vn/public/wp/16/editors/vAWhWnPYJDvAXn4GUdlInKMzBvzIDhISdlpzQ4us.png",
+    "imageWidth": 1600,
+    "imageHeight": 1600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMOXUFjn2dLNVzh6Di9cKbHPqo8b5Q-v9Ml1ZAMuhlRQ&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "AEON MALL Tân Phú Celadon",
+    "domain": "aeonmall-tanphuceladon.com.vn",
+    "link": "https://aeonmall-tanphuceladon.com.vn/tin-tuc/qua-tang-sinh-nhat-sep-nam-30-goi-y-tinh-te-kem-noi-mua-uy-tin.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Faeonmall-review-rikkei.cdn.vccloud.vn%2Fpublic%2Fwp%2F16%2Feditors%2FvAWhWnPYJDvAXn4GUdlInKMzBvzIDhISdlpzQ4us.png&tbnid=FDcCDuj8btqRHM&imgrefurl=https%3A%2F%2Faeonmall-tanphuceladon.com.vn%2Ftin-tuc%2Fqua-tang-sinh-nhat-sep-nam-30-goi-y-tinh-te-kem-noi-mua-uy-tin.html&docid=mlHK0mS_zZ_4oM&w=1600&h=1600",
+    "position": 6
+   },
+   {
+    "title": "Quà tặng sinh nhật sếp nam: 30 gợi ý tinh tế kèm nơi mua uy tín | AEON MALL  Tân Phú Celadon - Điểm vui chơi và mua sắm tuyệt vời cho",
+    "imageUrl": "https://aeonmall-review-rikkei.cdn.vccloud.vn/public/wp/16/editors/iDieJZjjaVtqCl7CWr1K4laAKXhg9qjKuOSBe4r4.png",
+    "imageWidth": 1777,
+    "imageHeight": 1333,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdaQAWh17qbtS8_427Du_8ytY7gbNKLLoGaMF2GUlwDw&s",
+    "thumbnailWidth": 259,
+    "thumbnailHeight": 194,
+    "source": "AEON MALL Tân Phú Celadon",
+    "domain": "aeonmall-tanphuceladon.com.vn",
+    "link": "https://aeonmall-tanphuceladon.com.vn/tin-tuc/qua-tang-sinh-nhat-sep-nam-30-goi-y-tinh-te-kem-noi-mua-uy-tin.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Faeonmall-review-rikkei.cdn.vccloud.vn%2Fpublic%2Fwp%2F16%2Feditors%2FiDieJZjjaVtqCl7CWr1K4laAKXhg9qjKuOSBe4r4.png&tbnid=AQFtO9ppndQqhM&imgrefurl=https%3A%2F%2Faeonmall-tanphuceladon.com.vn%2Ftin-tuc%2Fqua-tang-sinh-nhat-sep-nam-30-goi-y-tinh-te-kem-noi-mua-uy-tin.html&docid=mlHK0mS_zZ_4oM&w=1777&h=1333",
+    "position": 7
+   },
+   {
+    "title": "Quà tặng sinh nhật sếp nam: 30 gợi ý tinh tế kèm nơi mua uy tín | AEON MALL  Tân Phú Celadon - Điểm vui chơi và mua sắm tuyệt vời cho",
+    "imageUrl": "https://aeonmall-review-rikkei.cdn.vccloud.vn/public/wp/16/editors/y9UmzFg4fbOyMV8974bNjSA8syazfuul2Gg1ZzEL.png",
+    "imageWidth": 1248,
+    "imageHeight": 1248,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTc1rCpA0kvNJ1YT55j1d5TxLkJU2W_fJ19x04zfyXpng&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "AEON MALL Tân Phú Celadon",
+    "domain": "aeonmall-tanphuceladon.com.vn",
+    "link": "https://aeonmall-tanphuceladon.com.vn/tin-tuc/qua-tang-sinh-nhat-sep-nam-30-goi-y-tinh-te-kem-noi-mua-uy-tin.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Faeonmall-review-rikkei.cdn.vccloud.vn%2Fpublic%2Fwp%2F16%2Feditors%2Fy9UmzFg4fbOyMV8974bNjSA8syazfuul2Gg1ZzEL.png&tbnid=Hu9KvSh0tbjInM&imgrefurl=https%3A%2F%2Faeonmall-tanphuceladon.com.vn%2Ftin-tuc%2Fqua-tang-sinh-nhat-sep-nam-30-goi-y-tinh-te-kem-noi-mua-uy-tin.html&docid=mlHK0mS_zZ_4oM&w=1248&h=1248",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

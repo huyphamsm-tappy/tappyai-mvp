@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quán Nhật ăn tại chỗ giá 300k/người quan 1 gia menu thuc don",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:07:33.333Z",
+ "body": {
+  "searchParameters": {
+   "q": "quán Nhật ăn tại chỗ giá 300k/người quan 1 gia menu thuc don",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Top nhà hàng Nhật Bản ngon nhất ở Quận 1 kèm ƯU ĐÃI ...",
+    "link": "https://pasgo.vn/kham-pha/ho-chi-minh/top-10-nha-hang-nhat-ban-ngon-noi-tieng-nhat-o-quan-1-558",
+    "snippet": "1. Nhà hàng NORI Modern Izakaya - Lý Tự Trọng · 2. MATSURI - Japanese Restaurant - Nguyễn Huệ - Tận hưởng ẩm thực Nhật tinh tế trong không gian ...",
+    "date": "3 thg 8, 2026",
+    "rating": 4.8,
+    "ratingCount": 166,
+    "position": 1
+   },
+   {
+    "title": "Không thể bỏ lỡ ở Quận 1, TP.HCM! Top 10 ẩm thực Nhật ...",
+    "link": "https://www.gurutto-vietnam.com/report/292/",
+    "snippet": "Izakaya Kamura · Thưởng thức sashimi, cá nướng, yakitori, tempura..., khoảng mỗi món 50,000〜300,000 VND · Có sake và bia đầy đủ, rất phù hợp cho ...",
+    "date": "11 thg 12, 2025",
+    "position": 2
+   },
+   {
+    "title": "Omakase ở VN mình đôi khi bị hiểu nhầm khá lớn. ...",
+    "link": "https://www.facebook.com/meoac.ne/posts/omakase-%E1%BB%9F-vn-m%C3%ACnh-%C4%91%C3%B4i-khi-b%E1%BB%8B-hi%E1%BB%83u-nh%E1%BA%A7m-kh%C3%A1-l%E1%BB%9Bn-ki%E1%BB%83uu-gi%C3%A1-b%E1%BB%8B-overprice-n%C3%AAn-m%E1%BB%8Di-ng/10236671076369888/",
+    "snippet": "Còn à la carte có sushi chỉ từ 30k/cục. Có sashimi, đặc biệt là có cá nướng theo ngày. Tuỳ ngày có cá gì nướng cá đó. Ăn thì bếp sẽ báo giá. Set ...",
+    "position": 3
+   },
+   {
+    "title": "Top 20 nhà hàng Nhật Quận 1 ngon trứ danh, chuẩn vị",
+    "link": "https://zalopay.vn/nha-hang-nhat-quan-1-5793",
+    "snippet": "Danh sách nhà hàng Nhật Quận 1 nổi tiếng, view đẹp · 1. Shamoji Robata Yaki · 2. Kichi Kichi · 3. Hokkaido Sachi Sushi · 4.",
+    "date": "30 thg 6, 2024",
+    "position": 4
+   },
+   {
+    "title": "Bật mí địa điểm ăn Sushi ngon - rẻ được giới trẻ săn lùng tại ...",
+    "link": "https://www.facebook.com/TokyoSushiHouseVN/videos/-b%E1%BA%ADt-m%C3%AD-%C4%91%E1%BB%8Ba-%C4%91i%E1%BB%83m-%C4%83n-sushi-ngon-r%E1%BA%BB-%C4%91%C6%B0%E1%BB%A3c-gi%E1%BB%9Bi-tr%E1%BA%BB-s%C4%83n-l%C3%B9ng-t%E1%BA%A1i-trung-t%C3%A2m-qu%E1%BA%ADn-1b%E1%BA%A1n/1356345942260976/",
+    "snippet": "Bật mí địa điểm ăn Sushi ngon - rẻ được giới trẻ săn lùng tại trung tâm Quận 1 Bạn muốn thưởng thức sushi và các món Nhật xịn mịn mà giá lại ...",
+    "position": 5
+   },
+   {
+    "title": "Ăn món Nhật ở Quận 1 TP.HCM: cẩm nang quán & món phải ...",
+    "link": "https://aniki.vn/blog/quan-nhat-ngon-quan-1",
+    "snippet": "ANIKI — 112 Trần Khắc Chân, Phường Tân Định, Quận 1 phục vụ trọn bộ món Nhật: donburi, sushi, sashimi, lươn nướng và món nướng/chiên, giá hợp lý ...",
+    "date": "19 thg 5, 2026",
+    "position": 6
+   },
+   {
+    "title": "Món Ngon Quận 1 | Bữa Tối Sushi Và Sashimi Không Giới Hạn",
+    "link": "https://www.youtube.com/watch?v=OcRkU1jVQBw",
+    "snippet": "Món Ngon Quận 1 | Bữa Tối Sushi Và Sashimi Không Giới Hạn - Ăn Quên Lối Về Mình vừa được mời đi ăn sushi ở nhà hàng Sushi In Sushi và khá là ...",
+    "position": 7
+   },
+   {
+    "title": "Gợi ý top 10 nhà hàng Omakase TPHCM sang trọng, đẳng ...",
+    "link": "https://gofood.vn/tin-tuc/nha-hang-omakase-tphcm.html?srsltid=AU7gw4Xd2J7gW2zMMcBBM9pmlwLv6IwL5Wnz_g7pcubxzHdIxRtgIIrc",
+    "snippet": "YEN Sushi & SakePub - Japanese Fusion Cuisine · Địa chỉ: 15A Lê Quý Đôn, Phường 6, Quận 3, TPHCM · Giá tham khảo: 500.000 - 1.200.000 VNĐ/người ...",
+    "date": "17 thg 12, 2025",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

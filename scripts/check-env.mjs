@@ -37,7 +37,9 @@ export const REQUIRED_ENV = [
   'NEXT_PUBLIC_SUPABASE_URL',
   'NEXT_PUBLIC_SUPABASE_ANON_KEY',
   'SUPABASE_SERVICE_ROLE_KEY',
-  'ANTHROPIC_API_KEY',
+  // Owner 30/09: GPT-6 Luna serves every AI call (the Anthropic account has no credit) — the AI key is OpenAI's.
+  // Still five variables; ANTHROPIC_API_KEY is optional (only LLM_PROVIDER=claude / HAIKU_FALLBACK=1 read it).
+  'OPENAI_API_KEY',
   'NEXT_PUBLIC_SITE_URL',
 ]
 

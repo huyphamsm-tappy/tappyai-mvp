@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "La Sinfonía Citadel Hotel and Spa",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:58:46.881Z",
+ "body": {
+  "searchParameters": {
+   "q": "La Sinfonía Citadel Hotel and Spa",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "La Sinfonía Citadel Hotel and Spa, Hà Nội (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/462713632.jpg?k=b3c00275de2255de29da3cb7c60d987a1fc9e0090859d72a06c29b5b40ef199c&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdRQzfR3k7wQ55rVfN8gG5E5vLqMPYWSeh_b4V_YmNsA&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/delicacy-amp-spa.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F462713632.jpg%3Fk%3Db3c00275de2255de29da3cb7c60d987a1fc9e0090859d72a06c29b5b40ef199c%26o%3D&tbnid=vq8HH3sexLAHHM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fdelicacy-amp-spa.vi.html&docid=lX4cKX3clO9hZM&w=1024&h=683",
+    "position": 1
+   },
+   {
+    "title": "La Sinfonía Citadel Hotel and Spa - La Sinfonia Vietnam",
+    "imageUrl": "http://lasinfoniavietnam.com/wp-content/uploads/2023/06/z4467530677771_5d3ed856be608c4eecfa7907fae5079a-scaled.jpg",
+    "imageWidth": 2560,
+    "imageHeight": 1707,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS14CJVQQSIB8yXB6j4a3MacrSr3G-kXnJR6Ja1_encNg&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "La Sinfonia Vietnam",
+    "domain": "lasinfoniavietnam.com",
+    "link": "https://lasinfoniavietnam.com/citadel/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=http%3A%2F%2Flasinfoniavietnam.com%2Fwp-content%2Fuploads%2F2023%2F06%2Fz4467530677771_5d3ed856be608c4eecfa7907fae5079a-scaled.jpg&tbnid=qxu8kXnKHxpwWM&imgrefurl=https%3A%2F%2Flasinfoniavietnam.com%2Fcitadel%2F&docid=Uy1Qok-eds873M&w=2560&h=1707",
+    "position": 2
+   },
+   {
+    "title": "Best Price on La Sinfonia Citadel hotel and Spa in Hanoi + Reviews!",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/462713640.jpg?k=991c83b65b7c9b162f93a16e9b90eb9a8aadac262e934582797f3e36a804b018&o=",
+    "imageWidth": 358,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeasyx_mekGzLXxWR3OQieUeXV0BoP_7gzwx4fDTVqyw&s=10",
+    "thumbnailWidth": 358,
+    "thumbnailHeight": 500,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/la-sinfonnia-citadel-hotel-and-spa/hotel/hanoi-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F462713640.jpg%3Fk%3D991c83b65b7c9b162f93a16e9b90eb9a8aadac262e934582797f3e36a804b018%26o%3D&tbnid=vBYm165UFlQjwM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fla-sinfonnia-citadel-hotel-and-spa%2Fhotel%2Fhanoi-vn.html&docid=-CgdHPxvOUQhHM&w=358&h=500",
+    "position": 3
+   },
+   {
+    "title": "La Sinfonía Citadel Hotel and Spa - La Sinfonia Vietnam",
+    "imageUrl": "https://lasinfoniavietnam.com/wp-content/uploads/2023/06/171058858.jpg",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLp9Bilz1IsS_lIpGhOS70Wg4YE703Gf-66S39w_a0Lg&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "La Sinfonia Vietnam",
+    "domain": "lasinfoniavietnam.com",
+    "link": "https://lasinfoniavietnam.com/citadel/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flasinfoniavietnam.com%2Fwp-content%2Fuploads%2F2023%2F06%2F171058858.jpg&tbnid=kkM5c3A468gxwM&imgrefurl=https%3A%2F%2Flasinfoniavietnam.com%2Fcitadel%2F&docid=Uy1Qok-eds873M&w=1024&h=683",
+    "position": 4
+   },
+   {
+    "title": "La Sinfonía Citadel Hotel and Spa - La Sinfonia Vietnam",
+    "imageUrl": "https://lasinfoniavietnam.com/wp-content/uploads/2023/06/z4467522782444_c5a2a5e6bd792b3bf6ec6f72a38c5830-scaled.jpg",
+    "imageWidth": 2560,
+    "imageHeight": 1707,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQl0PnIL6vdV8BkhnfzDt8NTuZpyHtYLWlfOV4YlfAyKQ&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "La Sinfonia Vietnam",
+    "domain": "lasinfoniavietnam.com",
+    "link": "https://lasinfoniavietnam.com/citadel/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flasinfoniavietnam.com%2Fwp-content%2Fuploads%2F2023%2F06%2Fz4467522782444_c5a2a5e6bd792b3bf6ec6f72a38c5830-scaled.jpg&tbnid=rB6i2wMZLGsgtM&imgrefurl=https%3A%2F%2Flasinfoniavietnam.com%2Fcitadel%2F&docid=Uy1Qok-eds873M&w=2560&h=1707",
+    "position": 5
+   },
+   {
+    "title": "La Sinfonía Citadel Hotel and Spa - La Sinfonia Vietnam",
+    "imageUrl": "https://lasinfoniavietnam.com/wp-content/uploads/2023/06/z4467526137053_6199c351c71a70d9b24d8451add7e6d6-scaled.jpg",
+    "imageWidth": 2560,
+    "imageHeight": 1708,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNfxKE0g2CXALjWupIhbdkSTPTRuVh2vzXUGh_X7A08Q&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "La Sinfonia Vietnam",
+    "domain": "lasinfoniavietnam.com",
+    "link": "https://lasinfoniavietnam.com/citadel/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flasinfoniavietnam.com%2Fwp-content%2Fuploads%2F2023%2F06%2Fz4467526137053_6199c351c71a70d9b24d8451add7e6d6-scaled.jpg&tbnid=dR5EB5hcYJHI1M&imgrefurl=https%3A%2F%2Flasinfoniavietnam.com%2Fcitadel%2F&docid=Uy1Qok-eds873M&w=2560&h=1708",
+    "position": 6
+   },
+   {
+    "title": "La Sinfonía Citadel Hotel and Spa - La Sinfonia Vietnam",
+    "imageUrl": "https://lasinfoniavietnam.com/wp-content/uploads/2023/06/Terrace-Suite-4-1-scaled.jpg",
+    "imageWidth": 2560,
+    "imageHeight": 1706,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSI1hCZZ6rEjGXbudAKCDT3kOfvXBr9U_nXUiqOOOFBYw&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "La Sinfonia Vietnam",
+    "domain": "lasinfoniavietnam.com",
+    "link": "https://lasinfoniavietnam.com/hotel/citadel/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flasinfoniavietnam.com%2Fwp-content%2Fuploads%2F2023%2F06%2FTerrace-Suite-4-1-scaled.jpg&tbnid=0xO1ZW6-rZOkWM&imgrefurl=https%3A%2F%2Flasinfoniavietnam.com%2Fhotel%2Fcitadel%2F&docid=B-tP4XbzSvh1AM&w=2560&h=1706",
+    "position": 7
+   },
+   {
+    "title": "Best Price on La Sinfonia Citadel hotel and Spa in Hanoi + Reviews!",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/462713851.jpg?k=43d94ba64be479a6d7a3bc275a8d9cde28fb50d0b9f2ceaa325ae43596333392&o=",
+    "imageWidth": 500,
+    "imageHeight": 333,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAKKJxrFwJUpMjpXBjsd9KLEmYB58rJJz2Lc4vhk6qoQ&s=10",
+    "thumbnailWidth": 500,
+    "thumbnailHeight": 333,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/la-sinfonnia-citadel-hotel-and-spa/hotel/hanoi-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F462713851.jpg%3Fk%3D43d94ba64be479a6d7a3bc275a8d9cde28fb50d0b9f2ceaa325ae43596333392%26o%3D&tbnid=KXrIFoxTFnZ6SM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fla-sinfonnia-citadel-hotel-and-spa%2Fhotel%2Fhanoi-vn.html&docid=-CgdHPxvOUQhHM&w=500&h=333",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

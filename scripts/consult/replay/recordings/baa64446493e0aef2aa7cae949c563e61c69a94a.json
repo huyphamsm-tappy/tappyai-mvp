@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Laptop MSI Modern 15 F1MG-1225VN\" OR \"Laptop MSI Modern 14 F1MG-432VN\" OR \"HP 15s-du1055tu 6405U Notebook 39\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:10:18.126Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Laptop MSI Modern 15 F1MG-1225VN\" OR \"Laptop MSI Modern 14 F1MG-432VN\" OR \"HP 15s-du1055tu 6405U Notebook 39\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

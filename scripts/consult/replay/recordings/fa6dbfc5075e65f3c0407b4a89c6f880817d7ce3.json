@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Ốp UAG Monarch Pro Kevlar Magsafe iPhone 17 Pro Max\" OR \"Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe\" OR \"Ốp lưng iPhone 17 Pro UAG chống sốc Scout With Magsafe\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:40:25.585Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Ốp UAG Monarch Pro Kevlar Magsafe iPhone 17 Pro Max\" OR \"Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe\" OR \"Ốp lưng iPhone 17 Pro UAG chống sốc Scout With Magsafe\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-scout-with-magsafe.html",
+    "snippet": "Mua ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe chính hãng - Giá rẻ, đảm bảo chất lượng, độ bền cao, hỗ trợ giao hàng tận nơi toàn quốc.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 1
+   },
+   {
+    "title": "Ốp UAG Monarch Pro Kevlar Magsafe iPhone 17 Pro Max",
+    "link": "https://shopee.vn/%E1%BB%90p-UAG-Monarch-Pro-Kevlar-Magsafe-iPhone-17-Pro-Max-H%C3%A0ng-Ch%C3%ADnh-H%C3%A3ng-i.133330086.45705023284",
+    "snippet": "Ốp UAG Monarch Pro Kevlar Magsafe iPhone 17 Pro Max - Hàng Chính Hãng. outline grey truck icon. Không hỗ trợ. service entrance icon. Trả hàng miễn phí 15 ngày ...",
+    "position": 2
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe",
+    "link": "https://timgiatot.com.vn/gia/254171-op-lung-iphone-17-pro-max-uag-chong-soc-scout-with-magsafe",
+    "snippet": "So sánh giá Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe: giá từ 850.000 ₫ trên 10 nơi bán, cập nhật tháng 9/2026. Giá từ các sàn lớn.",
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro UAG chống sốc Scout With Magsafe",
+    "link": "https://timgiatot.com.vn/gia/253655-op-lung-iphone-17-pro-uag-chong-soc-scout-with-magsafe",
+    "snippet": "Ốp lưng iPhone 17 Pro UAG chống sốc Scout With Magsafe: giá từ 900.000 ₫ trên 13 nơi bán, ật tháng 9/2026. Giá từ các sàn lớn. ₫(~60%)",
+    "position": 4
+   },
+   {
+    "title": "Ốp lưng Scout w MagSafe cho iPhone 17 Pro Max [6.9 inch]",
+    "link": "https://uagvietnam.vn/products/op-lung-scout-w-magsafe-cho-iphone-17-pro-max-6-9-inch",
+    "snippet": "- Vỏ ngoài Armor Shell cứng cáp, chống trầy xước và giữ dáng bền bỉ. - Lõi mềm đàn hồi, hỗ trợ hấp thụ lực va chạm hiệu quả. - Góc bo khí tăng ...",
+    "position": 5
+   },
+   {
+    "title": "Dư 2 ốp ko dùng, có shipcod",
+    "link": "https://www.facebook.com/groups/506918584183877/posts/1603390401203351/",
+    "snippet": "Dư 2 ốp ko dùng, có shipcod - Ốp lưng iPhone 17 Pro UAG chống sốc Scout With Magsafe: 350k - Ốp lưng iPhone 17 Belkin with magsafe clear: 300k ; Cần ra đi em nó ...",
+    "position": 6
+   },
+   {
+    "title": "Ốp UAG Scout Clear MagSafe cho iPhone 17 Pro Max",
+    "link": "https://phukiendeyeu.vn/op-uag-scout-clear-magsafe-cho-iphone-17-pro-max/-17-pro/-17-id4266.html",
+    "snippet": "bảo vệ iPhone 17 Pro Max, 17 Pro hoặc 17 · 1. Chất liệu siêu nhẹ nhưng bền chắc · 2. Tương thích hoàn hảo với MagSafe · 3. Chức năng nâng cao, trải nghiệm người ...",
+    "rating": 5,
+    "ratingCount": 2,
+    "position": 7
+   },
+   {
+    "title": "Magsafe T7 Ốp Lưng Chống Sốc IPhone 15 WIWU Air ...",
+    "link": "https://pandorassteakhouse.com/product/category/41754436001350",
+    "snippet": "Magsafe T7 Ốp lưng iPhone 17 Pro UAG chống sốc Scout With Magsafe. 14 USD (tax included).",
+    "rating": 4.6,
+    "ratingCount": 296,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

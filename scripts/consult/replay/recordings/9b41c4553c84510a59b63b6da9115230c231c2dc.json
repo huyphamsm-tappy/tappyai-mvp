@@ -1,0 +1,587 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "món ăn no không chiên Chicken 3S quan 7",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.734,106.7218,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:01:20.339Z",
+ "body": {
+  "searchParameters": {
+   "q": "món ăn no không chiên Chicken 3S quan 7",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.734,106.7218,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7339942,106.7217997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "MỲ CAY-GÀ RÁN HÀN QUỐC CHICKEN 3S",
+    "address": "475 Nguyễn Thị Thập, Tân Hưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7388455,
+    "longitude": 106.70954739999999,
+    "rating": 4.8,
+    "ratingCount": 825,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Nhà hàng Hàn Quốc",
+    "types": [
+     "Nhà hàng Hàn Quốc"
+    ],
+    "phoneNumber": "+84 981 818 495",
+    "openingHours": {
+     "Thứ Tư": "09:30–22:00",
+     "Thứ Năm": "09:30–22:00",
+     "Thứ Sáu": "09:30–22:00",
+     "Thứ Bảy": "09:30–22:00",
+     "Chủ Nhật": "09:30–22:00",
+     "Thứ Hai": "09:30–22:00",
+     "Thứ Ba": "09:30–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmNFxmnrTF1R18d39uJxkT2riAqybltguKmXcqMTD8VymEXbauM-pwKPqfUKfmNMuIB0mQT2DJPn3c4MStJqyQeY44ExU3GMXLS1L41_Na_LS0uBy_LTjYrk_TdT7UV99rGdkGhYBgjfOaW",
+    "cid": "4247336828360773790",
+    "fid": "0x31752f001be4009f:0x3af192578fe0d09e",
+    "placeId": "ChIJnwDkGwAvdTERntDgj1eS8To"
+   },
+   {
+    "position": 2,
+    "title": "BÒ NÉ 3 NGON",
+    "address": "539 Lê Văn Lương, Tân Hưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7345647,
+    "longitude": 106.70231,
+    "rating": 4.4,
+    "ratingCount": 170,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 896 895 000",
+    "openingHours": {
+     "Thứ Tư": "07:00–22:00",
+     "Thứ Năm": "07:00–22:00",
+     "Thứ Sáu": "07:00–22:00",
+     "Thứ Bảy": "07:00–22:00",
+     "Chủ Nhật": "07:00–22:00",
+     "Thứ Hai": "07:00–22:00",
+     "Thứ Ba": "07:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlAnzzK6q12ObUJHB5etiC2MFhMX6K9N-TueWRUjY0pczfqv0v9DD9t9ypGj6ef8rMLAxe6OLfV9seA-9JFv_7MqRpWXBvbgwjY2Kw99DpNkb4pQ8DJh98V-NsnzHlacsUGWSL7",
+    "cid": "12111728713196650833",
+    "fid": "0x31752fe96c7f8c55:0xa81581180dfc4151",
+    "placeId": "ChIJVYx_bOkvdTERUUH8DRiBFag"
+   },
+   {
+    "position": 3,
+    "title": "K-JEJU CHICKEN -CN PHÚ MỸ HƯNG QUẬN 7",
+    "address": "34 Đ. số 6, Hưng vượng 2, Tân Hưng, Hồ Chí Minh 000007, Việt Nam",
+    "latitude": 10.7302985,
+    "longitude": 106.7088759,
+    "rating": 4.9,
+    "ratingCount": 3654,
+    "priceLevel": "200-300 N ₫",
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "http://kjejuchicken.com/",
+    "phoneNumber": "+84 896 615 574",
+    "openingHours": {
+     "Thứ Tư": "10:00–03:00",
+     "Thứ Năm": "10:00–03:00",
+     "Thứ Sáu": "10:00–03:00",
+     "Thứ Bảy": "10:00–03:00",
+     "Chủ Nhật": "10:00–03:00",
+     "Thứ Hai": "10:00–03:00",
+     "Thứ Ba": "10:00–03:00"
+    },
+    "bookingLinks": [
+     "http://kjejuchicken.com/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmdI8K8XsQ4foCg-ClGou0xpoi8bUspd0o7-053INU8lYFzxoSqjphYglnhmw8a5Dkq37VofJdpNhBpjtKhr_C7doVeCnDxNTvS2h7pDvwODskOhSNIDDTkaq73Ys6UcG7Q-9s",
+    "cid": "8796482834109451716",
+    "fid": "0x31752f15b1dfd6c1:0x7a13628827ea4dc4",
+    "placeId": "ChIJwdbfsRUvdTERxE3qJ4hiE3o"
+   },
+   {
+    "position": 4,
+    "title": "Xôi Xéo Bà 3 Béo",
+    "address": "103 Trần Trọng Cung, Tân Thuận, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.743623399999999,
+    "longitude": 106.733786,
+    "rating": 4.2,
+    "ratingCount": 361,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 942 200 505",
+    "openingHours": {
+     "Thứ Tư": "06:00–22:00",
+     "Thứ Năm": "06:00–22:00",
+     "Thứ Sáu": "06:00–22:00",
+     "Thứ Bảy": "06:00–22:00",
+     "Chủ Nhật": "06:00–22:00",
+     "Thứ Hai": "06:00–22:00",
+     "Thứ Ba": "06:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnWYHUGm3VxOGq0-MIaGhLITwPq-w62RZ1z4y22MbWLA09Sdk3MDs_PscwADe587WMb_xLMNmYR5lg8nBFc5l5PQ7M5sz3plXFlGIx4lfIzTYa-hmmKAxlsfF8-sXacbDbDg6Wp",
+    "cid": "10286456126392179809",
+    "fid": "0x317525c1ddc90ca5:0x8ec0d558d33f1c61",
+    "placeId": "ChIJpQzJ3cEldTERYRw_01jVwI4"
+   },
+   {
+    "position": 5,
+    "title": "감미 가정식 백반 / GAMMI - Cơm phần Hàn Quốc",
+    "address": "Sky Garden 2, Phú Mỹ Hưng, Khu đô thị Phú Mỹ Hưng, Tân Hưng, Hồ Chí Minh 72600, Việt Nam",
+    "latitude": 10.7308341,
+    "longitude": 106.706569,
+    "rating": 4.8,
+    "ratingCount": 205,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng Hàn Quốc",
+    "types": [
+     "Nhà hàng Hàn Quốc"
+    ],
+    "website": "https://www.facebook.com/gammi.comphanhanquoc",
+    "phoneNumber": "+84 775 090 996",
+    "openingHours": {
+     "Thứ Tư": "06:00–23:00",
+     "Thứ Năm": "06:00–23:00",
+     "Thứ Sáu": "06:00–23:00",
+     "Thứ Bảy": "10:00–23:00",
+     "Chủ Nhật": "Đóng cửa",
+     "Thứ Hai": "06:00–23:00",
+     "Thứ Ba": "06:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlGL0irs5_JRLUOKh0G2YKN7_EZdySexaBFRqC7hq4liiuFbpnF8eWuiVnk2uf1SLQNPw8pSQnM69ofZ8hT52o4G1Zu2M85p6Cg0Ae0dCYxhh27GiIvWPLh-Zd4VNTRges1Ac76",
+    "cid": "11048193435631336007",
+    "fid": "0x31752f9e1ca51225:0x99531164d49bba47",
+    "placeId": "ChIJJRKlHJ4vdTERR7qb1GQRU5k"
+   },
+   {
+    "position": 6,
+    "title": "Chicken Plus Nguyễn Thị Thập 2",
+    "address": "39 Nguyễn Thị Thập, Tân Mỹ, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7374239,
+    "longitude": 106.72942599999999,
+    "rating": 3,
+    "ratingCount": 86,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng",
+     "Nhà hàng thịt gà"
+    ],
+    "website": "https://chickenplus.com.vn/",
+    "phoneNumber": "+84 796 314 824",
+    "openingHours": {
+     "Thứ Tư": "10:00–22:00",
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00",
+     "Thứ Ba": "10:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkzdesABuqQ4ywKHlygYnQ0G7MUxCbRNVAGPWUIYhoCJZ8bSKmi612J4PndjYHqkLzFGE23t_JBbqmAVQna756xh0-Hlx0pQ1ttt0ImJyFf-Oo1TlDvCFa1A980PN5ZyGzMTHn_4A",
+    "cid": "3691357030543630654",
+    "fid": "0x317525effe4fbd33:0x333a55a960b1a13e",
+    "placeId": "ChIJM71P_u8ldTERPqGxYKlVOjM"
+   },
+   {
+    "position": 7,
+    "title": "Hanoi Ngon - 34 Lê Văn Lương, Q7 | Ăn vặt chuẩn Hà Nội Ngon, Nem chua rán, Bánh giò, Bánh gà sốt phô mai, Chân gà, Trà chanh",
+    "address": "139 Lê Văn Lương, Quận 7, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7488951,
+    "longitude": 106.7049613,
+    "rating": 4.9,
+    "ratingCount": 289,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán ăn nhẹ",
+    "types": [
+     "Quán ăn nhẹ"
+    ],
+    "website": "https://hanoingon.com/",
+    "phoneNumber": "+84 773 800 807",
+    "openingHours": {
+     "Thứ Tư": "11:00–22:00",
+     "Thứ Năm": "11:00–22:00",
+     "Thứ Sáu": "11:00–22:00",
+     "Thứ Bảy": "11:00–22:00",
+     "Chủ Nhật": "11:00–22:00",
+     "Thứ Hai": "11:00–22:00",
+     "Thứ Ba": "11:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmjyRjW7p1bSqF1uWpT4W_zs3Z_ON7DcP65La87wb4fQ0MAgoZmgwBMmHNqsnNw9S1-iCHrM8q73ctub2dEK3jzTaJ_SyQT2XRE1RZDLhxpaIcwe6sGvLjRMUqPjZrNvYppT5HPV4WnTeLM",
+    "cid": "14822477094278668086",
+    "fid": "0x31752ff48b1cba85:0xcdb4046267d81f36",
+    "placeId": "ChIJhboci_QvdTERNh_YZ2IEtM0"
+   },
+   {
+    "position": 8,
+    "title": "Sayaka-Lotte quận 7",
+    "address": "469 Nguyễn Hữu Thọ, Tân Hưng, Hồ Chí Minh 008428, Việt Nam",
+    "latitude": 10.741022899999999,
+    "longitude": 106.70204299999999,
+    "rating": 4.8,
+    "ratingCount": 1835,
+    "priceLevel": "300-400 N ₫",
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 933 322 358",
+    "openingHours": {
+     "Thứ Tư": "08:30–21:30",
+     "Thứ Năm": "08:30–21:30",
+     "Thứ Sáu": "08:30–21:30",
+     "Thứ Bảy": "08:30–21:30",
+     "Chủ Nhật": "08:30–21:30",
+     "Thứ Hai": "08:30–21:30",
+     "Thứ Ba": "08:30–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm1Q9OdIdodIoBDvm_ElsTWTcAV5H-pmFxXYIZMhCHDVfpqm79VhO5kfkUBtDgJXmApy3UM7jkXOBRs9IiDRxzYWSoSljkyilPQBYWfUzuLWCd3W22OdqzUCCMtSogHzRAfg8pb9BuqaWNk",
+    "cid": "9427629853701714761",
+    "fid": "0x31752f80e84f6e33:0x82d5ab66f7c23349",
+    "placeId": "ChIJM25P6IAvdTERSTPC92ar1YI"
+   },
+   {
+    "position": 9,
+    "title": "Minh Ngọc Quán | Quán ngon quận 7 | Quán ngon Nguyễn Thị Thập",
+    "address": "65 Nguyễn Thị Thập, Tân Mỹ, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.737478,
+    "longitude": 106.727463,
+    "rating": 4.4,
+    "ratingCount": 73,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "website": "http://gaminhngoc.com/",
+    "openingHours": {
+     "Thứ Tư": "10:00–22:00",
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00",
+     "Thứ Ba": "10:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl7Ho1Cr_GuTUdvfEnaKF6MHQmV-8z69wE04gK_jwa50cOJAgrWXPSAf4-5n8UIsXvwD9-hWK_47wwgLX0Z9yT9LZ470cX2kmlH6Lim-zEzzGWyPfi6Gnq8rQDVitfW2N47C7w",
+    "cid": "283263598994958366",
+    "fid": "0x317525f5388d7683:0x3ee5abe13e4a81e",
+    "placeId": "ChIJg3aNOPUldTERHqjkE75a7gM"
+   },
+   {
+    "position": 10,
+    "title": "Cơm Gà Đông Nguyên - 東源雞飯",
+    "address": "53 Đ. Hà Huy Tập, Khu đô thị Phú Mỹ Hưng, Tân Hưng, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7262189,
+    "longitude": 106.7103243,
+    "rating": 4.5,
+    "ratingCount": 1126,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng thịt gà",
+    "types": [
+     "Nhà hàng thịt gà",
+     "Nhà hàng Quảng Đông",
+     "Nhà hàng mì Trung Quốc",
+     "Nhà hàng ăn nhanh",
+     "Nhà hàng xúp",
+     "Nhà hàng Việt Nam"
+    ],
+    "website": "https://comgadongnguyen.vn/?utm_source=google&utm_medium=gbp&utm_campaign=maps_pmh",
+    "phoneNumber": "+84 1800 8383",
+    "openingHours": {
+     "Thứ Tư": "09:00–20:30",
+     "Thứ Năm": "09:00–20:30",
+     "Thứ Sáu": "09:00–20:30",
+     "Thứ Bảy": "09:00–20:30",
+     "Chủ Nhật": "09:00–20:30",
+     "Thứ Hai": "09:00–20:30",
+     "Thứ Ba": "09:00–20:30"
+    },
+    "bookingLinks": [
+     "https://comgadongnguyen.vn/pages/dat-ban"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk_83mDMfUtAJe6dyrRNZmQWha-ju13v-ulGzRmzF3GOm6RANQ-obKwnAFxtsfDfAQ6Oldw5ROZq3IFMNv0Oc9CsKji6GwO1UCs-NJZIqZjGXlXkYecdxlPAoclu3x7sdL2qEFE",
+    "cid": "4367522233940589917",
+    "fid": "0x31752fa3e7a1b39f:0x3c9c8e54e6a63d5d",
+    "placeId": "ChIJn7Oh56MvdTERXT2m5lSOnDw"
+   },
+   {
+    "position": 11,
+    "title": "Texas Chicken",
+    "address": "Big C, Lô A/99 Nguyễn Thị Thập, Khu Dân Cư Cityland, Tân Mỹ, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7373991,
+    "longitude": 106.72502019999999,
+    "rating": 3.8,
+    "ratingCount": 509,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng ăn nhanh",
+    "types": [
+     "Nhà hàng ăn nhanh",
+     "Nhà hàng"
+    ],
+    "website": "http://facebook.com/TexasChickenVN",
+    "phoneNumber": "+84 28 6276 9892",
+    "openingHours": {
+     "Thứ Tư": "10:00–22:00",
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00",
+     "Thứ Ba": "10:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkEV0nEG6dDzSjPJZTNUXH1oKtGjdveutgCS-tY-9vKKH5UJnlpBzlqwOw1y4DID_7nXoFtBOs27GlKOiGYzsP9rD0Z-cFTr_z33foxVYOJzmqKutjWhqxDIJnIg9U9sFkLbm3K",
+    "cid": "1363160124813602490",
+    "fid": "0x317525685f9abf8f:0x12eaeae9437deeba",
+    "placeId": "ChIJj7-aX2gldTERuu59Q-nq6hI"
+   },
+   {
+    "position": 12,
+    "title": "Lẩu Gà Lá É Phú Yên Quán 3",
+    "address": "1625 Huỳnh Tấn Phát, Quận 7, Hồ Chí Minh 72906, Việt Nam",
+    "latitude": 10.7079832,
+    "longitude": 106.737389,
+    "rating": 4.7,
+    "ratingCount": 24,
+    "priceLevel": "200-300 N ₫",
+    "type": "Nhà hàng món lẩu",
+    "types": [
+     "Nhà hàng món lẩu"
+    ],
+    "phoneNumber": "+84 397 494 948",
+    "openingHours": {
+     "Thứ Tư": "08:00–00:00",
+     "Thứ Năm": "08:00–00:00",
+     "Thứ Sáu": "08:00–00:00",
+     "Thứ Bảy": "08:00–00:00",
+     "Chủ Nhật": "08:00–00:00",
+     "Thứ Hai": "08:00–00:00",
+     "Thứ Ba": "08:00–00:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkHi7Vc8YNp-XgaSSSbN580502adVPvX9khTBNwaZHulc3iuwIg8pCPTSBYLB8XJk-nCEjFSDdMW8UMQ34lXatqXiShV5O_GmMhapSOLN6b1I-yhbYRcDVnQF4stFBn0CfWJGeGj6SjQ0So",
+    "cid": "7389054332923064325",
+    "fid": "0x317525001fdb6ec7:0x668b31c453f0b005",
+    "placeId": "ChIJx27bHwAldTERBbDwU8Qxi2Y"
+   },
+   {
+    "position": 13,
+    "title": "Mì Hàn Quốc",
+    "address": "Hưng Phước 4/02 Đ. số 6, Khu đô thị Phú Mỹ Hưng, Tân Hưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7300195,
+    "longitude": 106.7082274,
+    "rating": 4.7,
+    "ratingCount": 473,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng Hàn Quốc",
+    "types": [
+     "Nhà hàng Hàn Quốc"
+    ],
+    "phoneNumber": "+84 28 6683 5069",
+    "openingHours": {
+     "Thứ Tư": "09:00–21:00",
+     "Thứ Năm": "09:00–21:00",
+     "Thứ Sáu": "09:00–21:00",
+     "Thứ Bảy": "09:00–21:00",
+     "Chủ Nhật": "09:00–21:00",
+     "Thứ Hai": "09:00–21:00",
+     "Thứ Ba": "09:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnRdmdOfi-cdq304a1k9U-WNwe8_V2xqwoJEm5HVecn9WEzIrB5Ho2sJ7__N7vZ-1TQpWsnFaW6JCFfTxYYicdQbtp9tyrxXqedRwSBqms0zW_wm8J3gzu9r7IsiZVyRfyBhSw",
+    "cid": "1804272760622277649",
+    "fid": "0x31752ffe96647733:0x190a10842ecde411",
+    "placeId": "ChIJM3dklv4vdTEREeTNLoQQChk"
+   },
+   {
+    "position": 14,
+    "title": "Chao Chicken",
+    "address": "Lê Văn Thiêm/56 Khu Phố Hưng Phước 2, Khu đô thị Phú Mỹ Hưng, Tân Hưng, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7311409,
+    "longitude": 106.70815599999999,
+    "rating": 4.6,
+    "ratingCount": 454,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng Hàn Quốc",
+    "types": [
+     "Nhà hàng Hàn Quốc",
+     "Quán gà rán mang đi"
+    ],
+    "website": "http://chaochicken.com/",
+    "phoneNumber": "+84 919 190 779",
+    "openingHours": {
+     "Thứ Tư": "10:30–23:00",
+     "Thứ Năm": "10:30–23:00",
+     "Thứ Sáu": "10:30–23:00",
+     "Thứ Bảy": "10:30–23:00",
+     "Chủ Nhật": "10:30–23:00",
+     "Thứ Hai": "10:30–23:00",
+     "Thứ Ba": "10:30–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmEORoHFPFs7x7txoBprUChSWC0YTGZmOVhNDuI9XY_vcaIiCM95TNTpzsbXLP68_YnhvkcGroU_iltrFSxNGq6OSDUEN54O4C7f5wDdYAjQKBmbuYQZE98z0feQ0Dx_ZBLNgg",
+    "cid": "1133374726963521576",
+    "fid": "0x31752f83400069f7:0xfba8e4f2e10e828",
+    "placeId": "ChIJ92kAQIMvdTERKOgQLk-Oug8"
+   },
+   {
+    "position": 15,
+    "title": "Hochi Horizon Cafe & Dining",
+    "address": "8 Đ. Trần Văn Trà, Khu đô thị Phú Mỹ Hưng, Quận 7, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7241518,
+    "longitude": 106.72054759999999,
+    "rating": 4.7,
+    "ratingCount": 266,
+    "priceLevel": "100-200 N ₫",
+    "type": "Quán ăn tự phục vụ",
+    "types": [
+     "Quán ăn tự phục vụ",
+     "Nhà hàng chuyên phục vụ bữa nửa buổi",
+     "Quán cà phê",
+     "Nhà hàng"
+    ],
+    "website": "https://www.hochi.vn/",
+    "phoneNumber": "+84 816 533 715",
+    "openingHours": {
+     "Thứ Tư": "08:00–21:00",
+     "Thứ Năm": "08:00–21:00",
+     "Thứ Sáu": "08:00–21:00",
+     "Thứ Bảy": "08:00–21:00",
+     "Chủ Nhật": "08:00–21:00",
+     "Thứ Hai": "08:00–21:00",
+     "Thứ Ba": "08:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmsdRPxIzR9RVQ1RStvrGWxh53qTcaimLbRfY7IvHbTDQKJ6IakdzwbfugS8tYAXKiwtamZTvPh96fdMaXZrnl1tYMR9xRbpOEevHsalcw8ddiLK2V652og4ldcmHvBJYQUE-w4hDv8Sa9g",
+    "cid": "3976522407348814764",
+    "fid": "0x31752f0018730a53:0x372f720f9b6843ac",
+    "placeId": "ChIJUwpzGAAvdTERrENomw9yLzc"
+   },
+   {
+    "position": 16,
+    "title": "Lẩu Gà Lá É Bá Phát 2",
+    "address": "131 Nguyễn Thị Thập, Tân Mỹ, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7379757,
+    "longitude": 106.7204919,
+    "rating": 4.9,
+    "ratingCount": 135,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 865 547 279",
+    "openingHours": {
+     "Thứ Tư": "09:00–00:00",
+     "Thứ Năm": "09:00–00:00",
+     "Thứ Sáu": "09:00–00:00",
+     "Thứ Bảy": "09:00–00:00",
+     "Chủ Nhật": "09:00–03:00",
+     "Thứ Hai": "09:00–00:00",
+     "Thứ Ba": "09:00–00:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk7ETXq2GPt6Um2c53FpmtcdR4S-Y9SZ7rf33S5L9KVfM0BV2Cs-xzVZy610vENYNUacFXDnFDa5y6ejSPqnxuAQ8PfWn4Ygbk9Cl3otlGsM1uZisIvTjCqpkzZ8jHAX3a8pqkbXQ",
+    "cid": "3350810542539600768",
+    "fid": "0x31752f006279e2a3:0x2e80786f61b4f380",
+    "placeId": "ChIJo-J5YgAvdTERgPO0YW94gC4"
+   },
+   {
+    "position": 17,
+    "title": "Cơm tấm Minh Long",
+    "address": "607 Nguyễn Thị Thập, Tân Hưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7398175,
+    "longitude": 106.7030631,
+    "rating": 3.9,
+    "ratingCount": 465,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Nhà hàng cơm",
+    "types": [
+     "Nhà hàng cơm"
+    ],
+    "website": "https://www.facebook.com/C%C6%A0M-T%E1%BA%A4M-MINH-LONG-700566507061617/",
+    "phoneNumber": "+84 938 903 801",
+    "openingHours": {
+     "Thứ Tư": "07:00–21:00",
+     "Thứ Năm": "07:00–21:00",
+     "Thứ Sáu": "07:00–21:00",
+     "Thứ Bảy": "07:00–21:00",
+     "Chủ Nhật": "07:00–21:00",
+     "Thứ Hai": "07:00–21:00",
+     "Thứ Ba": "07:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWldE9B-9wnAsyDKAAXFyGil8ZB7simcxwzRYzIAQCfXDqlMHo43bdQ6SQPfWa_1atshzRGbFhCfY2tMlSAwiwlCV-DgTBoj5-uJwJtrzALjJ_ETXvR4dtU-qcujgbzfxoZwGmz8",
+    "cid": "8505899571603694635",
+    "fid": "0x31752f992b0851b3:0x760b06981c95e42b",
+    "placeId": "ChIJs1EIK5kvdTERK-SVHJgGC3Y"
+   },
+   {
+    "position": 18,
+    "title": "Lotteria Huỳnh Tấn Phát",
+    "address": "573 Huỳnh Tấn Phát, Tân Thuận, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7422648,
+    "longitude": 106.7298046,
+    "rating": 4.3,
+    "ratingCount": 351,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Nhà hàng ăn nhanh",
+    "types": [
+     "Nhà hàng ăn nhanh"
+    ],
+    "website": "http://www.lotteria.vn/",
+    "phoneNumber": "+84 1900 6778",
+    "openingHours": {
+     "Thứ Tư": "08:00–22:00",
+     "Thứ Năm": "08:00–22:00",
+     "Thứ Sáu": "08:00–22:00",
+     "Thứ Bảy": "08:00–22:00",
+     "Chủ Nhật": "08:00–22:00",
+     "Thứ Hai": "08:00–22:00",
+     "Thứ Ba": "08:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn9W4eT0JfoMmnK6CCiHWUweVUSE8_M3gjMK8eymEt_AXBhuuPU7z5LORR-tjMyu8z0NfGy4OpzFk1xpV7iWPXwBW55mdPscaSH4igHQeWGNsUBP227vDigX_3C2e489sSsq0khug",
+    "cid": "4534263741328736727",
+    "fid": "0x3175258ddf69eb81:0x3eecf0d963d541d7",
+    "placeId": "ChIJgetp340ldTER10HVY9nw7D4"
+   },
+   {
+    "position": 19,
+    "title": "Popeyes Nguyễn Thị Thập",
+    "address": "519 Nguyễn Thị Thập, Tân Hưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7392149,
+    "longitude": 106.7072685,
+    "rating": 4.2,
+    "ratingCount": 1798,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng ăn nhanh",
+    "types": [
+     "Nhà hàng ăn nhanh"
+    ],
+    "website": "http://www.popeyes.vn/",
+    "phoneNumber": "+84 28 3775 2286",
+    "openingHours": {
+     "Thứ Tư": "10:00–22:00",
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00",
+     "Thứ Ba": "10:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkjQ4_Gn_XRIqjuZYD0pFducDa9KblCPZeogALLEQs66HWs0-1JBr2mdmqt1OfRW0rFDNrnrPB7rYEjN9S030rzgBk1rwir1auc-pl_IucXQmp7OQT1KxWVKflQY9TnpYG8WPX7zQ",
+    "cid": "14599977244846889373",
+    "fid": "0x31752f9953e7f6eb:0xca9d89f33fe2999d",
+    "placeId": "ChIJ6_bnU5kvdTERnZniP_OJnco"
+   }
+  ],
+  "credits": 3
+ }
+}

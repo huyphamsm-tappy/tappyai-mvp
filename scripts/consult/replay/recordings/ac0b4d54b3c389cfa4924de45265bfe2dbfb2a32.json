@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"F-You 81 Massage\" OR \"Massage Tĩnh Viên\" OR \"Trải nghiệm Ha Spa & Massage tại Quận 1\" sai gon site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:28:26.020Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"F-You 81 Massage\" OR \"Massage Tĩnh Viên\" OR \"Trải nghiệm Ha Spa & Massage tại Quận 1\" sai gon site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Massage Tĩnh Viên #theotheoriviu #vtmgr #Learnontiktok ...",
+    "link": "https://www.tiktok.com/@theotheoriviu/video/7641437053804186900",
+    "snippet": "Tất Physio Massage Trị Liệu · Massage Healing · Massage Trị Liệu Đà Lạt. Massage Tĩnh Viên #theotheoriviu #vtmgr #Learnontiktok #massage.",
+    "position": 1
+   },
+   {
+    "title": "tỉnhspa",
+    "link": "https://www.tiktok.com/tag/t%E1%BB%89nhspa",
+    "snippet": "Chỉ vài giây chạm nhẹ - mở ra cánh cửa nhan sắc & sức khoẻ. Khám phá bí mật huyệt đạo trên gương mặt, ai cũng làm được! #huyetdao ...",
+    "position": 2
+   },
+   {
+    "title": "Một chiếc clip sẽ hữu ích cho những ai hay đau cổ vai gáy ...",
+    "link": "https://www.tiktok.com/@chamdidau/video/7256401642579381510",
+    "snippet": "Massage Tĩnh Viên. 190 · recommend-cover. sức khoẻ của bạn. 471 · recommend ... Khám phá một trong những spa tuyệt nhất tại Sài Gòn với dịch vụ ...",
+    "position": 3
+   },
+   {
+    "title": "massagetrilieuhcm",
+    "link": "https://www.tiktok.com/tag/massagetrilieuhcm",
+    "snippet": "thích hợp Cho khách hàng muốn được thư giãn. tịnh tâm. ở đây có nhiều dịch vụ đa dạng với mức giá hợp lý. không những vậy. spa còn có các ưu đãi Cho khách hàng ...",
+    "position": 4
+   },
+   {
+    "title": "Review Massage Từ A Đến Z Sài Gòn",
+    "link": "https://www.tiktok.com/discover/review-massage-t%E1%BB%AB-a-%C4%91%E1%BA%BFn-z-s%C3%A0i-g%C3%B2n",
+    "snippet": "Massage Tĩnh Viên #theotheoriviu #vtmgr #Learnontiktok #massage · âm thanh gốc - Thẻo Thẻo · Review Massage Trị Liệu Đông Y · Massage Vật Lý ...",
+    "date": "14 thg 9, 2026",
+    "position": 5
+   },
+   {
+    "title": "Message Vietnam Ho Chi Min",
+    "link": "https://www.tiktok.com/discover/message-vietnam-ho-chi-min",
+    "snippet": "Thẻo Thẻo. Massage Tĩnh Viên #theotheoriviu #vtmgr #Learnontiktok #massage · âm thanh gốc - Thẻo Thẻo · Review Massage Trị Liệu Đông Y.",
+    "date": "21 thg 9, 2026",
+    "position": 6
+   },
+   {
+    "title": "Trải nghiệm massage thư giãn tuyệt vời tại VTMGR",
+    "link": "https://www.tiktok.com/@theotheoriviu/video/7637077212231077141",
+    "snippet": "Massage Tĩnh Viên #theotheoriviu #vtmgr #Learnontiktok #massage · âm thanh gốc - Thẻo Thẻo · Spa Linh Bống · Lg Clinic Spa Có Uy Tín Không.",
+    "position": 7
+   },
+   {
+    "title": "vietnammassage",
+    "link": "https://www.tiktok.com/tag/vietnammassage",
+    "snippet": "Massage Tĩnh Viên | 151 Hoà Hưng, Hoà Hưng Ward ✨ Today's treatment. A relaxing full-body massage followed by a nourishing wellness treat. Real massage ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

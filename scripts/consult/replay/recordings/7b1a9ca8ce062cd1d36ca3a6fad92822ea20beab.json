@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "laptop mới Thời lượng pin (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:13:44.216Z",
+ "body": {
+  "searchParameters": {
+   "q": "laptop mới Thời lượng pin (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Pin laptop dùng được bao lâu? Các yếu tố ảnh hưởng",
+    "link": "https://cellphones.com.vn/sforum/pin-laptop-dung-duoc-bao-lau",
+    "snippet": "Thời lượng trung bình của pin laptop là bao lâu? ... Thông thường, pin laptop dùng được trung bình từ 3 đến 8 giờ cho mỗi lần sạc đầy, tùy vào cấu hình máy và ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 1
+   },
+   {
+    "title": "Top 10 mẫu laptop văn phòng pin trâu tốt nhất hiện nay",
+    "link": "https://cellphones.com.vn/sforum/laptop-van-phong-pin-trau",
+    "snippet": "Top các mẫu văn phòng pin trâu tốt nhất như: MacBook Air M1 2020, Asus ZenBook 14 OLED, MacBook Air M3 13 inch 2024, Dell Inspiron 15 3530 P16WD,...",
+    "position": 2
+   },
+   {
+    "title": "6 cách tăng thời lượng sử dụng pin Laptop vô cùng đơn giản",
+    "link": "https://cellphones.com.vn/sforum/tong-hop-nhung-cach-giup-tang-thoi-luong-su-dung-pin-laptop",
+    "snippet": "Tổng hợp những cách giúp tăng thời lượng sử dụng pin Laptop · 1. Giảm độ sáng màn hình · 2. Tùy chỉnh Power plan · 3. Tắt Bluetooth và những kết nối không cần ...",
+    "position": 3
+   },
+   {
+    "title": "Hướng dẫn cách xả pin laptop đơn giản và chi tiết",
+    "link": "https://cellphones.com.vn/sforum/xa-pin-laptop-theo-chuan-loi-khuyen-tu-chuyen-gia-ban-da-biet",
+    "snippet": "Có nên xả pin laptop? ... Có, nhưng chỉ nên thực hiện định kỳ 2-3 tháng để duy trì độ chính xác của dung lượng pin. Xả pin quá thường ...",
+    "date": "26 thg 12, 2025",
+    "position": 4
+   },
+   {
+    "title": "Cách giới hạn sạc pin laptop Dell giúp kéo dài tuổi thọ pin",
+    "link": "https://cellphones.com.vn/sforum/cach-gioi-han-sac-pin-laptop-dell",
+    "snippet": "Một mức pin phù hợp sẽ giúp bạn vừa đảm bảo thời lượng sử dụng, vừa giảm áp lực lên pin, từ đó kéo dài tuổi thọ thiết bị trong thời gian dài.",
+    "date": "8 thg 6, 2026",
+    "position": 5
+   },
+   {
+    "title": "Laptop dưới 25 triệu | Hiệu năng mạnh mẽ, cấu hình ấn ...",
+    "link": "https://cellphones.com.vn/bo-loc/laptop-tu-20-25-trieu",
+    "snippet": "Laptop dưới 25 triệu chính hãng, thiết kế ấn tượng, cấu hình mạnh mẽ, hiệu năng nổi bật, bảo hành uy tín. Mua ngay laptop 25 triệu trả góp 0%",
+    "position": 6
+   },
+   {
+    "title": "5 laptop pin trâu đáng mua nhất tháng 1 này",
+    "link": "https://cellphones.com.vn/sforum/5-laptop-pin-trau-dang-mua-nhat-dau-nam",
+    "snippet": "Điểm mặt top 5 laptop có thời lượng pin trâu đáng mua nhất đầu năm 2025 này · 1. ASUS Expertboook P5 (P5405): 840 phút · 2. MacBook Pro M4 14 inch ...",
+    "date": "24 thg 1, 2025",
+    "position": 7
+   },
+   {
+    "title": "Pin laptop HP sử dụng được mấy tiếng? Yếu tố ảnh hưởng",
+    "link": "https://cellphones.com.vn/sforum/pin-laptop-hp-su-dung-duoc-may-tieng",
+    "snippet": "Thực tế cho thấy thời lượng pin của các dòng laptop HP khá đa dạng, dao động từ 4 đến 11 tiếng tùy thuộc vào model máy và điều kiện sử dụng.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

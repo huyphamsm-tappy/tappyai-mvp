@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Ốp lưng iPhone 17 Pro Max UAG chống sốc Monarch Pro\" OR \"(THANH LÝ) Ốp Lưng UAG MONARCH Pro Magsafe Cho\" OR \"Urban Armor Gear Ốp iPhone 11 Pro UAG Monarch\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:19:44.382Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Ốp lưng iPhone 17 Pro Max UAG chống sốc Monarch Pro\" OR \"(THANH LÝ) Ốp Lưng UAG MONARCH Pro Magsafe Cho\" OR \"Urban Armor Gear Ốp iPhone 11 Pro UAG Monarch\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

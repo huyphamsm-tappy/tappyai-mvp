@@ -1,0 +1,44 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Lenovo V15 G4 IRU 83A100PMVN site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:04:36.267Z",
+ "body": {
+  "searchParameters": {
+   "q": "Lenovo V15 G4 IRU 83A100PMVN site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop Lenovo V15 G4 IRU - 83A100PMVN (Core i5-13420H",
+    "link": "https://shopee.vn/Laptop-Lenovo-V15-G4-IRU-83A100PMVN-(Core-i5-13420H-Onboard-graphics-16GB-512GB-Windows-11)-B%E1%BA%A3o-h%C3%A0nh-24-th%C3%A1ng-i.469040198.43856708206",
+    "snippet": "Mua Laptop Lenovo V15 G4 IRU - 83A100PMVN (Core i5-13420H/ Onboard graphics/ 16GB/ 512GB/ Windows 11) - Bảo hành 24 tháng giá tốt. Mua hàng qua mạng uy tín, ...",
+    "rating": 5,
+    "ratingCount": 11,
+    "position": 1
+   },
+   {
+    "title": "Laptop Lenovo V15 G4 IRU 83A100PMVN i5-13420H | 16GB",
+    "link": "https://shopee.vn/Laptop-Lenovo-V15-G4-IRU-83A100PMVN-i5-13420H-16GB-512GB-15.6'-FHD-Win-11-i.409599477.43071517814",
+    "snippet": "Mua Laptop Lenovo V15 G4 IRU 83A100PMVN i5-13420H | 16GB | 512GB | 15.6' FHD | Win 11 giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "position": 2
+   },
+   {
+    "title": "Laptop văn phòng Lenovo V15 G4 IRU 83A100PMVN Chip ...",
+    "link": "https://shopee.vn/Laptop-v%C4%83n-ph%C3%B2ng-Lenovo-V15-G4-IRU-83A100PMVN-Chip-i5-13420H-Card-%C4%91%E1%BB%93-h%E1%BB%8Da-Intel-UHD-Graphics-i.32486783.40015616929",
+    "snippet": "Mua Laptop văn phòng Lenovo V15 G4 IRU 83A100PMVN Chip i5-13420H Card đồ họa Intel UHD Graphics giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 3
+   }
+  ],
+  "credits": 1
+ }
+}

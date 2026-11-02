@@ -1,0 +1,587 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "điểm tham quan thắng cảnh núi Tây Ninh Tây Ninh",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,12z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:24:54.214Z",
+ "body": {
+  "searchParameters": {
+   "q": "điểm tham quan thắng cảnh núi Tây Ninh Tây Ninh",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,12z",
+   "engine": "google"
+  },
+  "ll": "@10.7768062,106.7008955,12z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Khu du lịch Văn Thánh",
+    "address": "48/10 Điện Biên Phủ, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.798721299999999,
+    "longitude": 106.71656039999999,
+    "rating": 4.3,
+    "ratingCount": 5248,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "website": "https://www.facebook.com/dulichvanthanh/",
+    "phoneNumber": "+84 901 889 705",
+    "openingHours": {
+     "Thứ Tư": "07:00–21:00",
+     "Thứ Năm": "07:00–21:00",
+     "Thứ Sáu": "07:00–21:00",
+     "Thứ Bảy": "07:00–21:00",
+     "Chủ Nhật": "07:00–21:00",
+     "Thứ Hai": "07:00–21:00",
+     "Thứ Ba": "07:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLftuNAAqw0r_9iWxecKSavxheSm0k--B66DwzQquldechR_tYT868AbcqsbhtI-52oH-kn8j190BxcnYn7WfyrmgZrt1o3BAgvFQdZM6L-u80_FfCcxDg63f62nLfpiWQSMssGB",
+    "cid": "11384850416856558268",
+    "fid": "0x3175295d0d47c057:0x9dff1d2275b16abc",
+    "placeId": "ChIJV8BHDV0pdTERvGqxdSId_50"
+   },
+   {
+    "position": 2,
+    "title": "Khu Du Lịch Bến Xưa",
+    "address": "39A Hà Huy Giáp, An Phú Đông, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.8527195,
+    "longitude": 106.6773975,
+    "rating": 4.3,
+    "ratingCount": 1593,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "website": "https://benxua.vn/",
+    "phoneNumber": "+84 942 166 166",
+    "description": "Công viên rộng lớn ven sông có bể bơi, nhiều nhà hàng trong các tòa nhà kiểu cổ và hồ hoa súng.",
+    "openingHours": {
+     "Thứ Tư": "07:00–22:00",
+     "Thứ Năm": "07:00–22:00",
+     "Thứ Sáu": "07:00–22:00",
+     "Thứ Bảy": "07:00–22:00",
+     "Chủ Nhật": "07:00–22:00",
+     "Thứ Hai": "07:00–22:00",
+     "Thứ Ba": "07:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmM4aukGFbqeaqPzxvTFRC-5yyelYKXFqO2IkZY0oXc9T_OKxe_Z7ueS4Sp92ozK4fVLy6QiDm0W4sLEc31hkeKU9jBlpRDXzW_h5ZIjtVWovsrgAGqQS4kYJMFeA_jhZ8W5cAk",
+    "cid": "255713947382682657",
+    "fid": "0x3175284af5c6aaab:0x38c7a7af5db9421",
+    "placeId": "ChIJq6rG9UoodTERIZTb9Xp6jAM"
+   },
+   {
+    "position": 3,
+    "title": "PHÚ THẮNG GRAND HOTEL - LONG AN",
+    "address": "Khu Công Nghiệp Tân Đô, Ấp Bình Tiền 2, Đức Hòa, Tây Ninh 82700, Việt Nam",
+    "latitude": 10.798966199999999,
+    "longitude": 106.49068749999999,
+    "rating": 4.4,
+    "ratingCount": 301,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://phuthanggrandhotel.com/",
+    "phoneNumber": "+84 982 663 016",
+    "description": "Khách sạn cao cấp có phòng ở sáng sủa nhìn ra thành phố, khu spa, nhà hàng/quầy bar và bữa sáng.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOx7hcMC7AyXYj59SXc_fDXqMwNLn-ZOAOa-CUeywPpR_v3vYzTZkTddkDvekSwFy2CsQh3PFerjiRQN-8aKkVASxeu4a7G-EL5XnC2_uK4mqlRQ0SLPTfiErfosOEF-Vuh9CNV",
+    "cid": "6040149706148268848",
+    "fid": "0x310ad57dc5b860b5:0x53d2ec27d925cb30",
+    "placeId": "ChIJtWC4xX3VCjERMMsl2Sfs0lM"
+   },
+   {
+    "position": 4,
+    "title": "Hội Quán Nghĩa An",
+    "address": "678 Nguyễn Trãi, Chợ Lớn, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.753729,
+    "longitude": 106.6620902,
+    "rating": 4.7,
+    "ratingCount": 1202,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Nơi thờ cúng"
+    ],
+    "phoneNumber": "+84 28 3853 8775",
+    "description": "Ngôi chùa kiểu Trung Hoa có những họa tiết chạm khắc tinh xảo và tượng Phật dát vàng trong điện thờ đẹp mắt.",
+    "openingHours": {
+     "Thứ Tư": "06:00–17:00",
+     "Thứ Năm": "06:00–17:00",
+     "Thứ Sáu": "06:00–17:00",
+     "Thứ Bảy": "06:00–17:00",
+     "Chủ Nhật": "06:00–17:00",
+     "Thứ Hai": "06:00–17:00",
+     "Thứ Ba": "06:00–17:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLeGR5RU51LMsbwvEMhDkEJMirsLyqZiUVaw0ri4n9mP08vuvOkRjRd29F0TIFhFc3Jx7F-hEGfHb_sj8DG7omUjypBM-TbYrMJhkLk8PAS3A6uEhAKg0_Ff4jBFczCucH20wehE",
+    "cid": "6185030838806917856",
+    "fid": "0x31752ef0d2aef039:0x55d5a4c737ec32e0",
+    "placeId": "ChIJOfCu0vAudTER4DLsN8ek1VU"
+   },
+   {
+    "position": 5,
+    "title": "Chùa Vạn Phật",
+    "address": "66/14 Đ. Nghĩa Thục, An Đông, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.753370199999999,
+    "longitude": 106.67529959999999,
+    "rating": 4.7,
+    "ratingCount": 2951,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Chùa",
+     "Chùa phật giáo"
+    ],
+    "website": "http://facebook.com/chuavanphat.q5.tphcm",
+    "phoneNumber": "+84 28 3838 1955",
+    "description": "Ngôi chùa có điện thờ tinh xảo cùng 3 tượng Phật lớn, bao quanh là hàng nghìn bức tượng nhỏ hơn.",
+    "openingHours": {
+     "Thứ Tư": "07:00–19:00",
+     "Thứ Năm": "07:00–19:00",
+     "Thứ Sáu": "07:00–19:00",
+     "Thứ Bảy": "07:00–19:00",
+     "Chủ Nhật": "07:00–19:00",
+     "Thứ Hai": "07:00–19:00",
+     "Thứ Ba": "07:00–19:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmO43DZBBG5_MoM7TFQrppyMdyi2Nw_WvWW7gEd7MnohlEBGH54SjN16316xhbvMzo0Fv5hAbf1lkcUkG_IpkvfoMf-YT57MbS5lhTDD5wK-nHzmkN3ssiQl41h8fBTfXgX1jZi97w",
+    "cid": "17690189578805208921",
+    "fid": "0x31752efdee443bdf:0xf5802db1fe006759",
+    "placeId": "ChIJ3ztE7v0udTERWWcA_rEtgPU"
+   },
+   {
+    "position": 6,
+    "title": "Cột cờ Thủ Ngữ",
+    "address": "2 Tôn Đức Thắng, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7698624,
+    "longitude": 106.7063259,
+    "rating": 4.4,
+    "ratingCount": 351,
+    "type": "Điểm mốc lịch sử",
+    "types": [
+     "Điểm mốc lịch sử"
+    ],
+    "openingHours": {
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOOImZ8SeFd8vg4zwxfi0OQkGYiW19GLMrSl0QXIRFnhX285U9g6zYU8qNmtpLv9CCLo323IVyRuSoStyO4PrQ7b0_OOrfToDLUPHD7qCD_VwsVilkvMynv7vdRYXIgXmkHwnSw",
+    "cid": "4187824741001686641",
+    "fid": "0x31752f43d2dea1ab:0x3a1e2469f4ff6e71",
+    "placeId": "ChIJq6He0kMvdTERcW7_9GkkHjo"
+   },
+   {
+    "position": 7,
+    "title": "Chùa Tuyền Lâm",
+    "address": "887 Đ. Hồng Bàng, Phường 9, Quận 6, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7542037,
+    "longitude": 106.6407053,
+    "rating": 4.5,
+    "ratingCount": 500,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Chùa phật giáo"
+    ],
+    "description": "Ngôi chùa nhiều màu sắc, có các yếu tố kiến trúc truyền thống của Trung Quốc và bài trí nhiều tượng Phật.",
+    "openingHours": {
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOmrhZ65DAHQDDxgDGfQxD-gFXbvXOjAnP2AeTVpprbjUtJPZNxsc8EZ9jJJR8bOcEQS5slrzvz6NIJgBlwR76wD_atAx0eqMXq66GM-LcN9QT50of5y6LqGWBbLITPPMKZfi76FA",
+    "cid": "3450932617754761174",
+    "fid": "0x31752e85ffc4b47b:0x2fe42cee9914d7d6",
+    "placeId": "ChIJe7TE_4UudTER1tcUme4s5C8"
+   },
+   {
+    "position": 8,
+    "title": "Vietopia",
+    "address": "98 Nguyễn Thị Thập, Khu đô thị Him Lam, Tân Hưng, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7415542,
+    "longitude": 106.69500389999999,
+    "rating": 4.2,
+    "ratingCount": 3285,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Chương trình ngoại khóa",
+     "Công viên giải trí"
+    ],
+    "website": "https://vietopia.com.vn/",
+    "description": "Sân chơi trong nhà rộng kiểu thành phố thu nhỏ với các hoạt động giáo dục, thực hành.",
+    "openingHours": {
+     "Thứ Tư": "08:00–16:00",
+     "Thứ Năm": "08:00–16:00",
+     "Thứ Sáu": "08:00–16:00",
+     "Thứ Bảy": "09:00–17:00",
+     "Chủ Nhật": "09:00–17:00",
+     "Thứ Hai": "Đóng cửa",
+     "Thứ Ba": "08:00–16:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmN005AJkdVqa8kTtYT0ZK7ibv4D0zu63oWPlO1YDTudShrUdIu6t9rcF6qpp7NQKtOQ7XsIKgxM47u1Rul72ljfN5JbNJqw41nh3Cn4p4NWWpb1NXUwzrUw2h0TuIDc-4Zpm2S1",
+    "cid": "16351191221892170681",
+    "fid": "0x31752fa142524103:0xe2eb19c8b35e43b9",
+    "placeId": "ChIJA0FSQqEvdTERuUNes8gZ6-I"
+   },
+   {
+    "position": 9,
+    "title": "Chùa Xá Lợi",
+    "address": "89 Bà Huyện Thanh Quan, Xuân Hòa, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7780334,
+    "longitude": 106.6864615,
+    "rating": 4.7,
+    "ratingCount": 1900,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Chùa",
+     "Chùa phật giáo"
+    ],
+    "website": "http://chuaxaloi.vn/",
+    "description": "Ngôi chùa Phật Giáo nổi bật, cao vút và xây năm 1956 này từng là nơi bị lực lượng chính quyền tập kích năm 1963.",
+    "openingHours": {
+     "Thứ Tư": "06:00–11:30, 14:00–21:00",
+     "Thứ Năm": "06:00–11:30, 14:00–21:00",
+     "Thứ Sáu": "06:00–11:30, 14:00–21:00",
+     "Thứ Bảy": "06:00–11:30, 14:00–21:00",
+     "Chủ Nhật": "06:00–11:30, 14:00–21:00",
+     "Thứ Hai": "06:00–11:30, 14:00–21:00",
+     "Thứ Ba": "06:00–11:30, 14:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNgo0nIfgIenSRND18vMUj82tVtGJwqfbab8lMnYnnVSeBRvchmy0_MoCDLptR5KCLUgKpei38mTUTTNkmZxOFvE70ONbVT_0r6gdofxXtLftGRa-TwR1MEokJFI8kVtuc02mfo",
+    "cid": "7879675335981184785",
+    "fid": "0x31752f256a3b2a6f:0x6d5a3af84290b711",
+    "placeId": "ChIJbyo7aiUvdTEREbeQQvg6Wm0"
+   },
+   {
+    "position": 10,
+    "title": "Chùa Phổ Quang",
+    "address": "21 Huỳnh Lan Khanh, Tân Sơn Hòa, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.8050829,
+    "longitude": 106.6686603,
+    "rating": 4.7,
+    "ratingCount": 3935,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Chùa",
+     "Tổ chức tôn giáo",
+     "Chùa phật giáo"
+    ],
+    "description": "Ngôi chùa có sân trong rợp bóng cọ và đền thờ giống hang động có tượng mạ vàng.",
+    "openingHours": {
+     "Thứ Tư": "06:00–21:00",
+     "Thứ Năm": "06:00–21:00",
+     "Thứ Sáu": "06:00–21:00",
+     "Thứ Bảy": "06:00–21:00",
+     "Chủ Nhật": "06:00–21:00",
+     "Thứ Hai": "06:00–21:00",
+     "Thứ Ba": "06:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLe03SjTmH7mYiXuUplg7YrV3wo5_-KX4-ySal_F4gQm2_GxfOzOflTXa6D2nW127-bq6nsOnVEx3-wzh7zN_-NM1UUTBJzmVPLBLv05uqeBhTfcLBpE6b1GrsHVl27c0bOPVc1OMQ",
+    "cid": "2110724789895767462",
+    "fid": "0x317529244947990f:0x1d4acd03685925a6",
+    "placeId": "ChIJD5lHSSQpdTERpiVZaAPNSh0"
+   },
+   {
+    "position": 11,
+    "title": "Bò Tơ Tây Ninh Năm Sánh",
+    "address": "149 Hoàng Hữu Nam, Tăng Nhơn Phú, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.856500299999999,
+    "longitude": 106.81347369999999,
+    "rating": 4.1,
+    "ratingCount": 473,
+    "priceLevel": "100-400 N ₫",
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng",
+     "Nhà hàng Việt Nam"
+    ],
+    "phoneNumber": "+84 908 388 353",
+    "openingHours": {
+     "Thứ Tư": "09:00–23:00",
+     "Thứ Năm": "09:00–23:00",
+     "Thứ Sáu": "09:00–23:00",
+     "Thứ Bảy": "09:00–23:00",
+     "Chủ Nhật": "09:00–23:00",
+     "Thứ Hai": "09:00–23:00",
+     "Thứ Ba": "09:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOX_OsOQVh18jCUdjWPCzIMca-ND8X573DenZPoFKPwaoz-Siro2Z-8PpoPaAE3Uq7JtoBC8pY8DARyOlZ23QEffYetBEZRYfAbu-nlsioa4CI4sxdYNyopVMghN3eDrbqbihQy6hE3uIg",
+    "cid": "11820550113273183590",
+    "fid": "0x3175274dcac81e9d:0xa40b07b33759fd66",
+    "placeId": "ChIJnR7Iyk0ndTERZv1ZN7MHC6Q"
+   },
+   {
+    "position": 12,
+    "title": "Tu viện Tường Vân",
+    "address": "128 Nguyễn Hữu Trí, Khu phố 5, Tân Nhựt, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.6944789,
+    "longitude": 106.5851398,
+    "rating": 4.7,
+    "ratingCount": 688,
+    "type": "Tu viện",
+    "types": [
+     "Tu viện"
+    ],
+    "website": "http://phatphapungdung.com/",
+    "phoneNumber": "+84 28 6268 9409",
+    "openingHours": {
+     "Thứ Tư": "08:00–11:30, 13:30–21:00",
+     "Thứ Năm": "08:00–11:30, 13:30–21:00",
+     "Thứ Sáu": "08:00–11:30, 13:30–21:00",
+     "Thứ Bảy": "08:00–11:30, 13:30–21:00",
+     "Chủ Nhật": "08:00–11:30, 13:30–21:00",
+     "Thứ Hai": "08:00–11:30, 13:30–21:00",
+     "Thứ Ba": "08:00–11:30, 13:30–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMkTwYM5JnU0Z2a2Bdzo2nqJmJwZnWovybaQwc78FftGswY8fOmL_3HVFZ6qFNP4l1_e2m1PpKcDvzKtq2F16gAWR9PVymhGOCl8SOhoy7qsABo5oz4hhmYbuxMxAJgUCzrMZnlrA",
+    "cid": "5483932692707221637",
+    "fid": "0x3175326fe4f49deb:0x4c1ad7ba98f72085",
+    "placeId": "ChIJ65305G8ydTERhSD3mLrXGkw"
+   },
+   {
+    "position": 13,
+    "title": "Công viên Vinhomes Central Park",
+    "address": "Trần Trọng Kim, Vinhomes Tân Cảng, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7934308,
+    "longitude": 106.7243981,
+    "rating": 4.6,
+    "ratingCount": 8984,
+    "type": "Công viên",
+    "types": [
+     "Công viên"
+    ],
+    "website": "http://vinhomes.vn/",
+    "phoneNumber": "+84 903 158 325",
+    "openingHours": {
+     "Thứ Tư": "06:00–21:30",
+     "Thứ Năm": "06:00–21:30",
+     "Thứ Sáu": "06:00–21:30",
+     "Thứ Bảy": "06:00–21:30",
+     "Chủ Nhật": "06:00–21:30",
+     "Thứ Hai": "06:00–21:30",
+     "Thứ Ba": "06:00–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNrICewgfGwITtigtufh6jrBFgMfFJytZJd68YI9W485mIMAhUu4zCtDb-2pO3nDduccPdZoEh8TWUqRv5zGv7pehY5Sv9mDAuNNvmhGHXUq9KglVTfTfXbWtB8c-dqleklLmt7jQ",
+    "cid": "1401226975389611975",
+    "fid": "0x317527c6f2782ec9:0x1372288295caf7c7",
+    "placeId": "ChIJyS548sYndTERx_fKlYIochM"
+   },
+   {
+    "position": 14,
+    "title": "Mộ Cự Thạch",
+    "address": "Hàng Gòn, Đồng Nai, Việt Nam",
+    "latitude": 10.864336699999999,
+    "longitude": 107.2306775,
+    "rating": 4.3,
+    "ratingCount": 363,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Bảo tàng khảo cổ học"
+    ],
+    "phoneNumber": "+84 916 136 787",
+    "openingHours": {
+     "Thứ Tư": "09:00–17:00",
+     "Thứ Năm": "09:00–17:00",
+     "Thứ Sáu": "09:00–17:00",
+     "Thứ Bảy": "09:00–17:00",
+     "Chủ Nhật": "09:00–17:00",
+     "Thứ Hai": "09:00–17:00",
+     "Thứ Ba": "09:00–17:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNI86qdURu-wrrZFSZM5R5W_SaYB-tI-boxrs6uHxTCLMs-A0mwqJIb53-9RlZScaFbXPYujRsO6J3og_Nhma0JDmc-yBKCWi3jeybtQaq72mVxwYj6ncMb1QSPr_NN6wePrHhTHw",
+    "cid": "17461823188032979483",
+    "fid": "0x3174fe386525e73b:0xf254dbac3d62821b",
+    "placeId": "ChIJO-clZTj-dDERG4JiPazbVPI"
+   },
+   {
+    "position": 15,
+    "title": "Chùa Bửu Quang (Theravāda)",
+    "address": "171/8-10 QL1A, Tam Bình, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.8732992,
+    "longitude": 106.7378677,
+    "rating": 4.6,
+    "ratingCount": 859,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Chùa phật giáo"
+    ],
+    "description": "Ngôi chùa thanh tĩnh có điện thờ trang nhã, những vườn cây, là nơi ưa thích để thiền định.",
+    "openingHours": {
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Đóng cửa",
+     "Thứ Ba": "08:00–17:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPh4H5h_OEE38dIu0PlVih2O-MPoXwlPkDOPlCD1QD_j3xPGzllANepFoYn2ne7BtOOnYypLDFuGAL47FmZQ8xlcfRQRDb0o16wtSXHLM6AeU3XKTt3jqkkJQWfPXZ3FnsNpZXr",
+    "cid": "7538969274128559034",
+    "fid": "0x317527f66f3deeed:0x689fcc9c95046bba",
+    "placeId": "ChIJ7e49b_YndTERumsElZzMn2g"
+   },
+   {
+    "position": 16,
+    "title": "Phòng Vé Đồng Phước Quận 10 ( Thành Thái )",
+    "address": "C30 Đ. Thành Thái, Diên Hồng, Hồ Chí Minh 700910, Việt Nam",
+    "latitude": 10.778715799999999,
+    "longitude": 106.6605653,
+    "rating": 2.8,
+    "ratingCount": 13,
+    "type": "Công ty vận tải đường bộ",
+    "types": [
+     "Công ty vận tải đường bộ"
+    ],
+    "website": "https://dongphuoctayninh.com/",
+    "phoneNumber": "+84 1900 1152",
+    "openingHours": {
+     "Thứ Tư": "04:30–21:00",
+     "Thứ Năm": "04:30–21:00",
+     "Thứ Sáu": "04:30–21:00",
+     "Thứ Bảy": "04:30–21:00",
+     "Chủ Nhật": "04:30–21:00",
+     "Thứ Hai": "04:30–21:00",
+     "Thứ Ba": "04:30–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPguCsV2CjpwOChis3vtKJZNoVf6Pvwq4_2_NZaEFkclr8RmOA9ThCpnoTekKw59vWnLUGzR2Nze0HsD04y8ayC8pbTAp2q_tDbfGM88MbpM1R3D2nBMwKpySonwblqEcgMkUqsdor4e-g",
+    "cid": "7080921504068798004",
+    "fid": "0x31752f6b09b2fbe9:0x62447c9774720634",
+    "placeId": "ChIJ6fuyCWsvdTERNAZydJd8RGI"
+   },
+   {
+    "position": 17,
+    "title": "Nhà thờ Giáo xứ Thánh Phanxicô Xaviê",
+    "address": "25 Đ. Học Lạc, Chợ Lớn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.751965,
+    "longitude": 106.65433859999999,
+    "rating": 4.6,
+    "ratingCount": 1433,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Nhà thờ Công giáo"
+    ],
+    "website": "https://nhathochatam.com/",
+    "phoneNumber": "+84 28 3856 0274",
+    "description": "Nhà thờ Công giáo nhỏ này có từ đầu thế kỷ 20 và mang nhiều đặc điểm của phong cách Trung Hoa.",
+    "openingHours": {
+     "Thứ Tư": "07:00–12:00, 14:00–18:00, 19:00–21:00",
+     "Thứ Năm": "07:00–12:00, 14:00–18:00, 19:00–21:00",
+     "Thứ Sáu": "07:00–12:00, 14:00–18:00, 19:00–21:00",
+     "Thứ Bảy": "07:00–12:00, 14:00–18:00, 19:00–21:00",
+     "Chủ Nhật": "07:00–12:00, 14:00–18:00, 19:00–21:00",
+     "Thứ Hai": "07:00–12:00, 14:00–18:00, 19:00–21:00",
+     "Thứ Ba": "07:00–12:00, 14:00–18:00, 19:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmODlSREWW4hiUXnYehipv32UK6LXHLdPp4BOerCM-23h05KQ5y4mtP9LaFz_eeoSsKm8VlwEejqA-Pw0W4OAbbQiydT8__kLwxL2bKpiUfmLuXHcaQG_19WDHYhihRz3Co4V5xzcw",
+    "cid": "4961442202214032007",
+    "fid": "0x31752ef4ebbbcd21:0x44da956564996287",
+    "placeId": "ChIJIc276_QudTERh2KZZGWV2kQ"
+   },
+   {
+    "position": 18,
+    "title": "Chùa Phước Viên",
+    "address": "Vòng xoay Hàng Xanh, Ngã tư Hàng Xanh/318 Xô Viết Nghệ Tĩnh, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.8009988,
+    "longitude": 106.71175199999999,
+    "rating": 4.6,
+    "ratingCount": 584,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Chùa phật giáo"
+    ],
+    "website": "http://fb.com/chuaphuocvienhangxanh",
+    "phoneNumber": "+84 28 3899 0727",
+    "openingHours": {
+     "Thứ Tư": "06:00–21:00",
+     "Thứ Năm": "06:00–21:00",
+     "Thứ Sáu": "06:00–21:00",
+     "Thứ Bảy": "06:00–21:00",
+     "Chủ Nhật": "06:00–21:00",
+     "Thứ Hai": "06:00–21:00",
+     "Thứ Ba": "06:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLen2RLw64nkw2EXpIb4f_5LhpRFom9KwQce_01Z-5w_DNO5a4wtRiD7jzOZyrITppJUwiGPAhYASrJyH5rwIy6HJCGY8nCsEK_VmmDiu5z2rxU_au_eXRwjK7m8enwwvnjX__W2",
+    "cid": "13845001287077398474",
+    "fid": "0x317528a534ee809d:0xc02353510f1307ca",
+    "placeId": "ChIJnYDuNKUodTERygcTD1FTI8A"
+   },
+   {
+    "position": 19,
+    "title": "Thánh thất Sài Gòn",
+    "address": "891 Trần Hưng Đạo, Chợ Quán, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7546509,
+    "longitude": 106.67946979999999,
+    "rating": 4.6,
+    "ratingCount": 110,
+    "type": "Nơi thờ cúng",
+    "types": [
+     "Nơi thờ cúng"
+    ],
+    "website": "https://caodai.com.vn/vn",
+    "phoneNumber": "+84 966 637 397",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmObJ1I3LCV9PHn9K5w2FumwLflIedr8OgKMfWAc4Ej5PeNjPCIqljAMJU_3Z6Lq1jM7JCvwcnATBD5ZKejZkMyNjTo8jLnAfHon8Rwof4zcEQOe1iS5JZrkYtd8WvOvk2AG4d00ow",
+    "cid": "14172829329647160752",
+    "fid": "0x31752f03abf598f9:0xc4b0012f37db4db0",
+    "placeId": "ChIJ-Zj1qwMvdTERsE3bNy8BsMQ"
+   },
+   {
+    "position": 20,
+    "title": "Văn phòng vé máy bay quốc tế Korean-air",
+    "address": "173 Nguyễn Thị Minh Khai, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7704679,
+    "longitude": 106.686588,
+    "rating": 4,
+    "ratingCount": 4,
+    "type": "Đại lý du lịch bằng máy bay trực thăng",
+    "types": [
+     "Đại lý du lịch bằng máy bay trực thăng",
+     "Đại lý du lịch"
+    ],
+    "website": "http://korean-air.biz/",
+    "phoneNumber": "+84 28 3936 2020",
+    "openingHours": {
+     "Thứ Tư": "08:00–22:00",
+     "Thứ Năm": "08:00–22:00",
+     "Thứ Sáu": "08:00–22:00",
+     "Thứ Bảy": "08:00–22:00",
+     "Chủ Nhật": "Đóng cửa",
+     "Thứ Hai": "08:00–22:00",
+     "Thứ Ba": "08:00–22:00"
+    },
+    "bookingLinks": [
+     "https://korean-air.biz/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLe5-aR5Tkl1CdG1HLUr6hpr4LvcL8HmlMp7qzCmVGxsCXSRMy1BJj21PKbG6H4Cxzeyrl59hy7pLyyacYhHl_5Ice7fSsUP6Tfgm19v8OZT4ZYg6NgDEZSoYhMqMlY5jqmKb-glVg",
+    "cid": "10158671256981725853",
+    "fid": "0x31752f5c829b0db3:0x8cfad9af6e5de29d",
+    "placeId": "ChIJsw2bglwvdTERneJdbq_Z-ow"
+   }
+  ],
+  "credits": 3
+ }
+}

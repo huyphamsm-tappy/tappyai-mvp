@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"M Hotel Da Nang\" OR \"NALOD ĐÀ NẴNG\" OR \"Nhu Minh Plaza Danang Hotel\" Đà Nẵng site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:57:09.277Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"M Hotel Da Nang\" OR \"NALOD ĐÀ NẴNG\" OR \"Nhu Minh Plaza Danang Hotel\" Đà Nẵng site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn Nalod Đà Nẵng: Trải nghiệm biển tuyệt vời",
+    "link": "https://www.tiktok.com/@reviewkhachsandanang43rv/video/7623019870178921748",
+    "snippet": "Khách sạn Nalod Đà Nẵng: Trải nghiệm biển tuyệt vời. Khám phá Nalod Hotel Đà Nẵng, nơi có view biển đẹp và dịch vụ tuyệt vời chỉ từ 800xu/người/ ...",
+    "position": 1
+   },
+   {
+    "title": "Chiếc khách sạn 5 sao Nalod Đà Nẵng đã làm mình thổn ...",
+    "link": "https://www.tiktok.com/@lymedanang/video/7358430293503544577",
+    "snippet": "Chiếc khách sạn 5 sao Nalod Đà Nẵng đã làm mình thổn thức? #khachsandanang #dulichdanang #lymedanang #xuhuong #viral · Nhà Hàng Có Phòng Riêng ...",
+    "position": 2
+   },
+   {
+    "title": "M Hotel Da Nang: A Stunning 5-Star Oasis in Da Nang",
+    "link": "https://www.tiktok.com/@resorthotel_vietnam/video/7645542292819954965",
+    "snippet": "M hotel Da Nang - khách sạn 5 sao - được ưu ái với chiếc tên ốc đảo xinh đẹp giữa lòng Đà Nẵng làm bao du khách mê đắm. ✨ #mhotel # ...",
+    "position": 3
+   },
+   {
+    "title": "M Hotel Da Nang: A Nighttime Paradise",
+    "link": "https://www.tiktok.com/@mhoteldanang/video/7491982726556388615",
+    "snippet": "M Hotel Da Nang: A Nighttime Paradise. Explore the enchanting atmosphere of M Hotel Da Nang by night. Experience stunning views and vibrant ...",
+    "position": 4
+   },
+   {
+    "title": "Khách Sạn M Hotel Đà Nẵng: Trải Nghiệm Tuyệt Vời",
+    "link": "https://www.tiktok.com/@mhoteldanang/video/7490770335315414273",
+    "snippet": "dịch vụ khách sạn M Hotel Đà Nẵng, trải nghiệm du lịch tại Đà Nẵng, hồ bơi tầng thượng M Hotel, review khách sạn Đà Nẵng, khách sạn Đà Nẵng ...",
+    "position": 5
+   },
+   {
+    "title": "M Hotel Danang",
+    "link": "https://www.tiktok.com/discover/m-hotel-danang",
+    "snippet": "M Hotel Đà Nẵng mang phong cách phủ xanh độc đáo, kết hợp hồ bơi vô cực hướng thẳng bán đảo Sơn Trà – điểm check-in không thể bỏ lỡ tại Đà ...",
+    "date": "21 thg 9, 2026",
+    "position": 6
+   },
+   {
+    "title": "Nhu Minh Plaza Danang hotel (@nmpdananghotel)",
+    "link": "https://www.tiktok.com/@nmpdananghotel",
+    "snippet": "Nhu Minh Plaza Danang hotel · @nmpdananghotel · Phòng khách sạn biển - sảnh sự kiện 4 ⭐️ 0947.04.00.11 41 Phạm Văn Đồng, Tp Đà Nẵng.",
+    "position": 7
+   },
+   {
+    "title": "M Hotel Danang: Ốc Đảo Xanh Giữa Lòng Đà Nẵng",
+    "link": "https://www.tiktok.com/@mhoteldanang/video/7539823134933847314",
+    "snippet": "Khám phá M Hotel Danang, nơi thiên nhiên tươi mát hòa quyện cùng kiến trúc. @M Hotel Danang · original sound - Missus Villame · M Hotel Da Nang.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

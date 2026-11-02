@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "hộp quà cà phê tặng sếp nam (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:22:50.988Z",
+ "body": {
+  "searchParameters": {
+   "q": "hộp quà cà phê tặng sếp nam (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quà biếu sếp - Giá Tốt, Sale Tháng 09, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/qu%C3%A0/bi%E1%BA%BFu%20s%E1%BA%BFp",
+    "snippet": "Hộp quà tặng Hạt Dinh Dưỡng, Trà thảo mộc, Món quà ý nghĩa dành tặng vợ thầy cô giáo, nhân viên và đối tác. 340.000₫. rating-star 4.9.",
+    "position": 1
+   },
+   {
+    "title": "Quà tặng cho sếp - Giá Tốt, Sale Tháng 09, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/qu%C3%A0%20t%E1%BA%B7ng/cho%20s%E1%BA%BFp",
+    "snippet": "Set Quà Tốt Nghiệp Khắc Tên Gấu Bông Cử Nhân + Ly Khắc Tên Cá Nhân Hóa Tặng Bạn Bè [TẶNG KÈM THIỆP + TÚI]. 80.000₫. 130.000₫. -38%. Mua 2 & giảm 1%.",
+    "position": 2
+   },
+   {
+    "title": "15+ món quà Tết cho sếp vừa cao cấp vừa tinh tế, dễ ghi ...",
+    "link": "https://shopee.vn/blog/qua-tet-cho-sep/",
+    "snippet": "Quà phù hợp với sở thích và tính cách sếp như áo sơ mi, đồng hồ, nước hoa, các phụ kiện công nghệ, vật trang trí phong thủy hay tặng rượu vang ...",
+    "date": "6 thg 2, 2026",
+    "position": 3
+   },
+   {
+    "title": "quà tặng sếp nữ - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/qu%C3%A0%20t%E1%BA%B7ng/s%E1%BA%BFp%20n%E1%BB%AF",
+    "snippet": "Set quà tặng 2026 Cộng Cà Phê kèm túi đựng và hộp màu ngẫu nhiên -. custom ... Set quà sinh nhật cho nam, quà tặng bạn trai, gồm cốc sứ, móc khóa gấu ...",
+    "position": 4
+   },
+   {
+    "title": "Gợi ý 10+ món quà 8/3 cho sếp nữ giúp bạn ghi điểm tuyệt ...",
+    "link": "https://shopee.vn/blog/qua-8-3-cho-sep-nu/",
+    "snippet": "Hộp quà thơm bao gồm nến thơm, xà bông thơm, sáp thơm, tinh dầu, sage & palo santo là món quà phổ biến trong những năm gần đây, khi người ta chú ...",
+    "date": "6 thg 3, 2025",
+    "position": 5
+   },
+   {
+    "title": "Quà tặng sếp - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/qu%C3%A0%20t%E1%BA%B7ng/s%E1%BA%BFp",
+    "snippet": "Set Quà Tặng Sang Trọng – Bình Giữ Nhiệt + Ô Gấp Hoặc Máy Massage – quà tốt nghiệp, quà tặng doanh nghệp, quà giáng sinh. 119.000₫. rating-star 4.9.",
+    "position": 6
+   },
+   {
+    "title": "quà tặng doanh nghiệp - Giá Tốt, Sale Tháng 09, Freeship ...",
+    "link": "https://shopee.vn/list/qu%C3%A0%20t%E1%BA%B7ng/doanh%20nghi%E1%BB%87p",
+    "snippet": "Hộp quà tặng Hạt Dinh Dưỡng, Trà thảo mộc, Món quà ý nghĩa dành tặng vợ thầy cô giáo, nhân viên và đối tác. 340.000₫. rating-star 4.9.",
+    "position": 7
+   },
+   {
+    "title": "Đồ biếu tết - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/%C4%91%E1%BB%93%20bi%E1%BA%BFu%20t%E1%BA%BFt",
+    "snippet": "... Hộp Quà Biếu Cao Cấp Dành Tặng Bố Mẹ Sếp, Biếu Tết. 384.000₫. 389.000₫. -1 ... Quà Tặng Trà Shan Tuyết Cổ Thụ An Nam Cao Cấp - Quà Vu Lan Tết Trung Thu ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

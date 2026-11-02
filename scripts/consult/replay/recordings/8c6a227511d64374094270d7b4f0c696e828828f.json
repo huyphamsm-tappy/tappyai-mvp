@@ -1,0 +1,48 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Dell XPS 15 9510 – Core i7, Màn 4K site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:46:12.372Z",
+ "body": {
+  "searchParameters": {
+   "q": "Dell XPS 15 9510 – Core i7, Màn 4K site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "LAPTOP CAO CẤP, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/tran_dinh_manh",
+    "snippet": "Laptop Dell Precision 5540 l Core i7- 9850H l ram 32G l SSD 1TB l Màn ... (Zin bóc máy) Vỏ Dell XPS 15: 9500, 9510; Dell Precision 5550, 5560 (Mặt A ...",
+    "position": 1
+   },
+   {
+    "title": "Dell xps 15 - Giá Tốt, Sale Tháng 08, Freeship 0Đ",
+    "link": "https://shopee.vn/list/dell%20xps%2015",
+    "snippet": "Laptop Dell XPS 15 9550 Core i7-6700HQ, 16gb Ram, 256gb SSD, Nvidia GTX960M ... màn 4K cảm ứng 15.6inch siêu nét9.900.000₫. Mua online các sản phẩm dell ...",
+    "position": 2
+   },
+   {
+    "title": "Dell precision 5550 - Giá Tốt, Sale Tháng 09, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/laptop/dell/precision%205550",
+    "snippet": "... Core i7-1265U/ Ram 32GB/ SSD 512GB/ Màn 14\" FHD. 12.950.000₫. rating-star 4.8 · [Giá rẻ nhất] Dell Latitude 7420 Carbon/ CPU: Core i7 11th/ ... Dell XPS 9500 9510 ...",
+    "position": 3
+   },
+   {
+    "title": "Dell XPS 9310 / 9510 / 9520 Xiaomi Pro Book Core i5/ i7 ...",
+    "link": "https://shopee.vn/Laptop-nhi%E1%BB%81u-m%C3%A3-Dell-XPS-9310-9510-9520-Xiaomi-Pro-Book-Core-i5-i7-16GB-512GB-qua-s%E1%BB%AD-d%E1%BB%A5ng-BH-3-th%C3%A1ng--i.64488824.43427923825",
+    "snippet": "Laptop nhiều mã : Dell XPS 9310 / 9510 / 9520 Xiaomi Pro Book Core i5/ i7 16GB /512GB [qua sử dụng, BH 3 tháng]. outline grey truck icon. Không hỗ trợ ...",
+    "position": 4
+   }
+  ],
+  "credits": 1
+ }
+}

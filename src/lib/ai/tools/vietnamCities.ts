@@ -90,7 +90,7 @@ const CITIES: Record<string, VietnamCity> = (() => {
     'ha long': haLong, 'halong': haLong, 'hong gai': haLong,
     'can tho': canTho, 'hai phong': haiPhong, 'nha trang': nhaTrang,
     'da lat': daLat, 'dalat': daLat, 'vung tau': vungTau,
-    'hoi an': hoiAn, 'phu quoc': phuQuoc, 'quy nhon': quyNhon,
+    'hoi an': hoiAn, 'phu quoc': phuQuoc, 'quy nhon': quyNhon, 'qui nhon': quyNhon,
     'sa pa': saPa, 'sapa': saPa, 'ninh binh': ninhBinh,
   }
 })()

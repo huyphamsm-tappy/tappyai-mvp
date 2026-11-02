@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Minasi HanoiOI LakeSide Hotel\" OR \"Lakeside House Hanoi\" OR \"FLESTA Núi Trúc Serviced Apartment & Hotel\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:58:12.964Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Minasi HanoiOI LakeSide Hotel\" OR \"Lakeside House Hanoi\" OR \"FLESTA Núi Trúc Serviced Apartment & Hotel\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Background chất lượng 😁 @Tui Lina nè @Nhà có \"em Son ...",
+    "link": "https://www.tiktok.com/@tuilinane.review/video/7681607561782594837",
+    "snippet": "@Tui Lina nè. Review. Nhà sáng tạo kiếm hoa hồng. âm thanh gốc - Tui Lina nè. Review · Shop|Túi xinh lắm · Minasi HanoiOI LakeSide Hotel.",
+    "position": 1
+   },
+   {
+    "title": "luôn cố gắng vì các tình yêu luôn ở phía sau",
+    "link": "https://www.tiktok.com/@nguyensonthanh310/video/7654570615722069266",
+    "snippet": "... Minasi HanoiOi LakeSide Hotel 1/9: 9 x Deluxe Double: 2.300.000 đ Nesta Hotel & Spa 1/9: 9 x Deluxe Double Room: 2.300.000 đ Khan Quang Do Hotel 1/9 ...",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

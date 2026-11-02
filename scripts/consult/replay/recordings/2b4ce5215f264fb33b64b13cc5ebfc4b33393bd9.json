@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Ốp lưng UAG Pathfinder SE chính hãng với Magsafe cho iPhone\" OR \"Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe\" OR \"[iPhone 17 Pro/17 Pro Max] Ốp lưng UAG Pathfinder\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:10:08.219Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Ốp lưng UAG Pathfinder SE chính hãng với Magsafe cho iPhone\" OR \"Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe\" OR \"[iPhone 17 Pro/17 Pro Max] Ốp lưng UAG Pathfinder\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-scout-with-magsafe.html",
+    "snippet": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe ; Giá sản phẩm. 1.000.000đ 850.000đ ; Danh sách Cookies. Việc từ chối một số loại cookie sẽ có thể ảnh ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 1
+   },
+   {
+    "title": "[iPhone 17 Pro/17 Pro Max] Ốp lưng UAG Pathfinder ...",
+    "link": "https://shopee.vn/-iPhone-17-Pro-17-Pro-Max-%E1%BB%90p-l%C6%B0ng-UAG-Pathfinder-Civilian-Monarch-Pro-Orange-phi%C3%AAn-b%E1%BA%A3n-cam-%C4%91%E1%BA%B7c-bi%E1%BB%87t-i.898301886.50000977503",
+    "snippet": "Mua [iPhone 17 Pro/17 Pro Max] Ốp lưng UAG Pathfinder/Civilian/Monarch Pro Orange phiên bản cam đặc biệt giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 25,
+    "position": 2
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe",
+    "link": "https://timgiatot.com.vn/gia/254171-op-lung-iphone-17-pro-max-uag-chong-soc-scout-with-magsafe",
+    "snippet": "So sánh giá Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe: giá từ 850.000 ₫ trên 10 nơi bán, cập nhật tháng 9/2026. Giá từ các sàn lớn.",
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng UAG Pathfinder SE chính hãng với Magsafe cho iPhone ...",
+    "link": "https://www.lazada.vn/products/op-lung-uag-pathfinder-se-chinh-hang-voi-magsafe-cho-iphone-17-pro-max-iphone-17-air-iphone-16-pro-max-iphone-15-14-13-12-pro-max-vo-dien-thoai-cap-bac-quan-su-go-ghe-chong-roi-dap-bao-ve-trong-suot-i13404795989.html?srsltid=AU7gw4VrWPAgn17LonMADPEsje_8pvToLWXRLJTHZ9nMfYUtYpDjHR6W",
+    "snippet": "Ốp lưng UAG Pathfinder SE chính hãng với Magsafe cho iPhone 17 Pro Max / iPhone 17 Air / iPhone 16 Pro Max / iPhone 15 14 13 12 Pro Max vỏ điện thoại cấp bậc ...",
+    "position": 4
+   },
+   {
+    "title": "Tìm ốp 17prm cam",
+    "link": "https://www.facebook.com/groups/337292695886986/posts/1064317203184528/",
+    "snippet": "[iPhone 17 Pro/17 Pro Max] Ốp lưng UAG Pathfinder/Civilian/Monarch Pro Orange phiên bản cam đặc biệt https://s.shopee. vn/5VV8LnuFJt.",
+    "position": 5
+   },
+   {
+    "title": "Ốp lưng iPhone 14 Plus / 15 Plus UAG chống sốc Plyo Ice ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-14-plus-uag-plyo-ice-with-magsafe.html",
+    "snippet": "... Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe. Trả góp 0%. : 850.000đ. 1.000.000đ.",
+    "position": 6
+   },
+   {
+    "title": "Mình cần tìm UAG cho 17pro 👍",
+    "link": "https://www.facebook.com/groups/337292695886986/posts/1048609658088616/",
+    "snippet": "Ốp lưng UAG Civilian hỗ trợ sạc từ tính Magnetic cho iPhonee 17 Pro Chỉ còn 1.209.300₫. Mua ngay trên Shopee! https://s. shopee.vn/ ...",
+    "position": 7
+   },
+   {
+    "title": "Ốp lưng trong suốt UAG Pathfinder chính hãng với Magsafe cho ...",
+    "link": "https://www.lazada.vn/products/op-lung-trong-suot-uag-pathfinder-chinh-hang-voi-magsafe-cho-iphone-17-pro-max-iphone-16-pro-max-iphone-17-air-iphone-15-pro-max-iphone-14-13-12-pro-max-vo-dien-thoai-chong-soc-chac-chan-chong-truot-bac-quan-su-bao-ve-bia-i13403129152-s117063755292.html?srsltid=AU7gw4VJGkoMl3zUD_StA8NEJRTGHf4k5FNZWi5coIew4C7PJPe7Hcwu",
+    "snippet": "Ốp lưng UAG Pathfinder SE chính hãng với Magsafe cho iPhone 17 Pro Max / iPhone. 316.000 ₫ · Ốp lưng UAG Monarch Pro Kevla chính hãng với Magsafe cho Samsung ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

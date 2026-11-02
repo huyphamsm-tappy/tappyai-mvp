@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Khu vui chơi Tom&Jini Eco Retreat\" OR \"Du Lịch Sinh Thái MiLanFarm\" OR \"Nhà tưởng niệm AHLLVT Võ Thị Thắng\" núi Bà Đen, Tây Ninh site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:33:58.279Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Khu vui chơi Tom&Jini Eco Retreat\" OR \"Du Lịch Sinh Thái MiLanFarm\" OR \"Nhà tưởng niệm AHLLVT Võ Thị Thắng\" núi Bà Đen, Tây Ninh site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

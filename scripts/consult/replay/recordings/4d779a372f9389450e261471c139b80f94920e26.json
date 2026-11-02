@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Acer Gaming Aspire 5 A515-58GM-53PZ\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:26:05.897Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Acer Gaming Aspire 5 A515-58GM-53PZ\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop Acer Gaming Aspire 5 A515-58GM-53PZ",
+    "link": "https://cellphones.com.vn/laptop-acer-gaming-aspire-5-a515-58gm-53pz.html",
+    "snippet": "Acer Gaming Aspire 5 A515 58GM 53PZ với thiết kế thời thượng, mạnh mẽ cùng hiệu suất đỉnh cao xứng đáng là sự lựa chọn hoàn hảo cho dân đồ họa và game thủ.",
+    "rating": 5,
+    "ratingCount": 6,
+    "position": 1
+   },
+   {
+    "title": "Laptop Acer Gaming Aspire 5 A515-58GM-53PZ - Đã Kích ...",
+    "link": "https://cellphones.com.vn/laptop-acer-gaming-aspire-5-a515-58gm-53pz-cu-da-kich-hoat.html",
+    "snippet": "Mua ngay Laptop Acer Gaming Aspire 5 A515-58GM-53PZ cũ giá rẻ - Nguồn gốc rõ ràng, bảo hành 6-12 tháng, đổi mới 30 ngày, luôn xuất bán đầy đủ VAT.",
+    "position": 2
+   },
+   {
+    "title": "Laptop Acer Gaming Aspire 5 A515-58GM-53PZ NX. ...",
+    "link": "https://cellphones.com.vn/laptop-acer-gaming-aspire-5-a515-58gm-53pz-nx-kq4sv-008-cu-da-kich-hoat.html",
+    "snippet": "Laptop Acer Gaming Aspire 5 A515-58GM-53PZ NX.KQ4SV.008 - Đã Kích Hoạt. I5-13420H/8GB/512GB PCIE/VGA 4GB RTX2050/15.6 FHD/WIN11/ ...",
+    "position": 3
+   },
+   {
+    "title": "Laptop Acer Gaming Aspire 5 A515-58GM-53PZ - Cũ Xước ...",
+    "link": "https://cellphones.com.vn/laptop-acer-gaming-aspire-5-a515-58gm-53pz-cu-xuoc-can.html",
+    "snippet": "Mua ngay Laptop Acer Gaming Aspire 5 A515-58GM-53PZ cũ giá rẻ - Nguồn gốc rõ ràng, bảo hành 6-12 tháng, đổi mới 30 ngày, luôn xuất bán đầy đủ VAT.",
+    "position": 4
+   },
+   {
+    "title": "So sánh Laptop Acer Gaming Aspire 5 A515-58GM-53PZ",
+    "link": "https://cellphones.com.vn/so-sanh/laptop-acer-gaming-aspire-5-a515-58gm-53pz",
+    "snippet": "So Sánh Laptop Acer Gaming Aspire 5 A515-58GM-53PZ ; Loại card đồ họa. NVIDIA GeForce RTX 2050 4GB GDDR6 ; Dung lượng RAM. 16GB ; Loại RAM. DDR4 3200MHz ; Số khe ...",
+    "position": 5
+   },
+   {
+    "title": "So sánh Laptop Acer Aspire 5 A515-58GM-59LJ và ...",
+    "link": "https://cellphones.com.vn/so-sanh/laptop-acer-aspire-5-a515-58gm-59lj-vs-laptop-acer-gaming-aspire-5-a515-58gm-53pz",
+    "snippet": "So Sánh Laptop Acer Aspire 5 A515-58GM-59LJ và Laptop Acer Gaming Aspire 5 A515-58GM-53PZ ; Loại card đồ họa. NVIDIA GeForce RTX 2050 4 GB GDDR6. NVIDIA GeForce ...",
+    "position": 6
+   },
+   {
+    "title": "Laptop chơi LMHT: Mượt mà lên Thách Đấu, giá dưới 15 ...",
+    "link": "https://cellphones.com.vn/sforum/laptop-choi-lmht-muot-ma-gia-duoi-15-trieu",
+    "snippet": "Laptop Acer Gaming Aspire 5 A515-58GM-53PZ. 15.490.000đ20.490.000đ. HSSV chỉ còn 14.715.500đSmember giảm thêm ...",
+    "position": 7
+   },
+   {
+    "title": "Top laptop Acer giảm giá cực sốc trong tháng 2 này",
+    "link": "https://cellphones.com.vn/sforum/top-laptop-acer-giam-gia-thang-2",
+    "snippet": "Nếu như nói Acer Nitro V ANV15-51-58AN là \"một trong\" những mẫu laptop gaming ở phân khúc rẻ nhất thì laptop Acer Gaming Aspire 5 A515-58GM-53PZ ...",
+    "date": "20 thg 2, 2025",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

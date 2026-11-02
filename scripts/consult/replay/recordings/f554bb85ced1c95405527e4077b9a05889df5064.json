@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hapaku Combo 3 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:09:32.763Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hapaku Combo 3 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Combo Mua 3 Tặng 1 Túi Thơm Thảo Dược Hapaku Treo ...",
+    "link": "https://shopee.vn/Combo-Mua-3-T%E1%BA%B7ng-1-T%C3%BAi-Th%C6%A1m-Th%E1%BA%A3o-D%C6%B0%E1%BB%A3c-Hapaku-Treo-%C3%94-T%C3%B4-T%E1%BB%A7-Qu%E1%BA%A7n-%C3%81o-Nh%C3%A0-B%E1%BA%BFp-Gi%C3%BAp-Kh%E1%BB%AD-M%C3%B9i-i.50231551.1233093172",
+    "snippet": "Mua Combo Mua 3 Tặng 1 Túi Thơm Thảo Dược Hapaku Treo Ô Tô, Tủ Quần Áo, Nhà Bếp Giúp Khử Mùi giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 1
+   },
+   {
+    "title": "Combo 2 Túi Thơm Tự Nhiên HAPAKU Hút Mùi, Khử ...",
+    "link": "https://shopee.vn/Combo-2-T%C3%BAi-Th%C6%A1m-T%E1%BB%B1-Nhi%C3%AAn-HAPAKU-H%C3%BAt-M%C3%B9i-Kh%E1%BB%AD-M%C3%B9i-T%E1%BB%A7-Qu%E1%BA%A7n-%C3%81o-Ph%C3%B2ng-Ng%E1%BB%A7-Treo-%C3%94-T%C3%B4-i.50231551.2326540703",
+    "snippet": "Mua Combo 2 Túi Thơm Tự Nhiên HAPAKU Hút Mùi, Khử Mùi Tủ Quần Áo, Phòng Ngủ, Treo Ô Tô giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.8,
+    "ratingCount": 36,
+    "position": 2
+   },
+   {
+    "title": "Set Quà Tặng Mẹ Từ Thảo Dược Tự Nhiên HAPAKU ...",
+    "link": "https://shopee.vn/Set-Qu%C3%A0-T%E1%BA%B7ng-8-3-T%E1%BB%AB-Th%E1%BA%A3o-D%C6%B0%E1%BB%A3c-T%E1%BB%B1-Nhi%C3%AAn-HAPAKU-Qu%C3%A0-Cho-M%E1%BA%B9-%C4%90ai-Ch%C6%B0%E1%BB%9Dm-N%C3%B3ng-Gi%E1%BA%A3m-%C4%90au-C%E1%BB%95-G%C3%A1y-i.50231551.25705430548",
+    "snippet": "Mua Set Quà Tặng Mẹ Từ Thảo Dược Tự Nhiên HAPAKU, Quà Cho Mẹ, Đai Chườm Nóng Giảm Đau Cổ Gáy giá tốt ... 3 phân loại có sẵn. 376.000₫-713.000₫. 499.000₫ - 1.000.",
+    "position": 3
+   },
+   {
+    "title": "HAPAKU VIỆT NAM - Shopee Mall Online",
+    "link": "https://shopee.vn/hapaku_officialstore",
+    "snippet": "Mua đai chườm nóng thảo dược, bóng mát xa, túi thơm thảo dược, gối ngải cứu, tinh dầu tự nhiên HAPAKU VIỆT NAM chính hãng tại Shopee ưu đãi tháng 09/2026.",
+    "position": 4
+   },
+   {
+    "title": "Tấm Thảo Dược Thay Thế Gối Chườm Thảo Dược Điện ...",
+    "link": "https://shopee.vn/T%E1%BA%A5m-Th%E1%BA%A3o-D%C6%B0%E1%BB%A3c-Thay-Th%E1%BA%BF-G%E1%BB%91i-Ch%C6%B0%E1%BB%9Dm-Th%E1%BA%A3o-D%C6%B0%E1%BB%A3c-%C4%90i%E1%BB%87n-Hapaku-H%E1%BB%97-Tr%E1%BB%A3-Gi%E1%BA%A3m-%C4%90au-Th%C6%B0-Gi%C3%A3n-C%C6%A1-Th%E1%BB%83-i.50231551.5262289290",
+    "snippet": "Mua Tấm Thảo Dược Thay Thế Gối Chườm Thảo Dược Điện Hapaku - Hỗ Trợ Giảm Đau, Thư Giãn Cơ Thể giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 5
+   },
+   {
+    "title": "Combo 5 Lọ Tinh Dầu Tự Nhiên 10ml HAPAKU, Thư Giãn ...",
+    "link": "https://shopee.vn/Combo-5-L%E1%BB%8D-Tinh-D%E1%BA%A7u-T%E1%BB%B1-Nhi%C3%AAn-10ml-HAPAKU-Th%C6%B0-Gi%C3%A3n-Gi%E1%BA%A3m-C%C4%83ng-Th%E1%BA%B3ng-T%E1%BB%B1-Ch%E1%BB%8Dn-M%C3%B9i-%C4%90i%E1%BB%81n-Trong-Ghi-Ch%C3%BA-i.147495080.2247133067",
+    "snippet": "Mua Combo 5 Lọ Tinh Dầu Tự Nhiên 10ml HAPAKU, Thư Giãn, Giảm Căng Thẳng, Tự Chọn Mùi Điền Trong Ghi Chú giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 6
+   },
+   {
+    "title": "HAPAKU Combo 5 Tinh Dầu Tự Nhiên - Glam Beautique",
+    "link": "https://shopee.vn/HAPAKU-Combo-5-Tinh-D%E1%BA%A7u-T%E1%BB%B1-Nhi%C3%AAn-Glam-Beautique-i.703059764.49814551203",
+    "snippet": "HAPAKU Combo 5 Tinh Dầu Tự Nhiên - Glam Beautique. 1/3. 674.000₫. Mua để nhận quà. HAPAKU Combo 5 Tinh Dầu Tự Nhiên - Glam Beautique.",
+    "position": 7
+   },
+   {
+    "title": "giá tốt Tháng 9, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?promotionId=149380690706432",
+    "snippet": "Mua 2 & giảm 3%. rating-star 4.9 · Combo Mua 3 Tặng 1 Túi Thơm Thảo Dược Hapaku Treo Ô Tô, Tủ Quần. custom-overlay. flag-label Combo Mua 3 Tặng 1 Túi Thơm Thảo ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

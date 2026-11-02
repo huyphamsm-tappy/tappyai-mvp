@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Macbook Air 13'' -2015- MJVE2 I5 4GB 128GB SSD New 97%\" OR \"Dell Latitude 14 7430 (2022)\" OR \"Surface Pro 8 i5/8GB/256GB (Likenew)\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:05:14.227Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Macbook Air 13'' -2015- MJVE2 I5 4GB 128GB SSD New 97%\" OR \"Dell Latitude 14 7430 (2022)\" OR \"Surface Pro 8 i5/8GB/256GB (Likenew)\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Surface Pro 8 i5 8GB 256GB — LikeNew Certified",
+    "link": "https://www.tiktok.com/@surfacecuhcm/video/7655275411030494485",
+    "snippet": "Product overview Surface Pro 8 i5 8GB 256GB — LikeNew This listing highlights a Surface Pro 8 with Intel Core i5, 8GB of RAM and a 256GB SSD in LikeNew ...",
+    "position": 1
+   },
+   {
+    "title": "Surface Pro 8 i5 8GB 256GB LikeNew - Official VN Sale",
+    "link": "https://www.tiktok.com/@surfacecuhcm/video/7663037199901887764",
+    "snippet": "How to search and compare Use specific queries to find listings and compare offers: “Surface Pro 8 i5 8GB 256GB LikeNew HCM”, “Surface Pro 8 ...",
+    "position": 2
+   },
+   {
+    "title": "Surface Pro 8 i5 8GB 256GB LikeNew 99% màu Platinum",
+    "link": "https://www.tiktok.com/@surfacecuhanoi/video/7651250026567552264",
+    "snippet": "Surface Pro 8 i5 8GB 256GB LikeNew 99% màu Platinum - Nhỏ gọn như Tablet, Mạnh mẽ như Laptop. Cầm lên là mê! #surface #surfacehcm ...",
+    "position": 3
+   },
+   {
+    "title": "Surface Pro 7 Plus LTE: i5 8GB 128GB - Như Mới",
+    "link": "https://www.tiktok.com/@surfacecuhcm/photo/7650083110696307988?image_index=1",
+    "snippet": "Surface Pro 8 i5 8GB 256GB - LikeNew #surfacecuhcm #surfacehcm #surface #pro8cu #surfacepro8 @Tymo.vn @Surface Cũ Hà Nội + HCM @Surfacehcm ...",
+    "position": 4
+   },
+   {
+    "title": "Học ngành Y mà chọn Surface Laptop 13 inch ? Nghe hơi ...",
+    "link": "https://www.tiktok.com/@surfacehcmvn/video/7680185783222947093",
+    "snippet": "Surface Pro 8 i5 8GB 256GB - LikeNew #surfacecuhcm #surfacehcm #surface #pro8cu #surfacepro8 @Tymo.vn @Surface Cũ Hà Nội + HCM @Surfacehcm ...",
+    "position": 5
+   },
+   {
+    "title": "surfacepro8",
+    "link": "https://www.tiktok.com/tag/surfacepro8",
+    "snippet": "Surface Pro 8 i5 8GB 256GB - LikeNew #surfacecuhcm #surfacehcm #surface ... Surface Pro 8 i5 8GB 256GB likenew 99% - Một chiếc máy mà chỉ cần · Surface ...",
+    "position": 6
+   },
+   {
+    "title": "Surface Pro 7 Plus: Laptop mỏng nhẹ, đa năng cho mọi ...",
+    "link": "https://www.tiktok.com/@surfacecuhanoi/photo/7653308549237427463",
+    "snippet": "Surface Pro 8 i5 8GB 256GB LikeNew 99% - nhỏ gọn nhưng không hề nhỏ về hiệu năng. - Mang đi khắp nơi, xử lý công việc mọi lúc #surface ...",
+    "position": 7
+   },
+   {
+    "title": "surfacecuhcm",
+    "link": "https://www.tiktok.com/tag/surfacecuhcm",
+    "snippet": "Surface Pro 8 i5 8GB 256GB - LikeNew #surfacecuhcm #surfacehcm #surface #pro8cu · Mở hộp Surface Laptop 7 X Plus 16GB 512GB New Seal Dune cùng anh Hoàng ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

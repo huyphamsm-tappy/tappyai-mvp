@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Ốp lưng UAG Pathfinder SE chính hãng với Magsafe cho iPhone site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:08:17.591Z",
+ "body": {
+  "searchParameters": {
+   "q": "Ốp lưng UAG Pathfinder SE chính hãng với Magsafe cho iPhone site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Uag pathfinder s24 ultra - Giá Tốt, Sale Tháng 08, Freeship 0Đ",
+    "link": "https://shopee.vn/list/uag/pathfinder%20s24%20ultra",
+    "snippet": "Ốp lưng UAG XTE Pathfinder mới có vỏ từ tính cho Samsung S26 + S25 + s24 + s23 + ultra plus Vỏ điện thoại chống sốc. 365.040₫. 730.080₫. -50%. rating-star ...",
+    "position": 1
+   },
+   {
+    "title": "Pathfinder - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/Pathfinder",
+    "snippet": "flag-label Uag Pathfinder với Ốp Lưng Từ Tính Cho iPhone 15 Pro Max 14 ... 【Mall┃Chính hãng】Ốp lưng UAG Pathfinder MagSafe cho iPhone 12 / 13 / 14 ...",
+    "position": 2
+   },
+   {
+    "title": "bao da uag giá tốt Tháng 8, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=bao%20da%20uag&urlold=bao-da-uag-iphone-x-xs/1119248851089420653/877968015750663345/%20",
+    "snippet": "Ốp lưng UAG dành cho iPhone 16 Pro Max hỗ trợ sạc không dây chuẩn chống · Dây đeo đồng hồ UAG - Giữ chắc chắn, thiết kế mạnh mẽ dành cho.",
+    "position": 3
+   },
+   {
+    "title": "ốp điện thoại magsafe - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/%E1%BB%91p%20%C4%91i%E1%BB%87n%20tho%E1%BA%A1i/magsafe",
+    "snippet": "【Mall┃Chính hãng】Ốp lưng UAG Pathfinder MagSafe cho iPhone 12 / 13 / 14 ... Lưng Cho iPhone 17 Pro Max Vỏ Bảo Vệ Thân Thiện Với Da193.320₫ · 9. Ốp ...",
+    "position": 4
+   },
+   {
+    "title": "[iPhone 17/16/15 Series] Ốp Lưng UAG Pathfinder sạc từ tính",
+    "link": "https://shopee.vn/-iPhone-17-16-15-Series-%E1%BB%90p-L%C6%B0ng-UAG-Pathfinder-s%E1%BA%A1c-t%E1%BB%AB-t%C3%ADnh-%E2%80%93-Ch%E1%BB%91ng-S%E1%BB%91c-Chu%E1%BA%A9n-Qu%C3%A2n-%C4%90%E1%BB%99i-Thi%E1%BA%BFt-K%E1%BA%BF-Nh%E1%BA%B9-V%E1%BA%ADt-Li%E1%BB%87u-T%C3%A1i-ch%E1%BA%BF-i.153125852.54104890675?extraParams=%7B%22display_model_id%22%3A254147360824%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "Mua [iPhone 17/16/15 Series] Ốp Lưng UAG Pathfinder sạc từ tính – Chống Sốc Chuẩn Quân Đội, Thiết Kế Nhẹ, Vật Liệu Tái chế giá tốt.",
+    "position": 5
+   },
+   {
+    "title": "ốp lưng uag - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/%E1%BB%91p%20l%C6%B0ng/uag",
+    "snippet": "[Dành cho iPhone 18 Pro/Promax] Ốp Lưng UAG Chính Hãng Chống Sốc Đạt Chuẩn Quân Đội, Sạc Từ Tính, Bảo Hành 12 Tháng1.240.000₫ · 7. Ốp Điện Thoại Cho IPhone 16 ...",
+    "position": 6
+   },
+   {
+    "title": "Ốp iphone 13 - Giá Tốt, Sale Tháng 08, Freeship 0Đ",
+    "link": "https://shopee.vn/list/%E1%BB%91p/iphone%2013",
+    "snippet": "Shopee cung cấp đầy đủ các sản phẩm ốp iphone 13 chính hãng với nhiều mức giá ưu đãi vô cùng hấp dẫn. Bạn có thể thỏa thích tham khảo sản phẩm chính hãng từ các ...",
+    "position": 7
+   },
+   {
+    "title": "Ốp iphone 14 plus - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/%E1%BB%91p/iphone%2014%20plus",
+    "snippet": "Shopee cung cấp đầy đủ các sản phẩm ốp iphone 14 plus chính hãng với nhiều mức giá ưu đãi vô cùng hấp dẫn. Bạn có thể thỏa thích tham khảo sản phẩm chính hãng ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

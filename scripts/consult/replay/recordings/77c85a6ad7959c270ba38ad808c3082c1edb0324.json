@@ -1,0 +1,417 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "Ốp lưng iPhone 17 Pro Max 17 pro max UAG Monarch hoặc Pathfinder Có MagSafe",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:40:57.040Z",
+ "body": {
+  "searchParameters": {
+   "q": "Ốp lưng iPhone 17 Pro Max 17 pro max UAG Monarch hoặc Pathfinder Có MagSafe",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Pathfinder",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%90p+l%C6%B0ng+iPhone+17+Pro+Max+17+pro+max+UAG+Monarch+ho%E1%BA%B7c+Pathfinder+C%C3%B3+MagSafe&prds=localAnnotatedOfferId:1,catalogid:5570854008236708658,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "1.275.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTxv4Q9CAOQfl412NtHGW1cN-qaYRN5dg-wEPZbXa0jlbVDd57umbXwdygpTHljecih9YgwEdw0NEly3dT88foK4YlRMzvTzxlzYs3DK9Rxx7yYK-fVheFTHw",
+    "rating": 4.4,
+    "ratingCount": 324,
+    "productId": "5570854008236708658",
+    "position": 1
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Monarch Pro",
+    "source": "Xù Case Center",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%90p+l%C6%B0ng+iPhone+17+Pro+Max+17+pro+max+UAG+Monarch+ho%E1%BA%B7c+Pathfinder+C%C3%B3+MagSafe&prds=localAnnotatedOfferId:1,catalogid:17876859509019840018,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "2.125.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQjDH6zw8j1WeK5Eh_AhZdWQGNDYey78ek7OYwMCN-2AP5u7lQBPV_x4oaVJ9aAxRt7yMyp73mHRVr5JyGcrpkMUKlJYZszhaKtNoGjDFKGLk_WJDOrqmdkIQ",
+    "rating": 4.6,
+    "ratingCount": 401,
+    "productId": "17876859509019840018",
+    "position": 2
+   },
+   {
+    "title": "Ốp lưng UAG Pathfinder Magsafe cho iPhone 17 Pro Max",
+    "source": "vuapk.vn",
+    "price": "1.498.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTSkLpvpQfC6JkknIoG7xjQLSFnvHbQkO6uLDwjl8hL33WTHDIPUHoLN7fUrTq8OzsY16Nssr0Q-EWjwq34JVAGrakk5llMccnYqkuC7tKffcd5_2lQzbAd1Q",
+    "rating": 5,
+    "ratingCount": 2,
+    "productId": "11513484830725230498",
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng Magsafe iPhone 17 Pro Max UAG Monarch Pro",
+    "source": "minhtuanmobile.com",
+    "price": "1.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSbTaM7R5xx09pqDS7wSk0z16tcA9OAr3rovAN1dlzGfINUCuYnZzAOvmoA2cC_MK-MWBWbbU5OKwFGipzse4-pNLH0RwACiZ1-KFMkzQmx11e96Ql5DdIhxQ",
+    "rating": 4.6,
+    "ratingCount": 401,
+    "productId": "2808049410177451851",
+    "position": 4
+   },
+   {
+    "title": "Ốp lưng Pathfinder Clear w Magsafe cho iPhone 17 Pro Max [6.9 inch]",
+    "source": "UAG Authorized Reseller",
+    "price": "1.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTu9F7XOa-PyFlaHQlRoMWaydr1jSZ0xe9D-K07Lyv3yfMkR6qOdx3RwFDrxi-17t9cTxnyV8usFLbSBOI_oaDILAxUyJ5txLKUU8C1SKnkx8qCM7bELGlyGg",
+    "rating": 4.4,
+    "ratingCount": 324,
+    "productId": "784139172837631818",
+    "position": 5
+   },
+   {
+    "title": "Ốp lưng Monarch Pro w Magsafe cho iPhone 17 Pro Max [6.9 inch]",
+    "source": "UAG Authorized Reseller",
+    "price": "2.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQgukDsmaEUMb67X3Cb82B_-YAaAlNPJ4NUTjIaHMxr7kO0su1mmDKqkrdrDOJjOj88FL3gPx-tPMs9-xxZ3z5bOlDnyem--mpq5_S5XK_VccjugJ7jJJQK1Q",
+    "rating": 4.1,
+    "ratingCount": 11,
+    "productId": "6113249309275079241",
+    "position": 6
+   },
+   {
+    "title": "Ốp lưng iPhone 18 Pro Max/17 Pro Max UAG Pathfinder With Magsafe",
+    "source": "CellphoneS",
+    "price": "1.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRRrIDnw8GlqXCiLc2OuBkKYyPSFJ55qCFtbQODUVE3ht9xMx5bNW9gbeXq_uK_oHc7En3DqRVsd_v8JTMHEV0B2Z4iyhiT6-kSVkzMK-sw6xB0cun7-RTW",
+    "rating": 4.2,
+    "ratingCount": 51,
+    "productId": "7530346148050193656",
+    "position": 7
+   },
+   {
+    "title": "Ốp UAG Pathfinder Chống Sốc Đạt Chuẩn Tích Hợp Sạc Từ Tính Chính Hãng cho iPhone 17 Pro| 17 Pro Max -Black / iPhone 17 Pro",
+    "source": "Xù Case Center",
+    "price": "1.289.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSUJqJ0_5TxW2VZl4ggCK4dVp_HXsdQ_FJF_gHNcJFPqfe9O9gm1iHSMz8BIAnLCSlY43NzW1SAIVheY2phsrq9-OnxhAqp1nzM3lnnueNN_UTbVBQAZkj-",
+    "rating": 4.4,
+    "ratingCount": 324,
+    "productId": "14220201051226316266",
+    "position": 8
+   },
+   {
+    "title": "Ốp lưng UAG Monarch Pro Magsafe cho iPhone 17 Promax",
+    "source": "vuapk.vn",
+    "price": "1.998.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTPJi6kifnOaKHzuhmPIcQdTlrO5CmWBBdzKXkX6_b6icrMQPP5wy8wSWCi12YUPBbEnz6_A_Ih0RAa2WnnHasKNPL9CI9ylj9VL9J7xH0QSTmYqheccEc4",
+    "rating": 5,
+    "ratingCount": 4,
+    "productId": "10345256391470581496",
+    "position": 9
+   },
+   {
+    "title": "Ốp lưng Magsafe iPhone 17 Pro Max UAG Pathfinder - 114549118282",
+    "source": "minhtuanmobile.com",
+    "price": "1.270.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRRJE5jp-Nwo6TWKNLbL6nAwz9M95sQHDkpC8e2ifbuy8NCehKZBGEzrb_LzCCaFbKkMvI-3P_f0R2fw1klyZ9gv9IMVerKUYBZTkfjUsOlQdj_uL5fNyJCtw",
+    "rating": 5,
+    "ratingCount": 2,
+    "productId": "16366715319152751860",
+    "position": 10
+   },
+   {
+    "title": "Ốp lưng iPhone 17 - UAG Pathfinder Magsafe - 17 Pro Max / Orange",
+    "source": "Dâu Đen",
+    "price": "1.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQx5QVjsm4reclkyOz0hncg8Q5rRT2wErGBYPOh469v3UOLo7-hKsBGU1vMUeJejM117cYgNUNZ7Z-otWL_pIEj2BndNieHvgBVG-cq0e9Xb7TL-RuHFCEWJQ",
+    "rating": 4.4,
+    "ratingCount": 324,
+    "productId": "13590249393221014375",
+    "position": 11
+   },
+   {
+    "title": "Ốp lưng kèm dây đeo iPhone 17 Pro Max UAG chống sốc Pathfind",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%90p+l%C6%B0ng+iPhone+17+Pro+Max+17+pro+max+UAG+Monarch+ho%E1%BA%B7c+Pathfinder+C%C3%B3+MagSafe&prds=localAnnotatedOfferId:1,catalogid:17257131317529629394,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "1.445.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTL9kqlrBU7sbv90IvrKRg0etv7FQ496xKd367Ze3HdKdOZT6uEhQtd9XGU-WpHr5mVtuf7qxQn1BSzIq81iweqKjyJS4XQRy7ybf0h2SZBp4UyOfp0OohH",
+    "productId": "17257131317529629394",
+    "position": 12
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro UAG chống sốc Pathfinder With Magsafe",
+    "source": "Xù Case Center",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%90p+l%C6%B0ng+iPhone+17+Pro+Max+17+pro+max+UAG+Monarch+ho%E1%BA%B7c+Pathfinder+C%C3%B3+MagSafe&prds=localAnnotatedOfferId:1,catalogid:3460567121529895921,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "1.289.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRa4dIhBepIrze6Ws5dYGf_yg5kak1t9t02YYmjMXst6Gqsl6WyPGFvviH3CVDWK4yyU0lET3CX5B-RoQAbe9dMobsI2Jv0kDCGDDUXQQjK9kOq0uAjTFPtew",
+    "rating": 4.6,
+    "ratingCount": 163,
+    "productId": "3460567121529895921",
+    "position": 13
+   },
+   {
+    "title": "Ốp lưng Magsafe iPhone 17 Pro Max UAG Pathfinder - 114549114141",
+    "source": "minhtuanmobile.com",
+    "price": "1.270.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRrEgLElffd7u0YJeAbBybGVAuCyDENkjgOG6mwgfCmh-HXG5Uv-dSzno82P19JOno6KFlYpY3WApxuLD4Yab4Jbmtpl6SCsMjgjrXNDzy3UCDmhdafNo2L",
+    "rating": 4.4,
+    "ratingCount": 324,
+    "productId": "342156380976712003",
+    "position": 14
+   },
+   {
+    "title": "Ốp lưng UAG Pathfinder Magsafe Clear cho iPhone 17 Pro Max",
+    "source": "vuapk.vn",
+    "price": "1.498.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTavmes2DQVPFoQjxbfI19-ObMiumK8cDJOMQ-q3Ta3kLVZvzh-9Qemo73NjhWEixbcUL-ig9nUhd7yW6Go12XSYEp9wZmSqYyhm_HbpLXVCxyzAi1EAjYLcw",
+    "rating": 5,
+    "ratingCount": 2,
+    "productId": "2904444199491243634",
+    "position": 15
+   },
+   {
+    "title": "Ốp lưng UAG Phiên bản giới hạn cho iPhone 17 Pro Max Pathfinder & Civilian -Monarch Pro / iPhone 17 Pro Max",
+    "source": "HoaiBaoStore",
+    "price": "2.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQ_FFwwB-lWyhAYnZz1bXGJ1rjWwmbegjyLslAAEYJ8qLjBWnIpKT6ely_3RIBf3VdZGrnfDfCwm5xx5fdQLXotfR_9lVtaCjM_wggwOoQ8J1C5B4MdRIaB",
+    "productId": "10391631553807034276",
+    "position": 16
+   },
+   {
+    "title": "Ốp lưng iPhone 18 Pro Max/17 Pro Max UAG Monarch Pro Kevlar With Ma",
+    "source": "CellphoneS",
+    "price": "2.700.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQM4fhaJcbyz8SBKzDBiIjI4I3-0WZSsDOX9qAe5zNdk42hi8x22nkmUHMec8rQQkq_9XWaXn-0pY8D0jNPoI9wr8HkGWmvxgIeKGQJd-251mXUj5knhbYh",
+    "rating": 4.7,
+    "ratingCount": 7,
+    "productId": "6189406913423073724",
+    "position": 17
+   },
+   {
+    "title": "Ốp lưng iPhone 17 - UAG Monarch Pro - 17 Pro Max / Orange",
+    "source": "Dâu Đen",
+    "price": "2.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQ7T0IBpUnuRZsDt9eg2WpRnJnryMvTum7_JyZI0fPfeJ7TiYi4KWjJGwriY8Vx9yVLq6tcSLV7iNss1IOUQKUvu6K1B-9OhBBq_49gskXOCiG20zoUsvdtKQ",
+    "rating": 4.7,
+    "ratingCount": 59,
+    "productId": "9471689018452831756",
+    "position": 18
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Pathfinder Se With Mags",
+    "source": "vuapk.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%90p+l%C6%B0ng+iPhone+17+Pro+Max+17+pro+max+UAG+Monarch+ho%E1%BA%B7c+Pathfinder+C%C3%B3+MagSafe&prds=localAnnotatedOfferId:1,catalogid:1466528317773199768,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "1.498.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTrkzT2NzZiBcQu3fyNfv375WDdeVS-CmFLNCr0LEd0OphFScRda8j9OOCY0HTsGyE2iqcSokMgjWnWeIHwcXMR9p6b2Wb4JVKN8fWlu9KLXsyoU0ovq0PD",
+    "rating": 4.3,
+    "ratingCount": 17,
+    "productId": "1466528317773199768",
+    "position": 19
+   },
+   {
+    "title": "Ốp lưng Magsafe iPhone 17 Pro Max UAG Monarch Pro Exclusive Cap",
+    "source": "minhtuanmobile.com",
+    "price": "2.090.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTrOzZ2dcjqlMbRZETOzEWlaBIzVl4fvbZYdftmR2QqCxrNRwB7dzzlTkfqPGMsUrYJiyWS4SgaAcvQVMTEjClixqXPb3eqUY0ZxfPIkqhLz2zSfkPCAFOwCw",
+    "productId": "5950298652396158398",
+    "position": 20
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%90p+l%C6%B0ng+iPhone+17+Pro+Max+17+pro+max+UAG+Monarch+ho%E1%BA%B7c+Pathfinder+C%C3%B3+MagSafe&prds=localAnnotatedOfferId:1,catalogid:11328777645598825837,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "850.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQiUMvPd9dVNNQ-GXtRTLVWPi9prlcvWwJKlj1evj7iysFEBrsL51HtvTE8S4OsxBf49KYoiZK7DfsDAnEXrrzNf8L3DmMLwEz0PgtlZ-CywgdIvjqSrXrSrw",
+    "rating": 4.9,
+    "ratingCount": 318,
+    "productId": "11328777645598825837",
+    "position": 21
+   },
+   {
+    "title": "Ốp lưng Pathfinder Clear w Magsafe cho iPhone 17 Pro [6.3 inch]",
+    "source": "UAG Authorized Reseller",
+    "price": "1.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRMK4wPxFF21EM2XdPDun7VBlwOT9az9CvnpOcT5EGhg-wplRQetRA9x__WdT4maG55l8SyNrK0WnuIanle3HzPIcJAazakWYAMm0jV5DkWMyvxJAtkokilaw",
+    "productId": "6057515842569056525",
+    "position": 22
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro UAG chống sốc Monarch Pro Orange",
+    "source": "vuapk.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%90p+l%C6%B0ng+iPhone+17+Pro+Max+17+pro+max+UAG+Monarch+ho%E1%BA%B7c+Pathfinder+C%C3%B3+MagSafe&prds=localAnnotatedOfferId:1,catalogid:14549016134021999447,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "2.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcS6omN_Kzl9kXP5uNWViRTJGLsbfO6KOBkmJuobX0UmPwfNBRZ1YqJvxDfePbLCH8-0gnTZ5qV8KvftlbsuoKB2ehLZlwSroqWVBzssunYqJVYMt9do1Aej",
+    "rating": 4.7,
+    "ratingCount": 59,
+    "productId": "14549016134021999447",
+    "position": 23
+   },
+   {
+    "title": "Ốp lưng Magsafe iPhone 17 Pro Max UAG Pathfinder Clear - 114552114333",
+    "source": "minhtuanmobile.com",
+    "price": "1.430.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQK0jsgjtnlrVgYJ4uTcEtuN5B-yd6CeSQyxllXXE9UO0b7r-uzzGt-V8k4Zn7Ws5abi6nDZa9WYfOkD63l_rlngm3eHRgq8d1hqo2XtlLeKcrIqIjKaO-G2w",
+    "rating": 4.4,
+    "ratingCount": 324,
+    "productId": "11032191032727529424",
+    "position": 24
+   },
+   {
+    "title": "Ốp lưng iPhone 17 - UAG Pathfinder Clear Magsafe - 17 Pro Max / Ash/Black",
+    "source": "Dâu Đen",
+    "price": "1.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQlQy3vylovibJfdWF8YQK_kZbRXZSKg9M78y2nUEKLm3QzmgwproeoUGwvD-GrzbWkrTTxBZQdxeDVEgpLmCO3o7rm7iDNEF-NRogBFymlHD8XF4oqxXu-",
+    "productId": "15762466462747677033",
+    "position": 25
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Metropolis Lt With Mags",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%90p+l%C6%B0ng+iPhone+17+Pro+Max+17+pro+max+UAG+Monarch+ho%E1%BA%B7c+Pathfinder+C%C3%B3+MagSafe&prds=localAnnotatedOfferId:1,catalogid:2467478484682127931,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "1.445.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSTB0sAslXjAgZqMWs8QfikcSEpqGKLJ4ABULGs1paqGSDUSB01YDg6Obl_y0Y-9UtrTn-ovE2E9p473ROmcrsFQvd1E1IHc7Qh0DX0JQ4X4MCU50uff6L4",
+    "rating": 4.5,
+    "ratingCount": 44,
+    "productId": "2467478484682127931",
+    "position": 26
+   },
+   {
+    "title": "Ốp lưng UAG Pathfinder Magnetic Cho iPhone 17 Series -Black / iPhone 17 Pro Max",
+    "source": "HoaiBaoStore",
+    "price": "1.050.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcS45altkKaChcCX2e9C3Y8BwXPy70zToZIX3gCQcT5EhIk-4OZuQyODio3IkPTYEhziPG9dT_GuS2KCa65vBlkloixsg681iOKBRAY3PX244Mn9et-m1Nxviw",
+    "rating": 4.4,
+    "ratingCount": 324,
+    "productId": "12279408058955060386",
+    "position": 27
+   },
+   {
+    "title": "Ốp lưng Magsafe iPhone 17 Pro Max UAG Pathfinder Clear kèm dây đeo - 1145521BV02",
+    "source": "minhtuanmobile.com",
+    "price": "1.610.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSaG425xwAwomi4uGveUGcipIqniDcck0GPAtKbWvdIYI-nm5Eo3_ZOmxoq3bKtOR_ypZXZouoSeFsWUeqLDcsXgEa8JsVB4kPwo9BeEnU4byL7nUeZw69I",
+    "rating": 2,
+    "ratingCount": 1,
+    "productId": "8789474718497446062",
+    "position": 28
+   },
+   {
+    "title": "Ốp lưng UAG Monarch Pro Kevlar cho iPhone 17 Promax",
+    "source": "vuapk.vn",
+    "price": "2.480.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSq1yrG2SeN3BO_px1jr3AlFAWWYXv-quNbD6zeShJmqJmaUbBGbPnmz6SsKEta6fbJCzn-GHTePE9FqFYn0KhuLiHj3iGoulBEpyrjmnaFqiG2zbKlCRRR5w",
+    "rating": 4.6,
+    "ratingCount": 401,
+    "productId": "16648751457821787951",
+    "position": 29
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro UAG chống sốc Pathfinder Clear With Magsa",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%90p+l%C6%B0ng+iPhone+17+Pro+Max+17+pro+max+UAG+Monarch+ho%E1%BA%B7c+Pathfinder+C%C3%B3+MagSafe&prds=localAnnotatedOfferId:1,catalogid:1215990323809417678,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "1.350.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSGo2ln_HkFpGJBGFS6aPlDeeZ4MS7KNj-fPP3x-WRWh7Dtkn2ZJYLyR81SUpOtyDcq-rP7Be2BRbSBb_p3PTk5-TwFNgdwMchzMbW2Kx29lueKvw_c0lxg7A",
+    "rating": 4.4,
+    "ratingCount": 132,
+    "productId": "1215990323809417678",
+    "position": 30
+   },
+   {
+    "title": "Ốp lưng Magsafe iPhone 17 Pro Max UAG Monarch Pro Kevlar - 114514113940",
+    "source": "minhtuanmobile.com",
+    "price": "2.380.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTj6RcFLizRlehDMO4S1am6o41f1zidznHus-5drtUdJKZGTMp9jeDIEbKzhCcD_le_OIA_yEhz5_KfnptXxt4XMb1EH0D9AgEBEh6ZGwBDqWXwvDVr-yic-Q",
+    "rating": 4.6,
+    "ratingCount": 401,
+    "productId": "12305027288548588196",
+    "position": 31
+   },
+   {
+    "title": "Ốp lưng Monarch Pro w Magsafe cho iPhone 17 Pro [6.3 inch]",
+    "source": "UAG Authorized Reseller",
+    "price": "2.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRwpHVWdJbtC5bmI8RMpYvREtin9f3nmGakyZurufqzUmQ_aad1T_S4lW9_fXUmT4goY9tYfBoWpoMc_DMJY6knDZhgyyZwFcr1E7RrXhCbpFEhaGAnQkoQVw",
+    "productId": "18064258396572871824",
+    "position": 32
+   },
+   {
+    "title": "Ốp lưng UAG Pathfinder Magsafe cho iPhone 17 Pro",
+    "source": "vuapk.vn",
+    "price": "1.498.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQOT0yJgcxLK93OZFLwHayBgpTVC_B1RdSFSaBnLGnwe2jLo9xKTIqrs9AzkbNIEc4pO4MXypyI5lh1MGK1X38Efu6qSx5s0Dc-XGh0A_rMwdRhO7aRh5eQ",
+    "productId": "15878915074854444265",
+    "position": 33
+   },
+   {
+    "title": "UAG Pathfinder Case with MagSafe for iPhone 18 Pro Max/17 Pro Max",
+    "source": "Cover it up",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%90p+l%C6%B0ng+iPhone+17+Pro+Max+17+pro+max+UAG+Monarch+ho%E1%BA%B7c+Pathfinder+C%C3%B3+MagSafe&prds=localAnnotatedOfferId:1,catalogid:16281902783203523447,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "1.894.352 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTejNrFcNma8ABi-_vZzX0-pgtiNb8xR9tICib8npSAQZGnsYIgxYphiO-PwrJ9YLwYwAYpYTYuT_VhuLpDttSu_SUzeKrE7MrjXUKowlmhbz1Mwnz2L-ov",
+    "productId": "16281902783203523447",
+    "position": 34
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Trooper With Magsafe",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%90p+l%C6%B0ng+iPhone+17+Pro+Max+17+pro+max+UAG+Monarch+ho%E1%BA%B7c+Pathfinder+C%C3%B3+MagSafe&prds=localAnnotatedOfferId:1,catalogid:8175104977367041132,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "1.360.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTYKWIei2jcUOy2jKenZYyTv18rfABhCF4XT54EIu0DpLWVk7VZ1Yje2qM3adF-Vgoo74Xfp-DHTx1ich9edAst1o4xIk5YCYhH7gYyHQu4CnOVKQYQxXOz",
+    "rating": 4.2,
+    "ratingCount": 24,
+    "productId": "8175104977367041132",
+    "position": 35
+   },
+   {
+    "title": "Ốp lưng Magsafe iPhone 17 Pro UAG Monarch Pro",
+    "source": "minhtuanmobile.com",
+    "price": "1.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTvh_8PfXcD1-nWWIkO3z7kcBu_SJBcyXRnOSsTM1lpCBKJAiM7L0D19zB6VwWhXxRjMHCi9eTKiWHvIQn3Lq_lABqeFEtgACC9nsyR2ICRnlvnPtQwhlpzPQ",
+    "rating": 5,
+    "ratingCount": 1,
+    "productId": "14257449115884750543",
+    "position": 36
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro / Pro max (kèm dây đeo) - UAG Pathfinder Clear Magsafe - 17 Pro / Active Lava",
+    "source": "Dâu Đen",
+    "price": "1.700.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRWL3bCnUWng9bDGTiqFH_P5fO42a3fs9kRGGtiYcZ3DZrTxlbPlxB91U8QXR-oBPTSZ0zrhxyvpjOz0qaxBsOPartRd7lhd5AmV5J0adjpmQHrV4dDigaXfg",
+    "rating": 2,
+    "ratingCount": 1,
+    "productId": "12076766712973179668",
+    "position": 37
+   },
+   {
+    "title": "Ốp lưng UAG Monarch Pro Magsafe cho iPhone 17 Pro",
+    "source": "vuapk.vn",
+    "price": "1.998.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRec9lqlVowX2ZEmATt9Tovl6EDLb-Z-nr1iB5qGUil5BgvUn7KBFAtCaDkTRotX5jCQD6bTlHDaUETCFcXo3pSJCWYIHEi2_QKXVYc8SmKF1ISS8ZatrO6",
+    "rating": 5,
+    "ratingCount": 1,
+    "productId": "16538941989716221652",
+    "position": 38
+   },
+   {
+    "title": "Ốp lưng UAG Monarch Pro Magnetic Cho iPhone 17 Series -Kevlar Black / iPhone 17 Pro Max",
+    "source": "HoaiBaoStore",
+    "price": "2.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTxHL17ZEwBhd_1O3csfVvmc7AwEa-UIyyP7Rfhaw-Z-otfA6e6BBHmgOXyZ-s2RIzV7AQwuQghGx0TXtTwrmddWVgB5_X94BJ86sy9z9WM5svmyuObEe4t-g",
+    "rating": 4.6,
+    "ratingCount": 401,
+    "productId": "3020069441487923257",
+    "position": 39
+   },
+   {
+    "title": "Ốp lưng iPhone 18 Pro Max/17 Pro Max UAG Monarch Pro Veil With Mags",
+    "source": "CellphoneS",
+    "price": "2.200.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRP_ipuVZWvHFySdMmYsMizk7UFBLXMTUZPf18S4XwpRdnmQ31r-0y7Ao4x7oQTAYvo_U1XvQPIdGzg5jKrUeCJVf0CjCtH-31-Qm_YJ-c7EVL2i3jSA_mE",
+    "productId": "15667554536589734925",
+    "position": 40
+   }
+  ],
+  "credits": 2
+ }
+}

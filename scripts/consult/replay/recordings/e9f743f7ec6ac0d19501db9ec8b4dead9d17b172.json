@@ -1,0 +1,349 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "quà tặng thích cà phê sếp nam, 40 tuổi",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:10:49.873Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà tặng thích cà phê sếp nam, 40 tuổi",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Quà tặng 20/11 cho đối tác nam, sếp nam, đồng nghiệp nam, người yêu nam ,bạn bè, anh trai hoặc người thân quà tặng Set cà vạt nam 4 món cao cấp làm",
+    "source": "AGANA",
+    "price": "475.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQAueNqa1uv-2TmkZ-V0eXs73ywJuYy7LHpyyhSqcUZtE6UHxga5a6tnXvxDZWAQ7JqOGK2TkirKTbzdkvLcBNLz8CuKHu0YZQM7fdyJ_mTzMajn6MquzuaFg",
+    "productId": "12587933666687134561",
+    "position": 1
+   },
+   {
+    "title": "Set Quà Cà Phê A Bold Style, Quà Tặng Sếp Nam - The Curator",
+    "source": "Chus.vn",
+    "price": "770.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQf8qpggGF0woDJ8moQmsgRa3yymh1aSFhSvoWFfi0UUIG0Xu66Z2wrwsq1XvQLYK0v7ajd1MyI0NzgNy9ILPvoIyg-9IVB0GQHed1YeSewrCvqMQHZl-D0",
+    "productId": "964833838479577685",
+    "position": 2
+   },
+   {
+    "title": "Quà tặng người già",
+    "source": "H&H Nutrition",
+    "price": "580.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQWxgsSRPrz0VYM_MU48OymjYPan2FOv1WSpxuuBVJqVHj8W-wQuWk80mjG7MqVd1Z2MR6zSl0iQKDoNsCFW-WlWxnDVw0VYR-j5PGfZ7qA5d4Jy-0CKv6sJQ",
+    "productId": "1066319085431425496",
+    "position": 3
+   },
+   {
+    "title": "Quà tặng 20/11 cho đối tác nam, sếp nam, đồng nghiệp nam, người yêu nam ,bạn bè, anh trai hoặc người thân quà tặng Set cà vạt nam 8 món cao cấp làm",
+    "source": "AGANA",
+    "price": "1.250.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcS2-n7C_q6RR5ZuDkDqOpmisTVKEsnnIRmmcv9OAInQV4YLsFv1TUJDh_i_dz2iUsgVeRSDCOj3AZnauvXnpHXuSwiaScehJsZ48GAhSkgqSLd3Z9yu9stM07E",
+    "productId": "8499215027645538511",
+    "position": 4
+   },
+   {
+    "title": "Bộ Quà Tặng Bạn Trai Cực Đỉnh",
+    "source": "Thegioisonmoi.com",
+    "price": "1.999.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQImsvmCY84zcIFIxX548fX_xXm46lK7v_xK3R_lTt2j48Aq95eRVPdhfsmtvaFsiLld0PxQ-EmGAfVKVGFqRWeK84ypoLVnxJ1qeUd1dZbWiYH_IQIB-xCmw",
+    "productId": "16607383639513715133",
+    "position": 5
+   },
+   {
+    "title": "Quà tặng 20/11 cho đối tác nam, sếp nam, đồng nghiệp nam, người yêu nam ,bạn bè, anh trai hoặc người thân quà tặng Cà vạt nam chống nhăn dễ thắt thời",
+    "source": "AGANA",
+    "price": "265.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQveSDtXQ7y-VDEwSagEY8qJQx6byPEHeG3PzGBBcAlw8hoS_pDNcrWj75_HlUATP2HkdJs7_t6Hnk19EF5Ti36Sotr-bJKl2ftqhxaUzlxJDCKwFaqY0LT",
+    "productId": "6733858431587649682",
+    "position": 6
+   },
+   {
+    "title": "Quà tặng cho sếp nam | Tượng ngựa Bạch Ngọc màu trắng 10,62kg | Có Hộp Đẹp & Giấy Kiểm Định Đá Quý",
+    "source": "Decora.vn",
+    "price": "20.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTZGokpx5XwQ-BRA8rSCTxaTfRJX8rgIW8J3SrGmLAGU9eZFMT0_eBNSvcQdg_y_Pyu1hFdZJX_n6DQTaem36OQltmG7FPtr56dZfD64vo1",
+    "productId": "11482912572884169794",
+    "position": 7
+   },
+   {
+    "title": "Quà tặng Sếp Năm Nhâm Dần 2022 Hổ Tài Lộc Dát Vàng 9999 | Quà Tặng Đại Việt",
+    "source": "Qùa Tặng Đại Việt",
+    "price": "14.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQuQQgbXHn4GH8dQoLIbsfdk98BB4SoPXSMi62RWv__VytOwn4Nc1BfuDo7SM5JRuLzKS-W-ERMMntXkgNKKwpLFL_0oISASRx-Xh3Rf-eq",
+    "productId": "16421098336370149653",
+    "position": 8
+   },
+   {
+    "title": "Bộ quà tặng Tết Cộng Cà Phê",
+    "source": "minaco.vn",
+    "price": "339.500 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTSOof3ZFHhu4JY0dI3xLJeFmGjPAs_ilLrJNKsZuihQRIzR-hRHYC3_k7rYsB-mXGWrW7P2SmwizAYw3cVKY93t4WDBovM",
+    "productId": "4943664002171857286",
+    "position": 9
+   },
+   {
+    "title": "Quà Tặng Sinh Nhật Cho Người Yêu",
+    "source": "Thegioisonmoi.com",
+    "price": "1.599.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTbdYjJF6v98U8cr5mqEEt2hhfAmod1TOdzbRHXnHCRr5m5LLm65z9oOUyL_M0rLorbZ2JwiXvRA9Fsb9u32V2OHKtFnXtTkN9EPSi-fUFWDeCl4QyulbtM",
+    "productId": "11303834534091267205",
+    "position": 10
+   },
+   {
+    "title": "Quà tặng nhân viên 006",
+    "source": "C.Ty Quà Tặng 102",
+    "price": "180.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcT1OKlFSB3HzSHR0spOZBRoZQ7VTeWvKOIcnNFVg0Cm_p3p5VtJATzU0PZl7p6OQM9cjoammAmOJzCuZeoXG3b-RRy6cXlJtMQKZGS6nAvZtT3Vml4E_NCT",
+    "productId": "16049878803238469469",
+    "position": 11
+   },
+   {
+    "title": "Quà tặng sếp sinh nhật ấn tượng với hốc thạch anh tím 34,6kg",
+    "source": "Decora.vn",
+    "price": "66.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTjP6GCqT8UabKGzW7hR_4I3CVbPQVvz4rOdC5KfSt-VzvSDfBbOz3J5zIbtlP6GdUDXU5gTD4Tx8VUxfeYCSWpjqaV8qt8yN0GG_T6JQVfL9yPv_64RR5D6g",
+    "productId": "1502227512932320017",
+    "position": 12
+   },
+   {
+    "title": "Quà Tặng 8 3 Cho Công Ty Cực Đẹp, Cực Ý Nghĩa",
+    "source": "Theflowers.vn",
+    "price": "490.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSWlN2vwuF7lJmlrQC7doTDOLUUvkHcejZW37ZBRUz6X11BpKORMFe5y0ab9lRhRCssDStCMng-F7esj6TCDA50181PvNfy72ziN-rF_l1fK0SkFjsdxsj93g",
+    "productId": "4885219285025230950",
+    "position": 13
+   },
+   {
+    "title": "SET quà tặng văn phòng phẩm ý nghĩa, độc đáo",
+    "source": "inviendong.com",
+    "price": "85.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSQwjUdJ9xfk7Mkr360ArzNaGFPb4_gc7R9iuAoPFMujh0CO9hGaiw8axBfEV0JiEWruDc875QkzUgNybfff5QKxpmKQKCINCQO8NyUGa-XT5UO9p2VG3655g",
+    "productId": "11552452900499088336",
+    "position": 14
+   },
+   {
+    "title": "Set Quà Tặng Sinh Nhật Đặc Biệt",
+    "source": "Thegioisonmoi.com",
+    "price": "2.249.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSrQu9mam4haM8D7jAUGrEPCOkF5-WXQ4q_3nGY1pDrZb6AG5PtTqDvEYmPEsIGtTFZpz8w4WZ6mQIIs5t42dZ-6Mj9XLMn_8u0KtAIhD7AR-35MoQYzqA6",
+    "productId": "17359154661159474000",
+    "position": 15
+   },
+   {
+    "title": "Set Quà Tặng Cà Phê Cao Cấp Mee Fee",
+    "source": "Mee Fee",
+    "price": "540.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSY-Xe8hPVj8ZsT14PwPPpgIOXRHC1HL8Q9qpKvJ42DhwO2d_9PPfLWRtllfVfjJZNINRb-x0UTWyybk1AASFdz2KZKB8D6FduJw5dabLbN",
+    "productId": "10943124075084577408",
+    "position": 16
+   },
+   {
+    "title": "Hộp Quà Cà Phê & Socola Energy Boost, Quà Tặng Bạn Trai",
+    "source": "Chus.vn",
+    "price": "1.045.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTD5_vIAKB5Gz51P8g_swxbR8FIp8T0OeSu5GW_mTb21PxAuhkbqccFndIAYtKNu4lLvFuNt366iOLp0_caVftXFMUTmgYK1-1_jvIfVXe7",
+    "productId": "18003968108919316577",
+    "position": 17
+   },
+   {
+    "title": "Bộ quà tặng phong thủy thời trang cao cấp cho người mệnh thủy",
+    "source": "Thomas Nguyen",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+th%C3%ADch+c%C3%A0+ph%C3%AA+s%E1%BA%BFp+nam%2C+40+tu%E1%BB%95i&prds=localAnnotatedOfferId:1,catalogid:1053900763757994511,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "3.314.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSleIkrhonoXcfUY8VlwdS2u5-EXkd4S5aqVCYUkbSDdnyf7_BXoH4jbKP9aHnq_Gciv3F3R3ZgbNXw3yPoIpo_DiC5f9lpKMwbBmFYcZE",
+    "productId": "1053900763757994511",
+    "position": 18
+   },
+   {
+    "title": "Giỏ quà tặng sếp nữ lên chức - FSNK256",
+    "source": "MKnow",
+    "price": "1.680.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQdPZoAeUVLIQICUou896uSjV5Bl3Ry8MRbBGyRKWnzFvHZ3xvOQnEAihj4TYIPrXBozX0ClF92GwfuruIido5mnCDoWOs_hPh4FiEjCu0",
+    "productId": "4004935345557230762",
+    "position": 19
+   },
+   {
+    "title": "quà tặng vip quà tặng sếp -mô hình thuyền mạ vàng 24k -Ngang 31 cao 22 sâu 12cm / đồng mạ vàng 24k / thuyền buồm thuận buồm xuôi gió",
+    "source": "dongphongthuy.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+th%C3%ADch+c%C3%A0+ph%C3%AA+s%E1%BA%BFp+nam%2C+40+tu%E1%BB%95i&prds=localAnnotatedOfferId:1,catalogid:6190211132203516419,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "5.800.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSeVU2a88xJjhvvxcQorIdqnsDqccZldNAxqW63sc5mzCAsiRz0qmIc2U4Ix2MmSP3vXAk2F0YQXC3KsiyTTMjcRL41EzJPlHlOgSA8KxM",
+    "productId": "6190211132203516419",
+    "position": 20
+   },
+   {
+    "title": "Set Quà Tặng Cà Phê Cao Cấp Mee Fee - Mini Gift Set",
+    "source": "Mee Fee",
+    "price": "324.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTgDVMCCqRvpGo_Kmfq5b0IrOyiblS7vPddQY_mcUAbgQfym4s7Y3xbMEJQ9raRVbRtVMEKCsM8BgVUzvs_U6dbulkLeZ-hKaUW8FjEmf9j",
+    "productId": "5103220032090785665",
+    "position": 21
+   },
+   {
+    "title": "Set quà tặng \"Vietnam Corner - Tea\" - Trà sen thượng hạng",
+    "source": "Chus.vn",
+    "price": "495.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcS37GI6bt-7OKf1d4OpcEVU4xYXPiE_OpHIL9V5Y1SKA_iy9QOg8jUE1li3-P8fY5H6HPVgewFx-x36Cp8tbKYsiAn88MbYit99Bhhi2ySdleeXB4v7LVHC",
+    "productId": "3430858448986233814",
+    "position": 22
+   },
+   {
+    "title": "SET quà tặng cà phê - Phúc - Lộc - Thọ - Olive Coffee",
+    "source": "Olive coffee",
+    "price": "1.100.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTPehRu_ExY-ZTBSCTSbypaw1ovscU2Mb-ax9uErkHye4rvfObB1JI9UO4IZsJPvl1WTkuv_m2QYQ1jBzoKYr_oChaLkC9aBU8nqNJawbkm",
+    "productId": "17773247747032458598",
+    "position": 23
+   },
+   {
+    "title": "Bộ Giftset quà tặng độc đáo theo yêu cầu",
+    "source": "Butgokhacten.Vn",
+    "price": "386.400 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRz7F9Brv5ONQ8wxhhvllyhgpecS4lv4VpF696g2sgmKcbtQZip741Lf6VP3_EuPKAQXBsPFjKMjT54rIDh6E1dKlwAdFJ39Sz116Pc0Lg",
+    "productId": "7739092466855828108",
+    "position": 24
+   },
+   {
+    "title": "Hộp Quà Tặng 1 Gói Arabica và 1 Gói Summer Day 250G Bột",
+    "source": "Cà Phê Sạch ORG",
+    "price": "390.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTRClkFnamkTVPTx35ENxB8zLO9MMTHnYL7RYF49zuiojGnBJ3L7s5ocxU-UqbgYPIsTPsg9dLr5LHF_ZsWO9irCugq4QhLwQ",
+    "productId": "2513232225703035040",
+    "position": 25
+   },
+   {
+    "title": "Set Quà Tặng KHẮC TÊN THEO YÊU CẦU tặng sinh nhật, quà lưu niệm cá nhân và doanh nghiệp",
+    "source": "Memories.vn",
+    "price": "139.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRte7wIq5PFmP899Uxo_8EsUu2TIP7kijyHys4DIV19HLHJre2SQvRsTLIjpXGeb5uyKt2VOqdyhwth8n-tT3XZyMc32nAhLLVgGMzJqrA",
+    "productId": "14933379037095288658",
+    "position": 26
+   },
+   {
+    "title": "Bộ quà tặng phong thủy thời trang cao cấp cho người mệnh Kim và thủy",
+    "source": "Thomas Nguyen",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+th%C3%ADch+c%C3%A0+ph%C3%AA+s%E1%BA%BFp+nam%2C+40+tu%E1%BB%95i&prds=localAnnotatedOfferId:1,catalogid:13699358177507284468,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "4.032.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcS7Ta_PiEyTCuRob7XB4cmiMeTC95Xsd7rtfez69pTUy0IzOwiUHuNrGitjcJsO-5ymkQNC7fGd_VrZoznaLcSSNDGo3is_RTXxfGzRMJ02GDspfMiQaBLp",
+    "productId": "13699358177507284468",
+    "position": 27
+   },
+   {
+    "title": "Quà tặng lễ tốt nghiệp - 0962 998 995 | 0937 501 941",
+    "source": "naturalproduct.vn",
+    "price": "240.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQfTvJbEWdZuyKyLaoJc-llT25qspgFOCoMd8e9FFDSILdTpx6Ivmy2Bh_LT7u3jbd10gpoKry7MUZoMiEKWtoVOYf0BaAYA9Ziw05Y-4jI",
+    "productId": "9024914681290459958",
+    "position": 28
+   },
+   {
+    "title": "Quà tặng sếp nam sang trọng với Gỗ hóa thạch 17,78kg",
+    "source": "Decora.vn",
+    "price": "22.536.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQKJi-v--vkUURHhKYieQy-ekpqMp-argQGUcv6fc9Dkm825XD91mkrnTWV_11DubBZIsPPEgMrqdqxRNPdrZDFDEFxA2Vk5SFTr-a1s-Q",
+    "productId": "9742957705738919372",
+    "position": 29
+   },
+   {
+    "title": "Bộ quà tặng ngành Bảo hiểm sang trọng, giá rẻ 2026",
+    "source": "Thành Phát Gift & Decor",
+    "price": "190.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQydcIZOiBTbel0LkhPsw8HPM3RanDu8s6PoHuTe0UjZ2ETHr8Ovw4OykyF4Jlvkxim9i7i2bwyscNogdzKkkW8EAPun2QdGUVxdv8WL6IgxS0BS89AJhjzEg",
+    "productId": "17166001593346204098",
+    "position": 30
+   },
+   {
+    "title": "Hộp Quà Tặng Linh Vật Mèo 16 x 16cm Mạ Vàng 24k",
+    "source": "Lê Gia Group",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+th%C3%ADch+c%C3%A0+ph%C3%AA+s%E1%BA%BFp+nam%2C+40+tu%E1%BB%95i&prds=localAnnotatedOfferId:1,catalogid:842217774293233971,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "1.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRihunrDEYjXGWJQyEXnuY4jKwj8hoCR05LiVBX0NNJmX2fmbvHXjWLy3AmOUpkQAnJflHSgZnpdqobPSgLcvnfhcGb6yBMM57lNlvFL7M",
+    "productId": "842217774293233971",
+    "position": 31
+   },
+   {
+    "title": "Set Quà Tặng Mộc Vị Cao Cấp, Sang Trọng",
+    "source": "happynuts.vn",
+    "price": "545.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRZLH1byfIKXw_LFPBZOWLsouQ_y4m83rL1FQBzPxpZOmAfvO7yqZZlO5m67d4ecfs45_vAjdwnAGXIxihuIWEDBWEMhhpzxd_QN4jjOb0",
+    "productId": "1741469411220656975",
+    "position": 32
+   },
+   {
+    "title": "Quà Tặng Sếp Năm Nhâm Dần 2022 - Hổ Phú Quý Tài Lộc Dát Vàng 9999 | Quà Tặng Đại Việt",
+    "source": "Qùa Tặng Đại Việt",
+    "price": "7.400.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQyoz2gkuHbYxjZpuQmUhqP5cSDDy-UDQ4Rxkua6FrrTgKNXU4Hw2UnniSumKwM3k2kxVE9lC144za2Ty5E1-sKEHz_C6DDGaETE4uOBJA",
+    "productId": "11234521761470917921",
+    "position": 33
+   },
+   {
+    "title": "Bộ quà tặng sáng tạo ý tưởng GS33 đep, giá xưởng 2026",
+    "source": "Thành Phát Gift & Decor",
+    "price": "598.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTxYAbbc2tzFn6RTQhqMAbyf3aDFZugMBXYA4rlODwY3DVNDSbT_Ip4V8u2p3yNL2XXXJwiZiA_5YGrGpJXk6R_L8e1CUF1x8ZAAfqtJ0IH09CAOuV_75QV",
+    "productId": "13206371126297375088",
+    "position": 34
+   },
+   {
+    "title": "Set quà tặng Nam Phương Ngự Phẩm",
+    "source": "Thế Giới Trầm Hương",
+    "price": "1.375.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQyB-fqFEQRcAy01GEGguXCDI9HBJXZxvp6KGmM3tbTDYKF4sSQpFUsVVNO4ofUXRsY_9n-XTKi23rhG7MkQucshp_rq1vgFQlqBI07MJMs",
+    "productId": "13736286978115672873",
+    "position": 35
+   },
+   {
+    "title": "Bộ Quà Tặng Cuối Năm Dành Tặng Các Em Học Sinh GS14 - CÔNG TY CỔ PHẦN QUÀ TẶNG VUÔNG TRÒN",
+    "source": "Vuông Tròn Gift",
+    "price": "360.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQpRjqvMKPJmtnjjMCRSmgRWbsPeI2ceKRjccCBfFYmfuqVjgCp8y_Uh5Q39ZRVh5LsQdnb_mTaiDdf4klpGj8WT1bNqdcmRT6RibRA2eIItEROdRAbcqLg",
+    "productId": "5297559449269903861",
+    "position": 36
+   },
+   {
+    "title": "Bộ quà tặng thiết kế theo yêu cầu GS28 đẹp, giá xưởng 2026",
+    "source": "Thành Phát Gift & Decor",
+    "price": "428.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTT8TxUHd0SB1dg0EaS-QtcstKj0JRKraoB1fZV5sHCwrAQfXFJcLt2s5UWwF_thx7sFh4g6Wmd4wfX0ZIBx-F8vnE6dsKF2Wb5CxJLccJo",
+    "productId": "12882421455884578718",
+    "position": 37
+   },
+   {
+    "title": "Quà Tặng Sếp Nữ Cao Cấp - Gỗ Hóa Thạch 14.1kg Đồ Trang Trí Phòng Khách Sang Trọng",
+    "source": "Decora.vn",
+    "price": "31.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSm92-8Efzw6yYFjlFf21f0QIiJ-M_YzBQpGCSG9k0UVAfidVp0CRdLsO6mKXnjeLukA__sWzmiBTimVHOoUNd2n2DerQNGweZ2jDnshOc",
+    "productId": "1205566080452247336",
+    "position": 38
+   },
+   {
+    "title": "Set Quà Tặng Hoa Sen - Quà Tặng Sếp/Đối Tác – Tranh Đồng Mạ Vàng 24K & Hộp Trang Sức Sơn Mài",
+    "source": "myngheviet.vn",
+    "price": "4.187.160 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRlH-xWKNUFKH40T9NkHwySS8QpiEyHcJB0M3Q25IfAvUaW935qk9bvluQ1LQKYKMdsDavsFuButNTvRUSBgqUKcZjYT2fIzAhaAoKgjecU",
+    "productId": "3944880660529266444",
+    "position": 39
+   },
+   {
+    "title": "Set Quà Tặng Khăn Choàng Tằm Hoa 3D Cao Cấp Và Trâm Cài Áo Quý Phái (SQTT09025)",
+    "source": "Khăn choàng Phạm Gia",
+    "price": "900.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRgNry0DxS6AK6Hq0jqnYb_DZ8mSqdy4ZAPksDIfK2WNS6d3gyBjf6jUCkik9pCYR3GuJ__vIyErQguDPRg9mJ5Je1LzSQsYLYdDZ9LRNKa9RyiczZ7qq9Z",
+    "productId": "10701162790681859518",
+    "position": 40
+   }
+  ],
+  "credits": 2
+ }
+}

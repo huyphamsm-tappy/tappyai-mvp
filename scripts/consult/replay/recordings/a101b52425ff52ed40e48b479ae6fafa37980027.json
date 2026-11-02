@@ -1,0 +1,82 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Spa\" quan 1 site:klook.com/vi/activity",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:56:44.029Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Spa\" quan 1 site:klook.com/vi/activity",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Trải nghiệm Ha Spa & Massage tại Quận 1, Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/165262-ha-spa-massage-experience-in-district-1-ho-chi-minh/",
+    "snippet": "Shinrin Spa: Gội Đầu & Massage tại Quận 1, TP. Hồ Chí Minh. ☆ 4.8 (470). ₫ 77,520. Giảm 40. Sale · Day Spa tại Quận 1 Thành phố Hồ Chí Minh. ☆ 5.0 (81).",
+    "rating": 4.4,
+    "ratingCount": 77,
+    "position": 1
+   },
+   {
+    "title": "Gội Đầu & Massage tại Charm Garden Spa ở Quận 1, Hồ ...",
+    "link": "https://www.klook.com/vi/activity/212930-charm-garden-spa-hair-wash-massage-in-district-1-ho-chi-minh/",
+    "snippet": "Charm Spa Garden - Spa & Massage Tốt Nhất Quận 1. Trải nghiệm một trong những thương hiệu spa lâu đời nhất Việt Nam với các chi nhánh tại các thành phố du lịch ...",
+    "rating": 4,
+    "ratingCount": 1,
+    "position": 2
+   },
+   {
+    "title": "Shinrin Spa: Gội Đầu & Massage tại Quận 1, TP. Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/151252-shinrin-spa-massage-experience-in-district-1-ho-chi-minh/",
+    "snippet": "Shinrin Spa kết hợp nét quyến rũ của Việt Nam với các dịch vụ chăm sóc sức khỏe chất lượng như massage toàn thân, spa thảo dược cho đầu, chăm sóc da mặt và xông ...",
+    "rating": 4.8,
+    "ratingCount": 470,
+    "position": 3
+   },
+   {
+    "title": "The Moc Spa: Một lối thoát lấy cảm hứng từ thiên nhiên ở ...",
+    "link": "https://www.klook.com/vi/activity/189146-the-moc-spa-a-nature-inspired-escape-in-district-1/",
+    "snippet": "The Moc Spa: Một lối thoát lấy cảm hứng từ thiên nhiên ở Quận 1 · Tận hưởng không khí yên bình, thư thái tránh xa sự ồn ào của thành phố · Massage body, gội đầu ...",
+    "position": 4
+   },
+   {
+    "title": "Trải nghiệm Amy Spa & Massage ở Quận 1, Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/147259-amy-spa-massage-experience-in-district-1-ho-chi-minh/",
+    "snippet": "Hỗ trợ khách hàng. Bạn có thể sẽ thích. Day Spa tại Quận 1 Thành phố Hồ Chí Minh. ☆ 5.0 (82). ₫ 175,000 · Shinrin Spa: Gội Đầu & Massage tại Quận 1, TP.",
+    "rating": 4.8,
+    "ratingCount": 17,
+    "position": 5
+   },
+   {
+    "title": "Tam Oi Head Spa và Massage ở Quận 1, TP. Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/222222-tam-oi-head-spa-and-massage-in-district-1-ho-chi-minh-city/",
+    "snippet": "Tam Oi Head Spa và Massage ở Quận 1, TP. Hồ Chí Minh · Nạp năng lượng cho cơ thể và tâm trí với các nghi thức chăm sóc sức khỏe châu Á đích thực · Tận hưởng các ...",
+    "position": 6
+   },
+   {
+    "title": "Trải nghiệm La Spa & Massage Premium tại Quận 1, Hồ ...",
+    "link": "https://www.klook.com/vi/activity/157287-la-spa-massage-premium-experience-in-district-1-ho-chi-minh/",
+    "snippet": "Shinrin Spa: Gội Đầu & Massage tại Quận 1, TP. Hồ Chí Minh. ☆ 4.8 (470). ₫ 77,520. Giảm 40. Sale · AYen Spa & Healing: Trải nghiệm Massage và Gội đầu tại TP.",
+    "rating": 5,
+    "ratingCount": 8,
+    "position": 7
+   },
+   {
+    "title": "Bloom Spa & Hairwash tại Quận 1, Thành phố Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/220015-bloom-spa-hairwash-in-district-1-ho-chi-minh-city/",
+    "snippet": "Day Spa tại Quận 1 TP. Hồ Chí Minh, cách Nhà thờ Hồng 1 phút đi bộ. ☆ 5.0 ... Điểm tham quan nổi tiếng ở Thành phố Hồ Chí Minh. 1 Địa đạo Củ Chi; 2 Sông ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

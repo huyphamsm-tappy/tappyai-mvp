@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Tổng Hợp 50 Món Đồ Ăn Vặt Trung Quốc Tự Chọn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:19:53.534Z",
+ "body": {
+  "searchParameters": {
+   "q": "Tổng Hợp 50 Món Đồ Ăn Vặt Trung Quốc Tự Chọn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Tổng Hợp 50 Món Đồ Ăn Vặt Trung Quốc Tự Chọn YUDOFOOD Nội Địa",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-7qukw-lgzasdpbr1o213",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3yAua3Dey6Vvc8VeqWjXzN6yZTeLrjg1krgwEkcJdAA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/T%E1%BB%95ng-H%E1%BB%A3p-50-M%C3%B3n-%C4%90%E1%BB%93-%C4%82n-V%E1%BA%B7t-Trung-Qu%E1%BB%91c-T%E1%BB%B1-Ch%E1%BB%8Dn-YUDOFOOD-N%E1%BB%99i-%C4%90%E1%BB%8Ba-i.273139028.17381536952",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-7qukw-lgzasdpbr1o213&tbnid=h9UfPeaZvFnDKM&imgrefurl=https%3A%2F%2Fshopee.vn%2FT%25E1%25BB%2595ng-H%25E1%25BB%25A3p-50-M%25C3%25B3n-%25C4%2590%25E1%25BB%2593-%25C4%2582n-V%25E1%25BA%25B7t-Trung-Qu%25E1%25BB%2591c-T%25E1%25BB%25B1-Ch%25E1%25BB%258Dn-YUDOFOOD-N%25E1%25BB%2599i-%25C4%2590%25E1%25BB%258Ba-i.273139028.17381536952&docid=XO85PKQzYueiBM&w=800&h=800",
+    "position": 1
+   },
+   {
+    "title": "Tổng Hợp 50 Món Đồ Ăn Vặt Trung Quốc Tự Chọn YUDOFOOD Nội Địa",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/e4dea4fd508b8b03ba1ee4e9518d1589",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSX0SwdeCZ7bW4VNowc1yPKK6pj05FfjtotLal5_f90LQ&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/T%E1%BB%95ng-H%E1%BB%A3p-50-M%C3%B3n-%C4%90%E1%BB%93-%C4%82n-V%E1%BA%B7t-Trung-Qu%E1%BB%91c-T%E1%BB%B1-Ch%E1%BB%8Dn-YUDOFOOD-N%E1%BB%99i-%C4%90%E1%BB%8Ba-i.273139028.17381536952",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fe4dea4fd508b8b03ba1ee4e9518d1589&tbnid=Jn7BlxboCNb41M&imgrefurl=https%3A%2F%2Fshopee.vn%2FT%25E1%25BB%2595ng-H%25E1%25BB%25A3p-50-M%25C3%25B3n-%25C4%2590%25E1%25BB%2593-%25C4%2582n-V%25E1%25BA%25B7t-Trung-Qu%25E1%25BB%2591c-T%25E1%25BB%25B1-Ch%25E1%25BB%258Dn-YUDOFOOD-N%25E1%25BB%2599i-%25C4%2590%25E1%25BB%258Ba-i.273139028.17381536952&docid=XO85PKQzYueiBM&w=1024&h=1024",
+    "position": 2
+   },
+   {
+    "title": "Tổng Hợp 50 Món Đồ Ăn Vặt Trung Quốc Tự Chọn YUDOFOOD Nội Địa",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/47f84a19736bb094c702fdf6c9e732ef",
+    "imageWidth": 960,
+    "imageHeight": 960,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJakhQxF3GDyhzKuB3E3DGzH3ugPIbKPw6HWshvu0VYw&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/T%E1%BB%95ng-H%E1%BB%A3p-50-M%C3%B3n-%C4%90%E1%BB%93-%C4%82n-V%E1%BA%B7t-Trung-Qu%E1%BB%91c-T%E1%BB%B1-Ch%E1%BB%8Dn-YUDOFOOD-N%E1%BB%99i-%C4%90%E1%BB%8Ba-i.273139028.17381536952",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2F47f84a19736bb094c702fdf6c9e732ef&tbnid=s9LosqUqwG4_JM&imgrefurl=https%3A%2F%2Fshopee.vn%2FT%25E1%25BB%2595ng-H%25E1%25BB%25A3p-50-M%25C3%25B3n-%25C4%2590%25E1%25BB%2593-%25C4%2582n-V%25E1%25BA%25B7t-Trung-Qu%25E1%25BB%2591c-T%25E1%25BB%25B1-Ch%25E1%25BB%258Dn-YUDOFOOD-N%25E1%25BB%2599i-%25C4%2590%25E1%25BB%258Ba-i.273139028.17381536952&docid=XO85PKQzYueiBM&w=960&h=960",
+    "position": 3
+   },
+   {
+    "title": "Tổng Hợp 50 Món Đồ Ăn Vặt Trung Quốc Tự Chọn YUDOFOOD Nội Địa",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/d208240cfbfb73f468a76b741e9e9815",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_l07en2RTFxzIxD21UVXqMeJXCw3ErhvCj-ujEXkOng&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/T%E1%BB%95ng-H%E1%BB%A3p-50-M%C3%B3n-%C4%90%E1%BB%93-%C4%82n-V%E1%BA%B7t-Trung-Qu%E1%BB%91c-T%E1%BB%B1-Ch%E1%BB%8Dn-YUDOFOOD-N%E1%BB%99i-%C4%90%E1%BB%8Ba-i.273139028.17381536952",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fd208240cfbfb73f468a76b741e9e9815&tbnid=tU860fHIvHfDIM&imgrefurl=https%3A%2F%2Fshopee.vn%2FT%25E1%25BB%2595ng-H%25E1%25BB%25A3p-50-M%25C3%25B3n-%25C4%2590%25E1%25BB%2593-%25C4%2582n-V%25E1%25BA%25B7t-Trung-Qu%25E1%25BB%2591c-T%25E1%25BB%25B1-Ch%25E1%25BB%258Dn-YUDOFOOD-N%25E1%25BB%2599i-%25C4%2590%25E1%25BB%258Ba-i.273139028.17381536952&docid=XO85PKQzYueiBM&w=1024&h=1024",
+    "position": 4
+   },
+   {
+    "title": "Tổng Hợp 50 Món Đồ Ăn Vặt Trung Quốc Tự Chọn YUDOFOOD Nội Địa",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/ea556d6b19be71f81d098cdb803f9da8",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-SIm6afrdOJiinxABK_SjJ-CEpmahmVKg8Lw3Wz3UEA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/T%E1%BB%95ng-H%E1%BB%A3p-50-M%C3%B3n-%C4%90%E1%BB%93-%C4%82n-V%E1%BA%B7t-Trung-Qu%E1%BB%91c-T%E1%BB%B1-Ch%E1%BB%8Dn-YUDOFOOD-N%E1%BB%99i-%C4%90%E1%BB%8Ba-i.273139028.17381536952",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fea556d6b19be71f81d098cdb803f9da8&tbnid=YtuVu5HsxJ-jEM&imgrefurl=https%3A%2F%2Fshopee.vn%2FT%25E1%25BB%2595ng-H%25E1%25BB%25A3p-50-M%25C3%25B3n-%25C4%2590%25E1%25BB%2593-%25C4%2582n-V%25E1%25BA%25B7t-Trung-Qu%25E1%25BB%2591c-T%25E1%25BB%25B1-Ch%25E1%25BB%258Dn-YUDOFOOD-N%25E1%25BB%2599i-%25C4%2590%25E1%25BB%258Ba-i.273139028.17381536952&docid=XO85PKQzYueiBM&w=1024&h=1024",
+    "position": 5
+   },
+   {
+    "title": "Tổng Hợp 50 Món Đồ Ăn Vặt Trung Quốc Tự Chọn YUDOFOOD Nội Địa",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/4abd4444cdada956eb918afaadaf0f04",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWQvD_pWO0m3IUlaz8iVnAjxc06t1TcZ94u_GHZYlt5w&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/T%E1%BB%95ng-H%E1%BB%A3p-50-M%C3%B3n-%C4%90%E1%BB%93-%C4%82n-V%E1%BA%B7t-Trung-Qu%E1%BB%91c-T%E1%BB%B1-Ch%E1%BB%8Dn-YUDOFOOD-N%E1%BB%99i-%C4%90%E1%BB%8Ba-i.273139028.17381536952",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2F4abd4444cdada956eb918afaadaf0f04&tbnid=E4a0oU6UiexhXM&imgrefurl=https%3A%2F%2Fshopee.vn%2FT%25E1%25BB%2595ng-H%25E1%25BB%25A3p-50-M%25C3%25B3n-%25C4%2590%25E1%25BB%2593-%25C4%2582n-V%25E1%25BA%25B7t-Trung-Qu%25E1%25BB%2591c-T%25E1%25BB%25B1-Ch%25E1%25BB%258Dn-YUDOFOOD-N%25E1%25BB%2599i-%25C4%2590%25E1%25BB%258Ba-i.273139028.17381536952&docid=XO85PKQzYueiBM&w=800&h=800",
+    "position": 6
+   },
+   {
+    "title": "Tổng Hợp 50 Món Đồ Ăn Vặt Trung Quốc Tự Chọn YUDOFOOD Nội Địa",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/c5994c2a845b1712596e7e003758ce96",
+    "imageWidth": 400,
+    "imageHeight": 400,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSprXdpFZ5fNZ0yxUbyNID4501YRPwgNsGsDLnLJt5afQ&s=10",
+    "thumbnailWidth": 400,
+    "thumbnailHeight": 400,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/T%E1%BB%95ng-H%E1%BB%A3p-50-M%C3%B3n-%C4%90%E1%BB%93-%C4%82n-V%E1%BA%B7t-Trung-Qu%E1%BB%91c-T%E1%BB%B1-Ch%E1%BB%8Dn-YUDOFOOD-N%E1%BB%99i-%C4%90%E1%BB%8Ba-i.273139028.17381536952",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fc5994c2a845b1712596e7e003758ce96&tbnid=TENm7y9EsiW2zM&imgrefurl=https%3A%2F%2Fshopee.vn%2FT%25E1%25BB%2595ng-H%25E1%25BB%25A3p-50-M%25C3%25B3n-%25C4%2590%25E1%25BB%2593-%25C4%2582n-V%25E1%25BA%25B7t-Trung-Qu%25E1%25BB%2591c-T%25E1%25BB%25B1-Ch%25E1%25BB%258Dn-YUDOFOOD-N%25E1%25BB%2599i-%25C4%2590%25E1%25BB%258Ba-i.273139028.17381536952&docid=XO85PKQzYueiBM&w=400&h=400",
+    "position": 7
+   },
+   {
+    "title": "Tổng Hợp 50 Món Đồ Ăn Vặt Trung Quốc Tự Chọn YUDOFOOD Nội Địa",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/0fcb4927c5c970d80b1d5334883b69e9",
+    "imageWidth": 730,
+    "imageHeight": 730,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdvtIvCQSDtUotiPgL-ew6_wju7tcJ1kfsaGHIs31uyw&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/T%E1%BB%95ng-H%E1%BB%A3p-50-M%C3%B3n-%C4%90%E1%BB%93-%C4%82n-V%E1%BA%B7t-Trung-Qu%E1%BB%91c-T%E1%BB%B1-Ch%E1%BB%8Dn-YUDOFOOD-N%E1%BB%99i-%C4%90%E1%BB%8Ba-i.273139028.17381536952",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2F0fcb4927c5c970d80b1d5334883b69e9&tbnid=IWEHRZZI0VBgPM&imgrefurl=https%3A%2F%2Fshopee.vn%2FT%25E1%25BB%2595ng-H%25E1%25BB%25A3p-50-M%25C3%25B3n-%25C4%2590%25E1%25BB%2593-%25C4%2582n-V%25E1%25BA%25B7t-Trung-Qu%25E1%25BB%2591c-T%25E1%25BB%25B1-Ch%25E1%25BB%258Dn-YUDOFOOD-N%25E1%25BB%2599i-%25C4%2590%25E1%25BB%258Ba-i.273139028.17381536952&docid=XO85PKQzYueiBM&w=730&h=730",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

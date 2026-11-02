@@ -1,0 +1,83 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quà tặng sức khỏe thảo dược tự nhiên Giftbox Hapaku (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:09:27.595Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà tặng sức khỏe thảo dược tự nhiên Giftbox Hapaku (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "HAPAKU - Quà Tặng Sức Khỏe, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/hapakuquatang",
+    "snippet": "... thảo dược (Đai chườm dùng điện đầu tiên tại VN), Bóng mát xa, Túi thơm thảo dược, Gối ngải cứu, Tinh dầu tự nhiên,… - Được lựa chọn làm quà tặng trong các ...",
+    "position": 1
+   },
+   {
+    "title": "Set Quà Tặng Nhân Viên Nữ 20/10 Từ Túi Chườm Thảo ...",
+    "link": "https://shopee.vn/Set-Qu%C3%A0-T%E1%BA%B7ng-Nh%C3%A2n-Vi%C3%AAn-N%E1%BB%AF-20-10-T%E1%BB%AB-T%C3%BAi-Ch%C6%B0%E1%BB%9Dm-Th%E1%BA%A3o-D%C6%B0%E1%BB%A3c-Hapaku-Qu%C3%A0-T%E1%BA%B7ng-20-10-%C3%9D-Ngh%C4%A9a-Thi%E1%BA%BFt-Th%E1%BB%B1c-i.1234610844.28322391605?extraParams=%7B%22display_model_id%22%3A242387476329%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "Shopee Sức Khỏe Dụng cụ massage và trị liệu. Set Quà Tặng Nhân Viên Nữ 20/10 Từ Túi Chườm Thảo Dược Hapaku, Quà Tặng 20/10 Ý Nghĩa Thiết Thực.",
+    "date": "10 thg 9, 2026",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 2
+   },
+   {
+    "title": "Set Quà Tặng Mẹ Từ Túi Chườm Thảo Dược Hapaku, ...",
+    "link": "https://shopee.vn/Set-Qu%C3%A0-T%E1%BA%B7ng-M%E1%BA%B9-T%E1%BB%AB-T%C3%BAi-Ch%C6%B0%E1%BB%9Dm-Th%E1%BA%A3o-D%C6%B0%E1%BB%A3c-Hapaku-Qu%C3%A0-T%E1%BA%B7ng-Sinh-Nh%E1%BA%ADt-M%E1%BA%B9-%C3%9D-Ngh%C4%A9a-H%E1%BB%97-Tr%E1%BB%A3-Gi%E1%BA%A3m-%C4%90au-Vai-G%C3%A1y-Th%C6%B0-Gi%C3%A3n-Ng%E1%BB%A7-Ngon-i.1234610844.25526324386",
+    "snippet": "Mua Set Quà Tặng Mẹ Từ Túi Chườm Thảo Dược Hapaku, Quà Tặng Sinh Nhật Mẹ Ý Nghĩa, Hỗ Trợ Giảm Đau Vai Gáy, Thư Giãn Ngủ Ngon giá tốt.",
+    "rating": 5,
+    "ratingCount": 25,
+    "position": 3
+   },
+   {
+    "title": "Set Quà Tặng Nhân Viên Nữ 20/10 Từ Túi Chườm Thảo ...",
+    "link": "https://shopee.vn/Set-Qu%C3%A0-T%E1%BA%B7ng-Nh%C3%A2n-Vi%C3%AAn-Kh%C3%A1ch-H%C3%A0ng-Tham-Gia-H%E1%BB%99i-Th%E1%BA%A3o-T%E1%BB%AB-T%C3%BAi-Ch%C6%B0%E1%BB%9Dm-Th%E1%BA%A3o-D%C6%B0%E1%BB%A3c-Hapaku-Qu%C3%A0-T%E1%BA%B7ng-Doanh-Nghi%E1%BB%87p-i.1234610844.28322391605",
+    "snippet": "Mua Set Quà Tặng Nhân Viên Nữ 20/10 Từ Túi Chườm Thảo Dược Hapaku, Quà Tặng 20/10 Ý Nghĩa Thiết Thực giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 4
+   },
+   {
+    "title": "HAPAKU VIỆT NAM - Shopee Mall Online",
+    "link": "https://shopee.vn/hapaku_officialstore",
+    "snippet": "Mua đai chườm nóng thảo dược, bóng mát xa, túi thơm thảo dược, gối ngải cứu, tinh dầu tự nhiên HAPAKU VIỆT NAM chính hãng tại Shopee ưu đãi tháng 09/2026.",
+    "position": 5
+   },
+   {
+    "title": "Túi Thơm Treo Nhà Vệ Sinh Từ Thảo Dược Hapaku 70g ...",
+    "link": "https://shopee.vn/T%C3%BAi-Th%C6%A1m-Treo-Nh%C3%A0-V%E1%BB%87-Sinh-T%E1%BB%AB-Th%E1%BA%A3o-D%C6%B0%E1%BB%A3c-Hapaku-70g-H%C6%B0%C6%A1ng-Th%C6%A1m-Th%E1%BA%A3o-D%C6%B0%E1%BB%A3c-Th%C6%B0-Gi%C3%A3n-An-To%C3%A0n-S%E1%BB%A9c-Kh%E1%BB%8Fe-i.1235337110.25782059058",
+    "snippet": "Mua Túi Thơm Treo Nhà Vệ Sinh Từ Thảo Dược Hapaku 70g, Hương Thơm Thảo Dược Thư Giãn, An Toàn Sức Khỏe giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.9,
+    "ratingCount": 18,
+    "position": 6
+   },
+   {
+    "title": "Túi Chườm Thảo Dược Khớp Gối Hapaku, Giảm Đau ...",
+    "link": "https://shopee.vn/T%C3%BAi-Ch%C6%B0%E1%BB%9Dm-Th%E1%BA%A3o-D%C6%B0%E1%BB%A3c-Kh%E1%BB%9Bp-G%E1%BB%91i-Hapaku-Gi%E1%BA%A3m-Nh%E1%BB%A9c-M%E1%BB%8Fi-Do-Tho%C3%A1i-H%C3%B3a-Kh%E1%BB%9Bp-G%E1%BB%91i-Gi%E1%BA%A3m-C%C4%83ng-C%E1%BB%A9ng-C%C6%A1-i.1235337110.25575842979",
+    "snippet": "Mua Túi Chườm Thảo Dược Khớp Gối Hapaku, Giảm Đau Khớp Gối Từ Thảo Dược Tự Nhiên, Giảm Đau Do Thoái Hóa giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 7
+   },
+   {
+    "title": "Túi Thơm Khử Mùi Nhà Bếp Từ Thảo Dược Hapaku 70g ...",
+    "link": "https://shopee.vn/T%C3%BAi-Th%C6%A1m-Kh%E1%BB%AD-M%C3%B9i-Nh%C3%A0-B%E1%BA%BFp-T%E1%BB%AB-Th%E1%BA%A3o-D%C6%B0%E1%BB%A3c-Hapaku-70g-H%C6%B0%C6%A1ng-Th%C6%A1m-Th%E1%BA%A3o-D%C6%B0%E1%BB%A3c-Th%C6%B0-Gi%C3%A3n-An-To%C3%A0n-S%E1%BB%A9c-Kh%E1%BB%8Fe-i.1235337110.25782059058?extraParams=%7B%22display_model_id%22%3A371113693291%2C%22model_selection_logic%22%3A2%7D",
+    "snippet": "Mua Túi Thơm Khử Mùi Nhà Bếp Từ Thảo Dược Hapaku 70g, Hương Thơm Thảo Dược Thư Giãn, An Toàn Sức Khỏe giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.9,
+    "ratingCount": 18,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,385 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "laptop mới cho sinh viên học thiết kế đồ họa dưới 20 triệu",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:20:04.088Z",
+ "body": {
+  "searchParameters": {
+   "q": "laptop mới cho sinh viên học thiết kế đồ họa dưới 20 triệu",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Laptop làm việc văn phòng, học online DEEQ, màn hình 14 inch FullHD 1080, Ram 8G,SSD M2 128G, Intel J4150 (4 Core, 2.5Ghz)",
+    "source": "Promax Shop",
+    "price": "6.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTKUHJcqLO0r3RYDqdNLPxALOZoNKvQquO6jfz40IPgzt3FcpkdDDcExrXWgmIkN8WzU4m4S01KrW_KQOaZ7NmK6etn76at0IowEBvLg1dYubiLsMD2v58W8A",
+    "productId": "17180646393086510740",
+    "position": 1
+   },
+   {
+    "title": "HP Victus 16-E0175AX: Laptop Gaming Cũ Mạnh Mẽ, Lựa Chọn Hoàn Hảo cho Game Thủ và Sáng Tạo - Laptop Viễn Chinh",
+    "source": "Laptop Viễn Chinh",
+    "price": "11.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQ0H-mbQLMPXP6XbcsA4w5ygAKoBeVwOPxtEnU7edflZqp_hrcEid9VgyjDRUgz3sBmyhlIIF6Zq_9rgj8OWEyTzJUtZv9ReS1iqNUPCIEgreM4XAJkdZUezg",
+    "productId": "15743459758813567550",
+    "position": 2
+   },
+   {
+    "title": "Microsoft Surface Laptop Go 2 i5 RAM 8GB SSD",
+    "source": "Surface Center",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+m%E1%BB%9Bi+cho+sinh+vi%C3%AAn+h%E1%BB%8Dc+thi%E1%BA%BFt+k%E1%BA%BF+%C4%91%E1%BB%93+h%E1%BB%8Da+d%C6%B0%E1%BB%9Bi+20+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:14476866001591952098,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "13.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQxfmPiRJWJfTlKwGR97fS5dj2Og2ugWZ3FuSC4pItXHIwtkWjqw_O_X_40_en_QL-eKfZE1i2EuzN8Hn2IcgaWVZXH9ZA7lf9HNHsXLL4S6k7METV7saKP",
+    "rating": 4.6,
+    "ratingCount": 237,
+    "productId": "14476866001591952098",
+    "position": 3
+   },
+   {
+    "title": "Laptop Lenovo ThinkPad X1 Carbon Gen 13 Aura Edition 21NS010JVN",
+    "source": "Hugotech.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+m%E1%BB%9Bi+cho+sinh+vi%C3%AAn+h%E1%BB%8Dc+thi%E1%BA%BFt+k%E1%BA%BF+%C4%91%E1%BB%93+h%E1%BB%8Da+d%C6%B0%E1%BB%9Bi+20+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:13189759463222775462,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "57.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQE33zdD2fTedKtZ8bz3p96uyr98qXhJGq4z4P8AHS4YMwdgWfg2i16EbXBfRfFK14qFjGeL6Tq6iODeNwedGlSw2nCHK1Kbr-C3q_hiDaUVReiqpv_p_SL",
+    "productId": "13189759463222775462",
+    "position": 4
+   },
+   {
+    "title": "Gigabyte G7 i7-11800H Notebook 43,9 cm (17.3\") Full HD Intel Core i7 16 GB DDR4-SDRAM 512 GB SSD NVIDIA GeForce RTX 3050 Ti Wi-Fi 6 (802.11ax) ...",
+    "source": "hotgear.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+m%E1%BB%9Bi+cho+sinh+vi%C3%AAn+h%E1%BB%8Dc+thi%E1%BA%BFt+k%E1%BA%BF+%C4%91%E1%BB%93+h%E1%BB%8Da+d%C6%B0%E1%BB%9Bi+20+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:12946246002950029361,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "26.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTasSnla243XtMiDRMg_5V7c0VchzqaNlWNmkRJSk_-Q_M9Uupx9DPxHppzflvgml6TLdkoFwWP2uZUDZY63vnos-bPi3dX_Cr5HYMqBjhJJNQkVBXYDjVmZw",
+    "rating": 4.8,
+    "ratingCount": 5,
+    "productId": "12946246002950029361",
+    "position": 5
+   },
+   {
+    "title": "Microsoft Surface Laptop Go",
+    "source": "SurfacePro.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+m%E1%BB%9Bi+cho+sinh+vi%C3%AAn+h%E1%BB%8Dc+thi%E1%BA%BFt+k%E1%BA%BF+%C4%91%E1%BB%93+h%E1%BB%8Da+d%C6%B0%E1%BB%9Bi+20+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:15352277025722798923,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "19.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRFGadPsGjBLM_13Pb8-pH9CXGOVLKfhkLY4o4QI_efklgR5e9jfeuIvXrUBFVeybHPpheND01lNRxnhIZBWpIuyVF--AbBWCG5y0kWHgrR",
+    "productId": "15352277025722798923",
+    "position": 6
+   },
+   {
+    "title": "ThinkPad X13 2021 - 13.3 QHD 2K - AMD Ryzen Pro 7 5850U 32GB 1TB SSD",
+    "source": "Mac24h",
+    "price": "14.300.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRXOCDjfSvQp3ytzW6istDeFU6WhydPNa_DllMJdS3Lqwa3vpGGp4jD8hNJd-0zWkiMBSOs0-zjZtpFempPZEckOZ85WDR7PLu3a1Hj7mNLb0AxiejdBoAK",
+    "productId": "6734135843266919402",
+    "position": 7
+   },
+   {
+    "title": "Surface Book 2 13 inch Core i7 Ram 16GB 512GB (New)",
+    "source": "Surfaceviet.vn",
+    "price": "27.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRPjK520PEQHAjWwPGtyPhKGVqpv6cIGfBN3Vn0TuLn06wHgj2JGznVZcwZ9jPJ9p_p0oaGx_9LQmlL0fayktVLnt5wH-1zESt1mJOvkNmQ5BmO75JgoD5ucQ",
+    "rating": 4.5,
+    "ratingCount": 98,
+    "productId": "13934267757498333410",
+    "position": 8
+   },
+   {
+    "title": "Máy tính xách tay/ Laptop Lenovo ThinkPad X1 Carbon Gen 13",
+    "source": "Hugotech.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+m%E1%BB%9Bi+cho+sinh+vi%C3%AAn+h%E1%BB%8Dc+thi%E1%BA%BFt+k%E1%BA%BF+%C4%91%E1%BB%93+h%E1%BB%8Da+d%C6%B0%E1%BB%9Bi+20+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:3131557960759102286,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "59.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQewj3ybWjpnJe3FQ9DnrMV9KVdFCMcKT5OylAZC3sVsv6Ezkd-SPZFwNPWlC5Rq3U40Y9Kgw-RXkFjFeHlNnnhsirAsoPEkOG8jgsvm0u_NlPXyfN16DabUQ",
+    "productId": "3131557960759102286",
+    "position": 9
+   },
+   {
+    "title": "Laptop Dell 15 DC15250 CPH991 (i7-1355U | 16GB | 1TB | Intel UHD | 15.6' FHD 120Hz | Win 11 + Office Home 2024) -Hàng Chính Hãng",
+    "source": "Hangchinhhieu.vn",
+    "price": "27.690.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSKs7A4BSQZ0mMoZzEju6miOv_EyaQEqaN_fge6bo86wi7QUuubPAyXV2Gavh1pd2K0YzvcPYYJZjlWLD2148lFzyHilXiDv8vZMuWuLwHb0oMPeTDL1oVl",
+    "rating": 5,
+    "ratingCount": 20,
+    "productId": "3896913996952992726",
+    "position": 10
+   },
+   {
+    "title": "Máy tính xách tay/ Laptop HP VICTUS 16-d0290TX",
+    "source": "Camera Sài Gòn New",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+m%E1%BB%9Bi+cho+sinh+vi%C3%AAn+h%E1%BB%8Dc+thi%E1%BA%BFt+k%E1%BA%BF+%C4%91%E1%BB%93+h%E1%BB%8Da+d%C6%B0%E1%BB%9Bi+20+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:907938659031282281,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "30.075.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSdvZeZmhMpyLPJYjxPulNAfrw0zJLlH__1lw0lYg9JJ77BcrK1mjpXWN5rOitzhzL-g7a3jrkQpoNiX6GfMhMfnfZ28YUX9Am08IpbxAw",
+    "productId": "907938659031282281",
+    "position": 11
+   },
+   {
+    "title": "Laptop N-ONE Nbook Pro, 32GB+1TB, Màn hình kép 16 inch 2 màn hình Windows 11 Pro Intel Core i7-1260P 12 nhân – Dt24h",
+    "source": "dt24h Store",
+    "price": "23.855.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTxLSaRyYVHAX4dcKwy4cwR6MQ0h4NFlf-CNYQiSC7coHk8BC4QxL9hQ4XhI4XkDQHnk2ATgpFQgKmV8FXYpbBlVapJXc7uBrOOsmPObpoN3rMgN1GdaEgk",
+    "productId": "13576294128602807611",
+    "position": 12
+   },
+   {
+    "title": "Lenovo ThinkPad X13 GEN 6 21RK00AVVN",
+    "source": "thinkpro.vn",
+    "price": "59.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQF0iMY-uhUytalyJO59ZxyszPPYBRLrE--E2Q5llR7s6t1ls_jttV-YTtUTcejPXcOiYaU1s_epmntFmOb0_ySPcbMzB3RK-gdd5lEn_0v0udh9MUR3h8X",
+    "rating": 4.5,
+    "ratingCount": 56,
+    "productId": "2731299994200725332",
+    "position": 13
+   },
+   {
+    "title": "[New 100%] Laptop Lenovo Thinkbook 16 G7+ Ryzen AI 7 H 350H | 32GB | 1TB | 16 inch 3K+ 165Hz",
+    "source": "Laptop Thịnh Vượng",
+    "price": "23.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRUiPeopd6X0aT_lBMFyN89dTDObsiokTu_shwBTv6Z_rT2OnSHIYbhbcrudp1sowxYMoh8qF_c7oapRRCq9uTjww5jnZVDAKPpW487Gmf35xb94iOJaw2e",
+    "productId": "17139802105996066852",
+    "position": 14
+   },
+   {
+    "title": "Thinkpad X1 Carbon Gen 13 - Outlet",
+    "source": "Mac24h",
+    "price": "33.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQwnCS2JrFPfE-N_5Pg3SUFRmNYR8Ia_8vkflBwy5H0M9yOdMub-BuA17HC8uiBPXu7Xe9Th6aPYRRLuhI12YxmyB3XRlgAsHytlDjOPVIrjO1R9n_9GJYU",
+    "rating": 4.4,
+    "ratingCount": 646,
+    "productId": "1326296587571708861",
+    "position": 15
+   },
+   {
+    "title": "Lenovo ThinkBook 16p G6 ADR Ryzen 9 8945HX RAM 16GB SSD 1TB RTX 5060 8GB 16 inch QHD+ 165Hz Windows 11",
+    "source": "Lapvip",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+m%E1%BB%9Bi+cho+sinh+vi%C3%AAn+h%E1%BB%8Dc+thi%E1%BA%BFt+k%E1%BA%BF+%C4%91%E1%BB%93+h%E1%BB%8Da+d%C6%B0%E1%BB%9Bi+20+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:8297254305382551285,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "39.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQePvJjfBKdOFE5Jl5GQ6SbsbOGJaAKMrlLveqg_KO_jdctpe7VkiQsqlU_1vkmOdrn_mLZ3bajGip37ddTEPYljjtHOFmSvil2aakxLdK3udkRyYRcKe87Eg",
+    "productId": "8297254305382551285",
+    "position": 16
+   },
+   {
+    "title": "Surface Go 4 Intel N200 / 8GB / 256GB (New)",
+    "source": "Surface Center",
+    "price": "26.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSKgN6D3VyfxbYpPwi9I4QQURbeHN4viqgsza5hhE1T8D5EZKDEszA-_mWYaW_dymRK5bYsI0JsVSATm0XzD8Y48SOsz0fT7s5VwcIGxSSIQefaxtnwXy0bKA",
+    "productId": "1115165065594877089",
+    "position": 17
+   },
+   {
+    "title": "Surface Go Intel 4415Y Ram 8GB SSD 128Gb LTE (New)",
+    "source": "Surfaceviet.vn",
+    "price": "8.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQaR-dq86r8hbiLwcMph3MQ9kiVljvxg4MBgUYwzNahlBjpuiFswQf-3vLBQUX0BDfwBgbh1NR0dMghfMaEslFKWX3sOJUUo4SGBT0wVPcBWVO2xiENqHRRnA",
+    "productId": "9222672847559937653",
+    "position": 18
+   },
+   {
+    "title": "Victus by HP 16-e0175AX 5600H Notebook 40,9 cm (16.1\") Full HD AMD Ryzen 5 8 GB DDR4-SDRAM 512 GB SSD NVIDIA GeForce RTX 3050 Wi-Fi 6 (802.11ax) ...",
+    "source": "Camera Sài Gòn New",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+m%E1%BB%9Bi+cho+sinh+vi%C3%AAn+h%E1%BB%8Dc+thi%E1%BA%BFt+k%E1%BA%BF+%C4%91%E1%BB%93+h%E1%BB%8Da+d%C6%B0%E1%BB%9Bi+20+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:12058779511452263365,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "24.565.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTB9NpHi9Uym54dlibiHmaqxYKeHpJRbHzIGK6eV5NKG-5BIicCUxiZuJ8mI_vJXYRiRL-C_6_OiH2O2Kn1_jMdF-O234cEPmtV8C7e3S59",
+    "rating": 4.9,
+    "ratingCount": 14,
+    "productId": "12058779511452263365",
+    "position": 19
+   },
+   {
+    "title": "[New 100%] Lenovo Thinkbook X AI G3 2026 (Ultra 5 226V, 16GB, 512GB, 14 2K+ OLED 120Hz)",
+    "source": "Thế Giới Số 365",
+    "price": "29.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcS3_fLwTRVqtBEO5gd65p09-k6ELxoao_QTawGt9q0wecISji3A55GTRUZggNWG2z1u5kCJxkv_pIaWfL_PnkY82wcd2mdxKbSF5Lzd8aJ7pHpWM6JQ0h6n",
+    "productId": "3110949615479634943",
+    "position": 20
+   },
+   {
+    "title": "Lenovo Thinkpad X1 Carbon Gen 13 - Core Ultra 7 265U, RAM 32GB, SSD 1TB, 14\" FHD",
+    "source": "lapvip.com.vn",
+    "price": "46.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSeKB9IRdj2OqQGc708Z6Ww3IkhNm7CL9C1AlMzRGov0BudyLpYuwy80ppmgojuZA_DQQi1PtvhQGNrrwf2T02VpsZ1iNnY1zV16MvqAVomu4HHRS8JHWHqRw",
+    "rating": 4.8,
+    "ratingCount": 7,
+    "productId": "9167483477866695726",
+    "position": 21
+   },
+   {
+    "title": "Lenovo ThinkPad P1 Gen 5 16 inch 2022 – Core i7 12700H /32GB/1TB RTX-A2000 QHD",
+    "source": "Macstore",
+    "price": "30.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcS3Ee0cmLLRUuydc-eK8EBr4e9kU7op0zZgHy4Xb07vyt0RNW7dpZM7ZHA68h1LVWE2aycmE-RIGH7oxJYb0fz5YMD9iEEmNR8azSxNJ2W2mBilMwlAg2GK",
+    "rating": 5,
+    "ratingCount": 1,
+    "productId": "16375458078593390465",
+    "position": 22
+   },
+   {
+    "title": "Surface Laptop Go",
+    "source": "OnlyLap",
+    "price": "9.690.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQ0JGYPsGMQIwQtqfknpcTLUntmEmMHLK7TFw9JPeEWcA8Ri3qSESl81sCD8xAICaptd_Yoz2GnFCa-yY97JTcSEBucsu0nYl6wLlQW172XM2IKCbSx3sEg2g",
+    "productId": "6009024040631410152",
+    "position": 23
+   },
+   {
+    "title": "Lenovo ThinkPad X1 Carbon Gen 13 - Core Ultra 7 265U, RAM 32GB, SSD 1TB FHD",
+    "source": "Lapvip",
+    "price": "46.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcShHMYbSJZyGEiqiHL_22lVhrAbbTEPpqtATI3aupP-gvJKwOs3g0jlY1XC307zya5QSeqB1nY3ymOLCfrz2X8Y84seRLNj8vku2XgsGP6euH_m1A0vGqIQNg",
+    "rating": 4.4,
+    "ratingCount": 346,
+    "productId": "405729937137808545",
+    "position": 24
+   },
+   {
+    "title": "TGMT - Laptop Gaming HP Victus 16-s0173AX A9LG9PA | R5-7640HS | Ram 16GB | SSD 512GB | VGA GeForce RTX 3050 6GB | 16.1 inch FHD 144Hz | Win 11 -Mới",
+    "source": "thegioimaytinh.net.vn",
+    "price": "23.480.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSifBzKcj0PvXxOIblzjIazOrIPrt0uP8gyb3UrFMtAb5PCTl7pJ6shkF3E8YoooNllnoDRu2e91hcspwADzfTttjfliB7Uu8_8JgHwIj8lwLlbpV-tDuu9",
+    "productId": "2350492040729503809",
+    "position": 25
+   },
+   {
+    "title": "Lenovo ThinkPad X1 Carbon Gen 13 - Ultra 7 265U / Ram 32GB / SSD 512GB / Intel Graphics / 14.0′′ WUXGA Touch / No OS / Bảo hành 3 năm",
+    "source": "zshop.vn",
+    "price": "56.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSBEY1MAyNL5JqJ73XBPAV8R3_z0wZOMwVB7OsLyEbisXHypHBUq5lBLSCpH71oG-m5g2mYGZ2LeD1UrIyc3HvMnmqbcG518KaTOWXltmpF",
+    "rating": 5,
+    "ratingCount": 1,
+    "productId": "8248209472340377907",
+    "position": 26
+   },
+   {
+    "title": "Laptop Lenovo ThinkPad X1 Carbon Gen 13 - 21NS0107VN (Ultra 5 226V, 16GB, 512GB, 2.8K OLED 120Hz, Win11Pro)",
+    "source": "Thế Giới Di Động",
+    "price": "55.290.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcT8Z7Ze33CsnH-pUZP6vzF2cxEvA6oynevhg_8pkPr8ruNr2nyPRv2_62Kz9hXZWLmJmVrmIvwT4hypHxan5KSOgePM1ZLfgU9jaqimLfiQ75RnXFkkuUGklg",
+    "rating": 4.8,
+    "ratingCount": 7,
+    "productId": "6514464067683984088",
+    "position": 27
+   },
+   {
+    "title": "Surface Laptop Go Xanh, Bạc Intel (Core i5 RAM 8GB SSD 128GB)",
+    "source": "Laptopdep.vn",
+    "price": "12.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTelG3a095jbDm7HKSQr9R9GNkYybMQ8u8LhpSJJPkFE_NCPXVa2NDngPCEF_rxQfjqErKNCV4lWPsChBHRlIGVae-Lxtv23ZbilPdW3UmmLKVGrD6Fk_lVxQ",
+    "rating": 4.6,
+    "ratingCount": 237,
+    "productId": "3063607607879980760",
+    "position": 28
+   },
+   {
+    "title": "Thinkbook X AI 2024 Ultra 9-185H 32GB RAM 1TB SSD (màn không cảm ứng)",
+    "source": "SAZO",
+    "price": "28.390.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTZR3BGzPzDc6czGhCfIzY7tJT0BxSNA-UR8qpD9Uz-yZzibx1kwPCkHzWcnBlmfa8r4ZHrlCKDIZXrKx4edg7t-X0dNYFLjvo2DPM7rOFTpYnIZGSzUXxg",
+    "rating": 4.1,
+    "ratingCount": 26,
+    "productId": "12623446625723704894",
+    "position": 29
+   },
+   {
+    "title": "Lenovo Thinkpad 16 P1 Gen 6 (2023) - Core I7 13700H, RAM 32GB, SSD 1TB, RTX A2000 ADA 8GB, 16 inch 4K UHD OLED",
+    "source": "Lapvip",
+    "price": "39.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQOARBXFzDF83oetPpaud0NG27lbWArGsljc9oRLwLd6d7IBLJ1SK_BFpdK-aahu1n-5lUBBjaPIfgiTEZlsOgjIvzCy51x_Y6zT3lOseOGupQC1p8I-KpA",
+    "productId": "17633382933570951638",
+    "position": 30
+   },
+   {
+    "title": "Laptop Gaming HP Victus 16-r1182TX A2NN6PA i5-14450HX| 32GB| 1TB| RTX4050 6GB| 16.1\"FHD 144Hz| Win11",
+    "source": "CTy Máy Tính Vinh Hiển Lộc Tài",
+    "price": "32.790.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQ4O1U5erUBrBlxaSqcM2k4zl9QKUCgLlj3Lej5WFT78TFaJ2lRJoK-VSxTWFyTxXXpxVXYtVasOsDJ294-xvrQ6QwIooWdgd-3tI5L7xZKMJO1e1mTUaKqfA",
+    "productId": "16962859103387597553",
+    "position": 31
+   },
+   {
+    "title": "Laptop Core i5-1145G7 - Tặng Kèm Phần Mềm Hát Live",
+    "source": "thietbihatlive.com",
+    "price": "9.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcR5XZusIF8235NpIdQTKuYRgk0LBwJCoHDUbTErJnKAZdku6yQfVeocpwxfr5CtAq7yuTo8F9Zc58d8zSmRANdKa2COYfl6MpRaMj75PNQ",
+    "productId": "18428456378760635619",
+    "position": 32
+   },
+   {
+    "title": "Lenovo ThinkPad X1 Carbon Gen 9 - Đà Nẵng",
+    "source": "Trâm Anh Laptop",
+    "price": "28.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSPtC1bXNKicG1tBwqlApFRXWVFI3ELhJt_HYmBj3F2gyIN9FmtmFGmFT2nABn0cdj1bN5zz4D_M7hFR_NnEOXF-Ok7urGcmOp_NqrnfW0cXSb2uWDEfBMC",
+    "productId": "10028362151433396545",
+    "position": 33
+   },
+   {
+    "title": "HP Spectre X360 13 2020 13.3inch Windows 10 Home",
+    "source": "kinglap",
+    "price": "28.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcT4VbCWm1R15rdOw2OM94MnnIeNjvx2XYwh5l9ZrO0Csxd6605Lxmwz_dwGMY3Yo4dVk-XVdizX4Ax2yJVY0ZwpKOv6KJq5d0s2nwSWsUEf9vWGNBUsLl6J",
+    "productId": "9741614265359841964",
+    "position": 34
+   },
+   {
+    "title": "Lenovo ThinkPad X13 Gen 6 Ultra 7-255H | 32GB | 1TB | Intel Arc 140T | 13.3 inch WUXGA | NO OS | Đen",
+    "source": "Lapvip",
+    "price": "38.090.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTGldLQcziEsXKvhMFALwOxNRQTj9-YLqvF4F20nGaeh206gdckBbDW4OB62eSVj8QCkFMKh0SIgSrnjfSRJwVE17OhgmO5z0eDQnPCgyU4jJP5qQEvtvjAxQ",
+    "rating": 3.8,
+    "ratingCount": 11,
+    "productId": "1299753089747359691",
+    "position": 35
+   },
+   {
+    "title": "Surface Book 2 13.5\"- I7/8GB/256GB/GTX-1050-New",
+    "source": "Mac365.vn",
+    "price": "46.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRA1uhE3XsqkDnp2_ZDlJNRnc3vrbh8SqKYo_rV4lfItyduAiam6jJcItP78bMn53-GthZj5kC-aiYHVChKrbN25igPOlNQ12FtGBSa_NTRe4QNZ-OhD53O",
+    "productId": "5753691678608702716",
+    "position": 36
+   },
+   {
+    "title": "Laptop Lenovo ThinkPad X13 Gen 6 Ultra 7 255H 32GB 1TB 13.3 inch WUXGA NoOS Đen (21RK00ANVA)",
+    "source": "NewTechShop.vn",
+    "price": "46.100.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRKPb0XNiBNW7HXBzhIEptzBF15QweVRIPfgG7tUV8bKZLkqF_0rsApx1z30lbYrIImGXJKZxBMY4jifXvdqMasJ4HkwrQ1jn1x2TvpkPd0rFIVXe_D-67JPA",
+    "rating": 4.5,
+    "ratingCount": 56,
+    "productId": "16069775711215626028",
+    "position": 37
+   },
+   {
+    "title": "Laptop HP Pavilion Aero 13-be2098AU 8C5K5PA (Ryzen 7 7735U, 16GB, 512GB, 13.3",
+    "source": "Dương Long - duonglong.vn",
+    "price": "21.960.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQVMpNAGbj6vntJLQcc-kppaVRIKSIbcN6rEVWiN4svQsC6ynHvvAQEouJQ6E-WUxXPRtqbAhUa74IGRobhPGt4-gvtg43-8yNVuBAZd2HEuHIeX97yv3tM",
+    "productId": "14527300878855612580",
+    "position": 38
+   },
+   {
+    "title": "Thinkbook X AI 2026 (Ultra 5-228V| 32GB RAM| 1TB SSD)",
+    "source": "SAZO",
+    "price": "33.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTqWyOTWv2r8E77xu1loDr6Ky4w1Hp8W6b_ClGQxZ_HeyVQlyBG6nIe8n8-pe4MrkAPVHKCX8Y2NSduVigPnTvWHXqm1z7ktoTMSkgpRJKhnC5tXiWEbhHq",
+    "productId": "3449782200538251753",
+    "position": 39
+   },
+   {
+    "title": "Lenovo ThinkBook X G3 2026 (AI) - Core Ultra 5-228V, 32GB RAM, 1TB SSD, 14\" 2.8K Oled 120Hz, Win 11, Celestial",
+    "source": "Lapvip",
+    "price": "36.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQoJ6rRBk8MPjqcrLQaRBLY9GBhLXNrIX7S45tChubMlDg93PwycxO35mYgLLBO5pT0kWaQn-N7syjznLTpzgBNynhynV06CBFnSdxDejNipRTsWzA9nGnbMQ",
+    "productId": "6746423967402520716",
+    "position": 40
+   }
+  ],
+  "credits": 2
+ }
+}

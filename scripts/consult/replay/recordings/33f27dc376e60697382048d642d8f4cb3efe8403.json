@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Khách Sạn Núi Thành\" núi gần Sài Gòn site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:24:13.765Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Khách Sạn Núi Thành\" núi gần Sài Gòn site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách Sạn Núi Thành - Giá cả và Ưu đãi 2026, TP. Hồ Chí ...",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-2549770/nui-thanh-hotel/",
+    "snippet": "Khách Sạn Núi Thành ; 9 · Phòng VIP · 1 Giường queen. 27m² ; 10 · Phòng Superior với 1 Giường đôi · 1 Giường đôi. 19m² ; 11 · Phòng Tiêu chuẩn với Giường Đôi · 1 Giường ...",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn Tân Bình tại TP. Hồ Chí Minh",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotels-list-301/location696512/",
+    "snippet": "Nếu bạn không biết chọn khách sạn nào, hãy thử ở tại Cát Phúc Hotel, Khách sạn Đức Minh hoặc Khách Sạn Núi Thành , những khách sạn này được đánh giá rất tốt.",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Karaoke Eden Paradise KTV\" OR \"KARAOKE MONACO KTV\" OR \"Karaoke MEI\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:26:34.341Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Karaoke Eden Paradise KTV\" OR \"KARAOKE MONACO KTV\" OR \"Karaoke MEI\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Karaoke Mei Quận 1: Tiếng Đá Rơi Vào Ly Khó Nha Bro",
+    "link": "https://www.tiktok.com/@mei.karaoke/video/7577767144100875538",
+    "snippet": "Karaoke Mei Quận 1 được biết đến là nơi tụ tập bạn bè, thư giãn và hát hò. Không gian thoải mái, âm thanh vui nhộn và những tình huống bất ngờ ...",
+    "position": 1
+   },
+   {
+    "title": "Còn ai nghĩ karaoke quận 1 rổ rá trên trời nữa thì bước tới ...",
+    "link": "https://www.tiktok.com/@reviewsaigon.59/video/7593323014628986129",
+    "snippet": "Còn ai nghĩ karaoke quận 1 rổ rá trên trời nữa thì bước tới đây ... Karaoke MEI. 38 · recommend-cover. Dạ Dày Không Đáy. 1126 · recommend-cover.",
+    "position": 2
+   },
+   {
+    "title": "Mách bạn khu Karaoke xịn ngay Quận 1 mà zá siêu hạt dẻ ...",
+    "link": "https://www.tiktok.com/@reviewsaigon.59/video/7625152515004288276",
+    "snippet": "Karaoke Hàn Quốc Quận 1. Mách bạn khu Karaoke xịn ngay Quận 1 mà zá siêu hạt dẻ lunn!! ... Karaoke MEI. Đặt trước để được free 1h nha mấy mom. 4-6 ...",
+    "position": 3
+   },
+   {
+    "title": "Karaoke Quận 1 Giá 50k/h - Quán Hot Hit Dân Gen Z",
+    "link": "https://www.tiktok.com/@mei.karaoke/video/7614418613503823125",
+    "snippet": "22 Lượt thích,Video TikTok từ Karaoke MEI (@mei.karaoke): \"Trải nghiệm hát karaoke cực chill tại quán hot hit Quận 1 chỉ với 50k/giờ.",
+    "position": 4
+   },
+   {
+    "title": "Mei Karaoke",
+    "link": "https://www.tiktok.com/@mei.karaoke/video/7689052000020860180",
+    "snippet": "Mei Karaoke. Mei Karaoke offers a karaoke experience. Keywords: mei karaoke,karaoke mei,karaoke mie,hát karaoke,karaoke.",
+    "position": 5
+   },
+   {
+    "title": "Karaoke Xịn Sò Tại Quận Nhất Chỉ 80k/giờ",
+    "link": "https://www.tiktok.com/@duckim90/video/7593335608710417685",
+    "snippet": "Karaoke Kingdom Quận 1 · Karaoke Bareng Di Tempat Karaoke · Karaoke Chong Oi ... Karaoke MEI. 289. recommend-cover. Gia-Bảo96. 79 · recommend- ...",
+    "position": 6
+   },
+   {
+    "title": "Karaoke Gen Z: Giai điệu và Xu hướng Tiktok 2025",
+    "link": "https://www.tiktok.com/@mei.karaoke/video/7581841166430113031",
+    "snippet": "28 Lượt thích,Video TikTok từ Karaoke MEI (@mei.karaoke): \"Khám phá Karaoke Gen Z với những giai điệu mới nhất và xu hướng Tiktok 2025 thu ...",
+    "position": 7
+   },
+   {
+    "title": "#j4f #karaoke #friends #karaokemei #fyp",
+    "link": "https://www.tiktok.com/@mei.karaoke/video/7650095197254176020",
+    "snippet": "nhạc nền - Karaoke MEI. 26Thích. 0Bình luận. 1Lượt chia sẻ ... Pov: Bạn đi hát ở quán Karaoke hot hit ngay quận 1 ... quan 1, bạn trẻ và karaoke, văn hóa ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

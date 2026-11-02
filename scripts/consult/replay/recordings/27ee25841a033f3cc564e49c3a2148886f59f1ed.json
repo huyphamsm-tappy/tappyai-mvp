@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"May Xưa Spa Quận 1\" OR \"Gạo Spa\" OR \"Massage tận nơi Sài Gòn\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:19:06.282Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"May Xưa Spa Quận 1\" OR \"Gạo Spa\" OR \"Massage tận nơi Sài Gòn\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Gạo Spa gội đầu siêu rẻ chỉ 29k #goidauthaoduoc ...",
+    "link": "https://www.tiktok.com/@02baoanh/video/7502039618146094343",
+    "snippet": "Gạo Spa gội đầu siêu rẻ chỉ 29k #goidauthaoduoc #goidaulongxuyen #gaospalongxuyen #longxuyenangiang. @Bao Anh ăn hàng.",
+    "position": 1
+   },
+   {
+    "title": "Mầm Gạo Spa (@mamgaospa)",
+    "link": "https://www.tiktok.com/@mamgaospa",
+    "snippet": "Mầm Gạo Spa (@mamgaospa) trên TikTok |15.7K Lượt thích.1567 Follower. 69 Hoa Lan, P. Cầu Kiệu 33/24 Quốc Hương, P. An Khánh No TIP Spa.",
+    "position": 2
+   },
+   {
+    "title": "Gạo Spa Wellness",
+    "link": "https://www.tiktok.com/discover/g%E1%BA%A1o-spa-wellness",
+    "snippet": "Khám phá Gạo Spa & Wellness, nơi thư giãn và chăm sóc sắc đẹp tuyệt vời. Ưu đãi triệt lông cho học sinh sinh viên, trải nghiệm ngay hôm nay!",
+    "position": 3
+   },
+   {
+    "title": "Tắm trắng thiên nhiên Bạch Quý Phi 😚 lâu lâu Mầm sale 1 ...",
+    "link": "https://www.tiktok.com/@mamgaospa/video/7676316350926589204",
+    "snippet": "226 Lượt thích,Video TikTok từ Mầm Gạo Spa (@mamgaospa): \"Tắm trắng thiên nhiên Bạch Quý Phi lâu lâu Mầm sale 1 lần chỉ còn 589k/lần (khi ...",
+    "position": 4
+   },
+   {
+    "title": "Vừa làm việc vừa chill cùng Mầm nha 🥰 ------------------------- ...",
+    "link": "https://www.tiktok.com/@mamgaospa/video/7658684442285722900",
+    "snippet": "Video TikTok từ Mầm Gạo Spa (@mamgaospa): \"Vừa làm việc vừa chill cùng Mầm nha ...",
+    "position": 5
+   },
+   {
+    "title": "Triple One Spa Quận 1",
+    "link": "https://www.tiktok.com/discover/triple-one-spa-qu%E1%BA%ADn-1",
+    "snippet": "Hướng dẫn và lợi ích tại Mầm Gạo Spa. Tìm hiểu nâng cơ vùng cổ: phương pháp, lợi ích và dịch vụ tại Mầm Gạo Spa (Phú Nhuận & Quận 2). 75 ...",
+    "date": "10 thg 8, 2026",
+    "position": 6
+   },
+   {
+    "title": "Gạo Spa Massage and Shampoo Đà Nẵng",
+    "link": "https://www.tiktok.com/discover/g%E1%BA%A1o-spa-massage-and-shampoo-%C4%91%C3%A0-n%E1%BA%B5ng",
+    "snippet": "Khám phá các video liên quan đến Gạo Spa Massage and Shampoo Đà Nẵng trên TikTok. ... Gội đầu dưỡng sinh 120k ở Đà Nẵng — Tiệm 1:1 mở tới 23:00.",
+    "date": "31 thg 8, 2026",
+    "position": 7
+   },
+   {
+    "title": "Dịch vụ gội đầu dưỡng sinh mùa hè tại Gạo Spa & Wellness",
+    "link": "https://www.tiktok.com/@gao.spa.wellness/photo/7513997804939791634?image_index=9",
+    "snippet": "Keywords: gội đầu dưỡng sinh mùa hè,Dịch vụ thư giãn mùa hè,Gạo Spa & Wellness,combo gội đầu dưỡng sinh,massage cổ vai gáy,đả thông khí huyết,chăm sóc da mặt, ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

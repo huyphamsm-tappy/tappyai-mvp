@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Grand Mercure Hanoi",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:58:37.054Z",
+ "body": {
+  "searchParameters": {
+   "q": "Grand Mercure Hanoi",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Grand Mercure Hanoi, Hà Nội (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/919594573.jpg?k=278ca7298174750715551082d64d87d2727b0c34fafc6520513189fb8961d1d7&o=",
+    "imageWidth": 1024,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRb7WaW354OgwqD9QwkAgoHCW1oveiM4-QDtRx5sVSLHA&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/grand-mercure-hanoi.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F919594573.jpg%3Fk%3D278ca7298174750715551082d64d87d2727b0c34fafc6520513189fb8961d1d7%26o%3D&tbnid=vI8vvCEHaXHaRM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fgrand-mercure-hanoi.vi.html&docid=wi32hi31UOVIuM&w=1024&h=768",
+    "position": 1
+   },
+   {
+    "title": "Grand Mercure Hanoi - HẠNG PHÒNG",
+    "imageUrl": "https://www.grandmercurehanoi.com/wp-content/uploads/sites/283/2023/05/DELUXE-KING-1314_01b-min-1.jpg",
+    "imageWidth": 1950,
+    "imageHeight": 1200,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9Z1_jPkgl8u8oz58UX9tyF-dhb3ijXy8T-t0-EdpVHA&s=10",
+    "thumbnailWidth": 706,
+    "thumbnailHeight": 433,
+    "source": "Grand Mercure Hanoi",
+    "domain": "www.grandmercurehanoi.com",
+    "link": "https://www.grandmercurehanoi.com/vi/our-rooms/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.grandmercurehanoi.com%2Fwp-content%2Fuploads%2Fsites%2F283%2F2023%2F05%2FDELUXE-KING-1314_01b-min-1.jpg&tbnid=s953wb45dIUPoM&imgrefurl=https%3A%2F%2Fwww.grandmercurehanoi.com%2Fvi%2Four-rooms%2F&docid=NnO-l0Q_lstbEM&w=1950&h=1200",
+    "position": 2
+   },
+   {
+    "title": "Grand Mercure Hanoi - KHÁCH SẠN",
+    "imageUrl": "https://d2e5ushqwiltxm.cloudfront.net/wp-content/uploads/sites/283/2023/03/15071524/SwimmingPool_5954-1-1500x400.jpg",
+    "imageWidth": 1500,
+    "imageHeight": 400,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTA0FObvXN0ZPF3-_stGTsluxnqooxlXgP4izk5k1zWdw&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 198,
+    "source": "Grand Mercure Hanoi",
+    "domain": "www.grandmercurehanoi.com",
+    "link": "https://www.grandmercurehanoi.com/vi/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fd2e5ushqwiltxm.cloudfront.net%2Fwp-content%2Fuploads%2Fsites%2F283%2F2023%2F03%2F15071524%2FSwimmingPool_5954-1-1500x400.jpg&tbnid=YPIpEcodX-bdGM&imgrefurl=https%3A%2F%2Fwww.grandmercurehanoi.com%2Fvi%2F&docid=el_FBDw08MRyqM&w=1500&h=400",
+    "position": 3
+   },
+   {
+    "title": "Grand Mercure Hanoi - Hành trình khám phá văn hóa và vẻ đẹp của dải đất  hình chữ S",
+    "imageUrl": "https://i.ex-cdn.com/vntravellive.com/files/content/2023/05/30/trc_2595-1546.jpg",
+    "imageWidth": 840,
+    "imageHeight": 1161,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-MlHRX762K5lH1QKvI4GU7L1Bps_bTA_u4e9QKMqUuA&s=10",
+    "thumbnailWidth": 380,
+    "thumbnailHeight": 526,
+    "source": "Travellive",
+    "domain": "vntravellive.com",
+    "link": "https://vntravellive.com/grand-mercure-hanoi--hanh-trinh-kham-pha-van-hoa-va-ve-dep-cua-dai-dat-hinh-chu-s-d35475.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fi.ex-cdn.com%2Fvntravellive.com%2Ffiles%2Fcontent%2F2023%2F05%2F30%2Ftrc_2595-1546.jpg&tbnid=CNeseSpbd-L4FM&imgrefurl=https%3A%2F%2Fvntravellive.com%2Fgrand-mercure-hanoi--hanh-trinh-kham-pha-van-hoa-va-ve-dep-cua-dai-dat-hinh-chu-s-d35475.html&docid=2g-vBFB9AQEldM&w=840&h=1161",
+    "position": 4
+   },
+   {
+    "title": "Grand Mercure Hanoi, Hà Nội (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/914944430.jpg?k=27f9666e5142fac56db42fa051ba769fbd16b40f9e4d05fc123da6c4c7866895&o=",
+    "imageWidth": 1024,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYpk5OJ-3Scg-SnjtU7MnJWShPmxu84ghGy9Qip6kb3g&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/grand-mercure-hanoi.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F914944430.jpg%3Fk%3D27f9666e5142fac56db42fa051ba769fbd16b40f9e4d05fc123da6c4c7866895%26o%3D&tbnid=KPrTXqvJ5LW12M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fgrand-mercure-hanoi.vi.html&docid=wi32hi31UOVIuM&w=1024&h=768",
+    "position": 5
+   },
+   {
+    "title": "Khách sạn Grand Mercure Hà Nội 5 sao giá ưu đãi",
+    "imageUrl": "https://dulichxanh.com.vn/uploads/plugin/product_items/4703/1703230194-1326422573-khach-s-n-grand-mercure-ha-n-i-5-sao.jpg",
+    "imageWidth": 800,
+    "imageHeight": 720,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnr8TLg6VbJMuqOLxE8alBGY0tzC0e13Kp0VmSPWg9gQ&s=10",
+    "thumbnailWidth": 471,
+    "thumbnailHeight": 424,
+    "source": "Du Lịch Xanh",
+    "domain": "dulichxanh.com.vn",
+    "link": "https://dulichxanh.com.vn/khach-san-grand-mercure-ha-noi-5-sao.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdulichxanh.com.vn%2Fuploads%2Fplugin%2Fproduct_items%2F4703%2F1703230194-1326422573-khach-s-n-grand-mercure-ha-n-i-5-sao.jpg&tbnid=UEI_qBibR4wx_M&imgrefurl=https%3A%2F%2Fdulichxanh.com.vn%2Fkhach-san-grand-mercure-ha-noi-5-sao.html&docid=HtwjV-XmjlJXPM&w=800&h=720",
+    "position": 6
+   },
+   {
+    "title": "Grand Mercure Hanoi - KHÁCH SẠN",
+    "imageUrl": "https://d2e5ushqwiltxm.cloudfront.net/wp-content/uploads/sites/283/2023/03/15073042/Lobby_1-opt-2-1-e1678870378112-1500x400.jpg",
+    "imageWidth": 1500,
+    "imageHeight": 400,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDBNrk9mE-Tn4DiOaEtLH8Kdx5NcBWSVqud_HnJhx5Iw&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 198,
+    "source": "Grand Mercure Hanoi",
+    "domain": "www.grandmercurehanoi.com",
+    "link": "https://www.grandmercurehanoi.com/vi/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fd2e5ushqwiltxm.cloudfront.net%2Fwp-content%2Fuploads%2Fsites%2F283%2F2023%2F03%2F15073042%2FLobby_1-opt-2-1-e1678870378112-1500x400.jpg&tbnid=icYn47tu4i32ZM&imgrefurl=https%3A%2F%2Fwww.grandmercurehanoi.com%2Fvi%2F&docid=el_FBDw08MRyqM&w=1500&h=400",
+    "position": 7
+   },
+   {
+    "title": "Grand Mercure Hanoi - DELUXE SUITE",
+    "imageUrl": "https://d2e5ushqwiltxm.cloudfront.net/wp-content/uploads/sites/283/2022/11/15061002/Deluxe-Suite..jpg",
+    "imageWidth": 1638,
+    "imageHeight": 1200,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSl_29EMu_YBqHyw5xEtW1o3mo-j48ra6-7zfG_p1ZgSA&s=10",
+    "thumbnailWidth": 647,
+    "thumbnailHeight": 473,
+    "source": "Grand Mercure Hanoi",
+    "domain": "www.grandmercurehanoi.com",
+    "link": "https://www.grandmercurehanoi.com/our-rooms/deluxe-suite/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fd2e5ushqwiltxm.cloudfront.net%2Fwp-content%2Fuploads%2Fsites%2F283%2F2022%2F11%2F15061002%2FDeluxe-Suite..jpg&tbnid=u6aSLWkFpHTl-M&imgrefurl=https%3A%2F%2Fwww.grandmercurehanoi.com%2Four-rooms%2Fdeluxe-suite%2F&docid=f_jMJtS1WIU-7M&w=1638&h=1200",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

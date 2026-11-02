@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Cà phê hòa tan Key Coffee site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:22:04.317Z",
+ "body": {
+  "searchParameters": {
+   "q": "Cà phê hòa tan Key Coffee site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "cara minum kopi ladies sendat",
+    "link": "https://shop.tiktok.com/vn/k/cara-minum-kopi-ladies-sendat",
+    "snippet": "Ladies Coffee Goce - Cà Phê Nữ Hòa Tan 3 Trong 1 - Hộp 144g & 270g - Hương vị dịu nhẹ, hỗ trợ tỉnh táo và bừng sức sống. 0 sold. ₫81.000. ₫90.000 ...",
+    "position": 1
+   },
+   {
+    "title": "100 ổ khoá p2",
+    "link": "https://shop.tiktok.com/vn/k/100-o-khoa-p2",
+    "snippet": "Khám phá 100 ổ khoá p2 mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất hôm nay.",
+    "position": 2
+   },
+   {
+    "title": "NƯỚC GIẶT PARIS HƯƠNG NƯỚC HOA DẠNG TÚI 2,2KG",
+    "link": "https://shop.tiktok.com/vn/pdp/nuoc-giat-paris-22kg-huong-nuoc-hoa-giat-sach-mem-mai-thom-lau/1733241418808788652",
+    "snippet": "Mua NƯỚC GIẶT PARIS HƯƠNG NƯỚC HOA DẠNG TÚI 2,2KG trên TikTok Shop. Săn giá siêu hời cho và được freeship mặt hàng đủ điều kiện. Mua sắm ngay để nhận ưu đãi ...",
+    "position": 3
+   },
+   {
+    "title": "KimKim Milk Tea - TikTok Shop Vietnam",
+    "link": "https://shop.tiktok.com/vn/k/kimkim-milk-tea",
+    "snippet": "1 bịch Cà Phê Sữa Mê Kông 20 Gói - Thơm Ngon & Đậm Đà. 4.8. 11132 sold. ₫49.800. ₫79.000. 1 bịch Cà Phê Sữa Mê Kông 20 Gói - Thơm Ngon & Đậm Đà.",
+    "position": 4
+   },
+   {
+    "title": "oriental kopi tart nenas keju",
+    "link": "https://shop.tiktok.com/vn/k/oriental-kopi-tart-nenas-keju",
+    "snippet": "5 tặng 5 ( 1 hộp cafe muối napoly 5 gói tặng kèm 5 bột kem siêu ngon. 5. 3 sold · 65.000 ; TRÀ LÁ NAM 60 TÚI LỌC · 4.7. 1909 sold · 99.000. ₫139.000 ; 60 TÚI LỌC TRÀ ...",
+    "position": 5
+   },
+   {
+    "title": "Hey Tiger Newborn Diapers by Rascals - Soft & Gentle, 10 ...",
+    "link": "https://shop.tiktok.com/vn/pdp/hey-tiger-newborn-diapers-84pcs-by-rascal-friends-10-hour-protection/1729672132687399238",
+    "snippet": "These diapers are free from nasty chemicals and are dermatologically tested, ensuring safety for your baby's sensitive skin. Perfect for both day and night use,",
+    "rating": 4.9,
+    "ratingCount": 122,
+    "position": 6
+   },
+   {
+    "title": "Nescafe Ly Ca Đá Duy Tân 1L 1000ml Plus Hộp Nhựa PP ...",
+    "link": "https://shop.tiktok.com/vn/pdp/ly-cach-nhiet-1l-duy-tan-nhua-ben-an-toan-tien-loi-khi-du-lich/1731367299679814715",
+    "snippet": "Với dung tích 1L (1000ml), sản phẩm này có thể chứa đựng đủ lượng thực phẩm cần thiết cho một bữa ăn hoặc một ngày sử dụng. Với khối lượng tịnh 282g, sản phẩm ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 7
+   },
+   {
+    "title": "JB 15 Alkalized Cocoa Powder 500g for Baking Nata by ...",
+    "link": "https://shop.tiktok.com/vn/pdp/jb-15-alkalized-cocoa-powder-500g-for-baking-milder-flavor/1731483752967406992",
+    "snippet": "a premium alkalized cocoa powder used for baking. It's ideal for chocolate desserts, . This product offers a milder, less acidic flavor and a darker color.",
+    "rating": 4.8,
+    "ratingCount": 51,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

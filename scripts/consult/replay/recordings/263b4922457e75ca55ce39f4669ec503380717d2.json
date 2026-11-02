@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Dell Inspiron 15 3520 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:46:13.140Z",
+ "body": {
+  "searchParameters": {
+   "q": "Dell Inspiron 15 3520 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "dell inspiron 3535 ryzen 3",
+    "link": "https://shop.tiktok.com/vn/k/dell-inspiron-3535-ryzen-3",
+    "snippet": "Khám phá dell inspiron 3535 ryzen 3 mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất ...",
+    "position": 1
+   },
+   {
+    "title": "Bàn phím cho laptop Dell Inspiron 15-3000 3541 3542 3543 ...",
+    "link": "https://shop.tiktok.com/vn/pdp/ban-phim-dell-inspiron-15-3000-vostro-3578-moi-100-bao-hanh-12-thang/1730312337896672198",
+    "snippet": "Pin thay thế cho Laptop Dell Vostro 2420 2520 3420 3520 chất lượng nhập khẩu Hàng Nhập Khẩu Bảo Hành Toàn Quốc 12 Tháng ! 5.",
+    "position": 2
+   },
+   {
+    "title": "Pin thay thế cho Laptop Dell Inspiron N4050 N5050 5030 ...",
+    "link": "https://shop.tiktok.com/vn/pdp/pin-thay-the-cho-laptop-dell-inspiron-n4050-n5050-ben-%C4%91ep/1731323376207431622",
+    "snippet": "\"Là hàng thay thế có chất lượng cao tương đương gốcĐược làm từ linh kiện chất lượng cao giúp kéo dài tuổi thọBảo hành 12 tháng, 1 đổi 1Thời gian sử dụng cao ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 3
+   },
+   {
+    "title": "Sạc Dùng cho Laptop Delll Vostro 13 14 15 16 3000 5000 ...",
+    "link": "https://shop.tiktok.com/vn/pdp/sac-danh-cho-laptop-dell-vostro-13-16-series-65w-chinh-hang/1730559343559084582",
+    "snippet": "Sạc Bán Ra đã bao gồm thân sạc + Dây nguồn :Lưu ý : khuyến khích Khách hàng nên nhắn tin với Shop trước để được tư vấn chọn sạc phù hợp với chân cắm trên ...",
+    "rating": 4.7,
+    "ratingCount": 3,
+    "position": 4
+   },
+   {
+    "title": "Bộ Chuyển Đổi, 180W, 19,5V, 9,23A, 74X5J ...",
+    "link": "https://shop.tiktok.com/vn/pdp/bo-chuyen-%C4%91oi-dc-180w-cho-laptop-dell-alienware-precision/1730320128861964568",
+    "snippet": "Đầu vào: 100V-240V 50-60HzĐầu ra: 19.5V 9.23A 180WKích thước kết nối: 7.4 * 5.0mmTương thích với Dell Laptop ModelTương thích với Dell Alienware 13, 13 R2, ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 5
+   },
+   {
+    "title": "Pin thay thế cho Laptop Dell Inspiron 14 3441 3442 3443 ...",
+    "link": "https://shop.tiktok.com/vn/pdp/pin-laptop-dell-inspiron-14-3441-3442-6cell-5200mah-bao-hanh-12-thang-su-dung-lau-dai-thoi-gian-2-4-/1731324269152012230",
+    "snippet": "Pin thay thế cho Laptop Dell Vostro 2420 2520 3420 3520 chất lượng nhập khẩu Hàng Nhập Khẩu Bảo Hành Toàn Quốc 12 Tháng !",
+    "position": 6
+   },
+   {
+    "title": "Sạc thay thế cho Laptop Asus Zenbook UX390 UX490 ...",
+    "link": "https://shop.tiktok.com/vn/pdp/sac-thay-the-laptop-asus-zenbook-ux390-ux490-series-type-c/1731309463277242310",
+    "snippet": "Pin thay thế cho Laptop Dell Vostro 2420 2520 3420 3520 chất lượng nhập khẩu Hàng Nhập Khẩu Bảo Hành Toàn Quốc 12 Tháng ! 5.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 7
+   },
+   {
+    "title": "Pin thay thế cho Laptop HP Compaq 6 Cell Li-ion ...",
+    "link": "https://shop.tiktok.com/vn/pdp/pin-thay-the-laptop-hp-compaq-6-cell-lithium-ion-5200mah/1730840150706064326",
+    "snippet": "Pin thay thế cho Laptop Dell Vostro 2420 2520 3420 3520 chất lượng nhập khẩu Hàng Nhập Khẩu Bảo Hành Toàn Quốc 12 Tháng ! 5.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

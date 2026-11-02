@@ -1,0 +1,90 @@
+{
+ "data": {
+  "users": 3000,
+  "reviews": 300000,
+  "comments": 600000,
+  "notifications": 100000
+ },
+ "at": "2026-10-01T18:50:58.972Z",
+ "1_before_migration": {
+  "no_blocks": {
+   "explore_pool_200": 0.337,
+   "latest_page_20": 0.094,
+   "following_feed_20": 0.447,
+   "profile_grid_30": 0.178,
+   "comments_of_one_review_50": 0.028,
+   "my_notifications_50": 0.04
+  },
+  "few_blocks_10": {
+   "explore_pool_200": 0.243,
+   "latest_page_20": 0.095,
+   "following_feed_20": 0.452,
+   "profile_grid_30": 0.161,
+   "comments_of_one_review_50": 0.023,
+   "my_notifications_50": 0.036
+  },
+  "many_blocks_200": {
+   "explore_pool_200": 0.23,
+   "latest_page_20": 0.093,
+   "following_feed_20": 0.459,
+   "profile_grid_30": 0.166,
+   "comments_of_one_review_50": 0.03,
+   "my_notifications_50": 0.036
+  }
+ },
+ "2_with_migration_initplan_array": {
+  "no_blocks": {
+   "explore_pool_200": 0.782,
+   "latest_page_20": 0.662,
+   "following_feed_20": 1.012,
+   "profile_grid_30": 0.723,
+   "comments_of_one_review_50": 0.606,
+   "my_notifications_50": 0.577
+  },
+  "few_blocks_10": {
+   "explore_pool_200": 0.426,
+   "latest_page_20": 0.258,
+   "following_feed_20": 0.774,
+   "profile_grid_30": 0.341,
+   "comments_of_one_review_50": 0.201,
+   "my_notifications_50": 0.217
+  },
+  "many_blocks_200": {
+   "explore_pool_200": 0.992,
+   "latest_page_20": 0.75,
+   "following_feed_20": 1.291,
+   "profile_grid_30": 0.843,
+   "comments_of_one_review_50": 0.607,
+   "my_notifications_50": 0.651
+  }
+ },
+ "3_alternative_per_row_function": {
+  "no_blocks": {
+   "explore_pool_200": 112.707,
+   "latest_page_20": 34.767,
+   "following_feed_20": 11.975,
+   "profile_grid_30": 61.034,
+   "comments_of_one_review_50": 0.577,
+   "my_notifications_50": 0.571
+  },
+  "few_blocks_10": {
+   "explore_pool_200": 33.171,
+   "latest_page_20": 13.441,
+   "following_feed_20": 4.152,
+   "profile_grid_30": 17.63,
+   "comments_of_one_review_50": 0.209,
+   "my_notifications_50": 0.21
+  },
+  "many_blocks_200": {
+   "explore_pool_200": 125.963,
+   "latest_page_20": 37.277,
+   "following_feed_20": 19.741,
+   "profile_grid_30": 71.111,
+   "comments_of_one_review_50": 0.634,
+   "my_notifications_50": 0.798
+  }
+ },
+ "plans": {
+  "initplan_explore_many": "Limit  (cost=0.68..74.18 rows=200 width=28) (actual time=0.706..1.223 rows=200 loops=1)\n  Buffers: shared hit=460\n  InitPlan 1\n    ->  Result  (cost=0.00..0.26 rows=1 width=32) (actual time=0.694..0.694 rows=1 loops=1)\n          Buffers: shared hit=43\n  ->  Index Scan using reviews_created_at_idx on reviews  (cost=0.42..103092.98 rows=280522 width=28) (actual time=0.705..1.212 rows=200 loops=1)\n        Filter: (((is_hidden IS NULL) OR (NOT is_hidden)) AND ((publication_state IS NULL) OR (publication_state = 'PUBLISHED'::text)) AND (user_id <> ALL ((InitPlan 1).col1)) AND ((NOT is_hidden) OR ((NULLIF(current_setting('request.jwt.claim.sub'::text, true), ''::text))::uuid = user_id)) AND ((publication_state IS NULL) OR (publication_state = 'PUBLISHED'::text) OR (user_id = (NULLIF(current_setting('request.jwt.claim.sub'::text, true), ''::text))::uuid)))\n        Rows Removed by Filter: 17\n        Buffers: shared hit=460\nPlanning:\n  Buffers: shared hit=12\nPlanning Time: 0.234 ms\nExecution Time: 1.266 ms"
+ }
+}

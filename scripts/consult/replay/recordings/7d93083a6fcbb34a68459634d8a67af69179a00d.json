@@ -1,0 +1,81 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Ốp lưng Zagg iPhone 16 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:56:02.581Z",
+ "body": {
+  "searchParameters": {
+   "q": "Ốp lưng Zagg iPhone 16 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp Lưng ZAGG Chống Sốc Cho iPhone 16 Pro Max",
+    "link": "https://www.lazada.vn/products/op-lung-zagg-chong-soc-cho-iphone-16-pro-max-thiet-ke-da-dang-bao-ve-dien-thoai-chong-tray-xuoc-i3088123137.html?srsltid=AU7gw4U4iaXd5np_Zk0bf5XDHGV3FEC3tA1BbhHobboWWGm-qBoFoat0",
+    "snippet": "Ốp lưng ZAGG chống sốc iPhone 16 Pro Max với thiết kế đa dạng, bảo vệ hiệu quả chống trầy xước và va đập. Chất liệu silicone cao cấp, có sẵn nhiều màu sắc ...",
+    "rating": 5,
+    "ratingCount": 3,
+    "position": 1
+   },
+   {
+    "title": "[iPhone 16 Series] Ốp lưng ZAGG PH SoHo Magsafe ...",
+    "link": "https://www.lazada.vn/products/iphone-16-series-op-lung-zagg-ph-soho-magsafe-chong-soc-3m-bao-hanh-1-nam-1-doi-1-i2826261044.html?srsltid=AU7gw4Vsfp8togDewiahbekzdqaIXM2uxqrSlbj43jEpe74rED7IPtUX",
+    "snippet": "[iPhone 16 Series] Ốp lưng cao cấp ZAGG bảo vệ toàn diện với Graphene. 360.000 ₫. [iPhone 17 series] Ốp lưng chống sốc ZAGG chống sốc tới 5mét, làm. 361.000 ₫.",
+    "position": 2
+   },
+   {
+    "title": "[iPhone 16 Series] Ốp lưng ZAGG Novelty Magsafe Neko ...",
+    "link": "https://www.lazada.vn/products/iphone-16-series-op-lung-zagg-novelty-magsafe-neko-bao-ve-chong-soc-15m-bao-hanh-1-nam-1-doi-1-i2825667971.html?srsltid=AU7gw4UI8k3uWZXeH7XpTKAT14Gv1ZWmUy8fIRNfkywHl2mcCOJDMt3H",
+    "snippet": "LazMall [iPhone 16 Series] Ốp lưng ZAGG Novelty Magsafe Neko bảo vệ chống sốc 1.5m bảo hành 1 năm 1 đổi 1 · 100% chính hãng · 30 ngày miễn phí trả ...",
+    "date": "1 thg 5, 2026",
+    "rating": 5,
+    "ratingCount": 2,
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng ZAGG ESNTL Clear / Clear Snap / Smoky Snap ...",
+    "link": "https://www.lazada.vn/products/op-lung-zagg-esntl-clear-clear-snap-smoky-snap-danh-cho-iphone-16-series-chong-soc-15m-bao-hanh-1-nam-i2786634845.html?srsltid=AU7gw4X1CIHrtsu_x3kiDg2dEPYpPkQ3sGnt86fCD2Lh2oiPCsfuctJG",
+    "snippet": "LazMall Ốp lưng ZAGG ESNTL Clear / Clear Snap / Smoky Snap dành cho iPhone 16 series - chống sốc 1.5m bảo hành 1 năm · 100% chính hãng · 30 ngày ...",
+    "date": "1 thg 5, 2026",
+    "position": 4
+   },
+   {
+    "title": "[iPhone 16 / iPhone 16 Plus] Tổng hợp ốp lưng chống sốc ...",
+    "link": "https://www.lazada.vn/products/iphone-16-iphone-16-plus-tong-hop-op-lung-chong-soc-zagg-bao-ve-dien-thoai-len-toi-5m-chong-tray-xuoc-i3088363265.html?srsltid=AU7gw4XRK_BdQNnw6IH1mX_Qykki9Z6-dpGyJmlCuQS-t1UmaYYtZvph",
+    "snippet": "Ốp lưng chống sốc ZAGG cho iPhone 16 và 16 Plus bảo vệ lên tới 5m, chống trầy xước hiệu quả. Thiết kế Magsafe đa dạng màu sắc, phù hợp nhiều phong cách, ...",
+    "position": 5
+   },
+   {
+    "title": "Ốp Lưng ZAGG cho iPhone 16 Pro Max / 16 Pro, London ...",
+    "link": "https://h5.lazada.vn/products/op-lung-zagg-cho-iphone-16-pro-max-16-pro-london-snap-chong-soc-sac-tu-tinh-mag-thoi-trang-hang-chinh-hang-i2825726472.html",
+    "snippet": "- Khả năng chống sốc tối ưu đến 4m: Ốp lưng ZAGG London Snap giúp bảo vệ iPhone 16 Series một cách an toàn trước va đập và rơi rớt. - Tăng cường ...",
+    "position": 6
+   },
+   {
+    "title": "Ốp lưng ZAGG Crystal Palace Snap Case Trong Suốt ...",
+    "link": "https://www.lazada.vn/products/op-lung-zagg-crystal-palace-snap-case-trong-suot-chong-soc-cho-iphone-16-pro-max-15-plus14-lung-cung-vien-deo-cao-cap-i2426510418.html?srsltid=AU7gw4UkfpBbBBP5cW4nQFzHWiuWufde2f7ykJjZe3IyziWA4mjS-5w_",
+    "snippet": "Ốp lưng ZAGG Crystal Palace Snap Case Trong Suốt Chống Sốc Cho Iphone 16 Pro Max, 15 Plus,14 Lưng cứng viền dẻo cao cấp ; Dịch vụ · 15 Ngày Trả Hàng Miễn Phí. Áp ...",
+    "position": 7
+   },
+   {
+    "title": "[iPhone 16/15 Series] Ốp lưng ZAGG Denali Magsafe có ...",
+    "link": "https://h5.lazada.vn/products/iphone-1615-series-op-lung-zagg-denali-magsafe-co-chan-gap-chong-soc-5m-bao-hanh-1-nam-1-doi-1-i2426828650.html",
+    "snippet": "Ốp lưng ZAGG Denali Magsafe chống sốc cho iPhone 15/16 Pro và Pro Max với chân gập tiện lợi, bảo vệ toàn diện bằng TPU cao cấp.",
+    "date": "1 thg 5, 2026",
+    "rating": 5,
+    "ratingCount": 18,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

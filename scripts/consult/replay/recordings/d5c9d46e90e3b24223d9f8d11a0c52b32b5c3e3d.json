@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"HP 15s-du1055tu 6405U Notebook 39,6 cm (15.6 ) HD Intel Pentium Gold 4 GB DDR4-SDRAM 256 GB SSD Wi-Fi 5 (802.11ac) Windows 11\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:36:34.911Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"HP 15s-du1055tu 6405U Notebook 39,6 cm (15.6 ) HD Intel Pentium Gold 4 GB DDR4-SDRAM 256 GB SSD Wi-Fi 5 (802.11ac) Windows 11\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

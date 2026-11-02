@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Bộ quà tặng phong thủy thời trang cao cấp cho người mệnh thủy site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:10:54.794Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bộ quà tặng phong thủy thời trang cao cấp cho người mệnh thủy site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Đồ phong thủy - Giá Tốt, Miễn Phí Vận Chuyển, Đủ Loại",
+    "link": "https://shopee.vn/list/%C4%91%E1%BB%93%20phong%20th%E1%BB%A7y",
+    "snippet": "Tượng Hồ Lô Phong Thủy, Hoa Mẫu Đơn,Thiềm Thừ,Tỳ Hưu, Cây Kim Tiền Tài Lộc May Mắn Bình An. 320.000₫. rating-star 4.9.",
+    "position": 1
+   },
+   {
+    "title": "Trang sức phong thủy cho người mệnh Thủy 2026",
+    "link": "https://shopee.vn/blog/trang-suc-phong-thuy-cho-nguoi-menh-thuy/",
+    "snippet": "Một số trang sức cho người mệnh Thủy là đá Sapphire, Thạch anh, đá Ruby. Đây là những loại đá quý hiếm, nằm sâu trong lớp đất đá hàng nghìn năm ...",
+    "date": "30 thg 11, 2025",
+    "position": 2
+   },
+   {
+    "title": "Phong Thuỷ Bình An store, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/phongthuybinhan_store",
+    "snippet": "Dây Chuyền Đỏ Mặt Phật Quan Âm May Mắn · Dây Chuyền Đỏ Mặt Phật Quan Âm May Mắn ; Móc bạc để móc mặt dây chuyền làm đồ handmade · Móc bạc để móc mặt dây ...",
+    "position": 3
+   },
+   {
+    "title": "làm thiếp - Giá Tốt, Sale Tháng 09, Freeship 0Đ | Shopee Việt ...",
+    "link": "https://shopee.vn/list/l%C3%A0m%20thi%E1%BA%BFp",
+    "snippet": "Mua Online làm thiếp chất lượng, Freeship 0Đ, Voucher Shopee giảm tới 50% tại Shopee. Khuyến mãi tháng 09, 2026. Mua ngay!",
+    "position": 4
+   },
+   {
+    "title": "Mệnh Thủy mặc áo dài màu gì? Gợi ý 4 màu đẹp, dễ chọn ...",
+    "link": "https://shopee.vn/blog/menh-thuy-mac-ao-dai-mau-gi/",
+    "snippet": "Mệnh Thủy mặc áo dài màu gì? · Mệnh Thủy mặc áo dài màu xanh nhạt · Mệnh Thủy mặc áo dài màu xanh đậm · Mệnh Thủy mặc áo dài màu trắng · Mệnh Thủy ...",
+    "date": "21 thg 1, 2026",
+    "position": 5
+   },
+   {
+    "title": "Vòng đá phong thủy mệnh thủy nữ - Giá Tốt, Sale Tháng ...",
+    "link": "https://shopee.vn/list/v%C3%B2ng%20%C4%91%C3%A1/phong%20th%E1%BB%A7y/m%E1%BB%87nh%20th%E1%BB%A7y%20n%E1%BB%AF",
+    "snippet": "Lắc tay bạc nữ TLEE hạt bạc vỡ charm hồ điệp, điểm trai mix đá · Vòng tay đá tự nhiên cao cấp phong thủy mệnh kim mộc thủy hỏa thổ Sơn · Lắc tay bạc nữ TLEE hạt ...",
+    "position": 6
+   },
+   {
+    "title": "Đá Phong Thủy Chất Lượng, Giá Tốt, Đảm Bảo",
+    "link": "https://shopee.vn/list/%C4%91%C3%A1%20phong%20th%E1%BB%A7y",
+    "snippet": "Đối với những ai thuộc mệnh Kim có thể tham khảo qua những loại có màu sắc tương sinh tương hợp như đá màu nâu, đá màu vàng, đá màu trắng, bạc,... Theo phong ...",
+    "position": 7
+   },
+   {
+    "title": "Trang sức phong thủy cho người mệnh Mộc 2026",
+    "link": "https://shopee.vn/blog/trang-suc-phong-thuy-cho-nguoi-menh-moc/",
+    "snippet": "Gợi ý một số trang sức phong thủy cho người mệnh Mộc 2025 · Vòng đá Topaz · Vòng tay ngọc bích · Nhẫn hoặc dây chuyền mặt Tỳ Hưu · Vòng tay phong ...",
+    "date": "30 thg 11, 2025",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

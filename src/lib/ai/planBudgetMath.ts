@@ -107,8 +107,17 @@ export function appendConsultPlanCost(text: string, o: {
   if (/[×÷=]/.test(section) || /chưa có giá\s*[—-]\s*hỏi/i.test(section)) return none
   const p = o.people
   const bandOk = !!o.band && o.band.lo > 0 && Number.isFinite(o.band.hi)
+  // An open band is still a sourced price (Luna 30/09 §7 a: FOOD-2 "Bánh Cuốn … 1-100.000 ₫" became "chưa có giá"):
+  // Google's "1-100.000 ₫" parses to lo 0 ("dưới 100.000đ"), "Trên 1 Tr ₫" to hi ∞ ("trên 1.000.000đ").
+  const openBand = !bandOk && !!o.band && ((o.band.lo <= 0 && Number.isFinite(o.band.hi) && o.band.hi > 0) || (o.band.lo > 0 && !Number.isFinite(o.band.hi)))
   let block: string[] | null = null
-  if (p && bandOk && o.band) {
+  if (p && openBand && o.band) {
+    const who = o.pickName ? `${o.pickName}: ` : ''
+    block = [o.band.lo <= 0
+      ? `- ${who}${p} người × dưới ${vnd(o.band.hi)}/người = dưới ${vnd(p * o.band.hi)} (mức giá Google Maps)`
+      : `- ${who}${p} người × trên ${vnd(o.band.lo)}/người = trên ${vnd(p * o.band.lo)} (mức giá Google Maps)`,
+      '- Tổng: chỉ cộng phần có giá ở trên; các khoản khác (gửi xe, đồ uống thêm…) chưa có giá — hỏi quán.']
+  } else if (p && bandOk && o.band) {
     // Owner 29/09: real price bands only; the total adds only what has a price, and says so.
     block = [o.band.hi > o.band.lo
       ? `- ${o.pickName ? `${o.pickName}: ` : ''}${p} người × ${vnd(o.band.lo)}–${vnd(o.band.hi)}/người = ${vnd(p * o.band.lo)}–${vnd(p * o.band.hi)} (mức giá Google Maps)`

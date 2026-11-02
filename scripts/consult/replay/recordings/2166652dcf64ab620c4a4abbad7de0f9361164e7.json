@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple Apple Macbook Neo 13-Inch site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:10:23.214Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple Apple Macbook Neo 13-Inch site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Apple Ra Mắt Macbook Neo",
+    "link": "https://shop.tiktok.com/vn/k/apple-ra-mat-macbook-neo",
+    "snippet": "Khám phá Apple Ra Mắt Macbook Neo mới nhất tại TikTok Shop và tận hưởng freeship ... Neo ... Dán Màn Hình/ Dán Full 6in1 Macbook Neo 13 inch Innostyle USA Crystal ...",
+    "position": 1
+   },
+   {
+    "title": "apple macbook neo malaysia",
+    "link": "https://shop.tiktok.com/vn/k/apple-macbook-neo-malaysia",
+    "snippet": "Khám phá apple macbook neo malaysia mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất ...",
+    "position": 2
+   },
+   {
+    "title": "macbook neoสีน้ําเงิน",
+    "link": "https://shop.tiktok.com/vn/k/macbook-neo-si-nma-engin",
+    "snippet": "Khám phá macbook neoสีน้ําเงิน mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất hôm ...",
+    "position": 3
+   },
+   {
+    "title": "macbook neo có hàng chưa",
+    "link": "https://shop.tiktok.com/vn/k/macbook-neo-co-hang-chua",
+    "snippet": "... Macbook Air/Pro 13 ... Dán Màn Hình/ Dán Full 6in1 Macbook Neo 13 inch Innostyle USA Crystal Clear Trong suốt Từ Tính ISP13HD26 ... Apple Ra Mắt Macbook Neo.",
+    "position": 4
+   },
+   {
+    "title": "thực tế macbook neo",
+    "link": "https://shop.tiktok.com/vn/k/thuc-te-macbook-neo",
+    "snippet": "MacBook Neo 13 inch A18 Pro 2026 (6 core CPU| 5 core GPU| 8GB RAM| 256GB SSD) [ShopDunk Store]. Deal. 76 sold. ₫18.789.999. ₫23.399.000 ...",
+    "position": 5
+   },
+   {
+    "title": "macbook neo duy luân",
+    "link": "https://shop.tiktok.com/vn/k/macbook-neo-duy-luan",
+    "snippet": "Khám phá macbook neo duy luân mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất hôm ...",
+    "position": 6
+   },
+   {
+    "title": "Macbook neo press box",
+    "link": "https://shop.tiktok.com/vn/k/macbook-neo-press-box",
+    "snippet": "Khám phá Macbook neo press box mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất hôm ...",
+    "position": 7
+   },
+   {
+    "title": "Mac neo indigo - TikTok Shop Vietnam",
+    "link": "https://shop.tiktok.com/vn/k/mac-neo-indigo",
+    "snippet": "Khám phá Mac neo indigo mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất hôm nay.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

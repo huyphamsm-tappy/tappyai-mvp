@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Lê Phan Hotel Tây Ninh\" núi Bà Đen, Tây Ninh site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:17:03.866Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Lê Phan Hotel Tây Ninh\" núi Bà Đen, Tây Ninh site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "10 khách sạn được đề xuất gần TRUNG TÂM VĂN HÓA ...",
+    "link": "https://vn.trip.com/hotels/tan-ninh-trung-tm-vn-ha-tnh-ty-ninh/hotels-c807297m50673629/",
+    "snippet": "Khách sạn này cách Hồ Dầu Tiếng 20,1 km và cách Núi Bà Đen 22 km. Hãy tận ... Lê Phan Hotel Tây Ninh. 7,6/10. Tốt. 12 đánh giá. Cách TRUNG TÂM VĂN HÓA TỈNH ...",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn giá rẻ gần Lotte Cinema Tây Ninh, Tân Ninh",
+    "link": "https://vn.trip.com/hotels/landmark/vn/lotte-cinema-tay-ninh.html",
+    "snippet": "Khách sạn này cách Hồ Dầu Tiếng 20,1 km và cách Núi Bà Đen 22 km. Hãy ... Lê Phan Hotel Tây Ninh Các khách sạn gần Lotte Cinema Tây Ninh. Lê Phan Hotel ...",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

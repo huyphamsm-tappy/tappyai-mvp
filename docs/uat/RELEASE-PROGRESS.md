@@ -5,6 +5,43 @@ UAT = https://uat.tappyai.com (bound to branch rc/web-uat, audit DB `zdaprdfgpbp
 bypass secret in `D:\TappyAI-backups\vercel-bypass.txt`, header `x-vercel-protection-bypass`, never print it).
 Check the running SHA: `GET /api/version` with the bypass header.
 
+## ▶ LUNA SẴN SÀNG GỘP — commit f82fcaa (nhánh `origin/luna/consult-2026-09-30`), 2026-09-30
+Owner 30/09 (GẤP): Anthropic hết credit, không nạp → GPT-6 Luna lên production CÙNG release Phase 7. Phiên Luna làm code;
+**phiên web gộp nhánh vào rc/web-uat và release.** Nhánh đã rebase lên rc @95dbe94 (có bảo mật, bộ làm sạch Serper, I6,
+thẻ hỏi v2, 3 bản sửa kế hoạch). Chi tiết: `docs/uat/LUNA-REPORT.md` (§7–§13), `docs/uat/LUNA-PROGRESS.md`.
+
+**Đã chuyển — MỌI lời gọi AI đi qua lớp LLM (`src/lib/ai/llm`), mặc định giờ là Luna; không còn chỗ nào gọi Anthropic:**
+chat tư vấn + chat thường (fast/smart/planning, có ảnh = vision), hiểu ý định (structured), kế hoạch chi tiết, ScamShield
+(phân tích tin nhắn + đọc ảnh chụp), quét ảnh `/api/scan`, phân tích nội dung upload (explore), Viết content, dịch, gợi ý
+nhóm, trích/tóm tắt trí nhớ, 4 cron (deal-notifications, morning-brief, price-check, weekly-recap). Không có judge chạy trong app.
+Mức suy nghĩ: none mọi nơi; kế hoạch du lịch low (không công cụ); lời gọi có công cụ luôn none (API chỉ nhận none khi có công cụ).
+Định dạng đầu ra giữ nguyên (Viết content JSON {caption, hashtags}, dịch {translation}, ScamShield JSON…).
+
+**Khi Luna lỗi/timeout:** thử lại Luna 1 lần → vẫn lỗi thì đường lỗi sẵn có của từng nơi (chat: câu «Mình gặp trục trặc…
+Thử lại» + hoàn lượt hỏi). KHÔNG gọi Anthropic (HAIKU_FALLBACK mặc định TẮT). Code Haiku giữ nguyên.
+
+**Kiểm tra:** 16.143 test đạt · typecheck · lint 0 · 15/15 luật kiến trúc. Test sống 10/10 tính năng trên Luna, 0 request tới
+Anthropic (`LUNA_FEATURE_SMOKE=1 npx vitest run scripts/consult/luna/featureSmoke.test.ts`). ⚠ `scripts/controlBytes.test.mjs`
+chập chờn khi chạy CẢ bộ song song (2/3 lần; chạy riêng luôn đạt; lần full cuối 0 trượt). 🔑 Sửa kèm một lỗ SSRF: lớp bọc
+model làm rơi `supportsImageUrls` → SDK sẽ tự tải URL ảnh do user đưa; đã sửa + test.
+Replay cấu hình production (15×7): 95/105 tự động, 105/105 lượt do Luna, 0 thử lại, $0,0033/lượt, chữ đầu p50 2,2 s / p90 6,7 s.
+Chấm tay: lượt tư vấn A=0, B=1 (SHOP-3 t5 chọn máy 4GB cho học thiết kế, có nói rõ hạn chế), C=1, D=1. Kế hoạch 3/16 đạt đủ 10
+điều, 2 chi tiết bịa (Haiku trước: 2/55 đạt, 177 bịa) — lỗi chính: mục kế hoạch chỉ có câu «Chưa có thông tin đã kiểm cho mục này».
+
+**Biến môi trường (Production + Preview):**
+| Biến | Giá trị | Ghi chú |
+|---|---|---|
+| `OPENAI_API_KEY` | **bắt buộc** | thay `ANTHROPIC_API_KEY` trong danh sách 5 biến bắt buộc của `scripts/check-env.mjs` |
+| `LLM_PROVIDER` | **không đặt** (hoặc `openai`) | ⚠ nếu đang có `LLM_PROVIDER=claude` thì XOÁ — `claude` = quay về Haiku |
+| `CONSULT_LUNA`, `CONSULT_LUNA_FAST`, `CONSULT_LUNA_PLAN` | không đặt (mặc định BẬT) | đặt `0` để tắt từng phần |
+| `HAIKU_FALLBACK` | không đặt (TẮT) | `1` chỉ khi Anthropic có credit lại |
+| `LLM_PLAN_REASONING` | không đặt (= low) | tuỳ chọn |
+| `LLM_LUNA_MODEL` | không đặt (= gpt-6-luna) | tuỳ chọn |
+| `LLM_FAST_MODEL` / `LLM_SMART_MODEL` / … | bỏ qua khi dùng Luna | chỉ đọc khi `LLM_PROVIDER=claude` |
+| `SERPER_CACHE_V2` | tuỳ chọn `1` | giá cũ tối đa 6 giờ thay vì 24 giờ; mặc định TẮT |
+| `ANTHROPIC_API_KEY` | để nguyên / bỏ | không còn được dùng |
+**Quay lui:** `LLM_PROVIDER=claude` (cần Anthropic có credit) → đúng pipeline Phase 7 Haiku.
+
 ## Rules from the owner (2026-09-28)
 - **PASS only with a real screenshot on UAT** (headless browser + bypass). Unit tests are not enough.
   UI items: screenshot next to the matching design in `D:\redesign`. Evidence up to 2614652 → `docs/uat/evidence/release-2026-09-28/`.
@@ -227,6 +264,74 @@ Chưa commit — patch lưu scratchpad (shopR / shopAB5). Chờ Huy (Q-AI-SHOP).
 - Bảo mật 30/09: nhánh `security/hardening-2026-09-30` gộp vào rc (`d4f5c8c`), UAT `6aade7a` smoke 5 luồng đạt; migration #20–#23 vào PHẦN B.
   Apple IAP: production KHÔNG có `APPLE_IAP_*` → verify trả 503, lỗ API-1 đang đóng; không thêm các biến này trước khi `fea7f38` lên prod.
 
+### ▶ ĐÊM 30/09→01/10 — sửa B của trang Luna, R25, thẻ hỏi vé máy bay (UAT = `b88a499`, mã release; sau đó chỉ có commit tài liệu)
+- **Trang duyệt (cùng link, bản 2):** https://claude.ai/artifact/KtAqAkz3s1hUdpsZQUiQnV — 35 hội thoại / 125 lượt trên Luna: **A = 0, B = 0**, C = 9, D = 11.
+  9 hội thoại chụp lại sau 0:02 trên UAT (FOOD-1, FOOD-3, SHOP-3, SPA-3 chạy đủ 7 lượt; SHOP-2, TRAVEL-2, ENT-2, ENT-1, SPA-1 chạy lại).
+- **B cũ đã hết:** SHOP-2 chọn set 1.150.000đ trong 1–2 triệu (nguyên nhân: «1-2 triệu» bị đọc là 1.000đ–2.000.000đ); TRAVEL-2 đổi ĐIỂM ĐẾN khi nói «chỗ khác / đi rồi»
+  (Núi Dinh → Tây Ninh → Xuân Lộc, kế hoạch theo Xuân Lộc); khoảng cách tra 30/09: Núi Dinh ≈80 km (VnExpress), Núi Bà Đen 85–100 km, Núi Chứa Chan 100–110 km (mia.vn) — Bảo Lộc bỏ vì quá xa.
+  **Lệch tin nhắn 01/10:** tin ghi «Tây Ninh → Bảo Lộc → Xuân Lộc»; tôi làm theo lệnh trước (xếp theo khoảng cách thật) nên thứ tự là Núi Dinh → Tây Ninh → Xuân Lộc.
+- **R25 (3 ca chat web không có nút/link):** vé máy bay = LỖI THẬT (lệnh tìm vé cần điểm đi mà bộ hiểu ý không có → chạy tìm khách sạn); đã sửa `d016346` + hỏi «Bay từ đâu?» trong thẻ hỏi `848133c`.
+  Karaoke tối nay / đồ ăn vặt Q1: server gửi ĐỦ thẻ địa điểm (8 nơi, 3–6 hành động mỗi nơi); phép kiểm cũ trượt vì cửa sổ giới thiệu lần đầu «Tappy muốn hiểu bạn hơn!» phủ lên thẻ hỏi, mọi lần bấm hết giờ và e2e cũ nuốt lỗi. Khi đóng cửa sổ: đạt 2/2.
+  Chưa xử lý (chờ anh quyết): hai bộ 3 câu hỏi chồng nhau ở lần chat đầu.
+- **E2E web chặt** (`scratchpad/pw/webe2e.mjs`, chạy trên UAT `cc02d4c`): 9/11 ĐẠT — flight, snacks-then-q1, pho-q3, pho-q1, pho-delivery, headphones, concert, hotel, followup-more; TRƯỢT: saigon-tonight (cửa sổ giới thiệu; đạt khi đóng nó, 2/2 trên b88a499),
+  trip (tin kế hoạch cuối có thẻ quán + bản đồ nhưng không có link khách sạn — chưa rõ nguyên nhân). **trip-full chưa chạy lại.** Phép kiểm cũ của android/e2e/flows/chat.mjs đã ghi ở ANDROID-REQUESTS (R25) — không sửa thư mục android/.
+- **Số test (rõ từng bộ):** bộ FULL gồm test DB trên mã release `b88a499`: **16.263 test, 16.180 đạt, 1 trượt** = `scripts/controlBytes.test.mjs` hết giờ 5 giây vì quét `scripts/` đang chứa file replay chạy đêm (chạy riêng với giới hạn dài: 3/3 đạt). Bộ full trước đó trên `f1e7dc9`: 16.246 / 16.164 / 0 trượt.
+  12.754–12.755 = bộ con `src/lib` + `src/app/api`; 5.826 = bộ con `src/lib/ai` + `src/app/api/chat` — không phải full.
+- **Xoá tài khoản:** cờ TẮT (trạng thái UAT, quyết định cho production) — ĐÃ chụp: dòng «Yêu cầu xóa tài khoản» → trang hướng dẫn email support@tappyai.com, không có nút xoá. Cờ BẬT: CHƯA kiểm (cần đặt biến Preview + deploy thêm; sẽ chụp đến bước xác nhận, không bấm xoá).
+- **Lỗi mã tìm thấy trong đêm và đã sửa:** câu ghép của bộ lọc khi tên quán dài (b88a499); thẻ hỏi vé máy bay thiếu điểm đi (848133c).
+- **Chưa làm / chưa kiểm:** FOOD-3 lượt 3 chưa chụp lại sau b88a499; cờ xoá tài khoản BẬT; trip-full web e2e; link khách sạn trong tin kế hoạch (trip); test APK Android cuối; GPS cho điểm đi (backlog PL-FLIGHT-ORIGIN-GPS).
+
+### ▶ LUNA TRÊN UAT — chạy thật rút gọn 30/09 tối (UAT `3e763fb`), trang duyệt https://claude.ai/artifact/KtAqAkz3s1hUdpsZQUiQnV
+- Gộp `luna/consult-2026-09-30` (@c4ddf3c) vào rc = `87007a1`; 16.150 test (2 quét repo quá giờ khi chạy cả bộ, chạy riêng đạt) · tsc · lint 0 lỗi ·
+  kiến trúc 15/15 · build Vercel. Gói `@ai-sdk/openai@1.3.24` thêm vào node_modules dùng chung (khớp integrity lockfile).
+- Env: `OPENAI_API_KEY` (key TEST 30 ngày → PL-OPENAI-KEY) + `SERPER_CACHE_V2=1` cho Preview + Production; không có `LLM_PROVIDER`;
+  `ANTHROPIC_API_KEY` để nguyên. §2g + PHẦN B B0 đã ghi.
+- Sửa trước lượt chạy (`54210f2`): kế hoạch ẩn mục không có dữ liệu + nói chặng thiếu ở cuối; mua sắm không chọn máy thiếu RAM cho mục đích
+  đã nêu (SHOP-3 t5). Sau lượt chạy (`c2d8b59`): «không thích bar» không bị coi là muốn đi uống; chủ ngữ câu gộp bỏ đuôi «được xác nhận».
+- Lượt chạy: 20 câu tiêu biểu + 15 kịch bản + ScamShield / Viết content / đăng clip có phân tích (cả 3 chạy Luna, ảnh giao diện thật).
+  104 lượt, **A = 0**, B = 5 (TRAVEL-2 t5–t7 «đi rồi, chỗ khác» vẫn ở Tây Ninh; SHOP-2 t2/t6 lệch xa ngân sách 1–2 triệu), C/D ghi trên trang.
+  **Chi phí thật (server UAT): $0,404 / 104 lượt ≈ $0,0039/lượt** (Haiku $0,00916); lượt nền trước sửa $0,232 / 107 lượt.
+- ⏳ FOOD-1, FOOD-3, SHOP-3 (dừng ở lượt 1) và SPA-3 (lượt 4): 3 tài khoản test hết lượt hỏi trong ngày (Pro 300/300, free 15/15) —
+  bộ đếm ở KV dùng chung với production nên KHÔNG xoá; chụp nốt + ENT-2 t7 sau 0h (giờ VN).
+- Bằng chứng: `gs://tappyai-uat-evidence/luna-uat-2026-09-30/`.
+
+### ✅ 3 lỗi code ở lượt KẾ HOẠCH CHI TIẾT (LUNA-REPORT §7) — sửa trong Phase 7, rc `43d4395` + `ca10919`
+Kiểm trên rc hiện tại (sau các sửa dòng chi phí FOOD-1/ENT-1/ENT-2/SPA-2) bằng replay đúng các hội thoại có lượt kế hoạch lỗi
+(13 kịch bản + E1-G5; replay `scenarios-2026-09-30T10-14` trước sửa): **cả 3 lỗi CÒN** → sửa:
+- **(a) dòng "Chi phí"**: không có «Mình chọn» thì lấy quán KẾ HOẠCH viết ra (tên đủ thắng tên một phần; tên một phần phải có từ riêng,
+  không lấy tên quận/từ thường — "Gia Đình" ≠ "giả định"), không lấy quán chốt cũ của luồng (ENT-3 BIBO KIDS bị ghi "KHU VUI CHƠI TRẺ EM";
+  E1-G5 A Xỉu bị ghi "Cơm Ngon Hà Nội"); khung giá mở của Google giữ lại: «dưới 100.000đ» / «trên 1.000.000đ» (FOOD-2 Bánh Cuốn 1-100.000 ₫ bị ghi
+  "chưa có giá"). Số người: không thấy lệch ở lượt chạy lại (ENT-1 8 người đúng).
+- **(b) câu gộp "chưa xác nhận được"** (`hedgeCap.ts`): câu của guard giữ chủ ngữ thật («giờ chạy và giá vé cụ thể», «giờ mở cửa») thay vì
+  «từ nguồn đã tìm»; một chủ ngữ nói một lần (giá / mức giá / giá trực tuyến); không ghép ô bảng hay «(chưa có giá)». Mệnh đề mục đích
+  «để có phòng riêng» không còn thành «để mình chưa xác nhận được…» mà tách thành câu riêng (`unsupportedClaimGuard.ts`).
+- **(c) mục khung trống**: mục chỉ còn tiêu đề → «- Chưa có thông tin đã kiểm cho mục này.» (`fillEmptyPlanSections`).
+- Test offline bằng đúng các kế hoạch lỗi: `planCodeLines.test.ts` + `hedgeMergePlans.test.ts` — 9/11 ca TRƯỢT khi gỡ sửa; AI + chat 4.741 test đạt.
+- Replay lại các lượt kế hoạch (`scenarios-2026-09-30T10-30` + E1-G5): 0 mục trống, 0 câu gộp lỗi; dòng chi phí đúng quán ở 12/13 kế hoạch có
+  dòng chi phí — riêng E1-G5 còn sai ("Gia Đình" khớp "giả định") → sửa thêm `ca10919` (test có ca đó). **Lượt replay xác nhận `ca10919` KHÔNG
+  chạy được: Anthropic báo HẾT CREDIT** ("credit balance is too low") — cùng lúc UAT trả "An error occurred." cho câu hỏi thật. Chạy lại
+  E1-G5/ENT-1/ENT-3/SPA-1/SPA-2 khi có credit.
+- **UAT build bị bỏ qua (đã sửa `26873c0`)**: `scripts/vercel-ignore.mjs` so commit với `HEAD^`; merge `70c7cd3` (bên kia chỉ có commit
+  android) bị đọc là "chỉ android" → SKIP, 5 bản UAT 30/09 chiều bị Canceled. Giờ so với commit ĐÃ DEPLOY (`VERCEL_GIT_PREVIOUS_SHA`);
+  merge không có SHA đó → build. Test bằng đúng merge `70c7cd3`. **UAT hiện chạy `26873c0`** (gồm sửa kế hoạch).
+- Phiên Luna: rebase theo các file trên (`streamEnrichment.ts` planCostSubject, `planBudgetMath.ts`, `domainFrames.ts`, `hedgeCap.ts`, `unsupportedClaimGuard.ts`).
+
+### ✅ Bảo mật 2c–2f (tin gộp 30/09) — UAT `e7a79a9`
+- **2c Serper không tin cậy** (`79c79d7`): chỉ bộ làm sạch của luna `2f16ce8`, KHÔNG kèm Luna, chạy cho mọi lời gọi `serperPost`
+  (`src/lib/ai/tools/serperUntrusted.ts`). Tên thật giữ nguyên (Say Cheese Studio, Reveal Beauty Spa, Quán Quên Lối Về, System Coffee).
+  Tiêm lệnh với Haiku: **12/12 lượt sạch, 0 trượt** (`injectionCheck.mjs`). Bằng chứng: `gs://tappyai-uat-evidence/security-2026-09-30/serper-injection-haiku/`.
+- **2d «Core i5-1334U»**: đã có trong rc từ `af38b73` (budgetFromHistory đọc tin đã bỏ tên chép lại), test dữ liệu SHOP-3 4/4.
+- **2e I6 / R24** (`5eb785f`): `app_state` 5 phút trong cookie httpOnly/Secure/Lax → callback Zalo → `/auth/confirm` kiểm TRƯỚC khi dùng
+  token, trả `state`+`app_state` trong fragment, dùng 1 lần. Test 26/26. Smoke UAT 6/6: Zalo web → Zalo; Android thiếu state → từ chối;
+  có state → Zalo + cookie 5 phút; link magic giả `&platform=android` → từ chối và token KHÔNG bị dùng (cùng link vẫn đăng nhập web →
+  email OK); Google web = PKCE S256. Zalo thật trên app: chờ Android e2e cuối. Supabase Redirect URLs: Huy xem (OWNER-TOMORROW B0).
+- **2f «thích núi, gần Sài Gòn»**: 3 cách gõ (kịch bản, gõ tắt «gan sg / thik nui», một câu) → Tây Ninh / Núi Bà Đen, không Ba Vì.
+- Kiểm toàn bộ: 16.057 test đạt, 3 test quét repo quá 5 giây khi chạy cả bộ (chạy riêng 26/26 đạt); tsc 0; lint chỉ cảnh báo có sẵn;
+  kiến trúc 15/15; SQL grants 0 lỗi; build Vercel UAT READY. Smoke luồng bị đụng: Viết content 200, báo cáo 200, ScamShield CRITICAL,
+  ảnh nhóm không còn EXIF/GPS, thông báo: URL metadata bị chặn 400, endpoint mới 200 (endpoint cũ tái dùng → 500 do luật một
+  chủ/credential có sẵn, không phải lỗi mới). Không có migration mới trong đợt này.
+- **Vercel**: owner chốt KHÔNG nâng Pro; kiểm không bị chặn ngay trước deploy production, bị chặn → dừng (OWNER-TOMORROW B0).
+
 ### ✅ Thẻ hỏi nhanh mới [TAPPY_ASK] — web LIVE UAT `1c5087b` (30/09, chỉ đổi giao diện)
 - Đặc tả chung web + Android: `docs/design/ask-card/README.md` (R23 + **R23.1** §5). Server và tin gửi lên KHÔNG đổi.
   Web `1685c62` + `86f88d3` + `f6b4a31`; Android đã chép 1:1 (`e3aa75c`, `7f1646d`). iOS: `docs/ios/IOS-REQUESTS.md` I-1.
@@ -371,3 +476,63 @@ Hạn chế guard vá: mỗi bản vá sau model giờ được ĐẾM (`tappyai
 - Tiêu đề kế hoạch bị cắt 7/15 → sửa TẬN GỐC (guard đọc «gọi món»/«đặt bàn» trong tiêu đề là khẳng định) → 0/15, bỏ cơ chế «niêm phong».
 - Còn vá nhiều: câu «Mình chọn» thêm bằng code (4/15 lượt chọn), dòng «còn N» (server đếm — đúng thiết kế).
 - `place_claim` + `snippet_price` sửa 9–12/15 lượt mỗi loại → việc tiếp theo: giảm khẳng định không có nguồn ngay ở khung.
+
+## Android AAB release vc10 / 1.0.0 — build 30/09 (từ commit 68d6639, KHÔNG có thay đổi Android nào trên rc sau đó)
+- Build: `bash scripts/release/build-aab.sh 68d6639` (worktree detached `C:/wtbuild-68d6639`, không đụng worktree dùng chung).
+- File: `D:\TappyAI-backups\TappyAI-release-vc10-68d6639.aab` (gốc `C:/wtbuild-68d6639/android/app/build/outputs/bundle/release/app-release.aab`).
+- SHA-256 AAB: `79edd00910821470b4e198c7fd4d9915155ac335d214f12f9fd51b0d3df9c058`
+- Chứng chỉ ký (upload key) SHA-256: `02:5B:35:4D:1C:37:7B:DC:F3:D6:49:4A:71:8E:6B:2D:A4:56:2F:73:2B:CE:0A:42:11:9C:9B:09:37:74:5C:C7` — so với Play Console → App integrity → Upload key certificate. `jarsigner -verify` = "jar verified."
+- BuildConfig (script kiểm, đều `ok`): versionCode 10, versionName 1.0.0, API_BASE_URL `https://www.tappyai.com/`, WEB_APP_URL `https://www.tappyai.com`, GIT_SHA 68d6639, SUPABASE_URL = production (`fwznnobrdctuskgrvuik`), DEBUG=false, **VERCEL_BYPASS_SECRET rỗng**.
+- Quét thêm trên dex của chính AAB: KHÔNG có chuỗi `uat.tappyai.com`; chuỗi duy nhất liên quan là TÊN header `x-vercel-protection-bypass` trong `DeploymentProtectionInterceptor` — vô hiệu khi secret rỗng (`secret.isEmpty()` → không gắn header). Không chứa khoá bypass.
+- Test trước khi build (cùng commit): unit Android debug+release+uat xanh, web scan Android 793 qua, `verify-release-clean` 8/8.
+- Chưa upload gì; Play Console là bước của anh (RELEASE-PLAN §3d). Dọn sau upload: `git -C C:/wtrel worktree remove --force C:/wtbuild-68d6639`.
+- Nhánh local `android/video-held`: 4 commit của nó (video composer, golden chat, share e2e stub, guest giữ Login) ĐÃ nằm trên rc từ 29/09 dưới hash khác (41cd098, 8f6ca1e, f3b8679, 389e321) và đều có trong 68d6639 → bản release CÓ đăng video. Nhánh chỉ còn là bản cũ, không cần gộp.
+
+## 2026-10-01 — ĐÓNG BĂNG WEB (SHA cuối)
+- Mã web cuối = `81e8016` (đã gồm eaefa04 id thẻ hỏi, 3c-onboarding gate, /privacy OpenAI, R26/R27, ENV-RELEASE-CHECKLIST). Commit chứa ghi chú này chỉ khác `81e8016` ở tài liệu; SHA UAT phục vụ = commit này, đo bằng `GET /api/version`.
+- UAT chạy với `ACCOUNT_SELF_DELETE_ENABLED` ĐÃ GỠ (cờ TẮT, như production mặc định). Cờ BẬT được chụp tạm ở `81e8016` (trang xoá + gõ XÓA, KHÔNG bấm xoá) rồi gỡ biến và deploy lại.
+- Test đầy đủ (app + db, `npm test`) trên mã này: 952 file đạt / 16 bỏ qua; 16.184 test đạt, 0 lỗi, 80 skip, 1 todo; cổng "required-suite" OK.
+- 80 skip: 33 `weatherCountryMatrix` + 10 `memoryGate/cacheProbe/domainMatrix/refinementProbe/reviewSourceProbe/toolPayload` (đo thật, cần TAPPY_MEASURE=1); 10 `luna/featureSmoke` (LUNA_FEATURE_SMOKE=1, gọi OpenAI thật); 3 replay audit (AUDIT_REPLAY=1) + 1 `brainEval` (BRAIN_EVAL=1, gọi model thật); 7 `ccpVerificationEvidence` (CCP_VERIFY=1); 14 `profileCollectionsParity`/`sharedPrivacy` (describe.skip từ 17/09 — chờ port tab lên hub V3); 1 `decisionFrame` (it.skip từ 17/09, phụ thuộc guard chưa merge).
+- Dọn: xoá 4 tệp ghi replay CHƯA theo dõi trong `scripts/consult/replay/recordings/` (không xoá tệp đã commit).
+
+## ĐIỂM QUAY LẠI — release-freeze-3fce8b7 (01/10)
+- Tag git **local** `release-freeze-3fce8b7` → `3fce8b7c62eed5374d1f14b21c266e4c98650fd6` (bản đã đóng băng Huy đang test; không push — hook chặn).
+- Deployment Vercel của bản đó vẫn còn: `https://tappyai-p2aqcto8r-huyphamsm-tappys-projects.vercel.app` (Ready).
+- **Quay UAT về ngay (không đụng git, hoàn tác được):**
+  `vercel alias set https://tappyai-p2aqcto8r-huyphamsm-tappys-projects.vercel.app uat.tappyai.com`
+  (lần push kế tiếp lên rc/web-uat sẽ tự gán lại alias cho bản mới).
+- **Quay lại bằng git (không force):** `git -C C:/wtrel checkout -b rollback-to-3fce8b7 release-freeze-3fce8b7` để xem; muốn UAT build lại đúng nội dung đó: `git -C C:/wtrel revert --no-commit 3fce8b7..HEAD && git -C C:/wtrel commit -m "revert to 3fce8b7 content"` rồi push lên rc/web-uat như thường.
+- Kiểm: `curl https://uat.tappyai.com/api/version` phải trả `3fce8b7…`.
+
+## Regression Gate đỏ ở 40289ae — nguyên nhân gốc (01/10)
+- Hai bài đỏ: `scripts/architecture/controllerRules.test.ts` (2 test) và `vendorCacheRule.test.ts` — cùng chạy `scripts/architecture/check.mjs`. Luật bị phạm: **`no-commerce-merchant-hosts-outside-ccp`** — `src/lib/links/movieTitles.ts:28` viết thẳng host nhà cung cấp (cgv.vn, galaxycine.vn…) NGOÀI `src/lib/ccp`. Commit gây ra: **5c89e20** (A1/A2/A4 — câu trả lời «có phim gì hay»).
+- Vì sao phạm: tôi đặt tệp này ở `src/lib/links/` để tránh luật khác (`retrievalArchitecture`: markdown từ nội dung truy xuất chỉ ở `streamEnrichment`) mà **không chạy `scripts/architecture` và `npm test` đầy đủ trước khi push** — chỉ chạy `src/lib/ai`, `src/app/api`, `src/lib`. Né một luật bằng cách chuyển chỗ đã đâm vào luật kế bên.
+- Sửa (không nới luật nào): bảng trang phim đang chiếu chuyển vào `src/lib/ccp/adapters/nowShowing.ts`; `ccpBoundary.test` lại bắt tiếp: **mọi host trong CCP phải thuộc allow-list của registry, danh sách nhà cung cấp ĐÓNG BĂNG (D10)** ⇒ chỉ **CGV** (đã là provider) được link; Galaxy/Lotte/BHD/Beta chỉ nhắc tên. Thêm 4 rạp = quyết định của Huy (PL-MOVIES).
+- Cùng đợt phát hiện thêm một vi phạm quyết định cũ: tôi đã cho link khách sạn điền ngày từ «cuối tuần»; test `flightPickLink` (ghim quyết định 30/09 «không đoán ngày cho khách sạn») đỏ → **đã hoàn lại**.
+- **Quy tắc cho thay đổi sau:** trước KHI PUSH chạy `npm test` đầy đủ (gồm `scripts/architecture`, `src/lib/ccp`, `src/lib/ai/security`), không chỉ thư mục mình sửa; không dời tệp để né một luật; không thêm host thương mại ngoài `src/lib/ccp`; không thêm nhà cung cấp mới.
+
+## 2026-10-01 chiều — ĐÓNG BĂNG LẦN 2 (khối hoàn chỉnh A–E)
+- Mã web cuối = `c865408` (+ các commit tài liệu/dọn dẹp sau đó chỉ đổi tài liệu và gỡ tệp tạm; SHA phục vụ trên UAT = commit cuối, đo bằng `/api/version`). Điểm quay lại: tag `release-freeze-3fce8b7`.
+- Regression Gate xanh ở `27f333f` (run push 36827156658, PR 36827163991); Architecture Guard xanh (36827156630 / 36827164024). Merge Guard đỏ TỪ TRƯỚC (cả ở 3fce8b7): job «protected work stranded on side branches» — không do thay đổi này.
+- Cờ trên UAT: `STYLE_LUNA6` TẮT (không đặt), `ACCOUNT_SELF_DELETE_ENABLED` TẮT (đã gỡ).
+- Bằng chứng (riêng tư): `gs://tappyai-uat-evidence/evidence/c865408/`.
+- Danh sách Huy test: `docs/uat/HUY-TEST-ROUND-FINAL.md`.
+- Sai sót của tôi trong đợt này (đã sửa): commit nhầm tệp tạm (`.uatlogs.jsonl` = bản log UAT 33 KB, `.d7*`, 283 bản ghi Serper mới) bằng `git add -A` — đã gỡ khỏi cây, **nhưng vẫn nằm trong lịch sử commit 26832ad…c865408 đã push** (không force-push); log chỉ gồm sự kiện `tappyai_*` của lượt thử, không có nội dung cá nhân nào tôi thấy.
+
+## 2026-10-01 tối — ĐÓNG BĂNG LẦN 3 (giọng Luna 6 BẬT, xoá tài khoản BẬT trên UAT)
+- Mã web cuối = `f277b4b`; commit chứa ghi chú này chỉ khác ở tài liệu. SHA phục vụ = commit cuối, đo bằng `/api/version`. Điểm quay lại: tag `release-freeze-3fce8b7`.
+- **Cờ trên UAT (Preview, nhánh rc/web-uat):** `STYLE_LUNA6=1` BẬT; `ACCOUNT_SELF_DELETE_ENABLED=true` BẬT (đo `/api/config` → `accountSelfDelete:true`). Production: Huy quyết ở PHẦN B.
+- Regression Gate xanh ở f277b4b: run push **36837703726**, PR **36837713662**; Architecture Guard xanh (36837703712 / 36837713656). Merge Guard đỏ từ trước (không liên quan).
+- Test full cục bộ: 16.255 đạt, 0 lỗi, 80 skip; 15/15 luật kiến trúc.
+- Xoá tài khoản đo trên UAT bằng 2 tài khoản dùng-một-lần tạo mới (DB audit, không đụng tài khoản có sẵn): không gói → không có đoạn gói; có gói (`subscriptions.status='active'`) → có đoạn gói; gõ sai chữ → nút mờ; xoá → hàng chat/hồ sơ/gói = 0, `account_deletion_jobs` +1, người dùng không còn, gọi lần hai → 401. D1/D2/D4 đã áp trên DB audit (đo chỉ-đọc).
+- Bằng chứng: `gs://tappyai-uat-evidence/evidence/f277b4b/`.
+
+### ▶ ĐÊM 01→02/10 — gộp chặn người dùng + báo cáo + kiểm duyệt vào rc/web-uat (cờ TẮT trong mã; BẬT trên Preview)
+- Gộp `sec/user-blocks-slice` (đã duyệt độc lập bởi phiên bảo mật: «Có thể gộp», không còn mức cao/vừa) vào rc/web-uat. Điều kiện gộp đủ 7: bảo mật duyệt ✓; toàn bộ test nhánh gộp xanh (16.484 test; 4 tệp DB cổng cố định chạy ở cổng khác: 111/111) ✓; tsc, quyền SQL, kiến trúc xanh ✓; `next build` thành công trên nhánh gộp ✓; đo feed ≤ 1,3 ms (200 người bị chặn, 300.000 bài) ✓; bốn migration áp + rollback + áp lại thành công trên DB AUDIT ✓; không chạm `reviews/route.ts`, `uploadCompletion.ts` ✓. Regression Gate sau gộp: xem mục đóng băng.
+- Migration mới (production CHƯA áp, thứ tự trong `MIGRATION_ORDER.txt` và `docs/uat/PART-B-FINAL.md`): `20261001_user_blocks`, `20261001b_user_reports`, `20261001c_commerce_providers_cinemas`, `20261001d_moderation_standards`, `20261001e_banned_identity_hash`.
+- Cờ Preview (rc/web-uat): `USER_BLOCKS_ENABLED`, `REPORTS_ENABLED`, `MODERATION_ADMIN_ENABLED` = true; `STYLE_LUNA6`, `ACCOUNT_SELF_DELETE_ENABLED` = true (đã có); `SUBSCRIPTIONS_ENABLED` không đặt (tắt).
+- Tài liệu: `docs/security/USER-BLOCKS-SLICE.md` (§10 SẴN SÀNG DUYỆT, §11 xử lý phát hiện), `MODERATION-STANDARDS.md`, `PART-B-FINAL.md`.
+
+## 02/10 tối — KHỐI DUY NHẤT (nhóm A1–A10 + B1–B4), thay SHA 9474f65
+Đẩy MỘT lần lên rc/web-uat từ nhánh `final/web-2026-10-02` (SHA cuối = commit chứa dòng này; ghi 40 ký tự trong báo cáo Huy). Test: toàn bộ app 16.6k đạt (4 bộ DB đạt 111/111 ở cổng khác), tsc, kiểm kiến trúc 15/15, next build, không có migration mới. Bảo mật: phiên «security audit and hardening» đọc `9474f65..4601184`, hai điểm mức vừa đã vá, XÁC NHẬN không mở lỗ hổng mới. Danh sách test: docs/uat/HUY-TEST-ONE-PASS-2026-10-02.md. Chữ ScamShield cần luật sư xem: docs/uat/SCAMSHIELD-WORDING-FOR-REVIEW.md. Android/iOS: docs/uat/ANDROID-REQUESTS.md và docs/ios/IOS-REQUESTS.md §7–§8 (chữ cuối + lý do vi/en; build lại MỘT lần để đọc `reason_vi/reason_en`).
+Điều chưa chắc: mẫu «khách sạn + gstatic» không tái hiện được; bước bỏ-lọc-giá/mở-rộng mới chứng minh bằng test; khoảng ngân sách trong kế hoạch là ước tính chung chưa duyệt; poster QR làm một phần; app điện thoại chưa thấy ảnh thẻ hỏi ở UAT (Coil không có khoá bypass).

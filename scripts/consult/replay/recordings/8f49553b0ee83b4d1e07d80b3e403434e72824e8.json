@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quà sinh nhật cho sếp nam 40 tuổi thích cà phê (site:shopee.vn OR site:tiki.vn OR site:lazada.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:55:28.768Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà sinh nhật cho sếp nam 40 tuổi thích cà phê (site:shopee.vn OR site:tiki.vn OR site:lazada.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quà sinh nhật ý nghĩa, đa dạng, giao nhanh",
+    "link": "https://shopee.vn/list/qu%C3%A0%20sinh%20nh%E1%BA%ADt",
+    "snippet": "Mỹ phẩm và sản phẩm chăm sóc da: Một thỏi son cao cấp, bộ dưỡng da hay máy rửa mặt là những món quà thiết thực được nhiều cô gái yêu thích. Trang sức và phụ ...",
+    "position": 1
+   },
+   {
+    "title": "15+ món quà Tết tặng đối tác trang trọng, phù hợp nhiều ...",
+    "link": "https://shopee.vn/blog/qua-tet-tang-doi-tac/",
+    "snippet": "Các sản phẩm bổ dưỡng cho sức khỏe như Saffron, đông trùng hạ thảo, nhân sâm, tổ yến,… sẽ là món quà sức khỏe ý nghĩa trao gửi đến đối tác của ...",
+    "date": "21 thg 1, 2026",
+    "position": 2
+   },
+   {
+    "title": "Gợi Ý Món Quà Chia Tay Đồng Nghiệp Đáng Nhớ, Ý Nghĩa ...",
+    "link": "https://tiki.vn/blog/qua-chia-tay-dong-nghiep/",
+    "snippet": "Gợi ý món quà chia tay đồng nghiệp nữ, nam đáng nhớ, ý nghĩa nhất · 2.1. Buổi tiệc chia tay nhỏ, ấm cúng · 2.2. Album ảnh, khung ảnh kỷ niệm · 2.3.",
+    "date": "30 thg 3, 2023",
+    "position": 3
+   },
+   {
+    "title": "Lịch theo yêu cầu 2026 - Giá Tốt, Sale Tháng 09, Freeship ...",
+    "link": "https://shopee.vn/list/l%E1%BB%8Bch/theo%20y%C3%AAu%20c%E1%BA%A7u/2026",
+    "snippet": "... Quà tặng dịp Tết, Sinh nhật, các ngày Kỷ niệm - DT5N. 80.000₫. Rẻ Vô Địch. rating-star 5.0 · 2026 - Lịch quà tặng tốt nghiệp, sinh nhật, cuối năm in ảnh theo.",
+    "position": 4
+   },
+   {
+    "title": "1000 Lời chúc sinh nhật chồng yêu ý nghĩa, ngắn gọn, ngọt ...",
+    "link": "https://tiki.vn/blog/loi-chuc-sinh-nhat-chong/",
+    "snippet": "60 Món quà sinh nhật cho nam ý nghĩa, thiết thực, được yêu thích nhất 2023 ... >>> Xem thêm: Áo somi nam giá tốt – Tổng hợp quà tặng sinh nhật ...",
+    "date": "27 thg 11, 2023",
+    "position": 5
+   },
+   {
+    "title": "22 Món Quà 8/3 Cho Vợ Ý Nghĩa Và Được Yêu Thích 2024 | TIKI",
+    "link": "https://tiki.vn/blog/qua-8-3-cho-vo/",
+    "snippet": "Ngoài ra, những món quà nhỏ xinh như một chiếc nhẫn, đôi bông tai,… hay một chú gấu bông cũng là lựa chọn không tồi để các chàng sưởi ấm trái ...",
+    "date": "10 thg 2, 2023",
+    "position": 6
+   },
+   {
+    "title": "Quà Tết cho bố mẹ Giá Tốt, Đa Dạng, Đảm Bảo",
+    "link": "https://shopee.vn/list/qu%C3%A0%20t%E1%BA%BFt/cho%20b%E1%BB%91%20m%E1%BA%B9",
+    "snippet": "Thực phẩm chức năng: Càng về già thì chúng ta càng cần quan tâm hơn đến sức khỏe của bố mẹ vì vậy những loại thực phẩm chức năng chắc hẳn sẽ là món quà tặng Tết ...",
+    "position": 7
+   },
+   {
+    "title": "10+ Món quà Tết cho bố mẹ người yêu ý nghĩa nhất, khéo léo ...",
+    "link": "https://tiki.vn/blog/qua-tet-cho-bo-me-nguoi-yeu/",
+    "snippet": "10+ Món quà Tết cho bố mẹ người yêu ý nghĩa nhất, khéo léo, ghi điểm · 1. Giỏ quà biếu Tết · 2. Đặc sản quê hương · 3. Thực phẩm chức năng · 4. Vật ...",
+    "date": "20 thg 12, 2023",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

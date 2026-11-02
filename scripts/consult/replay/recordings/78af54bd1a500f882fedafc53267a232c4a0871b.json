@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "lenovo v15 g4 iru 83A100FYVN site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:05:00.634Z",
+ "body": {
+  "searchParameters": {
+   "q": "lenovo v15 g4 iru 83A100FYVN site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Pin Lenovo V15 G2-ITL G2-ALC G2-IJL G3-IAP G3-ABA G3 ...",
+    "link": "https://shopee.vn/Pin-Lenovo-V15-G2-ITL-G2-ALC-G2-IJL-G3-IAP-G3-ABA-G3-IAP-G4-IRU-L20M2PF0-L20C2PF0-L20M2PF8-L20L2PF0-i.104237702.28067781853",
+    "snippet": "Mua Pin Lenovo V15 G2-ITL G2-ALC G2-IJL G3-IAP G3-ABA G3-IAP G4-IRU L20M2PF0 L20C2PF0 L20M2PF8 L20L2PF0 giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

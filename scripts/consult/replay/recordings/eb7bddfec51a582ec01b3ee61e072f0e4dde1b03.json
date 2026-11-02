@@ -1,0 +1,66 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "HP ZBook Firefly 14 G7 i7-10510U Máy trạm di động 35,6 cm (14 ) Full HD Intel Core i7 16 GB DDR4-SDRAM 512 GB SSD NVIDIA Quadro P520 Wi-Fi 6 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:13:56.552Z",
+ "body": {
+  "searchParameters": {
+   "q": "HP ZBook Firefly 14 G7 i7-10510U Máy trạm di động 35,6 cm (14 ) Full HD Intel Core i7 16 GB DDR4-SDRAM 512 GB SSD NVIDIA Quadro P520 Wi-Fi 6 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop HP Zbook Firefly 14 G7 i7 10510U | 16GB RAM | 256GB ...",
+    "link": "https://shopee.vn/Laptop-HP-Zbook-Firefly-14-G7-i7-10510U-16GB-RAM-256GB-SSD-14-FHD-Quadro-P520-4GB-Win10-Pro-i.25822963.52159914757",
+    "snippet": "HP ZBook Firefly 14 G7 Intel Core I7 đi kèm 8GB hoặc 16GB RAM DDR4 bus 2666MHz, hỗ trợ nâng cấp tối đa lên đến 64GB, phù hợp cho người dùng chuyên nghiệp. Ổ cứng SSD NVMe PCIe dung lượng 256GB hoặc 512GB mang lại tốc độ truy xuất dữ liệu nhanh và có thể nâng cấp dễ dàng.",
+    "position": 1
+   },
+   {
+    "title": "Shopee Việt Nam",
+    "link": "https://shopee.vn/Laptop-HP-Zbook-Firefly-14-G7-Intel-Core-i7-10510U-ram-16GB-Ssd-512GB-Quadro-P520-4GB-LCD-14-FHD-i.164318637.23282172507",
+    "snippet": "Shopee Việt Nam",
+    "position": 2
+   },
+   {
+    "title": "banhang.shopee.vn",
+    "link": "https://banhang.shopee.vn/portal/product/list/live/all?operationSortBy=recommend_v2&page=1&size=12",
+    "snippet": "banhang.shopee.vn",
+    "position": 3
+   },
+   {
+    "title": "HP ZBook Firefly 14 G7 | Core i7-10610U | RAM 32GB| SSD 512GB ...",
+    "link": "https://shopee.vn/HP-ZBook-Firefly-14-G7-Core-i7-10610U-RAM-32GB-SSD-512GB-NVMe-VGA-Quadro-P520-M%C3%A0n-h%C3%ACnh-14%E2%80%9D-FHD-Windows-10-Pro-i.19678517.362881093",
+    "snippet": "Mua HP ZBook Firefly 14 G7 | Core i7-10610U | RAM 32GB| SSD 512GB NVMe | VGA Quadro P520 | Màn hình 14” FHD | Windows 10 Pro giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn Phí. XEM NGAY!",
+    "position": 4
+   },
+   {
+    "title": "Laptop HP ZBook Firefly 14 G8 i5/i7 Thế hệ 11 | Ram 16GB ...",
+    "link": "https://shopee.vn/Laptop-HP-ZBook-Firefly-14-G8-i5-i7-Th%E1%BA%BF-h%E1%BB%87-11-Ram-16GB-SSD-256gb-VGA-Quadro-T500-Win10-i.1535268543.54558641197",
+    "snippet": "Mua Laptop HP ZBook Firefly 14 G8 i5/i7 Thế hệ 11 | Ram 16GB | SSD 256gb | VGA Quadro T500 | Win10 giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn Phí. XEM NGAY!",
+    "position": 5
+   },
+   {
+    "title": "Laptop HP ZBook Firefly 14 G7 (14in FHD IPS / Core i5-10310U ...",
+    "link": "https://shopee.vn/Laptop-HP-ZBook-Firefly-14-G7-(14in-FHD-IPS-Core-i5-10310U-RAM-8GB-SSD-256GB)-KTP-Computer-i.487617113.44379754758",
+    "snippet": "Mua Laptop HP ZBook Firefly 14 G7 (14in FHD IPS / Core i5-10310U / RAM 8GB / SSD 256GB) KTP Computer giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn Phí. XEM NGAY!",
+    "position": 6
+   },
+   {
+    "title": "Laptop HP ZBook Firefly 14 G7 i5-10310U / 8GB / SSD 256GB",
+    "link": "https://shopee.vn/Laptop-HP-ZBook-Firefly-14-G7-i5-10310U-8GB-SSD-256GB-i.25822963.29781457122",
+    "snippet": "Mua Laptop HP ZBook Firefly 14 G7 i5-10310U / 8GB / SSD 256GB giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn Phí. XEM NGAY!",
+    "position": 7
+   }
+  ],
+  "credits": 1
+ }
+}

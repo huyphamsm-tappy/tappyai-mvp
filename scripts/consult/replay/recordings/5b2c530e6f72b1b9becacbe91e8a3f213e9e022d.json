@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Ốp lưng Pathfinder w Magsafe cho iPhone 17 Pro Max [6.9\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:41:09.928Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Ốp lưng Pathfinder w Magsafe cho iPhone 17 Pro Max [6.9\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

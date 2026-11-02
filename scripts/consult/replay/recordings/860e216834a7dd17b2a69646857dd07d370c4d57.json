@@ -1,0 +1,626 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "quán Hải sản ngon Đà Nẵng Da Nang",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@16.0544,108.2022,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:49:06.296Z",
+ "body": {
+  "searchParameters": {
+   "q": "quán Hải sản ngon Đà Nẵng Da Nang",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@16.0544,108.2022,14z",
+   "engine": "google"
+  },
+  "ll": "@16.0543915,108.2021997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Mộc quán Seafood Đà Nẵng",
+    "address": "26 Tô Hiến Thành, An Hải, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0640292,
+    "longitude": 108.2415578,
+    "rating": 4.8,
+    "ratingCount": 30635,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản",
+     "Nhà hàng"
+    ],
+    "website": "https://mocseafood.com/",
+    "phoneNumber": "+84 905 665 058",
+    "openingHours": {
+     "Thứ Tư": "10:30–22:30",
+     "Thứ Năm": "10:30–22:30",
+     "Thứ Sáu": "10:30–22:30",
+     "Thứ Bảy": "10:30–22:30",
+     "Chủ Nhật": "10:30–22:30",
+     "Thứ Hai": "10:30–22:30",
+     "Thứ Ba": "10:30–22:30"
+    },
+    "bookingLinks": [
+     "https://business.facebook.com/latest/inbox/messenger?asset_id=332627847363931&mailbox_id=332627847363931&selected_item_id=100002245787074&thread_type=FB_MESSAGE",
+     "http://pf.kakao.com/_AxcgZxj/chat"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlRYxombI1cskfK6Lu8Xaa51YRpC_bSQO_bPuyFKus8jFiL4fk5N9u6YLSQLHjuIk_f64UIgHu-UpkUZ4eSzu2BRsaNkEt_7Jz6dzkek5YslfVARyDEvf1mOvZ2DbM3rVJtRic",
+    "cid": "2059427300039139311",
+    "fid": "0x314217721a8aafc7:0x1c948e37d3931fef",
+    "placeId": "ChIJx6-KGnIXQjER7x-T0zeOlBw"
+   },
+   {
+    "position": 2,
+    "title": "Quán Hải Sản Thời Cổ Đà Nẵng - Seafood Restaurant",
+    "address": "354/1 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0438626,
+    "longitude": 108.2473136,
+    "rating": 4.7,
+    "ratingCount": 3861,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản",
+     "Nhà hàng",
+     "Chợ hải sản",
+     "Nhà hàng Việt Nam"
+    ],
+    "website": "https://www.facebook.com/haisanthoico?mibextid=ZbWKwL",
+    "phoneNumber": "+84 905 749 079",
+    "openingHours": {
+     "Thứ Tư": "10:00–23:00",
+     "Thứ Năm": "10:00–23:00",
+     "Thứ Sáu": "10:00–23:00",
+     "Thứ Bảy": "10:00–23:00",
+     "Chủ Nhật": "10:00–23:00",
+     "Thứ Hai": "10:00–23:00",
+     "Thứ Ba": "10:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmiPw-6-xYJ5N_c8-ALuqVF3QLbM-8eAQW65FLLoaxcQD4RAkVqyQi36Gg21MevRR1ltLqAuywxT7ov2GaOZsYu0HqIr9SGsdvHPXe26dlA9My5Ps85Eko3YscU2_EHAiC8tqnKog",
+    "cid": "4416459426147437129",
+    "fid": "0x3142177976f97ad5:0x3d4a6a72dc718a49",
+    "placeId": "ChIJ1Xr5dnkXQjERSYpx3HJqSj0"
+   },
+   {
+    "position": 3,
+    "title": "Hải Sản Đà Nẵng Bé Biển",
+    "address": "202 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0685271,
+    "longitude": 108.2449805,
+    "rating": 4.7,
+    "ratingCount": 5373,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản",
+     "Nhà cung cấp thực phẩm và đồ uống cho dịch vụ ăn uống",
+     "Nơi tổ chức sự kiện"
+    ],
+    "website": "https://haisanbebien.com/",
+    "phoneNumber": "+84 905 775 142",
+    "openingHours": {
+     "Thứ Tư": "07:30–02:00",
+     "Thứ Năm": "07:30–02:00",
+     "Thứ Sáu": "07:30–02:00",
+     "Thứ Bảy": "07:30–02:00",
+     "Chủ Nhật": "07:30–02:00",
+     "Thứ Hai": "07:30–02:00",
+     "Thứ Ba": "07:30–02:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlXSLfMtVnZREBUY7kBNCs5Hyf9TY3w_hDT0Qfop3NMDtrrnYwTo1PI3GvROxmVCEubo9EFJmryTSfMW9w8lIbUjUM3jYrZG_avsniygMw7pKBzxLyvKKDDY_HKEoWOzhppC1eJSbYUw5cn",
+    "cid": "13916594470133077361",
+    "fid": "0x314217bc80b20999:0xc121aceff3729571",
+    "placeId": "ChIJmQmygLwXQjERcZVy8--sIcE"
+   },
+   {
+    "position": 4,
+    "title": "Nhà Hàng Hải Sản - Ơ Kìa",
+    "address": "7 Trần Phú, Hải Châu, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0801078,
+    "longitude": 108.2230986,
+    "rating": 4.8,
+    "ratingCount": 3189,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "https://www.nhahangokia.com/",
+    "phoneNumber": "+84 906 430 707",
+    "openingHours": {
+     "Thứ Tư": "06:00–23:00",
+     "Thứ Năm": "06:00–23:00",
+     "Thứ Sáu": "06:00–23:00",
+     "Thứ Bảy": "06:00–23:00",
+     "Chủ Nhật": "06:00–23:00",
+     "Thứ Hai": "06:00–23:00",
+     "Thứ Ba": "06:00–23:00"
+    },
+    "bookingLinks": [
+     "https://book.chope.co/booking?source=google_dining&rid=nhahanghaisan2608vn&rwg_token=AE37R_iD_ILkU8oErDUmFwMmv9hTeN7CG6V1e-urxa36HNsghPa4-nzZBwZvfydcXFu9YYvVSErZHPYF76UeDlPqN5XvLliMiTUgbKuai58PzKQHRBr8gfM%3D",
+     "https://www.google.com/maps/reserve/v/dine/c/m4xfEt_j85g?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWle2ZvHUAH5jMW7-drfNSx9yn23yn63-UAI9M1m0cH_Tb_xwat9PosXPv6giM6pemePhHXS79aC7BTzOV9b_9XY68VuUu86uvunNacqXI5YHcN8FIcK-_GTx0X8yTCo5WUe1P81NenJ_Iu8",
+    "cid": "8430235641332136898",
+    "fid": "0x3142199eef80bd7d:0x74fe36a686707bc2",
+    "placeId": "ChIJfb2A754ZQjERwntwhqY2_nQ"
+   },
+   {
+    "position": 5,
+    "title": "Hải Sản Ku Tom Đà Nẵng",
+    "address": "283 Hồ Nghinh, An Hải, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0657206,
+    "longitude": 108.24337229999999,
+    "rating": 4.9,
+    "ratingCount": 3547,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản"
+    ],
+    "website": "https://haisankutomdanang.com/",
+    "phoneNumber": "+84 389 828 888",
+    "openingHours": {
+     "Thứ Tư": "10:00–02:00",
+     "Thứ Năm": "10:00–02:00",
+     "Thứ Sáu": "10:00–02:00",
+     "Thứ Bảy": "10:00–02:00",
+     "Chủ Nhật": "10:00–02:00",
+     "Thứ Hai": "10:00–02:00",
+     "Thứ Ba": "10:00–02:00"
+    },
+    "bookingLinks": [
+     "https://www.google.com/maps/reserve/v/dine/c/R7d9uO8ZbxM?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm9kH6cyrTU4BcWPjeXHRdnzVwGmD8SYhvy-i-zF9eEIZQkuQsysk1BtPvMTtwMkI6PXMrTddVxc1hMyVEZ7Vz_koMTktyfknRGCzhiSd09Wgu0H1TR5_kD4KSnICipj6lYWNX_euNR2zYK",
+    "cid": "11082184094803346066",
+    "fid": "0x314217d9a8c24acb:0x99cbd3b7e23cc292",
+    "placeId": "ChIJy0rCqNkXQjERksI84rfTy5k"
+   },
+   {
+    "position": 6,
+    "title": "ĐÀ THÀNH QUÁN",
+    "address": "122 Nguyễn Văn Thoại, Ngũ Hành Sơn, Đà Nẵng 55000, Việt Nam",
+    "latitude": 16.0554266,
+    "longitude": 108.24402239999999,
+    "rating": 4.8,
+    "ratingCount": 2849,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản"
+    ],
+    "phoneNumber": "+84 935 208 213",
+    "openingHours": {
+     "Thứ Tư": "10:00–02:00",
+     "Thứ Năm": "10:00–02:00",
+     "Thứ Sáu": "10:00–02:00",
+     "Thứ Bảy": "10:00–02:00",
+     "Chủ Nhật": "10:00–02:00",
+     "Thứ Hai": "10:00–02:00",
+     "Thứ Ba": "10:00–02:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmses5eR9DLXp3F3zbZUAjSOqEc_D8wmiPFIbp2iaeOVXUkhAgcb52zo_JX_zkpZSfB8E2nGNAc4navSJqxKglOqh11X3GhPp4yaL8xXTYVVPGnhTWf2CjzrUe460-xz4oOlBwl",
+    "cid": "9128692524504562285",
+    "fid": "0x3142176e8a31727b:0x7eafa17c32dbba6d",
+    "placeId": "ChIJe3Ixim4XQjERbbrbMnyhr34"
+   },
+   {
+    "position": 7,
+    "title": "Muối Biển Seafood Restaurant - Nhà hàng hải sản Đà Nẵng",
+    "address": "51 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0478481,
+    "longitude": 108.2495921,
+    "rating": 4.4,
+    "ratingCount": 3792,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản"
+    ],
+    "website": "https://muoibienseafood.com/",
+    "phoneNumber": "+84 363 399 388",
+    "openingHours": {
+     "Thứ Tư": "10:00–23:00",
+     "Thứ Năm": "10:00–23:00",
+     "Thứ Sáu": "10:00–23:00",
+     "Thứ Bảy": "10:00–23:00",
+     "Chủ Nhật": "10:00–23:00",
+     "Thứ Hai": "10:00–23:00",
+     "Thứ Ba": "10:00–23:00"
+    },
+    "bookingLinks": [
+     "https://muoibienseafood.com/lien-he/",
+     "https://www.facebook.com/muoibienseafood/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlThQ1Pr96bh2u8mpolUmtL1ZfyXMnrJgi9DMfVCkMm1jSrhe75IMlZndOvJchJ6DV45UHaIFfHqkubvjKnyDDidFBjvcNrW0xtN9okrvp48_l4ex6iKGGlEEIEbagBo4dGGTgSijxsvM7q",
+    "cid": "14050319423124457681",
+    "fid": "0x31421700480a843d:0xc2fcc312d41ac8d1",
+    "placeId": "ChIJPYQKSAAXQjER0cga1BLD_MI"
+   },
+   {
+    "position": 8,
+    "title": "Buffet Hải Sản Đà Nẵng Mr Mộc",
+    "address": "78 Võ Nguyên Giáp, Sơn Trà, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0823487,
+    "longitude": 108.2474204,
+    "rating": 4.9,
+    "ratingCount": 3032,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 905 993 874",
+    "openingHours": {
+     "Thứ Tư": "09:00–22:00",
+     "Thứ Năm": "09:00–22:00",
+     "Thứ Sáu": "09:00–22:00",
+     "Thứ Bảy": "09:00–22:00",
+     "Chủ Nhật": "09:00–22:00",
+     "Thứ Hai": "09:00–22:00",
+     "Thứ Ba": "09:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnEmWLEZXfVtN3sk4xq7LOKsGlN-u2POVFGNCXw_Clg7EZgf3SwrJfd4uKU9vFbQQVxtQpqcndYm-AO5oVLNTq-hSmBrUnrc7VxB5J8MzFIBsJqB16d_pqV05k23B20vFLBD6kgsSV4KnrK",
+    "cid": "16318222310272472768",
+    "fid": "0x3142174a21a6a55b:0xe275f8bbc9a516c0",
+    "placeId": "ChIJW6WmIUoXQjERwBalybv4deI"
+   },
+   {
+    "position": 9,
+    "title": "Hải sản My Hanh Seafood",
+    "address": "03-05 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.065402499999998,
+    "longitude": 108.24616979999999,
+    "rating": 4.7,
+    "ratingCount": 7343,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản"
+    ],
+    "website": "http://myhanhseafood.vn/",
+    "phoneNumber": "+84 967 748 668",
+    "openingHours": {
+     "Thứ Tư": "09:00–23:00",
+     "Thứ Năm": "09:00–23:00",
+     "Thứ Sáu": "09:00–23:00",
+     "Thứ Bảy": "09:00–23:00",
+     "Chủ Nhật": "09:00–23:00",
+     "Thứ Hai": "09:00–23:00",
+     "Thứ Ba": "09:00–23:00"
+    },
+    "bookingLinks": [
+     "http://myhanhseafood.vn/",
+     "https://www.facebook.com/MyHanhSeafoodOfficial"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkS-mk_T5uBGQQqwHB9PYCn7Hb8Z2OsB9FgFmzX3Osl4n4SpBbKtHCkoC2cQp7ClG-kzgjSpqK51CnNEXwY2HEkN4CyhouX-bb10jtIgJumBg5gKZk9QehNtIyCfLo1jDTNMdR_Oc5vDYw6",
+    "cid": "15356935463653978732",
+    "fid": "0x314217ee3600dbb9:0xd51ecb708db1b26c",
+    "placeId": "ChIJudsANu4XQjERbLKxjXDLHtU"
+   },
+   {
+    "position": 10,
+    "title": "Thèm Hải Sản",
+    "address": "39 Trần Bạch Đằng, An Hải, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0570832,
+    "longitude": 108.245463,
+    "rating": 4.8,
+    "ratingCount": 11163,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản"
+    ],
+    "website": "https://themhaisandn.com/",
+    "phoneNumber": "+84 946 495 571",
+    "openingHours": {
+     "Thứ Tư": "11:00–00:00",
+     "Thứ Năm": "11:00–00:00",
+     "Thứ Sáu": "11:00–00:00",
+     "Thứ Bảy": "11:00–00:00",
+     "Chủ Nhật": "11:00–00:00",
+     "Thứ Hai": "11:00–00:00",
+     "Thứ Ba": "11:00–00:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn0-WdAxuBFQxisFYhVngX7wD1CAcVaGqneGYzFDhNcNfb5l6LCwAdEs3sQomAjMCs_0wUzSlq6FKOaxfFioUoZmXvYYDcC1hY2f2inDpm9zMWunBD9wqFdQ3OV9fJKai1sDdH2-wlPR27U",
+    "cid": "14378541914985934539",
+    "fid": "0x314217243501ce37:0xc78ad7b0decd2ecb",
+    "placeId": "ChIJN84BNSQXQjERyy7N3rDXisc"
+   },
+   {
+    "position": 11,
+    "title": "Quán Hải Sản ÔNG MINH",
+    "address": "94 Võ Nguyên Giáp, Sơn Trà, Đà Nẵng 55000, Việt Nam",
+    "latitude": 16.0802935,
+    "longitude": 108.24663559999999,
+    "rating": 4.5,
+    "ratingCount": 2048,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản",
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 932 777 703",
+    "openingHours": {
+     "Thứ Tư": "10:00–02:00",
+     "Thứ Năm": "10:00–02:00",
+     "Thứ Sáu": "10:00–02:00",
+     "Thứ Bảy": "10:00–02:00",
+     "Chủ Nhật": "10:00–02:00",
+     "Thứ Hai": "10:00–02:00",
+     "Thứ Ba": "10:00–02:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlV9A-8pMeoHyA3oK_UaFHPFQ5jAPVBQWKA6iaXQijpnAgJVOEt_CgjxpLDGpfnGSCrPVRlFnfdKXZiTcNGfQ5nnMZIVsN_ds8vZOZNZAjBzAx6VnYo3cSjWY9-FaIAmCiUc2caQA",
+    "cid": "9261490050408366544",
+    "fid": "0x314217f887cb5105:0x80876c21a167c1d0",
+    "placeId": "ChIJBVHLh_gXQjER0MFnoSFsh4A"
+   },
+   {
+    "position": 12,
+    "title": "Nhà Hàng Biển Việt",
+    "address": "64 An Thượng 26, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.055389599999998,
+    "longitude": 108.2457142,
+    "rating": 4.7,
+    "ratingCount": 2146,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản"
+    ],
+    "phoneNumber": "+84 926 999 336",
+    "openingHours": {
+     "Thứ Tư": "10:00–22:30",
+     "Thứ Năm": "10:00–22:30",
+     "Thứ Sáu": "10:00–22:30",
+     "Thứ Bảy": "10:00–22:30",
+     "Chủ Nhật": "10:00–22:30",
+     "Thứ Hai": "10:00–22:30",
+     "Thứ Ba": "10:00–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnubp1AgUKGHa2_DiFAaqOll_5uWgXlpL6LsKbppCuLPxez7Ynv-837VCngJhfmXPFpZHfEd0ntBrxpPBC9mihRV1h3X2RIDhE27T5jd_oaO7Ldochgn33ASd0S9uvqSwCdEUHn",
+    "cid": "13230658813416901166",
+    "fid": "0x3142178afb017ca7:0xb79cbe177e1b0a2e",
+    "placeId": "ChIJp3wB-4oXQjERLgobfhe-nLc"
+   },
+   {
+    "position": 13,
+    "title": "Hải Sản Lộng Gió",
+    "address": "10 Nại Tú 2, Sơn Trà, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.081933,
+    "longitude": 108.22934889999999,
+    "rating": 4.7,
+    "ratingCount": 67,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản"
+    ],
+    "website": "https://www.facebook.com/Quannhaulonggio/",
+    "phoneNumber": "+84 905 331 419",
+    "openingHours": {
+     "Thứ Tư": "10:00–22:00",
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00",
+     "Thứ Ba": "10:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn9p0rx4FMbdGLZZ7dLeS9B2DAVQ7ngzgSlICV1vaiZzQy8RExyrJWD-x78EFtmyApy479yNy09iWYn7xnIyTHHUaDTYPfyjof3pcW10WmtUgULYWDwMsiqVjpFSVINKxqJyDN4jwbyljI",
+    "cid": "17222592021731006655",
+    "fid": "0x314219000f136a63:0xef02f031cec0d8bf",
+    "placeId": "ChIJY2oTDwAZQjERv9jAzjHwAu8"
+   },
+   {
+    "position": 14,
+    "title": "Nhà Hàng Lão Đại",
+    "address": "100 Võ Văn Kiệt, An Hải, Đà Nẵng 100000, Việt Nam",
+    "latitude": 16.0620191,
+    "longitude": 108.235918,
+    "rating": 4,
+    "ratingCount": 2970,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản",
+     "Phòng tiệc",
+     "Quán bia sân vườn",
+     "Nhà hàng giá rẻ",
+     "Nhà hàng gia đình",
+     "Nhà hàng",
+     "Nhà bán buôn hải sản"
+    ],
+    "website": "https://laodaiseafood.com/",
+    "phoneNumber": "+84 966 666 895",
+    "description": "Nhà hàng rộng rãi, nhộn nhịp có chỗ ngồi ngoài trời, bể chứa hải sản, cocktail và món ăn địa phương.",
+    "openingHours": {
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày"
+    },
+    "bookingLinks": [
+     "https://www.facebook.com/LaoDaiDaNang"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlSiN05NXnM0RZaQoKB_4dDjilOqMQyTPQN5kVb5vnKYgYPJ2_ekaZEliAAX38otYscAAKX0FA4lbJ6o5T-w_fZhhPEK4iplVM3sJhUJMJ0WDwsS44mTYIjEFU1AN-aaZIgUZLd",
+    "cid": "2196483325407730845",
+    "fid": "0x314219d5305a5279:0x1e7b79f26dff1c9d",
+    "placeId": "ChIJeVJaMNUZQjERnRz_bfJ5ex4"
+   },
+   {
+    "position": 15,
+    "title": "Vựa Hải sản Đà Nẵng",
+    "address": "181 Nguyễn Văn Thoại, An Hải, Đà Nẵng 50000, Việt Nam",
+    "latitude": 16.0553104,
+    "longitude": 108.24261369999999,
+    "rating": 4.8,
+    "ratingCount": 51,
+    "type": "Nhà bán buôn hải sản",
+    "types": [
+     "Nhà bán buôn hải sản"
+    ],
+    "website": "https://www.facebook.com/haisandananggiarev2",
+    "phoneNumber": "+84 933 002 802",
+    "openingHours": {
+     "Thứ Tư": "07:00–18:30",
+     "Thứ Năm": "07:00–18:30",
+     "Thứ Sáu": "07:00–18:30",
+     "Thứ Bảy": "07:00–18:30",
+     "Chủ Nhật": "07:00–18:30",
+     "Thứ Hai": "07:00–18:30",
+     "Thứ Ba": "07:00–18:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlJgepwFdt_D_12QcSdElYt6h0iB_qDESxFSBpHMyTqpRjLVaGl2ApHatUf_q1Rv-3kLOr8quhbFks0JcjJFbY0-ny75rB-PfC_FiVkAN5pAZCPASQ6YFqYwDk4qhAHxuRjXcX3",
+    "cid": "16030107988971528340",
+    "fid": "0x3142195bea960503:0xde766248e9cca094",
+    "placeId": "ChIJAwWW6lsZQjERlKDM6Uhidt4"
+   },
+   {
+    "position": 16,
+    "title": "Bé Ni 2",
+    "address": "228 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.066801599999998,
+    "longitude": 108.2449953,
+    "rating": 4.8,
+    "ratingCount": 14448,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản",
+     "Nhà hàng"
+    ],
+    "website": "http://zalo.me/84773515685",
+    "phoneNumber": "+84 773 515 685",
+    "openingHours": {
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày"
+    },
+    "bookingLinks": [
+     "https://l.facebook.com/l.php?u=https%3A%2F%2Fzaloapp.com%2Fqr%2Fp%2F10p8wlor0o1cf%3Ffbclid%3DIwAR0fErauul7NTChb2mJ5i2ib6kE-arGKitwbyG-EbJpCaFxAJj508CPuyoc&h=AT1r5rxzmtBAvymGQMnX9ohDimZK7g4PDR56fqDyS5aXmQLiCNNlNjDS33xVAc1lEFc8P87a1_RjLUxcxip79cVQSSHbkus9GpRwwL944Jb6SgYJOu4CFO6FzbmnSO9MpZznn2W0LXCD7fg",
+     "https://www.google.com/maps/reserve/v/dine/c/tvAKb7qbg3E?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlQIBHoNnySWkl8UOHH17Ydk9opLZ0_on7YVeyUiC8HLfrwEoZ_1V-U2KjuV3fqm5WEtn8xAD7910QqZIcBtuZH13-gCk-LM28zOCLmFnlAyc2EYC12J5IEouuVi1d5vcHj2l3KnQ",
+    "cid": "1280184014731027025",
+    "fid": "0x31421719573522c9:0x11c42094252d2251",
+    "placeId": "ChIJySI1VxkXQjERUSItJZQgxBE"
+   },
+   {
+    "position": 17,
+    "title": "NHÀ HÀNG ĐẢO XANH 岘港绿岛美缘新鲜海鲜餐厅",
+    "address": "124 Nguyễn Văn Thoại, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0555403,
+    "longitude": 108.2441662,
+    "rating": 4.8,
+    "ratingCount": 2597,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản"
+    ],
+    "website": "http://nhahangdaoxanh.com/",
+    "phoneNumber": "+84 905 891 688",
+    "openingHours": {
+     "Thứ Tư": "10:00–03:00",
+     "Thứ Năm": "10:00–03:00",
+     "Thứ Sáu": "10:00–03:00",
+     "Thứ Bảy": "10:00–03:00",
+     "Chủ Nhật": "10:00–03:00",
+     "Thứ Hai": "10:00–03:00",
+     "Thứ Ba": "10:00–03:00"
+    },
+    "bookingLinks": [
+     "https://nhahangdaoxanh.com/#contact"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk6EaNjV9tP2tiqoimlas3kn5aTnwAC9a0ZI8eTUh2ebMtOIseMBSZcVhe1InUIovjWD5ZtTCgOTz6ReNMSGAHTM1IChXL-Z_ahbNAdr-AuM_R7K6MGJGnPavM-hwcYisTniuRLmsK6cQE",
+    "cid": "18378587593892782665",
+    "fid": "0x314217f63e0d4d29:0xff0ddc0aef616249",
+    "placeId": "ChIJKU0NPvYXQjERSWJh7wrcDf8"
+   },
+   {
+    "position": 18,
+    "title": "Quán Hải sản Bà Tám",
+    "address": "596 /14 Hoàng Diệu, Hòa Cường, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0497581,
+    "longitude": 108.2181129,
+    "rating": 4.6,
+    "ratingCount": 160,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản"
+    ],
+    "phoneNumber": "+84 905 559 930",
+    "openingHours": {
+     "Thứ Tư": "10:00–22:30",
+     "Thứ Năm": "10:00–22:30",
+     "Thứ Sáu": "10:00–22:30",
+     "Thứ Bảy": "10:00–22:30",
+     "Chủ Nhật": "10:00–22:30",
+     "Thứ Hai": "10:00–22:30",
+     "Thứ Ba": "10:00–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnYlfomW0zZlkxHCFzZ4FouRbDROcahctMb0iIcrWMm1fUKqojVi2e49FY8GOcKkM6crVODgA4sSqOzim01kf7IdDrVbejpV0yHzFNHN_PYyU0F_-_kj1iks2bbiZ6C3_oHduYBAciQ8GE",
+    "cid": "15614823698978220651",
+    "fid": "0x314219d6ed69a851:0xd8b2ff6c5ff2aa6b",
+    "placeId": "ChIJUahp7dYZQjERa6ryX2z_stg"
+   },
+   {
+    "position": 19,
+    "title": "Nhà Hàng Hải Sản 24h",
+    "address": "260 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0572622,
+    "longitude": 108.2467946,
+    "rating": 4.3,
+    "ratingCount": 1545,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản"
+    ],
+    "website": "https://sites.google.com/view/hai-san-24h-restaurant",
+    "phoneNumber": "+84 971 189 103",
+    "openingHours": {
+     "Thứ Tư": "10:00–03:00",
+     "Thứ Năm": "10:00–03:00",
+     "Thứ Sáu": "10:00–03:00",
+     "Thứ Bảy": "10:00–03:00",
+     "Chủ Nhật": "10:00–03:00",
+     "Thứ Hai": "10:00–03:00",
+     "Thứ Ba": "10:00–03:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlt36rkOXLl8b9lYW7YZYBFR4ca7cyVzYgtGqNr6SHjMKfJmErmemI9kWw8MAeQEhyu5MzvErZqX3qnRCGaZBM_eFRgfEKVvLz-FGZLjwkBtymuBHAo1pSqiI5By7K9l3ks02KIlsos309D",
+    "cid": "12333411820528069080",
+    "fid": "0x314217bd96bcfa5f:0xab2914b49f2de9d8",
+    "placeId": "ChIJX_q8lr0XQjER2Oktn7QUKas"
+   },
+   {
+    "position": 20,
+    "title": "Nhà Hàng LÀNG HẢI SẢN",
+    "address": "817 Nguyễn Tất Thành, Thanh Khê, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0721599,
+    "longitude": 108.1954981,
+    "rating": 4.1,
+    "ratingCount": 379,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản"
+    ],
+    "website": "https://www.facebook.com/langhaisan/",
+    "phoneNumber": "+84 398 143 143",
+    "openingHours": {
+     "Thứ Tư": "08:00–23:00",
+     "Thứ Năm": "08:00–23:00",
+     "Thứ Sáu": "08:00–23:00",
+     "Thứ Bảy": "08:00–23:00",
+     "Chủ Nhật": "08:00–23:00",
+     "Thứ Hai": "08:00–23:00",
+     "Thứ Ba": "08:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWndyAp3X5ve_UMEfshzps6-fa-Qj3U1K_xybWNf15ZktF_11zgPeQjia2k-rflbnZ0MpLuhfLektLJTMRfpOlaDz9a03qvk9VNCSLT0EpCQ3QoZb96HI73hySzoCPgEQbC8Y4Q",
+    "cid": "17997826235403772865",
+    "fid": "0x3142196865941a21:0xf9c51f9ac272a3c1",
+    "placeId": "ChIJIRqUZWgZQjERwaNywpofxfk"
+   }
+  ],
+  "credits": 3
+ }
+}

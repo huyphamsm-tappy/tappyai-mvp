@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "ốp UAG iPhone 17 Pro Max (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:02:25.606Z",
+ "body": {
+  "searchParameters": {
+   "q": "ốp UAG iPhone 17 Pro Max (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp lưng UAG cho iPhone 17 Series",
+    "link": "https://cellphones.com.vn/phu-kien/bao-da-op-lung/iphone/iphone-17/uag.html",
+    "snippet": "Hỗ trợ sạc không dây/MagSafe; Mỏng nhẹ; Chống sốc, va đập; Chống trầy xước; Có chân đứng; Hạn chế ngã màu. Dòng iPhone. iPhone 17 Pro Max; iPhone 17 Pro",
+    "position": 1
+   },
+   {
+    "title": "[iPhone 17 Pro Max] Ốp lưng UAG/ ZAGG/ PITAKA chống ...",
+    "link": "https://shopee.vn/-iPhone-17-Pro-Max-%E1%BB%90p-l%C6%B0ng-UAG-ZAGG-PITAKA-ch%E1%BB%91ng-s%E1%BB%91c-b%E1%BA%A3o-h%C3%A0nh-ch%E1%BB%91ng-%E1%BB%91-v%C3%A0ng-H%C3%A0ng-ch%C3%ADnh-h%C3%A3ng-i.206824363.25796994129",
+    "snippet": "Mua [iPhone 17 Pro Max] Ốp lưng UAG/ ZAGG/ PITAKA chống sốc, bảo hành chống ố vàng - Hàng chính hãng giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 12,
+    "position": 2
+   },
+   {
+    "title": "Ốp lưng UAG Monarch Pro w Magnetic cho iPhone 17 ...",
+    "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-UAG-Monarch-Pro-w-Magnetic-cho-iPhone-17-Pro-Max-6.9-inch--i.241319331.43818320892",
+    "snippet": "Mua Ốp lưng UAG Monarch Pro w Magnetic cho iPhone 17 Pro Max [6.9 inch] giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Pathfinder ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-pathfinder-with-magsafe.html",
+    "snippet": "Ốp lưng iPhone 17 Pro Max UAG Pathfinder with Magsafe được thiết kế theo cấu trúc Featherlight Composite nhẹ với khả năng chống sốc đạt chuẩn quân sự. Sản phẩm ...",
+    "position": 4
+   },
+   {
+    "title": "Ốp lưng iPhone 17 (Pro Max | Pro) chính hãng",
+    "link": "https://cellphones.com.vn/phu-kien/bao-da-op-lung/iphone/iphone-17.html",
+    "snippet": "Tổng hợp ốp lưng iPhone 17(Pro| Pro Max) đa dạng mẫu mã, cao cấp dao động 200.000 VNĐ đến hơn 1.500.000 VNĐ - Mua ốp iPhone 17 (Pro Max) tại CellphoneS.",
+    "position": 5
+   },
+   {
+    "title": "Ốp lưng UAG Plyo dành cho iPhone 17 Pro Max Ice/Silver",
+    "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-UAG-Plyo-d%C3%A0nh-cho-iPhone-17-Pro-Max-Ice-Silver-B%E1%BA%A3o-h%C3%A0nh-12-th%C3%A1ng-i.152029915.41418690094",
+    "snippet": "Ốp lưng UAG Plyo dành cho iPhone 17 Pro Max Ice/Silver - Bảo hành 12 tháng. 1/10. Đã bán hết. 1.500.000₫. Ốp lưng UAG Plyo dành cho iPhone 17 Pro Max Ice/Silver ...",
+    "position": 6
+   },
+   {
+    "title": "Ốp lưng UAG Pathfinder Claer cho iPhone 17 Pro Max",
+    "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-UAG-Pathfinder-Claer-cho-iPhone-17-Pro-Max-Active-Neon-B%E1%BA%A3o-h%C3%A0nh-12-th%C3%A1ng-i.1383043614.43268930963",
+    "snippet": "Mua Ốp lưng UAG Pathfinder Claer cho iPhone 17 Pro Max - Active Neon - Bảo hành 12 tháng giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 7
+   },
+   {
+    "title": "Ốp từ tính UAG Plasma XTE cho iphone 17 Pro Max 16 15 14 13 ...",
+    "link": "https://shopee.vn/%E1%BB%90p-t%E1%BB%AB-t%C3%ADnh-UAG-Plasma-XTE-cho-iphone-17-Pro-Max-16-15-14-13-12-v%E1%BB%9Bi-%E1%BB%90p-%C4%91i%E1%BB%87n-tho%E1%BA%A1i-ch%C3%A2n-%C4%91%E1%BA%BF-t%C3%ADch-h%E1%BB%A3p-xoay-360-c%C3%B3-th%E1%BB%83-xoay-%C4%91%C6%B0%E1%BB%A3c-i.1891709514.45364758529",
+    "snippet": "Ốp từ tính UAG Plasma XTE cho iphone 17 Pro Max 16 15 14 13 12 với Ốp điện thoại chân đế tích hợp xoay 360 có thể xoay được. outline green truck icon.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -18,7 +18,7 @@ const VALID = {
   NEXT_PUBLIC_SUPABASE_URL: 'https://example.supabase.co',
   NEXT_PUBLIC_SUPABASE_ANON_KEY: 'anon-key',
   SUPABASE_SERVICE_ROLE_KEY: 'service-role-key',
-  ANTHROPIC_API_KEY: 'anthropic-key',
+  OPENAI_API_KEY: 'openai-key',
   NEXT_PUBLIC_SITE_URL: 'https://www.tappyai.com',
 }
 
@@ -26,7 +26,7 @@ describe('C9b — the required set is exactly the five the Owner approved', () =
   it('contains precisely those five names', () => {
     expect([...REQUIRED_ENV].sort()).toEqual(
       [
-        'ANTHROPIC_API_KEY',
+        'OPENAI_API_KEY',
         'NEXT_PUBLIC_SITE_URL',
         'NEXT_PUBLIC_SUPABASE_ANON_KEY',
         'NEXT_PUBLIC_SUPABASE_URL',
@@ -68,8 +68,8 @@ describe('C9b — validation', () => {
 
   it('an empty or whitespace-only value is rejected, not treated as set', () => {
     for (const blank of ['', '   ']) {
-      const issues = validateEnv({ ...VALID, ANTHROPIC_API_KEY: blank })
-      expect(issues).toEqual([{ name: 'ANTHROPIC_API_KEY', problem: 'empty' }])
+      const issues = validateEnv({ ...VALID, OPENAI_API_KEY: blank })
+      expect(issues).toEqual([{ name: 'OPENAI_API_KEY', problem: 'empty' }])
     }
   })
 
@@ -85,7 +85,7 @@ describe('C9b — validation', () => {
 
   it('only URL-shaped variables get URL validation', () => {
     // A key that happens not to look like a URL must not be rejected.
-    expect(validateEnv({ ...VALID, ANTHROPIC_API_KEY: 'not a url at all' })).toEqual([])
+    expect(validateEnv({ ...VALID, OPENAI_API_KEY: 'not a url at all' })).toEqual([])
     expect(URL_ENV).toEqual(['NEXT_PUBLIC_SUPABASE_URL', 'NEXT_PUBLIC_SITE_URL'])
   })
 

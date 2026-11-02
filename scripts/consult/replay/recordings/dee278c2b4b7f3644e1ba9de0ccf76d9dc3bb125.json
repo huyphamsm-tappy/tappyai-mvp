@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Laptop Dell XPS 15 9510\" OR \"Dell XPS 9500 Core i7 | Thiết Kế Sang\" OR \"Laptop Dell Inspiron 15 3520\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:48:07.694Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Laptop Dell XPS 15 9510\" OR \"Dell XPS 9500 Core i7 | Thiết Kế Sang\" OR \"Laptop Dell Inspiron 15 3520\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop Dell xps 15 9510 thiết kế đẹp cấu hình cao, thích hợp anh ...",
+    "link": "https://www.tiktok.com/@unilap.vn/video/7244167422142418177",
+    "snippet": "173 Lượt thích,20 Bình luận.Video TikTok từ Unilap_Laptop xách tay Mỹ (@unilap.vn): \"Laptop Dell xps 15 9510 thiết kế đẹp cấu hình cao, ...",
+    "date": "13 thg 6, 2023",
+    "position": 1
+   },
+   {
+    "title": "Got a New Laptop - Dell XPS 15 9510 Unboxing! #dellxps ... - TikTok",
+    "link": "https://www.tiktok.com/@tonytechbytes/video/7048396523113205038",
+    "snippet": "25K Likes, 151 Comments. TikTok video from Tony (@tonytechbytes): “Got a New Laptop - Dell XPS 15 9510 Unboxing! #dellxps #dellxps15 #dell ...",
+    "date": "1 thg 1, 2022",
+    "position": 2
+   },
+   {
+    "title": "Laptop Dell Inspiron 15 3520: Deal Hời Black Friday | TikTok",
+    "link": "https://www.tiktok.com/@hoanghamobileoffical/video/7577635574564097301",
+    "snippet": "Khám phá deal laptop Dell Inspiron 15 3520 siêu hấp dẫn với cấu hình mạnh, giá chỉ dưới 15 triệu! #hoanghamobile #yeucongnghe #review # ...",
+    "date": "27 thg 11, 2025",
+    "position": 3
+   },
+   {
+    "title": "So sánh Laptop Dell XPS 15 9510 và Laptop Dell Precision 5560 ...",
+    "link": "https://www.tiktok.com/@shopcongnghetld/video/7235632495117569285",
+    "snippet": "So sánh Laptop Dell XPS 15 9510 và Laptop Dell Precision 5560 máy nào dựng video và làm đồ hoạ tốt hơ. #shoplaptoptld #xuhuong #laptopđồhoạ3D # ...",
+    "date": "21 thg 5, 2023",
+    "position": 4
+   },
+   {
+    "title": "Review Laptop Dell Inspiron 15 3520 Cảm Ứng Mới Nhất - TikTok",
+    "link": "https://www.tiktok.com/@laptop24h/video/7477880626218126600",
+    "snippet": "Review Laptop Dell Inspiron 15 3520 Cảm Ứng Mới Nhất. Khám phá Dell Inspiron 15 3520 i5 gen 12 với màn hình cảm ứng. Đánh giá chi tiết và ...",
+    "date": "4 thg 3, 2025",
+    "position": 5
+   },
+   {
+    "title": "Laptop Dell Inspiron 15 3520 - Giá Rẻ với Hiệu Suất Cao | TikTok",
+    "link": "https://www.tiktok.com/@n.trungdinh/photo/7542365327041056021",
+    "snippet": "Laptop Dell Inspiron 15 3520 - Giá Rẻ với Hiệu Suất Cao. Mua ngay laptop Dell Inspiron 15 3520 đẹp 99% với CPU i5, RAM 8GB và SSD 512GB. Hỗ trợ trả góp 0% và ...",
+    "position": 6
+   },
+   {
+    "title": "Laptop Dell Inspiron 15 3520 của khách bị lỗi cắm sạc không nhận ...",
+    "link": "https://www.tiktok.com/@sualaptopphunggia79/video/7655619347678760210",
+    "snippet": "Video TikTok từ Sửa laptop 0945333458 (@sualaptopphunggia79): \"Laptop Dell Inspiron 15 3520 của khách bị lỗi cắm sạc không nhận.",
+    "date": "26 thg 6, 2026",
+    "position": 7
+   },
+   {
+    "title": "Bài học đắt giá khi dùng laptop Dell - TikTok",
+    "link": "https://www.tiktok.com/@laptopchaywin/video/7632662035368660245",
+    "snippet": "Bài học đắt giá khi dùng Laptop của nhà DELL #thanhcongnghe #laptopchaywin · Laptop Dell Inspiron 15 3520 I3 1215u 512gb 16gb Ram · Pap Laptop.",
+    "date": "25 thg 4, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

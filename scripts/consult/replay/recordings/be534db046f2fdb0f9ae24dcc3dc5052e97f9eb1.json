@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Urban Armor Gear Ốp iPhone 11 Pro UAG Monarch\" OR \"Ốp lưng iPhone 16 Pro Max UAG chống sốc Monarch Pro Titanium\" OR \"Ốp lưng iPhone 17 Pro Max UAG chống sốc Monarch Pro\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:25:49.419Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Urban Armor Gear Ốp iPhone 11 Pro UAG Monarch\" OR \"Ốp lưng iPhone 16 Pro Max UAG chống sốc Monarch Pro Titanium\" OR \"Ốp lưng iPhone 17 Pro Max UAG chống sốc Monarch Pro\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp lưng iPhone 16 Pro Max UAG chống sốc Monarch ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-16-pro-max-uag-monarch-pro-titanium.html",
+    "snippet": "Ốp lưng iPhone 16 Pro Max UAG chống sốc Monarch Pro Titanium · Giảm đến 1 triệu đồng cho đơn hàng từ 10 triệu đồng · Giảm ngay 600K cho đơn hàng từ 4 triệu đồng.",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

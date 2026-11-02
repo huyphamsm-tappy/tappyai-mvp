@@ -159,9 +159,15 @@ describe('PICK-06 — insufficient evidence produces NO Pick, never false confid
     expect(derivePick(rankCandidates(DECISIVE, bare), bare)).toBeNull()
   })
 
-  it('an exact tie yields no Pick — there is nothing to lean on', () => {
-    const tied = [place('A', { rating: 4.5, reviewCount: 100, distanceKm: 2 }), place('B', { rating: 4.5, reviewCount: 100, distanceKm: 2 })]
-    expect(derivePick(rankCandidates(tied, DISTANCE_FIRST), DISTANCE_FIRST)).toBeNull()
+  it('an exact tie is settled by the deterministic chain (D6): a Pick with reason tie_rule, never by input order', () => {
+    const tied = [place('B', { rating: 4.5, reviewCount: 100, distanceKm: 2 }), place('A', { rating: 4.5, reviewCount: 100, distanceKm: 2 })]
+    const p = derivePick(rankCandidates(tied, DISTANCE_FIRST), DISTANCE_FIRST)
+    expect(p).not.toBeNull()
+    expect(p!.reason).toBe('tie_rule')
+    expect(p!.conditional).toBe(false) // no hedged wording for a rule-decided tie (D6.a)
+    expect(p!.candidate.name).toBe('A') // score -> reviews -> name
+    // the same candidates in the other order: the same Pick
+    expect(derivePick(rankCandidates([...tied].reverse(), DISTANCE_FIRST), DISTANCE_FIRST)!.candidate.name).toBe('A')
   })
 
   it('a rank[0] with no grounded reason yields no Pick', () => {
@@ -181,7 +187,8 @@ describe('PICK-06 — insufficient evidence produces NO Pick, never false confid
 
   it('a NARROW win is a CONDITIONAL lean, not silence and not false certainty', () => {
     const close = [
-      place('A', { rating: 4.50, reviewCount: 100, distanceKm: 2.0 }),
+      // Phase 3B (I-2): a stated distance priority switches the places default (rating) block off, so the narrow lead must be a DISTANCE lead.
+      place('A', { rating: 4.50, reviewCount: 100, distanceKm: 1.95 }),
       place('B', { rating: 4.48, reviewCount: 100, distanceKm: 2.0 }),
     ]
     const p = derivePick(rankCandidates(close, DISTANCE_FIRST), DISTANCE_FIRST)
@@ -374,13 +381,15 @@ describe('PICK-08 — implicit purchase intent enables a Pick without stated cri
     expect(withSignal!.reasons.length).toBeGreaterThan(0)
   })
 
-  it('the signal STILL yields null on ties (grounding guards unchanged)', () => {
+  it('on an exact tie the signal yields the rule-decided Pick (D6); the other grounding guards are unchanged', () => {
     const tied = [
       place('A', { rating: 4.5, reviewCount: 100 }),
       place('B', { rating: 4.5, reviewCount: 100 }),
     ]
     const need = profile()
-    expect(derivePick(rankCandidates(tied, need), need, { implicitPurchaseIntent: true })).toBeNull()
+    const p = derivePick(rankCandidates(tied, need), need, { implicitPurchaseIntent: true })
+    expect(p?.reason).toBe('tie_rule')
+    expect(p?.candidate.name).toBe('A')
   })
 
   it('the signal STILL yields null when candidates carry no rankable evidence', () => {

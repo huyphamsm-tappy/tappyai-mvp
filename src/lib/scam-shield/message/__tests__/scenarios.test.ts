@@ -11,7 +11,8 @@ import { TELEGRAM_SCAM, assessment, fakeAnalyzer, tableUrlChecker } from './fixt
 // The one that matters most is first.
 
 const DANGEROUS = new Set(['HIGH', 'CRITICAL'])
-const REASSURING = new Set(['SAFE', 'LOW'])
+// 02/10: the public level is never SAFE/LOW (old apps would print "An toàn"); the reassuring end is INCONCLUSIVE.
+const REASSURING = new Set(['INCONCLUSIVE'])
 
 async function run(text: string, opts: {
   analyzer?: ReturnType<typeof fakeAnalyzer>
@@ -22,7 +23,7 @@ async function run(text: string, opts: {
 } = {}): Promise<MessageAnalysisResult> {
   return analyzeMessage(
     { text, url: opts.url, locale: opts.locale ?? 'vi', aiGate: opts.aiGate ?? true },
-    { analyzer: opts.analyzer ?? fakeAnalyzer(), urlChecker: tableUrlChecker(opts.urls ?? {}) },
+    { aiEnabled: true, analyzer: opts.analyzer ?? fakeAnalyzer(), urlChecker: tableUrlChecker(opts.urls ?? {}) },
   )
 }
 
@@ -92,8 +93,8 @@ describe('1. a legitimate Telegram security notification', () => {
     const analyzer = fakeAnalyzer({ fallback: assessment({ riskLevel: 'safe', confidence: 0.9, reasoningSummary: 'A genuine login code notification.' }) })
     const result = await run(LEGIT, { analyzer, locale: 'en' })
     expect(REASSURING.has(result.risk.level)).toBe(true)
-    expect(result.advice.doNot).toEqual([])
-    expect(result.advice.doNow.map(a => a.code)).toContain('STAY_ALERT')
+    expect(result.advice.doNot.map(a => a.code)).toEqual(['NO_TRANSFER', 'NO_OTP', 'NO_CLICK_LINK'])
+    expect(result.advice.doNow.map(a => a.code)).toContain('COULD_NOT_CONCLUDE')
   })
 
   it('is INCONCLUSIVE — never SAFE — when no model could look at it', async () => {
@@ -231,7 +232,7 @@ describe('13. a URL-only input with an unknown domain', () => {
     let gateAsked = false
     const result = await analyzeMessage(
       { text: 'https://42777qz.hanveko.cfd', locale: 'vi', aiGate: async () => { gateAsked = true; return { allowed: true } } },
-      { analyzer, urlChecker: tableUrlChecker({ '42777qz.hanveko.cfd': { level: 'INCONCLUSIVE', score: 0, confidence: 30 } }) },
+      { aiEnabled: true, analyzer, urlChecker: tableUrlChecker({ '42777qz.hanveko.cfd': { level: 'INCONCLUSIVE', score: 0, confidence: 30 } }) },
     )
     expect(result.analysis.tier).toBe(0)
     expect(result.analysis.aiStatus).toBe('not_needed')
@@ -240,9 +241,10 @@ describe('13. a URL-only input with an unknown domain', () => {
     expect(result.risk.level).toBe('INCONCLUSIVE')
   })
 
-  it('mirrors a SAFE engine verdict for a bare known-good link', async () => {
+  it('a SAFE engine verdict for a bare known-good link is still never shown as SAFE', async () => {
     const result = await run('check this https://vietcombank.com.vn/', { urls: { 'vietcombank.com.vn': { level: 'SAFE', score: 0, confidence: 95 } } })
-    expect(result.risk.level).toBe('SAFE')
+    expect(result.risk.level).toBe('INCONCLUSIVE')
+    expect(result.verdict).toBe('unrecognized')
     expect(result.analysis.tier).toBe(0)
   })
 })
@@ -276,7 +278,7 @@ describe('16. a screenshot containing a scam message', () => {
     let gateAsks = 0
     const result = await analyzeMessage(
       { image: { bytes: new Uint8Array([1, 2, 3]), mimeType: 'image/png' }, locale: 'vi', aiGate: async () => { gateAsks++; return { allowed: true } } },
-      { analyzer, urlChecker: tableUrlChecker({}) },
+      { aiEnabled: true, analyzer, urlChecker: tableUrlChecker({}) },
     )
     expect(result.inputType).toBe('screenshot')
     expect(analyzer.ocrCalls).toBe(1)
@@ -291,7 +293,7 @@ describe('16. a screenshot containing a scam message', () => {
     const analyzer = fakeAnalyzer({ ocr: 'fail' })
     const result = await analyzeMessage(
       { image: { bytes: new Uint8Array([1]), mimeType: 'image/png' }, locale: 'vi', aiGate: true },
-      { analyzer, urlChecker: tableUrlChecker({}) },
+      { aiEnabled: true, analyzer, urlChecker: tableUrlChecker({}) },
     )
     expect(result.risk.level).toBe('INCONCLUSIVE')
     expect(analyzer.calls).toHaveLength(0)
@@ -355,7 +357,7 @@ describe('quota and availability behaviour', () => {
     const analyzer = fakeAnalyzer()
     const result = await analyzeMessage(
       { text: TELEGRAM_SCAM, locale: 'vi', aiGate: async () => ({ allowed: false, reason: 'quota_exhausted' }) },
-      { analyzer, urlChecker: tableUrlChecker({}) },
+      { aiEnabled: true, analyzer, urlChecker: tableUrlChecker({}) },
     )
     expect(result.analysis.aiStatus).toBe('quota_exhausted')
     expect(analyzer.calls).toHaveLength(0)
@@ -366,7 +368,7 @@ describe('quota and availability behaviour', () => {
     const analyzer = fakeAnalyzer()
     const result = await analyzeMessage(
       { text: 'Bạn ơi cho mình hỏi chút được không?', locale: 'vi', aiGate: async () => { throw new Error('store down') } },
-      { analyzer, urlChecker: tableUrlChecker({}) },
+      { aiEnabled: true, analyzer, urlChecker: tableUrlChecker({}) },
     )
     expect(analyzer.calls).toHaveLength(0)
     expect(result.analysis.aiStatus).toBe('unavailable')
@@ -383,7 +385,7 @@ describe('quota and availability behaviour', () => {
     const checker = tableUrlChecker({})
     const result = await analyzeMessage(
       { text: 'Tin nhắn này có đáng tin không?', url: 'suspicious-site.cfd/login', locale: 'vi', aiGate: true },
-      { analyzer: fakeAnalyzer(), urlChecker: checker },
+      { aiEnabled: true, analyzer: fakeAnalyzer(), urlChecker: checker },
     )
     expect(checker.calls).toEqual(['https://suspicious-site.cfd/login'])
     expect(result.detectedEntities.urls).toEqual(['https://suspicious-site.cfd/login'])

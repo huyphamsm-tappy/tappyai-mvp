@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Mặt Nạ Cà Phê Trắng Da,Cấp Ẩm Sâu( date 12/2027) Hộp 5Miếng site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:09:16.559Z",
+ "body": {
+  "searchParameters": {
+   "q": "Mặt Nạ Cà Phê Trắng Da,Cấp Ẩm Sâu( date 12/2027) Hộp 5Miếng site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

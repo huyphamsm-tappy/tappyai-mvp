@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Cà phê hòa tan Key Coffee site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:22:04.953Z",
+ "body": {
+  "searchParameters": {
+   "q": "Cà phê hòa tan Key Coffee site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cà phê hòa tan Key Coffee 90g - Hachi Hachi Japan Shop",
+    "link": "https://shopee.vn/C%C3%A0-ph%C3%AA-h%C3%B2a-tan-Key-Coffee-90g-Hachi-Hachi-Japan-Shop-i.14063555.25545187483",
+    "snippet": "Cà phê hòa tan Key Coffee 90g - Hachi Hachi Japan Shop. 1/5. 299.000₫. Mua để nhận quà. mall inline badge. Cà phê hòa tan Key Coffee 90g - Hachi Hachi Japan ...",
+    "rating": 4.9,
+    "ratingCount": 33,
+    "position": 1
+   },
+   {
+    "title": "Cà phê hòa tan Maxim AGF 80g",
+    "link": "https://shopee.vn/C%C3%A0-ph%C3%AA-h%C3%B2a-tan-Maxim-AGF-80g-C%C3%A0-ph%C3%AA-h%C3%B2a-tan-Key-Coffee-100g-(H%E1%BB%98P)-i.885896671.25526871273",
+    "snippet": "Mua Cà phê hòa tan Maxim AGF 80g - Cà phê hòa tan Key Coffee 100g (HỘP) giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "position": 2
+   },
+   {
+    "title": "(HÀNG ÚC) Cà phê 3 in 1 hoà tan CAPUCINO",
+    "link": "https://shopee.vn/(H%C3%80NG-%C3%9AC)-C%C3%A0-ph%C3%AA-3-in-1-ho%C3%A0-tan-CAPUCINO-MOCHA-NESCAFE-Instant-Coffee-h%E1%BB%99p-ti%E1%BA%BFt-ki%E1%BB%87m-si%C3%AAu-to-i.537870584.42017901756",
+    "snippet": "Mua (HÀNG ÚC) Cà phê 3 in 1 hoà tan CAPUCINO/ MOCHA NESCAFE Instant Coffee hộp tiết kiệm siêu to giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 3
+   },
+   {
+    "title": "Minh Tien Coffee, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/nguyenhokien",
+    "snippet": "Coffilia Cà phê hòa tan đen - hộp 30g (Minh Tiến Coffee). 59.000₫. -2%. Mua để nhận quà. rating-star 4.9. 296 đã bán · Coffilia Cà phê túi lọc hộp 120g/72g.",
+    "position": 4
+   },
+   {
+    "title": "Maxim's - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/maxim%27s",
+    "snippet": "Cà phê hòa tan Maxim White Gold Coffee Mix 20 gói. custom-overlay. Cà phê hòa tan Maxim White Gold Coffee Mix 20 gói. 174.000₫. rating-star 5.0 · Cà phê maxim ...",
+    "position": 5
+   },
+   {
+    "title": "[LSHA] 8 Viên nén làm sạch máy pha cà phê hòa tan ...",
+    "link": "https://shopee.vn/-LSHA-8-Vi%C3%AAn-n%C3%A9n-l%C3%A0m-s%E1%BA%A1ch-m%C3%A1y-pha-c%C3%A0-ph%C3%AA-h%C3%B2a-tan-nhanh-cho-nh%C3%A0-b%E1%BA%BFp-B%E1%BA%A3o-tr%C3%AC-thi%E1%BA%BFt-b%E1%BB%8B-c%C3%A0-ph%C3%AA-gia-%C4%91%C3%ACnh-M%E1%BB%9AI-i.1091624025.51766454136",
+    "snippet": "[LSHA] 8 Viên nén làm sạch máy pha cà phê hòa tan nhanh cho nhà bếp Bảo trì thiết bị cà phê gia đình MỚI ... Tặng Voucher 15.000₫ nếu đơn giao sau thời gian trên.",
+    "position": 6
+   },
+   {
+    "title": "Combo 5 Tép Dùng Uống Thử Cà Phê Sữa Ngon Trần ...",
+    "link": "https://shopee.vn/Combo-5-Te%CC%81p-Du%CC%80ng-U%C3%B4%CC%81ng-Th%C6%B0%CC%89-Ca%CC%80-Ph%C3%AA-S%C6%B0%CC%83a-Ngon-Tr%C3%A2%CC%80n-Quang-Tra%CC%80-S%C6%B0%CC%83a-Tra%CC%80-Ho%CC%80a-Tan-Tr%C3%A2%CC%80n-Quang-i.138054425.24830931841",
+    "snippet": "Mua Combo 5 Tép Dùng Uống Thử Cà Phê Sữa Ngon Trần Quang, Trà Sữa, Trà Hòa Tan Trần Quang giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.9,
+    "ratingCount": 931,
+    "position": 7
+   },
+   {
+    "title": "vị dừa tự nhiên 4in1 hộp giấy tiện lợi 200gr/10 gói",
+    "link": "https://shopee.vn/C%C3%A0-Ph%C3%AA-Cappuccino-H%C3%B2a-Tan-vi%CC%A3-d%C6%B0%CC%80a-t%C6%B0%CC%A3-nhi%C3%AAn-4in1-h%E1%BB%99p-gi%E1%BA%A5y-ti%C3%AA%CC%A3n-l%C6%A1%CC%A3i-200gr-10-g%C3%B3i-i.18658538.28311062224",
+    "snippet": "Mua Cà Phê Cappuccino Hòa Tan - vị dừa tự nhiên 4in1 hộp giấy tiện lợi 200gr/10 gói giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Ốp lưng iPhone 16 Pro Max Slimcase Unique 3 With",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:55:59.680Z",
+ "body": {
+  "searchParameters": {
+   "q": "Ốp lưng iPhone 16 Pro Max Slimcase Unique 3 With",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Ốp lưng iPhone 16 Pro Max Slimcase Unique 3 With Magsafe Clear",
+    "imageUrl": "https://cdn2.cellphones.com.vn/x/media/catalog/product/t/e/text_ng_n_-_2024-11-06t222938.445.png",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNb1_cvpMPtN-rKJTSCcihuCJDnAZe2Dldus67wnHttQ&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/op-lung-iphone-16-pro-max-slimcase-unique-3-magsafe-clear.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Fx%2Fmedia%2Fcatalog%2Fproduct%2Ft%2Fe%2Ftext_ng_n_-_2024-11-06t222938.445.png&tbnid=pGOkS_BfGgrrfM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fop-lung-iphone-16-pro-max-slimcase-unique-3-magsafe-clear.html&docid=bL4QIR-eHNt-2M&w=600&h=600",
+    "position": 1
+   },
+   {
+    "title": "Slimcase Unique 3 | Ốp Lưng iPhone 16 Series Trong Suốt, Chống Ố Vàng –  Slimcase Vietnam",
+    "imageUrl": "http://slimcase.vn/cdn/shop/collections/Banner-Unique-3_221edf3c-5071-41bf-8e2c-89f1038797ab.jpg?v=1731915343&width=2048",
+    "imageWidth": 2000,
+    "imageHeight": 1030,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpYG6XCIldAu3MxcirkS7AKdafjN6mFGW_xmtDpWxdMg&s=10",
+    "thumbnailWidth": 622,
+    "thumbnailHeight": 321,
+    "source": "Slimcase Vietnam",
+    "domain": "slimcase.vn",
+    "link": "https://slimcase.vn/collections/slimcase-unique-3?srsltid=AU7gw4Vs0pqQyr4vVpgxDA56I-rFQrG6bYdgkEuhxNsNQvncYRxyqUSI",
+    "googleUrl": "https://www.google.com/imgres?imgurl=http%3A%2F%2Fslimcase.vn%2Fcdn%2Fshop%2Fcollections%2FBanner-Unique-3_221edf3c-5071-41bf-8e2c-89f1038797ab.jpg%3Fv%3D1731915343%26width%3D2048&tbnid=ov-CrcYTpI9DzM&imgrefurl=https%3A%2F%2Fslimcase.vn%2Fcollections%2Fslimcase-unique-3%3Fsrsltid%3DAU7gw4Vs0pqQyr4vVpgxDA56I-rFQrG6bYdgkEuhxNsNQvncYRxyqUSI&docid=dmZCwgf9OG8KNM&w=2000&h=1030",
+    "position": 2
+   },
+   {
+    "title": "Ốp lưng iPhone 16 Pro Max Slimcase Unique 3 Clear",
+    "imageUrl": "https://cdn2.cellphones.com.vn/x/media/catalog/product/g/r/group_629_11_.png",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAm5U8fYm1BQE2qUwQn0IPoOrrUeRUmT4C64eDzi_K6w&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/op-lung-iphone-16-pro-max-slimcase-unique-3-clear.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Fx%2Fmedia%2Fcatalog%2Fproduct%2Fg%2Fr%2Fgroup_629_11_.png&tbnid=ISAwT19mgMDPyM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fop-lung-iphone-16-pro-max-slimcase-unique-3-clear.html&docid=KF5GJXuDAX4VhM&w=600&h=600",
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng iPhone 16 Pro Slimcase Unique 3 With Magsafe Clear",
+    "imageUrl": "https://cdn2.cellphones.com.vn/x/media/catalog/product/t/e/text_ng_n_-_2024-12-16t104038.296.png",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDQ8qk1xnMe7BbiXGFk2kjlhdqP5E5IorsSD3M-NEdrg&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/op-lung-magsafe-iphone-16-pro-slimcase-unique-3-clear.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Fx%2Fmedia%2Fcatalog%2Fproduct%2Ft%2Fe%2Ftext_ng_n_-_2024-12-16t104038.296.png&tbnid=0wMB3lhRsZU6GM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fop-lung-magsafe-iphone-16-pro-slimcase-unique-3-clear.html&docid=jh-DnT6iVh9kPM&w=600&h=600",
+    "position": 4
+   },
+   {
+    "title": "Ốp lưng Slimcase iPhone 16",
+    "imageUrl": "https://slimcase.vn/cdn/shop/files/unique_3_-_iphone_16__01_r2.png?crop=center&height=1200&v=1754989007&width=1200",
+    "imageWidth": 1200,
+    "imageHeight": 1200,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmLFA9hrQjYnuijhyBED3-1TyE6dUpc04i664TVg5S9A&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Slimcase Vietnam",
+    "domain": "slimcase.vn",
+    "link": "https://slimcase.vn/products/op-lung-slimcase-cho-iphone-16?srsltid=AU7gw4VYqRp4VJcoA7uLJTkbv4p7ZPujv2P_WyBS31nFZoBKiZiaH3GL",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fslimcase.vn%2Fcdn%2Fshop%2Ffiles%2Funique_3_-_iphone_16__01_r2.png%3Fcrop%3Dcenter%26height%3D1200%26v%3D1754989007%26width%3D1200&tbnid=bHZiMPsA_A8ISM&imgrefurl=https%3A%2F%2Fslimcase.vn%2Fproducts%2Fop-lung-slimcase-cho-iphone-16%3Fsrsltid%3DAU7gw4VYqRp4VJcoA7uLJTkbv4p7ZPujv2P_WyBS31nFZoBKiZiaH3GL&docid=xR_A9R7Z_ZbnpM&w=1200&h=1200",
+    "position": 5
+   },
+   {
+    "title": "Ốp lưng iPhone 16 Pro Slimcase Unique 3 With Magsafe Clear",
+    "imageUrl": "https://cdn2.cellphones.com.vn/x/media/catalog/product/t/e/text_ng_n_-_2024-12-16t104151.551.png",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeDVr28LCK6qh3Q9fKbpO6y1JVCZhQS9dHetWGGhRqaA&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/op-lung-magsafe-iphone-16-pro-slimcase-unique-3-clear.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Fx%2Fmedia%2Fcatalog%2Fproduct%2Ft%2Fe%2Ftext_ng_n_-_2024-12-16t104151.551.png&tbnid=7j4NkE4qLwKDhM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fop-lung-magsafe-iphone-16-pro-slimcase-unique-3-clear.html&docid=jh-DnT6iVh9kPM&w=600&h=600",
+    "position": 6
+   },
+   {
+    "title": "Slimcase Unique 3 | Ốp Lưng iPhone 16 Series Trong Suốt, Chống Ố Vàng –  Slimcase Vietnam",
+    "imageUrl": "https://slimcase.vn/cdn/shop/files/preview_images/6200b74c1d7d4213aff9739cc3d6f339.thumbnail.0000000000_800x.jpg?v=1733732873",
+    "imageWidth": 800,
+    "imageHeight": 450,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6gaha65R75-MsOr4419IvuiSwqKTJBn4RhKJNWlHi4g&s",
+    "thumbnailWidth": 299,
+    "thumbnailHeight": 168,
+    "source": "Slimcase Vietnam",
+    "domain": "slimcase.vn",
+    "link": "https://slimcase.vn/collections/slimcase-unique-3?srsltid=AU7gw4WgSSv7N3ci0XimazAgnXf5R0uyKeNC5BK3fP7jHFGc6SYx93sv",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fslimcase.vn%2Fcdn%2Fshop%2Ffiles%2Fpreview_images%2F6200b74c1d7d4213aff9739cc3d6f339.thumbnail.0000000000_800x.jpg%3Fv%3D1733732873&tbnid=SVAzZufxBaiZbM&imgrefurl=https%3A%2F%2Fslimcase.vn%2Fcollections%2Fslimcase-unique-3%3Fsrsltid%3DAU7gw4WgSSv7N3ci0XimazAgnXf5R0uyKeNC5BK3fP7jHFGc6SYx93sv&docid=dmZCwgf9OG8KNM&w=800&h=450",
+    "position": 7
+   },
+   {
+    "title": "Ốp lưng iPhone 16 Pro Max Slimcase Unique 3 Clear | Giá rẻ",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:100/plain/https://cellphones.com.vn/media/wysiwyg/phu-kien/op_lung/iPhone/iPhone-16/op-lung-iphone-16-pro-max-slimcase-unique-3-clear-1.jpg",
+    "imageWidth": 810,
+    "imageHeight": 456,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSww4EJl_VezIH8FQuOHnGs3oNeUtQyAfg727slyaup7w&s",
+    "thumbnailWidth": 299,
+    "thumbnailHeight": 168,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/op-lung-iphone-16-pro-max-slimcase-unique-3-clear.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A0%2Fq%3A100%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fwysiwyg%2Fphu-kien%2Fop_lung%2FiPhone%2FiPhone-16%2Fop-lung-iphone-16-pro-max-slimcase-unique-3-clear-1.jpg&tbnid=bqYn_vigS9_7JM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fop-lung-iphone-16-pro-max-slimcase-unique-3-clear.html&docid=KF5GJXuDAX4VhM&w=810&h=456",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

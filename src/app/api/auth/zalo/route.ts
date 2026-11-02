@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import crypto from 'crypto'
 import { searchParam } from '@/lib/http/searchParams'
+import { APP_STATE_COOKIE, appStateCookieOptions, appStateCookieValue, validAppState } from '@/lib/auth/appState'
 
 const ZALO_APP_ID = process.env.ZALO_APP_ID!
 
@@ -21,6 +22,12 @@ export async function GET(req: NextRequest) {
   const platformParam = searchParam(req, 'platform')
   const platform = platformParam === 'ios' ? 'ios' : platformParam === 'android' ? 'android' : 'web'
   const REDIRECT_URI = `${originOf(req)}/api/auth/zalo/callback`
+  // I6 / R24: a native sign-in must carry the app's own `app_state`; without a valid one nothing starts (the app would
+  // refuse the callback anyway, and the confirm step refuses to hand a session over without it).
+  const appState = searchParam(req, 'app_state')
+  if (platform !== 'web' && !validAppState(appState)) {
+    return NextResponse.redirect(new URL('/login?error=app_state_invalid', originOf(req)))
+  }
 
   const codeVerifier = crypto.randomBytes(32).toString('base64url')
   const codeChallenge = crypto.createHash('sha256').update(codeVerifier).digest('base64url')
@@ -48,5 +55,7 @@ export async function GET(req: NextRequest) {
   res.cookies.set('zalo_login_platform', platform, {
     httpOnly: true, secure: true, sameSite: 'lax', maxAge: 300, path: '/',
   })
+  if (platform !== 'web' && appState) res.cookies.set(APP_STATE_COOKIE, appStateCookieValue(appState), appStateCookieOptions)
+  else res.cookies.delete(APP_STATE_COOKIE)
   return res
 }

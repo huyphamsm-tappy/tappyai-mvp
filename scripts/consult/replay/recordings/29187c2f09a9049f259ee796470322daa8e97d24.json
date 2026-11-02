@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Fusion Original\" gần Sài Gòn site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:06:39.787Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Fusion Original\" gần Sài Gòn site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Fusion Original Saigon Centre - Giá cả và Ưu đãi 2026, TP. ...",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-94137440/fusion-original-saigon-centre/",
+    "snippet": "Làm thế nào để tôi đến được Fusion Original Saigon Centre từ sân bay gần nhất? Sân bay gần nhất là Cảng hàng không quốc tế Tân Sơn Nhất, cách đó cách khách ...",
+    "position": 1
+   },
+   {
+    "title": "Fusion Original Saigon Centre - Xem 72 Ảnh & Đánh giá",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-94137440/fusion-original-saigon-centre/photo.html",
+    "snippet": "Khám phá 72 ảnh của Fusion Original Saigon Centre, bao gồm phòng ốc, tiện nghi, cơ sở vật chất và khu vực xung quanh. Sử dụng hình ảnh khách sạn thực tế để ...",
+    "position": 2
+   },
+   {
+    "title": "Các khách sạn ở gần Sài Gòn Square, TP. Hồ Chí Minh",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-saigon-square-shopping-mall/hotels-c301m19948910/",
+    "snippet": "Fusion Original Saigon Centre · 9,3 · 503 đánh giá ; Sedona Suites Ho Chi Minh City · 9,4 · 518 đánh giá ; Khách sạn Silverland Bến Thành · 9,5 · 470 đánh giá ; M ...",
+    "position": 3
+   },
+   {
+    "title": "Trụ sở Giáo phận Long Xuyên tại Sài Gòn - Khách sạn",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-tr-s-gio-phn-long-xuyn-ti-si-gn/hotels-c301m36354105/",
+    "snippet": "Các khách sạn nổi tiếng ở gần Trụ sở Giáo phận Long Xuyên tại Sài Gòn. Chọn ... Fusion Original Saigon Centre Các khách sạn ở TP. Hồ Chí Minh. Fusion ...",
+    "position": 4
+   },
+   {
+    "title": "Các khách sạn ở gần HALL B - TRUNG TÂM TRIỂN LÃM ...",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-wtc-binh-duong-new-city-expo/hotels-c301m30487401/",
+    "snippet": "Fusion Original Saigon Centre Các khách sạn ở TP. Hồ Chí Minh. Fusion Original Saigon Centre. Khách Sạn Ở Trung tâm Thành phố Hồ Chí Minh, TP. Hồ Chí Minh. 9,3 ...",
+    "position": 5
+   },
+   {
+    "title": "Các khách sạn nổi tiếng ở gần Hồ Mây Park Vũng Tàu",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-ho-may-culture-ecotourism-park/hotels-c301m16653481/",
+    "snippet": "Fusion Original Saigon Centre ... Tọa lạc tại vị trí thuận tiện cho các điểm du lịch, nhà hàng, quán bar và cửa hàng nổi tiếng của thành phố, Fusion Originals ...",
+    "position": 6
+   },
+   {
+    "title": "Các khách sạn nổi tiếng ở gần Chabad of Vietnam (Saigon)",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-chabad-of-vietnam/hotels-c301m37546853/",
+    "snippet": "Tiện nghi phòng bao gồm điện thoại, cùng két bảo mật và bàn. No. 19. Fusion Original Saigon Centre Các khách sạn ở TP. Hồ Chí Minh ...",
+    "position": 7
+   },
+   {
+    "title": "10 khách sạn được đề xuất gần Nhà văn hóa khu phố 3",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-nh-vn-ha-khu-ph-3-khu-vui-chi-thiu-nhi/hotels-c301m37819089/",
+    "snippet": "Fusion Original Saigon Centre ... Tọa lạc tại vị trí thuận tiện cho các điểm du lịch, nhà hàng, quán bar và cửa hàng nổi tiếng của thành phố, Fusion Originals ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

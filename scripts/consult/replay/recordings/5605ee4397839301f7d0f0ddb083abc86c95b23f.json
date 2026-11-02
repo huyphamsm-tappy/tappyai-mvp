@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Tour Cắm Trại 2N1Đ Phú Điền - Núi Chữ Thập Đồng Nai ...",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:06:51.187Z",
+ "body": {
+  "searchParameters": {
+   "q": "Tour Cắm Trại 2N1Đ Phú Điền - Núi Chữ Thập Đồng Nai ...",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Tour 2N1Đ Phú Điền - Núi Đá Chữ Thập Đồng Nai, khởi hành từ TPHCM - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/reguhwkm5u9siamrugzi.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4zJI2xV6pVuV71O4JurLqWfsRn-8TJyTlGcvY7T8WeQ&s=10",
+    "thumbnailWidth": 565,
+    "thumbnailHeight": 353,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/71292-phu-dien-field-fiery-cross-reef-mountain-from-ho-chi-minh-city/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Freguhwkm5u9siamrugzi.jpg&tbnid=RiIUhP5bcEndtM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F71292-phu-dien-field-fiery-cross-reef-mountain-from-ho-chi-minh-city%2F&docid=6nngSNd3PSrhbM&w=750&h=469",
+    "position": 1
+   },
+   {
+    "title": "Tour 2N1Đ Phú Điền - Núi Đá Chữ Thập Đồng Nai, khởi hành từ TPHCM - Klook",
+    "imageUrl": "https://res.klook.com/images/fl_lossy.progressive,q_65/c_fill,w_1295,h_728/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/prlpqgrtk8gppmim2i49/TourC%E1%BA%AFmTr%E1%BA%A1i2N1%C4%90Ph%C3%BA%C4%90i%E1%BB%81n-N%C3%BAiCh%E1%BB%AFTh%E1%BA%ADp%C4%90%E1%BB%93ngNaiKh%E1%BB%9FiH%C3%A0nht%E1%BB%ABTPHCM.jpg",
+    "imageWidth": 1295,
+    "imageHeight": 728,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYvGKXfBq7VBmRyLoNQXHzAOJLJp8A1J8w8SH0KYkieQ&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/71292-phu-dien-field-fiery-cross-reef-mountain-from-ho-chi-minh-city/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Ffl_lossy.progressive%2Cq_65%2Fc_fill%2Cw_1295%2Ch_728%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fprlpqgrtk8gppmim2i49%2FTourC%25E1%25BA%25AFmTr%25E1%25BA%25A1i2N1%25C4%2590Ph%25C3%25BA%25C4%2590i%25E1%25BB%2581n-N%25C3%25BAiCh%25E1%25BB%25AFTh%25E1%25BA%25ADp%25C4%2590%25E1%25BB%2593ngNaiKh%25E1%25BB%259FiH%25C3%25A0nht%25E1%25BB%25ABTPHCM.jpg&tbnid=2WesMWBtZfVxzM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F71292-phu-dien-field-fiery-cross-reef-mountain-from-ho-chi-minh-city%2F&docid=6nngSNd3PSrhbM&w=1295&h=728",
+    "position": 2
+   },
+   {
+    "title": "Cùng Hoàng Gia Thịnh khám phá tour cắm trại 2N1Đ Phú Điền - Núi Chữ Thập  Đồng Nai » Thuê Xe VIP Giá Rẻ - Hoàng Gia Thịnh",
+    "imageUrl": "https://thuexeviphoanggia.com/wp-content/uploads/Phu-Dien-Nui-Chu-Thap-Dong-Nai-1.png",
+    "imageWidth": 600,
+    "imageHeight": 400,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGRXyV2iVgc9oAI8HLRRzHvaFycvh9Vdz3feSNF7sGoA&s=10",
+    "thumbnailWidth": 600,
+    "thumbnailHeight": 400,
+    "source": "thuê xe Limousine",
+    "domain": "thuexeviphoanggia.com",
+    "link": "https://thuexeviphoanggia.com/cung-hoang-gia-thinh-kham-pha-tour-cam-trai-2n1d-phu-dien-nui-chu-thap-dong-nai/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fthuexeviphoanggia.com%2Fwp-content%2Fuploads%2FPhu-Dien-Nui-Chu-Thap-Dong-Nai-1.png&tbnid=SQ7PiqTtAtYhvM&imgrefurl=https%3A%2F%2Fthuexeviphoanggia.com%2Fcung-hoang-gia-thinh-kham-pha-tour-cam-trai-2n1d-phu-dien-nui-chu-thap-dong-nai%2F&docid=B0dQxn9RFY08XM&w=600&h=400",
+    "position": 3
+   },
+   {
+    "title": "Tour 2N1Đ Phú Điền - Núi Đá Chữ Thập Đồng Nai, khởi hành từ TPHCM - Klook",
+    "imageUrl": "https://res.klook.com/images/fl_lossy.progressive,q_65/c_fill,w_1295,h_863/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/bijstup30f8lot1dhflt/TourC%E1%BA%AFmTr%E1%BA%A1i2N1%C4%90Ph%C3%BA%C4%90i%E1%BB%81n-N%C3%BAiCh%E1%BB%AFTh%E1%BA%ADp%C4%90%E1%BB%93ngNaiKh%E1%BB%9FiH%C3%A0nht%E1%BB%ABTPHCM.jpg",
+    "imageWidth": 1295,
+    "imageHeight": 863,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLig5NB8C6qdVpb12eXJjBHQWrRKUika92W5oWZ07M9Q&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/71292-phu-dien-field-fiery-cross-reef-mountain-from-ho-chi-minh-city/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Ffl_lossy.progressive%2Cq_65%2Fc_fill%2Cw_1295%2Ch_863%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fbijstup30f8lot1dhflt%2FTourC%25E1%25BA%25AFmTr%25E1%25BA%25A1i2N1%25C4%2590Ph%25C3%25BA%25C4%2590i%25E1%25BB%2581n-N%25C3%25BAiCh%25E1%25BB%25AFTh%25E1%25BA%25ADp%25C4%2590%25E1%25BB%2593ngNaiKh%25E1%25BB%259FiH%25C3%25A0nht%25E1%25BB%25ABTPHCM.jpg&tbnid=xvobITe2IqDJzM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F71292-phu-dien-field-fiery-cross-reef-mountain-from-ho-chi-minh-city%2F&docid=6nngSNd3PSrhbM&w=1295&h=863",
+    "position": 4
+   },
+   {
+    "title": "Tour Glamping Đồng Nai 2N1Đ và những trải nghiệm khám phá thiên nhiên đặc  sắc - iVIVU.com",
+    "imageUrl": "https://cdn3.ivivu.com/2023/02/Ph%C3%BA-%C4%90i%E1%BB%81n-Glamping-ivivu-6.jpg",
+    "imageWidth": 960,
+    "imageHeight": 540,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTF-5zLV1xHlLPo_iV_AmvxEKgJDwcLiBz93661e762pA&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 414,
+    "source": "iVIVU.com",
+    "domain": "www.ivivu.com",
+    "link": "https://www.ivivu.com/blog/2023/02/tour-glamping-dong-nai-2n1d-va-nhung-trai-nghiem-kham-pha-thien-nhien-dac-sac/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn3.ivivu.com%2F2023%2F02%2FPh%25C3%25BA-%25C4%2590i%25E1%25BB%2581n-Glamping-ivivu-6.jpg&tbnid=Fq6WtC67IYyOLM&imgrefurl=https%3A%2F%2Fwww.ivivu.com%2Fblog%2F2023%2F02%2Ftour-glamping-dong-nai-2n1d-va-nhung-trai-nghiem-kham-pha-thien-nhien-dac-sac%2F&docid=FSQTJdWX3cYPUM&w=960&h=540",
+    "position": 5
+   },
+   {
+    "title": "Tour 2N1Đ Phú Điền - Núi Đá Chữ Thập Đồng Nai, khởi hành từ TPHCM - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/kqzay2su1zb4gjle7cvg.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTb_ua2wQKolWE6e941CTN6O7A8__ZTlKOX173zzl4kw&s=10",
+    "thumbnailWidth": 565,
+    "thumbnailHeight": 353,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/71292-phu-dien-field-fiery-cross-reef-mountain-from-ho-chi-minh-city/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fkqzay2su1zb4gjle7cvg.jpg&tbnid=dK9wLCtGOLsWfM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F71292-phu-dien-field-fiery-cross-reef-mountain-from-ho-chi-minh-city%2F&docid=6nngSNd3PSrhbM&w=750&h=469",
+    "position": 6
+   },
+   {
+    "title": "Cùng Hoàng Gia Thịnh khám phá tour cắm trại 2N1Đ Phú Điền - Núi Chữ Thập  Đồng Nai » Thuê Xe VIP Giá Rẻ - Hoàng Gia Thịnh",
+    "imageUrl": "https://thuexeviphoanggia.com/wp-content/uploads/Phu-Dien-Nui-Chu-Thap-Dong-Nai.png",
+    "imageWidth": 600,
+    "imageHeight": 400,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-uDK5aNMzRdTPd1pZVzTAHOlUL3M0Hy6ZtIEfurLINQ&s=10",
+    "thumbnailWidth": 600,
+    "thumbnailHeight": 400,
+    "source": "thuê xe Limousine",
+    "domain": "thuexeviphoanggia.com",
+    "link": "https://thuexeviphoanggia.com/cung-hoang-gia-thinh-kham-pha-tour-cam-trai-2n1d-phu-dien-nui-chu-thap-dong-nai/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fthuexeviphoanggia.com%2Fwp-content%2Fuploads%2FPhu-Dien-Nui-Chu-Thap-Dong-Nai.png&tbnid=5KbZEq04QjzTsM&imgrefurl=https%3A%2F%2Fthuexeviphoanggia.com%2Fcung-hoang-gia-thinh-kham-pha-tour-cam-trai-2n1d-phu-dien-nui-chu-thap-dong-nai%2F&docid=B0dQxn9RFY08XM&w=600&h=400",
+    "position": 7
+   },
+   {
+    "title": "Tour 2N1Đ Phú Điền - Núi Đá Chữ Thập Đồng Nai, khởi hành từ TPHCM - Klook",
+    "imageUrl": "https://res.klook.com/images/fl_lossy.progressive,q_65/c_fill,w_1295,h_728/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/cviwql2zzpmbdodntkem/TourC%E1%BA%AFmTr%E1%BA%A1i2N1%C4%90Ph%C3%BA%C4%90i%E1%BB%81n-N%C3%BAiCh%E1%BB%AFTh%E1%BA%ADp%C4%90%E1%BB%93ngNaiKh%E1%BB%9FiH%C3%A0nht%E1%BB%ABTPHCM.jpg",
+    "imageWidth": 1295,
+    "imageHeight": 728,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrwLUmvlTTMm1F3Frtby-_olKREO-n_kAxMCm0pIZMnA&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/71292-phu-dien-field-fiery-cross-reef-mountain-from-ho-chi-minh-city/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Ffl_lossy.progressive%2Cq_65%2Fc_fill%2Cw_1295%2Ch_728%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fcviwql2zzpmbdodntkem%2FTourC%25E1%25BA%25AFmTr%25E1%25BA%25A1i2N1%25C4%2590Ph%25C3%25BA%25C4%2590i%25E1%25BB%2581n-N%25C3%25BAiCh%25E1%25BB%25AFTh%25E1%25BA%25ADp%25C4%2590%25E1%25BB%2593ngNaiKh%25E1%25BB%259FiH%25C3%25A0nht%25E1%25BB%25ABTPHCM.jpg&tbnid=eOZV3_r6PMHqAM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F71292-phu-dien-field-fiery-cross-reef-mountain-from-ho-chi-minh-city%2F&docid=6nngSNd3PSrhbM&w=1295&h=728",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

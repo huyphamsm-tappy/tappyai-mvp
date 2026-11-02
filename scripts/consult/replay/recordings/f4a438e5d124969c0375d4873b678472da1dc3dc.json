@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Khách sạn Mường Thanh Luxury\" Đà Nẵng site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:53:22.030Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Khách sạn Mường Thanh Luxury\" Đà Nẵng site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn Mường Thanh Luxury Đà Nẵng - Giá cả và Ưu ...",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-8065403/muong-thanh-luxury-da-nang-hotel/",
+    "snippet": "Khách sạn Mường Thanh Luxury Đà Nẵng · 89m² | Tầng: 8-38 · Có cửa sổ · Không hút thuốc · Wi-Fi miễn phí.",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn Mường Thanh Luxury Đà Nẵng - Xem 134 Ảnh ...",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-8065403/muong-thanh-luxury-da-nang-hotel/photo.html",
+    "snippet": "Khám phá 134 ảnh của Khách sạn Mường Thanh Luxury Đà Nẵng, bao gồm phòng ốc, tiện nghi, cơ sở vật chất và khu vực xung quanh. Sử dụng hình ảnh khách sạn ...",
+    "position": 2
+   },
+   {
+    "title": "Các đánh giá Khách sạn Mường Thanh Luxury Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-8065403/muong-thanh-luxury-da-nang-hotel/review.html",
+    "snippet": "Các đánh giá Khách sạn Mường Thanh Luxury Đà Nẵng. 270 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng. 8.",
+    "position": 3
+   },
+   {
+    "title": "Khách sạn Mường Thanh Luxury Sông Hàn - Giá cả và Ưu ...",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-840365/one-opera-danang-hotel/",
+    "snippet": "Khách sạn Mường Thanh Luxury Sông Hàn · Vị trí lý tưởng · Phong cảnh tuyệt vời · Bữa sáng đa dạng · Có dịch vụ đón tại sân bay.",
+    "position": 4
+   },
+   {
+    "title": "Các đánh giá Khách sạn Mường Thanh Luxury Sông Hàn",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-840365/one-opera-danang-hotel/review.html",
+    "snippet": "Các đánh giá Khách sạn Mường Thanh Luxury Sông Hàn · Tất cả đánh giá(282) · Đánh giá tích cực(266) · Phòng lớn(54) · Dễ đi lại(32) · Gần sân bay(26) · Vị trí thuận ...",
+    "position": 5
+   },
+   {
+    "title": "Khách sạn Mường Thanh Luxury Cà Mau - Giá cả và Ưu ...",
+    "link": "https://vn.trip.com/hotels/an-xuyen-hotel-detail-5211909/muong-thanh-luxury-ca-mau-hotel/",
+    "snippet": "Giờ nhận phòng tại Khách sạn Mường Thanh Luxury Cà Mau bắt đầu từ 14:00-20:00, và giờ trả phòng là 12:00. Khách sạn Mường Thanh Luxury Cà Mau có hồ bơi không?",
+    "position": 6
+   },
+   {
+    "title": "Các đánh giá Khách sạn Mường Thanh Luxury Quảng Ninh",
+    "link": "https://vn.trip.com/hotels/bai-chay-hotel-detail-2198933/muong-thanh-luxury-quang-ninh-hotel/review.html",
+    "snippet": "Các đánh giá Khách sạn Mường Thanh Luxury Quảng Ninh · Tất cả đánh giá(44) · Đánh giá tích cực(42) · Vị trí tuyệt vời(11) · Phòng tuyệt vời(10) · Dịch vụ tuyệt vời(8).",
+    "position": 7
+   },
+   {
+    "title": "Khách sạn Mường Thanh Grand Quảng Nam - Giá cả và Ưu đãi ...",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-3895956/muong-thanh-grand-quang-nam/?rankingId=100200304295",
+    "snippet": "Xếp hạng 2 trong danh sách Nâng tầm dịch vụ của Đà Nẵng ... Khách sạn Mường Thanh Luxury Đà NẵngKhách sạn ... Đà NẵngCác khách sạn gần Ga Đà Nẵng. Điểm đến hàng ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

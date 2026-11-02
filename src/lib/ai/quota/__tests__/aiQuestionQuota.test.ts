@@ -8,7 +8,7 @@ import {
 
 // ── The ONE AI question quota — the contract, pinned ─────────────────────────
 //
-// Anonymous: 5 for the LIFETIME of the identity. Registered: 15 per VN day. One pool for every
+// Anonymous: 5 for the LIFETIME of the identity. Registered: 10 per VN day (Phase 7 canonical Free). One pool for every
 // AI feature. Enforced by the server against a verified identity; nothing the client sends can
 // change it. Both limiter backends are exercised: the in-process fallback (no store configured)
 // and a faithful fake of the shared store's atomic sorted-set script.
@@ -118,35 +118,35 @@ function contractSuite(label: string, setup: () => { store: ReturnType<typeof fa
       })
     })
 
-    describe('registered — fifteen per VN day, one pool', () => {
-      it('8. starts with 15/day', async () => {
-        expect(await peekAiQuestionQuota(user())).toMatchObject({ limit: FREE_DAILY_LIMIT, period: 'day', used: 0, remaining: 15 })
+    describe('registered — ten per VN day, one pool', () => {
+      it('8. starts with 10/day', async () => {
+        expect(await peekAiQuestionQuota(user())).toMatchObject({ limit: FREE_DAILY_LIMIT, period: 'day', used: 0, remaining: 10 })
       })
       it('9./10. usage in any area — chat or a Scam Alerts analysis — reduces the same pool', async () => {
-        await spendN(user(), 3)          // general
-        await spendN(user(), 2)          // travel
-        await spendN(user(), 2)          // food
+        await spendN(user(), 2)          // general
+        await spendN(user(), 1)          // travel
+        await spendN(user(), 1)          // food
         await spendN(user(), 1)          // entertainment
         await spendN(user(), 1)          // spa
         await spendN(user(), 2)          // scam alerts message analysis
-        expect(await peekAiQuestionQuota(user())).toMatchObject({ used: 11, remaining: 4 })
+        expect(await peekAiQuestionQuota(user())).toMatchObject({ used: 8, remaining: 2 })
       })
-      it('11. the 16th question that day is refused', async () => {
-        const all = await spendN(user(), 15)
+      it('11. the 11th question that day is refused', async () => {
+        const all = await spendN(user(), 10)
         expect(all.every(r => r.ok)).toBe(true)
         expect((await consumeAiQuestion(user())).ok).toBe(false)
       })
-      it('12. the next VN day resets to 15 — at 00:00 Asia/Ho_Chi_Minh, not at UTC midnight', async () => {
+      it('12. the next VN day resets to 10 — at 00:00 Asia/Ho_Chi_Minh, not at UTC midnight', async () => {
         vi.useFakeTimers()
         vi.setSystemTime(new Date('2026-09-15T23:30:00+07:00'))
-        await spendN(user(), 15)
+        await spendN(user(), 10)
         expect((await consumeAiQuestion(user())).ok).toBe(false)
         vi.setSystemTime(new Date('2026-09-16T00:05:00+07:00'))   // 17:05 UTC on the 15th
-        expect(await peekAiQuestionQuota(user())).toMatchObject({ used: 0, remaining: 15 })
+        expect(await peekAiQuestionQuota(user())).toMatchObject({ used: 0, remaining: 10 })
         expect((await consumeAiQuestion(user())).ok).toBe(true)
       })
       it('two accounts never share a pool', async () => {
-        await spendN(user('a'), 15)
+        await spendN(user('a'), 10)
         expect((await consumeAiQuestion(user('b'))).ok).toBe(true)
       })
     })
@@ -159,11 +159,11 @@ function contractSuite(label: string, setup: () => { store: ReturnType<typeof fa
         // There is no API that takes a count, a limit, a period or a "reset" from anyone.
         expect(typeof (consumeAiQuestion as unknown as { reset?: unknown }).reset).toBe('undefined')
       })
-      it('20. concurrent requests cannot over-spend: 20 parallel spends admit exactly 15', async () => {
+      it('20. concurrent requests cannot over-spend: 20 parallel spends admit exactly 10', async () => {
         const results = await Promise.all(Array.from({ length: 20 }, () => consumeAiQuestion(user())))
-        expect(results.filter(r => r.ok)).toHaveLength(15)
-        expect(results.filter(r => !r.ok)).toHaveLength(5)
-        expect((await peekAiQuestionQuota(user())).used).toBe(15)
+        expect(results.filter(r => r.ok)).toHaveLength(10)
+        expect(results.filter(r => !r.ok)).toHaveLength(10)
+        expect((await peekAiQuestionQuota(user())).used).toBe(10)
       })
       it('20b. 8 parallel anonymous spends admit exactly 5', async () => {
         const results = await Promise.all(Array.from({ length: 8 }, () => consumeAiQuestion(anon())))

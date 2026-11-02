@@ -1,0 +1,38 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Top 30+ quà tặng sinh nhật sếp dưới 1 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:03:45.612Z",
+ "body": {
+  "searchParameters": {
+   "q": "Top 30+ quà tặng sinh nhật sếp dưới 1 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "30+ lời chúc 20/10 cho đồng nghiệp vừa ý nghĩa vừa gần gũi",
+    "link": "https://shopee.vn/blog/loi-chuc-20-10-cho-dong-nghiep/",
+    "snippet": "Một lời chúc 20/10 cho đồng nghiệp chân thành sẽ giúp gắn kết tình cảm và tạo nên bầu không khí làm việc thân thiện, vui vẻ.",
+    "date": "13 thg 10, 2024",
+    "position": 1
+   },
+   {
+    "title": "Top 30+ phim ngắn xuyên không hay 2026 cực cuốn, trọn ...",
+    "link": "https://shopee.vn/blog/phim-ngan-xuyen-khong-hay/",
+    "snippet": "Đừng bỏ lỡ list phim ngắn xuyên không hay 2026 từ Shopee Blog! Trải nghiệm xem miễn phí trên Shopee Drama với kịch bản lôi cuốn, cày cực đã.",
+    "date": "19 thg 9, 2026",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

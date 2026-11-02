@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Golden Sun Hotel\" Đà Lạt site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:12:47.007Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Golden Sun Hotel\" Đà Lạt site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn Golden Sun - Đà Lạt - Giá cả và Ưu đãi 2026, ...",
+    "link": "https://vn.trip.com/hotels/dalat-hotel-detail-111328125/golden-sun-hotel-dalat/",
+    "snippet": "Khách sạn Golden Sun - Đà Lạt. Golden Sun Hotel - Dalat. 1 Bà Huyện Thanh Quan, P.10, ...",
+    "position": 1
+   },
+   {
+    "title": "Các đánh giá Khách sạn Golden Sun - Đà Lạt",
+    "link": "https://vn.trip.com/hotels/dalat-hotel-detail-111328125/golden-sun-hotel-dalat/review.html",
+    "snippet": "Chúng tôi rất mong được tiếp tục chào đón Quý khách trong những lần ghé thăm Đà Lạt sắp tới.Trân trọng,Golden Sun Hotel - Dalat. Xem Thêm. Người Dùn ...",
+    "position": 2
+   },
+   {
+    "title": "Khách sạn Golden Sun - Đà Lạt - Xem 179 Ảnh & Đánh giá",
+    "link": "https://vn.trip.com/hotels/dalat-hotel-detail-111328125/golden-sun-hotel-dalat/photo.html",
+    "snippet": "Kính gửi Quý khách,Xin chân thành cảm ơn Quý khách đã dành thời gian chia sẻ cảm nhận sau khi lưu trú tại Golden Sun Hotel - Dalat. Chúng tôi rất vui khi biết ...",
+    "position": 3
+   },
+   {
+    "title": "Golden Sun Hotel - Giá cả và Ưu đãi 2026, Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-105409701/golden-sun-hotel-danang/",
+    "snippet": "Có, Golden Sun Hotel phục vụ bữa sáng được đánh giá cao. Các lựa chọn bữa sáng: Châu Á, Kiểu lục địa. Giá phòng tại Golden Sun Hotel là bao nhiêu?",
+    "position": 4
+   },
+   {
+    "title": "Tìm Khách Sạn 4 Sao Tại Đà Lạt",
+    "link": "https://vn.trip.com/hotels/star4/city/vn/dalat.html",
+    "snippet": "Khách sạn Golden Sun - Đà Lạt ... Golden Sun Hotel - Đà Lạt ở Xuân Hương - Đà Lạt, cách Chợ Đà Lạt và Hồ Xuân Hương 5 phút lái xe. Khách sạn spa này cách Quảng ...",
+    "position": 5
+   },
+   {
+    "title": "Các khách sạn ở gần Công Viên Trần Hưng Đạo, Đà Lạt",
+    "link": "https://vn.trip.com/hotels/dalat-tran-hung-dao-park/hotels-c5204m30441361/",
+    "snippet": "Trung tâm Đà Lạt, Đà Lạt | Cách Công Viên Trần Hưng Đạo 0.45KM. 9,6/10. Đáng Kinh Ngạc 106 đánh giá. Golden Sun Hotel - Đà Lạt ở Xuân Hương - Đà Lạt, cách Chợ ...",
+    "position": 6
+   },
+   {
+    "title": "10 khách sạn được đề xuất gần Trường Cao đẳng Đà Lạt ...",
+    "link": "https://vn.trip.com/hotels/dalat-pedagogical-college-of-da-lat/hotels-c5204m6792511/",
+    "snippet": "Trung tâm Đà Lạt, Đà Lạt | Cách Trường Cao đẳng Đà Lạt 1.06KM. 9,6/10. Đáng Kinh Ngạc 106 đánh giá. Golden Sun Hotel - Đà Lạt ở Xuân Hương - Đà Lạt, cách Chợ ...",
+    "position": 7
+   },
+   {
+    "title": "Hotel Palace Portoroz by Minor Hotels Đánh giá của khách",
+    "link": "https://vn.trip.com/hotels/portoroz-hotel-detail-2149077/hotel-palace-portoroz-by-minor-hotels/review.html",
+    "snippet": "... Golden Sun Hotel, Golden Sun Hotel đánh giá của khách, Golden Sun Hotel đánh giá từ khách du lịch, đánh giá khách sạn Golden Sun HotelĐánh giá Luang Prabang ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

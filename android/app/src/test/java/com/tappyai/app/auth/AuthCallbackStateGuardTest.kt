@@ -12,7 +12,7 @@ import java.io.File
 
 /**
  * 🔒 Login CSRF on `tappyai://auth-callback` (security review 30/09, HIGH). A callback may import a
- * session ONLY for a sign-in this app started: matching state, within 10 minutes, single use.
+ * session ONLY for a sign-in this app started: matching state, within 5 minutes (the server I6 window), single use.
  */
 class AuthCallbackStateGuardTest {
 
@@ -87,6 +87,19 @@ class AuthCallbackStateGuardTest {
         assertNull(AuthCallbackStateGuard.stateOf("tappyai://auth-callback#access_token=x&refresh_token=y"))
         assertNull(AuthCallbackStateGuard.stateOf("tappyai://auth-callback#xstate=s&state="))
         assertNull(AuthCallbackStateGuard.stateOf(null))
+        // The shared MOB-1 / I6 contract's name is accepted too.
+        assertEquals("s3", AuthCallbackStateGuard.stateOf("tappyai://auth-callback#access_token=x&refresh_token=y&app_state=s3"))
+        assertEquals("s4", AuthCallbackStateGuard.stateOf("tappyai://auth-callback?code=c&app_state=s4"))
+    }
+
+    @Test fun `Google on Android never lands on the callback - native ID token only (MOB-1)`() {
+        // MOB-1: "Google chỉ nhận mã PKCE, từ chối callback chứa token". On Android Google is the
+        // Credential Manager ID-token exchange — no browser, no tappyai://auth-callback at all — so a
+        // token-bearing callback can only ever be Zalo's, and it needs the matching app_state.
+        val google = src("features/auth/src/main/java/com/tappyai/features/auth/data/GoogleSignInClient.kt")
+        assertTrue(!google.contains("auth-callback") && !google.contains("CustomTabsIntent") && !google.contains("launchUrl"))
+        val repo = src("features/auth/src/main/java/com/tappyai/features/auth/data/AuthRepository.kt")
+        assertTrue(repo.contains("suspend fun signInWithGoogleIdToken("))
     }
 
     // ── Wiring (source pins) ──

@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Ốp lưng iPhone 17 Pro Max UAG chống sốc Plyo Ice\" OR \"Ốp lưng chống sốc UAG Monarch cho iPhone 12 Pro Max\" OR \"Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:08:38.424Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Ốp lưng iPhone 17 Pro Max UAG chống sốc Plyo Ice\" OR \"Ốp lưng chống sốc UAG Monarch cho iPhone 12 Pro Max\" OR \"Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Plyo Ice | Giá rẻ",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-plyo-ice.html",
+    "snippet": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Plyo Ice ; Smember Giảm thêm đến 47.000đ ; Chống sốc và hạn chế trầy xước hiệu quả. Ốp lưng iPhone 17 Pro Max UAG Plyo Ice ...",
+    "position": 1
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Plyo Ice - timgiatot",
+    "link": "https://timgiatot.com.vn/gia/256771-op-lung-iphone-17-pro-max-uag-chong-soc-plyo-ice",
+    "snippet": "So sánh giá Ốp lưng iPhone 17 Pro Max UAG chống sốc Plyo Ice: giá từ 935.000 ₫ trên 2 nơi bán, cập nhật tháng 9/2026. Giá từ các sàn lớn.",
+    "position": 2
+   },
+   {
+    "title": "So sánh Ốp lưng chống sốc UAG Monarch cho iPhone 12 Pro ...",
+    "link": "https://cellphones.com.vn/so-sanh/op-lung-chong-soc-uag-monarch-cho-iphone-12-pro-max-vs-op-lung-iphone-12-12-pro-native-union-clic-canvas",
+    "snippet": "So sánh chi tiết về giá, cấu hình, ưu nhược điểm giữa: Ốp lưng chống sốc UAG Monarch cho iPhone 12 Pro Max và Ốp lưng iPhone 12 | 12 Pro Native Union Clic ...",
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe",
+    "link": "https://timgiatot.com.vn/gia/254171-op-lung-iphone-17-pro-max-uag-chong-soc-scout-with-magsafe",
+    "snippet": "So sánh giá Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe: giá từ 850.000 ₫ trên 10 nơi bán, cập nhật tháng 9/2026. Giá từ các sàn lớn.",
+    "position": 4
+   },
+   {
+    "title": "Ốp lưng UAG - Bảo vệ xứng tầm cho điện thoại của bạn",
+    "link": "https://minhtuanmobile.com/tin-tuc/op-lung-uag-bao-ve-xung-tam-cho-dien-thoai-cua-ban/",
+    "snippet": "UAG Pathfinder là dòng ốp mang đậm DNA thiết kế của UAG, rất dễ nhận diện với mặt lưng họa tiết lục giác lớn cùng các đường viền nổi cứng cáp.",
+    "date": "27 thg 1, 2026",
+    "position": 5
+   },
+   {
+    "title": "Ốp lưng Scout w MagSafe cho iPhone 17 Pro Max [6.9 inch]",
+    "link": "https://uagvietnam.vn/products/op-lung-scout-w-magsafe-cho-iphone-17-pro-max-6-9-inch",
+    "snippet": "UAG Scout Clear đạt chứng nhận MIL-SPEC 810G-516, mang lại khả năng chống sốc lên đến 3 mét. Nhờ thiết kế bền chắc cùng các góc bo khí hấp thụ lực, iPhone 17 ...",
+    "position": 6
+   },
+   {
+    "title": "ốp Lưng Uag Uag Monarch Iphone 12 Pro Ốp ... - excelien.com",
+    "link": "https://excelien.com/product/review/25963791041600",
+    "snippet": "... Ốp lưng chống sốc UAG Monarch cho iPhone 12 Pro Max chính hãng giá rẻ, Ốp Lưng UAG Chống Va Đập Cho iPhone 11, 12, 13 Series An Toàn.",
+    "rating": 4.1,
+    "ratingCount": 58,
+    "position": 7
+   },
+   {
+    "title": "Ốp lưng iPhone 14 Plus / 15 Plus UAG chống sốc Plyo Ice ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-14-plus-uag-plyo-ice-with-magsafe.html",
+    "snippet": "Ốp lưng Samsung Galaxy S26 Ultra UAG Plyo · 880.000đ. 1.100.000đ · 20% ; Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe · 850.000đ. 1.000.000đ · 15% ; Ốp ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

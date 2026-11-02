@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Massage Golden\" OR \"May Xưa Spa Quận 1\" OR \"Massage tận nơi Sài Gòn\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:50:58.968Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Massage Golden\" OR \"May Xưa Spa Quận 1\" OR \"Massage tận nơi Sài Gòn\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Review Massage Golden",
+    "link": "https://www.tiktok.com/discover/review-massage-golden",
+    "snippet": "7.1M posts. Discover videos related to Review Massage Golden on TikTok. See more videos about Review Massage Rạch Gia, Review Massage Glow, ...",
+    "position": 1
+   },
+   {
+    "title": "Nhóm Massage Tận Nơi Sài Gòn",
+    "link": "https://www.tiktok.com/discover/nh%C3%B3m-massage-t%E1%BA%ADn-n%C6%A1i-s%C3%A0i-g%C3%B2n",
+    "snippet": "Nhóm Massage Tận Nơi Sài Gòn. Khám phá các video liên quan đến Nhóm Massage Tận Nơi Sài Gòn trên TikTok. Cập nhật lần cuối 2026-09-07. 11 Likes, 1 Comments.",
+    "position": 2
+   },
+   {
+    "title": "Golden Spa Kovan",
+    "link": "https://www.tiktok.com/discover/golden-spa-kovan",
+    "snippet": "#goldenspa #spaday #relaxation #massage. Golden Spa Makadi, Cleopatra Spa experience, luxury spa services, professional massage therapists, relaxing spa ...",
+    "position": 3
+   },
+   {
+    "title": "Golden Thai Spa Ajman Nuiemia | TikTok",
+    "link": "https://www.tiktok.com/discover/golden-thai-spa-ajman-nuiemia",
+    "snippet": "... Massage. Golden Spa Semarang buka setiap hari. Info jam operasi, layanan massage, dan promo makan harian. Jangan lupa mampir! 381 Likes, 6 ...",
+    "date": "7 thg 9, 2026",
+    "position": 4
+   },
+   {
+    "title": "Kerala Spa Golden",
+    "link": "https://www.tiktok.com/discover/kerala-spa-golden",
+    "snippet": "Golden Spa Semarang: Buka Setiap Hari — Promo & Layanan Massage. Golden Spa Semarang buka setiap hari. Info jam operasi, layanan massage, dan promo makan ...",
+    "position": 5
+   },
+   {
+    "title": "Golden Triangle Massage Center",
+    "link": "https://www.tiktok.com/discover/golden-triangle-massage-center",
+    "snippet": "Golden Triangle 1 Penang 泰式按摩 Thai Massage [ Full ... TikTok video from Golden Shield Massage (@golden. 66.6K1w ago. golden ...",
+    "date": "12 thg 8, 2026",
+    "position": 6
+   },
+   {
+    "title": "Massage khoẻ KTV tay nghề cao Giúp phục hồi sức ...",
+    "link": "https://www.tiktok.com/@massagehungthinh/video/7628147767285681416",
+    "snippet": "Massage GOLDEN. 2086 · recommend-cover. Lily Rì Viu. 49 · recommend-cover ... Con nổi ban những vết chấm đỏ được 1 thời gian nhưng mẹ chỉ nghĩ ...",
+    "position": 7
+   },
+   {
+    "title": "Massage Tận Nơi Sài Gòm",
+    "link": "https://www.tiktok.com/discover/massage-t%E1%BA%ADn-n%C6%A1i-s%C3%A0i-g%C3%B2m",
+    "snippet": "... 1 | Massage Quận 1 · Ren Spa Quận 10 · Olenii Spa Quận 10 · Sen Boutique Spa Danang ... massage tận nơi Sài Gòn. 834 Likes, 81 Comments. TikTok video from App ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

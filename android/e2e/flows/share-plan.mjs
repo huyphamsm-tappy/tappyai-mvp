@@ -38,8 +38,8 @@ export async function android({ a, shot, check, seeded }) {
   if (!row) return
   await a.tap(row, { after: 5000 })
   shot('reopened')
-  const card = await a.scrollTo(/Chia sẻ lịch trình/, { max: 10 }).catch(() => null)
-  check('mở lại → thẻ kế hoạch hiện đủ (có "Chia sẻ lịch trình")', !!card)
+  const card = await a.planShareButton()
+  check('mở lại → thẻ kế hoạch v2 hiện đủ («TAPPY PLAN» + nút «Chia sẻ»)', !!card)
   if (!card) return
   const PICS = '/sdcard/Pictures/TappyAI'
   // Scroll INSIDE the bottom sheet: up only — a downward drag at its top dismisses the sheet.
@@ -49,7 +49,7 @@ export async function android({ a, shot, check, seeded }) {
   }
   let savedBytes = null
   for (const [tile, pkg, wantImage] of [['Zalo', 'com.zing.zalo', false], ['TikTok (gửi ảnh)', 'com.zhiliaoapp.musically', true]]) {
-    const btn = await a.scrollTo(/Chia sẻ lịch trình/, { max: 10 }).catch(() => null)
+    const btn = await a.planShareButton()
     await a.tap(btn, { after: 3000 })
     // SL1: the sheet mints the plan's page first ("Đang tạo liên kết kế hoạch…"), then draws the plan image.
     await a.waitGone(/Đang tạo liên kết kế hoạch/, { timeout: 30000 }).catch(() => {})

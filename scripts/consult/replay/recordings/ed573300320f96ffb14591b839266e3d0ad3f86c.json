@@ -1,0 +1,625 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "quán hải sản",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:26:17.407Z",
+ "body": {
+  "searchParameters": {
+   "q": "quán hải sản",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7768941,106.7008997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Hải Sản Hoàng Gia CN Quốc Hương Quận 2",
+    "address": "16 Quốc Hương, An Khánh, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.8034196,
+    "longitude": 106.7320091,
+    "rating": 4.8,
+    "ratingCount": 1260,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng",
+     "Nhà hàng hải sản"
+    ],
+    "website": "https://haisanhoanggia.com/",
+    "phoneNumber": "+84 1900 0303",
+    "openingHours": {
+     "Thứ Tư": "07:00–22:00",
+     "Thứ Năm": "07:00–22:00",
+     "Thứ Sáu": "07:00–22:00",
+     "Thứ Bảy": "07:00–22:00",
+     "Chủ Nhật": "07:00–22:00",
+     "Thứ Hai": "07:00–22:00",
+     "Thứ Ba": "07:00–22:00"
+    },
+    "bookingLinks": [
+     "https://s.ldplink.me/bccwP",
+     "https://www.google.com/maps/reserve/v/dine/c/-4h0j02ucYw?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPFbM3ZKyi18KPVMqw2GooCDfAAZoqtFXVI5Ba6r6JxB3-JGzQhs97GRTqzezeCANrHGKGAVhFJ8I9_Llkt_7KaWjqwLe0z_C0IF4y_hiUAyyQ0yc9p9i-Zo1NuaP1IS0kLtbjEEaXcarbm",
+    "cid": "10895358604197242734",
+    "fid": "0x3175278e9faef481:0x973416eca7ac276e",
+    "placeId": "ChIJgfSun44ndTERbiesp-wWNJc"
+   },
+   {
+    "position": 2,
+    "title": "Hải Sản Hoàng Gia",
+    "address": "192 Lý Tự Trọng, Bến Thành, Hồ Chí Minh 710200, Việt Nam",
+    "latitude": 10.7729617,
+    "longitude": 106.6954686,
+    "rating": 4.8,
+    "ratingCount": 1255,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng",
+     "Nhà hàng hải sản"
+    ],
+    "website": "https://haisanhoanggia.com/",
+    "phoneNumber": "+84 1900 0303",
+    "openingHours": {
+     "Thứ Tư": "08:00–00:00",
+     "Thứ Năm": "08:00–00:00",
+     "Thứ Sáu": "08:00–00:00",
+     "Thứ Bảy": "08:00–00:00",
+     "Chủ Nhật": "08:00–00:00",
+     "Thứ Hai": "08:00–00:00",
+     "Thứ Ba": "08:00–00:00"
+    },
+    "bookingLinks": [
+     "https://s.ldplink.me/RhqgD",
+     "https://www.google.com/maps/reserve/v/dine/c/Q9Spy0V7tdE?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPlNegIcRDZ-MpyTgG6kMkBMuFBV0xSxLf-QS9MQjjXzEkMFS_cDHtB_aeMhDdEbG8DFI-xpSsUcwk0i8jMe4evmkAdJ1VUg5Z915JuPo1-yJ1XjR-XfpxNh8taXbmt6AK5evob-yUWHJI",
+    "cid": "5587965731067952908",
+    "fid": "0x31752fe44a00e847:0x4d8c7139e15c7f0c",
+    "placeId": "ChIJR-gASuQvdTERDH9c4TlxjE0"
+   },
+   {
+    "position": 3,
+    "title": "Hải sản Hoàng Gia CN Nguyễn Tri Phương",
+    "address": "235 Nguyễn Tri Phương, Diên Hồng, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7601215,
+    "longitude": 106.668667,
+    "rating": 4.9,
+    "ratingCount": 751,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng",
+     "Nhà hàng hải sản"
+    ],
+    "website": "https://haisanhoanggia.com/",
+    "phoneNumber": "+84 1900 0303",
+    "openingHours": {
+     "Thứ Tư": "07:00–22:00",
+     "Thứ Năm": "07:00–22:00",
+     "Thứ Sáu": "07:00–22:00",
+     "Thứ Bảy": "07:00–22:00",
+     "Chủ Nhật": "07:00–22:00",
+     "Thứ Hai": "07:00–22:00",
+     "Thứ Ba": "07:00–22:00"
+    },
+    "bookingLinks": [
+     "https://s.ldplink.me/dbgnQ"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLemA93fZW-o-f_M5p0W3Gt0LAWA5o77TyziLyFze7ojqDFAheuZVcUSfTuqsYA57NlpYXfETFpGeM0lsQ-h3bd36e8ulnWB2xet6Y82Vrun6e1KvnfIb4E4hrfcyWmKgWQZs1pOzAjdyQw",
+    "cid": "10521887382276386763",
+    "fid": "0x31752fa45412fb25:0x920540d3ab3fafcb",
+    "placeId": "ChIJJfsSVKQvdTERy68_q9NABZI"
+   },
+   {
+    "position": 4,
+    "title": "Hải Sản Hoàng Gia CN 608 Đường 3 Tháng 2",
+    "address": "608 3 Tháng 2, Diên Hồng, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.765436099999999,
+    "longitude": 106.6625732,
+    "rating": 4.8,
+    "ratingCount": 590,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng",
+     "Nhà hàng hải sản"
+    ],
+    "website": "https://haisanhoanggia.com/",
+    "phoneNumber": "+84 1900 0303",
+    "openingHours": {
+     "Thứ Tư": "08:00–23:00",
+     "Thứ Năm": "08:00–23:00",
+     "Thứ Sáu": "08:00–23:00",
+     "Thứ Bảy": "08:00–23:00",
+     "Chủ Nhật": "08:00–23:00",
+     "Thứ Hai": "08:00–23:00",
+     "Thứ Ba": "08:00–23:00"
+    },
+    "bookingLinks": [
+     "https://s.ldplink.me/DkB4S"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPIC6Q4qmCJqurxKa1oF_85yvLFZ8OWD_7rD1L0bENxf_7eQJXzMxPXL3v14pAoTiA03kRx3MnWz5jT2QkBt1tgY7IXfc8Eyzhez8zv5Wnu5pCcQ66drVSm1VU9dRnXgu8XtoaHgubG4Idm",
+    "cid": "18256061979356842634",
+    "fid": "0x31752f06fbb99fff:0xfd5a8fa53d144a8a",
+    "placeId": "ChIJ_5-5-wYvdTERikoUPaWPWv0"
+   },
+   {
+    "position": 5,
+    "title": "Nhà Hàng Hải Sản Mr.D - Nhà Hàng Hải Sản Tân Bình",
+    "address": "30/6B Hoàng Hoa Thám, Bảy Hiền, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.797867499999999,
+    "longitude": 106.64772389999999,
+    "rating": 4.7,
+    "ratingCount": 142,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản",
+     "Nhà hàng châu Á",
+     "Nhà hàng cơm",
+     "Nhà bán buôn hải sản"
+    ],
+    "website": "https://haisanmrd.com/",
+    "phoneNumber": "+84 936 952 968",
+    "openingHours": {
+     "Thứ Tư": "08:00–23:00",
+     "Thứ Năm": "08:00–23:00",
+     "Thứ Sáu": "08:00–23:00",
+     "Thứ Bảy": "08:00–23:00",
+     "Chủ Nhật": "08:00–23:00",
+     "Thứ Hai": "08:00–23:00",
+     "Thứ Ba": "08:00–23:00"
+    },
+    "bookingLinks": [
+     "https://haisanmrd.com/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmM_7jM5JMb0pLvbTRahY1c7YHI7EF3_VfCOR4pw5qA2V7LJ7fS8C7xoc6zQ2J5pC1kQg-6oV6LE6q3bevSEypT7zUVBGUwgHhe2A03n0HKqWEjJy0dsyJjQXAv99Pt1U74NLOXJEH5IjKqj",
+    "cid": "1704315476976606866",
+    "fid": "0x317529ca807f9121:0x17a6f1e57e641e92",
+    "placeId": "ChIJIZF_gMopdTERkh5kfuXxphc"
+   },
+   {
+    "position": 6,
+    "title": "Quán hải sản 157 Nguyễn Tri Phương",
+    "address": "157 Nguyễn Tri Phương, An Đông, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7557156,
+    "longitude": 106.6694258,
+    "rating": 4.3,
+    "ratingCount": 219,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản"
+    ],
+    "phoneNumber": "+84 779 999 157",
+    "openingHours": {
+     "Thứ Tư": "10:30–00:00",
+     "Thứ Năm": "10:30–00:00",
+     "Thứ Sáu": "10:30–00:00",
+     "Thứ Bảy": "10:30–00:00",
+     "Chủ Nhật": "10:30–00:00",
+     "Thứ Hai": "10:30–00:00",
+     "Thứ Ba": "10:30–00:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmN502XAP_DRPfFwKNwTmkO8hg5r8YV9083fFfswtENhsXc3pa_2Vu_tbJM-XeZSulKP74cW_7G9hMh1qThRcsg_EOvjxawYm-wUuc35DFQAtxlsHqXpQhYr9V6J98JsWuL7H3hvocMcPbdJ",
+    "cid": "661479667016750509",
+    "fid": "0x31752f5bb1182ef5:0x92e0c40a2ad55ad",
+    "placeId": "ChIJ9S4YsVsvdTERrVWtokAMLgk"
+   },
+   {
+    "position": 7,
+    "title": "Chợ Hải Sản 79",
+    "address": "58 Lương Định Của phường An Phú Quận 2 Thành phố Thủ Đức, 58 Lương Định Của, Bình Trưng, Hồ Chí Minh 71300, Việt Nam",
+    "latitude": 10.7905988,
+    "longitude": 106.74274059999999,
+    "rating": 4.5,
+    "ratingCount": 463,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản"
+    ],
+    "website": "https://www.facebook.com/chohaisan79",
+    "phoneNumber": "+84 784 287 979",
+    "openingHours": {
+     "Thứ Tư": "10:30–00:00",
+     "Thứ Năm": "10:30–00:00",
+     "Thứ Sáu": "10:30–00:00",
+     "Thứ Bảy": "10:30–00:00",
+     "Chủ Nhật": "10:30–00:00",
+     "Thứ Hai": "10:30–00:00",
+     "Thứ Ba": "10:30–00:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPeYWQ6oL0pZfSvlltd2n6KPcqJRpStd-zFFVqZn-NS-meqhrzK0PHY5V5FG-2v55UAenhqPD218hPSSOpGRmyVzU0rEYNdO7SQ00j1YUcuqV2H2BVkXSV6Y-D89FDp6jO0azrH",
+    "cid": "14771124116002009463",
+    "fid": "0x317525bb06a96ff5:0xccfd931f6b817177",
+    "placeId": "ChIJ9W-pBrsldTERd3GBax-T_cw"
+   },
+   {
+    "position": 8,
+    "title": "Hải Sản Hoàng Gia - 37 Lý Tự Trọng Quận 1",
+    "address": "37 Lý Tự Trọng, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7791895,
+    "longitude": 106.7023152,
+    "rating": 4.6,
+    "ratingCount": 1736,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng",
+     "Nhà hàng hải sản"
+    ],
+    "website": "https://haisanhoanggia.com/",
+    "phoneNumber": "+84 1900 0303",
+    "openingHours": {
+     "Thứ Tư": "08:00–00:00",
+     "Thứ Năm": "08:00–00:00",
+     "Thứ Sáu": "08:00–00:00",
+     "Thứ Bảy": "08:00–00:00",
+     "Chủ Nhật": "08:00–00:00",
+     "Thứ Hai": "08:00–00:00",
+     "Thứ Ba": "08:00–00:00"
+    },
+    "bookingLinks": [
+     "https://s.ldplink.me/CvwTi"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmM-JdhS_jPxD-hqF3hqrGiBN42gE_I_R2WcDo5VgaZXspVgal4x4ymh-xw36yW2dctJeUJITrWZQ4pudIBT1lzlh8f2rLYsUjb16_qZg4Via_Nh1PR6dEs9Pz8L-Ip6BV6Wx1x58SuvD1E",
+    "cid": "16949755476597099381",
+    "fid": "0x31752f48660a872b:0xeb39a0cd644d4b75",
+    "placeId": "ChIJK4cKZkgvdTERdUtNZM2gOes"
+   },
+   {
+    "position": 9,
+    "title": "ẨM THỰC HOÀNG OANH | HẢI SẢN NGON QUẬN 11 | ĐẶT TIỆC HẢI SẢN QUẬN 11",
+    "address": "353 Lạc Long Quân, Hòa Bình, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.771021099999999,
+    "longitude": 106.645124,
+    "rating": 4.8,
+    "ratingCount": 4,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 907 930 789",
+    "openingHours": {
+     "Thứ Tư": "09:00–23:30",
+     "Thứ Năm": "09:00–23:30",
+     "Thứ Sáu": "09:00–23:30",
+     "Thứ Bảy": "09:00–23:00",
+     "Chủ Nhật": "09:00–23:30",
+     "Thứ Hai": "09:00–23:30",
+     "Thứ Ba": "09:00–23:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMJrifJnqB4gQSDgeU5SHAYjkqV9dZfJtgEQMFSco4tG5vuHerhuJLDo2-IqQjN1eNHAwYPSAzkOb0VVeLHf3GsKbYLjVb2esymNUNwOGTJA4AyfB-gb9PBW30kPfQCOi3UmRo",
+    "cid": "2204023952944452687",
+    "fid": "0x31752f3a1e96dfb9:0x1e96441b97b4d44f",
+    "placeId": "ChIJud-WHjovdTERT9S0lxtElh4"
+   },
+   {
+    "position": 10,
+    "title": "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+    "address": "180 Trần Hưng Đạo, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7630564,
+    "longitude": 106.69073569999999,
+    "rating": 4.7,
+    "ratingCount": 985,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng",
+     "Nhà hàng hải sản"
+    ],
+    "website": "https://haisanhoanggia.com/",
+    "phoneNumber": "+84 1900 0303",
+    "openingHours": {
+     "Thứ Tư": "08:00–00:00",
+     "Thứ Năm": "08:00–00:00",
+     "Thứ Sáu": "08:00–00:00",
+     "Thứ Bảy": "08:00–00:00",
+     "Chủ Nhật": "08:00–00:00",
+     "Thứ Hai": "08:00–00:00",
+     "Thứ Ba": "08:00–00:00"
+    },
+    "bookingLinks": [
+     "https://s.ldplink.me/qPMj7",
+     "https://www.google.com/maps/reserve/v/dine/c/vG3sFEFo0Xw?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmO147swBl-zOR0E9E9ykU57uYQVauc8NMaVoF_BCV9VgsQVKiloLlhK2iwtpLYdoAp0A1dGDzbakMNDkxvbgiF5_at21qxul6COlSiioIxAPeykSWzO1tEn4_4acQwuwQE7zDc0",
+    "cid": "8690476982161666487",
+    "fid": "0x31752f1485da8c51:0x789ac6c56a7471b7",
+    "placeId": "ChIJUYzahRQvdTERt3F0asXGmng"
+   },
+   {
+    "position": 11,
+    "title": "Đại Hải Sản",
+    "address": "19 Số 16, Khánh Hội, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7564712,
+    "longitude": 106.70387649999999,
+    "rating": 4.6,
+    "ratingCount": 32,
+    "type": "Chợ hải sản",
+    "types": [
+     "Chợ hải sản"
+    ],
+    "website": "https://daihaisan.com/",
+    "phoneNumber": "+84 901 308 777",
+    "openingHours": {
+     "Thứ Tư": "07:00–20:00",
+     "Thứ Năm": "07:00–20:00",
+     "Thứ Sáu": "07:00–20:00",
+     "Thứ Bảy": "07:00–20:00",
+     "Chủ Nhật": "07:00–20:00",
+     "Thứ Hai": "07:00–20:00",
+     "Thứ Ba": "07:00–20:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmO1XMlqFxEgdgzmMPHtWW6-sFChG8Sx-Cft8yT-uhvONSHIPxyD5wQlz3Ws81Zxp169Ko1xGW2JE7zG6j8VjV6NpkHV6FQMHTRYCShHBX4npqub4bZ-UbdqRiHFefzkFKVIZDKQ",
+    "cid": "16800282056834118426",
+    "fid": "0x31752f728078451f:0xe9269784dbf7731a",
+    "placeId": "ChIJH0V4gHIvdTERGnP324SXJuk"
+   },
+   {
+    "position": 12,
+    "title": "Quán Hải Sản 04",
+    "address": "4 Đ. Lý Thường Kiệt, Chợ Lớn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7573343,
+    "longitude": 106.6621517,
+    "rating": 3.9,
+    "ratingCount": 1758,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam",
+     "Nhà hàng"
+    ],
+    "website": "http://quananso4.vn/",
+    "phoneNumber": "+84 708 501 628",
+    "openingHours": {
+     "Thứ Tư": "09:00–22:30",
+     "Thứ Năm": "09:00–22:30",
+     "Thứ Sáu": "09:00–22:30",
+     "Thứ Bảy": "09:00–22:30",
+     "Chủ Nhật": "09:00–22:30",
+     "Thứ Hai": "09:00–22:30",
+     "Thứ Ba": "09:00–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLfwYMyqky_so86gzZQ95o_M-D8b2BMBmT1ufyg3K9MIZ8qa5Q3qRxUL_7f57xFsrGlboM1CxUzI-dHyRLb-Rsg2elyxn1yKjqLwTOgb2kAAIOdjBLUBzvcOEYoeq27KT_4NysFqAw",
+    "cid": "3374977117498223014",
+    "fid": "0x31752ef04a216019:0x2ed653ce958da9a6",
+    "placeId": "ChIJGWAhSvAudTERpqmNlc5T1i4"
+   },
+   {
+    "position": 13,
+    "title": "Quán Hải Sản Út Liên 2",
+    "address": "RM38+MF8, 3C Đ. Phổ Quang, Tân Sơn Hòa, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.804070099999999,
+    "longitude": 106.66615019999999,
+    "rating": 4.1,
+    "ratingCount": 1063,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản"
+    ],
+    "website": "https://www.foody.vn/ho-chi-minh/ut-lien-2-oc-hai-san",
+    "phoneNumber": "+84 903 640 183",
+    "description": "Quán ăn bình dân có chỗ ngồi trong nhà và ngoài trời, nổi tiếng với các món hải sản địa phương.",
+    "openingHours": {
+     "Thứ Tư": "11:00–23:00",
+     "Thứ Năm": "11:00–23:00",
+     "Thứ Sáu": "11:00–23:00",
+     "Thứ Bảy": "11:00–23:00",
+     "Chủ Nhật": "11:00–23:00",
+     "Thứ Hai": "11:00–23:00",
+     "Thứ Ba": "11:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMvfc1kV30wEnXDg4ovo5eFu-OPaUnv1lsh9zKUE0XOEbcLCJt8-UAWYxMbhlF-_cQluXmP63GWAjTS6d95nec1Ku7y3qU9ZHgROKJbsZB3ZgDzH2deC0s_rbOjuFWkgTIl4Ttn-A",
+    "cid": "16747184582198247747",
+    "fid": "0x31752974e04b7831:0xe869f3a5a9d34143",
+    "placeId": "ChIJMXhL4HQpdTERQ0HTqaXzaeg"
+   },
+   {
+    "position": 14,
+    "title": "Quán Cua Ngon - Hương Vị Đất Mũi",
+    "address": "250 Đ. Nguyễn Thái Bình, Phường 12, Bảy Hiền, Hồ Chí Minh 72510, Việt Nam",
+    "latitude": 10.795809499999999,
+    "longitude": 106.650942,
+    "rating": 4.5,
+    "ratingCount": 159,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản",
+     "Quán ăn nhỏ",
+     "Nhà hàng Trung Quốc có giao hàng",
+     "Nhà bán buôn hải sản",
+     "Cửa hàng"
+    ],
+    "website": "http://www.cuacamau.com/",
+    "phoneNumber": "+84 28 6268 6268",
+    "openingHours": {
+     "Thứ Tư": "06:00–22:00",
+     "Thứ Năm": "06:00–22:00",
+     "Thứ Sáu": "06:00–22:00",
+     "Thứ Bảy": "06:00–22:00",
+     "Chủ Nhật": "06:00–22:00",
+     "Thứ Hai": "06:00–22:00",
+     "Thứ Ba": "06:00–22:00"
+    },
+    "bookingLinks": [
+     "https://cuacamau.com/dat-ban-cua-ngon",
+     "https://pasgo.vn/nha-hang/cua-ngon-huong-vi-dat-mui-nguyen-thai-binh-5105"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOLYzF4BpHjNpsvY860uhs8T_agp1mDvrHvNObIFNiPRjOxFWo0fCXCGx8-rSzD4dJ6nL0EYn2d3EIdysFcPvjXUn4v46-81WpPAuq9neYMPLUzNPoAKxpGe5_J0LcZ32OKlVrjhQ",
+    "cid": "12570904573619246815",
+    "fid": "0x3175299db4862295:0xae74d31b2fe896df",
+    "placeId": "ChIJlSKGtJ0pdTER35boLxvTdK4"
+   },
+   {
+    "position": 15,
+    "title": "Quán Hải Sản 567 | Quán Hải Sản Ngon Quận Phú Nhuận|.",
+    "address": "115 Đ. Phùng Văn Cung, Cầu Kiệu, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.8019266,
+    "longitude": 106.68458679999999,
+    "rating": 4.4,
+    "ratingCount": 89,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản"
+    ],
+    "website": "http://xn--hisn567-qn4cc.com/",
+    "phoneNumber": "+84 908 898 398",
+    "openingHours": {
+     "Thứ Tư": "10:00–23:00",
+     "Thứ Năm": "10:00–23:00",
+     "Thứ Sáu": "10:00–23:00",
+     "Thứ Bảy": "10:00–23:00",
+     "Chủ Nhật": "10:00–23:00",
+     "Thứ Hai": "10:00–23:00",
+     "Thứ Ba": "10:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPr67FpTxIWWo8Z1uPMuzaS1yzfDuLliyTylG3RKBfRWFGNiqSQ9WJ3f8cbOykiyBLXmqeJXlzPEEk8ANdfwmj2tcgIxT8fSJl1mbdus4RHd-SKkP9KHDEJCpQ7FTVovaEzzPe2",
+    "cid": "16459431577778016972",
+    "fid": "0x317528eeffffffff:0xe46ba5d06e4e52cc",
+    "placeId": "ChIJ_____-4odTERzFJObtCla-Q"
+   },
+   {
+    "position": 16,
+    "title": "Quán Hải Sản Ngon Tân Bình",
+    "address": "1e Bình Giã, Tân Bình, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7985334,
+    "longitude": 106.64412949999999,
+    "rating": 4.3,
+    "ratingCount": 32,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản"
+    ],
+    "phoneNumber": "+84 902 709 139",
+    "openingHours": {
+     "Thứ Tư": "16:00–03:00",
+     "Thứ Năm": "16:00–03:00",
+     "Thứ Sáu": "16:00–03:00",
+     "Thứ Bảy": "16:00–03:00",
+     "Chủ Nhật": "16:00–03:00",
+     "Thứ Hai": "16:00–03:00",
+     "Thứ Ba": "16:00–03:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNWI0Fdl-FB4hLwuqd6xvqM-uc3NVDZhqaCu1aG04Sn53VxqoNVDExRlorkS43LXRuyGluaGtaN-ESf8iNCXdqr3_G2FXd3CDDO60eYK0RqXqeKMO08mDlPuaBcdKKdrNmvOdRUVw",
+    "cid": "9896821345426065071",
+    "fid": "0x31752990b4db9915:0x89589293fb9fc6af",
+    "placeId": "ChIJFZnbtJApdTERr8af-5OSWIk"
+   },
+   {
+    "position": 17,
+    "title": "Vựa Hải Sản Đại Hải",
+    "address": "81 Dạ Nam, Chánh Hưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.748814,
+    "longitude": 106.6853034,
+    "rating": 5,
+    "ratingCount": 1,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản"
+    ],
+    "phoneNumber": "+84 978 808 138",
+    "openingHours": {
+     "Thứ Tư": "07:00–22:30",
+     "Thứ Năm": "07:00–22:30",
+     "Thứ Sáu": "07:00–22:30",
+     "Thứ Bảy": "07:00–22:30",
+     "Chủ Nhật": "07:00–22:30",
+     "Thứ Hai": "07:00–22:30",
+     "Thứ Ba": "07:00–22:30"
+    },
+    "thumbnailUrl": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=F2zwhFnFX3yE7uoZBHMUhw&cb_client=search.gws-prod.grass&w=80&h=92&yaw=82.21399&pitch=0&thumbfov=100",
+    "cid": "13310533953542840158",
+    "fid": "0x31752f07aa036c73:0xb8b8841bc7b25f5e",
+    "placeId": "ChIJc2wDqgcvdTERXl-yxxuEuLg"
+   },
+   {
+    "position": 18,
+    "title": "Xô Cajun - 36/3A Nguyễn Gia Trí, P25, BT",
+    "address": "36/3A Nguyễn Gia Trí, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.802379499999999,
+    "longitude": 106.716034,
+    "rating": 4.7,
+    "ratingCount": 512,
+    "type": "Nhà hàng Cajun",
+    "types": [
+     "Nhà hàng Cajun",
+     "Quán ăn nhỏ"
+    ],
+    "website": "https://xocajun.com/",
+    "phoneNumber": "+84 835 100 800",
+    "openingHours": {
+     "Thứ Tư": "10:00–21:30",
+     "Thứ Năm": "10:00–21:30",
+     "Thứ Sáu": "10:00–21:30",
+     "Thứ Bảy": "10:00–21:30",
+     "Chủ Nhật": "10:00–21:30",
+     "Thứ Hai": "10:00–21:30",
+     "Thứ Ba": "10:00–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLdQB_HuuNYqejRkgRITq4eu9-XBFMrEeOl_zrubQZAVtCa3blwQDiOdtQNIRVBHoqk5qariXV-1b77DQh_WzRRDCx4eXlKL6aXGgCD1qpnWwQ2NhWOKk4V47UMbZfZIEDxAGr7P",
+    "cid": "17323802480457487024",
+    "fid": "0x317529403c5a7b93:0xf06a82920eb312b0",
+    "placeId": "ChIJk3taPEApdTERsBKzDpKCavA"
+   },
+   {
+    "position": 19,
+    "title": "HẢI SẢN PHƯỚC",
+    "address": "27 Trần Lựu, Street, An Khánh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7917654,
+    "longitude": 106.7357768,
+    "rating": 4.3,
+    "ratingCount": 232,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản"
+    ],
+    "phoneNumber": "+84 916 556 067",
+    "openingHours": {
+     "Thứ Tư": "09:00–23:00",
+     "Thứ Năm": "09:00–23:00",
+     "Thứ Sáu": "09:00–23:00",
+     "Thứ Bảy": "09:00–23:00",
+     "Chủ Nhật": "09:00–23:00",
+     "Thứ Hai": "09:00–23:00",
+     "Thứ Ba": "09:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLd8E6TO-bacADX3JY7FGQm9ANLEr__egWQhjFcIeG-aRSkcZnT2l0puMM9awn6zx6wSkAg5R9_sKPqECPuvjDmY-1XzNHm6l2sWTag0V0DZ7LwPaxS0zNmfbyQ_6Agl_ZRShd8",
+    "cid": "8854184234227731707",
+    "fid": "0x317527f27f871fdb:0x7ae061a649020cfb",
+    "placeId": "ChIJ2x-Hf_IndTER-wwCSaZh4Ho"
+   },
+   {
+    "position": 20,
+    "title": "Nhà Hàng Hải Sản 346",
+    "address": "183 Cao Thắng, Hòa Hưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.774590199999999,
+    "longitude": 106.6739805,
+    "rating": 4,
+    "ratingCount": 240,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 789 346 346",
+    "openingHours": {
+     "Thứ Tư": "10:00–23:00",
+     "Thứ Năm": "10:00–23:00",
+     "Thứ Sáu": "10:00–23:00",
+     "Thứ Bảy": "10:00–23:00",
+     "Chủ Nhật": "10:00–23:00",
+     "Thứ Hai": "10:00–23:00",
+     "Thứ Ba": "10:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmN0gpPYAYVgMrCJ2Lo1KDewYPQMSBhJDEcZIk7W6EgaEgKA5fu3JN3dX5jlwmhT7Td8zAe20SA9yj83JiMUheW15U4kFh9gdUnjcHFLRnSvzSd115u1x-9yWjeJNqZsnJoH_ajAxw",
+    "cid": "10302687401428232805",
+    "fid": "0x31752fe64f1f430f:0x8efa7f9b0a05aa65",
+    "placeId": "ChIJD0MfT-YvdTERZaoFCpt_-o4"
+   }
+  ],
+  "credits": 3
+ }
+}

@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Điện thoại Itel P55 Plus NFC 8GB 256GB\" OR \"REDMI 17 6 GB+256 GB Tím Liên Hoa\" OR \"NKTEL Điện Thoại 4G -Loa Lớn\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:54:40.915Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Điện thoại Itel P55 Plus NFC 8GB 256GB\" OR \"REDMI 17 6 GB+256 GB Tím Liên Hoa\" OR \"NKTEL Điện Thoại 4G -Loa Lớn\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

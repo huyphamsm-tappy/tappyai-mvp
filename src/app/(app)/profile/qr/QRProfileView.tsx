@@ -17,9 +17,9 @@ import { GOOGLE_PLAY_URL, playBadgeEnabled } from '@/lib/share/storeListing'
 // ── V3 Web · QR Profile ─────────────────────────────────────────────────────
 //
 // 🔑 THE QR SYSTEM ALREADY EXISTED AND IS REUSED WHOLE. `lib/qr/qrcode.ts` is a
-// dependency-free ISO/IEC 18004 encoder that `QRProfileButton` has shipped with
-// for as long as the profile has had a share icon. This page adds a surface and
-// a download; it adds no second encoder, no image service and no table.
+// dependency-free ISO/IEC 18004 encoder (the old `QRProfileButton` modal that
+// first shipped it was removed in Phase 7; this page is now the one QR surface).
+// It adds no second encoder, no image service and no table.
 //
 // 🚨 THE QR IS DELIBERATELY PLAIN. No logo in the middle, no gradient, no
 // rounded modules, no dark-mode inversion of the code itself. Every one of those
@@ -51,15 +51,11 @@ export default function QRProfileView({
 }) {
   const { t } = useTranslation()
   const router = useRouter()
-  const [origin, setOrigin] = useState('')
   const [shareOpen, setShareOpen] = useState(false)
   const [downloading, setDownloading] = useState(false)
   const [failed, setFailed] = useState(false)
   const svgRef = useRef<HTMLDivElement>(null)
 
-  // The origin is only knowable in the browser, and the QR must encode the URL a
-  // scanner will actually resolve — not a build-time guess.
-  useEffect(() => { setOrigin(window.location.origin) }, [])
 
   /**
    * 🚨 THE PUBLIC PROFILE URL, AND NOTHING ELSE.
@@ -69,7 +65,9 @@ export default function QRProfileView({
    * is a thing people photograph and forward, so whatever it carries is public
    * the moment it is printed.
    */
-  const profileUrl = origin ? `${origin}/users/${userId}` : ''
+  // Phase 7: the CANONICAL public URL (NEXT_PUBLIC_SITE_URL via absoluteUrl) — never window.location, which encoded
+  // localhost / preview hosts into codes people print and forward.
+  const profileUrl = userId ? absoluteUrl(`/users/${userId}`) : ''
 
   const svg = useMemo(() => {
     if (!profileUrl) return ''
@@ -116,44 +114,78 @@ export default function QRProfileView({
    * `lib/qr/brandedCard.ts`). A failure leaves the page alone; the QR on screen
    * is still scannable, which is the primary path.
    */
+  function buildCard(): Promise<Blob | null> {
+    return renderBrandedQrCard({
+      text: profileUrl,
+      displayName,
+      caption: t('v3.qr.scanHint'),
+      // The product line and the site, both already configuration: `v3.page.subtitle` is the
+      // shipped tagline and the host comes from NEXT_PUBLIC_SITE_URL via `absoluteUrl`.
+      tagline: t('v3.page.subtitle'),
+      website: cardWebsite(),
+      // The approved card's remaining copy (UAT3). No @username — owner decision, see brandedCard.ts.
+      invite: t('v3.qr.card.invite'),
+      slogan: t('v3.qr.card.slogan'),
+      sloganSub: t('v3.qr.card.sloganSub'),
+      websiteLabel: t('v3.qr.card.websiteLabel'),
+      features: [t('v3.qr.card.feat1'), t('v3.qr.card.feat2'), t('v3.qr.card.feat3'), t('v3.qr.card.feat4')],
+      // Store badges: hidden by default (storeListing.ts) — Android is not public, iOS not available.
+      ...(playBadgeEnabled() ? { googlePlay: {
+        badgeTop: t('v3.qr.card.playBadgeTop'),
+        titlePre: t('v3.qr.card.getAppPre'),
+        titlePost: t('v3.qr.card.getAppPost'),
+        sub: t('v3.qr.card.getAppSub'),
+        orWebsite: t('v3.qr.card.orWebsite'),
+      } } : { apps: {
+        title: t('v3.qr.card.appsTitle'),
+        android: t('v3.qr.card.androidSoon'),
+        ios: t('v3.qr.card.iosSoon'),
+        orWebsite: t('v3.qr.card.orWebsite'),
+      } }),
+      qrPx: QR_PX * DOWNLOAD_SCALE,
+      quietModules: QR_MARGIN,
+    })
+  }
+
+  // The page SHOWS the approved branded card (the same PNG that "Tải mã QR" saves); the plain code is
+  // only the fallback while it renders or if rendering fails.
+  const [cardUrl, setCardUrl] = useState('')
+  const cardBlob = useRef<Blob | null>(null)
+  // Phase 7: the shown object URL is revoked only when a NEWER card replaces it (or on unmount) — revoking it in the effect
+  // cleanup left the <img> on a dead blob whenever the effect re-ran (e.g. `t` settling after hydration) before the next render.
+  const shownUrl = useRef('')
+  useEffect(() => {
+    if (!profileUrl) return
+    let cancelled = false
+    void buildCard().then((png) => {
+      if (cancelled || !png) return
+      cardBlob.current = png
+      const next = URL.createObjectURL(png)
+      const prev = shownUrl.current
+      shownUrl.current = next
+      setCardUrl(next)
+      if (prev) URL.revokeObjectURL(prev)
+    }).catch(() => {})
+    return () => { cancelled = true }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profileUrl, displayName, t])
+  useEffect(() => () => { if (shownUrl.current) URL.revokeObjectURL(shownUrl.current) }, [])
+
   async function download() {
     if (!profileUrl || downloading) return
     setDownloading(true)
     try {
-      const png = await renderBrandedQrCard({
-        text: profileUrl,
-        displayName,
-        caption: t('v3.qr.scanHint'),
-        // The product line and the site, both already configuration: `v3.page.subtitle` is the
-        // shipped tagline and the host comes from NEXT_PUBLIC_SITE_URL via `absoluteUrl`.
-        // Google Play badge beside the site (owner SL2, 29/09); no App Store badge yet.
-        tagline: t('v3.page.subtitle'),
-        website: cardWebsite(),
-        // The approved card's remaining copy (UAT3): invitation line, banner, website label and the
-        // feature strip. No @username — owner decision, see brandedCard.ts.
-        invite: t('v3.qr.card.invite'),
-        slogan: t('v3.qr.card.slogan'),
-        sloganSub: t('v3.qr.card.sloganSub'),
-        websiteLabel: t('v3.qr.card.websiteLabel'),
-        features: [t('v3.qr.card.feat1'), t('v3.qr.card.feat2'), t('v3.qr.card.feat3'), t('v3.qr.card.feat4')],
-        // Gated (storeListing.ts): the Play listing is not public yet → production shows no badge until it is.
-        ...(playBadgeEnabled() ? { googlePlay: {
-          badgeTop: t('v3.qr.card.playBadgeTop'),
-          titlePre: t('v3.qr.card.getAppPre'),
-          titlePost: t('v3.qr.card.getAppPost'),
-          sub: t('v3.qr.card.getAppSub'),
-          orWebsite: t('v3.qr.card.orWebsite'),
-        } } : {}),
-        qrPx: QR_PX * DOWNLOAD_SCALE,
-        quietModules: QR_MARGIN,
-      })
-      if (!png) return
+      const png = cardBlob.current ?? await buildCard()
+      // A failed render is shown, never swallowed (Phase 7: no silent failure, no unhandled rejection).
+      if (!png) { setFailed(true); return }
       const href = URL.createObjectURL(png)
       const a = document.createElement('a')
       a.href = href
       a.download = 'tappyai-qr.png'
       a.click()
       URL.revokeObjectURL(href)
+    } catch {
+      setFailed(true)
     } finally {
       setDownloading(false)
     }
@@ -186,7 +218,16 @@ export default function QRProfileView({
             {t('v3.qr.title')}
           </h1>
 
-          {failed ? (
+          {cardUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={cardUrl}
+              alt={t('v3.qr.title')}
+              data-qr-card
+              className="mt-4 w-full rounded-2xl"
+              style={{ boxShadow: '0 10px 30px -12px rgba(0,0,0,0.55)' }}
+            />
+          ) : failed ? (
             <p role="alert" className="py-14 text-[13px]" style={{ color: 'var(--v3-rose)' }}>
               {t('v3.qr.failed')}
             </p>
@@ -203,15 +244,17 @@ export default function QRProfileView({
 
           {/* The name as stored, and nothing beneath it: there is no username
               column on `profiles`, so there is no handle to print. */}
-          {displayName && (
+          {!cardUrl && displayName && (
             <p className="mt-5 text-[16px] font-bold" style={{ color: 'var(--v3-fg)' }}>
               {displayName}
             </p>
           )}
 
-          <p className="mt-1.5 text-[12.5px] leading-snug" style={{ color: 'var(--v3-fg-muted)' }}>
-            {t('v3.qr.scanHint')}
-          </p>
+          {!cardUrl && (
+            <p className="mt-1.5 text-[12.5px] leading-snug" style={{ color: 'var(--v3-fg-muted)' }}>
+              {t('v3.qr.scanHint')}
+            </p>
+          )}
 
           <div className="mt-6 w-full space-y-2">
             <button
@@ -247,7 +290,7 @@ export default function QRProfileView({
                 style={{ background: '#000', color: '#fff', border: '1px solid #A6A6A6' }}
                 data-qr-google-play
               >
-                {t('v3.qr.card.playBadgeTop')} Google Play
+                {t('v3.qr.getApp')}
               </a>
             )}
           </div>

@@ -7,8 +7,8 @@ import { publicRateLimit } from '@/lib/security/publicRateLimit'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { analyzeMessage } from '@/lib/scam-shield/message'
-import { aiQuotaIdentity, consumeAiQuestion, isProAccount, quotaFor, refundAiQuestion, type AiQuotaSpend } from '@/lib/ai/quota/aiQuestionQuota'
-import { MESSAGE_MAX_CHARS, SCREENSHOT_ALLOWED_MIME, SCREENSHOT_MAX_BYTES } from '@/lib/scam-shield/message/config'
+import { aiQuotaIdentity, consumeAiQuestion, quotaFor, refundAiQuestion, resolveAccountQuota, type AiQuotaSpend } from '@/lib/ai/quota/aiQuestionQuota'
+import { MESSAGE_MAX_CHARS, SCREENSHOT_ALLOWED_MIME, SCREENSHOT_MAX_BYTES, isScamShieldAiEnabled } from '@/lib/scam-shield/message/config'
 import { CHECK_RATE_LIMIT_WINDOW_MS } from '@/lib/scam-shield/config'
 
 // POST /api/scam-shield/analyze — Scam Shield · Analyze Message.
@@ -100,6 +100,11 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'invalid_input', message: serverMessage('scam.analyzeEmpty', locale) }, { status: 400 })
   }
 
+  // 02/10: reading a screenshot is a model (vision) call; with the AI switch off it is unavailable.
+  if (parsed.data.imageBase64 && !isScamShieldAiEnabled()) {
+    return NextResponse.json({ error: 'screenshot_unavailable', message: serverMessage('scam.screenshotUnavailable', locale) }, { status: 400 })
+  }
+
   let image: { bytes: Uint8Array; mimeType: string } | undefined
   if (parsed.data.imageBase64) {
     const decoded = decodeImage(parsed.data.imageBase64, parsed.data.mimeType)
@@ -114,11 +119,14 @@ export async function POST(req: Request) {
   // Scam Alerts allowance of its own. It is spent INSIDE the pipeline, at the moment a model is
   // about to be called, and at most once per request (OCR + analysis of a screenshot share the
   // one gate call): a bare link never reaches this closure, so a URL-only check costs nothing.
-  // Pro accounts are exempt, exactly as in /api/chat.
-  const identity = aiQuotaIdentity(user, ip)
+  // Exempt accounts (a legacy Pro period) and metered plans (Free 10, paid 30) follow exactly the /api/chat rule —
+  // one decision, aiQuestionQuota.resolveAccountQuota.
+  let identity = aiQuotaIdentity(user, ip)
   let quota: (AiQuotaSpend & { pro: boolean }) | null = null
   const aiGate = async () => {
-    if (await isProAccount(supabase, user)) {
+    const acct = await resolveAccountQuota(supabase, user)
+    identity = aiQuotaIdentity(user, ip, acct.plan)
+    if (acct.exempt) {
       const q = quotaFor(identity)
       quota = { ok: true, limit: q.limit, period: q.period, used: 0, remaining: q.limit, scope: 'instance', pro: true, refund: null }
       return { allowed: true as const }

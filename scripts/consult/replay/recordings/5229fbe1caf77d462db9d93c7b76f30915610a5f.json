@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Sala Danang Beach Hotel\" OR \"NALOD ĐÀ NẴNG\" OR \"Nhu Minh Plaza Danang Hotel\" Đà Nẵng site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:25:15.608Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Sala Danang Beach Hotel\" OR \"NALOD ĐÀ NẴNG\" OR \"Nhu Minh Plaza Danang Hotel\" Đà Nẵng site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn Nalod Đà Nẵng: Trải nghiệm biển tuyệt vời",
+    "link": "https://www.tiktok.com/@reviewkhachsandanang43rv/video/7623019870178921748",
+    "snippet": "Khách sạn Nalod Đà Nẵng: Trải nghiệm biển tuyệt vời. Khám phá Nalod Hotel Đà Nẵng, nơi có view biển đẹp và dịch vụ tuyệt vời chỉ từ 800xu/người/ ...",
+    "position": 1
+   },
+   {
+    "title": "Chiếc khách sạn 5 sao Nalod Đà Nẵng đã làm mình thổn ...",
+    "link": "https://www.tiktok.com/@lymedanang/video/7358430293503544577",
+    "snippet": "Chiếc khách sạn 5 sao Nalod Đà Nẵng đã làm mình thổn thức? #khachsandanang #dulichdanang #lymedanang #xuhuong #viral · Nhà Hàng Có Phòng Riêng ...",
+    "position": 2
+   },
+   {
+    "title": "Sala Danang Beach Hotel (@saladanangbeachhotel)",
+    "link": "https://www.tiktok.com/@saladanangbeachhotel",
+    "snippet": "Sala Danang Beach Hotel (@saladanangbeachhotel) trên TikTok |1060 Lượt thích.227 Follower.36 - 38 Lam Hoang Street, Son Tra District, Danang City, Viet Nam.",
+    "position": 3
+   },
+   {
+    "title": "Khám Phá Rooftop Mới Tại Đà Nẵng - Sala Danang Beach ...",
+    "link": "https://www.tiktok.com/@saigoncityview/video/7358804491241639169",
+    "snippet": "Khám phá một rooftop mới tuyệt đẹp với view toàn cảnh Đà Nẵng và đường ven biển tại Sala Danang Beach Hotel. Đến với Đà Nẵng để trải nghiệm hành ...",
+    "position": 4
+   },
+   {
+    "title": "SALA DANANG BEACH HOTEL: Lý tưởng tại Đà Nẵng gần ...",
+    "link": "https://www.tiktok.com/@bigonetravel/photo/7655784608008572180",
+    "snippet": "Khám phá Sala Danang Beach Hotel, điểm dừng chân lý tưởng tại Đà Nẵng với nhiều hạng phòng từ tiêu chuẩn đến suite cao cấp, chỉ vài phút tới ...",
+    "position": 5
+   },
+   {
+    "title": "Sala Danang Beach Hotel",
+    "link": "https://www.tiktok.com/@sala.danang.beach",
+    "snippet": "Kênh Tiktok chính thức của Sala Danang Beach Hotel Hotline đặt phòng: 0236//3658//555. Buffet sáng tại Khách sạn Sala Danang Beach sẽ có gì?",
+    "position": 6
+   },
+   {
+    "title": "Review khách sạn The Nalod Đà Nẵng: view biển sịn sò, ...",
+    "link": "https://www.tiktok.com/@wikidulich.com/video/7687839199134878983",
+    "snippet": "Review khách sạn The Nalod Đà Nẵng: view biển sịn sò, giá hợp lý, buffet sáng đa dạng. Tuy nhiên, vẫn có những điểm chưa thực sự hoàn hảo, ...",
+    "position": 7
+   },
+   {
+    "title": "Khách Sạn Nalod Đà Nẵng",
+    "link": "https://www.tiktok.com/discover/kh%C3%A1ch-s%E1%BA%A1n-nalod-%C4%91%C3%A0-n%E1%BA%B5ng",
+    "snippet": "Khách sạn Nalod Đà Nẵng: Trải nghiệm biển Phạm Văn Đồng hè 2026. Khám phá Khách sạn Nalod, tọa lạc ngay trung tâm biển Phạm Văn Đồng, Đà Nẵng.",
+    "date": "31 thg 8, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

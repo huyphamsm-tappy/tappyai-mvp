@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Ốp lưng UAG Pathfinder\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:10:03.823Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Ốp lưng UAG Pathfinder\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp lưng iPhone 15 Pro Max UAG Pathfinder hỗ trợ sạc ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-15-pro-max-uag-pathfinder-with-magsafe.html",
+    "snippet": "Với khả năng chống sốc đạt tiêu chuẩn khi chịu được rơi từ độ cao 5.4m, ốp lưng UAG Pathfinder with Magsafe là một lựa chọn bảo vệ hoàn hảo dành cho chiếc ...",
+    "position": 1
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro UAG chống sốc Pathfinder With ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-uag-pathfinder-with-magsafe.html",
+    "snippet": "Với khả năng kháng rơi lên đến 5,5 mét, ốp lưng UAG Pathfinder With Magsafe này vượt trội hơn gấp 3 lần so với tiêu chuẩn thử nghiệm quân đội MIL-Spec 810G- ...",
+    "position": 2
+   },
+   {
+    "title": "Ốp lưng iPhone 16 Plus UAG chống sốc Pathfinder With ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-16-plus-uag-pathfinder-with-magsafe.html",
+    "snippet": "Mua ngay ốp lưng UAG Pathfinder MagSafe cho iPhone 16 Plus chính hãng tại CellphoneS. Ốp lưng iPhone 16 Plus UAG Pathfinder – Chống sốc vượt trội, hỗ trợ ...",
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Pathfinder ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-pathfinder-clear-with-magsafe.html",
+    "snippet": "Hiện nay, ốp lưng UAG Pathfinder Clear hiện đang được bán tại CellphoneS với bảo hành chính hãng dài hạn. Đội ngũ nhân viên tận tâm tại đây sẽ luôn sẵn sàng ...",
+    "position": 4
+   },
+   {
+    "title": "Ốp lưng cho iPhone X - UAG Pathfinder SE Camo Series",
+    "link": "https://cellphones.com.vn/op-lung-cho-iphone-x-uag-pathfinder-se-camo-series.html",
+    "snippet": "... Ốp lưng UAG Pathfinder SE Camo Series cho iPhone X - Bền bỉ, tương thích sạc không dây 1.1. Chất liệu composite siêu bền, viền TPU bảo vệ góc cạnh 1.2. Ốp ...",
+    "position": 5
+   },
+   {
+    "title": "Ốp lưng iPhone 16 Pro UAG chống sốc Pathfinder SE With ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-16-pro-uag-pathfinder-se-magsafe.html",
+    "snippet": "Ốp lưng UAG Pathfinder SE MagSafe với tiêu chuẩn bảo vệ cấp độ Quân đội Hoa Kỳ sẽ đảm bảo cho chiếc điện thoại iPhone 16 Pro của người dùng luôn an toàn. Du ...",
+    "position": 6
+   },
+   {
+    "title": "Ốp lưng Chống Sốc UAG Pathfinder Cho iPhone 11 Pro Max",
+    "link": "https://cellphones.com.vn/op-lung-chong-soc-uag-pathfinder-cho-iphone-11-pro-max.html",
+    "snippet": "Ốp lưng UAG Pathfinder cho iPhone 11 Pro Max - Ốp lưng chống sốc bảo vệ điện thoại toàn diện · Thương hiệu nổi tiếng UAG với tiêu chuẩn an toàn MIL-STD 810G dành ...",
+    "position": 7
+   },
+   {
+    "title": "Ốp lưng cho iPhone XS Max - UAG Pathfinder",
+    "link": "https://cellphones.com.vn/op-lung-iphone-xs-max-uga-pathfinder.html",
+    "snippet": "... Ốp lưng UAG Pathfinder – chiếc ốp lưng chống sốc cho iPhone Xs Max 1.1. UAG – một tên tuổi không thể không nhắc đến khi nói về những chiếc ốp chống sốc 1.2 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

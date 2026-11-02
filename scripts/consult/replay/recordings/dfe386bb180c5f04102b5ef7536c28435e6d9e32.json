@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Cà phê hòa tan Key Coffee site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:22:04.099Z",
+ "body": {
+  "searchParameters": {
+   "q": "Cà phê hòa tan Key Coffee site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "[Ichiban Market] Cà Phê Không Đường Key Coffee Riquid ...",
+    "link": "https://www.lazada.vn/products/ichiban-market-ca-phe-khong-duong-key-coffee-riquid-coffee-1l-i1544339372-s6497871240.html?from_gmc=1&fl_tag=1&srsltid=AU7gw4XY4oVIECbj_V96Ht2FfaZYmqw6bhla-JBBRk_wxAlIlgHnQ0xl",
+    "snippet": "☕✨ CÀ PHÊ KHÔNG ĐƯỜNG KEY COFFEE RIQUID COFFEE Cà phê làm từ 100% hạt cà phê nguyên chất, hương vị đậm đà, không đường – phù hợp cho người thích vị cà phê ...",
+    "position": 1
+   },
+   {
+    "title": "Cà phê hòa tan Café SỮA Plus - Túi 1 kg (50 gói x 20 g)e",
+    "link": "https://h5.lazada.vn/products/ca-phe-hoa-tan-cafe-sua-plus-tui-1-kg-50-goi-x-20-ge-i3213900421.html",
+    "snippet": "Cà Phê Hòa Tan 3IN1 KING COFFEE – Túi 88 gói x 16g. 275.000 ₫ · Cà Phê Hòa Tan 3IN1 KING COFFEE – Túi 45 gói x 16g. 155.000 ₫ · Cà Phê Hòa Tan Đen Thuần Khiết ...",
+    "rating": 4.7,
+    "ratingCount": 12,
+    "position": 2
+   },
+   {
+    "title": "Combo 5 Hộp 50 Viên Cà Phê Hòa Tan Sấy Thăng Hoa ...",
+    "link": "https://www.lazada.vn/products/combo-5-hop-50-vien-ca-phe-hoa-tan-say-thang-hoa-aodai-coffee-6-cap-do-i13352108909-s116753109404.html?from_gmc=1&fl_tag=1&srsltid=AU7gw4VVcLC3-jEMWmWqeLf92kYshvuqLh_XstLABMwdVTaI-__E1dOe",
+    "snippet": "LazMall Combo 5 Hộp 50 Viên Cà Phê Hòa Tan Sấy Thăng Hoa AODAI COFFEE 6 Cấp Độ · 100% chính hãng · 30 ngày miễn phí trả hàng · Không áp dụng chính sách bảo hành.",
+    "position": 3
+   },
+   {
+    "title": "Hạt Cà Phê Geshu Ngọt Thơm Mùi Hoa và Trái Cây Pha Tay 100g",
+    "link": "https://h5.lazada.vn/products/m2mcoffee-hat-ca-phe-geshu-ngot-thom-mui-hoa-va-trai-cay-pha-tay-100g-i13339446417-s117054141863.html",
+    "snippet": "Những hạt cà phê này rất phù hợp cho những người yêu thích cà phê hòa tan, mang đến một cách nhanh chóng và dễ dàng để thưởng thức một tách cà phê thơm ngon.",
+    "position": 4
+   },
+   {
+    "title": "Cà phê túi lọc Mitix 120g ( 10 gói x12g)",
+    "link": "https://www.lazada.vn/products/ca-phe-tui-loc-mitix-120g-10-goi-x12g-i761070768.html?srsltid=AU7gw4U7kcByslE2Go4SJ69tLqfUF0rsb3Hj8t06VKYFkgyFDFDhH2pZ",
+    "snippet": "Cà phê rang xay mộc, 100% nguyên chất. hương vị nguyên bản, không hương liệu. Vị thanh, dịu, nhẹ nhàng, phù hợp nhiều lứa tuổi. Cà phê được đựng ...",
+    "rating": 4.6,
+    "ratingCount": 5,
+    "position": 5
+   },
+   {
+    "title": "Cà Phê Đen Không Đường Sắt 200g",
+    "link": "https://h5.lazada.vn/products/ca-phe-den-khong-duong-sat-200g-i13436481355-s117220175326.html",
+    "snippet": "G7 COFFEE |Cà phê hòa tan 3 trong 1 vị đậm đà 50 gói. 223.000 ₫. Áo Thun Nam Trắng Đơn Giản Cổ Tròn. 500.000 ₫. Mô Hình Máy Tính lắp Ráp ZYJ Màu Giới Hạn. 3.083 ...",
+    "rating": 4.8,
+    "ratingCount": 10,
+    "position": 6
+   },
+   {
+    "title": "(HÀNG ÚC) Cà phê đen hoà tan vị rang đậm NESCAFE ...",
+    "link": "https://www.lazada.vn/products/hang-uc-ca-phe-den-hoa-tan-vi-rang-dam-nescafe-blend43-dark-espresso-hu-thuy-tinh-i2736229088.html?srsltid=AU7gw4WdeME1Mzke0jRNBC9BKW1ZtCHa9ULTlQ9bmbvjc138_QeO_tt2",
+    "snippet": "Cà phê đen hoà tan NESCAFE Blend43 với vị rang đậm, 10DARK ROAST 300G, phù hợp cho người yêu thích cà phê không đường. Hũ thủy tinh tiện lợi, ...",
+    "position": 7
+   },
+   {
+    "title": "Cà phê rang xay Coffilia - Bừng sắc hương trái - 250g",
+    "link": "https://www.lazada.vn/products/ca-phe-rang-xay-coffilia-bung-sac-huong-trai-250g-i647836915.html?srsltid=AU7gw4UPBKoiPVwX8A7pQniGT1PiqcU-6PnnKuGBKxWBkgU8jE-T0BHX",
+    "snippet": "Đặc điểm nổi bật. Hòa quyện giữa hương vị Arabica và Robusta, rang mộc, đậm bởi nghệ nhân 20 năm kinh nghiệm, không hương liệu, chọn lọc kĩ càng.",
+    "rating": 5,
+    "ratingCount": 6,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

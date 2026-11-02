@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Ẩm Thực Sân Vườn Sông Thương\" OR \"Ẩm thực sân vườn Mái Lá Quận 7\" OR \"Tràng An Quán\" quan 7 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:45:34.677Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Ẩm Thực Sân Vườn Sông Thương\" OR \"Ẩm thực sân vườn Mái Lá Quận 7\" OR \"Tràng An Quán\" quan 7 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Trải nghiệm ẩm thực mang hương vị quê nhà tại Tràng An ...",
+    "link": "https://www.tiktok.com/@duynhatng113/video/7546226434705083656",
+    "snippet": "Quán Bà Chế Ở Quận 7 · Bazan Quán Quận 7 Menu · Đất Ốc Quán Quận 7. Trải nghiệm ẩm thực mang hương vị quê nhà tại Tràng An Quán ở Quận 7. @Duy ...",
+    "position": 1
+   },
+   {
+    "title": "Tràng An Quán: Ẩm Thực Đồng Quê Ngon Quận 7",
+    "link": "https://www.tiktok.com/@angimayoi/video/7519095713175751954",
+    "snippet": "Quán Cô Dậu Quận 7 · Quán Nhậu Quận 7 · Quán Chay Pháp Uyển Quận 7 · Đất Ốc Quán Quận 7. Tràng An Quán: Ẩm Thực Đồng Quê Ngon Quận 7. Khám phá ...",
+    "position": 2
+   },
+   {
+    "title": "Tràng An Quán-Ẩm Thực Đồng Quê (@tranganquanquan7)",
+    "link": "https://www.tiktok.com/@tranganquanquan7",
+    "snippet": "@tranganquanquan7 · Tràng An Quán- Ẩm thực đồng Quê 131 Đường 47, P. Tân Quy, Quận 7 0969.273.254.",
+    "position": 3
+   },
+   {
+    "title": "Tràng An Quán Quận 7: Ẩm Thực Đồng Quê Bắc Bộ Giữa ...",
+    "link": "https://www.tiktok.com/@ngocduy_diachianuong/video/7257482106287230213",
+    "snippet": "quán mình nói đến là Tràng An. quán nằm tại địa chỉ 131 đường 4 7 phường Tân quy. Quận 7. nơi đây rất phù hợp Cho nhóm khách 2 5 đến 60 ...",
+    "position": 4
+   },
+   {
+    "title": "Tràng An Quán Quận 7: Nhà Hàng Ẩm Thực Đồng Quê Ngon",
+    "link": "https://www.tiktok.com/@tranliendoanh_99/video/7454168839086132498",
+    "snippet": "Tràng An Quán ở Quận 7 được biết đến là nhà hàng ẩm thực đồng quê với không gian rộng rãi, thoáng mát và đậm chất quê hương giữa lòng Sài ...",
+    "position": 5
+   },
+   {
+    "title": "Ẩm Thực Sân Vườn Mái Lá Quận 7",
+    "link": "https://www.tiktok.com/discover/%E1%BA%A9m-th%E1%BB%B1c-s%C3%A2n-v%C6%B0%E1%BB%9Dn-m%C3%A1i-l%C3%A1-qu%E1%BA%ADn-7",
+    "snippet": "Ẩm Thực Sân Vườn Mái Lá Quận 7: Địa Chỉ, Menu & Không Gian. Ẩm Thực Sân Vườn Mái Lá là nhà hàng với không gian sân vườn thoáng mát, ...",
+    "date": "21 thg 9, 2026",
+    "position": 6
+   },
+   {
+    "title": "Enjoy Crab Soup Hotpot with Beef and Ribs at Tràng An ...",
+    "link": "https://www.tiktok.com/@tranganquanquan7/video/7252130210529791237",
+    "snippet": "Tràng An Quán, located in Quận 7, offers a delightful culinary experience centered around its famous crab soup hotpot, ...",
+    "position": 7
+   },
+   {
+    "title": "Khám Phá Tràng An Quán với Món Đồng Quê Ngon",
+    "link": "https://www.tiktok.com/@huynhhongocduc/video/7540143693261540616",
+    "snippet": "Khám Phá Tràng An Quán với Món Đồng Quê Ngon. Khám phá các món ăn đồng quê hấp dẫn tại Tràng An Quán. Đừng bỏ lỡ những trải nghiệm ẩm thực tuyệt ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

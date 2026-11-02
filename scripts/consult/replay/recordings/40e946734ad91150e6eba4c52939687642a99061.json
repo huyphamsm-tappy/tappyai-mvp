@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"寿司と天ぷら居酒屋かむら- Izakaya Kamura\" OR \"MAGURO Studio\" OR \"Michi Sushi\" Quận 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:22:04.060Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"寿司と天ぷら居酒屋かむら- Izakaya Kamura\" OR \"MAGURO Studio\" OR \"Michi Sushi\" Quận 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "MAGURO Studio (@maguro_studio)",
+    "link": "https://www.tiktok.com/@maguro_studio",
+    "snippet": "Lấy cảm hứng từ tôm hùm trong Set Niji Omakase! Truyền thống nhưng không kém phần dí dỏm để Trung Thu này đáng nhớ hơn tại MAGURO Studio. See You Tonight!",
+    "position": 1
+   },
+   {
+    "title": "Set Omakase 3.200k/ng tại: 📍 MAGURO STUDIO",
+    "link": "https://www.tiktok.com/@nhungpoza/video/7245565620123651374",
+    "snippet": "Set Omakase 3.200k/ng tại: MAGURO STUDIO | 19 Đông Du, Q1, HCM ... E chưa ăn omakase ở Sg bao giờ, c có thể recommend e 1 địa chỉ đáng thử đc k ...",
+    "position": 2
+   },
+   {
+    "title": "MAGURO Studio - 𝗡𝗶𝗴𝗶𝗿𝗶 𝗶𝗻 𝗺𝗼𝘁𝗶𝗼𝗻",
+    "link": "https://www.tiktok.com/@maguro_studio/video/7512026869865188616",
+    "snippet": "... MAGURO Studio 0907 521 017 19 Dong Du, Ben Nghe, District 1, HCMC\".Bossa No Se - redd.",
+    "position": 3
+   },
+   {
+    "title": "Wagyu Shabu Shabu x Black Truffle at MAGURO Studio ...",
+    "link": "https://www.tiktok.com/@maguro_studio/video/7639365272985537813",
+    "snippet": "Located at 19 Dong Du, HCMC, MAGURO Studio invites you to indulge in this memorable culinary experience. Reservations are recommended to ensure ...",
+    "position": 4
+   },
+   {
+    "title": "Nắn Nigiri chưa bao giờ là copy-paste! Tùy vào thớ thịt dày ...",
+    "link": "https://www.tiktok.com/@maguro_studio/video/7675973945618713864",
+    "snippet": "Tổng Hợp Món Ngon Tại Maguro Studio - Quận Nhất. Khám phá nhà hàng Nhật Maguro Studio với những món sushi đẳng cấp và trải nghiệm ẩm thực tuyệt ...",
+    "position": 5
+   },
+   {
+    "title": "Khám Phá Chất Lượng Cá Ngừ Tại Maguro Studio",
+    "link": "https://www.tiktok.com/@cafehoppersg/photo/7543494116638870792?image_index=13",
+    "snippet": "Maguro Studio 19 Đông Du, phường Bến Nghé, quận 1, TpHCM 11 am - 2 pm | 6 pm - 10 pm ( Sunday Off) Maguro nằm ngay tại trung tâm quận ...",
+    "position": 6
+   },
+   {
+    "title": "Michi Sushi Nguyễn Huệ",
+    "link": "https://www.tiktok.com/discover/michi-sushi-nguy%E1%BB%85n-hu%E1%BB%87",
+    "snippet": "MICHI SUSHI – ƯU ĐÃI CỰC HẤP DẪN Team mê sushi đâu rồi ơi! Ghé Michi Sushi thưởng thức sashimi tươi ngon và đừng bỏ lỡ những ưu đãi ...",
+    "date": "14 thg 9, 2026",
+    "position": 7
+   },
+   {
+    "title": "Ăn Sushi Trên Thuyền Khổng Lồ Tại Quận 1",
+    "link": "https://www.tiktok.com/@thon_foodie/video/7211907584675040538",
+    "snippet": "Michi Sushi Nguyễn Huệ · Sushi Hạ Long · Sushi Bà Rịa · Hagi Sushi Nguyễn ... Ăn Sushi Trên Thuyền Khổng Lồ Tại Quận 1: Review Chi Nhánh Mới Của ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

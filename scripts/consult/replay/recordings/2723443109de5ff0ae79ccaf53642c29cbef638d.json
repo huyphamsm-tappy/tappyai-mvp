@@ -1,0 +1,52 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "asus Gaming Vivobook 16X K3605VC-RP431W site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:26:05.585Z",
+ "body": {
+  "searchParameters": {
+   "q": "asus Gaming Vivobook 16X K3605VC-RP431W site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop ASUS Gaming Vivobook 16X K3605VC-RP431W i5 ...",
+    "link": "https://shopee.vn/Laptop-ASUS-Gaming-Vivobook-16X-K3605VC-RP431W-i5-13420H-RTX-3050-16-16GB-512GB-Win-11-%C4%90en-i.267145398.43751504877",
+    "snippet": "Mua Laptop ASUS Gaming Vivobook 16X K3605VC-RP431W i5-13420H | RTX 3050 16\" | 16GB | 512GB | Win 11 Đen giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.9,
+    "ratingCount": 8,
+    "position": 1
+   },
+   {
+    "title": "Laptop ASUS Gaming Vivobook 16X K3605VC-RP431W ...",
+    "link": "https://shopee.vn/Laptop-ASUS-Gaming-Vivobook-16X-K3605VC-RP431W-(Core-i5-13420H-RTX-3050-4GB-16-inch-WUXGA-IPS-16GB-512GB-Win-1-i.5526488.42053187930",
+    "snippet": "Laptop ASUS Gaming Vivobook 16X K3605VC-RP431W (Core i5-13420H | RTX 3050 4GB | 16 inch WUXGA IPS | 16GB | 512GB | Win 1. outline green truck icon.",
+    "rating": 5,
+    "ratingCount": 5,
+    "position": 2
+   },
+   {
+    "title": "Laptop ASUS Gaming VivoBook 16X K3605VC-RP431W ...",
+    "link": "https://shopee.vn/Laptop-ASUS-Gaming-VivoBook-16X-K3605VC-RP431W-i5-13420H-RTX%E2%84%A2-3050-4GB-16GB-512GB-16'-Win-11-i.139249594.42162826440",
+    "snippet": "Mua Laptop ASUS Gaming VivoBook 16X K3605VC-RP431W i5-13420H | RTX™ 3050 4GB | 16GB | 512GB | 16' | Win 11 giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 3
+   },
+   {
+    "title": "Laptop Asus Vivobook 16X K3605VC-RP431W (Core i5- ...",
+    "link": "https://shopee.vn/Laptop-Asus-Vivobook-16X-K3605VC-RP431W-(Core-i5-13420H-RTX-3050-4GB-16GB-512GB-Windows-11)-B%E1%BA%A3o-h%C3%A0nh-24-th%C3%A1ng-i.469040198.44422651255",
+    "snippet": "Mua Laptop Asus Vivobook 16X K3605VC-RP431W (Core i5-13420H/ RTX 3050 4GB/16GB/ 512GB/ Windows 11) - Bảo hành 24 tháng giá tốt. Mua hàng qua mạng uy tín, ...",
+    "position": 4
+   }
+  ],
+  "credits": 1
+ }
+}

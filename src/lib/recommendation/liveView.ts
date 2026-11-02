@@ -525,6 +525,21 @@ export function placesRenderOrder(view: Pick<PlacesLiveView, 'items' | 'picked' 
 }
 
 /**
+ * PHASE 3C / D7 — the ENGINE Pick is authoritative for the card (CONSULT_BRIEF on). The mirror image of `alignEmphasisToModelPick`:
+ * the emphasis, reasons and trade-off stay with the engine's pick whatever the reply named, and a reply that named another venue first
+ * does not move them (it is reported, never silently obeyed). With no engine Pick (an explicit no-Pick state) no card is emphasised.
+ * Returns new arrays; never mutates the input.
+ */
+export function alignEmphasisToEnginePick(
+  recs: readonly Recommendation[],
+  modelPickId: string | null,
+): { recs: Recommendation[]; outcome: 'same' | 'engine_kept' | 'no_engine_pick' } {
+  const engine = recs.find(r => r.recommended)
+  if (!engine) return { recs: [...recs], outcome: 'no_engine_pick' }
+  return { recs: [...recs], outcome: modelPickId && modelPickId !== engine.entity.id ? 'engine_kept' : 'same' }
+}
+
+/**
  * "VÌ SAO" FOLLOWS THE SAME PICK AS CARD #1 (release close-out B.2, 2026-09-19).
  *
  * `recommended` / `reasons` / `tradeOff` come from the ENGINE's `derivePick`, while card #1 is the

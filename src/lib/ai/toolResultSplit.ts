@@ -114,6 +114,12 @@ export interface EnrichmentCollector {
   shoppingMarker?: string
   setShoppingMarker(marker: string | undefined): void
   /**
+   * A code-built block of prose + links that rides with the reply (A3, 2026-10-02): e.g. «only another phone model was found» with
+   * search links for the right keyword. Inserted after the prose, before the structured markers. First one wins.
+   */
+  appendix?: { text: string; links: Array<{ name: string; url: string }> }
+  setAppendix(block: { text: string; links: Array<{ name: string; url: string }> } | undefined): void
+  /**
    * The turn's canonical recommendations, for the `[TAPPY_PLACES]` block.
    *
    * Held as STRUCTURE rather than a rendered string, unlike `shoppingMarker`:
@@ -131,6 +137,13 @@ export interface EnrichmentCollector {
    */
   placesProducer?: ProducerSubject
   setPlacesRecommendations(recs: Recommendation[] | undefined, producer: ProducerSubject | null): void
+  /**
+   * A trip PLAN prefetches a hotel search and place searches in PARALLEL and the reply carries ONE card block. "First non-empty
+   * set wins" made the winner whichever search came back first (owner UAT 2026-10-01: the same request showed hotel cards once
+   * and restaurant cards once). With this set, a `stay` producer takes the slot from any other producer, so a plan reliably
+   * carries the booking-critical block — the hotel — and the order of arrival no longer matters.
+   */
+  preferStay?: boolean
   /**
    * The provider's own map search for this turn, straight off the tool result.
    *
@@ -160,14 +173,28 @@ export interface EnrichmentCollector {
   /** Consult V2 turn type — the prose-shape guard follows the approved frame for it (2 alternatives; a plan is not reshaped). */
   consultTurn?: string
   setConsultTurn(turn: string, refers?: string[], known?: Record<string, string>): void
+  /** The area of the turn ('flight' for a fare turn) — the advice floor (adviceFloor.ts) picks its tips by it. */
+  consultDomain?: string
+  setConsultDomain(domain: string | undefined): void
   /** Consult V2 plan: the pick the conversation settled on (the plan's cost line is about it). */
   consultPick?: string | null
   setConsultPick(name: string | null): void
+  /** Phase 3C (CONSULT_BRIEF): the Brief travelled this turn, so the ENGINE Pick is authoritative for the card and the pick sentence (D7). */
+  consultBrief?: boolean
+  /** TAPPY_AGENT: the turn was decided by the bounded agent (no consult turn) — claim guards that used to key on a consult pick turn still run. */
+  agentMode?: boolean
+  setConsultBrief(on: boolean): void
+  setConsultShown(names: string[]): void
+  /** PHIÊN LUNA: the reply is checked for a prompt echo / secret shape before it leaves (lunaSafety.ts). */
+  leakCheck?: (text: string) => { leak: boolean; reason: string | null }
+  setLeakCheck(fn: (text: string) => { leak: boolean; reason: string | null }): void
   consultKnown?: Record<string, string>
   /** Consult V2 shopping plan: the chosen product's listed price (route, from the newest shopping card). */
   consultPlanPrice?: { amount: number; seller: string | null } | null
   /** Consult V2: the names a compare / follow-up turn is about (router `refers`). */
   consultRefers?: string[]
+  /** PHIÊN LUNA: names the consultation already showed — a reject turn's fallback pick is never one of them. */
+  consultShown?: string[]
   /**
    * Whether a reflex "what kind would you like?" question may survive this
    * reply. Set by the route once a tool result has been judged against the
@@ -204,7 +231,7 @@ export interface ConsultativeV1Context {
    * turn's only place evidence; the place-claim guard reads it instead of an
    * empty row set. Empty on a first turn.
    */
-  carried: Array<{ name: string; rating: number | null; reviewCount: number | null; distanceKm: number | null; hours?: string | null }>
+  carried: Array<{ name: string; rating: number | null; reviewCount: number | null; distanceKm: number | null; hours?: string | null; phone?: string | null; address?: string | null }>
   /** Stated hard constraints no candidate carried evidence for — set at tool time. */
   hardGaps: string[]
   /** ASSUME_PRESENT constraints (air_con…) some fetched text argues AGAINST — set at tool time. */
@@ -407,11 +434,19 @@ export function createEnrichmentCollector(turnText = '', earlierUserTexts: reado
     setConsultButtons(labels: string[]) { this.consultButtons = labels.slice(0, 3) },
     consultTurn: undefined as string | undefined,
     consultRefers: undefined as string[] | undefined,
+    consultShown: undefined as string[] | undefined,
+    setConsultShown(names: string[]) { this.consultShown = names },
+    leakCheck: undefined as ((text: string) => { leak: boolean; reason: string | null }) | undefined,
+    setLeakCheck(fn: (text: string) => { leak: boolean; reason: string | null }) { this.leakCheck = fn },
     consultKnown: undefined as Record<string, string> | undefined,
+    consultDomain: undefined as string | undefined,
+    setConsultDomain(domain: string | undefined) { this.consultDomain = domain },
     consultPlanPrice: null as { amount: number; seller: string | null } | null,
     setConsultTurn(turn: string, refers?: string[], known?: Record<string, string>) { this.consultTurn = turn; this.consultRefers = refers; this.consultKnown = known },
     consultPick: null as string | null,
     setConsultPick(name: string | null) { this.consultPick = name },
+    consultBrief: undefined as boolean | undefined,
+    setConsultBrief(on: boolean) { this.consultBrief = on },
     clarificationPolicy: 'allow' as 'allow' | 'no_reflex',
     setClarificationPolicy(policy: 'allow' | 'no_reflex') { this.clarificationPolicy = policy },
     consultativeV1: undefined as ConsultativeV1Context | undefined,
@@ -434,7 +469,7 @@ export function createEnrichmentCollector(turnText = '', earlierUserTexts: reado
        * producer cannot leave a trace either way.
        */
       if (!admitsProducer(turnText, producer, earlierUserTexts)) return
-      if (recs && recs.length > 0 && !this.placesRecommendations) {
+      if (recs && recs.length > 0 && (!this.placesRecommendations || (this.preferStay && producer === 'stay' && this.placesProducer !== 'stay'))) {
         this.placesRecommendations = recs
         this.placesProducer = producer ?? undefined
       }
@@ -443,6 +478,10 @@ export function createEnrichmentCollector(turnText = '', earlierUserTexts: reado
     setShoppingMarker(marker) {
       // First one wins, mirroring the TikTok URL: one shopping decision per turn.
       if (marker && !this.shoppingMarker) this.shoppingMarker = marker
+    },
+    appendix: undefined as { text: string; links: Array<{ name: string; url: string }> } | undefined,
+    setAppendix(block) {
+      if (block && !this.appendix) this.appendix = block
     },
     add(items) {
       for (const raw of items ?? []) {

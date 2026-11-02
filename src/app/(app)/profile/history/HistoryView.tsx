@@ -225,11 +225,11 @@ export default function HistoryView({
     { labelKey: 'v3.history.links', icon: Link2, value: shownLinks.length },
   ]
 
-  /** The subscription page's own benefit lines — three of the six, not a new list. */
+  /** Phase 7: benefit lines that are TRUE of the canonical catalog (30 AI questions/day, 7 days–12 months, VietQR). */
   const premiumPoints: { key: string; icon: LucideIcon }[] = [
-    { key: 'sub.pro.history', icon: HistoryIcon },
-    { key: 'sub.pro.memory', icon: Sparkles },
-    { key: 'sub.pro.messages', icon: MessageCircle },
+    { key: 'v3.history.premium.quota', icon: MessageCircle },
+    { key: 'v3.history.premium.plans', icon: HistoryIcon },
+    { key: 'v3.history.premium.pay', icon: Sparkles },
   ]
 
   return (

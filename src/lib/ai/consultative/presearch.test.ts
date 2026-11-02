@@ -80,7 +80,8 @@ describe('what the model and the client receive', () => {
   })
   it('route.ts wires it: the plan from the directive, the frames onto the response, the pair into the model messages, the count into usage', () => {
     const route = readFileSync('src/app/api/chat/route.ts', 'utf8')
-    expect(route).toMatch(/let presearchPlan = consultativeV1 \? planPresearch\(searchNow, situation/)
+    // TAPPY_AGENT (04/10): an agent turn runs no code-chosen presearch (the agent chooses its calls) — the Consultative wiring is unchanged otherwise.
+    expect(route).toMatch(/let presearchPlan = consultativeV1 && !agentOn \? planPresearch\(searchNow, situation/)
     // One call: the place search or (owner 2026-09-28, c40 T7) the fare call.
     expect(route).toMatch(/\[preCall\.name\]\.execute\(preCall\.args/)
     expect(route).toMatch(/presearchPlan && toolExecutes\('search_places'\) \? \{ name: 'search_places', args: presearchPlan\.args \}/)

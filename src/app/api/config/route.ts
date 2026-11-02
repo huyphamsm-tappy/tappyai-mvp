@@ -1,8 +1,10 @@
+import { subscriptionsEnabled } from '@/lib/payments/flags'
 import { NextResponse } from 'next/server'
 import {
   FREE_DAILY_LIMIT,
   ANON_LIFETIME_LIMIT,
   SHOW_PRO_UPGRADE,
+  showProUpgradeEnabled,
   SHOW_APP_CONNECTIONS,
   SHOW_SCAM_SHIELD,
   SHOW_MUSIC,
@@ -19,7 +21,13 @@ import {
   ONBOARDING_CITIES,
   publicShareEnabled,
 } from '@/lib/config/product'
-import { selfDeleteEnabled } from '@/lib/account/selfDelete'
+import { userBlocksEnabled, reportsEnabled, moderationAdminEnabled } from '@/lib/safety/userBlocks'
+import { appleSignInAvailable } from '@/lib/auth/appleCapability'
+import { selfDeleteAvailable } from '@/lib/account/deletionReady'
+
+// `flags.appleSignIn` is read at request time from the Supabase project's own provider state (appleCapability.ts), so the route is
+// dynamic; the Cache-Control below still lets the CDN serve it for 5 minutes.
+export const dynamic = 'force-dynamic'
 
 // GET /api/config — the backend-owned product configuration, as a stable
 // contract for ALL clients (Web, Android, iOS). Native clients read quotas,
@@ -31,6 +39,8 @@ import { selfDeleteEnabled } from '@/lib/account/selfDelete'
 // /api/upload/video size token, /api/reviews caps). A tampered client changes
 // what it SHOWS, never what it CAN DO.
 export async function GET() {
+  const appleSignIn = await appleSignInAvailable()
+  const accountSelfDelete = await selfDeleteAvailable()
   return NextResponse.json(
     {
       freemium: {
@@ -47,21 +57,40 @@ export async function GET() {
         anonLifetimeLimit: ANON_LIFETIME_LIMIT,
       },
       flags: {
-        showProUpgrade: SHOW_PRO_UPGRADE,
+        showProUpgrade: showProUpgradeEnabled(),
+        // SUBSCRIPTIONS_ENABLED: the five plans, the payment routes and the 30/day allowance. Web reads it through
+        // useSubscriptionsFlag; this route is static, so the value is the build's env (redeploy after flipping).
+        subscriptions: subscriptionsEnabled(),
         showAppConnections: SHOW_APP_CONNECTIONS,
         showScamShield: SHOW_SCAM_SHIELD,
         // Music is hidden on every platform while the catalogue licensing is undecided.
         // Native reads this; the underlying routes and catalogue are untouched.
         showMusic: SHOW_MUSIC,
-        // UAT3 P0: native Settings offers the in-app deletion (POST /api/account/delete) only where
-        // the server can keep the promise (ACCOUNT_SELF_DELETE_ENABLED, after D1/D2/D4). Off = the
-        // request-by-email flow. This route is static, so the value is the build's env — flipping the
-        // variable needs a redeploy (DEPLOY-CHECKLIST §4d step 3 says so).
-        accountSelfDelete: selfDeleteEnabled(),
+        // In-app account deletion (POST /api/account/delete). Native clients offer it only where the server can keep the promise
+        // (ACCOUNT_SELF_DELETE_ENABLED AND the clean-up migration installed - lib/account/deletionReady.ts); off = the request-by-email
+        // flow. The route is dynamic, so the value follows the running environment. A missing field (older server) means off.
+        accountSelfDelete,
         // A5 privacy kill switch for the G1 public share (/r/<slug>). Default true; env
         // SHOW_PUBLIC_SHARE=false|0 turns it off (build env — redeploy after flipping). Clients hide
         // the "public link" action on false; a missing field (older server) means true.
         publicShare: publicShareEnabled(),
+        // Sign in with Apple (iOS native: Apple identity token -> Supabase signInWithIdToken). TRUE only while the Supabase project reports
+        // its Apple provider as enabled (GET /auth/v1/settings, see lib/auth/appleCapability.ts); false on any doubt (unconfigured, error,
+        // timeout). iOS shows the button only on true. Web has no Apple button: this flag does not change the Web login page.
+        appleSignIn,
+      },
+      // User-safety surfaces a client may SHOW (Android SafetyApi / iOS AppConfig.P8 already read this block). The server
+      // enforces each on its own (a guarded route answers 404 while its flag is off); this only decides whether the buttons
+      // are drawn. `userBlocks` = USER_BLOCKS_ENABLED (build env — redeploy after flipping). `commentModeration` rides the same
+      // switch (the post's creator may delete comments on it). `reports` = REPORTS_ENABLED (POST /api/comments/{id}/report and /api/users/{id}/report; post/clip reports
+      // are POST /api/reviews/{id}/report, always on). A client that finds no `p8` block means all off.
+      p8: {
+        reports: reportsEnabled(),
+        userBlocks: userBlocksEnabled(),
+        commentModeration: userBlocksEnabled(),
+        accountDeletion: false,
+        // Violation notices + appeals (GET /api/moderation/decisions, POST …/appeal) and the report-status list: MODERATION_ADMIN_ENABLED.
+        moderationNotices: moderationAdminEnabled(),
       },
       upload: {
         maxPhotosPerReview: MAX_PHOTOS_PER_REVIEW,

@@ -57,6 +57,28 @@ Ngưỡng release (Huy 29/09): mỗi mảng ≥ 17/21 (TB 2 lượt replay), A =
   còn rất ít laptop thật; cần nguồn sản phẩm có thông số (trọng lượng, màu) — feed ACCESSTRADE sau khi có API key.
 Bằng chứng: replay `scripts/consult/replay/out/scenarios-2026-09-29T17-*`, phân loại tay trong RELEASE-PROGRESS "AI tư vấn — kết quả cuối".
 
+## PL-FLIGHT-ORIGIN-GPS — điểm đi của vé máy bay lấy từ vị trí người dùng (owner 30/09 đêm, R25)
+- Đã làm trong release: thẻ hỏi vé máy bay có câu «Bay từ đâu?» (Từ TP.HCM / Hà Nội / Đà Nẵng / nơi khác) cùng khung thẻ hỏi mới; lời người
+  dùng («từ Hà Nội…», «Hà Nội đi Đà Nẵng») vẫn được đọc trước. Hồ sơ KHÔNG có trường thành phố; trí nhớ chỉ giữ NƠI ĐÃ HỎI (điểm đến), không phải nơi ở.
+  Còn lại: nếu người dùng bỏ qua câu này, link dùng TP.HCM làm giả định và câu trả lời nói rõ («bạn đổi ngay trên trang»).
+- Để sau: đoán điểm đi từ GPS (thành phố có sân bay gần nhất trong ~60 km) để khỏi hỏi. Vì sao chưa làm: bộ định tuyến chỉ biết «có GPS hay
+  không» (không có toạ độ) nên phải đổi chữ ký + thêm bảng thành phố; tự đặt điểm xuất phát chuyến bay theo vị trí là suy diễn riêng tư nên
+  cần owner duyệt cách nói («Mình thấy bạn đang ở …, xuất phát từ đó nhé?»). Làm cùng đợt thẻ hỏi theo mảng du lịch.
+
+## PL-KV-SPLIT — UAT (Preview) và production dùng CHUNG một kho KV → tách kho riêng cho từng môi trường (owner 30/09)
+- Hiện `KV_URL` / `KV_REST_API_URL` / `KV_REST_API_TOKEN` / `REDIS_URL` trên Vercel là một bộ cho **Production, Preview, Development**.
+  Kho này giữ bộ đếm lượt hỏi (Pro 300/ngày, free 15/ngày, burst), giới hạn tốc độ, cache Serper, … → một lượt test nặng trên UAT dùng
+  chung hạ tầng với production; muốn "trả lượt" cho tài khoản test trên UAT phải ghi vào kho của production (30/09 KHÔNG làm).
+- Việc: tạo kho KV riêng cho Preview (Upstash/Vercel KV), đặt biến riêng cho Preview + Development, giữ Production nguyên; kiểm key prefix
+  theo môi trường; smoke: đếm lượt trên UAT không đổi số của production. Làm SAU release, trước đợt test lớn tiếp theo.
+
+## PL-OPENAI-KEY — tạo key OpenAI PRODUCTION trước khi key test hết hạn (owner 30/09, GẤP theo lịch)
+- Release 30/09 chạy GPT-6 Luna bằng `OPENAI_API_KEY` = **key TEST hạn 30 ngày** (`D:\TappyAI-backups\openai-key.txt`, đặt cho
+  Production + Preview ngày 30/09) → hết hạn khoảng **30/10/2026**. Key hết hạn = MỌI tính năng AI trên production lỗi (không còn dự phòng
+  Haiku: Anthropic hết credit, `HAIKU_FALLBACK` tắt).
+- Việc: tạo key production (tổ chức/dự án riêng, giới hạn chi tiêu + cảnh báo), thay trên Vercel Production + Preview, redeploy, smoke 1 câu
+  chat + ScamShield. Làm **trước 25/10** (đặt nhắc lịch).
+
 ## PL-HOSTING-GCP — đánh giá dời hosting web từ Vercel sang Google Cloud (owner 30/09: CHỈ GHI, CHƯA LÀM)
 Bối cảnh: 30/09 Vercel báo team `huyphamsm-tappys-projects` dùng 100% Function Storage (10 GB, Hobby, tính theo đỉnh 30 ngày).
 Đã làm ngay: build chỉ `rc/web-uat` + `main` (`scripts/vercel-ignore.mjs`), xoá 6 bản Preview cũ, retention đang 30 ngày.
@@ -91,3 +113,42 @@ là đánh giá cũ 28/09 của trang trước, đã xử lý ở vòng C1/C2).
 - **UP-4 quét GPS** ảnh đã tải lên **trước 24/09** (trước R-2) trong bucket production; xoá EXIF hàng loạt.
 - **DEP-1 nâng Next.js 15** (14.2.35 hết hỗ trợ; 1 critical + vài high, đa số chỉ ảnh hưởng self-host).
 - **Đổi khoá Google** còn nằm trong 2 file settings của worktree cũ + transcript trên máy (danh sách trong báo cáo) — xoay khoá rồi xoá file.
+
+## PL-PLAN-CARD-RACE — thẻ địa điểm của tin nhắn KẾ HOẠCH chuyến đi do cuộc đua song song quyết định (01/10)
+Lượt kế hoạch lấy trước khách sạn + quán ăn + điểm tham quan + thời tiết SONG SONG (`route.ts` ~2625); tin nhắn chỉ mang MỘT khối thẻ và `setPlacesRecommendations` là «bộ đầu tiên không rỗng thắng» (`toolResultSplit.ts`). Cùng một câu «Lên kế hoạch đi Đà Nẵng 3 ngày 2 đêm…» hai lần chạy trên UAT cho hai kết quả: một lần thẻ khách sạn (nút «Đặt phòng trên Trip.com»), một lần chỉ thẻ quán ăn/điểm tham quan. Link đặt phòng đã nằm ở tin nhắn CHỐT khách sạn ngay trước đó, nên không phải lỗi mất link; nhưng thứ tự không xác định. Đề xuất: chọn thứ tự cố định (khách sạn đã chốt → thẻ quán/điểm tham quan) hoặc gộp hai khối. Chưa sửa vì đã đóng băng và là quyết định sản phẩm.
+
+## Backlog ghi thêm 01/10 (khối hoàn chỉnh của Huy, mục E5) — chỉ ghi, chưa làm
+
+- **PL-MOVIES** — danh sách phim đang chiếu thật. Hiện: câu trả lời trung thực + 5 link trang phim đang chiếu chính thức (CGV, Galaxy, Lotte, BHD, Beta), không nêu tên phim. Cách làm: nguồn có cấu trúc (API/feed của cụm rạp hoặc TMDB «now playing» cho VN) + code kiểm; chi phí đo thật khi chọn nguồn.
+- **PL-FLIGHT-PRICES** — danh sách chuyến bay kèm giá. Hiện: link điền sẵn chặng + ngày + số người (Trip.com, Traveloka qua ACCESSTRADE), không có giá. Chưa có nguồn được duyệt (nguồn cũ đã gỡ khỏi kiến trúc 04/10/2026); muốn có giá phải chọn một nguồn đối tác mới và giấy phép hiển thị giá — quyết định của owner.
+- **PL-PERMISSIONS-DEFAULT** — quyền Mic/GPS/thông báo «mặc định bật»: hệ điều hành bắt buộc hộp hỏi, không ép được; web đã có công tắc Micrô mặc định BẬT (Cài đặt). Phần native (công tắc trong app Android/iOS, xin quyền đúng lúc kèm lý do) chưa làm.
+- **PL-VOICE-NATIVE** — màn Mic mới (mockup `D:\TappyAI-backups\designoiceoice-mockup.png.png`: mascot vẫy tay, «Tôi đang lắng nghe...», nút tròn giữa có vòng sóng tím, Hủy/Gửi, khung chữ dưới với câu mẫu mờ bị chữ nhận diện thay thế). Hành vi tắt mic: tắt hẳn khi Hủy/Gửi/Quay lại/đổi màn/xuống nền/lỗi/60 giây không có chữ; câu mẫu KHÔNG BAO GIỜ được gửi; Gửi mờ khi chữ rỗng. Cần làm trên Android + iOS (web đã làm).
+- **PL-FCM-TOKEN** — token FCM bị ghi đè giữa Android và iOS (cùng người dùng hai máy): khoá bảng token theo `(user_id, provider, token)` hoặc thêm cột `platform`. Server chỉ gửi FCM **data-only** cho Android; iOS cần khối APNs (`apns` payload + `aps.alert`).
+- **PL-DELETE-EMAIL-DEADLINE** — thời hạn trả lời luồng xoá tài khoản bằng email khi cờ TẮT: trang đang ghi «trong vòng 30 ngày» và «nhật ký máy chủ lưu tối đa 30 ngày» — **cả hai là giá trị chưa được Huy xác nhận / chưa đo** (DELETE-ACCOUNT-COPY-DRAFT đánh dấu [XÁC NHẬN]).
+- **PL-CLIENT-STRINGS (D6)** — chữ do CLIENT dựng (không sửa đợt này, liệt kê ở `docs/uat/STYLE-LUNA6-REVIEW.md`): tiêu đề/phụ đề thẻ hỏi theo mảng (`ASK_HEADER` web `askCardModel.ts`, bản port Android/iOS), «Những lựa chọn sát nhất mình tìm được» + «Chưa có phương án nào vượt hẳn…» (`i18n/w5/shoppingDecision.ts`), nhãn nút. Cần viết lại cùng giọng ở đợt có build native.
+- **PL-HISTORY-CARDS (A5)** — mở lại lịch sử chat mất thẻ/ảnh/link: lịch sử chỉ lưu `{role, content}` trong `conversations.messages`; thẻ địa điểm chỉ sống trong bộ nhớ tab (`liveViewCache.ts`) vì điều khoản Google Places cấm lưu nội dung Places. Hướng làm: lưu **chỉ place_id / id sản phẩm** theo (hội thoại, lượt) ở server và dựng lại thẻ khi mở lịch sử bằng Place Details (được phép lưu place_id); cần cả client Android/iOS đọc phần dựng lại. Chưa làm vì cần sửa app native.
+- **PL-CHAT-TITLE (A6)** — tiêu đề chat là câu đầu tiên của hội thoại (đặt ở client khi lưu); khi người dùng tiếp tục hội thoại cũ «Quán cafe view đẹp» sang chủ đề khác, tiêu đề không đổi. Đổi thành tiêu đề theo chủ đề cần sửa client (3 nền tảng).
+- **PL-TOUR-KLOOK (B)** — «tour khám phá Hội An» đang ra khách sạn. Cần luồng tour/hoạt động: nhận ý định → link tìm kiếm Klook (đã duyệt ACCESSTRADE) đúng từ khoá. URL tìm kiếm Klook chưa kiểm được (Cloudflare 403 với công cụ) — cần mở bằng trình duyệt thật để chốt cú pháp.
+- **PL-XE-KHACH** — «vé xe khách» không có link: Vexere chỉ có trang chủ (depth 0). Cần dò cú pháp tìm tuyến của Vexere/Futa trước khi hiện link.
+- **Gác lại từ khối A/B/C của 01/10 và lý do:** A5, A6 (cần native); tour/Klook, xe khách (chưa kiểm được cú pháp link); thẻ «ăn phở Bắc» vẫn tiêu đề trung tính (đổi thành «Hôm nay ăn gì nhỉ?» cần id báo mảng trong hợp đồng thẻ → đụng cả hai app).
+
+- **PL-COPY-PREMIUM (sau release, KHÔNG làm bây giờ)** — chữ «Premium», «không giới hạn», «Pro» mâu thuẫn khi bật gói trả phí mới (30 câu/ngày): `v3.premium.*` (khung thanh bên, hiện cho mọi người), `v3.top.plan`, `v3.profile.premium`, `v3.history.premiumTitle`, `profile.upgradePro`, `sub.*` cũ, iOS SubscriptionView, trang admin userAnalytics. Danh sách và chữ đề xuất: `docs/payments/COPY-CONFLICTS-FOR-WEB.md` trên nhánh `p8/subscriptions` (chỉ đọc). Riêng `publicResult.softGate` (sai ngay ở bản release) đã sửa 02/10.
+
+## Thêm 02/10 (Huy ghi nhận, KHÔNG làm trước release)
+- Cắt phút CI (Regression Gate chạy hai lần mỗi push)
+- App Links: `assetlinks.json`
+- Nút Chặn / Báo cáo trên web (hiện chỉ có API + app)
+- Lịch sử chat giữ ảnh và thẻ; tiêu đề chat
+- Tour sang Klook; link xe khách
+- Nén clip trước khi tải lên
+- FCM cho iOS
+- Email tóm tắt hàng chờ kiểm duyệt
+- Chuyển `docs/audit` sang GCS
+- Scam Shield: khớp tình huống tĩnh (`matchScenario`) + 89 tình huống Phase 8; đồng bộ thư viện qua server; đồng ý trước khi gửi AI trên web
+- Chữ pháp lý: nhờ người am hiểu luật Việt Nam xem lại (docs/uat/LEGAL-TEXT-REVIEW-2026-10-02.md)
+
+## Ảnh thẻ hỏi / thẻ kế hoạch (02/10, Huy duyệt; nhánh `assets/ask-card-images`)
+- **Ảnh riêng cho 3 ô còn thiếu** (bowling, món Nhật/Hàn, âm nhạc) và **tách 3 ô mua sắm** (trung tâm / chợ / đồ công nghệ đang dùng chung ảnh trung tâm thương mại vì cùng khoá `diem-mua-sam`): cần ảnh riêng + sửa bảng gán ô trên CẢ 3 nền tảng (`askCardModel.ts`, Android `AskCardModel.kt`, iOS `AskCardModel.swift`) + build lại Android và iOS.
+- **Hero (16:9) để sau:** cần quyết (1) server chọn khoá hero thế nào (hiện không nơi nào ghi `hero_image`), (2) đổi tiền tố khoá `entertainment-`→`giai-tri-`, `shopping-`→`mua-sam-` (và thống nhất `-01` hay `-1`), (3) thẻ kế hoạch trong chat web vẽ hero (hiện chưa), (4) ảnh còn thiếu: giải trí 4, mua sắm 10, spa 7, ăn uống 5, du lịch 1 (và bản trùng giải trí số 0/2). Ảnh nguồn ở `D:\THIETKE PLAN`, bản đã xem: chưa đổi tên theo khoá.
+- **Android UAT không tải được ảnh từ uat.tappyai.com**: Coil dùng máy khách HTTP riêng, không có `DeploymentProtectionInterceptor` (chỉ máy khách API có); sửa = cho Coil dùng cùng máy khách (build lại UAT). iOS không có bypass. Bản release trỏ www.tappyai.com nên không bị.
+

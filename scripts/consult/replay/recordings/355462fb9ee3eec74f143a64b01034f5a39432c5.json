@@ -1,0 +1,469 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "Công viên bờ sông TP.HCM Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,12z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:37:39.202Z",
+ "body": {
+  "searchParameters": {
+   "q": "Công viên bờ sông TP.HCM Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,12z",
+   "engine": "google"
+  },
+  "ll": "@10.7768062,106.7008955,12z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Công Viên Bờ Sông Sài Gòn Tp Thủ Đức",
+    "address": "QPC5+MWF, An Khánh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.771690399999999,
+    "longitude": 106.70980139999999,
+    "rating": 4.6,
+    "ratingCount": 634,
+    "type": "Công viên",
+    "types": [
+     "Công viên"
+    ],
+    "openingHours": {
+     "Thứ Tư": "06:00–22:00",
+     "Thứ Năm": "06:00–22:00",
+     "Thứ Sáu": "06:00–22:00",
+     "Thứ Bảy": "06:00–22:00",
+     "Chủ Nhật": "06:00–22:00",
+     "Thứ Hai": "06:00–22:00",
+     "Thứ Ba": "06:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkHO15-lMTcx4w8-pbWw4M1DQsd_Wr4XmZMHfZIGB3x9xiOQyi0M3c1xzsbl90JDGoZHtW3-JdXSKBfa7lBCk7YhyZm1OXhxVwdETtCWj1kaig4qA7xlrd7Hbse5XSkFIFrQHhJTkMm6liz",
+    "cid": "14403115314444078259",
+    "fid": "0x31752f003c64069d:0xc7e22511486d8cb3",
+    "placeId": "ChIJnQZkPAAvdTERs4xtSBEl4sc"
+   },
+   {
+    "position": 2,
+    "title": "Công viên bờ sông sài gòn",
+    "address": "25/3A Lương Định Của, An Khánh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.777595,
+    "longitude": 106.7106161,
+    "rating": 4.6,
+    "ratingCount": 88,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "openingHours": {
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnTj5e5mh6edil2hv-B1HXRbt2To6Nz184Duoy3vSCpN7_zk2jZJgQ_q1WQ-MhR0fLEbSyAOq5gWAGbY5TILlty-e_zbqNyGZB9bWr0NoAk9XO04sK3_zUgIcQ4HOdDbOFQmNi5",
+    "cid": "6441533938157752535",
+    "fid": "0x31752f007178c15f:0x5964ecfcf08410d7",
+    "placeId": "ChIJX8F4cQAvdTER1xCE8PzsZFk"
+   },
+   {
+    "position": 3,
+    "title": "Công viên bờ sông Thủ Thiêm",
+    "address": "QPC5+MW7, An Khánh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.771650099999999,
+    "longitude": 106.70979419999999,
+    "rating": 4.4,
+    "ratingCount": 226,
+    "type": "Công viên",
+    "types": [
+     "Công viên",
+     "Công viên giải trí"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmNhisYJqdOCsknHuyuhiBwvcwS_0OlT7v5ZloGHRepQnxNPMo3YO4XffJp3mY-DMzOZhEl6owHQKazysafAF3Aw3BkxCYZmY_5ZzItct2sewoEz-VIDU4jpcyiVmxqjDPqZ486bQ",
+    "cid": "13988225495297437107",
+    "fid": "0x31752fde43f274ad:0xc22028f9a5442db3",
+    "placeId": "ChIJrXTyQ94vdTERsy1EpfkoIMI"
+   },
+   {
+    "position": 4,
+    "title": "Công viên bờ sông",
+    "address": "Tôn Đức Thắng, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.774972199999999,
+    "longitude": 106.7064267,
+    "rating": 4.4,
+    "ratingCount": 8896,
+    "type": "Công viên",
+    "types": [
+     "Công viên"
+    ],
+    "description": "Công viên, chợ và khu giải trí bên bờ Sông Sài Gòn, có các chuyến đi thuyền và món ăn địa phương.",
+    "openingHours": {
+     "Thứ Tư": "09:00–19:00",
+     "Thứ Năm": "09:00–19:00",
+     "Thứ Sáu": "09:00–19:00",
+     "Thứ Bảy": "09:00–19:00",
+     "Chủ Nhật": "09:00–17:00",
+     "Thứ Hai": "09:00–19:00",
+     "Thứ Ba": "09:00–19:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmG9ZDFHxCpq9MDn66r7RGn0P4VP1mZzvTlINuiqQsZOBIcPxx_RZsajHab881bJ-DpnmTVqUGJYnNbJqs1DjwZHY19eqJpjfhZvjAO1tw5kWOZQ7DjcFm0aorGw_3IjFgkAdG5",
+    "cid": "48057141929985483",
+    "fid": "0x31752f382eb056a9:0xaabbb749a845cb",
+    "placeId": "ChIJqVawLjgvdTERy0WoSbe7qgA"
+   },
+   {
+    "position": 5,
+    "title": "Công viên Bờ Sông",
+    "address": "25 Đường Số 9, Hiệp Bình, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.8216439,
+    "longitude": 106.72034149999999,
+    "rating": 4.5,
+    "ratingCount": 23,
+    "type": "Công viên",
+    "types": [
+     "Công viên"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnNofUmhVSJU-jSK99K7Em1rNdNdfKR--AAm8DnfCF1rpyn5MzeIURYN-bJBlK4hCzg0dxWXTWqfuKqM2OyDo23PfG5VeJpELXRcbcutQeBZDExt6fqtnAN_HEjinjL7N89D8NcLSqb9UWq",
+    "cid": "13532150018017015262",
+    "fid": "0x317529346e7d9a77:0xbbcbdabeb73335de",
+    "placeId": "ChIJd5p9bjQpdTER3jUzt77ay7s"
+   },
+   {
+    "position": 6,
+    "title": "Công viên bờ sông",
+    "address": "PJPM+QHQ, Nguyễn Văn Luông, Bình Phú, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7369725,
+    "longitude": 106.63399299999999,
+    "rating": 4.1,
+    "ratingCount": 82,
+    "type": "Công viên",
+    "types": [
+     "Công viên"
+    ],
+    "openingHours": {
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWld1mpb5I414nQjVXmlArR23dUKbpTOSGJy5ApvYPeDxm_ts31bAg85lD-t4L59RsRVM73FvV0GYBcwoi87OdN-JFqOethYXCr7tDXGfr395jW5e71cW-TBHjQamRZNk80MHTsi",
+    "cid": "3885484548653280448",
+    "fid": "0x31752e77438f03c7:0x35ec039c5ebf6cc0",
+    "placeId": "ChIJxwOPQ3cudTERwGy_XpwD7DU"
+   },
+   {
+    "position": 7,
+    "title": "Công viên Bờ sông Sài Gòn",
+    "address": "33 10 Lương Định Của, An Khánh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.780052,
+    "longitude": 106.712611,
+    "rating": 3.7,
+    "ratingCount": 3,
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm1dJ5Vg6RP1oC1TepFcWq-18ghKZ8JeTNbEDPZNF79tHb_omXjiDJoNBbb5CTVGrrplC_lHPTriCjLKSgPO78Essx7Lh5SVkT4C99pFy-EbJbcnlmzJfqiFdxPMQbdadFRAqvmyWLRSt3X",
+    "cid": "8205521135589746867",
+    "fid": "0x31752f0023fb466f:0x71dfddff83c968b3",
+    "placeId": "ChIJb0b7IwAvdTERs2jJg__d33E"
+   },
+   {
+    "position": 8,
+    "title": "Quảng Trường Thủ Thiêm",
+    "address": "An Khánh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7767083,
+    "longitude": 106.71077369999999,
+    "rating": 4.1,
+    "ratingCount": 62,
+    "type": "Công viên",
+    "types": [
+     "Công viên"
+    ],
+    "openingHours": {
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnf8BwnH7dQ2OpkHNzzglIS2s0gbS8Jwx1FR5ZDCkO_cFxikmdDxDE9TDWX_aEQGMkEIOS3UodLqObi3KN7VlDwR2OsJgWzOiE_1X0mpXXqEeHNvk2LWjdTIStA5-qTJiEGym0iNw8ksg7A",
+    "cid": "5014750466689842940",
+    "fid": "0x31752f0052c09ea7:0x4597f8faec45befc",
+    "placeId": "ChIJp57AUgAvdTER_L5F7Pr4l0U"
+   },
+   {
+    "position": 9,
+    "title": "Công viên bờ sông Sài Gòn - phường An Khánh",
+    "address": "15 Đường N12, An Khánh, Hồ Chí Minh 71108, Việt Nam",
+    "latitude": 10.776819699999999,
+    "longitude": 106.7121713,
+    "rating": 3.7,
+    "ratingCount": 9,
+    "type": "Công viên",
+    "types": [
+     "Công viên"
+    ],
+    "openingHours": {
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlWMZioUboViChS1ToazquOY7J23hJY2uqEFmdHyzvGvnijn5-KMyJyndcmDg_gpbsWe0seWpwYzZOSKZE6O73wZXoDy4DDmnxY8NtiwFqcYOZ3TYTQyPRZGC0W9GiP26aUAPrIzCvzFJYY",
+    "cid": "8169415483678326904",
+    "fid": "0x317527a1ae26fbcf:0x715f981957390078",
+    "placeId": "ChIJz_smrqEndTEReAA5VxmYX3E"
+   },
+   {
+    "position": 10,
+    "title": "Công viên bờ sông Thanh Đa",
+    "address": "308H Đ. Thanh Đa, Cư xá Thanh Đa, Bình Quới, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.818888999999999,
+    "longitude": 106.71540499999999,
+    "rating": 4.8,
+    "ratingCount": 45,
+    "type": "Công viên",
+    "types": [
+     "Công viên"
+    ],
+    "openingHours": {
+     "Thứ Tư": "05:00–23:00",
+     "Thứ Năm": "05:00–23:00",
+     "Thứ Sáu": "05:00–23:00",
+     "Thứ Bảy": "05:00–23:00",
+     "Chủ Nhật": "05:00–23:00",
+     "Thứ Hai": "05:00–23:00",
+     "Thứ Ba": "05:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmQBVTIWAlnsBfMZz8QeemkCcn12ItxEupokzpCUgD8Inq9Jirt_Nd2uFc0Kl7OuWNZU07LstTZ1eGzmPHAJrkYfuNaksv3P_-A6PuopbOd8Ld0FxfQa2B2Vd4fPNXgxSmeRV1y7A",
+    "cid": "7636701549954915177",
+    "fid": "0x3175294d54e9dc8d:0x69fb039944bcdb69",
+    "placeId": "ChIJjdzpVE0pdTERadu8RJkD-2k"
+   },
+   {
+    "position": 11,
+    "title": "Công viên bờ kè hầm Thủ Thiêm",
+    "address": "14A, An Khánh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7703473,
+    "longitude": 106.7098527,
+    "rating": 4.7,
+    "ratingCount": 164,
+    "type": "Công viên",
+    "types": [
+     "Công viên"
+    ],
+    "openingHours": {
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmRK2cKz31g2y9AMvtVPYEiuvPqAwWUlo5UOytCbBjgdsSHdcMIa2YJOrxTCf-THnfvaiOIuuOwT-uIaxmgY8wPlg9qKJdJHiFX_XCzHRcu-eZaOo-7D7XUjtqp6LXEM49KlDFwMrAIfvhc",
+    "cid": "17175828859935607309",
+    "fid": "0x31752ff7b74912db:0xee5ccd58bf5d4a0d",
+    "placeId": "ChIJ2xJJt_cvdTERDUpdv1jNXO4"
+   },
+   {
+    "position": 12,
+    "title": "Công viên bờ sông Tôn Thất Thuyết, Phường 16, Quận 4",
+    "address": "78 Tôn Thất Thuyết, Xóm Chiếu, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.753148,
+    "longitude": 106.711838,
+    "rating": 4.1,
+    "ratingCount": 73,
+    "type": "Công viên",
+    "types": [
+     "Công viên"
+    ],
+    "openingHours": {
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm5IaQl4A5GcZmR0uZldJxfRVBlfp0HcAaPLO_giypHMKGYpgcHKv5dJ7V-P_rnxi_1urMqAGp-F0OOvhnEupkJtZNNlrh_wBJtiWuG0FGvnexFYmfkTftKySkeH2ia_24o-JL70Q",
+    "cid": "1987238955513563928",
+    "fid": "0x31752f7a807cf46d:0x1b94174d1b344b18",
+    "placeId": "ChIJbfR8gHovdTERGEs0G00XlBs"
+   },
+   {
+    "position": 13,
+    "title": "Công viên bờ sông lô 1",
+    "address": "RP98+PCF, Số 3, Cư xá Thanh Đa, Bình Quới, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.819300499999999,
+    "longitude": 106.71605459999999,
+    "rating": 2.6,
+    "ratingCount": 9,
+    "type": "Công viên",
+    "types": [
+     "Công viên"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkoNFDOrXASw8084Fa2NGSrcFa3fYrhYjPvDFsgrQHL70xX8YcKXIAsH5hAA6COX8JBZtEyo0hoDZADVnIuIamtqw6Lxd65soZjalCA5KEM810LGFjfW3_cKBNBmMMrG7XpvGQ8UIvqCfo",
+    "cid": "568114014238941603",
+    "fid": "0x317529732720f999:0x7e258af9aa221a3",
+    "placeId": "ChIJmfkgJ3MpdTERoyGimq9Y4gc"
+   },
+   {
+    "position": 14,
+    "title": "Công viên Cảng Ba Son",
+    "address": "2 Tôn Đức Thắng, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7857722,
+    "longitude": 106.7133047,
+    "rating": 4.7,
+    "ratingCount": 236,
+    "type": "Công viên",
+    "types": [
+     "Công viên"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmNzomc9SE26KlfmTesfRDcKGWJCz4NDuzlI6dsJZTcunOtSkB0aAulw1cHhGMIgEA8QSVhlcivlh0MhiXHg03TG1ohbYQoOb-ZuDUIeUknjx8StDQmNWWLbzsSyOMn2Gsc1x6j",
+    "cid": "7052411805237986068",
+    "fid": "0x31752f025d963ed1:0x61df332becfb4314",
+    "placeId": "ChIJ0T6WXQIvdTERFEP77Csz32E"
+   },
+   {
+    "position": 15,
+    "title": "Công Viên Bờ Sông Sài Gòn-Thảo Điền - Đối Diện Ngân Hàng Hd Bank (1 Đường Số 49B) - Nguyễn Văn Hưởng - Phường Thảo Điền",
+    "address": "An Khánh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.8018763,
+    "longitude": 106.7282254,
+    "rating": 3.8,
+    "ratingCount": 4,
+    "type": "Trạm xe buýt",
+    "types": [
+     "Trạm xe buýt"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnONNgqCQK9Z3irwUruGFa021T8LvFGsWnQyoe7VUEzWY7bMhYb9ZWDOB_OnufWI5WQjO5fwZ5IkrhwJGlbtZ2vMticFLNxQ_LSxInim7U1sgWtvbwfk8-BAfzZ-GRZ4IGDpPOC5RmvIZ8",
+    "cid": "11372183952772799125",
+    "fid": "0x3175261c660393ed:0x9dd21d0d796b9a95",
+    "placeId": "ChIJ7ZMDZhwmdTERlZpreQ0d0p0"
+   },
+   {
+    "position": 16,
+    "title": "Công viên gầm cầu Ba Son",
+    "address": "QPJ5+974, Cầu Ba Son, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.78088,
+    "longitude": 106.7082155,
+    "rating": 4.6,
+    "ratingCount": 234,
+    "type": "Công viên",
+    "types": [
+     "Công viên"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmsZCq37u6bDtXsOmbJnXqxmDgdRptCTQaYLDMBvoOyBgxTKFL98KRZdPNOzIWme8GHzxPOQUkWJ8A1EbCwiNqTnbTroEmIOAZnKUrb5Zk_WJ_fQ8X6xW2IVIx8eSeE75HziNkGfA",
+    "cid": "545411202916805766",
+    "fid": "0x31752fb03146b30b:0x791b0996e5fec86",
+    "placeId": "ChIJC7NGMbAvdTERhuxfbpmwkQc"
+   },
+   {
+    "position": 17,
+    "title": "Thủ Thiêm Riverstage - Công Viên Bờ Sông Thủ Thiêm",
+    "address": "Công viên bờ sông, 16Bis Nguyễn Thiện Thành, An Khánh, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7767131,
+    "longitude": 106.7110132,
+    "rating": 4.8,
+    "ratingCount": 231,
+    "type": "Trung tâm văn hoá",
+    "types": [
+     "Trung tâm văn hoá",
+     "Nơi tổ chức sự kiện"
+    ],
+    "website": "http://thuthiemriverstage.vn/",
+    "phoneNumber": "+84 908 097 767",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWna-8u3ouJebrw7E9znVQ7AAlj6LQsN9Lsb3iZPJAoKhm6mKTeiJ9WJeH_Okd8nLJVe2rkNWEim59nVEjTiAsPbQqsC5X-E5OqF346YvUS5EfBelwkhkhkuB7subtkeNTa4Dq19t60PmwuE",
+    "cid": "6607203576800119722",
+    "fid": "0x31752fdfe60475df:0x5bb180a589dc8baa",
+    "placeId": "ChIJ33UE5t8vdTERqovciaWAsVs"
+   },
+   {
+    "position": 18,
+    "title": "Công viên Bờ sông sau UBND Tp Thủ Đức",
+    "address": "QQC2+XPG, Cát Lái, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7724424,
+    "longitude": 106.7518149,
+    "rating": 4,
+    "ratingCount": 3,
+    "type": "Công viên",
+    "types": [
+     "Công viên"
+    ],
+    "openingHours": {
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnT5Z6M-GrRxtvvTSbl9Sxwh8MmmugVwNSxd1CmPf98VPtEslkPaPkxcXMgLlblYzwX6-z3yA24BL8MuUgxFE67ur2GQKFL8gmDVHDAtYtdC1CziMq3r1rLkusJA7y3fHk2M9EHl6V0cUeV",
+    "cid": "1374189415915605664",
+    "fid": "0x317525005bfff6fd:0x131219fe35c04ea0",
+    "placeId": "ChIJ_fb_WwAldTERoE7ANf4ZEhM"
+   },
+   {
+    "position": 19,
+    "title": "Công viên sông sài gòn",
+    "address": "QPJ5+P7W, Tôn Đức Thắng, Quận 1, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.781982,
+    "longitude": 106.708776,
+    "rating": 5,
+    "ratingCount": 1,
+    "type": "Sân chơi",
+    "types": [
+     "Sân chơi"
+    ],
+    "website": "http://flashlaundrypro.com/",
+    "phoneNumber": "+84 934 052 230",
+    "openingHours": {
+     "Thứ Tư": "07:00–23:15",
+     "Thứ Năm": "07:00–23:15",
+     "Thứ Sáu": "07:00–23:15",
+     "Thứ Bảy": "07:00–23:15",
+     "Chủ Nhật": "07:00–23:15",
+     "Thứ Hai": "07:00–23:15",
+     "Thứ Ba": "07:00–23:15"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk9M750ZpFnRW_Shzt5avSy7nESM1r0Q6OLveJGZQjuDO2fUJewXowMeFhClXzfqH_MkcWGJC3_rPMvmWKPTzU-TdSDVs6oxg1nVFztd2Op6EwedkOWD4CnQ9zLFDmXeZ74pNNmuCP541bJ",
+    "cid": "17446251722220442542",
+    "fid": "0x31752f0014635f83:0xf21d8981d4ff13ae",
+    "placeId": "ChIJg19jFAAvdTERrhP_1IGJHfI"
+   },
+   {
+    "position": 20,
+    "title": "Công Viên Bờ Sông Sài Gòn-Thảo Điền - Đối Diện Công Viên Bờ Sông Sài Gòn-Thảo Điền - Nguyễn Văn Hưởng - Phường Thảo Điền",
+    "address": "An Khánh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.8016644,
+    "longitude": 106.7285527,
+    "rating": 4.5,
+    "ratingCount": 2,
+    "type": "Trạm xe buýt",
+    "types": [
+     "Trạm xe buýt"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlfeX_Ehwa-iulqM9JVDqBBHHrRXCh5H50_IM2YbszJJwnzJVdeUuPTl9yZBf0tc9I5uMYEIB61L4_VL0srgEID-O1_vPt1pjyEXXC-qU4wHbpz9SCCePKU1j1FFfDJctkwe8AlFd0dhIUn",
+    "cid": "7675117062427571971",
+    "fid": "0x3175261c64c66617:0x6a837e4dc388f703",
+    "placeId": "ChIJF2bGZBwmdTERA_eIw01-g2o"
+   }
+  ],
+  "credits": 3
+ }
+}

@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "ve xe khach tu TP.HCM di Tây Ninh gia bao nhieu vexere futa phuong trang",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:24:34.022Z",
+ "body": {
+  "searchParameters": {
+   "q": "ve xe khach tu TP.HCM di Tây Ninh gia bao nhieu vexere futa phuong trang",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "FUTA Bus Lines",
+    "link": "https://futabus.vn/",
+    "snippet": "Đặt vé xe Phương Trang đi liên tỉnh trực tuyến. Số điện thoại tổng đài đặt vé xe phương trang: 1900 6067.",
+    "position": 1
+   },
+   {
+    "title": "Xe Phương Trang đi Tây Ninh từ Sài Gòn: Lịch chạy, cách ...",
+    "link": "https://blog.vexere.com/xe-phuong-trang-di-tay-ninh-tu-sai-gon/",
+    "snippet": "Giá vé xe Phương Trang đi Tây Ninh từ Sài Gòn hiện tại là 155.000 VNĐ/vé, áp dụng cho cả xe giường nằm limousine cao cấp và xe ghế ngồi 28 chỗ.",
+    "date": "29 thg 12, 2025",
+    "position": 2
+   },
+   {
+    "title": "Tiện lợi 🚌🚌 Tuyến TP.HCM - Tây Ninh 📱Đặt vé trải nghiệm ...",
+    "link": "https://www.facebook.com/xephuongtrang/posts/-trong-th%C3%A1ng-3-n%C3%A0yc%C3%B4ng-ty-ph%C6%B0%C6%A1ng-trang-ra-m%E1%BA%AFt-si%C3%AAu-ph%E1%BA%A9m-m%E1%BB%9Bi-sang-tr%E1%BB%8Dng-ti%E1%BA%BFt-ki%E1%BB%87m/922667897023480/",
+    "snippet": "Thi Mai Huynh Dạ Quý khách vui lòng truy cập https://futabus.vn/ hoặc APP FUTA, nhập tuyến đường cần đi, ngày khởi hành để tham khảo thông tin ...",
+    "position": 3
+   },
+   {
+    "title": "Xe Phương Trang | Đặt Vé Online, Giá Vé 2026 & Số điện ...",
+    "link": "https://www.redbus.vn/ve-xe-khach/nha-xe/phuong-trang",
+    "snippet": "Hiện tại, giá vé niêm yết cho tuyến TP.HCM - Đà Lạt dao động khoảng 290.000 VNĐ/vé (đối với xe giường nằm tiêu chuẩn). Giá có thể thay đổi nhẹ vào các dịp ...",
+    "rating": 4.3,
+    "ratingCount": 3837,
+    "position": 4
+   },
+   {
+    "title": "CÔNG TY PHƯƠNG TRANG KHAI TRƯƠNG TUYẾN BẾN ...",
+    "link": "https://www.facebook.com/xephuongtrang/posts/c%C3%B4ng-ty-ph%C6%B0%C6%A1ng-trang-khai-tr%C6%B0%C6%A1ng-tuy%E1%BA%BFn-b%E1%BA%BFn-xe-mi%E1%BB%81n-t%C3%A2y-b%E1%BA%BFn-xe-t%C3%A2y-ninh-t%E1%BB%AB-ng%C3%A0y-0/940711411885795/?locale=vi_VN",
+    "snippet": "CÔNG TY PHƯƠNG TRANG KHAI TRƯƠNG TUYẾN BẾN XE MIỀN TÂY - BẾN XE TÂY NINH TỪ NGÀY 03/04/2026. GIÁ VÉ CHỈ 110.000Đ/VÉ. XEM THÊM TẠI.",
+    "position": 5
+   },
+   {
+    "title": "Công ty cổ phần xe khách Phương Trang",
+    "link": "https://futabus.vn/tin-tuc/cong-ty-phuong-trang-tung-bung-khai-truong-van-phong-trang-bang-tay-ninh",
+    "snippet": "Đặt vé xe Phương Trang đi liên tỉnh trực tuyến. Số điện tổng đài thoại đặt vé xe phương trang: 1900 6067. Đặt vé nhanh qua ứng dụng Android, ...",
+    "date": "19 thg 12, 2024",
+    "position": 6
+   },
+   {
+    "title": "Xe khách Sài Gòn Tây Ninh: 7 nhà xe giá rẻ có dịch vụ tốt nhất ...",
+    "link": "https://motogo.vn/xe-sai-gon-tay-ninh/",
+    "snippet": "Bảng giá vé, giờ chạy các nhà xe Sài Gòn Tây Ninh 2026 ; Nhà xe, Giá vé, Loại xe ; Đồng Phước, từ 120.000đ (ghế) / 145.000đ (limo), Ghế / limo 12 ...",
+    "date": "8 thg 9, 2026",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 7
+   },
+   {
+    "title": "TỪ TP. HỒ CHÍ MINH ⇄ BẾN XE TÂY NINH: HÀNH TRÌNH ...",
+    "link": "https://www.facebook.com/xephuongtrang/videos/-t%E1%BB%AB-tp-h%E1%BB%93-ch%C3%AD-minh-b%E1%BA%BFn-xe-t%C3%A2y-ninh-h%C3%A0nh-tr%C3%ACnh-kh%C3%B4ng-ch%E1%BB%89-%C4%91%E1%BB%83-%C4%91i-m%C3%A0-%C4%91%E1%BB%83-t%E1%BA%ADn-h%C6%B0%E1%BB%9Fngm%E1%BB%99t/928834023196171/",
+    "snippet": "Thông tin chi tiết xin vui lòng liên hệ: ☎ Tổng đài đặt vé Tây Ninh: 1900.6913 ☎ Trung Tâm Tổng Đài & CSKH: 1900.6067 # ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

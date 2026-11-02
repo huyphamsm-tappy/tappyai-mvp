@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Ốp lưng iPhone 17 Pro Max UAG chống sốc Essential Armor With Ma\" OR \"Ốp lưng iPhone 17 Pro Max UAG chống sốc Plyo Ice\" OR \"Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:58:50.674Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Ốp lưng iPhone 17 Pro Max UAG chống sốc Essential Armor With Ma\" OR \"Ốp lưng iPhone 17 Pro Max UAG chống sốc Plyo Ice\" OR \"Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Plyo Ice | Giá rẻ",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-plyo-ice.html",
+    "snippet": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Plyo Ice ; Smember Giảm thêm đến 47.000đ ; Chống sốc và hạn chế trầy xước hiệu quả. Ốp lưng iPhone 17 Pro Max UAG Plyo Ice ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

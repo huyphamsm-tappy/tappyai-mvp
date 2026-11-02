@@ -1,0 +1,83 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Cà Phê Hòa Tan Ưu Lạc 5 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:59:33.154Z",
+ "body": {
+  "searchParameters": {
+   "q": "Cà Phê Hòa Tan Ưu Lạc 5 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "searchInformation": {
+   "didYouMean": "Cà Phê Hòa Tan Lưu Lạc 5 site:lazada.vn/products"
+  },
+  "organic": [
+   {
+    "title": "Cà Phê Mộc Đắc Lắc Nguyên Chất . Loại đặc biệt ( Robusta 70%",
+    "link": "https://www.lazada.vn/products/ca-phe-moc-dac-lac-nguyen-chat-loai-dac-biet-robusta-70-arabica-30-thom-tu-nhien-vi-dam-da-giup-tinh-than-tinh-tao-i3070557463-s14759936601.html?from_gmc=1&fl_tag=1&srsltid=AU7gw4VEj6zNg0yRl7o1ixPRmOFJNBW3rdZjkIbMryxZnvA0IvHoqFkV",
+    "snippet": "– Khối lượng tịnh: 500Gr. – Thành phần: Cà phê rang xay tự nhiên (Robusta 70% + Arabica 30%). – Xuất xứ: Đắc Lắc, Việt Nam.",
+    "position": 1
+   },
+   {
+    "title": "Cà Phê Thải Độc Đại Tràng Loại Hoà Tan GERSON COFFEE",
+    "link": "https://h5.lazada.vn/products/ca-phe-thai-doc-dai-trang-loai-hoa-tan-gerson-coffee-1-hop-cofe-45-goi-moi-goi-su-dung-1-lan-i1906919865-s8692160666.html",
+    "snippet": "Cà phê thải độc Đại Tràng loại hòa tan Gerson Coffee - giải pháp dinh dưỡng tiện lợi với 45 gói sử dụng 1 lần, phù hợp cho người cần thanh lọc cơ thể.",
+    "rating": 4.9,
+    "ratingCount": 14,
+    "position": 2
+   },
+   {
+    "title": "COMBO 5 Bịch Cà Phê Hòa Tan Rang Xay 3 in 1 Vị Cafe ...",
+    "link": "https://www.lazada.vn/products/combo-5-bich-ca-phe-hoa-tan-rang-xay-3-in-1-vi-cafe-g7-trung-nguyen-legend-classic-50-goi-x-17g-i13402050829.html?srsltid=AU7gw4UAv-k3M2GYCMZvuAn8g4OeWRNy5os3ll_yUSsNoD4CglOD1Dva",
+    "snippet": "Thành phần: Đường, bột kem (có chứa đạm sữa), hỗn hợp cà phê hòa tan (11,6% cà phê Robusta, 0,7% đậu nành), maltodextrin, cà phê rang xay nhuyễn (0,7%), muối i- ...",
+    "position": 3
+   },
+   {
+    "title": "COMBO 10 Bịch Cà Phê Trung Nguyên Sáng Tạo 3 340gr Rang ...",
+    "link": "https://h5.lazada.vn/products/combo-10-bich-ca-phe-trung-nguyen-sang-tao-3-340gr-rang-xay-arabica-coffee-i13400651717-s117064162620.html",
+    "snippet": "Thương hiệu: Trung Nguyên Legend. Thành phần: Cà phê (80,5%), đậu nành, dung dịch đường nâu, dầu bơ thay thế, hương liệu tổng hợp, bơ (có ...",
+    "position": 4
+   },
+   {
+    "title": "[Premium] Cà Phê Chất Lượng Cao Blend Signature M'JA",
+    "link": "https://www.lazada.vn/products/premium-ca-phe-chat-luong-cao-blend-signature-mja-70-arabica-30-robusta-rang-moc-nguyen-chat-cao-cap-tui-500g-i2003464561.html?srsltid=AU7gw4VCHReCk-7Ao-eiHQMJBxeXDMkqQSkveNE_Tm7_t4NRAkOQ61T8",
+    "snippet": "Cà phê chất lượng cao MJA 500g, hòa tan 70% Arabica 30% Robusta, hương thơm trái cây nhiệt đới. Túi zip bảo quản tốt, tiện lợi, từ Việt Nam, ...",
+    "rating": 5,
+    "ratingCount": 4,
+    "position": 5
+   },
+   {
+    "title": "Cà Phê G7 Hòa Tan Đen( Không Đường Không Sữa) ...",
+    "link": "https://www.lazada.vn/products/ca-phe-g7-hoa-tan-den-khong-duong-khong-sua-trung-nguyen-hop-50-goi-x-2gam-i952906794.html?srsltid=AU7gw4XZh0wrY_HtSvQfcxO2M5yjYgiiEhWKgH2mA6jfuCTYpSaDybG9",
+    "snippet": "Sản phẩm được sản xuất hoàn toàn thuần cà phê, không đường, không sữa. Hương vị nổi bật của G7 hòa tàn chính là từ những hạt cà phê abrabica, robusta, excelsa, ...",
+    "rating": 4.8,
+    "ratingCount": 36,
+    "position": 6
+   },
+   {
+    "title": "CÀ PHÊ RANG XAY TNI KING COFFEE GOURMET ...",
+    "link": "https://www.lazada.vn/products/ca-phe-rang-xay-tni-king-coffee-gourmet-blend-500gr-00018-i2618335546.html?srsltid=AU7gw4WN6tNSozrsED5PxLttLX39FumxyKJ2ihQYdGCkl5zmId9UJmLH",
+    "snippet": "Chứng chỉ HALAL. Có ; Ngành Hàng. Cà phê rang xay ; Trọng lượng mỗi khẩu phần. 25 g ; Hạn sử dụng. 24 tháng ; Đặc điểm hương vị. Hương vị đậm đà & mạnh mẽ.",
+    "position": 7
+   },
+   {
+    "title": "30 HỘP Cà phê phin giấy- cà phê hương Hạt Dẻ ...",
+    "link": "https://www.lazada.vn/products/30-hop-ca-phe-phin-giay-ca-phe-huong-hat-de-hazelnut-coffee-ground-coffee-drip-bag100gr-i2294842188.html?srsltid=AU7gw4XzbRyWc6A2IcPIeHYfe4Wg4h4SfedIjvLISuRpjWzMKPJv3pP1",
+    "snippet": "Giao hàng. Thành phố Hồ Chí Minh, Phường Bến Thành. Giao tiêu chuẩn , Đảm bảo nhận vào 22-24 thg 9. 120.900 ₫ ; Dịch vụ · 100% chính hãng. service. 30 ngày miễn ...",
+    "rating": 5,
+    "ratingCount": 4,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

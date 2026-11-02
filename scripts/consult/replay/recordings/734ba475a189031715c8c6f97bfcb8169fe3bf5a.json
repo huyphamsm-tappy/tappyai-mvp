@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "【Vận chuyển nội địa】Máy xay cà phê bằng tay, 40 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:11:30.155Z",
+ "body": {
+  "searchParameters": {
+   "q": "【Vận chuyển nội địa】Máy xay cà phê bằng tay, 40 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Máy pha cà phê nội địa nhật - Giá Tốt, Sale Tháng 09, ...",
+    "link": "https://shopee.vn/list/m%C3%A1y%20pha%20c%C3%A0%20ph%C3%AA/n%E1%BB%99i%20%C4%91%E1%BB%8Ba%20nh%E1%BA%ADt",
+    "snippet": "Shopee cung cấp đầy đủ các sản phẩm máy pha cà phê nội địa nhật chính hãng với nhiều mức giá ưu đãi vô cùng hấp dẫn. Bạn có thể thỏa thích tham khảo sản phẩm ...",
+    "position": 1
+   },
+   {
+    "title": "Máy xay cà phê gia đình - Giá Tốt, Sale Tháng 09, Freeship ...",
+    "link": "https://shopee.vn/list/ma%CC%81y%20xay%20ca%CC%80%20ph%C3%AA/gia%20%C4%91i%CC%80nh",
+    "snippet": "Mua online máy xay cà phê gia đình chất lượng, Voucher Shopee Live giảm tới 50% tại Shopee. Khuyến mãi tháng 09, 2026 . Freeship 0Đ. Mua ngay!",
+    "position": 2
+   },
+   {
+    "title": "#xay giá tốt Tháng 6, 2026 | Mua ngay",
+    "link": "https://shopee.vn/xay-tag",
+    "snippet": "[ Bao Gồm VAT] Máy xay hạt cà phê WINCI CG5002, 30 cỡ xay, Bảo hành 12 tháng. 2.990.000₫.",
+    "position": 3
+   },
+   {
+    "title": "Máy pha cà phê cầm tay - Giá Tốt, Sale Tháng 09, Ship 0 ...",
+    "link": "https://shopee.vn/list/m%C3%A1y%20pha%20c%C3%A0%20ph%C3%AA/c%E1%BA%A7m%20tay",
+    "snippet": "Mua online máy pha cà phê cầm tay chất lượng, Voucher Shopee Live giảm tới 50% tại Shopee. Khuyến mãi tháng 09, 2026 . Miễn phí vận chuyển. Mua ngay!",
+    "position": 4
+   },
+   {
+    "title": "Máy xay cafe - Giá Tốt, Miễn Phí Vận Chuyển, Đủ Loại",
+    "link": "https://shopee.vn/list/m%C3%A1y%20xay/cafe",
+    "snippet": "Máy Xay Cafe Mini Cầm Tay - Cối Xay CNC 5 Trục Chống Mài Mòn, Xay Mịn Đều 20-30g, Tiện Dụng Khi Du Lịch. 570.000₫. 980.000₫. -42%. voucher-icon. Rẻ Vô Địch.",
+    "position": 5
+   },
+   {
+    "title": "Máy pha cà phê cầm tay cera - Giá Tốt, Sale Tháng 09 ...",
+    "link": "https://shopee.vn/list/m%C3%A1y%20pha%20c%C3%A0%20ph%C3%AA/c%E1%BA%A7m%20tay/cera",
+    "snippet": "Các sản phẩm máy pha cà phê cầm tay cera chính hãng được bán tại Shopee với giá ưu đãi hấp dẫn. Bạn còn có thể áp dụng các mã giảm giá, mã hoàn xu và freeship ...",
+    "position": 6
+   },
+   {
+    "title": "Máy pha cà phê gia đình - Giá Tốt, Miễn Phí Vận Chuyển ...",
+    "link": "https://shopee.vn/list/m%C3%A1y%20pha%20c%C3%A0%20ph%C3%AA/gia%20%C4%91%C3%ACnh",
+    "snippet": "Mua online máy pha cà phê gia đình chất lượng, mới nhất, giảm tới 50% tại Shopee Việt Nam. Khuyến mãi tháng 09. Miễn phí vận chuyển. Mua ngay!",
+    "position": 7
+   },
+   {
+    "title": "Máy xay cafe cầm tay - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/m%C3%A1y%20xay%20cafe/c%E1%BA%A7m%20tay",
+    "snippet": "Máy Xay Cafe Mini Cầm Tay - Cối Xay CNC 5 Trục Chống Mài Mòn, Xay Mịn Đều 20-30g, Tiện Dụng Khi Du Lịch. 570.000₫. 980.000₫.",
+    "date": "1 thg 5, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

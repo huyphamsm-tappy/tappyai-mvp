@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Aniki Nhà Hàng Nhật Quận 1\" OR \"Matsuri Japanese Restaurant\" OR \"Michi Sushi\" Quận 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:25:17.161Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Aniki Nhà Hàng Nhật Quận 1\" OR \"Matsuri Japanese Restaurant\" OR \"Michi Sushi\" Quận 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Review Ẩm Thực Nhật Bản Aniki — Nhà hàng Nhật quận 1",
+    "link": "https://www.tiktok.com/@aniki_restaurant/video/7638582596653698325",
+    "snippet": "... Aniki, nhà hàng Nhật quận 1, ẩm thực Nhật giản đơn, trải nghiệm nhà hàng Aniki, món Nhật cân bằng hương vị, Aniki restaurant review, review ...",
+    "position": 1
+   },
+   {
+    "title": "Trong tháng 9 này sashimi mua 1 mà được 2 nên ăn thả ga ...",
+    "link": "https://www.tiktok.com/@aniki_restaurant/video/7688639036340096277",
+    "snippet": "Video TikTok từ Aniki - Nhà hàng Nhật Bản (@aniki_restaurant): \"Trong tháng 9 này sashimi mua 1 ... Aniki Nhà Hàng Nhật Quận 1 · author. 18 · 3.",
+    "position": 2
+   },
+   {
+    "title": "Discover Authentic Japanese Cuisine at Aniki Restaurant",
+    "link": "https://www.tiktok.com/@aniki_restaurant/video/7636674767533264148",
+    "snippet": "Located in Quan 1, Aniki Restaurant is a testament to the beauty and subtlety of Japanese ... Aniki Nhà Hàng Nhật Quận 1 · author · 330 · 11.",
+    "position": 3
+   },
+   {
+    "title": "Best Seller Aniki - Ramen Vị Tỏi Đen #anikirestaurant # ...",
+    "link": "https://www.tiktok.com/@aniki_restaurant/video/7683894953130478869",
+    "snippet": "Aniki Nhà Hàng Nhật Quận 1 · author · 19 · 0 ... 1 Tặng 1 còn áp dụng. Nhà hàng cảm ơn khách đã ủng hộ và khuyến khích khách tranh thủ ghé thưởng ...",
+    "position": 4
+   },
+   {
+    "title": "Tình đầu ngây thơ ăn quán này cái dính luôn tới giờ ...",
+    "link": "https://www.tiktok.com/@aniki_restaurant/video/7674152592989015317",
+    "snippet": "Aniki Nhà Hàng Nhật Quận 1 · author. 15 · 3 ... Xem thêm câu trả lời khác (1). Các video hàng đầu trong ngày hôm nay. @Video của aniki_restaurant.",
+    "position": 5
+   },
+   {
+    "title": "Michi Sushi (@michi_sushi_42nguyenhue)",
+    "link": "https://www.tiktok.com/@michi_sushi_42nguyenhue",
+    "snippet": "Michi Sushi Chung cư 42 Nguyễn huệ-lầu 7, Bến Nghé, Q.1 Đặt món tại đây · Đã follow · Tài khoản được đề xuất · Tận hưởng trải nghiệm đầy đủ trong ứng dụng.",
+    "position": 6
+   },
+   {
+    "title": "Khách order 1 set sashimi nhưng nhân viên mang 2 ...",
+    "link": "https://www.tiktok.com/@aniki_restaurant/video/7660485664391122196",
+    "snippet": "... mang ra 2 set giống nhau — video. @Aniki - Nhà hàng Nhật Bản · âm thanh gốc - Aniki - Nhà hàng Nhật Bản · Aniki Nhà Hàng Nhật Quận 1 · author.",
+    "position": 7
+   },
+   {
+    "title": "Nào, ăn thôi #aniki_restaurant#aniki_respyfツ #sushi",
+    "link": "https://www.tiktok.com/@aniki.be.like/video/7684968132192324885",
+    "snippet": "Aniki Nhà Hàng Nhật Quận 1 · author. 17 · 0 ... 1. Chuẩn bị cơm: nếu muốn vị gần sushi, trộn cơm còn nóng với giấm gạo, chút đường và muối rồi ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -61,7 +61,12 @@ const TERMS: LegalDoc = {
     {
       id: 'acceptable-use',
       headingKey: 'legal.terms.s4.heading',
-      blocks: [{ kind: 'p', key: 'legal.terms.s4.p1' }],
+      blocks: [
+        { kind: 'p', key: 'legal.terms.s4.p1' },
+        { kind: 'p', key: 'legal.terms.s4.p2' },
+        { kind: 'p', key: 'legal.terms.s4.p3' },
+        { kind: 'link', labelKey: 'legal.terms.s4.link', key: 'legal.terms.s4.linkText', href: '/community-guidelines' },
+      ],
     },
     {
       id: 'changes-to-these-terms',

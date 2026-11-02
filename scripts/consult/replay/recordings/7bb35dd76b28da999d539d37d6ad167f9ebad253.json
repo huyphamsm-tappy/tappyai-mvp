@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Itel P55 Plus NFC 8GB 256GB site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:54:33.666Z",
+ "body": {
+  "searchParameters": {
+   "q": "Itel P55 Plus NFC 8GB 256GB site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "[SIÊU PHẨM MỚI] Máy Tính Bảng TECLAST T50 PLUS ...",
+    "link": "https://www.lazada.vn/products/sieu-pham-moi-may-tinh-bang-teclast-t50-plus-2025-20gb812256gb-16gb610256gb-fhd-11-8000mah-bh-12t-i13371979424.html?srsltid=AU7gw4WjbQShu2ttj3fouBMFFzIK7qhXEl65A346FoJG8Om4gMWzUrPA",
+    "snippet": "Màn hình Full HD 11 inch với tần số quét thích ứng 120Hz và độ phân giải 1920x1200, sử dụng tấm nền IPS, mang lại hình ảnh mượt mà và sống động cho cả công việc ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

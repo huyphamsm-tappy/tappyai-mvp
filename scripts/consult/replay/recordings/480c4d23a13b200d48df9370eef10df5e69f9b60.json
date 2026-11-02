@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Rong Chơi Coffee Van Garden\" OR \"Xào Xạc cafe & plants\" OR \"3Đ Chill Cafe\" quan 3 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:01:54.746Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Rong Chơi Coffee Van Garden\" OR \"Xào Xạc cafe & plants\" OR \"3Đ Chill Cafe\" quan 3 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Xào xạc cafe & plants 📍 453/15 Nguyễn Đình Chiểu ...",
+    "link": "https://www.tiktok.com/@cafehoppersg/photo/7482220926134750471?lang=ro-RO",
+    "snippet": "Xào xạc cafe & plants 453/15 Nguyễn Đình Chiểu, phường 5, quận 3, TpHCM 7:30 am - 10 pm #xaoxac #xaoxaccafe #xaoxaccafeplants #cafe # ...",
+    "position": 1
+   },
+   {
+    "title": "3Đ Chill Cafe: Góc Cà Phê Matcha & Bánh Ngọt Quận 3",
+    "link": "https://www.tiktok.com/@goc.sg/photo/7662273383438093589",
+    "snippet": "+1 không gian cho những buổi tối deep talk cùng tri kỷ #tphcm #saigon #coffeetime #coffee #quan3. 3Đ Chill Cafe: Góc Cà Phê Matcha & Bánh Ngọt ...",
+    "position": 2
+   },
+   {
+    "title": "Địa điểm lý tưởng để chill tại 3Đ Chill Café",
+    "link": "https://www.tiktok.com/@3d.chillcafe/video/7533080808983219474",
+    "snippet": "Khám phá 3Đ Chill Café - góc nhỏ lý tưởng tại Sài Gòn để tận hưởng nắng và thư giãn. #3dchillcafe #caphesaigon #cafesaigon #chill #saigon #quan3 ...",
+    "position": 3
+   },
+   {
+    "title": "3Đ Chill Cafe: Không Gian Vintage Xanh Mát Tại Quận 3",
+    "link": "https://www.tiktok.com/@tron.blog/photo/7660876501793000725",
+    "snippet": "HCM. Chi phí: 45k – 65k. Cuối tuần này, mang theo chiếc máy ảnh và ghé 3Đ Chill Cafe để sạc lại năng lượng thôi nào! —————————————— ©️ ...",
+    "position": 4
+   },
+   {
+    "title": "Trải nghiệm cà phê đẹp tại quận 3 Sài Gòn",
+    "link": "https://www.tiktok.com/@shundidau_/video/7618859636585778452",
+    "snippet": "Khám phá quán cà phê đẹp tại Sài Gòn, nơi lý tưởng để chụp ảnh. @Shun Đi Đâu · âm thanh gốc - Shun Đi Đâu · Xào Xạc cafe & plants · author.",
+    "position": 5
+   },
+   {
+    "title": "Xào xạc cafe & plants 📍 453/15 Nguyễn Đình Chiểu ...",
+    "link": "https://www.tiktok.com/@cafehoppersg/photo/7482220926134750471?image_index=7",
+    "snippet": "Xào xạc cafe & plants 453/15 Nguyễn Đình Chiểu, phường 5, quận 3, TpHCM 7:30 am - 10 pm #xaoxac #xaoxaccafe #xaoxaccafeplants #cafe # ...",
+    "position": 6
+   },
+   {
+    "title": "Có một tiệm cafe đón nắng siêu chill núp mình trong ...",
+    "link": "https://www.tiktok.com/@nau_caphe/video/7558035375483129106",
+    "snippet": "... quận 3 #3dchill #3dchillcafe #cafe #quan3 #naudicaphe · nhạc ... 3Đ Chill Café. Dạ mình cám ơn bạn ghé chơi hen, hôm nào bạn ghé tụi ...",
+    "position": 7
+   },
+   {
+    "title": "3Đ Chill Café (@3d.chillcafe)",
+    "link": "https://www.tiktok.com/@3d.chillcafe",
+    "snippet": "3Đ Chill Café 3d.chillcafe Trong con hẻm nhỏ ở Q3. linktr.ee/3dchillcafe ... Cafe Mellow Beans Quận 3 · Quán Cà Phê Đẹp Ở Bình Thạnh · Quán Cafe Lề ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

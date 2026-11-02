@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Tiệm Nail Quận 10\" OR \"Dzin Nail Mi Quận 10\" OR \"Trải Nghiệm Làm Móng tại Tiệm Nail ChocoBusy ở Busan\" quan 10 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:29:52.686Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Tiệm Nail Quận 10\" OR \"Dzin Nail Mi Quận 10\" OR \"Trải Nghiệm Làm Móng tại Tiệm Nail ChocoBusy ở Busan\" quan 10 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Vlog Bé Thảo: Bí Mật Tiệm Nail Quận 10",
+    "link": "https://www.tiktok.com/@thaothichlamnail94/video/7657838476699716871",
+    "snippet": "Vlog của bé Thảo #nailquận10 #tiệmnailquận10 #làmmóngquận10 #tiệmlàmmóngquận10. Vlog Bé Thảo: Bí Mật Tiệm Nail Quận 10. Chào mừng bạn đến với ...",
+    "position": 1
+   },
+   {
+    "title": "Tiệm Nail Quận 10 - Mở Cửa Hàng Ngày",
+    "link": "https://www.tiktok.com/@meinail98/video/7657058810376326420",
+    "snippet": "Video TikTok từ Tiệm Nail Quận 10 (@meinail98): \"Khám phá tiệm nail tại Quận 10, mở cửa hàng ngày từ 9 giờ sáng đến 8 giờ tối.",
+    "position": 2
+   },
+   {
+    "title": "Review tiệm nail quận 10: làm móng đẹp, có quà khai trương",
+    "link": "https://www.tiktok.com/@nghihaydii/video/7642696834481179924",
+    "snippet": "Review tiệm nail quận 10: làm móng đẹp, có quà khai trương. Lead Một tiệm nail ở quận 10 đang thu hút vì vị trí “núp” rất kín: phải đi qua một ...",
+    "position": 3
+   },
+   {
+    "title": "493/62 Cách Mạng Tháng 8 , quận 10 #nails #nailquan10 ...",
+    "link": "https://www.tiktok.com/@meinail98/video/7646681209048665365",
+    "snippet": "Video TikTok từ Tiệm Nail Quận 10 (@meinail98): \" 493/62 Cách Mạng Tháng 8 , quận 10 #nails #nailquan10 #nailmatmeo\".âm thanh gốc - Linh ...",
+    "position": 4
+   },
+   {
+    "title": "Biến hình 🤣🤣 #nails #xuhuong #mei #quan10",
+    "link": "https://www.tiktok.com/@meinail98/video/7680089116528200980",
+    "snippet": "31 Lượt thích,Video TikTok từ Tiệm Nail Quận 10 (@meinail98): \"Biến hình #nails #xuhuong #mei #quan10\".original sound - Megan Josol Art ...",
+    "position": 5
+   },
+   {
+    "title": "Hồi chiều trời mưa...#mua #nails",
+    "link": "https://www.tiktok.com/@meinail98/video/7688632223255317781",
+    "snippet": "Hãy để Tiệm Nail Mei giúp bạn tỏa sáng với đôi tay xinh đẹp! Keywords: tiệm nail quận 10, làm móng quận 10, nail nghệ thuật, dịch vụ làm ...",
+    "position": 6
+   },
+   {
+    "title": "ManisbyDuk - French Nails - Tiệm Nail Quận 10",
+    "link": "https://www.tiktok.com/@manisbyduk/photo/7598766630910332180?lang=ro-RO",
+    "snippet": "French Nails - Tiệm Nail Quận 10. French nails với thiết kế tinh tế, làm trực tiếp tại ManisbyDuk. Đặt lịch tại 324 Hoà Hưng, Quận 10.",
+    "position": 7
+   },
+   {
+    "title": "Nay kiêng làm móng hẻ bà — trend Namiinailstu tiệm nail ...",
+    "link": "https://www.tiktok.com/@namii.nailstu/video/7678629235606572306",
+    "snippet": "Kết thúc Video ngắn này truyền tải thông điệp rõ ràng: một buổi sáng may mắn tại tiệm nail Quận 10 khiến chủ tiệm quyết định nghỉ sớm. Người xem ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

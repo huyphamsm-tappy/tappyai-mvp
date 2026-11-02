@@ -26,7 +26,7 @@ const KEPT = [1, 2] as const
 
 type Phase = { kind: 'form' } | { kind: 'deleting' } | { kind: 'done' } | { kind: 'error'; key: string }
 
-export default function DeleteAccountView({ user }: { user: { name?: string | null; avatarUrl?: string | null } | null }) {
+export default function DeleteAccountView({ user, hasPaidPlan = false }: { user: { name?: string | null; avatarUrl?: string | null } | null; /** `subscriptions.status === 'active'` — the data the Premium badge already uses. Shows the paid-plan paragraph. */ hasPaidPlan?: boolean }) {
   const { t } = useTranslation()
   const router = useRouter()
   const [typed, setTyped] = useState('')
@@ -89,7 +89,10 @@ export default function DeleteAccountView({ user }: { user: { name?: string | nu
           <p role="note" className="flex items-start gap-2 rounded-xl border px-3 py-2.5 text-[13.5px] font-semibold text-red-600 dark:text-red-400"
             style={{ borderColor: 'rgba(239,68,68,0.45)', background: 'rgba(239,68,68,0.08)' }}>
             <TriangleAlert size={18} className="mt-0.5 shrink-0" />
-            <span>{t('accountDelete.warning')}</span>
+            <span>
+              {t('accountDelete.warn.lead')}
+              {hasPaidPlan && <> <span data-delete-plan-note>{t('accountDelete.warn.plan')}</span></>}
+            </span>
           </p>
 
           <div>

@@ -1,0 +1,82 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "ốp lưng iPhone 16 trong suốt magsafe (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:55:58.048Z",
+ "body": {
+  "searchParameters": {
+   "q": "ốp lưng iPhone 16 trong suốt magsafe (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp Lưng Trong Suốt MagSafe cho iPhone 16 Pro",
+    "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-Trong-Su%E1%BB%91t-MagSafe-cho-iPhone-16-Pro-i.88201679.24436109163",
+    "snippet": "Ốp Lưng Trong Suốt MagSafe cho iPhone 16 Pro. 1/5. Đã bán hết. 1.429.000₫. fbs-logo-vn. mall inline badge. Ốp Lưng Trong Suốt MagSafe cho iPhone 16 Pro.",
+    "rating": 4.8,
+    "ratingCount": 157,
+    "position": 1
+   },
+   {
+    "title": "Ốp lưng iPhone 16 Pro Max Apple With Magsafe Clear",
+    "link": "https://cellphones.com.vn/op-lung-iphone-16-pro-max-apple-magsafe-clear.html",
+    "snippet": "Bảo vệ toàn diện cho iPhone 16 Pro Max khỏi va đập, rơi rớt; Chất liệu cao cấp chống trầy xước, giữ vẻ đẹp cho điện thoại; Tương thích hoàn hảo với sạc ...",
+    "rating": 5,
+    "ratingCount": 4,
+    "position": 2
+   },
+   {
+    "title": "Ốp iPhone 16 chống sốc, có Magsafe giá rẻ 09/2026",
+    "link": "https://cellphones.com.vn/phu-kien/bao-da-op-lung/iphone/iphone-16-series.html",
+    "snippet": "Ngoài khả năng hỗ trợ phụ kiện, nhiều mẫu ốp MagSafe còn được thiết kế ôm sát khung máy nhằm tăng độ ổn định khi cầm nắm. Thiết kế này cũng góp phần hạn chế ảnh ...",
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng iPhone 16 Pro Max Slimcase Unique 3 With ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-16-pro-max-slimcase-unique-3-magsafe-clear.html",
+    "snippet": "Ốp lưng iPhone 16 Pro Max Slimcase Unique 3 Magsafe Clear có thiết kế mỏng nhẹ, hỗ trợ sạc không dây MagSafe tiện lợi và hạn chế ố vàng.",
+    "rating": 5,
+    "ratingCount": 2,
+    "position": 4
+   },
+   {
+    "title": "Những chiếc ốp lưng không thể bỏ qua cho iPhone 16",
+    "link": "https://cellphones.com.vn/sforum/nhung-chiec-op-lung-khong-bo-qua-cho-iphone-16",
+    "snippet": "Ốp lưng iPhone 16 TGVIS Len Magsafe Clear. 405.000đ450.000đ. Smember giảm thêm 20.000đ. Ốp lưng iPhone 16 TGVIS Len Magsafe Clear-Trong suốt. Trong suốt405.000đ.",
+    "position": 5
+   },
+   {
+    "title": "Ốp Lưng Magsafe Trong Suốt iPhone 16 Series Aukey PC- ...",
+    "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-Magsafe-Trong-Su%E1%BB%91t-iPhone-16-Series-Aukey-PC-TM20-%C4%90%E1%BB%99-B%E1%BB%81n-Cao-Ch%E1%BB%91ng-Va-%C4%90%E1%BA%ADp-T%E1%BB%91t-i.953737085.43807543924",
+    "snippet": "Ốp Lưng Magsafe Trong Suốt iPhone 16 Series Aukey PC-TM20 - Độ Bền Cao - Chống Va Đập Tốt ; Chọn loại hàng. iPhone. 16. iPhone. 16 Plus. +2 ; iPhone. 16 ; iPhone.",
+    "rating": 4.5,
+    "ratingCount": 10,
+    "position": 6
+   },
+   {
+    "title": "Ốp lưng iPhone 16/17 / Plus/Pro/Pro Max trong suốt chuẩn ...",
+    "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-iPhone-16-17-Plus-Pro-Pro-Max-trong-su%E1%BB%91t-chu%E1%BA%A9n-MagSafe-khung-vi%E1%BB%81n-ch%E1%BB%91ng-s%E1%BB%91c-trong-tr%E1%BA%BBo-i.1771572467.47161510223?extraParams=%7B%22display_model_id%22%3A262662100922%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "Mua Ốp lưng iPhone 16/17 / Plus/Pro/Pro Max trong suốt chuẩn MagSafe, khung viền chống sốc trong trẻo giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 7
+   },
+   {
+    "title": "HOCO [Dành cho Iphone16] Ốp điện thoại di động trong ...",
+    "link": "https://shopee.vn/HOCO-D%C3%A0nh-cho-Iphone16-%E1%BB%90p-%C4%91i%E1%BB%87n-tho%E1%BA%A1i-di-%C4%91%E1%BB%99ng-trong-su%E1%BB%91t-Magsafe-ch%C3%ADnh-h%C3%A3ng-100-cho-IPhone-16-Pro-Max-IPhone-16-Plus-%E1%BB%90p-l%C6%B0ng-ch%E1%BB%91ng-s%E1%BB%91c-i.565106793.26062885919",
+    "snippet": "HOCO [Dành cho Iphone16] Ốp điện thoại di động trong suốt Magsafe chính hãng 100% cho IPhone 16 Pro Max IPhone 16 Plus Ốp lưng chống sốc.",
+    "rating": 4.8,
+    "ratingCount": 6,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

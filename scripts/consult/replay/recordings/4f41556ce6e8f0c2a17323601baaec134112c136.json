@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Ốp lưng UAG Monarch Pro w Magnetic cho iPhone 17\" OR \"Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe\" OR \"Ốp UAG Monarch Pro Kevlar Magsafe iPhone 17 Pro Max\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:20:41.303Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Ốp lưng UAG Monarch Pro w Magnetic cho iPhone 17\" OR \"Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe\" OR \"Ốp UAG Monarch Pro Kevlar Magsafe iPhone 17 Pro Max\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-scout-with-magsafe.html",
+    "snippet": "Mua ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe chính hãng - Giá rẻ, đảm bảo chất lượng, độ bền cao, hỗ trợ giao hàng tận nơi toàn quốc.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 1
+   },
+   {
+    "title": "Ốp lưng UAG Monarch Pro w Magnetic cho iPhone 17 ...",
+    "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-UAG-Monarch-Pro-w-Magnetic-cho-iPhone-17-Pro-Max-6.9-inch--i.241319331.43818320892",
+    "snippet": "Ốp lưng UAG Monarch Pro w Magnetic cho iPhone 17 Pro Max [6.9 inch]. outline grey truck icon. Không hỗ trợ. service entrance icon. Trả hàng miễn phí 15 ngày ...",
+    "position": 2
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe",
+    "link": "https://timgiatot.com.vn/gia/254171-op-lung-iphone-17-pro-max-uag-chong-soc-scout-with-magsafe",
+    "snippet": "So sánh giá Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe: giá từ 850.000 ₫ trên 10 nơi bán, cập nhật tháng 9/2026. Giá từ các sàn lớn.",
+    "position": 3
+   },
+   {
+    "title": "uag case 17 pro max monarch deep blue",
+    "link": "https://shop.tiktok.com/vn/k/uag-case-17-pro-max-monarch-deep-blue",
+    "snippet": "Ốp lưng UAG Monarch Pro w Magnetic cho iPhone 17 Series. 0 sold. ₫1.892.000. ₫2.200.000 ...",
+    "position": 4
+   },
+   {
+    "title": "Tìm UAG lướt cho 17 pro max ạ",
+    "link": "https://www.facebook.com/groups/337292695886986/posts/1037212459228336/",
+    "snippet": "Shop có nhiều mẫu ốp uag cho 17 promax: https://s.shopee.vn/6L3RpbSuOE. s.shopee.vn. Ốp lưng UAG Monarch Pro w Magnetic cho iPhone 17 Pro Max. 2h. Peter Nguyen.",
+    "position": 5
+   },
+   {
+    "title": "bao da uag giá tốt Tháng 7, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=bao%20da%20uag&urlold=bao-da-uag-iphone-xsmax/1873995943246618333/877968015750663345/%20",
+    "snippet": "Ốp lưng UAG Monarch Pro w Magnetic cho iPhone 17 Series | Iphone 16 Series. custom-overlay. flag-label Ốp lưng UAG Monarch Pro w Magnetic cho iPhone 17 Series ...",
+    "position": 6
+   },
+   {
+    "title": "17 pro max case uag monarch",
+    "link": "https://shop.tiktok.com/vn/k/17-pro-max-case-uag-monarch",
+    "snippet": "Ốp lưng UAG Monarch Pro w Magnetic cho iPhone 17 Series. 0 sold · 1.892.000 ; Ốp lưng Magsafe iPhone 17 Pro UAG Monarch Pro Kevlar - Bảo hành 12 tháng chính hãng.",
+    "position": 7
+   },
+   {
+    "title": "Ốp lưng iPhone 14 Plus / 15 Plus UAG chống sốc Plyo Ice ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-14-plus-uag-plyo-ice-with-magsafe.html",
+    "snippet": "... Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe. Trả góp 0%. : 850.000đ. 1.000.000đ.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

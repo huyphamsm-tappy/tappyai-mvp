@@ -1,0 +1,60 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hải Sản Hoàng Gia CN Phạm Văn Nghị Quận 7\" OR \"Nhà Hàng 39 | Nhà Hàng Đặc Sản Quận 7\" OR \"Bánh Cuốn Nóng Cao Bằng\" quan 7 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:07:16.109Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hải Sản Hoàng Gia CN Phạm Văn Nghị Quận 7\" OR \"Nhà Hàng 39 | Nhà Hàng Đặc Sản Quận 7\" OR \"Bánh Cuốn Nóng Cao Bằng\" quan 7 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Bánh Cuốn Thủy Cao Bằng - Hương vị nước hầm xương độc đáo",
+    "link": "https://www.tiktok.com/@constance.reportfood/photo/7665703069681880327",
+    "snippet": "... quận 7 . Thời điểm mình viết bài này là quán mới mở chi nhánh gần xịt nhà mình, coi như giờ khỏi lê la qua tới quận 7 để ăn nữa. ... Bánh Cuốn Nóng Cao Bằng.",
+    "position": 1
+   },
+   {
+    "title": "Khám Phá Nơi Đến Đặc Biệt",
+    "link": "https://www.tiktok.com/@tralam9494/photo/7654838344714571026",
+    "snippet": "Hải Sản Hoàng Gia CN Phạm Văn Nghị Quận 7 · author · 167 · 1 ... Tam quan lệch lạc, ngũ quan méo mó nó là vậy đó #Me3con · âm thanh gốc - deo tin vao tinh yeu. 29 ...",
+    "position": 2
+   },
+   {
+    "title": "Cách Làm Bánh Cuốn Trứng Bằng Chảo Chống Dính Tại ...",
+    "link": "https://www.tiktok.com/@commotminh68/video/7508978409805040914",
+    "snippet": "... bánh cuốn nóng cao bằng đà nẵng, bánh cuốn trứng giò mukbang, bánh ... bánh cuốn quận 7, bánh cuốn trứng lòng đào quận 7, bánh cuốn hà ...",
+    "position": 3
+   },
+   {
+    "title": "Sáng sáng cả nhà chưa biết ăn gì thì mời mọi người ghé ...",
+    "link": "https://www.tiktok.com/@lientrieu06/video/7596998707606867218",
+    "snippet": "Sáng sáng cả nhà chưa biết ăn gì thì mời mọi người ghé thử nhà em thử ngay món Bánh Cuốn Nóng Cao Bằng( mẹ chồng em gốc Cao Bằng) ạ, ...",
+    "position": 4
+   },
+   {
+    "title": "Ăn sả khi uống bột: hướng dẫn đơn giản cho 7–10 ngày",
+    "link": "https://www.tiktok.com/@buithuy_93/video/7655659314757012744",
+    "snippet": "Bánh cuốn nóng Cao Bằng – công thức bột gạo dẻo dai. Cách làm bánh cuốn nóng chỉ bằng bột gạo (không pha bột năng) để bánh dẻo dai, cuốn bằng đũa. Thông tin ...",
+    "position": 5
+   },
+   {
+    "title": "Bạn nào học nghề thì đến 227 nguyễn thị định, phường ...",
+    "link": "https://www.tiktok.com/@lan_trieu_thi/video/7537958293021527304",
+    "snippet": "Bánh cuốn nóng Cao Bằng tại hồ câu Tre vàng , 227 Nguyễn Thị Định- p Thành Nhất - Buôn Ma thuật - T Đắk Lắk , Có nhận dạy nghề và bán nồi ...",
+    "position": 6
+   }
+  ],
+  "credits": 1
+ }
+}

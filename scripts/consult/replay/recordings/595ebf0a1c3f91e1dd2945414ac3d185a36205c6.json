@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Minasi HanoiOI LakeSide Hotel",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:58:09.932Z",
+ "body": {
+  "searchParameters": {
+   "q": "Minasi HanoiOI LakeSide Hotel",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Minasi HanoiOi Lakeside Hotel, Hà Nội | Hotels.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/43000000/42280000/42275600/42275584/d6006e9f.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 863,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjr4jrR8ROwtBNb8iydeNQ-l7sD-cFYNToyIn9TBiybQ&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "hotels",
+    "domain": "vi.hotels.com",
+    "link": "https://vi.hotels.com/ho1353818688/hanoioi-hotel-ha-noi-viet-nam/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F43000000%2F42280000%2F42275600%2F42275584%2Fd6006e9f.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=s88qlrV_eEJVZM&imgrefurl=https%3A%2F%2Fvi.hotels.com%2Fho1353818688%2Fhanoioi-hotel-ha-noi-viet-nam%2F&docid=QqGts49baXkIMM&w=863&h=575",
+    "position": 1
+   },
+   {
+    "title": "Khách Sạn Minasi HanoiOi LakeSide, Quận Hoàn Kiếm, Hà Nội",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/10665115/-1/8bc5098443d04477626ab76a1b51ab48.jpg?ca=9&ce=1&s=414x232",
+    "imageWidth": 348,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkbdVHSLV98CcZZCs6hfDw-S5pyPfhfnyf6tnLj6OL4w&s=10",
+    "thumbnailWidth": 348,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/hanoioi-hotel/hotel/hanoi-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F10665115%2F-1%2F8bc5098443d04477626ab76a1b51ab48.jpg%3Fca%3D9%26ce%3D1%26s%3D414x232&tbnid=_fvmZFiFKfdr7M&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fhanoioi-hotel%2Fhotel%2Fhanoi-vn.html&docid=BSjFD7-5ZMIaXM&w=348&h=232",
+    "position": 2
+   },
+   {
+    "title": "Minasi HanoiOi Lakeside - Boutique Hotel by Truc Bach Lake",
+    "imageUrl": "https://minasihotels.com/wp-content/uploads/2023/02/230916926.jpg",
+    "imageWidth": 512,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_XY_tBbUoUxJ9wVcsqUnVVd2A7M9CMEK13iBKx_WQcw&s=10",
+    "thumbnailWidth": 452,
+    "thumbnailHeight": 678,
+    "source": "Minasi Hotels",
+    "domain": "minasihotels.com",
+    "link": "https://minasihotels.com/hotel/hanoioi-hotel-in-hanoi/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fminasihotels.com%2Fwp-content%2Fuploads%2F2023%2F02%2F230916926.jpg&tbnid=3pJGSElKt9NnQM&imgrefurl=https%3A%2F%2Fminasihotels.com%2Fhotel%2Fhanoioi-hotel-in-hanoi%2F&docid=OfJPiHfcleSVQM&w=512&h=768",
+    "position": 3
+   },
+   {
+    "title": "Minasi HanoiOi Lakeside - Boutique Hotel by Truc Bach Lake",
+    "imageUrl": "https://minasihotels.com/wp-content/uploads/2023/02/hanoioi-01-1.jpg",
+    "imageWidth": 1536,
+    "imageHeight": 1058,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRx72hh5frGeGFTW6TedL0wjvuLt2UPTiPt9MDAynylgg&s=10",
+    "thumbnailWidth": 666,
+    "thumbnailHeight": 460,
+    "source": "Minasi Hotels",
+    "domain": "minasihotels.com",
+    "link": "https://minasihotels.com/hotel/hanoioi-hotel-in-hanoi/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fminasihotels.com%2Fwp-content%2Fuploads%2F2023%2F02%2Fhanoioi-01-1.jpg&tbnid=9Jyyag6tMwF6WM&imgrefurl=https%3A%2F%2Fminasihotels.com%2Fhotel%2Fhanoioi-hotel-in-hanoi%2F&docid=OfJPiHfcleSVQM&w=1536&h=1058",
+    "position": 4
+   },
+   {
+    "title": "MINASI HANOIOI LAKESIDE HOTEL (Hoan Kiem) - Đánh giá Khách sạn & So sánh  giá - Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1a/36/9f/7e/hanoioi-hotel.jpg?w=900&h=500&s=1",
+    "imageWidth": 900,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9-ZSKen-i2BhRafs6kI9HtnZhAbO0wQGGc7yocrMn8Q&s=10",
+    "thumbnailWidth": 599,
+    "thumbnailHeight": 333,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g27501570-d19453509-Reviews-Minasi_HanoiOi_LakeSide_Hotel-Hoan_Kiem_Hanoi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F1a%2F36%2F9f%2F7e%2Fhanoioi-hotel.jpg%3Fw%3D900%26h%3D500%26s%3D1&tbnid=uOhlDkcIg88YIM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g27501570-d19453509-Reviews-Minasi_HanoiOi_LakeSide_Hotel-Hoan_Kiem_Hanoi.html&docid=zqAqyMe2Y2pBtM&w=900&h=500",
+    "position": 5
+   },
+   {
+    "title": "Minasi HanoiOi Lakeside Hotel, Hà Nội (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/230866061.jpg?k=82364a169d021cc000bfe6b4346cd1242dfb4ecb71788165d85418ecc5dcd07f&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpzDp9sJHn4xBFWHPn_DSpylM2_j_7hB0TnFBevSzvTg&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/hanoioi.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F230866061.jpg%3Fk%3D82364a169d021cc000bfe6b4346cd1242dfb4ecb71788165d85418ecc5dcd07f%26o%3D&tbnid=k65n_FlrHgayPM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fhanoioi.vi.html&docid=ox2KnTaS7b_zrM&w=1024&h=683",
+    "position": 6
+   },
+   {
+    "title": "Minasi HanoiOi Lakeside Hotel, Hà Nội | Hotels.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/43000000/42280000/42275600/42275584/50438941.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 863,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQl8ptNNf8emIBFRHL70dV7_DLaxqryC-YGEnQc-0CeOg&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "hotels",
+    "domain": "vi.hotels.com",
+    "link": "https://vi.hotels.com/ho1353818688/hanoioi-hotel-ha-noi-viet-nam/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F43000000%2F42280000%2F42275600%2F42275584%2F50438941.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=nyRwWnEx2i1FYM&imgrefurl=https%3A%2F%2Fvi.hotels.com%2Fho1353818688%2Fhanoioi-hotel-ha-noi-viet-nam%2F&docid=QqGts49baXkIMM&w=863&h=575",
+    "position": 7
+   },
+   {
+    "title": "Minasi HanoiOi Lakeside - Boutique Hotel by Truc Bach Lake",
+    "imageUrl": "https://minasihotels.com/wp-content/uploads/2023/02/230916922.jpg",
+    "imageWidth": 1280,
+    "imageHeight": 853,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsJ_D5gXHo_Zssva_2PBJ9E74Ur6pW3T_RcW39SM6DhA&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Minasi Hotels",
+    "domain": "minasihotels.com",
+    "link": "https://minasihotels.com/hotel/hanoioi-hotel-in-hanoi/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fminasihotels.com%2Fwp-content%2Fuploads%2F2023%2F02%2F230916922.jpg&tbnid=ki2GKLB41FFxLM&imgrefurl=https%3A%2F%2Fminasihotels.com%2Fhotel%2Fhanoioi-hotel-in-hanoi%2F&docid=OfJPiHfcleSVQM&w=1280&h=853",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

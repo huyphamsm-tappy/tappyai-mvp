@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"GILAN BOUTIQUE HOTEL\" Cát Tiên, Lâm Đồng site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:23:33.761Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"GILAN BOUTIQUE HOTEL\" Cát Tiên, Lâm Đồng site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

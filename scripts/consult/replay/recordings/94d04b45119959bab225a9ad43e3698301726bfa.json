@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Ốp lưng iPhone 16 Pro Max\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:19:37.410Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Ốp lưng iPhone 16 Pro Max\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp iPhone 16 chống sốc, có Magsafe giá rẻ 09/2026",
+    "link": "https://cellphones.com.vn/phu-kien/bao-da-op-lung/iphone/iphone-16-series.html",
+    "snippet": "... Ốp lưng iPhone 16 Pro Max Apple With Magsafe Clear. Trả góp 0%. : 1.150.000đ. 1.429.000đ. Giảm 20%. Smember ...",
+    "position": 1
+   },
+   {
+    "title": "Ốp lưng iPhone 16 Pro Max Apple With Magsafe Clear",
+    "link": "https://cellphones.com.vn/op-lung-iphone-16-pro-max-apple-magsafe-clear.html",
+    "snippet": "Ốp lưng iPhone 16 Pro Max Apple MagSafe Clear nổi bật với màu sắc trong suốt, vừa bảo vệ tốt vừa giữ nguyên vẻ đẹp nguyên bản của iPhone 16 Pro Max. Ốp có kích ...",
+    "rating": 5,
+    "ratingCount": 4,
+    "position": 2
+   },
+   {
+    "title": "Ốp lưng WiWU cho iPhone 16 (Pro, Plus, Pro Max) giá tốt",
+    "link": "https://cellphones.com.vn/phu-kien/bao-da-op-lung/iphone/iphone-16-series/wiwu.html",
+    "snippet": "... Ốp lưng iPhone 16 Pro Max Wiwu MCC-102 Clear. Trả góp 0%. : 351.000đ. 390.000đ. Giảm 10%. Smember giảm đến 18.000đ. 2 Giờ.",
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng iPhone 16 Pro Max Mipow Premium Slim With ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-16-pro-max-mipow-premium-slim-with-magsafe.html",
+    "snippet": "Ốp lưng iPhone 16 Pro Max Mipow Premium slim with magsafe hoàn thiện với thiết kế nhám mờ với hai phiên bản màu sắc đen, trắng cực tối giản.",
+    "position": 4
+   },
+   {
+    "title": "Những chiếc ốp lưng iPhone 16 Pro Max không thể bỏ qua",
+    "link": "https://cellphones.com.vn/sforum/op-lung-iphone-16-pro-max",
+    "snippet": "1. Ốp lưng trong suốt khoe màu nguyên bản · 1.1. Ốp lưng iPhone 16 Pro Max Mipow Transparent with MagSafe · 1.2. Ốp lưng iPhone 16 Pro Max Spigen Ultra Hybrid ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 5
+   },
+   {
+    "title": "Ốp lưng UAG cho iPhone 16 (Plus, Pro, Pro Max) giá tốt",
+    "link": "https://cellphones.com.vn/phu-kien/bao-da-op-lung/iphone/iphone-16-series/uag.html",
+    "snippet": "Ốp lưng iPhone 16 Pro Max UAG chống sốc Essential Armor With Magsafe. Trả góp 0%. : 990.000đ. 1.100.000đ. Giảm 10%.",
+    "position": 6
+   },
+   {
+    "title": "Mua Ốp lưng ZAGG iPhone 16 Series | Giá rẻ, giao nhanh 2H",
+    "link": "https://cellphones.com.vn/phu-kien/bao-da-op-lung/iphone/iphone-16-series/zagg.html",
+    "snippet": "... Ốp Lưng iPhone 16 Pro Max ESNTL Clear. Trả góp 0%. : 351.000đ. 390.000đ. Giảm 10%. Smember giảm đến 18.000đ. 2 Giờ.",
+    "position": 7
+   },
+   {
+    "title": "Ốp lưng iPhone 16 Pro Max TGVIS VIDA",
+    "link": "https://cellphones.com.vn/op-lung-iphone-16-pro-max-tgvis-vida.html",
+    "snippet": "Ốp lưng iPhone 16 Pro Max TGVIS VIDA ôm sát thân máy từ chất liệu cao cấp, cầm nắm chắc tay và tương thích với sạc MagSafe để sạc không dây tiện lợi. Ốp lưng có ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

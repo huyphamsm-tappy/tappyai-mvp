@@ -1,0 +1,595 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "quán lẩu lẩu thái quan 1",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:52:24.557Z",
+ "body": {
+  "searchParameters": {
+   "q": "quán lẩu lẩu thái quan 1",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7768941,106.7008997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Ah! Ngon Quán - Lẩu Nấm & Lẩu Thái & Lẩu Bò - Quận Tân Bình",
+    "address": "Hẻm 766/25 Cách Mạng Tháng Tám, Tân Sơn Nhất, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7888205,
+    "longitude": 106.66265209999999,
+    "rating": 3.8,
+    "ratingCount": 221,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "http://www.facebook.com/ahngonquan",
+    "phoneNumber": "+84 915 830 890",
+    "openingHours": {
+     "Thứ Tư": "10:00–23:00",
+     "Thứ Năm": "10:00–23:00",
+     "Thứ Sáu": "10:00–23:00",
+     "Thứ Bảy": "10:00–23:00",
+     "Chủ Nhật": "10:00–23:00",
+     "Thứ Hai": "10:00–23:00",
+     "Thứ Ba": "10:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SPtuPjisU4BeAnLVLsI_H4IreCr1JBmi4qyQca94d8it_bi2-K5SlIUmalBEqUokZWIJbkrUa-kUKydvYsE6rqaL1ZEgmPXnRQYBJcOPwvDX2e1ZczN8KJw_-U3V3qVXjb7WeP",
+    "cid": "3033913244400443368",
+    "fid": "0x31752ecd0966ed7f:0x2a1aa0057bd75fe8",
+    "placeId": "ChIJf-1mCc0udTER6F_XewWgGio"
+   },
+   {
+    "position": 2,
+    "title": "Vạn Quán - Lẩu Gà Lá É CN3 Q.1",
+    "address": "45 Cô Giang, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.764118999999999,
+    "longitude": 106.696286,
+    "rating": 4.5,
+    "ratingCount": 173,
+    "priceLevel": "100-200 N ₫",
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "website": "https://www.facebook.com/L%E1%BA%A9u-G%C3%A0-L%C3%A1-%C3%89-Ch%C3%ADnh-G%E1%BB%91c-V%E1%BA%A1n-Qu%C3%A1n-3-CN-Qu%E1%BA%ADn-1-102611769171404",
+    "phoneNumber": "+84 332 773 758",
+    "openingHours": {
+     "Thứ Tư": "10:00–02:30",
+     "Thứ Năm": "10:00–02:30",
+     "Thứ Sáu": "10:00–02:30",
+     "Thứ Bảy": "10:00–02:30",
+     "Chủ Nhật": "10:00–02:30",
+     "Thứ Hai": "10:00–02:30",
+     "Thứ Ba": "10:00–02:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QilEzjEMbxXvjRv8BimZ4z6XO7cIcujerWkBfAOCIhTiFy3gnhrUh2Ki__Upb11Up8ZtSJ5RuPQ1oPRhKHwTndUVFMCLAvV_LxvRhKgLEjTmbshZoylru4wjj4p2xbBWQ-22w3",
+    "cid": "17047997337439684277",
+    "fid": "0x31752fd43cadcfe3:0xec96a74115e5c6b5",
+    "placeId": "ChIJ48-tPNQvdTERtcblFUGnluw"
+   },
+   {
+    "position": 3,
+    "title": "LẨU NGON 79",
+    "address": "245/23 Nguyễn Trãi, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.764650999999999,
+    "longitude": 106.68803199999999,
+    "rating": 4.6,
+    "ratingCount": 121,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 946 303 747",
+    "openingHours": {
+     "Thứ Tư": "12:00–00:00",
+     "Thứ Năm": "12:00–00:00",
+     "Thứ Sáu": "12:00–00:00",
+     "Thứ Bảy": "12:00–00:00",
+     "Chủ Nhật": "12:00–00:00",
+     "Thứ Hai": "14:00–00:00",
+     "Thứ Ba": "12:00–00:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9RcMbNLlBQFwlZPRME-TGZ1aTDmHY6tSD6Ou-sBAzbhsD18bDDVguuCPM_idtJuRkoCwi8xWKMsqLH5rZhUKGEI9oOvHaVMwTOU6mbKoURCkU16z96dCFcEMC3Eg5PqnYePfXI",
+    "cid": "18226023195490786761",
+    "fid": "0x31752f22db2c6905:0xfcefd787db421dc9",
+    "placeId": "ChIJBWks2yIvdTERyR1C24fX7_w"
+   },
+   {
+    "position": 4,
+    "title": "Lẩu bò Hồng Tiêu",
+    "address": "245/10 Nguyễn Trãi, Quận 1, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7644069,
+    "longitude": 106.6880561,
+    "rating": 4.7,
+    "ratingCount": 149,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng món lẩu",
+    "types": [
+     "Nhà hàng món lẩu",
+     "Nhà hàng gia đình",
+     "Nhà hàng cho người theo đạo Hồi",
+     "Nhà hàng",
+     "Nhà hàng Việt Nam"
+    ],
+    "website": "https://www.facebook.com/lauhongtieu",
+    "phoneNumber": "+84 931 419 003",
+    "openingHours": {
+     "Thứ Tư": "10:00–02:00",
+     "Thứ Năm": "10:00–02:00",
+     "Thứ Sáu": "10:00–02:00",
+     "Thứ Bảy": "10:00–02:00",
+     "Chủ Nhật": "10:00–02:00",
+     "Thứ Hai": "10:00–02:00",
+     "Thứ Ba": "10:00–02:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QBKD4dvZjKkHyUKD8Dtts8Ly2JAsFRiVNjkJtZRLBfHKS-jdZr3mf_8O3TW7dcees5IV5QaGiU9SCW1l1j19GRbRQkjTCQGbGoNayB5c8hngjcffYQ6QfCRpcI3Bg6tbY1ahrnIR7Im0E",
+    "cid": "13472223007037838639",
+    "fid": "0x31752f7509ba02b7:0xbaf6f3722d55d52f",
+    "placeId": "ChIJtwK6CXUvdTERL9VVLXLz9ro"
+   },
+   {
+    "position": 5,
+    "title": "Dragon Hot Pot - Lẩu Malatang - Trần Quang Khải",
+    "address": "71 Bis Trần Quang Khải, Tân Định, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7921953,
+    "longitude": 106.6937442,
+    "rating": 4.8,
+    "ratingCount": 966,
+    "priceLevel": "200-300 N ₫",
+    "type": "Nhà hàng món lẩu",
+    "types": [
+     "Nhà hàng món lẩu",
+     "Nhà hàng"
+    ],
+    "website": "https://dragonhotpotvietnam.com/",
+    "phoneNumber": "+84 1800 255855",
+    "openingHours": {
+     "Thứ Tư": "11:00–22:00",
+     "Thứ Năm": "11:00–22:00",
+     "Thứ Sáu": "11:00–22:00",
+     "Thứ Bảy": "11:00–22:00",
+     "Chủ Nhật": "11:00–22:00",
+     "Thứ Hai": "11:00–22:00",
+     "Thứ Ba": "11:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SNKYXNTvYRwXQYYv3Q8NucvHL6yJe6pXOhy9yeWrD8-do1XBXBFQAVPlW8YPzWyA6p5StfFZy5X0L-WNJXJMTS2repvqt1SewysWhWBQPINGOm9F9MHUkLa0CxhdH570XmlQ_z",
+    "cid": "10573424304823296185",
+    "fid": "0x317529fd1318e9ff:0x92bc5962847960b9",
+    "placeId": "ChIJ_-kYE_0pdTERuWB5hGJZvJI"
+   },
+   {
+    "position": 6,
+    "title": "Pachi Pachi Nướng Lẩu Nhật Bản",
+    "address": "52 Mạc Đĩnh Chi, Tân Định, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.787369,
+    "longitude": 106.69692599999999,
+    "rating": 4.1,
+    "ratingCount": 793,
+    "priceLevel": "200-300 N ₫",
+    "type": "Nhà hàng Nhật Bản",
+    "types": [
+     "Nhà hàng Nhật Bản"
+    ],
+    "phoneNumber": "+84 28 6295 9294",
+    "openingHours": {
+     "Thứ Tư": "10:30–15:00, 17:00–22:00",
+     "Thứ Năm": "10:30–15:00, 17:00–22:00",
+     "Thứ Sáu": "10:30–15:00, 17:00–22:00",
+     "Thứ Bảy": "10:30–15:00, 17:00–22:00",
+     "Chủ Nhật": "10:30–15:00, 17:00–22:00",
+     "Thứ Hai": "10:30–15:00, 17:00–22:00",
+     "Thứ Ba": "10:30–15:00, 17:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SqHwRo5Grk2_XUDdEI0zPF1nG2tQhKYF_rl1AllyANZJagztL5Mv2csX8woFavQMI_mcBqWKwwu7WHyv1cJnRxr1qZIYQ5wZ3vOuXmjOl_W4m1PLj1At72le8XF7m2SXW-VuCUUQ",
+    "cid": "2473956365887729997",
+    "fid": "0x31752f3502498303:0x225542350a8df14d",
+    "placeId": "ChIJA4NJAjUvdTERTfGNCjVCVSI"
+   },
+   {
+    "position": 7,
+    "title": "TIỆM LẨU 1996",
+    "address": "29 Đ. Nguyễn Đình Chiểu, Đức Nhuận, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.803666,
+    "longitude": 106.6798869,
+    "rating": 4.9,
+    "ratingCount": 1206,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng món lẩu",
+    "types": [
+     "Nhà hàng món lẩu",
+     "Nhà hàng Việt Nam"
+    ],
+    "website": "https://tiemlau1996-order.sapofnb.vn/",
+    "phoneNumber": "+84 797 272 999",
+    "openingHours": {
+     "Thứ Tư": "10:00–21:30",
+     "Thứ Năm": "10:00–14:00, 16:00–21:30",
+     "Thứ Sáu": "10:00–14:00, 16:00–21:30",
+     "Thứ Bảy": "10:00–14:00, 16:00–21:30",
+     "Chủ Nhật": "10:00–14:00, 16:00–21:30",
+     "Thứ Hai": "10:00–14:00, 16:00–21:30",
+     "Thứ Ba": "10:00–14:00, 16:00–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9TZnfiqSUGsuMTbeynZ2bIIbMdP3SFut5UgSiUdstZB1SvbzblL8Grml5KTrmiGdtNlHoa6Ehs4ftnE_TFCRdr4qtb_m1hWzIFZJxbU7DFsV4wtUxR8W5K5nTsd5XIEcnqLy3yfOiQJjR7C",
+    "cid": "1957628619378414516",
+    "fid": "0x317529841ac2f873:0x1b2ae4db7c3053b4",
+    "placeId": "ChIJc_jCGoQpdTERtFMwfNvkKhs"
+   },
+   {
+    "position": 8,
+    "title": "LẨU DÊ 214 - Since 1992",
+    "address": "214 Nguyễn Công Trứ, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7680937,
+    "longitude": 106.70050619999999,
+    "rating": 4.5,
+    "ratingCount": 201,
+    "priceLevel": "200-300 N ₫",
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "website": "http://g.page/laude214",
+    "openingHours": {
+     "Thứ Tư": "16:00–22:30",
+     "Thứ Năm": "16:00–22:30",
+     "Thứ Sáu": "16:00–22:30",
+     "Thứ Bảy": "16:00–22:30",
+     "Chủ Nhật": "16:00–22:30",
+     "Thứ Hai": "16:00–22:30",
+     "Thứ Ba": "16:00–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9T2-Fd0ZPenrTI3krpqvD2_HCWd0SJmlsDKSe_MVNChxfwIVzbZnisC-Agw4NvbsZoiANoZvtDYH1WdC_3yieXgDhUFTX3h1c3JsQSyrycUWVq7XZNI2GzeCaIXRv6FlrF4CAOXGLXTUXPK",
+    "cid": "9221751343962301408",
+    "fid": "0x31752f400f4b591b:0x7ffa3dfd07daa3e0",
+    "placeId": "ChIJG1lLD0AvdTER4KPaB_09-n8"
+   },
+   {
+    "position": 9,
+    "title": "Lẩu Bò Tí Chuột - 1",
+    "address": "3 Đ. Cao Bá Nhạ, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7635071,
+    "longitude": 106.69039889999999,
+    "rating": 3.9,
+    "ratingCount": 1287,
+    "priceLevel": "100-400 N ₫",
+    "type": "Nhà hàng món lẩu",
+    "types": [
+     "Nhà hàng món lẩu"
+    ],
+    "phoneNumber": "+84 566 776 979",
+    "openingHours": {
+     "Thứ Tư": "06:00–00:00",
+     "Thứ Năm": "06:00–00:00",
+     "Thứ Sáu": "06:00–00:00",
+     "Thứ Bảy": "06:00–00:00",
+     "Chủ Nhật": "06:00–00:00",
+     "Thứ Hai": "06:00–00:00",
+     "Thứ Ba": "06:00–00:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QTV1fa1z-zCHAzVJII3Xs0U8UUHP2-IB5cpSQDNWjxNU3hgrY2ekSLFkcjhN5_RnC1as6hoUuMIX19OJ5w5RRf3jDvBX3DshXdFTmphIhwn8DSoraTCHdAbnnoc4M6jWEZpHIG",
+    "cid": "16420848615343341242",
+    "fid": "0x31752f17253e2431:0xe3e292d074013eba",
+    "placeId": "ChIJMSQ-JRcvdTERuj4BdNCS4uM"
+   },
+   {
+    "position": 10,
+    "title": "Lẩu Bò Quang Khải",
+    "address": "60 Hồ Hảo Hớn, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.762335,
+    "longitude": 106.6915556,
+    "rating": 4.7,
+    "ratingCount": 636,
+    "priceLevel": "100-300 N ₫",
+    "type": "Nhà hàng món lẩu",
+    "types": [
+     "Nhà hàng món lẩu"
+    ],
+    "phoneNumber": "+84 703 388 662",
+    "openingHours": {
+     "Thứ Tư": "11:00–01:00",
+     "Thứ Năm": "11:00–01:03",
+     "Thứ Sáu": "11:00–01:00",
+     "Thứ Bảy": "11:00–01:00",
+     "Chủ Nhật": "11:00–01:00",
+     "Thứ Hai": "11:00–01:00",
+     "Thứ Ba": "11:00–01:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9TnFkEnHTCWooTwib6-IRwm2Ioj2Hw5tfLEvFuUXWkB-XlJRPxCF1FAk9xMoS3Wd3Y5dQ3gBLQpwnVS6EJVtVI8QsKS6xawYKZ9_gwf0jLPqorSoE2fQzGQ6d3WtTGE4RgQeTvp5opXypg2",
+    "cid": "10836431299708285193",
+    "fid": "0x31752f288b7aa7c5:0x9662bcda6c097109",
+    "placeId": "ChIJxad6iygvdTERCXEJbNq8YpY"
+   },
+   {
+    "position": 11,
+    "title": "Lẩu thái mini 45k",
+    "address": "107 Đ. Vạn Kiếp, Gia Định, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7988558,
+    "longitude": 106.69369239999999,
+    "rating": 4.5,
+    "ratingCount": 42,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Nhà hàng món lẩu",
+    "types": [
+     "Nhà hàng món lẩu"
+    ],
+    "phoneNumber": "+84 903 076 978",
+    "openingHours": {
+     "Thứ Tư": "17:00–23:30",
+     "Thứ Năm": "17:00–23:30",
+     "Thứ Sáu": "17:00–23:30",
+     "Thứ Bảy": "17:00–23:30",
+     "Chủ Nhật": "17:00–23:30",
+     "Thứ Hai": "17:00–23:30",
+     "Thứ Ba": "17:00–23:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QL7yIBXg6krJqaFD1vTj03n7RWRE3HF5LIeF7hS8mMurkx6RmtG9wKASdC65tRL1Ymj_hf9ffNad_KU0wyG--Mo_slUl0sjxM3JW0PwoaqBaSr_VQe18lnmWxV-B9KGgFnnpDCrGQUPFGc",
+    "cid": "10109896300355614106",
+    "fid": "0x317529b37426726b:0x8c4d911ee2bb759a",
+    "placeId": "ChIJa3ImdLMpdTERmnW74h6RTYw"
+   },
+   {
+    "position": 12,
+    "title": "Quán Lẩu Cá",
+    "address": "314 Hoà Hưng, Hòa Hưng, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7781256,
+    "longitude": 106.67115199999999,
+    "rating": 4.4,
+    "ratingCount": 69,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "openingHours": {
+     "Thứ Tư": "08:00–22:00",
+     "Thứ Năm": "08:00–22:00",
+     "Thứ Sáu": "08:00–22:00",
+     "Thứ Bảy": "08:00–22:00",
+     "Chủ Nhật": "08:00–22:00",
+     "Thứ Hai": "08:00–22:00",
+     "Thứ Ba": "08:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QP70tLeSAoecAudNnHiQ0LDzBFqyI01sY6kIxdoxBrAFM1mwJV9Oth7jDFCkrkJf41m_GKFJ9P29Im7DZG3IXdm0QL7tMlOg0HHWu7y5WiCfy0lSjn3T5eXniFm7eW-w7hGiWs",
+    "cid": "9375286859024707917",
+    "fid": "0x31752ed991c0ba3d:0x821bb5b9d38e314d",
+    "placeId": "ChIJPbrAkdkudTERTTGO07m1G4I"
+   },
+   {
+    "position": 13,
+    "title": "Chill Thái - Thai Food",
+    "address": "163 Cô Giang, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.762091999999999,
+    "longitude": 106.6939671,
+    "rating": 4.8,
+    "ratingCount": 4072,
+    "priceLevel": "100-500 N ₫",
+    "type": "Nhà hàng Thái Lan",
+    "types": [
+     "Nhà hàng Thái Lan"
+    ],
+    "website": "https://www.chillthai.vn/",
+    "phoneNumber": "+84 906 003 539",
+    "openingHours": {
+     "Thứ Tư": "11:00–22:00",
+     "Thứ Năm": "11:00–22:00",
+     "Thứ Sáu": "11:00–22:00",
+     "Thứ Bảy": "11:00–22:00",
+     "Chủ Nhật": "11:00–22:00",
+     "Thứ Hai": "11:00–22:00",
+     "Thứ Ba": "11:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9S4WvZXehptQYRk3u3jFdy-0aN-rS65C9-RWi8p826mJTHxAoiAIF78nKr0ZgpKb8Eijpl3RM0SUVELyati6KCwWxDYj9Nb-vtbxI9Xyd2DCS6URNztSzKiNoFkIQNLY6NxUNVP",
+    "cid": "13057655073954600262",
+    "fid": "0x31752f2c7fccce15:0xb5361c1b7aa41546",
+    "placeId": "ChIJFc7MfywvdTERRhWkehscNrU"
+   },
+   {
+    "position": 14,
+    "title": "Thái Sumo Lẩu cá viên - Quận 4",
+    "address": "005 Lô B2 đường 12B, Chung cư, Vĩnh Hội, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.755149099999999,
+    "longitude": 106.70049329999999,
+    "rating": 4.8,
+    "ratingCount": 1044,
+    "priceLevel": "100-200 N ₫",
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "website": "https://thaisumo.vn/",
+    "phoneNumber": "+84 932 108 256",
+    "openingHours": {
+     "Thứ Tư": "15:00–22:00",
+     "Thứ Năm": "15:00–22:00",
+     "Thứ Sáu": "15:00–22:00",
+     "Thứ Bảy": "15:00–22:00",
+     "Chủ Nhật": "15:00–22:00",
+     "Thứ Hai": "15:00–22:00",
+     "Thứ Ba": "15:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Sj8tSu4b4dTgnxeCLrjFEceeYySHyTwXrHow7eax4fzW5tcEQ-sNnKA3INtfNZD0JLj81RbyNFCbPiICHrwBOBgneY9QZ_zsXZkUZ7TiSANBxon-kWXmXCd47kAxyi_ho9_esL",
+    "cid": "4082126074664533962",
+    "fid": "0x31752f72c822bfc9:0x38a6a00970bd3fca",
+    "placeId": "ChIJyb8iyHIvdTERyj-9cAmgpjg"
+   },
+   {
+    "position": 15,
+    "title": "Quán Lẩu & Nướng Xiên Khè",
+    "address": "117 Trần Khắc Chân, Tân Định, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.795377,
+    "longitude": 106.690703,
+    "rating": 3.7,
+    "ratingCount": 953,
+    "priceLevel": "300-400 N ₫",
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 902 572 117",
+    "openingHours": {
+     "Thứ Tư": "11:00–02:00",
+     "Thứ Năm": "11:00–02:00",
+     "Thứ Sáu": "11:00–02:00",
+     "Thứ Bảy": "11:00–02:00",
+     "Chủ Nhật": "11:00–02:00",
+     "Thứ Hai": "11:00–02:00",
+     "Thứ Ba": "11:00–02:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SbQOjI96YnyzJZG7syzzmlgGvRU06jf0waKS364dwAJNfsFS8cSgQM9rbBj_G3h_HTwgexKMjwnnGjVy41VQq5v6kmLHM4cVKfDAtm63T92IDi75lbxyFiHctEkUxMXwwnpQMr",
+    "cid": "16879503476835206082",
+    "fid": "0x317528cc2b706e33:0xea400afb11bbc3c2",
+    "placeId": "ChIJM25wK8wodTERwsO7EfsKQOo"
+   },
+   {
+    "position": 16,
+    "title": "Thái Sumo Lẩu cá viên - Lãnh Binh Thăng",
+    "address": "295 Lãnh Binh Thăng, Bình Thới, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7642604,
+    "longitude": 106.6481398,
+    "rating": 4.7,
+    "ratingCount": 643,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng món lẩu",
+    "types": [
+     "Nhà hàng món lẩu"
+    ],
+    "website": "https://thaisumo.vn/",
+    "phoneNumber": "+84 938 463 256",
+    "openingHours": {
+     "Thứ Tư": "10:00–22:00",
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00",
+     "Thứ Ba": "10:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QanB2xZu-ruaaq0gG-jKyRjbrMiWFZrgi3fAD9cISZmPaZ_v2d74L85gSEEVcmI66xObCWkpQyEc-X6lQ2O-z8EixUX_iQPvLHD5-gVnkiF5GNP-hyBugx9uFel94XdHR5_0vq",
+    "cid": "6207682234832450596",
+    "fid": "0x31752f6063e79935:0x56261e1a55b0f424",
+    "placeId": "ChIJNZnnY2AvdTERJPSwVRoeJlY"
+   },
+   {
+    "position": 17,
+    "title": "CHADA THÁI Quận 1 - 170 Bis Trần Hưng Đạo",
+    "address": "170 Bis Trần Hưng Đạo, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7633926,
+    "longitude": 106.6910867,
+    "rating": 4.6,
+    "ratingCount": 142,
+    "priceLevel": "200-300 N ₫",
+    "type": "Nhà hàng Thái Lan",
+    "types": [
+     "Nhà hàng Thái Lan"
+    ],
+    "website": "https://chadathai.vn/",
+    "openingHours": {
+     "Thứ Tư": "10:00–22:00",
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00",
+     "Thứ Ba": "10:00–22:00"
+    },
+    "bookingLinks": [
+     "https://chadathai.vn/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QK7T6xyJ6kZuMFdY_wAFWQICd0RbdjRDusawx2p4VpgAPeLNwOpzh1twWHi4C51VLJwfd2wJnY29iPtxdlf7Lc701dRvVRNr1RQoZ2G7T2VA933S2bT0km6_Dqjilc30yuXVflJOy4qx6b",
+    "cid": "12893224513786272142",
+    "fid": "0x31752fe184d770f5:0xb2edef625196d98e",
+    "placeId": "ChIJ9XDXhOEvdTERjtmWUWLv7bI"
+   },
+   {
+    "position": 18,
+    "title": "Quán LẨU DÊ Thái Lan",
+    "address": "939 Hoàng Sa, Nhiêu Lộc, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7860494,
+    "longitude": 106.67474299999999,
+    "rating": 3.9,
+    "ratingCount": 629,
+    "priceLevel": "200-300 N ₫",
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "https://laudethailan.cukcuk.vn/order-online",
+    "phoneNumber": "+84 28 3931 7472",
+    "openingHours": {
+     "Thứ Tư": "10:00–03:00",
+     "Thứ Năm": "10:00–03:00",
+     "Thứ Sáu": "10:00–03:00",
+     "Thứ Bảy": "10:00–03:00",
+     "Chủ Nhật": "10:00–03:00",
+     "Thứ Hai": "10:00–03:00",
+     "Thứ Ba": "10:00–03:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9R-Y8k446VC8c2p-tK74jyj5Q8590HzKyQvbJpp-wcyHIrfbh5SPzwqvr9QhHaI1or1PL5szUpIcioXhSSnPgbExMMqWz1xDxr_HNWQn7GM6cftmfDipOTZmdYq8bRDzr5Atj7P",
+    "cid": "2492857368120686955",
+    "fid": "0x31752ed5ea572c73:0x229868918e8c796b",
+    "placeId": "ChIJcyxX6tUudTERa3mMjpFomCI"
+   },
+   {
+    "position": 19,
+    "title": "Quán Lẩu Dê 218 - 老賴羊肉火锅 - 1980",
+    "address": "218 Nguyễn Công Trứ, Bến Thành, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.767968399999999,
+    "longitude": 106.70048949999999,
+    "rating": 4.7,
+    "ratingCount": 1176,
+    "priceLevel": "200-400 N ₫",
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "website": "http://laude218.com/",
+    "phoneNumber": "+84 28 3825 1085",
+    "openingHours": {
+     "Thứ Tư": "16:00–22:00",
+     "Thứ Năm": "16:00–22:00",
+     "Thứ Sáu": "16:00–22:00",
+     "Thứ Bảy": "15:00–22:00",
+     "Chủ Nhật": "15:00–22:00",
+     "Thứ Hai": "16:00–22:00",
+     "Thứ Ba": "16:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9TM2QVnF2pZn6Ditc_fRQCPoBz6CLG39XljD-PVkTAwUbGRCfEG7AKUbIzT4ODa2TGaJaQBODP1ffM4wSedXY6arxmWRBNcF3GFQzLZ6oKLP108JDUSt2OmFbSm_TuFJoBpZEKqh4PmxV_Z",
+    "cid": "6306746393950388866",
+    "fid": "0x31752f40050f06fd:0x5786106e43e38282",
+    "placeId": "ChIJ_QYPBUAvdTERgoLjQ24Qhlc"
+   },
+   {
+    "position": 20,
+    "title": "LUCKY QUÁN",
+    "address": "001 Lô A, Chung Cư Ấn Quang, Bà Hạt, Vườn Lài, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.766242799999999,
+    "longitude": 106.67123529999999,
+    "rating": 4.5,
+    "ratingCount": 17,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Rn9NdMTTMp3H4hmjBm1gf5fIK9w9TH5urBDR49c2qISmoJoUqmjozyZftk-dtjqjRkZvE7Gd0Dg1DsrYMjSnQE7hR7885stFQT3FSO_I_Qu3ElFxBdQIHdta3xnv1RAp-sBJxn",
+    "cid": "578708337553946953",
+    "fid": "0x31752ff8eb7ee069:0x807fc2ab875b949",
+    "placeId": "ChIJaeB-6_gvdTERSbl1uCr8Bwg"
+   }
+  ],
+  "credits": 3
+ }
+}

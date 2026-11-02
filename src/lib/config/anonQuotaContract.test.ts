@@ -13,9 +13,9 @@ import { ANON_LIFETIME_LIMIT, FREE_DAILY_LIMIT } from './product'
 const read = (p: string) => readFileSync(p, 'utf8')
 
 describe('the values', () => {
-  it('anonymous = 5 lifetime, registered = 15/day', () => {
+  it('anonymous = 5 lifetime, registered = 10/day (Phase 7 canonical catalog)', () => {
     expect(ANON_LIFETIME_LIMIT).toBe(5)
-    expect(FREE_DAILY_LIMIT).toBe(15)
+    expect(FREE_DAILY_LIMIT).toBe(10)
   })
 })
 

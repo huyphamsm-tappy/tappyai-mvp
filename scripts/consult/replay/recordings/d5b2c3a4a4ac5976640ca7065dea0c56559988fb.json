@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Gội Đầu Dưỡng Sinh Quận 3 HẺM SPA\" OR \"Đại An\" OR \"Quán Spa Massage & Gội Đầu Nhất Đầu Hùng · Chi nhánh ...\" Quận 3 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T06:00:40.181Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Gội Đầu Dưỡng Sinh Quận 3 HẺM SPA\" OR \"Đại An\" OR \"Quán Spa Massage & Gội Đầu Nhất Đầu Hùng · Chi nhánh ...\" Quận 3 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Túi 20 Ống Cà Phê Sữa Hòa Tan",
+    "link": "https://www.tiktok.com/@tiemtradaian/video/7663366948402597127",
+    "snippet": "Video TikTok từ Tiệm Trà Đại An (@tiemtradaian): \"Túi 20 Ống Cà Phê ... Túi Nâu Signature — 44/007 Nguyễn Thông, Quận 3 ⏰ 8:30AM ...",
+    "position": 1
+   },
+   {
+    "title": "Bộ ảnh mới của cặp đôi Đại An🤵👰 Huỳnh Nhi rất đẹp ...",
+    "link": "https://www.tiktok.com/@vyvy02092110121998/video/7264419899999636743",
+    "snippet": "Sau khi tìm hiểu, An Nhi và Đại An chọn Sohee Wedding để chụp trang phục, concept và bối cảnh. Ekip chuẩn bị riêng theo phong cách, gu và vóc ...",
+    "position": 2
+   },
+   {
+    "title": "Trường Tiểu Học Tân An - Cơ Sở Đại An, Đồng Nai",
+    "link": "https://www.tiktok.com/@tiencantho_98/video/7660329173063339271",
+    "snippet": "Thông tin vị trí giúp phụ huynh và người quan tâm dễ nhận diện cơ sở Đại An là một trong các cơ sở của Trường Tiểu Học Tân An. Cơ sở vật chất và ...",
+    "position": 3
+   },
+   {
+    "title": "Nam Hoà Xuân - Ngũ Hành Sơn - Đại An 3 - Tây Bắc - 100m2",
+    "link": "https://www.tiktok.com/@thobds/video/7650072981821230344",
+    "snippet": "Nam Hoà Xuân - Ngũ Hành Sơn - Đại An 3 - Tây Bắc - 100m2 - Đường 7m5 lề 4m #thobds #namhoaxuan #tiktok #danang #nguhanhson · nhạc nền - CTedmMusic · âm thanh ...",
+    "position": 4
+   },
+   {
+    "title": "Đám Cưới Đầy Cảm Xúc Của Đại An Và Huỳnh Như Với ...",
+    "link": "https://www.tiktok.com/@sohee.wedding/photo/7572405202851040533?image_index=17",
+    "snippet": "Đám Cưới Đầy Cảm Xúc Của Đại An Và Huỳnh Như Với Concept Đỏ Rực. Khám phá đám cưới đầy điện ảnh của Đại An và Huỳnh Như với phong cách đỏ rực, ...",
+    "position": 5
+   },
+   {
+    "title": "SoHee Wedding - 𝗖𝗼𝗹𝗹𝗮𝗯 𝟮𝟬𝟮𝟱",
+    "link": "https://www.tiktok.com/@sohee.wedding/photo/7572405202851040533?image_index=9&lang=cs-CZ",
+    "snippet": "Đây có lẽ là concept SoHee thích nhất khi thể hiện được cá tính, một chút táo bạo, và đầy tự do của hai bạn. Đại An tự tin, Huỳnh Nhi cuốn hút, cặp đôi cùng bộc ...",
+    "position": 6
+   },
+   {
+    "title": "Đại An Trầm Hương Store",
+    "link": "https://www.tiktok.com/@daian.store",
+    "snippet": "Đại An Trầm Hương Store (@daian.store) trên TikTok |69.4K Lượt thích.16.1K Follower.Đại An Store - Chuyên Phân Phối Sản phẩm Phong Thuỷ.",
+    "position": 7
+   },
+   {
+    "title": "Đại An ✌🏻 (@daian2808)",
+    "link": "https://www.tiktok.com/@daian2808",
+    "snippet": "Đại An ✌ (@daian2808) trên TikTok |446 Lượt thích.1100 Follower.Xem video phổ biến của Đại An ✌ : \"Hà lan mà lên phố th...\", \"Cuộc sống này đ é o ...\".",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

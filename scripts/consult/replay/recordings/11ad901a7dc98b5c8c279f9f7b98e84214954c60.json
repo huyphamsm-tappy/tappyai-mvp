@@ -1,0 +1,50 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Acer Gaming Aspire 5 A515-58GM-53PZ site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:26:05.609Z",
+ "body": {
+  "searchParameters": {
+   "q": "Acer Gaming Aspire 5 A515-58GM-53PZ site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop gaming Acer Aspire 5 A515 58GM 53PZ I5| 8GB",
+    "link": "https://shopee.vn/Laptop-gaming-Acer-Aspire-5-A515-58GM-53PZ-I5-8GB-512GB-2050-i.1036648426.25459821987",
+    "snippet": "Mua Laptop gaming Acer Aspire 5 A515 58GM 53PZ I5| 8GB| 512GB| 2050 giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn ...",
+    "position": 1
+   },
+   {
+    "title": "Laptop ACER Gaming Aspire 5 A515-58GM-53PZ (i5- ...",
+    "link": "https://shopee.vn/Laptop-ACER-Gaming-Aspire-5-A515-58GM-53PZ-(i5-13420H-RAM-8GB-GeForce-RTX-2050-512GB-SSD-Windows-11)-B%E1%BA%A3o-h%C3%A0nh-12-th%C3%A1n-i.469040198.29866811702",
+    "snippet": "Mua Laptop ACER Gaming Aspire 5 A515-58GM-53PZ (i5-13420H/RAM 8GB/GeForce RTX 2050/512GB SSD/ Windows 11) - Bảo hành 12 thán giá tốt.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 2
+   },
+   {
+    "title": "Laptop Gaming Acer Aspire 5 A515-58GM-53PZ (i5- ...",
+    "link": "https://shopee.vn/Laptop-Gaming-Acer-Aspire-5-A515-58GM-53PZ-(i5-13420H-8GB-512GB-SSD-RTX2050-4GB-15.6-FHD-X%C3%A1m)-Ch%C3%ADnh-H%C3%A3ng-BH-2-N%C4%83m-3S1-i.1253280646.24780877744",
+    "snippet": "Mua Laptop Gaming Acer Aspire 5 A515-58GM-53PZ (i5-13420H,8GB,512GB SSD,RTX2050/4GB,15.6\" FHD,Xám) Chính Hãng BH 2 Năm 3S1 giá tốt.",
+    "position": 3
+   },
+   {
+    "title": "Sạc dành cho Laptop Acer Aspire 5 15 A515-58M-57J1 ...",
+    "link": "https://shopee.vn/S%E1%BA%A1c-d%C3%A0nh-cho-Laptop-Acer-Aspire-5-15-A515-58M-57J1-Model-No-N23C3-19V-4.74A-i.1247566075.28884056912",
+    "snippet": "Mua Sạc dành cho Laptop Acer Aspire 5 15 A515-58M-57J1 Model No: N23C3 19V 4.74A giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "position": 4
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Set quà tặng 3 món cà phê - trà - đồ ăn vặt ý nghĩa cho thầy",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:16:04.158Z",
+ "body": {
+  "searchParameters": {
+   "q": "Set quà tặng 3 món cà phê - trà - đồ ăn vặt ý nghĩa cho thầy",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Set quà tặng 3 món cà phê - trà - đồ ăn vặt ý nghĩa cho thầy cô, sếp và  đồng nghiệp - Cộng Cà Phê | Shopee Việt Nam",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mqr0tc4muccg73",
+    "imageWidth": 500,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQx6r3kbdf6TGo6VSgtUemqaiLfGj1JZ8PqVwlOScD1Hw&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/Set-qu%C3%A0-t%E1%BA%B7ng-3-m%C3%B3n-c%C3%A0-ph%C3%AA-tr%C3%A0-%C4%91%E1%BB%93-%C4%83n-v%E1%BA%B7t-%C3%BD-ngh%C4%A9a-cho-th%E1%BA%A7y-c%C3%B4-s%E1%BA%BFp-v%C3%A0-%C4%91%E1%BB%93ng-nghi%E1%BB%87p-C%E1%BB%99ng-C%C3%A0-Ph%C3%AA-i.354028981.54406709356",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-81ztc-mqr0tc4muccg73&tbnid=NWCtvOgCSVc4iM&imgrefurl=https%3A%2F%2Fshopee.vn%2FSet-qu%25C3%25A0-t%25E1%25BA%25B7ng-3-m%25C3%25B3n-c%25C3%25A0-ph%25C3%25AA-tr%25C3%25A0-%25C4%2591%25E1%25BB%2593-%25C4%2583n-v%25E1%25BA%25B7t-%25C3%25BD-ngh%25C4%25A9a-cho-th%25E1%25BA%25A7y-c%25C3%25B4-s%25E1%25BA%25BFp-v%25C3%25A0-%25C4%2591%25E1%25BB%2593ng-nghi%25E1%25BB%2587p-C%25E1%25BB%2599ng-C%25C3%25A0-Ph%25C3%25AA-i.354028981.54406709356&docid=DVy6faAWu8Ot9M&w=500&h=500",
+    "position": 1
+   },
+   {
+    "title": "Set quà tặng 3 món cà phê - trà - đồ ăn vặt ý nghĩa cho thầy cô, sếp và  đồng nghiệp - Cộng Cà Phê | Shopee Việt Nam",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mleeap0ph79g93",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHmqaqdvrqwkW7-IeVeryxZk5Lo75IZCqmBpHDTdY1Ew&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/Set-qu%C3%A0-t%E1%BA%B7ng-3-m%C3%B3n-c%C3%A0-ph%C3%AA-tr%C3%A0-%C4%91%E1%BB%93-%C4%83n-v%E1%BA%B7t-%C3%BD-ngh%C4%A9a-cho-th%E1%BA%A7y-c%C3%B4-s%E1%BA%BFp-v%C3%A0-%C4%91%E1%BB%93ng-nghi%E1%BB%87p-C%E1%BB%99ng-C%C3%A0-Ph%C3%AA-i.354028981.54406709356",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-81ztc-mleeap0ph79g93&tbnid=rNUqUVwzbMW3cM&imgrefurl=https%3A%2F%2Fshopee.vn%2FSet-qu%25C3%25A0-t%25E1%25BA%25B7ng-3-m%25C3%25B3n-c%25C3%25A0-ph%25C3%25AA-tr%25C3%25A0-%25C4%2591%25E1%25BB%2593-%25C4%2583n-v%25E1%25BA%25B7t-%25C3%25BD-ngh%25C4%25A9a-cho-th%25E1%25BA%25A7y-c%25C3%25B4-s%25E1%25BA%25BFp-v%25C3%25A0-%25C4%2591%25E1%25BB%2593ng-nghi%25E1%25BB%2587p-C%25E1%25BB%2599ng-C%25C3%25A0-Ph%25C3%25AA-i.354028981.54406709356&docid=DVy6faAWu8Ot9M&w=1024&h=1024",
+    "position": 2
+   },
+   {
+    "title": "Set quà tặng 3 món cà phê - trà - đồ ăn vặt ý nghĩa cho thầy cô, sếp và  đồng nghiệp - Cộng Cà Phê | Shopee Việt Nam",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mleea8448d1d30",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRw1Y7Sy6vmSStnFps0nJI2BRx7zxakZTGWXbxMgx13tw&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/Set-qu%C3%A0-t%E1%BA%B7ng-3-m%C3%B3n-c%C3%A0-ph%C3%AA-tr%C3%A0-%C4%91%E1%BB%93-%C4%83n-v%E1%BA%B7t-%C3%BD-ngh%C4%A9a-cho-th%E1%BA%A7y-c%C3%B4-s%E1%BA%BFp-v%C3%A0-%C4%91%E1%BB%93ng-nghi%E1%BB%87p-C%E1%BB%99ng-C%C3%A0-Ph%C3%AA-i.354028981.54406709356",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-81ztc-mleea8448d1d30&tbnid=nFiMQaUFvfkJ5M&imgrefurl=https%3A%2F%2Fshopee.vn%2FSet-qu%25C3%25A0-t%25E1%25BA%25B7ng-3-m%25C3%25B3n-c%25C3%25A0-ph%25C3%25AA-tr%25C3%25A0-%25C4%2591%25E1%25BB%2593-%25C4%2583n-v%25E1%25BA%25B7t-%25C3%25BD-ngh%25C4%25A9a-cho-th%25E1%25BA%25A7y-c%25C3%25B4-s%25E1%25BA%25BFp-v%25C3%25A0-%25C4%2591%25E1%25BB%2593ng-nghi%25E1%25BB%2587p-C%25E1%25BB%2599ng-C%25C3%25A0-Ph%25C3%25AA-i.354028981.54406709356&docid=DVy6faAWu8Ot9M&w=1024&h=1024",
+    "position": 3
+   },
+   {
+    "title": "Set quà tặng 3 món cà phê - trà - đồ ăn vặt ý nghĩa cho thầy cô, sếp và  đồng nghiệp - Cộng Cà Phê | Shopee Việt Nam",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mleck5qrjs3l1a",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQO0fPLsMUe3vDZCqg2LtzxQ2WFagqCgI4ltN4c60wTEA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/Set-qu%C3%A0-t%E1%BA%B7ng-3-m%C3%B3n-c%C3%A0-ph%C3%AA-tr%C3%A0-%C4%91%E1%BB%93-%C4%83n-v%E1%BA%B7t-%C3%BD-ngh%C4%A9a-cho-th%E1%BA%A7y-c%C3%B4-s%E1%BA%BFp-v%C3%A0-%C4%91%E1%BB%93ng-nghi%E1%BB%87p-C%E1%BB%99ng-C%C3%A0-Ph%C3%AA-i.354028981.54406709356",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-81ztc-mleck5qrjs3l1a&tbnid=wymkQSpOMuB-xM&imgrefurl=https%3A%2F%2Fshopee.vn%2FSet-qu%25C3%25A0-t%25E1%25BA%25B7ng-3-m%25C3%25B3n-c%25C3%25A0-ph%25C3%25AA-tr%25C3%25A0-%25C4%2591%25E1%25BB%2593-%25C4%2583n-v%25E1%25BA%25B7t-%25C3%25BD-ngh%25C4%25A9a-cho-th%25E1%25BA%25A7y-c%25C3%25B4-s%25E1%25BA%25BFp-v%25C3%25A0-%25C4%2591%25E1%25BB%2593ng-nghi%25E1%25BB%2587p-C%25E1%25BB%2599ng-C%25C3%25A0-Ph%25C3%25AA-i.354028981.54406709356&docid=DVy6faAWu8Ot9M&w=1024&h=1024",
+    "position": 4
+   },
+   {
+    "title": "Set quà tặng 3 món cà phê - trà - đồ ăn vặt ý nghĩa cho thầy cô, sếp và  đồng nghiệp - Cộng Cà Phê | Shopee Việt Nam",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-mlecju830jy851",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQp18Z8AIGv_bwDiLGaixupunNhXNAZlvRpDhDnt1ODA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/Set-qu%C3%A0-t%E1%BA%B7ng-3-m%C3%B3n-c%C3%A0-ph%C3%AA-tr%C3%A0-%C4%91%E1%BB%93-%C4%83n-v%E1%BA%B7t-%C3%BD-ngh%C4%A9a-cho-th%E1%BA%A7y-c%C3%B4-s%E1%BA%BFp-v%C3%A0-%C4%91%E1%BB%93ng-nghi%E1%BB%87p-C%E1%BB%99ng-C%C3%A0-Ph%C3%AA-i.354028981.54406709356",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-81ztc-mlecju830jy851&tbnid=jVTD-GwHFgM1qM&imgrefurl=https%3A%2F%2Fshopee.vn%2FSet-qu%25C3%25A0-t%25E1%25BA%25B7ng-3-m%25C3%25B3n-c%25C3%25A0-ph%25C3%25AA-tr%25C3%25A0-%25C4%2591%25E1%25BB%2593-%25C4%2583n-v%25E1%25BA%25B7t-%25C3%25BD-ngh%25C4%25A9a-cho-th%25E1%25BA%25A7y-c%25C3%25B4-s%25E1%25BA%25BFp-v%25C3%25A0-%25C4%2591%25E1%25BB%2593ng-nghi%25E1%25BB%2587p-C%25E1%25BB%2599ng-C%25C3%25A0-Ph%25C3%25AA-i.354028981.54406709356&docid=DVy6faAWu8Ot9M&w=1024&h=1024",
+    "position": 5
+   },
+   {
+    "title": "Set quà tặng 3 món cà phê - trà - đồ ăn vặt ý nghĩa cho thầy cô, sếp và  đồng nghiệp - Cộng Cà Phê ##quatangcaocap",
+    "imageUrl": "https://www.tiktok.com/api/img/?itemId=7635709340694990088&location=0&aid=1988",
+    "imageWidth": 704,
+    "imageHeight": 1280,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyxMcw484f88K5aiby3gqDVYTe6Z7NIdeaCoAM2-GlXQ&s=10",
+    "thumbnailWidth": 411,
+    "thumbnailHeight": 747,
+    "source": "TikTok",
+    "domain": "www.tiktok.com",
+    "link": "https://www.tiktok.com/@quatangcaocap1/video/7635709340694990088",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.tiktok.com%2Fapi%2Fimg%2F%3FitemId%3D7635709340694990088%26location%3D0%26aid%3D1988&tbnid=hogW3E5-jDtTEM&imgrefurl=https%3A%2F%2Fwww.tiktok.com%2F%40quatangcaocap1%2Fvideo%2F7635709340694990088&docid=RsiirJx6M9NKzM&w=704&h=1280",
+    "position": 6
+   },
+   {
+    "title": "{} Set quà tặng Cà phê Đặc Sản Việt (Mix mật ong, trà thảo mộc & tim sen)  CTG349 » CT BEE FARM - Mật Ong & Quà Tặng",
+    "imageUrl": "https://dacsangialaitoi.com/wp-content/uploads/2024/05/set-qua-tang-ctbee-tet-00024.jpg",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKhYCpMFYY9EQ20tTngnXtcu3z8mZutpWwPIYyQuXdQg&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Đặc Sản Tây Nguyên Cô Thủy",
+    "domain": "dacsangialaitoi.com",
+    "link": "https://dacsangialaitoi.com/san-pham/set-qua-tang-ca-phe-dac-san-viet-ctg349/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdacsangialaitoi.com%2Fwp-content%2Fuploads%2F2024%2F05%2Fset-qua-tang-ctbee-tet-00024.jpg&tbnid=PHL9zefNzgXpdM&imgrefurl=https%3A%2F%2Fdacsangialaitoi.com%2Fsan-pham%2Fset-qua-tang-ca-phe-dac-san-viet-ctg349%2F&docid=ByD8RUqD9DpE3M&w=800&h=800",
+    "position": 7
+   },
+   {
+    "title": "{} Set quà tặng Cà phê Đặc Sản Việt (Mix mật ong, trà thảo mộc & tim sen)  CTG349 » CT BEE FARM - Mật Ong & Quà Tặng",
+    "imageUrl": "https://dacsangialaitoi.com/wp-content/uploads/2023/11/SET-CAPHE002.jpg",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTn-vpMJuTklhDcW8Zcz-2dnLZninhqgE6S8HfsUAftg&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Đặc Sản Tây Nguyên Cô Thủy",
+    "domain": "dacsangialaitoi.com",
+    "link": "https://dacsangialaitoi.com/san-pham/set-qua-tang-ca-phe-dac-san-viet-ctg349/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdacsangialaitoi.com%2Fwp-content%2Fuploads%2F2023%2F11%2FSET-CAPHE002.jpg&tbnid=OkgOTkHB5JiQXM&imgrefurl=https%3A%2F%2Fdacsangialaitoi.com%2Fsan-pham%2Fset-qua-tang-ca-phe-dac-san-viet-ctg349%2F&docid=ByD8RUqD9DpE3M&w=800&h=800",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

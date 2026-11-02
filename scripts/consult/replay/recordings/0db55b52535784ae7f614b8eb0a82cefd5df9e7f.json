@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Laptop Acer Gaming Aspire 5 A515-58GM-53PZ\" OR \"Laptop asus Gaming Vivobook 16X K3605VC-RP431W\" OR \"Laptop Asus Gaming VivoBook K3605ZC-RP564W\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:26:12.956Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Laptop Acer Gaming Aspire 5 A515-58GM-53PZ\" OR \"Laptop asus Gaming Vivobook 16X K3605VC-RP431W\" OR \"Laptop Asus Gaming VivoBook K3605ZC-RP564W\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "💻 Laptop Asus Gaming Vivobook K3605ZC-RP564W Chơi ...",
+    "link": "https://www.tiktok.com/@cuonggcacon/video/7512668941999803655",
+    "snippet": "Laptop Asus Gaming Vivobook K3605ZC-RP564W Chơi game mượt mà như đi trên mây, Core i5, 16GB RAM, 512GB SSD, chỉ cần xài thử! Màn hình 16 inch ...",
+    "position": 1
+   },
+   {
+    "title": "đồ chơi cân bằng cho bé #dochoixephinh #dochoigiaoduc ...",
+    "link": "https://www.tiktok.com/@cuonggcacon/video/7359409030571265281",
+    "snippet": "Laptop Asus Gaming Vivobook K3605ZC-RP564W Chơi game mượt mà như đi trên mây, Core i5, 16GB RAM, 512GB SSD, chỉ cần xài thử! Màn hình 16 ...",
+    "position": 2
+   },
+   {
+    "title": "voi6m12d",
+    "link": "https://www.tiktok.com/tag/voi6m12d",
+    "snippet": "Laptop ASUS Gaming VivoBook K3605ZC-RP564W- Hắc công tử nhà laptop HĐ I5 ... Laptop ASUS Gaming VivoBook K3605ZC-RP564W- Hắc công tử nhà laptop HĐ I5 ...",
+    "position": 3
+   },
+   {
+    "title": "Đắm Chìm Trong Thế Giới Ảo Với Gaming Vivobook ...",
+    "link": "https://www.tiktok.com/@tuananhlaptopworld/photo/7400215797534067969?image_index=2",
+    "snippet": "... Laptop ASUS Gaming Vivobook K3605ZC-RP564W (Core™ i5-12500H | 16GB | 512GB | RTX 3050 | 16inch FHD+ 144Hz | Win 11 | Đen) Laptop ASUS ...",
+    "position": 4
+   },
+   {
+    "title": "TOP 5 Laptop Gaming Chính Hãng với RTX 2050",
+    "link": "https://www.tiktok.com/@laptopworld24/video/7371816867276655889",
+    "snippet": "Laptop Acer Gaming Aspire 5 A515 58GM 53PZ 15.890 thôi nếu hssv thì giảm 300k tại tgdđ. 2024-6-23Trả lời. 0. _ngthien0201. Có 8 củ mà muốn mua lenovo i3 gaming ...",
+    "position": 5
+   },
+   {
+    "title": "Sắm máy lọc qua Fptshop ngay nha",
+    "link": "https://www.tiktok.com/@cuonggcacon/video/7683175251932663060",
+    "snippet": "Laptop Asus Gaming Vivobook K3605ZC-RP564W Chơi game mượt mà như đi trên mây, Core i5, 16GB RAM, 512GB SSD, chỉ cần xài thử! Màn hình 16 ...",
+    "position": 6
+   },
+   {
+    "title": "Cương Cá Con (@cuonggcacon)",
+    "link": "https://www.tiktok.com/@cuonggcacon",
+    "snippet": "Laptop Asus Gaming Vivobook K3605ZC-RP564W Chơi game mượt mà như đi trên mây. 485 · FPTShop xin chào #fptshop #giaiphongmiennam #tiktok #xuhuong #viral ...",
+    "position": 7
+   },
+   {
+    "title": "Sửa mọi lỗi trên máy tính cực tiện",
+    "link": "https://www.tiktok.com/@laptopworld24/video/7551791121425288466",
+    "snippet": "Laptop ASUS Gaming Vivobook 16X K3605VC-RP431W I5-13420H/16GB/512GB PCIE/VGA 4GB RTX3050/16.0 WUXG 3 máy này dùng để vừa hc vừa chơi thì cái ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

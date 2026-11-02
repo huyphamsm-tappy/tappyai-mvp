@@ -99,11 +99,11 @@ describe('reassurance needs coverage', () => {
     const r = fuse({ urlChecks: [safeUrl] })
     expect(r.level).toBe('INCONCLUSIVE')
     expect(r.confidence).toBeLessThan(MIN_CONFIDENCE_FOR_SAFE)
-    expect(r.reasoningSummary).toMatch(/not enough evidence/i)
+    expect(r.reasoningSummary).toMatch(/does NOT mean it is safe/i)
   })
-  it('a model that was consulted but failed says so in the fallback summary', () => {
+  it('with no scenario and no findings the summary is the "unrecognised" wording, never reassurance', () => {
     const r = fuse({}, true)
-    expect(r.reasoningSummary).toMatch(/did not return/i)
+    expect(r.reasoningSummary).toMatch(/No familiar signs recognised/i)
   })
   it('a warning stands at low confidence', () => {
     const r = fuse({ rules: telegramRules })
@@ -111,7 +111,7 @@ describe('reassurance needs coverage', () => {
     expect(['HIGH', 'CRITICAL']).toContain(r.level)
   })
   it('the Vietnamese fallback summary is Vietnamese', () => {
-    expect(fuse({ locale: 'vi' }).reasoningSummary).toMatch(/Chưa đủ bằng chứng/)
+    expect(fuse({ locale: 'vi' }).reasoningSummary).toMatch(/Chưa nhận ra dấu hiệu quen thuộc/)
   })
 })
 

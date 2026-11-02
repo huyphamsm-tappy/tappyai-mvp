@@ -1,0 +1,132 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "quà sinh nhật cho sếp nam thích cà phê",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:23:53.605Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà sinh nhật cho sếp nam thích cà phê",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Qùa Sinh Nhật Cho Bạn Trai 2026",
+    "source": "Thegioisonmoi.com",
+    "price": "3.999.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSdODQJLQR9yGK-SyRptvDTcirI8dnHLZYpLiFqLy6eotyotfoOQtemIxG9zy2aQg2iEez1AKIIoAT0xiUc1xXfgHu-k2DOY0daai1p6eCCmMcBazjChp7KEA",
+    "productId": "6266184835129103199",
+    "position": 1
+   },
+   {
+    "title": "Quà Sinh Nhật Nàng Thích",
+    "source": "Thegioisonmoi.com",
+    "price": "1.850.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSh8iM3VVb3b71s5opP9CXRv6pUzKzNJbNPacNs9invH64U5rMEIqEbqgr_Ie7aodPgVORyykrIVr5aJJ_Sjh9kdyLsSZ8WoXz3349_rR3vqekD6z7eg07L",
+    "productId": "13131898990751761474",
+    "position": 2
+   },
+   {
+    "title": "Quà Sinh Nhật Cho Người Yêu Hot",
+    "source": "Thegioisonmoi.com",
+    "price": "2.999.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRPxupxwFd8GP3G8_umzAzwYD1K29Q7neCgo2Ih-4uH1moxlxdi1tB8IK9uiDHNymh-HtgJO7ybapmwrZOjO8FFLoJzAS8ZCT22GvQbJi2hRGJVPlCN98gh",
+    "rating": 4.9,
+    "ratingCount": 22,
+    "productId": "5604554563139378692",
+    "position": 3
+   },
+   {
+    "title": "Cà phê Pleiku Blend Organic - SHIN Cà phê - Cà phê pha thủ công - Gói 250g",
+    "source": "tiki.vn",
+    "price": "250.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSLLlntvlMXO79-GQDUNrQCcMlD_M7hZCB7mjHBllv_QNs8BVSLLFCbUSvGgw98YHZNH806F_TPdjyiSzcYUSPHmIXQg4Qcbt75TRX7oB40dd1nRwsHWSsDnKw",
+    "productId": "12016741087309575561",
+    "position": 4
+   },
+   {
+    "title": "Quà Sinh Nhật Cao Cấp Nhất",
+    "source": "Thegioisonmoi.com",
+    "price": "8.999.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSevaHK1AlPvIPMDcgl7jedo6Y9S_t4jPmgIHohgbhaVki21DmyuG-Ain2t_LJqoHIJrjBvPBAieIaVNqt0SITI7xP747cf551uoB4gdCQcWs4gQVxAQp1p",
+    "productId": "15492521667153728579",
+    "position": 5
+   },
+   {
+    "title": "Qùa Tặng Sinh Nhật Bạn Trai Thích Nhất",
+    "source": "Thegioisonmoi.com",
+    "price": "1.699.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQv0-HwGx-pfEdENxFbVYJPDJDu-QhKOSzi-I6rVqadMgR0niz3WoE-JAQ5uFzLkNQwPu6R4gZDNM5SiT-2ez-WFaNetzqcZaworKYEAALG",
+    "productId": "15239631839741439460",
+    "position": 6
+   },
+   {
+    "title": "Quà Sinh Nhật Cho Nàng - Top 10 Thỏi Son Phụ Nữ Thích Nhất -2. Son Bobbi Brown Luxe Satin Màu Ruby 808",
+    "source": "Thegioisonmoi.com",
+    "price": "499.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQm4YyYdbd9VGtY-vwVK_IMcOImQSEWNhmx7c1tZGJp_d6FV_aZvEXk46f5yWjgcltO4mZBKyenj0xhsg7bFxFt4d9x7i8_gouo5Eli8O37d1L_UkOijd-H7w",
+    "productId": "11710720066086872088",
+    "position": 7
+   },
+   {
+    "title": "Bánh sinh nhật sếp lớn công ty Tasco Insurance",
+    "source": "Bánh sinh nhật Daily Cake",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+sinh+nh%E1%BA%ADt+cho+s%E1%BA%BFp+nam+th%C3%ADch+c%C3%A0+ph%C3%AA&prds=localAnnotatedOfferId:1,catalogid:13883804449702448519,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "400.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcR8f3W3ufFeyhB3UP4QuEhIhcGjvzpOKhwbMOelVu4N1mBROoMTWQOiBpKA3ru5vGFpfvuFiL8IAuqHP8aUSoxQssmKVmqGraGbH_l2Ins",
+    "productId": "13883804449702448519",
+    "position": 8
+   },
+   {
+    "title": "bánh sinh nhật xếp chữ SN457",
+    "source": "Tiệm Bánh Choco",
+    "price": "560.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRlTij5bRShZ_VrBWQO5ykAYaeSHgZkMwtrZBy27wfRCPV_CjdczEtkNXo9CkLCZrG6WmdIRqU-K1__hZoDWmn-K71YkXG1cQ",
+    "productId": "10816493008194197167",
+    "position": 9
+   },
+   {
+    "title": "Hệ thống phun sương quán cà phê tphcm 10 vòi phun mịn",
+    "source": "Boba.vn",
+    "price": "890.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTjSTpK1W2U1sQRKDzLcnCzNVncYIh5xuF1mnCmXX5R6fnq9jyYLMrkFr4q9RlnKPJlbk59L3U9K-Kg4X5MoSELkS0O5wmOzSY_5LH9hCI",
+    "productId": "4013076752922155691",
+    "position": 10
+   },
+   {
+    "title": "he thong phun suong quan cafe trọn bộ 35 béc tại quận 7",
+    "source": "Bomgiare.com",
+    "price": "2.290.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRMMzdJ1fRlN5Z0rPMs_8UuZkZCeqOx4mRDSgBHGqijE-L3yBIFj8VHrTbE4XYhAtiRGilXC41p4Qk9YIeDkbc2-ICC4B5qEBLPxJ7eaFc",
+    "productId": "10580717653287030620",
+    "position": 11
+   },
+   {
+    "title": "Làm mát quán cafe 70 béc công xuất lớn tại tphcm",
+    "source": "Boba.vn",
+    "price": "3.220.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSSvf45JWGp-TIwbqh653KfLOp3FGQFRVaA9W3AULJo4TzjCHelv_H_6N2iHvCybJChWEMjw52gjvJzl319j2CA3jDN0yTGX-8NJf7eNTeb",
+    "productId": "17009338560633660105",
+    "position": 12
+   },
+   {
+    "title": "Set Quà Tặng Nến Aurora Bloom Cho Người Đặc Biệt - 220g",
+    "source": "Đại Lý Tinh Dầu Nến Thơm Set Quà",
+    "price": "404 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRRtup00VR_dOuNvd2ORpdroJSmZWbIBsB3jS3BUpRBbWaVxfvHoLa6VL0XHCN-S8tB8g18njs1LKfh2uOBlV2XTe2-8Sd3LjLVWf6P1l80",
+    "productId": "8642456058201722263",
+    "position": 13
+   }
+  ],
+  "credits": 2
+ }
+}

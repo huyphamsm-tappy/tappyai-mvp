@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "FLESTA Núi Trúc Serviced Apartment & Hotel",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:58:09.839Z",
+ "body": {
+  "searchParameters": {
+   "q": "FLESTA Núi Trúc Serviced Apartment & Hotel",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "FLESTA Nui Truc Serviced Apartment & Hotel, Giá giảm 30%, Ảnh & Review chân  thật",
+    "imageUrl": "https://ik.imagekit.io/tvlk/apr-asset/TzEv3ZUmG4-4Dz22hvmO9NUDzw1DGCIdWl4oPtKumOg=/lodging/111000000/110630000/110627600/110627514/2e9e368a_z.jpg?tr=q-80,c-at_max,w-740,h-500&_src=imagekit",
+    "imageWidth": 375,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrIBSaWymlBhUb4Fo_IG31YE5B0uIH1aDAuJukFjaGfg&s=10",
+    "thumbnailWidth": 375,
+    "thumbnailHeight": 500,
+    "source": "Traveloka",
+    "domain": "www.traveloka.com",
+    "link": "https://www.traveloka.com/vi-vn/hotel/vietnam/flesta-nui-truc-9000005509719",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fik.imagekit.io%2Ftvlk%2Fapr-asset%2FTzEv3ZUmG4-4Dz22hvmO9NUDzw1DGCIdWl4oPtKumOg%3D%2Flodging%2F111000000%2F110630000%2F110627600%2F110627514%2F2e9e368a_z.jpg%3Ftr%3Dq-80%2Cc-at_max%2Cw-740%2Ch-500%26_src%3Dimagekit&tbnid=5qWN5LSFDTzT-M&imgrefurl=https%3A%2F%2Fwww.traveloka.com%2Fvi-vn%2Fhotel%2Fvietnam%2Fflesta-nui-truc-9000005509719&docid=6BpIG36URgOZlM&w=375&h=500",
+    "position": 1
+   },
+   {
+    "title": "FLESTA Núi Trúc Serviced Apartment Đánh giá của khách: Xếp hạng thực tế,  Hình ảnh & Phản hồi | Trip.com",
+    "imageUrl": "https://ak-d.tripcdn.com/images/0221i12000nzd9lfaB3E5_W_750_375_R5.webp?default=1",
+    "imageWidth": 281,
+    "imageHeight": 375,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRauiqpD429sr7GMf27x-RBJxylUDv_vhlCoLeVcC337Q&s",
+    "thumbnailWidth": 194,
+    "thumbnailHeight": 259,
+    "source": "Trip.com",
+    "domain": "vn.trip.com",
+    "link": "https://vn.trip.com/hotels/hanoi-hotel-detail-113067369/flesta-nui-truc-serviced-apartment/review.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fak-d.tripcdn.com%2Fimages%2F0221i12000nzd9lfaB3E5_W_750_375_R5.webp%3Fdefault%3D1&tbnid=Iu-4lzrueZPYBM&imgrefurl=https%3A%2F%2Fvn.trip.com%2Fhotels%2Fhanoi-hotel-detail-113067369%2Fflesta-nui-truc-serviced-apartment%2Freview.html&docid=kgtQg3KfGmKrdM&w=281&h=375",
+    "position": 2
+   },
+   {
+    "title": "Serviced apartments in Vietnam | 24h/365d customer support",
+    "imageUrl": "https://crm.flesta.vn//uploads/projects/1742457513-67dbcaa9686f9.jpg",
+    "imageWidth": 1913,
+    "imageHeight": 2560,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbR2YXcHHUISnltheH8Baiqel1APVv4hVexaEpOPjUzA&s=10",
+    "thumbnailWidth": 386,
+    "thumbnailHeight": 518,
+    "source": "www.flesta.vn",
+    "domain": "www.flesta.vn",
+    "link": "https://www.flesta.vn/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcrm.flesta.vn%2F%2Fuploads%2Fprojects%2F1742457513-67dbcaa9686f9.jpg&tbnid=8dqp_25l8wvESM&imgrefurl=https%3A%2F%2Fwww.flesta.vn%2F&docid=vcmgunGMSVokpM&w=1913&h=2560",
+    "position": 3
+   },
+   {
+    "title": "FLESTA NUI TRUC｜Thuê｜Công ty TNHH N-Asset Việt Nam｜Bất động sản cho thuê,  mua bán, quản lý tại Hồ Chí Minh, Hà Nội, Bình Dương, Hải Phòng",
+    "imageUrl": "https://n-asset-vietnam.vn/wp/wp-content/uploads/2023/10/Anh-ben-ngoai-toa-nha-1.jpg",
+    "imageWidth": 1859,
+    "imageHeight": 1894,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSs9rawXdm_Ho3wEuIrQsucZS5fswt1AN8ur34sYkhQVg&s=10",
+    "thumbnailWidth": 549,
+    "thumbnailHeight": 558,
+    "source": "n-asset-vietnam.vn",
+    "domain": "n-asset-vietnam.vn",
+    "link": "https://n-asset-vietnam.vn/vn/building/p78258/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fn-asset-vietnam.vn%2Fwp%2Fwp-content%2Fuploads%2F2023%2F10%2FAnh-ben-ngoai-toa-nha-1.jpg&tbnid=1Bc8ropUZV4GsM&imgrefurl=https%3A%2F%2Fn-asset-vietnam.vn%2Fvn%2Fbuilding%2Fp78258%2F&docid=Uo3HF0tpFFHLoM&w=1859&h=1894",
+    "position": 4
+   },
+   {
+    "title": "Flesta Ha Noi Serviced Apartment & Hotel | Hanoi",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=100084070811080",
+    "imageWidth": 1414,
+    "imageHeight": 2000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjTLyhNwE1xj-X5ii0UX0UGJ15ohATrIa0EZnwyZMvHw&s=10",
+    "thumbnailWidth": 376,
+    "thumbnailHeight": 531,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/p/Flesta-Ha-Noi-Serviced-Apartment-Hotel-100084070811080/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D100084070811080&tbnid=dRLbcG5WElHTZM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fp%2FFlesta-Ha-Noi-Serviced-Apartment-Hotel-100084070811080%2F&docid=FQeypWGbeKu_kM&w=1414&h=2000",
+    "position": 5
+   },
+   {
+    "title": "FLESTA Nui Truc Serviced Apartment & Hotel, Hanoi: Reviews & Hotel Deals |  Book at Hotels.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/111000000/110630000/110627600/110627514/8b99f292.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 863,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjMwNQb_bB2N5ONU7VCwAWjWzQnY-q4_VANw4mVz9tEA&s",
+    "thumbnailWidth": 275,
+    "thumbnailHeight": 183,
+    "source": "Hotels.com Australia",
+    "domain": "au.hotels.com",
+    "link": "https://au.hotels.com/ho3541080448/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F111000000%2F110630000%2F110627600%2F110627514%2F8b99f292.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=33hL6yNzZiPQwM&imgrefurl=https%3A%2F%2Fau.hotels.com%2Fho3541080448%2F&docid=FKzcigRkWNeVlM&w=863&h=575",
+    "position": 6
+   },
+   {
+    "title": "FLESTA Nui Truc Serviced Apartment & Hotel Reviews, Deals & Photos 2026 -  Expedia",
+    "imageUrl": "https://images.trvl-media.com/lodging/111000000/110630000/110627600/110627514/4d197f77.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 863,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7gRGYSDbA85j6eDd2IMfsJxYHYR5WL5mWyNH9PbTcLQ&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Expedia.ie",
+    "domain": "www.expedia.ie",
+    "link": "https://www.expedia.ie/Hanoi-Hotels-FLESTA-Nui-Truc-Serviced-ApartmentHotel.h110627514.Hotel-Information",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F111000000%2F110630000%2F110627600%2F110627514%2F4d197f77.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=3qskZW3E_JRqnM&imgrefurl=https%3A%2F%2Fwww.expedia.ie%2FHanoi-Hotels-FLESTA-Nui-Truc-Serviced-ApartmentHotel.h110627514.Hotel-Information&docid=vo-ORRCOpRiEXM&w=863&h=575",
+    "position": 7
+   },
+   {
+    "title": "FLESTA Núi Trúc , Hanoi - 2026 Reviews, Pictures & Deals",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/503040822.jpg?k=b4c2e3a5596316b29cfe339a33c20ccb0985f3aaa153624597191e7e94cc92a8&o=",
+    "imageWidth": 375,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRT06lZqJSmLb_3lNteR1OPWVbeT-ed_FkitAIN9L04XA&s",
+    "thumbnailWidth": 194,
+    "thumbnailHeight": 259,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/en-ie/flesta-nui-truc/hotel/hanoi-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F503040822.jpg%3Fk%3Db4c2e3a5596316b29cfe339a33c20ccb0985f3aaa153624597191e7e94cc92a8%26o%3D&tbnid=FOD9ibtK20eIZM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fen-ie%2Fflesta-nui-truc%2Fhotel%2Fhanoi-vn.html&docid=U_SveX_s1RBXcM&w=375&h=500",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

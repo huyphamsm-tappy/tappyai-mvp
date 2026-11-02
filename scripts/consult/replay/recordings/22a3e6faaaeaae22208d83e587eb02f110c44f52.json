@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "ĐỒ ĂN SƠ CHẾ SẴN ( Ship hỏa tốc Hà Nội )- 1KG site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:19:56.335Z",
+ "body": {
+  "searchParameters": {
+   "q": "ĐỒ ĂN SƠ CHẾ SẴN ( Ship hỏa tốc Hà Nội )- 1KG site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "ĐỒ ĂN SƠ CHẾ SẴN ( Ship hỏa tốc Hà Nội ) - 1KG bí đỏ ...",
+    "link": "https://shopee.vn/%C4%90%E1%BB%92-%C4%82N-S%C6%A0-CH%E1%BA%BE-S%E1%BA%B4N-(-Ship-h%E1%BB%8Fa-t%E1%BB%91c-H%C3%A0-N%E1%BB%99i-)-1KG-b%C3%AD-%C4%91%E1%BB%8F-ngon-b%C3%AD-%C4%91%E1%BB%8F-n%E1%BA%BFp-c%C3%B4-ti%C3%AAn-d%C3%B9ng-l%C3%A0m-m%C3%B3n-canh-x%C3%A0o-rau-c%E1%BB%A7-qu%E1%BA%A3-V%C3%A2n-N%E1%BB%99i-i.1316482131.27886606377",
+    "snippet": "Mua ĐỒ ĂN SƠ CHẾ SẴN ( Ship hỏa tốc Hà Nội ) - 1KG bí đỏ ngon, bí đỏ nếp cô tiên dùng làm món canh, xào, rau củ quả Vân Nội giá tốt.",
+    "position": 1
+   },
+   {
+    "title": "ĐỒ ĂN SƠ CHẾ SẴN ( Ship hỏa tốc Hà Nội )- 1KG Bắp cải ...",
+    "link": "https://shopee.vn/%C4%90%E1%BB%92-%C4%82N-S%C6%A0-CH%E1%BA%BE-S%E1%BA%B4N-(-Ship-h%E1%BB%8Fa-t%E1%BB%91c-H%C3%A0-N%E1%BB%99i-)-1KG-B%E1%BA%AFp-c%E1%BA%A3i-tr%E1%BA%AFng-c%E1%BA%A3i-b%E1%BA%AFp-ngon-ch%E1%BA%BF-bi%E1%BA%BFn-m%C3%B3n-%C4%83n-rau-c%E1%BB%A7-qu%E1%BA%A3-t%C6%B0%C6%A1i-ngon-V%C3%A2n-N%E1%BB%99i-i.1316482131.28786606448",
+    "snippet": "Mua ĐỒ ĂN SƠ CHẾ SẴN ( Ship hỏa tốc Hà Nội )- 1KG Bắp cải trắng, cải bắp ngon chế biến món ăn, rau củ quả tươi ngon Vân Nội giá tốt.",
+    "position": 2
+   },
+   {
+    "title": "HN.Food, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/vidafood1",
+    "snippet": "HNfood Mua sắm thả - ga shoping tại nhà HNfood chuyên cung cấp các mặt hàng thực phẩm, ăn vặt nhập khẩu chất lượng, đảm bảo vệ sinh an toàn thực phẩm.",
+    "position": 3
+   },
+   {
+    "title": "Năm châu Market_Sỉ đồ ăn vặt, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/dailycpfood",
+    "snippet": "NĂM CHÂU FOODS - KHO SỈ/LẺ THỰC PHẨM & ĐỒ ĂN VẶT TOÀN QUỐC Là công ty hoạt động trên 10 năm chuyên cung cấp nguyên liệu thực phẩm & đồ ăn vặt phục vụ ...",
+    "position": 4
+   },
+   {
+    "title": "THỰC PHẨM BẢO NGỌC, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/baongoc.food",
+    "snippet": "BẢO NGỌC FOOD - THỰC PHẨM BẢO NGỌC - BAOYU FOOD là tổng kho cung cấp các sản phẩm thực phẩm nhập khẩu, với quy mô và kinh nghiệm Thực Phẩm Bảo Ngọc cam kết ...",
+    "position": 5
+   },
+   {
+    "title": "Chế biến sẵn tiện lợi. siêu ngon miệng - ship hỏa tốc Hà Nội",
+    "link": "https://shopee.vn/THANH-CUA-H%C3%80N-QU%E1%BB%90C-1KG-Ch%E1%BA%BF-bi%E1%BA%BFn-s%E1%BA%B5n-ti%E1%BB%87n-l%E1%BB%A3i.-si%C3%AAu-ngon-mi%E1%BB%87ng-ship-h%E1%BB%8Fa-t%E1%BB%91c-H%C3%A0-N%E1%BB%99i-i.1474021239.26776668523",
+    "snippet": "Mua THANH CUA HÀN QUỐC 1KG - Chế biến sẵn tiện lợi. siêu ngon miệng - ship hỏa tốc Hà Nội giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 6
+   },
+   {
+    "title": "Thực Phẩm An Dương, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/anduongfood",
+    "snippet": "Dẻ Sườn Bò Rút Xương 1kg, Lọc Sạch M, Mềm Ngon Ngọt Thịt, Nhập Khẩu, An Toàn Vệ Sinh Thực Phẩm [Ship Hỏa Tốc 1H]. 190.000₫. rating-star 4.6. 271 đã bán.",
+    "position": 7
+   },
+   {
+    "title": "Đồ ăn vặt đông lạnh - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/%C4%91%E1%BB%93%20%C4%83n%20v%E1%BA%B7t/%C4%91%C3%B4ng%20l%E1%BA%A1nh",
+    "snippet": "VỎ SỦI CẢO LUỘC 1KG TẶNG KÈM 200G MÌ TƯƠI - CHỈ SHIP HỎA TỐC NỘI.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

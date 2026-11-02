@@ -1,0 +1,84 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Cà phê Chồn nguyên chất 100% site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:16:06.433Z",
+ "body": {
+  "searchParameters": {
+   "q": "Cà phê Chồn nguyên chất 100% site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "cà phê chồn moka thượng hạng nguyên chất 100% hạt a ...",
+    "link": "https://shopee.vn/search?keyword=c%C3%A0+ph%C3%AA+ch%E1%BB%93n+moka+th%C6%B0%E1%BB%A3ng+h%E1%BA%A1ng+nguy%C3%AAn+ch%E1%BA%A5t+100%25+h%E1%BA%A1t+a+cafe+premium+weasel+moka+coffee+-+h%C6%B0%C6%A1ng+v%E1%BB%8B+%C4%91%E1%BA%AFng+nh%E1%BA%B9+t%E1%BB%B1+nhi%C3%AAn%2C+ph%E1%BA%A3ng+ph%E1%BA%A5t+h%C6%B0%C6%A1ng+socola+-+120g%2F+6+g%C3%B3i",
+    "snippet": "Mua cà phê chồn moka thượng hạng nguyên chất 100% hạt a cafe premium weasel moka coffee - hương vị đắng nhẹ tự nhiên, phảng phất hương socola - 120g/ 6 gói ...",
+    "position": 1
+   },
+   {
+    "title": "Combo 4 gói Cà phê chồn nguyên chất 100% túi lọc cao ...",
+    "link": "https://shopee.vn/Combo-4-g%C3%B3i-C%C3%A0-ph%C3%AA-ch%E1%BB%93n-nguy%C3%AAn-ch%E1%BA%A5t-100-t%C3%BAi-l%E1%BB%8Dc-cao-c%E1%BA%A5p-H%E1%BA%A1t-A-Cafe-Weaseal-Legend-Coffee-Drip-phin-gi%E1%BA%A5y-ti%E1%BB%87n-l%E1%BB%A3i-i.312500391.6859378778",
+    "snippet": "Shopee Bách Hóa Online Đồ uống Cà phê. Combo 4 gói Cà phê chồn nguyên chất 100% túi lọc cao cấp Hạt A Cafe Weaseal Legend Coffee Drip, phin giấy tiện lợi.",
+    "rating": 4.9,
+    "ratingCount": 72,
+    "position": 2
+   },
+   {
+    "title": "Cà phê chồn cao cấp Heritages Coffee Kraft Bag Hương ...",
+    "link": "https://shopee.vn/C%C3%A0-ph%C3%AA-ch%E1%BB%93n-cao-c%E1%BA%A5p-Heritages-Coffee-Kraft-Bag-H%C6%B0%C6%A1ng-Mai-Cafe-100-h%E1%BA%A1t-Robusta-nguy%C3%AAn-ch%E1%BA%A5t-125gr-i.312500391.3257651170",
+    "snippet": "Mua Cà phê chồn cao cấp Heritages Coffee Kraft Bag Hương Mai Cafe 100% hạt Robusta nguyên chất 125gr giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 3,
+    "position": 3
+   },
+   {
+    "title": "Cà Phê Sấy Lạnh Hoà Tan Đen 100% Robusta (Hũ 30g/80g)",
+    "link": "https://shopee.vn/Cafe-S%E1%BA%A5y-L%E1%BA%A1nh-Nguy%C3%AAn-Ch%E1%BA%A5t-C%C3%A0-Ph%C3%AA-S%E1%BA%A5y-L%E1%BA%A1nh-Ho%C3%A0-Tan-%C4%90en-100-Robusta-(H%C5%A9-30g-80g)-Cf-S%E1%BA%A5y-L%E1%BA%A1nh-H%C6%B0%C6%A1ng-Ch%E1%BB%93n-Honee-Coffee-i.236408784.25370753002",
+    "snippet": "Mua Cafe Sấy Lạnh Nguyên Chất - Cà Phê Sấy Lạnh Hoà Tan Đen 100% Robusta (Hũ 30g/80g) - Cf Sấy Lạnh Hương Chồn Honee Coffee giá tốt.",
+    "rating": 4.9,
+    "ratingCount": 2859,
+    "position": 4
+   },
+   {
+    "title": "Cà phê chồn Hương Mai Cafe Weasel Legend Coffee 100 ...",
+    "link": "https://shopee.vn/C%C3%A0-ph%C3%AA-ch%E1%BB%93n-H%C6%B0%C6%A1ng-Mai-Cafe-Weasel-Legend-Coffee-100-h%E1%BA%A1t-Arabica-nguy%C3%AAn-ch%E1%BA%A5t-250gr-i.312500391.4653888446",
+    "snippet": "Mua Cà phê chồn Hương Mai Cafe Weasel Legend Coffee 100% hạt Arabica nguyên chất 250gr giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.8,
+    "ratingCount": 97,
+    "position": 5
+   },
+   {
+    "title": "Cà Phê Bột Robusta Nguyên Chất 100% Hộp 350Gr Con ...",
+    "link": "https://shopee.vn/C%C3%A0-Ph%C3%AA-B%E1%BB%99t-Robusta-Nguy%C3%AAn-Ch%E1%BA%A5t-100-H%E1%BB%99p-350Gr-Con-Ch%E1%BB%93n-V%C3%A0ng-Huca-Food-i.80536559.21732297641",
+    "snippet": "Cà Phê Bột Robusta Nguyên Chất 100% Hộp 350Gr Con Chồn Vàng - Huca Food. 1/1. 223.000₫. Cà Phê Bột Robusta Nguyên Chất 100% Hộp 350Gr Con Chồn Vàng - Huca Food.",
+    "rating": 5,
+    "ratingCount": 6,
+    "position": 6
+   },
+   {
+    "title": "Cà phê chồn trung nguyên - Giá Tốt, Miễn Phí Vận Chuyển ...",
+    "link": "https://shopee.vn/list/c%C3%A0%20ph%C3%AA%20ch%E1%BB%93n/trung%20nguy%C3%AAn%20legend",
+    "snippet": "[Mê Trang] Cà Phê Chồn- túi hạt 500g Cao Cấp – Hương Thơm Đậm Đà, Hậu Ngọt Tinh Tế. 330.000₫. 550.000₫. -40%. rating-star 4.9 · Trung Nguyên Legend - Cà phê ...",
+    "position": 7
+   },
+   {
+    "title": "[Gói thử 50g] Cà phê Chồn pha phin Nguyên Chất 100%",
+    "link": "https://shopee.vn/-G%C3%B3i-th%E1%BB%AD-50g-C%C3%A0-ph%C3%AA-Ch%E1%BB%93n-pha-phin-Nguy%C3%AAn-Ch%E1%BA%A5t-100--i.993782019.18793926410",
+    "snippet": "[Gói thử 50g] Cà phê Chồn pha phin Nguyên Chất 100%. 1/6. Đã bán hết. 5.000₫. [Gói thử 50g] Cà phê Chồn pha phin Nguyên Chất 100%.",
+    "rating": 5,
+    "ratingCount": 4,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

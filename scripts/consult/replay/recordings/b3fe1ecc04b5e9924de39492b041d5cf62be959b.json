@@ -1,0 +1,140 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Seahorse",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:05:58.519Z",
+ "body": {
+  "searchParameters": {
+   "q": "Seahorse",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Seahorse - Wikipedia",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/2/25/Hippocampus_hippocampus_%28on_Ascophyllum_nodosum%29.jpg?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=original",
+    "imageWidth": 2533,
+    "imageHeight": 3378,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ24up_71DfnJ6JgLgEWKr0dl6z_uIpRmVjT1F9rtE_Xw&s=10",
+    "thumbnailWidth": 386,
+    "thumbnailHeight": 518,
+    "source": "Wikipedia",
+    "domain": "en.wikipedia.org",
+    "link": "https://en.wikipedia.org/wiki/Seahorse",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2F2%2F25%2FHippocampus_hippocampus_%2528on_Ascophyllum_nodosum%2529.jpg%3Futm_source%3Den.wikipedia.org%26utm_campaign%3Dindex%26utm_content%3Doriginal&tbnid=qL4C8lUQiV13AM&imgrefurl=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FSeahorse&docid=goEfA9hEEmFWpM&w=2533&h=3378",
+    "copyright": "Hans Hillewaert",
+    "creator": "Hans Hillewaert",
+    "position": 1
+   },
+   {
+    "title": "Seahorse | Description, Reproduction, Habitat, & Facts | Britannica",
+    "imageUrl": "https://cdn.britannica.com/03/107603-050-50F6080F/sea-horse.jpg",
+    "imageWidth": 1357,
+    "imageHeight": 1600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUpXjonP_U5owRJSGBZq0nD7JpjekMwZynABkJSltjDQ&s=10",
+    "thumbnailWidth": 510,
+    "thumbnailHeight": 601,
+    "source": "Britannica",
+    "domain": "www.britannica.com",
+    "link": "https://www.britannica.com/animal/sea-horse",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.britannica.com%2F03%2F107603-050-50F6080F%2Fsea-horse.jpg&tbnid=B5L33rcOm-DdoM&imgrefurl=https%3A%2F%2Fwww.britannica.com%2Fanimal%2Fsea-horse&docid=F-8Wm34xYaEf5M&w=1357&h=1600",
+    "position": 2
+   },
+   {
+    "title": "Seahorses Are One of the Deadliest Creatures in the Sea. Yes, Seahorses.",
+    "imageUrl": "https://www.treehugger.com/thmb/HoIg45uBOVUhR7wdkXyTvu-Sa7o=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-1159240457-79e9779a466c4b6e82d188384c34142b.jpg",
+    "imageWidth": 1500,
+    "imageHeight": 997,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCDyc3S8fag_aijyq9AkUK5YeWOcZYvUZZ803F5SPVew&s=10",
+    "thumbnailWidth": 679,
+    "thumbnailHeight": 450,
+    "source": "Treehugger",
+    "domain": "www.treehugger.com",
+    "link": "https://www.treehugger.com/nature-blows-my-mind-seahorses-are-one-deadliest-creatures-sea-yes-seahorses-4858626",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.treehugger.com%2Fthmb%2FHoIg45uBOVUhR7wdkXyTvu-Sa7o%3D%2F1500x0%2Ffilters%3Ano_upscale()%3Amax_bytes(150000)%3Astrip_icc()%2FGettyImages-1159240457-79e9779a466c4b6e82d188384c34142b.jpg&tbnid=3H6PZb2APrTRLM&imgrefurl=https%3A%2F%2Fwww.treehugger.com%2Fnature-blows-my-mind-seahorses-are-one-deadliest-creatures-sea-yes-seahorses-4858626&docid=FZnLC4z6Qq4RxM&w=1500&h=997",
+    "position": 3
+   },
+   {
+    "title": "It has no scales, swims upright and grips with its tail – so why is the  seahorse considered a fish? | Discover Wildlife",
+    "imageUrl": "https://c02.purpledshub.com/uploads/sites/62/2025/07/seahorse-2.jpg?webp=1&w=1200",
+    "imageWidth": 1200,
+    "imageHeight": 1800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIIIVmO6sheL9pITQIzSbYCNOVfalZjF1ZXwPkKnxMpQ&s=10",
+    "thumbnailWidth": 452,
+    "thumbnailHeight": 678,
+    "source": "BBC Wildlife Magazine",
+    "domain": "www.discoverwildlife.com",
+    "link": "https://www.discoverwildlife.com/animal-facts/fish/why-is-seahorse-a-fish",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fc02.purpledshub.com%2Fuploads%2Fsites%2F62%2F2025%2F07%2Fseahorse-2.jpg%3Fwebp%3D1%26w%3D1200&tbnid=xlmgqN1_30ZlyM&imgrefurl=https%3A%2F%2Fwww.discoverwildlife.com%2Fanimal-facts%2Ffish%2Fwhy-is-seahorse-a-fish&docid=mEkZ62QIvu9aRM&w=1200&h=1800",
+    "creator": "Wirestock",
+    "credit": "Getty Images/iStockphoto",
+    "position": 4
+   },
+   {
+    "title": "The weird, wondrous world of seahorses | National Geographic",
+    "imageUrl": "https://i.natgeofe.com/n/61e90359-d848-4a2d-bfd1-3d6a26cefb34/MM8854_200309_27169_edited_on_white.jpg",
+    "imageWidth": 3072,
+    "imageHeight": 2627,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJhsKWU8weZEI0moVxEKKExQiFGzh-NCEZtqXvpfB3-w&s=10",
+    "thumbnailWidth": 599,
+    "thumbnailHeight": 511,
+    "source": "National Geographic",
+    "domain": "www.nationalgeographic.com",
+    "link": "https://www.nationalgeographic.com/magazine/article/the-weird-wondrous-world-of-seahorses-feature",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fi.natgeofe.com%2Fn%2F61e90359-d848-4a2d-bfd1-3d6a26cefb34%2FMM8854_200309_27169_edited_on_white.jpg&tbnid=KTQd5RejCCcqVM&imgrefurl=https%3A%2F%2Fwww.nationalgeographic.com%2Fmagazine%2Farticle%2Fthe-weird-wondrous-world-of-seahorses-feature&docid=3STawjG92BHvSM&w=3072&h=2627",
+    "position": 5
+   },
+   {
+    "title": "Calling all those born in the Year of the Horse！ Did you know that the  ocean has its own mane attraction–the seahorse? Swipe through for some fun  facts on this fascinating marine",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=10224326068053118",
+    "imageWidth": 828,
+    "imageHeight": 1012,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQINFPfLlHfF9hvCJQspW4L0yyxYzqmsJWSAsvbaeTbQw&s=10",
+    "thumbnailWidth": 404,
+    "thumbnailHeight": 495,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/RWSSGO/posts/calling-all-those-born-in-the-year-of-the-horsedid-you-know-that-the-ocean-has-i/1205585211684471/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D10224326068053118&tbnid=99iaDpp9FlHg-M&imgrefurl=https%3A%2F%2Fwww.facebook.com%2FRWSSGO%2Fposts%2Fcalling-all-those-born-in-the-year-of-the-horsedid-you-know-that-the-ocean-has-i%2F1205585211684471%2F&docid=R2-dRWUbT03xfM&w=828&h=1012",
+    "position": 6
+   },
+   {
+    "title": "The Seahorse – Beachcombing Magazine",
+    "imageUrl": "https://cdn.shopify.com/s/files/1/0016/6959/5189/files/sea-horse-swimming-hippocampus_1024x1024.jpg?v=1563490115",
+    "imageWidth": 1024,
+    "imageHeight": 545,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPgrWJAdOhTeM9Hhke3K0WyCy4irHknR4Qvp1QaYz1SA&s=10",
+    "thumbnailWidth": 612,
+    "thumbnailHeight": 326,
+    "source": "Beachcombing Magazine",
+    "domain": "www.beachcombingmagazine.com",
+    "link": "https://www.beachcombingmagazine.com/blogs/news/the-seahorse?srsltid=AU7gw4XklNPNtx3LH7DltPpKQOlVTc7GYWGvcnWwXCZOwtwM3azGJvWc",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.shopify.com%2Fs%2Ffiles%2F1%2F0016%2F6959%2F5189%2Ffiles%2Fsea-horse-swimming-hippocampus_1024x1024.jpg%3Fv%3D1563490115&tbnid=3VbjIn9hwS-BOM&imgrefurl=https%3A%2F%2Fwww.beachcombingmagazine.com%2Fblogs%2Fnews%2Fthe-seahorse%3Fsrsltid%3DAU7gw4XklNPNtx3LH7DltPpKQOlVTc7GYWGvcnWwXCZOwtwM3azGJvWc&docid=_MSCuHLjW8BWXM&w=1024&h=545",
+    "position": 7
+   },
+   {
+    "title": "Lined Seahorse - Clearwater Marine Aquarium",
+    "imageUrl": "https://www.cmaquarium.org/app/uploads/2024/11/sea-horses-6-480x480-1.jpg",
+    "imageWidth": 480,
+    "imageHeight": 480,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS45BaPmq8lMIBT2m4OIDEECunr31zMnEJ6MDb5YNJgGw&s=10",
+    "thumbnailWidth": 480,
+    "thumbnailHeight": 480,
+    "source": "Clearwater Marine Aquarium",
+    "domain": "www.cmaquarium.org",
+    "link": "https://www.cmaquarium.org/animals/lined-seahorse/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.cmaquarium.org%2Fapp%2Fuploads%2F2024%2F11%2Fsea-horses-6-480x480-1.jpg&tbnid=m9MX8lJ9aja1aM&imgrefurl=https%3A%2F%2Fwww.cmaquarium.org%2Fanimals%2Flined-seahorse%2F&docid=wPcO7lGWRLXaOM&w=480&h=480",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

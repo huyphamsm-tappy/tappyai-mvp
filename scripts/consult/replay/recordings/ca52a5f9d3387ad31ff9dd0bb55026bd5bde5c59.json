@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Ốp lưng iPhone 17 Pro Max 17 pro max UAG Có MagSafe; dòng Monarch hoặc Pathfinder; dưới 1 triệu (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:08:35.207Z",
+ "body": {
+  "searchParameters": {
+   "q": "Ốp lưng iPhone 17 Pro Max 17 pro max UAG Có MagSafe; dòng Monarch hoặc Pathfinder; dưới 1 triệu (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Monarch ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-monarch-pro-exclusive-cap-carbon-fiber.html",
+    "snippet": "Sản phẩm ốp lưng iPhone 17 Pro Max có nam châm MagSafe, cho phép sạc không dây và hỗ trợ Apple Pay. Ốp lưng có nút bấm lớn dễ thao tác và mép nhô cao bảo vệ màn ...",
+    "position": 1
+   },
+   {
+    "title": "Ốp lưng UAG cho iPhone 17 Series",
+    "link": "https://cellphones.com.vn/phu-kien/bao-da-op-lung/iphone/iphone-17/uag.html",
+    "snippet": "Ốp lưng UAG iPhone 17 Series · Hỗ trợ sạc không dây/MagSafe · Mỏng nhẹ · Chống sốc, va đập · Chống trầy xước · Có chân đứng · Hạn chế ngã màu.",
+    "position": 2
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Monarch ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-monarch-pro-kevlar-more-color.html",
+    "snippet": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Monarch Pro Kevlar Element Green · Mới, đầy đủ phụ kiện từ nhà sản xuất · - Bảo hành 12 tháng lỗi do nhà sản xuất - Riêng ...",
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng chống sốc UAG Monarch cho iPhone 12 Pro Max",
+    "link": "https://cellphones.com.vn/op-lung-chong-soc-uag-monarch-cho-iphone-12-pro-max.html",
+    "snippet": "Ốp lưng chống sốc cho iPhone 12 Pro Max UAG Monarch được hãng thiết kế rất nhỏ gọn không chiếm nhiều diện tích khi bạn cho vào túi. Giúp người dùng có thể mang ...",
+    "position": 4
+   },
+   {
+    "title": "Các hãng ốp lưng nổi tiếng được yêu thích hiện nay",
+    "link": "https://cellphones.com.vn/sforum/cac-hang-op-lung-noi-tieng",
+    "snippet": "Ưu điểm lớn của hãng là chất liệu silicone cao cấp và tái chế bền bỉ cho cảm giác cầm nắm cực kỳ êm ái, sang trọng cùng lớp lót nỉ bên trong bảo ...",
+    "date": "20 thg 4, 2026",
+    "position": 5
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Plyo Exclusive ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-plyo-exclusive-cap-with-magsafe.html",
+    "snippet": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Plyo Exclusive Cap With Magsafe ; Smember Giảm thêm đến 68.000đ ; Giá sản phẩm. 1.600.000đ 1.360.000đ ; Danh sách Cookies.",
+    "position": 6
+   },
+   {
+    "title": "Các mẫu ốp lưng điện thoại mới nhất hiện nay",
+    "link": "https://cellphones.com.vn/sforum/mau-op-lung-dien-thoai-moi-nhat",
+    "snippet": "Ngoài ra, nhờ vào chất liệu Armour Max độc quyền, không những đảm bảo độ cứng cáp của ốp lưng mà còn giúp ốp giữ được độ mới, hạn chế hiện tượng ...",
+    "date": "9 thg 6, 2024",
+    "position": 7
+   },
+   {
+    "title": "Ốp lưng iPhone 15 Pro Max UAG Monarch hỗ trợ sạc ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-15-pro-max-uag-monarch-with-magsafe.html",
+    "snippet": "Ốp lưng iPhone 15 Pro Max UAG Monarch with Magsafe là ốp cao cấp và cứng cấp nhất mà bạn có thể tìm thấy của UAG. Với cấu trúc 5 lớp cùng các chất liệu bền ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

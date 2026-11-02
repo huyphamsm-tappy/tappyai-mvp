@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"LẨU NGON 79\" OR \"Vạn Quán\" OR \"Lẩu bò Hồng Tiêu\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:53:57.631Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"LẨU NGON 79\" OR \"Vạn Quán\" OR \"Lẩu bò Hồng Tiêu\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Lẩu Ngon 79 Nguyễn Trãi — Review quán Thái ...",
+    "link": "https://www.tiktok.com/@giadinhtihi/video/7644233790897868049",
+    "snippet": "Kết luận Lẩu Ngon 79 (Nguyễn Trãi) là lựa chọn hợp lý cho ai tìm lẩu Thái, gỏi Thái và hải sản tại khu vực Quận 1 — đáng thử cho bữa tối gia ...",
+    "position": 1
+   },
+   {
+    "title": "Ăn một lần là nhớ cả đời cùng Quán Lẩu Ngon 79, đồ ...",
+    "link": "https://www.tiktok.com/@diadiemanuong/video/7358775159106309397",
+    "snippet": "Ăn một lần là nhớ cả đời cùng Quán Lẩu Ngon 79, đồ ăn ngon hấp dẫn mà giá thì rất bình dân ngay trong trung tâm Quận 1 #diadiemanuong ...",
+    "position": 2
+   },
+   {
+    "title": "Lẩu bò hồng tiêu – thơm cay, đậm vị",
+    "link": "https://www.tiktok.com/@lauhongtieu/video/7688238535257623828",
+    "snippet": "Địa chỉ và giờ mở - Tên quán: Lẩu Bò Hồng Tiêu - Địa chỉ: 245/10 Nguyễn Trãi, Cầu Ông Lãnh, Quận 1, TP. ... Nếu bạn cần một địa điểm lẩu bò ngon, ...",
+    "position": 3
+   },
+   {
+    "title": "Lẩu Ngon 79 Nguyễn Trãi",
+    "link": "https://www.tiktok.com/discover/l%E1%BA%A9u-ngon-79-nguy%E1%BB%85n-tr%C3%A3i",
+    "snippet": "Đạo mê món Thái bơi hết vào đây, nồi lẩu lá chúc chua cay với dĩa gỏi đâm vị đỉnh chóp Lẩu Ngon 79 - 245/23 Nguyễn Trãi, ...",
+    "date": "21 thg 9, 2026",
+    "position": 4
+   },
+   {
+    "title": "Lẩu bò Hồng Tiêu, siêu ngon, siêu đông khách chủ quán là ...",
+    "link": "https://www.tiktok.com/@ngocduy_diachianuong/video/7358417392503966977",
+    "snippet": "Lẩu bò Hồng Tiêu, siêu ngon, siêu đông khách chủ quán là bếp trưởng nhà hàng năm sao #vtvcab #diachianuong #laubohongtieu #foryou ; Ăn Cùng Dậu.",
+    "position": 5
+   },
+   {
+    "title": "Lẩu Núp Hẻm Siêu Ngon Tại 79 Nguyễn Thị Tú",
+    "link": "https://www.tiktok.com/@ngocduy_diachianuong/video/7423250127286013202",
+    "snippet": "Nước lẩu đậm vị, cá tươi và các loại rau đi kèm tạo nên trải nghiệm ăn lẩu trọn vẹn. Nhiều người tìm kiếm “lẩu cá 79” hoặc “lẩu ngon 79 Quận 1” ...",
+    "position": 6
+   },
+   {
+    "title": "Lẩu Bò Hồng Tiêu – Nước Dùng Ngọt Thanh Từ Xương Bò",
+    "link": "https://www.tiktok.com/@lauhongtieu/video/7650898931404000528",
+    "snippet": "nếu đang tìm chỗ ăn lẩu bò ngon và tiết kiệm ở Quận 1, Lẩu Bò Hồng Tiêu là lựa chọn đáng thử. Quán nằm tại 245/10 Nguyễn Trãi, Cầu Ông Lãnh ...",
+    "date": "Mai là thứ Sáu rồi",
+    "position": 7
+   },
+   {
+    "title": "Lẩu ngon 79 nấu bằng lá chúc siêu chất lượng ở quận ...",
+    "link": "https://www.tiktok.com/@lee.haydi/video/7426219077745511688",
+    "snippet": "Lẩu ngon 79 nấu bằng lá chúc siêu chất lượng ở quận 1, mừng sinh nhật 2 tuổi ngập tràn ưu đãi #laungon #laungon79 #AnCungTikTok #LearnOnTikTok # ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

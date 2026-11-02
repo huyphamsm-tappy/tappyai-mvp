@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Set Đồ Jean Nam Lunary site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:19:56.053Z",
+ "body": {
+  "searchParameters": {
+   "q": "Set Đồ Jean Nam Lunary site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Set Đồ Jean Nam ICONDENIM Lunary Form Boxy SEID0104",
+    "link": "https://shop.tiktok.com/vn/pdp/icondenim-set-jeans-nam-lunary-form-box-chat-lieu-jacquard/1734381951983191756?source=anchor",
+    "snippet": "ICONDENIM Set Đồ Jean Nam LunaryChất liệu: Jacquard Jean (70% cotton, 14% viscose, 16% polyester)Form: Áo Boxy – Quần Regular CHẤT LIỆU JACQUARD JEAN – MỀM ...",
+    "position": 1
+   },
+   {
+    "title": "กางเกงไอมาเน่ปักเบอร์",
+    "link": "https://shop.tiktok.com/vn/k/kangekng-aio-ma-en-pak-ebor",
+    "snippet": "Set Đồ Jean Nam ICONDENIM Lunary Form Boxy SEID0104. 1. 11 sold. ₫384.000. ₫399.000 ...",
+    "position": 2
+   },
+   {
+    "title": "box spanar set",
+    "link": "https://shop.tiktok.com/vn/k/box-spanar-set",
+    "snippet": "Set Đồ Jean Nam ICONDENIM Lunary Form Boxy SEID0104. 1. 18 sold. ₫359.000. ₫399.000 ...",
+    "position": 3
+   },
+   {
+    "title": "Iucd set - TikTok Shop Vietnam",
+    "link": "https://shop.tiktok.com/vn/k/iucd-set",
+    "snippet": "Set Đồ Cuban Nam ICDN Jacquard Jean SEID0075 · 4.7. 589 sold · 281.880. ₫349.000 ; Set Đồ Nam ICONDENIM Lunary SEID0104. 5. 24 sold · 359.000. ₫399.000 ; Sét Bộ đùi ...",
+    "position": 4
+   },
+   {
+    "title": "jenama kasut israil",
+    "link": "https://shop.tiktok.com/vn/k/jenama-kasut-israil",
+    "snippet": "Set Đồ Jean Nam ICONDENIM Lunary Form Boxy SEID0104. 1. 17 sold. ₫359.000. ₫399.000 ...",
+    "position": 5
+   },
+   {
+    "title": "001 sen barang lelaki",
+    "link": "https://shop.tiktok.com/vn/k/001-sen-barang-lelaki",
+    "snippet": "Set Đồ Nam ICONDENIM Lunary SEID0104. 5. 23 sold. ₫384.000. ₫399.000. Set Đồ Nam ...",
+    "position": 6
+   },
+   {
+    "title": "TikTok Shop Vietnam: Freeship quần áo, mỹ phẩm và hơn ...",
+    "link": "https://shop.tiktok.com/vn",
+    "snippet": "Khám phá ưu đãi cho quần áo, mỹ phẩm, đồ điện tử và hơn thế nữa tại TikTok Shop Vietnam. Hưởng freeship cho mặt hàng đủ điều kiện. Mua sắm ngay để nhận ưu ...",
+    "position": 7
+   },
+   {
+    "title": "áo sm mềm hottrend!!!!!!!!!!!!!!!!!!!!!!",
+    "link": "https://shop.tiktok.com/vn/pdp/ao-polo-nam-cao-cap-thiet-ke-hot-trend-chat-lieu-mem-mai/1731196026418661277",
+    "snippet": "Sản phẩm này là hàng Quảng Châu cao cấp, được thiết kế theo xu hướng hot trend hiện nay. Chất liệu của sản phẩm rất mềm và mịn, giúp mang lại cảm giác thoải ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

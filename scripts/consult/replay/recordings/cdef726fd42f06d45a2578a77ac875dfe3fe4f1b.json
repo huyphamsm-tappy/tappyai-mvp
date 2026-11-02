@@ -1,0 +1,428 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "khách sạn gần vị trí hiện tại",
+  "gl": "vn",
+  "hl": "vi"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:20:35.312Z",
+ "body": {
+  "searchParameters": {
+   "q": "khách sạn gần vị trí hiện tại",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "engine": "google"
+  },
+  "ll": "@36.8409184,-76.2103436,11z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Comfort Inn & Suites Chesapeake - Portsmouth",
+    "address": "3355 S Military Hwy, Chesapeake, VA 23323",
+    "latitude": 36.773225,
+    "longitude": -76.339726,
+    "rating": 3.4,
+    "ratingCount": 1418,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://www.choicehotels.com/virginia/chesapeake/comfort-inn-hotels/va455?mc=llgoxxpx",
+    "phoneNumber": "(757) 673-8585",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmhp1a8aUL05sTbxvKhqHxcc6Bj6MQ8CWMOBGYrTLLB5FgExX3JhcoLk3lWfotUkKcSSsmVm_L4o08z9H3X5b6Bcr0ftnI7D95QW-fud1EuMyhyol0o2gAu4zWd2IWKXVOXT-m_",
+    "cid": "5010012012936364866",
+    "fid": "0x89baa392a3832125:0x45872361af830342",
+    "placeId": "ChIJJSGDo5KjuokRQgODr2Ejh0U"
+   },
+   {
+    "position": 2,
+    "title": "Quality Inn Chesapeake - Greenbrier",
+    "address": "100 Red Cedar Ct, Chesapeake, VA 23320",
+    "latitude": 36.767666999999996,
+    "longitude": -76.252696,
+    "rating": 2.6,
+    "ratingCount": 754,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://www.choicehotels.com/virginia/chesapeake/quality-inn-hotels/va679?mc=llgoxxpx",
+    "phoneNumber": "(757) 401-4532",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkSY9MvfdlNq7cv8vz9BMwjQwDHhy3Vm116-mhE2qR1opg95-vyHNwPe8C93_e1RxNGic3JhbbP7X7vBeYuNFA2rVRqE9j6beTCaa7LSmq2u07_AlWdvdfc74NzofnPRqLsex5gkiuQuGN1",
+    "cid": "6889407105354169272",
+    "fid": "0x89babcbc1f0c70c9:0x5f9c1742bbaffbb8",
+    "placeId": "ChIJyXAMH7y8uokRuPuvu0IXnF8"
+   },
+   {
+    "position": 3,
+    "title": "WoodSpring Suites Chesapeake-Norfolk South",
+    "address": "137 Kempsville Rd, Chesapeake, VA 23320",
+    "latitude": 36.735002099999996,
+    "longitude": -76.2393558,
+    "rating": 3.5,
+    "ratingCount": 692,
+    "type": "Khách sạn lưu trú dài hạn",
+    "types": [
+     "Khách sạn lưu trú dài hạn",
+     "Khách sạn"
+    ],
+    "website": "https://www.woodspring.com/extended-stay-hotels/locations/virginia/chesapeake-norfolk/woodspring-suites-chesapeake-norfolk-south?mc=llgoxxpx",
+    "phoneNumber": "(757) 410-0006",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkTmQ2VgBEy5R1Q2e64clw4ODUAsCPA2cl5KpaFcVWtbiYuoTgDbcWhQnSLlWZyaSHvKeo1uJMCmo3AKwAAxKb37a9rIh28Lu99dYAxr8_T0kMAb2EfHLybEebgZ5vgvmmL5OC7RQJzoNq0",
+    "cid": "14021554264683505443",
+    "fid": "0x89babb6e87775e61:0xc29691507952e723",
+    "placeId": "ChIJYV53h267uokRI-dSeVCRlsI"
+   },
+   {
+    "position": 4,
+    "title": "Fairfield by Marriott Inn & Suites Chesapeake Suffolk",
+    "address": "2122 Jolliff Rd, Chesapeake, VA 23321",
+    "latitude": 36.8183131,
+    "longitude": -76.4436497,
+    "rating": 3.8,
+    "ratingCount": 600,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://www.marriott.com/en-us/hotels/orfsu-fairfield-inn-and-suites-chesapeake-suffolk/overview/?scid=f2ae0541-1279-4f24-b197-a979c79310b0",
+    "phoneNumber": "(757) 966-2727",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm6G__JoVQomk3f0AfSxJPiBNBEaBwXM73ys9j8y02vJzsyRlTnm4DPZWwjZ-QzBNFrf-oiR-Tq8kWhlIjnj8MyfqP_066UUHoBjJ1U2xhXKhY0Syv1UqTctprGj1pTU20-zpRwKYhjwYDi",
+    "cid": "9295351911501158409",
+    "fid": "0x89baa062cf8a82c7:0x80ffb9508b465809",
+    "placeId": "ChIJx4KKz2KguokRCVhGi1C5_4A"
+   },
+   {
+    "position": 5,
+    "title": "Comfort Suites Chesapeake - Norfolk",
+    "address": "1550 Crossways Blvd, Chesapeake, VA 23320",
+    "latitude": 36.7811501,
+    "longitude": -76.2381163,
+    "rating": 4.2,
+    "ratingCount": 1024,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://www.choicehotels.com/virginia/chesapeake/comfort-suites-hotels/va122?mc=llgoxxpx",
+    "phoneNumber": "(757) 420-1600",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm_IKQ_OGTQQ1DBq00LyoP7ZpoaU_T3DWs85NbWTG8gc6RDc0L9vMggaMpoOO58uFj8PRWXM-JuLKiyL1g0jORrzorPRwC14clrx6i89LCj-p1Qgj9_uYDVl1hpki2Sb7uUas5b",
+    "cid": "10429762271646104262",
+    "fid": "0x89babcef9065909d:0x90bdf586dd3cbac6",
+    "placeId": "ChIJnZBlkO-8uokRxro83Yb1vZA"
+   },
+   {
+    "position": 6,
+    "title": "Comfort Suites Suffolk - Chesapeake",
+    "address": "5409 Plummer Blvd, Suffolk, VA 23435",
+    "latitude": 36.861288,
+    "longitude": -76.44697099999999,
+    "rating": 3.7,
+    "ratingCount": 966,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://www.choicehotels.com/virginia/suffolk/comfort-suites-hotels/va501?mc=llgoxxpx",
+    "phoneNumber": "(757) 337-4011",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlybRRiuPbr7iqAkA4HQIF3YcjU3F1arhVslMGhiWAtH2HrU8nDAQMeS7PrdJfpSDYauGJwmM93eC1_b6_o7w1rgeWfa5cFkce0qGTeaH0rUYwCUmRnBBbI_Tf8F2lzX8tbCf0",
+    "cid": "1598199287701200032",
+    "fid": "0x89ba9ff9d25c1839:0x162df1c8d7b65ca0",
+    "placeId": "ChIJORhc0vmfuokRoFy218jxLRY"
+   },
+   {
+    "position": 7,
+    "title": "Ocean View Inn",
+    "address": "1020 E Ocean View Ave, Norfolk, VA 23503",
+    "latitude": 36.9468348,
+    "longitude": -76.2394714,
+    "rating": 3,
+    "ratingCount": 1001,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Trạm nghỉ"
+    ],
+    "website": "http://www.oceanviewinnnorfolk.com/",
+    "phoneNumber": "(757) 394-3240",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlPqVm2GWie6Tyl2aR2XJXiwTxfA8Uu9McTU_GmZ-2Z60me3yYAyzY8epSFv2xCvKOORomE7i80bTjmJGk5H2zzn-eNsETjSVCSkgCpmeTX1OA2WKv_kmONwhwIcsmEywyevCAa",
+    "cid": "7211888530128320692",
+    "fid": "0x89ba90eeddcd041d:0x6415c6686e0338b4",
+    "placeId": "ChIJHQTN3e6QuokRtDgDbmjGFWQ"
+   },
+   {
+    "position": 8,
+    "title": "Holiday Inn Express & Suites Chesapeake by IHG",
+    "address": "2436 Gum Rd, Chesapeake, VA 23321",
+    "latitude": 36.820990099999996,
+    "longitude": -76.42952869999999,
+    "rating": 3.6,
+    "ratingCount": 738,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Trung tâm thương mại",
+     "Câu lạc bộ thể dục",
+     "Quán trọ",
+     "Bể bơi"
+    ],
+    "website": "https://www.ihg.com/holidayinnexpress/hotels/us/en/chesapeake/orfpb/hoteldetail?cm_mmc=GoogleMaps-_-EX-_-US-_-ORFPB",
+    "phoneNumber": "(757) 465-2222",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnxtbKiZqQrJQGjKwhYpDfpt3askdqQB5UN58gIphMjK38EUJ9XwvwSjBJjb5-jRzMvO5zNJWWyr_vikims3dWdPPiOdSXjW8thCIGQwjXMHrG4G7xRibAjmURzMf-ikdPSyYS4vw",
+    "cid": "16154375096489052744",
+    "fid": "0x89baa05c39772fa1:0xe02fde8f8aa58a48",
+    "placeId": "ChIJoS93OVyguokRSIqlio_eL-A"
+   },
+   {
+    "position": 9,
+    "title": "Sleep Inn & Suites Chesapeake - Portsmouth",
+    "address": "3280 Western Branch Blvd, Chesapeake, VA 23321",
+    "latitude": 36.866321,
+    "longitude": -76.411144,
+    "rating": 3.4,
+    "ratingCount": 1052,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://www.choicehotels.com/virginia/chesapeake/sleep-inn-hotels/va305?mc=llgoxxpx",
+    "phoneNumber": "(757) 447-2650",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn8NjGj4_pdmRwylmvqNU0C-4imqpJgadNK63B8PY7EOisxPsCv5iHnPmRH-pI9_XUg7wcHOewU0nPOKpVfLp1I8U6s3GrepF_tbnhFG6rXS_eL7xuyj7qpGtKwN0A0hCPdqDusBA",
+    "cid": "17371425872470353603",
+    "fid": "0x89ba9f9d4969f175:0xf113b3cb12a026c3",
+    "placeId": "ChIJdfFpSZ2fuokRwyagEsuzE_E"
+   },
+   {
+    "position": 10,
+    "title": "Boardwalk Resort and Villas",
+    "address": "1601 Atlantic Ave, Virginia Beach, VA 23451",
+    "latitude": 36.8447688,
+    "longitude": -75.9737162,
+    "rating": 4.2,
+    "ratingCount": 1821,
+    "type": "Khách sạn nghỉ dưỡng",
+    "types": [
+     "Khách sạn nghỉ dưỡng",
+     "Khách sạn"
+    ],
+    "website": "https://www.tophotelreservations.com/boardwalk-resort-and-villas?utm_source=yext&utm_medium=organic&utm_campaign=bwr-yext-listing&utm_content=yext-listing_website_url",
+    "phoneNumber": "(757) 213-3099",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlkJzTSlQDXCw0A4pQfqb79igXmkwDQ5cDZsFjCTUOqkqMBOKOXxEJ1pz-OuNMwY7YHPxuoEXAqMTOBYZygYEvuw1D3-H9JGXnRXE-1qir13E1jGOlvCCAfwxAAQN1-1tE3t70GXu8rh8eV",
+    "cid": "5212227845745317756",
+    "fid": "0x89bae99e3e1c4dbf:0x48558d9c320c977c",
+    "placeId": "ChIJv00cPp7puokRfJcMMpyNVUg"
+   },
+   {
+    "position": 11,
+    "title": "La Quinta Inn & Suites by Wyndham Norfolk",
+    "address": "1387 N Military Hwy, Norfolk, VA 23502",
+    "latitude": 36.8716418,
+    "longitude": -76.2116672,
+    "rating": 3.7,
+    "ratingCount": 1509,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Quán trọ",
+     "Trạm nghỉ"
+    ],
+    "website": "https://www.wyndhamhotels.com/laquinta/norfolk-virginia/la-quinta-inn-and-suites-norfolk/overview?CID=LC:6ysy27krtpcrqev:53461&iata=00093796",
+    "phoneNumber": "(757) 466-7001",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkKro-AhKnAa996zd9swofXSbassqBmjbrJGIx-dxxK2YJRw24n9YANihueUlCWNmVDFWhkAy2jKv5OsEFTpZoGS3R5jx6w5FPZ3YPQkJUA9VYmMMkiOhcdoMvLMYANjLBlGoFb2A",
+    "cid": "12241345580688600800",
+    "fid": "0x89ba96584afa7d89:0xa9e1fef2bdbdeee0",
+    "placeId": "ChIJiX36SliWuokR4O69vfL-4ak"
+   },
+   {
+    "position": 12,
+    "title": "Red Roof Inn Chesapeake Conference Center",
+    "address": "724 Woodlake Dr, Chesapeake, VA 23320",
+    "latitude": 36.7913889,
+    "longitude": -76.2341667,
+    "rating": 3.8,
+    "ratingCount": 1467,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Khách sạn lưu trú dài hạn",
+     "Quán trọ",
+     "Trạm nghỉ"
+    ],
+    "website": "https://www.redroof.com/property/va/chesapeake/RRI154?utm_source=GMB&utm_medium=Google&utm_campaign=GMB_Performance_RRI154",
+    "phoneNumber": "(757) 743-3200",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm9E69KkMP5vDn1dhgwB0sRewAl-E5MOJeMgqk9td6Ki-MEEz4B9CIa1UfcngjNCpqT672xzsnR9ubOKz5qSmyCMysMcYJMM_fOLxK0vr0FdXPySjQRSZswQn2BSvbAm3ZtHTMN",
+    "cid": "5134677680919845532",
+    "fid": "0x89babcfd6645edfb:0x47420a25675a9a9c",
+    "placeId": "ChIJ--1FZv28uokRnJpaZyUKQkc"
+   },
+   {
+    "position": 13,
+    "title": "Days Inn by Wyndham Chesapeake",
+    "address": "1439 George Washington Hwy N, Chesapeake, VA 23323",
+    "latitude": 36.7927055,
+    "longitude": -76.3285034,
+    "rating": 2.7,
+    "ratingCount": 510,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Quán trọ",
+     "Trạm nghỉ"
+    ],
+    "website": "https://www.wyndhamhotels.com/days-inn/chesapeake-virginia/days-inn-chesapeake/overview?CID=LC:iqv0j1dklijly45:6360&iata=00093796",
+    "phoneNumber": "(757) 487-8861",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWndVJTuFURmAJlLCeFk2JJj03uHgoSNIMPg4eBpl_zGOExlXOAM9jMP0Y2aj21xj4zc2P36yGN-ATsyeZE2UpQ6HqG7NoFwIrxkxaw6c5w3WgJiZaTCQo82ozXzWKZbjZu4gAmy",
+    "cid": "7610432652300365291",
+    "fid": "0x89baa3aff9eeb961:0x699db02ceb65adeb",
+    "placeId": "ChIJYbnu-a-juokR661l6yywnWk"
+   },
+   {
+    "position": 14,
+    "title": "Econo Lodge Inn & Suites Virginia Beach - Norfolk",
+    "address": "5819 Northampton Blvd, Virginia Beach, VA 23455",
+    "latitude": 36.881232,
+    "longitude": -76.185384,
+    "rating": 2.7,
+    "ratingCount": 1105,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://www.choicehotels.com/virginia/virginia-beach/econo-lodge-hotels/va220?mc=llgoxxpx",
+    "phoneNumber": "(757) 460-1000",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlG6B-l6-RZ7_FC1fZXZebSFOyW26iZrsq0lSEh1trxKO2_w7CQQg1DkZBeSoHDBAfZF5tOG3qyOwQZ3YYP7yX7GNzOt9coSpzYJcpgxtVgPsupGmDR1sQswFM2cKxDjFXUoIk",
+    "cid": "12099861178707135547",
+    "fid": "0x89ba969b4ad2106f:0xa7eb57a25c60cc3b",
+    "placeId": "ChIJbxDSSpuWuokRO8xgXKJX66c"
+   },
+   {
+    "position": 15,
+    "title": "Hilton Vacation Club Ocean Beach Club Virginia Beach",
+    "address": "3401 Atlantic Ave, Virginia Beach, VA 23451",
+    "latitude": 36.862536999999996,
+    "longitude": -75.9787154,
+    "rating": 3.9,
+    "ratingCount": 3266,
+    "type": "Khách sạn nghỉ dưỡng",
+    "types": [
+     "Khách sạn nghỉ dưỡng",
+     "Khách sạn"
+    ],
+    "website": "https://www.hilton.com/en/hotels/orfavgv-hilton-vacation-ocean-beach-club/?SEO_id=GMB-AMER-HH-ORFAVGV",
+    "phoneNumber": "(757) 213-0601",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmix6bHlu32-NI8fbdztw_b0UXpUHK7DGS4xVNQiDCjpMaELDJmmwzUucLG2B7DBeMcCVDSeCz9fgin0L6fO7SQfcqw8e7ZUjZotmR5vYNR_M7GSQaX3VBaJ0bfJbe1SOkT23c",
+    "cid": "16766766834408153258",
+    "fid": "0x89bae968d0c3c1bd:0xe8af859a0cb2e0aa",
+    "placeId": "ChIJvcHD0GjpuokRquCyDJqFr-g"
+   },
+   {
+    "position": 16,
+    "title": "Wingate by Wyndham Chesapeake",
+    "address": "817 Greenbrier Cir, Chesapeake, VA 23320",
+    "latitude": 36.7912932,
+    "longitude": -76.23075709999999,
+    "rating": 4,
+    "ratingCount": 983,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Khách sạn lưu trú dài hạn"
+    ],
+    "website": "https://www.wyndhamhotels.com/wingate/chesapeake-virginia/wingate-by-wyndham-chesapeake/overview?CID=LC:7hcm1fujuihd89e:30346&iata=00093796",
+    "phoneNumber": "(757) 219-2223",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmAjm8HZPaBfZXgrD7GHdYFPrB37IE_IatWVu3GrbIYd9mmr8KTzNaO_LvEtyJC-tlw2h1TWCtlAome8blV39nS_QvLiIdLFz9mDL2xo6rBy8RFvGj3IhU-g-IB6KmBmwNsyd8",
+    "cid": "17835943353865108497",
+    "fid": "0x89babcfdffcb8375:0xf785fffb411e7c11",
+    "placeId": "ChIJdYPL__28uokREXweQfv_hfc"
+   },
+   {
+    "position": 17,
+    "title": "La Quinta Inn by Wyndham Norfolk Virginia Beach",
+    "address": "192 Newtown Rd, Virginia Beach, VA 23462",
+    "latitude": 36.843486399999996,
+    "longitude": -76.1840287,
+    "rating": 3.4,
+    "ratingCount": 1335,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Quán trọ",
+     "Trạm nghỉ"
+    ],
+    "website": "https://www.wyndhamhotels.com/laquinta/virginia-beach-virginia/la-quinta-inn-norfolk-virginia-beach/overview?CID=LC:6ysy27krtpcrqev:53462&iata=00093796",
+    "phoneNumber": "(757) 497-6620",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWneFTCMHkmmuEmj5MiCj_vlrqcIPLSwHn8HWA4-f1dGF6tYOIZleHDHnbeliBfYGDyY-edkzeE4QTgY7eO8UNNri3lDCxM-AgLD8ko0LzTxmbx7Clzr7o2lyl3apJWGU6cSJvMIGsw68pqf",
+    "cid": "11629867969642749009",
+    "fid": "0x89ba960eb3558d29:0xa165974cfb3fdc51",
+    "placeId": "ChIJKY1Vsw6WuokRUdw_-0yXZaE"
+   },
+   {
+    "position": 18,
+    "title": "WoodSpring Suites Chesapeake-Norfolk Greenbrier",
+    "address": "1708 Sentinel Dr, Chesapeake, VA 23320",
+    "latitude": 36.777043299999995,
+    "longitude": -76.2553056,
+    "rating": 3.3,
+    "ratingCount": 468,
+    "type": "Khách sạn lưu trú dài hạn",
+    "types": [
+     "Khách sạn lưu trú dài hạn",
+     "Khách sạn"
+    ],
+    "website": "https://www.woodspring.com/extended-stay-hotels/locations/virginia/chesapeake-norfolk/woodspring-suites-chesapeake-norfolk-greenbrier?mc=llgoxxpx",
+    "phoneNumber": "(757) 963-5009",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkLKki6nFrtvaXf0ScEqkcCRqMEtiD5pKW2_iX9_0m0QkBUBWLn4C-jaGoftGN9mpugWW_enzG1xRmHVrwemXY3de8g4u6E58lEiFCq_se0tEJxtlYl3tXMExeiPFbQQ8tRTI_TQIao33w",
+    "cid": "17664665457325143836",
+    "fid": "0x89babcc6ea22571b:0xf5257fa45bfa771c",
+    "placeId": "ChIJG1ci6sa8uokRHHf6W6R_JfU"
+   },
+   {
+    "position": 19,
+    "title": "Hampton Inn & Suites Chesapeake-Battlefield Blvd.",
+    "address": "1421 Battlefield Blvd N, Chesapeake, VA 23320",
+    "latitude": 36.766946399999995,
+    "longitude": -76.2509939,
+    "rating": 3.9,
+    "ratingCount": 1084,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://www.hilton.com/en/hotels/orfbfhx-hampton-suites-chesapeake-battlefield-blvd/?SEO_id=GMB-AMER-HX-ORFBFHX",
+    "phoneNumber": "(757) 819-5230",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkyp1Y9Pu-6WWnKBXI22sYlFIBFVjR5SbRw83WtygIzn-ZByavoNnX-Ds4ilIfZiWkO53MGM8F-ND_sbYuNlWojGTJDHipZ77hwUOn8srarVR3UCPzCbZgsAdxWgcxj6g5t_IY",
+    "cid": "5293400748723991033",
+    "fid": "0x89babcbdd32a11ef:0x4975efef717af1f9",
+    "placeId": "ChIJ7xEq0728uokR-fF6ce_vdUk"
+   },
+   {
+    "position": 20,
+    "title": "Red Roof Inn Norfolk - Portsmouth",
+    "address": "925 London Blvd, Portsmouth, VA 23704",
+    "latitude": 36.836376,
+    "longitude": -76.3097493,
+    "rating": 3,
+    "ratingCount": 355,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Khách sạn lưu trú dài hạn",
+     "Quán trọ",
+     "Trạm nghỉ"
+    ],
+    "website": "https://www.redroof.com/property/va/Portsmouth/RRI1143?utm_source=GMB&utm_medium=Google&utm_campaign=GMB_Performance_RRI1143",
+    "phoneNumber": "(757) 398-0612",
+    "description": "Khách sạn bình dân không cầu kỳ với các phòng nghỉ thoải mái được trang bị tủ lạnh mini và lò vi sóng, cùng với Wi-Fi.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnwW4gTFKJRY4gvIWlGjJfCdTXtDcbCR8VL26etqrctZGrV8iIcSMnYodIfrM0fS4gHrtIm7Vhx4g7A1UYNGf5xI5vxjRdmfk9YH_ajLg1pkohX4q-bdxzt9bJWflTd_SyWajAp4w",
+    "cid": "4211013490325127727",
+    "fid": "0x89baa3118635ae6b:0x3a7086756335022f",
+    "placeId": "ChIJa641hhGjuokRLwI1Y3WGcDo"
+   }
+  ],
+  "credits": 3
+ }
+}

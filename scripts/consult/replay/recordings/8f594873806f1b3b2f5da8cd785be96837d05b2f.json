@@ -1,0 +1,66 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Khách Sạn Avatar\" Đà Nẵng site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:05:55.390Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Khách Sạn Avatar\" Đà Nẵng site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn Avatar Đà Nẵng - Giá cả và Ưu đãi 2026, ...",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-2902404/avatar-danang-hotel/",
+    "snippet": "Giờ nhận phòng tại Khách sạn Avatar Đà Nẵng bắt đầu từ 14:00, và giờ trả phòng là 12:00. Khách sạn Avatar Đà Nẵng có hồ bơi không? Có, Khách sạn Avatar Đà Nẵng ...",
+    "position": 1
+   },
+   {
+    "title": "Các đánh giá Khách sạn Avatar Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-2902404/avatar-danang-hotel/review.html",
+    "snippet": "Các đánh giá Khách sạn Avatar Đà Nẵng · Tất cả đánh giá(641) · Đánh giá tích cực(621) · Bữa sáng ngon(110) · Gần biển(55) · Bãi biển tuyệt vời(43) · Bể bơi sạch sẽ(38).",
+    "position": 2
+   },
+   {
+    "title": "Khách sạn được đề xuất tại Biển Bắc Mỹ An, Đà Nẵng ...",
+    "link": "https://vn.trip.com/hotels/da-nang-hotels-list-1356/zone107182610/",
+    "snippet": "Khách sạn Avatar Đà Nẵng Các khách sạn ở Biển Bắc Mỹ An. Khách sạn Avatar Đà Nẵng. 8,8/10. Rất Tốt. 640 đánh giá. Khách Sạn Gần Biển Bắc Mỹ An,Đà Nẵng 8.5% số ...",
+    "position": 3
+   },
+   {
+    "title": "Các khách sạn ở gần Vườn cây cảnh Thiên Vân, Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/da-nang-vn-cy-cnh-thin-vn/hotels-c1356m31281361/",
+    "snippet": "Khách sạn Avatar Đà Nẵng. Biển Bắc Mỹ An, Đà Nẵng | Cách Vườn cây cảnh Thiên Vân 1.35KM. 8,8/10. Rất Tốt 640 đánh giá. Khách sạn Avatar Đà Nẵng ở Ngũ Hành Sơn, ...",
+    "position": 4
+   },
+   {
+    "title": "Khách sạn và Ưu đãi Khách sạn Tốt nhất ở Laois, Ireland",
+    "link": "https://vn.trip.com/hotels/province/ie-county-laois.html",
+    "snippet": "... Khách sạn Avatar Đà NẵngKhách Sạn Tân Cửu Long. Chuyến Bay Từ Các Thành Phố Phổ Biến. vé máy bay đi phú quốcvé máy bay hà nội sài gònvé máy bay đi đà lạtvé ...",
+    "position": 5
+   },
+   {
+    "title": "Khách Sạn Được Đề Xuất Hàng Đầu tại Ireland",
+    "link": "https://vn.trip.com/hotels/country/ireland.html",
+    "snippet": "... Khách sạn Avatar Đà NẵngNhõng Nhẽo HomestayZhenshui Homestay (Wuzhen Dongzha Scenic Area)Trân Châu Beach & ResortKhách sạn Harbor, Đà Nẵng. Chuyến Bay Từ Các ...",
+    "position": 6
+   },
+   {
+    "title": "Khách sạn và Ưu đãi Khách sạn Tốt nhất ở Bejaja, Algeria",
+    "link": "https://vn.trip.com/hotels/province/dz-bejaia.html",
+    "snippet": "... Khách sạn Avatar Đà NẵngJoi Boutique Bãi TrướcMINH NHẬT HOTEL河内国际酒店. Chuyến Bay Từ Các Thành Phố Phổ Biến. vé máy bay đi phú quốcvé máy bay hà nội sài ...",
+    "position": 7
+   }
+  ],
+  "credits": 1
+ }
+}

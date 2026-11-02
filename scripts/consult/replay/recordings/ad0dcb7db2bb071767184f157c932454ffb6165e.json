@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "laptop mới Dành cho sinh viên (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:35:28.224Z",
+ "body": {
+  "searchParameters": {
+   "q": "laptop mới Dành cho sinh viên (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop cho sinh viên giá rẻ | Bền bỉ, giảm đến 4.000.000đ",
+    "link": "https://cellphones.com.vn/laptop/sinh-vien.html",
+    "snippet": "Laptop sinh viên từ 3.5 triệu, đổi điểm giảm thêm đến 10%, giao hàng miễn phí tận nhà. Mua laptop cho sinh viên săn Flashvoucher giảm 500K.",
+    "position": 1
+   },
+   {
+    "title": "10+ mẫu laptop cho học sinh đáng mua nhất hiện nay 2026",
+    "link": "https://cellphones.com.vn/sforum/laptop-cho-hoc-sinh",
+    "snippet": "Gợi ý 10 mẫu laptop cho học sinh tốt đáng mua nhất 2026 · MacBook Neo · HP 14S-DQ5121TU · HP Pavilion 14-DV2073TU · ASUS Vivobook 14 X1404ZA · MSI ...",
+    "date": "15 thg 3, 2025",
+    "position": 2
+   },
+   {
+    "title": "Top laptop cho sinh viên công nghệ thông tin cày code ...",
+    "link": "https://cellphones.com.vn/sforum/laptop-cho-sinh-vien-cong-nghe-thong-tin",
+    "snippet": "Top 4 laptop sinh viên ngành công nghệ thông tin đáng mua · Acer Aspire Lite 15 (AL15-72P) · Lenovo IdeaPad Slim 3 (14ARP10) · Acer Gaming Nitro Lite 16 · ASUS ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 3
+   },
+   {
+    "title": "Top 5 laptop cho sinh viên y khoa tốt, đáng mua nhất 2026",
+    "link": "https://cellphones.com.vn/sforum/laptop-cho-sinh-vien-y-khoa",
+    "snippet": "Top 5 laptop cho sinh viên y khoa giá tốt, đáng mua nhất 2026 · Lenovo IdeaPad Slim 3 · Acer Swift Lite 14 AI · Acer Swift Go · ASUS Vivobook S14 · Dell 14 DC14255.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 4
+   },
+   {
+    "title": "Top 15+ laptop cho sinh viên kỹ thuật tốt nhất 2026",
+    "link": "https://cellphones.com.vn/sforum/laptop-cho-sinh-vien-ky-thuat",
+    "snippet": "Top laptop cho sinh viên kỹ thuật lý tưởng nhất · Laptop ASUS VivoBook 15 (M1502NAQ) · Laptop Acer Gaming Aspire 7 · Laptop MSI Katana 15 (B13UDXK) · Laptop Lenovo ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 5
+   },
+   {
+    "title": "TOP 10+ laptop cho sinh viên ngoại ngữ đáng mua nhất",
+    "link": "https://cellphones.com.vn/sforum/laptop-cho-sinh-vien-ngoai-ngu",
+    "snippet": "Top 4 laptop sinh viên ngoại ngữ nên mua · MacBook Neo (8GB - 512GB) · Lenovo IdeaPad Slim 3 (14ARP10) · Acer Swift Go 14 AI (SFG14-41-R251) · ASUS VivoBook S16 ( ...",
+    "position": 6
+   },
+   {
+    "title": "Laptop dưới 10 triệu cấu hình mạnh mẽ, hiệu năng vượt trội",
+    "link": "https://cellphones.com.vn/bo-loc/laptop-duoi-10-trieu",
+    "snippet": "MacBook Air M5 13 inch 2026 10CPU 8GPU 16GB 512GB | Chính hãng Apple Việt Nam · Laptop Acer Gaming Nitro ProPanel ANV15-52-50VA · Laptop ASUS Vivobook 14 X1404VA- ...",
+    "position": 7
+   },
+   {
+    "title": "[2026] Top 10+ laptop cho học sinh sinh viên nên mua hiện ...",
+    "link": "https://shopee.vn/blog/laptop-cho-hoc-sinh-sinh-vien/",
+    "snippet": "Một số dòng laptop dành cho học sinh mà bạn có thể chọn là Acer Aspire 5, Dell Inspiron 14 hoặc MSI Modern 14. Vì ở lứa tuổi này, nhu cầu chủ ...",
+    "date": "29 thg 7, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

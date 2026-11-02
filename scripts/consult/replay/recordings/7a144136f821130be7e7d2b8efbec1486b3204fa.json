@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe\" OR \"Ốp lưng iPhone 17 Pro UAG chống sốc Scout With Magsafe\" OR \"Ốp lưng MagSafe iPhone 17 Pro Max JC PC TPU AVA+ KL6501\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:10:13.968Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe\" OR \"Ốp lưng iPhone 17 Pro UAG chống sốc Scout With Magsafe\" OR \"Ốp lưng MagSafe iPhone 17 Pro Max JC PC TPU AVA+ KL6501\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-scout-with-magsafe.html",
+    "snippet": "Mua ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe chính hãng - Giá rẻ, đảm bảo chất lượng, độ bền cao, hỗ trợ giao hàng tận nơi toàn quốc.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 1
+   },
+   {
+    "title": "Ốp Lưng MagSafe iPhone 17 Pro Max JC PC TPU AVA+ ...",
+    "link": "https://www.thegioididong.com/op-lung-flipcover/op-lung-magsafe-iphone-17-pro-max-jc-pc-tpu-ava-kl5320",
+    "snippet": "Vòng MagSafe được tích hợp liền mạch, đảm bảo tương thích tuyệt đối. Đặc biệt, ốp lưng iPhone 17 Pro Max có chân đỡ kim loại có thể xoay 360 độ, cho phép bạn ...",
+    "rating": 5,
+    "ratingCount": 7878,
+    "position": 2
+   },
+   {
+    "title": "Ốp lưng AVA+ iPhone 17 Pro Max KL5320 Giá rẻ, chân đỡ ...",
+    "link": "https://www.topzone.vn/op-lung-iphone/op-lung-magsafe-iphone-17-pro-max-jc-pc-tpu-ava-kl5320",
+    "snippet": "Được chế tác riêng biệt cho iPhone 17 Pro Max, chiếc ốp này đảm bảo ôm khít từng đường cong, từng chi tiết nhỏ nhất của thiết bị. Vẻ ngoài bán trong suốt cùng ...",
+    "position": 3
+   },
+   {
+    "title": "Power Bank Magsafe Charger Iphone 13 Pro Max Ốp Lưng ...",
+    "link": "https://www.pngparadise.com/productSearch/pictureSearch?id=1589032010800",
+    "snippet": "Power Bank Magsafe Charger Iphone 13 Pro Max Ốp Lưng MagSafe IPhone 17 Pro Max JC PC TPU AVA+ KL5320 Giá Rẻ. Item no : GMN7659380. sold recently ...",
+    "date": "9 thg 4, 2026",
+    "rating": 4.2,
+    "ratingCount": 5,
+    "position": 4
+   },
+   {
+    "title": "Ốp Lưng MagSafe iPhone 17 Pro Max JC PC TPU AVA+ ...",
+    "link": "https://www.facebook.com/thegioididongcom/photos/%E1%BB%91p-l%C6%B0ng-magsafe-iphone-17-pro-max-jc-pc-tpu-ava-kl5320-s%C4%83n-online-ngay-httpstgdd/1246098750896067/",
+    "snippet": "Ốp Lưng MagSafe iPhone 17 Pro Max JC PC TPU AVA+ KL5320 Săn online ngay: https://tgdd.vn/Op-lung-magsafe -iphone-17-pro-max Ốp Lưng ...",
+    "position": 5
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro UAG chống sốc Scout With Magsafe",
+    "link": "https://timgiatot.com.vn/gia/253655-op-lung-iphone-17-pro-uag-chong-soc-scout-with-magsafe",
+    "snippet": "So sánh giá Ốp lưng iPhone 17 Pro UAG chống sốc Scout With Magsafe: giá từ 900.000 ₫ trên 13 nơi bán, cập nhật tháng 9/2026. Giá từ các sàn lớn.",
+    "position": 6
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max giá rẻ, giao nhanh, bền đẹp",
+    "link": "https://www.topzone.vn/op-lung-iphone-cho-iphone-17-pro-max",
+    "snippet": "Ốp lưng iPhone 17 Pro Max chính hãng, giá tốt, nhiều mẫu đẹp, bền bỉ, chất lượng cao, chống trầy xước, giao nhanh toàn quốc. Click ngay!",
+    "position": 7
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe",
+    "link": "https://timgiatot.com.vn/gia/254171-op-lung-iphone-17-pro-max-uag-chong-soc-scout-with-magsafe",
+    "snippet": "So sánh giá Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe: giá từ 850.000 ₫ trên 10 nơi bán, cập nhật tháng 9/2026. Giá từ các sàn lớn.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

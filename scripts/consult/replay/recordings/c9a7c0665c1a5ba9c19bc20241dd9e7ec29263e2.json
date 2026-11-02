@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Wink Saigon Centre, part of Unscripted by Hyatt",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:24:18.506Z",
+ "body": {
+  "searchParameters": {
+   "q": "Wink Saigon Centre, part of Unscripted by Hyatt",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "WINK SAIGON CENTRE, UNSCRIPTED BY HYATT (Thành phố Hồ Chí Minh) - Đánh giá  Khách sạn & So sánh giá - Tripadvisor",
+    "imageUrl": "https://media-cdn.tripadvisor.com/media/photo-s/23/bf/e3/45/wink-hotel-saigon-centre.jpg",
+    "imageWidth": 536,
+    "imageHeight": 450,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTp5lfpZ3XrLeB2mjqe6dKE8COuhUQkgvQUAbIfRcN6Pw&s=10",
+    "thumbnailWidth": 487,
+    "thumbnailHeight": 410,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g293925-d21499770-Reviews-Wink_Saigon_Centre_Unscripted_by_Hyatt-Ho_Chi_Minh_City.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia-cdn.tripadvisor.com%2Fmedia%2Fphoto-s%2F23%2Fbf%2Fe3%2F45%2Fwink-hotel-saigon-centre.jpg&tbnid=QtwfACMd2J2nXM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g293925-d21499770-Reviews-Wink_Saigon_Centre_Unscripted_by_Hyatt-Ho_Chi_Minh_City.html&docid=HWo3Ib9p-WttSM&w=536&h=450",
+    "position": 1
+   },
+   {
+    "title": "Wink Hotel Saigon Centre | Boutique Hotel in Ho Chi Minh City",
+    "imageUrl": "https://assets.hyatt.com/content/dam/hyatt/hyattdam/images/2025/11/11/0025/VN100-P0024-Wink-Space-Morning-Light.jpg/VN100-P0024-Wink-Space-Morning-Light.4x3.jpg",
+    "imageWidth": 2560,
+    "imageHeight": 1920,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQSIxdelhQcTZBMVEGXBmdcYY7F9s8R8XupEdhhlORPg&s=10",
+    "thumbnailWidth": 515,
+    "thumbnailHeight": 388,
+    "source": "Hyatt",
+    "domain": "www.hyatt.com",
+    "link": "https://www.hyatt.com/unscripted-by-hyatt/vi-VN/vn100-wink-saigon-centre",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fassets.hyatt.com%2Fcontent%2Fdam%2Fhyatt%2Fhyattdam%2Fimages%2F2025%2F11%2F11%2F0025%2FVN100-P0024-Wink-Space-Morning-Light.jpg%2FVN100-P0024-Wink-Space-Morning-Light.4x3.jpg&tbnid=iBJ4ksab_rbJrM&imgrefurl=https%3A%2F%2Fwww.hyatt.com%2Funscripted-by-hyatt%2Fvi-VN%2Fvn100-wink-saigon-centre&docid=JaRMnEkkDRssBM&w=2560&h=1920",
+    "position": 2
+   },
+   {
+    "title": "Review: Hyatt's Unscripted Brand Hotel – Wink Saigon Centre in Vietnam |  Daddy Travels Miles & Points",
+    "imageUrl": "https://daddytravelsnow.com/wp-content/uploads/2026/01/img_8957-scaled.jpg",
+    "imageWidth": 1425,
+    "imageHeight": 1900,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReBB2itBHhKaip5BPIaIoSAAy0OTef8-foGP6d2W4gag&s=10",
+    "thumbnailWidth": 480,
+    "thumbnailHeight": 640,
+    "source": "Daddy Travels Miles & Points",
+    "domain": "daddytravelsnow.com",
+    "link": "https://daddytravelsnow.com/2026/01/24/review-hyatts-unscripted-brand-hotel-wink-saigon-centre-in-vietnam/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdaddytravelsnow.com%2Fwp-content%2Fuploads%2F2026%2F01%2Fimg_8957-scaled.jpg&tbnid=O1Fm-0dlSRNS3M&imgrefurl=https%3A%2F%2Fdaddytravelsnow.com%2F2026%2F01%2F24%2Freview-hyatts-unscripted-brand-hotel-wink-saigon-centre-in-vietnam%2F&docid=aByjpmuwPLqdsM&w=1425&h=1900",
+    "position": 3
+   },
+   {
+    "title": "Wink Saigon Centre, Unscripted by Hyatt - 24 Hours stay, Ho Chi Minh City  (updated prices 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max300/512627622.jpg?k=ec90138b84787280f8733b1cd5a463ae8fc6ed8f7f31d89d82608b45151d9f6f&o=",
+    "imageWidth": 300,
+    "imageHeight": 197,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPH7wjYL0HayOAhlevy5JPBmLFWur-w0XOR3QFPyv9DQ&s=10",
+    "thumbnailWidth": 299,
+    "thumbnailHeight": 197,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/wink-saigon-centre-ho-chi-minh-city.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax300%2F512627622.jpg%3Fk%3Dec90138b84787280f8733b1cd5a463ae8fc6ed8f7f31d89d82608b45151d9f6f%26o%3D&tbnid=65pERTBi2ilElM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fwink-saigon-centre-ho-chi-minh-city.html&docid=2Ae6NSiYU4oYIM&w=300&h=197",
+    "position": 4
+   },
+   {
+    "title": "Wink Saigon Centre, Unscripted by Hyatt - 24 Hours stay, Ho Chi Minh City  (updated prices 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/889687688.jpg?k=6f03abc5a86e048d03699f82ad89c67e5adfabfdaff72fd8016568bee1ee8c9c&o=",
+    "imageWidth": 1024,
+    "imageHeight": 767,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbm7-K7z0-lG_DE8QrwBwPftYaCX7Xmev1nCVni9qfcQ&s=10",
+    "thumbnailWidth": 640,
+    "thumbnailHeight": 479,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/wink-saigon-centre-ho-chi-minh-city.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F889687688.jpg%3Fk%3D6f03abc5a86e048d03699f82ad89c67e5adfabfdaff72fd8016568bee1ee8c9c%26o%3D&tbnid=uA1R650IexUO-M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fwink-saigon-centre-ho-chi-minh-city.html&docid=2Ae6NSiYU4oYIM&w=1024&h=767",
+    "position": 5
+   },
+   {
+    "title": "Best Price on Wink Saigon Centre, Unscripted by Hyatt - 24 hours stay in Ho  Chi Minh City + Reviews!",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/83513337/1311105155/e28ae487b90bdda2600993da141c70df.jpeg?va=1&ce=3&s=414x232",
+    "imageWidth": 335,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtEj_pjrKPCVr-wS1xM-JeL1iaLqOn63_vLDsY0gW_cQ&s=10",
+    "thumbnailWidth": 335,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/en-ca/wink-hotel-saigon-centre/hotel/ho-chi-minh-city-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F83513337%2F1311105155%2Fe28ae487b90bdda2600993da141c70df.jpeg%3Fva%3D1%26ce%3D3%26s%3D414x232&tbnid=nyIbLtDYcIMlVM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fen-ca%2Fwink-hotel-saigon-centre%2Fhotel%2Fho-chi-minh-city-vn.html&docid=96ARYVRq-AJLqM&w=335&h=232",
+    "position": 6
+   },
+   {
+    "title": "Khách sạn Wink Saigon Centre, Unscripted by Hyatt, Quận 1, Hồ Chí Minh",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/18170457/0/a3c5e7fd1e3ff62bde1ac2d75930eb1b.jpeg?ce=3&s=414x232",
+    "imageWidth": 348,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4W_7t4oHitJlYMHOzrfV1ZLs1N4dNvxvQE3aHsAEi3A&s",
+    "thumbnailWidth": 275,
+    "thumbnailHeight": 183,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/wink-hotel-saigon-centre/hotel/ho-chi-minh-city-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F18170457%2F0%2Fa3c5e7fd1e3ff62bde1ac2d75930eb1b.jpeg%3Fce%3D3%26s%3D414x232&tbnid=io-kZlbE0OqpxM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fwink-hotel-saigon-centre%2Fhotel%2Fho-chi-minh-city-vn.html&docid=ipk313FTeX60YM&w=348&h=232",
+    "position": 7
+   },
+   {
+    "title": "Wink Saigon Centre, Unscripted by Hyatt - Lưu trú trọn vẹn 24 giờ - Giá cả  và Ưu đãi 2026, TP. Hồ Chí Minh",
+    "imageUrl": "https://ak-d.tripcdn.com/images/1mc6012000gzkxallE4B2_R_960_660_R5_D.jpg",
+    "imageWidth": 960,
+    "imageHeight": 660,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQER_TG0iMZh0T9Ht1TTGjScDNsf1HNM-_9M-v1f71ojA&s",
+    "thumbnailWidth": 271,
+    "thumbnailHeight": 186,
+    "source": "Trip.com",
+    "domain": "vn.trip.com",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-68010655/wink-saigon-centre-unscripted-by-hyatt-24-hours-stay/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fak-d.tripcdn.com%2Fimages%2F1mc6012000gzkxallE4B2_R_960_660_R5_D.jpg&tbnid=C6dhIa3CLDrqfM&imgrefurl=https%3A%2F%2Fvn.trip.com%2Fhotels%2Fho-chi-minh-city-hotel-detail-68010655%2Fwink-saigon-centre-unscripted-by-hyatt-24-hours-stay%2F&docid=jJV5Xkz_FqWukM&w=960&h=660",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

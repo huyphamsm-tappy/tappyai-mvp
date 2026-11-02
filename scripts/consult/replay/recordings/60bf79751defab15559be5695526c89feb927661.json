@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "SET QUÀ TẶNG BẠN NỮ, HỘP QUÀ TẶNG VALENTINE, SINH NHẬT, 8-3 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:21:52.738Z",
+ "body": {
+  "searchParameters": {
+   "q": "SET QUÀ TẶNG BẠN NỮ, HỘP QUÀ TẶNG VALENTINE, SINH NHẬT, 8-3 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Set quà tặng bạn gái sinh nhật dịp lễ 20/10, valentine, 8/3 cực kỳ ...",
+    "link": "https://www.lazada.vn/products/pdp-i2258038974.html?srsltid=AU7gw4W-_oJrnnVHzIEzlKIDj7ZVMJ7rGrXVwd4PL8C8I6MJVZd7RQNS",
+    "snippet": "Set quà tặng bạn gái sinh nhật dịp lễ 20/10 valentine 8/3 cực kỳ cute ý nghĩa bộ quà tặng túi chườm ấm 350ml kèm thiệp hộp quà và túi xách.",
+    "position": 1
+   },
+   {
+    "title": "Set quà Tình Yêu Dễ Thương LINDO, Quà tặng Valentine, 8/3, ...",
+    "link": "https://www.lazada.vn/products/pdp-i2990893076.html?srsltid=AU7gw4VB0v3gcwV_DeiUHY8sGDwiP51C4GoJ-sDF6YzUAA62BaSf2XZQ",
+    "snippet": "Set quà Tình Yêu Dễ Thương LINDO, Quà tặng Valentine, 8/3, 20/10, Sinh Nhật, Các dịp đặc biệt · [HCM]Khuyên tai nữ thời trang kiểu dáng Hàn Quốc độc lạ LINDO · [ ...",
+    "position": 2
+   },
+   {
+    "title": "Sét quà tặng bạn gái ngày lễ 8/3 valentine kèm hộp quà túi xách ...",
+    "link": "https://h5.lazada.vn/products/set-qua-tang-ban-gai-ngay-le-83-valentine-kem-hop-qua-tui-xach-bo-qua-tang-sinh-nhat-combo-tui-chuom-bung-350ml-i3041902750-s14634065407.html",
+    "snippet": "- Full box bao gồm: 1 túi chườm ấm bụng theo set tùy chọn, 1 giấy hướng dẫn sử dụng và 1 thiệp ghi lời yêu thương, kèm theo nhiều món quà mix kèm tùy chọn hoặc ...",
+    "position": 3
+   },
+   {
+    "title": "Set quà Tình Yêu LINDO, Quà tặng Valentine, 8/3, 20/10, Sinh ...",
+    "link": "https://www.lazada.vn/products/pdp-i2990476974.html?srsltid=AU7gw4UZVDNtgy3dou56UqHm2yH7_bV1UNlyn41Bc7arUbfPESsCZPDr",
+    "snippet": "... bạn gái, Set quà tặng Gấu Dâu, Set quà tặng Kurumi, Set quà tặng Thỏ Hồng, Set Quà Capybara, Set quà Tặng Valentine, Set quà tặng Tình Yêu Nhân Vật: Chuột ...",
+    "position": 4
+   },
+   {
+    "title": "[Set đủ Phụ kiện xinh] Quà tặng sinh nhật bạn trai/gái ...",
+    "link": "https://www.lazada.vn/products/set-du-phu-kien-xinh-qua-tang-sinh-nhat-ban-traigai-valentine-83-hop-qua-kemtui-xach-kep-toc-bang-do-gau-cute-i13373638075.html?srsltid=AU7gw4X_h46c9AfkZFnk6V3aaGG0iBFDyuE3zKSSk8lNJJFRhBmZhoqF",
+    "snippet": "[Set đủ Phụ kiện xinh] Quà tặng sinh nhật bạn trai/gái Valentine, 8/3 Hộp quà kèmTúi xách, Kẹp tóc, băng đô gấu cute. Tuỳ chọn sản phẩm. Set đủ phụ kiện xinh.",
+    "position": 5
+   },
+   {
+    "title": "[Đủ Hộp+Túi xách] Set Quà tặng Socola sinh nhật bạn trai/ ...",
+    "link": "https://www.lazada.vn/products/du-hoptui-xach-set-qua-tang-socola-sinh-nhat-ban-traigai-valentine-83-socola-den-it-duong-50gr-figo-sieu-ngon-i2257484228.html?srsltid=AU7gw4VPxPCVQyHNCvg7qJOAlRpGvHWOn2VVWW29rn2CaE3D26ialTep",
+    "snippet": "Set quà tặng socola sinh nhật Figo với 5 hộp socola đen ít đường 50g, phù hợp cho ngày Valentine 8/3 và sinh nhật bạn trai/gái. Socola Figo siêu ngon, ...",
+    "position": 6
+   },
+   {
+    "title": "Bộ Quà Tặng Nước Hoa Nữ Cao Cấp, Set ...",
+    "link": "https://www.lazada.vn/products/bo-qua-tang-nuoc-hoa-nu-cao-cap-set-qua-tang-valentine-qua-tang-sinh-nhat-ban-gai-qua-tang-83-2010-sang-trong-combo-qua-tang-ban-gai-3-chai-nuoc-hoa-i1738760539.html?srsltid=AU7gw4VzotgKGh8cgJtjDeGcgj-axhOuot7RNO0PGv93k98o2thWlYse",
+    "snippet": "Bộ Quà Tặng Nước Hoa Nữ Cao Cấp, Set Quà Tặng Valentine, Quà Tặng Sinh Nhật Bạn Gái, Quà Tặng 8/3, 20/10 Sang Trọng (Combo quà tặng bạn gái 3 chai nước hoa).",
+    "rating": 5,
+    "ratingCount": 3,
+    "position": 7
+   },
+   {
+    "title": "Sét quà tặng người yêu, bạn gái ngày sinh nhật, 8/3, 20/10 ...",
+    "link": "https://www.lazada.vn/products/set-qua-tang-nguoi-yeu-ban-gai-ngay-sinh-nhat-83-2010-ki-niem-i1893161414.html?srsltid=AU7gw4Xg8IGUos_S4yiHNtNBVCn-WlkeTY9SBuvmUyDib6m6gkARRU4i",
+    "snippet": "-3 Dây cột tóc Scrunchies. -1 Cây bút xinh. ... -1 Bó hoa kẹo ngọt ngào. ... - 1 Tấm thiệp trái tim giúp bạn viết lời chúc ấm áp đến người được tặng. - QUÀ TẶNG ...",
+    "rating": 5,
+    "ratingCount": 19,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

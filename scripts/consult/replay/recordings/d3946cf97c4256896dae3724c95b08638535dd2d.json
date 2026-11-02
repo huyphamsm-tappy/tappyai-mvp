@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Khách sạn Le Marais Đà Lạt Hotel",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:12:49.741Z",
+ "body": {
+  "searchParameters": {
+   "q": "Khách sạn Le Marais Đà Lạt Hotel",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Le Marais Đà Lạt Hotel - TiimHotel",
+    "imageUrl": "https://tiimhotel.vn/uploads/images/TH2173/Other/1.jpg",
+    "imageWidth": 1280,
+    "imageHeight": 720,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_sUQmMQN4g0ADIUopFpLNQw8QY4I-AsabFCLAF6DHxQ&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "Tiim Hotel",
+    "domain": "tiimhotel.vn",
+    "link": "https://tiimhotel.vn/hotel/le-marais-da-lat-hotel",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Ftiimhotel.vn%2Fuploads%2Fimages%2FTH2173%2FOther%2F1.jpg&tbnid=YP1GGJGVOrKMwM&imgrefurl=https%3A%2F%2Ftiimhotel.vn%2Fhotel%2Fle-marais-da-lat-hotel&docid=XYdMqEIeZ6A1kM&w=1280&h=720",
+    "position": 1
+   },
+   {
+    "title": "Le Marais Đà Lạt Hotel | Đặt phòng ngay",
+    "imageUrl": "https://cdn2.vietnambooking.com/wp-content/uploads/hotel_pro/hotel_383070/a0091bfeff3a5a121c2b737dd4f6ed64.jpg",
+    "imageWidth": 2336,
+    "imageHeight": 2560,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRLpDJh8CRFWF1tPb_NVXNNNEi-1A58Em22RZq6idbww&s=10",
+    "thumbnailWidth": 426,
+    "thumbnailHeight": 469,
+    "source": "Vietnam Booking",
+    "domain": "www.vietnambooking.com",
+    "link": "https://www.vietnambooking.com/hotel/vietnam/le-marais-da-lat-hotel.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.vietnambooking.com%2Fwp-content%2Fuploads%2Fhotel_pro%2Fhotel_383070%2Fa0091bfeff3a5a121c2b737dd4f6ed64.jpg&tbnid=WeHiIiIJWHHAuM&imgrefurl=https%3A%2F%2Fwww.vietnambooking.com%2Fhotel%2Fvietnam%2Fle-marais-da-lat-hotel.html&docid=-kcbYk08wotvkM&w=2336&h=2560",
+    "position": 2
+   },
+   {
+    "title": "Le Marais Dalat Hotel | Đà Lạt",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=836051546099662",
+    "imageWidth": 3366,
+    "imageHeight": 1245,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNTJnIjXbvjPyYIP1CDBBrocZP6isInTZ9xBpKOCNrBg&s=10",
+    "thumbnailWidth": 735,
+    "thumbnailHeight": 272,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/lemaraisdalat/?locale=vi_VN",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D836051546099662&tbnid=pXa-onhV6eSLZM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Flemaraisdalat%2F%3Flocale%3Dvi_VN&docid=AiASu3wfHL1xOM&w=3366&h=1245",
+    "position": 3
+   },
+   {
+    "title": "Le Marais Đà Lạt Hotel | Đặt phòng ngay",
+    "imageUrl": "https://cdn2.vietnambooking.com/wp-content/uploads/hotel_pro/hotel_440130/29c5b77abad2f2753cf9d80e921b161c.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHDRd3ATzmJiSYqXi9ILNygJypgMA1AjruBBX4CKtpQw&s=10",
+    "thumbnailWidth": 576,
+    "thumbnailHeight": 347,
+    "source": "Vietnam Booking",
+    "domain": "www.vietnambooking.com",
+    "link": "https://www.vietnambooking.com/hotel/vietnam/le-marais-da-lat-hotel.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.vietnambooking.com%2Fwp-content%2Fuploads%2Fhotel_pro%2Fhotel_440130%2F29c5b77abad2f2753cf9d80e921b161c.jpg&tbnid=RoXxyf6-UpcaZM&imgrefurl=https%3A%2F%2Fwww.vietnambooking.com%2Fhotel%2Fvietnam%2Fle-marais-da-lat-hotel.html&docid=-kcbYk08wotvkM&w=1000&h=600",
+    "position": 4
+   },
+   {
+    "title": "Le Marais Đà Lạt Hotel | Đặt phòng ngay",
+    "imageUrl": "https://cdn2.vietnambooking.com/wp-content/uploads/hotel_pro/hotel_440130/9297d88d4654f308a4707514598a001f.jpg",
+    "imageWidth": 800,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSipCehDdFmGeBsKe6W8rgukAQJieBLWa2cE4FWafpvqA&s=10",
+    "thumbnailWidth": 515,
+    "thumbnailHeight": 388,
+    "source": "Vietnam Booking",
+    "domain": "www.vietnambooking.com",
+    "link": "https://www.vietnambooking.com/hotel/vietnam/le-marais-da-lat-hotel.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.vietnambooking.com%2Fwp-content%2Fuploads%2Fhotel_pro%2Fhotel_440130%2F9297d88d4654f308a4707514598a001f.jpg&tbnid=2jd6NTq1LE-3-M&imgrefurl=https%3A%2F%2Fwww.vietnambooking.com%2Fhotel%2Fvietnam%2Fle-marais-da-lat-hotel.html&docid=-kcbYk08wotvkM&w=800&h=600",
+    "position": 5
+   },
+   {
+    "title": "🎉 HELLO 2026 – CHÀO NĂM MỚI TẠI LE MARAIS ĐÀ LẠT 🎉, Một năm mới gõ cửa,  mang theo những hy vọng mới, những hành trình mới và những khoảnh khắc đáng  nhớ đang chờ được viết tiếp…, Giữa lòng Đà Lạt mộng ...",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=2363642130804444&get_thumbnail=1",
+    "imageWidth": 1080,
+    "imageHeight": 1920,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQ71kD3h37aISCBEyE9pLTE3F2RUUytZoiSynpf0_Xew&s=10",
+    "thumbnailWidth": 335,
+    "thumbnailHeight": 597,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/lemaraisdalat/?locale=vi_VN",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D2363642130804444%26get_thumbnail%3D1&tbnid=uRowG90xisnf-M&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Flemaraisdalat%2F%3Flocale%3Dvi_VN&docid=AiASu3wfHL1xOM&w=1080&h=1920",
+    "position": 6
+   },
+   {
+    "title": "Le Marais Đà Lạt Hotel - TiimHotel",
+    "imageUrl": "https://tiimhotel.vn/uploads/images/TH2173/Other/3.jpg",
+    "imageWidth": 1280,
+    "imageHeight": 720,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcwzXn2uKNEcVN_WJT00ZD3dWos1hsr31LEKRai-FaOA&s",
+    "thumbnailWidth": 299,
+    "thumbnailHeight": 168,
+    "source": "Tiim Hotel",
+    "domain": "tiimhotel.vn",
+    "link": "https://tiimhotel.vn/hotel/le-marais-da-lat-hotel",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Ftiimhotel.vn%2Fuploads%2Fimages%2FTH2173%2FOther%2F3.jpg&tbnid=T6h4jX3kaRUi1M&imgrefurl=https%3A%2F%2Ftiimhotel.vn%2Fhotel%2Fle-marais-da-lat-hotel&docid=XYdMqEIeZ6A1kM&w=1280&h=720",
+    "position": 7
+   },
+   {
+    "title": "Le Marais Dalat Hotel Tuyển dụng 35871 - Hoteljob.vn",
+    "imageUrl": "https://www.hoteljob.vn/uploads/images/2023/06/20/649148dc465a51_51652283_crop_1170_400_100.jpg",
+    "imageWidth": 1140,
+    "imageHeight": 400,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHcCFZ8euTmtN83wlOz36bJyaBifTAdUuK8890rNRH7A&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 258,
+    "source": "Hoteljob.vn",
+    "domain": "www.hoteljob.vn",
+    "link": "https://www.hoteljob.vn/gian-tuyen-dung/35871-le-marais-dalat-hotel",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.hoteljob.vn%2Fuploads%2Fimages%2F2023%2F06%2F20%2F649148dc465a51_51652283_crop_1170_400_100.jpg&tbnid=f4rMrTY64VNlTM&imgrefurl=https%3A%2F%2Fwww.hoteljob.vn%2Fgian-tuyen-dung%2F35871-le-marais-dalat-hotel&docid=vJi0rzDNyHPxiM&w=1140&h=400",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -10,6 +10,7 @@ import { impersonationSignal } from './engine/impersonationSignal'
 import { classifyBrand } from './directory/brandMatch'
 import { officialDirectory } from './directory/officialDirectory'
 import { decodeQrImage } from './qr/decoder'
+import { toPublicCheckResult } from './verdict'
 import { registerProvider } from './providers/registry'
 import { webRiskProvider } from './providers/webRisk'
 import { whoisProvider } from './providers/whois'
@@ -159,7 +160,9 @@ async function runCheck(target: CheckTarget, inputType: InputType): Promise<Chec
   const directoryMatch = brandMatch.entity
   const actions = getRecommendedActions(risk.level, evidence, directoryMatch, risk.confidence)
 
-  return {
+  // 🚨 The internal level stays internal: `toPublicCheckResult` turns SAFE/LOW into INCONCLUSIVE and
+  // adds `verdict`, so no client — web, Android or iOS — is ever told a link is "safe" (owner 02/10).
+  return toPublicCheckResult({
     inputType,
     url: target.url.toString(),
     risk: {
@@ -172,7 +175,7 @@ async function runCheck(target: CheckTarget, inputType: InputType): Promise<Chec
     actions,
     checkedAt: Date.now(),
     cached: signals.some(s => s.cachedAt !== undefined),
-  }
+  })
 }
 
 export { officialDirectory as directory }

@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Khách Sạn Hạnh Phúc - Phòng Đẹp Giá Rẻ 24/24",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:24:18.276Z",
+ "body": {
+  "searchParameters": {
+   "q": "Khách Sạn Hạnh Phúc - Phòng Đẹp Giá Rẻ 24/24",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Khách Sạn Hạnh Phúc - Phòng Đẹp Giá Rẻ 24/24 – khách sạn trên Google",
+    "imageUrl": "https://lh3.googleusercontent.com/proxy/OortpMTJENalVeUClMBdgKSAIfb6ywX3raZli4QXYxuPT1jj7mPswrgtIh5BP0EHBMZdAjrMQnwVlBHe3MJFQw-9E5UewStCRp8qObpNX68nMbm9T_AsOkb1ixk45kPKaYQnioW0O0mkXHvyql-1g9Wq1WmujFk=w252-h378-k-no",
+    "imageWidth": 252,
+    "imageHeight": 378,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIk5xueqBRpZQJXoEwbOki259ZDX-OSzVenojJBHqKoA&s=10",
+    "thumbnailWidth": 252,
+    "thumbnailHeight": 378,
+    "source": "Google",
+    "domain": "www.google.com.vn",
+    "link": "https://www.google.com.vn/travel/hotels/entity/ChcIjMCHsIuTjPZrGgsvZy8xdGRwcDRsbBAB",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flh3.googleusercontent.com%2Fproxy%2FOortpMTJENalVeUClMBdgKSAIfb6ywX3raZli4QXYxuPT1jj7mPswrgtIh5BP0EHBMZdAjrMQnwVlBHe3MJFQw-9E5UewStCRp8qObpNX68nMbm9T_AsOkb1ixk45kPKaYQnioW0O0mkXHvyql-1g9Wq1WmujFk%3Dw252-h378-k-no&tbnid=5eMbafqE-m7_YM&imgrefurl=https%3A%2F%2Fwww.google.com.vn%2Ftravel%2Fhotels%2Fentity%2FChcIjMCHsIuTjPZrGgsvZy8xdGRwcDRsbBAB&docid=wteorgFwmjjwMM&w=252&h=378",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn Hạnh Phúc Sài Gòn | Ho Chi Minh City",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=100068233903912",
+    "imageWidth": 2048,
+    "imageHeight": 1361,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhT1WglDA2ETaNq9FTl3-TQFbaUlrtKl9FsH4XNT69vw&s=10",
+    "thumbnailWidth": 549,
+    "thumbnailHeight": 364,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/p/Kh%C3%A1ch-s%E1%BA%A1n-H%E1%BA%A1nh-Ph%C3%BAc-S%C3%A0i-G%C3%B2n-100068233903912/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D100068233903912&tbnid=4sfETsC-lA5zOM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fp%2FKh%25C3%25A1ch-s%25E1%25BA%25A1n-H%25E1%25BA%25A1nh-Ph%25C3%25BAc-S%25C3%25A0i-G%25C3%25B2n-100068233903912%2F&docid=PIlo7NMcTZHL6M&w=2048&h=1361",
+    "position": 2
+   },
+   {
+    "title": "Review Khách Sạn Hạnh Phúc Quận 1: Giá, Tiện Ích",
+    "imageUrl": "https://diadiemluutru.com/wp-content/uploads/2025/05/khach-san-hanh-phuc-quan-1.jpg",
+    "imageWidth": 800,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSve_e7C3LFfgNlDpFF3qwERJDN3JipiG342x41ZNCtjQ&s=10",
+    "thumbnailWidth": 700,
+    "thumbnailHeight": 438,
+    "source": "Địa Điểm Lưu Trú",
+    "domain": "diadiemluutru.com",
+    "link": "https://diadiemluutru.com/khach-san-hanh-phuc-quan-1/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdiadiemluutru.com%2Fwp-content%2Fuploads%2F2025%2F05%2Fkhach-san-hanh-phuc-quan-1.jpg&tbnid=TFfcOf3N1eu5SM&imgrefurl=https%3A%2F%2Fdiadiemluutru.com%2Fkhach-san-hanh-phuc-quan-1%2F&docid=xb7CSsDavGt6RM&w=800&h=500",
+    "position": 3
+   },
+   {
+    "title": "Khách sạn Hạnh Phúc – Trung tâm thành phố – Gần phố Bùi Viện, Giá giảm 30%,  Ảnh & Review chân thật",
+    "imageUrl": "https://ik.imagekit.io/tvlk/apr-asset/Ixf4aptF5N2Qdfmh4fGGYhTN274kJXuNMkUAzpL5HuD9jzSxIGG5kZNhhHY-p7nw/hotel/asset/10032888-18c949d613581e0475c9820607381c21.jpg?tr=q-40,c-at_max,w-1280,h-720&_src=imagekit",
+    "imageWidth": 1080,
+    "imageHeight": 720,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTt1PtSVBCvK6hKyPHKXhxIjFPIOAyJkQsueXeu_Qr2Lw&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Traveloka",
+    "domain": "www.traveloka.com",
+    "link": "https://www.traveloka.com/vi-vn/hotel/vietnam/hanh-phuc-hotel---city-center--3000010032888",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fik.imagekit.io%2Ftvlk%2Fapr-asset%2FIxf4aptF5N2Qdfmh4fGGYhTN274kJXuNMkUAzpL5HuD9jzSxIGG5kZNhhHY-p7nw%2Fhotel%2Fasset%2F10032888-18c949d613581e0475c9820607381c21.jpg%3Ftr%3Dq-40%2Cc-at_max%2Cw-1280%2Ch-720%26_src%3Dimagekit&tbnid=ugfj35R0J6LrDM&imgrefurl=https%3A%2F%2Fwww.traveloka.com%2Fvi-vn%2Fhotel%2Fvietnam%2Fhanh-phuc-hotel---city-center--3000010032888&docid=BJXqnpAT1TKqKM&w=1080&h=720",
+    "position": 4
+   },
+   {
+    "title": "Khách sạn Hạnh Phúc – Trung tâm thành phố – Gần phố Bùi Viện, Giá giảm 30%,  Ảnh & Review chân thật",
+    "imageUrl": "https://ik.imagekit.io/tvlk/apr-asset/Ixf4aptF5N2Qdfmh4fGGYhTN274kJXuNMkUAzpL5HuD9jzSxIGG5kZNhhHY-p7nw/hotel/asset/10032888-a30537ef3c252b80a4747074a1f9cdca.jpg?tr=q-40,c-at_max,w-1280,h-720&_src=imagekit",
+    "imageWidth": 1080,
+    "imageHeight": 720,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT04GvS9fcDuoHKfGwTT2BZE4zoVRdgpUq-dJQ1fFUNPw&s",
+    "thumbnailWidth": 275,
+    "thumbnailHeight": 183,
+    "source": "Traveloka",
+    "domain": "www.traveloka.com",
+    "link": "https://www.traveloka.com/vi-vn/hotel/vietnam/hanh-phuc-hotel---city-center--3000010032888",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fik.imagekit.io%2Ftvlk%2Fapr-asset%2FIxf4aptF5N2Qdfmh4fGGYhTN274kJXuNMkUAzpL5HuD9jzSxIGG5kZNhhHY-p7nw%2Fhotel%2Fasset%2F10032888-a30537ef3c252b80a4747074a1f9cdca.jpg%3Ftr%3Dq-40%2Cc-at_max%2Cw-1280%2Ch-720%26_src%3Dimagekit&tbnid=TrzKrIZ33mLdBM&imgrefurl=https%3A%2F%2Fwww.traveloka.com%2Fvi-vn%2Fhotel%2Fvietnam%2Fhanh-phuc-hotel---city-center--3000010032888&docid=BJXqnpAT1TKqKM&w=1080&h=720",
+    "position": 5
+   },
+   {
+    "title": "Khách sạn Hạnh Phúc - Trung Tâm Quận 1 Gần Phố Bùi Viện (HANH PHUC HOTEL  -Trung Tâm Quận 1 Gần Phố Bùi Viện) Hồ Chí Minh, Việt Nam: Agoda.com có giá",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/79085121/0/74dc642614d0ef14b5761e8f7206b128.jpg?ce=3&s=1024x768",
+    "imageWidth": 1024,
+    "imageHeight": 682,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJ4KkhMX08LbdictrcpXF2Zp99EO8d8iQpf3901MEYhQ&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/hanh-phuc-hotel-center-of-saigon-near-bui-vien-street-h15784791/hotel/ho-chi-minh-city-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F79085121%2F0%2F74dc642614d0ef14b5761e8f7206b128.jpg%3Fce%3D3%26s%3D1024x768&tbnid=d4x9SYBOh08MxM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fhanh-phuc-hotel-center-of-saigon-near-bui-vien-street-h15784791%2Fhotel%2Fho-chi-minh-city-vn.html&docid=IZj7vr7BGch8LM&w=1024&h=682",
+    "position": 6
+   },
+   {
+    "title": "Khách sạn Hạnh Phúc, Thành phố Hồ Chí Minh | Hotels.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/20000000/19820000/19818300/19818247/b56bf28d.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 862,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSbUTkV2UPjHOw-9TsnNJcxrVKcYLjhdRaxpJ4SLiVLA&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "hotels",
+    "domain": "vi.hotels.com",
+    "link": "https://vi.hotels.com/ho635183904/khach-san-hanh-phuc-thanh-pho-ho-chi-minh-viet-nam/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F20000000%2F19820000%2F19818300%2F19818247%2Fb56bf28d.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=F9wW7WRwu8DfgM&imgrefurl=https%3A%2F%2Fvi.hotels.com%2Fho635183904%2Fkhach-san-hanh-phuc-thanh-pho-ho-chi-minh-viet-nam%2F&docid=GHie8PUj9VyH9M&w=862&h=575",
+    "position": 7
+   },
+   {
+    "title": "KHÁCH SẠN HẠNH PHÚC",
+    "imageUrl": "https://khachsansaigon.com.vn/upload/news/banner-01-2176.jpg",
+    "imageWidth": 555,
+    "imageHeight": 641,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRStSvQetkGMfCEBG3OBYTjkL7X8tO4PNrmAVTwafHB5Q&s=10",
+    "thumbnailWidth": 416,
+    "thumbnailHeight": 480,
+    "source": "khachsansaigon.com.vn",
+    "domain": "khachsansaigon.com.vn",
+    "link": "https://khachsansaigon.com.vn/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fkhachsansaigon.com.vn%2Fupload%2Fnews%2Fbanner-01-2176.jpg&tbnid=lKv_GuEw6AxjjM&imgrefurl=https%3A%2F%2Fkhachsansaigon.com.vn%2F&docid=foRBsyitq8S9XM&w=555&h=641",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

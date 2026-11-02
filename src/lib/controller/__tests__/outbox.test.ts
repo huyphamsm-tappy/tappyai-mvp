@@ -460,6 +460,19 @@ describe('C8 — the drain is wired as a daily cron', () => {
     //
     // 13 -> 14 on 2026-09-29 (R21, owner): `/api/cron/click-attributions-sweep` deletes ACCESSTRADE click joins
     //   older than 12 months (bounded, service_role only) and logs the count; it notifies nobody.
-    expect(vercelJson.crons.length).toBe(14)
+    //
+    // 14 -> 15 on 2026-10-04 (Phase 7 closeout CP5): `/api/cron/subscriptions-expire` marks ended web plans `expired` once a day
+    //   (00:00 VN). Double-gated by CRON_SECRET and SUBSCRIPTIONS_ENABLED; access never depended on it (the entitlement rule already
+    //   treats a past current_period_end as unpaid); it notifies nobody.
+    //
+    // 15 -> 16 on 2026-10-09 (App Review 1.2 remediation, owner): `/api/cron/moderation-digest` (daily, 08:00 VN) sends the reviewers
+    //   a counts-only summary of the moderation queue (open / new / urgent / overdue). It is the safety net behind the per-report alert,
+    //   so a report cannot sit unseen for a day. Double-gated by CRON_SECRET and MODERATION_ADMIN_ENABLED (404 while off); it reads only
+    //   moderation_queue priority and timestamps, and notifies staff named in MODERATION_DIGEST_USER_IDS — never an end user.
+    //
+    // 16 -> 17 on 2026-10-09 (App Review 1.2, owner): the same `/api/cron/moderation-digest` a second time a day (13:00 UTC = 20:00 VN), so it
+    //   runs every 12 h. The escalation to the backup reviewers fires for reports that will be overdue BEFORE the next run; with one
+    //   run a day an urgent report could pass 24 h unnoticed. Hobby allows daily jobs only, so this is two daily entries, not an hourly one.
+    expect(vercelJson.crons.length).toBe(17)
   })
 })
