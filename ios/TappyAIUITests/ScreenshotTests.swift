@@ -165,14 +165,13 @@ final class ScreenshotTests: XCTestCase {
 
     // MARK: - A2 In-app account deletion (App Store 5.1.1(v)) — both states of the server flag
 
-    /// Flag OFF (production today): the row is the email request, and the app says so.
-    func testAccountDeletionWhenTheServerFlagIsOff() {
+    /// Flag OFF (03/11, build 179 rejected for 5.1.1(v)): a signed-in person still STARTS the deletion inside the app - the row no longer waits for
+    /// /api/config - and the form is there; the email request is only the way out if the server then answers `not_available`.
+    func testAccountDeletionStartsInTheAppEvenWhenTheServerFlagIsOff() {
         let app = launch(route: "settings", signedIn: true, extra: ["-uitest-theme", "dark"])
         XCTAssertTrue(scrollTo(app, "settings-delete"), "delete row")
         any(app, "settings-delete").tap()
-        let title = app.alerts.firstMatch
-        XCTAssertTrue(title.waitForExistence(timeout: 10), "explanation alert")
-        XCTAssertTrue(title.label.contains("Yêu cầu xoá tài khoản"), "says it is a REQUEST, got: \(title.label)")
+        XCTAssertTrue(any(app, "delete-word").waitForExistence(timeout: 20), "the in-app confirmation form, not an email alert")
         shot("44-delete-flag-off")
     }
 
