@@ -295,7 +295,7 @@ struct EditProfileView: View {
             coverSupported = p.supportsCover
             profileLoaded = true
         } catch {
-            error = NSLocalizedString("common.loadFailed", comment: "")
+            self.error = NSLocalizedString("common.loadFailed", comment: "")
         }
         loading = false
     }
