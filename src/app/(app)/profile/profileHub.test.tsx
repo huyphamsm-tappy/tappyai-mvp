@@ -22,6 +22,7 @@ Object.defineProperty(window, 'matchMedia', {
   }),
 })
 
+import { accountMoreRows } from './ProfileRows'
 import ProfileView from './ProfileView'
 import { setLocale } from '@/lib/i18n/useTranslation'
 
@@ -273,14 +274,14 @@ describe('content comes from the gated endpoints, and only from them', () => {
   it('offers the five content states, then places', () => {
     const { container } = renderHub()
     const tabs = [...container.querySelectorAll('[data-profile-content] .v3-chip')].map((c) => c.textContent)
-    expect(tabs).toEqual(['Published', 'Shared', 'Saved', 'Restricted', 'Hidden', 'Places'])
+    expect(tabs).toEqual(['Published', 'Shared', 'Saved', 'In review / Restricted', 'Hidden', 'Places'])
   })
 
   it('the Vietnamese labels are the owner\'s wording', () => {
     setLocale('vi')
     const { container } = renderHub()
     const tabs = [...container.querySelectorAll('[data-profile-content] .v3-chip')].map((c) => c.textContent)
-    expect(tabs).toEqual(['Đã đăng', 'Đã chia sẻ', 'Đã lưu', 'Bị hạn chế', 'Đã ẩn', 'Địa điểm'])
+    expect(tabs).toEqual(['Đã đăng', 'Đã chia sẻ', 'Đã lưu', 'Chờ duyệt / Bị hạn chế', 'Đã ẩn', 'Địa điểm'])
   })
 })
 
@@ -358,8 +359,12 @@ describe('the hub stays an account hub, not a replacement for other products', (
     const hrefs = [...container.querySelectorAll('.v3-panel li a[href]')].map((a) => a.getAttribute('href'))
     // The routes the SHARED inventory owns (ProfileRows). The Inbox lives in the shell's own
     // Account group, not in this list — asserting it here would test the wrong component.
+    // Compact hub (2026-10-02): the hub draws Tài khoản + Cài đặt; the other eight rows are one tap
+    // deeper, on /profile/account (`accountMoreRows`).
+    expect(hrefs).toEqual(['/profile/account', '/profile/settings'])
+    const reachable = [...hrefs, ...accountMoreRows().map((r) => r.href)]
     for (const route of ['/planner', '/profile/settings', '/profile/history', '/profile/favorites', '/profile/price-watches']) {
-      expect(hrefs, `${route} must stay reachable from Profile`).toContain(route)
+      expect(reachable, `${route} must stay reachable from Profile`).toContain(route)
     }
   })
 
@@ -412,13 +417,15 @@ describe('the hero after the reskin', () => {
     expect(hero.textContent ?? '').not.toMatch(/thay ảnh bìa|change cover/i)
   })
 
-  it('renders the edit action and the existing QR/share button in each of the two breakpoint layers', () => {
+  it('renders the edit action and the canonical QR link in each of the two breakpoint layers (Phase 7: one QR implementation)', () => {
     const { container } = renderHub()
     const hero = container.querySelector('[data-profile-hero]') as HTMLElement
     // Two layers (>=sm row, <sm row) are authored; CSS shows one. Each layer holds exactly one edit link.
     const edits = [...hero.querySelectorAll('a[href="/profile/edit"]')].filter(a => (a.textContent ?? '').trim().length > 0)
     expect(edits).toHaveLength(2)
-    expect(within(hero).getAllByRole('button', { name: /mã qr trang cá nhân của tôi/i })).toHaveLength(2)
+    // Phase 7: no second QR renderer on this page — each layer links to the ONE canonical QR page.
+    expect([...hero.querySelectorAll('a[href="/profile/qr"]')]).toHaveLength(2)
+    expect(within(hero).queryAllByRole('button', { name: /mã qr trang cá nhân của tôi/i })).toHaveLength(0)
   })
 })
 
@@ -466,7 +473,7 @@ describe('the rail after the reskin', () => {
     expect(links).toContain('/users/u2')
     const qr = container.querySelector('[data-profile-qr]') as HTMLElement
     expect(within(qr).getByRole('link').getAttribute('href')).toBe('/profile/qr')
-    expect(within(qr).getByRole('button', { name: /mã qr trang cá nhân của tôi/i })).toBeTruthy()
+    expect(within(qr).queryByRole('button', { name: /mã qr trang cá nhân của tôi/i })).toBeNull()
   })
 
   it('draws no download control of its own — the download lives on /profile/qr', () => {

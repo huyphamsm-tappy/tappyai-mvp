@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hủy Tiếng Ồn Chống Ồn Cho Học Tập Ngáy Công Nghiệp site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:02:43.191Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hủy Tiếng Ồn Chống Ồn Cho Học Tập Ngáy Công Nghiệp site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Checklist chuẩn bị đồ dùng học tập cần thiết cho lớp 5",
+    "link": "https://shopee.vn/blog/do-dung-hoc-tap-can-thiet-cho-lop-5/",
+    "snippet": "Nên chọn tai nghe đeo êm, có micro rõ ràng và âm lượng an toàn để bảo vệ thính giác trong quá trình sử dụng. Tai nghe chống ồn (Nguồn: Shopee.vn) ...",
+    "date": "1 thg 8, 2026",
+    "position": 1
+   },
+   {
+    "title": "Shopee Việt Nam | Mua Sắm Online",
+    "link": "https://shopee.vn/",
+    "snippet": "... Cho Gaming, Học Tập & Phòng Ngủ. 42.499₫ · MEAI GS02 Quạt Mini Cầm Tay Pin USB ... Giảm Tiếng Ồn Tiết Kiệm Năng Lượng Dễ Lắp Đặt. 20.500₫ · Cường Lực Điện ...",
+    "position": 2
+   },
+   {
+    "title": "Học đại học có cần laptop không? Cách chọn máy phù ...",
+    "link": "https://shopee.vn/blog/hoc-dai-hoc-co-can-laptop-khong/",
+    "snippet": "Học đại học có cần laptop không là băn khoăn quen thuộc của sinh viên năm nhất và phụ huynh trước mùa tựu trường.",
+    "date": "17 thg 8, 2026",
+    "position": 3
+   },
+   {
+    "title": "STT về sự cố gắng nỗ lực hay, truyền động lực mạnh mẽ ...",
+    "link": "https://shopee.vn/blog/stt-ve-su-co-gang-no-luc/",
+    "snippet": "Tai nghe bluetooth chống ồn chủ động: Món bảo bối tuyệt vời giúp bạn hoàn toàn tách biệt khỏi những tiếng ồn xô bồ xung quanh để chìm đắm vào ...",
+    "date": "3 thg 6, 2026",
+    "position": 4
+   },
+   {
+    "title": "nuce giá tốt Tháng 9, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=nuce",
+    "snippet": "Mua nuce giao tận nơi Voucher Shopee giảm đến 50%. Miễn phí vận chuyển và đổi trả dễ dàng. Thanh toán bảo mật. Đặt mua ngay!",
+    "position": 5
+   },
+   {
+    "title": "Tai nghe cách âm chống ồn - Giá Tốt, Sale Tháng 10, ...",
+    "link": "https://shopee.vn/list/tai%20nghe/c%C3%A1ch%20%C3%A2m/ch%E1%BB%91ng%20%E1%BB%93n",
+    "snippet": "Tai Nghe Moldex Chống Ồn Ngủ Ngủ Chuyên Dụng Siêu Cách Âm Học Để Ngáy Tiếng Ồn Chuyên Nghiệp130.900₫ · 2. Tai Nghe Ngăn Tiếng Ồn Trẻ Em Ngủ Ngon Phòng Học Ký ...",
+    "position": 6
+   },
+   {
+    "title": "Các hành vi vi phạm Shopee Live và hình thức phạt tương ...",
+    "link": "https://banhang.shopee.vn/edu/article/5939",
+    "snippet": "- Âm thanh rè, không có âm thanh, tiếng ồn xung quanh rõ và lớn hoặc bất kỳ âm thanh nào gây cảm giác khó chịu cho người xem... Nhẹ. 1. Nhắc ...",
+    "date": "30 thg 3, 2026",
+    "position": 7
+   },
+   {
+    "title": "Thứ Tư Siêu Rẻ",
+    "link": "https://shopee.vn/m/thu-4-sieu-re-032026",
+    "snippet": "Phấn Má Hồng Đơn Sắc JUDYDOLL Blush Powder Mịn mờ Chuẩn màu Tiệp da Bền màu · 2 pc đèn LED sương mù 2 màu 24SMD H8 H11 H3 H4 H7 9005 HB3 · Son tint dưỡng ẩm ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

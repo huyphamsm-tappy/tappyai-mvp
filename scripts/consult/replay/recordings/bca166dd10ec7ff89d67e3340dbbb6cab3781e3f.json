@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Truyền Thuyết ChamPong Bình Thạnh\" OR \"Mây Nướng\" OR \"Phong Vị 24h | Nhà Hàng Lẩu Quận 5\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:58:54.467Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Truyền Thuyết ChamPong Bình Thạnh\" OR \"Mây Nướng\" OR \"Phong Vị 24h | Nhà Hàng Lẩu Quận 5\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hành trình xây dựng của \"MÂY NƯỚNG\"",
+    "link": "https://www.tiktok.com/@chuquanlembem/video/7634486982109826312",
+    "snippet": "Mây Nướng không chỉ là một nhà hàng, mà còn là một hành trình xây dựng độc đáo, nơi mà ẩm thực và thiết kế gặp gỡ để tạo ra trải nghiệm độc ...",
+    "position": 1
+   },
+   {
+    "title": "Quán đồ nướng ngon gần Cầu Ông Lãnh, Q1",
+    "link": "https://www.tiktok.com/@didauangi.vn/video/7651215691877534997",
+    "snippet": "Mấy bạn thích ăn đồ nướng thì có thể thử quán Mây Nướng tại khu Đề Thám, gần Cầu Ông Lãnh (Quận 1). Đây là gợi ý ăn uống phù hợp cho buổi ...",
+    "position": 2
+   },
+   {
+    "title": "Đọt mây nướng — Thưởng thức món ăn nhiều gai",
+    "link": "https://www.tiktok.com/@vochonganba99/video/7690021349548395828",
+    "snippet": "Đọt mây nướng là chủ đề chính của video. Video giới thiệu đọt mây đã được nướng và mô tả là một món ăn \"nhiều gai\" được thưởng thức trong ...",
+    "position": 3
+   },
+   {
+    "title": "Thử món mới Champong Lòng Bò & Gà Chiên Xốt Cay tại ...",
+    "link": "https://www.tiktok.com/@hoaoididau/video/7687461595147980053",
+    "snippet": "Video giới thiệu trải nghiệm tại Truyền Thuyết Champong Bình Thạnh và thử hai món mới: Champong Lòng Bò và Gà Chiên Xốt Cay.",
+    "position": 4
+   },
+   {
+    "title": "60+ Món Lai Rai Nên Thử từ Mây Nướng - Nong Farm to Grill",
+    "link": "https://www.tiktok.com/@chuquanlembem/video/7646727737343757586",
+    "snippet": "Kết luận Bộ sưu tập hơn 60 món lai rai từ Mây Nướng (Nong Farm to Grill) cung cấp nhiều ý tưởng cho buổi gặp gỡ, từ đồ nướng truyền thống đến ...",
+    "position": 5
+   },
+   {
+    "title": "Andee buffet nướng review: Mây Nướng Nè cảm ơn anh ...",
+    "link": "https://www.tiktok.com/@andeee_story/video/7676737538039581973",
+    "snippet": "Nội dung tập trung vào trải nghiệm buffet nướng Andee và tương tác thân thiện giữa khách và nhân viên. Nội dung chính - Bối cảnh: Quán Mây Nướng ...",
+    "position": 6
+   },
+   {
+    "title": "Nhà hàng Mây Nướng Vương Khang — Lần đầu mở quán ...",
+    "link": "https://www.tiktok.com/@vuong.khang.vlog/video/7640295289798085909",
+    "snippet": "Với dự án Mây Nướng của Vương Khang, điểm nhấn là không gian khói nướng và món nướng hải sản — những yếu tố sẽ quyết định thu hút thực khách.",
+    "position": 7
+   },
+   {
+    "title": "Menu Mây Nướng Quận 1 – Quán nướng view đẹp, giá ...",
+    "link": "https://www.tiktok.com/@sonrakhe/video/7647889192063864085",
+    "snippet": "Menu và giá Menu Mây Nướng tập trung vào các món nướng: thịt nướng, bò nướng, gà nướng, hải sản nướng và các combo thịt nướng. Theo truy vấn phổ ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

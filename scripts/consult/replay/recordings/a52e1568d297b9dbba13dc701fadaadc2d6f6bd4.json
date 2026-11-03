@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Samsung Galaxy S24 128GB chính hãng Việt Nam giá (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:35:59.324Z",
+ "body": {
+  "searchParameters": {
+   "q": "Samsung Galaxy S24 128GB chính hãng Việt Nam giá (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Giá Samsung Galaxy S24 series cập nhật mới, ưu đãi sốc",
+    "link": "https://cellphones.com.vn/mobile/samsung/galaxy-s/s24-series.html",
+    "snippet": "Mức giá của dòng máy này như sau: Samsung Galaxy S24 tiêu chuẩn: khởi điểm từ 22.990.000đ. Samsung Galaxy S24 Plus 256GB - 512GB: khởi điểm từ 26.990.000đ. Giá ...",
+    "position": 1
+   },
+   {
+    "title": "Samsung Galaxy S chính hãng | Nhiều dòng giá tốt 10/2026",
+    "link": "https://cellphones.com.vn/mobile/samsung/galaxy-s.html",
+    "snippet": "Bảng giá điện thoại Samsung S Series mới 10/2026? ; Samsung Galaxy S26 5G 12GB 256GB. 22.990.000đ. 22.490.000đ ; Samsung Galaxy S24 Ultra 12GB 256GB. 25.290.000đ.",
+    "position": 2
+   },
+   {
+    "title": "Samsung Galaxy S24 FE 5G chính hãng, giá rẻ, góp 0%",
+    "link": "https://cellphones.com.vn/dien-thoai-samsung-galaxy-s24-fe.html",
+    "snippet": "Samsung Galaxy S24 FE giá bao nhiêu? ; Tên sản phẩm. Giá bán. Giá thu cũ lên đời ; Samsung Galaxy S24 FE 5G 8GB 128GB. 11.490.000đ. 10.490.000đ ...",
+    "rating": 4.9,
+    "ratingCount": 8,
+    "position": 3
+   },
+   {
+    "title": "Samsung Galaxy S24 Plus chính hãng, giá giảm đến 2 triệu",
+    "link": "https://cellphones.com.vn/samsung-galaxy-s24-plus.html",
+    "snippet": "Samsung Galaxy S24 Plus 12GB 256GB ; Lên đời chỉ từ 14.424.000đ ; Trợ giá đến 2.000.000đ ; Giá hàng mới: 18.650.000 ; Trả góp 0% ; Hiệu năng. 5/5. (11 đánh giá).",
+    "rating": 5,
+    "ratingCount": 17,
+    "position": 4
+   },
+   {
+    "title": "Samsung S24 Ultra cũ như mới, chính hãng, giá rẻ, góp 0%",
+    "link": "https://cellphones.com.vn/hang-cu/samsung/galaxy-s/s24-series.html",
+    "snippet": "Tình trạng máy. Xước cấn; Đã kích hoạt; Trầy xước · Kiểu màn hình. Đục lỗ (Nốt ruồi); Giọt nước · Tính năng camera. Chụp xóa phông; Chụp góc rộng; Chống rung · Bộ ...",
+    "position": 5
+   },
+   {
+    "title": "Samsung Galaxy S24 có mấy phiên bản? Tìm hiểu ngay!",
+    "link": "https://cellphones.com.vn/sforum/samsung-galaxy-s24-co-may-phien-ban",
+    "snippet": "Hơn nữa, mua Galaxy S24 tại CellphoneS, khách hàng còn được hưởng chế độ hậu mãi tốt và bảo hành chính hãng 12 tháng. Điều này không chỉ đảm ...",
+    "date": "9 thg 1, 2024",
+    "position": 6
+   },
+   {
+    "title": "Điện Thoại Samsung Galaxy S24 FE 5G 8GB/128GB Chính ...",
+    "link": "https://shopee.vn/%C4%90i%E1%BB%87n-Tho%E1%BA%A1i-Samsung-Galaxy-S24-FE-5G-8GB-128GB-Ch%C3%ADnh-H%C3%A3ng-B%E1%BA%A3o-H%C3%A0nh-12-Th%C3%A1ng-i.1388358182.27467586917",
+    "snippet": "Mua Điện Thoại Samsung Galaxy S24 FE 5G 8GB/128GB Chính Hãng, Bảo Hành 12 Tháng giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "position": 7
+   },
+   {
+    "title": "Những smartphone Samsung sẽ nhận tới 6 năm cập nhật ...",
+    "link": "https://cellphones.com.vn/sforum/smartphone-samsung-6-nam-cap-nhat",
+    "snippet": "Danh sách smartphone Samsung tầm trung sẽ nhận tới 6 bản cập nhật Android lớn tiếp theo! ; Samsung Galaxy Z Flip8 5G 12GB 256GB. 27.990.000đ ; Samsung Galaxy Z ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

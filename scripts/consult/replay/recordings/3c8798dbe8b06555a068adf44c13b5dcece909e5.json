@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Quán Bụi Central\" OR \"Quán Bụi\" OR \"Cơm Thố Xá Lị\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:38:47.375Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Quán Bụi Central\" OR \"Quán Bụi\" OR \"Cơm Thố Xá Lị\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quán Bụi Group (@quanbui_group)",
+    "link": "https://www.tiktok.com/@quanbui_group",
+    "snippet": "Những cảm nhận khách quan, chi tiết từ khách luôn là điều Quán Bụi trân · Bữa cơm tối chuẩn vị Việt tại Quán Bụi central #quanbuigroup #vietnamesefood # ...",
+    "position": 1
+   },
+   {
+    "title": "Khám Phá Quán Bụi: Hương Vị Cơm Nhà Việt Nam",
+    "link": "https://www.tiktok.com/@nguyencongnuongw_/video/7535335656923335944",
+    "snippet": "Khám Phá Quán Bụi: Hương Vị Cơm Nhà Việt Nam. Trải nghiệm ẩm thực Việt Nam tại Quán Bụi, nơi mang đậm hương vị cơm nhà. Đừng bỏ lỡ! #review ...",
+    "position": 2
+   },
+   {
+    "title": "Cơm Thố Xá Lị: Món Tiềm Siêu Ngon người Hoa ở Quận 1",
+    "link": "https://www.tiktok.com/@didauofficial/video/7312277488145566978",
+    "snippet": "Khám phá vị ngon của cơm thố xá lị người Hoa tại Quận 1 với các món tiềm siêu hấp dẫn. Một trải nghiệm ẩm thực đầy phong phú! #didau #ancung # ...",
+    "position": 3
+   },
+   {
+    "title": "Quán Bụi Heritage: Món Ngon Đậm Phong Cách Việt Nam",
+    "link": "https://www.tiktok.com/@htvtintuc/video/7674865991259622677",
+    "snippet": "Quán Bụi Heritage giới thiệu set menu đặc biệt nhân dịp kỷ niệm 15 năm hoạt động, mang đến những trải nghiệm ẩm thực độc đáo đậm phong cách Việt Nam.",
+    "position": 4
+   },
+   {
+    "title": "Combo ăn sáng Việt tại Quán Bụi Sài Gòn chỉ 99k++",
+    "link": "https://www.tiktok.com/@quanbui_group/video/7303400928680447250",
+    "snippet": "Quán Bụi Sài Gòn ăn sáng ngon 99k, combo ăn sáng Việt tại Quán Bụi, không gian thoải mái Quán Bụi, thực đơn ăn sáng tại Quán Bụi, địa điểm ...",
+    "position": 5
+   },
+   {
+    "title": "Cơm thố Xá Lị - Món Canh Tiềm Người Hoa Ngon Nhất",
+    "link": "https://www.tiktok.com/@tuanmanhnguyen3/video/7568854444671110418",
+    "snippet": "Cơm thố Xá Lị - Món Canh Tiềm Người Hoa Ngon Nhất. Khám phá Cơm thố Xá Lị với các món canh tiềm tuyệt hảo! Đến thử ngay hôm nay nhé ...",
+    "position": 6
+   },
+   {
+    "title": "Quán Bụi Phố: Lẩu, Nướng, và Ốc Ngon Tại Tây Ninh",
+    "link": "https://www.tiktok.com/@mrhi1905/video/7594436856524197127",
+    "snippet": "Quán Bụi Phố: Lẩu, Nướng, và Ốc Ngon Tại Tây Ninh. Khám phá Quán Bụi Phố với lẩu cá tằm, ốc, và món nướng ngon miệng. Giá cả hợp lý và phục ...",
+    "position": 7
+   },
+   {
+    "title": "QUÁN BỤI & STIICKY THAI Toàn món ăn ngon! #quanbui ...",
+    "link": "https://www.tiktok.com/@diancungneenha/video/7676785732567977236",
+    "snippet": "3157 Lượt thích,29 Bình luận.Video TikTok từ Đi ăn cùng Nee nha ￼ (@diancungneenha): \"QUÁN BỤI & STIICKY THAI Toàn món ăn ngon!",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

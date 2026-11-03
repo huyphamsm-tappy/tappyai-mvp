@@ -1,0 +1,82 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Bluetooth chụp Tai Sony WH-CH720N site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:58:40.238Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bluetooth chụp Tai Sony WH-CH720N site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe sony wh ch720n - Giá Tốt, Sale Tháng 10, Ship 0 ...",
+    "link": "https://shopee.vn/list/tai%20nghe/sony/wh%20ch720n",
+    "snippet": "flag-label Tai Nghe Không Dây Bluetooth Chụp Tai Sony WH-CH520. 1.120.000 ... Tai nghe bluetooth chống ồn Sony WH-CH720N chip V12.715.600₫ · 3. 1 Cặp Thay ...",
+    "position": 1
+   },
+   {
+    "title": "Tai nghe chụp tai, tai nghe bluetooth, Sony WH-CH720N",
+    "link": "https://shopee.vn/Tai-nghe-ch%E1%BB%A5p-tai-tai-nghe-bluetooth-Sony-WH-CH720N-i.172282681.18186531733",
+    "snippet": "Mua Tai nghe chụp tai, tai nghe bluetooth, Sony WH-CH720N giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền ...",
+    "rating": 5,
+    "ratingCount": 8,
+    "position": 2
+   },
+   {
+    "title": "Tai Nghe Chụp Tai Bluetooth Sony WH-CH720N Chống Ồn",
+    "link": "https://shopee.vn/Tai-Nghe-Ch%E1%BB%A5p-Tai-Bluetooth-Sony-WH-CH720N-Ch%E1%BB%91ng-%E1%BB%92n-K%E1%BA%BFt-N%E1%BB%91i-Kh%C3%B4ng-D%C3%A2y-C%C3%B3-D%C3%A2y-Ch%C3%ADnh-H%C3%A3ng-i.424715.52952632412",
+    "snippet": "Mua Tai Nghe Chụp Tai Bluetooth Sony WH-CH720N Chống Ồn - Kết Nối Không Dây / Có Dây - Chính Hãng giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 3
+   },
+   {
+    "title": "Tai nghe Bluetooth chụp tai Sony WH-CH720N",
+    "link": "https://shopee.vn/Tai-nghe-Bluetooth-ch%E1%BB%A5p-tai-Sony-WH-CH720N-i.288286284.25595258375",
+    "snippet": "Mua Tai nghe Bluetooth chụp tai Sony WH-CH720N giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn ...",
+    "rating": 5,
+    "ratingCount": 7,
+    "position": 4
+   },
+   {
+    "title": "Mới Túi Đựng Tai Nghe bluetooth Không Dây sony wh- ...",
+    "link": "https://shopee.vn/M%E1%BB%9Bi-T%C3%BAi-%C4%90%E1%BB%B1ng-Tai-Nghe-bluetooth-Kh%C3%B4ng-D%C3%A2y-sony-wh-ch720n-wh-ch710n-wh-ch520-i.891294509.20592808996",
+    "snippet": "Mới Túi Đựng Tai Nghe bluetooth Không Dây sony wh-ch720n wh-ch710n wh-ch520 ... Tặng Voucher 15.000₫ nếu đơn giao sau thời gian trên.",
+    "rating": 5,
+    "ratingCount": 349,
+    "position": 5
+   },
+   {
+    "title": "Tai nghe chụp tai Bluetooth Sony WH-CH720N",
+    "link": "https://shopee.vn/Tai-nghe-ch%E1%BB%A5p-tai-Bluetooth-Sony-WH-CH720N-H%C3%A0ng-ch%C3%ADnh-h%C3%A3ng-i.331695868.23575475362",
+    "snippet": "Mua Tai nghe chụp tai Bluetooth Sony WH-CH720N - Hàng chính hãng giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 6
+   },
+   {
+    "title": "Tai nghe chụp tai Bluetooth SONY WH-CH720N",
+    "link": "https://shopee.vn/Tai-nghe-ch%E1%BB%A5p-tai-Bluetooth-SONY-WH-CH720N-Ch%C3%ADnh-h%C3%A3ng-ph%C3%A2n-ph%E1%BB%91i-i.689965329.19289002745",
+    "snippet": "Mua Tai nghe chụp tai Bluetooth SONY WH-CH720N - Chính hãng phân phối giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn ...",
+    "position": 7
+   },
+   {
+    "title": "Tai nghe chụp tai Bluetooth SONY WH-CH720N",
+    "link": "https://shopee.vn/Tai-nghe-ch%E1%BB%A5p-tai-Bluetooth-SONY-WH-CH720N-i.1281837458.58053897229",
+    "snippet": "Mua Tai nghe chụp tai Bluetooth SONY WH-CH720N giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

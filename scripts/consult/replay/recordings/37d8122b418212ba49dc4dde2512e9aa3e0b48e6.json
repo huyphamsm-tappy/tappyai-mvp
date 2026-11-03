@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hội An vé phố cổ quy định tham quan",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:33:55.245Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hội An vé phố cổ quy định tham quan",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cập Nhật Giá Vé Tham Quan Phố Cổ Hội An 2026 & Mẹo ...",
+    "link": "https://phanvantravel.com/ve-tham-quan-pho-co-hoi-an",
+    "snippet": "Với tấm vé tham quan Phố Cổ Hội An trị giá 80.000 VNĐ - 120.000 VNĐ, du khách có thể tự chọn 5 điểm tham quan trong danh sách di tích mở cửa, không bắt buộc ...",
+    "position": 1
+   },
+   {
+    "title": "Vé tham quan Hội An - Phố cổ Hội An - Di sản văn hóa thế giới",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Dieu-can-biet/ve-tham-quan-hoi-an-1940.hwh",
+    "snippet": "1/ Giá vé tham quan Khu phố cổ Hội An Giá vé Việt Nam: 80.000 VNĐ/ 1 người/ 1 vé. Giá vé nước ngoài: 120.000 VNĐ/ 1 người/ 1 vé",
+    "date": "23 thg 2, 2020",
+    "position": 2
+   },
+   {
+    "title": "Vé Tham Quan Phố Cổ Hội An",
+    "link": "https://www.klook.com/vi/activity/72346-hoi-an-ancient-town-attractions-adminssion-ticket/",
+    "snippet": "Thị trấn cổ kính tuyệt đẹp. Không cần vé vẫn có thể vào khu phố cổ. Điểm khác biệt là với vé, bạn có thể vào 5 điểm tham quan do bạn tự chọn với một số điều ...",
+    "rating": 4,
+    "ratingCount": 691,
+    "position": 3
+   },
+   {
+    "title": "THÔNG TIN VỀ ĐỐI TƯỢNG MIỄN THU PHÍ THAM QUAN ...",
+    "link": "https://www.facebook.com/thanhphohoian.quangnam.vn/posts/-th%C3%B4ng-tin-v%E1%BB%81-%C4%91%E1%BB%91i-t%C6%B0%E1%BB%A3ng-mi%E1%BB%85n-thu-ph%C3%AD-tham-quan-t%E1%BA%A1i-%C4%91%C3%B4-th%E1%BB%8B-c%E1%BB%95-h%E1%BB%99i-an-theo-ngh%E1%BB%8B-qu/1398102752359813/",
+    "snippet": "- Với giá vé 80.000đ, du khách được tham quan tương ứng cảnh quan chung và 03 công trình văn hoá. Những điểm tham quan nổi bật bao gồm: - ...",
+    "position": 4
+   },
+   {
+    "title": "Từ ngày 15/5, du khách phải mua vé khi tham quan khu ...",
+    "link": "https://baochinhphu.vn/tu-ngay-15-5-du-khach-phai-mua-ve-khi-tham-quan-khu-pho-co-hoi-an-102230404005456526.htm",
+    "snippet": "(Chinhphu.vn) - Giá vé tham quan khu phố cổ Hội An vẫn giữ nguyên mức 80.000 đồng/vé đối với khách trong nước và 120.000 đồng/vé đối với khách ...",
+    "date": "4 thg 4, 2023",
+    "position": 5
+   },
+   {
+    "title": "Giá vé các điểm tham quan tại Hội An",
+    "link": "https://danatravel.vn/thong-tin-du-lich/gia-ve-cac-diem-tham-quan-tai-hoi-an.html?srsltid=AU7gw4X3TJE3DYV1Ng_pDO7pOI7spP9vwf6tw2tepywda9MG-7yVT8lo",
+    "snippet": "Giá vé các điểm tham quan tại Hội An · 1. Phố cổ Hội An. - Khách Nội địa: 80.000 VND/khách/lượt · 2. Show ký ức Hội An. - Thời gian áp dụng: Từ ...",
+    "date": "13 thg 1, 2026",
+    "position": 6
+   },
+   {
+    "title": "Những thông tin cần biết về vé tham quan Đô thị cổ Hội An",
+    "link": "https://hoianheritage.net/vi/news/Tin-tuc-su-kien/thong-bao-ve-hoat-dong-tham-quan-khu-pho-co-hoi-an-1711.html",
+    "snippet": "Quyền lợi của du khách - Với vé có mệnh giá 80.000 VNĐ: + Tham quan cảnh quan chung Khu phố cổ + Tham quan 01 điểm di tích Chùa Cầu hoặc ...",
+    "date": "26 thg 1, 2026",
+    "position": 7
+   },
+   {
+    "title": "Có cần mua vé vào phố cổ Hội An không? - Holdall",
+    "link": "https://holdall.vn/ve-vao-pho-co-hoi-an",
+    "snippet": "Mỗi vé cho phép bạn tham quan tối đa 3 – 5 điểm di tích trong danh sách được quy định, tùy theo chính sách từng thời điểm. Trong trường hợp du ...",
+    "date": "11 thg 7, 2025",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

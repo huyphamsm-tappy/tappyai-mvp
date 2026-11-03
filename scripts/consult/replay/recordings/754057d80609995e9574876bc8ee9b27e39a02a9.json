@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"KHÁCH SẠN MỸ KHÊ 2\" Đà Nẵng site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:11:46.162Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"KHÁCH SẠN MỸ KHÊ 2\" Đà Nẵng site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "KHÁCH SẠN MỸ KHÊ 2 - Giá cả và Ưu đãi 2026, Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-45905306/khach-san-my-khe-2/",
+    "snippet": "Giờ nhận phòng tại KHÁCH SẠN MỸ KHÊ 2 bắt đầu từ 14:00-24:00, và giờ trả phòng là 12:00. Có được mang theo thú cưng tại KHÁCH SẠN MỸ KHÊ 2 không? Không, không ...",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn ở Quảng Ngãi, Việt Nam",
+    "link": "https://vn.trip.com/hotels/province/vn-quang-ngai-province.html",
+    "snippet": "Vũ HotelWuzhen Tong'an InnNhà Khách T78 (T78 Hotel Nha Trang)LS Hotel (Guilin Liangsu)Khu nghỉ dưỡng OmelyKHÁCH SẠN MỸ KHÊ 2Diều Sóc SơnKhách sạn Nha VIET ...",
+    "position": 2
+   },
+   {
+    "title": "Khách sạn ở Jost Van Dyke, Quần đảo Virgin thuộc Anh",
+    "link": "https://vn.trip.com/hotels/province/vg-jost-van-dyke.html",
+    "snippet": "One88 on CommerceVũ HotelWuzhen Tong'an InnNhà Khách T78 (T78 Hotel Nha Trang)Khu nghỉ dưỡng OmelyKHÁCH SẠN MỸ KHÊ 2LS Hotel (Guilin Liangsu)Ibala Hotel ...",
+    "position": 3
+   },
+   {
+    "title": "Khách sạn ở Canelones, Uruguay",
+    "link": "https://vn.trip.com/hotels/province/uy-canelones-department.html",
+    "snippet": "... KHÁCH SẠN MỸ KHÊ 2Bella Merry Hotel & ApartmentOYO 10795 Hotel RS ResidencySofitel Guangzhou SunrichSeashell Resort Koh TaoHotel Terrace at KutaApec Mandala ...",
+    "position": 4
+   },
+   {
+    "title": "Khách sạn và Ưu đãi Khách sạn Tốt nhất ở River Gee, Liberia",
+    "link": "https://vn.trip.com/hotels/province/lr-river-gee.html",
+    "snippet": "... KHÁCH SẠN MỸ KHÊ 2Pan Pacific XiamenIvory Mountain Holiday InnKhách sạn Mê LinhCecil HotelThe Prince Kyoto Takaragaike, Autograph CollectionKhu Nghi Duong ...",
+    "position": 5
+   },
+   {
+    "title": "Khách sạn và Ưu đãi Khách sạn Tốt nhất ở Jizzakh, Uzbekistan",
+    "link": "https://vn.trip.com/hotels/province/uz-jizzakh.html",
+    "snippet": "... KHÁCH SẠN MỸ KHÊ 2Casa Solada HotelHotel GóticoHotel Famitic Nikko StationToni Hütte am RiesserkopfEuro Hotel MilanLong HotelHoliday Inn HANGZHOU WEST LAKE ...",
+    "position": 6
+   },
+   {
+    "title": "Khách sạn tại Thành Phố Mexico",
+    "link": "https://vn.trip.com/hotels/province/mx-federal-district.html",
+    "snippet": "... KHÁCH SẠN MỸ KHÊ 2Diều Sóc SơnMarina Bay Sands SingaporeL3 guest houseGolden ... đà nẵngvé máy bay cần thơ hà nội. Khách Sạn Tại Các Vùng Khác. Các khách ...",
+    "position": 7
+   },
+   {
+    "title": "Khách sạn ở Tỉnh Wakayama, Nhật Bản",
+    "link": "https://vn.trip.com/hotels/province/jp-wakayama-prefecture.html",
+    "snippet": "One88 on CommerceVũ HotelWuzhen Tong'an InnNhà Khách T78 (T78 Hotel Nha Trang)LS Hotel (Guilin Liangsu)Khu nghỉ dưỡng OmelyKHÁCH SẠN MỸ KHÊ 2Diều Sóc Sơn ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

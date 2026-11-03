@@ -1,0 +1,552 @@
+// Launcher of the LIVE TRIAL: runs liveTrial.test.ts in its OWN node process and owns that process's whole life (round 2g, D1/D3).
+//
+//   node scripts/uat/consultUat/liveTrialLauncher.mjs                    the real trial (one question, real network, real money - only after every gate in the sheet)
+//   node scripts/uat/consultUat/liveTrialLauncher.mjs --plumbing-check   starts the same child WITHOUT the confirmation (the trial test is skipped): no request, no cost
+//
+// WHY A SEPARATE PROCESS. The trial wraps fetch and node:http(s) while it runs; a wrapper that is taken off after a short drain leaves later background work free
+// to send anything. Here the child keeps the network CLOSED until it ends (the core runs with afterTrial: 'deny') and this launcher ends the child: as soon as the
+// summary block has arrived (or after a time limit) the whole process TREE is killed and the launcher checks that the process is gone.
+//
+// WHAT THE CHILD SEES. Only an allow-list of environment variables is passed on: the two keys, the benchmark flags and BENCH_* variables, and the few system variables
+// node needs. Nothing else - no NODE_OPTIONS, no proxy variables, no CI. A variable that looks like a trial setting (CONSULT_*, LLM_*, TAPPY_* ...) but is not in the
+// list is REFUSED by name (the trial would not run with it). The child is started with an EXPLICIT command line (no --use-env-proxy, no preload). The launcher itself
+// sets BENCH_LIVE_TRIAL and BENCH_TRIAL_ISOLATED (a random per-run nonce), for the child only: the Owner never sets BENCH_LIVE_TRIAL in a shell.
+//
+// WHAT THE OWNER SEES. The child's output is read into memory, never shown. Only the text between the summary markers (which carry the run's nonce, so that text the
+// child merely prints cannot forge them) is printed, after the keys have been removed from it. A redacted copy of the whole output is written next to the results
+// (BENCH_TRIAL_OUT_DIR, drive D only) for the Owner's own eyes. No key is ever an argument or printed.
+//
+// LIMITS (stated): the tree is ended while the child is alive (taskkill /T needs the parent). If the child exits BY ITSELF while a descendant still holds its output pipes
+// the launcher stops waiting after 3 s and says so (exit 3); it does NOT kill by a pid that no longer belongs to a live process (a Windows pid can be reused).
+//
+// This file uses only node: modules (it must run with plain `node`) and has no side effect when imported.
+import { spawn, spawnSync } from 'node:child_process'
+import { createHash, randomBytes } from 'node:crypto'
+import { existsSync, mkdirSync, readFileSync, realpathSync, writeFileSync } from 'node:fs'
+import { createInterface } from 'node:readline'
+import { join, dirname } from 'node:path'
+import { fileURLToPath, pathToFileURL } from 'node:url'
+
+/** The markers around the blocks the child prints. They carry the run's nonce: `<<TRIAL-SUMMARY-BEGIN:<nonce>>>`. */
+export const marker = (kind, nonce) => `<<TRIAL-${kind}:${nonce}>>`
+export const SUMMARY_BEGIN = 'SUMMARY-BEGIN', SUMMARY_END = 'SUMMARY-END', REFUSED_BEGIN = 'REFUSED-BEGIN', REFUSED_END = 'REFUSED-END'
+/** Round 3f: the preflight report block (conditions ĐẠT / KHÔNG ĐẠT). Printed by a child run with BENCH_TRIAL_PREFLIGHT_ONLY=1, which sends nothing. */
+export const PREFLIGHT_BEGIN = 'PREFLIGHT-BEGIN', PREFLIGHT_END = 'PREFLIGHT-END'
+/**
+ * Round 3f · Gate 1: the one line the Owner types (or pastes) before the first request of a real run. Compared exactly.
+ * Wave 2: built from the configuration the run really has - ASCII only (no diacritics to mistype), the budget MODE and the RUN cap in force - so a line that was given for
+ * another mode or another cap does not confirm this run. `CHAY LUOT DO <EXTENSION|ACCEPTANCE> TRAN <run cap>`, e.g. `CHAY LUOT DO EXTENSION TRAN 1.75`.
+ * null when the cap is not a plain decimal number (the preflight refuses such a run before Gate 1; this is the same check at the point of use).
+ */
+export function gate1Line(env) {
+  const cap = String(env.BENCH_SPEND_RUN_CAP_USD ?? '').trim()
+  if (!/^[0-9]+(\.[0-9]+)?$/.test(cap)) return null
+  return `CHAY LUOT DO ${env.BENCH_TRIAL_MODE === 'dev-multi' ? 'EXTENSION' : 'ACCEPTANCE'} TRAN ${cap}`
+}
+
+/** The system variables node and vitest need on Windows / POSIX. Nothing that could change where a connection goes. */
+export const SYSTEM_ENV_NAMES = [
+  'PATH', 'Path', 'PATHEXT', 'SystemRoot', 'SYSTEMROOT', 'windir', 'ComSpec', 'OS', 'TEMP', 'TMP', 'TMPDIR',
+  'USERPROFILE', 'HOMEDRIVE', 'HOMEPATH', 'APPDATA', 'LOCALAPPDATA', 'ProgramData', 'ProgramFiles', 'ProgramFiles(x86)', 'ProgramW6432',
+  'NUMBER_OF_PROCESSORS', 'PROCESSOR_ARCHITECTURE', 'HOME', 'LANG', 'LC_ALL',
+]
+/** The trial's own variables besides the flags. */
+export const TRIAL_ENV_NAMES = [
+  'OPENAI_API_KEY', 'SERPER_API_KEY',
+  'BENCH_SPEND_GATE', 'BENCH_SPEND_TURN_CAP_USD', 'BENCH_SPEND_RUN_CAP_USD', 'BENCH_CONFIRM_SPEND',
+  'BENCH_EXPECT_CONSULTATIVE_V1', 'BENCH_EXPECT_CONSULT_V2', 'BENCH_TRIAL_QUESTION_FILE', 'BENCH_TRIAL_OUT_DIR',
+  // round 3c: 'dev-multi' runs the development turns of the question file in one process (liveTrial.test.ts); unset = one question as before
+  'BENCH_TRIAL_MODE',
+  // quota option (d): 1 = reset the free-question counter before each turn, effective ONLY with BENCH_TRIAL_MODE=dev-multi; unset or 0 = the real limit applies
+  'BENCH_RESET_FREE_QUOTA_PER_TURN',
+  // Wave 6 (Owner decision A, 28/10): the replay of the writing step - the capture file, the variant, the folder of outside evidence (names only; replayTrial.ts checks the values)
+  'BENCH_REPLAY_CAPTURE', 'BENCH_REPLAY_VARIANT', 'BENCH_REPLAY_EVIDENCE_DIR',
+]
+/**
+ * The benchmark flag names (kept equal to BENCH_FLAG_NAMES in liveRunner.ts by liveTrialLauncher.test.ts). A flag the Owner set is passed on, an unset one stays unset.
+ * (The audit file variables are in the list on purpose: if the Owner set them the child must SEE them, so that its preflight refuses.)
+ */
+export const FLAG_ENV_NAMES = [
+  'BENCH_SPEND_GATE', 'BENCH_SPEND_TURN_CAP_USD', 'BENCH_SPEND_RUN_CAP_USD',
+  'TURN_WEB_TICKET', 'SEARCH_FALLBACK_GATE',
+  'CONSULT_LUNA', 'CONSULT_LUNA_FAST', 'CONSULT_LUNA_PLAN', 'CONSULT_LUNA_ONE', 'CONSULTATIVE_V1', 'CONSULT_V2', 'CONSULT_V3',
+  'TAPPY_AGENT', 'CONSULTATIVE_IN_AGENT', 'TAPPY_ANSWER_V4', 'RETRIEVAL_V5',
+  'LLM_PROVIDER', 'LLM_OPENAI_API', 'AGENT_MODEL', 'HAIKU_FALLBACK', 'C2_REQUEST_BUDGET',
+  'MONEY_GUARD_KEEP_VERIFIED', 'PLACE_CLAIM_KEEP_VERIFIED_PRICE', 'LEGACY_STREAM_TRACE', 'SERPER_CACHE_V2',
+  // Wave 4 (C-PRE-0), bench only: lets read_page's own requests reach a public page (liveTrial.ts publicPageFetchAllowed); default OFF
+  'BENCH_ALLOW_PUBLIC_PAGE_FETCH',
+  'SERPER_USD_PER_CREDIT', 'LLM_LUNA_MODEL', 'LLM_CONSULT_MODEL', 'LLM_INTENT_MODEL', 'LLM_PLAN_MODEL',
+  'AUDIT_DRY_RUN', 'AUDIT_MODEL_REQUEST_FILE', 'AUDIT_USAGE_LOG_FILE',
+  // round 3b-1: routing guard for the aviation word "hàng không" (intent.ts routeFlightGuardOn); default OFF
+  'ROUTE_FLIGHT_HANG_KHONG_GUARD',
+  // round 3h: a bare buy verb offers shopping instead of forcing search_products (intent.ts routeToolOfferOn); default OFF
+  'ROUTE_TOOL_OFFER_GUARD',
+  // round closure: the Serper REQUEST cap (serperRequestCap.ts); default OFF. A paid run refuses to start unless all three are armed
+  'CONSULT_REQUEST_CAP', 'CONSULT_REQUEST_CAP_PER_TURN', 'CONSULT_REQUEST_CAP_PER_RUN',
+  // Wave 2: product-behaviour flags, default OFF (src/lib/config/consultFlags.ts); unset or 0 = the old behaviour, 1 = ON
+  'CONSULT_FINAL_SYNTHESIS', 'CONSULT_ANSWER_ATTRIBUTION', 'CONSULT_GENERAL_ASSISTANT',
+  // Wave 2C: observability only (structured tappyai_trace log lines); default OFF, honoured only outside a production runtime
+  'CONSULT_TRACE_DIAGNOSTICS',
+  // Wave 2D · C: a knowledge / conversation turn that states no place never starts a place lookup by code; default OFF, honoured only outside a production runtime
+  'CONSULT_SEARCH_NOW_INTENT_GATE',
+  // Wave 2D · A: a follow-up reads the whole thread and the products already shown; default OFF, honoured only outside a production runtime
+  'CONSULT_THREAD_AWARE_ASK',
+  // Wave 2I · A: a model call the fallback gave up on is cancelled and closed as unknown (never left held); default OFF, honoured only outside a production runtime
+  'CONSULT_ABORT_ABANDONED_FIRST_PART',
+  // Wave 2I · B: a knowledge turn the search-now gate blocked also gets web_search and no stray area question (needs the gate); default OFF, honoured only outside a production runtime
+  'CONSULT_KNOWLEDGE_TURN_TOOLS',
+  // Wave 3 · W2: every lean consult turn is offered web_search and one general line about needs; the model chooses (needs the gate); default OFF, honoured only outside a production runtime
+  'CONSULT_TOOL_BY_NEED',
+  // Wave 3 · W4: every lean consult turn is also offered the exact calculator `calculate` and its figures count as evidence when their inputs are grounded; default OFF, honoured only outside a production runtime
+  'CONSULT_DETERMINISTIC_MATH',
+  // Wave 3 · W1: a lean consult turn may search, read the pages its results point to (robots.txt honoured, 4 pages) and search again within six model steps; default OFF, honoured only outside a production runtime
+  'CONSULT_RESEARCH_LOOP',
+  // Wave 3 · W3: the writing step of a lean consult turn gets the multi-part shape (conclusion, one section per part, a table, sources with dates, what is unverified) and a 3.500-token ceiling; default OFF, honoured only outside a production runtime
+  'CONSULT_STRUCTURED_SYNTHESIS',
+  // Wave 4 · C-PRE-2: a free-chat turn keeps a domain (and so takes the lean venue path) only when BOTH the intent layer and the rules named it; default OFF, not tied to the level, honoured only outside a production runtime
+  'CONSULT_CHAT_DOMAIN_AGREEMENT',
+  // Wave 4 · Q1: the non-lean free-chat consult turn (R3) also gets read_page, calculate and the by-need search description, steps by level; unset follows the level from L2; honoured only outside a production runtime
+  'CONSULT_KNOWLEDGE_PATH',
+  // Wave 4 · Q2: a lean turn the code pre-searched (R2) also offers web_search, read_page and calculate; unset follows the level from L2; honoured only outside a production runtime
+  'CONSULT_PICK_TURN_TOOLS',
+  // Wave 5 · W5-2: on a pre-searched pick (R2, needs the C3 tools) the code reads up to three venue pages before the model writes; default OFF, not tied to the level, honoured only outside a production runtime
+  'CONSULT_PICK_PAGE_READ',
+  // Wave 5 · W5-1: read_page is held back only in the LAST step (other tools keep the two-step reserve); needs CONSULT_FINAL_SYNTHESIS=1; default OFF, not tied to the level, honoured only outside a production runtime
+  'CONSULT_READ_PAGE_LATE',
+  // Wave 6, bench only: keeps the body of every model request the trial lets through, in its own capture-<n>.json in the run folder, for a replay of the writing step (writerCapture.ts); default OFF, only "1", only BENCH_TRIAL_MODE=dev-multi, never in production
+  'BENCH_CAPTURE_WRITER_INPUT',
+  // Unwind (28/10, consultFlags.ts): each removes one layer of code that decided in the model's place; default OFF, only "1", not tied to the level, honoured only outside a production runtime.
+  // CONSULT_UNWIND_S5 (Exa) is NOT registered: the bench network wall does not reach api.exa.ai.
+  'CONSULT_UNWIND_S1A', 'CONSULT_UNWIND_S1B', 'CONSULT_UNWIND_S1C', 'CONSULT_UNWIND_S1D',
+  'CONSULT_UNWIND_S2A', 'CONSULT_UNWIND_S2B', 'CONSULT_UNWIND_S2C',
+  'CONSULT_UNWIND_S3A', 'CONSULT_UNWIND_S3B', 'CONSULT_UNWIND_S3C',
+  'CONSULT_UNWIND_S4A', 'CONSULT_UNWIND_S4B',
+  'CONSULT_UNWIND_S6A', 'CONSULT_UNWIND_S6B', 'CONSULT_UNWIND_S6C',
+  // One brain (Owner 28/10, "sửa cái gốc"): the answer model is the only reader of the question (oneBrain.ts); exactly "1", never in production
+  'CONSULT_ONE_BRAIN',
+  // Owner 28/10 (Huy, "dùng cả 40 câu"): a dev-multi run may carry the twelve benchmark questions (devQuestions.benchmarkTextsFor); exactly "1", only dev-multi; the preflight states it
+  'BENCH_DEV_INCLUDES_BENCHMARK',
+  // Wave 3 · W6: one number 0-4 that switches W2 / W4 (L1), W1 (L2), W3 (L3) on together, L4 deepens the loop; unset = level 0; honoured only outside a production runtime
+  'CONSULT_CAPABILITY_LEVEL',
+]
+/** Names that look like a setting of the trial or of the route: when one is set but is not in the allow-list the launcher refuses instead of silently dropping it. */
+const LOOKS_LIKE_A_SETTING = /^(CONSULT|CONSULTATIVE|TAPPY|LLM|SERPER|OPENAI|AUDIT|FILM|BENCH|C2|MONEY|PLACE|LEGACY|RETRIEVAL|HAIKU|AGENT|TURN|SEARCH|STYLE|CCP)_/i
+
+const escapeRegExp = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+const isAllowedName = name => {
+  const lower = name.toLowerCase()
+  return [...SYSTEM_ENV_NAMES, ...TRIAL_ENV_NAMES, ...FLAG_ENV_NAMES].some(a => (process.platform === 'win32' ? a.toLowerCase() === lower : a === name))
+}
+
+/** Removes the exact key values (case-insensitive, at least 8 characters) and anything shaped like an OpenAI key. Same rule as redactSecrets in liveRunner.ts. */
+export function redactText(text, env) {
+  let out = String(text)
+  for (const name of ['OPENAI_API_KEY', 'SERPER_API_KEY']) {
+    const v = env[name]
+    if (v && v.length >= 4) out = out.replace(new RegExp(escapeRegExp(v), 'gi'), '***') // any value of 4+ characters: a short key echoed by a child must not reach the output
+  }
+  // the provider echoes a masked piece of what was sent as the key ("Incorrect API key provided: <first 4>****<last 4>."), whatever its shape: mask the word after that phrase
+  out = out.replace(/(Incorrect API key provided:\s*)[^\s"'\\,]*[^\s"'\\,.]/gi, '$1***')
+  return out.replace(/\bsk-[A-Za-z0-9_*.-]{4,}/g, 'sk-***')
+}
+
+/** The child's environment: ONLY the allow-listed names that the parent has set, plus the two markers the launcher sets itself. Pure. */
+export function buildChildEnv(parentEnv, { confirm, nonce, preflightOnly = false }) {
+  const out = {}
+  for (const [k, v] of Object.entries(parentEnv)) {
+    if (v === undefined) continue
+    if (isAllowedName(k)) out[k] = v
+  }
+  out.BENCH_TRIAL_ISOLATED = nonce
+  if (confirm) out.BENCH_LIVE_TRIAL = 'I-UNDERSTAND-THIS-SPENDS-REAL-MONEY'
+  // the preflight-only child prints its condition report and stops before the trial: it sends nothing (liveTrial.test.ts)
+  if (preflightOnly) out.BENCH_TRIAL_PREFLIGHT_ONLY = '1'
+  return out
+}
+
+/** Reasons the launcher itself will not start (the child's own preflight does the authoritative checks and reports its reasons in the refused block). Pure. */
+export function launcherRefusals(parentEnv) {
+  const reasons = []
+  if ((parentEnv.CI ?? '') !== '') reasons.push('CI is set: the live trial never runs in CI')
+  if (parentEnv.BENCH_LIVE_TRIAL !== undefined) reasons.push('BENCH_LIVE_TRIAL is set in this shell: the launcher sets it itself, for the child only - remove it from the shell')
+  if (parentEnv.BENCH_TRIAL_ISOLATED !== undefined) reasons.push('BENCH_TRIAL_ISOLATED is set in this shell: the launcher sets it itself, for the child only - remove it from the shell')
+  if (parentEnv.BENCH_TRIAL_PREFLIGHT_ONLY !== undefined) reasons.push('BENCH_TRIAL_PREFLIGHT_ONLY is set in this shell: the launcher sets it itself, for the preflight child only - remove it from the shell')
+  for (const k of Object.keys(parentEnv)) {
+    if (parentEnv[k] !== undefined && LOOKS_LIKE_A_SETTING.test(k) && !isAllowedName(k) && k !== 'BENCH_LIVE_TRIAL' && k !== 'BENCH_TRIAL_ISOLATED' && k !== 'BENCH_TRIAL_PREFLIGHT_ONLY') {
+      reasons.push(`${k} is set but is not one of the variables the trial passes on: the trial would run WITHOUT it and not measure what you set up; unset it`)
+    }
+  }
+  return reasons
+}
+
+/** The text between two markers (the last complete block), or null. Pure. */
+export function extractBlock(text, begin, end) {
+  const e = text.lastIndexOf(end)
+  if (e < 0) return null
+  const b = text.lastIndexOf(begin, e)
+  if (b < 0) return null
+  return text.slice(b + begin.length, e).replace(/^\r?\n/, '').replace(/\r?\n$/, '')
+}
+
+/** Ends a process and everything it started. Windows: taskkill /T /F; elsewhere: the process group. Call it only for a process that is still ALIVE (a pid can be reused). */
+export function killTree(pid) {
+  if (process.platform === 'win32') spawnSync('taskkill', ['/PID', String(pid), '/T', '/F'], { windowsHide: true, stdio: 'ignore' })
+  else { try { process.kill(-pid, 'SIGKILL') } catch { try { process.kill(pid, 'SIGKILL') } catch { /* already gone */ } } }
+}
+export function isAlive(pid) {
+  try { process.kill(pid, 0); return true } catch (e) { return e && e.code === 'EPERM' }
+}
+
+/**
+ * The pids of every process that descends from `pid`, found by parent-process id (Windows: Get-CimInstance Win32_Process; elsewhere: ps). Windows keeps the parent id of an
+ * orphan, so the descendants of a process that has already exited are still found. Best effort: [] when the listing fails.
+ */
+export function listDescendants(pid, sinceMs = 0) {
+  try {
+    if (process.platform === 'win32') {
+      // Windows keeps the parent id of an orphan, and a pid can be REUSED: an older, unrelated process whose stale parent id happens to equal this pid would look like a
+      // descendant. So only processes CREATED AFTER `sinceMs` (the moment the child was started) count, each pid is visited once (a stale cycle cannot loop), and the image
+      // name is returned next to the pid so that the Owner can tell what it is.
+      const script = `$since=[DateTimeOffset]::FromUnixTimeMilliseconds(${Math.floor(Number(sinceMs))}).UtcDateTime; $seen=@{}; function K($p){ Get-CimInstance Win32_Process -Filter "ParentProcessId=$p" | Where-Object { $_.CreationDate -and $_.CreationDate.ToUniversalTime() -ge $since } | ForEach-Object { if(-not $seen.ContainsKey($_.ProcessId)){ $seen[$_.ProcessId]=1; "$($_.ProcessId):$($_.Name)"; K $_.ProcessId } } }; (K ${Number(pid)}) -join ','`
+      const r = spawnSync('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', script], { windowsHide: true, encoding: 'utf8', timeout: 15_000 })
+      return String(r.stdout ?? '').trim().split(',').filter(Boolean).map(s => { const [p, ...n] = s.split(':'); return { pid: Number(p), name: n.join(':') } }).filter(x => Number.isInteger(x.pid) && x.pid > 0)
+    }
+    const r = spawnSync('ps', ['-A', '-o', 'pid=,ppid=,comm='], { encoding: 'utf8', timeout: 15_000 })
+    const kids = new Map()
+    for (const line of String(r.stdout ?? '').split('\n')) {
+      const m = /^\s*(\d+)\s+(\d+)\s+(.*)$/.exec(line)
+      if (m) kids.set(Number(m[2]), [...(kids.get(Number(m[2])) ?? []), { pid: Number(m[1]), name: m[3].trim() }])
+    }
+    const out = []
+    const visited = new Set([Number(pid)])
+    const queue = [Number(pid)]
+    while (queue.length) { for (const k of kids.get(queue.shift()) ?? []) { if (!visited.has(k.pid)) { visited.add(k.pid); out.push(k); queue.push(k.pid) } } }
+    return out
+  } catch { return [] }
+}
+
+/**
+ * Runs the child, reads its output in memory, ends it once an end marker has arrived (or at the time limit) and checks that it is gone.
+ * `child` = { file, args } (default: node + vitest). `endMarkers` = the strings whose arrival means "the block is in" (the markers WITH the run's nonce).
+ * Injectable for tests (no real vitest, no network).
+ */
+export async function runTrialChild({ child, cwd, env, endMarkers = [], graceMs = 750, timeLimitMs = 600_000, maxBytes = 8_000_000, now = Date.now, kill = killTree, alive = isAlive, descendants = listDescendants }) {
+  const started = now()
+  const proc = spawn(child.file, child.args, { cwd, env, stdio: ['ignore', 'pipe', 'pipe'], windowsHide: true, detached: process.platform !== 'win32' })
+  const pid = proc.pid
+  let text = ''
+  let bytes = 0
+  let truncated = false
+  let exitCode = null
+  let exited = false
+  let closed = false
+  let killedBy = null
+  let sawEnd = false
+  let finish = () => {}
+  const done = new Promise(resolve => { finish = resolve })
+  // If the pipes do not close (a descendant holds them, or ending the process did not work) the launcher must not wait for ever: after 3 s it stops waiting.
+  let giveUpArmed = false
+  const armGiveUp = () => { if (!giveUpArmed) { giveUpArmed = true; setTimeout(() => finish(), 3_000) } }
+  // The descendants seen while the tree was still known (before it was ended, or right after the child exited by itself): afterwards each one is checked, so that a process
+  // that outlived the tree is REPORTED instead of being taken for gone. (Windows keeps the parent id of an orphan, so the listing still works after the parent exited.)
+  const seen = new Map() // pid -> image name
+  const snapshot = () => { for (const d of descendants(pid, started - 2_000)) if (d.pid !== pid) seen.set(d.pid, d.name) }
+  // 'close' (not 'exit'): it fires once the output pipes are closed too, so the last chunk is not lost
+  proc.on('close', () => { closed = true; exited = true; finish() })
+  proc.on('error', () => { exited = true; finish() })
+  proc.on('exit', code => { exitCode = code; exited = true; snapshot(); armGiveUp() })
+  // Ends the whole tree while the child is ALIVE. (After it has exited by itself no pid is killed: it might belong to another process by now.)
+  const endChild = reason => {
+    if (killedBy || exited) return
+    killedBy = reason
+    snapshot()
+    kill(pid)
+    armGiveUp()
+  }
+  proc.stdout.setEncoding('utf8'); proc.stderr.setEncoding('utf8')
+  const take = chunk => {
+    if (bytes < maxBytes) { text += chunk; bytes += Buffer.byteLength(chunk) } else truncated = true
+    if (!sawEnd && endMarkers.some(m => text.includes(m))) {
+      sawEnd = true
+      // the block is in: the child gets a moment to finish by itself, then its whole tree is ended
+      setTimeout(() => endChild('after-summary'), graceMs)
+    }
+  }
+  proc.stdout.on('data', take)
+  proc.stderr.on('data', take)
+  const limit = setTimeout(() => endChild('time-limit'), timeLimitMs)
+  await done
+  clearTimeout(limit)
+  await new Promise(r => setTimeout(r, 100))
+  const stillAlive = pid && !exited ? alive(pid) : false
+  // survivors: descendants seen while the tree was known that are still alive now. pipesOpen: the child is gone but something still holds its output pipes.
+  // A process that is merely slow to go away (a worker or the esbuild service tearing down) is given up to 2 s before it is reported.
+  let left = [...seen.keys()].filter(p => alive(p))
+  for (let waited = 0; left.length && waited < 2_000; waited += 200) { await new Promise(r => setTimeout(r, 200)); left = left.filter(p => alive(p)) }
+  const survivors = left
+  const survivorNames = Object.fromEntries(left.map(p => [p, seen.get(p)]))
+  return { text, truncated, exitCode, killedBy, stillAlive, pipesOpen: !closed, survivors, survivorNames, pid, ms: now() - started }
+}
+
+/**
+ * The whole launcher. `print` receives ONLY filtered text. Returns the exit code the CLI should use (0 only when a clean, accepted summary was printed).
+ */
+export async function runLauncher({ env, repoRoot, plumbingCheck = false, preflightOnly = false, print, child, graceMs, timeLimitMs, nonce = randomBytes(16).toString('hex'), writeFile = writeFileSync, makeDir = mkdirSync, run = runTrialChild }) {
+  const refusals = launcherRefusals(env)
+  if (refusals.length) { for (const r of refusals) print(`REFUSED: ${redactText(r, env)}`); return 2 }
+  const childEnv = buildChildEnv(env, { confirm: !plumbingCheck, nonce, preflightOnly })
+  const spec = child ?? { file: process.execPath, args: [join(repoRoot, 'node_modules', 'vitest', 'vitest.mjs'), 'run', '--project', 'app', 'scripts/uat/consultUat/liveTrial.test.ts', '--reporter=verbose', '--silent=false'] }
+  const m = k => marker(k, nonce)
+  const res = await run({ child: spec, cwd: repoRoot, env: childEnv, endMarkers: [m(SUMMARY_END), m(REFUSED_END), m(PREFLIGHT_END)], graceMs, timeLimitMs })
+  const redacted = redactText(res.text, env)
+  // a redacted copy of the whole output, for the Owner (never for a transcript); written only for a results folder on drive D, and never in a plumbing check
+  let logPath = null
+  const outDir = env.BENCH_TRIAL_OUT_DIR
+  if (!plumbingCheck && outDir && /^D:[\\/]/i.test(outDir)) {
+    try { makeDir(outDir, { recursive: true }); logPath = join(outDir, `child-output-redacted-${Date.now()}.txt`); writeFile(logPath, redacted) } catch { logPath = null }
+  }
+  const summary = extractBlock(redacted, m(SUMMARY_BEGIN), m(SUMMARY_END))
+  const refused = extractBlock(redacted, m(REFUSED_BEGIN), m(REFUSED_END))
+  const preflight = extractBlock(redacted, m(PREFLIGHT_BEGIN), m(PREFLIGHT_END))
+  if (preflightOnly) {
+    // the preflight child sends nothing; its block lists every condition. Only a block with no KHÔNG ĐẠT line and the all-clear total is a pass.
+    if (preflight !== null) print(preflight)
+    else print(`PREFLIGHT: the child produced no condition report (child exit code ${res.exitCode}${res.killedBy ? `, ended by the launcher: ${res.killedBy}` : ''}). Nothing was sent.`)
+  }
+  if (summary !== null) print(summary)
+  if (refused !== null) print(`REFUSED (nothing was sent):\n${refused}`)
+  if (summary === null && refused === null && !preflightOnly) print(plumbingCheck ? `plumbing check: the child ran and produced no trial block (exit code ${res.exitCode}). This exit code does NOT prove the configuration: the trial test is skipped without the confirmation. Use --preflight-only to check the configuration (it sends nothing).` : `NO TRIAL SUMMARY was produced (child exit code ${res.exitCode}${res.killedBy ? `, ended by the launcher: ${res.killedBy}` : ''}). Do not run again; look at the redacted output file.`)
+  print(`child process: ${res.stillAlive ? `STILL ALIVE (pid ${res.pid}) - end it by hand` : 'ended'}${res.killedBy ? ` (ended by the launcher: ${res.killedBy})` : ''}; ${res.ms} ms`)
+  if (res.survivors && res.survivors.length) print(`WARNING: process(es) that belonged to the trial's tree are STILL RUNNING (pid ${res.survivors.map(p => `${p}${res.survivorNames && res.survivorNames[p] ? ` ${res.survivorNames[p]}` : ''}`).join(', ')}): check what they are, end them by hand if they belong to the trial (Task Manager) - they were not killed by pid because a pid can be reused`)
+  if (res.pipesOpen) print('WARNING: the child process is gone but its output pipes did not close: a descendant process may be left running - check the Task Manager for node.exe and end it by hand')
+  if (logPath) print(`redacted copy of the child output (for you, not for a transcript): ${redactText(logPath, env)}`)
+  if (res.stillAlive || res.pipesOpen || (res.survivors && res.survivors.length)) return 3
+  // The preflight child prints its block and then stays alive (vitest does not exit at once): the launcher ends it after the block (killedBy
+  // 'after-summary'), so a clean block is accepted with or without a zero exit code. A time-limit kill is not accepted.
+  const childDone = res.exitCode === 0 || res.killedBy === 'after-summary'
+  if (preflightOnly) return preflight !== null && childDone && /TỔNG: mọi điều kiện ĐẠT/.test(preflight) && !/KHÔNG ĐẠT/.test(preflight) ? 0 : 1
+  if (plumbingCheck) return res.exitCode === 0 ? 0 : 1
+  // a real run is clean only if its summary is complete AND the child was not cut short by the time limit (a kill is never a clean result)
+  return summary !== null && /turnOk=true/.test(summary) && /trialClean=true/.test(summary) && !/NOT CLEAN/.test(summary) && res.killedBy !== 'time-limit' ? 0 : 1
+}
+
+/**
+ * Round 3f · hidden input for a key. Needs a terminal; the typed characters are never echoed and never written anywhere. The value goes back to the
+ * caller only. Ctrl+C cancels (nothing is read further). Control characters are built with String.fromCharCode (no escape sequences in source).
+ */
+export function readHidden(prompt, { input = process.stdin, output = process.stdout } = {}) {
+  if (!input.isTTY || typeof input.setRawMode !== 'function') return Promise.reject(new Error('hidden input needs an interactive terminal (nothing was read)'))
+  const CR = String.fromCharCode(13), LF = String.fromCharCode(10), ETX = String.fromCharCode(3), DEL = String.fromCharCode(127), BS = String.fromCharCode(8)
+  return new Promise((resolve, reject) => {
+    let buf = ''
+    const finish = (err, value) => {
+      input.removeListener('data', onData)
+      input.setRawMode(false)
+      input.pause()
+      output.write('\n')
+      if (err) reject(err); else resolve(value)
+    }
+    const onData = chunk => {
+      for (const ch of String(chunk)) {
+        if (ch === CR || ch === LF) return finish(null, buf)
+        if (ch === ETX) return finish(new Error('cancelled by Ctrl+C (nothing was sent)'), '')
+        if (ch === DEL || ch === BS) { buf = buf.slice(0, -1); continue }
+        buf += ch
+      }
+    }
+    output.write(prompt)
+    input.setRawMode(true)
+    input.resume()
+    input.on('data', onData)
+  })
+}
+
+/** Round 3f · a typed line (Gate 1). Times out to '' (which is refused). The line is shown as typed; it is not a secret. */
+export function askLine(prompt, { input = process.stdin, output = process.stdout, timeoutMs = 300_000 } = {}) {
+  return new Promise(resolve => {
+    const rl = createInterface({ input, output, terminal: true })
+    const timer = setTimeout(() => { rl.close(); resolve('') }, timeoutMs)
+    // end of input (stdin closed) ends the wait at once: '' is refused by the caller
+    rl.on('close', () => { clearTimeout(timer); resolve('') })
+    // the answer is resolved BEFORE the interface closes: rl.close() emits 'close' synchronously, which would otherwise resolve '' first
+    rl.question(prompt, answer => { clearTimeout(timer); resolve(answer); rl.close() })
+  })
+}
+
+/**
+ * Quota option (d) · the Gate 1 line about the free-plan question limit, from the EFFECTIVE configuration (never "ON" just because the mode is dev-multi).
+ * The decision is the same as quotaResetState in liveTrial.ts (a test compares them): ON only for BENCH_TRIAL_MODE exactly dev-multi AND BENCH_RESET_FREE_QUOTA_PER_TURN exactly 1.
+ */
+export function quotaLines(env) {
+  const flag = env.BENCH_RESET_FREE_QUOTA_PER_TURN
+  const on = env.BENCH_TRIAL_MODE === 'dev-multi' && flag === '1'
+  const show = v => (v === undefined ? 'unset' : /^[A-Za-z0-9_-]{1,24}$/.test(v) ? v : JSON.stringify(v.slice(0, 24)))
+  const why = `mode=${show(env.BENCH_TRIAL_MODE)}, flag=${show(flag)}`
+  if (on) return [`trần ẩn của Free (300 câu/ngày): được ĐẶT LẠI mỗi lượt (${why}) — chỉ để đo chất lượng tư vấn, không phải hành vi thật; user, hội thoại, lịch sử, cache, trần chi phí và trần request giữ nguyên`]
+  const ignored = flag === '1' ? ' — cờ không có hiệu lực ở chế độ này (chỉ BENCH_TRIAL_MODE=dev-multi)' : ''
+  return [`trần ẩn của Free (300 câu/ngày): ÁP DỤNG như thật (${why})${ignored} — nếu có hơn 300 lượt, run sẽ dừng ở lượt 301 (HTTP 429 free_limit_reached)`]
+}
+
+/** Wave 2 · the state each product-behaviour flag REALLY has (ON only for the value 1), for Gate 1. Same rule as wave2FlagState in liveTrial.ts (a test compares them). */
+export const WAVE2_FLAG_NAMES = ['CONSULT_FINAL_SYNTHESIS', 'CONSULT_ANSWER_ATTRIBUTION', 'CONSULT_GENERAL_ASSISTANT', 'CONSULT_TRACE_DIAGNOSTICS', 'CONSULT_SEARCH_NOW_INTENT_GATE', 'CONSULT_THREAD_AWARE_ASK', 'CONSULT_ABORT_ABANDONED_FIRST_PART', 'CONSULT_KNOWLEDGE_TURN_TOOLS', 'CONSULT_TOOL_BY_NEED', 'CONSULT_DETERMINISTIC_MATH', 'CONSULT_RESEARCH_LOOP', 'CONSULT_STRUCTURED_SYNTHESIS', 'CONSULT_CHAT_DOMAIN_AGREEMENT', 'CONSULT_KNOWLEDGE_PATH', 'CONSULT_PICK_TURN_TOOLS', 'CONSULT_PICK_PAGE_READ', 'CONSULT_READ_PAGE_LATE', 'BENCH_CAPTURE_WRITER_INPUT', 'CONSULT_UNWIND_S1A', 'CONSULT_UNWIND_S1B', 'CONSULT_UNWIND_S1C', 'CONSULT_UNWIND_S1D', 'CONSULT_UNWIND_S2A', 'CONSULT_UNWIND_S2B', 'CONSULT_UNWIND_S2C', 'CONSULT_UNWIND_S3A', 'CONSULT_UNWIND_S3B', 'CONSULT_UNWIND_S3C', 'CONSULT_UNWIND_S4A', 'CONSULT_UNWIND_S4B', 'CONSULT_UNWIND_S6A', 'CONSULT_UNWIND_S6B', 'CONSULT_UNWIND_S6C', 'CONSULT_ONE_BRAIN']
+/** Wave 2J (F6): a flag that does nothing unless another flag is exactly 1 too (same table as WAVE2_FLAG_NEEDS in liveTrial.ts; a test compares them). */
+export const WAVE2_FLAG_NEEDS = { CONSULT_KNOWLEDGE_TURN_TOOLS: 'CONSULT_SEARCH_NOW_INTENT_GATE', CONSULT_TOOL_BY_NEED: 'CONSULT_SEARCH_NOW_INTENT_GATE', CONSULT_UNWIND_S6B: 'CONSULT_UNWIND_S6A' }
+/** Wave 3 (W6): the level each Wave 3 flag is switched on from (same table as CAPABILITY_FLAG_LEVELS in src/lib/config/consultFlags.ts; a test compares them). */
+export const CAPABILITY_FLAG_LEVELS = { CONSULT_TOOL_BY_NEED: 1, CONSULT_DETERMINISTIC_MATH: 1, CONSULT_RESEARCH_LOOP: 2, CONSULT_STRUCTURED_SYNTHESIS: 3, CONSULT_KNOWLEDGE_PATH: 2, CONSULT_PICK_TURN_TOOLS: 2 }
+/** The effective capability level: a single character 0-4, else 0 (the child and the product read it the same way). */
+export function capabilityLevelOf(env) { return typeof env.CONSULT_CAPABILITY_LEVEL === 'string' && /^[0-4]$/.test(env.CONSULT_CAPABILITY_LEVEL) ? Number(env.CONSULT_CAPABILITY_LEVEL) : 0 }
+export function wave2Line(env) {
+  const show = v => (v === undefined ? 'unset' : /^[A-Za-z0-9_-]{1,12}$/.test(v) ? v : JSON.stringify(v.slice(0, 12)))
+  const level = capabilityLevelOf(env)
+  // a Wave 3 flag that is UNSET follows the level; a flag that is set decides for itself ("1" on, anything else off)
+  const on = k => (env[k] !== undefined ? env[k] === '1' : level >= (CAPABILITY_FLAG_LEVELS[k] ?? 5))
+  const state = k => (!on(k) ? 'TẮT' : (WAVE2_FLAG_NEEDS[k] !== undefined && env[WAVE2_FLAG_NEEDS[k]] !== '1') ? `KHÔNG CÓ HIỆU LỰC — cần ${WAVE2_FLAG_NEEDS[k]}=1` : (env[k] === undefined ? 'BẬT theo mức' : 'BẬT'))
+  return `cờ hành vi Wave 2 (mặc định TẮT; chỉ giá trị 1 là BẬT): ${WAVE2_FLAG_NAMES.map(k => `${k}=${show(env[k])} (${state(k)})`).join(', ')} | mức năng lực CONSULT_CAPABILITY_LEVEL=${show(env.CONSULT_CAPABILITY_LEVEL)} (mức hiệu lực L${level}; chỉ ký tự 0–4, khác = L0; cờ Wave 3 để trống thì theo mức, cờ đã đặt thì tự quyết)`
+}
+
+/**
+ * Wave 4 (C-PRE-0): the state the two bench-side switches REALLY have, for Gate 1 (the same words the preflight report prints; a test compares the two). LEGACY_STREAM_TRACE is read by the product like
+ * this (trimmed, "1" or "true"); BENCH_ALLOW_PUBLIC_PAGE_FETCH only counts when it is exactly "1" AND the mode is the extension mode.
+ */
+export function benchSwitchLine(env) {
+  const trimmed = (env.LEGACY_STREAM_TRACE ?? '').trim()
+  const trace = env.LEGACY_STREAM_TRACE === undefined ? 'TẮT' : (trimmed === '1' || trimmed === 'true') ? 'BẬT' : 'TẮT'
+  const v = env.BENCH_ALLOW_PUBLIC_PAGE_FETCH
+  const page = v === undefined ? 'TẮT' : v !== '1' ? 'TẮT (giá trị không phải đúng "1")' : env.BENCH_TRIAL_MODE !== 'dev-multi' ? 'KHÔNG CÓ HIỆU LỰC — chỉ chế độ extension (BENCH_TRIAL_MODE=dev-multi)' : 'BẬT'
+  const show = x => (x === undefined ? 'unset' : /^[A-Za-z0-9_-]{1,12}$/.test(x) ? x : JSON.stringify(x.slice(0, 12)))
+  return `cờ đo của bộ chạy thử: LEGACY_STREAM_TRACE=${show(env.LEGACY_STREAM_TRACE)} (${trace}: đếm ký tự từng chặng lọc hậu kỳ) | BENCH_ALLOW_PUBLIC_PAGE_FETCH=${show(v)} (${page}: read_page tải trang công khai, chỉ GET, robots từng bước nhảy)`
+}
+
+/**
+ * Wave 6 (Owner decision A, 28/10) · the variants of the writing-step replay, as the Gate 1 lines name them (the same table as VARIANTS in writerReplay.ts; a test compares them):
+ * the reasoning effort put in the request (null = the captured call's own), the V1 note, the outside evidence.
+ */
+export const REPLAY_VARIANT_TABLE = {
+  V0: { effort: null, note: false, evidence: false }, V1: { effort: null, note: true, evidence: false },
+  V2: { effort: 'medium', note: false, evidence: false }, V3: { effort: 'medium', note: true, evidence: false },
+  X0: { effort: null, note: false, evidence: true, passageChars: 1200 }, X1: { effort: null, note: true, evidence: true, passageChars: 1200 },
+  // amendment 4 (28/10): X2 = X1 with passages up to 3 200 characters; X3 = X1 with reasoning effort medium
+  X2: { effort: null, note: true, evidence: true, passageChars: 3200 }, X3: { effort: 'medium', note: true, evidence: true, passageChars: 1200 },
+}
+/** The replay's own ceilings (the same constants as replayTrial.ts; a test compares them). */
+export const REPLAY_MAX_RUN_CAP_USD = '0.30', REPLAY_MAX_TURN_CAP_USD = '0.10'
+/**
+ * The Gate 1 lines of a replay run (none for an ordinary run): the capture file by NAME and SHA-256, the variant, the model, the reasoning effort, the number of calls, the caps. The capture is read here
+ * only to hash it and to count the writer calls (the same rule as pickWriterCalls in writerReplay.ts; a test compares the two); its text is never printed.
+ */
+export function replayLines(env, { readBytes = p => readFileSync(p) } = {}) {
+  if (env.BENCH_REPLAY_VARIANT === undefined && env.BENCH_REPLAY_CAPTURE === undefined && env.BENCH_REPLAY_EVIDENCE_DIR === undefined) return []
+  const v = REPLAY_VARIANT_TABLE[env.BENCH_REPLAY_VARIANT]
+  const show = x => (x === undefined ? 'unset' : /^[A-Za-z0-9_.-]{1,24}$/.test(x) ? x : JSON.stringify(x.slice(0, 24)))
+  const lines = [`PHÁT LẠI bước viết (KHÔNG tìm kiếm lại, KHÔNG Serper) — biến thể ${show(env.BENCH_REPLAY_VARIANT)}${v ? `: chỉ dẫn ${v.note ? 'gốc + lời dặn V1' : 'gốc'}; mức suy luận ${v.effort ?? 'như lời gọi gốc'}; trần đầu ra ${v.effort ? '4000 token (gồm cả token suy luận; không công cụ)' : 'như lời gọi gốc (tối đa 4000)'}; bằng chứng Exa ${v.evidence ? `CÓ (khối cuối đầu vào viết; mỗi đoạn tối đa ${v.passageChars} ký tự)` : 'không'}` : ` — KHÔNG HỢP LỆ (${Object.keys(REPLAY_VARIANT_TABLE).join(',')})`}`]
+  const file = (env.BENCH_REPLAY_CAPTURE ?? '').trim()
+  if (file === '') lines.push('tệp capture: KHÔNG ĐẶT BENCH_REPLAY_CAPTURE')
+  else {
+    const name = file.replace(/^.*[\\/]/, '')
+    try {
+      const bytes = readBytes(file)
+      const sha = createHash('sha256').update(bytes).digest('hex')
+      const cap = JSON.parse(Buffer.from(bytes).toString('utf8'))
+      const sentChars = b => { try { return JSON.stringify(b?.messages ?? []).length } catch { return 0 } }
+      const turns = []
+      for (const c of cap.calls ?? []) if (c.turn !== null && c.turn !== undefined && !turns.includes(c.turn)) turns.push(c.turn)
+      const picks = turns.map(t => {
+        const mine = cap.calls.filter(c => c.turn === t && c.body !== null && typeof c.body === 'object')
+        const largest = Math.max(0, ...mine.map(c => sentChars(c.body)))
+        return [...mine].reverse().find(c => !c.body.response_format && c.response?.status === 200 && (c.response?.textChars ?? 0) > 0 && (c.response?.toolCalls ?? 0) === 0 && sentChars(c.body) * 2 >= largest)
+      })
+      const picked = picks.filter(Boolean)
+      const models = [...new Set(picked.map(c => String(c.body.model ?? '?')))].join(',')
+      const efforts = [...new Set(picked.map(c => (typeof c.body.reasoning_effort === 'string' ? c.body.reasoning_effort : 'unset')))].join(',')
+      lines.push(`tệp capture: ${name} sha256=${sha}`)
+      lines.push(`mô hình của lời gọi viết: ${models || '-'} (mức suy luận ghi trong capture: ${efforts || '-'}) | số lời gọi sẽ gửi: ${picked.length} trên ${turns.length} lượt (mỗi lượt đúng 1 lời gọi viết) | chỉ gọi api.openai.com/v1/chat/completions (không Serper, không host khác)`)
+    } catch { lines.push(`tệp capture: ${name} — KHÔNG ĐỌC ĐƯỢC hoặc không phải JSON`) }
+  }
+  if (v && v.evidence) lines.push(`thư mục bằng chứng Exa: ${(env.BENCH_REPLAY_EVIDENCE_DIR ?? '').trim() || 'KHÔNG ĐẶT BENCH_REPLAY_EVIDENCE_DIR'} (mỗi lượt cần một tệp evidence-<lượt>.json)`)
+  lines.push(`trần phát lại: mỗi lượt ${env.BENCH_SPEND_TURN_CAP_USD ?? '?'} USD (tối đa ${REPLAY_MAX_TURN_CAP_USD}), cả biến thể ${env.BENCH_SPEND_RUN_CAP_USD ?? '?'} USD (tối đa ${REPLAY_MAX_RUN_CAP_USD}) — ƯỚC TÍNH; mọi lời gọi qua meteredModel + cổng chi tiêu, chi phí không rõ thì chặn`)
+  return lines
+}
+
+/** Round 3f · Gate 1 summary: what the run will do, with no key value. Pure. */
+export function gate1Summary(env, questionText) {
+  const lines = [
+    '--- Gate 1: tóm tắt trước lần gửi request đầu tiên (không có giá trị khóa) ---',
+    `BENCH_TRIAL_MODE=${env.BENCH_TRIAL_MODE ?? '(unset)'}`,
+    `caps: lượt ${env.BENCH_SPEND_TURN_CAP_USD ?? '?'} USD, tổng ${env.BENCH_SPEND_RUN_CAP_USD ?? '?'} USD, BENCH_CONFIRM_SPEND=${env.BENCH_CONFIRM_SPEND ?? '?'}`,
+    `chế độ ngân sách: ${env.BENCH_TRIAL_MODE === 'dev-multi' ? 'extension (bộ mở rộng; tối đa 1.75 USD/lần chạy)' : 'acceptance (nghiệm thu; tối đa 0.65 USD/lần chạy)'}, tối đa 0.10 USD/lượt ở mọi chế độ (Chủ dự án tự gõ trần thật, có thể thấp hơn)`,
+    `trần request Serper (đếm request, KHÔNG phải tiền): CONSULT_REQUEST_CAP=${env.CONSULT_REQUEST_CAP ?? '(unset)'}, mỗi lượt ${env.CONSULT_REQUEST_CAP_PER_TURN ?? '?'}, cả lần chạy ${env.CONSULT_REQUEST_CAP_PER_RUN ?? '?'}`,
+    `mạng được phép: hai dịch vụ trả phí của lần chạy (OpenAI chat completions và Serper; có sổ chi phí)${env.BENCH_TRIAL_MODE === 'dev-multi'
+      ? '; THÊM đúng 3 host OSM miễn phí mà search_places tự gọi khi dự phòng (nominatim.openstreetmap.org, overpass-api.de, maps.mail.ru) và đúng 1 host DuckDuckGo mà web_search tự gọi khi Serper không có kết quả (html.duckduckgo.com, đường /html/): chỉ đếm số request từng host, không tính tiền, nằm ngoài trần request và cổng USD'
+      : '; ba host OSM và DuckDuckGo của dự phòng tìm kiếm bị CHẶN (chế độ nghiệm thu)'}`,
+    ...quotaLines(env),
+    wave2Line(env),
+    benchSwitchLine(env),
+    ...replayLines(env),
+    `khóa: OPENAI_API_KEY ${(env.OPENAI_API_KEY ?? '') !== '' ? 'SET' : 'UNSET'}, SERPER_API_KEY ${(env.SERPER_API_KEY ?? '') !== '' ? 'SET' : 'UNSET'}`,
+  ]
+  if (questionText === null) lines.push('lượt: tệp câu hỏi không đọc được')
+  else {
+    // Wave 2B: directive lines of format v2 (@format / @doc / @note: recognised by their first field, nothing else) are not turns; a note is named by id only, its text is not shown.
+    const all = questionText.replace(/^﻿/, '').split(/\r?\n/).filter(l => l.trim() !== '')
+    const head = l => l.split('|', 1)[0]
+    const isDirective = l => ['@format', '@doc', '@note'].includes(head(l))
+    const turns = all.filter(l => !isDirective(l)).map(l => l.split('|').slice(0, 3).join('|'))
+    const notes = all.filter(l => head(l) === '@note').map(l => { const p = l.split('|'); return `${p[1] ?? '?'}#${p[2] ?? '?'}` })
+    lines.push(`lượt (id|hội thoại|lượt): ${turns.join('  ')}`)
+    lines.push(`tệp câu hỏi: SHA-256 ${createHash('sha256').update(Buffer.from(questionText, 'utf8')).digest('hex')} | định dạng ${all.length > 0 && all[0].trim() === '@format|2' ? 'v2' : 'v1'} | ghi chú người chấm KHÔNG gửi cho mô hình: ${notes.length}${notes.length ? ` (${notes.join(', ')})` : ''}`)
+  }
+  const confirmLine = gate1Line(env)
+  lines.push(confirmLine === null
+    ? 'KHÔNG THỂ xác nhận: trần chạy BENCH_SPEND_RUN_CAP_USD không phải một số thập phân; không có dòng xác nhận nào hợp lệ, không gửi gì'
+    : `Gõ (hoặc dán) đúng dòng sau, chỉ gồm chữ không dấu, để gửi request đầu tiên: ${confirmLine}`)
+  return lines
+}
+
+/**
+ * Round 3f · the whole real flow, in order: (0) preflight-only child: every condition must be ĐẠT, nothing is sent; (1) Gate 1: an interactive
+ * terminal and the typed line, exact; (2) only then the real run. `keys` are merged into the CHILD environment only (a fresh object): process.env of
+ * this launcher is never changed. Returns the exit code of the step that ended the flow.
+ */
+export async function runFlow({ env, repoRoot, keys = {}, print, child, run, nonce, questionText = null, stdinIsTTY = process.stdin.isTTY === true, askGate1 = p => askLine(p), graceMs, timeLimitMs, writeFile, makeDir }) {
+  const full = { ...env, ...keys }
+  const common = { env: full, repoRoot, print, child, run, graceMs, timeLimitMs, writeFile, makeDir }
+  // each child gets its own random nonce (32 hex, as the test file requires); the test may pin the real run's nonce
+  const pre = await runLauncher({ ...common, preflightOnly: true })
+  if (pre !== 0) { print('Gate 0 not passed: nothing was sent.'); return pre }
+  if (!stdinIsTTY) { print('REFUSED: Gate 1 needs an interactive terminal; nothing was sent.'); return 2 }
+  for (const line of gate1Summary(full, questionText)) print(line)
+  // the line is built from THIS run's configuration (mode and run cap); a trailing carriage return from the terminal is dropped; nothing else is forgiven
+  const expected = gate1Line(full)
+  if (expected === null) { print('Gate 1 cannot be confirmed: the run cap is not a plain decimal number; nothing was sent.'); return 2 }
+  const answer = (await askGate1(`> `)).replace(/\r$/, '')
+  if (answer !== expected) { print('Gate 1 not confirmed (the line did not match exactly): nothing was sent.'); return 1 }
+  return runLauncher({ ...common, nonce })
+}
+
+const samePath = (a, b) => {
+  try { const x = realpathSync(a), y = realpathSync(b); return process.platform === 'win32' ? x.toLowerCase() === y.toLowerCase() : x === y } catch { return false }
+}
+const here = dirname(fileURLToPath(import.meta.url))
+if (process.argv[1] && (import.meta.url === pathToFileURL(process.argv[1]).href || samePath(fileURLToPath(import.meta.url), process.argv[1]))) {
+  const repoRoot = join(here, '..', '..', '..')
+  if (!existsSync(join(repoRoot, 'node_modules', 'vitest', 'vitest.mjs'))) { console.log('REFUSED: node_modules/vitest/vitest.mjs not found'); process.exit(2) }
+  const argv = process.argv.slice(2)
+  const print = s => console.log(s)
+  // keys are read by hand, here, only when asked for (--prompt-keys) and only when the shell does not already hold them. They go to the child, never to process.env.
+  const keys = {}
+  if (argv.includes('--prompt-keys')) {
+    for (const name of ['OPENAI_API_KEY', 'SERPER_API_KEY']) {
+      if ((process.env[name] ?? '') !== '') { print(`${name}: SET in this shell (value not shown). Prefer a fresh PowerShell and --prompt-keys.`); continue }
+      try { keys[name] = await readHidden(`${name} (nhập ẩn, không hiện): `) } catch (e) { print(`REFUSED: ${e.message}`); process.exit(2) }
+    }
+  }
+  let questionText = null
+  try { questionText = readFileSync((process.env.BENCH_TRIAL_QUESTION_FILE ?? '').trim(), 'utf8') } catch { questionText = null }
+  let code
+  if (argv.includes('--plumbing-check')) code = await runLauncher({ env: process.env, repoRoot, plumbingCheck: true, print })
+  else if (argv.includes('--preflight-only')) code = await runLauncher({ env: { ...process.env, ...keys }, repoRoot, preflightOnly: true, print })
+  else code = await runFlow({ env: process.env, repoRoot, keys, print, questionText })
+  // the launcher's own references to the keys are dropped before exit. JavaScript cannot zero a string in memory: that limit is stated, not hidden.
+  for (const k of Object.keys(keys)) delete keys[k]
+  process.exit(code)
+}

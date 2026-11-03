@@ -1,0 +1,66 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Cafe sách Phương Nam\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:22:21.125Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Cafe sách Phương Nam\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cafe Sách Phương Nam: Thiên Đường Sách Tại TP.HCM",
+    "link": "https://www.tiktok.com/@nguyenthi_xuannguyet/video/7262180074575678738",
+    "snippet": "Cafe sách cùng chị Hai của mẹ ❤️ #cafesach #bookcity #phuongnambookcity. Cafe Sách Phương Nam: Thiên Đường Sách Tại TP.HCM. **Tham Quan Cafe ...",
+    "position": 1
+   },
+   {
+    "title": "Jem❤️✨ - original sound - Meng🏳️‍",
+    "link": "https://www.tiktok.com/music/original-sound-Meng%F0%9F%8F%B3%EF%B8%8F%E2%80%8D%F0%9F%8C%88-7622890245893196551",
+    "snippet": "Cafe Sách Phương Nam: Thiên Đường Sách Tại TP.HCM. |. 盛大にやらかしさぶろう 反省してる顔が可愛すぎた #猫 #ハチワレ #猫のいる暮らし #やらかした #反省.",
+    "position": 2
+   },
+   {
+    "title": "Nhà Sách Phương Nam Nguyễn Trãi",
+    "link": "https://www.tiktok.com/discover/nh%C3%A0-s%C3%A1ch-ph%C6%B0%C6%A1ng-nam-nguy%E1%BB%85n-tr%C3%A3i",
+    "snippet": "Cafe Sách Phương Nam: Thiên Đường Sách Tại TP.HCM. Khám phá Cafe Sách Phương Nam, nơi lý tưởng để vừa đọc sách vừa thưởng thức cà phê. Địa chỉ thú vị cho ...",
+    "position": 3
+   },
+   {
+    "title": "Yovani - sonido original",
+    "link": "https://www.tiktok.com/music/sonido-original-7631554363052346129",
+    "snippet": "Cafe Sách Phương Nam: Thiên Đường Sách Tại TP.HCM. |. Sandro's Fortnite Fail: Total Versägä Part 2. |. So don't u worry bout them bitches I ain't entertain em.",
+    "position": 4
+   },
+   {
+    "title": "původní zvuk - Kamenožrout",
+    "link": "https://www.tiktok.com/music/p%C5%AFvodn%C3%AD-zvuk-7526521104291842838",
+    "snippet": "Cafe Sách Phương Nam: Thiên Đường Sách Tại TP.HCM. |. لا أريد العيش بدونها يا أخي. |.. |. شهادت شیر مرد افغان زمین — پیام تسلیت و هویت‌های تاجیک هزاره ازبک ...",
+    "position": 5
+   },
+   {
+    "title": "user4990063858800 — оригинальный звук",
+    "link": "https://www.tiktok.com/music/%D0%BE%D1%80%D0%B8%D0%B3%D0%B8%D0%BD%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9-%D0%B7%D0%B2%D1%83%D0%BA-6977423503059553025",
+    "snippet": "Cafe Sách Phương Nam: Thiên Đường Sách Tại TP.HCM. |. mehak-larkana-viral-video. |. Photo post introducing my boyfriend. |. イズシーのオススメキャップアレンジ ...",
+    "position": 6
+   },
+   {
+    "title": "A B I L I S K - клоун — оригинальный звук",
+    "link": "https://www.tiktok.com/music/%D0%BE%D1%80%D0%B8%D0%B3%D0%B8%D0%BD%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9-%D0%B7%D0%B2%D1%83%D0%BA-7197028481992100650",
+    "snippet": "Limited Stock Announcement — \"Limitado lang ang dami, hangga't may stock pa!\" |. Cafe Sách Phương Nam: Thiên Đường Sách Tại TP.HCM. |. Você joga dinheiro fora ...",
+    "position": 7
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,198 @@
+# SEC4 — cost-route matrix, ratchet design, slice plan (Checkpoint 2, 2026-10-10)
+
+Baseline `17d4aac`. Companion to `SEC4-COST-ROUTE-COVERAGE-AUDIT.md`. **Nothing in the runtime changes in slice 1.** Production KV configuration and per-route runtime wiring are **not verified** (BLOCKED, §6). "Shared" below means the limiter's *design* shares state across instances *when its store is configured*.
+
+## 1. Verification of the earlier audit against current code
+Re-checked by grep of each route file and by a call-site scan (route source + import closure, depth 3; patterns in §4):
+- Confirmed: `voice/tts`, `explore/process`, `group/[id]/suggest`, `upload/video` use only the in-process `rateLimit`; `reviews/upload` a local in-file `checkRL`; `profile`, `group/[id]/avatar`, `stripe/*`, `reviews/[id]/like`, `users/[id]/follow` have no limiter; `translate`, `scan` have daily-per-IP only (they also call `publicRateLimit`'s in-process fallback pattern).
+- **Corrections / additions found now:** (a) `memory` (POST runs `extractMemoryFromConversation`, an LLM call on user-supplied messages) has **no limiter** and **no Web caller** (the only caller was removed — see the comment in `ChatInterface.tsx`); the earlier audit missed it. (b) `voice/language` is **not** cost-bearing (it only calls the pure `detectLang`). (c) `onboarding`, `recommendations`, `suggested-prompts` import `memoryService` (which contains the LLM function) but call only `getMemory`/`updateMemory`: **false positives of a module-level scan**, handled as explicit exemptions. (d) `scam-shield/directory` serves a static dataset through a barrel that also exports the Web Risk client: false positive. (e) `stripe/checkout` and `stripe/portal` answer 404 while `subscriptionsEnabled()` is on (they are dormant in a SePay/VietQR deployment; prod flag state UNVERIFIED) and have no Web caller. (f) `admin/marketing/campaigns/[id]` (GET, PATCH) has no `distributedRateLimit` although every other admin route does (C10 §5 treats a new admin route without a limit as a violation; low cost — the send path `/activate` is limited).
+
+## 2. Route matrix
+Legend — limiter: **D** `distributedRateLimit`, **P** `publicRateLimit`/`publicDailyRateLimit`, **Q** shared AI quota, **L** in-process `rateLimit`/local, **C** cron secret, **—** none. Store-down: *closed* = refuses; *per-instance* = falls back to in-process count; *n/a*. Tests = tests that exercise the limit itself.
+
+| Pri | Route | Cost / provider | Limiter · key · limit (today) | Shared? | Store unavailable | Proposed limit & rationale (NOT applied) | Limit tests today |
+|---|---|---|---|---|---|---|---|
+| P1 | `POST /api/memory` | LLM (Haiku) on caller-supplied messages; no Web caller | — | – | – | Close it (no caller) or D, user key, 5/min + daily cap: unbounded LLM spend by any signed-in user; low legitimate use | none |
+| P1 | `stripe/checkout`, `stripe/portal` | Stripe API calls | — (404 while `subscriptionsEnabled()`) | – | – | D, user key, 10/min if the routes are ever re-enabled; dormant now | `payments/flagGate.test.ts` (flag only) |
+| P1 | `profile` (POST cover/avatar), `group/[id]/avatar` | storage write + server-side image processing (CPU/egress), size-capped | — | – | – | D, user key, ~20/hour: bounded by size cap, so cost is modest; abuse = storage churn | profile/avatar tests (no limit assertions) |
+| P1 | `reviews/[id]/like`, `users/[id]/follow` | push dispatch per action (no per-send fee) | — | – | – | L→D user key ~60/min: spam vector more than spend | none |
+| P2 | `voice/tts` | Google TTS (priced per character; ≤2000 chars/call) | L · user · 30/min | no | per-instance | D, user key, keep 30/min **plus** a daily character/call ceiling (owner number): the one variable-cost route in this tier | none |
+| P2 | `explore/process` | LLM (content processing) | L · user · 20/min | no | per-instance | D, user key, 20/min (unchanged number) + daily cap | none |
+| P2 | `group/[id]/suggest` | LLM | L · user · 5/min | no | per-instance | D, user key, 5/min (already tight) | none |
+| P2 | `upload/video` | signed upload URL minting (bandwidth is on the client→GCS leg) | L · user · 30/min | no | per-instance | D, user key, 30/min; low cost | 1 test mentions the limit |
+| P2 | `reviews/upload` | image processing | local `checkRL` · user · 10/day | no | per-instance | D, user key, same 10/day (it is already a daily cap) | 1 |
+| P3 | `translate` | LLM | P daily · IP · 30/day, no burst cap | if KV | KV present: closed; absent: per-instance | add burst (e.g. 6/min/IP) and a global daily ceiling (new env; owner number): IP rotation multiplies the daily cap | none |
+| P3 | `scan` | vision LLM | P daily · IP · 20/day, no burst cap | if KV | same | same as `translate` (vision calls cost more per call) | none |
+| P3 | `messaging/threads/[id]/messages`, `reviews/[id]/comments` | push dispatch | L · user · 60/min, 10/min | no | per-instance | D, same numbers | route tests cover behaviour, not the limit |
+| ok | `chat` | LLM, Serper, Places, TTS | P IP 30/min · P user 20/min · Q daily · P Pro 300/day · Serper ceiling | if KV (Serper count per-instance if store down) | KV present: closed; absent: per-instance | unchanged; frozen Serper area | `chatCaps`, quota, route tests |
+| ok | `viet-content`, `scam-shield/analyze\|check\|qr\|share` | LLM / Web Risk lookups | P burst + daily (+Q for analyze) · IP | if KV | as above | unchanged | `publicRouteRateLimits.test.ts`, analyze/viet-content tests |
+| ok | `admin/**` (35 of 36) | push/storage/audit fan-out | D · admin user | yes | closed | unchanged | `adminRateLimitContract.test.ts`, `distributedRateLimit.test.ts` |
+| gap | `admin/marketing/campaigns/[id]` | low (state change; send is in `/activate`) | — | – | – | D, admin user, like its siblings | none |
+| ok | `cron/**`, `notifications/backfill` | LLM/Serper/push fan-out | `CRON_SECRET` bearer; closed when unset | n/a | closed | unchanged (not user-reachable) | `cronAuth.test.ts` |
+| exempt | `onboarding`, `recommendations`, `suggested-prompts`, `scam-shield/directory`, `shared-results/preview`, `commerce/handoff`, `webhooks/stripe` | no provider call on this path (module co-location / static data / inbound signed webhook) | various | | | none | – |
+
+Why not one blanket policy: the tiers differ in who the caller is (anonymous IP vs signed-in user vs operator), what a call costs (per-character TTS vs a signed URL vs a push) and what failing closed would break (a sign-in-less public endpoint should keep working per-instance without KV; an admin route should refuse).
+
+## 3. Coverage ratchet (design and acceptance criteria — **slice 1**)
+**What it prevents:** a new route that can incur provider cost shipping with no declared limiter; a declaration drifting from the code; the known-gap list growing silently.
+**Mechanism (`src/lib/security/costRouteRegistry.ts` + `costRouteCoverage.test.ts`, no runtime import):**
+1. The test walks every `src/app/api/**/route.ts`, computes cost signals from the route source and the files it imports (depth 3, project files only; patterns in §4) and the limiter patterns present **in the route source**.
+2. Group rules: every detected `admin/**` route must contain `distributedRateLimit`; every detected `cron/**` route must contain `cronAuth`. Both have one explicit, recorded exception each (`admin/marketing/campaigns/[id]` as a known gap).
+3. Every other detected route must have an explicit entry `{ route, cost, limiters, key, status, note }` with `status` ∈ `covered` | `known-gap` | `exempt`.
+**Acceptance criteria (all must hold for the slice to be accepted):**
+- AC1 a detected cost route with no entry fails the test with a message that names the route and the signals found;
+- AC2 an entry whose route no longer exists fails (no stale declarations);
+- AC3 the declared `limiters` must equal the limiter patterns actually present in the route source (so adding or removing a limiter forces a declaration update — the ratchet works in both directions);
+- AC4 `covered` requires at least one of D / P / Q (or C for cron); `known-gap` must name the missing control (note ≥ 20 characters) and the slice that closes it (2..6); `exempt` requires a reason of ≥ 40 characters;
+- AC5 the number of `known-gap` entries is pinned (`KNOWN_GAP_BUDGET`); raising it requires editing the test, which review sees; lowering it is the way a gap is closed;
+- AC6 mutation checks: a fake cost route file, a removed declaration, a declared limiter the code lacks, a gap relabelled, and a gap added without a budget change each make the suite fail (5/5 caught on the real tree; the rules themselves are also tested on a fixture tree);
+- AC7 **no runtime behaviour change**: no route, limiter, config or migration file is modified; Android/iOS untouched.
+Limits of the heuristic (stated, not hidden): a route that reaches a provider only through a symbol this scan does not recognise, or deeper than 3 imports, is not detected; and a module that merely *contains* a cost function counts as a signal, hence the explicit exemptions. The patterns list is part of the test so it is reviewed like code.
+
+## 4. Cost signal patterns (initial)
+LLM (`AI.generate|extract|stream*(`, `streamText|generateText|generateObject(`), Serper (`serperSearch|serperPlaces|serperShopping|serperImages(` , `google.serper.dev`), Google TTS/STT/Vision/Translate hosts, OpenAI/Anthropic hosts, Stripe (`new Stripe(`, `from 'stripe'`), storage (`getMediaProvider`, `createUploadSession`), push/email (`emitNotification`, `sendNotificationToUser`, `sendEmail`, `resend`), Web Risk / Safe Browsing / VirusTotal / urlscan, Google Places (`places.googleapis.com`, `fetchPlacePhoto`).
+
+## 5. Slice plan (each independently reviewable; only slice 1 is in this checkpoint)
+1. **Ratchet + registry** (this checkpoint; tests only).
+2. User-keyed in-process → shared: `voice/tts`, `explore/process`, `group/[id]/suggest`, `upload/video`, `reviews/upload` (same limits, same keys; decision needed on store-down behaviour: recommend the `publicRateLimit` semantics — per-instance only when no KV configured, closed when configured but down). Daily ceiling for TTS needs an owner number.
+3. `memory` POST: close or limit (decision: is the endpoint needed?).
+4. `translate` / `scan`: burst cap + global ceiling (owner numbers).
+5. Storage writers and push-triggering routes.
+6. `admin/marketing/campaigns/[id]` (one-line, matches its siblings).
+Each behaviour slice: acceptance criteria written first, route-level tests with a real limiter (like `adminRateLimitContract.test.ts`), 429 + `Retry-After`, mutation checks, diff reviewed before the next.
+
+## 6. BLOCKED / unverified (explicit)
+- `KV_REST_API_*` / `UPSTASH_*` present and healthy in Production **now** (docs record 2026-08-13 / 2026-09-20 only).
+- Which path each route actually takes in production (log query needed; `tappyai_rate_limit` is logged only on rejection in chat).
+- Live values of `CHAT_IP_BURST_PER_MINUTE`, `PRO_DAILY_CHAT_CAP`, `SERPER_DAILY_CREDIT_CEILING`, `CRON_SECRET`, `SUBSCRIPTIONS_ENABLED`.
+- WAF/CDN limiting outside the repository; vendor spend; lambda fan-out factor.
+These stay BLOCKED until read-only production evidence is provided; no claim of runtime wiring is made.
+
+
+---
+## Update — slice 2 complete; routes grouped by cost and operational behaviour (2026-10-10, `5c9a1b3`)
+
+**Slice 2 (in-process → shared limiter), five independent commits:** `group/[id]/suggest` (`c392300`), `explore/process` (`1a53cb8`), `upload/video` (`e659383`), `voice/tts` (`5ad2b89` + `3e3afc7`), `reviews/upload` (`5c9a1b3`). Each keeps its previous limit and key (`group-suggest:<user>` 5/min, `explore-process:<user>` 20/min, `upload-video:<user>` 30/min, `voice-tts:<user>` 30/min, `reviews-upload:<user>` 10/day) and now calls `publicRateLimit` / `publicDailyRateLimit`. The ratchet budget fell **17 → 12**. **No new limit value was invented.** One behaviour change, documented and pinned by a test: `reviews/upload`'s day now ends at **Vietnam midnight** (it was a per-instance `Map` that reset at UTC midnight, 07:00 Vietnam time).
+
+**What the new limiter does (verified by five route-level suites and a mutation check per route):**
+- *limit exceeded* → the route's existing `429 rate_limit` body, before the route does any work (no database read, model call, synthesis or storage write);
+- *keying* → per user id; another user has an independent bucket;
+- *shared* → two module graphs (two lambdas) sharing one store exhaust one budget; with no store configured the counter is per instance (as before);
+- *window* → still refused at half the window, admitted again after it; the daily cap follows the Vietnam date;
+- *store failure* → when a store is configured but does not answer (throws or answers garbage) the request is **refused (fail closed)** and the route recovers as soon as the store answers; when **no** store is configured it falls back to the in-process limiter (never worse than before).
+
+**Operational consequence to accept knowingly:** while the shared store is configured but unavailable, these five features (group suggestions, explore content processing, video upload authorisation, text-to-speech, review photo upload) answer 429 for every user. That is the trade-off the public LLM routes already carry (owner decision D2 in `publicRateLimit.ts`) and the reason a missing cap is not silently granted during an incident. **Production KV configuration and the live behaviour of these routes remain UNVERIFIED** (the code comment that production has `KV_REST_API_*` is from an earlier date; there is no current evidence).
+
+### Routes grouped by cost class and operational behaviour (current state)
+| Group | Routes | Cost / behaviour | State |
+|---|---|---|---|
+| G1 user-keyed provider calls (LLM, TTS) | `chat`, `group/[id]/suggest`, `explore/process`, `voice/tts` | per-call provider spend; signed-in users; refusal is user-visible and recoverable | shared limiter (chat layered); **done** |
+| G2 user-keyed storage authorisation / writes | `upload/video`, `reviews/upload` (done); `profile`, `group/[id]/avatar` (**gap, slice 5**) | storage + image processing, size-capped; abuse = storage churn | 2 of 4 done |
+| G3 anonymous, IP-keyed LLM / lookups | `translate`, `scan` (daily-only: **gap, slice 4**); `viet-content`, `scam-shield/*` (burst + daily) | per-call LLM / vision / Web Risk; IP rotation multiplies caps; no global ceiling | 4 covered, 2 gaps |
+| G4 LLM with no limiter, no caller | `memory` POST | unbounded input per call | **gap, slice 3 — decision table in `MEMORY-POST-AUDIT.md`** |
+| G5 push-per-action (spam vector, no per-send fee) | `reviews/[id]/like`, `users/[id]/follow` (none), `reviews/[id]/comments`, `messaging/…/messages` (in-process) | push dispatch | gaps, slice 5 |
+| G6 payments | `stripe/checkout`, `stripe/portal` | 404 ONLY while `subscriptionsEnabled()`; live when the flag is off (default/release state); no in-repo caller — see the 2026-10-10 section at the end | gap, slice 5 |
+| G7 operators | `admin/**` (35 of 36 shared-limited), `admin/marketing/campaigns/[id]` | fail closed | 1 gap, slice 6 |
+| G8 cron / exempt | `cron/**`, `notifications/backfill`; false positives and the inbound webhook | secret-gated / no provider call | declared |
+
+Remaining ratchet budget: **12** known gaps (`memory`, `translate`, `scan`, `profile`, `group/[id]/avatar`, `reviews/[id]/like`, `users/[id]/follow`, `reviews/[id]/comments`, `messaging/…/messages`, `stripe/checkout`, `stripe/portal`, `admin/marketing/campaigns/[id]`).
+
+
+---
+## Slice 5a — `POST /api/profile` and `POST /api/group/[id]/avatar` (contract and acceptance criteria, written BEFORE the change)
+
+| | `POST /api/profile` (avatar or cover) | `POST /api/group/[id]/avatar` |
+|---|---|---|
+| Current contract | multipart `avatar` (≤ 3 MB) or `cover` (≤ `MAX_PHOTO_SIZE_MB`); magic-byte check, EXIF strip, `putMedia` under `avatars/` or the cover prefix; 401/400/413-style errors as today | multipart `avatar` (≤ 3 MB), creator only (403 otherwise), magic-byte check, `putMedia`, row update as the caller |
+| Resource cost | storage write + server-side image decode/strip (CPU), size-capped; abuse = storage churn and CPU | same |
+| Authentication | `getRequestUser` (401); anonymous sessions: the cover path refuses them (B17), the avatar path is deliberately open (`handle_new_user` skips anonymous) | `getRequestUser` (401), anonymous refused (B17), creator check (403) |
+| Limiter today | **none** | **none** |
+| Limit (NOT derived from an existing limit — there is none; owner-adjustable) | **10 uploads per hour per user, avatar and cover together** (`profile-photo:<user id>`) | **10 uploads per hour per user** (`group-avatar:<user id>`) |
+| Why these numbers | an avatar/cover is changed rarely; 10/hour tolerates crop mistakes and retries and bounds worst-case churn to 240 stored objects per user per day; both are size-capped, so this is abuse containment, not a spend control. The numbers are a proposal, stated here so review can change them | same |
+| Where the check sits | after authentication and **before the multipart body is read** (so a refused request does no parsing, decoding or storage) | after the creator check (a non-creator gets 403 and spends nothing) and before the body is read |
+| Limiter | `publicRateLimit` + `rateLimitedResponse` (shared store when configured; in-process only when none is configured; fail closed when configured but down) | same |
+| Refusal | the existing 429 `rate_limit` contract + `X-RateLimit-Reason` (`limit_exceeded` / `store_unavailable`) + one `tappyai_rate_limit` log line | same |
+| GET / PATCH / other methods | unchanged (no storage write) | n/a |
+
+**Acceptance criteria:** (1) the 11th upload within an hour is 429 before the body is read; (2) a different user is unaffected; (3) the budget is shared across two instances; (4) the window is an hour (still refused at 30 min, admitted after 60); (5) store configured but down → 429 with reason `store_unavailable`, no body read, recovers; (6) no store configured → in-process fallback with the same limit; (7) existing validation, anonymous refusal, creator check and order of checks are unchanged (the existing route tests pass untouched); (8) mutations (limit, key, window, limiter removed, check moved after the body read) are caught; (9) the ratchet registry moves both routes from `known-gap` to `covered` and the budget falls by two.
+
+
+---
+## Slice 5b — push-per-action routes: `POST /api/reviews/[id]/like`, `POST /api/users/[id]/follow`, `POST /api/reviews/[id]/comments` (contract and acceptance criteria, written BEFORE the change)
+
+**Out of this slice, on the owner's instruction:** `POST /api/messaging/threads/[id]/messages` (the send limiter) — its behaviour is not changed here; its fail-open-or-per-instance question stays an owner decision in the collapse proposal (§7d).
+
+| | `reviews/[id]/like` | `users/[id]/follow` | `reviews/[id]/comments` (POST) |
+|---|---|---|---|
+| Contract today | toggle (insert, delete on 23505); on a successful insert: a push to the review owner and a possible milestone push | toggle follow/unfollow; a push to the target on follow | inserts a comment (suspension check first) and pushes to the review owner |
+| Resource cost | database write + push dispatch per action (no per-send fee); the abuse is notification spam against one person | same | same |
+| Authentication | session (401); anonymous refused (B17) | session; anonymous refused; self-follow 400 | session; anonymous refused (B17) |
+| Limiter today | **none** | **none** | in-process `rateLimit(comment:<user>, 10, 60 s)` |
+| Limit | **60 per minute per user** (`like:<user id>`) — a proposal, no previous limit existed | **30 per minute per user** (`follow:<user id>`) — a proposal | **10 per minute per user, key `comment:<user id>` — UNCHANGED**; only the limiter becomes the shared one |
+| Why these numbers | a fast scroller double-tapping likes stays well under 60/min; rapid like/unlike toggling to spam the owner's inbox does not | following 30 accounts a minute is above any real use | preserves the existing limit and copy (`comment.tooFast`) |
+| Position | after the anonymous refusal (and after the self-follow 400), before any database write | same | exactly where the current check is |
+| Refusal | the existing-style 429 `rate_limit` body + `X-RateLimit-Reason` + `Retry-After` + one `tappyai_rate_limit` log line | same | same, with the existing `comment.tooFast` message |
+| Store failure | shared store configured but down → **429 with reason `store_unavailable`** (fail closed, consistent with the other migrated routes); no store configured → in-process fallback | same | same |
+**Operational note:** unlike the paid-provider routes these three are *social* actions: while the shared store is configured but unavailable, liking, following and commenting would answer 429 for everyone. That is the same fail-closed semantics as slice 2 and is flagged as an owner decision (a fail-open-to-in-process variant would be the alternative for abuse-only limits; it needs its own helper and tests and is **not** implemented here).
+
+**Acceptance criteria:** (1) the limit-plus-one request is 429 before any database access or notification; (2) another user is unaffected; (3) the budget is shared across two instances; (4) the window is a minute (still refused at 30 s, admitted after 60 s); (5) store down → 429 `store_unavailable`, no database access, recovers; (6) no store configured → in-process fallback with the same number; (7) signed-out → 401 and anonymous → refused **without spending** (order unchanged; for follow, self-follow 400 spends nothing); (8) comments keep their exact limit, key and message; (9) mutations (limit, key, window, in-process again, missing await) are caught; (10) the ratchet moves the three routes to `covered` and the budget falls by three.
+
+
+---
+## Slice 5c — `PATCH /api/admin/marketing/campaigns/[id]` (contract and acceptance criteria, written BEFORE the change)
+
+| | |
+|---|---|
+| Current contract | `GET` reads one campaign (permission `MARKETING_CAMPAIGNS_READ`); `PATCH` edits a **draft** (permission `MARKETING_CAMPAIGNS_UPDATE`, same-origin check, zod body, 404/409/422 as today, audit log). There is no DELETE. The send path is `/activate`, which is limited. |
+| Resource cost | database write + audit row per edit; no provider call. It is the only admin route in the cost scan without a shared limiter, so it is the one exception recorded in the ratchet. |
+| Authentication | `requirePermission` (operator session) — unchanged. |
+| Limiter today | **none** (its siblings use `distributedRateLimit`: create 60 per hour, activate 3 per day, dry-run 30 per hour, per admin id) |
+| Limit | **60 per hour per admin on `PATCH`, key `admin:marketing:campaign:update:<admin id>`** — the same numbers as the sibling `create` (a proposal; there was no previous limit). `GET` is read-only and, like the sibling list route, is **not** limited. |
+| Position | after the permission and same-origin checks, before the body is parsed and before any database access (the sibling `create` does the same) |
+| Limiter | `distributedRateLimit` directly (admin = **fail closed when no store is configured or it does not answer**, as every other admin route; this is the C10 contract, not the public-route semantics) |
+| Refusal | the sibling's shape: `adminError('RATE_LIMITED', …, 429, { 'Retry-After' })` plus `X-RateLimit-Reason` (`limit_exceeded` / `store_unavailable`) and one `tappyai_rate_limit` log line; no key is logged |
+| Store failure | **429 with reason `store_unavailable`** (operators cannot edit until the store answers — the accepted C10 trade-off) |
+
+**Acceptance criteria:** (1) the 61st edit in an hour is 429 with `Retry-After`, before the body is parsed or the database read; (2) another admin is unaffected; (3) shared across instances; (4) the window is an hour; (5) store down **or not configured** → 429 `store_unavailable`, nothing written, recovers; (6) permission failure → the existing 401/403 and spends nothing; cross-origin → 403 and spends nothing; (7) the existing campaign route tests pass unchanged; (8) mutations caught; (9) the ratchet drops its admin exception for this route (`ADMIN_EXCEPTIONS` becomes empty) and the budget falls by one.
+
+
+---
+## State after slices 3, 5a, 5b, 5c and the refusal-reason work (2026-10-10)
+
+| Slice | Routes | Result | Commits |
+|---|---|---|---|
+| 3 | `memory` POST | **disabled (404 before any work)** after the dependency check in `MEMORY-POST-AUDIT.md` §3 | `016b996` |
+| refusal reason | all shared-limiter routes | refusals say **why**: `reason` on `distributedRateLimit`/`publicRateLimit` results (`limit_exceeded` / `store_unavailable`), one helper `rateLimitedResponse` (429 contract unchanged, `X-RateLimit-Reason`, `Retry-After`, one `tappyai_rate_limit` log line with limit, scope and reason, never the key); a store answer that is neither "admitted" nor "rejected" now counts as `store_unavailable` | `7570304` |
+| 5a | `profile` (avatar/cover), `group/[id]/avatar` | 10/hour per user each (documented proposal) | `f49a7b1` |
+| 5b | `reviews/[id]/like` 60/min, `users/[id]/follow` 30/min (proposals), `reviews/[id]/comments` 10/min **unchanged** | shared limiter | `cb5fd7f` |
+| 5c | `admin/marketing/campaigns/[id]` PATCH | `distributedRateLimit`, 60/hour per admin, fail closed; admin exception removed | `c7f14f3` |
+
+**Infrastructure failure vs genuine quota breach (what is and is not distinguished):** in the logs/metrics (`tappyai_rate_limit` lines: count `reason = store_unavailable` for an outage, `limit_exceeded` for usage) and in a response header (`X-RateLimit-Reason`). **The HTTP status is deliberately still 429** for both, because the existing clients (Web, Android, iOS) already handle 429 and a different status for the outage would change a contract they depend on; moving an outage to 503 is a client-contract decision for the application phase and is listed as an owner decision.
+
+**Ratchet:** known-gap budget **5**: `translate`, `scan` (slice 4 — **needs the owner's burst and global-ceiling numbers; none were invented**), `stripe/checkout`, `stripe/portal` (dormant while the subscriptions flag is on), `messaging/threads/[id]/messages` (the send limiter — **not changed on the owner's instruction**; fail-open vs per-instance is decided in the collapse proposal §7d). `ADMIN_EXCEPTIONS` is empty.
+
+**Still UNVERIFIED (no production evidence):** that `KV_REST_API_*` is configured in Production now; which path any route takes at runtime; the live behaviour and 429 rate of every limiter; whether a WAF/CDN limits outside the repository. **SEC4 production coverage is NOT claimed.** What is proven is the behaviour of each limiter in tests (limit, keying, cross-instance sharing, window, store failure, no-store fallback, reason reporting) and the ratchet that stops a new cost route shipping undeclared.
+
+
+---
+## 2026-10-10 (continuation) — Stripe verification, ratchet review, proposals
+
+### Stripe `checkout` / `portal`: NOT dormant by default (corrects earlier wording)
+Evidence, all in-repository:
+* Both routes return 404 **only** when `subscriptionsEnabled()` is true (`SUBSCRIPTIONS_ENABLED` = `1` or `true`, read at call time). The code default is **off** (`src/lib/payments/flags.ts`: "OFF = the release behaviour exactly (Stripe/Apple routes …)"), `.env.local.example` ships `SUBSCRIPTIONS_ENABLED=false`, and `docs/uat/PART-B-FINAL.md` / `RELEASE-PROGRESS.md` state the flag is **not set** for the release. `payments/flagGate.test.ts` proves it: flag off → a signed-out call answers **401 (the route runs)**; flag on → 404.
+* So under the default and the documented release state the routes are **live**: any session with a user id — including an anonymous Supabase session (`anonymousWriteBoundary` lists both routes as accepted for "the calling account") — can call `stripe.customers.create` and `checkout.sessions.create` / `billingPortal.sessions.create`, and the checkout route upserts `billing_customers`. They need `STRIPE_SECRET_KEY` at import; the Production and Preview environments carry the Stripe keys (`PRELAUNCH-REPORT.md`, finding F-062). Whether the key *works* in production is UNVERIFIED.
+* **No caller anywhere in the repository:** no `src` file other than the routes and tests references `/api/stripe/checkout|portal`; the old Web `SubscriptionView` no longer exists (`subscriptionCanonical.test.ts` asserts the file is gone); the Android and iOS trees contain no reference to the two paths (searched, nothing edited). `docs/payments/P7-SUBSCRIPTIONS.md` records them as "the pre-P7 Pro path used only by the old SubscriptionView".
+* Cost: Stripe API calls are not billed per call, but each call to checkout for a new user **creates a Stripe customer object** (pollution of the live Stripe account) and writes a row; Stripe applies its own API rate limit to the account key (not measured here).
+
+Conclusion: **"dormant" holds only while `SUBSCRIPTIONS_ENABLED` is on, and the evidence says the release state is off.** The two routes stay `known-gap` (slice 5); they are *not* exempt. Registry notes were corrected (this commit). Options for the owner (none implemented): (a) 404 both routes like `/api/memory` POST (needs confirmation that no mobile build or external client calls them); (b) refuse anonymous sessions + a small user-keyed shared limit; (c) set `SUBSCRIPTIONS_ENABLED` per the payments plan, which closes them as a side effect. **Production value of the flag: UNVERIFIED.**
+
+### The ratchet's limits, and the one tightening made
+Known limitations of `costRoutes/scan.ts` (a text heuristic; it is a *ratchet against drift*, not proof of coverage):
+1. It proves a limiter is **called somewhere in the route file**; it does not prove the call is before the provider call, that the result is honoured, or that every HTTP method is covered (`admin/marketing/campaigns/[id]` once had `GET` unguarded while `PATCH` was the target). Order and per-method behaviour are asserted only by the per-route `limiter.test.ts` files.
+2. Cost signals are a fixed list of provider patterns and imports followed to depth 3. A provider that is not in the list, or reached through a dynamic string, is invisible. A one-off probe (not committed) listed routes with **no** detected signal whose import closure contains other external hosts: `iap/apple/verify` (Apple StoreKit), `account/delete` (Apple revoke), `auth/zalo*` and `integrations/zalo*` (Zalo OAuth/Graph), `integrations/google-calendar*` (Google APIs), `explore/oembed` (TikTok oEmbed), `booking/recheck` (partner pages), `rates` (open.er-api.com), `links/resolve` (YouTube), `payments/sepay` (Brevo mail), `plans/share`. These are not claimed to be gaps: most are authenticated, free or low-cost, or webhooks. They are listed so the owner knows the signal list is incomplete; no declaration was added for them, and no test enumerating hosts was added (an allow-list test of that kind would be noisy and would create false confidence).
+3. Module-level false positives (`memoryService` etc.) are handled by explicit `exempt` entries, each with a written reason.
+4. Rate limiting is only one control; the ratchet says nothing about authentication, body size or quotas that live in other modules.
+
+**Tightening made (this commit):** limiter detection now ignores comments and requires a **call** (`name(`), not a bare word. Why: the previous pattern counted an import or a comment. It was demonstrably wrong on the real tree — `chat` was declared with `distributed` only because a *comment* in `chat/route.ts` mentions `distributedRateLimit`; the route reaches the shared store through `publicRateLimit`. The registry entry was corrected to `public, quota`. Proof: a new fixture test fails when comment-stripping is removed and when the call-form requirement is reverted (both mutations run and restored); the real-tree test passes only with the corrected declaration.
+
+Remaining budget: **5** known gaps (`translate`, `scan` → `SEC4-TRANSLATE-SCAN-PROPOSAL.md`; `stripe/checkout`, `stripe/portal` → above; `messaging/threads/[id]/messages` → `MESSAGE-SEND-LIMITER-AUDIT.md`). **Production KV configuration and runtime wiring remain UNVERIFIED**: the only in-repo statement is a 2026-09-24 note that `KV_REST_API_URL` and `KV_REST_API_TOKEN` exist *by name* in Production; the same investigation recorded that 29 of 57 Production variables pull as empty, so presence by name is not evidence of a working store.

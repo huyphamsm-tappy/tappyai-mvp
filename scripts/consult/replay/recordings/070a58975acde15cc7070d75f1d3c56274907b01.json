@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Phở Việt Nam\" OR \"PHỞ HÀ\" OR \"Phở Hải Triều\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:04:08.374Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Phở Việt Nam\" OR \"PHỞ HÀ\" OR \"Phở Hải Triều\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Phở Việt Nam: Hướng dẫn và gợi ý món phở ngon",
+    "link": "https://www.tiktok.com/@saigonspringroll/video/7681533386514582797",
+    "snippet": "tinh hoa ẩm thực đường phố và quán ăn — tập trung vào nước dùng trong, bánh phở mềm và thịt vừa chín.",
+    "date": "Lead Phở Việt Nam",
+    "position": 1
+   },
+   {
+    "title": "Phở Việt Nam by Võ Quốc: Menu mới tiện lợi",
+    "link": "https://www.tiktok.com/@phovietnambyvoquoc/video/7630761633479986449",
+    "snippet": "Phải tiến hành rà soát lại hết mới thấy có nhiều cái cần thay đổi, hiện tại Phở Việt Nam by Võ Quốc đã cập nhật giao diện mới cho menu, ...",
+    "position": 2
+   },
+   {
+    "title": "Phở Việt Nam ngon khó cưỡng | Phở Cần Thơ",
+    "link": "https://www.tiktok.com/@happyinvn/video/7678602526194797844",
+    "snippet": "Phở Cần Thơ: Phở Việt Nam ngon khó cưỡng Lead Phở Cần Thơ được mô tả là “ngonnnn lắm” — một lời khuyên mạnh mẽ nên thử. Bát phở ở Cần Thơ ...",
+    "position": 3
+   },
+   {
+    "title": "Phở Hà: Quán Phở Mở Khuya Trên Đường Hàm Nghi",
+    "link": "https://www.tiktok.com/@nguyenquangdungdirector/video/7498356885536509202",
+    "snippet": "Khám phá quán phở Hà mở khuya trên đường Hàm Nghi. Đến ngay để thưởng thức phở ngon nhé! #phò #HàNội #ẩmthực. Đây là bản tóm tắt nội dung do ...",
+    "position": 4
+   },
+   {
+    "title": "Công thức phở ngon",
+    "link": "https://www.tiktok.com/@dongchuildaypho/video/7688404700663663890",
+    "snippet": "... Lượt thích,299 Bình luận.Video TikTok từ ĐÔNG CHUIL – DẠY PHỞ VIỆT NAM ... Các thuật ngữ liên quan xuất hiện gồm Phở Bò Mỹ và phở hà nội ...",
+    "position": 5
+   },
+   {
+    "title": "Phở Việt Nam: Xem Làm Bánh Phở Tươi Trực Tiếp",
+    "link": "https://www.tiktok.com/@taihoadatviet/video/7625124168417201416",
+    "snippet": "Phở Việt Nam: Xem Làm Bánh Phở Tươi Trực Tiếp. Trải nghiệm phở bò độc đáo tại Phở Việt Nam Gò Vấp, xem làm bánh phở tươi thủ công qua lớp kính.",
+    "position": 6
+   },
+   {
+    "title": "Phở Việt Nam Ngon Đỉnh tại Phạm Hồng Thái",
+    "link": "https://www.tiktok.com/@vine.2905/video/7601361027833269522",
+    "snippet": "Phở Việt Nam Ngon Đỉnh tại Phạm Hồng Thái. Khám phá quán phở nổi ... Quán Phở Hà Nội ( Cầu Bà Lát ). Ăn phở của a k. 5-2Trả lời. 0. Kim. e ...",
+    "position": 7
+   },
+   {
+    "title": "Bí quyết nước dùng chuẩn phở Hà Nội ở Mỹ",
+    "link": "https://www.tiktok.com/@dongchuildaypho/video/7652787348253461778",
+    "snippet": "Video TikTok từ ĐÔNG CHUIL – DẠY PHỞ VIỆT NAM (@dongchuildaypho): \"Công thức phở ngon từ phở Hà Nội tại California: hầm xương 24h, ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -9,12 +9,13 @@ import { parseShareRequest, resolveShareSource } from '@/lib/share/shareRequest'
 import { decideSharePolicy } from '@/lib/share/sharePolicy'
 import { createSharedResult, SharedResultError } from '@/lib/share/sharedResultStore'
 import { absoluteUrl } from '@/lib/share/openGraph'
+import { summarize } from '@/lib/share/sharedResultMetadata'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 
 // POST /api/shared-results — publish a frozen, sanitized public snapshot.
 //
-// Explicit only: reached from the share preview's Confirm. Owner-scoped
+// Explicit only: reached from the share preview's Confirm, or (02/10) from the user's click on a share channel in the menu, which says first that a public page is created. Owner-scoped
 // (the source message is read through RLS), sanitized server-side, capped per
 // identity and per IP. Returns the public URL. No LLM, one INSERT.
 //
@@ -73,6 +74,7 @@ export async function POST(req: NextRequest) {
       path,
       url: absoluteUrl(path),
       title: row.payload.title,
+      description: summarize(row.payload.body ?? ''),
       domain: row.domain,
       parent_id: row.parent_id ?? null,
       listed: !row.owner_is_anonymous,

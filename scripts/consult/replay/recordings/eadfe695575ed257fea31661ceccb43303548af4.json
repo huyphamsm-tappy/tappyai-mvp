@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:checkcoverage.apple.com Mac serial coverage activation lock MacBook kiểm tra",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:03:05.470Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:checkcoverage.apple.com Mac serial coverage activation lock MacBook kiểm tra",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Apple Check Coverage",
+    "link": "https://checkcoverage.apple.com/",
+    "snippet": "Check your Apple warranty status. Enter a serial number to review your eligibility for support and extended coverage.",
+    "position": 1
+   },
+   {
+    "title": "View Coverage - AppleCare & Warranty",
+    "link": "https://checkcoverage.apple.com/am/en?cid=gn-ols-checkcoverage-lp-get_help",
+    "snippet": "Check your Apple warranty status. Enter a serial number to review your eligibility for support and extended coverage.",
+    "position": 2
+   },
+   {
+    "title": "AppleCare & Warranty - Apple Check Coverage",
+    "link": "https://checkcoverage.apple.com/?locale=en_JP",
+    "snippet": "Check your Apple warranty status. Enter a serial number to review your eligibility for support and extended coverage.",
+    "position": 3
+   },
+   {
+    "title": "Xem phạm vi bảo hành – AppleCare & Bảo hành",
+    "link": "https://checkcoverage.apple.com/?locale=vi_VN",
+    "snippet": "Check your Apple warranty status. Enter a serial number to review your eligibility for support and extended coverage.",
+    "position": 4
+   },
+   {
+    "title": "View Coverage - AppleCare & Warranty",
+    "link": "https://checkcoverage.apple.com/?locale=en_ID",
+    "snippet": "Check your Apple warranty status. Enter a serial number to review your eligibility for support and extended coverage.",
+    "position": 5
+   },
+   {
+    "title": "Country Selection - AppleCare & Warranty",
+    "link": "https://checkcoverage.apple.com/country-region/?locale=en_IL",
+    "snippet": "Check your Apple warranty status. Enter a serial number to review your eligibility for support and extended coverage.",
+    "position": 6
+   },
+   {
+    "title": "AppleCare et garantie - Apple Check Coverage",
+    "link": "https://checkcoverage.apple.com/?locale=fr_FR",
+    "snippet": "Check your Apple warranty status. Enter a serial number to review your eligibility for support and extended coverage.",
+    "position": 7
+   },
+   {
+    "title": "AppleCare y garantía - Apple Check Coverage",
+    "link": "https://checkcoverage.apple.com/?locale=es_MX",
+    "snippet": "Check your Apple warranty status. Enter a serial number to review your eligibility for support and extended coverage.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

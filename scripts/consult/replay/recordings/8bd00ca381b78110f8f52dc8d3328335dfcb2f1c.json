@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook Air site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:09:36.572Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Air site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Macbook air m1 13 inch laptop keyboard case",
+    "link": "https://shop.tiktok.com/vn/k/macbook-air-m1-13-inch-laptop-keyboard-case",
+    "snippet": "Khám phá Macbook air m1 13 inch laptop keyboard case mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm ...",
+    "position": 1
+   },
+   {
+    "title": "apple m5 macbook air",
+    "link": "https://shop.tiktok.com/vn/k/apple-m5-macbook-air",
+    "snippet": "Khám phá apple m5 macbook air mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất hôm ...",
+    "position": 2
+   },
+   {
+    "title": "casing macbook air m3",
+    "link": "https://shop.tiktok.com/vn/k/casing-macbook-air-m3",
+    "snippet": "Khám phá casing macbook air m3 mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất hôm ...",
+    "position": 3
+   },
+   {
+    "title": "MacBook Air Retina 13 i5 16GHz",
+    "link": "https://shop.tiktok.com/vn/k/macbook-air-retina-13-i5-16ghz",
+    "snippet": "Khám phá MacBook Air Retina 13 i5 16GHz mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành ...",
+    "position": 4
+   },
+   {
+    "title": "Macbook air m4 bag",
+    "link": "https://shop.tiktok.com/vn/k/macbook-air-m4-bag",
+    "snippet": "Khám phá Macbook air m4 bag mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất hôm nay.",
+    "position": 5
+   },
+   {
+    "title": "Kết quả cho \"Macbook air m2 8 136\"",
+    "link": "https://shop.tiktok.com/vn/k/macbook-air-m2-8-136",
+    "snippet": "Khám phá Macbook air m2 8 136 mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất hôm ...",
+    "position": 6
+   },
+   {
+    "title": "Laptop macbook air screen protector",
+    "link": "https://shop.tiktok.com/vn/k/laptop-macbook-air-screen-protector",
+    "snippet": "Khám phá Laptop macbook air screen protector mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh ...",
+    "position": 7
+   },
+   {
+    "title": "Apple MacBook Air 13-inch 2017 S250",
+    "link": "https://shop.tiktok.com/vn/k/apple-macbook-air-13-inch-2017-s250",
+    "snippet": "Khám phá Apple MacBook Air 13-inch 2017 S250 mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -163,7 +163,10 @@ final class CreateReviewViewModel: AppObservableObject {
             } catch is CancellationError {
                 // user cancelled
             } catch {
-                self.error = NSLocalizedString("review.error.videoUpload", comment: "")
+                // Storage service down: nothing was saved and a retry cannot work (Web `reviewNew.videoUploadUnavailable`).
+                self.error = UploadUnavailable.matches(error)
+                    ? NSLocalizedString("review.error.videoUploadUnavailable", comment: "")
+                    : NSLocalizedString("review.error.videoUpload", comment: "")
                 resetVideoState()
             }
         }
@@ -210,7 +213,8 @@ final class CreateReviewViewModel: AppObservableObject {
             thumbPreview = thumbnail
 
             if let jpegData = thumbnail.jpegData(compressionQuality: 0.82) {
-                thumbnailURL = try await service.uploadThumbnail(data: jpegData)
+                // No Exif/XMP: the server refuses a thumbnail that carries either.
+                thumbnailURL = try await service.uploadThumbnail(data: ClipMetadata.stripJPEGMetadata(jpegData))
             }
         } catch {
             log.error("thumbnail generation/upload failed (continuing): \(error)")
@@ -220,7 +224,9 @@ final class CreateReviewViewModel: AppObservableObject {
 
         // 2. Upload video
         uploadStep = .uploading(progress: 0)
-        let videoData = try Data(contentsOf: url)
+        // GPS location, device and creation times removed before the bytes leave the phone — the
+        // server refuses a clip that still carries them (422 identifying_metadata).
+        let videoData = ClipMetadata.neutralize(try Data(contentsOf: url))
         let ext = url.pathExtension.isEmpty ? "mp4" : url.pathExtension.lowercased()
         let result = try await service.uploadVideoFile(data: videoData, ext: ext)
 

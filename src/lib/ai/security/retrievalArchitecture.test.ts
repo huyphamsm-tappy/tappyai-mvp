@@ -220,11 +220,26 @@ describe('retrieved content cannot acquire authority', () => {
     // the model or a retrieval snippet; only URLs the tool result itself carried (`_tappy_commerce`
     // marks them) are eligible; and the line goes through `sanitizeUrlForMarkdown` and
     // `escapeMarkdownLabel` like every other site.
+    //
+    // The SIXTH (A3, 2026-10-02) is the «only another phone model was found» block: the reply says so and lists one search link per marketplace
+    // for the right keyword. Re-read against the same rule: the HOST and the search grammar come from the CCP registry (`buildShoppingLinks` →
+    // `marketplaceSearchTemplates`, Shopee and Lazada), never from the model or a snippet; the only free text is the product keyword, which
+    // `encodeURIComponent` confines to the query value; and the line goes through `sanitizeUrlForMarkdown` and `escapeMarkdownLabel`.
+    //
+    // The SEVENTH (Phase 8 M3, 2026-10-08 — lock change, docs/phase8/M3-REPORT.md §F) is source CITATIONS for the TAPPY_AGENT=2 runtime:
+    // `citeSources` turns the model's [S#] markers into links to the pages the agent READ this turn. Original expectation: six sites.
+    // Why it no longer holds: Phase 8 requires source links in research answers (spec §13 / DoD 13). New expectation: seven, and the
+    // seventh passes the same reading — the URL's origin is the secure page fetch (security/safePageFetch.ts: every hop validated, DNS
+    // pinned), never the model; it must ALSO be in this turn's tool frames (`allowedUrls`); the label is the source's host, never model
+    // text; and the one line that builds the link names `sanitizeUrlForMarkdown` and `escapeMarkdownLabel`. The model only ever writes
+    // the marker `[S1]`; a marker naming no such source is removed.
     const sites = PROD.flatMap(f =>
       f.body.split(/\r?\n/)
         .map((text, i) => ({ file: f.path, line: i + 1, text }))
         .filter(l => AI_LAYER(l.file) && !isCommentOnly(l.text) && /\]\(\$\{/.test(l.text)))
     expect(sites.map(s => s.file)).toEqual([
+      'lib/ai/streamEnrichment.ts',
+      'lib/ai/streamEnrichment.ts',
       'lib/ai/streamEnrichment.ts',
       'lib/ai/streamEnrichment.ts',
       'lib/ai/streamEnrichment.ts',

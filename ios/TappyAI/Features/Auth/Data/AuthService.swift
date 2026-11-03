@@ -11,6 +11,9 @@ protocol AuthService: Sendable {
     func sendEmailOTP(email: String) async throws
     func verifyEmailOTP(email: String, token: String) async throws -> AuthTokens
 
+    /// Email + password sign-in (web `/login`, Android parity L1).
+    func signIn(email: String, password: String) async throws -> AuthTokens
+
     // Email + password registration — survey §1.6
     /// Returns tokens if a session is issued immediately, or nil if email confirmation is required.
     func register(email: String, password: String, fullName: String) async throws -> AuthTokens?
@@ -19,6 +22,10 @@ protocol AuthService: Sendable {
     func oauthURL(provider: OAuthProviderKind, redirectTo: URL) throws -> URL
     /// Exchange the callback URL (PKCE `code`) captured from the web-auth session for a session.
     func session(fromCallback url: URL) async throws -> AuthTokens
+
+    // Sign in with Apple — the identity token from the native sheet, and the raw nonce whose
+    // SHA-256 was sent to Apple (`AppleSignIn`).
+    func signInWithApple(idToken: String, nonce: String) async throws -> AuthTokens
 
     // Anonymous contract hydration — set the SDK session from tokens issued by POST /api/auth/anonymous.
     func hydrate(accessToken: String, refreshToken: String) async throws -> AuthTokens

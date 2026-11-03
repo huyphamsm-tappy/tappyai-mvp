@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple AirPods Pro (2nd generation) sweat water resistant IP54 USB-C case IPX4 Lightning case official",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:09:00.376Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple AirPods Pro (2nd generation) sweat water resistant IP54 USB-C case IPX4 Lightning case official",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "About the sweat and water resistance of AirPods Pro ...",
+    "link": "https://support.apple.com/en-vn/105046",
+    "snippet": "The AirPods and charging case for these models are dust, sweat, and water resistant for non-water sports and exercise, and have a rating of IP54 ...",
+    "date": "17 thg 9, 2026",
+    "position": 1
+   },
+   {
+    "title": "Compare AirPods models",
+    "link": "https://www.apple.com/in/airpods/compare/?modelList=airpods-2nd-gen,airpods-pro",
+    "snippet": "AirPods 5 and AirPods Pro 3 have a rating of IP57, and AirPods Pro 2 have a rating of IP54 under IEC standard 60529. Dust, sweat and water resistance are not ...",
+    "position": 2
+   },
+   {
+    "title": "AirPods Pro 2 - Tech Specs",
+    "link": "https://support.apple.com/en-vn/111851",
+    "snippet": "AirPods Pro and charging case are sweat and water resistant for non-water sports and exercise. AirPods Pro and charging case were tested under controlled ...",
+    "position": 3
+   },
+   {
+    "title": "Compare AirPods models",
+    "link": "https://www.apple.com/airpods/compare/?modelList=airpods-pro,airpods-3rd-gen-lightning",
+    "snippet": "AirPods 5 and AirPods Pro 3 have a rating of IP57 and AirPods Pro 2 have a rating of IP54 under IEC standard 60529. Dust, sweat, and water resistance are not ...",
+    "position": 4
+   },
+   {
+    "title": "Apple AirPods Pro (2nd generation) with MagSafe ...",
+    "link": "https://www.amazon.com/clp/B0CP4CG1ZB",
+    "snippet": "Apple AirPods Pro (2nd generation) with MagSafe Charging Case (USB-C). Amazon ... Sweat & Water Resistant, Apple & Android Compatible - Jet Black.",
+    "position": 5
+   },
+   {
+    "title": "AirPods Pro (2nd Generation) with MagSafe Charging Case ...",
+    "link": "https://www.facebook.com/htbazarbd/posts/airpods-pro-2nd-generation-with-magsafe-charging-case-usb-c/1137066888845397/",
+    "snippet": "The **AirPods Pro (2nd generation) with USB-C** combine Apple's industry-leading wireless earbuds with the convenience of a USB-C charging ...",
+    "position": 6
+   },
+   {
+    "title": "so, are air pods pro 2 waterproof or not? : r/airpods",
+    "link": "https://www.reddit.com/r/airpods/comments/1l3hggp/so_are_air_pods_pro_2_waterproof_or_not/",
+    "snippet": "yesterday i accidentally left one of my buds in my work shorts and i put them to wash for 30 mins put them to dry and realised today that they might’ve ...",
+    "position": 7
+   },
+   {
+    "title": "Tai nghe Apple AirPods Pro 2 2023 USB-C | Giá rẻ, góp 0%",
+    "link": "https://cellphones.com.vn/apple-airpods-pro-2-usb-c.html",
+    "snippet": "Với bốn cặp đầu tai nghe silicon tùy chỉnh và khả năng chống bụi, mồ hôi, nước đạt tiêu chuẩn IP54, AirPods Pro 2 lý tưởng cho mọi hoạt động. Airpods Pro 2 Type ...",
+    "rating": 4.9,
+    "ratingCount": 50,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

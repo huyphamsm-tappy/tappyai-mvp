@@ -139,7 +139,7 @@ export default function EditProfilePage() {
       let data: { ok?: boolean; error?: string; message?: string } = {}
       try { data = await res.json() } catch { /* non-JSON response */ }
       if (!res.ok) throw new Error(data.message || t('editProfile.err.save'))
-      // Same reason as the avatar upload above: /profile/account is a server component and Next
+      // Same reason as the avatar upload above: /profile is a server component and Next
       // keeps its RSC payload in the CLIENT router cache for ~30s. Save → push() lands back on
       // it well inside that window, so without this the user is returned to the copy rendered
       // before the edit and the new name looks like it never saved.
@@ -147,7 +147,8 @@ export default function EditProfilePage() {
       setSaved(true)
       setTimeout(() => {
         setSaved(false)
-        router.push('/profile/account')
+        // Phase 7: the edit flow returns to Profile V3, never to the old account layout.
+        router.push('/profile')
       }, 1200)
     } catch (err) {
       setError(err instanceof Error ? err.message : t('editProfile.err.save'))
@@ -169,7 +170,7 @@ export default function EditProfilePage() {
 
   return (
     <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24">
-      <Header title={t('editProfile.title')} showBack backHref="/profile/account" />
+      <Header title={t('editProfile.title')} showBack backHref="/profile" />
 
       <main className="max-w-lg mx-auto px-4 py-6 space-y-6">
 

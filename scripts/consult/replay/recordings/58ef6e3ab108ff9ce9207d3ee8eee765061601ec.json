@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com/vn MacBook Air M1 thông số bảo hành kiểm tra số sê-ri",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:12:15.977Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com/vn MacBook Air M1 thông số bảo hành kiểm tra số sê-ri",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "AppleCare",
+    "link": "https://www.apple.com/vn/applecare/",
+    "snippet": "Đa số sản phẩm của Apple đều được bảo hành phần cứng trong một năm thông qua bảo hành giới hạn. Các gói bảo hành AppleCare+ mở rộng phạm vi bảo hành phần ...",
+    "position": 1
+   },
+   {
+    "title": "Ứng dụng Wrnty: Bảo hành & Hóa đơn - App Store",
+    "link": "https://apps.apple.com/vn/app/wrnty-b%E1%BA%A3o-h%C3%A0nh-h%C3%B3a-%C4%91%C6%A1n/id6747742961?l=vi&platform=vision",
+    "snippet": "Wrnty: Bảo hành & Hóa đơn · Độ tuổi. 00+. Tuổi · Danh mục. Hiệu Suất · Nhà phát triển. Robert Jensen · Ngôn ngữ. VI. + 46 ngôn ngữ · Kích cỡ. 20,2. MB.",
+    "position": 2
+   },
+   {
+    "title": "Apple Trade In - Apple (VN)",
+    "link": "https://www.apple.com/vn/shop/trade-in",
+    "snippet": "Trên thiết bị Mac, hãy nhấp vào menu rồi chuyển đến mục Về Mac Này. Nếu bạn vẫn không tìm thấy số sê-ri, đây là một số cách khác để tìm số sê-ri của bạn(Mở ...",
+    "position": 3
+   },
+   {
+    "title": "Mua MacBook Air - Giáo Dục",
+    "link": "https://www.apple.com/vn-edu/shop/buy-mac/macbook-air",
+    "snippet": "Gói bảo hành AppleCare+. Bảo vệ Mac mới của bạn. · Sửa chữa không hạn chế cho trường hợp hư hỏng do sự cố bất ngờ. · Dịch vụ sửa chữa được Apple chứng nhận sử ...",
+    "position": 4
+   },
+   {
+    "title": "Mua MacBook Air, 13 inch, Chip M5, CPU 10 lõi, GPU 8 ...",
+    "link": "https://www.apple.com/vn-edu/shop/buy-mac/macbook-air/13-inch-%C4%91%C3%AAm-xanh-th%E1%BA%B3m-m5-chip-cpu-10-l%C3%B5i-gpu-8-l%C3%B5i-16gb-b%E1%BB%99-nh%E1%BB%9B-512gb-dung-l%C6%B0%E1%BB%A3ng-l%C6%B0u-tr%E1%BB%AF",
+    "snippet": "Mỗi máy Mac đều được bảo hành giới hạn trong một năm(Mở trong cửa sổ mới) và hỗ trợ kỹ thuật miễn phí(Mở trong cửa sổ mới) lên đến 90 ngày. ... Ngoài ra, bạn sẽ ...",
+    "position": 5
+   },
+   {
+    "title": "Mua MacBook Air",
+    "link": "https://www.apple.com/vn/shop/buy-mac/macbook-air",
+    "snippet": "Phiên bản. Chọn kích cỡ. · Màu. Chọn màu bạn yêu thích. · Chip M5. Chọn mức hiệu năng xử lý của bạn. · Tùy biến. Giữ nguyên hoặc điều chỉnh. · Các ứng dụng Pro. Sử ...",
+    "position": 6
+   },
+   {
+    "title": "Mua MacBook Neo, Xanh Indigo, 256GB - Giáo Dục",
+    "link": "https://www.apple.com/vn-edu/shop/buy-mac/macbook-neo/xanh-indigo-256gb",
+    "snippet": "Gói bảo hành AppleCare+. Bảo vệ Mac mới của bạn. · Sửa chữa không hạn chế cho trường hợp hư hỏng do sự cố bất ngờ. · Dịch vụ sửa chữa được Apple chứng nhận sử ...",
+    "position": 7
+   },
+   {
+    "title": "Mua Mac Studio, Chip M5 Max, CPU 18 lõi, GPU 32 ...",
+    "link": "https://www.apple.com/vn/shop/buy-mac/mac-studio/m5-max-chip-cpu-18-l%C3%B5i-gpu-32-l%C3%B5i-36gb-b%E1%BB%99-nh%E1%BB%9B-1tb-dung-l%C6%B0%E1%BB%A3ng-l%C6%B0u-tr%E1%BB%AF",
+    "snippet": "AppleCare+ cho Mac kéo dài thời gian bảo hành lên ba năm kể từ ngày mua AppleCare+, đồng thời tặng thêm bảo hành không giới hạn số lần cho các trường hợp hư ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

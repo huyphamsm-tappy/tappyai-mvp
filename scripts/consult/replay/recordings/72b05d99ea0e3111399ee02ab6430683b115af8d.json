@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"BẢN Cà Phê\" OR \"The Workshop Coffee\" OR \"Thức Coffee\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:46:53.148Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"BẢN Cà Phê\" OR \"The Workshop Coffee\" OR \"Thức Coffee\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Review The Workshop Coffee Quận 1: Quán Cafe Nổi ...",
+    "link": "https://www.tiktok.com/@chamdidau/video/7345025504321244423",
+    "snippet": "The Workshop Coffee: Điểm Đến Lý Tưởng Tại Quận 1 Sài Gòn Nếu bạn đang tìm kiếm một quán cà phê nổi tiếng tại Sài Gòn, The Workshop Coffee ...",
+    "position": 1
+   },
+   {
+    "title": "The Workshop Coffee",
+    "link": "https://www.tiktok.com/discover/the-workshop-coffee",
+    "snippet": "Khám phá The Workshop Coffee - quán cafe hợp lý cho làm việc và gặp gỡ bạn bè tại quận 1. Đến thưởng thức nước ngon và không gian đẹp ngay! 139 ...",
+    "date": "14 thg 9, 2026",
+    "position": 2
+   },
+   {
+    "title": "THỨC COFFEE 24H : cà phê học bài/ cà phê võng máy l...",
+    "link": "https://www.tiktok.com/@nguyenhuuphuoc87/video/7687551190804040980",
+    "snippet": "@Thức Coffee 24h - THỨC COFFEE 24H : cà phê học bài/ cà phê võng máy lạnh view cầu Rạch Ngỗng 2 #ThucCoffeeCanTho #CaPheHocBaiCanTho # ...",
+    "position": 3
+   },
+   {
+    "title": "The Workshop Coffee 27 Ngô Đức Kế Quận 1 – Saigon Cafe",
+    "link": "https://www.tiktok.com/@davisitonguyen/video/7517147745224789278",
+    "snippet": "The Workshop Coffee at 27 Ngô Đức Kế, Bến Nghé, Quận 1 is a Saigon cafe spot known for coffee and Vietnamese food in the heart of Ho Chi ...",
+    "position": 4
+   },
+   {
+    "title": "The Workshop Coffee Roasters: Review sau nhiều năm",
+    "link": "https://www.tiktok.com/@hai.meca/photo/7661536948552535304",
+    "snippet": "TikTok video from Hải mê cà ☕ (@hai.meca): “Đánh giá The Workshop Coffee Roasters - một trong những nhà rang được nhắc đến nhiều trong cộng đồng specialty ...",
+    "position": 5
+   },
+   {
+    "title": "The Workshop Coffee Quận 1",
+    "link": "https://www.tiktok.com/discover/the-workshop-coffee-qu%E1%BA%ADn-1",
+    "snippet": "Cách phố đi bộ chỉ vài bước chân, The Workshop Coffee sở hữu một không gian rộng rãi, trần cao và view trung tâm đắt giá. Menu tại đây có phục ...",
+    "date": "28 thg 9, 2026",
+    "position": 6
+   },
+   {
+    "title": "Thức Coffee - Cà phê và điểm tâm ngon ở Giồng Trôm",
+    "link": "https://www.tiktok.com/@angidaytroi/video/7674963802894503176",
+    "snippet": "Thức Coffee - Cà phê và điểm tâm ngon ở Giồng Trôm - Thứ 7 hàng tuần giao lưu âm nhạc nữa nghen quý anh chị ! Quán nằm trên đường vào Khu ...",
+    "position": 7
+   },
+   {
+    "title": "Thức Coffee (@thuccoffee)",
+    "link": "https://www.tiktok.com/@thuccoffee",
+    "snippet": "Thức Coffee (@thuccoffee) trên TikTok |61K Lượt thích.1073 Follower.Follow kênh mới của tụi mình nha ‍♀️ @Thức Coffee quán cafe ko ngủ.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

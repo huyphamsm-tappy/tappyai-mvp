@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"YE SO BAN\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:40:13.377Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"YE SO BAN\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Thiên đường buffet tokbokki hấp dẫn tại YE SO BAN",
+    "link": "https://www.tiktok.com/@minn.cookie/video/7520844469684489490",
+    "snippet": "Tìm hiểu buffet tokbokki tuyệt vời tại YE SO BAN. Quán ăn ngon, trải nghiệm ẩm thực độc đáo với nhiều món hấp dẫn. #MinnCookie #MCV # ...",
+    "position": 1
+   },
+   {
+    "title": "Buffet Tokbokki Ye So Ban - Trải Nghiệm Ẩm Thực Hàn ...",
+    "link": "https://www.tiktok.com/@vimaay/video/7206984944642460954",
+    "snippet": "Buffet Tokbokki Ye So Ban - Trải Nghiệm Ẩm Thực Hàn Quốc Siêu Đỉnh. Khám phá buffet tokbokki Ye So Ban với đa dạng món ăn Hàn Quốc hấp dẫn.",
+    "position": 2
+   },
+   {
+    "title": "Ở Sài Gòn, có một thiên đường Buffet Tokbokki ngon ơi là ...",
+    "link": "https://www.tiktok.com/@minn.cookie/video/7562512744134544648",
+    "snippet": "... · Tác giả. Ye So Ban cập nhật món mới quá chừng luôn á bà ❤. 2025-10-19Trả lời. 2. Xem thêm câu trả lời khác (1). Bạn có thể thích. recommend- ...",
+    "position": 3
+   },
+   {
+    "title": "Trải Nghiệm Buffet Tokbokki Tại Ye So Ban",
+    "link": "https://www.tiktok.com/@bonbonlonton104/video/7571533201118727442",
+    "snippet": "Khám phá buffet tokbokki ngon miệng tại Ye So Ban, nơi có giá hợp lý và món ăn chất lượng. ... Ye So Ban, đánh giá buffet tokbokki, ẩm thực ...",
+    "position": 4
+   },
+   {
+    "title": "yesoban",
+    "link": "https://www.tiktok.com/tag/yesoban",
+    "snippet": "Ăn buffet tokbokki ở Ye So Ban, no nê không V.A.T #bonbonlonton #foodreview · YESOBAN Buffet tokbokki 150.k Ở quận 3 #LearnOnTikTok #ancungtiktok #foodie # · Mí ...",
+    "position": 5
+   },
+   {
+    "title": "YESOBAN Buffet Tokbokki: Buffet tokbokki đi 4 tính 3 ở ...",
+    "link": "https://www.tiktok.com/@tinhtungtangvn/video/7665930643129322759",
+    "snippet": "YE SO BAN Korean Restaurant · author · 10.4K · 49 ... ye so ban buffet. joseon tteokbokki. tokbokki. buffet. asian street food.",
+    "position": 6
+   },
+   {
+    "title": "Buffet Tokbokki Siêu Ngon Chỉ 139K Tại Yesoban",
+    "link": "https://www.tiktok.com/@yesoban.vietnam/video/7513067721555315975",
+    "snippet": "—------- YE SO BAN – Nhà hàng Lẩu Tokbokki Buffet. ☎️ Hotline: 028 35 35 4399 ( đặt bàn ngay ) Địa chỉ: Tầng trệt, Số 19 Cao ...",
+    "position": 7
+   },
+   {
+    "title": "Lẩu Tokbokki Ye So Ban",
+    "link": "https://www.tiktok.com/discover/l%E1%BA%A9u-tokbokki-ye-so-ban",
+    "snippet": "Ăn buffet tokbokki ở Ye So Ban, no nê không V.A.T #bonbonlonton #foodreview ... Thiên đường buffet tokbokki ở YE SO BAN đã quá đã mấy bà ơi #MinnCookie ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

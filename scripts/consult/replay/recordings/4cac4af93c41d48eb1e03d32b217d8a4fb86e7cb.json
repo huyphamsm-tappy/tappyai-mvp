@@ -1,0 +1,389 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "Theo Apple thì AirPods Pro 2 nghe được bao lâu mỗi lần sạc?",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:03:22.479Z",
+ "body": {
+  "searchParameters": {
+   "q": "Theo Apple thì AirPods Pro 2 nghe được bao lâu mỗi lần sạc?",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Tai nghe Apple AirPods Pro 2 Chính Hãng",
+    "source": "Đức Huy Mobile",
+    "link": "https://www.google.com/search?ibp=oshop&q=Theo+Apple+th%C3%AC+AirPods+Pro+2+nghe+%C4%91%C6%B0%E1%BB%A3c+bao+l%C3%A2u+m%E1%BB%97i+l%E1%BA%A7n+s%E1%BA%A1c%3F&prds=localAnnotatedOfferId:1,catalogid:6883422599141817139,gpcid:2026503356983009469,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "3.199.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcT3rYCzVO7QyYYc_Hg_zILO8WgxUOmPYrCKu8l9rDJuSFGOoPSPU_jptSh1BOehlLf8orJOUMZnWF0dIQdPruFshWNUrbo7Doy-26Abow0QVvwye7ebKr83nA",
+    "productId": "6883422599141817139",
+    "position": 1
+   },
+   {
+    "title": "Tai nghe Apple AirPods Pro 2 MTJV3LL/A",
+    "source": "xoanstore.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=Theo+Apple+th%C3%AC+AirPods+Pro+2+nghe+%C4%91%C6%B0%E1%BB%A3c+bao+l%C3%A2u+m%E1%BB%97i+l%E1%BA%A7n+s%E1%BA%A1c%3F&prds=localAnnotatedOfferId:1,catalogid:14654904352796751784,gpcid:3896066944466806859,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "1.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRLQbWwbHLifa0chL9zdrTPjeEXxLSNjg9FiyxEx8_1PCdd_qeKWwnhDyJFh5smBnswLY1ncpG-8lYvZCH7NgjJG_GN45o5KsDuxmXaR896-E4UkspP79GJvw",
+    "productId": "14654904352796751784",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe Bluetooth Apple AirPods Pro 2",
+    "source": "minmobile",
+    "link": "https://www.google.com/search?ibp=oshop&q=Theo+Apple+th%C3%AC+AirPods+Pro+2+nghe+%C4%91%C6%B0%E1%BB%A3c+bao+l%C3%A2u+m%E1%BB%97i+l%E1%BA%A7n+s%E1%BA%A1c%3F&prds=localAnnotatedOfferId:1,catalogid:14284785235002806804,gpcid:10294904266282636550,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "4.800.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTafXBav1t_5xiUxRkNcyrfVwUkNYDucniQ9UofFh53-f6ACJFIsR4ePF2smnimBU1ceeyePqc8a4Hnpq_1NuLwlnHjBM17M8fyiK2hoolg9YirJz712bB6fA",
+    "productId": "14284785235002806804",
+    "position": 3
+   },
+   {
+    "title": "Tai nghe Apple AirPods Pro Gen 2 MagSafe Charge (USB-C) Chính Hãng",
+    "source": "Đức Huy Mobile",
+    "price": "4.299.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSDiP575ByWAi6nSuE83eCS2tnvRJIlK05UKlEbmNncEi91oac6mjgyH4T1P7N5FFMJQGuMpEiwcwebxPX8HFTrbM-viXb-3ffS6BOK9x7ahw-pf0-Gwy1_",
+    "productId": "9201844771200063556",
+    "position": 4
+   },
+   {
+    "title": "Apple Tai nghe AirPods",
+    "source": "dinhtoan.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=Theo+Apple+th%C3%AC+AirPods+Pro+2+nghe+%C4%91%C6%B0%E1%BB%A3c+bao+l%C3%A2u+m%E1%BB%97i+l%E1%BA%A7n+s%E1%BA%A1c%3F&prds=localAnnotatedOfferId:1,catalogid:16101189591189091270,gpcid:4038827701299763328,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "2.690.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRHISR3SJa7ftUWoGh9jM-hc6AsEUZPshjNxIh6l_rPGQIo3ieGfnwPCFB1XHnq-jwduwghwvKNFTdbTfX1x0vr90a5RLSYCvTyQJDKaWzU",
+    "productId": "16101189591189091270",
+    "position": 5
+   },
+   {
+    "title": "Tai nghe AirPods Pro 2 với Hộp Sạc MagSafe (Type-C) - Chính Hãng VN/A",
+    "source": "clickbuy.com.vn",
+    "price": "5.290.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQ3W57BkMkDsPzF2OZnQqYI5rl9qN0jDKeqlfiEhgbmgSxLxTjZkvtUbtCV_3xYJLPSvA14Uo-1bnfracij311ED-wf7LWiYy5tfnMWBwMwBMxyWVX0FnQd-Q",
+    "rating": 4.7,
+    "ratingCount": 416,
+    "productId": "14978435814086119623",
+    "position": 6
+   },
+   {
+    "title": "Tai nghe Apple AirPods Pro 2",
+    "source": "Oneway Mobile",
+    "price": "4.690.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRMAdvebZ73Jovjy-mRNG94kwI49QAaG3-CGFXJa0s2kQsXj26BIrNpvgtXXefoCYDR6SsOF0oDLyJPxofGVw6GSwQKnFMc9RyEGHzWS865ByWsbxu-enVZ",
+    "rating": 5,
+    "ratingCount": 173,
+    "productId": "3923119600996646302",
+    "position": 7
+   },
+   {
+    "title": "Tai nghe Airpods Pro 2 2023 chính hãng VN/A | Giá tốt",
+    "source": "XTmobile",
+    "price": "4.499.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSgmlo71bpQUrOARFJ-W4gCoTL6m_9ITVVoE3kDJFKfIZ2vIqdd4ItPJkudV_TBwWEF0AlzHKkBAepLVmbxtKUOHD7i9GhQXspZsX41PXnZ0IIHwUWkriA3VA",
+    "rating": 4.7,
+    "ratingCount": 416,
+    "productId": "12719326418412141280",
+    "position": 8
+   },
+   {
+    "title": "Tai nghe Bluetooth Apple AirPods Pro 2 2023 USB-C - MTJV3ZP/A - sh77ky9xfqd - MTJV3ZP - Cũ",
+    "source": "Hoàng Hà Mobile",
+    "price": "4.760.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSSNTIGZ5B7HmyvI1_K_wggoUUixCTjkO7YG-KrkCJgTvCxOqsjU7dZnpx9HXLy2ZVlw_zE2u18KhESgaReNAkooFaosNtERwV6OlKiBsBtKj_xKIzcb34A9w",
+    "rating": 4.7,
+    "ratingCount": 416,
+    "productId": "2093099931346820333",
+    "position": 9
+   },
+   {
+    "title": "Tai nghe AirPods Pro",
+    "source": "Fptshop.com.vn",
+    "price": "5.879.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSD0fIOKW9dn4uDuToAWjV_Y9SEnYbOHWiwuJpGYsibithdd7JejWHdHdaNUeYJIdR4b0FRIJO9Y-MhAPF1GZIsVLkpTqmKWKsk7YYxwJDuLL8COjsorspW2g",
+    "rating": 4.5,
+    "ratingCount": 26,
+    "productId": "5568656583627901290",
+    "position": 10
+   },
+   {
+    "title": "Tai nghe Bluetooth Apple Airpods Pro 2 Chính Hãng",
+    "source": "Ngọc Nguyễn Store",
+    "price": "4.200.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQ2gdfgLPv8uEbzWjf8v9Bvg2tkce-qdIi32XvYxXk_LHDjmHOJusoIDYmr_LcM5ssmS9dnMbc85SOUeWOvc5B3PnHqxVDDpIOzFNWj8eANgEzXmdJuq-HmwA",
+    "rating": 4.2,
+    "ratingCount": 26,
+    "productId": "18094552820705344698",
+    "position": 11
+   },
+   {
+    "title": "Tai nghe Apple AirPods Pro Sạc Không Dây New Seal",
+    "source": "TechOne Hà Nội",
+    "link": "https://www.google.com/search?ibp=oshop&q=Theo+Apple+th%C3%AC+AirPods+Pro+2+nghe+%C4%91%C6%B0%E1%BB%A3c+bao+l%C3%A2u+m%E1%BB%97i+l%E1%BA%A7n+s%E1%BA%A1c%3F&prds=localAnnotatedOfferId:1,catalogid:12924207652874328849,gpcid:2209452977871672586,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "4.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRuaqdjFa1XG5KJX4vtXFTMhScKLKsFWkl9KuK9f7n6RQpa9WL4M80E0UTn9jkxqXMXoyijtobUScrIrXs4zNRDuHfPNE74REqbQx46qLzakYlOMYhArNwY",
+    "productId": "12924207652874328849",
+    "position": 12
+   },
+   {
+    "title": "Tai Nghe Airpod Pro 2 2023 - Chính hãng",
+    "source": "Hoàng Gia Xách Tay",
+    "price": "3.200.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTyuNrsQ3VBBesQUhfy0TS1gNdQLdwHQoTeY6VcolytQqMCnT7x88_39IV4L209PNlWNWivIv13aDF6Y9uFVG9pRcHRn2nB8tC4VnhRxFdBDgSULjLr1-f1",
+    "productId": "8381541325380433475",
+    "position": 13
+   },
+   {
+    "title": "Apple Airpods Pro 2 with MagSafe Charging Case",
+    "source": "MediaMart",
+    "link": "https://www.google.com/search?ibp=oshop&q=Theo+Apple+th%C3%AC+AirPods+Pro+2+nghe+%C4%91%C6%B0%E1%BB%A3c+bao+l%C3%A2u+m%E1%BB%97i+l%E1%BA%A7n+s%E1%BA%A1c%3F&prds=localAnnotatedOfferId:1,catalogid:14218111880125072843,gpcid:2395638331677304893,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "6.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTIZpXTMorYVzq4nF4Y8SHNLNULN7j-n6gcAb3bZY07qsMZuxCryPz4hqWz47i3ob-mJoNN-COT1NPQpP53cKvj8AGANg9M8d0Cnnb8rZoXZUrCYITlKAv6Lw",
+    "rating": 4.7,
+    "ratingCount": 661,
+    "productId": "14218111880125072843",
+    "position": 14
+   },
+   {
+    "title": "Tai Nghe Lẻ Apple Airpods Pro 2 USB-C (A3047- A3048)",
+    "source": "H2shop.vn",
+    "price": "1.700.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSYQWTjlAYtwoWgAB0NwN7xrtDjpSimDY7iNKrS7zxNfFgzHGrvDa_J1Q9dOMfD3pYkJ839yuyRKVCojwvfZc9TbBHGCMCZUY6AlRT_ZFBXGbhyJVsRxRbr",
+    "productId": "10979365136430658633",
+    "position": 15
+   },
+   {
+    "title": "Tai nghe Airpods Pro 2 Lightning-Like New (Lẻ và bộ) - Lẻ Dock",
+    "source": "xoanstore.vn",
+    "price": "990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRARG-xJdNSa4OeZLwJvbbsQtKmQ3lTQ4t6aV1_C2Ozgv6M886zYy3gpgr8E1QVor2R4u4oaFQeoGIaebxoJzWS8QKoiQHyfOY6tv5tUEEto-yx0sF6IxAG",
+    "rating": 4.2,
+    "ratingCount": 72,
+    "productId": "2398972089255978595",
+    "position": 16
+   },
+   {
+    "title": "Tai nghe Bluetooth AirPods Pro Gen 2 USB-C Chính Hãng Mới 100% - Pad",
+    "source": "PAD Store",
+    "price": "4.499.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcT4dD0rq45Xv3vio34ivB6QQqGQ_jWiVv97id0yyykUjxv9NeP-hXj8MPdQjeP5CsOIhudW84n5CffDH3hDROFYEGq2V57qgFV2Rl9Of13nDSBaoasM7l1ndw",
+    "rating": 4.2,
+    "ratingCount": 233,
+    "productId": "16487773829495534818",
+    "position": 17
+   },
+   {
+    "title": "Tai nghe Apple AirPods Pro 2 (USB-C) - Hàng chính hãng",
+    "source": "Reseller.com.vn",
+    "price": "3.950.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSxzXdR1FSmkji7VJw7yvxcchbakW4WgQ3GE-effzH57ctFoeP7gMebGx5BfI1kbkq39dWbzl0hYLxDiQTmiObqNlLkre145d83-aSYVHjhxyDjr2BCr_bAug",
+    "rating": 4.9,
+    "ratingCount": 432,
+    "productId": "14594466845976699215",
+    "position": 18
+   },
+   {
+    "title": "Tai nghe Bluetooth Apple AirPods Pro 2 (Fullbox) | Chính hãng",
+    "source": "Tín Đồ Tai Nghe",
+    "price": "4.950.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcR0TSzYOVrcwXVUX96wQgaHqP-3hQ91FvhSJiZ6DWsMCALnphuWSjW9pM3ObkhRgSPh-7bbz6hvJdxpa2bZNn3diboQ5Pa87VEB6y2GwOoeJhwsxf_QTiFt",
+    "rating": 4.9,
+    "ratingCount": 432,
+    "productId": "12726963405543830931",
+    "position": 19
+   },
+   {
+    "title": "Tai Nghe Airpods Pro 2 Sạc type C (Chính hãng mới 100%)",
+    "source": "Tinh Tế Mobile",
+    "price": "4.590.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRg-FXnmHe8onC8ao0okNHDGOwMZGe2f_8WBGMol-krYC5dg0Ws_QhkEZRsBFQCv44tf-5ABubaDU1ZXaVZs7UREF8tXyCIUMsXJwwtTNDejKGWerkGbVYl",
+    "rating": 4.9,
+    "ratingCount": 432,
+    "productId": "17648929882713450768",
+    "position": 20
+   },
+   {
+    "title": "【Siêu Rẻ 】Tai Nghe Airpods Pro 2",
+    "source": "Mac24h",
+    "price": "4.550.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTLOsDkTawSv2lKKRUD36ZbM5tawSp1rYPkfcAKREIDNGATbBlvvo7-82SfrIrmsRMTMixNgRT2b934Fw-U50Aogr3EkKH2fdY-7sWZwQpplaJcm6lBu0mfrg",
+    "productId": "701508680348948779",
+    "position": 21
+   },
+   {
+    "title": "Airpods Pro Gen 2",
+    "source": "Táo Đen Shop",
+    "price": "5.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQV-f4kAsI-m5h3yQYdqdqUx9RBSMlrshDTMYRat6YMAy1k0SI9ahHTc0QaZo3g4meaT14bIiJXjtHJTzhFBETluk0KTfEQPlfZbyZxUd09X7itrojZfEKsmg",
+    "productId": "1508964317348002666",
+    "position": 22
+   },
+   {
+    "title": "Tai nghe Airpods Pro 2 MagSafe (USB‐C) ( 2023 )",
+    "source": "apple8",
+    "price": "4.399.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQDi1BqyWNr_OofoUpAV8vwI0MIBNWqLf0vsCS_o0oaCapOFSkkj4kCyBXrVEwFqmJU2k4Gn_rFKvdaOrG2_m_VYhGwiVQ9P4eKe0qeKBFT2nW_gSdHtgjzVg",
+    "productId": "12792952083505365791",
+    "position": 23
+   },
+   {
+    "title": "Tai nghe Apple Airpods Pro",
+    "source": "Songlong Media",
+    "price": "5.399.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSHBqR9NPJRwp003zU8l7uBYcf2MV3ACUQgvhqbwDgqtqA7wF_KdwfqdNwyErMwpNab1eSTiGT29p4R2WuHBxkAonyFIwTT5jay5bAj1e1hHSBbgAU-l4H95Q",
+    "productId": "5248653042167032826",
+    "position": 24
+   },
+   {
+    "title": "Tai nghe AirPods Pro 2 (Type-C) -Chính hãng / USB-C",
+    "source": "Hoàng Phát 360",
+    "price": "4.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTvz23M5pNSK37Rh1QZt8MXfKC4EJrBrB43KBl_QPez4uarRQ6JBhxVAAQ1v8PID0QRN2HUJxgUeKZ4zslyaY8o6mPumUG9rNHJvWESuIBgTpugNWwt71PY",
+    "rating": 4.9,
+    "ratingCount": 432,
+    "productId": "3287429610952169265",
+    "position": 25
+   },
+   {
+    "title": "Tai nghe Airpods Pro 2 Type C-Like New (Lẻ và bộ) - Lẻ tai trái",
+    "source": "xoanstore.vn",
+    "price": "1.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRD0TNVU9AfymWLgM8RlGnKJpv5muTYKejKatiwvhc__mqr8Gl_7cD4J0VsLy2hTwssyU4ddgiRw8UT2D7noanL_io_w0U62K23Rtkkpi469Hg-cEGd1KWDO3o",
+    "productId": "4739603149609368492",
+    "position": 26
+   },
+   {
+    "title": "Tai nghe Bluetooth AirPods Pro 2 MagSafe Charge 99%",
+    "source": "Bạch Long Store",
+    "price": "3.700.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTi31HxiMFvBkWwUuYyEtkyvJdm74-jQjIcYsgKzEh2lqcKvxcJgTndN1U2acWwRAN7BbTE37y0h96-32x6tRJoJCi6Wvqy4i4onHs5_11R-MSnraQh27o4",
+    "productId": "15693157991501263230",
+    "position": 27
+   },
+   {
+    "title": "Airpods Pro 2",
+    "source": "Mac24h",
+    "price": "4.550.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQ1h44G61vk9aHNLlQNOYK7E3W_Dj7zuQsO8S5ROQd5Alon2JPcEd_48ShEFPcqoM0Qkwgyex8Nr8O8rcaj1HVeB58-Zu7OCowFKNJg_Ks2fsUnZasyahUb",
+    "productId": "14126010986697864965",
+    "position": 28
+   },
+   {
+    "title": "Apple Airpods Pro 2 Magsafe Charge 2022 - Tai Nghe Bluetooth Apple - 99%",
+    "source": "Lâm Phong Store",
+    "price": "4.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTI-DhOt-037yqP7MNbxhXsQ2NOHwx_ykHEJ1QmsA6FPq54EiHuGeCdLNbVfEjVbscySrJSLOX310QM9srY2EiP23XvZVmTBw6ox4W3iEoRDm6DahAnJiBlig",
+    "rating": 4.7,
+    "ratingCount": 661,
+    "productId": "5942794944023479954",
+    "position": 29
+   },
+   {
+    "title": "Tai Nghe Airpods Pro 2 (Chính hãng mới 100%)",
+    "source": "Tinh Tế Mobile",
+    "price": "4.290.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTLmnZWiYdK0fBG_vcylR0gR_L40Nf9PvHbm89B3nNST9Hy8F3-MO9mGdzWHiKGBrO48-eBfkL3eJ-JG07FjY-9mqgvEQgIlFbY6gHtTRTHTNNpt7TwY4p0",
+    "rating": 4.2,
+    "ratingCount": 233,
+    "productId": "18415042157481534057",
+    "position": 30
+   },
+   {
+    "title": "Tai nghe Bluetooth Apple AirPods Pro 2 (2022) Magsafe Nhập Khẩu",
+    "source": "pgluxury.com",
+    "price": "4.790.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQ5iYTll3Er_la3LcnwF6S8z4k6C_wBfoDtxTxxanCAwDzjsVwQWHHOhqbM_Wj1bu1g-45-f005BQV2S-YXK6y07T7zjrboSXLDI4ndm3jcqgj5zvATU2NYjQ",
+    "productId": "7689088957839599254",
+    "position": 31
+   },
+   {
+    "title": "Tai nghe Airpods Pro 2 MagSafe (USB‐C) ( 2023 ) -Airpods Pro 2 USB-C 2023",
+    "source": "apple8",
+    "price": "4.399.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcS7Y5iJaA_jCH0iPeiMHmLMITYP7B6hfBCT_IhcjJ2B0L2s_MPM1ja7cZYDqdeK-NFsF2U-LX-dz9zZzKo629RVFJX6SZl5anoOlF1vlaM9kM5qfIbAHx_8Ew",
+    "productId": "10701796729457249071",
+    "position": 32
+   },
+   {
+    "title": "Tai Nghe Airpods Pro 2 2022 Lightning - Mới/Openbox - Active Online",
+    "source": "xoanstore.vn",
+    "price": "4.690.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcStdzA0VnVROQJ5xiJ5A6e_Zi_BQoznIFVdgOmuJLt29E3XnlbxnucCDRbWS_0KQdAdoQLOWtmsvHqYTu876aTezyrC5yIzHDX01w-5zdkIYayj00q0KVc9d40",
+    "rating": 4.7,
+    "ratingCount": 661,
+    "productId": "6587587879829017582",
+    "position": 33
+   },
+   {
+    "title": "AirPods Pro 2 USB-C Cũ",
+    "source": "TheTekCoffee",
+    "price": "1.700.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcT9wgoSNVl7bchdOhbxh0b_eq64O54PpETe9zpLV6QbLGKD5MQqCs0PwL1nbmsCoVFHKSxi44mRLphfE9dPZBNMh4-1T7XlWCLgbZjUozkMwgyX0_5gPPLRlg",
+    "rating": 4.7,
+    "ratingCount": 416,
+    "productId": "3120239753962735270",
+    "position": 34
+   },
+   {
+    "title": "Tai nghe Apple AirPods Pro 2 USB-C VN/A",
+    "source": "Vua Thợ Mall",
+    "price": "4.790.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQVPuJqmrwHVCYiBEif4NkRZ-9sA-yaM-Mke8oXvGml-luiP0uMYKlKmLFKwYKVBTxrFNPg67IzL5f_9pfHs4Jd9v6f1UnwbMyy-FFMRhHVzTqo5gq20qux",
+    "rating": 1,
+    "ratingCount": 1,
+    "productId": "5879262511263830662",
+    "position": 35
+   },
+   {
+    "title": "Tai nghe lẻ Apple AirPods Pro 2 Lightning- Tai bên phải",
+    "source": "HaLoShop",
+    "price": "2.200.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcR2-Ft-8o-hnnK8jeg5DsQzB2SHHpue4XbHurmNCggQb-deOYAQeHvZYZ04N2JM__kq-HbGKT1q-T-LuSWq3efZCR6WYJ8uKc1RiiaaIfQUe22Kgp9h9qQB",
+    "rating": 4.8,
+    "ratingCount": 46,
+    "productId": "1961004828670968051",
+    "position": 36
+   },
+   {
+    "title": "Tai nghe Bluetooth AirPods Pro 2 2023 USB-C - Mới 100%",
+    "source": "Nguyễn Đức Đông - DHP Mobile",
+    "price": "5.725.731 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTzZEy29o6Sf-RNMTfZoPZXf4IEZRHazV0a6J0Ng3CT8UVWFMYwZyMPVJ9Pt3VnI_g-CIfN1V2noIkyjZ9DywrFRWJj_TfqXvdFfD6dU2vLzwMJ7PAARJ4D",
+    "productId": "5385640587144784454",
+    "position": 37
+   },
+   {
+    "title": "Tai nghe Bluetooth Apple AirPods Pro 2 2023 USB-C | Chính hãng Apple Việt Nam",
+    "source": "TechOne Hà Nội",
+    "price": "4.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRN77EIFfdaCjx3pSxipki1iMphFcYD0ytm9WlyG9veDn2yGWBhyWgPorCBNBM1Npf2OWPtmCx_IPWIANtbEN7MyrPk2JxrRmwU5I3RX-6k4sP2phLNaLgO",
+    "productId": "7638460293156230117",
+    "position": 38
+   },
+   {
+    "title": "Aripods pro bản nâng cấp rep 1:1",
+    "source": "Phụ Kiện Điện Thoại",
+    "price": "400.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRu8IDmp39ZvVO-6aU2d7umcW7h5-GkVhroz9IHoCEcs1S_c2tEgN6KjiAmtY89ctthEANItpYCytOYM2jWx6NdLJ6xfL_ROoGDOQZOMPrI",
+    "productId": "4595532491644278355",
+    "position": 39
+   },
+   {
+    "title": "Tai nghe Bluetooth Apple AirPods Pro 3 Trắng MFHP4",
+    "source": "Điện máy XANH",
+    "price": "6.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQROPC8mLvobIpH1jGUDHuc2soZMU_fRbBI3Xsg52GDZRzRTfbh6r1eHmF0WRmNIEaPGiMuvdFmGzL54mS4ZddgBER19gFp3a3EESCkqlY6O1oav5EzNa8a1A",
+    "productId": "1189914940288710781",
+    "position": 40
+   }
+  ],
+  "credits": 2
+ }
+}

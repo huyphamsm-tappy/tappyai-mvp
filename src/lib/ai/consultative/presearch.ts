@@ -34,7 +34,8 @@ export interface PresearchPlan {
   reuse?: { shown: string[] }
 }
 
-const PLACE_TYPES = new Set(['restaurant', 'cafe', 'spa', 'bar', 'attraction', 'cinema'])
+/** The `searchNow` types that run the place tool (exported: searchNowIntentGate.ts gates exactly these). */
+export const PLACE_TYPES: ReadonlySet<string> = new Set(['shop', 'restaurant', 'cafe', 'spa', 'bar', 'attraction', 'cinema'])
 
 // UAT4 consultative-40 A/B (27 Sep 2026, flags ON, head vs 19 Sep): the pre-search ran the SUGGESTED
 // query too — `exact: false` means "the model may sharpen it" — so a specified request lost its
@@ -51,7 +52,7 @@ export function planPresearch(searchNow: SearchNow | null, situation: SituationF
   if (!PLACE_TYPES.has(searchNow.type)) return null
   if (!searchNow.query.trim()) return null
   const location = situation.place.text?.trim() || opts.statedArea?.trim() || undefined
-  return { toolName: 'search_places', args: { query: searchNow.query.trim(), type: searchNow.type, ...(location ? { location } : {}) }, exact: searchNow.exact }
+  return { toolName: 'search_places', args: { query: searchNow.query.trim(), ...(searchNow.type === 'shop' ? {} : { type: searchNow.type }), ...(location ? { location } : {}) }, exact: searchNow.exact }
 }
 
 /**
@@ -105,12 +106,49 @@ export function queryCoversRequest(query: string, userText: string, area?: strin
   return text.split(' ').filter(Boolean).every(w => queryWords.has(w) || COVERED_BY_OTHER_MEANS.has(w) || /^\d+k?$/.test(w))
 }
 
+/**
+ * CONSULT_UNWIND_S2C. The code's own pre-search of a pick was the RULES' query, sent as "exact", so the coverage check above never ran on it.
+ * Measured 28/10 (localhost turn 5, "kiếm quán cơm gà ở phan xích long"): the rules built "quán cơm" (their dish table has only "cơm"), the
+ * street was not a district, so the search ran with neither the dish nor the area and found nothing. With the flag the first candidate that
+ * covers the request (the rules' query, then the intent layer's own query) is searched; when none covers it, the code does not pre-search
+ * at all and the model writes its own search. Same coverage rule as a suggested directive; nothing new is matched.
+ */
+export function coveringQuery(candidates: ReadonlyArray<string | null | undefined>, userText: string, area?: string | null): string | null {
+  for (const c of candidates) {
+    const q = (c ?? '').trim()
+    if (q && queryCoversRequest(q, userText, area)) return q
+  }
+  return null
+}
+
 export interface PresearchOutcome {
   toolCallId: string
   toolName: string
   args: PresearchPlan['args'] | FlightPresearchPlan['args']
   result: unknown
   ms: number
+}
+
+/**
+ * Wave 4 (B, CONSULT_PICK_TURN_TOOLS): the venue websites of a code pre-search, read from the FULL provider rows (`full`, before the model's copy was slimmed - the slimmed rows that
+ * reach the stream carry no website), for the venues the model's copy (`shown`) still names. The price guard then knows which page host is which venue's own site, so an amount read
+ * on that site is evidence for THAT venue only. Pure: input only; a row without a name or an http(s) website, or a venue the model never saw, gives nothing. At most 10.
+ */
+export function presearchPlaceSites(full: unknown, shown: unknown): Array<{ name: string; website: string }> {
+  const rowsOf = (r: unknown): Array<Record<string, unknown>> => {
+    const rows = r && typeof r === 'object' ? (r as { results?: unknown }).results : undefined
+    return Array.isArray(rows) ? rows.filter((x): x is Record<string, unknown> => !!x && typeof x === 'object') : []
+  }
+  const shownNames = new Set(rowsOf(shown).map(r => r.name).filter((n): n is string => typeof n === 'string' && n !== ''))
+  const webUrl = (u: unknown): boolean => { try { return typeof u === 'string' && ['http:', 'https:'].includes(new URL(u).protocol) } catch { return false } }
+  const out: Array<{ name: string; website: string }> = []
+  for (const r of rowsOf(full)) {
+    const name = r.name, website = r.website_uri ?? r.website
+    if (typeof name !== 'string' || !shownNames.has(name) || typeof website !== 'string' || !webUrl(website)) continue
+    if (!out.some(o => o.name === name)) out.push({ name, website })
+    if (out.length >= 10) break
+  }
+  return out
 }
 
 /** The two CoreMessages that put a completed tool call into the model's history. */
@@ -150,9 +188,8 @@ export function prefixBody(prefix: string, body: ReadableStream<Uint8Array> | nu
 }
 
 /** A1(b): the progress frame that leads a pre-search turn — written before the search runs. */
-export function searchingFrame(lang: string): string {
-  return '8:' + JSON.stringify([buildProgressAnnotation('searching', lang)]) + '\n'
-}
+/** Moved to recommendation/progressAnnotation.ts (Phase 8 M1: the agent runtime must not import the consult pre-search); re-exported for its callers. */
+export { searchingFrame } from '@/lib/recommendation/progressAnnotation'
 
 /**
  * A1(b): a body that yields `prefix` NOW and the turn's own stream once `produce` resolves — the

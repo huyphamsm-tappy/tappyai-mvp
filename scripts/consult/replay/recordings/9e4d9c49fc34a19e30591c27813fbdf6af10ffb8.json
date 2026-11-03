@@ -1,0 +1,26 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "du lịch 3 ngày 2 đêm cho 2 người, ngân s quán đặc sản ngon Đà Nẵng Da Nang",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@16.0544,108.2022,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:43:07.435Z",
+ "body": {
+  "searchParameters": {
+   "q": "du lịch 3 ngày 2 đêm cho 2 người, ngân s quán đặc sản ngon Đà Nẵng Da Nang",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@16.0544,108.2022,14z",
+   "engine": "google"
+  },
+  "ll": "@16.0544,108.2022,14z",
+  "places": [],
+  "credits": 3
+ }
+}

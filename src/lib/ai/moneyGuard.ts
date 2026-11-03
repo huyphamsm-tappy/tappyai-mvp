@@ -1,3 +1,6 @@
+import { foldedWords, namedInSegments } from './entityNameGuard'
+import { ENDS_SENTENCE, isCitationOnly, maskLinks } from './citationTail'
+
 // ── Deterministic money-claim guard (C3-B.10) ────────────────────────────────
 //
 // Three phases of measurement established that the model asserts a price
@@ -16,6 +19,68 @@
 export type ClaimVerdict = 'VERIFIED' | 'UNVERIFIED' | 'ACCESSORY' | 'AMBIGUOUS'
 
 /** One record as it arrives from the shopping tool. `price` is AUTHORITATIVE. */
+/** WS2: options of the money guard. Omitted = the shipped behaviour, byte-identical. */
+export interface MoneyGuardOptions {
+  /** Agent runtime only: a price in a sentence naming exactly one seller is judged against THAT seller's own listing. */
+  sellerAttribution?: boolean
+  /** CONSULTATIVE_IN_AGENT: a comma between two digits ("1,7 lít") is a decimal point, not a clause delimiter in the clause cut. */
+  decimalSafe?: boolean
+  /**
+   * CONSULT_V3 (A/B eval 17/10). Measured on every shopping turn: "**Huawei FreeBuds SE 4 (ANC)** — khoảng **790.000đ**" was cut although the
+   * listing "Tai nghe Bluetooth True Wireless Huawei Freebuds SE 4 (ANC)" carries 790.000 — the claim is judged against the REQUEST ("tai nghe
+   * bluetooth"), and that listing reads as a variant (its "SE"); the user's own "tầm 15 triệu" echoed as "ngân sách khoảng 15 triệu đồng" was cut;
+   * the closing question's options "1. Dưới 1,5 triệu 2. 1,5–3 triệu" were cut to "1.2.3.". Three readings, each tighter than the request:
+   *   · `namedListing`: an amount in a line that NAMES a listing (its bold name's identifying tokens, or a model number of its title, occur
+   *     there) and equals that listing's own price (±2%) is verified by it;
+   *   · `userTexts`: an amount the user stated (a budget) is the user's, not a claim;
+   *   · `choiceOptions`: the numbered options under a closing question are what the user may answer, not prices of anything.
+   */
+  namedListing?: boolean
+  userTexts?: readonly string[]
+  choiceOptions?: boolean
+  /**
+   * Wave 3 (W4, CONSULT_DETERMINISTIC_MATH): whole-number results of the exact calculator this turn (calcEvidenceNumbers). An amount that equals one of them (within 0.5 %, so "4,3 triệu" for 4.304.128
+   * reads as that result) is the turn's own arithmetic, not a claim about a listing: VERIFIED. Absent or empty = no change at all.
+   */
+  calcValues?: readonly number[]
+}
+
+/** The line around a position. */
+function lineAt(text: string, pos: number): string {
+  const a = text.lastIndexOf('\n', pos - 1) + 1
+  const b = text.indexOf('\n', pos)
+  return text.slice(a, b === -1 ? text.length : b)
+}
+
+/** [start, end) of every numbered option line under a line that ends with a question mark (bold or not). */
+export function closingChoiceSpans(text: string): Array<[number, number]> {
+  const spans: Array<[number, number]> = []
+  let at = 0, afterQuestion = false
+  for (const line of text.split('\n')) {
+    const end = at + line.length
+    if (/\?\s*(?:\*\*)?\s*$/.test(line)) afterQuestion = true
+    else if (afterQuestion && /^\s*\d{1,2}[.)]\s*\S/.test(line)) spans.push([at, end])
+    else if (line.trim()) afterQuestion = false
+    at = end + 1
+  }
+  return spans
+}
+
+/** Model-number tokens of a listing title: letters AND digits, not a quantity ("ey245310", "18mslvn", "a515" — not "5l", "256gb"). */
+const modelNumbers = (title: string): string[] =>
+  foldedWords(title).filter(t => /[a-z]/.test(t) && /\d/.test(t) && t.length >= 3 && !/^\d+(?:gb|tb|mb|mah|w|wh|v|hz|mm|cm|kg|g|l|ml|inch|in|k|tr|d|h|p|x|mp|lit)$/.test(t))
+
+/** The sentence around a position (the same bounds the attribution uses). */
+function sentenceAt(text: string, pos: number): string {
+  let start = 0
+  for (const m of text.slice(0, pos).matchAll(/[.!?;](?=\s)|\n/g)) start = m.index! + 1
+  let end = text.length
+  for (const ch of ['\n', '!', '?', ';']) { const i = text.indexOf(ch, pos); if (i !== -1 && i < end) end = i }
+  // A full stop ends the sentence; "4.190.000" and "truonggiang.vn" do not.
+  const dot = text.slice(pos).search(/\.(?=\s|$)/); if (dot !== -1 && pos + dot < end) end = pos + dot
+  return text.slice(start, end)
+}
+
 export interface EvidenceRecord {
   title?: string
   /** Structured price string, e.g. "6.490.000 ₫". Never parsed out of title/snippet. */
@@ -134,6 +199,14 @@ function toNumber(raw: string, hasScaleUnit: boolean): number {
  */
 const isLowercaseMetre = (unit: string): boolean => unit === 'm'
 
+/**
+ * A TOUR LENGTH IS NOT MONEY (share run 31/10, T07): "8N7Đ" / "5N4Đ" is the travel-trade way of writing "8 ngày 7 đêm", and the one-brain
+ * label step read "7Đ" as 7 đồng and replaced it — the answer said "tour 8Nchưa xác minh". Decided on the SHAPE, as the "đồng" rule above:
+ * a number written right after "<number>N", with "đ" as its unit, is the nights of a duration. A price after a duration is written with a
+ * space and its thousands ("5N4Đ 7.990.000đ"), so it is still read.
+ */
+const isNightsOfDuration = (masked: string, at: number, unit: string): boolean => /^đ$/i.test(unit) && /\d\s*n\s*$/i.test(masked.slice(Math.max(0, at - 6), at))
+
 /** Every monetary claim in the prose, with its offsets in the ORIGINAL text. */
 export function extractMoneyClaims(text: string): Array<Omit<MoneyClaim, 'verdict' | 'entity' | 'reason'>> {
   return extractMoneyClaimsDetailed(text).claims
@@ -171,6 +244,7 @@ export function extractMoneyClaimsDetailed(text: string): { claims: Array<Omit<M
     if (overlaps(m.index!)) continue
     const unit = m[2]
     if (isLowercaseMetre(unit)) { lowercaseMSkipped++; continue }
+    if (isNightsOfDuration(masked, m.index!, unit)) continue
     const scale = unitScale(unit)
     const v = toNumber(m[1], scale > 1) * scale
     out.push({
@@ -305,12 +379,47 @@ function judge(
  * `entities` are the product terms actually requested — in production the
  * search_products query arguments, one per tool call.
  */
-export function judgeMoneyClaims(text: string, records: EvidenceRecord[], entities: string[]): MoneyClaim[] {
+export function judgeMoneyClaims(text: string, records: EvidenceRecord[], entities: string[], opts: MoneyGuardOptions = {}): MoneyClaim[] {
   const found = extractMoneyClaims(text)
   if (found.length === 0) return []
+  // WS2 (agent runtime only): "**Viettablet** … khoảng 4,19 triệu" is a claim about THAT seller's listing, and it is verified by that
+  // listing's own structured price — whatever the request's wording (measured WS-K1: the query's "USB-C" made every listing a variant
+  // and three listing-backed seller prices were deleted). Only when exactly one seller is named and its own row carries the figure.
+  const bySeller = (c: Omit<MoneyClaim, 'verdict' | 'entity' | 'reason'>): string | null => {
+    if (!opts.sellerAttribution) return null
+    const s = strip(sentenceAt(text, c.start))
+    const sellers = [...new Set(records.map(r => (r.source ?? '').trim()).filter(x => strip(x).replace(/[^a-z0-9]/g, '').length >= 3))]
+    const named = sellers.filter(x => { const k = strip(x).replace(/[^a-z0-9.]/g, ''); return k.length >= 3 && s.replace(/[^a-z0-9.]/g, '').includes(k) })
+    if (named.length !== 1) return null
+    const own = records.filter(r => (r.source ?? '').trim() === named[0]).map(structuredPrice).filter((v): v is number => v !== null)
+    const ok = (v: number) => own.some(p => withinTolerance(v, p))
+    return ok(c.lo) && ok(c.hi) ? named[0] : null
+  }
+  // CONSULT_V3 readings (see MoneyGuardOptions): checked first, each one only ever VERIFIES.
+  const userValues = (opts.userTexts ?? []).flatMap(t => extractMoneyClaims(t)).flatMap(u => [u.lo, u.hi])
+  const choiceSpans = opts.choiceOptions ? closingChoiceSpans(text) : []
+  const calcValues = opts.calcValues ?? []
+  const v3Reading = (c: Omit<MoneyClaim, 'verdict' | 'entity' | 'reason'>): MoneyClaim | null => {
+    if (calcValues.length > 0 && [c.lo, c.hi].every(v => calcValues.some(u => Math.abs(v - u) <= Math.max(1, u * 0.005)))) return { ...c, verdict: 'VERIFIED', entity: null, reason: 'calculated by the exact calculator this turn' }
+    if (choiceSpans.some(([a, b]) => c.start >= a && c.start < b)) return { ...c, verdict: 'VERIFIED', entity: null, reason: 'closing question option' }
+    if (userValues.length > 0 && [c.lo, c.hi].every(v => userValues.some(u => withinTolerance(v, u)))) return { ...c, verdict: 'VERIFIED', entity: null, reason: 'stated by the user' }
+    if (!opts.namedListing) return null
+    const line = lineAt(text, c.start)
+    const lineWords = foldedWords(line)
+    const bolds = [...line.matchAll(/\*\*([^*\n]{3,80})\*\*/g)].map(m => m[1]).filter(b => extractMoneyClaims(b).length === 0)
+    for (const r of records) {
+      const p = structuredPrice(r)
+      if (p === null || !withinTolerance(c.lo, p) || !withinTolerance(c.hi, p)) continue
+      const seg = [foldedWords(`${r.title ?? ''} ${r.source ?? ''}`)]
+      const byName = bolds.some(b => namedInSegments(b, seg) === true)
+      const byModel = modelNumbers(r.title ?? '').some(m => lineWords.includes(m))
+      if (byName || byModel) return { ...c, verdict: 'VERIFIED', entity: r.title ?? null, reason: 'the named listing\'s own price' }
+    }
+    return null
+  }
   const usable = entities.map(requestedEntity).filter(Boolean)
   if (usable.length === 0) {
-    return found.map(c => ({ ...c, verdict: 'AMBIGUOUS' as const, entity: null, reason: 'no requested entity available' }))
+    return found.map(c => v3Reading(c) ?? ({ ...c, verdict: 'AMBIGUOUS' as const, entity: null, reason: 'no requested entity available' }))
   }
 
   // Attribute each claim to an entity by the sentence it sits in. A
@@ -338,6 +447,10 @@ export function judgeMoneyClaims(text: string, records: EvidenceRecord[], entiti
   }
 
   const first = found.map(c => {
+    const v3 = v3Reading(c)
+    if (v3) return v3
+    const seller = bySeller(c)
+    if (seller) return { ...c, verdict: 'VERIFIED' as const, entity: seller, reason: 'stated by the named seller\'s own listing' }
     const entity = attribute(c.start)
     if (!entity) return { ...c, verdict: 'AMBIGUOUS' as const, entity: null, reason: 'attribution: 0 or >1 requested entity in sentence' }
     const j = judge(c, entity, records, [])
@@ -407,6 +520,27 @@ export function sentenceSpans(text: string): Array<[number, number]> {
 }
 
 /**
+ * 30/10: `sentenceSpans` keeps every link / URL as a span of its own, so "… 120.000đ/người (theo [Vietravel](https://…))." is three spans;
+ * removing "the sentence" removed only the first and left "[Vietravel](…))." (measured on localhost, "Vietravel)." on screen). For the
+ * removal below, a span boundary that only a LINK made (not a stop, not a line break, not a machine block) is joined back, so the sentence
+ * that goes takes its own citation with it. Each guard that reads `sentenceSpans` for judging keeps its spans as they are.
+ */
+function withInlineLinksJoined(text: string, spans: Array<[number, number]>): Array<[number, number]> {
+  const linkEdges = new Set<number>()
+  for (const [a, b] of protectedSpans(text)) {
+    if (/^\[(?:CTA_BUTTONS|FOLLOWUPS|TAPPY_PLAN)\]/.test(text.slice(a, b))) continue
+    linkEdges.add(a); linkEdges.add(b)
+  }
+  const out: Array<[number, number]> = []
+  for (const [a, b] of spans) {
+    const last = out[out.length - 1]
+    const joinable = last && last[1] === a && linkEdges.has(a) && text[a - 1] !== '\n' && !ENDS_SENTENCE.test(text.slice(last[0], a))
+    if (joinable) last[1] = b; else out.push([a, b])
+  }
+  return out
+}
+
+/**
  * POLICY R3 — PROPORTIONAL (owner, 2026-09-20; supersedes the whole-sentence default locked in
  * C3-B.10.2).
  *
@@ -422,6 +556,8 @@ export function sentenceSpans(text: string): Array<[number, number]> {
  * character comes from the input; seams are tidied (a doubled delimiter, a leading connective).
  */
 const CLAUSE_DELIM = /[,;:()]|\s[—–-]\s/g
+// Same, but a comma flanked by digits on both sides ("1,7 lít", "1,200,000") is part of the number (flag CONSULTATIVE_IN_AGENT).
+const CLAUSE_DELIM_DECIMAL = /(?<!\d),|,(?!\d)|[;:()]|\s[—–-]\s/g
 // F-092 (2026-09-25): "với" / "with" are NOT here. Sentence-initial they are a PREPOSITION opening a
 // complete sentence ("Với hai bạn thì rất vui", "Với ngân sách 3 triệu, …"), and stripping them ate
 // the next sentence's first word. Only true conjunctions dangle off a removed sentence.
@@ -451,7 +587,7 @@ export function lastClauseOf(s: string): string {
  *   line, and `sentenceSpans` splits "**1. iPhone…**" after "1.", so the sentence alone sees an
  *   opening `**` its line already holds (golden post-f094 B1, measured with the pre-guard capture).
  */
-function removeClauseAround(sentenceWithBreak: string, at: number, end: number, linePrefix = ''): string | null {
+export function removeClauseAround(sentenceWithBreak: string, at: number, end: number, linePrefix = '', decimalSafe = false): string | null {
   // The line break that closes a list line is structure, not clause: it always survives.
   const brk = sentenceWithBreak.match(/\n+$/)?.[0] ?? ''
   const sentence = sentenceWithBreak.slice(0, sentenceWithBreak.length - brk.length)
@@ -465,7 +601,10 @@ function removeClauseAround(sentenceWithBreak: string, at: number, end: number, 
   // Clause bounds inside this sentence: the delimiter before the amount (excluded from what
   // stays) and the delimiter after it (kept, so the remaining clauses still read as a list).
   let a = 0, b = Math.max(stop, end), bDelim = ''
-  for (const m of sentence.matchAll(CLAUSE_DELIM)) {
+  // 30/10: the brackets of a link are not clause delimiters ("(theo [Vietravel](https://…))." was cut at the link's own "(", leaving
+  // "Vietravel)."): the scan runs over the sentence with each link masked, same length, so every offset still holds.
+  const scan = maskLinks(sentence)
+  for (const m of scan.matchAll(decimalSafe ? CLAUSE_DELIM_DECIMAL : CLAUSE_DELIM)) {
     const i = m.index!
     if (i < at) a = i
     else if (i >= end) { b = i + m[0].length; bDelim = m[0]; break }
@@ -478,7 +617,7 @@ function removeClauseAround(sentenceWithBreak: string, at: number, end: number, 
    */
   let qualifier = false
   if (bDelim === '(') {
-    const close = sentence.indexOf(')', b)
+    const close = scan.indexOf(')', b)
     if (close !== -1) { b = close + 1; bDelim = ')'; qualifier = true }
   }
   const before = sentence.slice(0, a).replace(HEDGE_BEFORE, '').replace(/\s+$/, '')
@@ -530,6 +669,76 @@ function removeClauseAround(sentenceWithBreak: string, at: number, end: number, 
   return rest + brk
 }
 
+/**
+ * Round 42 round 3 (commit 3a, PRICE-CUT-RESIDUE-01 / S5): the connectives a travel sentence turns on — the cut point
+ * when no clause delimiter separates a verified fare from an unverified one. Matched with the space before it, so
+ * the cut keeps the text before the space.
+ */
+const FARE_CONNECTIVE = /\s+(?:trong khi|trong lúc|còn|nhưng|tuy nhiên|khi đó|hoặc)(?![\p{L}\p{N}])/giu
+
+/**
+ * Round 42 round 3 (commit 3a; travelGuard only, through `noAmountOnlyFallback`): a sentence that states a VERIFIED
+ * amount next to an unverified one loses the part that carries the unverified amount and keeps every verified one —
+ * never the whole sentence, never only the number ("Vietjet 387.000 VND, nhưng cũng có chuyến chỉ." was the
+ * residue). Offsets are relative to the sentence; `verified` is sorted by start.
+ *
+ * - after a verified amount: cut from the clause delimiter before the unverified amount (2a), else from the nearest
+ *   connective before it (2c), else from the end of the verified amount — through the sentence's stop, which stays;
+ * - another verified amount follows: the cut ends before the next delimiter / connective (S5m2), so it stays;
+ * - before every verified amount: the head goes through the delimiter / connective after the unverified amount, the
+ *   leading connective with it, and the first letter takes its case back (2b).
+ *
+ * Returns null when no cut keeps every verified amount — the caller then takes its former path.
+ */
+function cutAroundVerified(sentenceWithBreak: string, verified: Array<[number, number]>, unverified: Array<[number, number]>, decimalSafe: boolean): string | null {
+  const brk = sentenceWithBreak.match(/\n+$/)?.[0] ?? ''
+  const sentence = sentenceWithBreak.slice(0, sentenceWithBreak.length - brk.length)
+  const stop = sentence.match(/[.!?…]+[\s"'”’]*$/u)?.index ?? sentence.length
+  const lead = sentence.match(/^\s*/)?.[0].length ?? 0
+  // 30/10: a link's own brackets are not clause delimiters (see removeClauseAround); offsets are unchanged by the mask.
+  const scan = maskLinks(sentence)
+  const spans = (re: RegExp) => [...scan.matchAll(re)].map(m => [m.index!, m.index! + m[0].length] as [number, number])
+  const delims = spans(decimalSafe ? CLAUSE_DELIM_DECIMAL : CLAUSE_DELIM)
+  const conns = spans(FARE_CONNECTIVE)
+  const within = (from: number, to: number) => (x: [number, number]) => x[0] >= from && x[1] <= to
+  // The first boundary after the unverified amount: [where a cut ending before it stops, where a head cut through it stops].
+  const firstAfter = (from: number, to: number): [number, number] | null => {
+    const d = delims.find(within(from, to)), c = conns.find(within(from, to))
+    if (d && (!c || d[0] <= c[0])) return [d[0], d[1]]
+    return c ? [c[0], c[1]] : null
+  }
+  const cuts: Array<[number, number]> = []
+  for (const [us, ue] of unverified) {
+    const prev = verified.filter(([, e]) => e <= us).pop()
+    const next = verified.find(([s]) => s >= ue)
+    if (prev) {
+      const d = delims.filter(within(prev[1], us)).pop()
+      const c = conns.filter(within(prev[1], us)).pop()
+      const from = d ? d[0] : c ? c[0] : prev[1]
+      const to = next ? (firstAfter(ue, next[0])?.[0] ?? ue) : stop
+      cuts.push([from, Math.max(to, ue)])
+    } else if (next) {
+      cuts.push([lead, firstAfter(ue, next[0])?.[1] ?? ue])
+    } else return null
+  }
+  cuts.sort((x, y) => x[0] - y[0])
+  const merged: Array<[number, number]> = []
+  for (const c of cuts) {
+    const last = merged[merged.length - 1]
+    if (last && c[0] <= last[1]) last[1] = Math.max(last[1], c[1]); else merged.push([c[0], c[1]])
+  }
+  if (merged.some(([f, t]) => verified.some(([s, e]) => s < t && e > f))) return null
+  let out = '', at = 0
+  for (const [f, t] of merged) { out += sentence.slice(at, f); at = t }
+  out += sentence.slice(at)
+  if (merged[0][0] <= lead) {
+    const head = sentence.slice(0, lead)
+    out = head + capitaliseFirst(out.slice(head.length).replace(/^\s+/, '').replace(LEADING_CONNECTIVE, ''))
+  }
+  if (!HAS_LETTER.test(out)) return null
+  return out + brk
+}
+
 /** The first letter after leading space, list bullets and emphasis is lower case. */
 function startsLower(s: string): boolean {
   return /^\p{Ll}/u.test(s.replace(/^[\s*_>#-]+/u, '').replace(/^[^\p{L}\p{N}]+/u, ''))
@@ -540,17 +749,65 @@ function capitaliseFirst(s: string): string {
   return s.replace(/^([\s*_>#-]*)(\p{Ll})/u, (_m, lead: string, ch: string) => lead + ch.toLocaleUpperCase('vi'))
 }
 
+/**
+ * MONEY-GUARD-KEEP-VERIFIED-01 — MONEY_GUARD_KEEP_VERIFIED (default OFF). ON: `redactUnsupportedClaims` (callers without `wholeSentence` /
+ * `noAmountOnlyFallback`, i.e. `guardMoneyClaimsInText`) no longer removes a VERIFIED amount only because another amount in the same sentence is
+ * not verified. Read at call time, same shape as `snippetPriceGuardV2Enabled` (config/product.ts:443-446) plus a trim: ON only for `1` / `true`.
+ */
+export function moneyGuardKeepVerifiedEnabled(env: NodeJS.ProcessEnv = process.env): boolean {
+  const v = env.MONEY_GUARD_KEEP_VERIFIED?.trim()
+  return v === '1' || v === 'true'
+}
+
+/**
+ * keepVerified only: the claim spans of one sentence can be edited by offset only when every claim of the sentence ends inside it and no two
+ * claims share a character (a prefix and a suffix currency symbol can: "8.000.000 ₫ 3.000.000" is the claim "8.000.000 ₫" and the claim
+ * "₫ 3.000.000"). Otherwise the sentence takes the former path, whose clause cut always removes the clause around the unverified amount.
+ */
+function claimSpansAreSafe(claims: ReadonlyArray<{ start: number; end: number }>, from: number, to: number): boolean {
+  const here = claims.filter(c => c.start >= from && c.start < to)
+  if (here.some(c => c.end > to)) return false
+  return here.every((c, i) => here.every((d, j) => i === j || c.end <= d.start || d.end <= c.start))
+}
+
+/** keepVerified fallback: only the unverified amounts (and the hedge word right before each) are taken out of the sentence; every other character stays. */
+function removeAmountsOnly(sentenceWithBreak: string, spans: Array<[number, number]>): string {
+  let out = sentenceWithBreak
+  for (const [s, e] of [...spans].sort((x, y) => y[0] - x[0])) out = out.slice(0, s).replace(HEDGE_BEFORE, '') + out.slice(e)
+  return out
+}
+
+/**
+ * ONE BRAIN (P0-2, 29/10 audit): the figures no evidence backs are REPLACED by `label` ("chưa xác minh") — the hedge word right before each ("khoảng", "tầm") goes with it,
+ * and every other character stays: the name, the row, the bullet, the heading around the figure are the model's own words. Pure; claims must come from this `text`.
+ */
+export function labelUnsupportedAmounts(text: string, claims: ReadonlyArray<{ start: number; end: number; verdict: string }>, label: string): string {
+  let out = text
+  for (const c of [...claims].filter(x => x.verdict !== 'VERIFIED').sort((a, b) => b.start - a.start)) out = out.slice(0, c.start).replace(HEDGE_BEFORE, '') + label + out.slice(c.end)
+  return out
+}
+
 export interface RedactOptions {
   /**
    * F-094 (owner 2026-09-25): remove every affected sentence WHOLE — no clause cut. The v1 snippet
    * price guard uses it; its clause cuts produced the headless fragments the golden set measured.
    */
   wholeSentence?: boolean
+  /** See MoneyGuardOptions.decimalSafe. */
+  decimalSafe?: boolean
+  /**
+   * Round 42 round 3 (PRICE-CUT-RESIDUE-01): no step (3) "only the amounts go" — a sentence that cannot lose just a clause goes whole, even when that
+   * leaves nothing — and a sentence that also states a VERIFIED amount is cut around it first (`cutAroundVerified`), so a verified amount never goes.
+   * Only for a caller that always writes its own notice after a cut (travelGuard); off = the former behaviour for every other caller.
+   */
+  noAmountOnlyFallback?: boolean
 }
 
 export function redactUnsupportedClaims(text: string, claims: MoneyClaim[], opts: RedactOptions = {}): string {
   const bad = claims.filter(c => c.verdict !== 'VERIFIED')
   if (bad.length === 0) return text
+  // Read here, at call time. Never for `wholeSentence` (snippet guard) or `noAmountOnlyFallback` (travelGuard): those callers keep their own behaviour.
+  const keepVerifiedOn = !opts.wholeSentence && !opts.noAmountOnlyFallback && moneyGuardKeepVerifiedEnabled()
 
   // Seams only, never across a line break: a list bullet after a newline is structure, not a
   // doubled delimiter.
@@ -561,8 +818,9 @@ export function redactUnsupportedClaims(text: string, claims: MoneyClaim[], opts
     .replace(/[ \t]{2,}/g, ' ').replace(/[ \t]+([.,;])/g, '$1').replace(/\n{3,}/g, '\n\n').trim()
 
   // 1) clause-level removal inside each affected sentence; 2) the sentence when the clause is all of it
-  const spans = sentenceSpans(text)
+  const spans = withInlineLinksJoined(text, sentenceSpans(text))
   let dropped = false // the previous sentence went: a connective opening this one dangles
+  let droppedOnLine = false // …and it went on this line, without a line break after it: a citation that follows it is its own
   // F-094: "Và phù hợp bữa trưa…" after a removed sentence became "phù hợp bữa trưa…" — a sentence
   // with no capital. The connective goes and the first letter takes its case back.
   const stripConnective = (s: string) => {
@@ -572,12 +830,17 @@ export function redactUnsupportedClaims(text: string, claims: MoneyClaim[], opts
   const pieces = spans.map(([a, b]) => {
     const inSentence = bad.filter(c => c.start >= a && c.start < b).sort((x, y) => y.start - x.start)
     const raw = text.slice(a, b)
+    const pieceDropped = (): string => { dropped = true; droppedOnLine = !raw.endsWith('\n'); return '' }
     if (inSentence.length === 0) {
       // F-094: what a removed sentence leaves behind that is not prose — the " 🤔" after
       // "… 70-80k để có thêm lựa chọn? 🤔" (golden post-f094b T3 t2) — goes with it.
       if (dropped && raw.trim() && !/[\p{L}\p{N}]/u.test(raw)) return raw.match(/\n+$/)?.[0] ?? ''
+      // 30/10: the citation written after it on the same line ("… 120.000đ/người. [Vietravel](https://…)") was the removed sentence's own
+      // source, and stood alone once the sentence went. A link on a line of its own is not touched.
+      if (droppedOnLine && raw.trim() && isCitationOnly(raw)) { droppedOnLine = !raw.endsWith('\n'); return raw.match(/\n+$/)?.[0] ?? '' }
       const out = dropped && raw.trim() ? stripConnective(raw) : raw
       if (raw.trim()) dropped = false
+      if (raw.trim() || raw.includes('\n')) droppedOnLine = false
       return out
     }
     let sentence = raw
@@ -587,10 +850,38 @@ export function redactUnsupportedClaims(text: string, claims: MoneyClaim[], opts
     // every anti-fragment rule of that path still applies.
     const lineStart = text.lastIndexOf('\n', a - 1) + 1
     const isListLine = /^\s*(?:\*\*)?\s*(?:[-*•+]|\d+[.)])\s/u.test(text.slice(lineStart, b))
-    if (opts.wholeSentence && !isListLine) { dropped = true; return '' }
+    if (opts.wholeSentence && !isListLine) return pieceDropped()
+    droppedOnLine = false
+    // Round 42 round 3 (commit 3a): with the opt-in, a sentence that also states a verified amount is cut around it BEFORE the clause path (1),
+    // whose cut can take the verified amount with the clause (S5h3) or drop the sentence whole (travelGuard.test.ts case 4).
+    if (opts.noAmountOnlyFallback) {
+      const verified = claims.filter(c => c.verdict === 'VERIFIED' && c.start >= a && c.start < b).sort((x, y) => x.start - y.start)
+      const kept = verified.length > 0
+        ? cutAroundVerified(raw, verified.map((c): [number, number] => [c.start - a, c.end - a]), [...inSentence].reverse().map((c): [number, number] => [c.start - a, c.end - a]), opts.decimalSafe === true)
+        : null
+      if (kept !== null) {
+        dropped = false
+        const trailing = kept.match(/[\n]+$/)?.[0] ?? ''
+        return stripConnective(kept.replace(/[\n]+$/, '')) + trailing
+      }
+    }
+    // MONEY-GUARD-KEEP-VERIFIED-01 (flag MONEY_GUARD_KEEP_VERIFIED, default OFF): a sentence that states a VERIFIED amount never loses it to the
+    // clause cut below. Cut around the verified amounts; if no such cut exists, take out only the unverified amounts. Claims whose spans are not
+    // safe to edit (see claimSpansAreSafe) keep the former path, which removes the unverified amount with its clause (or the sentence).
+    if (keepVerifiedOn) {
+      const verified = claims.filter(c => c.verdict === 'VERIFIED' && c.start >= a && c.start < b).sort((x, y) => x.start - y.start)
+      if (verified.length > 0 && claimSpansAreSafe(claims, a, b)) {
+        const unverifiedSpans = [...inSentence].reverse().map((c): [number, number] => [c.start - a, c.end - a])
+        const kept = cutAroundVerified(raw, verified.map((c): [number, number] => [c.start - a, c.end - a]), unverifiedSpans, opts.decimalSafe === true)
+          ?? removeAmountsOnly(raw, unverifiedSpans)
+        dropped = false
+        const trailing = kept.match(/[\n]+$/)?.[0] ?? ''
+        return stripConnective(kept.replace(/[\n]+$/, '')) + trailing
+      }
+    }
     for (const c of inSentence) {
-      const cut = removeClauseAround(sentence, c.start - a, c.end - a, text.slice(text.lastIndexOf('\n', a - 1) + 1, a))
-      if (cut === null) { dropped = true; return '' }
+      const cut = removeClauseAround(sentence, c.start - a, c.end - a, text.slice(text.lastIndexOf('\n', a - 1) + 1, a), opts.decimalSafe === true)
+      if (cut === null) return pieceDropped()
       sentence = cut // claims are processed from the end, so earlier offsets are unaffected
     }
     dropped = false
@@ -600,6 +891,7 @@ export function redactUnsupportedClaims(text: string, claims: MoneyClaim[], opts
   })
   const proportional = tidy(pieces.join(''))
   if (HAS_LETTER.test(proportional)) return proportional
+  if (opts.noAmountOnlyFallback) return proportional
 
   // 3) removing the clauses would leave nothing — take only the amounts.
   let out = text
@@ -622,11 +914,12 @@ export function guardMoneyClaimsInText(
   text: string,
   records: EvidenceRecord[],
   entities: string[],
+  opts: MoneyGuardOptions = {},
 ): { text: string; claims: MoneyClaim[]; enforced: boolean } {
   const hasStructuredPrice = records.some(r => structuredPrice(r) !== null)
   if (!hasStructuredPrice) return { text, claims: [], enforced: false }
-  const claims = judgeMoneyClaims(text, records, entities)
+  const claims = judgeMoneyClaims(text, records, entities, opts)
   const unsupported = claims.filter(c => c.verdict !== 'VERIFIED')
   if (unsupported.length === 0) return { text, claims, enforced: true }
-  return { text: redactUnsupportedClaims(text, claims), claims, enforced: true }
+  return { text: redactUnsupportedClaims(text, claims, opts.decimalSafe ? { decimalSafe: true } : {}), claims, enforced: true }
 }

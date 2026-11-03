@@ -34,7 +34,7 @@ vi.mock('@/lib/scam-shield/message', () => ({ analyzeMessage: h.analyze }))
 // lib/ai/quota/__tests__. `aiQuotaIdentity` and `quotaFor` are the real ones.
 vi.mock('@/lib/ai/quota/aiQuestionQuota', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@/lib/ai/quota/aiQuestionQuota')>()
-  return { ...actual, consumeAiQuestion: h.consume, isProAccount: h.isPro }
+  return { ...actual, consumeAiQuestion: h.consume, resolveAccountQuota: h.isPro }
 })
 
 const { POST } = await import('./route')
@@ -54,6 +54,8 @@ const post = (body: unknown, headers: Record<string, string> = {}) =>
   }))
 
 beforeEach(() => {
+  // The AI switch is OFF by default (owner 02/10); these route tests exercise the AI-on path.
+  vi.stubEnv('SCAM_SHIELD_AI_ENABLED', 'true')
   h.state.user = null
   h.state.restricted = false
   h.state.quotaOk = true
@@ -63,7 +65,7 @@ beforeEach(() => {
   h.isPro.mockReset()
   h.burst.mockClear()
   h.logs.length = 0
-  h.isPro.mockImplementation(async () => h.state.pro)
+  h.isPro.mockImplementation(async () => ({ exempt: h.state.pro, plan: h.state.pro ? 'pro' : 'free' }))
   h.consume.mockImplementation(async (identity: { kind: string }) => {
     const lifetime = identity.kind !== 'user'
     const limit = lifetime ? 5 : 15
@@ -221,5 +223,15 @@ describe('the response and the log', () => {
     const res = await post({ text: 'x' })
     expect(res.status).toBe(500)
     expect((await res.json())).toMatchObject({ error: 'analyze_failed' })
+  })
+})
+
+describe('02/10 — AI switch OFF (default)', () => {
+  it('a screenshot is refused with screenshot_unavailable and nothing is spent', async () => {
+    vi.stubEnv('SCAM_SHIELD_AI_ENABLED', 'false')
+    const res = await post({ imageBase64: 'data:image/png;base64,iVBORw0KGgo=', mimeType: 'image/png' })
+    expect(res.status).toBe(400)
+    expect((await res.json()).error).toBe('screenshot_unavailable')
+    expect(h.consume).not.toHaveBeenCalled()
   })
 })

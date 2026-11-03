@@ -1,0 +1,395 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "tai nghe chống ồn chạy bộ dưới 3 triệu IPX5 ANC earbuds Việt Nam",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:18:48.559Z",
+ "body": {
+  "searchParameters": {
+   "q": "tai nghe chống ồn chạy bộ dưới 3 triệu IPX5 ANC earbuds Việt Nam",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Tai nghe Bluetooth True Wireless Huawei Freebuds SE 4",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+IPX5+ANC+earbuds+Vi%E1%BB%87t+Nam&prds=localAnnotatedOfferId:1,catalogid:10655244227358683365,gpcid:1475109100044329082,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "790.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTa5uhEp8QuqUMcpMCWgh1-FkFgalOomfbEZGTq1V1BaeHxIqdtihpCJjAaCyHsE4Fq48wdj1loXAinx80982Rs1o3KQ1dZjqDARCMeJQPdab3BG5HjeXtLSQ",
+    "productId": "10655244227358683365",
+    "position": 1
+   },
+   {
+    "title": "Baseus Tai nghe Không Dây TWS Baseus Inspire XP1",
+    "source": "Baseus Việt Nam",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+IPX5+ANC+earbuds+Vi%E1%BB%87t+Nam&prds=localAnnotatedOfferId:1,catalogid:3340121238556858707,gpcid:7818895122849852859,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "1.999.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRxKR_1fNbZEwXjiZGtwYXs_TM3TQ1mjEltmriMt2hhsuEnZW_THLIPnxcZKN110HrMtzty_5uW2ZRIT74XjSFZ3Ohpt72VZ0KmWWIcLI4KqsttnB-g41Lm",
+    "rating": 4.8,
+    "ratingCount": 163,
+    "productId": "3340121238556858707",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe Bose Tai nghe Mở Ultra Open-Ear",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+IPX5+ANC+earbuds+Vi%E1%BB%87t+Nam&prds=localAnnotatedOfferId:1,catalogid:2548677344200108123,gpcid:5011358045418386671,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "5.790.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSuDrlsKF8YnkpmIJ3FydlP0mpi1CUbUMTiODSEEXtdG7OFrIzvfUNE0pHYMgWGz9_YG-aoCAmE-AjLMzYll_CglkgSapTBmn1kcEizC6q_2XbWZsNIutFlDQ",
+    "productId": "2548677344200108123",
+    "position": 3
+   },
+   {
+    "title": "Tai Nghe Pro3 Hổ Vằn 1563E – True Wireless ANC, Đo Nhịp Tim, Pin 24 Giờ, Chống Nước IP57, Âm Thanh Cao Cấp, Kết Nối Bluetooth 5.3",
+    "source": "Chiaki.vn",
+    "price": "790.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRpNt0UNtLVJQxNIEFW6I9HJshVHAIWcdwm7ZB1dMekvoLWizeuoB1hGjZwIXStOufI89_47sySKK13CZh0ZwB5nTtQaday2ZJ0MPSqsBq51aqyoWglTzrn9w",
+    "productId": "553912819565684582",
+    "position": 4
+   },
+   {
+    "title": "Tai nghe Bluetooth Lenovo LE302 IPX5 Chống nước HIFI Chất lượng âm thanh Thoải mái khi tập thể dục",
+    "source": "Shopee",
+    "price": "269.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcR7Aya8eOffGcExZCBtT6O4jDVFS_tNZ4U5IlMmvWa5rMMG1V_LddC1scnJkFn3sWrOgJHTX8iV-JodvYrBEFZPEOmMCkeyxC4yAwzDIldPLlv-UFvI8Zdh",
+    "productId": "14796219691490296989",
+    "position": 5
+   },
+   {
+    "title": "Tai Nghe Jbl Sense Lite",
+    "source": "pgi.com.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+IPX5+ANC+earbuds+Vi%E1%BB%87t+Nam&prds=localAnnotatedOfferId:1,catalogid:386164092150872593,gpcid:5095118598932364164,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "2.590.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSRw6KC5cRxs2KwDn-mkHoukK88ry3kvoSjgiY_GijRI4b-CyrZ3b76Q8qqBg6cbW5fXiLnMXxJYsDwEu0Z_suuK8vczOkYqE2fBkLtqERAIGTfagwim27E",
+    "rating": 4.3,
+    "ratingCount": 589,
+    "productId": "386164092150872593",
+    "position": 6
+   },
+   {
+    "title": "Baseus Tai nghe Bluetooth TWS Baseus Eli Sport 2 -Đen",
+    "source": "Baseus Việt Nam",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+IPX5+ANC+earbuds+Vi%E1%BB%87t+Nam&prds=localAnnotatedOfferId:1,catalogid:9672989923173520821,gpcid:14232055853085542046,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTgS9Eu7Myp-IL3ZreuWzExhVH2U57-YvSdmmTI46C5iQWhNjR4k-Ir7g0EHr38GBn5kvnBqwz55IdfYV-YNkvRecM6uGWA41JveHVYXyWRS3dGslZBgaRivQ",
+    "rating": 4.8,
+    "ratingCount": 454,
+    "productId": "9672989923173520821",
+    "position": 7
+   },
+   {
+    "title": "Tai nghe Sony WH-1000XM6",
+    "source": "Sony Store Online",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+IPX5+ANC+earbuds+Vi%E1%BB%87t+Nam&prds=localAnnotatedOfferId:1,catalogid:2497512045070680419,gpcid:16337411903393755079,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "9.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRgHY50oiyINlbpmD6hUt5VpeOLwd_wzMXGbtk1fG6DELoHCoAGg1jmjkFAVpiKGK-ek3sLbWeVKBNiNRaf6HzNdbY1mGzM",
+    "productId": "2497512045070680419",
+    "position": 8
+   },
+   {
+    "title": "Tai nghe 1563E Thỏ Công Nghệ, khử ồn real ANC, thích hợp cho tất cả các dòng máy -Bảo hành 12 tháng",
+    "source": "Shopee",
+    "price": "1.040.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcT5GccXYIwC7AeT9Kopete07tCaGY8ajXvS5dFtiknaj3RsABYxNRw8qlNBeFkdI2fOO1WsPpWzY2TnF71wDOveoEp7OkeAW52Xmmx8a53rYB03vme0dEBaHQ",
+    "rating": 4.7,
+    "ratingCount": 32,
+    "productId": "17635878888066160699",
+    "position": 9
+   },
+   {
+    "title": "Tai nghe chụp Tai Bose Quietcomfort Ultra Gen 2",
+    "source": "HDRadio.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+IPX5+ANC+earbuds+Vi%E1%BB%87t+Nam&prds=localAnnotatedOfferId:1,catalogid:5935180288566721863,gpcid:3222417658520627649,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "9.580.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTqwCKeElRsbvIAz5EzqCUq0ETQQ2Ack-y2NAt14V2YkjKjYMbHlVxw7YNgqGMWC6ownVzuKQfPOFINEVN2Qb2M21AWxOLxPPWAlHwMdF0Z7eMOopJuI8me",
+    "productId": "5935180288566721863",
+    "position": 10
+   },
+   {
+    "title": "Tai nghe Bluetooth chụp Tai Baseus Bass BH1 NC",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+IPX5+ANC+earbuds+Vi%E1%BB%87t+Nam&prds=localAnnotatedOfferId:1,catalogid:5661517676391190358,gpcid:1874974143733272671,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "785.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRGxKfdRL0NN-gDV8rSqA4NIAaKwD1E6jjoEZYh_F0gafX_v8Z7p0AaSh5SLlg9nJLoEbNwDkfrBsaosA2ZOK031HKdYcq3RT06fLmXueOtJgHsogCgwn_d",
+    "rating": 4.7,
+    "ratingCount": 962,
+    "productId": "5661517676391190358",
+    "position": 11
+   },
+   {
+    "title": "Tai nghe Bluetooth thể thao JBL Soundgear Clips",
+    "source": "Fptshop.com.vn",
+    "price": "3.717.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQ02TmhB0sChBcSOgCLFdR2oJrsXnDd4lf-SEFamF7I4EClMFwKUd4W1MJp5uNXM-Hv16zNtEAyztVX2CKr4XT-WdLE2COmIJS9pLrVCEeek21rM56Z0cCJ",
+    "rating": 4.4,
+    "ratingCount": 523,
+    "productId": "560433516413921029",
+    "position": 12
+   },
+   {
+    "title": "Tai nghe Bluetooth thể thao Anker Soundcore C50i",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+IPX5+ANC+earbuds+Vi%E1%BB%87t+Nam&prds=localAnnotatedOfferId:1,catalogid:6488980335045529425,gpcid:9062866904942090884,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "1.200.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSG2HtHWOHVj0-NfJuo7HB6t5Mu3ZxIxbRP_FzYbfSfle6VhihTuZe3OwYN0fLxr6HQxTvyKd7ss6eUBND5y-S7FyatrxV4Ln8uvzK5bGUxqpMZ5TxfBtPf-k4",
+    "productId": "6488980335045529425",
+    "position": 13
+   },
+   {
+    "title": "Tai Nghe Bluetooth Pro 3 ANC - Giảm Ồn Chủ Động ~40dB, Âm Thanh Rõ Nét, Sạc Type-C, Thiết Kế Nhỏ Gọn, Phù Hợp với Android & iOS",
+    "source": "Chiaki.vn",
+    "price": "419.999 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQlLKuCAk66L8oL98Fx8t2DyBnRgMrh574kL1tIY687wMcBkDb2zRScNkHFNSI1kJ0aZlG5K6Cgyto9J6l4tVorWphiHUhTUQSfJaU7SlE",
+    "productId": "9760401757419077255",
+    "position": 14
+   },
+   {
+    "title": "Tai nghe không dây TWS Baseus Bass EP10 NC",
+    "source": "Thế Giới Di Động",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+IPX5+ANC+earbuds+Vi%E1%BB%87t+Nam&prds=localAnnotatedOfferId:1,catalogid:346218224596442874,gpcid:12059129179899610764,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "350.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQthWIW0Iid8WdzFZoMVCcNULplXsii325mY6bVOmXVn77PQAS6RvshQ3LdV8ERuiyxHG1UH-TRthhUExrtC1xwiF8CflK_Y8t0UrrDx79hVRSQjvEbJH5GcYw",
+    "productId": "346218224596442874",
+    "position": 15
+   },
+   {
+    "title": "Tai nghe Bluetooth True Wireless StarGO S10 Pro (ANC)",
+    "source": "CellphoneS",
+    "price": "290.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQuQw1yUopBJU_Xnu2UNCnGQteNXROiv7rSqgwdnWNSRzUt84L2T-cHnN4fx8zoINGz6Pi93QSPwLcUWhStydHb6lkliQkAWuy8usAT6k5Nfv2DSaNgM-nV-tI",
+    "productId": "6129270160950870783",
+    "position": 16
+   },
+   {
+    "title": "Tai Nghe Honor Earbuds X10 Lite | Khử Tiếng Ồn Chủ Động | Thời Lượng Pin Lên Đến 45H | Bluetooth 5.4 | Bảo Hành 12 Tháng",
+    "source": "Shopee",
+    "price": "790.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcReAl4yO-9LubOlXVNCQCDGsWH3xTlVzmqBSCThcgTQ_Yt0DLyxMW3JLgHT3lw0QqZC5uECll_5VZdCAAE5K9NbRFnjPVos2DHILD5N-VVyk25Dbt14F_o82Q",
+    "rating": 4.7,
+    "ratingCount": 125,
+    "productId": "6984613924716160065",
+    "position": 17
+   },
+   {
+    "title": "Tai nghe với kết nối không dây độ trễ thấp, công nghệ chống ồn chủ động (ANC), pin lên đến 27 giờ với hộp sạc không dây, chống nước chuẩn IPX4 và hỗ",
+    "source": "Nakio Computer",
+    "price": "2.190.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQdGynEq1Pe--1hFCZsMGMCFmWvzKBmq2W--2Z65nfLZKfEl3go-udipeXgoANQZx8q89Q--9nhG-BHnNjE_jLxlZh6V2fSfhMF8h9LQmLEExP8mLsaOesR_dQ",
+    "productId": "8908889785259441687",
+    "position": 18
+   },
+   {
+    "title": "Baseus Tai nghe Không Dây TWS Bass BS2 Lite",
+    "source": "Baseus Việt Nam",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+IPX5+ANC+earbuds+Vi%E1%BB%87t+Nam&prds=localAnnotatedOfferId:1,catalogid:9030195934277789115,gpcid:7205955921654229053,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "320.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQY2C5nnRfwupS1rTyCD--8KlizPaVtKLF3Ascdhv85HKUKz4jdY90Xdu9N4pAQrvoJuJetmPjv6GIueR6n0ubmm-hob2_KJa65foNjktI3EmS-lRBDtixIz5M",
+    "productId": "9030195934277789115",
+    "position": 19
+   },
+   {
+    "title": "Tai nghe Bluetooth JLab Metal Rugged",
+    "source": "Fptshop.com.vn",
+    "price": "339.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRtVDKxUbDso_10QJ4qhT6maoQzsSJVU6kCZH5gorcE2R04ZX4pyYc19nm6CikMkn-1rSjTlln35MDuZg6ZTfoLf1UPI0Jx1HRiShLgjIJrk6Zi8J0MRLu1",
+    "productId": "2992379788927253268",
+    "position": 20
+   },
+   {
+    "title": "Dành Cho IQOOTWS Air3 Tai Nghe Bluetooth 6.0 AI Gọi Chống Ồn Tai Nghe Không Dây Thật Cho IQOO Neo 10",
+    "source": "Shopee",
+    "price": "671.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRFjv8VbWG86Mxhu67_-HovLKZuDYz03Xs6WQCfAq8m27vD0tuLavIg5u3kmVtYAsFUTDnIsbC0XgiTJmDWTHe9bi6JsNigJSgxHLXLxIGyaD-96cV4smOjqw",
+    "rating": 4.8,
+    "ratingCount": 71,
+    "productId": "2977862136078509229",
+    "position": 21
+   },
+   {
+    "title": "Tai nghe Bluetooth True Wireless Rezo Wave Pro ANC Màu be",
+    "source": "Thế Giới Di Động",
+    "price": "490.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSet4MePg1wn-x66bKO6cINp51QWYzMVBANDDjsRnWT87FlR0_xCj4zw4gtZV4Z60leXvqROuAe_VNgCSdEmvsGPi0NPdxFDLj9LnD3B4kYH6ezQlZ2LuiMbw",
+    "productId": "15586367167331900552",
+    "position": 22
+   },
+   {
+    "title": "Tai Nghe Bluetooth Không Dây Y36 TWS - Tai Nghe Nhét Tai Chống Ồn, Âm Thanh HIFI, Thời Gian Chờ 25 Giờ, Chống Nước IPX5",
+    "source": "Chiaki.vn",
+    "price": "220.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSiSSyD0dFdLUUXuZv94qs1J9ZSX2bYd_7fFd3I-FGQWeQThck609ZKe8Liegfsm1U4De7ozsaSPmjFkBF7FRv0eOj4dwJkbzh_YKtjLNDw",
+    "productId": "6189942774342751877",
+    "position": 23
+   },
+   {
+    "title": "Tai nghe chống ồn TOTALTSP701 -Tai nghe chống ồn TOTALTSP701",
+    "source": "himarket.vn",
+    "price": "79.800 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcS6xon3xfDasb7SjFLBpQBEgvLmNKpWHBrjj99lIw5D3SQ_OyIZYU9Navze73eoGA9F43SVqrL7dukrfKuxFU9FdWplt3QIoiJFRKULzPaVtk-NQKnoaiD_",
+    "productId": "16469076606847842583",
+    "position": 24
+   },
+   {
+    "title": "Tai nghe Bluetooth không dây HiFi Âm thanh nổi Khử tiếng ồn IPX Chống nước Pin dài Điều khiển cảm ứng Tai nghe Bluetooth chơi game thể thao",
+    "source": "Shopee",
+    "price": "186.999 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQuAkGlxRapgVoeJamywfYjdSKiPxxar4zYo4ePLJv9DstKGrshx58-3vHRdoKGmAyPlW5mSoD8RdkE-s9DoCisYxbLFKNGY1cy06Dba339Y974PtcXDEZv",
+    "productId": "5773252690504541879",
+    "position": 25
+   },
+   {
+    "title": "Tai nghe Bluetooth chụp tai StarGO C100 Pro (ANC)",
+    "source": "CellphoneS",
+    "price": "310.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTRR4yKozhycyAYcYyVi-xKI-RojTArS0DXSOb5Rjl3iTMs9vex_yiR-QbV9g9sLc0gTCTHKiUrFTB9tcr6_uXjhjQs6lyJpQGypja5HSQTipcoPlDzGN9Y4g",
+    "productId": "1305706177115601898",
+    "position": 26
+   },
+   {
+    "title": "Baseus Tai Nghe Chụp Tai Không Dây Baseus Bass BH1 -Trắng",
+    "source": "Baseus Việt Nam",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+IPX5+ANC+earbuds+Vi%E1%BB%87t+Nam&prds=localAnnotatedOfferId:1,catalogid:11713069749495372633,gpcid:11247251933209186024,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "550.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTin83UA1TeBx_aGGnG-IPFBD0AzJPd-CtpjaHKYbv3VbJmbTlxAUKJJlHFJmmmYfP3mx8YhzU7e7uoxJFimykQqzvSS6D8I4uFb_3K7gE97N59luKF35M1",
+    "rating": 4.3,
+    "ratingCount": 20,
+    "productId": "11713069749495372633",
+    "position": 27
+   },
+   {
+    "title": "Tai Nghe Thể Thao TaoTronics Free Aero 1",
+    "source": "Antien.vn",
+    "price": "1.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSPBEWw7vI7sH-fDYX0xzELmOj4S4y87WQtqpMOFmx_y7oAKU-7PaeIFVWXMMFI_5Njh8ZsV9tJhwecYYPwzA8A0RP09KvAE2zh9cn-NXDqP18qJyOiPXhUFg",
+    "productId": "15112631290979660489",
+    "position": 28
+   },
+   {
+    "title": "Tai nghe Bluetooth Chụp Tai Xiaomi Redmi NEO Xanh Dương",
+    "source": "Thế Giới Di Động",
+    "price": "1.630.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSGQeIU6DR6BKX1IteFj9giOp5mWHGx34QtFy6uQFZEa06IVicI1DEAfXg534PUN0Axs_m7pX9fBOpQib1-_kyzkupcOPG8eDZu3r0Ug4Q3ddq_e3wF6oO06g",
+    "productId": "9022952016386133108",
+    "position": 29
+   },
+   {
+    "title": "Tai nghe Honor Earbuds X9 chính hãng Tai nghe không dây Bluetooth 5.3 hỗ trợ cuộc gọi giảm tiếng ồn chủ động 49dB IP54 chống bụi.",
+    "source": "Shopee",
+    "price": "605.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRv8e3xEvkseM9WbL2-m8zmfcsFLloCbujwGJYffjda_7y21xESdOJrEDrcSyFJnEXL2ZBTzycrPa95e7oP5rCOJsuhDsX6ey5yE2fDrAgqE9ydRoaJEO2O",
+    "rating": 4.7,
+    "ratingCount": 43,
+    "productId": "5272763931138481917",
+    "position": 30
+   },
+   {
+    "title": "Tai Nghe Shure Aonic 40 (SBH1DYBK1-A) Chụp Tai, Chống Ồn, Pin 25h",
+    "source": "HDRadio.vn",
+    "price": "5.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSdQvXJPACfxfPD01cHce1dEoGG0B1hXj3FD0ZGX5Z_9lcQHSTwrZcxYbLIvyV439W2EdKLeBHLGZ8qZjNw9qLm3BWt1qN-mTsOOCIBU_QXa8rIrYvWio59YQ",
+    "rating": 4.7,
+    "ratingCount": 26,
+    "productId": "14655994801456024802",
+    "position": 31
+   },
+   {
+    "title": "Tai Nghe Không Dây TWS Baseus Inspire XP1 (Bluetooth v6.1, 8H, Dolby Audio, Sound by BOSE, Adaptive ANC, 360° Sound Reality, SuperBass 3.0,",
+    "source": "Promax Studio",
+    "price": "1.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSOAzZM6mAjrIr4DQViu-itsbFTXibriMNvY1bMZTFQ2fTQq32dBx6J_PxspawYDuc-a3394FyvfPT5XGuwwvo3QoipCc31GQHFGEKRzyOMV1tbJ_b8_IV7LQ",
+    "rating": 4.8,
+    "ratingCount": 163,
+    "productId": "18185108018221270130",
+    "position": 32
+   },
+   {
+    "title": "Tai nghe Nothing Ear (3) - Đen",
+    "source": "Happy Phone",
+    "price": "4.470.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRt1_Ck_qq8niPvfpu0vMmKaHDy3QAOwGKRGNjUPtdlyvBhRwB4a-ACyFUNvPt8uEMpALSmCddqqVZx1N2o5o7s9OtIRc0iVCnBIRXT1FwYbOLtX0qdxZ8uhg",
+    "rating": 4.6,
+    "ratingCount": 251,
+    "productId": "5523932197979113005",
+    "position": 33
+   },
+   {
+    "title": "Polvcdg -P050-X6 IPX8 Tai nghe Bluetooth không dây dẫn xương chống nước 32G Bài tập 5.3 Tai nghe không dây móc Tai bơi",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+IPX5+ANC+earbuds+Vi%E1%BB%87t+Nam&prds=localAnnotatedOfferId:1,catalogid:5072925998899746421,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "995.300 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQee9C9R2ytdRFToEJH_Fgv7i_fpnE83IyAFEhegAHXkh0-BJISqVE_WL9aD_qa0aF9MvmtoDvvJzCvXgKGmJ7o2ivVmNSa35DPHmXovF8Zlp-x7I-rBxLC",
+    "rating": 3.3,
+    "ratingCount": 3,
+    "productId": "5072925998899746421",
+    "position": 34
+   },
+   {
+    "title": "Tai Nghe AI Phiên Dịch B28 - Hỗ Trợ 150 Ngôn Ngữ Bluetooth 5.3 Chống Ồn Chống Nước Nhỏ Gọn",
+    "source": "Lazada Vietnam",
+    "price": "499.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcT8NMDCHA6873xKEgTuzWHRSY6_F7JDb4E0SjLPP7sCKGlLcXsuNw1g8CnJEs6aaljiRifzkcR1ckE5mlHbBEqfFBKGppdqR36eKVeHyMvzw6DtIAX6lZBSXg",
+    "rating": 5,
+    "ratingCount": 1,
+    "productId": "6253845035988719535",
+    "position": 35
+   },
+   {
+    "title": "Tai nghe Bluetooth chụp tai Philips TAH3020",
+    "source": "CellphoneS",
+    "price": "550.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTrBqzoKbOnUMQ6SjT8kkVZocfgycu11_CaaUz9x6oJLfKyQ2Z643TPFnm3Sr7gm62zDdWxr7sjE_bWK8JN_KOF9c6kNsA5U0leVoeEpBS1zGFBcULZb6t3Sg",
+    "productId": "9051391491281498343",
+    "position": 36
+   },
+   {
+    "title": "Tai Nghe Dẫn Truyền Xương BRIDIO X3 Bluetooth 6.0 Không Nhét Tai IPX5 Pin 8H Type C Chạy Bộ",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+IPX5+ANC+earbuds+Vi%E1%BB%87t+Nam&prds=localAnnotatedOfferId:1,catalogid:4366505982396771648,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "385.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQF4HWIMnz6oEM553zHC80ej9shnFum6Xzsr07Le_ei4owACSsR1jrYG1qu5W4fkmeD-vLpARU9X6LMTYEcRiUvSoQf30H5Bdxs9ZhCt66RvK9ainxg2-qCbw",
+    "rating": 4.6,
+    "ratingCount": 8,
+    "productId": "4366505982396771648",
+    "position": 37
+   },
+   {
+    "title": "Tai nghe Bose QuietComfort Ultra Earbuds -Lunar Blue",
+    "source": "Chieu Duong Tech",
+    "price": "7.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcR1udndU9a03aloFB2C7a9F88JCFH_kWrtPX5cX5xs_nLR8S3PRSaLR35VJ79MGSQLM5n_uyCcxfWZYMsg2Dif2aVCAV_Gdsg",
+    "productId": "58948152103100020",
+    "position": 38
+   },
+   {
+    "title": "Tai nghe mở tai Baseus Inspire XC1 OpenEar Sound by Bose - Trắng",
+    "source": "chube.vn",
+    "price": "2.093.520 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSJK934aGe6CAZFaoTZ8Mlid92r6M-BGZ7RrONVCjFZsXIIz2872qPTju55ff5_yAQRGE22Se_mmZq70UxFyUW8Xlt2jCRX3CRZ7KBS3u5qs8WkrsUFE7CbQ-M",
+    "rating": 4.8,
+    "ratingCount": 260,
+    "productId": "16813165608833115406",
+    "position": 39
+   },
+   {
+    "title": "Tai nghe Bluetooth thể thao TWS không dây Defunc True Sport thời gian 30H, chống nước IPX5, Bảo hành 1 năm",
+    "source": "Shopee",
+    "price": "1.170.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSHB9OEFsEluHoKdxXV0P3ktyho5f0PjlyyTn4kP1395eXimx7ARlPFFyeBGpwBsL1ehkqTWdefQyj7ZkS8sKdQgYLz-nGMvRb9xhqHeBkmVTquAp47HGneSw",
+    "rating": 4.8,
+    "ratingCount": 17,
+    "productId": "7117439042941436780",
+    "position": 40
+   }
+  ],
+  "credits": 2
+ }
+}

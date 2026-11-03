@@ -4,6 +4,11 @@
 export const vi: Record<string, string> = {
   'deals.title': 'Deal hôm nay',
   'deals.empty': 'Chưa có ưu đãi nào. Quay lại sau nhé!',
+  'deals.partnersTitle': 'Đặt chỗ qua đối tác của Tappy',
+  'deals.partnersHint': 'Chưa có ưu đãi mới hôm nay. Bạn vẫn có thể đặt qua các đối tác dưới đây; Tappy chưa xác minh giá hay ưu đãi trực tiếp.',
+  'deals.partner.traveloka': 'Đặt khách sạn và vé máy bay trên Traveloka.',
+  'deals.partner.vexere': 'Đặt vé xe khách trên Vexere.',
+  'deals.partnerCta': 'Mở {source}',
   'deals.subtitle': 'Tappy chọn lọc {count} ưu đãi tốt nhất — cập nhật mỗi ngày lúc 7:30 sáng',
   'deals.viaSource': 'qua {source}',
   'deals.dayLeft': 'Còn 1 ngày',
@@ -24,6 +29,11 @@ export const vi: Record<string, string> = {
 export const en: Record<string, string> = {
   'deals.title': "Today's deals",
   'deals.empty': 'No deals yet. Check back soon!',
+  'deals.partnersTitle': 'Book through Tappy partners',
+  'deals.partnersHint': "No new deals today. You can still book through the partners below; Tappy hasn't verified live prices or offers.",
+  'deals.partner.traveloka': 'Book hotels and flights on Traveloka.',
+  'deals.partner.vexere': 'Book coach tickets on Vexere.',
+  'deals.partnerCta': 'Open {source}',
   'deals.subtitle': 'Tappy hand-picks the {count} best deals — refreshed every day at 7:30 AM',
   'deals.viaSource': 'via {source}',
   'deals.dayLeft': '1 day left',

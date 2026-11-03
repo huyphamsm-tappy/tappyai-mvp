@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hoff Coffee Brewers by BeanHop\" OR \"The Workshop Coffee\" OR \"Tiệm cà phê Linh\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T17:13:19.170Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hoff Coffee Brewers by BeanHop\" OR \"The Workshop Coffee\" OR \"Tiệm cà phê Linh\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tiệm cà phê Linh IEC Tứ Hiệp: Quán cafe chill, góc sống ...",
+    "link": "https://www.tiktok.com/@thanh.thanh_tri/video/7665575910657084693",
+    "snippet": "Lead Tiệm cà phê Linh vừa được phát hiện ngay khu IEC Tứ Hiệp — một quán cafe chill với đồ uống ngon và nhiều góc sống ảo.",
+    "position": 1
+   },
+   {
+    "title": "Tiệm Cà Phê Linh - Tái Hiện Sài Gòn Xưa và Nay",
+    "link": "https://www.tiktok.com/@baro.phe/video/7234435488730402053",
+    "snippet": "Khám phá tiệm cà phê Linh ở Quận 1, Sài Gòn với không gian xưa và nay độc đáo. Cảm nhận văn hóa cà phê Việt Nam qua thập kỷ sài gòn xưa và nay.",
+    "position": 2
+   },
+   {
+    "title": "Review The Workshop Coffee Quận 1: Quán Cafe Nổi ...",
+    "link": "https://www.tiktok.com/@chamdidau/video/7345025504321244423",
+    "snippet": "The Workshop Coffee: Điểm Đến Lý Tưởng Tại Quận 1 Sài Gòn Nếu bạn đang tìm kiếm một quán cà phê nổi tiếng tại Sài Gòn, The Workshop Coffee ...",
+    "position": 3
+   },
+   {
+    "title": "The Workshop Coffee",
+    "link": "https://www.tiktok.com/discover/the-workshop-coffee",
+    "snippet": "Khám phá The Workshop Coffee - quán cafe hợp lý cho làm việc và gặp gỡ bạn bè tại quận 1. Đến thưởng thức nước ngon và không gian đẹp ngay! 139 ...",
+    "date": "14 thg 9, 2026",
+    "position": 4
+   },
+   {
+    "title": "Tiệm cà phê Linh - Chi nhánh mới toanh view triệu đô ✨🧚🏻‍ ...",
+    "link": "https://www.tiktok.com/@vyhaydi.sg/video/7569807663941324050",
+    "snippet": "Tiệm cà phê Linh - Chi nhánh mới toanh view triệu đô ✨ ‍♀️ #linhcaphe #cafesaigon #saigon1975 #vyhaydi #xuhuong ... Xoài đang chữa lành.",
+    "position": 5
+   },
+   {
+    "title": "Tiệm cà phê Linh mở chi nhánh gần Hồ Con Rùa",
+    "link": "https://www.tiktok.com/@vivusaigon.vn/video/7424365754134400274",
+    "snippet": "Tiệm cà phê Linh vừa khai trương chi nhánh gần Hồ Con Rùa #saigonvivu #xuhuong #saigon #henho #cafe #cafechill #vibesaigonxua · Quán Cafe Đẹp Ở ...",
+    "position": 6
+   },
+   {
+    "title": "Cái Tiệm Cà Phê Linh - Menu Thạch Mác Púp và Trà Xoài ...",
+    "link": "https://www.tiktok.com/@caitiemcaphe/video/7393314587661110536",
+    "snippet": "Cái Tiệm Cà Phê Linh - Menu Thạch Mác Púp và Trà Xoài Non Muối Muội. Khám phá thế giới thạch mác púp và trà xoài tại Cái Tiệm Cà Phê Linh.",
+    "position": 7
+   },
+   {
+    "title": "Tiệm cà phê Linh Tây Thôn (@tiemcaphelinhtaython)",
+    "link": "https://www.tiktok.com/@tiemcaphelinhtaython",
+    "snippet": "Tiệm cà phê Linh Tây Thôn (@tiemcaphelinhtaython) trên TikTok |1769 Lượt thích.214 Follower. 777 Kha Vạn Cân, phường Linh Tây, TP Thủ Đức, HCM.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

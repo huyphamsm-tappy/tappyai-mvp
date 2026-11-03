@@ -63,8 +63,9 @@ describe('coaches — get_transport_options vexere_link is a CCP projection', ()
     const search = vi.fn(async (q: string) => q.includes('site:vexere.com') ? [{ title: 'Vé xe Sài Gòn đi Đà Lạt | Vexere', link: 'https://vexere.com/vi-VN/ve-xe-khach-tu-sai-gon-di-da-lat-lam-dong-129t23991.html', snippet: '' }] : [])
     const result: Row = { type: 'intercity', vexere_link: 'https://vexere.com/vi-VN' }
     await attachCommerceLinks('get_transport_options', result, { enabled: true, now: NOW, search, origin: 'Sài Gòn', destination: 'Đà Lạt', departDate: '2026-10-10', transportMode: 'intercity' })
-    expect(search).toHaveBeenCalledTimes(1)
-    expect(search.mock.calls[0][0]).toBe('xe khách Sài Gòn Đà Lạt site:vexere.com/vi-VN')
+    // T4 (29 Oct 2026): no rail page among the fetched rows → ONE more scoped search for the train list; a coach page there is refused.
+    expect(search.mock.calls.map(c => c[0])).toEqual(['xe khách Sài Gòn Đà Lạt site:vexere.com/vi-VN', 'tàu Sài Gòn Đà Lạt site:vexere.com/vn/ve-tau-hoa'])
+    expect(result.train_booking_link).toBeUndefined()
     expect(result.vexere_link).toBe('https://vexere.com/vi-VN/ve-xe-khach-tu-sai-gon-di-da-lat-lam-dong-129t23991.html?date=10-10-2026')
     const facts = result._tappy_commerce as RouteHandoffFacts[]
     expect(facts.map(f => [f.providerId, f.kind, f.guestDepth, f.authRequiredAt])).toEqual([['vexere', 'SEARCH_HANDOFF', 4, 'none']])
@@ -181,7 +182,7 @@ describe('a NAMED merchant narrows the whole turn (Final local live UAT, 14 Sep 
     const kept = result.search_results as Row[]
     expect(kept.map(r => r.title)).toEqual(['Golden Holiday Hotel - Hoi An - Booking.com', 'Bed Station Hostel Hoi An']) // Phú Yên refused
     expect(links(kept[0])).toEqual([]) // a Booking.com row gets no Booking.com link under an Agoda request
-    expect(links(kept[1]).map(l => [l.providerId, l.kind])).toEqual([['agoda', 'DIRECT_DEEP_LINK']])
+    expect(links(kept[1]).map(l => [l.providerId, l.kind])).toEqual([['agoda', 'AFFILIATE_DEEP_LINK']]) // T5 (29 Oct 2026): the partner cid
     expect(kept.every(r => r._tappy_requested_provider === 'agoda')).toBe(true)
     expect(result.booking_link).toBeUndefined()
     expect(result.agoda_link).toBe('https://www.agoda.com/vi-vn/')
@@ -246,10 +247,10 @@ describe('hotels — the OTA rows become subject links with the stay; no landing
     expect(got.every(l => l.depth >= 2 && l.kind !== 'SEARCH_HANDOFF')).toBe(true)
   })
 
-  it('an Agoda row gets its property link labelled as a look (guest L3, no boundary), never a booking promise', async () => {
+  it('an Agoda row without dates gets its bare property page (L3 link, guest L4 like Booking.com since 29 Oct 2026, no boundary), carrying the partner cid (T6)', async () => {
     const row = { title: 'Dai Long Hotel | Hoi An', link: 'https://www.agoda.com/vi-vn/dai-long-hotel/hotel/hoi-an-vn.html', snippet: '' }
     await attachCommerceLinks('get_hotel_prices', { search_results: [row] }, { enabled: true, now: NOW, search: noSearch, location: 'Hội An' })
     const got = links(row)
-    expect(got.map(l => [l.providerId, l.kind, l.guestDepth, l.authenticatedDepth, l.handoff])).toEqual([['agoda', 'DETAIL_HANDOFF', 3, null, 'guest']])
+    expect(got.map(l => [l.providerId, l.kind, l.depth, l.guestDepth, l.authenticatedDepth, l.handoff])).toEqual([['agoda', 'AFFILIATE_DEEP_LINK', 3, 4, null, 'guest']])
   })
 })

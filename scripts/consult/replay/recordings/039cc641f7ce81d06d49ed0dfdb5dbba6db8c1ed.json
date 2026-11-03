@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "free English conversation listening podcast transcript beginner slow English",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:34:31.575Z",
+ "body": {
+  "searchParameters": {
+   "q": "free English conversation listening podcast transcript beginner slow English",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Slow English Listening & Fluency Practice",
+    "link": "https://www.youtube.com/watch?v=aNYEtGxjGVc",
+    "snippet": "Learn English with Podcast | Slow English Listening & Fluency Practice | A1 & A2 Shadowing Practice · Comments.",
+    "position": 1
+   },
+   {
+    "title": "30 Minute Easy Listening Slow English Podcast ...",
+    "link": "https://www.youtube.com/watch?v=YzLAcTmwAx0",
+    "snippet": "Comments · English Podcast for Motivation | Learn English for Conversation Practice Shadowing | Easy Listening · Learn English with Podcast | A ...",
+    "position": 2
+   },
+   {
+    "title": "Learn English and listen to English with podcasts in English",
+    "link": "https://www.podcastsinenglish.com/",
+    "snippet": "An excellent site where you can choose which podcast to listen to according to level. All podcasts are accompanied by worksheets, tapescripts, and vocabulary ...",
+    "position": 3
+   },
+   {
+    "title": "The Best English Podcast With Transcripts To Improve ...",
+    "link": "https://realenglishconversations.com/english-podcast-with-transcripts/",
+    "snippet": "Learn to easily understand English with this English podcast with transcripts, where you'll hear natural conversations, cool phrases and fun stories while ...",
+    "position": 4
+   },
+   {
+    "title": "SLOW ENGLISH PODCAST (A1-A2) With Subtitles",
+    "link": "https://open.spotify.com/show/3nZEeTPQnPMYelBzNDOBCX",
+    "snippet": "Slow English listening practice for A1–A2 learners about Talking About Creativity ✨Full Transcript + Study Pack (Only $3.99/month): ...",
+    "position": 5
+   },
+   {
+    "title": "A1 English Listening Practice | Slow English Podcast",
+    "link": "https://www.facebook.com/SlowEnglishPodcastVN/videos/learning-english-podcast-for-beginners-a1-english-listening-practice/1237850775217819/",
+    "snippet": "This video features a host from the \"A1 English Listening Practice\" channel, providing three easy tips for beginners to practice English. The ...",
+    "position": 6
+   },
+   {
+    "title": "Slow Listening & Shadowing for Beginners (A1- A2)",
+    "link": "https://www.youtube.com/watch?v=-SOVLf-g0ZM",
+    "snippet": "In this slow English podcast, Tom talks clearly and gently about how to keep going — even when it feels hard. This episode is perfect for ...",
+    "position": 7
+   },
+   {
+    "title": "English Podcasts with Free Transcripts",
+    "link": "https://www.leonardoenglish.com/free-transcripts",
+    "snippet": "Learn English and improve your listening skills with podcasts with free transcripts and subtitles. Each podcast has a transcript, vocabulary list and a quiz ...",
+    "rating": 5,
+    "ratingCount": 184,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

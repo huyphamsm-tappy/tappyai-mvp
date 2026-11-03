@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "vốn điều lệ tối thiểu công ty TNHH Việt Nam ngành nghề vốn pháp định cổng thông tin chính phủ",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T16:55:32.711Z",
+ "body": {
+  "searchParameters": {
+   "q": "vốn điều lệ tối thiểu công ty TNHH Việt Nam ngành nghề vốn pháp định cổng thông tin chính phủ",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Lĩnh vực Tài chính - Kinh doanh dịch vụ kiểm toán",
+    "link": "https://dangkykinhdoanh.gov.vn/vn/Pages/ChitietNN.aspx?lvID=3&nnID=42",
+    "snippet": "... Chính phủ quy định: Thành viên là tổ chức được góp tối đa 35% vốn điều lệ của công ty TNHH hai thành viên trở lên. Trường hợp có nhiều tổ chức góp vốn thì tổng ...",
+    "position": 1
+   },
+   {
+    "title": "Thành lập công ty TNHH cần bao nhiêu vốn điều lệ tối thiểu?",
+    "link": "https://thuequanghuy.vn/von-thanh-lap-cong-ty-tnhh",
+    "snippet": "Theo quy định, công ty này phải đảm bảo có một mức vốn pháp định tối thiểu là 300 tỷ đồng để đảm bảo khả năng thanh toán các bồi thường và các chi phí khác ...",
+    "position": 2
+   },
+   {
+    "title": "Vốn pháp định là gì? Khác gì vốn điều lệ",
+    "link": "https://luatvietnam.vn/doanh-nghiep/von-phap-dinh-la-gi-561-97286-article.html",
+    "snippet": "Vốn pháp định là mức vốn tối thiểu mà doanh nghiệp phải có theo quy định để thành lập và hoạt động. Vậy cụ thể vốn pháp định là gì?",
+    "date": "7 thg 4, 2024",
+    "position": 3
+   },
+   {
+    "title": "Thành Lập Công Ty TNHH Cần Bao Nhiêu Vốn? Quy Định ...",
+    "link": "https://luatthanhdo.com.vn/thanh-lap-cong-ty-tnhh-can-bao-nhieu-von-1",
+    "snippet": "Hiện tại, pháp luật Việt Nam không quy định mức vốn điều lệ tối thiểu chung khi thành lập công ty TNHH. Tuy nhiên, một số ngành, nghề kinh doanh ...",
+    "date": "21 thg 10, 2025",
+    "position": 4
+   },
+   {
+    "title": "Vốn pháp định là gì? Danh mục các ngành nghề yêu cầu ...",
+    "link": "https://amis.misa.vn/33717/von-phap-dinh/",
+    "snippet": "Theo quy định, vốn pháp định tối thiểu là 20 tỷ đồng. Ngành vận tải và logistics. Yêu cầu vốn pháp định khác nhau tùy loại hình vận tải, ví dụ: ...",
+    "date": "16 thg 3, 2025",
+    "position": 5
+   },
+   {
+    "title": "Quy định mới về thành lập, chuyển đổi doanh nghiệp do ...",
+    "link": "https://www.nghean.gov.vn/tuyen-truyen-pho-bien-huong-dan-thuc-hien-phap-luat-che-do-chinh-sach/quy-dinh-moi-ve-thanh-lap-chuyen-doi-doanh-nghiep-do-nha-nuoc-nam-giu-100-von-dieu-le-488828",
+    "snippet": "Doanh nghiệp khi thành lập phải có mức vốn điều lệ không thấp hơn 100 tỷ đồng. Trường hợp kinh doanh những ngành, nghề quy định phải có vốn pháp ...",
+    "date": "6 thg 4, 2022",
+    "position": 6
+   },
+   {
+    "title": "Vốn Điều Lệ Tối Thiểu Bao Nhiêu Để Thành Lập Công Ty ...",
+    "link": "https://vietaustralia.com/vn/von-dieu-le-toi-thieu-la-bao-nhieu-de-thanh-lap-cong-ty/",
+    "snippet": "Vốn điều lệ tối thiểu phải đủ để duy trì hoạt động kinh doanh của công ty trong ít nhất 6 tháng đầu tiên. · Vốn điều lệ tối thiểu phải cao hơn ...",
+    "date": "30 thg 6, 2023",
+    "position": 7
+   },
+   {
+    "title": "Vốn điều lệ tối thiểu khi thành lập công ty là bao nhiêu?",
+    "link": "https://pbgdpl.caobang.gov.vn/ho-tro-phap-ly-cho-doanh-nghiep-nho-va-vua/von-dieu-le-toi-thieu-khi-thanh-lap-cong-ty-la-bao-nhieu-1049470",
+    "snippet": "- Kê khai khống vốn điều lệ có giá trị từ 10 tỷ đồng đến dưới 20 tỷ đồng: Phạt 30 - 40 triệu đồng. - Kê khai khống vốn điều lệ có giá trị từ 20 tỷ đồng đến dưới ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

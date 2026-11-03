@@ -1,0 +1,47 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "khách sạn My Khe Beach, Da Nang",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@16.0544,108.2022,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:16:19.433Z",
+ "body": {
+  "searchParameters": {
+   "q": "khách sạn My Khe Beach, Da Nang",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@16.0544,108.2022,14z",
+   "engine": "google"
+  },
+  "ll": "@16.0606128,108.2433424,18.0536z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Mỹ Khê Beach Hotel",
+    "address": "254 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.060612799999998,
+    "longitude": 108.2459173,
+    "rating": 3.8,
+    "ratingCount": 469,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Sân pickleball"
+    ],
+    "website": "http://www.mykhebeachhotel.com/",
+    "phoneNumber": "+84 905 567 894",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmQCsRPNu9YPwHQzMA_vY_WXm30tUIh09Fizq2JsPGDxmGSqib7jg3DCkjroXCeIZgH3n-Oy-kWFv_xNPdGkZj6cMLW6qz-EgCr-bFgDgoSRsWOWQPZQMQZqZ5r8bFSCrq43bPWSTvEJiOQ",
+    "cid": "3772200002263076145",
+    "fid": "0x3142177883fcc497:0x34598bea849e4d31",
+    "placeId": "ChIJl8T8g3gXQjERMU2ehOqLWTQ"
+   }
+  ],
+  "credits": 3
+ }
+}

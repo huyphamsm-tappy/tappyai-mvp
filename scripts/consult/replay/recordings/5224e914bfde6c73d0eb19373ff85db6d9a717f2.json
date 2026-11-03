@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"NHÀ HÀNG NGON\" OR \"Secret Garden\" OR \"Viet Kitchen\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:08:39.969Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"NHÀ HÀNG NGON\" OR \"Secret Garden\" OR \"Viet Kitchen\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Secret Garden Vietnamese Dishes at Ann Garden",
+    "link": "https://www.tiktok.com/@secretgardencatba/video/7601181989751819540",
+    "snippet": "The vegetables travel straight from the garden to Secret Garden, where they are prepared with respect for their origin. This is not just food.",
+    "position": 1
+   },
+   {
+    "title": "Discover NK Viet Kitchen: A Vietnamese Gem in Hollywood",
+    "link": "https://www.tiktok.com/@treatyoselfeverywhere/video/7503929972520701214",
+    "snippet": "This new restaurant in South Florida is a true gem Name: NK Viet Kitchen- Cơm Gà Ninh Kiều 3373 Sheridan St, Hollywood, FL 33021 # ...",
+    "position": 2
+   },
+   {
+    "title": "🍤🍜 JAM VIET KITCHEN 🍜🍤 is a delicious modern style ...",
+    "link": "https://www.tiktok.com/@chrristiinnee/video/7678845896053886239",
+    "snippet": "JAM VIET KITCHEN is a delicious modern style Vietnamese restaurant that you definitely need to check out! Think creative cocktails ...",
+    "position": 3
+   },
+   {
+    "title": "Secret Garden Restaurant (@secretgarden.19lck)",
+    "link": "https://www.tiktok.com/@secretgarden.19lck",
+    "snippet": "Secret Garden - 19 Lê Công Kiều, P. Bến Thành, Quận 1. Vừa ăn tối vừa chill trong một không gian trong lành, mát mẻ hay cảm.",
+    "position": 4
+   },
+   {
+    "title": "USED-The Secret Garden by Hautzig, Deborah (Paperback)",
+    "link": "https://shop.tiktok.com/us/pdp/the-secret-garden-by-hautzig-deborah-paperback-full-color-illustrations/1731888457452917450",
+    "snippet": "Buy USED-The Secret Garden by Hautzig, Deborah (Paperback) on TikTok Shop. Discover great prices on and get free shipping on eligible items.",
+    "position": 5
+   },
+   {
+    "title": "pleasantly surprised with this hidden gem📍Secret Garden, ...",
+    "link": "https://www.tiktok.com/@brandneweats/video/7274913856378490113",
+    "snippet": "But I think the overall experience makes it worth it, especially if you are tourist. pleasantly surprised with this hidden gem Secret Garden, ...",
+    "position": 6
+   },
+   {
+    "title": "Secret Garden Magnetic Palette",
+    "link": "https://shop.tiktok.com/us/pdp/eyeshadow-palette-secret-garden-25-pan-vegan-palette-with-multi-chromes/1730273895147409526",
+    "snippet": "Buy Secret Garden Magnetic Palette on TikTok Shop. Discover great prices on and get free shipping on eligible items. Shop now for exclusive deals!",
+    "position": 7
+   },
+   {
+    "title": "Secret Garden - Mini Luminary Soy Wax Candle",
+    "link": "https://shop.tiktok.com/us/pdp/secret-garden-mini-luminary-soy-wax-candle-botanical-fragrance/1731993306266898687",
+    "snippet": "The Secret Garden Candle Scent invites you to step into an enchanting garden filled with nature's beauty. This fresh and botanical fragrance combines a ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

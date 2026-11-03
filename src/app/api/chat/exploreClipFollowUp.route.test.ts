@@ -19,7 +19,7 @@
  * options, the place provider to return fixed rows. Nothing about providers or ranking changes.
  */
 
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { __resetAiQuestionQuotaLocal } from '@/lib/ai/quota/aiQuestionQuota'
 
 const REVIEW = '9d4cdf3b-a93f-427c-880a-9950472e3705'
@@ -104,6 +104,12 @@ vi.mock('@/lib/ai/tools/food', async (importOriginal) => {
 })
 
 import { POST } from '@/app/api/chat/route'
+// R42 R3 (LOC-DEFAULT-HCM-01 regression run): no network, ever — a fetch the mocks above do not cover fails at once instead of going online.
+beforeEach(() => { vi.stubGlobal('fetch', async (input: unknown) => { throw new Error('network disabled in this test: ' + String(input).slice(0, 60)) }) })
+afterEach(() => { vi.unstubAllGlobals() })
+// R42 R4: the fixture rows carry website_uri, so the photo lookup reads the site's og:image over node:https (common.ts fetchOfficialWebsiteImage →
+// safeGetText, not fetch). That one read fails here like an unreachable site, which the lookup already treats as "no image" (common.ts catch → null).
+vi.mock('@/lib/security/safeFetch', async (importOriginal) => ({ ...(await importOriginal<typeof import('@/lib/security/safeFetch')>()), safeGetText: async () => { throw new Error('network disabled in this test: website image') } }))
 
 const ROW = {
   id: REVIEW,

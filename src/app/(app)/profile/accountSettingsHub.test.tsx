@@ -8,7 +8,7 @@ vi.mock('next/navigation', () => ({
   useSearchParams: () => new URLSearchParams(),
 }))
 
-import { AccountSettingsHub, accountRows, settingsRows, signInHref } from './ProfileRows'
+import { AccountSettingsHub, ProfileRowList, accountRows, accountHubRows, accountMoreRows, settingsRows, signInHref } from './ProfileRows'
 import { setLocale } from '@/lib/i18n/useTranslation'
 
 // "Tài khoản & Cài đặt" — owner reference 2026-09-22. Header + TÀI KHOẢN card + CÀI ĐẶT card,
@@ -43,20 +43,19 @@ describe('Account & Settings hub', () => {
     expect(settings.textContent).toContain('Tùy chỉnh ứng dụng theo sở thích của bạn')
   })
 
-  it('the account card lists the reference rows in order, with correct hrefs', () => {
+  it('the account card is compact: one row to /profile/account', () => {
     const { container } = render(<AccountSettingsHub />)
     const hrefs = hrefsIn(container.querySelector('[data-hub-group="account"]')!)
-    expect(hrefs).toEqual(accountRows().map((r) => r.href))
-    const positions = DESIGN_ACCOUNT_ROUTES.map((r) => hrefs.indexOf(r))
-    expect(positions.every((p) => p >= 0)).toBe(true)
-    expect([...positions].sort((a, b) => a - b)).toEqual(positions)
+    expect(hrefs).toEqual(['/profile/account'])
   })
 
-  it('each account row carries the reference title', () => {
-    const { container } = render(<AccountSettingsHub />)
-    const account = container.querySelector('[data-hub-group="account"]') as HTMLElement
-    const row = (href: string) => account.querySelector(`a[href="${href}"]`)!.textContent
-    expect(row('/profile/account')).toContain('Thông tin cá nhân')
+  it('the full reference inventory stays reachable, in order, via the Account page list', () => {
+    const all = [accountRows()[0], ...accountMoreRows()].map((r) => r.href)
+    const positions = DESIGN_ACCOUNT_ROUTES.map((r) => all.indexOf(r))
+    expect(positions.every((p) => p >= 0)).toBe(true)
+    expect([...positions].sort((a, b) => a - b)).toEqual(positions)
+    const { container } = render(<ProfileRowList rows={accountMoreRows()} />)
+    const row = (href: string) => container.querySelector(`a[href="${href}"]`)!.textContent
     expect(row('/profile/history')).toContain('Lịch sử chat')
     expect(row('/profile/bookings')).toContain('Lịch đặt chỗ')
     expect(row('/profile/preferences')).toContain('Sở thích của tôi')
@@ -78,7 +77,7 @@ describe('Account & Settings hub', () => {
   it('the guest variant locks every row behind sign-in with the real returnTo', () => {
     const { container } = render(<AccountSettingsHub locked />)
     const all = hrefsIn(container.querySelector('[data-account-hub]')!)
-    expect(all).toEqual([...accountRows(), ...settingsRows()].map((r) => signInHref(r.href)))
+    expect(all).toEqual([...accountHubRows(), ...settingsRows()].map((r) => signInHref(r.href)))
   })
 
   it('uses a local mascot asset, never a remote image', () => {

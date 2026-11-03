@@ -35,9 +35,10 @@ export default function SplitBillPage() {
     { id: 1, name: t('splitBill.personDefaultName', { n: '1' }), amount: '' },
     { id: 2, name: t('splitBill.personDefaultName', { n: '2' }), amount: '' },
   ])
-  let nextId = persons.length + 1
-
-  const activeTip = customTip !== '' ? parseFloat(customTip) || 0 : tip
+  // tip === -1 is a sentinel for "a preset was deselected because a custom tip is being typed".
+  // It must never reach the arithmetic: clearing the custom field fell back to it and applied a
+  // −1 % tip. A negative custom tip is clamped the same way.
+  const activeTip = customTip !== '' ? Math.max(0, parseFloat(customTip) || 0) : Math.max(0, tip)
   const totalNum = parseFloat(total.replace(/[^0-9.]/g, '')) || 0
   const grandTotal = totalNum * (1 + activeTip / 100)
   const perPerson = people > 0 ? grandTotal / people : 0
@@ -47,8 +48,14 @@ export default function SplitBillPage() {
   }, [persons])
   const customGrand = customTotal * (1 + activeTip / 100)
 
+  // The new id is derived from the CURRENT list inside the updater, never from persons.length:
+  // after a removal the length-based id was re-issued while still in use, and two rows then
+  // shared one key (one row vanished, and both edited together).
   function addPerson() {
-    setPersons(prev => [...prev, { id: nextId++, name: t('splitBill.personDefaultName', { n: String(prev.length + 1) }), amount: '' }])
+    setPersons(prev => {
+      const id = prev.reduce((m, p) => Math.max(m, p.id), 0) + 1
+      return [...prev, { id, name: t('splitBill.personDefaultName', { n: String(prev.length + 1) }), amount: '' }]
+    })
   }
   function removePerson(id: number) {
     if (persons.length <= 2) return

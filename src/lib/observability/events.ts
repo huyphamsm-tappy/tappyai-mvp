@@ -66,6 +66,24 @@ export interface UsageEvent {
   providerId: string
   /** Semantic role the route asked for: 'fast' | 'smart' | 'planning' | 'vision'. */
   modelRole: string
+  /**
+   * WHICH KIND OF DECISION this turn was: 'places' | 'hotel' | 'shopping' |
+   * 'transport', or null for anything that is not choosing something.
+   *
+   * Added because cost-per-FEATURE was the one attribution the cost model was
+   * asked for and could not compute. `intent` is only 'chitchat' | 'tool', so
+   * every weather lookup, news query, hotel search and product comparison
+   * collapsed into one bucket called "tool" — and those turns differ by
+   * thousands of tokens and by whether they run the ranking pipeline at all.
+   * Without this, "shopping got more expensive" is not a statement the data can
+   * make.
+   *
+   * A closed four-value vocabulary from `NeedProfile['domain']`, derived
+   * deterministically from the conversation. It is a CATEGORY, not content: it
+   * cannot carry a query, a place name, a product, or anything that resolves to
+   * a person, which is the bar every field on this type has to clear.
+   */
+  decisionDomain: string | null
   /** t0 → the model request being sent. Our own pre-flight work (auth, quota, prompt build). */
   preModelMs: number | null
   /** t0 → first text token back. null when the turn produced no text. */
@@ -306,8 +324,45 @@ export interface CommerceHandoffEvent {
   platform?: string
 }
 
+/**
+ * Phase 8 agent runtime (TAPPY_AGENT=2): one summary per agent run. Counters and closed vocabularies only — the full per-round
+ * trace (queries, tool names, guard stages) stays in the runtime's console line `tappyai_agent_run_trace`; this record is what may
+ * reach Cloud Logging. `traceId` is a random UUID per run (joins the two), `sessionHash` a truncated sha256 — neither resolves to a person.
+ */
+export interface AgentRunEvent {
+  type: 'tappyai_agent_run'
+  traceId: string
+  sessionHash?: string
+  /** answered | asked | answered_after_tool_budget | answered_after_time_budget | model_error | aborted */
+  agentStatus: string
+  /** model_answered | asked | tool_budget | round_budget | time_budget | model_error | aborted */
+  stopReason: string
+  /** text | ask | cards | plan */
+  outputType: string
+  providerId: string
+  modelRole: string
+  modelRounds: number
+  toolCalls: number
+  serperCredits: number
+  serperLimit: number
+  timeouts: number
+  retries: number
+  budgetRefusals: number
+  errors: number
+  guardChanges: number
+  promptTokens: number
+  completionTokens: number
+  costMicroUsd: number
+  elapsedMs: number
+  /** M3 research counters. */
+  pageReads?: number
+  evidenceItems?: number
+  conflicts?: number
+}
+
 export type ObservabilityEvent =
   | UsageEvent
+  | AgentRunEvent
   | TtsRequestEvent
   | TtsMetricsEvent
   | TtsFailureEvent
@@ -332,6 +387,7 @@ export type ObservabilityEvent =
  */
 const SEVERITY: Record<ObservabilityEvent['type'], EventSeverity> = {
   tappyai_usage: 'INFO',
+  tappyai_agent_run: 'INFO',
   tts_request: 'INFO',
   tts_metrics: 'INFO',
   tts_failure: 'ERROR',
@@ -378,6 +434,8 @@ export const ALLOWED_PAYLOAD_KEYS: ReadonlySet<string> = new Set([
   // P1-3 cost attribution: which adapter/role served the turn, and the latency marks that
   // separate provider time from our own. Numbers and closed vocabularies only.
   'modelRole', 'preModelMs', 'ttftMs', 'modelFinishMs', 'ttuaMs', 'postModelMs', 'toolMs',
+  // Cost per FEATURE. A four-value category, never a query or a place name.
+  'decisionDomain',
   // tts counters — charactersSynthesized and characters are COUNTS, never the characters themselves
   'requests', 'cacheHits', 'cacheMisses', 'charactersSynthesized', 'errors', 'totalLatencyMs',
   'characters', 'cacheHit',
@@ -391,6 +449,11 @@ export const ALLOWED_PAYLOAD_KEYS: ReadonlySet<string> = new Set([
   'linkId', 'depth', 'guestDepth', 'authenticatedDepth', 'authRequiredAt', 'paramsPreserved', 'paramsDropped',
   'trackingPresent', 'trackingNetwork', 'expiresAt', 'confidence', 'linkDigest',
   'method', 'ms',
+  // Phase 8 agent run summary (AgentRunEvent): ids are a random per-run UUID; everything else counters / closed vocabularies.
+  'traceId', 'agentStatus', 'stopReason', 'outputType', 'modelRounds', 'serperCredits', 'serperLimit', 'timeouts', 'retries',
+  'budgetRefusals', 'guardChanges', 'costMicroUsd',
+  // Phase 8 M3 research counters (numbers only).
+  'pageReads', 'evidenceItems', 'conflicts',
 ])
 
 /**

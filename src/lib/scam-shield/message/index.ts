@@ -7,7 +7,9 @@ import { planAnalysis } from './router'
 import { fuseRisk } from './fusion'
 import { buildAdvice } from './advice'
 import { getAntiFraudAnalyzer, type AntiFraudAnalyzer } from './ai/analyzer'
-import { MAX_ENTITIES_PER_KIND, OCR_MAX_CHARS } from './config'
+import { MAX_ENTITIES_PER_KIND, OCR_MAX_CHARS, isScamShieldAiEnabled } from './config'
+import { matchScenario } from '../knowledge/match'
+import { messageVerdict, publicLevel, scenarioBlock } from '../verdict'
 
 // Scam Shield · message analysis — the pipeline.
 //
@@ -31,12 +33,15 @@ export interface AnalyzeOptions {
   urlChecker?: UrlChecker
   analyzer?: AntiFraudAnalyzer
   abortSignal?: AbortSignal
+  /** Test seam; production reads `SCAM_SHIELD_AI_ENABLED` (default OFF — no model is ever called). */
+  aiEnabled?: boolean
 }
 
 export async function analyzeMessage(
   input: MessageAnalysisInput,
   options: AnalyzeOptions = {},
 ): Promise<MessageAnalysisResult> {
+  const aiEnabled = options.aiEnabled ?? isScamShieldAiEnabled()
   const analyzer = options.analyzer ?? getAntiFraudAnalyzer()
   const inputType: MessageInputType = input.image ? 'screenshot' : 'message'
 
@@ -64,7 +69,7 @@ export async function analyzeMessage(
   let ocrFailed = false
   let ocrUsage: AnalysisMeta['usage'] | undefined
   if (input.image) {
-    if (analyzer.isAvailable() && analyzer.capabilities.image && (await gate()).allowed) {
+    if (aiEnabled && analyzer.isAvailable() && analyzer.capabilities.image && (await gate()).allowed) {
       const ocr = await analyzer.extractText({ image: input.image.bytes, mimeType: input.image.mimeType })
       if (ocr.status === 'ok') {
         extractedText = ocr.text.slice(0, OCR_MAX_CHARS)
@@ -108,8 +113,9 @@ export async function analyzeMessage(
   let usage = ocrUsage
   let tier = plan.tier
 
-  const decision = tier === 0 ? null : analyzer.isAvailable() ? await gate() : null
-  if (tier === 0) {
+  const decision = tier === 0 || !aiEnabled ? null : analyzer.isAvailable() ? await gate() : null
+  if (tier === 0 || !aiEnabled) {
+    // 02/10: with the AI switch off (default) no model is consulted and no question is spent.
     aiStatus = 'not_needed'
   } else if (!analyzer.isAvailable()) {
     aiStatus = 'unavailable'
@@ -142,13 +148,20 @@ export async function analyzeMessage(
     tier = callTier
   }
 
+  // ── Static scenario library (the 25 Bộ Công an scenarios). Works on a SHORT description too.
+  // A match turns a would-be LEVEL 0 "bare link" into a real message verdict: "phạt nguội + link".
+  const scenario = matchScenario(normalized.text)
+  const fusionTier: AnalysisTier = tier === 0 && scenario ? 1 : tier
+
   // ── Fuse and advise.
-  const fused = fuseRisk({ tier, rules, ai, urlChecks, locale: input.locale }, aiStatus === 'used' || aiStatus === 'failed')
-  const advice = buildAdvice({ level: fused.level, signals: fused.signals, attackGoal: fused.attackGoal, urlChecks })
+  const fused = fuseRisk({ tier: fusionTier, rules, ai, urlChecks, locale: input.locale, scenario }, aiStatus === 'used' || aiStatus === 'failed')
+  const advice = buildAdvice({ level: fused.level, signals: fused.signals, attackGoal: fused.attackGoal, urlChecks, scenario })
+  const verdict = messageVerdict(fused.level, scenario)
 
   const result: MessageAnalysisResult = {
     inputType,
-    risk: { level: fused.level, score: fused.score, confidence: fused.confidence },
+    // The public level never says SAFE/LOW (old Android/iOS builds would print "An toàn"); see verdict.ts.
+    risk: { level: publicLevel(fused.level), score: fused.score, confidence: fused.confidence },
     scamType: fused.scamType,
     attackGoal: fused.attackGoal,
     signals: fused.signals,
@@ -163,8 +176,10 @@ export async function analyzeMessage(
     urlChecks,
     advice,
     reasoningSummary: fused.reasoningSummary,
-    analysis: { tier, aiStatus, provider, modelRole, ...(usage ? { usage } : {}) },
+    analysis: { tier: aiEnabled ? tier : 0, aiStatus, provider, modelRole, ...(usage ? { usage } : {}) },
     analyzedAt: Date.now(),
+    verdict,
+    scenario: scenario && verdict !== 'unrecognized' ? scenarioBlock(scenario) : null,
   }
   if (extractedText !== undefined) result.extractedText = extractedText
   return result

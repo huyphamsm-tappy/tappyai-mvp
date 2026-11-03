@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:support.apple.com/en-us check Activation Lock before buying used Mac erase setup Mac",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:38:06.420Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:support.apple.com/en-us check Activation Lock before buying used Mac erase setup Mac",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Activation Lock for Mac",
+    "link": "https://support.apple.com/en-us/102541",
+    "snippet": "With Activation Lock, your Apple Account password or device passcode is required before anyone can turn off Find My, erase your Mac, or ...",
+    "date": "5 thg 6, 2026",
+    "position": 1
+   },
+   {
+    "title": "Activation Lock for iPhone and iPad",
+    "link": "https://support.apple.com/en-us/108794",
+    "snippet": "Check for Activation Lock before you buy a device from someone else. Before ... Don't take ownership of any used iPhone or iPad until it's been erased.",
+    "position": 2
+   },
+   {
+    "title": "How to remove Activation Lock",
+    "link": "https://support.apple.com/en-us/108934",
+    "snippet": "Start a support request. If you need help removing Activation Lock, and have proof of purchase documentation, you can start an Activation Lock ...",
+    "date": "27 thg 5, 2026",
+    "position": 3
+   },
+   {
+    "title": "If you want to buy a preowned iPhone",
+    "link": "https://support.apple.com/en-us/104999",
+    "snippet": "If you see iPhone Locked to Owner when you turn on or wake the iPhone and you're with the seller, ask them to enter their password to turn off Activation Lock.",
+    "position": 4
+   },
+   {
+    "title": "About Activation Lock on your Apple Watch",
+    "link": "https://support.apple.com/en-us/102573",
+    "snippet": "With Activation Lock, your Apple Account email address or phone number and password are required before anyone can: Unpair your Apple Watch from your iPhone.",
+    "position": 5
+   },
+   {
+    "title": "If a part is locked to someone else's Apple Account",
+    "link": "https://support.apple.com/en-us/120610",
+    "snippet": "Unlock the part by removing Activation Lock · Go to iCloud.com/find and sign in with the Apple Account linked to the previously used part.",
+    "date": "29 thg 4, 2026",
+    "position": 6
+   },
+   {
+    "title": "About Activation Lock on Apple Vision Pro",
+    "link": "https://support.apple.com/en-us/118489",
+    "snippet": "To turn off Activation Lock, turn off Find My in Settings. Or sign out of your Apple Account on your Vision Pro. If you no longer have access to ...",
+    "date": "14 thg 11, 2024",
+    "position": 7
+   },
+   {
+    "title": "Before you sell, give away, or trade in your Apple Watch",
+    "link": "https://support.apple.com/en-us/102542",
+    "snippet": "You need to turn off Activation Lock and remove your personal information from your device: Keep your Apple Watch and iPhone close together.",
+    "date": "14 thg 9, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

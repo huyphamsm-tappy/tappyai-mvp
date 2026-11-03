@@ -1,0 +1,33 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:support.apple.com/en-us/111851 AirPods Pro 2 up to 6 hours listening ANC 30 hours charging case battery test",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:37:13.671Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:support.apple.com/en-us/111851 AirPods Pro 2 up to 6 hours listening ANC 30 hours charging case battery test",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "searchInformation": {
+   "showingResultsFor": "site:support.apple.com/en-us/111851 AirPods Pro 2 up to 6 hours listening AND 30 hours charging case battery test"
+  },
+  "organic": [
+   {
+    "title": "AirPods Pro 2 - Tech Specs",
+    "link": "https://support.apple.com/en-us/111851",
+    "snippet": "With Spatial Audio and Head Tracking enabled, listening time was up to 5.5 hours. Testing consisted of full AirPods Pro battery discharge while playing audio ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

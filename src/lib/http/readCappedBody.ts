@@ -55,8 +55,13 @@ export async function readCappedBody(req: Request, max = RAW_BODY_MAX_BYTES): Pr
   return { ok: true, text: new TextDecoder().decode(all) }
 }
 
-/** A chat body with no image part must fit the text ceiling. Checked on the raw text, pre-parse. */
+/**
+ * A chat body with no image part must fit the text ceiling. Checked on the raw text, pre-parse.
+ * 31/10: the web client sends a picture or a PDF as an `experimental_attachments` entry with a `contentType`, never as a `"type":"image"`
+ * part, so every web picture over 256 KB was refused here as "too long". Such an entry counts as a media part too; the input contract
+ * (clientInput.ts) still bounds each attachment, and the raw ceiling above bounds the body.
+ */
 export function exceedsTextCeiling(raw: string): boolean {
   if (Buffer.byteLength(raw, 'utf8') <= TEXT_BODY_MAX_BYTES) return false
-  return !/"type"\s*:\s*"image"/.test(raw)
+  return !/"type"\s*:\s*"image"|"contentType"\s*:\s*"(?:image\/(?:png|jpeg|webp|gif)|application\/pdf)"/.test(raw)
 }

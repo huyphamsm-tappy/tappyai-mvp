@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Nhà hàng chay Phương Mai\" OR \"Hàng Dương Quán Quận 1\" OR \"Hoang Yen Buffet Premier\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:37:46.872Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Nhà hàng chay Phương Mai\" OR \"Hàng Dương Quán Quận 1\" OR \"Hoang Yen Buffet Premier\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nhà hàng chay Phương Mai: Điểm đến tuyệt vời cho thực ...",
+    "link": "https://www.tiktok.com/@xiathichanchaynek/video/7523829987942763794",
+    "snippet": "Có tuổi đời hơn 10 năm, nhà hàng chay Phương Mai đã không làm mình thất vọng từ không gian cho đến chất lượng món ăn, mê chỗ này lắm mấy ní ơi!",
+    "position": 1
+   },
+   {
+    "title": "Nhà hàng chay Phương Mai Quận 1 – không gian yên bình ...",
+    "link": "https://www.tiktok.com/@pvtoby/video/7678216948299140353",
+    "snippet": "Lead Nhà hàng Chay Phương Mai ở Quận 1 là một địa chỉ chay có tuổi đời hơn 10 năm, nổi bật với không gian yên bình và tiếng nước chảy róc ...",
+    "position": 2
+   },
+   {
+    "title": "Nhà Hàng Chay Phương Mai (@lan.calla)",
+    "link": "https://www.tiktok.com/@lan.calla",
+    "snippet": "Nhà Hàng Chay Phương Mai · @lan.calla · Hẻm 82 nhà số 86F Võ Thị Sáu, F. Tân Định (quận 1 cũ) Tp. HCM Hotline / Zalo: 0888.339.257.",
+    "position": 3
+   },
+   {
+    "title": "Trải nghiệm buffet Premier tuyệt vời",
+    "link": "https://www.tiktok.com/@hoangyengroup.official/video/7517277800148028690",
+    "snippet": "Hoàng Yến Buffet Premier TẶNG NGAY 1 lon nước ngọt với lượt order đầu tiên ... Hoàng Yến Buffet Premier! Ưu đãi cực chất: Giảm đến 10% - Tặng món siêu ...",
+    "position": 4
+   },
+   {
+    "title": "... thẩm nhiênG...❤️ #nhahangchayphuongmai # ...",
+    "link": "https://www.tiktok.com/@lan.calla/video/7555731554866040072",
+    "snippet": "218 Lượt thích,Video TikTok từ Nhà Hàng Chay Phương Mai (@lan.calla): \"... thẩm nhiênG...❤️ #nhahangchayphuongmai #vegetarianrestaurant ...",
+    "position": 5
+   },
+   {
+    "title": "Nhà hàng chay Phương Mai Quận 1 – không gian yên bình hơn ...",
+    "link": "https://vt.tiktok.com/ZSVVdHRxX/",
+    "snippet": "Lead Nhà hàng Chay Phương Mai ở Quận 1 là một địa chỉ chay có tuổi đời hơn 10 năm, nổi bật với không gian yên bình và tiếng nước chảy róc rách tạo cảm giác ...",
+    "position": 6
+   },
+   {
+    "title": "âm thanh gốc - Nhà Hàng Chay Phương Mai",
+    "link": "https://www.tiktok.com/music/%C3%A2m-thanh-g%E1%BB%91c-Nh%C3%A0-H%C3%A0ng-Chay-Ph%C6%B0%C6%A1ng-Mai-7666888284526365456",
+    "snippet": "Bài hát âm thanh gốc - Nhà Hàng Chay Phương Mai do Nhà Hàng Chay Phương Mai sáng tác. Xem video mới nhất về âm thanh gốc - Nhà Hàng Chay Phương Mai trên TikTok.",
+    "position": 7
+   },
+   {
+    "title": "Khám Phá Quán Chay Phương Mai Ngon Nhất Tháng 7",
+    "link": "https://www.tiktok.com/@yang10290/video/7542927318956739848",
+    "snippet": "Nhà hàng chay Phương Mai: Điểm đến tuyệt vời cho thực khách. Khám phá nhà hàng chay Phương Mai với không gian đẹp và món ăn ngon. Đừng bỏ lỡ ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

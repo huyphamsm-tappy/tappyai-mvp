@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook Pro M4 16GB giá Sài Gòn cửa hàng",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:36:48.722Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Pro M4 16GB giá Sài Gòn cửa hàng",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Macbook Pro M4 (Pro, Max) 2024 | Giá tốt, trả góp 0%",
+    "link": "https://cellphones.com.vn/laptop/mac/macbook-pro/macbook-pro-2024.html",
+    "snippet": "MacBook Pro M4 Series hiện được phân phối tại thị trường Việt Nam với mức giá dao động từ 39.99 triệu VNĐ cho phiên bản cơ bản với chip M4, RAM 16GB và SSD ...",
+    "position": 1
+   },
+   {
+    "title": "MacBook Pro M4 - (14 inch/16GB/512GB)",
+    "link": "https://laptop15.vn/macbook-pro-m4/",
+    "snippet": "MacBook Pro M4 (14 inch/16GB/512GB), Giá chỉ từ 26 Triệu. ShipCOD Toàn Quốc, Laptop cũ Hải Phòng GIÁ RẺ nhất thị trường liên hệ 0904.456.002.",
+    "position": 2
+   },
+   {
+    "title": "MacBook Pro 14 inch M4 2025 10CPU/10GPU 16GB 1TB ...",
+    "link": "https://newtechshop.vn/apple-macbook-pro-14-inch-m4-2025-10cpu-10gpu-16gb-1tb",
+    "snippet": "... Apple MacBook Pro 14 inch M4 2025 10CPU/10GPU 16GB 1TB - Hàng cũ. 40.450.000₫. Mua ngay (Giao tận nơi hoặc nhận tại cửa hàng) Thêm vào giỏ. Mã giảm giá: Mã giảm ...",
+    "rating": 4.8,
+    "ratingCount": 1002,
+    "position": 3
+   },
+   {
+    "title": "MacBook Pro M4 Cũ",
+    "link": "https://qmacstore.com/collections/macbook-pro-m4-cu?srsltid=AU7gw4WuoEVm4g8L6yxxGy36OEXpUHQjbKARhLoBp_KQduxeD7mzN6TM",
+    "snippet": "M4 16GB 512GB (10C CPU / 10C GPU) · 38.500.000đ ; M4 16GB 1TB (10C CPU / 10C GPU) · 41.500.000đ ; M4 24GB 512GB (10C CPU / 10C GPU) · 41.500.000đ ; M4 24GB 1TB (10C ...",
+    "position": 4
+   },
+   {
+    "title": "💻 MacBook Pro M4 đã rẻ nay còn rẻ hơn, mùa hè không ...",
+    "link": "https://www.facebook.com/clickbuy.saigon/posts/-macbook-pro-m4-%C4%91%C3%A3-r%E1%BA%BB-nay-c%C3%B2n-r%E1%BA%BB-h%C6%A1n-m%C3%B9a-h%C3%A8-kh%C3%B4ng-th%E1%BB%83-thi%E1%BA%BFu-m%C3%BAc-ngay-k%E1%BA%BBo-l%E1%BB%A1-n%C3%A2ng/1206278118209537/",
+    "snippet": "Phiên bản 14 inch trang bị chip M4, bộ nhớ 16GB, ba cổng Thunderbolt 4. Trong khi đó, các mẫu 14 inch và 16 inch sở hữu M4 Pro và M4 Max, hỗ trợ ...",
+    "date": "25 thg 8, 2025",
+    "position": 5
+   },
+   {
+    "title": "Macbook Pro M4 (2024) chính hãng, giá tốt tại ...",
+    "link": "https://ttcenter.com.vn/macbook-pro-m4?srsltid=AU7gw4XqKH6PE9t5pMlSr1bDKvg1iIoWalcoWEghXw6n32k1Sm7oLQcY",
+    "snippet": "MacBook Pro M4 14inch NANO 10CPU 10GPU (16GB - 1TB) | New CPO. 38.990.000đ. 45.790.000đ Giảm 15 ...",
+    "position": 6
+   },
+   {
+    "title": "Mua MacBook Pro",
+    "link": "https://www.apple.com/vn/shop/buy-mac/macbook-pro",
+    "snippet": "Giới hạn sáu MacBook Pro 16” cho mỗi khách hàng. Từ 54.999.000đ hoặc 2.239.000đ/tháng ...",
+    "position": 7
+   },
+   {
+    "title": "28 Apple Macbook Pro M4 cũ giá trên 25 triệu đẹp Tp Hồ ...",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-macbook-pro-m4-gia-tren-25-trieu-tp-ho-chi-minh-sfYkfYe2HQYoqX",
+    "snippet": "Apple MacBook Pro 14 M4 16GB/512GB Xám · 30.000.000 đ · Hội Đồ Điện Tử ; Apple Macbook Pro M4 16GB/512GB 14 inch Bạc 99% · 35.900.000 đ · Hội Đồ Điện Tử ; Apple ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

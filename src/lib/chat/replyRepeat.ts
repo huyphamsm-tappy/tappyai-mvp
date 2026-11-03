@@ -64,6 +64,21 @@ function segments(text: string): Array<{ block: boolean; text: string }> {
 
 /** Sentences with their trailing punctuation, emoji and whitespace kept attached. */
 function sentences(prose: string): string[] {
+  // A URL is ONE token: its dots and its «?» are not sentence ends. Split there and the tail of «…/catalog/?q=kính%20cường%20lực» becomes a
+  // «sentence» that the next link with the same keyword (Shopee, then Lazada) «repeats» — the second link was cut in the middle
+  // (A3, 2026-10-02: «- [Lazada](https://www.lazada.vn/catalog/?» followed by the buttons).
+  // A whole markdown link is one unit too: its LABEL is usually a host ("[vpcp.dichvucong.gov.vn](…)") whose dots are not sentence ends either.
+  // Split inside the label, the tail "vn](https://…))." of the second citation of the same page equalled the first one's and was dropped as a
+  // repeated sentence, leaving "([vpcp.dichvucong.gov." in the reply (passport answer, 2026-10-11 — the server's final text was complete, per
+  // the verbatim stream trace).
+  const urls: string[] = []
+  const masked = prose
+    .replace(/\[[^\]\n]*\]\(https?:\/\/[^\s)]+\)/g, u => `\u0001${urls.push(u) - 1}\u0002`)
+    .replace(/https?:\/\/[^\s)\]]+/g, u => `\u0001${urls.push(u) - 1}\u0002`)
+  return splitSentences(masked).map(p => p.replace(/\u0001(\d+)\u0002/g, (_m, i: string) => urls[Number(i)]))
+}
+
+function splitSentences(prose: string): string[] {
   return prose.match(/[^.!?…\n]+(?:[.!?…]+|\n|$)(?:[\s\p{Extended_Pictographic}️‍]*)/gu) ?? [prose]
 }
 
@@ -76,15 +91,17 @@ function isRepeat(key: string, seen: string[]): boolean {
  * Drops every prose sentence that repeats one said earlier — earlier in `text`, or in `prior`
  * (prose already sent in this turn). Blocks are untouched; nothing new is ever removed.
  */
-export function dedupeSentences(text: string, prior: string[] = []): string {
+export function dedupeSentences(text: string, prior: string[] = [], opts: { withinText?: boolean } = {}): string {
   const seen = prior.flatMap(p => sentences(p.replace(BLOCK_RE, ' ')).map(sentenceKey)).filter(Boolean)
+  // withinText false (one brain, review 30/10): only what repeats `prior` goes - the same advice under two days of one plan stays
+  const withinText = opts.withinText !== false
   let changed = false
   const out = segments(text).map(seg => {
     if (seg.block) return seg.text
     return sentences(seg.text).map(s => {
       const key = sentenceKey(s)
       if (isRepeat(key, seen)) { changed = true; return '' }
-      if (key) seen.push(key)
+      if (key && withinText) seen.push(key)
       return s
     }).join('')
   }).join('')

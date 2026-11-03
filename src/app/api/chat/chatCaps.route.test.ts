@@ -3,13 +3,13 @@
  *
  *   per IP        30/min   (was in-process only; now publicRateLimit — shared when KV is configured)
  *   per account   20/min   (new: one account behind many IPs)
- *   Pro per day   300      (new: Pro was unlimited)
+ *   Pro per day   1000     (new: Pro was unlimited; owner 01/11/2026 raised it from 300 - a hidden anti-abuse ceiling)
  *
  * Every refusal is a 429 with a server-written sentence and costs no model call. Numbers are env
  * overrides (chatCaps.ts). These drive the REAL limiters against the in-process store (no KV in
  * tests), the way `publicRateLimit` runs on a deployment without credentials.
  */
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 
 const h = vi.hoisted(() => {
   const state = {
@@ -22,7 +22,7 @@ const h = vi.hoisted(() => {
     const b: any = {
       select: () => b, in: () => b, or: () => b, order: () => b, limit: () => b, gte: () => b, lt: () => b, not: () => b, is: () => b, eq: () => b,
       single: () => Promise.resolve(table === 'subscriptions' && state.pro ? { data: { status: 'active', current_period_end: new Date(Date.now() + 86_400_000).toISOString() }, error: null } : { data: null, error: null }),
-      maybeSingle: () => Promise.resolve({ data: null, error: null }),
+      maybeSingle: () => Promise.resolve(table === 'subscriptions' && state.pro ? { data: { plan: 'pro', status: 'active', current_period_end: new Date(Date.now() + 86_400_000).toISOString(), source: 'web' }, error: null } : { data: null, error: null }),
       insert: () => Promise.resolve({ data: null, error: null }),
       upsert: () => Promise.resolve({ data: null, error: null }),
       then: (r: any) => r({ data: [], error: null }),
@@ -64,6 +64,9 @@ vi.mock('@/lib/ai/tools/food', async (importOriginal) => {
 })
 
 import { POST } from '@/app/api/chat/route'
+// R42 R3 (LOC-DEFAULT-HCM-01 regression run): no network, ever — a fetch the mocks above do not cover fails at once instead of going online.
+beforeEach(() => { vi.stubGlobal('fetch', async (input: unknown) => { throw new Error('network disabled in this test: ' + String(input).slice(0, 60)) }) })
+afterEach(() => { vi.unstubAllGlobals() })
 import { CHAT_IP_BURST_PER_MINUTE, CHAT_USER_BURST_PER_MINUTE, PRO_DAILY_CHAT_CAP } from '@/lib/security/chatCaps'
 
 // Fixtures as escapes: the i18n ratchet (webHardcodedUiStrings) scans src/app for Vietnamese code points.
@@ -83,10 +86,11 @@ let n = 0
 beforeEach(() => { n++; h.state.user = { id: `u-${n}` }; h.state.pro = false; h.state.calls.model = 0; h.state.ip = `10.0.${n}.1` })
 
 describe('the caps exist and are env-tunable defaults', () => {
-  it('30 / 20 / 300', () => {
+  it('30 / 20 / 1000', () => {
     expect(CHAT_IP_BURST_PER_MINUTE).toBe(30)
     expect(CHAT_USER_BURST_PER_MINUTE).toBe(20)
-    expect(PRO_DAILY_CHAT_CAP).toBe(300)
+    // owner 01/11/2026: 300 -> 1000 (accounts have no visible limit; hidden anti-abuse ceiling)
+    expect(PRO_DAILY_CHAT_CAP).toBe(1000)
   })
 })
 

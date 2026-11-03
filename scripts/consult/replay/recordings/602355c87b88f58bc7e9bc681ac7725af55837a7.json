@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:hoianworldheritage.org.vn \"80.000\" \"vé tham quan\" Hội An",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:04:52.988Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:hoianworldheritage.org.vn \"80.000\" \"vé tham quan\" Hội An",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Vé tham quan Hội An - Phố cổ Hội An - Di sản văn hóa thế giới",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Dieu-can-biet/ve-tham-quan-hoi-an-1940.hwh",
+    "snippet": "1/ Giá vé tham quan Khu phố cổ Hội An Giá vé Việt Nam: 80.000 VNĐ/ 1 người/ 1 vé. Giá vé nước ngoài: 120.000 VNĐ/ 1 người/ 1 vé",
+    "date": "23 thg 2, 2020",
+    "position": 1
+   },
+   {
+    "title": "Cập nhật vé tham quan Khu phố cổ Hội An – Hành trình chạm ...",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Du-lich-Hoi-An/cap-nhat-ve-tham-quan-khu-pho-co-hoi-an-hanh-trinh-cham-ve-nguyen-ban-giua-long-di-san-3033.hwh",
+    "snippet": "Với vé tham quan mệnh giá 80.000 đồng, du khách được dạo bước trong không gian chung của Khu phố cổ Hội An, nơi những con đường nhỏ rợp bóng ...",
+    "date": "16 thg 3, 2026",
+    "position": 2
+   },
+   {
+    "title": "Vé tham quan Hội An - Phố cổ Hội An - Di sản văn hóa thế giới",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Dieu-can-biet/Ve-tham-quan-Hoi-An-641.hwh",
+    "snippet": "... Hội An. Vé tham quan khách nội địa: tham quan Hội An. Tham quan khu phố cổ - Giá vé: 80.000đ / người / 1lượt - Mỗi vé bạn có thể tham quan: 1 ...",
+    "date": "30 thg 4, 2012",
+    "position": 3
+   },
+   {
+    "title": "Miễn phí vé tham quan phố cổ Hội An trong ngày 4.12",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Hoi-An-24h/mien-phi-ve-tham-quan-pho-co-hoi-an-trong-ngay-4-12-1742.hwh",
+    "snippet": "... Hội An; tạo sức hút khách du lịch về với địa phương. Hiện vé tham quan phố cổ gồm 2 mức giá 80.000 đồng dành cho khách Việt Nam (tham quan 4 ...",
+    "date": "2 thg 12, 2018",
+    "position": 4
+   },
+   {
+    "title": "Hội An- nơi mỗi vé tham quan góp phần bảo tồn văn hóa",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Du-lich-Hoi-An/hoi-an-noi-moi-ve-tham-quan-gop-phan-bao-ton-van-hoa-2856.hwh",
+    "snippet": "... Hội An. Với mức giá hợp lý, 120.000 đồng cho vé tham quan 5 điểm di tích và 80.000 đồng cho vé tham quan 3 điểm di tích, du khách có thể khám ...",
+    "date": "16 thg 3, 2025",
+    "position": 5
+   },
+   {
+    "title": "Thông tin du lịch Hội An - Phố cổ Hội An - Di sản văn hóa thế ...",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Dieu-can-biet/thong-tin-du-lich-hoi-an-2311.hwh",
+    "snippet": "- Với vé có mệnh giá 80.000 VNĐ: + Tham quan cảnh quan chung ... hội an du lịch hội an vé tham quan khu phố cổ phố cổ đêm phố cổ chùa ...",
+    "date": "8 thg 5, 2023",
+    "position": 6
+   },
+   {
+    "title": "THÔNG BÁO Về việc bán vé xem biểu diễn Lễ hội ánh sáng “Sắc ...",
+    "link": "http://hoianworldheritage.org.vn/vi/news/Thong-bao/thong-bao-ve-viec-ban-ve-xem-bieu-dien-le-hoi-anh-sang-sac-mau-hoi-an-2017-1470.hwh",
+    "snippet": "Hoi An; Hoi An; Hoi An; Hoi An; Hoi An; Hoi An ... + Khách Việt Nam: 80.000 VNĐ/vé/người. + Khách ... hội an du lịch hội an vé tham quan khu phố cổ phố ...",
+    "position": 7
+   },
+   {
+    "title": "Tình hình tổ chức hoạt động hướng dẫn tham quan \"Di sản ...",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Dieu-can-biet/Tinh-hinh-to-chuc-hoat-dong-huong-dan-tham-quan-Di-san-van-hoa-the-gioi-Khu-pho-co-Hoi-An-741.hwh",
+    "snippet": "- Vé tham quan Đại Nội-Huế là 80.000đ/lượt công trình đối với khách nước ngoài và 55.000đ/lượt công trình đối với khách Việt Nam; - Vé tham quan ...",
+    "date": "1 thg 12, 2012",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

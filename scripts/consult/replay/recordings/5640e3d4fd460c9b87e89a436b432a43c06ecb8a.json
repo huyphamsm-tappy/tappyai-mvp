@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:hochieu.xuatnhapcanh.gov.vn lệ phí hộ chiếu 200.000 đồng hồ sơ cấp online ảnh căn cước",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:03:16.924Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:hochieu.xuatnhapcanh.gov.vn lệ phí hộ chiếu 200.000 đồng hồ sơ cấp online ảnh căn cước",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

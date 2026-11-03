@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hội An thời điểm tốt nhất tham quan sáng chiều tối nắng đông du lịch",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T09:55:23.111Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hội An thời điểm tốt nhất tham quan sáng chiều tối nắng đông du lịch",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Thời điểm lý tưởng nhất để tham quan Phố cổ Hội An vào ...",
+    "link": "https://danangtohoian.com/vi/thoi-diem-ly-tuong-nhat-de-tham-quan-pho-co-hoi-an-vao-mua-he/",
+    "snippet": "Thời điểm lý tưởng nhất để tham quan Phố cổ Hội An vào mùa hè năm 2026 · Thời điểm tốt nhất trong ngày6:00–10:00 sáng · và 4:30–10:00 tối (chiều muộn + tối).",
+    "position": 1
+   },
+   {
+    "title": "Thời Điểm Đẹp Nhất Để Đi Hội An Là Khi Nào?",
+    "link": "https://lasiestaresorts.com/vi/thoi-diem-dep-nhat-di-hoi-an.html",
+    "snippet": "Mùa khô từ tháng 2 đến tháng 8 được xem là thời gian đẹp nhất để ghé thăm Hội An. Lúc này, bầu trời cao rộng trong xanh, nắng vàng trải dài và nhiệt độ dao động ...",
+    "rating": 4.7,
+    "ratingCount": 3,
+    "position": 2
+   },
+   {
+    "title": "Phố cổ hội an thì nên đi ban ngày hay buổi tối hả mọi người",
+    "link": "https://www.facebook.com/groups/2292208260990538/posts/2730039320540761/",
+    "snippet": "Lavila Hội An. Nên buổi sáng thì đi sớm 6h , chiều tối 19h30. · ThanhLoan Phạm. Chụp ảnh nên đi tầm sáng sớm 5g nhé!!! · Quang Phan Minh. Nếu đi ...",
+    "position": 3
+   },
+   {
+    "title": "Kinh nghiệm Du lịch HỘI AN 2026 từ A-Z: lưu trú, ăn chơi, ...",
+    "link": "https://vnexpress.net/cam-nang-du-lich-hoi-an-4446174.html",
+    "snippet": "Ba tháng đầu năm là thời gian lý tưởng nhất để rong chơi tại Hội An khi nắng không quá gắt, trời mát mẻ, thi thoảng có mưa nhỏ. Từ tháng 4 đến tháng 6 là ...",
+    "position": 4
+   },
+   {
+    "title": "Kinh nghiệm du lịch Hội An 1 ngày: Lịch trình chi tiết từ ...",
+    "link": "https://sovaba.travel/blog/bai-viet-kinh-nghiem-du-lich-hoi-an-1-ngay",
+    "snippet": "Sáng (7h-11h: Khám phá phố cổ và di sản). Bắt đầu bằng việc đến phố cổ Hội An (khoảng 45 phút từ Đà Nẵng). Tham quan Chùa Cầu – biểu tượng của Hội ...",
+    "position": 5
+   },
+   {
+    "title": "Du lịch Hội An tháng 8-9 có gì? Điểm đến lý tưởng cho ...",
+    "link": "https://hoianmemoriesland.com/vi/du-lich-hoi-an-thang-89-co-gi-diem-den-ly-tuong-cho-ca-gia-dinh-va-cap-doi-d444",
+    "snippet": "2. Các hoạt động trải nghiệm du lịch Hội An tháng 8-9 hấp dẫn · 2.1. Đảo Ký Ức Hội An: Thiên đường check-in · 2.1.4. Không thể bỏ lỡ show diễn đẹp nhất thế giới ...",
+    "position": 6
+   },
+   {
+    "title": "Đi Hội An Mùa Nào Đẹp Nhất? Kinh Nghiệm Chọn Thời ...",
+    "link": "https://vuivivudanang.vn/blogs/tin-tuc-hoi-an/di-hoi-an-mua-nao-dep-nhat-kinh-nghiem-chon-thoi-diem-du-lich-hoi-an-ly-tuong",
+    "snippet": "Có mùa trời trong xanh, nắng nhẹ, thích hợp dạo phố và chụp ảnh; có mùa lại mang vẻ lãng mạn, trầm mặc với những cơn mưa nhẹ và ánh đèn lồng ...",
+    "date": "17 thg 9, 2026",
+    "position": 7
+   },
+   {
+    "title": "Có nên dành một ngày để khám phá phố cổ Hội An?",
+    "link": "https://tourdulichgiare.com.vn/co-nen-danh-mot-ngay-de-kham-pha-pho-co-hoi-an/",
+    "snippet": "Vì thực chất, Hội An chỉ là một địa điểm tham quan, chủ yếu là đi bộ nhiều. Thường thì khách sẽ chọn đi vào buổi sáng, hoặc đi vào buổi chiều chứ không phải đi ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

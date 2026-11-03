@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hàng Dương Quán Quận 1\" OR \"Quán Bụi Central\" OR \"NHÀ HÀNG NGON\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:21:05.100Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hàng Dương Quán Quận 1\" OR \"Quán Bụi Central\" OR \"NHÀ HÀNG NGON\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Bật Mí 3 Nhà Hàng Ngon Ở Tà Xùa Giá Cả Phải Chăng",
+    "link": "https://www.tiktok.com/@truongdulich/video/7692090464362597640",
+    "snippet": "Nếu bạn đang phân vân không biết nên ăn ở đâu, hãy để chúng tôi bật mí cho bạn 3 nhà hàng ngon và giá cả phải chăng tại đây. ### 1. Nhà hàng ...",
+    "position": 1
+   },
+   {
+    "title": "Nhà Hàng Ngon: Trải Nghiệm Ẩm Thực Tại TP.HCM",
+    "link": "https://www.tiktok.com/@anchimihe/video/7121950658047135019",
+    "snippet": "Nhà Hàng Ngon | 160 Pasteur, Bến Nghé, Quận 1, Thành phố Hồ Chí Minh ... Nhà Hàng Ngon: Trải Nghiệm Ẩm Thực Tại TP.HCM. Khám phá Nhà ...",
+    "position": 2
+   },
+   {
+    "title": "Khám Phá Nhà Hàng Ngon Tại Hàm Nghi, Nam Từ Liêm",
+    "link": "https://www.tiktok.com/@trainghiemcungnga/video/7424493995121839378",
+    "snippet": "Gợi ý 1 nhà hàng ngon-chất khu Hàm Nghi- Nam Từ Liêm để ace đổi gió. Sắp 20/10 rồi lên lịch hẹn hò ngay thôiiii #comnieu #comnha #comque # ...",
+    "position": 3
+   },
+   {
+    "title": "Dấu hiệu nhận biết một nhà hàng ngon chuẩn vị là đây ...",
+    "link": "https://www.tiktok.com/@nhahangquangon/video/7669013753110859028",
+    "snippet": "39 Lượt thích,Video TikTok từ Nhà Hàng Quá Ngon (@nhahangquangon): \"Dấu hiệu nhận biết một nhà hàng ngon chuẩn vị là đây #nhahangquangon ...",
+    "position": 4
+   },
+   {
+    "title": "Đi ăn mì bò kho, một trong những nhà hàng ngon ở khu ...",
+    "link": "https://www.tiktok.com/@anlychicago/video/7688405076607520014",
+    "snippet": "TikTok video from Ailey Ly (@anlychicago): “Đi ăn mì bò kho, một trong những nhà hàng ngon ở khu người Vietnam tại Chicago.",
+    "position": 5
+   },
+   {
+    "title": "Nhà hàng ngon ở Hà Khẩu",
+    "link": "https://www.tiktok.com/@huymenmen90/video/7673843159897476370",
+    "snippet": "25 Lượt thích,Video TikTok từ Huy Mèn Mén (@huymenmen90): \"Nhà hàng ngon ở Hà Khẩu\".原創音樂 - 五音璇玑.",
+    "position": 6
+   },
+   {
+    "title": "Nhà Hàng ngon tại Tam Đảo",
+    "link": "https://www.tiktok.com/@nhahangchophien/video/7633243867130727701",
+    "snippet": "590 Lượt thích,32 Bình luận.Video TikTok từ Nhà Hàng Chợ Phiên Tam Đảo (@nhahangchophien): \"Nhà Hàng ngon tại Tam Đảo \".âm thanh gốc - Nhà ...",
+    "position": 7
+   },
+   {
+    "title": "Cá Đồng Kho Khế: Công Thức Chuẩn Nhà Hàng Ngon Tuyệt",
+    "link": "https://www.tiktok.com/@dongchuildaypho/video/7658480600038395154",
+    "snippet": "Cá Đồng Kho Khế: Công Thức Chuẩn Nhà Hàng Ngon Tuyệt. Món cá đồng kho khế là một món ăn đậm đà hương vị quê nhà, với vị chua thanh của khế hòa quyện cùng vị ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

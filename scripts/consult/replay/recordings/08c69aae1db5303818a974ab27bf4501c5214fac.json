@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"MEAT & MEET\" OR \"Buffet Gánh Khách Sạn Palace\" OR \"Pachi Pachi Nướng Lẩu Nhật Bản\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T01:56:34.768Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"MEAT & MEET\" OR \"Buffet Gánh Khách Sạn Palace\" OR \"Pachi Pachi Nướng Lẩu Nhật Bản\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "MEAT & MEET BBQ (@meatandmeetbbq)",
+    "link": "https://www.tiktok.com/@meatandmeetbbq",
+    "snippet": "Khám phá buffet nướng Hàn Quốc 219k tại Meat and Meet (quận 2): · Thông tin khai trương chi nhánh Meat & Meet Parc Mall, buffet BBQ thịt nướng.",
+    "position": 1
+   },
+   {
+    "title": "Khoan đi Meat & Meet nếu bạn chưa biết đến ưu đãi này ...",
+    "link": "https://www.tiktok.com/@meatandmeetbbq/video/7685963691564469524",
+    "snippet": "49 Lượt thích,Video TikTok từ MEAT & MEET BBQ (@meatandmeetbbq): \"Khoan đi Meat & Meet nếu bạn chưa biết đến ưu đãi này nha #bbq ...",
+    "position": 2
+   },
+   {
+    "title": "Review Buffet BBQ tại Meat & Meet — ăn lại vẫn thấy vui",
+    "link": "https://www.tiktok.com/@dadaykhongday95/video/7686364406598503698",
+    "snippet": "Người nói cho biết có “quá trời kỷ niệm” ở Meat & Meet, nên mỗi lần quay lại ăn đều thấy mắc cười. Lần ăn được mô tả là “ngon lắm nhen” và người ...",
+    "position": 3
+   },
+   {
+    "title": "#bbq #nhahangthitnuong #meatandmeet #buffet #fyp",
+    "link": "https://www.tiktok.com/@meatandmeetbbq/video/7691538030405946676",
+    "snippet": "Video TikTok từ MEAT & MEET BBQ (@meatandmeetbbq): \"#bbq #nhahangthitnuong #meatandmeet #buffet #fyp\".âm thanh gốc - MEAT & MEET BBQ.",
+    "position": 4
+   },
+   {
+    "title": "5 ưu điểm khi đến MEAT & MEET, bạn đã biết chưa? #bbq ...",
+    "link": "https://www.tiktok.com/@meatandmeetbbq/video/7686706576681356565",
+    "snippet": "29 Lượt thích,Video TikTok từ MEAT & MEET BBQ (@meatandmeetbbq): \"5 ưu điểm khi đến MEAT & MEET, bạn đã biết chưa?",
+    "position": 5
+   },
+   {
+    "title": "Nhà hàng buffet view tone hồng xinh xỉu | review Meat & ...",
+    "link": "https://www.tiktok.com/@meatandmeetbbq/video/7663326890156903701",
+    "snippet": "Bài viết tóm tắt trải nghiệm tại Meat & Meet, nêu rõ điểm nhấn không gian và món ăn để giúp bạn quyết định có nên ghé hay không. Không gian và ...",
+    "position": 6
+   },
+   {
+    "title": "Best BBQ Buffet Near Me: Estella Meat & Meet Restaurant ...",
+    "link": "https://www.tiktok.com/@meatandmeetbbq/video/7682613595800161556",
+    "snippet": "What Estella BBQ Buffet Offers Estella's Meat & Meet appears as a buffet-style nhahang thit nuong (Vietnamese grilled meat restaurant) focusing ...",
+    "position": 7
+   },
+   {
+    "title": "Buffet Thịt Nướng MEAT & MEET Lê Thị Riêng Chỉ 189k",
+    "link": "https://www.tiktok.com/@meatandmeetbbq/video/7690787994650807572",
+    "snippet": "Chỉ với 189.000 VNĐ/người, bạn có thể thưởng thức một bàn thịt nướng siêu hời. Ưu đãi đặc biệt này áp dụng duy nhất tại chi nhánh MEAT & MEET Lê ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Bluetooth chụp Tai Sony WH-CH720N site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:58:40.185Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bluetooth chụp Tai Sony WH-CH720N site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe chụp tai Bluetooth SONY WH-CH720N",
+    "link": "https://www.lazada.vn/products/tai-nghe-chup-tai-bluetooth-sony-wh-ch720n-chinh-hang-phan-phoi-i2299955157.html?srsltid=AU7gw4WTiwdWT_t0iT_krkfmKGIFZiChIV_D0Wzr0fTTDxN1-9huwx9i",
+    "snippet": "✓ Thiết kế công thái học, trọng lượng chỉ 192g, đệm mút và đệm đầu được làm từ da tổng hợp và urethan mang tới sự thoải mái tối đa.",
+    "position": 1
+   },
+   {
+    "title": "Tai nghe chụp tai Bluetooth Sony WH-CH720N - Hàng chính hãng",
+    "link": "https://www.lazada.vn/products/tai-nghe-chup-tai-bluetooth-sony-wh-ch720n-hang-chinh-hang-thiet-ke-gon-nhe-kha-nang-chong-on-kep-hieu-qua-am-thanh-trong-treo-manh-me-i2389181687-s11620309229.html?srsltid=AU7gw4UKfEbJpKdM6x3CKVTSrdDDUD-Sm9P7kyjY02YbcMcUMS5wFCi6",
+    "snippet": "Tai nghe chụp tai Bluetooth Sony WH-CH720N - Hàng chính hãng - Thiết kế gọn nhẹ, khả năng chống ồn kép hiệu quả, âm thanh trong trẻo mạnh mẽ.",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe chụp tai Bluetooth Sony WH-CH720N - Hàng chính hãng",
+    "link": "https://h5.lazada.vn/products/tai-nghe-chup-tai-bluetooth-sony-wh-ch720n-hang-chinh-hang-thiet-ke-gon-nhe-kha-nang-chong-on-kep-hieu-qua-am-thanh-trong-treo-manh-me-i2389719046-s11624216032.html",
+    "snippet": "Tai nghe chụp tai Bluetooth Sony WH-CH720N với khả năng chống ồn kép hiệu quả, thiết kế gọn nhẹ phù hợp cho việc sử dụng lâu dài.",
+    "position": 3
+   },
+   {
+    "title": "Combo tai nghe Sony WH-CH720N và Sennheiser HD 350BT",
+    "link": "https://www.lazada.vn/products/combo-tai-nghe-sony-wh-ch720n-va-sennheiser-hd-350bt-i2324771767.html?srsltid=AU7gw4W3RR7IrDY5ttdDaRRn3NAhKsc-ge0ioIqf24zP9Nq-w-dP_E3t",
+    "snippet": "Tai nghe được trang bị công nghệ Bluetooth 5.0, khắc phục được hầu hết các yếu điểm trên các thế hệ bluetooth cũ. Các bộ codec âm thanh SBC, AAC, AptX cho khả ...",
+    "position": 4
+   },
+   {
+    "title": "Tai Nghe Không Dây Sony WH-CH720N Khử Tiếng Ồn Cho Học ...",
+    "link": "https://h5.lazada.vn/products/tai-nghe-khong-day-sony-wh-ch720n-khu-tieng-on-cho-hoc-tap-va-choi-game-i3287936394.html",
+    "snippet": "LazMall Tai Nghe Không Dây Sony WH-CH720N Khử Tiếng Ồn Cho Học Tập Và Chơi Game · 100% chính hãng · 30 ngày miễn phí trả hàng · Không áp dụng chính sách bảo hành.",
+    "position": 5
+   },
+   {
+    "title": "Sony | Tai nghe Bluetooth Chống ồn chủ động",
+    "link": "https://www.lazada.vn/products/sony-tai-nghe-bluetooth-chong-on-chu-dong-i13315012647-s117320584237.html?from_gmc=1&fl_tag=1&srsltid=AU7gw4WPJYuh_GxxqFNXnu3wTFL6FBkSyaR1AbS0aQ96fuzqvhat4LRY",
+    "snippet": "Được thiết kế để tồn tại lâu dài, tai nghe Sony WH-CH720N có kết cấu chắc chắn có thể chịu được việc sử dụng hàng ngày, đảm bảo tuổi thọ và độ tin cậy.",
+    "position": 6
+   },
+   {
+    "title": "Tai nghe Sony không dây có công nghệ chống ồn WH- ...",
+    "link": "https://www.lazada.vn/products/tai-nghe-sony-khong-day-co-cong-nghe-chong-on-wh-ch720n-i2244687698.html?srsltid=AU7gw4VSp-aDLCesW9tE_bF0OJOtLPXCRr5OcPSKD8QRVomvdSKQsPF2",
+    "snippet": "Để thuận tiện nhất, tai nghe Bluetooth® này có thể được ghép nối với hai thiết bị Bluetooth cùng lúc. Nhờ đó, khi cuộc gọi đến, tai nghe sẽ biết thiết bị ...",
+    "rating": 5,
+    "ratingCount": 160,
+    "position": 7
+   },
+   {
+    "title": "Tai nghe không dây chống ồn SONY WH-CH720N Chính ...",
+    "link": "https://www.lazada.vn/products/tai-nghe-khong-day-chong-on-sony-wh-ch720n-chinh-hang-i2251492868.html?srsltid=AU7gw4X7sjkxzxMUrz8PAKiDkcU1oK1hxXgnYoGIaRb1rwvlUat3gDzN",
+    "snippet": "Nặng chỉ 192g, WH-CH720N là tai nghe không dây choàng đầu nhẹ nhất của chúng tôi vừa có tính năng Chống ồn vừa tạo cảm giác thoải mái đáng kinh ngạc mà không ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

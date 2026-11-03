@@ -1,5 +1,7 @@
 // @vitest-environment node
 import { describe, it, expect } from 'vitest'
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
 import { rendersDecisionCard, DECISION_CARD_SURFACES } from './decisionSurface'
 import { applyPlaceEnrichmentStreamFilter } from './streamEnrichment'
 import { createEnrichmentCollector } from './toolResultSplit'
@@ -37,6 +39,24 @@ describe('rendersDecisionCard — the surface header', () => {
     expect(rendersDecisionCard('ios')).toBe(false)
     expect(rendersDecisionCard('Web')).toBe(false)       // exact, like the header check it replaced
     expect(rendersDecisionCard('android ')).toBe(false)
+  })
+
+  // Owner 02/11 (iOS follows the web): the iOS app draws the decision card from the same `8:` annotation, but older iOS builds in the
+  // store may not, and they send the same `x-tappy-surface: ios`. So a client declares the card in `x-tappy-caps` (the R10 way the ask
+  // block works) and the surface header alone still means no card for iOS.
+  it('a client that declares the "card" capability renders the card, whatever its surface; without it nothing changes', () => {
+    expect(rendersDecisionCard('ios', 'card')).toBe(true)
+    expect(rendersDecisionCard(null, 'card')).toBe(true)
+    expect(rendersDecisionCard('ios', 'plan, card')).toBe(true)
+    expect(rendersDecisionCard('ios', 'ask')).toBe(false)
+    expect(rendersDecisionCard('ios', 'cards')).toBe(false)
+    expect(rendersDecisionCard('ios', null)).toBe(false)
+    expect(rendersDecisionCard('web', null)).toBe(true)
+  })
+
+  it('the route reads x-tappy-caps for the card as it does for the ask block', () => {
+    const route = readFileSync(join(process.cwd(), 'src/app/api/chat/route.ts'), 'utf8')
+    expect(route).toContain("rendersDecisionCardFor(surfaceHeader, req.headers.get('x-tappy-caps'))")
   })
 
   it('the set is exactly the two clients that draw the card today', () => {

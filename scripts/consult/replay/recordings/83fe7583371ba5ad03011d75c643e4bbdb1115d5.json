@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "iPhone 15 128GB site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:34:20.953Z",
+ "body": {
+  "searchParameters": {
+   "q": "iPhone 15 128GB site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "IPhone 15 Biggest Apple Deal Black Friday",
+    "link": "https://shop.tiktok.com/vn/k/iphone-15-biggest-apple-deal-black-friday",
+    "snippet": "Điện thoại iPhone 15 128GB · 159 sold · 16.989.999. ₫19.590.000 ; IPhone 15 12 13 14 16 Pro Max XR 16 14 15 Plus XS Max Vỏ Bảo Vệ Màu Đen Tuyệt Vời. 1 sold · 19.799.",
+    "position": 1
+   },
+   {
+    "title": "iPhone 15 สีฟ้า 128gd",
+    "link": "https://shop.tiktok.com/vn/k/iphone-15-si-fa-128gd",
+    "snippet": "iPhone 15 สีฟ้า 128gd. Điện thoại iPhone 15 128GB. 5. 160 sold. ₫16.989.999. ₫19.590.000. Điện thoại iPhone 15 128GB.",
+    "position": 2
+   },
+   {
+    "title": "iphone 15ฟ้า",
+    "link": "https://shop.tiktok.com/vn/k/iphone-15-fa",
+    "snippet": "Điện thoại iPhone 15 128GB. Deal. 5. 125 sold. ₫17.290.000. ₫19.590.000. Điện thoại iPhone 15 128GB. 5. 125 sold.",
+    "position": 3
+   },
+   {
+    "title": "Besar iphone 15 plus",
+    "link": "https://shop.tiktok.com/vn/k/besar-iphone-15-plus",
+    "snippet": "Kết quả cho \"Besar iphone 15 plus\". Điện thoại iPhone 15 128GB. Deal. 5. 125 sold. ₫17.290.000. ₫19.590.000. Điện ...",
+    "position": 4
+   },
+   {
+    "title": "ไอโฟนi15 pro ในศูนย์ยังมีมั้ย",
+    "link": "https://shop.tiktok.com/vn/k/aioofn-i15-pro-ain-suny-yangmi-may",
+    "snippet": "iPhone 15 128GB Chính hãng VN/A [Viettel Store]. Deal. 5. 548 sold. ₫17.790.000. ₫21.990.000 ...",
+    "position": 5
+   },
+   {
+    "title": "black magic camera iphone 15",
+    "link": "https://shop.tiktok.com/vn/k/black-magic-camera-iphone-15",
+    "snippet": "iPhone 15 128GB Chính hãng VN/A [Viettel Store]. Deal. 5. 571 sold. ₫18.089.999 ... iPhone 15 128GB Chính Hãng VN/A [ShopDunk Store]. Deal. 4.9. 598 sold.",
+    "position": 6
+   },
+   {
+    "title": "studio 7 iphone 15",
+    "link": "https://shop.tiktok.com/vn/k/studio-7-iphone-15",
+    "snippet": "Điện thoại iPhone 15 128GB. Deal. 5. 151 sold. ₫18.289.900. ₫19.590.000. Điện thoại iPhone 15 128GB. 5. 151 sold.",
+    "position": 7
+   },
+   {
+    "title": "15 iphone thường",
+    "link": "https://shop.tiktok.com/vn/k/15-iphone-thuong",
+    "snippet": "iPhone 15 128GB Chính hãng VN/A [Viettel Store]. Deal. 5. 562 sold. ₫18.090.000 ... iPhone 15 128GB Chính Hãng VN/A [ShopDunk Store]. Deal. 4.9. 597 sold.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Pizza 4P's giá menu một người TP.HCM gia menu thuc don",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:14:18.273Z",
+ "body": {
+  "searchParameters": {
+   "q": "Pizza 4P's giá menu một người TP.HCM gia menu thuc don",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Menu",
+    "link": "https://pizza4ps.com/vn/menu/",
+    "snippet": "Menu ; Spicy Garlic Shrimp Pizza. 274,000 vnd ; Burrata Parma Ham. 298,000 vnd ; Extra Parma Ham Margherita. 331,000 vnd ; Milano Salami & Chorizo Margherita Pizza.",
+    "position": 1
+   },
+   {
+    "title": "Menu",
+    "link": "https://pizza4ps.com/vn/menu/?lang=vietnamese",
+    "snippet": "Menu ; Các loại phô mai nhà làm (S). 114,000 vnd ; Các loại phô mai nhà làm (L). 208,000 vnd ; Set thịt nguội và phô mai (Nhỏ). 181,000 vnd ; Set thịt nguội và phô ...",
+    "position": 2
+   },
+   {
+    "title": "[SEASONAL MENU - THỰC ĐƠN THEO MÙA] TASTE THE ...",
+    "link": "https://www.facebook.com/Pizza4Ps/posts/seasonal-menu-th%E1%BB%B1c-%C4%91%C6%A1n-theo-m%C3%B9ataste-the-difference-tr%E1%BA%A3i-nghi%E1%BB%87m-h%C6%B0%C6%A1ng-v%E1%BB%8B-kh%C3%A1c-bi/1071749431662475/",
+    "snippet": "*Thực đơn giới hạn gồm năm món, phục vụ từ ngày 2 tháng 4, chỉ có tại Pizza 4P's Xuân Thuỷ và Hai Bà Trưng (TP.HCM). ☎️Hotline: 19006043 ...",
+    "position": 3
+   },
+   {
+    "title": "Pizza 4P's Vincom: Menu, Bảng Giá và Khuyến Mãi Mới Nhất",
+    "link": "https://vincom.com.vn/brand/pizza-4ps",
+    "snippet": "Pizza 4P's Vincom với sự đa dạng của menu, là nơi lý tưởng cho các cặp đôi lựa chọn làm không gian hẹn hò. Mức giá của Pizza 4P's không quá cao, vừa túi tiền so ...",
+    "position": 4
+   },
+   {
+    "title": "Dù sao thì mình gợi ý cách gọi bàn ở Pizza 4P's cho 4 ...",
+    "link": "https://www.threads.com/@himmienguyen/post/DOQhe2SEUnK/d%C3%B9-sao-th%C3%AC-m%C3%ACnh-g%E1%BB%A3i-%C3%BD-c%C3%A1ch-g%E1%BB%8Di-b%C3%A0n-%E1%BB%9F-pizza-4ps-cho-4-ng%C6%B0%E1%BB%9Di-v%E1%BB%9Bi-budget-2tr8-v%E1%BB%9Bi-m?hl=vi",
+    "snippet": "Dù sao thì mình gợi ý cách gọi bàn ở Pizza 4P's cho 4 người với budget 2tr8. Với mức này, bạn có thể ăn rất thoải mái, gồm khai vị, salad, pasta ...",
+    "position": 5
+   },
+   {
+    "title": "4p's pizza địa điểm hẹn hò sang-rẻ cho lễ 2/9",
+    "link": "https://www.lemon8-app.com/@datdidaudoo/7273313675824628225?region=vn",
+    "snippet": "... giá – trung bình khoảng 700 nghìn đồng một người.Ngoài ra, vị trí của ROS Yacht Club nằm ngay tại trung tâm thành phố cũng rất thuận tiện ...",
+    "position": 6
+   },
+   {
+    "title": "Pizza 4P's Grand Menu Overview | PDF",
+    "link": "https://www.scribd.com/document/781332890/Pizza4Ps-Grand-Menu",
+    "snippet": "Pizza 4P's Grand Menu 1. Pizza 4P's Grand Menu 2. Pizza 4P's Grand Menu 3. Assorted House-made Cheese. Say Các loại phô mai nhà làm dairy nuts. 88,000 vnđ",
+    "position": 7
+   },
+   {
+    "title": "Pizza 4P's - Pizza Kiểu Nhật - Lê Thánh Tôn ở TP. HCM",
+    "link": "https://www.foody.vn/ho-chi-minh/pizza-4p-s-pizza-kieu-nhat-le-thanh-ton",
+    "snippet": "0707894444 ; Pizza 4P's - Pizza Kiểu Nhật -*** · 523 ; Pizza 4P's - Pizza Kiểu Nhật -*** · 464 ; Pizza 4P · 590 ; Ngon · 1k ; Pizza 4P's - Pizza Kiểu Nhật -*** · 2k ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

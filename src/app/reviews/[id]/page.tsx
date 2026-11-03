@@ -117,6 +117,7 @@ export default async function ReviewDetailPage({ params }: Props) {
       initialLiked={initialLiked}
       initialSaved={initialSaved}
       commentCount={commentCount}
+      viewerId={viewerId}
     />
   )
 }

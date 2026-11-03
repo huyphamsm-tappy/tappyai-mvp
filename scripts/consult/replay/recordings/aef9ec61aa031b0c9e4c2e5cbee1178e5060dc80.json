@@ -1,0 +1,81 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook Air M1 (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:44:10.287Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Air M1 (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Macbook Air M1 2020 (8GB/256GB) | Giá rẻ, giảm sốc 2024",
+    "link": "https://cellphones.com.vn/macbook-air-2020-m1.html",
+    "snippet": "Đặc điểm nổi bật · Phù hợp cho lập trình viên, thiết kế đồ họa 2D, dân văn phòng · Hiệu năng vượt trội - Cân mọi tác vụ từ word, exel đến chỉnh sửa ảnh trên các ...",
+    "rating": 4.9,
+    "ratingCount": 64,
+    "position": 1
+   },
+   {
+    "title": "MacBook cũ | Mac cũ uy tín, trả góp 0%, giảm đến 7 triệu",
+    "link": "https://cellphones.com.vn/hang-cu/mac.html",
+    "snippet": "... Apple MacBook Air M1 256GB 2020 Đã kích hoạt bảo hành. Sắp về hàng. Trả góp 0%. : 16.790.000đ. 22.990.000đ.",
+    "position": 2
+   },
+   {
+    "title": "So sánh MacBook Neo và MacBook Air M1",
+    "link": "https://cellphones.com.vn/sforum/so-sanh-macbook-neo-va-macbook-air-m1",
+    "snippet": "MacBook Neo sở hữu kích thước 1.27 x 29.75 x 20.64 cm và nặng khoảng 1.23 kg, trong khi MacBook Air M1 có kích thước 0.41 – 1.61 x 30.41 x 21.24 ...",
+    "date": "11 thg 4, 2026",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 3
+   },
+   {
+    "title": "Hàng cũ Apple MacBook Air M1 256GB 2020 | Giá rẻ",
+    "link": "https://cellphones.com.vn/macbook-air-2020-m1-cu-xuoc-can.html",
+    "snippet": "Mua Apple MacBook Air M1 256GB 2020 cũ giá rẻ - Nguồn gốc rõ ràng, bảo hành 6-12 tháng, đổi mới 30 ngày, luôn xuất bán đầy đủ VAT.",
+    "rating": 5,
+    "ratingCount": 4,
+    "position": 4
+   },
+   {
+    "title": "20 tính năng nhất định phải thử trên MacBook Air/Pro M1",
+    "link": "https://cellphones.com.vn/sforum/20-tinh-nang-nhat-dinh-phai-thu-tren-macbook-air-m1-va-macbook-pro-m1",
+    "snippet": "20 tính năng nhất định phải thử trên MacBook Air M1 và MacBook Pro M1 · 1. Cài đặt Ứng dụng iPhone và iPad · 2. Lựa chọn thay thế cảm ứng (Touch Alternatives).",
+    "position": 5
+   },
+   {
+    "title": "MacBook Air M1 2020 (8 core CPU| 7 core GPU| 8GB RAM",
+    "link": "https://shopee.vn/MacBook-Air-M1-2020-(8-core-CPU-7-core-GPU-8GB-RAM-256GB-SSD)-i.288286284.5875315506",
+    "snippet": "Mua MacBook Air M1 2020 (8 core CPU| 7 core GPU| 8GB RAM| 256GB SSD) giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn ...",
+    "rating": 4.9,
+    "ratingCount": 910,
+    "position": 6
+   },
+   {
+    "title": "Đánh giá Macbook Air M1: Còn gì để chê ... khi nó quá đỉnh!",
+    "link": "https://cellphones.com.vn/sforum/danh-gia-laptop-macbook-air-m1-sau-4-nam",
+    "snippet": "Trải qua 4 năm tuổi đời kể từ khi ra mắt, Macbook Air M1 vẫn luôn là chiếc laptop được ưa chuộng hàng đầu hiện nay trong tầm giá dưới 20 triệu.",
+    "position": 7
+   },
+   {
+    "title": "So sánh MacBook Air M2 và MacBook Air M1: Liệu có đáng?",
+    "link": "https://cellphones.com.vn/sforum/so-sanh-macbook-air-m2-va-macbook-air-m1",
+    "snippet": "Hiện tại, MacBook Air M2 có giá cao hơn MacBook Air M1 tới 7 triệu đồng. Nguyên nhân chính là do MacBook Air M1 đang được các cửa hàng xả kho cuối năm, giảm giá ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

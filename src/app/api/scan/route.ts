@@ -1,5 +1,7 @@
 import { AI } from '@/lib/ai/llm'
 import { NextRequest, NextResponse } from 'next/server'
+import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { refuseWithoutAiConsent } from '@/lib/ai/consent/aiConsentGuard'
 import { clientIp } from '@/lib/security/rateLimit'
 import { publicDailyRateLimit } from '@/lib/security/publicRateLimit'
 import { requestLocale } from '@/lib/i18n/requestLocale'
@@ -33,6 +35,14 @@ export async function POST(req: NextRequest) {
     }
   } catch {
     return NextResponse.json({ error: 'invalid_input', message: serverMessage('validation.invalid', requestLocale(req)) }, { status: 400 })
+  }
+
+  // App Review 5.1.2(i): a signed-in iOS-used account sends its image only with a current agreement. Signed-out
+  // callers have no account to check (see aiConsentGuard notes).
+  const { user } = await getRequestUser(req).catch(() => ({ user: null }))
+  if (user) {
+    const aiConsentRefusal = await refuseWithoutAiConsent(user.id, requestLocale(req))
+    if (aiConsentRefusal) return aiConsentRefusal
   }
 
   try {

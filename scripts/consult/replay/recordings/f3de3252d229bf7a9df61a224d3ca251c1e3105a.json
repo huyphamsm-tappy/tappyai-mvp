@@ -1,0 +1,500 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "lịch trình 3 ngày 2 đêm; khách sạn khoản quán đặc sản ngon Đà Lạt Da Lat",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@11.9404,108.4583,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:09:26.330Z",
+ "body": {
+  "searchParameters": {
+   "q": "lịch trình 3 ngày 2 đêm; khách sạn khoản quán đặc sản ngon Đà Lạt Da Lat",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@11.9404,108.4583,14z",
+   "engine": "google"
+  },
+  "ll": "@11.9403935,108.4582997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Đặc sản Ngon Lạ Đà Lạt",
+    "address": "5 Đường Trương Công Định, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+    "latitude": 11.9432365,
+    "longitude": 108.43545669999999,
+    "rating": 4.8,
+    "ratingCount": 686,
+    "type": "Cửa hàng bán thực phẩm đặc sản",
+    "types": [
+     "Cửa hàng bán thực phẩm đặc sản",
+     "Cửa hàng",
+     "Cửa hàng thực phẩm thiên nhiên",
+     "Cửa hàng thực phẩm hữu cơ",
+     "Cửa hàng trà"
+    ],
+    "website": "https://www.facebook.com/ngonladalatstore/",
+    "phoneNumber": "+84 898 981 589",
+    "openingHours": {
+     "Thứ Năm": "07:30–22:00",
+     "Thứ Sáu": "07:30–22:00",
+     "Thứ Bảy": "07:30–22:00",
+     "Chủ Nhật": "07:30–22:00",
+     "Thứ Hai": "00:00–22:00",
+     "Thứ Ba": "07:30–22:00",
+     "Thứ Tư": "07:30–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMgdlE6HppxSeh_526WUiLMv3n0FPeNeTy2nwv9qvGDBqVCioVjMjTrz1c7PaXXA8PmtLe1IrNVVJi2VYK16x2nlC3VM4AM0JP4cWaArzK3CS6nBIqBNHiG2fIWYfiOs8V6AYFJ",
+    "cid": "10208848053027077315",
+    "fid": "0x317113c75d37fce7:0x8dad1d37269dfcc3",
+    "placeId": "ChIJ5_w3XccTcTERw_ydJjcdrY0"
+   },
+   {
+    "position": 2,
+    "title": "Signature by M Village The Valley Retreat, a brand of Modern Village Lifestyle",
+    "address": "29A 3/4, Xuân Hương - Đà Lạt, Lâm Đồng 670000, Việt Nam",
+    "latitude": 11.925671399999999,
+    "longitude": 108.4474673,
+    "rating": 4.7,
+    "ratingCount": 197,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://modernvillagelifestyle.vn/vi/chi-nhanh/signature-by-m-village-the-valley-retreat/?brand=signature",
+    "phoneNumber": "+84 818 999 016",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLcFZiB6-qoAfXHSIMcjwt1g_6eIKc8llnph9gQuak1zJDGMQ_OFfQ4spASWPQIbX_U0Bapx77JQXRSWiUCITPZ5cdjQxggNuBmlpToWUDDJC7l6PxzVrVXdwS5W_qU6dtFPZy4wDwvQU9J5",
+    "cid": "15607538717124997802",
+    "fid": "0x317113e6288e96d5:0xd8991dc55c6432aa",
+    "placeId": "ChIJ1ZaOKOYTcTERqjJkXMUdmdg"
+   },
+   {
+    "position": 3,
+    "title": "Dưới Tán Thông",
+    "address": "1B, 26 Hẻm Hoàng Hoa Thám, Xuân Hương - Đà Lạt, Lâm Đồng 66000, Việt Nam",
+    "latitude": 11.940310799999999,
+    "longitude": 108.463487,
+    "rating": 4.2,
+    "ratingCount": 1062,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 931 449 727",
+    "openingHours": {
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00",
+     "Thứ Ba": "10:00–22:00",
+     "Thứ Tư": "10:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOKyUyihH1XUyUqle5Q-PPHHofLxPauhzfAUBPgy6ob2LygkXFB39wecqY3QmkP8ciEQ6MU-CGt6ioIIPQ81wsOtVdoDUhMuoblJDuWApJEnwAQydaRQ5v1qvoDvvML7PgCK2AA",
+    "cid": "4815878904877930762",
+    "fid": "0x3171138e58a694ff:0x42d570592e8bd90a",
+    "placeId": "ChIJ_5SmWI4TcTERCtmLLllw1UI"
+   },
+   {
+    "position": 4,
+    "title": "Miền Sương Khói - Home & Café Đà Lạt",
+    "address": "70 Đ. Trịnh Hoài Đức, Xuân Trường - Đà Lạt, Lâm Đồng 66000, Việt Nam",
+    "latitude": 11.9456495,
+    "longitude": 108.4815234,
+    "rating": 4.9,
+    "ratingCount": 395,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Quán cà phê"
+    ],
+    "website": "http://miensuongkhoi.com/",
+    "phoneNumber": "+84 962 686 344",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPwwH80MDcps6S1zQOR24kd66kL5MAfGfpg1sFpbHMuQsDcYO9MEy33yO2Z85dmIyfjctWVp9IMV8_OMWrWp77etKxtWmz32kJwhrUGuwORNz3xHkodLuRDjqYDwQnOww3jGy9N",
+    "cid": "8870609607828618937",
+    "fid": "0x317113fe2f734bdd:0x7b1abc7097cabeb9",
+    "placeId": "ChIJ3UtzL_4TcTERub7Kl3C8Gns"
+   },
+   {
+    "position": 5,
+    "title": "Grand Mercure Dalat",
+    "address": "03 Nguyễn Du, Lâm Viên - Đà Lạt, Lâm Đồng 670000, Việt Nam",
+    "latitude": 11.9451708,
+    "longitude": 108.45943989999999,
+    "rating": 4.6,
+    "ratingCount": 4268,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Quán cà phê",
+     "Nơi tổ chức sự kiện",
+     "Quầy giải khát",
+     "Khách sạn nghỉ dưỡng",
+     "Nhà hàng",
+     "Địa điểm tổ chức lễ cưới"
+    ],
+    "website": "https://all.accor.com/lien_externe.svlt?goto=fiche_hotel&code_hotel=B8H0&merchantid=seo-maps-VN-B8H0&sourceid=aw-cen&utm_medium=seo%20maps&utm_source=google%20Maps&utm_campaign=seo%20maps",
+    "phoneNumber": "+84 263 3810 826",
+    "description": "Khách sạn cao cấp từng là một biệt thự từ thập niên 1920, có phòng ở trang nhã, cảnh sân vườn, quầy bar và nhà hàng.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMkOcNSM-qtTqxxp0N6-XMz4FJ-WSIa1iyZBd-g1uPw8ALJQtLRrgn1YWwlFu_-NIqVoA-WzsSIeofFaWVRmzTMfyec4W4GbMhEOpCbqUgQPeEJXmlhvpGjG2UsTTtrp1QmYnsKQB-9vuTI",
+    "cid": "2113144111545030087",
+    "fid": "0x3171137b932ca13f:0x1d53655f9fd995c7",
+    "placeId": "ChIJP6Esk3sTcTERx5XZn19lUx0"
+   },
+   {
+    "position": 6,
+    "title": "Tiệm nướng Thương Thương",
+    "address": "30 Đặng Thái Thân, Xuân Hương - Đà Lạt, Lâm Đồng 670000, Việt Nam",
+    "latitude": 11.9287422,
+    "longitude": 108.45146199999999,
+    "rating": 4.6,
+    "ratingCount": 2200,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng",
+     "Món nướng",
+     "Khu vực nướng"
+    ],
+    "website": "https://dalatreview.vn/tiem-nuong-thuong-thuong.html",
+    "phoneNumber": "+84 915 001 845",
+    "openingHours": {
+     "Thứ Năm": "10:30–22:30",
+     "Thứ Sáu": "10:30–22:30",
+     "Thứ Bảy": "10:30–22:30",
+     "Chủ Nhật": "10:30–22:30",
+     "Thứ Hai": "10:30–22:30",
+     "Thứ Ba": "10:30–22:30",
+     "Thứ Tư": "10:30–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLeB4fFkTq9tui002LRZIt5mpP3FsUGzsBceOlHVZnvBR9F9SzDWNyvd1WemMFxk4zhhJXCKx7iP0qNtLDda2gqWn9qGOrRt03yRQOvmSm4tEtRx9DhAkfiNvrJ8Gcf3PoUzdpiDFw",
+    "cid": "8407056294852225461",
+    "fid": "0x317113fba1ed61d7:0x74abdd285d60e9b5",
+    "placeId": "ChIJ12HtofsTcTERtelgXSjdq3Q"
+   },
+   {
+    "position": 7,
+    "title": "stayDuong.dalat",
+    "address": "400 Đường Hai Bà Trưng, Cam Ly - Đà Lạt, Lâm Đồng 670000, Việt Nam",
+    "latitude": 11.9552663,
+    "longitude": 108.43003879999999,
+    "rating": 4.8,
+    "ratingCount": 306,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 817 290 399",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLfO9xqAVMRfp9u75ckZBHj25zIch1pqHqnwGQUdBa3iAa5i-vykmDuCw8IYn7lno-WQI_hZFCWipa4vs_4SxD3dRXt4WQYVyWuxCQ7X0b2R00JRFKoo_49ErRH-BfFZz3wE5uBA-MYFdtVY",
+    "cid": "3152453643945697783",
+    "fid": "0x31711305914d6d2d:0x2bbfc3e30244e1f7",
+    "placeId": "ChIJLW1NkQUTcTER9-FEAuPDvys"
+   },
+   {
+    "position": 8,
+    "title": "Villa Tuấn Vũ",
+    "address": "14 Đ. Trịnh Hoài Đức, Xuân Trường - Đà Lạt, Lâm Đồng 670000, Việt Nam",
+    "latitude": 11.9473643,
+    "longitude": 108.4830487,
+    "rating": 4.8,
+    "ratingCount": 249,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Biệt thự nhà vườn"
+    ],
+    "website": "https://www.facebook.com/villatuanvudalat",
+    "phoneNumber": "+84 982 216 975",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-proxy/AIM7gW3LQrE6gERkUvB8xdw0ZVGphs8Ri54JjcfKHejUqFKk9FyzEiexFKMbnM8gOm9WBQYD42Q1YIsGbDUFUfnFs0SkqjpN7OzUxGIF6JJALU9zltJc_8K4AJmsxoL_ZfeMYDUSfnV_FYyMwbNB2EyMr2Voa5DlFEr_q_-5Ozri2Arue-EV1iRrYbHNOA",
+    "cid": "12523998841630153122",
+    "fid": "0x3171137deb9b846d:0xadce2e976ac4d9a2",
+    "placeId": "ChIJbYSb630TcTERotnEapcuzq0"
+   },
+   {
+    "position": 9,
+    "title": "New Century Dalat Hotel",
+    "address": "14B Đống Đa, Xuân Hương - Đà Lạt, Lâm Đồng 670000, Việt Nam",
+    "latitude": 11.9236753,
+    "longitude": 108.44323519999999,
+    "rating": 4.5,
+    "ratingCount": 323,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://book.securebookings.net/roomrate?id=70d5ad9f-681d-1690889706-478b-bf25-69b3fcb615bb",
+    "phoneNumber": "+84 776 458 485",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPKmkIeQ6R4jSKpIxQiOP6ifojqu6MbmYUE5ynNA7YNB3S_XJ8PerlpEfWe_IFwZsKw1BcGFJdQHYKX27-xJPfMpG6uUEKj46MsKg6FbuApMiNDBdQVuv9yaKrr0DyLnECGN2b83KSfwdrl",
+    "cid": "14347211777730861643",
+    "fid": "0x317113e107fce7ff:0xc71b8918d8f2da4b",
+    "placeId": "ChIJ_-f8B-ETcTERS9ry2BiJG8c"
+   },
+   {
+    "position": 10,
+    "title": "Khách sạn DaLat Peach Valley",
+    "address": "26k Yersin, Xuân Hương - Đà Lạt, Lâm Đồng 66117, Việt Nam",
+    "latitude": 11.9433379,
+    "longitude": 108.4511033,
+    "rating": 4.9,
+    "ratingCount": 957,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://hoteldalatvalley.com/",
+    "phoneNumber": "+84 263 3838 686",
+    "description": "Khách sạn ấm cúng có quán cà phê, quầy bar, nhà hàng và cảnh Hồ Xuân Hương.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLfLSBqKo28qkj97d1r7a8p9lDL-yxDLEzRydFMLRKyBgPXk07EOvv3EjIcA-LaA1NpmA5RlXQrVAWxtzBF__idJwn5DCTBnLFQ0uidTLWcdo1vVtuJgveM5XvDGEhvrJh785Q3s",
+    "cid": "15560163064707979358",
+    "fid": "0x31752fd46d3a3d01:0xd7f0cdddb712985e",
+    "placeId": "ChIJAT06bdQvdTERXpgSt93N8Nc"
+   },
+   {
+    "position": 11,
+    "title": "Tiệm Ăn Rơm",
+    "address": "83 Trạng Trình, Lâm Viên - Đà Lạt, Lâm Đồng, Việt Nam",
+    "latitude": 11.9518563,
+    "longitude": 108.4586755,
+    "rating": 4.8,
+    "ratingCount": 740,
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "website": "https://www.facebook.com/profile.php?id=100093259692828&mibextid=LQQJ4d",
+    "phoneNumber": "+84 902 355 436",
+    "openingHours": {
+     "Thứ Năm": "Đóng cửa",
+     "Thứ Sáu": "10:30–21:00",
+     "Thứ Bảy": "10:30–21:00",
+     "Chủ Nhật": "10:30–21:00",
+     "Thứ Hai": "10:30–21:00",
+     "Thứ Ba": "Đóng cửa",
+     "Thứ Tư": "Đóng cửa"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOP5UFNTCCCjszBt6H-fDms1bu3Fp5egL-TM3sKtJ8HMnDrrBTUcfiLIzPxgUzdjQRXY-eF1Jf4pB8Hu0vYXj7suABLpYyvjFl_4aMmTnNHMm8UZUccGyeZ4nqm5gZuDGvYUc5Z4Cc_6pll",
+    "cid": "10459854442374027958",
+    "fid": "0x31711318a8b35efb:0x9128de3257fedab6",
+    "placeId": "ChIJ-16zqBgTcTERttr-VzLeKJE"
+   },
+   {
+    "position": 12,
+    "title": "Tiệm Cơm Hồi Nớ",
+    "address": "4 Trần Hưng Đạo, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+    "latitude": 11.9373916,
+    "longitude": 108.4473933,
+    "rating": 4.5,
+    "ratingCount": 2656,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "https://www.facebook.com/TiemComHoiNo?mibextid=ZbWKwL",
+    "phoneNumber": "+84 979 189 199",
+    "openingHours": {
+     "Thứ Năm": "09:30–16:00",
+     "Thứ Sáu": "09:30–16:00",
+     "Thứ Bảy": "09:30–16:00",
+     "Chủ Nhật": "09:30–16:00",
+     "Thứ Hai": "09:30–16:00",
+     "Thứ Ba": "09:30–16:00",
+     "Thứ Tư": "09:30–16:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmN6m83-2mPqVaFVIcdZZVpZwDlAVaqiQM3dCcM7J2BeN23yxHZB_V1H5KTatspEcEnKXFcVsEt7TTzKvUquuYnmk0uL4-jNslH9LK-VIcyxaU-nx5zWps10L9ur2LTVbvKt4yVljyczlPr3",
+    "cid": "10114570282334858058",
+    "fid": "0x317113e1bb8cf417:0x8c5e2c151e4aab4a",
+    "placeId": "ChIJF_SMu-ETcTERSqtKHhUsXow"
+   },
+   {
+    "position": 13,
+    "title": "TTC Hotel - Đà Lạt",
+    "address": "4 Đường Nguyễn Thị Minh Khai, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+    "latitude": 11.9418548,
+    "longitude": 108.43765289999999,
+    "rating": 4.1,
+    "ratingCount": 1316,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://ttchoteldalat.com/",
+    "phoneNumber": "+84 263 3826 042",
+    "description": "Khách sạn bình dân nhìn ra thành phố, có bữa sáng miễn phí, 3 nhà hàng và không gian tổ chức sự kiện.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLf9lmQQbHb-rjGT8QW4ANs9jeLejVN7M0mLclE3cvE6V8OSxejolVlW50TOOZTUadu5EvcsqS1K91-3xRn9nlywRzXzkucNmL7WIJuNoI1A-_kuI_SgAtrLSrLnWjAs5BJqUpnO",
+    "cid": "2101945194560521748",
+    "fid": "0x3171132f11dddd7d:0x1d2b9c04931e8614",
+    "placeId": "ChIJfd3dES8TcTERFIYekwScKx0"
+   },
+   {
+    "position": 14,
+    "title": "Cơm Niêu Đèn Lồng Đà Lạt",
+    "address": "79 Đường Bùi Thị Xuân, Xuân Hương - Đà Lạt, Lâm Đồng 670000, Việt Nam",
+    "latitude": 11.9459203,
+    "longitude": 108.43925089999999,
+    "rating": 4,
+    "ratingCount": 421,
+    "type": "Nhà hàng gia đình",
+    "types": [
+     "Nhà hàng gia đình"
+    ],
+    "phoneNumber": "+84 944 511 119",
+    "openingHours": {
+     "Thứ Năm": "09:00–21:00",
+     "Thứ Sáu": "09:00–21:00",
+     "Thứ Bảy": "09:00–21:00",
+     "Chủ Nhật": "09:00–21:00",
+     "Thứ Hai": "09:00–21:00",
+     "Thứ Ba": "09:00–21:00",
+     "Thứ Tư": "09:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLd560nqacrpQUbZcmzNFSsOhDNtN8MI3QWCboUDmvbCPl5K5PdfHb0q79c57F6cNssiTYJwqJYucCMmFG_T985JuN2hkfZ5M-LRQDVaJFAUDbvVBU52dAKEqqQsrtHG9CbENGMVZQ",
+    "cid": "12113521890969294306",
+    "fid": "0x3171131bed2513b3:0xa81bdffaca2495e2",
+    "placeId": "ChIJsxMl7RsTcTER4pUkyvrfG6g"
+   },
+   {
+    "position": 15,
+    "title": "Bếp Khói - Sườn Cay Khổng Lồ Đà Lạt",
+    "address": "42 Phan Chu Trinh, Lâm Viên - Đà Lạt, Lâm Đồng 66000, Việt Nam",
+    "latitude": 11.951141199999999,
+    "longitude": 108.4653718,
+    "rating": 4.6,
+    "ratingCount": 1554,
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "website": "https://www.facebook.com/Bepkhoidalat/",
+    "phoneNumber": "+84 394 452 784",
+    "openingHours": {
+     "Thứ Năm": "10:30–14:00, 16:30–22:00",
+     "Thứ Sáu": "10:30–14:00, 16:30–22:00",
+     "Thứ Bảy": "10:30–14:00, 16:30–22:00",
+     "Chủ Nhật": "10:30–14:00, 16:30–22:00",
+     "Thứ Hai": "10:30–14:00, 16:30–22:00",
+     "Thứ Ba": "10:30–14:00, 16:30–22:00",
+     "Thứ Tư": "10:30–14:00, 16:30–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLcj7DqAXHQnwAwJD7OPXPyei-XosemhVqRTrrLH8VKqviWEprg3oKTASWeYZh9wFF435n-nSgyy4mFC8CXvKRTbyT_QO6L9gXRhlw2gimBoU92we2pzL36SuztAblS1eQG00M0g",
+    "cid": "17094768101990628906",
+    "fid": "0x317113ea80a24a77:0xed3cd1044cd47e2a",
+    "placeId": "ChIJd0qigOoTcTERKn7UTATRPO0"
+   },
+   {
+    "position": 16,
+    "title": "VIEW HOME DALAT",
+    "address": "Đồi 70, Đ. Trịnh Hoài Đức, Xuân Trường - Đà Lạt, Lâm Đồng, Việt Nam",
+    "latitude": 11.945726299999999,
+    "longitude": 108.4817789,
+    "rating": 4.9,
+    "ratingCount": 141,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Lưu trú nhà dân"
+    ],
+    "website": "https://www.facebook.com/viewhomedalat",
+    "phoneNumber": "+84 934 569 939",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPO4234AkM4fssMXPKuAIibuqU6frMXMFDl1ogwRh7rCWwz2n2nN5Oyo_zVM7zif0C5SYZnFzx6U57abP6IFz6w1arxt0iCOZJ-eGZLT-5-p07mqWuq1T8zxuPjwVWSnCStBOBm",
+    "cid": "10257442195736505886",
+    "fid": "0x317113fc98d13ad7:0x8e59c154acfa2e1e",
+    "placeId": "ChIJ1zrRmPwTcTERHi76rFTBWY4"
+   },
+   {
+    "position": 17,
+    "title": "Nhà hàng Thái YAM - Chiangmai in Dalat",
+    "address": "286 Đường Hai Bà Trưng, Cam Ly - Đà Lạt, Lâm Đồng, Việt Nam",
+    "latitude": 11.951035,
+    "longitude": 108.43199419999999,
+    "rating": 4.9,
+    "ratingCount": 2261,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "http://facebook.com/Yam.nhahangThai",
+    "phoneNumber": "+84 932 449 440",
+    "openingHours": {
+     "Thứ Năm": "10:00–14:00, 17:00–21:00",
+     "Thứ Sáu": "10:00–14:00, 17:00–21:00",
+     "Thứ Bảy": "10:00–14:00, 17:00–21:00",
+     "Chủ Nhật": "10:00–14:00, 17:00–21:00",
+     "Thứ Hai": "10:00–14:00, 17:00–21:00",
+     "Thứ Ba": "10:00–14:00, 17:00–21:00",
+     "Thứ Tư": "10:00–14:00, 17:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPb4efoI8_KoKcVTARoLBSMn7_dak9z37ADQ4wi89NsXN1AUyJXO8l_OfijzPGbVNRLLYb-zCddXiEBs6aISmiUz2CcdztoNvKQCM0MFfAmygu9UoexLR2T6mbo-_hii94yJtE1SRr9EAk",
+    "cid": "17083482600416973355",
+    "fid": "0x317113a84576a2f5:0xed14b8e9b46b922b",
+    "placeId": "ChIJ9aJ2RagTcTERK5JrtOm4FO0"
+   },
+   {
+    "position": 18,
+    "title": "Chợ đà lạt",
+    "address": "chợ Đà Lạt, 24 Đường Nguyễn Thị Minh Khai, Xuân Hương - Đà Lạt, Lâm Đồng 02633, Việt Nam",
+    "latitude": 11.943022599999999,
+    "longitude": 108.43687779999999,
+    "rating": 4.5,
+    "ratingCount": 1714,
+    "type": "Chợ",
+    "types": [
+     "Chợ"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLcR0cHXFAbyXVPr0cC7tQSm6TXn05ew878WEa5ralqushrMFKaF3A0V6eNYc-DykDf-x-sP6xv7p7AamrIFT4Jwl3sMfDsFucpmOqQrMQRw5spSBKGKImVXikdxOILBhj2YkizXLd9qNro",
+    "cid": "5084899052227786311",
+    "fid": "0x3171130043681211:0x469130bf3ec1f647",
+    "placeId": "ChIJERJoQwATcTERR_bBPr8wkUY"
+   },
+   {
+    "position": 19,
+    "title": "Teakhouse",
+    "address": "Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+    "latitude": 11.926023899999999,
+    "longitude": 108.4449003,
+    "rating": 4.8,
+    "ratingCount": 889,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Căn hộ nghỉ dưỡng cho thuê"
+    ],
+    "website": "https://www.booking.com/hotel/vn/teakhouse-da-lat.vi.html?aid=7955654",
+    "phoneNumber": "+84 938 370 860",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLd3-UzqEil47Wr4tTW1aWNydJSulNCnEVHHUAy_yA6BoJgm5eUXqjMBR27b-GPcCzhozYxg9kzkkwiV-tv2SWdlI32ZM8tHZuMkDmwK5hYKkmEFZp_YtUuje1odrTSslkw5NS4mnXokFPhm",
+    "cid": "4366770532713739124",
+    "fid": "0x317113b7ea1842fb:0x3c99e2a9d20bb374",
+    "placeId": "ChIJ-0IY6rcTcTERdLML0qnimTw"
+   },
+   {
+    "position": 20,
+    "title": "Cơm Hến O Hoa",
+    "address": "24 Đường Ánh Sáng, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+    "latitude": 11.9396317,
+    "longitude": 108.43608479999999,
+    "rating": 4.6,
+    "ratingCount": 142,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "openingHours": {
+     "Thứ Năm": "07:30–18:30",
+     "Thứ Sáu": "07:30–18:30",
+     "Thứ Bảy": "07:30–18:30",
+     "Chủ Nhật": "07:30–18:30",
+     "Thứ Hai": "07:30–18:30",
+     "Thứ Ba": "07:30–18:30",
+     "Thứ Tư": "07:30–18:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLda-aVvdPPerDUO4ZLZVPxW7hM_n_J76sg5Ikpc6lWCuThhwyU54o_-upFXzQTMwyW0TtEFj55Hp8IgHanQDqbxqCMi_yYXVXZrQGq9fj_wZTGw8-6I52_ee-L_cy5bwZMxUIT-",
+    "cid": "17628094101678263275",
+    "fid": "0x317113274920bfd1:0xf4a3923015b10beb",
+    "placeId": "ChIJ0b8gSScTcTER6wuxFTCSo_Q"
+   }
+  ],
+  "credits": 3
+ }
+}

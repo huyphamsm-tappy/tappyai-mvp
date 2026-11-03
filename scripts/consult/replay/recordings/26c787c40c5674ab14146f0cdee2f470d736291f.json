@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple kiểm tra Mac cũ Activation Lock Find My serial number trước khi mua",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:43:34.034Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple kiểm tra Mac cũ Activation Lock Find My serial number trước khi mua",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Kiểm tra xuất xứ MacBook: 5 Bước Chính Xác Trong 10 Phút",
+    "link": "https://macone.vn/tin-tuc/kiem-tra-xuat-xu-macbook/?srsltid=AU7gw4Xvy-Q-drirIT3_ogXkfXtODW7txkFFIxPBtg1M4bV6Xx1aRYSw",
+    "snippet": "Đăng nhập Apple ID; Section “Devices” → Chọn MacBook; Xem “Serial Number”. Cách này hữu ích khi bạn cần check từ xa (máy không ở ...",
+    "position": 1
+   },
+   {
+    "title": "Tìm tên kiểu máy và số sê-ri của máy Mac",
+    "link": "https://support.apple.com/vi-vn/102767",
+    "snippet": "Nhấn và giữ phím Option trên bàn phím trong khi chọn menu Apple > Thông tin hệ thống từ thanh menu. · Chọn Phần cứng trong thanh bên. · Thông tin ở bên phải ...",
+    "position": 2
+   },
+   {
+    "title": "Cảnh báo anh em mua máy Mac cũ! | Viết bởi summon_rain",
+    "link": "https://tinhte.vn/thread/canh-bao-anh-em-mua-may-mac-cu.3680805/",
+    "snippet": "Cách chắc chắn 100% để kiểm tra Activation Lock - iCloud ẩn. Sau khi gọi lên Apple Support VN và chat với nhân viên của Apple, mình được ...",
+    "date": "12 thg 6, 2023",
+    "rating": 5,
+    "ratingCount": 23,
+    "position": 3
+   },
+   {
+    "title": "MacBook bị khóa mật khẩu – Nguyên nhân và cách mở ...",
+    "link": "https://suamacbook.vn/macbook-bi-khoa-mat-khau-nguyen-nhan-va-cach-mo-hieu-qua/?srsltid=AU7gw4Vwj_eBy63QeOHeivItvSYrwVmJXmaFly4RzPifT5TqcHIjsNCg",
+    "snippet": "+ Bị khóa iCloud do bật Find My Mac nhưng không tắt trước khi reset. Cách mở khóa MacBook bị mật khẩu. ✓ Cách 1: Đặt lại mật khẩu đăng nhập ...",
+    "date": "21 thg 10, 2025",
+    "position": 4
+   },
+   {
+    "title": "Check serial MacBook chính xác để biết máy có chính hãng",
+    "link": "https://clickbuy.com.vn/check-serial-macbook.html?srsltid=AU7gw4Xthk6hFOQUKj4E0DRGZ6E0yvwm3TVA3ArzNIcQnyuh5cGP-LDv",
+    "snippet": "Check serial Macbook ngay trên thân máy · Tra cứu trong phần giới thiệu “About This Mac” · Xem mã serial từ tài khoản Apple ID đã đăng nhập · Check ...",
+    "date": "19 thg 7, 2025",
+    "position": 5
+   },
+   {
+    "title": "Cách Kiểm Tra iCloud iPhone Cũ Trước Khi Mua",
+    "link": "https://hoanghamobile.com/tin-tuc/cach-kiem-tra-icloud-iphone-cu/?srsltid=AU7gw4V4MVnoaZfCfj8NTc_3eddVGjnpX6UUi8b9X0nHKL6TklfpUoHt",
+    "snippet": "Cách thực tế và đáng tin nhất vẫn là kiểm tra trực tiếp trên máy (Cài đặt) và xóa máy rồi thiết lập lại như trên. Bạn cũng nên kiểm tra IMEI/số serial (Cài đặt > ...",
+    "position": 6
+   },
+   {
+    "title": "13 Bước Kiểm Tra MacBook Cũ Chuẩn: Tránh Bị \"Lừa\" Khi ...",
+    "link": "https://www.youtube.com/watch?v=aB2T5BHFF6I",
+    "snippet": "Bạn đang có ý định mua một chiếc MacBook cũ (Like New) để tiết kiệm chi phí nhưng lo lắng về chất lượng? Đừng bỏ lỡ video này!",
+    "position": 7
+   },
+   {
+    "title": "Cách kiểm tra MacBook cũ trước khi mua ĐƠN GIẢN ...",
+    "link": "https://24hstore.vn/huong-dan-ky-thuat/cach-kiem-tra-macbook-cu-n9230?srsltid=AU7gw4XQ1P2zHVagjqE0PwCdB3ApmTWPeYsnT9e7jw0z5IZQvXYY2oWp",
+    "snippet": "Cách kiểm tra pin MacBook cũ đơn giản bằng cách: Nhấn chọn logo Apple > Thông tin Hệ thống (System Information) > Nguồn điện (Power) trên thanh ...",
+    "date": "31 thg 5, 2025",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

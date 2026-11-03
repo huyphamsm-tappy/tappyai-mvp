@@ -4,7 +4,7 @@
 // model + Serper ≈ 4 credits): the only cap was 30 requests/min per IP, per instance, and a Pro
 // account had NO daily cap at all — 30 × 60 × 24 = 43,200 turns/day ≈ $1,500 of model and
 // ≈ 170k Serper credits, per instance, per account. Free accounts were bounded by the shared
-// 15/day question pool and anonymous by the 5-lifetime trial, so the gap was Pro and the
+// 10/day question pool and anonymous by the 5-lifetime trial, so the gap was Pro and the
 // per-instance nature of the IP cap.
 //
 // Every number here is an env override with a default, so the owner can move a cap without a
@@ -21,5 +21,8 @@ function envInt(name: string, fallback: number, env: NodeJS.ProcessEnv = process
 export const CHAT_IP_BURST_PER_MINUTE = envInt('CHAT_IP_BURST_PER_MINUTE', 30)
 /** Burst cap per signed-in account, per minute — the case the IP cap cannot see (one account, many IPs). */
 export const CHAT_USER_BURST_PER_MINUTE = envInt('CHAT_USER_BURST_PER_MINUTE', 20)
-/** Model turns per VN day for a Pro account (canned $0 turns excluded). Far above real use; bounds the worst day. */
-export const PRO_DAILY_CHAT_CAP = envInt('PRO_DAILY_CHAT_CAP', 300)
+/**
+ * Model turns per VN day for a Pro account (canned $0 turns excluded). Far above real use; bounds the worst day.
+ * Owner 01/11/2026: 1000, the same hidden ceiling as every paid plan (PAID_DAILY_CEILING); was 300.
+ */
+export const PRO_DAILY_CHAT_CAP = envInt('PRO_DAILY_CHAT_CAP', 1000)

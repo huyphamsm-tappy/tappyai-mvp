@@ -14,7 +14,15 @@ struct TappyAIApp: App {
                 .environmentObject(deps.router)
                 .environmentObject(deps.theme)
                 .environmentObject(deps.localization)
-                .task { deps.bootstrap() }
+                // Injected on its own: a store nested in `deps` would not re-render the tab badge when its count changes.
+                .environmentObject(deps.notificationCenter)
+                .overlay { UITestOverlay() }
+                .task {
+                    deps.bootstrap()
+                    #if DEBUG
+                    UITestLaunch.apply(deps)
+                    #endif
+                }
                 .onOpenURL { deps.handleDeepLink($0.absoluteString) }
                 .onContinueUserActivity(NSUserActivityTypeBrowsingWeb) { activity in
                     guard let url = activity.webpageURL else { return }
@@ -26,6 +34,7 @@ struct TappyAIApp: App {
             case .active:
                 AppLogger.app.debug("scene: active")
                 deps.notificationManager.clearBadge()
+                Task { await deps.notificationCenter.refresh() }
             case .inactive: AppLogger.app.debug("scene: inactive")
             case .background: AppLogger.app.debug("scene: background")
             @unknown default: break

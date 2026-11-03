@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, afterAll } from 'vitest'
+import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest'
 import { execFileSync, spawnSync } from 'node:child_process'
 import { mkdtempSync, writeFileSync, rmSync, mkdirSync, readFileSync } from 'node:fs'
 import { join, dirname } from 'node:path'
@@ -11,6 +11,11 @@ import { checkContainment } from './branch-containment.mjs'
 // real-history proofs (a6ca9f0, 1e7b77e, integration/v3-foundation) are in
 // docs/uat/evidence/merge-guard-2026-09-25/; these pin each rule's pass AND fail so the guards
 // cannot quietly go vacuous.
+
+// Timeout: every test builds a synthetic git repository and spawns several git processes. Measured 2026-10-10: in isolation these take 1-3 s; with the CPU saturated (12 busy loops on 12 cores) the same tests took 5-9 s and
+// failed with 'Test timed out in 5000ms' (vitest default) while their assertions were never reached. The full runner saturates the machine the same way, so
+// the two files failed intermittently there and passed alone. A longer timeout changes no assertion.
+vi.setConfig({ testTimeout: 30_000 })
 
 const GUARD = join(__dirname, 'merge-guard.mjs')
 const DAY = 86_400_000

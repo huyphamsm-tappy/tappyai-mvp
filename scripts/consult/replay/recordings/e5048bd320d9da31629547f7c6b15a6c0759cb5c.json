@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"KHÁCH SẠN MỸ KHÊ 2\" gần biển Mỹ Khê, Đà Nẵng, dưới 1.500.000 VND/đêm, link đặt phòng site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:38:37.317Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"KHÁCH SẠN MỸ KHÊ 2\" gần biển Mỹ Khê, Đà Nẵng, dưới 1.500.000 VND/đêm, link đặt phòng site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "lệ phí cấp hộ chiếu online 2026 180000 200000 Thông tư Bộ Tài chính hồ sơ cấp hộ chiếu trực tuyến Việt Nam",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T01:55:41.959Z",
+ "body": {
+  "searchParameters": {
+   "q": "lệ phí cấp hộ chiếu online 2026 180000 200000 Thông tư Bộ Tài chính hồ sơ cấp hộ chiếu trực tuyến Việt Nam",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Từ 15/8/2026, miễn lệ phí cấp hộ chiếu phổ thông trong ...",
+    "link": "https://luatvietnam.vn/tin-van-ban-moi/mien-le-phi-cap-ho-chieu-pho-thong-trong-nuoc-cho-nguoi-co-vneid-muc-2-186-111583-article.html",
+    "snippet": "Từ 15/8/2026, miễn lệ phí cấp hộ chiếu phổ thông trong nước cho người có VNeID mức 2 · Ngày 14/8/2026, Bộ Tài chính ban hành Thông tư 117/2026/TT ...",
+    "date": "18 thg 8, 2026",
+    "position": 1
+   },
+   {
+    "title": "Mức thu lệ phí cấp hộ chiếu, giấy thông hành, giấy phép xuất ...",
+    "link": "https://xaydungchinhsach.chinhphu.vn/muc-thu-le-phi-cap-ho-chieu-giay-thong-hanh-giay-phep-xuat-canh-tem-ab-119260401102312629.htm",
+    "snippet": "Lệ phí cấp hộ chiếu, giấy thông hành, giấy phép xuất cảnh, tem \"AB\" được quy định như sau: ; a. Cấp mới. 200.000 ; b. Cấp lại do bị hỏng hoặc bị ...",
+    "date": "1 thg 4, 2026",
+    "position": 2
+   },
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp tỉnh)",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=29497",
+    "snippet": "* Người đề nghị cấp hộ chiếu phổ thông có thể yêu cầu nhận kết quả qua dịch vụ bưu chính và phải trả phí dịch vụ chuyển phát. * Thời gian tiếp nhận hồ sơ: Từ ...",
+    "position": 3
+   },
+   {
+    "title": "TIN VUI: Từ 15/8/2026, miễn lệ phí cấp hộ chiếu phổ thông ...",
+    "link": "https://www.facebook.com/LuatVietnam.vn/posts/tin-vui-t%E1%BB%AB-1582026-mi%E1%BB%85n-l%E1%BB%87-ph%C3%AD-c%E1%BA%A5p-h%E1%BB%99-chi%E1%BA%BFu-ph%E1%BB%95-th%C3%B4ng-trong-n%C6%B0%E1%BB%9Bc-cho-ng%C6%B0%E1%BB%9Di-c%C3%B3-vn/1607561301157093/",
+    "snippet": "TIN VUI: Từ 15/8/2026, miễn lệ phí cấp hộ chiếu phổ thông trong nước cho người có VNeID mức 2.",
+    "position": 4
+   },
+   {
+    "title": "MIỄN 100% LỆ PHÍ CẤP HỘ CHIẾU KHI ĐÁP ỨNG ĐỦ ĐIỀU ...",
+    "link": "https://www.facebook.com/xnctthue/posts/-mi%E1%BB%85n-100-l%E1%BB%87-ph%C3%AD-c%E1%BA%A5p-h%E1%BB%99-chi%E1%BA%BFu-khi-%C4%91%C3%A1p-%E1%BB%A9ng-%C4%91%E1%BB%A7-%C4%91i%E1%BB%81u-ki%E1%BB%87n-tr%C3%AAn-vneidth%E1%BB%B1c-hi%E1%BB%87n-ngh%E1%BB%8B-/1494413036056480/",
+    "snippet": "MIỄN 100% LỆ PHÍ CẤP HỘ CHIẾU KHI ĐÁP ỨNG ĐỦ ĐIỀU KIỆN TRÊN VNeID Thực hiện Nghị quyết số 66.22/2026/NQ-CP ngày 09/7/2026 của Chính phủ về ...",
+    "position": 5
+   },
+   {
+    "title": "biểu mức thu phí, lệ phí cấp hộ chiếu đối với công dân ...",
+    "link": "https://xnc-congan.hochiminhcity.gov.vn/wps/portal/xnc/Home/xncnn?1dmy&page=chitiet&urile=wcm%3Apath%3A%2Fxnc-cms%2Fxnc%2Farticle-xncnn%2Flp-xncnn%2Fbmtp",
+    "snippet": "BIỂU MỨC THU PHÍ, LỆ PHÍ CẤP HỘ CHIẾU ĐỐI VỚI CÔNG DÂN VIỆT NAM ; 1. Lệ phí cấp hộ chiếu ; a. Cấp mới. 200.000 ; b. Cấp lại do bị hỏng hoặc bị mất. 400.000 ; c. Gia ...",
+    "position": 6
+   },
+   {
+    "title": "Quy định mới về lệ phí cấp hộ chiếu năm 2026",
+    "link": "https://congan.khanhhoa.gov.vn/vi/quy-dinh-moi-ve-le-phi-cap-ho-chieu-nam-2026",
+    "snippet": "- Gia hạn hộ chiếu (ngoại giao, công vụ): 100.000 đồng/lần cấp. - Cấp giấy xác nhận nhân sự: 100.000 đồng/lần cấp. Lưu ý, các trường hợp được ...",
+    "date": "29 thg 9, 2026",
+    "position": 7
+   },
+   {
+    "title": "Toàn Bộ Quy Trình Làm Hộ Chiếu Online Và Trực Tiếp 2026",
+    "link": "https://fisc.com.vn/lam-ho-chieu/",
+    "snippet": "Lệ phí làm hộ chiếu ; Cấp mới hộ chiếu, 200.000 ; Cấp lại do hết hạn, 200.000 ; Cấp lại do bị mất hoặc hư hỏng, 400.000 ; Sửa đổi thông tin, 50.000 ; Trẻ em dưới 9 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

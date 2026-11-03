@@ -12,6 +12,7 @@
  */
 
 import { SignJWT, importPKCS8 } from 'jose'
+import { isAppleSandboxAllowed } from './transactionPolicy'
 
 const PRODUCTION_BASE = 'https://api.storekit.itunes.apple.com'
 const SANDBOX_BASE    = 'https://api.storekit-sandbox.itunes.apple.com'
@@ -47,9 +48,9 @@ async function makeAuthJWT(): Promise<string> {
     .sign(privateKey)
 }
 
-async function appleGet<T>(path: string): Promise<T> {
+async function appleGet<T>(path: string, base: string = apiBase()): Promise<T> {
   const jwt = await makeAuthJWT()
-  const res = await fetch(`${apiBase()}${path}`, {
+  const res = await fetch(`${base}${path}`, {
     headers: { Authorization: `Bearer ${jwt}` },
     // Never cache — always fetch fresh entitlement data
     cache: 'no-store',
@@ -86,16 +87,44 @@ export interface SubscriptionStatusResponse {
   }>
 }
 
+// ── Error detection ────────────────────────────────────────────────────────
+
+/**
+ * Returns true if an App Store Server API error represents a TransactionIdNotFoundError
+ * (HTTP 404 with Apple error code 4040010 or message containing 'Transaction id not found.').
+ */
+export function isTransactionIdNotFoundError(err: unknown): boolean {
+  if (!(err instanceof Error)) return false
+  const msg = err.message
+  if (!msg.includes('404')) return false
+  return (
+    msg.includes('4040010') ||
+    /Transaction\s*id\s*not\s*found/i.test(msg) ||
+    /TransactionIdNotFoundError/i.test(msg)
+  )
+}
+
 // ── Public API ─────────────────────────────────────────────────────────────
 
 /**
  * GET /inApps/v1/subscriptions/{originalTransactionId}
  * Returns the latest subscription status for all groups under this transaction.
+ * Retries against Sandbox ONLY when APPLE_IAP_ALLOW_SANDBOX is explicitly enabled AND
+ * the primary Production call returns a TransactionIdNotFoundError (Apple App Review / TestFlight).
  */
 export async function getSubscriptionStatuses(
-  originalTransactionId: string
+  originalTransactionId: string,
+  env: NodeJS.ProcessEnv = process.env,
 ): Promise<SubscriptionStatusResponse> {
-  return appleGet(`/inApps/v1/subscriptions/${originalTransactionId}`)
+  const primary = apiBase()
+  try {
+    return await appleGet(`/inApps/v1/subscriptions/${originalTransactionId}`, primary)
+  } catch (err: unknown) {
+    if (primary === PRODUCTION_BASE && isAppleSandboxAllowed(env) && isTransactionIdNotFoundError(err)) {
+      return await appleGet(`/inApps/v1/subscriptions/${originalTransactionId}`, SANDBOX_BASE)
+    }
+    throw err
+  }
 }
 
 /**

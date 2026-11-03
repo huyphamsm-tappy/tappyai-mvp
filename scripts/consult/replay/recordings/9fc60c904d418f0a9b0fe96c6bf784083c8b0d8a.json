@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "King House Villa Hotel",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:06:56.706Z",
+ "body": {
+  "searchParameters": {
+   "q": "King House Villa Hotel",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "King House Villa Hotel & Spa, Đà Nẵng (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/241430891.jpg?k=874742fe0b1e9dd77ae4127b25a28078928c1a69143a4f3fb8a237e414084684&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSE-ZM3bR7P5XXpa9l7kZA7-znnTHUHEE4oKz4veixBZQ&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/king-house-hotel.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F241430891.jpg%3Fk%3D874742fe0b1e9dd77ae4127b25a28078928c1a69143a4f3fb8a237e414084684%26o%3D&tbnid=q44BTJvdwZ7xgM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fking-house-hotel.vi.html&docid=lkv_POtLO8i49M&w=1024&h=683",
+    "position": 1
+   },
+   {
+    "title": "King House Villa Hotel | Da Nang",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=1168796148168913",
+    "imageWidth": 1241,
+    "imageHeight": 1079,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFYLocMj81bXuvDIL1LAYOfxBI7CoM8Sg_Vj8cqrfKYQ&s=10",
+    "thumbnailWidth": 479,
+    "thumbnailHeight": 417,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/kinghouse.hotel.danang/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D1168796148168913&tbnid=RDqf6Yln0GmD3M&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fkinghouse.hotel.danang%2F&docid=-swG7WGqkVAN2M&w=1241&h=1079",
+    "position": 2
+   },
+   {
+    "title": "King House Villa Hotel & Spa, Đà Nẵng (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/518323563.jpg?k=de2e4d0c4684cf9370a9ec669ec3ad46ef704cea372a0a744e99bc7a989a230a&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuipI7dOcGZEWOD55oEFqgPuU3y4J1kaeNS2KYCs5dWQ&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/king-house-hotel.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F518323563.jpg%3Fk%3Dde2e4d0c4684cf9370a9ec669ec3ad46ef704cea372a0a744e99bc7a989a230a%26o%3D&tbnid=0F3FxrfYMq-R7M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fking-house-hotel.vi.html&docid=lkv_POtLO8i49M&w=1024&h=683",
+    "position": 3
+   },
+   {
+    "title": "King House Villa Hotel Đà Nẵng giá mới nhất - Vietgoing",
+    "imageUrl": "https://image.vietgoing.com/hotel/02/73/medium/vietgoing_lyg2208109924.webp",
+    "imageWidth": 810,
+    "imageHeight": 455,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYjKknFp7phhJNlIJPYrLPjbsagyQdBMCJGghhEvnQcw&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "Vietgoing",
+    "domain": "vietgoing.com",
+    "link": "https://vietgoing.com/hotel/1896-king-house-villa-hotel-da-nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimage.vietgoing.com%2Fhotel%2F02%2F73%2Fmedium%2Fvietgoing_lyg2208109924.webp&tbnid=j8p0QtU88lXd4M&imgrefurl=https%3A%2F%2Fvietgoing.com%2Fhotel%2F1896-king-house-villa-hotel-da-nang.html&docid=mg8uvOhzJwx6zM&w=810&h=455",
+    "position": 4
+   },
+   {
+    "title": "KING HOUSE VILLA HOTEL & SPA (Đà Nẵng) - Đánh giá Khách sạn & So sánh giá -  Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1a/ba/d3/fd/king-house-villa-hotel.jpg?w=900&h=500&s=1",
+    "imageWidth": 900,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwMFDXIje6M2thHH9Kwa-pq1cWweYblJXnaK1fFx2zSw&s=10",
+    "thumbnailWidth": 599,
+    "thumbnailHeight": 333,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g298085-d15816453-Reviews-King_House_Villa_Hotel_Spa-Da_Nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F1a%2Fba%2Fd3%2Ffd%2Fking-house-villa-hotel.jpg%3Fw%3D900%26h%3D500%26s%3D1&tbnid=B4XVFGfoLD6YRM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g298085-d15816453-Reviews-King_House_Villa_Hotel_Spa-Da_Nang.html&docid=sVMs3T4iA2mhxM&w=900&h=500",
+    "position": 5
+   },
+   {
+    "title": "Biệt Thự Khách Sạn & Spa King House, Phước Mỹ, Đà Nẵng",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/179593970.jpg?k=f104c5a56a5b59dec572a842946e0303a04d4bff4d2818eeeabc15756a9e9e56&o=",
+    "imageWidth": 500,
+    "imageHeight": 320,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOeZytIv3AqEcbArIHlciO9RbW_nknOKahACclixTJtg&s=10",
+    "thumbnailWidth": 500,
+    "thumbnailHeight": 319,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/king-house-villa-hotel/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F179593970.jpg%3Fk%3Df104c5a56a5b59dec572a842946e0303a04d4bff4d2818eeeabc15756a9e9e56%26o%3D&tbnid=4bGT9uEsjhQcfM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fking-house-villa-hotel%2Fhotel%2Fda-nang-vn.html&docid=Pb0Jw1P_ET93vM&w=500&h=320",
+    "position": 6
+   },
+   {
+    "title": "King House Villa Hotel & Spa, Đà Nẵng (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/201880552.jpg?k=177be7f0f3bcea0a3013e74bacd55efc8e93664de4f4d63e485c03f8ae13724d&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQl-qKysZvbGUyRlSu1NZ8Sq1ex2j5mI8Ofcu9GVnnlqA&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/king-house-hotel.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F201880552.jpg%3Fk%3D177be7f0f3bcea0a3013e74bacd55efc8e93664de4f4d63e485c03f8ae13724d%26o%3D&tbnid=qFP17nrwzNXqmM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fking-house-hotel.vi.html&docid=lkv_POtLO8i49M&w=1024&h=683",
+    "position": 7
+   },
+   {
+    "title": "Biệt Thự Khách Sạn & Spa King House, Phước Mỹ, Đà Nẵng",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/179593976.jpg?k=b12e6e1071626d24f3b08c81c9001fcfb08b532c489f5eb66b31881efd155ffd&o=",
+    "imageWidth": 500,
+    "imageHeight": 333,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAtZ8MtNz4or1GrjCZyH85Ud1_0pSy1S7CQ0HoTPgx2Q&s=10",
+    "thumbnailWidth": 500,
+    "thumbnailHeight": 333,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/king-house-villa-hotel/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F179593976.jpg%3Fk%3Db12e6e1071626d24f3b08c81c9001fcfb08b532c489f5eb66b31881efd155ffd%26o%3D&tbnid=G6uMxo5VwP7YxM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fking-house-villa-hotel%2Fhotel%2Fda-nang-vn.html&docid=Pb0Jw1P_ET93vM&w=500&h=333",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

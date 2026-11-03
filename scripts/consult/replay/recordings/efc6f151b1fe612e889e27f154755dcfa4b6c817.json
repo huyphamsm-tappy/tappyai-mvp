@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "chụp Tai Gaming Sony INZONE H3 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:21:55.528Z",
+ "body": {
+  "searchParameters": {
+   "q": "chụp Tai Gaming Sony INZONE H3 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe chụp tai Gaming Sony Inzone H3",
+    "link": "https://shop.tiktok.com/vn/pdp/1737422745857328721",
+    "snippet": "Bảo hành 12 tháng chính hãng 1 đổi 1 trong 15 ngày nếu có lỗi phần cứng từ NSX. Jack cắm. ·. Cổng kết nối : 3.5mm. Thông tin chung.",
+    "position": 1
+   },
+   {
+    "title": "Loa Bluetooth Sony SRS-XB100 Extra Bass",
+    "link": "https://shop.tiktok.com/vn/pdp/loa-bluetooth-sony-srs-xb100-extra-bass-am-thanh-%C4%91inh-cao/1729758011963116113",
+    "snippet": "Tai nghe chụp tai Gaming Sony Inzone H3. 1 sold. ₫1.178.000. Tai nghe chụp tai ...",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

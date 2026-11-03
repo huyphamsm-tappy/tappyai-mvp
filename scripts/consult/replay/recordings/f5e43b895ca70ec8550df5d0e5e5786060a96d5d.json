@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:xuatnhapcanh.gov.vn cấp hộ chiếu online lệ phí hồ sơ",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:16:37.100Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:xuatnhapcanh.gov.vn cấp hộ chiếu online lệ phí hồ sơ",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Vietnam evisa - National portal on Immigration",
+    "link": "https://evisa.xuatnhapcanh.gov.vn/vi_VN/trang-chu-ttdt",
+    "snippet": "Điều kiện để được cấp thị thực điện tử: Người nước ngoài đang ở nước ngoài;; Có hộ chiếu hợp lệ;; Không thuộc các trường hợp chưa cho nhập ...",
+    "date": "11 thg 11, 2024",
+    "position": 1
+   },
+   {
+    "title": "Tổ chức bảo lãnh người nước ngoài",
+    "link": "https://evisa.xuatnhapcanh.gov.vn/en_US/web/guest/huong-dan-dvbl-xdnc",
+    "snippet": "Bước 1: Nhập thông tin công văn đề nghị xét duyệt, kiểm tra nhân sự người nước ngoài nhập cảnh (theo Mẫu NA2) và nhận mã hồ sơ điện tử. Bước 2: In công văn đề ...",
+    "position": 2
+   },
+   {
+    "title": "DV bảo lãnh - National portal on Immigration",
+    "link": "https://evisa.xuatnhapcanh.gov.vn/vi_VN/web/guest/dv-bao-lanh",
+    "snippet": "Bước 1: Sử dụng tài khoản được cấp để đăng nhập vào mục khai và gửi hồ sơ đề nghị cấp thị thực điện tử. Bước 2: Nhập thông tin của người nước ngoài đề nghị ...",
+    "position": 3
+   },
+   {
+    "title": "Tờ khai điện tử đề nghị cấp hộ chiếu",
+    "link": "https://hochieu.xuatnhapcanh.gov.vn/faces/contact.jspx",
+    "snippet": "I. Thông tin liên hệ. Website: https://hochieu.xuatnhapcanh.gov.vn. Email: contact@immigration.gov.vn. 1. Trụ sở tại Hà Nội.",
+    "position": 4
+   },
+   {
+    "title": "Tra cứu tính trạng hồ sơ và download Thị thực điện tử",
+    "link": "https://evisa.xuatnhapcanh.gov.vn/vi_VN/web/guest/tra-cuu-ho-so",
+    "snippet": "Tra cứu tính trạng hồ sơ và download Thị thực điện tử. Mã hồ sơ điện tử: Email: Ngày sinh: refreshCaptcha. Chữ để nhận dạng. Mã xác nhận. Tìm kiếm. Họ tên:.",
+    "position": 5
+   },
+   {
+    "title": "ABTC Search - National portal on Immigration",
+    "link": "https://evisa.xuatnhapcanh.gov.vn/vi_VN/abtc-search",
+    "snippet": "Tra cứu tình trạng cấp thẻ ABTC cho công dân Việt Nam. Số biên nhận *. Số hộ chiếu *. Mã an toàn. Chữ để nhận dạng Refresh CAPTCHA.",
+    "position": 6
+   },
+   {
+    "title": "Tổ chức không có account - National portal on Immigration",
+    "link": "https://evisa.xuatnhapcanh.gov.vn/dvbl-khong-tai-khoan",
+    "snippet": "Trang chủ · Thị thực điện tử · Mời, bảo lãnh nhập cảnh · Tra cứu hồ sơ · Thị thực điện tử · Mời, bảo lãnh nhập cảnh · Hỗ trợ · Đăng nhập ...",
+    "position": 7
+   },
+   {
+    "title": "Foreigner apply for e-visa - National portal on Immigration",
+    "link": "https://evisa.xuatnhapcanh.gov.vn/en_US/web/guest/khai-thi-thuc-dien-tu/cap-thi-thuc-dien-tu?p_p_id=khaithithucdientu_WAR_eVisaportlet&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&p_p_col_id=column-2&p_p_col_count=1&_khaithithucdientu_WAR_eVisaportlet_view=insert",
+    "snippet": "... hộ chiếu size nhỏ hơn 200KB. Bước 3: Sau khi thêm mới thành công, hệ thống hiển thị thông báo, người dùng ghi nhớ thông tin “Mã hồ sơ điện tử” để tra cứu hồ sơ ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

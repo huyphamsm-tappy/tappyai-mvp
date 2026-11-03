@@ -30,6 +30,7 @@ const usage: UsageEvent = {
   // truncates on SIZE, so a sample smaller than a production record would under-test those paths.
   providerId: 'claude',
   modelRole: 'smart',
+  decisionDomain: 'places',
   preModelMs: 640,
   ttftMs: 1811,
   modelFinishMs: 11120,

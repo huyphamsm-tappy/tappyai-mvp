@@ -1,0 +1,61 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Khách sạn Lavencos biển Mỹ Khê Đà Nẵng\" OR \"Mỹ Khê Beach Hotel\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:11:51.811Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Khách sạn Lavencos biển Mỹ Khê Đà Nẵng\" OR \"Mỹ Khê Beach Hotel\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Kova Hotel Đà Nẵng - Khách sạn 3 sao gần biển Mỹ Khê từ 375k ...",
+    "link": "https://www.tiktok.com/@lacadanang.tiktok/video/7644183037416115464",
+    "snippet": "recommend-cover. Thanh Phương Du Lịch. 27 · recommend-cover. saurauela. 7 · recommend-cover. Mỹ Khê Beach Hotel. 95 · recommend-cover. Review Du Lịch. 1783.",
+    "position": 1
+   },
+   {
+    "title": "Chicland Hotel Đà Nẵng: Eco-chic Stay Near Mỹ Khê Beach",
+    "link": "https://www.tiktok.com/@kingdomtourist.hotel/photo/7534922896066628882",
+    "snippet": "Enjoy 5-star amenities, infinity pool, and breakfast. Keywords: Chicland Hotel Đà Nẵng,khách sạn Đà Nẵng,eco-chic hotel,Mỹ Khê Beach hotel,resort Đà Nẵng. This ...",
+    "position": 2
+   },
+   {
+    "title": "Experience Exquisite Dining at Velora Restaurant",
+    "link": "https://www.tiktok.com/@nestaceliadananghotel/video/7650320130794196245",
+    "snippet": "Nesta Celia Danang Hotel. 463 · recommend-cover. Hotel in Danang. 198 · recommend-cover. Mỹ Khê Beach Hotel. 119 · recommend-cover. Mẩm làm du lịch. 100.",
+    "position": 3
+   },
+   {
+    "title": "Chicland Hotel Đà Nẵng: Eco-chic Stay Near Mỹ Khê Beach",
+    "link": "https://www.tiktok.com/@kingdomtourist.hotel/photo/7534922896066628882?image_index=5",
+    "snippet": "Enjoy 5-star amenities, infinity pool, and breakfast. Keywords: Chicland Hotel Đà Nẵng,khách sạn Đà Nẵng,eco-chic hotel,Mỹ Khê Beach hotel, ...",
+    "position": 4
+   },
+   {
+    "title": "Phúc Long Luxury Đà Nẵng: 4-Star Beachfront Hotel with Infinity ...",
+    "link": "https://www.tiktok.com/@kimdangbooking/photo/7640363395878997269?image_index=4",
+    "snippet": "Keywords: Phúc Long Luxury Đà Nẵng,Mỹ Khê beach hotel,4-star hotel Đà Nẵng,beachfront hotel,infinity pool hotel,hotel deals Đà Nẵng. This is an AI-generated ...",
+    "position": 5
+   },
+   {
+    "title": "ダナン ミーケビーチ ホテル",
+    "link": "https://www.tiktok.com/discover/%E3%83%80%E3%83%8A%E3%83%B3-%E3%83%9F%E3%83%BC%E3%82%B1%E3%83%93%E3%83%BC%E3%83%81-%E3%83%9B%E3%83%86%E3%83%AB",
+    "snippet": "TikTok video from Mỹ Khê Beach Hotel (@mkbeachqk5. 29691週間前. mkbeachqk5. Mỹ Khê Beach Hotel. Tổ hợp khách sạn T50A và T50B Khách sạn Mỹ ...",
+    "date": "14 thg 9, 2026",
+    "position": 6
+   }
+  ],
+  "credits": 1
+ }
+}

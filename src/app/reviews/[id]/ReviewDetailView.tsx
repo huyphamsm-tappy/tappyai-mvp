@@ -9,6 +9,7 @@ import ReviewLikeButton from './ReviewLikeButton'
 import ReviewSaveButton from './ReviewSaveButton'
 import ReviewShareButton from './ReviewShareButton'
 import { postCardOf } from '@/lib/share/contentCards'
+import { isShareOnlyPlaceName } from '@/lib/share/reviewShareTitle'
 import ReviewMusicCard from '../ReviewMusicCard'
 import VideoPlayer from '@/components/explore/VideoPlayer'
 import { useMusicTrack, getPreviewUrl } from '@/modules/music'
@@ -16,13 +17,14 @@ import { SHOW_MUSIC } from '@/lib/config/product'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { track } from '@/lib/tracking/tracker'
 import { askTappyPlaceEvent } from '@/lib/explore/clipVenueEvidence'
+import { SafetyMenu } from '@/components/safety/SafetyMenu'
 
 type Author = { full_name: string | null; avatar_url: string | null } | null
 
 // "Share-only" posts (a clip/photo with no place added) carry a sentinel
 // place_name — don't render it as a place title or a "go to <place>?" CTA.
-const SHARE_ONLY_NAMES = new Set(['Chia sẻ', 'Chia se'])
-const isShareOnlyName = (n?: string | null) => !n?.trim() || SHARE_ONLY_NAMES.has(n.trim())
+// The rule is the one in @/lib/share/reviewShareTitle (shared with the feed and the API).
+const isShareOnlyName = isShareOnlyPlaceName
 
 type Review = {
   id: string
@@ -50,6 +52,8 @@ interface Props {
   initialLiked: boolean
   initialSaved: boolean
   commentCount: number
+  /** WP-06 — who is looking; report/block is offered only on someone else's review. */
+  viewerId?: string | null
 }
 
 const RATING_LABEL_KEY: Record<number, string> = {
@@ -66,6 +70,7 @@ export default function ReviewDetailView({
   initialLiked,
   initialSaved,
   commentCount,
+  viewerId = null,
 }: Props) {
   const { t } = useTranslation()
 
@@ -235,6 +240,10 @@ export default function ReviewDetailView({
           card={postCardOf(review)}
           variant="bar"
         />
+        {/* WP-06 — report this post / block its author (signed-in, not the author). */}
+        {viewerId && viewerId !== review.user_id && (
+          <SafetyMenu tone="onMedia" report={{ target: 'review', id: reviewId }} user={{ id: review.user_id, name: review.profiles?.full_name }} />
+        )}
       </div>
 
       {/* ─── Content card — slides over hero ─── */}

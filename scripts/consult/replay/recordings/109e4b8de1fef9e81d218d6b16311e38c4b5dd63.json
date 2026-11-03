@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Khách sạn Novotel Đà Nẵng",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:14:50.291Z",
+ "body": {
+  "searchParameters": {
+   "q": "Khách sạn Novotel Đà Nẵng",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Novotel Danang Premier | Khách sạn doanh nhân Đà Nẵng ngắm cầu rồng",
+    "imageUrl": "https://www.novotel-danang-premier.com/wp-content/uploads/sites/72/2024/08/Novotel-Danang-Toan-Canh-e1746431795299.jpg",
+    "imageWidth": 1280,
+    "imageHeight": 707,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpp9jesIPQoI5M0VgXSTEbKNqyFtvkS8xLDGAx84DNOg&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 408,
+    "source": "www.novotel-danang-premier.com",
+    "domain": "www.novotel-danang-premier.com",
+    "link": "https://www.novotel-danang-premier.com/vi/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.novotel-danang-premier.com%2Fwp-content%2Fuploads%2Fsites%2F72%2F2024%2F08%2FNovotel-Danang-Toan-Canh-e1746431795299.jpg&tbnid=WkVSFoNpD5qFoM&imgrefurl=https%3A%2F%2Fwww.novotel-danang-premier.com%2Fvi%2F&docid=Zh-yOH1wqcUBkM&w=1280&h=707",
+    "position": 1
+   },
+   {
+    "title": "Novotel Đà Nẵng Premier Han River, Hải Châu, Đà Nẵng",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/399935/0/224d9ff4e71d4c3f335e4948a6d594c0.jpeg?va=1&ce=2&s=414x232&ar=16x9",
+    "imageWidth": 414,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHu8Qx5EOmwMvB51uBRUY8jaIGQNwXCat1vjm2QG9FQA&s",
+    "thumbnailWidth": 299,
+    "thumbnailHeight": 168,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/novotel-danang-premier-han-river/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F399935%2F0%2F224d9ff4e71d4c3f335e4948a6d594c0.jpeg%3Fva%3D1%26ce%3D2%26s%3D414x232%26ar%3D16x9&tbnid=_CNiY8rxh3fSxM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fnovotel-danang-premier-han-river%2Fhotel%2Fda-nang-vn.html&docid=JpWeP-InL2N07M&w=414&h=232",
+    "position": 2
+   },
+   {
+    "title": "KHÁCH SẠN NOVOTEL ĐÀ NẴNG",
+    "imageUrl": "https://www.liangchi.com.vn/uploads/du-an/2021_04/ha-novotel.jpg",
+    "imageWidth": 298,
+    "imageHeight": 397,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSt7wrT2jUrI-YuDgHGmZkO2e9qPEKWbUp2Lc01PAkb8w&s=10",
+    "thumbnailWidth": 298,
+    "thumbnailHeight": 397,
+    "source": "Liangchi",
+    "domain": "www.liangchi.com.vn",
+    "link": "https://www.liangchi.com.vn/vi/du-an/toa-nha/khach-san-novotel-da-nang-6.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.liangchi.com.vn%2Fuploads%2Fdu-an%2F2021_04%2Fha-novotel.jpg&tbnid=xNNqu9si3NComM&imgrefurl=https%3A%2F%2Fwww.liangchi.com.vn%2Fvi%2Fdu-an%2Ftoa-nha%2Fkhach-san-novotel-da-nang-6.html&docid=w9dibjz1aHL0PM&w=298&h=397",
+    "position": 3
+   },
+   {
+    "title": "Review Novotel Đà Nẵng - Khách Sạn 5 Sao Đẳng Cấp - Klook Blog",
+    "imageUrl": "https://res.klook.com/image/upload/q_85/c_fill,w_650,h_345/v1648464463/blog/rmp3cssuhllamc0tpvdt.jpg",
+    "imageWidth": 650,
+    "imageHeight": 345,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-8bvXSxt8AMCPkW7JvXsllw0wZH2OipSDjsMQR8wSVg&s=10",
+    "thumbnailWidth": 612,
+    "thumbnailHeight": 326,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/blog/novotel-da-nang/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fq_85%2Fc_fill%2Cw_650%2Ch_345%2Fv1648464463%2Fblog%2Frmp3cssuhllamc0tpvdt.jpg&tbnid=-6dPrVoajGtjeM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Fblog%2Fnovotel-da-nang%2F&docid=uuKynRhB5rL3jM&w=650&h=345",
+    "position": 4
+   },
+   {
+    "title": "Novotel Danang Premier | Khách sạn doanh nhân Đà Nẵng ngắm cầu rồng",
+    "imageUrl": "https://d2e5ushqwiltxm.cloudfront.net/wp-content/uploads/sites/72/2023/09/23172835/GRAND-THUY-SON_01.jpg",
+    "imageWidth": 1800,
+    "imageHeight": 1200,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQakkSgIKCHWdIpsiZ1nK9Fuditdj49YCBFtJHtaQwq1g&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "www.novotel-danang-premier.com",
+    "domain": "www.novotel-danang-premier.com",
+    "link": "https://www.novotel-danang-premier.com/vi/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fd2e5ushqwiltxm.cloudfront.net%2Fwp-content%2Fuploads%2Fsites%2F72%2F2023%2F09%2F23172835%2FGRAND-THUY-SON_01.jpg&tbnid=Pol1czKSNE9MJM&imgrefurl=https%3A%2F%2Fwww.novotel-danang-premier.com%2Fvi%2F&docid=Zh-yOH1wqcUBkM&w=1800&h=1200",
+    "position": 5
+   },
+   {
+    "title": "Phòng khách sạn | Novotel Danang Premier Han River",
+    "imageUrl": "https://www.novotel-danang-premier.com/wp-content/uploads/sites/72/2023/08/Novotel-Danang-Premier-Han-River-Corner-Suite-2.jpg",
+    "imageWidth": 1800,
+    "imageHeight": 1200,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-1VDEJov6dHn9Jztv9kv72CVneUOlPNvARc22UCnUrg&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Novotel Danang Premier Han River",
+    "domain": "www.novotel-danang-premier.com",
+    "link": "https://www.novotel-danang-premier.com/vi/phong-khach-san/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.novotel-danang-premier.com%2Fwp-content%2Fuploads%2Fsites%2F72%2F2023%2F08%2FNovotel-Danang-Premier-Han-River-Corner-Suite-2.jpg&tbnid=FMkyFGToDIdPsM&imgrefurl=https%3A%2F%2Fwww.novotel-danang-premier.com%2Fvi%2Fphong-khach-san%2F&docid=3KBhvXhsuhh-aM&w=1800&h=1200",
+    "position": 6
+   },
+   {
+    "title": "Khách sạn Novotel Đà Nẵng - DIDITRIP",
+    "imageUrl": "https://diditrip.vn/wp-content/uploads/2023/11/du-khach-di-chuyen-den-khach-san-bang-nhieu-phuong-tien.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 900,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9uRI9piQJXQlXPC5O9XHXpJ2f8m3mVWf10l5Xg_5QtA&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "Diditrip",
+    "domain": "diditrip.vn",
+    "link": "https://diditrip.vn/khach-san/khach-san-novotel-da-nang/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdiditrip.vn%2Fwp-content%2Fuploads%2F2023%2F11%2Fdu-khach-di-chuyen-den-khach-san-bang-nhieu-phuong-tien.jpg&tbnid=Dn6ZUC9UtZMM6M&imgrefurl=https%3A%2F%2Fdiditrip.vn%2Fkhach-san%2Fkhach-san-novotel-da-nang%2F&docid=0dp5Dws5JK-GQM&w=1200&h=900",
+    "position": 7
+   },
+   {
+    "title": "Novotel Đà Nẵng Premier Hàn River - Khách sạn đẳng cấp 5 sao",
+    "imageUrl": "https://land24.vn/wp-content/uploads/2026/08/novotel-da-nang-premier-han-river-khach-san-dang-cap-5-sao.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVyWOlYktvN6IwTLJt3q1lV26S-mqWnkiD1ZY3umcLIw&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 354,
+    "source": "Land24",
+    "domain": "land24.vn",
+    "link": "https://land24.vn/novotel-da-nang-premier-han-river/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fland24.vn%2Fwp-content%2Fuploads%2F2026%2F08%2Fnovotel-da-nang-premier-han-river-khach-san-dang-cap-5-sao.jpg&tbnid=B6mZL_H6RgkodM&imgrefurl=https%3A%2F%2Fland24.vn%2Fnovotel-da-nang-premier-han-river%2F&docid=jq8OBfBLJeVUBM&w=1200&h=575",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

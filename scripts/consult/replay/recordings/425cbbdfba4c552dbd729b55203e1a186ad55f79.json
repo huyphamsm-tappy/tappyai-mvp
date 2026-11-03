@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Samsung Galaxy S24 thông số kỹ thuật màn hình 120Hz camera tele pin chính thức Samsung Việt Nam",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:17:31.497Z",
+ "body": {
+  "searchParameters": {
+   "q": "Samsung Galaxy S24 thông số kỹ thuật màn hình 120Hz camera tele pin chính thức Samsung Việt Nam",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Galaxy S24 series chính thức ra mắt S24 FE: Trải nghiệm ...",
+    "link": "https://news.samsung.com/vn/galaxy-s24-series-chinh-thuc-ra-mat-s24-fe-trai-nghiem-tron-bo-tinh-nang-galaxy-ai-dang-cap",
+    "snippet": "Thông số kỹ thuật ; Thông số kỹ thuật sản phẩm Galaxy S24 FE ; Màn Hình, 6.7-inch FHD+. Dynamic AMOLED 2X. Tần số quét tương thích 120Hz (60/120Hz).",
+    "date": "26 thg 9, 2024",
+    "position": 1
+   },
+   {
+    "title": "Galaxy S24: Thông số kỹ thuật, thiết kế, pin và hơn thế",
+    "link": "https://minhtuanmobile.com/tin-tuc/galaxy-s24-thong-so-ky-thuat-thiet-ke-pin-va-hon-the/",
+    "snippet": "Thông số kỹ thuật ; Màn hình. 6,2 inch, AMOLED LTPO, 120Hz ; Chip xử lý. Exynos 2400 ; GPU. Adreno 740 (Qualcomm) hoặc Mali (Exynos) ; RAM. 8GB ; Bộ ...",
+    "date": "27 thg 12, 2023",
+    "position": 2
+   },
+   {
+    "title": "Samsung Galaxy S24 FE có tính năng gì mới? Giá bao ...",
+    "link": "https://www.dienmayxanh.com/kinh-nghiem-hay/samsung-galaxy-s24-fe-co-tinh-nang-gi-moi-1570508?srsltid=AU7gw4XQviosGJCZjAd_mHdP405WC3-sRkaP2FlnGoRN624PRD7zTdwL",
+    "snippet": "Màn hình. 6.7-inch FHD+; Dynamic AMOLED 2X; Tần số quét tương thích 120Hz (60/120Hz); Công nghệ Vision Booster ; Kích thước & Trọng lượng, 77.3 X ...",
+    "date": "30 thg 9, 2024",
+    "position": 3
+   },
+   {
+    "title": "Giá Rẻ Nhất Dùng Hay Nhất, Cầm Rất Sướng, Không Thiếu AI!",
+    "link": "https://www.youtube.com/watch?v=IetZ5Zi2eLY",
+    "snippet": "Đặt trước Galaxy S24 giá tốt nhất tại Di Động Việt: https://didongviet.vn/samsung-galaxy-s24-series.html?utm_source=Media&utm_medium ...",
+    "position": 4
+   },
+   {
+    "title": "Samsung Galaxy S24 – Wikipedia tiếng Việt",
+    "link": "https://vi.wikipedia.org/wiki/Samsung_Galaxy_S24",
+    "snippet": "Samsung Galaxy S24 là điện thoại thông minh cao cấp chạy hệ điều hành Android thuộc dòng Galaxy S series được thiết kế, sản xuất và bán ra bởi Samsung ...",
+    "position": 5
+   },
+   {
+    "title": "Tìm hiểu cấu hình Samsung Galaxy S24 series",
+    "link": "https://fptshop.com.vn/tin-tuc/danh-gia/tim-hieu-cau-hinh-samsung-galaxy-s24-series-169056",
+    "snippet": "Màn hình chính, 6.1 inch, Dynamic AMOLED 2X, Full-HD+, 120Hz, 2500 nits, 6.7 inch, Dynamic AMOLED 2X, Quad-HD+, 120Hz, 2500 nits ; Bộ xử lý, Snapdragon 8 Gen 3 ...",
+    "position": 6
+   },
+   {
+    "title": "Samsung Galaxy S24 Ultra 12GB 256GB",
+    "link": "https://cellphones.com.vn/samsung-galaxy-s24-ultra.html",
+    "snippet": "Thông số kỹ thuật ; Bộ nhớ trong. 256 GB ; Pin. 5,000mAh ; Thẻ SIM. SIM 1 + SIM 2 / SIM 1 + eSIM / 2 eSIM ; Hệ điều hành. Android 14, One UI 6.1 ; Độ phân giải màn ...",
+    "rating": 4.9,
+    "ratingCount": 59,
+    "position": 7
+   },
+   {
+    "title": "Samsung Galaxy S24 sử dụng chip gì? Hiệu năng vận ...",
+    "link": "https://viettelstore.vn/tin-tuc/samsung-galaxy-s24-su-dung-chip-gi?srsltid=AU7gw4XbyVYU6EDReyOqqJfuZuF9_syUdE0Xbz8jMUKHkm-zT5U0Ygd2",
+    "snippet": "Chiếc điện thoại Samsung S24 tiêu chuẩn rất có thể sẽ được trang bị màn hình đến 6.2inch, độ phân giải 2K+, sử dụng tấm nền Dynamic AMOLED 2X ...",
+    "date": "23 thg 1, 2024",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

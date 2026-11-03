@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com AirPods Pro 2 water resistance rating IP54 charging case earbuds",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:51:45.796Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com AirPods Pro 2 water resistance rating IP54 charging case earbuds",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "About the sweat and water resistance of AirPods Pro ...",
+    "link": "https://support.apple.com/en-us/105046",
+    "snippet": "The AirPods and charging case for these models are dust, sweat, and water resistant for non-water sports and exercise, and have a rating of IP54 ...",
+    "date": "17 thg 9, 2026",
+    "position": 1
+   },
+   {
+    "title": "Compare AirPods models",
+    "link": "https://www.apple.com/airpods/compare/",
+    "snippet": "AirPods 5 and AirPods Pro 3 have a rating of IP57 and AirPods Pro 2 have a rating of IP54 under IEC standard 60529. Dust, sweat, and water resistance are ...",
+    "position": 2
+   },
+   {
+    "title": "AirPods Pro 2 with MagSafe Charging Case (USB-C)",
+    "link": "https://support.apple.com/en-us/111834",
+    "snippet": "AirPods Pro 2 are dust, sweat, and water resistant for non-water sports and exercise. Products including charging case were tested under controlled laboratory ...",
+    "position": 3
+   },
+   {
+    "title": "Are AirPod pros waterproof",
+    "link": "https://discussions.apple.com/thread/255765784",
+    "snippet": "^^^ does anyone know?",
+    "date": "20 thg 9, 2024",
+    "position": 4
+   },
+   {
+    "title": "AirPods 5",
+    "link": "https://www.apple.com/airpods-5/",
+    "snippet": "IP57 rating for improved dust, sweat, and water resistance. AirPods 5 wireless charging case, white color.",
+    "position": 5
+   },
+   {
+    "title": "Apple upgrades AirPods Pro (2nd generation) with USB‐C ...",
+    "link": "https://www.apple.com/newsroom/2023/09/apple-upgrades-airpods-pro-2nd-generation-with-usb-c-charging/",
+    "snippet": "An improved IP54 rating for the earbuds and case also offers additional dust resistance, so users can bring them on their favorite rugged ...",
+    "date": "12 thg 9, 2023",
+    "position": 6
+   },
+   {
+    "title": "AirPods 4 with Active Noise Cancellation - Tech Specs",
+    "link": "https://support.apple.com/en-us/121204",
+    "snippet": "Products including charging case were tested under controlled laboratory conditions, and have a rating of IP54 under IEC standard 60529. Dust, sweat, and water ...",
+    "position": 7
+   },
+   {
+    "title": "Refurbished AirPods Pro 2 with MagSafe Charging Case ...",
+    "link": "https://www.apple.com/shop/product/ftjv3ll/a/Refurbished-AirPods-Pro-2-with-MagSafe-Charging-Case-USB-%E2%80%8DC",
+    "snippet": "Sweat and Water Resistant. Dust, sweat, and water resistant (IP54): AirPods Pro and charging case¹². Size and Weight. AirPods Pro 2 (Each). Height: 1.22 inches ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

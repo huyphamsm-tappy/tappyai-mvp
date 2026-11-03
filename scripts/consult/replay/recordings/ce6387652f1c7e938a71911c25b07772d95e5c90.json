@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:support.apple.com AirPods Pro 2 battery life listening time 6 hours",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:09:50.376Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:support.apple.com AirPods Pro 2 battery life listening time 6 hours",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "AirPods Pro 2 - Tech Specs",
+    "link": "https://support.apple.com/en-us/111851",
+    "snippet": "Up to 6 hours of listening time with a single charge (up to 5.5 hours with Spatial Audio and Head Tracking enabled)4. AirPods Pro with MagSafe Charging Case.",
+    "position": 1
+   },
+   {
+    "title": "AirPods Pro 2 with MagSafe Charging Case (USB-C)",
+    "link": "https://support.apple.com/en-us/111834",
+    "snippet": "Up to 6 hours of listening time on a single charge (up to 5.5 hours with Spatial Audio and Head Tracking enabled) · Up to 4 hours of Lossless Audio listening ...",
+    "position": 2
+   },
+   {
+    "title": "AirPods Pro 3 - Tech Specs",
+    "link": "https://support.apple.com/en-us/125135",
+    "snippet": "Battery · Up to 24 hours of listening time with Active Noise Cancellation enabled · 5 minutes in the case provides around 1 hour of listening time ...",
+    "position": 3
+   },
+   {
+    "title": "AirPods Pro 1 with Wireless Charging Case - Tech Specs",
+    "link": "https://support.apple.com/en-us/111861",
+    "snippet": "Battery. AirPods Pro. Up to 4.5 hours of listening time with a single charge (up to 5 hours with Active Noise Cancellation and Transparency off)4. AirPods Pro ...",
+    "position": 4
+   },
+   {
+    "title": "AirPods 4 with Active Noise Cancellation - Tech Specs",
+    "link": "https://support.apple.com/en-us/121204",
+    "snippet": "Battery · Up to 4 hours of listening time on a single charge with Active Noise Cancellation enabled · Up to 5 hours of listening time on a single charge with ...",
+    "position": 5
+   },
+   {
+    "title": "Keeping AirPods within acceptable operating temperatures",
+    "link": "https://support.apple.com/en-us/119846",
+    "snippet": "Using AirPods in very hot conditions can permanently shorten battery life. Store your AirPods where the temperature is between -10º and 45º C (14º to 113º F).",
+    "position": 6
+   },
+   {
+    "title": "AirPods 3 - Tech Specs",
+    "link": "https://support.apple.com/en-us/111863",
+    "snippet": "AirPods. Up to 6 hours of listening time with a single charge (up to 5 hours with Personalized Spatial Audio Enabled) ; AirPods with Lightning Charging Case or ...",
+    "position": 7
+   },
+   {
+    "title": "Charge your AirPods",
+    "link": "https://support.apple.com/en-us/119912",
+    "snippet": "Learn how to charge your AirPods and how to check the charge status.",
+    "date": "17 thg 9, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

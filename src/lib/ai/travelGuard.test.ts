@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { guardTravelClaimsInText, scheduleTimesIn } from './travelGuard'
+import { guardTravelClaimsInText, journeyTimeOf, scheduleTimesIn } from './travelGuard'
 import { detectTravelIntent } from './intent'
 
 // The fail-closed boundary for dynamic travel facts (P0). The production bug —
@@ -203,6 +203,54 @@ describe('🚨 a stated budget may be a constraint, never the property price', (
     const text = 'Mình gợi ý khách sạn này. Với ngân sách 7 triệu thì rất ổn.'
     const out = guardTravelClaimsInText(text, NO_FARES, USER)
     expect(out.text).not.toContain('7 triệu')
+  })
+})
+
+// ── 30/10: a journey time is the difference of a row's two times, in the form scheduleTimesIn reads the model's "12h35" ──
+describe('journeyTimeOf', () => {
+  it('reads the time between departure and arrival, across midnight, as h:mm', () => {
+    expect(journeyTimeOf('13:00', '01:35')).toBe('12:35')
+    expect(journeyTimeOf('06:00', '13:43')).toBe('7:43')
+    expect(journeyTimeOf('21:45', '05:40')).toBe('7:55')
+    expect(journeyTimeOf('06:00', '08:05')).toBe('2:05')
+    expect(scheduleTimesIn('mất khoảng 12h35')).toEqual([journeyTimeOf('13:00', '01:35')])
+  })
+  it('a period word written BEFORE the time sets it too ("buổi chiều 1 giờ" = 13:00); one inside the token still wins', () => {
+    expect(scheduleTimesIn('khởi hành buổi chiều 1 giờ')).toEqual(['13:00'])
+    expect(scheduleTimesIn('xe chạy tối 9h')).toEqual(['21:00'])
+    expect(scheduleTimesIn('đêm 11h')).toEqual(['23:00'])
+    expect(scheduleTimesIn('sáng 6h30')).toEqual(['6:30'])
+    expect(scheduleTimesIn('chiều nay 2h sáng mai mới tới')).toEqual(['2:00'])
+    expect(scheduleTimesIn('chạy tới 9h')).toEqual(['9:00'])
+    expect(scheduleTimesIn('chay toi 9h')).toEqual(['9:00'])
+    expect(scheduleTimesIn('tối thiểu 2h')).toEqual(['2:00'])
+    expect(scheduleTimesIn('chiều 10h sáng')).toEqual(['10:00'])
+    expect(scheduleTimesIn('chiều, chuyến 13:00')).toEqual(['13:00'])
+  })
+  it('the travel guard keeps a departure written with the period word first when a row states it', () => {
+    const text = 'Đi tàu vào Huế khá thoải mái.\n\nNếu muốn ngủ trên tàu, chọn SE9 khởi hành buổi chiều 1 giờ.'
+    expect(guardTravelClaimsInText(text, [], 've tau ha noi hue', { evidenceTimes: ['13:00'], lang: 'vi' }).text).toContain('buổi chiều 1 giờ')
+    expect(guardTravelClaimsInText(text, [], 've tau ha noi hue', { evidenceTimes: ['1:00'], lang: 'vi' }).text).not.toContain('buổi chiều 1 giờ')
+  })
+  it("availability 'counted' (one brain, owner 30/10 a): advice and a pointer to the booking page stay; a stated number of seats is still cut", () => {
+    const lead = 'Đi tàu vào Huế khá thoải mái.\n\n'
+    const advice = 'Dịp cuối tuần vé giường nằm hay hết chỗ sớm, nên đặt trước 1–2 tuần.'
+    const pointer = 'Bạn bấm link đặt vé để xem chỗ còn trống và giá đúng ngày.'
+    const counted = 'Chuyến SE9 hiện còn 3 chỗ giường nằm.'
+    const seats = 'Only 4 seats left on that train.'
+    const run = (s: string, availability?: 'any' | 'counted') => guardTravelClaimsInText(`${lead}${s}`, [], 've tau ha noi hue', { lang: 'vi', ...(availability ? { availability } : {}) }).text
+    expect(run(advice, 'counted')).toContain(advice)
+    expect(run(pointer, 'counted')).toContain(pointer)
+    expect(run(counted, 'counted')).not.toContain('còn 3 chỗ')
+    expect(run(seats, 'counted')).not.toContain('4 seats left')
+    // default ('any', every other path): unchanged, every availability wording goes
+    for (const s of [advice, pointer, counted]) { expect(run(s)).not.toContain(s); expect(run(s, 'any')).not.toContain(s) }
+  })
+  it('gives nothing for an unreadable time or a zero-length trip', () => {
+    expect(journeyTimeOf('13h', '01:35')).toBeNull()
+    expect(journeyTimeOf('', '01:35')).toBeNull()
+    expect(journeyTimeOf('25:00', '01:35')).toBeNull()
+    expect(journeyTimeOf('08:00', '08:00')).toBeNull()
   })
 })
 

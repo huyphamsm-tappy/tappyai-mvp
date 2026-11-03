@@ -57,8 +57,10 @@ describe('F2 — the composer renders the server outcome', () => {
   })
 
   it('leaks no internal moderation detail into the composer', () => {
-    for (const leak of ['safety_state', 'publication_state', 'evaluated_version', 'ts.'])
+    for (const leak of ['safety_state', 'publication_state', 'evaluated_version'])
       expect(SRC, leak).not.toContain(leak)
+    // The internal `ts.` prefix as a WORD (owner B4, 29/10): the bare substring also matched "paints." in a comment.
+    expect(SRC, 'ts.').not.toMatch(/\bts\./)
   })
 
   it('asks the server for the wording in the USER’s chosen language', () => {

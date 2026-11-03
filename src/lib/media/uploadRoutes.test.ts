@@ -49,7 +49,8 @@ vi.mock('@/lib/auth/getRequestUser', () => ({ getRequestUser: h.getRequestUser }
 // limiter under Component 10. Both modules must be stubbed or the public
 // routes lose their limiter mock.
 vi.mock('@/lib/security/rateLimit', () => ({ rateLimit: h.rateLimit, clientIp: () => 'ip' }))
-vi.mock('@/lib/security/distributedRateLimit', () => ({ distributedRateLimit: h.rateLimit }))
+// `publicRateLimit` (SEC4 slice 2c) asks whether a shared store is configured; "not configured" routes it to the in-process `rateLimit`, which this suite controls through `h.rateLimit`.
+vi.mock('@/lib/security/distributedRateLimit', () => ({ distributedRateLimit: h.rateLimit, isDistributedStoreConfigured: () => false }))
 vi.mock('@vercel/blob/client', () => ({ handleUpload: h.handleUpload }))
 vi.mock('@/lib/admin/rbac', async (orig) => {
   const actual = (await orig()) as Record<string, unknown>

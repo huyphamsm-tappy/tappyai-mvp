@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:support.apple.com Mac check battery cycle count Mac laptop Apple diagnostics",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:38:06.675Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:support.apple.com Mac check battery cycle count Mac laptop Apple diagnostics",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Determine battery cycle count for Mac laptops",
+    "link": "https://support.apple.com/en-us/102888",
+    "snippet": "Find your battery's cycle count · Hold the Option key and click the Apple menu , then choose System Information. · Under the Hardware section of the System ...",
+    "position": 1
+   },
+   {
+    "title": "If you see battery 'Service Recommended' on your Mac ...",
+    "link": "https://support.apple.com/en-us/108376",
+    "snippet": "Press and hold the Option key while clicking the battery status menu in the menu bar, which might report battery-health status as Replace Soon, ...",
+    "date": "11 thg 5, 2026",
+    "position": 2
+   },
+   {
+    "title": "Check the condition of your Mac laptop's battery",
+    "link": "https://support.apple.com/guide/mac-help/check-the-condition-of-your-computers-battery-mh20865/mac",
+    "snippet": "To view your battery's condition, choose Apple menu > System Settings, then click Battery in the sidebar. (You may need to scroll down.).",
+    "position": 3
+   },
+   {
+    "title": "Check the condition of your Mac laptop's battery",
+    "link": "https://support.apple.com/en-gb/guide/mac-help/mh20865/mac",
+    "snippet": "To view your battery's condition, choose Apple menu > System Settings, then click Battery in the sidebar. (You may need to scroll down.).",
+    "position": 4
+   },
+   {
+    "title": "How to check battery health and history on your iPad",
+    "link": "https://support.apple.com/en-us/117759",
+    "snippet": "Find out how to check battery health, the date of manufacturing and first use, and the cycle count of the battery in your iPad.",
+    "date": "2 thg 3, 2026",
+    "position": 5
+   },
+   {
+    "title": "If your Mac battery won't charge",
+    "link": "https://support.apple.com/guide/mac-help/if-your-battery-wont-charge-mh29198/mac",
+    "snippet": "See the Apple Support article Use Apple Diagnostics to test your Mac. Get your Mac serviced. If the battery still won't charge, your Mac may need to be serviced ...",
+    "position": 6
+   },
+   {
+    "title": "About Optimized Battery Charging and Charge Limit on Mac",
+    "link": "https://support.apple.com/en-us/102338",
+    "snippet": "From the Apple menu , choose System Settings. · Click Battery in the sidebar. · Click the info button next to Charging (or Battery Health).",
+    "date": "6 thg 4, 2026",
+    "position": 7
+   },
+   {
+    "title": "If your Mac battery runs out of charge quickly",
+    "link": "https://support.apple.com/guide/mac-help/if-your-battery-runs-out-of-charge-quickly-mh27540/mac",
+    "snippet": "Check your battery's condition. · Change your settings. · Turn on Low Power Mode. · Quit apps that you aren't using. · Disconnect any accessories that you aren't ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

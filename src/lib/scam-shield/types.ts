@@ -55,6 +55,11 @@ export interface EvidenceItem {
   summary: string
   detail: string
   dataPoints: Record<string, unknown>
+  /** Stable `<source>.<finding>` code of the reason (02/10). Additive: old app builds ignore it. */
+  reasonCode?: string
+  /** The reason as a sentence a person can read, in Vietnamese / English (see reasons.ts). `detail` stays the engine's English line. */
+  reason_vi?: string
+  reason_en?: string
 }
 
 export interface EvidenceReport {
@@ -122,4 +127,6 @@ export interface CheckResult {
   actions: RecommendedAction[]
   checkedAt: number
   cached: boolean
+  /** Added 02/10: the three-state public verdict (`familiar` | `suspicious` | `unrecognized`). Old clients ignore it. */
+  verdict?: 'familiar' | 'suspicious' | 'unrecognized'
 }

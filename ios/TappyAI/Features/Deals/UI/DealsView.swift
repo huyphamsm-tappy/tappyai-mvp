@@ -3,6 +3,7 @@ import SwiftUI
 struct DealsView: View {
     @AppStateObject private var vm: DealsViewModel
     @AppEnvironmentState private var localization: LocalizationManager
+    @AppEnvironmentState private var router: AppRouter
 
     init(deps: AppDependencies) {
         _vm = AppStateObject(wrappedValue: DealsViewModel(service: DealsService(api: deps.api)))
@@ -34,8 +35,14 @@ struct DealsView: View {
                 .padding(.top, 60)
             case .loaded:
                 if vm.deals.isEmpty {
-                    TappyEmptyState(systemImage: "tag", title: "deals.empty")
-                        .padding(.top, 60)
+                    // The ask-Tappy card shows even with no deals (web `/deals`, Android L16).
+                    ScrollView {
+                        VStack(spacing: Spacing.lg) {
+                            askHero(partners: [])
+                            TappyEmptyState(systemImage: "tag", title: "deals.empty")
+                        }
+                        .padding(Spacing.md)
+                    }
                 } else {
                     list
                 }
@@ -51,12 +58,73 @@ struct DealsView: View {
     private var list: some View {
         ScrollView {
             VStack(spacing: Spacing.sm) {
+                askHero(partners: vm.deals.map(\.partnerName).reduce(into: [String]()) { if !$0.contains($1) { $0.append($1) } })
                 ForEach(vm.deals) { deal in
                     dealCard(deal)
                 }
             }
             .padding(Spacing.md)
         }
+    }
+
+    /// "Hỏi Tappy trước khi mua" — its CTA opens the real Chat. The partner tiles are the platforms the
+    /// feed really returned, each with its official logo from `BrandRegistry` (the initial if it has none).
+    private func askHero(partners: [String]) -> some View {
+        VStack(alignment: .leading, spacing: Spacing.md) {
+            HStack(spacing: Spacing.md) {
+                Image("TappyShopping").resizable().scaledToFit().frame(width: 76, height: 76)
+                    .accessibilityHidden(true)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("deals.hero.title").font(.system(size: 17, weight: .bold)).foregroundStyle(.white)
+                    Text("deals.hero.body").font(.system(size: 12.5)).foregroundStyle(Color(hex: 0xCBD5E1))
+                }
+            }
+            Button {
+                router.popToRoot(on: .chat)
+                router.switchTo(.chat)
+            } label: {
+                HStack(spacing: 8) {
+                    Text("deals.hero.cta").font(.system(size: 14, weight: .semibold))
+                    Image(systemName: "arrow.right").font(.system(size: 14))
+                }
+                .foregroundStyle(.white)
+                .padding(.horizontal, Spacing.lg).padding(.vertical, Spacing.sm)
+                .background(Capsule().fill(LinearGradient(colors: [Color(hex: 0x6366F1), Color(hex: 0x8B7CFF)],
+                                                          startPoint: .leading, endPoint: .trailing)))
+            }
+            .buttonStyle(.plain)
+            .accessibilityIdentifier("deals-ask-tappy")
+            if !partners.isEmpty {
+                Text("deals.hero.platforms").font(.system(size: 10.5, weight: .semibold)).foregroundStyle(Color(hex: 0x94A3B8))
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: Spacing.xs) {
+                        // Web: one logo per platform that really appears in the feed (official mark from the brand
+                        // registry, else the partner's initial), in a 40-pt tile, non-interactive.
+                        ForEach(partners, id: \.self) { name in
+                            Group {
+                                if let brand = BrandRegistry.resolve(name) {
+                                    BrandLogoView(brand: brand, size: 28)
+                                } else {
+                                    Text(String(name.prefix(1)).uppercased())
+                                        .font(.system(size: 12, weight: .bold)).foregroundStyle(Color(hex: 0xF59E0B))
+                                        .accessibilityLabel(Text(verbatim: name))
+                                }
+                            }
+                            .frame(width: 40, height: 40)
+                            .background(RoundedRectangle(cornerRadius: 12, style: .continuous).fill(Color.white.opacity(0.12)))
+                        }
+                    }
+                }
+            }
+        }
+        .padding(Spacing.lg)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(LinearGradient(colors: [Color(hex: 0x1E2A78), Color(hex: 0x3B2E8F)], startPoint: .topLeading, endPoint: .bottomTrailing))
+        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 20, style: .continuous).stroke(Color.white.opacity(0.2), lineWidth: 1))
+        // No identifier on this container: SwiftUI pushes a container's identifier down onto its
+        // direct children, which hid the CTA's own "deals-ask-tappy" from the UI test (CI 30/09),
+        // exactly as it did the hub's guest sign-in button in the first run.
     }
 
     @ViewBuilder
@@ -76,10 +144,15 @@ struct DealsView: View {
                                 .font(.system(size: 11))
                         }
                     }
-                    Text(deal.title)
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundStyle(TappyColor.textPrimary)
-                        .lineLimit(2)
+                    // The feed's `title` is often the partner's own name («Shopee» / «Shopee»): never print it twice.
+                    // Then the line under the name is what the partner is for (`description`).
+                    let sub = Self.subtitle(for: deal)
+                    if !sub.isEmpty {
+                        Text(sub)
+                            .font(.system(size: 14, weight: .medium))
+                            .foregroundStyle(TappyColor.textPrimary)
+                            .lineLimit(2)
+                    }
                     if let discount = deal.discountLabel {
                         Text(discount)
                             .font(.system(size: 12, weight: .bold))
@@ -104,8 +177,18 @@ struct DealsView: View {
         .overlay(RoundedRectangle(cornerRadius: Radius.xl).stroke(TappyColor.border, lineWidth: 1))
     }
 
+    /// Web fallback order (`BRAND_ASSETS.md` §8): the registry's official logo → the deal's own `logoImage` → the initial.
     @ViewBuilder
     private func logo(_ deal: PartnerDeal) -> some View {
+        if let brand = BrandRegistry.resolve(deal.partnerName) {
+            BrandLogoView(brand: brand, size: 48, decorative: true)
+        } else {
+            plainLogo(deal)
+        }
+    }
+
+    @ViewBuilder
+    private func plainLogo(_ deal: PartnerDeal) -> some View {
         Group {
             if let url = deal.logoImage, let imageURL = URL(string: url) {
                 AsyncImage(url: imageURL) { phase in
@@ -144,6 +227,13 @@ struct DealsView: View {
             .clipShape(Capsule())
     }
 
+    static func subtitle(for deal: PartnerDeal) -> String {
+        func norm(_ s: String) -> String { s.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() }
+        let title = deal.title.trimmingCharacters(in: .whitespacesAndNewlines)
+        if !title.isEmpty, norm(title) != norm(deal.partnerName) { return title }
+        return (deal.description ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
     private static let palette: [Color] = [.orange, .blue, .purple, .green, .pink, .indigo, .teal, .brown]
 
     private static func color(for categoryKey: String) -> Color {
@@ -151,9 +241,11 @@ struct DealsView: View {
         return palette[hash % palette.count]
     }
 
+    /// Opens exactly the deal's `officialUrl` (what the Web card links to), and only if it is an https URL with a host
+    /// (`DealLink`). A missing or unsafe URL opens nothing and counts no click.
     private func open(_ deal: PartnerDeal) {
+        guard let url = DealLink.url(from: deal.officialUrl) else { return }
         vm.openDeal(deal)
-        guard let url = URL(string: deal.officialUrl) else { return }
         UIApplication.shared.open(url)
     }
 }

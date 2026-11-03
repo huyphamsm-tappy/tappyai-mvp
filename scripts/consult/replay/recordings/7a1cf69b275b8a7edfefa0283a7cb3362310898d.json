@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook Air site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:09:37.024Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Air site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "MacBook Air 2020 13.3 inch M1- Hàng Chính Hãng",
+    "link": "https://www.lazada.vn/products/pdp-i1040858590.html?srsltid=AU7gw4XxGv5s_7UUDiwgIppXA47EBkl6Qj_MF6s-mOgI85DPqBmDm0Fi",
+    "snippet": "MacBook Air là máy tính xách tay mỏng và nhẹ nhất của Apple, siêu mạnh mẽ với chip M1. Tạo ra một cú nhảy vọt về hiệu năng CPU và đồ họa, cùng thời lượng pin ...",
+    "position": 1
+   },
+   {
+    "title": "Máy tính xách tay Apple MacBook Air 13 inch M5",
+    "link": "https://h5.lazada.vn/products/may-tinh-xach-tay-apple-macbook-air-13-inch-m5-hang-chinh-hang-i13334273827-s116519872394.html",
+    "snippet": "LazMall Máy tính xách tay Apple MacBook Air 13 inch M5 - Hàng Chính Hãng ... Trả góp trong 12 tháng, chỉ với 2.833.250 ₫ mỗi tháng.",
+    "position": 2
+   },
+   {
+    "title": "Máy tính xách tay Apple MacBook Air 13 inch M5",
+    "link": "https://h5.lazada.vn/products/may-tinh-xach-tay-apple-macbook-air-13-inch-m5-hang-chinh-hang-saa-i13334273827-s116519872393.html",
+    "snippet": "LazMall Máy tính xách tay Apple MacBook Air 13 inch M5 - Hàng Chính Hãng SA/A · 100% chính hãng · 30 ngày miễn phí trả hàng · Hóa đơn 1 năm.",
+    "position": 3
+   },
+   {
+    "title": "Ốp Laptop Mềm TPU Cho Macbook Air 13 M1 M2 & ...",
+    "link": "https://www.lazada.vn/products/tpu-mem-laptop-cho-macbook-air-13-m1m2-macbook-pro-14-chip-air-136-unisex-phong-cach-doanh-nhan-chac-chan-bao-da-co-khoa-cai-i2434571582.html?srsltid=AU7gw4VpeBaH-4sbwjwxFE5cRPpQgObqk8jo0PZzne65aL8zfvTE4Xgs",
+    "snippet": "Được thiết kế để phù hợp với nhiều mẫu MacBook bao gồm Air 13 M1 M2, Pro 14 và Pro 13, đảm bảo vừa khít và an toàn cho thiết bị của bạn. Khóa ...",
+    "rating": 4.9,
+    "ratingCount": 150,
+    "position": 4
+   },
+   {
+    "title": "Smartdevil kính cường lực màng cho MacBook Air M4 13.6 ...",
+    "link": "https://h5.lazada.vn/products/smartdevil-kinh-cuong-luc-mang-cho-macbook-air-m4-136-inch-a3240-macbook-air-m2-a2681-macbook-mieng-bao-ve-man-hinh-i2204167874.html",
+    "snippet": "Đặc điểm nổi bật · 1. smartdevil MacBook Air/Pro miếng bảo vệ màn hình · 2. Chống dầu và chống nước · 3. Chống bám vân tay · 4. Chống trầy xước.",
+    "rating": 4.7,
+    "ratingCount": 57,
+    "position": 5
+   },
+   {
+    "title": "Miếng Dán Màn Hình HD Mềm Mại Cho MacBook Air 13 ...",
+    "link": "https://h5.lazada.vn/products/mieng-dan-man-hinh-hd-mem-mai-cho-macbook-air-13-inch-m1-m2-pro-bao-ve-may-tinh-xach-tay-trong-suot-tuong-thich-voi-cac-mau-11-14-15-16-inch-i3215799270.html",
+    "snippet": "Miếng Dán Màn Hình HD Mềm Mại Cho MacBook Air 13 Inch M1 M2 Pro, Bảo Vệ Máy Tính Xách Tay Trong Suốt, Tương Thích Với Các Mẫu 11, 14, 15, 16 Inch.",
+    "position": 6
+   },
+   {
+    "title": "Smartdevil bảo vệ bàn phím màng cho MacBook Air M1 13 inch ...",
+    "link": "https://www.lazada.vn/products/smartdevil-bao-ve-ban-phim-mang-cho-macbook-air-m1-13-inch-a2337-macbook-air-m2-136-inch-macbook-pro-m2-13-16-inch-tpu-tai-su-dung-mang-bao-ve-chong-tham-nuoc-may-tinh-xach-tay-chong-bui-i1860816853.html?srsltid=AU7gw4X6WbqMWhvZ_BBXPYYospPp814rl__W0QaIQMMfA3va6ozhqHeh",
+    "snippet": "SmartDevil. Độ dày siêu mỏng chỉ 0.13mm, mỏng và nhạy cảm. Chất liệu TPU bảo vệ sức khỏe và môi trường, bền và không bị ố vàng.",
+    "position": 7
+   },
+   {
+    "title": "Ốp Bảo Vệ Chống Sốc Cho MacBook Air 15.3 Inch Với Chip M1 ...",
+    "link": "https://www.lazada.vn/products/p-bo-v-chng-sc-cho-macbook-air-153-inch-vi-chip-m1-m2-m3-m4-m5-mng-trong-sut-nh-pha-l-dnh-cho-c-nam-v-n-chng-nc-i13439868289.html?srsltid=AU7gw4VVeq6JC_tnCy4wO87J0IXxylm5uo6IL4xSRFlaNEYmVLdXwYxY",
+    "snippet": "Vỏ MacBook Air 15.3 này cung cấp khả năng bảo vệ chống sốc mạnh mẽ, bảo vệ thiết bị của bạn khỏi bị rơi và va đập do vô tình. Cài đặt dễ dàng.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

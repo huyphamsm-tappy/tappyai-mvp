@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Samsung Galaxy S24 bản thường dung lượng pin mAh thông số chính thức",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:03:53.761Z",
+ "body": {
+  "searchParameters": {
+   "q": "Samsung Galaxy S24 bản thường dung lượng pin mAh thông số chính thức",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Đánh giá pin Galaxy S24: Pin dùng liên tục hơn 9 tiếng ...",
+    "link": "https://www.thegioididong.com/tin-tuc/danh-gia-pin-galaxy-s24-1560847",
+    "snippet": "Như các bạn thấy thông số trên, Galaxy S24 được trang bị viên pin 4.000 mAh. ... lượng sử dụng lâu dài với những tác vụ thông thường.",
+    "date": "5 thg 2, 2024",
+    "position": 1
+   },
+   {
+    "title": "Đánh giá pin Samsung Galaxy S24",
+    "link": "https://cellphones.com.vn/sforum/danh-gia-pin-samsung-galaxy-s24",
+    "snippet": "Đánh giá pin Samsung Galaxy S24: Pin 4,000 mAh liệu có đủ để dùng cả ngày? · Thông số cấu hình Galaxy S24 · Điều kiện thử nghiệm đánh giá pin Galaxy S24 · Test pin ...",
+    "date": "26 thg 1, 2024",
+    "position": 2
+   },
+   {
+    "title": "Samsung Galaxy S24 sử dụng chip gì? Hiệu năng vận ...",
+    "link": "https://viettelstore.vn/tin-tuc/samsung-galaxy-s24-su-dung-chip-gi?srsltid=AU7gw4Wdv1eXhEHJlTKcTZMMXP1v406bgaSTJjwD542zY5Gquwjen2OC",
+    "snippet": "Theo một số nguồn tin, Samsung Galaxy S24 được cho là sẽ tích hợp viên pin 4.000mAh cùng sạc nhanh công suất 25W. Bạn có thể sử dụng thiết bị ...",
+    "date": "23 thg 1, 2024",
+    "position": 3
+   },
+   {
+    "title": "Galaxy S24: Thông số kỹ thuật, thiết kế, pin và hơn thế",
+    "link": "https://minhtuanmobile.com/tin-tuc/galaxy-s24-thong-so-ky-thuat-thiet-ke-pin-va-hon-the/",
+    "snippet": "Theo các tin đồn, Samsung Galaxy S24 sẽ được trang bị viên pin 4.000 mAh, tốc độ sạc nhanh của Galaxy S24 vẫn được hỗ trợ sạc siêu nhanh 25W.",
+    "date": "27 thg 12, 2023",
+    "position": 4
+   },
+   {
+    "title": "Samsung Galaxy S24, S24+, thanh toán trước giảm 1 triệu",
+    "link": "https://www.samsung.com/vn/smartphones/galaxy-s24/?srsltid=AU7gw4WjeX2nubVCHrVt32SNkHFTfqnhYW_xjmBQXwVSLoPjPIhMJoYl",
+    "snippet": "Nhờ kích cỡ cải tiến và phần viền siêu mỏng, Galaxy S24 màn hình FHD+ 6.2\" và Galaxy S24+ màn hình QHD+ 6.7\" trở nên nổi bật với màn hình lớn hơn bao giờ hết, ...",
+    "position": 5
+   },
+   {
+    "title": "Đánh giá pin Galaxy S24 series: Pin dùng liên tục hơn 9 ...",
+    "link": "https://baodanang.vn/danh-gia-pin-galaxy-s24-series-pin-dung-lien-tuc-hon-9-tieng-thoai-mai-su-dung-ca-ngay-3131263.html",
+    "snippet": "Cụ thể, Galaxy S24 tiêu chuẩn sở hữu mức dung lượng pin 4.000 mAh, cao hơn mẫu Galaxy S23 với viên pin 3.900 mAh. Trong khi đó, Galaxy S24 Plus ...",
+    "date": "15 thg 3, 2024",
+    "position": 6
+   },
+   {
+    "title": "Đánh giá Samsung Galaxy S24: Flagship Android nhỏ gọn ...",
+    "link": "https://tinhte.vn/thread/danh-gia-samsung-galaxy-s24-flagship-android-nho-gon-cuc-chat-luong-o-thoi-diem-hien-tai.3791734/",
+    "snippet": "Bên cạnh những yếu tố trên, mình nhận thấy nhiều bạn còn e ngại về hiệu năng chip Exynos 2400 cùng dung lượng pin 4.000 mAh của thiết bị. Vì vậy ...",
+    "date": "1 thg 6, 2024",
+    "rating": 4.5,
+    "ratingCount": 16,
+    "position": 7
+   },
+   {
+    "title": "Samsung Galaxy S24 5G ở thời điểm hiện tại có đáng mua?",
+    "link": "https://www.youtube.com/watch?v=Kj3rra_9S_Y",
+    "snippet": "showroom123 #samsung #galaxys24 Mình đánh giá Galaxy S24 là mẫu flagship Android nhỏ gọn rất chất lượng ở thời điểm hiện tại.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

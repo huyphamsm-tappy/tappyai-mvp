@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Phở Hải\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:07:22.775Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Phở Hải\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Phở Hải - Quán Phở Nổi Tiếng Quận 1",
+    "link": "https://www.tiktok.com/@haivivu1989/video/7485976394334244104",
+    "snippet": "Khám phá Phở Hải, quán ăn siêu ngon với nhiều món phở nổi bật. Không thể bỏ lỡ nếu bạn là tín đồ của phở! #ancungtiktok . Keywords: phở ngon ...",
+    "position": 1
+   },
+   {
+    "title": "Phở Hải: Quán Phở Đêm Ngon Nức Tiếng Sài Gòn",
+    "link": "https://www.tiktok.com/@pika_laca/video/7627442075939654933",
+    "snippet": "Khám phá Phở Hải, quán phở đêm nổi tiếng ở Sài Gòn với tủy bò đặc biệt. Trải nghiệm vị ngon đậm đà, giá cả hợp lý. #pikalaca #phongonsaigon.",
+    "position": 2
+   },
+   {
+    "title": "Phở Chú Hải: Địa Điểm Bán Phở Nức Tiếng Quận 1",
+    "link": "https://www.tiktok.com/@uyen.phuongle/video/7321703305430797569",
+    "snippet": "Đi ăn phở Hải là phải hở hả mng :))). 2024-1-14Trả lời. Đã thích bởi nhà sáng tạo. 8. Uyên Phương Lê · Tác giả.. 2024-1-15Trả lời. 1.",
+    "position": 3
+   },
+   {
+    "title": "Phở hải sản đơn giản tại nhà",
+    "link": "https://www.tiktok.com/@naucungno/video/7639231909167402261",
+    "snippet": "Body Tổng quan: Phở hải sản là biến thể dễ làm của món phở truyền thống, thay thịt bò hoặc gà bằng tôm, mực, hoặc các hải sản khác. Phiên bản ...",
+    "position": 4
+   },
+   {
+    "title": "Phở Hải - đông nghẹt khách, giới nghệ sỹ thích mê#pho ...",
+    "link": "https://www.tiktok.com/@tigercrystal_0803/video/7506740031722114312",
+    "snippet": "301 Lượt thích,28 Bình luận.Video TikTok từ NGÂN CHÂN ĐI (@tigercrystal_0803): \"Phở Hải - đông nghẹt khách, giới nghệ sỹ thích mê#pho ...",
+    "position": 5
+   },
+   {
+    "title": "Phở Chú Hải Quận 1: Quán Phở Đêm Nổi Tiếng Mở Đến ...",
+    "link": "https://www.tiktok.com/@dangtumlum20/video/7296504944545238274",
+    "snippet": "### Điểm Đặc Biệt Của Quán Phở Hải Điểm nhấn lớn nhất của quán phở Chú Hải chính là thời gian mở cửa. Khác với nhiều quán phở khác, nơi đây ...",
+    "position": 6
+   },
+   {
+    "title": "Khám Phá Hương Vị Phở Hải Sản Tại Canada",
+    "link": "https://www.tiktok.com/@camenfoods/photo/7615150362223250706",
+    "snippet": "Khám Phá Hương Vị Phở Hải Sản Tại Canada. Thử ngay phở hải sản mới có mặt tại Canada, một trải nghiệm vị giác độc đáo khác biệt với phở bò! # ...",
+    "position": 7
+   },
+   {
+    "title": "Đi ăn phở Hải là phải hở ha 😋#phohai #foodfestontiktok ...",
+    "link": "https://www.tiktok.com/@eatwithdien/video/7240493789272345861",
+    "snippet": "1263 Lượt thích,31 Bình luận.Video TikTok từ DUYÊN NGÔ (@eatwithdien): \"Đi ăn phở Hải là phải hở ha #phohai #foodfestontiktok #hômnayăngì ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

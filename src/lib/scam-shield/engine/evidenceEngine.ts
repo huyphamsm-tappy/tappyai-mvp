@@ -1,4 +1,5 @@
 import type { ProviderSignal, EvidenceItem, EvidenceReport, EvidenceCategory } from '../types'
+import { reasonFor } from '../reasons'
 
 const CATEGORY_MAP: Record<string, EvidenceCategory> = {
   webRisk: 'threat_intelligence',
@@ -14,15 +15,19 @@ const CATEGORY_MAP: Record<string, EvidenceCategory> = {
 
 export function buildEvidence(signals: ProviderSignal[]): EvidenceReport {
   const completed = signals.filter(s => s.status === 'completed')
-  const items: EvidenceItem[] = completed.map(s => ({
-    source: s.provider,
-    category: CATEGORY_MAP[s.provider] ?? 'threat_intelligence',
-    finding: s.finding,
-    severity: s.severity,
-    summary: s.detail,
-    detail: s.detail,
-    dataPoints: extractDataPoints(s),
-  }))
+  const items: EvidenceItem[] = completed.map(s => {
+    const base = {
+      source: s.provider,
+      category: CATEGORY_MAP[s.provider] ?? 'threat_intelligence',
+      finding: s.finding,
+      severity: s.severity,
+      summary: s.detail,
+      detail: s.detail,
+      dataPoints: extractDataPoints(s),
+    }
+    const r = reasonFor(base)
+    return { ...base, reasonCode: r.code, reason_vi: r.vi, reason_en: r.en }
+  })
 
   return {
     items,

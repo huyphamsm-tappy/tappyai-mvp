@@ -1,3 +1,4 @@
+import AuthenticationServices
 import SwiftUI
 
 /// The login screen: Google, Zalo, and Email-OTP, plus a link to registration. Presented modally
@@ -8,6 +9,7 @@ struct AuthFlowView: View {
     private let onClose: () -> Void
 
     private let config: AppConfigService
+    @Environment(\.colorScheme) private var colorScheme
 
     init(repo: AuthRepository, config: AppConfigService, onClose: @escaping () -> Void) {
         self.repo = repo
@@ -41,7 +43,7 @@ struct AuthFlowView: View {
         }
         .overlay(alignment: .topTrailing) {
             Button { onClose() } label: { Image(systemName: TappyIcon.close) }
-                .padding(Spacing.md).tappyTappable(NSLocalizedString("common.close", comment: ""))
+                .padding(Spacing.md).tappyTappable("common.close")
         }
         .task { await vm.loadProviders() }
         .sheet(isPresented: $vm.showRegister) {
@@ -53,13 +55,50 @@ struct AuthFlowView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: Spacing.md) {
                 header
+                // App Review 1.2: agree to the Terms before ANY sign-in method; every method also refuses without it.
+                AuthTermsConsentView(agreed: $vm.termsAgreed, showRequired: vm.termsRefusalVisible)
+                if vm.appleEnabled {
+                    SignInWithAppleButton(.continue) { request in
+                        request.requestedScopes = [.fullName, .email]
+                        request.nonce = vm.prepareAppleRequest()
+                    } onCompletion: { result in
+                        let credential = (try? result.get())?.credential as? ASAuthorizationAppleIDCredential
+                        let error: Error? = { if case .failure(let e) = result { return e }; return nil }()
+                        Task {
+                            await vm.finishApple(identityToken: credential?.identityToken, userId: credential?.user,
+                                                 fullName: credential?.fullName, error: error)
+                        }
+                    }
+                    .signInWithAppleButtonStyle(colorScheme == .dark ? .white : .black)
+                    .frame(height: 48)
+                    .clipShape(RoundedRectangle(cornerRadius: Radius.lg))
+                    .disabled(!vm.termsAgreed)   // Apple's sheet cannot be cancelled after it opens: keep it shut until the Terms are agreed
+                    .opacity(vm.termsAgreed ? 1 : 0.5)
+                    .accessibilityIdentifier("auth-apple")
+                }
+                // Google and Zalo are two equal-weight choices (web `/login`, Android): white surface, hairline
+                // border, primary text, the provider's own mark. Neither is a «recommended» solid button.
                 if vm.enabledProviders.contains("google") {
-                    Button("auth.continueGoogle") { Task { await vm.continueWithGoogle() } }
-                        .buttonStyle(.tappy(.primary))
+                    Button { Task { await vm.continueWithGoogle() } } label: {
+                        ProviderButtonLabel(titleKey: "auth.continueGoogle") {
+                            Text(verbatim: "G").font(.system(size: 17, weight: .bold)).foregroundStyle(Color(hex: 0x4285F4, alpha: 1))
+                        }
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityIdentifier("auth-google")
+                    Text("auth.googleNote").font(TappyFont.caption).foregroundStyle(TappyColor.textSecondary)
                 }
                 if vm.enabledProviders.contains("zalo") {
-                    Button("auth.continueZalo") { Task { await vm.continueWithZalo() } }
-                        .buttonStyle(.tappy(.secondary))
+                    Button { Task { await vm.continueWithZalo() } } label: {
+                        ProviderButtonLabel(titleKey: "auth.continueZalo") {
+                            Text(verbatim: "Zalo").font(.system(size: 9, weight: .black)).foregroundStyle(.white)
+                                .frame(width: 26, height: 22)
+                                .background(Color(hex: 0x0068FF, alpha: 1))
+                                .clipShape(RoundedRectangle(cornerRadius: 5, style: .continuous))
+                        }
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityIdentifier("auth-zalo")
                 }
                 if vm.enabledProviders.contains("email") {
                     dividerOr
@@ -67,11 +106,32 @@ struct AuthFlowView: View {
                 }
                 Button("auth.createAccount") { vm.showRegister = true }
                     .buttonStyle(.tappy(.tertiary))
+                    .accessibilityIdentifier("auth-create-account")
+                // Guest: the anonymous session already exists, so continuing is just closing.
+                Button("auth.continueGuest") { onClose() }
+                    .buttonStyle(.tappy(.tertiary))
+                    .accessibilityIdentifier("auth-guest")
                 if let error = vm.errorMessage {
                     Text(error).font(TappyFont.footnote).foregroundStyle(TappyColor.danger)
+                        .accessibilityIdentifier("auth-error")
                 }
             }
             .padding(Spacing.md)
+        }
+    }
+
+    private struct ProviderButtonLabel<Mark: View>: View {
+        let titleKey: LocalizedStringKey
+        @ViewBuilder let mark: () -> Mark
+        var body: some View {
+            HStack(spacing: Spacing.sm) {
+                mark()
+                Text(titleKey).font(TappyFont.bodyEmphasis).foregroundStyle(TappyColor.textPrimary)
+            }
+            .frame(maxWidth: .infinity, minHeight: 48)
+            .background(TappyColor.cardBackground)
+            .clipShape(RoundedRectangle(cornerRadius: Radius.lg, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: Radius.lg, style: .continuous).stroke(TappyColor.border, lineWidth: 1))
         }
     }
 
@@ -99,9 +159,23 @@ struct AuthFlowView: View {
                 .keyboardType(.emailAddress)
                 .textInputAutocapitalization(.never)
                 .autocorrectionDisabled()
-            Button("auth.sendCode") { Task { await vm.sendOTP() } }
-                .buttonStyle(.tappy(.primary))
-                .disabled(!vm.emailValid)
+                .accessibilityIdentifier("auth-email")
+            if vm.useCode {
+                Button("auth.sendCode") { Task { await vm.sendOTP() } }
+                    .buttonStyle(.tappy(.primary))
+                    .disabled(!vm.emailValid)
+                Button("auth.usePassword") { vm.useCode = false }
+                    .buttonStyle(.tappy(.tertiary))
+            } else {
+                TappyTextField(titleKey: "auth.password", text: $vm.password, isSecure: true)
+                    .accessibilityIdentifier("auth-password")
+                Button("auth.signIn") { Task { await vm.signInWithPassword() } }
+                    .buttonStyle(.tappy(.primary))
+                    .disabled(!vm.passwordSignInValid)
+                    .accessibilityIdentifier("auth-submit")
+                Button("auth.useCode") { vm.useCode = true }
+                    .buttonStyle(.tappy(.tertiary))
+            }
         }
     }
 

@@ -139,6 +139,8 @@ const BOOKING_HOTEL = /^\/hotel\/([a-z]{2})\/([a-z0-9-]+)(?:\.[a-z]{2}(?:-[a-z]{
 const AGODA_HOTEL = /^\/(?:[a-z]{2}-[a-z]{2}\/)?([a-z0-9-]+)\/hotel\/([a-z0-9-]+)\.html$/
 const TRAVELOKA_HOTEL = /^\/(?:[a-z]{2}-[a-z]{2}\/)?hotel\/([a-z-]+)\/([a-z0-9-]+-\d{5,})\/?$/
 const VEXERE_ROUTE = /^\/vi-VN\/(ve-xe-khach-tu-([a-z0-9-]+)-di-([a-z0-9-]+)-(\d+t\d+))\.html$/
+/** Vexere's rail route page: /vn/ve-tau-hoa/tu-<from>-di-<to>.<fromAreaId>.<toAreaId>.vi (the ids are Vexere's own area ids). */
+const VEXERE_RAIL_ROUTE = /^\/vn\/ve-tau-hoa\/(tu-([a-z0-9-]+)-di-([a-z0-9-]+)\.(\d{1,6})\.(\d{1,6})\.vi)$/
 const TICKETBOX_EVENT = /^\/([a-z0-9-]+-(\d{3,12}))\/?$/
 const TICKETBOX_RESERVED = new Set(['search', 'events', 'about', 'help', 'login', 'my-tickets', 'blog'])
 
@@ -183,12 +185,38 @@ const agoda: HandoffGrammar = {
   configure(canonical, configuration) {
     const s = stay(configuration)
     if (!s) return null
-    const p = new URLSearchParams({ checkIn: s.checkIn, checkOut: s.checkOut, adults: String(s.adults), rooms: String(s.rooms), children: String(s.children) })
-    // The occupancy from the URL was seen applied (14 Sep 2026); date application was not confirmed in that session.
-    return { url: `${canonical}?${p}`, depth: 3, preserved: ['propertyRef', 'adults', 'rooms', 'children'], pageOnly: ['checkIn', 'checkOut'], dropped: [], expiresAt: isoDay(s.checkIn), grammar: 'observed' }
+    const nights = Math.round((Date.parse(s.checkOut) - Date.parse(s.checkIn)) / 86_400_000)
+    if (!(nights >= 1 && nights <= 90)) return null
+    // Verified 29 Oct 2026 (a live open of a Đà Lạt property): ?checkIn=YYYY-MM-DD&los=<nights>&adults=&rooms= lands on the property with the
+    // stay applied ("15 tháng 11"), the room rows priced and the book buttons on the page (L4, like Booking.com's room rows). Children were
+    // not part of that check: sent, but the page is the authority (page-only).
+    const p = new URLSearchParams({ checkIn: s.checkIn, los: String(nights), adults: String(s.adults), rooms: String(s.rooms) })
+    if (s.children > 0) p.set('children', String(s.children))
+    // No children is the page's own default, so a request for none is carried as asked.
+    return { url: `${canonical}?${p}`, depth: 4, preserved: ['propertyRef', 'checkIn', 'checkOut', 'adults', 'rooms', ...(s.children > 0 ? [] : ['children'])], pageOnly: s.children > 0 ? ['children'] : [], dropped: [], expiresAt: isoDay(s.checkIn), grammar: 'verified' }
   },
-  search() {
-    // /vi-vn/search?q= and ?textToSearch= drop the query (verified 14 Sep 2026): the landing page is the truth.
+  search(request) {
+    // Agoda's own results grammar takes NUMERIC ids, never a name (verified 06 Oct 2026 from the partner link generator + a live open, no CID needed):
+    //   /search?city=<cityId>[&selectedproperty=<hotelId>]&checkin=&checkout=&adults=&rooms=&los=<nights>
+    // so it is composed ONLY when the request carries AGODA's own ids in constraints.providerRefs.agoda — never the shared hotel cityRef (that one is Trip.com's), never an id guessed from a name.
+    const c = request.configuration
+    const own = request.constraints?.providerRefs?.agoda
+    if (c?.kind === 'hotel' && own?.cityRef && /^\d{1,12}$/.test(own.cityRef)) {
+      const nights = Math.round((Date.parse(c.checkOut) - Date.parse(c.checkIn)) / 86_400_000)
+      if (nights >= 1 && nights <= 90) {
+        const hotel = own.propertyRef && /^\d{1,12}$/.test(own.propertyRef) ? own.propertyRef : null
+        const p = new URLSearchParams({ city: own.cityRef, checkin: c.checkIn, checkout: c.checkOut, adults: String(c.adults), rooms: String(c.rooms ?? 1), los: String(nights) })
+        if (hotel) p.set('selectedproperty', hotel)
+        const children = (c.children ?? 0) > 0
+        return {
+          url: `https://www.agoda.com/search?${p}`, depth: hotel ? 3 : 2,
+          preserved: ['cityRef', 'checkIn', 'checkOut', 'adults', 'rooms', ...(hotel ? ['propertyRef'] : [])],
+          pageOnly: children ? ['children'] : [], dropped: hotel ? [] : ['propertyRef'], expiresAt: isoDay(c.checkIn), grammar: 'verified',
+          limitation: hotel ? 'Trang Agoda với khách sạn, ngày và số khách đã chọn — xem phòng và giá trên trang.' : 'Kết quả Agoda cho điểm đến, ngày và số khách đã chọn — bạn chọn khách sạn trên trang.',
+        }
+      }
+    }
+    // /vi-vn/search?q= and ?textToSearch= drop the query (verified 14 Sep 2026): without ids the landing page is the truth.
     return { url: 'https://www.agoda.com/vi-vn/', depth: 0, preserved: [], pageOnly: [], dropped: ['propertyRef', 'checkIn', 'checkOut', 'adults', 'rooms', 'children'], expiresAt: null, grammar: 'verified', limitation: 'Agoda không nhận điểm đến qua URL — nhập điểm đến và ngày trên trang Agoda.' }
   },
   detailDepth: 3,
@@ -235,12 +263,25 @@ const traveloka: HandoffGrammar = {
 /** Vexere spells Hồ Chí Minh City as "sai-gon"; the other city slugs follow the plain name. */
 const VEXERE_ALIASES: Record<string, string> = { 'ho-chi-minh': 'sai-gon', 'tp-ho-chi-minh': 'sai-gon', 'tp-hcm': 'sai-gon', 'tphcm': 'sai-gon', 'hcm': 'sai-gon', 'saigon': 'sai-gon', 'thanh-pho-ho-chi-minh': 'sai-gon' }
 const vexereSlug = (name: string) => { const s = slug(name); return VEXERE_ALIASES[s] ?? s }
+/**
+ * Vexere's RAIL pages spell the city "ho-chi-minh" (the coach pages say "sai-gon"); a station page names "ga-<station>-<district>-<city>".
+ * The request may name the station too ("Ga Hà Nội", measured live 29/10): the "ga" word is dropped on both sides.
+ */
+const railNames = (name: string) => { const raw = slug(name).replace(/^ga-/, ''); const s = VEXERE_ALIASES[raw] ?? raw; return s === 'sai-gon' ? ['ho-chi-minh', 'sai-gon'] : s ? [s] : [] }
+const railNamesPlace = (pageSlug: string, name: string) => railNames(name).some(n => pageSlug.replace(/^ga-/, '').startsWith(n))
 
 const vexere: HandoffGrammar = {
   detail(u, request) {
+    const c = request.configuration
+    const rail = u.pathname.match(VEXERE_RAIL_ROUTE)
+    if (rail) {
+      if (c?.kind !== 'transport' || c.mode !== 'train') return null
+      // Identity, as for coaches: the rail route page (city or station page) must name BOTH places the user asked for.
+      if (!railNamesPlace(rail[2], c.originRef) || !railNamesPlace(rail[3], c.destinationRef)) return null
+      return { id: `rail:${rail[4]}.${rail[5]}`, canonical: `https://vexere.com/vn/ve-tau-hoa/${rail[1]}` }
+    }
     const m = u.pathname.match(VEXERE_ROUTE)
     if (!m) return null
-    const c = request.configuration
     if (c?.kind !== 'transport' || c.mode !== 'bus') return null
     // Identity: the route page must name BOTH places the user asked for ("sai-gon" … "da-lat-lam-dong").
     const from = vexereSlug(c.originRef), to = vexereSlug(c.destinationRef)
@@ -248,6 +289,18 @@ const vexere: HandoffGrammar = {
     return { id: m[4], canonical: `https://vexere.com/vi-VN/${m[1]}.html` }
   },
   configure(canonical, configuration) {
+    if (configuration.kind === 'transport' && configuration.mode === 'train') {
+      // The rail route page ignores ?date= (verified 29 Oct 2026: it kept today's date). Its own search lands on
+      //   /vn/ve-tau-hoa/dat-ve-tau.vi?from=<id>_area&to=<id>_area&date[depart]=YYYY-MM-DD&passenger[adt]=<n>
+      // and that reduced form was opened on 29 Oct 2026: the day, the passenger count and every train with its fare (DSVN data) applied.
+      // The brackets travel percent-encoded (the URL guard refuses raw ones); the encoded form was opened the same day, same result.
+      // A STATION page's ids (…171723.171699.vi) go into the same <id>_area fields — Vexere's own search does that; opened 29 Oct 2026.
+      const ids = new URL(canonical).pathname.match(VEXERE_RAIL_ROUTE)
+      if (!ids) return null
+      const adults = configuration.passengers ?? 1
+      const url = `https://vexere.com/vn/ve-tau-hoa/dat-ve-tau.vi?from=${ids[4]}_area&to=${ids[5]}_area&date%5Bdepart%5D=${q(configuration.departDate)}&passenger%5Badt%5D=${adults}`
+      return { url, depth: 2, preserved: ['originRef', 'destinationRef', 'departDate', ...(configuration.passengers ? ['passengers'] : [])], pageOnly: configuration.returnDate ? ['returnDate'] : [], dropped: [], expiresAt: isoDay(configuration.departDate), grammar: 'verified' }
+    }
     if (configuration.kind !== 'transport' || configuration.mode !== 'bus') return null
     // ?date=DD-MM-YYYY verified 14 Sep 2026 (route page 200, date applied to the trip list).
     return { url: `${canonical}?date=${q(DMY(configuration.departDate))}`, depth: 2, preserved: ['originRef', 'destinationRef', 'departDate'], pageOnly: ['passengers', ...(configuration.returnDate ? ['returnDate'] : [])], dropped: [], expiresAt: isoDay(configuration.departDate), grammar: 'verified' }

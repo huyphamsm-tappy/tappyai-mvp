@@ -67,20 +67,27 @@ describe('Settings → Request Account Deletion', () => {
     expect(screen.queryByText('Request Account Deletion')).toBeNull()
   })
 
-  it('sits beside Sign out, and is danger-styled like it', () => {
+  it('owner 01/10 (TikTok style): a discreet plain row at the end of «Other», NOT red, NOT in the Sign out card', () => {
     setLocale('en')
     const { container } = render(<SettingsView user={user} />)
     const link = screen.getByRole('link', { name: /Request Account Deletion/i })
 
-    // Same card as Sign out, matching how Android groups the two rows. The card is
-    // `.v3-panel` since Settings moved onto the V3 shell (Phase 7 RC §9); it was `.card`.
-    const card = link.closest('div.v3-panel')
+    // Not in the card that holds Sign out.
+    const card = link.closest('.v3-panel')
     expect(card).not.toBeNull()
-    expect(card!.textContent).toContain('Sign out')
+    expect(card!.textContent).not.toContain('Sign out')
+    const signOutCard = screen.getByText('Sign out').closest('.v3-panel')
+    expect(signOutCard).not.toBe(card)
 
-    // MenuItem's `danger` treatment: red label, red icon tile.
-    expect(link.querySelector('.text-red-500')).not.toBeNull()
-    expect(container.querySelector('.bg-red-50')).not.toBeNull()
+    // It sits in the «Other» list, after Terms and Privacy (the last link of that list).
+    const links = Array.from(card!.querySelectorAll('a')).map(a => a.getAttribute('href'))
+    expect(links[links.length - 1]).toBe('/delete-account')
+    expect(links.indexOf('/privacy')).toBeLessThan(links.indexOf('/delete-account'))
+
+    // Plain text: none of MenuItem's `danger` treatment (red label, red icon tile).
+    expect(link.querySelector('.text-red-500')).toBeNull()
+    expect(link.className).not.toMatch(/red/)
+    expect(container.querySelector('.bg-red-50')).toBeNull()
   })
 
   it('keeps dark-mode variants on the new row', () => {

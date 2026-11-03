@@ -80,7 +80,7 @@ const HOTEL_LIST = [
 ]
 const hotelNeed = (): NeedProfile => ({
   domain: 'hotel', subject: 'resort', budget: null, budgetStated: null, location: { text: 'Phú Quốc', gps: null },
-  useCases: [], priorities: [{ key: 'rating', weight: 2, source: 'stated' }], mustHave: [], avoid: [], turnsObserved: 1, changedAtTurn: {},
+  useCases: [], priorities: [{ key: 'rating', weight: 2, source: 'stated' }], mustHave: [], avoid: [], turnsObserved: 1, changedAtTurn: {}, partySize: null,
 })
 
 describe('T8: the top-rated guest house is never shortlisted for an upscale request', () => {

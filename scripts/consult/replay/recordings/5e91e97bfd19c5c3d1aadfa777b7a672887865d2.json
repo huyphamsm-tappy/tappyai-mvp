@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:hochieu.xuatnhapcanh.gov.vn cấp hộ chiếu online hồ sơ lệ phí",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:40:33.201Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:hochieu.xuatnhapcanh.gov.vn cấp hộ chiếu online hồ sơ lệ phí",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tờ khai điện tử đề nghị cấp hộ chiếu",
+    "link": "https://hochieu.xuatnhapcanh.gov.vn/faces/faq.jspx",
+    "snippet": "- Khai 01 tờ khai đề nghị cấp hộ chiếu theo mẫu quy định; - 02 ảnh cỡ 4cm x 6cm, phông nền trắng, mặt nhìn thẳng, đầu để trần, không đeo kính màu (chụp ảnh tại ...",
+    "position": 1
+   },
+   {
+    "title": "Tờ khai điện tử đề nghị cấp hộ chiếu",
+    "link": "https://hochieu.xuatnhapcanh.gov.vn/faces/contact.jspx",
+    "snippet": "Hồ Chí Minh. - Địa chỉ: 333-335-337 đường Nguyễn Trãi, Q1, TP. Hồ Chí Minh. - Điện thoại: 02839202300. - Số điện thoại giải đáp thủ tục xuất nhập cảnh của công ...",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

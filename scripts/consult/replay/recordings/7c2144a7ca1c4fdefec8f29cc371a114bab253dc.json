@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "ve tau Sài Gòn Đà Nẵng duong sat viet nam gia",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T16:56:38.503Z",
+ "body": {
+  "searchParameters": {
+   "q": "ve tau Sài Gòn Đà Nẵng duong sat viet nam gia",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tập đoàn Đường sắt Quốc gia Việt Nam - Bán vé tàu trực tuyến",
+    "link": "https://dsvn.vn/",
+    "snippet": "Tìm vé tàu, đặt vé tàu trực tuyến, mua vé tàu trực tuyến, tra cứu thông tin hành trình về giờ tàu và giá vé, tra cứu lại thông tin vé đã đặt.",
+    "position": 1
+   },
+   {
+    "title": "Vé tàu hoả Bắc Nam tại Đường sắt Việt Nam",
+    "link": "https://vetauduongsat.com/",
+    "snippet": "Vé tàu hoả Bắc Nam tại Đường sắt Việt Nam. Đặt booking Online, giao vé tận nơi miễn phí. Thủ tục nhanh chóng, nhân viên tư vấn nhiệt tình. Đặt vé ngay ...",
+    "position": 2
+   },
+   {
+    "title": "Vé Tàu Hồ Chí Minh Đà Nẵng từ 637.000đ",
+    "link": "https://vexere.com/vn/ve-tau-hoa/tu-ho-chi-minh-di-da-nang.29.15.vi",
+    "snippet": "Đặt vé tàu hỏa Hồ Chí Minh Đà Nẵng từ 637.000đ trên Vexere. 5 chuyến/ngày, 16 tiếng 31 phút. Giảm 25% cho khách mới, giảm 10% vé khứ hồi. Đặt ngay!",
+    "position": 3
+   },
+   {
+    "title": "Vé Tàu Từ Ga Đà Nẵng đi Sài Gòn",
+    "link": "https://vetau.alltours.vn/dai-ly/ve-tau-da-nang-sai-gon.html",
+    "snippet": "Vé tàu từ Ga Đà Nẵng đi Sài Gòn có giá khoảng 606,000 đồng. Khoảng cách giữa 2 ga là 935Km với tần suất 6 đoàn tàu/Ngày đón trả khách từ Đà Nẵng đi Sài Gòn, ...",
+    "rating": 4.3,
+    "ratingCount": 102,
+    "position": 4
+   },
+   {
+    "title": "Thông tin giờ tàu giá vé - Đường sắt Việt nam",
+    "link": "https://giotaugiave.dsvn.vn/",
+    "snippet": "Chiều Hà Nội > Huế > Đà Nẵng > Sài Gòn ; Đồng Lê, 436, 14:39 ; Minh Lệ, 482 ; Đồng Hới, 522, 16:27 ; Mỹ Đức, 551, 17:02.",
+    "position": 5
+   },
+   {
+    "title": "Trải nghiệm đặt vé tàu hoả Sài Gòn - Đà Nẵng 5 sao, chất ...",
+    "link": "https://vnpayapp.vn/blog/ve-tau-hoa-sai-gon-da-nang",
+    "snippet": "2. Giờ chạy và bảng giá vé tàu hoả Sài Gòn - Đà Nẵng ; SE2. 20:35 - 13:40 · Giường nằm khoang 6. 841.000 - 1.072.000 đồng ; SE22. 10:20 - 5:55.",
+    "date": "10 thg 1, 2025",
+    "position": 6
+   },
+   {
+    "title": "Bán vé tàu trực tuyến: Tổng công ty đường sắt Việt Nam",
+    "link": "https://vetau.com.vn/",
+    "snippet": "- Đổi vé: Vé cá nhân đổi trước giờ tàu chạy 24 giờ trở lên, lệ phí là 20.000 đồng/vé; không áp dụng đổi vé đối với vé tập thể. - Trả vé: + Vé cá nhân: Trả vé ...",
+    "position": 7
+   },
+   {
+    "title": "Vé Tàu Sài Gòn Đi Đà Nẵng - Tổng Công Ty Đường Sắt Việt ...",
+    "link": "https://vetauhoavn.com/tin-du-lich/ve-tau-sai-gon-di-da-nang-tong-cong-ty-duong-sat-viet-nam-134.html",
+    "snippet": "Quãng đường: 935 km · Thời gian di chuyển: khoảng 15 tiếng 40 phút · Giá vé 1 chiều rẻ nhất: 462.000VNĐ · Giá vé khứ hồi thấp nhất: 1.290.000 VNĐ ...",
+    "date": "5 thg 10, 2025",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

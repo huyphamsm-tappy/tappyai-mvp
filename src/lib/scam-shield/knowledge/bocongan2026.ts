@@ -1,3 +1,4 @@
+import { SCAM_REPORT_HOTLINE } from '../hotline'
 import type { KnowledgeDataset, KnowledgeSource, OfficialGroup, ScamScenario } from './types'
 
 // Scam Shield · official anti-fraud knowledge — dataset "Bộ Công an · 25 kịch bản lừa đảo 2026".
@@ -51,7 +52,8 @@ const GROUPS: OfficialGroup[] = [
 
 /** Shared "never" list — the source's five prevention measures apply to every scenario. */
 const NEVER_SHARE = 'Không cung cấp mã OTP, mật khẩu hay thông tin cá nhân cho người gọi/nhắn, dù họ xưng là ai.'
-const REPORT_113 = 'Báo ngay cho Công an nơi gần nhất hoặc gọi 113 nếu nghi ngờ bị lừa.'
+// TappyAI's own guidance line (not the source's verbatim text): reporting goes to the canonical Scam Shield hotline (one source of truth).
+const REPORT_HOTLINE = `Báo ngay cho Công an nơi gần nhất hoặc gọi ${SCAM_REPORT_HOTLINE.display} nếu nghi ngờ bị lừa.`
 
 function scenario(
   officialNumber: number,
@@ -70,7 +72,7 @@ const SCENARIOS: ScamScenario[] = [
     {
       warningSigns: ['Cuộc gọi video ngắn, hình mờ, giật hoặc kết thúc đột ngột', 'Người thân "bỗng nhiên" cần tiền gấp và chỉ nhận qua chuyển khoản', 'Tài khoản nhận tiền không mang tên người thân'],
       commonRequests: ['Chuyển khoản ngay để xử lý việc gấp', 'Chuyển vào tài khoản của "bạn" hoặc "đối tác" của người thân'],
-      whatToDo: ['Cúp máy và gọi lại người thân bằng số điện thoại đã lưu', 'Hỏi một chi tiết chỉ người thân mới biết trước khi chuyển tiền', REPORT_113],
+      whatToDo: ['Cúp máy và gọi lại người thân bằng số điện thoại đã lưu', 'Hỏi một chi tiết chỉ người thân mới biết trước khi chuyển tiền', REPORT_HOTLINE],
       whatNotToDo: ['Không chuyển tiền chỉ vì đã "thấy mặt" trong video', 'Không chuyển vào tài khoản lạ dù được giải thích lý do'],
     }),
   scenario(2, 'ai_deepfake', 'payment_fraud',
@@ -78,7 +80,7 @@ const SCENARIOS: ScamScenario[] = [
     {
       warningSigns: ['Giọng giống người quen nhưng gọi từ số lạ', 'Tình huống khẩn cấp (tai nạn, bị giữ, nợ gấp) và không thể gọi lại', 'Từ chối gọi video hoặc gặp trực tiếp'],
       commonRequests: ['Chuyển tiền "vay tạm" ngay lập tức', 'Giữ kín, không nói với ai khác'],
-      whatToDo: ['Gọi lại số đã lưu của người đó hoặc người thân của họ để kiểm chứng', 'Thống nhất trước với gia đình một "mật khẩu" cho tình huống khẩn cấp', REPORT_113],
+      whatToDo: ['Gọi lại số đã lưu của người đó hoặc người thân của họ để kiểm chứng', 'Thống nhất trước với gia đình một "mật khẩu" cho tình huống khẩn cấp', REPORT_HOTLINE],
       whatNotToDo: ['Không chuyển tiền dựa trên giọng nói', 'Không làm theo yêu cầu "giữ bí mật"'],
     }),
   scenario(9, 'ai_deepfake', 'identity_theft',
@@ -194,7 +196,7 @@ const SCENARIOS: ScamScenario[] = [
     {
       warningSigns: ['Nhóm chat đông người khoe lãi, "thầy" đọc lệnh', 'Rút được lãi nhỏ lúc đầu, rồi bị chặn rút khi số dư lớn'],
       commonRequests: ['Nạp số tiền lớn để "vào lệnh VIP"', 'Nộp "phí bảo hiểm", "thuế" để rút tiền'],
-      whatToDo: ['Rời nhóm, không nạp thêm; giữ toàn bộ tin nhắn, lịch sử giao dịch làm bằng chứng', REPORT_113],
+      whatToDo: ['Rời nhóm, không nạp thêm; giữ toàn bộ tin nhắn, lịch sử giao dịch làm bằng chứng', REPORT_HOTLINE],
       whatNotToDo: ['Không tin lãi nhỏ rút được ban đầu là bằng chứng uy tín', 'Không nộp bất kỳ "phí" nào để rút tiền'],
     }),
   scenario(23, 'investment_jobs', 'payment_fraud',

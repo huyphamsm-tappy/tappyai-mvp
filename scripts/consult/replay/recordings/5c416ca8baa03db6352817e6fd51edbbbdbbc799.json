@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "BBC Learning English English speaking beginner practice",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:05:26.779Z",
+ "body": {
+  "searchParameters": {
+   "q": "BBC Learning English English speaking beginner practice",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Easy Courses - Learning English",
+    "link": "https://www.bbc.co.uk/learningenglish/easy_course",
+    "snippet": "Here are our easy English programmes, for learners with a beginner, elementary or pre-intermediate level of English. Very Easy. A very easy English video series.",
+    "position": 1
+   },
+   {
+    "title": "BBC Learning English",
+    "link": "https://www.youtube.com/user/bbclearningenglish",
+    "snippet": "Learn English with the BBC. We publish new videos, shorts, podcasts, tutorials and lessons every week to help you learn and improve your English speaking, ...",
+    "position": 2
+   },
+   {
+    "title": "BBC Learning English - The English We Speak",
+    "link": "https://www.bbc.co.uk/learningenglish/features/the-english-we-speak",
+    "snippet": "In under 3 minutes, we help you stay ahead of the pack by giving you 'must have' phrases that you can use in your everyday conversation. Amaze your friends, ...",
+    "position": 3
+   },
+   {
+    "title": "How can I speak English more fluently? Ask BBC Learning ...",
+    "link": "https://www.youtube.com/watch?v=LDkvRFCm8No&xstg=CAMSBhUD-7L2Hw%3D%3D",
+    "snippet": "Mary has sent us a question. She wants to know how to improve her English fluency. To see Beth's hints and tips, visit our website: ...",
+    "position": 4
+   },
+   {
+    "title": "Practise English speaking skills | LearnEnglish",
+    "link": "https://learnenglish.britishcouncil.org/free-resources/speaking",
+    "snippet": "Speaking practice to help you learn useful language for everyday communication. Situations include responding to news, meeting face-to-face and asking a favour.",
+    "position": 5
+   },
+   {
+    "title": "How to introduce yourself: Easy English Conversations  ...",
+    "link": "https://www.youtube.com/watch?v=I_tRSrPru94&xstg=CAMSBhUD-7L2Hw%3D%3D",
+    "snippet": "What do English speakers say when they meet for the first time? Find out in this easy English conversation ... BBC Learning English•2.6M views · 2 ...",
+    "position": 6
+   },
+   {
+    "title": "BBC Learning English",
+    "link": "https://www.bbc.co.uk/learningenglish/",
+    "snippet": "Learning English ; Start here: Choose your level. Click on the level you want to try first ; New every week. We have a new episode of these programmes every week ...",
+    "position": 7
+   },
+   {
+    "title": "Learning English Conversations - BBC Audio",
+    "link": "https://www.bbc.com/audio/series/p02pc9zn",
+    "snippet": "Everyday expressions and real English conversations to help make your English conversations easier. Every week, we teach you a new phrase or expression.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Đế sạc để bàn 4 IN 1 GaN USB C 140W cho MacBook Air/Pro iPhone 17/16 Pro site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:01:52.337Z",
+ "body": {
+  "searchParameters": {
+   "q": "Đế sạc để bàn 4 IN 1 GaN USB C 140W cho MacBook Air/Pro iPhone 17/16 Pro site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "macbook_pro giá tốt Tháng 8, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=macbook_pro",
+    "snippet": "Củ Sạc Nhanh CUKTECH GaN 140W 4 Cổng Công Suất Cực Mạnh Cho MacBook Pro/. custom-overlay. flag-label Củ Sạc Nhanh CUKTECH GaN 140W 4 Cổng Công Suất Cực Mạnh Cho ...",
+    "position": 1
+   },
+   {
+    "title": "Sạc 140w - Giá Tốt, Sale Tháng 10, Freeship 0Đ",
+    "link": "https://shopee.vn/list/s%E1%BA%A1c/140w",
+    "snippet": "Sạc Anker Zolo 140W 3C1A PD3. · Bộ sạc nhanh Anker Zolo B2697 140W GaN, 4 cổng 3 USB-C và · Bộ củ sạc nhanh Cuktech 15 GaN 140W 4 cổng 3C + 1A AD1404U · Củ sạc ...",
+    "position": 2
+   },
+   {
+    "title": "Sạc Macbook Pro 45W Magsafe 2 |2012 Đến 2015",
+    "link": "https://shopee.vn/search?keyword=S%E1%BA%A1c%20Macbook%20Pro%2045W%20Magsafe%202%20%7C2012%20%C4%90%E1%BA%BFn%202015%7C",
+    "snippet": "2 + 2.4G USB chế độ kép, Chuột 3 cấp độ 1600 DPI di động công thái học RGB, Thích hợp cho máy tính xách tay, MacBook Air Pro và các thiết bị khác. 935.000₫.",
+    "position": 3
+   },
+   {
+    "title": "Ugreen 140w - Giá Tốt, Sale Tháng 10, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/s%E1%BA%A1c/ugreen/140w",
+    "snippet": "Bộ sạc USB C UGREEN 30W Nexode GaN PPS Khối sạc tường nhanh gọn Bộ chuyển đổi nguồn USB-C cho Galaxy S25 S24 Ultra. 203.957₫. 299.000₫. -32%. voucher-icon.",
+    "position": 4
+   },
+   {
+    "title": "dock sạc - Giá Tốt, Sale Tháng 10, Freeship 0Đ",
+    "link": "https://shopee.vn/list/dock%20s%E1%BA%A1c",
+    "snippet": "Trạm sạc USB C UGREEN 100W, Bộ sạc máy tính để bàn GaN 6 cổng. custom ... cho MacBook Pro/Air,, iPhone 17/16/15. 549.000₫. 990.000₫. -45%. voucher-icon. Rẻ ...",
+    "position": 5
+   },
+   {
+    "title": "sac_macbook giá tốt Tháng 9, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=sac_macbook",
+    "snippet": "Hagibis USB C sang USB C Cáp Góc Phải 240W 90 Độ Loại C Xe Cáp Sạc Nhanh 80Gbps Cho Thunderbolt 5 iPhone Macbook. 230.900₫. 481.800₫. -52%. voucher-icon.",
+    "position": 6
+   },
+   {
+    "title": "sạc không dây apple giá tốt Tháng 8, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=s%E1%BA%A1c%20kh%C3%B4ng%20d%C3%A2y%20apple",
+    "snippet": "Bộ sạc không dây HOCO chính hãng CW6 Pro 15W Trạm sạc nhanh 2 trong 1 Thích hợp cho điện thoại thông minh/ tai nghe Cáp sạc loại C. 216.000₫. 390.500₫.",
+    "position": 7
+   },
+   {
+    "title": "Củ sạc nhanh cuktech gan 120w - Giá Tốt, Sale Tháng 10, ...",
+    "link": "https://shopee.vn/list/c%E1%BB%A7%20s%E1%BA%A1c%20nhanh/cuktech%20gan/120w",
+    "snippet": "Bộ sạc USB C UGREEN 30W Nexode GaN PPS Khối sạc tường nhanh gọn Bộ chuyển đổi nguồn USB-C cho Galaxy S25 S24 Ultra. 223.957₫. 299.000₫. -25%. voucher-icon.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "lệ phí cấp hộ chiếu trực tuyến 2026 90.000 đồng Việt Nam Thông tư 2025 2026 Bộ Tài chính",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:16:50.289Z",
+ "body": {
+  "searchParameters": {
+   "q": "lệ phí cấp hộ chiếu trực tuyến 2026 90.000 đồng Việt Nam Thông tư 2025 2026 Bộ Tài chính",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Từ 1/1/2026, bạn sẽ mất quyền lợi này nếu chưa làm hộ ...",
+    "link": "https://cafef.vn/tu-1-1-2026-ban-se-mat-quyen-loi-nay-neu-chua-lam-ho-chieu-188251223210128572.chn",
+    "snippet": "Theo đó, lệ phí cấp hộ chiếu, giấy thông hành, giấy phép xuất cảnh và tem AB được giảm một nửa so với mức thu tại Thông tư số 25/2021/TT-BTC.",
+    "date": "23 thg 12, 2025",
+    "position": 1
+   },
+   {
+    "title": "Applying for a Passport Online in 2026: Just a Few Clicks ...",
+    "link": "https://www.youtube.com/watch?v=URQ-DCcLfH8",
+    "snippet": "Làm hộ chiếu online 2026: Chỉ vài thao tác, nhận tại nhà Trong bối cảnh nhiều thủ tục hành chính được đẩy mạnh số hóa, việc đăng ký làm hộ ...",
+    "position": 2
+   },
+   {
+    "title": "Ai làm hộ chiếu trong năm 2026 nhớ kỹ những điều sau",
+    "link": "https://cafef.vn/ai-lam-ho-chieu-trong-nam-2026-nho-ky-nhung-dieu-sau-188260312090951702.chn",
+    "snippet": "Theo đó, từ ngày 1/7/2025 đến hết ngày 31/12/2026 mức thu lệ phí cấp hộ chiếu, giấy thông hành, giấy phép xuất cảnh, tem AB được quy định bằng ...",
+    "date": "12 thg 3, 2026",
+    "position": 3
+   },
+   {
+    "title": "Từ 15/8/2026, miễn lệ phí cấp hộ chiếu phổ thông trong ...",
+    "link": "https://luatvietnam.vn/tin-van-ban-moi/mien-le-phi-cap-ho-chieu-pho-thong-trong-nuoc-cho-nguoi-co-vneid-muc-2-186-111583-article.html",
+    "snippet": "Từ 15/8/2026, miễn lệ phí cấp hộ chiếu phổ thông trong nước cho người có VNeID mức 2 · Ngày 14/8/2026, Bộ Tài chính ban hành Thông tư 117/2026/TT ...",
+    "date": "18 thg 8, 2026",
+    "position": 4
+   },
+   {
+    "title": "Từ 15/8/2026, miễn lệ phí cấp hộ chiếu phổ thông trong ...",
+    "link": "https://www.tiktok.com/@luatvietnam/video/7675294804632177927",
+    "snippet": "Từ 15/8/2026, miễn lệ phí cấp hộ chiếu phổ thông trong nước cho người có VNeID mức 2 #luatvietnam #luatvietnamvn #thongtinphapluat #tintuc # ...",
+    "position": 5
+   },
+   {
+    "title": "Quy định mới về lệ phí cấp hộ chiếu năm 2026",
+    "link": "https://congan.khanhhoa.gov.vn/vi/quy-dinh-moi-ve-le-phi-cap-ho-chieu-nam-2026",
+    "snippet": "Mức thu lệ phí cấp hộ chiếu năm 2026 mới nhất nêu trên được áp dụng chính thức từ ngày 01/4/2026 và thay thế cho mức phí theo quy định Thông tư ...",
+    "date": "29 thg 9, 2026",
+    "position": 6
+   },
+   {
+    "title": "Mức thu lệ phí cấp hộ chiếu, giấy thông hành, giấy phép xuất ...",
+    "link": "https://xaydungchinhsach.chinhphu.vn/muc-thu-le-phi-cap-ho-chieu-giay-thong-hanh-giay-phep-xuat-canh-tem-ab-119260401102312629.htm",
+    "snippet": "Lệ phí cấp hộ chiếu, giấy thông hành, giấy phép xuất cảnh, tem \"AB\" được quy định như sau: ; a. Cấp giấy phép xuất cảnh. 200.000 ; b. Cấp công hàm ...",
+    "date": "1 thg 4, 2026",
+    "position": 7
+   },
+   {
+    "title": "Lệ phí làm passport online lần đầu năm 2026 là bao nhiêu ...",
+    "link": "https://thuvienphapluat.vn/phap-luat/le-phi-lam-passport-online-lan-dau-nam-2026-la-bao-nhieu-huong-dan-nop-le-phi-online-tren-cong-dich-889167-277837.html",
+    "snippet": "Theo đó, từ ngày 01/07/2025 đến 31/12/2026 lệ phí cấp mới hộ chiếu sẽ được giảm xuống 50% so với mức lệ phí áp dụng trước đây còn 100.000 đồng.",
+    "date": "7 thg 7, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

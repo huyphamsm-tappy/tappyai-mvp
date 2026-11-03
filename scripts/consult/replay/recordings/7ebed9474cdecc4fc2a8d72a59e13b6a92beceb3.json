@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "nhà hàng yên tĩnh máy lạnh giá dưới 300.000 đồng/người Quận 1, TP.HCM gia menu thuc don",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:05:04.945Z",
+ "body": {
+  "searchParameters": {
+   "q": "nhà hàng yên tĩnh máy lạnh giá dưới 300.000 đồng/người Quận 1, TP.HCM gia menu thuc don",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Em tha thiết xin cả nhà mấy nhà hàng ăn trưa ở các quận 1 ...",
+    "link": "https://www.facebook.com/groups/SaigonReviews/posts/2075280800071726/",
+    "snippet": "Chỉ với 250k/1 khách mời bạn tham khảo nhà hàng Hoa Kabin + Vietkitchen ks Renaissance Riverside trung tâm quận 1. No photo description ...",
+    "position": 1
+   },
+   {
+    "title": "Top 45 nhà hàng ngon nổi tiếng nhất tại TP.HCM",
+    "link": "https://zalopay.vn/nha-hang-5067",
+    "snippet": "Giá dao động: 100.000 – 300.000 VNĐ/người. Nếu bạn muốn trải nghiệm sự đa dạng của ẩm thực truyền thống Trung Quốc thì San Fu Lou chắc chắn ...",
+    "date": "30 thg 9, 2025",
+    "position": 2
+   },
+   {
+    "title": "Chill cùng TOP 10 nhà hàng kiểu Pháp ở quận 1 với ...",
+    "link": "https://vincom.com.vn/trend/nha-hang-phap-quan-1",
+    "snippet": "Restaurant La Cuisine · Giờ mở cửa: 11:00 - 23:00 · Giá tham khảo: 200.000đ - 550.000đ/người · Địa chỉ: 52 Lê Thánh Tôn , P. Bến Nghé ,Quận 1, TP. HCM.",
+    "position": 3
+   },
+   {
+    "title": "Top 12 nhà hàng sang trọng Quận 1 để gặp đối tác",
+    "link": "https://www.officesaigon.vn/top-nha-hang-sang-trong-de-gap-doi-tac.html",
+    "snippet": "Top 12 nhà hàng Quận 1 sang trọng để tiếp khách hàng · 1. Nhà hàng Phố 79 · 2. Nhà hàng Nhật Miyen Japanese Fusion Cuisine · 3. La Brasserie Buffet ...",
+    "date": "4 thg 5, 2026",
+    "rating": 4.8,
+    "ratingCount": 13,
+    "position": 4
+   },
+   {
+    "title": "50+ quán ăn GIA ĐÌNH TPHCM ngon nổi tiếng nhất 2026",
+    "link": "https://pasgo.vn/kham-pha/ho-chi-minh/kham-pha-10-quan-an-gia-dinh-ngon-re-hut-khach-nhat-o-tphcm-219",
+    "snippet": "Bến Nghé, Quận 1; Loại hình: Gọi món Nhật Bản; Khoảng giá: 250.000 - 300.000 đ/người; Phù hợp: Ăn gia đình, sinh nhật, liên hoan văn phòng, hẹn ...",
+    "date": "24 thg 6, 2026",
+    "rating": 4.8,
+    "ratingCount": 187,
+    "position": 5
+   },
+   {
+    "title": "Các cao nhân cho em xin vài địa chỉ quán chill ...",
+    "link": "https://www.facebook.com/groups/SaigonReviews/posts/1997604801172660/",
+    "snippet": "Tiệm cơm Nam Sơn 211 Âu-cơ, P.5, Q.11, Sài-gòn Món nào cũng ngon, giá tương đối so với mặt bằng chung cơm Tàu Tổng cộng 562,000đ cho 2 ...",
+    "position": 6
+   },
+   {
+    "title": "Nhà hàng ẩm thực view sông Sài Gòn đồ ăn ngon",
+    "link": "https://www.lemon8-app.com/dunobienhoa/7179683962921550338?region=vn",
+    "snippet": "Bạn có thể lựa chọn nhiều loại hình phục vụ phù hợp với nhu cầu: set menu cao cấp với các món ăn tinh tế, buffet từ thứ Hai đến thứ Năm với mức ...",
+    "position": 7
+   },
+   {
+    "title": "Top 15 Nhà Hàng Quận 1 Sang Trọng - Ngon Nức Tiếng Ư ...",
+    "link": "https://butl.vn/nha-hang-quan-1/",
+    "snippet": "Địa chỉ: 32-34 Ngô Đức Kế, Phường Bến Nghé, Quận 1, TP.HCM · Giờ mở cửa: 09:00 – 23:30 · Giá tham khảo: 300.000 – 700.000 VNĐ/người · Hotline: 0901 ...",
+    "date": "23 thg 5, 2025",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

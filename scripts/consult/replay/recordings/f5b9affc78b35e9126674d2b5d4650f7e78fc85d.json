@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Anker Tai nghe Bluetooth Soundcore Liberty 4 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:21:06.081Z",
+ "body": {
+  "searchParameters": {
+   "q": "Anker Tai nghe Bluetooth Soundcore Liberty 4 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "soundcore liberty 4 ncเคส",
+    "link": "https://shop.tiktok.com/vn/k/soundcore-liberty-4-nc%25E0%25B9%2580%25E0%25B8%2584%25E0%25B8%25AA",
+    "snippet": "[BÁN CHẠY] Tai nghe Soundcore - Anker Liberty 4 NC chống ồn, Giảm tiếng ồn 98,5%, Chống ồn thích ứng với tai và môi trường, Âm thanh độ phân giải cao, ...",
+    "position": 1
+   },
+   {
+    "title": "anker liberty 4 pro",
+    "link": "https://shop.tiktok.com/vn/k/anker-liberty-4-pro",
+    "snippet": "[soundcore-Anker] soundcore Liberty 4 Pro của Anker, Tai nghe không dây khử tiếng ồn, 7 cảm biến và điều chỉnh chống tiếng ồn theo thời gian thực, ...",
+    "position": 2
+   },
+   {
+    "title": "soundcore liberty 3 nc",
+    "link": "https://shop.tiktok.com/vn/k/soundcore-liberty-3-nc",
+    "snippet": "Tai nghe không dây Bluetooth Anker Soundcore Liberty 4 NC - A3947. 0 sold. ₫2.199.000. ₫2.499 ...",
+    "position": 3
+   },
+   {
+    "title": "Dual connect for soundcore liberty 4 pro",
+    "link": "https://shop.tiktok.com/vn/k/dual-connect-for-soundcore-liberty-4-pro",
+    "snippet": "[soundcore-Anker] soundcore Liberty 4 Pro của Anker, Tai nghe không dây khử tiếng ồn, 7 cảm biến và điều chỉnh chống tiếng ồn theo thời gian thực, ...",
+    "position": 4
+   },
+   {
+    "title": "[soundcore-Anker] soundcore Liberty 4 Pro của Anker, Tai nghe ...",
+    "link": "https://shop.tiktok.com/vn/pdp/tai-nghe-khong-day-soundcore-liberty-4-pro-khu-tieng-on/1735501191440532481",
+    "snippet": "[soundcore-Anker] soundcore Liberty 4 Pro của Anker, Tai nghe không dây khử tiếng ồn, 7 cảm biến và điều chỉnh chống tiếng ồn theo thời gian thực, ...",
+    "position": 5
+   },
+   {
+    "title": "Vỏ Tai Nghe Hoạt Hình, Dành Cho Anker Soundcore Liberty 4 ...",
+    "link": "https://shop.tiktok.com/vn/pdp/vo-silicon-anker-soundcore-liberty-4-pro-chong-tray-soc/1731152801708542566",
+    "snippet": "Thông số kỹ thuật:Tên sản phẩm: Silicone cho Anker Soundcore Liberty 4 Pro / 4NCLoại: Vỏ, Vỏ, MócSử dụng: Dành cho tai ngheĐối với tai ngheChất liệu: ...",
+    "position": 6
+   },
+   {
+    "title": "tai nghe soundcore liberty 4 nc thay pin",
+    "link": "https://shop.tiktok.com/vn/k/tai-nghe-soundcore-liberty-4-nc-thay-pin",
+    "snippet": "Kết quả cho \"tai nghe soundcore liberty 4 nc thay pin\" ; 4.8. 15617 sold · 330.650. ₫499.000 ; 4.5. 158 sold · 2.090.000. ₫2.490.000 ; 4.6. 230 sold · 2.504.000. ₫ ...",
+    "position": 7
+   },
+   {
+    "title": "soundcore by anker liberty 3 pro earbuds",
+    "link": "https://shop.tiktok.com/vn/k/soundcore-by-anker-liberty-3-pro-earbuds",
+    "snippet": "[soundcore-Anker] soundcore Liberty 4 Pro của Anker, Tai nghe không dây khử tiếng ồn ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

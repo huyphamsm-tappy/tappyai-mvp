@@ -334,6 +334,7 @@ Huy quyết: cờ `ACCOUNT_SELF_DELETE_ENABLED` BẬT lúc release; bấm xoá t
 - **EN:** «Delete your account permanently? All your data will be deleted immediately and cannot be recovered: chat history, saved places, posts, photos and clips. {PLAN} Type DELETE to confirm.» — {PLAN} known: «Your paid plan and any remaining credit will be lost, and Tappy does not refund the unused part. Deleting your account does not cancel your subscription on the App Store or Google Play — cancel it there so you are not charged again.» — unknown: «If you have a paid plan, your plan and any remaining credit will be lost, and Tappy does not refund the unused part. Deleting your account does not cancel your subscription on the App Store or Google Play — cancel it there so you are not charged again.»
 - Từ xác nhận vẫn **XÓA / DELETE** (server nhận XÓA, XOÁ, DELETE). Chữ «hoàn tiền do App Store/Google Play quyết» nằm ở trang web, không bắt buộc trong hộp.
 - «Có gói trả phí» web lấy từ `subscriptions.status = 'active'`; nếu Android đã đọc `GET /api/subscription` thì dùng chính dữ liệu đó, không thì dùng bản chung. KHÔNG thêm field/endpoint.
+- **KIỂU HÀNG MỚI (Huy 01/10, kiểu TikTok) — thay hàng đỏ hiện có:** hàng «Xóa tài khoản» là hàng CHỮ THƯỜNG (cùng kiểu mọi hàng khác trong mục), KHÔNG đỏ, KHÔNG nền/biểu tượng đỏ; nằm trong mục **«Khác»**, là hàng CUỐI mục (sau Điều khoản, Chính sách riêng tư), và **KHÔNG nằm cạnh «Đăng xuất»** (Đăng xuất đứng riêng một khung bên dưới, xa hàng này). Bấm → màn cảnh báo (chữ ở trên) → gõ XÓA/DELETE → nút «Xóa vĩnh viễn tài khoản». Nhãn: «Xóa tài khoản» / «Delete account» (khi cờ TẮT vẫn là «Yêu cầu xóa tài khoản», mở email). Android hiện đang là hàng đỏ cạnh Đăng xuất (`SettingsScreen.kt`) ⇒ cần sửa app; bản AAB vc10 hiện có hàng đỏ — chấp nhận được cho tới bản kế tiếp nếu Huy không yêu cầu build lại.
 - Thứ tự release: áp D1/D2/D4 → bật cờ → xoá thử tài khoản test (ENV-RELEASE-CHECKLIST §1). Android dò cờ qua `GET /api/config` → `flags.accountSelfDelete` như hiện nay.
 
 ## 3. Quy tắc bằng chứng mới (chủ dự án, 2026-09-28) — áp dụng cho CẢ phiên Android
@@ -407,3 +408,96 @@ Cần làm:
 - **QR:** giải mã trên máy (ZXing), phân loại sao chép `payload.ts`; KHÔNG dùng `/api/scam-shield/qr`.
 - **Báo cáo/chặn:** `POST /api/comments/{id}/report`, `POST /api/users/{id}/report`, `POST/DELETE /api/users/{id}/block`, theo `GET /api/config → p8`. Không dùng `POST /api/reports`.
 - Chi tiết + bằng chứng: `docs/android/WEB-PARITY-EVIDENCE-2026-10-02.md`.
+## Từ phiên iOS 02/10 — ghi nguồn OpenStreetMap
+
+Android cũng hiển thị thẻ địa điểm có dữ liệu OSM (nguồn dự phòng) mà không có dòng «© OpenStreetMap contributors». Đề nghị thêm trong Cài đặt một dòng «Dữ liệu địa điểm: © OpenStreetMap contributors (ODbL)» là liên kết tới https://www.openstreetmap.org/copyright (cùng chuỗi với iOS). `MapCanvas.kt` hiện là khung giả; nếu sau này gắn bản đồ thật thì ghi nguồn phải nằm ở góc bản đồ. Chi tiết: `docs/ios/SOURCES-AND-CONTENT-RIGHTS.md`.
+
+## 4. Chặn người dùng — HỢP ĐỒNG CUỐI (01/10, nhánh sec/user-blocks-slice; chưa merge)
+- Hiện nút «Chặn» CHỈ khi `GET /api/config` → `p8.userBlocks === true` (thiếu khối `p8` = tắt). Không cần build lại: cờ do server bật.
+- `POST /api/users/{id}/block` → `200 {ok:true, blocked:true}`; `DELETE` cùng đường dẫn → `{ok:true, blocked:false}`. Idempotent. 401 chưa đăng nhập; 403 tài khoản ẩn danh; 400 id sai hoặc chính mình; 429 quá 30 lần/phút; 404 thân rỗng khi cờ tắt. Không phân biệt được «tài khoản kia không tồn tại».
+- `GET /api/users/blocks` → `{blocks:[{blocked_id, created_at}]}` (chỉ của chính mình, mới nhất trước, gồm cả chặn từ chat).
+- Sau khi chặn: bài/bình luận hai bên biến mất khỏi feed/danh sách phía server; hồ sơ đối phương 404; client xoá tạm khỏi danh sách đang hiển thị.
+- `p8.commentModeration` (cùng cờ): chủ bài xoá được bình luận trên bài mình (`DELETE /api/reviews/{id}/comments`).
+- **`GET /api/config` → `p8` (đối tượng cấp cao nhất, cạnh `flags`/`upload`; boolean thuần):** `{ reports, userBlocks, commentModeration, accountDeletion }`. `userBlocks` và `commentModeration` = `USER_BLOCKS_ENABLED === 'true'`; `reports` = `REPORTS_ENABLED === 'true'`; `accountDeletion` luôn false (dùng `flags.accountSelfDelete`). Thiếu khối `p8` = tắt hết.
+- **Báo cáo bình luận / người dùng** (khi `p8.reports` true; route 404 thân rỗng khi tắt): `POST /api/comments/{id}/report` và `POST /api/users/{id}/report`, body `{reason, note?}` (`details` cũng được đọc như `note`, cắt còn 300 ký tự). `reason` nhận: `spam, harassment, inappropriate, copyright, misinformation, violence, other` và các giá trị native `scam, sensitive, hate, sexual, self_harm, impersonation` (lưu đúng như gửi). Thành công `200 {ok:true, reported:true}`; gửi lại lần hai `200 {..., alreadyReported:true}`. Lỗi: 400 (lý do/id sai, hoặc tự báo mình/bình luận của mình), 401, 403 (ẩn danh), 429 (quá 10 lần/10 phút), 500 — **mọi lỗi là mã HTTP không phải 2xx kèm `{error, message}`**. Đối tượng không tồn tại/không thấy được → vẫn `200` (không lộ tồn tại).
+- **Báo cáo bài/clip** vẫn `POST /api/reviews/{id}/report` (luôn bật); nhận cả các lý do native (server quy về lý do chuẩn: scam→misinformation, sensitive/sexual→inappropriate, hate→harassment, self_harm→violence, impersonation→other).
+- **KHÔNG có `POST /api/reports`** (route gộp của Phase 8 không vào bản này). Ai đang gọi đường đó (iOS I7) phải đổi sang hai đường riêng ở trên.
+
+## 5. Báo cáo nâng cao + Thông báo vi phạm (01/10, nhánh sec/user-blocks-slice; chưa merge) — KHÔNG bắt build lại bây giờ
+Mọi thứ dưới đây do server bật; app đọc `GET /api/config` → `p8.reports` và `p8.moderationNotices` (boolean). Chưa cần làm trong bản app hiện tại; ghi để bản kế tiếp dùng.
+- **Trạng thái báo cáo của chính mình:** `GET /api/reports/mine` (cần đăng nhập thật, chỉ khi `p8.reports`) → `{reports:[{id, target_type:'review'|'comment'|'user', target_id, reason, created_at, status}]}`, `status` ∈ `received` (đã nhận) · `in_review` (đang xem xét) · `actioned` (đã xử lý) · `no_violation` (không vi phạm). Không bao giờ có chi tiết quyết định hay người duyệt. Người bị báo không biết ai báo.
+- **Ẩn cho riêng mình:** sau khi báo cáo, app tự ẩn đối tượng đó khỏi màn hình của chính người báo (dùng `target_id` ở danh sách trên để ẩn trên máy khác). Người khác vẫn thấy cho đến khi người duyệt quyết — báo cáo KHÔNG ẩn/gỡ gì cho ai.
+- **Lý do báo cáo (user_reports):** `spam, harassment, inappropriate, copyright, misinformation, violence, other, scam, sensitive, hate, sexual, self_harm, impersonation, child_safety` (thêm `child_safety` — nhóm nghiêm trọng, được ưu tiên). Báo cáo bài/clip (`POST /api/reviews/{id}/report`) vẫn nhận các lý do native và quy về lý do chuẩn.
+- **Thông báo vi phạm** (chỉ khi `p8.moderationNotices`): web có `/profile/notices`. API: `GET /api/moderation/decisions` → `{decisions:[{id, created_at, rule_group, feature, severity, outcome:'warning'|'content_removed'|'restricted'|'banned', restrict_days, content_type, strike_expires_at, appeal:{status:'pending'|'upheld'|'reversed', created_at}|null, can_appeal}]}`; `POST /api/moderation/decisions/{id}/appeal` body `{message}` (10–1000 ký tự) → `200 {ok:true,status:'pending'}`; 404 (không phải quyết định của mình / không có), 409 (đã kháng nghị / quá 30 ngày), 429. Mỗi quyết định kháng nghị MỘT lần trong 30 ngày. Thông báo hệ thống tới người bị xử lý có `data.kind = 'moderation_decision'` và `entityUrl = /profile/notices?d=<id>`; kết quả kháng nghị: `data.kind = 'moderation_appeal_result'`.
+- **Trang Quy tắc cộng đồng:** `https://www.tappyai.com/community-guidelines` (công khai, vi/en). Hộp «Quy tắc cộng đồng» trong app hiện trỏ Điều khoản: nên trỏ trang này ở bản sau.
+- Lỗi vẫn là mã HTTP khác 2xx kèm `{error, message}`.
+
+## 6. Lá chắn lừa đảo đồng bộ 3 nền tảng — HỢP ĐỒNG (02/10, phiên WEB chủ trì)
+Chi tiết đầy đủ và bảng thực tế web: `docs/uat/SCAM-SHIELD-PARITY.md` §2. Tóm tắt: **server KHÔNG đổi**; dùng `POST /api/scam-shield/check {url}` (kiểm link), `POST /api/scam-shield/analyze {text, url?}` (kiểm tin nhắn; chỉ gửi `text`/`url`, không gửi ảnh), QR **giải mã trên máy** rồi gửi MỖI link đã giải mã tới `/check` (loại khác link: hiện loại + cảnh báo, KHÔNG gọi máy chủ), `POST /api/scam-shield/share {url}` cho kết quả link. Route cũ `/api/scam-shield/qr` (nhận ảnh) không dùng nữa. Không có `matchScenario` ở release (Phase 8).
+
+## 7. Lá chắn lừa đảo — bỏ «An toàn», bỏ điểm số, bỏ AI (02/10, nhánh final/scam; server đã đổi, app CHƯA đổi)
+**Quyết định phía server (tương thích ngược, đã làm):** `risk.level` KHÔNG BAO GIỜ trả `SAFE` hoặc `LOW` nữa (cả `/check`, `/analyze`, QR-link, trang chia sẻ); hai mức đó được đổi thành `INCONCLUSIVE`. Lý do: cả Android (`ScamShieldResult.kt`: `RiskLevel.SAFE -> scam_shield_level_safe`, tông xanh) lẫn iOS (`ScamShieldView.swift`: `.safe -> scamShield.level.safe`) tự in chữ «An toàn» khi nhận `SAFE`; còn `INCONCLUSIVE` cả hai app đã vẽ trung tính, không có khiên xanh. Nhờ vậy bản app cũ đang chạy không còn hiện «An toàn». Thêm trường mới (không đổi/xóa trường cũ): `verdict` ∈ `familiar | suspicious | unrecognized` (cả `/check` và `/analyze`), và ở `/analyze` thêm `scenario` (null hoặc `{id, officialNumber, title, summary, warningSigns[], whatToDo[], whatNotToDo[], source{organization,title,url,publishedAt}, hotline, strength}`). `risk.score` và `risk.confidence` vẫn có trong JSON (app cũ giải mã số nguyên bắt buộc) nhưng web không hiện.
+**Tin nhắn không còn gọi AI** (cờ `SCAM_SHIELD_AI_ENABLED`, mặc định TẮT): `analysis.aiStatus` luôn `not_needed`, `analysis.tier` = 0, `quota` = `null`; `advice` và `reasoningSummary` đã dùng lời văn mới. Ảnh chụp tin nhắn (`imageBase64`) bị từ chối `400 screenshot_unavailable` (app v1 vốn không gửi ảnh). Nhận diện tin ngắn dùng thư viện 25 tình huống (khớp cụm từ có trọng số).
+**App cần đổi ở bản kế tiếp (KHÔNG bắt build lại bây giờ):**
+- **Android:** (1) không in số `risk.score` và nhãn «Độ tin cậy …» (`ConfidenceBadge`, `VerdictHead`, chuỗi `scam_shield_v3_score` / `scam_shield_v3_confidence_*`); (2) đọc `verdict` để chọn 1 trong 3 tiêu đề (bản dịch ở `docs/uat/SCAMSHIELD-WORDING-FOR-REVIEW.md` mục 1; link dùng nhóm `scamVerdict.link.*`); (3) không hiện ghi chú AI / «AI hôm nay x/15» (server luôn `not_needed`, `quota` null nên bộ đếm tự ẩn; dòng ghi chú «không dùng lượt AI» có thể còn hiện); (4) thêm khối `scenario` + dòng «TappyAI không thay thế cơ quan chức năng».
+- Cho tới lúc đó: bản cũ vẫn chạy đúng, chỉ còn hiện con số điểm và «Độ tin cậy» (đã không còn chữ «An toàn»).
+
+## 8. Lá chắn lừa đảo — CHỮ CUỐI (vi + en) và LÝ DO cho link/QR (02/10, nhánh final/web-2026-10-02)
+Android và iOS dùng ĐÚNG những câu dưới đây. Chữ này vẫn cần người am hiểu luật Việt Nam xem (docs/uat/SCAMSHIELD-WORDING-FOR-REVIEW.md). Không bao giờ hiện «An toàn/Safe», điểm số hay «Độ tin cậy».
+
+**Tin nhắn — ba trạng thái** (`verdict` trong JSON của /analyze: `familiar` | `suspicious` | `unrecognized`)
+| Trạng thái | Tiêu đề vi | Tiêu đề en | Câu đi kèm vi | Câu đi kèm en |
+|---|---|---|---|---|
+| familiar | Có dấu hiệu lừa đảo quen thuộc | Familiar scam signs found | Nội dung này giống một thủ đoạn lừa đảo đã được cơ quan chức năng cảnh báo. Đừng làm theo yêu cầu trong đó. | This looks like a scam tactic the authorities have warned about. Do not do what it asks. |
+| suspicious | Có một số dấu hiệu đáng ngờ | Some suspicious signs found | Chưa đủ để kết luận, nhưng bạn nên dừng lại và xác minh qua kênh chính thức trước khi làm bất cứ điều gì. | Not enough to be certain, but stop and verify through an official channel before doing anything. |
+| unrecognized | Chưa nhận ra dấu hiệu quen thuộc | No familiar signs recognised | Điều này KHÔNG có nghĩa là an toàn: đừng chuyển tiền, đừng đọc mã OTP, đừng bấm link lạ; hãy xác minh qua kênh chính thức. | This does NOT mean it is safe: do not send money, do not read out any OTP code, do not tap unknown links; verify through an official channel. |
+
+**Link / QR có link — ba trạng thái**
+| Trạng thái | Tiêu đề vi | Tiêu đề en |
+|---|---|---|
+| familiar | Đường link có đặc điểm thường gặp ở link giả mạo | This link has traits that are common in fake links |
+| suspicious | Đường link có một số điểm đáng ngờ | This link has some suspicious traits |
+| unrecognized | Chưa nhận ra dấu hiệu quen thuộc ở đường link này | No familiar signs recognised in this link |
+- familiar, câu đi kèm vi: «Đây là nhận định về đặc điểm của đường link, không phải kết luận về một tổ chức hay tên miền cụ thể. Đừng đăng nhập, đừng nhập OTP hay thông tin thẻ trên trang này.»
+- suspicious: «Chưa đủ để kết luận. Đừng nhập thông tin cá nhân hay mã OTP; hãy tự mở website hoặc ứng dụng chính thức.»
+- unrecognized: cùng câu «Điều này KHÔNG có nghĩa là an toàn…» như trên.
+- Tiêu đề khối lý do: «Lý do cụ thể» / «Specific reasons».
+- QR KHÔNG phải link: hiện loại mã + «TappyAI chưa kiểm tra nội dung này. Đừng làm theo hướng dẫn trong đó nếu bạn không chắc; hãy xác minh qua kênh chính thức.» / «TappyAI has not checked this content. Do not follow instructions in it if you are unsure; verify through an official channel.»
+
+**Dòng cuối mọi kết quả:** «TappyAI không thay thế cơ quan chức năng.» / «TappyAI does not replace the authorities.»
+**Dòng 113 (khi có tình huống khớp):** «Báo ngay cho Công an nơi gần nhất hoặc gọi 113 nếu nghi ngờ bị lừa.» / «Report to the nearest police station or call 113 if you suspect a scam.»
+**Khối tình huống:** «Tình huống tương ứng» / «Matching scenario»; «Kịch bản số {n} trong danh sách của Bộ Công an» / «Scenario #{n} in the Ministry of Public Security list»; «Dấu hiệu nhận biết (theo bài viết)» / «Warning signs (from the article)»; «Thông tin từ nguồn chính thức» / «Information from an official source»; «Xem bài viết gốc» / «Open the original article»; «Phần dấu hiệu và lời khuyên do TappyAI biên soạn từ nguồn chính thức, không phải trích dẫn nguyên văn.» / «The signs and advice were written by TappyAI from the official material, not quoted verbatim.»
+
+**LÝ DO bằng vi/en cho link/QR (mới, CỘNG THÊM vào hợp đồng, không đổi trường cũ).** Mỗi phần tử của `evidence.items[]` ở /check (kể cả kiểm link do QR) có thêm (`urlChecks[]` của /analyze chỉ là bản tóm tắt, KHÔNG có các trường này):
+- `reasonCode` — mã ổn định `<source>.<finding>` (bảng dưới);
+- `reason_vi`, `reason_en` — câu đã điền số liệu; app chọn theo ngôn ngữ (mặc định vi) hoặc tự dịch từ `reasonCode`;
+- `detail`/`summary` vẫn là dòng tiếng Anh kỹ thuật cũ (cho bản app cũ). Bản app cũ vẫn chạy; muốn hết chữ Anh thì app phải ĐỌC `reason_vi/reason_en` → **Android và iOS build lại MỘT lần**.
+Chỉ hiện các mục `severity` là `warning` hoặc `critical` (mục `safe` là «bình thường», không hiện thành lý do). Không có lý do nào kết luận «link/tên miền này là lừa đảo» hay nói «an toàn».
+Lưu ý: engine link HIỆN KHÔNG có tín hiệu «từ khoá đăng nhập/ngân hàng» hay «link rút gọn» nên không có câu cho chúng; chỉ khi engine thêm tín hiệu thì thêm câu vào `src/lib/scam-shield/reasons.ts` (test chặn: finding mới mà thiếu câu thì test đỏ).
+| reasonCode | Tiếng Việt | English |
+|---|---|---|
+| `blocklist.BLOCKLISTED` | Tên miền nằm trong danh sách trang web xấu của Việt Nam mà TappyAI đối chiếu. | The domain appears on a Vietnamese bad-site list that TappyAI checks against. |
+| `blocklist.NOT_LISTED` | Tên miền không nằm trong danh sách trang web xấu mà TappyAI đối chiếu. | The domain is not on the bad-site list TappyAI checks against. |
+| `dns.NO_A_RECORD` | Tên miền chưa trỏ tới máy chủ nào (không có bản ghi địa chỉ). Hay gặp ở tên miền bỏ không hoặc mới đăng ký. | The domain does not point to any server yet (no address record). Common with parked or newly registered domains. |
+| `dns.NO_NS_RECORD` | Tên miền không khai báo máy chủ tên (không có bản ghi NS). | The domain declares no name servers (no NS record). |
+| `dns.RESOLVED` | Tên miền có bản ghi DNS bình thường. | The domain has ordinary DNS records. |
+| `redirect.UNSAFE_REDIRECT` | Đường link chuyển hướng tới một địa chỉ không được phép truy cập (địa chỉ nội bộ). | The link redirects to an address that must not be visited (an internal address). |
+| `redirect.CROSS_DOMAIN_REDIRECT` | Đường link chuyển qua 3 tên miền khác nhau trước khi tới trang cuối. | The link passes through 3 different domains before the final page. |
+| `redirect.EXCESSIVE_REDIRECTS` | Đường link chuyển hướng 4 lần trước khi tới trang cuối. | The link redirects 4 times before the final page. |
+| `redirect.MULTIPLE_REDIRECTS` | Đường link chuyển hướng 4 lần trước khi tới trang cuối. | The link redirects 4 times before the final page. |
+| `redirect.FEW_REDIRECTS` | Đường link chuyển hướng ít lần, trong cùng một tên miền. | The link redirects a few times, within the same domain. |
+| `redirect.NO_REDIRECTS` | Đường link không chuyển hướng. | The link does not redirect. |
+| `ssl.INVALID_CERT` | Chứng chỉ bảo mật (SSL) của trang không hợp lệ hoặc đã hết hạn. | The page’s security certificate (SSL) is invalid or expired. |
+| `ssl.EXPIRING_SOON` | Chứng chỉ bảo mật (SSL) của trang sắp hết hạn (còn 9 ngày). | The page’s security certificate (SSL) expires soon (9 days left). |
+| `ssl.NO_SSL` | Không xác minh được chứng chỉ bảo mật (SSL) của trang. | The page’s security certificate (SSL) could not be verified. |
+| `ssl.VALID` | Chứng chỉ bảo mật (SSL) của trang hợp lệ. | The page’s security certificate (SSL) is valid. |
+| `whois.NEWLY_REGISTERED` | Tên miền mới được đăng ký cách đây 5 ngày. | The domain was registered only 5 days ago. |
+| `whois.RECENTLY_REGISTERED` | Tên miền mới được đăng ký cách đây 5 ngày. | The domain was registered only 5 days ago. |
+| `whois.ESTABLISHED` | Tên miền đã được đăng ký cách đây 5 ngày. | The domain was registered 5 days ago. |
+| `impersonation.BRAND_IMPERSONATION` | Tên miền có chứa tên «Vietcombank» nhưng không nằm trong các tên miền chính thức mà TappyAI có của tổ chức này. | The domain contains the name “Vietcombank” but is not one of the official domains TappyAI has for that organisation. |
+| `impersonation.OFFICIAL_DOMAIN` | Tên miền trùng với tên miền chính thức của «Vietcombank» trong danh bạ TappyAI. | The domain matches an official domain of “Vietcombank” in the TappyAI directory. |
+| `webRisk.CLEAN` | Google Web Risk không ghi nhận cảnh báo cho địa chỉ này. | Google Web Risk has no warning recorded for this address. |
+| `webRisk.SOCIAL_ENGINEERING` | Google Web Risk có cảnh báo về địa chỉ này: trang giả mạo để lấy thông tin (lừa đảo trực tuyến). | Google Web Risk has a warning about this address: a page that imitates another to steal information (phishing). |
+| `webRisk.MALWARE` | Google Web Risk có cảnh báo về địa chỉ này: trang phát tán phần mềm độc hại. | Google Web Risk has a warning about this address: a page that spreads malicious software. |
+| `webRisk.UNWANTED_SOFTWARE` | Google Web Risk có cảnh báo về địa chỉ này: trang cài phần mềm không mong muốn. | Google Web Risk has a warning about this address: a page that installs unwanted software. |
+(Câu có số: số ngày, số lần chuyển hướng, số ngày còn hạn của chứng chỉ, tên tổ chức được điền từ dữ liệu; tên tổ chức đã lọc ký tự đặc biệt.)

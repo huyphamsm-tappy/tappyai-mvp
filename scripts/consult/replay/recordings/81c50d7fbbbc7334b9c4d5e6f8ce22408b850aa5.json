@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Bluetooth True Wireless Huawei Freebuds SE 4 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:26:55.458Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bluetooth True Wireless Huawei Freebuds SE 4 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai Nghe Bluetooth HUAWEI FreeBuds SE 4 ANC",
+    "link": "https://shopee.vn/Tai-Nghe-Bluetooth-HUAWEI-FreeBuds-SE-4-ANC-50-Gi%E1%BB%9D-Ph%C3%A1t-Nh%E1%BA%A1c-Ch%E1%BB%91ng-%E1%BB%92n-Ch%E1%BB%A7-%C4%90%E1%BB%99ng-%C4%90a-Ch%E1%BA%BF-%C4%90%E1%BB%99-ANC-Nh%E1%BA%B9-V%C3%A0-Nh%E1%BB%8F-G%E1%BB%8Dn-i.93963889.41613728920",
+    "snippet": "Mua Tai Nghe Bluetooth HUAWEI FreeBuds SE 4 ANC | 50 Giờ Phát Nhạc | Chống Ồn Chủ Động Đa Chế Độ ANC | Nhẹ Và Nhỏ Gọn giá tốt. Mua hàng qua mạng uy tín, ...",
+    "rating": 4.9,
+    "ratingCount": 1390,
+    "position": 1
+   },
+   {
+    "title": "[LIVESTREAM] Tai Nghe Bluetooth HUAWEI FreeBuds SE ...",
+    "link": "https://shopee.vn/-LIVESTREAM-Tai-Nghe-Bluetooth-HUAWEI-FreeBuds-SE-4-ANC-50-Gi%E1%BB%9D-Ph%C3%A1t-Nh%E1%BA%A1c-Ch%E1%BB%91ng-%E1%BB%92n-Ch%E1%BB%A7-%C4%90%E1%BB%99ng-%C4%90a-Ch%E1%BA%BF-%C4%90%E1%BB%99-ANC-Nh%E1%BA%B9-V%C3%A0-i.93963889.44362693937",
+    "snippet": "Mua [LIVESTREAM] Tai Nghe Bluetooth HUAWEI FreeBuds SE 4 ANC | 50 Giờ Phát Nhạc | Chống Ồn Chủ Động Đa Chế Độ ANC | Nhẹ Và giá tốt.",
+    "rating": 4.7,
+    "ratingCount": 170,
+    "position": 2
+   },
+   {
+    "title": "Huawei freebuds se 4 anc - Giá Tốt, Sale Tháng 10 ...",
+    "link": "https://shopee.vn/list/tai%20nghe/huawei/freebuds%20se%204%20anc",
+    "snippet": "Các sản phẩm tai nghe huawei freebuds se 4 anc chính hãng được bán tại Shopee với giá ưu đãi hấp dẫn. Bạn còn có thể áp dụng các mã giảm giá, mã hoàn xu và ...",
+    "position": 3
+   },
+   {
+    "title": "Freebuds - Giá Tốt, Sale Tháng 10, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/freebuds",
+    "snippet": "[LIVESTREAM] Tai Nghe Bluetooth HUAWEI FreeBuds SE 4 ANC | 50 Giờ Phát Nhạc ... HÀNG TẶNG KHÔNG BÁN - Tai nghe Bluetooth True Wireless Huawei FreeBuds SE 2 ...",
+    "position": 4
+   },
+   {
+    "title": "Tai nghe Bluetooth True Wireless Huawei FreeBuds SE 2 ...",
+    "link": "https://shopee.vn/H%C3%80NG-T%E1%BA%B6NG-KH%C3%94NG-B%C3%81N-Tai-nghe-Bluetooth-True-Wireless-Huawei-FreeBuds-SE-2-Ceramic-White-i.600507109.40252497540?extraParams=%7B%22display_model_id%22%3A295205534831%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "Mua HÀNG TẶNG KHÔNG BÁN - Tai nghe Bluetooth True Wireless Huawei FreeBuds SE 2 Ceramic White giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 398,
+    "position": 5
+   },
+   {
+    "title": "Huawei freebuds se 3 - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/huawei/freebuds%20se%203",
+    "snippet": "Tai Nghe Bluetooth HUAWEI FreeBuds SE 3 | 42 Giờ Phát Nhạc | Nhẹ Và Nhỏ · Tai Nghe Bluetooth HUAWEI FreeBuds SE 4 ANC | 50 Giờ Phát Nhạc | Chống Ồn · [Giá Sinh ...",
+    "position": 6
+   },
+   {
+    "title": "Huawei freebuds 4i - Giá Tốt, Miễn Phí Vận Chuyển, Đủ Loại",
+    "link": "https://shopee.vn/list/tai%20nghe%20bluetooth/huawei/freebuds%204i",
+    "snippet": "Mua online huawei freebuds 4i chất lượng, mới nhất, giảm tới 50% tại Shopee Việt Nam. Khuyến mãi tháng 09. Miễn phí vận chuyển. Mua ngay!",
+    "position": 7
+   },
+   {
+    "title": "[ Hoả Tốc ] Tai Nghe Bluetooth True Wireless HUAWEI ...",
+    "link": "https://shopee.vn/-Ho%E1%BA%A3-T%E1%BB%91c-Tai-Nghe-Bluetooth-True-Wireless-HUAWEI-Freebuds-SE-2-i.424715.24282656593",
+    "snippet": "Mua tối thiểu ₫1tr để được giảm 4%. [ Hoả Tốc ] Tai Nghe Bluetooth True Wireless HUAWEI Freebuds SE 2. outline grey truck icon. Không hỗ trợ. service entrance ...",
+    "rating": 4.9,
+    "ratingCount": 16,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

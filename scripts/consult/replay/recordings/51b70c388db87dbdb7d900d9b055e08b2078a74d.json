@@ -1,0 +1,54 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "MEAT & MEET - SAIGON CENTRE Quận 1 Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:31:12.688Z",
+ "body": {
+  "searchParameters": {
+   "q": "MEAT & MEET - SAIGON CENTRE Quận 1 Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7728968,106.6980283,18.0536z",
+  "places": [
+   {
+    "position": 1,
+    "title": "MEAT & MEET - SAIGON CENTRE",
+    "address": "67, Lê Lợi/B2 saigoncentre Phường, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7728968,
+    "longitude": 106.70060319999999,
+    "rating": 4.1,
+    "ratingCount": 1101,
+    "type": "Nhà hàng Hàn Quốc",
+    "types": [
+     "Nhà hàng Hàn Quốc"
+    ],
+    "phoneNumber": "+84 28 6650 5058",
+    "openingHours": {
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00",
+     "Thứ Ba": "10:00–22:00",
+     "Thứ Tư": "10:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmzv1WQ_X7xW9RfepRaLUNdkHZgWK_MlqtnunTXFYLZ2ol1YxtyTbCoG015R_swGT5j_apxxQGWhqCvuCTN7yPvVIN5-KCUafD5CGrqNLvx51Pac-bIVRSpQ72XrLVkPP19QCTBHyBoTfck",
+    "cid": "7673274807650988252",
+    "fid": "0x31752fa27f0fb805:0x6a7cf2c865fdb0dc",
+    "placeId": "ChIJBbgPf6IvdTER3LD9ZcjyfGo"
+   }
+  ],
+  "credits": 3
+ }
+}

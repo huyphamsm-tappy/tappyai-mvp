@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh-doc.html hộ chiếu hồ sơ lệ phí 2 trực tuyến",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:34:11.540Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh-doc.html hộ chiếu hồ sơ lệ phí 2 trực tuyến",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp tỉnh)",
+    "link": "https://vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh-doc.html?ma_thu_tuc=1.001456",
+    "snippet": "Bước 1: Chuẩn bị hồ sơ theo quy định của pháp luật. Bước 2: Nộp hồ sơ * Người đề nghị cấp hộ chiếu phổ thông không gắn chíp điện tử trực tiếp nộp hồ sơ vào ...",
+    "position": 1
+   },
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp trung ...",
+    "link": "https://vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh-doc.html?ma_thu_tuc=1.001471",
+    "snippet": "Bước 1: Chuẩn bị hồ sơ theo quy định của pháp luật. Bước 2: Nộp hồ sơ * Người đề nghị cấp hộ chiếu phổ thông không gắn chíp điện tử từ lần thứ hai hoặc lần ...",
+    "position": 2
+   },
+   {
+    "title": "Cấp Phiếu Lý lịch tư pháp cho công dân Việt Nam; người ...",
+    "link": "https://vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh-doc.html?ma_thu_tuc=3.000333",
+    "snippet": "Bước 1: Người có yêu cầu cấp Phiếu Lý lịch tư pháp (sau đây gọi tắt là Người yêu cầu) đăng nhập bằng tài khoản định danh mức độ 2 trên cổng dịch vụ công ...",
+    "position": 3
+   },
+   {
+    "title": "Đăng ký xe lần đầu trực tuyến toàn trình đối với xe sản xuất ...",
+    "link": "https://vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh-doc.html?ma_thu_tuc=1.012575",
+    "snippet": "Bước 1: Chủ xe đăng nhập bằng tài khoản định danh mức độ 2 trên cổng dịch vụ công hoặc Ứng dụng định danh quốc gia và kê khai chính xác, đầy đủ, ...",
+    "position": 4
+   },
+   {
+    "title": "Đăng ký, cấp biển số xe lần đầu (thực hiện tại cấp huyện)",
+    "link": "https://vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh-doc.html?ma_thu_tuc=1.000781",
+    "snippet": "Trực tiếp, 02 Ngày, Lệ phí: ĐồngXem chi tiết; + Trực tiếp tại trụ sở Công an cấp huyện. Thời gian: Từ thứ 2 đến thứ 7 (theo quy định của Thủ tướng Chính phủ).",
+    "position": 5
+   },
+   {
+    "title": "Đăng ký thường trú - Cổng Dịch vụ công Quốc gia",
+    "link": "https://vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh-doc.html?ma_thu_tuc=1.004222",
+    "snippet": "Thời gian tiếp nhận hồ sơ: Giờ hành chính các ngày làm việc từ thứ 2 đến thứ 6 và sáng thứ 7 hàng tuần (trừ các ngày nghỉ lễ, tết theo quy định của pháp luật).",
+    "position": 6
+   },
+   {
+    "title": "Xóa đăng ký thường trú - Cổng Dịch vụ công Quốc gia",
+    "link": "https://vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh-doc.html?ma_thu_tuc=1.003197",
+    "snippet": "Thời gian tiếp nhận hồ sơ: Giờ hành chính các ngày làm việc từ thứ 2 đến thứ 6 và sáng thứ 7 hàng tuần (trừ các ngày nghỉ lễ, tết theo quy định của pháp luật).",
+    "position": 7
+   },
+   {
+    "title": "Đăng ký tạm trú - Cổng Dịch vụ công Quốc gia",
+    "link": "https://vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh-doc.html?ma_thu_tuc=1.004194",
+    "snippet": "Thời gian tiếp nhận hồ sơ: Giờ hành chính các ngày làm việc từ thứ 2 đến thứ 6 và sáng thứ 7 hàng tuần (trừ các ngày nghỉ lễ, tết theo quy định của pháp luật).",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

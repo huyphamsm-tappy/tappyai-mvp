@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:chotot.com mua MacBook Air M1 cũ 9 triệu 2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:50:15.540Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:chotot.com mua MacBook Air M1 cũ 9 triệu 2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "143 Apple Macbook Air M1 cũ giá 5 - 10 triệu tốt Toàn quốc",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-macbook-air-m1-gia-tu-5-trieu-den-10-trieu-sfk84zHjxuXIsn",
+    "snippet": "143 Apple Macbook Air M1 cũ giá 5 - 10 triệu tốt Toàn quốc ; MacBook Air 13\" M1 8Gb/256Gb 98%-Góp 0đ-Thu Mua · 8.800.000 đ · 4.9. 1052 đã bán ; [CẦN BÁN] MACBOOK ...",
+    "position": 1
+   },
+   {
+    "title": "Mua bán MacBook Air M1 cũ Cần Thơ giá tốt 08/10/2026",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-macbook-air-m1-can-tho-sdpb3pm141",
+    "snippet": "9 MacBook Air M1 cũ Cần Thơ giá tốt, uy tín ; MacBook Air M1- Chip M1- Ram 8-SSD 256gb-13.3 inch · 10.900.000 đ. Giá tốtKèm phụ kiệnCó đổi trả ; Apple Macbook Air ...",
+    "position": 2
+   },
+   {
+    "title": "Giá MacBook Air 07/2026 - Thiết kế mỏng nhẹ, Pin cực trâu",
+    "link": "https://www.chotot.com/laptop-macbook-air-sd6a0e",
+    "snippet": "Các dòng Air dùng chip Intel đời cũ có giá bán vô cùng dễ tiếp cận, chỉ từ 3 - 9 triệu đồng. Trong khi đó, các dòng máy dùng chip Apple Silicon (M1, M2, M3 ...",
+    "position": 3
+   },
+   {
+    "title": "5.753 Macbook cũ like new chính hãng giá rẻ 08/10/2026",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-sdpb3",
+    "snippet": "5.753 Macbook cũ like new chính hãng, máy đẹp, uy tín, giá cực rẻ cập nhật 08/10/2026. Dễ dàng tìm mua Macbook cũ tại Chợ Tốt.",
+    "position": 4
+   },
+   {
+    "title": "Mua bán MacBook Air cũ tại Hà Nội giá rẻ, máy like new 10 ...",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-macbook-air-ha-noi-sdpb3pm5",
+    "snippet": "Macbook Air cũ hiện đang có 240 tin đăng được rao bán tại Hà Nội trên Chợ Tốt cập nhật ngày 07/10/2026. Giá laptop Macbook Air cũ tại Hà Nội khoảng 5,9 triệu ...",
+    "position": 5
+   },
+   {
+    "title": "0 Apple Macbook Air M1 cũ giá trên 25 triệu tốt Quận Sơn Trà",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-macbook-air-m1-gia-tren-25-trieu-quan-son-tra-da-nang-sfRCcP811qJD8o",
+    "snippet": "0 Apple Macbook Air M1 cũ giá trên 25 triệu tốt Quận Sơn Trà ; PHÒNG GÁC CAO Ở 4-5 BẠN NGAY LÊ VĂN VIỆT - KHU CNC - MAN THIỆN QUẬN 9. Nội thất đầy đủ. 3,9 triệu/ ...",
+    "position": 6
+   },
+   {
+    "title": "0 Apple Macbook Air M1 cũ giá trên 25 triệu tốt Bắc Kạn",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-macbook-air-m1-gia-tren-25-trieu-bac-kan-sfJ2QJssUDveA2",
+    "snippet": "0 Laptop Apple Macbook Air M1 cũ giá trên 25 triệu Bắc Kạn bền đẹp. Đa dạng tin đăng bán, tìm mua Apple Macbook Air M1 cũ giá trên 25 triệu ở Chợ Tốt.",
+    "position": 7
+   },
+   {
+    "title": "Giá MacBook Air M1 10/2026 - Giá quốc dân, Nhỏ gọn tiện ...",
+    "link": "https://www.chotot.com/laptop-macbook-air-m1-sd6a0e",
+    "snippet": "Cụ thể, giá máy cũ/like new bản 8GB/256GB dao động khoảng 10,35 triệu - 12,65 triệu, còn bản 16GB/512GB có giá khoảng 10,35 triệu - 12,65 triệu. Đây được xem là ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

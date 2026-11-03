@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"The Workshop Coffee\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:16:26.799Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"The Workshop Coffee\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "The Workshop Coffee",
+    "link": "https://www.tiktok.com/discover/the-workshop-coffee",
+    "snippet": "The workshop coffee which has been honoured with a place on the 'Asia's 50 Best Coffee Shops' list, is an absolute must-visit destination",
+    "date": "14 thg 9, 2026",
+    "position": 1
+   },
+   {
+    "title": "The Workshop Coffee Roasters: Review sau nhiều năm",
+    "link": "https://www.tiktok.com/@hai.meca/photo/7661536948552535304",
+    "snippet": "The Workshop Coffee Roasters: Review sau nhiều năm. Đánh giá The Workshop Coffee Roasters - một trong những nhà rang được nhắc đến nhiều trong cộng đồng ...",
+    "position": 2
+   },
+   {
+    "title": "Review The Workshop Coffee Quận 1: Quán Cafe Nổi ...",
+    "link": "https://www.tiktok.com/@chamdidau/video/7345025504321244423",
+    "snippet": "The Workshop Coffee: Điểm Đến Lý Tưởng Tại Quận 1 Sài Gòn Nếu bạn đang tìm kiếm một quán cà phê nổi tiếng tại Sài Gòn, The Workshop Coffee ...",
+    "position": 3
+   },
+   {
+    "title": "Exploring The Workshop Coffee Shop in Wilmington, NC",
+    "link": "https://www.tiktok.com/@sidneycorbin/video/7506351344945761582",
+    "snippet": "2162 Likes, TikTok video from Sidney Corbin (@sidneycorbin): “Discover the charm of The Workshop coffee shop in Wilmington, NC, with stunning ocean views.",
+    "position": 4
+   },
+   {
+    "title": "Asia's 50 Best Coffee Shop in Ho Chi Minh City",
+    "link": "https://www.tiktok.com/@bill741227/photo/7679371459915156744",
+    "snippet": "Discover The Workshop Coffee, a must-visit destination in Ho Chi Minh City recognized on Asia's 50 Best Coffee Shops list. Enjoy outstanding ...",
+    "position": 5
+   },
+   {
+    "title": "The Workshop Coffee 27 Ngô Đức Kế Quận 1 – Saigon Cafe",
+    "link": "https://www.tiktok.com/@davisitonguyen/video/7517147745224789278",
+    "snippet": "The Workshop Coffee offers a relaxed setting for coffee lovers who enjoy Vietnamese coffee, lattes, and other cafe drinks. The space is often ...",
+    "position": 6
+   },
+   {
+    "title": "The French Workshop Coffee",
+    "link": "https://www.tiktok.com/discover/the-french-workshop-coffee",
+    "snippet": "... The Workshop Coffee, Pocket Coffee France, Chaize Coffee Paris, Temu French Press Coffee, Ordering Coffee in French.",
+    "position": 7
+   },
+   {
+    "title": "Discovering Workshop Coffee at Hotel Café Royal",
+    "link": "https://www.tiktok.com/@londoncoffeeshops/video/7621481150736944404",
+    "snippet": "If you're a coffee lover, the Workshop Coffee at Hotel Café Royal in Belgravia is a hidden gem you might not want to overlook.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Asanoha Modern Japanese Hotpot yên tĩnh độ ồn không gian Quận 1, TP.HCM gia menu thuc don",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:30:35.805Z",
+ "body": {
+  "searchParameters": {
+   "q": "Asanoha Modern Japanese Hotpot yên tĩnh độ ồn không gian Quận 1, TP.HCM gia menu thuc don",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Asanoha Modern Japanese Hotpot (@asanohavn)",
+    "link": "https://www.instagram.com/asanohavn/",
+    "snippet": "MỘT TUẦN CUỐI CÙNG ĐỂ HƯỞNG TRỌN ƯU ĐÃI 20% Gửi đến 'ngoại lệ của ASANOHA' món quà giảm giá chất lượng cho mọi tiệc lẩu, nhanh tay đặt bàn rồi mình hẹn ...",
+    "position": 1
+   },
+   {
+    "title": "Asanoha - Modern Japanese Hotpot | Ho Chi Minh City",
+    "link": "https://www.facebook.com/asanohavn/?locale=vi_VN",
+    "snippet": "Ra mắt thực khách ngay tại trung tâm Quận 1, ASANOHA đem đến không gian mang đậm văn hoá Nhật Bản tạo nên một nơi thưởng lẩu êm đềm như 'bữa ăn sau vườn nhà' ...",
+    "position": 2
+   },
+   {
+    "title": "Asanoha - Modern Japanese Hotpot - Saigon Centre",
+    "link": "https://pasgo.vn/nha-hang/asanoha-modern-japanese-hotpot-saigon-centre-4550",
+    "snippet": "Asanoha - Modern Japanese Hotpot - Saigon Centre ; Chỉ đường. Lầu 5, Saigon Centre, 67 Lê Lợi, P. Bến Nghé, Q. 1. (Nhấn vào ảnh bản đồ để xem chỉ đường, nhấn vào ...",
+    "position": 3
+   },
+   {
+    "title": "Asanoha - Modern Japanese Hotpot, Thành phố Hồ Chí Minh",
+    "link": "https://www.tripadvisor.com.vn/Restaurant_Review-g293925-d23416012-Reviews-Asanoha_Modern_Japanese_Hotpot-Ho_Chi_Minh_City.html",
+    "snippet": "Món ăn tuoi ngon, nhân viên nhiệt tình vui vẻ, thịt bò mềm và béo nhẹ, không gian yên tĩnh sạch sẽ. Mình sẽ giới thiệu bạn bè và người thân. Đọc thêm.",
+    "rating": 4.9,
+    "ratingCount": 52,
+    "position": 4
+   },
+   {
+    "title": "🍲 Buổi trưa mà đi ăn lẩu thì sao ấy nhỉ? Không sao cả vì ...",
+    "link": "https://www.facebook.com/asanohavn/videos/set-lunch/1460393691059650/",
+    "snippet": "✨ Ghé Akataiyo để trải nghiệm Set Lunch chuẩn vị Nhật mỗi ngày. Hotline: 0906791938 ➖➖ ➖➖ ➖➖ ➖➖ ➖➖ ➖➖ ➖➖ Akataiyo Sushi có 6 chi ...",
+    "position": 5
+   },
+   {
+    "title": "ƯU ĐÃI CÓ 1-0-2 | GIẢM MẠNH 15% TOÀN MENU 🔥🔥 Cơ ...",
+    "link": "https://www.facebook.com/asanohavn/posts/%C6%B0u-%C4%91%C3%A3i-c%C3%B3-1-0-2-gi%E1%BA%A3m-m%E1%BA%A1nh-15-to%C3%A0n-menu-c%C6%A1-h%E1%BB%99i-%C4%91%E1%BA%B7c-bi%E1%BB%87t-%C4%91%E1%BB%83-nh%E1%BA%ADn-chu%E1%BB%97i-%C6%B0u-%C4%91%C3%A3i-h%E1%BA%A5p-/868904298593333/",
+    "snippet": "Để đặt bàn thuận lợi và nhanh chóng hơn, Asanoha gửi link đặt bàn qua Website: https://asanoha.com.vn/reservation/ Nhân viên nhà hàng sẽ liên hệ ...",
+    "position": 6
+   },
+   {
+    "title": "Asanoha – Modern Japanese Hotpot ở TP. HCM",
+    "link": "https://www.foody.vn/ho-chi-minh/asanoha-modern-japanese-hotpot",
+    "snippet": "Địa chỉ: Lầu 5, Saigon Centre, 67 Lê Lợi, P. Bến Nghé, Quận 1, TP. HCM - Điện thoại: Đang cập nhật. ... Ngon quá! Không gian ổn, phục vụ tốt, món ăn tươi ...",
+    "position": 7
+   },
+   {
+    "title": "Đặt Bàn - Asanoha",
+    "link": "https://asanoha.com.vn/reservation/",
+    "snippet": "Địa chỉ: 180 Pasteur, Phường Sài Gòn, Thành phố Hồ Chí Minh, Việt Nam. Điện thoại: +8428-3933-9999 | Liên hệ: asanoha@asanoha.com.vn. ©2026 TAKAHIRO ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

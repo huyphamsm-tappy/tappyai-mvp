@@ -120,7 +120,7 @@ Lượt kế hoạch lấy trước khách sạn + quán ăn + điểm tham quan
 ## Backlog ghi thêm 01/10 (khối hoàn chỉnh của Huy, mục E5) — chỉ ghi, chưa làm
 
 - **PL-MOVIES** — danh sách phim đang chiếu thật. Hiện: câu trả lời trung thực + 5 link trang phim đang chiếu chính thức (CGV, Galaxy, Lotte, BHD, Beta), không nêu tên phim. Cách làm: nguồn có cấu trúc (API/feed của cụm rạp hoặc TMDB «now playing» cho VN) + code kiểm; chi phí đo thật khi chọn nguồn.
-- **PL-FLIGHT-PRICES** — danh sách chuyến bay kèm giá. Hiện: link điền sẵn chặng + ngày + số người (Trip.com, Traveloka qua ACCESSTRADE), không có giá. Nguồn khả dĩ: Travelpayouts (đã có trong code, giá theo người, cache), Amadeus/Skyscanner partner API; cần chọn nguồn và giấy phép hiển thị giá.
+- **PL-FLIGHT-PRICES** — danh sách chuyến bay kèm giá. Hiện: link điền sẵn chặng + ngày + số người (Trip.com, Traveloka qua ACCESSTRADE), không có giá. Chưa có nguồn được duyệt (nguồn cũ đã gỡ khỏi kiến trúc 04/10/2026); muốn có giá phải chọn một nguồn đối tác mới và giấy phép hiển thị giá — quyết định của owner.
 - **PL-PERMISSIONS-DEFAULT** — quyền Mic/GPS/thông báo «mặc định bật»: hệ điều hành bắt buộc hộp hỏi, không ép được; web đã có công tắc Micrô mặc định BẬT (Cài đặt). Phần native (công tắc trong app Android/iOS, xin quyền đúng lúc kèm lý do) chưa làm.
 - **PL-VOICE-NATIVE** — màn Mic mới (mockup `D:\TappyAI-backups\designoiceoice-mockup.png.png`: mascot vẫy tay, «Tôi đang lắng nghe...», nút tròn giữa có vòng sóng tím, Hủy/Gửi, khung chữ dưới với câu mẫu mờ bị chữ nhận diện thay thế). Hành vi tắt mic: tắt hẳn khi Hủy/Gửi/Quay lại/đổi màn/xuống nền/lỗi/60 giây không có chữ; câu mẫu KHÔNG BAO GIỜ được gửi; Gửi mờ khi chữ rỗng. Cần làm trên Android + iOS (web đã làm).
 - **PL-FCM-TOKEN** — token FCM bị ghi đè giữa Android và iOS (cùng người dùng hai máy): khoá bảng token theo `(user_id, provider, token)` hoặc thêm cột `platform`. Server chỉ gửi FCM **data-only** cho Android; iOS cần khối APNs (`apns` payload + `aps.alert`).
@@ -131,4 +131,24 @@ Lượt kế hoạch lấy trước khách sạn + quán ăn + điểm tham quan
 - **PL-TOUR-KLOOK (B)** — «tour khám phá Hội An» đang ra khách sạn. Cần luồng tour/hoạt động: nhận ý định → link tìm kiếm Klook (đã duyệt ACCESSTRADE) đúng từ khoá. URL tìm kiếm Klook chưa kiểm được (Cloudflare 403 với công cụ) — cần mở bằng trình duyệt thật để chốt cú pháp.
 - **PL-XE-KHACH** — «vé xe khách» không có link: Vexere chỉ có trang chủ (depth 0). Cần dò cú pháp tìm tuyến của Vexere/Futa trước khi hiện link.
 - **Gác lại từ khối A/B/C của 01/10 và lý do:** A5, A6 (cần native); tour/Klook, xe khách (chưa kiểm được cú pháp link); thẻ «ăn phở Bắc» vẫn tiêu đề trung tính (đổi thành «Hôm nay ăn gì nhỉ?» cần id báo mảng trong hợp đồng thẻ → đụng cả hai app).
+
+- **PL-COPY-PREMIUM (sau release, KHÔNG làm bây giờ)** — chữ «Premium», «không giới hạn», «Pro» mâu thuẫn khi bật gói trả phí mới (30 câu/ngày): `v3.premium.*` (khung thanh bên, hiện cho mọi người), `v3.top.plan`, `v3.profile.premium`, `v3.history.premiumTitle`, `profile.upgradePro`, `sub.*` cũ, iOS SubscriptionView, trang admin userAnalytics. Danh sách và chữ đề xuất: `docs/payments/COPY-CONFLICTS-FOR-WEB.md` trên nhánh `p8/subscriptions` (chỉ đọc). Riêng `publicResult.softGate` (sai ngay ở bản release) đã sửa 02/10.
+
+## Thêm 02/10 (Huy ghi nhận, KHÔNG làm trước release)
+- Cắt phút CI (Regression Gate chạy hai lần mỗi push)
+- App Links: `assetlinks.json`
+- Nút Chặn / Báo cáo trên web (hiện chỉ có API + app)
+- Lịch sử chat giữ ảnh và thẻ; tiêu đề chat
+- Tour sang Klook; link xe khách
+- Nén clip trước khi tải lên
+- FCM cho iOS
+- Email tóm tắt hàng chờ kiểm duyệt
+- Chuyển `docs/audit` sang GCS
+- Scam Shield: khớp tình huống tĩnh (`matchScenario`) + 89 tình huống Phase 8; đồng bộ thư viện qua server; đồng ý trước khi gửi AI trên web
+- Chữ pháp lý: nhờ người am hiểu luật Việt Nam xem lại (docs/uat/LEGAL-TEXT-REVIEW-2026-10-02.md)
+
+## Ảnh thẻ hỏi / thẻ kế hoạch (02/10, Huy duyệt; nhánh `assets/ask-card-images`)
+- **Ảnh riêng cho 3 ô còn thiếu** (bowling, món Nhật/Hàn, âm nhạc) và **tách 3 ô mua sắm** (trung tâm / chợ / đồ công nghệ đang dùng chung ảnh trung tâm thương mại vì cùng khoá `diem-mua-sam`): cần ảnh riêng + sửa bảng gán ô trên CẢ 3 nền tảng (`askCardModel.ts`, Android `AskCardModel.kt`, iOS `AskCardModel.swift`) + build lại Android và iOS.
+- **Hero (16:9) để sau:** cần quyết (1) server chọn khoá hero thế nào (hiện không nơi nào ghi `hero_image`), (2) đổi tiền tố khoá `entertainment-`→`giai-tri-`, `shopping-`→`mua-sam-` (và thống nhất `-01` hay `-1`), (3) thẻ kế hoạch trong chat web vẽ hero (hiện chưa), (4) ảnh còn thiếu: giải trí 4, mua sắm 10, spa 7, ăn uống 5, du lịch 1 (và bản trùng giải trí số 0/2). Ảnh nguồn ở `D:\THIETKE PLAN`, bản đã xem: chưa đổi tên theo khoá.
+- **Android UAT không tải được ảnh từ uat.tappyai.com**: Coil dùng máy khách HTTP riêng, không có `DeploymentProtectionInterceptor` (chỉ máy khách API có); sửa = cho Coil dùng cùng máy khách (build lại UAT). iOS không có bypass. Bản release trỏ www.tappyai.com nên không bị.
 

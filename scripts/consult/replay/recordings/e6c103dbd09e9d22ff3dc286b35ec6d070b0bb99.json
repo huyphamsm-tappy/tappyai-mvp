@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Bluetooth chụp Tai Sony WH-CH720N\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:58:40.555Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Bluetooth chụp Tai Sony WH-CH720N\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe Bluetooth chụp tai Sony WH-CH720N",
+    "link": "https://cellphones.com.vn/tai-nghe-chup-tai-sony-wh-ch720n.html",
+    "snippet": "Tai nghe Bluetooth chụp tai Sony WH-CH720N · Giảm đến 1 triệu đồng cho đơn hàng từ 10 triệu đồng · Giảm ngay 600K cho đơn hàng từ 4 triệu đồng · Giảm đến 350.000 ...",
+    "rating": 4.9,
+    "ratingCount": 9,
+    "position": 1
+   },
+   {
+    "title": "Tai nghe Bluetooth chụp tai Sony WH-CH720N - Cũ | Giá rẻ",
+    "link": "https://cellphones.com.vn/tai-nghe-chup-tai-sony-wh-ch720n-cu.html",
+    "snippet": "Tai nghe Bluetooth chụp tai Sony WH-CH720N - Cũ · Phụ kiện cũ, không bao gồm hộp · Bảo hành 1 đổi 1 trong 30 ngày. Xem chi tiết · Giá sản phẩm đã bao gồm thuế VAT.",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe Sony bluetooth chống ồn, chính hãng [GIẢM 47%]",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe/sony.html",
+    "snippet": "... Bluetooth chụp tai Sony WH-CH720N. Trả góp 0%. : 2.080.000đ. 2.990.000đ. Giảm 30 ... Tai nghe Bluetooth chụp tai Sony WH ...",
+    "position": 3
+   },
+   {
+    "title": "So sánh Tai nghe Bluetooth chụp tai Sony WH-CH720N và ...",
+    "link": "https://cellphones.com.vn/so-sanh/tai-nghe-chup-tai-sony-wh-ch720n-vs-tai-nghe-chup-tai-sony-wh-1000xm5",
+    "snippet": "So Sánh Tai nghe Bluetooth chụp tai Sony WH-CH720N và Tai nghe Bluetooth chụp tai Sony WH-1000XM5 ; Trọng lượng. 192g. 250 g ; Công nghệ âm thanh. Bộ xử lý tích ...",
+    "position": 4
+   },
+   {
+    "title": "So sánh Tai nghe Bluetooth chụp tai Sony WH-CH720N và ...",
+    "link": "https://cellphones.com.vn/so-sanh/tai-nghe-chup-tai-sony-wh-ch720n-vs-tai-nghe-khong-day-havit-tw-967",
+    "snippet": "So Sánh Tai nghe Bluetooth chụp tai Sony WH-CH720N và Tai nghe Bluetooth True Wireless Havit TW 967 ; Kích thước. Dài 26 cm - Rộng 20.8 cm - Cao 5.5 cm ; Trọng ...",
+    "position": 5
+   },
+   {
+    "title": "So sánh Tai nghe Bluetooth truyền dẫn xương Shokz Openrun ...",
+    "link": "https://cellphones.com.vn/so-sanh/tai-nghe-truyen-dan-xuong-shokz-openrun-vs-tai-nghe-chup-tai-sony-wh-ch720n",
+    "snippet": "So sánh chi tiết về giá, cấu hình, ưu nhược điểm giữa: Tai nghe Bluetooth truyền dẫn xương Shokz Openrun và Tai nghe Bluetooth chụp tai Sony WH-CH720N.",
+    "position": 6
+   },
+   {
+    "title": "So sánh Tai nghe chụp tai WH-XB910N và ...",
+    "link": "https://cellphones.com.vn/so-sanh/tai-nghe-chup-tai-sony-wh-xb910n-vs-tai-nghe-chup-tai-sony-wh-ch720n",
+    "snippet": "So Sánh Tai nghe chụp tai WH-XB910N và Tai nghe Bluetooth chụp tai Sony WH-CH720N ; Công nghệ âm thanh. Extra Bass Chống ồn. Bộ xử lý tích hợp V1 codec SBC Chống ...",
+    "position": 7
+   },
+   {
+    "title": "So sánh Tai nghe Bluetooth Sony MDR-XB950B1 và Tai ...",
+    "link": "https://cellphones.com.vn/so-sanh/tai-nghe-bluetooth-sony-mdr-xb950b1-vs-tai-nghe-chup-tai-sony-wh-ch720n",
+    "snippet": "So sánh chi tiết về giá, cấu hình, ưu nhược điểm giữa: Tai nghe Bluetooth Sony MDR-XB950B1 và Tai nghe Bluetooth chụp tai Sony WH-CH720N.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

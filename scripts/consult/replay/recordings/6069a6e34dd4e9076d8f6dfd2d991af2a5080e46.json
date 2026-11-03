@@ -1,0 +1,84 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Bluetooth TWS Xiaomi Redmi Buds 6 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:03:38.059Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bluetooth TWS Xiaomi Redmi Buds 6 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Redmi buds 6 - Giá Tốt, Sale Tháng 10, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/tai%20nghe/xiaomi/redmi%20buds%206",
+    "snippet": "Tai Nghe Bluetooth Không Dây Cao Cấp,Chống Ồn Chủ Động,Âm Thanh HiFi Sống Động Tự Động Kết Nối Cảm Ứng Mượt. 329.000₫. 499.000₫.",
+    "position": 1
+   },
+   {
+    "title": "Tai nghe Redmi Buds 6 Active TWS Bluetooth 5.4 30H Tuổi ...",
+    "link": "https://shopee.vn/Tai-nghe-Redmi-Buds-6-Active-TWS-Bluetooth-5.4-30H-Tu%E1%BB%95i-th%E1%BB%8D-pin-d%C3%A0i-5-ch%E1%BA%BF-%C4%91%E1%BB%99-%C4%91i%E1%BB%81u-ch%E1%BB%89nh-Tai-nghe-kh%C3%B4n-i.1126469477.28270364489",
+    "snippet": "Mua Tai nghe Redmi Buds 6 Active TWS Bluetooth 5.4 30H Tuổi thọ pin dài 5 chế độ điều chỉnh Tai nghe khôn giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.8,
+    "ratingCount": 108,
+    "position": 2
+   },
+   {
+    "title": "Tai nghe Bluetooth không dây Xiaomi Redmi Buds 6",
+    "link": "https://shopee.vn/Tai-nghe-Bluetooth-kh%C3%B4ng-d%C3%A2y-Xiaomi-Redmi-Buds-6-i.1396654883.27472741998",
+    "snippet": "Tai nghe Bluetooth không dây Xiaomi Redmi Buds 6. outline grey truck icon. Không hỗ trợ. service entrance icon. Chính hãng 100% • Miễn phí vận chuyển.",
+    "rating": 4.9,
+    "ratingCount": 241,
+    "position": 3
+   },
+   {
+    "title": "Xiaomi Tai nghe Bluetooth Redmi Buds 6 Play |Thời lượng ...",
+    "link": "https://shopee.vn/Xiaomi-Tai-nghe-Bluetooth-Redmi-Buds-6-Play-Th%E1%BB%9Di-l%C6%B0%E1%BB%A3ng-pin-l%C3%AAn-t%E1%BB%9Bi-36-gi%E1%BB%9D-C%E1%BB%A7-loa-%C4%91%E1%BB%99ng-10-mm-mang-%C4%91%E1%BA%BFn-%C3%A2m-thanh-m%E1%BA%A1nh-m%E1%BA%BD-i.1524999479.44401555507",
+    "snippet": "Mua Xiaomi Tai nghe Bluetooth Redmi Buds 6 Play |Thời lượng pin lên tới 36 giờ | Củ loa động 10 mm mang đến âm thanh mạnh mẽ giá tốt.",
+    "rating": 4.9,
+    "ratingCount": 1251,
+    "position": 4
+   },
+   {
+    "title": "Tai nghe Bluetooth TWS Xiaomi Redmi Buds 6 Lite ...",
+    "link": "https://shopee.vn/Tai-nghe-Bluetooth-TWS-Xiaomi-Redmi-Buds-6-Lite-Buds-6-Active-b%E1%BA%A3o-h%C3%A0nh-12-th%C3%A1ng(phukien_zin)-i.134610344.5001642634",
+    "snippet": "Mua Tai nghe Bluetooth TWS Xiaomi Redmi Buds 6 Lite / Buds 6 Active, bảo hành 12 tháng(phukien_zin) giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.6,
+    "ratingCount": 23,
+    "position": 5
+   },
+   {
+    "title": "Tai nghe Bluetooth TWS XIAOMI REDMI Buds 6",
+    "link": "https://shopee.vn/Tai-nghe-Bluetooth-TWS-XIAOMI-REDMI-Buds-6-H%C3%A0ng-ch%C3%ADnh-h%C3%A3ng-B%E1%BA%A3o-h%C3%A0nh-12-th%C3%A1ng-i.1368566009.29326673040",
+    "snippet": "Mua Tai nghe Bluetooth TWS XIAOMI REDMI Buds 6 - Hàng chính hãng - Bảo hành 12 tháng giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "rating": 4.2,
+    "ratingCount": 5,
+    "position": 6
+   },
+   {
+    "title": "Tai nghe Bluetooth TWS Xiaomi Redmi Buds 8 Active",
+    "link": "https://shopee.vn/Tai-nghe-Bluetooth-TWS-Xiaomi-Redmi-Buds-8-Active-Kh%E1%BB%AD-%E1%BB%92n-AI-S%E1%BA%A1c-Nhanh-Pin-37H-B%E1%BA%A3o-H%C3%A0nh-12-Th%C3%A1ng-i.1167833879.25684926802",
+    "snippet": "Mua Tai nghe Bluetooth TWS Xiaomi Redmi Buds 8 Active | Khử Ồn AI | Sạc Nhanh | Pin 37H - Bảo Hành 12 Tháng giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 97,
+    "position": 7
+   },
+   {
+    "title": "Redmi buds 3 lite - Giá Tốt, Miễn Phí Vận Chuyển, Đủ Loại",
+    "link": "https://shopee.vn/list/tai%20nghe/xiaomi/redmi%20buds%203%20lite",
+    "snippet": "Các sản phẩm tai nghe xiaomi redmi buds 3 lite chính hãng được bán tại Shopee với giá ưu đãi hấp dẫn. Bạn còn có thể áp dụng các mã giảm giá, mã hoàn xu và ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

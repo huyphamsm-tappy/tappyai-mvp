@@ -1,0 +1,38 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:xaydungchinhsach.chinhphu.vn 1/4/2026 lệ phí cấp hộ chiếu 200. Thông tư",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:14:12.836Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:xaydungchinhsach.chinhphu.vn 1/4/2026 lệ phí cấp hộ chiếu 200. Thông tư",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "QUY ĐỊNH SỐ 21-QĐ/TW về CÔNG TÁC KIỂM TRA, GIÁM ...",
+    "link": "https://xaydungchinhsach.chinhphu.vn/quy-dinh-so-21-qd-tw-ve-cong-tac-kiem-tra-giam-sat-ky-luat-cua-dang-119260414082549936.htm",
+    "snippet": "Toàn văn Quy định số 21-QĐ/TW của Ban Chấp hành Trung ương Đảng về công tác kiểm tra, giám sát và kỷ luật của Đảng.",
+    "date": "15 thg 5, 2026",
+    "position": 1
+   },
+   {
+    "title": "Chi tiết giá bán lẻ điện sinh hoạt, giá bán buôn điện từ 10/5",
+    "link": "https://xaydungchinhsach.chinhphu.vn/chi-tiet-gia-ban-le-dien-sinh-hoat-gia-ban-buon-dien-tu-10-5-11925051008285612.htm",
+    "snippet": "Đối với các hộ dân sử dụng điện sinh hoạt, mỗi hộ trong 1 tháng sẽ trả thêm từ 4.550 đồng đến hơn 65.050 đồng, tùy theo mức sử dụng. Cụ thể, các ...",
+    "date": "17 thg 5, 2025",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

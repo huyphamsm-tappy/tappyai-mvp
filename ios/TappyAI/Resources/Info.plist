@@ -2,6 +2,18 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>$(PRODUCT_NAME)</string>
+	<key>CFBundlePackageType</key>
+	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleDisplayName</key>
 	<string>TappyAI</string>
 	<key>CFBundleShortVersionString</key>
@@ -25,7 +37,11 @@
 
 	<!-- Launch + orientation -->
 	<key>UILaunchScreen</key>
-	<dict/>
+	<dict>
+		<!-- Dark by default (like the web): no white flash before the first dark screen. -->
+		<key>UIColorName</key>
+		<string>LaunchBackground</string>
+	</dict>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -40,15 +56,19 @@
 
 	<!-- Permission usage strings (foundation placeholders; wording finalized with feature work) -->
 	<key>NSCameraUsageDescription</key>
-	<string>TappyAI uses the camera to record reviews and scan menus/receipts.</string>
+	<string>TappyAI uses the camera to take photos and record videos for your posts, and to scan menus, receipts and QR codes. Photos are only used when you post or scan.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>TappyAI uses the microphone to record video reviews and original sounds.</string>
+	<string>TappyAI uses the microphone for voice input in chat and to record the sound of videos you post.</string>
+	<!-- Required by App Store processing (ITMS-90683): chat voice input uses SFSpeechRecognizer
+	     (Features/Chat/Data/VoiceInputManager.swift). Build 16 was rejected without it. -->
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>TappyAI turns what you say into a chat message. Your voice is transcribed by Apple speech recognition and is not stored by TappyAI.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>TappyAI accesses your photos to upload reviews and images.</string>
+	<string>TappyAI reads the photos and videos you choose to post, set as your avatar or cover, or send to be scanned. Nothing else in your library is read.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>TappyAI saves media you export from the app.</string>
+	<string>TappyAI saves the share cards and images you choose to save to your photos.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>TappyAI uses your location to find nearby places and personalize suggestions.</string>
+	<string>TappyAI uses your precise location, only while the app is open and only if you allow it, to find places around you. It is never used in the background.</string>
 
 	<!-- Custom URL scheme for OAuth callbacks (Google/Zalo). Also register a universal-link domain (D4). -->
 	<!-- Share sheet (Core/Share/TappyShare.appScheme): canOpenURL answers false for any scheme

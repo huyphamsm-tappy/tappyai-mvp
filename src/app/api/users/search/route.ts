@@ -1,3 +1,4 @@
+import { userBlocksEnabled, blockedPeers } from '@/lib/safety/userBlocks'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { clientIp } from '@/lib/security/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
@@ -101,7 +102,14 @@ export async function GET(req: NextRequest) {
     .limit(20)
 
   const nameIds = (nameResults || []).map(p => p.id)
-  const allIds = [...new Set([...matchedIds, ...nameIds])]
+  let allIds = [...new Set([...matchedIds, ...nameIds])]
+  // Blocked accounts do not find each other, in either direction. "Who blocked ME" is unreadable through RLS, so this read
+  // uses the service role (and only when the block feature is on).
+  if (userBlocksEnabled() && allIds.length > 0) {
+    const { createAdminClient } = await import('@/lib/supabase/admin')
+    const blocked = await blockedPeers(createAdminClient(), user.id, allIds)
+    if (blocked.size > 0) allIds = allIds.filter((id) => !blocked.has(id))
+  }
   if (allIds.length === 0) return NextResponse.json({ users: [] })
 
   const { data: profiles } = await supabase

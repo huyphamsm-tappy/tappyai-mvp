@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import Image from '@/components/media/SafeImage'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import type { ComponentProps } from 'react'
 import type Header from '@/components/Header'
 import { Bell, Settings, Check, AlertCircle, Loader2 } from 'lucide-react'
@@ -149,6 +149,8 @@ function InboxView({ user }: { user: ComponentProps<typeof Header>['user'] }) {
   const { t, locale } = useTranslation()
   const { notifications, unreadCount, loading, markAllRead } = useNotifications()
   const [tab, setTab] = useState<InboxTab>('messages')
+  // `?thread=<id>` (the profile's Message button) opens that conversation; anything else is ignored.
+  const requestedThread = useSearchParams()?.get('thread') ?? undefined
   const [filter, setFilter] = useState(0)
   const [showSettings, setShowSettings] = useState(false)
 
@@ -212,7 +214,7 @@ function InboxView({ user }: { user: ComponentProps<typeof Header>['user'] }) {
 
       {tab === 'messages' && (
         <div className="pt-4">
-          <MessagesTab signedIn={!!user} />
+          <MessagesTab signedIn={!!user} initialThreadId={requestedThread} />
         </div>
       )}
 

@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"NHÀ HÀNG NGON\" OR \"Quán Bụi\" OR \"Xóm Chợ Cũ Restaurant\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:00:35.767Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"NHÀ HÀNG NGON\" OR \"Quán Bụi\" OR \"Xóm Chợ Cũ Restaurant\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quán Bụi Group (@quanbui_group)",
+    "link": "https://www.tiktok.com/@quanbui_group",
+    "snippet": "Enriching Vietnamese Food Culture · Những cảm nhận khách quan, chi tiết từ khách luôn là điều Quán Bụi trân · Bữa cơm tối chuẩn vị Việt tại Quán Bụi central # ...",
+    "position": 1
+   },
+   {
+    "title": "Ngon Restaurant Garden Grove CA",
+    "link": "https://www.tiktok.com/@rainaiscrazy/video/7597616189896002846",
+    "snippet": "Ngon Restaurant Garden Grove CA – Nhà Hàng Ngon Tại Garden Grove ... Keywords: ngon restaurant garden grove ca, nhà hàng ngon tại garden ...",
+    "position": 2
+   },
+   {
+    "title": "Khám Phá Quán Bụi: Hương Vị Cơm Nhà Việt Nam",
+    "link": "https://www.tiktok.com/@nguyencongnuongw_/video/7535335656923335944",
+    "snippet": "Khám Phá Quán Bụi: Hương Vị Cơm Nhà Việt Nam. Trải nghiệm ẩm thực Việt Nam tại Quán Bụi, nơi mang đậm hương vị cơm nhà. Đừng bỏ lỡ! #review ...",
+    "position": 3
+   },
+   {
+    "title": "Nhà Hàng Ngon: Trải Nghiệm Ẩm Thực Tại TP.HCM",
+    "link": "https://www.tiktok.com/@anchimihe/video/7121950658047135019",
+    "snippet": "Nhà Hàng Ngon | 160 Pasteur, Bến Nghé, Quận 1, Thành phố Hồ Chí Minh ... Nhà Hàng Ngon: Trải Nghiệm Ẩm Thực Tại TP.HCM. Khám phá Nhà ...",
+    "position": 4
+   },
+   {
+    "title": "Phong cách quán bụi bặm vỉa hè chill nhất",
+    "link": "https://www.tiktok.com/@tuannuocep1996/video/7603231109345807636",
+    "snippet": "Phong cách quán bụi bặm vỉa hè chill nhất. Khám phá phong cách quán vỉa hè với thức uống thú vị. Chịu không? #xuhuongtiktok #nuocepnguyenchat ...",
+    "position": 5
+   },
+   {
+    "title": "Một đám cưới nhỏ xinh tại Quán Bụi Garden 3, nơi từng ...",
+    "link": "https://www.tiktok.com/@quanbui_group/video/7594683262455319828",
+    "snippet": "Một đám cưới nhỏ xinh tại Quán Bụi Garden 3, nơi từng bữa ăn, từng khoảnh khắc đều đủ đầy yêu thương. #vietnameserestaurant #amthuc #wedding # ...",
+    "position": 6
+   },
+   {
+    "title": "Bật Mí 3 Nhà Hàng Ngon Ở Tà Xùa Giá Cả Phải Chăng",
+    "link": "https://www.tiktok.com/@truongdulich/video/7692090464362597640",
+    "snippet": "Nếu bạn đang phân vân không biết nên ăn ở đâu, hãy để chúng tôi bật mí cho bạn 3 nhà hàng ngon và giá cả phải chăng tại đây. ### 1. Nhà hàng ...",
+    "position": 7
+   },
+   {
+    "title": "QUÁN BỤI & STIICKY THAI Toàn món ăn ngon! #quanbui ...",
+    "link": "https://www.tiktok.com/@diancungneenha/video/7676785732567977236",
+    "snippet": "3157 Lượt thích,29 Bình luận.Video TikTok từ Đi ăn cùng Nee nha ￼ (@diancungneenha): \"QUÁN BỤI & STIICKY THAI Toàn món ăn ngon!",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

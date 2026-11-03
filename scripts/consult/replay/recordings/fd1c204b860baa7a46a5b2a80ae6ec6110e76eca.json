@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Asanoha - Modern Japanese Hotpot\" OR \"MEAT & MEET\" OR \"Buffet Gánh Khách Sạn Bông Sen\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:17:47.265Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Asanoha - Modern Japanese Hotpot\" OR \"MEAT & MEET\" OR \"Buffet Gánh Khách Sạn Bông Sen\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khám Phá Meat & Meet BBQ Quận 7: Đẳng Cấp Nướng - TikTok",
+    "link": "https://www.tiktok.com/@anvyfood/video/7589956904709901575",
+    "snippet": "Tìm hiểu về chất lượng thịt và trải nghiệm buffet ấn tượng tại Meat & Meet. @An Đi Ăn.",
+    "date": "31 thg 12, 2025",
+    "position": 1
+   },
+   {
+    "title": "Buffet Thịt Nướng MEAT & MEET Lê Thị Riêng Chỉ 189k | Ưu Đãi Trưa",
+    "link": "https://www.tiktok.com/@meatandmeetbbq/video/7690787994650807572",
+    "snippet": "Chỉ với 189.000 VNĐ/người, bạn có thể thưởng thức một bàn thịt nướng siêu hời. Ưu đãi đặc biệt này áp dụng duy nhất tại chi nhánh MEAT & MEET Lê ...",
+    "date": "28 thg 9, 2026",
+    "position": 2
+   },
+   {
+    "title": "MEAT & MEET BBQ (@meatandmeetbbq) - TikTok",
+    "link": "https://www.tiktok.com/@meatandmeetbbq",
+    "snippet": "Khám phá buffet nướng Hàn Quốc 219k tại Meat and Meet (quận 2): · Thông tin khai trương chi nhánh Meat & Meet Parc Mall, buffet BBQ thịt nướng.",
+    "position": 3
+   },
+   {
+    "title": "Buffet Meat & Meet Estella 249k: Săn Quà & Ăn Nướng ... - TikTok",
+    "link": "https://www.tiktok.com/@meatandmeetbbq/video/7679348119674424597",
+    "snippet": "Nếu bạn đang lăn tăn không biết cuối tuần này đi đâu ăn gì, hãy ghé ngay Meat & Meet Estella để thưởng thức một bữa buffet BBQ hấp dẫn chỉ ...",
+    "date": "29 thg 8, 2026",
+    "position": 4
+   },
+   {
+    "title": "Canh giờ săn deal Happy Hour tại Meat & Meet nha #bbq ... - TikTok",
+    "link": "https://www.tiktok.com/@meatandmeetbbq/video/7686346543460355348",
+    "snippet": "... Meat & Meet nha #bbq #nhahangthitnuong #meatandmeet #buffet #fyp\".âm thanh gốc - MEAT & MEET BBQ.",
+    "date": "16 thg 9, 2026",
+    "position": 5
+   },
+   {
+    "title": "BUFFET TRƯA CHUẨN HÀN – CHỈ TỪ 189K TẠI MEAT ... - TikTok",
+    "link": "https://www.tiktok.com/@vincomcenterdongkhoi/video/7592269710062914823",
+    "snippet": "Video TikTok từ Vincom Center Đồng Khởi (@vincomcenterdongkhoi): \"BUFFET TRƯA CHUẨN HÀN – CHỈ TỪ 189K TẠI MEAT & MEET!",
+    "date": "6 thg 1, 2026",
+    "position": 6
+   },
+   {
+    "title": "Buffet Meat & Meet Chỉ 159k - Địa Điểm Ăn Ngon - TikTok",
+    "link": "https://www.tiktok.com/@sinhlacavn/video/7413982517688061192",
+    "snippet": "Meat Meet Diepkloof · Shmeet Meat. Buffet Meat & Meet Chỉ 159k - Địa Điểm Ăn Ngon. Khám phá buffet meat and meet chỉ với 159k, review chi tiết ...",
+    "date": "12 thg 9, 2024",
+    "position": 7
+   },
+   {
+    "title": "Phát hiện Buffet BBQ siu ngon giữa lòng Sài Gòn luôn ... - TikTok",
+    "link": "https://www.tiktok.com/@tamdichill/video/7683045816377806098",
+    "snippet": "... trả lời khác (1). MEAT & MEET BBQ.. 9-17Trả lời. 0. Các video hàng đầu trong ngày hôm nay. @Video của tamdichill. #reviewanngon. #buffet.",
+    "date": "8 thg 9, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

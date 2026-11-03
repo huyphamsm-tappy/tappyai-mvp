@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "phố cổ Hội An giờ tham quan tốt nhất lưu ý vé tham quan chính thức",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:16:31.738Z",
+ "body": {
+  "searchParameters": {
+   "q": "phố cổ Hội An giờ tham quan tốt nhất lưu ý vé tham quan chính thức",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "[ English Below ] Những thông tin cần biết về vé tham quan ...",
+    "link": "https://www.facebook.com/VisitHoiAn/posts/-english-below-nh%E1%BB%AFng-th%C3%B4ng-tin-c%E1%BA%A7n-bi%E1%BA%BFt-v%E1%BB%81-v%C3%A9-tham-quan-%C4%91%C3%B4-th%E1%BB%8B-c%E1%BB%95-h%E1%BB%99i-an%C4%91%E1%BB%83-kh%C3%A1m-/956020783448194/",
+    "snippet": "Thử ngay bánh mì Phượng hoặc bánh mì Madam Khánh – được khách Tây lẫn ta tấm tắc khen ngon • 8h30 - 11h30: Dạo phố cổ Lúc này nắng còn dịu, bạn ...",
+    "position": 1
+   },
+   {
+    "title": "Phố Cổ Hà Nội: Ăn Gì, Chơi Gì, Check-in Ở Đâu",
+    "link": "https://www.vietjetair.com/vi/news/cam-nang-du-lich-1640944806320/pho-co-ha-noi-an-gi-choi-gi-check-in-o-dau-1749109444634",
+    "snippet": "Phố cổ Hà Nội là nơi quá khứ sóng đôi với hiện tại, hội tụ tinh hoa ẩm thực, vui chơi, giải trí giữa lòng thủ đô. 1. Phố cổ Hà Nội ở đâu? Phố cổ Hà Nội nằm ở ...",
+    "position": 2
+   },
+   {
+    "title": "Phố Cổ Hà Nội – Ăn gì, chơi gì, check-in ở đâu đẹp nhất",
+    "link": "https://zalopay.vn/pho-co-ha-noi-5583",
+    "snippet": "Phố Cổ Hà Nội tọa lạc tại phía Tây và phía Bắc hồ Hoàn Kiếm, có diện tích khoảng 100ha, gồm 76 tuyến phố thuộc 10 phường: Đồng Xuân, ...",
+    "date": "1 thg 10, 2025",
+    "position": 3
+   },
+   {
+    "title": "Phố cổ Hà Nội: 15+ địa chỉ tham quan, ăn uống chuẩn nhất",
+    "link": "https://vinpearl.com/vi/review-pho-co-ha-noi",
+    "snippet": "Phố cổ Hà Nội hay tên gọi ước lệ 36 phố phường từ lâu đã trở thành điểm đến hấp dẫn của du khách khi ghé thăm Thủ đô. Khu phố nổi bật với vẻ đẹp ...",
+    "date": "4 thg 11, 2025",
+    "rating": 5,
+    "ratingCount": 999,
+    "position": 4
+   },
+   {
+    "title": "Kinh Nghiệm Đi Phố Cổ Hà Nội Tự Túc - Khám Phá 36 ...",
+    "link": "https://www.klook.com/vi/blog/pho-co-ha-noi/",
+    "snippet": "Ăn Gì Ở Phố Cổ Hà Nội? · 1. Phở Bát Đàn - Biểu Tượng Ẩm Thực Hà Nội Với Hương Vị Đặc Sắc · 2. Chả Cá Lã Vọng - Tinh Hoa Ẩm Thực Hà Thành Xưa · 3. Xôi Chè Bà Thìn - ...",
+    "position": 5
+   },
+   {
+    "title": "9 Bài Hát Chầu Văn Hay Nhất Hiện Nay",
+    "link": "https://www.youtube.com/watch?v=zJwN_LiMOxI",
+    "snippet": "Hát Văn Quan Hoàng Mười Hay Nhất - 9 Bài Hát Chầu Văn Hay Nhất Hiện Nay Nhạc NSND Thu Hiền Hay Nhất: http://bit.ly/40sUZD0 #NhacTruTinh ...",
+    "position": 6
+   },
+   {
+    "title": "Những cách tốt nhất để khám phá phố cổ Hội An",
+    "link": "https://vietnam.travel/vi/things-to-do/best-ways-explore-ancient-town-hoi-an",
+    "snippet": "'Thị trấn màu vàng' quyến rũ mang đậm dấu ấn lịch sử và tràn ngập những cơ hội để tạo nên những kỷ niệm kỳ diệu. Dưới đây là những gợi ý hàng đầu về những ...",
+    "position": 7
+   },
+   {
+    "title": "Kinh nghiệm Du lịch HỘI AN 2026 từ A-Z: lưu trú, ăn chơi, ...",
+    "link": "https://vnexpress.net/cam-nang-du-lich-hoi-an-4446174.html",
+    "snippet": "Nằm bên bờ bắc hạ lưu sông Thu Bồn, Hội An là một đô thị cổ tại Quảng Nam, cách thành phố Đà Nẵng hơn 30 km, cách Huế 122 km. Nhắc tới Hội An là phải kể tới ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

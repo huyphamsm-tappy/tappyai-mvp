@@ -30,9 +30,12 @@ final class DataStreamLineParserTests: XCTestCase {
 
     func testAnnotationFrameCarriesPayload() {
         // `8:[…]` is where the `tappy.places.v1` recommendation rides (share parity with web/Android).
-        if case let .annotation(data)? = DataStreamLineParser.parse(line: "8:[{\"kind\":\"tappy.places.v1\"}]") {
+        // Since the parser learned `.places`, an `8:` line that is not a usable place set degrades to
+        // `.unknown` (see the tests below) — but its payload must still be carried, not dropped.
+        if case let .unknown(prefix, data)? = DataStreamLineParser.parse(line: "8:[{\"kind\":\"tappy.places.v1\"}]") {
+            XCTAssertEqual(prefix, "8")
             XCTAssertFalse(data.isEmpty)
-        } else { XCTFail("expected annotation") }
+        } else { XCTFail("expected unknown(8:) carrying the payload") }
     }
 
     func testUnknownPrefixIsPreserved() {
@@ -87,5 +90,57 @@ final class DataStreamLineParserTests: XCTestCase {
         guard case .unknown? = DataStreamLineParser.parse(line: line) else {
             return XCTFail("an empty item list must not become a places frame")
         }
+    }
+
+    // MARK: - One `8:` array, several annotations (one-brain stream; web / Android read every element)
+
+    private let placesElement = "{\"kind\":\"tappy.places.v1\",\"v\":1,\"domain\":\"food\",\"ranked\":true,"
+        + "\"items\":[{\"id\":\"p1\",\"name\":\"Quán Live\",\"rating\":4.8,\"ratingCount\":320,"
+        + "\"categories\":[\"cafe\"],\"rank\":0,\"actions\":[]}]}"
+    private let progressElement = "{\"kind\":\"tappy.progress.v1\",\"stage\":\"found\",\"text\":\"Đã có 10 chỗ phù hợp\"}"
+    private let statusElement = "{\"kind\":\"tappy.turn_status.v1\",\"v\":1,\"status\":\"incomplete\"}"
+
+    func testEveryElementOfOneArrayIsEmittedInOrder() {
+        let frames = DataStreamLineParser.frames(line: "8:[\(progressElement),\(placesElement),\(statusElement)]")
+        XCTAssertEqual(frames.count, 3)
+        guard frames.count == 3 else { return }
+        XCTAssertEqual(frames[0], .progress(stage: "found", text: "Đã có 10 chỗ phù hợp"))
+        guard case let .places(view) = frames[1] else { return XCTFail("the second element is the place set") }
+        XCTAssertEqual(view.items.count, 1)
+        XCTAssertEqual(frames[2], .turnStatus(.incomplete))
+    }
+
+    func testAnElementOfAnUnknownKindIsSkippedAndTheOthersStay() {
+        let other = "{\"kind\":\"something.else.v1\",\"items\":[{\"id\":\"p1\",\"name\":\"Không phải quán\"}]}"
+        let frames = DataStreamLineParser.frames(line: "8:[\(other),\(statusElement),42,\"text\",null]")
+        XCTAssertEqual(frames, [.turnStatus(.incomplete)])
+    }
+
+    func testAnArrayWithNothingRecognisedIsOneUnknownFrameCarryingTheLine() {
+        let frames = DataStreamLineParser.frames(line: "8:[{\"kind\":\"something.else.v1\"}]")
+        guard frames.count == 1, case let .unknown(prefix, data) = frames[0] else { return XCTFail("expected one unknown frame") }
+        XCTAssertEqual(prefix, "8")
+        XCTAssertFalse(data.isEmpty)
+    }
+
+    func testAnEmptyOrMalformedAnnotationArrayIsOneUnknownFrame() {
+        for payload in ["[]", "{\"kind\":\"tappy.turn_status.v1\",\"status\":\"incomplete\"}", "not json"] {
+            let frames = DataStreamLineParser.frames(line: "8:\(payload)")
+            guard frames.count == 1, case .unknown = frames[0] else { return XCTFail("expected one unknown frame for \(payload)") }
+        }
+    }
+
+    func testAnElementWithAnUnknownStatusOrABlankProgressIsDropped() {
+        let badStatus = "{\"kind\":\"tappy.turn_status.v1\",\"status\":\"refunded\"}"
+        let blank = "{\"kind\":\"tappy.progress.v1\",\"stage\":\"writing\",\"text\":\"   \"}"
+        let frames = DataStreamLineParser.frames(line: "8:[\(badStatus),\(blank),\(progressElement)]")
+        XCTAssertEqual(frames, [.progress(stage: "found", text: "Đã có 10 chỗ phù hợp")])
+    }
+
+    func testParseStillReturnsTheFirstFrameOfALine() {
+        XCTAssertEqual(DataStreamLineParser.parse(line: "8:[\(progressElement),\(statusElement)]"),
+                       .progress(stage: "found", text: "Đã có 10 chỗ phù hợp"))
+        XCTAssertEqual(DataStreamLineParser.frames(line: "0:\"hi\""), [.text("hi")])
+        XCTAssertEqual(DataStreamLineParser.frames(line: "no-colon-here"), [])
     }
 }

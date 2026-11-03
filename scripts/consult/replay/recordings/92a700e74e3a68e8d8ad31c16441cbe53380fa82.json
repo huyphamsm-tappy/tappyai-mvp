@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Bluetooth chụp Tai Baseus Bass BH1 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:00:09.191Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bluetooth chụp Tai Baseus Bass BH1 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "baseus หูฟังไร้สายแบบครอบหู รุ่น bass bh1 lite wireless headphones",
+    "link": "https://shop.tiktok.com/vn/k/baseus-hufang-airsay-aebb-khrob-hu-run-bass-bh1-lite-wireless-headphones",
+    "snippet": "Khám phá baseus หูฟังไร้สายแบบครอบหู รุ่น bass bh1 lite wireless headphones mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc ...",
+    "position": 1
+   },
+   {
+    "title": "baseus bowie h1i case",
+    "link": "https://shop.tiktok.com/vn/k/baseus-bowie-h1i-case",
+    "snippet": "Tai Nghe Chụp Tai Không Dây Baseus Bass BH1 (Bluetooth v6.0, 80H, 600mAh, SuperBass 2.0, AI ...",
+    "position": 2
+   },
+   {
+    "title": "baseus bass bd1 earphone case",
+    "link": "https://shop.tiktok.com/vn/k/baseus-bass-bd1-earphone-case",
+    "snippet": "[New] BASEUS Tai nghe Chụp tai BASS BH1 AIR ANC-35dB ENC thông minh Bluetooth 6.0 Driver 40mm Pin 80 giờ.",
+    "position": 3
+   },
+   {
+    "title": "Headphone Baseus H1 - TikTok Shop Vietnam",
+    "link": "https://shop.tiktok.com/vn/k/headphone-baseus-h1",
+    "snippet": "Tai nghe Bluetooth chụp tai Baseus Bowie H1i, Kiểu dáng năng động, chống ồn thông minh, Bluetooth 5.3, Bảo hành 12 tháng. 0 sold. ₫1.198.919. ₫2.179.852 ...",
+    "position": 4
+   },
+   {
+    "title": "baseus h1 replacement pads",
+    "link": "https://shop.tiktok.com/vn/k/baseus-h1-replacement-pads",
+    "snippet": "[New] BASEUS Tai nghe Chụp tai BASS BH1 AIR ANC-35dB ENC thông minh Bluetooth 6.0 Driver 40mm Pin 80 giờ.",
+    "position": 5
+   },
+   {
+    "title": "altimax tali bg66",
+    "link": "https://shop.tiktok.com/vn/k/altimax-tali-bg66",
+    "snippet": "[ Promax x BiCheee ] Tai Nghe Chụp Tai Không Dây Baseus Bass BH1 (Bluetooth v6.0 ...",
+    "position": 6
+   },
+   {
+    "title": "baseus bd1 app",
+    "link": "https://shop.tiktok.com/vn/k/baseus-bd1-app",
+    "snippet": "[New] BASEUS Tai nghe Chụp tai BASS BH1 AIR ANC-35dB ENC thông minh Bluetooth 6.0 Driver 40mm Pin 80 giờ.",
+    "position": 7
+   },
+   {
+    "title": "baseus earbud mc1",
+    "link": "https://shop.tiktok.com/vn/k/baseus-earbud-mc1",
+    "snippet": "[New] BASEUS Tai nghe Chụp tai BASS BH1 AIR ANC-35dB ENC thông minh Bluetooth 6.0 Driver 40mm Pin 80 giờ.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

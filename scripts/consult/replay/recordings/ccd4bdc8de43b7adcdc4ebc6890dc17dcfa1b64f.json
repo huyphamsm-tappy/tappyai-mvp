@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Nhà hàng chay Phương Mai\" OR \"MEAT & MEET\" OR \"Viet Kitchen\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:37:41.404Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Nhà hàng chay Phương Mai\" OR \"MEAT & MEET\" OR \"Viet Kitchen\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "MEAT & MEET BBQ (@meatandmeetbbq)",
+    "link": "https://www.tiktok.com/@meatandmeetbbq",
+    "snippet": "MEAT & MEET KOREAN BBQ CONTAINER Vui lòng đặt bàn qua hotline các chi nhánh · Khám phá buffet nướng Hàn Quốc 219k tại Meat and Meet (quận 2): · Thông tin khai ...",
+    "position": 1
+   },
+   {
+    "title": "Best Pho & Wings at Viet Kitchen in Tampa | Taste Test",
+    "link": "https://www.tiktok.com/@foodiejustice/video/7629415810351631646",
+    "snippet": "Everybody's been asking where the best pho is, and today I'm at Viet Kitchen to find out. This spot is known for having some of the best wings, ...",
+    "position": 2
+   },
+   {
+    "title": "Authentic Vietnamese Food at Lantern Viet Kitchen",
+    "link": "https://www.tiktok.com/@hotbitemama/video/7564153794339163422",
+    "snippet": "Discover unique Vietnamese dishes and drinks at Lantern Viet Kitchen. Don't miss the crispy Bánh xèo and Thai iced tea with sea salt cream! # ...",
+    "position": 3
+   },
+   {
+    "title": "The Timeless Joy of Pho Pours at Gao Viet Kitchen",
+    "link": "https://www.tiktok.com/@mr.gaoviet/video/7609564445445999902",
+    "snippet": "At Gao Viet Kitchen, the art of pouring pho never gets old. Each bowl is crafted with the same passion and dedication, showcasing the love ...",
+    "position": 4
+   },
+   {
+    "title": "Nhà hàng chay Phương Mai: Điểm đến tuyệt vời cho thực ...",
+    "link": "https://www.tiktok.com/@xiathichanchaynek/video/7523829987942763794",
+    "snippet": "Có tuổi đời hơn 10 năm, nhà hàng chay Phương Mai đã không làm mình thất vọng từ không gian cho đến chất lượng món ăn, mê chỗ này lắm mấy ní ơi!",
+    "position": 5
+   },
+   {
+    "title": "Video sponsored by @Viet Kitchen Lakewood One of my ...",
+    "link": "https://www.tiktok.com/@erika.taste.test/video/7580219334304304414",
+    "snippet": "11101 Pacific Hwy SW Suite 1, Lakewood, WA 98499 LET'S EAT! . Video sponsored by @Viet Kitchen Lakewood One of my favorite Vietnamese ...",
+    "position": 6
+   },
+   {
+    "title": "Delicious Vietnamese Food at Viet Kitchen Fast Food",
+    "link": "https://www.tiktok.com/@veeeeevee/video/7649929238891613471",
+    "snippet": "Experience the taste of authentic Vietnamese cuisine at Viet Kitchen Fast Food, a spot renowned for serving delicious and quick meals.",
+    "position": 7
+   },
+   {
+    "title": "Nhà Hàng Chay Phương Mai (@lan.calla)",
+    "link": "https://www.tiktok.com/@lan.calla",
+    "snippet": "Nhà Hàng Chay Phương Mai · @lan.calla · Hẻm 82 nhà số 86F Võ Thị Sáu, F. Tân Định (quận 1 cũ) Tp. HCM Hotline / Zalo: 0888.339.257.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

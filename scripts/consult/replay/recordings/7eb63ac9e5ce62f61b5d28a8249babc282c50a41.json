@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"SPACEP - Working & Study Space\" OR \"Evergreen - Coworking Space\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:37:04.428Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"SPACEP - Working & Study Space\" OR \"Evergreen - Coworking Space\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "SPACEP - Không gian học tập hiện đại tại Quận 1",
+    "link": "https://www.tiktok.com/@spacep.thestudyhub/video/7579261210621676807",
+    "snippet": "Trải nghiệm SPACEP với không gian hiện đại. @spacep.thestudyhub · nhạc nền - spacep.thestudyhub · SPACEP - Working & Study Space · author. 25.",
+    "position": 1
+   },
+   {
+    "title": "🌱EVERGREEN WORKSPACE #study #rmit #fyp",
+    "link": "https://www.tiktok.com/@hellurjol/video/7687064961318669576",
+    "snippet": "EVERGREEN WORKSPACE #study #rmit #fyp. EVERGREEN WORKSPACE #study #rmit #fyp. @jolie · original sound · Evergreen - Coworking Space · author.",
+    "position": 2
+   },
+   {
+    "title": "Phòng họp tại SPACEP cho lớp học và nhóm họp",
+    "link": "https://www.tiktok.com/@spacep.thestudyhub/video/7573688635938180360",
+    "snippet": "... tiện nghi cho lớp học và họp nhóm, với. @spacep.thestudyhub · original sound - spacep.thestudyhub · SPACEP - Working & Study Space · author.",
+    "position": 3
+   },
+   {
+    "title": "☔️Mùa mưa mọi người chọn đi đâu để chạy deadline? Ở ...",
+    "link": "https://www.tiktok.com/@spacep.thestudyhub/video/7651995476123831559",
+    "snippet": "... mưa mọi người chọn đi đâu để chạy deadline? Ở đây tụi mình. @spacep.thestudyhub · som original · SPACEP - Working & Study Space · author · 72.",
+    "position": 4
+   },
+   {
+    "title": "đếm ngược 5 ngày cuối cùng của CTKM tặng giờ trải ...",
+    "link": "https://www.tiktok.com/@spacep.thestudyhub/video/7559971536359279879",
+    "snippet": "... giờ trải nghiệm free Private Zone tại. @spacep.thestudyhub · original sound - spacep.thestudyhub · SPACEP - Working & Study Space · author.",
+    "position": 5
+   },
+   {
+    "title": "[IMC x SPACEP] Địa điểm học tập giá HSSV chỉ từ ...",
+    "link": "https://www.tiktok.com/@spacep.thestudyhub/video/7586316332778540309",
+    "snippet": "... điểm học tập giá HSSV chỉ từ 35k/h. @spacep.thestudyhub · original sound - spacep.thestudyhub · SPACEP - Working & Study Space · author. 13 · 5.",
+    "position": 6
+   },
+   {
+    "title": "Evergreen Coworking Space - Nơi làm việc lý tưởng ở ...",
+    "link": "https://www.tiktok.com/@evergreen.ws/photo/7639428518736137492?image_index=1",
+    "snippet": "Giá cả dễ chịu, phù hợp cho freelancer và người cần chạy deadline. Keywords: Evergreen Coworking Space,chỗ ngồi làm việc,freelancer,chạy ...",
+    "position": 7
+   },
+   {
+    "title": "Coworking Space siêu ưng ở Q1",
+    "link": "https://www.tiktok.com/@itgirl.chillmode/video/7688708021047807253",
+    "snippet": "... coworking space siêu ưng ở Q1 cho làm việc và thư giãn. @Cô nàng IT thư giãn · suara asli - MUSIC24 · Evergreen - Coworking Space · author.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,67 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Tám Riêu\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:47:26.379Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Tám Riêu\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tám Riêu (@amthuctamrieu) | TikTok",
+    "link": "https://www.tiktok.com/@amthuctamrieu",
+    "snippet": "“Thả lẩu” Tám Riêu sao cho đúng? Để Tám bày cho cả nhà các bước thả lẩu hợp lý nhất để riêu cua không bị “khét” dưới đáy nồi, cả nhà để ý nha! 🤗 Mong rằng cả nhà có những trải nghiệm thú vị nhất khi dùng bữa tại Tám Riêu.",
+    "position": 1
+   },
+   {
+    "title": "Tám Riêu Tám Chuyện (@quanan8rieu) | TikTok",
+    "link": "https://www.tiktok.com/@quanan8rieu",
+    "snippet": "Tám Riêu Tám Chuyện (@quanan8rieu) trên TikTok |479.6K Lượt thích.8426 Follower.235 Phan Xích Long, Phú Nhuận 140A Lý Chính Thắng, Q3.Xem video phổ biến của Tám Riêu Tám Chuyện: \"Nỗi áp lực nặng nề #...\", \"Khách gì vô quán kím...\".",
+    "position": 2
+   },
+   {
+    "title": "Tám Riêu trên TikTok",
+    "link": "https://www.tiktok.com/@amthuctamrieu/video/7684622746847939858",
+    "snippet": "Video TikTok từ Tám Riêu (@amthuctamrieu): \"Cùng khám phá hành trình tìm ra nồi lẩu riêu cua \"chân ái\" và chuỗi ngày test lẩu tới mức \"tiền đình\" của nhân viên nhà Tám! 🤣 #tamrieu #laucuadong #laurieutuoi #amthuc #amthucmienque\".HÀNH TRÌNH TÌM RA NỒI LẨU RIÊU TƯƠIâm thanh gốc - Tám Riêu.",
+    "position": 3
+   },
+   {
+    "title": "Tám Riêu trên TikTok",
+    "link": "https://www.tiktok.com/@amthuctamrieu/video/7676795225368546567",
+    "snippet": "Cô chú nào gu yên tĩnh, tìm chỗ trò chuyện tâm tình thì ghé Tám Riêu tụi con nghen. Có lẩu cua đồng nóng hỏi, có cảnh quê mộc mạc, ôn lại chuyện xưa là hết bài luôn 🥰",
+    "position": 4
+   },
+   {
+    "title": "Tám Riêu trên TikTok",
+    "link": "https://www.tiktok.com/@amthuctamrieu/video/7680504325788945671",
+    "snippet": "34 Lượt thích,Video TikTok từ Tám Riêu (@amthuctamrieu): \"Lẩu riêu nhà Tám sao vị thanh vậy ta? 🤔 Vì nước lẩu lấy vị ngọt tự nhiên từ riêu cua tươi và rau củ, nên ăn nhẹ miệng, không bị gắt vị.",
+    "position": 5
+   },
+   {
+    "title": "Khách nhà Tám Riêu dễ thương thế này nè cô bác ơi!!! Cảm ơn ...",
+    "link": "https://www.tiktok.com/@amthuctamrieu/video/7670856228645391634",
+    "snippet": "Video TikTok từ Tám Riêu (@amthuctamrieu): \"Khách nhà Tám Riêu dễ thương thế này nè cô bác ơi!!! 🥰 Cảm ơn cô và hội bạn đã chọn Tám Riêu để họp mặt tâm tình nha 💕 Còn mấy bà, bao lâu rồi chưa họp hội bạn thân?",
+    "position": 6
+   },
+   {
+    "title": "Tám Riêu trên TikTok",
+    "link": "https://www.tiktok.com/@amthuctamrieu/video/7411459742003973383",
+    "snippet": "Thèm chè Như Ngọc thì phải làm sao! 🌿Nhanh chân đến ngay Tám Riêu Lý Chính Thắng để tiếp tục được Tám khao cả một khây chè Như Ngọc khi gọi Lẩu Gánh Cua Đồng quý vị nha!👉 Nhớ chè Như Ngọc, nhớ đến Tám Riêu Lý Chính Thắng!",
+    "date": "Sep 6, 2024",
+    "position": 7
+   }
+  ],
+  "credits": 1
+ }
+}

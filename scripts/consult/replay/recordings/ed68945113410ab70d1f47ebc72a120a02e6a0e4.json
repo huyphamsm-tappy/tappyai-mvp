@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "CHÍNH HÃNG Tai nghe Bluetooth 2 Tai không dây giảm tiếng ồn ANC & ENC 2024 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:34:03.312Z",
+ "body": {
+  "searchParameters": {
+   "q": "CHÍNH HÃNG Tai nghe Bluetooth 2 Tai không dây giảm tiếng ồn ANC & ENC 2024 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "🍀CHÍNH HÃNG🍀 Tai nghe Bluetooth 2 tai không dây giảm ...",
+    "link": "https://shopee.vn/%F0%9F%8D%80CH%C3%8DNH-H%C3%83NG%F0%9F%8D%80-Tai-nghe-Bluetooth-2-tai-kh%C3%B4ng-d%C3%A2y-gi%E1%BA%A3m-ti%E1%BA%BFng-%E1%BB%93n-ANC-ENC-2024-th%E1%BB%83-thao-m%C3%A0n-h%C3%ACnh-c%E1%BA%A3m-%E1%BB%A9ng-th%C3%B4ng-i.228219692.26914311733",
+    "snippet": "Mua tối thiểu ₫199k để được giảm ₫8k. CHÍNH HÃNG Tai nghe Bluetooth 2 tai không dây giảm tiếng ồn ANC & ENC 2024 thể thao màn hình cảm ứng thông.",
+    "position": 1
+   },
+   {
+    "title": "Shopee",
+    "link": "https://shopee.vn/collections/1072609",
+    "snippet": "Tronsmart Element Mega Loa Bluetooth 5.0 Công suất 40W Hỗ trợ TWS và NFC ghép đôi 2 loa Âm thanh nổi sống động kết hợp. 1.320.000₫. -2%. rating-star 4.8.",
+    "position": 2
+   },
+   {
+    "title": "TOP 5+ tai nghe bluetooth cho học sinh sinh viên",
+    "link": "https://shopee.vn/blog/tai-nghe-bluetooth-cho-hoc-sinh-sinh-vien/",
+    "snippet": "Điểm nổi bật nhất của sản phẩm là khả năng chống ồn chủ động (ANC) cùng chất lượng đàm thoại rõ ràng, giúp giảm tiếng ồn từ môi trường xung ...",
+    "date": "10 thg 8, 2026",
+    "position": 3
+   },
+   {
+    "title": "Top 8 tai nghe bluetooth dưới 1 triệu đáng sở hữu",
+    "link": "https://shopee.vn/blog/tai-nghe-bluetooth-duoi-1-trieu/",
+    "snippet": "Sản phẩm có hộp sạc được thiết kế dạng dẹt, khá nhỏ gọn cùng các góc cạnh được bo tròn, mang lại cảm giác thoải mái cầm nắm và dễ dàng mang theo ...",
+    "date": "20 thg 6, 2026",
+    "position": 4
+   },
+   {
+    "title": "Top 5 tai nghe Bluetooth chơi game “phê không thể chê”",
+    "link": "https://shopee.vn/blog/tai-nghe-bluetooth-choi-game/",
+    "snippet": "SoundPEATS Air6 HS là mẫu tai nghe true wireless hướng đến những game thủ yêu thích sự gọn nhẹ nhưng vẫn đòi hỏi chất lượng âm thanh tốt và kết ...",
+    "date": "26 thg 5, 2026",
+    "position": 5
+   },
+   {
+    "title": "sangeanvietnam, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/sangeanvietnam",
+    "snippet": "Tai Nghe Bluetooth Không Dây Sangean SE01 Chống Mồ Hôi, Chống Nước, Không Đau Tai, Giảm Tiếng Ồn, Điều Khiển Cảm Ứng. 209.000₫. -42%. rating-star 4.9.",
+    "position": 6
+   },
+   {
+    "title": "Tai nghe không dây chống ồn - Giá Tốt, Sale Tháng 10 ...",
+    "link": "https://shopee.vn/list/tai%20nghe/kh%C3%B4ng%20d%C3%A2y/ch%E1%BB%91ng%20%E1%BB%93n",
+    "snippet": "Tai nghe không dây Bluetooth 5.3 Goojodoq có tính năng điều khiển cảm ứng, âm trầm và thời lượng pin cực dài Kênh đôi. 102.500₫. 208.000₫.",
+    "position": 7
+   },
+   {
+    "title": "nghe+bluetooth giá tốt Tháng 7, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=nghe%2Bbluetooth&noCorrection=true",
+    "snippet": "Mua nghe+bluetooth giao tận nơi Voucher Shopee giảm đến 50%. Miễn phí vận chuyển và đổi trả dễ dàng. Thanh toán bảo mật. Đặt mua ngay!",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

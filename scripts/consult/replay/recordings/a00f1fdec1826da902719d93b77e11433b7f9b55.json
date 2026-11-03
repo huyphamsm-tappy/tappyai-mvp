@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "British Council LearnEnglish speaking practice free A1 A2",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:34:23.711Z",
+ "body": {
+  "searchParameters": {
+   "q": "British Council LearnEnglish speaking practice free A1 A2",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "A1 speaking | LearnEnglish",
+    "link": "https://learnenglish.britishcouncil.org/free-resources/speaking/a1",
+    "snippet": "This section offers speaking practice to help you learn and practise useful phrases that will help you to speak English clearly and effectively. Each lesson has ...",
+    "position": 1
+   },
+   {
+    "title": "Practise English speaking skills | LearnEnglish",
+    "link": "https://learnenglish.britishcouncil.org/free-resources/speaking",
+    "snippet": "Speaking practice to help you learn useful language for everyday communication. Situations include responding to news, meeting face-to-face and asking a favour.",
+    "position": 2
+   },
+   {
+    "title": "British Council: Learn English Online",
+    "link": "https://learnenglish.britishcouncil.org/",
+    "snippet": "Learn with free resources ... Practise your English by watching videos, reading texts and listening to audio. Each activity includes short, interactive exercises ...",
+    "position": 3
+   },
+   {
+    "title": "Talking about other people | LearnEnglish",
+    "link": "https://learnenglish.britishcouncil.org/free-resources/speaking/a1/talking-about-other-people",
+    "snippet": "Do the preparation exercise first. Then watch the video and do the exercises to check your understanding and practise the language. Preparation ...",
+    "date": "26 thg 6, 2020",
+    "position": 4
+   },
+   {
+    "title": "A2 speaking | LearnEnglish",
+    "link": "https://learnenglish.britishcouncil.org/free-resources/speaking/a2",
+    "snippet": "This section offers speaking practice to help you learn and practise useful phrases that will help you to speak English clearly and effectively. Each lesson has ...",
+    "position": 5
+   },
+   {
+    "title": "Episode 01 - They meet",
+    "link": "https://learnenglish.britishcouncil.org/free-resources/general/video-series/starting-out/episode-01-they-meet",
+    "snippet": "A1 speaking · A2 speaking · B1 speaking · B2 speaking · Grammar. Back. Grammar. A1-A2 ... Learning-style quiz · IELTS preparation · IELTS Coach · Level test.",
+    "date": "19 thg 12, 2016",
+    "position": 6
+   },
+   {
+    "title": "British Council LearnEnglish Teens | Free resources for teens ...",
+    "link": "https://learnenglishteens.britishcouncil.org/",
+    "snippet": "Are you looking for free resources? On LearnEnglish Teens you can watch videos, read texts, listen to audio and do online exercises to help you improve your ...",
+    "position": 7
+   },
+   {
+    "title": "Episode 02 - Tom's party",
+    "link": "https://learnenglish.britishcouncil.org/free-resources/general/video-series/starting-out/episode-02-toms-party",
+    "snippet": "A1 speaking · A2 speaking · B1 speaking · B2 speaking · Grammar. Back. Grammar. A1-A2 ... Take free level test · Understand your English level · Improve your ...",
+    "date": "11 thg 1, 2017",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

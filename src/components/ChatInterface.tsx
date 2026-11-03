@@ -1,23 +1,60 @@
 'use client'
 
+import AiDisclaimer from '@/components/AiDisclaimer'
 import { useChat } from 'ai/react'
 import type { Message } from 'ai'
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
 import { flushSync } from 'react-dom'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Send, Sparkles, Mic, Smile, Heart, X, Square, RotateCcw, Brain } from 'lucide-react'
+import { Send, Sparkles, Mic, Smile, Heart, X, Square, RotateCcw, Brain, Info } from 'lucide-react'
 import posthog from 'posthog-js'
+import { useDeepResearchOffered } from '@/lib/subscription/modeAccess'
 import { useServerTTS } from '@/hooks/useServerTTS'
 import MessageActionBar from '@/components/chat/MessageActionBar'
 import { cn, CATEGORIES, type CategoryId } from '@/lib/utils'
 import { inlineLinkTap } from '@/lib/recommendation/handoff'
+import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
+import { NEWS_SOURCE_LABELS } from '@/lib/chat/sourceLabels'
+import { parseRecheckHref, runRecheck } from '@/lib/providers/realtime/recheckLink'
 
-// A tap on a link inside the rendered reply text: a tracked affiliate link reports GA4
+// "Kiểm tra giá & tình trạng" (web): a realtime offer Tappy holds carries a recheck link. The tap re-asks the provider through
+// POST /api/booking/recheck and writes the answer BESIDE the link; the booking link next to it stays the CTA. The answer is plain text (never HTML),
+// and the only link it can add is the https booking page the SERVER returned.
+async function showRecheck(a: HTMLAnchorElement) {
+  if (a.dataset.rechecking === '1') return
+  a.dataset.rechecking = '1'
+  const label = a.textContent
+  a.textContent = 'Đang kiểm tra…'
+  const note = await runRecheck(a.href)
+  a.textContent = label
+  delete a.dataset.rechecking
+  if (!note) return
+  a.parentElement?.querySelectorAll('[data-recheck-note]').forEach(n => { if (n.previousElementSibling === a) n.remove() })
+  const span = document.createElement('span')
+  span.dataset.recheckNote = note.status
+  span.setAttribute('role', 'status')
+  span.className = note.status === 'unavailable' ? 'text-[13px] text-red-600 dark:text-red-400' : note.status === 'price_changed' ? 'text-[13px] text-amber-600 dark:text-amber-400' : 'text-[13px] text-gray-600 dark:text-gray-300'
+  span.textContent = ` ${note.sentence}`
+  if (note.bookingUrl && note.status !== 'unavailable') {
+    const open = document.createElement('a')
+    open.href = note.bookingUrl
+    open.target = '_blank'
+    open.rel = 'noopener noreferrer'
+    open.className = 'underline ml-1'
+    open.textContent = 'Mở trang đặt'
+    span.append(' ', open)
+  }
+  a.insertAdjacentElement('afterend', span)
+}
+
+// A tap on a link inside the rendered reply text: a recheck link runs the recheck in place; a tracked affiliate link reports GA4
 // `affiliate_click` (src/lib/recommendation/handoff.ts); every other link is untouched.
-function onMessageLinkClick(e: React.MouseEvent<HTMLDivElement>) {
+export function onMessageLinkClick(e: React.MouseEvent<HTMLDivElement>) {
   const a = (e.target as HTMLElement | null)?.closest?.('a')
-  if (a instanceof HTMLAnchorElement) inlineLinkTap(a.href)
+  if (!(a instanceof HTMLAnchorElement)) return
+  if (parseRecheckHref(a.href)) { e.preventDefault(); void showRecheck(a); return }
+  inlineLinkTap(a.href)
 }
 import { getDynamicPrompts } from '@/lib/suggestedPrompts'
 import TripPlanCard from '@/components/TripPlanCard'
@@ -26,6 +63,14 @@ import { parseCTA } from '@/lib/structuredContent/parseCta'
 import { parseFollowups } from '@/lib/structuredContent/parseFollowups'
 import { parseAsk } from '@/lib/structuredContent/parseAsk'
 import AskCard from '@/components/chat/AskCard'
+import ChoiceCard from '@/components/chat/ChoiceCard'
+import { parseChoiceTail, isOtherOption, otherPrefill } from '@/lib/structuredContent/parseChoices'
+import { parseMediaBlocks, type MediaEntity } from '@/lib/media/mediaHosts'
+import { NewsMediaGrid, EntityCard, EntityPanel, OptionCards } from '@/components/chat/MediaBlocks'
+import { ArticleAnswer, EntityRow, ImageGrid, SourcesFooter, summaryOpening } from '@/components/chat/ArticleAnswer'
+import { readDocMedia, rememberDocMedia, recallDocMedia } from '@/lib/answerDoc/media'
+import { StreamedTextKeeper } from '@/lib/chat/streamedText'
+import { useLatencyMarks } from '@/lib/chat/useLatencyMarks'
 import VoiceOverlay from '@/components/chat/VoiceOverlay'
 import { classifyOutboundAction, emitQuery, emitResultAction, hostOf } from '@/lib/analytics/g1Events'
 import ShoppingDecision from '@/components/chat/ShoppingDecision'
@@ -36,23 +81,38 @@ import { useOnlineStatus } from '@/hooks/useOnlineStatus'
 import { parseShoppingMarker } from '@/lib/ai/consultative/synthesisView'
 import { parsePlacesMarker } from '@/lib/recommendation/marker'
 import { readPlacesLiveView } from '@/lib/recommendation/liveView'
-import { readProgress } from '@/lib/recommendation/progressAnnotation'
+import { readProgress, readTurnStatus } from '@/lib/recommendation/progressAnnotation'
+import { readResearchStatus, readResearchCharts } from '@/lib/ai/research/deepResearch'
+import { chartDataUrl } from '@/lib/answerDoc/reportChart'
+import { titleKey } from '@/lib/answerDoc/parse'
+import ResearchCard from '@/components/chat/ResearchCard'
 import { rememberPlacesView, recallPlacesView } from '@/lib/recommendation/liveViewCache'
+import { rememberTurnStatus, recallTurnStatus } from '@/lib/recommendation/turnStatusCache'
 import PlaceDecision from '@/components/chat/PlaceDecision'
 import { useTranslation, getStoredLocale } from '@/lib/i18n/useTranslation'
+import ScrollJumpButtons from '@/components/chat/ScrollJumpButtons'
 import { validateModelCtaButtons } from '@/lib/recommendation/ctaValidation'
 import { requestedProviderOf } from '@/lib/ai/tools/commerceIntent'
 import { inputLocaleFor } from '@/lib/voice/config'
 import { readMicEnabled } from '@/lib/voice/micSetting'
+import { isNearMeRequest, readSessionFix, requestFreshFix } from '@/lib/location/currentLocation'
 import { TappyMascot } from '@/components/TappyMascot'
 import { getTappyPose } from '@/lib/TappyMascotState'
 import { track } from '@/lib/tracking/tracker'
 import { ensureAnonymousSession } from '@/lib/auth/ensureAnonymousSession'
 import { attachSavedContext, type SavedMessage } from '@/lib/chat/savedContext'
 import { withCompactedHistory } from '@/lib/chat/requestHistory'
+import { withCutWatch } from '@/lib/chat/streamCut'
+import { stripRemainingFooter } from '@/lib/chat/footerLine'
+import { useChatSessionId } from '@/lib/chat/useChatSessionId'
+import { useFinishReveal } from '@/lib/chat/useFinishReveal'
+import MessageBoundary, { Deferred } from '@/components/chat/MessageBoundary'
+import { useStickToBottom } from '@/components/chat/useStickToBottom'
 import { balanceBoldPerLine } from '@/lib/chat/markdownNormalize'
 import { cleanRepeats } from '@/lib/chat/replyRepeat'
 import { isAgeGateMessage, redirectToAgeCheck } from '@/lib/account/ageGateClient'
+import { checkAttachment, firstAttachable, pastedAttachment, dragHasFiles } from '@/components/chat/composerAttachment'
+import UserMessageCopy from '@/components/chat/UserMessageCopy'
 
 // Mood chips — labels and the message each sends are dictionary keys so both
 // localize; the analytics id stays stable across languages.
@@ -79,7 +139,7 @@ const QUICK_PROMPTS: Record<string, string[]> = {
   entertainment: ['Rạp chiếu phim IMAX?', 'Quán karaoke bao phòng?', 'Bar rooftop view đẹp?'],
   travel: ['Lịch trình Đà Nẵng 3 ngày 2 người budget 5 triệu', 'Lịch trình Phú Quốc 4 ngày 2 người budget 8 triệu', 'Lịch trình Hội An 2 ngày cuối tuần budget 3 triệu'],
   spa: ['Spa massage giá bình dân?', 'Nail salon gel tốt?', 'Trung tâm dưỡng da uy tín?'],
-  general: ['🌙 Tối nay mình muốn spa + ăn tối ngon, 2 người budget 800k', 'Lịch trình Đà Nẵng 3 ngày 2 người budget 5 triệu', 'Ăn gì ngon hôm nay gần đây?'],
+  general: ['Mình đang phân vân giữa hai lời mời làm việc, giúp mình cân nhắc nhé', 'Giải thích giúp mình lãi kép là gì, cho ví dụ dễ hiểu', 'Lịch trình Đà Nẵng 3 ngày 2 người budget 5 triệu'],
 }
 
 // English mirror of QUICK_PROMPTS — picked by the active locale. Vietnamese
@@ -90,7 +150,7 @@ const QUICK_PROMPTS_EN: Record<string, string[]> = {
   entertainment: ['IMAX movie theaters?', 'Karaoke places with private rooms?', 'Rooftop bars with a great view?'],
   travel: ['Đà Nẵng itinerary, 3 days, 2 people, 5M budget', 'Phú Quốc itinerary, 4 days, 2 people, 8M budget', 'Hội An weekend itinerary, 2 days, 3M budget'],
   spa: ['Affordable massage spas?', 'Good gel nail salons?', 'Trusted skincare centers?'],
-  general: ['🌙 Tonight: a nice spa + dinner for 2, budget 800k', 'Đà Nẵng itinerary, 3 days, 2 people, 5M budget', "What's good to eat nearby today?"],
+  general: ["I'm torn between two job offers — help me weigh them", 'Explain compound interest with an easy example', 'Đà Nẵng itinerary, 3 days, 2 people, 5M budget'],
 }
 
 type CTAButton = import('@/lib/structuredContent/parseCta').CTAButton
@@ -475,6 +535,25 @@ export function isImageUrl(url: string): boolean {
   } catch { return false }
 }
 const looksLikeUrl = (s: string) => /^\s*(https?:\/\/|www\.)/i.test(s)
+/** CONSULT_V3 layouts: the answer's first paragraph and the rest (the media block goes between them, as ChatGPT places it). */
+export function splitLeadParagraph(text: string): [string, string] {
+  const i = text.search(/\n\s*\n/)
+  return i < 0 ? [text, ''] : [text.slice(0, i).trimEnd(), text.slice(i).replace(/^\s+/, '')]
+}
+/** The tapped bold text names the panel's subject (same words, case and accents ignored; "Elon Musk" ⊂ "Elon Reeve Musk" counts). */
+export function sameSubjectName(a: string, b: string): boolean {
+  const f = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/gi, 'd').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
+  const x = f(a), y = f(b)
+  return x.length >= 3 && y.length >= 3 && (x === y || y.includes(x) || x.includes(y))
+}
+/** CONSULT_V3 UAT build only (inlined at build time): closing decision questions render as a choice card, citations group into one chip. */
+const CONSULT_V3_CHOICES = process.env.NEXT_PUBLIC_CONSULT_V3 === '1'
+/** TAPPY_ANSWER_V4 build flag (owner 19/10): answers laid out as an article (ArticleAnswer) with the server's item pictures and comparison cards. */
+const ANSWER_V4 = process.env.NEXT_PUBLIC_TAPPY_ANSWER_V4 === '1'
+/** A source chip whose label is just its own host ("vnexpress.net", the citation step's label) reads better as the outlet's name. */
+const labelIsOwnHost = (label: string, url: string) => {
+  try { return label.trim().toLowerCase().replace(/^www\./, '') === new URL(url.replace(/&amp;/g, '&')).hostname.toLowerCase().replace(/^www\./, '') } catch { return false }
+}
 const LINK_LABELS: Array<[RegExp, string]> = [
   [/(^|\.)(google\.[a-z.]+|goo\.gl|maps\.app\.goo\.gl)$/, 'Google Maps'],
   [/(^|\.)(facebook\.com|fb\.com|fb\.me)$/, 'Facebook'],
@@ -502,12 +581,74 @@ export function linkLabelFor(url: string): string {
     return host.length > 28 ? `${host.slice(0, 26)}…` : host
   } catch { return 'Link' }
 }
+/**
+ * Tappy's own signed click redirect (`/go/at`) is built with the deployment's `NEXT_PUBLIC_SITE_URL` (https only) and signed with that
+ * environment's secret. Opened on a DIFFERENT origin (UAT / preview / localhost, whose site URL is the production host) it is rejected there and
+ * the button lands on a dead page (UAT 2026-10-07, "Xem giá trên Trip.com / Traveloka"). In the web chat it is therefore opened on the origin the
+ * person is on — a relative href. Every other link is untouched.
+ */
+export function sameSiteClickHref(url: string): string {
+  try {
+    const u = new URL(url.replace(/&amp;/g, '&'))
+    if (u.pathname !== '/go/at' || !/(^|\.)tappyai\.com$/i.test(u.hostname)) return url
+    return `${u.pathname}${u.search}`
+  } catch { return url }
+}
 /** One link, one chip: never glued to its neighbour, never a raw URL. */
-function linkChip(url: string, label: string): string {
-  return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center align-middle mx-0.5 my-0.5 px-2.5 py-0.5 rounded-full border border-primary-500/40 bg-primary-500/10 text-primary-600 dark:text-primary-300 text-[13px] font-medium no-underline hover:bg-primary-500/20 max-w-full truncate">${label}</a>`
+function linkChip(url: string, label: string, title?: string): string {
+  return `<a href="${sameSiteClickHref(url)}"${title ? ` title="${title.replace(/"/g, '&quot;').replace(/'/g, '&#39;')}"` : ''} target="_blank" rel="noopener noreferrer" class="inline-flex items-center align-middle mx-0.5 my-0.5 px-2.5 py-0.5 rounded-full border border-primary-500/40 bg-primary-500/10 text-primary-600 dark:text-primary-300 text-[13px] font-medium no-underline hover:bg-primary-500/20 max-w-full truncate">${label}</a>`
+}
+
+// ── POST-UAT B1 (UAT-01 raw ``` fences, UAT-08 raw table pipes, 2026-10-09): code blocks, inline code and GFM tables ──────────
+// Code is lifted out FIRST (before bold balancing, link chips, images) into private-use placeholders and put back LAST, escaped:
+// nothing inside a code block is ever turned into a link, bold or an image, and no raw HTML from the model is ever interpreted.
+// A fence still open at the end of the text (mid-stream) renders as code until it closes — never as a stray "```".
+const CODE_MARK = (n: number) => `${n}`
+const CODE_MARK_RE = /(\d+)/g
+function liftCode(content: string): { text: string; blocks: string[] } {
+  const blocks: string[] = []
+  const put = (html: string) => { blocks.push(html); return CODE_MARK(blocks.length - 1) }
+  let text = content.replace(/(^|\n)[ \t]*```[ \t]*([\w#+.-]{0,20})[^\n]*\n([\s\S]*?)(?:\n[ \t]*```[ \t]*(?=\n|$)|$(?![\s\S]))/g, (_m, pre: string, lang: string, body: string) => {
+    const label = lang ? `<div class="text-[11px] uppercase tracking-wide text-gray-400 dark:text-gray-500 px-3 pt-2">${escapeHtml(lang)}</div>` : ''
+    return `${pre}${put(`<div class="my-2 rounded-xl bg-gray-100 dark:bg-gray-800/80 border border-gray-200 dark:border-gray-700 overflow-hidden" data-md="code">${label}<pre class="m-0 px-3 py-2 overflow-x-auto text-[13px] leading-relaxed whitespace-pre"><code${lang ? ` data-lang="${escapeHtml(lang)}"` : ''}>${escapeHtml(body.replace(/\n$/, ''))}</code></pre></div>`)}`
+  })
+  // inline `code` (single backticks, one line)
+  text = text.replace(/`([^`\n]{1,200})`/g, (_m, c: string) => put(`<code class="px-1 py-0.5 rounded bg-gray-100 dark:bg-gray-800 text-[0.92em]">${escapeHtml(c)}</code>`))
+  return { text, blocks }
+}
+const TABLE_SEP = /^\s*\|?\s*:?-{2,}:?\s*(?:\|\s*:?-{2,}:?\s*)+\|?\s*$/
+const cellsOf = (row: string) => row.trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map(c => c.trim())
+/** GFM tables → a scrollable <table> on ONE line (the message body is pre-wrap: newlines inside the markup would render). */
+function renderTables(escaped: string): string {
+  const lines = escaped.split('\n')
+  const out: string[] = []
+  for (let i = 0; i < lines.length; i++) {
+    if (i + 1 < lines.length && /\|/.test(lines[i]) && TABLE_SEP.test(lines[i + 1])) {
+      const head = cellsOf(lines[i])
+      const align = cellsOf(lines[i + 1]).map(c => /^:-+:$/.test(c) ? 'center' : /-:$/.test(c) ? 'right' : 'left')
+      const rows: string[][] = []
+      let j = i + 2
+      while (j < lines.length && /\|/.test(lines[j]) && lines[j].trim()) { rows.push(cellsOf(lines[j])); j++ }
+      const td = (c: string, k: number, tag: 'th' | 'td') => `<${tag} class="px-3 py-1.5 border-b border-gray-200 dark:border-gray-700${tag === 'th' ? ' font-semibold bg-gray-50 dark:bg-gray-800/60' : ''}" style="text-align:${align[k] ?? 'left'}">${c}</${tag}>`
+      out.push(`<div class="my-2 overflow-x-auto max-w-full" data-md="table"><table class="text-[13px] border-collapse min-w-full"><thead><tr>${head.map((c, k) => td(c, k, 'th')).join('')}</tr></thead><tbody>${rows.map(r => `<tr>${head.map((_, k) => td(r[k] ?? '', k, 'td')).join('')}</tr>`).join('')}</tbody></table></div>`)
+      i = j - 1
+      continue
+    }
+    out.push(lines[i])
+  }
+  return out.join('\n')
 }
 
 export function formatMessage(content: string) {
+  const lifted = liftCode(content)
+  return formatMessageBody(lifted.text)
+    .replace(CODE_MARK_RE, (_m, n: string) => lifted.blocks[Number(n)] ?? '')
+    // The body is pre-wrap: a newline next to a BLOCK (code / table) would paint an empty line above and below it.
+    .replace(/\n+(<div class="my-2[^"]*"[^>]*data-md="(?:code|table)")/g, '$1')
+    .replace(/(<\/(?:pre|table)><\/div>)\n+/g, '$1')
+}
+
+function formatMessageBody(content: string) {
   // Images first — render before link processing to avoid conflicts. Group any run of
   // consecutive image lines (a place's photo gallery) into one horizontally-scrollable
   // strip instead of stacking them vertically, so 3 photos swipe left/right like a carousel.
@@ -525,21 +666,44 @@ export function formatMessage(content: string) {
     .replace(/(^|[^!])\[([^\]\n]*)\]\((https?:\/\/[^\s)]+)\)/g, (m, pre: string, label: string, url: string) => isImageUrl(url) ? `${pre}![${label}](${url})` : m)
     // A bare image URL on its own is a photo too.
     .replace(/(^|\s)(https?:\/\/[^\s<)\]]+)/g, (m, pre: string, url: string) => isImageUrl(url) ? `${pre}![](${url})` : m)
-  const withImages = escapeHtml(normalized).replace(
+  const withImages = renderTables(escapeHtml(normalized)).replace(
     /(?:!\[[^\]]*\]\(https?:\/\/[^\s)]+\)[ \t]*\n?)+/g,
     (block) => {
       const imgs = [...block.matchAll(/!\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/g)]
       if (imgs.length === 0) return block
-      const imgTags = imgs.map(([, alt, src]) =>
+      // Gate 2 N1/N2 (D-N3): the browser loads an image only from a safe https URL (no http:, internal host, private IP or userinfo) — covers
+      // stored messages written before the server-side checks. An unsafe one is dropped, never shown as a link. `src` is HTML-escaped here.
+      const safe = imgs.filter(([, , src]) => isSafeHttpsUrl(src.replace(/&amp;/g, '&')))
+      if (safe.length === 0) return '\n'
+      const imgTags = safe.map(([, alt, src]) =>
         `<img src="${src}" alt="${alt}" data-zoomable="true" style="width:200px;height:160px;object-fit:cover;border-radius:12px;flex-shrink:0;scroll-snap-align:start;cursor:zoom-in" loading="lazy" onerror="this.style.display='none'"/>`
       ).join('')
       return `\n<div style="display:flex;gap:8px;overflow-x:auto;margin:8px 0;padding-bottom:2px;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory">${imgTags}</div>\n`
     }
   )
-  return withImages
+  // CONSULT_V3 layouts: the citation step's " ([a](u1), [b](u2))" becomes ONE source chip "a +1" (title lists every source); a single cited
+  // source loses its brackets. Off the build flag: unchanged.
+  // A news host reads as its outlet's name (sourceLabels.ts); the grouped path only, so the default chips are unchanged.
+  const newsName = (url: string): string | null => {
+    try {
+      const host = new URL(url.replace(/&amp;/g, '&')).hostname.toLowerCase().replace(/^www\./, '')
+      return NEWS_SOURCE_LABELS.find(([re]) => re.test(host))?.[1] ?? null
+    } catch { return null }
+  }
+  const nice = (label: string, url: string) => newsName(url) ?? (looksLikeUrl(label) || labelIsOwnHost(label, url) ? linkLabelFor(url) : label)
+  const grouped = CONSULT_V3_CHOICES
+    ? withImages.replace(/\s?\((\[[^\]\n]+\]\(https?:\/\/[^\s)]+\)(?:\s*,\s*\[[^\]\n]+\]\(https?:\/\/[^\s)]+\))*)\)/g, (_m, inner: string) => {
+      const links = [...inner.matchAll(/\[([^\]\n]+)\]\((https?:\/\/[^\s)]+)\)/g)].map(m => ({ label: nice(m[1], m[2]), url: m[2] }))
+      const names = [...new Set(links.map(l => l.label))]
+      return ` ${linkChip(links[0].url, links.length > 1 ? `${links[0].label} +${links.length - 1}` : links[0].label, names.join(', '))}`
+    })
+    : withImages
+  return grouped
     .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, (_m, label: string, url: string) => linkChip(url, looksLikeUrl(label) ? linkLabelFor(url) : label))
     // A bare URL is never printed: it becomes a chip named for where it goes ("Facebook", "Google Maps").
-    .replace(/(^|[^"'>=])(https?:\/\/[^\s<]+)/g, (_m, pre: string, url: string) => `${pre}${linkChip(url, linkLabelFor(url))}`)
+    // Only in TEXT, never inside a tag: a URL inside an attribute value (a photo's alt) became a nested <a> whose quote closed the attribute,
+    // and the rest of the URL parsed as attributes — an `on…=` handler. Tags pass through untouched.
+    .replace(/(<[^>]*>)|(^|[^"'>=])(https?:\/\/[^\s<]+)/g, (_m, tag: string | undefined, pre: string, url: string) => tag ?? `${pre}${linkChip(url, linkLabelFor(url))}`)
     .replace(/^### (.+)$\n?/gm, '<div class="font-semibold mt-3 mb-1">$1</div>')
     .replace(/^## (.+)$\n?/gm, '<div class="font-semibold text-base mt-3 mb-1">$1</div>')
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
@@ -681,7 +845,11 @@ export default function ChatInterface({
 }: ChatInterfaceProps) {
   const router = useRouter()
   const { t, locale } = useTranslation()
-  const bottomRef = useRef<HTMLDivElement>(null)
+  // A1 (2026-10-02): the thread stays pinned to its end while it grows (see useStickToBottom).
+  const { scrollRef, contentRef, pin, pinned } = useStickToBottom<HTMLDivElement, HTMLDivElement>()
+  // A reply stream that closed without its finish frame (streamCut.ts): the UI offers «answer again».
+  const [streamCut, setStreamCut] = useState(false)
+  const cutAwareFetch = useMemo(() => withCutWatch(withCompactedHistory, () => setStreamCut(true)), [])
   const inputRef = useRef<HTMLTextAreaElement>(null)
   // Tracks the in-flight save so internal_booking clicks can await it before
   // navigating — prevents the race where the user clicks before router.replace
@@ -726,7 +894,17 @@ export default function ChatInterface({
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null)
   const [zoomedImage, setZoomedImage] = useState<string | null>(null)
+  // CONSULT_V3 layouts: the subject panel (Wikipedia summary) open over the chat, or none.
+  const [entityPanel, setEntityPanel] = useState<MediaEntity | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  // 31/10 (owner, ChatGPT's composer): the mode the person picks - web search, thinking, deep research. Sent with every request of this chat
+  // until turned off; the server decides what each mode may do (clientInput.readChatMode, route.ts).
+  // 01/11 (owner chose "C", like ChatGPT Go): the default is Auto (Tappy decides when to think); "Trả lời nhanh" is Chat.
+  const [chatMode, setChatMode] = useState<'auto' | 'chat' | 'web' | 'think' | 'deep'>('auto')
+  const [plusOpen, setPlusOpen] = useState(false)
+  // the plan decides whether Deep Research is offered (Free: no); whole menu until the plan is known
+  const deepOffered = useDeepResearchOffered()
+  useEffect(() => { if (!deepOffered) setChatMode(m => (m === 'deep' ? 'auto' : m)) }, [deepOffered])
   const recognitionRef = useRef<SpeechRecognition | null>(null)
   // The input text captured when dictation starts, so interim results append to
   // (not clobber) whatever the user already typed.
@@ -735,13 +913,15 @@ export default function ChatInterface({
   const voiceSpokeRef = useRef(false)
 
   interface UserLocation { lat: number; lng: number; address: string; ts?: number }
-  const [userLocation, setUserLocation] = useState<UserLocation | null>(() => {
-    if (typeof window === 'undefined') return null
-    try {
-      const s = localStorage.getItem('tappy_location')
-      return s ? (JSON.parse(s) as UserLocation) : null
-    } catch { return null }
-  })
+  // A1 (2026-10-02): NOT read from localStorage during render. The server renders no location chip, so a client whose first render had one
+  // failed hydration on every reload of /chat/<id> (React #418/#423 on UAT: the server HTML is thrown away and the page re-rendered from scratch).
+  // The stored location is applied right after mount instead; nothing sends before then.
+  const [userLocation, setUserLocation] = useState<UserLocation | null>(null)
+  // Round 42: only a fix taken in THIS tab session is the current location; one stored by an earlier session stays stored, unsent.
+  useEffect(() => {
+    const loc = readSessionFix()
+    if (loc) setUserLocation(loc)
+  }, [])
 
   // User-chosen response style (Personalization — MFS 2.6). Set on /profile/tappy-knows,
   // stored in localStorage, sent with each chat request. Empty = adaptive default.
@@ -807,20 +987,7 @@ export default function ChatInterface({
   // The remount after the first reply (/chat → /chat/{id}) is the SAME chat, so it adopts the pending id;
   // reopening a chat from history reuses the id stored for its row. A chat from before this has none →
   // a new id, and the server rebuilds from the history.
-  const [chatSessionId] = useState<string>(() => {
-    const fresh = () => (typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : `${Date.now().toString(16).padStart(8, '0').slice(-8)}-0000-4000-8000-${Math.random().toString(16).slice(2, 14).padEnd(12, '0')}`)
-    if (typeof window === 'undefined') return fresh()
-    try {
-      const slot = conversationId ? `tappy_chat_session:${conversationId}` : null
-      const own = slot ? localStorage.getItem(slot) : null
-      if (own) return own
-      const pending = isContinuation ? sessionStorage.getItem('tappy_chat_session:pending') : null
-      const id = pending ?? fresh()
-      if (slot) { localStorage.setItem(slot, id); sessionStorage.removeItem('tappy_chat_session:pending') }
-      else sessionStorage.setItem('tappy_chat_session:pending', id)
-      return id
-    } catch { return fresh() }
-  })
+  const chatSessionId = useChatSessionId(conversationId, isContinuation)
 
   // A signed-out visitor has no identity, and the server (correctly) refuses to
   // scope evidence to nobody — so without this, grounded follow-ups would be off
@@ -850,6 +1017,14 @@ export default function ChatInterface({
   // can name the result they act on.
   const pendingResultIdRef = useRef<string | null>(null)
   const resultIdsRef = useRef<Map<string, string>>(new Map())
+  // CONSULTATIVE_IN_AGENT: the server asked (x-tappy-reveal) for the settled reply to be revealed progressively — display only (lib/chat/useFinishReveal).
+  const [revealMode, setRevealMode] = useState(false)
+  // C2 P2 6.2 (lib/chat/streamedText, NEXT_PUBLIC_C2_KEEP_STREAMED_TEXT): when the reply being received first showed text, and — once per reply,
+  // at its finish — whether it is kept exactly as streamed. Flag off: keep() is always false (the default path is unchanged).
+  const streamKeeperRef = useRef<StreamedTextKeeper | null>(null)
+  if (!streamKeeperRef.current) streamKeeperRef.current = new StreamedTextKeeper()
+  // C2: browser-side latency marks (observation only, off unless NEXT_PUBLIC_C2_LATENCY_MARKS=1 / localStorage.tappy_latency=1). Set after useChat returns.
+  const latencyOnResponseRef = useRef<() => void>(() => {})
   const { messages, input, handleInputChange, handleSubmit, isLoading, setInput, append, reload, stop, error, setMessages } = useChat({
     api: '/api/chat',
     /**
@@ -868,15 +1043,20 @@ export default function ChatInterface({
     // blocks; over budget, the oldest turns go) so a long thread never hits the server's input
     // budget and 413s on every turn. Only the request body changes — see lib/chat/requestHistory.
     // Done in `fetch` rather than experimental_prepareRequestBody, which would drop `body` below.
-    fetch: withCompactedHistory,
+    fetch: cutAwareFetch,
     body: {
       ...(userLocation ? { userLocation: { lat: userLocation.lat, lng: userLocation.lng, address: userLocation.address } } : {}),
       ...(userPreferences.length > 0 ? { userPreferences } : {}),
       ...((responseStyle.tone || responseStyle.length) ? { responseStyle } : {}),
       chatSessionId,
       ...(initialContext ? { context: initialContext } : {}),
+      mode: chatMode,
     },
     onResponse: (response) => {
+      latencyOnResponseRef.current()
+      // 31/10: a deep research is one question (as ChatGPT's); the composer goes back to Chat once the request is accepted
+      setChatMode(m => (m === 'deep' ? 'auto' : m))
+      setRevealMode(response.headers.get('x-tappy-reveal') === '1')
       // Latest key wins — see the note on setEvidenceKey.
       const eid = response.headers.get('X-Decision-Evidence-Id')
       if (eid) setEvidenceKey(eid)
@@ -893,7 +1073,9 @@ export default function ChatInterface({
       // UAT3: one reply, not two. A reply that streamed the same answer twice (lib/chat/replyRepeat)
       // is collapsed to its last version — on screen and in what is saved. The server guard
       // (stepRepeatGuard) catches the multi-step shape; this catches a repeat inside one step.
-      const collapsed = typeof finished.content === 'string' ? cleanRepeats(finished.content) : finished.content
+      // C2 P2 6.2 (F-3 b): text the user already read while it streamed is kept exactly as received (flag on; off → cleaned as before).
+      const keepAsStreamed = streamKeeperRef.current!.keep(finished.id, Date.now())
+      const collapsed = typeof finished.content === 'string' && !keepAsStreamed ? cleanRepeats(finished.content) : finished.content
       const message = collapsed === finished.content ? finished : { ...finished, content: collapsed }
       if (message !== finished) setMessages(prev => prev.map(m => (m.id === finished.id ? message : m)))
       if (pendingResultIdRef.current) {
@@ -984,9 +1166,16 @@ export default function ChatInterface({
   // out fluidly instead of jumping in bursts. Called unconditionally at the top
   // level (hooks rule); only the last streaming message uses the smoothed value.
   const lastAssistantRaw = lastMsg && lastMsg.role === 'assistant' && typeof lastMsg.content === 'string'
-    ? parsePlacesMarker(parseShoppingMarker(parseFollowups(parseCTA(parsePlan(lastMsg.content).text).text).text).text).text
+    ? parseMediaBlocks(parsePlacesMarker(parseShoppingMarker(parseFollowups(parseCTA(parsePlan(lastMsg.content).text).text).text).text).text).text
     : ''
   const smoothedLastText = useSmoothText(lastAssistantRaw, isLoading && lastMsg?.role === 'assistant')
+  // C2 P2 6.2: note when the reply being received first shows text (once per reply), and — flag on — never re-reveal a reply the user already
+  // read while it streamed (the finish reveal restarts from 0: it would hide what is on screen and type it again). Decided once, at the finish.
+  if (isLoading && lastMsg?.role === 'assistant' && lastAssistantRaw) streamKeeperRef.current.noteShown(lastMsg.id, Date.now())
+  const revealAllowed = revealMode && !(!isLoading && lastMsg?.role === 'assistant' && streamKeeperRef.current.keep(lastMsg.id, Date.now()))
+  const finishReveal = useFinishReveal(lastAssistantRaw, isLoading, revealAllowed, markdownSafeRevealEnd)
+  // C2: what the user can actually read now = the reveal's prefix while it runs, else the (smoothed) streamed text.
+  latencyOnResponseRef.current = useLatencyMarks(finishReveal.revealing ? finishReveal.text : (isLoading ? smoothedLastText : lastAssistantRaw), isLoading, finishReveal.revealing).onResponse
 
   // Cancel a queued voice auto-send (grace window): used when the user edits the
   // text, taps "sửa", starts a new dictation, sends manually, or unmounts.
@@ -1165,42 +1354,31 @@ export default function ChatInterface({
   const handleNearbySearch = useCallback(() => {
     const send = () => {
       posthog.capture('nearby_search_clicked')
-      append({ role: 'user', content: 'Gợi ý quán ăn và địa điểm vui chơi gần mình nhé' })
+      // The "📍 Nearby" chip is a place-search TOOL button — what it asks for is the place search, not a statement of Tappy's scope.
+      // In the session's language (29/10: an English session sent the Vietnamese sentence as the user's message).
+      append({ role: 'user', content: t('chat.chipNearbyAsk') })
     }
 
-    if (userLocation) { send(); return }
-
-    // Try localStorage first (set by LocationProvider but not yet in state)
-    try {
-      const stored = localStorage.getItem('tappy_location')
-      if (stored) {
-        const loc = JSON.parse(stored) as UserLocation
-        flushSync(() => setUserLocation(loc))
-        send(); return
-      }
-    } catch {}
-
-    // Request fresh GPS
+    // Round 42: always a NEW device fix (maximumAge 0). Refused / timed out → send WITHOUT a location (never an older fix); the server asks.
     if (!navigator.geolocation) { send(); return }
-    navigator.geolocation.getCurrentPosition(
-      async (pos) => {
-        const { latitude: lat, longitude: lng } = pos.coords
-        let address = ''
-        try {
-          const resp = await fetch(
-            `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`,
-            { headers: { 'Accept-Language': 'vi', 'User-Agent': 'TappyAI/1.0 (huypham.sm@gmail.com)' } }
-          )
-          if (resp.ok) { const d = await resp.json(); address = (d?.display_name as string) || '' }
-        } catch {}
-        const loc: UserLocation = { lat, lng, address, ts: Date.now() }
-        localStorage.setItem('tappy_location', JSON.stringify(loc))
-        flushSync(() => setUserLocation(loc))
-        send()
-      },
-      () => send() // denied — send anyway
-    )
-  }, [userLocation, append])
+    void requestFreshFix().then((loc) => {
+      flushSync(() => setUserLocation(loc))
+      send()
+    })
+  }, [append, t])
+
+  // Round 42 (D2): a typed "gần tôi / quanh đây …" message asks for a fresh fix before it is sent, like the 📍 chip. Other messages send at once.
+  const freshFixPendingRef = useRef(false)
+  const submitWithCurrentLocation = useCallback((submit: () => void) => {
+    if (!isNearMeRequest(input) || !navigator.geolocation) { submit(); return }
+    if (freshFixPendingRef.current) return
+    freshFixPendingRef.current = true
+    void requestFreshFix().then((loc) => {
+      freshFixPendingRef.current = false
+      flushSync(() => setUserLocation(loc))
+      submit()
+    })
+  }, [input])
 
   // Read Aloud — audio synthesized server-side, so every platform hears the same Tappy voice.
   // The language of each reply is decided by the backend, not here.
@@ -1320,9 +1498,12 @@ export default function ChatInterface({
     } catch { /* storage unavailable — nothing to restore */ }
   }
 
+  // A message the user just sent always brings the view to the end; the growth of the thread afterwards is followed by
+  // useStickToBottom's observer (not by a one-off smooth scroll aimed before the content had finished growing).
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages])
+    if (messages[messages.length - 1]?.role === 'user') pin()
+  }, [messages, pin])
+  useEffect(() => { if (isLoading) setStreamCut(false) }, [isLoading])
 
   // Auto-focus input on mount and when conversationId changes
   useEffect(() => {
@@ -1351,19 +1532,61 @@ export default function ChatInterface({
     })
   }
 
+  // 31/10: an image or a PDF (the server reads the PDF's text: pdfAttachments.ts). The same limits as the server, said before sending.
+  const [attachError, setAttachError] = useState<string | null>(null)
+  // 01/11: the attach button, a file dropped on the chat and a picture pasted into the box all end here (composerAttachment.ts rules).
+  const acceptAttachment = useCallback((file: File) => {
+    const check = checkAttachment(file)
+    if (!check.ok) { setAttachError(t(check.error)); return }
+    setAttachError(null)
+    setImageFile(file)
+    setImagePreviewUrl(check.isPdf ? null : URL.createObjectURL(file))
+  }, [t])
   const handleImageSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
-    if (!file) return
-    setImageFile(file)
-    const url = URL.createObjectURL(file)
-    setImagePreviewUrl(url)
     // Reset so same file can be re-selected
     e.target.value = ''
+    if (file) acceptAttachment(file)
+  }, [acceptAttachment])
+  // A file dragged over the chat: the hint shows while it is over any part of the chat. enter / leave are counted (a child element fires its own pair;
+  // Safari gives no relatedTarget), so the hint does not flicker. While Tappy is answering the box is disabled: the drop is still taken over (the
+  // browser would otherwise open the file) but nothing is attached and no hint shows.
+  const [dragOver, setDragOver] = useState(false)
+  const dragDepth = useRef(0)
+  const onChatDragEnter = useCallback((e: React.DragEvent) => {
+    if (!dragHasFiles(e.dataTransfer)) return
+    dragDepth.current += 1
+    if (!isLoading) setDragOver(true)
+  }, [isLoading])
+  const onChatDragOver = useCallback((e: React.DragEvent) => {
+    if (!dragHasFiles(e.dataTransfer)) return
+    e.preventDefault()
   }, [])
+  const onChatDragLeave = useCallback((e: React.DragEvent) => {
+    if (!dragHasFiles(e.dataTransfer)) return
+    dragDepth.current = Math.max(0, dragDepth.current - 1)
+    if (dragDepth.current === 0) setDragOver(false)
+  }, [])
+  const onChatDrop = useCallback((e: React.DragEvent) => {
+    if (!dragHasFiles(e.dataTransfer)) return
+    e.preventDefault()
+    dragDepth.current = 0
+    setDragOver(false)
+    if (isLoading) return
+    const file = firstAttachable(e.dataTransfer.files)
+    if (file) acceptAttachment(file)
+  }, [acceptAttachment, isLoading])
+  const onComposerPaste = useCallback((e: React.ClipboardEvent) => {
+    const file = pastedAttachment(e.clipboardData)
+    if (!file) return // pasted text (and anything Tappy cannot read) goes into the box as before
+    e.preventDefault()
+    acceptAttachment(file)
+  }, [acceptAttachment])
 
   const clearImage = useCallback(() => {
     setImageFile(null)
     setImagePreviewUrl(null)
+    setAttachError(null)
   }, [])
 
   // Revoke the object URL whenever it changes (re-selection) or on unmount, so a
@@ -1378,15 +1601,17 @@ export default function ChatInterface({
     cancelAutoSend() // a manual send supersedes any queued voice auto-send
     if (!input.trim() && !imageFile) return
     posthog.capture('chat_message_sent', { input_method: 'button', has_image: !!imageFile })
-    if (imageFile) {
-      const dt = new DataTransfer()
-      dt.items.add(imageFile)
-      handleSubmit(e, { experimental_attachments: dt.files })
-      clearImage()
-    } else {
-      handleSubmit(e)
-    }
-  }, [input, imageFile, handleSubmit, clearImage, cancelAutoSend])
+    submitWithCurrentLocation(() => {
+      if (imageFile) {
+        const dt = new DataTransfer()
+        dt.items.add(imageFile)
+        handleSubmit(e, { experimental_attachments: dt.files })
+        clearImage()
+      } else {
+        handleSubmit(e)
+      }
+    })
+  }, [input, imageFile, handleSubmit, clearImage, cancelAutoSend, submitWithCurrentLocation])
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -1395,14 +1620,16 @@ export default function ChatInterface({
       if ((input.trim() || imageFile) && !isLoading) {
         posthog.capture('chat_message_sent', { input_method: 'keyboard', has_image: !!imageFile })
         const fakeForm = { preventDefault: () => {} } as React.FormEvent<HTMLFormElement>
-        if (imageFile) {
-          const dt = new DataTransfer()
-          dt.items.add(imageFile)
-          handleSubmit(fakeForm, { experimental_attachments: dt.files })
-          clearImage()
-        } else {
-          handleSubmit(fakeForm)
-        }
+        submitWithCurrentLocation(() => {
+          if (imageFile) {
+            const dt = new DataTransfer()
+            dt.items.add(imageFile)
+            handleSubmit(fakeForm, { experimental_attachments: dt.files })
+            clearImage()
+          } else {
+            handleSubmit(fakeForm)
+          }
+        })
       }
     }
   }
@@ -1428,7 +1655,12 @@ export default function ChatInterface({
   }, [category, locale])
 
   return (
-    <div className="relative flex flex-col h-full">
+    <div className="relative flex flex-col h-full" onDragEnter={onChatDragEnter} onDragOver={onChatDragOver} onDragLeave={onChatDragLeave} onDrop={onChatDrop} data-chat-dropzone>
+      {dragOver && (
+        <div className="pointer-events-none absolute inset-2 z-50 flex items-center justify-center rounded-3xl border-2 border-dashed border-primary-500 bg-primary-500/10 text-sm font-medium text-primary-600 dark:text-primary-300" data-print-hide data-chat-drop-hint>
+          {t('attach.drop')}
+        </div>
+      )}
       {voiceOpen && (
         <VoiceOverlay listening={isListening} text={voiceText} error={voiceError} firstUse={voiceFirstUse} onToggle={toggleVoice} onCancel={closeVoice} onSend={sendVoice} />
       )}
@@ -1440,8 +1672,10 @@ export default function ChatInterface({
           }}
         />
       )}
-      <div className="flex-1 overflow-y-auto">
-        <div className="max-w-container-content mx-auto w-full px-4 py-5">
+      {/* owner 02/11: the pane and its jump buttons (to the top / to the end, with the typing dots while Tappy answers below) */}
+      <div className="relative flex min-h-0 flex-1 flex-col">
+      <div ref={scrollRef} data-chat-scroll style={{ overflowAnchor: "none" }} className="flex-1 overflow-y-auto">
+        <div ref={contentRef} className="max-w-container-content mx-auto w-full px-4 py-5">
           {messages.length === 0 && (
             <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 animate-fade-in">
               <div className="text-center">
@@ -1522,6 +1756,17 @@ export default function ChatInterface({
           >
             {messages.map((msg, msgIdx) => {
               if (msg.role === 'assistant') {
+                // A1 (2026-10-02): every assistant message renders inside its OWN error boundary, parsing included
+                // (Deferred runs the callback inside the boundary), so one broken message can never blank the chat frame.
+                return (
+                  <MessageBoundary
+                    key={msg.id}
+                    resetKey={typeof msg.content === 'string' ? msg.content.length : 0}
+                    rawText={typeof msg.content === 'string' ? msg.content : ''}
+                    labels={{ title: t('chat.messageBroken'), retry: t('chat.messageRetry'), copy: t('chat.messageCopy'), copied: t('chat.messageCopied') }}
+                    onError={(e) => { console.error('chat message render failed:', e); try { posthog.capture('chat_message_render_failed', { message: String(e?.message).slice(0, 120) }) } catch { /* analytics only */ } }}
+                  >
+                    <Deferred render={() => {
                 const { text: textAfterPlan, plan } = parsePlan(msg.content)
                 // Validated, not raw: a model-authored purchase promise backed by a
                 // homepage or a search page is downgraded to the honest search label.
@@ -1537,7 +1782,18 @@ export default function ChatInterface({
                 // is unconditional and independent of decode (fixture rule 1).
                 const { text: textAfterPlaces } = parsePlacesMarker(textAfterShopping)
                 // Consult ASK turn (owner 2026-09-29): questions with their own chips; stripped always.
-                const { text, questions: askQuestions } = parseAsk(textAfterPlaces)
+                // CONSULT_V3 layouts: the server's media block (news pictures / subject card); stripped always, rendered when valid.
+                const { text: textAfterMedia, blocks: mediaBlocks } = parseMediaBlocks(textAfterPlaces)
+                const newsMedia = mediaBlocks.find(b => b.kind === 'news')
+                const entityMedia = mediaBlocks.find(b => b.kind === 'entity')
+                const entitiesMedia = mediaBlocks.find(b => b.kind === 'entities')
+                const optionsMedia = mediaBlocks.find(b => b.kind === 'options')
+                const { text, questions: askQuestions } = parseAsk(textAfterMedia)
+                // TAPPY_ANSWER_V4: the item pictures arrive as an ANNOTATION (never stored text — web images are live-only); kept for the tab's life
+                // across the save navigation, like the place card. Flag off: nothing is read.
+                const liveDocMedia = ANSWER_V4 ? readDocMedia(msg.annotations as unknown[] | undefined) : null
+                if (liveDocMedia) rememberDocMedia(msg.content, liveDocMedia)
+                const docImages = ANSWER_V4 ? (liveDocMedia ?? recallDocMedia(msg.content))?.items ?? [] : []
                 /**
                  * The place decision, from this message's ANNOTATIONS.
                  *
@@ -1582,17 +1838,83 @@ export default function ChatInterface({
                 // the marker from what's shown; when this is a shopping decision,
                 // also strip the injected product-image flood (keeping the first as
                 // the hero) so the decision replaces the raw grid.
-                const rawBody = isLoading && isLastMessage ? parsePlacesMarker(parseShoppingMarker(smoothedLastText).text).text : text
-                const { text: bodyText, firstImage: heroImage } = shopView
+                const rawBody = isLoading && isLastMessage ? parsePlacesMarker(parseShoppingMarker(smoothedLastText).text).text
+                  : isLastMessage && finishReveal.revealing ? parsePlacesMarker(parseShoppingMarker(finishReveal.text).text).text : text
+                const { text: bodyTextRaw, firstImage: heroImage } = shopView
                   ? stripProductImages(rawBody)
                   : { text: rawBody, firstImage: null }
+                // A3: «Còn N lựa chọn nữa» is shown only under a place card (the cards behind «Xem thêm N chỗ»). No card (a reloaded thread, whose card
+                // annotation is not stored) or a shopping decision (every product is already a card): the line would offer options that are not there.
+                const bodyText = placeView && !shopView ? bodyTextRaw : stripRemainingFooter(bodyTextRaw)
+                // CONSULT_V3 (build flag NEXT_PUBLIC_CONSULT_V3): the latest reply's closing decision question(s) with numbered options become a
+                // choice card (parseChoices.ts) — view only; older replies and streaming text stay prose.
+                const choice = CONSULT_V3_CHOICES && isLastMessage && !isLoading && !finishReveal.revealing && askQuestions.length === 0 ? parseChoiceTail(bodyText) : null
+                // C2 P2 layer 5: the server's END state of this turn (tappy.turn_status.v1: incomplete / interrupted), from the ANNOTATIONS — never
+                // from or into the text, so copy / TTS / the saved message never carry it. Kept across the save navigation like the card above.
+                const liveTurnStatus = readTurnStatus(msg.annotations as unknown[] | undefined)
+                if (liveTurnStatus) rememberTurnStatus(msg.content, liveTurnStatus)
+                const turnStatus = liveTurnStatus ?? recallTurnStatus(msg.content)
+                // 31/10: a deep research's plan and progress (tappy.research.v1), above its report; live-only like the cards above
+                const research = readResearchStatus(msg.annotations as unknown[] | undefined)
+                // owner 31/10: a deep research section's chart (figures checked against their sources) right under its heading
+                const researchCharts = research ? readResearchCharts(msg.annotations as unknown[] | undefined) : []
+                const underHeading = researchCharts.length ? (title: string) => {
+                  const c = researchCharts.find(x => titleKey(x.section) === titleKey(title))
+                  return c ? <figure className="my-3" data-research-chart><img src={chartDataUrl(c, locale)} alt={c.title} className="w-full max-w-2xl rounded-xl border border-gray-200 dark:border-gray-700" /></figure> : null
+                } : undefined
                 return (
                   <div key={msg.id} data-msg-id={msg.id} className="animate-slide-up flex gap-3">
                     <TappyAvatar category={category} active={isLoading && isLastMessage} searching={!!(isLoading && isLastMessage && activeTool)} />
                     <div className="flex-1 min-w-0">
+                      {research && <ResearchCard status={research} report={msg.content} images={docImages} charts={researchCharts} format={formatMessage} />}
                       <div className="text-base leading-[1.6] text-gray-800 dark:text-gray-100 pt-0.5">
-                        <div className={cn('message-content whitespace-pre-wrap', isLoading && isLastMessage && 'streaming-cursor')} onClick={onMessageLinkClick} dangerouslySetInnerHTML={{ __html: formatMessage(bodyText) }} />
+                        {(() => {
+                          // CONSULT_V3 layouts: the news grid / subject card sit right after the answer's first paragraph (as ChatGPT places them);
+                          // tapping the subject's bold name opens the side panel. Without a media block: exactly the former single body.
+                          const shown = choice?.groups.length ? choice.text : bodyText
+                          const settled = !(isLoading && isLastMessage)
+                          const entity = settled && entityMedia?.kind === 'entity' ? entityMedia.entity : null
+                          const news = settled && newsMedia?.kind === 'news' ? newsMedia.items : null
+                          const entities = settled && entitiesMedia?.kind === 'entities' ? entitiesMedia.entities : null
+                          const [lead, rest] = entity || news || entities ? splitLeadParagraph(shown) : [shown, '']
+                          const onBodyClick = (e: React.MouseEvent<HTMLDivElement>) => {
+                            const el = e.target as HTMLElement
+                            if (entity && el.tagName === 'STRONG' && sameSubjectName(el.textContent ?? '', entity.name)) { setEntityPanel(entity); return }
+                            const tapped = el.tagName === 'STRONG' ? entities?.find(x => sameSubjectName(el.textContent ?? '', x.name)) : undefined
+                            if (tapped) { setEntityPanel(tapped); return }
+                            onMessageLinkClick(e)
+                          }
+                          // TAPPY_ANSWER_V4 (build flag, off by default): the article layout — same text, same formatter, block typography and the
+                          // server's item pictures (an annotation, live-only).
+                          if (ANSWER_V4) {
+                            // Owner 28/10 (ChatGPT layout): the item pictures also open the answer as a grid under its first paragraph; the pages it used end it ("Nguồn").
+                            // a deep research report shows its pictures under their own sections only (no opening grid of the same pictures)
+                            const [gLead, gRest] = !entity && !news && !entities && !research && settled && docImages.length >= 3 ? splitLeadParagraph(shown) : [lead, rest]
+                            return (
+                              <>
+                                <ArticleAnswer text={gLead} images={docImages} format={formatMessage} onClick={onBodyClick} under={underHeading}
+                                  className={cn(isLoading && isLastMessage && 'streaming-cursor', (entity || entities) && '[&_strong]:cursor-pointer')} />
+                                {gLead !== lead && <ImageGrid images={docImages} />}
+                                {news && <NewsMediaGrid items={news} />}
+                                {entity && <EntityCard entity={{ ...entity, summary: summaryOpening(entity.summary, 300) }} onOpen={() => setEntityPanel(entity)} />}
+                                {entities && <EntityRow entities={entities} onOpen={x => setEntityPanel(x)} />}
+                                {gRest && <ArticleAnswer text={gRest} images={docImages} format={formatMessage} onClick={onBodyClick} className="mt-3" under={underHeading} />}
+                                {settled && <SourcesFooter text={shown} lang={locale === 'en' ? 'en' : 'vi'} />}
+                              </>
+                            )
+                          }
+                          if (!entity && !news) return <div className={cn('message-content whitespace-pre-wrap', isLoading && isLastMessage && 'streaming-cursor')} onClick={onMessageLinkClick} dangerouslySetInnerHTML={{ __html: formatMessage(shown) }} />
+                          return (
+                            <>
+                              <div className={cn('message-content whitespace-pre-wrap', isLoading && isLastMessage && 'streaming-cursor', entity && '[&_strong]:cursor-pointer')} onClick={onBodyClick} dangerouslySetInnerHTML={{ __html: formatMessage(lead) }} />
+                              {news && <NewsMediaGrid items={news} />}
+                              {entity && <EntityCard entity={entity} onOpen={() => setEntityPanel(entity)} />}
+                              {rest && <div className="message-content whitespace-pre-wrap" onClick={onBodyClick} dangerouslySetInnerHTML={{ __html: formatMessage(rest) }} />}
+                            </>
+                          )
+                        })()}
                       </div>
+                      {optionsMedia?.kind === 'options' && !(isLoading && isLastMessage) && <OptionCards title={optionsMedia.title} options={optionsMedia.options} />}
                       {plan && <TripPlanCard plan={plan} placePhotos={placeView?.items} />}
                       {shopView && (
                         <ShoppingDecision
@@ -1636,6 +1958,14 @@ export default function ChatInterface({
                           />
                         ) : null
                       })()}
+                      {/* C2 P2 layer 5: one fixed status line under a turn the server marked incomplete / interrupted — shown once the reply is
+                          done (and its reveal finished), client copy only (never the server's reason), never part of the answer text. */}
+                      {turnStatus && !(isLoading && isLastMessage) && !(isLastMessage && finishReveal.revealing) && (
+                        <p role="note" data-testid="turn-status" data-status={turnStatus.status} className="mt-2 flex items-start gap-1.5 text-xs leading-relaxed text-amber-700 dark:text-amber-300 animate-fade-in">
+                          <Info size={13} className="mt-0.5 shrink-0" aria-hidden="true" />
+                          <span>{t(turnStatus.status === 'incomplete' ? 'chat.turnIncomplete' : 'chat.turnInterrupted')}</span>
+                        </p>
+                      )}
                       {/* Action bar (copy/share/like/dislike/TTS/regenerate) — only
                           once the reply is done, fading in for a polished finish. */}
                       {!(isLoading && isLastMessage) && (
@@ -1688,7 +2018,7 @@ export default function ChatInterface({
                             return (
                               <div key={i} className="inline-flex items-center gap-1">
                                 <a
-                                  href={btn.url}
+                                  href={sameSiteClickHref(btn.url)}
                                   data-cta-type={btn.type}
                                   target={btn.type === 'internal_booking' ? undefined : '_blank'}
                                   rel={btn.type === 'internal_booking' ? undefined : 'noopener noreferrer'}
@@ -1733,6 +2063,9 @@ export default function ChatInterface({
                           model-authored chips, now introduced so they read as offered refinements
                           rather than as loose buttons under the answer. Shown only alongside a
                           decision, because that is the turn where refining means something. */}
+                      {choice && choice.groups.length > 0 && (
+                        <ChoiceCard groups={choice.groups} onSend={answer => append({ role: 'user', content: answer })} />
+                      )}
                       {askQuestions.length > 0 && isLastMessage && !isLoading && (
                         <AskCard questions={askQuestions} lang={locale} onSend={answer => append({ role: 'user', content: answer })} />
                       )}
@@ -1748,7 +2081,12 @@ export default function ChatInterface({
                             <button
                               key={i}
                               type="button"
-                              onClick={() => { posthog.capture('followup_clicked'); emitResultAction({ action_type: 'follow_up_query', result_id: resultIdsRef.current.get(msg.id) }); append({ role: 'user', content: f }) }}
+                              onClick={() => {
+                                // CONSULT_V3 (UAT 17/10): an "other" chip ("Nơi khác") is the start of the user's own answer, not an answer — it fills
+                                // the composer ("Nơi khác: ") and focuses it instead of sending a message the model can only ask about again.
+                                if (CONSULT_V3_CHOICES && isOtherOption(f)) { setInput(otherPrefill(f)); inputRef.current?.focus(); return }
+                                posthog.capture('followup_clicked'); emitResultAction({ action_type: 'follow_up_query', result_id: resultIdsRef.current.get(msg.id) }); append({ role: 'user', content: f })
+                              }}
                               style={{ animationDelay: `${i * 70}ms` }}
                               className="animate-pop-in inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
                             >
@@ -1760,6 +2098,9 @@ export default function ChatInterface({
                       )}
                     </div>
                   </div>
+                )
+                    }} />
+                  </MessageBoundary>
                 )
               }
               const msgAttachments = (msg as any).experimental_attachments as Array<{ url: string; name?: string; contentType?: string }> | undefined
@@ -1775,11 +2116,18 @@ export default function ChatInterface({
                         className="rounded-2xl rounded-br-md max-w-[240px] max-h-[280px] object-cover border border-white/20 shadow cursor-zoom-in"
                       />
                     ))}
+                    {msgAttachments?.filter(a => a.contentType === 'application/pdf').map((att, i) => (
+                      <div key={`pdf-${i}`} className="inline-flex items-center gap-2 rounded-2xl rounded-br-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200">
+                        <span aria-hidden="true">📄</span>
+                        <span className="max-w-[220px] truncate">{att.name || 'PDF'}</span>
+                      </div>
+                    ))}
                     {(typeof msg.content === 'string' ? msg.content : '').trim() && (
                       <div className="bg-interactive text-white rounded-2xl rounded-br-md px-4 py-2.5 text-base leading-[1.6]">
                         <div className="message-content whitespace-pre-wrap" onClick={onMessageLinkClick} dangerouslySetInnerHTML={{ __html: formatMessage(typeof msg.content === 'string' ? msg.content : '') }} />
                       </div>
                     )}
+                    <UserMessageCopy text={typeof msg.content === 'string' ? msg.content : ''} />
                   </div>
                 </div>
               )
@@ -1808,6 +2156,22 @@ export default function ChatInterface({
                   <span key={progress ? `p:${progress.stage}` : toolHint ? activeTool : thinkHintIdx} className="text-xs text-gray-400 dark:text-gray-500 animate-fade-in" data-testid="turn-progress" data-stage={progress?.stage}>
                     {progress ? progress.text : toolHint ? toolHint[locale === 'en' ? 1 : 0] : THINK_HINTS[thinkHintIdx % THINK_HINTS.length]}
                   </span>
+                </div>
+              </div>
+            )}
+            {/* A reply whose stream closed without its finish frame is half an answer: say so and offer to answer again. */}
+            {streamCut && !error && !isLoading && (
+              <div role="status" data-testid="stream-cut" className="flex gap-3 animate-fade-in">
+                <TappyAvatar category={category} error />
+                <div className="flex-1 min-w-0 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/40 px-4 py-3 text-sm text-amber-800 dark:text-amber-200">
+                  <p className="leading-relaxed">{t('chat.streamCut')}</p>
+                  <button
+                    type="button"
+                    onClick={() => { setStreamCut(false); reload() }}
+                    className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-medium transition-colors"
+                  >
+                    <RotateCcw size={13} /> {t('chat.streamCutRetry')}
+                  </button>
                 </div>
               </div>
             )}
@@ -1899,16 +2263,39 @@ export default function ChatInterface({
               </div>
             )}
           </div>
-          <div ref={bottomRef} />
         </div>
       </div>
-      <div className="flex-shrink-0 px-4 pb-4 pt-2 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-950">
+      <ScrollJumpButtons
+        scrollRef={scrollRef}
+        answering={isLoading}
+        onTop={() => { pinned.current = false; scrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' }) }}
+        onEnd={pin}
+      />
+      </div>
+      <div data-print-hide className="flex-shrink-0 px-4 pb-4 pt-2 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-950">
         {/* Emoji panel overlay — click outside to close */}
         {showEmojiPanel && (
           <div className="fixed inset-0 z-10" onClick={() => setShowEmojiPanel(false)} />
         )}
         {/* Action chips */}
         <div className="max-w-container-content mx-auto w-full flex gap-2 mb-2 overflow-x-auto scrollbar-none">
+          {/* Not a scope: Tappy answers any topic. These two lead the bar so the place/trip tools below are not the whole story. */}
+          <button
+            type="button"
+            disabled={isLoading}
+            onClick={() => { posthog.capture('chat_message_sent', { input_method: 'advice_chip' }); setInput(t('chat.chipAdvicePrefill')) }}
+            className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 border border-purple-200 dark:border-purple-800 hover:bg-purple-100 dark:hover:bg-purple-900/50 transition-all disabled:opacity-40"
+          >
+            {t('chat.chipAdvice')}
+          </button>
+          <button
+            type="button"
+            disabled={isLoading}
+            onClick={() => { posthog.capture('chat_message_sent', { input_method: 'explain_chip' }); setInput(t('chat.chipExplainPrefill')) }}
+            className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800 hover:bg-amber-100 dark:hover:bg-amber-900/50 transition-all disabled:opacity-40"
+          >
+            {t('chat.chipExplain')}
+          </button>
           <button
             type="button"
             onClick={handleNearbySearch}
@@ -1946,8 +2333,7 @@ export default function ChatInterface({
         <input
           ref={fileInputRef}
           type="file"
-          accept="image/*"
-          capture="environment"
+          accept="image/png,image/jpeg,image/webp,image/gif,application/pdf"
           className="hidden"
           onChange={handleImageSelect}
         />
@@ -1992,6 +2378,17 @@ export default function ChatInterface({
               </button>
             </div>
           )}
+          {/* PDF chosen: its name (no preview of a document's pages); a refused file says why */}
+          {imageFile && imageFile.type === 'application/pdf' && (
+            <div className="inline-flex items-center gap-2 self-start ml-1 rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200" data-testid="pdf-attachment">
+              <span aria-hidden="true">📄</span>
+              <span className="max-w-[220px] truncate">{imageFile.name}</span>
+              <button type="button" onClick={clearImage} className="ml-1 rounded-full p-0.5 hover:bg-gray-200 dark:hover:bg-gray-700" aria-label={t('attach.remove')}>
+                <X size={12} />
+              </button>
+            </div>
+          )}
+          {attachError && <div role="status" className="self-start ml-1 text-xs text-red-600 dark:text-red-400">{attachError}</div>}
           {/* Image preview */}
           {imagePreviewUrl && (
             <div className="relative inline-flex self-start ml-1">
@@ -2026,7 +2423,57 @@ export default function ChatInterface({
               <span>{voiceError}</span>
             </div>
           )}
+          {/* 31/10: the mode in use, removable (01/11: Auto is the default and shows nothing) */}
+          {chatMode !== 'auto' && (
+            <div className="inline-flex items-center gap-1.5 self-start rounded-full border border-primary-500/40 bg-primary-500/10 px-3 py-1 text-xs font-medium text-primary-700 dark:text-primary-300" data-testid="chat-mode-chip">
+              <span aria-hidden="true">{chatMode === 'web' ? '🌐' : chatMode === 'deep' ? '🔎' : chatMode === 'chat' ? '⚡' : '💡'}</span>
+              <span>{t(`mode.${chatMode}`)}</span>
+              <button type="button" onClick={() => setChatMode('auto')} className="ml-0.5 rounded-full p-0.5 hover:bg-primary-500/20" aria-label={t('mode.off')}>
+                <X size={11} />
+              </button>
+            </div>
+          )}
           <div className="flex gap-2 items-end">
+          {/* 31/10: "+" - attach a picture or a PDF, or pick a mode (ChatGPT's composer menu) */}
+          <div className="relative flex-shrink-0">
+            <button
+              type="button"
+              onClick={() => setPlusOpen(v => !v)}
+              aria-expanded={plusOpen}
+              aria-label={t('composer.plus')}
+              className={cn('w-11 h-11 rounded-2xl flex items-center justify-center transition-all text-xl leading-none', plusOpen ? 'bg-primary-500/15 text-primary-600' : 'bg-gray-100 dark:bg-gray-800 text-content-secondary hover:bg-gray-200 dark:hover:bg-gray-700')}
+            >
+              +
+            </button>
+            {plusOpen && (
+              <>
+                <button type="button" aria-hidden="true" tabIndex={-1} className="fixed inset-0 z-10 cursor-default" onClick={() => setPlusOpen(false)} />
+                <div role="menu" data-testid="composer-plus-menu" className="absolute bottom-14 left-0 z-20 w-72 rounded-2xl border border-gray-100 bg-white p-1.5 shadow-xl dark:border-gray-800 dark:bg-gray-900">
+                  {([
+                    { key: 'attach', icon: '📎', label: t('composer.attach'), hint: t('composer.attachHint'), on: false, act: () => fileInputRef.current?.click() },
+                    // 01/11 (owner): people just type - Auto picks a quick answer, a web lookup or thinking by itself, so the menu keeps
+                    // only attaching and Deep Research.
+                    { key: 'deep', icon: '🔎', label: t('mode.deep'), hint: t('mode.deepHint'), on: chatMode === 'deep', act: () => setChatMode(m => (m === 'deep' ? 'auto' : 'deep')) },
+                  ] as const).filter(item => item.key !== 'deep' || deepOffered).map(item => (
+                    <button
+                      key={item.key}
+                      type="button"
+                      role="menuitem"
+                      data-testid={`composer-${item.key}`}
+                      onClick={() => { item.act(); setPlusOpen(false) }}
+                      className={cn('flex w-full items-start gap-3 rounded-xl px-3 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-800', item.on && 'bg-primary-500/10')}
+                    >
+                      <span aria-hidden="true" className="text-lg leading-6">{item.icon}</span>
+                      <span className="min-w-0">
+                        <span className="block text-sm font-medium text-gray-900 dark:text-gray-100">{item.label}{item.on ? ' ✓' : ''}</span>
+                        <span className="block text-xs text-gray-500 dark:text-gray-400">{item.hint}</span>
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
           <textarea
               ref={inputRef}
               value={input}
@@ -2038,6 +2485,7 @@ export default function ChatInterface({
                 e.target.style.height = Math.min(e.target.scrollHeight, 160) + 'px'
               }}
               onKeyDown={handleKeyDown}
+              onPaste={onComposerPaste}
               placeholder={imageFile ? t('chat.inputImagePlaceholder') : t('chat.inputPlaceholder')}
               disabled={isLoading}
               rows={1}
@@ -2109,7 +2557,9 @@ export default function ChatInterface({
           )}
           </div>
         </form>
+        <AiDisclaimer className="mt-1.5" />
       </div>
+      {entityPanel && <EntityPanel entity={entityPanel} onClose={() => setEntityPanel(null)} />}
       {/* Image zoom lightbox — opens on click for any place photo or uploaded attachment */}
       {zoomedImage && (
         <div

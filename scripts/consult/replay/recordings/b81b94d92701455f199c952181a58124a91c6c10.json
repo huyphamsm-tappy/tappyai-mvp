@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com/vn AirPods Pro 2 thời gian nghe một lần sạc 6 giờ",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:48:06.230Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com/vn AirPods Pro 2 thời gian nghe một lần sạc 6 giờ",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "AirPods Pro 3 - Thông Số Kỹ Thuật",
+    "link": "https://www.apple.com/vn/airpods-pro/specs/",
+    "snippet": "Thời gian nghe lên đến 8 giờ với một lần sạc khi bật tính năng Chủ Động Khử Tiếng Ồn (lên đến 7,5 giờ khi bật Âm Thanh Không Gian và Theo Dõi Chuyển Động Đầu) ...",
+    "position": 1
+   },
+   {
+    "title": "So Sánh Các Phiên Bản AirPods",
+    "link": "https://www.apple.com/vn/airpods/compare/",
+    "snippet": "5 giờ. Thời gian nghe lên đến 5 giờ với một lần sạc. 6 giờ. Thời gian nghe lên đến 6 giờ với một lần sạc. 6 giờ. Thời gian nghe lên đến 6 giờ với một lần sạc.",
+    "position": 2
+   },
+   {
+    "title": "Mua AirPods Max 2 - Đêm Xanh Thẳm",
+    "link": "https://www.apple.com/vn-edu/shop/buy-airpods/airpods-max-2/%C4%91%C3%AAm-xanh-th%E1%BA%B3m",
+    "snippet": "... sạc dễ dàng. Cùng thời gian nghe lên đến 20 giờ chỉ với một lần sạc khi bật Chủ Động Khử Tiếng Ồn. Chú thích ¹³. Trong hộp có gì. AirPods Max 2; Smart Case; Cáp ...",
+    "position": 3
+   },
+   {
+    "title": "Apple công bố thế hệ AirPods Pro tiếp theo",
+    "link": "https://www.apple.com/vn/newsroom/2022/09/apple-announces-the-next-generation-of-airpods-pro/",
+    "snippet": "AirPods Pro có thêm thời gian nghe là 1,5 giờ so với thế hệ đầu tiên ... gian nghe lên tới 6 giờ với công nghệ khử tiếng ồn chủ động.2 ...",
+    "date": "7 thg 9, 2022",
+    "position": 4
+   },
+   {
+    "title": "Mua AirPods Pro 3",
+    "link": "https://www.apple.com/vn/shop/buy-airpods/airpods-pro-3",
+    "snippet": "AirPods Pro 3 không đi kèm bộ tiếp hợp nguồn hoặc Cáp Sạc USB-C. Chúng tôi khuyến khích bạn sử dụng bất kỳ bộ tiếp hợp nguồn hoặc cáp sạc USB-C nào tương thích.",
+    "position": 5
+   },
+   {
+    "title": "Apple giới thiệu AirPods 5 với tính năng Chủ Động Khử ...",
+    "link": "https://www.apple.com/vn/newsroom/2026/09/apple-introduces-airpods-5-featuring-best-in-class-open-ear-active-noise-cancellation/",
+    "snippet": "... nghe. Thời lượng pin cũng được cải thiện với thời gian nghe lên đến năm giờ khi bật Chủ Động Khử Tiếng Ồn chỉ với một lần sạc — lâu hơn một giờ ...",
+    "date": "10 thg 9, 2026",
+    "position": 6
+   },
+   {
+    "title": "AirPods Max 2",
+    "link": "https://www.apple.com/vn/airpods-max/",
+    "snippet": "8 giờ. Thời lượng pin lên đến 8 giờ với một lần sạc khi bật tính năng Chủ Động Khử Tiếng Ồn, và lên đến 10 giờ ở chế độ Xuyên Âm khi sử dụng tính năng ...",
+    "position": 7
+   },
+   {
+    "title": "Mua iPhone 18 Pro 256GB Đen - Giáo Dục - Apple (VN)",
+    "link": "https://www.apple.com/vn-edu/shop/buy-iphone/iphone-18-pro/m%C3%A0n-h%C3%ACnh-6,3-inch-256gb-%C4%91en",
+    "snippet": "Sửa chữa không giới hạn cho các sự cố như rơi vỡ và đổ chất lỏng; Ưu tiên hỗ trợ từ các chuyên gia của Apple; Dịch Vụ Thay Thế Nhanh — chúng tôi sẽ gửi ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,83 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "laptop tốt đáng mua 2026 Việt Nam (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:33:51.745Z",
+ "body": {
+  "searchParameters": {
+   "q": "laptop tốt đáng mua 2026 Việt Nam (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop học tập nên mua trong dịp đầu năm mới 2026",
+    "link": "https://cellphones.com.vn/sforum/laptop-hoc-tap-dip-dau-nam-moi-2026",
+    "snippet": "1. Laptop HP 14-EP0112TU · 2. Laptop ASUS Vivobook 15 X1502VA · 3. Laptop Acer Aspire Lite 15 AL15-72P · 4. Laptop MSI Modern 14 F13MG · 5. Apple ...",
+    "date": "25 thg 2, 2026",
+    "position": 1
+   },
+   {
+    "title": "Laptop | Máy tính xách tay giá rẻ, trả góp 0%, giảm 15 triệu",
+    "link": "https://cellphones.com.vn/laptop.html",
+    "snippet": "Acer Swift Air 14 liệu có đáng mua để học tập và làm việc năm 2026? Trên tay Acer Swift Air 14: Siêu mỏng nhẹ 1.19kg, cấu hình ngon đáng mua cho sinh viên ...",
+    "position": 2
+   },
+   {
+    "title": "Laptop dưới 15 triệu | Hiệu năng mạnh mẽ, cấu hình nổi bật",
+    "link": "https://cellphones.com.vn/bo-loc/laptop-tu-10-15-trieu",
+    "snippet": "Laptop ASUS Vivobook 14 X1404VA-EB355W · Laptop Acer Gaming Nitro ProPanel ANV15-52-50VA · Laptop MSI Katana 15 B13VEK-2440VN · Laptop Acer Gaming Aspire 7 A715- ...",
+    "position": 3
+   },
+   {
+    "title": "Top 5 laptop đáng mua năm 2026 dành cho học sinh cấp 3",
+    "link": "https://cellphones.com.vn/sforum/laptop-danh-cho-hoc-sinh-cap-3",
+    "snippet": "Top 5 mẫu laptop dành cho học sinh cấp 3 2026 · Dell Pro 15 Essential · Acer Aspire Lite 15 · Laptop ASUS Vivobook Go 15 · MSI Modern 14 · MacBook Neo 256GB.",
+    "position": 4
+   },
+   {
+    "title": "Nên mua laptop ngay hay đợi Tết 2026 để được giá tốt",
+    "link": "https://cellphones.com.vn/sforum/nen-mua-laptop-bay-gio-hay-doi-den-tet",
+    "snippet": "Top laptop đáng mua dịp Tết 2026 · ASUS Gaming Vivobook 16X K3605VC-RP431W · ASUS TUF Gaming F16 FX607VJ-RL034W · Lenovo LOQ 15AHP10 83JG0047VN.",
+    "date": "12 thg 2, 2026",
+    "rating": 4,
+    "ratingCount": 2,
+    "position": 5
+   },
+   {
+    "title": "TOP 3 laptop văn phòng dưới 25 triệu đáng mua năm 2026",
+    "link": "https://cellphones.com.vn/sforum/laptop-van-phong-25-trieu",
+    "snippet": "TOP 3 laptop văn phòng 25 triệu đáng mua năm 2026 · ASUS Vivobook S14 · Lenovo IdeaPad Slim 3 · ASUS ExpertBook P3.",
+    "date": "24 thg 8, 2026",
+    "position": 6
+   },
+   {
+    "title": "Top 4 laptop văn phòng 20 triệu đáng mua nhất đầu 2026",
+    "link": "https://cellphones.com.vn/sforum/laptop-van-phong-20-trieu-dang-mua-2026",
+    "snippet": "1. Apple MacBook Air M2 (8CPU - 8GPU - 16GB - 256GB) · 2. Dell 14 DC14250 DC4C5386W - Lựa chọn “an toàn” cho dân văn phòng thích Windows · 3. HP ...",
+    "date": "26 thg 1, 2026",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 7
+   },
+   {
+    "title": "TOP laptop gaming 25 triệu đáng mua nhất đầu năm 2026",
+    "link": "https://cellphones.com.vn/sforum/laptop-gaming-25-trieu-ngon-nhat-dau-nam-2026",
+    "snippet": "Laptop gaming 25 triệu: Những cái tên nổi bật đầu năm 2026 · HP Victus 15-FB3116AX BX8U4PA · ASUS TUF Gaming F16 FX607VU-RL045W · ASUS Gaming V16 ...",
+    "date": "7 thg 1, 2026",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -44,6 +44,12 @@ export interface ConsultDecision {
   refers?: string[]
   /** For `reject`: what the user did not like, as a constraint for the next search. */
   rejectReason?: string
+  /** For `reject` only: the user re-stated / dismissed a decision PRIORITY — the same candidates are re-decided, nothing shown is excluded. */
+  reprioritize?: boolean
+  /** For `followup` / `compare`: `refers` was resolved from an ordinal ("quán thứ hai") against the cards the user was shown. */
+  ordinalRef?: boolean
+  /** CONSULT_THREAD_AWARE_ASK (Wave 2D · A): the decision was read from the names of the product card the thread showed ("shown_card"), not from the wording alone. Absent otherwise. */
+  evidence?: 'shown_card'
 }
 
 /** The fixed part of the brain prompt — byte-identical on every call (prompt-cache friendly). */
@@ -97,6 +103,31 @@ export function wasAskReply(assistantText: string | null | undefined): boolean {
 
 const str = (v: unknown, max = 200): string => (typeof v === 'string' ? v.trim().slice(0, max) : '')
 
+/** P0-1 closeout: why a brain answer that ARRIVED cannot be used (as opposed to a call that failed or returned nothing). */
+export type ConsultInvalidReason = 'free_text' | 'bad_json' | 'bad_shape' | 'bad_domain'
+
+/**
+ * P0-1 closeout (owner decision 16/10): an answer that arrived is either a usable decision or INVALID — free text where the JSON
+ * structure was required, broken JSON, no valid turn, or a domain outside the catalogue. An invalid answer is never used in part
+ * (no slot, query or text of it) and never sends the turn to free generation: the route answers with its own fallback. An EMPTY
+ * answer is "no decision" (a failure), like an error or a timeout.
+ */
+export function classifyConsultOutput(raw: string): { decision: ConsultDecision } | { invalid: ConsultInvalidReason } | { empty: true } {
+  if (!raw || !raw.trim()) return { empty: true }
+  const start = raw.indexOf('{')
+  const end = raw.lastIndexOf('}')
+  if (start === -1) return { invalid: 'free_text' }
+  if (end <= start) return { invalid: 'bad_json' } // an object begun and never closed (a cut-off answer)
+  let j: unknown
+  try { j = JSON.parse(raw.slice(start, end + 1)) } catch { return { invalid: 'bad_json' } }
+  if (!j || typeof j !== 'object' || Array.isArray(j)) return { invalid: 'bad_shape' }
+  const o = j as Record<string, unknown>
+  if (!TURNS.includes(o.turn as ConsultTurn)) return { invalid: 'bad_shape' }
+  if (o.domains !== undefined && (!Array.isArray(o.domains) || o.domains.some(d => !CONSULT_DOMAINS.includes(d as ConsultDomain)))) return { invalid: 'bad_domain' }
+  const decision = parseConsultDecision(raw)
+  return decision ? { decision } : { invalid: 'bad_shape' }
+}
+
 /** Parses and validates the brain's JSON; null when it cannot be trusted (the route then falls back). */
 export function parseConsultDecision(raw: string): ConsultDecision | null {
   const start = raw.indexOf('{')
@@ -137,7 +168,7 @@ export function parseConsultDecision(raw: string): ConsultDecision | null {
 
 /**
  * Code-enforced rules on top of the model's decision:
- *  - an ask needs ≥ 2 usable questions, else it becomes a pick (never an empty question);
+ *  - an ask needs ≥ 2 usable questions, else it becomes a pick (never an empty question); Phase 3A / D2: the card finally SHOWN carries exactly one (refineAsk);
  *  - never two asks in a row (the previous Tappy turn already asked → pick);
  *  - a request in one of the five areas is never "chat" when the deterministic reader also sees the
  *    area (the karaoke refusal must not come back through the brain).
@@ -189,14 +220,15 @@ export function consultV2Enabled(env: Record<string, string | undefined> = proce
 export interface BrainRun { decision: ConsultDecision; usage: { promptTokens: number; completionTokens: number }; ms: number }
 
 /**
- * One Haiku call (role `fast`). Returns null on timeout, provider error or an untrustworthy answer —
- * the route then keeps the previous pipeline for this turn (fail open to the old behaviour, never to
- * a refusal).
+ * One Haiku call (role `fast`). Returns null on timeout, provider error, an empty answer or an INVALID one.
+ *  - timeout / error / empty = the brain FAILED: the route keeps the previous (guarded) pipeline for this turn.
+ *  - invalid (classifyConsultOutput) = an answer arrived but cannot be used: `ctx.onInvalid` is told why, and the route answers with
+ *    its own server-built fallback instead (P0-1 closeout, owner decision 16/10). Nothing of the invalid answer is used.
  */
 export async function runConsultBrain(
   generate: (opts: { role: 'fast'; systemShared: string; messages: CoreMessage[]; maxTokens: number; temperature: number }) => Promise<{ text: string; usage?: { promptTokens?: number; completionTokens?: number } }>,
   messages: Array<{ role: string; content: unknown }>,
-  ctx: { hasGps: boolean; previousWasAsk: boolean; deterministicDomain?: ConsultDomain | null; storedNames?: string[]; timeoutMs?: number },
+  ctx: { hasGps: boolean; previousWasAsk: boolean; deterministicDomain?: ConsultDomain | null; storedNames?: string[]; timeoutMs?: number; onInvalid?: (reason: ConsultInvalidReason) => void },
 ): Promise<BrainRun | null> {
   const t0 = Date.now()
   const timeout = new Promise<null>(res => setTimeout(() => res(null), ctx.timeoutMs ?? 8000))
@@ -206,8 +238,10 @@ export async function runConsultBrain(
       timeout,
     ])
     if (!out) return null
-    const parsed = parseConsultDecision(out.text)
-    if (!parsed) return null
+    const c = classifyConsultOutput(typeof out.text === 'string' ? out.text : '')
+    if ('empty' in c) return null
+    if ('invalid' in c) { try { ctx.onInvalid?.(c.invalid) } catch { /* reporting only */ } return null }
+    const parsed = c.decision
     return {
       decision: enforceConsultRules(parsed, { previousWasAsk: ctx.previousWasAsk, deterministicDomain: ctx.deterministicDomain }),
       usage: { promptTokens: out.usage?.promptTokens ?? 0, completionTokens: out.usage?.completionTokens ?? 0 },
@@ -227,6 +261,20 @@ export function placeTypeFor(domain: ConsultDomain | undefined): 'restaurant' | 
     case 'travel': return 'hotel'
     default: return null
   }
+}
+
+/**
+ * The same line with N given by the CARD SET (A3, owner 2026-10-02): `footerRemaining(placesView)` — hidden cards, 0 when no card
+ * is shown. The model's own count line in any wording is removed; the server's line is added only when n > 0. The line goes
+ * before the first structured block even when that block follows the prose on the same line.
+ */
+export function consultRemainingLineN(text: string, n: number, lang: string, opts: { add?: boolean } = {}): string {
+  const vi = /(?:Mình\s+)?[Cc]òn(?:\s+khoảng)?\s+\d+\s+lựa chọn[^\n]*/g, en = /I have \d+ more option[^\n]*/g
+  const stripped = text.replace(vi, '').replace(en, '').replace(/\n{3,}/g, '\n\n').trimEnd()
+  if (!(n > 0) || opts.add === false) return stripped
+  const line = remainingLine(n, lang) ?? (lang === 'en' ? `I have ${n} more option${n > 1 ? 's' : ''} — want to see more?` : `Mình còn ${n} lựa chọn nữa, muốn xem thêm không?`)
+  const m = /\[(?:CTA_BUTTONS|FOLLOWUPS|TAPPY_[A-Z_]+)\]/.exec(stripped)
+  return m ? `${stripped.slice(0, m.index).trimEnd()}\n\n${line}\n\n${stripped.slice(m.index)}` : `${stripped}\n\n${line}`
 }
 
 /**
@@ -279,6 +327,23 @@ export function normalizePickSentence(text: string, fallbackPick?: string | null
     return first ? `${first[0]} ${line}${text.slice(first[0].length)}` : `${line}\n\n${text}`
   }
   return text
+}
+
+/**
+ * PHASE 3C / D7 — the pick sentence names the ENGINE's Pick. When the reply's "**Mình chọn: X**" names a different venue, the name is
+ * rewritten to the engine's and the divergence is returned (so it is logged, never silent). The same pick sentence form, the same single
+ * bold, nothing else in the reply is touched; a reply without that form is untouched (the existing backstop supplies it from the engine pick).
+ */
+export function enforceEnginePickSentence(text: string, enginePick: string | null | undefined): { text: string; diverged: string | null } {
+  const engine = (enginePick ?? '').trim()
+  if (!engine) return { text, diverged: null }
+  const m = /\*\*Mình chọn:\s*([^*\n]+)\*\*/.exec(text)
+  if (!m) return { text, diverged: null }
+  const f = (s: string) => s.normalize('NFC').toLowerCase().replace(/\s+/g, ' ').trim()
+  const named = f(m[1]), eng = f(engine)
+  // The same venue written head-only ("Béo Ơi Quán" for "Béo Ơi Quán - Món ngon Hà Nội") is the same Pick.
+  if (named === eng || (named.length >= 4 && eng.includes(named)) || (eng.length >= 4 && named.includes(eng))) return { text, diverged: null }
+  return { text: text.replace(m[0], `**Mình chọn: ${engine}**`), diverged: m[1].trim() }
 }
 
 /** The shopping card's recommended product name, from its [TAPPY_SHOPPING] marker (or null). */

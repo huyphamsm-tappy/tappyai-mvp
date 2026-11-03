@@ -1,4 +1,6 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { publicRateLimit } from '@/lib/security/publicRateLimit'
+import { rateLimitedResponse } from '@/lib/security/rateLimitResponse'
 import { NextRequest, NextResponse } from 'next/server'
 import { emitNotification } from '@/lib/notifications/emit'
 import { rebuildProfile } from '@/lib/preferences/profileCache'
@@ -17,6 +19,10 @@ export async function POST(
   const anonRefusal = refuseAnonymousSocialWrite(req, user)
   if (anonRefusal) return anonRefusal
   if (user.id === params.id) return NextResponse.json({ error: 'follow_self', message: serverMessage('social.followSelf', requestLocale(req)) }, { status: 400 })
+
+  // SEC4 slice 5b: a toggle that pushes to the target had no limiter. 30 per minute per user (a proposal; no previous limit existed).
+  const rl = await publicRateLimit(`follow:${user.id}`, 30, 60_000)
+  if (!rl.ok) return rateLimitedResponse(req, rl, 'user_follow')
 
   const targetId = params.id
 
@@ -43,6 +49,8 @@ export async function POST(
     return NextResponse.json({ following: false, follower_count: profile?.follower_count ?? 0 })
   }
 
+  // 42501 = refused by row-level security (a block between the two accounts): a plain 403, never a server error, and it says nothing about who blocked whom.
+  if (error?.code === '42501') return NextResponse.json({ error: 'follow_forbidden', message: serverMessage('social.followFailed', requestLocale(req)) }, { status: 403 })
   if (error) return NextResponse.json({ error: 'follow_failed', message: serverMessage('social.followFailed', requestLocale(req)) }, { status: 500 })
 
   // Insert succeeded → new follow: rebuild profile + fetch + notify

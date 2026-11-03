@@ -2,6 +2,8 @@ import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { getAgeEligibility, ageEligibilityCode } from '@/lib/account/ageEligibility'
 import { buildAIContext } from '@/lib/ai/contextBuilder'
 import { publishableFilter } from '@/lib/safety/gate/publicationAccess'
+import { pickReviewImage } from '@/lib/recommendation/placeImage'
+import { isShareOnlyPlaceName } from '@/lib/share/reviewShareTitle'
 import { rankCandidates } from '@/lib/recommendation/recommendationEngine'
 import type { AIContextResult } from '@/types/aiContext'
 import type { CandidatePlace } from '@/types/recommendation'
@@ -13,9 +15,9 @@ export const dynamic = 'force-dynamic'
 
 // A "share-only" post (user posted a clip/photo without adding a place) carries
 // a sentinel place_name instead of a real one, so it must never be ranked as a
-// place. Covers the current value and the legacy no-diacritic one.
-const SHARE_ONLY_NAMES = new Set(['Chia sẻ', 'Chia se'])
-const isShareOnlyPlace = (n?: string | null) => !n?.trim() || SHARE_ONLY_NAMES.has(n.trim())
+// place. The rule lives in ONE place (@/lib/share/reviewShareTitle), shared with
+// the feed and the detail page, so the three surfaces cannot disagree about it.
+const isShareOnlyPlace = isShareOnlyPlaceName
 
 // GET /api/recommendations — personalized "Gợi ý cho bạn".
 // Builds the user's AI context (from preference profile + memory) and ranks
@@ -64,7 +66,7 @@ export async function GET(req: NextRequest) {
   // 2. Candidate places: aggregate visible community reviews by place.
   const { data: reviewRows } = await supabase
     .from('reviews')
-    .select('place_id, place_name, place_address, rating, hashtags, created_at, photos')
+    .select('place_id, place_name, place_address, rating, hashtags, created_at, photos, thumbnail')
     .eq('is_hidden', false)
     // Content safety gate. Exclusion only — no ranking or recommendation penalty
     // is introduced here; unpublishable rows simply are not candidates.
@@ -87,7 +89,7 @@ export async function GET(req: NextRequest) {
     if (isShareOnlyPlace(r.place_name as string | null)) continue // skip place-less "sharing" posts
     const e: PlaceAgg = byPlace.get(pid) ?? { name: r.place_name ?? '', address: r.place_address ?? null, ratings: [], tags: new Set<string>(), latest: r.created_at as string, photo: null }
     // Rows arrive newest first: the first public https photo is the place's most recent one.
-    if (!e.photo) { const ph = (Array.isArray(r.photos) ? r.photos : []).find((u: unknown): u is string => typeof u === 'string' && /^https:\/\//.test(u)); if (ph) e.photo = ph }
+    if (!e.photo) e.photo = pickReviewImage(r)
     if (typeof r.rating === 'number') e.ratings.push(r.rating)
     for (const t of (r.hashtags ?? [])) if (t) e.tags.add(String(t))
     if ((r.created_at as string) > e.latest) e.latest = r.created_at as string
@@ -128,6 +130,7 @@ export async function GET(req: NextRequest) {
         reviewCount: 0,
         averageRating: 0,
         latestReviewAt: (f.created_at as string) ?? null,
+        savedByUser: true,
       })
     }
   }

@@ -16,15 +16,21 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 // knowledge library — never touches it. Enforced server-side in `lib/ai/quota/aiQuestionQuota.ts`;
 // clients read these numbers via GET /api/config and /api/subscription for DISPLAY only.
 //
-/** Logged-in free tier: AI questions per VN day, across the whole product. Temporarily 15 during
- * the free test phase (Pro hidden — no legal entity for payments yet). */
-export const FREE_DAILY_LIMIT = 15
+/**
+ * Owner 01/11/2026: a signed-in account has NO question limit (every plan, Free included) - shown as "Không giới hạn câu hỏi AI".
+ * These two numbers are only the HIDDEN anti-abuse ceilings per VN day (owner approved: 300 Free, 1000 paid), never advertised;
+ * real use is far below them. (Was Free = 10/day, paid = 30/day.)
+ */
+export const FREE_DAILY_LIMIT = 300
+export const PAID_DAILY_CEILING = 1000
+/** For display: accounts have no question limit (the ceilings above are anti-abuse only). Read by the clients via GET /api/config. */
+export const ACCOUNT_QUESTIONS_UNLIMITED = true
 /**
  * Anonymous visitors: AI questions for the LIFETIME of the anonymous identity — a one-time trial,
- * not a daily allowance. Five, once; then an account. Not per day, not per session, not per
- * return visit. (Was `ANON_DAILY_LIMIT`, five per VN day, until 2026-09-15.)
+ * not a daily allowance. Ten, once (owner 01/11/2026: "10 câu hỏi đầu, câu 11 bắt tạo account"; was five); then an account.
+ * Not per day, not per session, not per return visit. (Was `ANON_DAILY_LIMIT`, five per VN day, until 2026-09-15.)
  */
-export const ANON_LIFETIME_LIMIT = 5
+export const ANON_LIFETIME_LIMIT = 10
 
 // ── G1 growth: share-out + anonymous follow-up policy ───────────────────────
 //
@@ -78,6 +84,10 @@ export const SHOPPING_SHORTLIST = 6
 /** Pro upsell hidden app-wide during the free test phase. Mirrored by the
  * Android `SHOW_PRO_UPGRADE` gate — flip BOTH together when Pro launches. */
 export const SHOW_PRO_UPGRADE = false
+
+export function showProUpgradeEnabled(env: NodeJS.ProcessEnv = process.env): boolean {
+  return env.SHOW_PRO_UPGRADE === 'true' || env.SHOW_PRO_UPGRADE === '1' || SHOW_PRO_UPGRADE
+}
 /** App Connections (integrations) entry point hidden app-wide (owner product
  * decision 2026-07-17). The feature, its page, and its APIs stay intact — only
  * the UI entry point is gated off. Mirrored by the Android `SHOW_APP_CONNECTIONS`
@@ -127,6 +137,12 @@ export const SHOW_MUSIC = false
  * to a contract both clients read would be a change they neither need nor expect.
  */
 export const SHOW_MARKETPLACE = false
+/**
+ * Phase 7 closeout 8A: "Hỏi Tappy về video này" on the Explore clip stage is HIDDEN, not deleted — the clip context the chat
+ * receives is too thin and the turn can stall. The route (/chat?ctx=…), the bridge prompt and the tracking stay; flip to true
+ * to bring the button back.
+ */
+export const SHOW_ASK_ABOUT_CLIP = false
 /**
  * Home's category card row (Ẩm thực · Mua sắm · Du lịch · Giải trí · Thư giãn · Khám phá thêm).
  *

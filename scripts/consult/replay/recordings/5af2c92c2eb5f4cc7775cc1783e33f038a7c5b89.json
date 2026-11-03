@@ -1,0 +1,31 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:hoianworldheritage.org.vn/vi/news \"khung giờ\" \"phố đi bộ\" Hội An 2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:46:03.555Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:hoianworldheritage.org.vn/vi/news \"khung giờ\" \"phố đi bộ\" Hội An 2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cập nhật vé tham quan Khu phố cổ Hội An – Hành trình chạm ...",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Du-lich-Hoi-An/cap-nhat-ve-tham-quan-khu-pho-co-hoi-an-hanh-trinh-cham-ve-nguyen-ban-giua-long-di-san-3033.hwh",
+    "snippet": "Không gian phố đi bộ – Nơi du khách tận hưởng nhịp sống di sản ... khung giờ nhất định. Tại Khu phố cổ, không gian này được áp dụng từ ...",
+    "date": "16 thg 3, 2026",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

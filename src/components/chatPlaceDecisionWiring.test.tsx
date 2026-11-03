@@ -182,7 +182,9 @@ describe('the delivery channel stays the safe one', () => {
     // Which surfaces are card-capable is decided in ONE place (decisionSurface.ts:
     // web + android); the route reads the header through it and nowhere else.
     const route = read('src/app/api/chat/route.ts')
-    expect(route).toMatch(/const rendersDecisionCard = rendersDecisionCardFor\(surfaceHeader\)/)
+    // 02/11 (iOS follows the web): the call also passes `x-tappy-caps`, so a client that declares "card" (the iOS app) is card-capable; the
+    // decision stays in decisionSurface.ts and the route still reads the header through it and nowhere else.
+    expect(route).toMatch(/const rendersDecisionCard = rendersDecisionCardFor\(surfaceHeader, req\.headers\.get\('x-tappy-caps'\)\)/)
     expect(route).not.toMatch(/x-tappy-surface'\) === 'web'/)
     expect(route).toMatch(/rendersDecisionCard \? buildRenderedDecisionBlock\(\) : ''/)
   })

@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Macbook Air M3 13 inch 2024",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:09:46.807Z",
+ "body": {
+  "searchParameters": {
+   "q": "Macbook Air M3 13 inch 2024",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Macbook Air 13 inch 2024 Silver (MXCT3) - M3/ 16G/ 512G - NEW NOBOX - Lâm  Phong Store",
+    "imageUrl": "https://bizweb.dktcdn.net/thumb/1024x1024/100/318/659/products/macbook-air-m3-17-2z19-pl-jpeg-7c6dbcaf-2770-4c1f-bf91-4b2efa93a202-3358e264-fd4c-4f68-bab1-bf32518c0992-e8c199fb-45d3-4d1c-8e3c-ec7c9cf1efa3.jpg?v=1756438001303",
+    "imageWidth": 1024,
+    "imageHeight": 755,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqSIOq9jYQxwBKvYYeMi0rq-Oav1UHLL5UchqJGvM42g&s=10",
+    "thumbnailWidth": 521,
+    "thumbnailHeight": 383,
+    "source": "Lâm Phong Store® - Macbook & Apple Accessories",
+    "domain": "lamphongstore.com",
+    "link": "https://lamphongstore.com/macbook-air-13-inch-2024-silver-mxct3-m3-16g-512g-new-nobox?srsltid=AU7gw4X7L__3WHPGKvFKhxAk-vXGQLT9CAzPIv-je9QMLKkRw_ieOK0x",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbizweb.dktcdn.net%2Fthumb%2F1024x1024%2F100%2F318%2F659%2Fproducts%2Fmacbook-air-m3-17-2z19-pl-jpeg-7c6dbcaf-2770-4c1f-bf91-4b2efa93a202-3358e264-fd4c-4f68-bab1-bf32518c0992-e8c199fb-45d3-4d1c-8e3c-ec7c9cf1efa3.jpg%3Fv%3D1756438001303&tbnid=Zr9c3MYpxeU4rM&imgrefurl=https%3A%2F%2Flamphongstore.com%2Fmacbook-air-13-inch-2024-silver-mxct3-m3-16g-512g-new-nobox%3Fsrsltid%3DAU7gw4X7L__3WHPGKvFKhxAk-vXGQLT9CAzPIv-je9QMLKkRw_ieOK0x&docid=UqWjAJ_xZpkJzM&w=1024&h=755",
+    "position": 1
+   },
+   {
+    "title": "Macbook Air M3 13 inch 2024 16GB - 512GB | Giá rẻ %, trả góp 0%",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/m/a/macbook-air-m3-13-inch-2024_1__5_1.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhv5S2tvawBrRwMwHgmMuCJ0KGRkGFrqGfcsRMNpE-Tw&s=10",
+    "thumbnailWidth": 358,
+    "thumbnailHeight": 358,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/macbook-air-m3-13-inch-2024-16gb-512gb-sac-70w.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fm%2Fa%2Fmacbook-air-m3-13-inch-2024_1__5_1.png&tbnid=JXuWbItJgsO7nM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fmacbook-air-m3-13-inch-2024-16gb-512gb-sac-70w.html&docid=pz1UtIFCXWkuoM&w=358&h=358",
+    "position": 2
+   },
+   {
+    "title": "Macbook Air M3 13'6 inch 2024 - 8CPU-10GPU / Ram 24Gb / 1Tb - Likenew",
+    "imageUrl": "https://bizweb.dktcdn.net/100/444/581/products/11-db7470bb-32c0-4015-b55e-9e79cd3fc9b5-6e09409d-3d58-47ca-9746-ac9df4002747-f5d01b96-4d21-4d06-b245-3889d3cb3779-d924cb4b-3e32-44c6-9a1c-c4c4422bfacf.png?v=1751082133147",
+    "imageWidth": 768,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReiCXRFWtYKWyKhzzroT_mO1HrwBJ83LlJh3HGxPJe9w&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Macshop24h",
+    "domain": "macshop24h.vn",
+    "link": "https://macshop24h.vn/macbook-air-m3-13-6-inch-2024-8cpu-10gpu-ram-24gb-1tb-likenew?srsltid=AU7gw4U-WhqNh0TvwYvZw8w4Js1REHGNpyhxAq_ocDn14YbiJ2haUy_8",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbizweb.dktcdn.net%2F100%2F444%2F581%2Fproducts%2F11-db7470bb-32c0-4015-b55e-9e79cd3fc9b5-6e09409d-3d58-47ca-9746-ac9df4002747-f5d01b96-4d21-4d06-b245-3889d3cb3779-d924cb4b-3e32-44c6-9a1c-c4c4422bfacf.png%3Fv%3D1751082133147&tbnid=tfJUWVwI3RRhtM&imgrefurl=https%3A%2F%2Fmacshop24h.vn%2Fmacbook-air-m3-13-6-inch-2024-8cpu-10gpu-ram-24gb-1tb-likenew%3Fsrsltid%3DAU7gw4U-WhqNh0TvwYvZw8w4Js1REHGNpyhxAq_ocDn14YbiJ2haUy_8&docid=-i7lEC32QIZzTM&w=768&h=768",
+    "position": 3
+   },
+   {
+    "title": "Macbook Air M3 13 inch 2024 giá rẻ, góp 0%, giao nhanh",
+    "imageUrl": "https://cdn.tgdd.vn/Products/Images/44/322612/Slider/vi-vn-macbook-air-13-inch-m3-2024-slider-2.jpg",
+    "imageWidth": 1020,
+    "imageHeight": 570,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSB907prVbfyrNZlFAvv73Tn9XeEfSKkWSklUMptDnJxw&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 411,
+    "source": "Thegioididong.com",
+    "domain": "www.thegioididong.com",
+    "link": "https://www.thegioididong.com/laptop/macbook-air-13-inch-m3-2024",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.tgdd.vn%2FProducts%2FImages%2F44%2F322612%2FSlider%2Fvi-vn-macbook-air-13-inch-m3-2024-slider-2.jpg&tbnid=4E4ZwebNVFNKEM&imgrefurl=https%3A%2F%2Fwww.thegioididong.com%2Flaptop%2Fmacbook-air-13-inch-m3-2024&docid=TqX17v9czLmJrM&w=1020&h=570",
+    "position": 4
+   },
+   {
+    "title": "MacBook Air 13 inch M3 2024 8-core CPU/8GB/512GB/10-core GPU cũ",
+    "imageUrl": "https://bachlongstore.vn/vnt_upload/product/03_2024/macbook_air2.png",
+    "imageWidth": 650,
+    "imageHeight": 650,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTo8Fm4c9UL1JUnGMqXE5yGsMdMy0rKcvepFa7SoiRYoQ&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Bạch Long Store",
+    "domain": "bachlongstore.vn",
+    "link": "https://bachlongstore.vn/macbook-air-13-inch-m3-2024-8-core-cpu-8gb-512gb-10-core-gpu-cu.html?srsltid=AU7gw4UUbmMiVF_RYuH8G3hW5DtcsaIxo0Z09WDvFiMY62HPgHy8S3p1",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbachlongstore.vn%2Fvnt_upload%2Fproduct%2F03_2024%2Fmacbook_air2.png&tbnid=vnhLICgJvBNgQM&imgrefurl=https%3A%2F%2Fbachlongstore.vn%2Fmacbook-air-13-inch-m3-2024-8-core-cpu-8gb-512gb-10-core-gpu-cu.html%3Fsrsltid%3DAU7gw4UUbmMiVF_RYuH8G3hW5DtcsaIxo0Z09WDvFiMY62HPgHy8S3p1&docid=qUlbbeo_20_CVM&w=650&h=650",
+    "position": 5
+   },
+   {
+    "title": "MacBook Air 13-inch (M3, 2024) review | T3",
+    "imageUrl": "https://cdn.mos.cms.futurecdn.net/oLggbYvoxtc9yd3vLJDQwT.jpg",
+    "imageWidth": 1993,
+    "imageHeight": 1121,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBYOD5v93QCTrgWORyh62UN3EhYSpIO45vOkyfeBiCXA&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 414,
+    "source": "T3",
+    "domain": "www.t3.com",
+    "link": "https://www.t3.com/reviews/macbook-air-m3-review-13-inch-2024",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.mos.cms.futurecdn.net%2FoLggbYvoxtc9yd3vLJDQwT.jpg&tbnid=IHho5uqi1KV3mM&imgrefurl=https%3A%2F%2Fwww.t3.com%2Freviews%2Fmacbook-air-m3-review-13-inch-2024&docid=zREvD_OztfKlXM&w=1993&h=1121",
+    "position": 6
+   },
+   {
+    "title": "MacBook Air M3 13 inch RAM 16GB 2024 | | Mac24h",
+    "imageUrl": "https://mac24h.vn/images/detailed/93/Macbook_air_m3_2024_MAC24H.png",
+    "imageWidth": 350,
+    "imageHeight": 212,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMt_8Uvhz6sA6NyRwqs6OzoBTCdKPyDwR7qkOaiDvMfg&s=10",
+    "thumbnailWidth": 350,
+    "thumbnailHeight": 212,
+    "source": "Mac24h",
+    "domain": "mac24h.vn",
+    "link": "https://mac24h.vn/macbook-air-m3-13-inch-2024.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmac24h.vn%2Fimages%2Fdetailed%2F93%2FMacbook_air_m3_2024_MAC24H.png&tbnid=ekIf7sBGZLHAWM&imgrefurl=https%3A%2F%2Fmac24h.vn%2Fmacbook-air-m3-13-inch-2024.html&docid=x8TBPVSA0rqBwM&w=350&h=212",
+    "position": 7
+   },
+   {
+    "title": "Apple ra mắt MacBook Air 13 và 15 inch mới trang bị chip M3 mạnh mẽ - Apple  (VN)",
+    "imageUrl": "https://www.apple.com/newsroom/images/2024/03/apple-unveils-the-new-13-and-15-inch-macbook-air-with-the-powerful-m3-chip/article/Apple-MacBook-Air-2-up-hero-240304_big.jpg.large.jpg",
+    "imageWidth": 980,
+    "imageHeight": 551,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvtiZD1t_5T-qZCXJ7kCOGtHdF9yNLx7958NeMwIse7Q&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "Apple",
+    "domain": "www.apple.com",
+    "link": "https://www.apple.com/vn/newsroom/2024/03/apple-unveils-the-new-13-and-15-inch-macbook-air-with-the-powerful-m3-chip/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.apple.com%2Fnewsroom%2Fimages%2F2024%2F03%2Fapple-unveils-the-new-13-and-15-inch-macbook-air-with-the-powerful-m3-chip%2Farticle%2FApple-MacBook-Air-2-up-hero-240304_big.jpg.large.jpg&tbnid=vdLdq1nas0iL6M&imgrefurl=https%3A%2F%2Fwww.apple.com%2Fvn%2Fnewsroom%2F2024%2F03%2Fapple-unveils-the-new-13-and-15-inch-macbook-air-with-the-powerful-m3-chip%2F&docid=QyK5AqbN-GmlhM&w=980&h=551",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

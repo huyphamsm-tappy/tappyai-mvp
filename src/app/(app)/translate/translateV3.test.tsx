@@ -14,7 +14,9 @@ vi.mock('@/components/NotificationProvider', () => ({
 }))
 vi.mock('@/components/Header', () => ({
   __esModule: true,
-  default: ({ title }: { title?: string }) => <header data-testid="header">{title}</header>,
+  default: ({ title, showBack, backFallbackHref }: { title?: string; showBack?: boolean; backFallbackHref?: string }) => (
+    <header data-testid="header" data-show-back={showBack ? 'true' : undefined} data-back-fallback={backFallbackHref}>{title}</header>
+  ),
 }))
 vi.mock('@/components/BottomNav', () => ({ __esModule: true, default: () => <nav data-testid="bottom-nav" /> }))
 vi.mock('@/components/v3/TappyPresence', () => ({
@@ -50,6 +52,17 @@ afterEach(() => { cleanup(); vi.unstubAllGlobals() })
 const textarea = () => document.getElementById('tr-source') as HTMLTextAreaElement
 const submit = () => document.querySelector('[data-tr-submit]') as HTMLButtonElement
 
+describe('header Back (BUG 15)', () => {
+  it('asks the shared Header for Back, falling back to Smart Tools on a direct visit', async () => {
+    const { SMART_TOOLS_HREF } = await import('@/lib/tools/registry')
+    render(<TranslatePage />)
+    const h = screen.getByTestId('header')
+    expect(h.getAttribute('data-show-back')).toBe('true')
+    expect(h.getAttribute('data-back-fallback')).toBe(SMART_TOOLS_HREF)
+    expect(screen.getByTestId('bottom-nav')).toBeTruthy()
+  })
+})
+
 describe('what the page claims is what the code does', () => {
   it('the hero and the tiles quote the real language count, taken from LANGUAGES', () => {
     render(<TranslatePage />)
@@ -74,7 +87,8 @@ describe('what the page claims is what the code does', () => {
     render(<TranslatePage />)
     expect(API).toContain('const DAILY_LIMIT = 30')
     expect(document.querySelector('[data-tr-tip]')!.textContent).toMatch(/30/)
-    expect(API).not.toContain('getRequestUser')
+    // Signed-out callers still need no account: the only account check is the iOS consent refusal (403), never a 401.
+    expect(API).not.toMatch(/status:\s*401/)
   })
 
   it('says the source language is detected, and offers no source selector', () => {

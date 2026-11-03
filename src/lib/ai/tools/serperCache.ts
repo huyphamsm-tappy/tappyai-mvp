@@ -29,16 +29,19 @@
 // because the OWNER ASKED FOR 24 h. Whether 24 h of shared retention fits the Maps-content terms is
 // the owner's call, not this file's.
 //
-// 🚫 PHOTOS ARE EXCLUDED. `/images` lookups (fetchPlacePhotosByName) are NOT cached here, pending the
-// owner's decision on persisting imagery. Only 'search' | 'shopping' | 'maps' are accepted.
+// 🖼 PHOTOS (owner decision 03/11: "hình ảnh Serper chúng ta đã trả tiền thì có quyền lưu trữ để tái sử dụng, tối ưu chi phí"; before
+// this they were excluded "pending the owner's decision on persisting imagery"). `/images` lookups (fetchPlacePhotosByName) store the
+// picked image LINKS only - never the picture files - under a hard EX TTL (3 days by default, SERPER_CACHE_IMAGES_TTL_SECONDS), keyed on
+// the place name WITHOUT the V2 tone-folding/filler rules (two names that differ by a tone mark are two venues). Only non-empty results.
 
 import { createHash } from 'node:crypto'
+import { recordSerperL2Bypass } from './serperMeter'
 import { cacheKeyPart } from './cacheKeys'
 import { isDistributedStoreConfigured, namespacedKey } from '@/lib/security/distributedRateLimit'
 import { sanitizeSerperJson } from './serperUntrusted'
 import { areaKeyV2, normalizeQueryV2, serperCacheV2Enabled, serperTtlV2 } from './serperCacheV2'
 
-export type SerperCachedEndpoint = 'search' | 'shopping' | 'maps'
+export type SerperCachedEndpoint = 'search' | 'shopping' | 'maps' | 'images'
 
 /** Where a request was targeted: coordinates (maps `ll`), a location string, or nothing. */
 export type SerperCacheArea = { lat: number; lng: number; zoom?: number } | string | null | undefined
@@ -46,7 +49,14 @@ export type SerperCacheArea = { lat: number; lng: number; zoom?: number } | stri
 const DEFAULT_TTL_SECONDS = 86_400
 export const SERPER_CACHE_MAX_BYTES = 200 * 1024
 export const SERPER_CACHE_TIMEOUT_MS = 300
-const CACHEABLE: ReadonlySet<string> = new Set<SerperCachedEndpoint>(['search', 'shopping', 'maps'])
+const CACHEABLE: ReadonlySet<string> = new Set<SerperCachedEndpoint>(['search', 'shopping', 'maps', 'images'])
+const DEFAULT_IMAGES_TTL_SECONDS = 3 * 86_400
+
+/** How long a stored photo link lives: SERPER_CACHE_IMAGES_TTL_SECONDS, else 3 days. Pure. */
+export function serperCacheImagesTtlSeconds(env: NodeJS.ProcessEnv = process.env): number {
+  const n = Number(env.SERPER_CACHE_IMAGES_TTL_SECONDS)
+  return Number.isFinite(n) && n > 0 ? Math.floor(n) : DEFAULT_IMAGES_TTL_SECONDS
+}
 
 export function serperCacheTtlSeconds(env: NodeJS.ProcessEnv = process.env): number {
   const n = Number(env.SERPER_CACHE_TTL_SECONDS)
@@ -73,7 +83,7 @@ export function serperSharedCacheKey(
 ): string {
   const ep = variant ? `${endpoint}:${variant}` : endpoint
   // SERPER_CACHE_V2 (default OFF): normalised query + area (serperCacheV2.ts); v1 keys are never read under v2.
-  if (serperCacheV2Enabled(env)) {
+  if (endpoint !== 'images' && serperCacheV2Enabled(env)) {
     const q2 = createHash('sha256').update(normalizeQueryV2(query)).digest('hex')
     return namespacedKey(`serper:v2:${ep}:${q2}:${areaKeyV2(area)}`, env)
   }
@@ -119,12 +129,41 @@ export async function serperCacheGet<T>(
   variant?: string,
   env: NodeJS.ProcessEnv = process.env,
 ): Promise<T[] | null> {
-  if (!CACHEABLE.has(endpoint) || !query.trim() || !isDistributedStoreConfigured(env)) return null
+  const hit = await serperCacheGetMeta<T>(endpoint, query, area, variant, env)
+  return hit ? hit.rows : null
+}
+
+/**
+ * Stored value format. v3 (Phase 8 freshness): `{ v: 3, at: <ISO fetch time>, rows: [...] }`, so a shared hit says WHEN its rows were
+ * fetched. Older entries are a bare JSON array (no time): they still read as hits, with `at: null` = "time unknown". A reader that only
+ * knows the bare array (an older deploy) treats a v3 entry as a miss — it costs one call, never a wrong answer.
+ */
+export const SERPER_CACHE_FORMAT = 3
+
+export interface SharedCacheHit<T> { rows: T[]; at: string | null }
+
+/** Shared-cache read with the fetch time (null when the entry predates v3). Same rules as `serperCacheGet`. */
+export async function serperCacheGetMeta<T>(
+  endpoint: SerperCachedEndpoint,
+  query: string,
+  area: SerperCacheArea,
+  variant?: string,
+  env: NodeJS.ProcessEnv = process.env,
+): Promise<SharedCacheHit<T> | null> {
+  if (!CACHEABLE.has(endpoint) || !query.trim()) return null
+  // POST-CREDIT: with no store configured (a UAT launcher strips the KV variables on purpose) EVERY read is a miss — counted, so a
+  // cold cache is reported as 'L2 not configured' and never mistaken for fresh data or a low hit rate.
+  if (!isDistributedStoreConfigured(env)) { recordSerperL2Bypass(); return null }
   try {
     const raw = await kvCommand(['GET', serperSharedCacheKey(endpoint, query, area, variant, env)], env)
     if (typeof raw !== 'string' || !raw) return null
     const parsed: unknown = JSON.parse(raw)
-    return Array.isArray(parsed) && parsed.length > 0 ? (parsed as T[]) : null
+    if (Array.isArray(parsed)) return parsed.length > 0 ? { rows: parsed as T[], at: null } : null
+    const env3 = parsed as { v?: unknown; at?: unknown; rows?: unknown } | null
+    if (env3 && env3.v === SERPER_CACHE_FORMAT && Array.isArray(env3.rows) && env3.rows.length > 0) {
+      return { rows: env3.rows as T[], at: typeof env3.at === 'string' && Number.isFinite(Date.parse(env3.at)) ? env3.at : null }
+    }
+    return null
   } catch {
     return null
   }
@@ -145,11 +184,12 @@ export async function serperCacheSet(
   if (!CACHEABLE.has(endpoint) || !query.trim() || !isDistributedStoreConfigured(env)) return
   if (!Array.isArray(value) || value.length === 0) return
   try {
-    const v2 = serperCacheV2Enabled(env)
+    const isImages = endpoint === 'images' // photo LINKS: already picked from safe https addresses; no V2 rules, its own TTL
+    const v2 = !isImages && serperCacheV2Enabled(env)
     // v2 shares only cleaned public text: an injected title/snippet never reaches another user's turn raw (serperUntrusted.ts).
-    const json = JSON.stringify(v2 ? sanitizeSerperJson(value).body : value)
+    const json = JSON.stringify({ v: SERPER_CACHE_FORMAT, at: new Date().toISOString(), rows: v2 ? sanitizeSerperJson(value).body : value })
     if (new TextEncoder().encode(json).length > SERPER_CACHE_MAX_BYTES) return
-    const ttl = v2 ? serperTtlV2(endpoint, query, env) : serperCacheTtlSeconds(env)
+    const ttl = isImages ? serperCacheImagesTtlSeconds(env) : v2 ? serperTtlV2(endpoint, query, env) : serperCacheTtlSeconds(env)
     await kvCommand(['SET', serperSharedCacheKey(endpoint, query, area, variant, env), json, 'EX', String(ttl)], env)
   } catch {
     /* fail open */

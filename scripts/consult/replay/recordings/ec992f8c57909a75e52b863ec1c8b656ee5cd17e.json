@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple kiểm tra Mac Activation Lock MacBook trước khi mua cũ",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:15:27.204Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple kiểm tra Mac Activation Lock MacBook trước khi mua cũ",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cách kiểm tra MacBook cũ trước khi mua ĐƠN GIẢN ...",
+    "link": "https://24hstore.vn/huong-dan-ky-thuat/cach-kiem-tra-macbook-cu-n9230?srsltid=AU7gw4WPaYAlnujTSxoH0jyEHLln2qgfUqkvT0KXJ4kIAMliEoR1lUbA",
+    "snippet": "Cách kiểm tra MacBook cũ tránh mất tiền oan: Kiểm tra ngoại hình bên ngoài MacBook, Kiểm tra màn hình, Kiểm tra thông tin máy, Kiểm tra ...",
+    "date": "31 thg 5, 2025",
+    "position": 1
+   },
+   {
+    "title": "Cách kiểm tra MacBook cũ trước khi mua chuẩn xác, kỹ ...",
+    "link": "https://www.thegioididong.com/hoi-dap/cach-kiem-tra-macbook-cu-truoc-khi-mua-chuan-xac-1533818",
+    "snippet": "2. Cách test MacBook cũ trước khi mua · Kiểm tra hình thức bên ngoài · Kiểm tra màn hình · Kiểm tra thông tin máy · Kiểm tra Webcam, Mic, Cảm Biến, ...",
+    "date": "10 thg 6, 2023",
+    "position": 2
+   },
+   {
+    "title": "Hướng dẫn kiểm tra MacBook cũ, test máy chi tiết trước khi mua.",
+    "link": "https://thumacbook.com/huong-dan-kiem-tra-macbook-cu-test-may-chi-tiet-truoc-khi-mua/",
+    "snippet": "Bước quan trọng nhất để kiểm tra máy có iCloud ẩn hay không là reset máy về cài đặt gốc. Vào menu Apple → System Settings → General → Transfer or Reset → ...",
+    "position": 3
+   },
+   {
+    "title": "Cần kiểm tra những gì trước khi mua Macbook cũ?",
+    "link": "https://www.reddit.com/r/macbook/comments/1ekl23i/what_to_check_before_buying_a_used_macbook/?tl=vi",
+    "snippet": "Chào mọi người! \n\nTớ đang tính mua một chiếc Mac cũ và muốn đảm bảo là mình kiểm tra kỹ càng mọi thứ trước khi nhận ...",
+    "position": 4
+   },
+   {
+    "title": "10 phút. Mua Macbook cũ thì check ngay cho mình những yếu ...",
+    "link": "https://www.facebook.com/thinkview.vn/videos/10-ph%C3%BAt-mua-macbook-c%C5%A9-th%C3%AC-check-ngay-cho-m%C3%ACnh-nh%E1%BB%AFng-y%E1%BA%BFu-t%E1%BB%91-n%C3%A0y-nha/1708083160468379/",
+    "snippet": "Thứ năm là ESD. Bởi thế hệ Macbook Apple hàng chết SSD ở trên các bạn nên kiểm tra thật kĩ và cách kiểm tra thì mình đã để ở đây. Các bạn ...",
+    "position": 5
+   },
+   {
+    "title": "Cảnh báo anh em mua máy Mac cũ! | Viết bởi summon_rain",
+    "link": "https://tinhte.vn/thread/canh-bao-anh-em-mua-may-mac-cu.3680805/",
+    "snippet": "Cách chắc chắn 100% để kiểm tra Activation Lock - iCloud ẩn. Sau khi gọi lên Apple Support VN và chat với nhân viên của Apple, mình được ...",
+    "date": "12 thg 6, 2023",
+    "rating": 5,
+    "ratingCount": 23,
+    "position": 6
+   },
+   {
+    "title": "Nếu máy Mac của bạn bị thất lạc hoặc mất cắp",
+    "link": "https://support.apple.com/vi-vn/102481",
+    "snippet": "Đăng nhập vào icloud.com/find, rồi chọn máy Mac từ menu Thiết bị. · Nhập mật mã bạn đã tạo khi khóa máy bằng tính năng Tìm trên máy Mac dùng chip Intel, không có ...",
+    "position": 7
+   },
+   {
+    "title": "12 lưu ý quan trọng khi mua MacBook cũ bạn cần phải nắm",
+    "link": "https://www.fogostore.vn/blogs/news/12-luu-y-quan-trong-khi-mua-macbook-cu-ban-can-phai-nam?srsltid=AU7gw4X01Aty3n9aYeUiII2HtI-eAtl2XGdMHx4EdgaZLIPjR2gACAD7",
+    "snippet": "1. Kiểm tra kỹ thông số kỹ thuật · 2. Kiểm tra trạng thái khóa kích hoạt iCloud · 3. Kiểm tra xem MacBook có phải là bản gốc hay không · 4. Kiểm ...",
+    "date": "25 thg 10, 2024",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

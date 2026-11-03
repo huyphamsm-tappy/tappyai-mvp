@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Tai nghe Bluetooth chụp Tai Baseus Inspire XH1\" OR \"Tai Nghe Samsung Galaxy Buds 3 Pro Chính Hãng\" OR \"[ A4 ] Tai Nghe Hổ Vằn Louda 1571AM / 1563E Chống Ồn ANC 45DB\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:20:01.145Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Tai nghe Bluetooth chụp Tai Baseus Inspire XH1\" OR \"Tai Nghe Samsung Galaxy Buds 3 Pro Chính Hãng\" OR \"[ A4 ] Tai Nghe Hổ Vằn Louda 1571AM / 1563E Chống Ồn ANC 45DB\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

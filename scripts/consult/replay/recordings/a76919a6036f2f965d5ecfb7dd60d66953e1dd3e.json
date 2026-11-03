@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "iPhone 15 Pro 256GB site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:08:59.739Z",
+ "body": {
+  "searchParameters": {
+   "q": "iPhone 15 Pro 256GB site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "i̇phone 15 pro max 256gb",
+    "link": "https://shop.tiktok.com/vn/k/iphone-15-pro-max-256gb",
+    "snippet": "Introducing the iPhone 15 Pro Max 256GB, the pinnacle of mobile technology that combines cutting-edge features with exceptional performance.",
+    "position": 1
+   },
+   {
+    "title": "15 pro 256gb silver",
+    "link": "https://shop.tiktok.com/vn/k/15-pro-256gb-silver",
+    "snippet": "Khám phá 15 pro 256gb silver mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất hôm ...",
+    "position": 2
+   },
+   {
+    "title": "i̇phone 15 256gb",
+    "link": "https://shop.tiktok.com/vn/k/iphone-15-256gb",
+    "snippet": "iPhone 15 256GB Chính hãng VN/A [Viettel Store]. Deal. 2.3. 154 sold. ₫21.790.000. ₫24.990.000. iPhone 15 256GB Chính hãng VN/A [Viettel Store].",
+    "position": 3
+   },
+   {
+    "title": "Iphone 15 Pro Max512gb",
+    "link": "https://shop.tiktok.com/vn/k/iphone-15-pro-max512gb",
+    "snippet": "Khám phá Iphone 15 Pro Max512gb mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất hôm ...",
+    "position": 4
+   },
+   {
+    "title": "16 pro iphone 256gb",
+    "link": "https://shop.tiktok.com/vn/k/16-pro-iphone-256gb",
+    "snippet": "16 pro iphone 256gb ; 4.9. 10456 sold · 33.499.999. ₫60.000.000 ; 5. 21 sold · 35.000. ₫39.000 ; 0 sold · 25.900. ₫45.000 ...",
+    "position": 5
+   },
+   {
+    "title": "Iphone 15 live - TikTok Shop Vietnam",
+    "link": "https://shop.tiktok.com/vn/k/iphone-15-live",
+    "snippet": "Khám phá Iphone 15 live mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất hôm nay.",
+    "position": 6
+   },
+   {
+    "title": "iphone 15proร้านโรสสโตร์",
+    "link": "https://shop.tiktok.com/vn/k/iphone-15pro-ran-or-ss-ot-r",
+    "snippet": "Khám phá iphone 15proร้านโรสสโตร์ mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất ...",
+    "position": 7
+   },
+   {
+    "title": "12 iphone pro max 256gb",
+    "link": "https://shop.tiktok.com/vn/k/12-iphone-pro-max-256gb",
+    "snippet": "Khám phá 12 iphone pro max 256gb mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất hôm ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

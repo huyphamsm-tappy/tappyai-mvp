@@ -1,21 +1,25 @@
-import { describe, it, expect, afterEach } from 'vitest'
+import { describe, it, expect, afterEach, beforeEach } from 'vitest'
 import { voiceLayerBlock, STYLE_LUNA6_BLOCK, styleLuna6On, ASK_TAIL_VI_LUNA6, evidenceGapLine, remainingLine } from './styleLuna6'
 import { buildAskReply, consultRemainingLine, wasAskReply, ASK_TAIL_VI } from './consultBrain'
 
 const ask = { lead: 'Để chọn đúng quán cho bạn:', questions: [{ id: 'party', q: 'Mấy người?', options: ['1', '2'] }, { id: 'budget', q: 'Ngân sách?', options: ['a', 'b'] }] }
+// AI-Hay pass (04/10): the voice layer is ON by default. These tests describe the OFF text, so each starts from the explicit STYLE_LUNA6=0.
+beforeEach(() => { process.env.STYLE_LUNA6 = '0' })
 afterEach(() => { delete process.env.STYLE_LUNA6 })
 
-describe('D0: STYLE_LUNA6 is OFF by default and OFF means today’s text, byte for byte', () => {
-  it('flag unset', () => {
+describe('D0: STYLE_LUNA6 is ON by default; STYLE_LUNA6=0 means the earlier text, byte for byte', () => {
+  it('default (flag unset) is ON', () => { delete process.env.STYLE_LUNA6; expect(styleLuna6On()).toBe(true); expect(voiceLayerBlock()).not.toBe('') })
+  it('flag 0', () => {
     expect(styleLuna6On()).toBe(false)
     expect(voiceLayerBlock()).toBe('')
     expect(remainingLine(3, 'vi')).toBeNull()
     expect(evidenceGapLine('vi', null)).toBeNull()
     expect(buildAskReply(ask, { lang: 'vi', structured: true })).toContain(ASK_TAIL_VI)
   })
-  it('only the exact value «1» turns it on', () => {
-    process.env.STYLE_LUNA6 = 'true'; expect(styleLuna6On()).toBe(false)
+  it('only the exact value «0» turns it off', () => {
+    process.env.STYLE_LUNA6 = 'false'; expect(styleLuna6On()).toBe(true)
     process.env.STYLE_LUNA6 = '1'; expect(styleLuna6On()).toBe(true)
+    process.env.STYLE_LUNA6 = '0'; expect(styleLuna6On()).toBe(false)
   })
 })
 
@@ -57,8 +61,9 @@ describe('D1/D3/D4/D5: the block says what it must and nothing structural', () =
     expect(b).toMatch(/khoang 1\/3/); expect(b).toMatch(/chi 😄/)
     for (const k of ['lua dao', 'nan nhan', 'suc khoe', 'khan cap', 'chua co du lieu']) expect(b).toContain(k)
   })
-  it('keeps the assumptions (does not delete them) and forbids the dead phrases', () => {
-    expect(b).toMatch(/VAN noi du/)
+  it('does not announce default assumptions, forbids the boilerplate and the dead phrases', () => {
+    expect(b).toMatch(/Gia dinh MAC DINH/)
+    expect(b).toContain('Mẹo (theo kinh nghiệm chung)')
     for (const k of ['Chắc chắn rồi', 'Hy vọng thông tin hữu ích', 'Rất vui được hỗ trợ']) expect(b).toContain(k)
   })
   it('touches no structure: no marker, no tool, no number rule', () => {

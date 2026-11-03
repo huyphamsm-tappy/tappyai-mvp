@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com AirPods Pro 2 tech specs up to 6 hours listening time 30 hours MagSafe charging case",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:03:30.075Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com AirPods Pro 2 tech specs up to 6 hours listening time 30 hours MagSafe charging case",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "AirPods Pro 2 - Tech Specs",
+    "link": "https://support.apple.com/en-us/111851",
+    "snippet": "AirPods Pro with MagSafe Charging Case. Up to 30 hours of listening time5. 5 minutes in the case provides around 1 hour of listening time6. Connectivity.",
+    "position": 1
+   },
+   {
+    "title": "AirPods Pro 3 - Technical Specifications",
+    "link": "https://www.apple.com/airpods-pro/specs/",
+    "snippet": "Up to 24 hours of listening time with Active Noise Cancellation enabled; 5 minutes in the case provides around 1 hour of listening time. Connectivity.",
+    "position": 2
+   },
+   {
+    "title": "AirPods Pro 2 with MagSafe Charging Case (USB-C)",
+    "link": "https://support.apple.com/en-us/111834",
+    "snippet": "Up to 6 hours of listening time on a single charge (up to 5.5 hours with Spatial Audio and Head Tracking enabled) · Up to 4 hours of Lossless Audio listening ...",
+    "position": 3
+   },
+   {
+    "title": "Compare AirPods models",
+    "link": "https://www.apple.com/airpods/compare/",
+    "snippet": "Up to 30 hours of listening time with charging case and Active Noise Cancellation.",
+    "position": 4
+   },
+   {
+    "title": "AirPods Pro 3",
+    "link": "https://www.apple.com/airpods-pro/",
+    "snippet": "All-day battery life. They're workin' 9 to 5. The MagSafe Charging Case is full of helpful features — like a built-in speaker and more powerful Precision ...",
+    "position": 5
+   },
+   {
+    "title": "AirPods 5 - Technical Specifications",
+    "link": "https://www.apple.com/airpods-5/specs/",
+    "snippet": "Up to 6 hours of battery life on a single charge with noise control off. Battery life with charging case. Up to 20 hours of battery life with Active Noise ...",
+    "position": 6
+   },
+   {
+    "title": "AirPods 3 - Tech Specs",
+    "link": "https://support.apple.com/en-us/111863",
+    "snippet": "Up to 30 hours of listening time. 5 minutes in the case provides around 1 hour of listening time. Connectivity. Bluetooth 5.0 wireless technology. In the Box.",
+    "position": 7
+   },
+   {
+    "title": "AirPods Pro 3 - Tech Specs",
+    "link": "https://support.apple.com/en-us/125135",
+    "snippet": "Up to 24 hours of listening time with Active Noise Cancellation enabled21. 5 minutes in the case provides around 1 hour of listening time22. Connectivity.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

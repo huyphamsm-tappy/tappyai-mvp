@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vanban.chinhphu.vn \"cấp hộ chiếu\" \"200.000\" \"157/2015\"",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:25:41.771Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vanban.chinhphu.vn \"cấp hộ chiếu\" \"200.000\" \"157/2015\"",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

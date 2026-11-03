@@ -7,6 +7,11 @@ import { useTranslation } from '@/lib/i18n/useTranslation'
 import ShareMenu from '@/components/share/ShareMenu'
 import { buildPlanArtifact } from '@/lib/share/shareArtifact'
 import { withPlacePhotos, type PlacePhotoSource } from '@/lib/plans/share/planPhotos'
+import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
+
+const DAY_COVERS = process.env.NEXT_PUBLIC_CONSULT_V3 === '1'
+// Owner UAT 02/11: a multi-day plan is the designed card - a page per day behind day tabs - on every build. The 29/10 one-brain variant
+// that listed every day in one long page is withdrawn.
 
 export interface PlanItem {
   time: string
@@ -78,6 +83,10 @@ export default function TripPlanCard({ plan: rawPlan, placePhotos }: {
   const artifact = buildPlanArtifact(withPlacePhotos(plan, placePhotos), locale === 'en' ? 'en' : 'vi')
 
   const currentDay = plan.days[activeDay] ?? plan.days[0]
+  // CONSULT_V3 UAT build (NEXT_PUBLIC_CONSULT_V3, inlined at build): a cover photo for the day, like ChatGPT's itinerary — the first safe
+  // https photo among the day's own stops (server-matched place photos; no new image source, no new request).
+  const coverOf = (day: typeof currentDay): string | null => DAY_COVERS ? day?.items.map(it => it.photo_url).find((u): u is string => !!u && isSafeHttpsUrl(u)) ?? null : null
+  const daysToShow = [currentDay]
 
   return (
     <div className="mt-3 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden bg-white dark:bg-gray-900 shadow-sm">
@@ -125,16 +134,29 @@ export default function TripPlanCard({ plan: rawPlan, placePhotos }: {
         </div>
       )}
 
+      {daysToShow.map((day, di) => {
+      const dayCover = coverOf(day)
+      return (
+      <div key={di}>
+      {dayCover && (
+        <div className="relative">
+          <img src={dayCover} alt={day?.label ?? ''} loading="lazy" onError={(e) => { e.currentTarget.parentElement!.style.display = 'none' }} className="w-full h-40 object-cover" />
+          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-3 pb-2 pt-8">
+            <span className="text-sm font-semibold text-white">{day?.label}</span>
+          </div>
+        </div>
+      )}
+
       {/* ── Timeline ── */}
       <div className="divide-y divide-gray-50 dark:divide-gray-800/80">
-        {currentDay?.items.map((item, i) => (
+        {day?.items.map((item, i) => (
           <div key={i} className="px-3 py-3 flex gap-3">
             {/* Time column */}
             <div className="flex flex-col items-center flex-shrink-0 w-10 pt-0.5">
               <span className="text-xs text-gray-400 dark:text-gray-500 font-mono leading-none">
                 {item.time || ''}
               </span>
-              {i < currentDay.items.length - 1 && (
+              {i < day.items.length - 1 && (
                 <div className="w-px flex-1 mt-1.5 bg-gray-100 dark:bg-gray-800 min-h-4" />
               )}
             </div>
@@ -156,8 +178,10 @@ export default function TripPlanCard({ plan: rawPlan, placePhotos }: {
                 )}
               </div>
 
-              {/* Photo — server-matched representative image, right under the place */}
-              {item.photo_url && (
+              {/* Photo — server-matched representative image, right under the place. Gate 2 F-A (A3-2 a): a stored plan may carry a
+                  photo_url written before A1, so only a safe public https URL (urlGuard contract) is rendered. A risk reduction, not
+                  provenance: an https URL on any public host still renders. */}
+              {item.photo_url && item.photo_url !== dayCover && isSafeHttpsUrl(item.photo_url) && (
                 <img
                   src={item.photo_url}
                   alt={item.name}
@@ -213,6 +237,8 @@ export default function TripPlanCard({ plan: rawPlan, placePhotos }: {
           </div>
         ))}
       </div>
+      </div>
+      )})}
 
       {/* ── Local tips (grounded: a stop of this plan, or flagged general advice) ── */}
       {Array.isArray(plan.local_tips) && plan.local_tips.some(tip => tip && typeof tip.text === 'string') && (

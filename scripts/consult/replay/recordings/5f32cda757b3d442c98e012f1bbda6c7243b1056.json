@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vnexpress.net/du-lich Hội An",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:53:59.408Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vnexpress.net/du-lich Hội An",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "du lịch Hội An",
+    "link": "https://video.vnexpress.net/du-lich-hoi-an/tag-50384-1.html",
+    "snippet": "Máy bay chở 160 người hủy cất cánh vì động cơ 'khạc lửa'. 00:31 ; Tên lửa Nga gây loạt vụ nổ sáng rực bầu trời Kiev. 01:08 ; Nga phóng loạt tên lửa tầm xa từ quần ...",
+    "position": 1
+   },
+   {
+    "title": "Du lịch Huế, Hội An lao đao trong vòng xoáy bão lũ",
+    "link": "https://vnexpress.net/du-lich-hue-hoi-an-lao-dao-trong-vong-xoay-bao-lu-4959860.html",
+    "snippet": "Không thể đón khách, cơ sở hạ tầng thiệt hại hàng tỷ đồng, những người làm du lịch miền Trung đối diện tháng 11 khó khăn khi bão lũ ập đến, ...",
+    "date": "5 thg 11, 2025",
+    "position": 2
+   },
+   {
+    "title": "Du lịch xanh ở Hội An",
+    "link": "https://vnexpress.net/du-lich-xanh-o-hoi-an-2888242.html",
+    "snippet": "Eco-Tour Hội An thích hợp với du khách thành thị đam mê du lịch bụi và những bạn trẻ hướng ngoại muốn có cơ hội giao lưu với người nước ngoài.",
+    "date": "3 thg 10, 2013",
+    "position": 3
+   },
+   {
+    "title": "Du lịch miền Trung gián đoạn do bão Fengshen",
+    "link": "https://vnexpress.net/du-lich-mien-trung-gian-doan-do-bao-fengshen-4954566.html",
+    "snippet": "Bão Fengshen gây mưa lớn tại Quảng Trị, Huế, Đà Nẵng, Hội An và Quảng Ngãi, khiến nhiều hoạt động du lịch phải tạm dừng để đảm bảo an toàn.",
+    "date": "22 thg 10, 2025",
+    "position": 4
+   },
+   {
+    "title": "Hội An miễn phí vé tham quan ngày 4/12",
+    "link": "https://vnexpress.net/du-lich/hoi-an-mien-phi-ve-tham-quan-ngay-4-12-3846118.html",
+    "snippet": "Vé tham quan Hội An có giá 80.000 đồng với khách trong nước và 120.000 đồng với khách nước ngoài. Làng gốm Thanh Hà áp dụng giá vé với hai nhóm ...",
+    "date": "29 thg 11, 2018",
+    "position": 5
+   },
+   {
+    "title": "Đầu bếp 12 nước trổ tài tại phố cổ Hội An",
+    "link": "https://video.vnexpress.net/du-lich/dau-bep-12-nuoc-tro-tai-tai-pho-co-hoi-an-3371347.html",
+    "snippet": "12 đầu bếp đến từ 12 quốc gia trên thế giới đã chọn một nhà hàng bất kỳ ở phố cổ Hội An (Quảng Nam) để trang trí và trổ tài nấu những món ăn của nước mình ...",
+    "position": 6
+   },
+   {
+    "title": "Du lịch Đà Nẵng - Hội An - Huế",
+    "link": "https://raovat.vnexpress.net/du-lich-da-nang-hoi-an-hue-1796756.html",
+    "snippet": "Xin giới thiệu đến Anh/Chị một số tour ghép miền Trung: Đà Nẵng – Bà Nà : 870k ( buffet trưa tại đỉnh núi Bà Nà ). Đà Nẵng – Cù Lao Chàm : 550k.",
+    "position": 7
+   },
+   {
+    "title": "Du Lịch Hội An - tham quan ngũ hành sơn và phố cổ Hội An",
+    "link": "https://raovat.vnexpress.net/du-lich-hoi-an-tham-quan-ngu-hanh-son-va-pho-co-hoi-an-1780240.html",
+    "snippet": "Du Lịch Hội An - tham quan ngũ hành sơn và phố cổ Hội An là chương trình độc nhất chỉ có tại công ty Ly's travel Hội an, với phương châm mang đến những cuộc ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

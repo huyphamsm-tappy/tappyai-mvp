@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hanami Hotel Danang\" OR \"Sala Danang Beach Hotel\" OR \"M Hotel Da Nang\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:18:23.698Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hanami Hotel Danang\" OR \"Sala Danang Beach Hotel\" OR \"M Hotel Da Nang\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Sala Danang Beach Hotel - TikTok",
+    "link": "https://www.tiktok.com/@sala.danang.beach",
+    "snippet": "Kênh Tiktok chính thức của Sala Danang Beach Hotel Hotline đặt phòng: 0236//3658//555. Buffet sáng tại Khách sạn Sala Danang Beach sẽ có gì?",
+    "position": 1
+   },
+   {
+    "title": "Sala Danang Beach Hotel (@saladanangbeachhotel) | TikTok",
+    "link": "https://www.tiktok.com/@saladanangbeachhotel",
+    "snippet": "Sala Danang Beach Hotel (@saladanangbeachhotel) trên TikTok |1060 Lượt thích.227 Follower.36 - 38 Lam Hoang Street, Son Tra District, Danang City, Viet Nam.",
+    "position": 2
+   },
+   {
+    "title": "SALA DANANG BEACH HOTEL: Lý tưởng tại Đà Nẵng gần Mỹ Khê ...",
+    "link": "https://www.tiktok.com/@bigonetravel/photo/7655784608008572180",
+    "snippet": "Khám phá Sala Danang Beach Hotel, điểm dừng chân lý tưởng tại Đà Nẵng với nhiều hạng phòng từ tiêu chuẩn đến suite cao cấp, chỉ vài phút tới ...",
+    "date": "26 thg 6, 2026",
+    "position": 3
+   },
+   {
+    "title": "Hội thao Sala DaNang Beach Hotel 2026 - Lần thứ 4 | TikTok",
+    "link": "https://www.tiktok.com/@lifeatsala/video/7671236738945273095",
+    "snippet": "Video TikTok từ Life at Sala !!! (@lifeatsala): \"Tổng hợp sự kiện Hội thao Sala DaNang Beach Hotel 2026 lần thứ 4: hình ảnh, ...",
+    "date": "7 thg 8, 2026",
+    "position": 4
+   },
+   {
+    "title": "M Hotel Da Nang: A Nighttime Paradise - TikTok",
+    "link": "https://www.tiktok.com/@mhoteldanang/video/7491982726556388615",
+    "snippet": "167 Lượt thích,Video TikTok từ M Hotel Danang (@mhoteldanang): \"Explore the enchanting atmosphere of M Hotel Da Nang by night.",
+    "date": "11 thg 4, 2025",
+    "position": 5
+   },
+   {
+    "title": "Discover M Hotel Da Nang: A Luxurious Haven | TikTok",
+    "link": "https://www.tiktok.com/@pointfootage/video/7469809813174684960",
+    "snippet": "Experience the beauty of M Hotel Da Nang! With breathtaking views and luxurious amenities, it's a perfect spot for your next getaway. @M Hotel ...",
+    "date": "10 thg 2, 2025",
+    "position": 6
+   },
+   {
+    "title": "Khám Phá Rooftop Mới Tại Đà Nẵng - Sala Danang Beach Hotel",
+    "link": "https://www.tiktok.com/@saigoncityview/video/7358804491241639169",
+    "snippet": "Khám phá một rooftop mới tuyệt đẹp với view toàn cảnh Đà Nẵng và đường ven biển tại Sala Danang Beach Hotel. Đến với Đà Nẵng để trải nghiệm hành ...",
+    "date": "17 thg 4, 2024",
+    "position": 7
+   },
+   {
+    "title": "Tiệc trà chiều tại Khách sạn Sala Danang Beach có gì ... - TikTok",
+    "link": "https://www.tiktok.com/@sala.danang.beach/video/7686735249384033537",
+    "snippet": "68 Lượt thích,Video TikTok từ Sala Danang Beach Hotel (@sala.danang.beach): \"Tiệc trà chiều tại Khách sạn Sala Danang Beach có gì?",
+    "date": "17 thg 9, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

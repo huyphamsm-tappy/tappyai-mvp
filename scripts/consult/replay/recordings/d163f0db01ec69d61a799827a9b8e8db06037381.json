@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Vinamilk doanh thu năm 2024 doanh thu thuần báo cáo thường niên 2024",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T16:55:47.272Z",
+ "body": {
+  "searchParameters": {
+   "q": "Vinamilk doanh thu năm 2024 doanh thu thuần báo cáo thường niên 2024",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "BÁO CÁO THƯỜNG NIÊN 2024",
+    "link": "https://www.vinamilk.com.vn/bao-cao-thuong-nien/bao-cao/2024/doc/vi/full-bao-cao.pdf?srsltid=AU7gw4WQp6B6qDcwHbeHDVV8J24NLlxwOGhEL5CSuS_TRa_F41ujujF_",
+    "snippet": "Báo cáo hoạt động. Khối. Kinh doanh. Nội Địa. Doanh thu thuần hợp nhất trong nước năm 2024 đạt 50.799 tỷ đồng, tăng trưởng 0,4% so với cùng kỳ ...",
+    "date": "17 thg 5, 2024",
+    "position": 1
+   },
+   {
+    "title": "Báo cáo Thường niên",
+    "link": "https://www.vinamilk.com.vn/investor/reports/annual?srsltid=AU7gw4Vh0Uu9x4zR4ZlMs9G6JUkrPxSl-AZZaIqMlKZaEuI7slWsRVyc",
+    "snippet": "Báo cáo ; Báo cáo thường niên 2025. 19/03/2026 ; Báo cáo thường niên 2024. 16/03/2025 ; Báo cáo thường niên 2023. 01/01/2024 ; Báo cáo thường niên 2022. 01/01/2023.",
+    "position": 2
+   },
+   {
+    "title": "Báo cáo Tài chính",
+    "link": "https://www.vinamilk.com.vn/investor/reports/financial?srsltid=AU7gw4XhBRxu-_DOZ5sDUWck0rBEpxulgssQMe-5RHmkibYVhUCqf2A1",
+    "snippet": "Báo cáo. Báo cáo Tài chínhBáo cáo Thường niênBáo cáo phát triển bền vữngBáo cáo Quản trị Công ty ... Số giấy chứng nhận đăng ký doanh nghiệp: 0300588569.",
+    "position": 3
+   },
+   {
+    "title": "VNM Báo cáo thường niên 2024 | Vinamilk",
+    "link": "https://vn.linkedin.com/posts/vinamilk_vnm-b%C3%A1o-c%C3%A1o-th%C6%B0%E1%BB%9Dng-ni%C3%AAn-2024-activity-7319935039654240256-xs0x",
+    "snippet": "\"Luôn cầu tiến\" là thông điệp của Báo cáo Thường niên Vinamilk 2024, đi kèm những kết quả ấn tượng: ✔️ Tổng doanh thu hợp nhất đạt 61.824 ...",
+    "position": 4
+   },
+   {
+    "title": "Báo cáo KQHD Vinamilk 2024: Phân Tích Kết Quả Kinh ...",
+    "link": "https://www.studocu.vn/vn/document/truong-dai-hoc-luat-thanh-pho-ho-chi-minh/quan-tri-tai-chinh/bao-cao-kqhd-vinamilk-2024-phan-tich-ket-qua-kinh-doanh-va-chi-phi/130573223",
+    "snippet": "Doanh thu thuần về bán hàng và cung cấp dịch vụ của Vinamilk trong năm 2024 đạt 61,782,609 triệu đồng, tăng 2% so với năm 2023 (60,368,916 triệu đồng). Mặc dù ...",
+    "position": 5
+   },
+   {
+    "title": "Vinamilk",
+    "link": "https://www.vinamilk.com.vn/bao-cao-thuong-nien/bao-cao/2024/index.html?srsltid=AU7gw4WzjzZfZseK7Ng-cKnlvA4yWfrkJJ458qDpUj_GKBzYcVN_aOWB",
+    "snippet": "BÁO CÁO THƯỜNG NIÊN 2024 ... Tổng doanh thu hợp nhất. 0 tỉ đồng +0% so với cùng kỳ. 0. Thị trường xuất khẩu lũy kế (+3 quốc gia mới so với cùng kỳ). 0. Sản phẩm ...",
+    "position": 6
+   },
+   {
+    "title": "Vinamilk về đích 2024: Doanh thu nước ngoài tăng trưởng ...",
+    "link": "https://vietnamnet.vn/vinamilk-ve-dich-2024-doanh-thu-nuoc-ngoai-tang-truong-cao-nhat-5-nam-2366666.html",
+    "snippet": "Lũy kế năm 2024, tổng doanh thu hợp nhất của Vinamilk đạt 61.824 tỷ đồng, tăng 2,2% so với cùng kỳ. Xét về cấu trúc doanh thu, thị trường nội ...",
+    "date": "25 thg 1, 2025",
+    "position": 7
+   },
+   {
+    "title": "Báo cáo tài chính hợp nhất cho năm kết thúc ngày 31 ...",
+    "link": "https://www.vinamilk.com.vn/bao-cao-thuong-nien/bao-cao/2024/doc/vi/bctc-ifrs.pdf?srsltid=AU7gw4XtO2Iwq3lc_OXNLck9RXeNYlgtTDkmphpmtyTtBRnBDD-Rh7l5",
+    "snippet": "Báo cáo thường niên Vinamilk 2024. 180. 181. Luôn cầu tiến. Báo cáo tài ... Doanh thu hoạt động tài chính. 1.456.409. 1.546.046. Chi phí tài ...",
+    "date": "31 thg 12, 2024",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

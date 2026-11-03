@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Pizza 4P's menu giá pizza pasta TP.HCM gia menu thuc don",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:41:32.717Z",
+ "body": {
+  "searchParameters": {
+   "q": "Pizza 4P's menu giá pizza pasta TP.HCM gia menu thuc don",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Menu",
+    "link": "https://pizza4ps.com/vn/menu/",
+    "snippet": "Menu ; Clam & Basil Sauce Spaghetti. 178,000 vnd ; Crab Tomato Cream Spaghetti with Ricotta Cheese. 258,000 vnd ; Salmon Cream House-made Fettuccine. 204,000 vnd ...",
+    "position": 1
+   },
+   {
+    "title": "[SEASONAL MENU - THỰC ĐƠN THEO MÙA] TASTE THE ...",
+    "link": "https://www.facebook.com/Pizza4Ps/posts/seasonal-menu-th%E1%BB%B1c-%C4%91%C6%A1n-theo-m%C3%B9ataste-the-difference-tr%E1%BA%A3i-nghi%E1%BB%87m-h%C6%B0%C6%A1ng-v%E1%BB%8B-kh%C3%A1c-bi/1071749431662475/",
+    "snippet": "*Thực đơn giới hạn gồm năm món, phục vụ từ ngày 2 tháng 4, chỉ có tại Pizza 4P's Xuân Thuỷ và Hai Bà Trưng (TP.HCM). ☎️Hotline: 19006043 ...",
+    "position": 2
+   },
+   {
+    "title": "Menu",
+    "link": "https://pizza4ps.com/vn/menu/?lang=vietnamese",
+    "snippet": "Menu ; Các loại phô mai nhà làm (S). 114,000 vnd ; Các loại phô mai nhà làm (L). 208,000 vnd ; Set thịt nguội và phô mai (Nhỏ). 181,000 vnd ; Set thịt nguội và phô ...",
+    "position": 3
+   },
+   {
+    "title": "Pizza 4P's Vincom: Menu, Bảng Giá và Khuyến Mãi Mới Nhất",
+    "link": "https://vincom.com.vn/brand/pizza-4ps",
+    "snippet": "Bảng giá và menu của Pizza 4P's Vincom. Không chỉ làm nên thương hiệu bởi những chiếc pizza “xịn sò”, Pizza 4P's còn nổi đình đám bởi các món ăn kèm: salad ...",
+    "position": 4
+   },
+   {
+    "title": "Pizza 4P's Menu and Prices Overview | PDF | Foods | Cuisine",
+    "link": "https://www.scribd.com/document/850497652/Pizza-4Ps-INDIA-Food-Menu",
+    "snippet": "NON-VEG PASTA. Crab Tomato Cream Spaghetti with e n 920 P 42. Ricotta Cheese. Basil Pesto Spaghetti - Chicken n 520 P 59. Basil Pesto Spaghetti - Shrimp n 620 ...",
+    "position": 5
+   },
+   {
+    "title": "4ps Pizza Menu",
+    "link": "https://www.instagram.com/popular/4ps-pizza-menu/",
+    "snippet": "The menu features wood-fired pizzas like Margherita, 4 Cheese, and fusion options such as Korean Chicken Bulgogi and Salmon Miso Cream, alongside pasta and ...",
+    "position": 6
+   },
+   {
+    "title": "Pizza 4Ps thì cũng có mấy bận được review rồi, ai ...",
+    "link": "https://www.facebook.com/groups/anginhi/posts/1001255226573573/",
+    "snippet": "HCMC REVIEW | ĂN GÌ Ở PIZZA 4P'S 15/8 Lê Thánh Tôn Q1 HCMC (hẻm cạnh tòa nhà CGV đầu đường LTT) Viết về 4Ps đáng ra là SoChaud phải viết từ rất ...",
+    "position": 7
+   },
+   {
+    "title": "Review Pizza 4P's: Quán Pizza kết nối hạnh phúc giữa phố ...",
+    "link": "https://www.traveloka.com/vi-vn/explore/tips/ta-pizza-4ps/592094",
+    "snippet": "1.2 Menu đặc trưng tại Pizza 4P's. Pizza 4P's nổi bật với thực đơn đa dạng và độc đáo, mang đậm dấu ấn sự pha trộn giữa ẩm thực Ý truyền thống và sáng tạo hiện ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

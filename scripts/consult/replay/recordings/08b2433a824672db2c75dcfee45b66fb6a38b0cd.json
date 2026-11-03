@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:moj.gov.vn lệ phí cấp hộ chiếu phổ thông 2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:35:45.678Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:moj.gov.vn lệ phí cấp hộ chiếu phổ thông 2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "CÔNG TY ĐẤU GIÁ HỢP DANH MIỀN ĐÔNG",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/thong-bao-bdg-so-117-05-ngay-18-8-2026-ba-tinh-01a0224881547cf8943822713758f6b6.pdf",
+    "snippet": "Quyền sử dụng đất, quyền sở hữu nhà ở và tài sản gắn liền với đất có diện tích. 1005,6m2 (đất trồng cây lâu năm), thửa đất số 120, ...",
+    "date": "18 thg 8, 2026",
+    "position": 1
+   },
+   {
+    "title": "Những quy định đáng chú ý có hiệu lực từ tháng 8",
+    "link": "https://htpldn.moj.gov.vn/Pages/chi-tiet-tin.aspx?ItemID=86&l=Vanbanchinhsachmoi",
+    "snippet": "Đối với thi sát hạch lái xe ô tô hạng B1, B2, C, D, E, F lần lượt lý thuyết 100.000 đồng/lần (tăng 10.000 đồng); thực hành trong hình 350.000 ...",
+    "date": "1 thg 8, 2023",
+    "position": 2
+   },
+   {
+    "title": "THÔNG BÁO PHÁT HÀNH BIÊN LAI",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/tb-phat-hanh-bien-lai-019f1b90107a712683a84fe80c65b8bd.pdf",
+    "snippet": "BIÊN LAI THU TẠM ỨNG ÁN PHÍ, LỆ PHÍ TÒA ÁN. Họ và tên người nộp tiền: Ngày … tháng ….. năm ..... MẪU. CCCD/Hộ chiếu: Địa chỉ: cấp ngày tháng ...",
+    "date": "1 thg 7, 2026",
+    "position": 3
+   },
+   {
+    "title": "CÔNG TY ĐẤU GIÁ HỢP DANH AN GIA",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/tb-104-01-01a0279fcd777ce09c0ef063b7503ad1.pdf",
+    "snippet": "cấp Giấy chứng nhận quyền sử dụng đất, quyền sở hữu nhà ở và tài sản khác gắn liền với đất số BR 339941 (số vào sổ cấp GCN: CH 04029) ngày ...",
+    "date": "21 thg 8, 2026",
+    "position": 4
+   },
+   {
+    "title": "THÔNG BÁO về việc bán đấu giá tài sản (lần 2)",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/2486-thong-bao-ve-viec-ban-dau-gia-tai-san-so-tb-thads-kv2-ngay-06-05-2026-019e001a5d617523bf6b1f1a183cdf26.pdf",
+    "snippet": "Căn cứ Điều 101 Luật Thi hành án dân sự;. Căn cứ bản án số 43/2023/QĐST-DS ngày 27 tháng 07 năm 2023 của Toà án nhân dân thành phố từ sơn, ...",
+    "date": "6 thg 5, 2026",
+    "position": 5
+   },
+   {
+    "title": "2322/tb-thads",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/2322-2026-tb-bdg-kv3-01a089847330785fb348f6e6bf21aebc.pdf",
+    "snippet": "Giá khởi điểm: 13.998.800.000đ (chưa bao gồm các loại thuế, phí lệ phí liên quan); Bước giá: 50.000.000đ; Tiền đặt trước: 2.700.000.000đ/hồ mua hồ sơ mời ...",
+    "position": 6
+   },
+   {
+    "title": "CÔNG TY ĐẤU GIÁ HỢP DANH MIỀN ĐÔNG",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/tb-125-16-ngay-02-10-2026-ban-dau-gia-vu-thang-thuy-kv-11-chv-tiep-01a108f38e7973959771cc588b430776.pdf",
+    "snippet": "Thời hạn và địa điểm xem tài sản: Từ 07 giờ 30 phút ngày 06/10/2026 đến 17 giờ 00 phút ngày 27/10/2026 (trong giờ hành chính các ngày làm việc, ...",
+    "date": "6 ngày trước",
+    "position": 7
+   },
+   {
+    "title": "cục quản lý thi hành án dân sự cộng hoà xã hội chủ nghĩa ...",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/tb-so-6331-thads-kv5-ngay-27-07-2026-ve-viec-ban-dau-gia-tai-san-vu-nguyen-thai-son-my-duyen-019fabad54d97b4881a8207c4a27b796.pdf",
+    "snippet": "+ Đối với cá nhân: Căn cước/căn cước công dân/Hộ chiếu (CC,CCCD/Hộ ... Lệ phí trước bạ, lệ phí công chứng hợp đồng mua bán tài sản đấu giá ...",
+    "date": "27 thg 7, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:hoianworldheritage.org.vn \"7 giờ 30\" vé tham quan phố cổ Hội An 2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:13:56.059Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:hoianworldheritage.org.vn \"7 giờ 30\" vé tham quan phố cổ Hội An 2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "hồ sơ cấp hộ chiếu online người đủ 14 tuổi CCCD ảnh chân dung giấy tờ cần thiết Việt Nam",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T17:14:42.209Z",
+ "body": {
+  "searchParameters": {
+   "q": "hồ sơ cấp hộ chiếu online người đủ 14 tuổi CCCD ảnh chân dung giấy tờ cần thiết Việt Nam",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tờ khai điện tử đề nghị cấp hộ chiếu",
+    "link": "https://hochieu.xuatnhapcanh.gov.vn/faces/faq.jspx",
+    "snippet": "Hồ sơ bao gồm: - Khai 01 tờ khai đề nghị cấp hộ chiếu theo mẫu quy định; - 02 ảnh cỡ 4cm x 6cm, phông nền trắng, mặt ...",
+    "position": 1
+   },
+   {
+    "title": "HƯỚNG DẪN NỘP HỒ SƠ CẤP HỘ CHIẾU TRÊN ỨNG DỤNG ...",
+    "link": "https://www.facebook.com/congantinhtuyenquang/videos/h%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-n%E1%BB%99p-h%E1%BB%93-s%C6%A1-c%E1%BA%A5p-h%E1%BB%99-chi%E1%BA%BFu-tr%C3%AAn-%E1%BB%A9ng-d%E1%BB%A5ng-vneidnh%E1%BA%B1m-t%E1%BA%A1o-thu%E1%BA%ADn-l%E1%BB%A3i-cho-ng%C6%B0%E1%BB%9Di/948024608129618/",
+    "snippet": "This tutorial provides a comprehensive guide on how to apply for a standard Vietnamese passport online using the VNeID mobile application. It ...",
+    "position": 2
+   },
+   {
+    "title": "Thủ tục làm chiếu cho trẻ em dưới 14 tuổi theo quy định mới",
+    "link": "https://www.xuatnhapcanh.com.vn/c11t259-thu-tuc-lam-chieu-cho-tre-em-duoi-14-tuoi-theo-quy-dinh-moi.htm",
+    "snippet": "- Tải ảnh chân dung 4x6 cm nền trắng, ảnh mặt trước và sau của CCCD;. - Nhập đầy đủ thông tin vào các cột mục;. - Đăng ký nơi nhận hộ chiếu;. - ...",
+    "date": "13 thg 12, 2023",
+    "position": 3
+   },
+   {
+    "title": "Hướng dẫn người dân đăng ký làm hộ chiếu trên ứng ...",
+    "link": "https://congan.hungyen.gov.vn/huong-dan-nguoi-dan-dang-ky-lam-ho-chieu-tren-ung-dung-vneid-c231845.html",
+    "snippet": "Việc đăng ký hộ chiếu qua VNeID giúp người dân tiết kiệm thời gian, không cần điền giấy tờ thủ công và có thể theo dõi hồ sơ trực tuyến. Công an xã Trà Giang ...",
+    "position": 4
+   },
+   {
+    "title": "📢 HƯỚNG DẪN CẤP HỘ CHIẾU PHỔ THÔNG ONLINE ...",
+    "link": "https://www.facebook.com/100073463619815/posts/-h%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-c%E1%BA%A5p-h%E1%BB%99-chi%E1%BA%BFu-ph%E1%BB%95-th%C3%B4ng-online-tr%C3%AAn-%E1%BB%A9ng-d%E1%BB%A5ng-vneidnh%E1%BA%B1m-%C4%91%C6%A1n-gi%E1%BA%A3n-h%C3%B3a-th/1001152079010237/",
+    "snippet": "Các bước thực hiện Bước 1: Truy cập dịch vụ Đăng nhập tài khoản VNeID mức 2 Chọn mục “Thủ tục hành chính” Chọn “Cấp hộ chiếu phổ thông trong ...",
+    "position": 5
+   },
+   {
+    "title": "HƯỚNG DẪN LÀM HỘ CHIẾU CHO TRẺ EM DƯỚI 14 TUỔI ...",
+    "link": "https://congan.caobang.gov.vn/thoi-su-chinh-tri/huong-dan-lam-ho-chieu-cho-tre-em-duoi-14-tuoi-tren-cong-dich-vu-cong-bo-cong-an-1032207",
+    "snippet": "1️⃣ Hồ sơ cần chuẩn bị: Các thông tin về Họ và tên, Ngày tháng năm sinh, Nơi đăng ký thường trú, Năm sinh bố, mẹ hoặc người giám hộ... 01 File ...",
+    "date": "13 thg 11, 2025",
+    "position": 6
+   },
+   {
+    "title": "tờ khai cấp hộ chiếu phổ thông ở nước ngoài - Bộ Ngoại giao",
+    "link": "https://passport.mofa.gov.vn/",
+    "snippet": "Ảnh mới chụp (không quá 6 tháng); · Tỉ lệ ảnh: rộng × dài = 3 × 4 · Độ phân giải tối thiểu 300 dpi; · Tỉ lệ diện tích khuôn mặt chiếm khoảng 75% diện tích ảnh; ...",
+    "position": 7
+   },
+   {
+    "title": "Thủ tục làm hộ chiếu/passport online cho trẻ em dưới 14 tuổi",
+    "link": "https://ketoananpha.vn/thu-tuc-lam-ho-chieu-online-cho-tre-em.html",
+    "snippet": "Hồ sơ làm hộ chiếu online cho trẻ em dưới 14 tuổi cần chuẩn bị gồm có: 1 ảnh chụp chân dung của bé (*);; Bản chính hộ chiếu gốc cấp lần gần nhất của trẻ em ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

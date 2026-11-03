@@ -194,6 +194,7 @@ export function guardPlanPrices(
   fullText: string,
   evidence: PlanPriceEvidence,
   lang = 'vi',
+  opts: { keepModelBudget?: boolean } = {},
 ): { text: string; redacted: number } {
   const open = '[TAPPY_PLAN]'
   const close = '[/TAPPY_PLAN]'
@@ -247,7 +248,10 @@ export function guardPlanPrices(
   // The total is the user's number when they gave one; otherwise it is only
   // real when it is one of the retrieved amounts. A total the model summed from
   // invented item prices is invented too.
-  if (typeof plan.budget_total === 'string' && !supported(plan.budget_total, [...entityPool, ...evidence.userAmounts])) {
+  // keepModelBudget (one brain, 29/10): the plan's total and its cost lines are the model's own labelled planning split of the user's budget
+  // ("dự toán giả định … tối đa 6,0 triệu/2 người"), not a price the places quote. Replaced by "chưa có giá" they left the card with no budget
+  // at all. The per-item prices (a figure a place must have published) are still judged above.
+  if (!opts.keepModelBudget && typeof plan.budget_total === 'string' && !supported(plan.budget_total, [...entityPool, ...evidence.userAmounts])) {
     plan.budget_total = sentinel
     redacted++
     changed = true
@@ -255,7 +259,7 @@ export function guardPlanPrices(
 
   // Breakdown lines: retrieved amounts only — the budget is not a cost. Derived
   // lines go regardless of their value; the server writes its own below.
-  if (plan.cost_breakdown && typeof plan.cost_breakdown === 'object' && !Array.isArray(plan.cost_breakdown)) {
+  if (!opts.keepModelBudget && plan.cost_breakdown && typeof plan.cost_breakdown === 'object' && !Array.isArray(plan.cost_breakdown)) {
     for (const key of Object.keys(plan.cost_breakdown)) {
       if (DERIVED_KEY_RE.test(normalizeVN(key.toLowerCase()))) {
         delete plan.cost_breakdown[key]

@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook tầm 25 triệu lập trình MacBook Air M-series 16GB RAM Việt Nam (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:52:02.952Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook tầm 25 triệu lập trình MacBook Air M-series 16GB RAM Việt Nam (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Macbook | Laptop Apple giá tốt, góp 0% 12T, giảm 5% HSSV",
+    "link": "https://cellphones.com.vn/laptop/mac.html",
+    "snippet": "Giá MacBook Air bao nhiêu? Giá MacBook Air phổ biến từ 34.69 triệu đến 60.99 triệu đồng tùy vào từng cấu hình cũng như dòng đời máy. Trong đó các thế hệ mớ chạy ...",
+    "position": 1
+   },
+   {
+    "title": "MacBook Air M4 13 inch 2025 10CPU 8GPU 16GB 256GB",
+    "link": "https://cellphones.com.vn/apple-macbook-air-13-m4-10cpu-8gpu-16gb-256gb-2025.html",
+    "snippet": "MacBook Air M4 13 inch 2025 10CPU 8GPU 16GB 256GB | Chính hãng Apple Việt Nam ; HSSV, Giáo viên đến 500.000đ ; Smember Giảm thêm đến 250.000đ ; Thời lượng pin. 5/5.",
+    "rating": 4.9,
+    "ratingCount": 19,
+    "position": 2
+   },
+   {
+    "title": "Macbook Air M4 2025 | Chính hãng Apple, giảm đến 3 triệu",
+    "link": "https://cellphones.com.vn/bo-loc/macbook-air-m4",
+    "snippet": "Tuổi thọ pin 1.5. Tích hợp tính năng Apple Intelligence thú vị 1.6. Hệ điều hành macOS: mượt mà và bảo mật 1.7. Tích hợp Camera Center Stage 12MP 1.8. Đa nhiệm ...",
+    "position": 3
+   },
+   {
+    "title": "Macbook Pro chính hãng - Giá rẻ, lên đời trợ giá 2 triệu",
+    "link": "https://cellphones.com.vn/laptop/mac/macbook-pro.html",
+    "snippet": "MacBook Pro giá bao nhiêu tiền vào tháng 10/2026 ; MacBook Pro M5 Pro 16 inch 2026 18CPU 20GPU 24GB 1TB | Chính hãng Apple Việt Nam. 79.490.000đ. 77.490.000đ.",
+    "position": 4
+   },
+   {
+    "title": "Macbook Air M3 13 inch 2024 16GB - 256GB",
+    "link": "https://cellphones.com.vn/macbook-air-m3-13-inch-2024-16gb-256gb.html",
+    "snippet": "Thông số kỹ thuật ; Dung lượng RAM. 16GB ; Ổ cứng. 256GB SSD ; Kích thước màn hình. 13.6 inches ; Công nghệ màn hình. True Tone ; Hệ điều hành. MacOS.",
+    "rating": 4.3,
+    "ratingCount": 9,
+    "position": 5
+   },
+   {
+    "title": "MacBook Air M4 15 inch 2025 10CPU 10GPU 16GB 512GB",
+    "link": "https://cellphones.com.vn/apple-macbook-air-15-m4-10cpu-10gpu-16gb-512gb-2025.html",
+    "snippet": "Mua ngay MacBook Air M4 15 inch 2025 10CPU 10GPU 16GB 512GB giá rẻ - Hỗ trợ trả góp 0%, đổi mới 30 ngày, bảo hành chính hãng, giao hàng tận nơi miễn phí.",
+    "position": 6
+   },
+   {
+    "title": "Top 4 MacBook cho sinh viên theo từng phân khúc 2025",
+    "link": "https://cellphones.com.vn/sforum/macbook-cho-sinh-vien-theo-tung-phan-khuc",
+    "snippet": "Tư vấn chọn MacBook phù hợp cho sinh viên theo từng phân khúc giá và nhu cầu. Gợi ý 5 mẫu MacBook đáng mua nhất năm 2025.",
+    "position": 7
+   },
+   {
+    "title": "MacBook Air M4 13 inch 2025 10CPU 8GPU 16GB 256GB ...",
+    "link": "https://cellphones.com.vn/apple-macbook-air-13-m4-10cpu-8gpu-16gb-256gb-2025-sac-70w.html",
+    "snippet": "Apple MacBook Air 13 M4 10CPU 8GPU 16GB 256GB Sạc 70W tích hợp RAM 16GB và SSD 256GB, màn hình Liquid Retina 13,6 inch và thời lượng pin lên đến 18 giờ. Thiết ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook 25 triệu lập trình (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:21:19.261Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook 25 triệu lập trình (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tài chính dưới 25 triệu, sinh viên nên chọn laptop ...",
+    "link": "https://cellphones.com.vn/sforum/tai-chinh-duoi-25-trieu-sinh-vien-nen-chon-laptop-windows-hay-macbook",
+    "snippet": "Tài chính dưới 25 triệu, sinh viên nên chọn laptop Windows hay MacBook? · MacBook Air M1 2020 (8GB/256GB) · MacBook Air M2 (2022) · Laptop Lenovo Yoga Slim 6 ...",
+    "position": 1
+   },
+   {
+    "title": "Macbook | Laptop Apple giá tốt, góp 0% 12T, giảm 5% HSSV",
+    "link": "https://cellphones.com.vn/laptop/mac.html",
+    "snippet": "Giá MacBook Air bao nhiêu? Giá MacBook Air phổ biến từ 34.69 triệu đến 60.99 triệu đồng tùy vào từng cấu hình cũng như dòng đời máy. Trong đó các thế hệ mớ chạy ...",
+    "position": 2
+   },
+   {
+    "title": "Laptop dưới 30 triệu | Thiết kế mỏng nhẹ, hiệu năng khủng",
+    "link": "https://cellphones.com.vn/bo-loc/laptop-tu-25-30-trieu",
+    "snippet": "Laptop dưới 30 triệu thiết kế sang trọng, tinh tế, được ứng dụng nhiều công nghệ hiện đại, vượt trội. Mua ngay laptop 30 triệu uy tín tại đây.",
+    "position": 3
+   },
+   {
+    "title": "Build cấu hình MacBook CTO cho lập trình viên và phát ...",
+    "link": "https://cellphones.com.vn/sforum/build-cau-hinh-macbook-cto-cho-lap-trinh-vien",
+    "snippet": "Chip: Apple M3 Max với 16-core CPU, 30-core GPU (nâng từ 11 Core CPU mặc định) · RAM: 64GB (tăng từ 36GB mặc định) · Ổ cứng: 2TB SSD (tăng từ 1TB ...",
+    "date": "15 thg 8, 2024",
+    "position": 4
+   },
+   {
+    "title": "Laptop dưới 25 triệu | Hiệu năng mạnh mẽ, cấu hình ấn ...",
+    "link": "https://cellphones.com.vn/bo-loc/laptop-tu-20-25-trieu",
+    "snippet": "Laptop dưới 25 triệu chính hãng, thiết kế ấn tượng, cấu hình mạnh mẽ, hiệu năng nổi bật, bảo hành uy tín. Mua ngay laptop 25 triệu trả góp 0%",
+    "position": 5
+   },
+   {
+    "title": "Top 4 MacBook cho sinh viên theo từng phân khúc 2025",
+    "link": "https://cellphones.com.vn/sforum/macbook-cho-sinh-vien-theo-tung-phan-khuc",
+    "snippet": "1. Từ 20 triệu: MacBook Neo - Tân binh đáng chú ý nhất của Apple trong năm 2026 · 2. Từ 30 triệu: MacBook Air M5 13 inch - Kích thước nhỏ, hiệu năng mạnh · 3. Từ ...",
+    "position": 6
+   },
+   {
+    "title": "Laptop cho sinh viên ngành công nghệ thông tin dưới 30 ...",
+    "link": "https://cellphones.com.vn/sforum/laptop-cho-sinh-vien-it-duoi-30-trieu",
+    "snippet": "Cấu hình thì khỏi bàn, MacBook Air M2 15 inch được trang bị con chip M2 mới với 8 nhân CPU và 10 nhân GPU. Dung lượng RAM mặc định của bản base là 8GB, có ...",
+    "position": 7
+   },
+   {
+    "title": "Điểm mặt 5 laptop học IT tốt nhất phân khúc 20 triệu",
+    "link": "https://cellphones.com.vn/sforum/diem-mat-5-laptop-sinh-vien-it-20-trieu",
+    "snippet": "MacBook Air M2 13 inch gây ấn tượng với thiết kế siêu mỏng nhẹ, tinh tế và hiện đại với khung nhôm nguyên khối cao cấp. Máy có trọng lượng chỉ khoảng 1.24kg, ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

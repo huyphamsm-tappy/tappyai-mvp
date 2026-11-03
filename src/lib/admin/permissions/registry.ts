@@ -413,6 +413,60 @@ const DEFINITIONS: readonly PermissionDefinition[] = [
     defaultRoles: ['admin', 'super_admin'],
   }),
 
+  // ── Commerce / Tappy Business merchants ──────────────────────────────────
+  //
+  // Tappy Business (docs/tappy-business/PHASE_0_ARCHITECTURE.md) lets small
+  // merchants publish a catalogue and take orders. These three permissions
+  // govern the BACK-OFFICE surface over that capability, and nothing else.
+  //
+  // 🔑 A MERCHANT NEVER HOLDS ONE OF THESE.
+  //
+  // A shop owner's authority over their own products and orders is resource
+  // ownership — `business_merchants.controller_user_id = auth.uid()`, resolved
+  // by `src/lib/business/authz.ts`. It is deliberately NOT expressed as a
+  // permission: granting an ordinary end user a `commerce.*` id would place
+  // them inside the administrative permission model, which is a boundary this
+  // product does not cross. These ids are for operators looking AT merchants.
+  //
+  // Suspension is split from un-suspension for the same reason the notification
+  // permissions are split: the two are not symmetric in consequence. Suspending
+  // stops a live shop from taking orders and auto-rejects its pending ones;
+  // restoring is a correction. Reviewing them separately is worth one extra id.
+  def({
+    id: 'commerce.merchants.read',
+    displayName: 'List Tappy Business merchants',
+    description:
+      'View merchant shop profiles in the Controller, including suspended ones. Shop-level data only; customer PII from orders is not exposed by this permission.',
+    module: 'commerce',
+    capability: 'commerce.merchants',
+    category: 'read',
+    riskLevel: 'low',
+    defaultRoles: ['admin', 'super_admin'],
+  }),
+  def({
+    id: 'commerce.merchants.suspend',
+    displayName: 'Suspend a merchant',
+    description:
+      'Stop a merchant from receiving new orders and auto-reject their pending ones. Immediately visible to real customers mid-purchase.',
+    module: 'commerce',
+    capability: 'commerce.merchants',
+    category: 'write',
+    // HIGH: it takes a live business offline and cancels orders in flight.
+    riskLevel: 'high',
+    defaultRoles: ['admin', 'super_admin'],
+  }),
+  def({
+    id: 'commerce.merchants.unsuspend',
+    displayName: 'Restore a suspended merchant',
+    description:
+      'Return a suspended merchant to active trading. Does not reinstate orders that were rejected while they were suspended.',
+    module: 'commerce',
+    capability: 'commerce.merchants',
+    category: 'write',
+    riskLevel: 'medium',
+    defaultRoles: ['admin', 'super_admin'],
+  }),
+
   // ── Security / RBAC ──────────────────────────────────────────────────────
   def({
     id: 'security.roles.read',
@@ -847,6 +901,9 @@ export const PERMISSIONS = {
   COMMERCE_DEALS_UPDATE: 'commerce.deals.update',
   COMMERCE_DEALS_DELETE: 'commerce.deals.delete',
   COMMERCE_DEALS_UPLOAD_MEDIA: 'commerce.deals.upload_media',
+  COMMERCE_MERCHANTS_READ: 'commerce.merchants.read',
+  COMMERCE_MERCHANTS_SUSPEND: 'commerce.merchants.suspend',
+  COMMERCE_MERCHANTS_UNSUSPEND: 'commerce.merchants.unsuspend',
   SECURITY_ROLES_READ: 'security.roles.read',
   SECURITY_ROLES_GRANT: 'security.roles.grant',
   SECURITY_ROLES_REVOKE: 'security.roles.revoke',

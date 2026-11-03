@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "AirPods Pro 2 giá chính hãng Việt Nam giá niêm yết Apple",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:37:59.992Z",
+ "body": {
+  "searchParameters": {
+   "q": "AirPods Pro 2 giá chính hãng Việt Nam giá niêm yết Apple",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe Apple AirPods Pro 2 2023 USB-C | Giá rẻ, góp 0%",
+    "link": "https://cellphones.com.vn/apple-airpods-pro-2-usb-c.html",
+    "snippet": "Tai nghe Bluetooth Apple AirPods Pro 2 2023 USB-C | Chính hãng Apple Việt Nam ; Micro. Có ; Phương thức điều khiển. Cảm ứng chạm ; Giá sản phẩm. 6.190.000đ 4.990.",
+    "rating": 4.9,
+    "ratingCount": 50,
+    "position": 1
+   },
+   {
+    "title": "AirPods - Apple (VN)",
+    "link": "https://www.apple.com/vn/airpods/",
+    "snippet": "So sánh các phiên bản AirPods ; AirPods 5 · 3.799.000đ ; AirPods 5 Hộp Sạc Không Dây · 4.299.000đ ; AirPods Pro 3 · 6.799.000đ ; AirPods Max 2 · 14.999.000đ.",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe Apple Airpods chính hãng, giá tốt | Trả góp 0%",
+    "link": "https://shopdunk.com/airpods",
+    "snippet": "Giá Airpods 2 từ 2.690.000đ; AirPods 3 từ 4.650.000đ; Airpods Pro 1 từ 4.350.000đ; Airpods Pro 2 từ 5.990.000đ; Airpods Max từ 12.590.000đ.",
+    "position": 3
+   },
+   {
+    "title": "Mua AirPods Pro 3",
+    "link": "https://www.apple.com/vn/shop/buy-airpods/airpods-pro-3",
+    "snippet": "Chủ Động Khử Tiếng Ồn, vuốt âm lượng và thời lượng pin lâu hơn. 4.299.000đ. Hiện đang xem. Chủ Động Khử Tiếng Ồn hiệu quả hơn đến 1, ...",
+    "position": 4
+   },
+   {
+    "title": "❤️‍🔥 AIRPODS PRO 2: HUYỀN THOẠI GIÁ HỜI",
+    "link": "https://www.facebook.com/CellphoneSVietnam/posts/%EF%B8%8F-airpods-pro-2-huy%E1%BB%81n-tho%E1%BA%A1i-gi%C3%A1-h%E1%BB%9Di-c%C6%A1-h%E1%BB%99i-cu%E1%BB%91i-cho-anh-em-ch%E1%BB%91t-ngay-k%E1%BA%BBo-l%E1%BB%A1-%C4%91%C3%A2y-/1390152456471177/",
+    "snippet": "Airpod cũ - Mới giá thanh lý hỗ trợ thanh toán thẻ tín dụng - trả góp 0% Airpod pro 2 type-c likenew : 3.400.000 Airpod pro 2 type-c newseal.: ...",
+    "position": 5
+   },
+   {
+    "title": "Tai nghe AirPods Pro 2 giá rẻ, góp 0%, USB-C, chống ồn",
+    "link": "https://www.thegioididong.com/tai-nghe/tai-nghe-bluetooth-airpods-pro-gen-2-magsafe-charge-usb-c-apple-mtjv3",
+    "snippet": "Tai nghe Apple Airpods Pro 2 USB-C giá rẻ, chống ồn chủ động, giảm ngay 900K, trả chậm 0%, BH chính hãng Apple, 1 đổi 1 tháng đầu, VPBank hoàn tiền 800K.",
+    "position": 6
+   },
+   {
+    "title": "Giá AirPods Pro ở Việt Nam rẻ hơn Mỹ",
+    "link": "https://vnexpress.net/gia-airpods-pro-o-viet-nam-re-hon-my-4171874.html",
+    "snippet": "AirPods Pro có mặt ở Việt Nam cuối 2019 với mức niêm yết chính hãng 7,4 triệu đồng. Sau chưa đầy một năm, giá mẫu tai nghe này liên tục lao dốc.",
+    "date": "5 thg 10, 2020",
+    "position": 7
+   },
+   {
+    "title": "AirPods Pro 2 - Thông số kỹ thuật",
+    "link": "https://support.apple.com/vi-vn/111851",
+    "snippet": "Các tính năng Trợ Năng giúp người khuyết tật tận dụng tối đa AirPods Pro mới của mình. Các tính năng bao gồm: Âm thanh Nghe Trực Tiếp7. Mức âm thanh tai nghe.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

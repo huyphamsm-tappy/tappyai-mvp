@@ -1,9 +1,13 @@
 import type { UserMemory } from './memory/memoryService'
 
+// 'general' = every topic that is NOT a data vertical: work, study, money, personal decisions, relationships, health habits, knowledge.
+// The five verticals are tools with their own data, not Tappy's scope (owner principle 11/10), so general prompts get at least half the strip.
+export type PromptCategoryName = 'food' | 'shopping' | 'entertainment' | 'travel' | 'spa' | 'general'
+
 export interface SuggestedPrompt {
   text: string
   textEn: string
-  category: 'food' | 'shopping' | 'entertainment' | 'travel' | 'spa'
+  category: PromptCategoryName
   emoji: string
   gradient: string
 }
@@ -11,7 +15,7 @@ export interface SuggestedPrompt {
 type PromptItem = {
   text: string
   textEn: string
-  category: 'food' | 'shopping' | 'entertainment' | 'travel' | 'spa'
+  category: PromptCategoryName
   emoji?: string
   gradient?: string
 }
@@ -31,6 +35,7 @@ const DEFAULT_EMOJI: Record<string, string> = {
   entertainment: '🎮',
   travel: '✈️',
   spa: '💆',
+  general: '💡',
 }
 
 const DEFAULT_GRADIENT: Record<string, string> = {
@@ -39,6 +44,7 @@ const DEFAULT_GRADIENT: Record<string, string> = {
   entertainment: 'from-purple-100 to-purple-50 dark:from-purple-900/30 dark:to-purple-900/10',
   travel: 'from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-900/10',
   spa: 'from-green-100 to-green-50 dark:from-green-900/30 dark:to-green-900/10',
+  general: 'from-violet-100 to-violet-50 dark:from-violet-900/30 dark:to-violet-900/10',
 }
 
 const CAFE_GRADIENT = 'from-amber-100 to-amber-50 dark:from-amber-900/30 dark:to-amber-900/10'
@@ -192,6 +198,70 @@ const SPA_OVERRIDE_PROMPTS: PromptItem[] = [
   { text: 'Spa nước khoáng hoặc sauna gần đây?', textEn: 'A mineral spa or sauna nearby?', category: 'spa' },
 ]
 
+// ===== CROSS-VERTICAL DISCOVERY (time-neutral) =====
+// The time pools above are food/coffee almost end to end, so on their own the strip
+// could never show Shopping / Travel / Entertainment / Wellness. These are merged into
+// every draw so each vertical is always available to the selector.
+const DISCOVERY_PROMPTS: PromptItem[] = [
+  { text: 'Đang có deal hay khuyến mãi nào đáng mua gần đây không?', textEn: 'Any worthwhile deals or promotions nearby right now?', category: 'shopping' },
+  { text: 'Trung tâm thương mại nào đang sale, đi dạo mua sắm một vòng?', textEn: 'Which mall has a sale on — a little shopping stroll?', category: 'shopping' },
+  { text: 'Gợi ý lịch trình du lịch 2 ngày 1 đêm gần đây?', textEn: 'A 2-day, 1-night trip itinerary nearby?', category: 'travel' },
+  { text: 'Nên đi du lịch đâu dịp nghỉ lễ sắp tới?', textEn: 'Where should I travel for the next holiday?', category: 'travel' },
+  { text: 'Tối nay có phim hay hoặc sự kiện gì đáng đi không?', textEn: 'Any good movie or event worth going to tonight?', category: 'entertainment' },
+  { text: 'Chỗ vui chơi giải trí cho nhóm bạn cuối tuần này?', textEn: 'Somewhere fun for a group of friends this weekend?', category: 'entertainment' },
+  { text: 'Spa hoặc massage thư giãn sau một tuần mệt?', textEn: 'A spa or massage to unwind after a tiring week?', category: 'spa' },
+  { text: 'Phòng gym, yoga hoặc chỗ chăm sóc sức khoẻ gần đây?', textEn: 'A gym, yoga studio or wellness spot nearby?', category: 'spa' },
+]
+
+// ===== ANY-TOPIC PROMPTS (not a vertical: advice, work, study, money, decisions, relationships, habits, knowledge) =====
+const GENERAL_PROMPTS: PromptItem[] = [
+  { text: 'Mình đang phân vân giữa hai lời mời làm việc — giúp mình cân nhắc nhé?', textEn: "I'm torn between two job offers — can you help me weigh them?", category: 'general' },
+  { text: 'Nên học cao học hay đi làm ngay sau khi ra trường?', textEn: 'Grad school or start working right after graduating?', category: 'general', emoji: '🎓' },
+  { text: 'Có một khoản tiền nhàn rỗi: nên trả nợ hay để tiết kiệm?', textEn: 'I have spare money: pay off debt or save it?', category: 'general', emoji: '💰' },
+  { text: 'Giải thích giúp mình lãi kép là gì, cho ví dụ dễ hiểu', textEn: 'Explain compound interest with an easy example', category: 'general', emoji: '📈' },
+  { text: 'Viết lại giúp mình email xin nghỉ phép cho lịch sự hơn', textEn: 'Help me rewrite a leave-request email so it sounds more polite', category: 'general', emoji: '✉️' },
+  { text: 'Mình hay ngủ muộn rồi mệt cả ngày — đổi thói quen thế nào cho dễ?', textEn: 'I stay up late and feel tired all day — how can I change the habit?', category: 'general', emoji: '😴' },
+  { text: 'Làm sao nói chuyện với người thân khi hai bên đang hơi căng về chuyện tiền?', textEn: 'How do I talk to a family member when money is causing tension?', category: 'general', emoji: '💬' },
+  { text: 'Laptop hay MacBook cho người mới học lập trình?', textEn: 'Laptop or MacBook for someone learning to code?', category: 'general', emoji: '💻' },
+  { text: 'Chuẩn bị gì cho buổi phỏng vấn trong 2 ngày tới?', textEn: 'How should I prepare for an interview in two days?', category: 'general', emoji: '🗂️' },
+  { text: 'Giải thích giúp mình lạm phát ảnh hưởng thế nào đến tiền tiết kiệm', textEn: 'Explain how inflation affects my savings', category: 'general', emoji: '📉' },
+  { text: 'Tin tức nổi bật hôm nay có gì đáng chú ý?', textEn: "What's the most notable news today?", category: 'general', emoji: '📰' },
+  { text: 'Mình muốn bắt đầu tập thói quen đọc sách — bắt đầu từ đâu?', textEn: 'I want to build a reading habit — where do I start?', category: 'general', emoji: '📚' },
+  { text: 'Tỷ giá USD/VND hôm nay là bao nhiêu và vì sao hay dao động?', textEn: "What's today's USD/VND rate and why does it fluctuate?", category: 'general', emoji: '💱' },
+  { text: 'Mình bị áp lực công việc, làm gì để bớt stress mà không bỏ việc?', textEn: "Work pressure is getting to me — how to ease stress without quitting?", category: 'general', emoji: '🧘' },
+  { text: 'Học tiếng Anh giao tiếp trong 3 tháng — lộ trình thực tế?', textEn: 'Learning conversational English in 3 months — a realistic plan?', category: 'general', emoji: '🗣️' },
+  { text: 'Nên đàm phán lương thế nào khi nhận offer mới?', textEn: 'How should I negotiate salary on a new offer?', category: 'general', emoji: '🤝' },
+]
+
+type PromptCategory = PromptItem['category']
+
+/**
+ * Round-robin across categories (category order shuffled, order inside a category kept), so with
+ * >=2 verticals available no two neighbours share a vertical unless the other verticals ran out.
+ * Pure given its input; exported for tests.
+ */
+export function diversifyByCategory<T extends { category: PromptCategory }>(items: T[], count: number): T[] {
+  const buckets = new Map<PromptCategory, T[]>()
+  for (const p of items) {
+    const b = buckets.get(p.category)
+    if (b) b.push(p)
+    else buckets.set(p.category, [p])
+  }
+  const queues = shuffle([...buckets.values()])
+  const out: T[] = []
+  while (out.length < count && queues.some(q => q.length > 0)) {
+    // Rebuild the lap order each time so the vertical used last never opens the next lap.
+    const lastCat = out.length ? out[out.length - 1].category : null
+    const lap = queues.filter(q => q.length > 0)
+    if (lap.length > 1 && lastCat && lap[0][0].category === lastCat) lap.push(lap.shift()!)
+    for (const q of lap) {
+      if (out.length >= count) break
+      out.push(q.shift()!)
+    }
+  }
+  return out
+}
+
 export function getDynamicPrompts(
   hour: number,
   dayOfWeek: number,
@@ -227,6 +297,7 @@ export function getDynamicPrompts(
     ...basePool,
     ...dayPool,
     ...WITTY_PROMPTS.slice(0, 3),
+    ...DISCOVERY_PROMPTS,
   ])
 
   // 5. Memory signals
@@ -275,23 +346,23 @@ export function getDynamicPrompts(
     return true
   })
 
-  // 6. Pick with category diversity
+  // 6. Pick: at least half of the strip is any-topic (advice, work, study, money, knowledge) — the verticals are tools, not the scope — and the
+  //    rest keeps the vertical diversity (round-robin, never a run of one vertical). Any-topic and vertical prompts alternate, any-topic first.
+  const generalCount = Math.min(Math.ceil(count / 2), GENERAL_PROMPTS.length)
+  const general = shuffle(GENERAL_PROMPTS).slice(0, generalCount)
+  const verticals = candidates.filter(p => p.category !== 'general')
+  const spaPick = likesSpa ? verticals.find(p => p.category === 'spa') : undefined
+  const restCount = count - general.length
+  const rest = spaPick && restCount > 0
+    ? [spaPick, ...diversifyByCategory(verticals.filter(p => p !== spaPick && p.category !== 'spa'), restCount - 1)]
+    : diversifyByCategory(verticals, restCount)
   const selected: PromptItem[] = []
-  const usedCategories = new Set<string>()
-
-  for (const p of candidates) {
-    if (selected.length >= count) break
-    if (!usedCategories.has(p.category) || selected.length === count - 1) {
-      selected.push(p)
-      usedCategories.add(p.category)
-    }
-  }
-  for (const p of candidates) {
-    if (selected.length >= count) break
-    if (!selected.includes(p)) selected.push(p)
+  for (let i = 0; selected.length < general.length + rest.length; i++) {
+    if (general[i]) selected.push(general[i])
+    if (rest[i]) selected.push(rest[i])
   }
 
-  return selected.slice(0, count).map(p => ({
+  return selected.map(p => ({
     text: localize(p.text),
     textEn: localizeEn(p.textEn),
     category: p.category,

@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Axcela Vietnam\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:32:58.379Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Axcela Vietnam\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Replying to - @hibrettessema - #azelaschoolofenglish - #azela",
+    "link": "https://www.tiktok.com/@azelaacademy/video/7429789408175344902",
+    "snippet": "Axcela Việt Nam ☘️Tăng level CERF chỉ sau 1 khoá học 6 tháng ☘️Kết hợp học Giáo viên, HLV Tiếng Anh cá nhân, thực hành app Cam kết đào tạo lại ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

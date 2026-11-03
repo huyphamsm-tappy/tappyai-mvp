@@ -5,6 +5,7 @@ import Stripe from 'stripe'
 import { serverEnv } from '@/lib/config/env'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
+import { subscriptionsEnabled } from '@/lib/payments/flags'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2024-06-20' })
 
@@ -12,6 +13,8 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2024-06
 // cancel their subscription themselves (MFS 6.3 Membership: "easy to leave", never coerce).
 // Stripe hosts the cancel UI, so there is no custom cancellation logic to maintain.
 export async function POST(req: Request) {
+  // SUBSCRIPTIONS: Stripe does not onboard individual Vietnamese sellers — VietQR/SePay replaces it while the flag is ON.
+  if (subscriptionsEnabled()) return new NextResponse(null, { status: 404 })
   try {
     const { user } = await getRequestUser(req)
     if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })

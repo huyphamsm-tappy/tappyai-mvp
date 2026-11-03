@@ -2,7 +2,7 @@ import { actionLabel } from './actionLabel'
 import { isDirectEntityUrl } from '@/lib/links/directUrl'
 import type { ActionKind } from './actions'
 // The registry module only (providers + domain types): this file is client-bundled.
-import { PROVIDER_REGISTRY, isRemovedMerchant } from '@/lib/ccp/registry'
+import { PROVIDER_REGISTRY, isRemovedMerchant, namesAnotherRemovedMerchant } from '@/lib/ccp/registry'
 import { resultsPagePrefixes, searchTemplates } from '@/lib/ccp/adapters'
 // The pure depth judgement, NOT @/lib/commerce/outboundLink: that module imports the CCP barrel
 // (node:crypto) and the KV counter, and a client import of it fails `next build`.
@@ -188,6 +188,24 @@ export function namesOtherMerchant(label: string, host: string): boolean {
 const PROSE_LINK_RE = /\[([^\]\n]+)\]\((https?:\/\/[^\s)]+)\)/g
 
 /**
+ * B1 (owner 01/11/2026: "mở lại tất cả, chỉ ở dạng link tới đúng trang sản phẩm"): a removed or switched-off merchant's OWN product page -
+ * a URL the egress guard already admitted (it came back in this turn's search results, never a model-written address) - keeps its link in
+ * the prose. A product page here is a 'product' URL shape with an item in its path (two segments or more, or a last segment with a digit or
+ * ".html"): "tiki.vn/iphone-15-p123.html", "thegioididong.com/dtdd/iphone-15"; never the front door, a section ("tiki.vn/dien-thoai"),
+ * a category or a search page. Model-written buttons to these merchants stay forbidden (isMisleadingModelCta), and a label naming one of
+ * them on another site is still unmade. Pure.
+ */
+export function isRemovedMerchantProductPage(url: string): boolean {
+  const host = hostOf(url)
+  if (!host || !isRemovedMerchant('', host)) return false
+  if (linkDepthClass(url) !== 'product') return false
+  let segments: string[] = []
+  try { segments = new URL(url).pathname.split('/').filter(Boolean) } catch { return false }
+  const last = segments[segments.length - 1] ?? ''
+  return segments.length >= 2 || /\d|\.html?$/i.test(last)
+}
+
+/**
  * Prose hygiene for MODEL-authored markdown links (Final local live UAT, 14 Sep 2026): the reply
  * to "Mua iPhone trên Điện Máy Xanh" carried "[Điện Máy Xanh](https://www.dienmaycholon.vn)" —
  * a registry merchant's NAME on another retailer's site. A label that names a registry merchant
@@ -203,7 +221,9 @@ export function unlinkMislabelledMerchantLinks(text: string, systemUrls?: Readon
     // turn — a link to ANY OTHER registry merchant (live UAT 14 Sep 2026: "… trên Trip.com" whose
     // reply still linked "[Booking.com] hoặc [Agoda]"). The named merchant's own links stay.
     const other = !!requestedProviderId && isOtherRegistryMerchant(url, requestedProviderId)
-    return other || isForbiddenMerchant(label, hostOf(url)) || namesOtherMerchant(label, hostOf(url)) || isRegistryFrontDoor(url) || isRegistrySearchPage(url) ? label : whole
+    // B1: the forbidden-merchant rule does not unmake that merchant's own product page (the label may name it or nothing else)
+    const forbidden = isForbiddenMerchant(label, hostOf(url)) && !(isRemovedMerchantProductPage(url) && !namesOtherMerchant(label, hostOf(url)) && !namesAnotherRemovedMerchant(label, hostOf(url)))
+    return other || forbidden || namesOtherMerchant(label, hostOf(url)) || isRegistryFrontDoor(url) || isRegistrySearchPage(url) ? label : whole
   })
 }
 

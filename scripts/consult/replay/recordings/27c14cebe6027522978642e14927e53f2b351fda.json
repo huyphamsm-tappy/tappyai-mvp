@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hoff Coffee Brewers by BeanHop\" OR \"Work'in Saigon Cafe\" OR \"Bibli Library Café\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:00:29.449Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hoff Coffee Brewers by BeanHop\" OR \"Work'in Saigon Cafe\" OR \"Bibli Library Café\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Thăm BIBLI Library Café: Nơi Tâm Hồn Được Chữa Lành",
+    "link": "https://www.tiktok.com/@ton_social/video/7625901802776464660",
+    "snippet": "BIBLI Library Café là một điểm đến lý tưởng cho những ai đang tìm kiếm một không gian thư giãn và chữa lành. Với không khí yên bình, ...",
+    "position": 1
+   },
+   {
+    "title": "Tham Quan Bibli Library Café Ngày Xuân",
+    "link": "https://www.tiktok.com/@bibli.library.cafe/video/7602591992496885010",
+    "snippet": "Mời các bạn đi tham quan một vòng quanh Bibli nhé ạ ☺️ Ghé Bibli Library Café ngày xuân để khai mở một hành trình mới đầy hứng khởi, nơi ...",
+    "position": 2
+   },
+   {
+    "title": "Trải Nghiệm 5 Giác Quan Tại Bibli Library Café",
+    "link": "https://www.tiktok.com/@esther.luver/video/7624773568496160020",
+    "snippet": "Trải Nghiệm 5 Giác Quan Tại Bibli Library Café. Khám phá không gian độc đáo và vị cà phê tuyệt vời tại Bibli Library Café. Đảm bảo bạn sẽ ...",
+    "position": 3
+   },
+   {
+    "title": "Trải Nghiệm Brunch Chay Tại Bibli Library Café",
+    "link": "https://www.tiktok.com/@bibli.library.cafe/photo/7630742524780350741",
+    "snippet": "Đến Bibli Library Café thưởng thức brunch chay để nuông chiều vị giác nhưng vẫn nhẹ nhàng cho cơ thể. Một set đủ đầy từ matcha muối vừng béo bùi, ...",
+    "position": 4
+   },
+   {
+    "title": "Bibli Library Café - Góc Tĩnh Lặng Cho Nàng Thơ Ở Sài Gòn",
+    "link": "https://www.tiktok.com/@bibli.library.cafe/photo/7633347617308658964",
+    "snippet": "Bibli Library Café - Góc Tĩnh Lặng Cho Nàng Thơ Ở Sài Gòn. Bibli Library Café ở Quận 1, Sài Gòn, mang đến không gian yên tĩnh với ánh nắng nhẹ, kệ sách và đồng ...",
+    "position": 5
+   },
+   {
+    "title": "Bibli Library Café: Không gian & Đồ uống ưng ý tại TP.HCM",
+    "link": "https://www.tiktok.com/@shihodaily/photo/7681678714421120277",
+    "snippet": "Khám phá Bibli Library Café ở Quận 1, TP.HCM với không gian gỗ ấm cúng, ánh sáng vàng dịu, và đồ uống ngon. Ideal cho làm việc, ...",
+    "position": 6
+   },
+   {
+    "title": "Bibli Library Café: Harry Potter themed cafe in Saigon",
+    "link": "https://www.tiktok.com/@naoganh.cahe_hong/photo/7670144722878483732?image_index=19",
+    "snippet": "Bibli Library Café: Harry Potter themed cafe in Saigon. Experience a magical Harry Potter-themed cafe experience at Bibli Library Café in Saigon ...",
+    "position": 7
+   },
+   {
+    "title": "Quán cafe Harry Potter ở Sài Gòn: Bibli Library Café review",
+    "link": "https://www.tiktok.com/@cimchucneee/video/7659347680870649106",
+    "snippet": "Lead Bibli Library Café là quán cafe theo phong cách Harry Potter ở Sài Gòn được nhiều người nhắc đến — không gian decor sách và đạo cụ ma ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

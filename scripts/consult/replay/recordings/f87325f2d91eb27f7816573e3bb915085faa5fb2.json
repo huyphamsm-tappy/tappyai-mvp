@@ -1,0 +1,84 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Baseus Tai nghe Bluetooth TWS Baseus Eli Sport 2 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:12:55.003Z",
+ "body": {
+  "searchParameters": {
+   "q": "Baseus Tai nghe Bluetooth TWS Baseus Eli Sport 2 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe Bluetooth thể thao Baseus Eli Sport 2 Open-Ear ...",
+    "link": "https://shopee.vn/Tai-nghe-Bluetooth-th%E1%BB%83-thao-Baseus-Eli-Sport-2-Open-Ear-Bluetooth-5.3-45H-IP57-%C4%90%E1%BB%99-tr%E1%BB%85-0.06S-i.928285061.25509471061",
+    "snippet": "Mua Tai nghe Bluetooth thể thao Baseus Eli Sport 2 Open-Ear Bluetooth 5.3 45H IP57 Độ trễ 0.06S giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.9,
+    "ratingCount": 133,
+    "position": 1
+   },
+   {
+    "title": "Tai nghe Bluetooth thể thao Baseus Eli Sport 2 Open-Ear ...",
+    "link": "https://shopee.vn/Tai-nghe-Bluetooth-th%E1%BB%83-thao-Baseus-Eli-Sport-2-Open-Ear-Bluetooth-6.0-Hi-Res-Audio-ch%E1%BB%91ng-n%C6%B0%E1%BB%9Bc-IP57-i.628049927.45201415794",
+    "snippet": "Mua Tai nghe Bluetooth thể thao Baseus Eli Sport 2 Open-Ear Bluetooth 6.0, Hi-Res Audio, chống nước IP57 giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.9,
+    "ratingCount": 34,
+    "position": 2
+   },
+   {
+    "title": "Tai nghe Bluetooth thể thao Baseus Eli Fit Open-Ear ...",
+    "link": "https://shopee.vn/Tai-nghe-Bluetooth-th%E1%BB%83-thao-Baseus-Eli-Fit-Open-Ear-Bluetooth-5.3-nghe-nh%E1%BA%A1c-35h-%C4%91%E1%BB%99-tr%E1%BB%85-0.06s-i.928285061.26308700743",
+    "snippet": "Mua Tai nghe Bluetooth thể thao Baseus Eli Fit Open-Ear Bluetooth 5.3 nghe nhạc 35h độ trễ 0.06s giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.9,
+    "ratingCount": 105,
+    "position": 3
+   },
+   {
+    "title": "Tws 10i - Giá Tốt, Sale Tháng 10, Freeship 0Đ",
+    "link": "https://shopee.vn/list/tws%2010i",
+    "snippet": "Tai nghe Baseus Eli 10i Fit Open-Ear TWS Bluetooth 5.4 thiết kế thể thao267.000₫ · 8. CHÍNH HÃNG Tai Nghe không dây 2 tai rời Bluetooth TWS Remax TWS 10i ...",
+    "position": 4
+   },
+   {
+    "title": "Tai nghe Bluetooth thể thao Baseus Eli 2i Fit Open-Ear ...",
+    "link": "https://shopee.vn/Tai-nghe-Bluetooth-th%E1%BB%83-thao-Baseus-Eli-2i-Fit-Open-Ear-Bluetooth-6.0-Driver-14.2mm-ch%E1%BB%91ng-n%C6%B0%E1%BB%9Bc-IPX5-i.628049927.46901407406",
+    "snippet": "1/11. Đã bán hết. 2 phân loại có sẵn. 990.000₫. Tai nghe Bluetooth thể thao Baseus Eli 2i Fit Open-Ear Bluetooth 6.0, Driver 14.2mm, chống nước IPX5.",
+    "rating": 4.9,
+    "ratingCount": 14,
+    "position": 5
+   },
+   {
+    "title": "[Sẵn sàng] Ốp lưng cho tai nghe silicon màu trơn Baseus ...",
+    "link": "https://shopee.vn/-S%E1%BA%B5n-s%C3%A0ng-%E1%BB%90p-l%C6%B0ng-cho-tai-nghe-silicon-m%C3%A0u-tr%C6%A1n-Baseus-Eli-Sport-2-Bass-BF1-c%C3%B3-m%C3%B3c-i.453434105.52808688014",
+    "snippet": "[Sẵn sàng] Ốp lưng cho tai nghe silicon màu trơn Baseus Eli Sport 2 / Bass BF1 có móc ... Tặng Voucher 15.000₫ nếu đơn giao sau thời gian trên.",
+    "rating": 4.5,
+    "ratingCount": 4,
+    "position": 6
+   },
+   {
+    "title": "Tai nghe Baseus Eli 10i Fit Open-EarTWS Bluetooth 5.4 ...",
+    "link": "https://shopee.vn/Tai-nghe-Baseus-Eli-10i-Fit-Open-EarTWS-Bluetooth-5.4-Tai-nghe-kh%C3%B4ng-d%C3%A2y-Tai-nghe-th%E1%BB%83-thao-i.1106380974.26514135098",
+    "snippet": "Bluetooth ... 2 phân loại có sẵn. 799.000₫. final price indicator. Giá Sau Voucher. Mua tối thiểu ₫899k để được giảm ₫60k. mall inline badge. Tai nghe Baseus Eli ...",
+    "rating": 4.9,
+    "ratingCount": 834,
+    "position": 7
+   },
+   {
+    "title": "DEAL QUỐC TẾ 0Đ",
+    "link": "https://shopee.vn/m/sandealquocte-0105",
+    "snippet": "Tai nghe nhét tai không dây BASEUS WM02 bluetooth 5.3 TWS chống ồn. -16% · 615.000₫ ; Bộ 50 màu nước SeamiArt kèm 6 cọ vẽ tranh thiết kế tiện lợi. -40% · 662.200₫.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

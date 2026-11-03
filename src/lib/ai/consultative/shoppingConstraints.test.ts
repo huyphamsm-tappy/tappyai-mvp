@@ -7,6 +7,7 @@ import {
   rejectCandidate,
   validateShoppingCandidates,
   unmetConstraintPayload,
+  PRODUCT_TYPES,
   type ShoppingConstraints,
 } from './shoppingConstraints'
 import { extractBudget } from '../budget'
@@ -403,5 +404,17 @@ describe('B2 — the need profile knows every product family (the consultative s
     expect(np('mua máy sấy tóc tầm 800k').domain).toBe('shopping') // buy verb, unknown noun
     expect(np('lập kế hoạch ăn chơi nhảy múa tối nay cho 2 người').domain).toBe('places') // "múa" is dancing
     expect(np('Thôi nâng ngân sách lên 35 triệu').subject).toBeNull() // "ngân sách" is the budget, not a book
+  })
+})
+
+describe('bike family: a bicycle is not an electric motorbike (round 3H)', () => {
+  const familyOf = (folded: string) => PRODUCT_TYPES.find(([, re]) => re.test(folded))?.[0] ?? null
+  it('"xe máy điện" (folded "xe may dien") is in no bicycle family', () => {
+    expect(familyOf('pin lithium xe may dien')).not.toBe('bike')
+    expect(familyOf('xe may dien')).toBeNull()
+  })
+  it('bicycles stay bicycles: "xe đạp" and "xe đạp điện" are the bike family', () => {
+    expect(familyOf('xe dap')).toBe('bike')
+    expect(familyOf('xe dap dien')).toBe('bike')
   })
 })

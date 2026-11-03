@@ -63,31 +63,22 @@ export default function SettingsView({ user, selfDelete = false }: {
             <MenuItem icon={BookOpen} label={t('settings.howToUse')} href="/how-to-use" />
             <MenuItem icon={FileText} label={t('settings.terms')} href="/terms" />
             <MenuItem icon={Shield} label={t('settings.privacy')} href="/privacy" />
+            {/* Owner 01/10 (TikTok style): account deletion is a DISCREET ordinary row at the end of «Khác» — plain text, not red,
+                and far from Sign out. Where self-service deletion is enabled it opens the in-app warning screen (type XÓA);
+                elsewhere it opens the public /delete-account page (a request handled by support). */}
+            <MenuItem
+              icon={Trash2}
+              label={selfDelete ? t('settings.deleteAccountSelf') : t('settings.deleteAccount')}
+              href={selfDelete ? '/profile/settings/delete-account' : '/delete-account'}
+            />
           </div>
         </Panel>
 
         <p className="text-center text-xs" style={{ color: 'var(--v3-fg-muted)' }}>{t('settings.version', { v: '0.1.0' })}</p>
 
-        {/* Account actions. Grouped in one card the way the Android Settings screen
-            groups them (SettingsScreen.kt: Sign out, divider, Request account
-            deletion — both danger-styled), so the two platforms read the same.
-            Where self-service deletion is enabled (UAT3 P0) the row opens the
-            in-app deletion page; elsewhere it links to the public /delete-account
-            page, where deletion is a request handled by support. */}
+        {/* Sign out stays alone in its own card. */}
         <div className="v3-panel space-y-1 p-2">
           <SignOutButton />
-          {/* rounded-xl + overflow-hidden so MenuItem's square hover fill is clipped
-              to the same pill shape as SignOutButton's; without it the two rows in
-              this card highlight differently. Local wrapper rather than restyling
-              the shared MenuItem, which every other settings row also uses. */}
-          <div className="overflow-hidden rounded-xl">
-            <MenuItem
-              icon={Trash2}
-              label={selfDelete ? t('settings.deleteAccountSelf') : t('settings.deleteAccount')}
-              href={selfDelete ? '/profile/settings/delete-account' : '/delete-account'}
-              danger
-            />
-          </div>
         </div>
       </div>
 

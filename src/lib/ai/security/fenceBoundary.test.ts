@@ -30,6 +30,8 @@ const PRODUCERS: Array<[string, string]> = [
   // P3-F3 (a711181, restored 2026-09-25). The caption/title an upload submits were interpolated
   // into the extraction prompt raw; registering the producer keeps `explore_content` enforced.
   ['explore content', 'src/lib/explore/contentProcessor.ts'],
+  // 31/10: the text layer of a PDF the person attaches — anyone may have written the document; registered so `user_document` is enforced.
+  ['attached PDF text', 'src/lib/ai/attachments/pdfAttachments.ts'],
 ]
 
 describe('the fence is the single implementation', () => {

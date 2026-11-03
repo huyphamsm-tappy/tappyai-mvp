@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Quán Bụi\" OR \"Xóm Chợ Cũ Restaurant\" OR \"Nhà hàng chay Phương Mai\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T17:15:09.267Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Quán Bụi\" OR \"Xóm Chợ Cũ Restaurant\" OR \"Nhà hàng chay Phương Mai\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quán Bụi Group (@quanbui_group)",
+    "link": "https://www.tiktok.com/@quanbui_group",
+    "snippet": "Những cảm nhận khách quan, chi tiết từ khách luôn là điều Quán Bụi trân · Bữa cơm tối chuẩn vị Việt tại Quán Bụi central #quanbuigroup #vietnamesefood # ...",
+    "position": 1
+   },
+   {
+    "title": "Nhà hàng chay Phương Mai: Điểm đến tuyệt vời cho thực ...",
+    "link": "https://www.tiktok.com/@xiathichanchaynek/video/7523829987942763794",
+    "snippet": "Có tuổi đời hơn 10 năm, nhà hàng chay Phương Mai đã không làm mình thất vọng từ không gian cho đến chất lượng món ăn, mê chỗ này lắm mấy ní ơi!",
+    "position": 2
+   },
+   {
+    "title": "Nhà Hàng Chay Phương Mai (@lan.calla)",
+    "link": "https://www.tiktok.com/@lan.calla",
+    "snippet": "Nhà Hàng Chay Phương Mai · @lan.calla · Hẻm 82 nhà số 86F Võ Thị Sáu, F. Tân Định (quận 1 cũ) Tp. HCM Hotline / Zalo: 0888.339.257.",
+    "position": 3
+   },
+   {
+    "title": "Khám Phá Quán Bụi: Hương Vị Cơm Nhà Việt Nam",
+    "link": "https://www.tiktok.com/@nguyencongnuongw_/video/7535335656923335944",
+    "snippet": "Khám Phá Quán Bụi: Hương Vị Cơm Nhà Việt Nam. Trải nghiệm ẩm thực Việt Nam tại Quán Bụi, nơi mang đậm hương vị cơm nhà. Đừng bỏ lỡ! #review ...",
+    "position": 4
+   },
+   {
+    "title": "Phong cách quán bụi bặm vỉa hè chill nhất",
+    "link": "https://www.tiktok.com/@tuannuocep1996/video/7603231109345807636",
+    "snippet": "Phong cách quán bụi bặm vỉa hè chill nhất. Khám phá phong cách quán vỉa hè với thức uống thú vị. Chịu không? #xuhuongtiktok #nuocepnguyenchat ...",
+    "position": 5
+   },
+   {
+    "title": "Combo ăn sáng Việt tại Quán Bụi Sài Gòn chỉ 99k++",
+    "link": "https://www.tiktok.com/@quanbui_group/video/7303400928680447250",
+    "snippet": "Quán Bụi Sài Gòn ăn sáng ngon 99k, combo ăn sáng Việt tại Quán Bụi, không gian thoải mái Quán Bụi, thực đơn ăn sáng tại Quán Bụi, địa điểm ...",
+    "position": 6
+   },
+   {
+    "title": "Review Quán Bụi Mai Phương Thuý: Có Quá Đắt Không?",
+    "link": "https://www.tiktok.com/@thanhdat.food/video/7035445272918428930",
+    "snippet": "Quán Bụi nằm tại một địa điểm thuận lợi, mang đến không gian ấm cúng và đậm chất riêng, phù hợp cho những buổi gặp gỡ thân mật hoặc một bữa ăn ...",
+    "position": 7
+   },
+   {
+    "title": "Một đám cưới nhỏ xinh tại Quán Bụi Garden 3, nơi từng ...",
+    "link": "https://www.tiktok.com/@quanbui_group/video/7594683262455319828",
+    "snippet": "Một đám cưới nhỏ xinh tại Quán Bụi Garden 3, nơi từng bữa ăn, từng khoảnh khắc đều đủ đầy yêu thương. #vietnameserestaurant #amthuc #wedding # ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

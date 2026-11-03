@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "tham quan phố cổ Hội An thời gian phù hợp lưu ý vé",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:15:57.029Z",
+ "body": {
+  "searchParameters": {
+   "q": "tham quan phố cổ Hội An thời gian phù hợp lưu ý vé",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cập nhật vé tham quan Khu phố cổ Hội An – Hành trình chạm ...",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Du-lich-Hoi-An/cap-nhat-ve-tham-quan-khu-pho-co-hoi-an-hanh-trinh-cham-ve-nguyen-ban-giua-long-di-san-3033.hwh",
+    "snippet": "Tại Khu phố cổ, không gian này được áp dụng từ 09:00 đến 21:30 vào mùa hè và 09:00 đến 21:00 vào mùa đông. Riêng tuyến đường Phan Châu Trinh, ...",
+    "date": "16 thg 3, 2026",
+    "position": 1
+   },
+   {
+    "title": "Phố cổ Hội An Đà Nẵng: Hướng dẫn du lịch chi tiết và ...",
+    "link": "https://pystravel.vn/tin/17567-pho-co-hoi-an-da-nang.html?srsltid=AU7gw4XmfU74cxeWLM3UIWw67FJE58XWvVkEL4QiGw9bhhAvmNUyNBgx",
+    "snippet": "Nếu chỉ tập trung khám phá khu phố cổ, 1 ngày là khoảng thời gian tương đối phù hợp để tham quan các công trình nổi bật, thưởng thức đặc sản và trải nghiệm Hội ...",
+    "position": 2
+   },
+   {
+    "title": "Cập Nhật Giá Vé Tham Quan Phố Cổ Hội An 2026 & Mẹo ...",
+    "link": "https://phanvantravel.com/ve-tham-quan-pho-co-hoi-an",
+    "snippet": "Không gian phố bộ về đêm đem lại nhiều hoạt động giải trí bổ sung hoàn toàn miễn phí từ 19h00 - 20h30. Du khách dạo phố có thể tự do hòa mình vào các trò chơi ...",
+    "position": 3
+   },
+   {
+    "title": "Giới thiệu du lịch Hội An - phường Hội An",
+    "link": "https://hoian.danang.gov.vn/tin-tuc/chi-tiet.html?id=68df52a751f7f62cb86fd08f&p_id=371",
+    "snippet": "Du lịch phố cổ Hội An lý tưởng nhất là từ tháng 2 đến tháng 4 hàng năm bởi vào thời gian này tiết trời xuân mát mẻ, Hội An ít mưa & có nắng nhẹ ...",
+    "date": "2 thg 10, 2025",
+    "position": 4
+   },
+   {
+    "title": "[ English Below ] Những thông tin cần biết về vé tham quan ...",
+    "link": "https://www.facebook.com/VisitHoiAn/posts/-english-below-nh%E1%BB%AFng-th%C3%B4ng-tin-c%E1%BA%A7n-bi%E1%BA%BFt-v%E1%BB%81-v%C3%A9-tham-quan-%C4%91%C3%B4-th%E1%BB%8B-c%E1%BB%95-h%E1%BB%99i-an%C4%91%E1%BB%83-kh%C3%A1m-/956020783448194/",
+    "snippet": "Thử ngay bánh mì Phượng hoặc bánh mì Madam Khánh – được khách Tây lẫn ta tấm tắc khen ngon • 8h30 - 11h30: Dạo phố cổ Lúc này nắng còn dịu, bạn ...",
+    "position": 5
+   },
+   {
+    "title": "Cập nhật giá vé tham quan Phố cổ Hội An cho khách trong ...",
+    "link": "https://sovaba.travel/blog/bai-viet-cap-nhat-gia-ve-tham-quan-pho-co-hoi-an",
+    "snippet": "5. Giờ mở cửa Phố cổ Hội An và thời gian sử dụng vé · Giờ mở cửa chung: Từ 7h sáng đến 21h30 tối (một số điểm như Chùa Cầu mở đến 22h vào dịp lễ hội). · Giờ bán ...",
+    "position": 6
+   },
+   {
+    "title": "Kinh nghiệm du lịch Hội An tự túc chi tiết nhất 2026",
+    "link": "https://www.traveloka.com/vi-vn/explore/destination/kinh-nghiem-du-lich-hoi-an-2/222225",
+    "snippet": "Theo kinh nghiệm du lịch Hội An tự túc thì lý tưởng nhất sẽ là thời gian từ tháng 1 đến tháng 3, lúc này trời mát mẻ, nắng không quá gắt nên rất phù hợp để dạo ...",
+    "position": 7
+   },
+   {
+    "title": "Phố Cổ Hội An Có Gì Thú Vị? Những Gợi Ý Khi Tham ...",
+    "link": "https://www.klook.com/vi/blog/pho-co-hoi-an/",
+    "snippet": "Khoảng cách từ Đà Nẵng đến Hội An là khoảng 30km về phía Nam. Thời gian di chuyển sẽ phụ thuộc vào phương tiện sử dụng như sau: Xe máy: Thường mất khoảng 45 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

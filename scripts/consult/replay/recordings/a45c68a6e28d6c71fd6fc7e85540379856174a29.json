@@ -1,0 +1,81 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Samsung Galaxy S24 FE 5G 8GB 128GB\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:02:21.087Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Samsung Galaxy S24 FE 5G 8GB 128GB\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Samsung Galaxy S24 FE 5G chính hãng, giá rẻ, góp 0%",
+    "link": "https://cellphones.com.vn/dien-thoai-samsung-galaxy-s24-fe.html",
+    "snippet": "Đặc điểm nổi bật của Samsung Galaxy S24 FE 5G 8GB 128GB · Màn hình Dynamic AMOLED 120Hz - Mang lại trải nghiệm hình ảnh siêu mượt mà, màu sắc sống động. · Chip ...",
+    "rating": 4.9,
+    "ratingCount": 8,
+    "position": 1
+   },
+   {
+    "title": "Samsung Galaxy S24 FE 5G 8GB 128GB - Cũ Đẹp | Giá rẻ",
+    "link": "https://cellphones.com.vn/dien-thoai-samsung-galaxy-s24-fe-cu-dep.html",
+    "snippet": "Mua điện thoại Samsung Galaxy S24 FE 5G (8GB 128GB) cũ giá rẻ - Nguồn gốc rõ ràng, bảo hành 6-12 tháng, đổi mới 30 ngày, luôn xuất bán đầy đủ VAT.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 2
+   },
+   {
+    "title": "Samsung Galaxy S24 FE 5G 8GB 128GB - Cũ Trầy Xước",
+    "link": "https://cellphones.com.vn/dien-thoai-samsung-galaxy-s24-fe-cu-tray-xuoc.html",
+    "snippet": "Samsung Galaxy S24 FE 5G 8GB 128GB - Cũ Trầy Xước ; HSSV, Giáo viên đến 374.500đ ; Smember Giảm thêm đến 75.000đ ; Trả góp 0% ; Giá sản phẩm. 16.690.000đ 7.490.000đ.",
+    "position": 3
+   },
+   {
+    "title": "Samsung Galaxy S24 FE 5G 8GB 128GB - Cũ Xước Cấn",
+    "link": "https://cellphones.com.vn/dien-thoai-samsung-galaxy-s24-fe-cu-xuoc-can.html",
+    "snippet": "Samsung Galaxy S24 FE 5G 8GB 128GB - Cũ Xước Cấn ; HSSV, Giáo viên đến 344.500đ ; Smember Giảm thêm đến 69.000đ ; Trả góp 0% ; Giá sản phẩm. 16.690.000đ 6.890.000đ.",
+    "position": 4
+   },
+   {
+    "title": "So sánh Samsung S25 FE và S24 FE: Có nên nâng cấp",
+    "link": "https://cellphones.com.vn/sforum/so-sanh-samsung-s25-fe-va-s24-fe",
+    "snippet": "Samsung Galaxy S24 FE 5G 8GB 128GB. 11.490.000đ16.690.000đ. Đăng ký nhận bản tin khuyến mãi qua số điện ...",
+    "date": "29 thg 9, 2025",
+    "position": 5
+   },
+   {
+    "title": "Galaxy S24 FE có gì mới? Giá bao nhiêu? Khi nào ra mắt?",
+    "link": "https://cellphones.com.vn/sforum/samsung-galaxy-s24-fe-co-gi-moi",
+    "snippet": "Trả góp 0%. Samsung Galaxy S24 FE 5G 8GB 128GB. 11.490.000đ16.690.000đ. HSSV chỉ còn 10.990.000đSmember giảm ...",
+    "date": "7 thg 9, 2024",
+    "position": 6
+   },
+   {
+    "title": "So sánh Galaxy S24 FE và Galaxy S23 FE: Có gì khác biệt?",
+    "link": "https://cellphones.com.vn/sforum/so-sanh-galaxy-s24-fe-va-galaxy-s23-fe",
+    "snippet": "Samsung Galaxy S24 FE 5G 8GB 128GB - xanh lá. Xanh lá11.490.000đ. Samsung Galaxy S24 FE 5G 8GB 128GB - xám. Xám11.490.000đ. Đăng ký nhận bản tin khuyến mãi qua ...",
+    "position": 7
+   },
+   {
+    "title": "Galaxy S24 FE sau 4 tháng sử dụng: Làm gì cũng bớt cực",
+    "link": "https://cellphones.com.vn/sforum/galaxy-s24-fe-sau-4-thang-su-dung-lam-gi-cung-bot-cuc",
+    "snippet": "Samsung Galaxy S24 FE 5G 8GB 128GB - xanh lá. Xanh lá11.490.000đ. Samsung Galaxy S24 FE 5G 8GB 128GB - xám. Xám11.490.000đ. Đăng ký nhận bản tin ...",
+    "date": "27 thg 2, 2025",
+    "rating": 3.5,
+    "ratingCount": 4,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

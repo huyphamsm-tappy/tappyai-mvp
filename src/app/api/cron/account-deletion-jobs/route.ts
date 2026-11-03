@@ -4,6 +4,7 @@ import { getMediaProvider } from '@/lib/media'
 import { revokeGoogleToken } from '@/lib/integrations/googleCalendar'
 import { processAccountDeletionJobs } from '@/lib/account/deletionJobs'
 import { isAuthorizedCronRequest } from '@/lib/security/cronAuth'
+import { accountDeletionSchemaReady } from '@/lib/account/deletionReady'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60
@@ -18,6 +19,13 @@ export const maxDuration = 60
 export async function GET(req: Request) {
   if (!isAuthorizedCronRequest(req)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  // The queue exists only once the clean-up migration is applied. Until then there is nothing to drain: report that, successfully
+  // and visibly, instead of failing every night. After it is applied a real failure below is still a 500.
+  if (!(await accountDeletionSchemaReady())) {
+    console.log(JSON.stringify({ type: 'tappyai_cron', job: 'account-deletion-jobs', ok: true, skipped: 'cleanup_not_installed' }))
+    return NextResponse.json({ ok: true, skipped: 'cleanup_not_installed' })
   }
 
   const media = getMediaProvider(process.env, req)

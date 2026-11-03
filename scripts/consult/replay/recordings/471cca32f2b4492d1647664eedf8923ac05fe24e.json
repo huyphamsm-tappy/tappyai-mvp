@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vanban.chinhphu.vn lệ phí cấp hộ chiếu phổ thông thông tư 2025",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:07:06.566Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vanban.chinhphu.vn lệ phí cấp hộ chiếu phổ thông thông tư 2025",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Công văn số 5425/VPCP-KTTH của Văn phòng Chính phủ",
+    "link": "https://vanban.chinhphu.vn/default.aspx?pageid=27160&docid=180557",
+    "snippet": "Công văn số 5425/VPCP-KTTH của Văn phòng Chính phủ: V/v hướng dẫn thu, nộp lệ phí cấp hộ chiếu, thị thực, giấy tờ về nhập cảnh, xuất cảnh ; Số ký hiệu, 5425/VPCP ...",
+    "position": 1
+   },
+   {
+    "title": "Thông tư số 68/2025/TT-BCA của Bộ Công an",
+    "link": "https://vanban.chinhphu.vn/?pageid=27160&docid=214804&classid=1&typegroupid=6",
+    "snippet": "Thông tư số 68/2025/TT-BCA của Bộ Công an: Sửa đổi, bổ sung một số điều của Thông tư số 31/2023/TT-BCA ngày 20 tháng 7 năm 2023 của Bộ trưởng Bộ Công an quy ...",
+    "position": 2
+   },
+   {
+    "title": "Thông tư số 64/2025/TT-BTC của Bộ Tài chính: Quy định mức ...",
+    "link": "https://vanban.chinhphu.vn/?pageid=27160&docid=214418",
+    "snippet": "Thông tư số 64/2025/TT-BTC của Bộ Tài chính: Quy định mức thu, miễn một số khoản phí, lệ phí nhằm hỗ trợ cho doanh nghiệp, người dân.",
+    "position": 3
+   },
+   {
+    "title": "Cổng thông tin điện tử Chính phủ - Hệ thống văn bản",
+    "link": "https://vanban.chinhphu.vn/he-thong-van-ban?classid=1&mode=1&typegroupid=6",
+    "snippet": "Ban hành định mức chi phí, lợi nhuận áp dụng cho dịch vụ sự nghiệp công bảo đảm an toàn hàng hải sử dụng ngân sách nhà nước từ nguồn kinh phí chi thường xuyên, ...",
+    "position": 4
+   },
+   {
+    "title": "Thông tư số 55/2023/TT-BTC của Bộ Tài chính",
+    "link": "https://vanban.chinhphu.vn/?pageid=27160&docid=208496",
+    "snippet": "Thông tư số 55/2023/TT-BTC của Bộ Tài chính: Quy định quản lý, sử dụng và quyết toán kinh phí sự nghiệp từ nguồn ngân sách nhà nước thực hiện các chương trình ...",
+    "position": 5
+   },
+   {
+    "title": "Thông tư liên tịch số 08/2009/TTLT/BCA-BNG của Bộ Công an ...",
+    "link": "https://vanban.chinhphu.vn/default.aspx?pageid=27160&docid=91760",
+    "snippet": "Thông tư liên tịch số 08/2009/TTLT/BCA-BNG của Bộ Công an, Bộ Ngoại giao: Hướng dẫn việc cấp hộ chiếu phổ thông và giấy thông hành ở nước ngoài theo Nghị ...",
+    "position": 6
+   },
+   {
+    "title": "Nghị định số 163/2025/NĐ-CP của Chính phủ",
+    "link": "https://vanban.chinhphu.vn/?pageid=27160&docid=214322",
+    "snippet": "Nghị định số 163/2025/NĐ-CP của Chính phủ: Quy định chi tiết một số điều và biện pháp để tổ chức, hướng dẫn thi hành Luật Dược.",
+    "position": 7
+   },
+   {
+    "title": "Thông tư số 73/2021/TT-BCA của Bộ Công an: Quy định về ...",
+    "link": "https://vanban.chinhphu.vn/?pageid=27160&docid=203494",
+    "snippet": "Thông tư số 73/2021/TT-BCA của Bộ Công an: Quy định về mẫu hộ chiếu, giấy thông hành và các biểu mẫu liên quan ; Ngày ban hành, 29-06-2021 ; Ngày có hiệu lực, 14- ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

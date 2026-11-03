@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quán ăn ngon món Việt đa dạng dưới 200k/người, không cần rẻ nhất Quận 3, TP.HCM gia menu thuc don",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T09:50:59.425Z",
+ "body": {
+  "searchParameters": {
+   "q": "quán ăn ngon món Việt đa dạng dưới 200k/người, không cần rẻ nhất Quận 3, TP.HCM gia menu thuc don",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Top Những Quán Ăn Núp Hẻm Ngon Rẻ ở Sài Gòn, Thổ ...",
+    "link": "https://www.youtube.com/watch?v=AvS9oprIc4s",
+    "snippet": "Địa chỉ : Top Những Quán Ăn Núp Hẻm Ngon Rẻ ở Sài Gòn, Thổ Địa Chỉ Đường Mới Biết 1. GÀ NƯỚNG CHÚ THÀNH (10H -22H) 00:00 110/39 SỐ 30, ...",
+    "position": 1
+   },
+   {
+    "title": "em xin địa chỉ quán buffet nướng/lẩu ok dưới 200k ở Q3 ...",
+    "link": "https://www.facebook.com/groups/reviewbuffet/posts/3609185772725748/",
+    "snippet": "Hoàng Thị Kim Vy · Orifood ở Lê Văn Sỹ nha. Korean Grill ở Nowzone. ; Linh Gì Đó Nguyễn. Hot Pot Yummy - Lẩu Băng Chuyền ; Neko Miya. Yuhua hoặc ...",
+    "position": 2
+   },
+   {
+    "title": "Top 45 nhà hàng ngon nổi tiếng nhất tại TP.HCM",
+    "link": "https://zalopay.vn/nha-hang-5067",
+    "snippet": "Nhà hàng chuyên món Việt và các món ăn khác sang - xịn - mịn, nổi tiếng ở Sài Gòn: Chuỗi nhà hàng Phố 79, Kabin, Reflections Restaurant, ...",
+    "date": "30 thg 9, 2025",
+    "position": 3
+   },
+   {
+    "title": "Top những quán ăn ngon, nổi tiếng, giá 200k ở Sài Gòn",
+    "link": "https://pasgo.vn/blog/top-nhung-quan-an-mon-ngon-noi-tieng-nhat-o-sai-gon-726",
+    "snippet": "1. Pachi Pachi - 52 Mạc Đĩnh Chi, Phường Đa Kao, Quận 1 · 2. Lẩu & Nướng Soa Soa - 64 Phạm Ngọc Thạch, Phường 6, Quận 3 · 3. Subin BBQ – Quán ...",
+    "date": "9 thg 12, 2018",
+    "position": 4
+   },
+   {
+    "title": "Top 16 QUÁN ĂN NGON RẺ dân Sành Ăn không nên bỏ lỡ ...",
+    "link": "https://www.youtube.com/watch?v=i7EWrRAirgc",
+    "snippet": "Địa chỉ : TỔNG HỢP 16 QUÁN ĂN NGON RẺ NỔI TIẾNG QUẬN 3 NĂM 2026 (PHẦN 5) 1. HỘT VỊT LỘN CÔ VÂN (14H -24H) ĐỊA CHỈ: 2B Bàn Cờ, Phường Bàn Cờ ...",
+    "position": 5
+   },
+   {
+    "title": "Gợi ý những quán ăn ngon và rẻ : r/saigon",
+    "link": "https://www.reddit.com/r/saigon/comments/16xoqrb/cheap_food_recommendations/?tl=vi",
+    "snippet": "Phố ăn vặt Hồ Thị Kỷ thì rẻ và đồ ăn đa dạng nhất luôn ấy. Họ ... Những món ăn địa phương ngon nhất với giá dưới $14 cho các tín đồ ẩm thực.",
+    "position": 6
+   },
+   {
+    "title": "Khám Phá Ngay 25 Quán Buffet Nướng Giá Rẻ Chất ...",
+    "link": "https://vincom.com.vn/trend/buffet-nuong-gia-re",
+    "snippet": "Bỏ túi ngay 25 quán buffet nướng giá rẻ từ 99k đến 200k với chất lượng thơm ngon, chuẩn vị như: King BBQ, Buffet Alibaba, Samurai BBQ, Tasaki BBQ,...",
+    "position": 7
+   },
+   {
+    "title": "Top 10 quán ăn gia đình ngon rẻ, không gian ấm cúng, menu ...",
+    "link": "https://www.bachhoaxanh.com/kinh-nghiem-hay/top-10-quan-an-gia-dinh-ngon-re-khong-gian-am-cung-menu-da-dang-1586983",
+    "snippet": "1Soul Bến Thành - Thủ Khoa Huân · 2Lẩu Hồng Kông - Hoàng Văn Thụ · 3Tám Riêu - Phan Xích Long · 4Ẩm Thực Chay Tuệ - Trần Hưng Đạo · 5Dìn Ký Cù Lao Xanh - Trần Văn ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,55 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vbpl.vn lệ phí cấp hộ chiếu phổ thông 2026 phí cấp hộ chiếu Thông tư 25/2021/TT-BTC",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:10:18.955Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vbpl.vn lệ phí cấp hộ chiếu phổ thông 2026 phí cấp hộ chiếu Thông tư 25/2021/TT-BTC",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Thông tư 28/2026/TT-BTC của Bộ Tài chính",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/b6e43930-5972-11f1-9c79-07f23d89b27d",
+    "snippet": "Thông tư 28/2026/TT-BTC Quy định mức thu, chế độ thu, nộp phí, lệ phí trong lĩnh vực xuất cảnh, nhập cảnh, quá cảnh, cư trú tại Việt Nam · 1. Người nộp phí, lệ ...",
+    "position": 1
+   },
+   {
+    "title": "Thông tư 64/2025/TT-BTC của Bộ Tài chính",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/thong-tu-so-64-2025-tt-btc-quy-dinh-muc-thu-mien-mot-so-khoan-phi-le-phi-nham-ho-tro-cho-doanh-nghiep-nguoi-dan--179085",
+    "snippet": "Bằng 50% mức thu phí quy định tại Biểu mức thu phí khai thác, sử dụng thông tin, dữ liệu khí tượng thủy văn ban hành kèm theo Thông tư số 197/2016/TT-BTC ngày ...",
+    "position": 2
+   },
+   {
+    "title": "Thông tư 63/2023/TT-BTC của Bộ Tài chính",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/thong-tu-so-63-2023-tt-btc-sua-doi-bo-sung-mot-so-dieu-cua-mot-so-thong-tu-quy-dinh-thu-phi-le-phi-cua-bo-truong-bo-tai-chinh-nham-khuyen-khich-su-dung-dich-vu-cong-truc-tuyen--163740",
+    "snippet": "b) Kể từ ngày 01 tháng 01 năm 2026 trở đi, áp dụng mức thu lệ phí quy định tại Biểu mức thu phí, lệ phí ban hành kèm theo Thông tư này.\" Điều ...",
+    "position": 3
+   },
+   {
+    "title": "Quyết định 118/2025/QĐ-UBND by UBND Tỉnh Bắc Ninh",
+    "link": "https://vbpl.vn/en/van-ban/chi-tiet/quyet-dinh-so-118-2025-qd-ubnd-ban-hanh-quy-dinh-quan-ly-chat-thai-ran-sinh-hoat-tren-dia-ban-tinh-bac-ninh--186468",
+    "snippet": "a) Thực hiện quy định tại điểm đ, khoản 1 Điều 72 Luật số 72/2020/QH14; Điều 69, khoản 1 Điều 70, Điều 72 Nghị định số 08/2022/NĐ- CP và Điều 9 ...",
+    "date": "31 thg 12, 2025",
+    "position": 4
+   },
+   {
+    "title": "Văn bản hệ thống hóa 345/QĐ-UBND của UBND Tỉnh ...",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/quyet-dinh-so-345-qd-ubnd-ve-viec-cong-bo-danh-muc-van-ban-quy-pham-phap-luat-het-hieu-luc-toan-bo-va-mot-phan-thuoc-linh-vuc-quan-ly-nha-nuoc-cua-hoi-dong-nhan-dan-tinh-uy-ban-nhan-dan-tinh-dong-nai-nam-2018--hhtquyetdinh_78",
+    "snippet": "Thông tư số 02/2017/TT-BTC ngày 06/01/2017 của Bộ Tài chính hướng dẫn quản lý kinh phí sự nghiệp bảo vệ môi trường là căn cứ pháp lý trực tiếp để ban hành ...",
+    "position": 5
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -21,6 +21,11 @@ final class AppDependencies: AppObservableObject {
     let authRepository: AuthRepository
     let configService: AppConfigService
     let notificationManager: NotificationManager
+    /// The unread count of the in-app inbox, read by the tab bar (it must not live in one screen).
+    let notificationCenter: NotificationCenterStore
+    let safety: SafetyStore
+    /// One-time «share data with AI» consent (App Review 5.1.2(i)); the networking layer enforces it too.
+    let aiConsent = AIConsentCoordinator()
 
     init(env: AppEnvironment = .current) {
         self.env = env
@@ -50,8 +55,10 @@ final class AppDependencies: AppObservableObject {
         self.localization = LocalizationManager()
         self.deepLinks = deepLinks
         self.entitlements = ServerEntitlementService(api: api)
-        self.paymentProvider = StoreKitProvider(api: api)
-        self.notificationManager = NotificationManager(api: api, deepLinks: deepLinks, router: router)
+        self.paymentProvider = StoreKitProvider(api: api, session: session)
+        self.notificationManager = NotificationManager(api: api, deepLinks: deepLinks, router: router, session: session)
+        self.notificationCenter = NotificationCenterStore(service: NotificationsService(api: api), supabase: supabase, session: session)
+        self.safety = SafetyStore(service: SafetyService(api: api), config: configService, session: session)
 
         // Auth feature wiring (Phase 1).
         let webAuth = WebAuthenticator()
@@ -62,10 +69,16 @@ final class AppDependencies: AppObservableObject {
             onboarding: OnboardingService(api: api),
             zalo: ZaloAuthController(apiBaseURL: env.apiBaseURL, webAuth: webAuth, callbackScheme: "tappyai"),
             webAuth: webAuth,
-            session: session
+            session: session,
+            profile: ProfileService(api: api)
         )
 
         registerServices()
+        // Every sign-out (and the sign-out that follows account deletion) first releases THIS phone's push
+        // registration, while the session can still authorise the call.
+        // A real account's session that cannot be renewed → guest + notice; a fresh guest session keeps chat usable.
+        session.onSessionEnded = { [weak self] in Task { await self?.authRepository.ensureAnonymousSession() } }
+        authRepository.beforeSignOut = { [weak self] in await self?.notificationManager.releaseThisDevice() }
         AppLogger.app.info("Dependencies composed (env=\(env.kind.rawValue))")
     }
 
@@ -88,7 +101,13 @@ final class AppDependencies: AppObservableObject {
         AppLogger.performance.measure("bootstrap") { session.bootstrap() }
         Task { await authRepository.reconcileOnLaunch() }
         Task { await notificationManager.registerIfAuthorized() }
+        Task { await safety.refresh() }
+        // Sign in with Apple: notice the person revoking the app in iOS Settings and sign out.
+        appleMonitor = AppleCredentialMonitor { [weak self] in await self?.authRepository.signOut() }
+        appleMonitor?.start()
     }
+
+    private var appleMonitor: AppleCredentialMonitor?
 
     func handleDeepLink(_ urlOrPath: String) {
         if let target = deepLinks.target(for: urlOrPath) { router.handle(target) }

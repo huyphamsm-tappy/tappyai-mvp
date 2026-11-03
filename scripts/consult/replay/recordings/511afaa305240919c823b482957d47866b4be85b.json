@@ -1,0 +1,66 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Bluetooth thể thao Anker Soundcore V40i site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:06:29.005Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bluetooth thể thao Anker Soundcore V40i site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe Bluetooth True Wireless Open-ear Anker Soundcore ...",
+    "link": "https://www.lazada.vn/products/pdp-i3209397335.html?srsltid=AU7gw4Xoxkz6c3d1fKAGc-J9SZSaVakYoyMJ6wAPmRnYITjEW6SfY3-k",
+    "snippet": "Tai nghe Bluetooth True Wireless Open-ear Anker Soundcore V40i A3878 - Hàng chính hãng - Thiết kế mở, nghe nhạc 6 giờ, đàm thoại rõ ràng nhờ AI.",
+    "position": 1
+   },
+   {
+    "title": "Túi chống sốc Zadez Neoprene Sleeve Laptop 13.3/14/15.6 inch ...",
+    "link": "https://www.lazada.vn/products/tui-chong-soc-zadez-neoprene-sleeve-laptop-13314156-inch-zlc-84-hang-chinh-hang-kha-nang-hap-thu-luc-tot-i1913160816.html?srsltid=AU7gw4XAhGJOTgCDpifAkq-t1D-n_lObI1I_WBWFg6328PEwmgR8FOH7",
+    "snippet": "Tai nghe Bluetooth True Wireless Open-ear Anker Soundcore V40i A3878 - Hàng chính hãng. 1.299.000 ₫ · Loa Bluetooth JBL Boombox 4 JBLBOOMBOX4 - Hàng chính hãng ...",
+    "position": 2
+   },
+   {
+    "title": "(JQ) Bút bi bấm văn phòng 3 màu, ngòi 0.5mm, kèm 1 ruột ...",
+    "link": "https://www.lazada.vn/products/jq-but-bi-bam-van-phong-3-mau-ngoi-05mm-kem-1-ruot-but-muc-den-pham-i13448018860.html?srsltid=AU7gw4U9g5YAPWd7UioMeZnLDRwRvTIUyhR3vcp6MosSEYb7X4ehOjW7",
+    "snippet": "Tùy chọn ba màu. Tận hưởng sự tiện lợi của ba màu trong một cây bút, nâng cao hiệu quả và khả năng sáng tạo khi viết của bạn. Chất liệu chất lượng cao.",
+    "position": 3
+   },
+   {
+    "title": "Đồng hồ thông minh Amazfit T-Rex 3 Pro 48mm A2444",
+    "link": "https://www.lazada.vn/products/dong-ho-thong-minh-amazfit-t-rex-3-pro-48mm-a2444-hang-chinh-hang-amoled-15-vo-titanium-su-dung-len-den-25-ngay-i3218985162-s15424541642.html?srsltid=AU7gw4X0165zo6sT5O6-oOMUFXAcj8G2GSQcWIPIbFOA3VHLxG4ItBnm",
+    "snippet": "Đặc điểm nổi bật. Vỏ hợp kim Titanium cấp 5 + mặt kính Sapphire chống xước. Màn hình AMOLED 1.5\" – độ sáng tối đa 3000 nit, hiển thị rõ ràng ngoài trời.",
+    "position": 4
+   },
+   {
+    "title": "Cổng chuyển đổi USB Type-C to HDMI 2.0 Philips Deliver ...",
+    "link": "https://www.lazada.vn/products/cng-chuyn-i-usb-typec-to-hdmi-20-philips-deliver-4k-60hz-video-from-mobile-devices-swv501073--hng-chnh-hng--h-tr-4k60hz-kt-ni-plug--play-hot-ng-n-nh-i3322737133.html?srsltid=AU7gw4UUUF3iBIQPqqsJVT727tAYggnI55UHiF4SHi_g6kkJ1Cg-8wIQ",
+    "snippet": "✓ Hỗ trợ xuất video 4K@60Hz rõ nét · ✓ Chuyển tín hiệu từ USB-C sang HDMI tiện lợi · ✓ Tương thích với smartphone, tablet và laptop USB-C · ✓ Hỗ trợ âm thanh ...",
+    "position": 5
+   },
+   {
+    "title": "Chuột có dây Gaming Havit MS1026 - Hàng chính hãng",
+    "link": "https://www.lazada.vn/products/chuot-co-day-gaming-havit-ms1026-hang-chinh-hang-dpi-1000-6400-thiet-ke-cong-thai-hoc-led-reg-doc-dao-i2003017677.html?srsltid=AU7gw4U1G8AdJt0hJXF3CwDw1fKPgiQBaYI72jOcYkK0zlbBo7bJOgZ_",
+    "snippet": "Đặc điểm nổi bật · Sản phẩm chính hãng Havit · Thiết kế cong thái học Ergonomic mang lại cảm giác cầm nắm thoải mái · DPI: 1000 - 6400 · Các phím chức năng bên cạnh ...",
+    "position": 6
+   },
+   {
+    "title": "Chuột không dây Logitech MX Master 4 - Hàng chính hãng",
+    "link": "https://www.lazada.vn/products/chuot-khong-day-logitech-mx-master-4-hang-chinh-hang-darkfield-8000-dpi-cuon-magspeed-pin-sieu-ben-sac-nhanh-i3214960685.html?srsltid=AU7gw4U4ITH11LjWhQV9Rd6eoQ4VYGlfmI1GLEMHs9q02_hxP6Al_fKX",
+    "snippet": "Tai nghe Bluetooth True Wireless Open-ear Anker Soundcore V40i A3878 - Hàng chính hãng. 1.299.000 ₫. Loa Bluetooth JBL Charge 6 JBLCHARGE6 - Hàng chính hãng ...",
+    "position": 7
+   }
+  ],
+  "credits": 1
+ }
+}

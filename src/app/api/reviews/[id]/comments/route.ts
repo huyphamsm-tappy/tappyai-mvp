@@ -1,7 +1,8 @@
 import { createClient } from '@/lib/supabase/server'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { rateLimit } from '@/lib/security/rateLimit'
+import { publicRateLimit } from '@/lib/security/publicRateLimit'
+import { rateLimitedResponse } from '@/lib/security/rateLimitResponse'
 import { NextRequest, NextResponse } from 'next/server'
 import { emitNotification } from '@/lib/notifications/emit'
 import { searchParam } from '@/lib/http/searchParams'
@@ -110,9 +111,9 @@ export async function POST(
 
   // Burst cap: each comment inserts a row AND fires a push to the review owner,
   // so an uncapped POST is a spam vector against that owner.
-  if (!rateLimit(`comment:${user.id}`, 10, 60_000).ok) {
-    return NextResponse.json({ error: 'rate_limit', message: serverMessage('comment.tooFast', requestLocale(req)) }, { status: 429 })
-  }
+  // SEC4 slice 5b: the shared limiter, same limit (10 per minute), same key and same copy as before.
+  const rl = await publicRateLimit(`comment:${user.id}`, 10, 60_000)
+  if (!rl.ok) return rateLimitedResponse(req, rl, 'review_comment', serverMessage('comment.tooFast', requestLocale(req)))
 
   // Module 08 §4 — a suspended account cannot comment.
   const restriction = await getAccountRestriction(supabase, user.id)
@@ -143,6 +144,8 @@ export async function POST(
     .select('id, body, created_at, user_id, parent_comment_id')
     .single()
 
+  // 42501 = refused by row-level security (a block between the commenter and the post's author): 403, not a server error.
+  if (error?.code === '42501') return NextResponse.json({ error: 'comment_forbidden', message: serverMessage('comment.postFailed', requestLocale(req)) }, { status: 403 })
   if (error) return NextResponse.json({ error: 'comment_failed', message: serverMessage('comment.postFailed', requestLocale(req)) }, { status: 500 })
 
   const [withProfile] = await attachProfiles(supabase, [insertedComment])
@@ -191,7 +194,8 @@ export async function DELETE(
     .from('review_comments')
     .delete()
     .eq('id', commentId)
-    .eq('user_id', user.id)
+    // No `.eq('user_id', …)` here (owner 01/10): RLS decides — the comment's AUTHOR, or the creator of the post it is on
+    // (20261001_user_blocks.sql). A comment that is not the caller's to delete matches no row and nothing is deleted.
 
   if (error) return NextResponse.json({ error: 'delete_failed', message: serverMessage('server.deleteFailed', requestLocale(req)) }, { status: 500 })
 

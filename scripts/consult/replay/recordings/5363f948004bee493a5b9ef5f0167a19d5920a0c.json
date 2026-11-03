@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "iPhone 15 Pro Max 256GB site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:09:00.842Z",
+ "body": {
+  "searchParameters": {
+   "q": "iPhone 15 Pro Max 256GB site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "iPhone 15 Pro Max 256GB Chính Hãng VN/A",
+    "link": "https://shopee.vn/iPhone-15-Pro-Max-256GB-Ch%C3%ADnh-H%C3%A3ng-VN-A-i.288286284.21993222972",
+    "snippet": "iPhone 15 Pro Max 256GB Chính Hãng VN/A. icon video play. button back to video. 1/9. Đã bán hết. 4 phân loại có sẵn. 43.990.000₫. mall inline badge ...",
+    "rating": 5,
+    "ratingCount": 3459,
+    "position": 1
+   },
+   {
+    "title": "Điện thoại Apple iPhone 15 Pro Max 256GB",
+    "link": "https://shopee.vn/%C4%90i%E1%BB%87n-tho%E1%BA%A1i-Apple-iPhone-15-Pro-Max-256GB-i.88201679.20493037179",
+    "snippet": "4 phân loại có sẵn. 34.999.000₫. fbs-logo-vn. mall inline badge. Điện thoại Apple iPhone 15 Pro Max 256GB. outline grey truck icon. Không hỗ trợ.",
+    "rating": 5,
+    "ratingCount": 11622,
+    "position": 2
+   },
+   {
+    "title": "Iphone pro max - Giá Tốt, Sale Tháng 10, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/%C4%91i%E1%BB%87n%20tho%E1%BA%A1i/iphone/pro%20max",
+    "snippet": "Mua online iphone pro max chất lượng, Voucher Shopee Live giảm tới 50% tại Shopee. Khuyến mãi tháng 10, 2026 . Miễn phí vận chuyển. Mua ngay!",
+    "position": 3
+   },
+   {
+    "title": "Iphone 15 pro max - Giá Tốt, Miễn Phí Vận Chuyển, Đủ Loại",
+    "link": "https://shopee.vn/list/%C4%91i%E1%BB%87n%20tho%E1%BA%A1i/iphone/15%20pro%20max",
+    "snippet": "Điện thoại iPhone 15 Pro Max mang đến nhiều nâng cấp đáng giá như chip A17 Pro mạnh mẽ hơn, khung viền titan siêu bền, camera tele tiềm vọng 5x cải thiện khả ...",
+    "position": 4
+   },
+   {
+    "title": "iphone 15pro giá tốt Tháng 9, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=iphone%2015pro",
+    "snippet": "Apple iPhone 15 256GB Chính hãng VN/A · Apple iPhone 15 256GB Chính hãng VN/A. 22.305.000 · 27.290.000₫. -18% ; Apple iPhone Air 256GB Chính hãng ZP/A · Apple ...",
+    "position": 5
+   },
+   {
+    "title": "săn điện thoại iphone 15 pro max - Giá Tốt, Sale Tháng 10, ...",
+    "link": "https://shopee.vn/list/s%C4%83n%20%C4%91i%E1%BB%87n%20tho%E1%BA%A1i/iphone%2015%20pro%20max",
+    "snippet": "Mua Online săn điện thoại iphone 15 pro max chất lượng, Freeship 0Đ, Voucher Shopee giảm tới 50% tại Shopee. Khuyến mãi tháng 10, 2026. Mua ngay!",
+    "position": 6
+   },
+   {
+    "title": "iphone 17 pro max - Giá Tốt, Sale Tháng 10, Freeship 0Đ",
+    "link": "https://shopee.vn/list/iphone/17%20pro%20max",
+    "snippet": "Điện thoại Apple iPhone 15 256GB. 22.490.000₫. 25.999.000₫. -13%. Rẻ Vô Địch. rating-star 4.9 · Apple iPhone 17 Pro Max 1TB Chính hãng ZP/A. custom-overlay.",
+    "position": 7
+   },
+   {
+    "title": "iPhone 15 Pro 256GB Chính Hãng VN/A",
+    "link": "https://shopee.vn/iPhone-15-Pro-256GB-Ch%C3%ADnh-H%C3%A3ng-VN-A-i.288286284.22755135981",
+    "snippet": "Chính hãng 100% • Miễn phí vận chuyển • Bảo hiểm thiết bị di động nâng cao. Chọn loại hàng. Natural. Titanium. Black. Titanium.",
+    "rating": 5,
+    "ratingCount": 34,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

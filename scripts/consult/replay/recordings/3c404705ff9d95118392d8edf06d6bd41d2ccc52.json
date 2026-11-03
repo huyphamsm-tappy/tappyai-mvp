@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple kiểm tra tình trạng pin Mac maximum capacity service recommended cycle count MacBook Air M1 chính thức",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:05:55.325Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple kiểm tra tình trạng pin Mac maximum capacity service recommended cycle count MacBook Air M1 chính thức",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "MacBook báo lỗi pin Service Recommended cách xử lý đúng",
+    "link": "https://ufotech.vn/macbook-bao-loi-pin-service-recommended/",
+    "snippet": "Service Recommended là gì? Là cảnh báo chính thức từ macOS cho biết pin MacBook đã suy giảm dung lượng (thường dưới 80%) hoặc phần cứng pin đang ...",
+    "date": "6 thg 3, 2026",
+    "position": 1
+   },
+   {
+    "title": "Cách xem số lần sạc và sử dụng pin trên MacBook đúng ...",
+    "link": "https://macone.vn/tin-tuc/xem-so-lan-sac-va-su-dung-pin-tren-macbook/?srsltid=AU7gw4UqSEv2DdHDymlb0y9IEMeVErjD7tayJmq8yjEshiEga79eLsfl",
+    "snippet": "Xem số lần sạc MacBook chỉ mất vài giây: vào Apple Menu > About This Mac > System Report > Power và tìm dòng Cycle Count. MacBook Air và ...",
+    "date": "20 thg 1, 2026",
+    "position": 2
+   },
+   {
+    "title": "MacBook báo Service Recommended: Có cần thay pin ...",
+    "link": "https://didong3tot.com/blogs/blog-ky-thuat/macbook-service-recommended",
+    "snippet": "Vào Apple menu > System Settings > Battery > Battery Health. Tùy macOS, tên mục có thể khác nhẹ. Kiểm tra trạng thái pin và Maximum Capacity nếu ...",
+    "date": "15 thg 8, 2026",
+    "position": 3
+   },
+   {
+    "title": "Xác định số chu kỳ sạc của pin trên máy tính xách tay Mac",
+    "link": "https://support.apple.com/vi-vn/102888",
+    "snippet": "Giữ phím Option và bấm vào menu Apple , sau đó chọn Thông tin hệ thống. · Trong mục Phần cứng trên cửa sổ Thông tin hệ thống, chọn Nguồn. Số chu kỳ sạc hiện ...",
+    "position": 4
+   },
+   {
+    "title": "Macbook air m1 của em sạc 57 lần pin còn 91% có phải là ...",
+    "link": "https://www.facebook.com/groups/Grouptinhte/posts/6995398867250665/",
+    "snippet": "Số lần sạc k nói lên gì cả . Nhiều máy 10-20 lần sạc pin chai , phồng là bình thường . Lý do là vừa dùng vừa sạc ( vừa dùng vừa sạc liên tục ...",
+    "position": 5
+   },
+   {
+    "title": "Kiểm tra độ chai pin MacBook chuẩn xác nhất",
+    "link": "https://dienthoaivui.com.vn/cach-kiem-tra-pin-macbook-co-bi-chai-hay-khong",
+    "snippet": "Bước 1: Nhấn tổ hợp phím Command + Space, hộp thoại Power. gồm: Condition, Cycle Count và Maximum Capacity. Kéo",
+    "date": "23 thg 4, 2024",
+    "position": 6
+   },
+   {
+    "title": "Chỉ nhìn biểu tượng pin thì khá khó biết MacBook còn chính ...",
+    "link": "https://www.facebook.com/1pro.vn/posts/ch%E1%BB%89-nh%C3%ACn-bi%E1%BB%83u-t%C6%B0%E1%BB%A3ng-pin-th%C3%AC-kh%C3%A1-kh%C3%B3-bi%E1%BA%BFt-macbook-c%C3%B2n-ch%C3%ADnh-x%C3%A1c-bao-nhi%C3%AAu-pin-b%E1%BA%ADt/122233768382511512/",
+    "snippet": "- Nếu bạn nhận được dòng thông báo Normal, điều này có nghĩa là chức năng pin trên MacBook của bạn vẫn hoạt động tốt. - Với trạng thái Replace ...",
+    "position": 7
+   },
+   {
+    "title": "Cách kiểm tra số lần sạc pin và độ chai pin trên Macbook ...",
+    "link": "https://www.thegioididong.com/hoi-dap/cach-kiem-tra-pin-chai-tren-macbook-nhanh-nhat-1226190",
+    "snippet": "Bước 1: Chọn vào biểu tượng Apple > Chọn About This Mac. p theo Bước 2: Nhấn chọn vào System Report. Bước 3: Bạn chọn vào Power, lúc này sẽ hiể ...",
+    "date": "21 thg 2, 2023",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -93,7 +93,6 @@ export type SourceId =
    * are different products from one vendor and must stay separately attributable.
    */
   | 'serper_places'
-  | 'travelpayouts'
   | 'tappy_reviews'
   | 'official_website'
   /** The application computed it (distance, price range, rank). Provenance is "us". */

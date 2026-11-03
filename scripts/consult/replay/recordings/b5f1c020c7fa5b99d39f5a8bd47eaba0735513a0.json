@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:hochieu.xuatnhapcanh.gov.vn lệ phí cấp hộ chiếu trực tuyến 2026 180.",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:18:33.357Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:hochieu.xuatnhapcanh.gov.vn lệ phí cấp hộ chiếu trực tuyến 2026 180.",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

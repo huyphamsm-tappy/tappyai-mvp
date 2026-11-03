@@ -195,8 +195,11 @@ describe('exactly one model request per chat turn, still', () => {
     // second, forced-tool call site — which is why `toolChoice` was added during integration and
     // then reverted: its only consumer is not here, and it breaks
     // consultative/architectureLock.test.ts, which is a tested RC contract.
-    const calls = route().match(/AI\.stream\(\{/g) ?? []
+    // TAPPY_AGENT (04/10): the options moved into `streamOpts` so the same call site can hand the turn to the bounded agent (flag ON);
+    // there is still exactly ONE AI.stream call, and the agent's own steps (AI.step) live only in src/lib/ai/agent, never in the route.
+    const calls = route().match(/AI\.stream\(streamOpts\)/g) ?? []
     expect(calls).toHaveLength(1)
+    expect(route()).not.toMatch(/AI\.step\(/)
   })
 
   it('the AI layer offers no tool forcing', () => {

@@ -53,6 +53,7 @@ function OnboardingPageInner() {
   const [selected, setSelected] = useState<string[]>([])
   const [city, setCity] = useState('')
   const [loading, setLoading] = useState(false)
+  const [saveError, setSaveError] = useState(false)
 
   const toggleInterest = (id: string) => {
     setSelected(prev =>
@@ -62,14 +63,28 @@ function OnboardingPageInner() {
 
   const handleFinish = async () => {
     setLoading(true)
+    setSaveError(false)
+    const next = searchParams.get('next') || '/'
     try {
-      await fetch('/api/onboarding', {
+      const res = await fetch('/api/onboarding', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ interests: selected, city }),
       })
-    } catch { /* no-op */ }
-    const next = searchParams.get('next') || '/'
+      // fetch() only rejects on a network failure — a 401 or 500 RESOLVES. Swallowing them navigated the user away
+      // as if the profile were marked onboarded, but auth/callback re-reads profiles.onboarded on every login and
+      // sends them straight back here: a single silent failure loops the user through onboarding with no way out.
+      // No readable session: retrying cannot help, so send them to log in (auth/callback keeps `next`).
+      if (res.status === 401) {
+        router.replace(`/login?returnTo=${encodeURIComponent(next)}`)
+        return
+      }
+      if (!res.ok) throw new Error(`onboarding save failed: ${res.status}`)
+    } catch {
+      setSaveError(true)
+      setLoading(false)
+      return
+    }
     // replace() instead of push() so /onboarding is removed from history.
     // After the full OAuth flow, history has one entry for /onboarding (the
     // entire login chain was collapsed by window.location.replace). push()
@@ -319,6 +334,11 @@ function OnboardingPageInner() {
                 />
 
                 <div className="mt-7 flex flex-col items-center gap-3">
+                  {saveError && (
+                    <p role="alert" className="mb-1 text-sm text-red-400 text-center">
+                      {t('onboarding.saveError')}
+                    </p>
+                  )}
                   <button
                     onClick={handleFinish}
                     disabled={loading}
@@ -328,7 +348,8 @@ function OnboardingPageInner() {
                   </button>
                   <button
                     onClick={handleFinish}
-                    className="text-sm text-white/40 transition-colors hover:text-white/70"
+                    disabled={loading}
+                    className="text-sm text-white/40 transition-colors hover:text-white/70 disabled:opacity-40"
                   >
                     {t('common.skip')}
                   </button>

@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:support.apple.com AirPods Pro 2 sweat water resistance IP rating",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:26:05.054Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:support.apple.com AirPods Pro 2 sweat water resistance IP rating",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "About the sweat and water resistance of AirPods Pro ...",
+    "link": "https://support.apple.com/en-us/105046",
+    "snippet": "The AirPods and charging case for these models are dust, sweat, and water resistant for non-water sports and exercise, and have a rating of IP54 ...",
+    "date": "17 thg 9, 2026",
+    "position": 1
+   },
+   {
+    "title": "AirPods Pro 2 - Tech Specs",
+    "link": "https://support.apple.com/en-us/111851",
+    "snippet": "... rating of IPX4 under IEC standard 60529. Sweat and water resistance are not permanent conditions and resistance might decrease as a result of normal wear.",
+    "position": 2
+   },
+   {
+    "title": "AirPods Pro 3 - Tech Specs",
+    "link": "https://support.apple.com/en-us/125135",
+    "snippet": "... rating of IP57 under IEC standard 60529. Dust, sweat, and water resistance are not permanent conditions and resistance might decrease as a result of normal wear ...",
+    "position": 3
+   },
+   {
+    "title": "AirPods Pro 1 with Wireless Charging Case - Tech Specs",
+    "link": "https://support.apple.com/en-us/111861",
+    "snippet": "Sweat and Water Resistant2. Sweat and water resistant (IPX4). Size and Weight3. AirPods Pro (each). Height: 1.22 inches (30.9 mm). Width: 0.86 inch (21.8 mm).",
+    "position": 4
+   },
+   {
+    "title": "AirPods Pro 2 with MagSafe Charging Case (USB-C)",
+    "link": "https://support.apple.com/en-us/111834",
+    "snippet": "... rating of IP54 under IEC standard 60529. Dust, sweat, and water resistance are not permanent conditions and resistance might decrease as a result of normal wear ...",
+    "position": 5
+   },
+   {
+    "title": "AirPods 3 - Tech Specs",
+    "link": "https://support.apple.com/en-us/111863",
+    "snippet": "AirPods 3 are sweat and water resistant for non-water sports and exercise, and they are IPX4 rated. Sweat and water resistance are not permanent conditions.",
+    "position": 6
+   },
+   {
+    "title": "AirPods 4 with Active Noise Cancellation - Tech Specs",
+    "link": "https://support.apple.com/en-us/121204",
+    "snippet": "... rating of IP54 under IEC standard 60529. Dust, sweat, and water resistance are not permanent conditions and resistance might decrease as a result of normal wear ...",
+    "position": 7
+   },
+   {
+    "title": "About the sweat and water resistance of Beats wireless ...",
+    "link": "https://support.apple.com/en-us/101579",
+    "snippet": "... water sports and exercise, and have a rating of IPX4 under IEC standard 60529. Powerbeats, Powerbeats Pro, Powerbeats Pro 2, Beats Studio ...",
+    "date": "1 thg 10, 2025",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

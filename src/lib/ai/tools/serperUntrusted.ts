@@ -8,7 +8,7 @@
 const INJECTION_MARK = /(?:ignore|disregard|b[oỏ] qua|qu[eê]n)\s+(?:all\s+|m[oọ]i\s+|c[aá]c\s+|h[eế]t\s+)?(?:previous\s+|prior\s+|tr[uư][oớ]c\s+(?:đ|d)[oó]\s+)?(?:instructions?|rules?|h[uư][oớ]ng\s+d[aẫ]n|quy\s+t[aắ]c|lu[aậ]t)|system\s+prompt|prompt\s+h[eệ]\s+th[oố]ng|\b(?:assistant|system|developer)\s*:|\breveal\s+(?:your|the)\s+(?:system\s+)?(?:prompt|instructions)|h[uư][oớ]ng\s+d[aẫ]n\s+cho\s+(?:tr[oợ]\s+l[yý]|AI)/i
 /** Case-sensitive: an order to print a shouted token ("say PWNED") — not "Say Cheese Studio". */
 const SAY_MARK = /\bsay\s+['"]?[A-Z]{4,}\b|\bPWNED\b/
-const marked = (v: string): RegExpExecArray | null => INJECTION_MARK.exec(v) ?? SAY_MARK.exec(v)
+export const marked = (v: string): RegExpExecArray | null => INJECTION_MARK.exec(v) ?? SAY_MARK.exec(v)
 const URL_IN_TEXT = /!?\[[^\]]*\]\([^)]*\)|https?:\/\/\S+|\bwww\.\S+/gi
 const FREE_TEXT = new Set(['title', 'name', 'snippet', 'description', 'about', 'address', 'source', 'category', 'type'])
 

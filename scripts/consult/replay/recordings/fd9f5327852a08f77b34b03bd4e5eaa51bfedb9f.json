@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Macbook Pro 13\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:59:25.994Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Macbook Pro 13\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Macbook Pro 13 inch | Chính hãng giá tốt, thu cũ đổi mới",
+    "link": "https://cellphones.com.vn/bo-loc/macbook-pro-13-inch",
+    "snippet": "Macbook Pro 13 inch là dòng laptop cao cấp, sang trọng phù hợp với sinh viên và dân văn phòng nhờ vào kích thước nhỏ gọn, tiện lợi.",
+    "position": 1
+   },
+   {
+    "title": "Tổng hợp kích thước MacBook Pro 13 inch qua các thế hệ",
+    "link": "https://cellphones.com.vn/sforum/kich-thuoc-macbook-pro-13-inch",
+    "snippet": "Ra mắt năm 2020, kích thước MacBook Pro 13 inch M1 vẫn giữ nguyên phong cách quen thuộc với số đo 1.56 x 30.41 x 21.24 cm và trọng lượng khoảng 1.4 kg - gần như ...",
+    "position": 2
+   },
+   {
+    "title": "MacBook cũ | Mac cũ uy tín, trả góp 0%, giảm đến 7 triệu",
+    "link": "https://cellphones.com.vn/hang-cu/mac.html",
+    "snippet": "Apple Macbook Pro 13 Touch Bar i5 2.0 512GB 2020 - Cũ đẹp. Sắp về hàng. Trả góp 0%. : 12.690.000đ. 49.990.000đ. Giảm ...",
+    "position": 3
+   },
+   {
+    "title": "Apple MacBook Pro 13 Touch Bar M1 256GB 2020",
+    "link": "https://cellphones.com.vn/macbook-pro-2020-13-inch-touch-bar-m1-256gb-cu-xuoc-can.html",
+    "snippet": "Apple MacBook Pro 13 Touch Bar M1 256GB 2020 - Cũ xước cấn ; Trợ giá đến 2.000.000đ ; Giá sản phẩm. 35.990.000đ 13.790.000đ ; Lưu ý · Giá thu mua áp dụng cho dung ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 4
+   },
+   {
+    "title": "MacBook Pro 13\" M1 ra mắt: nhanh hơn 2.8 lần, pin 20 giờ",
+    "link": "https://cellphones.com.vn/sforum/apple-ra-mat-macbook-pro-13-moi-apple-m1-nhanh-hon-2-8-lan-pin-20-gio-gia-tu-1299-usd",
+    "snippet": "MacBook Pro 13 inch phiên bản chạy chip M1 vẫn có giá không đổi so với thế hệ trước, khởi điểm từ 1299 USD (khoảng 30.1 triệu đồng) cho bản 8GB RAM + 256GB SSD.",
+    "position": 5
+   },
+   {
+    "title": "So sánh Apple Macbook Pro 13 Touch Bar i5 2.0 1TB 2020",
+    "link": "https://cellphones.com.vn/so-sanh/macbook-pro-13-touchbar-i5-2-0ghz-1tb-cu-dep-vs-apple-macbook-air-13-2020-256-gb-cu-xuoc-can",
+    "snippet": "So sánh chi tiết về giá, cấu hình, ưu nhược điểm giữa: Apple Macbook Pro 13 Touch Bar i5 2.0 1TB 2020 - Cũ đẹp và Apple MacBook Air 13 256GB 2020 - Cũ Xước ...",
+    "position": 6
+   },
+   {
+    "title": "Apple Macbook Pro 13 Touch Bar i5 2.0 512GB 2020",
+    "link": "https://cellphones.com.vn/so-sanh/macbook-pro-13-touchbar-i5-2ghz-512gb-2020-cu-tray-xuoc-vs-apple-macbook-air-13-2020-256-gb-cu-dep",
+    "snippet": "So sánh chi tiết về giá, cấu hình, ưu nhược điểm giữa: Apple Macbook Pro 13 Touch Bar i5 2.0 512GB 2020 - Cũ Trầy Xước và Apple MacBook Air 13 256GB 2020 ...",
+    "position": 7
+   },
+   {
+    "title": "So sánh Dán màn hình Apple Macbook Pro 13 ...",
+    "link": "https://cellphones.com.vn/so-sanh/dan-man-hinh-macbook-pro-air-13-inch-mocoll-vs-dan-macbook-air-pro-13-inch-innostyle",
+    "snippet": "So sánh chi tiết về giá, cấu hình, ưu nhược điểm giữa: Dán màn hình Apple Macbook Pro 13\"/Macbook Air Mocoll và Dán màn hình Innostyle cho Macbook Air/Pro ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

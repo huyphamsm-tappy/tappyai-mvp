@@ -13,9 +13,12 @@
 // with CONSULT_LUNA on and no routing env, both roles run on the default model (isolates the prompt effect).
 
 import { z } from 'zod'
-import type { CoreMessage } from 'ai'
+import { NoObjectGeneratedError, type CoreMessage } from 'ai'
 import { CONSULT_DOMAINS, enforceConsultRules, type BrainRun, type ConsultDecision, type ConsultDomain, type ConsultTurn } from './consultBrain'
 import { budgetOf, localAreaOf, partyOf, prep, timeOf, tripDatesOf } from './consultRouter'
+import { reconcileAsk, type AskEvidenceInput } from './askReconcile'
+import { adviceEnabled } from './adviceBlock'
+import { consultativeInAgentEnabled } from './consultativeAgentFlag'
 
 /**
  * Owner 30/09 (URGENT, Anthropic out of credit): the Luna flags default ON with the default provider (GPT-6 Luna).
@@ -33,7 +36,10 @@ export function consultLunaEnabled(env: Record<string, string | undefined> = pro
   return flagOn(env.CONSULT_LUNA, env)
 }
 
-/** CONSULT_LUNA_FAST (needs CONSULT_LUNA; default OFF): skip the intent call on continuing turns the rules are sure of. */
+/**
+ * CONSULT_LUNA_FAST (needs CONSULT_LUNA): skip the intent call on continuing turns the rules are sure of. NOT default OFF: like every Luna flag
+ * (flagOn above) an unset value is ON with the default provider; only an explicit '0' / 'off' / 'false' turns it off (verified 28/10, localhost turn 3a).
+ */
 export function consultLunaFastEnabled(env: Record<string, string | undefined> = process.env): boolean {
   return consultLunaEnabled(env) && flagOn(env.CONSULT_LUNA_FAST, env)
 }
@@ -69,7 +75,7 @@ export function skipLunaIntent(
 export const LUNA_PLAN_RULE = [
   'LƯỢT NÀY LÀ KẾ HOẠCH CHI TIẾT.',
   '- Viết ĐỦ mọi mục của khung kế hoạch, đúng thứ tự và đúng tên tiêu đề in đậm của khung — kể cả khi người dùng hỏi một câu cụ thể ("gọi món gì", "kiểm tra gì", "chuẩn bị gì"): trả lời câu đó ở mục phù hợp.',
-  '- Mục không có dữ liệu: ghi "chưa có thông tin" ngay dưới tiêu đề — không bỏ mục, không để mục trống, không đoán, không lấy hiểu biết chung làm sự thật.',
+  '- Mục không có dữ liệu về NƠI CHỐN (giá, giờ mở cửa, địa chỉ, khuyến mãi, giờ bay): ghi "chưa có thông tin" — không đoán. Nhưng LỜI KHUYÊN CHUNG (món nên thử, giờ nên đi, đồ nên mang, cách di chuyển, cảnh báo) thì VIẾT từ hiểu biết chung, ghi "theo kinh nghiệm chung" — không để mục trống (02/10: người dùng xin kế hoạch, không phải danh sách "chưa có").',
   '- Dữ liệu tìm được có giờ mở cửa, khoảng giá, địa chỉ, số điện thoại của nơi nào thì GHI RA cho nơi đó — chỉ nói "chưa có" khi dữ liệu thật sự không có.',
   '- Giữ đủ mọi điều người dùng đã nói: số người, ngân sách, khu vực, ngày giờ, yêu cầu cụ thể (vd "gel + vẽ", "không đồ chiên", "phòng riêng"). Nơi người dùng đã bác hoặc nói "đi rồi" thì KHÔNG đưa lại.',
   '- Lịch nhiều bữa / nhiều chặng: mỗi bữa, mỗi chặng một nơi KHÁC nhau lấy từ dữ liệu (chỉ lặp lại khi dữ liệu có đúng một nơi — nói rõ vậy). Mỗi chặng người dùng nêu (ăn → chơi → uống) đều có một nơi hoặc ghi "chưa có thông tin" cho chặng đó.',
@@ -172,6 +178,15 @@ LOẠI LƯỢT (turn):
 - query: với pick/reject — MỘT truy vấn tìm kiếm ngắn kiểu người địa phương gõ, không chứa khu vực; còn lại null.
 - area: khu vực/thành phố người dùng nói, không thì null. refers: tên người dùng nhắc tới (compare/followup). reject_reason: điều bị chê.
 - Câu hỏi/lựa chọn viết tiếng Việt có dấu (tiếng Anh nếu người dùng viết tiếng Anh), xưng "mình"/"bạn".`
+
+/**
+ * CONSULT_UNWIND_S4B. The same instructions with ONE sentence replaced: "domains = [] only when truly outside the 5 areas" pushed a land-price
+ * question and a police-news question into "shopping" (localhost 28/10, turns 2 and 4). The replacement says WHEN an area applies (the user asks
+ * to choose / find / book something specific) and that a question asked to KNOW has none. Same schema, same enum: no data-contract change.
+ */
+const INTENT_DOMAIN_RULE_HEAD = 'Nhu cầu thuộc 5 mảng LUÔN thuộc Tappy. domains = [] chỉ khi thật sự ngoài 5 mảng.'
+const INTENT_DOMAIN_RULE_UNWIND = 'Mảng chỉ dùng khi người dùng nhờ CHỌN / TÌM / ĐẶT một quán, sản phẩm, chuyến đi, chỗ chơi hay dịch vụ cụ thể. Câu hỏi để BIẾT (kiến thức, tin tức, số liệu hay giá chung, giải thích) → domains = [], kể cả khi chủ đề gần một mảng hoặc câu có tên một nơi.'
+export const INTENT_SYSTEM_UNWIND = INTENT_SYSTEM.replace(INTENT_DOMAIN_RULE_HEAD, INTENT_DOMAIN_RULE_UNWIND)
 
 export function intentMessages(messages: Array<{ role: string; content: unknown }>, extra: { hasGps: boolean; storedNames?: string[] }): CoreMessage[] {
   const text = (c: unknown) => (typeof c === 'string' ? c : Array.isArray(c) ? c.map((p: { text?: string }) => p?.text ?? '').join(' ') : '')
@@ -329,19 +344,20 @@ type Extract = (opts: { role: 'intent'; systemShared: string; messages: CoreMess
 export async function runLunaIntent(
   extract: Extract,
   messages: Array<{ role: string; content: unknown }>,
-  ctx: { hasGps: boolean; previousWasAsk: boolean; deterministicDomain?: ConsultDomain | null; userTexts: readonly string[]; storedNames?: string[]; timeoutMs?: number },
+  ctx: { hasGps: boolean; previousWasAsk: boolean; deterministicDomain?: ConsultDomain | null; userTexts: readonly string[]; storedNames?: string[]; timeoutMs?: number; onInvalid?: (reason: 'schema') => void; knowledgeDomainless?: boolean },
 ): Promise<IntentRun | null> {
   const t0 = Date.now()
   let timer: ReturnType<typeof setTimeout> | undefined
   const timeout = new Promise<null>(res => { timer = setTimeout(() => res(null), ctx.timeoutMs ?? 12000) })
   try {
     const out = await Promise.race([
-      extract({ role: 'intent', systemShared: INTENT_SYSTEM, messages: intentMessages(messages, { hasGps: ctx.hasGps, storedNames: ctx.storedNames }), schema: LunaIntentSchema, schemaName: 'tappy_intent', maxTokens: 900 }),
+      extract({ role: 'intent', systemShared: ctx.knowledgeDomainless ? INTENT_SYSTEM_UNWIND : INTENT_SYSTEM, messages: intentMessages(messages, { hasGps: ctx.hasGps, storedNames: ctx.storedNames }), schema: LunaIntentSchema, schemaName: 'tappy_intent', maxTokens: 900 }),
       timeout,
     ])
     if (!out) return null
     const { intent, check } = checkIntent(out.object, ctx.userTexts, { hasGps: ctx.hasGps })
-    const decision = enforceConsultRules(intentToDecision(intent), { previousWasAsk: ctx.previousWasAsk, deterministicDomain: ctx.deterministicDomain })
+    // CONSULT_UNWIND_S4B: an empty `domains` the intent layer chose is kept - the rules' keyword domain no longer fills it in (enforceConsultRules).
+    const decision = enforceConsultRules(intentToDecision(intent), { previousWasAsk: ctx.previousWasAsk, deterministicDomain: ctx.knowledgeDomainless ? null : ctx.deterministicDomain })
     const cost = out.providerMetadata?.tappy?.cost as { usd?: number; provider?: string; effort?: string } | undefined
     return {
       decision,
@@ -354,7 +370,11 @@ export async function runLunaIntent(
       served: cost?.provider ? `${cost.provider}${cost.effort ? `:${cost.effort}` : ''}${(out.providerMetadata?.tappy as { fellBack?: boolean } | undefined)?.fellBack ? ':fallback' : ''}` : null,
     }
   } catch (e) {
-    console.warn(JSON.stringify({ type: 'tappyai_luna_intent_error', error: (e instanceof Error ? e.message : String(e)).slice(0, 200) }))
+    // P0-1 closeout (owner decision 16/10): an answer that arrived but does not parse / match the schema is INVALID (the route answers
+    // with its own fallback, nothing of it is used); a provider error is a FAILURE (the guarded pipeline continues).
+    const invalid = NoObjectGeneratedError.isInstance(e)
+    console.warn(JSON.stringify({ type: 'tappyai_luna_intent_error', kind: invalid ? 'invalid_output' : 'failure', error: (e instanceof Error ? e.message : String(e)).slice(0, 200) }))
+    if (invalid) { try { ctx.onInvalid?.('schema') } catch { /* reporting only */ } }
     return null
   } finally { clearTimeout(timer) }
 }
@@ -369,7 +389,7 @@ export async function runLunaIntent(
  *    (replay 30/09 SHOP-2 t3: "<product> mua ở đâu uy tín" read by the rules as a new request; Luna: a follow-up).
  * Luna's checked facts are merged over the router's slots either way (Luna wins where both read a slot).
  */
-export function mergeIntentWithRules(luna: ConsultDecision, routed: { decision: ConsultDecision; confidence: 'rule' | 'unsure' } | null, ownWordsKnown: Record<string, string> = {}): { decision: ConsultDecision; mode: 'luna' | 'merged' | 'luna-turn' } {
+export function mergeIntentWithRules(luna: ConsultDecision, routed: { decision: ConsultDecision; confidence: 'rule' | 'unsure' } | null, ownWordsKnown: Record<string, string> = {}, evidence?: Omit<AskEvidenceInput, 'lunaKnown'>): { decision: ConsultDecision; mode: 'luna' | 'merged' | 'luna-turn'; rule?: 'shown_card' | 'evidence_resolved' | 'evidence_partial' | 'evidence_open' } {
   // Slots: the router's reading of the user's OWN words (no copied names), then Luna's checked facts on top (replay 30/09
   // low TRAVEL-3 t5: Luna left out the route, the travel code lost the flight and searched hotels).
   luna = { ...luna, known: { ...ownWordsKnown, ...luna.known } }
@@ -380,12 +400,38 @@ export function mergeIntentWithRules(luna: ConsultDecision, routed: { decision: 
   }
   if (!routed || routed.confidence !== 'rule') return { decision: luna, mode: 'luna' }
   const r = routed.decision
+  // D9 (3A.9, final fix): the router's deterministic DOMAIN question stands. It is produced only for a state-only message — EVERY word of it is budget /
+  // priority vocabulary and there is no explicit domain signal — so any domain the intent read names for it ("Không quá 500k." → shopping) is, by
+  // construction, not grounded in the user's words. Before this the merge fell through to "Luna reads another turn type → LUNA": the turn became free chat
+  // (or a Luna-invented domain) and the answer model picked a tool — hotels, weather, a restaurant or product search — i.e. invented the domain
+  // (38 turns of the benchmark, B07's "Không quá 500k." included). A domain named by the USER (the rules' own reading) is never in this branch.
+  if (r.turn === 'ask' && r.domains.length === 0 && r.ask?.questions[0]?.id === 'domain') return { decision: r, mode: 'merged' }
   const same = luna.domains.length === 0 || (r.domains.length > 0 && luna.domains.length === r.domains.length && luna.domains.every(d => r.domains.includes(d)))
   if (!same) return { decision: luna, mode: 'luna' }
   const area = luna.area ?? r.area
   const explicit = (t: ConsultTurn) => t === 'plan' || t === 'more' || t === 'compare' || t === 'reject'
   const askOrPick = (t: ConsultTurn) => t === 'ask' || t === 'pick'
-  if (luna.turn === r.turn || explicit(r.turn) || (askOrPick(luna.turn) && askOrPick(r.turn))) {
+  // 02/10 (A4): the intent model flipped "lập kế hoạch đi Đà Nẵng 3N2Đ" between ask / pick / plan run to run; a request the rules
+  // say still needs its ask stays an ask (the plan follows the answer — planIntent.ts), so the turn type is code's, not luck's.
+  const planBeforeAsk = adviceEnabled() && luna.turn === 'plan' && r.turn === 'ask'
+  // CONSULT_THREAD_AWARE_ASK (Wave 2D · A; the route passes `evidence` only with the flag ON, so OFF never reaches this block). Two disagreements are settled on EVIDENCE, not on "the rules win":
+  //   1. the rules read the message against the product card the thread showed (r.evidence = 'shown_card': an exact product match) - that reading stands against a different turn type of the intent layer,
+  //      unless Luna read an explicit action (plan / more / compare / reject);
+  //   2. rules say ASK, Luna says PICK: each question on the rules' card is checked against what the thread holds (askReconcile.ts - the user's words, Luna's values that the words carry, the shown
+  //      product). All answered → Luna's pick; some answered → the rules' card keeps only what is still open; none → the rules' card as it was. Luna's word alone never answers a question.
+  if (evidence) {
+    const keep = (turn: ConsultDecision, rule: 'shown_card' | 'evidence_partial' | 'evidence_open') => ({ decision: { ...turn, known: luna.known, ...(area ? { area } : {}), assumptions: turn.assumptions.length ? turn.assumptions : luna.assumptions }, mode: 'merged' as const, rule })
+    if (r.evidence === 'shown_card' && luna.turn !== r.turn && !explicit(luna.turn)) return keep(r, 'shown_card')
+    if (r.turn === 'ask' && r.ask && luna.turn === 'pick' && r.evidence !== 'shown_card') {
+      const rec = reconcileAsk(r, { ...evidence, lunaKnown: luna.known })
+      if (rec.report.applicable) {
+        // Wave 2E: the intent layer's pick keeps ITS query; when it gave none, the query the evidence itself builds stands in (a pick with no query leaves the code nothing to search).
+        if (rec.decision.turn === 'pick') return { decision: { ...luna, domains: r.domains, known: luna.known, ...(area ? { area } : {}), ...(luna.query?.trim() || !rec.decision.query ? {} : { query: rec.decision.query }) }, mode: 'luna-turn', rule: 'evidence_resolved' }
+        return keep(rec.decision, rec.report.outcome === 'trimmed' ? 'evidence_partial' : 'evidence_open')
+      }
+    }
+  }
+  if (luna.turn === r.turn || explicit(r.turn) || planBeforeAsk || (askOrPick(luna.turn) && askOrPick(r.turn))) {
     return { decision: { ...r, known: luna.known, ...(area ? { area } : {}), assumptions: r.assumptions.length ? r.assumptions : luna.assumptions }, mode: 'merged' }
   }
   return {
@@ -395,10 +441,26 @@ export function mergeIntentWithRules(luna: ConsultDecision, routed: { decision: 
 }
 
 /**
+ * Wave 4 · C-PRE-2 (CONSULT_CHAT_DOMAIN_AGREEMENT, default OFF; the route calls this only with the flag ON). Pure, structural: no word of the message is read.
+ * A turn the merge settled as free CHAT keeps a domain only when BOTH readers named it - the intent layer (`luna`, before the merge) and the rules (`routed`). A domain only one of them found
+ * (measured B2 27/10: rules "unsure []" + intent "chat [food]", or rules "ask [food]" + intent "chat [shopping]") is not evidence of a venue request, and it was what sent knowledge questions down the
+ * lean venue path. Any other turn type is returned as it was; so is a chat turn whose domains both readers share.
+ */
+export function agreedChatDecision<T extends { decision: ConsultDecision }>(merged: T, luna: ConsultDecision, routed: { decision: ConsultDecision } | null): T {
+  const d = merged.decision
+  if (d.turn !== 'chat' || d.domains.length === 0) return merged
+  const agreed = d.domains.filter(x => luna.domains.includes(x) && (routed?.decision.domains ?? []).includes(x))
+  return agreed.length === d.domains.length ? merged : { ...merged, decision: { ...d, domains: agreed } }
+}
+
+/**
  * "**Mình chọn: X** vì/— <reason>" → "**Mình chọn: X**. <Reason>" — the first pick sentence only, before any marker.
  * Structure only: no word is added or removed, so no guard is bypassed (the reason is still judged on its own).
  */
 export function splitPickSentence(text: string): string {
+  // CONSULTATIVE_IN_AGENT (TAPPY_AGENT=2 only, default OFF): the agent's own wording stands — no "**Mình chọn: X**." mould. A decoration
+  // of the sentence, not a fact guard; every fact guard still judges the reason as written. Flag off: unchanged.
+  if (consultativeInAgentEnabled()) return text
   // Luna bolds its own count ("Mình còn **34 lựa chọn** nữa") — unbolded so the server's count line replaces it, not doubles it.
   text = text.replace(/([Cc]òn(?:\s+khoảng)?\s+)\*\*(\d+)(\s+lựa chọn)?\*\*/g, '$1$2$3')
   // "**Mình chọn: chưa thể …**" is not a pick (replay 30/09 TRAVEL-2 t2): plain text, so no later turn takes it for a name.

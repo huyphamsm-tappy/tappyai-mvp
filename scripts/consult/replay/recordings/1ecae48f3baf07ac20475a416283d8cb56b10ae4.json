@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "giá xăng mới nhất Việt Nam hôm nay 8/10/2026 giá xăng RON95 E5 RON92 kỳ điều hành",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T01:53:51.538Z",
+ "body": {
+  "searchParameters": {
+   "q": "giá xăng mới nhất Việt Nam hôm nay 8/10/2026 giá xăng RON95 E5 RON92 kỳ điều hành",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Giá xăng dầu hôm nay 8/10, tin giá xăng mới nhất",
+    "link": "https://vnexpress.net/chu-de/gia-xang-dau-3026",
+    "snippet": "Giá xăng hôm nay ; Xăng E10 RON 95-III, 27.180, + 100 ; Xăng E5 RON 92, 26.560, + 170 ; Dầu Diesel, 29.710, - 780 ...",
+    "position": 1
+   },
+   {
+    "title": "Giá xăng dầu hôm nay cập nhật mới nhất",
+    "link": "https://baomoi.com/tien-ich-gia-xang-dau.epi",
+    "snippet": "Giá Xăng dầu Ngày 08-10-2026 00:29 ; DO 0,05S Mức 2, 29,710 ; Xăng E10 RON 95 Mức 3, 27,180 ; Xăng E10 RON 95 Mức 5, 28,180 ; Xăng E5 RON 92 Mức 2, 26,560 ...",
+    "position": 2
+   },
+   {
+    "title": "Giá xăng dầu hôm nay 8/10: Chờ kỳ điều hành mới giữa ...",
+    "link": "https://thethao247.vn/63-gia-xang-dau-hom-nay-8-10-cho-ky-dieu-hanh-moi-giua-suc-ep-gia-dau-c123-d439235.html",
+    "snippet": "Giá xăng dầu hôm nay 8/10 trong nước vẫn theo bảng giá từ 15h ngày 1/10: xăng E10 RON 95-III ở mức 27.180 đồng/lít, E5 RON 92-II ở mức 26.560 ...",
+    "date": "3 giờ trước",
+    "position": 3
+   },
+   {
+    "title": "Giá xăng dầu hôm nay 8/10: Brent quanh 101 USD, chờ ...",
+    "link": "https://baolaocai.vn/gia-xang-dau-hom-nay-810-brent-quanh-101-usd-cho-gia-moi-luc-15h-post911365.html",
+    "snippet": "Giá xăng dầu trong nước sáng 8/10 ; Xăng E10 RON 95 Mức 3, 27.180, 27.720 ; Xăng E5 RON 92 Mức 2, 26.560, 27.090 ; DO 0,001S Mức 5, 31.110, 31.730.",
+    "date": "3 giờ trước",
+    "position": 4
+   },
+   {
+    "title": "Tin giá xăng dầu",
+    "link": "https://www.pvoil.com.vn/tin-gia-xang-dau",
+    "snippet": "Xăng E5 RON 92-II, 26.560 đ, +170. 3, Dầu DO 0,05S-II, 29.710 đ, -780. 4, Dầu DO ... Tổng công ty Dầu Việt Nam - CTCP. Mã số thuế: 0305795054. Tầng 14-18, Tòa ...",
+    "position": 5
+   },
+   {
+    "title": "Giá xăng dầu hôm nay các loại RON 95 ...",
+    "link": "https://bbw.vn/gia-xang-dau",
+    "snippet": "Giá xăng dầu hôm nay, kỳ điều hành mới nhất, Biến động giá xăng dầu các loại ... Dầu diesel giảm gần 1.000 đồng/lít, xăng E5 còn 21.330 đồng trong kỳ điều chỉnh ...",
+    "position": 6
+   },
+   {
+    "title": "Giá xăng dầu hôm nay bao nhiêu 1 lít mới nhất?",
+    "link": "https://topi.vn/gia-xang-dau-hom-nay.html",
+    "snippet": "1. Bảng giá xăng dầu Petrolimex mới nhất ; Xăng E10 RON 95-V · 28.180, 28.740 ; Xăng E10 RON 95-III, 27.180, 27.720 ; Xăng E5 RON 92-II, 26.560, 27.090 ; DO 0,001S-V ...",
+    "position": 7
+   },
+   {
+    "title": "Trang chủ :: Công ty TNHH MTV Petrolimex Sài Gòn",
+    "link": "https://saigon.petrolimex.com.vn/index.html",
+    "snippet": "Giá bán lẻ xăng dầu · Hotline Petrolimex Sài Gòn: 1900 2828 · Địa chỉ: 15 Lê Duẩn, Phường Sài Gòn, TP.HCM · Số điện thoại: +8428 3829 2081 · Email: saigon@ ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

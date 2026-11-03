@@ -1,6 +1,5 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import {
-  extractMemoryFromConversation,
   getMemory,
   updateMemory,
   clearMemory,
@@ -30,42 +29,12 @@ export async function GET(req: Request) {
   }
 }
 
-// POST /api/memory — extract + save memory from conversation
-export async function POST(req: Request) {
-  try {
-    const { user, supabase } = await getRequestUser(req)
-    if (!user) return NextResponse.json({ ok: false }, { status: 401 })
-
-    const { messages } = await req.json()
-    if (!messages?.length) return NextResponse.json({ ok: false })
-
-    const existing = await getMemory(user.id, supabase)
-    const extracted = await extractMemoryFromConversation(messages, existing)
-
-    if (Object.keys(extracted).length > 0) {
-      await updateMemory(user.id, {
-        location_base: extracted.location_base ?? existing?.location_base ?? null,
-        discovery_city: extracted.discovery_city ?? existing?.discovery_city ?? null,
-        companions: extracted.companions ?? existing?.companions ?? null,
-        timing: extracted.timing ?? existing?.timing ?? null,
-        personality: extracted.personality ?? existing?.personality ?? null,
-        preferences: {
-          ...(existing?.preferences || {}),
-          ...(extracted.preferences || {}),
-        },
-        budget: {
-          ...(existing?.budget || {}),
-          ...(extracted.budget || {}),
-        },
-        history: extracted.history ?? existing?.history ?? [],
-      }, supabase)
-    }
-
-    return NextResponse.json({ ok: true })
-  } catch (e) {
-    console.error('Memory POST error:', e)
-    return NextResponse.json({ ok: false })
-  }
+// POST /api/memory — DISABLED (SEC4, 2026-10-10). It ran an LLM extraction on caller-supplied messages with no limiter and no input cap, and nothing calls it:
+// the Web removed its duplicate call, Android and iOS use GET / PATCH / DELETE only (no client has ever called POST), and chat extracts server-side in /api/chat's
+// onFinish. It answers 404 BEFORE any authentication, memory read, model call or write. Restoring it needs the owner's limiter and payload numbers
+// (docs/phase8/MEMORY-POST-AUDIT.md). GET / PATCH / DELETE are unchanged.
+export async function POST() {
+  return new NextResponse(null, { status: 404 })
 }
 
 // PATCH /api/memory — correct memory: edit/remove individual remembered facts.

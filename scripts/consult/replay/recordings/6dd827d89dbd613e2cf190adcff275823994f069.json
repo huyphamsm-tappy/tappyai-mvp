@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook Pro M4 16GB RAM giá tại Việt Nam (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:41:17.819Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Pro M4 16GB RAM giá tại Việt Nam (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "MacBook Pro 14 M4 10CPU 10GPU 16GB 512GB",
+    "link": "https://cellphones.com.vn/macbook-pro-14-inch-m4-16gb-512gb.html",
+    "snippet": "MacBook Pro 14 M4 10CPU 10GPU 16GB 512GB | Chính hãng Apple Việt Nam ; HSSV, Giáo viên đến 500.000đ ; Smember Giảm thêm đến 386.000đ ; Trả góp 0% ; Thời lượng pin.",
+    "rating": 5,
+    "ratingCount": 8,
+    "position": 1
+   },
+   {
+    "title": "Macbook Pro M4 (Pro, Max) 2024 | Giá tốt, trả góp 0%",
+    "link": "https://cellphones.com.vn/laptop/mac/macbook-pro/macbook-pro-2024.html",
+    "snippet": "MacBook Pro M4 Series hiện được phân phối tại thị trường Việt Nam với mức giá dao động từ 39.99 triệu VNĐ cho phiên bản cơ bản với chip M4, RAM 16GB và SSD ...",
+    "position": 2
+   },
+   {
+    "title": "Macbook | Laptop Apple giá tốt, góp 0% 12T, giảm 5% HSSV",
+    "link": "https://cellphones.com.vn/laptop/mac.html",
+    "snippet": "Macbook chính hãng, trả góp 0% 12 tháng, phụ phí 0Đ, trả trước 0Đ, giảm thêm 500K HSSV. Mua ngay laptop Apple giá rẻ, trợ giá lên đời 2 triệu.",
+    "position": 3
+   },
+   {
+    "title": "Macbook M4 | Giá rẻ, trả góp 0%, giảm thêm 3% cho sinh ...",
+    "link": "https://cellphones.com.vn/laptop/mac/m4-series.html",
+    "snippet": "MacBook Pro 14 M4 10CPU 10GPU 16GB 512GB Nano Sạc 70W | Chính hãng Apple Việt Nam. 41.990.000đ. 39.990.000đ ; MacBook Pro 16 M4 Max 16CPU 40GPU 64GB 2TB | Chính ...",
+    "position": 4
+   },
+   {
+    "title": "MacBook Air M4 13 inch 2025 10CPU 8GPU 16GB 256GB",
+    "link": "https://cellphones.com.vn/apple-macbook-air-13-m4-10cpu-8gpu-16gb-256gb-2025.html",
+    "snippet": "MacBook Air M4 13 inch 2025 10CPU 8GPU 16GB 256GB | Chính hãng Apple Việt Nam ; Trả góp 0% ; Thời lượng pin. 5/5. (16 đánh giá) ; Hiệu năng. 5/5. (16 đánh giá).",
+    "rating": 4.9,
+    "ratingCount": 19,
+    "position": 5
+   },
+   {
+    "title": "MacBook Pro 14 M4 Pro 12CPU 16GPU 24GB 512GB",
+    "link": "https://cellphones.com.vn/macbook-pro-14-inch-m4-pro-24gb-512gb.html",
+    "snippet": "Mua ngayMacBook Pro 14 M4 Pro 12CPU 16GPU 24GB 512GB | Giá tốt, bảo hành chính hãng Apple Việt Nam, trả góp 0%, đổi mới 30 ngày.",
+    "rating": 4.8,
+    "ratingCount": 4,
+    "position": 6
+   },
+   {
+    "title": "Macbook Pro chính hãng - Giá rẻ, lên đời trợ giá 2 triệu",
+    "link": "https://cellphones.com.vn/laptop/mac/macbook-pro.html",
+    "snippet": "MacBook Pro 16 M4 Pro 14CPU 20GPU 24GB 1TB Sạc 140W | Chính hãng Apple Việt Nam. 73.990.000đ. 71.990.000đ ; MacBook Pro 14 M5 10CPU 10GPU 16GB 512GB Sạc 96W | ...",
+    "position": 7
+   },
+   {
+    "title": "MacBook Pro 14 M4 10CPU 10GPU 16GB 512GB Sạc 96W",
+    "link": "https://cellphones.com.vn/macbook-pro-14-inch-m4-10-cpu-10-gpu-16gb-512gb-96w-cu-dkh.html",
+    "snippet": "MacBook Pro 14 M4 10CPU 10GPU 16GB 512GB Sạc 96W - Chính hãng Đã kích hoạt ; HSSV, Giáo viên đến 700.000đ ; Smember Giảm thêm đến 385.000đ ; Đặc điểm nổi bật.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -10,6 +10,7 @@
 
 import type { RiskLevel } from '../types'
 import type { RequestLocale } from '@/lib/i18n/requestLocale'
+import type { ScenarioBlock, Verdict } from '../verdict'
 
 export type MessageInputType = 'message' | 'screenshot'
 
@@ -192,6 +193,10 @@ export interface MessageAnalysisResult {
   /** Screenshot input only: what was read off the image, so the user can see what was analysed. */
   extractedText?: string
   analyzedAt: number
+  /** Added 02/10 (additive; old clients ignore it): the three-state public verdict. `risk.score` is internal. */
+  verdict?: Verdict
+  /** Added 02/10: the matched official scenario (static, sourced), or null. */
+  scenario?: ScenarioBlock | null
 }
 
 export interface MessageAnalysisInput {

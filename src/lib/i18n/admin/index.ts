@@ -3,7 +3,10 @@
 // namespaced under `admin.*` (collision-free with every other namespace).
 // New admin modules/screens should add keys here (or a sibling file merged
 // into `vi`/`en` below) rather than hardcoding strings in components.
+import { deskVi, deskEn } from './moderationDesk'
+
 export const vi: Record<string, string> = {
+  ...deskVi,
   // Shell / navigation
   'admin.shell.brand': 'TappyAI',
   // Renders beside the brand as "TappyAI Controller" (sidebar + mobile header).
@@ -707,6 +710,7 @@ export const vi: Record<string, string> = {
 }
 
 export const en: Record<string, string> = {
+  ...deskEn,
   // Shell / navigation
   'admin.shell.brand': 'TappyAI',
   // Renders beside the brand as "TappyAI Controller" (sidebar + mobile header).

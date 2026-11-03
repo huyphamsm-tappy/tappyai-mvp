@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple MacBook Air M1 kiểm tra máy cũ Activation Lock serial battery cycle count official",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:45:25.387Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple MacBook Air M1 kiểm tra máy cũ Activation Lock serial battery cycle count official",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Xác định số chu kỳ sạc của pin trên máy tính xách tay Mac",
+    "link": "https://support.apple.com/vi-vn/102888",
+    "snippet": "Để đạt hiệu suất tối ưu, hãy thay pin khi bạn đạt đến số chu kỳ sạc tối đa. Tìm số chu kỳ sạc của pin. Để truy cập thông tin về pin trên máy tính xách tay Mac, ...",
+    "position": 1
+   },
+   {
+    "title": "Kiểm tra xuất xứ MacBook: 5 Bước Chính Xác Trong 10 Phút",
+    "link": "https://macone.vn/tin-tuc/kiem-tra-xuat-xu-macbook/?srsltid=AU7gw4X15jMp7eGxvOwxjZzIF9PlozgbOgS6GftHit9LuUJj4dAADgAB",
+    "snippet": "Cách kiểm tra battery cycle count? Trên macOS Ventura trở lên: Click logo Apple > System Settings; Chọn Battery > Battery Health; Xem “Cycle Count”. Trên macOS ...",
+    "position": 2
+   },
+   {
+    "title": "Tìm tên kiểu máy và số sê-ri của máy Mac",
+    "link": "https://support.apple.com/vi-vn/102767",
+    "snippet": "Tìm tên kiểu máy và số sê-ri của máy Mac. Sử dụng bất kỳ cách nào sau đây để tìm tên kiểu máy và số sê-ri của máy Mac. Giới thiệu về máy Mac này.",
+    "position": 3
+   },
+   {
+    "title": "11 Cách kiểm tra Pin Macbook cũ đã qua sử dụng",
+    "link": "https://laptoptrieuphat.com/11-cach-kiem-tra-pin-macbook-cu-da-qua-su-dung/?srsltid=AU7gw4W4SnZ5b3hghjwDv2lFIjwb_hHir8fNuqnr2N9jEuiHyhvpUg75",
+    "snippet": "Do đó, khi mua macbook cũ bạn nên kiểm tra chi tiết số lần sạc bằng cách nhấn và giữ nút About this Mac=>System Report =>Chọn mục Power. Trong ...",
+    "date": "9 thg 6, 2025",
+    "position": 4
+   },
+   {
+    "title": "Hướng dẫn cách kiểm tra Macbook cũ chuẩn nhất!",
+    "link": "https://hnmac.vn/blogs/tin-tuc/cach-test-macbook-cu?srsltid=AU7gw4X33gsYpnp3HPTA28c3uLMOCScdlBMncCRm7VycdCOeGymaxdIK",
+    "snippet": "Mở ứng dụng System Information trong Mac. kiem-tra-pin-sac-macbook. Tại phần Power, chú ý đến 2 thông số là Cycle Count và Battery Health. Số ...",
+    "date": "3 thg 8, 2018",
+    "position": 5
+   },
+   {
+    "title": "Cycle count là gì? Cách kiểm tra số lần sạc trên Macbook",
+    "link": "https://2tmobile.com/cycle-count-macbook-la-gi/?srsltid=AU7gw4ULCcNmatVwHDHG73QkZKw3ecY1qK_nIGyXt4apq0HtIUuRTZu8",
+    "snippet": "Cách kiểm tra độ chai pin số lần sạc pin Macbook ... Trong cửa sổ “System Information” (Thông tin hệ thống) hiển thị, tìm và chọn “Power” (Nguồn) ...",
+    "date": "11 thg 8, 2023",
+    "rating": 4.8,
+    "ratingCount": 89,
+    "position": 6
+   },
+   {
+    "title": "Cách kiểm tra MacBook Air cũ nhanh để mua máy bền đẹp",
+    "link": "https://1pro.vn/bai-viet/cach-kiem-tra-macbook-air-cu/?srsltid=AU7gw4WdSxottgwCh-RAxcWcVh0NWjUG1A3OIY_ew7O9pCRimZlM7DQ3",
+    "snippet": "Trước hết, bạn mở About This Mac để xem chip, RAM, dung lượng và macOS. Tiếp theo, bạn bấm System Report để đối chiếu nhanh: Memory để chắc RAM ...",
+    "date": "12 thg 12, 2025",
+    "position": 7
+   },
+   {
+    "title": "Kiểm tra bảo hành Macbook Air, Pro chi tiết và nhanh ...",
+    "link": "https://dienthoaivui.com.vn/cach-check-kiem-tra-bao-hanh-macbook-air-pro-chi-tiet",
+    "snippet": "Để check Serial trên Macbook sẽ khá đơn giản: Bước 1: Chọn biểu tượng Apple ở phía trên cùng của màn hình sau đó bạn sẽ nhìn thấy mục About This ...",
+    "date": "19 thg 7, 2023",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

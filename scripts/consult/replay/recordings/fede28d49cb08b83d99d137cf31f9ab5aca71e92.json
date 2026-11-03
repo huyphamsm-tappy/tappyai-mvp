@@ -1,0 +1,82 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:soundcore.com Liberty 4 NC IPX4 water resistance",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:14:53.698Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:soundcore.com Liberty 4 NC IPX4 water resistance",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Liberty 4 NC True-Wireless ANC Earbuds",
+    "link": "https://www.soundcore.com/products/liberty-4-nc-a3947z11",
+    "snippet": "soundcore Liberty 4 NC | True-Wireless Noise Cancelling Earbuds ; Water Resistance, IPX4 ; Bluetooth Version, 5.3 ; Active Noise Cancellation, Adaptive ANC 2.0.",
+    "rating": 4.8,
+    "ratingCount": 761,
+    "position": 1
+   },
+   {
+    "title": "Liberty 4 Pro Noise Cancelling Earbuds - soundcore US",
+    "link": "https://www.soundcore.com/products/a3954-liberty-4-pro-tws-earbuds",
+    "snippet": "Our IPX5 splash-proof earbuds shrug off water spills and rain, delivering clear, reliable audio to you at all times. Our IPX5 splash-proof earbuds shrug off ...",
+    "rating": 4.8,
+    "ratingCount": 392,
+    "position": 2
+   },
+   {
+    "title": "Are Waterproof Earbuds Really Waterproof?",
+    "link": "https://www.soundcore.com/au/blogs/earbuds/are-waterproof-earbuds-really-work",
+    "snippet": "The IPX4 rating means this product is splash- and sweat-resistant, making it well suited for daily workouts, commuting, and on-the-go listening.",
+    "date": "28 thg 12, 2025",
+    "position": 3
+   },
+   {
+    "title": "Best ANC Earbuds for Commuting: Liberty 4 NC vs. ...",
+    "link": "https://www.soundcore.com/blogs/earbuds/liberty-4-nc-vs-liberty-4-pro",
+    "snippet": "The Liberty 4 NC includes an IPX4 rating for sweat and light rain resistance, a practical addition for walkers or cyclists. It also supports ...",
+    "date": "6 thg 4, 2026",
+    "position": 4
+   },
+   {
+    "title": "Waterproof Headphones - soundcore US",
+    "link": "https://www.soundcore.com/collections/waterproof-headphones",
+    "snippet": "With a waterproof rating of IPX7, soundcore waterproof earbuds can be submerged in water up to 1 meter for up to 30 minutes without damage, ...",
+    "position": 5
+   },
+   {
+    "title": "Liberty 4 NC - All-New True-Wireless Noise Canceling ...",
+    "link": "https://www.soundcore.com/products/a3947z11-f0",
+    "snippet": "IPX4 water-resistance against spills and rain; 6 mics and an AI algorithm ... Liberty 4 NC Hands-Free Output: soundcore Liberty 4 NC Hands-Free. MIC. What ...",
+    "rating": 5,
+    "ratingCount": 2,
+    "position": 6
+   },
+   {
+    "title": "Liberty 4 NC - True-Wireless Noise Canceling Earbuds",
+    "link": "https://www.soundcore.com/eu/products/liberty-4-nc-a3947g11",
+    "snippet": "10/50 hours of battery for long-lasting quiet. Fast Pair and Bluetooth 5.3 multi-point connection. IPX4 water-resistance against spills and rain. 6 mics and an ...",
+    "rating": 4.7,
+    "ratingCount": 280,
+    "position": 7
+   },
+   {
+    "title": "Liberty 4 NC - All-New True-Wireless Noise Canceling ...",
+    "link": "https://www.soundcore.com/ca/products/a3947z11-f0",
+    "snippet": "10/50 hours of battery for long-lasting quiet. Fast Pair and Bluetooth 5.3 multi-point connection. IPX4 water-resistance against spills and rain. 6 mics and an ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

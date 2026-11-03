@@ -188,12 +188,15 @@ describe('taps go where the UI says they go', () => {
 
   it('the review detail author row carries the review\'s user id', () => {
     const src = code(`${IOS}/Features/Reviews/UI/ReviewDetailView.swift`)
-    expect(src).toMatch(/ReviewsDestination\.userProfile\(id: userId\)/)
+    // Author row = the avatar/name tap (`onCreatorTap`); it pushes the profile of the review's own user id, and only
+    // when the review has one (`if let uid = review.userId`), never a hard-coded or empty id.
+    expect(src).toMatch(/if let uid = review\.userId \{ router\.push\(ReviewsDestination\.userProfile\(id: uid\)\)/)
   })
 
   it('a post tile opens that post', () => {
     const src = code(`${IOS}/Features/Reviews/UI/MyPostsView.swift`)
-    expect(src).toMatch(/ReviewsDestination\.reviewDetail\(id: post\.id\)/)
+    // The tile is a `ForEach(rows) { row in Button { ... } }`; the tapped row's own id opens that post.
+    expect(src).toMatch(/ForEach\(rows\) \{ row in[\s\S]*?ReviewsDestination\.reviewDetail\(id: row\.id\)/)
   })
 })
 
@@ -209,7 +212,7 @@ describe('group dining is native, not a link out of the app', () => {
   })
 
   it('the profile row pushes the native destination', () => {
-    expect(code(`${IOS}/Features/Profile/UI/ProfileMainView.swift`))
+    expect(code(`${IOS}/Features/Profile/UI/AccountMenuView.swift`))
       .toMatch(/profile\.row\.groupDining[^\n]*dest: \.groupDining/)
   })
 

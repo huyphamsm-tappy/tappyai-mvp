@@ -87,6 +87,8 @@ export interface PlaceClaimEvidence {
    * every Entertainment turn measured so far.
    */
   ticketablePlaces?: Set<string>
+  /** A trusted now-showing listing was retrieved this turn (searchIntel/filmSearch): "đang chiếu" about a LISTED film is supported. Seats and showtimes still never are. */
+  nowShowingListed?: boolean
   /**
    * URLs the SYSTEM handed the model this turn as validated commerce links (Final local live UAT,
    * 14 Sep 2026): the Commerce Capability Platform's flight / coach / event / film handoffs
@@ -177,14 +179,30 @@ const ORDERING_SEARCH_FRAMING_RE = /(có thể tìm|co the tim|kiểm tra|kiem t
  *
  * A question is never a claim: "Bạn muốn đặt online hay ăn tại quán?" asks.
  */
-export function isOrderingClaim(sentence: string): boolean {
+/** POST-UAT (UAT-09 post-fix run): a COST CATEGORY ("phí giao hàng", "phí nền tảng đặt món") names an expense, not a venue that delivers. */
+const COST_CATEGORY_RE = /(?<!\p{L})(?:phí|phi|chi phí|chi phi|tiền|tien|fee|cost of)\s+(?:giao hàng|giao hang|ship|vận chuyển|van chuyen|nền tảng|nen tang|đặt món|dat mon|delivery)(?!\p{L})/giu
+const COST_LIST_RE = /(?<!\p{L})(?:chi phí|chi phi|khoản chi|khoan chi|các khoản|cac khoan|vốn|von|costs?|expenses?)(?!\p{L})[^.!?\n]{0,40}(?<!\p{L})(?:gồm|gom|bao gồm|bao gom|như|nhu|include|includes|including)(?!\p{L})/iu
+export function isOrderingClaim(raw: string): boolean {
+  const sentence = raw.replace(COST_CATEGORY_RE, ' ')
   if (!ORDERING_RE.test(sentence)) return false
   if (/\?\s*$/.test(sentence.trim())) return false
   if (ORDERING_POSSESSION_RE.test(sentence)) return true
+  // TG-VERIFIED-LOSS-PRE-01 (S5h3): a sentence that OPENS with an instruction to the USER about where to book ("Đặt qua app hoặc website, …")
+  // names a booking channel, not a service some venue is said to have. It stops being a claim only when nothing else in the sentence is
+  // ordering vocabulary ("Đặt qua app thì quán giao tận nhà" still is one); possession wording was checked above and still wins.
+  if (BOOKING_CHANNEL_ADVICE_RE.test(sentence) && !ORDERING_RE.test(sentence.replace(BOOKING_CHANNEL_ADVICE_RE, ' '))) return false
   if (CAPABILITY_NEGATION_RE.test(sentence)) return false
   if (USER_WISH_RE.test(sentence)) return false
+  // POST-UAT (UAT-09 final run): a sentence LISTING COSTS ("Chi phí vận hành tháng gồm thuê mặt bằng, lương, …, giao hàng, phí thanh
+  // toán") names expense categories; with no possession wording (checked above) it says nothing about what a venue offers.
+  if (COST_LIST_RE.test(sentence)) return false
+  // POST-UAT (UAT-25 post-fix run): advice to the USER ("nhớ xem giá trước khi gọi món") says nothing about what the venue offers.
+  if (ADVICE_BEFORE_ORDER_RE.test(sentence)) return false
   return !ORDERING_SEARCH_FRAMING_RE.test(sentence)
 }
+/** The sentence-opening "Đặt qua <generic channel>[ hoặc <generic channel>]" — app / website / hotline only; a named platform (GrabFood, ShopeeFood) is not generic and stays a claim. */
+const BOOKING_CHANNEL_ADVICE_RE = /^[\s*•>-]*(?:đặt|dat)\s+qua\s+(?:app|ứng dụng|ung dung|website|web|trang web|hotline)(?!\p{L})(?:\s*(?:hoặc|hoac|hay|và|va|or|,)\s*(?:app|ứng dụng|ung dung|website|web|trang web|hotline)(?!\p{L}))*/iu
+const ADVICE_BEFORE_ORDER_RE =/(?<!\p{L})(?:trước khi|truoc khi|before)\s+(?:gọi món|goi mon|đặt món|dat mon|đặt bàn|dat ban|đặt|dat|order(?:ing)?|book(?:ing)?)(?!\p{L})/iu
 
 /**
  * A turn that retrieved NOTHING cannot back a claim that a venue takes orders (UAT 2026-09-28: after
@@ -240,7 +258,7 @@ const CAPABILITY_NEGATION_RE = /(?:chưa|chua|không|khong|not|cannot|can't|does
 // the streaming boundary, and an entity-level evidence set.
 
 /** Anything that talks about tickets or showtimes. */
-const TICKET_RE = /(đặt vé|dat ve|mua vé|mua ve|bán vé|ban ve|còn vé|con ve|hết vé|het ve|có vé|co ve|vé xem phim|ve xem phim|suất chiếu|suat chieu|lịch chiếu|lich chieu|đang chiếu|dang chieu|suất \d|suat \d|book(?:ing)? tickets?|buy tickets?|tickets? available|sold out|showtimes?)/iu
+const TICKET_RE = /(đặt vé|dat ve|mua vé|mua ve|bán vé|ban ve|còn vé|con ve|hết vé|het ve|có vé|co ve|vé xem phim|ve xem phim|suất chiếu|suat chieu|lịch chiếu|lich chieu|đang chiếu|dang chieu|(?<!(?:lãi|lai|công|cong|năng|nang|hiệu|hieu|áp|ap|tần|tan|xác|xac|sinh|biên|bien) )suất \d|(?<!(?:lai|cong|nang|hieu|ap|tan|xac|sinh|bien) )suat \d|book(?:ing)? tickets?|buy tickets?|tickets? available|sold out|showtimes?)/iu
 
 /**
  * A claim about CURRENT AVAILABILITY or a SPECIFIC SHOWTIME.
@@ -263,7 +281,14 @@ const TICKET_SALE_POSSESSION_RE = /(có bán vé|co ban ve|bán vé online|ban v
  * (`https://cinestar.com.vn/`) and a search page are NOT that — see
  * `isDirectTicketUrl` — which is the distinction the whole rule exists to make.
  */
-export function isTicketSaleClaim(sentence: string): boolean {
+/**
+ * POST-UAT (UAT-25 post-fix run): "điểm tham quan có vé" / "hoạt động có vé" is an ATTRIBUTE — a ticketed (paid-admission) kind of
+ * place or activity — not a claim that a venue has tickets on sale. "…chọn điểm tham quan có vé, hãy bớt một lượt cà phê" and "không
+ * cần thêm hoạt động có vé" were cut as ticket-sale claims.
+ */
+const TICKETED_ATTRIBUTE_RE = /(?<!\p{L})(?:điểm tham quan|diem tham quan|hoạt động|hoat dong|địa điểm|dia diem|điểm|diem|nơi|noi|khu|trò chơi|tro choi|attractions?|activit(?:y|ies))\s+(?:có vé|co ve|thu phí|thu phi|ticketed)(?!\p{L})/giu
+export function isTicketSaleClaim(raw: string): boolean {
+  const sentence = raw.replace(TICKETED_ATTRIBUTE_RE, ' ')
   if (!TICKET_RE.test(sentence)) return false
   if (/\?\s*$/.test(sentence.trim())) return false
   if (TICKET_AVAILABILITY_RE.test(sentence)) return false // handled by the stricter rule
@@ -303,6 +328,12 @@ const TICKET_SALE_VOCAB_RE = /(đặt vé|dat ve|mua vé|mua ve|bán vé|ban ve|
  * showtime claim even without "suất"/"chiếu lúc" — nothing this pipeline fetches can back it.
  */
 const SHOWTIME_STATED_RE = /(?:lịch chiếu|lich chieu|suất chiếu|suat chieu|showtimes?)[^.!?]*(?:\d{1,2}:[0-5]\d|\d{1,2}\s*h(?:[0-5]\d)?(?![\p{L}\p{N}]))/iu
+
+/** The only availability wording is "đang chiếu" / "now showing" — no seat, no clock time. */
+function onlyNowShowing(sentence: string): boolean {
+  const rest = sentence.replace(/(đang chiếu|dang chieu|now showing)/giu, ' ')
+  return !TICKET_AVAILABILITY_RE.test(rest) && !SHOWTIME_STATED_RE.test(rest)
+}
 
 /** Is this a claim about seats being available, or about a specific showtime? */
 export function isTicketAvailabilityClaim(sentence: string): boolean {
@@ -381,7 +412,9 @@ function statedScores(sentence: string, re: RegExp): number[] {
  * `á` is not an ASCII word character, so the boundary does not exist and the whole
  * pattern silently fails. Same trap that has now bitten three times in this repo.
  */
-const REVIEW_COUNT_RE = /\d[\d.,]*\s*(?:\+\s*)?(?:đánh giá|danh gia|nhận xét|nhan xet|lượt đánh giá|luot danh gia|reviews?|ratings?)(?!\p{L})/iu
+// A count does not begin inside another number or a clock time: "07:00–22:00, đánh giá 4,3/5" is an hour, a comma and the word, not "00, đánh giá" = 0 reviews
+// (measured 29/10 on localhost: two venue bullets whose every figure the place tool had returned were deleted whole by this).
+const REVIEW_COUNT_RE = /(?<![\d:.,])\d[\d.,]*\s*(?:\+\s*)?(?:đánh giá|danh gia|nhận xét|nhan xet|lượt đánh giá|luot danh gia|reviews?|ratings?)(?!\p{L})/iu
 
 /**
  * A Vietnamese phone number stated in prose.
@@ -588,6 +621,118 @@ function stripOffendingClauses(sentence: string, offenders: readonly RegExp[]): 
 }
 
 /**
+ * PLACE_CLAIM_KEEP_VERIFIED_PRICE (default OFF, read at call time). A sentence whose ONLY unsupported claim is one quality or
+ * popularity phrase keeps its VERIFIED price: the claim clause is cut, the price stays. A verified price is a structured price of a
+ * row whose name the same sentence names (see everyAmountAttributed). Any other shape returns null and the caller takes the
+ * established path (clause trim, else the whole sentence goes). A sentence with any unattributed amount therefore never keeps one.
+ */
+const KEEP_PRICE_DELIM_RE = /\s*(?:[,;:]|\s(?:nên|và|nhưng|vì|nen|va|nhung|vi)\s)\s*/iu
+/** Money-looking tokens: a digit run not glued to a letter, a digit or a hyphen (so "WH-1000XM5" is not a price). */
+const MONEY_TOKEN_RE = /(?<![\p{L}\d-])\d[\d.,]*/gu
+
+/** A structured price of a retrieved row, and the row's name (the part before " - " in its title). */
+export interface VerifiedPrice { value: number; name: string }
+
+function placeClaimKeepVerifiedPriceEnabled(env: NodeJS.ProcessEnv = process.env): boolean {
+  const v = env.PLACE_CLAIM_KEEP_VERIFIED_PRICE?.trim()
+  return v === '1' || v === 'true'
+}
+
+/**
+ * The value of a money-looking token. Only a grouped amount ("8.000.000", "8,000,000") or a plain run of 4+ digits ("3000000")
+ * has a value this guard can verify; anything else ("3 triệu", "3tr", "4.9", "2") is NaN, which never matches a verified price.
+ */
+function tokenValue(raw: string): number {
+  const t = raw.replace(/[.,]+$/, '')
+  if (/^\d{1,3}(?:[.,]\d{3})+$/.test(t)) return parseInt(t.replace(/[.,]/g, ''), 10)
+  if (/^\d{4,}$/.test(t)) return parseInt(t, 10)
+  return NaN
+}
+
+function moneyTokensIn(text: string): number[] {
+  return [...text.matchAll(MONEY_TOKEN_RE)].map(m => tokenValue(m[0]))
+}
+
+/** Diacritics removed, case kept (the variant check reads capitalisation). */
+const foldKeepCase = (s: string): string => s.normalize('NFD').replace(/\p{M}/gu, '').replace(/đ/g, 'd').replace(/Đ/g, 'D')
+
+/** Words that, right after a row name, continue the product name ("Sony WH-1000XM5 Pro" is not "Sony WH-1000XM5"). */
+const VARIANT_WORDS = new Set([
+  'pro', 'max', 'ultra', 'plus', 'mini', 'lite', 'se', 'air', 'ii', 'iii', 'iv', 'v2', 'gen',
+  // Vietnamese and condition words that introduce a different edition or condition of the product.
+  'ban', 'phien', 'doi', 'the', 'he', 'cu', 'xach', 'refurbished', 'used', 'new', 'like',
+])
+
+/**
+ * Does the token that follows a row name continue the product name? After wrappers and punctuation are trimmed from both ends,
+ * a capitalised token, a token with a digit, or a token with a part in VARIANT_WORDS does ("[Pro]", "pro/max", "bản", "cũ").
+ * This is a fail-closed HEURISTIC, not proof of identity: it cannot tell a lowercase variant outside the list
+ * ("Sony WH-1000XM5 edition") from prose, and it only looks to the right of the name (the left side is a word boundary only:
+ * "Ốp lưng cho Sony WH-1000XM5" is not detected). A digit anywhere in the next token also rejects, which is over-cautious.
+ */
+function continuesAsVariant(token: string): boolean {
+  const t = token.replace(/^[^\p{L}\d]+/u, '').replace(/[^\p{L}\d]+$/u, '')
+  if (t === '') return false
+  return /^\p{Lu}/u.test(t) || /\d/.test(t) || t.split(/[^\p{L}\d]+/u).some(part => VARIANT_WORDS.has(part.toLowerCase()))
+}
+
+/**
+ * The row name occurs as whole words in the sentence, and at EVERY occurrence the next token does not continue the name as a
+ * variant (see continuesAsVariant). Diacritic-insensitive and case-insensitive for the name itself.
+ */
+function rowNameIn(text: string, name: string): boolean {
+  const folded = foldKeepCase(text)
+  const n = foldKeepCase(name).trim()
+  if (n.length < 4) return false
+  const esc = n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  const hits = [...folded.matchAll(new RegExp('(?<![\\p{L}\\d])' + esc + '(?![\\p{L}\\d+\\-/_*`\\[\\]])', 'giu'))]
+  if (hits.length === 0) return false
+  return hits.every(h => {
+    const next = /^\s+(\S+)/u.exec(folded.slice((h.index ?? 0) + h[0].length))
+    return !next || !continuesAsVariant(next[1])
+  })
+}
+
+/**
+ * Every money token in the sentence must be a verified price of a row whose name the SAME sentence names. A price of another
+ * row, an unverifiable token, or a price no row states, is not kept: the verified number must belong to the place or product
+ * the sentence is about. Name matching is a heuristic (rowNameIn), so this narrows misattribution; it does not prove identity.
+ */
+function everyAmountAttributed(text: string, verified: readonly VerifiedPrice[]): boolean {
+  const values = moneyTokensIn(text)
+  if (values.length === 0) return false
+  return values.every(v => !Number.isNaN(v) && verified.some(p => p.value === v && rowNameIn(text, p.name)))
+}
+
+function keepVerifiedPriceCut(sentence: string, violated: readonly RegExp[], verified: readonly VerifiedPrice[] | undefined): { text: string; headRemoved: boolean } | null {
+  if (!placeClaimKeepVerifiedPriceEnabled() || !verified || verified.length === 0 || violated.length !== 1) return null
+  const re = violated[0]
+  if (re !== QUALITY_RE && re !== POPULARITY_RE) return null
+  // A bold span is a venue or product name, not prose: a sentence with bold markup takes the established path.
+  if (sentence.includes('**')) return null
+  if (!everyAmountAttributed(sentence, verified)) return null
+  const found = [...sentence.matchAll(new RegExp(re.source, 'giu'))]
+  if (found.length !== 1) return null
+  const match = found[0].index ?? 0
+  // "được" / "duoc" in front of the matched phrase belongs to the claim too ("duoc danh gia cao" matches from "danh").
+  const lead = /(?:được|duoc)\s+$/iu.exec(sentence.slice(0, match))
+  const start = lead ? match - lead[0].length : match
+  const end = match + found[0][0].length
+  const delim = KEEP_PRICE_DELIM_RE.exec(sentence.slice(end))
+  if (!delim) return null
+  const cutEnd = end + delim.index + delim[0].length
+  const firstAmountAt = sentence.search(/(?<![\p{L}\d-])\d/u)
+  // The clause must end before the first amount: a claim that runs into the price has no clean edge to cut.
+  if (firstAmountAt < cutEnd) return null
+  const removed = sentence.slice(start, cutEnd)
+  if (/[\d.!?]/.test(removed)) return null
+  const out = (sentence.slice(0, start) + sentence.slice(cutEnd)).replace(/[ \t]{2,}/g, ' ').trim()
+  if (!/\p{L}/u.test(out) || re.test(out)) return null
+  if (!everyAmountAttributed(out, verified) || moneyTokensIn(out).length !== moneyTokensIn(sentence).length) return null
+  return { text: out, headRemoved: false }
+}
+
+/**
  * Is what survived a trim a sentence in its own right, or the tail of the claim?
  *
  * 🚨 MEASURED ON THE REVIEW UAT 2026-09-09. The model wrote
@@ -605,6 +750,24 @@ function stripOffendingClauses(sentence: string, offenders: readonly RegExp[]): 
  */
 function trimStandsAlone(headRemoved: boolean, survivorNames: string | null): boolean {
   return !headRemoved || survivorNames !== null
+}
+
+/**
+ * DIAGNOSTIC ONLY (Round 37), off unless PLACE_CLAIM_DIAG=1: which claim rule really matched a sentence, what the sentence was before the guard touched it, what is left, and why it
+ * was trimmed or removed. A trim is counted in neither `sentences_removed` nor `reasons`, so the standard guard line cannot say which rule cut a clause. This writes ONE console line
+ * and decides nothing: the guard's output is the same with the variable on or off. The line carries the model's own sentence, so it belongs in the audit environment only.
+ */
+function placeClaimDiagOn(): boolean {
+  return process.env.PLACE_CLAIM_DIAG === '1'
+}
+function placeClaimDiag(sentence: string, offenders: readonly RegExp[], decision: 'clause_trim' | 'sentence_removed', why: string, after: string | null): void {
+  const names: Array<[RegExp, string]> = [[QUALITY_RE, 'QUALITY_RE'], [POPULARITY_RE, 'POPULARITY_RE'], [ORDERING_RE, 'ORDERING_RE'], [TICKET_RE, 'TICKET_RE'], [TICKET_AVAILABILITY_RE, 'TICKET_AVAILABILITY_RE']]
+  const bare = sentence.replace(/\*\*[^*\n]+\*\*/g, ' ')
+  console.log(JSON.stringify({
+    type: 'tappyai_guard', guard: 'place_claim_diag', decision, why,
+    offenders: offenders.map(re => ({ regex: names.find(([r]) => r === re)?.[1] ?? 'OTHER', matched: re.exec(bare)?.[0] ?? null })),
+    before: sentence, after,
+  }))
 }
 
 /**
@@ -640,6 +803,8 @@ export interface PlaceClaimOptions {
   attributionV2?: boolean
   /** The engine's Pick, for the `pick_attributable` telemetry signal only. */
   pickName?: string | null
+  /** PLACE_CLAIM_KEEP_VERIFIED_PRICE only: the structured prices of this turn's product rows (VND) with the row name. Ignored unless the flag is on. */
+  verifiedPrices?: readonly VerifiedPrice[]
 }
 
 /** Per-turn counters for the `tappyai_guard` telemetry event. Never carries user text. */
@@ -673,7 +838,7 @@ export function guardPlaceClaimsInText(
   }
   if (!text) return { text, redacted: 0, stats }
   const { ratings, distancesKm, texts, entityTexts, placeNames, orderablePlaces } = evidence
-  const { ratingsByEntity, reviewCountsByEntity, phonesByEntity, ticketablePlaces, systemLinkUrls } = evidence
+  const { ratingsByEntity, reviewCountsByEntity, phonesByEntity, ticketablePlaces, systemLinkUrls, nowShowingListed } = evidence
   const carriesSystemLink = (sentence: string): boolean => !!systemLinkUrls && systemLinkUrls.size > 0 && [...systemLinkUrls].some(u => sentence.includes(u))
   const retrievedNumbers = numbersIn(texts)
   const tokens = placeTokensFor(placeNames ?? [])
@@ -856,7 +1021,7 @@ export function guardPlaceClaimsInText(
      * "đang chiếu suất 21h" cannot be supported however good the venue's URL is.
      * A ticket page would let the user CHECK; it does not tell us the answer.
      */
-    if (isTicketAvailabilityClaim(s)) violated.push(TICKET_AVAILABILITY_RE)
+    if (isTicketAvailabilityClaim(s) && !(nowShowingListed && onlyNowShowing(s))) violated.push(TICKET_AVAILABILITY_RE)
 
     /**
      * 🔑 KEEP THE INTRODUCTION, DROP THE CLAIM.
@@ -868,12 +1033,16 @@ export function guardPlaceClaimsInText(
      */
     if (violated.length > 0) {
       const namedBefore = placeNamedIn(s)
-      const trim = stripOffendingClauses(s, violated)
+      // PLACE_CLAIM_KEEP_VERIFIED_PRICE: the verified-price cut is used only when it keeps the place name; otherwise the established path runs.
+      const kept = keepVerifiedPriceCut(s, violated, opts.verifiedPrices)
+      const keptOk = kept !== null && (namedBefore === null || placeNamedIn(kept.text) === namedBefore)
+      const trim = keptOk ? kept : stripOffendingClauses(s, violated)
       const survivorNames = trim ? placeNamedIn(trim.text) : null
       if (trim !== null
         && (namedBefore === null || survivorNames === namedBefore)
         && trimStandsAlone(trim.headRemoved, survivorNames)) {
         trimmed.set(i, trim.text)
+        if (placeClaimDiagOn()) placeClaimDiag(s, violated, 'clause_trim', trim.headRemoved ? 'head_clause_removed_survivor_names_a_place' : 'offending_clauses_removed', trim.text)
         // 🚨 A TRIM IS NOT A VERDICT ON THE REST OF THE SENTENCE. Returning here let
         // "Quán này 3.1 sao, hơn 99.999 đánh giá, giao hàng tận nơi." keep its invented
         // rating and count once the delivery clause was cut (measured in the G1b
@@ -881,6 +1050,7 @@ export function guardPlaceClaimsInText(
         // doomed sentence wins over its trim in `render`.
         prose = proseOnly(trim.text)
       } else {
+        if (placeClaimDiagOn()) placeClaimDiag(s, violated, 'sentence_removed', trim === null ? 'no_clause_trim_possible' : (namedBefore !== null && survivorNames !== namedBefore) ? 'trim_would_lose_the_place_name' : 'trim_head_removed_survivor_names_no_place', null)
         doomed.add(i)
         reasonOf.set(i, reasonForRegex(violated[0]))
         if (namedBefore === null) stats.unattributable_claims++

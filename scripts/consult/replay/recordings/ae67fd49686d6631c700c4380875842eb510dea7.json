@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "hồ sơ cấp hộ chiếu online người đủ 14 tuổi ảnh chân dung căn cước VNeID Bộ Công an",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:47:00.445Z",
+ "body": {
+  "searchParameters": {
+   "q": "hồ sơ cấp hộ chiếu online người đủ 14 tuổi ảnh chân dung căn cước VNeID Bộ Công an",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp tỉnh)",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=29497",
+    "snippet": "Tờ khai đề nghị cấp hộ chiếu phổ thông ở trong nước (mẫu TK01 dành cho người từ 14 tuổi trở lên; mẫu TK01a dành cho người chưa đủ 14 tuổi) ban hành kèm theo ...",
+    "position": 1
+   },
+   {
+    "title": "Hướng dẫn người dân đăng ký làm hộ chiếu trên ứng ...",
+    "link": "https://congan.hungyen.gov.vn/huong-dan-nguoi-dan-dang-ky-lam-ho-chieu-tren-ung-dung-vneid-c231845.html",
+    "snippet": "1. Điều kiện để đăng ký hộ chiếu qua VNeID. - Công dân Việt Nam có tài khoản định danh điện tử mức độ 2 (đã xác thực tại Công an cấp xã, phòng). · 2. Các bước ...",
+    "position": 2
+   },
+   {
+    "title": "HƯỚNG DẪN LÀM HỘ CHIẾU CHO TRẺ EM DƯỚI 14 TUỔI ...",
+    "link": "https://congan.caobang.gov.vn/thoi-su-chinh-tri/huong-dan-lam-ho-chieu-cho-tre-em-duoi-14-tuoi-tren-cong-dich-vu-cong-bo-cong-an-1032207",
+    "snippet": "1️⃣ Hồ sơ cần chuẩn bị: Các thông tin về Họ và tên, Ngày tháng năm sinh, Nơi đăng ký thường trú, Năm sinh bố, mẹ hoặc người giám hộ... 01 File ...",
+    "date": "13 thg 11, 2025",
+    "position": 3
+   },
+   {
+    "title": "Cấp thẻ căn cước cho người dưới 14 tuổi (thực hiện tại cấp ...",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=57072",
+    "snippet": "... hồ sơ căn cước để công dân kiểm tra và ký xác nhận. Tên giấy tờ, Mẫu đơn, tờ khai, Số lượng. Phiếu thu nhận thông tin căn cước (Mẫu CC01 ban hành kèm theo ...",
+    "position": 4
+   },
+   {
+    "title": "Thủ tục làm chiếu cho trẻ em dưới 14 tuổi theo quy định mới",
+    "link": "https://www.xuatnhapcanh.com.vn/c11t259-thu-tuc-lam-chieu-cho-tre-em-duoi-14-tuoi-theo-quy-dinh-moi.htm",
+    "snippet": "Bản gốc Thẻ căn cước công dân hoặc hộ chiếu của bố mệ hoặc người giám hộ đi nộp hồ sơ xin cấp hộ chiếu cho trẻ em dưới 14 tuổi. Khi nộp hồ sơ ...",
+    "date": "13 thg 12, 2023",
+    "position": 5
+   },
+   {
+    "title": "Thủ tục làm hộ chiếu trực tuyến cho trẻ em dưới 14 tuổi ...",
+    "link": "https://hcc.tayninh.gov.vn/thong-tin-tuyen-truyen-ho-tro/thu-tuc-lam-ho-chieu-truc-tuyen-cho-tre-em-duoi-14-tuoi-tren-cong-dich-vu-cong-va-nhung-dieu-can-1022863",
+    "snippet": "Đăng nhập Cổng dịch vụ công quốc gia hoặc Cổng dịch vụ công Bộ Công an bằng tài khoản VNeID mức độ 2 của bố, mẹ hoặc người giám hộ; chọn dịch vụ ...",
+    "date": "2 thg 10, 2025",
+    "position": 6
+   },
+   {
+    "title": "Hướng dẫn thủ tục cấp hộ chiếu trên VNeID",
+    "link": "https://www.youtube.com/watch?v=U9T6ZCOixB8",
+    "snippet": "Hướng dẫn thủ tục cấp hộ chiếu phổ thông trong nước thực hiện trên ứng dụng VNeID mới nhất. Trong video này, bạn sẽ được hướng dẫn từng bước ...",
+    "position": 7
+   },
+   {
+    "title": "Tờ khai điện tử đề nghị cấp hộ chiếu",
+    "link": "https://hochieu.xuatnhapcanh.gov.vn/faces/faq.jspx",
+    "snippet": "- Chứng minh nhân dân hoặc Thẻ căn cước công dân hoặc hộ chiếu còn giá trị sử dụng (nếu có, xuất trình khi nộp hồ sơ để cơ quan Quản lý xuất nhập cảnh kiểm tra, ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

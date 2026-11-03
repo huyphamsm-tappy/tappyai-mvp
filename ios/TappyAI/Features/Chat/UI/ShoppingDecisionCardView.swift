@@ -67,7 +67,7 @@ struct ShoppingDecisionCardView: View {
     private func recommendedCard(_ entity: ShoppingEntityView) -> some View {
         VStack(alignment: .leading, spacing: Spacing.xs) {
             HStack(alignment: .top, spacing: Spacing.sm) {
-                if let image = entity.image, let url = URL(string: image) {
+                if let image = entity.image, let url = safeWebURL(image) {
                     AsyncImage(url: url) { phase in
                         if case .success(let img) = phase {
                             img.resizable().aspectRatio(contentMode: .fill)
@@ -98,6 +98,8 @@ struct ShoppingDecisionCardView: View {
                     Text(priceText(entity))
                         .font(TappyFont.body)
                         .foregroundStyle(TappyColor.textSecondary)
+
+                    ratingAndSpecs(entity, recommendedSeller: view.recommendation?.seller)
 
                     ForEach(Array(reasons.enumerated()), id: \.offset) { _, reason in
                         Text("· \(reason.evidence)")
@@ -155,7 +157,14 @@ struct ShoppingDecisionCardView: View {
             Text(priceText(entity))
                 .font(TappyFont.caption)
                 .foregroundStyle(TappyColor.textSecondary)
-            CommerceHandoffRow(handoffs: entity.commerceHandoffs, emphasised: false)
+            ratingAndSpecs(entity, recommendedSeller: nil)
+            let handoffs = entity.commerceHandoffs
+            CommerceHandoffRow(handoffs: handoffs, emphasised: false)
+            // Web ShoppingDecision.tsx: while no verified merchant handoff exists the row keeps its featured offer's own link,
+            // so an alternative is never left without a way to open it.
+            if handoffs.detail.isEmpty, let offer = featuredOffer(entity) {
+                offerRow(offer)
+            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, Spacing.sm)
@@ -164,6 +173,37 @@ struct ShoppingDecisionCardView: View {
             RoundedRectangle(cornerRadius: Radius.md)
                 .stroke(TappyColor.border, lineWidth: 1)
         )
+    }
+
+    // MARK: - Rating and specs
+
+    /// The featured listing's own rating and the stated specs / condition as chips (web `Rating` and `Specs`): what the server sent,
+    /// labelled in the reader's language, nothing derived. Nothing stated shows nothing.
+    @ViewBuilder
+    private func ratingAndSpecs(_ entity: ShoppingEntityView, recommendedSeller: String?) -> some View {
+        let offer = featuredOffer(entity, seller: recommendedSeller)
+        let rating = ratingFacts(rating: offer?.rating, count: offer?.ratingCount, lang: LocalizationManager.currentLanguageCode)
+        let chips = specChips(entity, spec: ShoppingFactsLabels.spec, condition: ShoppingFactsLabels.condition)
+        if let rating {
+            Text(ShoppingFactsLabels.ratingLine(rating))
+                .font(TappyFont.caption)
+                .foregroundStyle(TappyColor.textSecondary)
+                .padding(.top, Spacing.xxs)
+        }
+        if !chips.isEmpty {
+            ChatFlowLayout(spacing: Spacing.xs) {
+                ForEach(Array(chips.enumerated()), id: \.offset) { _, chip in
+                    Text(chip)
+                        .font(TappyFont.caption)
+                        .foregroundStyle(TappyColor.textSecondary)
+                        .padding(.horizontal, Spacing.sm)
+                        .padding(.vertical, Spacing.xxs)
+                        .background(TappyColor.textSecondary.opacity(0.08))
+                        .clipShape(Capsule())
+                }
+            }
+            .padding(.top, Spacing.xs)
+        }
     }
 
     // MARK: - Offers
@@ -184,7 +224,7 @@ struct ShoppingDecisionCardView: View {
                 .font(TappyFont.caption)
                 .fontWeight(.medium)
                 .foregroundStyle(TappyColor.textPrimary)
-            if let urlString = offer.url, let url = URL(string: urlString) {
+            if let urlString = offer.url, let url = safeWebURL(urlString) {
                 Link(String(localized: "shoppingDecision.view"), destination: url)
                     .font(TappyFont.caption)
                     .foregroundStyle(TappyColor.primary)

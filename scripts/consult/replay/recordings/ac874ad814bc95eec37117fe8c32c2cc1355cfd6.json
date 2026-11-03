@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Là Việt Coffee\" OR \"Cooku’s nest café\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:13:18.454Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Là Việt Coffee\" OR \"Cooku’s nest café\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Không Gian Trải Nghiệm Cà Phê Tại Là Việt Coffee",
+    "link": "https://www.tiktok.com/@lavietcoffee/video/7587653513560263957",
+    "snippet": "KHÔNG GIAN TRẢI NGHIỆM CÀ PHÊ & MORE by Là Việt Coffee – ĐIỂM HẸN THÚ VỊ CHO CÁC SỰ KIỆN CUỐI NĂM NGAY TẠI TRUNG TÂM SÀI GÒN Vui lòng ...",
+    "position": 1
+   },
+   {
+    "title": "Là Việt Coffee (@lavietcoffee)",
+    "link": "https://www.tiktok.com/@lavietcoffee",
+    "snippet": "Là Việt Coffee (@lavietcoffee) trên TikTok |3217 Lượt thích.1246 Follower.IG: lavietcoffee.Xem video phổ biến của Là Việt Coffee: \"Đến du lịch tại Sài .",
+    "position": 2
+   },
+   {
+    "title": "Những ngày bận rộn cần 1 ly cà phê nhanh ☕️✨💕 @Là ...",
+    "link": "https://www.tiktok.com/@iampom_/video/7682770599961300242",
+    "snippet": "Video TikTok từ iampom (@iampom_): \"Những ngày bận rộn cần 1 ly cà phê nhanh ☕️✨ @Là Việt Coffee #coffee #laviet #minivlog ...",
+    "position": 3
+   },
+   {
+    "title": "Just pour, sip and let the moment take over. ☕🌊 With our ...",
+    "link": "https://www.tiktok.com/@lavietcoffee/video/7527957733757160722",
+    "snippet": "Video TikTok từ Là Việt Coffee (@lavietcoffee): \"Just pour, sip and let the moment take over. ☕ With our drip bag coffee, your perfect ...",
+    "position": 4
+   },
+   {
+    "title": "Trải nghiệm cà phê tại Là Việt Coffee Nguyễn Công Trứ",
+    "link": "https://www.tiktok.com/@lavietcoffee/video/7367974848561155348",
+    "snippet": "Trải nghiệm cà phê tại Là Việt Coffee Nguyễn Công Trứ. Khám phá không gian và hương vị tuyệt vời tại Là Việt Coffee. Đừng bỏ lỡ trải nghiệm ...",
+    "position": 5
+   },
+   {
+    "title": "Là Việt Coffee",
+    "link": "https://www.tiktok.com/discover/l%C3%A0-vi%E1%BB%87t-coffee",
+    "snippet": "Khám Phá Quán Cà Phê Phòng Thí Nghiệm Ở Đà Lạt. Đến với Là Việt Coffee, nơi bạn sẽ tìm thấy không gian cà phê độc đáo và ấm cúng tại Đà Lạt. Hãy ...",
+    "date": "21 thg 9, 2026",
+    "position": 6
+   },
+   {
+    "title": "🌱 TH-A1 (Tinh hoa 1) là giống cà phê được viện WASI ...",
+    "link": "https://www.tiktok.com/@lavietcoffee/video/7674142792477674772",
+    "snippet": "96 Lượt thích,Video TikTok từ Là Việt Coffee (@lavietcoffee): \" TH-A1 (Tinh hoa 1) là giống cà phê được viện WASI chọn tạo tại Việt Nam, ...",
+    "position": 7
+   },
+   {
+    "title": "Là Việt Coffee Menu",
+    "link": "https://www.tiktok.com/discover/l%C3%A0-vi%E1%BB%87t-coffee-menu",
+    "snippet": "10.1M bài đăng. Hãy khám phá video liên quan đến Là Việt Coffee Menu trên TikTok. Xem thêm video về Da Vien Coffee Menu, Mays Vietnamese Coffee Menu, ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Tám Riêu\" OR \"Năm Giờ Chiều\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:06:33.805Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Tám Riêu\" OR \"Năm Giờ Chiều\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tám Riêu (@amthuctamrieu)",
+    "link": "https://www.tiktok.com/@amthuctamrieu",
+    "snippet": "Tám Riêu (@amthuctamrieu) trên TikTok |201K Lượt thích.14.9K Follower.235 Phan Xích Long, Phú Nhuận 140A Lý Chính Thắng, Q3 Sdt: 033 4626060.",
+    "position": 1
+   },
+   {
+    "title": "Ghé Tám Riêu ăn ngon có quà — Trung thu thêm vui",
+    "link": "https://www.tiktok.com/@amthuctamrieu/video/7686071623484640530",
+    "snippet": "Nội dung cho biết quán Tám Riêu đang khuyến mãi dịp Trung thu với thông điệp “Ghé Tám Riêu ăn ngon có quà, Trung thu thêm vui”. Cover video có ...",
+    "position": 2
+   },
+   {
+    "title": "5 điều có thể bạn chưa biết ở Tám Riêu 🦀 Mấy bà ...",
+    "link": "https://www.tiktok.com/@amthuctamrieu/video/7673825053250800914",
+    "snippet": "5 điều có thể bạn chưa biết ở Tám Riêu Mấy bà biết mấy điều rồi nè, cmt ở dưới cho Tám Riêu biết nghen!",
+    "position": 3
+   },
+   {
+    "title": "TOP 5 món ăn Tám Riêu nhất định phải thử | Phú Nhuận, Quận 3",
+    "link": "https://www.tiktok.com/@amthuctamrieu/video/7668308905927167253",
+    "snippet": "Quán có phong cách đồng quê Nam Bộ, rất phù hợp để gia đình cùng đến thưởng thức. Tám Riêu có hai chi nhánh tại 235 Phan Xích Long, Phú Nhuận và 140A Lý Chính ...",
+    "position": 4
+   },
+   {
+    "title": "Ẩm thực đồng quê Nam Bộ, món nào món nấy dân dã ...",
+    "link": "https://www.tiktok.com/@amthuctamrieu/video/7656384287721262344",
+    "snippet": "33 Lượt thích,Video TikTok từ Tám Riêu (@amthuctamrieu): \"Ẩm thực đồng quê Nam Bộ, món nào món nấy dân dã, đậm vị quê nhà.",
+    "position": 5
+   },
+   {
+    "title": "Khám Phá Quán Tám Riêu Tại Lý Chính Thắng Quận 3",
+    "link": "https://www.tiktok.com/@amthuctamrieu/video/7349541760781126914",
+    "snippet": "Nằm trên mặt tiền Lý Chính Thắng, Quận 3, quán Tám Riêu ngày nào đã sửa sang lại đẹp đẽ cùng với cây xanh, đèn lồng, cổng tre,... nhường lại ...",
+    "position": 6
+   },
+   {
+    "title": "Lẩu cua đồng Tám Riêu – Địa điểm 2/9 tụ tập bạn bè",
+    "link": "https://www.tiktok.com/@amthuctamrieu/video/7679033916849769736",
+    "snippet": "Khi 2/9 sắp đến mà chưa biết đi đâu, Tám Riêu là gợi ý đơn giản và dễ chiều: gọi một gánh lẩu cua đồng nóng hổi, thêm vài món quê, ...",
+    "position": 7
+   },
+   {
+    "title": "Trung thu ghé Tám Riêu: phá cỗ và nhận quà",
+    "link": "https://www.tiktok.com/@amthuctamrieu/video/7689057493766376712",
+    "snippet": "Trung thu ghé Tám Riêu mô tả phá cỗ Trung thu cùng gia đình, không khí ấm cúng và món ngon trên bàn. Video liên quan đến Tám Riêu và việc ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

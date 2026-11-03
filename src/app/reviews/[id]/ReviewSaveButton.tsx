@@ -24,9 +24,16 @@ export default function ReviewSaveButton({
     if (pending) return
     setPending(true)
     const prev = saved
-    setSaved(!prev)
+    setSaved(!prev) // optimistic
     try {
       const res = await fetch(`/api/reviews/${reviewId}/save`, { method: 'POST' })
+      // fetch() only REJECTS on a network failure — a 401 resolves normally. This page is public, so an anonymous
+      // tap must undo the optimistic state and go to login (browse-only policy), not fill the bookmark and stop there.
+      if (res.status === 401) {
+        setSaved(prev)
+        window.location.href = '/login?returnTo=' + encodeURIComponent(`/reviews/${reviewId}`)
+        return
+      }
       if (!res.ok) throw new Error('save_failed')
       const data = await res.json().catch(() => null)
       if (typeof data?.saved !== 'boolean') throw new Error('save_failed')

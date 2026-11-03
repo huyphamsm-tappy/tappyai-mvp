@@ -33,6 +33,7 @@ import { capabilitiesOf, type CapabilitySource } from '@/lib/recommendation/capa
 import type { CommerceLinkRow } from '@/lib/ccp'
 import type { Recommendation } from '@/lib/recommendation/recommendation'
 import { admitsProducer, type ProducerSubject } from '@/lib/recommendation/slotAdmission'
+import { mergeShoppingMarkers } from '@/lib/ai/consultative/synthesisView'
 
 // `commerce_links` is the CCP row attachment (owner decision P6-B): Commerce Links the platform
 // resolved for the row. Carved for the same reason as `order_links` — the model must never see a
@@ -114,6 +115,12 @@ export interface EnrichmentCollector {
   shoppingMarker?: string
   setShoppingMarker(marker: string | undefined): void
   /**
+   * A code-built block of prose + links that rides with the reply (A3, 2026-10-02): e.g. «only another phone model was found» with
+   * search links for the right keyword. Inserted after the prose, before the structured markers. First one wins.
+   */
+  appendix?: { text: string; links: Array<{ name: string; url: string }> }
+  setAppendix(block: { text: string; links: Array<{ name: string; url: string }> } | undefined): void
+  /**
    * The turn's canonical recommendations, for the `[TAPPY_PLACES]` block.
    *
    * Held as STRUCTURE rather than a rendered string, unlike `shoppingMarker`:
@@ -148,6 +155,13 @@ export interface EnrichmentCollector {
   placesMapsUrl?: string
   setPlacesMapsUrl(url: string | undefined): void
   /**
+   * g' (closeout round 3, PROPOSAL): the FULL results the server's own tools built this turn, before any copy was trimmed or carved
+   * for the model. streamEnrichment grants their link fields under the same TOOL_URL_CONTRACT (tool + field path), so an action
+   * link the model copy carved out (maps_link, website_uri, booking_links ...) is still a verified grant. Bounded (24 results).
+   */
+  serverToolResults?: Array<{ toolName: string; result: unknown }>
+  addServerToolResult?(toolName: string, result: unknown): void
+  /**
    * True when THIS request will render the decision as a card.
    *
    * The per-place photo/link block below is injected into the reply text for
@@ -167,9 +181,102 @@ export interface EnrichmentCollector {
   /** Consult V2 turn type — the prose-shape guard follows the approved frame for it (2 alternatives; a plan is not reshaped). */
   consultTurn?: string
   setConsultTurn(turn: string, refers?: string[], known?: Record<string, string>): void
+  /** Wave 3 (W3, CONSULT_STRUCTURED_SYNTHESIS): the answer is a structured, multi-part one - the prose-shape sentence cap (a short pick + a reason) is not applied to it. */
+  structuredSynthesis?: boolean
+  /** Wave 4 (B, CONSULT_PICK_TURN_TOOLS): the code pre-search's venue websites, from the full rows (presearch.ts presearchPlaceSites). Absent = the price guard as before. */
+  placeSites?: Array<{ name: string; website: string }>
+  setStructuredSynthesis(on: boolean): void
+  /** The area of the turn ('flight' for a fare turn) — the advice floor (adviceFloor.ts) picks its tips by it. */
+  consultDomain?: string
+  setConsultDomain(domain: string | undefined): void
   /** Consult V2 plan: the pick the conversation settled on (the plan's cost line is about it). */
   consultPick?: string | null
   setConsultPick(name: string | null): void
+  /** Phase 3C (CONSULT_BRIEF): the Brief travelled this turn, so the ENGINE Pick is authoritative for the card and the pick sentence (D7). */
+  consultBrief?: boolean
+  /** TAPPY_AGENT: the turn was decided by the bounded agent (no consult turn) — claim guards that used to key on a consult pick turn still run. */
+  agentMode?: boolean
+  /** CONSULT_ONE_BRAIN: the answer model alone decided the turn — its prose is not reshaped or line-tidied (the claim guards still run). */
+  oneBrain?: boolean
+  /** CONSULT_ONE_BRAIN: the plan the model passed to present_plan (TappyPlan JSON); appended as [TAPPY_PLAN] before the plan guards run. */
+  planBlock?: string
+  /** CONSULT_ONE_BRAIN (31/10): the options the model passed to present_options (MediaBlock 'options' JSON); emitted as [TAPPY_MEDIA] after the link guards, with only this turn's tool links. */
+  optionsBlock?: string
+  /** Phase 8 (TAPPY_AGENT=2) run trace: called with every settle-path stage that CHANGED the reply text (observation only). */
+  guardTrace?: (stage: string, before: string, after: string) => void
+  /** Phase 8 M3 (TAPPY_AGENT=2): pages the agent read this turn — [S#] markers become source links at the enrichment site (citeSources). */
+  /** WS2 link contract: url, label, title, source_type (class), action_type — the pages the agent read this turn. */
+  /**
+   * WS2 (TAPPY_AGENT=2): records the recommendation decision of the final answer when Luna wrote no valid [TAPPY_RANK] block
+   * (agent/runtime/decisionRecord.ts). Absent on every other path.
+   */
+  /** WS2 final: the DATA context Luna was given this turn (card facts, task evidence) and earlier replies — evidence for the gate. */
+  gateContext?: string[]
+  /** WS2 final: the No-Fabrication Gate's per-turn claim summary, for the run trace. */
+  claimsTrace?: (summary: Record<string, unknown>) => void
+  recordDecision?: (answer: string, candidates: string[]) => Promise<{ contract: import('./agent/runtime/rankingContract').RankingContract | null; ms: number; usd: number; error?: string }>
+  citationSources?: Array<{ id: string; host: string; url: string; label?: string; title?: string; source_type?: string; action_type?: string }>
+  /** CONSULTATIVE_IN_AGENT: search-result links held (no page was read) and shown only if a guard cut every figure and the one "chưa xác minh" sentence is added at settle. */
+  unverifiedSources?: Array<{ id: string; host: string; url: string; label?: string; title?: string; source_type?: string; action_type?: string }>
+  /** Phase 8 M4 (TAPPY_AGENT=2): page / task provenance for the settle-path guards (guardEvidence.ts). Absent = guards as before. */
+  guardEvidence?: import('./guardEvidence').GuardEvidence
+  /** Phase 8 M4: the provenance verdicts of the reply (counts only, no text) for the run trace. */
+  evidenceTrace?: (summary: Record<string, unknown>) => void
+  /** Phase 8 M5 (TAPPY_AGENT=2): Luna ranks; its [TAPPY_RANK] line orders the cards (agent/runtime/rankingContract.ts). */
+  semanticRanking?: boolean
+  /**
+   * CONSULTATIVE_IN_AGENT (default OFF; set only when the flag is on AND the turn is a trip-plan turn): the plan is the whole answer. No
+   * ranking line / decision recorder, no standalone venue cards after it, and no card photos fetched for them (the plan's own items keep
+   * their photos). Absent = the pre-flag behaviour, byte for byte.
+   */
+  planTurn?: boolean
+  /**
+   * Gate 2 F-A (A1, D-prov): the exact photo URLs the ROUTE wrote into a server-built [TAPPY_PLAN] block that travels inside the model
+   * stream (today only the evening plan, route.ts). The egress pass keeps a plan `photo_url` only when it is one of these; every other
+   * one is model-written and removed. Absent = no server-built block this turn, so no plan `photo_url` survives egress.
+   */
+  serverPlanPhotos?: ReadonlySet<string>
+  /**
+   * CONSULTATIVE_IN_AGENT (default OFF; set whenever the flag is on, on every turn): the four settle-path precision fixes that only apply under
+   * the flag — worked examples are not facts (noFabricationGate), amount phrases are not names (entityNameGuard), a plan card holds only
+   * places of the plan's destination (planItemGuard), and no "see the card below" line without a card (groundingGate). Absent = unchanged.
+   */
+  consultative?: boolean
+  /**
+   * CONSULT_V3 (owner 17/10, consultV3.ts; only with `consultative`): the behaviour-shaping settle steps are skipped — the consultative_v1
+   * claim/atmosphere/shape cuts, the travel-claims cut and the "figures not verified" line — and a plan budget shows labelled estimates.
+   * Every security guard still runs. Absent = unchanged.
+   */
+  consultV3?: boolean
+  /**
+   * TAPPY_ANSWER_V4 (owner 19/10, only with `consultV3`): the QUALITY stages that delete or rewrite the model's sentences because a claim is
+   * not found in the turn's evidence run in SHADOW — they are computed and traced, and the text is kept (offline guard audit 19/10: 15 of 22
+   * removed sentences stated facts an independent same-day answer confirmed). Security, egress, leak, card and marker stages still run.
+   * A medicine dose with no source is the one claim still changed, at claim level (the drug stays, the figure becomes "see the label").
+   */
+  answerV4?: boolean
+  /**
+   * RETRIEVAL_V5 lần 2c (B3, only with `answerV4`): the settle-path stages state, they do not delete — a real conflict is written as the other
+   * source's value inside the sentence (never "các nguồn chưa khớp"), and an unverified figure gets ONE "(chưa xác minh)" at its sentence end
+   * (never between a number and its unit or inside a range).
+   */
+  retrievalV5?: boolean
+  /** TAPPY_ANSWER_V4: the model's understanding of the question (answerV4/understand.ts), when it settled before the settle path. */
+  understanding?: import('@/lib/ai/answerV4/understand').TurnUnderstanding
+  /** CONSULT_V3 task frame: the task the model declared this turn (taskFrame.ts) — place / shopping cards only for the kinds that use them. */
+  taskFrame?: import('@/lib/ai/agent/runtime/taskFrame').TaskFrame
+  /** CONSULT_V3: the previous assistant reply carried place facts (rating / distance / hours) — the place guard still runs on a follow-up. */
+  priorPlaceContext?: boolean
+  /** CONSULT_V3 layouts: the validated media block (news pictures / Wikipedia subject card) the runtime built; emitted as [TAPPY_MEDIA]. */
+  media?: import('@/lib/media/mediaHosts').MediaBlock
+  /** Phase 8 M5: what the ranking line did (counts, closed values; no text) for the run trace. */
+  rankingTrace?: (summary: Record<string, unknown>) => void
+  /**
+   * CONSULTATIVE_IN_AGENT + audit trace only (cardPathTrace.ts): the correlation id of this turn's card-path diagnostics. Absent everywhere else, and then
+   * every card-path trace call is a no-op.
+   */
+  diagTurnId?: string
+  setConsultBrief(on: boolean): void
   setConsultShown(names: string[]): void
   /** PHIÊN LUNA: the reply is checked for a prompt echo / secret shape before it leaves (lunaSafety.ts). */
   leakCheck?: (text: string) => { leak: boolean; reason: string | null }
@@ -217,7 +324,7 @@ export interface ConsultativeV1Context {
    * turn's only place evidence; the place-claim guard reads it instead of an
    * empty row set. Empty on a first turn.
    */
-  carried: Array<{ name: string; rating: number | null; reviewCount: number | null; distanceKm: number | null; hours?: string | null }>
+  carried: Array<{ name: string; rating: number | null; reviewCount: number | null; distanceKm: number | null; hours?: string | null; phone?: string | null; address?: string | null }>
   /** Stated hard constraints no candidate carried evidence for — set at tool time. */
   hardGaps: string[]
   /** ASSUME_PRESENT constraints (air_con…) some fetched text argues AGAINST — set at tool time. */
@@ -414,6 +521,10 @@ export function createEnrichmentCollector(turnText = '', earlierUserTexts: reado
       // owns the map link, and a later tool must not repoint it.
       if (url && !this.placesMapsUrl) this.placesMapsUrl = url
     },
+    serverToolResults: [] as Array<{ toolName: string; result: unknown }>,
+    addServerToolResult(toolName: string, result: unknown) {
+      if (this.serverToolResults && this.serverToolResults.length < 24) this.serverToolResults.push({ toolName, result })
+    },
     rendersDecisionCard: false,
     setRendersDecisionCard(on: boolean) { this.rendersDecisionCard = on },
     consultButtons: undefined as string[] | undefined,
@@ -425,10 +536,16 @@ export function createEnrichmentCollector(turnText = '', earlierUserTexts: reado
     leakCheck: undefined as ((text: string) => { leak: boolean; reason: string | null }) | undefined,
     setLeakCheck(fn: (text: string) => { leak: boolean; reason: string | null }) { this.leakCheck = fn },
     consultKnown: undefined as Record<string, string> | undefined,
+    consultDomain: undefined as string | undefined,
+    setConsultDomain(domain: string | undefined) { this.consultDomain = domain },
     consultPlanPrice: null as { amount: number; seller: string | null } | null,
     setConsultTurn(turn: string, refers?: string[], known?: Record<string, string>) { this.consultTurn = turn; this.consultRefers = refers; this.consultKnown = known },
+    structuredSynthesis: false as boolean,
+    setStructuredSynthesis(on: boolean) { this.structuredSynthesis = on },
     consultPick: null as string | null,
     setConsultPick(name: string | null) { this.consultPick = name },
+    consultBrief: undefined as boolean | undefined,
+    setConsultBrief(on: boolean) { this.consultBrief = on },
     clarificationPolicy: 'allow' as 'allow' | 'no_reflex',
     setClarificationPolicy(policy: 'allow' | 'no_reflex') { this.clarificationPolicy = policy },
     consultativeV1: undefined as ConsultativeV1Context | undefined,
@@ -450,7 +567,9 @@ export function createEnrichmentCollector(turnText = '', earlierUserTexts: reado
        * Order matters: admission is judged before emptiness, so a REFUSED
        * producer cannot leave a trace either way.
        */
-      if (!admitsProducer(turnText, producer, earlierUserTexts)) return
+      // review 30/10 (one brain): the tool the model called decides the cards - "đi Đà Lạt chơi gì" + a hotel search the model chose was refused
+      // because the user typed no hotel word. The admission reading of the user's words stays for every other route.
+      if (this.oneBrain !== true && !admitsProducer(turnText, producer, earlierUserTexts)) return
       if (recs && recs.length > 0 && (!this.placesRecommendations || (this.preferStay && producer === 'stay' && this.placesProducer !== 'stay'))) {
         this.placesRecommendations = recs
         this.placesProducer = producer ?? undefined
@@ -460,6 +579,12 @@ export function createEnrichmentCollector(turnText = '', earlierUserTexts: reado
     setShoppingMarker(marker) {
       // First one wins, mirroring the TikTok URL: one shopping decision per turn.
       if (marker && !this.shoppingMarker) this.shoppingMarker = marker
+      // CONSULT_ONE_BRAIN: every search of the turn contributes its listings, so the card can show the item the answer settled on.
+      else if (marker && this.oneBrain === true) this.shoppingMarker = mergeShoppingMarkers(this.shoppingMarker as string, marker)
+    },
+    appendix: undefined as { text: string; links: Array<{ name: string; url: string }> } | undefined,
+    setAppendix(block) {
+      if (block && !this.appendix) this.appendix = block
     },
     add(items) {
       for (const raw of items ?? []) {

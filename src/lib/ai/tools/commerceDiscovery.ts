@@ -83,6 +83,8 @@ export async function cachedDiscoverySearch(query: string): Promise<Array<{ titl
     setCache(negativeKey(query), true, serperCacheTtlSeconds() * 1000)
     return []
   }
+  // TURN_WEB_TICKET Plan B (owner 23/10/2026): CCP discovery is a vertical's own lookup ("V"): it does NOT take the turn's web ticket, which is kept for the model's
+  // web_search and the pre-search. (With the ticket OFF - the default - the label is not consulted: the request is sent exactly as before.)
   const rows = await serperSearch(query)
   if (Array.isArray(rows) && rows.length === 0) {
     setCache(negativeKey(query), true, serperCacheTtlSeconds() * 1000)

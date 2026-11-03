@@ -19,6 +19,7 @@
 import { isOpenNow } from '@/lib/ai/tools/serperPlaces'
 import { buildActions, type ActionSource } from '@/lib/recommendation/actions'
 import { normalizeVN } from '@/lib/ai/intent'
+import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 
 export type EveningStageKey = 'dinner' | 'night' | 'drinks'
 
@@ -175,7 +176,8 @@ export function buildEveningPlanBlock(stops: readonly EveningStop[], opts: { lan
     if (place.maps_link) item.maps_link = place.maps_link
     if (place.place_id) item.place_id = place.place_id
     const photo = place.photo_urls?.[0] ?? place.photo_url
-    if (photo) item.photo_url = photo
+    // Gate 2 N2 (D-N2, proposal): a plan photo is written only as a safe https URL.
+    if (photo && isSafeHttpsUrl(photo)) item.photo_url = photo
     const book = bookingUrl(place, stage.actionDomain)
     if (book) item.booking_link = book
     return item

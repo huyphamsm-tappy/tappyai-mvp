@@ -1,4 +1,7 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { publicDailyRateLimit } from '@/lib/security/publicRateLimit'
+import { rateLimitedResponse } from '@/lib/security/rateLimitResponse'
+import { isUploadServiceUnavailable } from '@/lib/media/uploadAvailability'
 import { NextRequest, NextResponse } from 'next/server'
 import { getMediaProvider, putMedia } from '@/lib/media'
 import { randomMediaSuffix } from '@/lib/media/key'
@@ -16,16 +19,6 @@ import { refuseIneligible } from '@/lib/account/requireEligibleUser'
 // Shared with the composer, which shows this number to the user — see the note in product.ts.
 const MAX_FILE_SIZE = MAX_PHOTO_SIZE_MB * 1024 * 1024
 const MAX_UPLOADS_PER_DAY = 10
-
-const rlStore = new Map<string, { date: string; count: number }>()
-function checkRL(userId: string): boolean {
-  const today = new Date().toISOString().slice(0, 10)
-  const e = rlStore.get(userId)
-  if (!e || e.date !== today) { rlStore.set(userId, { date: today, count: 1 }); return true }
-  if (e.count >= MAX_UPLOADS_PER_DAY) return false
-  e.count++
-  return true
-}
 
 export async function POST(req: NextRequest) {
   const { user, supabase } = await getRequestUser(req)
@@ -47,12 +40,9 @@ export async function POST(req: NextRequest) {
   const ageRefusal = await refuseIneligible(req, supabase)
   if (ageRefusal) return ageRefusal
 
-  if (!checkRL(user.id)) {
-    return NextResponse.json(
-      { error: 'rate_limit', message: serverMessage('rate.uploadLimit', requestLocale(req), { n: MAX_UPLOADS_PER_DAY }) },
-      { status: 429 }
-    )
-  }
+  // SEC4 slice 2e: the shared per-day limiter (it used to be a private per-instance Map that reset at UTC midnight; the day now ends at Vietnam midnight like every other daily cap).
+  const rl = await publicDailyRateLimit(`reviews-upload:${user.id}`, MAX_UPLOADS_PER_DAY)
+  if (!rl.ok) return rateLimitedResponse(req, rl, 'reviews_upload_daily', serverMessage('rate.uploadLimit', requestLocale(req), { n: MAX_UPLOADS_PER_DAY }))
 
   let formData: FormData
   try {
@@ -99,6 +89,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ url: blob.url })
   } catch (e) {
     console.error('Media upload error:', e)
+    // Phase 7 CP9: the same classification /api/profile and the group avatar use — a credential / storage outage (e.g. the WIF
+    // provider refusing a non-production deployment) is the SERVICE being unavailable (503), so the composer does not invite a
+    // futile retry; anything else stays the generic retryable failure (500).
+    if (isUploadServiceUnavailable(e)) {
+      return NextResponse.json({ error: 'upload_unavailable', message: serverMessage('media.uploadUnavailable', requestLocale(req)) }, { status: 503 })
+    }
     return NextResponse.json({ error: 'upload_failed', message: serverMessage('media.uploadFailed', requestLocale(req)) }, { status: 500 })
   }
 }

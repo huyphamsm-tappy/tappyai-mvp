@@ -44,7 +44,7 @@ class SmartToolsTest {
         val ours = SMART_TOOL_CATALOGUE.map { listOf(it.id.name.lowercase(), it.group.name.lowercase(), it.home.toString(), it.auth.toString()) }
         assertEquals(rows.filter { it[0] != "suggest" && it[0] != "music" }, ours)
         assertEquals(8, SMART_TOOL_CATALOGUE.size)
-        assertEquals(listOf("scan", "translate", "currency", "split", "safety", "together", "fortune", "captions"), SMART_TOOL_CATALOGUE.map { it.id.name.lowercase() })
+        assertEquals(listOf("safety", "scan", "translate", "currency", "split", "together", "fortune", "captions"), SMART_TOOL_CATALOGUE.map { it.id.name.lowercase() })
         // Un-hidden, the offered list is the whole catalogue again — the day the flags flip nothing is lost.
         assertEquals(SMART_TOOL_CATALOGUE, smartTools(showTranslate = true, showVietContent = true))
         assertEquals(listOf("daily", "discover", "fun"), smartToolGroups(SMART_TOOL_CATALOGUE).map { it.first.name.lowercase() })
@@ -57,7 +57,7 @@ class SmartToolsTest {
         assertFalse(ProductFlags.SHOW_TRANSLATE)
         assertFalse(ProductFlags.SHOW_VIET_CONTENT)
         val shipped = SMART_TOOLS.map { it.id.name.lowercase() }
-        assertEquals(listOf("scan", "currency", "split", "safety", "together", "fortune"), shipped)
+        assertEquals(listOf("safety", "scan", "currency", "split", "together", "fortune"), shipped)
         assertEquals(listOf(4, 1, 1), smartToolGroups().map { it.second.size })
         assertEquals(listOf("daily", "discover", "fun"), smartToolGroups().map { it.first.name.lowercase() })
         // Each flag hides only its own tool.

@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Cafe sách Phương Nam\" OR \"LÀ YÊN Cafe\" OR \"Hôm nay cafe\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:22:12.375Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Cafe sách Phương Nam\" OR \"LÀ YÊN Cafe\" OR \"Hôm nay cafe\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Là Yên Cafe: Không gian xanh mát làm việc và cà phê ngon",
+    "link": "https://www.tiktok.com/@riverplate249/photo/7619970792540982548",
+    "snippet": "Là Yên Cafe: Không gian xanh mát làm việc và cà phê ngon. Là Yên Cafe tại 18Bis Nguyễn Thị Minh Khai, Quận 1 có không gian xanh mát chia ...",
+    "position": 1
+   },
+   {
+    "title": "Cafe Sách Phương Nam: Thiên Đường Sách Tại TP.HCM",
+    "link": "https://www.tiktok.com/@nguyenthi_xuannguyet/video/7262180074575678738",
+    "snippet": "Cafe sách cùng chị Hai của mẹ ❤️ #cafesach #bookcity #phuongnambookcity. Cafe Sách Phương Nam: Thiên Đường Sách Tại TP.HCM. **Tham Quan Cafe ...",
+    "position": 2
+   },
+   {
+    "title": "hôm nay cafe một mình",
+    "link": "https://www.tiktok.com/@l.phng7133/video/7683122217965653269",
+    "snippet": "510 Lượt thích,369 Bình luận.Video TikTok từ lê phương (@l.phng7133): \"hôm nay cafe một mình\".chúc cả nhà buổi tối vui vẻ ấm áp bên gia đình ...",
+    "position": 3
+   },
+   {
+    "title": "Doanh thu top1 hôm nay Cafe sữa tươi #suanhakim # ...",
+    "link": "https://www.tiktok.com/@sa.nh.kim/video/7688607397207788821",
+    "snippet": "152 Lượt thích,Video TikTok từ Sữa Nhà Kim ( chợ thủ dầu một) (@sa.nh.kim): \"Doanh thu top1 hôm nay Cafe sữa tươi #suanhakim #thudaumot\".âm ...",
+    "position": 4
+   },
+   {
+    "title": "Hôm Nay Cafe",
+    "link": "https://www.tiktok.com/discover/h%C3%B4m-nay-cafe",
+    "snippet": "Hôm nay cafe gặp lại người cũ bên tình mới. Hóa ra cũ người mới ta ... ” là hai trong nhiều lời yêu thương mà Hôm nay Cafe gửi tới mình.",
+    "date": "3 thg 8, 2026",
+    "position": 5
+   },
+   {
+    "title": "Hôm nay cafe gặp lại người cũ bên tình mới. Hóa ra ...",
+    "link": "https://www.tiktok.com/@thuantran.68/video/7671590321129606417",
+    "snippet": "Hôm nay cafe gặp lại người cũ bên tình mới. Hóa ra cũ người mới ta' là có thật, chúc hai bạn hạnh phúc. . Hôm nay cafe gặp lại người cũ bên tình mới.",
+    "position": 6
+   },
+   {
+    "title": "Là Yên - Cafe Đà Nẵng | Lạc Đà Coffee",
+    "link": "https://www.tiktok.com/@lui.me.cafe/photo/7662979046262820116",
+    "snippet": "Là Yên - Cafe Đà Nẵng | Lạc Đà Coffee. Chia sẻ triết lý sống về tình yêu và sự mất mát bản thân tại Lạc Đà Coffee, một quán cafe ở Đà Nẵng. Keywords: cafe Đà ...",
+    "position": 7
+   },
+   {
+    "title": "Quán cà phê có món mới hôm nay - cafe mang đi, cafe máy",
+    "link": "https://www.tiktok.com/@1234nbh7/video/7665220100277931284",
+    "snippet": "Quán em hôm nay có món mới các anh chị nhé #cafemangdi #cafemay #cafeviral #cafengon @Bùi Trường TV (Hát Mường). Quán cà phê có món mới hôm nay - cafe mang đi, ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

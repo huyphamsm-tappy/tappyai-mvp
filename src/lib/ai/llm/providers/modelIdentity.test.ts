@@ -32,7 +32,8 @@ import type { ModelRole } from '../types'
 // Asserted against the SHIPPED table (imported, never retyped): a copy of the
 // mapping inside the test would let the two drift apart and still pass.
 
-const ROLES: readonly ModelRole[] = ['fast', 'smart', 'planning', 'vision', 'consult', 'intent', 'plan']
+// Phase 8 M1: + 'agent' (the runtime role of TAPPY_AGENT=2 — same pinned model as every other role).
+const ROLES: readonly ModelRole[] = ['fast', 'smart', 'planning', 'vision', 'consult', 'intent', 'plan', 'agent']
 
 /**
  * A dated Anthropic snapshot: `<family>-<YYYYMMDD>`.

@@ -1,0 +1,54 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Asanoha - Modern Japanese Hotpot\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:30:43.133Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Asanoha - Modern Japanese Hotpot\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Asanoha - Modern Japanese Hotpot - Mô hình lẩu 1 người ...",
+    "link": "https://www.tiktok.com/@saigondulich/video/7386337316064857361",
+    "snippet": "Relaxing Japanese-style BGM featuring piano(1522156) · Asanoha - Modern Japanese Hotpot · author.",
+    "position": 1
+   },
+   {
+    "title": "Nhà hàng lẩu Asanoha: Lẩu Tomyum Collagen Ngon",
+    "link": "https://www.tiktok.com/@hi.vidayyy/video/7303888415777508609",
+    "snippet": "... TikTok. Khám phá thực đơn lẩu tomyum collagen tại Asanoha, địa điểm lý tưởng cho tín. @Vi Đây ౨ৎ · Food · Asanoha - Modern Japanese Hotpot · author · 168 · 17.",
+    "position": 2
+   },
+   {
+    "title": "BUỔI TRƯA ĂN … LẨU NHẬT ASANOHA NHA #buoitrua # ...",
+    "link": "https://www.tiktok.com/@anngon.choivui/video/7412573208462757137",
+    "snippet": "... reviewfood #saigonfood. @ ĂN NGON & CHƠI VUI🏖️ · Cheerful and cute like Disney's parade · Asanoha - Modern Japanese Hotpot · author · 10.1K.",
+    "position": 3
+   },
+   {
+    "title": "Thế còn anh? — short Vietnamese song/poem clip",
+    "link": "https://www.tiktok.com/@2205_phamngocbaotran/video/7677040990158343445",
+    "snippet": "Short Vietnamese clip titled “Thế còn anh?” featuring on-screen lyric lines. @Nấm · nhạc nền - HoanVuu · Asanoha - Modern Japanese Hotpot.",
+    "position": 4
+   },
+   {
+    "title": "Đừng có nhắc — clip ngắn gây thèm ăn",
+    "link": "https://www.tiktok.com/@yoko27001/video/7673101346198834439",
+    "snippet": "... Đừng có nhắc” khiến bạn thèm ngay — xem phản ứng và. @thaooanhnguyen · nhạc nền - C h u ố i ? Asanoha - Modern Japanese Hotpot · author.",
+    "position": 5
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -374,6 +374,7 @@ export default function MessageActionBar({
           open={shareOpen}
           onClose={() => setShareOpen(false)}
           onPublicLink={conversationId ? () => { setShareOpen(false); setPublicOpen(true) } : undefined}
+          publicSource={conversationId && typeof messageIndex === 'number' ? { conversationId, messageIndex } : undefined}
         />
       )}
       {conversationId && (

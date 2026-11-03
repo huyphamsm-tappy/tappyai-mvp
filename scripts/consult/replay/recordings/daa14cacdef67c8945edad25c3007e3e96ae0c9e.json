@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Tai nghe AirPods Pro (thế hệ thứ 2) với Hộp Sạc MagSafe",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:42:24.705Z",
+ "body": {
+  "searchParameters": {
+   "q": "Tai nghe AirPods Pro (thế hệ thứ 2) với Hộp Sạc MagSafe",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "AirPods Pro (thế hệ thứ 2) với Hộp sạc MagSafe (Lightning) Tài liệu hướng  dẫn và nội dung tải về - Bộ phận hỗ trợ của Apple (VN)",
+    "imageUrl": "https://cdsassets.apple.com/content/services/pub/image?productid=300882&size=240x240",
+    "imageWidth": 240,
+    "imageHeight": 240,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQv6I5ld3Gm8mQddBUO5JwMUQjcEDyvrF5-NdabDgDk5w&s=10",
+    "thumbnailWidth": 240,
+    "thumbnailHeight": 240,
+    "source": "Apple Support",
+    "domain": "support.apple.com",
+    "link": "https://support.apple.com/vi-vn/docs/airpods/300882",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdsassets.apple.com%2Fcontent%2Fservices%2Fpub%2Fimage%3Fproductid%3D300882%26size%3D240x240&tbnid=6YRSaJi0JDgGYM&imgrefurl=https%3A%2F%2Fsupport.apple.com%2Fvi-vn%2Fdocs%2Fairpods%2F300882&docid=UTc7q8uMmBI4AM&w=240&h=240",
+    "position": 1
+   },
+   {
+    "title": "Airpods Pro 2 với Hộp sạc MagSafe (USB-C) - Chính Hãng Apple",
+    "imageUrl": "https://bizweb.dktcdn.net/100/442/323/products/mqd83-jpeg-960f58f8-2bac-468f-a11c-b766ca5e5436.jpg?v=1698732453003",
+    "imageWidth": 1144,
+    "imageHeight": 1144,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHV1rYJn-IJ1tBuR9qdWxsGKUBAP_Bj7T6y-XlEUGN2w&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Dr. Fone",
+    "domain": "www.drfone.vn",
+    "link": "https://www.drfone.vn/airpods-pro-2-voi-hop-sac-magsafe-usb-c-chinh-hang-apple",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbizweb.dktcdn.net%2F100%2F442%2F323%2Fproducts%2Fmqd83-jpeg-960f58f8-2bac-468f-a11c-b766ca5e5436.jpg%3Fv%3D1698732453003&tbnid=LhGaw3NwVCuSiM&imgrefurl=https%3A%2F%2Fwww.drfone.vn%2Fairpods-pro-2-voi-hop-sac-magsafe-usb-c-chinh-hang-apple&docid=DCt6a3MFG2kfLM&w=1144&h=1144",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe AirPods Pro 2 với Hộp Sạc MagSafe (USB-C) - Chính hãng",
+    "imageUrl": "https://dinhtoan.vn/wp-content/uploads/2024/11/Tai-nghe-Airpods-pro-2-3-1.jpg",
+    "imageWidth": 900,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtfROuZ3PvnccQc4YLYkJMv2QAHgErlUGMPT6ngGrFgQ&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Đình Toàn Mobile",
+    "domain": "dinhtoan.vn",
+    "link": "https://dinhtoan.vn/tai-nghe-airpods-pro-2-voi-hop-sac-magsafe-usb-c-chinh-hang-apple-viet-nam/?srsltid=AU7gw4XRxX-LJsRYHxhgYV0KCJDiLaULeSIo5S8wk69ur8hxpMUPCZzq",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdinhtoan.vn%2Fwp-content%2Fuploads%2F2024%2F11%2FTai-nghe-Airpods-pro-2-3-1.jpg&tbnid=x8YwGO0lIsU5PM&imgrefurl=https%3A%2F%2Fdinhtoan.vn%2Ftai-nghe-airpods-pro-2-voi-hop-sac-magsafe-usb-c-chinh-hang-apple-viet-nam%2F%3Fsrsltid%3DAU7gw4XRxX-LJsRYHxhgYV0KCJDiLaULeSIo5S8wk69ur8hxpMUPCZzq&docid=IGzs_5gl9LChBM&w=900&h=600",
+    "position": 3
+   },
+   {
+    "title": "Tai nghe AirPods Pro 2 giá rẻ, góp 0%, USB-C, chống ồn",
+    "imageUrl": "https://cdn.tgdd.vn/Products/Images/54/315014/tai-nghe-bluetooth-airpods-pro-2nd-gen-usb-c-charge-apple-thumb-1-600x600.jpg",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYPZg4H_bGKkOhlOYlI82_Jh4HjWNuabyWkju-ChxDhQ&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Thegioididong.com",
+    "domain": "www.thegioididong.com",
+    "link": "https://www.thegioididong.com/tai-nghe/tai-nghe-bluetooth-airpods-pro-gen-2-magsafe-charge-usb-c-apple-mtjv3",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.tgdd.vn%2FProducts%2FImages%2F54%2F315014%2Ftai-nghe-bluetooth-airpods-pro-2nd-gen-usb-c-charge-apple-thumb-1-600x600.jpg&tbnid=M3zSxt8R_YDCKM&imgrefurl=https%3A%2F%2Fwww.thegioididong.com%2Ftai-nghe%2Ftai-nghe-bluetooth-airpods-pro-gen-2-magsafe-charge-usb-c-apple-mtjv3&docid=PYkSgBcGVnxvcM&w=600&h=600",
+    "position": 4
+   },
+   {
+    "title": "AirPods Pro 2 2023 - Hộp Sạc Magsafe ( USB - C ) Chính Hãng",
+    "imageUrl": "https://product.hstatic.net/1000353777/product/2_9522c71f681e4896801c3eea3580fe76_1024x1024.jpg",
+    "imageWidth": 1024,
+    "imageHeight": 917,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcP1agArMq2wxxMVYhQFkDcFkoe4P0PQPCqQzauw-Q7w&s=10",
+    "thumbnailWidth": 472,
+    "thumbnailHeight": 423,
+    "source": "Huy Phong",
+    "domain": "www.iservice.vn",
+    "link": "https://www.iservice.vn/products/tai-nghe-airpods-pro-2-voi-hop-sac-magsafe-usb-c",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fproduct.hstatic.net%2F1000353777%2Fproduct%2F2_9522c71f681e4896801c3eea3580fe76_1024x1024.jpg&tbnid=f_ZAu7zY095RSM&imgrefurl=https%3A%2F%2Fwww.iservice.vn%2Fproducts%2Ftai-nghe-airpods-pro-2-voi-hop-sac-magsafe-usb-c&docid=zwrM6KDxWyj5OM&w=1024&h=917",
+    "position": 5
+   },
+   {
+    "title": "Tai nghe AirPods Pro 2 với Hộp Sạc MagSafe (USB-C) - Chính hãng",
+    "imageUrl": "https://dinhtoan.vn/wp-content/uploads/2024/11/Tai-nghe-Airpods-pro-2-2-1.jpg",
+    "imageWidth": 900,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTx-3AvUtRBvMpSk4GRD0As5lsHf8iJIWPTnsj6-1vVNg&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Đình Toàn Mobile",
+    "domain": "dinhtoan.vn",
+    "link": "https://dinhtoan.vn/tai-nghe-airpods-pro-2-voi-hop-sac-magsafe-usb-c-chinh-hang-apple-viet-nam/?srsltid=AU7gw4Vl_KV6w6VeXiFnDW41MxFN7c4WFOS-CdBcX8sD9zWKlC1paBia",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdinhtoan.vn%2Fwp-content%2Fuploads%2F2024%2F11%2FTai-nghe-Airpods-pro-2-2-1.jpg&tbnid=vH8W_W9rDaHJSM&imgrefurl=https%3A%2F%2Fdinhtoan.vn%2Ftai-nghe-airpods-pro-2-voi-hop-sac-magsafe-usb-c-chinh-hang-apple-viet-nam%2F%3Fsrsltid%3DAU7gw4Vl_KV6w6VeXiFnDW41MxFN7c4WFOS-CdBcX8sD9zWKlC1paBia&docid=IGzs_5gl9LChBM&w=900&h=600",
+    "position": 6
+   },
+   {
+    "title": "AirPods Pro 2 với Hộp sạc MagSafe (USB-C) - Thông số kỹ thuật - Bộ phận hỗ  trợ của Apple (VN)",
+    "imageUrl": "https://cdsassets.apple.com/live/7WUAS350/images/tech-specs/airpods-pro-2.png",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRze9yMvpMPdhKqDr7lW2wX1fFIJPqZdJmqPZsywyEgrQ&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Apple Support",
+    "domain": "support.apple.com",
+    "link": "https://support.apple.com/vi-vn/111834",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdsassets.apple.com%2Flive%2F7WUAS350%2Fimages%2Ftech-specs%2Fairpods-pro-2.png&tbnid=hDxzEEVGaoLZ6M&imgrefurl=https%3A%2F%2Fsupport.apple.com%2Fvi-vn%2F111834&docid=QtuyzjhWIgHrQM&w=1000&h=1000",
+    "position": 7
+   },
+   {
+    "title": "Tai nghe AirPods Pro 2 2023 Magsafe (USB-C) - Giá rẻ, trả góp 0%",
+    "imageUrl": "https://dienthoaigiakho.vn/_next/image?url=https%3A%2F%2Fcdn.dienthoaigiakho.vn%2Fphotos%2F1760682816827-Airpods-pro2.jpg&w=3840&q=75",
+    "imageWidth": 1200,
+    "imageHeight": 1200,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRseeXu20upnM-qsgD9eNpN8H4zLEsNbMFhaMCFurI4wg&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Dienthoaigiakho",
+    "domain": "dienthoaigiakho.vn",
+    "link": "https://dienthoaigiakho.vn/tai-nghe-apple-airpods-pro-2-magsafe-charge-2023-usb-c-apple-viet-nam-1697438840",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdienthoaigiakho.vn%2F_next%2Fimage%3Furl%3Dhttps%253A%252F%252Fcdn.dienthoaigiakho.vn%252Fphotos%252F1760682816827-Airpods-pro2.jpg%26w%3D3840%26q%3D75&tbnid=4yjuZqcGdXzeNM&imgrefurl=https%3A%2F%2Fdienthoaigiakho.vn%2Ftai-nghe-apple-airpods-pro-2-magsafe-charge-2023-usb-c-apple-viet-nam-1697438840&docid=osx-cx5eCF3LvM&w=1200&h=1200",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

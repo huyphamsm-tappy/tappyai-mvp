@@ -1,6 +1,6 @@
 import Foundation
 
-struct SuggestedPrompt {
+struct DynamicPrompt {
     let text: String
     let textEn: String
     let category: String
@@ -8,7 +8,7 @@ struct SuggestedPrompt {
 
 enum DynamicPrompts {
 
-    static func get(hour: Int, dayOfWeek: Int, count: Int = 3) -> [SuggestedPrompt] {
+    static func get(hour: Int, dayOfWeek: Int, count: Int = 3) -> [DynamicPrompt] {
         let basePool: [PromptItem]
         if hour >= 5 && hour < 9 { basePool = morning }
         else if hour >= 11 && hour < 14 { basePool = lunch }
@@ -39,7 +39,7 @@ enum DynamicPrompts {
             if !selected.contains(where: { $0.text == p.text }) { selected.append(p) }
         }
 
-        return selected.prefix(count).map { SuggestedPrompt(text: $0.text, textEn: $0.textEn, category: $0.category) }
+        return selected.prefix(count).map { DynamicPrompt(text: $0.text, textEn: $0.textEn, category: $0.category) }
     }
 
     private struct PromptItem {

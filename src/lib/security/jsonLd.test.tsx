@@ -51,6 +51,9 @@ describe('<JsonLd>', () => {
 })
 
 describe('/r/[slug] — the page the attack targeted, built from a real payload', () => {
+  // Timeout: this test dynamically imports the real page, so its first run pays the transform cost of the page and its dependency tree. Alone it takes
+  // ~0.9 s (1.4 s with the CPU saturated by 12 busy loops); inside the full runner, where every worker transforms modules at once, it measured 5110 ms against
+  // the 5000 ms default and failed on the clock alone (it passes 6/6 in isolation). The test is deterministic: only this timeout is raised, no assertion changed.
   it('a hostile title and question stay data, never markup', async () => {
     // The real builder: the title is user-supplied (POST /api/shared-results) and only PII is
     // redacted from it, so the attack string survives into the stored payload exactly.
@@ -80,7 +83,7 @@ describe('/r/[slug] — the page the attack targeted, built from a real payload'
     const [qa, crumbs] = blocks.map((b) => JSON.stringify(JSON.parse(b)))
     expect(qa).toContain(JSON.stringify(ATTACK).slice(1, -1)) // still the exact title, as data
     expect(crumbs).toContain(JSON.stringify(ATTACK).slice(1, -1))
-  })
+  }, 30_000) // see the note above this test
 })
 
 describe('guard — no page renders JSON-LD except through <JsonLd>', () => {

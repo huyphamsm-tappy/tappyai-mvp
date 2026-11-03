@@ -18,12 +18,13 @@
 import { ADVICE_RE, type DecisionFrame } from './decisionFrame'
 import type { SituationFrame } from './situationFrame'
 import type { NeedProfile } from './needProfile'
-import { normalizeVN, namedCinemaQuery, namedVenueIn } from '../intent'
+import { normalizeVN, namedCinemaQuery, namedVenueIn, routeToolOfferOn } from '../intent'
 import { detectDish } from '../foodDish'
 import { CLARIFY_JOIN } from './actionability'
 import { deriveShoppingConstraints, namesUnknownProduct } from './shoppingConstraints'
+import { deriveLocalShopSearch } from './localShop'
 
-export type SearchNowType = 'restaurant' | 'cafe' | 'spa' | 'bar' | 'attraction' | 'cinema' | 'hotel' | 'product' | 'flight'
+export type SearchNowType = 'shop' | 'restaurant' | 'cafe' | 'spa' | 'bar' | 'attraction' | 'cinema' | 'hotel' | 'product' | 'flight'
 export interface SearchNow {
   query: string
   type: SearchNowType
@@ -104,9 +105,16 @@ export function deriveSearchNow(input: {
   afterClarify?: boolean
   /** Every user turn of the consultation, joined — the venue kind may have been stated turns ago. */
   consultationText?: string
+  /** chat2 A2: the previous assistant turn asked a question and showed no venue — the user's reply (or repeat) must be SEARCHED. */
+  askedBack?: boolean
 }): SearchNow | null {
   const { situation, frame } = input
-  if (!situation || !input.isFirstReply || input.movieRecommend) return null
+  if (!situation || input.movieRecommend) return null
+  // chat2 A2: a physical shop / repair-service request is a MAP search — on the first turn, after a clarify, and when
+  // the user repeats it after the assistant asked back (the loop). Never a question first.
+  const localShop = deriveLocalShopSearch(input.consultationText ?? input.text)
+  if (localShop && (input.isFirstReply || input.afterClarify || input.askedBack)) return { query: localShop.query, type: 'shop', exact: true }
+  if (!input.isFirstReply) return null
   if (frame.clarify) return null
   // An advice question ("mua xe máy cũ cần kiểm tra gì") names a product but asks what to watch for:
   // no product call (measured golden G5b/G5c: the directive made the model "pick" a spare part).
@@ -115,17 +123,23 @@ export function deriveSearchNow(input: {
   // instead of searching; and with no subject the occasion "sinh nhật" would have routed the call to
   // RESTAURANTS): the product the user just named IS the call — the need profile's subject when it
   // read one, else the answer text itself.
+  // round 3h (ROUTE_TOOL_OFFER_GUARD, ON): the clarify answer is searched before the model only when it names a KNOWN product family (the need
+  // profile's subject). A free-text answer about a price or a market is left to the model with both shopping tools offered.
+  const offerOn = routeToolOfferOn()
   if (input.afterClarify) {
     const [request, ...rest] = input.text.split(CLARIFY_JOIN)
     const answer = rest.join(CLARIFY_JOIN).trim()
     const shopping = (frame.domains.includes('shopping') && !frame.placeDecision) || input.need?.domain === 'shopping' || SHOP_REQUEST.test(normalizeVN(request.toLowerCase()))
+    if (shopping && offerOn) return input.need?.subject ? { query: input.need.subject, type: 'product', exact: true } : null
     if (shopping) return answer || input.need?.subject ? { query: input.need?.subject ?? answer, type: 'product', exact: true } : null
   }
   // F (2026-09-20, measured Android turn B5 "loa karaoke gia dinh duoi 3 trieu…"): with no directive the
   // model asked "mua loa hay tìm quán karaoke?" instead of searching. A first-turn purchase that NAMES
   // its product (a known family, or an unknown noun after the buy verb) gets the product call as a
   // SUGGESTED query — the same directive the clarify answer already gets, one turn earlier.
-  const shoppingNamed = input.need?.domain === 'shopping' && (!!input.need?.subject || namesUnknownProduct(deriveShoppingConstraints([{ role: 'user', content: input.text }], input.need?.budget ?? null)))
+  // round 3h (ROUTE_TOOL_OFFER_GUARD): with the flag ON only a KNOWN product family is searched before the model. An unknown noun after a buy
+  // verb is not enough: a price question can carry one (round 3g D8), and the model still gets the tools to answer it.
+  const shoppingNamed = input.need?.domain === 'shopping' && (!!input.need?.subject || (!offerOn && namesUnknownProduct(deriveShoppingConstraints([{ role: 'user', content: input.text }], input.need?.budget ?? null))))
   const asksWhere = /(?:^|\s)(?:o dau|gan day|gan toi|gan minh|cua hang|tiem|shop|sieu thi)(?:\s|$)/.test(normalizeVN(input.text.toLowerCase()))
   if (frame.domains.includes('shopping') && !frame.placeDecision) return shoppingNamed && !asksWhere ? { query: input.text.trim(), type: 'product', exact: false } : null
   // E3 (measured EP1 "loa karaoke gia đình…"): the need profile KNOWS the product family, and nothing

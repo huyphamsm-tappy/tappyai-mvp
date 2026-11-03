@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Theo Apple thì AirPods Pro 2 nghe được bao lâu mỗi lần sạc? (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:03:24.397Z",
+ "body": {
+  "searchParameters": {
+   "q": "Theo Apple thì AirPods Pro 2 nghe được bao lâu mỗi lần sạc? (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "AirPods sạc bao lâu thì đầy? Cách kiểm tra thời lượng pin",
+    "link": "https://cellphones.com.vn/sforum/airpods-sac-bao-lau-thi-day",
+    "snippet": "AirPods 2 sẽ mang đến trải nghiệm nghe nhạc liên tục với chất lượng cao lên đến 5 giờ. Thời gian cho mỗi lần đàm thoại liên tục là 3 giờ và 24 ...",
+    "date": "2 thg 7, 2024",
+    "position": 1
+   },
+   {
+    "title": "Sạc AirPods trong bao lâu? Tổng quan về các dòng AirPods",
+    "link": "https://tiki.vn/blog/sac-airpods-trong-bao-lau/",
+    "snippet": "Sẽ mất khoảng 45 phút để sạc đầy pin cho chiếc AirPods 2. Tuy nhiên, chỉ cần mất khoảng 15 phút đầu để sạc, bạn có thể sử dụng tai nghe này ...",
+    "date": "20 thg 4, 2023",
+    "position": 2
+   },
+   {
+    "title": "So sánh AirPods Pro 3 vs AirPods Pro 2: Khác biệt là gì?",
+    "link": "https://cellphones.com.vn/sforum/so-sanh-airpods-pro-3-vs-airpods-pro-2",
+    "snippet": "Công nghệ Spatial Audio cá nhân hóa tạo ra trải nghiệm âm thanh vòm sống động. Thời lượng pin của AirPods Pro 2 lên đến 6 giờ nghe nhạc cho mỗi lần sạc và tổng ...",
+    "position": 3
+   },
+   {
+    "title": "Cách sử dụng AirPods, AirPods Pro từ A-Z cho người mới ...",
+    "link": "https://cellphones.com.vn/sforum/cach-su-dung-airpods",
+    "snippet": "Dưới đây sẽ hướng dẫn cách kết nối để sử dụng AirPods, AirPods Pro chi tiết giúp bạn khai thác tối đa tính năng và tối ưu trải nghiệm âm ...",
+    "date": "8 thg 3, 2026",
+    "position": 4
+   },
+   {
+    "title": "Nhìn lại AirPods Pro sau gần 1 năm sử dụng",
+    "link": "https://cellphones.com.vn/sforum/nhin-lai-airpods-pro-sau-gan-1-nam-su-dung-duoc-gi-mat-gi-va-can-luu-y-gi-truoc-khi-mua-tai-nghe-nay",
+    "snippet": "... AirPods 2; Thời lượng pin tai nghe tốt hơn: một lần sạc đầy pin tai nghe sử dụng được 8 tiếng. Trong khi đó AirPods Pro chỉ có thời lượng nghe tối đa là 5 tiếng ...",
+    "position": 5
+   },
+   {
+    "title": "Airpods không nghe được 1 bên: Nguyên nhân, cách khắc ...",
+    "link": "https://cellphones.com.vn/sforum/airpods-khong-nghe-duoc-1-ben",
+    "snippet": "Cách khắc phục khi AirPods chỉ nghe được 1 bên · Đặt lại AirPods về hộp sạc · Kiểm tra lại pin · Vệ sinh lại tai nghe AirPods · Ngắt kết nối và kết nối lại 2 thiết ...",
+    "position": 6
+   },
+   {
+    "title": "Tạo sao một bên tai nghe AirPods nhanh hết pin? Cách xử lý",
+    "link": "https://cellphones.com.vn/sforum/mot-ben-tai-nghe-airpods-nhanh-het-pin",
+    "snippet": "Cách khắc phục lỗi tai nghe AirPods nhanh hết pin mỗi bên · Vệ sinh hộp sạc và chân tiếp xúc: Lau sạch bụi bẩn ở chân sạc tai nghe và trong hộp để đảm bảo hai ...",
+    "position": 7
+   },
+   {
+    "title": "Ý nghĩa đèn báo sạc AirPods: Giải mã màu sắc và lỗi ...",
+    "link": "https://cellphones.com.vn/sforum/y-nghia-den-bao-sac-airpods",
+    "snippet": "Sau khoảng 8 giây, đèn LED sẽ tự động tắt đi để tiết kiệm pin nhưng quá trình nạp điện vẫn tiếp diễn. Để bật đèn AirPods khi sạc sáng trở lại, ...",
+    "date": "30 thg 4, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

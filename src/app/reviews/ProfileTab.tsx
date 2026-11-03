@@ -4,7 +4,7 @@
 // page.tsx: the profile-grid delete-reflow regression test imports ProfileTab, and
 // Next.js forbids extra named exports from a page file.
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import Link from 'next/link'
 import Image from '@/components/media/SafeImage'
 import {
@@ -15,10 +15,12 @@ import { trailingFillerCount } from '@/lib/ui/gridFill'
 import { getUserPreferences } from '@/lib/userMemory'
 import type { UserPreferences } from '@/lib/userMemory'
 import LikeListSheet from './LikeListSheet'
+import SharedClipViewer, { isStageClip, useIsDesktopViewer } from './SharedClipViewer'
 import LinkPoster from '@/components/LinkPoster'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { Post, CommentDrawer, ShareModal, isShareOnlyName, type Review } from './feedShared'
 import { loginPathFor, currentDestination } from '@/lib/auth/returnTo'
+import { SafetyMenu } from '@/components/safety/SafetyMenu'
 
 /* ─── Swipeable clip viewer — opens from the profile grid with the SAME UX as
    the main feed: swipe/arrow between clips, single-tap pause, double-tap like,
@@ -37,7 +39,24 @@ import { loginPathFor, currentDestination } from '@/lib/auth/returnTo'
 // Exported so the Inbox can reuse it: a notification about a CLIP has to land in the clip
 // experience, not on the article-style detail page. It needs nothing from the profile grid —
 // `posts` may be a single review fetched by id — so there is no second viewer to build.
-export function ClipViewer({ posts, startIndex, me, onClose, onDelete }: { posts: Review[]; startIndex: number; me: string | null; onClose: () => void; onDelete?: (id: string) => void }) {
+export function ClipViewer(props: { posts: Review[]; startIndex: number; me: string | null; onClose: () => void; onDelete?: (id: string) => void }) {
+  // B3 (2026-10-02): ONE viewer for the whole app. Tablets/desktops get the Khám phá stage (the
+  // shared `ClipStage`); phones keep the full-screen vertical pager below, which is Khám phá's own
+  // phone feed (`Post`). A list whose opened row is not a playable clip (a photo post) also keeps
+  // the pager, since the stage is a video surface.
+  const isDesktop = useIsDesktopViewer()
+  const { posts, startIndex } = props
+  const clips = useMemo(() => posts.filter(isStageClip), [posts])
+  const opened = posts[startIndex]
+  const stageStart = opened ? clips.findIndex(c => c.id === opened.id) : -1
+  if (isDesktop === null) return <div className="fixed inset-0 z-50 bg-black" aria-busy="true" />
+  if (isDesktop && stageStart >= 0) {
+    return <SharedClipViewer posts={clips} startIndex={stageStart} me={props.me} onClose={props.onClose} onDelete={props.onDelete} />
+  }
+  return <PhoneClipViewer {...props} />
+}
+
+function PhoneClipViewer({ posts, startIndex, me, onClose, onDelete }: { posts: Review[]; startIndex: number; me: string | null; onClose: () => void; onDelete?: (id: string) => void }) {
   const [items, setItems] = useState<Review[]>(posts)
   const [activeIndex, setActiveIndex] = useState(startIndex)
   const [commentOf, setCommentOf] = useState<Review | null>(null)
@@ -50,6 +69,23 @@ export function ClipViewer({ posts, startIndex, me, onClose, onDelete }: { posts
     const c = containerRef.current
     if (c) c.scrollTo({ top: startIndex * c.clientHeight, behavior: 'auto' })
   }, [startIndex])
+
+  // Deleting a clip shrinks `items` but never moves the scroll position, which is what
+  // `activeIndex` follows on scroll. If the removed clip was BEFORE the one in view, every later
+  // index shifts down by one while `activeIndex` and the physical scrollTop stay put — the wrong
+  // slide is then active (or none is, once activeIndex >= items.length), so the clip the user is
+  // looking at never plays: the black/frozen thumbnail. Clamp the index and re-snap the scroll so
+  // both agree again. Runs only when the count changes.
+  const prevLengthRef = useRef(items.length)
+  useEffect(() => {
+    if (items.length === prevLengthRef.current) return
+    prevLengthRef.current = items.length
+    const clamped = Math.min(activeIndex, Math.max(0, items.length - 1))
+    if (clamped !== activeIndex) setActiveIndex(clamped)
+    const c = containerRef.current
+    if (c) c.scrollTo({ top: clamped * c.clientHeight, behavior: 'auto' })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [items.length])
 
   // 🔑 The destination is the page we are ON, never a literal. This viewer is mounted by the
   // profile grid AND by `/reviews/[id]` — every share link and push notification lands there — so
@@ -115,6 +151,14 @@ export function ClipViewer({ posts, startIndex, me, onClose, onDelete }: { posts
     setActiveIndex(next)
   }
 
+  // An open comment sheet follows the active clip (BUG 11): no stale comments from the previous one.
+  const activeItemId = items[activeIndex]?.id ?? null
+  useEffect(() => {
+    if (!activeItemId) return
+    setCommentOf(cur => (cur && cur.id !== activeItemId ? items.find(r => r.id === activeItemId) ?? null : cur))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeItemId])
+
   return (
     <div className="fixed inset-0 z-50 bg-black flex justify-center">
       <button onClick={onClose} aria-label="Đóng" className="absolute top-4 left-4 z-[60] w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center text-white active:scale-90 transition-transform">
@@ -140,7 +184,7 @@ export function ClipViewer({ posts, startIndex, me, onClose, onDelete }: { posts
             className="w-11 h-11 rounded-full bg-gray-800/90 text-white flex items-center justify-center hover:bg-gray-700 disabled:opacity-30 disabled:cursor-default transition-colors"><ChevronDown size={22} /></button>
         </div>
       </div>
-      {commentOf && <CommentDrawer review={commentOf} me={me} onClose={() => setCommentOf(null)} onAdded={addComment} />}
+      {commentOf && <CommentDrawer key={commentOf.id} review={commentOf} me={me} onClose={() => setCommentOf(null)} onAdded={addComment} onNavigate={scrollFeed} />}
       {shareOf && <ShareModal review={shareOf} onClose={() => setShareOf(null)} />}
       {likesOf && <LikeListSheet reviewId={likesOf} onClose={() => setLikesOf(null)} />}
     </div>
@@ -176,8 +220,12 @@ export function ProfileTab({ userId, viewerId, showBackButton, onBack, variant =
   const [profile, setProfile] = useState<{
     full_name: string | null; avatar_url: string | null
     follower_count: number; following_count: number; review_count: number
+    /** Public cover image (profiles.cover_url, served by /api/users/[id]) — Phase 7 8B hero background. */
+    cover_url?: string | null
   } | null>(null)
   const [following, setFollowing] = useState(false)
+  const coverRaw = profile?.cover_url?.trim() ?? ''
+  const coverBg = /^(https:\/\/|\/)[^\s"'()<>]+$/.test(coverRaw) ? `"${coverRaw}"` : null
   const [followBusy, setFollowBusy] = useState(false)
   const [posts, setPosts] = useState<Review[]>([])
   const [loading, setLoading] = useState(true)
@@ -284,7 +332,10 @@ export function ProfileTab({ userId, viewerId, showBackButton, onBack, variant =
           is looking: /users/[id] is one page with one shape for everyone. The
           compact horizontal hero hands the viewport to the grid, because on a
           profile page the clips are the content. */}
-      <div style={{ background: 'linear-gradient(180deg, #1a0a2e 0%, #0d0618 60%, #000 100%)' }}
+      {/* Phase 7 8B: the hero shows the profile's own cover photo when it has one (dimmed for legibility); otherwise the gradient. */}
+      <div data-profile-hero-bg={coverBg ? 'cover' : 'gradient'} style={coverBg
+        ? { backgroundImage: `linear-gradient(180deg, rgba(13,6,24,0.45) 0%, rgba(13,6,24,0.75) 60%, #000 100%), url(${coverBg})`, backgroundSize: 'cover', backgroundPosition: 'center' }
+        : { background: 'linear-gradient(180deg, #1a0a2e 0%, #0d0618 60%, #000 100%)' }}
         className={`relative px-4 flex ${isPage ? 'flex-row items-center gap-4 pt-5 pb-3' : 'flex-col items-center pt-14 pb-4'}`}>
         {/* Back button — only when this profile is its own stacked route
             (/users/[id]), not when it's the bottom-nav "Hồ sơ" tab. Same visual
@@ -342,6 +393,10 @@ export function ProfileTab({ userId, viewerId, showBackButton, onBack, variant =
             }`}>
             {followBusy ? <Loader2 size={15} className="animate-spin mx-auto" /> : following ? t('reviews.following') : t('reviews.follow')}
           </button>
+        )}
+        {/* WP-06 — report / block this person. Draws nothing while the flags are off or when nobody is signed in. */}
+        {!isOwnProfile && viewerId && (
+          <SafetyMenu tone="onMedia" report={{ target: 'user', id: userId }} user={{ id: userId, name: profile?.full_name }} onBlockedChange={(b) => { if (b) setFollowing(false) }} />
         )}
         </div>
       </div>

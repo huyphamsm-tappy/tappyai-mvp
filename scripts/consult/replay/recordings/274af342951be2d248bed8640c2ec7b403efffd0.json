@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Flower Hotel Đà Nẵng",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:48:05.909Z",
+ "body": {
+  "searchParameters": {
+   "q": "Flower Hotel Đà Nẵng",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Flower Da Nang Hotel | Da Nang",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=100063989017660",
+    "imageWidth": 1000,
+    "imageHeight": 1830,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzU7HtXnAqLceOHl8JURvQ16aD673Zl9uMJYyILP4oPQ&s=10",
+    "thumbnailWidth": 330,
+    "thumbnailHeight": 606,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/p/Flower-Da-Nang-Hotel-100063989017660/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D100063989017660&tbnid=3YOP1I34yg0UoM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fp%2FFlower-Da-Nang-Hotel-100063989017660%2F&docid=bzhtLgCsrbWuDM&w=1000&h=1830",
+    "position": 1
+   },
+   {
+    "title": "Đặt Flower Hotel Đà Nẵng Bãi biển Bắc Mỹ An giá tốt nhất - BestPrice",
+    "imageUrl": "https://owa.bestprice.vn/images/hotels/uploads/flower-hotel-da-nang-63eef2a2bbf20.jpg",
+    "imageWidth": 1024,
+    "imageHeight": 576,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_RH2iN1-o6PV3ck2fnGlnfbz-66B_A3n7nO3YlR-aTw&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 414,
+    "source": "BestPrice",
+    "domain": "www.bestprice.vn",
+    "link": "https://www.bestprice.vn/khach-san/flower-hotel-da-nang-3119.html?srsltid=AU7gw4V0GW7PR8HZuvVXnceyniTxlVqkIZhgzu0Cgg2MLA_hmBVu3rPt",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fowa.bestprice.vn%2Fimages%2Fhotels%2Fuploads%2Fflower-hotel-da-nang-63eef2a2bbf20.jpg&tbnid=AxNewn1jgzSihM&imgrefurl=https%3A%2F%2Fwww.bestprice.vn%2Fkhach-san%2Fflower-hotel-da-nang-3119.html%3Fsrsltid%3DAU7gw4V0GW7PR8HZuvVXnceyniTxlVqkIZhgzu0Cgg2MLA_hmBVu3rPt&docid=AHqpis4hDJxqTM&w=1024&h=576",
+    "position": 2
+   },
+   {
+    "title": "Flower Hotel Đà Nẵng giá mới nhất - Vietgoing",
+    "imageUrl": "https://image.vietgoing.com/hotel/02/98/large/vietgoing_dvk2207204226.webp",
+    "imageWidth": 1200,
+    "imageHeight": 675,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSHxPaJyWijhhs8gEjJ8RBbqGWjWZOGNma2kdEbMHHMw&s",
+    "thumbnailWidth": 299,
+    "thumbnailHeight": 168,
+    "source": "Vietgoing",
+    "domain": "vietgoing.com",
+    "link": "https://vietgoing.com/hotel/1098-flower-hotel-da-nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimage.vietgoing.com%2Fhotel%2F02%2F98%2Flarge%2Fvietgoing_dvk2207204226.webp&tbnid=d9QV7JujxXs94M&imgrefurl=https%3A%2F%2Fvietgoing.com%2Fhotel%2F1098-flower-hotel-da-nang.html&docid=lHiQPeRiK0rKbM&w=1200&h=675",
+    "position": 3
+   },
+   {
+    "title": "FLOWER HOTEL",
+    "imageUrl": "https://bevivu.com/wp-content/uploads/image8/2024/02/flower-hotel070220241707306374.jpeg",
+    "imageWidth": 641,
+    "imageHeight": 900,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSslAFdANjHH6yBRtPOGx7ZwzaK0BOD1RsmfNHuIQvbCg&s=10",
+    "thumbnailWidth": 466,
+    "thumbnailHeight": 656,
+    "source": "Bevivu",
+    "domain": "bevivu.com",
+    "link": "https://bevivu.com/flower-hotel/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbevivu.com%2Fwp-content%2Fuploads%2Fimage8%2F2024%2F02%2Fflower-hotel070220241707306374.jpeg&tbnid=O0zcfpfEKKBZVM&imgrefurl=https%3A%2F%2Fbevivu.com%2Fflower-hotel%2F&docid=9TMr54YQ8Rio3M&w=641&h=900",
+    "position": 4
+   },
+   {
+    "title": "Flower Hotel Đà Nẵng giá mới nhất - Vietgoing",
+    "imageUrl": "https://image.vietgoing.com/hotel/02/98/large/vietgoing_pic2207205607.webp",
+    "imageWidth": 1200,
+    "imageHeight": 675,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTo97n5Uny2bRB90zZ4gC6C_PKXm_15uMJvkaUuEUF0yA&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "Vietgoing",
+    "domain": "vietgoing.com",
+    "link": "https://vietgoing.com/hotel/1098-flower-hotel-da-nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimage.vietgoing.com%2Fhotel%2F02%2F98%2Flarge%2Fvietgoing_pic2207205607.webp&tbnid=Q6W6YR9nftaZdM&imgrefurl=https%3A%2F%2Fvietgoing.com%2Fhotel%2F1098-flower-hotel-da-nang.html&docid=lHiQPeRiK0rKbM&w=1200&h=675",
+    "position": 5
+   },
+   {
+    "title": "Khách sạn Flower Đà Nẵng - Khách sạn 3 sao cạnh biển Mỹ Khê",
+    "imageUrl": "https://cdn2.vietnambooking.com/wp-content/uploads/hotel_pro/hotel_347204/c7e61ee131de4aadabf7bc505bdbd23c.jpg",
+    "imageWidth": 800,
+    "imageHeight": 450,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgUlHqZ05Na0W0zgMnnEJwqA4oIbzyp7o705vY0sWUzQ&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "Vietnam Booking",
+    "domain": "www.vietnambooking.com",
+    "link": "https://www.vietnambooking.com/hotel/vietnam/khach-san-flower-da-nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.vietnambooking.com%2Fwp-content%2Fuploads%2Fhotel_pro%2Fhotel_347204%2Fc7e61ee131de4aadabf7bc505bdbd23c.jpg&tbnid=-sfnSPjtq35PHM&imgrefurl=https%3A%2F%2Fwww.vietnambooking.com%2Fhotel%2Fvietnam%2Fkhach-san-flower-da-nang.html&docid=c9BIMqExH4WEVM&w=800&h=450",
+    "position": 6
+   },
+   {
+    "title": "FLOWER HOTEL | DA NANG, VIETNAM | SEASON DEALS FROM $20",
+    "imageUrl": "https://flower.danang-hotels.com/data/Pics/OriginalPhoto/9249/924996/924996736/flower-hotel-da-nang-pic-36.JPEG",
+    "imageWidth": 2000,
+    "imageHeight": 1333,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAEZDPUd-j97n5lXZtNhXwMK5X0Cd-B-kCsVeR9KFFlg&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Da Nang",
+    "domain": "flower.danang-hotels.com",
+    "link": "https://flower.danang-hotels.com/en/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fflower.danang-hotels.com%2Fdata%2FPics%2FOriginalPhoto%2F9249%2F924996%2F924996736%2Fflower-hotel-da-nang-pic-36.JPEG&tbnid=ov3oJek7PBKe8M&imgrefurl=https%3A%2F%2Fflower.danang-hotels.com%2Fen%2F&docid=2YuaiCERq_DI4M&w=2000&h=1333",
+    "position": 7
+   },
+   {
+    "title": "FLOWER HOTEL (Đà Nẵng) - Đánh giá Khách sạn & So sánh giá - Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2a/83/4a/43/flower-hotel.jpg?w=900&h=500&s=1",
+    "imageWidth": 900,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9taDCt5eCsh-fbb_zdn-K1BbeYrBTvXn2wtjDPKIv2g&s=10",
+    "thumbnailWidth": 599,
+    "thumbnailHeight": 333,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g298085-d14225847-Reviews-Flower_Hotel-Da_Nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F2a%2F83%2F4a%2F43%2Fflower-hotel.jpg%3Fw%3D900%26h%3D500%26s%3D1&tbnid=5VprRSaF8XhY4M&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g298085-d14225847-Reviews-Flower_Hotel-Da_Nang.html&docid=4LDAxOuAbgSk8M&w=900&h=500",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com AirPods Pro 2 IPX4 chống nước mồ hôi hộp sạc thông số",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:53:00.017Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com AirPods Pro 2 IPX4 chống nước mồ hôi hộp sạc thông số",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Giới thiệu về khả năng chịu nước và mồ hôi của AirPods ...",
+    "link": "https://support.apple.com/vi-vn/105046",
+    "snippet": "AirPods Pro 1 có khả năng chịu được nước và mồ hôi khi tập thể dục và chơi thể thao không phải dưới nước, đồng thời đạt xếp hạng IPX4 theo tiêu chuẩn IEC 60529.",
+    "position": 1
+   },
+   {
+    "title": "AirPods Pro 2 - Thông số kỹ thuật",
+    "link": "https://support.apple.com/vi-vn/111851",
+    "snippet": "AirPods Pro và hộp sạc có khả năng chống mồ hôi và chống nước, có thể sử dụng trong các môn thể thao và luyện tập không liên quan đến nước. AirPods Pro và hộp ...",
+    "position": 2
+   },
+   {
+    "title": "So Sánh Các Phiên Bản AirPods",
+    "link": "https://www.apple.com/vn/airpods/compare/",
+    "snippet": "Khả năng chống bụi, chống mồ hôi và chống nước không phải là các điều kiện vĩnh viễn, và khả năng này có thể giảm do hao mòn thông thường. Không sạc pin khi bị ...",
+    "position": 3
+   },
+   {
+    "title": "AirPods 2 - Thông số kỹ thuật",
+    "link": "https://support.apple.com/vi-vn/111856",
+    "snippet": "AirPods 3 và AirPods Pro 2 có khả năng chống mồ hôi và chống nước, có thể sử dụng trong các môn thể thao và luyện tập không liên quan đến nước. Tai nghe ...",
+    "position": 4
+   },
+   {
+    "title": "AirPods 3 - Thông số kỹ thuật - Bộ phận hỗ trợ của ...",
+    "link": "https://support.apple.com/vi-vn/111863",
+    "snippet": "Chống Mồ Hôi Và Chống Nước2. Chống mồ hôi và chống nước (IPX4): AirPods và hộp sạc. Kích Thước Và Trọng Lượng 3. AirPods (Mỗi Bên). Cao: 30,79 mm. Rộng: 18,26 ...",
+    "position": 5
+   },
+   {
+    "title": "About the sweat and water resistance of AirPods Pro ...",
+    "link": "https://support.apple.com/en-us/105046",
+    "snippet": "The AirPods and charging case for these models are sweat and water resistant for non-water sports and exercise, and have a rating of IPX4 under ...",
+    "date": "17 thg 9, 2026",
+    "position": 6
+   },
+   {
+    "title": "AirPods Pro 2 - Tech Specs",
+    "link": "https://support.apple.com/en-us/111851",
+    "snippet": "Sweat and Water Resistant2. Sweat and water resistant (IPX4): AirPods Pro and charging case. Size and Weight3. AirPods Pro (Each). Height: 1.22 inches (30.9 mm).",
+    "position": 7
+   },
+   {
+    "title": "Apple công bố thế hệ AirPods Pro tiếp theo",
+    "link": "https://www.apple.com/vn/newsroom/2022/09/apple-announces-the-next-generation-of-airpods-pro/",
+    "snippet": "AirPods Pro và hộp sạc có khả năng chống nước và mồ hôi dành cho việc tập luyện và thể thao không ở dưới nước, và đều đạt tiêu chuẩn IPX4.",
+    "date": "7 thg 9, 2022",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

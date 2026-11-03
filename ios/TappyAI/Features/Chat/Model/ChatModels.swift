@@ -18,16 +18,27 @@ struct ChatMessage: Identifiable, Equatable, Sendable {
     /// for the session; never persisted — Places data is live-only, and `persistConversation`
     /// sends `content` alone.
     var placesView: SharePlacesView? = nil
+    /// The photo or PDF the person sent with this question (a user message). In memory for the session, like the web's
+    /// `experimental_attachments`: never part of `content`, never saved with the conversation (`persistConversation` sends `content` alone).
+    var attachment: ChatAttachment? = nil
+    /// The Deep Research card of this reply (`tappy.research.v1`): plan, steps, source count and the cited sources. In memory for the
+    /// session, like the web's annotations: never part of `content`, never saved (the server keeps the text alone). Nil on every other reply.
+    var research: ResearchStatus? = nil
+    /// The report's charts (`tappy.research_charts.v1`), drawn from figures the server checked. In memory only; empty on every other reply.
+    var charts: [ResearchChart] = []
+    /// The pictures that go under the answer's headings (`tappy.doc_media.v1`). Live only: in memory, never saved; empty on every other reply.
+    var docMedia: [DocMediaItem] = []
 
     init(id: String = UUID().uuidString, role: MessageRole, content: String,
          status: MessageStatus = .complete, toolInvocations: [ToolInvocation] = [],
-         livePlaces: PlacesLiveView? = nil) {
+         livePlaces: PlacesLiveView? = nil, attachment: ChatAttachment? = nil) {
         self.id = id
         self.role = role
         self.content = content
         self.status = status
         self.toolInvocations = toolInvocations
         self.livePlaces = livePlaces
+        self.attachment = attachment
     }
 
     var isUser: Bool { role == .user }
@@ -79,6 +90,19 @@ struct ParsedContent: Equatable, Sendable {
     /// `EMIT_TAPPY_PLACES` is on. Parsing it now is what lets that flag be flipped without raw JSON
     /// reaching a user, which is how `[TAPPY_SHOPPING]` and `[CTA_BUTTONS]` both leaked before.
     var places: [PersistedPlace] = []
+    /// `[TAPPY_MEDIA]` news pictures / Wikipedia subject cards, host-checked (`MediaBlocks`). Empty
+    /// unless the server flags (CONSULT_V3 / ANSWER_V4) emit them.
+    var media: [MediaBlock] = []
+    /// The reply's prose in reading order with its `![alt](url)` pictures kept WHERE the model wrote them (`text` and `images` above are the
+    /// older split: all the prose, then all the pictures). A text piece is clean prose; a run of pictures with only blank space between
+    /// them is one `.images`. The same pictures as `images`, the same prose as `text`, only in order.
+    var segments: [ReplySegment] = []
+}
+
+/// One piece of a reply's prose, in the order the model wrote it.
+enum ReplySegment: Equatable, Sendable {
+    case text(String)
+    case images([ParsedImage])
 }
 
 struct ParsedImage: Equatable, Sendable, Identifiable {
@@ -95,20 +119,278 @@ struct CTAButton: Equatable, Sendable, Identifiable {
     var id: String { "\(label)-\(url)" }
 }
 
+/// The `[TAPPY_PLAN]` block, in the shape the backend emits (the planning prompt in
+/// `src/lib/ai/promptBuilder.ts`; web type `TappyPlan` in `src/components/TripPlanCard.tsx`;
+/// Android `chat/ChatResponse.kt`):
+///
+///     {"type","title","people","budget_total","days":[{"label","items":[{"time","emoji",
+///      "category","name","description","price","address","maps_link","booking_link",
+///      "place_id","photo_url"}]}],"cost_breakdown":{…},"share_text","local_tips":[…]}
+///
+/// Required: `days`, and `items` on every day — a block without them does not decode, so a plan
+/// in another shape can never turn into days with nothing in them. An item without a `name` is
+/// dropped unless it has words (`description`), which then stand in for the name. Prices go through
+/// `PlanPrice.amount`, like web `projectPlanPrices`: a sentinel such as "chưa có giá" is not a price.
 struct TappyPlan: Equatable, Sendable, Decodable {
+    let type: String?
+    /// May be empty: the model usually writes one, but only `days` is validated server-side.
+    let title: String
+    let people: Int?
+    let budgetTotal: String?
     let days: [PlanDay]
+    /// The server's cost lines in the order it wrote them (web, Android). A decoder cannot see that order, so `ContentParser` restores it from the
+    /// raw block with `withCostLinesOrdered(byRawJSON:)`; straight from a decoder the lines are sorted by key.
+    private(set) var costBreakdown: [CostLine]?
+    let shareText: String?
+    let localTips: [LocalTip]?
+
+    // ── Plan card v2 (ANDROID-REQUESTS R22, owner 29/09). All optional: a plan without them still
+    //    draws, every image slot falling back to its area's gradient placeholder. ──
+    /// "travel" | "hotel" | "flight" | "food" | "entertainment" | "shopping" | "spa".
+    let domain: String?
+    /// "Quy Nhơn, Bình Định" — the destination as the server wrote it, never derived here.
+    let destination: String?
+    /// "3 ngày · 2 đêm" / "Tối nay · 18:00–22:30".
+    let duration: String?
+    /// One or two lines under the title.
+    let tagline: String?
+    /// The STORED hero image key (`<mang>-<kieu>-N`, 16:9), resolved through the image manifest.
+    let heroImage: String?
+    /// The server's per-person figure; the app never divides.
+    let budgetPerPerson: String?
+    /// Up to 4 "Điểm nổi bật" tiles, each with its STORED image key.
+    let highlights: [Highlight]?
+
+    /// One line of the cost block: the server's label and its amount (a number the server wrote is kept as text).
+    struct CostLine: Equatable, Sendable {
+        let key: String
+        let value: String
+    }
+
+    /// A cost value as the server wrote it: text, or a bare number (turned into text). Anything else is nil and the line is dropped.
+    private struct CostValue: Decodable, Sendable {
+        let text: String?
+        init(from decoder: Decoder) throws {
+            guard let c = try? decoder.singleValueContainer() else { text = nil; return }
+            if let s = try? c.decode(String.self) { text = s }
+            else if let n = try? c.decode(Int64.self) { text = String(n) }
+            else if let d = try? c.decode(Double.self) { text = String(d) }
+            else { text = nil }
+        }
+    }
+
+    /// The same plan with its cost lines in the order `raw` (the verbatim block) wrote them; a line the raw text does not name keeps its place
+    /// after the named ones. Unchanged when there is nothing to reorder.
+    func withCostLinesOrdered(byRawJSON raw: String) -> TappyPlan {
+        guard let lines = costBreakdown, lines.count > 1 else { return self }
+        let order = JSONKeyOrder.keys(ofTopLevel: "cost_breakdown", in: raw)
+        guard !order.isEmpty else { return self }
+        var rest = lines
+        var ordered: [CostLine] = []
+        for key in order {
+            if let at = rest.firstIndex(where: { $0.key == key }) { ordered.append(rest.remove(at: at)) }
+        }
+        var copy = self
+        copy.costBreakdown = ordered + rest
+        return copy
+    }
+
+    struct Highlight: Equatable, Sendable, Decodable {
+        let label: String
+        /// A stored key (`diem-<loai>` or a hero key), never a URL.
+        let image: String?
+    }
 
     struct PlanDay: Equatable, Sendable, Decodable {
-        let day: Int?
+        /// "Ngày 1", "Tối nay"… Empty when the block has none; surfaces fall back to "Day N".
+        let label: String
+        let items: [PlanItem]
+        /// "Khám phá thành phố biển" — the day's theme (plan card v2, optional).
         let title: String?
-        let activities: [Activity]?
 
-        struct Activity: Equatable, Sendable, Decodable {
-            let time: String?
-            let title: String?
-            let description: String?
-            let cost: String?
+        private enum CodingKeys: String, CodingKey { case label, items, title }
+
+        init(label: String, items: [PlanItem], title: String? = nil) {
+            self.label = label
+            self.items = items
+            self.title = title
         }
+
+        init(from decoder: Decoder) throws {
+            let c = try decoder.container(keyedBy: CodingKeys.self)
+            title = ((try? c.decodeIfPresent(String.self, forKey: .title)) ?? nil)?
+                .trimmingCharacters(in: .whitespacesAndNewlines).nilIfEmpty
+            label = ((try? c.decodeIfPresent(String.self, forKey: .label)) ?? nil)?
+                .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+            // Required: a day without `items` is not a plan day.
+            items = try c.decode([Lossy<PlanItem>].self, forKey: .items).compactMap(\.value)
+        }
+    }
+
+    struct PlanItem: Equatable, Sendable, Decodable {
+        let time: String
+        let emoji: String
+        let category: String
+        let name: String
+        let description: String?
+        let price: String?
+        let address: String?
+        let mapsLink: String?
+        let bookingLink: String?
+        let placeId: String?
+        let photoUrl: String?
+        /// Plan card v2: the STORED image key of this stop (`diem-<loai>`, 1:1), resolved via the manifest.
+        /// The card draws the stop's own `photoUrl` (https only, as the web does) first, then this key's picture, then the area's placeholder.
+        let image: String?
+
+        private enum CodingKeys: String, CodingKey {
+            case time, emoji, category, name, description, price, address, image
+            case mapsLink = "maps_link", bookingLink = "booking_link"
+            case placeId = "place_id", photoUrl = "photo_url"
+        }
+
+        init(from decoder: Decoder) throws {
+            let c = try decoder.container(keyedBy: CodingKeys.self)
+            func text(_ key: CodingKeys) -> String? {
+                guard let raw = (try? c.decodeIfPresent(String.self, forKey: key)) ?? nil else { return nil }
+                let v = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+                return v.isEmpty ? nil : v
+            }
+            // A stop needs a name OR words (the web shows a stop whose name is blank); with neither there is nothing to show.
+            let words = text(.description)
+            guard let name = text(.name) ?? (words == nil ? nil : "") else {
+                throw DecodingError.keyNotFound(CodingKeys.name, .init(codingPath: c.codingPath,
+                                                                       debugDescription: "plan item without a name or words"))
+            }
+            self.name = name
+            time = text(.time) ?? ""
+            emoji = text(.emoji) ?? ""
+            category = text(.category) ?? ""
+            description = words
+            price = PlanPrice.amount(text(.price))
+            address = text(.address)
+            mapsLink = text(.mapsLink)
+            bookingLink = text(.bookingLink)
+            placeId = text(.placeId)
+            photoUrl = text(.photoUrl)
+            image = text(.image)
+        }
+    }
+
+    struct LocalTip: Equatable, Sendable, Decodable {
+        let text: String
+        /// "tool" | "general"
+        let basis: String
+        let place: String?
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case type, title, people, days
+        case budgetTotal = "budget_total", costBreakdown = "cost_breakdown"
+        case shareText = "share_text", localTips = "local_tips"
+        case domain, destination, duration, tagline, highlights
+        case heroImage = "hero_image", budgetPerPerson = "budget_per_person"
+    }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        // Required: the one field web `parsePlan` validates. Per DAY it is lossy: a malformed day
+        // (no `items` array) is dropped and the rest of the plan still renders. A day whose `items`
+        // is empty is well-formed and stays — the backend emits one (e.g. a trailing "Chi tiết chi
+        // phí"). When EVERY day is malformed — a block in another shape — it is not a plan.
+        let entries = try c.decode([Lossy<PlanDay>].self, forKey: .days)
+        let decoded = entries.compactMap(\.value)
+        guard entries.isEmpty || !decoded.isEmpty else {
+            throw DecodingError.dataCorruptedError(forKey: .days, in: c, debugDescription: "no well-formed plan day")
+        }
+        days = decoded
+        type = (try? c.decodeIfPresent(String.self, forKey: .type)) ?? nil
+        title = ((try? c.decodeIfPresent(String.self, forKey: .title)) ?? nil)?
+            .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        let people = (try? c.decodeIfPresent(Int.self, forKey: .people)) ?? nil
+        self.people = (people ?? 0) > 0 ? people : nil
+        budgetTotal = PlanPrice.amount((try? c.decodeIfPresent(String.self, forKey: .budgetTotal)) ?? nil)
+        // A numeric value is kept (as text) and one odd value costs only its own line, never the whole block.
+        let rawLines = ((try? c.decodeIfPresent([String: CostValue].self, forKey: .costBreakdown)) ?? nil) ?? [:]
+        let breakdown: [CostLine] = rawLines.keys.sorted().compactMap { key in
+            PlanPrice.amount(rawLines[key]?.text).map { CostLine(key: key, value: $0) }
+        }
+        costBreakdown = breakdown.isEmpty ? nil : breakdown
+        let share = ((try? c.decodeIfPresent(String.self, forKey: .shareText)) ?? nil)?
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        shareText = (share?.isEmpty ?? true) ? nil : share
+        let tips: [Lossy<LocalTip>]? = (try? c.decodeIfPresent([Lossy<LocalTip>].self, forKey: .localTips)) ?? nil
+        localTips = tips?.compactMap(\.value)
+
+        // Plan card v2 — each optional and lenient: a wrong-typed field is absent, never a failed plan.
+        func text(_ key: CodingKeys) -> String? {
+            guard let raw = (try? c.decodeIfPresent(String.self, forKey: key)) ?? nil else { return nil }
+            return raw.trimmingCharacters(in: .whitespacesAndNewlines).nilIfEmpty
+        }
+        domain = text(.domain)
+        destination = text(.destination)
+        duration = text(.duration)
+        tagline = text(.tagline)
+        heroImage = text(.heroImage)
+        budgetPerPerson = PlanPrice.amount(text(.budgetPerPerson))
+        let marked: [Lossy<Highlight>]? = (try? c.decodeIfPresent([Lossy<Highlight>].self, forKey: .highlights)) ?? nil
+        highlights = marked?.compactMap(\.value)
+    }
+
+    /// Decodes an element or yields nil, so one malformed element does not sink the whole array.
+    private struct Lossy<T: Decodable & Sendable>: Decodable, Sendable {
+        let value: T?
+        init(from decoder: Decoder) throws { value = try? T(from: decoder) }
+    }
+}
+
+/// What the plan card shows beyond the days — the same pieces as web `TripPlanCard`.
+enum PlanCardContent {
+    /// "3 người · 2.500.000đ": people (only when more than one) and the budget, joined so a
+    /// missing half leaves no dangling separator. Nil when neither exists.
+    static func summary(_ plan: TappyPlan) -> String? {
+        var parts: [String] = []
+        if let people = plan.people, people > 1 {
+            parts.append(String(format: NSLocalizedString("chat.plan.people", comment: ""), people))
+        }
+        if let budget = plan.budgetTotal { parts.append(budget) }
+        return parts.isEmpty ? nil : parts.joined(separator: " · ")
+    }
+
+    /// Tips with text; a "tool" tip keeps its place, anything else is general advice.
+    static func tips(_ plan: TappyPlan) -> [(place: String?, text: String)] {
+        (plan.localTips ?? []).compactMap { tip in
+            let text = tip.text.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !text.isEmpty else { return nil }
+            let place = tip.place?.trimmingCharacters(in: .whitespacesAndNewlines)
+            return (tip.basis == "tool" && !(place ?? "").isEmpty ? place : nil, text)
+        }
+    }
+
+    /// A Maps / booking link the card may open: http(s) with a host, else nil.
+    static func link(_ raw: String?) -> URL? {
+        guard let raw else { return nil }
+        return safeWebURL(raw)
+    }
+}
+
+/// A plan price is shown only when it IS a price — port of web `planAmount`
+/// (`src/lib/plans/planPrice.ts`) and Android `PlanPrice.kt`. A value is kept when it has a digit
+/// or says the thing is free; the model's "no price" sentinels are dropped, never rewritten.
+enum PlanPrice {
+    private static let noPrice = try! NSRegularExpression(
+        pattern: #"chưa\s*có\s*giá|chưa\s*rõ\s*giá|không\s*rõ\s*giá|price\s*not\s*available|no\s*price|\bn/a\b|\bunknown\b"#,
+        options: [.caseInsensitive])
+    private static let free = try! NSRegularExpression(
+        pattern: #"^(?:miễn\s*phí|free)(?!\p{L})"#, options: [.caseInsensitive])
+
+    static func amount(_ raw: String?) -> String? {
+        guard let v = raw?.trimmingCharacters(in: .whitespacesAndNewlines), !v.isEmpty else { return nil }
+        let range = NSRange(v.startIndex..., in: v)
+        if noPrice.firstMatch(in: v, range: range) != nil { return nil }
+        if v.rangeOfCharacter(from: .decimalDigits) != nil { return v }
+        if free.firstMatch(in: v, range: range) != nil { return v }
+        return nil
     }
 }
 
@@ -123,6 +405,20 @@ struct Conversation: Decodable, Sendable, Identifiable {
     struct ConversationMessage: Decodable, Sendable {
         let role: String
         let content: String
+    }
+}
+
+/// Lenient: a conversation needs an id; a message that does not decode is dropped (one broken
+/// turn must not make the whole history unopenable), and a POST answer without messages is fine.
+extension Conversation {
+    enum CodingKeys: String, CodingKey { case id, title, category, messages }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id = try c.requiredId(forKey: .id)
+        title = c.lenient(String.self, forKey: .title)
+        category = c.lenient(String.self, forKey: .category)
+        messages = c.lossyArray(ConversationMessage.self, forKey: .messages)
     }
 }
 
@@ -141,39 +437,32 @@ struct UpdateConversationRequest: Encodable, Sendable {
 struct MessagePayload: Encodable, Sendable {
     let role: String
     let content: String
-}
+    /// What the question carries beside its text. Only the chat request sends it (`ChatService.wireMessages`, as
+    /// `experimental_attachments`); it is not a coding key, so a saved conversation holds the text alone.
+    var attachments: [ChatAttachment] = []
 
-// MARK: - Chat request body (matches Web's /api/chat POST)
-
-struct ChatRequest: Encodable, Sendable {
-    let messages: [MessagePayload]
-    var userLocation: LocationPayload?
-
-    struct LocationPayload: Encodable, Sendable {
-        let lat: Double
-        let lng: Double
-        let address: String
-    }
+    private enum CodingKeys: String, CodingKey { case role, content }
 }
 
 // MARK: - Tool hint mapping (matches Web TOOL_HINTS)
 
 enum ToolHints {
-    static let hints: [String: (vi: String, en: String)] = [
-        "search_places":         ("🔎 Đang tìm địa điểm…",       "🔎 Searching places…"),
-        "search_products":       ("🛍️ Đang tìm sản phẩm…",      "🛍️ Searching products…"),
-        "get_weather":           ("⛅ Đang xem thời tiết…",       "⛅ Checking the weather…"),
-        "get_gold_price":        ("🪙 Đang tra giá vàng…",        "🪙 Checking gold prices…"),
-        "get_flight_prices":     ("✈️ Đang tìm vé máy bay…",     "✈️ Finding flights…"),
-        "get_hotel_prices":      ("🏨 Đang tìm khách sạn…",      "🏨 Finding hotels…"),
-        "get_transport_options": ("🚗 Đang tìm cách di chuyển…",  "🚗 Finding transport…"),
-        "get_news":              ("📰 Đang đọc tin tức…",          "📰 Reading the news…"),
-        "web_search":            ("🌐 Đang tìm trên web…",        "🌐 Searching the web…"),
-        "save_price_watch":      ("🔔 Đang đặt theo dõi giá…",    "🔔 Setting up price watch…"),
+    /// The tools a turn can run, by wire name (web `TOOL_HINTS` + the one-brain tools of `route.ts`). The WORDS are in the String
+    /// Catalog (`chat.tool.<name>`); a tool not listed keeps the rotating wait hint.
+    static let tools = [
+        "search_places", "search_products", "get_weather", "get_gold_price", "get_flight_prices", "get_hotel_prices",
+        "get_transport_options", "get_news", "web_search", "save_price_watch",
+        // The one-brain tools: the model's own reading, forecast, arithmetic and extra thinking.
+        "read_page", "think_deeper", "get_weather_forecast", "calculate",
     ]
 
     static func hint(for tool: String, locale: String) -> String? {
-        guard let pair = hints[tool] else { return nil }
-        return locale == "en" ? pair.en : pair.vi
+        guard tools.contains(tool) else { return nil }
+        return ChatWelcome.text("chat.tool.\(tool)", language: locale)
+    }
+
+    /// The three hints that rotate while the reply has not started and no tool is named (web `THINK_HINTS`).
+    static func waitHints(locale: String) -> [String] {
+        (1...3).map { ChatWelcome.text("chat.think.\($0)", language: locale) }
     }
 }

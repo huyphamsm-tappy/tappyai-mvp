@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Không Dây KY5 / F9 / X55 / KY8 PRO site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:22:15.969Z",
+ "body": {
+  "searchParameters": {
+   "q": "Không Dây KY5 / F9 / X55 / KY8 PRO site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai Nghe Không Dây KY5 / F9 / X55 / KY8 PRO Bluetooth ...",
+    "link": "https://shopee.vn/Tai-Nghe-Kh%C3%B4ng-D%C3%A2y-KY5-F9-X55-KY8-PRO-Bluetooth-M%C3%A0n-H%C3%ACnh-LED-Tai-Nghe-T%C3%ADch-H%E1%BB%A3p-Mic-Kh%E1%BB%AD-Ti%E1%BA%BFng-%E1%BB%92n-i.186608798.41952722241",
+    "snippet": "Mua Tai Nghe Không Dây KY5 / F9 / X55 / KY8 PRO Bluetooth Màn Hình LED Tai Nghe Tích Hợp Mic , Khử Tiếng Ồn giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 1
+   },
+   {
+    "title": "Tai Nghe Không Dây KY5 / F9 / M10 / KY8 PRO Bluetooth ...",
+    "link": "https://shopee.vn/Tai-Nghe-Kh%C3%B4ng-D%C3%A2y-KY5-F9-M10-KY8-PRO-Bluetooth-M%C3%A0n-H%C3%ACnh-LED-Tai-Nghe-T%C3%ADch-H%E1%BB%A3p-Mic-Kh%E1%BB%AD-Ti%E1%BA%BFng-%E1%BB%92n-i.878113998.41902788540",
+    "snippet": "Mua Tai Nghe Không Dây KY5 / F9 / M10 / KY8 PRO Bluetooth Màn Hình LED Tai Nghe Tích Hợp Mic , Khử Tiếng Ồn giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe bluetooth không dây KY5 / KY9 / KY8 / F9 / X87 ...",
+    "link": "https://shopee.vn/Tai-nghe-bluetooth-kh%C3%B4ng-d%C3%A2y-KY5-KY9-KY8-F9-X87-PRO-c%E1%BA%A3m-%E1%BB%A9ng-c%C3%B3-mic-ch%E1%BB%91ng-%E1%BB%93n-nh%C3%A9t-tai-i.924949799.27087088091",
+    "snippet": "Mua Tai nghe bluetooth không dây KY5 / KY9 / KY8 / F9 / X87 PRO cảm ứng có mic chống ồn nhét tai giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 3
+   },
+   {
+    "title": "Tai nghe ky5 pro - Giá Tốt, Sale Tháng 10, Freeship 0Đ",
+    "link": "https://shopee.vn/list/tai%20nghe/ky5/pro",
+    "snippet": "Tai nghe không dây Bluetooth 5.3 Goojodoq có tính năng điều khiển cảm ứng, âm trầm và thời lượng pin cực dài Kênh đôi. 100.000₫. 208.000₫.",
+    "position": 4
+   },
+   {
+    "title": "Tai Nghe bluetooth KY5 PRO / KY8 / X55 / KY9 M10 5 Màu ...",
+    "link": "https://shopee.vn/Tai-Nghe-bluetooth-KY5-PRO-KY8-X55-KY9-M10-5-M%C3%A0u-Trong-Su%E1%BB%91t-V%E1%BB%9Bi-M%C3%A0n-H%C3%ACnh-K%E1%BB%B9-Thu%E1%BA%ADt-S%E1%BB%91-Gi%E1%BA%A3m-Ti%E1%BA%BFng-%E1%BB%92n-T%C3%ADch-H%E1%BB%A3p-mic-i.1652766848.47450483728",
+    "snippet": "Mua Tai Nghe bluetooth KY5 PRO / KY8 / X55 / KY9 M10 5 Màu Trong Suốt Với Màn Hình Kỹ Thuật Số Giảm Tiếng Ồn Tích Hợp mic giá tốt. Mua hàng qua mạng uy tín, ...",
+    "position": 5
+   },
+   {
+    "title": "ky9 giá tốt Tháng 8, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=,ky9",
+    "snippet": "Tai nghe bluetooth không dây KY9 Pro S P kèm vỏ bảo vệ+dây đeo cảm ứng có mic chống ồn nhét tai. 72.900₫. 90.000₫. -19%. Rẻ Vô Địch. Mua 2 & giảm 10%.",
+    "position": 6
+   },
+   {
+    "title": "Tai nghe s20 pro - Giá Tốt, Miễn Phí Vận Chuyển, Đủ Loại",
+    "link": "https://shopee.vn/list/tai%20nghe/s20%20pro",
+    "snippet": "Tai Nghe Không Dây S20 Pro Bluetooth V5.2 - Âm Thanh Hifi 9D Cực Hay Có Micro màn hình LED chống thấm nước, Pin Trâu. 50.000₫. 100.000₫. -50%. rating-star ...",
+    "position": 7
+   },
+   {
+    "title": "Tai nghe Bluetooth KY5 / X15 / KY8 [2 Quà tặng] 1 Nhãn ...",
+    "link": "https://shopee.vn/Tai-nghe-Bluetooth-KY5-X15-KY8-2-Qu%C3%A0-t%E1%BA%B7ng-1-Nh%C3%A3n-d%C3%A1n-ho%E1%BA%A1t-h%C3%ACnh-1-Bao-tay-ch%C6%A1i-game-%C3%82m-thanh-n%E1%BB%95i-m%E1%BB%A9c-HiFi-i.1652766848.47903793413",
+    "snippet": "Tai nghe Bluetooth KY5 / X15 / KY8 [2 Quà tặng] 1 Nhãn dán hoạt hình + 1 Bao tay chơi game , Âm thanh nổi mức HiFi. outline grey truck icon. Không hỗ trợ ...",
+    "rating": 4.7,
+    "ratingCount": 3773,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -21,6 +21,7 @@ export type MediaUploadKind =
   | 'audioCover'
   | 'dealLogo'
   | 'dealBanner'
+  | 'productImage'
 
 export interface UploadKindPolicy {
   prefix: MediaPrefix
@@ -50,6 +51,10 @@ export const MEDIA_UPLOAD_POLICIES: Record<MediaUploadKind, UploadKindPolicy> = 
   // re-encodes them and strips EXIF; a photo sent client-direct as a "video" kept its GPS and serial.
   video: { prefix: 'videos', contentTypes: [...VIDEO_TYPES], maxBytes: MAX_VIDEO_SIZE_MB * MB },
   videoThumbnail: { prefix: 'thumbnails', contentTypes: IMAGE_TYPES, maxBytes: 10 * MB },
+  // Tappy Business — one image per product, shot on a phone by a shop owner.
+  // 6MB matches the review-photo ceiling users already meet; SVG is absent
+  // because a product photo is never a vector and SVG carries script.
+  productImage: { prefix: 'products', contentTypes: IMAGE_TYPES, maxBytes: 6 * MB },
   audio: { prefix: 'music', contentTypes: AUDIO_TYPES, maxBytes: 20 * MB },
   audioCover: { prefix: 'music', contentTypes: IMAGE_TYPES, maxBytes: 5 * MB },
   // Parity with the Blob route: admins could upload SVG logos. An SVG served

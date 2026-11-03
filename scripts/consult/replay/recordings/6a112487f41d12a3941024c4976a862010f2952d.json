@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Bluetooth Chống Ồn ANC Pin 8H Đầy Đủ Chức Năng Bản 2025 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:22:15.496Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bluetooth Chống Ồn ANC Pin 8H Đầy Đủ Chức Năng Bản 2025 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "[FLASH SALE] Tai Nghe Hổ Vằn Pro2 1563E GOLDEN BUDS ...",
+    "link": "https://shop.tiktok.com/vn/pdp/tai-nghe-ho-van-ap4-1563e-chong-on-anc-am-thanh-khong-gian-bluetooth-5-3-thoi-luong-pin-6-gio/1731427775098226699",
+    "snippet": "Micro khử ồn ENC V2 hỗ trợ ghi âm rõ ràng.Pin và Tính NăngPin có thể sử dụng lên đến 8 giờ, đảm bảo bạn không phải sạc thường xuyên. Tai nghe này còn hỗ trợ ...",
+    "position": 1
+   },
+   {
+    "title": "Tai Nghe Bluetooth Không Dây AP3.:8H Đầy Đủ Chức Năng Thế ...",
+    "link": "https://shop.tiktok.com/vn/pdp/tai-nghe-bluetooth-khong-day-ap3-chong-on-am-hay-1-doi-1/1729930728207780011",
+    "snippet": "... Tai Nghe Bluetooth Pro2 Hổ Vằn 1563E – Bản Cao Cấp 2025, Chống Ồn 40dB, Cảm Ứng Lực, Mic Khử Ồn ...",
+    "position": 2
+   },
+   {
+    "title": "Tai Nghe Bluetooth Pr0 Gen2 ANC [Bản Nâng Cấp] Chống Ồn ...",
+    "link": "https://shop.tiktok.com/vn/pdp/tai-nghe-bluetooth-pro-gen2-anc-chong-on-40db-pin-8-gio/1731126020359555576",
+    "snippet": "Tai Nghe Bluetooth Pr0 Gen2 ANC [Bản Nâng Cấp] Chống Ồn 40db- Xuyên Âm Chủ Động, Bass Căng| Pin 8H Kèm Ốp Bảo Vệ+ Cap Usb. Bảo Hành 6 Tháng Lỗi Đổi Mới Nhét ...",
+    "position": 3
+   },
+   {
+    "title": "ProX2 - TikTok Shop Vietnam",
+    "link": "https://shop.tiktok.com/vn/k/prox2",
+    "snippet": "Tai Nghe ProZen 2 Chip Jerry, main đỏ XRX, Fix OS 18, Pin 8h- Vuốt tăng giảm âm lượng trên tai, Bass căng, Phù hợp nghe nhạc Sàn, Remix, Nonstop, Vinahouse.",
+    "position": 4
+   },
+   {
+    "title": "Input sensor gen2 - TikTok Shop Vietnam",
+    "link": "https://shop.tiktok.com/vn/k/input-sensor-gen2",
+    "snippet": "Kết quả cho \"Input sensor gen2\". Tai nghe Bluetooth ProGen2 bản xịn 2025 Chống ồn chủ động, Đầy đủ tính năng: Cảm biến chạm, vuốt tăng giảm âm lượng,Bảo ...",
+    "position": 5
+   },
+   {
+    "title": "Tai nghe AP4 - Âm thanh sống động Bass mạnh mẽ Đàm thoại ...",
+    "link": "https://shop.tiktok.com/vn/pdp/1733454434516109156?source=anchor",
+    "snippet": "Mua Tai nghe AP4 - Âm thanh sống động Bass mạnh mẽ Đàm thoại to rõ Bảo hành 6 tháng lỗi 1 đổi 1 trong 7 ngày Tai nghe AP4 thế hệ 4 công nghệ âm thanh vượt ...",
+    "position": 6
+   },
+   {
+    "title": "Tai Nghe Bluetool.Pro.Gen5. Bass Căng .Pin Khỏe . Kết Nối ...",
+    "link": "https://shop.tiktok.com/vn/pdp/tai-nghe-bluetooth-pro-gen2-am-thanh-hieu-qua-chong-nuoc/1732568540030011054",
+    "snippet": "Tai nghe bluetooth Pro Gen2, Tính năng nghe gọi và mic đàm thoại ổn địnhThời lượng Pin trâu từ 4-6h liên tục- Hộp sạc có thể sạc cho tai nghe 2-3 lần- Tai ...",
+    "position": 7
+   },
+   {
+    "title": "Tai Nghe Gaming BAK T1 Có Micro Đàm Thoại Dây USB Âm ...",
+    "link": "https://shop.tiktok.com/vn/pdp/tai-nghe-bluetooth-p9-chup-tai-khong-day-chong-on-gaming/1730061224626063531",
+    "snippet": "( LUX-A3 ) Tai Nghe Bluetooth Không Dây LUX A3 , Âm Thanh Hay, Êm Ái. Có MICRO Nghe Gọi ,Tặng Ốp-Cảm Ứng Chạm, Kết Nối Mọi Dòng Máy- tai nghe không dây , Hiệu ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

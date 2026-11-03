@@ -42,7 +42,7 @@ final class LocalizationManager: AppObservableObject {
     /// LTR for both supported languages; wired now so future RTL locales need no structural change.
     var layoutDirection: LayoutDirection { .leftToRight }
 
-    private static func systemDefault() -> AppLanguage {
+    nonisolated private static func systemDefault() -> AppLanguage {
         let code = Locale.preferredLanguages.first?.prefix(2).lowercased()
         return code == "vi" ? .vi : .en
     }
@@ -52,7 +52,7 @@ final class LocalizationManager: AppObservableObject {
     /// Exists for non-`@MainActor` collaborators constructed before the environment is available —
     /// today `VoiceInputManager`, which needs a dictation locale at init. It reads the same stored
     /// value `init` does and falls back the same way, so the two cannot disagree.
-    static var currentLanguageCode: String {
+    nonisolated static var currentLanguageCode: String {
         let saved = UserDefaultsStore().string(.language).flatMap(AppLanguage.init(rawValue:))
         return (saved ?? systemDefault()).rawValue
     }

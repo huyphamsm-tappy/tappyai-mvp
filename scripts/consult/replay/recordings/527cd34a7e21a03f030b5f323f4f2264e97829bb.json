@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com/vn MacBook Air M1 thông số kỹ thuật hỗ trợ macOS",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:32:49.450Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com/vn MacBook Air M1 thông số kỹ thuật hỗ trợ macOS",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cáp Bện USB-C sang USB-C của Beats (1.5 m / 5 ft) – Hồng ...",
+    "link": "https://www.apple.com/vn/shop/product/mk8p4zp/a/c%C3%A1p-b%E1%BB%87n-usb-c-sang-usb-c-c%E1%BB%A7a-beats-15-m-5-ft-h%E1%BB%93ng-s%C3%A1ng",
+    "snippet": "Cáp hỗ trợ sạc nhanh lên đến 60 watt và có thể truyền dữ liệu ở tốc độ USB 2.0. Để sạc nhanh và hiệu quả, hãy kết nối cáp USB-C với bộ tiếp hợp nguồn USB-C ...",
+    "position": 1
+   },
+   {
+    "title": "So Sánh Các Phiên Bản MacBook Air",
+    "link": "https://www.apple.com/vn/macbook-air/compare/",
+    "snippet": "CPU 12 lõi với 2 lõi siêu xử lý, 4 lõi hiệu năng và 6 lõi tiết kiệm điện. GPU 12 lõi. Neural Accelerators Công nghệ dò tia tốc độ cao bằng phần cứng",
+    "position": 2
+   },
+   {
+    "title": "Mac - Apple (VN)",
+    "link": "https://www.apple.com/vn/mac/",
+    "snippet": "Máy tính xách tay và máy tính để bàn Mac mạnh mẽ nhất từ trước đến nay. Siêu mạnh mẽ với Apple silicon. MacBook Neo, MacBook Air, MacBook Pro, iMac, ...",
+    "position": 3
+   },
+   {
+    "title": "Apple giới thiệu MacBook Air mới trang bị chip M5",
+    "link": "https://www.apple.com/vn/newsroom/2026/03/apple-introduces-the-new-macbook-air-with-m5/",
+    "snippet": "MacBook Air có thiết kế nhôm mỏng, nhẹ và bền đẹp, màn hình Liquid Retina ấn tượng, camera 12MP Center Stage, thời lượng pin lên đến 18 giờ, hệ ...",
+    "date": "3 thg 3, 2026",
+    "position": 4
+   },
+   {
+    "title": "MacBook Air 13 inch và MacBook Air 15 inch - Mac Làm ...",
+    "link": "https://www.apple.com/vn/macbook-air/mac-does-that/",
+    "snippet": "Hướng dẫn điều hướng trên macOS trên MacBook Pro 14\" với các đường thể hiện. Thanh menu: Luôn nằm ở đầu màn hình để bạn có thể nhanh chóng tìm thấy các công cụ ...",
+    "position": 5
+   },
+   {
+    "title": "So Sánh Các Phiên Bản Mac",
+    "link": "https://www.apple.com/vn/mac/compare/",
+    "snippet": "So sánh các phiên bản Mac ; và Siri AI ; Bộ Nhớ. 8GB. 16GB 24GB 32GB ; Dung Lượng Lưu Trữ ; Màn Hình. Màn hình Liquid Retina 13,0 inch (theo đường chéo) · Màn hình ...",
+    "position": 6
+   },
+   {
+    "title": "Apple giới thiệu MacBook Air mới với chip M4 và có màu ...",
+    "link": "https://www.apple.com/vn/newsroom/2025/03/apple-introduces-the-new-macbook-air-with-the-m4-chip-and-a-sky-blue-color/",
+    "snippet": "Chip M4 sở hữu CPU 10 lõi mạnh mẽ, GPU lên đến 10 lõi và hỗ trợ bộ nhớ thống nhất lên đến 32GB, giúp MacBook Air mới nhanh hơn gấp 2 lần so với ...",
+    "date": "5 thg 3, 2025",
+    "position": 7
+   },
+   {
+    "title": "Apple ra mắt MacBook Pro 14 inch mới trang bị chip M5",
+    "link": "https://www.apple.com/vn/newsroom/2025/10/apple-unveils-new-14-inch-macbook-pro-powered-by-the-m5-chip/",
+    "snippet": "Với hiệu năng cao hơn đến 3,5 lần cho các luồng công việc AI, bộ nhớ nhanh hơn, thời lượng pin lên đến 24 giờ cùng với macOS Tahoe, MacBook ...",
+    "date": "15 thg 10, 2025",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

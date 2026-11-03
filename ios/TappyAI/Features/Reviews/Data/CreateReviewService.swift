@@ -3,9 +3,17 @@ import Foundation
 struct CreateReviewService: Sendable {
     private let api: APIClient
     private let log = AppLogger.reviews
+    private let consent: AIConsentCoordinator?
 
-    init(api: APIClient) {
+    init(api: APIClient, consent: AIConsentCoordinator? = nil) {
         self.api = api
+        self.consent = consent
+    }
+
+    /// App Review 5.1.2(i): the review's text, photo or link goes to the AI provider when the post is analysed or
+    /// checked for safety. «Để sau» = the request is not made.
+    private func requireConsent() async throws {
+        if let consent, !(await consent.ensure()) { throw AIConsentStore.blockedError }
     }
 
     // MARK: - Photo upload (multipart POST /api/reviews/upload)
@@ -136,6 +144,7 @@ struct CreateReviewService: Sendable {
     // MARK: - AI content analysis (POST /api/explore/process — non-blocking)
 
     func processContent(thumbnailUrl: String?, caption: String?) async throws -> AIProcessResponse {
+        try await requireConsent()
         var payload: [String: String] = [:]
         if let t = thumbnailUrl, !t.isEmpty { payload["thumbnail_url"] = t }
         if let c = caption, !c.isEmpty { payload["caption"] = c }
@@ -166,6 +175,9 @@ struct CreateReviewService: Sendable {
     // MARK: - Create review (POST /api/reviews)
 
     func createReview(payload: CreateReviewPayload) async throws -> CreateReviewResponse {
+        // A post with a photo or a media link is checked by the AI safety step on the server (an image is read by the
+        // model). A text-only post sends nothing to the model and needs no consent.
+        if payload.photos?.isEmpty == false || payload.mediaUrl != nil { try await requireConsent() }
         let body = try JSONEncoder().encode(payload)
         var endpoint = Endpoint(
             path: "/api/reviews",

@@ -1,0 +1,37 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com/vn AirPods Pro 2 khả năng chống nước IP54 tai nghe hộp sạc thông số kỹ thuật",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T17:19:07.502Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com/vn AirPods Pro 2 khả năng chống nước IP54 tai nghe hộp sạc thông số kỹ thuật",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "So Sánh Các Phiên Bản AirPods",
+    "link": "https://www.apple.com/vn/airpods/compare/",
+    "snippet": "Khả năng chống bụi, chống mồ hôi và chống nước không phải là các điều kiện vĩnh viễn, và khả năng này có thể giảm do hao mòn thông thường. Không sạc pin khi bị ...",
+    "position": 1
+   },
+   {
+    "title": "Apple nâng cấp AirPods Pro (thế hệ thứ 2) với tính năng ...",
+    "link": "https://www.apple.com/vn/newsroom/2023/09/apple-upgrades-airpods-pro-2nd-generation-with-usb-c-charging/",
+    "snippet": "Mức IP54 được cải tiến cho tai nghe và hộp sạc cũng tăng thêm khả ... Khả dụng cho các mẫu AirPods Pro (thế hệ thứ 2) với Hộp Sạc MagSafe ...",
+    "date": "13 thg 9, 2023",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

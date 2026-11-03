@@ -11,6 +11,10 @@ final class PlacesService: Sendable {
 
     struct FavoritesResponse: Decodable {
         let favorites: [Favorite]
+        enum CodingKeys: String, CodingKey { case favorites }
+        init(from decoder: Decoder) throws {
+            favorites = try decoder.container(keyedBy: CodingKeys.self).lossyArray(Favorite.self, forKey: .favorites)
+        }
     }
 
     func fetchFavorites() async throws -> [Favorite] {
@@ -45,6 +49,10 @@ final class PlacesService: Sendable {
 
     struct SavedReviewsResponse: Decodable {
         let reviews: [SavedReview]
+        enum CodingKeys: String, CodingKey { case reviews }
+        init(from decoder: Decoder) throws {
+            reviews = try decoder.container(keyedBy: CodingKeys.self).lossyArray(SavedReview.self, forKey: .reviews)
+        }
     }
 
     func fetchSavedReviews() async throws -> [SavedReview] {
@@ -59,6 +67,13 @@ final class PlacesService: Sendable {
         let recommendations: [Recommendation]
         let explanation: [String]?
         let personalized: Bool?
+        enum CodingKeys: String, CodingKey { case recommendations, explanation, personalized }
+        init(from decoder: Decoder) throws {
+            let c = try decoder.container(keyedBy: CodingKeys.self)
+            recommendations = c.lossyArray(Recommendation.self, forKey: .recommendations)
+            explanation = c.lossyArray(String.self, forKey: .explanation)
+            personalized = c.lenient(Bool.self, forKey: .personalized)
+        }
     }
 
     func fetchRecommendations() async throws -> RecommendationsResponse {
@@ -70,6 +85,10 @@ final class PlacesService: Sendable {
 
     struct BookingsResponse: Decodable {
         let bookings: [Booking]
+        enum CodingKeys: String, CodingKey { case bookings }
+        init(from decoder: Decoder) throws {
+            bookings = try decoder.container(keyedBy: CodingKeys.self).lossyArray(Booking.self, forKey: .bookings)
+        }
     }
 
     func fetchBookings(serviceId: String) async throws -> [Booking] {
@@ -116,6 +135,10 @@ final class PlacesService: Sendable {
 
     struct TappyReviewsResponse: Decodable {
         let reviews: [TappyReview]
+        enum CodingKeys: String, CodingKey { case reviews }
+        init(from decoder: Decoder) throws {
+            reviews = try decoder.container(keyedBy: CodingKeys.self).lossyArray(TappyReview.self, forKey: .reviews)
+        }
     }
 
     func fetchPlaceReviews(placeId: String) async throws -> [TappyReview] {

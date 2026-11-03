@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Đỉnh Bàn Cờ\" OR \"Cầu Rồng\" OR \"Ngũ Hành Sơn\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:02:30.114Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Đỉnh Bàn Cờ\" OR \"Cầu Rồng\" OR \"Ngũ Hành Sơn\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Trải Nghiệm Check-in Đỉnh Bàn Cờ Đà Nẵng",
+    "link": "https://www.tiktok.com/@pinniedigitaldiary/video/7487565906831248646",
+    "snippet": "Hãy cùng khám phá Đỉnh Bàn Cờ, nơi lý tưởng cho trekking và ngắm cảnh thiên nhiên tuyệt đẹp! #trekking #sontra #dinhbanco #danang #mountain # ...",
+    "position": 1
+   },
+   {
+    "title": "Tham Quan Ngũ Hành Sơn Đà Nẵng: Động Âm Phủ & 5 Núi",
+    "link": "https://www.tiktok.com/@mc.hienvinh/video/7535008488053902610",
+    "snippet": "Ngũ Hành Sơn ở Đà Nẵng là một trong những điểm tham quan nổi tiếng với cảnh quan hang động, núi đá và suối nước tự nhiên.",
+    "position": 2
+   },
+   {
+    "title": "Lưu Ý Quan Trọng Khi Xem Cầu Rồng Phun Lửa",
+    "link": "https://www.tiktok.com/@insightdanang/video/7691603474605264148",
+    "snippet": "* **Ngày diễn:** Chỉ có vào thứ Bảy và Chủ Nhật. * **Địa điểm:** Cầu Rồng, nối liền hai quận Hải Châu và Sơn Trà. ### Kinh Nghiệm Xem Cầu Rồng ...",
+    "position": 3
+   },
+   {
+    "title": "Đường lên Đỉnh Bàn Cờ: Hướng dẫn trekking đẹp ở Sơn Trà",
+    "link": "https://www.tiktok.com/@dat_avndomino/video/7658514356971244807",
+    "snippet": "Đường lên Đỉnh Bàn Cờ nằm trong rừng Sơn Trà, là một trong những cung đường trekking đẹp nhất ở Đà Nẵng. Cung đường được miêu tả là “triệu ...",
+    "position": 4
+   },
+   {
+    "title": "Ngũ Hành Sơn – bản giao hưởng của đá, tâm linh và văn ...",
+    "link": "https://www.tiktok.com/@quydisan/video/7569891646616177940",
+    "snippet": "Ngũ Hành Sơn – bản giao hưởng của đá, tâm linh và văn hóa dân tộc #disanvietnam #proudvietnam. Ngũ Hành Sơn – bản giao hưởng của đá, tâm linh ...",
+    "position": 5
+   },
+   {
+    "title": "Đề cử Ngũ Hành Sơn thành Di sản Thế giới hỗn hợp",
+    "link": "https://www.tiktok.com/@enews.trending/video/7690770118795742471",
+    "snippet": "Đà Nẵng sẽ nộp đề cử danh thắng Ngũ Hành Sơn trở thành Di sản Thế giới hỗn hợp. Đây là thông tin rằng chính quyền Đà Nẵng sẽ tiến hành nộp ...",
+    "position": 6
+   },
+   {
+    "title": "Các cây cầu nổi tiếng ở Đà Nẵng — Top 1 Cầu Rồng",
+    "link": "https://vt.tiktok.com/ZSbmjduuE/",
+    "snippet": "Thành phố được gọi là \"Thành phố của những cây cầu\" nhờ nhiều công trình kiến trúc cầu nổi bật. Trong đó, Cầu Rồng được xếp hạng Top 1 về mức độ ...",
+    "position": 7
+   },
+   {
+    "title": "Trekking Đỉnh Bàn Cờ Sơn Trà: Hành Trình 14km Lần Đầu ...",
+    "link": "https://www.tiktok.com/@miijuly25/video/7646446007244377345",
+    "snippet": "Lộ trình và quãng đường - Cung chính: leo lên Đỉnh Bàn Cờ trên bán đảo Sơn Trà, tổng quãng khoảng 14km (khứ hồi hoặc vòng tuỳ lộ trình nhóm chọn) ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

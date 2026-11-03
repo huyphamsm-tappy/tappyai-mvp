@@ -34,10 +34,12 @@ export type BudgetVerdict =
 
 export interface PlacesBudget {
   /** Records the intent and says whether a Google-backed search may proceed. */
-  claim(type: string | undefined, location: string | undefined): BudgetVerdict
+  claim(type: string | undefined, location: string | undefined, query?: string): BudgetVerdict
   /** Distinct intents retrieved so far. */
   readonly used: number
   readonly limit: number
+  /** One brain (review 30/10): a place name the city list does not know may cost one extra /maps lookup for its coordinates (food.ts). */
+  readonly namedCentre?: boolean
 }
 
 /**
@@ -51,6 +53,18 @@ export interface PlacesBudget {
  */
 export const PLACES_BUDGET_PLANNING = 3
 export const PLACES_BUDGET_DEFAULT = 1
+/**
+ * Agent turns (TAPPY_AGENT=1 and =2): distinct Places intents one agent turn may retrieve. A PROVIDER SAFETY QUOTA owned here, with the
+ * other Places limits — not an orchestration budget. It used to be read from the Phase 7 loop's `AGENT_LIMITS.maxToolCalls` (also 3), so
+ * changing how many tool calls an agent turn may make would have silently changed the Google quota (Phase 8 WS2 audit). Same value: the
+ * agent may ask several different questions in one turn (food, then attractions, then a hotel), never the same one twice.
+ */
+export const PLACES_BUDGET_AGENT = 3
+/**
+ * One brain (owner UAT 02/11): the model plans its own searches, and a day out asks several (a stay, food, sights, the evening). At 3 a
+ * Quy Nhon plan had its "bar pub" searches refused and ended at dinner. 6 leaves room for a full day; the model decides how many it needs.
+ */
+export const PLACES_BUDGET_ONE_BRAIN = 6
 
 /**
  * Normalizes an intent to what actually decides the result set.
@@ -70,13 +84,20 @@ function intentKey(type: string | undefined, location: string | undefined): stri
   return `${norm(type)}|${norm(location)}`
 }
 
-export function createPlacesBudget(limit: number): PlacesBudget {
+/**
+ * `byQuery` (one brain, review 30/10): the query is part of the intent. The model that plans a day asks "lẩu gà lá é" and then "bánh căn" -
+ * both restaurant + Đà Lạt - and the second came back as zero rows ('intent_already_retrieved'), read by the model as "nothing found".
+ * The limit still caps the distinct lookups of the turn.
+ */
+export function createPlacesBudget(limit: number, opts: { byQuery?: boolean; namedCentre?: boolean } = {}): PlacesBudget {
   const retrieved = new Set<string>()
+  const norm = (s: string | undefined) => normalizeVN((s ?? '').normalize('NFC').toLowerCase()).replace(/\s+/g, ' ').trim()
   return {
     get used() { return retrieved.size },
     limit,
-    claim(type, location) {
-      const key = intentKey(type, location)
+    namedCentre: opts.namedCentre === true,
+    claim(type, location, query) {
+      const key = opts.byQuery ? `${intentKey(type, location)}|${norm(query)}` : intentKey(type, location)
       // Asked again in different words. The first answer already covers it, and the cache will
       // serve it when the key matches; when it does not, a second call buys nothing.
       if (retrieved.has(key)) return { allowed: false, reason: 'intent_already_retrieved' }

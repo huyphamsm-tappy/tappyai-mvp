@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "So sánh Samsung Galaxy S24 và iPhone 15 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T01:57:39.739Z",
+ "body": {
+  "searchParameters": {
+   "q": "So sánh Samsung Galaxy S24 và iPhone 15 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "doztradingqh.vn, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/doztradingqh.vn",
+    "snippet": "Chào mừng đến với DOZCELL *** Tất cả các mặt hàng ở đây đều là hàng sẵn sàng *** Bán lẻ, Bán buôn, dropshiping Mọi hỗ trợ. Chất lượng cao, giá thấp, ...",
+    "position": 1
+   },
+   {
+    "title": "Có nên mua điện thoại trên Shopee không? 7 shop uy tín ...",
+    "link": "https://shopee.vn/blog/co-nen-mua-dien-thoai-tren-shopee-khong/",
+    "snippet": "Gian hàng này đích thị là “thiên đường” cho các fan của dòng Galaxy S24 Ultra, Z Fold/Z Flip hay các dòng quốc dân như Galaxy A và M series.",
+    "date": "18 thg 4, 2026",
+    "position": 2
+   },
+   {
+    "title": "Samsung S24 Ultra với Galaxy AI, camera 200MP",
+    "link": "https://shopee.vn/list/samsung/s24%20ultra",
+    "snippet": "Trái tim của S24 Ultra là bộ vi xử lý Snapdragon 8 Gen 3 for Galaxy, được tối ưu hóa cho dòng Galaxy, với hiệu suất CPU tăng 20% và GPU tăng 30% so với thế hệ ...",
+    "position": 3
+   },
+   {
+    "title": ".opz giá tốt Tháng 9, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=.opz",
+    "snippet": "Ốp lưng trong suốt cho Samsung S26/S25/S24/S23/FE/Plus, hoạt hình dễ thương, dành cho bé trai bé gái ôpz lưng iphone ốp điện thoại ốp. 267.300₫. 486.000₫.",
+    "position": 4
+   },
+   {
+    "title": "Cách mua trả góp trên Shopee lãi suất 0% đơn giản, an ...",
+    "link": "https://shopee.vn/blog/cach-mua-tra-gop-tren-shopee/",
+    "snippet": "So sánh mua trả góp trên Shopee và trả góp ở cửa hàng. Dưới đây là bảng so sánh giúp bạn dễ hình dung sự khác biệt giữa hai hình thức phổ ...",
+    "date": "21 thg 4, 2026",
+    "position": 5
+   },
+   {
+    "title": "28.11 Siêu Sale Black Friday | Siêu Nhanh Siêu Rẻ",
+    "link": "https://shopee.vn/m/sieu-sale-black-friday?gidzl=QKzcK7YUiX5kKs1LUOIm4cjUOb5aXBOK9WLdNpJKiHybKc5OPTEp7oO7P5q_rBGTB0CrLsCXu-DpUP-p5W",
+    "snippet": "Trước khi mua bất kỳ món đồ nào, hãy dành thời gian so sánh giá cả giữa các cửa hàng, thương hiệu khác nhau. Điều này sẽ giúp bạn mua được món đồ với mức giá ...",
+    "position": 6
+   },
+   {
+    "title": "Samsung galaxy s24fe - Giá Tốt, Sale Tháng 08, Freeship 0Đ",
+    "link": "https://shopee.vn/list/samsung%20galaxy/s24fe",
+    "snippet": "Shopee cung cấp đầy đủ các sản phẩm samsung galaxy s24fe chính hãng với nhiều mức giá ưu đãi vô cùng hấp dẫn. Bạn có thể thỏa thích tham khảo sản phẩm chính ...",
+    "position": 7
+   },
+   {
+    "title": "bao da uag giá tốt Tháng 9, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=bao%20da%20uag&urlold=bao-da-uag-iphone-xsmax/1073718429952690826/877968015750663345/%20",
+    "snippet": "UAG explorer thế hệ thứ hai phù hợp cho iPhone 16 pro max iPhone 15 14 Pro MAX iPhone 16 15 12 và giá đỡ Samsung s25ultra S24 S23, có vỏ bảo vệ chống rơi mạnh.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"M Hotel\" Đà Nẵng, khách sạn yên tĩnh khoảng 1.000.000 VND mỗi đêm, check-in 2026-10-10, check-out 2026-10-11 site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:10:41.387Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"M Hotel\" Đà Nẵng, khách sạn yên tĩnh khoảng 1.000.000 VND mỗi đêm, check-in 2026-10-10, check-out 2026-10-11 site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

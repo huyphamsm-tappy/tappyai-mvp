@@ -17,10 +17,19 @@ struct ReviewPostView: View {
     let onHide: () -> Void
     let onCreatorTap: () -> Void
     var onMusicTap: (() -> Void)?
+    /// Report someone else's post (web: shown to a signed-in non-owner). Nil hides the menu.
+    var onReport: ((ReviewReportReason) -> Void)?
+    /// The Phase 8 safety sheet (report with the full reason list + block the author). When set it
+    /// replaces the one-tap reason menu above; nil = the server has the safety flags off.
+    var onSafety: (() -> Void)?
 
+    @Environment(\.scenePhase) private var scenePhase
     @State private var showHeartBurst = false
     @State private var singleTapTask: Task<Void, Never>?
     @State private var showOwnMenu = false
+    @State private var showReportMenu = false
+
+    private var canReport: Bool { !isOwnPost && isAuthenticated && (onReport != nil || onSafety != nil) }
 
     var body: some View {
         GeometryReader { geo in
@@ -47,6 +56,10 @@ struct ReviewPostView: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        // Inside the page controller the hosted view still gets the status bar's safe-area inset, so the GeometryReader
+        // above was 59 pt short and the picture started below a black band. The status bar is hidden in the feed: let the
+        // picture run to the very top. (The caption sits at the bottom and is not affected.)
+        .ignoresSafeArea(edges: .top)
         .onChange(of: isActive) { newValue in
             if review.isVideo, !isExternalEmbed, let url = review.mediaUrl, let videoURL = URL(string: url) {
                 if isActive || isNeighbor {
@@ -65,9 +78,30 @@ struct ReviewPostView: View {
                 }
             }
         }
+        // The page is leaving the screen (swipe, other tab, pushed screen, sheet that covers it): its clip stops. A page controller
+        // never re-sends `isActive` to a page that is no longer visible, so this is the only signal that always arrives.
+        .onDisappear {
+            // a tap that is still waiting out its double-tap window must not start this clip after it left the screen
+            singleTapTask?.cancel()
+            singleTapTask = nil
+            if review.isVideo, !isExternalEmbed { videoPlayer.setActive(false) }
+        }
+        // Leaving the app (Zalo's share target, the lock screen) stops sound; coming back resumes the clip that is on screen.
+        .onChange(of: scenePhase) { phase in
+            guard review.isVideo, !isExternalEmbed else { return }
+            if phase == .active { if isActive { videoPlayer.setActive(true) } } else { videoPlayer.setActive(false) }
+        }
         .confirmationDialog("", isPresented: $showOwnMenu, titleVisibility: .hidden) {
             Button(NSLocalizedString("review.action.hide", comment: "")) { onHide() }
             Button(NSLocalizedString("review.action.delete", comment: ""), role: .destructive) { onDelete() }
+            Button(NSLocalizedString("common.cancel", comment: ""), role: .cancel) {}
+        }
+        .confirmationDialog(NSLocalizedString("review.report.title", comment: ""),
+                            isPresented: $showReportMenu, titleVisibility: .visible) {
+            // Tapping a reason sends it at once, as on web — no second confirmation.
+            ForEach(ReviewReportReason.allCases) { reason in
+                Button(NSLocalizedString(reason.labelKey, comment: "")) { onReport?(reason) }
+            }
             Button(NSLocalizedString("common.cancel", comment: ""), role: .cancel) {}
         }
     }
@@ -83,9 +117,49 @@ struct ReviewPostView: View {
     private func mediaLayer(size: CGSize) -> some View {
         if review.isVideo, !isExternalEmbed, let url = review.mediaUrl, URL(string: url) != nil {
             if isActive || isNeighbor {
-                FeedVideoView(player: videoPlayer.player)
-                    .frame(width: size.width, height: size.height)
-                    .clipped()
+                // The cover is ALWAYS underneath: the video draws over it only once it has a frame, so there is
+                // never a black rectangle. Spinner while it loads; a plain message + «try again» if it cannot.
+                ZStack {
+                    thumbnailView(size: size)
+                    FeedVideoView(player: videoPlayer.player)
+                        .frame(width: size.width, height: size.height)
+                        .clipped()
+                    if isActive, videoPlayer.failed {
+                        VStack(spacing: Spacing.sm) {
+                            Text("feed.video.failed").font(TappyFont.callout).foregroundStyle(.white)
+                            Button { videoPlayer.retry() } label: {
+                                Text("common.retry.action")
+                                    .font(TappyFont.bodyEmphasis).foregroundStyle(.white)
+                                    .padding(.horizontal, Spacing.lg).padding(.vertical, Spacing.xs)
+                                    .background(TappyColor.primary).clipShape(Capsule())
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityIdentifier("feed-video-retry")
+                        }
+                        .padding(Spacing.md)
+                        .background(.black.opacity(0.55))
+                        .clipShape(RoundedRectangle(cornerRadius: Radius.lg, style: .continuous))
+                    } else if isActive, videoPlayer.isBuffering {
+                        ProgressView().tint(.white).scaleEffect(1.3)
+                    }
+                    // Autoplay starts muted (the Web's policy); say so, and one tap turns the sound on without pausing.
+                    if isActive, videoPlayer.isMuted, videoPlayer.isPlaying, !videoPlayer.failed {
+                        VStack {
+                            Spacer()
+                            HStack(spacing: Spacing.xs) {
+                                Image(systemName: "speaker.slash.fill")
+                                Text("feed.sound.tapToUnmute")
+                            }
+                            .font(TappyFont.caption).foregroundStyle(.white)
+                            .padding(.horizontal, Spacing.sm).padding(.vertical, Spacing.xs)
+                            .background(.black.opacity(0.55)).clipShape(Capsule())
+                            .padding(.bottom, 140)
+                            .accessibilityIdentifier("feed-sound-off")
+                        }
+                        .allowsHitTesting(false)
+                    }
+                }
+                .frame(width: size.width, height: size.height)
             } else {
                 thumbnailView(size: size)
             }
@@ -259,6 +333,22 @@ struct ReviewPostView: View {
                             }
                         }
                         .buttonStyle(.plain)
+                        .minimumTapTarget()
+                        .contentShape(Rectangle())
+                    } else if canReport {
+                        Button {
+                            if let onSafety { onSafety() } else { showReportMenu = true }
+                        } label: {
+                            Image(systemName: "ellipsis")
+                                .font(.system(size: 14))
+                                .foregroundStyle(TappyColor.feedTextSecondary)
+                        }
+                        .buttonStyle(.plain)
+                        // The ⋯ glyph alone is 13 x 3 pt: the report / block entry (App Store 1.2) gets a real tap target.
+                        .minimumTapTarget()
+                        .contentShape(Rectangle())
+                        .accessibilityLabel(Text("review.report.title"))
+                        .accessibilityIdentifier("review-safety")
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -330,7 +420,8 @@ struct ReviewPostView: View {
         singleTapTask = nil
 
         onDoubleTapLike()
-        FeedVideoPlayer.feedAudioUnlocked = true
+        // A double tap is a gesture too: it unlocks sound for THIS clip as well (before it only set the flag, and this clip stayed muted).
+        if review.isVideo, !isExternalEmbed, videoPlayer.isMuted { videoPlayer.unlockAudio() }
 
         showHeartBurst = true
         let generator = UIImpactFeedbackGenerator(style: .medium)
@@ -347,8 +438,7 @@ struct ReviewPostView: View {
             try? await Task.sleep(nanoseconds: 300_000_000)
             guard !Task.isCancelled else { return }
             if review.isVideo, !isExternalEmbed {
-                videoPlayer.togglePlay()
-                videoPlayer.unlockAudio()
+                videoPlayer.handleTap()
             }
         }
     }

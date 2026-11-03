@@ -1,6 +1,7 @@
 import type { Recommendation } from './recommendation'
 import { UNKNOWN } from '@/lib/ai/consultative/decisionEvidence'
 import type { SourceId } from '@/lib/ai/consultative/evidenceProvenance'
+import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 
 // ── [TAPPY_PLACES] — the durable channel ─────────────────────────────────────
 //
@@ -142,7 +143,8 @@ export function toPersisted(r: Recommendation): PersistedRecommendation {
   // An image from a Google Photo redirect is Places content; a provider or
   // Serper image is not.
   const img = e.images.primary
-  if (img && img.source !== 'google_photo') out.image = img.url
+  // Gate 2 F-B (B1, proposal): iOS / Android render this straight into an image view, whatever the scheme — safe https only.
+  if (img && img.source !== 'google_photo' && isSafeHttpsUrl(img.url)) out.image = img.url
 
   // Application-derived and exempt values — always safe to write.
   if (typeof e.availability.openNow === 'boolean' && mayPersist(prov['availability.openingHours'])) out.openNow = e.availability.openNow

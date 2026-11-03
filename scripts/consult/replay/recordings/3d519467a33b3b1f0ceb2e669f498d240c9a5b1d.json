@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple Hộp Sạc MagSafe dành cho AirPods Pro site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T01:55:54.296Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple Hộp Sạc MagSafe dành cho AirPods Pro site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "tai nghe airpod 4",
+    "link": "https://shop.tiktok.com/vn/k/tai-nghe-airpod-4",
+    "snippet": "Airpods4, Hỗ trợ chế độ giảm tiếng ồn, đi kèm với hộp sạc Magsafe, sạc cổng USB, tai nghe Bluetooth thế hệ thứ tư. Deal. 5. 63 sold. ₫257.520. ₫373.768 ...",
+    "position": 1
+   },
+   {
+    "title": "Vỏ công tắc Khóa Tự động bật lên, Sanptoch, Dành cho Apple ...",
+    "link": "https://shop.tiktok.com/vn/pdp/vo-airpods-4-pro2-pro-3rd-2-1-chong-soc-kep-moc-nam-cham/1729596715800562340",
+    "snippet": "·【 Sạc dễ dàng 】 - Vỏ ốp bảo vệ hỗ trợ sạc có dây và không dây mà không cần tháo vỏ Airpods. Đèn LED phía trước cho hộp sạc có thể nhìn thấy.·Tự động bật ...",
+    "position": 2
+   },
+   {
+    "title": "airpod 4 chống ồn",
+    "link": "https://shop.tiktok.com/vn/k/airpod-4-chong-on",
+    "snippet": "... Airpods4, Hỗ trợ chế độ giảm tiếng ồn, đi kèm với hộp sạc Magsafe, sạc cổng USB, tai nghe Bluetooth thế hệ thứ tư. Deal. 5. 63 sold. ₫257.520.",
+    "position": 3
+   },
+   {
+    "title": "Ốp SPIGEN, Dành Cho Apple AirPods 3, AirPods Pro 2 Và ...",
+    "link": "https://shop.tiktok.com/vn/pdp/op-bao-ve-airpods-3-pro-2-spigen-chat-lieu-chong-soc-cao-cap-bo-2-phu-kien/1731778475460692120",
+    "snippet": "Ốp SPIGEN, Dành Cho Apple AirPods 3, AirPods Pro 2 Và 3, Vỏ Bảo Vệ Chống Sốc Cao Cấp, Vỏ Hộp Tai Nghe, Vỏ Ốp Airpods, Bộ 2 Phụ Kiện. Sold by ChicNest.",
+    "position": 4
+   },
+   {
+    "title": "Hộp Đựng Tai Nghe, Công Tắc Khóa Bật Lên Tự Động, ...",
+    "link": "https://shop.tiktok.com/vn/pdp/hop-dung-tai-nghe-airpods-thiet-ke-an-toan-tien-loi/1732271801426152262?source=anchor",
+    "snippet": "【Bảo vệ địa chấn】Được làm bằng vật liệu TPU cấp quân sự và có thiết kế khóa an toàn, nó có thể bảo vệ Airpods của bạn khỏi bị rơi, trầy xước và va chạm hàng ...",
+    "position": 5
+   },
+   {
+    "title": "Ốp Tai Nghe Apple AirPods 1 2 Pro, Thiết Kế Hộp Giày ...",
+    "link": "https://shop.tiktok.com/vn/pdp/op-tai-nghe-airpods-3-vo-silicon-thoi-trang-3d-thiet-ke-hop-giay/1730202552562649265",
+    "snippet": "Ốp Bảo Vệ Airpods Pro, Thiết Kế Hình Chú Chó Pacha Dễ Thương Thế Hệ Thứ 2, Ốp Mềm Trong Suốt Hoạt Hình, Thích Hợp Cho Airpods Pro Phụ Kiện.",
+    "position": 6
+   },
+   {
+    "title": "Hộp Tai Nghe, Bạc Mạ Điện, Sang Trọng, Dành Cho Vỏ ...",
+    "link": "https://shop.tiktok.com/vn/pdp/hop-tai-nghe-mau-sang-trong-danh-cho-airpods-pro2-1-2-3/1730219225881741658",
+    "snippet": "Mô hình tương thích:Đối với Apple Airpods1 / 2 / Pro / 3 mới 2021 / Pro 2ndGói bao gồm:Hộp đựng tai nghe * 1 + Móc * 1.Thông báo:1. hỗ trợ vận chuyển thả!",
+    "position": 7
+   },
+   {
+    "title": "Ốp Chống Sốc, Dành Cho Airpods Pro 2 1, ...",
+    "link": "https://shop.tiktok.com/vn/pdp/vo-chong-soc-airpods-pro-2-3-tpu-pc-cong-tac-tu-tinh/1731238907614432050",
+    "snippet": "Ốp Nam Châm Sạc Không Dây Magsafe, Chất Liệu Silicon Lỏng Chính Hãng, Tương ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

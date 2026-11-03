@@ -284,3 +284,13 @@ describe('the placeholder cannot be forgotten', () => {
     expect(block, 'and must say what would replace it').toContain('public/home/inspire/')
   })
 })
+
+describe('Phase 7 8I — a card\'s picture matches its suggestion', () => {
+  it('a repeated category takes another picture OF ITS OWN category, never another category\'s', () => {
+    const art = assignCardArt([{ category: 'travel' }, { category: 'food' }, { category: 'travel' }, { category: 'spa' }, { category: 'travel' }])
+    expect(new Set(art).size).toBe(5)
+    for (const i of [0, 2, 4]) expect(art[i]).toMatch(/^\/home\/inspire\/travel(-\d)?\.webp$/)
+    expect(art[1]).toMatch(/\/food(-\d)?\.webp$/)
+    expect(art[3]).toMatch(/\/spa(-\d)?\.webp$/)
+  })
+})

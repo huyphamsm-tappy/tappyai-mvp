@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Gogi House Trần Hưng Đạo Quận 1\" OR \"Hoang Yen Buffet Premier\" OR \"Chài Village\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:32:29.930Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Gogi House Trần Hưng Đạo Quận 1\" OR \"Hoang Yen Buffet Premier\" OR \"Chài Village\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Buffet Tôm Hùm Không Giới Hạn tại Chài Village - Quận 1",
+    "link": "https://www.tiktok.com/@ngocduy_diachianuong/video/7650442125921750292",
+    "snippet": "Với menu buffet phong phú chỉ hơn 700.000 VNĐ, Chài Village là một lựa chọn đáng cân nhắc cho những ai đang tìm kiếm một địa điểm buffet tôm hùm ...",
+    "position": 1
+   },
+   {
+    "title": "Buffet tôm hùm Chài Village - Ăn thả ga ở Phố Đi Bộ ...",
+    "link": "https://www.tiktok.com/@dangtumlum20/video/7664213216897273108",
+    "snippet": "Giới thiệu nhanh Ăn buffet tôm hùm thả ga tại Chài Village, ngay trên Phố Đi Bộ Nguyễn Huệ — lựa chọn lý tưởng cho ai muốn thưởng thức hải sản ...",
+    "position": 2
+   },
+   {
+    "title": "Buffet Chài Village",
+    "link": "https://www.tiktok.com/discover/buffet-ch%C3%A0i-village",
+    "snippet": "Khám phá Buffet Hải Sản tại Chài Village: Lobster tươi ngon, không gian ấm cúng cho bữa tối hoàn hảo tại Sài Gòn!Xem thêm video về Chài Village Buffet ...",
+    "position": 3
+   },
+   {
+    "title": "Chài Village buffet — Chài Village dining guide",
+    "link": "https://www.tiktok.com/@duyhaydi86/video/7662599116760927518",
+    "snippet": "Lead Chài Village buffet highlights what visitors most want to know: buffet options, what to expect at the venue, and practical tips for planning a visit to ...",
+    "position": 4
+   },
+   {
+    "title": "Buffet Tôm Hùm Tại Chài Village - Trải Nghiệm Ẩm Thực Mới",
+    "link": "https://www.tiktok.com/@ancungdaune/video/7444156152851483912",
+    "snippet": "Khám phá buffet tôm hùm tại Chài Village, nơi mang đến trải nghiệm ẩm thực phong phú. Đừng bỏ qua đánh giá ẩm thực ngon! #ancungdaune # ...",
+    "position": 5
+   },
+   {
+    "title": "Buffet tôm hùm Chài Village ở 99 Nguyễn Huệ — ăn thả ga ...",
+    "link": "https://www.tiktok.com/@sonrakhe/video/7642641884971683092",
+    "snippet": "Buffet tôm hùm Chài Village ở 99 Nguyễn Huệ — ăn thả ga, view Saigon Tóm tắt nhanh Chài Village phục vụ buffet tôm hùm không giới hạn, còn ...",
+    "position": 6
+   },
+   {
+    "title": "Chài Village Buffet Review",
+    "link": "https://www.tiktok.com/discover/ch%C3%A0i-village-buffet-review",
+    "snippet": "Chài Village thưởng thức buffet tôm hùm không giới hạn số lượng giữa lòng ... Chài Village in Saigon is a must visit for those of you who enjoy seafood ...",
+    "position": 7
+   },
+   {
+    "title": "Cua 🦞 Buffet Hải Sản Tươi Sống | Chài Village",
+    "link": "https://www.tiktok.com/@chaivillage_official/video/7663017488430632212",
+    "snippet": "Trải nghiệm một bữa tiệc hải sản thịnh soạn với cua và các loại hải sản tươi sống tại Chài Village. Thực khách có thể tận hưởng không giới hạn các món ăn ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

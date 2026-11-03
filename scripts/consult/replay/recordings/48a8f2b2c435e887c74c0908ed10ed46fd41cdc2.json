@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hội An áp dụng giá vé tham quan mới từ 2 00 khách trong nước quốc tế tháng 3 2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:04:12.044Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hội An áp dụng giá vé tham quan mới từ 2 00 khách trong nước quốc tế tháng 3 2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hội An có đánh mất mình từ việc bán vé tham quan?",
+    "link": "https://gialaitv.vn/hoi-an-co-danh-mat-minh-tu-viec-ban-ve-tham-quan/",
+    "snippet": "Theo Đề án về kiểm soát hoạt động bán vé, hướng dẫn tham quan khu phố cổ, kể từ ngày 15/5 tới đây, thành phố Hội An áp dụng giá vé 80 nghìn đồng ...",
+    "date": "5 thg 4, 2026",
+    "position": 1
+   },
+   {
+    "title": "Giá vé các điểm tham quan tại Hội An",
+    "link": "https://danatravel.vn/thong-tin-du-lich/gia-ve-cac-diem-tham-quan-tai-hoi-an.html?srsltid=AU7gw4WLKkeLknHUvtKUKEUhb7rHQd0NGbJnzZaPcRIU-zv6gSMOBNhz",
+    "snippet": "Giá vé các điểm tham quan tại Hội An ; Combo vé Show + thuyền · Trẻ em (Vé show + 50k), 300.000 VNĐ/Khách, 375.000 VNĐ/Khách, 650.000 VNĐ/Khách.",
+    "date": "13 thg 1, 2026",
+    "position": 2
+   },
+   {
+    "title": "[GIẢM 10%] Vé show Ký Ức Hội An 2026",
+    "link": "https://www.traveloka.com/vi-vn/activities/vietnam/product/the-hoi-an-memories-show-tickets-2001400570194",
+    "snippet": "Giá vé: từ 420.000 VND. 2. Công viên Đất nung Thanh Hà. Nếu muốn tìm hiểu về nghề gốm truyền thống của Hội An, công viên Đất nung Thanh ...",
+    "position": 3
+   },
+   {
+    "title": "Vé Ký Ức Hội An 2026 mới nhất: Những thông tin quan trọng ...",
+    "link": "https://www.facebook.com/danago.vn/videos/-v%C3%A9-k%C3%BD-%E1%BB%A9c-h%E1%BB%99i-an-2026-m%E1%BB%9Bi-nh%E1%BA%A5tnh%E1%BB%AFng-th%C3%B4ng-tin-quan-tr%E1%BB%8Dng-b%E1%BA%A1n-kh%C3%B4ng-n%C3%AAn-b%E1%BB%8F-l%E1%BB%A1-t%E1%BB%AB-/1300674828870064/",
+    "snippet": "Giá vé hạng bốc VIP cho du khách ngoại tỉnh. Một triệu hai trăm ngàn đồng một vé người lớn và sáu trăm ngàn đồng một vé cho trẻ em. Ưu đãi dành ...",
+    "position": 4
+   },
+   {
+    "title": "Cập Nhật Giá Vé Tham Quan Phố Cổ Hội An 2026 & Mẹo ...",
+    "link": "https://phanvantravel.com/ve-tham-quan-pho-co-hoi-an",
+    "snippet": "Khách quốc tế. 120.000 VNĐ/người/lượt. Người lớn và trẻ em nước ngoài cao từ 1m4 trở lên ; Trẻ em (1m đến dưới 1m4). 50.000 VNĐ/người/lượt. Áp dụng theo chiều ...",
+    "position": 5
+   },
+   {
+    "title": "Chi Phí Tham Quan Hội An 2026: Đi Bao Nhiêu Tiền Là Đủ?",
+    "link": "https://vuivivudanang.vn/blogs/tin-tuc-hoi-an/chi-phi-tham-quan-hoi-an-2026-di-bao-nhieu-tien-la-du",
+    "snippet": "Trung bình khoảng 500.000 – 1.000.000 VNĐ/người, bao gồm di chuyển, ăn uống và vé tham quan cơ bản. Có cần mua vé vào phố cổ không? Có, ...",
+    "date": "8 ngày trước",
+    "position": 6
+   },
+   {
+    "title": "Kinh nghiệm Du lịch HỘI AN 2026 từ A-Z: lưu trú, ăn chơi, ...",
+    "link": "https://vnexpress.net/cam-nang-du-lich-hoi-an-4446174.html",
+    "snippet": "... dừng chân chụp ảnh thú vị, tìm hiểu văn hóa địa phương... Với vé tham quan giá 80.000 đồng cho một người giá trị trong 24h bạn có cơ hội tham quan ba trong ...",
+    "position": 7
+   },
+   {
+    "title": "GIỜ THAM QUAN VÀ GIÁ VÉ MỚI NHẤT (ÁP DỤNG TỪ 01.01 ...",
+    "link": "https://dinhdoclap.gov.vn/gio-tham-quan-va-gia-ve-moi-nhat-ap-dung-tu-01-8-2025-2/",
+    "snippet": "GIỜ THAM QUAN VÀ GIÁ VÉ MỚI NHẤT (ÁP DỤNG TỪ 01.01.2026) · 1. Vé tham quan toàn bộ (Dinh và Nhà Trưng bày). Độ tuổi từ 18 – 59: 80.000 VNĐ. Độ tuổi từ 60 trở lên ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

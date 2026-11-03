@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:mps.gov.vn lệ phí cấp hộ chiếu phổ thông 2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:33:45.188Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:mps.gov.vn lệ phí cấp hộ chiếu phổ thông 2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hướng dẫn đăng ký hồ sơ đề nghị cấp hộ chiếu phổ thông ...",
+    "link": "https://mps.gov.vn/chinh-sach-phap-luat/bai-viet/huong-dan-dang-ky-ho-so-de-nghi-cap-ho-chieu-pho-thong-tren-cong-dich-vu-cong-quoc-gia-d3-t797",
+    "snippet": "Cổng Thông tin điện tử Bộ Công an hướng dẫn đăng ký hồ sơ đề nghị cấp hộ chiếu phổ thông trên Cổng dịch vụ công quốc gia với 04 bước, như sau:",
+    "position": 1
+   },
+   {
+    "title": "Mong kiểm tra tiến độ cấp hộ chiếu phổ thông - mã hồ sơ ...",
+    "link": "https://mps.gov.vn/hoi-dap/chi-tiet-cau-hoi/32bc696c-eae6-4681-824f-4911e1cb2206?page=/",
+    "snippet": "Công dân đã thanh toán lệ phí hồ sơ cấp hộ chiếu vào ngày 27/07/2026. Tuy nhiên hồ sơ của công dân cần được bổ túc vì ảnh chân dung do công ...",
+    "date": "10 thg 9, 2026",
+    "position": 2
+   },
+   {
+    "title": "Hồ sơ Cấp hộ chiếu online hoàn thành ngày 09/4/2026 ...",
+    "link": "https://mps.gov.vn/hoi-dap/chi-tiet-cau-hoi/00df46fe-036d-4563-bf8f-2b7bf3783199?page=/",
+    "snippet": "Ngày 02/4/2026, công dân hoàn thành nghĩa vụ nộp lệ phí, hồ sơ được tiếp nhận, xử lý theo quy định; Phòng Quản lý xuất nhập cảnh chuyển đề nghị ...",
+    "date": "10 thg 7, 2026",
+    "position": 3
+   },
+   {
+    "title": "Kiểm ta hồ sơ cấp hộ chiếu online mã G01.913.108- ...",
+    "link": "https://mps.gov.vn/hoi-dap/chi-tiet-cau-hoi/803e4cbe-22d9-4505-a0b3-671eee56fcfc?page=/",
+    "snippet": "Ngày 25/5/2026, công dân trực tiếp đến Phòng Quản lý xuất nhập cảnh để bổ túc hồ sơ, khai lại tờ khai, chụp lại ảnh chân dung để nộp trực tiếp, ...",
+    "date": "17 thg 7, 2026",
+    "position": 4
+   },
+   {
+    "title": "Tình trạng hồ sơ cấp hộ chiếu chưa trả kết quả, mã hồ ...",
+    "link": "https://mps.gov.vn/hoi-dap/chi-tiet-cau-hoi/e8d644ee-c804-4333-b02d-0314b48b33a4?page=/",
+    "snippet": "Công dân Vương Hồng Phong nộp hồ sơ vào ngày 27/02/2026, được tiếp nhận hồ sơ và đóng lệ phí cùng ngày, hạn trả kết quả dự kiến ngày 11/3/2026.",
+    "position": 5
+   },
+   {
+    "title": "KIểm tra hồ sơ cấp hộ chiếu mã G01.891.108-260727- ...",
+    "link": "https://mps.gov.vn/hoi-dap/chi-tiet-cau-hoi/3793b908-8317-4b45-831a-7fee6bd85feb?page=/",
+    "snippet": "Đến ngày 22/8/2026, Cục Quản lý xuất nhập cảnh đã in hộ chiếu cho công dân và chuyển hộ chiếu qua đường Bưu chính về Phòng Quản lý xuất nhập ...",
+    "position": 6
+   },
+   {
+    "title": "Mong tra cứu giúp hồ sơ Cấp hộ chiếu đã nộp tiền ngày 21 ...",
+    "link": "https://mps.gov.vn/hoi-dap/chi-tiet-cau-hoi/b3f9b5a5-3aa0-4ee0-bb0f-53f471f9f97e?page=/",
+    "snippet": "Mong cơ quan chức năng tra cứu giúp hồ sơ Cấp hộ chiếu đã nộp tiền ngày 21/05/2026 ạ. E cảm ơn G01.839.108-260509-00226.",
+    "date": "13 thg 7, 2026",
+    "position": 7
+   },
+   {
+    "title": "Lấy ý kiến về đối tượng, thẩm quyền, trình tự, thủ tục cấp ...",
+    "link": "https://mps.gov.vn/chinh-sach-phap-luat/bai-viet/lay-y-kien-ve-doi-tuong-tham-quyen-trinh-tu-thu-tuc-cap-tem-ab-d1-t1727",
+    "snippet": "Theo đó, dự thảo Quyết định này quy định về đối tượng, thẩm quyền, trình tự, thủ tục cấp tem “AB” vào hộ chiếu phổ thông của công dân Việt Nam để xuất cảnh ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

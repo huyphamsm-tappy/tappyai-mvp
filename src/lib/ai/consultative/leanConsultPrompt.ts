@@ -48,9 +48,52 @@ export const DOMAIN_TOOLS: Record<ConsultDomain, readonly string[]> = {
 }
 
 /** The union of the tools of the turn's areas (multi-area requests get each area's tools). */
-export function consultTools(domains: readonly ConsultDomain[]): string[] {
-  return [...new Set(domains.flatMap(d => DOMAIN_TOOLS[d] ?? []))]
+export function consultTools(domains: readonly ConsultDomain[], opts: { shoppingWebSearch?: boolean; knowledgeTurnWebSearch?: boolean; toolByNeed?: boolean; math?: boolean; research?: boolean } = {}): string[] {
+  const tools = domains.flatMap(d => DOMAIN_TOOLS[d] ?? [])
+  // round 3h (ROUTE_TOOL_OFFER_GUARD): a shopping turn may also OFFER web_search for a price or market lookup. Offered, never forced.
+  if (opts.shoppingWebSearch && domains.includes('shopping')) tools.push('web_search')
+  // Wave 2I (B, CONSULT_KNOWLEDGE_TURN_TOOLS): a turn the search-now gate blocked is a knowledge / conversation turn that still names an area (the intent layer names one for it): it also gets web_search.
+  if (opts.knowledgeTurnWebSearch) tools.push('web_search')
+  // Wave 3 (W2, CONSULT_TOOL_BY_NEED): every lean consult turn with an area is offered web_search; the model chooses by need. Offered, never forced.
+  if (opts.toolByNeed && domains.length > 0) tools.push('web_search')
+  // Wave 3 (W4, CONSULT_DETERMINISTIC_MATH): every lean consult turn with an area is offered the exact calculator. Offered, never forced.
+  if (opts.math && domains.length > 0) tools.push('calculate')
+  // Wave 3 (W1, CONSULT_RESEARCH_LOOP): every lean consult turn with an area is offered the page reader AND web_search (a read needs a link to read: the search is where most links come from). Offered, never forced.
+  if (opts.research && domains.length > 0) tools.push('web_search', 'read_page')
+  return [...new Set(tools)]
 }
+
+/**
+ * Wave 3 (W4): one GENERAL line, added only with CONSULT_DETERMINISTIC_MATH on. It says arithmetic goes through the calculator and the answer states the inputs; it carries no keyword and no example sentence.
+ */
+export const MATH_TOOL_RULE = `TINH TOAN: moi phep tinh so hoc (tong tien, chia, ty le phan tram, lai suat, tra gop, so sanh chi phi) PHAI dung cong cu calculate, khong tinh nham; dung so cua nguoi dung va so tu ket qua cong cu, viet so thap phan bang dau cham. Khi tra loi, neu ngan gon cong thuc/dau vao va dung dung ket qua calculate tra ve (lam tron theo nhu cau).`
+
+/** Wave 3 (W3): the output ceiling of a structured-synthesis turn. The hard per-call ceiling is 4.000 (requestBudget.ts) and stays. */
+export const STRUCTURED_MAX_TOKENS = 3500
+
+/**
+ * Wave 3 (W3): the shape of the writing step, added only with CONSULT_STRUCTURED_SYNTHESIS on and placed last (after the frame). It REPLACES the short voice only for a request with several parts: the model counts
+ * the parts and constraints of the user's request itself (no keyword, no list of words); one simple decision keeps the short "chot mot lua chon" form and its "Mình chọn:" line.
+ */
+export const STRUCTURED_SYNTHESIS_RULE = `HINH DANG CAU TRA LOI (ghi de "ngan" cua khung tren CHI khi yeu cau co tu 2 ve/rang buoc tro len; dem so ve trong yeu cau cua nguoi dung): moi yeu cau don gian, chi can mot quyet dinh thi giu cach chot MOT lua chon, ngan, va giu dong "Mình chọn: ..." nhu cu. Tu 2 ve tro len: (1) mo dau 1-2 cau ket luan; (2) moi ve mot muc co tieu de ngan, tra loi du tung ve, khong bo ve nao, khong them ve nguoi dung khong hoi; (3) co tu 2 phuong an tro len thi dung BANG markdown, moi hang la mot phuong an, moi cot la mot rang buoc nguoi dung da neu; o nao chua co du lieu thi ghi "chua xac minh" (khong dien con so uoc luong); (4) con so/dieu kien lay tu trang hoac ket qua tim kiem thi ghi ten nguon va ngay lay ngay ben canh; (5) cuoi cung: nhung gi chua xac minh va buoc nen lam tiep. Do dai theo so ve va luong bang chung: du de tra loi het cac ve, khong lan man, khong lap lai. Van giu moi luat that: chi dung du lieu tu cong cu/trang thai, link do he thong gan.`
+
+/** Wave 3 (W4): the description of the calculator tool shown to the model. General: what it takes and returns. */
+export const CALCULATE_DESCRIPTION = 'Tinh chinh xac mot bieu thuc so hoc. Toan tu: + - * / ^ ( ) va % (x% = x/100); so thap phan dung dau cham; cac doi so cua ham cach nhau bang dau phay roi dau cach. Ham: pmt(lai_moi_ky, so_ky, so_tien_vay [, gia_tri_con_lai]) tien tra moi ky; fv(lai, ky, tien_gop_moi_ky [, von_dau]); pv(lai, ky, tien_moi_ky [, gia_tri_cuoi]); npv(lai, dong_tien_1, dong_tien_2, ...); rate_conv(lai_moi_ky, so_ky) lai gop; round(x, so_le), min, max, sum, avg, pow, sqrt, ln, exp, abs; hang so pi, e. Lai suat la phan so moi ky (1%/thang = 0.01). Tra ve value (chinh xac), rounded (so nguyen), rounded_2, steps va inputs.'
+
+/**
+ * Wave 3 (W2): one GENERAL line, added only with CONSULT_TOOL_BY_NEED on. It describes needs, not words: which kind of need uses which tool. No keyword, no example sentence, no area question rule
+ * (the area question behaves as with the search-now gate alone).
+ */
+export const TOOL_BY_NEED_RULE = `CHON CONG CU THEO NHU CAU: thong tin co the da doi (thoi su, so lieu, gia, gio mo cua, lich, quy dinh) hoac can nguon → web_search roi tra loi dua tren ket qua; yeu cau di den mot noi/tim mot noi → cong cu tim dia diem; kien thuc on dinh → tra loi truc tiep, khong can tim. Co the dung nhieu cong cu trong cung mot luot khi nhu cau co nhieu phan.`
+
+/** Wave 3 (W2): the description web_search carries with CONSULT_TOOL_BY_NEED on - when to use it and when not. General: no keyword, no example. */
+export const WEB_SEARCH_DESCRIPTION_BY_NEED = 'Tim tren internet khi cau tra loi phu thuoc vao thong tin co the da thay doi hoac can nguon dan (tin moi, so lieu, gia, gio mo cua, lich, quy dinh, thong tin ve mot to chuc hay san pham cu the). Khong dung cho kien thuc on dinh ma ban da biet chac, va khong thay cho cong cu tim dia diem khi nguoi dung muon tim noi de den. Ket qua chi la mau trich: chi noi dieu ket qua noi, nguon nao thi ghi nguon do.'
+
+/**
+ * Wave 2I (B) / Wave 2J: one GENERAL line for a turn the search-now gate blocked and that is given web_search. Added to the prompt only with CONSULT_KNOWLEDGE_TURN_TOOLS on.
+ * It says only which tool a knowledge / information question uses; it carries no keyword, no example and nothing about the area question (that behaves as with the gate alone).
+ */
+export const KNOWLEDGE_TURN_TOOL_RULE = `CAU HOI KIEN THUC / THONG TIN khong nhac toi dia diem: dung web_search khi can thong tin moi hoac can nguon, va tra loi truc tiep; khong dung cong cu tim dia diem neu nguoi dung khong yeu cau dia diem.`
 
 export function buildLeanConsultSystem(o: {
   lang: string
@@ -62,6 +105,8 @@ export function buildLeanConsultSystem(o: {
   consultBlock: string
   /** Request blocks that must survive (decision evidence, memory, prefs, planning block…). */
   extra?: string[]
+  /** Blocks placed AFTER the frame (the last thing the model reads before the reminder) — the advice layer (adviceBlock.ts). */
+  tail?: string[]
   /**
    * Cost §6: the area's static text (its tool rules + every frame of the area, `frameLibrary`) goes in the
    * CACHED segment, so it clears Anthropic's minimum cacheable prefix and a session's later turns read it
@@ -83,6 +128,7 @@ export function buildLeanConsultSystem(o: {
     o.library || o.core ? '' : tools,
     ...(o.extra ?? []).filter(Boolean),
     o.consultBlock,
+    ...(o.tail ?? []).filter(Boolean),
     `REMINDER: reply in ${o.langName} only.`,
   ].filter(Boolean).join('\n\n')
   if (o.core) return { shared: [o.core, tools, o.library ?? ''].filter(Boolean).join('\n\n'), dynamic }

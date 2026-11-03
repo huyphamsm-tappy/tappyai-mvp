@@ -1,4 +1,6 @@
 import { getCache, setCache, serperSearch } from './common'
+import { logText } from '@/lib/ai/logSafeText'
+import { withRetrievedAt } from './retrievalClock'
 import { normalizeVN } from '@/lib/ai/intent'
 import { createClient } from '@/lib/supabase/server'
 import { publishableFilter } from '@/lib/safety/gate/publicationAccess'
@@ -22,8 +24,22 @@ import { serperPlaces, serperPlaceToRow } from './serperPlaces'
 import { serperMapsQuery } from './serperLocation'
 import { placesProvider } from './placesProvider'
 import { SERPER_PLACES_SOURCE } from '@/lib/recommendation/buildEntity'
+import { consultV3Enabled } from '@/lib/ai/consultV3Flag'
+import { isAllowedMediaImage } from '@/lib/media/mediaHosts'
+import { placeQueryFit } from './placeQueryFit'
 
-export async function getNews(query: string, lang = 'vi') {
+/**
+ * CONSULT_V3 layouts (owner 17/10): the article's own picture from the RSS item — the first <img src> in its description, else its
+ * <enclosure url>. Kept only when it is an https image on that outlet's CDN (mediaHosts.ts); the news layout shows it beside the cited
+ * article. Off the flag nothing is read.
+ */
+export function rssItemImage(item: string): string | null {
+  const raw = item.match(/<img[^>]+src=["']([^"']+)["']/i)?.[1] ?? item.match(/<enclosure[^>]+url=["']([^"']+)["']/i)?.[1] ?? null
+  const url = raw ? raw.replace(/&amp;/g, '&').trim() : null
+  return url && isAllowedMediaImage(url) ? url : null
+}
+
+async function getNewsImpl(query: string, lang = 'vi') {
   const cacheKey = newsCacheKey(query, lang)
   const cached = getCache(cacheKey)
   if (cached) return cached
@@ -36,7 +52,8 @@ export async function getNews(query: string, lang = 'vi') {
   let result: unknown
   try {
     const queryTerms = query.toLowerCase().split(' ').filter(t => t.length > 2)
-    const articles: Array<{ title: string; description: string; link: string; source: string; published: string }> = []
+    const articles: Array<{ title: string; description: string; link: string; source: string; published: string; image?: string }> = []
+    const withImages = consultV3Enabled()
     await Promise.all(feeds.map(async feed => {
       try {
         const resp = await Promise.race([
@@ -54,7 +71,8 @@ export async function getNews(query: string, lang = 'vi') {
           if (!title) continue
           const tl = title.toLowerCase(), dl = desc.toLowerCase()
           const matches = queryTerms.length === 0 || queryTerms.some(k => tl.includes(k) || dl.includes(k))
-          if (matches) articles.push({ title, description: desc.slice(0, 200), link, source: feed.name, published: pub ? new Date(pub).toLocaleDateString(isVi(lang) ? 'vi-VN' : 'en-US') : messages.news.latest(lang) })
+          const image = withImages ? rssItemImage(item) : null
+          if (matches) articles.push({ title, description: desc.slice(0, 200), link, source: feed.name, published: pub ? new Date(pub).toLocaleDateString(isVi(lang) ? 'vi-VN' : 'en-US') : messages.news.latest(lang), ...(image ? { image } : {}) })
         }
       } catch { /* skip feed */ }
     }))
@@ -412,11 +430,14 @@ export async function searchPlacesOSM(query: string, location?: string, type?: s
       // and `PlaceDecision` already renders the address line only when present,
       // so omitting it is what the rest of the pipeline expects.
       const addr = [tags['addr:housenumber'], tags['addr:street'], tags['addr:suburb']].filter(Boolean).join(' ') || tags['addr:full'] || null
+      const rowName = tags['name:vi'] || tags.name || ''
       return {
-        name: tags['name:vi'] || tags.name || '',
+        name: rowName,
         ...(addr ? { address: addr } : {}),
         phone: tags.phone || tags['contact:phone'] || null,
-        maps_link: elat && elon ? 'https://www.google.com/maps?q=' + elat + ',' + elon : googleMapsUrl,
+        // Gate 2 S5, D-S5-7b (PROPOSAL): without coordinates, a Maps search for THIS row (its name + address, tool data) -- never the
+        // model's search query (googleMapsUrl), which the row's 'action' maps_link grant would otherwise publish.
+        maps_link: elat && elon ? 'https://www.google.com/maps?q=' + elat + ',' + elon : 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent([rowName, addr].filter(Boolean).join(' ')),
         ...(cuisine ? { cuisine } : {}),
         ...(tags.opening_hours ? { opening_hours: tags.opening_hours } : {}),
         ...(website ? { website_uri: website } : {}),
@@ -482,6 +503,36 @@ function isDirectFoodOrderLink(link: string): boolean {
 // fallback rows and the Google rows stay shape-compatible.
 
 /**
+ * chat2 A2 (2026-10-02): a Serper /maps call with NO centre is answered from New York ('nhà hàng Việt' →
+ * 8 of 8 rows in NY, measured), and the geography guard then drops every row — the user gets
+ * "no results" for a venue search in their own city. With no GPS, no stated area and no city in the
+ * query or the location, the search is centred on Ho Chi Minh City (the default city); a city the
+ * text names keeps its own destination centre (resolved by the caller).
+ */
+/**
+ * The coordinates of a named place the city list does not know: the first /maps row for the bare name inside Việt Nam's bounds; when
+ * no row is in Việt Nam the place is abroad, and its first row is the place (owner UAT 02/11: "Tokyo, Japan" was dropped for being
+ * outside Việt Nam and the search ran around the default TP.HCM - Saigon izakayas on a Tokyo plan).
+ */
+const inVietnamBounds = (lat: number, lng: number) => lat > 8 && lat < 23.5 && lng > 102 && lng < 110
+
+async function placeCoordinates(name: string): Promise<{ lat: number; lng: number } | null> {
+  if (cityInText(name)) return null
+  const rows = (await serperPlaces(name, null, { priceRetry: false }).catch(() => null) ?? [])
+    .filter(r => typeof r.latitude === 'number' && typeof r.longitude === 'number')
+  const inVietnam = (r: (typeof rows)[number]) => inVietnamBounds(r.latitude as number, r.longitude as number)
+  const top = rows.find(inVietnam) ?? rows[0]
+  console.log(JSON.stringify({ type: 'tappyai_places_debug', provider: 'serper_maps', step: 'named_place_centre', found: !!top }))
+  return top ? { lat: top.latitude as number, lng: top.longitude as number } : null
+}
+
+function defaultCentre(query: string, location: string | undefined): { lat: number; lng: number; zoom: number } | null {
+  if (cityInText(query) || cityInText(location)) return null
+  console.log(JSON.stringify({ type: 'tappyai_places_debug', provider: 'serper_maps', step: 'default_centre', city: 'hcm' }))
+  return { lat: 10.7769, lng: 106.7009, zoom: 14 }
+}
+
+/**
  * Serper `/maps` — the PRIMARY structured place source for Vietnam.
  *
  * 🚨 WHY IT SITS ABOVE OSM AND BELOW GOOGLE. Google Places is the richest source
@@ -507,6 +558,8 @@ async function searchPlacesSerper(
   priceRetry = true,
   placeType?: string | null,
   areaCentre: { lat: number; lng: number; label: string } | null = null,
+  /** One brain (review 30/10): this turn may spend one /maps lookup to place a name the city list does not know (PlacesBudget.namedCentre). */
+  namedCentre = false,
 ): Promise<Record<string, unknown> | null> {
   const { destination, remote } = scope
   // PRELAUNCH 5b: a district the user NAMED beats their GPS — "phở ở Quận 3" asked from Quận 1 is
@@ -519,6 +572,9 @@ async function searchPlacesSerper(
   // near (14z). The engine still ranks nearer rows higher, so a close venue still wins when it exists.
   const zoom = placeType === 'attraction' || placeType === 'cinema' ? 12 : 14
   const centreAt = (lat: number, lng: number) => ({ lat, lng, zoom })
+  // Review 30/10: a place the city list does not know ("Côn Đảo", "Tam Cốc", "Mộc Châu") had no centre - refused by the route, or centred on
+  // the default TP.HCM. The place name itself is looked up once (no centre) and its own coordinates are the centre (a Việt Nam row first; abroad, its own).
+  const named = namedCentre && !useArea && !centeredOnUser && !destination && !locationBias && !!location?.trim() ? await placeCoordinates(location!.trim()) : null
   const centre = useArea
     ? centreAt(areaCentre!.lat, areaCentre!.lng)
     : centeredOnUser
@@ -527,7 +583,9 @@ async function searchPlacesSerper(
       ? centreAt(destination.coords[0], destination.coords[1])
       : locationBias
         ? centreAt(locationBias.lat, locationBias.lng)
-        : null
+        : named
+          ? centreAt(named.lat, named.lng)
+          : defaultCentre(query, location)
 
   // The place string is normalised (city alias → Maps name, no commas) so `/maps` answers with
   // `priceLevel` consistently — see serperLocation.ts for the measurement. Serper only.
@@ -556,11 +614,15 @@ async function searchPlacesSerper(
     returned: records.length, inScope: rows.length,
     destination: destination?.query ?? null, centeredOnUser, area: useArea ? areaCentre!.label : null,
   }))
+  // 01/11: a search centred on a place ABROAD says so, so the route's geography guard holds its rows to that place instead of dropping every
+  // row for being outside Việt Nam (UAT: Singapore and Bali came back empty).
+  const abroad = !useArea && !centeredOnUser && !destination && !locationBias && named && !inVietnamBounds(named.lat, named.lng) ? { lat: named.lat, lng: named.lng } : null
   return {
     source: SERPER_PLACES_SOURCE,
     count: rows.length,
     location: location ?? '',
     results: rows.slice(0, 10),
+    ...(abroad ? { centre_abroad: abroad } : {}),
     google_maps_search: 'https://maps.google.com/maps?q=' + encodeURIComponent(query + ' ' + (location ?? '')),
   }
 }
@@ -576,12 +638,14 @@ async function searchPlacesUncached(
   locationBias?: { lat: number; lng: number } | null,
   priceRetry = true,
   areaCentre: { lat: number; lng: number; label: string } | null = null,
+  namedCentre = false,
 ): Promise<{ result: unknown; googleOk: boolean }> {
   // BUG-011: resolved once here and used by BOTH providers, so the Google call and the OSM
   // fallback can never disagree about which city this search is for.
   const { destination, remote: remoteDestination } = resolveSearchScope(location, locationBias)
   console.log(JSON.stringify({
-    type: 'tappyai_tool_called', tool: 'searchPlaces', step: 'fn_entry', query, location, placeType: type,
+    // S4 (D): the query and the location are the user's words (or a copy of them): a length and whether a location was set, never the text
+    type: 'tappyai_tool_called', tool: 'searchPlaces', step: 'fn_entry', query: logText(query, 'tool_arg'), hasLocation: !!location, placeType: type,
     // Operational only — a city name we resolved, never user text.
     destination: destination?.query ?? null, remoteDestination,
     // A5 (2026-09-20): the GPS the search is centred on, to TWO decimals (≈1 km — a district, never
@@ -614,7 +678,7 @@ async function searchPlacesUncached(
    * see the wrapper). Only the OSM fallback and failures stay uncached.
    */
   if (!result && provider !== 'osm') {
-    result = await searchPlacesSerper(query, location, lang, locationBias, { destination, remote: remoteDestination }, priceRetry, type, areaCentre)
+    result = await searchPlacesSerper(query, location, lang, locationBias, { destination, remote: remoteDestination }, priceRetry, type, areaCentre, namedCentre)
     if (result) googleOk = true
   }
   if (!result) {
@@ -671,6 +735,17 @@ async function searchPlacesUncached(
       // defence-in-depth rather than the first line of defence. An honest empty answer is
       // still a useful one — offering to widen the search is fine; naming a venue is not.
       (result as Record<string, unknown>).no_results_instruction = messages.places.noResultsInstruction(lang)
+    } else {
+      // 03/11 (placeQueryFit.ts): which of the specific things the person named each row's NAME shows - a signal for the model, never a filter.
+      const fit = placeQueryFit(query, placeRows as Array<{ name?: unknown }>)
+      if (fit.terms.length > 0) {
+        (result as Record<string, unknown>).query_fit = {
+          terms: fit.terms,
+          full_matches: fit.fullMatches,
+          rows: fit.rows.map(r => ({ name: r.name, missing: r.missing })),
+          ...(fit.note ? { note: fit.note } : {}),
+        }
+      }
     }
   }
 
@@ -850,10 +925,10 @@ async function searchPlacesUncached(
               return {
                 ...place,
                 ...(remoteDestination ? {} : {
+                  // Gate 2 S5, D-S5-3 (PROPOSAL): no `location` (the model's argument) -- the builder then uses the row's own address.
                   order_links: buildFoodOrderLinks(
                     place.name as string || '',
                     place.address as string | undefined,
-                    location
                   ),
                 }),
                 ...tiktokFields,
@@ -958,7 +1033,7 @@ async function searchPlacesUncached(
  * caching it under the Google key meant a single 403 poisoned that query for thirty minutes — so
  * the first request after quota recovered still got the fallback. Failures are never cached at all.
  */
-export async function searchPlaces(
+async function searchPlacesImpl(
   query: string, location?: string, type?: string, lang = 'vi',
   locationBias?: { lat: number; lng: number } | null,
   budget?: PlacesBudget,
@@ -975,9 +1050,11 @@ export async function searchPlaces(
   // The area is part of the question, so it is part of the key: "phở" centred on Quận 3 is not the
   // same answer as "phở" centred on the user.
   const cacheKey = placesCacheKey(query, opts.areaCentre ? `${location ?? ''}@area:${opts.areaCentre.label}` : location, type, locationBias, lang)
+  // S4 (found by the S4 canary, not in the design list): the cache key holds the query and the location - the log keeps its length only
+  const logCacheHit = (step: 'cache_hit' | 'cache_hit_after_join') => console.log(JSON.stringify({ type: 'tappyai_places_budget', step, cacheKey: logText(cacheKey, 'tool_arg') }))
   const cached = getCache(cacheKey)
   if (cached) {
-    console.log(JSON.stringify({ type: 'tappyai_places_budget', step: 'cache_hit', cacheKey }))
+    logCacheHit('cache_hit')
     return cached
   }
 
@@ -985,12 +1062,12 @@ export async function searchPlaces(
     // A flight that finished while this one waited has already filled the cache.
     const fresh = getCache(cacheKey)
     if (fresh) {
-      console.log(JSON.stringify({ type: 'tappyai_places_budget', step: 'cache_hit_after_join', cacheKey }))
+      logCacheHit('cache_hit_after_join')
       return fresh
     }
 
     if (budget) {
-      const verdict = budget.claim(type, location)
+      const verdict = budget.claim(type, location, query)
       if (!verdict.allowed) {
         console.log(JSON.stringify({
           type: 'tappyai_places_budget', step: 'blocked', reason: verdict.reason,
@@ -999,14 +1076,15 @@ export async function searchPlaces(
         // No search, and nothing invented to stand in for one. The turn answers from its prose and
         // from whatever it already retrieved — a thinner answer, never a fabricated one.
         return {
-          source: 'budget', count: 0, results: [],
+          // review 30/10: said plainly, so the model does not read the empty list as "no such place exists"
+          source: 'budget', count: 0, results: [], place_search_status: verdict.reason === 'budget_exhausted' ? 'not_run_turn_budget_used' : 'not_run_same_search_already_done',
           note: messages.places.searchOnMaps(lang, 'https://maps.google.com/maps?q=' + encodeURIComponent(query + ' ' + (location || ''))),
         }
       }
     }
 
     console.log(JSON.stringify({ type: 'tappyai_places_budget', step: 'provider_attempt', provider: placesProvider(), placeType: type ?? null }))
-    const { result, googleOk } = await searchPlacesUncached(query, location, type, lang, locationBias, opts.priceRetry !== false, opts.areaCentre ?? null)
+    const { result, googleOk } = await searchPlacesUncached(query, location, type, lang, locationBias, opts.priceRetry !== false, opts.areaCentre ?? null, budget?.namedCentre === true)
     if (googleOk) {
       setCache(cacheKey, result, 30 * 60 * 1000) // cache 30 phut, dia diem it thay doi
       console.log(JSON.stringify({ type: 'tappyai_places_budget', step: 'google_ok_cached' }))
@@ -1016,3 +1094,9 @@ export async function searchPlaces(
     return result
   })
 }
+
+/** Stamps `retrieved_at` (the oldest real fetch time of the rows used) on the result — see retrievalClock.ts. */
+export function searchPlaces(...args: Parameters<typeof searchPlacesImpl>): ReturnType<typeof searchPlacesImpl> { return withRetrievedAt(() => searchPlacesImpl(...args)) }
+
+/** Stamps `retrieved_at` (the oldest real fetch time of the rows used) on the result — see retrievalClock.ts. */
+export function getNews(...args: Parameters<typeof getNewsImpl>): ReturnType<typeof getNewsImpl> { return withRetrievedAt(() => getNewsImpl(...args)) }

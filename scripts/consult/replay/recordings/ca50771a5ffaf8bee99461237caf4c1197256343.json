@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Airpod pro 2 - Giá Tốt, Miễn Phí Vận Chuyển, Đủ Loại",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T16:56:24.404Z",
+ "body": {
+  "searchParameters": {
+   "q": "Airpod pro 2 - Giá Tốt, Miễn Phí Vận Chuyển, Đủ Loại",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Airpod pro 2 - Giá Tốt, Miễn Phí Vận Chuyển, Đủ Loại | Shopee Việt Nam",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-miob88momyh26a",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbhz3aalkz983Ro7jPYguLR4QKoxoq2YNpXnkj2HF-Jg&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/list/airpod/pro/2",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-820l4-miob88momyh26a&tbnid=85xLPeB_J0Z-mM&imgrefurl=https%3A%2F%2Fshopee.vn%2Flist%2Fairpod%2Fpro%2F2&docid=us1-oiRpDhTvEM&w=600&h=600",
+    "position": 1
+   },
+   {
+    "title": "Airpod pro 2 - Giá Tốt, Miễn Phí Vận Chuyển, Đủ Loại | Shopee Việt Nam",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-7ra0g-m6xsorruqyld97",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrF0VCiJTXrsfjKlfwdk3lgB_hAz4GlPKPgbRs7MylQA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/list/airpod/pro/2",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-7ra0g-m6xsorruqyld97&tbnid=ogw4BLgjsY6SpM&imgrefurl=https%3A%2F%2Fshopee.vn%2Flist%2Fairpod%2Fpro%2F2&docid=us1-oiRpDhTvEM&w=1024&h=1024",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe AirPods Pro 2 2023 Magsafe (USB-C) - Giá rẻ, trả góp 0%",
+    "imageUrl": "https://cdn.dienthoaigiakho.vn/photos/1760682816827-Airpods-pro2.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 1200,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTL2PISDKhXvjgByXxMrW7XMqRQ0MophkANm1KUKYRuEw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Dienthoaigiakho",
+    "domain": "dienthoaigiakho.vn",
+    "link": "https://dienthoaigiakho.vn/tai-nghe-apple-airpods-pro-2-magsafe-charge-2023-usb-c-apple-viet-nam-1697438840",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.dienthoaigiakho.vn%2Fphotos%2F1760682816827-Airpods-pro2.jpg&tbnid=ivUS5A1b9Lxg9M&imgrefurl=https%3A%2F%2Fdienthoaigiakho.vn%2Ftai-nghe-apple-airpods-pro-2-magsafe-charge-2023-usb-c-apple-viet-nam-1697438840&docid=osx-cx5eCF3LvM&w=1200&h=1200",
+    "position": 3
+   },
+   {
+    "title": "Airpod pro 2 - Giá Tốt, Miễn Phí Vận Chuyển, Đủ Loại | Shopee Việt Nam",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lzc89zpi4joh81",
+    "imageWidth": 807,
+    "imageHeight": 807,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQX8hsroeH7KPnaLDjbQ_HolOyekUubTJGmIWG8Aysciw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/list/airpod/pro/2",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-7r98o-lzc89zpi4joh81&tbnid=VG5FWFEGJi1nHM&imgrefurl=https%3A%2F%2Fshopee.vn%2Flist%2Fairpod%2Fpro%2F2&docid=us1-oiRpDhTvEM&w=807&h=807",
+    "position": 4
+   },
+   {
+    "title": "Airpod pro 2 - Giá Tốt, Miễn Phí Vận Chuyển, Đủ Loại | Shopee Việt Nam",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-81ztc-msxtchi443re0b",
+    "imageWidth": 850,
+    "imageHeight": 850,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGu5SgANqvknbXGWnPSIsAhJbhlcd4Sacz1SYpTPDLRA&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/list/airpod/pro/2",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-81ztc-msxtchi443re0b&tbnid=QyBb0rLELTuGDM&imgrefurl=https%3A%2F%2Fshopee.vn%2Flist%2Fairpod%2Fpro%2F2&docid=us1-oiRpDhTvEM&w=850&h=850",
+    "position": 5
+   },
+   {
+    "title": "Airpod Pro 2 - 2022 Chính Hãng",
+    "imageUrl": "https://mac24h.vn/images/detailed/95/MQD83.jpeg",
+    "imageWidth": 1144,
+    "imageHeight": 1144,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHV1rYJn-IJ1tBuR9qdWxsGKUBAP_Bj7T6y-XlEUGN2w&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Mac24h",
+    "domain": "mac24h.vn",
+    "link": "https://mac24h.vn/airpod-pro-2-2022.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmac24h.vn%2Fimages%2Fdetailed%2F95%2FMQD83.jpeg&tbnid=LhGaw3NwVCuSiM&imgrefurl=https%3A%2F%2Fmac24h.vn%2Fairpod-pro-2-2022.html&docid=vfGwOa0ak1IygM&w=1144&h=1144",
+    "position": 6
+   },
+   {
+    "title": "Tai Nghe AirPods Pro 2023 (USB-C) Giá Rẻ, Góp 0%, Chính Hãng",
+    "imageUrl": "https://24hstore.vn/images/products/2024/10/17/large/airpods-pro-2-2023.jpg",
+    "imageWidth": 400,
+    "imageHeight": 400,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyHiMM0y0zhOwwhTtoB26znnykg5M2hbaje-HBHwk0tA&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "24hStore.vn",
+    "domain": "24hstore.vn",
+    "link": "https://24hstore.vn/apple-airpods-pro-2-2023-moi/tai-nghe-apple-airpods-pro-2-2023-magsafe-p9050?srsltid=AU7gw4WL9EJHHDsgbRTr0ROi-vvflRsgnSdAuvPB4CjQy8UwA_M5XkVs",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2F24hstore.vn%2Fimages%2Fproducts%2F2024%2F10%2F17%2Flarge%2Fairpods-pro-2-2023.jpg&tbnid=_xI40GU9pfQGCM&imgrefurl=https%3A%2F%2F24hstore.vn%2Fapple-airpods-pro-2-2023-moi%2Ftai-nghe-apple-airpods-pro-2-2023-magsafe-p9050%3Fsrsltid%3DAU7gw4WL9EJHHDsgbRTr0ROi-vvflRsgnSdAuvPB4CjQy8UwA_M5XkVs&docid=eHY3pUWkP2A0FM&w=400&h=400",
+    "position": 7
+   },
+   {
+    "title": "Tai Nghe Bluetooth Airpods Pro 2 | Chính Hãng - Biên Hoà",
+    "imageUrl": "https://hieuapple.com/uploads/shops/airpods-pro2/proo2.jpg",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTByE38p26fB3V3XNOVVMuAwpj43XPiVbNkjSw1YhA4aw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Hiếu Store",
+    "domain": "hieuapple.com",
+    "link": "https://hieuapple.com/tai-nghe/Tai-Nghe-AirPods-Pro-2-Chinh-Hang-Gia-Tot-Bien-Hoa.html?srsltid=AU7gw4VO3A5k04Ed5tG7LPfrcyLPrC_hqHvGZGlb_OmDUnLpMvyKDOf3",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fhieuapple.com%2Fuploads%2Fshops%2Fairpods-pro2%2Fproo2.jpg&tbnid=5Rkg5hRo-tAqRM&imgrefurl=https%3A%2F%2Fhieuapple.com%2Ftai-nghe%2FTai-Nghe-AirPods-Pro-2-Chinh-Hang-Gia-Tot-Bien-Hoa.html%3Fsrsltid%3DAU7gw4VO3A5k04Ed5tG7LPfrcyLPrC_hqHvGZGlb_OmDUnLpMvyKDOf3&docid=GObEHKPRAHZ-XM&w=600&h=600",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

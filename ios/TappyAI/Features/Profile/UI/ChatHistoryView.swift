@@ -141,9 +141,7 @@ struct ChatHistoryView: View {
     }
 
     private func relativeTime(_ iso: String) -> String {
-        let f = ISO8601DateFormatter()
-        f.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        guard let date = f.date(from: iso) ?? ISO8601DateFormatter().date(from: iso) else { return "" }
+        guard let date = ISO8601Timestamp.date(from: iso) else { return "" }
         let diff = Date().timeIntervalSince(date)
         if diff < 60 { return NSLocalizedString("common.justNow", comment: "") }
         if diff < 3600 { return "\(Int(diff/60)) phút trước" }

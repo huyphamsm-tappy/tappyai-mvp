@@ -79,6 +79,7 @@ export const CommerceRequestSchema = z
         budgetMaxVnd: z.number().int().min(0).optional(),
         city: z.string().trim().max(80).optional(),
         merchantAllowList: z.array(z.string().trim().min(1).max(40)).max(20).optional(),
+        providerRefs: z.record(z.string().max(20), z.object({ cityRef: z.string().regex(/^\d{1,12}$/).optional(), propertyRef: z.string().regex(/^\d{1,12}$/).optional() })).optional(),
       })
       .optional(),
     context: z

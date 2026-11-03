@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Trung tâm tiếng Anh Simple (Simple English) Quận 10\" OR \"Axcela Vietnam\" OR \"TDP IELTS\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:22:38.773Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Trung tâm tiếng Anh Simple (Simple English) Quận 10\" OR \"Axcela Vietnam\" OR \"TDP IELTS\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Các khóa học IELTS tại TDP IELTS",
+    "link": "https://www.tiktok.com/@vutruielts.tdp/video/7687936399881915649",
+    "snippet": "TDP IELTS là trung tâm đào tạo IELTS với nhiều khóa học đa dạng dành cho học viên. Trung tâm có các khóa học phù hợp cho học viên mất gốc ...",
+    "position": 1
+   },
+   {
+    "title": "Gia đình Cao Lâm Viên chọn TDP IELTS đồng hành cùng ...",
+    "link": "https://www.tiktok.com/@vutruielts.tdp/video/7685340887139798288",
+    "snippet": "Gia đình người mẫu, diễn viên Cao Lâm Viên đã lựa chọn TDP IELTS để đồng hành cùng con gái trên hành trình chinh phục IELTS.",
+    "position": 2
+   },
+   {
+    "title": "TOP 5 LÝ DO HỌC VIÊN LỰA CHỌN ĐỒNG HÀNH CÙNG ...",
+    "link": "https://www.tiktok.com/@vutruielts.tdp/video/7687516926377020680",
+    "snippet": "TOP 5 LÝ DO HỌC VIÊN LỰA CHỌN ĐỒNG HÀNH CÙNG TDP IELTS. TOP 5 LÝ DO HỌC VIÊN LỰA CHỌN ĐỒNG HÀNH CÙNG TDP IELTS. @Vũ trụ IELTS · âm thanh gốc ...",
+    "position": 3
+   },
+   {
+    "title": "TDP IELTS Tặng Bánh Trung Thu Cao Cấp",
+    "link": "https://www.tiktok.com/@vutruielts.tdp/video/7685730486169210113",
+    "snippet": "Tại TDP IELTS, phương pháp độc quyền TDP IELTS 102 được thiết kế dành riêng cho cả những học viên mất gốc, với lộ trình 3 giai đoạn: ✓ Giai ...",
+    "position": 4
+   },
+   {
+    "title": "Học sinh mất gốc đạt IELTS 6.5+ với phương pháp TDP ...",
+    "link": "https://www.tiktok.com/@vutruielts.tdp/video/7677165070329105684",
+    "snippet": "Tất cả giáo viên tại TDP IELTS đều có kinh nghiệm và chuyên môn trong việc giảng dạy cho học viên mất gốc, thấu hiểu tâm lý và đồng hành cùng sự ...",
+    "position": 5
+   },
+   {
+    "title": "Học viên Phương Mai đạt 8.0 IELTS tại TDP IELTS",
+    "link": "https://www.tiktok.com/@vutruielts.tdp/video/7683117018937117969",
+    "snippet": "TDP IELTS tự hào đồng hành cùng các học viên trên con đường chinh phục IELTS. Với đội ngũ giảng viên giàu kinh nghiệm và lộ trình học tập cá ...",
+    "position": 6
+   },
+   {
+    "title": "Cao Lâm Viên - TDP IELTS",
+    "link": "https://www.tiktok.com/@vutruielts.tdp/video/7689715775606803730",
+    "snippet": "Gia đình người mẫu, diễn viên Cao Lâm Viên đã lựa chọn TDP cho con chinh phục mục tiêu IELTS. Keywords: Cao Lâm Viên, TDP IELTS, học IELTS. Đây ...",
+    "position": 7
+   },
+   {
+    "title": "Túi Mẹ Bỉm Đi Học Có Gì - TDP IELTS",
+    "link": "https://www.tiktok.com/@vutruielts.tdp/video/7676410414485359873",
+    "snippet": "Video TikTok từ Vũ trụ IELTS (@vutruielts.tdp): \"Khám phá \"túi mẹ bỉm đi học\" của chị Thanh, học viên TDP IELTS, có gì bên trong?",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

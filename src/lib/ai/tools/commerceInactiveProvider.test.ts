@@ -16,10 +16,14 @@ describe('DMX off (runtime row): buttons, links and rows', () => {
   beforeEach(() => __resetProviderConfig())
   afterEach(() => setProviderConfigSource(null))
 
-  it("the model's button and prose link to the merchant are removed while the row is off, kept when it is on", async () => {
+  it("the model's button to the merchant is removed while the row is off, kept when it is on; a prose link to its own product page stays (B1)", async () => {
     await use([row({ providerId: 'dmx', active: false })])
     expect(isMisleadingModelCta({ label: '🛒 Mua ngay', type: 'purchase', url: 'https://www.dienmayxanh.com/dien-thoai/iphone-15-256gb' })).toBe(true)
-    expect(unlinkMislabelledMerchantLinks('Xem [Điện Máy Xanh](https://www.dienmayxanh.com/dien-thoai/iphone-15-256gb).')).toBe('Xem Điện Máy Xanh.')
+    // Owner 01/11/2026 (B1, "mở lại tất cả, chỉ ở dạng link tới đúng trang sản phẩm"): was 'Xem Điện Máy Xanh.' - the merchant's own product
+    // page keeps its prose link; its front door and search page are still unmade (below), and its button above is still removed.
+    expect(unlinkMislabelledMerchantLinks('Xem [Điện Máy Xanh](https://www.dienmayxanh.com/dien-thoai/iphone-15-256gb).')).toBe('Xem [Điện Máy Xanh](https://www.dienmayxanh.com/dien-thoai/iphone-15-256gb).')
+    expect(unlinkMislabelledMerchantLinks('Xem [Điện Máy Xanh](https://www.dienmayxanh.com/).')).toBe('Xem Điện Máy Xanh.')
+    expect(unlinkMislabelledMerchantLinks('Xem [Điện Máy Xanh](https://www.dienmayxanh.com/tim-kiem?key=iphone).')).toBe('Xem Điện Máy Xanh.')
     await use([row({ providerId: 'dmx', active: true })])
     expect(isMisleadingModelCta({ label: '🛒 Mua ngay', type: 'purchase', url: 'https://www.dienmayxanh.com/dien-thoai/iphone-15-256gb' })).toBe(false)
   })

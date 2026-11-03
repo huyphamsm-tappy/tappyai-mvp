@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hội An phố cổ thời gian tham quan tốt nhất lưu ý vé tham quan quy định",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:51:06.298Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hội An phố cổ thời gian tham quan tốt nhất lưu ý vé tham quan quy định",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cập Nhật Giá Vé Tham Quan Phố Cổ Hội An 2026 & Mẹo ...",
+    "link": "https://phanvantravel.com/ve-tham-quan-pho-co-hoi-an",
+    "snippet": "3. Các điểm tham quan miễn phí tại Phố Cổ Hội An không cần vé · 3.1. Không gian phố đi bộ và check-in ngoài trời · 3.2. Ẩm thực và nghệ thuật dân gian miễn phí.",
+    "position": 1
+   },
+   {
+    "title": "Những thông tin cần biết về vé tham quan Đô thị cổ Hội An",
+    "link": "https://hoianheritage.net/vi/news/Tin-tuc-su-kien/thong-bao-ve-hoat-dong-tham-quan-khu-pho-co-hoi-an-1711.html",
+    "snippet": "Quyền lợi của du khách - Với vé có mệnh giá 80.000 VNĐ: + Tham quan cảnh quan chung Khu phố cổ + Tham quan 01 điểm di tích Chùa Cầu hoặc ...",
+    "date": "26 thg 1, 2026",
+    "position": 2
+   },
+   {
+    "title": "[ English Below ] Những thông tin cần biết về vé tham quan ...",
+    "link": "https://www.facebook.com/VisitHoiAn/posts/-english-below-nh%E1%BB%AFng-th%C3%B4ng-tin-c%E1%BA%A7n-bi%E1%BA%BFt-v%E1%BB%81-v%C3%A9-tham-quan-%C4%91%C3%B4-th%E1%BB%8B-c%E1%BB%95-h%E1%BB%99i-an%C4%91%E1%BB%83-kh%C3%A1m-/956020783448194/",
+    "snippet": "Thử ngay bánh mì Phượng hoặc bánh mì Madam Khánh – được khách Tây lẫn ta tấm tắc khen ngon • 8h30 - 11h30: Dạo phố cổ Lúc này nắng còn dịu, bạn ...",
+    "position": 3
+   },
+   {
+    "title": "Phố cổ Hội An Đà Nẵng: Hướng dẫn du lịch chi tiết và ...",
+    "link": "https://pystravel.vn/tin/17567-pho-co-hoi-an-da-nang.html?srsltid=AU7gw4Veb_ksK3zfhzRjpUG3_XyB8QMUUeVL8XA5JsZPECwC3KtnkZ1M",
+    "snippet": "Nếu chỉ tập trung khám phá khu phố cổ, 1 ngày là khoảng thời gian tương đối phù hợp để tham quan các công trình nổi bật, thưởng thức đặc sản và trải nghiệm Hội ...",
+    "position": 4
+   },
+   {
+    "title": "Bảng giá vé tham quan phố cổ Hội An 2026",
+    "link": "https://webdulichhoian.com/bang-gia-ve-tham-quan-pho-co-hoi-an.html",
+    "snippet": "Bảng giá vé tham quan phố cổ Hội An 2026 với nhiều sự lựa chọn cho khách du lịch đi Hội An tham quan những điểm di tích văn hóa thế giới.",
+    "position": 5
+   },
+   {
+    "title": "Kinh nghiệm mua vé vào cửa và tham quan các di tích nổi ...",
+    "link": "https://hoianmemoriesland.com/vi/kinh-nghiem-mua-ve-vao-cua-va-tham-quan-cac-di-tich-noi-tieng-o-hoi-an-d498",
+    "snippet": "Thời gian tham quan: Phố cổ Hội An hoạt động từ sáng sớm đến chiều muộn ... Lên kế hoạch tham quan hợp lý giúp bạn tận hưởng trọn vẹn vẻ đẹp của phố cổ Hội An.",
+    "position": 6
+   },
+   {
+    "title": "Hội An: Đổi mới cách bán vé tham quan khu phố cổ",
+    "link": "https://vietnamtourism.gov.vn/post/14477",
+    "snippet": "Theo Rough Guides, đêm phố cổ Hội An với lễ hội đêm rằm được tổ chức vào ngày 14 Âm lịch hằng tháng là một trong những nơi thích hợp để du khách ...",
+    "date": "26 thg 5, 2014",
+    "position": 7
+   },
+   {
+    "title": "Có cần mua vé vào phố cổ Hội An không? - Holdall",
+    "link": "https://holdall.vn/ve-vao-pho-co-hoi-an",
+    "snippet": "Mỗi vé cho phép bạn tham quan tối đa 3 – 5 điểm di tích trong danh sách được quy định, tùy theo chính sách từng thời điểm. Trong trường hợp du ...",
+    "date": "11 thg 7, 2025",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

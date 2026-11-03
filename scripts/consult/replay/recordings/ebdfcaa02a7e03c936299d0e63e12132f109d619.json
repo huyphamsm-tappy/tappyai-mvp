@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"MacBook Neo 13\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T01:57:04.718Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"MacBook Neo 13\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "MacBook Neo 13 inch A18 Pro 2026 6CPU 5GPU 8GB ...",
+    "link": "https://cellphones.com.vn/macbook-neo-13-a18-pro-6-cpu-5-gpu-8gb-256gb.html",
+    "snippet": "MacBook Neo 13 inch A18 Pro 2026 6CPU 5GPU 8GB 256GB | Chính hãng Apple Việt Nam ; Loại CPU. Chip Apple A18 Pro CPU 6 lõi với 2 lõi hiệu năng và 4 lõi tiết kiệm ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 1
+   },
+   {
+    "title": "MacBook Neo 13 inch A18 Pro 2026 6CPU 5GPU 8GB ...",
+    "link": "https://cellphones.com.vn/macbook-neo-13-a18-pro-6-cpu-5-gpu-8gb-512gb.html",
+    "snippet": "Sản phẩm APPLE MACBOOK NEO 13 A18 PRO 6 CPU 5 GPU 8GB 512GB 2026 VÀNG TOUCH ID (MHFE4) giá thời điểm hiện tại là 21.390.000đ ạ - miền Nam,. Dạ mình ở phường ( ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 2
+   },
+   {
+    "title": "MacBook Neo 2026 giá rẻ, HSSV giảm ...",
+    "link": "https://cellphones.com.vn/laptop/mac/macbook-neo.html",
+    "snippet": "Sản phẩm APPLE MACBOOK NEO 13 A18 PRO 6 CPU 5 GPU 8GB 256GB 2026 BẠC CHÍNH HÃNG (MHFA4)- Giá thời điểm hiện tại 19.490.000đ. Khu vực miền Nam. Sản phẩm APPLE ...",
+    "position": 3
+   },
+   {
+    "title": "Apple MacBook Neo có tính năng gì mới? Ra mắt khi nào?",
+    "link": "https://cellphones.com.vn/sforum/macbook-neo-co-tinh-nang-gi-moi-ra-mat-khi-nao",
+    "snippet": "MacBook Neo 13 inch A18 Pro 2026 6CPU 5GPU 8GB 256GB | Chính hãng Apple Việt ...",
+    "rating": 4,
+    "ratingCount": 4,
+    "position": 4
+   },
+   {
+    "title": "MacBook Neo cũ | Bền đẹp, giá tiết kiệm, giảm đến 2 triệu",
+    "link": "https://cellphones.com.vn/hang-cu/mac/macbook-neo-cu.html",
+    "snippet": "MacBook Neo 13 inch A18 Pro 2026 6CPU 5GPU 8GB 512GB Touch ID - Đã Kích Hoạt · 18.990.000đ. 21.990.000đ · 14% · 190.000đ ; MacBook Neo 13 inch A18 Pro 2026 6CPU ...",
+    "position": 5
+   },
+   {
+    "title": "MacBook Neo màu hồng phù hợp với ai? Có gì nổi bật?",
+    "link": "https://cellphones.com.vn/sforum/macbook-neo-mau-hong",
+    "snippet": "MacBook Neo 13 inch A18 Pro 2026 6CPU 5GPU 8GB 256GB | Chính hãng Apple Việt ...",
+    "position": 6
+   },
+   {
+    "title": "MacBook Neo sau 1 tháng: Cảm giác dùng mới là tất cả!",
+    "link": "https://cellphones.com.vn/sforum/danh-gia-macbook-neo-sau-1-thang-su-dung",
+    "snippet": "MacBook Neo 13 inch A18 Pro 2026 6CPU 5GPU 8GB 256GB | Chính hãng Apple Việt Nam.",
+    "position": 7
+   },
+   {
+    "title": "So sánh MacBook Neo vs MacBook Air M4",
+    "link": "https://cellphones.com.vn/sforum/so-sanh-macbook-neo-va-macbook-air-m4",
+    "snippet": "MacBook Neo 13 inch A18 Pro 2026 6CPU 5GPU 8GB 256GB | Chính hãng Apple Việt ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,5 +1,9 @@
 import { extractMoneyClaims, sentenceSpans } from './moneyGuard'
-import { mayRedactPlaceClaim } from './placeClaimGuard'
+import { mayRedactPlaceClaim, dropUnbackedOrderingPossession } from './placeClaimGuard'
+import { claimsIn } from './noFabricationGate'
+import { dropUnbackedOfferClaims } from './consultative/offerClaims'
+import { admitsUnverified } from './caveatDedupe'
+import { isGenericInvite } from './closingInvite'
 
 // ── How much of a streaming places reply may be released early ───────────────
 //
@@ -111,13 +115,85 @@ export function alignReleasedPrefix(settled: string, released: string): number |
   return i
 }
 
+// ── C2 P2 · SafeFlush for an AGENT answer (C2_SAFEFLUSH / C2_AGENT_STREAM, default OFF) ────────────────────────────────────────────────────────
+//
+// The agent's settle path runs ~45 stages, several of them on the WHOLE text and driven by evidence (no-fabrication gate, unsupported claims,
+// entity names, evidence binding, list renumbering, orphaned lead-ins, a verification lead prepended for flight / film facts, the leak check…).
+// No sentence can be PROVEN untouched by all of them in general, so this is deliberately narrower than `safeFlushPoint`: it releases only whole
+// PARAGRAPHS that carry none of what any of those stages reads —
+//   · no digit (amounts, ratings, counts, distances, hours, dates, list numbering);
+//   · no bracket, link, URL, "@" or marker ([S1] / [N1] citations, [TAPPY_*] blocks, markdown links);
+//   · no list / table / heading line (renumbering, bare markers, orphaned lead-ins), and not a lead-in ending in ":" (it waits for what it leads);
+//   · no capitalised word inside a sentence (a proper name: a place, a product, a person — entity and place guards read names);
+//   · no price / rating / distance / opening-hours / review / verification wording.
+// The caller additionally turns it off for turns whose guards rewrite prose wholesale (any place, travel, ticket, film, transport or shopping
+// tool; a plan turn; the V1 consultative context) and checks the leak rule on what it would release. Whether this is SAFE is not claimed by this
+// comment: it is MEASURED (replay of whole-text vs streamed settle, C2 P2 report) and the settle path fails closed on any mismatch.
+// letter-aware word boundaries (JS \b is ASCII-only and fails before "đ", "ồ"…)
+const AGENT_HOLD_WORDS = /(?<![\p{L}\p{N}])(?:đồng|vnđ|vnd|usd|eur|triệu|nghìn|ngàn|giá|phí|rẻ|đắt|khuyến mãi|giảm giá|đánh giá|review|rating|km|mét|cây số|phút|giờ mở|mở cửa|đóng cửa|gần đây|cách đây|nguồn|theo (?:dữ liệu|kết quả|báo|thông tin)|đã (?:tra|kiểm tra|tìm|xem|xác minh)|xác minh|kiểm chứng|chưa xác|cập nhật|mới nhất|hôm nay|price|cost|rated|reviews?|distance|open(?:s|ing)?|closed?|source|verified|today|latest)(?![\p{L}\p{N}])/iu
+const AGENT_HOLD_CHARS = /[0-9\[\]()<>@|#$€£¥%]|https?:|www\.|\]\(/i
+const LIST_OR_TABLE_LINE = /^\s*(?:[-*+•]|\d+[.)]|#{1,6}\s|\|)/m
+
+function capitalisedInsideSentence(p: string): boolean {
+  const plain = p.replace(/[*_`~]/g, '')
+  for (const sentence of plain.split(/(?<=[.!?…:])\s+|\n+/)) {
+    const words = sentence.trim().split(/\s+/).filter(Boolean)
+    for (let i = 1; i < words.length; i++) if (/^\p{Lu}/u.test(words[i])) return true
+  }
+  return false
+}
+
+/** Why a paragraph may NOT be released early (null = it may). Exported for tests and the replay. */
+export function agentHoldReason(paragraph: string): string | null {
+  const p = paragraph.trim()
+  if (!p) return null
+  // whitespace the settle path normalises (runs of spaces, trailing spaces before a line break, leading indentation): the released bytes must be
+  // EXACTLY the settled bytes, so such a paragraph waits
+  if (/[ \t]{2,}|[ \t]\n|\n[ \t]|^[ \t]|[ \t]$/.test(paragraph.replace(/^\n+|\n+$/g, ''))) return 'irregular_whitespace'
+  if (AGENT_HOLD_CHARS.test(p)) return 'digit_link_or_marker'
+  if (LIST_OR_TABLE_LINE.test(p)) return 'list_table_or_heading'
+  if (/:\s*$/.test(p)) return 'lead_in'
+  if (capitalisedInsideSentence(p)) return 'proper_name'
+  if (AGENT_HOLD_WORDS.test(p.normalize('NFC'))) return 'claim_wording'
+  // C2 P2 6.0 (F-2): the settle guards' OWN detectors, run on the paragraph with the WORST-CASE context (no evidence, no card, no link, no
+  // price) — a paragraph any of them could change waits. Never a re-typed word list: when a guard's detector changes, the hold moves with it
+  // (agentSafeFlush.test "hold ↔ guard consistency").
+  if (claimsIn(p).length) return 'checkable_claim' // noFabricationGate
+  if (dropUnbackedOrderingPossession(p).removed) return 'ordering_claim' // ordering / possession ("có giao hàng", "nhận đặt bàn")
+  if (dropUnbackedOfferClaims(p, { hasAction: false, hasPriceData: false, lang: 'vi' }).removed.length) return 'offer_claim' // "link / nút bên dưới"
+  if (admitsUnverified(p)) return 'caveat' // dedupeCaveats
+  if (p.split(/(?<=[.!?…])\s+/).some(isGenericInvite)) return 'closing_invite' // stripClosingInvite
+  return null
+}
+
+/**
+ * How many characters of an agent answer may be released now: the end of the last COMPLETE paragraph (followed by a blank line) such that it
+ * and every paragraph before it pass `agentHoldReason` (and the optional `extraCheck`, e.g. the leak rule, on the whole released text).
+ * Monotone: it never decreases as the text grows. 0 = release nothing.
+ */
+export function agentSafeFlushPoint(accumulated: string, extraCheck?: (released: string) => boolean): number {
+  if (!accumulated) return 0
+  let point = 0
+  const re = /\n[ \t]*\n/g
+  let start = 0
+  let m: RegExpExecArray | null
+  while ((m = re.exec(accumulated)) !== null) {
+    const para = accumulated.slice(start, m.index)
+    if (agentHoldReason(para) !== null) break
+    if (extraCheck && !extraCheck(accumulated.slice(0, m.index))) break
+    if (para.trim()) point = m.index
+    start = m.index + m[0].length
+  }
+  return point
+}
+
 /**
  * The number of characters of `accumulated` that may be streamed to the client now.
  *
  * 0 means "release nothing yet". The result never decreases as `accumulated` grows, so a caller
  * can simply track how much it has already sent.
  */
-export function safeFlushPoint(accumulated: string, segmentComplete = false): number {
+export function safeFlushPoint(accumulated: string, segmentComplete = false, holdCitations = false): number {
   if (!accumulated) return 0
 
   // Where the money claims are. One pass over the whole text: cheap, and it is the same reading
@@ -142,6 +218,10 @@ export function safeFlushPoint(accumulated: string, segmentComplete = false): nu
     // ...and at the first sentence carrying a claim the PLACE guard could remove.
     // Evidence-blind on purpose: see `mayRedactPlaceClaim`.
     if (mayRedactPlaceClaim(accumulated.slice(start, end))) break
+    // CONSULTATIVE_IN_AGENT (`holdCitations`): a sentence carrying a [S#] source marker is NOT released. The settled text turns the marker
+    // into a markdown link, so the released bytes would no longer be a prefix of it: the final send then repeated the whole reply (measured
+    // live, 2026-10-11, passport answer: repeated paragraphs, and a link cut mid-label at the end of the reply).
+    if (holdCitations && /\[S\d{1,2}(?:\s*,\s*S\d{1,2})*\]/.test(accumulated.slice(start, end))) break
     // 🚨 A LINK SPAN END IS NOT A SENTENCE END. `sentenceSpans` keeps a markdown link / bare URL as
     // its own span, so a sentence with an inline link arrives here in three pieces. Measured live
     // (C3 run 20, 2026-09-20): "Bạn có thể vào **[trang CGV](…)** để xem … giá vé (thường từ

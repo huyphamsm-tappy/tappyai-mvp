@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "lớp tiếng Anh giao tiếp người lớn học giao tiếp ca tối Quận 1, TP.HCM gia menu thuc don",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:22:44.024Z",
+ "body": {
+  "searchParameters": {
+   "q": "lớp tiếng Anh giao tiếp người lớn học giao tiếp ca tối Quận 1, TP.HCM gia menu thuc don",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "11 trung tâm tiếng Anh giao tiếp TPHCM đáng tham khảo ...",
+    "link": "https://ieltsthetutors.edu.vn/trung-tam-tieng-anh-giao-tiep-tphcm",
+    "snippet": "Tổng hợp 11 trung tâm tiếng Anh giao tiếp TPHCM, so sánh chương trình, hình thức học, sĩ số, học phí và đối tượng phù hợp để bạn dễ chọn nơi ...",
+    "date": "29 thg 4, 2025",
+    "position": 1
+   },
+   {
+    "title": "Top 7 Trung Tâm Tiếng Anh Giao Tiếp Tốt Nhất TP.HCM",
+    "link": "https://www.wallstreetenglish.edu.vn/blog/top-trung-tam-giao-tiep-hcm-tot-nhat/",
+    "snippet": "Top 7 Trung Tâm Tiếng Anh Giao Tiếp Tốt Nhất TP.HCM · Phương Pháp Giảng Dạy: Tập trung vào thực hành giao tiếp, tạo môi trường tương tác cao.",
+    "date": "9 thg 5, 2025",
+    "position": 2
+   },
+   {
+    "title": "Cho mình xin trung tâm dạy tiếng anh giao tiếp uy tín ở ...",
+    "link": "https://www.facebook.com/groups/497670824783561/posts/1649299982953967/",
+    "snippet": "Cho mình xin trung tâm dạy tiếng anh giao tiếp uy tín ở HCM ạ, ai học rồi review chân thực giúp em, huhu thực sự cần trung tâm học thật.",
+    "position": 3
+   },
+   {
+    "title": "KHOÁ HỌC TIẾNG ANH GIAO TIẾP 1 KÈM 1 DÀNH RIÊNG ...",
+    "link": "https://www.facebook.com/HoctiengAnhLangmaster/videos/kho%C3%A1-h%E1%BB%8Dc-ti%E1%BA%BFng-anh-giao-ti%E1%BA%BFp-1-k%C3%A8m-1-d%C3%A0nh-ri%C3%AAng-cho-ng%C6%B0%E1%BB%9Di-mu%E1%BB%91n-th%C4%83ng-ti%E1%BA%BFn-s%E1%BB%B1-ngh/1393539059254310/",
+    "snippet": "KHOÁ HỌC TIẾNG ANH GIAO TIẾP 1 KÈM 1 DÀNH RIÊNG CHO NGƯỜI MUỐN THĂNG TIẾN SỰ NGHIỆP Bạn có đang rơi vào những tình huống này?",
+    "position": 4
+   },
+   {
+    "title": "Gia Sư Dạy Kèm Tiếng Anh Giao Tiếp Tại Nhà TPHCM",
+    "link": "https://giasuthanhtai.com.vn/gia-su-day-tieng-anh-giao-tiep-tai-nha.html",
+    "snippet": "Gia sư dạy kèm tiếng Anh giao tiếp giỏi, phương pháp truyền đạt dễ hiểu, nhiều năm kinh nghiệm, là nơi đáng tin cậy nhất để đăng ký tìm gia sư chất lượng.",
+    "position": 5
+   },
+   {
+    "title": "Top 10 trung tâm tiếng Anh cho người đi làm uy tín và tốt nhất",
+    "link": "https://talkfirst.vn/trung-tam-tieng-anh-cho-nguoi-di-lam/",
+    "snippet": "Top 10 trung tâm tiếng Anh cho người đi làm uy tín và tốt nhất · 1. Trung tâm Anh ngữ TalkFirst · 2. Trung tâm tiếng Anh IELTS CITY · 3. Trung tâm ...",
+    "date": "18 thg 4, 2025",
+    "position": 6
+   },
+   {
+    "title": "Tiếng Anh Nghe Nói - Trung Tâm Tiếng Anh Giao Tiếp TPHCM",
+    "link": "https://tienganhnghenoi.vn/",
+    "snippet": "Học tiếng Anh giao tiếp với 100% Giáo Viên Bản Xứ. Nắm vững ngữ pháp, phát âm chuẩn giọng Anh-Mỹ, tăng phản xạ tự nhiên, tự tin giao tiếp chỉ sau 3 tháng.",
+    "position": 7
+   },
+   {
+    "title": "Cần bạn gia sư tiếng anh dạy giao tiếp .. dạy kèm 1:1",
+    "link": "https://www.facebook.com/groups/trungtamgiasuquan9/posts/1559795335532891/",
+    "snippet": "Em tham khảo lớp học ONLINE 1 KÈM 1 bên chị nhé! - Học phí chỉ 109k/1 buổi; - Lộ trình học rõ ràng; - Có video/record xem lại sau mỗi buổi ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

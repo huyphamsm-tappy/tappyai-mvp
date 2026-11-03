@@ -3,6 +3,7 @@ import type { EntityDomain, EntityKind } from './entity'
 import type { Action } from './actions'
 import { resolveActionLabel } from './actionLabel'
 import { UNKNOWN } from '@/lib/ai/consultative/normalizedEvidence'
+import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 
 // ── The TRANSIENT view of a place decision ───────────────────────────────────
 //
@@ -296,7 +297,8 @@ function toLive(r: Recommendation, actionLimit: number): LivePlace {
   const hoursWeek = e.ext && typeof e.ext === 'object'
     ? (e.ext as { openingHoursWeek?: Record<string, string> }).openingHoursWeek
     : undefined
-  const image = e.images.primary && isHttpUrl(e.images.primary.url) ? e.images.primary.url : undefined
+  // Gate 2 N2 (R-2, proposal): an image needs a safe https URL (isHttpUrl, still used for links below, admits http:).
+  const image = e.images.primary && isSafeHttpsUrl(e.images.primary.url) ? e.images.primary.url : undefined
   const categories = e.attributes.categories?.filter(c => typeof c === 'string' && c.length > 0)
   // Only amenities the provider stated. `EntityAttributes` is sparse by design:
   // a missing key means "not stated", never "no", so absence stays absence.
@@ -484,12 +486,19 @@ export function readPlacesLiveView(annotations: unknown[] | undefined | null): P
   let view: PlacesLiveView | null = null
   for (const a of annotations) {
     if (!a || typeof a !== 'object') continue
-    const candidate = a as Partial<PlacesLiveView>
+    const candidate = a as Partial<PlacesLiveView> & { cleared?: unknown }
     if (candidate.kind !== PLACES_ANNOTATION_KIND) continue
+    // POST-UAT B5: the decision said "no card" — an explicit `cleared` frame retracts the preliminary set sent before it.
+    if (candidate.cleared === true) { view = null; continue }
     const items = Array.isArray(candidate.items)
       ? candidate.items
         .filter(x => x && typeof x.name === 'string' && x.name)
-        .map(x => ({ ...x, actions: Array.isArray(x.actions) ? x.actions : [] }))
+        // Gate 2 N2 (R-3, proposal): a STORED card is read back here — the only path covering old messages on the web.
+        // Its image is kept only as a safe https URL; every other field is untouched.
+        .map(x => {
+          const { image, ...rest } = x
+          return { ...rest, ...(typeof image === 'string' && isSafeHttpsUrl(image) ? { image } : {}), actions: Array.isArray(x.actions) ? x.actions : [] }
+        })
       : []
     if (items.length === 0) continue
     view = {
@@ -522,6 +531,21 @@ export function placesRenderOrder(view: Pick<PlacesLiveView, 'items' | 'picked' 
   const ordered = [...first, ...view.items.filter(i => !seen.has(i.id))]
   const n = typeof view.shown === 'number' && view.shown > 0 ? Math.min(view.shown, ordered.length) : ordered.length
   return { visible: ordered.slice(0, n), hidden: ordered.slice(n) }
+}
+
+/**
+ * PHASE 3C / D7 — the ENGINE Pick is authoritative for the card (CONSULT_BRIEF on). The mirror image of `alignEmphasisToModelPick`:
+ * the emphasis, reasons and trade-off stay with the engine's pick whatever the reply named, and a reply that named another venue first
+ * does not move them (it is reported, never silently obeyed). With no engine Pick (an explicit no-Pick state) no card is emphasised.
+ * Returns new arrays; never mutates the input.
+ */
+export function alignEmphasisToEnginePick(
+  recs: readonly Recommendation[],
+  modelPickId: string | null,
+): { recs: Recommendation[]; outcome: 'same' | 'engine_kept' | 'no_engine_pick' } {
+  const engine = recs.find(r => r.recommended)
+  if (!engine) return { recs: [...recs], outcome: 'no_engine_pick' }
+  return { recs: [...recs], outcome: modelPickId && modelPickId !== engine.entity.id ? 'engine_kept' : 'same' }
 }
 
 /**

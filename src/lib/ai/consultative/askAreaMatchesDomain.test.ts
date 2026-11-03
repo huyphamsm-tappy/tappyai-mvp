@@ -30,7 +30,7 @@ describe('ask card area = conversation area (first turn of the 103 everyday requ
     })
   }
   it('the reported case: a Northern pho ask is a FOOD card', () => {
-    const d = routeConsult([{ role: 'user', content: 'ăn phở Bắc tối nay' }], { hasGps: true, lang: 'vi' }).decision
+    const d = routeConsult([{ role: 'user', content: 'ăn phở tối nay' }], { hasGps: false, lang: 'vi' }).decision // with GPS this now searches (AI-Hay pass)
     expect(d.turn).toBe('ask')
     expect(askAreaOf(d.ask!.questions)).toBe('food')
   })

@@ -32,6 +32,45 @@ const LINK_ONLY_RIGHTS: RightsFlags = { displayOk: true, priceOk: false, imageOk
 
 const DAY = 86_400_000
 
+
+// ── Cinema chains linked by their own «now showing» page (owner 01/10: Galaxy · Lotte · BHD · Beta join CGV) ──
+// Opened without login (HTTP 200 / real browser) on 2026-10-01; nothing deeper is claimed: the film list is L2, the
+// showtime picker and seats stay on the chain's page. Passthrough only — a discovered page on the chain's own host
+// is handed off; no URL is composed here and no price, showtime or availability is ever shown (rights: link only).
+const CINEMA_VERIFIED = '2026-10-01'
+function cinemaChain(providerId: string, merchantName: string, hosts: string[], listPage: string): ProviderRegistryEntry {
+  return {
+    providerId,
+    merchantId: providerId,
+    merchantName,
+    domains: ['entertainment'],
+    intents: ['buy_ticket'],
+    allowedHosts: hosts,
+    capabilities: ['transactionBoundary'],
+    commerce: ['cinema_ticket', 'commerce_handoff'],
+    depth: {
+      buy_ticket: {
+        guestDepth: 2,
+        authenticatedDepth: null,
+        bestPossibleDepth: 2,
+        authRequiredAt: 'none',
+        verifiedOn: CINEMA_VERIFIED,
+        evidence: listPage,
+        reason: 'Trang phim đang chiếu mở được không cần đăng nhập (01/10/2026); chọn suất chiếu và ghế làm trên trang của rạp.',
+      },
+    },
+    linkStrategy: { buy_ticket: ['handoff'] },
+    freshness: { identity: { freshnessType: 'near_realtime', ttlMs: DAY, note: 'film pages; showtimes live on the chain page' } },
+    rights: LINK_ONLY_RIGHTS,
+    enabledFlag: 'CCP_HANDOFF_ONLY',
+    tier: 'handoff_only',
+    notes: ['Cinema chain added by owner decision 01/10/2026 (provider list was frozen at 17); passthrough of a discovered film page only.'],
+    handoffPassthrough: true,
+    // No `discovery`: a film-page search per chain would multiply the Serper cost of every film question; the chain is linked
+    // through its now-showing page (nowShowing.ts) and passes a page it is HANDED through unchanged.
+  }
+}
+
 export const PROVIDER_REGISTRY: readonly ProviderRegistryEntry[] = [
   {
     providerId: 'dmx',
@@ -398,8 +437,8 @@ export const PROVIDER_REGISTRY: readonly ProviderRegistryEntry[] = [
     tracking: { network: 'accesstrade', campaignId: '5222734619328835827', approval: 'approved', safeWrapper: 'deep_link', unsafeWrappers: [] },
     enabledFlag: 'CCP_ADAPTER_VEXERE',
     tier: 'mvp',
-    notes: ['Route pages (/vi-VN/ve-xe-khach-tu-<from>-di-<to>-<ids>.html) are DISCOVERED — the ids are Vexere\'s; the adapter appends the date and checks the slug names both places.', 'No composable search grammar (verified 404); the landing page is the fallback.', 'ACCESSTRADE campaign approved (portal 27 Sep 2026).'],
-    discovery: { site: 'vexere.com/vi-VN', subjectKind: 'route' },
+    notes: ['Route pages (/vi-VN/ve-xe-khach-tu-<from>-di-<to>-<ids>.html) are DISCOVERED — the ids are Vexere\'s; the adapter appends the date and checks the slug names both places.', 'No composable search grammar (verified 404); the landing page is the fallback.', 'ACCESSTRADE campaign approved (portal 27 Sep 2026; still offered in the Deep Link tool 29 Oct 2026).', 'Trains (29 Oct 2026): rail route pages /vn/ve-tau-hoa/tu-<from>-di-<to>.<id>.<id>.vi are DISCOVERED; their area ids compose the dated train list dat-ve-tau.vi (date + adults, DSVN fares).'],
+    discovery: { site: 'vexere.com/vi-VN', subjectKind: 'route', railSite: 'vexere.com/vn/ve-tau-hoa' },
   },
   {
     providerId: 'booking',
@@ -441,30 +480,36 @@ export const PROVIDER_REGISTRY: readonly ProviderRegistryEntry[] = [
     domains: ['travel'],
     intents: ['book_hotel'],
     allowedHosts: ['www.agoda.com', 'agoda.com'],
-    capabilities: ['search', 'details', 'configure', 'resolveDeepLink', 'transactionBoundary'],
+    capabilities: ['search', 'details', 'configure', 'resolveDeepLink', 'transactionBoundary', 'tracking'],
     commerce: ['hotel_discovery', 'hotel_detail', 'hotel_booking', 'commerce_handoff'],
     depth: {
       book_hotel: {
+        // 29 Oct 2026: the property URL with checkIn + los + adults + rooms opened with the stay applied, priced room rows and book
+        // buttons (L4) — see the grammar. The audit lines below are the earlier state, kept for the record.
         // Audit 13 Sep 2026: direct property URL with dates loads (L3, untracked); the room list did
         // not render in that session, so nothing deeper is claimed. 14 Sep 2026 (read-only browser):
         // the property page shows the occupancy from the URL; /vi-vn/search?q= and ?textToSearch=
         // both DROP the query and land on the homepage — Agoda has no composable search grammar.
-        guestDepth: 3,
+        guestDepth: 4,
         authenticatedDepth: null,
         bestPossibleDepth: 5,
         authRequiredAt: 'none',
         verifiedOn: COMPLETION_VERIFIED,
         evidence: COMPLETION_EVIDENCE,
-        reason: 'Trang khách sạn Agoda mở với ngày/số khách từ URL; bảng phòng và bước đặt chưa xác minh.',
+        reason: 'Trang khách sạn Agoda mở với ngày nhận phòng, số đêm và số khách từ URL; bảng phòng có giá và nút đặt (kiểm 29/10/2026); bước nhập thông tin chưa thực thi.',
       },
     },
-    linkStrategy: { book_hotel: ['detail', 'handoff'] },
+    linkStrategy: { book_hotel: ['tracked', 'detail', 'handoff'] },
     freshness: { identity: { freshnessType: 'static', ttlMs: 30 * DAY, note: 'property slugs' } },
     // Agoda programme terms: no price comparison, no coupons (same class as Booking.com).
     rights: { displayOk: true, priceOk: false, imageOk: false, comparisonOk: false, couponOk: false },
+    // Partner portal 29 Oct 2026 (owner's account): site 1974819 APPROVED; Agoda's own programme, not Accesstrade (no Agoda campaign in
+    // the AT Deep Link tool). Agoda's FAQ names partnersearch.aspx links as the tracked form and says property pages are not a supported
+    // link target, so a cid on a property page is BEST EFFORT: the owner chose depth first, affiliate when possible (29 Oct 2026).
+    tracking: { network: 'param', param: { name: 'cid', value: '1974819' }, approval: 'approved', safeWrapper: 'deep_link', unsafeWrappers: [] },
     enabledFlag: 'CCP_ADAPTER_AGODA',
     tier: 'mvp',
-    notes: ['Direct property links only; the Agoda programme is pending and its tools issue search-result links only — never used for a property (monetisation only).', 'No composable search grammar (query dropped, verified 14 Sep 2026); the landing page is the fallback.', 'Discovery: the hotel tool\'s own OTA search returns Agoda property rows (no extra CCP scope).'],
+    notes: ['Direct property links with the stay applied (L4, 29 Oct 2026), carrying the partner cid.', 'Agoda partner site 1974819 approved (portal 29 Oct 2026); the tracked form Agoda documents is partnersearch.aspx?pcs=1&cid=&hid=<hotel id> — Tappy holds no Agoda hotel ids yet (Lite API / hotel data file).', 'No composable search grammar (query dropped, verified 14 Sep 2026); the landing page is the fallback.', 'Discovery: the hotel tool\'s own OTA search returns Agoda property rows (no extra CCP scope).'],
   },
   {
     providerId: 'traveloka',
@@ -671,4 +716,8 @@ export const PROVIDER_REGISTRY: readonly ProviderRegistryEntry[] = [
     handoffPassthrough: true,
     discovery: { site: 'shopeefood.vn', subjectKind: 'restaurant' },
   },
+  cinemaChain('galaxy', 'Galaxy Cinema', ['www.galaxycine.vn', 'galaxycine.vn'], 'https://www.galaxycine.vn/phim-dang-chieu/'),
+  cinemaChain('lotte', 'Lotte Cinema', ['www.lottecinemavn.com', 'lottecinemavn.com'], 'https://www.lottecinemavn.com/LCHS/Contents/Movie/Movie-List.aspx'),
+  cinemaChain('bhd', 'BHD Star', ['www.bhdstar.vn', 'bhdstar.vn'], 'https://www.bhdstar.vn/phim/'),
+  cinemaChain('beta', 'Beta Cinemas', ['www.betacinemas.vn', 'betacinemas.vn'], 'https://www.betacinemas.vn/phim.htm'),
 ]

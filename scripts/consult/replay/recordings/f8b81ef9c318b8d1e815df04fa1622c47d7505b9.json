@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "nhà hàng Michelin giá dưới 50k/người Quận 1, TP.HCM gia menu thuc don",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:10:13.866Z",
+ "body": {
+  "searchParameters": {
+   "q": "nhà hàng Michelin giá dưới 50k/người Quận 1, TP.HCM gia menu thuc don",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "So sánh độ sang chảnh của 9 nhà hàng sao Michelin ở ...",
+    "link": "https://laodong.vn/du-lich/am-thuc/so-sanh-do-sang-chanh-cua-9-nha-hang-sao-michelin-o-viet-nam-1519686.html",
+    "snippet": "Nhà hàng có những set menu từ 5,9 - 7,5 triệu đồng/khách. Khi đặt chỗ tại nhà hàng, thực khách cũng phải đặt cọc 1 triệu đồng/người. Ảnh: La ...",
+    "date": "10 thg 6, 2025",
+    "position": 1
+   },
+   {
+    "title": "NHÀ HÀNG VIỆT NAM ĐƯỢC MICHELIN VINH DANH ...",
+    "link": "https://www.youtube.com/watch?v=3w4Toc5ub-Q",
+    "snippet": "Chi nhánh Thảo Điền: 32 Đường 11, Phường An Khánh, TP. HCM · Chi nhánh Tao Đàn: 34 Đường Võ Văn Tần, Phường Xuân Hoà, TP. HCM.",
+    "position": 2
+   },
+   {
+    "title": "Nhà Hàng Michelin Sài Gòn: 8 Địa Chỉ Được ...",
+    "link": "https://madamelam.com/nha-hang-michelin-sai-gon/",
+    "snippet": "Long Triều Akuna Akuna là nhà hàng 1 sao Michelin tại TP.HCM, nổi bật với phong cách fine dining hiện đại. Nhà hàng được dẫn dắt bởi chef Sam Aisbett,",
+    "position": 3
+   },
+   {
+    "title": "Những nhà hàng Michelin ở Việt Nam không thể bỏ lỡ",
+    "link": "https://www.vietjetair.com/vi/pages/nhung-nha-hang-michelin-o-viet-nam-khong-the-bo-lo-1723425963866",
+    "snippet": "Set menu thông dụng ở đây gồm 6 món đi cùng set rượu Úc hay set rượu quốc tế tùy chọn. Menu 6 món bao gồm: sashimi cá ngừ vây xanh; ngan om đỏ kiểu Trung Hoa; ...",
+    "position": 4
+   },
+   {
+    "title": "9 nhà hàng 1 sao Michelin ở Việt Nam giờ ra sao?",
+    "link": "https://baomoi.com/9-nha-hang-1-sao-michelin-o-viet-nam-gio-ra-sao-c55307608.epi",
+    "snippet": "Anan Saigon Địa chỉ: 89 Tôn Thất Đạm, phường Sài Gòn, TP.HCM. Là nhà hàng đầu tiên của TP.HCM nhận sao Michelin, Anan Saigon (Ănăn Saigon)",
+    "date": "3 thg 6, 2026",
+    "position": 5
+   },
+   {
+    "title": "Sao Michelin Là Gì? Top 8 Nhà Hàng ...",
+    "link": "https://vincom.com.vn/trend/nha-hang-michelin",
+    "snippet": "Jardin Des Sens Saigon là nhà hàng đầu tiên tại được nhận 3 sao Michelin tại TP. HCM. Nhà hàng này được sáng tạo nên bởi anh em song sinh người Pháp, các món ăn ...",
+    "position": 6
+   },
+   {
+    "title": "181 cơ sở ẩm thực Việt Nam được vinh danh tại Michelin ...",
+    "link": "https://vietnamtourism.gov.vn/post/63234",
+    "snippet": "Michelin Guide công bố danh sách 181 cơ sở ăn uống đạt giải với 9 nhà hàng ăn uống được tuyển chọn dựa trên chất lượng ẩm thực (trong đó có 14 ...",
+    "date": "5 thg 6, 2025",
+    "position": 7
+   },
+   {
+    "title": "Top 9 nhà hàng một sao Michelin tại Việt Nam",
+    "link": "https://www.bachhoaxanh.com/kinh-nghiem-hay/top-9-nha-hang-mot-sao-michelin-tai-viet-nam-1584777",
+    "snippet": "Top 9 nhà hàng một sao Michelin tại Việt Nam · 1. CieL Dining · 2. CoCo Dining · 3. La Maison 1888 · 4. Long Triều · 5. Akuna · 6. Gia · 7. Hibana by Koki · 8. Tầm Vị.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

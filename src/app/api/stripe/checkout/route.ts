@@ -5,10 +5,13 @@ import Stripe from 'stripe'
 import { serverEnv } from '@/lib/config/env'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
+import { subscriptionsEnabled } from '@/lib/payments/flags'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2024-06-20' })
 
 export async function POST(req: Request) {
+  // SUBSCRIPTIONS: Stripe does not onboard individual Vietnamese sellers — VietQR/SePay replaces it while the flag is ON.
+  if (subscriptionsEnabled()) return new NextResponse(null, { status: 404 })
   try {
     const { user } = await getRequestUser(req)
     if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })

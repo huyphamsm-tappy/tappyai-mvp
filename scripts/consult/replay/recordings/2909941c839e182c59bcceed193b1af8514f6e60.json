@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Quán Bụi\" OR \"Quán Bụi Central\" OR \"Quán Bụi Garden\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T01:57:18.107Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Quán Bụi\" OR \"Quán Bụi Central\" OR \"Quán Bụi Garden\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quán Bụi Group (@quanbui_group)",
+    "link": "https://www.tiktok.com/@quanbui_group",
+    "snippet": "Những cảm nhận khách quan, chi tiết từ khách luôn là điều Quán Bụi trân · Bữa cơm tối chuẩn vị Việt tại Quán Bụi central #quanbuigroup #vietnamesefood # ...",
+    "position": 1
+   },
+   {
+    "title": "Combo ăn sáng Việt tại Quán Bụi Sài Gòn chỉ 99k++",
+    "link": "https://www.tiktok.com/@quanbui_group/video/7303400928680447250",
+    "snippet": "Quán Bụi Sài Gòn ăn sáng ngon 99k, combo ăn sáng Việt tại Quán Bụi, không gian thoải mái Quán Bụi, thực đơn ăn sáng tại Quán Bụi, địa điểm ...",
+    "position": 2
+   },
+   {
+    "title": "QUÁN BỤI & STIICKY THAI Toàn món ăn ngon! #quanbui ...",
+    "link": "https://www.tiktok.com/@diancungneenha/video/7676785732567977236",
+    "snippet": "3157 Lượt thích,29 Bình luận.Video TikTok từ Đi ăn cùng Nee nha ￼ (@diancungneenha): \"QUÁN BỤI & STIICKY THAI Toàn món ăn ngon!",
+    "position": 3
+   },
+   {
+    "title": "Khám Phá Quán Bụi: Hương Vị Cơm Nhà Việt Nam",
+    "link": "https://www.tiktok.com/@nguyencongnuongw_/video/7535335656923335944",
+    "snippet": "Khám Phá Quán Bụi: Hương Vị Cơm Nhà Việt Nam. Trải nghiệm ẩm thực Việt Nam tại Quán Bụi, nơi mang đậm hương vị cơm nhà. Đừng bỏ lỡ! #review ...",
+    "position": 4
+   },
+   {
+    "title": "Chiếc quán mà tui tâm đắc nhất dạo gần đây, hợp mặt tụ ...",
+    "link": "https://www.tiktok.com/@elitutu0808/video/7602268208564931857",
+    "snippet": "Quán Bụi Lê Thánh Tôn vinh hạnh chào đón đoàn khách 150 người đến thưởng thức hương vị Việt! Cảm ơn vì đã chọn chúng tôi cho hành trình ẩm ...",
+    "position": 5
+   },
+   {
+    "title": "Quán Bụi Phố: Lẩu, Nướng, và Ốc Ngon Tại Tây Ninh",
+    "link": "https://www.tiktok.com/@mrhi1905/video/7594436856524197127",
+    "snippet": "Quán Bụi Phố: Lẩu, Nướng, và Ốc Ngon Tại Tây Ninh. Khám phá Quán Bụi Phố với lẩu cá tằm, ốc, và món nướng ngon miệng. Giá cả hợp lý và phục ...",
+    "position": 6
+   },
+   {
+    "title": "Phong cách quán bụi bặm vỉa hè chill nhất",
+    "link": "https://www.tiktok.com/@tuannuocep1996/video/7603231109345807636",
+    "snippet": "Phong cách quán bụi bặm vỉa hè chill nhất. Khám phá phong cách quán vỉa hè với thức uống thú vị. Chịu không? #xuhuongtiktok #nuocepnguyenchat ...",
+    "position": 7
+   },
+   {
+    "title": "Review Quán Bụi Mai Phương Thuý: Có Quá Đắt Không?",
+    "link": "https://www.tiktok.com/@thanhdat.food/video/7035445272918428930",
+    "snippet": "Quán Bụi nằm tại một địa điểm thuận lợi, mang đến không gian ấm cúng và đậm chất riêng, phù hợp cho những buổi gặp gỡ thân mật hoặc một bữa ăn ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

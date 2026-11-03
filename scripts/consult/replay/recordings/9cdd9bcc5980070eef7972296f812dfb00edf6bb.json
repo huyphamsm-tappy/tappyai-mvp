@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Sea Near Me Hotel Danang\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:21:57.628Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Sea Near Me Hotel Danang\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn Sea Near Me Hotel Đà Nẵng: Bể Bơi Gần Biển",
+    "link": "https://www.tiktok.com/@reviewkhachsandanang43rv/video/7502063763386928401",
+    "snippet": "Khách sạn Sea Near Me Hotel Đà Nẵng, chiếc khách sạn có bể bơi gần biển Mỹ Khê, g.i.á chỉ từ 210xu/người/đêm #reviewkhachsandanang # ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

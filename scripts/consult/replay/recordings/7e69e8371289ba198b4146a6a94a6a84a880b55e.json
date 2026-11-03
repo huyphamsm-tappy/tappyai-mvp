@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "hồ sơ cấp hộ chiếu phổ thông online căn cước ảnh chân dung giấy tờ lần đầu online",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:40:41.183Z",
+ "body": {
+  "searchParameters": {
+   "q": "hồ sơ cấp hộ chiếu phổ thông online căn cước ảnh chân dung giấy tờ lần đầu online",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp tỉnh)",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=29497",
+    "snippet": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp tỉnh). Nộp hồ sơ. Đăng nhập tài khoản khai báo tạm trú. Tên đăng nhập. Mật khẩu. Tỉnh thành.",
+    "position": 1
+   },
+   {
+    "title": "Thủ tục làm hộ chiếu phổ thông online",
+    "link": "https://www.xuatnhapcanh.com.vn/c11t80-thu-tuc-lam-ho-chieu-online.htm",
+    "snippet": "- Tờ khai xin cấp hộ chiếu in ra từ bản online. - Thẻ căn cước công ... - Tải ảnh chân dung 4x6 cm nền trắng, ảnh mặt trước và sau của CCCD;.",
+    "date": "24 thg 12, 2024",
+    "position": 2
+   },
+   {
+    "title": "Tờ khai điện tử đề nghị cấp hộ chiếu",
+    "link": "https://hochieu.xuatnhapcanh.gov.vn/faces/faq.jspx",
+    "snippet": "- Chứng minh nhân dân hoặc Thẻ căn cước công dân hoặc hộ chiếu còn giá trị sử dụng (nếu có, xuất trình khi nộp hồ sơ để cơ quan Quản lý xuất nhập cảnh kiểm tra, ...",
+    "position": 3
+   },
+   {
+    "title": "Hướng dẫn làm hộ chiếu online (passport online), nhận tại ...",
+    "link": "https://quephong.nghean.gov.vn/tin-noi-bat/huong-dan-lam-ho-chieu-online-passport-online-nhan-tai-nha-633365",
+    "snippet": "Tuy nhiên, như đã nói ở trên, từ ngày 01/06/2022, công dân Việt Nam có thể thực hiện thủ tục làm hộ chiếu online hoàn toàn, và kết quả được gửi ...",
+    "date": "19 thg 4, 2024",
+    "position": 4
+   },
+   {
+    "title": "HƯỚNG DẪN THAO TÁC ĐĂNG KÝ CẤP HỘ CHIẾU PHỔ ...",
+    "link": "https://www.facebook.com/xuatnhapcanhhanoi/posts/h%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-thao-t%C3%A1c-%C4%91%C4%83ng-k%C3%BD-c%E1%BA%A5p-h%E1%BB%99-chi%E1%BA%BFu-ph%E1%BB%95-th%C3%B4ng-tr%C3%AAn-c%E1%BB%95ng-d%E1%BB%8Bch-v%E1%BB%A5-c%C3%B4ng-b%E1%BB%99-c%C3%B4ng/765553852792615/",
+    "snippet": "Sau đó chọn thủ tục cần làm, ví dụ chọn thủ tục cấp hộ chiếu phổ thông ở trong nước thực hiện tại cấp tỉnh. Chọn vào hồ sơ. Để bắt đầu khai báo ...",
+    "position": 5
+   },
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp tỉnh)",
+    "link": "https://vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh-doc.html?ma_thu_tuc=1.001456",
+    "snippet": "Thành phần hồ sơ ; Ảnh mới chụp không quá 06 tháng, cỡ 4cm x 6cm, mặt nhìn thẳng, đầu để trần, rõ mặt, rõ hai tai, không đeo kính, trang phục lịch sự, phông ảnh ...",
+    "position": 6
+   },
+   {
+    "title": "Hướng dẫn người dân đăng ký làm hộ chiếu trên ứng ...",
+    "link": "https://congan.hungyen.gov.vn/huong-dan-nguoi-dan-dang-ky-lam-ho-chieu-tren-ung-dung-vneid-c231845.html",
+    "snippet": "1. Điều kiện để đăng ký hộ chiếu qua VNeID. - Công dân Việt Nam có tài khoản định danh điện tử mức độ 2 (đã xác thực tại Công an cấp xã, phòng). · 2. Các bước ...",
+    "position": 7
+   },
+   {
+    "title": "Instructions for making PASSPORT ONLINE from July 1, 2024",
+    "link": "https://www.youtube.com/watch?v=LTj7DuQ4OM0&xstg=CAMSBhUDzO3xHw%3D%3D",
+    "snippet": "Cảm ơn bạn đã ghé thăm video của kênh. Video này hướng dẫn các bạn cách làm hộ chiếu online mới nhất - Hướng dẫn chỉnh ảnh hộ chiếu thành ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

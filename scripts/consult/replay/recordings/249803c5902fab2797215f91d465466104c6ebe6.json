@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:support.apple.com AirPods Pro 2 battery life listening time ANC charging case",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:37:10.017Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:support.apple.com AirPods Pro 2 battery life listening time ANC charging case",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "AirPods Pro 2 - Tech Specs",
+    "link": "https://support.apple.com/en-us/111851",
+    "snippet": "Up to 30 hours of listening time5. 5 minutes in the case provides around 1 hour of listening time6. Connectivity. Bluetooth 5.3 wireless technology. In the Box.",
+    "position": 1
+   },
+   {
+    "title": "AirPods Pro 1 with Wireless Charging Case - Tech Specs",
+    "link": "https://support.apple.com/en-us/111861",
+    "snippet": "With Active Noise Cancellation and Transparency turned off, listening time was up to 5 hours. Testing consisted of full AirPods Pro battery discharge while ...",
+    "position": 2
+   },
+   {
+    "title": "AirPods Pro 2 with MagSafe Charging Case (USB-C)",
+    "link": "https://support.apple.com/en-us/111834",
+    "snippet": "Up to 6 hours of listening time on a single charge (up to 5.5 hours with Spatial Audio and Head Tracking enabled) · Up to 4 hours of Lossless Audio listening ...",
+    "position": 3
+   },
+   {
+    "title": "AirPods 4 with Active Noise Cancellation - Tech Specs",
+    "link": "https://support.apple.com/en-us/121204",
+    "snippet": "Up to 30 hours of listening time with noise control off14. 5 minutes in the case provides around 1 hour of listening time15. Connectivity. Bluetooth 5.3 ...",
+    "position": 4
+   },
+   {
+    "title": "Charge your AirPods",
+    "link": "https://support.apple.com/en-us/119912",
+    "snippet": "You can use your iPhone or iPad to turn on reminders to charge your AirPods Pro 2 (both models), AirPods 4 (ANC), AirPods 5 with Wireless ...",
+    "date": "17 thg 9, 2026",
+    "position": 5
+   },
+   {
+    "title": "AirPods Pro 3 - Tech Specs",
+    "link": "https://support.apple.com/en-us/125135",
+    "snippet": "Up to 24 hours of listening time with Active Noise Cancellation enabled21. 5 minutes in the case provides around 1 hour of listening time22. Connectivity.",
+    "position": 6
+   },
+   {
+    "title": "About charging and playback time",
+    "link": "https://support.apple.com/guide/beats/about-charging-and-playback-time-devc8a939c17/web",
+    "snippet": "Powerbeats Pro 2 provide up to 36 hours of playback with Active Noise Cancellation (ANC) turned on and up to 45 hours with ANC turned off (when using the ...",
+    "position": 7
+   },
+   {
+    "title": "About firmware updates for AirPods",
+    "link": "https://support.apple.com/en-us/106340",
+    "snippet": "About firmware updates for AirPods. Learn about changes and features included in the firmware updates for your AirPods.",
+    "date": "17 thg 9, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

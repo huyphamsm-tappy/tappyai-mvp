@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Cơm Ngon Hà Nội\" OR \"Ăn Tiệm G\" OR \"Hàng Dương Quán Quận 1\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:53:49.692Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Cơm Ngon Hà Nội\" OR \"Ăn Tiệm G\" OR \"Hàng Dương Quán Quận 1\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khám Phá Ẩm Thực Tại Tiệm Ăn G Quận 1",
+    "link": "https://www.tiktok.com/@longnhongsaigon/video/7553490361033723143",
+    "snippet": "POV ăn cơm trưa @Ăn Tiệm G khu tài chính Q1 #longnhongsaigon #mcv #antiemg #AnCungTikTok #quan1 Tiệm Ăn Của Quỷ Tập 5 Giải ThíchQuán Ăn Chợ ...",
+    "position": 1
+   },
+   {
+    "title": "Ăn Tiệm G (@antiemg)",
+    "link": "https://www.tiktok.com/@antiemg",
+    "snippet": "Ăn Tiệm G · @antiemg · Cơm trưa bán từ thứ 2 đến thứ 6 (11h-15h) Các món đặc sản truyền thống vị Bắc menu trên IG:antiemg món sẽ được đặt trước. full tuần từ 11h- ...",
+    "position": 2
+   },
+   {
+    "title": "Quán Cơm Ngon Hà Nội: Thiếu Sót Lớn Nếu Chưa Ghé!",
+    "link": "https://www.tiktok.com/@congnhanvanphongvn/video/7622290966287813908",
+    "snippet": "Quán Cơm Ngon Hà Nội: Thiếu Sót Lớn Nếu Chưa Ghé! Khám phá quán cơm 'chất lượng' tại Hà Nội mà bạn không thể bỏ lỡ. Ăn ngon, bổ, rẻ cho công ...",
+    "position": 3
+   },
+   {
+    "title": "Quán Cơm Ngon Hà Nội: Mê Cơm Lưu Lại Ngay!",
+    "link": "https://www.tiktok.com/@thodiahanois/video/7618816599063006485",
+    "snippet": "Quán Cơm Ngon Hà Nội: Mê Cơm Lưu Lại Ngay! Khám phá ngay danh sách các quán cơm ngon tại Hà Nội dành cho team mê cơm. Lưu lại địa chỉ để ...",
+    "position": 4
+   },
+   {
+    "title": "mơ chín.. báo hiệu mùa hè rực rỡ nay tụi mình sắm sửa ...",
+    "link": "https://www.tiktok.com/@antiemg/video/7625937222319017236?lang=az",
+    "snippet": "Ăn Tiệm G (@antiemg) tərəfindən TikTok videosu: \"mơ chín.. báo hiệu mùa hè rực rỡ nay tụi mình sắm sửa mơ ngon cho một mùa...rựu mơ say nồng #xuhuong ...",
+    "position": 5
+   },
+   {
+    "title": "#antiemg #nauan #comnha #nâunngoncungtiktok",
+    "link": "https://www.tiktok.com/@antiemg/video/7637464223756471572",
+    "snippet": "20 Lượt thích,Video TikTok từ Ăn Tiệm G (@antiemg): \"#antiemg #nauan #comnha #nâunngoncungtiktok\".âm thanh gốc - Ăn Tiệm G.",
+    "position": 6
+   },
+   {
+    "title": "Cơm Quê Dượng Bầu: Khám Phá Ẩm Thực Trung Tâm ...",
+    "link": "https://www.tiktok.com/@comque.duongbau/video/7509822871691119890",
+    "snippet": "Cơm Ngon Hà Nội · Đào Minh Quân Cơm Quê Dượng Bầu · Bà Bầu Ăn Cháo Lòng Được Không · Bà Bầu Ăn Cơm Bằng Tô Được Không. Cơm Quê Dượng Bầu: Khám ...",
+    "position": 7
+   },
+   {
+    "title": "Món Ăn Miền Tây: Mắm Chưng, Canh Khoai Mỡ, Khô Cá ...",
+    "link": "https://www.tiktok.com/@antiemg/video/7633702843857276180",
+    "snippet": "Thưởng thức bữa cơm đậm chất Miền Tây với Mắm chưng, canh khoai mỡ nấu. @Ăn Tiệm G.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

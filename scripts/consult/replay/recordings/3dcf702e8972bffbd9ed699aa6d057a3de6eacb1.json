@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Xóm Chợ Cũ Restaurant\" OR \"NHÀ HÀNG NGON\" OR \"Nhà hàng chay Phương Mai\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:56:17.843Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Xóm Chợ Cũ Restaurant\" OR \"NHÀ HÀNG NGON\" OR \"Nhà hàng chay Phương Mai\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nhà Hàng Chay Phương Mai (@lan.calla)",
+    "link": "https://www.tiktok.com/@lan.calla",
+    "snippet": "Nhà Hàng Chay Phương Mai · @lan.calla · Hẻm 82 nhà số 86F Võ Thị Sáu, F. Tân Định (quận 1 cũ) Tp. HCM Hotline / Zalo: 0888.339.257.",
+    "position": 1
+   },
+   {
+    "title": "Nhà hàng chay Phương Mai: Điểm đến tuyệt vời cho thực ...",
+    "link": "https://www.tiktok.com/@xiathichanchaynek/video/7523829987942763794",
+    "snippet": "Có tuổi đời hơn 10 năm, nhà hàng chay Phương Mai đã không làm mình thất vọng từ không gian cho đến chất lượng món ăn, mê chỗ này lắm mấy ní ơi!",
+    "position": 2
+   },
+   {
+    "title": "Bật Mí 3 Nhà Hàng Ngon Ở Tà Xùa Giá Cả Phải Chăng",
+    "link": "https://www.tiktok.com/@truongdulich/video/7692090464362597640",
+    "snippet": "Nếu bạn đang phân vân không biết nên ăn ở đâu, hãy để chúng tôi bật mí cho bạn 3 nhà hàng ngon và giá cả phải chăng tại đây. ### 1. Nhà hàng ...",
+    "position": 3
+   },
+   {
+    "title": "Nhà Hàng Ngon: Trải Nghiệm Ẩm Thực Tại TP.HCM",
+    "link": "https://www.tiktok.com/@anchimihe/video/7121950658047135019",
+    "snippet": "Nhà Hàng Ngon | 160 Pasteur, Bến Nghé, Quận 1, Thành phố Hồ Chí Minh ... Nhà Hàng Ngon: Trải Nghiệm Ẩm Thực Tại TP.HCM. Khám phá Nhà ...",
+    "position": 4
+   },
+   {
+    "title": "... thẩm nhiênG...❤️ #nhahangchayphuongmai # ...",
+    "link": "https://www.tiktok.com/@lan.calla/video/7555731554866040072",
+    "snippet": "218 Lượt thích,Video TikTok từ Nhà Hàng Chay Phương Mai (@lan.calla): \"... thẩm nhiênG...❤️ #nhahangchayphuongmai #vegetarianrestaurant ...",
+    "position": 5
+   },
+   {
+    "title": "Khám Phá Nhà Hàng Ngon Tại Hàm Nghi, Nam Từ Liêm",
+    "link": "https://www.tiktok.com/@trainghiemcungnga/video/7424493995121839378",
+    "snippet": "Gợi ý 1 nhà hàng ngon-chất khu Hàm Nghi- Nam Từ Liêm để ace đổi gió. Sắp 20/10 rồi lên lịch hẹn hò ngay thôiiii #comnieu #comnha #comque # ...",
+    "position": 6
+   },
+   {
+    "title": "Đi ăn mì bò kho, một trong những nhà hàng ngon ở khu ...",
+    "link": "https://www.tiktok.com/@anlychicago/video/7688405076607520014",
+    "snippet": "TikTok video from Ailey Ly (@anlychicago): “Đi ăn mì bò kho, một trong những nhà hàng ngon ở khu người Vietnam tại Chicago.",
+    "position": 7
+   },
+   {
+    "title": "... Phương Mai... nét thường vi...💚💚💚 #nhahangchay ...",
+    "link": "https://www.tiktok.com/@lan.calla/video/7544983659204381960",
+    "snippet": "76 Lượt thích,Video TikTok từ Nhà Hàng Chay Phương Mai (@lan.calla): \"... Phương Mai... nét thường vi.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

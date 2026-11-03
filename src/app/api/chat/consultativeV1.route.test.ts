@@ -85,6 +85,12 @@ vi.mock('@/lib/ai/tools/food', async (importOriginal) => {
 })
 
 import { POST } from '@/app/api/chat/route'
+// R42 R3 (LOC-DEFAULT-HCM-01 regression run): no network, ever — a fetch the mocks above do not cover fails at once instead of going online.
+beforeEach(() => { vi.stubGlobal('fetch', async (input: unknown) => { throw new Error('network disabled in this test: ' + String(input).slice(0, 60)) }) })
+afterEach(() => { vi.unstubAllGlobals() })
+// R42 R4: the fixture rows carry website_uri, so the photo lookup reads the site's og:image over node:https (common.ts fetchOfficialWebsiteImage →
+// safeGetText, not fetch). That one read fails here like an unreachable site, which the lookup already treats as "no image" (common.ts catch → null).
+vi.mock('@/lib/security/safeFetch', async (importOriginal) => ({ ...(await importOriginal<typeof import('@/lib/security/safeFetch')>()), safeGetText: async () => { throw new Error('network disabled in this test: website image') } }))
 
 /**
  * A1(b) (2026-09-20): on a pre-search turn the route returns its response BEFORE the search and the
@@ -187,7 +193,9 @@ describe('flag ON', () => {
     await post([{ role: 'user', content: 'Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận' }])
     const s = system()
     expect(s).toContain('===== TINH HUONG (V1) =====')
-    expect(s).toContain('Điều kiện cứng: có chỗ đậu xe, phù hợp trẻ em (user nói)')
+    // Owner (3A, D8): "con nít" is household context (who = family), not a hard condition; only the parking request is hard.
+    expect(s).toContain('Điều kiện cứng: có chỗ đậu xe (user nói)')
+    expect(s).not.toContain('phù hợp trẻ em')
   })
 
   it('a date question the decision frame reads as "inform / web_search" still carries the block — the situation decides', async () => {

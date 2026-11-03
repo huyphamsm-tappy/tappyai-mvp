@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "bluetooth cao cấp chống ồn ANC, Pin 6h-8h, Đàm Thoại 2 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:58:23.255Z",
+ "body": {
+  "searchParameters": {
+   "q": "bluetooth cao cấp chống ồn ANC, Pin 6h-8h, Đàm Thoại 2 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "[ 10.10 Giảm 50% ] Tai nghe bluetooth cao cấp chống ồn ...",
+    "link": "https://shopee.vn/-10.10-Gi%E1%BA%A3m-50-Tai-nghe-bluetooth-cao-c%E1%BA%A5p-ch%E1%BB%91ng-%E1%BB%93n-ANC-Pin-6h-8h-%C4%90%C3%A0m-Tho%E1%BA%A1i-2-chi%E1%BB%81u-i.1314919796.52618377442",
+    "snippet": "Mua [ 10.10 Giảm 50% ] Tai nghe bluetooth cao cấp chống ồn ANC, Pin 6h-8h, Đàm Thoại 2 chiều giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 14,
+    "position": 1
+   },
+   {
+    "title": "Your Sound, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/yoursoundairpod",
+    "snippet": "Tai Nghe Bluetooth BỜ RỒ 2 - A.P.3 - A.P.2 - A.P.4 - Y9PLUS| Pin 6–8H | Sạc Không Dây - Bluetooth 5.3 - Chip Cao Cấp. 528.000₫. rating-star 5.0. 41 đã bán.",
+    "position": 2
+   },
+   {
+    "title": "1571am - Giá Tốt, Sale Tháng 10, Freeship 0Đ",
+    "link": "https://shopee.vn/list/1571am",
+    "snippet": "Tai nghe Bluetooth Hoco EW47 chính hãng chống ồn A-N-C có mic đàm thoại nghe nhạc ... Tai Nghe Bluetooth PRO 2 Bản Cao Cấp Bass Căng Pin 8H Đàm Thoại Chống Ồn.",
+    "position": 3
+   },
+   {
+    "title": "YÊU TÁO Y9791, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/yeutao.y9791",
+    "snippet": "Tai Nghe 1563E PỜ RỒ 2( BẢN MỚI ) Hổ Vằn Chip Cao Cấp – Bluetooth 5.3 – Chống Ồn ANC – Tăng Giảm Âm Lượng – Pin 6–8H. 900.000₫. rating-star 5.0. 20 đã bán.",
+    "position": 4
+   },
+   {
+    "title": "LIUFLITE VIỆT NAM , Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/liuflite.vn",
+    "snippet": "Tai Nghe Bluetooth PRO 2 LIUFLITE Bản Cao Cấp Bass Căng Pin 8H Đàm Thoại Chống Ồn Định Vị Cảm Ứng. 159.000₫. -47%. voucher-icon. Mua để nhận quà.",
+    "position": 5
+   },
+   {
+    "title": "Tai nghe a1cura - Giá Tốt, Sale Tháng 10, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/tai%20nghe/a1cura",
+    "snippet": "Tai Nghe Không Dây Bluetooth PRO3 Chống Ồn ANC Pin 8H Cao Cấp Tự Động Kết ... Cao Cấp, Đàm Thoại Hai Chiều, Pin Trâu 6H-8H, A1CURA. 389.000₫. rating-star 5.0.",
+    "position": 6
+   },
+   {
+    "title": "Necotop - Shopee Mall Online",
+    "link": "https://shopee.vn/necotop",
+    "snippet": "Tai Nghe Bluetooth Không Dây Cao Cấp Định Vị Đổi Tên Tự Động Kết Nối Cảm · Tai Nghe Bluetooth PR2 Chống Ồn Pin Trâu 6-8h Mic Đàm Thoại Rõ Ràng · Tai Nghe Không ...",
+    "position": 7
+   },
+   {
+    "title": "PHUKIENCHAT STORE - Shopee Mall Online",
+    "link": "https://shopee.vn/phukienchat_store1",
+    "snippet": "249.000 · Tai Nghe Bluetooth PRO2 Không Dây Thế Hệ Mới ,Đàm Thoại Hai Chiều, Pin · Tai Nghe Bluetooth Không Dây Cao Cấp Full Chức Năng Định Vị Đổi Tên Bảo Hành.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

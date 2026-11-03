@@ -1,0 +1,48 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vanban.chinhphu.vn \"lệ phí cấp hộ chiếu\" 2",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:46:28.972Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vanban.chinhphu.vn \"lệ phí cấp hộ chiếu\" 2",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Thông tư số 66/2009/TT-BTC của Bộ Tài chính",
+    "link": "https://vanban.chinhphu.vn/default.aspx?pageid=27160&docid=84925",
+    "snippet": "1. Thông tư này quy định đối với khoản lệ phí cấp hộ chiếu, thị thực và các loại giấy tờ cho người Việt Nam và người nước ngoài nhập cảnh, xuất cảnh, quá cảnh ...",
+    "position": 1
+   },
+   {
+    "title": "Thông tư số 97/2011/TT-BTC của Bộ Tài chính",
+    "link": "https://vanban.chinhphu.vn/default.aspx?pageid=27160&docid=151483",
+    "snippet": "1. Bổ sung điểm d vào khoản 2 mục I Phụ lục Biểu mức thu lệ phí cấp hộ chiếu, thị thực và các loại giấy tờ về xuất cảnh, nhập cảnh, quá cảnh và cư trú tại Việt ...",
+    "position": 2
+   },
+   {
+    "title": "Thông tư số 88/2007/TT-BTC của Bộ Tài chính",
+    "link": "https://vanban.chinhphu.vn/default.aspx?pageid=27160&docid=32620",
+    "snippet": "... Bộ Tài chính quy định chế độ thu, nộp và quản lý sử dụng lệ phí cấp hộ chiếu, thị thực và giấy tờ về nhập cảnh, xuất cảnh, quá cảnh và cư trú tại Việt Nam.",
+    "position": 3
+   },
+   {
+    "title": "Thông tư số 102/2012/TT-BTC của Bộ Tài chính",
+    "link": "https://vanban.chinhphu.vn/?pageid=27160&docid=163560",
+    "snippet": "vii) Lệ phí visa, lệ phí cấp hộ chiếu: Thanh toán theo phiếu thu hợp pháp của cơ quan lãnh sự trong và ngoài nước;. viii) Tiền đóng góp tham gia (tham dự) ...",
+    "position": 4
+   }
+  ],
+  "credits": 1
+ }
+}

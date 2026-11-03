@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook Air M1 check battery cycle count Apple support",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:03:29.037Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Air M1 check battery cycle count Apple support",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Determine battery cycle count for Mac laptops",
+    "link": "https://support.apple.com/en-vn/102888",
+    "snippet": "Find your battery's cycle count · Hold the Option key and click the Apple menu , then choose System Information. · Under the Hardware section of ...",
+    "date": "10 thg 3, 2026",
+    "position": 1
+   },
+   {
+    "title": "How To Check Battery Health and Cycle Count on Macbook ...",
+    "link": "https://www.youtube.com/watch?v=GvMzdReN0f8",
+    "snippet": "In this video you will learn how to check the battery health and battery cycle count on your Macbook Air and Macbook Pro.",
+    "position": 2
+   },
+   {
+    "title": "If you see battery 'Service Recommended' on your Mac ...",
+    "link": "https://support.apple.com/en-us/108376",
+    "snippet": "From the Apple menu , choose System Settings (or System Preferences). · Click Battery. · Find the information shown for Battery Health: Normal: ...",
+    "date": "11 thg 5, 2026",
+    "position": 3
+   },
+   {
+    "title": "How to Check Battery Cycles Count, Health and ...",
+    "link": "https://www.youtube.com/watch?v=ljkUONYxpU4",
+    "snippet": "You can then get an idea of the battery life of your MacBook. Let me show you how to find the battery cycle count on your MacBook in this ...",
+    "position": 4
+   },
+   {
+    "title": "MacBook Air M1 maximum capacity dropped t…",
+    "link": "https://discussions.apple.com/thread/256368270",
+    "snippet": "I bought a MacBook Air M1 three weeks ago, and the device was very clean and like new. The maximum capacity was at 100% and the cycle count was 18. Now, ...",
+    "date": "7 ngày trước",
+    "position": 5
+   },
+   {
+    "title": "How to check battery health on MacBook?",
+    "link": "https://istyle.ae/blogs/istyle-blogs/how-to-check-battery-health-on-macbook?srsltid=AU7gw4VTOwInykv7ji9-F260niGihqnZUAqXnkzgwUwAlk_Jmok9knnF",
+    "snippet": "How do I view the charge cycles of a Mac? · Step 1 - Go to the apple at the top left of your screen. · Step 2 - Click About this Mac. · Step 3 - ...",
+    "date": "8 thg 9, 2025",
+    "position": 6
+   },
+   {
+    "title": "Check the condition of your Mac laptop's battery",
+    "link": "https://support.apple.com/guide/mac-help/check-the-condition-of-your-computers-battery-mh20865/mac",
+    "snippet": "To view your battery's condition, choose Apple menu > System Settings, then click Battery in the sidebar. (You may need to scroll down.).",
+    "position": 7
+   },
+   {
+    "title": "MacBook Air M1 Battery Cycle Count: What's Normal and ...",
+    "link": "https://www.facebook.com/fb-answers/macbook-air-m1-battery-cycle-count/",
+    "snippet": "The MacBook Air M1 is rated for up to 1,000 battery cycles before it's considered “consumed,” and most owners see 90-100% battery health well into the ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

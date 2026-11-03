@@ -1,0 +1,56 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "GEEK Hub Nguyen Dinh Chieu wifi ổ cắm Quận 1 Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:39:22.318Z",
+ "body": {
+  "searchParameters": {
+   "q": "GEEK Hub Nguyen Dinh Chieu wifi ổ cắm Quận 1 Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7874516,106.6967457,18.0536z",
+  "places": [
+   {
+    "position": 1,
+    "title": "GEEK Hub Nguyen Dinh Chieu",
+    "address": "27b/9 Đường Nguyễn Đình Chiểu, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.787451599999999,
+    "longitude": 106.6993206,
+    "rating": 4.5,
+    "ratingCount": 302,
+    "type": "Không gian làm việc chia sẻ",
+    "types": [
+     "Không gian làm việc chia sẻ",
+     "Đại lý cho thuê văn phòng"
+    ],
+    "website": "http://geekhub.vn/",
+    "phoneNumber": "+84 28 2200 8683",
+    "openingHours": {
+     "Thứ Năm": "07:30–21:30",
+     "Thứ Sáu": "07:30–21:30",
+     "Thứ Bảy": "07:30–21:30",
+     "Chủ Nhật": "07:30–21:30",
+     "Thứ Hai": "07:30–21:30",
+     "Thứ Ba": "07:30–21:30",
+     "Thứ Tư": "07:30–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOOmtrJdzRSCB0wPDti3G6_jMXY3tW7LP-B8ic4ROFGDtqfv5q0SkFg4HnjFoqRvbmaCStxYXNHuRw9pJT5xDXXb-H6lpBcVF61MAWoEAt28I-lYEfBWiSCC97F_LscMzciE9Mf",
+    "cid": "11135049055463399445",
+    "fid": "0x31752f3565d22c2b:0x9a87a41eb371e015",
+    "placeId": "ChIJKyzSZTUvdTERFeBxsx6kh5o"
+   }
+  ],
+  "credits": 3
+ }
+}

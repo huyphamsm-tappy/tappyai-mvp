@@ -40,11 +40,11 @@ ghi **CẦN HUY XÁC NHẬN**.
 **"Chia sẻ" theo định nghĩa Play**: chuyển dữ liệu cho **bên xử lý thay mặt mình** (service provider) KHÔNG tính là chia sẻ.
 Bên nhận dữ liệu phía server: Anthropic (Claude — AI chat, dịch, quét ảnh, viết content, kiểm tra lừa đảo: `src/lib/ai/llm/registry.ts:37-55`,
 `package.json:27`), Serper (tìm địa điểm, nhận toạ độ: `src/lib/ai/tools/serperPlaces.ts:136`), OpenStreetMap Overpass/Nominatim
-(`src/lib/ai/tools/food.ts:197-203`), Google Web Risk (kiểm link lừa đảo), Travelpayouts (`src/lib/ai/tools/travel.ts`), Google Cloud
+(`src/lib/ai/tools/food.ts:197-203`), Google Web Risk (kiểm link lừa đảo), Google Cloud
 Storage (ảnh/video), Supabase (CSDL, đăng nhập), Vercel (máy chủ), Upstash (giới hạn tần suất), Google Cloud Logging, Firebase (Google).
 **Huy quyết 29/09: Anthropic, Supabase, Google Cloud (Storage, Logging), Firebase là bên xử lý thay mặt TappyAI → KHÔNG tính
 "chia sẻ".** Vercel, Upstash cùng loại hạ tầng → cũng không tính. Còn lại **CẦN HUY XÁC NHẬN**: Serper, OSM Overpass/Nominatim,
-Google Web Risk, Travelpayouts nhận nội dung truy vấn (Serper/Overpass nhận toạ độ). Chúng là API tra cứu Tappy gọi thay người dùng;
+Google Web Risk nhận nội dung truy vấn (Serper/Overpass nhận toạ độ). Chúng là API tra cứu Tappy gọi thay người dùng;
 khuyến nghị cũng coi là bên xử lý. Riêng Overpass là API công cộng không có hợp đồng xử lý — nếu muốn chặt chẽ thì khai
 **Vị trí: có chia sẻ**, mục đích "Chức năng ứng dụng".
 

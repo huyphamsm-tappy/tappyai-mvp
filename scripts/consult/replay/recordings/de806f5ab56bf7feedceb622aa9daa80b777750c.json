@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"La Lola Saigon\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:30:47.542Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"La Lola Saigon\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "La Lola Saigon (@lalolasaigon)",
+    "link": "https://www.tiktok.com/@lalolasaigon",
+    "snippet": "La Lola Saigon · @lalolasaigon · A miracle of Mediterranean Kitchen 82 Ly Tu Trong, Ben Thanh Ward, D1, HCMC, Vietnam ⏰ Open Daily: 10:30AM - 11PM.",
+    "position": 1
+   },
+   {
+    "title": "Join us in creating unforgettable moments at La Lola Thao ...",
+    "link": "https://www.tiktok.com/@lalolasaigon/video/7685765943535881492",
+    "snippet": "La Lola Saigon. La Lola Saigon là chốn dừng chân lý tưởng cho những khoảnh khắc đáng nhớ, những sự kiện trang trọng cho doanh nghiệp và đội ...",
+    "position": 2
+   },
+   {
+    "title": "Michelin Star Restaurant & Morning Vibes - La Lola Saigon",
+    "link": "https://www.tiktok.com/@lalolasaigon/video/7672784563864718612",
+    "snippet": "Start your day with a special morning date at La Lola Saigon. This establishment holds the prestigious Michelin star, signifying its excellence in dining.",
+    "position": 3
+   },
+   {
+    "title": "Guitar Night [Every Friday] at La Lola Saigon 🎸 ...",
+    "link": "https://www.tiktok.com/@lalolasaigon/video/7686135412343049492",
+    "snippet": "Guitar Night [Every Friday] at La Lola Saigon #guitar #acoustic #restaurant #food #diningtable · recommend-cover. La Lola Saigon · recommend- ...",
+    "position": 4
+   },
+   {
+    "title": "The art of cooking is where culinary artists are held in the highest ...",
+    "link": "https://www.tiktok.com/@lalolasaigon/video/7673008178870684949",
+    "snippet": "The art of cooking is where culinary artists are held in the highest esteem #saigon #restaurant #cuisine #michelinstar · recommend-cover. La Lola Saigon.",
+    "position": 5
+   },
+   {
+    "title": "Romantic Mediterranean Restaurant in HCMC - Michelin Star",
+    "link": "https://www.tiktok.com/@lalolasaigon/video/7672391769434164501",
+    "snippet": "Video TikTok từ La Lola Saigon (@lalolasaigon): \"Discover a romantic Mediterranean-style restaurant in Ho Chi Minh City (HCMC) with a Michelin Star.",
+    "position": 6
+   },
+   {
+    "title": "Link order GrabFood trong phần bình luận",
+    "link": "https://www.tiktok.com/@lalolasaigon/video/7689823185662922004",
+    "snippet": "Video TikTok từ La Lola Saigon (@lalolasaigon): \"Video hướng dẫn đặt GrabFood: link order GrabFood trong phần bình luận và thông tin liên ...",
+    "position": 7
+   },
+   {
+    "title": "🥂 La Lola Thao Dien chính thức đi vào hoạt động, không ...",
+    "link": "https://www.tiktok.com/@lalolasaigon/video/7683540728185916692",
+    "snippet": "Video TikTok từ La Lola Saigon (@lalolasaigon): \" La Lola Thao Dien chính thức đi vào hoạt động, không gian mới cho những trái tim và tâm ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

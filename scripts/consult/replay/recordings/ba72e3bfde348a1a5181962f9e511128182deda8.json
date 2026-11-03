@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vanban.chinhphu.vn lệ phí cấp hộ chiếu phổ thông thông tư lệ phí xuất cảnh nhập cảnh",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:34:09.729Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vanban.chinhphu.vn lệ phí cấp hộ chiếu phổ thông thông tư lệ phí xuất cảnh nhập cảnh",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Thông tư số 66/2009/TT-BTC của Bộ Tài chính",
+    "link": "https://vanban.chinhphu.vn/default.aspx?pageid=27160&docid=84925",
+    "snippet": "1. Thông tư này quy định đối với khoản lệ phí cấp hộ chiếu, thị thực và các loại giấy tờ cho người Việt Nam và người nước ngoài nhập cảnh, xuất cảnh, quá cảnh ...",
+    "position": 1
+   },
+   {
+    "title": "Thông tư số 97/2011/TT-BTC của Bộ Tài chính",
+    "link": "https://vanban.chinhphu.vn/default.aspx?pageid=27160&docid=151483",
+    "snippet": "“Mức thu lệ phí xuất nhập cảnh được quy định cụ thể tại Biểu mức thu lệ phí ban hành kèm theo Thông tư này, đơn vị tính là 01 quyển hộ chiếu, 01 thị thực, 01 ...",
+    "position": 2
+   },
+   {
+    "title": "Thông tư số 88/2007/TT-BTC của Bộ Tài chính",
+    "link": "https://vanban.chinhphu.vn/default.aspx?pageid=27160&docid=32620",
+    "snippet": "... lệ phí cấp hộ chiếu, thị thực. và giấy tờ về nhập cảnh, xuất cảnh, quá cảnh và cư trú tại Việt Nam. Căn cứ Pháp lệnh phí và lệ phí; Nghị định số 57/2002/NĐ-CP ...",
+    "position": 3
+   },
+   {
+    "title": "Thông tư số 157/2015/TT-BTC của Bộ Tài chính: Quy định chế ...",
+    "link": "https://vanban.chinhphu.vn/default.aspx?pageid=27160&docid=182515",
+    "snippet": "Thông tư số 157/2015/TT-BTC của Bộ Tài chính: Quy định chế độ thu, nộp và quản lý sử dụng lệ phí cấp hộ chiếu, thị thực, giấy tờ về nhập cảnh, xuất cảnh, ...",
+    "position": 4
+   },
+   {
+    "title": "Thông tư số 113/2009/TT-BTC của Bộ Tài chính",
+    "link": "https://vanban.chinhphu.vn/default.aspx?pageid=27160&docid=87805",
+    "snippet": "Bộ Tài chính hướng dẫn như sau: Điều 1. Bãi bỏ khoản lệ phí cấp giấy thông hành hồi hương, giấy chứng nhận hồi hương qui định tại điểm 9 Phụ lục II - Mức thu ...",
+    "position": 5
+   },
+   {
+    "title": "Công văn số 5425/VPCP-KTTH của Văn phòng Chính phủ",
+    "link": "https://vanban.chinhphu.vn/default.aspx?pageid=27160&docid=180557",
+    "snippet": "Công văn số 5425/VPCP-KTTH của Văn phòng Chính phủ: V/v hướng dẫn thu, nộp lệ phí cấp hộ chiếu, thị thực, giấy tờ về nhập cảnh, xuất cảnh ; Số ký hiệu, 5425/VPCP ...",
+    "position": 6
+   },
+   {
+    "title": "Thông tư liên tịch số 08/2009/TTLT/BCA-BNG của Bộ Công an ...",
+    "link": "https://vanban.chinhphu.vn/default.aspx?pageid=27160&docid=91760",
+    "snippet": "Thông tư liên tịch số 08/2009/TTLT/BCA-BNG của Bộ Công an, Bộ Ngoại giao: Hướng dẫn việc cấp hộ chiếu phổ thông và giấy thông hành ở nước ngoài theo Nghị ...",
+    "position": 7
+   },
+   {
+    "title": "Thông tư số 102/2012/TT-BTC của Bộ Tài chính",
+    "link": "https://vanban.chinhphu.vn/?pageid=27160&docid=163560",
+    "snippet": "viii) Lệ phí thị thực, lệ phí cấp hộ chiếu;. ix) Tiền đóng góp tham gia (tham dự) hội nghị, hội thảo (bao gồm cả tiền mua tài liệu nếu có);. x ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

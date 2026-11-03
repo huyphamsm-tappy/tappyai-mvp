@@ -5,6 +5,8 @@ import { getMemoryBatch } from '@/lib/memory/memoryService'
 import { getAllSubscribedUserIds } from '@/lib/notifications/send'
 import { emitNotification } from '@/lib/notifications/emit'
 import { isAuthorizedCronRequest } from '@/lib/security/cronAuth'
+import { loadAllowedUserIds } from '@/lib/ai/consent/aiDataConsent'
+import { WEEKLY_NUDGE } from '@/lib/i18n/backgroundNotices'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60
@@ -51,11 +53,25 @@ export async function GET(req: Request) {
       return NextResponse.json({ ok: true, sent: 0, skipped: userIds.length, reason: 'insufficient_activity' })
     }
 
-    // Fetch memory for active users
-    const memoryByUser = await getMemoryBatch(activeUserIds, supabase)
+    // Memory (what the user explored, where, with whom) goes to the AI only for users who agreed to it.
+    const allowed = await loadAllowedUserIds(supabase, activeUserIds)
+    const aiUserIds = activeUserIds.filter(uid => allowed.has(uid))
+    const memoryByUser = aiUserIds.length ? await getMemoryBatch(aiUserIds, supabase) : new Map()
 
     const results = await Promise.allSettled(
       activeUserIds.map(async (uid) => {
+        if (!allowed.has(uid)) {
+          // No AI and no counts or places: the same weekly nudge the job uses when it has nothing to personalise.
+          await emitNotification({
+            userId: uid,
+            type: 'weekly',
+            category: 'explore',
+            title: WEEKLY_NUDGE.title,
+            body: WEEKLY_NUDGE.body,
+            entityUrl: '/profile/tappy-knows',
+          })
+          return
+        }
         const mem = memoryByUser.get(uid)
         const convoCount = countByUser.get(uid) ?? 0
         // The weekly recap is about what the user wanted to EXPLORE, so it leads

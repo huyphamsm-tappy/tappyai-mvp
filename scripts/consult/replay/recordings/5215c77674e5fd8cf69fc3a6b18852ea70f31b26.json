@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:thuvienphapluat.vn lệ phí cấp hộ chiếu trực tuyến năm 2 đồng 2025",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:31:36.956Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:thuvienphapluat.vn lệ phí cấp hộ chiếu trực tuyến năm 2 đồng 2025",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hộ chiếu online lấy ở đâu? Lệ phí cấp hộ chiếu năm 2025 ...",
+    "link": "https://thuvienphapluat.vn/ma-so-thue/phap-luat-thue/ho-chieu-online-lay-o-dau-le-phi-cap-ho-chieu-nam-2025-la-bao-nhieu-134661-204966.html",
+    "snippet": "Do đó, theo những quy định trên thì mức thu lệ phí cấp mới hộ chiếu năm 2025 là 180.000 đồng/lần cấp. Lưu ý: Từ ngày 01/01/2026 trở đi thì ...",
+    "date": "28 thg 5, 2025",
+    "position": 1
+   },
+   {
+    "title": "Hướng dẫn cách làm hộ chiếu online? Lệ phí cấp hộ ...",
+    "link": "https://thuvienphapluat.vn/ma-so-thue/phap-luat-thue/huong-dan-cach-lam-ho-chieu-online-le-phi-cap-ho-chieu-nam-2025-la-bao-nhieu-29563-209125.html",
+    "snippet": "Lệ phí cấp hộ chiếu năm 2025 là bao nhiêu? ; a. Cấp mới. 200.000 ; b. Cấp lại do bị hỏng hoặc bị mất. 400.000 ; c. Cấp giấy xác nhận yếu tố nhân sự.",
+    "date": "6 thg 8, 2025",
+    "position": 2
+   },
+   {
+    "title": "Mức lệ phí làm hộ chiếu năm 2025 và năm 2026",
+    "link": "https://thuvienphapluat.vn/chinh-sach-phap-luat-moi/vn/ho-tro-phap-luat/tu-van-phap-luat/97284/muc-le-phi-lam-ho-chieu-nam-2025-va-nam-2026",
+    "snippet": "Mức lệ phí làm hộ chiếu năm 2025 và năm 2026 ; a. Cấp mới. 100.000 ; b. Cấp lại do bị hỏng hoặc bị mất. 200.000 ; c. Cấp giấy xác nhận yếu tố nhân ...",
+    "date": "28 thg 10, 2025",
+    "position": 3
+   },
+   {
+    "title": "Hướng dẫn làm passport online, hộ chiếu online năm 2025 ...",
+    "link": "https://thuvienphapluat.vn/banan/tin-tuc/huong-dan-lam-passport-online-ho-chieu-online-nam-2025-nhanh-chong-tren-cong-dich-vu-cong-bo-cong-an-14278.html",
+    "snippet": "Bước 1: Truy cập vào Cổng Dịch vụ công Bộ Công an https://dichvucong.bocongan.gov.vn/ · Bước 2: Chọn Mục “Nộp hồ sơ trực tuyến”; Tại khung lĩnh ...",
+    "date": "15 thg 9, 2025",
+    "position": 4
+   },
+   {
+    "title": "Chính thức giảm 50% lệ phí cấp hộ chiếu đến hết 2026 ...",
+    "link": "https://thuvienphapluat.vn/ma-so-thue/phap-luat-thue/chinh-thuc-giam-50-le-phi-cap-ho-chieu-den-het-2026-theo-thong-tu-642025-209665.html",
+    "snippet": "Chính thức giảm 50% lệ phí cấp hộ chiếu đến hết 2026 theo Thông tư 64/2025? ; Cấp mới. 100.000 ; Cấp lại do bị hỏng hoặc bị mất. 200.000 ; Cấp giấy ...",
+    "date": "15 thg 8, 2025",
+    "position": 5
+   },
+   {
+    "title": "Lệ phí làm passport online lần đầu năm 2026 là bao nhiêu ...",
+    "link": "https://thuvienphapluat.vn/phap-luat/le-phi-lam-passport-online-lan-dau-nam-2026-la-bao-nhieu-huong-dan-nop-le-phi-online-tren-cong-dich-889167-277837.html",
+    "snippet": "Theo đó, từ ngày 01/07/2025 đến 31/12/2026 lệ phí cấp mới hộ chiếu sẽ được giảm xuống 50% so với mức lệ phí áp dụng trước đây còn 100.000 đồng.",
+    "date": "7 thg 7, 2026",
+    "position": 6
+   },
+   {
+    "title": "Hướng dẫn cách làm hộ chiếu trực tuyến cho trẻ em chi tiết ...",
+    "link": "https://thuvienphapluat.vn/ma-so-thue/phap-luat-thue/huong-dan-cach-lam-ho-chieu-truc-tuyen-cho-tre-em-chi-tiet-day-du-nam-2025-le-phi-lam-ho-chieu-truc-346418-190540.html",
+    "snippet": "- Từ đây đến hết ngày 31/12/2024: 144.000 đồng/hộ chiếu. · - Từ 01/01/2025 đến hết ngày 31/12/2025: 180.000 đồng/hộ chiếu. · - Từ 01/01/2026 trở ...",
+    "date": "28 thg 5, 2026",
+    "position": 7
+   },
+   {
+    "title": "Hướng dẫn làm hộ chiếu online đơn giản, nhanh nhận ...",
+    "link": "https://thuvienphapluat.vn/hoi-dap-phap-luat/huong-dan-lam-ho-chieu-online-don-gian-nhanh-nhan-nhat-2024-138019917.html",
+    "snippet": "Từ 01/01/2026, mức lệ phí làm hộ chiếu online sẽ quay lại mức giá cũ là 200.000 VNĐ cho cấp mới và 400.000 VNĐ cho trường hợp cấp lại. Hộ chiếu ...",
+    "date": "26 thg 12, 2025",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

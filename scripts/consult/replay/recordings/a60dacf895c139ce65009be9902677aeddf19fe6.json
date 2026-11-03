@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"NHÀ HÀNG NGON\" OR \"Quán Bụi Central\" OR \"Quán Bụi\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T01:56:44.469Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"NHÀ HÀNG NGON\" OR \"Quán Bụi Central\" OR \"Quán Bụi\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quán Bụi Group (@quanbui_group)",
+    "link": "https://www.tiktok.com/@quanbui_group",
+    "snippet": "Những cảm nhận khách quan, chi tiết từ khách luôn là điều Quán Bụi trân · Bữa cơm tối chuẩn vị Việt tại Quán Bụi central #quanbuigroup #vietnamesefood # ...",
+    "position": 1
+   },
+   {
+    "title": "Review Quán Bụi: Ẩm Thực Việt Tại Quận 1 Sài Gòn",
+    "link": "https://www.tiktok.com/@ryan.di.tum.lum/video/7274894315871046930",
+    "snippet": "Khám phá Quán Bụi với không gian đẹp, ẩm thực đa dạng. Hãy cùng thưởng thức các món ngon tại đây! #reviewanngon #quanbui #vietnamesefood. Đây là ...",
+    "position": 2
+   },
+   {
+    "title": "Top 5 nhà hàng ngon ở Irvine 2026 — review ăn uống ...",
+    "link": "https://www.tiktok.com/@tuilathitkho/video/7641428220532870420",
+    "snippet": "Lead Tổng hợp Top 5 nhà hàng ngon ở Irvine: lựa chọn dễ tìm cho người muốn ăn ngon, thử món Mỹ và Á, kèm nhận xét cơ bản về món ăn, ...",
+    "position": 3
+   },
+   {
+    "title": "Khám Phá Quán Bụi: Hương Vị Cơm Nhà Việt Nam",
+    "link": "https://www.tiktok.com/@nguyencongnuongw_/video/7535335656923335944",
+    "snippet": "Khám Phá Quán Bụi: Hương Vị Cơm Nhà Việt Nam. Trải nghiệm ẩm thực Việt Nam tại Quán Bụi, nơi mang đậm hương vị cơm nhà. Đừng bỏ lỡ! #review ...",
+    "position": 4
+   },
+   {
+    "title": "Bật Mí 3 Nhà Hàng Ngon Ở Tà Xùa Giá Cả Phải Chăng",
+    "link": "https://www.tiktok.com/@truongdulich/video/7692090464362597640",
+    "snippet": "Nếu bạn đang phân vân không biết nên ăn ở đâu, hãy để chúng tôi bật mí cho bạn 3 nhà hàng ngon và giá cả phải chăng tại đây. ### 1. Nhà hàng ...",
+    "position": 5
+   },
+   {
+    "title": "Nhà Hàng Ngon: Trải Nghiệm Ẩm Thực Tại TP.HCM",
+    "link": "https://www.tiktok.com/@anchimihe/video/7121950658047135019",
+    "snippet": "Nhà Hàng Ngon | 160 Pasteur, Bến Nghé, Quận 1, Thành phố Hồ Chí Minh ... Nhà Hàng Ngon: Trải Nghiệm Ẩm Thực Tại TP.HCM. Khám phá Nhà ...",
+    "position": 6
+   },
+   {
+    "title": "QUÁN BỤI & STIICKY THAI Toàn món ăn ngon! #quanbui ...",
+    "link": "https://www.tiktok.com/@diancungneenha/video/7676785732567977236",
+    "snippet": "3157 Lượt thích,29 Bình luận.Video TikTok từ Đi ăn cùng Nee nha ￼ (@diancungneenha): \"QUÁN BỤI & STIICKY THAI Toàn món ăn ngon!",
+    "position": 7
+   },
+   {
+    "title": "Mỳ Hàn tươi làm tại nhà hàng – ngon đỉnh, nhất định thử",
+    "link": "https://www.tiktok.com/@hanoifoodchill/video/7664573325896731924",
+    "snippet": "Mỳ Hàn tươi làm tại nhà hàng – ngon đỉnh, nhất định thử. Mỳ Hàn tươi làm ngay tại nhà hàng — trải nghiệm ngon đỉnh Tóm tắt nhanh Mỳ Hàn tươi ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,142 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Lumi Hoi An Hotel",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:02:37.205Z",
+ "body": {
+  "searchParameters": {
+   "q": "Lumi Hoi An Hotel",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Lumi Hội An Hotel, Hội An (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max500/823515098.jpg?k=3d46acd5148279a540683e230f9206061195e2bbcb0ee6abb7b023ccf34c0e74&o=&hp=1",
+    "imageWidth": 500,
+    "imageHeight": 334,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDdPipFsGKCuem5qK3ZogvnTjyfIcc8r_2Uo9fuxuIyA&s=10",
+    "thumbnailWidth": 500,
+    "thumbnailHeight": 333,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/lumi-hoi-an.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F823515098.jpg%3Fk%3D3d46acd5148279a540683e230f9206061195e2bbcb0ee6abb7b023ccf34c0e74%26o%3D%26hp%3D1&tbnid=WgRrAIr_TVj3oM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Flumi-hoi-an.vi.html&docid=tfTvJqMGoHxYqM&w=500&h=334",
+    "position": 1
+   },
+   {
+    "title": "Lumi Hội An Hotel, Hội An (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/823516107.jpg?k=c7cad95f8b7f3f8d4d3e1e0f302c48c0999a605219a7f7fce2f6b4ac7c6d2810&o=",
+    "imageWidth": 1024,
+    "imageHeight": 684,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0X1qn63QwSFdeKSjQ8y1X1mFKCUso4mShkE3khWHIKA&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/lumi-hoi-an.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F823516107.jpg%3Fk%3Dc7cad95f8b7f3f8d4d3e1e0f302c48c0999a605219a7f7fce2f6b4ac7c6d2810%26o%3D&tbnid=bGI84LxjXm2zjM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Flumi-hoi-an.vi.html&docid=tfTvJqMGoHxYqM&w=1024&h=684",
+    "position": 2
+   },
+   {
+    "title": "Lumi Hội An Hotel, Hội An (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/823516090.jpg?k=e44a5dfd9510247a5933a19884b39f6ec1c7fd32666cfe849f8fbfcc9b8b4181&o=",
+    "imageWidth": 1024,
+    "imageHeight": 684,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTr3lRTaj2yStXasmI7VeEfggbtDb0EgP4dTpbJlkprpw&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/lumi-hoi-an.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F823516090.jpg%3Fk%3De44a5dfd9510247a5933a19884b39f6ec1c7fd32666cfe849f8fbfcc9b8b4181%26o%3D&tbnid=p3IV_Nwmi5bkPM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Flumi-hoi-an.vi.html&docid=tfTvJqMGoHxYqM&w=1024&h=684",
+    "position": 3
+   },
+   {
+    "title": "Khách sạn Lumi Hội An - Lumi Hoi An Hotel",
+    "imageUrl": "https://lumihotel.com.vn/wp-content/uploads/2025/04/lumi__VTG0965-HDR.jpg",
+    "imageWidth": 2000,
+    "imageHeight": 1335,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIwC87tj4c-RWDbd5WRy4Cb_Wu7Dn5Vm-WI6MtM7Ti7g&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Lumi Hoi An Hotel",
+    "domain": "lumihotel.com.vn",
+    "link": "https://lumihotel.com.vn/vi/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flumihotel.com.vn%2Fwp-content%2Fuploads%2F2025%2F04%2Flumi__VTG0965-HDR.jpg&tbnid=S1WJrh3aYRm_OM&imgrefurl=https%3A%2F%2Flumihotel.com.vn%2Fvi%2F&docid=3R71Xst3UnSwQM&w=2000&h=1335",
+    "copyright": "www.vientang.com",
+    "creator": "Vien Tang",
+    "position": 4
+   },
+   {
+    "title": "Khách sạn Lumi Hội An - Lumi Hoi An Hotel",
+    "imageUrl": "https://lumihotel.com.vn/wp-content/uploads/2025/04/Lumi-14-02-26-72.jpg",
+    "imageWidth": 2000,
+    "imageHeight": 1335,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMkMFRtNA27RtVIX5yeEyQEnDKIijsWglG4uSlfCoy1w&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Lumi Hoi An Hotel",
+    "domain": "lumihotel.com.vn",
+    "link": "https://lumihotel.com.vn/vi/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flumihotel.com.vn%2Fwp-content%2Fuploads%2F2025%2F04%2FLumi-14-02-26-72.jpg&tbnid=rX1ohC9p-LQTJM&imgrefurl=https%3A%2F%2Flumihotel.com.vn%2Fvi%2F&docid=3R71Xst3UnSwQM&w=2000&h=1335",
+    "copyright": "www.vientang.com",
+    "creator": "Vien Tang",
+    "position": 5
+   },
+   {
+    "title": "Khách sạn Lumi Hội An - Lumi Hoi An Hotel",
+    "imageUrl": "https://lumihotel.com.vn/wp-content/uploads/2025/04/lumi__VTG1206-HDR.jpg",
+    "imageWidth": 2000,
+    "imageHeight": 1335,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTu6QnZ4JoAsgeHzZy0NUDAh3HqaYXNxurXof04FhyM7Q&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Lumi Hoi An Hotel",
+    "domain": "lumihotel.com.vn",
+    "link": "https://lumihotel.com.vn/vi/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flumihotel.com.vn%2Fwp-content%2Fuploads%2F2025%2F04%2Flumi__VTG1206-HDR.jpg&tbnid=WyS8ycZ-zmfu9M&imgrefurl=https%3A%2F%2Flumihotel.com.vn%2Fvi%2F&docid=3R71Xst3UnSwQM&w=2000&h=1335",
+    "copyright": "www.vientang.com",
+    "creator": "Vien Tang",
+    "position": 6
+   },
+   {
+    "title": "Nép mình trong con ngõ nhỏ yên bình giữa trung tâm phố Hội, Lumi Hoi An là  một nơi dừng chân lý tưởng cho những ai tìm kiếm tinh thần hiện đại,",
+    "imageUrl": "https://lookaside.instagram.com/seo/google_widget/crawler/?media_id=3936530158292584058",
+    "imageWidth": 3072,
+    "imageHeight": 4096,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKD8KP8iFMCvt2ogUTFDqYqH_R_d0eABT_gp4A8MXRsw&s=10",
+    "thumbnailWidth": 387,
+    "thumbnailHeight": 516,
+    "source": "Instagram",
+    "domain": "www.instagram.com",
+    "link": "https://www.instagram.com/p/DahXopgmsjN/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.instagram.com%2Fseo%2Fgoogle_widget%2Fcrawler%2F%3Fmedia_id%3D3936530158292584058&tbnid=Q9-QC-nyF1ssfM&imgrefurl=https%3A%2F%2Fwww.instagram.com%2Fp%2FDahXopgmsjN%2F&docid=oMoJ5leXoDxfhM&w=3072&h=4096",
+    "position": 7
+   },
+   {
+    "title": "Lumi Hội An Hotel | Da Nang",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=122093320557278289",
+    "imageWidth": 2048,
+    "imageHeight": 1414,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTebXD6BoAHZRgV2QZWwkeyfQo_dnPJU_8nwwnKefFleA&s=10",
+    "thumbnailWidth": 538,
+    "thumbnailHeight": 371,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/lumihoianhotel/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D122093320557278289&tbnid=dIT8QEK230cUNM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Flumihoianhotel%2F&docid=4hqpnOLGhPgsuM&w=2048&h=1414",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

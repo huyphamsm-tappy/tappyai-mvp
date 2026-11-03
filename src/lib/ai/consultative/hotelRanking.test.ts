@@ -21,6 +21,7 @@ function profile(over: Partial<NeedProfile> = {}): NeedProfile {
   return {
     domain: 'hotel', subject: 'hotel', budget: null, budgetStated: null,
     location: { text: null, gps: null },
+    partySize: null,
     useCases: [], priorities: [], mustHave: [], avoid: [],
     turnsObserved: 1, changedAtTurn: {},
     ...over,

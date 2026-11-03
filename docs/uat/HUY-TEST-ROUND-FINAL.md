@@ -16,7 +16,7 @@ Tài khoản test, iPhone Safari, uat.tappyai.com. «Đạt» = thấy đúng nh
 | 11 | «Lên kế hoạch đi Đà Nẵng 3 ngày 2 đêm tuần sau cho 2 người, ngân sách 10 triệu, bay từ TP.HCM, thích biển và ăn hải sản» | tin kế hoạch có khối thẻ KHÁCH SẠN (nút đặt phòng) |
 | 12 | Mở lại lịch sử chat | CÒN MẤT thẻ/ảnh/link — đã biết, PL-HISTORY-CARDS (cần app native), không phải lỗi mới |
 | 13 | «quán phở ngon quận 1» → «xem thêm» | thẻ + link bản đồ như trước (hồi quy) |
-| 14 | **XOÁ TÀI KHOẢN — CHỈ tài khoản test, KHÔNG dùng tài khoản thật.** Đăng nhập `manual.uat.fresh@tappyai.com` (hoặc tài khoản tạo mới @tappyai.com) → Cài đặt → cuối mục «Khác» | hàng chữ thường «Xóa tài khoản» (KHÔNG đỏ nổi bật); bấm → trang liệt kê dữ liệu bị xoá |
+| 14 | **XOÁ TÀI KHOẢN — CHỈ tài khoản test, KHÔNG dùng tài khoản thật.** Đăng nhập `manual.uat.fresh@tappyai.com` (hoặc tài khoản tạo mới @tappyai.com) → Cài đặt → cuối mục «Khác» | hàng chữ thường «Xóa tài khoản» là hàng CUỐI mục «Khác», KHÔNG đỏ, KHÔNG nằm cạnh «Đăng xuất» (Đăng xuất ở khung riêng bên dưới); bấm → màn cảnh báo |
 | 15 | Trang xoá: đọc chữ cảnh báo | «Xóa tài khoản vĩnh viễn? Toàn bộ dữ liệu của bạn sẽ bị xóa ngay và không thể khôi phục: lịch sử chat, địa điểm đã lưu, bài đăng, ảnh và clip.» + câu «Gõ XÓA để xác nhận.» Tài khoản test KHÔNG có gói ⇒ KHÔNG thấy đoạn «Gói trả phí và credit còn lại sẽ mất…». (Tài khoản có gói thử bằng `manual.uat.pro@tappyai.com` — chỉ NHÌN chữ, đừng xoá nó: phải thấy đoạn gói, gồm «Tappy không hoàn lại phần chưa dùng» và «không tự hủy gói trên App Store hoặc Google Play») |
 | 16 | Gõ sai chữ (ví dụ «XOA1») | nút «Xóa vĩnh viễn tài khoản» mờ, không bấm được |
 | 17 | Gõ đúng XÓA → bấm xoá (tài khoản test) | màn «Tài khoản của bạn đã được xóa», bị đăng xuất; đăng nhập lại cùng email → tài khoản MỚI trống (chat, địa điểm đã lưu đã mất) |
@@ -25,3 +25,7 @@ Tài khoản test, iPhone Safari, uat.tappyai.com. «Đạt» = thấy đúng nh
 | 20 | /privacy (vi + en) | ghi OpenAI (không Anthropic), có Upstash, Brevo, wttr.in, Overpass |
 | 21 | 7 chuỗi câu hỏi phần A của OWNER-TOMORROW-2026-09-30 | như hướng dẫn trong tệp đó |
 | 22 | Giọng văn (nếu cờ BẬT trên UAT) | câu trả lời chốt ít mở bằng «Mình hiểu bạn…», vẫn nêu giả định, không có «Chắc chắn rồi/tuyệt vời», đùa nhẹ không quá 1/3 số câu và KHÔNG đùa ở chuyện sức khoẻ/lừa đảo; xưng «mình/bạn» |
+| 23 | **Lá chắn lừa đảo — tin nhắn.** Vào /scam-shield → «Phân tích tin nhắn», dán: «Bưu điện: bưu phẩm Trung thu của bạn bị giữ do thiếu phí 18.000đ. Quét mã QR hoặc truy cập http://buudien-vn-trungthu.top/phi để nộp phí…» rồi một tin phạt nguội kèm link | cả hai ra «Rất nguy hiểm»/«Nguy cơ cao», có lời khuyên «Không làm / Nên làm». Tin bình thường («Chiều nay mình đón con rồi ghé mua rau nhé…») ra «An toàn», KHÔNG bị báo nhầm |
+| 24 | **Lá chắn lừa đảo — quét QR.** «Quét mã QR» → chọn ảnh chụp một mã QR chứa link lạ; rồi thử mã Wi-Fi hoặc mã thanh toán | link lạ ra kết quả như kiểm link (ảnh KHÔNG được tải lên máy chủ); mã Wi-Fi/thanh toán hiện «Mã QR này không chứa đường link web» + loại mã + «TappyAI không tự…» |
+| 25 | /privacy, /terms, /delete-account (đã đổi chữ 02/10) | chỉ đọc lại: /privacy có mục «6. Báo cáo, chặn và kiểm duyệt» và đoạn Scam Shield; /terms có link Quy tắc cộng đồng; không còn Stripe/gói trả phí; /delete-account nói xoá ngay trong app hoặc tại trang này |
+

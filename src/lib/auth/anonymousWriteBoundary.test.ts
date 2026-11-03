@@ -52,6 +52,23 @@ const EXEMPT: Record<string, string> = {
   'age-declaration': 'guest 18+ self-declaration for the chat trial; sets an HttpOnly cookie, writes nothing server-side; 10/min per IP',
   'auth/claim-anonymous': 'the anonymous→account handoff; the anonymous token IS the credential',
 
+  // ── Tappy Business: the customer is a guest by design. ──
+  //
+  // A shopper who taps a product link from Facebook or Zalo has no Tappy
+  // account and is never asked for one — that is the whole premise of the
+  // capability (PHASE_0 §22). Refusing anonymous callers here would refuse
+  // every real customer.
+  //
+  // It is NOT unguarded. The route carries five controls the boundary helper
+  // does not provide: IP, per-product and keyed-phone rate limits, Turnstile,
+  // and a required Idempotency-Key. See docs/tappy-business/P2_1_ORDER_CREATION.md.
+  //
+  // 🚨 The MERCHANT side is the opposite and is not exempt: every mutating
+  // route under /api/business/ calls refuseAnonymousSocialWrite, because a shop
+  // belongs to a real account.
+  'public/business/orders':
+    'guest checkout — the customer has no account by design; rate-limited by IP, product and keyed phone, plus Turnstile and a required Idempotency-Key',
+
   // ── The product deliberately offers these to a visitor (see socialWriteAccess.ts). ──
   'chat': 'the anonymous tier IS chat — capped at ANON_LIFETIME_LIMIT per identity (five, once), server-side, from the shared AI question pool',
   'conversations': "the visitor's own chat history; claimed into the account on sign-in",
@@ -61,6 +78,7 @@ const EXEMPT: Record<string, string> = {
   'onboarding': 'runs before an account exists, by design',
   'favorites': "the visitor's own saved places; private",
   'bookings': "the visitor's own bookings; private",
+  'booking/recheck': 'a READ-ONLY provider re-check (POST only to carry the stay); writes nothing; 20/min per IP is its cost control; the anonymous tier IS chat and a recheck is part of its booking flow',
   // 'price-watch' WAS here, on the same "private, self-scoped" reasoning as its neighbours.
   //
   // 🚨 That reasoning was true and insufficient. Privacy is one axis; recurring cost is another,
@@ -73,6 +91,9 @@ const EXEMPT: Record<string, string> = {
   // It is now guarded, so it must NOT stay listed here: an exemption that sits next to a working
   // guard is a loaded gun. Delete the guard and this line would silently make it legal again.
   'profile': 'self-scoped; an anonymous row is the visitor’s own and is claimed later',
+  'comments/[commentId]/report': 'refuses anonymous callers inside lib/safety/userReports.ts (handleReport → refuseAnonymousSocialWrite; pinned by userReports.test.ts); the route file is a one-line wrapper',
+  'users/[id]/report': 'same wrapper as comments/[commentId]/report — handleReport refuses anonymous callers (403), 10 per 10 minutes per account',
+  'moderation/decisions/[id]/appeal': 'a decision belongs to its subject: an anonymous visitor has none (404, no oracle); one appeal per decision (UNIQUE), 5 per 10 minutes per account',
   // 🗑️ `notifications/subscribe` removed 2026-09-01: the route now calls
   // `refuseAnonymousSocialWrite`, so it is guarded rather than exempt.
   //
@@ -106,6 +127,9 @@ const EXEMPT: Record<string, string> = {
   'notifications/read': 'marks the caller’s own notifications read, self-scoped',
   'message-feedback': "feedback on the visitor's own chat message; not public content",
 
+  // ── Guarded one level down ──
+  'payments/orders': 'refuses anonymous callers inside requirePayer (lib/payments/authGuard.ts → refuseAnonymousSocialWrite; pinned by authGuard.test.ts) and is rate-limited 10 per 10 min per account',
+
   // ── Anonymous-capable tools. Each carries its own cost control. ──
   'scam-shield/check': 'anonymous checks are a product feature; capped at dailyLimitAnon per IP',
   'scam-shield/qr': 'same surface as scam-shield/check; rate-limited',
@@ -133,6 +157,7 @@ const EXEMPT: Record<string, string> = {
   'zalo/mini/verify': 'exchanges a Zalo token for a server-signed rate-limit cookie; no user content, rate-limited 20/min per IP',
 
   // ── Machine-to-machine. No end user is present at all. ──
+  'payments/sepay': 'bank webhook (SePay): authenticated by an HMAC-SHA256 signature over the raw body + timestamp, idempotent by transaction id; no end user is present',
   'iap/apple/notifications': 'Apple server-to-server notification',
   'iap/apple/verify': 'receipt verification for the calling account',
   'stripe/checkout': 'payment session for the calling account',
@@ -312,9 +337,10 @@ describe('U15 — a route that spends money is capped', () => {
     const src = code('explore/process')
     // The CALL, not the import — see `guarded`.
     expect(src).toMatch(/refuseAnonymousSocialWrite\s*\(req,\s*user\)/)
-    expect(src).toMatch(/rateLimit\(`explore-process:\$\{user\.id\}`/)
+    // SEC4 slice 2b: the limiter is the shared one (`publicRateLimit`); same key, same position.
+    expect(src).toMatch(/publicRateLimit\(`explore-process:\$\{user\.id\}`/)
     // And both must precede the spend.
     expect(src.indexOf('refuseAnonymousSocialWrite(')).toBeLessThan(src.indexOf('processContent('))
-    expect(src.indexOf('rateLimit(')).toBeLessThan(src.indexOf('processContent('))
+    expect(src.indexOf('publicRateLimit(')).toBeLessThan(src.indexOf('processContent('))
   })
 })

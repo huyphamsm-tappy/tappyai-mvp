@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Nhà Hàng Cơm Quê Thị Tấm\" OR \"Năm Giờ Chiều\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:27:05.186Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Nhà Hàng Cơm Quê Thị Tấm\" OR \"Năm Giờ Chiều\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Năm giờ chiều rồi, tìm được một quán “núp hẻm” xanh mát ...",
+    "link": "https://www.tiktok.com/@baobaolovefood/video/7642281876312296724",
+    "snippet": "Năm giờ chiều rồi, tìm được một quán “núp hẻm” xanh mát, nhẹ nhàng, món ngon dân dã thiệt là đã #reviewanngon ##ancungtiktok #sinhtoluamach # ...",
+    "position": 1
+   },
+   {
+    "title": "Năm Giờ Chiều — Ca Nô Lặng Lẽ Về Bờ ngày 17",
+    "link": "https://www.tiktok.com/@nhvnews/video/7677182667074407701",
+    "snippet": "Ca Nô Lặng Lẽ Về Bờ ngày 17. Video: “Năm Giờ Chiều” — ca nô lặng lẽ về bờ ngày mười bảy, khép lại vô vọng khi phép màu vẫn ...",
+    "date": "Năm Giờ Chiều",
+    "position": 2
+   },
+   {
+    "title": "Năm Giờ Chiều quán ở Sài Gòn — trải nghiệm nhậu chill",
+    "link": "https://www.tiktok.com/@namgiochieu_ngoichill/video/7652666704903851285",
+    "snippet": "Vibe và không gian Năm Giờ Chiều mang phong cách thoải mái, dễ chịu — lý tưởng cho hội bạn muốn nhậu chill, tán gẫu nhẹ nhàng hoặc tiệc nhỏ. Âm ...",
+    "position": 3
+   },
+   {
+    "title": "Trả lời @hải lão đại Sau Năm Giờ Chiều / Ma Đề Ơi",
+    "link": "https://www.tiktok.com/@247h2n/video/7686737416270531861",
+    "snippet": "Trả lời @hải lão đại Sau Năm Giờ Chiều / Ma Đề Ơi - Remix / Nhạc Chế Tổng Hợp / Nhạc chế hay / Nỗi Buồn 3 Con Số #madeoi #nhacche #hoabanglang # ...",
+    "position": 4
+   },
+   {
+    "title": "Trả lời @D.NgOanhh🤍 Năm giờ chiều hôm nay đi sự kiện ...",
+    "link": "https://www.tiktok.com/@nguyenhien98386/video/7686089069826280724",
+    "snippet": "Trả lời @D.NgOanhh Năm giờ chiều hôm nay đi sự kiện hợp tác gà no nào mấy mom @Tui Bánh Mì đây #gluthatione_trắng_da_toàn_thân600mg # ...",
+    "position": 5
+   },
+   {
+    "title": "Năm Giờ Chiều (@namgiochieu_ngoichill)",
+    "link": "https://www.tiktok.com/@namgiochieu_ngoichill",
+    "snippet": "Năm Giờ Chiều · @namgiochieu_ngoichill · Mồi ngon & Ngồi chill 20/4 Kỳ Đồng (Q3 cũ) Hotline đặt bàn: 092 309 1368.",
+    "position": 6
+   },
+   {
+    "title": "Trà đá lúa mạch cùng Ghi, khám phá quán núp hẻm ở Sài ...",
+    "link": "https://www.tiktok.com/@ghithichnhau/video/7664964215819537685",
+    "snippet": "Trà đá lúa mạch cùng Ghi, khám phá quán núp hẻm ở Sài Gòn cùng Ghi nha Quán Năm Giờ Chiều , ai đã từng trải nghiệm ở đây nào??? #ghithichnhau ...",
+    "position": 7
+   },
+   {
+    "title": "Đi 2-3 người nên gọi Set nướng nào cho tiện 🤔 ...",
+    "link": "https://www.tiktok.com/@namgiochieu_ngoichill/video/7675722179421801748",
+    "snippet": "Video TikTok từ Năm Giờ Chiều (@namgiochieu_ngoichill): \"Đi 2-3 người nên gọi Set nướng nào cho tiện #namgiochieu #nhauchill #saigon ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

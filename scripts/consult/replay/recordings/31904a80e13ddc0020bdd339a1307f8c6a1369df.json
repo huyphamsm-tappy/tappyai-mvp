@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "kiểm tra MacBook Air M1 cũ giá 9 triệu có hợp lý không (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:01:48.733Z",
+ "body": {
+  "searchParameters": {
+   "q": "kiểm tra MacBook Air M1 cũ giá 9 triệu có hợp lý không (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "MacBook cũ giá dưới 10 triệu: Liệu có đáng đầu tư?",
+    "link": "https://cellphones.com.vn/sforum/macbook-cu-gia-duoi-10-trieu-lieu-co-dang-dau-tu",
+    "snippet": "Đặc biệt, ngân sách 10 triệu cho một chiếc MacBook cũ thường chỉ bằng 30-50% so với giá gốc, giúp tiết kiệm đáng kể.",
+    "position": 1
+   },
+   {
+    "title": "MacBook cũ | Mac cũ uy tín, trả góp 0%, giảm đến 7 triệu",
+    "link": "https://cellphones.com.vn/hang-cu/mac.html",
+    "snippet": "Macbook cũ giá rẻ, giảm 2tr lên đời, HSSV giảm 700k, trả góp 0%, 0 phụ phí, 0 trả trước, bảo hành lên đến 6 tháng. Mua ngay Macbook cũ uy tín.",
+    "position": 2
+   },
+   {
+    "title": "Cách kiểm tra MacBook cũ để tránh ''tiền mất tật mang''",
+    "link": "https://cellphones.com.vn/sforum/cach-kiem-tra-macbook-cu",
+    "snippet": "Cách kiểm tra MacBook cũ để tránh ''tiền mất tật mang'' · 1. Cách check cấu hình MacBook cũ · 2. Dùng phần mềm Apple Hardware Test để check MacBook cũ · 3. Kiểm ...",
+    "position": 3
+   },
+   {
+    "title": "Chỉ còn 19 triệu, chiếc MacBook 3 năm tuổi này vẫn quá ...",
+    "link": "https://cellphones.com.vn/sforum/chi-con-19-trieu-macbook-air-m1-2020-van-qua-hap-dan-trong-nam-2023",
+    "snippet": "Với mức giá chỉ khoảng 19 triệu đồng, MacBook Air M1 2020 chắc chắn là một chiếc laptop văn phòng tuyệt vời với hiệu năng mạnh mẽ, thời lượng ...",
+    "date": "30 thg 3, 2023",
+    "position": 4
+   },
+   {
+    "title": "Top 4 MacBook cho sinh viên theo từng phân khúc 2025",
+    "link": "https://cellphones.com.vn/sforum/macbook-cho-sinh-vien-theo-tung-phan-khuc",
+    "snippet": "Tư vấn chọn MacBook phù hợp cho sinh viên theo từng phân khúc giá và nhu cầu. Gợi ý 5 mẫu MacBook đáng mua nhất năm 2025.",
+    "position": 5
+   },
+   {
+    "title": "Hàng cũ Apple MacBook Air M1 256GB 2020 | Giá rẻ",
+    "link": "https://cellphones.com.vn/macbook-air-2020-m1-cu-xuoc-can.html",
+    "snippet": "Apple MacBook Air M1 256GB 2020 - Cũ xước cấn ; Lên đời chỉ từ 10.167.000đ ; Trợ giá đến 2.000.000đ ; Trả góp 0% ; Trả góp 0% ; Giá sản phẩm. 22.990.000đ 12.290.000đ.",
+    "rating": 5,
+    "ratingCount": 4,
+    "position": 6
+   },
+   {
+    "title": "MacBook ARM quá mạnh, người dùng đua nhau \"thanh lý ...",
+    "link": "https://cellphones.com.vn/sforum/macbook-arm-qua-manh-nguoi-dung-dua-nhau-thanh-ly-may-mac-cu",
+    "snippet": "MacBook chạy chip M1 mới mang tới hiệu năng vượt trội mà khiến nhiều người dùng cảm thấy các dòng máy Mac Intel cũ trở nên \"lỗi thời\".",
+    "date": "25 thg 11, 2020",
+    "position": 7
+   },
+   {
+    "title": "Hướng dẫn kiểm tra dung lượng MacBook đơn giản",
+    "link": "https://cellphones.com.vn/sforum/kiem-tra-dung-luong-macbook",
+    "snippet": "Bạn đã biết cách kiểm tra dung lượng Macbook chưa? Bài viết sau đây sẽ hướng dẫn bạn chi tiết từng cách kiểm tra dung lượng Mac đơn giản nhất!",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

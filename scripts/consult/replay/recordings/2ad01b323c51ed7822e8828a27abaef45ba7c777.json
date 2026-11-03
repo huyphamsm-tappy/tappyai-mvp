@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Macbook Air M1 2020 (8GB/256GB)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:03:36.554Z",
+ "body": {
+  "searchParameters": {
+   "q": "Macbook Air M1 2020 (8GB/256GB)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Macbook Air M1 8GB 256GB chính hãng T&T Center | Giá tốt",
+    "imageUrl": "https://ttcenter.com.vn/uploads/product/b7nx18km-103-macbook-air-m1-8gb-512gb-new.jpg",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXIuU8Plkn6tqwc2ZpM2YPDjPJmcaHxtnG6mX_IMrRNg&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "T&T Center",
+    "domain": "ttcenter.com.vn",
+    "link": "https://ttcenter.com.vn/macbook-air-m1-8gb-256gb-like-new?srsltid=AU7gw4UKpbNkaMuY9DbW3uCllAygvlR9vd_xox_n4-5-MXFb9y82Ve32",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fttcenter.com.vn%2Fuploads%2Fproduct%2Fb7nx18km-103-macbook-air-m1-8gb-512gb-new.jpg&tbnid=MtIwhQm86cnjIM&imgrefurl=https%3A%2F%2Fttcenter.com.vn%2Fmacbook-air-m1-8gb-256gb-like-new%3Fsrsltid%3DAU7gw4UKpbNkaMuY9DbW3uCllAygvlR9vd_xox_n4-5-MXFb9y82Ve32&docid=0ryFdXReqv6IaM&w=800&h=800",
+    "position": 1
+   },
+   {
+    "title": "MacBook Air M1 2020 8GB 256GB Like New 99% Fullbox",
+    "imageUrl": "https://bizweb.dktcdn.net/100/533/247/products/473270412-122132988926584088-2421431429398133414-n.jpg?v=1754628351267",
+    "imageWidth": 2048,
+    "imageHeight": 1365,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpi8X0nW5B5-4zREQQ8fhe4VFaAtMkF_jGylBVGoZjFQ&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Mac18",
+    "domain": "mac18.vn",
+    "link": "https://mac18.vn/macbook-air-m1-13-inch-2020-8gb-256gb-like-new-99-fullbox",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbizweb.dktcdn.net%2F100%2F533%2F247%2Fproducts%2F473270412-122132988926584088-2421431429398133414-n.jpg%3Fv%3D1754628351267&tbnid=2ZXYhNKk2B4KqM&imgrefurl=https%3A%2F%2Fmac18.vn%2Fmacbook-air-m1-13-inch-2020-8gb-256gb-like-new-99-fullbox&docid=q0Vn4OVDKpECdM&w=2048&h=1365",
+    "position": 2
+   },
+   {
+    "title": "MacBook Air 2020 13 inch Apple M1 8GB RAM 256GB SSD - 98%",
+    "imageUrl": "https://macone.vn/wp-content/uploads/2020/11/Macbook-Air-2020-ARM.png",
+    "imageWidth": 1772,
+    "imageHeight": 1564,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToE020FaUJ1AfttleJc57AzBYCu4YUXBMWKrr5h6csaA&s=10",
+    "thumbnailWidth": 589,
+    "thumbnailHeight": 520,
+    "source": "MACONE",
+    "domain": "macone.vn",
+    "link": "https://macone.vn/macbook-air-2020-13-inch-apple-m1-8gb-ram-256gb-ssd-98/?srsltid=AU7gw4WXtgARhYM6x56Mw4YlFlTIqho4DTBUCRgIAEOPUelts3pCwlQa",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmacone.vn%2Fwp-content%2Fuploads%2F2020%2F11%2FMacbook-Air-2020-ARM.png&tbnid=eRspkKoo1O4vTM&imgrefurl=https%3A%2F%2Fmacone.vn%2Fmacbook-air-2020-13-inch-apple-m1-8gb-ram-256gb-ssd-98%2F%3Fsrsltid%3DAU7gw4WXtgARhYM6x56Mw4YlFlTIqho4DTBUCRgIAEOPUelts3pCwlQa&docid=55sEOfiR5pP8oM&w=1772&h=1564",
+    "position": 3
+   },
+   {
+    "title": "MacBook Air (M1, 2020) - Thông số kỹ thuật - Bộ phận hỗ trợ của Apple (VN)",
+    "imageUrl": "https://cdsassets.apple.com/live/SZLF0YNV/images/sp/111883_macbookair.png",
+    "imageWidth": 942,
+    "imageHeight": 598,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTV0n6ExMzt8-fpaqgCh2ApqulIIqDzspFsrNqHpsVJlg&s=10",
+    "thumbnailWidth": 561,
+    "thumbnailHeight": 356,
+    "source": "Apple Support",
+    "domain": "support.apple.com",
+    "link": "https://support.apple.com/vi-vn/111883",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdsassets.apple.com%2Flive%2FSZLF0YNV%2Fimages%2Fsp%2F111883_macbookair.png&tbnid=A18Z0NgvCR7KvM&imgrefurl=https%3A%2F%2Fsupport.apple.com%2Fvi-vn%2F111883&docid=KH1D9vTJWW3HLM&w=942&h=598",
+    "position": 4
+   },
+   {
+    "title": "Macbook Air M1 8GB 256GB chính hãng T&T Center | Giá tốt",
+    "imageUrl": "https://ttcenter.com.vn/uploads/photos/1690449390_1686_7c1c6c85d8006d7104fd4d906da93ac1.jpg",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjE5iI1zkk46yRxoYVNwsfzKuducwcueB1m00oySa-qQ&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "T&T Center",
+    "domain": "ttcenter.com.vn",
+    "link": "https://ttcenter.com.vn/macbook-air-m1-8gb-256gb-like-new?srsltid=AU7gw4VPXD56DM_eKEH7Ez1aPLKNYXeBevRcFTywrgsO5nsWLzwjbXNe",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fttcenter.com.vn%2Fuploads%2Fphotos%2F1690449390_1686_7c1c6c85d8006d7104fd4d906da93ac1.jpg&tbnid=Ifeo34ajvdezXM&imgrefurl=https%3A%2F%2Fttcenter.com.vn%2Fmacbook-air-m1-8gb-256gb-like-new%3Fsrsltid%3DAU7gw4VPXD56DM_eKEH7Ez1aPLKNYXeBevRcFTywrgsO5nsWLzwjbXNe&docid=0ryFdXReqv6IaM&w=600&h=600",
+    "position": 5
+   },
+   {
+    "title": "Like New] Macbook Air M1 2020 Ram 8GB SSD 256GB 2.5K",
+    "imageUrl": "http://laptopkimanh.vn/upload/image/product/macbook-air-2020-11.jpg",
+    "imageWidth": 2562,
+    "imageHeight": 2562,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWvDLwFZUHGnXiOIH35FfQmpq1dBi5DzAdXQ-x4-Kuyw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Laptop Kim Anh",
+    "domain": "laptopkimanh.vn",
+    "link": "https://laptopkimanh.vn/like-new-macbook-m1-2020-ram-8gb-ssd-256gb-25k-0.html?srsltid=AU7gw4Vs9OOv4p5tkgR-Xqm7KTxfdACko4ciCa6Sw6EVbAI5586yZVqP",
+    "googleUrl": "https://www.google.com/imgres?imgurl=http%3A%2F%2Flaptopkimanh.vn%2Fupload%2Fimage%2Fproduct%2Fmacbook-air-2020-11.jpg&tbnid=evl3bTWdjS20JM&imgrefurl=https%3A%2F%2Flaptopkimanh.vn%2Flike-new-macbook-m1-2020-ram-8gb-ssd-256gb-25k-0.html%3Fsrsltid%3DAU7gw4Vs9OOv4p5tkgR-Xqm7KTxfdACko4ciCa6Sw6EVbAI5586yZVqP&docid=T0qP-zAmAijzvM&w=2562&h=2562",
+    "position": 6
+   },
+   {
+    "title": "Macbook Air M1 2020| Apple M1| 8GB RAM| 256GB SSD| 13.3inch Retina  (2560x1600)| Rose Gold| Japanese version",
+    "imageUrl": "https://maytinhquanganh.com/wp-content/uploads/2026/05/z7825092093221_787f632ba67c313c6008de40433bad54.jpg",
+    "imageWidth": 1139,
+    "imageHeight": 1200,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXHJcOAZGU_ae2Xz6bf2UaCLIs0iXkOruHFd5xzMSVMA&s=10",
+    "thumbnailWidth": 539,
+    "thumbnailHeight": 567,
+    "source": "Laptop cũ Hải Phòng",
+    "domain": "maytinhquanganh.com",
+    "link": "https://maytinhquanganh.com/sp/macbook-air-m1-2020-apple-m1-8gb-ram-256gb-ssd-13-3inch-retina-2560x1600-rose-gold-japanese-version/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmaytinhquanganh.com%2Fwp-content%2Fuploads%2F2026%2F05%2Fz7825092093221_787f632ba67c313c6008de40433bad54.jpg&tbnid=XCEVBdGg38tGTM&imgrefurl=https%3A%2F%2Fmaytinhquanganh.com%2Fsp%2Fmacbook-air-m1-2020-apple-m1-8gb-ram-256gb-ssd-13-3inch-retina-2560x1600-rose-gold-japanese-version%2F&docid=OcUcAKhs7H9g1M&w=1139&h=1200",
+    "position": 7
+   },
+   {
+    "title": "Macbook Air M1 2020 8/256Gb Cũ | Thu Cũ Đổi Mới",
+    "imageUrl": "https://tuannguyenmobile.com/wp-content/uploads/2024/01/z5077044866749_79d46688da7a2ef5fe27a76d589da343.jpg",
+    "imageWidth": 480,
+    "imageHeight": 640,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWjDGv9v2V_1K1YIxoUlLqtmFTTU1Zas-zAhB8l1LTxQ&s=10",
+    "thumbnailWidth": 480,
+    "thumbnailHeight": 640,
+    "source": "Tuấn Nguyễn Mobile",
+    "domain": "tuannguyenmobile.com",
+    "link": "https://tuannguyenmobile.com/macbook-air-m1-2020-8-256g-cu/?srsltid=AU7gw4Wu61UyMsaUsU7lv_Ls_f-y_XxE5MgEZXMlXnRlRKf_0bU7K1FE",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Ftuannguyenmobile.com%2Fwp-content%2Fuploads%2F2024%2F01%2Fz5077044866749_79d46688da7a2ef5fe27a76d589da343.jpg&tbnid=zf6i_kEveWNWTM&imgrefurl=https%3A%2F%2Ftuannguyenmobile.com%2Fmacbook-air-m1-2020-8-256g-cu%2F%3Fsrsltid%3DAU7gw4Wu61UyMsaUsU7lv_Ls_f-y_XxE5MgEZXMlXnRlRKf_0bU7K1FE&docid=6bAKL8IKo_GDZM&w=480&h=640",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

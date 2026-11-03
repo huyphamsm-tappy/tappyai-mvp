@@ -1,0 +1,68 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple Apple 2024 Macbook Pro Laptop Với M4 Pro sai gon site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:41:21.970Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple Apple 2024 Macbook Pro Laptop Với M4 Pro sai gon site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Củ sạc GaN PD 65W Type-C 1 cổng Note King, bộ chuyển ...",
+    "link": "https://h5.lazada.vn/products/pdp-i13413564359.html",
+    "snippet": "Bộ chuyển đổi này tương thích với máy tính xách tay MacBook Air 13 15 m4 2025, đảm bảo vừa vặn hoàn hảo và trải nghiệm sạc liền mạch.",
+    "position": 1
+   },
+   {
+    "title": "3 cổng USB-C sạc 3 thiết bị cùng lúc | Màn hình ...",
+    "link": "https://www.lazada.vn/products/anker-prime-160w-cu-sac-nhanh-anker-prime-160w-3-cong-usb-c-sac-3-thiet-bi-cung-luc-man-hinh-cam-ung-thong-minh-ho-tro-app-chan-gap-chac-chan-ho-tro-sac-nhanh-da-thiet-bi-danh-cho-samsung-iphone151617-macbook-a2687-i3237101491.html?srsltid=AU7gw4ULL6IjDDHqBSObFtTpIuJw6Yzl2-gcXRvzwWwlW6Yofo_BCVgi",
+    "snippet": "Thiết kế nhỏ gọn như hộp sạc AirPods nhưng sở hữu công suất sạc tối đa 160W. Công nghệ GaN tiên tiến giúp tăng gấp đôi mật độ năng lượng so với thế hệ 140W ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 2
+   },
+   {
+    "title": "Bao da bàn phím WIWU Mag Touch Keyboard cho IPad ...",
+    "link": "https://www.lazada.vn/products/bao-da-ban-phim-wiwu-mag-touch-keyboard-cho-ipad-gen-11-a16-11-inch-2025-9-10-pro-11-129-13-inch-m1-m2-air-4-5-6-m2-2024-m3-2025-i1895669123.html?srsltid=AU7gw4UxnGRj6BPOefdBsduCE1k8VReftXPDDL3fzSl8MnK3ZfdTFxbD",
+    "snippet": "Mô tả sản phẩm ... - Tương thích : IPad Gen 10 10.9 inch 2022 , Pro 11 inch 2018 / 2020 / 2021 /2022 / M1/M2 / IPad Air 5,4 10.9 inch .",
+    "rating": 5,
+    "ratingCount": 10,
+    "position": 3
+   },
+   {
+    "title": "Cổng Kết Nối Đa Chức Năng 8 Trong 1 USB Type C Với ...",
+    "link": "https://www.lazada.vn/products/cong-ket-noi-da-chuc-nang-usb-type-c-8-trong-1-voi-giac-cam-35mm-dau-doc-the-sd-danh-cho-laptop-pc-hub-type-c-tich-hop-ethernet-i13402914500.html?srsltid=AU7gw4WXMRAPXeCAEPKT7tTCe6AtO7rHQ13R3CioOmwmgU0ouE0X-5_5",
+    "snippet": "Với chiều dài 15cm, bộ mở rộng USB C nhỏ gọn này rất dễ mang theo, khiến nó trở nên hoàn hảo khi sử dụng khi di chuyển. USB 3.0 tốc độ cao.",
+    "position": 4
+   },
+   {
+    "title": "HUNTKEY | Sạc Nhanh PD Đa Cổng Công Suất Cao 140W",
+    "link": "https://www.lazada.vn/products/huntkey-sac-nhanh-pd-da-cong-cong-suat-cao-140w-i13394179686.html?srsltid=AU7gw4UN8KjtscapapqQuWKf7U-7CRQ706qofAvqaHiiyjRtLL5GNobr",
+    "snippet": "LazMall HUNTKEY | Sạc Nhanh PD Đa Cổng Công Suất Cao 140W · 100% chính hãng · 30 ngày miễn phí trả hàng · Không áp dụng chính sách bảo hành.",
+    "rating": 5,
+    "ratingCount": 58,
+    "position": 5
+   },
+   {
+    "title": "Bàn Phím Magic Có Đèn Nền Cho iPad Thế Hệ 11 11 Inch ...",
+    "link": "https://www.lazada.vn/products/ban-phim-magic-co-den-nen-cho-ipad-the-he-11-11-inch-the-he-10-109-inch-bao-da-ban-phim-thong-minh-da-diem-tuong-thich-voi-ipad-a16-i3244004558.html?srsltid=AU7gw4X05w_E17UK8XPvn3-DdgQfMqnETpRFFC20la_8skR7OyvX8b88",
+    "snippet": "Tuổi thọ pin dài. Với pin lithium 500mAh, bàn phím mang đến thời gian chờ 150 ngày và thời gian làm việc 5 giờ khi bật đèn nền, đảm bảo thời gian sử dụng ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 6
+   }
+  ],
+  "credits": 1
+ }
+}

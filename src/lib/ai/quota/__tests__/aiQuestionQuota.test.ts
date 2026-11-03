@@ -8,7 +8,8 @@ import {
 
 // ── The ONE AI question quota — the contract, pinned ─────────────────────────
 //
-// Anonymous: 5 for the LIFETIME of the identity. Registered: 15 per VN day. One pool for every
+// Anonymous: 10 for the LIFETIME of the identity. Registered: hidden anti-abuse ceiling of 300 per VN day (Free; accounts
+// show no limit). One pool for every
 // AI feature. Enforced by the server against a verified identity; nothing the client sends can
 // change it. Both limiter backends are exercised: the in-process fallback (no store configured)
 // and a faithful fake of the shared store's atomic sorted-set script.
@@ -67,36 +68,39 @@ function contractSuite(label: string, setup: () => { store: ReturnType<typeof fa
     })
     afterEach(() => { __resetRateLimitStore(); vi.unstubAllEnvs(); vi.useRealTimers() })
 
-    describe('anonymous — five, for the lifetime of the identity', () => {
-      it('1. starts with 5', async () => {
+    describe(`anonymous — ${ANON_LIFETIME_LIMIT}, for the lifetime of the identity`, () => {
+      it(`1. starts with ${ANON_LIFETIME_LIMIT}`, async () => {
         const q = await peekAiQuestionQuota(anon())
-        expect(q).toMatchObject({ limit: ANON_LIFETIME_LIMIT, period: 'lifetime', used: 0, remaining: 5 })
-        expect(quotaFor(anon())).toEqual({ limit: 5, period: 'lifetime' })
+        // owner 01/11/2026: 5 -> 10 (accounts have no visible limit; hidden anti-abuse ceiling)
+        expect(ANON_LIFETIME_LIMIT).toBe(10)
+        expect(q).toMatchObject({ limit: ANON_LIFETIME_LIMIT, period: 'lifetime', used: 0, remaining: ANON_LIFETIME_LIMIT })
+        expect(quotaFor(anon())).toEqual({ limit: ANON_LIFETIME_LIMIT, period: 'lifetime' })
       })
-      it('2. one question → 4 remaining', async () => {
+      it(`2. one question → ${ANON_LIFETIME_LIMIT - 1} remaining`, async () => {
         const r = await consumeAiQuestion(anon())
-        expect(r).toMatchObject({ ok: true, used: 1, remaining: 4, period: 'lifetime' })
-        expect((await peekAiQuestionQuota(anon())).remaining).toBe(4)
+        expect(r).toMatchObject({ ok: true, used: 1, remaining: ANON_LIFETIME_LIMIT - 1, period: 'lifetime' })
+        expect((await peekAiQuestionQuota(anon())).remaining).toBe(ANON_LIFETIME_LIMIT - 1)
       })
       it('3. questions from different Tappy areas draw down ONE counter (the identity, not the feature)', async () => {
         // Travel, Food, Entertainment, Spa, Scam Alerts — the module has no notion of a feature;
-        // five spends from five call sites are five spends.
-        for (const _area of ['travel', 'food', 'entertainment', 'spa', 'scam-alerts']) await consumeAiQuestion(anon())
+        // spends from different call sites, cycling through the areas, are all spends on the one counter.
+        const areas = ['travel', 'food', 'entertainment', 'spa', 'scam-alerts']
+        for (let i = 0; i < ANON_LIFETIME_LIMIT; i++) { void areas[i % areas.length]; await consumeAiQuestion(anon()) }
         expect((await peekAiQuestionQuota(anon())).remaining).toBe(0)
       })
-      it('4. all five → 0; 7. the sixth is refused and spends nothing', async () => {
-        const five = await spendN(anon(), 5)
-        expect(five.every(r => r.ok)).toBe(true)
-        expect(five[4].remaining).toBe(0)
-        const sixth = await consumeAiQuestion(anon())
-        expect(sixth.ok).toBe(false)
-        expect(sixth.remaining).toBe(0)
-        expect((await peekAiQuestionQuota(anon())).used).toBe(5)
+      it(`4. all ${ANON_LIFETIME_LIMIT} → 0; 7. the ${ANON_LIFETIME_LIMIT + 1}th is refused and spends nothing`, async () => {
+        const all = await spendN(anon(), ANON_LIFETIME_LIMIT)
+        expect(all.every(r => r.ok)).toBe(true)
+        expect(all[ANON_LIFETIME_LIMIT - 1].remaining).toBe(0)
+        const next = await consumeAiQuestion(anon())
+        expect(next.ok).toBe(false)
+        expect(next.remaining).toBe(0)
+        expect((await peekAiQuestionQuota(anon())).used).toBe(ANON_LIFETIME_LIMIT)
       })
       it('5. returning tomorrow (and next month) → still 0', async () => {
         vi.useFakeTimers()
         vi.setSystemTime(new Date('2026-09-15T10:00:00+07:00'))
-        await spendN(anon(), 5)
+        await spendN(anon(), ANON_LIFETIME_LIMIT)
         vi.setSystemTime(new Date('2026-09-16T10:00:00+07:00'))
         expect((await consumeAiQuestion(anon())).ok).toBe(false)
         vi.setSystemTime(new Date('2026-10-20T10:00:00+07:00'))
@@ -104,49 +108,51 @@ function contractSuite(label: string, setup: () => { store: ReturnType<typeof fa
         expect((await peekAiQuestionQuota(anon())).remaining).toBe(0)
       })
       it('6. a reload / browser restart cannot restore it — the counter is server-side, keyed by identity', async () => {
-        await spendN(anon(), 5)
+        await spendN(anon(), ANON_LIFETIME_LIMIT)
         // "Restart": nothing the client holds is consulted; the same verified identity meets the same counter.
         expect((await consumeAiQuestion(anon('anon-1'))).ok).toBe(false)
         // A DIFFERENT identity is a different trial — that is what makes the identity, not the browser, the unit.
         expect((await consumeAiQuestion(anon('anon-2'))).ok).toBe(true)
       })
       it('an identity-less guest is metered the same way, keyed by IP', async () => {
-        expect(quotaFor(guest())).toEqual({ limit: 5, period: 'lifetime' })
-        await spendN(guest(), 5)
+        expect(quotaFor(guest())).toEqual({ limit: ANON_LIFETIME_LIMIT, period: 'lifetime' })
+        await spendN(guest(), ANON_LIFETIME_LIMIT)
         expect((await consumeAiQuestion(guest())).ok).toBe(false)
         expect((await consumeAiQuestion(guest('203.0.113.10'))).ok).toBe(true)
       })
     })
 
-    describe('registered — fifteen per VN day, one pool', () => {
-      it('8. starts with 15/day', async () => {
-        expect(await peekAiQuestionQuota(user())).toMatchObject({ limit: FREE_DAILY_LIMIT, period: 'day', used: 0, remaining: 15 })
+    describe(`registered — hidden ceiling of ${FREE_DAILY_LIMIT} per VN day, one pool`, () => {
+      it(`8. starts with ${FREE_DAILY_LIMIT}/day`, async () => {
+        expect(FREE_DAILY_LIMIT).toBe(300)
+        expect(await peekAiQuestionQuota(user())).toMatchObject({ limit: FREE_DAILY_LIMIT, period: 'day', used: 0, remaining: FREE_DAILY_LIMIT })
       })
       it('9./10. usage in any area — chat or a Scam Alerts analysis — reduces the same pool', async () => {
-        await spendN(user(), 3)          // general
-        await spendN(user(), 2)          // travel
-        await spendN(user(), 2)          // food
+        await spendN(user(), 2)          // general
+        await spendN(user(), 1)          // travel
+        await spendN(user(), 1)          // food
         await spendN(user(), 1)          // entertainment
         await spendN(user(), 1)          // spa
         await spendN(user(), 2)          // scam alerts message analysis
-        expect(await peekAiQuestionQuota(user())).toMatchObject({ used: 11, remaining: 4 })
+        expect(await peekAiQuestionQuota(user())).toMatchObject({ used: 8, remaining: FREE_DAILY_LIMIT - 8 })
       })
-      it('11. the 16th question that day is refused', async () => {
-        const all = await spendN(user(), 15)
+      it(`11. the ${FREE_DAILY_LIMIT + 1}th question that day is refused`, async () => {
+        const all = await spendN(user(), FREE_DAILY_LIMIT)
         expect(all.every(r => r.ok)).toBe(true)
         expect((await consumeAiQuestion(user())).ok).toBe(false)
       })
-      it('12. the next VN day resets to 15 — at 00:00 Asia/Ho_Chi_Minh, not at UTC midnight', async () => {
+      it(`12. the next VN day resets to ${FREE_DAILY_LIMIT} — at 00:00 Asia/Ho_Chi_Minh, not at UTC midnight`, async () => {
         vi.useFakeTimers()
         vi.setSystemTime(new Date('2026-09-15T23:30:00+07:00'))
-        await spendN(user(), 15)
+        await spendN(user(), FREE_DAILY_LIMIT)
         expect((await consumeAiQuestion(user())).ok).toBe(false)
         vi.setSystemTime(new Date('2026-09-16T00:05:00+07:00'))   // 17:05 UTC on the 15th
-        expect(await peekAiQuestionQuota(user())).toMatchObject({ used: 0, remaining: 15 })
+        expect(await peekAiQuestionQuota(user())).toMatchObject({ used: 0, remaining: FREE_DAILY_LIMIT })
         expect((await consumeAiQuestion(user())).ok).toBe(true)
       })
       it('two accounts never share a pool', async () => {
-        await spendN(user('a'), 15)
+        await spendN(user('a'), FREE_DAILY_LIMIT)
+        expect((await consumeAiQuestion(user('a'))).ok).toBe(false)
         expect((await consumeAiQuestion(user('b'))).ok).toBe(true)
       })
     })
@@ -159,15 +165,15 @@ function contractSuite(label: string, setup: () => { store: ReturnType<typeof fa
         // There is no API that takes a count, a limit, a period or a "reset" from anyone.
         expect(typeof (consumeAiQuestion as unknown as { reset?: unknown }).reset).toBe('undefined')
       })
-      it('20. concurrent requests cannot over-spend: 20 parallel spends admit exactly 15', async () => {
-        const results = await Promise.all(Array.from({ length: 20 }, () => consumeAiQuestion(user())))
-        expect(results.filter(r => r.ok)).toHaveLength(15)
-        expect(results.filter(r => !r.ok)).toHaveLength(5)
-        expect((await peekAiQuestionQuota(user())).used).toBe(15)
+      it(`20. concurrent requests cannot over-spend: ${FREE_DAILY_LIMIT + 10} parallel spends admit exactly ${FREE_DAILY_LIMIT}`, async () => {
+        const results = await Promise.all(Array.from({ length: FREE_DAILY_LIMIT + 10 }, () => consumeAiQuestion(user())))
+        expect(results.filter(r => r.ok)).toHaveLength(FREE_DAILY_LIMIT)
+        expect(results.filter(r => !r.ok)).toHaveLength(10)
+        expect((await peekAiQuestionQuota(user())).used).toBe(FREE_DAILY_LIMIT)
       })
-      it('20b. 8 parallel anonymous spends admit exactly 5', async () => {
-        const results = await Promise.all(Array.from({ length: 8 }, () => consumeAiQuestion(anon())))
-        expect(results.filter(r => r.ok)).toHaveLength(5)
+      it(`20b. ${ANON_LIFETIME_LIMIT + 3} parallel anonymous spends admit exactly ${ANON_LIFETIME_LIMIT}`, async () => {
+        const results = await Promise.all(Array.from({ length: ANON_LIFETIME_LIMIT + 3 }, () => consumeAiQuestion(anon())))
+        expect(results.filter(r => r.ok)).toHaveLength(ANON_LIFETIME_LIMIT)
       })
       it('peeking never spends', async () => {
         for (let i = 0; i < 10; i++) await peekAiQuestionQuota(anon())

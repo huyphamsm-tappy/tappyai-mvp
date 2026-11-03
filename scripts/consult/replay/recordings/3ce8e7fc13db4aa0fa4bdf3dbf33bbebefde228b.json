@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Nhu Minh Plaza Danang Hotel\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:47:23.119Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Nhu Minh Plaza Danang Hotel\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nhu Minh Plaza Danang hotel (@nmpdananghotel)",
+    "link": "https://www.tiktok.com/@nmpdananghotel",
+    "snippet": "Nhu Minh Plaza Danang hotel · @nmpdananghotel · Phòng khách sạn biển - sảnh sự kiện 4 ⭐️ 0947.04.00.11 41 Phạm Văn Đồng, Tp Đà Nẵng.",
+    "position": 1
+   },
+   {
+    "title": "Các Hạng Phòng Khách Sạn Như Mình Plaza - View Biển ...",
+    "link": "https://www.tiktok.com/@nmpdananghotel/photo/7638447415628025108",
+    "snippet": "TikTok video from Nhu Minh Plaza Danang hotel (@nmpdananghotel): “Khám phá các hạng phòng tại Như Mình Plaza với sức chứa đa dạng, ...",
+    "position": 2
+   },
+   {
+    "title": "WE MADE IN VIETNAM! #vietnam #nghile30_41_5 # ...",
+    "link": "https://www.tiktok.com/@nmpdananghotel/video/7634070667662511380",
+    "snippet": "Video TikTok từ Nhu Minh Plaza Danang hotel (@nmpdananghotel): \"WE MADE IN VIETNAM! #vietnam #nghile30_41_5 #learnontiktok #foryoupage ...",
+    "position": 3
+   },
+   {
+    "title": "Video thực tế phòng dành cho 4 người lớn, phù hợp với ...",
+    "link": "https://www.tiktok.com/@nmpdananghotel/video/7650052081889414420",
+    "snippet": "Video TikTok từ Nhu Minh Plaza Danang hotel (@nmpdananghotel): \"Video thực tế phòng dành cho 4 người lớn, phù hợp với gia đình và nhóm bạn.",
+    "position": 4
+   },
+   {
+    "title": "Nhu Minh Plaza Đà Nẵng Hotel Spa",
+    "link": "https://www.tiktok.com/discover/nhu-minh-plaza-%C4%91%C3%A0-n%E1%BA%B5ng-hotel-spa",
+    "snippet": "Nhu Minh Plaza Danang hotel. Series chuẩn bị phòng check-in cùng Như Minh ... Nhu Minh Plaza Danang hotel. Vô tình bắt gặp buồng phòng chuẩn bị phòng ...",
+    "position": 5
+   },
+   {
+    "title": "Sảnh sự kiện đào tạo tại Như Minh Plaza",
+    "link": "https://www.tiktok.com/@nmpdananghotel/photo/7651877416385776916",
+    "snippet": "TikTok video from Nhu Minh Plaza Danang hotel (@nmpdananghotel): “Sảnh Như Minh Plaza tổ chức sự kiện đào tạo với sức chứa từ 50 đến 350 ...",
+    "position": 6
+   },
+   {
+    "title": "Tiệc trưa 160 khách: cách tổ chức và phục vụ thành công",
+    "link": "https://www.tiktok.com/@nmpdananghotel/video/7640319535710555413",
+    "snippet": "720 Lượt thích,32 Bình luận.Video TikTok từ Nhu Minh Plaza Danang hotel (@nmpdananghotel): \"Kinh nghiệm tổ chức tiệc trưa cho 160 khách: chuẩn bị, nhân sự, ...",
+    "position": 7
+   },
+   {
+    "title": "Nhu Minh Plaza Danang hotel - original sound",
+    "link": "https://www.tiktok.com/music/original-sound-Nhu-Minh-Plaza-Danang-hotel-7658218051465497352",
+    "snippet": "... Nhu Minh Plaza Danang hotel song created by Nhu Minh Plaza Danang hotel. Watch the latest videos about original sound - Nhu Minh Plaza Danang hotel on TikTok.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook Pro M4 16GB RAM giá Việt Nam TP.HCM shop website địa chỉ facebook",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:13:57.567Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Pro M4 16GB RAM giá Việt Nam TP.HCM shop website địa chỉ facebook",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Macbook - Hội Người Dùng",
+    "link": "https://www.facebook.com/groups/2968829273331903/",
+    "snippet": "MacMini M4 16GB/256GB – giá siêu hời chỉ 16trx✨ • Chip M4 | RAM 16GB | SSD 256GB • Ngoại hình cận 99% • Máy sạch hoàn toàn,không MDM,không icloud • Đã test ...",
+    "position": 1
+   },
+   {
+    "title": "Macbook Pro M4 Pro 14 inch 24GB 1TB giá tốt tại TP.HCM",
+    "link": "https://www.facebook.com/groups/438597821419989/posts/1478960694050358/",
+    "snippet": "CHÍNH SÁCH BẢO HÀNH (PT Store): • BẢO HÀNH FULL MÁY 6 THÁNG • Bao test đổi trả 7 ngày đầu • LIÊN HỆ ĐẶT HÀNG NGAY (Số lượng có hạn): • Điện ...",
+    "position": 2
+   },
+   {
+    "title": "Macbook Pro M4 Pro 16\" 48/2Tb New Care 1/27 Chỉ 6X ...",
+    "link": "https://www.facebook.com/groups/macbooksaigons/posts/1613929587216455/",
+    "snippet": "Macbook Pro M4 Pro 16\" 48/512gb Hơn 65Tr Xíu Máy Sạch Không MDM <=> : 90% 14CPU ~ 20GPU Văn phòng, Đồ hoạ 2D, 3D, Coding Vô tư Có : ...",
+    "position": 3
+   },
+   {
+    "title": "Macbook - Hội Người Dùng",
+    "link": "https://www.facebook.com/groups/hoinguoidungmacbook/",
+    "snippet": "Sẵn Macbook air m4 13” 16/256 x7 chiếc tại hà nội Kèm thêm 1 em air m5 13” 16/512 Giá chỉ từ 26tr Ib em hoặc nhắn zalo 0348151012 để em tư vấn · No photo ...",
+    "position": 4
+   },
+   {
+    "title": "TP.HCM Em Tìm ạ MacBook Pro 14 inch M4 Pro 14",
+    "link": "https://www.facebook.com/groups/hoinguoidungmacbook/posts/4612860665611606/",
+    "snippet": "TP.HCM Em Tìm ạ MacBook Pro 14 inch M4 Pro 14-Core CPU / 20-Core GPU / 48GB RAM.",
+    "position": 5
+   },
+   {
+    "title": "Thanh lý: MacBook Pro 14” M4 – 16GB/512GB",
+    "link": "https://www.facebook.com/www.bachlongstore.vn/videos/thanh-l%C3%BDmacbook-pro-14-m4-16gb512gb-space-blackapple-m4-10-cpu-10-gpu-ram-16gb-s/1707549410524852/",
+    "snippet": "Thanh lý: MacBook Pro 14” M4 – 16GB/512GB | Space Black Apple M4 10 CPU / 10 GPU • RAM 16GB • SSD 512GB hàng công ty Full Box ✨ Like New ...",
+    "position": 6
+   },
+   {
+    "title": "Thu mua Macbook Air, Pro M4 cũ giá cao tại TPHCM",
+    "link": "https://tuannguyenmobile.com/thu-mua-macbook-m4/?srsltid=AU7gw4Wjw0kCxpRRhfUUZhgOvsXQY9mq37XFp2X5ANe3Kwf7zqKX-RRE",
+    "snippet": "Bảng giá thu mua Macbook M4 Series Tại Tuấn Nguyễn Mobile: ; MacBook Pro 14 M4 (10 CPU – 10 GPU) 16GB 1TB, 33.000.000 đ, 37.000.000 đ ; MacBook Pro 14 M4 (10 CPU ...",
+    "rating": 5,
+    "ratingCount": 31,
+    "position": 7
+   },
+   {
+    "title": "Macbook Pro 14” M4 16Gb 1Tb Like New",
+    "link": "https://www.facebook.com/groups/MacbookArmVietNam/posts/1855680345450524/",
+    "snippet": "Macbook Pro 14” M4 16Gb 1Tb Like New Chip M4 Ram 16Gb Ssd 1Tb Máy đẹp cất kĩ trong ốp incase Máy chuẩn us không mdm không icloud Pin 100% mới ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,350 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "MacBook Air M1 cũ dưới 12 triệu pin tốt bảo hành shop uy tín Việt Nam",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:28:31.178Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Air M1 cũ dưới 12 triệu pin tốt bảo hành shop uy tín Việt Nam",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "MacBook Air M1 13 inch 2020 (8GB - 256GB) - Chính Hãng Like New",
+    "source": "Viettablet",
+    "price": "13.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQRDmmNfZXfDmK-uL9r9iEzC16nf_pPoXUrpeL-pLEN0toy-c9H6DJKdeTiJXPz_Sq3tIw7wu9qFIbyKn7oPbDx9JGJdm8j0YGRP_lWbro9ySWRo8xDNq_qzA",
+    "productId": "9525396093497621175",
+    "position": 1
+   },
+   {
+    "title": "Macbook Air M1 13 inch Cũ -Hàng 95%",
+    "source": "Tinh Tế Mobile",
+    "price": "9.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQIepCMiz774rUox2-_YnRrY9D5IPghnXhMXa-ZLwO9fLqU4GokP2pgziCfkI14kTn4X7Vg-LwTWAzRhG_drFS8OYxW3VS5AMl7hcp0GXcG3COCvi1pjDX7",
+    "productId": "22228383453806073",
+    "position": 2
+   },
+   {
+    "title": "MacBook Air M1 13 Inch (8GB/256GB) Cũ",
+    "source": "Điện Thoại Giá Kho",
+    "price": "8.590.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQCrXKNZRB37ITbh1rxAMBOP8mES45ywKDatWNFGjRkbaDqO4juaF7v5VMJYFen4KIAkYw-ijbeaxnXfMXGZjldec_F2vNKJMWy-rc9ZZlIvBcHq2_tqgWIaw",
+    "productId": "4530899095567986629",
+    "position": 3
+   },
+   {
+    "title": "Apple MacBook Air",
+    "source": "Mac24h",
+    "link": "https://www.google.com/search?ibp=oshop&q=MacBook+Air+M1+c%C5%A9+d%C6%B0%E1%BB%9Bi+12+tri%E1%BB%87u+pin+t%E1%BB%91t+b%E1%BA%A3o+h%C3%A0nh+shop+uy+t%C3%ADn+Vi%E1%BB%87t+Nam&prds=localAnnotatedOfferId:1,catalogid:1434325277585982111,gpcid:1152338077854414841,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "15.370.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSWPeTGGRuALdx59lrrSpx5vfnXg39iM3eOZHReH-idkrX_VI3FbfiyTb59LhFECrJ5MaAV8NtMd3v3nECEL4Nd4UKavmLw5o05Rf9N58A9a0sB-DP7U2_e2g",
+    "productId": "1434325277585982111",
+    "position": 4
+   },
+   {
+    "title": "Macbook Air M1 8/256GB giá rẻ",
+    "source": "xoanstore.vn",
+    "price": "13.290.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRUe3IULAvmN_0a4-nZ4He7E6OXqOVq-XWxz7c0SgMKSlTfls4_r4kGLNVdjf691YgZWluoBL79uwfLy-2YRkLeP-sFL8q7tSid6EGQiFdd",
+    "productId": "11168075143086716829",
+    "position": 5
+   },
+   {
+    "title": "MacBook Air 13-inch A2337 (M1, 2020) Cũ Lướt: Chiếc Laptop Quốc Dân, Hiệu Năng Vượt Mọi Đối Thủ - Laptop Viễn Chinh",
+    "source": "Laptop Viễn Chinh",
+    "price": "12.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQKFWgsBatOxB8fezIz_X_I40aV2AMb6mN3JczDX_pNrIaybufIuzzagrfeR32Sj2hT5tuFaJRoTOSkqEPj4BayPhcEXU8kzQuf4eYByxJYlyU32Zd6eBjx",
+    "productId": "3369069513405597045",
+    "position": 6
+   },
+   {
+    "title": "Macbook Air M1 13 inch 2020 8 CPU 7 GPU 8GB 256GB - Used",
+    "source": "PT Store - Macbook Giá Rẻ",
+    "price": "10.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRi79mUcICA8OYtxcY8T7nabOaAcx0juijW81suF4O_xhg7vWG-gIOj2-1cyERVZHqm3sAvSYMLAQsYNDPai2EqYgoAqfXBQ-FrAeh-h4UQSObbu7fh2D4a",
+    "productId": "3726486830646376565",
+    "position": 7
+   },
+   {
+    "title": "Macbook Air M1 2020 cũ- Hiệu Năng Bất Ngờ, Giá Rẻ, Uy Tín",
+    "source": "truonggiang.vn",
+    "price": "14.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTWO4dLkmLcBMeFl77RnqYD_KiAc6GXzsHVvV_fDsHcnlrcCy5xF4nMS-Szrcp-1A7uSpbZsHmbkfESj8HGeRklS2csG8MpfHiuebNdG0OAIFDauaHVdiaOkg",
+    "productId": "12679583702464469449",
+    "position": 8
+   },
+   {
+    "title": "MacBook Air 13 inch M1 2020 - USED",
+    "source": "macvn.com.vn",
+    "price": "12.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSgt2bHzyM7wJh1fepanzVAsnZEKH_JtvJUuBBfZmuX6tBE-9fvXk7BcaaqgoZv-wFLg4-8cmnSCm2l3rMtKgw3xGwvAKtSm9dY2W6TaPp7MiEnSLv90ySgHQ",
+    "rating": 4.3,
+    "ratingCount": 3,
+    "productId": "7330936603804696620",
+    "position": 9
+   },
+   {
+    "title": "Macbook Air M1 8GB 256GB",
+    "source": "Mac24h",
+    "price": "12.700.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTS_-OUuEBu4bryEHzS4bMzS9STWEIUTUpQavONbpDZK_AoeeqsJOwWSZnLdEE83K_h2YD1H7RorbozqiK9tc2HUsd0ZSr9ShEisVQO98YiYwbAEiS50w3M2A",
+    "productId": "13747928307953592530",
+    "position": 10
+   },
+   {
+    "title": "MacBook Air 13 inch M1 2020 8-core CPU/8GB/512GB/7-core GPU cũ",
+    "source": "Bạch Long Store",
+    "price": "14.250.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSWDNQQq6Ha4zDd_bmR8s1H74Ogk-aQxgiE3FZ4QDrTCetuak4IwimuvlgtX7zWXWoQovb2ECVO1RgROTR-LYHl7F-NnDOCb25K8L38AQyeBzUDhVm1azJUxA",
+    "productId": "7055889992777277104",
+    "position": 11
+   },
+   {
+    "title": "Macbook Air M1 13\" 8/256 Gray pin 9x% Likenew 99%",
+    "source": "HDproshop",
+    "price": "9.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTmJ3ODvZK-MuhDZbV75gSn11LkvthFxmWtcqGZWBObc3zeCDRb9FBKY9JCIAkheYZGJOcdYtJ_Xu1AhhtdCqndwnsmNQY5ok-TER35VL5BVJHALIfd_FxQZw",
+    "productId": "5250927555338102257",
+    "position": 12
+   },
+   {
+    "title": "Máy cũ MacBook Air 2020 13 inch Core i5 8GB Ram SSD 256GB",
+    "source": "laptopkimanh.vn",
+    "price": "14.200.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRXlhnaW3x2QZoTJF5rsV2eHS53lwkEyxAxFb7LKvZWgU5rbLn9F60pbardZMoxErTHN9NDrzuFnVtUQHCekxK1bovUZ6EGHWcBwHCoeUno00le7mAe8w_z",
+    "productId": "7294816502917962164",
+    "position": 13
+   },
+   {
+    "title": "MacBook Air M1 13 inch 2020 8CPU/7GPU - RAM 8GB - 256GB - 99%",
+    "source": "Oneway Mobile",
+    "price": "13.790.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTT9EZlcXTgjzsKRAaQrapQsIMjDBfTjCL-1B0GTCMgnb7QMWTkWhdbHYUgHh7Hhv17cW5HgCHKtTKCri4O-D9e2DXr90WlhegC8YkFGcZAF9v4mlCYvhguHA",
+    "productId": "17219112381001490281",
+    "position": 14
+   },
+   {
+    "title": "Apple MacBook Air 13 inch",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=MacBook+Air+M1+c%C5%A9+d%C6%B0%E1%BB%9Bi+12+tri%E1%BB%87u+pin+t%E1%BB%91t+b%E1%BA%A3o+h%C3%A0nh+shop+uy+t%C3%ADn+Vi%E1%BB%87t+Nam&prds=localAnnotatedOfferId:1,catalogid:14310375660070122170,gpcid:8602998232814770163,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "41.290.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQwk2ZnnzvrlEXEwysJtlgFNCr79QUKeyQ0jnFy75eRa4-AOrRsKVlM1HV3u_jIwy0OXOUCiMPg4y2NV_AxjUwvTXxGGVXIJD_YodL8_p7w4Og7Xb3p-7ciIA",
+    "productId": "14310375660070122170",
+    "position": 15
+   },
+   {
+    "title": "Đánh giá chi tiết Apple MacBook Air 13-inch A2337 (M1, 2020) (Chip M1/8GB/256GB/13.3\" 2K) - Gray sang trọng - Laptop Viễn Chinh",
+    "source": "Laptop Viễn Chinh",
+    "price": "12.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTLV1z_WU8nSydu67K8vrkovXdCQ6Im6OqDZ3a7g6mu03ZsX5rWu4Wgj0kFjqQL5xz9yhQi_yX0eQ_HrLi4ifIJ28dXLQwkOpv4WL4MDFqAxqy3pt7FBR3-ww",
+    "productId": "6827058221659875268",
+    "position": 16
+   },
+   {
+    "title": "Macbook Air M1 13 inch - 2020",
+    "source": "Mac24h",
+    "price": "12.200.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSw4yGjghP4laHKjJo7Rr1epAaRbKgJ_2vJ7oRvIHiOHD7QOOiEGK1tekBwTfAPEDLEtTn-S6Hf_SuK_-v5MdOeX2oAsLtx7axlvGoDiUlXy6b35ON-MhIZZQ",
+    "productId": "17865071997006832713",
+    "position": 17
+   },
+   {
+    "title": "Macbook Air 13 inch 2021 M1 (Gold|Sliver|Gray) Chính Hãng",
+    "source": "Ngọc Nguyễn Store",
+    "price": "12.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcR2eHFAaDqPIOaQAKBdnaSCyc6pYiszkQqKMFdQQcQ9k4TJehGtLcR6UbyfcgLZckufvA1MCaYw6VtlYDayKp53Ofo0f3hYFRWxm9XVT7PG_wrD49XBpL8t",
+    "productId": "10746426103011803080",
+    "position": 18
+   },
+   {
+    "title": "Macbook Pro M1 13 inch 2020 - USED",
+    "source": "macvn.com.vn",
+    "price": "15.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQxejvRpCKhvt8lSZ_BmlUmHEHRjE_Rhwrbj39AIEpC_0jnka7BpLXvLfWqvQUbFK8CsX7rOn0sakaF-b16G3gNBfcnb7DU9kSFrfWCNH3WH7aicZsfSxr1",
+    "productId": "106407365437401708",
+    "position": 19
+   },
+   {
+    "title": "Macbook Air M1 16GB/256GB Cũ",
+    "source": "Tuấn Nguyễn Mobile",
+    "price": "10.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcToJjzVafzBTYzzLEd1-I-5JFUPB37VeLHcbMX5bBz-KRlbdvyw_kGtIVXVWXTnmnqGg9ZBCDje5T5THa-lzAjkbR9cQO76l2_E0jXsuBP6JrPJD_y3readiA",
+    "productId": "3581252274173462309",
+    "position": 20
+   },
+   {
+    "title": "MacBook Air M1 16GB RAM",
+    "source": "Thuê Nhanh",
+    "price": "400.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcS--sAixjCZ6Lz7cGbisXN7GUnkspA4imY66XbnLq5YJM4JyCZWTtIWv8BTdV7XFG-2z-5gZFVvXrazHw10wGPj6GWZy9l3GRSHLHgBoO4",
+    "productId": "621948568442768367",
+    "position": 21
+   },
+   {
+    "title": "MacBook Air M1 2020 13 inch| Apple M1| 8GB RAM| 256GB SSD| 13,3” 2K (2560x1600)| Grey - Laptop cũ Hải Phòng",
+    "source": "Laptop cũ Hải Phòng",
+    "price": "13.899.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQzDEJ_Z5uTLm4yqdLCvsy9KAcPUQ3qWLG36GMwUzeE3HOc--enpgVWsRnB95UBlI4mr4Gg5xItZq8PYflXBH8ceLzmi1jXJ76ddZGazbWBxz6PJMO9C__9BQ",
+    "productId": "243688466936038264",
+    "position": 22
+   },
+   {
+    "title": "Macbook Air 2020 M1 13inch 8GB 256GB SSD Cũ - Truemart",
+    "source": "Truesmart.com.vn",
+    "price": "17.950.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRi5LvkxbfMRhIfS62YybmdPHGkdcpQFaKTqnL8w7a3HNVx7L74CTFugjOikp2ddZG538_wAPy6qGUz0WHX2yYiltUZHwjQ3v7e5IkbQtGpMsu52lAWvjBykA",
+    "productId": "10571284394337250179",
+    "position": 23
+   },
+   {
+    "title": "MacBook Air 13\" 2020 M1 Ram 16GB",
+    "source": "Fptshop.com.vn",
+    "price": "32.194.800 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQrneCLNk8-KcMN4SZetAXjVoxF0qMEDuvvm08l_PDvhSA8f-Pjv2zbDixgwZNy1j2p_JA6m7YkXP0-eZYDb2SYqPaWIyfR2940GYGwNND0hSzr1kpN5dII",
+    "productId": "15886094001121426077",
+    "position": 24
+   },
+   {
+    "title": "MacBook Air M1 13 inch 2020 8CPU/7GPU - RAM 16GB - 256GB - 99%",
+    "source": "Oneway Mobile",
+    "price": "15.790.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQDwuLTA_-NT9BguK525jdgmnHpaeLIAS18L7nYTu7XnWM96NkDoURqlndvvwoWh2dpMTdA6vO_i5zDf-cmI7VLk1GxGEJSZaIBdxHNivxtzu5Zk7FvW4yvKA",
+    "productId": "11147848624037178078",
+    "position": 25
+   },
+   {
+    "title": "Macbook Air M1 13inch – RAM 16GB / SSD 256Gb",
+    "source": "Tín Phát-Apple",
+    "price": "13.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTzlTt2t0BozdRMyWJcT_IoXeam-sulnM8YmoJcl__UBFhZ1zHGn8duv3C3N9DKtPGfMGQf8vRrDjrQQvJ6_6HchOAQlrFGNMOjHc9LpAaBkKyRnHKotPhkKQ",
+    "productId": "5189527312325717828",
+    "position": 26
+   },
+   {
+    "title": "[New] Macbook Air M1 8/256GB Openbox giá rẻ",
+    "source": "xoanstore.vn",
+    "price": "15.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcS07YtARqNERUHkTv3SN7wlbF-aPWWsvcTqP_fLkfvQ4n7ZIIOteRiyzhC6_JB_MqSOVbaUKx6rw4-fZ7PIcV8kb95Wz_3sLgtAhhqf721m",
+    "productId": "6332280840779660972",
+    "position": 27
+   },
+   {
+    "title": "Macbook Air M1 13' 2020 (Sliver, Gold, Gray) LIKE NEW",
+    "source": "Macbook Việt",
+    "price": "13.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQZiYgqdgE_XsdeNjAoRK3LjhpbEJI52ib-6lY0GqfFrMxodpjJmRcpp8-pJINFz62Eru_xBzqU7-iIYqScouA5RpClkQpcbzkmLTMLlwoy",
+    "productId": "16169262841316342283",
+    "position": 28
+   },
+   {
+    "title": "MacBook Air M1 8GB RAM 13 inch",
+    "source": "Thuê Nhanh",
+    "price": "300.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRqa74AjiHqD3lX4fjaM7ArcDamVjk_r68uxFFgPt_3NwO7JPLK9DtpmUzUBWCM98DNTWvTk33urTy4bNtjo9wqpt98i63nbfkgEC_670_y",
+    "productId": "2076086283483257708",
+    "position": 29
+   },
+   {
+    "title": "Macbook Air (M1,2020) 8GB/256GB Cũ",
+    "source": "Tuấn Nguyễn Mobile",
+    "price": "9.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcR7NNrXTGDsPEs5ic5JSjnOigwtQN49vKZM3hSIvGXztfdMX5kDSUoBsBWmfhuvz0vvMaXAfXukQI1pDiVePIn-p7jgHLj6ntqCSESi60w",
+    "productId": "15857765353865331106",
+    "position": 30
+   },
+   {
+    "title": "MacBook Air M1 RAM 16GB SSD 512GB - Khomacbook",
+    "source": "Khomacbook",
+    "price": "15.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRAAmwhafGPWycKBPExpVJqxWD0ywhD309aNTKe5RRqONFmNGUqm7fZlvoKNFwTcJcRCTL-PpHQ62BvaLoaBvYnsoMGIZLgFyVroAiSxcMGrwbU-FoQpQVE9g",
+    "productId": "1330590279328051656",
+    "position": 31
+   },
+   {
+    "title": "Macbook Air 13 inch M3 2024 - USED",
+    "source": "macvn.com.vn",
+    "price": "20.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcReDOcnS3aL4yPhnAGh5P0cu0GeiSJ4R4WZrDqdJAGeSglPMxLDrCWWCIMnE24agmWKBERawgOtGyCy_Ylvu1bhNlj7UDwHHadO5YM2rC8vqcqptpgu4kYcEA",
+    "productId": "2516613701368740152",
+    "position": 32
+   },
+   {
+    "title": "Macbook Air M1 13 inch 8GB/256GB Like New -Gray",
+    "source": "Fogo Store",
+    "price": "12.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTmUr9lS_x75TbcdSb9_DwXQSK3VuGTMJ3T3Yq1zHwys1fwJX7WD8AtWbcJVM_s9YnIp3XLscUSEy1RjGxgZWQ-kRtJhfmEfRwOVAT8qPhyt9dxzdEgd9a4",
+    "productId": "1406851518919640435",
+    "position": 33
+   },
+   {
+    "title": "MacBook Air 13-inch A2337 (M1, 2020) Cũ Lướt: Siêu Phẩm Mỏng Nhẹ, Hiệu Năng Vượt Trội - Laptop Viễn Chinh",
+    "source": "Laptop Viễn Chinh",
+    "price": "12.400.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSa2aEUiz7Wx_W-yEYyYUYwKFfcg1a2sdufLR302T8qSLIZWz5W8Dxg88MmLLx2xnJbzbiyii6KiZivUa1HtbOQya_orrXHcglPa5oxM1dftvM4OiUzmd1inQ",
+    "productId": "6780101295898176952",
+    "position": 34
+   },
+   {
+    "title": "MacBook Air M1 13 inch 2020 8CPU/8GPU - RAM 16GB - 512GB - 99%",
+    "source": "Oneway Mobile",
+    "price": "16.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRWWuBpfEcvDFPQor7lW4AfAMGNsjmHm0uLTjzeZl3Go3fz1Z3wN0AA_PlJ-71aUamn2uhci6xW8GWYZphpfjaCF53YeGX07hCz5yN09OwQ1LJfqiparyKqOg",
+    "productId": "16431561911688082862",
+    "position": 35
+   },
+   {
+    "title": "Apple MacBook Air 15 inch",
+    "source": "Apple",
+    "link": "https://www.google.com/search?ibp=oshop&q=MacBook+Air+M1+c%C5%A9+d%C6%B0%E1%BB%9Bi+12+tri%E1%BB%87u+pin+t%E1%BB%91t+b%E1%BA%A3o+h%C3%A0nh+shop+uy+t%C3%ADn+Vi%E1%BB%87t+Nam&prds=localAnnotatedOfferId:1,catalogid:15013061543033360976,gpcid:5383435682118214789,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "50.249.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQYgHIj8n1pa1uz30vlHW1U_qXGGolVlKOXUNLPX7ZdyhtoEt_CQbCfAsLdrC1wMAH5FcjQaHv_IE0izgQJ_PVir3pN4hynr4sF_wEWGNe9aelHXTMpJH5HUA",
+    "productId": "15013061543033360976",
+    "position": 36
+   },
+   {
+    "title": "MacBook Air 13in M1 RAM 8gb, SSD 256GB - 2020 LIKE NEW",
+    "source": "Macbook Việt",
+    "price": "13.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRJkOQ64-w2QD9IIP6rBEtzviFlJFlYivDjI4BP1ftau7YXeXJZAb6Kt6qwgbZzYIRQLjFU-JFdthlYnFSUBG4Rk2bkWR3lw8VYppd7rV1rOyPqZO_Uz0J4",
+    "productId": "12127119301999431915",
+    "position": 37
+   },
+   {
+    "title": "Macbook Air M1 2020 Gray MGN63 8G/ 256G - Likenew",
+    "source": "Lâm Phong Store",
+    "price": "12.999.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQD-GSmOLMe44FSlWBeEiPuSmMNygBHkdL-r3eHq4okoVSfJQQ4qrJHR9eN-saU829bIty5Ay3wChz3kyT0IG3h8cbquopPJCHDARPdeJs",
+    "productId": "16066304052689630645",
+    "position": 38
+   },
+   {
+    "title": "MacBook Air M1 13-Retina True, Touch ID | leminhSTORE Đà Nẵng",
+    "source": "leminhSTORE.vn",
+    "price": "12.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcT4kaTBmQlCJfpOqb4r31KFYBh2Y8-DVPRDqVY_fdXdK_7s27M8A2QXAHHmCr0HzaceFOJOXSlW_OT6WfiIRAS7GMa-JakaP3lW9fJaAGw",
+    "productId": "9443269898427154114",
+    "position": 39
+   },
+   {
+    "title": "Macbook Air 13 inch 2020 - MGN93",
+    "source": "OnlyLap",
+    "price": "13.290.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRiBiRMdJw0ebVt0XiVUsDziw3otgF1bG5iFS3hrQv-fGVVV_Rz3EX8ye4LF2XLbvnWEe71fkfDyqIQIgg2TJNeRSv3CKZ5c_CUWvS2_60XNdmtrxGq4wEL",
+    "productId": "3774615204100807007",
+    "position": 40
+   }
+  ],
+  "credits": 2
+ }
+}

@@ -28,6 +28,8 @@ export interface AttributeEvidence {
 }
 
 const fold = (s: string) => normalizeVN(s.toLowerCase()).replace(/\s+/g, ' ').trim()
+/** The words of a text, folded (no accents, lower case), letters and digits only: what `labelWords` is made of. */
+export const foldWords = (s: string): string[] => fold(s).replace(/[^\p{L}\p{N}]+/gu, ' ').split(' ').filter(Boolean)
 
 // Negation within a few words flips the sense: "không yên tĩnh" is not quiet.
 // "không gian" (space) and "không khí" (atmosphere) are nouns, not negations:
@@ -182,6 +184,18 @@ export function guardAtmosphereClaims(
      * is about the pick without saying so.
      */
     gapAttributes?: readonly VenueAttribute[]
+    /**
+     * Phase 8 M7 (TAPPY_AGENT=2 only): an honest UNVERIFIED statement ("chưa xác minh được quán nào thật sự yên tĩnh") and the user's
+     * re-prioritisation ("mình ưu tiên gần biển và bỏ tiêu chí yên tĩnh") are not venue claims — the agent's own hedge was being deleted
+     * (measured M7 eval SR-F1 / SR-G1). Off for the legacy and Phase 7 paths (unchanged).
+     */
+    agentHedges?: boolean
+    /**
+     * Wave 3 (W3, a structured answer; Wave 3-FIX R3-03): a markdown heading or table row that names NO venue and whose every word is a word of the USER'S OWN request ("## Chỗ ngồi yên tĩnh" after "...chỗ ngồi
+     * yên tĩnh...") is a LABEL for a part of that request, not a claim about a venue, so the unsupported-attribute test is not applied to it. A heading that brings words of its own ("## Mọi quán đều yên tĩnh,
+     * wifi miễn phí") says something: it is judged like any sentence. A row or sentence that names a venue is judged exactly as before. The words of the request are given folded (see `foldWords`); undefined = unchanged.
+     */
+    labelWords?: ReadonlySet<string>
   },
 ): AtmosphereGuardResult {
   if (!text || (ctx.names.length === 0 && !(ctx.gapAttributes && ctx.gapAttributes.length > 0))) return { text, removed: 0, unsupportedInPick: 0 }
@@ -211,10 +225,12 @@ export function guardAtmosphereClaims(
       named = [...lastNamed]
     }
     if (named.length > 0) lastNamed = named
+    if (ctx.labelWords && named.length === 0 && /^\s*(?:#{1,6}\s|\|)/.test(s) && foldWords(s).every(w => ctx.labelWords!.has(w))) return // a label made only of the request's own words (see labelWords)
     // A wish attributed to the user, or the honest gap sentence, is not a venue claim. The wish
     // reads as such only when it OPENS the clause ("vì bạn muốn yên tĩnh"); a trailing "…có chỗ
     // đậu xe mà bạn cần" is a claim that happens to mention the user (measured F4).
     if (/(?:^|[,;—–-]\s*|\b(?:vi|neu|theo nhu|nhu|do)\s+)ban (?:muon|can|thich|noi)\b|\byou (?:want|asked|said|need)\b|chua (?:thay|co|tim thay) (?:duoc )?bang chung|khong (?:tim )?thay bang chung|no evidence/.test(f)) return
+    if (ctx.agentHedges && /\bchua (?:xac minh|xac nhan|kiem chung|ro)\b|\bkhong (?:xac minh|xac nhan) duoc\b|\b(?:could not|cannot|can't) (?:verify|confirm)\b|\bnot (?:verified|confirmed)\b|\b(?:minh|ban) uu tien\b|\bbo tieu chi\b|\b(?:goi |nen |hay )?hoi (?:truoc|lai|quan|nhan vien)\b|\bkiem tra (?:truoc|lai)\b|\bxac nhan truoc\b|\b(?:ask|call|check) (?:ahead|first)\b/.test(f)) return
     const unsupported: RegExp[] = []
     for (const [attr, re] of CLAIM_WORDS) {
       const m = f.match(re)

@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hoff Coffee Brewers by BeanHop\" OR \"The Workshop Coffee\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:53:14.489Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hoff Coffee Brewers by BeanHop\" OR \"The Workshop Coffee\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Review The Workshop Coffee Quận 1: Quán Cafe Nổi Tiếng Sài Gòn",
+    "link": "https://www.tiktok.com/@chamdidau/video/7345025504321244423",
+    "snippet": "3298 Lượt thích,71 Bình luận.Video TikTok từ Châm đi đâu (@chamdidau): \"Bạn đang tìm quán cafe Quận 1? Khám phá The Workshop Coffee, ...",
+    "date": "11 thg 3, 2024",
+    "position": 1
+   },
+   {
+    "title": "The Workshop Coffee 27 Ngô Đức Kế Quận 1 – Saigon Cafe - TikTok",
+    "link": "https://www.tiktok.com/@davisitonguyen/video/7517147745224789278",
+    "snippet": "The Workshop Coffee offers a relaxed setting for coffee lovers who enjoy Vietnamese coffee, lattes, and other cafe drinks. The space is often ...",
+    "date": "17 thg 6, 2025",
+    "position": 2
+   },
+   {
+    "title": "The Workshop Coffee - TikTok",
+    "link": "https://www.tiktok.com/discover/the-workshop-coffee",
+    "snippet": "The workshop coffee which has been honoured with a place on the 'Asia's 50 Best Coffee Shops' list, is an absolute must-visit destination",
+    "date": "14 thg 9, 2026",
+    "position": 3
+   },
+   {
+    "title": "The Workshop Coffee Roasters: Review sau nhiều năm | TikTok",
+    "link": "https://www.tiktok.com/@hai.meca/photo/7661536948552535304",
+    "snippet": "The Workshop Coffee Roasters: Review sau nhiều năm. Đánh giá The Workshop Coffee Roasters - một trong những nhà rang được nhắc đến nhiều trong cộng đồng ...",
+    "position": 4
+   },
+   {
+    "title": "The Workshop Coffee Quận 1 - TikTok",
+    "link": "https://www.tiktok.com/discover/the-workshop-coffee-qu%E1%BA%ADn-1",
+    "snippet": "The workshop coffee which has been honoured with a place on the 'Asia's 50 Best Coffee Shops' list, is an absolute must-visit destination",
+    "date": "28 thg 9, 2026",
+    "position": 5
+   },
+   {
+    "title": "Quán cafe kết hợp phong phú workshop tại Bắc Ninh: Hane Coffee ...",
+    "link": "https://www.tiktok.com/@anchoibacninh/video/7663058247661686037",
+    "snippet": "... The Workshop Coffee Quận 1O Coffee AtelierCoffee Hoi AnThe Workshop CoffeeCoach Coffee Shop TaiwanNocoffee 福岡Bôi Coffee Ninh Bình Đào Duy ...",
+    "date": "16 thg 7, 2026",
+    "position": 6
+   },
+   {
+    "title": "Every Half Cafe Hồ Con Rùa - Địa Điểm Kiểu Sang Xịn - TikTok",
+    "link": "https://www.tiktok.com/@baro.phe/video/7582573562767215892",
+    "snippet": "... The Workshop Coffee Quận 1Every Half Coffee Quận 2 Thảo ĐiềnDe Night Coffee Quận 1Every Half Coffee Lotte Hotel Quận 1. Mới Mở: Every Half ...",
+    "date": "11 thg 12, 2025",
+    "position": 7
+   },
+   {
+    "title": "Charming Cafe in Ho Chi Minh City with European Vibes - TikTok",
+    "link": "https://www.tiktok.com/@vietnammoment.official/video/7571763763947326727",
+    "snippet": "777 Lượt thích,Video TikTok từ Vietnam Moments (@vietnammoment.official): \"Discover The Workshop Coffee in Ho Chi Minh City, a cafe that ...",
+    "date": "12 thg 11, 2025",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

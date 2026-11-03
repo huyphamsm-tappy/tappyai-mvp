@@ -82,7 +82,12 @@ describe('K-1 · A. role → permission → capability projection', () => {
     ],
     [
       'admin',
-      ['analytics.read', 'audit.read', 'commerce.deals', 'controller.dashboard',
+      // Tappy Business P0 (2026-09-08) adds `commerce.merchants`: the
+      // back-office view over merchant shops, plus suspend/unsuspend. It stops
+      // at admin, mirroring `commerce.deals`. A shop owner never holds it —
+      // their authority over their own catalogue is resource ownership
+      // (src/lib/business/authz.ts), deliberately outside the admin model.
+      ['analytics.read', 'audit.read', 'commerce.deals', 'commerce.merchants', 'controller.dashboard',
        'marketing.analytics', 'marketing.audience', 'marketing.campaigns', 'marketing.content',
        'marketing.promotions', 'moderation.review',
        // Notifications (2026-08-29): `history` reaches every role, `send` stops
@@ -93,7 +98,7 @@ describe('K-1 · A. role → permission → capability projection', () => {
     ],
     [
       'super_admin',
-      ['analytics.read', 'audit.read', 'commerce.deals', 'controller.dashboard',
+      ['analytics.read', 'audit.read', 'commerce.deals', 'commerce.merchants', 'controller.dashboard',
        'marketing.analytics', 'marketing.audience', 'marketing.campaigns', 'marketing.content',
        'marketing.promotions', 'moderation.review',
        'notifications.history', 'notifications.send',

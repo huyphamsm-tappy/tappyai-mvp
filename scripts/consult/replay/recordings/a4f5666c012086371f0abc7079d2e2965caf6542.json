@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"NHÀ HÀNG NGON\" OR \"Quán ăn ngon Sài Gòn\" OR \"Chài Village\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:12:47.007Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"NHÀ HÀNG NGON\" OR \"Quán ăn ngon Sài Gòn\" OR \"Chài Village\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Buffet Tôm Hùm Tại Chài Village - Trải Nghiệm Ẩm Thực Mới",
+    "link": "https://www.tiktok.com/@ancungdaune/video/7444156152851483912",
+    "snippet": "Khám phá buffet tôm hùm tại Chài Village, nơi mang đến trải nghiệm ẩm thực phong phú. Đừng bỏ qua đánh giá ẩm thực ngon! #ancungdaune # ...",
+    "position": 1
+   },
+   {
+    "title": "Buffet Tôm Hùm Không Giới Hạn tại Chài Village - Quận 1",
+    "link": "https://www.tiktok.com/@ngocduy_diachianuong/video/7650442125921750292",
+    "snippet": "Chài Village, tọa lạc tại Lầu 5, số 99 Nguyễn Huệ, Quận 1, mang đến trải nghiệm buffet tôm hùm không giới hạn với mức giá hấp dẫn, ...",
+    "position": 2
+   },
+   {
+    "title": "Buffet tôm hùm Chài Village ở 99 Nguyễn Huệ — ăn thả ga ...",
+    "link": "https://www.tiktok.com/@sonrakhe/video/7642641884971683092",
+    "snippet": "Buffet tôm hùm Chài Village ở 99 Nguyễn Huệ — ăn thả ga, view Saigon Tóm tắt nhanh Chài Village phục vụ buffet tôm hùm không giới hạn, ...",
+    "position": 3
+   },
+   {
+    "title": "Chài Village buffet — Chài Village dining guide",
+    "link": "https://www.tiktok.com/@duyhaydi86/video/7662599116760927518",
+    "snippet": "Lead Chài Village buffet highlights what visitors most want to know: buffet options, what to expect at the venue, and practical tips for planning a visit to ...",
+    "position": 4
+   },
+   {
+    "title": "Chài Village Buffet Tôm Hùm ăn thả ga 649k #vtvcab # ...",
+    "link": "https://www.tiktok.com/@ngocduy_diachianuong/video/7341200349258206466",
+    "snippet": "10.7K Lượt thích,102 Bình luận.Video TikTok từ Địa Chỉ Ăn Uống (@ngocduy_diachianuong): \"Chài Village Buffet Tôm Hùm ăn thả ga 649k #vtvcab ...",
+    "position": 5
+   },
+   {
+    "title": "Buffet Hải Sản Chài Village: Kinh Nghiệm Đỉnh Cao",
+    "link": "https://www.tiktok.com/@nhinhidaibandoanh/video/7571817045030178055",
+    "snippet": "BUFFET - CHÀI VILLAGE Lầu 5 Sài Gòn Garden 99 Nguyễn Huệ Quận 1 #nhinhidaibandoanh #ancungtiktok @Tiểu Nhou - 潮州人 #anx aivillage # ...",
+    "position": 6
+   },
+   {
+    "title": "Hè không đi biển ăn tôm hùm thì tới Chài Village buffet cho ...",
+    "link": "https://www.tiktok.com/@hi.vidayyy/video/7372821896070483218",
+    "snippet": "Buffet tôm hùm Chài Village ở 99 Nguyễn Huệ — ăn thả ga, view Saigon Tóm tắt nhanh Chài Village phục vụ buffet tôm hùm không giới hạn, còn có ...",
+    "position": 7
+   },
+   {
+    "title": "Buffet tôm hùm ở Chài village chỉ 699 cành # ...",
+    "link": "https://www.tiktok.com/@haituiminhdian/video/7487553744331148549",
+    "snippet": "Buffet tôm hùm ở Chài village chỉ 699 cành #haituiminhdian #ancungtiktok #reviewanngon #vtmgr #xuhuong #viral #chaivillage. Buffet tôm hùm ở ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

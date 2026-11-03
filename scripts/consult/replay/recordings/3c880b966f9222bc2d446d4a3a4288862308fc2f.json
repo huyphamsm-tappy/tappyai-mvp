@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook Neo 13 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T01:57:04.328Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Neo 13 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Vỏ cứng Crystal Clear Case cho MacBook Neo 13 inch ...",
+    "link": "https://shopee.vn/V%E1%BB%8F-c%E1%BB%A9ng-Crystal-Clear-Case-cho-MacBook-Neo-13-inch-2026-(Model-A3404-v%E1%BB%9Bi-Chip-A18-Pro)-i.414024611.45958065707",
+    "snippet": "Vỏ cứng Crystal Clear Case cho MacBook Neo 13 inch 2026 (Model A3404 với Chip A18 Pro) ... Tặng Voucher 15.000₫ nếu đơn giao sau thời gian trên.",
+    "rating": 4.8,
+    "ratingCount": 5,
+    "position": 1
+   },
+   {
+    "title": "Máy tính xách tay Apple MacBook Neo A18 Pro 13 inch (6 ...",
+    "link": "https://shopee.vn/M%C3%A1y-t%C3%ADnh-x%C3%A1ch-tay-Apple-MacBook-Neo-A18-Pro-13-inch-(6-core-CPU-5-core-GPU-8GB-RAM-256GB-512GB-SSD)-i.469040198.57108154449",
+    "snippet": "Mua Máy tính xách tay Apple MacBook Neo A18 Pro 13 inch (6 core CPU | 5 core GPU | 8GB RAM | 256GB/512GB SSD) giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.9,
+    "ratingCount": 181,
+    "position": 2
+   },
+   {
+    "title": "Bộ phụ kiện laptop MacBook Neo 13 2026 A3404 gồm 2 ...",
+    "link": "https://shopee.vn/B%E1%BB%99-ph%E1%BB%A5-ki%E1%BB%87n-laptop-MacBook-Neo-13-2026-A3404-g%E1%BB%93m-2-trong-1-v%E1%BB%8F-m%C3%A1y-m%E1%BB%9D-ch%E1%BB%91ng-d%E1%BA%A5u-v%C3%A2n-tay-ch%E1%BB%91ng-tr%E1%BA%A7y-x%C6%B0%E1%BB%9Bc-v%C3%A0-t%E1%BA%A5m-ph%E1%BB%A7-b%C3%A0n-ph%C3%ADm-i.1006220775.53465286363?extraParams=%7B%22display_model_id%22%3A396310219169%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "Bộ phụ kiện laptop MacBook Neo 13 2026 A3404 gồm 2 trong 1: vỏ máy mờ chống dấu vân tay, chống trầy xước và tấm phủ bàn phím ; Hàng Đặt Trước (có hàng sau 7 ngày) ...",
+    "rating": 4.8,
+    "ratingCount": 10,
+    "position": 3
+   },
+   {
+    "title": "Dành Cho MacBook Neo 13 2026 MacBook Air 13 inch M5 Kính ...",
+    "link": "https://shopee.vn/D%C3%A0nh-Cho-MacBook-Neo-13-2026-MacBook-Air-13-inch-M5-K%C3%ADnh-C%C6%B0%E1%BB%9Dng-L%E1%BB%B1c-B%E1%BA%A3o-V%E1%BB%87-M%C3%A0n-H%C3%ACnh-Cho-Apple-MacBook-Air-13inch-2026-2025-Ch%E1%BB%91ng-Tr%E1%BA%A7y-X%C6%B0%E1%BB%9Bc-Phim-9H-D%E1%BB%85-D%C3%A0ng-L%E1%BA%AFp-%C4%90%E1%BA%B7t-i.164796016.46457167794",
+    "snippet": "Dành Cho MacBook Neo 13 2026 MacBook Air 13 inch M5 Kính Cường Lực Bảo Vệ Màn Hình Cho Apple MacBook Air 13inch 2026 / 2025 Chống Trầy Xước Phim 9H Dễ Dàng Lắp ...",
+    "position": 4
+   },
+   {
+    "title": "Phim TrackPad Mờ Cao Cấp Cho 2026 MacBook Neo 13 ...",
+    "link": "https://shopee.vn/Phim-TrackPad-M%E1%BB%9D-Cao-C%E1%BA%A5p-Cho-2026-MacBook-Neo-13-A3404-Air-Pro-Si%C3%AAu-M%E1%BB%8Fng-Ch%E1%BB%91ng-V%C3%A2n-Tay-B%E1%BA%A3o-V%E1%BB%87-Da-i.1382787116.55407613630",
+    "snippet": "Mua Phim TrackPad Mờ Cao Cấp Cho 2026 MacBook Neo 13 A3404 Air Pro Siêu Mỏng Chống Vân Tay Bảo Vệ Da giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 3,
+    "ratingCount": 1,
+    "position": 5
+   },
+   {
+    "title": "Bảo Vệ Màn Hình Cho Macbook Neo 13 Inch Apple laptop ...",
+    "link": "https://shopee.vn/B%E1%BA%A3o-V%E1%BB%87-M%C3%A0n-H%C3%ACnh-Cho-Macbook-Neo-13-Inch-Apple-laptop-Macbook-Pro-14-Inch-Air-13-Inch-PET-M%E1%BB%9D-Ch%E1%BB%91ng-Tr%E1%BA%A7y-X%C6%B0%E1%BB%9Bc-Phim-M%C3%A0n-H%C3%ACnh-Phim-M%E1%BB%81m-i.164796016.53708181467",
+    "snippet": "Mua Bảo Vệ Màn Hình Cho Macbook Neo 13 Inch Apple laptop Macbook Pro 14 Inch Air 13 Inch PET Mờ Chống Trầy Xước Phim Màn Hình Phim Mềm giá tốt.",
+    "position": 6
+   },
+   {
+    "title": "Dành Cho MacBook Neo 13 2026 Nhẹ Chống Sốc Laptop Có ...",
+    "link": "https://shopee.vn/D%C3%A0nh-Cho-MacBook-Neo-13-2026-Nh%E1%BA%B9-Ch%E1%BB%91ng-S%E1%BB%91c-Laptop-C%C3%B3-Gi%C3%A1-%C4%90%E1%BB%A1-T%E1%BA%A3n-Nhi%E1%BB%87t-H%E1%BB%99p-%C4%90%E1%BB%B1ng-T%C6%B0%C6%A1ng-Th%C3%ADch-V%E1%BB%9Bi-MacBook-Neo-13-A3404-i.325601924.28945180963",
+    "snippet": "Dành Cho MacBook Neo 13 2026 Nhẹ Chống Sốc Laptop Có Giá Đỡ Tản Nhiệt Hộp Đựng Tương Thích Với MacBook Neo 13 A3404 ... Tặng Voucher 15.000₫ nếu đơn giao sau thời ...",
+    "position": 7
+   },
+   {
+    "title": "1 Chiếc Bảo Vệ Màn Hình Riêng Tư Cho MacBook Neo 13 ...",
+    "link": "https://shopee.vn/1-Chi%E1%BA%BFc-B%E1%BA%A3o-V%E1%BB%87-M%C3%A0n-H%C3%ACnh-Ri%C3%AAng-T%C6%B0-Cho-MacBook-Neo-13-2026-A18-Pro-Ch%E1%BB%91ng-Glare-%C3%81nh-S%C3%A1ng-Xanh-L%E1%BB%8Dc-Gi%E1%BA%A3m-C%C4%83ng-M%E1%BA%AFt-Ph%C3%B9-H%E1%BB%A3p-V%E1%BB%9Bi-Mac-Neo-i.306582624.58010402704",
+    "snippet": "Mua 1 Chiếc Bảo Vệ Màn Hình Riêng Tư Cho MacBook Neo 13 2026 A18 Pro Chống Glare Ánh Sáng Xanh Lọc Giảm Căng Mắt Phù Hợp Với Mac Neo giá tốt.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -51,6 +51,14 @@ function isSubjectPage(u: URL, kind: ProviderRegistryEntry['discovery'] extends 
   return true
 }
 
+/** What a passthrough page IS, from the registry — a cinema chain's film page must never read as a restaurant. */
+type PassthroughKind = 'product' | 'film' | 'restaurant'
+function passthroughKindOf(entry: ProviderRegistryEntry): PassthroughKind {
+  if (entry.discovery?.subjectKind === 'product') return 'product'
+  if (entry.commerce.includes('cinema_ticket')) return 'film'
+  return 'restaurant'
+}
+
 export function passthroughAdapterFor(entry: ProviderRegistryEntry): ProviderAdapter | SearchCapableAdapter {
   const search = PASSTHROUGH_SEARCH[entry.providerId]
   return {
@@ -72,7 +80,7 @@ export function passthroughAdapterFor(entry: ProviderRegistryEntry): ProviderAda
     },
     toOffer(request, hint: DiscoveryHint, now = new Date()) {
       const u = ownedUrl(entry, hint)
-      if (!u || !isSubjectPage(u, entry.discovery?.subjectKind ?? 'restaurant')) return null
+      if (!u || !isSubjectPage(u, passthroughKindOf(entry) === 'product' ? 'product' : 'restaurant')) return null
       if (hint.verified?.bookable === false) return null
       const canonical = `${u.origin}${u.pathname.replace(/\/+$/, '')}`
       const subjectRef = u.pathname.split('/').filter(Boolean).pop()!
@@ -94,17 +102,22 @@ export function passthroughAdapterFor(entry: ProviderRegistryEntry): ProviderAda
           limitations: [search.limitation, ...(auth ? [auth] : [])],
         }
       }
-      const product = entry.discovery?.subjectKind === 'product'
+      const kind = passthroughKindOf(entry)
+      const copy = {
+        product: { ref: 'productRef', pageOnly: ['variant', 'quantity'], limitation: 'Chọn phiên bản và số lượng trên trang sản phẩm.' },
+        film: { ref: 'filmRef', pageOnly: ['city', 'cinemaRef', 'date', 'showtime'], limitation: 'Chọn rạp, ngày và suất chiếu trên trang phim của rạp.' },
+        restaurant: { ref: 'restaurantRef', pageOnly: ['items', 'quantity', 'address'], limitation: 'Chọn món và số lượng trên trang nhà hàng.' },
+      }[kind]
       return {
         url: offer.canonicalUrl,
         depth: 3,
-        paramsPreserved: [product ? 'productRef' : 'restaurantRef'],
-        paramsPageOnly: product ? ['variant', 'quantity'] : ['items', 'quantity', 'address'],
+        paramsPreserved: [copy.ref],
+        paramsPageOnly: [...copy.pageOnly],
         paramsDropped: [],
         expiresAt: null,
         // The page was discovered, not composed from a verified grammar.
         grammar: 'observed',
-        limitations: [product ? 'Chọn phiên bản và số lượng trên trang sản phẩm.' : 'Chọn món và số lượng trên trang nhà hàng.', ...(auth ? [auth] : [])],
+        limitations: [copy.limitation, ...(auth ? [auth] : [])],
       }
     },
   }

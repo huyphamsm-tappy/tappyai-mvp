@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:moj.gov.vn lệ phí cấp hộ chiếu phổ thông 2026 thông tư lệ phí",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T09:57:00.617Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:moj.gov.vn lệ phí cấp hộ chiếu phổ thông 2026 thông tư lệ phí",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Trang chủ | CSDL quốc gia về pháp luật",
+    "link": "https://vbpl.moj.gov.vn/vanphongchinhphu/Pages/vbpq-toanvan.aspx?ItemID=17000&dvid=329",
+    "snippet": "Thông tư 08/2026/TT-NHNN Sửa đổi, bổ sung điểm a khoản 4 Điều 20 Thông tư số 22/2019/TT-NHNN quy định các giới hạn, tỷ lệ bảo đảm an toàn trong hoạt động ...",
+    "position": 1
+   },
+   {
+    "title": "Những quy định đáng chú ý có hiệu lực từ tháng 8",
+    "link": "https://htpldn.moj.gov.vn/Pages/chi-tiet-tin.aspx?ItemID=86&l=Vanbanchinhsachmoi",
+    "snippet": "Đối với thi sát hạch lái xe ô tô hạng B1, B2, C, D, E, F lần lượt lý thuyết 100.000 đồng/lần (tăng 10.000 đồng); thực hành trong hình 350.000 ...",
+    "date": "1 thg 8, 2023",
+    "position": 2
+   },
+   {
+    "title": "THÔNG BÁO PHÁT HÀNH BIÊN LAI",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/tb-phat-hanh-bien-lai-019f1b90107a712683a84fe80c65b8bd.pdf",
+    "snippet": "BIÊN LAI THU TẠM ỨNG ÁN PHÍ, LỆ PHÍ TÒA ÁN. Họ và tên người nộp tiền: Ngày … tháng ….. năm ..... MẪU. CCCD/Hộ chiếu: Địa chỉ: cấp ngày tháng ...",
+    "date": "1 thg 7, 2026",
+    "position": 3
+   },
+   {
+    "title": "BIÊN LAI THU TIỀN THUẾ, PHÍ, LỆ PHÍ",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/ebl01-019f182206687bec92cc95b3bb3ad9fc.pdf",
+    "snippet": "BIÊN LAI THU TIỀN THUẾ, PHÍ, LỆ PHÍ. Tên loại thuế, phí, lệ phí, án phí tòa án: Họ và tên người nộp tiền: Mã số thuế: CCCD/Hộ chiếu: cấp ngày tháng năm.",
+    "position": 4
+   },
+   {
+    "title": "PHỤ LỤC THỦ TỤC HÀNH CHÍNH ĐƯỢC SỬA ĐỔI, BỔ ...",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/5-pl-kem-theo-qd-630-btp-ve-cong-bo-tthc-20260427110904-25e8b9eb-019dcd2062537de0be16872851ba69d6.pdf",
+    "snippet": "PHẦN II. NỘI DUNG CỤ THỂ CỦA TỪNG THỦ TỤC HÀNH. CHÍNH ĐƯỢC SỬA ĐỔI, BỔ SUNG TRONG LĨNH VỰC THI HÀNH ÁN. DÂN SỰ THUỘC PHẠM VI CHỨC NĂNG QUẢN LÝ NHÀ NƯỚC CỦA.",
+    "position": 5
+   },
+   {
+    "title": "Thủ tục đăng ký nhận cha, mẹ, con",
+    "link": "https://moj.gov.vn/portal/thu-tuc-hanh-chinh/chi-tiet-1.001022.html",
+    "snippet": "Thông tư số 281/2016/TT-BTC. quy định mức thu, chế độ thu, nộp, quản lý và sử dụng phí khai thác, sử dụng thông tin trong cơ sở dữ liệu hộ tịch, phí xác nhận có ...",
+    "position": 6
+   },
+   {
+    "title": "0000000 BIÊN LAI THU TẠM ỨNG ÁN PHÍ, LỆ PHÍ TÒA ÁN",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/c17-can-tho-019f26075f627bd383e93f3c3316f65a.pdf",
+    "snippet": "BIÊN LAI THU TẠM ỨNG ÁN PHÍ, LỆ PHÍ TÒA ÁN. Ngày ... tháng ... năm ..... Họ và tên người nộp tiền: CCCD/Hộ chiếu: cấp ngày tháng năm. Địa chỉ: Nội dung:.",
+    "position": 7
+   },
+   {
+    "title": "thành phố hồ chí minh trung tâm dịch vụ đấu giá tài sản",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/qc-14024-01a0f2be3b957532a2384b4c9c14c657.pdf",
+    "snippet": "... tự chịu chi phí vận chuyển, phí, lệ phí, phí sử dụng đường bộ (phí bảo trì đường bộ trước và sau khi trúng đấu giá) và các chi phí khác (nếu ...",
+    "date": "29 thg 9, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

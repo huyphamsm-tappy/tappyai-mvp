@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "lệ phí hộ chiếu trực tuyến 2026 90% 2025 2026 thông tư 63/2023 2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:47:00.946Z",
+ "body": {
+  "searchParameters": {
+   "q": "lệ phí hộ chiếu trực tuyến 2026 90% 2025 2026 thông tư 63/2023 2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quy định mới về phí, lệ phí khi làm thủ tục cấp hộ chiếu trực ...",
+    "link": "https://pbgdplthainguyen.gov.vn/news/gioi-thieu-noi-dung-van-ban-phap-luat-moi/quy-dinh-moi-ve-phi-le-phi-khi-lam-thu-tuc-cap-ho-chieu-truc-tuyen-663.html",
+    "snippet": "- Kể từ ngày 01/01/2026 trở đi, áp dụng mức thu lệ phí quy định tại điểm 1 Mục I Biểu mức thu phí, lệ phí ban hành kèm theo Thông tư 25/2021/TT- ...",
+    "date": "18 thg 10, 2023",
+    "position": 1
+   },
+   {
+    "title": "Từ ngày 1/1/2026, người làm hộ chiếu qua hình thức trực ...",
+    "link": "https://www.facebook.com/tongdai1022/posts/t%E1%BB%AB-ng%C3%A0y-112026-ng%C6%B0%E1%BB%9Di-l%C3%A0m-h%E1%BB%99-chi%E1%BA%BFu-qua-h%C3%ACnh-th%E1%BB%A9c-tr%E1%BB%B1c-tuy%E1%BA%BFn-kh%C3%B4ng-%C4%91%C6%B0%E1%BB%A3c-gi%E1%BA%A3m-10-l%E1%BB%87/1162609196053572/",
+    "snippet": "Trong năm 2025, công dân làm hộ chiếu phổ thông trực tuyến được giảm 10% lệ phí. Tuy nhiên, từ ngày 1/1/2026, mức lệ phí sẽ áp dụng trở lại ...",
+    "position": 2
+   },
+   {
+    "title": "Lệ phí làm hộ chiếu là bao nhiêu? [Cập nhật mới nhất]",
+    "link": "https://luatvietnam.vn/thue-phi-le-phi/le-phi-lam-ho-chieu-565-24841-article.html",
+    "snippet": "Khi làm hộ chiếu, người có yêu cầu phải nộp lệ phí theo quy định. Tùy vào yêu cầu cấp mới, cấp lại mà lệ phí làm hộ chiếu sẽ khác nhau.",
+    "date": "18 thg 5, 2024",
+    "position": 3
+   },
+   {
+    "title": "Mức thu lệ phí cấp hộ chiếu phổ thông từ ngày 01/01/2025",
+    "link": "https://congan.daklak.gov.vn/an-toan-giao-thong/muc-thu-le-phi-cap-ho-chieu-pho-thong-tu-ngay-01-01-2025-4812.html",
+    "snippet": "Cụ thể, lệ phí đề nghị cấp hộ chiếu mới, cấp đổi hộ chiếu nộp lệ phí là 180.000 đồng/hộ chiếu; đổi hộ chiếu khi bị hư hỏng hoặc bị mất là: ...",
+    "date": "1 thg 1, 2025",
+    "position": 4
+   },
+   {
+    "title": "Từ 1/1/2026, người làm hộ chiếu qua hình thức trực tuyến ...",
+    "link": "https://baodanang.vn/tu-1-1-2026-nguoi-lam-ho-chieu-qua-hinh-thuc-truc-tuyen-khong-duoc-giam-10-le-phi-3312322.html",
+    "snippet": "Cụ thể, lệ phí làm hộ chiếu trực tuyến được áp dụng như sau: cấp mới là 180.000 đồng/lần và cấp lại do hỏng hoặc mất 360.000 đồng/lần. Chính ...",
+    "date": "2 thg 12, 2025",
+    "position": 5
+   },
+   {
+    "title": "🇻🇳 GIẢM 50% LỆ PHÍ HỘ CHIẾU, GIẤY THÔNG HÀNH, ...",
+    "link": "https://www.facebook.com/xuatnhapcanhhanoi/posts/-gi%E1%BA%A3m-50-l%E1%BB%87-ph%C3%AD-h%E1%BB%99-chi%E1%BA%BFu-gi%E1%BA%A5y-th%C3%B4ng-h%C3%A0nh-gi%E1%BA%A5y-ph%C3%A9p-xu%E1%BA%A5t-c%E1%BA%A3nh-tem-ab-t%E1%BB%AB-ng%C3%A0y-0172/744018704946130/",
+    "snippet": "THÔNG BÁO TĂNG PHÍ HỘ CHIẾU TỪ 1/1/2026 Từ ngày 1/1/2026, người dân làm hộ chiếu online không còn được giảm 10% lệ phí và sẽ áp dụng mức thu ...",
+    "position": 6
+   },
+   {
+    "title": "Phí làm hộ chiếu mới nhất là bao nhiêu?",
+    "link": "https://thuvienphapluat.vn/ma-so-thue/phap-luat-thue/phi-lam-ho-chieu-moi-nhat-la-bao-nhieu-lam-ho-chieu-mat-thoi-gian-bao-lau-489107-185305.html",
+    "snippet": "Tuy nhiên, từ ngày 01/01/2024 đến hết 31/12/2025, công dân Việt Nam làm hộ chiếu online sẽ được giảm 10% lệ phí theo Thông tư 63/2023/TT-BTC.",
+    "date": "13 thg 11, 2024",
+    "position": 7
+   },
+   {
+    "title": "Giảm 10% lệ phí khi làm hộ chiếu online từ 01/01/2024",
+    "link": "https://luatsucong.vn/giam-10-le-phi-khi-lam-ho-chieu-online-tu-01-01-2024/",
+    "snippet": "– Từ ngày 01/12/2023 đến hết ngày 31/12/2025 mức phí xác thực thông tin công dân, khai thác kết quả thông tin, áp dụng mức thu phí bằng 50% mức ...",
+    "date": "1 thg 1, 2024",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

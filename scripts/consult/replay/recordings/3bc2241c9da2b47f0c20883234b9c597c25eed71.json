@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "nhà hàng đặt bàn tối nay Quận 1, TP.HCM gia menu thuc don",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:34:03.989Z",
+ "body": {
+  "searchParameters": {
+   "q": "nhà hàng đặt bàn tối nay Quận 1, TP.HCM gia menu thuc don",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tạnh mưa rồi mấy bà ơii, tui ở đây chờ mấy bà đến múc buffet ...",
+    "link": "https://www.tiktok.com/@enteadalat/video/7473838888214088976",
+    "snippet": "Nếu bạn đang tìm kiếm một địa điểm buffet hải sản quen thuộc tại Vũng Tàu, mê buffet là lựa chọn không thể bỏ qua cho cả khách du lịch và ...",
+    "position": 1
+   },
+   {
+    "title": "Han Town | Ho Chi Minh City",
+    "link": "https://www.facebook.com/p/Han-Town-61558665262647/?locale=vi_VN",
+    "snippet": "Lễ này HANTOWN mở cửa xuyên lễ 30/4 – 2/5 ⏰ Từ 11:00 – 23:00 Không phụ thu, giá vẫn như ngày thường Ra mắt buffet thịt nướng Quầy line hơn 20 món, ăn ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 2
+   },
+   {
+    "title": "For Vincent Cao Minh Page, hospitality is simple. Welcome ...",
+    "link": "https://www.instagram.com/reel/DWEVj8WD7Dq/",
+    "snippet": "Từ tiếng “Chào Bạn” thân thương cất lên nơi bậu cửa đến thức ngon cuối cùng dọn lên bàn, mỗi khoảnh khắc đều được đong đầy để mang lại cảm giác ...",
+    "position": 3
+   },
+   {
+    "title": "CLOSE-UP: 99% Complete Thai-Style Garden House built ...",
+    "link": "https://www.youtube.com/watch?v=nO1XxeOq1yg",
+    "snippet": "Hôm nay, chúng ta cùng nhau ghé tham quan ngôi nhà vườn mái Thái hoàn thiện 99% ở Tây Ninh nhé. MAXHOME ARC - HỆ THỐNG THIẾT KẾ NHÀ ĐẸP ...",
+    "position": 4
+   },
+   {
+    "title": "Nhà riêng 23 m² 1 phòng ngủ, 1 phòng tắm riêng ở Quận ...",
+    "link": "https://www.agoda.com/vi-vn/dimi-home-h33848939/hotel/ho-chi-minh-city-vn.html",
+    "snippet": "Nhà riêng 23 m² 1 phòng ngủ, 1 phòng tắm riêng ở Quận 1 có bãi đỗ xe miễn phí cho mọi khách đến cơ sở lưu trú bằng phương tiện riêng.",
+    "position": 5
+   },
+   {
+    "title": "SỞ QUY HOẠCH KIẾN TRÚC TP.HCM",
+    "link": "https://qhkt.hochiminhcity.gov.vn/",
+    "snippet": "Khi dân số bùng nổ, con người sẽ nghĩ đến việc xây nhà dưới lòng đất hoặc dựa vào cảnh quan. Những thiết kế \"ngầm\" dưới đây được đánh giá đẹp nhất thế giới.",
+    "position": 6
+   },
+   {
+    "title": "Vietnam House Restaurant",
+    "link": "http://vietnamhousesaigon.com/vi/component/content/featured?id=featured",
+    "snippet": "Menu · Thực Đơn Buổi Trưa · Thực Đơn Gọi Món · Thực Đơn Buổi Tối · Thực Đơn Nước · Thực Đơn Rượu.",
+    "position": 7
+   },
+   {
+    "title": "ẨM THỰC QUÊ NHÀ TP. THỦ ĐỨC, Ho Chi Minh City",
+    "link": "https://www.tripadvisor.com/Restaurant_Review-g293925-d25565200-Reviews-M_Th_c_Que_Nha_Tp_Th_D_c-Ho_Chi_Minh_City.html",
+    "snippet": "Không gian sân vườn thoáng mát và hệ thống phòng VIP đa dạng, ấm cúng. Chuyên nhận tổ chức tiệc thôi nôi, sinh nhật, tiệc cưới, tiệc báo hủ, họp mặt, tiệc tại ...",
+    "rating": 2,
+    "ratingCount": 3,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

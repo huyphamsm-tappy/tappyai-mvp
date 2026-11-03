@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "My Khe Hotel",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:38:48.233Z",
+ "body": {
+  "searchParameters": {
+   "q": "My Khe Hotel",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "My Khe Hotel, Đà Nẵng (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/870102429.jpg?k=f0e02742fd671e97367787006bfe2d1c4efd0592afb4b451411ae045342be1f8&o=",
+    "imageWidth": 513,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzVHCLPiteJZJlnUeRp3tm75BQGurvEZUOlUfIHK5YPg&s=10",
+    "thumbnailWidth": 452,
+    "thumbnailHeight": 678,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/my-khe-amp-apartment.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F870102429.jpg%3Fk%3Df0e02742fd671e97367787006bfe2d1c4efd0592afb4b451411ae045342be1f8%26o%3D&tbnid=uRxINBq_KXPD5M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fmy-khe-amp-apartment.vi.html&docid=Vs5IxpFVyxFFTM&w=513&h=768",
+    "position": 1
+   },
+   {
+    "title": "My Khe Hotel, Đà Nẵng (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/871645428.jpg?k=7be7f3e73057eabb3910dc07b9ec577c363331e79334d145157b61628fb3eff9&o=",
+    "imageWidth": 1024,
+    "imageHeight": 682,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBYuChtKmRSRFcUf-aWZJVUHna1hoHbjeRvKHXf73Plw&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/my-khe-amp-apartment.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F871645428.jpg%3Fk%3D7be7f3e73057eabb3910dc07b9ec577c363331e79334d145157b61628fb3eff9%26o%3D&tbnid=hHmjQtjAEQvv8M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fmy-khe-amp-apartment.vi.html&docid=Vs5IxpFVyxFFTM&w=1024&h=682",
+    "position": 2
+   },
+   {
+    "title": "My Khe Hotel, Đà Nẵng (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/871319904.jpg?k=0f41ffead836e07b1b07fbb43145e9ccbf76f430aab834a8be5a125806594988&o=",
+    "imageWidth": 512,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0Bm1NAKRnmKmlA7443dVywxhC-HEKjerVhvwazM8q8Q&s=10",
+    "thumbnailWidth": 452,
+    "thumbnailHeight": 678,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/my-khe-amp-apartment.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F871319904.jpg%3Fk%3D0f41ffead836e07b1b07fbb43145e9ccbf76f430aab834a8be5a125806594988%26o%3D&tbnid=zrTeVxIGBSIGxM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fmy-khe-amp-apartment.vi.html&docid=Vs5IxpFVyxFFTM&w=512&h=768",
+    "position": 3
+   },
+   {
+    "title": "Da Nang Paradise Center My Khe Beach Resort & Spa, Đà Nẵng (cập nhật giá  năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/650698220.jpg?k=01bfff62756b1831b491b7101072bd9e0e5f55c4f785419694ae05973331a1dc&o=",
+    "imageWidth": 1024,
+    "imageHeight": 720,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYgss_cFiZzslhUC7rOZX470B5PgyNnozOl9nuiBRbFg&s=10",
+    "thumbnailWidth": 660,
+    "thumbnailHeight": 464,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/luxury-furama-danatrip-villas.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F650698220.jpg%3Fk%3D01bfff62756b1831b491b7101072bd9e0e5f55c4f785419694ae05973331a1dc%26o%3D&tbnid=t1MP0CuC7fl_-M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fluxury-furama-danatrip-villas.vi.html&docid=o8OODPh3-C8slM&w=1024&h=720",
+    "position": 4
+   },
+   {
+    "title": "My Khe Beach Hotel, Đà Nẵng | Hotels.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/126000000/125120000/125112600/125112597/91ba5882.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 788,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7UbjNavpgKr5keq_qN4aNKqGndXGrVtxc7VEk1cSJ8Q&s=10",
+    "thumbnailWidth": 522,
+    "thumbnailHeight": 383,
+    "source": "hotels",
+    "domain": "vi.hotels.com",
+    "link": "https://vi.hotels.com/ho4004603104/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F126000000%2F125120000%2F125112600%2F125112597%2F91ba5882.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=j2GjDKpuvoM5gM&imgrefurl=https%3A%2F%2Fvi.hotels.com%2Fho4004603104%2F&docid=dNp6jijqlzOwjM&w=788&h=575",
+    "position": 5
+   },
+   {
+    "title": "Khách sạn Mỹ Khê, Quảng Ngãi, Quảng Ngãi",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/529602/0/bb416466f9cb9277995553c762dad9de.jpeg?ce=0&s=1024x768",
+    "imageWidth": 1024,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzISNcsgt90iLg8CCFwdQUZ4RlcX0aTEAU7om7IzzhHA&s=10",
+    "thumbnailWidth": 515,
+    "thumbnailHeight": 388,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/my-khe-hotel/hotel/quang-ngai-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F529602%2F0%2Fbb416466f9cb9277995553c762dad9de.jpeg%3Fce%3D0%26s%3D1024x768&tbnid=ewBPrsaHxMA36M&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fmy-khe-hotel%2Fhotel%2Fquang-ngai-vn.html&docid=EZruREI6W0LnpM&w=1024&h=768",
+    "position": 6
+   },
+   {
+    "title": "Khách sạn Mỹ Khê 2 Đà Nẵng - Đặt phòng liền tay rinh ngay ưu đãi",
+    "imageUrl": "https://cdn2.vietnambooking.com/wp-content/uploads/hotel_pro/hotel_346392/9000703caae6882c7dd93e0b08dd0881.jpg",
+    "imageWidth": 850,
+    "imageHeight": 450,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnGwCCr-Lc0N2Xv9k-wBeSqkyyYtf3Rye-6pxgYmhF1A&s=10",
+    "thumbnailWidth": 615,
+    "thumbnailHeight": 325,
+    "source": "VietNam Booking",
+    "domain": "www.vietnambooking.com",
+    "link": "https://www.vietnambooking.com/hotel/vietnam/my-khe-2-da-nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.vietnambooking.com%2Fwp-content%2Fuploads%2Fhotel_pro%2Fhotel_346392%2F9000703caae6882c7dd93e0b08dd0881.jpg&tbnid=HgBXahrxh3TV7M&imgrefurl=https%3A%2F%2Fwww.vietnambooking.com%2Fhotel%2Fvietnam%2Fmy-khe-2-da-nang.html&docid=KtqRab17Q1REnM&w=850&h=450",
+    "position": 7
+   },
+   {
+    "title": "Top 10 khách sạn bãi biển Mỹ Khê xứng đáng để bạn trải nghiệm",
+    "imageUrl": "https://nhuminhplazahotel.com/wp-content/uploads/2023/06/khach-san-bai-bien-my-khe-2.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 900,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmvORGVZmC5NekP6v4ThPSlSni1hbPeHGus6Yjj2i-1Q&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "Nhu Minh Plaza Danang Hotel",
+    "domain": "nhuminhplazahotel.com",
+    "link": "https://nhuminhplazahotel.com/danang-travel/top-10-khach-san-bai-bien-my-khe-xung-dang-de-ban-trai-nghiem/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fnhuminhplazahotel.com%2Fwp-content%2Fuploads%2F2023%2F06%2Fkhach-san-bai-bien-my-khe-2.jpg&tbnid=wse3BzpkWjIUlM&imgrefurl=https%3A%2F%2Fnhuminhplazahotel.com%2Fdanang-travel%2Ftop-10-khach-san-bai-bien-my-khe-xung-dang-de-ban-trai-nghiem%2F&docid=nult18ZlKjgeYM&w=1200&h=900",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

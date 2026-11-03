@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com/vn/newsroom/2022/09 AirPods Pro 2 lên đến 6 giờ hộp sạc 30 giờ pin",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:12:39.962Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com/vn/newsroom/2022/09 AirPods Pro 2 lên đến 6 giờ hộp sạc 30 giờ pin",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Apple công bố thế hệ AirPods Pro tiếp theo",
+    "link": "https://www.apple.com/vn/newsroom/2022/09/apple-announces-the-next-generation-of-airpods-pro/",
+    "snippet": "Chất lượng âm thanh tuyệt đỉnh, công nghệ khử tiếng ồn chủ động tiên tiến, và nhiều tính năng mới giúp sử dụng thuận tiện hơn nữa.",
+    "date": "7 thg 9, 2022",
+    "position": 1
+   },
+   {
+    "title": "Apple Watch Ultra và AirPods Pro thế hệ mới sẽ lên kệ tại ...",
+    "link": "https://www.apple.com/vn/newsroom/2022/09/apple-watch-ultra-and-next-generation-airpods-pro-available-in-stores-friday/",
+    "snippet": "Ngoài ra, chế độ cài đặt nguồn điện thấp mới có thể kéo dài thời lượng pin lên đến 60 giờ, rất lý tưởng để sử dụng nhiều ngày. ... Hình ảnh ...",
+    "date": "22 thg 9, 2022",
+    "position": 2
+   },
+   {
+    "title": "Apple ra mắt iPhone 14 và iPhone 14 Plus",
+    "link": "https://www.apple.com/vn/newsroom/2022/09/apple-introduces-iphone-14-and-iphone-14-plus/",
+    "snippet": "Không sạc pin khi iPhone đang bị ướt. Vui lòng tham khảo hướng dẫn sử dụng để biết cách lau sạch và làm khô máy. Không bảo hành sản phẩm bị ...",
+    "date": "7 thg 9, 2022",
+    "position": 3
+   },
+   {
+    "title": "Giới thiệu Apple Watch Ultra",
+    "link": "https://www.apple.com/vn/newsroom/2022/09/introducing-apple-watch-ultra/",
+    "snippet": "Đối với những chuyến du lịch bụi dài ngày, người dùng có thể kéo dài thời lượng pin để đạt đến mốc 60 giờ sử dụng bằng cách dùng Chế độ Nguồn ...",
+    "date": "7 thg 9, 2022",
+    "position": 4
+   },
+   {
+    "title": "iOS 16 ra mắt ngay hôm nay",
+    "link": "https://www.apple.com/vn/newsroom/2022/09/ios-16-is-available-today/",
+    "snippet": "Màn Hình Khóa được thiết kế mới, mang đến khả năng cá nhân hóa cao hơn. Giờ đây, người dùng có thể thêm hiệu ứng chiều sâu vào ảnh Màn Hình Khóa ...",
+    "date": "12 thg 9, 2022",
+    "position": 5
+   },
+   {
+    "title": "Apple ra mắt Apple Watch Series 8 và Apple Watch SE mới",
+    "link": "https://www.apple.com/vn/newsroom/2022/09/apple-reveals-apple-watch-series-8-and-the-new-apple-watch-se/",
+    "snippet": "Để giúp người dùng duy trì kết nối lâu hơn nữa, Chế độ Nguồn điện Thấp mới có thể kéo dài thời lượng pin lên đến 36 giờ cho Apple Watch Series 8 ...",
+    "date": "7 thg 9, 2022",
+    "position": 6
+   },
+   {
+    "title": "Apple ra mắt iPhone 14 Pro và iPhone 14 Pro Max",
+    "link": "https://www.apple.com/vn/newsroom/2022/09/apple-debuts-iphone-14-pro-and-iphone-14-pro-max/",
+    "snippet": "Và với chip A16 Bionic cực kỳ mạnh mẽ và hiệu quả cùng thời lượng pin sử dụng cho cả ngày, đây là chiếc iPhone tốt nhất cho tới giờ.”.",
+    "date": "7 thg 9, 2022",
+    "position": 7
+   },
+   {
+    "title": "watchOS 9 ra mắt ngay hôm nay",
+    "link": "https://www.apple.com/vn/newsroom/2022/09/watchOS-9-is-available-today/",
+    "snippet": "Nhiều mặt đồng hồ mới, ứng dụng Bài Tập cải tiến, tính năng các giai đoạn ngủ, tính năng Lịch Sử AFib tiên phong, ứng dụng La Bàn được thiết ...",
+    "date": "12 thg 9, 2022",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

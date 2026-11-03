@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Ngũ Hành Sơn\" OR \"Bảo tàng 3D Art In Paradise\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:05:25.548Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Ngũ Hành Sơn\" OR \"Bảo tàng 3D Art In Paradise\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tham Quan Ngũ Hành Sơn Đà Nẵng: Động Âm Phủ & 5 Núi",
+    "link": "https://www.tiktok.com/@mc.hienvinh/video/7535008488053902610",
+    "snippet": "Ngũ Hành Sơn Đà Nẵng không chỉ là nơi leo núi mà còn là điểm tham quan hang động, chụp ảnh và tìm hiểu cảnh quan tự nhiên đặc trưng của khu vực.",
+    "position": 1
+   },
+   {
+    "title": "Khám Phá Ngũ Hành Sơn Tại Đà Nẵng",
+    "link": "https://www.tiktok.com/@klook_vietnam/video/7488187032158637330",
+    "snippet": "Ngũ Hành Sơn không chỉ nổi tiếng với Thuỷ Sơn tuyệt đẹp cùng nhiều điểm tham quan linh thiêng. Mà 4 ngọn núi còn lại như Kim Sơn, Hoả Sơn, Thổ ...",
+    "position": 2
+   },
+   {
+    "title": "Ngũ Hành Sơn – bản giao hưởng của đá, tâm linh và văn ...",
+    "link": "https://www.tiktok.com/@quydisan/video/7569891646616177940",
+    "snippet": "Ngũ Hành Sơn – bản giao hưởng của đá, tâm linh và văn hóa dân tộc #disanvietnam #proudvietnam. Ngũ Hành Sơn – bản giao hưởng của đá, tâm linh ...",
+    "position": 3
+   },
+   {
+    "title": "Huyền Thoại Ngũ Hành Sơn - Kênh Thảo My",
+    "link": "https://www.tiktok.com/@casithaomy/video/7612207195337575701",
+    "snippet": "Khám phá Huyền Thoại Ngũ Hành Sơn với Thảo My, nơi tâm linh gặp gỡ vẻ đẹp thiên nhiên. Đón xem ngay! #XuHuongTikTok2026 ♥️ . Keywords: Huyền ...",
+    "position": 4
+   },
+   {
+    "title": "Khám Phá Động Huyền Không Tại Ngũ Hành Sơn",
+    "link": "https://www.tiktok.com/@tadicungnguoi/video/7543492916560284936",
+    "snippet": "Khám Phá Động Huyền Không Tại Ngũ Hành Sơn. Trải nghiệm ngoạn mục tại Động Huyền Không ở Ngũ Hành Sơn Đà Nẵng cùng những review chi tiết. # ...",
+    "position": 5
+   },
+   {
+    "title": "Đề cử Ngũ Hành Sơn thành Di sản Thế giới hỗn hợp",
+    "link": "https://www.tiktok.com/@enews.trending/video/7690770118795742471",
+    "snippet": "Đà Nẵng sẽ nộp đề cử danh thắng Ngũ Hành Sơn trở thành Di sản Thế giới hỗn hợp. Đây là thông tin rằng chính quyền Đà Nẵng sẽ tiến hành nộp ...",
+    "position": 6
+   },
+   {
+    "title": "Ngũ Hành Sơn Đà Nẵng — Vẻ đẹp huyền thoại của tạo hóa",
+    "link": "https://www.tiktok.com/@utchi092022/video/7687224271818525970",
+    "snippet": "Ngũ Hành Sơn Đà Nẵng là chủ đề chính của video, nhấn mạnh vẻ đẹp huyền thoại của tạo hóa. Video dùng hình ảnh và cảnh quan để thể hiện Ngũ ...",
+    "position": 7
+   },
+   {
+    "title": "Xá Lợi Đức Phật tại Chùa Quan Thế Âm Ngũ Hành Sơn | TikTok",
+    "link": "https://www.tiktok.com/@user22v8t191fr/photo/7510529231198162184",
+    "snippet": "... Ngũ Hành Sơn. Chiêm ngưỡng Xá Lợi Đức Phật tại chùa Quan Thế Âm, Ngũ Hành Sơn, Đà Nẵng. Một trải nghiệm tâm linh ý nghĩa. Keywords: xá lợi ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

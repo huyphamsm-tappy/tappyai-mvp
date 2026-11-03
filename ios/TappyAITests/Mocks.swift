@@ -24,8 +24,8 @@ final class MockAPIClient: APIClient, @unchecked Sendable {
 
 enum TestFixtures {
     /// Builds a fake (unsigned) JWT whose payload carries `sub`, so SessionStore can read the user id.
-    static func tokens(expiresIn seconds: TimeInterval, sub: String = "user-1") -> AuthTokens {
-        var payload = Data("{\"sub\":\"\(sub)\"}".utf8).base64EncodedString()
+    static func tokens(expiresIn seconds: TimeInterval, sub: String = "user-1", anonymous: Bool = false) -> AuthTokens {
+        var payload = Data("{\"sub\":\"\(sub)\",\"is_anonymous\":\(anonymous)}".utf8).base64EncodedString()
         payload = payload.replacingOccurrences(of: "+", with: "-")
                          .replacingOccurrences(of: "/", with: "_")
                          .replacingOccurrences(of: "=", with: "")

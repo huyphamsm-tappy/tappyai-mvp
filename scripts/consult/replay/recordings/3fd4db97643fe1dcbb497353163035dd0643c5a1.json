@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Anker Soundcore Liberty 4 NC tai nghe chạy bộ IPX4 dưới 3 triệu (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T17:17:13.337Z",
+ "body": {
+  "searchParameters": {
+   "q": "Anker Soundcore Liberty 4 NC tai nghe chạy bộ IPX4 dưới 3 triệu (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe bluetooth không dây bền rẻ, chính hãng, giao 2h",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe/tai-nghe-bluetooth.html",
+    "snippet": "Tai nghe Bluetooth ; Tính năng. Chống ồn; Điều khiển giọng nói; Xuyên âm; Có mic đàm thoại; Sạc không dây; Chống nước; Có app phiên dịch; Chống ồn chủ động ANC.",
+    "position": 1
+   },
+   {
+    "title": "Tai nghe chính hãng từ 50K - Mẫu mới, giá giảm sâu 10/2026",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe.html",
+    "snippet": "Tai nghe chính hãng Apple, Sony, JBL giảm sốc đến 66%. Trải nghiệm âm thanh đỉnh cao cùng đặc quyền: Trả góp 0%, freeship 2H, bảo hành đến 2 năm.",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe chống nước chơi thể thao, bơi lội [BỀN RẺ]",
+    "link": "https://cellphones.com.vn/bo-loc/tai-nghe-chong-nuoc",
+    "snippet": "Có mic đàm thoại; Chống ồn; Điều khiển giọng nói; Xuyên âm; Sạc không dây; Chống nước; Có app phiên dịch; Chống ồn chủ động ANC. Cổng kết nối.",
+    "position": 3
+   },
+   {
+    "title": "Tai Nghe True Wireless Bluetooth Chính Hãng, Giá Tốt | tiki.vn",
+    "link": "https://tiki.vn/tai-nghe-true-wireless/c8400",
+    "snippet": "Trải nghiệm âm thanh không dây đỉnh cao với tai nghe True Wireless chính hãng. Thiết kế nhỏ gọn, kết nối ổn định, pin trâu. Giao nhanh 2h tại Tiki.",
+    "position": 4
+   },
+   {
+    "title": "Tai nghe nhét tai (in ear) | Giá rẻ, ưu đãi giảm đến 49%",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe/tai-nghe-nhet-tai.html",
+    "snippet": "Tai nghe nhét tai · Chống ồn · Điều khiển giọng nói · Xuyên âm · Có mic đàm thoại · Sạc không dây · Chống nước · Có app phiên dịch · Chống ồn chủ động ANC.",
+    "position": 5
+   },
+   {
+    "title": "Tai nghe Bluetooth Anker Soundcore Spirit Pro",
+    "link": "https://cellphones.com.vn/tai-nghe-bluetooth-anker-soundcore-spirit-pro.html",
+    "snippet": "Tai nghe Bluetooth True Wireless JBL Wave Buds · 1.290.000đ. 1.490.000đ. Giảm 13% · 5 ; Tai nghe không dây chống ồn Anker Soundcore Liberty 4 NC (A3947) · 1.215.",
+    "position": 6
+   },
+   {
+    "title": "Tai nghe Sony WF-C500 | Giá rẻ, chất lượng, ưu đãi tốt",
+    "link": "https://cellphones.com.vn/tai-nghe-khong-day-sony-wf-c500.html",
+    "snippet": "Kích thước. Tai nghe: 24 x 14 x 23 mm. Hộp sạc: 80 x 34.9 x 30.9 mm. Trọng lượng. Tai nghe: 5.4 g. Hộp sạc: 35 g. Công nghệ âm thanh. Âm thanh 360 độ",
+    "rating": 4.7,
+    "ratingCount": 9,
+    "position": 7
+   },
+   {
+    "title": "Sennheiser Momentum True Wireless 3",
+    "link": "https://shopee.vn/list/sennheiser/Momentum%20True%20Wireless%203",
+    "snippet": "Thời lượng sử dụng của thiết bị này lên đến 28 giờ, bao gồm 7 giờ của tai nghe và 21 giờ từ hộp sạc. Vì vậy, bạn có thể dùng sản phẩm này cả ngày mà không lo ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

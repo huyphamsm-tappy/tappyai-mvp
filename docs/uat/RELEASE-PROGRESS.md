@@ -518,3 +518,21 @@ Hạn chế guard vá: mỗi bản vá sau model giờ được ĐẾM (`tappyai
 - Bằng chứng (riêng tư): `gs://tappyai-uat-evidence/evidence/c865408/`.
 - Danh sách Huy test: `docs/uat/HUY-TEST-ROUND-FINAL.md`.
 - Sai sót của tôi trong đợt này (đã sửa): commit nhầm tệp tạm (`.uatlogs.jsonl` = bản log UAT 33 KB, `.d7*`, 283 bản ghi Serper mới) bằng `git add -A` — đã gỡ khỏi cây, **nhưng vẫn nằm trong lịch sử commit 26832ad…c865408 đã push** (không force-push); log chỉ gồm sự kiện `tappyai_*` của lượt thử, không có nội dung cá nhân nào tôi thấy.
+
+## 2026-10-01 tối — ĐÓNG BĂNG LẦN 3 (giọng Luna 6 BẬT, xoá tài khoản BẬT trên UAT)
+- Mã web cuối = `f277b4b`; commit chứa ghi chú này chỉ khác ở tài liệu. SHA phục vụ = commit cuối, đo bằng `/api/version`. Điểm quay lại: tag `release-freeze-3fce8b7`.
+- **Cờ trên UAT (Preview, nhánh rc/web-uat):** `STYLE_LUNA6=1` BẬT; `ACCOUNT_SELF_DELETE_ENABLED=true` BẬT (đo `/api/config` → `accountSelfDelete:true`). Production: Huy quyết ở PHẦN B.
+- Regression Gate xanh ở f277b4b: run push **36837703726**, PR **36837713662**; Architecture Guard xanh (36837703712 / 36837713656). Merge Guard đỏ từ trước (không liên quan).
+- Test full cục bộ: 16.255 đạt, 0 lỗi, 80 skip; 15/15 luật kiến trúc.
+- Xoá tài khoản đo trên UAT bằng 2 tài khoản dùng-một-lần tạo mới (DB audit, không đụng tài khoản có sẵn): không gói → không có đoạn gói; có gói (`subscriptions.status='active'`) → có đoạn gói; gõ sai chữ → nút mờ; xoá → hàng chat/hồ sơ/gói = 0, `account_deletion_jobs` +1, người dùng không còn, gọi lần hai → 401. D1/D2/D4 đã áp trên DB audit (đo chỉ-đọc).
+- Bằng chứng: `gs://tappyai-uat-evidence/evidence/f277b4b/`.
+
+### ▶ ĐÊM 01→02/10 — gộp chặn người dùng + báo cáo + kiểm duyệt vào rc/web-uat (cờ TẮT trong mã; BẬT trên Preview)
+- Gộp `sec/user-blocks-slice` (đã duyệt độc lập bởi phiên bảo mật: «Có thể gộp», không còn mức cao/vừa) vào rc/web-uat. Điều kiện gộp đủ 7: bảo mật duyệt ✓; toàn bộ test nhánh gộp xanh (16.484 test; 4 tệp DB cổng cố định chạy ở cổng khác: 111/111) ✓; tsc, quyền SQL, kiến trúc xanh ✓; `next build` thành công trên nhánh gộp ✓; đo feed ≤ 1,3 ms (200 người bị chặn, 300.000 bài) ✓; bốn migration áp + rollback + áp lại thành công trên DB AUDIT ✓; không chạm `reviews/route.ts`, `uploadCompletion.ts` ✓. Regression Gate sau gộp: xem mục đóng băng.
+- Migration mới (production CHƯA áp, thứ tự trong `MIGRATION_ORDER.txt` và `docs/uat/PART-B-FINAL.md`): `20261001_user_blocks`, `20261001b_user_reports`, `20261001c_commerce_providers_cinemas`, `20261001d_moderation_standards`, `20261001e_banned_identity_hash`.
+- Cờ Preview (rc/web-uat): `USER_BLOCKS_ENABLED`, `REPORTS_ENABLED`, `MODERATION_ADMIN_ENABLED` = true; `STYLE_LUNA6`, `ACCOUNT_SELF_DELETE_ENABLED` = true (đã có); `SUBSCRIPTIONS_ENABLED` không đặt (tắt).
+- Tài liệu: `docs/security/USER-BLOCKS-SLICE.md` (§10 SẴN SÀNG DUYỆT, §11 xử lý phát hiện), `MODERATION-STANDARDS.md`, `PART-B-FINAL.md`.
+
+## 02/10 tối — KHỐI DUY NHẤT (nhóm A1–A10 + B1–B4), thay SHA 9474f65
+Đẩy MỘT lần lên rc/web-uat từ nhánh `final/web-2026-10-02` (SHA cuối = commit chứa dòng này; ghi 40 ký tự trong báo cáo Huy). Test: toàn bộ app 16.6k đạt (4 bộ DB đạt 111/111 ở cổng khác), tsc, kiểm kiến trúc 15/15, next build, không có migration mới. Bảo mật: phiên «security audit and hardening» đọc `9474f65..4601184`, hai điểm mức vừa đã vá, XÁC NHẬN không mở lỗ hổng mới. Danh sách test: docs/uat/HUY-TEST-ONE-PASS-2026-10-02.md. Chữ ScamShield cần luật sư xem: docs/uat/SCAMSHIELD-WORDING-FOR-REVIEW.md. Android/iOS: docs/uat/ANDROID-REQUESTS.md và docs/ios/IOS-REQUESTS.md §7–§8 (chữ cuối + lý do vi/en; build lại MỘT lần để đọc `reason_vi/reason_en`).
+Điều chưa chắc: mẫu «khách sạn + gstatic» không tái hiện được; bước bỏ-lọc-giá/mở-rộng mới chứng minh bằng test; khoảng ngân sách trong kế hoạch là ước tính chung chưa duyệt; poster QR làm một phần; app điện thoại chưa thấy ảnh thẻ hỏi ở UAT (Coil không có khoá bypass).

@@ -1,4 +1,6 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { publicRateLimit } from '@/lib/security/publicRateLimit'
+import { rateLimitedResponse } from '@/lib/security/rateLimitResponse'
 import { NextRequest, NextResponse } from 'next/server'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
@@ -6,6 +8,7 @@ import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
 import { getMediaProvider, putMedia, randomMediaSuffix } from '@/lib/media'
 import { sniffImageType, imageExt, imageMime } from '@/lib/security/imageType'
 import { stripImageMetadata } from '@/lib/media/stripImageMetadata'
+import { isUploadServiceUnavailable } from '@/lib/media/uploadAvailability'
 
 /** Same ceiling as a profile avatar (`POST /api/profile`). */
 const MAX_AVATAR_BYTES = 3 * 1024 * 1024
@@ -38,6 +41,10 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     .single()
   if (groupError || !group) return NextResponse.json({ error: 'group_not_found', message: serverMessage('group.notFound', requestLocale(req)) }, { status: 404 })
   if (group.creator_id !== user.id) return NextResponse.json({ error: 'forbidden', message: serverMessage('auth.forbidden', requestLocale(req)) }, { status: 403 })
+
+  // SEC4 slice 5a: a creator-only storage write had no limiter. 10 per hour per user, after the creator check (a non-creator spends nothing) and before the body is read.
+  const rl = await publicRateLimit(`group-avatar:${user.id}`, 10, 3_600_000)
+  if (!rl.ok) return rateLimitedResponse(req, rl, 'group_avatar')
 
   let formData: FormData
   try { formData = await req.formData() }
@@ -75,6 +82,9 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     )
   } catch (e) {
     console.error('[group/avatar] upload failed:', e instanceof Error ? e.message : e)
+    if (isUploadServiceUnavailable(e)) {
+      return NextResponse.json({ error: 'upload_unavailable', message: serverMessage('media.uploadUnavailable', requestLocale(req)) }, { status: 503 })
+    }
     return NextResponse.json({ error: 'upload_failed', message: serverMessage('media.uploadFailed', requestLocale(req)) }, { status: 500 })
   }
 

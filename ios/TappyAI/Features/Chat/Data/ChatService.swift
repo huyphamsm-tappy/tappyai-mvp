@@ -16,23 +16,16 @@ final class ChatService: Sendable {
 
     // MARK: - Streaming chat
 
-    /// Streams a chat response. Returns an AsyncThrowingStream of StreamFrame.
-    /// The caller (ViewModel) assembles frames into message content.
-    func chat(messages: [MessagePayload]) -> AsyncThrowingStream<StreamFrame, Error> {
-        let body: [String: Any] = [
-            "messages": messages.map { ["role": $0.role, "content": $0.content] }
-        ]
-        guard let bodyData = try? JSONSerialization.data(withJSONObject: body) else {
-            return AsyncThrowingStream { $0.finish(throwing: AppError.validation(message: "Failed to encode chat request")) }
+    /// The request's `messages`: `{role, content}`, plus `experimental_attachments: [{url, contentType, name}]` on a question that
+    /// carries a photo or PDF (the web's useChat shape; the server's `validateAttachment` reads it). A question without one has no such key.
+    static func wireMessages(_ messages: [MessagePayload]) -> [[String: Any]] {
+        messages.map { message in
+            var row: [String: Any] = ["role": message.role, "content": message.content]
+            if !message.attachments.isEmpty {
+                row["experimental_attachments"] = message.attachments.map { $0.wireObject }
+            }
+            return row
         }
-        let endpoint = Endpoint(
-            path: "/api/chat",
-            method: .post,
-            body: bodyData,
-            requiresAuth: true,
-            timeout: 60
-        )
-        return streaming.stream(endpoint)
     }
 
     // MARK: - Conversation CRUD
@@ -43,7 +36,8 @@ final class ChatService: Sendable {
             method: .get,
             requiresAuth: true
         )
-        let all = try await api.send(endpoint, as: [Conversation].self)
+        // Lossy: one malformed row must not hide the conversation being opened.
+        let all = try await api.send(endpoint, as: LossyList<Conversation>.self).items
         guard let conversation = all.first(where: { $0.id == id }) else {
             throw AppError.validation(message: "Conversation not found")
         }
@@ -159,7 +153,7 @@ final class ChatService: Sendable {
 
     func fetchPreferences() async -> [String]? {
         let endpoint = Endpoint(path: "/api/preferences", method: .get, requiresAuth: true)
-        guard let result = try? await api.send(endpoint, as: PreferencesResponse.self) else { return nil }
+        guard let result = try? await api.send(endpoint, as: ChatPreferencesResponse.self) else { return nil }
         return result.preferences
     }
 
@@ -172,10 +166,16 @@ final class ChatService: Sendable {
 
     // MARK: - Streaming chat with enrichment
 
+    /// `guestAgeDeclaration`: the guest's stated age (`18plus` | `YYYY`), sent as
+    /// `x-tappy-age-declared`. Nil for accounts — their date of birth is read server-side.
     func chatWithContext(messages: [MessagePayload], userPreferences: [String]?, responseStyle: String?,
-                        userLocation: [String: Double]? = nil) -> AsyncThrowingStream<StreamFrame, Error> {
+                        userLocation: [String: Double]? = nil,
+                        guestAgeDeclaration: String? = nil,
+                        chatSessionId: String? = nil,
+                        decisionEvidenceId: String? = nil,
+                        mode: ChatMode = .default) -> AsyncThrowingStream<StreamFrame, Error> {
         var bodyDict: [String: Any] = [
-            "messages": messages.map { ["role": $0.role, "content": $0.content] }
+            "messages": Self.wireMessages(messages)
         ]
         if let prefs = userPreferences, !prefs.isEmpty {
             bodyDict["userPreferences"] = prefs
@@ -186,22 +186,60 @@ final class ChatService: Sendable {
         if let loc = userLocation {
             bodyDict["userLocation"] = loc
         }
+        // R14: one UUID per chat, sent on every turn (first turn and guests included).
+        if let sid = chatSessionId, ChatSessionId.isValid(sid) {
+            bodyDict["chatSessionId"] = sid
+        }
+        // ADR-024: the client echoes the KEY the server answered the last shopping turn with; the server looks the
+        // frozen listing facts up under the caller's own id. A malformed, expired or foreign key resolves to nothing.
+        if let key = decisionEvidenceId, !key.isEmpty {
+            bodyDict["decisionEvidenceId"] = key
+        }
+        // The one-brain server reads the mode from here; without it a request runs as plain Chat.
+        bodyDict["mode"] = mode.wire
         guard let bodyData = try? JSONSerialization.data(withJSONObject: bodyDict) else {
             return AsyncThrowingStream { $0.finish(throwing: AppError.validation(message: "Failed to encode chat request")) }
+        }
+        var headers: [String: String] = [
+            ChatClientDeclaration.surfaceHeader: ChatClientDeclaration.surface,
+            ChatClientDeclaration.capsHeader: ChatClientDeclaration.caps,
+        ]
+        if let declared = guestAgeDeclaration, !declared.isEmpty {
+            headers[GuestAgeDeclaration.header] = declared
         }
         let endpoint = Endpoint(
             path: "/api/chat",
             method: .post,
+            headers: headers,
             body: bodyData,
             requiresAuth: true,
-            timeout: 60
+            timeout: mode == .deep ? ChatStreamTimeout.deepResearch : ChatStreamTimeout.standard
         )
         return streaming.stream(endpoint)
     }
 }
 
+/// How long the chat stream may stay SILENT before the request times out (`URLRequest.timeoutInterval` counts the time
+/// without a byte). 130 s / 320 s as the one-brain web and Android read a silent stream: a Think step, or most of a Deep
+/// Research run, is quiet for a long time.
+enum ChatStreamTimeout {
+    static let standard: TimeInterval = 130
+    static let deepResearch: TimeInterval = 320
+}
+
+/// What this build declares to `/api/chat`. `x-tappy-surface: ios` tells the server the client
+/// draws the place/shopping decision as a card (so the prose must not repeat it) — the server
+/// whitelist does not know "ios" yet (docs/ios/IOS-REQUESTS.md #1). `x-tappy-caps: card` = this
+/// build draws the decision card (`rendersDecisionCard(surface, caps)` on the server). The ASK block is gone.
+enum ChatClientDeclaration {
+    static let surfaceHeader = "x-tappy-surface"
+    static let surface = "ios"
+    static let capsHeader = "x-tappy-caps"
+    static let caps = "card"
+}
+
 private struct MemoryCheckResponse: Decodable {
-    let memory: AnyCodable?
+    let memory: IgnoredJSONValue?
 }
 
 /// `language` is null when the server cannot name a language it supports, and `speakable` mirrors
@@ -211,11 +249,11 @@ private struct VoiceLanguageResponse: Decodable {
     let speakable: Bool
 }
 
-private struct PreferencesResponse: Decodable {
+private struct ChatPreferencesResponse: Decodable {
     let preferences: [String]?
 }
 
-private struct AnyCodable: Decodable {
+private struct IgnoredJSONValue: Decodable {
     init(from decoder: Decoder) throws {
         _ = try decoder.singleValueContainer()
     }

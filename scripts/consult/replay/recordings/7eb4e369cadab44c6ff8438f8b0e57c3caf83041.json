@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Polvcdg -P050-X6 IPX8 Tai nghe Bluetooth không dây dẫn xương chống nước 32G Bài tập 5.3 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:06:03.370Z",
+ "body": {
+  "searchParameters": {
+   "q": "Polvcdg -P050-X6 IPX8 Tai nghe Bluetooth không dây dẫn xương chống nước 32G Bài tập 5.3 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "New Tai nghe dẫn điện xương POLVCDG X7 IPX8 32GB ...",
+    "link": "https://www.lazada.vn/products/new-tai-nghe-dan-dien-xuong-polvcdg-x7-ipx8-32gb-ram-53-tai-nghe-khong-day-bluetooth-co-micro-khong-tham-nuoc-boi-2023-moi-i2507648346.html?srsltid=AU7gw4VNAliURB5RWet3XDvDWca_PezcW9hy6DtihS5nsNToGZbdcV9L",
+    "snippet": "Đặc điểm nổi bật · Khoa học vật:PVC, ABS, nhựa, TPU, silicone · Chiều rộng [mm]:45 · Chiều sâu [mm]:135 · Trọng lượng [g]:30 · Chiều cao [mm]:112 · Dung lượng pin [ ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

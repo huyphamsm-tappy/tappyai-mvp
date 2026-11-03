@@ -1,0 +1,299 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "2 người lớn, 1 trẻ em; chuyến đi 20–23/1 quán đặc sản ngon Đà Nẵng Da Nang",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@16.0544,108.2022,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:57:29.320Z",
+ "body": {
+  "searchParameters": {
+   "q": "2 người lớn, 1 trẻ em; chuyến đi 20–23/1 quán đặc sản ngon Đà Nẵng Da Nang",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@16.0544,108.2022,14z",
+   "engine": "google"
+  },
+  "ll": "@16.0543915,108.2021997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Đặc Sản Ngon Đà Nẵng - Đặc Sản Làm Quà shop online",
+    "address": "171 P. Đức Chính, An Hải, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0810019,
+    "longitude": 108.23967359999999,
+    "rating": 4.5,
+    "ratingCount": 41,
+    "type": "Cửa hàng bán thực phẩm đặc sản",
+    "types": [
+     "Cửa hàng bán thực phẩm đặc sản"
+    ],
+    "website": "https://dacsanngondanang.com/",
+    "phoneNumber": "+84 987 428 428",
+    "openingHours": {
+     "Thứ Năm": "06:30–22:30",
+     "Thứ Sáu": "06:30–22:30",
+     "Thứ Bảy": "06:30–22:30",
+     "Chủ Nhật": "06:30–22:30",
+     "Thứ Hai": "08:00–21:00",
+     "Thứ Ba": "06:30–22:30",
+     "Thứ Tư": "06:30–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl4nMwDcEw9MXeQilicF4xyVSMh8xJepAq05NRqdZ9Gv4l3Jlr5OmM5okdqIWHKE1TX3qMZ4gwok0tGJF6FNPC45c8t1gXRgC_n3G7VR2cuE6smZs9Tiw98FvDGmmtPs_njWuniRQ",
+    "cid": "3915797310732470034",
+    "fid": "0x314217451b1890bb:0x3657b4e846a38712",
+    "placeId": "ChIJu5AYG0UXQjEREoejRui0VzY"
+   },
+   {
+    "position": 2,
+    "title": "Mộc quán Seafood Đà Nẵng",
+    "address": "26 Tô Hiến Thành, An Hải, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0640292,
+    "longitude": 108.2415578,
+    "rating": 4.8,
+    "ratingCount": 31129,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản",
+     "Nhà hàng"
+    ],
+    "website": "https://mocseafood.com/",
+    "phoneNumber": "+84 905 665 058",
+    "openingHours": {
+     "Thứ Năm": "10:30–22:30",
+     "Thứ Sáu": "10:30–22:30",
+     "Thứ Bảy": "10:30–22:30",
+     "Chủ Nhật": "10:30–22:30",
+     "Thứ Hai": "10:30–22:30",
+     "Thứ Ba": "10:30–22:30",
+     "Thứ Tư": "10:30–22:30"
+    },
+    "bookingLinks": [
+     "https://business.facebook.com/latest/inbox/messenger?asset_id=332627847363931&mailbox_id=332627847363931&selected_item_id=100002245787074&thread_type=FB_MESSAGE",
+     "http://pf.kakao.com/_AxcgZxj/chat"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmaI-n01ttYFgyXdlnlu4MEximc0VVILY3udepJru1GMn_FhnmZA9CPIng9AnnbkvX5dBD8xpbksUSWI4ME5d2vTN3mej1CvUQ3U4e_DqX-dH09znL2lsDM5zhpbp-2POxWEHo",
+    "cid": "2059427300039139311",
+    "fid": "0x314217721a8aafc7:0x1c948e37d3931fef",
+    "placeId": "ChIJx6-KGnIXQjER7x-T0zeOlBw"
+   },
+   {
+    "position": 3,
+    "title": "Nhà Bếp Xưa Restaurant",
+    "address": "64 Hà Bổng, Sơn Trà, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0660246,
+    "longitude": 108.244216,
+    "rating": 4.8,
+    "ratingCount": 9216,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam"
+    ],
+    "phoneNumber": "+84 906 123 858",
+    "openingHours": {
+     "Thứ Năm": "10:00–21:30",
+     "Thứ Sáu": "10:00–21:30",
+     "Thứ Bảy": "10:00–21:30",
+     "Chủ Nhật": "10:00–21:30",
+     "Thứ Hai": "10:00–21:30",
+     "Thứ Ba": "10:30–21:30",
+     "Thứ Tư": "10:00–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmgOi-SQa378ULy5kFLdiWY7DiFue3CWgMhDec-M2oDbIyF6qCEir3raKZiojw9Lt7p0OMYjdKg6nPQmYttb--xpbYqUwogOy31MjIfcZHppOuJxffMsR9gxv49KXtMxjxOpXEgTqM1sDGS",
+    "cid": "17223004486738205102",
+    "fid": "0x314217f1aeaab4db:0xef0467544cfd59ae",
+    "placeId": "ChIJ27SqrvEXQjERrln9TFRnBO8"
+   },
+   {
+    "position": 4,
+    "title": "Golden Meat House",
+    "address": "100 Trần Bạch Đằng, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0549127,
+    "longitude": 108.2458977,
+    "rating": 4.7,
+    "ratingCount": 4071,
+    "type": "Nhà hàng món nướng Hàn Quốc",
+    "types": [
+     "Nhà hàng món nướng Hàn Quốc",
+     "Nhà hàng món nướng",
+     "Khu vực nướng",
+     "Nhà hàng Hàn Quốc",
+     "Nhà hàng bít tết"
+    ],
+    "website": "https://goldenmeat.vn/",
+    "phoneNumber": "+84 236 3712 888",
+    "openingHours": {
+     "Thứ Năm": "10:00–00:00",
+     "Thứ Sáu": "10:00–00:00",
+     "Thứ Bảy": "10:00–00:00",
+     "Chủ Nhật": "10:00–00:00",
+     "Thứ Hai": "10:00–00:00",
+     "Thứ Ba": "10:00–00:00",
+     "Thứ Tư": "10:00–00:00"
+    },
+    "bookingLinks": [
+     "https://goldenmeat.vn/#Reservation"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnHVGFj0qomfjcRBiAIKxpR8CbHc6miiLnrbE_tfiZVjrCCVgYcxa4R7GmtWwZ1hWQjXtbGeNUePy9mw9WaeJoongXJDwd5ie8e01ssT4cq09nAwtAAdGfGU5OHRms921tXZ1Jk",
+    "cid": "10150594483651869094",
+    "fid": "0x314217b74d212a13:0x8cde27e7191bf9a6",
+    "placeId": "ChIJEyohTbcXQjERpvkbGecn3ow"
+   },
+   {
+    "position": 5,
+    "title": "Thìa Gỗ Đà Nẵng",
+    "address": "53 Phan Thúc Duyện, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.052986699999998,
+    "longitude": 108.2415777,
+    "rating": 4.7,
+    "ratingCount": 7672,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam",
+     "Nhà hàng cao cấp",
+     "Nhà hàng"
+    ],
+    "website": "http://danang.thiagorestaurant.com/",
+    "phoneNumber": "+84 236 3689 005",
+    "description": "Nhà hàng bình dân phục vụ chả giò, phở, bánh mì và các món ăn đặc trưng khác của Việt Nam cùng với bia.",
+    "openingHours": {
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00",
+     "Thứ Ba": "10:00–22:00",
+     "Thứ Tư": "10:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmOVdKwhsAAZ_z1oKztfTFc52U6mT4xbVTnsHSixO10b_OvZjGJRSlx5hIMndehn6jrJvLpk5tz-HzYVP7qaBvGbDMah7yRjNCjK_W4HIxG52DzQnNjcDFwTws7O0iBBC2SG-V3GVdAuZI0",
+    "cid": "5776029369530758645",
+    "fid": "0x314219c3b54c18d7:0x5028941bdf1ab5f5",
+    "placeId": "ChIJ1xhMtcMZQjER9bUa3xuUKFA"
+   },
+   {
+    "position": 6,
+    "title": "Sky View Restaurant",
+    "address": "216 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0676095,
+    "longitude": 108.24477979999999,
+    "rating": 4.8,
+    "ratingCount": 931,
+    "type": "Nhà hàng cao cấp",
+    "types": [
+     "Nhà hàng cao cấp",
+     "Nhà hàng hỗn hợp"
+    ],
+    "website": "https://parosanddanang.com/restaurant/sky-view-restaurant/",
+    "phoneNumber": "+84 236 3928 688",
+    "openingHours": {
+     "Thứ Năm": "11:00–23:00",
+     "Thứ Sáu": "11:00–23:00",
+     "Thứ Bảy": "11:00–23:00",
+     "Chủ Nhật": "11:00–23:00",
+     "Thứ Hai": "11:00–23:00",
+     "Thứ Ba": "11:00–23:00",
+     "Thứ Tư": "11:00–23:00"
+    },
+    "bookingLinks": [
+     "https://parosanddanang.com/restaurant/sky-view-restaurant/#modal-book-custom"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmek1UD1mfZ_c0ZmQvaqIcF0djHOYsUJpRDd6iLzJ6k3QPEsjKuECSLCYORPNX27inuULUTBONK3JsJBs6fgxepZLzbC4O0-ZNY8i-IZNzgMkDnvFLK3vuOnuYkinXVW2SeZn-q",
+    "cid": "16848562905305425774",
+    "fid": "0x3142179ce12f3489:0xe9d21eb1e28da76e",
+    "placeId": "ChIJiTQv4ZwXQjERbqeN4rEe0uk"
+   },
+   {
+    "position": 7,
+    "title": "Sữa đậu Anh Trúc",
+    "address": "604 Điện Biên Phủ, Thanh Khê, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0656645,
+    "longitude": 108.18338849999999,
+    "rating": 3.4,
+    "ratingCount": 27,
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "website": "https://www.facebook.com/groups/166215906918284/",
+    "phoneNumber": "+84 703 143 143",
+    "openingHours": {
+     "Thứ Năm": "15:00–23:30",
+     "Thứ Sáu": "15:00–23:30",
+     "Thứ Bảy": "15:00–23:30",
+     "Chủ Nhật": "15:00–23:30",
+     "Thứ Hai": "15:00–23:30",
+     "Thứ Ba": "15:00–23:30",
+     "Thứ Tư": "15:00–23:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlUgazz2CSIOYgmcDBHKTa7MmV0_Y48s5uLG_mCHlR8E6BbEBTE4KnyCJGaPoAszMnmp1KqN4octLNEShuGAw6venBEHvolaxNxXAhC2XqDyPSSRCF8DJbzudphMEs2ZoHK48ASBw",
+    "cid": "67447581946666177",
+    "fid": "0x31421923a43ab86f:0xef9f37eae3dcc1",
+    "placeId": "ChIJb7g6pCMZQjERwdzj6jef7wA"
+   },
+   {
+    "position": 8,
+    "title": "Restaurant PHỞ HOUSE",
+    "address": "111 Nại Nam 8, Hòa Cường, Đà Nẵng, Việt Nam",
+    "latitude": 16.0347606,
+    "longitude": 108.2296899,
+    "rating": 4.6,
+    "ratingCount": 672,
+    "type": "Nhà hàng phở",
+    "types": [
+     "Nhà hàng phở"
+    ],
+    "phoneNumber": "+84 708 352 141",
+    "openingHours": {
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00",
+     "Thứ Ba": "10:00–22:00",
+     "Thứ Tư": "10:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlntWzPnoGWmwee_elummB1ReZmVu-3eS5bUV9a5lxBGmyk9_2xE-XY4s96szD6EU7Qp99d1XYNj0bTlRa66bvRJA73agYU7HbOtF8pBV-xYfnFYYCzosOPPMVQwM1y-jLm4hrcba-djtM-",
+    "cid": "7527985989206786565",
+    "fid": "0x314219e6bf47737f:0x6878c75f48c9c205",
+    "placeId": "ChIJf3NHv-YZQjERBcLJSF_HeGg"
+   },
+   {
+    "position": 9,
+    "title": "Brilliant Top Bar",
+    "address": "162 Bạch Đằng, Hải Châu, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0667018,
+    "longitude": 108.2246507,
+    "rating": 4.7,
+    "ratingCount": 656,
+    "type": "Quán bar",
+    "types": [
+     "Quán bar"
+    ],
+    "website": "http://www.brillianthotel.vn/",
+    "phoneNumber": "+84 912 196 347",
+    "openingHours": {
+     "Thứ Năm": "16:00–23:00",
+     "Thứ Sáu": "16:00–23:00",
+     "Thứ Bảy": "16:00–23:00",
+     "Chủ Nhật": "16:00–23:00",
+     "Thứ Hai": "16:00–23:00",
+     "Thứ Ba": "16:00–23:00",
+     "Thứ Tư": "16:00–23:00"
+    },
+    "bookingLinks": [
+     "https://www.google.com/maps/reserve/v/dine/c/jbEUhgUUzK8?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnP06DCNFcqEzxuP_Y9AJYt5xB62edQlMv5MyAxmZzgmECdtHOHbDSbXeGdafu8OrPvm5rTBSyfSkiNTsOq92eFfbm4oC4EL-khAN_PMHhe75PlNIr9sRYyyPVVGDJJtqT1fQM",
+    "cid": "13305700688735546480",
+    "fid": "0x314219d6630ab71f:0xb8a758479fc0ac70",
+    "placeId": "ChIJH7cKY9YZQjERcKzAn0dYp7g"
+   }
+  ],
+  "credits": 3
+ }
+}

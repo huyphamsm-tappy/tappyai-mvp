@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { HOW_TO_USE_DOC } from './howToUseDoc'
+import { blockKeys } from '@/components/legal/legalDoc'
 import { en, vi } from '@/lib/i18n/guide'
 import { translate } from '@/lib/i18n/useTranslation'
 
@@ -16,13 +17,7 @@ function keysOf(): string[] {
   const keys = [HOW_TO_USE_DOC.titleKey, HOW_TO_USE_DOC.effectiveKey]
   for (const section of HOW_TO_USE_DOC.sections) {
     keys.push(section.headingKey)
-    for (const block of section.blocks) {
-      if (block.kind === 'bullets' || block.kind === 'steps') keys.push(...block.keys)
-      // `contact` renders fixed labels and `email` carries a labelKey plus a literal address —
-      // neither has a `key`, so neither contributes to the document's translation keys here.
-      else if (block.kind === 'email') keys.push(block.labelKey)
-      else if (block.kind !== 'contact') keys.push(block.key)
-    }
+    for (const block of section.blocks) keys.push(...blockKeys(block))
   }
   return keys
 }

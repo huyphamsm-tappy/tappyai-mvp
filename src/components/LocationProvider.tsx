@@ -1,18 +1,15 @@
 'use client'
 import { useEffect } from 'react'
+import { readSessionFix, saveSessionFix } from '@/lib/location/currentLocation'
 
 const LOCATION_TTL = 30 * 60 * 1000 // re-request after 30 min
 
 export default function LocationProvider() {
   useEffect(() => {
     if (!navigator.geolocation) return
-    try {
-      const existing = localStorage.getItem('tappy_location')
-      if (existing) {
-        const parsed = JSON.parse(existing)
-        if (parsed.ts && Date.now() - parsed.ts < LOCATION_TTL) return
-      }
-    } catch {}
+    // Round 42: only a fix taken in THIS tab session may skip the refresh; one stored by an earlier session is not a reason to skip.
+    const existing = readSessionFix()
+    if (existing?.ts && Date.now() - existing.ts < LOCATION_TTL) return
     navigator.geolocation.getCurrentPosition(
       async (pos) => {
         const { latitude: lat, longitude: lng } = pos.coords
@@ -27,7 +24,7 @@ export default function LocationProvider() {
             address = (data?.display_name as string) || ''
           }
         } catch {}
-        localStorage.setItem('tappy_location', JSON.stringify({ lat, lng, address, ts: Date.now() }))
+        saveSessionFix({ lat, lng, address, ts: Date.now() })
       },
       () => { /* denied — do nothing */ },
       { timeout: 8000, maximumAge: 5 * 60 * 1000 }

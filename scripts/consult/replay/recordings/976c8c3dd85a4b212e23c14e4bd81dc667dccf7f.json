@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com/vn AirPods Pro (thế hệ thứ 2) thời gian nghe một lần sạc 6 giờ",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:13:11.819Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com/vn AirPods Pro (thế hệ thứ 2) thời gian nghe một lần sạc 6 giờ",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "So Sánh Các Phiên Bản AirPods",
+    "link": "https://www.apple.com/vn/airpods/compare/",
+    "snippet": "Khi tắt tính năng Kiểm Soát Tiếng Ồn, thời gian nghe lên đến 6 giờ. Thử nghiệm được thực hiện bằng cách xả toàn bộ pin AirPods khi phát âm thanh cho đến khi ...",
+    "position": 1
+   },
+   {
+    "title": "AirPods Pro 3 - Thông Số Kỹ Thuật",
+    "link": "https://www.apple.com/vn/airpods-pro/specs/",
+    "snippet": "Thời gian nghe lên đến 8 giờ với một lần sạc khi bật tính năng Chủ Động Khử Tiếng Ồn (lên đến 7,5 giờ khi bật Âm Thanh Không Gian và Theo Dõi Chuyển Động Đầu) ...",
+    "position": 2
+   },
+   {
+    "title": "Apple công bố thế hệ AirPods Pro tiếp theo",
+    "link": "https://www.apple.com/vn/newsroom/2022/09/apple-announces-the-next-generation-of-airpods-pro/",
+    "snippet": "... thời lượng pin tốt hơn. Thời lượng pin dài hơn. AirPods Pro có thêm thời gian nghe là 1,5 giờ so với thế hệ đầu tiên, như vậy tổng thời gian ...",
+    "date": "7 thg 9, 2022",
+    "position": 3
+   },
+   {
+    "title": "Mua AirPods Max 2 - Đêm Xanh Thẳm",
+    "link": "https://www.apple.com/vn-edu/shop/buy-airpods/airpods-max-2/%C4%91%C3%AAm-xanh-th%E1%BA%B3m",
+    "snippet": "AirPods Max 2. Âm thanh có độ trung thực cao, Chủ Động Khử Tiếng Ồn cải tiến, các tính năng thông minh mới. Miễn phí vận chuyển và khắc hình khi mua tại ...",
+    "position": 4
+   },
+   {
+    "title": "Mua AirPods Pro 3",
+    "link": "https://www.apple.com/vn/shop/buy-airpods/airpods-pro-3",
+    "snippet": "AirPods Pro 3 không đi kèm bộ tiếp hợp nguồn hoặc Cáp Sạc USB-C. Chúng tôi khuyến khích bạn sử dụng bất kỳ bộ tiếp hợp nguồn hoặc cáp sạc USB-C nào tương thích.",
+    "position": 5
+   },
+   {
+    "title": "Apple giới thiệu AirPods 5 với tính năng Chủ Động Khử ...",
+    "link": "https://www.apple.com/vn/newsroom/2026/09/apple-introduces-airpods-5-featuring-best-in-class-open-ear-active-noise-cancellation/",
+    "snippet": "... nghe. Thời lượng pin cũng được cải thiện với thời gian nghe lên đến năm giờ khi bật Chủ Động Khử Tiếng Ồn chỉ với một lần sạc — lâu hơn một giờ ...",
+    "date": "10 thg 9, 2026",
+    "position": 6
+   },
+   {
+    "title": "AirPods Max 2",
+    "link": "https://www.apple.com/vn/airpods-max/",
+    "snippet": "Thời gian nghe nhạc hoặc xem phim lên đến 20 giờ khi bật tính năng Chủ ... Thời lượng pin lên đến 8 giờ với một lần sạc khi bật tính năng Chủ Động Khử ...",
+    "position": 7
+   },
+   {
+    "title": "AirPods - Apple (VN)",
+    "link": "https://www.apple.com/vn/airpods/",
+    "snippet": "Thời lượng pin lên đến 5 giờ với một lần sạc khi bật tính năng Chủ Động Khử Tiếng Ồn và lên đến 22 giờ khi có hộp sạc và bật Chủ Động Khử Tiếng Ồn.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

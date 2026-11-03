@@ -1,0 +1,521 @@
+# iOS CI — compile the app and run the TappyAITests unit tests on the iOS Simulator.
+#
+# Build-only gate: no code signing, no archive, no upload, no secrets. Config/Secrets.xcconfig
+# is gitignored and optional (`#include?`), so the build uses the placeholder values in
+# Config/Debug.xcconfig.
+name: iOS
+
+on:
+  pull_request:
+    paths:
+      - "ios/**"
+      - ".github/workflows/ios.yml"
+  # The iOS session works on its own branch and has no Mac: this run is where its Swift compiles.
+  push:
+    branches: ["ios/**"]
+    paths:
+      - "ios/**"
+      - ".github/workflows/ios.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: ios-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    name: Build + TappyAITests
+    runs-on: macos-latest
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: ios
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Show toolchain
+        run: |
+          xcodebuild -version
+          swift --version
+
+      # Apple requires Xcode 26 or later for App Store / TestFlight uploads (since 2026-04-28:
+      # https://developer.apple.com/news/upcoming-requirements/). Not pinned to one version: the runner's
+      # default is used, and the build stops here if it ever falls below 26.
+      - name: Guard - Xcode 26 or later
+        run: |
+          major=$(xcodebuild -version | awk '/^Xcode/ {split($2,v,"."); print v[1]}')
+          echo "Xcode major version: ${major:-unknown}"
+          [ "${major:-0}" -ge 26 ] || { echo "::error::Xcode ${major:-unknown} on this runner; Apple requires Xcode 26 or later"; exit 1; }
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode project
+        run: |
+          xcodegen generate
+          mkdir -p build
+
+      - name: Pick iOS Simulator
+        id: sim
+        run: |
+          UDID=$(xcrun simctl list devices available -j | python3 -c '
+          import json, sys
+          data = json.load(sys.stdin)["devices"]
+          ios = sorted((k for k in data if "iOS" in k), reverse=True)
+          for runtime in ios:
+              for d in data[runtime]:
+                  if d["name"].startswith("iPhone"):
+                      print(d["udid"]); sys.exit(0)
+          sys.exit(1)
+          ')
+          echo "Using simulator $UDID"
+          echo "udid=$UDID" >> "$GITHUB_OUTPUT"
+
+      - name: Build (iOS Simulator)
+        run: |
+          set -o pipefail
+          xcodebuild build \
+            -project TappyAI.xcodeproj \
+            -scheme TappyAI \
+            -configuration Debug \
+            -destination "id=${{ steps.sim.outputs.udid }}" \
+            -derivedDataPath build/DerivedData \
+            -skipPackagePluginValidation \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            | tee build/xcodebuild-build.log
+
+      # A4 evidence: which privacy manifests the built app really carries (ours + the SDKs'), and the exact
+      # package versions this build resolved. Apple merges the SDK manifests into the app's Privacy Report.
+      - name: Privacy manifests in the built app
+        run: |
+          app=build/DerivedData/Build/Products/Debug-iphonesimulator/TappyAI.app
+          {
+            echo "### Privacy manifests inside TappyAI.app"
+            echo '| manifest | required-reason API categories |'
+            echo '|---|---|'
+            find "$app" -name PrivacyInfo.xcprivacy | sort | while read -r f; do
+              cats="$(plutil -convert xml1 -o - "$f" 2>/dev/null | grep -o 'NSPrivacyAccessedAPICategory[A-Za-z]*' | sed 's/NSPrivacyAccessedAPICategory//' | sort -u | tr '\n' ' ')"
+              echo "| \`${f#$app/}\` | ${cats:-none} |"
+            done
+            echo
+            echo "### Package versions resolved by this build"
+            resolved="$(find . -name Package.resolved -path '*swiftpm*' | head -1)"
+            if [ -n "$resolved" ]; then
+              python3 -c '
+          import json, sys
+          d = json.load(open(sys.argv[1]))
+          pins = d.get("pins") or d.get("object", {}).get("pins", [])
+          for p in sorted(pins, key=lambda p: p.get("identity") or p.get("package", "")):
+              s = p.get("state", {})
+              print("- %s %s" % (p.get("identity") or p.get("package"), s.get("version") or s.get("revision", "")[:10]))
+          ' "$resolved"
+            else
+              echo "(no Package.resolved found)"
+            fi
+          } | tee build/privacy-manifests.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Test (TappyAITests)
+        run: |
+          set -o pipefail
+          xcodebuild test \
+            -project TappyAI.xcodeproj \
+            -scheme TappyAI \
+            -configuration Debug \
+            -destination "id=${{ steps.sim.outputs.udid }}" \
+            -derivedDataPath build/DerivedData \
+            -skipPackagePluginValidation \
+            -only-testing:TappyAITests \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            | tee build/xcodebuild-test.log
+
+      # macOS minutes cost ten times on a private repository, and the UI tests are 18 of the 32 minutes: on a push they run only when the
+      # commit message contains [shots]; a pull request or a manual run always runs them.
+      # ── Screenshot evidence ────────────────────────────────────────────────────────────────
+      # UI tests open each screen against a fixture backend (scripts/ui_stub_server.py on
+      # localhost:3000 — the address the Debug build already targets) and attach a full-screen
+      # screenshot. A screen is PASS only when its screenshot exists; the exported images are paired
+      # with the Android reference image and uploaded as the `ios-screenshots` artifact.
+      - name: Start fixture backend
+        if: (github.event_name != 'push' || contains(github.event.head_commit.message, '[shots]'))
+        run: |
+          nohup python3 scripts/ui_stub_server.py 3000 > build/stub.log 2>&1 &
+          for i in $(seq 1 20); do curl -sf http://127.0.0.1:3000/api/config > /dev/null && break; sleep 1; done
+          curl -sf http://127.0.0.1:3000/api/config | head -c 120; echo
+
+      - name: Prepare simulator (boot, allow location)
+        if: (github.event_name != 'push' || contains(github.event.head_commit.message, '[shots]'))
+        run: |
+          xcrun simctl boot "${{ steps.sim.outputs.udid }}" || true
+          xcrun simctl bootstatus "${{ steps.sim.outputs.udid }}" -b
+          xcrun simctl privacy "${{ steps.sim.outputs.udid }}" grant location com.tappyai.ios.debug || true
+
+      - name: UI tests (screenshots)
+        if: (github.event_name != 'push' || contains(github.event.head_commit.message, '[shots]'))
+        run: |
+          set -o pipefail
+          rm -rf build/ui.xcresult
+          xcodebuild test \
+            -project TappyAI.xcodeproj \
+            -scheme TappyAI \
+            -configuration Debug \
+            -destination "id=${{ steps.sim.outputs.udid }}" \
+            -derivedDataPath build/DerivedData \
+            -skipPackagePluginValidation \
+            -only-testing:TappyAIUITests/ScreenshotTests \
+            -resultBundlePath build/ui.xcresult \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            | tee build/xcodebuild-ui.log
+
+      - name: Export + pair screenshots
+        if: always() && (github.event_name != 'push' || contains(github.event.head_commit.message, '[shots]'))
+        run: |
+          [ -d build/ui.xcresult ] || { echo "::error::no UI test result bundle"; exit 1; }
+          rm -rf build/ui-attachments build/shots build/pairs
+          xcrun xcresulttool export attachments --path build/ui.xcresult --output-path build/ui-attachments
+          python3 scripts/export_shots.py build/ui-attachments build/shots
+          python3 -m pip install --quiet --break-system-packages pillow
+          python3 scripts/pair_evidence.py build/shots .. build/pairs
+          echo "### iOS screenshots" >> "$GITHUB_STEP_SUMMARY"
+          cat build/pairs/pairs.md >> "$GITHUB_STEP_SUMMARY"
+          # PASS only with photos: 8 screens + 5 share cards + 2 config-failure screens + 3 signed-in hub + deals
+          # + 3 MOB-1 refusals (Zalo no state / foreign state / external link) + 5 Home V3 (L12)
+          # + 5 ask card v2 areas + 4 Settings (member top/bottom, guest top/bottom) + 7 safety (report, block,
+          # comments, blocked list) + 3 account deletion + 1 Sign in with Apple + 6 plan card v2.
+          count=$(ls build/shots/*.png 2>/dev/null | wc -l | tr -d ' ')
+          echo "screenshots: $count"
+          [ "$count" -ge 63 ] || { echo "::error::expected 63 screenshots, got $count"; exit 1; }
+
+      - name: Upload screenshots
+        if: always() && (github.event_name != 'push' || contains(github.event.head_commit.message, '[shots]'))
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-screenshots
+          path: |
+            ios/build/shots
+            ios/build/pairs
+            ios/build/ui.xcresult
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Error summary
+        if: failure()
+        run: |
+          for f in build/xcodebuild-build.log build/xcodebuild-test.log build/xcodebuild-ui.log build/stub.log; do
+            [ -f "$f" ] || continue
+            echo "=== $f ==="
+            grep -E "(error:|: error |Test Case .* failed|\*\* (BUILD|TEST) FAILED)" "$f" | sort -u | head -300 || true
+            echo "unique errors: $(grep -E 'error:' "$f" | sort -u | wc -l)"
+          done
+
+  # Signed Release archive, uploaded to TestFlight. Manual only (workflow_dispatch): it spends an
+  # App Store build number and needs the signing secrets, so it must never fire from a PR.
+  #
+  # Signing is MANUAL: an Apple Distribution certificate (.p12) and an App Store profile, both
+  # from repository secrets. Automatic signing archives with a *development* profile, which Apple
+  # refuses to create for a team with no registered devices (run #13), and it would also mint a
+  # new development certificate on every fresh runner until the account hit its cap. The App
+  # Store Connect API key is still used, but only to upload.
+  testflight:
+    name: Archive + upload to TestFlight
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: macos-latest
+    timeout-minutes: 100   # ~25 min build/upload + up to 45 min waiting on Apple's processing
+    defaults:
+      run:
+        working-directory: ios
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      # CFBundleVersion must increase on every upload; the workflow run number always does.
+      BUILD_NUMBER: ${{ github.run_number }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Show toolchain
+        run: |
+          xcodebuild -version
+          echo "CFBundleVersion for this upload: $BUILD_NUMBER"
+          major=$(xcodebuild -version | awk '/^Xcode/ {split($2,v,"."); print v[1]}')
+          [ "${major:-0}" -ge 26 ] || { echo "::error::Xcode ${major:-unknown} on this runner; Apple requires Xcode 26 or later for uploads (https://developer.apple.com/news/upcoming-requirements/)"; exit 1; }
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      # xcodebuild and altool both look for AuthKey_<id>.p8 under ~/private_keys.
+      - name: Write App Store Connect API key
+        env:
+          ASC_KEY_P8_BASE64: ${{ secrets.ASC_KEY_P8_BASE64 }}
+        run: |
+          for v in ASC_KEY_P8_BASE64 ASC_KEY_ID ASC_ISSUER_ID APPLE_TEAM_ID; do
+            [ -n "${!v}" ] || { echo "::error::secret $v is not set"; exit 1; }
+          done
+          mkdir -p "$HOME/private_keys"
+          key="$HOME/private_keys/AuthKey_${ASC_KEY_ID}.p8"
+          printf '%s' "$ASC_KEY_P8_BASE64" | base64 --decode > "$key"
+          chmod 600 "$key"
+          head -1 "$key" | grep -qx -- '-----BEGIN PRIVATE KEY-----' || { echo "::error::ASC_KEY_P8_BASE64 did not decode to a PEM private key"; exit 1; }
+          echo "ASC_KEY_PATH=$key" >> "$GITHUB_ENV"
+
+      # Runtime config the app reads from Info.plist (Config/*.xcconfig include it LAST, so it
+      # overrides their placeholders). A missing value stops the run: a placeholder build would
+      # upload fine and then fail every request on the tester's phone.
+      - name: Write Config/Secrets.xcconfig
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          TAPPY_API_BASE_URL: ${{ secrets.TAPPY_API_BASE_URL }}
+        run: |
+          for v in SUPABASE_URL SUPABASE_ANON_KEY TAPPY_API_BASE_URL; do
+            [ -n "${!v}" ] || { echo "::error::secret $v is not set; refusing to ship a placeholder build"; exit 1; }
+          done
+          # `//` starts a comment in an xcconfig, so a URL is written as https:/$()/host.
+          xc_url() { printf '%s' "${1%/}" | sed 's|//|/$()/|'; }
+          {
+            echo '// Written by CI for this run only; removed by the cleanup step.'
+            echo "SUPABASE_URL = $(xc_url "$SUPABASE_URL")"
+            echo "SUPABASE_ANON_KEY = $SUPABASE_ANON_KEY"
+            echo "TAPPY_API_BASE_URL = $(xc_url "$TAPPY_API_BASE_URL")"
+          } > Config/Secrets.xcconfig
+          echo "Secrets.xcconfig defines: $(grep -oE '^[A-Z_]+' Config/Secrets.xcconfig | xargs)"
+
+      # A TestFlight build must talk to PRODUCTION, reachable with NO bypass header: build 50 pointed at the
+      # UAT host, which sits behind Vercel SSO (302), so every tester saw "cannot load config". Never put the
+      # Vercel bypass secret in a build — an installed app can be unpacked. This step refuses a build that
+      # would need one. Only the host name is printed, never a key.
+      - name: Refuse a build that is not pointed at production
+        env:
+          TAPPY_API_BASE_URL: ${{ secrets.TAPPY_API_BASE_URL }}
+        run: |
+          base="${TAPPY_API_BASE_URL%/}"
+          host="$(printf '%s' "$base" | sed -E 's|^https?://([^/:]+).*|\1|')"
+          echo "API host for this build: $host"
+          case "$host" in
+            www.tappyai.com|tappyai.com) ;;
+            *) echo "::error::TAPPY_API_BASE_URL host is '$host', not production (www.tappyai.com). Refusing to ship."; exit 1 ;;
+          esac
+          case "$base" in https://*) ;; *) echo "::error::TAPPY_API_BASE_URL is not https"; exit 1 ;; esac
+          code="$(curl -sS -o "$RUNNER_TEMP/prod-config.json" -w '%{http_code}' --max-time 30 "$base/api/config" || echo 000)"
+          echo "GET /api/config (no bypass header) -> HTTP $code"
+          [ "$code" = "200" ] || { echo "::error::production /api/config answered $code without a bypass header; a tester's phone would get the same"; exit 1; }
+          # What Apple's reviewer will find on THIS server (they run the build against production). None of
+          # these stops a TestFlight build; each is a warning naming the App Review rule it would break.
+          python3 - "$RUNNER_TEMP/prod-config.json" <<'PY'
+          import json, sys
+          try:
+              cfg = json.load(open(sys.argv[1]))
+          except Exception:
+              print("::warning::production /api/config is not JSON; store-readiness flags not checked"); sys.exit(0)
+          flags, p8 = cfg.get("flags") or {}, cfg.get("p8") or {}
+          providers = [p.get("id") for p in (cfg.get("auth") or {}).get("providers", []) if p.get("enabled")]
+          checks = [
+              (flags.get("accountSelfDelete") is True, "accountSelfDelete", "5.1.1(v): account deletion must start inside the app (IOS-REQUESTS I10)"),
+              (p8.get("userBlocks") is True and p8.get("reports") is True, "p8.userBlocks + p8.reports", "1.2: report + block user-generated content (I7)"),
+              (flags.get("appleSignIn") is True or "apple" in providers, "Sign in with Apple", "4.8: required because Google/Zalo sign-in exist (I8)"),
+          ]
+          for ok, name, rule in checks:
+              print(("ok      " if ok else "MISSING ") + name)
+              if not ok:
+                  print("::warning::production has no " + name + " - App Review " + rule)
+          PY
+          # I6 / R24: a native Zalo sign-in must be refused unless it carries an app_state. If production does not
+          # have it yet, this build's Zalo sign-in cannot work (the app refuses a callback with no state).
+          loc="$(curl -sS -o /dev/null -w '%{redirect_url}' --max-time 30 "$base/api/auth/zalo?platform=ios" || true)"
+          case "$loc" in
+            *app_state_invalid*) echo "I6 is live on production (an ios sign-in without app_state is refused)." ;;
+            *) echo "::warning::production does not refuse /api/auth/zalo?platform=ios without app_state - I6 is not live there, Zalo sign-in on this build will be refused by the app" ;;
+          esac
+
+      # Push (Firebase Cloud Messaging). The plist comes from the Firebase Console (iOS app
+      # com.tappyai.ios) and is never committed. Without it the build still ships, with push inactive
+      # (FirebaseSetup.isAvailable is false) — so a missing secret is a warning, not a stop.
+      - name: Write GoogleService-Info.plist
+        env:
+          GOOGLE_SERVICE_INFO_PLIST_BASE64: ${{ secrets.GOOGLE_SERVICE_INFO_PLIST_BASE64 }}
+        run: |
+          if [ -n "$GOOGLE_SERVICE_INFO_PLIST_BASE64" ]; then
+            printf '%s' "$GOOGLE_SERVICE_INFO_PLIST_BASE64" | base64 --decode > TappyAI/Resources/GoogleService-Info.plist
+            plutil -lint TappyAI/Resources/GoogleService-Info.plist
+            echo "GoogleService-Info.plist written; bundle id: $(plutil -extract BUNDLE_ID raw -o - TappyAI/Resources/GoogleService-Info.plist)"
+          else
+            echo "::warning::GOOGLE_SERVICE_INFO_PLIST_BASE64 is not set - this build has NO push notifications"
+          fi
+
+      # A throwaway keychain holds the distribution identity for this job only; the cleanup step
+      # deletes it. Xcode 16+ reads profiles from UserData, older Xcode from MobileDevice.
+      - name: Install distribution certificate + App Store profile
+        env:
+          DIST_CERT_P12_BASE64: ${{ secrets.DIST_CERT_P12_BASE64 }}
+          DIST_CERT_P12_PASSWORD: ${{ secrets.DIST_CERT_P12_PASSWORD }}
+          APPSTORE_PROFILE_BASE64: ${{ secrets.APPSTORE_PROFILE_BASE64 }}
+        run: |
+          for v in DIST_CERT_P12_BASE64 DIST_CERT_P12_PASSWORD APPSTORE_PROFILE_BASE64; do
+            [ -n "${!v}" ] || { echo "::error::secret $v is not set"; exit 1; }
+          done
+          keychain="$RUNNER_TEMP/signing.keychain-db"
+          kc_pass="$(openssl rand -hex 24)"
+          security create-keychain -p "$kc_pass" "$keychain"
+          security set-keychain-settings -lut 21600 "$keychain"
+          security unlock-keychain -p "$kc_pass" "$keychain"
+          p12="$RUNNER_TEMP/dist.p12"
+          printf '%s' "$DIST_CERT_P12_BASE64" | base64 --decode > "$p12"
+          security import "$p12" -P "$DIST_CERT_P12_PASSWORD" -A -t cert -f pkcs12 -k "$keychain"
+          rm -f "$p12"
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$kc_pass" "$keychain" > /dev/null
+          security list-keychains -d user -s "$keychain" $(security list-keychains -d user | xargs)
+          echo "--- signing identities in the job keychain"
+          security find-identity -v -p codesigning "$keychain"
+          security find-identity -v -p codesigning "$keychain" | grep -q '"Apple Distribution' || { echo "::error::no valid Apple Distribution identity after import"; exit 1; }
+
+          profile="$RUNNER_TEMP/appstore.mobileprovision"
+          printf '%s' "$APPSTORE_PROFILE_BASE64" | base64 --decode > "$profile"
+          security cms -D -i "$profile" > "$RUNNER_TEMP/profile.plist"
+          uuid="$(plutil -extract UUID raw -o - "$RUNNER_TEMP/profile.plist")"
+          name="$(plutil -extract Name raw -o - "$RUNNER_TEMP/profile.plist")"
+          for dir in "$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles" "$HOME/Library/MobileDevice/Provisioning Profiles"; do
+            mkdir -p "$dir"
+            cp "$profile" "$dir/$uuid.mobileprovision"
+          done
+          echo "profile: $name ($uuid), expires $(plutil -extract ExpirationDate raw -o - "$RUNNER_TEMP/profile.plist")"
+          {
+            echo "SIGNING_KEYCHAIN=$keychain"
+            echo "PROFILE_UUID=$uuid"
+            echo "PROFILE_NAME=$name"
+          } >> "$GITHUB_ENV"
+          # Target-level only: Release.xcconfig is the TappyAI target's config file, so the
+          # profile applies to the app and not to the Swift packages (which reject a profile).
+          echo "PROVISIONING_PROFILE_SPECIFIER = $uuid" >> Config/Secrets.xcconfig
+
+      - name: Generate Xcode project
+        run: |
+          xcodegen generate
+          mkdir -p build
+
+      - name: Archive (Release, signed)
+        run: |
+          set -o pipefail
+          args=(
+            -project TappyAI.xcodeproj
+            -scheme TappyAI
+            -configuration Release
+            -destination 'generic/platform=iOS'
+            -archivePath build/TappyAI.xcarchive
+            -skipPackagePluginValidation
+            # Style, identity and team are safe on the command line (they reach the Swift
+            # packages too, which is harmless). The profile is NOT: it comes from the
+            # target-level Secrets.xcconfig written in the install step.
+            CODE_SIGN_STYLE=Manual
+            CODE_SIGN_IDENTITY="Apple Distribution"
+            DEVELOPMENT_TEAM="$APPLE_TEAM_ID"
+            OTHER_CODE_SIGN_FLAGS="--keychain $SIGNING_KEYCHAIN"
+            CURRENT_PROJECT_VERSION="$BUILD_NUMBER"
+          )
+          xcodebuild archive "${args[@]}" 2>&1 | tee build/archive.log
+
+      # Proves the archive carries real config and that the entitlements were signed in, without
+      # printing a value (the URLs and the anon key are secrets and would be masked anyway).
+      - name: Verify the archive
+        run: |
+          app=build/TappyAI.xcarchive/Products/Applications/TappyAI.app
+          pb() { /usr/libexec/PlistBuddy -c "Print :$1" "$app/Info.plist" 2>/dev/null; }
+          echo "CFBundleIdentifier            $(pb CFBundleIdentifier)"
+          echo "CFBundleShortVersionString    $(pb CFBundleShortVersionString)"
+          echo "CFBundleVersion               $(pb CFBundleVersion)"
+          echo "ITSAppUsesNonExemptEncryption $(pb ITSAppUsesNonExemptEncryption)"
+          anon="$(pb SUPABASE_ANON_KEY)"
+          echo "SUPABASE_ANON_KEY length      ${#anon}"
+          case "$(pb SUPABASE_URL) $anon $(pb TAPPY_API_BASE_URL)" in
+            *YOUR-PROJECT*|*REPLACE_ME*|*localhost*)
+              echo "::error::the archive still carries placeholder config"; exit 1 ;;
+          esac
+          [ "$(pb CFBundleVersion)" = "$BUILD_NUMBER" ] || { echo "::error::CFBundleVersion is not $BUILD_NUMBER"; exit 1; }
+          # Production host, and no Vercel bypass key anywhere in the app's Info.plist.
+          case "$(pb TAPPY_API_BASE_URL)" in
+            https://www.tappyai.com|https://tappyai.com) echo "API base                      production" ;;
+            *) echo "::error::the archive's API base is not production"; exit 1 ;;
+          esac
+          if plutil -p "$app/Info.plist" | grep -qi 'bypass'; then
+            echo "::error::a bypass value is present in Info.plist"; exit 1
+          fi
+          echo "--- signed entitlements"
+          codesign -d --entitlements - --xml "$app" 2>/dev/null | plutil -convert xml1 -o - - | grep -E '<key>|<string>' | sed -E 's/^[[:space:]]+//'
+
+      - name: Export + upload to App Store Connect
+        run: |
+          set -o pipefail
+          write_plist() {
+            /usr/libexec/PlistBuddy -c "Add :method string app-store-connect" \
+              -c "Add :destination string $1" \
+              -c "Add :teamID string $APPLE_TEAM_ID" \
+              -c "Add :signingStyle string manual" \
+              -c "Add :signingCertificate string Apple Distribution" \
+              -c "Add :provisioningProfiles dict" \
+              -c "Add :provisioningProfiles:com.tappyai.ios string $PROFILE_UUID" \
+              -c "Add :manageAppVersionAndBuildNumber bool false" \
+              -c "Add :uploadSymbols bool true" \
+              "build/ExportOptions-$1.plist" > /dev/null
+          }
+          write_plist upload
+          write_plist export
+          # The API key is used here only to authenticate the upload; signing is manual.
+          auth=(
+            -allowProvisioningUpdates
+            -authenticationKeyPath "$ASC_KEY_PATH"
+            -authenticationKeyID "$ASC_KEY_ID"
+            -authenticationKeyIssuerID "$ASC_ISSUER_ID"
+          )
+          if xcodebuild -exportArchive -archivePath build/TappyAI.xcarchive \
+              -exportOptionsPlist build/ExportOptions-upload.plist -exportPath build/upload \
+              "${auth[@]}" 2>&1 | tee build/export-upload.log; then
+            echo "Uploaded by xcodebuild -exportArchive (destination=upload)."
+          else
+            echo "::warning::xcodebuild upload failed; exporting an IPA and uploading with altool instead"
+            xcodebuild -exportArchive -archivePath build/TappyAI.xcarchive \
+              -exportOptionsPlist build/ExportOptions-export.plist -exportPath build/ipa \
+              "${auth[@]}" 2>&1 | tee build/export-ipa.log
+            xcrun altool --upload-app -t ios -f build/ipa/TappyAI.ipa \
+              --apiKey "$ASC_KEY_ID" --apiIssuer "$ASC_ISSUER_ID" 2>&1 | tee build/altool.log
+          fi
+          echo "### TestFlight upload: build $BUILD_NUMBER" >> "$GITHUB_STEP_SUMMARY"
+
+      # "Upload succeeded" only means the file arrived. Apple processes it afterwards and can
+      # still reject it (build 16: ITMS-90683, missing NSSpeechRecognitionUsageDescription) while
+      # the run stays green. Wait for the verdict so a green run means a usable TestFlight build.
+      - name: Wait for App Store Connect processing
+        run: python3 scripts/asc_wait_for_build.py
+
+      - name: Error summary
+        if: failure()
+        run: |
+          for f in build/archive.log build/export-upload.log build/export-ipa.log build/altool.log; do
+            [ -f "$f" ] || continue
+            echo "=== $f ==="
+            grep -E "(error:|: error |ERROR ITMS|\*\* (ARCHIVE|EXPORT) FAILED|No profiles|No signing certificate|requires a provisioning profile|has no devices|doesn't match|doesn't include|errSecInternalComponent)" "$f" | sort -u | head -80 || true
+          done
+
+      # Always runs, including after a failure or a cancel: the keys, the signing identity, the
+      # profile and the config must not outlive the job on the runner.
+      - name: Remove key material from the runner
+        if: always()
+        working-directory: .
+        run: |
+          rm -rf "$HOME/private_keys"
+          rm -f ios/Config/Secrets.xcconfig ios/TappyAI/Resources/GoogleService-Info.plist
+          if [ -n "${SIGNING_KEYCHAIN:-}" ] && [ -f "$SIGNING_KEYCHAIN" ]; then
+            security delete-keychain "$SIGNING_KEYCHAIN" || true
+          fi
+          if [ -n "${PROFILE_UUID:-}" ]; then
+            rm -f "$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles/$PROFILE_UUID.mobileprovision" \
+                  "$HOME/Library/MobileDevice/Provisioning Profiles/$PROFILE_UUID.mobileprovision"
+          fi
+          rm -f "$RUNNER_TEMP/dist.p12" "$RUNNER_TEMP/appstore.mobileprovision" "$RUNNER_TEMP/profile.plist"
+          echo "removed: API key, Secrets.xcconfig, signing keychain, App Store profile"

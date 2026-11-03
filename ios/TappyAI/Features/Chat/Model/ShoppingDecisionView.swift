@@ -22,6 +22,10 @@ struct ShoppingOfferView: Codable, Equatable, Sendable {
     let price: Double?
     let currency: String?
     let condition: String?
+    /// The rating THIS listing carries (never the entity's) and its review count — the server's, shown beside the price (web `Rating`).
+    /// `var` with a default so older markers decode as before and existing call sites keep their memberwise form.
+    var rating: Double? = nil
+    var ratingCount: Int? = nil
 }
 
 /// A Commerce Link the platform attached to a product entity (web `SynthesisCommerceView`,
@@ -141,6 +145,9 @@ struct ShoppingEntityView: Codable, Equatable, Sendable, Identifiable {
     let commerce: ShoppingCommerceView?
     /// Every Commerce Link CCP attached, in CCP's ranking order.
     let commerceLinks: [ShoppingCommerceView]?
+    /// The stated configuration as data (chip / ram / storage / size) and the seller's condition, shown as chips (web `Specs`).
+    let specs: [ShoppingSpecView]
+    let condition: ShoppingConditionView?
 
     var id: String { key }
 
@@ -162,7 +169,9 @@ struct ShoppingEntityView: Codable, Equatable, Sendable, Identifiable {
         image: String? = nil,
         offers: [ShoppingOfferView] = [],
         commerce: ShoppingCommerceView? = nil,
-        commerceLinks: [ShoppingCommerceView]? = nil
+        commerceLinks: [ShoppingCommerceView]? = nil,
+        specs: [ShoppingSpecView] = [],
+        condition: ShoppingConditionView? = nil
     ) {
         self.key = key
         self.config = config
@@ -174,6 +183,8 @@ struct ShoppingEntityView: Codable, Equatable, Sendable, Identifiable {
         self.offers = offers
         self.commerce = commerce
         self.commerceLinks = commerceLinks
+        self.specs = specs
+        self.condition = condition
     }
 
     // Defaults on decode: a field the server omitted must not fail the whole decision, but it must
@@ -188,9 +199,13 @@ struct ShoppingEntityView: Codable, Equatable, Sendable, Identifiable {
         priceLow = try? c.decode(Double.self, forKey: .priceLow)
         priceHigh = try? c.decode(Double.self, forKey: .priceHigh)
         image = try? c.decode(String.self, forKey: .image)
-        offers = (try? c.decode([ShoppingOfferView].self, forKey: .offers)) ?? []
+        offers = c.lossyArray(ShoppingOfferView.self, forKey: .offers)
         commerce = try? c.decode(ShoppingCommerceView.self, forKey: .commerce)
-        commerceLinks = try? c.decode([ShoppingCommerceView].self, forKey: .commerceLinks)
+        // nil when absent (a stored marker from before commerceLinks), lossy when present.
+        commerceLinks = c.contains(.commerceLinks) ? c.lossyArray(ShoppingCommerceView.self, forKey: .commerceLinks) : nil
+        // Absent in an older marker: no specs, no condition. One odd spec costs only itself.
+        specs = c.lossyArray(ShoppingSpecView.self, forKey: .specs)
+        condition = try? c.decode(ShoppingConditionView.self, forKey: .condition)
     }
 }
 
@@ -226,7 +241,7 @@ struct ShoppingRecommendationView: Codable, Equatable, Sendable {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         entityKey = try? c.decode(String.self, forKey: .entityKey)
         seller = try? c.decode(String.self, forKey: .seller)
-        reasons = (try? c.decode([ShoppingReason].self, forKey: .reasons)) ?? []
+        reasons = c.lossyArray(ShoppingReason.self, forKey: .reasons)
         tradeOff = try? c.decode(ShoppingReason.self, forKey: .tradeOff)
         conditional = (try? c.decode(Bool.self, forKey: .conditional)) ?? false
     }
@@ -248,7 +263,7 @@ struct ShoppingDecisionView: Codable, Equatable, Sendable {
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         v = (try? c.decode(Int.self, forKey: .v)) ?? 1
-        entities = (try? c.decode([ShoppingEntityView].self, forKey: .entities)) ?? []
+        entities = c.lossyArray(ShoppingEntityView.self, forKey: .entities)
         recommendation = try? c.decode(ShoppingRecommendationView.self, forKey: .recommendation)
     }
 }
@@ -265,19 +280,40 @@ enum ShoppingMatch {
 /// Free function because this is where the honesty rule is easiest to break: an empty string, a
 /// "0đ", or a low bound presented as a range would each be a claim the server never made.
 func shoppingPriceRangeText(low: Double?, high: Double?, unknown: String) -> String {
-    func compact(_ amount: Double) -> String {
-        let v = Int(amount)
-        if v >= 1_000_000 {
-            let millions = v / 1_000_000
-            let remainder = (v % 1_000_000) / 100_000
-            return remainder > 0 ? "\(millions).\(remainder) triệu" : "\(millions) triệu"
-        }
-        return "\(v / 1000)k"
+    // A price is a finite, non-negative number; anything else is not a claim the card can make.
+    func usable(_ x: Double?) -> Double? {
+        guard let x, x.isFinite, x >= 0 else { return nil }
+        return x
     }
-    switch (low, high) {
-    case let (l?, h?) where l != h: return "\(compact(l)) – \(compact(h))"
-    case let (l?, _): return compact(l)
-    case let (_, h?): return compact(h)
+    switch (usable(low), usable(high)) {
+    case let (l?, h?) where l != h:
+        let a = formatCompactVnd(l)
+        let b = formatCompactVnd(h)
+        return a == b ? a : "\(a) – \(b)"
+    case let (l?, _): return formatCompactVnd(l)
+    case let (_, h?): return formatCompactVnd(h)
     default: return unknown
     }
+}
+
+/// A compact price (port of Android `formatCompactVnd`). A price is never stated higher or lower than it is:
+/// 999.950 and up → "X triệu" rounded to one decimal, written with a comma as Vietnamese reads it ("25,8 triệu", 24.990.000 → "25 triệu");
+/// a round number of thousands → "250k"; anything else → the exact amount with dot thousands ("249.500đ", "500đ").
+/// The amount is cut to a whole number of đồng first and clamped, so no value can trap.
+func formatCompactVnd(_ amount: Double) -> String {
+    let v = Int64(max(0, min(amount.isFinite ? amount : 0, 1e15)).rounded(.towardZero))
+    if v >= 999_950 {
+        let tenths = (v + 50_000) / 100_000
+        let whole = tenths / 10
+        let decimal = tenths % 10
+        return decimal > 0 ? "\(whole),\(decimal) triệu" : "\(whole) triệu"
+    }
+    if v >= 1_000 && v % 1_000 == 0 { return "\(v / 1_000)k" }
+    let digits = Array(String(v))
+    var grouped = ""
+    for (i, digit) in digits.enumerated() {
+        if i > 0 && (digits.count - i) % 3 == 0 { grouped.append(".") }
+        grouped.append(digit)
+    }
+    return grouped + "đ"
 }

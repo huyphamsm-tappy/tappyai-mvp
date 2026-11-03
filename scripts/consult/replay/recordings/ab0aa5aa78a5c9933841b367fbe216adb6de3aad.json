@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook Air M1 cũ giá 9 triệu Việt Nam 2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:50:14.837Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Air M1 cũ giá 9 triệu Việt Nam 2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "MacBook cũ | Mac cũ uy tín, trả góp 0%, giảm đến 7 triệu",
+    "link": "https://cellphones.com.vn/hang-cu/mac.html",
+    "snippet": "... Apple MacBook Air M1 256GB 2020 - Cũ xước cấn. Trả góp 0%. : 12.290.000đ. 22.990.000đ. Giảm 47%. Smember giảm đến 123.000 ...",
+    "position": 1
+   },
+   {
+    "title": "Mua MacBook cũ GIÁ RẺ - Hà Nội",
+    "link": "https://onewaymobile.vn/macbook-cu",
+    "snippet": "MacBook Air M1 13 inch 2020 8CPU/7GPU - RAM 8GB - 256GB - 99% · 13.790.000đ 14.190.000đ ; MacBook Pro 13 inch 2020 M1 8CPU/8GPU - RAM 8GB - 256GB - 99% · 14.890.",
+    "position": 2
+   },
+   {
+    "title": "MacBook Air M1 CŨ năm 2026: Vẫn là \"vua\" phân khúc 12 triệu ...",
+    "link": "https://www.youtube.com/watch?v=hMFDlkwVM9w&xstg=CAMSBhUDze3xHw%3D%3D",
+    "snippet": "Bạn đang tìm kiếm một chiếc laptop ngon - bổ - rẻ trong tầm giá 12 triệu đồng vào năm 2026? Liệu chiếc MacBook Air M1 đã ra mắt 6 năm còn ...",
+    "position": 3
+   },
+   {
+    "title": "Bảng giá MacBook (Mới - Cũ) mới nhất 2026, cập nhật liên ...",
+    "link": "https://www.dienmayxanh.com/kinh-nghiem-hay/bang-gia-macbook-1539843?srsltid=AU7gw4UAxhYRXLrGWZxmkPKARr25lMrFx3FucQISlBlCJn6-FfNu9EBE",
+    "snippet": "Giá MacBook Air cũ ; Hình ảnh, Tên sản phẩm, Giá máy đổi trả ; Laptop Apple MacBook Air 15 inch M2 8GB/256GB Sạc 35W đã sử dụng, Từ 17.890.000₫ ...",
+    "date": "1 thg 6, 2026",
+    "position": 4
+   },
+   {
+    "title": "Mua Bán Macbook Cũ",
+    "link": "https://www.facebook.com/groups/muabanmacbookcu/",
+    "snippet": "Em ở HN muốn pass lại Macbook cho ai cần ạ, macbook air M1 8G/256G chuẩn bản US pin cao 96% đẹp như mới không lỗi lầm gì có thể kiểm tra thoải mái tặng kèm ...",
+    "position": 5
+   },
+   {
+    "title": "Top Most Worth-Buying MacBooks Under 25 Million in 2026",
+    "link": "https://www.youtube.com/watch?v=AKO_mTgbDyc&xstg=CAMSBhUDze3xHw%3D%3D",
+    "snippet": "... nam-hoc-moi_09082026) để nhận voucher đến 3 triệu tại ... giá nhất hiện nay: MacBook Neo, MacBook Air M3 và MacBook Pro M1 Pro ...",
+    "position": 6
+   },
+   {
+    "title": "MacBook Air M1 Cũ Có Còn Đáng Mua Năm 2026?",
+    "link": "https://didong3tot.com/blogs/blog-ky-thuat/macbook-air-m1-cu-co-dang-mua",
+    "snippet": "MacBook Air M1 có thiết kế nhôm nguyên khối đặc trưng của Apple. Một số ưu điểm nổi bật: thiết kế mỏng nhẹ. trọng lượng chỉ khoảng 1.29kg. hoàn ...",
+    "date": "11 thg 3, 2026",
+    "position": 7
+   },
+   {
+    "title": "MacBook Air M1 Cũ Có Còn Đáng Mua Năm 2026? Kinh ...",
+    "link": "https://nguyenkstore.com/2026/07/14/macbook-air-m1-cu-co-con-dang-mua-2026/",
+    "snippet": "Nếu ngân sách khoảng 12–15 triệu đồng, MacBook Air M1 cũ vẫn là lựa chọn rất đáng giá. Máy đáp ứng tốt hầu hết nhu cầu phổ thông với chi phí hợp ...",
+    "date": "14 thg 7, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

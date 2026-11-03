@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Quán Bụi\" OR \"Bánh Mì Mẹ Ỉn\" OR \"Nhà Hàng Du Ký\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:34:09.010Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Quán Bụi\" OR \"Bánh Mì Mẹ Ỉn\" OR \"Nhà Hàng Du Ký\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quán Bụi Group (@quanbui_group)",
+    "link": "https://www.tiktok.com/@quanbui_group",
+    "snippet": "Những cảm nhận khách quan, chi tiết từ khách luôn là điều Quán Bụi trân · Bữa cơm tối chuẩn vị Việt tại Quán Bụi central #quanbuigroup #vietnamesefood # ...",
+    "position": 1
+   },
+   {
+    "title": "Bánh Mì Mẹ Ỉn: Một Hành Trình Ẩm Thực Đẹp",
+    "link": "https://www.tiktok.com/@luuquangminhpro/video/7557959775984585991",
+    "snippet": "Bánh Mì Mẹ Ỉn: Một Hành Trình Ẩm Thực Đẹp. Khám phá Bánh Mì Mẹ Ỉn với những đánh giá tuyệt vời từ thực khách. Chắc chắn sẽ làm bạn thèm thuồng!",
+    "position": 2
+   },
+   {
+    "title": "QUÁN BỤI & STIICKY THAI Toàn món ăn ngon! #quanbui ...",
+    "link": "https://www.tiktok.com/@diancungneenha/video/7676785732567977236",
+    "snippet": "3157 Lượt thích,29 Bình luận.Video TikTok từ Đi ăn cùng Nee nha ￼ (@diancungneenha): \"QUÁN BỤI & STIICKY THAI Toàn món ăn ngon!",
+    "position": 3
+   },
+   {
+    "title": "Review Quán Bụi: Ẩm Thực Việt Tại Quận 1 Sài Gòn",
+    "link": "https://www.tiktok.com/@ryan.di.tum.lum/video/7274894315871046930",
+    "snippet": "quán bụi nằm ở ngay Quận một Hồ Chí Minh. bạn nào hay đi cà phê casino. ngoài Nhật Bản á. thì quán này nằm ngay trong con đường. sát vách ...",
+    "position": 4
+   },
+   {
+    "title": "Bánh Mì Mẹ Ỉn, phục vụ cho khách du lịch, vậy có hợp với ...",
+    "link": "https://www.tiktok.com/@huynhhongocduc/video/7375451502808157457",
+    "snippet": "183 Lượt thích,Video TikTok từ Đức Tân Bình (@huynhhongocduc): \"Bánh Mì Mẹ Ỉn, phục vụ cho khách du lịch, vậy có hợp với khẩu vị người Sài ...",
+    "position": 5
+   },
+   {
+    "title": "Khám Phá Quán Bụi: Hương Vị Cơm Nhà Việt Nam",
+    "link": "https://www.tiktok.com/@nguyencongnuongw_/video/7535335656923335944",
+    "snippet": "Khám Phá Quán Bụi: Hương Vị Cơm Nhà Việt Nam. Trải nghiệm ẩm thực Việt Nam tại Quán Bụi, nơi mang đậm hương vị cơm nhà. Đừng bỏ lỡ! #review ...",
+    "position": 6
+   },
+   {
+    "title": "Quán Bụi Heritage: Món Ngon Đậm Phong Cách Việt Nam",
+    "link": "https://www.tiktok.com/@htvtintuc/video/7674865991259622677",
+    "snippet": "Quán Bụi Heritage giới thiệu set menu đặc biệt nhân dịp kỷ niệm 15 năm hoạt động, mang đến những trải nghiệm ẩm thực độc đáo đậm phong cách Việt Nam.",
+    "position": 7
+   },
+   {
+    "title": "Một đám cưới nhỏ xinh tại Quán Bụi Garden 3, nơi từng ...",
+    "link": "https://www.tiktok.com/@quanbui_group/video/7594683262455319828",
+    "snippet": "Một đám cưới nhỏ xinh tại Quán Bụi Garden 3, nơi từng bữa ăn, từng khoảnh khắc đều đủ đầy yêu thương. #vietnameserestaurant #amthuc #wedding # ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

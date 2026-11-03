@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Quán ăn ngon Sài Gòn\" OR \"Quán Bụi Original\" OR \"Ann Quán\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:00:51.695Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Quán ăn ngon Sài Gòn\" OR \"Quán Bụi Original\" OR \"Ann Quán\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ann Quán: Quan Họ, Bánh Trung Thu Truyền Thống & Ẩm ...",
+    "link": "https://www.tiktok.com/@vuthuphuong99/video/7669290094855359765",
+    "snippet": "Địa chỉ: 66 Ngô Đức Kế, Phường Bến Nghé, Quận 1, TPHCM. Hotline: 028 3622 6666. Keywords: Ann Quán, ẩm thực Bắc, bánh Trung Thu truyền thống, ...",
+    "position": 1
+   },
+   {
+    "title": "Quán ăn ngon Sài Gòn hôm nay ăn gì",
+    "link": "https://www.tiktok.com/@boodiann/video/7675346474011479314",
+    "snippet": "8275 Lượt thích,71 Bình luận.Video TikTok từ Boo tới ròi nèee (@boodiann): \"Gợi ý quán ăn ngon Sài Gòn, món nướng hấp dẫn và cảm nhận ...",
+    "position": 2
+   },
+   {
+    "title": "Đi ăn ở quán của người nổi tiếng - phần 1",
+    "link": "https://www.tiktok.com/@tuilathitkho/video/7494674160463924487",
+    "snippet": "69 Lượt thích,Video TikTok từ tuilathitkho (@tuilathitkho): \"Đi ăn ở quán của người nổi tiếng - phần 1: Ann Quán của Vũ Thu Phương ...",
+    "position": 3
+   },
+   {
+    "title": "Ngoại truyện về những miếng trầu têm cánh Phượng nhà ...",
+    "link": "https://www.tiktok.com/@annquanchuyenchuake/video/7692747897317739794",
+    "snippet": "2164 Lượt thích,Video TikTok từ Ann Quán chuyện chưa kể (@annquanchuyenchuake): \"Ngoại truyện về những miếng trầu têm cánh Phượng nhà Ann ...",
+    "position": 4
+   },
+   {
+    "title": "Mâm Đồ Ăn Chee Bee Burger Review - Quán Ăn Ngon Sài ...",
+    "link": "https://www.tiktok.com/@cheebeesosweet/video/7418469162802007304",
+    "snippet": "Mâm Đồ Ăn Chee Bee Burger Review - Quán Ăn Ngon Sài Gòn. Khám phá mâm đồ ăn Chee Bee Burger tại quán ăn ngon Sài Gòn. Review chân thực về ...",
+    "position": 5
+   },
+   {
+    "title": "Đón trung thu vẹn nguyên cùng gia đình với Ann Quán nhé ...",
+    "link": "https://www.tiktok.com/@vuthuphuong99/video/7685744424449477908",
+    "snippet": "Đón trung thu vẹn nguyên cùng gia đình với Ann Quán nhé cả nhà ơi, miễn phí hoang toàn cho các cụ ạ #vuthuphuong #xinhlunglinhhailinhtinh ...",
+    "position": 6
+   },
+   {
+    "title": "Ann Quán Quận 1: Review không gian mộc mạc, ẩm thực ...",
+    "link": "https://www.tiktok.com/@annquanchuyenchuake/video/7667778933378649352",
+    "snippet": "Ann Quán ở Quận 1 chọn nâng niu những giá trị mộc mạc: từ chiếc cột nhà cũ kỹ biến tấu thành gốc cây hoài niệm, đến từng góc bàn và mảng ...",
+    "position": 7
+   },
+   {
+    "title": "Quán ăn ngon Sài Gòn",
+    "link": "https://www.tiktok.com/@saigonvui0/photo/7690860748167286024",
+    "snippet": "Mưa gì thì mưa chứ mấy quán này vẫn phải đi ăn bằng được #gsm164 #gsm205 #ghiensaigon #saigonangi #quananngonsaigon. Quán ăn ngon Sài Gòn. Mưa ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

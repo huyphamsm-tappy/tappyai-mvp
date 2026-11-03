@@ -27,6 +27,8 @@ interface HeaderProps {
    * plain `router.back()` behaviour.
    */
   backFallbackHref?: string
+  /** A page with its own in-page steps (checkout): runs first; returning true means it stepped back itself. */
+  onBack?: () => boolean
   /**
    * A node, not just a string, so a caller can put the approved Tappy pose beside
    * the label. Every existing caller passes a string and is unaffected.
@@ -36,7 +38,7 @@ interface HeaderProps {
   hideLogo?: boolean
 }
 
-export default function Header({ user, showBack, backHref, backFallbackHref, title, hideLogo }: HeaderProps) {
+export default function Header({ user, showBack, backHref, backFallbackHref, onBack, title, hideLogo }: HeaderProps) {
   const router = useRouter()
   const { t, locale } = useTranslation()
   // C14 — one shared derivation; the fallback word comes from the dictionary, not a literal.
@@ -68,6 +70,7 @@ export default function Header({ user, showBack, backHref, backFallbackHref, tit
   // per-tab count; `history.length <= 1` was the earlier test and it under-counted
   // (a fresh tab's blank entry already makes it 2).
   const goBack = () => {
+    if (onBack?.() === true) return
     if (backFallbackHref) {
       goBackInApp(router, backFallbackHref)
       return

@@ -132,11 +132,11 @@ internal data class SmartTool(
  * [SMART_TOOLS], which drops Dịch and Viết nội dung while their flags are off.
  */
 internal val SMART_TOOL_CATALOGUE: List<SmartTool> = listOf(
+    SmartTool(SmartToolId.Safety, R.string.smart_tool_safety, R.string.smart_tool_safety_desc, Icons.Filled.VerifiedUser, SmartToolHue.Blue, R.drawable.tappy_recommendation, SmartToolGroup.Daily, home = true),
     SmartTool(SmartToolId.Scan, R.string.smart_tool_scan, R.string.smart_tool_scan_desc, Icons.Outlined.DocumentScanner, SmartToolHue.Blue, R.drawable.tappy_searching, SmartToolGroup.Daily, home = true),
     SmartTool(SmartToolId.Translate, R.string.smart_tool_translate, R.string.smart_tool_translate_desc, Icons.Filled.Translate, SmartToolHue.Indigo, R.drawable.tappy_speaking, SmartToolGroup.Daily, home = true),
     SmartTool(SmartToolId.Currency, R.string.smart_tool_currency, R.string.smart_tool_currency_desc, Icons.Filled.SwapHoriz, SmartToolHue.Emerald, R.drawable.tappy_deals, SmartToolGroup.Daily, home = true),
     SmartTool(SmartToolId.Split, R.string.smart_tool_split, R.string.smart_tool_split_desc, Icons.Filled.Calculate, SmartToolHue.Amber, R.drawable.tappy_welcome, SmartToolGroup.Daily, home = true),
-    SmartTool(SmartToolId.Safety, R.string.smart_tool_safety, R.string.smart_tool_safety_desc, Icons.Filled.VerifiedUser, SmartToolHue.Blue, R.drawable.tappy_recommendation, SmartToolGroup.Daily, home = true),
     SmartTool(SmartToolId.Together, R.string.smart_tool_together, R.string.smart_tool_together_desc, Icons.Filled.Group, SmartToolHue.Rose, R.drawable.tappy_food, SmartToolGroup.Discover, home = false, auth = true),
     SmartTool(SmartToolId.Fortune, R.string.smart_tool_fortune, R.string.smart_tool_fortune_desc, Icons.Filled.AutoAwesome, SmartToolHue.Violet, R.drawable.tappy_thinking, SmartToolGroup.Fun, home = false),
     SmartTool(SmartToolId.Captions, R.string.smart_tool_captions, R.string.smart_tool_captions_desc, Icons.Filled.Edit, SmartToolHue.Pink, R.drawable.tappy_phone, SmartToolGroup.Fun, home = false),

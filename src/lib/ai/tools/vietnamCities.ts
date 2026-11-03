@@ -90,7 +90,7 @@ const CITIES: Record<string, VietnamCity> = (() => {
     'ha long': haLong, 'halong': haLong, 'hong gai': haLong,
     'can tho': canTho, 'hai phong': haiPhong, 'nha trang': nhaTrang,
     'da lat': daLat, 'dalat': daLat, 'vung tau': vungTau,
-    'hoi an': hoiAn, 'phu quoc': phuQuoc, 'quy nhon': quyNhon,
+    'hoi an': hoiAn, 'phu quoc': phuQuoc, 'quy nhon': quyNhon, 'qui nhon': quyNhon,
     'sa pa': saPa, 'sapa': saPa, 'ninh binh': ninhBinh,
   }
 })()
@@ -144,6 +144,13 @@ export function cityInText(text: string | null | undefined): VietnamCity | null 
   if (!hay) return null
   const alias = ALIASES_BY_LENGTH.find((a) => aliasPattern(a).test(hay))
   return alias ? CITIES[alias] : null
+}
+
+/** Does the text name this city (any of its aliases, same whole-token rule as cityInText)? A text may name several cities; cityInText returns only one. */
+export function textNamesCity(text: string | null | undefined, city: VietnamCity): boolean {
+  const hay = normalizeVN((text ?? '').toLowerCase())
+  if (!hay) return false
+  return ALIASES_BY_LENGTH.some((a) => CITIES[a] === city && aliasPattern(a).test(hay))
 }
 
 /**

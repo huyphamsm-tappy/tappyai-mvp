@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Macbook Air M1 2020 (8GB/256GB) site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:03:38.809Z",
+ "body": {
+  "searchParameters": {
+   "q": "Macbook Air M1 2020 (8GB/256GB) site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "MacBook Air 2020 13.3 inch M1- Hàng Chính Hãng",
+    "link": "https://www.lazada.vn/products/pdp-i1040858590.html?srsltid=AU7gw4U8rhX_TjYIDbTF9p2x8VJOPOPFsY5vVnpJlXGbpoDI4RAAalO5",
+    "snippet": "Chip M1 tạo ra một cú nhảy vọt về hiệu năng máy học, CPU và GPU Tăng thời gian sử dụng với thời lượng pin lên đến 18 giờ1 CPU 8 lõi cho hiệu năng nhanh hơn ...",
+    "position": 1
+   },
+   {
+    "title": "MacBook Air 2020 13.3 inch M1- Hàng Chính Hãng",
+    "link": "https://www.lazada.vn/products/macbook-air-2020-133-inch-m1-hang-chinh-hang-i1040858590.html?srsltid=AU7gw4XJHF4KhzHU9hnixK3oiVP_78YEjmMFB0qUGk94WksHtblk0IXd",
+    "snippet": "Thông số. Thương hiệu,Loạt thẻ đồ họa,Loại bộ xử lý ; Trả góp. Trả góp trong 6 tháng, chỉ với 2.998.333 ₫ mỗi tháng. ; Giao hàng. Thành phố Hồ Chí Minh, Phường ...",
+    "position": 2
+   },
+   {
+    "title": "Laptop Apple Macbook Neo A18 PRO 8GB 256GB SSD",
+    "link": "https://www.lazada.vn/products/laptop-apple-macbook-neo-a18-pro-8gb-256gb-ssd-hang-chinh-hang-i13381128377-s116970112873.html?srsltid=AU7gw4WVUaZZ651nrUwOGEYkRUdGG0XKm1ftul7PVGhfFdTjeCcAgHdL",
+    "snippet": "LazMall Laptop Apple Macbook Neo A18 PRO 8GB 256GB SSD - Hàng Chính Hãng · 100% chính hãng · 30 ngày miễn phí trả hàng · Không áp dụng chính sách bảo hành.",
+    "position": 3
+   },
+   {
+    "title": "Máy tính xách tay Apple MacBook Neo 13 inch",
+    "link": "https://www.lazada.vn/products/may-tinh-xach-tay-apple-macbook-neo-13-inch-hang-chinh-hang-i13335434012.html?srsltid=AU7gw4XpignrdYMb-xgzkCGcEBTYkcYDQ3XzNUGF5CZa6Ti85S_4r_1s",
+    "snippet": "Thông số. Thương hiệu,Loạt thẻ đồ họa,Tốc độ khung hình màn hình ; Trả góp. Trả góp trong 12 tháng, chỉ với 1.499.917 ₫ mỗi tháng. ; Giao hàng. Thành phố Hồ Chí ...",
+    "rating": 5,
+    "ratingCount": 9,
+    "position": 4
+   },
+   {
+    "title": "Main macbook air a1465 2015",
+    "link": "https://www.lazada.vn/products/main-macbook-air-a1465-2015-i475342582.html?srsltid=AU7gw4U4-PB2WlhLUO1jcAcqlnKyCUt2GgC8EGJ6V8Ag-OUaQArBkumw",
+    "snippet": "EOM. Linh kiện chất lượng 95%. Bảo hành 3 tháng. Sản phẩm giống hình. Hàng tháo máy nhập khẩu. 1. Main laptop là bản mạch in chính trong thiết bị điện tử, ...",
+    "position": 5
+   },
+   {
+    "title": "【Exclusive Online Deals】 Matte Laptop Case For Macbook ...",
+    "link": "https://h5.lazada.vn/products/exclusive-online-deals-matte-laptop-case-for-macbook-air-pro-133-mac-book-retina-15-new-touch-bar-11-12-13-inch-laptop-cover-case-16-bag-i3011996510.html",
+    "snippet": "Style: Laptop Cases; Gender: Unisex; For MacBook Air M1 2020: M1 Chip Air 13 A2337; For MacBook Pro M1 2020: M1 Chip Pro 13 A2338; Touch ID Air 13 inch 2018 ...",
+    "position": 6
+   },
+   {
+    "title": "Tấm Che Màn Hình, Dán Chống Nhìn Trộm Cho Laptop ...",
+    "link": "https://www.lazada.vn/products/tam-che-man-hinh-dan-chong-nhin-trom-cho-laptop-macbook-pro-air-man-hinh-bao-mat-chong-tray-cho-nhieu-dong-may-i2393035344.html?srsltid=AU7gw4XQOzQTWoef_jdSAHmOJk3JnWvAkGcL4iajDJOo59HkPxCIBUEL",
+    "snippet": "Cực kì dễ dán ko sợ bong bóng và cát bụi. chỉ cần làm theo hướng dán có sẵn và đặt tấm che vào màn hình bạn đã có thể sử dụng tính năng của tấm che chống nhìn ...",
+    "rating": 4.2,
+    "ratingCount": 19,
+    "position": 7
+   },
+   {
+    "title": "Pin ASUS A41N1424,GL552 GL552V GL552VW GL552VX ...",
+    "link": "https://www.lazada.vn/products/pin-asus-a41n1424gl552-gl552v-gl552vw-gl552vx-gl552vxm-gl552j-gl552jx-48wh-new-zin-bao-hanh-loi-1-doi-1-i2587817462.html?srsltid=AU7gw4UmimNJvieIP5KJwuGgKRAtJ_I2H_OMhI7KLy2YPrqlJIW2MAHD",
+    "snippet": "+ Dung lượng pin sụt giảm quá 50% trong thời gian bảo hành. ... + Pin phồng, không nhận pin, sạc điện không vào pin. Trong trường hợp Quý Khách có thắc mắc hoặc ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

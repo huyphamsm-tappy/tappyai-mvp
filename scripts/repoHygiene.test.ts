@@ -1,0 +1,61 @@
+import { describe, it, expect } from 'vitest'
+import { execFileSync } from 'node:child_process'
+
+// Repo hygiene gate (owner 01/10). A `git add -A` once committed a UAT runtime-log dump (.uatlogs.jsonl), replay outputs (.d7*) and
+// 283 new Serper recordings. This runs in the Regression Gate: scratch files at the repo root, or any log/jsonl/out file there,
+// fail the build. Recordings are legitimate only as a deliberate, reviewed addition (see the cap below).
+
+const tracked = execFileSync('git', ['ls-files'], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 }).split(/\r?\n/).filter(Boolean)
+
+// Root-level dotfiles that are real project config.
+const ROOT_DOTFILES = new Set(['.env.local.example', '.eslintrc.json', '.gitattributes', '.gitignore', '.vercelignore'])
+
+describe('no scratch files are committed', () => {
+  it('root-level dotfiles are only the known config files', () => {
+    const stray = tracked.filter(f => /^\.[^/]+$/.test(f) && !ROOT_DOTFILES.has(f))
+    expect(stray).toEqual([])
+  })
+  it('no log / jsonl / out / numstat dump sits at the repo root', () => {
+    const stray = tracked.filter(f => /^[^/]+\.(log|jsonl|out)$/.test(f) || /^[^/]*(numstat|compare)[^/]*\.(txt|json)$/.test(f))
+    expect(stray).toEqual([])
+  })
+  it('replay outputs are never tracked (scripts/consult/replay/out is generated)', () => {
+    expect(tracked.filter(f => f.startsWith('scripts/consult/replay/out/'))).toEqual([])
+  })
+  it('the replay recording set does not grow by accident (a deliberate addition raises this number in the same commit)', () => {
+    const n = tracked.filter(f => f.startsWith('scripts/consult/replay/recordings/')).length
+    // 2008 → 2068 (Phase 8 M0, eb3d32a): the 60 Serper recordings of the agent-eval baseline (scripts/agent-eval), added deliberately.
+    // 2068 → 2135 (Phase 8 M1): the 67 recordings of the TAPPY_AGENT=2 eval runs (scripts/agent-eval), added deliberately.
+    // 2135 → 2371 (Phase 8 M2): the 236 recordings of the M2 follow-up / regression eval runs (scripts/agent-eval), added deliberately.
+    // 2371 → 2542 (Phase 8 M3): the recordings of the M3 research / regression eval runs (scripts/agent-eval), added deliberately.
+    // 2542 → 2678 (Phase 8 M3 latency pass): the recordings of the latency-pass research / regression eval runs, added deliberately.
+    // 2678 → 2868 (Phase 8 M4): the recordings of the M4 evidence-guard research / regression eval runs, added deliberately.
+    // 2868 → 3179 (Phase 8 M5): the recordings of the M5 semantic-ranking / research / regression eval runs, added deliberately.
+    // 3179 → 3465 (Phase 8 M6): the recordings of the M6 tool-registry A/B and M3 / M5 / regression eval runs, added deliberately.
+    // 3465 → 3886 (Phase 8 M7): the recordings of the M7 final eval gate (full scenario set, regression / research / ranking), added deliberately.
+    // 3886 → 4252 (Phase 8 WS2 research intelligence): the recordings of the WS2 eval runs (new price / link / source scenarios + full regression), added deliberately.
+    // 4252 → 4332 (Phase 8 WS2 final reliability closure): the recordings of the No-Fabrication / repeated-run evals, added deliberately.
+    expect(n).toBeLessThanOrEqual(4332)
+  })
+})
+
+// Personal data in audit captures (owner 02/10). A UAT capture once committed the owner's real GPS fix (docs/audit/uat/2026-09-20/gps-proof.json,
+// removed). Captures of runs (location, phone numbers, Google Places rows) belong in the private evidence bucket, not in git.
+import { readFileSync, statSync } from 'node:fs'
+describe('audit captures carry no new personal data', () => {
+  it('nothing under docs/audit/uat/ is tracked (the folder is ignored)', () => {
+    expect(tracked.filter(f => f.startsWith('docs/audit/uat/'))).toEqual([])
+  })
+  it('the number of tracked audit/evidence files that hold a coordinate with 3+ decimals only goes DOWN (ratchet; 02/10 = 20)', () => {
+    const re = /"(?:lat|latitude)": *-?\d+\.\d{3,}/
+    let n = 0
+    for (const f of tracked) {
+      if (!(f.startsWith('docs/audit/') || f.startsWith('docs/uat/evidence/'))) continue
+      if (!/\.(json|jsonl|txt|stdout|md)$/.test(f)) continue
+      try { if (statSync(f).size > 8_000_000) continue; if (re.test(readFileSync(f, 'utf8'))) n++ } catch { /* deleted in the working tree */ }
+    }
+    expect(n).toBeLessThanOrEqual(20)
+    // 29/10: a synchronous read of every tracked audit / evidence file (up to 8 MB each); under the full run it passed the default 5 s
+    // (green alone, 6/6). The scan and its ceiling are unchanged; only the time it is given.
+  }, 60_000)
+})

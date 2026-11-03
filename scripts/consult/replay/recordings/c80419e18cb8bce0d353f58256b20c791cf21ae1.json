@@ -1,0 +1,57 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:hoianheritage.danang.gov.vn vé tham quan phố cổ Hội An giá 80. 2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:16:01.732Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:hoianheritage.danang.gov.vn vé tham quan phố cổ Hội An giá 80. 2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Đô thị cổ Hội An",
+    "link": "https://hoianheritage.danang.gov.vn/vi/trao-doi-chuyen-nganh/chuyen-de-nghien-cuu-trao-doi/thap-mo-dai-su-pho-bao-chua-chuc-thanh-hoi-an-1354.html",
+    "snippet": "Khi tham quan, chiêm bái Tổ đình Chúc Thánh (số 104 Tôn Đức Thắng), bên cạnh những kiến trúc chính như tam quan cũ, chính điện, nhà Tổ, ...",
+    "date": "17 thg 4, 2026",
+    "position": 1
+   },
+   {
+    "title": "Nghiên cứu di sản văn hóa phi vật thể ở Đô thị cổ Hội An ...",
+    "link": "https://hoianheritage.danang.gov.vn/vi/trao-doi-chuyen-nganh/chuyen-de-nghien-cuu-trao-doi/nghien-cuu-di-san-van-hoa-phi-vat-the-o-do-thi-co-hoi-an-trong-boi-canh-hien-nay-1364.html",
+    "snippet": "Đô thị cổ Hội An được công nhận di sản văn hóa thế giới không chỉ bởi hệ thống kiến trúc được bảo tồn khá nguyên vẹn mà còn bởi sự phong phú ...",
+    "date": "12 thg 6, 2026",
+    "position": 2
+   },
+   {
+    "title": "giá trị di sản văn hóa thế giới đô thị cổ hội an trong",
+    "link": "https://hoianheritage.danang.gov.vn/uploads/download/files/so-2-2025.pdf",
+    "snippet": "BVHTTDL : Bộ Văn hóa, Thể thao và Du lịch. CƯDVSNC : Cung ứng dịch vụ sự nghiệp công. CHLB : Cộng hòa Liên bang. DSVHTG. : Di sản Văn hóa Thể giới.",
+    "position": 3
+   },
+   {
+    "title": "Tập 04 (64) - 2023",
+    "link": "https://hoianheritage.danang.gov.vn/uploads/download/files/ban-tin-so-0464_2023.pdf",
+    "snippet": "- Các bảo tàng chuyên đề ở Hội An, điều thuận lợi là gắn với, nằm trong Khu phố cổ nên có khách tham quan, tìm hiểu, nhiều năm qua phát huy tốt. Nhưng cần ...",
+    "position": 4
+   },
+   {
+    "title": "Một vài thông tin về vị quan tứ phẩm Nguyễn Viết Ngôn qua tư ...",
+    "link": "https://hoianheritage.danang.gov.vn/vi/trao-doi-chuyen-nganh/chuyen-de-nghien-cuu-trao-doi/mot-vai-thong-tin-ve-vi-quan-tu-pham-nguyen-viet-ngon-qua-tu-lieu-1318.html",
+    "snippet": "Nguyễn Viết Ngôn, người làng Cẩm Phô (nay là phường Hội An, thành phố Đà Nẵng), làm quan dưới triều nhà Nguyễn, từng giữ đến chức Minh Nghĩa ...",
+    "date": "5 thg 11, 2025",
+    "position": 5
+   }
+  ],
+  "credits": 1
+ }
+}

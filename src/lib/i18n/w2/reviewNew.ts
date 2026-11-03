@@ -28,6 +28,7 @@ export const vi: Record<string, string> = {
   'reviewNew.addPhoto': 'Thêm ảnh',
   'reviewNew.maxPhotos': 'Tối đa {n} ảnh',
   'reviewNew.photoUploadError': 'Lỗi tải ảnh',
+  'reviewNew.photoTooLarge': 'Ảnh quá lớn. Vui lòng chọn ảnh dưới 4,5 MB.',
 
   // Video tab
   'reviewNew.selectVideo': 'Chọn video',
@@ -59,6 +60,7 @@ export const vi: Record<string, string> = {
   'reviewNew.videoTooLong': 'Video quá dài. Vui lòng chọn video tối đa 5 phút 5 giây.',
   'reviewNew.uploadCancelled': 'Đã hủy tải lên',
   'reviewNew.videoUploadError': 'Lỗi tải video. Vui lòng thử lại.',
+  'reviewNew.videoUploadUnavailable': 'Dịch vụ tải video đang tạm gián đoạn. Video của bạn chưa được lưu — vui lòng thử lại sau.',
 
   // URL tab
   'reviewNew.pasteYoutube': 'Dán link YouTube...',
@@ -67,6 +69,8 @@ export const vi: Record<string, string> = {
 
   // Body
   'reviewNew.bodyPlaceholder': 'Chia sẻ trải nghiệm, cảm nhận của bạn...',
+  'reviewNew.hashtagsLabel': 'Hashtag',
+  'reviewNew.hashtagsPlaceholder': 'Hashtag (tùy chọn), ví dụ: #anngon #dalat',
 
   // Place
   'reviewNew.addPlace': 'Thêm địa điểm',
@@ -122,6 +126,7 @@ export const en: Record<string, string> = {
   'reviewNew.addPhoto': 'Add photos',
   'reviewNew.maxPhotos': 'Up to {n} photos',
   'reviewNew.photoUploadError': 'Failed to upload photo',
+  'reviewNew.photoTooLarge': 'The photo is too large. Please choose one under 4.5 MB.',
 
   // Video tab
   'reviewNew.selectVideo': 'Choose a video',
@@ -149,6 +154,7 @@ export const en: Record<string, string> = {
   'reviewNew.videoTooLong': 'Video is too long. Please choose a video up to 5 minutes 5 seconds.',
   'reviewNew.uploadCancelled': 'Upload cancelled',
   'reviewNew.videoUploadError': 'Upload failed. Please try again.',
+  'reviewNew.videoUploadUnavailable': "Video uploads are temporarily unavailable. Your video wasn't saved — please try again later.",
 
   // URL tab
   'reviewNew.pasteYoutube': 'Paste a YouTube link...',
@@ -157,6 +163,8 @@ export const en: Record<string, string> = {
 
   // Body
   'reviewNew.bodyPlaceholder': 'Share your experience and thoughts...',
+  'reviewNew.hashtagsLabel': 'Hashtags',
+  'reviewNew.hashtagsPlaceholder': 'Hashtags (optional), e.g. #foodie #dalat',
 
   // Place
   'reviewNew.addPlace': 'Add location',

@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook Pro 14 inch M4 16GB 512GB giá 2026 Việt Nam Hoàng Hà Mobile",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:37:51.752Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Pro 14 inch M4 16GB 512GB giá 2026 Việt Nam Hoàng Hà Mobile",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "MacBook Pro 14 inch M4 10CPU 10GPU 16GB/512GB",
+    "link": "https://hoanghamobile.com/laptop/macbook-pro-m4-14-inch-16gb-512gb?srsltid=AU7gw4WKNkhYJop8SMTuBpHcyVbbKIIBwnGeUtVJEHks_aGXlx1ZBdJy",
+    "snippet": "MacBook Pro 14 inch M4 10CPU 10GPU 16GB/512GB - Chính hãng Apple Việt Nam ; SKU: MW2U3SA ; Trợ giá đến: 3.000.000 ₫ ; GIÁ CUỐI: 43,990,000 ₫.",
+    "rating": 4.6,
+    "ratingCount": 24,
+    "position": 1
+   },
+   {
+    "title": "MacBook Pro M5, M4 chính hãng, giá tốt 06/2026",
+    "link": "https://hoanghamobile.com/laptop/macbook/macbook-pro?srsltid=AU7gw4VfHKf7k05IN3GtYfUdqiMw-dV8Od2c8m8D_AP-nutbm00_cAPn",
+    "snippet": "16GB. 512GB SSD. MacBook Pro 14 inch M5 10CPU 10GPU (16GB/512GB). 49,490,000 ₫. Hoặc 5,705,000 ₫ x 6T. Hoàng Hà Member chỉ từ 48,896,000 ₫. TPBank Evo - Giảm ...",
+    "position": 2
+   },
+   {
+    "title": "MacBook Pro 14 inch M4 Pro 12CPU 16GPU 24GB/512GB",
+    "link": "https://hoanghamobile.com/laptop/macbook-pro-m4-pro-14-inch-24gb-512gb?srsltid=AU7gw4UZRP1xpL0nv_b3UM48F1rF8k3CEdHtcLvJoRDjU0iMsX28WtG7",
+    "snippet": "MacBook Pro 14 inch M4 Pro 12CPU 16GPU 24GB/512GB - Chính hãng Apple Việt Nam · Màn hình Liquid Retina XDR sắc nét · MacBook Pro M4 Pro 14 inch sở hữu chip Apple ...",
+    "rating": 3.7,
+    "ratingCount": 6,
+    "position": 3
+   },
+   {
+    "title": "MacBook chính hãng Apple, giá tốt",
+    "link": "https://hoanghamobile.com/laptop/macbook?srsltid=AU7gw4VAmnAsCZr6MyKfJt4o9u0IpPqmmUKBNDvHteI9fCqzMCSm-NNJ",
+    "snippet": "Máy sử dụng chip A18 Pro với CPU 6 lõi, GPU 5 lõi, bộ nhớ thống nhất 8GB và hai lựa chọn SSD 256GB hoặc 512GB. Màn hình Liquid Retina 13 inch cùng thiết kế gọn ...",
+    "position": 4
+   },
+   {
+    "title": "MacBook Pro M4: Giá Từ 36.89 Triệu 7/2026 | HHM",
+    "link": "https://hoanghamobile.com/tin-tuc/macbook-pro-m4/?srsltid=AU7gw4W2pD-c_qFBNZ1oWgZomAYxMltcBofSzfjVSFScsVgc4IwWyca8",
+    "snippet": "MacBook Pro M4 14 inch 16/512GB giá 34.99 triệu tại Hoàng Hà Mobile 6/2026. M4/M4 Pro/M4 Max, mini-LED 120Hz, pin 24 giờ, Apple Intelligence.",
+    "position": 5
+   },
+   {
+    "title": "Đánh giá MacBook Pro M4: cấu hình, giá, có nên mua?",
+    "link": "https://hoanghamobile.com/tin-tuc/danh-gia-macbook-pro-m4/?srsltid=AU7gw4WdUBDQ2zLCxes0sYw8_Y9lXN6Qw2JF6UzfQ29GjmcGuypJEZAv",
+    "snippet": "MacBook Pro M4 giá bao nhiêu? Bản 14 inch 16GB/512GB có giá tham khảo quanh 37–40 triệu đồng tại Hoàng Hà Mobile, tùy phiên bản và thời điểm.",
+    "position": 6
+   },
+   {
+    "title": "CẢ NHÀ ƠI, MACBOOK AIR M4 ĐÃ VỀ ...",
+    "link": "https://www.facebook.com/hoanghamobilecom/posts/-c%E1%BA%A3-nh%C3%A0-%C6%A1i-macbook-air-m4-%C4%91%C3%A3-v%E1%BB%81-h%C3%A0ng-r%E1%BB%93i-n%C3%A8-macbook-air-m4-m%C3%A0u-xanh-da-tr%E1%BB%9Di-%C4%91ang/1076563861175977/",
+    "snippet": "---- 💻 Thiết kế mỏng nhẹ quen thuộc, nâng cấp mạnh mẽ với chip Apple M4 10 nhân mới toanh – xử lý đồ họa, dựng video hay chạy đa nhiệm đều cực ...",
+    "position": 7
+   },
+   {
+    "title": "Mua trả góp MacBook Air M4 13 inch 16GB/256GB",
+    "link": "https://hoanghamobile.com/tra-gop/laptop/macbook-air-m4-13-6-inch-16gb-256gb?srsltid=AU7gw4UPmB3Kb8hQHr8G8VrHRpRBsXvLYsXD-sRp-lcmPXWdD3_QdAp6",
+    "snippet": "MacBook Air M4 13.6 inch (16GB/256GB) chính hãng Apple chỉ từ 28.490.000 ₫. Thiết kế siêu mỏng, chip M4 cực mạnh, trả góp 0%. Mua ngay tại Hoang Ha Mobile.",
+    "rating": 5,
+    "ratingCount": 5,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

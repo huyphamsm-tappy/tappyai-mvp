@@ -1,0 +1,362 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "MacBook khoảng 25 triệu lập trình RAM 16GB SSD 512GB",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:02:08.175Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook khoảng 25 triệu lập trình RAM 16GB SSD 512GB",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Apple MacBook Air 13 inch",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=MacBook+kho%E1%BA%A3ng+25+tri%E1%BB%87u+l%E1%BA%ADp+tr%C3%ACnh+RAM+16GB+SSD+512GB&prds=localAnnotatedOfferId:1,catalogid:10697054500960307846,gpcid:8602998232814770163,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "33.690.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQwk2ZnnzvrlEXEwysJtlgFNCr79QUKeyQ0jnFy75eRa4-AOrRsKVlM1HV3u_jIwy0OXOUCiMPg4y2NV_AxjUwvTXxGGVXIJD_YodL8_p7w4Og7Xb3p-7ciIA",
+    "productId": "10697054500960307846",
+    "position": 1
+   },
+   {
+    "title": "Macbook Pro M1 16GB 512GB",
+    "source": "Mac24h",
+    "price": "21.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTqRmz6wJnaOBak0kZwQk8naTxKSb3UiRI3CK8RMiJHXuMQ60GFRlSKExP4c66YpztjJgfApkE_kqOjsOGXEBuJbOISW9SIDpFgT8OrKVHZtzo8LtVj0GaMCA",
+    "productId": "4728943575735126508",
+    "position": 2
+   },
+   {
+    "title": "MacBook Air M4 2025 15 inch 10CPU 10GPU (16GB - 512GB) - Chính hãng Apple Việt Nam",
+    "source": "Viettablet",
+    "price": "29.899.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQDhPK-j1cMkgz-HJxWlf_wtZdmbZGQQy4GYdPWEdaWVaNuT6TPa8UXnNW9DnCZEvyAG0ag7dopsFE1Uoakx8D2CW5FnVv5-Nhoh6ZHjWbhs_xO7xPtMsVo9A",
+    "productId": "1931141506762945602",
+    "position": 3
+   },
+   {
+    "title": "Máy Tính Xách Tay Apple Apple Macbook Neo 13-Inch Mới",
+    "source": "Công Ty Phương Tùng",
+    "link": "https://www.google.com/search?ibp=oshop&q=MacBook+kho%E1%BA%A3ng+25+tri%E1%BB%87u+l%E1%BA%ADp+tr%C3%ACnh+RAM+16GB+SSD+512GB&prds=localAnnotatedOfferId:1,catalogid:8071037808297078357,gpcid:6376925527945280566,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "18.790.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTj1EJClj0J9U9Gprc2pooxGcA8uLzQ2T1n3etNPNhZe2kEdWY31Mj5lSGLhzqdotDQizrs-ZzGl36G8kpCU-plkTdF8xRczFxQVESy-XW_F3v8pRP6Qw67",
+    "productId": "8071037808297078357",
+    "position": 4
+   },
+   {
+    "title": "Apple MacBook Neo 13 inch",
+    "source": "Mac24h",
+    "link": "https://www.google.com/search?ibp=oshop&q=MacBook+kho%E1%BA%A3ng+25+tri%E1%BB%87u+l%E1%BA%ADp+tr%C3%ACnh+RAM+16GB+SSD+512GB&prds=localAnnotatedOfferId:1,catalogid:4445978253554398249,gpcid:3153650274114845939,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "21.200.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSy2P3VVKTVRFDq1pFjZvc1G5voVhhe7xqQ_9bnJKotAJdfuuBPcV3CzmvLSacMfaMT4srGRGSLSx559m7tWShKUYtFrXC-SIgbFAH870ROGEpVn1pnx0ekAw",
+    "productId": "4445978253554398249",
+    "position": 5
+   },
+   {
+    "title": "APPLE Macbook Pro 13",
+    "source": "Oneway Mobile",
+    "link": "https://www.google.com/search?ibp=oshop&q=MacBook+kho%E1%BA%A3ng+25+tri%E1%BB%87u+l%E1%BA%ADp+tr%C3%ACnh+RAM+16GB+SSD+512GB&prds=localAnnotatedOfferId:1,catalogid:17347256993492203171,gpcid:13535786723909334092,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "17.090.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcS2uA6nsj9eFLI7rWu3nQP29MjtG3N3WXhio-BhkOscCI2kwbQMpcncGQTif9RMcSvMIMdJrcMKZW8WxgfZKXaZc9nVrVTBfM-D9D-mgNA53CgsBNgJvw7B",
+    "productId": "17347256993492203171",
+    "position": 6
+   },
+   {
+    "title": "Laptop MacBook Air 13 inch M5 16GB/512GB/8GPU 70W Bạc",
+    "source": "Thế Giới Di Động",
+    "price": "36.090.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRZ-X-urUIr6hrf-5CuKxJNy82YFoy8h16IQjCdKobxWI1umJbsOzA5Cfz5iV8MhcZZn6Xve2EYwthAW9icpTR66qP1tBtIK3TWaAJK6O5HPp_ca_OhWPtr",
+    "productId": "11087824472153648057",
+    "position": 7
+   },
+   {
+    "title": "MacBook Air 13 M5 2026 10CPU/10GPU/16GB/512GB/70W",
+    "source": "Fptshop.com.vn",
+    "price": "35.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSExmbS3GnKaFPDQeS2SG-qOZUXAmdu133grdRjtMCfhWJ8vlj_eePwjoPlRmropPr2g2Y3LJqX5Yi1BbSnvF_kyQollq3uVUeOZJEZhx7apCHILjkKEpkN",
+    "productId": "17168301959252280806",
+    "position": 8
+   },
+   {
+    "title": "Apple MacBook Air 15 inch",
+    "source": "Apple",
+    "link": "https://www.google.com/search?ibp=oshop&q=MacBook+kho%E1%BA%A3ng+25+tri%E1%BB%87u+l%E1%BA%ADp+tr%C3%ACnh+RAM+16GB+SSD+512GB&prds=localAnnotatedOfferId:1,catalogid:15013061543033360976,gpcid:5383435682118214789,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "50.249.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQYgHIj8n1pa1uz30vlHW1U_qXGGolVlKOXUNLPX7ZdyhtoEt_CQbCfAsLdrC1wMAH5FcjQaHv_IE0izgQJ_PVir3pN4hynr4sF_wEWGNe9aelHXTMpJH5HUA",
+    "productId": "15013061543033360976",
+    "position": 9
+   },
+   {
+    "title": "Macbook Pro 13 M2 16/512 giá rẻ",
+    "source": "xoanstore.vn",
+    "price": "27.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRZ_euIc1XiNx25v-WDWpegrt0we-Yquhqql7dpQfPRP-ZaTVjggUbxeD7ik-uwf5_s-x6OAbJsWgZvt-mPvFCDkFmF9aQqd_oqCWv4C4kKrk5sB68-C6hoLQ",
+    "productId": "12265660141651883164",
+    "position": 10
+   },
+   {
+    "title": "Macbook Air 15 M4 2025 10CPU/10GPU/16GB/512GB",
+    "source": "Surfaceviet.vn",
+    "price": "35.290.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQMofFeRMfXIk0sMWiplL9kRlbyriPqVoL8SG5rqAsiVVq-yIAD2asBLJSiMItgZ9WwnyZ_N22BjfmaSDE826D4UHgHlGMNy58KuUWpC5o8sHDxkTKfFFYtaw",
+    "productId": "12760430830865862003",
+    "position": 11
+   },
+   {
+    "title": "Laptop MacBook Air 13 inch M5 16GB/512GB/8GPU 30W Xanh da trời nhạt",
+    "source": "Thế Giới Di Động",
+    "price": "35.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQbvYs-ebNTEe4XldbkW1ZahFSABs8UHASt_3PGwBeYCxkJ5HIIizU-v2xIMHsUIhCV6zhVtPINgnTMJtZNaVIwLfsNLYLIfHEg3Q0abGFxlf2dtaeOoC85zw",
+    "productId": "14414260497466825986",
+    "position": 12
+   },
+   {
+    "title": "Macbook Pro Retina - ME665 Quad I7 2.7Ghz 16GB 512GB / New 98%",
+    "source": "Mac24h",
+    "price": "13.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSzezVLDS8FuPtpkgUeRH0ze2F_HxRhMa-o8TgAVAfZdf9FkWQQ4TNAB8XDKBafY5up2_NfJHNnmBTkybG15VkxdmvKF-AYHo6LtKI-35zoMvT2JuUSSube",
+    "productId": "2667429906319772688",
+    "position": 13
+   },
+   {
+    "title": "MacBook Air 13 inch M4 (10 core GPU | 16GB RAM | 512GB SSD)",
+    "source": "TechOne Hà Nội",
+    "price": "32.190.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQihlLr845DSkp7JvzNJdbinuguQ98LDuP6WJno_dzaQAI0D3Pu3lfiY9upTv1JoKrJ4gCfPRa8F9cUAhiEaKaOfIwM-SYLswGsdDuYva5HjNkddk000Dr0vw",
+    "productId": "12544264687193588040",
+    "position": 14
+   },
+   {
+    "title": "Macbook Pro - M2 / 16Gb / 512Gb - 13 inch 2022 - Likenew - Space Gray",
+    "source": "Macshop24h.vn",
+    "price": "25.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTGdo0WSt8jzwFvH6LYWQpkkMgJSf3FBkSH0FGRe5v9evPaGyHw_T4iwQwjBnTFj9FdfZgau1bgsFAh-RrUIuXq_NQFCiGRPcs4ZEJ-BHyfHcGC7fiCcvzJ",
+    "productId": "17019344696771337439",
+    "position": 15
+   },
+   {
+    "title": "Laptop",
+    "source": "Điện máy XANH",
+    "price": "52.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSBJDNoe8PTfakUBleEkdFS4KFo1EeTlbv_bX5GGEaxqq5LqBH-Y9aQchUQDxeHxsRGjzF9FUka1_n_yDBOaW1fmnCzKryWZice8N5ShIU",
+    "productId": "11353970279978008810",
+    "position": 16
+   },
+   {
+    "title": "MacBook Air M5 (10 core GPU/16GB RAM/512GB SSD)",
+    "source": "Surface Store",
+    "price": "21.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcS6xpMVfzC33Iuhwsm7wFDIBombXU2uAt2ekBmnOR9z9DkCIXEZRpsb0uBnGBFKkc3T0jtZFTOAHzie-RdH3ja1Tet1bofgkZQ530MMp63lnNtmK7n14X2snA",
+    "rating": 4.8,
+    "ratingCount": 13,
+    "productId": "9560398091116813377",
+    "position": 17
+   },
+   {
+    "title": "Laptop MacBook Air 15 inch M5 16GB/512GB 35W Xanh da trời nhạt",
+    "source": "Thế Giới Di Động",
+    "price": "38.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSJIuAtVVY8Exvtwue36FwEU_qg7J1xejY0goq7dyC9W8bThCeJP9STQP3H4EDLQUhBS5X14NwWoE9X0C6x54wrTLvCxRLcf_zwRk6C4VT4XWEmlwI4HBTh",
+    "productId": "4628277735123197971",
+    "position": 18
+   },
+   {
+    "title": "Macbook Pro 13 inch M2 16GB/512GB Like New",
+    "source": "Tín Phát-Apple",
+    "price": "23.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcT04HleV18J1Bwh-7Xl8DnOG-dCTCaDn0b_AXjTgtUW5EqreXQ2nS_1l2oiVSuPXa-78nF9Ob884ui4LMmW9snMFQ5W7Qr66CqsYvqrh6fJ68NQNhU7ebw2",
+    "productId": "2132632769979998509",
+    "position": 19
+   },
+   {
+    "title": "MacBook Air M5 13-inch 16GB 512GB SSD",
+    "source": "ShopDunk",
+    "price": "34.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTYkhBbb1DsirwIg2g1auiva_YMSeBvU56OzBlXl3ef6-mzkjv2CGc2opKZbQpIbbu6v2RmPrVO2L9mVr9pDZz96YDpj-2wCf3mUdyITdn7gm8J_oZ-pxIN",
+    "productId": "7002292636830560024",
+    "position": 20
+   },
+   {
+    "title": "Macbook Pro 13 2022 M2 / 16GB / 512GB - NEW",
+    "source": "Lapvip",
+    "price": "39.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQcfXu7iqsAocg7RfeizxIWFfHNDYS1iYUEyTJSJ4aIYoCTdmaur5ueiFMmMVKIg7K9w6GmzUGlC4Cjcoj-ySHdm_jO2FedEauZWLHkz4JLF2z4TgfHj4H7fw",
+    "productId": "1086166758379016387",
+    "position": 21
+   },
+   {
+    "title": "MacBook Air M4 2025 13 inch – (Chip Apple M4/Ram 16GB/SSD 512GB)",
+    "source": "Macstore",
+    "price": "31.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQ1J9jcAW46KnlMZq7lbx7ngBkMPvrIZcGPGpVFI3mQOeVtvyUVbTeMbO2NNdaymMSyrODzLPzqnjM95J-gYjI3izjgFOF3UF0G94JOnHVipKIaVAz--uwW",
+    "productId": "15476721895911721924",
+    "position": 22
+   },
+   {
+    "title": "Macbook Pro 14 M3 16/512 giá rẻ",
+    "source": "xoanstore.vn",
+    "price": "35.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTNsMDRnPFUf2kVntPr2y3ioRfOcpyg2A9RxbmkXGSQPJ17R7Ag7hXdVkxdUu2I-2VV3wwd2Su8Ik9ikIXj8Ot1fK50iUE-YSPGHYrGVXptFr1tqDcK1D_E",
+    "productId": "1423822582077395889",
+    "position": 23
+   },
+   {
+    "title": "MLH42 - Macbook TouchBar I7 2.7Ghz 16GB 512GB VGA 2GB 99% fullbox FPT",
+    "source": "Mac24h",
+    "price": "51.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQ_H8fdlvpFoqoB0YlnB4DzGUHAkmJ6AEyRBeZyzoCsBkJAl1t_e8Ea-cs67pAn_si6A1gUwoALyUJSI_EbSzcJJ5JwCAgybsztuRWdMxqL",
+    "productId": "15640220920452410765",
+    "position": 24
+   },
+   {
+    "title": "Laptop Apple MacBook Air 13 inch M5 Starlight (10-core CPU, 8-core GPU, 16GB RAM, 512GB SSD, MDHA4SA/A)",
+    "source": "nguyencongpc.vn",
+    "price": "35.190.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQurOx1RCUHHiq_Ma1E1YvxbBFug59tYYEtq4z8DaEDXm6oc5HO8N9WnfI1syN1xn25pOzKKg96afMXqEpKTkso6FlKfk5O--sFMPOUdiCZjQAfDAEnIrTA",
+    "productId": "1904498294363580568",
+    "position": 25
+   },
+   {
+    "title": "Apple Macbook Air M3 13 inch 2024 8CPU",
+    "source": "Tín Phát-Apple",
+    "link": "https://www.google.com/search?ibp=oshop&q=MacBook+kho%E1%BA%A3ng+25+tri%E1%BB%87u+l%E1%BA%ADp+tr%C3%ACnh+RAM+16GB+SSD+512GB&prds=localAnnotatedOfferId:1,catalogid:11857727494944784857,gpcid:3819624554406751431,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "25.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTaZssXJUJticmlpJJmNWCFa3_jKFuukDf5EAWEiorqiaRWlyUmEHNTtjsD8asoV9T8A8399C4TyrXtbFiB07Icw_yWDI0UtiTMvIxGZ4s",
+    "productId": "11857727494944784857",
+    "position": 26
+   },
+   {
+    "title": "MacBook Pro M5 2025 (10 core GPU/10 core CPU/16GB RAM/512GB SSD)",
+    "source": "Surface Store",
+    "price": "57.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRZNwG5HRa-0g_tasTHSMp4t2iuX36n6RHJb76jeCU-vDSz6dB25UZyEgq6oF-VG_85EH1PMVPU7Uyab9esvT8V-EmLph8cZ18b7R6zwb6-xzctGJ4nKYI-Hw",
+    "rating": 5,
+    "ratingCount": 3,
+    "productId": "3730523288604179402",
+    "position": 27
+   },
+   {
+    "title": "Apple MacBook Pro 14 inch",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=MacBook+kho%E1%BA%A3ng+25+tri%E1%BB%87u+l%E1%BA%ADp+tr%C3%ACnh+RAM+16GB+SSD+512GB&prds=localAnnotatedOfferId:1,catalogid:8208757554240353264,gpcid:5713289733803647475,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "66.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQO7Kj-KiwZfakHsJmJ_PWoou4aPgogG94QlGfFJsnKsSFdVHWjmfPQQBEkOTLMrRlXGnhiur1-g1_9KzL9PC2Tf6Was9PcH-H7dZlno8BO-PrJTaPv9MmKVQ",
+    "productId": "8208757554240353264",
+    "position": 28
+   },
+   {
+    "title": "MacBook Air 2026 13 inch Apple M5 16GB RAM 512GB SSD – Openbox",
+    "source": "MacOne",
+    "price": "31.600.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTowv62K6abMeK6_LvSa2IvWlKSOQ33ZYIo2oZUshzcuijVs4yW3QJXlDim7n_5McecdLIIqtbqZQqmMMBHdakn8qO-da481zYiue6hxVkd8xzMDRghIj-t",
+    "productId": "7860276436493192974",
+    "position": 29
+   },
+   {
+    "title": "Macbook Air M4 15 inch 2025 Apple M4 10 CPU, 10 GPU, 16GB, 512GB",
+    "source": "Lapvip",
+    "price": "35.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRtOQkaMLE8EISIdEkSxu8qHG2aIWqXtgVRhganPAxhLJ0zlk9r-mi5uprxdh3Sdf8AihXtgH5J8QNi_6wzNch7ezWKuHsR1LrX85Q5krkVL4QA7Gnk7J14",
+    "productId": "10661115341370918011",
+    "position": 30
+   },
+   {
+    "title": "Macbook Pro 15 Inch MLH32 I7 | 16GB | 512GB | Radeon Pro 450 2Gb",
+    "source": "laptophssv.com",
+    "price": "10.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTyPr1-NJFH36-QGQfDdW8lTApLNd8gJllih9fU52t-ff94KGusXBek2yWtgXbMf3Vbg_10Eh0aUWgf0jExjVQt65Jzz9TXbMGMQ6nHbz3cOLPXJr_EFy7TiQ",
+    "productId": "11878478315671840540",
+    "position": 31
+   },
+   {
+    "title": "MacBook Air M4 2025 15 inch – (Chip Apple M4/Ram 16GB/SSD 512GB)",
+    "source": "Macstore",
+    "price": "36.999.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSkPK8O0Wi9Ci8wVqiFPiK6yOqJBzE074TIxo3bIWUp7-32oAdXNyibmx1BMXr9q2ZuSy-iDMijHALaHEw-aeRv_vLkxA-mNjYoSg6SwltAMVh-MjaP3gIGPg",
+    "productId": "10847530625294860441",
+    "position": 32
+   },
+   {
+    "title": "MacBook Air Apple M5 (10C CPU, 8C GPU, 16GB RAM, 512GB SSD, 13.6 inch, Midnight)",
+    "source": "nguyencongpc.vn",
+    "price": "35.190.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcR7pSmJf8cLUVbRjFhzaJ1aUHoQwod2mqq_KS1v2LXKPNtPxL9RRjU12dtSy68CtFeQJ16fAWxDTbZKKO3xzYHCmda6UjEWW0CmU5cEaxvB8cf3N5bOJM8GgQ",
+    "productId": "5073786438489652977",
+    "position": 33
+   },
+   {
+    "title": "MacBook Pro Retina - ME662 I7 3.0Ghz 8GB 512GB New 98%",
+    "source": "Mac24h",
+    "price": "5.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcR3mbgaZBYSi3948CPTg1O5eHtNwY7CAA4fOWhxgQhNx6CyH_lV0FthGN8a_qzVgmeOt3qASR7t6Xhm-zOi1kzrpifu450ovNYsUCqicJt9RsDMVp8wJTXddg",
+    "rating": 1,
+    "ratingCount": 1,
+    "productId": "15778277392486992746",
+    "position": 34
+   },
+   {
+    "title": "MacBook Pro 14 inch M5 2025 (10 core GPU| 10 core CPU| 16GB RAM| 512GB SSD) MDE04/ MDE44",
+    "source": "TechOne Hà Nội",
+    "price": "40.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTL3CxZshlmIfsGkO2T0DSYMkY7gnlKojkG_YrsPpwuY3_mCFFHesZ6vHsiACfFAzouX2q4ttWdyltwYJMFICrVl693TaPnw4iWRO4eEqgJEKuTke74FTGNFQ",
+    "productId": "604611550857447361",
+    "position": 35
+   },
+   {
+    "title": "MacBook Air 2025 13 inch Apple M4 16GB RAM 512GB SSD – Like New",
+    "source": "1PRO",
+    "price": "29.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSAHB4ksFLtofwa-DI47uQybKYc3o3C4YGGhD4P3vDVn1SchyFIVeXW7tJGgjDvNiWSAiv6jsWIU_gEm3iIxCy6-PCK1X4nHWqdWCWAbkgT6rm9PplwYdzkyQ",
+    "productId": "10916485964093373034",
+    "position": 36
+   },
+   {
+    "title": "Macbook Pro 14 M5 2025 - Apple M5 10 core CPU/10 core GPU/16GB Ram/512GB SSD/14.2 inch/70W/Mac OS/Silver, Silver",
+    "source": "lapvip.com.vn",
+    "price": "48.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTtOsnnhfcHSATL1avMqI9_pK3wja168_1xh7QF80apTrfMXUYRBMNmuxCKWrNAo_X_k1L1LNuDM1V58fy5H_EzNUG1hPjDRPJT51eH3dQ0PZYyUxc4HK9V9g",
+    "productId": "1205517221784563540",
+    "position": 37
+   },
+   {
+    "title": "MacBook Pro 14 M5 2025 10CPU 10GPU | 16GB/ 512GB SSD | Space Black (Chính hãng)",
+    "source": "Anh Đức Digital",
+    "price": "49.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcS_oOcESD3FGKxGsN9bvC3oeN3eJCJT6Ho36dTVRglJwkK3Wc7ts2shLIzP05Wif0P1pIFcUN81xehnd4aTSy8fVB6CgB_e6QKO9PfEKRU6myAPVz_M79kM",
+    "rating": 4.5,
+    "ratingCount": 26,
+    "productId": "1220524674544572536",
+    "position": 38
+   },
+   {
+    "title": "MacBook Pro 2025 14 inch Apple M5 10-Core CPU 10-Core GPU 16GB RAM 512GB SSD – Openbox",
+    "source": "MacOne",
+    "price": "45.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRbDkjftM35YvcFi9Ba-yVS5rsazmMdce9OHW7OanJ4seCqo_GYglv-zzoiQ0RDnGP_1HDapURfB7SXYgCuju5zXy6akR_ryy_fkhHme9k9ZDhWeNk9L7Ap",
+    "rating": 4.5,
+    "ratingCount": 26,
+    "productId": "7246157437706786919",
+    "position": 39
+   },
+   {
+    "title": "Z16U/Z16T - MacBook Pro 2022 13.3\" - M2 8core, GPU 10core / RAM 16GB / SSD 512GB - Likenew 99%",
+    "source": "zshop.vn",
+    "price": "32.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQrAGY1KQzm1kwKHWyuXse4eIt2zY1BC7qREXt0mG0XrfptYwr2ZHdvfLYzljwIuR__j3Lzwi92YUjN_ihAxnXNshoMBNmGt9D9Xs4R9i-2UJMBcD0vEygN",
+    "productId": "372447981103073007",
+    "position": 40
+   }
+  ],
+  "credits": 2
+ }
+}

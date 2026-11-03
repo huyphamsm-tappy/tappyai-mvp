@@ -1,0 +1,412 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "khách sạn Đà Nẵng, gần biển Mỹ Khê, 2 người, đêm 10/10/2026, ngân sách khoảng 1.000.000 VND",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@16.0544,108.2022,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:55:53.396Z",
+ "body": {
+  "searchParameters": {
+   "q": "khách sạn Đà Nẵng, gần biển Mỹ Khê, 2 người, đêm 10/10/2026, ngân sách khoảng 1.000.000 VND",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@16.0544,108.2022,14z",
+   "engine": "google"
+  },
+  "ll": "@16.0543915,108.2021997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "KHÁCH SẠN MỸ KHÊ 2",
+    "address": "260 Võ Nguyên Giáp, P, An Hải, Đà Nẵng 55000, Việt Nam",
+    "latitude": 16.0573378,
+    "longitude": 108.2462115,
+    "rating": 3.6,
+    "ratingCount": 185,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://mykhe2hoteldana.com/",
+    "phoneNumber": "+84 932 417 277",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPdoioY2xPTSIdzUFt-SZGF9oGtJazzs5UHK8YhZXJqSzCHNz_otDr6vmpgecvBSZjBbxXLoHuiEJDRzdUfgtHbZ41H9NCjz3JBsF7M9dhcdgjKF2ipdA74Wk_1j-w0BBnne6JLD7hptN_r",
+    "cid": "3701251880861622430",
+    "fid": "0x314217f1ee5fe20b:0x335d7cf9bf00e09e",
+    "placeId": "ChIJC-Jf7vEXQjERnuAAv_l8XTM"
+   },
+   {
+    "position": 2,
+    "title": "Grand Sea Hotel",
+    "address": "8 Hà Bổng, An Hải, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0682524,
+    "longitude": 108.2439182,
+    "rating": 3.7,
+    "ratingCount": 1012,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://agoda.com/grand-sea-hotel/hotel/da-nang-vn.html?countryId=38&finalPriceView=1&isShowMobileAppPrice=false&cid=1948475&numberOfBedrooms=&familyMode=false&adults=2&children=0&rooms=1&maxRooms=0&checkIn=2026-08-11&isCalendarCallout=false&childAges=&numberOfGuest=0&missingChildAges=false&travellerType=1&showReviewSubmissionEntry=false&currencyCode=VND&isFreeOccSearch=false&los=1&searchrequestid=d8a61e21-1f24-43ec-879a-14f8d237b528",
+    "phoneNumber": "+84 236 3636 888",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNgtQknRXuTMJfpqGImAYAo0Q878z5aajaNZIRNiH8skc0aCfVbIHRM-7YSX_I4ZWg5X9nQybHD14wTDb55dVecXyQa62Wx3PSfoczsNSTT-XFwIKoA57XfP-xvSPujbfsHlvbYz1DLTVPJ",
+    "cid": "2700716599364366525",
+    "fid": "0x3142178404398dab:0x257adf70281d30bd",
+    "placeId": "ChIJq405BIQXQjERvTAdKHDfeiU"
+   },
+   {
+    "position": 3,
+    "title": "Khách sạn EROS Đà Nẵng",
+    "address": "132 Hồ Nghinh, An Hải, Đà Nẵng 02363, Việt Nam",
+    "latitude": 16.0732912,
+    "longitude": 108.2427774,
+    "rating": 4.1,
+    "ratingCount": 63,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 961 103 113",
+    "description": "Khách sạn có phong cách đơn giản với phòng ở thoải mái cùng Wi-Fi miễn phí. Một số phòng hướng ra biển.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPRVmc22HBkUJrhhbD22B9umfmE18vjQ0l3jPuUQGsQ50cVpPxj2SHrqaZclt1M50y5hOVzLeiipmLOg8PTghAFuaQTsUK74OGEWB9WOJnroGxnSvDiJm0UykSXLJ0g3h8N01IZ",
+    "cid": "3795684894124272206",
+    "fid": "0x314217861cdb96d3:0x34acfb4d0197ea4e",
+    "placeId": "ChIJ05bbHIYXQjERTuqXAU37rDQ"
+   },
+   {
+    "position": 4,
+    "title": "Amanda Boutique Hotel",
+    "address": "Lô A2 - A2B,Q, 30 Tháng 4, Hòa Cường, Đà Nẵng, Việt Nam",
+    "latitude": 16.039925999999998,
+    "longitude": 108.2121222,
+    "rating": 3.5,
+    "ratingCount": 383,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 236 3624 335",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNjZKQEYQDt8yuZxKxWR6jTqmt6yHxOOEeNlsRaqRQLg0txwLvYFKljcOw3pgZKeGEJPIT61Lf-vjJ9Y1_ftiMwCX6Ia8XaPvyIwJigMzDeEQhkzGGCPxGCag3QI5PI4jNRQP4RZSUulCHz",
+    "cid": "5902262948916816512",
+    "fid": "0x3142199524fa142d:0x51e90ce16922ea80",
+    "placeId": "ChIJLRT6JJUZQjERgOoiaeEM6VE"
+   },
+   {
+    "position": 5,
+    "title": "Khách sạn Mường Thanh Luxury Đà Nẵng",
+    "address": "270 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0537195,
+    "longitude": 108.24733409999999,
+    "rating": 4.3,
+    "ratingCount": 6669,
+    "type": "Khách sạn lưu trú dài hạn",
+    "types": [
+     "Khách sạn lưu trú dài hạn",
+     "Khách sạn"
+    ],
+    "website": "https://booking.muongthanh.com/hotel-muong-thanh-luxury-da-nang",
+    "phoneNumber": "+84 236 3956 789",
+    "description": "Khách sạn sang trọng có nhà hàng, spa, quán bar tầng thượng, phòng ở ấm cúng và một số phòng nhìn ra biển.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMUkXALZFjv7AFFm838_TyTnqDavm8vdDlC5f_TcstLwEDUvCAOTk1B1VrOLcaQcSPua0hDzFGY7f0kARpdwG5V8dXQlbnt3GLQPOELRyfrQzCqBNsZ6Ak5zInH7J4c39FtpLSy",
+    "cid": "2142027292967736438",
+    "fid": "0x3142177a5081b45b:0x1dba027958889476",
+    "placeId": "ChIJW7SBUHoXQjERdpSIWHkCuh0"
+   },
+   {
+    "position": 6,
+    "title": "Mangata Beachfront Hotel",
+    "address": "36HW+C7J, 108 Võ Nguyên Giáp, An Hải, Đà Nẵng 50000, Việt Nam",
+    "latitude": 16.0787475,
+    "longitude": 108.24570419999999,
+    "rating": 4.5,
+    "ratingCount": 960,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://www.mangatahotel.vn/",
+    "phoneNumber": "+84 236 3874 999",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-proxy/AIM7gW3WC2H46uHupS-ru06PrwO6Wct8g_TB3YP1ibieQXsfsa3ez0S7dWyOXB68c3nKky9Gy_Q2ln05BeLepX9p_UraaQGQCcdXINXqtkxOhNjiIkgC4dNvJiIAV4BdnpCbOOZkdN_usIVaB2RE4qtXfd05T6fzLszNwxbxNLuGUXz1oxgn70TePSnK",
+    "cid": "17105343928329778026",
+    "fid": "0x3142178ddc408447:0xed6263acc0fb336a",
+    "placeId": "ChIJR4RA3I0XQjERajP7wKxjYu0"
+   },
+   {
+    "position": 7,
+    "title": "Sun River Hotel",
+    "address": "134-136 Bạch Đằng, Hải Châu, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.067425,
+    "longitude": 108.22472499999999,
+    "rating": 4,
+    "ratingCount": 728,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://sunriverhoteldanang.com/",
+    "phoneNumber": "+84 236 3849 188",
+    "description": "Khách sạn bình dân, nhà hàng thoáng mát, quán bar ấm cúng, phòng ở bài trí đơn giản và vài phòng nhìn ra sông.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-proxy/AIM7gW30Wgz-I-qoFOCd8kadZj4wEP7Bl3EGYZAzvaISQ1TWTtD8fwXxEq2vJxAdDAWXt1TMQLI5CJ2ngRuOVSDDmioSojKKGEjj3JMfNzqOg7GJ2vbk418-sfxx1wgXJ-Yhe8cp_BAKiQwDoRjRbtPmS9yhEbCMI38WxsB57xZv_yxTW7IIdJ-MLPc",
+    "cid": "2393758407789281162",
+    "fid": "0x3142183268d5babb:0x21385696d6627f8a",
+    "placeId": "ChIJu7rVaDIYQjERin9i1pZWOCE"
+   },
+   {
+    "position": 8,
+    "title": "Rich Hotel",
+    "address": "37 Hà Bổng, An Hải, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0678308,
+    "longitude": 108.2443789,
+    "rating": 3.8,
+    "ratingCount": 173,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 977 805 907",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNtMwED4IwBrHRyOe9d2Gt_wHlZmaVeHlCJfa4nSa-_wyCXP7tLglEdt9fLQMIHDUWdqBcmqh3URZcNPm9Lj14c526rY3niRDL4VaPey1iAROXDp5EVVZDcD2yf9JrZWOlvm3Idgw",
+    "cid": "1133907511975899822",
+    "fid": "0x3142178407c92e0f:0xfbc72dfdb7872ae",
+    "placeId": "ChIJDy7JB4QXQjERrnJ4299yvA8"
+   },
+   {
+    "position": 9,
+    "title": "LUNAR HOTEL",
+    "address": "242 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.065880399999998,
+    "longitude": 108.244937,
+    "rating": 4.3,
+    "ratingCount": 207,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://lunarhoteldanang.com/",
+    "phoneNumber": "+84 848 669 669",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-proxy/AIM7gW0RCMPpRVoxUvRasQj4rR34Aeeqy5zvZlIThgsRwUadMekUWpU15ICLvZi7--SXSaMaD2xU2PT_BjVu8LP3_oXlW-mxNmvT2TWfJKsFFCbc5wdFRnTor-4jKOb1Y-IQTi2sccCPbY5Ql4X1gnNtcGGOurPWQK3OEpctkLEujJzkXtYQB-EqlAI",
+    "cid": "14465869684685257279",
+    "fid": "0x314217007d427919:0xc8c117d5b2c1ba3f",
+    "placeId": "ChIJGXlCfQAXQjERP7rBstUXwcg"
+   },
+   {
+    "position": 10,
+    "title": "Besea Hotel",
+    "address": "22 An Thượng 32, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.050708999999998,
+    "longitude": 108.2462843,
+    "rating": 4.1,
+    "ratingCount": 233,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://www.facebook.com/Beseahotel",
+    "phoneNumber": "+84 702 303 368",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-proxy/AIM7gW1lL5w9r83sPu15yOS6yM_dxo_z9MPsgQOKQeNK3fRbYWwYVivekLvlavL8EsQu3jr6_h_3sp5ouznsANonp05B1e05wCdESg83bnDWJsDPnQMdEvgWmbIcY_xvt-QQtW1GVzngS8_YbxwIyUKHYGP8DnGAdiMV4y71DMMVoAm1_ckYWjBF67d0",
+    "cid": "17505940984259430106",
+    "fid": "0x31421765472388bd:0xf2f1989321bc46da",
+    "placeId": "ChIJvYgjR2UXQjER2ka8IZOY8fI"
+   },
+   {
+    "position": 11,
+    "title": "Dana Agena Bantiq Hotel",
+    "address": "16 Phạm Văn Đồng, An Hải, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.071628999999998,
+    "longitude": 108.2349787,
+    "rating": 3.7,
+    "ratingCount": 39,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 837 164 939",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOXRSATm3GveUr756vw9L-c1p-mLmLuUwW_I4Y70ZV1gkdUBIlRP7t0NtaavtOe7kdIbKsAhX8RyyZfdG1DMBUXnnMgMl4xcDrf-wZELRw44GktQsb3E3vJXvo_2ppoVTgALM4jvDmjw-4",
+    "cid": "2273033872925930373",
+    "fid": "0x3142195b76f5a657:0x1f8b7043ae2e3385",
+    "placeId": "ChIJV6b1dlsZQjERhTMurkNwix8"
+   },
+   {
+    "position": 12,
+    "title": "Diamond Sea Hotel",
+    "address": "232 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0664686,
+    "longitude": 108.24510719999999,
+    "rating": 4.4,
+    "ratingCount": 2028,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://diamondseahotel.com/?utm_medium=click&utm_source=GoogleMyBusiness",
+    "description": "Khách sạn sang trọng nhìn ra biển, có nhà hàng & bể bơi trên sân thượng, phục vụ bữa sáng miễn phí.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMf8NhM1FBzeqKHDLgl2qBf--iYIC-NPnCq_7DjrUIFIXFJXVWe8AzGr2Neu_T-9IZhwH1jXt2SzZQUIYmgJbSpS5dfgS8eTs4GtGSOdnXmE4hKCOcJ0W5eQSbvdymW3OCqmOWJ",
+    "cid": "1962081101708328793",
+    "fid": "0x31421783ecacb2cd:0x1b3ab65dcfd4ff59",
+    "placeId": "ChIJzbKs7IMXQjERWf_Uz122Ohs"
+   },
+   {
+    "position": 13,
+    "title": "Hans Hotel & Spa",
+    "address": "12 Phạm Phú Thứ, Hải Châu, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0673708,
+    "longitude": 108.22461179999999,
+    "rating": 3.7,
+    "ratingCount": 84,
+    "type": "Khách sạn lưu trú dài hạn",
+    "types": [
+     "Khách sạn lưu trú dài hạn",
+     "Spa"
+    ],
+    "website": "https://hans.win/",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMhlPzQGJIeEljm-YzYlUJvUzhds0RaAjXFYWw2LKdYDc9kicbS1V6C_enI_Fzm_ElnXDvqAg1204DoWvqug6aHufwEbFT9QRpOamqHofdW74iV_jc1XTD4rolXhQ6hPC50E-_Xgd3A3ho5",
+    "cid": "11937552557809648742",
+    "fid": "0x314219b32172df59:0xa5aab4cdafccc466",
+    "placeId": "ChIJWd9yIbMZQjERZsTMr820qqU"
+   },
+   {
+    "position": 14,
+    "title": "Bella Merry",
+    "address": "69 Hà Bổng, An Hải, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0671087,
+    "longitude": 108.2443871,
+    "rating": 4,
+    "ratingCount": 532,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://www.facebook.com/bellamerryhotel/",
+    "phoneNumber": "+84 932 445 099",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmM4WYlfX04e6vWk-ZK2uOUcReOocSNLL56OBcigSUvdLKboDE9wNNNCseJbNkibCcHgizq1e8yZ4CR407xioYcxTfSPOFzNtFx_2lv9OEhrlw2GmFIZklYHaVhi0296Y4uCxlFd",
+    "cid": "13230146186976542982",
+    "fid": "0x31421783fa85c891:0xb79aebdc5939c106",
+    "placeId": "ChIJkciF-oMXQjERBsE5Wdzrmrc"
+   },
+   {
+    "position": 15,
+    "title": "Khách sạn Misa",
+    "address": "11 D. Đình Nghệ, An Hải, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0687615,
+    "longitude": 108.244005,
+    "rating": 3.5,
+    "ratingCount": 250,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://misahotel.vn/",
+    "phoneNumber": "+84 236 3833 336",
+    "description": "Khách sạn giản dị ven biển với phòng ở đơn giản và nhà hàng bình dân. Một số phòng nhìn ra biển.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmO-NLF1JCQVBNAlNGS0a6BtFwfIzo3A3UPmPUi3-x4otqlaNKy8rxLTBIwqq0r7_AUJ2ycEHTc39sSWUjyH9Pu6KrOsMpTcYSp529ADM5l6rUW2G5saQXJb65Uw0LpPLeYWt-bfuAI3CSyQ",
+    "cid": "3037466181881146190",
+    "fid": "0x314217841e8a5897:0x2a273f663449ab4e",
+    "placeId": "ChIJl1iKHoQXQjERTqtJNGY_Jyo"
+   },
+   {
+    "position": 16,
+    "title": "Merry Land Hotel Da Nang",
+    "address": "192 Phạm Văn Đồng, An Hải, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.070111999999998,
+    "longitude": 108.2371847,
+    "rating": 3.9,
+    "ratingCount": 799,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://merrylandhoteldanang.com/",
+    "phoneNumber": "+84 236 3912 222",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOG1Ctphq0fAsaZzt059SJJlvMV2dluBoEKzIqZpYEf96sxRrsH_Ky5yRHCX5eQVOougMm3TY1hc8kIAeUJ-SWijdDzr0XC4h0J8Ydg706yXE7OX0yPTf4Lm3P02dNTinweQ9U",
+    "cid": "3392501289204737665",
+    "fid": "0x31421829da9500df:0x2f1495f2c31a6681",
+    "placeId": "ChIJ3wCV2ikYQjERgWYaw_KVFC8"
+   },
+   {
+    "position": 17,
+    "title": "Mandila Beach Hotel",
+    "address": "218 Võ Nguyên Giáp, An Hải, Đà Nẵng 55000, Việt Nam",
+    "latitude": 16.0676895,
+    "longitude": 108.244886,
+    "rating": 4.6,
+    "ratingCount": 2887,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://mandilabeachhotel.com/",
+    "phoneNumber": "+84 236 7306 666",
+    "description": "Khách sạn bình dân cách bãi biển 3 phút đi bộ, có bể bơi vô cực, spa, nhà hàng và quầy bar.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNheiW2Wy1mkq7LFJ3i0o9587qFROU06pRkKR-yBg5qjVqQV05XMcRDe8P8EtJbvWo7IV3MASJpUlhwU29eatVlHU6uLxb5PhtvxJlh1aIMxBGXjWTf7xKRXrfvCOCkhD-89HI",
+    "cid": "9952290635013503956",
+    "fid": "0x31421783f5350a4d:0x8a1da39a616d3bd4",
+    "placeId": "ChIJTQo19YMXQjER1DttYZqjHYo"
+   },
+   {
+    "position": 18,
+    "title": "Dylan Hotel Danang",
+    "address": "93 - 95 Hà Bổng, An Hải, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0666861,
+    "longitude": 108.2444836,
+    "rating": 3.7,
+    "ratingCount": 472,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://www.dylanhotel.com.vn/",
+    "phoneNumber": "+84 236 3555 468",
+    "description": "Khách sạn bình dị, có nhà hàng thoáng mát, quầy bar và phòng ở tinh tế. Một số phòng nhìn ra biển.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmP_vP6CU7O5l2X7VotbiHy4XYdXmX5sqhVKS2zVMsMRPYW_gsxQlFV-A77i9WXGkjkIiuZH8W8SRvOrYboqGPcb4GZeEVcEenqOy27FK036W2Z4rO3cD-9MTJrV8aMPXag3jjE",
+    "cid": "16292871808817094230",
+    "fid": "0x31421783e6227f17:0xe21be8963784de56",
+    "placeId": "ChIJF38i5oMXQjERVt6EN5boG-I"
+   },
+   {
+    "position": 19,
+    "title": "Holiday Beach Hotel Danang",
+    "address": "300 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0494867,
+    "longitude": 108.24870539999999,
+    "rating": 4.6,
+    "ratingCount": 2445,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://holidaybeachdanang.com/",
+    "phoneNumber": "+84 236 3967 777",
+    "description": "Khu nghỉ dưỡng sang trọng có phòng ốc hiện đại, bãi biển riêng, 2 bể bơi ngoài trời và nhiều nhà hàng.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNeFSiP5oJoc0hMPewiItYUo-5eOQwV5F9DL6Ryq7sJGDz1IKJwZoJglZSnLAFRntHj7vGL-heEbXGk2Qk7pqXnOCfawC-ruqKFW68xW_6NHVumSS_DHkgMIqyCwj8uvtpa3uQhFANAtsAD",
+    "cid": "14966577728417919045",
+    "fid": "0x3142176548c7b725:0xcfb3f725cd9f7045",
+    "placeId": "ChIJJbfHSGUXQjERRXCfzSX3s88"
+   },
+   {
+    "position": 20,
+    "title": "Monarque Hotel",
+    "address": "238 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0662467,
+    "longitude": 108.2448393,
+    "rating": 4.8,
+    "ratingCount": 2699,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://monarquehotel.vn/",
+    "phoneNumber": "+84 236 3588 888",
+    "description": "Khách sạn tinh tế có phòng ở sang trọng, cảnh biển, nhà hàng, 2 quầy bar, phòng tập thể dục và khu spa.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPkwGQuhnOU0Cb8r6e2ivgIkRReQuwzZ0eDhQDbWUxBX6eA17bAmxrqvjvnxpm5fa-cXqcmUwKT-yMJJf-LUDgOtZffbEeUyIQk2WdgTqcQH4CF8s32PheBRyekMYhPbyYomQnz",
+    "cid": "15782758919564172973",
+    "fid": "0x3142178d36fbef43:0xdb079f9de0401ead",
+    "placeId": "ChIJQ-_7No0XQjERrR5A4J2fB9s"
+   }
+  ],
+  "credits": 3
+ }
+}

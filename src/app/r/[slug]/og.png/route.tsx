@@ -22,17 +22,35 @@ import { isValidSlug } from '@/lib/share/slug'
 import { getPublicSharedResult } from '@/lib/share/sharedResultStore'
 import { summarize } from '@/lib/share/sharedResultMetadata'
 import { CATEGORIES } from '@/lib/utils'
+import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 
 export const runtime = 'edge'
 
 const IMAGE_TIMEOUT_MS = 2500
 const MAX_IMAGE_BYTES = 1_500_000
 
+/**
+ * Gate 2 G3 layer 2 (N1-og): the ONLY hosts this route fetches from, server side. The edge runtime cannot pin DNS the way
+ * `safeFetch` does, so "https" alone would let a snapshot choose where the server connects; a host allow-list is what prevents that.
+ * Matched on the registrable boundary (`host === h` or `host` ends with `.h`), so `gstatic.com.attacker.example` and `evilgstatic.com`
+ * do not pass. Independent of the read-time image policy: it holds even if that policy is bypassed.
+ */
+const OG_FETCH_HOSTS = ['gstatic.com', 'googleusercontent.com', 'ggpht.com'] as const
+
+function isOgFetchable(url: string): boolean {
+  if (!isSafeHttpsUrl(url)) return false
+  let host: string
+  try { host = new URL(url).hostname.toLowerCase() } catch { return false }
+  return OG_FETCH_HOSTS.some(h => host === h || host.endsWith(`.${h}`))
+}
+
 async function inlineImage(url: string): Promise<string | null> {
+  if (!isOgFetchable(url)) return null
   const ctrl = new AbortController()
   const timer = setTimeout(() => ctrl.abort(), IMAGE_TIMEOUT_MS)
   try {
-    const res = await fetch(url, { signal: ctrl.signal, headers: { Accept: 'image/*' } })
+    // A redirect is never followed: a 3xx (or an opaque redirect) is a failure and the image is left off the card.
+    const res = await fetch(url, { signal: ctrl.signal, headers: { Accept: 'image/*' }, redirect: 'manual' })
     if (!res.ok) return null
     const type = res.headers.get('content-type') ?? ''
     if (!/^image\/(jpeg|png|webp|gif)/i.test(type)) return null

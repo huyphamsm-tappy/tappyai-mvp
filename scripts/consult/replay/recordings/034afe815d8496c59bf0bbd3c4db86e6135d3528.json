@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hana Dalat Hotel\" OR \"Golden Sun Hotel\" OR \"Khách sạn Green Eco Đà Lạt\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:40:11.568Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hana Dalat Hotel\" OR \"Golden Sun Hotel\" OR \"Khách sạn Green Eco Đà Lạt\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Golden Sun Hotel - Dalat (@goldensunhotel.dalat)",
+    "link": "https://www.tiktok.com/@goldensunhotel.dalat",
+    "snippet": "Chào mừng bạn đến với Golden Sun Hotel – Dalat. Nghỉ dưỡng đẳng cấp chuẩn 5⭐. EVERY KIND WORD MEANS A LOT Mỗi trải nghiệm được sẻ ...",
+    "position": 1
+   },
+   {
+    "title": "Golden Sun Hotel Đà Lạt — Trải nghiệm sang trọng đẳng ...",
+    "link": "https://www.tiktok.com/@alotravel.231/video/7675987404741758228",
+    "snippet": "Vị trí và ấn tượng ban đầu Golden Sun Hotel Đà Lạt tọa lạc ở vị trí thuận tiện cho các điểm tham quan nổi tiếng, giúp tiết kiệm thời gian di ...",
+    "position": 2
+   },
+   {
+    "title": "Golden Sun Hotel Greece — photos, location, and visitor tips",
+    "link": "https://www.tiktok.com/@panagiotis164/video/7648861365469285654",
+    "snippet": "Lead Golden Sun Hotel in Greece — find quick facts, photos, location cues, and visitor tips to plan a stay. This guide summarizes what ...",
+    "position": 3
+   },
+   {
+    "title": "Hành trình xây dựng Golden Sun Hotel 6",
+    "link": "https://www.tiktok.com/@annanguyen61283/video/7689699319645015317",
+    "snippet": "Video thể hiện các giai đoạn xây dựng và khoảnh khắc công trình “thay áo mới” khi KS Golden Sun Hotel 6 hoàn thiện mặt ngoài. Nội dung nêu tên ...",
+    "position": 4
+   },
+   {
+    "title": "Anna _ Golden Sun Hotel",
+    "link": "https://www.tiktok.com/@annanguyen61283/video/7674588712281394452",
+    "snippet": "Liên hệ Hotline / Zalo: 0922 820 666. Inbox để được tư vấn chi tiết và giữ phòng đẹp trước khai trương. Kết luận Golden Sun Hotel 2 mang đến không gian lưu trú ...",
+    "position": 5
+   },
+   {
+    "title": "Discover Serenity at Golden Sun Hotel in Mang Den",
+    "link": "https://www.tiktok.com/@goldensunhotel.mangden/video/7627346372567567637?lang=ja-JP",
+    "snippet": "Nestled amidst the lush landscape of Mang Den, Golden Sun Hotel boasts beautifully designed rooms that enhance the serene surroundings. Each ...",
+    "position": 6
+   },
+   {
+    "title": "Golden Sun Hotel Review: What to Expect During Your Stay",
+    "link": "https://www.tiktok.com/@panagiotis811/video/7646620926557113622",
+    "snippet": "Golden Sun Hotel suggests a standard hotel experience—clean, furnished rooms suitable for short stays. Expect basic amenities typical of mid-range hotels: bed, ...",
+    "position": 7
+   },
+   {
+    "title": "Anna _ Golden Sun Hotel - âm thanh gốc",
+    "link": "https://www.tiktok.com/music/%C3%A2m-thanh-g%E1%BB%91c-Anna-Golden-Sun-Hotel-7622892276507134727",
+    "snippet": "Bài hát âm thanh gốc - Anna _ Golden Sun Hotel do Anna _ Golden Sun Hotel sáng tác. Xem video mới nhất về âm thanh gốc - Anna _ Golden Sun Hotel trên ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

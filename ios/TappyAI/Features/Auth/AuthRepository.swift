@@ -11,17 +11,30 @@ final class AuthRepository {
     private let zalo: ZaloAuthController
     private let webAuth: WebAuthenticator
     private let session: SessionStore
+    private let callbackStates: AuthCallbackStateStore
+    private let appleCredentials: AppleCredentialStore
+    /// Used only to save the name Apple sends on the first authorisation.
+    private let profile: ProfileService?
+    /// Runs first on every sign-out (and on account deletion, which signs out): set by the composition
+    /// root to remove this device's push registration while the session still authorises the call.
+    var beforeSignOut: (() async -> Void)?
     private let log = AppLogger.auth
 
     /// Deep-link scheme + Google redirect (survey §5.1). Register these in Info.plist + Supabase allow-list (D4).
     private let callbackScheme = "tappyai"
-    private let googleRedirect = URL(string: "tappyai://auth/callback")!
+    /// 🚨 Must be one of the URLs in Supabase → Authentication → URL Configuration → Redirect URLs. Anything else is silently
+    /// replaced by the Site URL (https://www.tappyai.com): the in-app browser then lands on the website Home page and never
+    /// returns to the app (TestFlight build 154). The allow-listed native URL is `tappyai://auth-callback` (Android uses it too).
+    private let googleRedirect = AuthCallbackURL.googleRedirect
 
     init(auth: AuthService, anon: AnonymousSessionService, gate: ProfileGateService,
          onboarding: OnboardingService, zalo: ZaloAuthController, webAuth: WebAuthenticator,
-         session: SessionStore) {
+         session: SessionStore, callbackStates: AuthCallbackStateStore = AuthCallbackStateStore(),
+         appleCredentials: AppleCredentialStore = AppleCredentialStore(), profile: ProfileService? = nil) {
         self.auth = auth; self.anon = anon; self.gate = gate; self.onboarding = onboarding
         self.zalo = zalo; self.webAuth = webAuth; self.session = session
+        self.callbackStates = callbackStates
+        self.appleCredentials = appleCredentials; self.profile = profile
     }
 
     // MARK: Launch
@@ -30,6 +43,11 @@ final class AuthRepository {
     /// adopt a restored user session, else obtain a server-authoritative anonymous session (D1).
     func reconcileOnLaunch() async {
         if let tokens = await auth.currentTokens(), let uid = await auth.currentUserId() {
+            // The SDK also persists the GUEST session: that is a guest, not an account (no profile gate, no sign-out).
+            if tokens.isAnonymousSession {
+                session.didAuthenticate(tokens, onboarded: true)
+                return
+            }
             let onboarded = await gate.isOnboarded(userId: uid)
             session.didAuthenticate(tokens, onboarded: onboarded)
         } else {
@@ -61,6 +79,15 @@ final class AuthRepository {
         await claimAnonymousHistory(claimToken)
     }
 
+    // MARK: Email + password sign-in
+
+    func signIn(email: String, password: String) async throws {
+        let claimToken = anonymousTokenToClaim()   // C33 — read BEFORE the session is replaced
+        let tokens = try await auth.signIn(email: email, password: password)
+        await finishAuthentication(tokens)
+        await claimAnonymousHistory(claimToken)
+    }
+
     // MARK: Register (survey §1.6) — returns true if a session was issued, false if "check your email"
 
     func register(email: String, password: String, fullName: String) async throws -> Bool {
@@ -79,26 +106,54 @@ final class AuthRepository {
         let claimToken = anonymousTokenToClaim()   // C33 — read BEFORE the session is replaced
         let url = try auth.oauthURL(provider: .google, redirectTo: googleRedirect)
         let callback = try await webAuth.authenticate(url: url, callbackScheme: callbackScheme)
+        _ = try AuthCallbackPolicy.google(callback)   // MOB-1: PKCE code only, never a token fragment
         let tokens = try await auth.session(fromCallback: callback)
         await finishAuthentication(tokens)
         await claimAnonymousHistory(claimToken)
+    }
+
+    // MARK: Sign in with Apple — native sheet, then Supabase signInWithIdToken (provider apple)
+
+    /// `appleUserId` is kept so a later revocation can be noticed; `fullName` is what Apple sent on the
+    /// FIRST authorisation only (nil afterwards) and is saved once, if the profile has no name yet.
+    func signInWithApple(idToken: String, nonce: String, appleUserId: String? = nil, fullName: String? = nil) async throws {
+        let claimToken = anonymousTokenToClaim()   // C33 — read BEFORE the session is replaced
+        let tokens = try await auth.signInWithApple(idToken: idToken, nonce: nonce)
+        if let appleUserId, !appleUserId.isEmpty { appleCredentials.record(appleUserId) }
+        await finishAuthentication(tokens)
+        await claimAnonymousHistory(claimToken)
+        await saveAppleName(fullName)
+    }
+
+    /// Best effort, and never over a name the person already has: Apple's name is a convenience, and
+    /// the sign-in it follows has already succeeded.
+    private func saveAppleName(_ fullName: String?) async {
+        guard let fullName, !fullName.isEmpty, let profile else { return }
+        do {
+            let current = try await profile.fetchProfile()
+            guard current.fullName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
+            try await profile.updateProfile(fullName: fullName, bio: nil)
+            log.info("apple name saved to the profile")
+        } catch {
+            log.info("apple name not saved — continuing signed in")
+        }
     }
 
     // MARK: Zalo (survey §5.2 · D2) — one ASWebAuthenticationSession; existing routes; no new endpoints
 
     func signInWithZalo() async throws {
         let claimToken = anonymousTokenToClaim()   // C33
-        let callback = try await zalo.authenticate()
-        // Server sends tokens in the URL fragment: tappyai://auth/callback#access_token=…&refresh_token=…
-        // Parse fragment into query items and hydrate directly; fall back to PKCE if fragment is absent.
-        if let fragment = callback.fragment,
-           let comps = URLComponents(string: "?\(fragment)"),
-           let access = comps.queryItems?.first(where: { $0.name == "access_token" })?.value,
-           let refresh = comps.queryItems?.first(where: { $0.name == "refresh_token" })?.value,
-           !access.isEmpty, !refresh.isEmpty {
+        // MOB-1: a fresh state per attempt; the callback is accepted only if the server echoes it.
+        let appState = callbackStates.begin()
+        let callback: URL
+        do { callback = try await zalo.authenticate(appState: appState) }
+        catch { callbackStates.clear(); throw error }
+        // Server sends tokens in the URL fragment: tappyai://auth/callback#access_token=…&state=…
+        switch try AuthCallbackPolicy.zalo(callback, states: callbackStates) {
+        case let .tokens(access, refresh):
             let tokens = try await auth.hydrate(accessToken: access, refreshToken: refresh)
             await finishAuthentication(tokens)
-        } else {
+        case .pkceCode:
             let tokens = try await auth.session(fromCallback: callback)
             await finishAuthentication(tokens)
         }
@@ -115,6 +170,8 @@ final class AuthRepository {
     // MARK: Sign-out (survey §1.3)
 
     func signOut() async {
+        await beforeSignOut?()   // e.g. unregister this device's push token while the session can still authorise it
+        appleCredentials.clear()
         await auth.signOut()
         session.logout()
         await ensureAnonymousSession()   // return to an anonymous session, not a tokenless state

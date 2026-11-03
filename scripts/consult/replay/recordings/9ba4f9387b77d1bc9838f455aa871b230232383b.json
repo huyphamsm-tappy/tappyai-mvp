@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Xiaomi Redmi Buds 6 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:19:31.062Z",
+ "body": {
+  "searchParameters": {
+   "q": "Xiaomi Redmi Buds 6 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe Bluetooth không dây Xiaomi Redmi Buds 6",
+    "link": "https://shopee.vn/Tai-nghe-Bluetooth-kh%C3%B4ng-d%C3%A2y-Xiaomi-Redmi-Buds-6-i.1396654883.27472741998",
+    "snippet": "Tai nghe Bluetooth không dây Xiaomi Redmi Buds 6. outline grey truck icon. Không hỗ trợ. service entrance icon. Chính hãng 100% • Miễn phí vận chuyển.",
+    "rating": 4.9,
+    "ratingCount": 243,
+    "position": 1
+   },
+   {
+    "title": "Xiaomi Tai nghe Bluetooth Redmi Buds 6 Play |Thời lượng ...",
+    "link": "https://shopee.vn/Xiaomi-Tai-nghe-Bluetooth-Redmi-Buds-6-Play-Th%E1%BB%9Di-l%C6%B0%E1%BB%A3ng-pin-l%C3%AAn-t%E1%BB%9Bi-36-gi%E1%BB%9D-C%E1%BB%A7-loa-%C4%91%E1%BB%99ng-10-mm-mang-%C4%91%E1%BA%BFn-%C3%A2m-thanh-m%E1%BA%A1nh-m%E1%BA%BD-i.1524999479.44401555507",
+    "snippet": "Mua Xiaomi Tai nghe Bluetooth Redmi Buds 6 Play |Thời lượng pin lên tới 36 giờ | Củ loa động 10 mm mang đến âm thanh mạnh mẽ giá tốt.",
+    "rating": 4.9,
+    "ratingCount": 1251,
+    "position": 2
+   },
+   {
+    "title": "Cho Redmi Buds 6 Active ốp tai ng Case Dành ...",
+    "link": "https://shopee.vn/Cho-Redmi-Buds-6-Active-%E1%BB%91p-tai-ng-Case-D%C3%A0nh-Cho-Redmi-Buds-6-Ho%E1%BA%A1t-%C4%90%E1%BB%99ng-Tai-Nghe-Ch%C3%B3-Con-D%E1%BB%85-Th%C6%B0%C6%A1ng-Hoa-Tr%C3%A1i-Tim-D%C3%A2u-G%E1%BA%A5u-Cung-i.1006251176.28056807624",
+    "snippet": "Cho Redmi Buds 6 Active ốp tai ng Case Dành Cho Redmi Buds 6 Hoạt Động Tai Nghe Chó Con Dễ Thương Hoa Trái Tim Dâu Gấu Cung ... Tặng Voucher 15.000₫ nếu đơn giao ...",
+    "rating": 4.9,
+    "ratingCount": 298,
+    "position": 3
+   },
+   {
+    "title": "Tai Nghe Xiaomi Redmi Buds 6 Active Chống Ồn Chính Hãng",
+    "link": "https://shopee.vn/Tai-Nghe-Xiaomi-Redmi-Buds-6-Active-Ch%E1%BB%91ng-%E1%BB%92n-Ch%C3%ADnh-H%C3%A3ng-i.1371593442.26677900696",
+    "snippet": "Mua Tai Nghe Xiaomi Redmi Buds 6 Active Chống Ồn Chính Hãng giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền ...",
+    "position": 4
+   },
+   {
+    "title": "Dành cho Xiaomi Redmi Buds 6 Pro Vỏ tai nghe chống sốc ...",
+    "link": "https://shopee.vn/D%C3%A0nh-cho-Xiaomi-Redmi-Buds-6-Pro-V%E1%BB%8F-tai-nghe-ch%E1%BB%91ng-s%E1%BB%91c-Xiaomi-Redmi-Buds-6-V%E1%BB%8F-silicon-ch%E1%BB%91ng-s%E1%BB%91c-i.1398917916.54908728173",
+    "snippet": "Dành cho Xiaomi Redmi Buds 6 Pro Vỏ tai nghe chống sốc Xiaomi Redmi Buds 6 Vỏ silicon chống sốc ... Tặng Voucher 15.000₫ nếu đơn giao sau thời gian trên.",
+    "position": 5
+   },
+   {
+    "title": "[Sẵn sàng] Ốp lưng cho Xiaomi Redmi Buds 6 Lite / 8 Lite / 6Pro ...",
+    "link": "https://shopee.vn/product/453434105/48810277323?gads_t_sig=gqRjZGVrxHCFomtpsTE0MjUxOnRzc19zZGtfa2V5omt20QABpGFsZ2_SAAAAZKNkZWvAomN0xEAAAAAMfaLqlfFS4JwQPCoOJZHE2YMfq1tWF61pnIIHqGuyOlpkjBotHu7Xpb0YRK1tULWVZdcpI_r9hw6jgE9CqmNpcGhlcnRleHTEbgAAAAzjCqTDgB1ccpAiSmRsgr0FmOTNApPU2tJy9y_bUNV33ojtgLeRUEqj3OS3VS5BMtrykcLOCrLqrEuQe3xPObFIwPUtUE2hLj_vE68WjXhGmOvAw6DKZx19cXAVfo66dZ03HGsrfSbLTvYw",
+    "snippet": "Mua [Sẵn sàng] Ốp lưng cho Xiaomi Redmi Buds 6 Lite / 8 Lite / 6Pro / 8Pro Phim hoạt hình Apple Star Silicone Tai nghe Vỏ mềm có móc giá tốt.",
+    "position": 6
+   },
+   {
+    "title": "[Sẵn Sàng] Đầu Tai Silicon Tương Thích Cho Xiaomi ...",
+    "link": "https://shopee.vn/-S%E1%BA%B5n-S%C3%A0ng-%C4%90%E1%BA%A7u-Tai-Silicon-T%C6%B0%C6%A1ng-Th%C3%ADch-Cho-Xiaomi-Redmi-Buds-6-Ch%C6%A1i-Tai-Nghe-Nh%C3%A9t-Tai-%C4%90%E1%BA%A7u-Eargel-N%C3%BAt-Tai-Ph%E1%BB%A5-Ki%E1%BB%87n-Thay-Th%E1%BA%BF-i.453434105.24636127346",
+    "snippet": "[Sẵn Sàng] Đầu Tai Silicon Tương Thích Cho Xiaomi Redmi Buds 6 Chơi Tai Nghe Nhét Tai Đầu Eargel Nút Tai Phụ Kiện Thay Thế ... Tặng Voucher 15.000₫ nếu đơn giao ...",
+    "rating": 5,
+    "ratingCount": 2,
+    "position": 7
+   },
+   {
+    "title": "Tai Nghe Không Dây Xiaomi Redmi Buds 6 Play | Pin 36 Giờ, ...",
+    "link": "https://shopee.vn/Tai-Nghe-Kh%C3%B4ng-D%C3%A2y-Xiaomi-Redmi-Buds-6-Play-Pin-36-Gi%E1%BB%9D-Kh%E1%BB%AD-%E1%BB%92n-AI-Bluetooth-5.4-Si%C3%AAu-Nh%E1%BA%B9-3.6g-i.1904083111.45115763984",
+    "snippet": "Mua Tai Nghe Không Dây Xiaomi Redmi Buds 6 Play | Pin 36 Giờ, Khử Ồn AI, Bluetooth 5.4, Siêu Nhẹ 3.6g giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

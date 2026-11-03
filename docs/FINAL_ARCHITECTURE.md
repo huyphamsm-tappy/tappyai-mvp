@@ -69,7 +69,7 @@ TappyAI is a **mobile-first web/PWA** served by a single Next.js application on 
 └───────────┘
       │
       ├── Stripe (payments/webhooks)      ├── Vercel Blob (media)
-      ├── web-push (VAPID notifications)   └── wttr.in / vang.today / Travelpayouts
+      ├── web-push (VAPID notifications)   └── wttr.in / vang.today
                                               (weather / gold / flights)
 ```
 
@@ -78,7 +78,7 @@ TappyAI is a **mobile-first web/PWA** served by a single Next.js application on 
 - **Middleware** (`middleware.ts`): refreshes the Supabase session cookie on every request (no auth redirects — the app is open to anonymous users); sets COOP/COEP headers for the SuperTux WASM game route.
 - **Next.js route handlers:** ~55 API routes covering chat, reviews/social, memory, preferences, tracking, cron, integrations, payments, uploads.
 - **Supabase:** primary datastore + auth + RLS. Accessed via three client flavors: cookie-scoped server client, browser client, and service-role admin client.
-- **External providers:** Google Places / OSM / Serper for places; Anthropic for LLM; Stripe for payments; wttr.in / vang.today / Travelpayouts for realtime data.
+- **External providers:** Google Places / OSM / Serper for places; Anthropic for LLM; Stripe for payments; wttr.in / vang.today for realtime data. Flights: booking hand-off links only (Trip.com, Traveloka, airline pages) — no fare/schedule/status provider (2026-10-04).
 
 ---
 
@@ -352,7 +352,7 @@ LLM renders + applyPlaceEnrichmentStreamFilter guarantees images/TikTok/links ap
 Google's 100/day quota is expected to be exhausted; the pipeline degrades to OSM+Serper automatically. Hotels and products additionally receive Serper photos so previously image-less tools now render galleries. CTAs are always **platform search links** built from the real place/product name — the app has no in-app booking and never emits "Đặt qua TappyAI".
 
 ### Related tools
-`get_hotel_prices` (Booking/Agoda web search + OSM list), `get_flight_prices` (Travelpayouts/Aviasales), `get_transport_options` (intercity bus/train search or taxi estimate), `search_products` (Shopee/Tiki/Lazada via Serper), `get_news`, `get_weather` (wttr.in), `get_gold_price` (vang.today), `web_search`, `save_price_watch`.
+`get_hotel_prices` (Booking/Agoda web search + OSM list), `get_flight_prices` (dated booking links on Trip.com / Traveloka / airline pages; fare, times and status "chưa xác minh"), `get_transport_options` (intercity bus/train search or taxi estimate), `search_products` (Shopee/Tiki/Lazada via Serper), `get_news`, `get_weather` (wttr.in), `get_gold_price` (vang.today), `web_search`, `save_price_watch`.
 
 ---
 

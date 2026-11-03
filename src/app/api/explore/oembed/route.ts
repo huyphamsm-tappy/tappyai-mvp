@@ -2,7 +2,16 @@ import { NextRequest, NextResponse } from 'next/server'
 import { searchParam } from '@/lib/http/searchParams'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
+import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 export const runtime = 'edge'
+
+/**
+ * Gate 2 N1/N2 (D-N4 / item N3, proposal): the review composer draws this preview as given, so a provider's thumbnail /
+ * og:image is returned only when it is a safe https URL (an og:image attribute may carry `&amp;`, decoded for the check).
+ */
+function safeThumbnail(u: unknown): string | null {
+  return typeof u === 'string' && isSafeHttpsUrl(u.replace(/&amp;/g, '&')) ? u : null
+}
 
 // GET /api/explore/oembed?url={url}
 // Server-side proxy — TikTok blocks direct client-side fetch (CORS).
@@ -78,7 +87,7 @@ export async function GET(req: NextRequest) {
       if (!res.ok) return NextResponse.json({ thumbnail_url: null, title: '', author_name: '' })
       const data = await res.json()
       return NextResponse.json({
-        thumbnail_url: data.thumbnail_url ?? null,
+        thumbnail_url: safeThumbnail(data.thumbnail_url),
         title: data.title ?? '',
         author_name: data.author_name ?? '',
       })
@@ -103,7 +112,7 @@ export async function GET(req: NextRequest) {
       const ogTitle = html.match(/<meta[^>]+property=["']og:title["'][^>]+content=["']([^"']+)["']/i)?.[1]
         ?? html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:title["']/i)?.[1]
         ?? ''
-      return NextResponse.json({ thumbnail_url: ogImage, title: ogTitle, author_name: '' })
+      return NextResponse.json({ thumbnail_url: safeThumbnail(ogImage), title: ogTitle, author_name: '' })
     } catch {
       return NextResponse.json({ thumbnail_url: null, title: '', author_name: '' })
     }

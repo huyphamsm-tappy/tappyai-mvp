@@ -1,5 +1,7 @@
 import Foundation
 import Combine
+import PhotosUI
+import SwiftUI
 
 @MainActor
 final class ChatViewModel: AppObservableObject {
@@ -11,9 +13,25 @@ final class ChatViewModel: AppObservableObject {
     @AppPublished var isStreaming: Bool = false
     @AppPublished var isLoadingConversation: Bool = false
     @AppPublished var error: ChatError? = nil
+    /// How the last reply ended when it was not a clean finish (cut stream, server turn status, `3:` part).
+    /// A line under the reply; never part of the answer text. Cleared when a new turn starts.
+    @AppPublished var endNotice: ChatEndNotice? = nil
+    /// What the pipeline is doing right now, as the server wrote it (`tappy.progress.v1`); shown in the
+    /// thinking indicator until the answer starts. Never text of the answer, never persisted.
+    @AppPublished var progressHint: String? = nil
+    /// The turn that is running RIGHT NOW: its Deep Research card, its charts and its section pictures, as they arrive, for the card to draw
+    /// live (web `ChatInterface`; Android `_streamingResearch`). Each is also held on the reply bubble, which keeps them when the turn ends,
+    /// is stopped or drops after some text; these are cleared when a turn starts and when it ends. Never text, never saved.
+    @AppPublished private(set) var liveResearch: ResearchStatus? = nil
+    @AppPublished private(set) var liveCharts: [ResearchChart] = []
+    @AppPublished private(set) var liveDocMedia: [DocMediaItem] = []
     @AppPublished var thinkHintIndex: Int = 0
     @AppPublished var activeTool: String? = nil
     @AppPublished var conversationId: String? = nil
+    /// R14: the chat's server-side consult-state key. Made once at init (or restored for a chat
+    /// reopened from history) and sent on every turn.
+    let chatSessionId: String
+    private let sessionIdStore = ChatSessionIdStore()
     @AppPublished var hasMemory: Bool = false
     @AppPublished var showOnboarding: Bool = false
     @AppPublished var userPreferences: [String] = []
@@ -60,6 +78,13 @@ final class ChatViewModel: AppObservableObject {
     /// arrives, and the chip would stay hidden for the rest of the session.
     @Published private(set) var hasLocationContext = false
     private var streamTask: Task<Void, Never>?
+    /// The current turn, or nil when none is running (Stop clears it). A turn's task checks it before it changes any state.
+    private var turnToken: UUID?
+    /// ADR-024. The latest decision-evidence key for THIS conversation, echoed on the next turn so a shopping
+    /// follow-up is grounded in the frozen listing facts. Instance-scoped: a new conversation gets a new view
+    /// model and therefore no key. Not persisted, so a reopened conversation starts without one until its next
+    /// shopping turn (see Phase L report).
+    private var decisionEvidenceId: String?
     private var thinkTimer: AnyCancellable?
     private var autoSendTask: Task<Void, Never>?
     private let log = AppLogger.chat
@@ -72,14 +97,115 @@ final class ChatViewModel: AppObservableObject {
     /// Publishes a plan for sharing (`POST /api/plans/share`). Nil only in tests that never share.
     let planShare: PlanSharing?
 
+    /// Saves a signed-in user's date of birth (`PATCH /api/profile`) and returns the server's
+    /// `ageStatus` / `canCorrectAge`. Nil only where no account flow exists (tests that never hit the gate).
+    typealias DateOfBirthSaver = @Sendable (String) async throws -> DateOfBirthUpdateResponse
+    /// Reads the account's `ageStatus` / `canCorrectAge` (`GET /api/profile`).
+    typealias AgeStatusLoader = @Sendable () async throws -> DateOfBirthUpdateResponse
+    private let saveDateOfBirth: DateOfBirthSaver?
+    private let loadAgeStatus: AgeStatusLoader?
+    private let guestAge: GuestAgeStore
+
+    /// Set while the date of birth is being saved; the form shows its "Saving…" state.
+    @AppPublished var ageSubmitting: Bool = false
+    /// The form's inline error (invalid date, save failed, correction already used).
+    @AppPublished var ageFormError: String? = nil
+    /// Blocked account: whether "I entered the wrong date" is offered (server `canCorrectAge`).
+    @AppPublished var canCorrectAge: Bool = true
+    /// Blocked account: the correction form is open.
+    @AppPublished var ageCorrecting: Bool = false
+
+    // MARK: - Answer mode (the composer's "+" menu)
+
+    /// The mode the next question is sent in. Auto unless the person picked Deep Research; it goes back to Auto when that
+    /// question's stream opens (web `onResponse`), never when it is sent.
+    @AppPublished private(set) var mode: ChatMode = .auto
+    /// The modes the "+" menu offers: the fixed Deep-only menu.
+    let menuModes: [ChatMode] = ChatMode.menu
+
+    /// The menu's choice: ignored when the mode is not on offer; the mode in use, picked again, goes back to Auto.
+    func selectMode(_ choice: ChatMode) {
+        guard menuModes.contains(choice) else { return }
+        mode = mode.picked(choice)
+    }
+
+    /// The chip's ×: back to Auto.
+    func clearMode() {
+        mode = .auto
+    }
+
+    // MARK: - Attachment (the composer's "+" -> photo or PDF)
+
+    /// The photo or PDF chosen for the next question; sent with it (even with no text) and then cleared.
+    @AppPublished private(set) var stagedAttachment: ChatAttachment? = nil
+    /// Why the last chosen file was not taken (the web's `attachError`), in the app's language; nil when there is nothing to say.
+    @AppPublished private(set) var attachError: String? = nil
+
+    /// Offers a chosen file to the composer. `attachmentCheck` decides by type and size; a refusal says why and stages nothing, and a
+    /// file that passed but could not be read says so. `data` may be nil only for a file refused by its size alone.
+    func attach(mime: String?, name: String, byteCount: Int, data: Data?) {
+        let check = attachmentCheck(mime: mime, byteCount: byteCount)
+        guard case .ok(let kind) = check else {
+            attachError = NSLocalizedString(check.errorKey ?? "chat.attach.unsupported", comment: "")
+            return
+        }
+        guard let data, let mime else {
+            attachError = NSLocalizedString("chat.attach.readFailed", comment: "")
+            return
+        }
+        attachError = nil
+        stagedAttachment = ChatAttachment(kind: kind, name: name, mime: mime.lowercased(), data: data)
+    }
+
+    /// A photo from the photo library: read, turned into a JPEG within the server's bounds, then offered as any file.
+    func attachPhoto(from item: PhotosPickerItem) async {
+        guard let raw = try? await item.loadTransferable(type: Data.self) else {
+            attachError = NSLocalizedString("chat.attach.readFailed", comment: "")
+            return
+        }
+        guard let jpeg = await AttachmentPreparer.prepareJPEG(raw) else {
+            attachError = NSLocalizedString("chat.attach.unsupported", comment: "")
+            return
+        }
+        attach(mime: "image/jpeg", name: "", byteCount: jpeg.count, data: jpeg)
+    }
+
+    /// A file from the Files picker (`fileImporter`'s result): read with its security scope, then offered as any file.
+    func attachFile(from result: Result<[URL], Error>) async {
+        guard case .success(let urls) = result, let url = urls.first else {
+            // The person cancelled, or the picker failed: only a failure is worth a sentence.
+            if case .failure = result { attachError = NSLocalizedString("chat.attach.readFailed", comment: "") }
+            return
+        }
+        guard let picked = await AttachmentPreparer.readPickedFile(at: url) else {
+            attachError = NSLocalizedString("chat.attach.readFailed", comment: "")
+            return
+        }
+        attach(mime: picked.mime, name: picked.name, byteCount: picked.byteCount, data: picked.data)
+    }
+
+    /// The preview card's ×.
+    func removeAttachment() {
+        stagedAttachment = nil
+        attachError = nil
+    }
+
     init(service: ChatService, session: SessionStore, category: String = "general",
          conversationId: String? = nil, savedMessages: [Conversation.ConversationMessage]? = nil,
-         planShare: PlanSharing? = nil) {
+         planShare: PlanSharing? = nil, saveDateOfBirth: DateOfBirthSaver? = nil,
+         loadAgeStatus: AgeStatusLoader? = nil,
+         guestAge: GuestAgeStore = GuestAgeStore(),
+         consent: AIConsentCoordinator? = nil) {
+        self.consent = consent
         self.service = service
         self.session = session
         self.planShare = planShare
+        self.saveDateOfBirth = saveDateOfBirth
+        self.loadAgeStatus = loadAgeStatus
+        self.guestAge = guestAge
         self.category = category
         self.conversationId = conversationId
+        self.chatSessionId = ChatSessionId.resolve(historyRowId: conversationId)
         wireReadAloudLanguage()
 
         if let saved = savedMessages {
@@ -117,6 +243,99 @@ final class ChatViewModel: AppObservableObject {
 
     var isAuthenticated: Bool { session.state.isAuthenticated }
 
+    /// Whether `/api/chat` treats this request as a guest (`!user || user.is_anonymous`): no
+    /// session or an anonymous one. `.onboarding` is a real account server-side.
+    var isGuest: Bool {
+        switch session.state {
+        case .authenticated, .onboarding: return false
+        case .unknown, .anonymous: return true
+        }
+    }
+
+    // MARK: - 18+ gate
+
+    /// The guest answered the inline prompt (`18plus` or a birth year): store it — under 18
+    /// included, the server decides — and resend the same turn, as Android's `onDeclareAge` does.
+    func declareGuestAge(_ value: String) {
+        guard !isStreaming else { return }
+        guestAge.save(value)
+        retry()
+    }
+
+    /// The signed-in user entered (or corrected) a date of birth: save it, then resend the turn if
+    /// the server now says eligible. Under 18 → the blocked state; nothing is resent.
+    func submitDateOfBirth(day: String, month: String, year: String) async {
+        guard !ageSubmitting, !isStreaming else { return }
+        guard let iso = DateOfBirthInput.iso(day: day, month: month, year: year) else {
+            ageFormError = NSLocalizedString("chat.age.error.invalid", comment: "")
+            return
+        }
+        guard let saveDateOfBirth else {
+            ageFormError = NSLocalizedString("chat.age.error.failed", comment: "")
+            return
+        }
+        ageSubmitting = true
+        defer { ageSubmitting = false }
+        let result: Result<DateOfBirthUpdateResponse, Error>
+        do { result = .success(try await saveDateOfBirth(iso)) } catch { result = .failure(error) }
+        apply(AgeCorrectionOutcome.from(result))
+    }
+
+    private func apply(_ outcome: AgeCorrectionOutcome) {
+        switch outcome {
+        case .resend:
+            ageFormError = nil
+            ageCorrecting = false
+            retry()
+        case .blocked(let canCorrect):
+            ageFormError = nil
+            ageCorrecting = false
+            canCorrectAge = canCorrect
+            error = .ageIneligible(message: nil)
+        case .correctionExhausted:
+            ageFormError = nil
+            ageCorrecting = false
+            canCorrectAge = false
+            error = .ageIneligible(message: nil)
+        case .formError(let text):
+            ageFormError = text
+        }
+    }
+
+    /// Blocked account taps "I entered the wrong date" (web `AgeCheckView`): open the form. The
+    /// server decides whether the correction is allowed (409 `age_correction_exhausted`).
+    func startAgeCorrection() {
+        guard !isGuest, canCorrectAge else { return }
+        ageFormError = nil
+        ageCorrecting = true
+    }
+
+    func cancelAgeCorrection() {
+        ageFormError = nil
+        ageCorrecting = false
+    }
+
+    /// The server refused an account as under 18: ask it whether a correction is still allowed,
+    /// so the button is not offered to someone who has used theirs (web reads `GET /api/profile`).
+    private func refreshAgeCorrection() {
+        guard !isGuest, let loadAgeStatus else { return }
+        Task { [weak self] in
+            guard let status = try? await loadAgeStatus() else { return }
+            self?.canCorrectAge = status.mayCorrect
+        }
+    }
+
+    nonisolated static func dateOfBirthErrorText(_ error: Error) -> String {
+        switch error as? AppError {
+        case .validation(let message)?:
+            return message   // the server's localized `age.invalidDate`
+        case .network(_, let code?)? where code == "age_correction_exhausted":
+            return NSLocalizedString("chat.age.error.correctionExhausted", comment: "")
+        default:
+            return NSLocalizedString("chat.age.error.failed", comment: "")
+        }
+    }
+
     // MARK: - Load existing conversation
 
     func loadConversation() async {
@@ -124,15 +343,22 @@ final class ChatViewModel: AppObservableObject {
         isLoadingConversation = true
         do {
             let conversation = try await service.loadConversation(id: id)
-            messages = conversation.messages.enumerated().map { idx, m in
+            let history = conversation.messages.enumerated().map { idx, m in
                 ChatMessage(
                     id: String(idx),
                     role: MessageRole(rawValue: m.role) ?? .user,
                     content: m.content
                 )
             }
+            // The stored history goes IN FRONT of whatever is already on screen: a question sent while it
+            // was loading must not be overwritten when it arrives.
+            messages = history + messages
         } catch {
-            self.error = Self.mapError(error)
+            // Saving is a PUT that replaces the whole stored list. A chat that could not load its history
+            // and kept this id would overwrite the stored conversation with the new messages only: it is a
+            // new chat now.
+            conversationId = nil
+            self.error = Self.mapError(error, isGuest: isGuest)
             log.error("load conversation failed: \(error)")
         }
         isLoadingConversation = false
@@ -170,21 +396,34 @@ final class ChatViewModel: AppObservableObject {
 
     // MARK: - Send message
 
+    /// Under 18 (`age_ineligible`): the chat input is locked and nothing is sent — the server would
+    /// only refuse again. (Correction of a wrong date is the account's own flow.)
+    var isAgeBlocked: Bool { error?.locksInput ?? false }
+
+    /// The user is editing the date again: an error about the previous attempt no longer applies.
+    func clearAgeFormError() {
+        if ageFormError != nil { ageFormError = nil }
+    }
+
     func send() {
         cancelAutoSend()
         let text = inputText.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !text.isEmpty, !isStreaming else { return }
+        let attachment = stagedAttachment
+        // A staged photo or PDF is a question by itself (the web sends it with an empty box).
+        guard !text.isEmpty || attachment != nil, !isStreaming, !isAgeBlocked, !isAwaitingConsent else { return }
         inputText = ""
         error = nil
+        stagedAttachment = nil
+        attachError = nil
 
-        let userMsg = ChatMessage(role: .user, content: text, status: .complete)
+        let userMsg = ChatMessage(role: .user, content: text, status: .complete, attachment: attachment)
         messages.append(userMsg)
 
         startStreaming()
     }
 
     func sendQuickPrompt(_ text: String) {
-        guard !isStreaming else { return }
+        guard !isStreaming, !isAgeBlocked, !isAwaitingConsent else { return }
         inputText = ""
         error = nil
 
@@ -197,21 +436,32 @@ final class ChatViewModel: AppObservableObject {
     // MARK: - Stop / Cancel
 
     func stop() {
+        // The token goes first: the cancelled turn's own task may still run its tail, and must find the turn gone.
+        turnToken = nil
         streamTask?.cancel()
         streamTask = nil
         stopThinkTimer()
         isStreaming = false
         activeTool = nil
+        // The reply bubble keeps the card, the charts and the pictures that had arrived (like its text).
+        clearLiveAnnotations()
 
         if let last = messages.last, last.isAssistant, last.status == .streaming {
-            messages[messages.count - 1].status = .complete
+            if last.content.isEmpty, last.research == nil, last.charts.isEmpty, last.docMedia.isEmpty {
+                // Nothing had arrived: an empty reply bubble would only enter the next turn's history.
+                messages.removeLast()
+            } else {
+                messages[messages.count - 1].status = .complete
+                // What was shown stays, and is stored (the turn's own Task no longer saves a stopped turn).
+                scheduleSave()
+            }
         }
     }
 
     // MARK: - Regenerate
 
     func regenerate() {
-        guard !isStreaming else { return }
+        guard !isStreaming, !isAgeBlocked, !isAwaitingConsent else { return }
         if let last = messages.last, last.isAssistant {
             messages.removeLast()
         }
@@ -219,18 +469,40 @@ final class ChatViewModel: AppObservableObject {
         startStreaming()
     }
 
+    // MARK: - AI-sharing agreement
+
+    /// «Review AI data sharing» on a `403 ai_consent_required` bubble: the same sheet as Settings. The
+    /// person's answer is recorded and synced by the consent store; nothing is resent from here.
+    func reviewAIConsent() {
+        consent?.requestFromSettings()
+    }
+
+    // MARK: - Resume after login
+
+    /// Whether the held message should be resent once the person has signed in: the turn stopped on a
+    /// «sign in» error and the last message is still the user's.
+    nonisolated static func shouldResumeAfterLogin(error: ChatError?, lastIsUser: Bool, isStreaming: Bool, signedIn: Bool) -> Bool {
+        guard signedIn, lastIsUser, !isStreaming else { return false }
+        return error == .authRequired || error == .anonLimitReached
+    }
+
+    func resumeAfterLogin() {
+        guard Self.shouldResumeAfterLogin(error: error, lastIsUser: messages.last?.isUser == true,
+                                          isStreaming: isStreaming, signedIn: isAuthenticated) else { return }
+        retry()
+    }
+
     // MARK: - Retry after error
 
     func retry() {
-        guard !isStreaming else { return }
+        guard !isStreaming, !isAwaitingConsent else { return }
+        // A reply that broke half way stays on screen marked as failed; the new attempt replaces it. Left in place it
+        // would be doubled, and the history sent would end with the assistant's half answer instead of the question.
+        if let last = messages.last, last.isAssistant, last.status == .failed {
+            messages.removeLast()
+        }
         error = nil
         startStreaming()
-    }
-
-    // MARK: - Delete message
-
-    func deleteMessage(id: String) {
-        messages.removeAll { $0.id == id }
     }
 
     // MARK: - Share
@@ -352,9 +624,38 @@ final class ChatViewModel: AppObservableObject {
 
     // MARK: - Streaming
 
+    /// «Share data with AI» (App Review 5.1.2(i)): asked once, before the first message goes out.
+    private let consent: AIConsentCoordinator?
+    /// A turn is held for the person's answer to the sharing sheet. Nothing else may be sent meanwhile (a second
+    /// question would join the held turn), so `send()` refuses and the input bar is locked while this is true.
+    @AppPublished private(set) var isAwaitingConsent: Bool = false
+
+    /// Whether this turn must wait for the person's answer. When it must, the sheet is shown and the turn
+    /// resumes on «Đồng ý»; on «Để sau» NOTHING is sent and the typed text goes back into the box.
+    private func holdForConsent() -> Bool {
+        guard let consent, !consent.isGranted else { return false }
+        guard !isAwaitingConsent else { return true }
+        isAwaitingConsent = true
+        Task { @MainActor [weak self] in
+            let agreed = await consent.ensure()
+            guard let self else { return }
+            self.isAwaitingConsent = false
+            if agreed {
+                self.startStreaming()
+            } else if let last = self.messages.last, last.isUser {
+                self.inputText = last.content
+                self.stagedAttachment = last.attachment
+                self.messages.removeLast()
+            }
+        }
+        return true
+    }
+
     private func startStreaming() {
+        if holdForConsent() { return }
         // Trim history from the front to stay under the backend's 24 000-char input cap.
-        var payloads = messages.map { MessagePayload(role: $0.role.rawValue, content: $0.content) }
+        // The latest question carries its photo or PDF; an earlier one only names it (`MessagePayload.history`).
+        var payloads = MessagePayload.history(from: messages)
         let maxChars = 20_000
         var totalChars = payloads.reduce(0) { $0 + $1.content.count }
         while totalChars > maxChars && payloads.count > 1 {
@@ -364,27 +665,60 @@ final class ChatViewModel: AppObservableObject {
 
         let assistantMsg = ChatMessage(role: .assistant, content: "", status: .streaming)
         messages.append(assistantMsg)
-        let assistantIndex = messages.count - 1
+        // The bubble is found by ITS id, never by a position: a history that loads meanwhile goes in front and
+        // moves every index.
+        let assistantId = assistantMsg.id
+        // This turn's token. Everything the turn does after it has been stopped or replaced is dropped, so a turn
+        // that ends late cannot clear the state of the next one.
+        let token = UUID()
+        turnToken = token
 
         isStreaming = true
         activeTool = nil
+        endNotice = nil
+        progressHint = nil
+        clearLiveAnnotations()
         startThinkTimer()
+        // The mode this question goes out in, read now: a later pick is for the next question.
+        let sentMode = mode
 
         streamTask = Task { [weak self] in
             guard let self else { return }
+            /// Edits this turn's reply bubble, if the turn is still the current one and the bubble is still there.
+            @MainActor func edit(_ change: (inout ChatMessage) -> Void) {
+                guard self.turnToken == token,
+                      let index = self.messages.firstIndex(where: { $0.id == assistantId }) else { return }
+                change(&self.messages[index])
+            }
+            @MainActor func reply() -> ChatMessage? {
+                self.messages.first(where: { $0.id == assistantId })
+            }
             let stream = self.service.chatWithContext(
                 messages: payloads,
                 userPreferences: self.userPreferences.isEmpty ? nil : self.userPreferences,
                 responseStyle: nil,
-                userLocation: self.activeLocation
+                userLocation: self.activeLocation,
+                guestAgeDeclaration: self.isGuest ? self.guestAge.declaration : nil,
+                chatSessionId: self.chatSessionId,
+                decisionEvidenceId: self.decisionEvidenceId,
+                mode: sentMode
             )
 
+            var streamReportedError = false
+            var sawDone = false
+            var streamOpened = false
             do {
                 for try await frame in stream {
-                    guard !Task.isCancelled else { break }
+                    guard !Task.isCancelled, self.turnToken == token else { break }
+                    // The stream is open: Deep Research was for this question (web `onResponse`). A request that was refused
+                    // or never connected sends no frame and keeps it. Only if the person has not picked another mode meanwhile.
+                    if !streamOpened {
+                        streamOpened = true
+                        if self.mode == sentMode { self.mode = sentMode.afterSend() }
+                    }
                     switch frame {
                     case .text(let delta):
-                        self.messages[assistantIndex].content += delta
+                        edit { $0.content += delta }
                         self.activeTool = nil
 
                     case .toolCall(let data):
@@ -393,14 +727,15 @@ final class ChatViewModel: AppObservableObject {
                             let invocation = ToolInvocation(
                                 id: call.id, toolName: call.toolName, state: .calling
                             )
-                            self.messages[assistantIndex].toolInvocations.append(invocation)
+                            edit { $0.toolInvocations.append(invocation) }
                         }
 
                     case .toolResult(let data):
                         if let result = Self.parseToolResult(data) {
-                            if let idx = self.messages[assistantIndex].toolInvocations
-                                .firstIndex(where: { $0.id == result.id }) {
-                                self.messages[assistantIndex].toolInvocations[idx].state = .result(result.data)
+                            edit { message in
+                                if let idx = message.toolInvocations.firstIndex(where: { $0.id == result.id }) {
+                                    message.toolInvocations[idx].state = .result(result.data)
+                                }
                             }
                         }
                         self.activeTool = nil
@@ -408,49 +743,129 @@ final class ChatViewModel: AppObservableObject {
                     case .places(let view):
                         // Held on the message, never appended to `content` — so it cannot leak into
                         // the reply, into TTS or into what gets persisted.
-                        self.messages[assistantIndex].livePlaces = view
                         // Share parity: the same decision, projected for the share sheet.
-                        self.messages[assistantIndex].placesView = SharePlacesView(from: view)
+                        edit {
+                            $0.livePlaces = view
+                            $0.placesView = SharePlacesView(from: view)
+                        }
 
                     case .stepEnd:
                         self.activeTool = nil
 
+                    // The server's own end state (incomplete / interrupted): a status line, never answer text.
+                    case .turnStatus(let status):
+                        self.endNotice = status == .interrupted ? .interrupted : .incomplete
+
+                    // The server's sentence for the current stage: replaces the rotating generic hint.
+                    case .progress(_, let text):
+                        self.progressHint = text
+
+                    // ADR-024: store the key; the next turn echoes it. Never the evidence facts.
+                    case .decisionEvidenceId(let key):
+                        self.decisionEvidenceId = key
+
                     case .done:
-                        break
+                        sawDone = true
+
+                    // The AI SDK data stream reports a failed turn as an `3:` error part on a 200 response. It was ignored, so a failed
+                    // turn finished as an empty "complete" reply and the person saw no answer and no error.
+                    case .unknown(let prefix, let payload) where prefix == "3":
+                        streamReportedError = true
+                        self.log.error("server error part in the chat stream: \(String(decoding: payload.prefix(200), as: UTF8.self))")
+
+                    // The Deep Research card, its charts and the section pictures (read and checked by the parser). The latest
+                    // of each is the turn's. They go on the reply bubble as they arrive - so a Stop, or a drop after some text,
+                    // keeps them with the text - and are published for the card to draw live. Never appended to `content`.
+                    case .research(let status):
+                        edit { $0.research = status }
+                        self.liveResearch = status
+
+                    case .charts(let charts):
+                        edit { $0.charts = charts }
+                        self.liveCharts = charts
+
+                    case .docMedia(let items):
+                        edit { $0.docMedia = items }
+                        self.liveDocMedia = items
 
                     case .messageStart, .unknown:
                         break
                     }
                 }
 
-                self.messages[assistantIndex].status = .complete
+                // A turn that was stopped or replaced ends here: `stop()` / the next turn own the state now.
+                guard !Task.isCancelled, self.turnToken == token else { return }
+
+                // A stream that ends with nothing to show is a failure, never a reply: say so and offer a retry.
+                if Self.streamProducedNothing(content: reply()?.content ?? "",
+                                              hasPlaces: reply()?.livePlaces != nil) {
+                    throw AppError.streaming(reason: streamReportedError ? "server reported an error" : "empty reply")
+                }
+
+                // Half an answer, said so: a `3:` error part after some text, or a body that closed without its finish
+                // frame (web `streamCut.ts`). The server's own status, when it sent one, wins.
+                if self.endNotice == nil {
+                    if streamReportedError { self.endNotice = .interrupted }
+                    else if !sawDone { self.endNotice = .cut }
+                }
+
+                edit { $0.status = .complete }
                 self.isStreaming = false
                 self.activeTool = nil
+                self.clearLiveAnnotations()
                 self.stopThinkTimer()
                 self.hasMemory = true
 
-                await self.persistConversation()
+                // The save is NOT this turn's work: it runs in its own Task, after the message is built, so
+                // Stop cannot cancel it and the input is not locked while the network call is out. A turn
+                // that was stopped is saved by `stop()` itself.
+                self.scheduleSave()
 
             } catch {
+                // Not this turn's any more (stopped or replaced): leave the current state alone.
+                guard self.turnToken == token else { return }
+
                 self.isStreaming = false
                 self.activeTool = nil
+                self.clearLiveAnnotations()
                 self.stopThinkTimer()
 
                 if error is CancellationError || (error as? AppError) == .cancellation {
-                    self.messages[assistantIndex].status = .complete
+                    edit { $0.status = .complete }
                     return
                 }
 
-                if self.messages[assistantIndex].content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                    self.messages.remove(at: assistantIndex)
+                if Self.streamProducedNothing(content: reply()?.content ?? "",
+                                              hasPlaces: reply()?.livePlaces != nil) {
+                    // nothing the person could read: no empty bubble next to the error
+                    self.messages.removeAll { $0.id == assistantId }
                 } else {
-                    self.messages[assistantIndex].status = .failed
+                    edit { $0.status = .failed }
                 }
 
-                self.error = Self.mapError(error)
+                self.error = Self.mapError(error, isGuest: self.isGuest)
+                if case .ageIneligible? = self.error { self.refreshAgeCorrection() }
                 self.log.error("stream error: \(error)")
             }
         }
+    }
+
+    /// True when a finished stream left nothing the person can read: no text and no place card.
+    /// «Nothing» means nothing the reader can SEE: also a reply whose text is only marker blocks that decode to no card.
+    nonisolated static func streamProducedNothing(content: String, hasPlaces: Bool) -> Bool {
+        if hasPlaces { return false }
+        if content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { return true }
+        let p = ContentParser.parse(content)
+        return p.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            && p.ctaButtons.isEmpty && p.plan == nil && p.followups.isEmpty && p.images.isEmpty
+            && p.shopping == nil && p.places.isEmpty && p.media.isEmpty
+    }
+
+    /// The running turn's card, charts and pictures are gone from the live state (the reply bubble holds them).
+    private func clearLiveAnnotations() {
+        liveResearch = nil
+        liveCharts = []
+        liveDocMedia = []
     }
 
     // MARK: - Think timer
@@ -472,10 +887,34 @@ final class ChatViewModel: AppObservableObject {
 
     // MARK: - Conversation persistence
 
+    /// Asks for the conversation to be saved. The save runs in a Task of its own (not the turn's `streamTask`, which
+    /// Stop cancels) and one save at a time: a request that comes while a save is out is folded into ONE more save
+    /// that runs when it returns, so two quick turns never create two conversations and an older PUT never lands
+    /// after a newer one.
+    private func scheduleSave() {
+        saveRequestedAgain = true
+        guard saveTask == nil else { return }
+        saveTask = Task { @MainActor in
+            while self.saveRequestedAgain {
+                self.saveRequestedAgain = false
+                await self.persistConversation()
+            }
+            self.saveTask = nil
+        }
+    }
+
+    private var saveTask: Task<Void, Never>?
+    private var saveRequestedAgain = false
+
+    /// One save, from the list as it is NOW (read when the request is built, not when the turn ended). A reply that
+    /// is still streaming is not part of it.
     private func persistConversation() async {
         guard session.state.isAuthenticated else { return }
-        let payloads = messages.map { MessagePayload(role: $0.role.rawValue, content: $0.content) }
-        let title = messages.first(where: { $0.isUser })?.content.prefix(50).description ?? "Chat"
+        let stored = messages.filter { $0.status != .streaming }
+        guard !stored.isEmpty else { return }
+        // Text only: a photo or PDF is not saved (a question that was only a file is saved as the note naming it).
+        let payloads = MessagePayload.saved(from: stored)
+        let title = payloads.first(where: { $0.role == MessageRole.user.rawValue })?.content.prefix(50).description ?? "Chat"
 
         do {
             if let id = conversationId {
@@ -486,6 +925,8 @@ final class ChatViewModel: AppObservableObject {
                 )
                 conversationId = saved.id
             }
+            // Reopening this chat from history later keeps the same chatSessionId (R14).
+            if let id = conversationId { sessionIdStore.put(id, chatSessionId) }
         } catch {
             log.error("persist failed: \(error)")
         }
@@ -493,28 +934,44 @@ final class ChatViewModel: AppObservableObject {
 
     // MARK: - Parsing helpers
 
-    private struct ToolCallParsed { let id: String; let toolName: String }
-    private struct ToolResultParsed { let id: String; let data: Data }
+    struct ToolCallParsed { let id: String; let toolName: String }
+    struct ToolResultParsed { let id: String; let data: Data }
 
-    private static func parseToolCall(_ data: Data) -> ToolCallParsed? {
-        guard let arr = try? JSONSerialization.jsonObject(with: data) as? [[String: Any]],
-              let first = arr.first,
-              let id = first["toolCallId"] as? String,
-              let name = first["toolName"] as? String else { return nil }
+    /// The one JSON object a `9:` / `a:` frame carries. The AI SDK v4 data stream sends an OBJECT
+    /// (`{toolCallId, toolName, args}` / `{toolCallId, result}`); an array of them (first element wins) is read too.
+    private nonisolated static func toolFrameObject(_ data: Data) -> [String: Any]? {
+        let json = try? JSONSerialization.jsonObject(with: data)
+        if let object = json as? [String: Any] { return object }
+        if let array = json as? [[String: Any]] { return array.first }
+        return nil
+    }
+
+    nonisolated static func parseToolCall(_ data: Data) -> ToolCallParsed? {
+        guard let object = toolFrameObject(data),
+              let id = object["toolCallId"] as? String,
+              let name = object["toolName"] as? String else { return nil }
         return ToolCallParsed(id: id, toolName: name)
     }
 
-    private static func parseToolResult(_ data: Data) -> ToolResultParsed? {
-        guard let arr = try? JSONSerialization.jsonObject(with: data) as? [[String: Any]],
-              let first = arr.first,
-              let id = first["toolCallId"] as? String else { return nil }
-        let resultData = (try? JSONSerialization.data(withJSONObject: first["result"] ?? [:])) ?? Data()
+    nonisolated static func parseToolResult(_ data: Data) -> ToolResultParsed? {
+        guard let object = toolFrameObject(data),
+              let id = object["toolCallId"] as? String else { return nil }
+        // A result that is a bare string or number is a JSON fragment: encoding it as a top-level value needs the option
+        // (without it Foundation raises instead of throwing).
+        let result: Any = object["result"] ?? [String: Any]()
+        let options: JSONSerialization.WritingOptions = JSONSerialization.isValidJSONObject(result) ? [] : [.fragmentsAllowed]
+        let resultData = (try? JSONSerialization.data(withJSONObject: result, options: options)) ?? Data()
         return ToolResultParsed(id: id, data: resultData)
     }
 
     // MARK: - Error mapping
 
-    private static func mapError(_ error: Error) -> ChatError {
+    /// [isGuest] matters for one code: `age_declaration_required` is the GUEST answer. A signed-in
+    /// user only receives it when the server's identity lookup failed and it fell back to the guest
+    /// check (`route.ts`, "UNMETERED MUST NEVER MEAN UNGATED"). Showing the guest birth-year form
+    /// there loops — the account's request never carries the guest header — so it is a temporary
+    /// failure: retriable, nothing to fill in.
+    nonisolated static func mapError(_ error: Error, isGuest: Bool = true) -> ChatError {
         guard let appError = error as? AppError else {
             return .generic
         }
@@ -523,12 +980,48 @@ final class ChatViewModel: AppObservableObject {
             switch reason {
             case .anonLimitReached: return .anonLimitReached
             case .freeLimitReached: return .freeLimitReached
+            case .planLimitReached(let message): return .planLimitReached(message: message)
+            case .deepResearchLimitReached(let message): return .deepResearchLimit(message: message)
+            case .proDailyLimitReached(let message): return .proDailyLimit(message: message)
+            case .rateLimited(let message): return .rateLimited(message: message)
+            // The server holds no current AI-sharing agreement: not a sign-in problem (that would send a
+            // signed-in person to the login screen), the remedy is the consent sheet.
+            case .aiConsentRequired(let message): return .aiConsentRequired(message: message)
+            case .ageGate(let code, let message):
+                switch AgeGateCode(rawValue: code) {
+                case .declarationRequired:
+                    return isGuest ? .ageDeclarationRequired(message: message) : .generic
+                case .verificationRequired: return .ageVerificationRequired(message: message)
+                case .ineligible: return .ageIneligible(message: message)
+                case nil: return .authRequired
+                }
             case .unauthenticated: return .authRequired
             default: return .authRequired
             }
         case .offline: return .offline
         case .streaming: return .generic
         default: return .generic
+        }
+    }
+}
+
+// MARK: - Reply end notice
+
+/// How a reply that did not finish cleanly ended. A fixed line under the reply, in the app's language, and
+/// never text of the answer; no billing claim is made (only the server decides about a refund).
+enum ChatEndNotice: Equatable, Sendable {
+    /// The body closed without its finish frame (`d:`): half an answer. Offers «answer again».
+    case cut
+    /// Server turn status `incomplete`: the answer may be missing its end.
+    case incomplete
+    /// Server turn status `interrupted`, or a `3:` error part after some text.
+    case interrupted
+
+    var messageKey: String {
+        switch self {
+        case .cut: return "chat.streamCut"
+        case .incomplete: return "chat.turnIncomplete"
+        case .interrupted: return "chat.turnInterrupted"
         }
     }
 }
@@ -541,11 +1034,51 @@ enum ChatError: Equatable, Sendable {
     case authRequired
     case anonLimitReached
     case freeLimitReached
+    /// 429 `plan_limit_reached` — a paid plan spent its daily questions; `message` is the server's sentence.
+    case planLimitReached(message: String?)
+    /// 429 `deep_research_limit_reached` — the plan's Deep Research reports for the month are spent.
+    case deepResearchLimit(message: String?)
+    /// 429 `pro_daily_limit_reached` — the hidden daily ceiling of a paid account.
+    case proDailyLimit(message: String?)
+    /// 429 `rate_limit` — too many requests in a minute.
+    case rateLimited(message: String?)
+    /// 403 `ai_consent_required` — no current AI-sharing agreement on the server; offers the consent sheet.
+    case aiConsentRequired(message: String?)
+    /// 18+ gate — guest must state their age (inline year / "I am 18 or older").
+    case ageDeclarationRequired(message: String?)
+    /// 18+ gate — account has no date of birth; collect it and save via `PATCH /api/profile`.
+    case ageVerificationRequired(message: String?)
+    /// 18+ gate — under 18. Blocked; no way around it from the client.
+    case ageIneligible(message: String?)
+
+    /// Under 18: nothing may be sent, so the chat input is locked. Every other state leaves the
+    /// input usable (the age forms included — the user may still type while answering them).
+    var locksInput: Bool {
+        if case .ageIneligible = self { return true }
+        return false
+    }
 
     var isRetriable: Bool {
         switch self {
         case .generic, .offline: return true
-        case .authRequired, .anonLimitReached, .freeLimitReached: return false
+        case .authRequired, .anonLimitReached, .freeLimitReached, .planLimitReached, .aiConsentRequired,
+             .deepResearchLimit, .proDailyLimit, .rateLimited,
+             .ageDeclarationRequired, .ageVerificationRequired, .ageIneligible: return false
+        }
+    }
+
+    /// The sentence for a limit state: the server's own when it sent one (already in the request language), else the app's.
+    /// Nil for every other state.
+    var limitSentence: String? {
+        switch self {
+        case .deepResearchLimit(let message):
+            return message ?? NSLocalizedString("chat.error.deepResearchLimit", comment: "")
+        case .proDailyLimit(let message):
+            return message ?? NSLocalizedString("chat.error.proDailyLimit", comment: "")
+        case .rateLimited(let message):
+            return message ?? NSLocalizedString("chat.error.rateLimited", comment: "")
+        default:
+            return nil
         }
     }
 }

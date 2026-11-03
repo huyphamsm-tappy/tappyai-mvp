@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com AirPods Pro 2 technical specifications up to 6 hours 30 hours",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:14:48.087Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com AirPods Pro 2 technical specifications up to 6 hours 30 hours",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "AirPods Pro 2 - Tech Specs",
+    "link": "https://support.apple.com/en-us/111851",
+    "snippet": "AirPods Pro with MagSafe Charging Case. Up to 30 hours of listening time5. 5 minutes in the case provides around 1 hour of listening time6. Connectivity.",
+    "position": 1
+   },
+   {
+    "title": "AirPods Pro 3 - Technical Specifications",
+    "link": "https://www.apple.com/airpods-pro/specs/",
+    "snippet": "Up to 24 hours of listening time with Active Noise Cancellation enabled; 5 minutes in the case provides around 1 hour of listening time. Connectivity.",
+    "position": 2
+   },
+   {
+    "title": "AirPods Pro 2 with MagSafe Charging Case (USB-C)",
+    "link": "https://support.apple.com/en-us/111834",
+    "snippet": "Battery · Up to 6 hours of listening time on a single charge (up to 5.5 hours with Spatial Audio and Head Tracking enabled) · Up to 4 hours of Lossless Audio ...",
+    "position": 3
+   },
+   {
+    "title": "Compare AirPods models",
+    "link": "https://www.apple.com/airpods/compare/?modelList=airpods-2nd-gen,airpods-pro",
+    "snippet": "Up to 30 hours of listening time with charging case and Active Noise Cancellation.",
+    "position": 4
+   },
+   {
+    "title": "AirPods Pro 3 - Tech Specs",
+    "link": "https://support.apple.com/en-us/125135",
+    "snippet": "Battery · Up to 8 hours of listening time on a single charge with Active Noise Cancellation enabled (up to 7.5 hours with Spatial Audio and Head Tracking enabled) ...",
+    "position": 5
+   },
+   {
+    "title": "Airpod Pro Gen 2 battery life issue",
+    "link": "https://discussions.apple.com/thread/255231805",
+    "snippet": "AirPods Pro. * Up to 6 hours of listening time with a single charge (up to 5.5 hours with Spatial Audio and Head Tracking enabled)6. * Up to ...",
+    "date": "27 thg 10, 2023",
+    "position": 6
+   },
+   {
+    "title": "AirPods 4 - Technical Specifications",
+    "link": "https://www.apple.com/jo/airpods-4/specs/",
+    "snippet": "Up to 30 hours of listening time; Up to 20 hours of talk time; 5 minutes in the case provides around 1 hour of listening time or around 45 minutes of talk time ...",
+    "position": 7
+   },
+   {
+    "title": "AirPods (2nd generation) - Technical Specifications",
+    "link": "https://www.apple.com/eg/airpods-2nd-generation/specs/",
+    "snippet": "More than 24 hours of listening time; Up to 18 hours of talk time. 15 minutes in the case provides up to 3 hours listening time or up to 2 hours talk time.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

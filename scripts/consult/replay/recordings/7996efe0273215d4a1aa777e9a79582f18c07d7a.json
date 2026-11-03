@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com/vn/newsroom/2022/09 AirPods Pro thời gian nghe 6 giờ hộp sạc 30 giờ",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:03:29.909Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com/vn/newsroom/2022/09 AirPods Pro thời gian nghe 6 giờ hộp sạc 30 giờ",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Apple công bố thế hệ AirPods Pro tiếp theo",
+    "link": "https://www.apple.com/vn/newsroom/2022/09/apple-announces-the-next-generation-of-airpods-pro/",
+    "snippet": "AirPods Pro có thêm thời gian nghe là 1,5 giờ so với thế hệ đầu tiên ... gian nghe lên tới 6 giờ với công nghệ khử tiếng ồn chủ động.2 ...",
+    "date": "7 thg 9, 2022",
+    "position": 1
+   },
+   {
+    "title": "Apple Watch Ultra và AirPods Pro thế hệ mới sẽ lên kệ tại ...",
+    "link": "https://www.apple.com/vn/newsroom/2022/09/apple-watch-ultra-and-next-generation-airpods-pro-available-in-stores-friday/",
+    "snippet": "AirPods Pro và hộp sạc có khả năng chống mồ hôi và chống nước khi tập thể dục và chơi các thể thao không ở dưới nước, đạt chuẩn IPX4. Khả năng ...",
+    "date": "22 thg 9, 2022",
+    "position": 2
+   },
+   {
+    "title": "iOS 16 ra mắt ngay hôm nay",
+    "link": "https://www.apple.com/vn/newsroom/2022/09/ios-16-is-available-today/",
+    "snippet": "Màn Hình Khóa được tái thiết kế sở hữu hiệu ứng chiều sâu mới hiển thị chủ thể một cách nghệ thuật trước thành phần chỉ thời gian, phông chữ và ...",
+    "date": "12 thg 9, 2022",
+    "position": 3
+   },
+   {
+    "title": "Apple ra mắt iPhone 14 và iPhone 14 Plus",
+    "link": "https://www.apple.com/vn/newsroom/2022/09/apple-introduces-iphone-14-and-iphone-14-plus/",
+    "snippet": "“Cả hai điện thoại đều có camera Chính mới mạnh mẽ với bước nhảy vọt về khả năng chụp trong điều kiện ánh sáng yếu, khả năng kết nối tiên tiến ...",
+    "date": "7 thg 9, 2022",
+    "position": 4
+   },
+   {
+    "title": "Giới thiệu Apple Watch Ultra",
+    "link": "https://www.apple.com/vn/newsroom/2022/09/introducing-apple-watch-ultra/",
+    "snippet": "Đối với những chuyến du lịch bụi dài ngày, người dùng có thể kéo dài thời lượng pin để đạt đến mốc 60 giờ sử dụng bằng cách dùng Chế độ Nguồn ...",
+    "date": "7 thg 9, 2022",
+    "position": 5
+   },
+   {
+    "title": "Apple ra mắt iPhone 14 Pro và iPhone 14 Pro Max",
+    "link": "https://www.apple.com/vn/newsroom/2022/09/apple-debuts-iphone-14-pro-and-iphone-14-pro-max/",
+    "snippet": "Và với chip A16 Bionic cực kỳ mạnh mẽ và hiệu quả cùng thời lượng pin sử dụng cho cả ngày, đây là chiếc iPhone tốt nhất cho tới giờ.”.",
+    "date": "7 thg 9, 2022",
+    "position": 6
+   },
+   {
+    "title": "Apple ra mắt Apple Watch Series 8 và Apple Watch SE mới",
+    "link": "https://www.apple.com/vn/newsroom/2022/09/apple-reveals-apple-watch-series-8-and-the-new-apple-watch-se/",
+    "snippet": "Để giúp người dùng duy trì kết nối lâu hơn nữa, Chế độ Nguồn điện Thấp mới có thể kéo dài thời lượng pin lên đến 36 giờ cho Apple Watch Series 8 ...",
+    "date": "7 thg 9, 2022",
+    "position": 7
+   }
+  ],
+  "credits": 1
+ }
+}

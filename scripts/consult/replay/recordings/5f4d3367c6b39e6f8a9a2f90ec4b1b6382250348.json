@@ -1,0 +1,413 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "khách sạn tầm 1 triệu đồng một đêm; lịch quán đặc sản ngon Đà Lạt Da Lat",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@11.9404,108.4583,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T01:57:59.777Z",
+ "body": {
+  "searchParameters": {
+   "q": "khách sạn tầm 1 triệu đồng một đêm; lịch quán đặc sản ngon Đà Lạt Da Lat",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@11.9404,108.4583,14z",
+   "engine": "google"
+  },
+  "ll": "@11.9403935,108.4582997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Laimeront Dalat Hotel & Apartment",
+    "address": "64 Phan Như Thạch, Xuân Hương - Đà Lạt, Lâm Đồng 66000, Việt Nam",
+    "latitude": 11.9405874,
+    "longitude": 108.43387,
+    "rating": 4.7,
+    "ratingCount": 59,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Khách sạn lưu trú dài hạn",
+     "Căn hộ nghỉ dưỡng cho thuê",
+     "Khách sạn tình yêu",
+     "Khách sạn nghỉ dưỡng"
+    ],
+    "phoneNumber": "+84 703 089 089",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk26f30EJB2lXzL2k_a7Fe-aEjKNoHZZny6ZBvQn1urksRI5Mk9VAFHDx8Tiw6ZAk0HrbnDF56Ofg_AxCryy86sP_pphBM0VHqwNhuiC7pO8hP762YlU8L8ySFuws1FHY7nd7gor0WRPEeB",
+    "cid": "201317347099608627",
+    "fid": "0x317113001d40b537:0x2cb390f80ff0633",
+    "placeId": "ChIJN7VAHQATcTERMwb_gA85ywI"
+   },
+   {
+    "position": 2,
+    "title": "Khách Sạn Dalat Palace",
+    "address": "2 Đ. Trần Phú, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+    "latitude": 11.9376173,
+    "longitude": 108.4403766,
+    "rating": 4.4,
+    "ratingCount": 1482,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://www.dalatpalacehotel.com/",
+    "phoneNumber": "+84 263 3825 444",
+    "description": "Khách sạn trang trọng từ thập niên 1920, cảnh hồ, vườn cây tuyệt đẹp, nhà hàng, spa và phòng ở tinh tế.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlCMT2iXAUf_FNiSPNICgg8bvH-Pe0DV12dSX045TGH3Pr_LDKB3pDbTnGuBG82zcSDyaDBi8X6Ygz97v0ANj1Ed4dMkceTdAOUI6b7QM8nqJUOxSWzfaGJR9aeKjES78uMeilH",
+    "cid": "13632160291114083599",
+    "fid": "0x317113319176da97:0xbd2f298ef90a650f",
+    "placeId": "ChIJl9p2kTETcTERD2UK-Y4pL70"
+   },
+   {
+    "position": 3,
+    "title": "MerPerle Dalat Hotel",
+    "address": "1 Đ. Hùng Vương, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+    "latitude": 11.9411183,
+    "longitude": 108.4583036,
+    "rating": 4.9,
+    "ratingCount": 6227,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://www.merperledalat.vn/",
+    "phoneNumber": "+84 263 3553 789",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkNe8ZaHAECR5m7oqEE7uP35lADLZ8dKG1rAarJBLQFW4Q6rvzlR9VmkANKZIlHsiWBBOAH9VFiLzv5XMiLyxAA_QveZN4oK05uGrbdGeDnViHBTpGYOJTllgFQoUJTuxNlWpxcYg",
+    "cid": "2925261577989617457",
+    "fid": "0x3171132bd1dd7c6f:0x28989de80f2b7731",
+    "placeId": "ChIJb3zd0SsTcTERMXcrD-idmCg"
+   },
+   {
+    "position": 4,
+    "title": "Mai An Home",
+    "address": "hẻm 33 Đường Bà Triệu, Xuân Hương - Đà Lạt, Lâm Đồng 670000, Việt Nam",
+    "latitude": 11.9372163,
+    "longitude": 108.4341307,
+    "rating": 5,
+    "ratingCount": 70,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 352 115 133",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkbR5GBx9cc8q079B58VzRIgAv5oER3n_81_EfuZqYbogtEnydN956nXk-7-JjSpNFG7aJSzKa3OLE4jM8BYzu_ZpJhA6p6Su02npuehlJUJDIVM9luFBF3Aho4pjZ4lY1IZ0o",
+    "cid": "17504383290232134095",
+    "fid": "0x317113cbb86fb5ef:0xf2ec0fdc3a91d9cf",
+    "placeId": "ChIJ77VvuMsTcTERz9mROtwP7PI"
+   },
+   {
+    "position": 5,
+    "title": "Hải Đường Hotel - Đà Lạt",
+    "address": "32 Đường Bà Triệu, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+    "latitude": 11.9373682,
+    "longitude": 108.43350679999999,
+    "rating": 4.1,
+    "ratingCount": 63,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://www.facebook.com/share/3XK94QxaMm7jH4nT/?mibextid=wwXIfr",
+    "phoneNumber": "+84 978 284 898",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnQapZ6yhEOJ07rjAhsLeweaMChhePlt2-_IpgBQpHAz9SHp_YU6uvZMeWppBZHkwb_04x5BWPXHdjkLI4n9JG6iDurpCzic9w1uedUbbSfSQrtyJq0oGjF5RYS6FnjWvIjWk8",
+    "cid": "3502873926100615019",
+    "fid": "0x3171130001792c0d:0x309cb546da347f6b",
+    "placeId": "ChIJDSx5AQATcTERa3802ka1nDA"
+   },
+   {
+    "position": 6,
+    "title": "Le House Da Lat",
+    "address": "124 Đường Phạm Ngọc Thạch, Cam Ly - Đà Lạt, Lâm Đồng, Việt Nam",
+    "latitude": 11.9469327,
+    "longitude": 108.4325298,
+    "rating": 4.8,
+    "ratingCount": 737,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://www.facebook.com/profile.php?id=61550290622942",
+    "phoneNumber": "+84 345 201 295",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlrSJNqxvFRzpsOPzvc73H6IRm907E7Bk4swKAnD6duYxo_t3kgACcKhqYb7rVO1DOKYcAnAEq6F0w__cizGI2Sxvim8chF66Lc1VkfRjqjLFqiO783HKnwbDMSmNJMigeAhB41",
+    "cid": "8180860991892289494",
+    "fid": "0x31711390cbb04bcb:0x718841ba6296f7d6",
+    "placeId": "ChIJy0uwy5ATcTER1veWYrpBiHE"
+   },
+   {
+    "position": 7,
+    "title": "Khách sạn Green Eco Đà Lạt",
+    "address": "9A Đường Triệu Việt Vương, Xuân Hương - Đà Lạt, Lâm Đồng 670000, Việt Nam",
+    "latitude": 11.919318299999999,
+    "longitude": 108.43617909999999,
+    "rating": 4.6,
+    "ratingCount": 426,
+    "type": "Khách sạn nghỉ dưỡng",
+    "types": [
+     "Khách sạn nghỉ dưỡng"
+    ],
+    "website": "https://greenecodalat.com.vn/",
+    "phoneNumber": "+84 866 522 772",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkTsM0tE9M4-50MYmev9uWx-2tmQrNupRfigz4YG6nu2xdykKtjOs-c1W799gEJIUT-n1sjXmh-zxXNtnjxocwgZhDUr54OKptFnB1Ftdgq15jiSTVIgXWZhlGNq4yZjOEDW8ya",
+    "cid": "11928159268203119740",
+    "fid": "0x31711353c852449f:0xa58955a80587c47c",
+    "placeId": "ChIJn0RSyFMTcTERfMSHBahViaU"
+   },
+   {
+    "position": 8,
+    "title": "VỊNH MÂY HOTEL",
+    "address": "65/90 Hoàng Hoa Thám, Xuân Hương - Đà Lạt, Lâm Đồng 670000, Việt Nam",
+    "latitude": 11.9325704,
+    "longitude": 108.46813089999999,
+    "rating": 4.5,
+    "ratingCount": 380,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://www.facebook.com/share/1KEpQ62wfP/?mibextid=wwXIfr",
+    "phoneNumber": "+84 946 820 468",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWldCbi_QZZuNy5gYYzu-h2s9Ri_SWo9KniYO3KWB1oWR7-8kJCVocxknhRAz2GG4275Nu4azp8KGMSGuaohtXvWG0BGVrI7unTRLrjlvx2WCqpCeIOuyLzQ95RyVhe7HE8Qe-V7XA",
+    "cid": "2802970794207345380",
+    "fid": "0x3171131ad3f1fa49:0x26e627162885fae4",
+    "placeId": "ChIJSfrx0xoTcTER5PqFKBYn5iY"
+   },
+   {
+    "position": 9,
+    "title": "Lê Tuấn Minh Hotel",
+    "address": "12 Đường Bà Triệu, Xuân Hương - Đà Lạt, Lâm Đồng 670000, Việt Nam",
+    "latitude": 11.9387107,
+    "longitude": 108.43419759999999,
+    "rating": 4.6,
+    "ratingCount": 506,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://www.booking.com/Share-4wEMe0r",
+    "phoneNumber": "+84 967 211 239",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlcyHP1N-OjDseQLqxpsgo27V6HN_k7QQJqhgmqNESdipZ64bAwlY_5IDjT4LHN5sQ3Tyvj7yrN9e6WKZxCbrPWhTA6esVCUS4lqc8PHG7h7jhQ8DTnaKbRDvUEpOHK4r4eCrvHCpuJkZdY",
+    "cid": "12909250547172503653",
+    "fid": "0x3171132e032285c1:0xb326def9fcbbf065",
+    "placeId": "ChIJwYUiAy4TcTERZfC7_PneJrM"
+   },
+   {
+    "position": 10,
+    "title": "RIVER PARK DALAT HOTEL - 115 PBC",
+    "address": "137 - 139 Phan Bội Châu, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+    "latitude": 11.943943899999999,
+    "longitude": 108.4393118,
+    "rating": 4.3,
+    "ratingCount": 70,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 916 421 535",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkQtZmS9iJVER0GxVldwi-ZgdCiCm0AhyLMDXcJ8hSaW4iTz1yrKtlWyoY-I_ef1U8fxs6k8N7uWXREn6_dy0Zvp_JhT9pyKe_YxisKANHR4Hq7-CBTNPWwe2T5NfYSzBz5eHTOkNZLZzc",
+    "cid": "13322776534154423069",
+    "fid": "0x317113269ee8ce29:0xb8e402abb42f2b1d",
+    "placeId": "ChIJKc7oniYTcTERHSsvtKsC5Lg"
+   },
+   {
+    "position": 11,
+    "title": "Dalat Paradise Hotel",
+    "address": "Số 28 Đường Bà Triệu, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+    "latitude": 11.9374764,
+    "longitude": 108.4336644,
+    "rating": 4.1,
+    "ratingCount": 253,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://dalatparadisehotel.com/",
+    "phoneNumber": "+84 263 3555 568",
+    "description": "Khách sạn bình dị có phòng ở bài trí ấm cúng, nhà hàng, bữa sáng và Wi-Fi.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk7G3Qgr_QRf1sxpQzTDswF2Q3RQiZYW2WNLB_UtkldWGI9A7CUq3rQphOixyX5o4pfNC1QSIgXGjf6nf4Q-FB_gu48_7Pz7nVqNSIGQYMiED_rLwH4QZV8KLP3zBs8hbiXBbuf",
+    "cid": "5341912728982233755",
+    "fid": "0x317113877eef07cb:0x4a224953081fa29b",
+    "placeId": "ChIJywfvfocTcTERm6IfCFNJIko"
+   },
+   {
+    "position": 12,
+    "title": "De Ma’at hôtel",
+    "address": "33-35 Nam Kỳ Khởi Nghĩa, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+    "latitude": 11.9404576,
+    "longitude": 108.435651,
+    "rating": 4.4,
+    "ratingCount": 465,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://m.facebook.com/De-Maat-H%C3%B4tel-%C4%90%C3%A0-L%E1%BA%A1t-111346818123824",
+    "phoneNumber": "+84 911 944 911",
+    "description": "Khách sạn cao cấp có phòng ở ấm cúng, thời thượng cùng cửa sổ chạm trần và Wi-Fi.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnD-luN3BEC6qDUboc-m6tYAxxjn8scwNnxyYjXUTPwYsnrcUNR_GoGubczRi3QlqyynKrN2s6OXIPUI4xZ2UIRNmuT2SBb8I1xdkSjsXYoQ4hGb0hX49dm4288edU4TxATE42A",
+    "cid": "4826346152759097589",
+    "fid": "0x317113f292b3d25f:0x42faa0413e4778f5",
+    "placeId": "ChIJX9KzkvITcTER9XhHPkGg-kI"
+   },
+   {
+    "position": 13,
+    "title": "Colline Dalat",
+    "address": "10 Phan Bội Châu, Xuân Hương - Đà Lạt, Lâm Đồng 670000, Việt Nam",
+    "latitude": 11.9439482,
+    "longitude": 108.4381016,
+    "rating": 4.5,
+    "ratingCount": 2777,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://hotelcolline.com/",
+    "phoneNumber": "+84 263 3665 588",
+    "description": "Khách sạn hiện đại với phòng ở tinh tế, có 2 nhà hàng, 2 quán bar và phòng tập thể dục.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl0vhzTOpXmmSDfAYgR6cTR1-Qs11NInqA5lXXTrtkMIbzKX0PfDeSYhb8Ntvw-pYT3zvGfKLBRBKt8Yiqs6d9dER8MXU8HAiAq-zHpuWpiSGaIUpQaYjVrCLEiagMmaVO_F89i4A",
+    "cid": "17255277842950743451",
+    "fid": "0x3171135333d87745:0xef770fc699bf659b",
+    "placeId": "ChIJRXfYM1MTcTERm2W_mcYPd-8"
+   },
+   {
+    "position": 14,
+    "title": "Nhà tam giác homestay",
+    "address": "80 Đường Triệu Việt Vương, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+    "latitude": 11.9207124,
+    "longitude": 108.4362146,
+    "rating": 4,
+    "ratingCount": 65,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 367 319 089",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkSpboUPYPqWDP-_FnaQG90R9Q4M1taNbVZbVKgLMW3ACemyTetSVMQVbhGD__LY_g9_MYtLrk0thkv-JTRA2Pf2-wyjKjikbedIxjnioygJrYe3_3jlWLZf3dFEGRGIXZwpt0e4g",
+    "cid": "7061296495739457643",
+    "fid": "0x317113d8e7241965:0x61fec3c02242d06b",
+    "placeId": "ChIJZRkk59gTcTERa9BCIsDD_mE"
+   },
+   {
+    "position": 15,
+    "title": "DAN Đà Lạt",
+    "address": "D19 Đường Bà Triệu, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+    "latitude": 11.9374006,
+    "longitude": 108.4329798,
+    "rating": 4.8,
+    "ratingCount": 70,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Lưu trú nhà dân"
+    ],
+    "website": "https://www.facebook.com/danhomestaydalat?mibextid=LQQJ4d",
+    "phoneNumber": "+84 942 262 541",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkfxDMnj6AyFRD-h8N88iuoLUadWZgLeLOG896UMwkj3lMKT_wSQSJuVs-lr76rS4t7JuuIli5B4x-fjH933jedg9OlUo66WrdcfFW3liW2w7ljJJu8sotVsT-9hEL45fIiA8s",
+    "cid": "10980415054533671451",
+    "fid": "0x3171132d8bf06437:0x98624550bbd4ba1b",
+    "placeId": "ChIJN2Twiy0TcTERG7rUu1BFYpg"
+   },
+   {
+    "position": 16,
+    "title": "Khách sạn Hoàng Minh Châu Bà Triệu Đà lạt",
+    "address": "11 Đường Bà Triệu, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+    "latitude": 11.938193799999999,
+    "longitude": 108.4341681,
+    "rating": 4.2,
+    "ratingCount": 177,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 263 3638 989",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn0kz067bagtzskveggh9-eBiyj47hG4yBep1kCUU6Lei7x5N5FYrDFA6UrtVBcagmYi8RmLayTf18dK4svZmh1hrbZ1u77qY0x4JxUmwJKUl1u-1sJm1T3tG3w5Wsa7imEXs5Q",
+    "cid": "15577550264005541240",
+    "fid": "0x3171130783bb31f7:0xd82e936e84d7bd78",
+    "placeId": "ChIJ9zG7gwcTcTEReL3XhG6TLtg"
+   },
+   {
+    "position": 17,
+    "title": "New Hampton Suits - Tầm Xuân Centre Hotel",
+    "address": "16 Hải Thượng, Cam Ly - Đà Lạt, Lâm Đồng, Việt Nam",
+    "latitude": 11.9418518,
+    "longitude": 108.4316707,
+    "rating": 3.9,
+    "ratingCount": 281,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://www.facebook.com/tamxuanhotel/",
+    "phoneNumber": "+84 263 3818 989",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmu1qmneDxKusjQQpYI5wG1tLf1aG_4o71B3CY_bN-U9BeMeKqZK766TJArufYsZe9ihgD1Orl3aUhvb6jseL9TiAjIF2SiTFJfM0Gax1q-4lisyniRzHtmXo-gjx-HPVb_5Rw7",
+    "cid": "5338341914413822114",
+    "fid": "0x3171132c4eb19a3f:0x4a1599affa36f0a2",
+    "placeId": "ChIJP5qxTiwTcTERovA2-q-ZFUo"
+   },
+   {
+    "position": 18,
+    "title": "LA PAIX DA LAT",
+    "address": "80 Đường Triệu Việt Vương, Xuân Hương - Đà Lạt, Lâm Đồng 67000, Việt Nam",
+    "latitude": 11.9204356,
+    "longitude": 108.4362361,
+    "rating": 3.9,
+    "ratingCount": 143,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://lapaix.com.vn/",
+    "phoneNumber": "+84 908 812 900",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmZhFLu536H2dKTkaVMDaoF9FLVgSGgCsHIcOrfWtQ8xFtDmBPqfxNEqfMKMpsKdt9O5woq-p-CZiiV31zH0sqY3DKb2_si-W7Z_1AdzedmRmBHAxub__1Ckg_xfj4lFYVwp26g",
+    "cid": "7298578779710413052",
+    "fid": "0x3171134f074e0125:0x6549c2bb09d7d8fc",
+    "placeId": "ChIJJQFOB08TcTER_NjXCbvCSWU"
+   },
+   {
+    "position": 19,
+    "title": "Artis Hotel Dalat",
+    "address": "11 Đ. Hoàng Diệu, Cam Ly - Đà Lạt, Lâm Đồng, Việt Nam",
+    "latitude": 11.9425204,
+    "longitude": 108.4303935,
+    "rating": 4.4,
+    "ratingCount": 297,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://artishotel.vn/",
+    "phoneNumber": "+84 948 547 788",
+    "description": "Các phòng và căn hộ cao cấp trong một khách sạn sang trọng, có chỗ đậu xe và dịch vụ cho thuê xe máy.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk6YNyEFMl2ISLUlfRDXkGKudkX_EmHnHT7SX0l_MbK4HO01arau0PG5s881DyQlMR1mv1jZEgsuOnqNruJqDB2t5JrhxH4z70j6b16NAsOFU6CfMUWRsB83v6hRq3YM0cNUI4XKtWY9s4A",
+    "cid": "13969150415968247846",
+    "fid": "0x317113c240785719:0xc1dc644aa5c9a026",
+    "placeId": "ChIJGVd4QMITcTERJqDJpUpk3ME"
+   },
+   {
+    "position": 20,
+    "title": "House Thị - Hotel Đà Lạt",
+    "address": "1/5 Lê Hồng Phong, Xuân Hương - Đà Lạt, Lâm Đồng 66115, Việt Nam",
+    "latitude": 11.9343539,
+    "longitude": 108.43212039999999,
+    "rating": 5,
+    "ratingCount": 166,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Khách sạn nghỉ dưỡng"
+    ],
+    "website": "https://www.facebook.com/HouseThiHomestay/",
+    "phoneNumber": "+84 973 523 770",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkxxZSNVNJ0BAf-qznMOi6dtF2-ezkzLvGnHfWqnK5ax7123329DAF-YesrhmJOGXSEiL9-ic7H37zFJ8YynTAf5g9EtW82LgdMzMX3qeRmoHCtc2S2RUjuUS8NpCNfzJ66fXVjfQ",
+    "cid": "14038555446541507268",
+    "fid": "0x31711300240871fb:0xc2d2f7cc96bb5ac4",
+    "placeId": "ChIJ-3EIJAATcTERxFq7lsz30sI"
+   }
+  ],
+  "credits": 3
+ }
+}

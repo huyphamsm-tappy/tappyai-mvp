@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Samsung Galaxy S24 Plus chính hãng, giá giảm đến 2 triệu",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:37:25.253Z",
+ "body": {
+  "searchParameters": {
+   "q": "Samsung Galaxy S24 Plus chính hãng, giá giảm đến 2 triệu",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Samsung Galaxy S24 Plus 12GB 256GB",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/g/a/galaxy-s24-plus-tim.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRewd5nqP0gwEumUOmMT9bcL7qnE-ijt5sSMMn0vJVEMA&s=10",
+    "thumbnailWidth": 358,
+    "thumbnailHeight": 358,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/samsung-galaxy-s24-plus.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fg%2Fa%2Fgalaxy-s24-plus-tim.png&tbnid=2ftCl0h9NgvkGM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fsamsung-galaxy-s24-plus.html&docid=EnuRG_iEpUHfpM&w=358&h=358",
+    "position": 1
+   },
+   {
+    "title": "Samsung Galaxy S24 Plus 12GB 256GB",
+    "imageUrl": "https://img.youtube.com/vi/YnmZe47Glok/maxresdefault.jpg",
+    "imageWidth": 1280,
+    "imageHeight": 720,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8a0gp0y-TSY-gLC74sGHAp2gJtjip52k7v8Z29OagoQ&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/samsung-galaxy-s24-plus.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimg.youtube.com%2Fvi%2FYnmZe47Glok%2Fmaxresdefault.jpg&tbnid=oa3jr1jwtDuvyM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fsamsung-galaxy-s24-plus.html&docid=EnuRG_iEpUHfpM&w=1280&h=720",
+    "position": 2
+   },
+   {
+    "title": "Samsung Galaxy S24 Plus 12GB 256GB",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-galaxy-s24_16__2.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUaOzdqzYgvQHtYrKFGJttR053gKpc-QcVEeYm6ZsvfA&s=10",
+    "thumbnailWidth": 358,
+    "thumbnailHeight": 358,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/samsung-galaxy-s24-plus.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fs%2Fa%2Fsamsung-galaxy-s24_16__2.png&tbnid=Zc5oxjHL2xHm0M&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fsamsung-galaxy-s24-plus.html&docid=EnuRG_iEpUHfpM&w=358&h=358",
+    "position": 3
+   },
+   {
+    "title": "Samsung Galaxy S24 Plus 5G (12GB - 256GB) - Chính Hãng",
+    "imageUrl": "https://cdn.viettablet.com/images/detailed/67/samsung-galaxy-s24-plus-anh-2.jpg",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxi-IyD9B5uXiqSJmpw4WbTlnVaglUkcJGMJTpmxHQGA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Viettablet",
+    "domain": "www.viettablet.com",
+    "link": "https://www.viettablet.com/samsung-galaxy-s24-plus?srsltid=AU7gw4XJHKghekEx5ppzVQrnNjLesW2ppPbQGx6Kj8_nk0Nf8pg2v4XL",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.viettablet.com%2Fimages%2Fdetailed%2F67%2Fsamsung-galaxy-s24-plus-anh-2.jpg&tbnid=Gzx3Jxw8lrnnnM&imgrefurl=https%3A%2F%2Fwww.viettablet.com%2Fsamsung-galaxy-s24-plus%3Fsrsltid%3DAU7gw4XJHKghekEx5ppzVQrnNjLesW2ppPbQGx6Kj8_nk0Nf8pg2v4XL&docid=9F9B5rzUNTM9XM&w=1024&h=1024",
+    "position": 4
+   },
+   {
+    "title": "Samsung Galaxy S24 Plus 5G",
+    "imageUrl": "https://cdn2.fptshop.com.vn/unsafe/512x0/filters:format(webp):quality(75)/2024_1_17_638410791178640748_samsung-galaxy-s24-plus-den-1-png.png",
+    "imageWidth": 512,
+    "imageHeight": 512,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqamDqkzS1nuwP_ig_gbKRpZNcAXs2SJEIJqh4T--hCQ&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "FPT Shop",
+    "domain": "fptshop.com.vn",
+    "link": "https://fptshop.com.vn/dien-thoai/samsung-galaxy-s24-plus",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.fptshop.com.vn%2Funsafe%2F512x0%2Ffilters%3Aformat(webp)%3Aquality(75)%2F2024_1_17_638410791178640748_samsung-galaxy-s24-plus-den-1-png.png&tbnid=Q0hNkfoq8KUFVM&imgrefurl=https%3A%2F%2Ffptshop.com.vn%2Fdien-thoai%2Fsamsung-galaxy-s24-plus&docid=h4SyAZhI9oZaSM&w=512&h=512",
+    "position": 5
+   },
+   {
+    "title": "Samsung Galaxy S24 Plus 5G (12GB - 256GB) Chính Hãng Chip Exynos 2400",
+    "imageUrl": "https://cdn.viettablet.com/images/detailed/59/samsung-galaxy-s24-plus-viettablet.jpg",
+    "imageWidth": 560,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAEpxGvT3NlTUSAa3JqESbRZou6oz9bHyfcvGqf4Z9uA&s=10",
+    "thumbnailWidth": 432,
+    "thumbnailHeight": 462,
+    "source": "Viettablet",
+    "domain": "www.viettablet.com",
+    "link": "https://www.viettablet.com/samsung-galaxy-s24-plus?srsltid=AU7gw4Vva1XfuZUW-saz4Kor-oyw1bLq0TCN9NVdQtgKYWBrIc4SKaCY",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.viettablet.com%2Fimages%2Fdetailed%2F59%2Fsamsung-galaxy-s24-plus-viettablet.jpg&tbnid=BVD-_J1jy3esuM&imgrefurl=https%3A%2F%2Fwww.viettablet.com%2Fsamsung-galaxy-s24-plus%3Fsrsltid%3DAU7gw4Vva1XfuZUW-saz4Kor-oyw1bLq0TCN9NVdQtgKYWBrIc4SKaCY&docid=9F9B5rzUNTM9XM&w=560&h=600",
+    "position": 6
+   },
+   {
+    "title": "Samsung Galaxy S24+ 512GB giảm đến 3 triệu. mua trả chậm 0% lãi suất",
+    "imageUrl": "https://cdn.tgdd.vn/Products/Images/42/319666/Slider/samsung-galaxy-s24-plus-5g-thumb-youtube-1020x570.jpg",
+    "imageWidth": 1020,
+    "imageHeight": 570,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQ0AeFCSeRjYzIia8LE_nvZwtc6rV4IumLanow_FNTKQ&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 411,
+    "source": "Điện máy XANH",
+    "domain": "www.dienmayxanh.com",
+    "link": "https://www.dienmayxanh.com/dien-thoai/samsung-galaxy-s24-plus-512gb-5g?srsltid=AU7gw4UjtefADOREYZmAMScJo4jKaWEedNNnQ-rlDjDCKlp66nWmt_1L",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.tgdd.vn%2FProducts%2FImages%2F42%2F319666%2FSlider%2Fsamsung-galaxy-s24-plus-5g-thumb-youtube-1020x570.jpg&tbnid=HR6g14RgAyQ7jM&imgrefurl=https%3A%2F%2Fwww.dienmayxanh.com%2Fdien-thoai%2Fsamsung-galaxy-s24-plus-512gb-5g%3Fsrsltid%3DAU7gw4UjtefADOREYZmAMScJo4jKaWEedNNnQ-rlDjDCKlp66nWmt_1L&docid=ZDrdQ36RCwTN7M&w=1020&h=570",
+    "position": 7
+   },
+   {
+    "title": "Samsung Galaxy S24 Plus 5G (12GB - 256GB) - Chính Hãng",
+    "imageUrl": "https://cdn.viettablet.com/images/detailed/67/samsung-galaxy-s24-plus-anh-5.jpg",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8DbunVNOecjRax36rVg2lgHb9NWcOqQKnms9rbYHuQA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Viettablet",
+    "domain": "www.viettablet.com",
+    "link": "https://www.viettablet.com/samsung-galaxy-s24-plus?srsltid=AU7gw4WT9oyzQK-3MZ2y09qmZRghA1Xc0wLnlWfHxFMeB_yvdd-k4Go5",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.viettablet.com%2Fimages%2Fdetailed%2F67%2Fsamsung-galaxy-s24-plus-anh-5.jpg&tbnid=gNiYTyu0hxO1MM&imgrefurl=https%3A%2F%2Fwww.viettablet.com%2Fsamsung-galaxy-s24-plus%3Fsrsltid%3DAU7gw4WT9oyzQK-3MZ2y09qmZRghA1Xc0wLnlWfHxFMeB_yvdd-k4Go5&docid=9F9B5rzUNTM9XM&w=1024&h=1024",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

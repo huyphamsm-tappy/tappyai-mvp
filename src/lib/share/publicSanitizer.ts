@@ -22,6 +22,8 @@ import { parseFollowups } from '@/lib/structuredContent/parseFollowups'
 import { parseShoppingMarker, type SynthesisView } from '@/lib/ai/consultative/synthesisView'
 import { parsePlacesMarker, type PlacesMarkerPayload } from '@/lib/recommendation/marker'
 import type { TappyPlan, PlanItem } from '@/components/TripPlanCard'
+import { isPlanPhotoUrl } from '@/lib/plans/share/planShare'
+import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 import {
   PUBLIC_PAYLOAD_LIMITS,
   SHARED_RESULT_PAYLOAD_VERSION,
@@ -103,7 +105,8 @@ export function generalizeQuery(query: string): string {
 
 /** A headline from the (generalised) question: first clause, sentence case, capped. */
 export function deriveTitle(publicQuery: string, fallback: string): string {
-  const first = publicQuery.split(/[.!?\n]/)[0]?.trim() ?? ''
+  // A sentence ends at ". " / "!" / "?" / a line break - not at the dot inside "TP.HCM" or "3.5tr".
+  const first = publicQuery.split(/[.!?]+(?:\s|$)|\n/)[0]?.trim() ?? ''
   const base = first.length >= 8 ? first : publicQuery.trim()
   const capped = base.length > PUBLIC_PAYLOAD_LIMITS.title ? `${base.slice(0, PUBLIC_PAYLOAD_LIMITS.title - 1).trimEnd()}…` : base
   const titled = capped ? capped.charAt(0).toUpperCase() + capped.slice(1) : ''
@@ -126,7 +129,106 @@ export function isStorableImageUrl(url: unknown): url is string {
   return true
 }
 
-const MD_IMAGE_RE = /!\[[^\]]*\]\((https?:\/\/[^\s)]+)\)/g
+// ── Gate 2 G3: the public image policy (G3-ADDENDUM.md + G3-DECISIONS.json) ─────────────────────────────────────────────────────────
+//
+// One pure function, applied at WRITE time (end of buildPublicPayload: new snapshots and the share preview) and at READ time (the public
+// loader and the hub listing), so old snapshots are covered without rewriting a stored row.
+//
+//   Layer 1 (F-A-pub): plan stop photos follow R1 (`isPublicPlanPhoto`). The URLs R1 REJECTS — computed from the plan BEFORE it is
+//            filtered — are also removed from `images`, because the snapshot builder copies plan photos into `images` (pushImage).
+//   Layer 3 (H-open):  `images`, shopping and places images keep a safe public https URL (urlGuard contract) that is storable and not
+//            rejected by layer 1. NO host allow-list: an https URL on any public host from a server source still renders, and so does
+//            an https image inside a forged [TAPPY_SHOPPING]/[TAPPY_PLACES] block of an OLD message — a recorded residual, not "safe".
+//   Layer 2 (N1-og) is separate, in /r/[slug]/og.png: it never relies on this function having run.
+// Lives here (not in publicPlanPhotos.ts) so buildPublicPayload can call it without an import cycle; publicPlanPhotos.ts re-exports.
+
+/** Layer 1, policy R1: a plan stop photo the public surfaces may show. R1 narrows the host; it does not prove provenance. */
+export function isPublicPlanPhoto(url: unknown): url is string {
+  return typeof url === 'string' && isPlanPhotoUrl(url) && isStorableImageUrl(url)
+}
+
+/** Layer 3, H-open: any other public image (hero, shopping, places). */
+export function isPublicImage(url: unknown): url is string {
+  return typeof url === 'string' && isSafeHttpsUrl(url) && isStorableImageUrl(url)
+}
+
+/** Layer 1: the stop photos R1 rejects, read off the plan as it is (i.e. before any filtering). */
+export function rejectedPlanPhotos(plan: unknown): Set<string> {
+  const out = new Set<string>()
+  const days = (plan as { days?: unknown } | null | undefined)?.days
+  if (!Array.isArray(days)) return out
+  for (const day of days) {
+    const items = (day as { items?: unknown } | null)?.items
+    if (!Array.isArray(items)) continue
+    for (const item of items) {
+      const url = (item as { photo_url?: unknown } | null)?.photo_url
+      if (typeof url === 'string' && !isPublicPlanPhoto(url)) out.add(url)
+    }
+  }
+  return out
+}
+
+/**
+ * Layer 1: the payload with every plan stop `photo_url` that fails R1 removed — only that key; days, stops and every other field stay.
+ * Pure; the SAME object comes back when nothing is removed. Non-object days / items pass through as they are.
+ */
+export function publicPlanPhotoView<P extends Pick<SharedResultPayload, 'plan'>>(payload: P): P {
+  const plan = payload.plan
+  if (!plan || !Array.isArray(plan.days)) return payload
+  let changed = false
+  const days = plan.days.map(day => {
+    if (!day || typeof day !== 'object' || !Array.isArray(day.items)) return day
+    let dayChanged = false
+    const items = day.items.map(item => {
+      if (!item || typeof item !== 'object' || !('photo_url' in item)) return item
+      if (isPublicPlanPhoto(item.photo_url)) return item
+      dayChanged = true
+      const { photo_url: _dropped, ...rest } = item
+      return rest as typeof item
+    })
+    if (!dayChanged) return day
+    changed = true
+    return { ...day, items }
+  })
+  return changed ? { ...payload, plan: { ...plan, days } } : payload
+}
+
+type ImagePayload = Pick<SharedResultPayload, 'plan' | 'images'> & Partial<Pick<SharedResultPayload, 'shopping' | 'places'>>
+
+/**
+ * Layers 1 + 3 over a whole public payload. Pure; the SAME object comes back when nothing changes. Only image fields are touched:
+ * plan stop `photo_url` (key removed), `images` (entries removed, order kept), shopping entity `image` (set to null — the field is
+ * part of that view's shape), places item `image` (key removed).
+ */
+export function publicImagePolicy<P extends ImagePayload>(payload: P): P {
+  const rejected = rejectedPlanPhotos(payload.plan)
+  const allowed = (u: unknown): u is string => isPublicImage(u) && !rejected.has(u)
+  let out: P = publicPlanPhotoView(payload)
+  const images = Array.isArray(payload.images) ? payload.images.filter(allowed) : payload.images
+  if (Array.isArray(payload.images) && images.length !== payload.images.length) out = { ...out, images }
+  const shopping = payload.shopping
+  if (shopping && Array.isArray(shopping.entities) && shopping.entities.some(e => e && e.image != null && !allowed(e.image))) {
+    out = { ...out, shopping: { ...shopping, entities: shopping.entities.map(e => (e && e.image != null && !allowed(e.image) ? { ...e, image: null } : e)) } }
+  }
+  const places = payload.places
+  if (places && Array.isArray(places.items) && places.items.some(i => i && i.image != null && !allowed(i.image))) {
+    out = { ...out, places: { ...places, items: places.items.map(i => {
+      if (!i || i.image == null || allowed(i.image)) return i
+      const { image: _dropped, ...rest } = i
+      return rest as typeof i
+    }) } }
+  }
+  return out
+}
+
+/** Read time, hub listing: the first public image of a listed result (the listing reads `images` and `plan` only). */
+export function publicFirstImage(images: unknown, plan: unknown): string | null {
+  if (!Array.isArray(images)) return null
+  const rejected = rejectedPlanPhotos(plan)
+  return (images.find(u => isPublicImage(u) && !rejected.has(u)) as string | undefined) ?? null
+}
+
+const MD_IMAGE_RE =/!\[[^\]]*\]\((https?:\/\/[^\s)]+)\)/g
 
 /** Lift image markdown out of prose. Returns the prose without images and the URLs found. */
 export function extractImages(text: string): { text: string; images: string[] } {
@@ -318,5 +420,6 @@ export function buildPublicPayload(input: BuildPublicPayloadInput): SharedResult
   if (plan) payload.plan = sanitizePlan(plan)
   if (shopping) payload.shopping = sanitizeShopping(shopping)
   if (places && places.items?.length) payload.places = sanitizePlaces(places)
-  return payload
+  // Gate 2 G3, write time: new snapshots and the share preview leave the builder already under the public image policy.
+  return publicImagePolicy(payload)
 }

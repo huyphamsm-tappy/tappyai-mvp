@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:xuatnhapcanh.gov.vn cấp hộ chiếu phổ thông online hồ sơ lệ phí",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:50:50.774Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:xuatnhapcanh.gov.vn cấp hộ chiếu phổ thông online hồ sơ lệ phí",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Trang chủ | Tờ khai điện tử đề nghị cấp hộ chiếu",
+    "link": "https://hochieu.xuatnhapcanh.gov.vn/",
+    "snippet": "Tải tờ khai hộ chiếu, xác nhận nhân thân đăng ký offline. Tờ khai điện tử đề nghị cấp hộ chiếu. Đối với những hộ chiếu cấp trước ngày 01/7/2025 thông tin về ...",
+    "position": 1
+   },
+   {
+    "title": "Tờ khai điện tử đề nghị cấp hộ chiếu",
+    "link": "https://hochieu.xuatnhapcanh.gov.vn/faces/faq.jspx",
+    "snippet": "HƯỚNG DẪN THỦ TỤC · 1. Hồ sơ bao gồm: - Khai 01 tờ khai đề nghị cấp hộ chiếu theo mẫu quy định; · 2. Nơi nộp hồ sơ: · 3. Những trường hợp sau đây có thể đề nghị ...",
+    "position": 2
+   },
+   {
+    "title": "Tờ khai điện tử đề nghị cấp hộ chiếu",
+    "link": "https://hochieu.xuatnhapcanh.gov.vn/faces/adf.task-flow?_id=task-flow-tkdt&_document=/WEB-INF/task-flow-tkdt.xml",
+    "snippet": "1. Họ và tên · 2. Giới tính · 3. Sinh ngày. Đủ ngày, tháng, năm sinh. Nơi sinh (theo giấy khai sinh). Chọn nơi sinh · 4. Số ĐDCN/CMND. Ngày cấp. Nơi cấp. Chọn nơi ...",
+    "position": 3
+   },
+   {
+    "title": "Tờ khai điện tử đề nghị cấp hộ chiếu",
+    "link": "https://hochieu.xuatnhapcanh.gov.vn/faces/contact.jspx",
+    "snippet": "Hồ Chí Minh. - Địa chỉ: 333-335-337 đường Nguyễn Trãi, Q1, TP. Hồ Chí Minh. - Điện thoại: 02839202300. - Số điện thoại giải đáp thủ tục xuất nhập cảnh của công ...",
+    "position": 4
+   },
+   {
+    "title": "Mẫu/Form X01",
+    "link": "https://hochieu.xuatnhapcanh.gov.vn/docs/FORM_TO_KHAI_X01.pdf",
+    "snippet": "Con dưới 9 tuổi đề nghị cấp chung hộ chiếu (nếu có):. Họ và tên (chữ in hoa). Nam Nữ. Sinh ngày tháng năm. Nơi sinh (tỉnh, TP). Tôi xin chịu trách nhiệm trước ...",
+    "position": 5
+   },
+   {
+    "title": "Tờ khai điện tử đề nghị cấp hộ chiếu",
+    "link": "https://hochieu.xuatnhapcanh.gov.vn/faces/adf.task-flow?_id=task-flow-xnnt&_document=/WEB-INF/task-flow-xnnt.xml",
+    "snippet": "1. Họ và tên · 2. Giới tính · 3. Sinh ngày. Đủ ngày, tháng, năm sinh. Nơi sinh (tỉnh/thành phố). Chọn nơi sinh · 4. Số ĐDCN/CMND.",
+    "position": 6
+   },
+   {
+    "title": "Tổ chức không có account - National portal on Immigration",
+    "link": "https://evisa.xuatnhapcanh.gov.vn/dvbl-khong-tai-khoan",
+    "snippet": "Trang chủ · Thị thực điện tử · Mời, bảo lãnh nhập cảnh · Tra cứu hồ sơ · Thị thực điện tử · Mời, bảo lãnh nhập cảnh · Hỗ trợ · Đăng nhập ...",
+    "position": 7
+   },
+   {
+    "title": "Trang khai báo tạm trú cho người nước ngoài và thông báo ...",
+    "link": "https://kbtt.xuatnhapcanh.gov.vn/",
+    "snippet": "Hệ thống chính thức của Bộ Công an hỗ trợ khai báo tạm trú cho người nước ngoài và thông báo lưu trú cho công dân Việt Nam trực tuyến nhanh chóng, ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

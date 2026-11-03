@@ -1,4 +1,6 @@
 import { AI } from '@/lib/ai/llm'
+import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { refuseWithoutAiConsent } from '@/lib/ai/consent/aiConsentGuard'
 import { clientIp } from '@/lib/security/rateLimit'
 import { publicDailyRateLimit, publicRateLimit } from '@/lib/security/publicRateLimit'
 import { requestLocale } from '@/lib/i18n/requestLocale'
@@ -76,6 +78,14 @@ export async function POST(req: Request) {
   const platformDesc = PLATFORM_GUIDE[platform] ?? PLATFORM_GUIDE.facebook
   const toneDesc = TONE_GUIDE[tone] ?? TONE_GUIDE.youthful
   const lengthDesc = LENGTH_GUIDE[length] ?? LENGTH_GUIDE.medium
+
+  // App Review 5.1.2(i): a signed-in iOS-used account sends its topic only with a current agreement. Signed-out
+  // callers have no account to check (see aiConsentGuard notes).
+  const { user } = await getRequestUser(req).catch(() => ({ user: null }))
+  if (user) {
+    const aiConsentRefusal = await refuseWithoutAiConsent(user.id, requestLocale(req))
+    if (aiConsentRefusal) return aiConsentRefusal
+  }
 
   try {
     const { text } = await AI.generate({

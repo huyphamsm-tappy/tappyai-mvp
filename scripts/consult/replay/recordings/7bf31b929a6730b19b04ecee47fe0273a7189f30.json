@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vanban.chinhphu.vn 2026 miễn lệ phí cấp hộ chiếu phổ thông 15/8/2026 nghị quyết",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:24:26.457Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vanban.chinhphu.vn 2026 miễn lệ phí cấp hộ chiếu phổ thông 15/8/2026 nghị quyết",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

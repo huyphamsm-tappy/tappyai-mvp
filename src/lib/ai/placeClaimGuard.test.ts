@@ -200,3 +200,229 @@ describe('🚨 a machine block is not a sentence — [TAPPY_PLAN] is never judge
     expect(out.text).toBe(text)
   })
 })
+
+// PLACE_CLAIM_KEEP_VERIFIED_PRICE (default OFF): a sentence removed only for a quality phrase keeps its verified price.
+// Fixture B is the Gate-3 scenario: the quality clause "được đánh giá cao nên" sits in front of a verified 8.000.000đ.
+describe('PLACE_CLAIM_KEEP_VERIFIED_PRICE', () => {
+  const B = 'Tôi đã tìm được một lựa chọn phù hợp. Sony WH-1000XM5 được đánh giá cao nên giá 8.000.000đ rất đáng tiền.'
+  const VERIFIED = { verifiedPrices: [{ value: 8000000, name: 'Sony WH-1000XM5' }] }
+  const withFlag = <T,>(v: string | undefined, fn: () => T): T => {
+    const saved = process.env.PLACE_CLAIM_KEEP_VERIFIED_PRICE
+    if (v === undefined) delete process.env.PLACE_CLAIM_KEEP_VERIFIED_PRICE
+    else process.env.PLACE_CLAIM_KEEP_VERIFIED_PRICE = v
+    try { return fn() } finally {
+      if (saved === undefined) delete process.env.PLACE_CLAIM_KEEP_VERIFIED_PRICE
+      else process.env.PLACE_CLAIM_KEEP_VERIFIED_PRICE = saved
+    }
+  }
+
+  it('flag OFF: fixture B keeps the legacy output (the whole sentence goes, price with it)', () => {
+    const out = withFlag(undefined, () => guardPlaceClaimsInText(B, ev(), VERIFIED))
+    expect(out.text).toBe('Tôi đã tìm được một lựa chọn phù hợp.')
+  })
+
+  it('flag ON: the quality clause goes, the verified 8.000.000đ stays, the place name stays', () => {
+    const out = withFlag('1', () => guardPlaceClaimsInText(B, ev(), VERIFIED))
+    expect(out.text).not.toMatch(/được đánh giá cao/)
+    expect(out.text).toContain('Sony WH-1000XM5 giá 8.000.000đ rất đáng tiền.')
+    expect(out.text).toContain('Tôi đã tìm được một lựa chọn phù hợp.')
+  })
+
+  it('flag ON, diacritic-free: "duoc danh gia cao nen" is cut with its "duoc", the price stays', () => {
+    const text = 'Sony WH-1000XM5 duoc danh gia cao nen gia 8.000.000d rat dang tien.'
+    const out = withFlag('1', () => guardPlaceClaimsInText(text, ev(), VERIFIED))
+    expect(out.text).not.toMatch(/duoc|danh gia cao/)
+    expect(out.text).toContain('Sony WH-1000XM5 gia 8.000.000d rat dang tien.')
+  })
+
+  it('flag ON, quality-only sentence with no verified amount: same as OFF (fail-closed)', () => {
+    const text = 'Mình chọn Sen Spa. Quán này được đánh giá cao. Bạn thử nhé.'
+    const off = withFlag(undefined, () => guardPlaceClaimsInText(text, ev(), VERIFIED))
+    const on = withFlag('1', () => guardPlaceClaimsInText(text, ev(), VERIFIED))
+    expect(on.text).toBe(off.text)
+    expect(on.text).not.toMatch(/được đánh giá cao/)
+  })
+
+  it('flag ON, a sentence with an unverified amount beside the verified one: same as OFF, no unverified price survives', () => {
+    const text = 'Tôi đã tìm được một lựa chọn phù hợp. Sony WH-1000XM5 được đánh giá cao nên giá 8.000.000đ, bản khác 3.000.000đ.'
+    const off = withFlag(undefined, () => guardPlaceClaimsInText(text, ev(), VERIFIED))
+    const on = withFlag('1', () => guardPlaceClaimsInText(text, ev(), VERIFIED))
+    expect(on.text).toBe(off.text)
+    expect(on.text).not.toContain('3.000.000')
+    expect(on.text).not.toMatch(/được đánh giá cao/)
+  })
+
+  // The flag contract for the shapes below: whatever the established path returns is what ON returns. That says nothing about
+  // whether the established path itself is right — the it.fails cases further down record where it is not.
+  it('flag does not change overlapping or malformed shapes (on === off)', () => {
+    const shapes = [
+      'Sony WH-1000XM5 giá 8.000.000đ, được đánh giá cao.', // the amount comes before the claim
+      'Sony WH-1000XM5 được đánh giá cao nên giá 8.000.000đ, được đánh giá cao nữa.', // two quality phrases
+      'Sony WH-1000XM5 được đánh giá cao 8.000.000đ.', // no clause edge before the price
+    ]
+    for (const text of shapes) {
+      const off = withFlag(undefined, () => guardPlaceClaimsInText(text, ev(), VERIFIED))
+      const on = withFlag('1', () => guardPlaceClaimsInText(text, ev(), VERIFIED))
+      expect(on.text, text).toBe(off.text)
+    }
+  })
+
+  // Outcome pin only: the `found.length !== 1` guard is redundant with the `re.test(out)` check that follows (a second phrase
+  // survives the cut and fails it), so this test cannot isolate the branch. It pins that two phrases take the established path.
+  it('two quality phrases in the sentence take the established path (on === off); outcome pin for the found.length branch', () => {
+    const text = 'Tôi đã tìm được một lựa chọn phù hợp. Sony WH-1000XM5 được đánh giá cao nên giá 8.000.000đ, được đánh giá cao nữa.'
+    const off = withFlag(undefined, () => guardPlaceClaimsInText(text, ev(), VERIFIED))
+    const on = withFlag('1', () => guardPlaceClaimsInText(text, ev(), VERIFIED))
+    expect(on.text).toBe(off.text)
+  })
+
+  it('fail-closed branch delimiter-not-found: no clause edge between the claim and the price takes the established path (on === off)', () => {
+    const text = 'Tôi đã tìm được một lựa chọn phù hợp. Sony WH-1000XM5 được đánh giá cao 8.000.000đ.'
+    const off = withFlag(undefined, () => guardPlaceClaimsInText(text, ev(), VERIFIED))
+    const on = withFlag('1', () => guardPlaceClaimsInText(text, ev(), VERIFIED))
+    expect(on.text).toBe(off.text)
+  })
+
+  // Outcome pin only: when the cut drops the named place, the existing survivor-name check after `trim` rejects it too, so
+  // `keptOk` changes the result only when the established clause trim would succeed where the cut fails; no such sentence was
+  // found, so this test cannot isolate `keptOk`. The contrast half does prove the place evidence is what blocks the cut.
+  it('a cut that drops a named place takes the established path (on === off), while the same sentence without place evidence is cut; outcome pin for keptOk', () => {
+    // "Sen Spa" sits inside the clause the cut removes, so the survivor no longer names the place the sentence named.
+    const text = 'Sony WH-1000XM5 được đánh giá cao tại Sen Spa nên giá 8.000.000đ rất tốt.'
+    const withPlace = ev({ placeNames: ['Sen Spa'] })
+    const off = withFlag(undefined, () => guardPlaceClaimsInText(text, withPlace, VERIFIED))
+    const on = withFlag('1', () => guardPlaceClaimsInText(text, withPlace, VERIFIED))
+    expect(on.text).toBe(off.text)
+    // Contrast, same sentence, no place evidence: nothing is named, so the cut is allowed and keeps the verified price.
+    const cut = withFlag('1', () => guardPlaceClaimsInText(text, ev(), VERIFIED))
+    expect(cut.text).toContain('8.000.000đ')
+    expect(cut.text).not.toMatch(/được đánh giá cao/)
+  })
+
+  it('flag does not change the shape with an un-dotted amount ("3000000đ") (on === off)', () => {
+    // Contract only. The established path keeps this sentence as it is (see the it.fails case below); the flag adds nothing to it.
+    const text = 'Sony WH-1000XM5 được đánh giá cao nên giá 8.000.000đ rất đáng tiền, bản cũ 3000000đ.'
+    const off = withFlag(undefined, () => guardPlaceClaimsInText(text, ev(), VERIFIED))
+    const on = withFlag('1', () => guardPlaceClaimsInText(text, ev(), VERIFIED))
+    expect(on.text).toBe(off.text)
+  })
+
+  // With a clean first sentence the established path removes a sentence that carries unsupported quality claims, whatever their
+  // number, and an un-dotted amount in it goes with the sentence. Observed in the 23/10 run: the two-phrase sentence below was
+  // removed once it followed a clean sentence. These are the established-path truths the three PC-V1-LAST-RESORT-01 it.fails cases below do NOT hold for.
+  it('established path: with a clean first sentence, a sentence with two quality phrases or an un-dotted amount is removed (flag does not change it)', () => {
+    const lead = 'Tôi đã tìm được một lựa chọn phù hợp. '
+    for (const claim of [
+      'Sony WH-1000XM5 được đánh giá cao nên giá 8.000.000đ, được đánh giá cao nữa.',
+      'Sony WH-1000XM5 được đánh giá cao nên giá 8.000.000đ rất đáng tiền, bản cũ 3000000đ.',
+    ]) {
+      const off = withFlag(undefined, () => guardPlaceClaimsInText(lead + claim, ev(), VERIFIED))
+      const on = withFlag('1', () => guardPlaceClaimsInText(lead + claim, ev(), VERIFIED))
+      expect(on.text, claim).toBe(off.text)
+      expect(off.text, claim).not.toMatch(/được đánh giá cao/)
+      expect(off.text, claim).not.toContain('3000000')
+    }
+  })
+
+  // PC-V1-LAST-RESORT-01 (open gate, pre-existing, NOT fixed by PLACE_CLAIM_KEEP_VERIFIED_PRICE). Root cause, read from source
+  // (placeClaimGuard.ts, end of guardPlaceClaimsInText): whenever EVERY sentence of the text is removed as carrying an
+  // unsupported claim (a lone sentence, or several), the v1 path returns the ORIGINAL text, claims included ("the same last
+  // resort this guard always had"); v2 returns what is left instead. The same path applies to every claim kind the guard
+  // judges, not only quality phrases. A reply made only of claim sentences therefore keeps them, however many phrases they have
+  // and whatever amounts they hold. These three cases assert the DESIRED behaviour and are expected to fail today; they are not
+  // a fix. (An it.fails case also passes if the code throws; the plain cases above pin the non-throwing behaviour.) Remove the
+  // marks in the commit that changes the last resort.
+  it.fails('PC-V1-LAST-RESORT-01 (two quality phrases): DESIRED — no quality phrase survives a reply made only of that sentence', () => {
+    const text = 'Sony WH-1000XM5 được đánh giá cao nên giá 8.000.000đ, được đánh giá cao nữa.'
+    const out = withFlag(undefined, () => guardPlaceClaimsInText(text, ev(), VERIFIED))
+    expect(out.text).not.toMatch(/được đánh giá cao/)
+  })
+
+  it.fails('PC-V1-LAST-RESORT-01 (no clause edge before the price): DESIRED — no quality phrase survives a reply made only of that sentence', () => {
+    const text = 'Sony WH-1000XM5 được đánh giá cao 8.000.000đ.'
+    const out = withFlag(undefined, () => guardPlaceClaimsInText(text, ev(), VERIFIED))
+    expect(out.text).not.toMatch(/được đánh giá cao/)
+  })
+
+  it.fails('PC-V1-LAST-RESORT-01 (un-dotted amount): DESIRED — an unverified un-dotted amount does not survive a reply made only of that sentence', () => {
+    const text = 'Sony WH-1000XM5 được đánh giá cao nên giá 8.000.000đ rất đáng tiền, bản cũ 3000000đ.'
+    const out = withFlag(undefined, () => guardPlaceClaimsInText(text, ev(), VERIFIED))
+    expect(out.text).not.toContain('3000000')
+  })
+
+  it('variant names: a verified price of "Sony WH-1000XM5" is not kept for a sentence naming a variant (on === off)', () => {
+    const variants = [
+      'Pro', 'pro', 'Max', 'Ultra', 'Plus', 'Mini', 'Lite', 'SE', 'Air', 'II', 'III', 'IV', 'V2', 'Gen', 'Black', '2024',
+      'bản', 'phiên', 'đời', 'thế', 'cũ', 'xách', 'refurbished', '[Pro]', '*Pro*', 'pro/max', '(Pro)',
+    ]
+    for (const v of variants) {
+      // A clean first sentence keeps the established path out of its last resort (it would return a lone claim sentence unchanged).
+      const text = `Tôi đã tìm được một lựa chọn phù hợp. Sony WH-1000XM5 ${v} được đánh giá cao nên giá 8.000.000đ rất đáng tiền.`
+      const off = withFlag(undefined, () => guardPlaceClaimsInText(text, ev(), VERIFIED))
+      const on = withFlag('1', () => guardPlaceClaimsInText(text, ev(), VERIFIED))
+      expect(on.text, text).toBe(off.text)
+      expect(on.text, text).not.toContain('8.000.000')
+    }
+  })
+
+  it('variant names: a separator glued to the row name ("XM5/XM6", "XM5-B", "XM5+") is a different product, not kept (on === off)', () => {
+    for (const glued of ['/XM6', '-B', '+', '_x', '`x`']) {
+      const text = `Tôi đã tìm được một lựa chọn phù hợp. Sony WH-1000XM5${glued} được đánh giá cao nên giá 8.000.000đ rất đáng tiền.`
+      const off = withFlag(undefined, () => guardPlaceClaimsInText(text, ev(), VERIFIED))
+      const on = withFlag('1', () => guardPlaceClaimsInText(text, ev(), VERIFIED))
+      expect(on.text, text).toBe(off.text)
+      expect(on.text, text).not.toContain('8.000.000')
+    }
+  })
+
+  it('variant names: the exact row name followed by lowercase Vietnamese words still keeps the price', () => {
+    const text = 'Sony WH-1000XM5 được đánh giá cao nên giá 8.000.000đ rất đáng tiền.'
+    const out = withFlag('1', () => guardPlaceClaimsInText(text, ev(), VERIFIED))
+    expect(out.text).toContain('Sony WH-1000XM5 giá 8.000.000đ rất đáng tiền.')
+  })
+
+  it('variant names: when the row IS the variant ("Sony WH-1000XM5 Pro") and the sentence follows it with lowercase words, the price is kept', () => {
+    const pro = { verifiedPrices: [{ value: 8000000, name: 'Sony WH-1000XM5 Pro' }] }
+    const text = 'Sony WH-1000XM5 Pro được đánh giá cao nên giá 8.000.000đ rất đáng tiền.'
+    const out = withFlag('1', () => guardPlaceClaimsInText(text, ev(), pro))
+    expect(out.text).toContain('Sony WH-1000XM5 Pro giá 8.000.000đ rất đáng tiền.')
+    expect(out.text).not.toMatch(/được đánh giá cao/)
+  })
+
+  it('flag ON: a sentence with bold markup takes the established path', () => {
+    const text = 'Sony WH-1000XM5 **được đánh giá cao** nên giá 8.000.000đ rất đáng tiền.'
+    const off = withFlag(undefined, () => guardPlaceClaimsInText(text, ev(), VERIFIED))
+    const on = withFlag('1', () => guardPlaceClaimsInText(text, ev(), VERIFIED))
+    expect(on.text).toBe(off.text)
+  })
+
+  it('flag ON: the sentence "Quán Sen Spa …" with a price that belongs to another row: same as OFF, unchanged by the flag', () => {
+    // Restored original case (it had been replaced). Source reason for the expected value: the reply is one claim sentence, so
+    // the established path takes its v1 last resort and returns the ORIGINAL text (placeClaimGuard.ts, end of
+    // guardPlaceClaimsInText); observed in the 23/10 run: ON === OFF === the input. Pre-existing (PC-V1-LAST-RESORT-01), not an
+    // effect of the flag, which must not change it.
+    const text = 'Quán Sen Spa được đánh giá cao nên giá 8.000.000đ rất tốt.'
+    const off = withFlag(undefined, () => guardPlaceClaimsInText(text, ev(), VERIFIED))
+    const on = withFlag('1', () => guardPlaceClaimsInText(text, ev(), VERIFIED))
+    expect(on.text).toBe(off.text)
+    expect(on.text).toBe(text)
+  })
+
+  it('flag ON: the same sentence after a clean first sentence — the price is not attributed to the verified row, the sentence goes as in OFF', () => {
+    const text = 'Tôi đã tìm được một lựa chọn phù hợp. Quán Sen Spa được đánh giá cao nên giá 8.000.000đ rất tốt.'
+    const off = withFlag(undefined, () => guardPlaceClaimsInText(text, ev(), VERIFIED))
+    const on = withFlag('1', () => guardPlaceClaimsInText(text, ev(), VERIFIED))
+    expect(on.text).toBe(off.text)
+    expect(on.text).toBe('Tôi đã tìm được một lựa chọn phù hợp.')
+  })
+
+  it('flag ON: a verified price of ANOTHER row is not kept for this place (attribution fails closed)', () => {
+    // Additional case. The verified row here is another product: the sentence names "Sony WH-1000XM5", so the 8.000.000đ is not attributed to it.
+    const otherRow = { verifiedPrices: [{ value: 8000000, name: 'Tai nghe khác' }] }
+    const off = withFlag(undefined, () => guardPlaceClaimsInText(B, ev(), otherRow))
+    const on = withFlag('1', () => guardPlaceClaimsInText(B, ev(), otherRow))
+    expect(on.text).toBe(off.text)
+    expect(on.text).toBe('Tôi đã tìm được một lựa chọn phù hợp.')
+    expect(on.text).not.toContain('8.000.000')
+  })
+})

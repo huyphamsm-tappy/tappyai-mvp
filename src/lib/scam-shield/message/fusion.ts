@@ -6,6 +6,8 @@ import type {
   SignalType, UrlCheckSummary,
 } from './types'
 import type { RuleEvaluation } from './rules'
+import type { ScenarioMatch } from '../knowledge/match'
+import { scamVerdictText } from '@/lib/i18n/scamVerdict'
 import { floorScore } from './rules'
 import {
   AI_CONFIDENCE_SCALE_MIN, AI_FLOOR_MIN_CONFIDENCE, AI_LEVEL_SCORE, CONFIDENCE_SHARE, CORROBORATION_BONUS,
@@ -47,6 +49,8 @@ export interface FusionInput {
   ai: AiAssessment | null
   urlChecks: UrlCheckSummary[]
   locale: RequestLocale
+  /** The best official-scenario match for the text (static; see knowledge/match.ts), if any. */
+  scenario?: ScenarioMatch | null
 }
 
 export interface FusedRisk {
@@ -83,9 +87,14 @@ function urlSignals(checks: UrlCheckSummary[], locale: RequestLocale): MessageSi
       type: 'suspicious_external_domain',
       severity,
       source: 'url',
+      // 02/10: a description of the LINK's traits, never "this is a scam" about a named organisation.
       explanation: locale === 'vi'
-        ? `Liên kết ${host} bị đánh giá ${c.level}${brand ? ` — giả mạo tên ${brand} nhưng không phải tên miền chính thức` : ''}.`
-        : `The link ${host} was rated ${c.level}${brand ? ` — it borrows the name ${brand} but is not the official domain` : ''}.`,
+        ? (c.level === 'MEDIUM'
+          ? `Liên kết ${host} có một số điểm đáng ngờ.`
+          : `Liên kết ${host} có đặc điểm thường gặp ở link giả mạo${brand ? ` (mượn tên ${brand} nhưng không phải tên miền chính thức đã biết)` : ''}.`)
+        : (c.level === 'MEDIUM'
+          ? `The link ${host} has some suspicious traits.`
+          : `The link ${host} has traits that are common in fake links${brand ? ` (it borrows the name ${brand} but is not a known official domain)` : ''}.`),
     })
   }
   return out
@@ -176,23 +185,36 @@ function inferFromRules(rules: RuleEvaluation): { scamType: ScamType | null; att
   return { scamType: null, attackGoal: null }
 }
 
-function fallbackSummary(locale: RequestLocale, level: RiskLevel, signalCount: number, aiConsulted: boolean): string {
-  if (locale === 'vi') {
-    const base = aiConsulted
-      ? 'Mô hình AI không trả về kết quả dùng được, nên kết luận dựa trên kiểm tra liên kết và các quy tắc nhận diện.'
-      : 'Lượt này chỉ dùng kiểm tra liên kết và các quy tắc nhận diện, chưa dùng phân tích AI.'
-    if (level === 'INCONCLUSIVE') return `${base} Chưa đủ bằng chứng để kết luận tin nhắn này an toàn.`
-    return signalCount > 0 ? `${base} Đã phát hiện ${signalCount} dấu hiệu đáng ngờ.` : base
-  }
-  const base = aiConsulted
-    ? 'The AI model did not return a usable assessment, so this verdict rests on the link checks and the detection rules.'
-    : 'This check used only the link checks and the detection rules, without AI analysis.'
-  if (level === 'INCONCLUSIVE') return `${base} There is not enough evidence to call this message safe.`
-  return signalCount > 0 ? `${base} ${signalCount} suspicious signal${signalCount === 1 ? '' : 's'} detected.` : base
+/** Static wording only (no AI ran): the same sentence the verdict card prints, in the caller's locale. */
+function fallbackSummary(locale: RequestLocale, level: RiskLevel, match: ScenarioMatch | null): string {
+  const l = locale === 'en' ? 'en' : 'vi'
+  if (match?.strength === 'strong' || level === 'HIGH' || level === 'CRITICAL') return scamVerdictText(l, 'scamVerdict.familiar.body')
+  if (match?.strength === 'weak' || level === 'MEDIUM') return scamVerdictText(l, 'scamVerdict.suspicious.body')
+  return `${scamVerdictText(l, 'scamVerdict.unrecognized.title')}. ${scamVerdictText(l, 'scamVerdict.unrecognized.body')}`
 }
 
-export function fuseRisk(input: FusionInput, aiConsulted = input.ai !== null): FusedRisk {
+const SCENARIO_SCAM_TYPE: Record<number, ScamType> = {
+  3: 'government_impersonation', 22: 'government_impersonation', 18: 'government_impersonation',
+  4: 'bank_phishing', 5: 'bank_phishing', 14: 'job_scam', 25: 'job_scam',
+  15: 'investment_scam', 16: 'investment_scam', 23: 'prize_scam', 24: 'romance_scam',
+  13: 'ecommerce_refund_scam', 21: 'ecommerce_refund_scam', 20: 'remote_access_scam',
+}
+
+function scenarioSignal(match: ScenarioMatch, locale: RequestLocale): MessageSignal {
+  const title = match.scenario.official.title
+  return {
+    type: 'other',
+    severity: match.strength === 'strong' ? 'high' : 'medium',
+    source: 'rule',
+    explanation: locale === 'vi'
+      ? `Nội dung giống tình huống “${title}” (kịch bản số ${match.scenario.officialNumber} trong danh sách của Bộ Công an).`
+      : `The content resembles the scenario “${title}” (no. ${match.scenario.officialNumber} in the Ministry of Public Security list).`,
+  }
+}
+
+export function fuseRisk(input: FusionInput, _aiConsulted = input.ai !== null): FusedRisk {
   const { rules, ai, urlChecks, locale } = input
+  const match = input.scenario ?? null
   const url = urlComponent(urlChecks)
   const signalsFromUrls = urlSignals(urlChecks, locale)
 
@@ -225,6 +247,7 @@ export function fuseRisk(input: FusionInput, aiConsulted = input.ai !== null): F
   const rulesPositive = ruleScore >= LEVEL_FLOOR_SCORE.MEDIUM || rules.floor !== null
   const urlPositive = url.floor !== null
 
+  const scenarioFloor = match ? (match.strength === 'strong' ? LEVEL_FLOOR_SCORE.HIGH : LEVEL_FLOOR_SCORE.MEDIUM) : 0
   let score = Math.max(ruleScore, aiPart.score, url.score)
 
   // A confident "safe" from the model may discount rule NOISE — a legitimate promo that says
@@ -241,7 +264,7 @@ export function fuseRisk(input: FusionInput, aiConsulted = input.ai !== null): F
   const positives = [rulesPositive, aiPart.positive, urlPositive].filter(Boolean).length
   if (positives >= 2) score += CORROBORATION_BONUS
 
-  score = clamp(Math.round(Math.max(score, ruleFloor, aiPart.floor, urlFloorScore(url.floor))), 0, 100)
+  score = clamp(Math.round(Math.max(score, ruleFloor, aiPart.floor, urlFloorScore(url.floor), scenarioFloor)), 0, 100)
 
   const confidence = clamp(Math.round(
     (ai ? CONFIDENCE_SHARE.ai * ai.confidence : 0) +
@@ -251,11 +274,14 @@ export function fuseRisk(input: FusionInput, aiConsulted = input.ai !== null): F
 
   const level = levelFor(score, confidence)
   const reassuring = level === 'SAFE' || level === 'LOW'
-  const signals = mergeSignals(rulesDiscounted && reassuring ? [] : rules.signals, ai, signalsFromUrls)
+  const signals = mergeSignals(rulesDiscounted && reassuring ? [] : rules.signals, ai, match ? [scenarioSignal(match, locale), ...signalsFromUrls] : signalsFromUrls)
   const inferred = ai ? { scamType: ai.scamType, attackGoal: ai.attackGoal } : inferFromRules(rules)
   // A model that found nothing wrong still leaves the rules' classification standing when the
   // rules floored the verdict — the floor is the product's decision, and it needs a name.
-  const classification = ai && !ai.scamType && !ai.attackGoal && rules.floor ? inferFromRules(rules) : inferred
+  let classification = ai && !ai.scamType && !ai.attackGoal && rules.floor ? inferFromRules(rules) : inferred
+  if (match && !classification.scamType && !classification.attackGoal) {
+    classification = { scamType: SCENARIO_SCAM_TYPE[match.scenario.officialNumber] ?? 'other', attackGoal: match.scenario.attackerGoal }
+  }
 
   return {
     level,
@@ -265,6 +291,6 @@ export function fuseRisk(input: FusionInput, aiConsulted = input.ai !== null): F
     scamType: reassuring ? null : classification.scamType,
     attackGoal: reassuring ? null : classification.attackGoal,
     requestedActions: ai?.requestedActions ?? [],
-    reasoningSummary: ai?.reasoningSummary || fallbackSummary(locale, level, signals.length, aiConsulted),
+    reasoningSummary: ai?.reasoningSummary || fallbackSummary(locale, level, match),
   }
 }

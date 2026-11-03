@@ -18,6 +18,7 @@
 
 import { normalizeVN, detectTripLength } from './intent'
 import { missingTripFacts, type TripFact } from './consultative/tripFacts'
+import { isCitationOnly } from './citationTail'
 
 const OPEN = '[TAPPY_PLAN]'
 const CLOSE = '[/TAPPY_PLAN]'
@@ -71,6 +72,9 @@ const TRIP_QUESTION = /(?<!\p{L})(?:ngày nào|hôm nào|khi nào|lúc nào|th�
 const withoutUrls = (s: string) => s.replace(/\]\([^)]*\)/g, ']').replace(/https?:\/\/\S+/g, ' ')
 
 function hasCalendarDate(s: string): boolean {
+  // POST-UAT B6 (UAT-13 post-fix run): a sentence the code has bound to a source ("… tạm dừng từ 8/10 … [S1].") states the SOURCE's
+  // date — a news fact with its link — not a travel date assumed for the user. [S#] markers exist only for sources actually returned.
+  if (/\[S\d{1,2}(?:\s*,\s*S\d{1,2})*\]/.test(s)) return false
   return CAL_DATE.test(withoutUrls(s).replace(OPEN_ALL_DAY, ''))
 }
 
@@ -92,10 +96,14 @@ export function guardUngivenTravelDate(fullText: string, userTexts: readonly str
     if (i % 2 === 1) return part
     return part.split('\n').map(line => {
       const sentences = line.split(SENTENCE_SPLIT)
+      let prevGone = false
       const kept = sentences.filter(sn => {
+        // 30/10: the citation after a removed sentence was its source, and stood alone once it went (see citationTail.ts).
+        if (prevGone && isCitationOnly(sn)) return false
+        prevGone = false
         if (ENDS_WITH_QUESTION.test(sn)) return true
         const bad = hasCalendarDate(sn) || ASSUMED_DAY.test(withoutUrls(sn))
-        if (bad) dropped++
+        if (bad) { dropped++; prevGone = true }
         return !bad
       })
       return kept.length === sentences.length ? line : kept.join(' ')
@@ -111,7 +119,11 @@ function guardProse(prose: string, missing: Set<TripFact>): { text: string; drop
     // A sentence may end in markdown or a closing quote/paren: "…nào?** Để mình…" (uat 192973d run 1).
     const parts = line.split(SENTENCE_SPLIT)
     let afterDroppedQuestion = false
+    let prevGone = false
     const kept = parts.filter(sentence => {
+      // 30/10: the citation after a removed sentence was its source, and stood alone once it went (see citationTail.ts).
+      if (prevGone && isCitationOnly(sentence)) return false
+      prevGone = false
       // The "(để xác nhận …)" aside, or the "Để mình tìm giá vé …" reason, that followed a dropped
       // question goes with it.
       const aside = afterDroppedQuestion && (/^\(.*\)[.!]?$/u.test(sentence.trim()) || /^(?:để|de)\s+(?:mình|minh|tôi|toi)\b/iu.test(sentence.trim()))
@@ -123,12 +135,12 @@ function guardProse(prose: string, missing: Set<TripFact>): { text: string; drop
       // sat right above the closing question; on 192973d it came bolded ("- **…nào?**").
       if (ENDS_WITH_QUESTION.test(sentence)) {
         const own = TRIP_QUESTION.test(sentence)
-        if (own) { dropped++; afterDroppedQuestion = true }
+        if (own) { dropped++; afterDroppedQuestion = true; prevGone = true }
         return !own
       }
       const bad = (missing.has('date') && hasCalendarDate(sentence))
         || ((missing.has('origin') || missing.has('transport')) && DEPARTURE.test(sentence))
-      if (bad) dropped++
+      if (bad) { dropped++; prevGone = true }
       return !bad
     })
     return kept.length === parts.length ? line : kept.join(' ')
@@ -141,7 +153,7 @@ function guardProse(prose: string, missing: Set<TripFact>): { text: string; drop
  * `userTexts` are the user's own messages in this thread. Returns the text unchanged for any other
  * plan, when the block does not parse, or when the user already gave date, origin and transport.
  */
-export function guardPlanTripFacts(fullText: string, userTexts: readonly string[]): PlanTripFactsResult {
+export function guardPlanTripFacts(fullText: string, userTexts: readonly string[], opts: { assumeLegs?: boolean } = {}): PlanTripFactsResult {
   const none: PlanTripFactsResult = { text: fullText, missing: [], labelsCleaned: 0, stopsDropped: 0, sentencesDropped: 0 }
   const start = fullText.indexOf(OPEN)
   const end = fullText.indexOf(CLOSE)
@@ -149,7 +161,9 @@ export function guardPlanTripFacts(fullText: string, userTexts: readonly string[
   let plan: Record<string, unknown>
   try { plan = JSON.parse(fullText.slice(start + OPEN.length, end).trim()) } catch { return none }
   if (!plan || typeof plan !== 'object' || plan.type !== 'trip') return none
-  const missing = missingTripFacts(fold(userTexts.join(' \n ')))
+  // CONSULTATIVE_IN_AGENT (`assumeLegs`): a complete trip states its date (resolved by the system clock), its outbound / return leg and its start
+  // as ASSUMPTIONS the reply names, so those are no longer cut for being "ungiven"; only the length trim below still applies.
+  const missing = opts.assumeLegs ? [] : missingTripFacts(fold(userTexts.join(' \n ')))
   // DAYS = the length the user stated (c40 T1 on uat 2bd5c59: "3 ngày 2 đêm" planned "Ngày 4 (Trước khi
   // về)"). The nearest stated length wins, as in the planning context; extra days' stops are folded into
   // the last day (the departure morning is still part of it), never silently dropped.

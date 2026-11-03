@@ -1,5 +1,9 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { parseConsultDecision, enforceConsultRules, buildAskReply, wasAskReply, brainMessages, ASK_TAIL_VI, BRAIN_SYSTEM, consultRemainingLine } from './consultBrain'
+
+// AI-Hay pass (04/10): the voice layer is ON by default; these tests describe the earlier fixed phrases, so they start from the explicit STYLE_LUNA6=0.
+beforeEach(() => { process.env.STYLE_LUNA6 = '0' })
+afterEach(() => { delete process.env.STYLE_LUNA6 })
 
 const ASK_JSON = JSON.stringify({
   domains: ['shopping'], turn: 'ask', known: { san_pham: 'ốp UAG iPhone 17 Pro Max' }, assumptions: [],

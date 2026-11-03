@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:hochieu.xuatnhapcanh.gov.vn \"200.000\" \"trực tuyến\" hộ chiếu lệ phí 2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:31:36.822Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:hochieu.xuatnhapcanh.gov.vn \"200.000\" \"trực tuyến\" hộ chiếu lệ phí 2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

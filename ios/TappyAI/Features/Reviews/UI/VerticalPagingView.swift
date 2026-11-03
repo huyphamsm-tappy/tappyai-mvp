@@ -15,7 +15,10 @@ struct VerticalPagingView<Content: View>: UIViewControllerRepresentable {
         context.coordinator.parent = self
         context.coordinator.pagingVC = vc
         if pageCount > 0 {
-            let first = makeHosting(index: 0)
+            // Open AT `currentPage` (a profile's clip viewer starts at the tapped clip); it used to open at page 0 whatever was asked.
+            let start = max(0, min(currentPage, pageCount - 1))
+            context.coordinator.currentIndex = start
+            let first = makeHosting(index: start)
             vc.setViewControllers([first], direction: .forward, animated: false)
         }
         return vc
@@ -96,6 +99,21 @@ struct VerticalPagingView<Content: View>: UIViewControllerRepresentable {
 
 class IndexedHostingController<Content: View>: UIHostingController<Content> {
     var index: Int = 0
+
+    /// Root cause of the black band above the Explore picture (CI run 37000177700, `EXPLORE-DIAG` accessibility frames):
+    /// the page cell is the full screen height (CollectionView / Cell `{{0,0},{402,791}}`) but the SwiftUI page was laid out
+    /// INSIDE the hosting view's top safe-area inset — the picture sat at `y = 62` (= the status-bar inset) with height
+    /// 729 = 791 − 62, and `.ignoresSafeArea(edges: .top)` in `ReviewPostView` did not widen it. The feed hides the
+    /// status bar and draws edge to edge, so this controller cancels ONLY the top inset (the bottom inset, which keeps the
+    /// caption clear of the bottom bar, is untouched).
+    override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
+        let systemTop = view.safeAreaInsets.top - additionalSafeAreaInsets.top
+        let target = -systemTop
+        if abs(additionalSafeAreaInsets.top - target) > 0.5 {
+            additionalSafeAreaInsets.top = target
+        }
+    }
 }
 
 class PagingViewController<Content: View>: UIPageViewController {
@@ -109,11 +127,23 @@ class PagingViewController<Content: View>: UIPageViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
+        tuneScrollView()
+    }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        tuneScrollView()
+    }
+
+    /// The page controller's own scroll view adds the status-bar safe area as a content inset, which pushed every
+    /// page ~47 pt down and left a black band above the picture (seen in the App Store shot, 02/10). The feed hides the
+    /// status bar and draws edge to edge, so the inset must never be applied.
+    private func tuneScrollView() {
         for sub in view.subviews {
             if let scrollView = sub as? UIScrollView {
                 scrollView.showsVerticalScrollIndicator = false
                 scrollView.showsHorizontalScrollIndicator = false
+                scrollView.contentInsetAdjustmentBehavior = .never
             }
         }
     }

@@ -42,15 +42,15 @@ describe('planAnalysis — the cheapest correct answer wins', () => {
 describe('buildAdvice — deterministic, bilingual, shaped by what the message asks for', () => {
   const sig = (type: Parameters<typeof buildAdvice>[0]['signals'][number]['type']) => ({ type, severity: 'high' as const, explanation: '', source: 'rule' as const })
 
-  it('SAFE/LOW: nothing to avoid, stay alert', () => {
+  it('SAFE/LOW: the same "unrecognised" advice as INCONCLUSIVE — never a reassurance', () => {
     const a = buildAdvice({ level: 'SAFE', signals: [], attackGoal: null, urlChecks: [] })
-    expect(a.doNot).toEqual([])
-    expect(a.doNow.map(x => x.code)).toEqual(['STAY_ALERT'])
+    expect(a.doNot.map(x => x.code)).toEqual(['NO_TRANSFER', 'NO_OTP', 'NO_CLICK_LINK'])
+    expect(a.doNow.map(x => x.code)).toEqual(['COULD_NOT_CONCLUDE', 'VERIFY_SENDER_INDEPENDENTLY'])
   })
   it('INCONCLUSIVE: says it could not conclude and, with a link, not to open it', () => {
     const a = buildAdvice({ level: 'INCONCLUSIVE', signals: [], attackGoal: null, urlChecks: [{ url: 'https://x.cfd/', status: 'failed' }] })
     expect(a.doNow.map(x => x.code)).toEqual(['COULD_NOT_CONCLUDE', 'VERIFY_SENDER_INDEPENDENTLY'])
-    expect(a.doNot.map(x => x.code)).toEqual(['NO_CLICK_LINK'])
+    expect(a.doNot.map(x => x.code)).toEqual(['NO_TRANSFER', 'NO_OTP', 'NO_CLICK_LINK'])
   })
   it('account takeover leads with OTP / password / recovery codes and the official app', () => {
     const a = buildAdvice({ level: 'HIGH', signals: [sig('verify_phone_request'), sig('urgency_pressure')], attackGoal: 'account_takeover', urlChecks: [{ url: 'https://x.cfd/', status: 'checked', level: 'LOW' }] })

@@ -48,6 +48,7 @@ const INTENTIONAL_SKIPS = {
   'src/lib/ai/__measure__/reviewSourceProbe.test.ts': 'MEASURE-gated: real network + paid model',
   'src/lib/ai/__measure__/toolPayload.test.ts': 'MEASURE-gated: real network + paid model',
   'src/lib/ai/__measure__/weatherCountryMatrix.test.ts': 'MEASURE-gated: real network (wttr.in) — F01 live country matrix',
+  'supabase/tests/user_blocks.measure.test.ts': 'BLOCKS_MEASURE-gated: 300k-row timing of the feed queries (writes docs/security/USER-BLOCKS-MEASURE.json); the policies are tested by user_blocks.test.ts',
 }
 
 const norm = (p) => String(p).replace(/\\/g, '/').replace(/^.*?(?=(src|supabase|scripts)\/)/, '')

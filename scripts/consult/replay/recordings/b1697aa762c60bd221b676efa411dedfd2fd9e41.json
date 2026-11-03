@@ -1,0 +1,42 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:xuatnhapcanh.gov.vn cấp hộ chiếu phổ thông trong nước trực tuyến lệ phí hồ sơ",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:09:34.430Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:xuatnhapcanh.gov.vn cấp hộ chiếu phổ thông trong nước trực tuyến lệ phí hồ sơ",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tờ khai điện tử đề nghị cấp hộ chiếu",
+    "link": "https://hochieu.xuatnhapcanh.gov.vn/faces/faq.jspx",
+    "snippet": "Người đề nghị cấp hộ chiếu lần đầu thực hiện tại Phòng Quản lý xuất nhập cảnh Công an tỉnh, thành phố trực thuộc Trung ương nơi thường trú hoặc nơi tạm trú.",
+    "position": 1
+   },
+   {
+    "title": "Tờ khai điện tử đề nghị cấp hộ chiếu",
+    "link": "https://hochieu.xuatnhapcanh.gov.vn/faces/contact.jspx",
+    "snippet": "Riêng Thứ 7 tiếp khách vào buổi sáng. Giờ tiếp khách: - Buổi sáng: từ 08h00 – 11h30 - Buổi chiều: từ 13h30 – 16h00. Ghi chú: Trường hợp quý ...",
+    "position": 2
+   },
+   {
+    "title": "DANH SÁCH CÁC NƯỚC",
+    "link": "https://evisa.xuatnhapcanh.gov.vn/documents/20181/117155/Vietnam-Evisa-nation-list-Vi.pdf/7611c905-0370-45e9-8080-cd0dec11df95",
+    "snippet": "STT. ICAO. TÊN. TÊN (TIẾNG ANH). 1. ARG Ác-hen-ti-na. Argentina. 2. ARM Ác-mê-ni-a. Armenia. 3. AZE A-déc-bai-gian. Azerbaijan. 4. IRL Ai-rơ-len. Ireland.",
+    "position": 3
+   }
+  ],
+  "credits": 1
+ }
+}

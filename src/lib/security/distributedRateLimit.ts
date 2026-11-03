@@ -42,9 +42,17 @@ export interface RateLimitStore {
   releaseSlidingWindow?(key: string, member: string): Promise<void>
 }
 
+/**
+ * WHY a request was refused. A genuine quota breach and an infrastructure failure are different events for an operator (one is a user, the other is an outage) and must be
+ * countable apart. Present only when `ok` is false. `store_unavailable` covers: no store resolved, the store threw or timed out, or it answered something unexpected
+ * (the fail-closed path). Additive: callers that ignore it behave exactly as before.
+ */
+export type RateLimitRefusal = 'limit_exceeded' | 'store_unavailable'
+
 export interface RateLimitResult {
   ok: boolean
   retryAfter: number
+  reason?: RateLimitRefusal
   /**
    * When `ok`, the sorted-set member this admission added. Pass it to `distributedRateLimitRelease`
    * to refund the unit if the work it admitted then failed (F-015). Absent when rejected, when the
@@ -231,7 +239,7 @@ export async function distributedRateLimit(
   limit: number,
   windowMs: number
 ): Promise<RateLimitResult> {
-  const failClosed: RateLimitResult = { ok: false, retryAfter: Math.max(1, Math.ceil(windowMs / 1000)) }
+  const failClosed: RateLimitResult = { ok: false, retryAfter: Math.max(1, Math.ceil(windowMs / 1000)), reason: 'store_unavailable' }
   const active = resolveStore()
   if (!active) return failClosed
 
@@ -244,8 +252,10 @@ export async function distributedRateLimit(
   try {
     const [admitted, oldest] = await active.evalSlidingWindow(namespacedKey(key), now, windowMs, limit, member)
     if (admitted === 1) return { ok: true, retryAfter: 0, member }
+    // Anything that is neither "admitted" (1) nor "rejected" (0) is the store misbehaving, not a quota breach: refuse (as before) but report it as an infrastructure failure.
+    if (admitted !== 0) return failClosed
     const elapsed = Number.isFinite(oldest) && oldest > 0 ? now - oldest : 0
-    return { ok: false, retryAfter: Math.max(1, Math.ceil((windowMs - elapsed) / 1000)) }
+    return { ok: false, retryAfter: Math.max(1, Math.ceil((windowMs - elapsed) / 1000)), reason: 'limit_exceeded' }
   } catch {
     return failClosed
   }

@@ -27,6 +27,7 @@ final class URLSessionAPIClient: APIClient {
     private let auth: AuthInterceptor
     private let retry: RetryPolicy
     private let decoder: JSONDecoder
+    private let consent: AIConsentStore
     private let log = AppLogger.network
 
     init(baseURL: URL,
@@ -34,7 +35,9 @@ final class URLSessionAPIClient: APIClient {
          session: URLSession = .shared,
          retry: RetryPolicy = .default,
          decoder: JSONDecoder = ResponseDecoder.json,
-         defaultTimeout: TimeInterval = 30) {
+         defaultTimeout: TimeInterval = 30,
+         consent: AIConsentStore = .shared) {
+        self.consent = consent
         self.builder = RequestBuilder(baseURL: baseURL, defaultTimeout: defaultTimeout)
         self.session = session
         self.auth = auth
@@ -66,6 +69,8 @@ final class URLSessionAPIClient: APIClient {
     }
 
     private func executeRaw(_ endpoint: Endpoint) async throws -> (Data, HTTPURLResponse) {
+        // App Review 5.1.2(i): no AI request leaves the phone before the person has agreed.
+        if consent.blocks(path: endpoint.path) { throw AIConsentStore.blockedError }
         var request = try builder.makeRequest(endpoint)
         if endpoint.requiresAuth { await auth.authorize(&request) }
         return try await execute(request, endpoint: endpoint, didRetryAuth: false, attempt: 0)
@@ -96,7 +101,8 @@ final class URLSessionAPIClient: APIClient {
 
         default:
             if retry.shouldRetry(status: http.statusCode, attempt: attempt),
-               !Self.isKnownLimit(status: http.statusCode, data: data) {
+               !Self.isKnownLimit(status: http.statusCode, data: data),
+               !UploadUnavailable.matches(status: http.statusCode, data: data) {
                 let delay = retry.delay(forAttempt: attempt)
                 log.debug("retry \(endpoint.path) status=\(http.statusCode) attempt=\(attempt) in \(delay)s")
                 try await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
@@ -123,21 +129,62 @@ final class URLSessionAPIClient: APIClient {
         return .network(status: nil, code: nil)
     }
 
+    /// `mapTransport` for the chat STREAM: a stream that stayed silent past its limit is a timeout, not a missing
+    /// connection (the person was told "no internet" while the network was fine). Everything else is unchanged.
+    static func mapStreamTransport(_ error: Error) -> AppError {
+        let ns = error as NSError
+        if ns.domain == NSURLErrorDomain, ns.code == NSURLErrorTimedOut {
+            return .streaming(reason: "timeout")
+        }
+        return mapTransport(error)
+    }
+
     static func mapHTTP(status: Int, data: Data) -> AppError {
-        let code = errorCode(from: data)
+        // The 502 session body keeps its message in `error` and the machine code in `code`; carry the code through.
+        let code = UploadUnavailable.matches(status: status, data: data) ? UploadUnavailable.code : errorCode(from: data)
         switch (status, code) {
         case (_, "anon_limit_reached"): return .authentication(reason: .anonLimitReached)
         case (_, "free_limit_reached"): return .authentication(reason: .freeLimitReached)
+        // A paid plan that spent its daily questions, and an account without a current AI-sharing
+        // agreement: each has its own server sentence and its own remedy (Phase K, web parity).
+        case (429, "plan_limit_reached"): return .authentication(reason: .planLimitReached(message: serverMessage(from: data)))
+        case (429, "deep_research_limit_reached"): return .authentication(reason: .deepResearchLimitReached(message: serverMessage(from: data)))
+        case (429, "pro_daily_limit_reached"): return .authentication(reason: .proDailyLimitReached(message: serverMessage(from: data)))
+        case (403, "ai_consent_required"): return .authentication(reason: .aiConsentRequired(message: serverMessage(from: data)))
         case (400, _): return .validation(message: errorMessage(from: data) ?? "Invalid request")
         case (401, _): return .authentication(reason: .unauthenticated)
+        case (403, let code?) where AgeGateCode(rawValue: code) != nil:
+            let message = (try? JSONSerialization.jsonObject(with: data) as? [String: Any])?["message"] as? String
+            return .authentication(reason: .ageGate(code: code, message: message))
         case (403, _): return .authentication(reason: .forbidden)
         default: return .network(status: status, code: code)
         }
     }
 
+    /// `mapHTTP` for the chat stream: the same, except that the burst limit (`429 rate_limit`) is read with the server's own
+    /// sentence. Other endpoints keep seeing it as `.network(429, "rate_limit")` (Scam Shield reads that), so the shared
+    /// mapping is not changed.
+    static func mapChatHTTP(status: Int, data: Data) -> AppError {
+        if status == 429, errorCode(from: data) == "rate_limit" {
+            return .authentication(reason: .rateLimited(message: serverMessage(from: data)))
+        }
+        return mapHTTP(status: status, data: data)
+    }
+
+    /// A refusal that repeating cannot change (a spent allowance or a burst limit): never retried by the client.
     static func isKnownLimit(status: Int, data: Data) -> Bool {
         let code = errorCode(from: data)
-        return code == "free_limit_reached" || code == "anon_limit_reached"
+        return code == "free_limit_reached" || code == "anon_limit_reached" || code == "plan_limit_reached"
+            || code == "deep_research_limit_reached" || code == "pro_daily_limit_reached" || code == "rate_limit"
+    }
+
+    /// The server's own `message` sentence (already in the request locale), or nil. Unlike
+    /// `errorMessage`, never falls back to the machine code in `error`.
+    private static func serverMessage(from data: Data) -> String? {
+        guard let obj = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+              let message = (obj["message"] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines),
+              !message.isEmpty else { return nil }
+        return message
     }
 
     private static func errorCode(from data: Data) -> String? {

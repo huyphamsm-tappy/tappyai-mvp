@@ -40,11 +40,27 @@ policy_of() {
       echo VERIFY-ONLY ;;
     20260904_group_read_boundary.sql)
       echo AFTER-DEPLOY ;;
+    # AI-consent table for POST /api/ai-consent (20261018) and its client-role REVOKE ALL (20261019). Additive / revoke-only,
+    # and the code on production before the consent branch never reads the table. Both go BEFORE the web deploy, so the
+    # endpoint can store iOS decisions from its first request and no client role ever holds the default grants.
+    20261018_ai_data_consent.sql|20261019_ai_data_consent_client_acl.sql)
+      echo APPLY ;;
+    # AI usage ledger (owner 01/11/2026, cost reporting only). Additive; the code writes it only with AI_USAGE_LEDGER=1, so it may go
+    # before or after the web deploy - turn the flag on only after this file is applied.
+    20261101_ai_usage_events.sql)
+      echo APPLY ;;
+    # Tappy (Promax) plan ids (owner 01/11/2026). Widens the allowed plan lists only (constraints + p8_apply_entitlement); apply it
+    # BEFORE the web release that sells promax1m / promax3m - until then the database refuses those orders and purchases.
+    20261102_plans_promax.sql)
+      echo APPLY ;;
     # H1 → M1 first, then the security-branch migrations in MIGRATION_ORDER.txt order (owner 30/09): 20260928b needs the
     # deal-click code (service role) on production; the others are code-independent but ride the same verified window.
     20260927_owner_update_column_privileges.sql|20260928_revoke_reviews_insert.sql|\
     20260928b_revoke_increment_deal_click_public.sql|20260928c_review_comments_publication_boundary.sql|\
-    20260930_content_reports_insert_check.sql|20260930b_review_interactions_bounds.sql)
+    20260930_content_reports_insert_check.sql|20260930b_review_interactions_bounds.sql|\
+    20261001_user_blocks.sql|20261001b_user_reports.sql|20261001d_moderation_standards.sql|\
+    20261001e_banned_identity_hash.sql|20261005_account_deletion_cleanup.sql|20261009_content_reports_to_queue.sql|20261010_content_reports_flood_guard.sql|\
+    20261018_chat_honours_user_blocks.sql)
       echo AFTER-SMOKE ;;
     20260913_g1_growth_foundation.sql|20260913_plan_shares.sql|20260915_profile_public_presentation.sql|\
     20260915b_review_likes_private.sql|20260918_g1b_share_ancestry.sql|20260920100000_commerce_providers.sql|\
@@ -53,7 +69,9 @@ policy_of() {
     20260921_music_tracks_lockdown.sql|20260921_user_events_ga4_event_types.sql|\
     20260921_user_events_shopping_search_event.sql|20260922_groups_avatar_url.sql|\
     20260925b_decision_evidence_sweep.sql|20260925d_audit_log_pii_retention.sql|d3-one-off-sweep.sql|\
-    20260929130000_commerce_click_attributions.sql|20260929140000_commerce_click_attributions_r21.sql)
+    20260929130000_commerce_click_attributions.sql|20260929140000_commerce_click_attributions_r21.sql|\
+    20261001c_commerce_providers_cinemas.sql|20261005_p8_cost_indexes.sql|\
+    20260924_p8_subscriptions_plan_model.sql|20261011_p8_payments.sql|20261015_p8_subscriptions.sql|20261016_p7_pip_one_time.sql|20261017_p7_pip_trial_any_source.sql)
       echo APPLY ;;
     *) echo UNLISTED ;;
   esac

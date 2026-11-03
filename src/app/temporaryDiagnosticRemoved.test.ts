@@ -39,11 +39,15 @@ describe('the temporary Zalo diagnostic is gone', () => {
     // This file is excluded because it names those identifiers itself, in the pattern below and
     // in the prose above. Without the exclusion the test matches its own text and fails — which
     // it did in CI, where the file is tracked, while passing locally where it was not yet added.
-    const { execSync } = require('node:child_process') as typeof import('node:child_process')
-    const hits = execSync(
-      'git grep -l -E "ClientErrorDiag|clientErrorRecord|tappy_diag_v1|DIAG_KEY" -- src ":!src/app/temporaryDiagnosticRemoved.test.ts" || true',
-      { encoding: 'utf8' },
-    ).trim()
+    // git is run directly (no shell): `… || true` needs a POSIX shell, and on Windows (cmd.exe has no `true`) the command itself failed.
+    // `git grep` exits 1 when nothing matches — that is the passing case; any other failure is still a failure.
+    const { execFileSync } = require('node:child_process') as typeof import('node:child_process')
+    let hits = ''
+    try {
+      hits = execFileSync('git', ['grep', '-l', '-E', 'ClientErrorDiag|clientErrorRecord|tappy_diag_v1|DIAG_KEY', '--', 'src', ':!src/app/temporaryDiagnosticRemoved.test.ts'], { encoding: 'utf8' }).trim()
+    } catch (e) {
+      if ((e as { status?: number }).status !== 1) throw e
+    }
     expect(hits, `still referenced in:\n${hits}`).toBe('')
   })
 })

@@ -153,6 +153,20 @@ const nextConfig = {
         ],
       },
       { source: '/:path*', headers: securityHeaders },
+      {
+        // Tappy Business order tracking. The catch-all above sets
+        // `strict-origin-when-cross-origin`, which would still send this
+        // origin — and the tracking token is in the page URL. A later rule
+        // wins for a duplicate key, so this narrows it to `no-referrer` for
+        // the one path where the URL itself is a bearer credential. The route
+        // handler sets the same headers; this is the belt to that pair of
+        // braces, because a config header cannot be forgotten in a refactor.
+        source: '/api/public/business/orders/track',
+        headers: [
+          { key: 'Referrer-Policy', value: 'no-referrer' },
+          { key: 'X-Robots-Tag', value: 'noindex, nofollow' },
+        ],
+      },
     ]
   },
   async redirects() {

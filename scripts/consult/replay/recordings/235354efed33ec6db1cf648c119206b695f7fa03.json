@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "nhà hàng món Việt dưới 300k/người có máy lạnh, yên tĩnh, không Quán Bụi Central, không gian ít ồn Quận 1, TP.HCM gia menu thuc don",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:15:31.504Z",
+ "body": {
+  "searchParameters": {
+   "q": "nhà hàng món Việt dưới 300k/người có máy lạnh, yên tĩnh, không Quán Bụi Central, không gian ít ồn Quận 1, TP.HCM gia menu thuc don",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Em tha thiết xin cả nhà mấy nhà hàng ăn trưa ở các quận 1 ...",
+    "link": "https://www.facebook.com/groups/SaigonReviews/posts/2075280800071726/",
+    "snippet": "300k nhìn tưởng nhỏ chứ ăn trưa máy lạnh ở Q1 thì bao la lựa chọn. Buffet thì có buffet Gánh trong ks Palace ngay mặt tiền Nguyễn Huệ đắt đỏ ...",
+    "position": 1
+   },
+   {
+    "title": "Một không gian đủ rộng để đón những cuộc hội ngộ ...",
+    "link": "https://www.facebook.com/quanbuirestaurant/videos/m%E1%BB%99t-kh%C3%B4ng-gian-%C4%91%E1%BB%A7-r%E1%BB%99ng-%C4%91%E1%BB%83-%C4%91%C3%B3n-nh%E1%BB%AFng-cu%E1%BB%99c-h%E1%BB%99i-ng%E1%BB%99-%C4%91%E1%BB%A7-%E1%BA%A5m-c%C3%BAng-%C4%91%E1%BB%83-gi%E1%BB%AF-tr%E1%BB%8Dn-c%E1%BA%A3m-gi%C3%A1c/1250417213711877/",
+    "snippet": "Một không gian đủ rộng để đón những cuộc hội ngộ, đủ ấm cúng để giữ trọn cảm giác thân quen. Tầng 1 của Quán Bụi Heritage là nơi những buổi ...",
+    "position": 2
+   },
+   {
+    "title": "Quán Bụi - Original",
+    "link": "https://quan-bui.com/vi/original/",
+    "snippet": "Nhà hàng gồm ba khu vực chính: tầng trệt, tầng một và tầng thượng, với sức chứa lên đến hơn 170 khách, phù hợp cho những buổi họp mặt gia đình, tiệc sinh nhật, ...",
+    "position": 3
+   },
+   {
+    "title": "Không gian Quán Bụi Heritage gần gũi, ấm cúng, vừa đủ ...",
+    "link": "https://www.instagram.com/reel/DcK0AhpHZLk/",
+    "snippet": "Saigon Kitchen Vina là một nơi như thế - để giữa thành phố, mình có thể ngồi xuống thật chậm, ăn một bữa cơm Việt và nhớ về những ngày xưa cũ.",
+    "position": 4
+   },
+   {
+    "title": "Top 45 nhà hàng ngon nổi tiếng nhất tại TP.HCM",
+    "link": "https://zalopay.vn/nha-hang-5067",
+    "snippet": "La Vela là nhà hàng hải sản buffet cao cấp nằm trong khách sạn 5 sao, nổi bật với tiệc buffet hải sản thượng hạng được tổ chức tại tầng cao, ...",
+    "date": "30 thg 9, 2025",
+    "position": 5
+   },
+   {
+    "title": "12+ nhà hàng Việt Nam Quận 1 đáng thử nhất Sài Thành",
+    "link": "https://www.greensm.com/vn-vi/news/nha-hang-viet-nam-quan-1",
+    "snippet": "Hoàng Yến Vietnamese Cuisine là thương hiệu ẩm thực truyền thống Việt Nam, nổi tiếng với những món ngon hấp dẫn, mang đến cảm giác như bữa cơm ...",
+    "date": "8 thg 1, 2025",
+    "position": 6
+   },
+   {
+    "title": "Các cao nhân cho em xin vài địa chỉ quán chill ...",
+    "link": "https://www.facebook.com/groups/SaigonReviews/posts/1997604801172660/",
+    "snippet": "Tiệm cơm Nam Sơn 211 Âu-cơ, P.5, Q.11, Sài-gòn Món nào cũng ngon, giá tương đối so với mặt bằng chung cơm Tàu Tổng cộng 562,000đ cho 2 người no ...",
+    "position": 7
+   },
+   {
+    "title": "Quán Bụi Central, Thành phố Hồ Chí Minh - Tripadvisor",
+    "link": "https://www.tripadvisor.com.vn/Restaurant_Review-g293925-d15609350-Reviews-Quan_Bui_Central-Ho_Chi_Minh_City.html",
+    "snippet": "Quán có không gian sạch sẽ, thoáng mát và nhân viên phục vụ nhiệt tình. Món ăn ngon, trình bày đẹp mắt, giá cả hợp lý. Thời gian phục vụ nhanh, phù hợp cho các ...",
+    "rating": 4.8,
+    "ratingCount": 230,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -23,6 +23,7 @@ import {
   type PublicSharedResultSummary,
   type SharedResultPayload,
 } from './sharedResult'
+import { publicImagePolicy, publicFirstImage } from './publicPlanPhotos'
 export type { PublicSharedResultSummary } from './sharedResult'
 
 export class SharedResultError extends Error {
@@ -89,7 +90,12 @@ export async function getPublicSharedResult(slug: string): Promise<PublicSharedR
   // Defensive: a row whose payload no longer validates is not rendered. This
   // guards against a future schema drift ever exposing something unvetted.
   if (validateSharedResultPayload((data as { payload: unknown }).payload)) return null
-  return data as unknown as PublicSharedResult
+  // Gate 2 F-A-pub + G3 (read time): every public consumer of this loader (page incl. JSON-LD, JSON endpoint, oEmbed, og.png) sees the
+  // payload through the public image policy (publicSanitizer.ts `publicImagePolicy`), old snapshots included; the stored row is not
+  // touched. Layer 3 is H-open: it does NOT make every public image trustworthy (see the policy header).
+  const row = data as unknown as PublicSharedResult
+  const payload = publicImagePolicy(row.payload)
+  return payload === row.payload ? row : { ...row, payload }
 }
 
 /**
@@ -102,7 +108,8 @@ export async function listPublicSharedResults(opts: { domain?: string; limit?: n
   const limit = Math.min(Math.max(opts.limit ?? 50, 1), 2000)
   let q = admin
     .from('shared_results')
-    .select('slug, query, domain, locale, created_at, payload->title, payload->images')
+    // payload->plan is read only so the hub card image follows the same public image policy (G3 layer 1 needs the plan's photos).
+    .select('slug, query, domain, locale, created_at, payload->title, payload->images, payload->plan')
     .eq('status', 'public')
     .eq('owner_is_anonymous', false)
     .order('created_at', { ascending: false })
@@ -117,7 +124,8 @@ export async function listPublicSharedResults(opts: { domain?: string; limit?: n
     domain: String(r.domain),
     locale: String(r.locale),
     created_at: String(r.created_at),
-    image: Array.isArray(r.images) && typeof r.images[0] === 'string' ? (r.images[0] as string) : null,
+    // Gate 2 G3 (read time, the one public read that bypasses getPublicSharedResult): the first image the public policy allows.
+    image: publicFirstImage(r.images, r.plan),
   }))
 }
 
