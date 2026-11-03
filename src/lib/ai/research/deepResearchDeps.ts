@@ -17,7 +17,8 @@ import { isAiProductSource, withoutAiSources } from '@/lib/security/aiSourcePoli
 import { createParallelTurnBudget, parallelSearch, PARALLEL_PRICE } from '@/lib/ai/tools/parallelClient'
 export { PARALLEL_PRICE }
 import { consultTraceDiagnosticsOn } from '@/lib/config/consultFlags'
-import { DEEP_RESEARCH_LIMITS, PAGE_TEXT_LIMIT, writerNotes, type Figure, type DeepResearchDeps, type Evidence, type ResearchPlan } from './deepResearch'
+import { leanValue } from './deepResearchLean'
+import { DEEP_RESEARCH_LIMITS, pageTextLimit, writerNotes, type Figure, type DeepResearchDeps, type Evidence, type ResearchPlan } from './deepResearch'
 
 const PlanStep = z.object({
   title: z.string().describe('what this step finds out, at most 8 words, in the language of the question (it becomes the section heading)'),
@@ -98,7 +99,7 @@ const rowsOf = (r: unknown): Array<Record<string, unknown>> => {
  * question did not list it - payments, regulation, the least-served segments - even when told to): they run on the 'plan' role, the one
  * the app configures to reason (low by default, LLM_PLAN_REASONING to change). The token ceilings leave room for that reasoning.
  */
-const PLANNING_ROLE = 'plan' as const
+const planningRole = () => leanValue<'plan' | 'intent'>('planRole', 'plan', 'intent') // 03/11 cost experiment DEEP_RESEARCH_LEAN_PLAN_ROLE
 const READ_PER_QUERY = 5
 /** Sources given to one notes call (02/11): a step's ~30 sources are read in batches of this size, at once. */
 export const NOTES_BATCH = 8
@@ -153,11 +154,11 @@ export function createDeepResearchDeps(o: { lang: string; userTexts: readonly st
     // the full texts ('dump') only when DEEP_RESEARCH_TRACE_FULL=1 as well: a local measurement of where information is lost, never production
     ...(consultTraceDiagnosticsOn() ? { trace: (e: Record<string, unknown>) => { if (e.ev === 'dump' && process.env.DEEP_RESEARCH_TRACE_FULL !== '1') return; console.log(JSON.stringify({ type: 'tappyai_deep_research_trace', ...e })) } } : {}),
     async plan(question, context) {
-      const r = await AI.extract({ role: PLANNING_ROLE, systemShared: PLAN_SYSTEM, messages: [{ role: 'user', content: `${context ? `Conversation so far:\n${context}\n\n` : ''}Question:\n${question}${langLine}` }], schema: PlanSchema, schemaName: 'tappy_research_plan', maxTokens: 3500, budgetKind: 'aux', abortSignal: o.signal } as never) as { object: Omit<ResearchPlan, 'parts'> & { specialist_steps?: ResearchPlan['steps']; parts?: Array<{ part?: string; step?: number | null }> }; providerMetadata?: unknown }
+      const r = await AI.extract({ role: planningRole(), systemShared: PLAN_SYSTEM, messages: [{ role: 'user', content: `${context ? `Conversation so far:\n${context}\n\n` : ''}Question:\n${question}${langLine}` }], schema: PlanSchema, schemaName: 'tappy_research_plan', maxTokens: 3500, budgetKind: 'aux', abortSignal: o.signal } as never) as { object: Omit<ResearchPlan, 'parts'> & { specialist_steps?: ResearchPlan['steps']; parts?: Array<{ part?: string; step?: number | null }> }; providerMetadata?: unknown }
       addCost(o.cost, r.providerMetadata)
       // the listed parts first, the specialist's steps last; when together they exceed the plan's cap the listed ones give way, never the specialist's
       const extra = (Array.isArray(r.object.specialist_steps) ? r.object.specialist_steps : []).slice(0, 3)
-      const listed = (Array.isArray(r.object.steps) ? r.object.steps : []).slice(0, Math.max(1, DEEP_RESEARCH_LIMITS.planSteps - extra.length))
+      const listed = (Array.isArray(r.object.steps) ? r.object.steps : []).slice(0, Math.max(1, leanValue('planSteps', DEEP_RESEARCH_LIMITS.planSteps, 8) - extra.length))
       // a part whose step number is not one of the listed steps (or null) is one no step researches; the run gives it a step (withPartSteps)
       const parts = (Array.isArray(r.object.parts) ? r.object.parts : []).filter(x => typeof x?.part === 'string' && x.part.trim())
       const uncovered = parts.filter(x => !(Number.isInteger(x.step) && (x.step as number) >= 1 && (x.step as number) <= listed.length)).map(x => x.part as string)
@@ -199,7 +200,7 @@ export function createDeepResearchDeps(o: { lang: string; userTexts: readonly st
       const batches: Array<readonly Evidence[]> = []
       for (let i = 0; i < evidence.length; i += NOTES_BATCH) batches.push(evidence.slice(i, i + NOTES_BATCH))
       const one = async (part: readonly Evidence[]) => {
-        const data = part.map(e => `[${e.id}] ${e.title}\n${e.snippet}\n${e.text.slice(0, PAGE_TEXT_LIMIT)}`).join('\n\n')
+        const data = part.map(e => `[${e.id}] ${e.title}\n${e.snippet}\n${e.text.slice(0, pageTextLimit())}`).join('\n\n')
         const r = await AI.extract({ role: 'intent', systemShared: NOTES_SYSTEM, messages: [{ role: 'user', content: `Question: ${question}${langLine}\nResearch step: ${step}\n\n${fenceUntrusted('tool_result', data)}` }], schema: NotesSchema, schemaName: 'tappy_research_notes', maxTokens: 6500, budgetKind: 'aux', abortSignal: o.signal } as never) as { object: { findings: Array<{ text: string; source: number; figure?: Figure | null }> }; providerMetadata?: unknown }
         addCost(o.cost, r.providerMetadata)
         return r.object.findings
@@ -210,7 +211,7 @@ export function createDeepResearchDeps(o: { lang: string; userTexts: readonly st
     },
     async gaps(question, plan, found, coverage) {
       const data = `Research plan: ${plan.title}\n${plan.parts?.length ? `Parts the question asks for: ${plan.parts.join('; ')}\n` : ''}${plan.steps.map((s, k) => `${k + 1}. ${s.title}${coverage?.[k] ? ` - ${coverage[k].findings} findings, ${coverage[k].figures} with a figure` : ''}`).join('\n')}\n\nFindings so far:\n${found.map(f => `- ${f}`).join('\n').slice(0, 30_000)}`
-      const r = await AI.extract({ role: PLANNING_ROLE, systemShared: GAPS_SYSTEM, messages: [{ role: 'user', content: `Question:\n${question}${langLine}\n\n${fenceUntrusted('tool_result', data)}` }], schema: GapsSchema, schemaName: 'tappy_research_gaps', maxTokens: 3500, budgetKind: 'aux', abortSignal: o.signal } as never) as { object: { steps: Array<{ title: string; queries: string[] }> }; providerMetadata?: unknown }
+      const r = await AI.extract({ role: planningRole(), systemShared: GAPS_SYSTEM, messages: [{ role: 'user', content: `Question:\n${question}${langLine}\n\n${fenceUntrusted('tool_result', data)}` }], schema: GapsSchema, schemaName: 'tappy_research_gaps', maxTokens: 3500, budgetKind: 'aux', abortSignal: o.signal } as never) as { object: { steps: Array<{ title: string; queries: string[] }> }; providerMetadata?: unknown }
       addCost(o.cost, r.providerMetadata)
       return Array.isArray(r.object?.steps) ? r.object.steps.map(s => ({ title: s.title, queries: s.queries, completes: (s as { completes_step?: number | null }).completes_step ?? null })) : []
     },

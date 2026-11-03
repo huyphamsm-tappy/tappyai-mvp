@@ -16,6 +16,7 @@
 // 270 s (what was written stays, with its sources) so the answer always ends inside the platform's limit. Measured 01/11 at 55 s / 105 s:
 // a pricing report was cut at 105 s.
 import { parseDoc, headingTitle, titleKey, type DocBlock } from '@/lib/answerDoc/parse'
+import { leanValue } from './deepResearchLean'
 
 // planSteps: the plan's own steps; steps: all steps of a run (the plan's + the follow-up round's GAP_STEPS), as the card shows them
 export const DEEP_RESEARCH_LIMITS = { planSteps: 10, steps: 17, queriesPerStep: 3, findingsPerStep: 90, researchDeadlineMs: 120_000, runDeadlineMs: 270_000 } as const
@@ -68,6 +69,8 @@ export interface ResearchChart { section: string; title: string; unit: string; k
 export const MAX_CHARTS = 4
 /** The most text of one page the notes step reads. */
 export const PAGE_TEXT_LIMIT = 9000
+/** The page limit this run uses: PAGE_TEXT_LIMIT, or 6000 under the DEEP_RESEARCH_LEAN_PAGE cost experiment (deepResearchLean.ts). */
+export const pageTextLimit = (): number => leanValue('page', PAGE_TEXT_LIMIT, 6000)
 /** One research step's counts (never text): search rows, pages given to the notes, pages with text, pages longer than the limit, findings the notes gave and the run kept. */
 export interface StepStat { rows: number; evidence: number; with_text: number; cut_pages: number; notes: number; kept: number }
 const MAX_CHART_POINTS = 12
@@ -261,10 +264,10 @@ export function normalisePlan(p: unknown, question: string): ResearchPlan | null
   const uncovered = (Array.isArray(r.uncovered) ? r.uncovered : []).map(x => clean(x, 120)).filter(Boolean).slice(0, PART_STEPS)
   const steps = (Array.isArray(r.steps) ? r.steps : []).map(s => {
     const x = (s ?? {}) as { title?: unknown; queries?: unknown; image_query?: unknown }
-    const queries = (Array.isArray(x.queries) ? x.queries : []).map(q => clean(q, 200)).filter(Boolean).slice(0, DEEP_RESEARCH_LIMITS.queriesPerStep)
+    const queries = (Array.isArray(x.queries) ? x.queries : []).map(q => clean(q, 200)).filter(Boolean).slice(0, leanValue('queries', DEEP_RESEARCH_LIMITS.queriesPerStep, 2))
     const image = clean(x.image_query, 80)
     return { title: clean(x.title, 160), queries, ...(image ? { image_query: image } : {}) }
-  }).filter(s => s.title && s.queries.length).slice(0, DEEP_RESEARCH_LIMITS.planSteps)
+  }).filter(s => s.title && s.queries.length).slice(0, leanValue('planSteps', DEEP_RESEARCH_LIMITS.planSteps, 8))
   if (!steps.length) return null
   // the label is one short heading word or two: markup characters are blanked like a source title's
   const label = clean(r.sources_label, 30).replace(/[[\]()<>`*_#|\\]/g, ' ').replace(/\s+/g, ' ').trim()
@@ -470,13 +473,13 @@ export async function runDeepResearch(question: string, context: string, lang: s
       if (!e) {
         const published = typeof g.published === 'string' && /^\d{4}-\d{2}-\d{2}/.test(g.published) ? g.published.slice(0, 10) : undefined
         const site = typeof g.site === 'string' && /^(?:[a-z0-9-]+\.)+[a-z]{2,}$/i.test(g.site) ? g.site.toLowerCase() : undefined
-        e = { id: evidence.length + 1, title: clean(g.title, 200), url, snippet: clean(g.snippet, 400), text: g.text.slice(0, PAGE_TEXT_LIMIT), ...(published ? { published } : {}), ...(site ? { site } : {}) }
+        e = { id: evidence.length + 1, title: clean(g.title, 200), url, snippet: clean(g.snippet, 400), text: g.text.slice(0, pageTextLimit()), ...(published ? { published } : {}), ...(site ? { site } : {}) }
         evidence.push(e); byUrl.set(url, e)
       }
       if (!mine.includes(e)) mine.push(e)
     }
     // 02/11 (owner: "tại sao thiếu thông tin"): counts per step - where the information is lost (not found / not read / cut at the page limit / not kept)
-    const stat = stepStats[k] = { rows: gathered.length, evidence: mine.length, with_text: gathered.filter(g => g.text.trim()).length, cut_pages: gathered.filter(g => g.text.length > PAGE_TEXT_LIMIT).length, notes: 0, kept: 0 }
+    const stat = stepStats[k] = { rows: gathered.length, evidence: mine.length, with_text: gathered.filter(g => g.text.trim()).length, cut_pages: gathered.filter(g => g.text.length > pageTextLimit()).length, notes: 0, kept: 0 }
     if (!mine.length) { steps[k].status = 'failed'; show('researching'); return }
     const got = await deps.notes(step.title, question, mine).catch(() => [])
     stat.notes = got.length
@@ -524,7 +527,7 @@ export async function runDeepResearch(question: string, context: string, lang: s
         // 02/11: a follow-up the check did not tie to a step still joins the section whose title it shares the most words with (when that is unique)
         const c = Number.isInteger(given) && given >= 1 && given <= planned ? given : stepForGap(s?.title ?? '', plan!.steps.slice(0, planned))
         return s ? { title: s.title, queries: s.queries, ...(c ? { completes: c } : {}) } : null
-      }).filter((s): s is ResearchPlan['steps'][number] => !!s).slice(0, GAP_STEPS)
+      }).filter((s): s is ResearchPlan['steps'][number] => !!s).slice(0, leanValue('gaps', GAP_STEPS, 2))
     deps.trace?.({ ev: 'gaps', steps: more.map(s => ({ title: s.title, queries: s.queries })) })
     if (more.length) {
       const from = plan.steps.length
