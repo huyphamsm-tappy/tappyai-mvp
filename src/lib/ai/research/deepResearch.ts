@@ -44,6 +44,47 @@ export function writerNotes(plan: ResearchPlan, findings: readonly Finding[]): s
  */
 export const GAP_STEPS = 4
 const GAP_MIN_LEFT_MS = 20_000
+/** The most characters of findings the gap check is shown (what the call can read at its cost). */
+export const GAP_FINDINGS_BUDGET = 30_000
+/** What a line costs the gap check's prompt beyond its text: the "- " in front and the newline after. */
+const GAP_LINE_OVERHEAD = 3
+
+/**
+ * 03/11 (audit: the gap check was given the findings in step order cut at 30 000 characters, so it saw 31-37% of them - the first steps
+ * only - and the later steps were invisible to it): the findings it reads are packed so EVERY step with findings is in it. Each step gets a
+ * fair share of the budget (what a short step does not use goes to the longer ones); inside a step a finding that carries a figure comes
+ * before one that does not, then the step's own order. A line is "[S<step>] text". The result never exceeds `budget` characters as the gap
+ * check will lay it out (line text + GAP_LINE_OVERHEAD each). Pure and deterministic.
+ */
+export function packFindingsForGapCheck(findings: ReadonlyArray<{ step: number; text: string; figure?: unknown }>, budget = GAP_FINDINGS_BUDGET): string[] {
+  const bySteps = new Map<number, string[]>()
+  for (const f of [...findings].sort((a, b) => Number(!!b.figure) - Number(!!a.figure))) { // stable: figure findings first, the step's own order kept
+    const line = `[S${f.step}] ${f.text}`
+    bySteps.set(f.step, [...(bySteps.get(f.step) ?? []), line])
+  }
+  const cost = (line: string) => line.length + GAP_LINE_OVERHEAD
+  const steps = [...bySteps.keys()].sort((a, b) => a - b)
+  const taken = new Map<number, string[]>(steps.map(s => [s, []]))
+  let left = budget
+  let open = steps.filter(s => bySteps.get(s)!.length)
+  // water-filling: each round gives every still-open step an equal share of what is left; a step that cannot use its share closes and returns it
+  while (open.length && left > 0) {
+    const share = Math.max(1, Math.floor(left / open.length))
+    const next: number[] = []
+    let progress = false
+    for (const s of open) {
+      const lines = bySteps.get(s)!
+      let i = taken.get(s)!.length
+      let spent = 0
+      while (i < lines.length && spent + cost(lines[i]) <= share && cost(lines[i]) <= left - spent) { spent += cost(lines[i]); taken.get(s)!.push(lines[i]); i++; progress = true }
+      left -= spent
+      if (i < lines.length) next.push(s)
+    }
+    if (!progress) break
+    open = next
+  }
+  return steps.flatMap(s => taken.get(s)!)
+}
 /**
  * 02/11 (owner: the report on phone accessories cited a Facebook page and a homework-sharing site next to ministries and the press): pages that
  * are posts, profiles or shared homework are never research evidence. Pure.
@@ -518,7 +559,7 @@ export async function runDeepResearch(question: string, context: string, lang: s
   if (!timedOut && deps.gaps && findings.length && DEEP_RESEARCH_LIMITS.researchDeadlineMs - (now() - t0) >= GAP_MIN_LEFT_MS) {
     // how much each plan step brought (02/11): the check sees a thin step, not only the pooled findings
     const coverage = plan.steps.map((s, k) => ({ title: s.title, findings: findings.filter(f => f.step === k + 1).length, figures: findings.filter(f => f.step === k + 1 && f.figure).length }))
-    const asked = await deps.gaps(question, plan, findings.map(f => f.text), coverage).catch(() => [])
+    const asked = await deps.gaps(question, plan, packFindingsForGapCheck(findings), coverage).catch(() => [])
     const planned = plan.steps.length
     const more = (Array.isArray(asked) ? asked : [])
       .map(g => {

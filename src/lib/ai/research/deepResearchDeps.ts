@@ -18,7 +18,7 @@ import { createParallelTurnBudget, parallelSearch, PARALLEL_PRICE } from '@/lib/
 export { PARALLEL_PRICE }
 import { consultTraceDiagnosticsOn } from '@/lib/config/consultFlags'
 import { leanValue } from './deepResearchLean'
-import { DEEP_RESEARCH_LIMITS, pageTextLimit, writerNotes, type Figure, type DeepResearchDeps, type Evidence, type ResearchPlan } from './deepResearch'
+import { DEEP_RESEARCH_LIMITS, GAP_FINDINGS_BUDGET, pageTextLimit, writerNotes, type Figure, type DeepResearchDeps, type Evidence, type ResearchPlan } from './deepResearch'
 
 const PlanStep = z.object({
   title: z.string().describe('what this step finds out, at most 8 words, in the language of the question (it becomes the section heading)'),
@@ -66,7 +66,8 @@ Layout, in this order:
 - "## 1. " + the word for "Summary" in the question's language: the 3-6 key findings as a numbered list, each one line starting with its point in bold, then the most important figure with its date and its source number; then one short paragraph with the overall conclusion.
 - When the sources measure things differently (different scopes, definitions, estimates vs official figures) or disagree: "## 2. " + a short section on scope and data caveats explaining it in a few sentences. Otherwise leave it out.
 - Then one numbered section per research step listed under "Findings by step", in that order, headed "## <n>. " + the step's title exactly as given. Write explanation in paragraphs, not a list of notes: what the sources show, figures with their dates, what they mean. Use "### <n>.<m> " sub-sections when a section has distinct parts.
-- When comparing options, players, years or figures, add a markdown table, with an italic caption line right under it: the word for "Table" + its number + what it shows + where the figures come from. When the question covers a period of years, give a year-by-year table (one row per year, with what happened and the key figure, each cited) in the section where it fits; when the findings give rules or laws, a table with the rule, its number and its date. Put a figure in a table cell only when the findings state it for that very year; never compute, back-extrapolate or interpolate a figure to fill a year (a forecast for one year is not a figure for the years before it); write "no figure found" in the cell instead, and say in the caption which years are missing.
+- When the request lists "Parts the question asks for", every part must be answered in full somewhere in the report; when no section's title names a part, give it a section of its own, headed with the person's words, before the recommendations.
+- When comparing options, players, years or figures, add a markdown table, with an italic caption line right under it: the word for "Table" + its number + what it shows + where the figures come from. When the question covers a period of years, give a year-by-year table (one row per year, with what happened and the key figure, each cited) in the section where it fits; when the findings give rules or laws, a table with the rule, its number and its date. Put a figure in a table cell only when the findings state it for that very year; never compute, back-extrapolate or interpolate a figure to fill a year (a forecast for one year is not a figure for the years before it); write, in the language of the report, that no figure was found in the cell instead, and say in the caption which years are missing.
 - Then a numbered section of practical recommendations in the question's language: each one a short paragraph starting with its point in bold.
 - End with a short bulleted list of what the sources did not answer (each item one line: the figure or fact missing and what would settle it); leave it out when nothing is missing.
 Sources and facts:
@@ -210,7 +211,7 @@ export function createDeepResearchDeps(o: { lang: string; userTexts: readonly st
         .filter(f => { const k = `${f.source}|${String(f.text).slice(0, 80).toLowerCase()}`; if (seen.has(k)) return false; seen.add(k); return true })
     },
     async gaps(question, plan, found, coverage) {
-      const data = `Research plan: ${plan.title}\n${plan.parts?.length ? `Parts the question asks for: ${plan.parts.join('; ')}\n` : ''}${plan.steps.map((s, k) => `${k + 1}. ${s.title}${coverage?.[k] ? ` - ${coverage[k].findings} findings, ${coverage[k].figures} with a figure` : ''}`).join('\n')}\n\nFindings so far:\n${found.map(f => `- ${f}`).join('\n').slice(0, 30_000)}`
+      const data = `Research plan: ${plan.title}\n${plan.parts?.length ? `Parts the question asks for: ${plan.parts.join('; ')}\n` : ''}${plan.steps.map((s, k) => `${k + 1}. ${s.title}${coverage?.[k] ? ` - ${coverage[k].findings} findings, ${coverage[k].figures} with a figure` : ''}`).join('\n')}\n\nFindings so far:\n${found.map(f => `- ${f}`).join('\n').slice(0, GAP_FINDINGS_BUDGET)}`
       const r = await AI.extract({ role: planningRole(), systemShared: GAPS_SYSTEM, messages: [{ role: 'user', content: `Question:\n${question}${langLine}\n\n${fenceUntrusted('tool_result', data)}` }], schema: GapsSchema, schemaName: 'tappy_research_gaps', maxTokens: 3500, budgetKind: 'aux', abortSignal: o.signal } as never) as { object: { steps: Array<{ title: string; queries: string[] }> }; providerMetadata?: unknown }
       addCost(o.cost, r.providerMetadata)
       return Array.isArray(r.object?.steps) ? r.object.steps.map(s => ({ title: s.title, queries: s.queries, completes: (s as { completes_step?: number | null }).completes_step ?? null })) : []
@@ -221,7 +222,7 @@ export function createDeepResearchDeps(o: { lang: string; userTexts: readonly st
       const host = (u: string) => { try { return new URL(u).hostname.replace(/^www\./, '') } catch { return '' } }
       const sources = evidence.filter(e => findings.some(f => f.source === e.id)).map(e => `[${e.id}] ${e.title} — ${e.site ?? host(e.url)}${e.published ? `, ${e.published}` : ''}`).join('\n')
       const notes = writerNotes(plan, findings)
-      const result = AI.stream({ role: 'consult', thinkEffort: 'medium', maxTokens: 16000, abortSignal: o.signal, systemShared: WRITER_SYSTEM, messages: [{ role: 'user', content: `Question:\n${question}${langLine}\n\nToday's date: ${new Date().toISOString().slice(0, 10)}\nResearch plan: ${plan.title}\n\n${fenceUntrusted('tool_result', `Sources:\n${sources}\n\nFindings by step:\n${notes}`)}` }] })
+      const result = AI.stream({ role: 'consult', thinkEffort: 'medium', maxTokens: 16000, abortSignal: o.signal, systemShared: WRITER_SYSTEM, messages: [{ role: 'user', content: `Question:\n${question}${langLine}\n\nToday's date: ${new Date().toISOString().slice(0, 10)}\nResearch plan: ${plan.title}${plan.parts?.length ? `\nParts the question asks for: ${plan.parts.join('; ')}` : ''}\n\n${fenceUntrusted('tool_result', `Sources:\n${sources}\n\nFindings by step:\n${notes}`)}` }] })
       yield* writtenText(result.fullStream)
       addCost(o.cost, await result.providerMetadata.catch(() => undefined))
     },
