@@ -28,8 +28,13 @@ export const V2_LIMITS = {
   minMsLeftForRound: 35_000,
   /** time the appended section needs at least (the writer is done; the sources block and the pictures follow) */
   repairMinMsLeft: 45_000,
-  maxRepairParts: 2,
+  maxRepairParts: 3,
   repairFindingsPerPart: 25,
+  /** a further gap round is not started once the run's model calls (not the web searches) have cost this much, in USD (a trial ceiling, to be set from measured runs) */
+  llmUsdCap: 0.12,
+  /** the report the critic reads, at most this many characters, and the time it may take */
+  criticMaxReportChars: 60_000,
+  criticMaxMs: 25_000,
 } as const
 
 /**
@@ -58,15 +63,16 @@ export function stepCoverage(plan: ResearchPlan, findings: readonly Finding[]): 
   }).filter((x): x is StepCoverage => !!x)
 }
 
-export type NextReason = 'research' | 'covered' | 'rounds' | 'time' | 'diminishing'
+export type NextReason = 'research' | 'covered' | 'rounds' | 'time' | 'diminishing' | 'budget'
 export interface NextAction { next: 'research' | 'synthesize'; reason: NextReason }
 
 /**
  * Whether another gap round is worth running, checked in this order: time left, rounds used, diminishing returns (the last round kept too few
  * new findings), coverage (no step empty or thin after the first round). `round` = gap rounds already run (>= 1 here: the first one always runs). Pure.
  */
-export function decideNext(s: { round: number; newFindings: number; msLeft: number; coverage: readonly StepCoverage[] }): NextAction {
+export function decideNext(s: { round: number; newFindings: number; msLeft: number; coverage: readonly StepCoverage[]; llmUsd?: number }): NextAction {
   if (s.msLeft < V2_LIMITS.minMsLeftForRound) return { next: 'synthesize', reason: 'time' }
+  if (s.llmUsd !== undefined && s.llmUsd >= V2_LIMITS.llmUsdCap) return { next: 'synthesize', reason: 'budget' }
   if (s.round >= V2_LIMITS.maxGapRounds) return { next: 'synthesize', reason: 'rounds' }
   if (s.newFindings < V2_LIMITS.minNewFindings) return { next: 'synthesize', reason: 'diminishing' }
   if (!s.coverage.some(c => c.status !== 'covered')) return { next: 'synthesize', reason: 'covered' }

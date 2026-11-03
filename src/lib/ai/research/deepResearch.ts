@@ -157,6 +157,13 @@ export interface DeepResearchDeps {
    */
   repair?(input: { question: string; plan: ResearchPlan; evidence: readonly Evidence[]; parts: ReadonlyArray<{ part: string; findings: readonly Finding[] }> }): AsyncIterable<string>
   /**
+   * DEEP_RESEARCH_V2 only: a model reads the written report against the parts of the question and says for each whether the report answers it
+   * (the semantic half of the check; a heading that names a part proves nothing about its content). Absent = the structural check only.
+   */
+  critic?(input: { question: string; parts: readonly string[]; report: string }): Promise<Array<{ part: string; verdict: 'answered' | 'thin' | 'missing' }>>
+  /** DEEP_RESEARCH_V2 only: what the run's model calls have cost so far, in USD (the web searches are not in it). Absent = no cost ceiling. */
+  spent?(): number
+  /**
    * The parts of the question the findings do not answer yet, as at most GAP_STEPS follow-up steps (title + queries); [] = covered.
    * Absent = one research round only.
    */
@@ -560,7 +567,7 @@ export async function runDeepResearch(question: string, context: string, lang: s
   for (let r = 0; r < (v2 ? V2_LIMITS.maxGapRounds : 1); r++) {
     if (timedOut || !deps.gaps || !findings.length || researchDeadline - (now() - t0) < GAP_MIN_LEFT_MS) break
     if (r > 0) {
-      const d = decideNext({ round: r, newFindings: lastNew, msLeft: researchDeadline - (now() - t0), coverage: stepCoverage(plan, findings) })
+      const d = decideNext({ round: r, newFindings: lastNew, msLeft: researchDeadline - (now() - t0), coverage: stepCoverage(plan, findings), ...(deps.spent ? { llmUsd: deps.spent() } : {}) })
       deps.trace?.({ ev: 'decide', round: r, next: d.next, reason: d.reason })
       if (d.next === 'synthesize') break
     }
@@ -614,8 +621,21 @@ export async function runDeepResearch(question: string, context: string, lang: s
     // DEEP_RESEARCH_V2 (03/11): the parts of the question that no heading of the report names are answered in one appended section (once; a structural check only)
     if (v2 && deps.repair && !left?.aborted && !cut && plan.parts?.length) {
       const heads = parseDoc(written).filter((b): b is Extract<DocBlock, { t: 'heading' }> => b.t === 'heading').map(b => headingTitle(b.text) ?? '').filter(Boolean)
-      const absent = missingParts(plan.parts, heads).slice(0, V2_LIMITS.maxRepairParts)
-      deps.trace?.({ ev: 'repair_check', parts: plan.parts.length, missing: absent.length })
+      const parts = plan.parts
+      const named = missingParts(parts, heads)
+      // the semantic half: a model reads the report against the parts; a part it calls thin or missing is repaired like one no heading names
+      let weak: string[] = []
+      if (deps.critic && DEEP_RESEARCH_LIMITS.runDeadlineMs - (now() - t0) >= V2_LIMITS.repairMinMsLeft + V2_LIMITS.criticMaxMs) {
+        let criticTimer: ReturnType<typeof setTimeout> | undefined
+        const verdicts = await Promise.race([
+          deps.critic({ question, parts, report: written.slice(0, V2_LIMITS.criticMaxReportChars) }).catch(() => []),
+          new Promise<[]>(r => { criticTimer = setTimeout(() => r([]), V2_LIMITS.criticMaxMs) }),
+        ])
+        clearTimeout(criticTimer)
+        weak = verdicts.filter(v => v.verdict !== 'answered' && parts.includes(v.part)).map(v => v.part)
+      }
+      const absent = [...new Set([...named, ...weak])].slice(0, V2_LIMITS.maxRepairParts)
+      deps.trace?.({ ev: 'repair_check', parts: parts.length, unnamed: named.length, weak: weak.length, repaired: absent.length })
       if (absent.length && DEEP_RESEARCH_LIMITS.runDeadlineMs - (now() - t0) >= V2_LIMITS.repairMinMsLeft) {
         say(numberer.push(stripper.push('\n\n')))
         for await (const delta of deps.repair({ question, plan, evidence: cited, parts: absent.map(p => ({ part: p, findings: findingsForPart(p, notes, V2_LIMITS.repairFindingsPerPart) })) })) {

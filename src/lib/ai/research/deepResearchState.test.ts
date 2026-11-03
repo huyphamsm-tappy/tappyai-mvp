@@ -47,6 +47,8 @@ describe('decideNext: when another gap round is worth running', () => {
     expect(decideNext({ ...ok, round: V2_LIMITS.maxGapRounds, coverage: thin })).toEqual({ next: 'synthesize', reason: 'rounds' })
     expect(decideNext({ ...ok, newFindings: V2_LIMITS.minNewFindings - 1, coverage: thin })).toEqual({ next: 'synthesize', reason: 'diminishing' })
     expect(decideNext({ ...ok, coverage: covered })).toEqual({ next: 'synthesize', reason: 'covered' })
+    expect(decideNext({ ...ok, coverage: thin, llmUsd: V2_LIMITS.llmUsdCap })).toEqual({ next: 'synthesize', reason: 'budget' })
+    expect(decideNext({ ...ok, coverage: thin, llmUsd: V2_LIMITS.llmUsdCap - 0.001 }).next).toBe('research')
     // time wins over everything
     expect(decideNext({ round: V2_LIMITS.maxGapRounds, newFindings: 0, msLeft: 0, coverage: covered }).reason).toBe('time')
   })
