@@ -156,7 +156,7 @@ export const AI = {
     const role = opts.role ?? 'intent'
     return generateObject({
       abortSignal: opts.abortSignal,
-      model: modelForRole(role, { structured: true, agentRuntime: opts.agentRuntime, budgetKind: opts.budgetKind }),
+      model: modelForRole(role, { structured: true, agentRuntime: opts.agentRuntime, budgetKind: opts.budgetKind, claudeModel: opts.claudeModel }),
       schema: opts.schema,
       schemaName: opts.schemaName,
       messages: buildMessages(opts, { role, agentRuntime: opts.agentRuntime }),

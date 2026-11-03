@@ -107,6 +107,7 @@ import { auditTrace } from './auditTrace'
 import { cardPathTrace } from './cardPathTrace'
 import { stripClosingInvite } from './closingInvite'
 import { appendPlanBudget, vndAmountsIn } from './planBudget'
+import { createSystemLinkLedger, DATED_LINK_TOOLS, type SystemLink } from './consultative/systemLinkSupersede'
 import type { Recommendation } from '@/lib/recommendation/recommendation'
 
 // The AI SDK data-stream protocol used by streamText().toDataStreamResponse():
@@ -1872,6 +1873,7 @@ export function applyPlaceEnrichmentStreamFilter(
   /** Validated commerce links the system handed the model this turn (CCP route / event / film projections). */
   const systemLinkUrls = new Set<string>()
   const systemLinks: Array<{ name: string; url: string }> = []
+  const systemLinkLedger = createSystemLinkLedger()
   /** A flight result this turn carried `fare_status: 'not_verified'` (no approved fare source — booking hand-off only). */
   let flightFareUnverified = false
   /** A film result this turn had no showtime / ticket-price source (get_movie_showtimes returns them as null). */
@@ -4423,15 +4425,24 @@ export function applyPlaceEnrichmentStreamFilter(
             if (Array.isArray(filmList)) for (const t of filmList) if (typeof t === 'string' && t) filmTitlesSeen.push(t)
             // CCP route / event / film projections (`_tappy_commerce` marks them): every URL the
             // platform validated for this turn, so the ticket guard can tell a system link from a claim.
-            if (res.result && Array.isArray((res.result as { _tappy_commerce?: unknown })._tappy_commerce)) {
-              const r = res.result as { booking_links?: Array<{ url?: string }>; event_links?: Array<{ url?: string }>; film_links?: Array<{ url?: string }>; product_links?: Array<{ url?: string }>; vexere_link?: string; train_booking_link?: string }
-              for (const l of [...(r.booking_links ?? []), ...(r.event_links ?? []), ...(r.film_links ?? []), ...(r.product_links ?? [])] as Array<{ name?: string; platform?: string; url?: string }>) {
-                if (typeof l?.url !== 'string' || systemLinkUrls.has(l.url)) continue
-                systemLinkUrls.add(l.url)
-                systemLinks.push({ name: [l.name, l.platform].filter(Boolean).join(' · ') || l.url, url: l.url })
+            const hasCommerce = !!res.result && Array.isArray((res.result as { _tappy_commerce?: unknown })._tappy_commerce)
+            // 03/11: a later fare / coach search of the same turn REPLACES the links of the earlier one (systemLinkSupersede.ts): the buttons carry
+            // the dates of the search the answer is about, never of one the model abandoned.
+            if (hasCommerce || (toolName && DATED_LINK_TOOLS.has(toolName))) {
+              const found: SystemLink[] = []
+              if (hasCommerce) {
+                const r = res.result as { booking_links?: Array<{ url?: string }>; event_links?: Array<{ url?: string }>; film_links?: Array<{ url?: string }>; product_links?: Array<{ url?: string }>; vexere_link?: string; train_booking_link?: string }
+                for (const l of [...(r.booking_links ?? []), ...(r.event_links ?? []), ...(r.film_links ?? []), ...(r.product_links ?? [])] as Array<{ name?: string; platform?: string; url?: string }>) {
+                  if (typeof l?.url !== 'string') continue
+                  found.push({ name: [l.name, l.platform].filter(Boolean).join(' · ') || l.url, url: l.url })
+                }
+                if (typeof r.vexere_link === 'string') found.push({ name: 'Vexere', url: r.vexere_link })
+                if (typeof r.train_booking_link === 'string') found.push({ name: 'Vexere', url: r.train_booking_link })
               }
-              if (typeof r.vexere_link === 'string' && !systemLinkUrls.has(r.vexere_link)) { systemLinkUrls.add(r.vexere_link); systemLinks.push({ name: 'Vexere', url: r.vexere_link }) }
-              if (typeof r.train_booking_link === 'string' && !systemLinkUrls.has(r.train_booking_link)) { systemLinkUrls.add(r.train_booking_link); systemLinks.push({ name: 'Vexere', url: r.train_booking_link }) }
+              systemLinkLedger.record(toolName ?? 'unknown', found)
+              systemLinks.length = 0
+              systemLinkUrls.clear()
+              for (const l of systemLinkLedger.links()) { systemLinkUrls.add(l.url); systemLinks.push(l) }
             }
             // Same rows, two more kinds of evidence — see placeClaimGuard. Shared with the hotel
             // branch below: a Serper `/maps` hotel row carries the same fields as a place row.

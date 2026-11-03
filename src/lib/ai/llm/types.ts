@@ -59,6 +59,11 @@ export interface AIGenerateOptions {
    */
   cacheHistory?: boolean
   /**
+   * 03/11 (Deep Research): serve THIS call with Claude Haiku 5.5 when the Anthropic key is present; otherwise the role's own model. Read by
+   * `AI.extract` (the research notes) and by `AI.stream` (the report writer). Unset = unchanged.
+   */
+  claudeModel?: 'haiku55'
+  /**
    * The call is made by the Phase 8 agent runtime (src/lib/ai/agent/runtime). Only read by the registry under AGENT_MODEL=haiku55,
    * where it routes the runtime's non-`agent` role (its final `plan` step) to the agent model too. No effect otherwise.
    */

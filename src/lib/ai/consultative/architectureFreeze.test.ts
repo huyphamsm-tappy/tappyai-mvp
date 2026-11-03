@@ -12,7 +12,7 @@ import { SALE_PLAN_IDS } from '@/lib/plans/planConfig'
 import { ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, CHAT_SEARCH_BUDGET, ONE_BRAIN_MODE_LINES, PRESENT_PLAN_DESCRIPTION } from './oneBrain'
 import { DEEP_RESEARCH_LIMITS } from '@/lib/ai/research/deepResearch'
 import { deepResearchV2On } from '@/lib/ai/research/deepResearchState'
-import { writerEffort, writerModel } from '@/lib/ai/research/deepResearchDeps'
+import { writerEffort, writerModel, notesModel } from '@/lib/ai/research/deepResearchDeps'
 import { isAiProductSource } from '@/lib/security/aiSourcePolicy'
 import { deepResearchOffered } from '@/lib/subscription/modeAccess'
 import { rendersDecisionCard, DECISION_CARD_SURFACES } from '@/lib/ai/decisionSurface'
@@ -130,5 +130,7 @@ describe('architecture freeze, fourth (03/11, for release)', () => {
     expect(writerModel({}, true)).toBe('luna')
     expect(writerModel({ DEEP_RESEARCH_WRITER_MODEL: 'haiku55' }, false)).toBe('luna')
     expect(writerModel({ DEEP_RESEARCH_WRITER_MODEL: 'haiku55', NODE_ENV: 'production' }, true)).toBe('luna')
+    expect(notesModel({}, true)).toBe('luna')
+    expect(notesModel({ DEEP_RESEARCH_NOTES_MODEL: 'haiku55', VERCEL_ENV: 'production' }, true)).toBe('luna')
   })
 })

@@ -26,6 +26,7 @@ import { placesProvider } from './placesProvider'
 import { SERPER_PLACES_SOURCE } from '@/lib/recommendation/buildEntity'
 import { consultV3Enabled } from '@/lib/ai/consultV3Flag'
 import { isAllowedMediaImage } from '@/lib/media/mediaHosts'
+import { placeQueryFit } from './placeQueryFit'
 
 /**
  * CONSULT_V3 layouts (owner 17/10): the article's own picture from the RSS item — the first <img src> in its description, else its
@@ -734,6 +735,17 @@ async function searchPlacesUncached(
       // defence-in-depth rather than the first line of defence. An honest empty answer is
       // still a useful one — offering to widen the search is fine; naming a venue is not.
       (result as Record<string, unknown>).no_results_instruction = messages.places.noResultsInstruction(lang)
+    } else {
+      // 03/11 (placeQueryFit.ts): which of the specific things the person named each row's NAME shows - a signal for the model, never a filter.
+      const fit = placeQueryFit(query, placeRows as Array<{ name?: unknown }>)
+      if (fit.terms.length > 0) {
+        (result as Record<string, unknown>).query_fit = {
+          terms: fit.terms,
+          full_matches: fit.fullMatches,
+          rows: fit.rows.map(r => ({ name: r.name, missing: r.missing })),
+          ...(fit.note ? { note: fit.note } : {}),
+        }
+      }
     }
   }
 
