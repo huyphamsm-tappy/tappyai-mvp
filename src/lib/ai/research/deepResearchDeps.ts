@@ -132,6 +132,18 @@ const CLAUDE_WRITER_MAX_TOKENS = 40_000
 export function writerModel(env: Record<string, string | undefined> = process.env, claudeAvailable: boolean = claudeWriterAvailable()): 'haiku55' | 'luna' {
   return (env[DEEP_RESEARCH_WRITER_MODEL_FLAG] ?? '').trim() === 'haiku55' && claudeAvailable && !lockedInProduction(env, DEEP_RESEARCH_WRITER_MODEL_FLAG) ? 'haiku55' : 'luna'
 }
+/**
+ * 03/11 (owner: Luna stays the brain; the Anthropic credit goes where it costs least in voice): which model reads the pages and writes the
+ * findings (the notes step: structured JSON the reader never sees, ~27% of a report's cost). DEEP_RESEARCH_NOTES_MODEL=haiku55 - only when the
+ * Anthropic key is present, and never in a production runtime unless the owner lists the name in CONSULT_PRODUCTION_ALLOW. Anything else = Luna.
+ * A failed Claude call is repeated on Luna (see `notes`), never dropped. Pure given `claudeAvailable`.
+ */
+export const DEEP_RESEARCH_NOTES_MODEL_FLAG = 'DEEP_RESEARCH_NOTES_MODEL'
+/** Claude's tokeniser spends ~3x the tokens of Luna's on Vietnamese (measured 03/11): the notes ceiling is higher on Claude. */
+const CLAUDE_NOTES_MAX_TOKENS = 12_000
+export function notesModel(env: Record<string, string | undefined> = process.env, claudeAvailable: boolean = claudeWriterAvailable()): 'haiku55' | 'luna' {
+  return (env[DEEP_RESEARCH_NOTES_MODEL_FLAG] ?? '').trim() === 'haiku55' && claudeAvailable && !lockedInProduction(env, DEEP_RESEARCH_NOTES_MODEL_FLAG) ? 'haiku55' : 'luna'
+}
 const READ_PER_QUERY = 5
 /** Sources given to one notes call (02/11): a step's ~30 sources are read in batches of this size, at once. */
 export const NOTES_BATCH = 8
@@ -233,7 +245,13 @@ export function createDeepResearchDeps(o: { lang: string; userTexts: readonly st
       for (let i = 0; i < evidence.length; i += NOTES_BATCH) batches.push(evidence.slice(i, i + NOTES_BATCH))
       const one = async (part: readonly Evidence[]) => {
         const data = part.map(e => `[${e.id}] ${e.title}\n${e.snippet}\n${e.text.slice(0, pageTextLimit())}`).join('\n\n')
-        const r = await AI.extract({ role: 'intent', systemShared: NOTES_SYSTEM, messages: [{ role: 'user', content: `Question: ${question}${langLine}\nResearch step: ${step}\n\n${fenceUntrusted('tool_result', data)}` }], schema: NotesSchema, schemaName: 'tappy_research_notes', maxTokens: 6500, budgetKind: 'aux', abortSignal: o.signal } as never) as { object: { findings: Array<{ text: string; source: number; figure?: Figure | null }> }; providerMetadata?: unknown }
+        type NotesOut = { object: { findings: Array<{ text: string; source: number; figure?: Figure | null }> }; providerMetadata?: unknown }
+        const ask = (claude: boolean) => AI.extract({ role: 'intent', systemShared: NOTES_SYSTEM, messages: [{ role: 'user', content: `Question: ${question}${langLine}\nResearch step: ${step}\n\n${fenceUntrusted('tool_result', data)}` }], schema: NotesSchema, schemaName: 'tappy_research_notes', maxTokens: claude ? CLAUDE_NOTES_MAX_TOKENS : 6500, budgetKind: 'aux', abortSignal: o.signal, ...(claude ? { claudeModel: 'haiku55' as const } : {}) } as never) as Promise<NotesOut>
+        let r: NotesOut
+        if (notesModel() === 'haiku55') {
+          // 03/11: Claude reads this batch; a refusal, an out-of-credit answer or an unparseable result is repeated once on Luna, never dropped.
+          r = await ask(true).catch(() => ask(false))
+        } else r = await ask(false)
         addCost(o.cost, r.providerMetadata)
         return r.object.findings
       }
