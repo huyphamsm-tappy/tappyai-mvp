@@ -123,7 +123,10 @@ describe('the route budget', () => {
   })
   it('the silent completion step stays under the clients\' 60 s idle read limit', () => {
     const android = readFileSync(join(process.cwd(), 'android/app/src/main/java/com/tappyai/app/chat/data/RealChatRepository.kt'), 'utf8')
-    const idle = Number(android.match(/\.readTimeout\((\d+), TimeUnit\.SECONDS\)/)?.[1]) * 1000
+    // 02/11: the read timeout is per mode (`streamReadTimeoutSeconds`: Deep, else the rest); the shortest one is the limit that applies here.
+    const limits = android.match(/fun streamReadTimeoutSeconds\(mode: ChatMode\): Long = if \(mode == ChatMode\.Deep\) (\d+)L else (\d+)L/)
+    expect(limits).not.toBeNull()
+    const idle = Math.min(Number(limits![1]), Number(limits![2])) * 1000
     expect(PLAN_COMPLETION_TIMEOUT_MS).toBeLessThan(idle)
   })
 })

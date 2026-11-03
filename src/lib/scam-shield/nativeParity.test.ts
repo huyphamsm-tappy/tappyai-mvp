@@ -175,9 +175,12 @@ describe('B09 — an unresolved check can never look safe', () => {
 
   it('Android draws INCONCLUSIVE and UNKNOWN in neutral slate, never green', () => {
     const screen = androidVerdict()
-    const safeLine = screen.split('\n').find((l) => l.includes('RiskLevel.SAFE ->'))!
-    // The V3 palette token SAFE is drawn in (`LEVEL_TONE.SAFE` on the web is the same emerald).
-    const green = safeLine.match(/V3Tone\.Emerald/)![0]
+    // 02/10 (decision A7/A8): Android has no "safe" appearance at all — SAFE and LOW share the neutral slate with the unresolved levels —
+    // so the guard is "never the green tone, never the reassuring glyph" on every one of those branches.
+    const green = 'V3Tone.Emerald'
+    const safeLine = screen.split('\n').find((l) => l.includes('RiskLevel.SAFE'))!
+    expect(safeLine, 'SAFE must not be drawn green').not.toContain(green)
+    expect(safeLine, 'SAFE must not use the reassuring shield glyph').not.toContain('GppGood')
 
     for (const level of ['INCONCLUSIVE', 'UNKNOWN']) {
       const line = screen.split('\n').find((l) => levelBranch(level).test(l))!
@@ -237,12 +240,16 @@ describe('B09 — the native copy tells the truth about a failed check', () => {
    * A failure message that reads like "no problems found" is the same defect as a wrong verdict.
    * Both catalogues must say the link was NOT checked.
    */
-  it('the Android error strings say the link was not checked', () => {
+  it('the Android error strings say the link was not checked, and none reads as a clean result', () => {
+    // 02/10: the Android copy is "Could not check …" / "Không thể kiểm tra …" (web error lines); what must never appear is reassurance.
     const en = read('android/app/src/main/res/values/strings_scam_shield.xml')
     const vi = read('android/app/src/main/res/values-vi/strings_scam_shield.xml')
-    for (const key of ['offline', 'timeout', 'generic']) {
-      expect(en).toMatch(new RegExp(`scam_shield_error_${key}">[^<]*has not been checked`))
-      expect(vi).toMatch(new RegExp(`scam_shield_error_${key}">[^<]*CHƯA được kiểm tra`))
+    expect(en).toMatch(/scam_shield_error_generic">Could not check/)
+    expect(vi).toMatch(/scam_shield_error_generic">Không thể kiểm tra/)
+    for (const xml of [en, vi]) {
+      for (const [, text] of xml.matchAll(/name="scam_shield_error_[a-z_]+">([^<]*)</g)) {
+        expect(text, `error copy must not reassure: ${text}`).not.toMatch(/\b(safe|no (risk|problems?|issues?))\b|an toàn|không có vấn đề/i)
+      }
     }
   })
 
