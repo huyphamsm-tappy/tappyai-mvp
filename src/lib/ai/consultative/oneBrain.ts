@@ -12,8 +12,12 @@
 
 /** Steps of a one-brain turn: 2 are kept for writing (FINAL_SYNTHESIS_RESERVED_STEPS), the other 6 are lookup rounds (29/10: 6 → 8, so a multi-criteria question can search, read reviews and check again). */
 export const ONE_BRAIN_MAX_STEPS = 8
-/** Output ceiling of a one-brain turn (the hard ceiling of the route, as S3B). */
-export const ONE_BRAIN_MAX_TOKENS = 4000
+/**
+ * Output ceiling of one model step of a one-brain turn (the hard ceiling of the route). 03/11: 4000 → 8000. Android UAT: a 7-day trip card
+ * (`present_plan` arguments, ~6 500 characters of Vietnamese JSON) was cut at the ceiling, the tool arguments did not parse and the whole turn
+ * ended with "Có lỗi xảy ra" and no text. It is a ceiling, not a target: a short answer costs what it costs.
+ */
+export const ONE_BRAIN_MAX_TOKENS = 8000
 
 /**
  * The note a fare tool's result carries on one brain when the tool has no fare source (`fare_status: 'not_verified'`). Share run 31/10 (T08,

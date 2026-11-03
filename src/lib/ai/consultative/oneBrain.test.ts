@@ -52,9 +52,9 @@ describe('the one general instruction', () => {
     expect(ONE_BRAIN_CORE).toContain('Never invent a fact')
     expect(ONE_BRAIN_SHAPE_REMINDER).toMatch(/hedge only what changes/i)
   })
-  it('limits: 8 steps (2 kept for writing, so 6 rounds of lookup; owner 29/10), 4000 output tokens', () => {
+  it('limits: 8 steps (2 kept for writing, so 6 rounds of lookup; owner 29/10), 8000 output tokens (03/11: a 7-day trip card did not fit in 4000)', () => {
     expect(ONE_BRAIN_MAX_STEPS).toBe(8)
-    expect(ONE_BRAIN_MAX_TOKENS).toBe(4000)
+    expect(ONE_BRAIN_MAX_TOKENS).toBe(8000)
   })
 })
 

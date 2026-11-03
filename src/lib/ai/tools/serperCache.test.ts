@@ -219,17 +219,75 @@ describe('serperPlaces through the shared cache', () => {
   })
 })
 
-describe('photos are NOT shared-cached (owner decision pending)', () => {
-  it('fetchPlacePhotosByName never reads or writes the shared store', async () => {
-    serperPayload = { images: [{ imageUrl: 'https://img.example/a.jpg', thumbnailUrl: 'https://img.example/t.jpg' }] }
-    await fetchPlacePhotosByName('pid', 'Quán A')
+// 03/11, owner: "hình ảnh Serper chúng ta đã trả tiền thì có quyền lưu trữ để tái sử dụng, tối ưu chi phí". Before this, photos were excluded
+// "pending the owner's decision on persisting imagery". What is stored is the picked image LINKS only (never the picture files), with a hard TTL.
+describe('photo links are shared-cached (owner decision 03/11)', () => {
+  const IMG = { images: [{ imageUrl: 'https://img.example/a.jpg', thumbnailUrl: 'https://img.example/t.jpg' }] }
+  it('the first lookup pays once and stores the links; a second instance reads them without paying', async () => {
+    serperPayload = IMG
+    const first = await fetchPlacePhotosByName('pid', 'Quán A')
+    expect(first.length).toBeGreaterThan(0)
     expect(serperCalls.map(c => c.endpoint)).toEqual(['images'])
-    expect(kvCalls).toHaveLength(0)
+    expect(kv.size).toBe(1)
+    __clearToolCache() // a different warm instance: its own memory is empty
+    serperCalls = []
+    expect(await fetchPlacePhotosByName('pid2', 'Quán A')).toEqual(first)
+    expect(serperCalls).toHaveLength(0)
   })
-  it('the cache layer itself refuses the images endpoint', async () => {
-    await serperCacheSet('images' as never, 'q', null, [{ a: 1 }])
-    expect(await serperCacheGet('images' as never, 'q', null)).toBeNull()
-    expect(kvCalls).toHaveLength(0)
+  it('the stored value is links only, with a hard expiry of 3 days by default', async () => {
+    serperPayload = IMG
+    await fetchPlacePhotosByName('pid', 'Quán A')
+    const [entry] = [...kv.values()]
+    expect(entry.ex).toBe(3 * 86_400)
+    const stored = JSON.parse(entry.value)
+    expect(stored.rows.every((u: unknown) => typeof u === 'string' && u.startsWith('https://'))).toBe(true)
+  })
+  it('SERPER_CACHE_IMAGES_TTL_SECONDS overrides the expiry', async () => {
+    vi.stubEnv('SERPER_CACHE_IMAGES_TTL_SECONDS', '7200')
+    serperPayload = IMG
+    await fetchPlacePhotosByName('pid', 'Quán A')
+    expect([...kv.values()][0].ex).toBe(7200)
+  })
+  it('a different place name is a different entry, and a tone mark is not folded away (no wrong photo)', async () => {
+    serperPayload = IMG
+    await fetchPlacePhotosByName('p1', 'Mắt Kính A')
+    serperCalls = []
+    await fetchPlacePhotosByName('p2', 'Mất Kính A')
+    expect(serperCalls.map(c => c.endpoint)).toEqual(['images'])
+    expect(kv.size).toBe(2)
+  })
+  it('a miss (no usable image) is never stored, so one failure cannot hide a venue for days', async () => {
+    serperPayload = { images: [] }
+    expect(await fetchPlacePhotosByName('pid', 'Quán Z')).toEqual([])
+    expect(kv.size).toBe(0)
+  })
+  it('a stored link that is not a safe https address is ignored and paid for again', async () => {
+    serperPayload = IMG
+    await fetchPlacePhotosByName('pid', 'Quán A')
+    const key = [...kv.keys()][0]
+    kv.set(key, { value: JSON.stringify({ v: 3, at: new Date().toISOString(), rows: ['javascript:alert(1)', 'http://plain.example/x.jpg'] }), ex: 100 })
+    __clearToolCache(); serperCalls = []
+    const out = await fetchPlacePhotosByName('pid', 'Quán A')
+    expect(out.every(u => u.startsWith('https://'))).toBe(true)
+    expect(serperCalls.map(c => c.endpoint)).toEqual(['images'])
+  })
+  it('KV down → the lookup still answers from Serper', async () => {
+    kvMode = 'throw'
+    serperPayload = IMG
+    expect((await fetchPlacePhotosByName('pid', 'Quán A')).length).toBeGreaterThan(0)
+    expect(serperCalls).toHaveLength(1)
+  })
+  it('the V2 key rules (tone folding, filler words) never apply to place photos', async () => {
+    vi.stubEnv('SERPER_CACHE_V2', '1')
+    serperPayload = IMG
+    await fetchPlacePhotosByName('p1', 'Mắt Kính A')
+    serperCalls = []
+    await fetchPlacePhotosByName('p2', 'Mất Kính A')
+    expect(serperCalls.map(c => c.endpoint)).toEqual(['images'])
+  })
+  it('the cache layer accepts the images endpoint', async () => {
+    await serperCacheSet('images', 'q', null, ['https://img.example/a.jpg'])
+    expect(await serperCacheGet<string>('images', 'q', null)).toEqual(['https://img.example/a.jpg'])
   })
 })
 
