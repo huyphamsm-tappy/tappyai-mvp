@@ -17,6 +17,7 @@
 // a pricing report was cut at 105 s.
 import { parseDoc, headingTitle, titleKey, type DocBlock } from '@/lib/answerDoc/parse'
 import { leanValue } from './deepResearchLean'
+import { deepResearchV2On, V2_LIMITS, termScores, stepCoverage, decideNext, missingParts, findingsForPart } from './deepResearchState'
 
 // planSteps: the plan's own steps; steps: all steps of a run (the plan's + the follow-up round's GAP_STEPS), as the card shows them
 export const DEEP_RESEARCH_LIMITS = { planSteps: 10, steps: 17, queriesPerStep: 3, findingsPerStep: 90, researchDeadlineMs: 120_000, runDeadlineMs: 270_000 } as const
@@ -151,6 +152,11 @@ export interface DeepResearchDeps {
   notes(step: string, question: string, evidence: readonly Evidence[]): Promise<Array<{ text: string; source: number; figure?: Figure | null }>>
   write(input: { question: string; plan: ResearchPlan; evidence: readonly Evidence[]; findings: readonly Finding[] }): AsyncIterable<string>
   /**
+   * DEEP_RESEARCH_V2 only (03/11): writes sections for the parts of the question no heading of the written report names, from the findings that
+   * speak to each; appended to the report. Absent = no repair.
+   */
+  repair?(input: { question: string; plan: ResearchPlan; evidence: readonly Evidence[]; parts: ReadonlyArray<{ part: string; findings: readonly Finding[] }> }): AsyncIterable<string>
+  /**
    * The parts of the question the findings do not answer yet, as at most GAP_STEPS follow-up steps (title + queries); [] = covered.
    * Absent = one research round only.
    */
@@ -165,16 +171,6 @@ export interface DeepResearchDeps {
 /** One section picture: `title` is the section heading it goes under (the client matches it like an item picture, answerDoc/media). */
 export interface SectionImage { title: string; src: string }
 export interface ResearchEmit { status(s: ResearchStatus): void; text(t: string): void; images?(items: SectionImage[]): void; charts?(charts: ResearchChart[]): void }
-
-/** How many terms a title shares with each step's title. A term is a word of 5+ letters or two neighbouring words. Pure. */
-function termScores(title: string, steps: ReadonlyArray<{ title: string }>): number[] {
-  const words = (s: string) => {
-    const w = s.toLowerCase().split(/[^\p{L}\d]+/u).filter(Boolean)
-    return new Set([...w.filter(x => x.length >= 5), ...w.slice(1).map((x, i) => `${w[i]} ${x}`)])
-  }
-  const mine = words(title)
-  return steps.map(s => [...words(s.title)].filter(w => mine.has(w)).length)
-}
 
 /**
  * The one plan step whose title shares the most terms with a follow-up's title, when there is exactly one best; else undefined. A term is a
@@ -475,9 +471,12 @@ export function sectionImages(report: string, plan: ResearchPlan, pictures: Read
 
 /** Runs one deep research. Never throws: a failure ends with a `failed` status and whatever was written. */
 /** `left` (review 02/11): the person went away - the run stops where it is, writes nothing more and ends as 'client_gone'. */
-export async function runDeepResearch(question: string, context: string, lang: string, deps: DeepResearchDeps, emit: ResearchEmit, left?: AbortSignal): Promise<{ plan: ResearchPlan | null; evidence: Evidence[]; findings: Finding[]; failed: string | null; cut?: boolean; followUps?: number; charts?: number; figures?: { proposed: number; kept: number }; stepStats?: StepStat[]; unsupported?: string[] }> {
+export async function runDeepResearch(question: string, context: string, lang: string, deps: DeepResearchDeps, emit: ResearchEmit, left?: AbortSignal): Promise<{ plan: ResearchPlan | null; evidence: Evidence[]; findings: Finding[]; failed: string | null; cut?: boolean; followUps?: number; charts?: number; figures?: { proposed: number; kept: number }; stepStats?: StepStat[]; unsupported?: string[]; repaired?: number }> {
   const now = deps.now ?? Date.now
   const t0 = now()
+  // DEEP_RESEARCH_V2 (03/11, OFF unless "1", never in production): several gap rounds in this request and a repair of the parts the report does not name
+  const v2 = deepResearchV2On()
+  const researchDeadline = v2 ? V2_LIMITS.researchDeadlineMs : DEEP_RESEARCH_LIMITS.researchDeadlineMs
   const evidence: Evidence[] = []
   const findings: Finding[] = []
   const byUrl = new Map<string, Evidence>()
@@ -550,18 +549,26 @@ export async function runDeepResearch(question: string, context: string, lang: s
   }
   // every step at once; a step still running at the deadline is dropped (marked failed), the report is written from what came back
   let timer: ReturnType<typeof setTimeout> | undefined
-  const deadline = new Promise<'deadline'>(r => { timer = setTimeout(() => r('deadline'), Math.max(0, DEEP_RESEARCH_LIMITS.researchDeadlineMs - (now() - t0))) })
+  const deadline = new Promise<'deadline'>(r => { timer = setTimeout(() => r('deadline'), Math.max(0, researchDeadline - (now() - t0))) })
   const gone = new Promise<'deadline'>(r => { if (left?.aborted) r('deadline'); else left?.addEventListener('abort', () => r('deadline'), { once: true }) })
   const round = (from: number) => Promise.race([Promise.all(plan!.steps.slice(from).map((_, j) => runStep(from + j).catch(() => { steps[from + j].status = 'failed' }))), deadline, gone])
   let timedOut = (await round(0)) === 'deadline'
-  // the second round: what the question asks that the findings do not answer yet, as follow-up steps (shown on the card like the others)
+  // the follow-up round: what the question asks that the findings do not answer yet, as follow-up steps (shown on the card like the others).
+  // One-pass: one round. DEEP_RESEARCH_V2: up to V2_LIMITS.maxGapRounds, each further one decided by decideNext (time, rounds, diminishing returns, coverage)
   let followUps = 0
-  if (!timedOut && deps.gaps && findings.length && DEEP_RESEARCH_LIMITS.researchDeadlineMs - (now() - t0) >= GAP_MIN_LEFT_MS) {
+  let lastNew = 0
+  for (let r = 0; r < (v2 ? V2_LIMITS.maxGapRounds : 1); r++) {
+    if (timedOut || !deps.gaps || !findings.length || researchDeadline - (now() - t0) < GAP_MIN_LEFT_MS) break
+    if (r > 0) {
+      const d = decideNext({ round: r, newFindings: lastNew, msLeft: researchDeadline - (now() - t0), coverage: stepCoverage(plan, findings) })
+      deps.trace?.({ ev: 'decide', round: r, next: d.next, reason: d.reason })
+      if (d.next === 'synthesize') break
+    }
     // how much each plan step brought (02/11): the check sees a thin step, not only the pooled findings
-    const coverage = plan.steps.map((s, k) => ({ title: s.title, findings: findings.filter(f => f.step === k + 1).length, figures: findings.filter(f => f.step === k + 1 && f.figure).length }))
-    const asked = await deps.gaps(question, plan, packFindingsForGapCheck(findings), coverage).catch(() => [])
+    const coverage: Array<{ title: string; findings: number; figures: number }> = plan.steps.map((s, k) => ({ title: s.title, findings: findings.filter(f => f.step === k + 1).length, figures: findings.filter(f => f.step === k + 1 && f.figure).length }))
+    const asked: Awaited<ReturnType<NonNullable<DeepResearchDeps['gaps']>>> = await deps.gaps(question, plan, packFindingsForGapCheck(findings), coverage).catch(() => [])
     const planned = plan.steps.length
-    const more = (Array.isArray(asked) ? asked : [])
+    const more: ResearchPlan['steps'] = (Array.isArray(asked) ? asked : [])
       .map(g => {
         const s = normalisePlan({ title: plan!.title, steps: [g] }, question)?.steps[0]
         const given = Number((g as { completes?: unknown } | null)?.completes)
@@ -570,14 +577,15 @@ export async function runDeepResearch(question: string, context: string, lang: s
         return s ? { title: s.title, queries: s.queries, ...(c ? { completes: c } : {}) } : null
       }).filter((s): s is ResearchPlan['steps'][number] => !!s).slice(0, leanValue('gaps', GAP_STEPS, 2))
     deps.trace?.({ ev: 'gaps', steps: more.map(s => ({ title: s.title, queries: s.queries })) })
-    if (more.length) {
-      const from = plan.steps.length
-      plan = { ...plan, steps: [...plan.steps, ...more] }
-      for (const s of more) steps.push({ title: s.title, status: 'pending' })
-      followUps = more.length
-      show('researching')
-      timedOut = (await round(from)) === 'deadline'
-    }
+    if (!more.length) break
+    const from = plan.steps.length
+    plan = { ...plan, steps: [...plan.steps, ...more] }
+    for (const s of more) steps.push({ title: s.title, status: 'pending' })
+    followUps += more.length
+    show('researching')
+    const before = findings.length
+    timedOut = (await round(from)) === 'deadline'
+    lastNew = findings.length - before
   }
   clearTimeout(timer)
   if (left?.aborted) return { plan, evidence, findings, failed: 'client_gone' }
@@ -592,6 +600,7 @@ export async function runDeepResearch(question: string, context: string, lang: s
   const stripper = linkStripper()
   const numberer = headingNumberer()
   let cut = false
+  let repaired = 0
   let written = ''
   const say = (t: string) => { if (t) { written += t; emit.text(t) } }
   const finish = () => { say(numberer.push(stripper.end())); say(numberer.end()) }
@@ -601,6 +610,21 @@ export async function runDeepResearch(question: string, context: string, lang: s
       if (left?.aborted) break
       // the run's own deadline: what was written stays and gets its sources (the route must answer inside its maxDuration)
       if (now() - t0 >= DEEP_RESEARCH_LIMITS.runDeadlineMs) { cut = true; break }
+    }
+    // DEEP_RESEARCH_V2 (03/11): the parts of the question that no heading of the report names are answered in one appended section (once; a structural check only)
+    if (v2 && deps.repair && !left?.aborted && !cut && plan.parts?.length) {
+      const heads = parseDoc(written).filter((b): b is Extract<DocBlock, { t: 'heading' }> => b.t === 'heading').map(b => headingTitle(b.text) ?? '').filter(Boolean)
+      const absent = missingParts(plan.parts, heads).slice(0, V2_LIMITS.maxRepairParts)
+      deps.trace?.({ ev: 'repair_check', parts: plan.parts.length, missing: absent.length })
+      if (absent.length && DEEP_RESEARCH_LIMITS.runDeadlineMs - (now() - t0) >= V2_LIMITS.repairMinMsLeft) {
+        say(numberer.push(stripper.push('\n\n')))
+        for await (const delta of deps.repair({ question, plan, evidence: cited, parts: absent.map(p => ({ part: p, findings: findingsForPart(p, notes, V2_LIMITS.repairFindingsPerPart) })) })) {
+          say(numberer.push(stripper.push(delta)))
+          if (left?.aborted) break
+          if (now() - t0 >= DEEP_RESEARCH_LIMITS.runDeadlineMs) { cut = true; break }
+        }
+        repaired = absent.length
+      }
     }
     finish()
     // review 02/11: a writer that wrote nothing is a failed write (refunded), not a report of sources alone
@@ -623,5 +647,5 @@ export async function runDeepResearch(question: string, context: string, lang: s
   if (placed.length && emit.images) emit.images(placed)
   const links = cited.map(e => ({ id: e.id, title: e.title, url: e.url }))
   emit.status({ type: 'tappy.research.v1', title: plan.title, phase: 'done', steps: steps.map(s => ({ ...s })), sources: evidence.length, links })
-  return { plan, evidence, findings, failed: null, cut, followUps, charts: charts.length, figures: { ...figureCount }, stepStats, unsupported: unsupportedNumbers(written, notes) }
+  return { plan, evidence, findings, failed: null, cut, followUps, charts: charts.length, figures: { ...figureCount }, stepStats, unsupported: unsupportedNumbers(written, notes), ...(repaired ? { repaired } : {}) }
 }
