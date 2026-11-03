@@ -129,7 +129,7 @@ export const AI = {
    * AI SDK stream result (use .toDataStreamResponse() for HTTP streaming). */
   stream(opts: AIStreamOptions) {
     return streamText({
-      model: modelForRole(opts.role ?? 'smart', { budgetKind: opts.budgetKind }),
+      model: modelForRole(opts.role ?? 'smart', { budgetKind: opts.budgetKind, claudeModel: opts.claudeModel }),
       messages: buildMessages(opts),
       // Undefined leaves the SDK default in place, so every existing caller is unchanged; the chat route names it explicitly.
       maxRetries: opts.maxRetries,

@@ -9,6 +9,7 @@
 import { z } from 'zod'
 import { randomUUID } from 'crypto'
 import { AI } from '@/lib/ai/llm'
+import { claudeWriterAvailable } from '@/lib/ai/llm/registry'
 import { fenceUntrusted } from '@/lib/ai/security/fence'
 import { webSearch, fetchPlacePhotosByName } from '@/lib/ai/tools/common'
 import { createLeanResearch } from '@/lib/ai/consultative/researchLoop'
@@ -119,6 +120,17 @@ export const DEEP_RESEARCH_WRITER_EFFORT_FLAG = 'DEEP_RESEARCH_WRITER_EFFORT'
 export function writerEffort(env: Record<string, string | undefined> = process.env): 'low' | 'medium' | 'high' {
   const v = (env[DEEP_RESEARCH_WRITER_EFFORT_FLAG] ?? '').trim()
   return (v === 'low' || v === 'high') && !lockedInProduction(env, DEEP_RESEARCH_WRITER_EFFORT_FLAG) ? v : 'medium'
+}
+/**
+ * 03/11: which model writes the report. DEEP_RESEARCH_WRITER_MODEL=haiku55 (Claude Haiku 5.5: same list price per token as Luna; measured 03/11 on the
+ * same findings: Claude-class writers beat Luna in three independent blind reads) - only when the Anthropic key is present, and never in a production
+ * runtime unless the owner lists the name in CONSULT_PRODUCTION_ALLOW. Anything else = Luna. Pure given `claudeAvailable`.
+ */
+export const DEEP_RESEARCH_WRITER_MODEL_FLAG = 'DEEP_RESEARCH_WRITER_MODEL'
+/** Claude's tokeniser spends ~3x the tokens of Luna's on Vietnamese: a 7 000-word report is 27-30k of them (measured 03/11; a 16 000 ceiling cut it short). */
+const CLAUDE_WRITER_MAX_TOKENS = 40_000
+export function writerModel(env: Record<string, string | undefined> = process.env, claudeAvailable: boolean = claudeWriterAvailable()): 'haiku55' | 'luna' {
+  return (env[DEEP_RESEARCH_WRITER_MODEL_FLAG] ?? '').trim() === 'haiku55' && claudeAvailable && !lockedInProduction(env, DEEP_RESEARCH_WRITER_MODEL_FLAG) ? 'haiku55' : 'luna'
 }
 const READ_PER_QUERY = 5
 /** Sources given to one notes call (02/11): a step's ~30 sources are read in batches of this size, at once. */
@@ -241,7 +253,22 @@ export function createDeepResearchDeps(o: { lang: string; userTexts: readonly st
       const host = (u: string) => { try { return new URL(u).hostname.replace(/^www\./, '') } catch { return '' } }
       const sources = evidence.filter(e => findings.some(f => f.source === e.id)).map(e => `[${e.id}] ${e.title} — ${e.site ?? host(e.url)}${e.published ? `, ${e.published}` : ''}`).join('\n')
       const notes = writerNotes(plan, findings)
-      const result = AI.stream({ role: 'consult', thinkEffort: writerEffort(), maxTokens: 16000, abortSignal: o.signal, systemShared: WRITER_SYSTEM, messages: [{ role: 'user', content: `Question:\n${question}${langLine}\n\nToday's date: ${new Date().toISOString().slice(0, 10)}\nResearch plan: ${plan.title}${plan.parts?.length ? `\nParts the question asks for: ${plan.parts.join('; ')}` : ''}\n\n${fenceUntrusted('tool_result', `Sources:\n${sources}\n\nFindings by step:\n${notes}`)}` }] })
+      const messages = [{ role: 'user' as const, content: `Question:\n${question}${langLine}\n\nToday's date: ${new Date().toISOString().slice(0, 10)}\nResearch plan: ${plan.title}${plan.parts?.length ? `\nParts the question asks for: ${plan.parts.join('; ')}` : ''}\n\n${fenceUntrusted('tool_result', `Sources:\n${sources}\n\nFindings by step:\n${notes}`)}` }]
+      // 03/11 DEEP_RESEARCH_WRITER_MODEL=haiku55: Claude Haiku 5.5 writes the report (a Vietnamese report is ~27-30k Claude tokens, so the ceiling is higher);
+      // a failure before any text (credit, overload) falls back to the Luna writer below, so the person still gets a report
+      if (writerModel() === 'haiku55') {
+        const claude = AI.stream({ role: 'consult', claudeModel: 'haiku55', maxTokens: CLAUDE_WRITER_MAX_TOKENS, abortSignal: o.signal, systemShared: WRITER_SYSTEM, messages })
+        let any = false
+        try {
+          for await (const t of writtenText(claude.fullStream)) { any = true; yield t }
+          addCost(o.cost, await claude.providerMetadata.catch(() => undefined))
+          return
+        } catch (e) {
+          if (any || o.signal?.aborted) throw e
+          console.warn(JSON.stringify({ type: 'tappyai_deep_research_writer_fallback', from: 'haiku55', to: 'luna' }))
+        }
+      }
+      const result = AI.stream({ role: 'consult', thinkEffort: writerEffort(), maxTokens: 16000, abortSignal: o.signal, systemShared: WRITER_SYSTEM, messages })
       yield* writtenText(result.fullStream)
       addCost(o.cost, await result.providerMetadata.catch(() => undefined))
     },
