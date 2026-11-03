@@ -17,6 +17,8 @@ final class AppleReauthorizer: NSObject, ASAuthorizationControllerDelegate, ASAu
     func authorizationCode() async throws -> String? {
         let request = ASAuthorizationAppleIDProvider().createRequest()
         request.requestedScopes = []
+        // 03/11: a second call while the sheet is up would orphan the first continuation; end that one as «cancelled».
+        if continuation != nil { finish(.success(nil)) }
         return try await withCheckedThrowingContinuation { continuation in
             self.continuation = continuation
             let controller = ASAuthorizationController(authorizationRequests: [request])

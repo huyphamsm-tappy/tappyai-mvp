@@ -133,7 +133,9 @@ final class SessionStore: AppObservableObject {
                 if current.expiresAt > clock() { return current.accessToken }
                 throw AppError.offline
             }
-            expire()
+            // 03/11: only if it is still THIS session. A person who signed out (or in again) while the refresh was out must not get
+            // a "session ended" notice for a session they already left.
+            if tokens?.refreshToken == current.refreshToken { expire() }
             throw AppError.authentication(reason: .refreshFailed)
         }
         // The session changed while the refresh was out (a sign-out, a new sign-in): the old result must not be written back over it.
@@ -154,7 +156,7 @@ final class SessionStore: AppObservableObject {
         do {
             fresh = try await refresh.refresh(current)
         } catch {
-            if Self.refreshEndsSession(error) { expire() }
+            if Self.refreshEndsSession(error), tokens?.refreshToken == current.refreshToken { expire() }
             return nil
         }
         guard tokens?.refreshToken == current.refreshToken else { return tokens?.accessToken }

@@ -100,7 +100,7 @@ final class URLSessionAPIClient: APIClient {
             throw Self.mapHTTP(status: 401, data: data)
 
         default:
-            if retry.shouldRetry(status: http.statusCode, attempt: attempt),
+            if retry.shouldRetry(status: http.statusCode, attempt: attempt, method: endpoint.method),
                !Self.isKnownLimit(status: http.statusCode, data: data),
                !UploadUnavailable.matches(status: http.statusCode, data: data) {
                 let delay = retry.delay(forAttempt: attempt)

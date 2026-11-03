@@ -27,6 +27,8 @@ final class LocationCoordinator: NSObject {
             return nil
         }
         return await withCheckedContinuation { cont in
+            // 03/11: a second request while one is out replaced the first continuation, which then never resumed (its chat send hung).
+            self.continuation?.resume(returning: nil)
             self.continuation = cont
             manager.requestLocation()
         }

@@ -72,8 +72,13 @@ final class ReviewDetailViewModel: AppObservableObject {
 
     // MARK: - Reactions
 
+    /// 03/11: a second tap while the first request is out sent a second toggle and the rollback of a failure restored a stale value.
+    private var likeBusy = false
+    private var saveBusy = false
+
     func toggleLike() {
-        guard var current = review else { return }
+        guard !likeBusy, var current = review else { return }
+        likeBusy = true
         let wasLiked = current.likedByMe
         let oldCount = current.likeCount
         current.likedByMe = !wasLiked
@@ -81,6 +86,7 @@ final class ReviewDetailViewModel: AppObservableObject {
         review = current
 
         Task {
+            defer { likeBusy = false }
             do {
                 let result = try await service.toggleLike(reviewId: reviewId)
                 review?.likedByMe = result.liked
@@ -93,7 +99,8 @@ final class ReviewDetailViewModel: AppObservableObject {
     }
 
     func toggleSave() {
-        guard var current = review else { return }
+        guard !saveBusy, var current = review else { return }
+        saveBusy = true
         let wasSaved = current.savedByMe
         let oldCount = current.saveCount
         current.savedByMe = !wasSaved
@@ -101,6 +108,7 @@ final class ReviewDetailViewModel: AppObservableObject {
         review = current
 
         Task {
+            defer { saveBusy = false }
             do {
                 let result = try await service.toggleSave(reviewId: reviewId)
                 review?.savedByMe = result.saved

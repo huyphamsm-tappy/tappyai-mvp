@@ -68,11 +68,15 @@ final class NotificationsViewModel: AppObservableObject {
                 try await channel.subscribeWithError()
             } catch {
                 self.log.error("notifications realtime subscribe failed: \(error)")
+                await self.supabase.removeChannel(channel)
                 return
             }
             for await _ in changes {
+                guard !Task.isCancelled else { break }
                 self.scheduleRefetch()
             }
+            // 03/11: see NotificationCenterStore: leaving the screen must leave the channel too.
+            await self.supabase.removeChannel(channel)
         }
     }
 

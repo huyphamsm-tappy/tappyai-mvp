@@ -46,6 +46,14 @@ final class AppRouter: AppObservableObject {
 
     func switchTo(_ tab: AppTab) { selectedTab = tab }
 
+    /// 03/11: the person is no longer signed in (signed out, or the session ended). Screens of the account (my posts, favourites, settings, an
+    /// open sheet) must not stay on the stack showing the previous person's data to a guest.
+    func resetAfterSignOut() {
+        for tab in AppTab.allCases { paths[tab] = NavigationPath() }
+        presentedSheet = nil
+        chatSeed = nil
+    }
+
     func push<V: Hashable>(_ value: V, on tab: AppTab? = nil) {
         let target = tab ?? selectedTab
         paths[target]?.append(value)

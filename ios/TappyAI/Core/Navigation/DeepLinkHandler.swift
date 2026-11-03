@@ -49,7 +49,8 @@ struct DeepLinkHandler {
                 path = url.path
             }
         } else {
-            path = urlOrPath
+            // 03/11: a bare path may carry a query or fragment ("/reviews/abc?utm=x"), which became part of the id.
+            path = String(urlOrPath.prefix { $0 != "?" && $0 != "#" })
         }
         return target(forPath: path)
     }

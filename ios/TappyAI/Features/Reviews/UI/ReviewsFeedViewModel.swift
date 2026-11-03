@@ -127,14 +127,18 @@ final class ReviewsFeedViewModel: AppObservableObject {
 
     // MARK: - Like (optimistic, matches Web double-tap + rail behavior)
 
+    /// 03/11: a second tap while the first request is out sent a second toggle (like then unlike), and a failed one rolled back to a stale value.
+    private var reactionBusy: Set<String> = []
+
     func toggleLike(reviewId: String) {
-        guard let idx = reviews.firstIndex(where: { $0.id == reviewId }) else { return }
+        guard let idx = reviews.firstIndex(where: { $0.id == reviewId }), reactionBusy.insert("like:" + reviewId).inserted else { return }
         let wasLiked = reviews[idx].likedByMe
         let oldCount = reviews[idx].likeCount
         reviews[idx].likedByMe = !wasLiked
         reviews[idx].likeCount = max(0, oldCount + (wasLiked ? -1 : 1))
 
         Task {
+            defer { reactionBusy.remove("like:" + reviewId) }
             do {
                 let result = try await service.toggleLike(reviewId: reviewId)
                 if let i = reviews.firstIndex(where: { $0.id == reviewId }) {
@@ -153,11 +157,13 @@ final class ReviewsFeedViewModel: AppObservableObject {
     func doubleTapLike(reviewId: String) {
         guard let idx = reviews.firstIndex(where: { $0.id == reviewId }) else { return }
         if reviews[idx].likedByMe { return }
+        guard reactionBusy.insert("like:" + reviewId).inserted else { return }
         let oldCount = reviews[idx].likeCount
         reviews[idx].likedByMe = true
         reviews[idx].likeCount = oldCount + 1
 
         Task {
+            defer { reactionBusy.remove("like:" + reviewId) }
             do {
                 let result = try await service.toggleLike(reviewId: reviewId)
                 if let i = reviews.firstIndex(where: { $0.id == reviewId }) {
@@ -175,13 +181,14 @@ final class ReviewsFeedViewModel: AppObservableObject {
     // MARK: - Save (optimistic)
 
     func toggleSave(reviewId: String) {
-        guard let idx = reviews.firstIndex(where: { $0.id == reviewId }) else { return }
+        guard let idx = reviews.firstIndex(where: { $0.id == reviewId }), reactionBusy.insert("save:" + reviewId).inserted else { return }
         let wasSaved = reviews[idx].savedByMe
         let oldCount = reviews[idx].saveCount
         reviews[idx].savedByMe = !wasSaved
         reviews[idx].saveCount = max(0, oldCount + (wasSaved ? -1 : 1))
 
         Task {
+            defer { reactionBusy.remove("save:" + reviewId) }
             do {
                 let result = try await service.toggleSave(reviewId: reviewId)
                 if let i = reviews.firstIndex(where: { $0.id == reviewId }) {

@@ -70,6 +70,9 @@ struct PlaceholderShellView: View {
                 .tag(tab)
             }
         }
+        .onChange(of: session.state.isAuthenticated) { signedIn in
+            if !signedIn { router.resetAfterSignOut() }
+        }
         .modifier(AIConsentSheet(consent: deps.aiConsent))
         // Sends any AI-consent decision the server has not accepted yet (after sign-in, or after a failed send), and each
         // new decision as it is made.
@@ -79,6 +82,7 @@ struct PlaceholderShellView: View {
         // The unread badge follows who is signed in: counts on sign-in and on launch, drops to 0 and lets go of the live channel on sign-out.
         .task(id: session.state.isAuthenticated) {
             await notificationCenter.sessionChanged()
+            if session.state.isAuthenticated { await deps.paymentProvider.retryUnfinished() }
         }
         .onReceive(NotificationCenter.default.publisher(for: AIConsentStore.didChange)) { _ in
             Task { await AIConsentSync.flush(api: deps.api, signedIn: session.state.isAuthenticated) }

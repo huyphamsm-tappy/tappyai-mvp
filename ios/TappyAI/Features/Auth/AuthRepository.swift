@@ -169,7 +169,14 @@ final class AuthRepository {
 
     // MARK: Sign-out (survey §1.3)
 
+    private var signingOut = false
+
     func signOut() async {
+        // 03/11: the Apple-credential monitor, the settings row and the account-deletion screen can all call this at once; the second call
+        // ran the push-token unregister and the server sign-out again against a session already gone.
+        guard !signingOut else { return }
+        signingOut = true
+        defer { signingOut = false }
         await beforeSignOut?()   // e.g. unregister this device's push token while the session can still authorise it
         appleCredentials.clear()
         await auth.signOut()

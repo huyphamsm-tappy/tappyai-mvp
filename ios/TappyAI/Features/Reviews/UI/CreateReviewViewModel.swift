@@ -132,7 +132,10 @@ final class CreateReviewViewModel: AppObservableObject {
             for item in toProcess {
                 do {
                     guard let data = try await item.loadTransferable(type: Data.self) else { continue }
-                    let compressed = UIImage(data: data)?.jpegData(compressionQuality: 0.85) ?? data
+                    // Decoding and re-encoding a full-size photo is off the main actor (it froze the form).
+                    let compressed = await Task.detached(priority: .userInitiated) {
+                        UIImage(data: data)?.jpegData(compressionQuality: 0.85) ?? data
+                    }.value
                     let url = try await service.uploadPhoto(data: compressed, filename: "photo_\(Int(Date().timeIntervalSince1970 * 1000)).jpg")
                     uploaded.append(url)
                 } catch {
@@ -159,6 +162,8 @@ final class CreateReviewViewModel: AppObservableObject {
         uploadTask = Task {
             do {
                 let videoURL = try await loadVideoURL(from: item)
+                // 03/11: the picked clip's temp copy stayed on disk when the person cancelled, the clip was too long/large, or the upload failed.
+                defer { try? FileManager.default.removeItem(at: videoURL) }
                 try await processVideo(url: videoURL)
             } catch is CancellationError {
                 // user cancelled
@@ -226,7 +231,10 @@ final class CreateReviewViewModel: AppObservableObject {
         uploadStep = .uploading(progress: 0)
         // GPS location, device and creation times removed before the bytes leave the phone — the
         // server refuses a clip that still carries them (422 identifying_metadata).
-        let videoData = ClipMetadata.neutralize(try Data(contentsOf: url))
+        // 03/11: this ran on the main actor: reading a clip of up to hundreds of MB and walking its boxes froze the screen (and the cancel button).
+        let videoData = try await Task.detached(priority: .userInitiated) {
+            ClipMetadata.neutralize(try Data(contentsOf: url))
+        }.value
         let ext = url.pathExtension.isEmpty ? "mp4" : url.pathExtension.lowercased()
         let result = try await service.uploadVideoFile(data: videoData, ext: ext)
 
