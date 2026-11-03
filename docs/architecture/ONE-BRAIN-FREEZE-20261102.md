@@ -25,7 +25,7 @@ Mô hình trả lời là bên **duy nhất** đọc câu hỏi.
 - **Code vẫn giữ:** an toàn, trần chi tiêu, lượt hỏi, và hiển thị thẻ cho những gì mô hình đã tra.
 - **Giới hạn của một lượt:**
   - 8 bước, trong đó 2 bước để viết;
-  - tối đa 4000 token đầu ra.
+  - tối đa 8000 token đầu ra cho mỗi bước của mô hình (03/11: đổi từ 4000, xem mục 4).
 
 ### 1.2. Năm chế độ
 
@@ -106,6 +106,7 @@ Chế độ đọc từ trường `mode` của request. Thiếu hoặc giá tr�
   - **561288d — nút mua:** người bán tên "Shop"/"Mall" không còn khớp "shopee" (chiều ngược lại cần tên ≥ 5 ký tự).
   - **ec5ccb9 — mệnh đề con số:** chỉ giờ giấc và tiền (17:30, 7h30, 9am, 20.000đ, 50k, 2 triệu, $30, €22, ¥500) bị bỏ; thời lượng ("2 tiếng") và chữ số trong tên ("Cầu Rồng 3D") giữ nguyên; mẹo "kiểm tra giờ/giá" chỉ thêm khi thật sự có giờ/giá bị bỏ.
   - **Đã biết, chấp nhận, không sửa:** (a) bữa ăn trùng quán trên một bộ não giữ tên và lời mô hình nhưng không còn dữ liệu địa điểm (đổi lấy việc bỏ ô trống chung); (b) tìm địa điểm cho nơi trong nước mà Maps không tìm thấy trong nước nhưng trùng tên nơi ở nước ngoài sẽ đặt tâm ở nơi đó (rủi ro thấp); (c) dòng không có tọa độ khi tìm ở nước ngoài được giữ; (d) mẹo "kiểm tra giờ/giá" viết bằng tiếng Việt cả với kế hoạch ngôn ngữ khác; (e) test nối dây của route chỉ kiểm thứ tự chuỗi.
+- **03/11, Owner: "Android … ra bugs, fix bugs nếu có" (UAT Android trên máy ảo, câu 10).** Lỗi thật của máy chủ, không phải của app: câu "lên kế hoạch Thái Lan 1 tuần cho 2 người" kết thúc bằng "Có lỗi xảy ra", không có chữ nào. Log: bước viết thẻ kế hoạch (`present_plan`) bị cắt ở trần 4000 token (`finish_reason: length`, `length_cut: true`), phần tham số JSON dài khoảng 6 500 ký tự tiếng Việt bị đứt giữa chuỗi (`AI_InvalidToolArgumentsError`, "Unterminated string"), lượt hỏi được hoàn lại. Sửa: `ONE_BRAIN_MAX_TOKENS` 4000 → 8000 (trần của một bước, không phải mục tiêu: câu trả lời ngắn không tốn thêm). **Đây là đổi một con số đã đóng băng; ghi ở đây và cập nhật 3 test canh.** Chưa xử lý: nếu vẫn bị cắt (kế hoạch dài hơn 8000 token) thì lượt vẫn lỗi; hướng cho Phase 9 là bắt lỗi này và cho mô hình viết lại gọn.
 
 ## 5. Đóng băng lần 2
 

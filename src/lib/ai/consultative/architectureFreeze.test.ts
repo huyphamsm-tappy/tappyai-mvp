@@ -39,8 +39,8 @@ describe('architecture freeze 02/11/2026', () => {
     expect(DEEP_RESEARCH_MONTHLY).toEqual({ free: 0, pro: 10, promax: 50 })
     expect([...SALE_PLAN_IDS]).toEqual(['pip', 'momo', 'coco', 'promax1m', 'promax3m'])
   })
-  it('one brain: 8 steps, 4000 output tokens; Chat lookups quick 1 / thorough 3', () => {
-    expect([ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS]).toEqual([8, 4000])
+  it('one brain: 8 steps, 8000 output tokens per step (03/11, section 4: a 7-day trip card did not fit in 4000); Chat lookups quick 1 / thorough 3', () => {
+    expect([ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS]).toEqual([8, 8000])
     expect(CHAT_SEARCH_BUDGET).toEqual({ quick: { searches: 1, reads: 1, followUp: false }, thorough: { searches: 3, reads: 3, followUp: true } })
   })
   it('time: 300 s only for Deep Research (research 120 s, writing stops at 270 s); every other answer ends at the 110 s turn deadline', () => {
