@@ -93,10 +93,13 @@ fun HomeShellScreen(
     // shell reads it once, on composition, and drives its OWN NavController. Ownership of this
     // navigation space never leaves this file.
     //
-    // Consumed rather than observed: a tap is a one-shot event, and re-reading it on a later
-    // recomposition would silently yank a user who had since navigated somewhere else.
-    LaunchedEffect(Unit) {
-        viewModel.consumePendingDestination()?.let { navController.navigate(it) }
+    // Consumed, not replayed: a tap is a one-shot event, and re-reading it on a later recomposition would silently yank a user who had since
+    // navigated somewhere else. 03/11: it is OBSERVED as well as consumed. It used to be read once, at first composition, so a text shared into
+    // Tappy while the shell was already open (Android Share sheet, "Ask Tappy" selection) arrived after that and was never seen. A destination
+    // that is present when the shell is composed (cold start) and one that arrives later are now taken the same way, once, and cleared.
+    val pendingDestination by viewModel.pendingDestination.collectAsStateWithLifecycle()
+    LaunchedEffect(pendingDestination) {
+        if (pendingDestination != null) viewModel.consumePendingDestination()?.let { navController.navigate(it) }
     }
 
     val backStackEntry by navController.currentBackStackEntryAsState()

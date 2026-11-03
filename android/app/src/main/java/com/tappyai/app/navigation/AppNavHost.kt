@@ -100,7 +100,10 @@ fun AppNavHost(
     LaunchedEffect(deepLinkTarget, sessionState) {
         val route = deepLinkTarget ?: return@LaunchedEffect
         if (deepLinkReady(sessionState) && !navController.currentDestination.isAuthScreen()) {
-            navController.navigate(route)
+            // 03/11: already ON the shell: do not stack a second shell on top of it (a fresh instance, with its own state, was the Home screen the
+            // person saw instead of the chat they shared into); the open shell takes the pending destination itself (HomeShellScreen).
+            val onShell = route == AppRoute.HomeShell && navController.currentDestination?.hasRoute<AppRoute.HomeShell>() == true
+            if (!onShell) navController.navigate(route)
             viewModel.consumeDeepLink()
         }
     }

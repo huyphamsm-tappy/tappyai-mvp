@@ -37,4 +37,7 @@ class HomeShellViewModel @Inject constructor(
      * does not know or care who asked.
      */
     fun consumePendingDestination(): HomeRoute? = pendingShellDestination.consume()
+
+    /** 03/11: a destination that arrives while the shell is already open (a text shared into Tappy) - the screen reacts to it. */
+    val pendingDestination: StateFlow<HomeRoute?> = pendingShellDestination.pendingFlow
 }
