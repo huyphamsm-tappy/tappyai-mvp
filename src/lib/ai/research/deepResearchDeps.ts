@@ -16,7 +16,7 @@ import { topResultUrls } from '@/lib/ai/consultative/searchReads'
 import { isAiProductSource, withoutAiSources } from '@/lib/security/aiSourcePolicy'
 import { createParallelTurnBudget, parallelSearch, PARALLEL_PRICE } from '@/lib/ai/tools/parallelClient'
 export { PARALLEL_PRICE }
-import { consultTraceDiagnosticsOn } from '@/lib/config/consultFlags'
+import { consultTraceDiagnosticsOn, lockedInProduction } from '@/lib/config/consultFlags'
 import { leanValue } from './deepResearchLean'
 import { DEEP_RESEARCH_LIMITS, GAP_FINDINGS_BUDGET, pageTextLimit, writerNotes, type Figure, type DeepResearchDeps, type Evidence, type ResearchPlan } from './deepResearch'
 
@@ -110,6 +110,16 @@ const rowsOf = (r: unknown): Array<Record<string, unknown>> => {
  * the app configures to reason (low by default, LLM_PLAN_REASONING to change). The token ceilings leave room for that reasoning.
  */
 const planningRole = () => leanValue<'plan' | 'intent'>('planRole', 'plan', 'intent') // 03/11 cost experiment DEEP_RESEARCH_LEAN_PLAN_ROLE
+/**
+ * 03/11 (root cause found by swapping the writer on the same findings: the report's quality gap to Claude sits in the writing step, not in the
+ * search or the extraction; the writer costs under one cent): how hard the report's writer thinks. DEEP_RESEARCH_WRITER_EFFORT = low | medium | high;
+ * anything else, and every production runtime (unless the owner lists the name in CONSULT_PRODUCTION_ALLOW), keeps 'medium'. Pure.
+ */
+export const DEEP_RESEARCH_WRITER_EFFORT_FLAG = 'DEEP_RESEARCH_WRITER_EFFORT'
+export function writerEffort(env: Record<string, string | undefined> = process.env): 'low' | 'medium' | 'high' {
+  const v = (env[DEEP_RESEARCH_WRITER_EFFORT_FLAG] ?? '').trim()
+  return (v === 'low' || v === 'high') && !lockedInProduction(env, DEEP_RESEARCH_WRITER_EFFORT_FLAG) ? v : 'medium'
+}
 const READ_PER_QUERY = 5
 /** Sources given to one notes call (02/11): a step's ~30 sources are read in batches of this size, at once. */
 export const NOTES_BATCH = 8
@@ -231,7 +241,7 @@ export function createDeepResearchDeps(o: { lang: string; userTexts: readonly st
       const host = (u: string) => { try { return new URL(u).hostname.replace(/^www\./, '') } catch { return '' } }
       const sources = evidence.filter(e => findings.some(f => f.source === e.id)).map(e => `[${e.id}] ${e.title} — ${e.site ?? host(e.url)}${e.published ? `, ${e.published}` : ''}`).join('\n')
       const notes = writerNotes(plan, findings)
-      const result = AI.stream({ role: 'consult', thinkEffort: 'medium', maxTokens: 16000, abortSignal: o.signal, systemShared: WRITER_SYSTEM, messages: [{ role: 'user', content: `Question:\n${question}${langLine}\n\nToday's date: ${new Date().toISOString().slice(0, 10)}\nResearch plan: ${plan.title}${plan.parts?.length ? `\nParts the question asks for: ${plan.parts.join('; ')}` : ''}\n\n${fenceUntrusted('tool_result', `Sources:\n${sources}\n\nFindings by step:\n${notes}`)}` }] })
+      const result = AI.stream({ role: 'consult', thinkEffort: writerEffort(), maxTokens: 16000, abortSignal: o.signal, systemShared: WRITER_SYSTEM, messages: [{ role: 'user', content: `Question:\n${question}${langLine}\n\nToday's date: ${new Date().toISOString().slice(0, 10)}\nResearch plan: ${plan.title}${plan.parts?.length ? `\nParts the question asks for: ${plan.parts.join('; ')}` : ''}\n\n${fenceUntrusted('tool_result', `Sources:\n${sources}\n\nFindings by step:\n${notes}`)}` }] })
       yield* writtenText(result.fullStream)
       addCost(o.cost, await result.providerMetadata.catch(() => undefined))
     },

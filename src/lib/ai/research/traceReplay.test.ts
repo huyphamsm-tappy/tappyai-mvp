@@ -8,7 +8,7 @@
 // the sources the writer is given, the figures, and what the gap check is shown (packed) against what it was shown before (the first 30 000 characters).
 
 import { describe, it, expect } from 'vitest'
-import { existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { runDeepResearch, writerNotes, numbersOf, DEEP_RESEARCH_LIMITS, GAP_FINDINGS_BUDGET, type DeepResearchDeps, type Evidence, type Finding, type ResearchPlan } from './deepResearch'
 
@@ -105,6 +105,13 @@ async function replay(dir: string) {
 
   const w = writerIn as { plan: ResearchPlan; evidence: readonly Evidence[]; findings: readonly Finding[] } | null
   const notes = w ? writerNotes(w.plan, w.findings) : ''
+  // DEEP_RESEARCH_WRITER_OUT=<dir>: also writes what the writer was given (plan title, sources, findings by step), to feed the same evidence to another writer
+  if (process.env.DEEP_RESEARCH_WRITER_OUT && w) {
+    const host = (u: string) => { try { return new URL(u).hostname.replace(/^www\./, '') } catch { return '' } }
+    const sources = w.evidence.filter(e => w.findings.some(f => f.source === e.id)).map(e => `[${e.id}] ${e.title} — ${e.site ?? host(e.url)}${e.published ? `, ${e.published}` : ''}`).join('\n')
+    mkdirSync(process.env.DEEP_RESEARCH_WRITER_OUT, { recursive: true })
+    writeFileSync(join(process.env.DEEP_RESEARCH_WRITER_OUT, `${dir.split(/[\\/]/).pop()}.writer-input.md`), `Research plan: ${w.plan.title}\n\nSources:\n${sources}\n\nFindings by step:\n${notes}\n`)
+  }
   const writerEvidenceIds = new Set((w?.evidence ?? []).map(e => e.id))
   const missingInNotes = (w?.findings ?? []).filter(f => !notes.includes(`- ${f.text} [${f.source}]`)).length
   const orphanSources = (w?.findings ?? []).filter(f => !writerEvidenceIds.has(f.source)).length
