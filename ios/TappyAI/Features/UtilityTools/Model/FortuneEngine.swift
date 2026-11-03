@@ -34,7 +34,9 @@ struct FortuneReading {
 
 enum FortuneEngine {
     static func getVNNow() -> Date {
-        Date(timeIntervalSinceNow: 7 * 3600)
+        // 03/11: this added 7 h and the caller then read the date in Asia/Ho_Chi_Minh (+7 again), so after 10:00 VN time the day/week key was tomorrow's.
+        // A Date is an instant; the caller already converts it to Vietnam time.
+        Date()
     }
 
     static func getPeriodKey(_ period: FortunePeriod) -> String {

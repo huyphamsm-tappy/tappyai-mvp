@@ -10,6 +10,8 @@ struct EditProfileView: View {
     @State private var email = ""
     @State private var avatarUrl = ""
     @State private var loading = true
+    /// True once the profile was really read. 03/11: a failed read left the form empty and Save enabled, so one tap wrote an empty name and bio over the account's.
+    @State private var profileLoaded = false
     @State private var saving = false
     @State private var saved = false
     @State private var error: String?
@@ -276,7 +278,7 @@ struct EditProfileView: View {
             .clipShape(RoundedRectangle(cornerRadius: Radius.xl))
         }
         .buttonStyle(.plain)
-        .disabled(saving || saved || uploadingAvatar)
+        .disabled(saving || saved || uploadingAvatar || !profileLoaded)
         .opacity((saving || uploadingAvatar) ? 0.6 : 1)
     }
 
@@ -291,7 +293,10 @@ struct EditProfileView: View {
             avatarUrl = p.avatarUrl
             coverUrl = p.coverUrl ?? ""
             coverSupported = p.supportsCover
-        } catch {}
+            profileLoaded = true
+        } catch {
+            error = NSLocalizedString("common.loadFailed", comment: "")
+        }
         loading = false
     }
 

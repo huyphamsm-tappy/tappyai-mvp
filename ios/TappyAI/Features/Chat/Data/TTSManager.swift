@@ -75,6 +75,11 @@ final class TTSManager: NSObject, AppObservableObject, AVSpeechSynthesizerDelega
         // rather than unavailable.
         guard let voice = AVSpeechSynthesisVoice(language: localeTag) else { return }
         synth.stopSpeaking(at: .immediate)
+        // 03/11: with the default ambient session, read-aloud was silent whenever the ring/silent switch was on, and a clip from the feed could keep
+        // the session. A spoken-audio playback session makes the voice audible; failure to set it must not block reading.
+        let session = AVAudioSession.sharedInstance()
+        try? session.setCategory(.playback, mode: .spokenAudio, options: [.duckOthers])
+        try? session.setActive(true)
         currentText = clean
         currentLocaleTag = localeTag
         speakingMsgId = msgId

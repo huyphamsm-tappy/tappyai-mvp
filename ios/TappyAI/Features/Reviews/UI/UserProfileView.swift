@@ -220,7 +220,8 @@ struct UserProfileView: View {
                     }
                     .buttonStyle(.plain)
                     .onAppear {
-                        if review.id == vm.reviews.last?.id {
+                        // 03/11: the grid shows `shown` (posts or shares); testing against the unfiltered list's last item meant the next page never loaded on one tab.
+                        if review.id == shown.last?.id {
                             Task { await vm.loadMore() }
                         }
                     }

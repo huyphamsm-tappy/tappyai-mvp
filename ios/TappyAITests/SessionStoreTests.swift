@@ -44,4 +44,32 @@ final class SessionStoreTests: XCTestCase {
         _ = try? await store.validAccessToken()
         XCTAssertEqual(store.state, .anonymous)
     }
+
+    // 03/11: only a refresh the server REFUSED ends a session; no signal must not throw a signed-in person out.
+    func testOfflineRefreshKeepsTheSession() async {
+        let storage = InMemoryTokenStorage(TestFixtures.tokens(expiresIn: -10, sub: "u-1"))
+        let store = SessionStore(storage: storage,
+                                 refresher: MockTokenRefreshing(result: .failure(URLError(.notConnectedToInternet))))
+        store.bootstrap()
+        _ = try? await store.validAccessToken()
+        XCTAssertEqual(store.state, .authenticated(userId: "u-1"))
+        XCTAssertNotNil(storage.load(), "the Keychain copy survives a bad moment of signal")
+    }
+
+    func testRefusedRefreshEndsTheSession() async {
+        let storage = InMemoryTokenStorage(TestFixtures.tokens(expiresIn: -10, sub: "u-1"))
+        let refused = NSError(domain: "auth", code: 400, userInfo: [NSLocalizedDescriptionKey: "Invalid Refresh Token: Already Used"])
+        let store = SessionStore(storage: storage, refresher: MockTokenRefreshing(result: .failure(refused)))
+        store.bootstrap()
+        _ = try? await store.validAccessToken()
+        XCTAssertEqual(store.state, .anonymous)
+    }
+
+    func testRefreshClassification() {
+        XCTAssertFalse(SessionStore.refreshEndsSession(URLError(.timedOut)))
+        XCTAssertFalse(SessionStore.refreshEndsSession(CancellationError()))
+        XCTAssertFalse(SessionStore.refreshEndsSession(AppError.offline))
+        XCTAssertTrue(SessionStore.refreshEndsSession(AppError.authentication(reason: .refreshFailed)))
+        XCTAssertFalse(SessionStore.refreshEndsSession(NSError(domain: "x", code: 1, userInfo: [NSLocalizedDescriptionKey: "server hiccup"])))
+    }
 }

@@ -124,30 +124,61 @@ final class SessionStore: AppObservableObject {
     func validAccessToken() async throws -> String {
         guard let current = tokens else { throw AppError.authentication(reason: .unauthenticated) }
         guard current.isExpiring(now: clock()) else { return current.accessToken }
+        let fresh: AuthTokens
         do {
-            let fresh = try await refresh.refresh(current)
-            tokens = fresh
-            storage.save(fresh)
-            return fresh.accessToken
+            fresh = try await refresh.refresh(current)
         } catch {
+            guard Self.refreshEndsSession(error) else {
+                // No connection (or a server hiccup): the session stays. A token that has not really expired yet still works.
+                if current.expiresAt > clock() { return current.accessToken }
+                throw AppError.offline
+            }
             expire()
             throw AppError.authentication(reason: .refreshFailed)
         }
+        // The session changed while the refresh was out (a sign-out, a new sign-in): the old result must not be written back over it.
+        guard tokens?.refreshToken == current.refreshToken else {
+            if let now = tokens { return now.accessToken }
+            throw AppError.authentication(reason: .unauthenticated)
+        }
+        tokens = fresh
+        storage.save(fresh)
+        return fresh.accessToken
     }
 
     /// Force a token refresh (single-flight) after a 401 whose token had not yet "expired".
-    /// Returns the new token, or nil if refresh failed (session is then logged out).
+    /// Returns the new token, or nil if refresh failed (the session is then logged out only when the refresh was REFUSED, not when it could not be reached).
     func forceRefreshToken() async -> String? {
         guard let current = tokens else { return nil }
+        let fresh: AuthTokens
         do {
-            let fresh = try await refresh.refresh(current)
-            tokens = fresh
-            storage.save(fresh)
-            return fresh.accessToken
+            fresh = try await refresh.refresh(current)
         } catch {
-            expire()
+            if Self.refreshEndsSession(error) { expire() }
             return nil
         }
+        guard tokens?.refreshToken == current.refreshToken else { return tokens?.accessToken }
+        tokens = fresh
+        storage.save(fresh)
+        return fresh.accessToken
+    }
+
+    /// 03/11: does this failed refresh END the session? Before, ANY error did (and wiped the Keychain), so one bad moment of signal - offline, a timeout,
+    /// a lost connection, a server hiccup - threw a signed-in person out to guest in the middle of using the app. Only a refresh the server REFUSED ends it
+    /// (the refresh token is invalid, already used or gone; or the error is of the app's own auth kind). Anything that merely could not be completed keeps
+    /// the session: the next call tries again. Pure.
+    nonisolated static func refreshEndsSession(_ error: Error) -> Bool {
+        if error is CancellationError || error is URLError { return false }
+        if (error as NSError).domain == NSURLErrorDomain { return false }
+        if let app = error as? AppError {
+            switch app {
+            case .offline, .network, .cancellation: return false
+            default: return true
+            }
+        }
+        let text = (String(describing: error) + " " + error.localizedDescription).lowercased()
+        let refused = ["refresh token", "refresh_token", "session_not_found", "session_expired", "session missing", "invalid_grant", "invalid jwt"]
+        return refused.contains { text.contains($0) }
     }
 
     /// Decode the `sub` (user id) claim from a JWT without verifying the signature
