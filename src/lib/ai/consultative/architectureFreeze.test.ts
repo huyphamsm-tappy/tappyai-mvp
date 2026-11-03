@@ -11,6 +11,8 @@ import { tierOf, modeForTier, DEEP_RESEARCH_MONTHLY } from '@/lib/plans/tiers'
 import { SALE_PLAN_IDS } from '@/lib/plans/planConfig'
 import { ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, CHAT_SEARCH_BUDGET, ONE_BRAIN_MODE_LINES, PRESENT_PLAN_DESCRIPTION } from './oneBrain'
 import { DEEP_RESEARCH_LIMITS } from '@/lib/ai/research/deepResearch'
+import { deepResearchV2On } from '@/lib/ai/research/deepResearchState'
+import { writerEffort, writerModel } from '@/lib/ai/research/deepResearchDeps'
 import { isAiProductSource } from '@/lib/security/aiSourcePolicy'
 import { deepResearchOffered } from '@/lib/subscription/modeAccess'
 import { rendersDecisionCard, DECISION_CARD_SURFACES } from '@/lib/ai/decisionSurface'
@@ -30,11 +32,11 @@ describe('architecture freeze 02/11/2026', () => {
     expect(readChatMode({ mode: 'turbo' })).toBe('chat')
     expect(Object.keys(ONE_BRAIN_MODE_LINES).sort()).toEqual(['auto', 'chat', 'think', 'web'])
   })
-  it('tiers: Pip (Free) runs Chat only; every paid plan has every mode; Deep Research 0 / 10 / 69 a month', () => {
+  it('tiers: Pip (Free) runs Chat only; every paid plan has every mode; Deep Research 0 / 10 / 50 a month', () => {
     for (const m of ['web', 'think', 'deep', 'auto'] as const) expect(modeForTier(m, 'free')).toBe('chat')
     for (const m of ['chat', 'web', 'think', 'deep', 'auto'] as const) { expect(modeForTier(m, 'pro')).toBe(m); expect(modeForTier(m, 'promax')).toBe(m) }
     expect([tierOf(null), tierOf('guest'), tierOf('pip'), tierOf('coco'), tierOf('milo'), tierOf('promax1m'), tierOf('promax3m')]).toEqual(['free', 'free', 'pro', 'pro', 'pro', 'promax', 'promax'])
-    expect(DEEP_RESEARCH_MONTHLY).toEqual({ free: 0, pro: 10, promax: 69 })
+    expect(DEEP_RESEARCH_MONTHLY).toEqual({ free: 0, pro: 10, promax: 50 })
     expect([...SALE_PLAN_IDS]).toEqual(['pip', 'momo', 'coco', 'promax1m', 'promax3m'])
   })
   it('one brain: 8 steps, 4000 output tokens; Chat lookups quick 1 / thorough 3', () => {
@@ -109,5 +111,24 @@ describe('architecture freeze, second (after the review of 01/11)', () => {
   it('the freeze document has its second and third sections', () => {
     expect(FREEZE_DOC).toContain('## 5. Đóng băng lần 2')
     expect(FREEZE_DOC).toContain('## 6. Đóng băng lần 3')
+  })
+})
+
+// ── Architecture freeze, fourth (owner 03/11: "kiến trúc bộ não … đóng băng tại đây … phát triển tiếp trong phase 9, trước mắt phát hành") ──
+// Written in section 7 of the same document. The Phase 9 Deep Research experiments stay in the tree but OFF: none changes what ships.
+describe('architecture freeze, fourth (03/11, for release)', () => {
+  it('the freeze document has its fourth section', () => {
+    expect(FREEZE_DOC).toContain('## 7. Đóng băng lần 4')
+  })
+  it('Phase 9 Deep Research experiments: OFF by default, and locked in production unless the owner names them', () => {
+    expect(deepResearchV2On({})).toBe(false)
+    expect(deepResearchV2On({ DEEP_RESEARCH_V2: '1' })).toBe(true)
+    expect(deepResearchV2On({ DEEP_RESEARCH_V2: '1', VERCEL_ENV: 'production' })).toBe(false)
+    expect(deepResearchV2On({ DEEP_RESEARCH_V2: '1', VERCEL_ENV: 'production', CONSULT_PRODUCTION_ALLOW: 'DEEP_RESEARCH_V2' })).toBe(true)
+    expect(writerEffort({})).toBe('medium')
+    expect(writerEffort({ DEEP_RESEARCH_WRITER_EFFORT: 'high', VERCEL_ENV: 'production' })).toBe('medium')
+    expect(writerModel({}, true)).toBe('luna')
+    expect(writerModel({ DEEP_RESEARCH_WRITER_MODEL: 'haiku55' }, false)).toBe('luna')
+    expect(writerModel({ DEEP_RESEARCH_WRITER_MODEL: 'haiku55', NODE_ENV: 'production' }, true)).toBe('luna')
   })
 })

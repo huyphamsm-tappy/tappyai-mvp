@@ -145,10 +145,12 @@ function waitsFor(role: ModelRole): { firstPartMs: number; generateMs: number } 
  * The model for a role. A fresh routed model per call (the adapter keeps a per-call usage sink on it).
  * `structured` asks for the vendor's strict JSON-schema mode where it has one.
  */
-export function modelForRole(role: ModelRole, opts: { structured?: boolean; agentRuntime?: boolean; budgetKind?: BudgetKind } = {}): LanguageModelV1 {
+export function modelForRole(role: ModelRole, opts: { structured?: boolean; agentRuntime?: boolean; budgetKind?: BudgetKind; claudeModel?: 'haiku55' } = {}): LanguageModelV1 {
   // C2_REQUEST_BUDGET (budget/meteredModel.ts): every concrete upstream model is metered separately (primary, retry, fallback). Outside a
   // request ledger, or with the flag unset, the meter calls straight through, so the resolution below is unchanged.
   const kind: BudgetKind = opts.budgetKind ?? 'main'
+  // 03/11: ONE call that asked for Claude Haiku 5.5 (Deep Research's writer, AIStreamOptions.claudeModel) gets it when the key is present, metered like the others
+  if (opts.claudeModel === 'haiku55' && anthropicConfigured()) return meteredModel(createHaiku55AgentModel({ label: role }), role, kind)
   if (servesAgentModel(role, opts) && agentModelChoice() === 'haiku55') return meteredModel(agentModel(role, opts), role, kind)
   return defaultModelForRole(role, { structured: opts.structured }, kind)
 }
@@ -228,6 +230,9 @@ function agentModel(role: ModelRole, opts: { structured?: boolean }): LanguageMo
     label: role,
   })
 }
+
+/** True when a Claude model can be called (the key is present). Never reveals the key. */
+export const claudeWriterAvailable = (): boolean => anthropicConfigured()
 
 /** Test hook: forget the routed provider so env changes take effect. */
 export function resetRoutingForTests(): void { openaiProvider = null; provider = null; claudeProvider = null }

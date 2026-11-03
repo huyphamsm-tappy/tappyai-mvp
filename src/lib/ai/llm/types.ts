@@ -104,6 +104,11 @@ export interface AIStreamOptions extends AIGenerateOptions {
    * turn); the steps before it run as Chat. Ignored when thinkEffort is set.
    */
   autoThink?: { on: boolean; effort: ReasoningEffort }
+  /**
+   * 03/11 (Deep Research's report writer): serve THIS streamed call with Claude Haiku 5.5 (same list price as Luna, a better long-form writer on the
+   * same findings in the 03/11 writer swap) when the Anthropic key is present; otherwise the role's own model. Unset = unchanged.
+   */
+  claudeModel?: 'haiku55'
   // REMOVED (C2): a `prepareStep` option forwarded as experimental_prepareStep.
   // streamText in ai@4.3.19 does not accept it — only generateText does — so it
   // was silently discarded on every call while its @ts-ignore claimed the

@@ -56,12 +56,12 @@ describe('payment mail', () => {
     expect(c.text).not.toMatch(/câu hỏi AI mỗi ngày/)
   })
 
-  it('a Tappy (Promax) plan mail states 69 Deep Research a month', () => {
+  it('a Tappy (Promax) plan mail states 50 Deep Research a month', () => {
     // Owner 01/11/2026: new plan catalog
     const c = paymentMailContent({ ...m, plan: 'promax1m', amountVnd: 225000 })
     expect(c.subject).toContain('Tappy')
     expect(c.text).toContain('225.000đ')
-    expect(c.text).toContain('Bạn hỏi AI không giới hạn, có Suy nghĩ, Tìm web và 69 lượt Nghiên cứu sâu mỗi tháng.')
+    expect(c.text).toContain('Bạn hỏi AI không giới hạn, có Suy nghĩ, Tìm web và 50 lượt Nghiên cứu sâu mỗi tháng.')
   })
 
   it('is skipped without Brevo settings, and never throws', async () => {

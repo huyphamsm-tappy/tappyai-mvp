@@ -173,6 +173,13 @@ export const ONE_BRAIN_MODE_LINES: Readonly<Record<'chat' | 'web' | 'think' | 'a
  */
 const SCRIPT_LANGS: Readonly<Record<string, string>> = { zh: 'Chinese', ja: 'Japanese', ko: 'Korean', th: 'Thai', ar: 'Arabic' }
 
+/**
+ * 02/11 (owner: a question written in Chinese got an NHS link for the hospital): the language of a message says nothing about where the person
+ * is. Tappy serves people in Vietnam in any language, so anything that depends on the place (care, emergency numbers, rules, prices, shops) is
+ * the Vietnamese one, in the person's language, unless the device location or the person's own words say another place.
+ */
+export const PLACE_RULE = 'The person is in Vietnam by default, whatever language they write in (a message in Chinese, English or Korean comes from a visitor or resident in Vietnam, not from another country), unless their device location or their own words say they are elsewhere. For anything that depends on where they are - hospitals and clinics, emergency numbers, helplines, laws and procedures, prices, shops, getting somewhere - give the Vietnamese answer and Vietnamese sources, written in the person\'s language, and put Vietnam in the search query; never give another country\'s service (the UK\'s NHS, a US site) unless they ask about that country.'
+
 /** The per-turn part: today's date, where the person is, and the person's own settings. No routing, no domain rule. */
 export function oneBrainDynamic(c: OneBrainContext): string {
   const vnDateTime = c.now.toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', dateStyle: 'full', timeStyle: 'short' })
@@ -185,6 +192,7 @@ export function oneBrainDynamic(c: OneBrainContext): string {
   return [
     `Now in Vietnam: ${vnDateTime} (${vnDateISO}). Information dated before today may be out of date; say so when it matters.`,
     where,
+    PLACE_RULE,
     language,
     ...(scriptLang ? [`The person's latest message is written in ${scriptLang}: write this whole answer in ${scriptLang}, headings and table included.`] : []),
     ...(c.mode ? [ONE_BRAIN_MODE_LINES[c.mode]] : []),
