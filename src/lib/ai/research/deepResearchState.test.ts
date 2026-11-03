@@ -46,7 +46,8 @@ describe('decideNext: when another gap round is worth running', () => {
     expect(decideNext({ ...ok, msLeft: V2_LIMITS.minMsLeftForRound - 1, coverage: thin })).toEqual({ next: 'synthesize', reason: 'time' })
     expect(decideNext({ ...ok, round: V2_LIMITS.maxGapRounds, coverage: thin })).toEqual({ next: 'synthesize', reason: 'rounds' })
     expect(decideNext({ ...ok, newFindings: V2_LIMITS.minNewFindings - 1, coverage: thin })).toEqual({ next: 'synthesize', reason: 'diminishing' })
-    expect(decideNext({ ...ok, coverage: covered })).toEqual({ next: 'synthesize', reason: 'covered' })
+    // every step has findings: reported as 'covered', but the model's gap check decides whether to go on (a count says nothing about content)
+    expect(decideNext({ ...ok, coverage: covered })).toEqual({ next: 'research', reason: 'covered' })
     expect(decideNext({ ...ok, coverage: thin, llmUsd: V2_LIMITS.llmUsdCap })).toEqual({ next: 'synthesize', reason: 'budget' })
     expect(decideNext({ ...ok, coverage: thin, llmUsd: V2_LIMITS.llmUsdCap - 0.001 }).next).toBe('research')
     // time wins over everything

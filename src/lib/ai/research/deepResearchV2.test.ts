@@ -50,11 +50,11 @@ describe('Deep Research V2: gap rounds and the repair of unnamed parts (03/11)',
     expect(h.calls.gaps).toBe(1)
   })
 
-  it('ON: stops when every section is covered after the first round', async () => {
+  it('ON: every section having findings does not end the loop - only the gap check finding nothing, or the other limits, does', async () => {
     vi.stubEnv(DEEP_RESEARCH_V2_FLAG, '1')
     const h = harness({ firstStepFindings: 10, gapStepFindings: 10 })
     await h.run()
-    expect(h.calls.gaps).toBe(1)
+    expect(h.calls.gaps).toBe(3)
   })
 
   it('ON: the part no heading names is answered in an appended section, once, before the sources', async () => {

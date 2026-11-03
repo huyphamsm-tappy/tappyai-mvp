@@ -68,15 +68,17 @@ export interface NextAction { next: 'research' | 'synthesize'; reason: NextReaso
 
 /**
  * Whether another gap round is worth running, checked in this order: time left, rounds used, diminishing returns (the last round kept too few
- * new findings), coverage (no step empty or thin after the first round). `round` = gap rounds already run (>= 1 here: the first one always runs). Pure.
+ * new findings). Coverage by count no longer stops the loop (it can only be reported: reason 'covered' with next 'research' = every step has findings
+ * but the gap check may still find something missing). `round` = gap rounds already run (>= 1 here: the first one always runs). Pure.
  */
 export function decideNext(s: { round: number; newFindings: number; msLeft: number; coverage: readonly StepCoverage[]; llmUsd?: number }): NextAction {
   if (s.msLeft < V2_LIMITS.minMsLeftForRound) return { next: 'synthesize', reason: 'time' }
   if (s.llmUsd !== undefined && s.llmUsd >= V2_LIMITS.llmUsdCap) return { next: 'synthesize', reason: 'budget' }
   if (s.round >= V2_LIMITS.maxGapRounds) return { next: 'synthesize', reason: 'rounds' }
   if (s.newFindings < V2_LIMITS.minNewFindings) return { next: 'synthesize', reason: 'diminishing' }
-  if (!s.coverage.some(c => c.status !== 'covered')) return { next: 'synthesize', reason: 'covered' }
-  return { next: 'research', reason: 'research' }
+  // measured 03/11 (4 runs): by count every step had >= 4 findings after the first round, so "covered" stopped every run and the second round never ran;
+  // a count cannot say whether a step answers its part. Only the gap check (a model reading the findings) can end the loop by finding nothing missing.
+  return { next: 'research', reason: s.coverage.some(c => c.status !== 'covered') ? 'research' : 'covered' }
 }
 
 /**
