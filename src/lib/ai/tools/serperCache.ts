@@ -29,8 +29,10 @@
 // because the OWNER ASKED FOR 24 h. Whether 24 h of shared retention fits the Maps-content terms is
 // the owner's call, not this file's.
 //
-// 🚫 PHOTOS ARE EXCLUDED. `/images` lookups (fetchPlacePhotosByName) are NOT cached here, pending the
-// owner's decision on persisting imagery. Only 'search' | 'shopping' | 'maps' are accepted.
+// 🖼 PHOTOS (owner decision 03/11: "hình ảnh Serper chúng ta đã trả tiền thì có quyền lưu trữ để tái sử dụng, tối ưu chi phí"; before
+// this they were excluded "pending the owner's decision on persisting imagery"). `/images` lookups (fetchPlacePhotosByName) store the
+// picked image LINKS only - never the picture files - under a hard EX TTL (3 days by default, SERPER_CACHE_IMAGES_TTL_SECONDS), keyed on
+// the place name WITHOUT the V2 tone-folding/filler rules (two names that differ by a tone mark are two venues). Only non-empty results.
 
 import { createHash } from 'node:crypto'
 import { recordSerperL2Bypass } from './serperMeter'
@@ -39,7 +41,7 @@ import { isDistributedStoreConfigured, namespacedKey } from '@/lib/security/dist
 import { sanitizeSerperJson } from './serperUntrusted'
 import { areaKeyV2, normalizeQueryV2, serperCacheV2Enabled, serperTtlV2 } from './serperCacheV2'
 
-export type SerperCachedEndpoint = 'search' | 'shopping' | 'maps'
+export type SerperCachedEndpoint = 'search' | 'shopping' | 'maps' | 'images'
 
 /** Where a request was targeted: coordinates (maps `ll`), a location string, or nothing. */
 export type SerperCacheArea = { lat: number; lng: number; zoom?: number } | string | null | undefined
@@ -47,7 +49,14 @@ export type SerperCacheArea = { lat: number; lng: number; zoom?: number } | stri
 const DEFAULT_TTL_SECONDS = 86_400
 export const SERPER_CACHE_MAX_BYTES = 200 * 1024
 export const SERPER_CACHE_TIMEOUT_MS = 300
-const CACHEABLE: ReadonlySet<string> = new Set<SerperCachedEndpoint>(['search', 'shopping', 'maps'])
+const CACHEABLE: ReadonlySet<string> = new Set<SerperCachedEndpoint>(['search', 'shopping', 'maps', 'images'])
+const DEFAULT_IMAGES_TTL_SECONDS = 3 * 86_400
+
+/** How long a stored photo link lives: SERPER_CACHE_IMAGES_TTL_SECONDS, else 3 days. Pure. */
+export function serperCacheImagesTtlSeconds(env: NodeJS.ProcessEnv = process.env): number {
+  const n = Number(env.SERPER_CACHE_IMAGES_TTL_SECONDS)
+  return Number.isFinite(n) && n > 0 ? Math.floor(n) : DEFAULT_IMAGES_TTL_SECONDS
+}
 
 export function serperCacheTtlSeconds(env: NodeJS.ProcessEnv = process.env): number {
   const n = Number(env.SERPER_CACHE_TTL_SECONDS)
@@ -74,7 +83,7 @@ export function serperSharedCacheKey(
 ): string {
   const ep = variant ? `${endpoint}:${variant}` : endpoint
   // SERPER_CACHE_V2 (default OFF): normalised query + area (serperCacheV2.ts); v1 keys are never read under v2.
-  if (serperCacheV2Enabled(env)) {
+  if (endpoint !== 'images' && serperCacheV2Enabled(env)) {
     const q2 = createHash('sha256').update(normalizeQueryV2(query)).digest('hex')
     return namespacedKey(`serper:v2:${ep}:${q2}:${areaKeyV2(area)}`, env)
   }
@@ -175,11 +184,12 @@ export async function serperCacheSet(
   if (!CACHEABLE.has(endpoint) || !query.trim() || !isDistributedStoreConfigured(env)) return
   if (!Array.isArray(value) || value.length === 0) return
   try {
-    const v2 = serperCacheV2Enabled(env)
+    const isImages = endpoint === 'images' // photo LINKS: already picked from safe https addresses; no V2 rules, its own TTL
+    const v2 = !isImages && serperCacheV2Enabled(env)
     // v2 shares only cleaned public text: an injected title/snippet never reaches another user's turn raw (serperUntrusted.ts).
     const json = JSON.stringify({ v: SERPER_CACHE_FORMAT, at: new Date().toISOString(), rows: v2 ? sanitizeSerperJson(value).body : value })
     if (new TextEncoder().encode(json).length > SERPER_CACHE_MAX_BYTES) return
-    const ttl = v2 ? serperTtlV2(endpoint, query, env) : serperCacheTtlSeconds(env)
+    const ttl = isImages ? serperCacheImagesTtlSeconds(env) : v2 ? serperTtlV2(endpoint, query, env) : serperCacheTtlSeconds(env)
     await kvCommand(['SET', serperSharedCacheKey(endpoint, query, area, variant, env), json, 'EX', String(ttl)], env)
   } catch {
     /* fail open */

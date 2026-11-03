@@ -357,10 +357,11 @@ export function pickEmbeddableImageUrl(images: SerperImage[] | undefined): strin
   return pickEmbeddableImageUrls(images, 1)[0] ?? null
 }
 
-// ===== FETCH PLACE PHOTO BY NAME via Serper Images — LIVE SOURCE ONLY, no persistence =====
+// ===== FETCH PLACE PHOTO BY NAME via Serper Images =====
 // Serper does not own the images it returns (its own Terms say returned content "remain[s] the
-// sole responsibility of those who make it available"), so it is treated the same as Google:
-// last-resort fallback, resolved fresh on every call, never written to a database.
+// sole responsibility of those who make it available"). Until 03/11 this was LIVE SOURCE ONLY. Owner decision 03/11: the lookups are paid
+// for, so the picked image LINKS are kept in the shared cache for reuse (3 days by default, hard expiry, never the picture files, never a
+// database row, never an empty result). The terms caveat above stays the owner's to carry.
 export async function fetchPlacePhotosByName(placeId: string, placeName: string, max = 3, context: ImageContext = 'default'): Promise<string[]> {
   /**
    * 🚨 THE SAME VENUE WAS BOUGHT OVER AND OVER.
@@ -383,9 +384,20 @@ export async function fetchPlacePhotosByName(placeId: string, placeName: string,
     console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'serper_skip', reason: !apiKey ? 'no_key' : 'no_name', placeId }))
     return []
   }
-  // One in-flight /images request per (name, count, context). Images stay OUT of the shared L2 cache (owner decision, unchanged).
+  // One in-flight /images request per (name, count, context).
   return serperFlight(`images:${photoCacheKey}`, async (): Promise<string[]> => {
     try {
+      // L2 (03/11, owner: the photo lookups are paid for, so their links may be kept and reused): the picked LINKS of an earlier lookup of
+      // the same place name, shared by every instance, expiring on their own (serperCache.ts). A miss, a store outage or a stored value
+      // that is not a safe https address falls through to the paid call below.
+      const sharedVariant = `${max}:${context}`
+      const shared = await serperCacheGetMeta<string>('images', placeName, null, sharedVariant)
+      const sharedLinks = shared ? shared.rows.filter((u): u is string => typeof u === 'string' && isSafeHttpsUrl(u)) : []
+      if (sharedLinks.length > 0) {
+        recordSerperCacheHit('images')
+        setCache(photoCacheKey, sharedLinks, 15 * 60 * 1000)
+        return sharedLinks
+      }
       const resp = await serperPost('images', apiKey, { q: placeName, gl: 'vn', hl: 'vi', num: 8 }, 4000)
       if (!resp) return [] // A2: over today's Serper ceiling — no photo, the turn still answers
       if (!(resp as Response).ok) {
@@ -398,7 +410,10 @@ export async function fetchPlacePhotosByName(placeId: string, placeName: string,
       console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'serper_result', placeId, placeName: placeName.slice(0, 40), imageCount: images?.length ?? 0, pickedCount: photoUris.length, chosenHost: photoUris[0] ? hostOf(photoUris[0]) : null }))
       // 15 minutes, matching the products cache: long enough that a conversation
       // and its follow-ups pay once, short enough that these stay live URLs.
-      if (photoUris.length > 0) setCache(photoCacheKey, photoUris, 15 * 60 * 1000)
+      if (photoUris.length > 0) {
+        setCache(photoCacheKey, photoUris, 15 * 60 * 1000)
+        await serperCacheSet('images', placeName, null, photoUris, `${max}:${context}`) // links only; serperCacheSet never stores an empty result
+      }
       return photoUris
     } catch (e) {
       console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'serper_error', placeId, error: String(e).slice(0, 80) }))
