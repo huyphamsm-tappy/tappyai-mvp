@@ -26,6 +26,8 @@ struct ReviewPostView: View {
     @Environment(\.scenePhase) private var scenePhase
     @State private var showHeartBurst = false
     @State private var singleTapTask: Task<Void, Never>?
+    /// When the last tap turned the sound on, so the deferred single-tap handler does not also treat that same tap as pause/resume.
+    @State private var soundUnlockTapAt: Date?
     @State private var showOwnMenu = false
     @State private var showReportMenu = false
 
@@ -54,6 +56,9 @@ struct ReviewPostView: View {
             .onTapGesture(count: 1) {
                 handleSingleTap()
             }
+            // 03/11: the tap that turns the sound ON does it at once. The single tap above waits out SwiftUI's double-tap window AND this view's own
+            // 300 ms, so sound came ~0.6 s late and the person tapped again (a second tap = a pause or a like). This gesture runs beside it.
+            .simultaneousGesture(TapGesture().onEnded { unlockSoundNow() })
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         // Inside the page controller the hosted view still gets the status bar's safe-area inset, so the GeometryReader
@@ -415,9 +420,17 @@ struct ReviewPostView: View {
 
     // MARK: - Gestures
 
+    /// A tap on a clip whose sound is still off turns it on straight away and keeps the clip playing (it never pauses on this tap).
+    private func unlockSoundNow() {
+        guard review.isVideo, !isExternalEmbed, isActive, videoPlayer.isMuted else { return }
+        videoPlayer.handleTap()
+        soundUnlockTapAt = Date()
+    }
+
     private func handleDoubleTap() {
         singleTapTask?.cancel()
         singleTapTask = nil
+        soundUnlockTapAt = nil
 
         onDoubleTapLike()
         // A double tap is a gesture too: it unlocks sound for THIS clip as well (before it only set the flag, and this clip stayed muted).
@@ -437,6 +450,8 @@ struct ReviewPostView: View {
         singleTapTask = Task { @MainActor in
             try? await Task.sleep(nanoseconds: 300_000_000)
             guard !Task.isCancelled else { return }
+            // this same tap already turned the sound on (unlockSoundNow): it is not also a pause
+            if let at = soundUnlockTapAt, Date().timeIntervalSince(at) < 1.5 { soundUnlockTapAt = nil; return }
             if review.isVideo, !isExternalEmbed {
                 videoPlayer.handleTap()
             }

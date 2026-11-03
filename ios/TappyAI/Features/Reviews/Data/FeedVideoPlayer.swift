@@ -40,6 +40,11 @@ final class FeedVideoPlayer: AppObservableObject {
         try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
     }
 
+    /// The clip that is on screen stops NOW because the page changed. Unlike `pauseAll` it keeps the audio session: the next page is about to
+    /// play. 03/11: a swipe from a clip to a photo or an external-link post activated no player at all, so nothing stopped the clip that was left
+    /// (the previous clip's sound kept playing); the feed calls this the moment a page change completes, whatever the next post is.
+    static func deactivateActive() { activePlayer?.deactivate() }
+
     /// Players that are currently producing sound or moving pictures (a test pins this to «at most one»).
     static var playingCount: Int { live.allObjects.filter { $0.player.timeControlStatus != .paused }.count }
 
@@ -106,6 +111,19 @@ final class FeedVideoPlayer: AppObservableObject {
                 self.player.play()
             }
         }
+    }
+
+    /// Gives the clip's memory back: stops it and drops its item (decoder and buffer). 03/11: every clip ever shown kept its AVPlayerItem for the
+    /// life of the feed, so a long session grew until iOS ended the app. A page that needs the clip again loads it again.
+    func release() {
+        if Self.activePlayer === self { Self.activePlayer = nil }
+        pause(byUser: false)
+        itemCancellables.removeAll()
+        if let obs = endObserver { NotificationCenter.default.removeObserver(obs); endObserver = nil }
+        player.replaceCurrentItem(with: nil)
+        currentURL = nil
+        isBuffering = false
+        watchStart = nil
     }
 
     /// «Try again» after a failed load: the same URL, from scratch.
@@ -248,5 +266,30 @@ final class FeedVideoPlayer: AppObservableObject {
         }
 
         callback(watchSeconds, rate)
+    }
+}
+
+/// The feed's players, one per post, kept OUT of SwiftUI state: the feed asks for a player while it builds a page, and writing `@State` there
+/// is a mutation during a view update (undefined behaviour). Only the posts around the one on screen keep a player; the rest are released.
+@MainActor
+final class FeedPlayerPool {
+    private var players: [String: FeedVideoPlayer] = [:]
+
+    var count: Int { players.count }
+
+    /// The post's player, made on first ask by `make`.
+    func player(for id: String, make: () -> FeedVideoPlayer) -> FeedVideoPlayer {
+        if let existing = players[id] { return existing }
+        let created = make()
+        players[id] = created
+        return created
+    }
+
+    /// Releases every player whose post is not in `keep` (stopped, item dropped, forgotten).
+    func prune(keeping keep: Set<String>) {
+        for (id, p) in players where !keep.contains(id) {
+            p.release()
+            players.removeValue(forKey: id)
+        }
     }
 }

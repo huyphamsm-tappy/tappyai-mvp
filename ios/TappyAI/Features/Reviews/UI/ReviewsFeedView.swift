@@ -8,7 +8,8 @@ struct ReviewsFeedView: View {
     /// Set when this is a profile's clip viewer: that list, opened at one clip, instead of the network feed.
     private let seed: ClipSeed?
     @Environment(\.scenePhase) private var scenePhase
-    @State private var videoPlayers: [String: FeedVideoPlayer] = [:]
+    /// Not `@State` of a dictionary: `playerFor` runs while a page is being built, and writing state there is a mutation during a view update.
+    @State private var players: FeedPlayerPool
     @State private var showCreateReview = false
     @State private var soundPageTrackId: String?
     @ObservedObject private var safety: SafetyStore
@@ -18,6 +19,7 @@ struct ReviewsFeedView: View {
         self.deps = deps
         self.seed = seed
         _safety = ObservedObject(wrappedValue: deps.safety)
+        _players = State(wrappedValue: FeedPlayerPool())
         let service = ReviewsService(api: deps.api)
         let model = ReviewsFeedViewModel(service: service, session: deps.session)
         if let seed { model.seed(seed.posts, start: seed.start) }
@@ -109,12 +111,16 @@ struct ReviewsFeedView: View {
         // may go on playing. Coming back re-activates the clip that is on screen (its page's `onAppear`).
         .onDisappear { FeedVideoPlayer.pauseAll() }
         .onChange(of: scenePhase) { if $0 != .active { FeedVideoPlayer.pauseAll() } }
-        .onChange(of: vm.reviews.map(\.id)) { newIDs in
-            let active = Set(newIDs)
-            for key in videoPlayers.keys where !active.contains(key) {
-                videoPlayers.removeValue(forKey: key)
-            }
-        }
+        .onChange(of: vm.reviews.map(\.id)) { _ in prunePlayers() }
+        .onChange(of: vm.activeIndex) { _ in prunePlayers() }
+    }
+
+    /// Only the post on screen and two either side keep a player (and its video in memory); a long session no longer piles up every clip it showed.
+    private func prunePlayers() {
+        let lo = max(0, vm.activeIndex - 2)
+        let hi = min(vm.reviews.count - 1, vm.activeIndex + 2)
+        guard lo <= hi else { players.prune(keeping: []); return }
+        players.prune(keeping: Set(vm.reviews[lo...hi].map(\.id)))
     }
 
     // MARK: - Sheet bindings
@@ -228,12 +234,16 @@ struct ReviewsFeedView: View {
             pageCount: vm.reviews.count,
             currentPage: $vm.activeIndex,
             onPageChange: { index in
+                // The clip that was on screen stops the moment the swipe completes, whatever the next post is (a photo or a link post activates no player).
+                FeedVideoPlayer.deactivateActive()
                 vm.checkLoadMore(currentIndex: index)
             },
             onNearEnd: {
                 Task { await vm.loadMore() }
             }
         ) { index in
+            // The page controller can ask for a page the list no longer has (a post just blocked, reported, deleted or the tab switched): never index blindly.
+            if vm.reviews.indices.contains(index) {
             let review = vm.reviews[index]
             ReviewPostView(
                 review: review,
@@ -269,6 +279,9 @@ struct ReviewsFeedView: View {
                                                 summary: review.placeName ?? review.body)
                 } : nil
             )
+            } else {
+                TappyColor.feedBackground
+            }
         }
         .ignoresSafeArea()
     }
@@ -345,15 +358,15 @@ struct ReviewsFeedView: View {
     // MARK: - Video player pool
 
     private func playerFor(_ review: Review) -> FeedVideoPlayer {
-        if let existing = videoPlayers[review.id] { return existing }
-        let player = FeedVideoPlayer()
         let reviewId = review.id
         let service = vm.service
-        player.onInteract = { watchSeconds, completionRate in
-            Task { await service.interact(reviewId: reviewId, watchSeconds: watchSeconds, completionRate: completionRate) }
+        return players.player(for: reviewId) {
+            let player = FeedVideoPlayer()
+            player.onInteract = { watchSeconds, completionRate in
+                Task { await service.interact(reviewId: reviewId, watchSeconds: watchSeconds, completionRate: completionRate) }
+            }
+            return player
         }
-        videoPlayers[review.id] = player
-        return player
     }
 }
 
