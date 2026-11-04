@@ -1,0 +1,16 @@
+# Security audit 04/11 (D-02): the owner is the reviewer for the parts where a mistake costs money or exposes data.
+# (GitHub requests these reviews automatically; with required reviews turned on in the ruleset they also gate the merge.)
+*                              @huyphamsm-tappy
+/.github/                      @huyphamsm-tappy
+/src/lib/security/             @huyphamsm-tappy
+/src/lib/ai/quota/             @huyphamsm-tappy
+/src/lib/payments/             @huyphamsm-tappy
+/src/app/api/chat/             @huyphamsm-tappy
+/src/app/api/payments/         @huyphamsm-tappy
+/src/app/api/webhooks/         @huyphamsm-tappy
+/src/app/api/iap/              @huyphamsm-tappy
+/src/app/api/admin/            @huyphamsm-tappy
+/supabase/                     @huyphamsm-tappy
+/middleware.ts                 @huyphamsm-tappy
+/next.config.mjs               @huyphamsm-tappy
+/vercel.json                   @huyphamsm-tappy

@@ -46,9 +46,14 @@ export async function POST(req: NextRequest) {
 
     case 'customer.subscription.updated':
     case 'customer.subscription.deleted': {
-      const sub = event.data.object as Stripe.Subscription
-      const userId = sub.metadata?.supabase_user_id
+      const fromEvent = event.data.object as Stripe.Subscription
+      const userId = fromEvent.metadata?.supabase_user_id
       if (userId) {
+        // Security audit 04/11 (W-13): an event is a hint, not the truth. A replayed or late-arriving event carries an OLD state of the
+        // subscription, so the row is written from Stripe's CURRENT state of that subscription (the call is signed by our own key). Whatever order
+        // the events arrive in, and however often one is replayed, the row ends up equal to Stripe's. If Stripe cannot be asked, the event's
+        // own copy is used, as before.
+        const sub = await stripe.subscriptions.retrieve(fromEvent.id).catch(() => fromEvent)
         const { error: upsertErr } = await supabase.from('subscriptions').upsert({
           user_id: userId,
           // Column is `stripe_sub_id` in the production schema (NOT `stripe_subscription_id`),

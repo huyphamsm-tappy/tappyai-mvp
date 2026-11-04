@@ -1,0 +1,28 @@
+# Security audit 04/11 (D-02): version updates for the web dependencies and the pinned GitHub Actions.
+# The brain's libraries (Next, the AI SDK family, zod) are frozen (docs/architecture/ONE-BRAIN-FREEZE-20261102.md): their MAJOR updates are
+# never proposed automatically; minor and patch updates are.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    groups:
+      minor-and-patch:
+        update-types: [minor, patch]
+    ignore:
+      - dependency-name: next
+        update-types: ['version-update:semver-major']
+      - dependency-name: ai
+        update-types: ['version-update:semver-major']
+      - dependency-name: '@ai-sdk/*'
+        update-types: ['version-update:semver-major']
+      - dependency-name: zod
+        update-types: ['version-update:semver-major']
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 3

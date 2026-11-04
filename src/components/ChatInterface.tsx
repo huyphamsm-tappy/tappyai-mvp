@@ -641,8 +641,11 @@ function renderTables(escaped: string): string {
 
 export function formatMessage(content: string) {
   const lifted = liftCode(content)
+  // Security audit 04/11 (W-07): a code block is put back only in the text BETWEEN tags. A marker that a URL / label / alt pattern swallowed
+  // sits INSIDE a tag (an href, an alt, a title); restoring the block's HTML there let its quotes close the attribute and the rest of the code
+  // text parse as attributes (`onclick=`). Inside a tag the marker is simply dropped.
   return formatMessageBody(lifted.text)
-    .replace(CODE_MARK_RE, (_m, n: string) => lifted.blocks[Number(n)] ?? '')
+    .replace(new RegExp(`(<[^>]*>)|${CODE_MARK_RE.source}`, 'g'), (_m, tag: string | undefined, n: string) => (tag ? tag.replace(CODE_MARK_RE, '') : lifted.blocks[Number(n)] ?? ''))
     // The body is pre-wrap: a newline next to a BLOCK (code / table) would paint an empty line above and below it.
     .replace(/\n+(<div class="my-2[^"]*"[^>]*data-md="(?:code|table)")/g, '$1')
     .replace(/(<\/(?:pre|table)><\/div>)\n+/g, '$1')

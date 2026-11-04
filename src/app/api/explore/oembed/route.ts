@@ -3,6 +3,8 @@ import { searchParam } from '@/lib/http/searchParams'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
+import { clientIpKey } from '@/lib/security/rateLimit'
+import { publicRateLimit } from '@/lib/security/publicRateLimit'
 export const runtime = 'edge'
 
 /**
@@ -72,6 +74,10 @@ async function safeFetch(u: URL, allowed: Set<string>, headers: Record<string, s
 }
 
 export async function GET(req: NextRequest) {
+  // Security audit 04/11 (W-12): this route fetches third-party pages for anyone, so it is not an open relay - 60 a minute per caller (IPv6 by /64).
+  if (!(await publicRateLimit(`explore-oembed:${clientIpKey(req)}`, 60, 60_000)).ok) {
+    return NextResponse.json({ error: 'rate_limit', message: serverMessage('rate.tooFast', requestLocale(req)) }, { status: 429 })
+  }
   const raw = searchParam(req, 'url')
   if (!raw) return NextResponse.json({ error: 'missing_fields', message: serverMessage('validation.missingFields', requestLocale(req)) }, { status: 400 })
 
