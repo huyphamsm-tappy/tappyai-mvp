@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-11-04T04:03:40.108Z",
+  "generatedAt": "2026-10-07T05:53:40.075Z",
   "sizes_chars": {
     "shared": 48463,
-    "dynamic_places_first_reply_web": 4112,
-    "dynamic_shopping_first_reply_web": 12042,
+    "dynamic_places_first_reply_web": 3793,
+    "dynamic_shopping_first_reply_web": 11723,
     "simple_chitchat_prompt": 963
   },
   "shared_block_headers_in_order": [
@@ -15,7 +15,7 @@
   ],
   "dynamic_places_block_headers_in_order": [
     "CRITICAL LANGUAGE OVERRIDE (HIGHEST PRIORITY)",
-    "THOI GIAN HIEN TAI (rat quan trong): Bay gio la lúc 11:03 Thứ Tư, 4 tháng 11, 2026, gio Viet Nam (GMT+7). Ngay hien tai dang YYYY-MM-DD: 2026-11-04. Day la thong tin THOI GIAN THUC, LUON dung gia tri nay khi tra loi cau hoi ve \"hom nay/ngay mai/thang nay/nam nay/hien tai/bay gio\" hoac khi can tinh toan ngay thang, tuoi, deadline, lich am, v.v. TUYET DOI KHONG dung nam trong du lieu huan luyen cu (vd 2023, 2024, 2025) de doan nam hien tai - hay dung dung ngay/nam da cho o tren.",
+    "THOI GIAN HIEN TAI (rat quan trong): Bay gio la lúc 12:53 Thứ Tư, 7 tháng 10, 2026, gio Viet Nam (GMT+7). Ngay hien tai dang YYYY-MM-DD: 2026-10-07. Day la thong tin THOI GIAN THUC, LUON dung gia tri nay khi tra loi cau hoi ve \"hom nay/ngay mai/thang nay/nam nay/hien tai/bay gio\" hoac khi can tinh toan ngay thang, tuoi, deadline, lich am, v.v. TUYET DOI KHONG dung nam trong du lieu huan luyen cu (vd 2023, 2024, 2025) de doan nam hien tai - hay dung dung ngay/nam da cho o tren.",
     "WORD LIMIT - REPLY DAU TIEN",
     "TAPPY'S PICK — DA CHON SAN, BAN CHI GIAI THICH",
     "GIAO DIEN DA HIEN THI THE THONG TIN"
