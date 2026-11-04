@@ -17,6 +17,8 @@ const h = vi.hoisted(() => {
     uploads: [] as Array<{ bucket: string; path: string; bytes: Buffer; opts: Record<string, unknown> }>,
     order: [] as string[],
     size: { width: 800, height: 600 },
+    consentRefused: false,
+    verdict: 'ok' as 'ok' | 'blocked' | 'unavailable' | 'off',
   }
   const own: Record<string, unknown> = {}
   own.from = (t: string) => { state.order.push(`from:${t}`); return own }
@@ -49,6 +51,15 @@ vi.mock('@/lib/supabase/admin', () => ({ createAdminClient: () => h.admin }))
 vi.mock('@/lib/security/rateLimit', () => ({ rateLimit: () => ({ ok: h.state.memoryOk }) }))
 vi.mock('@/lib/media/stripImageMetadata', () => ({ stripImageMetadata: h.stripImageMetadata }))
 vi.mock('sharp', () => ({ default: h.sharp }))
+vi.mock('@/lib/ai/consent/aiConsentGuard', () => ({
+  refuseWithoutAiConsent: async () => {
+    h.state.order.push('consent')
+    return h.state.consentRefused ? new Response(JSON.stringify({ error: 'ai_consent_required' }), { status: 403 }) : null
+  },
+}))
+vi.mock('@/lib/messaging/imageScan', () => ({
+  scanChatImage: async () => { h.state.order.push('scan'); return h.state.verdict },
+}))
 
 import { POST } from './route'
 
@@ -75,6 +86,8 @@ beforeEach(() => {
   h.state.uploads = []
   h.state.order = []
   h.state.size = { width: 800, height: 600 }
+  h.state.consentRefused = false
+  h.state.verdict = 'ok'
   vi.spyOn(console, 'error').mockImplementation(() => {})
 })
 
@@ -99,6 +112,42 @@ describe('who may upload, and where', () => {
     expect((await upload(PNG)).status).toBe(404)
     expect(h.state.order).toEqual(['from:chat_threads'])
     expect(h.state.uploads).toHaveLength(0)
+  })
+})
+
+describe('the safety scan', () => {
+  it('without AI consent the answer is the consent 403, BEFORE the file is read: nothing scanned, nothing stored', async () => {
+    h.state.consentRefused = true
+    expect((await upload(PNG)).status).toBe(403)
+    expect(h.state.order).toEqual(['from:chat_threads', 'consent'])
+    expect(h.state.uploads).toHaveLength(0)
+  })
+
+  it('the scan runs on the cleaned picture AFTER the metadata strip and BEFORE the object is stored', async () => {
+    expect((await upload(PNG)).status).toBe(200)
+    expect(h.state.order).toEqual(['from:chat_threads', 'consent', 'strip', 'scan', 'upload'])
+  })
+
+  it('a blocked picture is a 422 image_blocked with a neutral message, and nothing is stored', async () => {
+    h.state.verdict = 'blocked'
+    const res = await upload(PNG)
+    expect(res.status).toBe(422)
+    expect((await res.json()).error).toBe('image_blocked')
+    expect(h.state.uploads).toHaveLength(0)
+  })
+
+  it('a scan that could not be completed refuses the upload (503), nothing stored', async () => {
+    h.state.verdict = 'unavailable'
+    const res = await upload(PNG)
+    expect(res.status).toBe(503)
+    expect((await res.json()).error).toBe('scan_unavailable')
+    expect(h.state.uploads).toHaveLength(0)
+  })
+
+  it('with the scan switched off explicitly the picture is stored', async () => {
+    h.state.verdict = 'off'
+    expect((await upload(PNG)).status).toBe(200)
+    expect(h.state.uploads).toHaveLength(1)
   })
 })
 
@@ -147,7 +196,7 @@ describe('what is stored and what comes back', () => {
     expect(u.bucket).toBe('chat-media')
     expect(u.bytes.toString().startsWith('STRIPPED:')).toBe(true)
     expect(u.opts).toMatchObject({ contentType: 'image/png', upsert: false })
-    expect(h.state.order).toEqual(['from:chat_threads', 'strip', 'upload']) // metadata is stripped BEFORE anything is stored
+    expect(h.state.order).toEqual(['from:chat_threads', 'consent', 'strip', 'scan', 'upload']) // metadata is stripped BEFORE anything is stored
   })
 
   it('the path is "<thread>/<caller>/<file>" — the caller from the SESSION, the thread from the URL — and is what the response carries, with the size and type', async () => {

@@ -473,6 +473,9 @@ describe('C8 — the drain is wired as a daily cron', () => {
     // 16 -> 17 on 2026-10-09 (App Review 1.2, owner): the same `/api/cron/moderation-digest` a second time a day (13:00 UTC = 20:00 VN), so it
     //   runs every 12 h. The escalation to the backup reviewers fires for reports that will be overdue BEFORE the next run; with one
     //   run a day an urgent report could pass 24 h unnoticed. Hobby allows daily jobs only, so this is two daily entries, not an hourly one.
-    expect(vercelJson.crons.length).toBe(17)
+    //
+    // 17 -> 18 on 2026-11-04 (Messenger, owner): `/api/cron/chat-media-retention` removes pictures older than 30 days from the private bucket and unused uploads after 24 h
+    //   (like Zalo, the device keeps its own copy). Daily, fixed minute and hour; it notifies nobody.
+    expect(vercelJson.crons.length).toBe(18)
   })
 })

@@ -9,6 +9,8 @@ import { stripImageMetadata } from '@/lib/media/stripImageMetadata'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { CHAT_MEDIA_BUCKET, CHAT_MEDIA_KINDS, CHAT_MEDIA_MAX_BYTES, chatMediaPath } from '@/lib/messaging/media'
+import { refuseWithoutAiConsent } from '@/lib/ai/consent/aiConsentGuard'
+import { scanChatImage } from '@/lib/messaging/imageScan'
 
 /**
  * POST /api/messaging/threads/[id]/media — upload ONE picture for a message of this conversation (migration 20261109_chat_media.sql).
@@ -37,6 +39,10 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
   const { data: thread } = await supabase.from('chat_threads').select('id, kind').eq('id', params.id).maybeSingle()
   if (!thread) return NextResponse.json({ error: 'not_found', message: serverMessage('server.notFound', locale) }, { status: 404 })
 
+  // The picture goes to the safety scan (a provider) before it is stored, so the account must have agreed to AI data sharing, exactly as for every AI endpoint.
+  const noConsent = await refuseWithoutAiConsent(user.id, locale)
+  if (noConsent) return noConsent
+
   let form: FormData
   try {
     form = await req.formData()
@@ -63,6 +69,16 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
   } catch (e) {
     console.error('[messaging/media] metadata strip failed, refusing the upload:', e instanceof Error ? e.message : e)
     return NextResponse.json({ error: 'bad_image_type', message: serverMessage('media.imageType', locale) }, { status: 400 })
+  }
+
+  // Safety scan of the CLEAN picture, before anything is stored. Blocked categories (sexual, sexual/minors, graphic violence) are refused with a neutral message;
+  // a scan that cannot be completed refuses too (a state that cannot be verified is not assumed safe). Off only when CHAT_IMAGE_SCAN_ENABLED=false.
+  const verdict = await scanChatImage(clean, imageMime(kind))
+  if (verdict === 'blocked') {
+    return NextResponse.json({ error: 'image_blocked', message: serverMessage('media.imageBlocked', locale) }, { status: 422 })
+  }
+  if (verdict === 'unavailable') {
+    return NextResponse.json({ error: 'scan_unavailable', message: serverMessage('media.scanUnavailable', locale) }, { status: 503 })
   }
 
   // The picture's size, from the clean bytes. Not essential: if it cannot be read the picture is still stored, with no size (the page then reserves no space).

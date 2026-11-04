@@ -18,6 +18,7 @@ import { SHOW_MARKETPLACE, SHOW_WALLET, SHOW_MUSIC } from '@/lib/config/product'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import BottomNav from '@/components/BottomNav'
 import { useNotifications } from '@/components/NotificationProvider'
+import { useMessageUnread, badgeTotal } from '@/lib/messaging/useMessageUnread'
 import { useThemeMode } from '@/lib/theme/useThemeMode'
 import { useAuthStatus } from '@/hooks/useAuthStatus'
 import { performSignOut } from '@/lib/auth/signOut'
@@ -329,7 +330,11 @@ export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = 
   const { t } = useTranslation()
   // Presentation only: delivery, consent and push identity are untouched — this reads a count the
   // store already maintains for the bottom nav.
-  const { unreadCount } = useNotifications()
+  const { unreadCount: notificationUnread } = useNotifications()
+  // The Inbox badge is the other notifications plus the unread MESSAGES, on every page (the conversation store is mounted only inside the inbox).
+  // A message notification is counted once, never also as a message — see useMessageUnread.
+  const messageUnread = useMessageUnread()
+  const unreadCount = badgeTotal(notificationUnread, messageUnread)
   const router = useRouter()
   const [query, setQuery] = useState('')
   // Home is the one page that already has the composer, so the chrome must not offer a second

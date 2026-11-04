@@ -407,6 +407,20 @@ describe('ThreadView · send and realtime', () => {
       expect(box.value).toBe('xin chào')
     })
 
+    it('after a 404 the writing area is replaced by the same neutral sentence (no more typing into a conversation that refuses every message); a 429 leaves it', async () => {
+      await attempt(404)
+      expect(screen.queryByRole('textbox')).toBeNull()
+      expect(screen.queryByRole('button', { name: /gửi|send/i })).toBeNull()
+      const locked = screen.getByTestId('composer-locked')
+      expect(locked.textContent).toBe('Không thể gửi tin nhắn trong cuộc trò chuyện này.')
+      expect(locked.textContent).not.toMatch(/chặn|block/i)
+      cleanup()
+      fetchMock.mockReset()
+      await attempt(429)
+      expect(screen.getByRole('textbox')).toBeTruthy()
+      expect(screen.queryByTestId('composer-locked')).toBeNull()
+    })
+
     it('429 says to slow down', async () => {
       expect((await attempt(429)).alert).toBe('Bạn gửi quá nhanh. Hãy thử lại sau ít phút.')
     })

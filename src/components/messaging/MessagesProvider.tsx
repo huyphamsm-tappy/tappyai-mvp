@@ -4,6 +4,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import { createClient } from '@/lib/supabase/client'
 import type { ChatMessage, ChatThreadSummary } from '@/lib/messaging/types'
 import { messageFromRealtimeRow, type RealtimeMessageRow } from '@/lib/messaging/realtimeRow'
+import { MESSAGES_READ_EVENT } from '@/lib/messaging/useMessageUnread'
 
 // ── Social messaging store ──────────────────────────────────────────────────
 //
@@ -152,6 +153,8 @@ export function MessagesProvider({ children }: { children: React.ReactNode }) {
     } catch {
       // the next refetch restores the true count
     }
+    // Tell the navigation badge (a separate count reader, see useMessageUnread) that the number changed.
+    try { window.dispatchEvent(new Event(MESSAGES_READ_EVENT)) } catch { /* no window */ }
     void refetch()
   }, [refetch])
 

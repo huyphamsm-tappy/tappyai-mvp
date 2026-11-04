@@ -9,6 +9,7 @@ import { CHAT_MEDIA_MAX_BYTES, CHAT_MEDIA_MIME_TYPES } from '@/lib/messaging/med
 import { threadTitle, type ChatMessage, type ChatThreadSummary } from '@/lib/messaging/types'
 import { useMessages } from './MessagesProvider'
 import { SafetyMenu } from '@/components/safety/SafetyMenu'
+import { MessagePhoto } from './MessagePhoto'
 import { newClientId } from '@/lib/messaging/clientId'
 import { bubbleMetas } from '@/lib/messaging/bubbles'
 
@@ -46,6 +47,10 @@ export default function ThreadView({
   // a local object URL of the chosen file (what the person sees in the composer), revoked when it is no longer needed.
   const [photo, setPhoto] = useState<{ path: string; width: number | null; height: number | null; previewUrl: string } | null>(null)
   const [uploading, setUploading] = useState(false)
+  // Set when the server answers a send with the neutral 404 ("this conversation cannot be written to": not a participant any more, or a block — the server never says which).
+  // The writing area is then replaced by that same neutral sentence, so nobody keeps typing into a conversation that will refuse every message, and nothing here ever tells who blocked whom.
+  const [locked, setLocked] = useState(false)
+  useEffect(() => { setLocked(false) }, [thread.id])
   const fileInput = useRef<HTMLInputElement>(null)
   const dropPhoto = useCallback(() => {
     setPhoto(prev => { if (prev) URL.revokeObjectURL(prev.previewUrl); return null })
@@ -183,7 +188,12 @@ export default function ThreadView({
       const r = await fetch(`/api/messaging/threads/${thread.id}/media`, { method: 'POST', body: form })
       if (!r.ok) {
         const code = await r.json().then((j: { error?: string }) => j?.error).catch(() => undefined)
-        setError(t(code === 'bad_image_type' ? 'v3.msg.imageType' : code === 'image_too_large' ? 'v3.msg.imageTooLarge' : 'v3.msg.uploadError'))
+        const key = code === 'bad_image_type' ? 'v3.msg.imageType'
+          : code === 'image_too_large' ? 'v3.msg.imageTooLarge'
+          : code === 'image_blocked' ? 'v3.msg.imageBlocked'
+          : code === 'scan_unavailable' ? 'v3.msg.scanUnavailable'
+          : 'v3.msg.uploadError'
+        setError(t(key))
         return
       }
       const d = await r.json() as { media: { path: string; width: number | null; height: number | null } }
@@ -222,6 +232,7 @@ export default function ThreadView({
       // NEUTRAL by design: the server answers "not a participant" and "blocked" with the same 404 (no oracle for who blocked whom), so the text
       // says only that this conversation cannot be written to. 429: the sender is going too fast. Anything else keeps the generic text.
       const status = e instanceof Error ? e.message : ''
+      if (status === '404') setLocked(true)
       setError(t(status === '404' ? 'v3.msg.cannotSend' : status === '429' ? 'v3.msg.sendTooFast' : 'v3.msg.sendError'))
     } finally {
       setSending(false)
@@ -330,26 +341,8 @@ export default function ThreadView({
                       ? { background: 'var(--v3-accent-fill)', color: 'var(--v3-on-accent)' }
                       : { background: 'var(--v3-panel-elevated)', color: 'var(--v3-fg)' }}
                   >
-                    {message.media && (
-                      // The picture, from the SHORT-LIVED signed link the server made for this read. Only an https link is ever put in the page: a missing, expired-and-unrefreshed or
-                      // odd value shows a placeholder, never a broken image. The size is reserved (no layout jump). It opens in a new tab without handing over the opener.
-                      message.media.url && /^https:\/\//i.test(message.media.url) ? (
-                        <div data-testid="message-photo" className={message.body ? 'mb-1.5' : ''}>
-                          <a href={message.media.url} target="_blank" rel="noopener noreferrer">
-                            {/* eslint-disable-next-line @next/next/no-img-element -- a signed storage link, not a build-time asset */}
-                            <img
-                              src={message.media.url}
-                              alt={t('v3.msg.photoAlt')}
-                              loading="lazy"
-                              {...(message.media.width && message.media.height ? { width: message.media.width, height: message.media.height } : {})}
-                              className="h-auto max-h-80 w-full max-w-[320px] rounded-xl object-cover"
-                            />
-                          </a>
-                        </div>
-                      ) : (
-                        <div data-testid="message-photo-missing" className={`text-[12.5px] italic ${message.body ? 'mb-1.5' : ''}`}>{t('v3.msg.photoUnavailable')}</div>
-                      )
-                    )}
+                    {/* The picture: the server's short-lived signed link while it has it, this browser's own copy after the retention period (see MessagePhoto). */}
+                    {message.media && <MessagePhoto messageId={message.id} media={message.media} hasText={!!message.body} />}
                     {/* Safe https links only — see linkify.tsx. Everything else stays text. A picture with no text has no (empty) text line. */}
                     {message.body && <span className="whitespace-pre-wrap break-words">{linkifySafe(message.body)}</span>}
                   </div>
@@ -381,6 +374,9 @@ export default function ThreadView({
         className="sticky bottom-0 flex flex-shrink-0 flex-col gap-2 border-t px-3 py-3"
         style={{ borderColor: 'var(--v3-border)', background: 'var(--v3-panel)' }}
       >
+        {locked ? (
+          <p data-testid="composer-locked" role="status" className="py-2 text-center text-[13px]" style={{ color: 'var(--v3-fg-muted)' }}>{t('v3.msg.cannotSend')}</p>
+        ) : (<>
         {(photo || uploading) && (
           <div className="flex items-center gap-2">
             {photo && (
@@ -448,6 +444,7 @@ export default function ThreadView({
           {sending ? <Loader2 size={18} className="animate-spin" /> : <Send size={18} />}
         </button>
         </div>
+        </>)}
       </div>
     </div>
   )

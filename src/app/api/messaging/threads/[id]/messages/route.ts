@@ -10,7 +10,7 @@ import { emitMessageNotification, messageNotificationsEnabled } from '@/lib/mess
 import { isOwnChatMediaPath, signChatMedia } from '@/lib/messaging/media'
 
 /** What a message row is read with: the text columns and the picture columns (migration 20261109). */
-const MESSAGE_COLUMNS = 'id, thread_id, sender_id, body, created_at, media_path, media_type, media_width, media_height'
+const MESSAGE_COLUMNS = 'id, thread_id, sender_id, body, created_at, media_path, media_type, media_width, media_height, media_expired_at'
 
 /** Matches the CHECK constraint on `chat_messages.body`; the database is the authority. */
 const MAX_BODY = 4000
@@ -29,6 +29,8 @@ interface MessageRow {
   media_type?: string | null
   media_width?: number | null
   media_height?: number | null
+  /** Set by the retention job once the picture's object was removed from storage (migration 20261110). */
+  media_expired_at?: string | null
 }
 
 /**
@@ -36,7 +38,8 @@ interface MessageRow {
  * only ever made for a message the caller can read. The storage path is not sent to the client: it has no use for it, and the link is all it needs.
  */
 async function toMessages(rows: MessageRow[]): Promise<ChatMessage[]> {
-  const paths = rows.flatMap(r => (r.media_path ? [r.media_path] : []))
+  // An expired picture has no object: no link is asked for, and the message says `expired` so the page can show its own copy (if the device has one) or "expired".
+  const paths = rows.flatMap(r => (r.media_path && !r.media_expired_at ? [r.media_path] : []))
   const links = await signChatMedia(paths)
   return rows.map(r => ({
     id: r.id,
@@ -45,7 +48,7 @@ async function toMessages(rows: MessageRow[]): Promise<ChatMessage[]> {
     body: r.body,
     createdAt: r.created_at,
     media: r.media_path
-      ? { type: 'image' as const, url: links.get(r.media_path) ?? null, width: r.media_width ?? null, height: r.media_height ?? null }
+      ? { type: 'image' as const, url: r.media_expired_at ? null : links.get(r.media_path) ?? null, width: r.media_width ?? null, height: r.media_height ?? null, ...(r.media_expired_at ? { expired: true } : {}) }
       : null,
   }))
 }

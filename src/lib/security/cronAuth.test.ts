@@ -58,7 +58,8 @@ describe('guard — every scheduler route uses it', () => {
     // 17 since the two moderation crons (moderation-digest, moderation-snapshot-purge; 02/10, flagged, not scheduled)
     // 18 since subscriptions-expire (P7 subscriptions; flagged, not scheduled)
     // 19 since business-order-expiry (Tappy Business e0f48b3, 21/10; not scheduled — owner 30/10: "fix hết", mục D)
-    expect(routes.length).toBe(20)
+    // 20 cron routes since chat-media-retention (Messenger picture retention, 04/11/2026; scheduled in vercel.json). Each one is checked by the it.each below.
+    expect(routes.length).toBe(21)
   })
 
   it.each(routes)('%s', (file) => {

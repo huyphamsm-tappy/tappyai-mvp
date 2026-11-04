@@ -102,6 +102,23 @@ describe('GET history with pictures', () => {
     expect(body.messages[0].media).toEqual({ type: 'image', url: null, width: 800, height: 600 })
   })
 
+  it('an EXPIRED picture (retention period over) asks for no link and comes back as expired with url null; a live one beside it is still linked', async () => {
+    h.state.rows = [THREAD_FOUND, { data: [row({ id: 'm1', media_expired_at: '2026-12-01T00:00:00.000Z' }), row({ id: 'm2', media_path: `${T}/u1/live.webp` })], error: null }]
+    h.state.links.set(`${T}/u1/live.webp`, 'https://storage.example/signed/live')
+    const body = await (await get()).json()
+    const byId = Object.fromEntries(body.messages.map((m: { id: string }) => [m.id, m]))
+    expect(byId.m1.media).toEqual({ type: 'image', url: null, width: 800, height: 600, expired: true })
+    expect(byId.m2.media.url).toBe('https://storage.example/signed/live')
+    expect(byId.m2.media.expired).toBeUndefined()
+    expect(h.state.signCalls).toEqual([[`${T}/u1/live.webp`]]) // the expired object is never signed
+  })
+
+  it('the history read asks for media_expired_at', async () => {
+    h.state.rows = [THREAD_FOUND, { data: [], error: null }]
+    await get()
+    expect(h.state.selected.find(c => c.includes('created_at'))).toContain('media_expired_at')
+  })
+
   it('the response has no `media_path` or `path` field: the client only needs the link (the signed link itself names the object — it IS the capability)', async () => {
     h.state.rows = [THREAD_FOUND, { data: [row()], error: null }]
     const body = await (await get()).json()
