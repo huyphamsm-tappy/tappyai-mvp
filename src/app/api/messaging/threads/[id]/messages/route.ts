@@ -7,6 +7,10 @@ import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
 import { rateLimit } from '@/lib/security/rateLimit'
 import type { ChatMessage } from '@/lib/messaging/types'
 import { emitMessageNotification, messageNotificationsEnabled } from '@/lib/messaging/messageNotifications'
+import { isOwnChatMediaPath, signChatMedia } from '@/lib/messaging/media'
+
+/** What a message row is read with: the text columns and the picture columns (migration 20261109). */
+const MESSAGE_COLUMNS = 'id, thread_id, sender_id, body, created_at, media_path, media_type, media_width, media_height'
 
 /** Matches the CHECK constraint on `chat_messages.body`; the database is the authority. */
 const MAX_BODY = 4000
@@ -21,15 +25,30 @@ interface MessageRow {
   sender_id: string | null
   body: string
   created_at: string
+  media_path?: string | null
+  media_type?: string | null
+  media_width?: number | null
+  media_height?: number | null
 }
 
-const toMessage = (r: MessageRow): ChatMessage => ({
-  id: r.id,
-  threadId: r.thread_id,
-  senderId: r.sender_id,
-  body: r.body,
-  createdAt: r.created_at,
-})
+/**
+ * The rows as messages, each picture with a SHORT-LIVED signed link made now by the server. The rows were read with the CALLER's client (row-level security), so a link is
+ * only ever made for a message the caller can read. The storage path is not sent to the client: it has no use for it, and the link is all it needs.
+ */
+async function toMessages(rows: MessageRow[]): Promise<ChatMessage[]> {
+  const paths = rows.flatMap(r => (r.media_path ? [r.media_path] : []))
+  const links = await signChatMedia(paths)
+  return rows.map(r => ({
+    id: r.id,
+    threadId: r.thread_id,
+    senderId: r.sender_id,
+    body: r.body,
+    createdAt: r.created_at,
+    media: r.media_path
+      ? { type: 'image' as const, url: links.get(r.media_path) ?? null, width: r.media_width ?? null, height: r.media_height ?? null }
+      : null,
+  }))
+}
 
 /**
  * 🚨 THE 404 IS A PRIVACY DECISION, NOT A CONVENIENCE.
@@ -74,7 +93,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   const beforeId = searchParam(req, 'beforeId')
   let query = supabase
     .from('chat_messages')
-    .select('id, thread_id, sender_id, body, created_at')
+    .select(MESSAGE_COLUMNS)
     .eq('thread_id', params.id)
     .order('created_at', { ascending: false })
     .order('id', { ascending: false })
@@ -96,7 +115,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 
   const rows = (data ?? []) as MessageRow[]
   return NextResponse.json({
-    messages: rows.map(toMessage).reverse(),
+    messages: (await toMessages(rows)).reverse(),
     hasMore: rows.length === PAGE_SIZE,
   })
 }
@@ -133,7 +152,24 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 
   const raw = (payload as { body?: unknown }).body
   const bodyText = typeof raw === 'string' ? raw.trim() : ''
-  if (!bodyText || bodyText.length > MAX_BODY) {
+
+  // A message is text, a picture, or both. The picture is the PATH the upload route returned: exactly "<this thread>/<the caller>/<file>" (the database CHECK says the
+  // same), and the object must really exist (checked below). Width and height are hints for the page's layout: kept only when they are sane integers.
+  const rawMedia = (payload as { media?: unknown }).media
+  let media: { path: string; width: number | null; height: number | null } | null = null
+  if (rawMedia !== undefined && rawMedia !== null) {
+    const m = rawMedia as { path?: unknown; width?: unknown; height?: unknown }
+    const dim = (n: unknown) => (typeof n === 'number' && Number.isInteger(n) && n >= 1 && n <= 20000 ? n : null)
+    if (typeof rawMedia !== 'object' || Array.isArray(rawMedia) || !isOwnChatMediaPath(m.path, params.id, user.id)) {
+      return NextResponse.json(
+        { error: 'invalid_input', message: serverMessage('validation.invalid', requestLocale(req)) },
+        { status: 400 },
+      )
+    }
+    media = { path: m.path, width: dim(m.width), height: dim(m.height) }
+  }
+
+  if ((!bodyText && !media) || bodyText.length > MAX_BODY) {
     return NextResponse.json(
       { error: 'invalid_input', message: serverMessage('validation.invalid', requestLocale(req)) },
       { status: 400 },
@@ -158,26 +194,47 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     )
   }
 
+  // The object must really be in storage: a message cannot point at nothing. (A link is made for it; the same link is used in the answer.) A repeat of a send that
+  // already committed (clientId) finds its picture here too, because the object is still there.
+  if (media && !(await signChatMedia([media.path])).has(media.path)) {
+    return NextResponse.json(
+      { error: 'invalid_input', message: serverMessage('validation.invalid', requestLocale(req)) },
+      { status: 400 },
+    )
+  }
+
   // 🔑 `sender_id` is taken from the SESSION, never from the request body, and
   // the INSERT policy asserts it equals `auth.uid()` a second time. A client
   // cannot post as somebody else even if this line were wrong.
   const { data, error } = await supabase
     .from('chat_messages')
-    .insert({ thread_id: params.id, sender_id: user.id, body: bodyText, ...(clientId ? { client_id: clientId } : {}) })
-    .select('id, thread_id, sender_id, body, created_at')
+    .insert({
+      thread_id: params.id, sender_id: user.id, body: bodyText,
+      ...(media ? { media_path: media.path, media_type: 'image', media_width: media.width, media_height: media.height } : {}),
+      ...(clientId ? { client_id: clientId } : {}),
+    })
+    .select(MESSAGE_COLUMNS)
     .single()
 
   if (error && error.code === '23505' && clientId) {
     // The same send already committed (the earlier answer was lost): return that row. No notification again — it went out the first time.
     const { data: existing } = await supabase
       .from('chat_messages')
-      .select('id, thread_id, sender_id, body, created_at')
+      .select(MESSAGE_COLUMNS)
       .eq('thread_id', params.id)
       .eq('sender_id', user.id)
       .eq('client_id', clientId)
       .maybeSingle()
-    if (existing) return NextResponse.json({ message: toMessage(existing as MessageRow) })
+    if (existing) return NextResponse.json({ message: (await toMessages([existing as MessageRow]))[0] })
     console.error('[messaging] send: duplicate client id but no stored row')
+  }
+
+  // One picture, one message: the unique index on the path refused a picture that another message already carries.
+  if (error && error.code === '23505' && media) {
+    return NextResponse.json(
+      { error: 'invalid_input', message: serverMessage('validation.invalid', requestLocale(req)) },
+      { status: 400 },
+    )
   }
 
   if (error) {
@@ -214,7 +271,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
   // while it is off this call reads no rows and emits nothing.
   await notifyThreadRecipients(supabase, params.id, user.id, (data as MessageRow).created_at)
 
-  return NextResponse.json({ message: toMessage(data as MessageRow) })
+  return NextResponse.json({ message: (await toMessages([data as MessageRow]))[0] })
 }
 
 /**

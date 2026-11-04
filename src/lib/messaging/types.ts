@@ -25,8 +25,24 @@ export interface ChatMessage {
   threadId: string
   /** Null when the author's account is gone — the message stays, the name does not. */
   senderId: string | null
+  /** The text. Empty ONLY when the message carries a picture. */
   body: string
   createdAt: string
+  /**
+   * The picture of a message, when it has one (migration 20261109). `url` is a SHORT-LIVED signed link the server made for this read; it is null when the object
+   * cannot be linked (storage down, object gone), and the page then shows a placeholder. Never stored, never part of a realtime row: a row from realtime carries
+   * `hasMedia` only, and the page reloads the thread to get the link.
+   */
+  media?: ChatMessageMedia | null
+  /** Set on a message that arrived through realtime and carries a picture whose link has not been made yet. */
+  hasMedia?: boolean
+}
+
+export interface ChatMessageMedia {
+  type: 'image'
+  url: string | null
+  width: number | null
+  height: number | null
 }
 
 /**
