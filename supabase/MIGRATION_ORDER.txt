@@ -155,3 +155,4 @@ supabase/migrations/20261019_ai_data_consent_client_acl.sql
 supabase/migrations/20261101_ai_usage_events.sql
 supabase/migrations/20261102_plans_promax.sql
 supabase/migrations/20261105_chat_messages_client_id.sql
+supabase/migrations/20261106_messenger_notification_collapse.sql

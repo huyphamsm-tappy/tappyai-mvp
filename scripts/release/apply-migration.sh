@@ -57,6 +57,10 @@ policy_of() {
     # reads it until the web release that sends `clientId`, so apply it BEFORE that release (the route writes the column only when a clientId is sent).
     20261105_chat_messages_client_id.sql)
       echo APPLY ;;
+    # Messenger notification collapse (DR-4, owner approved D1–D10 on 04/11/2026): a unique partial index + three functions. Nothing calls them until the web
+    # release behind MESSAGE_NOTIFICATIONS_ENABLED (OFF until Web, Android and iOS handle the 'message' type), so apply it BEFORE that release.
+    20261106_messenger_notification_collapse.sql)
+      echo APPLY ;;
     # H1 → M1 first, then the security-branch migrations in MIGRATION_ORDER.txt order (owner 30/09): 20260928b needs the
     # deal-click code (service role) on production; the others are code-independent but ride the same verified window.
     20260927_owner_update_column_privileges.sql|20260928_revoke_reviews_insert.sql|\
