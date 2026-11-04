@@ -1,7 +1,6 @@
 import { subscriptionsEnabled } from '@/lib/payments/flags'
 import { NextResponse } from 'next/server'
 import {
-  FREE_DAILY_LIMIT,
   ANON_LIFETIME_LIMIT,
   ACCOUNT_QUESTIONS_UNLIMITED,
   SHOW_PRO_UPGRADE,
@@ -46,8 +45,8 @@ export async function GET() {
     {
       freemium: {
         // ONE shared AI question pool for every AI feature (chat in all areas, Scam Alerts).
-        /** Registered account: the hidden anti-abuse ceiling per VN day (owner 01/11/2026: accounts have no question limit). */
-        freeDailyLimit: FREE_DAILY_LIMIT,
+        // Security audit 04/11 (W-08): `freeDailyLimit` (the hidden anti-abuse ceiling, 300 per VN day) is no longer published here - it told an
+        // abuser exactly where to stop. A signed-in client still gets its own counter from /api/subscription; nothing on a screen read it from here.
         /** Owner 01/11/2026: an account (any plan) has no question limit - a client shows "unlimited", never a number. Additive field. */
         accountQuestionsUnlimited: ACCOUNT_QUESTIONS_UNLIMITED,
         /**

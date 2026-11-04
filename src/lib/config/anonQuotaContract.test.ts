@@ -27,7 +27,13 @@ describe('GET /api/config exposes the anonymous allowance under its LIFETIME nam
 
   it('serves freemium.anonLifetimeLimit from ANON_LIFETIME_LIMIT', () => {
     expect(route).toMatch(/freemium:\s*\{[\s\S]*?anonLifetimeLimit:\s*ANON_LIFETIME_LIMIT[\s\S]*?\}/)
-    expect(route).toMatch(/freeDailyLimit:\s*FREE_DAILY_LIMIT/)
+  })
+
+  it('04/11 security audit (W-08): the hidden anti-abuse ceiling is not published (the iOS field is optional, no screen reads it from here)', () => {
+    const code = route.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '')
+    expect(code).not.toMatch(/freeDailyLimit\s*:/)
+    expect(code).not.toContain('FREE_DAILY_LIMIT')
+    expect(read('ios/TappyAI/Core/Config/AppConfigService.swift')).toMatch(/let freeDailyLimit: Int\?/)
   })
 
   it('🚨 no longer serves anonDailyLimit, and never reads a "daily" anonymous constant', () => {
