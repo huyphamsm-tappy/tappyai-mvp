@@ -124,8 +124,19 @@ private struct LegalWebView: UIViewRepresentable {
                 decisionHandler(.allow)
                 return
             }
-            UIApplication.shared.open(target)
+            // Security audit 04/11 (I-07): only a mail link or a plain web page leaves the app - never `tel:`, `itms-apps:`, `file:` or any other scheme.
+            if let openable = LegalLinkPolicy.externalTarget(for: target) { UIApplication.shared.open(openable) }
             decisionHandler(.cancel)
         }
+    }
+}
+
+/// What a tapped link on a legal page may open outside the app (security audit 04/11, I-07).
+enum LegalLinkPolicy {
+    /// The URL to open, or nil: `mailto:` as it is, otherwise the same door as every server-written address (`safeWebURL`: http/https with a
+    /// host, no credentials, no private address).
+    static func externalTarget(for url: URL) -> URL? {
+        if url.scheme?.lowercased() == "mailto" { return url }
+        return safeWebURL(url.absoluteString)
     }
 }

@@ -18,11 +18,31 @@ struct YouTubeEmbedView: UIViewRepresentable {
     /// `FeedVideoPlayer` "only the active/neighbor clip loads media" rule).
     let isActive: Bool
 
+    /// Security audit 04/11 (I-01): the page the player lives in may not navigate itself (or be navigated by the embed) anywhere but YouTube.
+    /// Only the MAIN frame is held to it: the player is a sub-frame and loads whatever YouTube needs.
+    static func allowsMainFrameNavigation(to url: URL?) -> Bool {
+        guard let url else { return true }
+        if url.scheme == "about" { return true }
+        guard url.scheme == "https", let host = url.host?.lowercased() else { return false }
+        return host == "youtube.com" || host.hasSuffix(".youtube.com")
+    }
+
+    final class Coordinator: NSObject, WKNavigationDelegate {
+        func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction,
+                     decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+            let isMainFrame = navigationAction.targetFrame?.isMainFrame ?? true
+            decisionHandler(!isMainFrame || YouTubeEmbedView.allowsMainFrameNavigation(to: navigationAction.request.url) ? .allow : .cancel)
+        }
+    }
+
+    func makeCoordinator() -> Coordinator { Coordinator() }
+
     func makeUIView(context: Context) -> WKWebView {
         let config = WKWebViewConfiguration()
         config.allowsInlineMediaPlayback = true
         config.mediaTypesRequiringUserActionForPlayback = []
         let webView = WKWebView(frame: .zero, configuration: config)
+        webView.navigationDelegate = context.coordinator
         webView.scrollView.isScrollEnabled = false
         webView.isOpaque = false
         webView.backgroundColor = .black
@@ -36,6 +56,8 @@ struct YouTubeEmbedView: UIViewRepresentable {
             return
         }
         guard webView.url == nil else { return }
+        // Only a plain id is ever written into the page (see ExternalSource.isValidYouTubeId).
+        guard ExternalSource.isValidYouTubeId(videoId) else { return }
         webView.loadHTMLString(Self.embedHTML(videoId: videoId), baseURL: URL(string: "https://www.youtube.com"))
     }
 

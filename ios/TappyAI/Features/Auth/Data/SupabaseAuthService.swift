@@ -79,6 +79,6 @@ final class SupabaseAuthService: AuthService {
 
     func signOut() async {
         do { try await supabase.auth.signOut() }
-        catch { log.error("signOut failed: \(error.localizedDescription)") }
+        catch { log.error("signOut failed: \(error.diagnosticTag)") }
     }
 }

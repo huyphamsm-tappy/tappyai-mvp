@@ -74,7 +74,7 @@ final class StoreKitProvider: PaymentProvider {
                 }
                 return .success
             case .unverified(_, let error):
-                log.error("StoreKit: unverified transaction: \(error.localizedDescription)")
+                log.error("StoreKit: unverified transaction: \(error.diagnosticTag)")
                 throw AppError.unexpected(message: "Unverified transaction: \(error.localizedDescription)")
             }
         case .pending:
@@ -175,7 +175,7 @@ final class StoreKitProvider: PaymentProvider {
             log.info("StoreKit: backend sync succeeded for txn \(transaction.id)")
             return true
         } catch {
-            log.error("StoreKit: backend sync failed: \(error.localizedDescription)")
+            log.error("StoreKit: backend sync failed: \(error.diagnosticTag)")
             return false
         }
     }
