@@ -18,9 +18,8 @@ function problems(html: string): string[] {
     for (const a of attrs.matchAll(/([^\s"'<>\/=]+)\s*(?:=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'>]+)))?/g)) {
       const attr = a[1].toLowerCase()
       const value = (a[2] ?? a[3] ?? a[4] ?? '').trim().toLowerCase().replace(/[\s\u0000-\u001f]/g, '')
-      // The one handler the builders write themselves: a broken image hides itself. It is a fixed string, never built from the input.
-      const ownImageHandler = name === 'img' && attr === 'onerror' && (a[2] ?? '') === "this.style.display='none'"
-      if (attr.startsWith('on') && !ownImageHandler) out.push(`event attribute ${attr} in <${name}>`)
+      // 04/11: no exception any more - the broken-image hider is a data attribute plus one listener, so the page policy forbids every inline handler.
+      if (attr.startsWith('on')) out.push(`event attribute ${attr} in <${name}>`)
       if (attr === 'srcdoc') out.push(`srcdoc in <${name}>`)
       if ((attr === 'href' || attr === 'src' || attr === 'xlink:href' || attr === 'action' || attr === 'formaction') && /^(javascript|vbscript|data):/.test(value)) out.push(`${attr}=${value.slice(0, 20)} in <${name}>`)
     }

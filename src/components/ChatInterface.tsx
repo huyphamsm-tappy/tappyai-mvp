@@ -48,6 +48,17 @@ async function showRecheck(a: HTMLAnchorElement) {
   a.insertAdjacentElement('afterend', span)
 }
 
+// Security audit 04/11 (W-05): a reply photo that fails to load hides itself. That used to be an inline `onerror="..."` attribute in the markup,
+// which forced the page policy to allow inline event handlers. It is now ONE capture-phase listener (the `error` event does not bubble) keyed on
+// a data attribute, so the policy can say `script-src-attr 'none'` and an injected `onclick=` / `onerror=` can never run.
+if (typeof document !== 'undefined' && !(window as unknown as { __tappyImgErr?: boolean }).__tappyImgErr) {
+  ;(window as unknown as { __tappyImgErr?: boolean }).__tappyImgErr = true
+  document.addEventListener('error', (e) => {
+    const el = e.target
+    if (el instanceof HTMLImageElement && el.hasAttribute('data-hide-on-error')) el.style.display = 'none'
+  }, true)
+}
+
 // A tap on a link inside the rendered reply text: a recheck link runs the recheck in place; a tracked affiliate link reports GA4
 // `affiliate_click` (src/lib/recommendation/handoff.ts); every other link is untouched.
 export function onMessageLinkClick(e: React.MouseEvent<HTMLDivElement>) {
@@ -679,7 +690,7 @@ function formatMessageBody(content: string) {
       const safe = imgs.filter(([, , src]) => isSafeHttpsUrl(src.replace(/&amp;/g, '&')))
       if (safe.length === 0) return '\n'
       const imgTags = safe.map(([, alt, src]) =>
-        `<img src="${src}" alt="${alt}" data-zoomable="true" style="width:200px;height:160px;object-fit:cover;border-radius:12px;flex-shrink:0;scroll-snap-align:start;cursor:zoom-in" loading="lazy" onerror="this.style.display='none'"/>`
+        `<img src="${src}" alt="${alt}" data-zoomable="true" style="width:200px;height:160px;object-fit:cover;border-radius:12px;flex-shrink:0;scroll-snap-align:start;cursor:zoom-in" loading="lazy" data-hide-on-error="1"/>`
       ).join('')
       return `\n<div style="display:flex;gap:8px;overflow-x:auto;margin:8px 0;padding-bottom:2px;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory">${imgTags}</div>\n`
     }

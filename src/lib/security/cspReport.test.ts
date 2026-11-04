@@ -63,13 +63,15 @@ describe('next.config.mjs headers', () => {
     const all = (await config.headers()).find(r => r.source === '/:path*')!.headers
     const enforced = all.find(h => h.key === 'Content-Security-Policy')!.value
     const reportOnly = all.find(h => h.key === 'Content-Security-Policy-Report-Only')!.value
-    const script = (p: string) => p.split('; ').find(d => d.startsWith('script-src'))!
-    expect(script(enforced)).toContain("'unsafe-inline'") // the real policy is NOT tightened here
+    const script = (p: string) => p.split('; ').find(d => d.startsWith('script-src '))!
+    expect(script(enforced)).toContain("'unsafe-inline'") // inline <script> blocks stay allowed (static caching is kept)
+    expect(enforced).toContain("script-src-attr 'none'") // but no inline event-handler attribute can run
+    expect(reportOnly).toContain("script-src-attr 'none'")
     expect(script(reportOnly)).not.toContain("'unsafe-inline'")
     expect(script(reportOnly)).toContain("'self'")
     expect(reportOnly).toContain('report-uri /api/csp-report')
     expect(reportOnly).not.toContain('upgrade-insecure-requests')
     // every other directive of the real policy is carried over
-    for (const d of enforced.split('; ').filter(d => !d.startsWith('script-src') && d !== 'upgrade-insecure-requests')) expect(reportOnly).toContain(d)
+    for (const d of enforced.split('; ').filter(d => !d.startsWith('script-src ') && d !== 'upgrade-insecure-requests')) expect(reportOnly).toContain(d)
   })
 })
