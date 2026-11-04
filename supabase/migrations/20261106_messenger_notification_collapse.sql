@@ -122,7 +122,7 @@ BEGIN
   RETURN v_n;
 END $$;
 
-REVOKE ALL ON FUNCTION public.mark_thread_read(uuid) FROM PUBLIC, anon;
+REVOKE ALL ON FUNCTION public.mark_thread_read(uuid) FROM PUBLIC, anon, authenticated;   -- ADR-019: name every client role, then grant back only the one that calls it
 GRANT EXECUTE ON FUNCTION public.mark_thread_read(uuid) TO authenticated;
 
 -- ── D7: Inbox "mark read" (all, or the given ids). A message-notification row is the thread's unread pointer, so reading it reads the thread:
@@ -169,5 +169,5 @@ BEGIN
   RETURN v_n;
 END $$;
 
-REVOKE ALL ON FUNCTION public.mark_notifications_read(uuid[]) FROM PUBLIC, anon;
+REVOKE ALL ON FUNCTION public.mark_notifications_read(uuid[]) FROM PUBLIC, anon, authenticated;   -- ADR-019: name every client role, then grant back only the one that calls it
 GRANT EXECUTE ON FUNCTION public.mark_notifications_read(uuid[]) TO authenticated;
