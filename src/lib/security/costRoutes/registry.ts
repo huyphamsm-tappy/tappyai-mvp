@@ -15,8 +15,8 @@ import type { CostRouteDecl } from './scan'
 
 export const ADMIN_EXCEPTIONS: readonly string[] = [] // slice 5c closed the last one (admin/marketing/campaigns/[id])
 
-/** The number of known-gap entries below. It may only go down. 9 = 5 + the four push/email routes declared 2026-10-21 (owner decision B6, reviewed as real gaps). */
-export const KNOWN_GAP_BUDGET = 9
+/** The number of known-gap entries below. It may only go down. 10 = 5 + the four push/email routes declared 2026-10-21 (owner decision B6, reviewed as real gaps) + messaging/messages/[id]/report (same handler and same gap as the other report routes; closes with them in slice 5). */
+export const KNOWN_GAP_BUDGET = 10
 
 export const COST_ROUTES: readonly CostRouteDecl[] = [
   // ── covered ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -52,6 +52,7 @@ export const COST_ROUTES: readonly CostRouteDecl[] = [
   { route: 'stripe/portal', cost: 'Stripe API call; 404 while subscriptionsEnabled()', limiters: [], key: '—', status: 'known-gap', note: 'no limiter. NOT dormant by default: 404 ONLY while SUBSCRIPTIONS_ENABLED is on; with it off (code default, .env example, and the stated release state) it is reachable by any signed-in or anonymous session and calls Stripe. No in-repo Web/Android/iOS caller. Production flag state UNVERIFIED (docs/phase8/SEC4-ROUTE-MATRIX.md)', slice: 5 },
   // Push / email dispatch routes that were already live and were never declared (owner decision B6, 2026-10-21). They fall in the matrix's G5 group
   // (push dispatch per action, slice 5). None of them has a route-level limiter the scanner can see, so none is `covered`.
+  { route: 'messaging/messages/[id]/report', cost: 'push / email dispatch per report (handleReport → moderator alert)', limiters: [], key: 'reporter (in lib, see note)', status: 'known-gap', note: 'no route-level limiter. Same handler as the other report routes: handleReport carries an in-process rateLimit, 10 per 10 minutes per user, per instance and not a shared store; closes with them in slice 5', slice: 5 },
   { route: 'comments/[commentId]/report', cost: 'push / email dispatch per report (handleReport → moderator alert)', limiters: [], key: 'reporter (in lib, see note)', status: 'known-gap', note: 'no route-level limiter. handleReport (src/lib/safety/userReports.ts) carries an in-process rateLimit, 10 per 10 minutes per user, which is per instance and not a shared store', slice: 5 },
   { route: 'users/[id]/report', cost: 'push / email dispatch per report (handleReport → moderator alert)', limiters: [], key: 'reporter (in lib, see note)', status: 'known-gap', note: 'no route-level limiter. handleReport (src/lib/safety/userReports.ts) carries an in-process rateLimit, 10 per 10 minutes per user, which is per instance and not a shared store', slice: 5 },
   { route: 'reviews/[id]/report', cost: 'push / email dispatch per report (alertModerators)', limiters: [], key: '—', status: 'known-gap', note: 'no limiter in the route or its direct imports; every report calls alertModerators, which emits a notification to the configured operator recipients (de-duplicated per window). Reviewed as a G5 push-per-action gap', slice: 5 },
