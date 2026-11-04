@@ -99,7 +99,9 @@ import { readZaloIdentity, zaloIdentitySecret } from '@/lib/zalo/identity'
 import { flushPending, recordEvent, type UsageEvent } from '@/lib/observability'
 import { FREE_DAILY_LIMIT, ANON_LIFETIME_LIMIT } from '@/lib/config/product'
 import { accountQuotaFor, aiQuotaIdentity, consumeAiQuestion, consumeDeepResearch, refundAiQuestion, type AiQuotaRefund } from '@/lib/ai/quota/aiQuestionQuota'
-import { tierOf, modeForTier, DEEP_RESEARCH_MONTHLY } from '@/lib/plans/tiers'
+import { tierOf, modeForTier, deepResearchMonthlyLimit } from '@/lib/plans/tiers'
+import { withinGlobalDeepCeiling } from '@/lib/ai/quota/globalCeiling'
+import { withoutInternalToolFields } from '@/lib/ai/streamInternalFields'
 import { wrapToolsWithoutAiSources } from '@/lib/security/aiSourcePolicy'
 import { subscriptionsEnabled } from '@/lib/payments/flags'
 import { entitlementFromRow, type SubscriptionRow } from '@/lib/plans/entitlement'
@@ -2382,6 +2384,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     const asked = chatMode
     chatMode = modeForTier(chatMode, planTier)
     if (asked !== chatMode) console.log(JSON.stringify({ type: 'tappyai_mode_tier', asked, ran: chatMode, tier: planTier }))
+  } else if (chatMode === 'deep' && deepResearchMonthlyLimit(planTier, { subscriptionsOn: false, signedIn: !!authedUserId }) <= 0) {
+    // Security audit 04/11 (W-01): a visitor never starts a ~0.06 USD research run, whatever the plan flag says.
+    chatMode = 'chat'
+    console.log(JSON.stringify({ type: 'tappyai_mode_tier', asked: 'deep', ran: chatMode, tier: planTier, why: 'visitor' }))
   }
   // 01/11 (mode "Tự động", owner chose "C"): the switch the model turns on with think_deeper; every later step of the stream reasons at medium
   // (AI.stream autoThink) and the lookups follow the Thinking mode. Off for the whole turn = exactly Chat.
@@ -3593,8 +3599,13 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // Owner 01/11/2026: Deep Research runs per VN month by tier (Coco 10, Tappy 69) on the quota store, with the plans on sale; a run that
     // produces nothing gives the run back with the question.
     let deepRefund: Awaited<ReturnType<typeof consumeDeepResearch>>['refund'] = null
-    if (subscriptionsEnabled() && authedUserId) {
-      const limit = DEEP_RESEARCH_MONTHLY[planTier]
+    // Security audit 04/11 (D-09): the day's ceiling across every account - a breaker for many accounts used together.
+    if (!(await withinGlobalDeepCeiling())) {
+      await refundQuotaOnFailure('deep_research_global_ceiling')
+      return new Response(JSON.stringify({ error: 'deep_research_unavailable', message: serverMessage('rate.retryTomorrow', requestLocale(req)) }), { status: 429, headers: { 'Content-Type': 'application/json' } })
+    }
+    if (authedUserId) {
+      const limit = deepResearchMonthlyLimit(planTier, { subscriptionsOn: subscriptionsEnabled(), signedIn: true })
       const spent = await consumeDeepResearch(authedUserId, limit)
       if (!spent.ok) {
         await refundQuotaOnFailure('deep_research_month_used')
@@ -4329,9 +4340,10 @@ ${finalWriteInstruction(lang)}` },
   messages.filter((m: { role: string }) => m.role === 'assistant').map((m: { content?: unknown }) => (typeof m.content === 'string' ? m.content : '')),
   // F-094 measurement: the golden harness's pre-guard capture. Never in production (goldenCapture.ts).
   goldenCaptureSink(req))
-  const finalResponse = (budget && budget.max < LUXURY_PRICE_FLOOR)
+  // Security audit 04/11 (W-09): the server's working fields in a tool result do not reach the browser (lib/ai/streamInternalFields.ts).
+  const finalResponse = withoutInternalToolFields((budget && budget.max < LUXURY_PRICE_FLOOR)
     ? applyLuxuryStreamFilter(enrichedResponse)
-    : enrichedResponse
+    : enrichedResponse)
   // ADR-024. The key to this turn's evidence, if a shopping decision writes one.
   // Not a capability: decision_evidence_load() still refuses it unless the
   // caller's auth.uid() owns the row, so holding the id grants nothing.

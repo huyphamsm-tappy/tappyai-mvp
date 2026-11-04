@@ -1,7 +1,9 @@
 // Owner 01/11/2026: plan tiers - Pip (Free) chats with Luna 6.0; MoMo (Trial) and Coco (Pro) have every mode and 10 Deep Research a month;
 // Tappy (Promax) every mode and 50 (02/11: was 69). The ids stored in subscriptions stay as they are.
 import { describe, it, expect, beforeEach } from 'vitest'
-import { tierOf, modeForTier, DEEP_RESEARCH_MONTHLY } from './tiers'
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
+import { tierOf, modeForTier, DEEP_RESEARCH_MONTHLY, deepResearchMonthlyLimit } from './tiers'
 import { consumeDeepResearch, refundAiQuestion, __resetAiQuestionQuotaLocal } from '@/lib/ai/quota/aiQuestionQuota'
 
 describe('tierOf', () => {
@@ -27,6 +29,28 @@ describe('modeForTier', () => {
   })
   it('Deep Research per month: Free 0, Pro 10, Promax 50', () => {
     expect(DEEP_RESEARCH_MONTHLY).toEqual({ free: 0, pro: 10, promax: 50 })
+  })
+})
+
+describe('deepResearchMonthlyLimit (security audit 04/11, W-01: the meter does not depend on the plan flag)', () => {
+  it('plans on sale: the tier\'s own allowance', () => {
+    for (const tier of ['free', 'pro', 'promax'] as const) {
+      expect(deepResearchMonthlyLimit(tier, { subscriptionsOn: true, signedIn: true })).toBe(DEEP_RESEARCH_MONTHLY[tier])
+    }
+  })
+  it('plans off: a signed-in account is metered at the Coco allowance (never unlimited), Promax keeps its own', () => {
+    expect(deepResearchMonthlyLimit('free', { subscriptionsOn: false, signedIn: true })).toBe(10)
+    expect(deepResearchMonthlyLimit('pro', { subscriptionsOn: false, signedIn: true })).toBe(10)
+    expect(deepResearchMonthlyLimit('promax', { subscriptionsOn: false, signedIn: true })).toBe(50)
+  })
+  it('plans off: a visitor gets none, so the turn runs as Chat', () => {
+    for (const tier of ['free', 'pro', 'promax'] as const) expect(deepResearchMonthlyLimit(tier, { subscriptionsOn: false, signedIn: false })).toBe(0)
+  })
+  it('the chat route meters every signed-in run and downgrades a visitor, with no plan-flag condition left on the meter', () => {
+    const route = readFileSync(join(process.cwd(), 'src/app/api/chat/route.ts'), 'utf8')
+    expect(route).not.toContain('if (subscriptionsEnabled() && authedUserId) {\n      const limit')
+    expect(route).toContain('if (authedUserId) {\n      const limit = deepResearchMonthlyLimit(planTier')
+    expect(route).toContain("signedIn: !!authedUserId }) <= 0) {")
   })
 })
 

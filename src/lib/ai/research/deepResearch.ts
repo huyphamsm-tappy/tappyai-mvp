@@ -36,7 +36,36 @@ export const sectionSteps = (plan: ResearchPlan) => plan.steps.filter(s => !s.co
 /** The writer's notes: one "## title" per section, its findings and those of the follow-ups that complete it. Pure. */
 export function writerNotes(plan: ResearchPlan, findings: readonly Finding[]): string {
   const of = (k: number) => findings.filter(f => f.step === k + 1 || plan.steps[f.step - 1]?.completes === k + 1)
-  return plan.steps.map((s, k) => (s.completes ? '' : `## ${s.title}\n${of(k).map(f => `- ${f.text} [${f.source}]`).join('\n') || '- (no findings)'}`)).filter(Boolean).join('\n\n')
+  const body = plan.steps.map((s, k) => (s.completes ? '' : `## ${s.title}\n${of(k).map(f => `- ${f.text} [${f.source}]`).join('\n') || '- (no findings)'}`)).filter(Boolean).join('\n\n')
+  const conflicts = figureConflicts(findings)
+  return conflicts.length ? `${body}\n\n## Conflicting figures (same series and label, different values — report both with their sources, never pick one silently)\n${conflicts.join('\n')}` : body
+}
+
+/** Relative gap above which two values of one series and label count as a conflict, not as rounding. */
+export const FIGURE_CONFLICT_GAP = 0.02
+
+/**
+ * Same series and label read from different sources with different values. Pure and deterministic: the writer is told, in the notes, which
+ * numbers disagree, so the report states the range and the sources instead of quoting whichever finding it met last.
+ */
+export function figureConflicts(findings: readonly Finding[]): string[] {
+  const key = (f: Figure) => `${f.series.trim().toLowerCase()}|${f.label.trim().toLowerCase()}|${f.unit.trim().toLowerCase()}`
+  const groups = new Map<string, Finding[]>()
+  for (const f of findings) {
+    if (!f.figure || !Number.isFinite(f.figure.value)) continue
+    const k = key(f.figure)
+    groups.set(k, [...(groups.get(k) ?? []), f])
+  }
+  const out: string[] = []
+  for (const group of groups.values()) {
+    const values = group.map(f => f.figure!.value)
+    const lo = Math.min(...values)
+    const hi = Math.max(...values)
+    if (new Set(group.map(f => f.source)).size < 2 || hi - lo <= Math.abs(hi) * FIGURE_CONFLICT_GAP) continue
+    const first = group[0].figure!
+    out.push(`- ${first.series} / ${first.label} (${first.unit}): ${group.map(f => `${f.figure!.value} [${f.source}]`).join(' vs ')}`)
+  }
+  return out
 }
 /**
  * Measured 31/10 (T22, "how many EV makers are there"): one research round found sales by brand but no count, and the report could only say

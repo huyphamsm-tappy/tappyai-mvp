@@ -107,3 +107,20 @@ export function clientIp(req: { headers: { get(name: string): string | null } })
 
   return 'unknown'
 }
+
+/**
+ * Security audit 04/11 (W-02): an IPv6 customer holds a whole /64 (2^64 addresses), so keying a limiter on the full address gives an
+ * attacker a fresh bucket per request. This is the key for the limiters that guard spend (anonymous sessions, scan, translate): an IPv6
+ * address collapses to its /64 prefix, an IPv4 address (or 'unknown', or an IPv4-mapped one) stays as it is. Pure.
+ */
+export function ipRateKey(ip: string): string {
+  if (!ip.includes(':') || ip.includes('.')) return ip
+  const dbl = ip.indexOf('::')
+  const head = (dbl === -1 ? ip : ip.slice(0, dbl)).split(':').filter(Boolean)
+  const tail = dbl === -1 ? [] : ip.slice(dbl + 2).split(':').filter(Boolean)
+  const groups = dbl === -1 ? head : [...head, ...Array(Math.max(0, 8 - head.length - tail.length)).fill('0'), ...tail]
+  if (groups.length !== 8 || groups.some(g => !/^[0-9a-f]{1,4}$/i.test(g))) return ip
+  return `${groups.slice(0, 4).map(g => g.toLowerCase().replace(/^0+(?=.)/, '')).join(':')}::/64`
+}
+
+export const clientIpKey = (req: { headers: { get(name: string): string | null } }): string => ipRateKey(clientIp(req))

@@ -90,7 +90,8 @@ describe('S1A — an empty place search appends the block after the model reply'
     const src = readFileSync(join(process.cwd(), 'src/app/api/chat/route.ts'), 'utf8')
     expect(src).toContain('emptyResultStream(askAfterStream(finalResponse.body')
     expect(src).toContain("...(consultUnwindS1aOn() ? { appendOnly: true } : {})")
-    expect(src).toMatch(/const finalResponse = \(budget && budget\.max < LUXURY_PRICE_FLOOR\)\s*\? applyLuxuryStreamFilter\(enrichedResponse\)\s*: enrichedResponse/)
+    // 04/11 (security audit W-09): the same selection, now wrapped in withoutInternalToolFields (the server's working fields stay off the wire).
+    expect(src).toMatch(/const finalResponse = withoutInternalToolFields\(\(budget && budget\.max < LUXURY_PRICE_FLOOR\)\s*\? applyLuxuryStreamFilter\(enrichedResponse\)\s*: enrichedResponse\)/)
   })
 })
 

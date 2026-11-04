@@ -21,6 +21,8 @@ assertNotProduction({ command: NEXT_COMMAND })
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Security audit 04/11 (W-11): no `X-Powered-By: Next.js` header.
+  poweredByHeader: false,
   // Build gates ENFORCED: production builds fail on TypeScript or ESLint errors.
   // (Previously both were disabled via ignoreBuildErrors/ignoreDuringBuilds,
   // which let type/lint regressions reach production unchecked.)

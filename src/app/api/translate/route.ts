@@ -2,7 +2,7 @@ import { AI } from '@/lib/ai/llm'
 import { NextRequest, NextResponse } from 'next/server'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { refuseWithoutAiConsent } from '@/lib/ai/consent/aiConsentGuard'
-import { clientIp } from '@/lib/security/rateLimit'
+import { clientIpKey } from '@/lib/security/rateLimit'
 import { publicDailyRateLimit } from '@/lib/security/publicRateLimit'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
@@ -29,8 +29,12 @@ export async function POST(req: NextRequest) {
   // P1-5: shared across instances when a store is configured (production is), in-process
   // otherwise. This endpoint calls a model WITHOUT requiring an account, so the cap was the only
   // thing standing between a script and our Anthropic bill — and it counted per lambda.
-  if (!(await publicDailyRateLimit(`translate:${clientIp(req)}`, DAILY_LIMIT)).ok) {
+  // Security audit 04/11 (W-03): the caller is keyed by its IPv6 /64 (not by address), and a global daily ceiling bounds the spend.
+  if (!(await publicDailyRateLimit(`translate:${clientIpKey(req)}`, DAILY_LIMIT)).ok) {
     return NextResponse.json({ error: 'rate_limit', message: serverMessage('translate.dailyLimit', locale, { n: DAILY_LIMIT }) }, { status: 429 })
+  }
+  if (!(await publicDailyRateLimit('translate:global', Number(process.env.TRANSLATE_GLOBAL_DAILY) > 0 ? Number(process.env.TRANSLATE_GLOBAL_DAILY) : 10_000)).ok) {
+    return NextResponse.json({ error: 'rate_limit', message: serverMessage('rate.retryTomorrow', locale) }, { status: 429 })
   }
 
   let text: string, targetLang: string

@@ -32,3 +32,15 @@ export function modeForTier(mode: ChatMode, tier: Tier): ChatMode {
 
 /** Deep Research runs per VN calendar month (owner: Coco/Pro 10, Tappy/Promax 50 since 02/11/2026 - a run costs about 0.06 USD; Free none). */
 export const DEEP_RESEARCH_MONTHLY: Readonly<Record<Tier, number>> = { free: 0, pro: 10, promax: 50 }
+
+/**
+ * The Deep Research runs an account may start per VN month. Security audit 04/11 (W-01): this used to be metered only with the plans on sale
+ * (SUBSCRIPTIONS_ENABLED); with the flag off any account could start unlimited runs at ~0.06 USD each. Now the meter does not depend on the flag:
+ *   plans on sale  - the tier's own allowance (Free 0 - those turns already run as Chat);
+ *   plans off      - a signed-in account gets the Coco allowance (every mode stays open before launch), a visitor none (their turn runs as Chat).
+ * Pure.
+ */
+export function deepResearchMonthlyLimit(tier: Tier, opts: { subscriptionsOn: boolean; signedIn: boolean }): number {
+  if (opts.subscriptionsOn) return DEEP_RESEARCH_MONTHLY[tier]
+  return opts.signedIn ? DEEP_RESEARCH_MONTHLY[tier === 'free' ? 'pro' : tier] : 0
+}
