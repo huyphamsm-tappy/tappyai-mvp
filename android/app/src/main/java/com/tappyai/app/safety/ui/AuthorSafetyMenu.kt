@@ -42,6 +42,8 @@ fun AuthorSafetyMenu(
     userName: String?,
     modifier: Modifier = Modifier,
     viewModel: SafetyViewModel = hiltViewModel(),
+    /** Called with true after a block took effect on the server (a conversation screen then leaves), false after an unblock. */
+    onBlockedChanged: (Boolean) -> Unit = {},
 ) {
     val flags by viewModel.flags.collectAsStateWithLifecycle()
     val blocked by viewModel.blockedIds.collectAsStateWithLifecycle()
@@ -70,6 +72,7 @@ fun AuthorSafetyMenu(
                 scope.launch {
                     val ok = viewModel.block(userId)
                     Toast.makeText(context, context.getString(if (ok) R.string.safety_block_done else R.string.safety_block_failed), Toast.LENGTH_SHORT).show()
+                    if (ok) onBlockedChanged(true)
                 }
             },
             onDismiss = { confirmBlock = false },
@@ -98,6 +101,7 @@ fun AuthorSafetyMenu(
                             scope.launch {
                                 val ok = viewModel.unblock(userId)
                                 Toast.makeText(context, context.getString(if (ok) R.string.safety_unblock_done else R.string.safety_unblock_failed), Toast.LENGTH_SHORT).show()
+                                if (ok) onBlockedChanged(false)
                             }
                         } else {
                             confirmBlock = true

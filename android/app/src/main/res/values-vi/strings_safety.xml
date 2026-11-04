@@ -4,6 +4,8 @@
     <string name="safety_report_post_title">Báo cáo bài đăng</string>
     <string name="safety_report_comment_title">Báo cáo bình luận</string>
     <string name="safety_report_user_title">Báo cáo người dùng</string>
+    <string name="safety_report_message_title">Báo cáo tin nhắn</string>
+    <string name="safety_report_message_notice">Tin nhắn này sẽ được gửi cho đội kiểm duyệt TappyAI xem xét. Những tin khác trong cuộc trò chuyện không bị gửi đi.</string>
     <string name="safety_report_prompt">Chọn lý do. Đội ngũ Tappy sẽ xem xét báo cáo.</string>
     <string name="safety_report_send">Gửi báo cáo</string>
     <string name="safety_report_sending">Đang gửi…</string>

@@ -38,4 +38,22 @@
     <string name="msg_v3_send_error">Không gửi được tin nhắn.</string>
     <string name="msg_v3_close">Đóng</string>
     <string name="msg_v3_load_older">Tin nhắn cũ hơn</string>
+    <string name="msg_v3_attach">Đính kèm ảnh</string>
+    <string name="msg_v3_remove_photo">Bỏ ảnh</string>
+    <string name="msg_v3_uploading">Đang tải ảnh lên...</string>
+    <string name="msg_v3_photo_alt">Ảnh trong tin nhắn</string>
+    <string name="msg_v3_photo_unavailable">Không tải được ảnh</string>
+    <string name="msg_v3_photo_expired">Ảnh đã hết hạn</string>
+    <string name="msg_v3_photo_preview">Đã gửi một ảnh</string>
+    <string name="msg_v3_upload_error">Không tải ảnh lên được.</string>
+    <string name="msg_v3_image_blocked">Ảnh này không phù hợp nên không thể gửi.</string>
+    <string name="msg_v3_scan_unavailable">Hiện chưa gửi được ảnh. Vui lòng thử lại sau.</string>
+    <string name="msg_v3_image_type">Chỉ gửi được ảnh JPEG, PNG hoặc WebP.</string>
+    <string name="msg_v3_image_too_large">Ảnh quá lớn (tối đa 5 MB).</string>
+    <string name="msg_v3_cannot_send">Không thể gửi tin nhắn trong cuộc trò chuyện này.</string>
+    <string name="msg_v3_send_too_fast">Bạn gửi quá nhanh. Hãy thử lại sau ít phút.</string>
+    <string name="msg_v3_report_message">Báo cáo tin nhắn</string>
+    <string name="msg_v3_message_action">Nhắn tin</string>
+    <string name="msg_v3_message_failed">Không mở được cuộc trò chuyện. Vui lòng thử lại.</string>
+    <string name="inbox_v3_new_messages">%1$d tin nhắn mới</string>
 </resources>

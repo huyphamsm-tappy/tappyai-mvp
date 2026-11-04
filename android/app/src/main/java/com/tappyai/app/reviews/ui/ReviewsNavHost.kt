@@ -156,6 +156,8 @@ fun ReviewsNavHost(
                 .collectAsState()
             ReviewProfileScreen(
                 userId = route.userId,
+                // "Nhắn tin" on another person's profile opens the conversation (the same ThreadScreen as the Inbox).
+                onOpenThread = { threadId -> navController.navigate(ReviewsRoute.MessageThread(threadId)) },
                 // A tile opens THIS author's clip pager on that clip — only their posts are paged.
                 onReviewClick = { reviewId ->
                     navController.navigate(ReviewsRoute.ProfileClips(userId = route.userId, startReviewId = reviewId))
@@ -213,6 +215,9 @@ fun ReviewsNavHost(
                 onBack = { navController.popBackStack() },
                 onOpenNotification = { notification ->
                     when {
+                        // A message notification opens its conversation. Checked BEFORE the `/profile/` branch below, which would take `/profile/notifications?…` for a person called "notifications".
+                        com.tappyai.app.messaging.messageThreadIdFromLink(notification.url) != null ->
+                            navController.navigate(ReviewsRoute.MessageThread(com.tappyai.app.messaging.messageThreadIdFromLink(notification.url)!!))
                         notification.url.startsWith("/reviews/") -> {
                             val reviewId = notification.url.removePrefix("/reviews/").substringBefore('?')
                             navController.navigate(ReviewsRoute.Detail(reviewId = reviewId))

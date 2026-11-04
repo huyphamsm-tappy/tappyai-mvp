@@ -1,9 +1,12 @@
 package com.tappyai.app.messaging.data
 
 import kotlinx.serialization.Serializable
+import okhttp3.MultipartBody
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -17,6 +20,10 @@ import retrofit2.http.Query
  * The wire shape is the web's own (`src/lib/messaging/types.ts`): camelCase, so no
  * `@SerialName` is needed. Reads are scoped by RLS against the bearer; a thread the caller is
  * not in answers 404, never 403 (a privacy decision the server makes, respected here).
+ *
+ * 2026-11-04 (web release b5cd20e): pictures (`.../media` upload, a `media` object on a message),
+ * the idempotent send (`clientId`), keyset paging (`before` + `beforeId`) and the unread totals
+ * the navigation badge needs (`api/messaging/unread`).
  */
 interface MessagingApi {
     /** The caller's conversation list, newest activity first, with a server-derived unread count per thread. */
@@ -27,16 +34,36 @@ interface MessagingApi {
     @POST("api/messaging/threads")
     suspend fun startThread(@Body body: StartThreadRequestDto): StartThreadResponseDto
 
-    /** One page of history, oldest → newest; `before` (an ISO stamp) pages further back. */
+    /**
+     * One page of history, oldest → newest. `before` (an ISO stamp) AND `beforeId` (the id of the oldest loaded message) page further back:
+     * together they are the keyset (created_at, id), so messages that share a timestamp are neither skipped nor repeated.
+     */
     @GET("api/messaging/threads/{id}/messages")
-    suspend fun getMessages(@Path("id") threadId: String, @Query("before") before: String? = null): MessagesResponseDto
+    suspend fun getMessages(
+        @Path("id") threadId: String,
+        @Query("before") before: String? = null,
+        @Query("beforeId") beforeId: String? = null,
+    ): MessagesResponseDto
 
     @POST("api/messaging/threads/{id}/messages")
     suspend fun sendMessage(@Path("id") threadId: String, @Body body: SendMessageRequestDto): SendMessageResponseDto
 
+    /**
+     * Uploads ONE picture (JPEG, PNG or WebP, at most 5 MB) for a message of this thread. The server re-encodes it without metadata, scans it, stores it in a private bucket
+     * and answers with the object's path; the picture belongs to a conversation only through the message that carries that path.
+     * 422 = the picture is not allowed · 503 = the safety scan is unavailable · 403 = AI data sharing not agreed · 400 = type or size · 429 = too fast · 404 = no such thread.
+     */
+    @Multipart
+    @POST("api/messaging/threads/{id}/media")
+    suspend fun uploadMedia(@Path("id") threadId: String, @Part file: MultipartBody.Part): UploadMediaResponseDto
+
     /** Moves the caller's read cursor to now — the unread count is derived from it, never decremented. */
     @POST("api/messaging/threads/{id}/read")
     suspend fun markRead(@Path("id") threadId: String): MarkThreadReadResponseDto
+
+    /** The two numbers behind the navigation badge: unread messages, and how many unread notifications are message notifications. */
+    @GET("api/messaging/unread")
+    suspend fun getUnread(): UnreadResponseDto
 }
 
 @Serializable
@@ -81,15 +108,48 @@ data class MessageDto(
     val threadId: String = "",
     /** Null when the author's account is gone. */
     val senderId: String? = null,
+    /** Empty ONLY when the message carries a picture. */
     val body: String = "",
     val createdAt: String = "",
+    /** The picture of the message, when it has one. */
+    val media: MessageMediaDto? = null,
+)
+
+/**
+ * `url` is a SHORT-LIVED signed link the server made for this read (null when the object cannot be linked); `expired` is set once the server removed the
+ * picture after its retention period (30 days) — the message stays, and only a copy kept on this device can still show it.
+ */
+@Serializable
+data class MessageMediaDto(
+    val type: String = "image",
+    val url: String? = null,
+    val width: Int? = null,
+    val height: Int? = null,
+    val expired: Boolean = false,
+)
+
+/** `{ body, media?: { path, width, height }, clientId }` — the sender is the bearer, never a field. */
+@Serializable
+data class SendMessageRequestDto(
+    val body: String,
+    val media: SendMediaDto? = null,
+    val clientId: String? = null,
 )
 
 @Serializable
-data class SendMessageRequestDto(val body: String)
+data class SendMediaDto(val path: String, val width: Int? = null, val height: Int? = null)
 
 @Serializable
 data class SendMessageResponseDto(val message: MessageDto = MessageDto())
 
 @Serializable
+data class UploadMediaResponseDto(val media: UploadedMediaDto = UploadedMediaDto())
+
+@Serializable
+data class UploadedMediaDto(val path: String = "", val type: String = "image", val width: Int? = null, val height: Int? = null)
+
+@Serializable
 data class MarkThreadReadResponseDto(val ok: Boolean = false)
+
+@Serializable
+data class UnreadResponseDto(val messages: Int = 0, val messageNotifications: Int = 0)

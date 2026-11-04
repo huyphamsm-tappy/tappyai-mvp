@@ -32,6 +32,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.ChatBubbleOutline
 import androidx.compose.material.icons.filled.EditNote
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Link
@@ -296,10 +297,17 @@ internal fun ReviewProfileScreen(
     onCompose: () -> Unit = {},
     reloadRequested: Boolean = false,
     onReloadHandled: () -> Unit = {},
+    /** Opens a Messenger conversation by thread id (the host's `MessageThread` route). Null = this host offers no "Nhắn tin". */
+    onOpenThread: ((String) -> Unit)? = null,
     viewModel: ReviewProfileViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     LaunchedEffect(userId) { viewModel.load(userId) }
+    val messageFailedText = stringResource(R.string.msg_v3_message_failed)
+    val toastContext = LocalContext.current
+    LaunchedEffect(uiState.messageFailed) {
+        if (uiState.messageFailed) android.widget.Toast.makeText(toastContext, messageFailedText, android.widget.Toast.LENGTH_SHORT).show()
+    }
     // Reflow the clip grid after a clip is deleted/hidden elsewhere (e.g. the pager) and the user
     // returns here — mirrors web ProfileTab refetching and MyReviews' resume-reload.
     ReloadOnResume { viewModel.retry() }
@@ -350,6 +358,9 @@ internal fun ReviewProfileScreen(
                         isFollowing = profile.isFollowing,
                         isToggling = uiState.isTogglingFollow,
                         onToggle = viewModel::toggleFollow,
+                        // "Nhắn tin" beside "Theo dõi": a signed-in member on someone else's profile, on a host that can open a conversation.
+                        onMessage = if (onOpenThread != null && viewModel.canMessage) ({ viewModel.openMessage(userId, onOpenThread) }) else null,
+                        messageBusy = uiState.isOpeningMessage,
                     ),
                     showCompose = false,
                     onShareLink = { shareProfileLink(context, userId) },
@@ -373,7 +384,14 @@ internal fun ReviewProfileScreen(
 /** The one primary action of the profile's action row: the owner edits, everyone else follows. */
 internal sealed interface CreatorPrimaryAction {
     data class Edit(val onEdit: () -> Unit) : CreatorPrimaryAction
-    data class Follow(val isFollowing: Boolean, val isToggling: Boolean, val onToggle: () -> Unit) : CreatorPrimaryAction
+    /** [onMessage] non-null = a signed-in member viewing ANOTHER person: "Nhắn tin" sits beside "Theo dõi" (the web's profile Message button); [messageBusy] while the conversation is opening. */
+    data class Follow(
+        val isFollowing: Boolean,
+        val isToggling: Boolean,
+        val onToggle: () -> Unit,
+        val onMessage: (() -> Unit)? = null,
+        val messageBusy: Boolean = false,
+    ) : CreatorPrimaryAction
 }
 
 /**
@@ -708,6 +726,17 @@ private fun CreatorProfileHeader(
                     filled = !primaryAction.isFollowing,
                     enabled = !primaryAction.isToggling,
                     onClick = primaryAction.onToggle,
+                    modifier = Modifier.weight(1f),
+                )
+            }
+            // "Nhắn tin" beside "Theo dõi" (the web's profile Message button) — only for a signed-in member viewing ANOTHER person.
+            (primaryAction as? CreatorPrimaryAction.Follow)?.onMessage?.let { openMessage ->
+                PrimaryAction(
+                    icon = Icons.Filled.ChatBubbleOutline,
+                    text = stringResource(R.string.msg_v3_message_action),
+                    filled = false,
+                    enabled = !(primaryAction as CreatorPrimaryAction.Follow).messageBusy,
+                    onClick = openMessage,
                     modifier = Modifier.weight(1f),
                 )
             }

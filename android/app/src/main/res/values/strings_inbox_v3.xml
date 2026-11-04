@@ -38,4 +38,22 @@
     <string name="msg_v3_send_error">Could not send the message.</string>
     <string name="msg_v3_close">Close</string>
     <string name="msg_v3_load_older">Older messages</string>
+    <string name="msg_v3_attach">Attach a photo</string>
+    <string name="msg_v3_remove_photo">Remove photo</string>
+    <string name="msg_v3_uploading">Uploading photo...</string>
+    <string name="msg_v3_photo_alt">Photo in the message</string>
+    <string name="msg_v3_photo_unavailable">The photo could not be loaded</string>
+    <string name="msg_v3_photo_expired">This photo has expired</string>
+    <string name="msg_v3_photo_preview">Sent a photo</string>
+    <string name="msg_v3_upload_error">The photo could not be uploaded.</string>
+    <string name="msg_v3_image_blocked">This photo isn\'t allowed, so it can\'t be sent.</string>
+    <string name="msg_v3_scan_unavailable">Photos can\'t be sent right now. Please try again later.</string>
+    <string name="msg_v3_image_type">Only JPEG, PNG or WebP photos can be sent.</string>
+    <string name="msg_v3_image_too_large">The photo is too large (5 MB at most).</string>
+    <string name="msg_v3_cannot_send">You can\'t send messages in this conversation.</string>
+    <string name="msg_v3_send_too_fast">You\'re sending too fast. Please try again in a few minutes.</string>
+    <string name="msg_v3_report_message">Report message</string>
+    <string name="msg_v3_message_action">Message</string>
+    <string name="msg_v3_message_failed">Could not open the conversation. Please try again.</string>
+    <string name="inbox_v3_new_messages">%1$d new messages</string>
 </resources>

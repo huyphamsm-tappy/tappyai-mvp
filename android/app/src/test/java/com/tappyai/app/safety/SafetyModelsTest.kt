@@ -41,7 +41,8 @@ class SafetyModelsTest {
 
     @Test
     fun `reporting targets use the wire names of the reports route`() {
-        assertEquals(listOf("review", "comment", "user"), ReportTarget.values().map { it.wire })
+        // "message" joined on 2026-11-04 (web release b5cd20e: POST /api/messaging/messages/{id}/report).
+        assertEquals(listOf("review", "comment", "user", "message"), ReportTarget.values().map { it.wire })
     }
 
     @Test

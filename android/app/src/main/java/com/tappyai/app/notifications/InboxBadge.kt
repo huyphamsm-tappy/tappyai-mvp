@@ -21,6 +21,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tappyai.app.messaging.data.MessageUnread
+import com.tappyai.app.messaging.data.MessagingRepository
+import com.tappyai.app.messaging.data.badgeTotal
 import com.tappyai.app.reviews.data.ReviewsRepository
 import com.tappyai.app.reviews.ui.selfProfileAccess
 import com.tappyai.core.network.NetworkResult
@@ -46,6 +49,7 @@ import javax.inject.Inject
 class InboxBadgeViewModel @Inject constructor(
     private val repository: ReviewsRepository,
     private val authRepository: AuthRepository,
+    private val messaging: MessagingRepository,
 ) : ViewModel() {
 
     var unreadCount by mutableStateOf(0)
@@ -64,7 +68,12 @@ class InboxBadgeViewModel @Inject constructor(
                 return@launch
             }
             when (val result = repository.getNotifications()) {
-                is NetworkResult.Success -> unreadCount = result.data.unreadCount
+                is NetworkResult.Success -> {
+                    // The badge counts the unread MESSAGES too (web release 2026-11-04: `useMessageUnread` + `badgeTotal`), once each — a message notification already inside the
+                    // notification count is swapped for the message count. If the messages' own count cannot be read, the badge shows the notification count alone.
+                    val messages = (messaging.getUnread() as? NetworkResult.Success)?.data ?: MessageUnread(messages = 0, messageNotifications = 0)
+                    unreadCount = badgeTotal(result.data.unreadCount, messages)
+                }
                 is NetworkResult.Error -> Unit // keep the previous count on a transient failure
             }
         }

@@ -43,6 +43,10 @@ interface SafetyApi {
     @POST("api/users/{id}/report")
     suspend fun reportUser(@Path("id") userId: String, @Body body: ReportBodyDto): Response<ReportAckDto>
 
+    /** A message of a conversation the caller is in (web release 2026-11-04; same handler and `reports` flag as the comment and user routes). Own message → 400; a message the caller cannot read → silent success. */
+    @POST("api/messaging/messages/{id}/report")
+    suspend fun reportMessage(@Path("id") messageId: String, @Body body: ReportBodyDto): Response<ReportAckDto>
+
     @POST("api/users/{id}/block")
     suspend fun block(@Path("id") userId: String): Response<ReportAckDto>
 

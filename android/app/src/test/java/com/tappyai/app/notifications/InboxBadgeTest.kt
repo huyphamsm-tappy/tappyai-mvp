@@ -32,7 +32,8 @@ class InboxBadgeTest {
         assertTrue("nothing at zero", s.contains("if (count <= 0) return"))
         assertTrue("the same gate as the Inbox, Messages and the self profile", s.contains("if (userId == null || !selfProfileAccess(userId, anonymous)) {") && s.contains("val anonymous = withContext(Dispatchers.IO) { authRepository.isAnonymous() }"))
         assertTrue("a guest draws nothing and requests nothing", s.substringAfter("!selfProfileAccess(userId, anonymous)) {").substringBefore("}").contains("unreadCount = 0"))
-        assertTrue("GET /api/notifications → unread_count, the Inbox's own number", s.contains("repository.getNotifications()") && s.contains("unreadCount = result.data.unreadCount"))
+        // 2026-11-04: the badge also counts the unread MESSAGES, once each (web `useMessageUnread` + `badgeTotal`); the Inbox's own number is still the notification base.
+        assertTrue("GET /api/notifications → unread_count, plus the unread messages", s.contains("repository.getNotifications()") && s.contains("badgeTotal(result.data.unreadCount, messages)") && s.contains("messaging.getUnread()"))
         assertTrue("a transient failure keeps the previous count", s.contains("is NetworkResult.Error -> Unit"))
         assertFalse("no local persistence of a count", s.contains("SharedPreferences") || s.contains("DataStore"))
         assertTrue("web's rose", s.contains("Color(0xFFF43F5E)"))

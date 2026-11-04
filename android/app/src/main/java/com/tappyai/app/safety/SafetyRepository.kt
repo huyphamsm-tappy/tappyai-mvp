@@ -94,6 +94,9 @@ class SafetyRepository @Inject constructor(
 
     private val canAct: Boolean get() = session.userId() != null && !session.isAnonymous()
 
+    /** Signed in with a real (non-guest) account — what reporting, blocking and messaging need. */
+    val isMember: Boolean get() = canAct
+
     /** Re-reads the server's flags (a failure keeps the last known values, initially closed) and the block list. */
     suspend fun refresh() {
         try {
@@ -137,6 +140,7 @@ class SafetyRepository @Inject constructor(
             when (target) {
                 ReportTarget.Comment -> api.reportComment(targetId, body)
                 ReportTarget.User -> api.reportUser(targetId, body)
+                ReportTarget.Message -> api.reportMessage(targetId, body)
                 ReportTarget.Review -> api.reportReview(targetId, ReviewReportBodyDto(reason.reviewWire()))
             }
         }

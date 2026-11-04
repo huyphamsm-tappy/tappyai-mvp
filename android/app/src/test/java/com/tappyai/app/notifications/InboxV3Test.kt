@@ -125,7 +125,8 @@ class InboxV3Test {
         assertTrue("guests get the sign-in state, not a 401", s.contains("false -> SignedOutState(onSignIn)"))
         assertTrue("unread is quiet - a dot and a brighter title", s.contains("if (group.unread) HomeV3.Purple else Color.Transparent") && s.contains("if (group.unread) FontWeight.SemiBold else FontWeight.Medium"))
         assertTrue("the Tappy mark for system rows, the emoji for the rest", s.contains("if (category == \"system\")") && s.contains("R.drawable.tappy_wave"))
-        assertTrue("+N is the collapsed count, never an unread badge", s.contains("if (group.count > 1)") && s.contains("R.string.inbox_v3_count_more"))
+        // 2026-11-04: a collapsed MESSAGE row says "N tin nhắn mới" on its second line instead of the +N chip (the web's `g.type !== 'message'`).
+        assertTrue("+N is the collapsed count, never an unread badge, and never on a message row", s.contains("if (group.count > 1 && group.type != \"message\")") && s.contains("R.string.inbox_v3_count_more") && s.contains("R.string.inbox_v3_new_messages"))
         assertTrue("the Messages tab (2026-09-17 second pass) with ITS OWN count, never the notification count", s.contains("messageUnread = messagesViewModel.unreadTotal") && s.contains("notificationUnread = viewModel.unreadCount") && s.contains("if (tab == 0) MessagesPane("))
     }
 

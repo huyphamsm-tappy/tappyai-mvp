@@ -63,6 +63,8 @@ fun ReportDialog(
     onSubmit: suspend (ReportReason) -> ReportOutcome,
     onFiled: (ReportOutcome) -> Unit,
     onDismiss: () -> Unit,
+    /** A sentence under the prompt, e.g. what a message report sends (and what it does not). */
+    notice: String? = null,
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -76,6 +78,7 @@ fun ReportDialog(
         text = {
             Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
                 Text(stringResource(R.string.safety_report_prompt), style = MaterialTheme.typography.bodyMedium)
+                if (notice != null) Text(notice, style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(top = 4.dp))
                 ReportReason.values().forEach { reason ->
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
