@@ -12,19 +12,31 @@ export const webAccount = 'e2e.android.pro@example.com'
 
 // expect: which merchant hosts a đặt/mua button may lead to (affiliate wrappers are unwrapped first).
 const CASES = [
-  { id: 'saigon-tonight', turns: ['tối nay có chỗ nào đi chơi ở sài gòn ko'], expect: /google\.|maps|ticketbox|grab|facebook|\.vn|\.com/ },
+  { id: 'saigon-tonight', turns: ['tối nay có chỗ nào đi chơi ở sài gòn ko'], expect: /google\.|maps|ticketbox|grab|facebook|\.vn|\.com/, web: /maps\.google|google\.com\/maps|ticketbox|vebo|ticketgo/ },
   { id: 'pho-q3', turns: ['quán phở ngon quận 3'], expect: /grab\.com|google\.|maps|zalo\.me/ },
   { id: 'pho-q1', turns: ['quán phở ngon quận 1'], expect: /grab\.com|google\.|maps|zalo\.me/ },
   { id: 'pho-delivery', turns: ['đặt phở giao tận nhà quận 1'], expect: /grab\.com|shopeefood|google\.|maps|zalo\.me/ },
   { id: 'headphones', turns: ['tai nghe bluetooth dưới 1 triệu'], expect: /shopee|lazada|tiki|cellphones|thegioididong|fptshop/ },
-  { id: 'snacks-then-q1', turns: ['mua đồ ăn vặt', 'tối nay đi đâu chơi quận 1'], expect: /google\.|maps|grab|shopee|lazada|ticketbox|\.vn|\.com/ },
+  { id: 'snacks-then-q1', turns: ['mua đồ ăn vặt', 'tối nay đi đâu chơi quận 1'], expect: /google\.|maps|grab|shopee|lazada|ticketbox|\.vn|\.com/, web: /maps\.google|google\.com\/maps|ticketbox|vebo|ticketgo/ },
   { id: 'concert', turns: ['vé concert tháng 10'], expect: /ticketbox|ticketgo|vebo|google\./ },
-  { id: 'flight', turns: ['vé máy bay đi Đà Nẵng'], expect: /traveloka|trip\.com|vietjet|vietnamairlines|bambooairways|agoda|booking|google\./ },
+  { id: 'flight', turns: ['vé máy bay đi Đà Nẵng'], expect: /traveloka|trip\.com|vietjet|vietnamairlines|bambooairways|agoda|booking|google\./, dated: true },
   { id: 'hotel', turns: ['khách sạn Đà Lạt cuối tuần'], expect: /booking\.com|agoda|traveloka|trip\.com|google\./ },
   // R14 (chatSessionId): the follow-up «xem thêm» carries no topic of its own — the server's state
   // for this chat must keep it on phở in District 1.
   { id: 'followup-more', turns: ['quán phở ngon quận 1', 'xem thêm'], expect: /grab\.com|google\.|maps|zalo\.me/, mustMention: /phở/i },
   { id: 'trip', turns: ['đi du lịch Đà Nẵng 3 ngày 2 đêm'], expect: /booking\.com|agoda|traveloka|trip\.com|vexere|grab|xanhsm|google\./, plan: true },
+  // The dish is already named: the server's ask carries NO area id (web answers `main`); the app still draws the FOOD card.
+  { id: 'pho-bac', turns: ['ăn phở Bắc tối nay'], expect: /grab\.com|google\.|maps|zalo\.me/ },
+  // Spa / làm đẹp: the fifth quick-ask area (ask-card evidence, 01/10).
+  { id: 'spa', turns: ['massage thư giãn ở quận 1'], expect: /google\.|maps|booking|\.vn|\.com/ },
+  // R28 (web 01/10): accessory for a phone is the accessory; cinema now-showing answered directly; season trip; fare from HCM.
+  { id: 'kinh-cuong-luc', turns: ['Muốn mua kính cường lực cho iphone', 'iPhone 17 · Cường lực mà'], expect: /shopee|lazada|tiki|cellphones|thegioididong|fptshop|google\./, web: /shopee|lazada|tiki|cellphones|thegioididong|fptshop|google\.|isclix|\/go\/at/ },
+  { id: 'phim', turns: ['có phim gì hay'], expect: /cgv|google\.|\.vn|\.com/ },
+  // 02/10 sweep (PL-TOUR-KLOOK, Vexere): which merchant a tour / a coach ticket leads to — whatever the server returns, shown on screen.
+  { id: 'tour-hoi-an', turns: ['đặt tour Hội An 1 ngày'], expect: /klook|viator|getyourguide|traveloka|trip.com|google.|.vn|.com/ },
+  { id: 'xe-khach', turns: ['vé xe khách Sài Gòn đi Đà Lạt'], expect: /vexere|futabus|traveloka|google.|.vn|.com/ },
+  { id: 'mua-he', turns: ['Mùa này đi du lịch ở đâu'], expect: /booking|agoda|traveloka|trip\.com|google\.|\.vn|\.com/ },
+  { id: 'bay-tu-hcm', turns: ['vé máy bay đi Đà Nẵng bay từ HCM'], expect: /traveloka|trip\.com|vietjet|vietnamairlines|bambooairways|agoda|booking|google\./, dated: true },
   // Every fact given up front, so the consult has nothing left to ask: the plan card + its share.
   { id: 'trip-full', turns: ['Lên kế hoạch đi Đà Nẵng 3 ngày 2 đêm tuần sau cho 2 người, ngân sách 10 triệu, bay từ TP.HCM, thích biển và ăn hải sản'], expect: /booking\.com|agoda|traveloka|trip\.com|vexere|grab|xanhsm|google\./, plan: true, share: true },
 ]
@@ -53,6 +65,13 @@ const askOf = (raw) => {
   const m = raw.match(/\[TAPPY_ASK\]([\s\S]*?)\[\/TAPPY_ASK\]/)
   try { return (JSON.parse(m[1]).questions || []).filter((q) => Array.isArray(q.options) && q.options.length >= 2) } catch { return [] }
 }
+
+/** Scrolls the chat LIST. a.swipe() starts at 73% of the height, which on the chat screen is the suggestion-chip bar (it scrolls sideways, the list never moves). */
+const listSwipe = (a, dir = 'up') => {
+  const [w, h] = a.screen()
+  const [from, to] = dir === 'up' ? [h * 0.62, h * 0.22] : [h * 0.22, h * 0.62]
+  a.sh('input', 'swipe', String(Math.round(w / 2)), String(Math.round(from)), String(Math.round(w / 2)), String(Math.round(to)), '450')
+}
 const strip = (s) => s.replace(/^[^\p{L}\p{N}]+/u, '').trim() // a label's leading emoji
 
 /** Raw content of the last assistant message in the user's newest conversation containing [prompt]. */
@@ -61,7 +80,7 @@ async function lastReply(email, prompt) {
   const api = await asUser(email)
   for (let i = 0; i < 8; i++) {
     const r = await api('/api/conversations')
-    const conv = (r.json || []).find((c) => Date.parse(c.updated_at || 0) >= caseStart && (c.messages || []).some((m) => m.role === 'user' && (m.content || '').includes(prompt)))
+    const conv = (Array.isArray(r.json) ? r.json : []).find((c) => Date.parse(c.updated_at || 0) >= caseStart && (c.messages || []).some((m) => m.role === 'user' && (m.content || '').includes(prompt)))
     const msgs = conv?.messages || []
     const last = [...msgs].reverse().find((m) => m.role === 'assistant')
     if (last && msgs.indexOf(last) > msgs.findLastIndex((m) => m.role === 'user' && (m.content || '').includes(prompt))) return last.content || ''
@@ -114,7 +133,10 @@ async function settle(a, shot, label) {
 
 export async function android({ a, shot, check, seeded }) {
   const email = seeded.users.pro.email
-  a.installShareStubs()
+  // The share stubs reuse the real apps' package ids: on a real phone they are NOT installed (BLOCKED — REAL ZALO PACKAGE CONFLICT) and the
+  // share part of a case is skipped; everything else in the chat flow still runs.
+  let shareBlocked = false
+  try { a.installShareStubs() } catch (e) { if (/REAL ZALO PACKAGE CONFLICT/.test(String(e.message))) shareBlocked = true; else throw e }
   // Chat asks for location on the first send (the reply is biased to where the phone is). Grant it
   // and put the emulator in District 1, Sài Gòn, like a user who tapped "While using the app".
   for (const p of ['ACCESS_FINE_LOCATION', 'ACCESS_COARSE_LOCATION']) a.sh('pm', 'grant', a.PKG, `android.permission.${p}`)
@@ -138,14 +160,22 @@ export async function android({ a, shot, check, seeded }) {
       if (!ctaOf(raw).length && askOf(raw).length && i === c.turns.length - 1) {
         // Ask card v2 (R23) is taller than the screen: bring each question into view before its tap.
         const qs = askOf(raw)
-        for (let k = 0; k < 4 && !a.find(qs[0].q); k++) { a.swipe('down'); await a.sleep(700) }
-        for (let k = 0; k < 8 && !a.find(qs[0].q); k++) { a.swipe('up'); await a.sleep(700) }
+        // The emulator's software-GPU ANR ("TappyAI UAT isn't responding") can land while the card is drawn: answer «Wait».
+        for (let k = 0; k < 4 && a.find(/isn.t responding/); k++) { const w = a.find('Wait'); if (w) await a.tap(w, { after: 3000 }) }
+        for (let k = 0; k < 4 && !a.find(qs[0].q); k++) { listSwipe(a, 'down'); await a.sleep(700) }
+        for (let k = 0; k < 8 && !a.find(qs[0].q); k++) { listSwipe(a, 'up'); await a.sleep(700) }
         const picked = []
         for (const q of qs) {
           let n = a.find(q.options[0])
           for (let k = 0; k < 4 && !n; k++) { a.sh('input', 'swipe', '540', '1500', '540', '1000', '400'); await a.sleep(700); n = a.find(q.options[0]) }
           if (n) { await a.tap(n, { after: 500 }); picked.push(q.options[0]) }
         }
+        // The card's TOP (mascot + the per-area title) for the area evidence — then back down to the send button.
+        const HEADER = /^(Hôm nay ăn gì nhỉ\?|Bạn đang tìm món gì\?|Chuyến đi thế nào đây\?|Thư giãn kiểu nào hôm nay\?|Tìm gì cho bạn hôm nay\?)$/
+        for (let k = 0; k < 3 && a.find(/isn.t responding/); k++) { const w = a.find('Wait'); if (w) await a.tap(w, { after: 3000 }) }
+        for (let k = 0; k < 6 && !a.find(HEADER); k++) { listSwipe(a, 'down'); await a.sleep(600) }
+        shot(`${c.id}-ask-header`)
+        check(`${c.id}: tiêu đề thẻ hỏi theo mảng`, !!a.find(HEADER), a.texts().find((t) => HEADER.test(t)) || '(không thấy tiêu đề)')
         shot(`${c.id}-ask-picked`)
         for (let k = 0; k < 6 && !a.find('Tìm cho tôi'); k++) { a.sh('input', 'swipe', '540', '1500', '540', '900', '400'); await a.sleep(700) }
         const send = a.find('Tìm cho tôi')
@@ -161,7 +191,7 @@ export async function android({ a, shot, check, seeded }) {
         const chips = followupsOf(raw)
         const chip = chips[0]
         // Chips sit in a horizontal row at the end of the reply: reach the row, then scroll it.
-        for (let k = 0; k < 8 && !a.find(chip) && !chips.some((x) => a.find(x)); k++) { a.swipe('up'); await a.sleep(700) }
+        for (let k = 0; k < 8 && !a.find(chip) && !chips.some((x) => a.find(x)); k++) { listSwipe(a, 'up'); await a.sleep(700) }
         const node = a.find(chip) || await a.scrollRowTo(chip, new RegExp(chips.map((x) => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|'))).catch(() => null)
         check(`${c.id}: câu hỏi làm rõ có nút trả lời một chạm «${chip}»`, !!node)
         if (node) {
@@ -174,8 +204,12 @@ export async function android({ a, shot, check, seeded }) {
     }
     // Plan case: accept the plan the way a user does — the server's "Lên kế hoạch chi tiết" chip.
     if (c.plan && !/\[TAPPY_PLAN\]/.test(raw)) {
-      for (let k = 0; k < 10 && !a.find(ACCEPT_PLAN); k++) { a.swipe('up'); await a.sleep(700) }
-      const acc = a.find(ACCEPT_PLAN)
+      // The chip sits in a HORIZONTAL row (and may carry an emoji prefix): reach the row vertically, then scroll the row sideways.
+      const ACCEPT_RE = new RegExp('^\\P{L}*' + ACCEPT_PLAN + '$', 'u')
+      const rowChips = followupsOf(raw)
+      const ROW_RE = rowChips.length ? new RegExp(rowChips.map((x) => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')) : ACCEPT_RE
+      for (let k = 0; k < 10 && !a.find(ACCEPT_RE); k++) { listSwipe(a, 'up'); await a.sleep(700) }
+      const acc = a.find(ACCEPT_RE) || await a.scrollRowTo(ACCEPT_RE, ROW_RE).catch(() => null)
       check(`${c.id}: có nút «${ACCEPT_PLAN}»`, !!acc)
       if (acc) {
         await a.tap(acc, { after: 3000 })
@@ -192,7 +226,7 @@ export async function android({ a, shot, check, seeded }) {
     // Read the whole reply on screen: the app shows a finished reply from its TOP, so read downward.
     await a.hideKeyboard()
     const seen = new Set()
-    for (let k = 0; k < 12; k++) { a.texts().forEach((t) => seen.add(t)); a.swipe('up'); await a.sleep(700) }
+    for (let k = 0; k < 12; k++) { a.texts().forEach((t) => seen.add(t)); listSwipe(a, 'up'); await a.sleep(700) }
     a.texts().forEach((t) => seen.add(t))
     const lint = screenLint([...seen])
     check(`${c.id}: không có ** / marker / URL thô / link dính / khoảng trắng lạ trên màn hình`, !lint.bold && !lint.marker && !lint.url && !lint.spaces && !lint.glued,
@@ -211,7 +245,10 @@ export async function android({ a, shot, check, seeded }) {
     const cardAction = [...seen].find((t) => ACTION.test(t))
     const label = shownCta[0] || cardAction
     if (label) {
-      const node = await a.scrollTo(new RegExp('^\\W*' + esc(label) + '$'), { max: 8 }).catch(() => null)
+      // The reading pass above ended at the BOTTOM of a long reply and a.scrollTo goes back up only 3 screens: walk up to the card's button first.
+      const LABEL_RE = new RegExp('^\\W*' + esc(label) + '$')
+      for (let k = 0; k < 20 && !a.find(LABEL_RE); k++) { listSwipe(a, 'down'); await a.sleep(500) }
+      const node = await a.scrollTo(LABEL_RE, { max: 8 }).catch(() => null)
       if (node) {
         a.clearLog()
         await a.tap(node, { after: 4000 })
@@ -227,7 +264,7 @@ export async function android({ a, shot, check, seeded }) {
         await a.dismissForeign(); await a.launch()
       } else check(`${c.id}: bấm được nút «${label}»`, false)
     } else check(`${c.id}: có nút đặt/mua/xem trên màn hình`, buttons.length === 0 && !/\[TAPPY_PLAN\]/.test(raw), '(câu trả lời không có nút — xem ảnh)')
-    if (c.share) await sharePlan(a, shot, check, c.id)
+    if (c.share && !shareBlocked) await sharePlan(a, shot, check, c.id)
   }
 }
 
@@ -249,6 +286,26 @@ async function sharePlan(a, shot, check, id) {
   const sheet = a.texts().join(' | ')
   check(`${id}: sheet mẫu #6 cho kế hoạch có link /plan/ + Zalo/Facebook/TikTok`, /Chia sẻ với mọi người/.test(sheet) && /uat\.tappyai\.com\/plan\//.test(sheet) && /Zalo/.test(sheet) && /Facebook/.test(sheet), sheet.slice(0, 120))
   await a.back()
+}
+
+/** Waits for a NEW assistant message after the click, the Stop control gone, and its text unchanged for 3 polls. */
+async function settledAnswer(page, before) {
+  const last = () => page.locator('[data-msg-id]').last()
+  const t0 = Date.now()
+  while (Date.now() - t0 < 180000) {
+    if ((await page.locator('[data-msg-id]').count()) > before) break
+    await page.waitForTimeout(1000)
+  }
+  let prev = null
+  let stable = 0
+  while (Date.now() - t0 < 180000) {
+    const busy = await page.locator('[aria-label*="Dừng"],[aria-label*="Stop"]').count()
+    const txt = await last().innerText().catch(() => '')
+    if (!busy && txt && txt === prev) stable++; else stable = 0
+    prev = txt
+    if (stable >= 3) return
+    await page.waitForTimeout(1500)
+  }
 }
 
 export async function web({ w, page, shot, check }) {
@@ -278,10 +335,11 @@ export async function web({ w, page, shot, check }) {
       }
       await shot(`${c.id}-ask-picked`)
       check(`${c.id}: web thẻ hỏi nhanh ${qs.length} câu, chọn được ${picked.length}`, picked.length === qs.length, picked.join(' · '))
-      await page.locator('[data-ask-send]').last().click().catch(() => {})
-      await page.waitForTimeout(4000)
-      await page.waitForFunction(() => !document.querySelector('[aria-label*="Dừng"],[aria-label*="Stop"]'), null, { timeout: 180000 }).catch(() => {})
-      await page.waitForTimeout(2000)
+      // R25 (web session 01/10): a failed click must be reported, and the next read waits for a NEW, settled answer.
+      const before = await page.locator('[data-msg-id]').count()
+      let sent = true
+      try { await page.locator('[data-ask-send]').last().click({ timeout: 15000 }) } catch (e) { sent = false; check(`${c.id}: web bấm «Tìm cho tôi» được`, false, String(e.message).split(String.fromCharCode(10))[0]) }
+      if (sent) await settledAnswer(page, before)
       raw = (await lastReply(webAccount, picked.join(' · '))) || raw
     } else if (!ctaOf(raw).length && chips.length && !chips.includes(ACCEPT_PLAN) && !c.plan) {
       const chip = page.getByText(chips[0], { exact: true }).last()
@@ -311,8 +369,13 @@ export async function web({ w, page, shot, check }) {
     await shot(`${c.id}-done`)
     const t = await page.locator('body').innerText().catch(() => '')
     check(`${c.id}: web không có ** / marker`, !/\*\*|\[\/?(TAPPY_[A-Z_]+|CTA_BUTTONS|FOLLOWUPS)\]/.test(t))
-    const hrefs = await page.locator('a[href^="http"]').evaluateAll((as) => as.map((x) => x.href)).catch(() => [])
+    // Only the LAST assistant message (earlier turns / page chrome do not count) and the decoded link, so a
+    // merchant behind an affiliate wrapper (go.isclix.com/?url=…, /go/at?u=…) is still visible.
+    const hrefs = await page.locator('[data-msg-id]').last().locator('a[href^="http"]').evaluateAll((as) => as.map((x) => x.href)).catch(() => [])
+    const decoded = hrefs.map((h) => { try { return decodeURIComponent(h) } catch { return h } })
     const hosts = [...ctaOf(raw).map((b) => unwrap(b.url)), ...hrefs.map(unwrap)].filter((h) => h && !/tappyai\.com$/.test(h))
-    check(`${c.id}: web nút/đường dẫn đúng loại trang`, hosts.some((h) => c.expect.test(h)), [...new Set(hosts)].slice(0, 6).join(', '))
+    const kind = c.web || c.expect
+    check(`${c.id}: web nút/đường dẫn đúng loại trang`, decoded.some((h) => kind.test(h)), [...new Set(hosts)].slice(0, 6).join(', ') || '(không có link trong tin nhắn cuối)')
+    if (c.dated) check(`${c.id}: web link có NGÀY`, decoded.some((h) => c.expect.test(h) && /20\d\d[-/]\d\d[-/]\d\d|\d{2}[-/]\d{2}[-/]20\d\d|departure|date=/i.test(h)))
   }
 }

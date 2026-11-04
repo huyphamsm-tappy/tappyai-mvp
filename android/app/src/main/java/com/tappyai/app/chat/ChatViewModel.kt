@@ -21,6 +21,9 @@ import com.tappyai.app.chat.data.ChatRepository
 import com.tappyai.app.chat.data.CommerceHandoffReporter
 import com.tappyai.core.analytics.AnalyticsProvider
 import com.tappyai.app.chat.data.ChatStreamEvent
+import com.tappyai.app.chat.data.DocMediaItem
+import com.tappyai.app.chat.data.ResearchChart
+import com.tappyai.app.chat.data.ResearchStatus
 import com.tappyai.app.chat.data.MessageFeedback
 import com.tappyai.app.chat.data.MessageFeedbackRepository
 import com.tappyai.app.chat.data.PublishedShare
@@ -48,6 +51,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import java.util.Locale
 import javax.inject.Inject
 
@@ -69,6 +74,7 @@ class ChatViewModel @Inject constructor(
     private val stringProvider: StringProvider,
     @ApplicationContext private val context: android.content.Context,
     private val productFlags: com.tappyai.app.config.ProductFlagsRepository,
+    private val membershipRepository: com.tappyai.app.membership.data.MembershipRepository,
 ) : ViewModel() {
 
     /** The web's SHOW_PUBLIC_SHARE (`/api/config` flags.publicShare); false until the server says on. */
@@ -124,6 +130,33 @@ class ChatViewModel @Inject constructor(
     private val _isAssistantResponding = MutableStateFlow(false)
     val isAssistantResponding: StateFlow<Boolean> = _isAssistantResponding.asStateFlow()
 
+    // Declared BEFORE init: a prefilled question starts its turn from init, on Main.immediate, and the property initializers below init
+    // would otherwise reset these to null right after the turn assigned them (Stop would keep nothing).
+    /** The reply streaming right now (A6: kept on Stop); null when none is, or once it was built. */
+    private var currentReply: StringBuilder? = null
+
+    /** The research card, charts and pictures the streaming turn has sent so far (kept on Stop and on a drop after text, like the text). */
+    private var currentAnnotations: TurnAnnotations? = null
+
+    // The answer mode sent with the next turn (web parity, 02/11: the one-brain modes; the web starts on Auto).
+    private val _mode = MutableStateFlow(ChatMode.Default)
+    val mode: StateFlow<ChatMode> = _mode.asStateFlow()
+    fun onModeSelected(mode: ChatMode) {
+        if (mode !in _menuModes.value) return
+        _mode.value = _mode.value.picked(mode)
+    }
+    fun onModeCleared() { _mode.value = ChatMode.Auto }
+
+    // The modes the "+" menu offers for this account's plan (web tiers.ts; the server enforces it). The whole menu until /api/payments/me
+    // answers, and for good when it cannot (plans not on sale answers 404): the app never takes a mode away on doubt.
+    private val _menuModes = MutableStateFlow(ChatMode.menu)
+    val menuModes: StateFlow<List<ChatMode>> = _menuModes.asStateFlow()
+
+    // The last reply's stream closed without its finish frame (ChatStreamEvent.Cut): the screen says so and
+    // offers «answer again». Cleared as soon as a new turn starts. Web parity: ChatInterface `streamCut`.
+    private val _streamCut = MutableStateFlow(false)
+    val streamCut: StateFlow<Boolean> = _streamCut.asStateFlow()
+
     // The reply text revealed AS IT STREAMS (structured blocks stripped, image markdown KEPT — the
     // UI segments it live so photo galleries appear inline mid-stream, matching the committed
     // message's segments). Empty until the first token arrives — the UI shows the thinking dots +
@@ -140,6 +173,9 @@ class ChatViewModel @Inject constructor(
     val streamingHint: StateFlow<String?> = _streamingHint.asStateFlow()
     private val _streamingPlaces = MutableStateFlow<PlacesLiveView?>(null)
     val streamingPlaces: StateFlow<PlacesLiveView?> = _streamingPlaces.asStateFlow()
+    // A3: the Deep Research card while the run streams (drawn by A5); kept on the reply once it is built.
+    private val _streamingResearch = MutableStateFlow<ResearchStatus?>(null)
+    val streamingResearch: StateFlow<ResearchStatus?> = _streamingResearch.asStateFlow()
 
     // True only while a resumed conversation's history is still loading, so the Welcome state
     // doesn't flash before the real messages arrive (see init{} below). Chats started fresh
@@ -284,6 +320,11 @@ class ChatViewModel @Inject constructor(
 
     init {
         viewModelScope.launch { productFlags.refresh() }
+        viewModelScope.launch {
+            _menuModes.value = ChatMode.menuFor(membershipRepository.getPlanAccess())
+            // a mode picked before the answer came, that the plan does not have, goes back to Auto
+            if (_mode.value != ChatMode.Auto && _mode.value !in _menuModes.value) _mode.value = ChatMode.Auto
+        }
         val id = conversationId
         // chat_opened (RUNBOOK §3.19) — fires once when a fresh main chat opens. A
         // resumed conversation (conversationId != null) is a continuation, matching
@@ -293,7 +334,7 @@ class ChatViewModel @Inject constructor(
             viewModelScope.launch {
                 when (val result = chatHistoryRepository.getConversationMessages(id)) {
                     is NetworkResult.Success -> {
-                        _messages.value = result.data.map { stored ->
+                        val loaded = result.data.map { stored ->
                             val isUser = stored.role == "user"
                             // 🚨 A REOPENED CONVERSATION USED TO LOSE EVERY STRUCTURED CARD.
                             // The stored content is the raw reply, markers and all, so the plan,
@@ -322,11 +363,15 @@ class ChatViewModel @Inject constructor(
                                 raw = if (isUser) "" else stored.content,
                             )
                         }
+                        // the history goes first; a question sent while it was loading stays after it (it used to be overwritten)
+                        _messages.update { loaded + it }
                     }
                     is NetworkResult.Error -> {
                         // Resume is best-effort: an id that fails to load (deleted, network error)
-                        // just falls back to a fresh chat rather than blocking the screen.
+                        // just falls back to a fresh chat rather than blocking the screen. A FRESH chat has no id: keeping the old one made the
+                        // next save replace the stored history (a PUT of the whole list) with the new messages only.
                         logger.e(TAG, "Failed to load conversation $id: ${result.error}")
+                        conversationId = null
                     }
                 }
                 _isLoadingConversation.value = false
@@ -455,16 +500,41 @@ class ChatViewModel @Inject constructor(
         voiceInputBase = null
     }
 
-    fun onImagePicked(uri: Uri) { pendingImageUri = uri }
+    fun onImagePicked(uri: Uri) { pendingImageUri = uri; pendingMime = null; pendingName = null; attachError = null }
 
-    fun onClearPendingImage() { pendingImageUri = null }
+    /**
+     * 02/11 (web parity: the composer's «Thêm ảnh & tệp PDF»): a photo or a PDF picked from the "+" menu, checked with the web's limits
+     * before it is staged; a refused file says why (the web's words) and stages nothing.
+     */
+    fun onAttachmentPicked(uri: Uri, mime: String?, name: String?, sizeBytes: Long?) {
+        when (attachmentCheck(mime, sizeBytes)) {
+            AttachCheck.Image -> onImagePicked(uri)
+            AttachCheck.Pdf -> { pendingImageUri = uri; pendingMime = mime; pendingName = name; attachError = null }
+            AttachCheck.PdfTooLarge -> attachError = stringProvider.get(R.string.chat_attach_pdf_too_large)
+            AttachCheck.Unsupported -> attachError = stringProvider.get(R.string.chat_attach_unsupported)
+        }
+    }
+
+    fun onClearPendingImage() { pendingImageUri = null; pendingMime = null; pendingName = null }
+
+    /** The staged file's type when it is a PDF (null = a photo) and its name; why the last pick was refused, or null. */
+    var pendingMime by mutableStateOf<String?>(null)
+        private set
+    var pendingName by mutableStateOf<String?>(null)
+        private set
+    var attachError by mutableStateOf<String?>(null)
+        private set
 
     fun onSend() {
         val text = input.trim()
         val image = pendingImageUri
         if (text.isEmpty() && image == null) return
-        sendUserMessage(text, image)
-        pendingImageUri = null
+        // the text send is locked while a reply streams, but the voice screen and the recognizer's auto-send come here too: sending now
+        // would cancel the reply with nothing kept; the transcript stays in the field to send once the reply is done
+        if (_isAssistantResponding.value) return
+        sendUserMessage(text, image, pendingMime, pendingName)
+        onClearPendingImage()
+        attachError = null
     }
 
     fun onMoodSelected(mood: MoodChip) = sendUserMessage(mood.prompt)
@@ -486,9 +556,18 @@ class ChatViewModel @Inject constructor(
     fun onFollowupSelected(followup: String) = sendUserMessage(followup)
 
     fun onStop() {
+        // A6 (02/11): what already arrived stays as the reply (web useChat keeps the streamed text on stop). Read before the cancel; null
+        // once the reply was built (both run on the main thread, so the finished reply and this one never both land).
+        val partial = currentReply?.toString().orEmpty()
+        currentReply = null
         respondingJob?.cancel()
         respondingJob = null
         _isAssistantResponding.value = false
+        partialReplyMessage(nextId++, partial, interrupted = false, currentAnnotations)?.let { kept ->
+            _messages.update { it + kept }
+            viewModelScope.launch { persistConversation() }
+        }
+        currentAnnotations = null
     }
 
     /**
@@ -645,8 +724,8 @@ class ChatViewModel @Inject constructor(
         analytics.track("shopping_search_click", mapOf("domain" to "shopping", "platform" to platform))
     }
 
-    private fun sendUserMessage(text: String, imageUri: Uri? = null) {
-        _messages.update { it + ChatMessage(id = nextId++, role = TappyChatRole.User, text = text, imageUri = imageUri) }
+    private fun sendUserMessage(text: String, imageUri: Uri? = null, attachmentMime: String? = null, attachmentName: String? = null) {
+        _messages.update { it + ChatMessage(id = nextId++, role = TappyChatRole.User, text = text, imageUri = imageUri, attachmentMime = attachmentMime, attachmentName = attachmentName) }
         input = ""
         streamAssistantReply(_messages.value)
     }
@@ -658,42 +737,78 @@ class ChatViewModel @Inject constructor(
         _isAssistantResponding.value = false
         respondingJob = viewModelScope.launch {
             _isAssistantResponding.value = true
+            _streamCut.value = false
             _streamingText.value = ""
             _streamingHint.value = null
             _streamingPlaces.value = null
 
+            val reply = StringBuilder()
+            currentReply = reply
+            val annotations = TurnAnnotations()
+            currentAnnotations = annotations
             try {
-                val reply = StringBuilder()
                 // The turn's LIVE place decision, if the stream carried one. It arrives on its own
                 // `8:` frame, usually before the prose finishes, and is held here until the message
                 // is built — it is never appended to the text, which is why it cannot leak into the
                 // reply, into TTS, or into what gets persisted.
                 var livePlaces: PlacesLiveView? = null
-                chatRepository.streamReply(history, chatSessionId).collect { event ->
+                // A3: the one-brain turn's live annotations, kept on the reply when it is built (never in its text)
+                var research: ResearchStatus? = null
+                var charts: List<ResearchChart> = emptyList()
+                var docMedia: List<DocMediaItem> = emptyList()
+                var turnStatus: String? = null
+                var serverSaidProgress = false
+                var lastParseAt = 0L
+                val turnMode = _mode.value
+                var modeSpent = false
+                chatRepository.streamReply(history, chatSessionId, turnMode).collect { event ->
+                    // web (onResponse): Deep Research is for one question, spent once the request was ACCEPTED - a refused or dropped
+                    // request keeps it, so "try again" is the same question
+                    if (!modeSpent) {
+                        modeSpent = true
+                        _mode.value = turnMode.afterSend()
+                    }
                     val token = when (event) {
                         is ChatStreamEvent.Text -> event.delta
                         // The last place frame is the turn's view (the preliminary set is replaced
                         // by the decision); both are shown live as they arrive.
                         is ChatStreamEvent.Places -> { livePlaces = event.view; _streamingPlaces.value = event.view; return@collect }
-                        is ChatStreamEvent.Progress -> { _streamingHint.value = event.text; return@collect }
+                        is ChatStreamEvent.Progress -> { serverSaidProgress = true; _streamingHint.value = event.text; return@collect }
+                        // Last event of a reply that closed without `d:`/`3:`: the half answer stays, with an «answer again» notice.
+                        ChatStreamEvent.Cut -> { _streamCut.value = true; return@collect }
+                        is ChatStreamEvent.Research -> { research = event.status; annotations.research = event.status; _streamingResearch.value = event.status; return@collect }
+                        is ChatStreamEvent.Charts -> { charts = event.charts; annotations.charts = event.charts; return@collect }
+                        is ChatStreamEvent.DocMedia -> { docMedia = event.items; annotations.docMedia = event.items; return@collect }
+                        is ChatStreamEvent.TurnStatus -> { turnStatus = event.status; return@collect }
+                        // Web parity (TOOL_HINTS): say which tool runs; the server's own progress line, when it sent one, wins.
+                        is ChatStreamEvent.ToolCall -> { toolHint(event.name)?.takeIf { !serverSaidProgress }?.let { _streamingHint.value = it }; return@collect }
+                        is ChatStreamEvent.ToolResult -> return@collect
                     }
                     reply.append(token)
                     // Surface the running text with structured blocks stripped but image markdown
                     // RETAINED — the UI segments it live, so each recommendation's photos render
                     // inline at their position during the stream (web parity: formatMessage runs
                     // on the accumulated stream every frame; images are never deferred to the end).
-                    _streamingText.value = ChatResponseParser.parse(reply.toString()).streamText
+                    // A7: at most every 50 ms or at a line break - a long report re-read the whole text on every token.
+                    val now = System.currentTimeMillis()
+                    if (reparseDue(lastParseAt, now, token)) {
+                        lastParseAt = now
+                        _streamingText.value = ChatResponseParser.parse(reply.toString()).streamText
+                    }
                 }
+                // the last tokens since the last re-read are on screen until the reply below replaces the live text
+                _streamingText.value = ChatResponseParser.parse(reply.toString()).streamText
 
                 // Parse the structured blocks the model may append (plan/CTA/followups) and strip
-                // them from the visible text — web parity (see ChatResponseParser). Web parses
-                // followups from the reply itself; keep the dedicated endpoint as a fallback when
-                // the model didn't inline any, so existing Android followups don't regress.
+                // them from the visible text — web parity (see ChatResponseParser). Follow-ups are the
+                // reply's own; A7 (02/11) dropped the app's per-domain fallback chips (web has none).
                 // UAT3: one reply, not two — a reply that streamed the same answer twice is kept as
                 // its last version, on screen AND in what is saved (ReplyRepeat, web parity).
+                currentReply = null // built below: Stop no longer keeps a partial copy
+                currentAnnotations = null
                 val finalReply = ReplyRepeat.cleanRepeats(reply.toString())
                 val parsed = ChatResponseParser.parse(finalReply)
-                val followups = parsed.followups.ifEmpty { chatRepository.getFollowups(category) }
+                val followups = parsed.followups
                 _messages.update { msgs ->
                     msgs + ChatMessage(
                         id = nextId++,
@@ -714,9 +829,20 @@ class ChatViewModel @Inject constructor(
                         // What gets SAVED. See [ChatMessage.raw]: the stripped text cannot rebuild
                         // a card, so the unstripped reply is carried alongside it.
                         raw = finalReply,
+                        research = research,
+                        charts = charts,
+                        docMedia = docMedia,
+                        turnStatus = turnStatus,
                     )
                 }
-                persistConversation()
+                // The reply is final: the live bubble, its research card and the Stop button go now. Saving is a network call that must
+                // not keep them on screen (a second copy of the reply, a locked input) nor be cancelled by Stop - it runs on its own.
+                _isAssistantResponding.value = false
+                _streamingText.value = ""
+                _streamingHint.value = null
+                _streamingPlaces.value = null
+                _streamingResearch.value = null
+                viewModelScope.launch { persistConversation() }
                 // chat_response (RUNBOOK §3.19) — one hit per completed AI answer; feature
                 // is the domain enum (matches web's `feature`), never the reply text.
                 analytics.track("chat_response", mapOf("feature" to category.name.lowercase()))
@@ -734,6 +860,8 @@ class ChatViewModel @Inject constructor(
                     is ChatException.AgeGate -> if (e.code == "age_verification_required") ChatErrorAction.VerifyAge else null
                     else -> null
                 }
+                // A6: the turn failed after text (a `3:` frame) - what arrived stays, marked interrupted (web), instead of an error bubble
+                if (keepInterrupted(reply)) return@launch
                 _messages.update { msgs ->
                     msgs + ChatMessage(
                         id = nextId++,
@@ -745,6 +873,8 @@ class ChatViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 logger.e(TAG, "Chat stream failed", e)
+                // A6: the connection dropped after text - the same: what arrived stays, marked interrupted
+                if (keepInterrupted(reply)) return@launch
                 _messages.update { msgs ->
                     msgs + ChatMessage(
                         id = nextId++,
@@ -758,9 +888,35 @@ class ChatViewModel @Inject constructor(
                 _streamingText.value = ""
                 _streamingHint.value = null
                 _streamingPlaces.value = null
+                _streamingResearch.value = null
+                if (currentReply === reply) currentReply = null
+                if (currentAnnotations === annotations) currentAnnotations = null
             }
         }
     }
+
+    /** A6: the reply that failed after text, kept and marked interrupted; false when nothing arrived (the caller shows its error bubble). */
+    private suspend fun keepInterrupted(reply: StringBuilder): Boolean {
+        val kept = partialReplyMessage(nextId++, reply.toString(), interrupted = true, currentAnnotations) ?: return false
+        _messages.update { it + kept }
+        viewModelScope.launch { persistConversation() }
+        return true
+    }
+
+    /** What a tool call means to the person (the web's TOOL_HINTS, same tools and words); an unmapped tool keeps the current hint. */
+    private fun toolHint(name: String): String? = when (name) {
+        "search_places" -> R.string.chat_tool_search_places
+        "search_products" -> R.string.chat_tool_search_products
+        "get_weather", "get_weather_forecast" -> R.string.chat_tool_weather
+        "get_gold_price" -> R.string.chat_tool_gold
+        "get_flight_prices" -> R.string.chat_tool_flights
+        "get_hotel_prices" -> R.string.chat_tool_hotels
+        "get_transport_options" -> R.string.chat_tool_transport
+        "get_news" -> R.string.chat_tool_news
+        "web_search" -> R.string.chat_tool_web_search
+        "save_price_watch" -> R.string.chat_tool_price_watch
+        else -> null
+    }?.let(stringProvider::get)
 
     /**
      * The message's index in the **persisted** `messages` array — which is what
@@ -829,7 +985,8 @@ class ChatViewModel @Inject constructor(
         val id = conversationId ?: return false
         val index = persistedIndexOf(messageId) ?: return false
         _sharePublic.value = SharePublicState.Loading
-        viewModelScope.launch {
+        shareJob?.cancel()
+        shareJob = viewModelScope.launch {
             _sharePublic.value = when (val outcome = sharedResultRepository.preview(id, index, shareLocale)) {
                 is ShareOutcome.Success -> SharePublicState.Preview(id, index, outcome.data, outcome.data.title)
                 else -> SharePublicState.Failed(outcome.toFailure())
@@ -846,7 +1003,8 @@ class ChatViewModel @Inject constructor(
     fun onConfirmSharePublic() {
         val current = _sharePublic.value as? SharePublicState.Preview ?: return
         _sharePublic.value = SharePublicState.Publishing
-        viewModelScope.launch {
+        shareJob?.cancel()
+        shareJob = viewModelScope.launch {
             _sharePublic.value = when (val outcome = sharedResultRepository.publish(current.conversationId, current.messageIndex, current.title, shareLocale)) {
                 is ShareOutcome.Success -> SharePublicState.Published(outcome.data)
                 else -> SharePublicState.Failed(outcome.toFailure())
@@ -854,7 +1012,12 @@ class ChatViewModel @Inject constructor(
         }
     }
 
+    // The pending preview/publish call: closing the dialog cancels it, so its answer cannot reopen the dialog.
+    private var shareJob: Job? = null
+
     fun onDismissSharePublic() {
+        shareJob?.cancel()
+        shareJob = null
         _sharePublic.value = SharePublicState.Idle
     }
 
@@ -893,7 +1056,15 @@ class ChatViewModel @Inject constructor(
      * surfaces failures via `useChat`'s `error`, never as a stored message), so persisting them
      * would corrupt both the history list and any later resume of this conversation.
      */
-    private suspend fun persistConversation() {
+    // One save at a time: the first save of a chat creates the conversation and sets conversationId; a second one that started before it
+    // answered would create a duplicate. The messages are read inside the lock, so a save always writes the latest list.
+    private val persistLock = Mutex()
+
+    private suspend fun persistConversation() = persistLock.withLock {
+        persistLocked()
+    }
+
+    private suspend fun persistLocked() {
         val stored = _messages.value
             .filterNot { it.isError }
             // 🚨 `raw`, NOT `text`. `text` has had every structured block decoded and REMOVED, so

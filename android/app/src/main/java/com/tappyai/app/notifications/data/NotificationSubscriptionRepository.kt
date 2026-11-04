@@ -34,6 +34,18 @@ class NotificationSubscriptionRepository @Inject constructor(
             .onFailure { logger.e(TAG, "FCM token registration failed: ${it.message}") }
     }
 
+    /**
+     * Turns this device's server-side push OFF. `true` = the server now has it off (or there is nothing to switch
+     * off: no account session, or a guest, never registers a device); `false` = the call failed (network, 5xx) —
+     * the caller must NOT tell the person it is off. [token] names the device; null = provider-scoped.
+     */
+    suspend fun unregister(token: String?): Boolean {
+        if (!shouldRegister(hasSession = auth.hasSession(), anonymous = auth.isAnonymous())) return true
+        return runCatching { api.unsubscribe(FcmUnsubscribeDto(credential = token?.takeIf { it.isNotBlank() })) }
+            .onFailure { logger.e(TAG, "FCM unsubscribe failed: ${it.javaClass.simpleName}") }
+            .isSuccess
+    }
+
     companion object {
         private const val TAG = "NotificationSubscription"
 

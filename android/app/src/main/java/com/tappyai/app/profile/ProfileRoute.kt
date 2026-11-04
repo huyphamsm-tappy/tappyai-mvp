@@ -15,6 +15,10 @@ sealed interface ProfileRoute {
     @Serializable
     data object Settings : ProfileRoute
 
+    /** Settings → Tài khoản đã chặn (only reachable while the server supports blocking). */
+    @Serializable
+    data object BlockedUsers : ProfileRoute
+
     /** The push-preference screen (Settings → Notifications). */
     @Serializable
     data object Notifications : ProfileRoute

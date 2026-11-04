@@ -15,4 +15,7 @@ interface MembershipRepository {
     /** Reads GET /api/subscription. Errors (incl. 401 when signed out) surface as a typed error so
      *  the screen can fall back to the static Free presentation. */
     suspend fun getStatus(): NetworkResult<MembershipStatus>
+
+    /** Reads GET /api/payments/me. Null = unknown (plans not on sale: 404, offline, any failure): the caller must not take anything away. */
+    suspend fun getPlanAccess(): PlanAccess?
 }

@@ -18,4 +18,14 @@ class RealMembershipRepository @Inject constructor(
             freeDailyLimit = dto.freeDailyLimit,
         )
     }
+
+    override suspend fun getPlanAccess(): PlanAccess? =
+        when (val result = safeApiCall { api.getMyPlan() }) {
+            is NetworkResult.Success -> PlanAccess(
+                signedIn = result.data.signedIn,
+                state = result.data.subscription?.state,
+                planId = result.data.subscription?.plan?.id,
+            )
+            is NetworkResult.Error -> null
+        }
 }

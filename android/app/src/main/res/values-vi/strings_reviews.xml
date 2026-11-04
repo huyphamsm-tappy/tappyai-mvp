@@ -104,7 +104,7 @@
     <string name="reviews_feed_empty_title">Chưa có bài viết nào</string>
     <string name="reviews_feed_empty_message">Hãy quay lại sau nhé.</string>
     <string name="reviews_tab_compose">Đăng bài</string>
-    <string name="reviews_tab_following">Đang theo dõi</string>
+    <string name="reviews_tab_following">Đang follow</string>
     <string name="reviews_tab_for_you">Đề xuất</string>
     <string name="reviews_tab_latest">Mới nhất</string>
     <string name="reviews_feed_empty_following">Chưa theo dõi ai hoặc họ chưa đăng bài</string>

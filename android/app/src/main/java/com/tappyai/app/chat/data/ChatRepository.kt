@@ -1,7 +1,7 @@
 package com.tappyai.app.chat.data
 
-import com.tappyai.app.chat.ChatCategory
 import com.tappyai.app.chat.ChatMessage
+import com.tappyai.app.chat.ChatMode
 import com.tappyai.app.chat.PlacesLiveView
 import kotlinx.coroutines.flow.Flow
 
@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.Flow
  * on network failure. Cancelling the collecting coroutine (user taps Stop) immediately cancels
  * the underlying HTTP call — no waiting for a 30-second timeout.
  *
- * [getFollowups] is client-side only; the backend does not return follow-up suggestions.
+ * Follow-up chips come from the reply itself ([FOLLOWUPS]); A7 (02/11) removed the app's own per-domain fallback (the web has none).
  */
 /**
  * One thing the stream said.
@@ -43,11 +43,32 @@ sealed interface ChatStreamEvent {
      * Never text, never persisted. Web parity: `progressAnnotation.ts`.
      */
     data class Progress(val stage: String, val text: String) : ChatStreamEvent
+
+    /**
+     * The body closed cleanly WITHOUT its finish frame (`d:`) or an error frame (`3:`) — a proxy or
+     * function cut the reply half-way. The route always ends a data stream with one of the two, so the
+     * text received is half an answer, not a normal one: the screen offers «answer again» (web parity:
+     * `src/lib/chat/streamCut.ts`, 56a26ae). Sent last, after every other event of the turn.
+     */
+    data object Cut : ChatStreamEvent
+
+    // A3 (02/11): the one-brain stream (see OneBrainFrames). Live-only, like the place view: never part of the text, never persisted.
+    /** The Deep Research card (`8:` tappy.research.v1); the latest one is the card. */
+    data class Research(val status: ResearchStatus) : ChatStreamEvent
+    /** The report's charts (`8:` tappy.research_charts.v1), re-checked. */
+    data class Charts(val charts: List<ResearchChart>) : ChatStreamEvent
+    /** The answer's pictures, each under the heading it names (`8:` tappy.doc_media.v1). */
+    data class DocMedia(val items: List<DocMediaItem>) : ChatStreamEvent
+    /** The server says the answer is `incomplete` or was `interrupted` (`8:` tappy.turn_status.v1): a line under it, not part of it. */
+    data class TurnStatus(val status: String) : ChatStreamEvent
+    /** A tool the model called (`9:`): what Tappy is doing right now (the web's tool hint). */
+    data class ToolCall(val id: String, val name: String) : ChatStreamEvent
+    /** That tool's result arrived (`a:`). */
+    data class ToolResult(val id: String) : ChatStreamEvent
 }
 
 interface ChatRepository {
-    fun streamReply(messages: List<ChatMessage>, chatSessionId: String? = null): Flow<ChatStreamEvent>
-    fun getFollowups(category: ChatCategory): List<String>
+    fun streamReply(messages: List<ChatMessage>, chatSessionId: String? = null, mode: ChatMode = ChatMode.Default): Flow<ChatStreamEvent>
 }
 // The V3 share artifact used to read the `8:` frame through a `takeLatestPlacesView()` side
 // channel; it now takes it from [ChatStreamEvent.Places] like the card does (see

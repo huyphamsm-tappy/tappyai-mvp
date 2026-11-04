@@ -9,6 +9,8 @@ const CHIPS = ['Tất cả', 'Địa điểm', 'Bài viết', 'Video']
 export async function android({ a, shot, check, seeded }) {
   await a.signIn(seeded.users.pro.email)
   await a.tap('Tôi', { after: 2500 })
+  // The hub keeps one «Tài khoản» row (web owner 02/10); the Saved row is on the Account page.
+  await a.tap(await a.scrollTo('Tài khoản'), { after: 3500 })
   // "Đã lưu" is also a profile-content tab; the Saved SCREEN is the menu row below it (by "Lịch sử chat").
   await a.scrollTo('Lịch sử chat')
   a.swipe('up'); await a.sleep(1200)

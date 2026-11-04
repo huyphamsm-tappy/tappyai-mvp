@@ -81,26 +81,9 @@
     <string name="chat_age_declaration_confirm_year">Continue</string>
     <string name="chat_age_declaration_adult">I am 18 or older</string>
 
-    <string name="chat_followup_food_1">Find another place</string>
-    <string name="chat_followup_food_2">See menu prices</string>
-    <string name="chat_followup_food_3">Book a table</string>
-    <string name="chat_followup_travel_1">Detailed itinerary</string>
-    <string name="chat_followup_travel_2">Find hotels</string>
-    <string name="chat_followup_travel_3">Flight tickets</string>
-    <string name="chat_followup_shopping_1">Compare prices</string>
-    <string name="chat_followup_shopping_2">Find stores</string>
-    <string name="chat_followup_shopping_3">See reviews</string>
-    <string name="chat_followup_entertainment_1">See showtimes</string>
-    <string name="chat_followup_entertainment_2">Book tickets now</string>
-    <string name="chat_followup_entertainment_3">See more</string>
-    <string name="chat_followup_spa_1">See price list</string>
-    <string name="chat_followup_spa_2">Book an appointment</string>
-    <string name="chat_followup_spa_3">See reviews</string>
-    <string name="chat_followup_general_1">Ask more</string>
-    <string name="chat_followup_general_2">Find more</string>
-    <string name="chat_followup_general_3">Another topic</string>
 
     <string name="chat_action_copy">Copy</string>
+    <string name="chat_action_copied">Copied</string>
     <string name="chat_action_share">Share</string>
     <string name="chat_share_chooser_title">Share message</string>
     <string name="chat_action_like">Like</string>
@@ -108,6 +91,9 @@
     <string name="chat_action_read_aloud">Read aloud</string>
     <string name="chat_action_stop_read_aloud">Stop reading</string>
     <string name="chat_action_regenerate">Regenerate</string>
+    <string name="chat_stream_cut">The answer was cut off half-way. Try again?</string>
+    <string name="chat_stream_cut_retry">Answer again</string>
+    <string name="chat_ai_disclaimer">Tappy can make mistakes. Please double-check important information.</string>
     <string name="chat_action_more">More</string>
     <string name="chat_more_copy_plaintext">Copy plaintext</string>
     <string name="chat_more_copy_id">Copy ID</string>
@@ -139,6 +125,8 @@
     <string name="shopping_decision_match_different">Different config</string>
     <string name="shopping_decision_match_unknown">Config unclear</string>
     <string name="shopping_decision_no_price">price unknown</string>
+    <string name="shopping_rating_line">★ %1$s · %2$s reviews</string>
+    <string name="shopping_rating_only">★ %1$s</string>
     <string name="shopping_decision_unknown_seller">Seller unknown</string>
     <string name="shopping_decision_trade_off">Trade-off</string>
     <string name="shopping_decision_conditional">Depends on your needs.</string>
@@ -313,6 +301,7 @@
     <string name="chat_plan_v2_overview">Overview</string>
     <string name="chat_plan_v2_highlights">Highlights</string>
     <string name="chat_plan_v2_no_price">no price yet — ask the venue</string>
+    <string name="chat_plan_v2_total_estimate">Estimated total</string>
     <string name="chat_plan_v2_full_cta">See the full plan on Tappy</string>
     <string name="chat_plan_v2_made_by">Made with TAPPY</string>
     <string name="auth_callback_refused">This sign-in link is invalid or has expired. Please sign in again from the app.</string>
@@ -339,4 +328,49 @@
     <string name="ask_v2_sub_spa">Pick a few things, Tappy finds the best place.</string>
     <string name="ask_v2_example_spa">E.g. female therapist, private room...</string>
     <string name="ask_v2_example_main">E.g. close to home, mid-range price...</string>
+    <!-- A2 (02/11): the answer modes, the web's words (src/lib/i18n/v3/structuredAi.ts mode.*) -->
+    <string name="chat_mode_menu">Choose a mode</string>
+    <string name="chat_mode_off">Turn the mode off</string>
+    <string name="chat_mode_chat">Quick answer</string>
+    <string name="chat_mode_chat_hint">Answers at once, without long thinking</string>
+    <string name="chat_mode_web">Web search</string>
+    <string name="chat_mode_web_hint">Look things up across sources, with links and dates</string>
+    <string name="chat_mode_think">Thinking</string>
+    <string name="chat_mode_think_hint">A thorough answer for hard questions, slower</string>
+    <string name="chat_mode_deep">Deep research</string>
+    <string name="chat_mode_deep_hint">Plans, reads many sources, writes a report (1–3 minutes)</string>
+    <!-- A3 (02/11): the tool in use, the web's TOOL_HINTS (ChatInterface.tsx) -->
+    <string name="chat_tool_search_places">🔎 Searching places…</string>
+    <string name="chat_tool_search_products">🛍️ Searching products…</string>
+    <string name="chat_tool_weather">⛅ Checking the weather…</string>
+    <string name="chat_tool_gold">🪙 Checking gold prices…</string>
+    <string name="chat_tool_flights">✈️ Finding flights…</string>
+    <string name="chat_tool_hotels">🏨 Finding hotels…</string>
+    <string name="chat_tool_transport">🚗 Finding transport…</string>
+    <string name="chat_tool_news">📰 Reading the news…</string>
+    <string name="chat_tool_web_search">🌐 Searching the web…</string>
+    <string name="chat_tool_price_watch">🔔 Setting up price watch…</string>
+    <!-- A4 (02/11): the server's turn status (tappy.turn_status.v1), the web's words (src/lib/i18n/w5/chatResilience.ts) -->
+    <string name="chat_turn_incomplete">This answer may be incomplete. Ask a follow-up and I will continue.</string>
+    <string name="chat_turn_interrupted">This answer was interrupted. What is above is what arrived — you can ask again.</string>
+    <!-- A5 (02/11): the Deep Research card, the web's words (research.*) -->
+    <string name="chat_research_planning">Planning the research…</string>
+    <string name="chat_research_researching">Researching · %1$d sources</string>
+    <string name="chat_research_writing">Writing the report · %1$d sources</string>
+    <string name="chat_research_done">Research complete · %1$d sources</string>
+    <string name="chat_tts_pause">Pause reading</string>
+    <string name="chat_tts_play">Resume reading</string>
+    <string name="chat_tts_back">Back 15 seconds</string>
+    <string name="chat_tts_forward">Forward 15 seconds</string>
+    <string name="chat_tts_speed">Change reading speed</string>
+    <string name="chat_research_saved">Report saved</string>
+    <string name="chat_research_save_failed">Couldn\'t save the report. Try again or pick another place.</string>
+    <string name="chat_research_failed">The research could not be completed</string>
+    <string name="chat_research_sources">Sources</string>
+    <string name="chat_research_download">Download report:</string>
+    <!-- 02/11: attaching, the web's words (composer.attach*, attach.*) -->
+    <string name="chat_attach">Add photos &amp; PDF files</string>
+    <string name="chat_attach_hint">Photos, screenshots, PDFs up to 3 MB</string>
+    <string name="chat_attach_unsupported">Tappy can read images (PNG, JPG, WEBP, GIF) and PDF files.</string>
+    <string name="chat_attach_pdf_too_large">This PDF is larger than 3 MB, so Tappy cannot read it yet. Try a smaller file or only the pages you need.</string>
 </resources>

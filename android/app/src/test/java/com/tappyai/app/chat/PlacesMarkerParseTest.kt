@@ -254,7 +254,8 @@ class PlacesMarkerParseTest {
         assertNotNull("RealChatRepository.kt not found", src)
         assertTrue(
             "every line the socket produces must go through ChatStreamFrames",
-            src!!.contains("ChatStreamFrames.parse(line)"),
+            // A3 (02/11): every event of the line (an `8:` array can carry several)
+            src!!.contains("ChatStreamFrames.events(line)"),
         )
         assertFalse(
             "and the repository must not keep a second, private copy of the frame rules",

@@ -22,6 +22,11 @@ data class ChatRequest(
      * once per chat and sent on every turn — see [com.tappyai.app.chat.ChatSessionId].
      */
     val chatSessionId: String? = null,
+    /**
+     * The answer mode the person picked ([com.tappyai.app.chat.ChatMode.wire]); always sent (null default, so encodeDefaults=false
+     * still writes a set value). Absent = the server's `chat`.
+     */
+    val mode: String? = null,
 )
 
 @Serializable
@@ -39,7 +44,20 @@ data class UserLocationDto(val lat: Double, val lng: Double)
 data class ChatMessageDto(
     val role: String,
     val content: JsonElement,
+    /**
+     * 02/11: a PDF, as the web sends it (useChat's attachments; the server's clientInput.validateAttachment reads the PDF's text). Null =
+     * no field on the wire (encodeDefaults=false). A photo keeps the vision part in [content].
+     */
+    @Suppress("PropertyName") val experimental_attachments: List<AttachmentDto>? = null,
 )
+
+/** One attachment: a data URL whose type matches [contentType], and the file's name. */
+@Serializable
+data class AttachmentDto(val url: String, val contentType: String, val name: String)
+
+const val PDF_MIME = "application/pdf"
+
+fun pdfAttachment(dataUrl: String, name: String): AttachmentDto = AttachmentDto(dataUrl, PDF_MIME, name.ifBlank { "tai-lieu.pdf" })
 
 fun textContent(text: String): JsonElement = JsonPrimitive(text)
 

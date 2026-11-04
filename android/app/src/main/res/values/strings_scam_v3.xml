@@ -2,8 +2,8 @@
 <!-- Scam Shield (Cảnh báo lừa đảo) — generated 2026-09-17 from design/v3-phase4 src/lib/i18n/v3/web.ts (f6712b8):
      the hero, the three tabs, Analyze Message and the official anti-fraud knowledge (v3.scam.hero*/feat*/tab*/msg.*/kb.*). -->
 <resources>
-    <string name="scam_v3_heroEyebrow">Browse more safely</string>
-    <string name="scam_v3_heroTitle1">Check it is safe</string>
+    <string name="scam_v3_heroEyebrow">Browse more carefully</string>
+    <string name="scam_v3_heroTitle1">Check it first</string>
     <string name="scam_v3_heroTitle2">before you open it</string>
     <string name="scam_v3_heroBody">Tappy helps you spot suspicious and fraudulent links and websites — check first, open later.</string>
     <string name="scam_v3_featDetect">Scam detection</string>
@@ -105,4 +105,12 @@
     <string name="scam_v3_kb_cat_investment_jobs">Investment &amp; jobs</string>
     <string name="scam_v3_kb_cat_online_trading">Online trading</string>
     <string name="scam_v3_kb_cat_data_theft">Data theft</string>
+    <string name="scam_v3_help_title">Think you were scammed?</string>
+    <string name="scam_v3_help_body">If you already sent money or shared an OTP code, call the police now.</string>
+    <string name="scam_v3_help_call">Call %1$s</string>
+    <string name="scam_v3_help_hotlineTitle">Hotline</string>
+    <string name="scam_v3_help_agency">Criminal Police Department - Ministry of Public Security</string>
+    <string name="scam_v3_help_hotlineDesc">The hotline that receives reports and denunciations of fraud.</string>
+    <string name="scam_v3_help_sourceLabel">Source:</string>
+    <string name="scam_v3_help_sourceName">Ministry of Public Security</string>
 </resources>

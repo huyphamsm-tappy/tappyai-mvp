@@ -1,12 +1,15 @@
 package com.tappyai.app
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -34,6 +37,10 @@ import javax.inject.Inject
  * proving the string resources themselves were correct and the gap was purely this Activity's
  * missing AppCompat delegate.
  */
+/** The default navigation-bar scrims of enableEdgeToEdge() (androidx.activity), kept explicit so the theme-following re-application matches them. */
+private val NAV_LIGHT_SCRIM = Color.argb(0xe6, 0xFF, 0xFF, 0xFF)
+private val NAV_DARK_SCRIM = Color.argb(0x80, 0x1b, 0x1b, 0x1b)
+
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
@@ -75,6 +82,19 @@ class MainActivity : AppCompatActivity() {
             // value rather than asking the system again.
             val mode by appearance.mode.collectAsStateWithLifecycle(initialValue = initialMode)
             val isDark = resolveDarkTheme(mode = mode, systemDark = isSystemInDarkTheme())
+
+            // The system bars' icon colour follows the APP's resolved theme, not the system's: the plain
+            // enableEdgeToEdge() above decides once, at start, from the SYSTEM setting — so after the person
+            // flips the in-app toggle (or the system theme changes while the app is open) the status-bar clock
+            // stayed white on a light screen (matrix 02/10). Re-applied whenever [isDark] changes; same
+            // transparent bars and default navigation scrims as enableEdgeToEdge()'s own defaults.
+            DisposableEffect(isDark) {
+                enableEdgeToEdge(
+                    statusBarStyle = SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT) { isDark },
+                    navigationBarStyle = SystemBarStyle.auto(NAV_LIGHT_SCRIM, NAV_DARK_SCRIM) { isDark },
+                )
+                onDispose { }
+            }
 
             TappyAITheme(darkTheme = isDark) {
                 AppNavHost(

@@ -109,6 +109,7 @@ import com.tappyai.core.designsystem.component.TappyImage
 @Composable
 fun AskCard(questions: List<AskQuestion>, onSend: (String) -> Unit, modifier: Modifier = Modifier) {
     val views = remember(questions) { AskCardModel.viewOf(questions) }
+    // 02/11: the area from the ask itself, as on the web (no guess from the conversation's words)
     val area = remember(questions) { AskCardModel.areaOf(questions) }
     val chosen = remember(questions) { mutableStateMapOf<String, Set<String>>() }
     var free by remember(questions) { mutableStateOf("") }

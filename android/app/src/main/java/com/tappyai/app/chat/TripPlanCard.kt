@@ -5,6 +5,8 @@ import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,6 +24,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -62,6 +65,7 @@ import com.tappyai.app.R
 import com.tappyai.app.chat.plan.PlanArea
 import com.tappyai.app.chat.plan.PlanCardView
 import com.tappyai.app.chat.plan.PlanImageManifest
+import com.tappyai.app.chat.plan.dayTabIndex
 import com.tappyai.app.chat.plan.planCardViewOf
 import com.tappyai.app.chat.plan.planImageRepository
 import com.tappyai.app.share.PlanShareOutcome
@@ -92,6 +96,7 @@ fun TripPlanCard(plan: TappyPlan, modifier: Modifier = Modifier, planJson: Strin
     val manifest = rememberPlanImageManifest()
 
     var shareOpen by remember(plan) { mutableStateOf(false) }
+    var selectedDay by remember(plan) { mutableStateOf(0) }
     if (shareOpen) {
         val artifact = remember(plan, planJson) { ShareArtifactBuilder.buildPlanArtifact(plan, Locale.getDefault().language, planJson) }
         // SL1 (owner 29/09): the plan card uses the approved sheet (sample #6) with the plan image (#7).
@@ -113,7 +118,10 @@ fun TripPlanCard(plan: TappyPlan, modifier: Modifier = Modifier, planJson: Strin
         Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 18.dp), verticalArrangement = Arrangement.spacedBy(18.dp)) {
             if (view.days.isNotEmpty()) {
                 Text(stringResource(R.string.chat_plan_v2_itinerary), color = PlanPal.Text, fontSize = 20.sp, fontWeight = FontWeight.Bold)
-                view.days.forEach { day -> DayBlock(day, view.area, manifest) { url -> openUrl(context, url) } }
+                // the web's day tabs (one day drawn at a time), not every day stacked
+                val active = dayTabIndex(selectedDay, view.days.size)
+                if (view.days.size > 1) DayTabs(view.days, active) { selectedDay = it }
+                DayBlock(view.days[active], view.area, manifest) { url -> openUrl(context, url) }
             }
             if (view.overview.isNotEmpty()) Overview(view)
             if (view.highlights.isNotEmpty()) Highlights(view, manifest)
@@ -176,8 +184,10 @@ private fun PlanImage(
     glyphSize: Int,
     modifier: Modifier,
     glyphAlignment: Alignment = Alignment.Center,
+    /** The photo the server matched to this stop (web TripPlanCard draws it); drawn before the key picture. 01/11: the 29/09 "no photo_url" rule is dropped. */
+    photoUrl: String? = null,
 ) {
-    val url = manifest.urlFor(key)
+    val url = photoUrl ?: manifest.urlFor(key)
     Box(modifier = modifier.background(area.placeholder())) {
         if (url != null) {
             TappyImage(url = url, contentDescription = null, contentScale = ContentScale.Crop, modifier = Modifier.fillMaxSize())
@@ -253,6 +263,34 @@ private fun MetaChip(icon: ImageVector, text: String) {
     }
 }
 
+/** The row of day tabs (web TripPlanCard tabs): each shows the day's own label ("Ngày 2 — Hội An: ăn món phố cổ"); the chosen one is filled. */
+@Composable
+private fun DayTabs(days: List<PlanCardView.Day>, active: Int, onPick: (Int) -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).testTag("plan_day_tabs"),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        days.forEachIndexed { i, day ->
+            val on = i == active
+            Text(
+                text = day.label.ifBlank { "%02d".format(day.number) },
+                color = if (on) Color.White else PlanPal.Muted,
+                fontSize = 13.sp,
+                fontWeight = if (on) FontWeight.Bold else FontWeight.Normal,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier
+                    .widthIn(max = 260.dp)
+                    .clip(RoundedCornerShape(50))
+                    .then(if (on) Modifier.background(PlanPal.Badge) else Modifier.background(Color(0x1AFFFFFF)))
+                    .clickable { onPick(i) }
+                    .padding(horizontal = 14.dp, vertical = 8.dp)
+                    .testTag("plan_day_tab_${day.number}"),
+            )
+        }
+    }
+}
+
 @Composable
 private fun DayBlock(day: PlanCardView.Day, area: PlanArea, manifest: PlanImageManifest, onOpenUrl: (String) -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(12.dp), modifier = Modifier.testTag("plan_day_${day.number}")) {
@@ -284,10 +322,12 @@ private fun StopRow(stop: PlanCardView.Stop, isLast: Boolean, area: PlanArea, ma
         PlanImage(
             key = stop.imageKey, area = area, manifest = manifest, glyph = stop.emoji, glyphSize = 22,
             modifier = Modifier.size(64.dp).clip(RoundedCornerShape(10.dp)),
+            photoUrl = stop.photoUrl,
         )
         Column(modifier = Modifier.weight(1f).padding(bottom = 10.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
             Text(stop.name, color = PlanPal.Text, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, maxLines = 2, overflow = TextOverflow.Ellipsis)
-            stop.description?.let { Text(it, color = PlanPal.Muted, fontSize = 12.sp, lineHeight = 16.sp, maxLines = 3, overflow = TextOverflow.Ellipsis) }
+            // the description whole (web shows it whole): a three-line cut dropped the closing "(chưa xác minh)" caveat
+            stop.description?.let { Text(it, color = PlanPal.Muted, fontSize = 12.sp, lineHeight = 16.sp) }
             stop.address?.let { addr ->
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Filled.LocationOn, contentDescription = null, tint = PlanPal.Accent, modifier = Modifier.size(12.dp))
@@ -295,13 +335,10 @@ private fun StopRow(stop: PlanCardView.Stop, isLast: Boolean, area: PlanArea, ma
                     Text(addr, color = PlanPal.Muted, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 }
             }
-            Text(
-                text = if (stop.priced) stop.price else stringResource(R.string.chat_plan_v2_no_price),
-                color = if (stop.priced) Color(0xFFFFD27A) else PlanPal.Muted,
-                fontSize = 12.sp,
-                fontWeight = if (stop.priced) FontWeight.SemiBold else FontWeight.Normal,
-                modifier = Modifier.testTag(if (stop.priced) "plan_price" else "plan_no_price"),
-            )
+            // a price line only for a priced stop (web: the chip shows only when the stop has a price); meals and walks carry none
+            stop.priceLine?.let { price ->
+                Text(text = price, color = Color(0xFFFFD27A), fontSize = 12.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.testTag("plan_price"))
+            }
             if (stop.mapsLink != null || stop.bookingLink != null) {
                 Row(horizontalArrangement = Arrangement.spacedBy(14.dp), modifier = Modifier.padding(top = 2.dp)) {
                     stop.mapsLink?.let { PlanLink(Icons.Filled.LocationOn, stringResource(R.string.chat_plan_map)) { onOpenUrl(it) } }
@@ -400,8 +437,16 @@ private fun Tips(plan: TappyPlan) {
 @Composable
 private fun CostLines(plan: TappyPlan) {
     val lines = plan.costBreakdown?.filterValues { it.isNotBlank() }.orEmpty()
-    if (lines.isEmpty()) return
+    // owner 01/11 (web TripPlanCard shows the total in the cost block): the server's total, never summed here
+    val total = com.tappyai.app.chat.PlanPrice.amount(plan.budgetTotal)
+    if (lines.isEmpty() && total == null) return
     Panel(stringResource(R.string.chat_plan_cost_title), "plan_costs") {
+        total?.let { t ->
+            Row(modifier = Modifier.fillMaxWidth()) {
+                Text(stringResource(R.string.chat_plan_v2_total_estimate), color = PlanPal.Text, fontSize = 13.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f))
+                Text(t, color = PlanPal.Text, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
+            }
+        }
         lines.forEach { (k, v) ->
             Row(modifier = Modifier.fillMaxWidth()) {
                 Text(k, color = PlanPal.Muted, fontSize = 13.sp, modifier = Modifier.weight(1f))

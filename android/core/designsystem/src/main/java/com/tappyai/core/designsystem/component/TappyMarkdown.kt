@@ -1,6 +1,7 @@
 package com.tappyai.core.designsystem.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -53,7 +54,8 @@ import com.tappyai.core.designsystem.theme.TappySpacing
  *   headings (#/##/###), **bold**, *italic*, `inline code`, fenced ``` code blocks,
  *   bullet lists, numbered lists, > blockquotes, --- horizontal rules, and [links](url)
  *   rendered as styled text (no click handling yet).
- * Explicitly out of scope: tables, raw HTML, nested lists, task lists, LaTeX, Mermaid,
+ * and (A4, 02/11) GFM tables, scrolling sideways when wide.
+ * Explicitly out of scope: raw HTML, nested lists, task lists, LaTeX, Mermaid,
  * markdown images.
  *
  * **The public API is intentionally just `TappyMarkdown(markdown, modifier)`** so the internals
@@ -93,9 +95,11 @@ fun markdownVisibleText(markdown: String): String =
             is MdBlock.Paragraph -> inline(block.text)
             is MdBlock.CodeBlock -> block.code
             is MdBlock.BulletList -> block.items.joinToString("\n") { "• " + inline(it) }
-            is MdBlock.NumberedList -> block.items.mapIndexed { i, it -> "${i + 1}. " + inline(it) }.joinToString("\n")
+            is MdBlock.NumberedList -> block.items.mapIndexed { i, it -> "${block.start + i}. " + inline(it) }.joinToString("\n")
             is MdBlock.Quote -> inline(block.text)
             MdBlock.Rule -> "—"
+            // one line per row, cells apart by a tab: what a reader sees as columns
+            is MdBlock.Table -> (listOf(block.header) + block.rows).joinToString("\n") { row -> row.joinToString("\t") { inline(it) } }
         }
     }
 
@@ -108,10 +112,22 @@ private sealed interface MdBlock {
     data class Paragraph(val text: String) : MdBlock
     data class CodeBlock(val code: String) : MdBlock
     data class BulletList(val items: List<String>) : MdBlock
-    data class NumberedList(val items: List<String>) : MdBlock
+    /** [start] = the model's own first number (02/11, web ArticleAnswer `<ol start>`): a list broken by a paragraph keeps counting. */
+    data class NumberedList(val items: List<String>, val start: Int = 1) : MdBlock
     data class Quote(val text: String) : MdBlock
     data object Rule : MdBlock
+    /** A4 (02/11, web parity: formatMessage draws GFM tables): a header row, its body rows; cells are inline markdown. */
+    data class Table(val header: List<String>, val rows: List<List<String>>) : MdBlock
 }
+
+// A GFM table: a `| a | b |` row followed by its separator `|---|:---:|`; a pipe line without that separator stays a paragraph.
+private val TABLE_ROW_REGEX = Regex("""^\s*\|.*\|\s*$""")
+private val TABLE_SEPARATOR_REGEX = Regex("""^\s*\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)*\|?\s*$""")
+
+private fun isTableStart(lines: List<String>, i: Int) =
+    i + 1 < lines.size && TABLE_ROW_REGEX.matches(lines[i]) && '|' in lines[i + 1] && TABLE_SEPARATOR_REGEX.matches(lines[i + 1])
+
+private fun tableCells(line: String): List<String> = line.trim().removePrefix("|").removeSuffix("|").split('|').map { it.trim() }
 
 private val HEADING_REGEX = Regex("^(#{1,3})\\s+(.*)$")
 // "•" too: the server writes its clarify / ASK questions as "• …" lines (consult V2, 2026-09-29);
@@ -140,6 +156,18 @@ private fun parseMarkdownBlocks(markdown: String): List<MdBlock> {
                 }
                 if (i < lines.size) i++ // consume the closing fence
                 blocks += MdBlock.CodeBlock(code.toString().trimEnd('\n'))
+            }
+
+            isTableStart(lines, i) -> {
+                val header = tableCells(line)
+                i += 2 // the header and its separator
+                val rows = mutableListOf<List<String>>()
+                while (i < lines.size && TABLE_ROW_REGEX.matches(lines[i])) {
+                    // a short row is padded, a long one cut: every row has the header's columns
+                    rows += tableCells(lines[i]).let { c -> List(header.size) { k -> c.getOrElse(k) { "" } } }
+                    i++
+                }
+                blocks += MdBlock.Table(header, rows)
             }
 
             // Rule is checked before bullet so "---" isn't mistaken for a "-" list item.
@@ -173,19 +201,20 @@ private fun parseMarkdownBlocks(markdown: String): List<MdBlock> {
             }
 
             NUMBERED_REGEX.matches(line) -> {
+                val start = Regex("""^\s*(\d+)\.""").find(line)?.groupValues?.get(1)?.toIntOrNull()?.takeIf { it in 0..9999 } ?: 1
                 val items = mutableListOf<String>()
                 while (i < lines.size && NUMBERED_REGEX.matches(lines[i])) {
                     items += NUMBERED_REGEX.find(lines[i])!!.groupValues[1]
                     i++
                 }
-                blocks += MdBlock.NumberedList(items)
+                blocks += MdBlock.NumberedList(items, start)
             }
 
             else -> {
                 // Paragraph: fold consecutive plain lines into one, until a blank or a line that
                 // starts a different block type.
                 val paragraph = StringBuilder()
-                while (i < lines.size && lines[i].isNotBlank() &&
+                while (i < lines.size && lines[i].isNotBlank() && !(paragraph.isNotEmpty() && isTableStart(lines, i)) &&
                     !FENCE_REGEX.matches(lines[i]) && !RULE_REGEX.matches(lines[i]) &&
                     !HEADING_REGEX.matches(lines[i]) && !QUOTE_REGEX.matches(lines[i]) &&
                     !BULLET_REGEX.matches(lines[i]) && !NUMBERED_REGEX.matches(lines[i])
@@ -206,6 +235,41 @@ private fun parseMarkdownBlocks(markdown: String): List<MdBlock> {
 // scan; any unterminated marker is emitted literally.
 // ---------------------------------------------------------------------------------------------
 
+/**
+ * The ")" that closes a link's address starting at [from]: brackets inside the address count in pairs ("…/Foo_(bar)"), so the link is not cut
+ * at the first ")". An address with a space or an unbalanced ")" keeps the old rule, the first ")".
+ */
+private fun closingParen(text: String, from: Int): Int {
+    var depth = 1
+    var k = from
+    while (k < text.length) {
+        when (text[k]) {
+            '(' -> depth++
+            ')' -> { depth--; if (depth == 0) return k }
+            ' ', '\n', '\t' -> return text.indexOf(')', from)
+        }
+        k++
+    }
+    return text.indexOf(')', from)
+}
+
+/**
+ * Where an emphasis opened at [i] with [c] ('*' or '_') ends, or -1 (the mark is then plain text). CommonMark's flanking, in short: the text
+ * does not start or end with a space, and an underscore inside a word is not emphasis ("ABC_123 … XYZ_456", "tin_a_b" kept their marks).
+ */
+private fun emphasisEnd(text: String, i: Int, c: Char): Int {
+    if (c == '_' && i > 0 && text[i - 1].isLetterOrDigit()) return -1
+    if (i + 1 >= text.length || text[i + 1].isWhitespace()) return -1
+    var from = i + 1
+    while (true) {
+        val end = text.indexOf(c, from)
+        if (end < 0) return -1
+        val closes = !text[end - 1].isWhitespace() && (c == '*' || end + 1 >= text.length || !text[end + 1].isLetterOrDigit())
+        if (closes) return end
+        from = end + 1
+    }
+}
+
 private fun buildInlineAnnotated(
     text: String,
     codeBackground: Color,
@@ -218,6 +282,11 @@ private fun buildInlineAnnotated(
     while (i < n) {
         val c = text[i]
         when {
+            // 02/11 (emulator, T22): a backslash escape is the character itself (CommonMark) - the model wrote "\*São faixas…\*" for a
+            // footnote mark and it read "\São faixas…*" in italics
+            c == '\\' && i + 1 < n && text[i + 1] in MARKDOWN_ESCAPABLE -> {
+                append(text[i + 1]); i += 2
+            }
             c == '`' -> {
                 val end = text.indexOf('`', i + 1)
                 if (end > i) {
@@ -243,7 +312,7 @@ private fun buildInlineAnnotated(
                 }
             }
             c == '*' || c == '_' -> {
-                val end = text.indexOf(c, i + 1)
+                val end = emphasisEnd(text, i, c)
                 if (end > i) {
                     withStyle(SpanStyle(fontStyle = FontStyle.Italic)) {
                         append(buildInlineAnnotated(text.substring(i + 1, end), codeBackground, linkColor))
@@ -256,16 +325,26 @@ private fun buildInlineAnnotated(
             c == '[' -> {
                 val closeBracket = text.indexOf(']', i + 1)
                 if (closeBracket > i && closeBracket + 1 < n && text[closeBracket + 1] == '(') {
-                    val closeParen = text.indexOf(')', closeBracket + 2)
+                    val closeParen = closingParen(text, closeBracket + 2)
                     if (closeParen > closeBracket) {
                         val linkText = text.substring(i + 1, closeBracket)
                         val url = text.substring(closeBracket + 2, closeParen)
+                        // review 01/11: only http(s) is a link. A model-written [x](intent:...) / (tel:...) / (javascript:...) reached the OS before;
+                        // it reads as its label now.
+                        if (!isOpenableLink(url)) {
+                            append(buildInlineAnnotated(linkText, codeBackground, linkColor))
+                            i = closeParen + 1
+                            continue
+                        }
                         // Real clickable link: withLink + LinkAnnotation.Url. With no explicit
                         // listener, the Text opens it through the ambient UriHandler, i.e. the
                         // system browser (Intent.ACTION_VIEW) — no in-app browser, no analytics.
                         // UAT 2026-09-28 (P1c): two links written back to back rendered as one
                         // word ("Official WebsiteGoogle Maps") — a separator keeps them apart.
                         if (lastWasLink) append(" · ")
+                        // 02/11: a source link written right after a word or a full stop ("…thu hồi.[CNBC](…)") read "thu hồi.CNBC";
+                        // the web draws it as a separate chip - here it gets a space before it.
+                        else if (i > 0 && !text[i - 1].isWhitespace() && text[i - 1] !in "([\"'“‘") append(" ")
                         withLink(
                             LinkAnnotation.Url(
                                 url = url,
@@ -277,8 +356,11 @@ private fun buildInlineAnnotated(
                                 ),
                             ),
                         ) {
-                            // A label that is itself a URL is never printed: the platform name instead.
-                            append(if (linkText.startsWith("http", ignoreCase = true)) linkLabelFor(url) else linkText)
+                            // A label that is itself a URL is never printed: the platform name instead. 02/11 (emulator, T31): also an
+                            // address written without its scheme ("apps.apple.com/vn/app/…"). Any other label keeps its own emphasis
+                            // (T22: "*The Global … 2025*" showed its asterisks). A label holds no "]", so no link can nest in it.
+                            if (linkText.startsWith("http", ignoreCase = true) || ADDRESS_LABEL.matches(linkText.trim())) append(linkLabelFor(url))
+                            else append(buildInlineAnnotated(linkText, codeBackground, linkColor))
                         }
                         i = closeParen + 1
                         lastWasLink = true
@@ -346,6 +428,17 @@ private val LINK_LABELS: List<Pair<Regex, String>> = listOf(
     Regex("""(^|\.)ticketbox\.vn$""") to "Ticketbox",
 )
 
+private val TABLE_COLUMN_WIDTH = 160.dp
+
+/** The punctuation a backslash makes literal in Markdown (CommonMark's ASCII punctuation the renderer uses). */
+private const val MARKDOWN_ESCAPABLE = "\\`*_{}[]()#+-.!|~>"
+
+/** Only an http(s) address is a link the reader can open; any other scheme (intent:, tel:, sms:, javascript:, file:, content:, market:) is not. */
+fun isOpenableLink(url: String): Boolean = url.startsWith("https://", ignoreCase = true) || url.startsWith("http://", ignoreCase = true)
+
+/** A label that is an address without its scheme: `www.x.y…` or `host.tld/path…`, no spaces. */
+private val ADDRESS_LABEL = Regex("""(?i)(?:www\.\S+|[a-z0-9-]+(?:\.[a-z0-9-]+)+/\S*)""")
+
 /** A readable name for a link target — the platform, else the short host. Never the URL (web parity: linkLabelFor). */
 internal fun linkLabelFor(url: String): String {
     val host = Regex("""^https?://([^/?#:]+)""", RegexOption.IGNORE_CASE).find(url)?.groupValues?.get(1)?.lowercase()?.removePrefix("www.")
@@ -399,11 +492,48 @@ private fun MarkdownBlock(block: MdBlock) {
         }
         is MdBlock.NumberedList -> Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.sm)) {
             block.items.forEachIndexed { index, item ->
-                MarkdownListItem(marker = "${index + 1}.", text = item)
+                MarkdownListItem(marker = "${block.start + index}.", text = item)
             }
         }
         is MdBlock.Quote -> MarkdownQuote(block.text)
         MdBlock.Rule -> HorizontalDivider()
+        is MdBlock.Table -> MarkdownTable(block)
+    }
+}
+
+/** A table that scrolls sideways when wider than the bubble (web: `overflow-x-auto`); the header row bold on a tinted row. */
+@Composable
+private fun MarkdownTable(table: MdBlock.Table) {
+    val border = MaterialTheme.colorScheme.outlineVariant
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(TappyShapes.input)
+            .border(1.dp, border, TappyShapes.input)
+            .horizontalScroll(rememberScrollState()),
+    ) {
+        Column {
+            (listOf(table.header) + table.rows).forEachIndexed { r, row ->
+                if (r > 0) HorizontalDivider(color = border)
+                Row(
+                    modifier = Modifier
+                        .height(IntrinsicSize.Min)
+                        .then(if (r == 0) Modifier.background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f)) else Modifier),
+                ) {
+                    row.forEachIndexed { c, cell ->
+                        if (c > 0) Box(Modifier.width(1.dp).fillMaxHeight().background(border))
+                        Text(
+                            text = inlineText(cell),
+                            style = MaterialTheme.typography.bodySmall,
+                            fontWeight = if (r == 0) FontWeight.SemiBold else null,
+                            // one width per column, the same in every row, so the columns line up (emulator 02/11: each row sized
+                            // its own cells and the header's dividers missed the rows')
+                            modifier = Modifier.width(TABLE_COLUMN_WIDTH).padding(horizontal = TappySpacing.md, vertical = TappySpacing.sm),
+                        )
+                    }
+                }
+            }
+        }
     }
 }
 

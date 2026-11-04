@@ -1,6 +1,9 @@
 package com.tappyai.app.chat
 
 import android.net.Uri
+import com.tappyai.app.chat.data.DocMediaItem
+import com.tappyai.app.chat.data.ResearchChart
+import com.tappyai.app.chat.data.ResearchStatus
 import com.tappyai.core.designsystem.component.TappyChatRole
 
 /** One message in a conversation. [isError] flags backend error responses so the UI can
@@ -49,6 +52,10 @@ data class ChatMessage(
      */
     val errorAction: ChatErrorAction? = null,
     val imageUri: Uri? = null,
+    /** 02/11: what [imageUri] points at when it is not a photo - `application/pdf` (sent as an attachment, as on the web); null = a photo. */
+    val attachmentMime: String? = null,
+    /** The attached file's name (a PDF's, shown in the bubble and named in the history). */
+    val attachmentName: String? = null,
     /**
      * The assistant's reply EXACTLY as it arrived, markers included.
      *
@@ -64,4 +71,13 @@ data class ChatMessage(
      * Empty for user turns and error bubbles, which have no markers and are not re-parsed.
      */
     val raw: String = "",
+    // A3 (02/11): the one-brain turn's live annotations (session-only, like [livePlaces]; a reopened chat shows the text alone, as on the web).
+    /** The Deep Research card of this turn (the last frame), or null. */
+    val research: ResearchStatus? = null,
+    /** The report's charts. */
+    val charts: List<ResearchChart> = emptyList(),
+    /** The answer's pictures, by heading. */
+    val docMedia: List<DocMediaItem> = emptyList(),
+    /** `incomplete` / `interrupted` from the server, or null. */
+    val turnStatus: String? = null,
 )

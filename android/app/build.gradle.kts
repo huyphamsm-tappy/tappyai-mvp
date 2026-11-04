@@ -66,6 +66,7 @@ fun releaseProp(name: String, default: String): String =
 //   TAPPYAI_UAT_VERCEL_BYPASS_FILE=D:/TappyAI-backups/vercel-bypass.txt  (read at build time)
 //   TAPPYAI_UAT_SUPABASE_URL=https://<audit ref>.supabase.co
 //   TAPPYAI_UAT_SUPABASE_ANON_KEY=<audit anon key>
+//   TAPPYAI_UAT_GOOGLE_WEB_CLIENT_ID=<the Web client ID Supabase UAT's Google provider accepts>
 // ---------------------------------------------------------------------------
 val uatRequested = gradle.startParameter.taskNames.any { Regex("Uat(?![a-z])").containsMatchIn(it) }
 val localProps = Properties()
@@ -85,6 +86,11 @@ val uatBypassSecret: String = if (!uatRequested) "" else {
 }
 val uatSupabaseUrl = uatProp("TAPPYAI_UAT_SUPABASE_URL")
 val uatSupabaseAnonKey = uatProp("TAPPYAI_UAT_SUPABASE_ANON_KEY")
+// The Google "Web application" client ID that Supabase's Google provider on the UAT project accepts as an `aud`
+// (Google Cloud project 1023373437508, client "TappyAI Web - Supabase UAT"). It is NOT the release/prod client
+// (TAPPYAI_GOOGLE_WEB_CLIENT_ID): Supabase answers `Unacceptable audience in id_token` to a token issued for any
+// other client — measured on a real SM-A127F on 2026-10-07 after the Android client for .staging was registered.
+val uatGoogleWebClientId = uatProp("TAPPYAI_UAT_GOOGLE_WEB_CLIENT_ID")
 
 val supabaseUrl = releaseProp("TAPPYAI_SUPABASE_URL", "https://your-project.supabase.co")
 val supabaseAnonKey = releaseProp("TAPPYAI_SUPABASE_ANON_KEY", "REPLACE_WITH_SUPABASE_ANON_KEY")
@@ -250,8 +256,10 @@ android {
         // found Scam Shield in one and not the other. Nothing on a device, in a bug report or in
         // Play could have told them apart, and Play rejects a reused versionCode outright.
         // 2026-09-28 public launch: 10 (skips 9 so no earlier upload can collide), 1.0.0.
-        versionCode = 10
-        versionName = "1.0.0"
+        // 2026-11-03: 13 / 1.0.1 - the live release is 12 (1.0.0). The brain-following chat (modes, research card, tables, read-aloud...) plus the
+        // share-into-open-app fix.
+        versionCode = 13
+        versionName = "1.0.1"
 
         vectorDrawables {
             useSupportLibrary = true
@@ -379,13 +387,20 @@ android {
             initWith(getByName("debug"))
             applicationIdSuffix = ".staging"
             versionNameSuffix = "-uat"
-            isMinifyEnabled = false
+            // `-PTAPPYAI_UAT_MINIFY=true` runs the SAME R8 + resource shrinking + proguard rules as the release build
+            // against the UAT backend, so the e2e flows can prove R8 did not break anything without touching production.
+            // Off by default: the normal UAT build stays the readable, unminified one.
+            val minifyUat = project.findProperty("TAPPYAI_UAT_MINIFY") == "true"
+            isMinifyEnabled = minifyUat
+            isShrinkResources = minifyUat
             isDebuggable = true
             matchingFallbacks += listOf("debug")
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             buildConfigField("String", "API_BASE_URL", "\"https://uat.tappyai.com/\"")
             buildConfigField("String", "WEB_APP_URL", "\"https://uat.tappyai.com\"")
             buildConfigField("String", "SUPABASE_URL", "\"$uatSupabaseUrl\"")
             buildConfigField("String", "SUPABASE_ANON_KEY", "\"$uatSupabaseAnonKey\"")
+            buildConfigField("String", "GOOGLE_WEB_CLIENT_ID", "\"$uatGoogleWebClientId\"")
             buildConfigField("String", "VERCEL_BYPASS_SECRET", "\"$uatBypassSecret\"")
         }
         release {
@@ -397,6 +412,17 @@ android {
             }
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             buildConfigField("String", "API_BASE_URL", "\"$releaseApiBaseUrl\"")
+        }
+    }
+
+    // 🔑 The app has its OWN language picker (Vietnamese / English, AppCompatDelegate.setApplicationLocales).
+    // By default a Play bundle delivers only the resources of the DEVICE's languages, so on a phone set to
+    // English a user who picks Vietnamese in the app would get Vietnamese strings missing and see English
+    // (lint: AppBundleLocaleChanges). Both languages ship in the base split instead; the cost is a few
+    // hundred KB of strings. Plain APK installs (the UAT build) are unaffected either way.
+    bundle {
+        language {
+            enableSplit = false
         }
     }
 
@@ -451,8 +477,10 @@ dependencies {
     // App Links (prepared): the session-bound Custom Tab that shows a public result page in-app.
     // Same library/version features/auth already uses for the Zalo sign-in tab — no new dependency.
     implementation(libs.androidx.browser)
-    // Firebase Cloud Messaging — transport only. The BOM decides the messaging version; nothing
-    // else from Firebase is pulled in (no Analytics, no Crashlytics).
+    // Firebase Cloud Messaging (push token + delivery). The BOM decides the version. Firebase ANALYTICS IS in the
+    // release too: it comes from :core:analytics (firebase-analytics-ktx, below) — closed GA4 event taxonomy, no
+    // user id, Advertising ID off (AndroidManifest.xml). Collection is ON by default and there is no in-app switch
+    // (measured 01/10: "App measurement collection enabled"). There is no Crashlytics. Declared in PLAY-CONSOLE-PASTE.md.
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.messaging.ktx)
     // OkHttp is implementation (non-transitive) in core:network, so RealChatRepository needs
@@ -505,4 +533,40 @@ dependencies {
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+// Production guard (02/10): a debug / staging / uat build must never talk to the PRODUCTION backend by accident.
+// On 02/10 a debug build whose local gradle.properties pointed TAPPYAI_API_BASE_URL_DEBUG at https://www.tappyai.com/
+// ran an automated UI exerciser and wrote to production (1 anonymous session, 2 view events). This check runs when the
+// task graph is built and REFUSES to run any debug / staging / uat task whose API base URL is the production host.
+// Release builds are never affected (they are meant to point at production). To override on purpose:
+//     -PTAPPYAI_ALLOW_PROD_FOR_NON_RELEASE=true
+// Changes no BuildConfig value and no release output.
+// ---------------------------------------------------------------------------------------------------------------
+run {
+    val prodHost = Regex("""^https?://(www\.)?tappyai\.com(:\d+)?(/|$)""", RegexOption.IGNORE_CASE)
+    val allowProd = project.findProperty("TAPPYAI_ALLOW_PROD_FOR_NON_RELEASE") == "true"
+    // The values the three non-release build types put into BuildConfig.API_BASE_URL (keep in sync with `buildTypes`).
+    val nonReleaseApiBase = mapOf(
+        "Debug" to (project.findProperty("TAPPYAI_API_BASE_URL_DEBUG")?.toString() ?: "http://10.0.2.2:3000/"),
+        "Staging" to (project.findProperty("TAPPYAI_API_BASE_URL_STAGING")?.toString() ?: "https://staging.tappyai.example.com/"),
+        "Uat" to "https://uat.tappyai.com/",
+    )
+    gradle.taskGraph.whenReady {
+        if (allowProd) return@whenReady
+        val taskNames = allTasks.filter { it.project == project }.map { it.name }
+        val offenders = nonReleaseApiBase.filter { (variant, url) ->
+            prodHost.containsMatchIn(url.trim()) &&
+                taskNames.any { it.contains(variant) && !it.contains("Release") }
+        }
+        if (offenders.isNotEmpty()) {
+            throw GradleException(
+                "Refusing to build/run a non-release variant against PRODUCTION: " +
+                    offenders.entries.joinToString { "${it.key} -> ${it.value}" } + ". " +
+                    "Point TAPPYAI_API_BASE_URL_DEBUG / _STAGING at a local or UAT backend (the 'uat' variant is fixed to https://uat.tappyai.com/). " +
+                    "To do it on purpose: -PTAPPYAI_ALLOW_PROD_FOR_NON_RELEASE=true",
+            )
+        }
+    }
 }

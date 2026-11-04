@@ -327,6 +327,8 @@ internal fun ReviewProfileScreen(
             .background(ExploreV3.Background),
     ) {
         CreatorProfileTopBar(onBack = onBack, onSearch = onSearch, onNotifications = onNotifications)
+        // Report / block this person — each item only while the server supports it (`/api/config` → p8).
+        com.tappyai.app.safety.ui.AuthorSafetyMenu(userId = userId, userName = profile?.fullName)
 
         when {
             uiState.isLoading && profile == null ->

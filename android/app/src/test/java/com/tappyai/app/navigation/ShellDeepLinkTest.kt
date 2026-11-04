@@ -111,4 +111,22 @@ class PendingShellDestinationTest {
         holder.set(HomeRoute.Chat(conversationId = "new"))
         assertEquals(HomeRoute.Chat(conversationId = "new"), holder.consume())
     }
+
+    // 03/11 (Android UAT on the emulator): a text shared into Tappy while the app was ALREADY open did nothing, because the shell read the
+    // pending destination once, when it was first composed. An open shell has to SEE a destination that arrives later.
+    @Test
+    fun `an open shell can observe a destination that arrives after it was composed`() {
+        val holder = PendingShellDestination()
+        assertNull(holder.pendingFlow.value)
+        holder.set(HomeRoute.Chat(prefill = "hỏi giá vàng"))
+        assertEquals(HomeRoute.Chat(prefill = "hỏi giá vàng"), holder.pendingFlow.value)
+    }
+
+    @Test
+    fun `consuming clears what an open shell observes`() {
+        val holder = PendingShellDestination()
+        holder.set(HomeRoute.Chat(prefill = "x"))
+        holder.consume()
+        assertNull("the observed value is cleared with the handoff, so it cannot replay", holder.pendingFlow.value)
+    }
 }

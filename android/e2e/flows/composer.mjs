@@ -22,7 +22,12 @@ async function pickNewest(a, kind = 'Photo') {
   const cellRe = new RegExp(`^${kind} taken on`)
   let cell
   for (let i = 0; i < 10 && !cell; i++) {
-    cell = a.dump().find((n) => n.clickable && cellRe.test(n.desc || ''))
+    // Skip zero-length entries («with duration 00:00»): aborted pushes leave them in the emulator gallery, they sort FIRST
+    // (newest), and picking one makes the app say «Không đọc được thông tin video» (02/10: false FAIL on every build).
+    const nodes = a.dump()
+    cell = nodes.find((n) => n.clickable && cellRe.test(n.desc || '') && !/duration 00:00/.test(n.desc || ''))
+    // 02/10: NO "first big cell" fallback here. This flow UPLOADS the picked item to UAT; on a real phone the newest item can be the
+    // owner's own screenshot (it was, once). Without the labelled cell (emulator picker) the flow stops instead of guessing.
     if (!cell) await a.sleep(1000)
   }
   if (!cell) throw new Error(`picker: no ${kind} cell`)
@@ -35,20 +40,41 @@ async function pickNewest(a, kind = 'Photo') {
 async function openComposer(a) {
   await a.tap('Khám phá', { after: 4000 })
   // The "+" in Explore's header — the only square button left of search there.
-  const plus = a.dump().filter((n) => n.clickable && n.y1 < 400 && n.x2 - n.x1 < 160 && n.x2 - n.x1 > 80).sort((x, y) => x.x1 - y.x1)[0]
+  const k = a.screen()[0] / 1080
+  const plus = a.dump().filter((n) => n.clickable && n.y1 < 400 * k && n.x2 - n.x1 < 160 * k && n.x2 - n.x1 > 80 * k).sort((x, y) => x.x1 - y.x1)[0]
   await a.tap(plus, { after: 3000 })
   if (!a.visible('Bài viết mới')) throw new Error('composer did not open')
 }
+
+// The community-rules agreement (Play UGC policy) is asked ONCE per device, before the first post.
+let termsSeen = false
+let ctx = { shot: () => {}, check: () => {} }
 
 async function post(a, body) {
   await a.tap('Chia sẻ trải nghiệm...', { after: 700 }).catch(() => a.tap(/Chia sẻ trải nghiệm/, { after: 700 }))
   await a.pasteText(body)
   await a.hideKeyboard()
-  await a.tap('Đăng', { after: 8000 })
+  await a.tap('Đăng', { after: 2500 })
+  if (a.visible('Quy tắc cộng đồng')) {
+    ctx.shot('community-rules')
+    if (!termsSeen) {
+      ctx.check('lần đăng đầu: hiện «Quy tắc cộng đồng» có link Điều khoản và support@tappyai.com', a.visible('Đọc Điều khoản sử dụng') && a.visible('support@tappyai.com'))
+      termsSeen = true
+    } else {
+      ctx.check('đã đồng ý rồi mà vẫn hỏi lại', false)
+    }
+    await a.tap('Đồng ý và đăng', { after: 8000 })
+  } else {
+    if (!termsSeen) ctx.check('lần đăng đầu: PHẢI hiện «Quy tắc cộng đồng» trước khi đăng', false)
+    await a.sleep(6000)
+  }
 }
 
 export async function android({ a, shot, check, seeded }) {
   const email = seeded.users.pro.email
+  ctx = { shot, check }
+  // Fresh agreement state: the e2e hook clears app data on launch({fresh}) only for onboarding; clear the one key here.
+  try { a.sh('am', 'force-stop', a.PKG); a.sh('run-as', a.PKG, 'rm', '-f', 'shared_prefs/tappy_safety.xml') } catch { /* the agreement may already be absent */ }
   const stamp = Date.now().toString(36)
   a.adb(['push', IMAGE, '/sdcard/Pictures/e2e-wave.png'])
   a.adb(['push', CLIP, '/sdcard/Movies/e2e-clip.mp4'])

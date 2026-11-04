@@ -4,8 +4,8 @@ import com.tappyai.app.chat.ChatSessionId
 import android.content.Context
 import android.util.Base64
 import com.tappyai.app.R
-import com.tappyai.app.chat.ChatCategory
 import com.tappyai.app.chat.ChatMessage
+import com.tappyai.app.chat.ChatMode
 import com.tappyai.core.common.StringProvider
 import com.tappyai.core.designsystem.component.TappyChatRole
 import com.tappyai.core.logging.LoggerProvider
@@ -13,8 +13,10 @@ import com.tappyai.core.security.JwtDecoder
 import com.tappyai.core.security.TokenProvider
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -51,7 +53,7 @@ class RealChatRepository @Inject constructor(
         return JwtDecoder.decode(token)?.isAnonymous == true
     }
 
-    override fun streamReply(messages: List<ChatMessage>, chatSessionId: String?): Flow<ChatStreamEvent> = callbackFlow {
+    override fun streamReply(messages: List<ChatMessage>, chatSessionId: String?, mode: ChatMode): Flow<ChatStreamEvent> = callbackFlow {
         // Error bubbles (isError) are a UI artifact, not real model output. They live in the
         // ViewModel's message list with role=Assistant, so without this filter a prior failed
         // turn's error text (e.g. a connection-error message) would be replayed to the backend as a genuine
@@ -63,11 +65,11 @@ class RealChatRepository @Inject constructor(
         // text-only turn sends `content` as a plain string, a turn with an image sends it as
         // `[{type:"text",...},{type:"image",...}]` (see ChatRequest.kt's doc).
         val dtoMessages = withContext(Dispatchers.IO) {
-            messages.filterNot { it.isError }.map { msg -> msg.toDto() }
+            compactHistory(messages.filterNot { it.isError }).map { msg -> msg.toDto() }
         }
         // The device's last known position rides along when the user granted it (see
         // ChatLocationSource); a guest's 18+ declaration rides as a header (see GuestAgeStore).
-        val body = json.encodeToString(ChatRequest(dtoMessages, userLocation = location.lastKnown(), chatSessionId = chatSessionId?.takeIf(ChatSessionId::isValid)))
+        val body = json.encodeToString(ChatRequest(dtoMessages, userLocation = location.lastKnown(), chatSessionId = chatSessionId?.takeIf(ChatSessionId::isValid), mode = mode.wire))
             .toRequestBody("application/json".toMediaType())
 
         val request = chatRequest(baseUrl, body, ageDeclared = if (isGuest()) guestAge.declared() else null)
@@ -79,8 +81,10 @@ class RealChatRepository @Inject constructor(
         // "network error" on a request the backend is still processing (its own ceiling is
         // maxDuration=60s). Align this call's read timeout with that ceiling. newBuilder()
         // shares the connection pool and interceptors — this is a cheap per-call override.
+        // 02/11: the one-brain route allows a turn 110 s and Deep Research 300 s, with silent stretches (thinking, a research
+        // step) — see [streamReadTimeoutSeconds]; it is still a silence limit, not a cap on the whole reply.
         val streamingClient = okHttpClient.newBuilder()
-            .readTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(streamReadTimeoutSeconds(mode), TimeUnit.SECONDS)
             .build()
         val call = streamingClient.newCall(request)
 
@@ -98,15 +102,19 @@ class RealChatRepository @Inject constructor(
                     return@launch
                 }
 
+                val end = ChatStreamEnd()
                 while (!source.exhausted()) {
                     val line = source.readUtf8Line() ?: break
+                    end.feed(line)
                     if (ChatStreamFrames.errorFrame(line) != null) {
                         // Localized generic text in the VM (a blank message), never the SDK's English one.
                         close(ChatException.AiError(""))
                         return@launch
                     }
-                    ChatStreamFrames.parse(line)?.let { trySend(it) }
+                    ChatStreamFrames.events(line).forEach { trySend(it) }
                 }
+                // Closed cleanly with no `d:`/`3:` frame: half an answer (web streamCut.ts) — say so.
+                if (end.cut) trySend(ChatStreamEvent.Cut)
                 close()
             } catch (e: IOException) {
                 // A cancelled call throws IOException — close cleanly rather than as an error.
@@ -127,39 +135,9 @@ class RealChatRepository @Inject constructor(
         // again throws "Another handler is already registered".
         awaitClose { call.cancel() }
     }
-
-    override fun getFollowups(category: ChatCategory): List<String> = when (category) {
-        ChatCategory.Food -> listOf(
-            stringProvider.get(R.string.chat_followup_food_1),
-            stringProvider.get(R.string.chat_followup_food_2),
-            stringProvider.get(R.string.chat_followup_food_3),
-        )
-        ChatCategory.Travel -> listOf(
-            stringProvider.get(R.string.chat_followup_travel_1),
-            stringProvider.get(R.string.chat_followup_travel_2),
-            stringProvider.get(R.string.chat_followup_travel_3),
-        )
-        ChatCategory.Shopping -> listOf(
-            stringProvider.get(R.string.chat_followup_shopping_1),
-            stringProvider.get(R.string.chat_followup_shopping_2),
-            stringProvider.get(R.string.chat_followup_shopping_3),
-        )
-        ChatCategory.Entertainment -> listOf(
-            stringProvider.get(R.string.chat_followup_entertainment_1),
-            stringProvider.get(R.string.chat_followup_entertainment_2),
-            stringProvider.get(R.string.chat_followup_entertainment_3),
-        )
-        ChatCategory.Spa -> listOf(
-            stringProvider.get(R.string.chat_followup_spa_1),
-            stringProvider.get(R.string.chat_followup_spa_2),
-            stringProvider.get(R.string.chat_followup_spa_3),
-        )
-        ChatCategory.General -> listOf(
-            stringProvider.get(R.string.chat_followup_general_1),
-            stringProvider.get(R.string.chat_followup_general_2),
-            stringProvider.get(R.string.chat_followup_general_3),
-        )
-    }
+        // callbackFlow's default buffer is 64 events and trySend drops the rest when it is full (Main re-reads the whole text every 50 ms):
+        // a burst lost words, research cards, charts or the "cut" notice. Nothing in the stream may be dropped.
+        .buffer(Channel.UNLIMITED)
 
     /** Decodes a failed response body and classifies it — see [chatErrorFor] for the rules. */
     private fun parseChatError(code: Int, body: String?): ChatException {
@@ -175,10 +153,11 @@ class RealChatRepository @Inject constructor(
      *  send — the user's typed text still reaches the model even if the photo didn't attach. */
     private fun ChatMessage.toDto(): ChatMessageDto {
         val role = if (this.role == TappyChatRole.User) "user" else "assistant"
+        val isPdf = attachmentMime == PDF_MIME
         val dataUrl = imageUri?.let { uri ->
             try {
                 val bytes = context.contentResolver.openInputStream(uri)?.use { it.readBytes() }
-                val mimeType = context.contentResolver.getType(uri)?.takeIf { it.startsWith("image/") } ?: "image/jpeg"
+                val mimeType = if (isPdf) PDF_MIME else context.contentResolver.getType(uri)?.takeIf { it.startsWith("image/") } ?: "image/jpeg"
                 bytes?.let { "data:$mimeType;base64,${Base64.encodeToString(it, Base64.NO_WRAP)}" }
             } catch (e: Exception) {
                 logger.e(TAG, "Failed to read chat image attachment", e)
@@ -191,6 +170,8 @@ class RealChatRepository @Inject constructor(
         // (sanitizePriorAssistantContent). Sending the reader-facing [text] lost that state: after
         // "Lên kế hoạch chi tiết" the server asked "Bạn muốn đi đâu?" on Android (UAT 2026-09-29).
         val body = historyBody(role, text, raw)
+        // 02/11: a PDF goes as the web sends it (an attachment; the server reads its text); a photo as the vision part, as before
+        if (isPdf && dataUrl != null) return ChatMessageDto(role = role, content = textContent(body), experimental_attachments = listOf(pdfAttachment(dataUrl, attachmentName.orEmpty())))
         val content = if (dataUrl != null) textAndImageContent(body, dataUrl) else textContent(body)
         return ChatMessageDto(role = role, content = content)
     }
@@ -223,6 +204,12 @@ internal const val SURFACE_ANDROID = "android"
 /** Rendering capabilities this build declares to /api/chat (comma list). "ask" = [com.tappyai.app.chat.AskBlock]. */
 internal const val CAPS_HEADER = "x-tappy-caps"
 internal const val CAPS_ANDROID = "ask"
+
+/**
+ * How long the reply stream may stay silent before it counts as a network failure. Above the server's own limits (web route:
+ * TURN_DEADLINE_MS 110 s, Deep Research maxDuration 300 s), so the server always ends a turn first and says why.
+ */
+internal fun streamReadTimeoutSeconds(mode: ChatMode): Long = if (mode == ChatMode.Deep) 320L else 130L
 
 /** What a history turn sends as content: an assistant turn's raw reply (markers kept), else its text. */
 internal fun historyBody(role: String, text: String, raw: String): String =
@@ -289,7 +276,9 @@ internal fun chatErrorFor(code: Int, dto: ChatErrorDto?, strings: StringProvider
         ?: dto?.error?.takeIf { looksLikeSentence(it) }
     val message = serverSentence ?: strings.get(R.string.chat_error_generic_with_code, code)
     return when {
-        code == 429 && dto?.error == "free_limit_reached" ->
+        // A6 (02/11): the plan's Deep Research runs per month are a limit of the plan too; the server's sentence names it.
+        // (`pro_daily_limit_reached` stays a rate limit: it is the hidden anti-abuse ceiling, logged by the server as one.)
+        code == 429 && dto?.error in setOf("free_limit_reached", "plan_limit_reached", "deep_research_limit_reached") ->
             ChatException.DailyLimitReached(message)
         code == 429 ->
             ChatException.RateLimited(message)

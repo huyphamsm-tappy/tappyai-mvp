@@ -27,8 +27,8 @@ object MembershipContent {
     const val FREE_PRICE = "0₫"
     const val PRO_PRICE = "99K"
 
-    // Web parity 2026-07-11: free tier is 15/day (server FREE_DAILY_LIMIT = 15, raised from 10 in
-    // web commit 66aedb8). Keep in sync with /api/chat.
+    // Web final (2a276ad, Phase 7 canonical catalog): free tier is 10/day (`FREE_DAILY_LIMIT = 10` in
+    // src/lib/config/product.ts; it was 15 until then). Keep in sync with /api/chat.
     private val freeFeatureResIds = listOf(
         R.string.membership_free_feature_messages,
         R.string.membership_free_feature_search,

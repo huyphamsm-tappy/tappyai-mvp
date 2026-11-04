@@ -78,15 +78,16 @@ class HomeAiFirstTest {
     fun `asking Tappy is the first thing on Home`() {
         val hero = at("V3HeroSection")
         val ask = at("V3AskBar")
-        val quick = at("V3QuickSuggestionsSection")
 
         assertTrue("the V3 hero must exist", hero >= 0)
         assertTrue("the ask bar must exist", ask >= 0)
-        assertTrue("the quick suggestions must exist", quick >= 0)
-        // The primary AI block, in the mockup's order: greeting, then the ask box, then the prompt
-        // pills that belong to the ask interaction.
+        // The primary AI block, in the mockup's order: greeting, then the ask box.
         assertTrue("the hero comes first", hero < ask)
-        assertTrue("the ask bar precedes the quick suggestions", ask < quick)
+        // 2026-10-03: "Gợi ý nhanh", "Gợi ý dành cho bạn" and "Ưu đãi hôm nay" were removed from Home.
+        for (removed in listOf("V3QuickSuggestionsSection", "V3RecommendationsSection", "V3DealsSection")) {
+            assertEquals("$removed is no longer on Home", -1, at(removed))
+            assertTrue("$removed is no longer defined", !source.contains("private fun $removed("))
+        }
         // Nothing renders above the hero.
         assertEquals("the hero is the first section rendered", "V3HeroSection", renderOrder().first())
     }
@@ -98,7 +99,7 @@ class HomeAiFirstTest {
         assertEquals("the tool drawer closes the page", "SmartToolsSection", renderOrder().last())
         // The AI block and the content sections all sit above it — including Continue.
         for (section in listOf(
-            "V3AskBar", "V3QuickSuggestionsSection", "V3RecommendationsSection",
+            "V3AskBar",
             "CategoryChipsSection", "SuggestionsSection", "RecentActivitySection",
         )) {
             val index = at(section)
@@ -108,14 +109,11 @@ class HomeAiFirstTest {
     }
 
     @Test
-    fun `personalization leads the content`() {
-        val quick = at("V3QuickSuggestionsSection")
-        val recommendations = at("V3RecommendationsSection")
-
-        // "Gợi ý dành cho bạn" is the first content section after the AI block: what Tappy has
-        // picked for this person outranks any catalogue of features.
-        assertTrue("recommendations must exist", recommendations >= 0)
-        assertTrue("recommendations follow the AI block", quick < recommendations)
+    fun `the discovery banner is the first content section after the AI block`() {
+        val ask = at("V3AskBar")
+        val banner = at("V3DiscoverBanner")
+        assertTrue("the banner must exist", banner >= 0)
+        assertTrue("the banner follows the ask bar", ask < banner)
     }
 
     @Test

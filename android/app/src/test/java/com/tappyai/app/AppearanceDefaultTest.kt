@@ -7,8 +7,8 @@ import org.junit.Test
 import java.io.File
 
 /**
- * Appearance = System / Light / Dark (UAT 2026-09-17). Default SYSTEM: nothing stored → the OS
- * decides, live. An explicit Light/Dark wins over the OS and survives restarts; "Theo hệ thống"
+ * Appearance = System / Light / Dark (UAT 2026-09-17). Default since 02/10: DARK (like the web; owner decision) — nothing
+ * stored → dark on every phone; "Theo hệ thống" is an explicit choice that hands the decision to the OS, live. An explicit Light/Dark wins over the OS and survives restarts; "Theo hệ thống"
  * hands control back to the OS. The rule is a pure function plus source pins: the resolution
  * happens once, in `MainActivity`; Settings exposes all three; no screen pins a palette or asks
  * the OS a second time.
@@ -24,8 +24,10 @@ class AppearanceDefaultTest {
     // ── The rule ──
 
     @Test
-    fun `nothing stored is SYSTEM - the OS decides, both ways`() {
-        assertEquals(AppearanceMode.System, appearanceModeFrom(stored = null, legacyDark = null))
+    fun `nothing stored is DARK - on a light phone too - and System is a choice that follows the OS both ways`() {
+        assertEquals(AppearanceMode.Dark, DEFAULT_APPEARANCE)
+        assertEquals(AppearanceMode.Dark, appearanceModeFrom(stored = null, legacyDark = null))
+        assertTrue("a phone set to light still opens dark", resolveDarkTheme(appearanceModeFrom(null, null), systemDark = false))
         assertTrue(resolveDarkTheme(AppearanceMode.System, systemDark = true))
         assertFalse(resolveDarkTheme(AppearanceMode.System, systemDark = false))
     }
@@ -51,7 +53,7 @@ class AppearanceDefaultTest {
         assertEquals(AppearanceMode.Light, appearanceModeFrom("light", legacyDark = true))
         assertEquals(AppearanceMode.Dark, appearanceModeFrom(null, legacyDark = true))
         assertEquals(AppearanceMode.Light, appearanceModeFrom(null, legacyDark = false))
-        assertEquals("an unknown wire value is not a choice", AppearanceMode.System, appearanceModeFrom("sepia", null))
+        assertEquals("an unknown wire value is not a choice: the default", DEFAULT_APPEARANCE, appearanceModeFrom("sepia", null))
         assertEquals(listOf("system", "light", "dark"), AppearanceMode.entries.map { it.wire })
         // The pre-mode call shape still resolves the same way.
         assertTrue(resolveDarkTheme(stored = null, systemDark = true))
@@ -71,7 +73,7 @@ class AppearanceDefaultTest {
         assertFalse("nothing writes the legacy boolean any more", m.contains("PREF_DARK_THEME"))
         assertFalse("nothing forces a night mode on the whole process", m.contains("setDefaultNightMode"))
         val store = src("app/src/main/java/com/tappyai/app/AppearancePreference.kt")
-        assertTrue("an unreadable store degrades to System, never crashes", store.contains("runCatching { runBlocking { mode.first() } }.getOrDefault(AppearanceMode.System)"))
+        assertTrue("an unreadable store degrades to the default (dark), never crashes", store.contains("runCatching { runBlocking { mode.first() } }.getOrDefault(DEFAULT_APPEARANCE)"))
         assertTrue("a write clears the legacy key so the two can never disagree", store.contains("preferences.setString(PREF_APPEARANCE_MODE, mode.wire)") && store.contains("preferences.remove(PREF_DARK_THEME)"))
         assertEquals("appearance_mode", PREF_APPEARANCE_MODE)
         assertEquals("dark_theme", PREF_DARK_THEME)

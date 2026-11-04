@@ -50,8 +50,10 @@ enum class SignalSeverity { SAFE, INFO, WARNING, CRITICAL, UNKNOWN;
 data class EvidenceItem(
     val source: String,
     val severity: SignalSeverity,
+    /** The sentence shown for this finding: the server's `reason_vi` / `reason_en` when present, else its English technical line. */
     val summary: String,
     val detail: String,
+    val reasonCode: String = "",
 )
 
 data class RecommendedAction(
@@ -60,6 +62,8 @@ data class RecommendedAction(
     val icon: String,
     /** Already localized by the caller: the backend ships both `label_vi` and `label_en`. */
     val label: String,
+    /** The engine's action code, e.g. `INCONCLUSIVE`. */
+    val code: String = "",
 )
 
 /**
@@ -94,6 +98,8 @@ data class ScamCheckResult(
     val officialMatch: OfficialEntity?,
     val actions: List<RecommendedAction>,
     val cached: Boolean,
+    /** The server's three-state verdict as sent (`familiar | suspicious | unrecognized`) or null. */
+    val verdict: String? = null,
 )
 
 /**
@@ -119,6 +125,8 @@ data class MessageSignal(
     /** `low | medium | high`. */
     val severity: String,
     val explanation: String,
+    /** `rule | ai | url`. */
+    val source: String = "",
 )
 
 /** One link the message carried, as the engine saw it; `checked = false` renders "Chưa kiểm tra được". */
@@ -162,4 +170,19 @@ data class MessageAnalysis(
     val aiStatus: String,
     val extractedText: String?,
     val quota: MessageQuota?,
+    /** The server's three-state verdict as sent, or null (an older server). */
+    val verdict: String? = null,
+    /** The matched official scenario (familiar / suspicious), or null. */
+    val scenario: MessageScenario? = null,
+)
+
+/** The scenario block a message verdict shows (web `ScenarioCard`): title, number, official summary, the article's warning signs, the source. */
+data class MessageScenario(
+    val officialNumber: Int,
+    val title: String,
+    val summary: String,
+    val warningSigns: List<String>,
+    val sourceOrganization: String,
+    val sourceTitle: String,
+    val sourceUrl: String,
 )

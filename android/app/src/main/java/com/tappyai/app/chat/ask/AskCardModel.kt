@@ -37,17 +37,28 @@ object AskCardModel {
     /** Lower case WITH marks (web `lower`) — for the words that collide once folded (rạp/rap, lẩu/lâu, đồ/đỏ, chợ/cho). */
     fun lower(s: String): String = Normalizer.normalize(s, Normalizer.Form.NFC).lowercase()
 
-    /** The area of the ask turn, from the question ids the router emits (web `askAreaOf`). Drives the header. */
+    /**
+     * The area of the ask turn — drives the header, the tint, the placeholder tiles and the free-text example.
+     *
+     * The web's `askAreaOf` (src/lib/structuredContent/askCardModel.ts): the question ids the server sends, then the two rules the web
+     * reads from the ask itself (spa words in a `style` question's options, a hotel ask's per-night words). 02/11 (owner: Android follows
+     * the web's one-brain architecture): the app no longer guesses the area from the conversation's words — the web never did; with no
+     * signal the card is the neutral [AskArea.MAIN].
+     *
+     * 🚨 Huy 01/10: web's rule made every `style` ask without spa words a TRIP, so «Phở Bắc hay Phở Nam?» (ids
+     * `style` / `party` / `budget`) drew «Chuyến đi thế nào đây?». Here a card never defaults to travel: with no
+     * signal at all it is the neutral [AskArea.MAIN]. Correct whether or not the server later sends `dish` / `mode`.
+     */
     fun areaOf(questions: List<AskQuestion>): AskArea {
         val ids = questions.map { it.id }.toSet()
         if ("dish" in ids || "mode" in ids) return AskArea.FOOD
         if ("service" in ids || "special" in ids) return AskArea.SPA
         if ("activity" in ids || "vibe" in ids || "artist" in ids) return AskArea.ENTERTAINMENT
-        if ("date" in ids || "origin" in ids || "transport" in ids) return AskArea.TRAVEL
-        if ("line" in ids || "must" in ids || "condition" in ids || "purpose" in ids) return AskArea.SHOPPING
+        // R28 (web 01/10): `dest` = «Bay đến đâu?», `device` = «Dùng cho iPhone nào?» (accessory shopping).
+        if ("date" in ids || "origin" in ids || "transport" in ids || "dest" in ids) return AskArea.TRAVEL
+        if ("line" in ids || "must" in ids || "condition" in ids || "purpose" in ids || "device" in ids) return AskArea.SHOPPING
         questions.firstOrNull { it.id == "style" }?.let { style ->
-            val spa = Regex("\\b(?:massage|toan than|vai gay|da nong|nail|son gel|dinh da|dap bot|mong|toc|cat|uon|nhuom|phuc hoi|goi)\\b")
-            return if (style.options.any { spa.containsMatchIn(fold(it)) }) AskArea.SPA else AskArea.TRAVEL
+            if (style.options.any { SPA_WORDS.containsMatchIn(fold(it)) }) return AskArea.SPA
         }
         // A hotel ask that already knows the dates carries only party / budget per night.
         if (questions.any { q ->
@@ -57,6 +68,8 @@ object AskCardModel {
         ) return AskArea.TRAVEL
         return AskArea.MAIN
     }
+
+    private val SPA_WORDS = Regex("\\b(?:massage|toan than|vai gay|da nong|nail|son gel|dinh da|dap bot|mong|toc|cat|uon|nhuom|phuc hoi|goi)\\b")
 
     private val TYPE_IDS = setOf("style", "type", "kind", "activity", "genre", "artist", "cuisine", "category", "loai", "mon", "product", "dish", "service")
     private val PARTY_IDS = setOf("party", "people", "group", "pax")
@@ -158,7 +171,7 @@ object AskCardModel {
     /** The chosen options (a multi-choice question's picks in the card's option order, ", ") + free text, " · ". */
     fun composeAnswer(views: List<AskQuestionView>, chosen: Map<String, Set<String>>, free: String = ""): String {
         val parts = views.mapNotNull { v ->
-            v.options.map { it.label }.filter { it in chosen[v.id].orEmpty() }.takeIf { it.isNotEmpty() }?.joinToString(", ")
+            v.options.map { it.label }.filter { it in chosen[v.id].orEmpty() }.distinct().takeIf { it.isNotEmpty() }?.joinToString(", ")
         }
         val extra = free.trim()
         return (parts + listOfNotNull(extra.takeIf { it.isNotEmpty() })).joinToString(" · ")

@@ -57,37 +57,76 @@ object ChatStreamFrames {
         return runCatching { json.decodeFromString<String>(stripped.removePrefix("3:")) }.getOrDefault("")
     }
 
-    fun parse(line: String): ChatStreamEvent? {
+    /** A `d:` (finish) or `3:` (error) frame — the two ways the route ends a data stream (web `streamCut.ts`: `/^(?:d|3):/`). */
+    fun isEndFrame(line: String): Boolean {
+        val stripped = if (line.startsWith("data: ")) line.removePrefix("data: ") else line
+        return stripped.startsWith("d:") || stripped.startsWith("3:")
+    }
+
+    /** The first event of a line (the callers from before A3); [events] reads them all. */
+    fun parse(line: String): ChatStreamEvent? = events(line).firstOrNull()
+
+    /**
+     * Every event of one stream line, in order. A3 (02/11, the one-brain stream): an `8:` array can carry several annotations at once
+     * (progress + the research card, …), so each element is read; `9:` / `a:` are the tool call and its result (the web's tool hint).
+     */
+    fun events(line: String): List<ChatStreamEvent> {
         val stripped = if (line.startsWith("data: ")) line.removePrefix("data: ") else line
         if (stripped.startsWith("0:")) {
-            return runCatching {
+            return listOfNotNull(runCatching {
                 ChatStreamEvent.Text(json.decodeFromString<String>(stripped.removePrefix("0:")))
-            }.getOrNull()
+            }.getOrNull())
+        }
+        if (stripped.startsWith("9:") || stripped.startsWith("a:")) {
+            return listOfNotNull(runCatching {
+                val obj = json.parseToJsonElement(stripped.substring(2)) as? JsonObject ?: return@runCatching null
+                val id = obj["toolCallId"]?.jsonPrimitive?.contentOrNull ?: return@runCatching null
+                if (stripped[0] == 'a') ChatStreamEvent.ToolResult(id)
+                else ChatStreamEvent.ToolCall(id, obj["toolName"]?.jsonPrimitive?.contentOrNull ?: return@runCatching null)
+            }.getOrNull())
         }
         if (stripped.startsWith("8:")) {
-            return runCatching {
-                // Each element is gated on its own `kind`: a frame this version does not know is
-                // skipped, and a known one is decoded by its own shape — a progress element has no
-                // `items`, so decoding the whole array as place views would drop the place view too.
-                val root = json.parseToJsonElement(stripped.removePrefix("8:")).jsonArray
-                var event: ChatStreamEvent? = null
-                for (element in root) {
-                    val obj = element as? JsonObject ?: continue
-                    when (obj["kind"]?.jsonPrimitive?.contentOrNull) {
-                        PLACES_ANNOTATION_KIND -> {
-                            val view = json.decodeFromJsonElement<PlacesLiveView>(obj)
-                            if (view.items.isNotEmpty()) { event = ChatStreamEvent.Places(view); break }
-                        }
+            val root = runCatching { json.parseToJsonElement(stripped.removePrefix("8:")).jsonArray }.getOrNull() ?: return emptyList()
+            // Each element is gated on its own `kind` (or `type`, the research frames): a frame this version does not know is skipped,
+            // and a known one is decoded by its own shape — a progress element has no `items`, so decoding the whole array as place views
+            // would drop the place view too. A malformed element is dropped on its own.
+            return root.mapNotNull { element ->
+                val obj = element as? JsonObject ?: return@mapNotNull null
+                runCatching {
+                    when (obj["kind"]?.jsonPrimitive?.contentOrNull ?: obj["type"]?.jsonPrimitive?.contentOrNull) {
+                        PLACES_ANNOTATION_KIND -> json.decodeFromJsonElement<PlacesLiveView>(obj).takeIf { it.items.isNotEmpty() }?.let { ChatStreamEvent.Places(it) }
                         PROGRESS_ANNOTATION_KIND -> {
                             val text = obj["text"]?.jsonPrimitive?.contentOrNull.orEmpty()
                             val stage = obj["stage"]?.jsonPrimitive?.contentOrNull.orEmpty()
-                            if (text.isNotBlank()) { event = ChatStreamEvent.Progress(stage, text); break }
+                            if (text.isNotBlank()) ChatStreamEvent.Progress(stage, text) else null
                         }
+                        OneBrainFrames.RESEARCH_TYPE -> OneBrainFrames.research(obj)?.let { ChatStreamEvent.Research(it) }
+                        OneBrainFrames.CHARTS_TYPE -> OneBrainFrames.charts(obj).takeIf { it.isNotEmpty() }?.let { ChatStreamEvent.Charts(it) }
+                        OneBrainFrames.DOC_MEDIA_KIND -> OneBrainFrames.docMedia(obj).takeIf { it.isNotEmpty() }?.let { ChatStreamEvent.DocMedia(it) }
+                        OneBrainFrames.TURN_STATUS_KIND -> OneBrainFrames.turnStatus(obj)?.let { ChatStreamEvent.TurnStatus(it) }
+                        else -> null
                     }
-                }
-                event
-            }.getOrNull()
+                }.getOrNull()
+            }
         }
-        return null
+        return emptyList()
     }
+}
+
+/**
+ * Tracks how one `/api/chat` body ended. A reply that closed cleanly after at least one line but with
+ * neither a `d:` nor a `3:` frame is a CUT reply (web `watchStreamCut`, `src/lib/chat/streamCut.ts`):
+ * [cut] is false for an empty body, and an aborted call or a network error never reaches the end of the
+ * loop, so neither is reported as a cut.
+ */
+class ChatStreamEnd {
+    private var sawAny = false
+    private var finished = false
+
+    fun feed(line: String) {
+        sawAny = true
+        if (ChatStreamFrames.isEndFrame(line)) finished = true
+    }
+
+    val cut: Boolean get() = sawAny && !finished
 }

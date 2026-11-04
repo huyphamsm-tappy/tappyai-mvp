@@ -15,7 +15,7 @@
     <string name="membership_upgrade_cta">Nâng cấp lên Pro — %1$s/tháng</string>
     <string name="membership_pro_subscription_feature_name">Gói Pro</string>
     <string name="membership_faq_title">Câu hỏi thường gặp</string>
-    <string name="membership_free_feature_messages">15 tin nhắn / ngày</string>
+    <string name="membership_free_feature_messages">10 tin nhắn / ngày</string>
     <string name="membership_free_feature_search">Tìm kiếm địa điểm cơ bản</string>
     <string name="membership_free_feature_history">Lưu lịch sử 7 ngày</string>
     <string name="membership_pro_feature_messages">Tin nhắn không giới hạn</string>

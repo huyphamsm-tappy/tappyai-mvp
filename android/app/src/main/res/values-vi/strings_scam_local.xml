@@ -1,0 +1,76 @@
+<resources>
+    <!-- Lá chắn lừa đảo — kết quả tạo NGAY TRÊN MÁY. Chữ CHÉP ĐÚNG từ web `src/lib/i18n/scamVerdict.ts` + `scamQr.ts`
+         (origin/rc/web-uat @ 56a26ae, docs/uat/SCAM-SHIELD-PARITY.md §8). Chữ chỉ đổi khi web đổi. -->
+
+    <!-- Ba trạng thái cho TIN NHẮN — KHÔNG BAO GIỜ «An toàn», không điểm số, không «Độ tin cậy» -->
+    <string name="scam_verdict_familiar">Có dấu hiệu lừa đảo quen thuộc</string>
+    <string name="scam_verdict_suspicious">Có một số dấu hiệu đáng ngờ</string>
+    <string name="scam_verdict_unrecognized">Chưa nhận ra dấu hiệu quen thuộc</string>
+    <string name="scam_verdict_familiar_body">Nội dung này giống một thủ đoạn lừa đảo đã được cơ quan chức năng cảnh báo. Đừng làm theo yêu cầu trong đó.</string>
+    <string name="scam_verdict_suspicious_body">Chưa đủ để kết luận, nhưng bạn nên dừng lại và xác minh qua kênh chính thức trước khi làm bất cứ điều gì.</string>
+    <string name="scam_verdict_unrecognized_body">Điều này KHÔNG có nghĩa là an toàn: đừng chuyển tiền, đừng đọc mã OTP, đừng bấm link lạ; hãy xác minh qua kênh chính thức.</string>
+
+    <!-- Ba trạng thái cho LINK (và link đọc từ QR) -->
+    <string name="scam_verdict_link_familiar_title">Đường link có đặc điểm thường gặp ở link giả mạo</string>
+    <string name="scam_verdict_link_suspicious_title">Đường link có một số điểm đáng ngờ</string>
+    <string name="scam_verdict_link_unrecognized_title">Chưa nhận ra dấu hiệu quen thuộc ở đường link này</string>
+    <string name="scam_verdict_link_familiar_body">Đây là nhận định về đặc điểm của đường link, không phải kết luận về một tổ chức hay tên miền cụ thể. Đừng đăng nhập, đừng nhập OTP hay thông tin thẻ trên trang này.</string>
+    <string name="scam_verdict_link_suspicious_body">Chưa đủ để kết luận. Đừng nhập thông tin cá nhân hay mã OTP; hãy tự mở website hoặc ứng dụng chính thức.</string>
+    <string name="scam_verdict_reasons">Lý do cụ thể</string>
+    <!-- Nhãn ngắn trong danh sách lịch sử trên máy (chỉ link) -->
+    <string name="scam_verdict_link_short_familiar">Đặc điểm link giả mạo</string>
+    <string name="scam_verdict_link_short_suspicious">Có điểm đáng ngờ</string>
+    <string name="scam_verdict_link_short_unrecognized">Chưa nhận ra dấu hiệu</string>
+
+    <!-- Luôn in dưới mọi kết quả -->
+    <string name="scam_verdict_disclaimer">TappyAI không thay thế cơ quan chức năng.</string>
+
+    <!-- Tình huống khớp (trạng thái quen thuộc / đáng ngờ khi có khớp) -->
+    <string name="scam_verdict_scenario_heading">Tình huống tương ứng</string>
+    <string name="scam_verdict_scenario_number">Kịch bản số %1$d trong danh sách của Bộ Công an</string>
+    <string name="scam_verdict_scenario_report">Báo ngay cho Công an nơi gần nhất hoặc gọi 0692.345.860 nếu nghi ngờ bị lừa.</string>
+
+    <!-- Tab tin nhắn -->
+    <string name="scam_verdict_msg_subtitle">Dán tin nhắn hoặc mô tả ngắn tình huống đáng ngờ. TappyAI đối chiếu với các tình huống lừa đảo đã được Bộ Công an cảnh báo.</string>
+    <string name="scam_verdict_msg_privacy">Đối chiếu bằng danh sách tình huống và quy tắc có sẵn: không dùng AI, không lưu nội dung tin nhắn.</string>
+
+    <!-- Chia sẻ kết quả: văn bản thường, KHÔNG kèm tin gốc hay nội dung mã -->
+
+    <!-- QR KHÔNG phải link -->
+    <string name="scam_qr_title">Mã QR này không chứa đường link web</string>
+    <string name="scam_qr_kind_payment">Loại mã: thanh toán</string>
+    <string name="scam_qr_kind_wifi">Loại mã: Wi-Fi</string>
+    <string name="scam_qr_kind_contact">Loại mã: danh bạ (thẻ liên hệ)</string>
+    <string name="scam_qr_kind_phone">Loại mã: số điện thoại</string>
+    <string name="scam_qr_kind_sms">Loại mã: tin nhắn SMS</string>
+    <string name="scam_qr_kind_email">Loại mã: email</string>
+    <string name="scam_qr_kind_geo">Loại mã: vị trí</string>
+    <string name="scam_qr_kind_app_link">Loại mã: liên kết mở ứng dụng</string>
+    <string name="scam_qr_kind_text">Loại mã: văn bản</string>
+    <string name="scam_qr_warn_payment">TappyAI không tự thanh toán. Chỉ trả tiền khi chính bạn biết rõ người nhận và số tiền; đừng quét mã thanh toán do người lạ gửi.</string>
+    <string name="scam_qr_warn_wifi">TappyAI không tự kết nối Wi-Fi. Mã lạ có thể dẫn vào mạng giả mạo.</string>
+    <string name="scam_qr_warn_contact">TappyAI không tự lưu vào danh bạ của bạn.</string>
+    <string name="scam_qr_warn_phone">TappyAI không tự gọi. Kẻ lừa đảo hay dùng số lạ — đừng gọi lại nếu bạn không chắc.</string>
+    <string name="scam_qr_warn_sms">TappyAI không tự nhắn tin.</string>
+    <string name="scam_qr_warn_email">TappyAI không tự gửi email.</string>
+    <string name="scam_qr_warn_geo">TappyAI không tự mở bản đồ.</string>
+    <string name="scam_qr_warn_app_link">Đây là liên kết mở một ứng dụng khác. TappyAI không tự mở nó; chỉ mở nếu bạn tin người gửi.</string>
+    <string name="scam_qr_warn_text">Nội dung này chưa được kiểm tra. Đừng làm theo hướng dẫn trong đó nếu bạn không chắc.</string>
+    <string name="scam_qr_content">Nội dung đọc được</string>
+    <string name="scam_qr_privacy">Ảnh QR được đọc ngay trên thiết bị của bạn và không được tải lên máy chủ.</string>
+    <string name="scam_qr_no_verdict">TappyAI chưa kiểm tra nội dung này. Đừng làm theo hướng dẫn trong đó nếu bạn không chắc; hãy xác minh qua kênh chính thức.</string>
+
+    <!-- Chỉ dùng khi cờ AI phân tích tin nhắn BẬT (hiện TẮT) -->
+
+    <!-- Tình huống khớp (web `scamVerdict.scenario.*`) -->
+    <string name="scam_verdict_scenario_signs">Dấu hiệu nhận biết (theo bài viết)</string>
+    <string name="scam_verdict_scenario_source">Thông tin từ nguồn chính thức</string>
+    <string name="scam_verdict_scenario_source_open">Xem bài viết gốc</string>
+    <string name="scam_verdict_scenario_guidance_note">Phần dấu hiệu và lời khuyên do TappyAI biên soạn từ nguồn chính thức, không phải trích dẫn nguyên văn.</string>
+
+    <!-- Chia sẻ kết quả kiểm LINK (web `share.scam.*`, `share.publishFailed`) -->
+    <string name="scam_share_button">Cảnh báo cho mọi người</string>
+    <string name="scam_share_hint">Tạo trang công khai với kết quả kiểm tra để gửi vào nhóm Zalo, Messenger…</string>
+    <string name="scam_share_title">Kiểm tra lừa đảo: %1$s — TappyAI</string>
+    <string name="scam_share_failed">Không thể tạo liên kết lúc này</string>
+</resources>

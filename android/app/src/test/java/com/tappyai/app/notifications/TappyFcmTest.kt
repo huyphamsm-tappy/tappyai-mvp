@@ -169,7 +169,7 @@ class TappyFcmTest {
     @Test
     fun `the device registers on consent, not at app start`() {
         val src = viewModel.readText()
-        assertTrue(src.contains("if (enabled) registerDevice()"))
+        assertTrue(src.substringAfter("if (enabled) {").substringBefore("return").contains("registerDevice()"))
         assertTrue("must not register on construction", !src.contains("init {"))
     }
 

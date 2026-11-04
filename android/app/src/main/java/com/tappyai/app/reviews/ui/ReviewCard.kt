@@ -29,7 +29,9 @@ import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.ChatBubble
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Block
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.outlined.ChatBubbleOutline
@@ -102,6 +104,10 @@ fun ReviewCard(
     onDelete: () -> Unit,
     onHide: () -> Unit,
     modifier: Modifier = Modifier,
+    /** "Báo cáo" in the rail's menu on SOMEONE ELSE's post (Play UGC policy). Null hides it. */
+    onReport: (() -> Unit)? = null,
+    /** "Chặn người dùng" in the same menu — non-null only when the server supports blocking. */
+    onBlockAuthor: (() -> Unit)? = null,
     /**
      * ✦ Hỏi Tappy (reference design): opens Chat pre-filled with a question about THIS clip —
      * the web's `/chat?q=` bridge (`bridge.promptEntity`, AskTappyButton.tsx). Null hides it.
@@ -206,6 +212,8 @@ fun ReviewCard(
             onSave = onSave,
             onDelete = onDelete,
             onHide = onHide,
+            onReport = onReport,
+            onBlockAuthor = onBlockAuthor,
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(end = 12.dp, bottom = bottomClearance + 56.dp),
@@ -386,6 +394,8 @@ private fun ReviewActionRail(
     onSave: () -> Unit,
     onDelete: () -> Unit,
     onHide: () -> Unit,
+    onReport: (() -> Unit)?,
+    onBlockAuthor: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -435,6 +445,8 @@ private fun ReviewActionRail(
             onSave = onSave,
             onDelete = onDelete,
             onHide = onHide,
+            onReport = onReport,
+            onBlockAuthor = onBlockAuthor,
         )
     }
 }
@@ -572,6 +584,8 @@ private fun RailMore(
     onSave: () -> Unit,
     onDelete: () -> Unit,
     onHide: () -> Unit,
+    onReport: (() -> Unit)?,
+    onBlockAuthor: (() -> Unit)?,
 ) {
     var expanded by remember { mutableStateOf(false) }
     Box {
@@ -597,6 +611,21 @@ private fun RailMore(
                     text = { Text(stringResource(R.string.reviews_overflow_delete_post), color = LikeRed) },
                     leadingIcon = { Icon(Icons.Filled.Delete, contentDescription = null, tint = LikeRed) },
                     onClick = { expanded = false; onDelete() },
+                )
+            }
+            // Someone else's post: report it, and (only where the server supports it) block its author.
+            if (!isMe && onReport != null) {
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.safety_report_action)) },
+                    leadingIcon = { Icon(Icons.Filled.Flag, contentDescription = null) },
+                    onClick = { expanded = false; onReport() },
+                )
+            }
+            if (!isMe && onBlockAuthor != null) {
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.safety_block_action), color = LikeRed) },
+                    leadingIcon = { Icon(Icons.Filled.Block, contentDescription = null, tint = LikeRed) },
+                    onClick = { expanded = false; onBlockAuthor() },
                 )
             }
         }

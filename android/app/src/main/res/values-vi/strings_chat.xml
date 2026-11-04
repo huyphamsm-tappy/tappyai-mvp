@@ -80,26 +80,9 @@
     <string name="chat_age_declaration_adult">Tôi đủ 18 tuổi</string>
     <string name="chat_error_login_required">Đăng nhập để tiếp tục trò chuyện với Tappy nhé!</string>
 
-    <string name="chat_followup_food_1">Tìm quán khác</string>
-    <string name="chat_followup_food_2">Xem giá menu</string>
-    <string name="chat_followup_food_3">Đặt bàn trước</string>
-    <string name="chat_followup_travel_1">Lịch trình chi tiết</string>
-    <string name="chat_followup_travel_2">Tìm khách sạn</string>
-    <string name="chat_followup_travel_3">Vé máy bay</string>
-    <string name="chat_followup_shopping_1">So sánh giá</string>
-    <string name="chat_followup_shopping_2">Tìm cửa hàng</string>
-    <string name="chat_followup_shopping_3">Xem review</string>
-    <string name="chat_followup_entertainment_1">Xem giờ chiếu</string>
-    <string name="chat_followup_entertainment_2">Đặt vé ngay</string>
-    <string name="chat_followup_entertainment_3">Xem thêm</string>
-    <string name="chat_followup_spa_1">Xem bảng giá</string>
-    <string name="chat_followup_spa_2">Đặt lịch</string>
-    <string name="chat_followup_spa_3">Xem review</string>
-    <string name="chat_followup_general_1">Hỏi thêm</string>
-    <string name="chat_followup_general_2">Tìm thêm</string>
-    <string name="chat_followup_general_3">Chủ đề khác</string>
 
     <string name="chat_action_copy">Sao chép</string>
+    <string name="chat_action_copied">Đã sao chép</string>
     <string name="chat_action_share">Chia sẻ</string>
     <string name="chat_share_chooser_title">Chia sẻ tin nhắn</string>
     <string name="chat_action_like">Thích</string>
@@ -107,6 +90,9 @@
     <string name="chat_action_read_aloud">Đọc to</string>
     <string name="chat_action_stop_read_aloud">Dừng đọc</string>
     <string name="chat_action_regenerate">Tạo lại</string>
+    <string name="chat_stream_cut">Câu trả lời bị ngắt giữa chừng. Bạn thử lại nhé?</string>
+    <string name="chat_stream_cut_retry">Trả lời lại</string>
+    <string name="chat_ai_disclaimer">Tappy có thể mắc lỗi. Vui lòng kiểm tra lại thông tin quan trọng.</string>
     <string name="chat_action_more">Thêm</string>
     <string name="chat_more_copy_plaintext">Sao chép văn bản thuần</string>
     <string name="chat_more_copy_id">Sao chép ID</string>
@@ -137,6 +123,8 @@
     <string name="shopping_decision_match_different">Khác cấu hình</string>
     <string name="shopping_decision_match_unknown">Chưa rõ cấu hình</string>
     <string name="shopping_decision_no_price">chưa rõ giá</string>
+    <string name="shopping_rating_line">★ %1$s · %2$s đánh giá</string>
+    <string name="shopping_rating_only">★ %1$s</string>
     <string name="shopping_decision_unknown_seller">Người bán chưa rõ</string>
     <string name="shopping_decision_trade_off">Đánh đổi</string>
     <string name="shopping_decision_conditional">Tùy nhu cầu của bạn.</string>
@@ -310,6 +298,7 @@
     <string name="chat_plan_v2_overview">Tổng quan</string>
     <string name="chat_plan_v2_highlights">Điểm nổi bật</string>
     <string name="chat_plan_v2_no_price">chưa có giá — hỏi quán</string>
+    <string name="chat_plan_v2_total_estimate">Tổng ước tính</string>
     <string name="chat_plan_v2_full_cta">Xem kế hoạch đầy đủ trên Tappy</string>
     <string name="chat_plan_v2_made_by">Được tạo bởi TAPPY</string>
     <string name="auth_callback_refused">Liên kết đăng nhập không hợp lệ hoặc đã hết hạn. Vui lòng đăng nhập lại trong ứng dụng.</string>
@@ -336,4 +325,49 @@
     <string name="ask_v2_sub_spa">Chọn nhanh vài thứ, Tappy sẽ tìm chỗ hợp nhất.</string>
     <string name="ask_v2_example_spa">Ví dụ: kỹ thuật viên nữ, phòng riêng...</string>
     <string name="ask_v2_example_main">Ví dụ: gần nhà, giá vừa phải...</string>
+    <!-- A2 (02/11): các chế độ trả lời, đúng chữ của web (src/lib/i18n/v3/structuredAi.ts mode.*) -->
+    <string name="chat_mode_menu">Chọn chế độ</string>
+    <string name="chat_mode_off">Tắt chế độ</string>
+    <string name="chat_mode_chat">Trả lời nhanh</string>
+    <string name="chat_mode_chat_hint">Trả lời ngay, không suy nghĩ lâu</string>
+    <string name="chat_mode_web">Tìm web</string>
+    <string name="chat_mode_web_hint">Tra cứu nhiều nguồn, có link và ngày</string>
+    <string name="chat_mode_think">Suy nghĩ</string>
+    <string name="chat_mode_think_hint">Trả lời kỹ cho câu khó, chậm hơn</string>
+    <string name="chat_mode_deep">Nghiên cứu sâu</string>
+    <string name="chat_mode_deep_hint">Lập kế hoạch, đọc nhiều nguồn, viết báo cáo (1–3 phút)</string>
+    <!-- A3 (02/11): công cụ đang chạy, đúng TOOL_HINTS của web (ChatInterface.tsx) -->
+    <string name="chat_tool_search_places">🔎 Đang tìm địa điểm…</string>
+    <string name="chat_tool_search_products">🛍️ Đang tìm sản phẩm…</string>
+    <string name="chat_tool_weather">⛅ Đang xem thời tiết…</string>
+    <string name="chat_tool_gold">🪙 Đang tra giá vàng…</string>
+    <string name="chat_tool_flights">✈️ Đang tìm vé máy bay…</string>
+    <string name="chat_tool_hotels">🏨 Đang tìm khách sạn…</string>
+    <string name="chat_tool_transport">🚗 Đang tìm cách di chuyển…</string>
+    <string name="chat_tool_news">📰 Đang đọc tin tức…</string>
+    <string name="chat_tool_web_search">🌐 Đang tìm trên web…</string>
+    <string name="chat_tool_price_watch">🔔 Đang đặt theo dõi giá…</string>
+    <!-- A4 (02/11): trạng thái lượt từ máy chủ (tappy.turn_status.v1), đúng chữ của web (src/lib/i18n/w5/chatResilience.ts) -->
+    <string name="chat_turn_incomplete">Câu trả lời có thể chưa đầy đủ. Bạn hỏi tiếp để mình viết thêm nhé.</string>
+    <string name="chat_turn_interrupted">Câu trả lời bị gián đoạn giữa chừng. Phần trên là những gì đã nhận được — bạn có thể hỏi lại.</string>
+    <!-- A5 (02/11): thẻ Nghiên cứu sâu, đúng chữ của web (research.*) -->
+    <string name="chat_research_planning">Đang lập kế hoạch nghiên cứu…</string>
+    <string name="chat_research_researching">Đang nghiên cứu · %1$d nguồn</string>
+    <string name="chat_research_writing">Đang viết báo cáo · %1$d nguồn</string>
+    <string name="chat_research_done">Đã nghiên cứu xong · %1$d nguồn</string>
+    <string name="chat_tts_pause">Tạm dừng đọc</string>
+    <string name="chat_tts_play">Đọc tiếp</string>
+    <string name="chat_tts_back">Lùi 15 giây</string>
+    <string name="chat_tts_forward">Tua tới 15 giây</string>
+    <string name="chat_tts_speed">Đổi tốc độ đọc</string>
+    <string name="chat_research_saved">Đã lưu báo cáo</string>
+    <string name="chat_research_save_failed">Không lưu được báo cáo. Hãy thử lại hoặc chọn nơi lưu khác.</string>
+    <string name="chat_research_failed">Không hoàn thành được nghiên cứu</string>
+    <string name="chat_research_sources">Nguồn</string>
+    <string name="chat_research_download">Tải báo cáo:</string>
+    <!-- 02/11: đính kèm, đúng chữ của web (composer.attach*, attach.*) -->
+    <string name="chat_attach">Thêm ảnh &amp; tệp PDF</string>
+    <string name="chat_attach_hint">Ảnh chụp, ảnh màn hình, PDF tới 3 MB</string>
+    <string name="chat_attach_unsupported">Tappy đọc được ảnh (PNG, JPG, WEBP, GIF) và tệp PDF.</string>
+    <string name="chat_attach_pdf_too_large">Tệp PDF lớn hơn 3 MB, Tappy chưa đọc được. Bạn thử gửi tệp nhỏ hơn hoặc chỉ các trang cần hỏi.</string>
 </resources>

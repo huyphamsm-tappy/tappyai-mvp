@@ -47,6 +47,7 @@ class SettingsViewModel @Inject constructor(
     @ApplicationContext private val appContext: android.content.Context,
     private val appearance: AppearanceStore,
     private val deletionApi: AccountDeletionApi,
+    private val membership: com.tappyai.app.membership.data.MembershipRepository,
 ) : ViewModel() {
 
     // ── In-app account deletion (UAT3 P0) ────────────────────────────────────────────────────
@@ -58,11 +59,22 @@ class SettingsViewModel @Inject constructor(
     var selfDeleteEnabled by mutableStateOf(false)
         private set
 
+    /**
+     * R29: whether the account has an ACTIVE paid plan, from the data the app already reads (`GET /api/subscription`,
+     * the same source as the Premium badge). null = the app does not know (offline / not read yet) → the confirmation
+     * uses the generic plan line. No new field or endpoint.
+     */
+    var paidPlan by mutableStateOf<Boolean?>(null)
+        private set
+
     /** null = idle; otherwise the last answer (or [DeletePhase.InFlight]). */
     var deletePhase by mutableStateOf<DeletePhase?>(null)
         private set
 
     init {
+        viewModelScope.launch {
+            paidPlan = (membership.getStatus() as? NetworkResult.Success)?.data?.isPro
+        }
         viewModelScope.launch {
             selfDeleteEnabled = runCatching { deletionApi.config().flags.accountSelfDelete }
                 .onFailure { logger.e(TAG, "config read failed: ${it.javaClass.simpleName}") }

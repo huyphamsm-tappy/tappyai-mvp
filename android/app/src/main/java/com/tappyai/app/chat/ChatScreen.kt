@@ -82,14 +82,19 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.booleanResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -156,8 +161,12 @@ fun ChatScreen(
     val messages by viewModel.messages.collectAsStateWithLifecycle()
     val publicShareEnabled by viewModel.publicShareEnabled.collectAsStateWithLifecycle()
     val isResponding by viewModel.isAssistantResponding.collectAsStateWithLifecycle()
+    val chatMode by viewModel.mode.collectAsStateWithLifecycle()
+    val menuModes by viewModel.menuModes.collectAsStateWithLifecycle()
+    val streamCut by viewModel.streamCut.collectAsStateWithLifecycle()
     val streamingText by viewModel.streamingText.collectAsStateWithLifecycle()
     val streamingHint by viewModel.streamingHint.collectAsStateWithLifecycle()
+    val streamingResearch by viewModel.streamingResearch.collectAsStateWithLifecycle()
     val streamingPlaces by viewModel.streamingPlaces.collectAsStateWithLifecycle()
     val sharePublic by viewModel.sharePublic.collectAsStateWithLifecycle()
     // G1 share-out dialog — rendered at the screen level so it survives list recomposition.
@@ -225,8 +234,9 @@ fun ChatScreen(
     }
 
     val listState = rememberLazyListState()
-    LaunchedEffect(messages.size, isResponding) {
-        val itemCount = messages.size + if (isResponding) 1 else 0
+    LaunchedEffect(messages.size, isResponding, streamCut) {
+        // the "stream cut" card is the last item when the stream ended cut (it used to be left below the screen)
+        val itemCount = messages.size + (if (isResponding) 1 else 0) + (if (streamCut && !isResponding) 1 else 0)
         if (itemCount > 0) listState.animateScrollToItem(itemCount - 1)
     }
 
@@ -247,7 +257,8 @@ fun ChatScreen(
             }
         } else if (messages.isEmpty() && !isResponding) {
             WelcomeState(
-                category = viewModel.category,
+                // A7 (02/11): one welcome, the general Tappy's, whatever shortcut opened the chat (web: one welcome; one brain decides)
+                category = ChatCategory.General,
                 onMoodSelected = viewModel::onMoodSelected,
                 onQuickPromptSelected = viewModel::onQuickPromptSelected,
                 modifier = Modifier.weight(1f).fillMaxWidth(),
@@ -269,10 +280,13 @@ fun ChatScreen(
                         // User bubbles slide up on entry (web: animate-slide-up). Assistant replies
                         // are NOT re-animated on commit — they take over the streaming row's exact
                         // position seamlessly (only the cursor drops + actions/CTA fade in).
-                        TappyChatRole.User -> Box(modifier = Modifier.messageAppear()) {
+                        TappyChatRole.User -> Column(modifier = Modifier.fillMaxWidth().messageAppear(), horizontalAlignment = Alignment.End) {
                             TappyChatBubble(role = TappyChatRole.User) {
                             Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.xs)) {
-                                message.imageUri?.let { uri ->
+                                // 02/11: a PDF shows as its name (the server reads its text), a photo as itself
+                                if (message.imageUri != null && message.attachmentMime == com.tappyai.app.chat.data.PDF_MIME) {
+                                    Text("📄 ${message.attachmentName ?: "PDF"}", style = MaterialTheme.typography.labelLarge)
+                                } else message.imageUri?.let { uri ->
                                     TappyImage(
                                         url = uri.toString(),
                                         contentDescription = null,
@@ -284,6 +298,8 @@ fun ChatScreen(
                                 if (message.text.isNotBlank()) Text(message.text)
                             }
                             }
+                            // 01/11 (web UserMessageCopy): a copy button under every question the person sent, copying it exactly as typed
+                            UserMessageCopyButton(message.text)
                         }
                         TappyChatRole.Assistant -> Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -292,7 +308,7 @@ fun ChatScreen(
                         ) {
                           // Per-message mascot avatar (web parity: <TappyAvatar> beside each reply).
                           Image(
-                              painter = painterResource(viewModel.category.mascot),
+                              painter = painterResource(ChatCategory.General.mascot), // A7: the general Tappy
                               contentDescription = null,
                               modifier = Modifier
                                   .padding(top = 2.dp)
@@ -310,18 +326,28 @@ fun ChatScreen(
                             val segments = message.segments.ifEmpty {
                                 if (message.text.isNotBlank()) listOf(ReplySegment.Text(message.text)) else emptyList()
                             }
+                            // A5: the Deep Research card above its report (web: ResearchCard before the message content)
+                            message.research?.let { research -> ResearchCard(status = research, report = message.text, charts = message.charts) }
                             if (segments.isNotEmpty()) {
                                 TappyChatBubble(role = TappyChatRole.Assistant) {
                                     Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.xs)) {
-                                        segments.forEach { segment ->
-                                            when (segment) {
-                                                is ReplySegment.Text -> TappyMarkdown(segment.markdown)
-                                                is ReplySegment.Images -> ChatImageCarousel(segment.urls)
+                                        // A4: the answer's pictures and charts under the sections they name (web article layout)
+                                        val parts: List<Any> = remember(message) {
+                                            val placer = ArticlePlacer(message.docMedia, message.charts)
+                                            segments.flatMap { s -> if (s is ReplySegment.Text) placer.place(s.markdown) else listOf(s) }
+                                        }
+                                        parts.forEach { part ->
+                                            when (part) {
+                                                is ReplySegment.Images -> ChatImageCarousel(part.urls)
+                                                is ArticlePart.Markdown -> TappyMarkdown(part.text)
+                                                is ArticlePart.Picture -> ArticlePicture(part.item)
+                                                is ArticlePart.Chart -> ResearchChartView(part.chart)
                                             }
                                         }
                                     }
                                 }
                             }
+                            message.turnStatus?.let { TurnStatusLine(it) }
                             message.plan?.let { plan -> TripPlanCard(plan, planJson = message.planJson) }
                             // The place decision. Rendered only once generation is done, like every
                             // other structured block: a half-arrived card is not a card, and showing
@@ -333,9 +359,8 @@ fun ChatScreen(
                             // is never persisted, so a reopened conversation has only the durable
                             // block, which is exactly what that block exists for.
                             //
-                            // On a plan turn either projection can repeat venues the itinerary
-                            // above already presents; those are dropped (TravelPlaceFilter) so one
-                            // venue is one card. The projections themselves are untouched.
+                            // 02/11 (owner: no client filter the web does not have): the server's places are shown as it sent them,
+                            // also on a plan turn - the old client-side itinerary filter (TravelPlaceFilter) is gone, as on the web.
                             //
                             // Web parity (`ChatInterface.tsx`): a turn that carries a SHOPPING
                             // decision shows that card and not the places, and any model-written
@@ -344,10 +369,8 @@ fun ChatScreen(
                             val placeCards = if (message.shopping == null) {
                                 // Item 2: the model's picks first (renderOrder), engine order after.
                                 message.livePlaces?.renderOrder()
-                                    ?.let { livePlacesOutsideItinerary(message.plan, it) }
                                     ?.map { it.toCardView() }
-                                    ?: placesOutsideItinerary(message.plan, message.places)
-                                        .mapNotNull { it.toCardView() }
+                                    ?: message.places.mapNotNull { it.toCardView() }
                             } else emptyList()
                             val placesMapsUrl = message.livePlaces?.mapsSearchUrl
                             if (!isResponding) {
@@ -426,7 +449,7 @@ fun ChatScreen(
                             // aloud — play/pause, ±15s skip, elapsed + progress, speed, close.
                             if (speakingMessageId == message.id) {
                                 TtsPlayerBar(
-                                    mascot = viewModel.category.mascot,
+                                    mascot = ChatCategory.General.mascot,
                                     isPaused = viewModel.ttsIsPaused,
                                     speed = viewModel.ttsSpeed,
                                     elapsedSec = viewModel.ttsElapsedSec,
@@ -438,8 +461,8 @@ fun ChatScreen(
                                 )
                             }
                             // Save-place affordance (web SavePlaceButton) — appears when the reply
-                            // mentions a place; saves it to favorites.
-                            if (!isResponding && !message.isError) {
+                            // mentions a place (the web's replyHasSavablePlace); saves it to favorites.
+                            if (!isResponding && !message.isError && replyHasSavablePlace(message.text, message.ctaButtons, placeCards.isNotEmpty())) {
                                 SavePlaceButton(
                                     text = message.text,
                                     buttons = message.ctaButtons,
@@ -518,13 +541,44 @@ fun ChatScreen(
                 }
                 if (isResponding) {
                     item(key = "assistant-responding") {
+                        Column {
+                        // A5: the research card while the run streams (its steps tick as they finish)
+                        streamingResearch?.let { live -> ResearchCard(status = live, report = null, charts = emptyList(), modifier = Modifier.padding(start = 44.dp)) }
                         AssistantStreamingRow(
-                            mascot = viewModel.category.mascot,
+                            mascot = ChatCategory.General.mascot,
                             streamingText = streamingText,
                             hint = streamingHint,
                             places = streamingPlaces,
                             commerce = commerceCallbacks,
                         )
+                        }
+                    }
+                }
+                // A reply whose stream closed without its finish frame is half an answer: say so and offer to answer
+                // again (web ChatInterface `data-testid="stream-cut"`, same words as `chat.streamCut`/`chat.streamCutRetry`).
+                if (streamCut && !isResponding) {
+                    item(key = "stream-cut") {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(16.dp))
+                                .background(MaterialTheme.colorScheme.surfaceVariant)
+                                .padding(TappySpacing.lg),
+                            verticalArrangement = Arrangement.spacedBy(TappySpacing.sm),
+                        ) {
+                            Text(
+                                text = stringResource(R.string.chat_stream_cut),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                            TappyButton(
+                                text = stringResource(R.string.chat_stream_cut_retry),
+                                onClick = viewModel::onRegenerate,
+                                variant = TappyButtonVariant.Ghost,
+                                size = TappyButtonSize.Small,
+                                leadingIcon = { Icon(Icons.Filled.Refresh, contentDescription = null, modifier = Modifier.size(16.dp)) },
+                            )
+                        }
                     }
                 }
             }
@@ -537,8 +591,37 @@ fun ChatScreen(
             contract = ActivityResultContracts.RequestPermission(),
         ) { granted -> if (granted) viewModel.startVoiceInput(deferAutoSend = true) }
 
+        // 02/11: the "+" menu's «Thêm ảnh & tệp PDF» (web parity); the file's type, name and size come from the system, checked before staging
+        val attachPicker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+            if (uri != null) {
+                val resolver = context.contentResolver
+                var name: String? = null
+                var size: Long? = null
+                runCatching {
+                    resolver.query(uri, arrayOf(android.provider.OpenableColumns.DISPLAY_NAME, android.provider.OpenableColumns.SIZE), null, null, null)?.use { c ->
+                        if (c.moveToFirst()) { name = c.getString(0); size = if (c.isNull(1)) null else c.getLong(1) }
+                    }
+                }
+                val mime = resolver.getType(uri)
+                // review 01/11: a PDF whose provider reports no size is measured from its stream (a missing size was taken as 0 bytes)
+                if (size == null && mime == com.tappyai.app.chat.data.PDF_MIME) {
+                    size = runCatching { resolver.openInputStream(uri)?.use { countBytesUpTo(it, PDF_LIMIT_BYTES + 1) } }.getOrNull()
+                }
+                viewModel.onAttachmentPicked(uri, mime, name, size)
+            }
+        }
         viewModel.pendingImageUri?.let { uri ->
-            PendingImagePreview(uri = uri, onClear = viewModel::onClearPendingImage)
+            if (viewModel.pendingMime == com.tappyai.app.chat.data.PDF_MIME) {
+                Row(modifier = Modifier.padding(horizontal = TappySpacing.md, vertical = TappySpacing.sm), verticalAlignment = Alignment.CenterVertically) {
+                    Text("📄 ${viewModel.pendingName ?: "PDF"}", style = MaterialTheme.typography.labelLarge, modifier = Modifier.weight(1f, fill = false))
+                    IconButton(onClick = viewModel::onClearPendingImage) {
+                        Icon(Icons.Filled.Close, contentDescription = stringResource(R.string.chat_clear_pending_image), modifier = Modifier.size(16.dp))
+                    }
+                }
+            } else PendingImagePreview(uri = uri, onClear = viewModel::onClearPendingImage)
+        }
+        viewModel.attachError?.let { why ->
+            Text(why, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.error, modifier = Modifier.padding(horizontal = TappySpacing.md))
         }
 
         // Quick prompt chips (web parity: the 4 static action chips above the composer —
@@ -563,6 +646,11 @@ fun ChatScreen(
             onEmojiPicked = viewModel::onEmojiPicked,
             onSend = { withLocationPrompt(false) { viewModel.onSend() } },
             onStop = viewModel::onStop,
+            mode = chatMode,
+            menuModes = menuModes,
+            onModePicked = viewModel::onModeSelected,
+            onModeCleared = viewModel::onModeCleared,
+            onAttach = { attachPicker.launch(ATTACHABLE_TYPES) },
             isListening = isListening,
             onVoice = {
                 if (ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO)
@@ -573,6 +661,18 @@ fun ChatScreen(
                     audioPermission.launch(Manifest.permission.RECORD_AUDIO)
                 }
             },
+        )
+        // Web final 2a276ad (Phase 7 CP7): the global AI disclaimer is a UI contract rendered by the product itself, under the
+        // chat composer (`<AiDisclaimer className="mt-1.5" />` after the form) — never left to the model to say.
+        Text(
+            text = stringResource(R.string.chat_ai_disclaimer),
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = TappySpacing.xl)
+                .padding(top = 6.dp, bottom = TappySpacing.sm),
         )
     }
     }
@@ -818,6 +918,11 @@ private fun ChatComposer(
     onSend: () -> Unit,
     onStop: () -> Unit,
     onVoice: () -> Unit,
+    mode: ChatMode = ChatMode.Default,
+    menuModes: List<ChatMode> = ChatMode.menu,
+    onModePicked: (ChatMode) -> Unit = {},
+    onModeCleared: () -> Unit = {},
+    onAttach: (() -> Unit)? = null,
 ) {
     val canSend = input.isNotBlank() || hasPendingImage
     // Web parity: the composer's Smile button toggles an emoji panel; picking one inserts it
@@ -831,17 +936,19 @@ private fun ChatComposer(
                 onEmojiPicked(emoji)
             })
         }
+        ChatModeChip(
+            mode = mode,
+            onClear = onModeCleared,
+            modifier = Modifier.padding(start = TappySpacing.md, top = TappySpacing.sm),
+        )
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = TappySpacing.md, vertical = TappySpacing.sm),
             verticalAlignment = Alignment.Bottom,
-            horizontalArrangement = Arrangement.spacedBy(TappySpacing.xs),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            // Attach button hidden for MVP — AI Chat is text-only, matching the web
-            // (ChatInterface: "Camera button hidden for MVP"). The staged-image plumbing
-            // (pendingImageUri → preview → vision send) stays dormant like the web's hidden
-            // file input, so re-enabling is a one-button change on both platforms.
+            // 02/11: attaching is the "+" menu's first item, as on the web (a photo or a PDF; pendingImageUri → preview → send).
             // ── Vietnamese IME composition ───────────────────────────────────────────
             // The value lives HERE as a TextFieldValue, not as the ViewModel's String.
             //
@@ -854,6 +961,15 @@ private fun ChatComposer(
             //
             // Committed text is still pushed straight to the ViewModel, so send, voice, prefill and
             // persistence all keep reading exactly what they read before.
+            // A2: "+" opens the mode menu (web: the composer's "+" left of the textarea; attaching stays hidden, as above)
+            ChatModeMenuButton(
+                mode = mode,
+                modes = menuModes,
+                enabled = !isResponding,
+                container = if (MaterialTheme.colorScheme.background.luminance() < 0.5f) WebGray800 else WebGray100,
+                onPick = onModePicked,
+                onAttach = onAttach,
+            )
             var field by remember { mutableStateOf(TextFieldValue(input)) }
             // Only an EXTERNAL change resets the field — a voice transcript, a prefill, or the clear
             // after send. Comparing text (not the whole value) is what keeps this from stamping on
@@ -871,6 +987,7 @@ private fun ChatComposer(
                 singleLine = false,
                 maxLines = 6,
                 modifier = Modifier.weight(1f),
+                filled = true, // Web: `bg-gray-100 dark:bg-gray-800 rounded-2xl px-4 py-3` (no outline), focus ring primary-500/50
                 // Enter sends, exactly as the send arrow does and under the same gate — web
                 // parity (Enter sends, Shift+Enter breaks the line). While a reply is still
                 // arriving Enter does nothing, like the arrow that is a Stop button then.
@@ -878,12 +995,17 @@ private fun ChatComposer(
             )
             // Emoji toggle — sits between the input and the mic, mirroring the web control order
             // (textarea → emoji → mic → send). Tinted while the panel is open (web accent state).
-            IconButton(onClick = { showEmojiPanel = !showEmojiPanel }) {
+            val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+            val buttonBg = if (isDark) WebGray800 else WebGray100
+            ComposerSquareButton(
+                onClick = { showEmojiPanel = !showEmojiPanel },
+                container = if (showEmojiPanel) (if (isDark) WebAccent900.copy(alpha = 0.30f) else WebAccent100) else buttonBg,
+            ) {
                 Icon(
                     imageVector = Icons.Filled.Mood,
                     contentDescription = stringResource(R.string.chat_action_emoji),
-                    tint = if (showEmojiPanel) MaterialTheme.colorScheme.primary
-                    else MaterialTheme.colorScheme.onSurfaceVariant,
+                    tint = if (showEmojiPanel) WebAccent500 else MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.size(20.dp),
                 )
             }
             // Mic: while listening, it pulses red so the user can clearly tell recording is active
@@ -894,31 +1016,35 @@ private fun ChatComposer(
                 animationSpec = infiniteRepeatable(tween(600), RepeatMode.Reverse),
                 label = "mic-scale",
             )
-            IconButton(onClick = onVoice) {
+            // Web: `w-11 h-11 rounded-2xl`, gray-100/800 fill, the Mic icon #FF9500; listening = white mic on an orange fill.
+            ComposerSquareButton(onClick = onVoice, container = if (isListening) WebAccent500 else buttonBg) {
                 Icon(
                     imageVector = Icons.Filled.Mic,
                     contentDescription = stringResource(
                         if (isListening) R.string.chat_action_voice_stop else R.string.chat_action_voice_input,
                     ),
-                    tint = if (isListening) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = if (isListening) Modifier.scale(micPulse) else Modifier,
+                    tint = if (isListening) Color.White else WebAccent500,
+                    modifier = Modifier.size(18.dp).then(if (isListening) Modifier.scale(micPulse) else Modifier),
                 )
             }
             if (isResponding) {
-                IconButton(onClick = onStop) {
+                // Web: gray-200 / gray-700 fill, a 15px filled square in gray-700 / gray-200.
+                ComposerSquareButton(onClick = onStop, container = if (isDark) WebGray700 else WebGray200) {
                     Icon(
                         imageVector = Icons.Filled.Stop,
                         contentDescription = stringResource(R.string.chat_action_stop),
-                        tint = MaterialTheme.colorScheme.error,
+                        tint = if (isDark) WebGray200 else WebGray700,
+                        modifier = Modifier.size(15.dp),
                     )
                 }
             } else {
-                IconButton(onClick = onSend, enabled = canSend) {
+                // Web: `bg-interactive` (#0062CC), the Send icon white 18px, `disabled:opacity-40`.
+                ComposerSquareButton(onClick = onSend, enabled = canSend, container = WebInteractiveBlue) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.Send,
                         contentDescription = stringResource(R.string.chat_action_send),
-                        tint = if (canSend) MaterialTheme.colorScheme.primary
-                        else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+                        tint = Color.White,
+                        modifier = Modifier.size(18.dp),
                     )
                 }
             }
@@ -927,17 +1053,34 @@ private fun ChatComposer(
 }
 
 /**
- * The web action-chip palettes — tailwind LIGHT-mode values, verbatim: chip 1 primary-50/600/200
- * (tailwind.config.ts custom palette), chip 2 accent-50/600/200, chips 3–4 tailwind default
- * blue/green 50/600/200. The chat shell renders light on Android (only Reviews is dark), so the
- * dark variants are deliberately not ported.
+ * The web action-chip palettes, verbatim from `ChatInterface.tsx` @ Web final a43948d. Light: chip 1 primary-50/600/200
+ * (tailwind.config.ts custom palette), chip 2 accent-50/600/200, chips 3–4 tailwind default blue/green 50/600/200.
+ * Dark (`dark:bg-X-900/30 dark:text-X-400 dark:border-X-800`): the app is dark by default, and the light pastel chips on a dark
+ * chat were the one place the Android composer area did not look like the Web one (05/10 screenshot audit) — so the dark
+ * variants ARE ported now.
  */
 private data class ChipColors(val bg: Color, val fg: Color, val border: Color)
 
-private val ChipNearbyColors = ChipColors(Color(0xFFE5F1FF), Color(0xFF0062CC), Color(0xFF99C8FF))
-private val ChipTonightColors = ChipColors(Color(0xFFFFF4E5), Color(0xFFCC7700), Color(0xFFFFD399))
-private val ChipTripColors = ChipColors(Color(0xFFEFF6FF), Color(0xFF2563EB), Color(0xFFBFDBFE))
-private val ChipPriceColors = ChipColors(Color(0xFFF0FDF4), Color(0xFF16A34A), Color(0xFFBBF7D0))
+private data class ChipPalette(val light: ChipColors, val dark: ChipColors) {
+    fun forTheme(isDark: Boolean) = if (isDark) dark else light
+}
+
+private val ChipNearbyColors = ChipPalette(
+    light = ChipColors(Color(0xFFE5F1FF), Color(0xFF0062CC), Color(0xFF99C8FF)),
+    dark = ChipColors(Color(0xFF001833).copy(alpha = 0.30f), Color(0xFF3391FF), Color(0xFF003166)),
+)
+private val ChipTonightColors = ChipPalette(
+    light = ChipColors(Color(0xFFFFF4E5), Color(0xFFCC7700), Color(0xFFFFD399)),
+    dark = ChipColors(Color(0xFF331E00).copy(alpha = 0.30f), Color(0xFFFFA733), Color(0xFF663C00)),
+)
+private val ChipTripColors = ChipPalette(
+    light = ChipColors(Color(0xFFEFF6FF), Color(0xFF2563EB), Color(0xFFBFDBFE)),
+    dark = ChipColors(Color(0xFF1E3A8A).copy(alpha = 0.30f), Color(0xFF60A5FA), Color(0xFF1E40AF)),
+)
+private val ChipPriceColors = ChipPalette(
+    light = ChipColors(Color(0xFFF0FDF4), Color(0xFF16A34A), Color(0xFFBBF7D0)),
+    dark = ChipColors(Color(0xFF14532D).copy(alpha = 0.30f), Color(0xFF4ADE80), Color(0xFF166534)),
+)
 
 /**
  * The 4 static quick-prompt chips above the composer — a 1:1 port of the web's "Action chips" row
@@ -970,7 +1113,9 @@ private fun ChatActionChips(
             .padding(horizontal = TappySpacing.md, vertical = TappySpacing.sm),
         horizontalArrangement = Arrangement.spacedBy(TappySpacing.md), // web gap-2 = 8px
     ) {
-        chips.forEach { (labelRes, colors, action) ->
+        val isDark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+        chips.forEach { (labelRes, palette, action) ->
+            val colors = palette.forTheme(isDark)
             val (text, sends) = action
             Box(
                 modifier = Modifier
@@ -991,6 +1136,35 @@ private fun ChatActionChips(
             }
         }
     }
+}
+
+// Web composer tokens (tailwind.config.ts / globals.css @ a43948d): gray-100/200/700/800, accent-100/500/900, --interactive.
+private val WebGray100 = Color(0xFFF3F4F6)
+private val WebGray200 = Color(0xFFE5E7EB)
+private val WebGray700 = Color(0xFF374151)
+private val WebGray800 = Color(0xFF1F2937)
+private val WebAccent100 = Color(0xFFFFE9CC)
+private val WebAccent500 = Color(0xFFFF9500)
+private val WebAccent900 = Color(0xFF331E00)
+private val WebInteractiveBlue = Color(0xFF0062CC)
+
+/** Web composer button: `w-11 h-11 rounded-2xl` (44dp, 16dp corners) on a filled container; disabled = `opacity-40`. */
+@Composable
+private fun ComposerSquareButton(
+    onClick: () -> Unit,
+    container: Color,
+    enabled: Boolean = true,
+    content: @Composable () -> Unit,
+) {
+    Box(
+        modifier = Modifier
+            .size(44.dp)
+            .alpha(if (enabled) 1f else 0.4f)
+            .clip(RoundedCornerShape(16.dp))
+            .background(container)
+            .clickable(enabled = enabled, onClick = onClick),
+        contentAlignment = Alignment.Center,
+    ) { content() }
 }
 
 /**
@@ -1080,11 +1254,14 @@ private fun TtsPlayerBar(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(TappySpacing.sm), // gap-1.5 = 6px
     ) {
+        val ttsBack = stringResource(R.string.chat_tts_back)
+        val ttsForward = stringResource(R.string.chat_tts_forward)
+        val ttsSpeed = stringResource(R.string.chat_tts_speed)
         Image(painter = painterResource(mascot), contentDescription = null, modifier = Modifier.size(24.dp))
         IconButton(onClick = onPauseResume, modifier = Modifier.size(28.dp)) {
             Icon(
                 imageVector = if (isPaused) Icons.Filled.PlayArrow else Icons.Filled.Pause,
-                contentDescription = null,
+                contentDescription = stringResource(if (isPaused) R.string.chat_tts_play else R.string.chat_tts_pause),
                 modifier = Modifier.size(16.dp),
                 tint = MaterialTheme.colorScheme.onSurface,
             )
@@ -1094,14 +1271,18 @@ private fun TtsPlayerBar(
             style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.SemiBold,
             color = onSurfaceVariant,
-            modifier = Modifier.clip(RoundedCornerShape(6.dp)).clickable { onSkip(-15) }.padding(2.dp),
+            modifier = Modifier.clip(RoundedCornerShape(6.dp))
+                .semantics { contentDescription = ttsBack }
+                .clickable(role = Role.Button) { onSkip(-15) }.padding(2.dp),
         )
         Text(
             text = "15»",
             style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.SemiBold,
             color = onSurfaceVariant,
-            modifier = Modifier.clip(RoundedCornerShape(6.dp)).clickable { onSkip(15) }.padding(2.dp),
+            modifier = Modifier.clip(RoundedCornerShape(6.dp))
+                .semantics { contentDescription = ttsForward }
+                .clickable(role = Role.Button) { onSkip(15) }.padding(2.dp),
         )
         Text(
             text = formatMinSec(elapsedSec),
@@ -1132,7 +1313,8 @@ private fun TtsPlayerBar(
             modifier = Modifier
                 .clip(RoundedCornerShape(6.dp))
                 .background(MaterialTheme.colorScheme.surfaceVariant)
-                .clickable { onCycleSpeed() }
+                .semantics { contentDescription = ttsSpeed }
+                .clickable(role = Role.Button) { onCycleSpeed() }
                 .padding(horizontal = TappySpacing.sm, vertical = 2.dp)
                 .widthIn(min = 28.dp),
             textAlign = androidx.compose.ui.text.style.TextAlign.Center,

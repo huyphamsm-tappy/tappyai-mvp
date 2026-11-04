@@ -350,6 +350,64 @@ Huy quyết: cờ `ACCOUNT_SELF_DELETE_ENABLED` BẬT lúc release; bấm xoá t
 - Repo chỉ giữ RELEASE-PROGRESS.md (web) / tài liệu Android với đường dẫn `gs://…` hoặc
   `gs://tappyai-uat-evidence/evidence/<SHA>/…`.
 
+### Gửi phiên WEB từ Android (01/10 tối) — hai ca không có link ở tin cuối (KHÔNG sửa bên Android)
+Chạy trên UAT `03358ed`; Android PASS cả hai, phía web của e2e FAIL một kiểm: «nút/đường dẫn đúng loại trang — không có link trong tin nhắn cuối».
+1. `mua-he`: câu hỏi nguyên văn **«Mùa này đi du lịch ở đâu»** → thẻ hỏi (Chuyến đi thế nào đây?) → chọn «Biển · Cuối tuần 2N1Đ · TP.HCM» → tin trả lời cuối không có link vé/khách sạn. Log: `D:\TappyAI-backups\android-parity-evidence\overnight-2026-10-01\final-round\h2-mua-he.log`; ảnh: `C:\wtandroid\android\e2e\out\2026-10-01T09-43-52`.
+2. `snacks-then-q1`: câu 1 **«mua đồ ăn vặt»**, câu 2 **«tối nay đi đâu chơi quận 1»** → tin cuối không có link. Log `...\final-round\h2-snacks-then-q1.log`; ảnh `C:\wtandroid\android\e2e\out\2026-10-01T09-51-58`.
+Có thể câu trả lời đúng là không cần link (ví dụ gợi ý chỗ chơi) và kiểm của e2e quá chặt — web quyết.
+
+### Gửi phiên WEB từ Android (01/10 đêm) — App Links, bài kiểm tương đương, chặn người dùng (KHÔNG sửa bên Android)
+1. **`/.well-known/assetlinks.json` trên www.tappyai.com chỉ có MỘT mục: `package_name: com.tappyai.twa`, `sha256_cert_fingerprints: 19:3F:97:CF:83:36:96:F7:DA:70:E1:8E:69:31:D3:E4:81:12:E3:EA:BD:FB:B1:64:56:12:8B:44:31:2F:C3:A4`** (đọc bằng GET công khai 01/10 21:xx; header 200, Age ~6,5 giờ). Không có `com.tappyai.app` và không có chứng chỉ khoá ký của Play. Hệ quả: dù app khai `autoVerify`, Android KHÔNG xác minh được tên miền ⇒ mọi link `https://www.tappyai.com/...` (kể cả `/plan/…`, `/r/…`) chỉ mở trình duyệt, không mở app. Hiện app cũng chỉ khai bộ lọc `/r/` và để TẮT mặc định (`tappy_app_links_enabled`); chưa có bộ lọc cho `/plan/`, `/reviews/`, `/users/`.
+   **Việc web (khi muốn link mở vào app):** thêm vào mảng một mục nữa (giữ mục TWA cũ nếu còn dùng):
+   `{"relation":["delegate_permission/common.handle_all_urls"],"target":{"namespace":"android_app","package_name":"com.tappyai.app","sha256_cert_fingerprints":["F9:30:19:21:FC:D0:51:14:62:8B:13:E4:E3:99:69:B8:66:45:91:00:18:EB:87:AF:DC:99:F7:F2:6E:F7:24:2D","0B:D1:D9:0C:9C:27:1B:45:A1:74:66:08:5B:50:DD:EB:17:40:F3:C6:D4:79:DE:75:3F:5E:1A:17:EE:D9:46:73"]}}`
+   (hai SHA-256 là chứng chỉ KHOÁ KÝ của Play: cổ điển `F9:30:…` và hậu lượng tử `0B:D1:…`, chép tay từ Play Console → Tính toàn vẹn của ứng dụng; **Huy xác nhận lại từ trang đó trước khi web ghi**). Khoá TẢI LÊN `02:5B:35:4D:…` KHÔNG cần cho bản cài từ Play. Content-Type `application/json`, không redirect. Sau đó phía Android mới bật bộ lọc `/plan/`, `/r/`, `/reviews/` và xác minh bằng `adb shell pm get-app-links`.
+   Chưa giải thích được: SHA-256 `29:62:B4:…` ở mục Digital Asset Links của trang App signing trên Play không khớp `19:3F:97:…` (trên web) cũng không khớp `F9:30:…` (khoá ký hiện tại).
+2. **Bài kiểm tương đương xoá tài khoản (`src/lib/legal/accountDeleteCopyParity.test.ts`)**: thêm hai cặp (chữ Android đã có sẵn và đúng bằng web, em đã so từng ký tự vi + en 01/10): `['accountDelete.warn.lead','account_delete_warn_lead']`, `['accountDelete.warn.plan','account_delete_warn_plan']`.
+3. **Chính sách quyền riêng tư (`legal.ts`) lệch với app (đọc 01/10 đêm):** (a) mục 5 «Quyền của bạn» vẫn ghi xoá tài khoản «bằng cách liên hệ đội ngũ hỗ trợ» — khi cờ BẬT, app xoá NGAY trong Cài đặt → Khác → «Xóa tài khoản»; (b) ảnh bạn gửi cho trợ lý (đính kèm trong chat, Scan, Dịch) được app mã hoá base64 gửi lên máy chủ và tới OpenAI — mục 3 chỉ nêu «tin nhắn bạn gõ, tuỳ chọn, bộ nhớ AI, vị trí», chưa nêu ảnh; (c) mục 3 nhắc Stripe «nếu đăng ký gói trả phí» — app Android không bán gói (không Play Billing/Stripe), chỉ đúng với web.
+4. **Chặn người dùng / báo cáo người dùng (Phase 8)**: app Android (`684431f`, vc11) đã sẵn sàng; chỉ hiện nút khi `GET /api/config` có `p8: {reports, userBlocks, commentModeration}` = true. Cần: bật `P8_USER_BLOCKS`, `P8_REPORTS_V2`, áp `20260924_p8_user_blocks.sql` + `20260924_p8_reports_sanctions_audit.sql` trên production, và `/api/config` trả khối `p8` (phase8 `src/lib/p8/clientFlags.ts`). Lý do «Lừa đảo» của app được gửi tới `POST /api/reviews/{id}/report` dưới dạng `misinformation` vì danh sách `reportReasons.ts` không có `scam` (nên thêm `scam` ở web, rồi báo Android đổi ánh xạ).
+
+
+### App Links — đặc tả cho SAU release (chốt 02/10; KHÔNG làm trong AAB `597698b`)
+
+**Mục tiêu:** bấm link `https://www.tappyai.com/plan/<id>`, `/r/<slug>`, … từ Zalo/Chrome/Messenger với bản cài từ Google Play thì **mở thẳng trong app** (không qua trình duyệt). Hiện tại KHÔNG làm được vì hai lý do độc lập: (a) web chưa công bố đúng `assetlinks.json`; (b) app chưa có bộ lọc cho các đường đó (xem dưới). Chưa có (a) thì (b) vô ích; có (a) mà chưa có (b) thì link vẫn mở trình duyệt. Link không xác minh được chỉ mở trình duyệt, không hỏng.
+
+#### A. Phiên WEB — tệp `/.well-known/assetlinks.json` (www.tappyai.com)
+Hiện (đọc 01/10): một mục duy nhất `com.tappyai.twa`, SHA-256 `19:3F:97:CF:83:36:96:F7:DA:70:E1:8E:69:31:D3:E4:81:12:E3:EA:BD:FB:B1:64:56:12:8B:44:31:2F:C3:A4` (một app TWA cũ; web tự quyết còn giữ không). **Cần thêm** một mục cho app thật:
+```json
+{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.tappyai.app",
+    "sha256_cert_fingerprints": [
+      "F9:30:19:21:FC:D0:51:14:62:8B:13:E4:E3:99:69:B8:66:45:91:00:18:EB:87:AF:DC:99:F7:F2:6E:F7:24:2D",
+      "0B:D1:D9:0C:9C:27:1B:45:A1:74:66:08:5B:50:DD:EB:17:40:F3:C6:D4:79:DE:75:3F:5E:1A:17:EE:D9:46:73",
+      "02:5B:35:4D:1C:37:7B:DC:F3:D6:49:4A:71:8E:6B:2D:A4:56:2F:73:2B:CE:0A:42:11:9C:9B:09:37:74:5C:C7"
+    ]
+  }
+}
+```
+- Hai SHA-256 đầu = chứng chỉ **khoá ký của Google Play** (cổ điển `F9:30:19:…:24:2D` và hậu lượng tử `0B:D1:D9:…:46:73`), chép tay từ Play Console → Test and release → App integrity → App signing (em đọc 01/10). **Huy xác nhận lại từ trang đó trước khi web ghi** — sai một ký tự là không xác minh được.
+- SHA-256 thứ ba = chứng chỉ **khoá tải lên** (`02:5B:35:4D:…:5C:C7`, khớp chữ ký AAB). KHÔNG cần cho bản cài từ Play (Play ký lại bằng khoá ký); chỉ cần nếu muốn link cũng xác minh trên bản cài thẳng từ tệp ký bằng khoá tải lên (kiểm thử nội bộ).
+- **Vì sao:** Android so chứng chỉ của APK ĐANG CÀI với danh sách này. Bản Play mang chữ ký của khoá ký Play, không phải khoá tải lên — thiếu hai SHA-256 đầu thì mọi bộ lọc đều "chưa xác minh".
+- Yêu cầu máy chủ: HTTP 200 trực tiếp (không chuyển hướng), `Content-Type: application/json`, không cần đăng nhập/cookie/bypass, đúng tại `https://www.tappyai.com/.well-known/assetlinks.json` (và nếu dùng apex `tappyai.com` thì cũng cần tệp tại đó). Giữ trang `/plan/<id>` và `/r/<slug>` công khai như hiện nay.
+- Kiểm sau khi ghi: `curl -s https://www.tappyai.com/.well-known/assetlinks.json | jq` thấy mục `com.tappyai.app`; Google "Digital Asset Links API" (`https://digitalassetlinks.googleapis.com/v1/statements:list?source.web.site=https://www.tappyai.com&relation=delegate_permission/common.handle_all_urls`) liệt kê `com.tappyai.app`.
+
+#### B. Phiên ANDROID — bản cập nhật sau release (làm SAU khi web xong mục A)
+Hiện trạng (đọc 02/10): `AndroidManifest.xml` có `<activity-alias android:name=".PublicLinkActivity" android:enabled="@bool/tappy_app_links_enabled">` với `autoVerify="true"`, `https`, host `${tappyPublicHost}` (= `www.tappyai.com`), `pathPrefix="/r/"`; bật bằng `-PTAPPYAI_APP_LINKS_ENABLED=true` (`build.gradle.kts` dòng `resValue("bool","tappy_app_links_enabled", …)`), TẮT mặc định. Không có bộ lọc cho `/plan/`, `/reviews/`, `/users/`, `/group/`. `ShellDeepLink.destinationFor` chỉ ánh xạ `/chat/<conversationId>`; `/reviews/<id>` và `/deals/<id>` cố ý "không ánh xạ" (đích cấp đối tượng nằm trong đồ thị lồng của từng tab).
+Cần làm:
+1. Thêm bộ lọc `autoVerify` (cùng alias hoặc alias mới) cho host `www.tappyai.com`, `https`, các tiền tố: **`/plan/`** (kế hoạch được chia sẻ — đường quan trọng nhất), **`/r/`** (kết quả công khai, đã có), **`/reviews/`** (bài/clip), **`/users/`** (hồ sơ), **`/group/`** (nhóm chia hoá đơn; hiện `tappyai://group` đã có). Mỗi tiền tố một `<data android:pathPrefix=…>` trong CÙNG một `intent-filter` có `autoVerify`.
+2. Màn nhận: `/plan/<id>` → mở trang kế hoạch (thẻ kế hoạch đọc từ `GET /api/plan/<id>` hoặc mở Custom Tab như `PublicLinkOpener` nếu chưa có màn riêng); `/reviews/<id>` → `ReviewDetail`; `/users/<id>` → `AuthorProfile`; mở rộng `ShellDeepLink` + `PendingShellDestination` cho các đích này (cần đưa đích cấp đối tượng ra khỏi đồ thị lồng).
+3. Bật `TAPPYAI_APP_LINKS_ENABLED=true` trong build phát hành; đổi mặc định hoặc truyền cờ trong `scripts/release/build-aab.sh`.
+4. Kiểm: `adb shell pm verify-app-links --re-verify com.tappyai.app` rồi `adb shell pm get-app-links com.tappyai.app` phải thấy `www.tappyai.com: verified` (hiện `1024` = chưa xác minh); `adb shell am start -a android.intent.action.VIEW -d https://www.tappyai.com/plan/<id>` mở app; từ Zalo/Chrome với bản cài từ Play (kênh thử nghiệm kín); kiểm trường hợp không xác minh → mở trình duyệt, không lỗi.
+5. Test đơn vị cho bảng ánh xạ đường → đích (mở rộng `ShellDeepLink` tests), e2e `nav-back` cho từng đích, kiểm Back từ link vào app.
+
+### Lá chắn lừa đảo — Android theo hợp đồng Web (03/10, ghi chú của phiên ANDROID; không đổi hợp đồng Web)
+- **Tin nhắn:** Android gọi `POST /api/scam-shield/analyze` chỉ với `text`/`url` (không ảnh) và hiển thị `verdict` + `scenario` + `signals` + `advice` + `urlChecks` theo `ScamMessageResult.tsx`. Android KHÔNG tự khớp/chấm điểm trên máy.
+- **Link / QR có link:** `POST /api/scam-shield/check` — đọc `verdict`, `reasonCode`, `reason_vi/reason_en`; nút «Cảnh báo cho mọi người» gọi `POST /api/scam-shield/share`.
+- **QR:** giải mã trên máy (ZXing), phân loại sao chép `payload.ts`; KHÔNG dùng `/api/scam-shield/qr`.
+- **Báo cáo/chặn:** `POST /api/comments/{id}/report`, `POST /api/users/{id}/report`, `POST/DELETE /api/users/{id}/block`, theo `GET /api/config → p8`. Không dùng `POST /api/reports`.
+- Chi tiết + bằng chứng: `docs/android/WEB-PARITY-EVIDENCE-2026-10-02.md`.
 ## Từ phiên iOS 02/10 — ghi nguồn OpenStreetMap
 
 Android cũng hiển thị thẻ địa điểm có dữ liệu OSM (nguồn dự phòng) mà không có dòng «© OpenStreetMap contributors». Đề nghị thêm trong Cài đặt một dòng «Dữ liệu địa điểm: © OpenStreetMap contributors (ODbL)» là liên kết tới https://www.openstreetmap.org/copyright (cùng chuỗi với iOS). `MapCanvas.kt` hiện là khung giả; nếu sau này gắn bản đồ thật thì ghi nguồn phải nằm ở góc bản đồ. Chi tiết: `docs/ios/SOURCES-AND-CONTENT-RIGHTS.md`.

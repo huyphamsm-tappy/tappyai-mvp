@@ -1,0 +1,44 @@
+<resources>
+    <!-- Báo cáo, chặn người dùng, quy tắc cộng đồng (chính sách nội dung do người dùng tạo của Google Play) -->
+    <string name="safety_report_action">Báo cáo</string>
+    <string name="safety_report_post_title">Báo cáo bài đăng</string>
+    <string name="safety_report_comment_title">Báo cáo bình luận</string>
+    <string name="safety_report_user_title">Báo cáo người dùng</string>
+    <string name="safety_report_prompt">Chọn lý do. Đội ngũ Tappy sẽ xem xét báo cáo.</string>
+    <string name="safety_report_send">Gửi báo cáo</string>
+    <string name="safety_report_sending">Đang gửi…</string>
+    <string name="safety_report_cancel">Hủy</string>
+    <string name="safety_report_sent">Đã gửi báo cáo. Cảm ơn bạn.</string>
+    <string name="safety_report_gone">Bài này không còn nữa.</string>
+    <string name="safety_report_sign_in">Hãy đăng nhập bằng tài khoản của bạn để báo cáo.</string>
+    <string name="safety_report_failed">Chưa gửi được báo cáo. Kiểm tra kết nối rồi thử lại.</string>
+    <string name="safety_report_contact">Việc gấp hoặc nội dung khác: gửi email tới</string>
+
+    <string name="safety_reason_spam">Spam</string>
+    <string name="safety_reason_harassment">Quấy rối hoặc bắt nạt</string>
+    <string name="safety_reason_sensitive">Nội dung nhạy cảm</string>
+    <string name="safety_reason_scam">Lừa đảo</string>
+    <string name="safety_reason_copyright">Vi phạm bản quyền</string>
+    <string name="safety_reason_other">Khác</string>
+
+    <string name="safety_block_action">Chặn người dùng</string>
+    <string name="safety_block_title">Chặn %1$s?</string>
+    <string name="safety_block_message">Bạn sẽ không thấy bài đăng và bình luận của họ nữa, và họ không thể theo dõi hay nhắn tin cho bạn. Bạn có thể bỏ chặn trong Cài đặt.</string>
+    <string name="safety_block_confirm">Chặn</string>
+    <string name="safety_block_done">Đã chặn.</string>
+    <string name="safety_block_failed">Chưa chặn được. Kiểm tra kết nối rồi thử lại.</string>
+    <string name="safety_user_default">người dùng này</string>
+    <string name="safety_profile_more">Thêm tùy chọn</string>
+
+    <string name="safety_blocked_title">Tài khoản đã chặn</string>
+    <string name="safety_blocked_desc">Xem và bỏ chặn người bạn đã chặn</string>
+    <string name="safety_blocked_empty">Bạn chưa chặn ai.</string>
+    <string name="safety_blocked_unblock">Bỏ chặn</string>
+    <string name="safety_unblock_done">Đã bỏ chặn.</string>
+    <string name="safety_unblock_failed">Chưa bỏ chặn được. Thử lại sau.</string>
+
+    <string name="safety_terms_title">Quy tắc cộng đồng</string>
+    <string name="safety_terms_message">Trước khi đăng, bạn đồng ý không đăng nội dung vi phạm pháp luật, quấy rối, khiêu dâm, lừa đảo hoặc xâm phạm bản quyền. Nội dung vi phạm có thể bị gỡ. Bạn có thể báo cáo nội dung vi phạm bằng nút … trên mỗi bài.</string>
+    <string name="safety_terms_read">Đọc Điều khoản sử dụng</string>
+    <string name="safety_terms_agree">Đồng ý và đăng</string>
+</resources>

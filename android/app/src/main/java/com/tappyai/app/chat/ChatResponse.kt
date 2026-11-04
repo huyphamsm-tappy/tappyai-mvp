@@ -121,6 +121,20 @@ data class CtaButton(
 @Serializable
 private data class CtaEnvelope(val buttons: List<CtaButton> = emptyList())
 
+private val CTA_URL_FORBIDDEN_CHARS = Regex("""[\u0000- \u007f]""")
+private val CTA_URL_ALLOWED = Regex("""^(?:https?://|tel:|mailto:|/(?![/\\]))""", RegexOption.IGNORE_CASE)
+
+/**
+ * Port of web `parseCTA`'s defence-in-depth filter (`src/lib/structuredContent/parseCta.ts`, security review
+ * 02/10, 56a26ae): a CTA button is a link to http(s), a phone/mail link (`tel:`, `mailto:`) or a same-site path
+ * (`/x`, never `//host` or `/\host`) — never `javascript:`, `data:`, `intent:`, `file:` or any other scheme —
+ * and its url holds no whitespace or control character. A button that fails is dropped, the rest kept.
+ */
+internal fun isSafeCtaUrl(url: String): Boolean {
+    val u = url.trim()
+    return !CTA_URL_FORBIDDEN_CHARS.containsMatchIn(u) && CTA_URL_ALLOWED.containsMatchIn(u)
+}
+
 /**
  * One positional piece of an assistant reply: markdown text, or a run of consecutive place photos
  * that renders as an inline gallery exactly where it appeared in the reply. Mirrors the web's
@@ -291,20 +305,13 @@ object ChatResponseParser {
     private val IMAGE_RUN_RE = Regex("""(?:!\[[^\]]*\]\(https?://[^\s)]+\)[ \t]*\n?)+""")
     // A PARTIAL trailing image markdown in a streaming snapshot (`![alt` or `![alt](https://part…`).
     private val PARTIAL_IMAGE_RE = Regex("""!\[[^\]]*(?:\]\([^\s)]*)?$""")
-    // A line that is ONLY an image — the shape the server's inline enrichment splices in.
-    private val IMAGE_ONLY_LINE_RE = Regex("""!\[[^\]]*\]\(https?://[^\s)]+\)""")
-    // A line that is ONLY markdown links joined by "·" — the injected order-link row.
-    private val LINK_ROW_RE =
-        Regex("""\[[^\]]+\]\(https?://[^\s)]+\)(?:\s*·\s*\[[^\]]+\]\(https?://[^\s)]+\))*""")
-    // Three or more newlines left behind once lines are removed.
+    // Any image markdown in the prose (the card shows the product's photo).
+    private val ANY_IMAGE_RE = Regex("""!\[[^\]]*\]\(https?://[^\s)]+\)""")
+    // The server's trailing fallback block, header to the end ("📸 _Hình ảnh & link review:_" / "📸 _Images & review links:_").
+    private val PHOTO_BLOCK_RE = Regex("""\n*📸 _(?:Hình ảnh & link review|Images & review links):_[\s\S]*$""")
+    // Three or more newlines left behind once images are removed.
     private val BLANK_RUN_RE = Regex("\n{3,}")
     private const val LF = "\n"
-    // The heading of the server's trailing fallback block ("📸 _Hình ảnh & link review:_" /
-    // "📸 _Images & review links:_"), and the bare bold product headings under it. Once the photo
-    // and link lines beneath them are removed, these are all that would be left: a label with
-    // nothing under it, and a column of names the card already lists.
-    private const val PHOTO_BLOCK_MARK = "📸"
-    private val BOLD_ONLY_LINE_RE = Regex("""\*\*[^*]+\*\*""")
 
     // UAT 2026-09-28 (owner P1c, web parity with formatMessage): a photo written as a LINK
     // ("[Ảnh địa điểm](https://lh3.googleusercontent.com/…)") or as a bare URL is a photo.
@@ -322,7 +329,8 @@ object ChatResponseParser {
         .replace(BARE_URL_RE) { m -> if (isImageUrl(m.groupValues[2])) "${m.groupValues[1]}![](${m.groupValues[2]})" else m.value }
 
     fun parse(content: String): ParsedAssistantReply {
-        var text = normalizeImageLinks(content)
+        // owner 01/11: a link to another AI product's page is never shown (the server filters sources; this is the second line, web aiSourcePolicy.ts)
+        var text = normalizeImageLinks(AiSourcePolicy.stripAiLinks(content))
 
         // 0. Consult V2 ASK turn (server 70667d3): 2-3 questions, each with its own options.
         // ALWAYS stripped — complete, malformed, or still arriving mid-stream — so no raw JSON reads.
@@ -374,7 +382,7 @@ object ChatResponseParser {
         text = CTA_PARTIAL_RE.replace(text, "").trimEnd()
 
         val buttons = ctaPayload?.let {
-            runCatching { json.decodeFromString<CtaEnvelope>(CardMarkdown.stripPayload(it.trim())).buttons }.getOrNull()
+            runCatching { json.decodeFromString<CtaEnvelope>(CardMarkdown.stripPayload(it.trim())).buttons.filter { b -> isSafeCtaUrl(b.url) } }.getOrNull()
         } ?: emptyList()
 
         // 3. Follow-up suggestion chips.
@@ -486,28 +494,13 @@ object ChatResponseParser {
     }
 
     /**
-     * Removes the server's inline product enrichment: the spliced photo lines and the merchant
-     * link rows beside them.
-     *
-     * Only these shapes are removed, and only as WHOLE lines:
-     *   · a line that is nothing but an `![…](http…)` image,
-     *   · a line that is nothing but markdown links joined by "·" (the order-link row),
-     *   · the "📸 …" heading of the trailing fallback block, and a bare bold-only heading line.
-     * A sentence that merely contains a link keeps it, because that is the model writing prose,
-     * not the enrichment writing UI.
+     * With a shopping card on screen, the prose's product photos go (the card shows them) - exactly the web's `stripProductImages`
+     * (ChatInterface.tsx): the trailing "📸 Hình ảnh & link review" block as a whole, and every image markdown. 02/11 (owner: no client
+     * code wrapped around the model beyond the web's): nothing else of the model's text is removed - its links and bold lines stay.
      */
     internal fun stripInjectedEnrichment(text: String): String =
-        text.lineSequence()
-            .filterNot { line ->
-                val trimmed = line.trim()
-                trimmed.isNotEmpty() && (
-                    IMAGE_ONLY_LINE_RE.matches(trimmed) ||
-                        LINK_ROW_RE.matches(trimmed) ||
-                        trimmed.startsWith(PHOTO_BLOCK_MARK) ||
-                        BOLD_ONLY_LINE_RE.matches(trimmed)
-                    )
-            }
-            .joinToString(LF)
+        text.replace(PHOTO_BLOCK_RE, "")
+            .replace(ANY_IMAGE_RE, "")
             .replace(BLANK_RUN_RE, LF + LF)
             .trim()
 

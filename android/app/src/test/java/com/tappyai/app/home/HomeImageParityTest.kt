@@ -95,16 +95,12 @@ class HomeImageParityTest {
     }
 
     @Test
-    fun `the Home deal card carries the partner mark the Deals screen draws - registry logo, then the deal's image, then a monogram`() {
-        val card = home.substring(home.indexOf("private fun V3DealCard("), home.indexOf("private fun dealAccent("))
-        assertTrue(card.contains("PartnerMark(deal = deal, size = 40.dp)"))
-        assertFalse("no generic offer glyph where the mark belongs", card.substring(0, card.indexOf("deal.discountLabel")).contains("Icons.Filled.LocalOffer"))
-        assertTrue("title and source line unchanged", card.contains("text = deal.title,") && card.contains("stringResource(R.string.deals_via_source, deal.partnerName)"))
+    fun `the Deals screen draws the partner mark - registry logo, then the deal's image, then a monogram (Home no longer has a deals rail)`() {
+        assertFalse("2026-10-03: Home has no deal card any more", home.contains("V3DealCard(") || home.contains("V3DealsSection("))
         val deals = src("app/src/main/java/com/tappyai/app/deals/DealsScreen.kt")
         val mark = deals.substring(deals.indexOf("internal fun PartnerMark("), deals.indexOf("internal fun PartnerMark(") + 1600)
         assertTrue("1. registry mark", mark.contains("if (hasBrandLogo(deal.partnerName)) {") && mark.contains("BrandLogo(partnerName = deal.partnerName, size = size, decorative = true)"))
         assertTrue("2. the deal's own image, with the monogram on a load failure", mark.contains("url = logo,") && mark.contains("onError = monogram,"))
         assertTrue("3. the monogram", mark.contains("deal.partnerName.trim().take(1).uppercase()"))
-        assertTrue("Home's Xem tất cả still opens the existing Deals surface (2026-09-14 redesign: the link gained a chevron, not a destination)", home.contains("V3SeeAll(text = stringResource(R.string.home_v3_deals_see_all), onClick = onOpenDeals)"))
     }
 }

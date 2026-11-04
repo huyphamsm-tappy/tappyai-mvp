@@ -42,6 +42,8 @@ fun AccountScreen(
     viewModel: AccountViewModel,
     onBack: () -> Unit,
     onEditProfile: () -> Unit,
+    /** Web : the «Của tôi» group listing the rows the compact Profile hub folds away. Empty by default. */
+    moreRows: @Composable () -> Unit = {},
 ) {
     Scaffold(
         topBar = { TappyAppBar(title = stringResource(R.string.account_title), onBackClick = onBack) },
@@ -68,6 +70,7 @@ fun AccountScreen(
             profile != null -> AccountContent(
                 profile = profile,
                 onEditProfile = onEditProfile,
+                moreRows = moreRows,
                 modifier = Modifier.fillMaxSize().padding(innerPadding),
             )
         }
@@ -78,6 +81,7 @@ fun AccountScreen(
 private fun AccountContent(
     profile: AccountProfile,
     onEditProfile: () -> Unit,
+    moreRows: @Composable () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -162,6 +166,16 @@ private fun AccountContent(
                         onClick = onEditProfile,
                     )
                 }
+            }
+
+            // «Của tôi» (Web )
+            Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(TappySpacing.sm)) {
+                Text(
+                    text = stringResource(R.string.account_more_section),
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                moreRows()
             }
 
             Spacer(modifier = Modifier.height(TappySpacing.xl))

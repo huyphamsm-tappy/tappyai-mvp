@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- V3 dark background (HomeV3 V3DarkPalette.background): the window colour before the first Compose frame. -->
+    <color name="tappy_window_dark">#FF050814</color>
+</resources>

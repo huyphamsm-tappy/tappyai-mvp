@@ -1,6 +1,10 @@
 package com.tappyai.app.navigation
 
 import com.tappyai.app.home.HomeRoute
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.getAndUpdate
 import java.net.URI
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -69,17 +73,18 @@ object ShellDeepLink {
  */
 @Singleton
 class PendingShellDestination @Inject constructor() {
-    @Volatile
-    private var pending: HomeRoute? = null
+    private val pending = MutableStateFlow<HomeRoute?>(null)
+
+    /**
+     * What an ALREADY OPEN shell observes (03/11): the shell used to read the destination once, when it was first composed, so a text
+     * shared into Tappy while the app was open was never seen. Cleared by [consume], like the value itself.
+     */
+    val pendingFlow: StateFlow<HomeRoute?> = pending.asStateFlow()
 
     fun set(route: HomeRoute) {
-        pending = route
+        pending.value = route
     }
 
     /** Returns the pending destination and clears it, so a tap can never be replayed. */
-    fun consume(): HomeRoute? {
-        val current = pending
-        pending = null
-        return current
-    }
+    fun consume(): HomeRoute? = pending.getAndUpdate { null }
 }

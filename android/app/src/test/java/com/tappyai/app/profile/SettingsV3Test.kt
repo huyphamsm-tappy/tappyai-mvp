@@ -44,7 +44,8 @@ class SettingsV3Test {
         assertTrue("delete stays a confirmed request", body.contains("onClick = { confirmDeleteAccount = true },") && screen.contains("""Uri.parse("mailto:${'$'}SUPPORT_EMAIL")""") && screen.contains("Intent(Intent.ACTION_SENDTO)"))
         assertTrue("version line", body.contains("R.string.settings_version, BuildConfig.VERSION_NAME"))
         assertTrue("guest → sign-in card with the existing Settings copy; account → sign-out", body.contains("if (viewModel.isAnonymous) {") && body.contains("SignInCard(onClick = onSignIn, subtitle = stringResource(R.string.settings_sign_in_desc))") && body.contains("onClick = viewModel::signOut,") && body.contains("R.string.settings_sign_out"))
-        assertEquals("every row is the design-system row", 11, Regex("""TappyMenuRow\(""").findAll(body).count())
+        // 11 + the conditional «Tài khoản đã chặn» row (drawn only while the server supports blocking; see SafetyWiringTest).
+        assertEquals("every row is the design-system row", 12, Regex("""TappyMenuRow\(""").findAll(body).count())
         assertFalse(screen.contains("Switch("))
     }
 
@@ -61,10 +62,17 @@ class SettingsV3Test {
     }
 
     @Test
-    fun `the dress is V3 - palette, grouped cards, accent tiles, the red destructive tile, the green On`() {
+    fun `the dress is V3 - palette, grouped cards, accent tiles, the discreet delete row, the green On`() {
         assertTrue(screen.contains("V3HomeTheme {") && screen.contains(".background(HomeV3.Background)"))
         assertEquals("two groups + the sign-out group", 3, Regex("""ProfileGroupCard \{""").findAll(screen).count())
-        assertTrue(screen.contains("accent = AccentRed,") && screen.contains("private val AccentRed = Color(0xFFEF4444)"))
+        // Huy 01/10 (TikTok style): the delete row is the SAME plain row as its siblings - muted slate tile, NO red - the last row of «Khác».
+        val delBlock = screen.substringAfter("icon = Icons.Filled.DeleteOutline,").substringBefore("onClick = { confirmDeleteAccount = true },")
+        assertFalse("no red on the delete row", delBlock.contains("AccentRed") || delBlock.contains("danger = true") || delBlock.contains("errorContainer"))
+        assertTrue("same row style as its siblings: a muted accent tile, semibold title", delBlock.contains("accent = AccentSlate,") && delBlock.contains("titleFontWeight = FontWeight.SemiBold"))
+        assertFalse(screen.contains("AccentRed"))
+        assertTrue(screen.contains("private val AccentSlate = Color(0xFF64748B)"))
+        // «Đăng xuất» is NOT next to it: the delete row comes first, the sign-out row sits later in its own group
+        assertTrue(screen.indexOf("Icons.Filled.DeleteOutline") < screen.indexOf("viewModel::signOut"))
         assertTrue(screen.contains("valueColor = if (viewModel.tappyNotificationSoundEnabled) AccentGreen else null,"))
         assertTrue(screen.contains("HorizontalDivider(color = HomeV3.Outline, modifier = Modifier.padding(start = 72.dp))"))
         val en = src("app/src/main/res/values/strings_settings.xml"); val vi = src("app/src/main/res/values-vi/strings_settings.xml")

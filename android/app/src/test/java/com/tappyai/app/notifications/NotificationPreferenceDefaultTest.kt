@@ -52,10 +52,12 @@ class NotificationPreferenceDefaultTest {
     fun `the view model starts from the stored-or-default preference and writes the person's choice as-is`() {
         val vm = src("NotificationsViewModel.kt")
         assertTrue(vm.contains("MutableStateFlow(preference.enabled)"))
-        assertFalse("no hardcoded OFF start", vm.contains("MutableStateFlow(false)"))
-        val setter = vm.substringAfter("fun setPushEnabled(enabled: Boolean)").substringBefore("\n    }")
-        assertTrue("written before anything else, ON or OFF", setter.contains("preference.write(enabled)") && setter.contains("_pushEnabled.value = enabled"))
-        assertTrue("device registration only on an explicit ON", setter.contains("if (enabled) registerDevice()"))
+        assertFalse("no hardcoded OFF start", vm.contains("_pushEnabled = MutableStateFlow(false)"))
+        // 01/10: ON is written at once and registers the device; OFF is written only once the SERVER has it off (PushOffTest).
+        val on = vm.substringAfter("if (enabled) {").substringBefore("return")
+        assertTrue("ON: written at once + device registered", on.contains("preference.write(true)") && on.contains("_pushEnabled.value = true") && on.contains("registerDevice()"))
+        val off = vm.substringAfter("PushToggleResult.Off ->").substringBefore("PushToggleResult.NotOff")
+        assertTrue("OFF: written after the server answered", off.contains("preference.write(false)") && off.contains("_pushEnabled.value = false"))
         assertFalse("the default never registers a device by itself", vm.contains("init {"))
     }
 

@@ -54,7 +54,7 @@ export const find = (q, nodes = dump()) => nodes.find((n) => matches(n, q) && n.
 export const texts = (nodes = dump()) => nodes.map((n) => n.text || n.desc).filter(Boolean)
 export const visible = (q) => !!find(q)
 /** Portrait grid tiles (profile / collection grids): clickable, ~1/3 of the width, taller than wide. */
-export const tiles = (nodes = dump()) => nodes.filter((n) => n.clickable && n.x2 - n.x1 > 250 && n.x2 - n.x1 < 420 && n.y2 - n.y1 > 400 && n.y1 > 300)
+export const tiles = (nodes = dump()) => { const k = screen()[0] / 1080; return nodes.filter((n) => n.clickable && n.x2 - n.x1 > 250 * k && n.x2 - n.x1 < 420 * k && n.y2 - n.y1 > 400 * k && n.y1 > 300 * k) }
 
 export async function waitFor(q, { timeout = 20000, interval = 800 } = {}) {
   const end = Date.now() + timeout
@@ -84,7 +84,7 @@ export async function scrollTo(q, { max = 8 } = {}) {
   for (const dir of ['down', 'up']) {
     for (let i = 0; i < max; i++) {
       const n = find(q)
-      if (n && n.y2 < 2050 && n.y1 > 200) return n
+      if (n && n.y2 < screen()[1] * 0.854 && n.y1 > 200) return n
       if (dir === 'down' && i >= 3) break
       swipe(dir)
       await sleep(900)
@@ -112,9 +112,16 @@ export async function scrollRowTo(q, rowQ, { max = 6, from = 650, to = 120 } = {
   }
   throw new Error(`could not scroll the row to ${q}`)
 }
+let _wh
+/** [width, height] of the screen (the harness was written for 1080x2400; a phone may be 720x1600). */
+export function screen() {
+  if (!_wh) { const m = sh('wm', 'size').match(/(\d+)x(\d+)/); _wh = m ? [Number(m[1]), Number(m[2])] : [1080, 2400] }
+  return _wh
+}
 export function swipe(dir = 'up') {
-  const [a, b] = dir === 'up' ? [1750, 700] : [700, 1750]
-  sh('input', 'swipe', '540', String(a), '540', String(b), '450')
+  const [w, h] = screen()
+  const [a, b] = dir === 'up' ? [h * 0.66, h * 0.27] : [h * 0.27, h * 0.66] // starts ABOVE the chat chip bar (~73-78%), which would swallow the swipe
+  sh('input', 'swipe', String(Math.round(w / 2)), String(Math.round(a)), String(Math.round(w / 2)), String(Math.round(b)), '450')
 }
 /** BACK only when the soft keyboard is up — a BACK with no keyboard would leave the screen. */
 export async function hideKeyboard() {
@@ -137,7 +144,8 @@ export async function pasteText(text) {
 // ── app lifecycle ────────────────────────────────────────────────────────────
 export function foreground() {
   const out = sh('dumpsys', 'activity', 'activities')
-  return (out.match(/topResumedActivity=ActivityRecord\{\S+ \S+ (\S+)/) || [])[1] || ''
+  // Android 12+ prints topResumedActivity; Android 11 only mResumedActivity.
+  return (out.match(/(?:topResumedActivity|mResumedActivity)[:=]\s*ActivityRecord\{\S+ \S+ (\S+)/) || [])[1] || ''
 }
 export async function launch({ fresh = false } = {}) {
   if (fresh) sh('am', 'force-stop', PKG)
@@ -179,7 +187,12 @@ export async function dismissForeign() {
   for (const p of ['com.google.android.providers.media.module', 'com.google.android.apps.maps', 'com.android.chrome']) sh('am', 'force-stop', p)
   sh('input', 'keyevent', '3'); await sleep(500)
 }
-export function install(apk) { adb(['install', '-r', apk]) }
+export function install(apk) {
+  // `adb install` fails now and then with an empty message while the phone is busy (screen dialog / package verifier): retry.
+  for (let i = 0; ; i++) {
+    try { adb(['install', '-r', apk]); return } catch (e) { if (i >= 3) throw e; Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 8000) }
+  }
+}
 
 /**
  * Signs the app in as a seeded AUDIT account without any UI typing (uat hook), then VERIFIES it:
@@ -262,11 +275,15 @@ export class Recorder {
 
 // ── share targets (stand-in Zalo / TikTok / Messenger from android/e2e/share-stub) ──────────────
 const STUB_DIR = path.resolve(path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1')), '../share-stub/build/outputs/apk')
+const STUB_PACKAGES = { zalo: 'com.zing.zalo', tiktok: 'com.zhiliaoapp.musically', messenger: 'com.facebook.orca' }
+/** The share stubs REUSE the real apps' package ids. Only ever on an emulator: on a phone with the real app they would overwrite or remove it. */
 export function installShareStubs() {
+  if (!SERIAL.startsWith('emulator')) throw new Error('BLOCKED — REAL ZALO PACKAGE CONFLICT: the share stubs use the real apps package ids; not installed on a real phone (manual share test)')
   for (const f of ['zalo', 'tiktok', 'messenger']) adb(['install', '-r', path.join(STUB_DIR, f, 'debug', `share-stub-${f}-debug.apk`)])
 }
 export function uninstallShareStubs() {
-  for (const p of ['com.zing.zalo', 'com.zhiliaoapp.musically', 'com.facebook.orca']) adb(['uninstall', p], { allowFail: true })
+  if (!SERIAL.startsWith('emulator')) return // never remove a real app from a real phone
+  for (const p of Object.values(STUB_PACKAGES)) adb(['uninstall', p], { allowFail: true })
 }
 export const clearLog = () => adb(['logcat', '-c'], { allowFail: true })
 /** The shares the stubs received since [clearLog], parsed. */

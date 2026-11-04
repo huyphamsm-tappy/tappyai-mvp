@@ -7,6 +7,8 @@ import com.tappyai.app.reviews.data.Review
 import com.tappyai.app.reviews.data.ReviewErrorMessages
 import com.tappyai.app.reviews.data.ReviewProfile
 import com.tappyai.app.reviews.data.ReviewsRepository
+import com.tappyai.app.safety.SafetyRepository
+import com.tappyai.app.safety.withoutHidden
 import com.tappyai.core.common.StringProvider
 import com.tappyai.core.logging.LoggerProvider
 import com.tappyai.core.network.NetworkResult
@@ -15,6 +17,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -38,6 +41,7 @@ class ReviewProfileViewModel @Inject constructor(
     private val logger: LoggerProvider,
     private val reviewErrorMessages: ReviewErrorMessages,
     private val stringProvider: StringProvider,
+    private val safety: SafetyRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ReviewProfileUiState())
@@ -45,6 +49,16 @@ class ReviewProfileViewModel @Inject constructor(
 
     private var loadedUserId: String? = null
     private var loadJob: Job? = null
+
+    init {
+        // A report or a block made on a screen above this one takes effect on the grid at once, without a refetch.
+        viewModelScope.launch {
+            combine(safety.blockedIds, safety.reportedIds) { blocked, reported -> blocked to reported }
+                .collect { (blocked, reported) ->
+                    _uiState.update { s -> s.copy(reviews = s.reviews.withoutHidden(blocked, reported, safety.me)) }
+                }
+        }
+    }
 
     fun load(userId: String) {
         if (loadedUserId == userId) return
@@ -84,7 +98,8 @@ class ReviewProfileViewModel @Inject constructor(
             _uiState.update {
                 it.copy(
                     profile = resolvedProfile,
-                    reviews = reviews ?: emptyList(),
+                    // Posts this device already reported stay out of the grid (the viewer's own are never filtered).
+                    reviews = (reviews ?: emptyList()).withoutHidden(safety.blockedIds.value, safety.reportedIds.value, safety.me),
                     isLoading = false,
                     error = null,
                 )

@@ -13,15 +13,23 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import com.tappyai.core.designsystem.theme.TappyAITheme
 import com.tappyai.core.designsystem.theme.TappyContainers
-import com.tappyai.core.designsystem.theme.TappyShapes
 import com.tappyai.core.designsystem.theme.TappySpacing
 import com.tappyai.core.designsystem.theme.TappyWindowWidthClass
 import com.tappyai.core.designsystem.theme.currentWindowWidthClass
 
 enum class TappyChatRole { User, Assistant }
+
+/** Web `--interactive` (src/app/globals.css): #0062CC, primary-600. */
+private val WebInteractive = Color(0xFF0062CC)
+
+/** Web `rounded-2xl rounded-br-md`: 16dp corners, the bottom-right one 6dp. */
+private val WebUserBubbleShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp, bottomEnd = 6.dp, bottomStart = 16.dp)
 
 /**
  * Chat message bubble (docs/UI_GUIDELINES.md §14) — **layout and styling only**. User messages
@@ -50,10 +58,13 @@ fun TappyChatBubble(
                     .align(Alignment.CenterEnd)
                     .widthIn(max = TappyContainers.content)
                     .fillMaxWidth(maxWidthFraction)
-                    .background(MaterialTheme.colorScheme.primary, TappyShapes.card)
-                    .padding(horizontal = TappySpacing.xl, vertical = TappySpacing.lg),
+                    // Web final `ChatInterface.tsx` user message: `bg-interactive text-white rounded-2xl rounded-br-md px-4 py-2.5`
+                    // (`--interactive` = #0062CC, white text 5.80:1, the same in light and dark). The Material `primary` of the dark scheme is a
+                    // pale periwinkle, which made the Android bubble a different colour from the Web one.
+                    .background(WebInteractive, WebUserBubbleShape)
+                    .padding(horizontal = 16.dp, vertical = 10.dp),
             ) {
-                StyledMessageContent(color = MaterialTheme.colorScheme.onPrimary, content = content)
+                StyledMessageContent(color = Color.White, content = content)
             }
 
             TappyChatRole.Assistant -> Box(

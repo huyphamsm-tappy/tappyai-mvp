@@ -78,7 +78,7 @@ class SmartToolScreensV3Test {
             .forEach { assertTrue("scan $it", scan.contains(it)) }
         listOf("viewModel::onInputTextChange", "viewModel::translate", "viewModel::clear", "viewModel.onTargetLanguageChange(language)", "viewModel.speak(translation, viewModel.targetLanguage.ttsTag)", "viewModel.isTranslating", "viewModel.translation", "viewModel.ttsAvailable")
             .forEach { assertTrue("translate $it", translate.contains(it)) }
-        listOf("viewModel::onUrlChange", "viewModel::check", "as? ScamShieldUiState.Result)?.let { VerdictCard(it.result) }", "as? ScamShieldUiState.Failed)?.let { failed -> UnresolvedCard(failed.failure, forMessage = viewModel.tab == ScamShieldTab.Message) }")
+        listOf("viewModel::onUrlChange", "viewModel::check", "as? ScamShieldUiState.Result)?.let { r ->", "as? ScamShieldUiState.Failed)?.let { failed -> UnresolvedCard(failed.failure, forMessage = viewModel.tab == ScamShieldTab.Message) }")
             .forEach { assertTrue("scam $it", scam.contains(it)) }
         listOf("viewModel::onGroupNameChange", "viewModel::createGroup", "viewModel.isCreating", "viewModel.errorMessage", "GroupDiningViewModel.MAX_NAME")
             .forEach { assertTrue("group $it", group.contains(it)) }

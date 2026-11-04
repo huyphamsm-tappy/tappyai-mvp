@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import com.tappyai.app.R
 import com.tappyai.core.common.formatCompactVnd
 import com.tappyai.core.designsystem.component.TappyImage
+import com.tappyai.core.designsystem.component.isOpenableLink
 import com.tappyai.core.designsystem.theme.TappyShapes
 import com.tappyai.core.designsystem.theme.TappySpacing
 
@@ -197,6 +198,7 @@ private fun RecommendedEntity(
                     color = colors.onSurfaceVariant,
                     modifier = Modifier.padding(top = TappySpacing.xs),
                 )
+                RatingAndSpecs(entity, recommendation?.seller)
                 reasons.forEach { r ->
                     Text(
                         text = "· ${r.evidence}",
@@ -312,7 +314,77 @@ private fun AlternativeEntity(entity: ShoppingEntityView, commerce: CommerceActi
             color = colors.onSurfaceVariant,
             modifier = Modifier.padding(top = TappySpacing.xs),
         )
-        CommerceHandoffRow(entity.commerceHandoffs, commerce, emphasised = false)
+        RatingAndSpecs(entity, null)
+        val handoffs = entity.commerceHandoffs
+        CommerceHandoffRow(handoffs, commerce, emphasised = false)
+        // owner 01/11 (web ShoppingDecision.tsx): while no verified merchant handoff exists the row keeps its featured offer's own link, so an
+        // alternative is never left without a way to open it
+        if (handoffs.detail.isEmpty()) featuredOffer(entity)?.let { OfferRow(it, onSearchLinkTap = commerce.onSearchLinkTap) }
+    }
+}
+
+private fun conditionRes(key: String): Int? = when (key) {
+    "dealerOfficial" -> R.string.shopping_condition_dealer_official
+    "warrantyOfficial" -> R.string.shopping_condition_warranty_official
+    "genuine" -> R.string.shopping_condition_genuine
+    "official" -> R.string.shopping_condition_official
+    "likeNew" -> R.string.shopping_condition_like_new
+    "refurbished" -> R.string.shopping_condition_refurbished
+    "sealed" -> R.string.shopping_condition_sealed
+    "gradeHigh" -> R.string.shopping_condition_grade_high
+    "used" -> R.string.shopping_condition_used
+    else -> null
+}
+
+/**
+ * The featured listing's own rating and the stated specs / condition as chips (web `Rating` and `Specs`): what the server sent, labelled and
+ * localised, nothing derived. Nothing stated shows nothing.
+ */
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun RatingAndSpecs(entity: ShoppingEntityView, recommendedSeller: String?) {
+    val context = LocalContext.current
+    val colors = MaterialTheme.colorScheme
+    val lang = if (java.util.Locale.getDefault().language == "vi") "vi" else "en"
+    val offer = featuredOffer(entity, recommendedSeller)
+    val rating = ratingFacts(offer?.rating, offer?.ratingCount, lang)
+    val chips = specChips(
+        entity,
+        spec = { key, value ->
+            when (key) {
+                "ram" -> context.getString(R.string.shopping_spec_ram, value)
+                "storage" -> context.getString(R.string.shopping_spec_storage, value)
+                else -> value
+            }
+        },
+        condition = { key -> conditionRes(key)?.let(context::getString) },
+    )
+    if (rating != null) {
+        Text(
+            text = if (rating.count != null) stringResource(R.string.shopping_rating_line, rating.value, rating.count) else stringResource(R.string.shopping_rating_only, rating.value),
+            style = MaterialTheme.typography.labelMedium,
+            color = colors.onSurfaceVariant,
+            modifier = Modifier.padding(top = TappySpacing.xs),
+        )
+    }
+    if (chips.isNotEmpty()) {
+        FlowRow(
+            modifier = Modifier.fillMaxWidth().padding(top = TappySpacing.sm),
+            horizontalArrangement = Arrangement.spacedBy(TappySpacing.sm),
+            verticalArrangement = Arrangement.spacedBy(TappySpacing.sm),
+        ) {
+            chips.forEach { chip ->
+                Text(
+                    text = chip,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = colors.onSurfaceVariant,
+                    modifier = Modifier
+                        .clip(TappyShapes.chip)
+                        .background(colors.onSurfaceVariant.copy(alpha = 0.08f))
+                        .padding(horizontal = TappySpacing.md, vertical = TappySpacing.xs),
+                )
+            }
+        }
     }
 }
 
@@ -362,7 +434,7 @@ private fun OfferRow(offer: ShoppingOfferView, onSearchLinkTap: (String) -> Unit
         modifier = Modifier
             .fillMaxWidth()
             .then(
-                if (offer.url != null) {
+                if (offer.url != null && isOpenableLink(offer.url)) {
                     Modifier.clickable {
                         // shopping_search_click fires ONLY for a search redirect (never a genuine
                         // product page), matching web's `!dest.direct` gate. Platform enum only —

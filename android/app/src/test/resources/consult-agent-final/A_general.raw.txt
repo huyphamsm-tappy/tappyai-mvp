@@ -1,0 +1,4 @@
+e:{"finishReason":"stop","usage":{"promptTokens":4853,"completionTokens":45},"isContinued":false}
+0:"Chào bạn! Mình là Tappy, trợ lý đời sống — có thể giúp bạn tìm quán ăn, chỗ vui chơi, phim, mua sắm, du lịch và nhiều thứ khác."
+8:[{"kind":"tappy.turn.v1","domain":null,"turnType":"legacy","model":"openai:none","tokensIn":4853,"tokensOut":45,"serperCalls":0,"cacheHits":0,"promptCacheRead":0,"promptCacheWrite":0,"usd":0.000629,"intent":null,"intentUsd":0,"answerUsd":0.0006291,"serperUsd":0,"reasoningTokens":0,"lunaCachedIn":0,"lunaCacheWrite":4853,"fellBack":false}]
+d:{"finishReason":"stop","usage":{"promptTokens":4853,"completionTokens":45}}

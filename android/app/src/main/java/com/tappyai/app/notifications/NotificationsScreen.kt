@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Icon
 import androidx.annotation.StringRes
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
@@ -66,6 +67,8 @@ fun NotificationsScreen(
     viewModel: NotificationsViewModel = hiltViewModel(),
 ) {
     val pushEnabled by viewModel.pushEnabled.collectAsStateWithLifecycle()
+    val busy by viewModel.busy.collectAsStateWithLifecycle()
+    val offFailed by viewModel.offFailed.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val permissionState = remember { NotificationPermissionState(context) }
     // Re-read whenever the screen comes back to the front — the person may have just returned
@@ -113,6 +116,8 @@ fun NotificationsScreen(
         run {
             PushToggleCard(
                 enabled = pushEnabled,
+                busy = busy,
+                offFailed = offFailed,
                 osBlocked = pushEnabled && !osGranted,
                 onToggle = { wanted ->
                     // The switch records the person's choice, ON or OFF, as-is. Turning it OFF
@@ -133,7 +138,7 @@ fun NotificationsScreen(
 }
 
 @Composable
-private fun PushToggleCard(enabled: Boolean, osBlocked: Boolean, onToggle: (Boolean) -> Unit, onAllow: () -> Unit) {
+private fun PushToggleCard(enabled: Boolean, busy: Boolean, offFailed: Boolean, osBlocked: Boolean, onToggle: (Boolean) -> Unit, onAllow: () -> Unit) {
     V3Panel {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -159,8 +164,19 @@ private fun PushToggleCard(enabled: Boolean, osBlocked: Boolean, onToggle: (Bool
             Switch(
                 checked = enabled,
                 onCheckedChange = onToggle,
+                enabled = !busy,
                 modifier = Modifier.semantics { contentDescription = toggleContentDescription },
                 colors = SwitchDefaults.colors(checkedTrackColor = HomeV3.Purple),
+            )
+        }
+        // Turning OFF failed (network / server): the switch stayed ON — say so, never "off" when it is not.
+        if (offFailed) {
+            Text(
+                text = stringResource(R.string.notif_off_failed),
+                color = MaterialTheme.colorScheme.error,
+                fontSize = 12.sp,
+                lineHeight = 16.sp,
+                modifier = Modifier.padding(top = TappySpacing.md),
             )
         }
         // The OS permission, as its own fact: the preference is ON, the device blocks delivery.

@@ -31,8 +31,9 @@ console.log(`UAT ${UAT_BASE} @ ${uatSha} — run ${runId}`)
 const seeded = await seed()
 if (only !== 'web') {
   a.install(APK)
-  a.sh('cmd', 'uimode', 'night', 'yes')
-  a.sh('pm', 'grant', a.PKG, 'android.permission.POST_NOTIFICATIONS')
+  // Only the emulator is forced to night mode; a real phone's system settings are never touched.
+  if (a.SERIAL.startsWith('emulator')) a.sh('cmd', 'uimode', 'night', 'yes')
+  try { a.sh('pm', 'grant', a.PKG, 'android.permission.POST_NOTIFICATIONS') } catch { /* Android < 13 has no such permission */ }
 }
 
 const results = []

@@ -44,7 +44,7 @@ class ScamShieldV3Test {
         val hero = s.indexOf("ToolHero(")
         val tool = s.indexOf("ToolPanel {")
         val tabs = s.indexOf("R.string.scam_v3_tabUrl")
-        val verdict = s.indexOf("?.let { VerdictCard(it.result) }")
+        val verdict = s.indexOf("VerdictCard(")
         val message = s.indexOf("?.let { MessageResultCard(it.result) }")
         val knowledge = s.indexOf("ScamKnowledgeSection(viewModel = viewModel)")
         val history = s.indexOf("HistoryPanel(")
@@ -68,15 +68,15 @@ class ScamShieldV3Test {
         assertEquals("exactly three tab chips", 3, Regex("""TabChip\(stringResource\(R\.string\.\w+\), Icons\.\w+\.\w+, viewModel\.tab == ScamShieldTab\.""").findAll(s).count())
         assertTrue("tabs wrap, never scroll", s.substringAfter("ToolPanel {").substringBefore("when (viewModel.tab)").contains("FlowRow("))
         assertTrue("the URL form", s.contains("ScamShieldTab.Url ->") && s.contains("R.string.scam_shield_v3_url_placeholder") && s.contains("KeyboardType.Uri") && s.contains("onClick = viewModel::check"))
-        assertTrue("the QR drop zone", s.contains("ScamShieldTab.Qr -> DropZone(") && s.contains("ActivityResultContracts.PickVisualMedia()"))
+        assertTrue("the QR drop zone", s.contains("ScamShieldTab.Qr ->") && s.contains("DropZone(") && s.contains("ActivityResultContracts.PickVisualMedia()"))
         val form = s.substringAfter("ScamShieldTab.Message ->").substringBefore("(viewModel.state as? ScamShieldUiState.Failed)")
         assertTrue("the message form: title, subtitle, 5-row text, link, screenshot, quota hint, CTA",
             form.contains("R.string.scam_v3_msg_title") && form.contains("R.string.scam_v3_msg_subtitle") && form.contains("minLines = 5") && form.contains("R.string.scam_v3_msg_urlPlaceholder") &&
-                form.contains("R.string.scam_v3_msg_upload") && form.contains("R.string.scam_v3_msg_removeScreenshot") && form.contains("R.string.scam_v3_msg_quotaHint, ScamShieldViewModel.ANON_LIFETIME_LIMIT.toString(), ScamShieldViewModel.FREE_DAILY_LIMIT.toString()") &&
+                form.contains("R.string.scam_v3_msg_upload") && form.contains("R.string.scam_v3_msg_removeScreenshot") && form.contains("R.string.scam_verdict_msg_privacy, ScamShieldViewModel.ANON_LIFETIME_LIMIT.toString(), ScamShieldViewModel.FREE_DAILY_LIMIT.toString()") &&
                 form.contains("R.string.scam_v3_msg_analyzing else R.string.scam_v3_msg_cta") && form.contains("enabled = viewModel.canAnalyze && !checking") && form.contains("onClick = viewModel::analyzeMessage"))
         assertTrue("switching tabs clears the verdict, as the web's switchTab does", vm.contains("fun selectTab(next: ScamShieldTab)") && vm.substringAfter("fun selectTab").substringBefore("}").contains("state = ScamShieldUiState.Idle"))
         assertTrue("the web's bounds: 4000 chars, 5 MB, JPEG/PNG/WebP", vm.contains("const val MESSAGE_MAX_CHARS = 4_000") && vm.contains("const val SCREENSHOT_MAX_BYTES = 5 * 1024 * 1024") && vm.contains("listOf(\"image/jpeg\", \"image/png\", \"image/webp\")"))
-        assertTrue("at least one of text / link / screenshot", vm.contains("message.isNotBlank() || messageUrl.isNotBlank() || screenshot != null"))
+        assertTrue("at least one of text / link / screenshot", vm.contains("message.isNotBlank() || messageUrl.isNotBlank() || (ScamShieldFlags.MESSAGE_SCREENSHOT && screenshot != null)"))
         assertTrue("the rose error box, inside the tool panel", result.contains("V3Tone.Rose.copy(alpha = 0.10f)") && result.contains(".border(1.dp, V3Tone.Rose, shape)"))
     }
 
@@ -84,23 +84,23 @@ class ScamShieldV3Test {
     fun `the verdict cards are tinted by the level - six hues, HIGH's own pair, INCONCLUSIVE neutral - and the message card reads verdict, why, wants, do not, do now, links`() {
         val s = result
         assertTrue(s.contains(".background(tone.soft).border(1.dp, tone.border, V3PanelShape)"))
-        assertTrue(s.contains("RiskLevel.SAFE -> LevelTone(V3Tone.Emerald") && s.contains("RiskLevel.LOW -> LevelTone(HomeV3.Purple") && s.contains("RiskLevel.MEDIUM -> LevelTone(V3Tone.Amber"))
+        assertTrue(s.contains("RiskLevel.SAFE, RiskLevel.LOW -> LevelTone(HomeV3.OnSurfaceVariant") && s.contains("RiskLevel.MEDIUM -> LevelTone(V3Tone.Amber"))
         assertTrue("HIGH is the feature-scoped --ss-high pair", s.contains("Color(0xFFB4400C)") && s.contains("Color(0xFFFB923C)") && s.contains("if (dark) SsHighDark else SsHighLight"))
         assertTrue(s.contains("RiskLevel.CRITICAL -> LevelTone(V3Tone.Rose"))
         assertTrue("INCONCLUSIVE and UNKNOWN are neutral slate, never green", s.contains("RiskLevel.INCONCLUSIVE, RiskLevel.UNKNOWN -> LevelTone(HomeV3.OnSurfaceVariant, HomeV3.SurfaceVariant, HomeV3.Outline, Icons.Filled.GppMaybe"))
-        assertTrue(s.contains("R.string.scam_shield_v3_score") && s.contains("confidence >= 80 ->") && s.contains("confidence >= 50 ->"))
+        assertTrue("02/10 (A7): no score, no confidence badge, no \"safe\" word", !s.contains("R.string.scam_shield_v3_score") && !s.contains("ConfidenceBadge(") && !s.contains("scam_shield_level_safe") && !s.contains("GppGood"))
         assertTrue("URL card: official, actions, evidence", s.contains("OfficialSection(") && s.contains("ActionsSection(") && s.contains("EvidenceSection("))
         assertTrue("the web's action glyph map", listOf("\"stop\" ->", "\"link\" ->", "\"phone\" ->", "\"flag\" ->", "\"warning\" ->", "\"search\" ->", "\"check\" ->").all { s.contains(it) })
 
         val card = s.substringAfter("internal fun MessageResultCard")
-        val order = listOf("result.reasoningSummary", "R.string.scam_v3_msg_goal)", "R.string.scam_v3_msg_why", "R.string.scam_v3_msg_wants", "R.string.scam_v3_msg_doNot", "R.string.scam_v3_msg_doNow", "R.string.scam_v3_msg_links", "R.string.scam_v3_msg_extracted", "AnalysisNote(result)")
+        val order = listOf("bodyRes", "result.reasoningSummary", "result.scenario?.let { ScenarioCard(it) }", "R.string.scam_v3_msg_goal)", "R.string.scam_verdict_reasons", "R.string.scam_v3_msg_wants", "R.string.scam_v3_msg_doNot", "R.string.scam_v3_msg_doNow", "R.string.scam_v3_msg_links", "R.string.scam_v3_msg_extracted")
             .map { it to card.indexOf(it) }
         order.forEach { (k, at) -> assertTrue("$k on the message card", at >= 0) }
         assertEquals("the web's order", order.map { it.first }, order.sortedBy { it.second }.map { it.first })
         assertTrue("signal dots: low accent, medium amber, high rose", s.contains("\"high\" -> V3Tone.Rose") && s.contains("\"medium\" -> V3Tone.Amber") && s.contains("else -> HomeV3.Purple"))
         assertTrue("stop = Ban in rose, go = check in emerald", s.contains("if (stop) Icons.Filled.Block else Icons.Filled.CheckCircle") && s.contains("if (stop) V3Tone.Rose else V3Tone.Emerald"))
         assertTrue("an unchecked link says so", s.contains("R.string.scam_v3_msg_linkUnchecked") && s.contains("if (c.checked && c.level != null) c.level else RiskLevel.INCONCLUSIVE"))
-        assertTrue("the analysis note names how the verdict was reached and the GLOBAL counter", listOf("\"used\" ->", "\"not_needed\" ->", "\"quota_exhausted\" ->", "\"unavailable\" ->", "R.string.scam_v3_msg_aiPro", "R.string.scam_v3_msg_aiLeft", "R.string.scam_v3_msg_aiToday", "R.string.scam_v3_msg_aiQuotaGuest").all { s.contains(it) })
+        assertTrue("no AI-quota line on the message card (the web card has none)", !result.contains("AnalysisNote") && !result.contains("scam_v3_msg_aiToday"))
         assertTrue("every SCAM_TYPES and ATTACK_GOALS key has a label", listOf("bank_phishing", "otp_phishing", "job_scam", "charity_scam").all { s.contains("\"$it\" -> R.string.scam_v3_msg_type_$it") } && listOf("account_takeover", "payment_fraud", "impersonation", "other").all { s.contains("\"$it\" -> R.string.scam_v3_msg_goal_$it") })
     }
 
@@ -198,16 +198,17 @@ class ScamShieldV3Test {
     @Test
     fun `the engine stays on the server and the fail-closed rules hold - three routes, one attempt wrapper`() {
         assertTrue(vm.contains("repository.check(target, preferVietnameseLabels = vietnamese())"))
-        assertTrue(vm.contains("repository.checkQrImage(bytes, mime, preferVietnameseLabels = vietnamese())"))
+        assertTrue("a QR code is decoded on the device and only its LINK is checked", vm.contains("QrCodes.decodeImage(bytes)") && vm.contains("is QrPayload.Link -> when (val o = repository.check(payload.url, preferVietnameseLabels = vietnamese()))"))
+        assertTrue("the picture is never uploaded", !vm.contains("checkQrImage(bytes"))
         assertTrue(vm.contains("repository.analyzeMessage(message.trim(), messageUrl.trim(), shot?.bytes, shot?.mimeType, preferVietnameseLabels = vietnamese())"))
         assertTrue("only a Verdict reaches Result", vm.contains("is ScamCheckOutcome.Verdict -> {") && vm.contains("is ScamCheckOutcome.Failed -> ScamShieldUiState.Failed(o.failure)") && vm.contains("is MessageAnalysisOutcome.Failed -> ScamShieldUiState.Failed(o.failure)"))
         assertTrue("an older check is replaced, never raced", vm.contains("inFlight?.cancel()"))
         val api = src("app/src/main/java/com/tappyai/app/scamshield/data/ScamShieldApi.kt")
-        assertTrue(api.contains("@POST(\"api/scam-shield/check\")") && api.contains("@POST(\"api/scam-shield/qr\")") && api.contains("@POST(\"api/scam-shield/analyze\")"))
+        assertTrue(api.contains("@POST(\"api/scam-shield/check\")") && !api.contains("@POST(\"api/scam-shield/qr\")") && api.contains("@POST(\"api/scam-shield/analyze\")"))
         val repo = src("app/src/main/java/com/tappyai/app/scamshield/data/RealScamShieldRepository.kt")
-        assertTrue(repo.contains("MultipartBody.Part.createFormData(\"image\", \"qr\""))
+        assertTrue("no QR image upload any more", !repo.contains("createFormData"))
         assertTrue("the screenshot travels as the web's data URL", repo.contains("\"data:\${mimeType ?: \"image/jpeg\"};base64,\" + Base64.encodeToString(it, Base64.NO_WRAP)"))
-        assertTrue("the server's localized refusal is preferred over the local fallback", result.contains("failure.serverMessage ?: stringResource(localFallbackFor(failure.code, forMessage))"))
+        assertTrue("the web maps the refusal CODE to its dictionary line (the server's own message is not shown)", result.contains("is ScamCheckFailure.Refused -> stringResource(localFallbackFor(failure.code, forMessage))") && !result.contains("failure.serverMessage"))
         assertTrue("an unmapped message failure reads as 'could not analyze', never as a sentence about a link", result.contains("else -> if (forMessage) R.string.scam_v3_msg_errFailed else R.string.scam_shield_error_generic") && screen.contains("forMessage = viewModel.tab == ScamShieldTab.Message"))
         assertTrue(listOf("\"qr_decode_failed\" ->", "\"qr_no_url\" ->", "\"invalid_image\" -> R.string.scam_v3_msg_errImage", "\"analyze_failed\", \"account_required\", \"account_error\" -> R.string.scam_v3_msg_errFailed").all { result.contains(it) })
     }
@@ -271,15 +272,15 @@ class ScamShieldV3Test {
     // ── 6. Home: the section, immediately above Ưu đãi hôm nay, opening the same route ──
 
     @Test
-    fun `Home renders Cảnh báo lừa đảo as its own section IMMEDIATELY ABOVE Ưu đãi hôm nay, once, without moving anything else`() {
+    fun `Home renders Cảnh báo lừa đảo as its own section directly under the discovery banner, once, without moving anything else`() {
         val h = home
-        val column = h.substring(h.indexOf("V3RecommendationsSection("), h.indexOf("SmartToolsSection(\n"))
-        val order = listOf("V3RecommendationsSection(", "V3DiscoverBanner(", "V3ScamShieldSection(", "V3DealsSection(", "CommunityVideosSection(", "CategoryChipsSection(", "SuggestionsSection(", "RecentActivitySection(")
+        val column = h.substring(h.indexOf("V3DiscoverBanner("), h.indexOf("SmartToolsSection(\n"))
+        val order = listOf("V3DiscoverBanner(", "V3ScamShieldSection(", "CommunityVideosSection(", "CategoryChipsSection(", "SuggestionsSection(", "RecentActivitySection(")
             .map { it to column.indexOf(it) }
         order.forEach { (name, at) -> assertTrue("$name is on the Home column", at >= 0) }
         assertEquals("the column order", order.map { it.first }, order.sortedBy { it.second }.map { it.first })
         assertEquals("the scam section is rendered exactly once", 1, Regex("""V3ScamShieldSection\(onOpenScamShield""").findAll(column).count())
-        assertEquals("the deals section is rendered exactly once", 1, Regex("""V3DealsSection\(state = deals""").findAll(column).count())
+        assertEquals("the removed deals section is not rendered", 0, Regex("""V3DealsSection\(""").findAll(h).count())
         assertTrue("the section's title is the canonical name", h.contains("private fun V3ScamShieldSection(") && h.contains("stringResource(R.string.home_scam_shield_title)"))
         assertTrue("the same header rhythm as Ưu đãi hôm nay: 52dp tile, 21sp title, see-all", h.substring(h.indexOf("private fun V3ScamShieldSection(")).let { it.contains(".size(52.dp)") && it.contains("fontSize = 21.sp") && it.contains("V3SeeAll(") })
         assertTrue("the drawer still lists every tool (DD-002)", h.contains("SmartToolId.Safety -> onOpenScamShield()"))

@@ -2,6 +2,7 @@ package com.tappyai.app.profile
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import com.tappyai.app.ProductFlags
 import com.tappyai.app.R
 
 /**
@@ -66,7 +67,8 @@ fun HowToUseScreen(onBack: () -> Unit) {
             ),
             LegalSection(
                 title = stringResource(R.string.guide_tools_title),
-                body = stringResource(R.string.guide_tools_body),
+                // Translate is hidden (ProductFlags.SHOW_TRANSLATE): the guide must not describe a tool the user cannot open.
+                body = stringResource(if (ProductFlags.SHOW_TRANSLATE) R.string.guide_tools_body_with_translate else R.string.guide_tools_body),
             ),
             LegalSection(
                 title = stringResource(R.string.guide_account_title),

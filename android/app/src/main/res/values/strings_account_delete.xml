@@ -4,6 +4,10 @@
 <resources>
     <string name="settings_delete_account_self">Delete account</string>
     <string name="settings_delete_account_self_desc">Permanently delete your account and data</string>
+    <!-- R29 (web 01/10): the owner's confirmation text. The plan line shows when the app KNOWS an active paid plan; the generic line when it does not. -->
+    <string name="account_delete_warn_lead">Delete your account permanently? All your data will be deleted immediately and cannot be recovered: chat history, saved places, posts, photos and clips.</string>
+    <string name="account_delete_warn_plan">Your paid plan and any remaining credit will be lost, and Tappy does not refund the unused part. Deleting your account does not cancel your subscription on the App Store or Google Play — cancel it there so you are not charged again.</string>
+    <string name="account_delete_warn_plan_generic">If you have a paid plan, the plan and any remaining credit will be lost, and Tappy does not refund the unused part. Deleting your account does not cancel your subscription on the App Store or Google Play — cancel it there so you are not charged again.</string>
     <string name="account_delete_warning">Deletion is permanent and cannot be undone. Your account is deleted as soon as you confirm.</string>
     <string name="account_delete_removes_heading">Deletion permanently removes:</string>
     <string name="account_delete_kept_heading">Kept, but no longer linked to you</string>
@@ -29,6 +33,6 @@
     <string name="account_delete_removes_9">Your Google Calendar connection — we also revoke TappyAI\'s access at Google.</string>
     <string name="account_delete_kept_1">Messages you sent to other people stay in their conversation and are shown as coming from a deleted account.</string>
     <string name="account_delete_kept_2">Reports and moderation decisions about content or accounts are kept for safety and legal compliance, without a link to your account.</string>
-    <string name="account_delete_confirm_label">To confirm, type %1$s</string>
+    <string name="account_delete_confirm_label">Type %1$s to confirm.</string>
     <string name="account_delete_done_p2">You will be signed out. If you have questions, contact %1$s.</string>
 </resources>

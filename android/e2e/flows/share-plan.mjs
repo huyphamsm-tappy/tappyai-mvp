@@ -32,6 +32,8 @@ export async function android({ a, shot, check, seeded }) {
   a.installShareStubs()
   await a.signIn(seeded.users.pro.email)
   await a.tap('Tôi', { after: 3000 })
+  // 02/10 (web owner): the Profile hub keeps ONE «Tài khoản» row; «Lịch sử chat» and the other eight rows live on the Account page.
+  await a.tap(await a.scrollTo('Tài khoản'), { after: 3500 })
   await a.tap(await a.scrollTo('Lịch sử chat'), { after: 4000 })
   const row = await a.scrollTo(TITLE, { max: 6 }).catch(() => null)
   check('Lịch sử chat có cuộc trò chuyện kế hoạch', !!row)

@@ -36,6 +36,7 @@ const checks = [
   ['release manifest has NO UatTestHookActivity', releaseManifest && !fs.readFileSync(releaseManifest, 'utf8').includes('UatTestHook')],
   ['uat manifest DOES have UatTestHookActivity (the check can see it)', uatManifest && fs.readFileSync(uatManifest, 'utf8').includes('UatTestHookActivity')],
   ['release manifest has NO UatPlanCardPreviewActivity (plan card v2 offline preview)', releaseManifest && !fs.readFileSync(releaseManifest, 'utf8').includes('UatPlanCardPreview')],
+  ['release manifest has NO UatDeleteConfirmPreviewActivity (R29 text preview)', releaseManifest && !fs.readFileSync(releaseManifest, 'utf8').includes('UatDeleteConfirmPreview')],
   ['release BuildConfig exists', !!releaseConfig],
   ['release BuildConfig does NOT contain the bypass secret', releaseConfig && !fs.readFileSync(releaseConfig, 'utf8').includes(secret)],
   ['release BuildConfig VERCEL_BYPASS_SECRET is empty', releaseConfig && /VERCEL_BYPASS_SECRET = ""/.test(fs.readFileSync(releaseConfig, 'utf8'))],

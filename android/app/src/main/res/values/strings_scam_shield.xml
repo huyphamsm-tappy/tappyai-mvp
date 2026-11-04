@@ -22,13 +22,11 @@
     <string name="scam_shield_evidence">What we found</string>
 
     <string name="scam_shield_unresolved_title">Couldn\'t check this link</string>
-    <string name="scam_shield_error_offline">No connection. This link has not been checked.</string>
-    <string name="scam_shield_error_timeout">The check took too long. This link has not been checked.</string>
-    <string name="scam_shield_error_generic">Something went wrong. This link has not been checked.</string>
-    <string name="scam_shield_error_rate_limit">Too many checks just now. Wait a moment and try again.</string>
-    <string name="scam_shield_error_daily_limit">You\'ve used all your checks for today.</string>
-    <string name="scam_shield_error_invalid_url">That doesn\'t look like a link. Check it and try again.</string>
-    <string name="scam_shield_error_private_url">That address is on a private network and can\'t be checked.</string>
+    <string name="scam_shield_error_generic">Could not check this URL</string>
+    <string name="scam_shield_error_rate_limit">Too many checks. Try again later.</string>
+    <string name="scam_shield_error_daily_limit">Daily check limit reached. Come back tomorrow.</string>
+    <string name="scam_shield_error_invalid_url">Invalid URL</string>
+    <string name="scam_shield_error_private_url">Cannot check internal network addresses</string>
 
     <string name="scam_shield_disclaimer">Scam Shield helps you spot risky links, but it can\'t catch everything. Never send money or share codes based on a link alone.</string>
 

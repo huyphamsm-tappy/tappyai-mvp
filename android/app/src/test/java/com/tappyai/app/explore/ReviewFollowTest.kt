@@ -63,7 +63,7 @@ class ReviewFollowTest {
         assertTrue("the existing repository toggle (POST /api/users/{id}/follow)", fn.contains("repository.toggleFollow(authorId)"))
         assertTrue("optimistic flip of every row by the author", fn.contains("s.reviews.withFollowState(authorId, target)"))
         assertTrue("the server's answer is written back", fn.contains("s.reviews.withFollowState(authorId, result.data)"))
-        assertTrue("a failure reverts", fn.contains("s.reviews.withFollowState(authorId, !target)"))
+        assertTrue("a failure reverts to what was shown", fn.contains("s.reviews.withFollowState(authorId, shown)"))
         assertTrue("never follow oneself, never double-fire", fn.contains("if (authorId == _uiState.value.currentUserId || authorId in followInFlight) return"))
         assertFalse("no new endpoint or client of its own", vm.contains("@POST") || vm.contains("followUser(") || vm.contains("HttpClient"))
     }

@@ -1,9 +1,6 @@
 package com.tappyai.app.scamshield.data
 
-import okhttp3.MultipartBody
 import retrofit2.http.Body
-import retrofit2.http.Multipart
-import retrofit2.http.Part
 import retrofit2.http.POST
 
 /**
@@ -17,15 +14,8 @@ interface ScamShieldApi {
     @POST("api/scam-shield/check")
     suspend fun check(@Body body: ScamCheckRequestDto): ScamCheckResponseDto
 
-    /**
-     * `POST /api/scam-shield/qr` — the web's QR tab: one image (`multipart/form-data`, part name
-     * `image`, ≤ 5 MB), decoded server-side, and the URL it carries checked by the same engine.
-     * Same `CheckResult` back; refusals name `qr_decode_failed`, `qr_no_url`, `no_image`,
-     * `too_large`, `invalid_content_type` in the error body.
-     */
-    @Multipart
-    @POST("api/scam-shield/qr")
-    suspend fun checkQr(@Part image: MultipartBody.Part): ScamCheckResponseDto
+    // QR codes are decoded ON THE DEVICE (ZXing, `QrCodes`): the picture is never uploaded, so `POST /api/scam-shield/qr` is not
+    // used by the app. Only the LINK a code carries goes to [check] above.
 
     /**
      * `POST /api/scam-shield/analyze` — the web's third tab, Analyze Message: the message text
@@ -35,4 +25,11 @@ interface ScamShieldApi {
      */
     @POST("api/scam-shield/analyze")
     suspend fun analyzeMessage(@Body body: MessageAnalysisRequestDto): MessageAnalysisResponseDto
+
+    /**
+     * `POST /api/scam-shield/share` — the web's `ScamShareButton`: the server re-runs the (cached, deterministic) link check and publishes a
+     * public page `/r/<slug>` from ITS result; nothing typed on the phone is published. 201 `{id, slug, path, url, host, …}`; 422 `not_shareable`.
+     */
+    @POST("api/scam-shield/share")
+    suspend fun share(@Body body: ScamShareRequestDto): ScamShareResponseDto
 }

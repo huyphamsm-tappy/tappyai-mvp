@@ -1,5 +1,6 @@
 package com.tappyai.app.notifications
 
+import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
@@ -33,12 +34,13 @@ class TappyNotificationPresenter(private val context: Context) {
      * [title] and [body] are display text and nothing else. They are not parsed, not classified,
      * and never leave this method except into the notification the OS draws.
      */
+    @SuppressLint("MissingPermission") // POST_NOTIFICATIONS is checked below, before the notify call
     fun present(kind: TappyNotificationKind, title: String?, body: String?, click: TappyNotificationClick) {
         TappyNotificationChannels.ensureChannels(context)
 
         val channelId = TappyNotificationChannels.channelFor(kind, preferences.identitySoundEnabled)
         val notification = NotificationCompat.Builder(context, channelId)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.drawable.ic_stat_notification)
             .setContentTitle(title ?: context.getString(R.string.app_name))
             .setContentText(body.orEmpty())
             .setStyle(NotificationCompat.BigTextStyle().bigText(body.orEmpty()))
@@ -49,6 +51,9 @@ class TappyNotificationPresenter(private val context: Context) {
 
         // POST_NOTIFICATIONS may be denied. That is the user's answer, not an error state: the
         // post is simply dropped, and nothing else about the app changes.
+        // Checked explicitly (and still guarded by runCatching): lint's MissingPermission wants the
+        // permission test in the same method as the call.
+        if (!TappyNotificationPermission.isGranted(context)) return
         runCatching {
             NotificationManagerCompat.from(context).notify(notificationId(click), notification)
         }

@@ -1,15 +1,18 @@
 package com.tappyai.core.common
 
 /**
- * Compact Vietnamese Dong formatting matching the web's `fmtVND`:
- * ≥ 1,000,000 → "X triệu" (one decimal if non-zero), else → "Xk".
+ * Compact Vietnamese Dong formatting. A price is never stated higher or lower than it is:
+ * ≥ 1,000,000 → "X triệu" rounded to one decimal, written with a comma as Vietnamese reads it ("25,8 triệu", 25.990.000 → "26 triệu");
+ * a round number of thousands → "250k"; anything else → the exact amount ("249.500đ", "500đ").
  */
 fun formatCompactVnd(amount: Long): String {
-    if (amount >= 1_000_000) {
-        val millions = amount / 1_000_000
-        val remainder = (amount % 1_000_000) / 100_000
-        return if (remainder > 0) "$millions.${remainder} triệu" else "$millions triệu"
+    // 999.950 and up rounds to a million
+    if (amount >= 999_950) {
+        val tenths = (amount + 50_000) / 100_000
+        val whole = tenths / 10
+        val decimal = tenths % 10
+        return if (decimal > 0) "$whole,$decimal triệu" else "$whole triệu"
     }
-    val thousands = amount / 1_000
-    return "${thousands}k"
+    if (amount >= 1_000 && amount % 1_000 == 0L) return "${amount / 1_000}k"
+    return amount.toString().reversed().chunked(3).joinToString(".").reversed() + "đ"
 }

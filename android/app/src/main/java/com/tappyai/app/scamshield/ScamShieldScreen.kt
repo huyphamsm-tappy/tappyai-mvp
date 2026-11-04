@@ -46,9 +46,11 @@ import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material.icons.filled.Upload
 import androidx.compose.material.icons.filled.Verified
 import androidx.compose.material.icons.outlined.Sms
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -121,6 +123,7 @@ fun ScamShieldScreen(
     viewModel: ScamShieldViewModel = hiltViewModel(),
 ) {
     val checking = viewModel.state is ScamShieldUiState.Checking
+    val context = androidx.compose.ui.platform.LocalContext.current
     val pickQr = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri -> if (uri != null) viewModel.checkQrImage(uri) }
     val pickScreenshot = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri -> if (uri != null) viewModel.pickScreenshot(uri) }
     val scroll = rememberScrollState()
@@ -169,6 +172,9 @@ fun ScamShieldScreen(
                     footer = { FeatureTiles() },
                 )
 
+                // ── 2b. Emergency card (Web final `ScamHelpCard`): after the hero, before any tool ──
+                ScamHelpCard()
+
                 // ── 3. The tool ──
                 ToolPanel {
                     FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -197,13 +203,17 @@ fun ScamShieldScreen(
                                 onClick = viewModel::check,
                             )
                         }
-                        ScamShieldTab.Qr -> DropZone(busy = checking, label = stringResource(if (checking) R.string.scam_shield_checking else R.string.scam_shield_v3_qr_upload)) {
-                            pickQr.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                        ScamShieldTab.Qr -> Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                            DropZone(busy = checking, label = stringResource(if (checking) R.string.scam_shield_checking else R.string.scam_shield_v3_qr_upload)) {
+                                pickQr.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                            }
+                            // The picture is read on the phone (ZXing); only a link inside the code is ever sent for checking.
+                            Text(text = stringResource(R.string.scam_qr_privacy), color = HomeV3.OnSurfaceVariant, fontSize = 11.5.sp, lineHeight = 15.sp)
                         }
                         ScamShieldTab.Message -> Column(modifier = Modifier.padding(top = 16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                             Column {
                                 Text(text = stringResource(R.string.scam_v3_msg_title), color = HomeV3.OnSurface, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-                                Text(text = stringResource(R.string.scam_v3_msg_subtitle), color = HomeV3.OnSurfaceVariant, fontSize = 13.sp, lineHeight = 17.sp, modifier = Modifier.padding(top = 2.dp))
+                                Text(text = stringResource(if (ScamShieldFlags.MESSAGE_SCREENSHOT) R.string.scam_v3_msg_subtitle else R.string.scam_verdict_msg_subtitle), color = HomeV3.OnSurfaceVariant, fontSize = 13.sp, lineHeight = 17.sp, modifier = Modifier.padding(top = 2.dp))
                             }
                             ToolTextField(
                                 value = viewModel.message,
@@ -224,38 +234,40 @@ fun ScamShieldScreen(
                                 leadingIcon = { Icon(Icons.Filled.Link, contentDescription = null, tint = HomeV3.OnSurfaceVariant, modifier = Modifier.size(17.dp)) },
                                 textSize = 14.sp,
                             )
-                            val shot = viewModel.screenshot
-                            if (shot != null) {
-                                Row(
-                                    modifier = Modifier.heightIn(min = 44.dp).clip(CircleShape).background(HomeV3.SurfaceVariant).border(1.dp, HomeV3.Outline, CircleShape).padding(start = 14.dp, end = 6.dp, top = 6.dp, bottom = 6.dp),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                ) {
-                                    Icon(Icons.Filled.AddPhotoAlternate, contentDescription = null, tint = HomeV3.OnSurface, modifier = Modifier.size(16.dp))
-                                    Text(text = shot.name, color = HomeV3.OnSurface, fontSize = 13.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.widthIn(max = 180.dp))
-                                    Box(
-                                        modifier = Modifier.size(28.dp).clip(CircleShape).clickable(role = Role.Button, onClickLabel = stringResource(R.string.scam_v3_msg_removeScreenshot), onClick = viewModel::removeScreenshot),
-                                        contentAlignment = Alignment.Center,
-                                    ) { Icon(Icons.Filled.Close, contentDescription = stringResource(R.string.scam_v3_msg_removeScreenshot), tint = HomeV3.OnSurfaceVariant, modifier = Modifier.size(14.dp)) }
-                                }
-                            } else {
-                                Row(
-                                    modifier = Modifier
-                                        .heightIn(min = 44.dp)
-                                        .clip(CircleShape)
-                                        .background(HomeV3.SurfaceVariant)
-                                        .border(1.dp, HomeV3.Outline, CircleShape)
-                                        .clickable(enabled = !checking, role = Role.Button) { pickScreenshot.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) }
-                                        .padding(horizontal = 16.dp, vertical = 10.dp),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                ) {
-                                    Icon(Icons.Filled.AddPhotoAlternate, contentDescription = null, tint = HomeV3.OnSurface, modifier = Modifier.size(16.dp))
-                                    Text(text = stringResource(R.string.scam_v3_msg_upload), color = HomeV3.OnSurface, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
+                            if (ScamShieldFlags.MESSAGE_SCREENSHOT) {
+                                val shot = viewModel.screenshot
+                                if (shot != null) {
+                                    Row(
+                                        modifier = Modifier.heightIn(min = 44.dp).clip(CircleShape).background(HomeV3.SurfaceVariant).border(1.dp, HomeV3.Outline, CircleShape).padding(start = 14.dp, end = 6.dp, top = 6.dp, bottom = 6.dp),
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                    ) {
+                                        Icon(Icons.Filled.AddPhotoAlternate, contentDescription = null, tint = HomeV3.OnSurface, modifier = Modifier.size(16.dp))
+                                        Text(text = shot.name, color = HomeV3.OnSurface, fontSize = 13.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.widthIn(max = 180.dp))
+                                        Box(
+                                            modifier = Modifier.size(28.dp).clip(CircleShape).clickable(role = Role.Button, onClickLabel = stringResource(R.string.scam_v3_msg_removeScreenshot), onClick = viewModel::removeScreenshot),
+                                            contentAlignment = Alignment.Center,
+                                        ) { Icon(Icons.Filled.Close, contentDescription = stringResource(R.string.scam_v3_msg_removeScreenshot), tint = HomeV3.OnSurfaceVariant, modifier = Modifier.size(14.dp)) }
+                                    }
+                                } else {
+                                    Row(
+                                        modifier = Modifier
+                                            .heightIn(min = 44.dp)
+                                            .clip(CircleShape)
+                                            .background(HomeV3.SurfaceVariant)
+                                            .border(1.dp, HomeV3.Outline, CircleShape)
+                                            .clickable(enabled = !checking, role = Role.Button) { pickScreenshot.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) }
+                                            .padding(horizontal = 16.dp, vertical = 10.dp),
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                    ) {
+                                        Icon(Icons.Filled.AddPhotoAlternate, contentDescription = null, tint = HomeV3.OnSurface, modifier = Modifier.size(16.dp))
+                                        Text(text = stringResource(R.string.scam_v3_msg_upload), color = HomeV3.OnSurface, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
+                                    }
                                 }
                             }
                             Text(
-                                text = stringResource(R.string.scam_v3_msg_quotaHint, ScamShieldViewModel.ANON_LIFETIME_LIMIT.toString(), ScamShieldViewModel.FREE_DAILY_LIMIT.toString()),
+                                text = stringResource(if (ScamShieldFlags.MESSAGE_SCREENSHOT) R.string.scam_v3_msg_quotaHint else R.string.scam_verdict_msg_privacy, ScamShieldViewModel.ANON_LIFETIME_LIMIT.toString(), ScamShieldViewModel.FREE_DAILY_LIMIT.toString()),
                                 color = HomeV3.OnSurfaceVariant,
                                 fontSize = 12.sp,
                                 lineHeight = 16.sp,
@@ -274,8 +286,16 @@ fun ScamShieldScreen(
                 }
 
                 // ── 4. The verdict ──
-                (viewModel.state as? ScamShieldUiState.Result)?.let { VerdictCard(it.result) }
+                (viewModel.state as? ScamShieldUiState.Result)?.let { r ->
+                    VerdictCard(
+                        result = r.result,
+                        shareBusy = viewModel.shareBusy,
+                        shareError = viewModel.shareError,
+                        onShare = { viewModel.shareLink(r.result) { host, url -> shareLinkVerdict(context, context.getString(R.string.scam_share_title, host), url) } },
+                    )
+                }
                 (viewModel.state as? ScamShieldUiState.MessageResult)?.let { MessageResultCard(it.result) }
+                (viewModel.state as? ScamShieldUiState.QrNotice)?.let { QrNoticeCard(it.payload) }
 
                 // ── 5. Official anti-fraud knowledge ──
                 ScamKnowledgeSection(viewModel = viewModel)
@@ -327,7 +347,7 @@ internal fun TabChip(label: String, icon: ImageVector?, active: Boolean, onClick
 
 /** `.v3-scam-brand.v3-scam-cta`: the blue→violet brand gradient, 52dp, 16dp radius. */
 @Composable
-private fun BrandCta(text: String, icon: ImageVector, busy: Boolean, enabled: Boolean, onClick: () -> Unit) {
+internal fun BrandCta(text: String, icon: ImageVector, busy: Boolean, enabled: Boolean, onClick: () -> Unit) {
     val shape = RoundedCornerShape(16.dp)
     Row(
         modifier = Modifier
@@ -509,3 +529,15 @@ private fun HistoryPanel(
 
 /** `https://vietcombank.com.vn/login` → `vietcombank.com.vn`. */
 internal fun displayHost(url: String): String = runCatching { java.net.URI(url).host }.getOrNull()?.takeIf { it.isNotBlank() } ?: url
+
+/** Hands the published page (`title` + its public URL) to the system share sheet — plain text, nothing typed on the phone is in it. */
+private fun shareLinkVerdict(context: android.content.Context, title: String, url: String) {
+    runCatching {
+        val send = android.content.Intent(android.content.Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(android.content.Intent.EXTRA_SUBJECT, title)
+            putExtra(android.content.Intent.EXTRA_TEXT, title + "\n" + url)
+        }
+        context.startActivity(android.content.Intent.createChooser(send, null).addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK))
+    }
+}

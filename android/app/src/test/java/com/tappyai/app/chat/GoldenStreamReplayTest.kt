@@ -116,8 +116,11 @@ class GoldenStreamReplayTest {
 
     @Test fun `(e) unknown 8 kinds and 9 a f e d frames are ignored without error`() {
         val events = replay(wire("xin chào"))
-        assertTrue(events.all { it is ChatStreamEvent.Text || it is ChatStreamEvent.Progress })
+        // A3 (02/11): `9:` / `a:` are read as the tool call and its result (the tool hint); the unknown `8:` kind and f / e / d stay ignored
+        assertTrue(events.all { it is ChatStreamEvent.Text || it is ChatStreamEvent.Progress || it is ChatStreamEvent.ToolCall || it is ChatStreamEvent.ToolResult })
         assertEquals(1, events.count { it is ChatStreamEvent.Progress })
+        assertEquals(listOf(ChatStreamEvent.ToolCall("p1", "search_places"), ChatStreamEvent.ToolResult("p1")), events.filter { it is ChatStreamEvent.ToolCall || it is ChatStreamEvent.ToolResult })
+        assertEquals("xin chào", events.filterIsInstance<ChatStreamEvent.Text>().joinToString("") { it.delta })
     }
 
     @Test fun `(f) a 3 frame is recognised as the error state`() {
