@@ -24,7 +24,7 @@ final class ThreadViewModel: AppObservableObject {
     }
 
     @AppPublished private(set) var thread: ChatThreadSummary?
-    @AppPublished private(set) var messages: [ChatMessage] = []
+    @AppPublished private(set) var messages: [PeerMessage] = []
     @AppPublished private(set) var hasMore = false
     @AppPublished private(set) var isLoading = true
     @AppPublished private(set) var loadingOlder = false

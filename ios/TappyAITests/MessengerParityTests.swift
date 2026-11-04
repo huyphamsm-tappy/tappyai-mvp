@@ -11,13 +11,13 @@ final class MessengerParityTests: XCTestCase {
         try ResponseDecoder.json.decode(T.self, from: Data(json.utf8))
     }
 
-    private func msg(_ id: String, _ sender: String?, _ at: String, body: String = "x") -> ChatMessage {
-        ChatMessage(id: id, threadId: "t", senderId: sender, body: body, createdAt: at)
+    private func msg(_ id: String, _ sender: String?, _ at: String, body: String = "x") -> PeerMessage {
+        PeerMessage(id: id, threadId: "t", senderId: sender, body: body, createdAt: at)
     }
 
     private let now = ISO8601Timestamp.date(from: "2026-11-04T12:00:00+07:00")!
 
-    private func metas(_ messages: [ChatMessage], group: Bool = true) -> [ChatBubbles.Meta] {
+    private func metas(_ messages: [PeerMessage], group: Bool = true) -> [ChatBubbles.Meta] {
         ChatBubbles.metas(for: messages, meId: "me", group: group, nameOf: { $0 == "a" ? "An" : "Bình" }, now: now)
     }
 

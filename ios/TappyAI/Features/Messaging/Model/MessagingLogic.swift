@@ -39,9 +39,9 @@ enum ChatBubbles {
         return String(format: "%02d/%02d %@", a.day ?? 0, a.month ?? 0, clock)
     }
 
-    static func metas(for messages: [ChatMessage], meId: String?, group: Bool,
+    static func metas(for messages: [PeerMessage], meId: String?, group: Bool,
                       nameOf: (String?) -> String, now: Date = Date()) -> [Meta] {
-        func sameRun(_ a: ChatMessage?, _ b: ChatMessage?) -> Bool {
+        func sameRun(_ a: PeerMessage?, _ b: PeerMessage?) -> Bool {
             guard let a, let b, a.senderId == b.senderId,
                   let x = ISO8601Timestamp.date(from: a.createdAt), let y = ISO8601Timestamp.date(from: b.createdAt) else { return false }
             return abs(y.timeIntervalSince(x)) < runGap
@@ -49,8 +49,8 @@ enum ChatBubbles {
         return messages.indices.map { i -> Meta in
             let m = messages[i]
             let mine = meId != nil && m.senderId == meId
-            let previous: ChatMessage? = i > 0 ? messages[i - 1] : nil
-            let next: ChatMessage? = i + 1 < messages.count ? messages[i + 1] : nil
+            let previous: PeerMessage? = i > 0 ? messages[i - 1] : nil
+            let next: PeerMessage? = i + 1 < messages.count ? messages[i + 1] : nil
             return Meta(showName: group && !mine && !sameRun(previous, m),
                         showTime: !sameRun(m, next),
                         name: mine ? nil : nameOf(m.senderId),

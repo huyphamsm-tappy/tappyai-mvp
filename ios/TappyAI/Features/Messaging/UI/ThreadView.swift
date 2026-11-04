@@ -152,7 +152,7 @@ struct ThreadView: View {
     }
 
     @ViewBuilder
-    private func bubble(_ message: ChatMessage, meta: ChatBubbles.Meta?) -> some View {
+    private func bubble(_ message: PeerMessage, meta: ChatBubbles.Meta?) -> some View {
         let mine = message.senderId != nil && message.senderId == vm.meId
         VStack(alignment: mine ? .trailing : .leading, spacing: 2) {
             if let meta, meta.showName, let name = meta.name {

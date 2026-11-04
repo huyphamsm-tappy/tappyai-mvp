@@ -116,7 +116,7 @@ struct ChatMessageMedia: Decodable, Equatable, Hashable, Sendable {
     }
 }
 
-struct ChatMessage: Decodable, Equatable, Hashable, Identifiable, Sendable {
+struct PeerMessage: Decodable, Equatable, Hashable, Identifiable, Sendable {
     let id: String
     let threadId: String
     /// Nil when the author's account is gone — the message stays, the name does not.
@@ -174,19 +174,19 @@ struct ChatThreadsResponse: Decodable, Sendable {
 
 /// One page of history, oldest → newest; `hasMore` says there is an older page.
 struct ChatMessagesPage: Decodable, Equatable, Sendable {
-    let messages: [ChatMessage]
+    let messages: [PeerMessage]
     let hasMore: Bool
     private enum CodingKeys: String, CodingKey { case messages, hasMore }
-    init(messages: [ChatMessage], hasMore: Bool) { self.messages = messages; self.hasMore = hasMore }
+    init(messages: [PeerMessage], hasMore: Bool) { self.messages = messages; self.hasMore = hasMore }
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
-        messages = c.lossyArray(ChatMessage.self, forKey: .messages)
+        messages = c.lossyArray(PeerMessage.self, forKey: .messages)
         hasMore = c.lenient(Bool.self, forKey: .hasMore, default: false)
     }
 }
 
 struct ChatSendResponse: Decodable, Sendable {
-    let message: ChatMessage
+    let message: PeerMessage
 }
 
 struct ChatUploadResponse: Decodable, Sendable {

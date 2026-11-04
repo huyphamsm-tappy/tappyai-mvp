@@ -47,7 +47,7 @@ struct MessagingService: Sendable {
 
     /// `POST /api/messaging/threads/{id}/messages` — text, a picture, or both. `clientId` makes the send idempotent: a retry of the SAME
     /// attempt returns the stored row instead of a second copy.
-    func send(threadId: String, body: String, clientId: String?, media: UploadedPhoto?) async throws -> ChatMessage {
+    func send(threadId: String, body: String, clientId: String?, media: UploadedPhoto?) async throws -> PeerMessage {
         let endpoint = Endpoint(path: "/api/messaging/threads/\(try safe(threadId))/messages", method: .post,
                                 body: try ChatWire.sendBody(body: body, clientId: clientId, media: media), requiresAuth: true)
         return try await api.send(endpoint, as: ChatSendResponse.self).message
