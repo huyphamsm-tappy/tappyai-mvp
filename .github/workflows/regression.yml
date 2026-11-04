@@ -16,6 +16,10 @@ on:
   push:
   pull_request:
 
+# Security audit 04/11 (D-01): the token these jobs get is read-only; nothing here writes to the repository.
+permissions:
+  contents: read
+
 jobs:
   # The point of CI-01: the whole suite, nothing excluded, nothing skipped.
   # `npm test` is `vitest run` — 97 files, including the embedded-postgres suites
