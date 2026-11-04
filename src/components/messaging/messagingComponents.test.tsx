@@ -120,6 +120,72 @@ describe('ThreadView · history', () => {
   })
 })
 
+describe('ThreadView · report a message', () => {
+  const stubs = (c: HTMLElement) => [...c.querySelectorAll('[data-testid="safety-stub"]')] as HTMLElement[]
+  const messageStubs = (c: HTMLElement) => stubs(c).filter(s => s.getAttribute('data-target') === 'message')
+
+  it('every bubble of ANOTHER person has a report action for that message; my own bubbles have none', async () => {
+    fetchMock.mockResolvedValueOnce(json({ messages: [msg(1, 'u2'), msg(2, 'me'), msg(3, 'u2')], hasMore: false }))
+    const { container } = render(<ThreadView thread={THREAD} onBack={() => {}} />)
+    await waitFor(() => expect(bodies()).toEqual(['tin 1', 'tin 2', 'tin 3']))
+    expect(messageStubs(container).map(s => s.getAttribute('data-report-id'))).toEqual(['m1', 'm3'])
+  })
+
+  it('a message report offers no block (blocking is the header\'s job, for the person, not per message)', async () => {
+    fetchMock.mockResolvedValueOnce(json({ messages: [msg(1, 'u2')], hasMore: false }))
+    const { container } = render(<ThreadView thread={THREAD} onBack={() => {}} />)
+    await waitFor(() => expect(bodies()).toEqual(['tin 1']))
+    expect(messageStubs(container)[0]!.getAttribute('data-user-id') ?? '').toBe('')
+  })
+
+  it('a message whose author is gone (no sender) can still be reported', async () => {
+    fetchMock.mockResolvedValueOnce(json({ messages: [{ ...msg(1), senderId: null }], hasMore: false }))
+    const { container } = render(<ThreadView thread={THREAD} onBack={() => {}} />)
+    await waitFor(() => expect(bodies()).toEqual(['tin 1']))
+    expect(messageStubs(container)).toHaveLength(1)
+  })
+
+  it('the header\'s own menu (report the person, block) is unchanged', async () => {
+    fetchMock.mockResolvedValueOnce(json({ messages: [], hasMore: false }))
+    const { container } = render(<ThreadView thread={THREAD} onBack={() => {}} />)
+    await waitFor(() => expect(screen.getByRole('textbox')).toBeTruthy())
+    const header = stubs(container).filter(s => s.getAttribute('data-target') === 'user')
+    expect(header).toHaveLength(1)
+    expect(header[0]!.getAttribute('data-user-id')).toBe('u2')
+  })
+})
+
+describe('ThreadView · who said it and when (bubbles)', () => {
+  const GROUP = { ...(THREAD as object), kind: 'group', title: 'Nhóm ăn uống', participants: [
+    { userId: 'me', fullName: 'Tôi', avatarUrl: null }, { userId: 'u2', fullName: 'Bình', avatarUrl: null }, { userId: 'u3', fullName: null, avatarUrl: null },
+  ] } as never
+  const names = (c: HTMLElement) => [...c.querySelectorAll('[data-testid="bubble-name"]')].map(e => e.textContent)
+  const times = (c: HTMLElement) => c.querySelectorAll('[data-testid="bubble-time"]').length
+
+  it('a group shows each other person\'s name ONCE per run (never mine), a deleted/unnamed sender under the fallback, and one time per run', async () => {
+    fetchMock.mockResolvedValueOnce(json({ messages: [msg(1, 'u2'), msg(2, 'u2'), msg(3, 'u3'), msg(4, 'me')], hasMore: false }))
+    const { container } = render(<ThreadView thread={GROUP} onBack={() => {}} />)
+    await waitFor(() => expect(bodies()).toEqual(['tin 1', 'tin 2', 'tin 3', 'tin 4']))
+    expect(names(container)).toEqual(['Bình', 'Người dùng'])
+    expect(times(container)).toBe(3) // runs: Bình (1,2), unnamed (3), me (4)
+  })
+
+  it('a direct thread shows no names (there is one other person) but still a time under each run', async () => {
+    fetchMock.mockResolvedValueOnce(json({ messages: [msg(1, 'u2'), msg(2, 'u2'), msg(3, 'me')], hasMore: false }))
+    const { container } = render(<ThreadView thread={THREAD} onBack={() => {}} />)
+    await waitFor(() => expect(bodies()).toEqual(['tin 1', 'tin 2', 'tin 3']))
+    expect(names(container)).toEqual([])
+    expect(times(container)).toBe(2)
+  })
+
+  it('the time is the Vietnam-time clock of the message (00:00:05Z on 10/10 is 07:00 in Ho Chi Minh)', async () => {
+    fetchMock.mockResolvedValueOnce(json({ messages: [msg(5, 'u2')], hasMore: false }))
+    const { container } = render(<ThreadView thread={THREAD} onBack={() => {}} />)
+    await waitFor(() => expect(bodies()).toEqual(['tin 5']))
+    expect(container.querySelector('[data-testid="bubble-time"]')?.textContent).toBe('10/10 07:00')
+  })
+})
+
 describe('ThreadView · send and realtime', () => {
   it('sends the trimmed draft, shows the server row once even when the realtime echo arrives, and clears the draft', async () => {
     fetchMock.mockResolvedValueOnce(json({ messages: [], hasMore: false }))
@@ -147,6 +213,35 @@ describe('ThreadView · send and realtime', () => {
     fireEvent.click(screen.getByRole('button', { name: /gửi|send/i }))
     await waitFor(() => expect(screen.getByRole('alert')).toBeTruthy())
     expect(box.value).toBe('giữ lại')
+  })
+
+  describe('what a refused send says (neutral: it must not reveal who blocked whom)', () => {
+    const attempt = async (status: number) => {
+      fetchMock.mockResolvedValueOnce(json({ messages: [], hasMore: false }))
+      render(<ThreadView thread={THREAD} onBack={() => {}} />)
+      await waitFor(() => expect(screen.getByRole('textbox')).toBeTruthy())
+      const box = screen.getByRole('textbox') as HTMLTextAreaElement
+      fireEvent.change(box, { target: { value: 'xin chào' } })
+      fetchMock.mockResolvedValueOnce(json({}, false, status))
+      fireEvent.click(screen.getByRole('button', { name: /gửi|send/i }))
+      await waitFor(() => expect(screen.getByRole('alert')).toBeTruthy())
+      return { alert: screen.getByRole('alert').textContent ?? '', box }
+    }
+
+    it('404 (not a participant, or a block — the server answers both alike) says the conversation cannot be written to, and keeps the draft', async () => {
+      const { alert, box } = await attempt(404)
+      expect(alert).toBe('Không thể gửi tin nhắn trong cuộc trò chuyện này.')
+      expect(alert, 'it must not say "blocked"').not.toMatch(/chặn|block/i)
+      expect(box.value).toBe('xin chào')
+    })
+
+    it('429 says to slow down', async () => {
+      expect((await attempt(429)).alert).toBe('Bạn gửi quá nhanh. Hãy thử lại sau ít phút.')
+    })
+
+    it('any other failure keeps the generic message', async () => {
+      expect((await attempt(500)).alert).toBe('Không gửi được tin nhắn.')
+    })
   })
 
   describe('clientId — one id per send attempt', () => {

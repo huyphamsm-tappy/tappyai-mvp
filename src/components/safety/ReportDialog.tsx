@@ -46,6 +46,10 @@ export function ReportDialog({
         </div>
       ) : (
         <>
+          {/* A message belongs to a private conversation: say, before anything is sent, that reporting it shows it to the moderators. */}
+          {target === 'message' && (
+            <p className="mt-2 text-sm text-gray-600 dark:text-gray-300" data-testid="report-message-notice">{t('safety.reportMessageNotice')}</p>
+          )}
           <fieldset className="mt-3 space-y-1.5">
             <legend className="text-sm font-medium">{t('safety.reportReasonLabel')}</legend>
             {REPORT_REASONS.map((r) => (

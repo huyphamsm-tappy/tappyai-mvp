@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { linkifySafe } from './linkify'
 import Image from '@/components/media/SafeImage'
 import { useTranslation } from '@/lib/i18n/useTranslation'
@@ -9,6 +9,7 @@ import { threadTitle, type ChatMessage, type ChatThreadSummary } from '@/lib/mes
 import { useMessages } from './MessagesProvider'
 import { SafetyMenu } from '@/components/safety/SafetyMenu'
 import { newClientId } from '@/lib/messaging/clientId'
+import { bubbleMetas } from '@/lib/messaging/bubbles'
 
 export default function ThreadView({
   thread,
@@ -50,6 +51,13 @@ export default function ThreadView({
     thread.kind === 'group' ? t('v3.msg.unnamedGroup') : t('v3.msg.unknownUser'),
   )
   const other = thread.participants.find(p => p.userId !== meId)
+
+  // Who said it and when: a name above the first bubble of someone else's run (group threads only) and a time under the last bubble of a run.
+  const metas = useMemo(() => bubbleMetas(messages, {
+    meId,
+    group: thread.kind === 'group',
+    nameOf: id => thread.participants.find(p => p.userId === id)?.fullName?.trim() || t('v3.msg.unknownUser'),
+  }), [messages, meId, thread.kind, thread.participants, t])
 
   // History, then the read cursor. Opening a thread IS reading it, so the mark is not tied to scrolling to the bottom (there are no per-message
   // receipts) — but it follows a SUCCESSFUL first page (D1), never the mount.
@@ -155,8 +163,11 @@ export default function ThreadView({
       setMessages(prev => (prev.some(m => m.id === d.message.id) ? prev : [...prev, d.message]))
       setDraft('')
       void refetch()
-    } catch {
-      setError(t('v3.msg.sendError'))
+    } catch (e) {
+      // NEUTRAL by design: the server answers "not a participant" and "blocked" with the same 404 (no oracle for who blocked whom), so the text
+      // says only that this conversation cannot be written to. 429: the sender is going too fast. Anything else keeps the generic text.
+      const status = e instanceof Error ? e.message : ''
+      setError(t(status === '404' ? 'v3.msg.cannotSend' : status === '429' ? 'v3.msg.sendTooFast' : 'v3.msg.sendError'))
     } finally {
       setSending(false)
     }
@@ -247,19 +258,34 @@ export default function ThreadView({
               {olderFailed && <p role="alert" className="text-[12px]" style={{ color: 'var(--v3-rose)' }}>{t('v3.msg.error')}</p>}
             </div>
           )}
-          {messages.map(message => {
+          {messages.map((message, i) => {
             const mine = message.senderId === meId
+            const meta = metas[i]
             return (
-              <div key={message.id} className={`flex ${mine ? 'justify-end' : 'justify-start'}`}>
-                <div
-                  className="max-w-[78%] rounded-2xl px-3.5 py-2.5 text-[13.5px] leading-snug"
-                  style={mine
-                    ? { background: 'var(--v3-accent-fill)', color: 'var(--v3-on-accent)' }
-                    : { background: 'var(--v3-panel-elevated)', color: 'var(--v3-fg)' }}
-                >
-                  {/* Safe https links only — see linkify.tsx. Everything else stays text. */}
-                  <span className="whitespace-pre-wrap break-words">{linkifySafe(message.body)}</span>
+              <div key={message.id} className={`flex flex-col ${mine ? 'items-end' : 'items-start'}`}>
+                {meta?.showName && (
+                  <span data-testid="bubble-name" className="mb-0.5 px-1 text-[11.5px] font-semibold" style={{ color: 'var(--v3-fg-secondary)' }}>
+                    {meta.name}
+                  </span>
+                )}
+                <div className={`flex max-w-full items-center gap-1 ${mine ? 'justify-end' : 'justify-start'}`}>
+                  <div
+                    className="max-w-[78%] rounded-2xl px-3.5 py-2.5 text-[13.5px] leading-snug"
+                    style={mine
+                      ? { background: 'var(--v3-accent-fill)', color: 'var(--v3-on-accent)' }
+                      : { background: 'var(--v3-panel-elevated)', color: 'var(--v3-fg)' }}
+                  >
+                    {/* Safe https links only — see linkify.tsx. Everything else stays text. */}
+                    <span className="whitespace-pre-wrap break-words">{linkifySafe(message.body)}</span>
+                  </div>
+                  {/* Report THIS message (only someone else's; the menu draws nothing while reports are off). No block here: blocking the person is the header's job. */}
+                  {!mine && <SafetyMenu report={{ target: 'message', id: message.id }} />}
                 </div>
+                {meta?.showTime && meta.time && (
+                  <span data-testid="bubble-time" className="mt-0.5 px-1 text-[10.5px] tabular-nums" style={{ color: 'var(--v3-fg-muted)' }}>
+                    {meta.time}
+                  </span>
+                )}
               </div>
             )
           })}

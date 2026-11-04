@@ -16,7 +16,7 @@ import { alertModerators, isUrgentReason } from '@/lib/safety/operatorAlert'
 // No existence oracle: a target that does not exist (or that the caller cannot see) answers exactly like success and
 // writes nothing. The only distinguishable refusal is reporting yourself (400) — your own id/comment is yours to know.
 
-export type ReportTarget = 'comment' | 'user'
+export type ReportTarget = 'comment' | 'user' | 'message'
 
 export async function handleReport(req: NextRequest, targetType: ReportTarget, targetId: string): Promise<NextResponse> {
   if (!reportsEnabled()) return new NextResponse(null, { status: 404 })
@@ -51,6 +51,16 @@ export async function handleReport(req: NextRequest, targetType: ReportTarget, t
     if (error) return NextResponse.json({ error: 'report_failed', message: serverMessage('server.error', locale) }, { status: 500 })
     if (!data) return done()
     if ((data as { user_id: string }).user_id === user.id) {
+      return NextResponse.json({ error: 'invalid_target', message: serverMessage('validation.invalid', locale) }, { status: 400 })
+    }
+  } else if (targetType === 'message') {
+    // A message of a conversation the caller is in: read with the CALLER's client, so row-level security decides what they can see. A message in a
+    // thread they are not in is a miss, and a miss is a silent success (no oracle for "this message exists"). Your own message is not yours to
+    // report. Only the id, the reason and the note are stored — not the text; a reviewer reads the message through the service role.
+    const { data, error } = await supabase.from('chat_messages').select('id, sender_id, thread_id').eq('id', targetId).maybeSingle()
+    if (error) return NextResponse.json({ error: 'report_failed', message: serverMessage('server.error', locale) }, { status: 500 })
+    if (!data) return done()
+    if ((data as { sender_id: string | null }).sender_id === user.id) {
       return NextResponse.json({ error: 'invalid_target', message: serverMessage('validation.invalid', locale) }, { status: 400 })
     }
   } else {

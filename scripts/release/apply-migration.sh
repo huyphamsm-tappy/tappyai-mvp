@@ -61,6 +61,14 @@ policy_of() {
     # release behind MESSAGE_NOTIFICATIONS_ENABLED (OFF until Web, Android and iOS handle the 'message' type), so apply it BEFORE that release.
     20261106_messenger_notification_collapse.sql)
       echo APPLY ;;
+    # Messenger hardening (audit 04/11/2026): a stricter chat_reads UPDATE policy + a 120/min per-sender backstop trigger on chat_messages. Nothing in the
+    # old web breaks (it sends far below 120/min); the new route maps SQLSTATE 53400 to 429. Apply before or with the web release.
+    20261107_chat_hardening.sql)
+      echo APPLY ;;
+    # Report a message (owner 04/11/2026): widens the user_reports target_type CHECK to include 'message'. Requires 20261001b (AFTER-SMOKE group).
+    # The route that writes the new value ships with the web release and is invisible while REPORTS_ENABLED is off; applying this first is safe.
+    20261108_user_reports_message_target.sql)
+      echo AFTER-SMOKE ;;
     # H1 → M1 first, then the security-branch migrations in MIGRATION_ORDER.txt order (owner 30/09): 20260928b needs the
     # deal-click code (service role) on production; the others are code-independent but ride the same verified window.
     20260927_owner_update_column_privileges.sql|20260928_revoke_reviews_insert.sql|\
