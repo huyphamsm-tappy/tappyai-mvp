@@ -28,15 +28,10 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
   const anonRefusal = refuseAnonymousSocialWrite(req, user)
   if (anonRefusal) return anonRefusal
 
-  // 🚨 `user_id` comes from the session. The INSERT policy also demands
-  // `user_id = auth.uid()` AND participation, so a read receipt cannot be moved
-  // on someone else's behalf even if this route were called with a forged body.
-  const { error } = await supabase
-    .from('chat_reads')
-    .upsert(
-      { thread_id: params.id, user_id: user.id, last_read_at: new Date().toISOString() },
-      { onConflict: 'thread_id,user_id' },
-    )
+  // D10 (DR-4): the cursor is moved by the database function `mark_thread_read` — the DATABASE clock, `GREATEST` (the cursor never goes back),
+  // a participant check (42501, answered below as 404) and, in the same transaction and under the same lock as the notification emitter, the
+  // thread's collapsed "message" notification is marked read. The caller is `auth.uid()` inside the function: nothing here names a user.
+  const { error } = await supabase.rpc('mark_thread_read', { p_thread: params.id })
 
   if (error) {
     // Not a participant: RLS refuses. Answered as "not found" so the endpoint

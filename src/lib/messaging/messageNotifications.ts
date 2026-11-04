@@ -1,4 +1,7 @@
-import { emitNotification } from '@/lib/notifications/emit'
+import { createAdminClient } from '@/lib/supabase/admin'
+import { pushStatusFor } from '@/lib/notifications/emit'
+import { sendNotificationToUser, type NotificationData, type NotificationPayload, type PushResult, type SendOptions } from '@/lib/notifications/send'
+import { messageNotificationTag, messageWebPushOptions } from '@/lib/notifications/messagePushOptions'
 
 // ── Phase 6 — MESSENGER → INBOX ─────────────────────────────────────────────
 //
@@ -63,22 +66,61 @@ export interface MessageNotificationInput {
   senderName: string
   senderAvatarUrl?: string | null
   threadId: string
+  /**
+   * `created_at` of the STORED message — the database's time, read back from the INSERT (DR-4). The collapsed row's date and the "newest message"
+   * rule follow it. It is a timestamp, never text of the message.
+   */
+  messageCreatedAt: string
 }
 
 export type MessageNotificationOutcome =
   | { emitted: false; reason: 'flag_off' | 'self_notification' }
   | { emitted: true; notificationId: string | null }
 
+/** What the collapse needs from the outside world. The default is the real database (service role) and the real push sender; tests pass fakes. */
+export interface MessageNotificationDeps {
+  rpc(name: string, args: Record<string, unknown>): PromiseLike<{ data: unknown; error: { message: string } | null }>
+  /** The degraded path: ONE plain insert (never a push); a duplicate on the unique index is fine. */
+  insertDegraded(row: Record<string, unknown>): PromiseLike<{ error: { code?: string; message: string } | null }>
+  push(userId: string, payload: NotificationPayload, options?: SendOptions): Promise<PushResult>
+  recordPush(notificationId: string, push: PushResult): Promise<void>
+}
+
+function realDeps(): MessageNotificationDeps {
+  const admin = createAdminClient()
+  return {
+    rpc: (name, args) => admin.rpc(name, args) as unknown as ReturnType<MessageNotificationDeps['rpc']>,
+    insertDegraded: row => admin.from('notifications').insert(row) as unknown as ReturnType<MessageNotificationDeps['insertDegraded']>,
+    push: sendNotificationToUser,
+    async recordPush(id, push) {
+      const status = pushStatusFor(push)
+      const { error } = await admin.from('notifications').update({
+        push_status: status,
+        push_sent_at: status === 'sent' || status === 'failed' ? new Date().toISOString() : null,
+        push_attempts: push.attempted === 0 ? 0 : 1,
+        push_error: push.firstError ?? null,
+      }).eq('id', id)
+      if (error) console.error('[messaging] message push status:', error)
+    },
+  }
+}
+
 /**
- * Emit the Inbox notification for a message that has already been stored.
+ * Emit the Inbox notification for a message that has already been stored — COLLAPSED (DR-4, D1–D10 approved 04/11/2026): there is at most one
+ * unread "message" notification per (recipient, thread), carrying a count in `data.count`; a new message updates it instead of adding a row.
  *
- * Non-throwing by contract, like every other notification producer: a failure
- * here must never fail the send. The message is already in `chat_messages`; the
- * notification is an extra.
+ * The write is the database function `emit_message_notification` (service role): one transaction takes the (recipient, thread) lock, counts what is
+ * unread from the read cursor, and inserts or updates the row; it answers whether a push is due (10-minute window per recipient and thread, state in
+ * Postgres). Only then is a push sent, with a Web Push Topic/TTL and a service-worker `tag` so that an earlier one for the thread is replaced.
+ * If the function fails twice, ONE plain insert keeps the Inbox pointer (it never pushes; the next emit repairs the count) and the send still succeeds.
+ *
+ * Non-throwing by contract, like every other notification producer: a failure here must never fail the send. The message is already in
+ * `chat_messages`; the notification is an extra.
  */
 export async function emitMessageNotification(
   input: MessageNotificationInput,
   env: NodeJS.ProcessEnv = process.env,
+  deps?: MessageNotificationDeps,
 ): Promise<MessageNotificationOutcome> {
   // The flag is checked FIRST, before any work and before any row is read.
   // "Off" must mean nothing happens at all — not "it happens and is discarded".
@@ -88,26 +130,69 @@ export async function emitMessageNotification(
   // never is.
   if (input.recipientId === input.senderId) return { emitted: false, reason: 'self_notification' }
 
-  const result = await emitNotification({
-    userId: input.recipientId,
-    type: 'message',
-    // 'social' rather than a new category: this is a person acting on another
-    // person, which is exactly what the social category already means, and the
-    // transactional/marketing split that NotificationCategory governs is
-    // unaffected by it.
-    category: 'social',
-    title: input.senderName,
-    // 🚨 A fixed sentence, not the message. See the header. `body` reaches the
-    // device push payload verbatim.
-    body: MESSAGE_NOTIFICATION_BODY,
-    actorId: input.senderId,
-    entityUrl: messageThreadDeepLink(input.threadId),
-    imageUrl: input.senderAvatarUrl ?? null,
-    // Ids only. A client resolves the thread through the authorised API.
-    data: { threadId: input.threadId, kind: 'message' },
-  })
+  const d = deps ?? realDeps()
+  const entityUrl = messageThreadDeepLink(input.threadId)
+  const args = {
+    p_user: input.recipientId,
+    p_thread: input.threadId,
+    p_message_at: input.messageCreatedAt,
+    p_actor: input.senderId,
+    p_title: input.senderName,
+    // 🚨 A fixed sentence, not the message. See the header. `body` reaches the device push payload verbatim.
+    p_body: MESSAGE_NOTIFICATION_BODY,
+    p_entity_url: entityUrl,
+    p_image_url: input.senderAvatarUrl ?? null,
+  }
 
-  return { emitted: true, notificationId: result.id }
+  let r = await d.rpc('emit_message_notification', args)
+  if (r.error) r = await d.rpc('emit_message_notification', args) // F3: one bounded retry
+  if (r.error) {
+    console.error('[messaging] emit_message_notification failed twice:', r.error.message)
+    const ins = await d.insertDegraded({
+      user_id: input.recipientId,
+      type: 'message',
+      category: 'social',
+      title: input.senderName,
+      body: MESSAGE_NOTIFICATION_BODY,
+      actor_id: input.senderId,
+      entity_url: entityUrl,
+      image_url: input.senderAvatarUrl ?? null,
+      // ids and times only; the count is repaired by the next emit
+      data: { threadId: input.threadId, kind: 'message', count: 1, firstMessageAt: input.messageCreatedAt, lastMessageAt: input.messageCreatedAt },
+      created_at: input.messageCreatedAt,
+      push_status: 'skipped',
+    })
+    if (ins.error && ins.error.code !== '23505') console.error('[messaging] degraded notification insert failed:', ins.error.message)
+    return { emitted: true, notificationId: null }
+  }
+
+  const row = (Array.isArray(r.data) ? r.data[0] : r.data) as { notification_id?: string; unread_count?: number; should_push?: boolean } | null | undefined
+  // No row: the cursor already covers the message, or nothing is unread from anyone else — there is nothing to point at.
+  if (!row?.notification_id) return { emitted: true, notificationId: null }
+
+  if (row.should_push) {
+    try {
+      // ids and a count only (D4: the count is data, never part of the server-side Vietnamese title). `kind: 'message'` is the notification TYPE the
+      // clients read from `data`, as it always was for this producer; it is outside the `normal | tappy_identity` sound classification, hence the cast.
+      const data = { url: entityUrl, notificationId: row.notification_id, threadId: input.threadId, kind: 'message', count: row.unread_count ?? 1 } as unknown as NotificationData
+      const push = await d.push(
+        input.recipientId,
+        {
+          title: input.senderName,
+          body: MESSAGE_NOTIFICATION_BODY,
+          ...(input.senderAvatarUrl ? { image: input.senderAvatarUrl } : {}),
+          tag: messageNotificationTag(input.threadId),
+          data,
+        },
+        { webpush: messageWebPushOptions(input.threadId) },
+      )
+      await d.recordPush(row.notification_id, push)
+    } catch (e) {
+      console.error('[messaging] message push threw:', e)
+    }
+  }
+
+  return { emitted: true, notificationId: row.notification_id }
 }
 
 /**

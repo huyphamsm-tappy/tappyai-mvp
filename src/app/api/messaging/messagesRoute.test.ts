@@ -19,6 +19,7 @@ const h = vi.hoisted(() => {
     upserted: [] as unknown[],
     /** Every filter/order call on the history query, in order: `order:created_at:desc`, `lt:created_at:<v>`, `or:<expr>`. */
     calls: [] as string[],
+    rpcs: [] as Array<{ name: string; args: unknown }>,
   }
   const builder: Record<string, unknown> = {}
   for (const m of ['from', 'select', 'eq', 'in', 'limit', 'maybeSingle', 'single']) {
@@ -29,6 +30,7 @@ const h = vi.hoisted(() => {
   builder.or = (expr: string) => { state.calls.push(`or:${expr}`); return builder }
   builder.insert = (v: unknown) => { state.inserted.push(v); return builder }
   builder.upsert = (v: unknown) => { state.upserted.push(v); return Promise.resolve(state.rows[state.i++] ?? { error: null }) }
+  builder.rpc = (name: string, args: unknown) => { state.rpcs.push({ name, args }); return Promise.resolve(state.rows[state.i++] ?? { data: null, error: null }) }
   ;(builder as { then: unknown }).then = (res: (v: unknown) => unknown, rej: (e: unknown) => unknown) =>
     Promise.resolve(state.rows[state.i++] ?? { data: null, error: null }).then(res, rej)
   const getRequestUser = vi.fn(async () => ({ user: state.user, supabase: builder }))
@@ -62,6 +64,7 @@ beforeEach(() => {
   h.state.inserted = []
   h.state.upserted = []
   h.state.calls = []
+  h.state.rpcs = []
 })
 
 describe('GET messages · paging cursor (ties on created_at)', () => {
@@ -213,23 +216,25 @@ describe('POST read', () => {
     expect((await markRead()).status).toBe(401)
     h.state.user = { id: 'anon-1', is_anonymous: true }
     expect((await markRead()).status).toBe(403)
-    expect(h.state.upserted).toHaveLength(0)
+    expect(h.state.rpcs).toHaveLength(0)
   })
 
-  it('writes the caller’s own cursor and nobody else’s', async () => {
+  it('moves the cursor through the database function `mark_thread_read`, naming only the thread (the caller is auth.uid() in the function, the clock is the database’s)', async () => {
+    // 🚨 A cursor, not a counter, and (D10) not a client-supplied time: the route sends no timestamp and no user id.
     h.state.rows = [{ error: null }]
     const res = await markRead()
     expect(res.status).toBe(200)
-    const written = h.state.upserted[0] as { thread_id: string; user_id: string; last_read_at: string }
-    expect(written.thread_id).toBe('thread-1')
-    expect(written.user_id).toBe('u1')
-    // 🚨 A cursor, not a counter. Nothing decrements a stored number, so the
-    // badge cannot drift out of step with the messages.
-    expect(Date.parse(written.last_read_at)).not.toBeNaN()
+    expect(h.state.rpcs).toEqual([{ name: 'mark_thread_read', args: { p_thread: 'thread-1' } }])
+    expect(h.state.upserted).toHaveLength(0) // no direct write to chat_reads any more
   })
 
-  it('answers 404 when the caller is not a participant', async () => {
-    h.state.rows = [{ error: { code: '42501', message: 'row-level security' } }]
+  it('answers 404 when the caller is not a participant (the function raises 42501)', async () => {
+    h.state.rows = [{ error: { code: '42501', message: 'not a participant' } }]
     expect((await markRead()).status).toBe(404)
+  })
+
+  it('answers 500 for any other database error', async () => {
+    h.state.rows = [{ error: { code: '55P03', message: 'lock timeout' } }]
+    expect((await markRead()).status).toBe(500)
   })
 })

@@ -123,9 +123,11 @@ describe('messages are not notifications', () => {
     expect(/body\??:\s*string/.test(src),
       'MessageNotificationInput must have no message-body field').toBe(false)
     expect(src).toContain('body: MESSAGE_NOTIFICATION_BODY')
-    for (const leak of ['messageBody', 'preview', 'snippet', 'lastMessage']) {
+    for (const leak of ['messageBody', 'preview', 'snippet']) {
       expect(src.includes(leak), `"${leak}" would put private content in a notification`).toBe(false)
     }
+    // `lastMessage` (a summary of the last message) must never appear; `lastMessageAt` is a TIMESTAMP the collapse stores in `data` (DR-4) and is allowed.
+    expect(/lastMessage(?!At\b)/.test(src), '"lastMessage" would put private content in a notification').toBe(false)
   })
 
   it('nothing converts a notification row into a message', () => {

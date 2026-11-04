@@ -22,7 +22,17 @@ export interface NotificationPayload {
   icon?: string
   badge?: string
   image?: string
+  /** `Notification.tag` (Web Push only, set by the service worker): a new push with the same tag REPLACES the notification already shown. */
+  tag?: string
   data?: NotificationData
+}
+
+/**
+ * Optional transport options, per provider. Absent = exactly the behaviour every producer had before (no options reach the provider).
+ * `webpush` is the third argument of `webpush.sendNotification` (RFC 8030: Topic, TTL, Urgency). FCM / APNs have none yet.
+ */
+export interface SendOptions {
+  webpush?: { topic?: string; TTL?: number; urgency?: 'very-low' | 'low' | 'normal' | 'high' }
 }
 
 type WebPushSubscriptionData = {
@@ -32,7 +42,7 @@ type WebPushSubscriptionData = {
 
 // ─── Internal dispatch ────────────────────────────────────────────────────────
 
-async function dispatchWebPush(subData: WebPushSubscriptionData, payload: NotificationPayload) {
+async function dispatchWebPush(subData: WebPushSubscriptionData, payload: NotificationPayload, options?: SendOptions['webpush']) {
   // The endpoint is client-written (PostgREST included): anything that is not a browser push
   // service is never requested, and is reported as GONE so the sweep below disables the row.
   if (!isAllowedWebPushEndpoint(subData?.endpoint)) {
@@ -54,19 +64,23 @@ async function dispatchWebPush(subData: WebPushSubscriptionData, payload: Notifi
       icon: payload.icon ?? '/tappy/wave.png',
       badge: payload.badge ?? '/tappy/wave.png',
       ...(payload.image ? { image: payload.image } : {}),
+      ...(payload.tag ? { tag: payload.tag } : {}),
       data: payload.data ?? {},
-    })
+    }),
+    // a third argument only when there is something to say: a send without options is called exactly as before
+    ...(options ? [options] : [])
   )
 }
 
 async function dispatch(
   provider: string,
   subscriptionData: Record<string, unknown>,
-  payload: NotificationPayload
+  payload: NotificationPayload,
+  options?: SendOptions
 ): Promise<void> {
   switch (provider) {
     case 'webpush':
-      await dispatchWebPush(subscriptionData as unknown as WebPushSubscriptionData, payload)
+      await dispatchWebPush(subscriptionData as unknown as WebPushSubscriptionData, payload, options?.webpush)
       break
 
     case 'fcm': {
@@ -115,7 +129,8 @@ export interface PushResult {
  */
 export async function sendNotificationToUser(
   userId: string,
-  payload: NotificationPayload
+  payload: NotificationPayload,
+  options?: SendOptions
 ): Promise<PushResult> {
   const supabase = createAdminClient()
   const { data: subs, error } = await supabase
@@ -131,7 +146,7 @@ export async function sendNotificationToUser(
   if (!subs?.length) return { attempted: 0, sent: 0, failed: 0, gone: 0 }
 
   const results = await Promise.allSettled(
-    subs.map(s => dispatch(s.provider, s.subscription_data as Record<string, unknown>, payload))
+    subs.map(s => dispatch(s.provider, s.subscription_data as Record<string, unknown>, payload, options))
   )
 
   // Prune subscriptions the push service reports as permanently gone (Web Push

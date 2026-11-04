@@ -60,9 +60,18 @@ describe('CHARACTERISATION · today\'s shared send path (changing these is part 
     expect((sendNotification.mock.calls[0] as unknown[]).length).toBe(2)   // (subscription, payload) — a third `options` argument does not exist today
   })
 
-  it('the service worker sets no `tag` and no `renotify`: two pushes for one thread would show two notifications', () => {
+  it('the service worker takes a `tag` from the push (so a conversation replaces its own notification) and never sets `renotify` (no second buzz)', () => {
     const sw = readFileSync('public/push-sw.js', 'utf8')
-    expect(sw).not.toMatch(/\btag\s*:/)
+    expect(sw).toMatch(/data\.tag\s*\?\s*\{\s*tag:\s*data\.tag\s*\}/)   // only when the push carries one: every other notification is untouched
     expect(sw).not.toMatch(/renotify/)
+  })
+
+  it('a push WITH options hands them to the library as the third argument; the tag travels in the payload', async () => {
+    const { sendNotificationToUser } = await import('./send')
+    await sendNotificationToUser('u1', { title: 'T', body: 'B', tag: `message:${THREAD}`, data: { url: '/x' } }, { webpush: messageWebPushOptions(THREAD) })
+    const call = sendNotification.mock.calls[0] as unknown[]
+    expect(call.length).toBe(3)
+    expect(call[2]).toEqual(messageWebPushOptions(THREAD))
+    expect(JSON.parse(String(call[1])).tag).toBe(`message:${THREAD}`)
   })
 })

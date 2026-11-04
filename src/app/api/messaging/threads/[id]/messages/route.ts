@@ -205,7 +205,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
   //
   // 🚨 OFF BY DEFAULT. `MESSAGE_NOTIFICATIONS_ENABLED` gates the whole path, and
   // while it is off this call reads no rows and emits nothing.
-  await notifyThreadRecipients(supabase, params.id, user.id)
+  await notifyThreadRecipients(supabase, params.id, user.id, (data as MessageRow).created_at)
 
   return NextResponse.json({ message: toMessage(data as MessageRow) })
 }
@@ -224,6 +224,7 @@ async function notifyThreadRecipients(
   supabase: Awaited<ReturnType<typeof getRequestUser>>['supabase'],
   threadId: string,
   senderId: string,
+  messageCreatedAt: string,
 ): Promise<void> {
   // Checked before any query: "off" must mean nothing happens at all.
   if (!messageNotificationsEnabled()) return
@@ -251,6 +252,7 @@ async function notifyThreadRecipients(
       senderName: sender?.full_name?.trim() || 'TappyAI',
       senderAvatarUrl: sender?.avatar_url ?? null,
       threadId,
+      messageCreatedAt,
     })))
   } catch (e) {
     // A notification must never fail the send that triggered it.
