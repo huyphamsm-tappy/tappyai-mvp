@@ -1,10 +1,14 @@
 -- ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
--- DRAFT v3 — NOT A MIGRATION. NOT APPLIED ANYWHERE. Lives OUTSIDE supabase/migrations/ ON PURPOSE until the owner approves the design.
+-- Messenger notification collapse (DR-4, D1–D10 approved by the owner 04/11/2026): one unread "message" notification per (recipient, thread), with a count.
 -- Design: docs/phase8/MESSENGER-NOTIFICATION-COLLAPSE-PROPOSAL.md §7g and docs/phase8/MESSENGER-COLLAPSE-MIGRATION-REVIEW-PACKAGE.md §8.
--- Tested (draft file loaded verbatim) by supabase/tests/notification_collapse_draft.test.ts on a production-SHAPED fixture (roles, auth.uid(), exact
+-- Tested (this file loaded verbatim) by supabase/tests/notification_collapse_draft.test.ts on a production-SHAPED fixture (roles, auth.uid(), exact
 -- notifications columns, nullable sender, simplified block policy). NOT tested: PostgREST, the real RLS of chat_*, the real safety_private.blocked_ids,
--- Supabase's role defaults, anything in production. Number/name are placeholders. Independent of 20261018 (no shared objects).
+-- Supabase's role defaults. Independent of 20261018 (no shared objects).
 -- Requires: public.notifications (20260725), public.chat_messages / chat_reads / chat_is_participant (20260905).
+-- Production pre-checks read 04/11/2026: notifications = 280 rows / 256 kB, 0 rows of type 'message', 0 duplicate unread (so the unique index builds at once);
+-- authenticated statement_timeout = 8 s (the 3 s function attribute is below it). Nothing calls these functions until the web release behind
+-- MESSAGE_NOTIFICATIONS_ENABLED, which stays OFF until Web, Android and iOS all handle the 'message' type.
+-- Rollback: rollback/20261106_messenger_notification_collapse_rollback.sql (drops the three functions and the index; keeps every row).
 -- ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 
 -- At most ONE unread message notification per (recipient, thread): the backstop under the advisory lock.
@@ -118,7 +122,7 @@ BEGIN
   RETURN v_n;
 END $$;
 
-REVOKE ALL ON FUNCTION public.mark_thread_read(uuid) FROM PUBLIC, anon;
+REVOKE ALL ON FUNCTION public.mark_thread_read(uuid) FROM PUBLIC, anon, authenticated;   -- ADR-019: name every client role, then grant back only the one that calls it
 GRANT EXECUTE ON FUNCTION public.mark_thread_read(uuid) TO authenticated;
 
 -- ── D7: Inbox "mark read" (all, or the given ids). A message-notification row is the thread's unread pointer, so reading it reads the thread:
@@ -165,5 +169,5 @@ BEGIN
   RETURN v_n;
 END $$;
 
-REVOKE ALL ON FUNCTION public.mark_notifications_read(uuid[]) FROM PUBLIC, anon;
+REVOKE ALL ON FUNCTION public.mark_notifications_read(uuid[]) FROM PUBLIC, anon, authenticated;   -- ADR-019: name every client role, then grant back only the one that calls it
 GRANT EXECUTE ON FUNCTION public.mark_notifications_read(uuid[]) TO authenticated;

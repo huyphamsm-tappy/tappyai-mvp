@@ -396,6 +396,9 @@ function NotifRow({ g, locale, first }: { g: GroupedNotif; locale: 'vi' | 'en'; 
 
   const go = () => { if (g.url) router.push(g.url) }
   const interactive = !!g.url
+  // A collapsed message row (DR-4 D4) is ONE row per conversation: its `count` is how many messages are unread, said in words in the second line
+  // ("An · 10 tin nhắn mới"), by locale, in the client — the server-side title stays the sender's name. It gets no "+N" chip (that is for stacks).
+  const unreadMessages = g.type === 'message' && g.count > 1 ? g.count : 0
 
   return (
     <div
@@ -462,9 +465,9 @@ function NotifRow({ g, locale, first }: { g: GroupedNotif; locale: 'vi' | 'en'; 
         >
           {g.title}
         </span>
-        {g.text && (
+        {(unreadMessages > 0 || g.text) && (
           <span className="mt-0.5 block text-[12px] leading-snug" style={{ color: 'var(--v3-fg-muted)' }}>
-            {g.text}
+            {unreadMessages > 0 ? t('v3.inbox.messageCount', { n: String(unreadMessages) }) : g.text}
           </span>
         )}
       </span>
@@ -477,7 +480,7 @@ function NotifRow({ g, locale, first }: { g: GroupedNotif; locale: 'vi' | 'en'; 
             collapsed into this row — twelve likes on one review is one row saying 12. The mockup
             put an unread badge here; per-row unread totals do not exist, and this number would be
             read as one if it were styled like one, so it stays a plain neutral chip. */}
-        {g.count > 1 && (
+        {g.count > 1 && g.type !== 'message' && (
           <span
             className="rounded-full px-1.5 py-0.5 text-[10.5px] font-semibold"
             style={{ background: 'var(--v3-panel-elevated)', color: 'var(--v3-fg-secondary)' }}

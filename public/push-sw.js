@@ -14,6 +14,9 @@ self.addEventListener('push', event => {
     icon: data.icon || '/tappy/wave.png',
     badge: data.badge || '/tappy/wave.png',
     image: data.image || undefined,
+    // A push that carries a tag REPLACES the notification already on screen with that tag, without a second buzz. The server
+    // sets one only for a conversation ("message:<thread>"), so ten messages of one thread are one notification, not ten.
+    ...(data.tag ? { tag: data.tag } : {}),
     data: data.data || {},
     vibrate: [200, 100, 200],
     requireInteraction: false,

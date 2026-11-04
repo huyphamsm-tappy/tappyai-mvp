@@ -1,8 +1,8 @@
 import { createHash } from 'node:crypto'
 
-// ── Messenger push options — DESIGN HELPER, NOT WIRED INTO ANY SEND PATH (2026-10-10) ──────────────────────────────────────────────────────────────────────────────
-// Design: docs/phase8/MESSENGER-NOTIFICATION-COLLAPSE-PROPOSAL.md §7g (D3). Nothing imports this module until the collapse design is approved; it exists so the push design
-// is checked against the real `web-push` library now (messagePushOptions.test.ts) instead of being asserted in prose.
+// ── Messenger push options (designed 2026-10-10; WIRED 2026-11-05, DR-4 approved) ───────────────────────────────────────────────────────────────────────────────
+// Design: docs/phase8/MESSENGER-NOTIFICATION-COLLAPSE-PROPOSAL.md §7g (D3). Used by src/lib/messaging/messageNotifications.ts when the database says a push is due
+// (only behind MESSAGE_NOTIFICATIONS_ENABLED). Checked against the real `web-push` library (messagePushOptions.test.ts) instead of being asserted in prose.
 //
 // What Web Push can and cannot do (RFC 8030 §5.4, and the installed web-push 3.6.7, which THROWS on a bad value):
 //   • `Topic` — at most 32 characters of the URL-safe base64 alphabet. A later push with the same Topic REPLACES an earlier one that the push service has not yet delivered

@@ -8,6 +8,7 @@ import { ArrowLeft, Send, Loader2, Users } from 'lucide-react'
 import { threadTitle, type ChatMessage, type ChatThreadSummary } from '@/lib/messaging/types'
 import { useMessages } from './MessagesProvider'
 import { SafetyMenu } from '@/components/safety/SafetyMenu'
+import { newClientId } from '@/lib/messaging/clientId'
 
 export default function ThreadView({
   thread,
@@ -36,6 +37,9 @@ export default function ThreadView({
   const keepPosition = useRef<{ top: number; height: number } | null>(null)
   const [draft, setDraft] = useState('')
   const [sending, setSending] = useState(false)
+  // The id of the send attempt in flight or just failed, tied to the exact text it was made for: a retry of the SAME text repeats it (the server
+  // then returns the stored row instead of a second copy); other text, or the next send after a success, gets a new one.
+  const attempt = useRef<{ id: string; body: string } | null>(null)
 
   const bottomRef = useRef<HTMLDivElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -47,9 +51,8 @@ export default function ThreadView({
   )
   const other = thread.participants.find(p => p.userId !== meId)
 
-  // History, then the read cursor. Opening a thread IS reading it, so the mark
-  // is unconditional rather than tied to scrolling to the bottom — Phase 1 has
-  // no per-message receipts to be precise about.
+  // History, then the read cursor. Opening a thread IS reading it, so the mark is not tied to scrolling to the bottom (there are no per-message
+  // receipts) — but it follows a SUCCESSFUL first page (D1), never the mount.
   useEffect(() => {
     let cancelled = false
     setLoading(true)
@@ -63,15 +66,20 @@ export default function ThreadView({
         if (!r.ok) throw new Error(String(r.status))
         return r.json()
       })
-      .then(d => { if (!cancelled) { setMessages(d.messages ?? []); setHasMore(d.hasMore === true) } })
+      .then(d => {
+        if (cancelled) return
+        setMessages(d.messages ?? [])
+        setHasMore(d.hasMore === true)
+        // D1 (DR-4): the thread is marked read only now that its first page has been loaded and shown. A pending or failed load marks nothing:
+        // the person has not seen the messages. A retry that succeeds comes through here too.
+        void markThreadRead(thread.id)
+      })
       .catch(() => { if (!cancelled) { setError(tRef.current('v3.msg.error')); setLoadFailed(true) } })
       .finally(() => { if (!cancelled) setLoading(false) })
     return () => { cancelled = true }
+    // markThreadRead is read at call time; it must not restart the history fetch when the provider re-renders
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [thread.id, reloadKey])
-
-  useEffect(() => {
-    void markThreadRead(thread.id)
-  }, [thread.id, markThreadRead])
 
   /**
    * 🔑 REAL REALTIME. This appends rows the DATABASE published — the provider
@@ -107,7 +115,8 @@ export default function ThreadView({
     setLoadingOlder(true)
     setOlderFailed(false)
     try {
-      const r = await fetch(`/api/messaging/threads/${thread.id}/messages?before=${encodeURIComponent(oldest.createdAt)}`)
+      // the cursor is the exact oldest row (time AND id): rows that share its timestamp are neither skipped nor repeated
+      const r = await fetch(`/api/messaging/threads/${thread.id}/messages?before=${encodeURIComponent(oldest.createdAt)}&beforeId=${encodeURIComponent(oldest.id)}`)
       if (!r.ok) throw new Error(String(r.status))
       const d = await r.json()
       const older: ChatMessage[] = d.messages ?? []
@@ -131,14 +140,16 @@ export default function ThreadView({
     if (!body || sending) return
     setSending(true)
     setError(null)
+    if (!attempt.current || attempt.current.body !== body) attempt.current = { id: newClientId(), body }
     try {
       const r = await fetch(`/api/messaging/threads/${thread.id}/messages`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ body }),
+        body: JSON.stringify({ body, clientId: attempt.current.id }),
       })
       if (!r.ok) throw new Error(String(r.status))
       const d = await r.json()
+      attempt.current = null // delivered: the next message is a new send, even with the same text
       // The server's row, not a locally minted one: it carries the real id and
       // the real `created_at`, so the Realtime echo dedupes against it cleanly.
       setMessages(prev => (prev.some(m => m.id === d.message.id) ? prev : [...prev, d.message]))

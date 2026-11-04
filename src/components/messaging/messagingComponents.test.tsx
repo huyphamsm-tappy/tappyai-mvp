@@ -34,6 +34,7 @@ import MessagesTab from './MessagesTab'
 const THREAD = { id: 't1', kind: 'direct', title: null, unreadCount: 0, lastMessage: null, updatedAt: '2026-10-10T00:00:00Z', participants: [{ userId: 'me', fullName: 'Tôi', avatarUrl: null }, { userId: 'u2', fullName: 'Lan', avatarUrl: null }] } as never
 const msg = (n: number, sender = 'u2') => ({ id: `m${n}`, threadId: 't1', senderId: sender, body: `tin ${n}`, createdAt: `2026-10-10T00:00:${String(n).padStart(2, '0')}Z` })
 const json = (body: unknown, ok = true, status = 200) => ({ ok, status, json: async () => body }) as Response
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
 let fetchMock: ReturnType<typeof vi.fn>
 beforeEach(() => {
@@ -89,7 +90,7 @@ describe('ThreadView · history', () => {
     fetchMock.mockResolvedValueOnce(json({ messages: [msg(1), msg(2), msg(3)], hasMore: false })) // msg(3) overlaps on purpose
     fireEvent.click(screen.getByRole('button', { name: 'Tải tin nhắn cũ hơn' }))
     await waitFor(() => expect(bodies()).toEqual(['tin 1', 'tin 2', 'tin 3', 'tin 4']))
-    expect(fetchMock.mock.calls[1][0]).toBe(`/api/messaging/threads/t1/messages?before=${encodeURIComponent('2026-10-10T00:00:03Z')}`)
+    expect(fetchMock.mock.calls[1][0]).toBe(`/api/messaging/threads/t1/messages?before=${encodeURIComponent('2026-10-10T00:00:03Z')}&beforeId=m3`) // the exact oldest row: time AND id
     expect(screen.queryByRole('button', { name: 'Tải tin nhắn cũ hơn' })).toBeNull()
   })
 
@@ -130,7 +131,7 @@ describe('ThreadView · send and realtime', () => {
     fetchMock.mockResolvedValueOnce(json({ message: sent }))
     fireEvent.click(screen.getByRole('button', { name: /gửi|send/i }))
     await waitFor(() => expect(bodies()).toEqual(['xin chào']))
-    expect(JSON.parse(String(fetchMock.mock.calls[1][1].body))).toEqual({ body: 'xin chào' })
+    expect(JSON.parse(String(fetchMock.mock.calls[1][1].body))).toEqual({ body: 'xin chào', clientId: expect.stringMatching(UUID_RE) })
     incoming.forEach(fn => fn(sent)) // the echo of my own INSERT
     expect(bodies()).toEqual(['xin chào'])
     expect(box.value).toBe('')
@@ -146,6 +147,56 @@ describe('ThreadView · send and realtime', () => {
     fireEvent.click(screen.getByRole('button', { name: /gửi|send/i }))
     await waitFor(() => expect(screen.getByRole('alert')).toBeTruthy())
     expect(box.value).toBe('giữ lại')
+  })
+
+  describe('clientId — one id per send attempt', () => {
+    const clientIdOf = (call: number) => (JSON.parse(String(fetchMock.mock.calls[call][1].body)) as { clientId: string }).clientId
+    const click = () => fireEvent.click(screen.getByRole('button', { name: /gửi|send/i }))
+    const setup = async () => {
+      fetchMock.mockResolvedValueOnce(json({ messages: [], hasMore: false }))
+      render(<ThreadView thread={THREAD} onBack={() => {}} />)
+      await waitFor(() => expect(screen.getByRole('textbox')).toBeTruthy())
+      return screen.getByRole('textbox') as HTMLTextAreaElement
+    }
+
+    it('a retry of the SAME text after a failed send repeats the same clientId (so a send that did commit is not stored twice)', async () => {
+      const box = await setup()
+      fireEvent.change(box, { target: { value: 'gửi lại' } })
+      fetchMock.mockResolvedValueOnce(json({}, false, 500))
+      click()
+      await waitFor(() => expect(screen.getByRole('alert')).toBeTruthy())
+      fetchMock.mockResolvedValueOnce(json({ message: { ...msg(9, 'me'), body: 'gửi lại' } }))
+      click()
+      await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(3))
+      expect(clientIdOf(2)).toBe(clientIdOf(1))
+    })
+
+    it('changing the text after a failed send makes a NEW clientId (the server must not answer with the old text)', async () => {
+      const box = await setup()
+      fireEvent.change(box, { target: { value: 'bản một' } })
+      fetchMock.mockResolvedValueOnce(json({}, false, 500))
+      click()
+      await waitFor(() => expect(screen.getByRole('alert')).toBeTruthy())
+      fireEvent.change(box, { target: { value: 'bản hai' } })
+      fetchMock.mockResolvedValueOnce(json({ message: { ...msg(9, 'me'), body: 'bản hai' } }))
+      click()
+      await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(3))
+      expect(clientIdOf(2)).not.toBe(clientIdOf(1))
+    })
+
+    it('after a successful send the same text sent again is a new message with a new clientId', async () => {
+      const box = await setup()
+      fireEvent.change(box, { target: { value: 'ok' } })
+      fetchMock.mockResolvedValueOnce(json({ message: { ...msg(8, 'me'), body: 'ok' } }))
+      click()
+      await waitFor(() => expect(box.value).toBe(''))
+      fireEvent.change(box, { target: { value: 'ok' } })
+      fetchMock.mockResolvedValueOnce(json({ message: { ...msg(9, 'me'), body: 'ok' } }))
+      click()
+      await waitFor(() => expect(fetchMock.mock.calls.filter(c => c[1]?.method === 'POST')).toHaveLength(2))
+      const posts = fetchMock.mock.calls.filter(c => c[1]?.method === 'POST')
+      expect(JSON.parse(String(posts[1][1].body)).clientId).not.toBe(JSON.parse(String(posts[0][1].body)).clientId)
+    })
   })
 
   it('an incoming message for ANOTHER thread is ignored; for this thread it is appended and the thread is marked read', async () => {

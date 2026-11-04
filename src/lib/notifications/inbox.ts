@@ -15,6 +15,11 @@ export interface InboxNotif {
   url: string
   created_at: string
   read_at: string | null
+  /**
+   * Only for a collapsed `message` notification (DR-4 D4): how many unread messages the row stands for, read from `data.count`
+   * (an integer ≥ 1). Absent for every other type, and for a message row whose `data.count` is missing or malformed.
+   */
+  count?: number
 }
 
 export interface GroupedNotif {
@@ -114,8 +119,12 @@ export function mapDtoToInbox(dto: NotificationDTO): InboxNotif {
     url: dto.entity_url ?? '',
     created_at: dto.created_at,
     read_at: dto.read_at,
+    ...(dto.type === 'message' && isCount(dto.data?.count) ? { count: dto.data.count as number } : {}),
   }
 }
+
+/** An integer ≥ 1. `data` is written by the database function but a recipient may edit their own rows, so it is never trusted blindly. */
+const isCount = (x: unknown): x is number => typeof x === 'number' && Number.isInteger(x) && x >= 1
 
 // Collapse many likes on the SAME review into one row (actor stack); everything
 // else stays its own row. Non-social rows (no actor) keep an empty actors[].
@@ -137,7 +146,8 @@ export function groupNotifs(notifs: InboxNotif[]): GroupedNotif[] {
         title: n.title,
         text: n.text,
         comment_body: n.type === 'comment' ? n.text : undefined,
-        created_at: n.created_at, count: 1,
+        // a collapsed message row stands for `count` unread messages (D4); every other row starts as one notification
+        created_at: n.created_at, count: n.type === 'message' && n.count ? n.count : 1,
         unread: !n.read_at,
       })
     }

@@ -274,6 +274,7 @@ export const vi: Record<string, string> = {
   'v3.inbox.emptyFiltered': 'Không có thông báo nào trong mục này.',
   'v3.inbox.error': 'Không tải được thông báo. Vui lòng thử lại.',
   'v3.inbox.countMore': '+{n}',
+  'v3.inbox.messageCount': '{n} tin nhắn mới',
 
   // ── Inbox panel ─────────────────────────────────────────────────────────
   'v3.inbox.all': 'Tất cả',
@@ -987,6 +988,7 @@ export const en: Record<string, string> = {
   'v3.inbox.emptyFiltered': 'Nothing in this category.',
   'v3.inbox.error': 'Could not load notifications. Please try again.',
   'v3.inbox.countMore': '+{n}',
+  'v3.inbox.messageCount': '{n} new messages',
 
   // ── Inbox panel ─────────────────────────────────────────────────────────
   'v3.inbox.all': 'All',

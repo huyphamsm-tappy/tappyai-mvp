@@ -8,7 +8,7 @@ import type { Client } from 'pg'
 // ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 // DRAFT-SQL TEST — NOT A MIGRATION TEST. Nothing here is applied anywhere.
 //
-// Loads docs/phase8/drafts/messenger-collapse/20261019_messenger_notification_collapse.DRAFT.sql VERBATIM into a real embedded PostgreSQL that has a production-SHAPED fixture:
+// Loads supabase/migrations/20261106_messenger_notification_collapse.sql (was docs/phase8/drafts/messenger-collapse/…DRAFT.sql) VERBATIM into a real embedded PostgreSQL that has a production-SHAPED fixture:
 // roles anon / authenticated / service_role, auth.users + auth.uid() (read from request.jwt.claim.sub, as PostgREST sets it), the exact columns of public.notifications
 // (20260725) with RLS (select_own / update_own + a SIMPLIFIED stand-in for the RESTRICTIVE user_blocks policy of 20261001), chat_* tables with a NULLABLE sender_id and the real
 // default cursor '-infinity', and chat_is_participant(). It checks design decisions D7–D10 of docs/phase8/MESSENGER-NOTIFICATION-COLLAPSE-PROPOSAL.md §7g.
@@ -18,8 +18,9 @@ import type { Client } from 'pg'
 
 const PORT = 54353
 const DB = 'collapsedraft'
-const DRAFT = process.env.COLLAPSE_DRAFT_SQL ?? 'docs/phase8/drafts/messenger-collapse/20261019_messenger_notification_collapse.DRAFT.sql'
-const ROLLBACK = 'docs/phase8/drafts/messenger-collapse/20261019_messenger_notification_collapse.ROLLBACK.DRAFT.sql'
+// 05/11: the draft became the real migration (owner approved D1–D10 on 04/11); this suite now loads that file verbatim.
+const DRAFT = process.env.COLLAPSE_DRAFT_SQL ?? 'supabase/migrations/20261106_messenger_notification_collapse.sql'
+const ROLLBACK = 'supabase/migrations/rollback/20261106_messenger_notification_collapse_rollback.sql'
 
 const FIXTURE_SQL = `
 CREATE ROLE anon NOLOGIN; CREATE ROLE authenticated NOLOGIN; CREATE ROLE service_role NOLOGIN;
