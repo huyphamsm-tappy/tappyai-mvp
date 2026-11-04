@@ -5,6 +5,7 @@ import { revokeGoogleToken } from '@/lib/integrations/googleCalendar'
 import { processAccountDeletionJobs } from '@/lib/account/deletionJobs'
 import { isAuthorizedCronRequest } from '@/lib/security/cronAuth'
 import { accountDeletionSchemaReady } from '@/lib/account/deletionReady'
+import { createChatMediaDeleter } from '@/lib/messaging/mediaDeletion'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60
@@ -34,9 +35,12 @@ export async function GET(req: Request) {
   }
 
   try {
+    const db = createAdminClient()
     const result = await processAccountDeletionJobs({
-      db: createAdminClient(),
+      db,
       media: { listObjects: media.listObjects.bind(media), deleteObject: media.deleteObject.bind(media) },
+      // the user's pictures in the private chat-media bucket (Supabase Storage), which the public-bucket listing cannot see
+      chatMedia: createChatMediaDeleter(db),
       revoke: (token) => revokeGoogleToken(token),
     })
     console.log(JSON.stringify({ type: 'tappyai_cron', job: 'account-deletion-jobs', ok: true, ...result }))

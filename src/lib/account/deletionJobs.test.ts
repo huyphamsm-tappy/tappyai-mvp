@@ -49,6 +49,39 @@ const job = (over: Partial<Job> = {}): Job => ({ id: 'j1', user_id: U, group_ids
 const FILES = [`avatars/${U}-a.jpg`, `covers/${U}-b.jpg`, `reviews/${U}/1.jpg`, `videos/${U}/v.mp4`, `thumbnails/${U}/t.jpg`, `music/${U}/m.mp3`, `avatars/group-${G}-g.jpg`]
 const OTHERS = ['avatars/22222222-2222-4222-8222-222222222222-x.jpg', 'reviews/22222222-2222-4222-8222-222222222222/9.jpg', `deals/${U}/banner.png`]
 
+describe('processAccountDeletionJobs — the private chat pictures (migration 20261109)', () => {
+  it('when a chat-media deleter is given, it runs once for the job\'s user, after the public files, and its count is added to the job\'s total', async () => {
+    const { db, updates } = fakeDb([job({ google_tokens: [] })])
+    const bucket = fakeBucket(FILES)
+    const asked: string[] = []
+    const r = await processAccountDeletionJobs({ db, media: bucket.media, revoke: async () => true, chatMedia: { deleteForUser: async (id) => { asked.push(id); return 3 } } })
+    expect(asked).toEqual([U])
+    expect(r.objectsDeleted).toBe(7 + 3)
+    expect(r.completed).toBe(1)
+    expect(updates[0].patch).toMatchObject({ media_deleted: 10, last_error: null })
+    expect(updates[0].patch.done_at).toEqual(expect.any(String))
+  })
+
+  it('🚨 a chat-media failure keeps the job pending and retried — "done" is never reported while the private pictures may still be there', async () => {
+    const { db, updates } = fakeDb([job({ google_tokens: [] })])
+    const r = await processAccountDeletionJobs({
+      db, media: fakeBucket(FILES).media, revoke: async () => true,
+      chatMedia: { deleteForUser: async () => { throw new Error('chat media: removal failed') } },
+    })
+    expect(r.completed).toBe(0)
+    expect(r.failed).toBe(1)
+    expect(updates[0].patch).toMatchObject({ attempts: 1, last_error: 'chat media: removal failed' })
+    expect(updates[0].patch.done_at).toBeUndefined()
+  })
+
+  it('without a chat-media deleter the job behaves exactly as before', async () => {
+    const { db, updates } = fakeDb([job({ google_tokens: [] })])
+    const r = await processAccountDeletionJobs({ db, media: fakeBucket(FILES).media, revoke: async () => true })
+    expect(r).toMatchObject({ completed: 1, objectsDeleted: 7 })
+    expect(updates[0].patch).toMatchObject({ media_deleted: 7 })
+  })
+})
+
 describe('processAccountDeletionJobs', () => {
   it('revokes the grant, deletes every upload of the user and their groups, nobody else’s, then marks done', async () => {
     const { db, updates } = fakeDb([job()])
