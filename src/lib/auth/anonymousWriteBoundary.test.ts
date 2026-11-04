@@ -51,6 +51,7 @@ const EXEMPT: Record<string, string> = {
   'auth/anonymous': 'mints the anonymous session; rate-limited 5/min + 30/day per IP',
   'age-declaration': 'guest 18+ self-declaration for the chat trial; sets an HttpOnly cookie, writes nothing server-side; 10/min per IP',
   'auth/claim-anonymous': 'the anonymous→account handoff; the anonymous token IS the credential',
+  'csp-report': 'the browser sends CSP violation reports with no credentials; nothing is stored (one log line per distinct violation); body capped at 20 KB, 30/min per IP',
 
   // ── Tappy Business: the customer is a guest by design. ──
   //

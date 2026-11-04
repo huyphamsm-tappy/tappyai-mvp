@@ -132,9 +132,21 @@ const nextConfig = {
       "upgrade-insecure-requests",
     ].join('; ')
 
+    // Security audit 04/11 (W-05, Owner approved): a REPORT-ONLY trial of the same policy with scripts WITHOUT 'unsafe-inline'. The browser
+    // blocks nothing for it; it POSTs what it would have blocked to /api/csp-report (logged as tappyai_csp_violation, one line per distinct
+    // violation). The list of inline scripts that appears there is exactly the work needed before the real policy can drop 'unsafe-inline'
+    // (nonces for Next's bootstrap scripts, and the inline image onerror handler in the chat markdown).
+    // `upgrade-insecure-requests` is not valid in a report-only policy, so it is left out of this copy.
+    const cspReportOnly = [
+      ...csp.split('; ').filter((d) => d !== 'upgrade-insecure-requests' && d !== scriptSrc),
+      scriptSrc.replace(" 'unsafe-inline'", ''),
+      'report-uri /api/csp-report',
+    ].join('; ')
+
     // Baseline security headers applied to every route.
     const securityHeaders = [
       { key: 'Content-Security-Policy', value: csp },
+      { key: 'Content-Security-Policy-Report-Only', value: cspReportOnly },
       { key: 'X-Content-Type-Options', value: 'nosniff' },
       { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
       { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },

@@ -61,5 +61,6 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'],
+  // api/csp-report: the browser's CSP violation reports carry no session and can be numerous, so they skip the per-request Supabase auth call.
+  matcher: ['/((?!_next/static|_next/image|favicon.ico|api/csp-report|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'],
 }
