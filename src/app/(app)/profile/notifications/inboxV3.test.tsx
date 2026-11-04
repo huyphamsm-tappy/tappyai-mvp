@@ -303,6 +303,44 @@ describe('filtering and rows', () => {
     const { container } = renderInbox()
     expect(container.textContent, 'two likes on one review collapse to one row saying +2').toContain('+2')
   })
+
+  describe('a collapsed MESSAGE row (DR-4 D4)', () => {
+    const messageDto = (count: unknown, over: Record<string, unknown> = {}) => dto({
+      id: 'm1', type: 'message', category: 'social', title: 'An', body: 'Đã gửi cho bạn một tin nhắn',
+      actor: { id: 'u2', name: 'An', avatar: null },
+      entity_url: '/profile/notifications?tab=messages&thread=t1', data: { threadId: 't1', kind: 'message', count },
+      ...over,
+    })
+
+    it('says how many messages in words, by the client — one row, the sender as title, no "+N" stack chip', () => {
+      store = { notifications: [messageDto(10)], unreadCount: 1, loading: false }
+      const { container } = renderInbox()
+      expect(container.textContent).toContain('An')
+      expect(container.textContent).toContain('10 tin nhắn mới')
+      expect(container.textContent, 'a conversation is not a stack of N notifications').not.toContain('+10')
+      expect(container.textContent, 'the fixed one-message sentence is replaced by the count').not.toContain('Đã gửi cho bạn một tin nhắn')
+    })
+
+    it('a single new message keeps the fixed sentence (no "1 tin nhắn mới")', () => {
+      store = { notifications: [messageDto(1)], unreadCount: 1, loading: false }
+      const { container } = renderInbox()
+      expect(container.textContent).toContain('Đã gửi cho bạn một tin nhắn')
+      expect(container.textContent).not.toContain('1 tin nhắn mới')
+    })
+
+    it('a malformed count (edited row) falls back to the fixed sentence', () => {
+      store = { notifications: [messageDto('999'), messageDto(-5, { id: 'm2' }), messageDto(1e9 + 0.5, { id: 'm3' })], unreadCount: 3, loading: false }
+      const { container } = renderInbox()
+      expect(container.textContent).not.toMatch(/\d+ tin nhắn mới/)
+    })
+
+    it('the row opens its conversation (the deep link the server wrote)', () => {
+      store = { notifications: [messageDto(3)], unreadCount: 1, loading: false }
+      renderInbox()
+      fireEvent.click(screen.getByText('An'))
+      expect(push).toHaveBeenCalledWith('/profile/notifications?tab=messages&thread=t1')
+    })
+  })
 })
 
 describe('empty and loading', () => {

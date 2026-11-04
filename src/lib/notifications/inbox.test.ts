@@ -13,6 +13,41 @@ const inbox = (over: Partial<InboxNotif>): InboxNotif => ({
   title: 'T', text: 'B', url: '/reviews/r1', created_at: '2026-07-26T00:00:00.000Z', read_at: null, ...over,
 })
 
+describe('collapsed message notifications (DR-4 D4: the count travels in data.count, never in the title)', () => {
+  const msg = (data: Record<string, unknown>) => dto({ id: 'n1', type: 'message', category: 'social', title: 'An', body: 'Đã gửi cho bạn một tin nhắn', actor: { id: 'u2', name: 'An', avatar: null }, entity_url: '/profile/notifications?tab=messages&thread=t1', data })
+
+  it('reads a valid count (an integer ≥ 1) from data.count for a message row', () => {
+    expect(mapDtoToInbox(msg({ count: 10 })).count).toBe(10)
+    expect(mapDtoToInbox(msg({ count: 1 })).count).toBe(1)
+  })
+
+  it.each([0, -3, 2.5, '10', null, undefined, NaN, Infinity, {}, []])('ignores a count that is not an integer ≥ 1: %j', (count) => {
+    expect(mapDtoToInbox(msg({ count })).count).toBeUndefined()
+  })
+
+  it('ignores data.count on every other type (a like row with a count is still one row of its own)', () => {
+    expect(mapDtoToInbox(dto({ type: 'like', data: { count: 99 } })).count).toBeUndefined()
+  })
+
+  it('a message row is its own group (never merged with another thread), and its group count IS the unread count', () => {
+    const g = groupNotifs([
+      mapDtoToInbox(msg({ count: 10, threadId: 't1' })),
+      mapDtoToInbox({ ...msg({ count: 2, threadId: 't2' }), id: 'n2' }),
+    ])
+    expect(g).toHaveLength(2)
+    expect(g.map(x => x.count).sort((a, b) => a - b)).toEqual([2, 10])
+    expect(g.every(x => x.type === 'message' && x.unread)).toBe(true)
+  })
+
+  it('a message row without a valid count is a group of 1', () => {
+    expect(groupNotifs([mapDtoToInbox(msg({}))])[0].count).toBe(1)
+  })
+
+  it('a read message row is not unread', () => {
+    expect(groupNotifs([mapDtoToInbox({ ...msg({ count: 4 }), read_at: '2026-11-05T00:00:00Z' })])[0].unread).toBe(false)
+  })
+})
+
 describe('mapDtoToInbox', () => {
   it('flattens actor into actor_id/name/avatar and body→text, entity_url→url', () => {
     const m = mapDtoToInbox(dto({ actor: { id: 'a1', name: 'Nam', avatar: 'x.png' }, body: 'Phở', entity_url: '/reviews/r9' }))
