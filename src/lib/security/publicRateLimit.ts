@@ -37,6 +37,20 @@ import { distributedRateLimit, isDistributedStoreConfigured, type RateLimitRefus
 /** Rolling window for a per-day cap. See `publicDailyRateLimit` for why the key carries the date. */
 const ONE_DAY_MS = 24 * 60 * 60 * 1000
 
+let warnedNoStore = false
+/**
+ * Security audit 04/11 (W-06): decision D2 above stays (no store -> in-process limiter), but on the Vercel PRODUCTION deployment a missing
+ * store means every public cap silently became "per instance", so it is logged loudly, once per instance, for a log alert to catch.
+ */
+export function warnIfProductionWithoutStore(env: NodeJS.ProcessEnv = process.env): boolean {
+  if (warnedNoStore || env.VERCEL_ENV !== 'production') return false
+  warnedNoStore = true
+  console.error(JSON.stringify({ type: 'tappyai_limiter_store_missing', note: 'public rate limits are per instance until the shared store env is set' }))
+  return true
+}
+/** Test hook. */
+export const __resetStoreWarning = (): void => { warnedNoStore = false }
+
 export interface PublicRateLimitResult {
   ok: boolean
   /** Seconds to wait. 0 when admitted. */
@@ -60,6 +74,7 @@ export async function publicRateLimit(
   windowMs: number,
 ): Promise<PublicRateLimitResult> {
   if (!isDistributedStoreConfigured()) {
+    warnIfProductionWithoutStore()
     const local = rateLimit(key, limit, windowMs)
     return { ok: local.ok, retryAfter: local.retryAfter, scope: 'instance', ...(local.ok ? {} : { reason: 'limit_exceeded' as const }) }
   }
@@ -84,6 +99,7 @@ export async function publicDailyRateLimit(
   limit: number,
 ): Promise<PublicRateLimitResult> {
   if (!isDistributedStoreConfigured()) {
+    warnIfProductionWithoutStore()
     const local = dailyRateLimit(key, limit)
     // The in-process daily limiter reports no retry hint, and the routes render a "tomorrow"
     // sentence rather than a countdown. Reported as 0 rather than invented.
