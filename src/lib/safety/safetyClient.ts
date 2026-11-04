@@ -7,10 +7,11 @@
 //   review   POST /api/reviews/{id}/report           always on; body { reason }                   (content_reports)
 //   comment  POST /api/comments/{id}/report          REPORTS_ENABLED; body { reason, note? }      (user_reports)
 //   user     POST /api/users/{id}/report             REPORTS_ENABLED; body { reason, note? }      (user_reports)
+//   message  POST /api/messaging/messages/{id}/report  REPORTS_ENABLED; body { reason, note? }    (user_reports, target_type 'message')
 //   block    POST|DELETE /api/users/{id}/block       USER_BLOCKS_ENABLED
 //   list     GET /api/users/blocks                   USER_BLOCKS_ENABLED
 
-export type ReportTarget = 'review' | 'comment' | 'user'
+export type ReportTarget = 'review' | 'comment' | 'user' | 'message'
 
 /**
  * What the menu offers. Every entry is accepted by all three routes: the comment/user routes accept the canonical seven plus the native extras,
@@ -27,6 +28,7 @@ const REPORT_URL: Record<ReportTarget, (id: string) => string> = {
   review: (id) => `/api/reviews/${encodeURIComponent(id)}/report`,
   comment: (id) => `/api/comments/${encodeURIComponent(id)}/report`,
   user: (id) => `/api/users/${encodeURIComponent(id)}/report`,
+  message: (id) => `/api/messaging/messages/${encodeURIComponent(id)}/report`,
 }
 
 export type SafetyOutcome = 'ok' | 'already' | 'rate_limited' | 'login' | 'failed'

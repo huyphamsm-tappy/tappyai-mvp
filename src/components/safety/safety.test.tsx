@@ -55,6 +55,12 @@ describe('safetyClient · routes, bodies, outcomes', () => {
     expect(calls.some(c => c.url === '/api/reports')).toBe(false)
   })
 
+  it('a MESSAGE is reported to its own per-target route, under the Messenger path, with the same body', async () => {
+    expect(await sendReport('message', 'm1', 'harassment', 'đe dọa')).toBe('ok')
+    expect(calls.map(c => [c.method, c.url])).toEqual([['POST', '/api/messaging/messages/m1/report']])
+    expect(calls[0].body).toEqual({ reason: 'harassment', note: 'đe dọa' })
+  })
+
   it('ids are URL-encoded, and a note is capped at the length the routes accept', async () => {
     await sendReport('user', 'a/b?c', 'other', 'x'.repeat(REPORT_NOTE_MAX + 50))
     expect(calls[0].url).toBe('/api/users/a%2Fb%3Fc/report')
@@ -291,6 +297,32 @@ describe('SafetyMenu · block flow', () => {
   })
 })
 
+describe('ReportDialog · reporting a message', () => {
+  const dialogFor = (target: 'message' | 'comment') => {
+    render(<ReportDialog open onOpenChange={() => {}} target={target} targetId="m1" />)
+    return screen.getByTestId('report-dialog')
+  }
+
+  it('says, BEFORE anything is sent, that the message goes to the moderators (a private conversation is being shared with them)', () => {
+    const dialog = dialogFor('message')
+    expect(within(dialog).getByTestId('report-message-notice').textContent).toBe('safety.reportMessageNotice')
+  })
+
+  it('the other targets do not carry that notice', () => {
+    expect(within(dialogFor('comment')).queryByTestId('report-message-notice')).toBeNull()
+  })
+
+  it('sending reports the message to its own route, with the reason and the note, and the title is the message title', async () => {
+    const dialog = dialogFor('message')
+    expect(dialog.textContent).toContain('safety.reportTitle.message')
+    fireEvent.click(within(dialog).getByLabelText('safety.reason.harassment'))
+    fireEvent.change(within(dialog).getByRole('textbox'), { target: { value: 'đe dọa tôi' } })
+    fireEvent.click(within(dialog).getByTestId('report-submit'))
+    await waitFor(() => expect(within(screen.getByTestId('report-dialog')).getByRole('status').textContent).toBe('safety.reportSent'))
+    expect(posts()).toEqual([{ method: 'POST', url: '/api/messaging/messages/m1/report', body: { reason: 'harassment', note: 'đe dọa tôi' } }])
+  })
+})
+
 describe('copy', () => {
   it('every literal safety.* key the three components use exists in BOTH languages (a missing key would show the raw key to the user)', async () => {
     const { readFileSync } = await import('node:fs')
@@ -303,7 +335,8 @@ describe('copy', () => {
   it('vi and en carry exactly the same keys, every reason and title the UI asks for exists, and {name} survives translation', () => {
     expect(Object.keys(safetyVi).sort()).toEqual(Object.keys(safetyEn).sort())
     for (const r of REPORT_REASONS) expect(safetyVi[`safety.reason.${r}`], r).toBeTruthy()
-    for (const k of ['reportTitle.review', 'reportTitle.comment', 'reportTitle.user', 'blockConfirmTitle', 'unblockConfirmTitle']) expect(safetyVi[`safety.${k}`], k).toBeTruthy()
+    for (const k of ['reportTitle.review', 'reportTitle.comment', 'reportTitle.user', 'reportTitle.message', 'reportMessageNotice', 'blockConfirmTitle', 'unblockConfirmTitle']) expect(safetyVi[`safety.${k}`], k).toBeTruthy()
+    for (const k of ['reportTitle.message', 'reportMessageNotice']) expect(safetyEn[`safety.${k}`], k).toBeTruthy()
     expect(safetyVi['safety.blockConfirmTitle']).toContain('{name}')
     expect(safetyEn['safety.blockConfirmTitle']).toContain('{name}')
     for (const k of ['close', 'rateLimited', 'failed', 'reportSent', 'cancel']) expect(safetyEn[`safety.${k}`], k).toBeTruthy()

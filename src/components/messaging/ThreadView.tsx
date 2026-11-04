@@ -268,14 +268,18 @@ export default function ThreadView({
                     {meta.name}
                   </span>
                 )}
-                <div
-                  className="max-w-[78%] rounded-2xl px-3.5 py-2.5 text-[13.5px] leading-snug"
-                  style={mine
-                    ? { background: 'var(--v3-accent-fill)', color: 'var(--v3-on-accent)' }
-                    : { background: 'var(--v3-panel-elevated)', color: 'var(--v3-fg)' }}
-                >
-                  {/* Safe https links only — see linkify.tsx. Everything else stays text. */}
-                  <span className="whitespace-pre-wrap break-words">{linkifySafe(message.body)}</span>
+                <div className={`flex max-w-full items-center gap-1 ${mine ? 'justify-end' : 'justify-start'}`}>
+                  <div
+                    className="max-w-[78%] rounded-2xl px-3.5 py-2.5 text-[13.5px] leading-snug"
+                    style={mine
+                      ? { background: 'var(--v3-accent-fill)', color: 'var(--v3-on-accent)' }
+                      : { background: 'var(--v3-panel-elevated)', color: 'var(--v3-fg)' }}
+                  >
+                    {/* Safe https links only — see linkify.tsx. Everything else stays text. */}
+                    <span className="whitespace-pre-wrap break-words">{linkifySafe(message.body)}</span>
+                  </div>
+                  {/* Report THIS message (only someone else's; the menu draws nothing while reports are off). No block here: blocking the person is the header's job. */}
+                  {!mine && <SafetyMenu report={{ target: 'message', id: message.id }} />}
                 </div>
                 {meta?.showTime && meta.time && (
                   <span data-testid="bubble-time" className="mt-0.5 px-1 text-[10.5px] tabular-nums" style={{ color: 'var(--v3-fg-muted)' }}>
