@@ -25,6 +25,10 @@ on:
     - cron: '0 1 * * *' # daily: stranded protected work does not announce itself
   workflow_dispatch:
 
+# Security audit 04/11 (D-01): the token these jobs get is read-only (checkout and `git` reads only).
+permissions:
+  contents: read
+
 env:
   # The branch that ships (owner decision 2026-09-25: rc/web-uat). The repository variable
   # SHIP_BRANCH overrides it without a code change.
