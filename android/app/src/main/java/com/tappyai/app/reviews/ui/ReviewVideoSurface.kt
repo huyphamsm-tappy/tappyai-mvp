@@ -278,6 +278,11 @@ private fun youtubeEmbedHtml(videoId: String): String =
         "src=\"https://www.youtube.com/embed/$videoId?autoplay=1&mute=1&playsinline=1&loop=1&playlist=$videoId&controls=0&modestbranding=1\">" +
         "</iframe></body></html>"
 
-/** Mirrors the web's `extractYoutubeId` regex. */
-private fun extractYoutubeId(url: String): String? =
+/**
+ * Mirrors the web's `extractYoutubeId` regex, then keeps only a real YouTube id (exactly 11 of `A-Za-z0-9_-`). Security audit 04/11 (A-02): the
+ * id is written into the embed page's HTML, and `[^&?/]+` also matches `"`, so a posted link like `youtu.be/x"onload="…` could add attributes
+ * to the page every viewer loads. A link that is not a plain id plays nothing.
+ */
+internal fun extractYoutubeId(url: String): String? =
     Regex("(?:youtube\\.com/watch\\?v=|youtu\\.be/)([^&?/]+)").find(url)?.groupValues?.getOrNull(1)
+        ?.takeIf { Regex("[A-Za-z0-9_-]{11}").matches(it) }
