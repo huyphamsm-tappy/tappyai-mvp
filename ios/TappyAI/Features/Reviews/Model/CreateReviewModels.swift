@@ -74,7 +74,15 @@ enum ExternalSource: String, CaseIterable, Sendable {
               match.numberOfRanges > 1,
               let idRange = Range(match.range(at: 1), in: url) else { return nil }
         let id = String(url[idRange])
-        return id.isEmpty ? nil : id
+        return isValidYouTubeId(id) ? id : nil
+    }
+
+    /// Security audit 04/11 (I-01): a YouTube id is exactly 11 of `A-Za-z0-9_-`. The id is written into an HTML page, and the
+    /// `[^&?/]+` capture above also accepts quotes and angle brackets, so a link like `youtu.be/x"onload="…` must play nothing.
+    static func isValidYouTubeId(_ id: String) -> Bool {
+        id.utf8.count == 11 && id.utf8.allSatisfy { b in
+            (b >= 0x30 && b <= 0x39) || (b >= 0x41 && b <= 0x5A) || (b >= 0x61 && b <= 0x7A) || b == 0x5F || b == 0x2D
+        }
     }
 }
 

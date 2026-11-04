@@ -359,7 +359,7 @@ final class ChatViewModel: AppObservableObject {
             // new chat now.
             conversationId = nil
             self.error = Self.mapError(error, isGuest: isGuest)
-            log.error("load conversation failed: \(error)")
+            log.error("load conversation failed: \(error.diagnosticTag)")
         }
         isLoadingConversation = false
     }
@@ -771,7 +771,8 @@ final class ChatViewModel: AppObservableObject {
                     // turn finished as an empty "complete" reply and the person saw no answer and no error.
                     case .unknown(let prefix, let payload) where prefix == "3":
                         streamReportedError = true
-                        self.log.error("server error part in the chat stream: \(String(decoding: payload.prefix(200), as: UTF8.self))")
+                        // I-02: the payload is the server's own words (it can quote the person's text); only its size is logged.
+                        self.log.error("server error part in the chat stream (\(payload.count) bytes)")
 
                     // The Deep Research card, its charts and the section pictures (read and checked by the parser). The latest
                     // of each is the turn's. They go on the reply bubble as they arrive - so a Stop, or a drop after some text,
@@ -845,7 +846,7 @@ final class ChatViewModel: AppObservableObject {
 
                 self.error = Self.mapError(error, isGuest: self.isGuest)
                 if case .ageIneligible? = self.error { self.refreshAgeCorrection() }
-                self.log.error("stream error: \(error)")
+                self.log.error("stream error: \(error.diagnosticTag)")
             }
         }
     }
@@ -928,7 +929,7 @@ final class ChatViewModel: AppObservableObject {
             // Reopening this chat from history later keeps the same chatSessionId (R14).
             if let id = conversationId { sessionIdStore.put(id, chatSessionId) }
         } catch {
-            log.error("persist failed: \(error)")
+            log.error("persist failed: \(error.diagnosticTag)")
         }
     }
 

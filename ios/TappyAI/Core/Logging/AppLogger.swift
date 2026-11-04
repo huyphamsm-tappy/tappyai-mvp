@@ -40,9 +40,12 @@ struct AppLogger {
     }
 
     /// Errors are always recorded (Release included), but keep sensitive data private.
+    /// Security audit 04/11 (I-02): the text is `.private`. Callers interpolate `\(error)`, which can carry a URL, a server message or
+    /// a piece of the person's own text; `.public` put all of it in sysdiagnose / Console. A Release log line now reads `<private>` unless
+    /// a debugger is attached; pass `error.diagnosticTag` when a readable, safe code is wanted in Release.
     func error(_ message: @autoclosure () -> String) {
         let text = message()  // os.Logger interpolation is an escaping autoclosure
-        logger.error("\(text, privacy: .public)")
+        logger.error("\(text, privacy: .private)")
     }
 
     /// Lightweight performance marker. Use around expensive foundation operations only.

@@ -29,6 +29,13 @@ enum DeepLinkTarget: Equatable {
 /// Parses inbound URLs (custom scheme `tappyai://…`, universal links, and push `data.url` paths)
 /// into `DeepLinkTarget`. Pure and unit-testable.
 struct DeepLinkHandler {
+    /// An id that may be written into an API path: 1-64 of `A-Za-z0-9_-` (this admits every UUID and the server's short ids).
+    static func isSafeId(_ id: String) -> Bool {
+        (1...64).contains(id.utf8.count) && id.utf8.allSatisfy { b in
+            (b >= 0x30 && b <= 0x39) || (b >= 0x41 && b <= 0x5A) || (b >= 0x61 && b <= 0x7A) || b == 0x5F || b == 0x2D
+        }
+    }
+
     /// Accepts either a full URL or a bare web path like `/reviews`.
     func target(for urlOrPath: String) -> DeepLinkTarget? {
         let path: String
@@ -64,6 +71,10 @@ struct DeepLinkHandler {
         let segments = normalized.split(separator: "/").map(String.init)
         if segments.count >= 2 {
             let id = segments[1]
+            // Security audit 04/11 (I-06): the id goes into an API path (`/api/group/{id}/join`) with the person's token. A link or push
+            // carrying `..`, `?`, `#`, `%2f`… would redirect that call inside our own API, so only a plain id (or UUID) is taken, and a
+            // content link with any other id resolves to nothing.
+            if ["reviews", "users", "group"].contains(segments[0]), id != "new", !Self.isSafeId(id) { return nil }
             if !id.isEmpty {
                 switch segments[0] {
                 case "reviews": return .review(id: id)

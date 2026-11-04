@@ -30,6 +30,9 @@ final class AppDependencies: AppObservableObject {
     init(env: AppEnvironment = .current) {
         self.env = env
 
+        // I-04: the Keychain survives deleting the app; a first launch of a fresh install must not resume the previous owner's session.
+        FreshInstallGuard.run(tokens: KeychainTokenStorage())
+
         // Infrastructure + auth engine first, so SessionStore can delegate refresh to the SDK.
         let supabase = SupabaseClientProvider.make(env)
         let authService = SupabaseAuthService(supabase: supabase)

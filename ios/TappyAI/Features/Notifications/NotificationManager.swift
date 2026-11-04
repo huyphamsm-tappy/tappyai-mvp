@@ -90,7 +90,7 @@ final class NotificationManager: NSObject {
     }
 
     func handleRegistrationError(_ error: Error) {
-        log.error("APNs registration failed: \(error.localizedDescription)")
+        log.error("APNs registration failed: \(error.diagnosticTag)")
     }
 
     fileprivate func uploadToken(_ token: String) async {
@@ -112,7 +112,7 @@ final class NotificationManager: NSObject {
             _ = try await api.send(endpoint)
             log.info("FCM token uploaded")
         } catch {
-            log.error("FCM token upload failed: \(error.localizedDescription)")
+            log.error("FCM token upload failed: \(error.diagnosticTag)")
         }
     }
 

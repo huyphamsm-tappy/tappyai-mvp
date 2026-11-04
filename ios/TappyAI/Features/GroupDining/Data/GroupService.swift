@@ -50,6 +50,8 @@ struct GroupService: Sendable {
     /// fields it does not read — `food_preferences` would silently arrive empty and the AI would
     /// suggest for a group whose preferences it was never told.
     func joinGroup(id: String, form: GroupJoinForm) async throws -> JoinGroupResponse {
+        // I-06: the id comes from a link or a push; it is written into the path, so only a plain id is sent.
+        guard DeepLinkHandler.isSafeId(id) else { throw AppError.validation(message: "invalid group id") }
         let payload = try JSONSerialization.data(withJSONObject: [
             "name": form.name,
             "budget": form.budget,
@@ -73,6 +75,7 @@ struct GroupService: Sendable {
     /// longer than the client default, and a client that gives up first bills for a suggestion
     /// nobody sees.
     func requestSuggestion(id: String) async throws -> GroupSuggestionResponse {
+        guard DeepLinkHandler.isSafeId(id) else { throw AppError.validation(message: "invalid group id") }
         // App Review 5.1.2(i): the model reads the details of every member who has agreed to it themselves; the server
         // omits the others. The creator still has to agree to their own details being sent.
         if let consent, !(await consent.ensure()) { throw AIConsentStore.blockedError }

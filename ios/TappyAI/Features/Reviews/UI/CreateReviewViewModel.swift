@@ -132,7 +132,11 @@ final class CreateReviewViewModel: AppObservableObject {
             for item in toProcess {
                 do {
                     guard let data = try await item.loadTransferable(type: Data.self) else { continue }
-                    let compressed = UIImage(data: data)?.jpegData(compressionQuality: 0.85) ?? data
+                    // I-08: a photo that cannot be decoded is NOT sent as it came - the original bytes keep their EXIF (GPS included).
+                    guard let compressed = Self.reencodedPhoto(data) else {
+                        self.error = NSLocalizedString("review.error.photoUpload", comment: "")
+                        continue
+                    }
                     let url = try await service.uploadPhoto(data: compressed, filename: "photo_\(Int(Date().timeIntervalSince1970 * 1000)).jpg")
                     uploaded.append(url)
                 } catch {
@@ -143,6 +147,12 @@ final class CreateReviewViewModel: AppObservableObject {
             photoURLs.append(contentsOf: uploaded)
             photoUploading = false
         }
+    }
+
+    /// The photo as a fresh JPEG (drawn from the decoded image, so the original's metadata - location, camera - does not travel), or nil
+    /// when the bytes are not an image the system can decode.
+    static func reencodedPhoto(_ raw: Data) -> Data? {
+        UIImage(data: raw)?.jpegData(compressionQuality: 0.85)
     }
 
     func removePhoto(at index: Int) {
