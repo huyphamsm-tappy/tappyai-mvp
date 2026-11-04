@@ -99,7 +99,7 @@ import { readZaloIdentity, zaloIdentitySecret } from '@/lib/zalo/identity'
 import { flushPending, recordEvent, type UsageEvent } from '@/lib/observability'
 import { FREE_DAILY_LIMIT, ANON_LIFETIME_LIMIT } from '@/lib/config/product'
 import { accountQuotaFor, aiQuotaIdentity, consumeAiQuestion, consumeDeepResearch, refundAiQuestion, type AiQuotaRefund } from '@/lib/ai/quota/aiQuestionQuota'
-import { tierOf, modeForTier, DEEP_RESEARCH_MONTHLY } from '@/lib/plans/tiers'
+import { tierOf, modeForTier, deepResearchMonthlyLimit } from '@/lib/plans/tiers'
 import { wrapToolsWithoutAiSources } from '@/lib/security/aiSourcePolicy'
 import { subscriptionsEnabled } from '@/lib/payments/flags'
 import { entitlementFromRow, type SubscriptionRow } from '@/lib/plans/entitlement'
@@ -2382,6 +2382,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     const asked = chatMode
     chatMode = modeForTier(chatMode, planTier)
     if (asked !== chatMode) console.log(JSON.stringify({ type: 'tappyai_mode_tier', asked, ran: chatMode, tier: planTier }))
+  } else if (chatMode === 'deep' && deepResearchMonthlyLimit(planTier, { subscriptionsOn: false, signedIn: !!authedUserId }) <= 0) {
+    // Security audit 04/11 (W-01): a visitor never starts a ~0.06 USD research run, whatever the plan flag says.
+    chatMode = 'chat'
+    console.log(JSON.stringify({ type: 'tappyai_mode_tier', asked: 'deep', ran: chatMode, tier: planTier, why: 'visitor' }))
   }
   // 01/11 (mode "Tự động", owner chose "C"): the switch the model turns on with think_deeper; every later step of the stream reasons at medium
   // (AI.stream autoThink) and the lookups follow the Thinking mode. Off for the whole turn = exactly Chat.
@@ -3593,8 +3597,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // Owner 01/11/2026: Deep Research runs per VN month by tier (Coco 10, Tappy 69) on the quota store, with the plans on sale; a run that
     // produces nothing gives the run back with the question.
     let deepRefund: Awaited<ReturnType<typeof consumeDeepResearch>>['refund'] = null
-    if (subscriptionsEnabled() && authedUserId) {
-      const limit = DEEP_RESEARCH_MONTHLY[planTier]
+    if (authedUserId) {
+      const limit = deepResearchMonthlyLimit(planTier, { subscriptionsOn: subscriptionsEnabled(), signedIn: true })
       const spent = await consumeDeepResearch(authedUserId, limit)
       if (!spent.ok) {
         await refundQuotaOnFailure('deep_research_month_used')
