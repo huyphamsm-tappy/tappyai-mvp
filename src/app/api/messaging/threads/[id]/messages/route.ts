@@ -140,6 +140,17 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     )
   }
 
+  // `clientId` (optional): a uuid the client makes once per send attempt and repeats on a retry. A retry after a timeout whose first
+  // attempt DID commit then hits the unique index (thread, sender, client_id) and gets the stored row back instead of a second copy.
+  const rawClientId = (payload as { clientId?: unknown }).clientId
+  if (rawClientId !== undefined && !(typeof rawClientId === 'string' && UUID.test(rawClientId))) {
+    return NextResponse.json(
+      { error: 'invalid_input', message: serverMessage('validation.invalid', requestLocale(req)) },
+      { status: 400 },
+    )
+  }
+  const clientId = typeof rawClientId === 'string' ? rawClientId : null
+
   if (!(await loadThread(supabase, params.id))) {
     return NextResponse.json(
       { error: 'not_found', message: serverMessage('server.notFound', requestLocale(req)) },
@@ -152,9 +163,22 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
   // cannot post as somebody else even if this line were wrong.
   const { data, error } = await supabase
     .from('chat_messages')
-    .insert({ thread_id: params.id, sender_id: user.id, body: bodyText })
+    .insert({ thread_id: params.id, sender_id: user.id, body: bodyText, ...(clientId ? { client_id: clientId } : {}) })
     .select('id, thread_id, sender_id, body, created_at')
     .single()
+
+  if (error && error.code === '23505' && clientId) {
+    // The same send already committed (the earlier answer was lost): return that row. No notification again — it went out the first time.
+    const { data: existing } = await supabase
+      .from('chat_messages')
+      .select('id, thread_id, sender_id, body, created_at')
+      .eq('thread_id', params.id)
+      .eq('sender_id', user.id)
+      .eq('client_id', clientId)
+      .maybeSingle()
+    if (existing) return NextResponse.json({ message: toMessage(existing as MessageRow) })
+    console.error('[messaging] send: duplicate client id but no stored row')
+  }
 
   if (error) {
     // RLS refusal on a thread that exists but is not the caller's — answered as

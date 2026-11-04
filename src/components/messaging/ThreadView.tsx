@@ -8,6 +8,7 @@ import { ArrowLeft, Send, Loader2, Users } from 'lucide-react'
 import { threadTitle, type ChatMessage, type ChatThreadSummary } from '@/lib/messaging/types'
 import { useMessages } from './MessagesProvider'
 import { SafetyMenu } from '@/components/safety/SafetyMenu'
+import { newClientId } from '@/lib/messaging/clientId'
 
 export default function ThreadView({
   thread,
@@ -36,6 +37,9 @@ export default function ThreadView({
   const keepPosition = useRef<{ top: number; height: number } | null>(null)
   const [draft, setDraft] = useState('')
   const [sending, setSending] = useState(false)
+  // The id of the send attempt in flight or just failed, tied to the exact text it was made for: a retry of the SAME text repeats it (the server
+  // then returns the stored row instead of a second copy); other text, or the next send after a success, gets a new one.
+  const attempt = useRef<{ id: string; body: string } | null>(null)
 
   const bottomRef = useRef<HTMLDivElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -132,14 +136,16 @@ export default function ThreadView({
     if (!body || sending) return
     setSending(true)
     setError(null)
+    if (!attempt.current || attempt.current.body !== body) attempt.current = { id: newClientId(), body }
     try {
       const r = await fetch(`/api/messaging/threads/${thread.id}/messages`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ body }),
+        body: JSON.stringify({ body, clientId: attempt.current.id }),
       })
       if (!r.ok) throw new Error(String(r.status))
       const d = await r.json()
+      attempt.current = null // delivered: the next message is a new send, even with the same text
       // The server's row, not a locally minted one: it carries the real id and
       // the real `created_at`, so the Realtime echo dedupes against it cleanly.
       setMessages(prev => (prev.some(m => m.id === d.message.id) ? prev : [...prev, d.message]))

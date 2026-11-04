@@ -53,6 +53,10 @@ policy_of() {
     # BEFORE the web release that sells promax1m / promax3m - until then the database refuses those orders and purchases.
     20261102_plans_promax.sql)
       echo APPLY ;;
+    # Messenger send idempotency (Inbox & Messenger audit 04/11/2026). One nullable column + one partial unique index on chat_messages; nothing
+    # reads it until the web release that sends `clientId`, so apply it BEFORE that release (the route writes the column only when a clientId is sent).
+    20261105_chat_messages_client_id.sql)
+      echo APPLY ;;
     # H1 → M1 first, then the security-branch migrations in MIGRATION_ORDER.txt order (owner 30/09): 20260928b needs the
     # deal-click code (service role) on production; the others are code-independent but ride the same verified window.
     20260927_owner_update_column_privileges.sql|20260928_revoke_reviews_insert.sql|\

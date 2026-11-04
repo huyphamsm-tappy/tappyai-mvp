@@ -166,6 +166,45 @@ describe('POST a message', () => {
     h.state.rows = [THREAD_FOUND, { data: null, error: { code: '42501', message: 'row-level security' } }]
     expect((await send({ body: 'hi' })).status).toBe(404)
   })
+
+  describe('clientId — a retry after a timeout must not store the message twice', () => {
+    const CID = '22222222-2222-4222-8222-222222222222'
+    const ROW = { id: 'm1', thread_id: 'thread-1', sender_id: 'u1', body: 'xin chào', created_at: '2026-11-05T01:00:00.000Z' }
+
+    it('stores the client id with the message', async () => {
+      h.state.rows = [THREAD_FOUND, { data: ROW, error: null }]
+      expect((await send({ body: 'xin chào', clientId: CID })).status).toBe(200)
+      expect(h.state.inserted[0]).toEqual({ thread_id: 'thread-1', sender_id: 'u1', body: 'xin chào', client_id: CID })
+    })
+
+    it('refuses a clientId that is not a uuid, before the database is touched', async () => {
+      for (const clientId of ['x', 123, '22222222-2222-4222-8222-22222222222', '', {}]) {
+        h.state.rows = [THREAD_FOUND]
+        h.state.i = 0
+        const res = await send({ body: 'hi', clientId })
+        expect(res.status, JSON.stringify(clientId)).toBe(400)
+      }
+      expect(h.state.inserted).toHaveLength(0)
+    })
+
+    it('a repeat of a send the database already holds (unique violation) answers 200 with the EXISTING row and stores nothing new', async () => {
+      h.state.rows = [THREAD_FOUND, { data: null, error: { code: '23505', message: 'duplicate key' } }, { data: ROW, error: null }]
+      const res = await send({ body: 'xin chào', clientId: CID })
+      expect(res.status).toBe(200)
+      expect((await res.json()).message).toMatchObject({ id: 'm1', body: 'xin chào', senderId: 'u1' })
+      expect(h.state.inserted).toHaveLength(1) // the one attempt; no second insert
+    })
+
+    it('a unique violation WITHOUT a clientId is a plain server error (nothing is hidden)', async () => {
+      h.state.rows = [THREAD_FOUND, { data: null, error: { code: '23505', message: 'duplicate key' } }]
+      expect((await send({ body: 'hi' })).status).toBe(500)
+    })
+
+    it('a unique violation whose original row cannot be found is a server error, not a made-up success', async () => {
+      h.state.rows = [THREAD_FOUND, { data: null, error: { code: '23505', message: 'duplicate key' } }, { data: null, error: null }]
+      expect((await send({ body: 'hi', clientId: CID })).status).toBe(500)
+    })
+  })
 })
 
 describe('POST read', () => {
