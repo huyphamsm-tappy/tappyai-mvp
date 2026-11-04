@@ -5,6 +5,7 @@ import { Home, MessageCircle, User, Compass, Tag } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { useNotifications } from '@/components/NotificationProvider'
+import { useMessageUnread, badgeTotal } from '@/lib/messaging/useMessageUnread'
 
 const tabs = [
   { href: '/', icon: Home, labelKey: 'nav.home' },
@@ -20,7 +21,9 @@ export default function BottomNav() {
   const { t } = useTranslation()
   // App-level unread count (ADR-014) — badge on the Explore tab is correct on
   // every route, including Home, because the store lives above the router.
-  const { unreadCount } = useNotifications()
+  const { unreadCount: notificationUnread } = useNotifications()
+  // The Inbox badge counts unread messages too (one shared reader, see useMessageUnread).
+  const unreadCount = badgeTotal(notificationUnread, useMessageUnread())
 
   // /reviews has its own TikNav — hide global nav to avoid duplicate "Trang chủ"
   if (pathname.startsWith('/reviews')) return null
