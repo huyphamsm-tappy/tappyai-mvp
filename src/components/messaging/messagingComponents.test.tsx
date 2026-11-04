@@ -120,6 +120,178 @@ describe('ThreadView · history', () => {
   })
 })
 
+describe('ThreadView · pictures', () => {
+  const MEDIA = { path: 't1/me/1730000000000-abc.webp', type: 'image', width: 800, height: 600 }
+  const LINK = 'https://storage.example/signed/abc?token=1'
+  const file = (name = 'a.png', type = 'image/png', size?: number) => {
+    const f = new File([new Uint8Array([1, 2, 3])], name, { type })
+    if (size !== undefined) Object.defineProperty(f, 'size', { value: size })
+    return f
+  }
+  const pick = (f: File) => {
+    const input = document.querySelector('input[type="file"]') as HTMLInputElement
+    fireEvent.change(input, { target: { files: [f] } })
+  }
+  const open = async () => {
+    fetchMock.mockResolvedValueOnce(json({ messages: [], hasMore: false }))
+    render(<ThreadView thread={THREAD} onBack={() => {}} />)
+    await waitFor(() => expect(screen.getByRole('textbox')).toBeTruthy())
+  }
+  const sendBtn = () => screen.getByRole('button', { name: /gửi|send/i }) as HTMLButtonElement
+  const posts = () => fetchMock.mock.calls.filter(c => c[1]?.method === 'POST')
+  beforeEach(() => {
+    URL.createObjectURL = vi.fn(() => 'blob:preview') as never
+    URL.revokeObjectURL = vi.fn() as never
+  })
+
+  it('choosing a picture uploads it AT ONCE to the media route as multipart, and shows a preview with a way to remove it', async () => {
+    await open()
+    fetchMock.mockResolvedValueOnce(json({ media: MEDIA }))
+    pick(file())
+    await waitFor(() => expect(screen.getByTestId('composer-photo')).toBeTruthy())
+    const [url, init] = posts()[0]!
+    expect(url).toBe('/api/messaging/threads/t1/media')
+    expect(init.body instanceof FormData).toBe(true)
+    expect((init.body as FormData).get('file')).toBeInstanceOf(File)
+    expect(screen.getByRole('button', { name: 'Bỏ ảnh' })).toBeTruthy()
+  })
+
+  it('a picture ALONE can be sent (no text): the request carries the uploaded path and size, the picture is shown from the server\'s signed link, and the composer is cleared', async () => {
+    await open()
+    expect(sendBtn().disabled).toBe(true) // nothing to send yet
+    fetchMock.mockResolvedValueOnce(json({ media: MEDIA }))
+    pick(file())
+    await waitFor(() => expect(sendBtn().disabled).toBe(false))
+    fetchMock.mockResolvedValueOnce(json({ message: { id: 'p1', threadId: 't1', senderId: 'me', body: '', createdAt: '2026-10-10T00:00:09Z', media: { type: 'image', url: LINK, width: 800, height: 600 } } }))
+    fireEvent.click(sendBtn())
+    await waitFor(() => expect(document.querySelector('[data-testid="message-photo"]')).toBeTruthy())
+    const sent = JSON.parse(String(posts()[1]![1].body))
+    expect(sent).toMatchObject({ body: '', media: { path: MEDIA.path, width: 800, height: 600 } })
+    expect(sent.clientId).toMatch(/^[0-9a-f-]{36}$/i)
+    const img = document.querySelector('[data-testid="message-photo"] img') as HTMLImageElement
+    expect(img.getAttribute('src')).toBe(LINK)
+    expect(img.getAttribute('alt')).toBe('Ảnh trong tin nhắn')
+    expect(screen.queryByTestId('composer-photo')).toBeNull()
+    expect(bodies(), 'a picture with no text has no empty text bubble').toEqual([])
+  })
+
+  it('a caption goes with the picture', async () => {
+    await open()
+    fetchMock.mockResolvedValueOnce(json({ media: MEDIA }))
+    pick(file())
+    await waitFor(() => expect(screen.getByTestId('composer-photo')).toBeTruthy())
+    fireEvent.change(screen.getByRole('textbox'), { target: { value: '  món này ngon  ' } })
+    fetchMock.mockResolvedValueOnce(json({ message: { id: 'p2', threadId: 't1', senderId: 'me', body: 'món này ngon', createdAt: '2026-10-10T00:00:09Z', media: { type: 'image', url: LINK, width: 800, height: 600 } } }))
+    fireEvent.click(sendBtn())
+    await waitFor(() => expect(bodies()).toEqual(['món này ngon']))
+    expect(JSON.parse(String(posts()[1]![1].body))).toMatchObject({ body: 'món này ngon', media: { path: MEDIA.path } })
+  })
+
+  it('removing the preview clears it and disables sending again (the uploaded object is simply never attached)', async () => {
+    await open()
+    fetchMock.mockResolvedValueOnce(json({ media: MEDIA }))
+    pick(file())
+    await waitFor(() => expect(screen.getByTestId('composer-photo')).toBeTruthy())
+    fireEvent.click(screen.getByRole('button', { name: 'Bỏ ảnh' }))
+    expect(screen.queryByTestId('composer-photo')).toBeNull()
+    expect(sendBtn().disabled).toBe(true)
+  })
+
+  describe('what is refused, and why (the server checks again; this saves a round trip)', () => {
+    it('a GIF (or anything not JPEG, PNG, WebP) is refused before any request, with the type message', async () => {
+      await open()
+      pick(file('a.gif', 'image/gif'))
+      expect((await screen.findByRole('alert')).textContent).toBe('Chỉ gửi được ảnh JPEG, PNG hoặc WebP.')
+      expect(posts()).toHaveLength(0)
+    })
+
+    it('over 5 MB is refused before any request', async () => {
+      await open()
+      pick(file('big.jpg', 'image/jpeg', 5 * 1024 * 1024 + 1))
+      expect((await screen.findByRole('alert')).textContent).toBe('Ảnh quá lớn (tối đa 5 MB).')
+      expect(posts()).toHaveLength(0)
+    })
+
+    it('the server\'s own refusals are said in words: bad type, too large; anything else is the generic upload failure; no preview is kept', async () => {
+      for (const [error, status, text] of [['bad_image_type', 400, 'Chỉ gửi được ảnh JPEG, PNG hoặc WebP.'], ['image_too_large', 400, 'Ảnh quá lớn (tối đa 5 MB).'], ['upload_failed', 500, 'Không tải ảnh lên được.']] as const) {
+        cleanup(); fetchMock.mockReset()
+        await open()
+        fetchMock.mockResolvedValueOnce(json({ error }, false, status))
+        pick(file())
+        expect((await screen.findByRole('alert')).textContent, error).toBe(text)
+        expect(screen.queryByTestId('composer-photo')).toBeNull()
+        expect(sendBtn().disabled).toBe(true)
+      }
+    })
+
+    it('a network failure while uploading is the generic upload failure', async () => {
+      await open()
+      fetchMock.mockRejectedValueOnce(new TypeError('network'))
+      pick(file())
+      expect((await screen.findByRole('alert')).textContent).toBe('Không tải ảnh lên được.')
+    })
+  })
+
+  it('a failed send keeps the picture and the text, and a retry of the SAME picture and text repeats the same clientId', async () => {
+    await open()
+    fetchMock.mockResolvedValueOnce(json({ media: MEDIA }))
+    pick(file())
+    await waitFor(() => expect(sendBtn().disabled).toBe(false))
+    fetchMock.mockResolvedValueOnce(json({}, false, 500))
+    fireEvent.click(sendBtn())
+    await waitFor(() => expect(screen.getByRole('alert')).toBeTruthy())
+    expect(screen.getByTestId('composer-photo')).toBeTruthy()
+    fetchMock.mockResolvedValueOnce(json({ message: { id: 'p3', threadId: 't1', senderId: 'me', body: '', createdAt: '2026-10-10T00:00:09Z', media: { type: 'image', url: LINK, width: 800, height: 600 } } }))
+    fireEvent.click(sendBtn())
+    await waitFor(() => expect(posts()).toHaveLength(3))
+    const ids = [posts()[1]![1], posts()[2]![1]].map(i => JSON.parse(String(i.body)).clientId)
+    expect(ids[0]).toBe(ids[1])
+  })
+
+  describe('showing a picture', () => {
+    it('a message with a picture shows it with its size reserved (no layout jump), opening in a new tab without leaking the opener', async () => {
+      fetchMock.mockResolvedValueOnce(json({ messages: [{ ...msg(1), body: '', media: { type: 'image', url: LINK, width: 800, height: 600 } }], hasMore: false }))
+      render(<ThreadView thread={THREAD} onBack={() => {}} />)
+      await waitFor(() => expect(document.querySelector('[data-testid="message-photo"] a')).toBeTruthy())
+      const a = document.querySelector('[data-testid="message-photo"] a') as HTMLAnchorElement
+      expect(a.getAttribute('href')).toBe(LINK)
+      expect(a.getAttribute('target')).toBe('_blank')
+      expect(a.getAttribute('rel')).toBe('noopener noreferrer')
+      const img = a.querySelector('img') as HTMLImageElement
+      expect(img.getAttribute('width')).toBe('800')
+      expect(img.getAttribute('height')).toBe('600')
+      expect(img.getAttribute('loading')).toBe('lazy')
+    })
+
+    it('a picture with no link (the object is gone or storage is down) shows a placeholder, never a broken image or an empty bubble', async () => {
+      fetchMock.mockResolvedValueOnce(json({ messages: [{ ...msg(1), body: '', media: { type: 'image', url: null, width: 800, height: 600 } }], hasMore: false }))
+      const { container } = render(<ThreadView thread={THREAD} onBack={() => {}} />)
+      await waitFor(() => expect(container.querySelector('[data-testid="message-photo-missing"]')).toBeTruthy())
+      expect(container.textContent).toContain('Không tải được ảnh')
+      expect(container.querySelector('img')).toBeNull()
+    })
+
+    it('a link that is not https (a made-up or hostile value) is never put in the page', async () => {
+      fetchMock.mockResolvedValueOnce(json({ messages: [{ ...msg(1), body: '', media: { type: 'image', url: 'javascript:alert(1)', width: 1, height: 1 } }, { ...msg(2), body: '', media: { type: 'image', url: 'data:text/html,x', width: 1, height: 1 } }], hasMore: false }))
+      const { container } = render(<ThreadView thread={THREAD} onBack={() => {}} />)
+      await waitFor(() => expect(container.querySelectorAll('[data-testid="message-photo-missing"]').length).toBe(2))
+      expect(container.querySelector('img')).toBeNull()
+      expect(container.querySelector('a[href^="javascript"]')).toBeNull()
+    })
+
+    it('a picture that arrives through realtime has no link yet: the thread is read again and the picture appears', async () => {
+      fetchMock.mockResolvedValueOnce(json({ messages: [msg(1)], hasMore: false }))
+      render(<ThreadView thread={THREAD} onBack={() => {}} />)
+      await waitFor(() => expect(bodies()).toEqual(['tin 1']))
+      fetchMock.mockResolvedValueOnce(json({ messages: [msg(1), { ...msg(2), body: '', media: { type: 'image', url: LINK, width: 800, height: 600 } }], hasMore: false }))
+      incoming.forEach(fn => fn({ ...msg(2), body: '', hasMedia: true }))
+      await waitFor(() => expect(document.querySelector('[data-testid="message-photo"] img')).toBeTruthy())
+      expect(document.querySelectorAll('[data-testid="message-photo"]').length).toBe(1) // not added twice
+      expect(fetchMock.mock.calls[1]![0]).toBe('/api/messaging/threads/t1/messages')
+    })
+  })
+})
+
 describe('ThreadView · report a message', () => {
   const stubs = (c: HTMLElement) => [...c.querySelectorAll('[data-testid="safety-stub"]')] as HTMLElement[]
   const messageStubs = (c: HTMLElement) => stubs(c).filter(s => s.getAttribute('data-target') === 'message')
@@ -304,6 +476,21 @@ describe('ThreadView · send and realtime', () => {
     incoming.forEach(fn => fn(msg(2)))
     await waitFor(() => expect(bodies()).toEqual(['tin 1', 'tin 2']))
     expect(markThreadRead).toHaveBeenCalledWith('t1')
+  })
+})
+
+describe('MessagesTab · the last message of a conversation that ends with a picture', () => {
+  it('a picture with no text is previewed in words ("Đã gửi một ảnh"), never as an empty line; a text message is previewed as its text', () => {
+    store = {
+      threads: [
+        { ...(THREAD as object), id: 'a', lastMessage: { body: '', senderId: 'u2', createdAt: '2026-10-10T00:00:05Z' } },
+        { ...(THREAD as object), id: 'b', participants: [{ userId: 'me', fullName: 'Tôi', avatarUrl: null }, { userId: 'u3', fullName: 'Mai', avatarUrl: null }], lastMessage: { body: 'hẹn mai nhé', senderId: 'u3', createdAt: '2026-10-10T00:00:04Z' } },
+      ],
+      unreadTotal: 0, loading: false, error: false,
+    }
+    const { container } = render(<MessagesTab signedIn />)
+    expect(container.textContent).toContain('Đã gửi một ảnh')
+    expect(container.textContent).toContain('hẹn mai nhé')
   })
 })
 

@@ -4,7 +4,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { linkifySafe } from './linkify'
 import Image from '@/components/media/SafeImage'
 import { useTranslation } from '@/lib/i18n/useTranslation'
-import { ArrowLeft, Send, Loader2, Users } from 'lucide-react'
+import { ArrowLeft, Send, Loader2, Users, ImagePlus, X } from 'lucide-react'
+import { CHAT_MEDIA_MAX_BYTES, CHAT_MEDIA_MIME_TYPES } from '@/lib/messaging/mediaLimits'
 import { threadTitle, type ChatMessage, type ChatThreadSummary } from '@/lib/messaging/types'
 import { useMessages } from './MessagesProvider'
 import { SafetyMenu } from '@/components/safety/SafetyMenu'
@@ -40,7 +41,16 @@ export default function ThreadView({
   const [sending, setSending] = useState(false)
   // The id of the send attempt in flight or just failed, tied to the exact text it was made for: a retry of the SAME text repeats it (the server
   // then returns the stored row instead of a second copy); other text, or the next send after a success, gets a new one.
-  const attempt = useRef<{ id: string; body: string } | null>(null)
+  const attempt = useRef<{ id: string; key: string } | null>(null)
+  // The picture chosen for the next message: uploaded AT ONCE (the media route), kept as {path,size} until the message is sent or the picture is removed. `previewUrl` is
+  // a local object URL of the chosen file (what the person sees in the composer), revoked when it is no longer needed.
+  const [photo, setPhoto] = useState<{ path: string; width: number | null; height: number | null; previewUrl: string } | null>(null)
+  const [uploading, setUploading] = useState(false)
+  const fileInput = useRef<HTMLInputElement>(null)
+  const dropPhoto = useCallback(() => {
+    setPhoto(prev => { if (prev) URL.revokeObjectURL(prev.previewUrl); return null })
+  }, [setPhoto])
+  useEffect(() => () => { setPhoto(prev => { if (prev) URL.revokeObjectURL(prev.previewUrl); return null }) }, [thread.id])
 
   const bottomRef = useRef<HTMLDivElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -100,7 +110,24 @@ export default function ThreadView({
   useEffect(() => {
     return subscribeToIncoming(message => {
       if (message.threadId !== thread.id) return
-      setMessages(prev => (prev.some(m => m.id === message.id) ? prev : [...prev, message]))
+      if (message.hasMedia && !message.media) {
+        // A picture arrives through realtime WITHOUT a link (a link is a short-lived signed one made by the server on read): read the newest page again and merge it by id, so the
+        // picture appears with its link. Nothing is appended from the bare row (it would be an empty bubble until the link comes).
+        void fetch(`/api/messaging/threads/${thread.id}/messages`)
+          .then(r => (r.ok ? r.json() : null))
+          .then((d: { messages?: ChatMessage[] } | null) => {
+            if (!d?.messages) return
+            const fresh = d.messages
+            setMessages(prev => {
+              const byId = new Map(prev.map(m => [m.id, m]))
+              for (const m of fresh) byId.set(m.id, m)
+              return [...byId.values()].sort((a, b) => (a.createdAt === b.createdAt ? a.id.localeCompare(b.id) : a.createdAt < b.createdAt ? -1 : 1))
+            })
+          })
+          .catch(() => { /* the next reload shows it */ })
+      } else {
+        setMessages(prev => (prev.some(m => m.id === message.id) ? prev : [...prev, message]))
+      }
       if (message.senderId !== meId) void markThreadRead(thread.id)
     })
   }, [thread.id, meId, subscribeToIncoming, markThreadRead])
@@ -143,17 +170,44 @@ export default function ThreadView({
     }
   }, [messages, loadingOlder, thread.id])
 
+  /** Pick a picture: pre-check the type and size (the server checks again), upload at once, keep the path for the message. */
+  const pickPhoto = useCallback(async (file: File | undefined) => {
+    if (!file || uploading) return
+    setError(null)
+    if (!(CHAT_MEDIA_MIME_TYPES as readonly string[]).includes(file.type)) { setError(t('v3.msg.imageType')); return }
+    if (file.size > CHAT_MEDIA_MAX_BYTES) { setError(t('v3.msg.imageTooLarge')); return }
+    setUploading(true)
+    try {
+      const form = new FormData()
+      form.append('file', file)
+      const r = await fetch(`/api/messaging/threads/${thread.id}/media`, { method: 'POST', body: form })
+      if (!r.ok) {
+        const code = await r.json().then((j: { error?: string }) => j?.error).catch(() => undefined)
+        setError(t(code === 'bad_image_type' ? 'v3.msg.imageType' : code === 'image_too_large' ? 'v3.msg.imageTooLarge' : 'v3.msg.uploadError'))
+        return
+      }
+      const d = await r.json() as { media: { path: string; width: number | null; height: number | null } }
+      setPhoto(prev => { if (prev) URL.revokeObjectURL(prev.previewUrl); return { path: d.media.path, width: d.media.width, height: d.media.height, previewUrl: URL.createObjectURL(file) } })
+    } catch {
+      setError(t('v3.msg.uploadError'))
+    } finally {
+      setUploading(false)
+    }
+  }, [uploading, thread.id, t])
+
   const send = useCallback(async () => {
     const body = draft.trim()
-    if (!body || sending) return
+    if ((!body && !photo) || sending || uploading) return
     setSending(true)
     setError(null)
-    if (!attempt.current || attempt.current.body !== body) attempt.current = { id: newClientId(), body }
+    // the attempt is tied to the exact text AND picture it was made for (see `attempt`)
+    const key = `${body}\u0000${photo?.path ?? ''}`
+    if (!attempt.current || attempt.current.key !== key) attempt.current = { id: newClientId(), key }
     try {
       const r = await fetch(`/api/messaging/threads/${thread.id}/messages`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ body, clientId: attempt.current.id }),
+        body: JSON.stringify({ body, ...(photo ? { media: { path: photo.path, width: photo.width, height: photo.height } } : {}), clientId: attempt.current.id }),
       })
       if (!r.ok) throw new Error(String(r.status))
       const d = await r.json()
@@ -162,6 +216,7 @@ export default function ThreadView({
       // the real `created_at`, so the Realtime echo dedupes against it cleanly.
       setMessages(prev => (prev.some(m => m.id === d.message.id) ? prev : [...prev, d.message]))
       setDraft('')
+      dropPhoto()
       void refetch()
     } catch (e) {
       // NEUTRAL by design: the server answers "not a participant" and "blocked" with the same 404 (no oracle for who blocked whom), so the text
@@ -171,7 +226,7 @@ export default function ThreadView({
     } finally {
       setSending(false)
     }
-  }, [draft, sending, thread.id, refetch, t])
+  }, [draft, photo, sending, uploading, dropPhoto, thread.id, refetch, t])
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
@@ -275,8 +330,28 @@ export default function ThreadView({
                       ? { background: 'var(--v3-accent-fill)', color: 'var(--v3-on-accent)' }
                       : { background: 'var(--v3-panel-elevated)', color: 'var(--v3-fg)' }}
                   >
-                    {/* Safe https links only — see linkify.tsx. Everything else stays text. */}
-                    <span className="whitespace-pre-wrap break-words">{linkifySafe(message.body)}</span>
+                    {message.media && (
+                      // The picture, from the SHORT-LIVED signed link the server made for this read. Only an https link is ever put in the page: a missing, expired-and-unrefreshed or
+                      // odd value shows a placeholder, never a broken image. The size is reserved (no layout jump). It opens in a new tab without handing over the opener.
+                      message.media.url && /^https:\/\//i.test(message.media.url) ? (
+                        <div data-testid="message-photo" className={message.body ? 'mb-1.5' : ''}>
+                          <a href={message.media.url} target="_blank" rel="noopener noreferrer">
+                            {/* eslint-disable-next-line @next/next/no-img-element -- a signed storage link, not a build-time asset */}
+                            <img
+                              src={message.media.url}
+                              alt={t('v3.msg.photoAlt')}
+                              loading="lazy"
+                              {...(message.media.width && message.media.height ? { width: message.media.width, height: message.media.height } : {})}
+                              className="h-auto max-h-80 w-full max-w-[320px] rounded-xl object-cover"
+                            />
+                          </a>
+                        </div>
+                      ) : (
+                        <div data-testid="message-photo-missing" className={`text-[12.5px] italic ${message.body ? 'mb-1.5' : ''}`}>{t('v3.msg.photoUnavailable')}</div>
+                      )
+                    )}
+                    {/* Safe https links only — see linkify.tsx. Everything else stays text. A picture with no text has no (empty) text line. */}
+                    {message.body && <span className="whitespace-pre-wrap break-words">{linkifySafe(message.body)}</span>}
                   </div>
                   {/* Report THIS message (only someone else's; the menu draws nothing while reports are off). No block here: blocking the person is the header's job. */}
                   {!mine && <SafetyMenu report={{ target: 'message', id: message.id }} />}
@@ -303,9 +378,50 @@ export default function ThreadView({
           on-screen keyboard shrinks the visual viewport, and a statically
           positioned composer ends up underneath it. */}
       <div
-        className="sticky bottom-0 flex flex-shrink-0 items-end gap-2 border-t px-3 py-3"
+        className="sticky bottom-0 flex flex-shrink-0 flex-col gap-2 border-t px-3 py-3"
         style={{ borderColor: 'var(--v3-border)', background: 'var(--v3-panel)' }}
       >
+        {(photo || uploading) && (
+          <div className="flex items-center gap-2">
+            {photo && (
+              <div data-testid="composer-photo" className="relative h-16 w-16 overflow-hidden rounded-xl" style={{ background: 'var(--v3-panel-elevated)' }}>
+                {/* eslint-disable-next-line @next/next/no-img-element -- a local object URL of the chosen file */}
+                <img src={photo.previewUrl} alt="" className="h-full w-full object-cover" />
+                <button
+                  type="button"
+                  onClick={dropPhoto}
+                  aria-label={t('v3.msg.removePhoto')}
+                  className="absolute right-0.5 top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-black/60 text-white"
+                >
+                  <X size={12} />
+                </button>
+              </div>
+            )}
+            {uploading && (
+              <span data-testid="composer-uploading" className="flex items-center gap-1.5 text-[12px]" style={{ color: 'var(--v3-fg-muted)' }}>
+                <Loader2 size={14} className="animate-spin" />{t('v3.msg.uploading')}
+              </span>
+            )}
+          </div>
+        )}
+        <div className="flex items-end gap-2">
+        <input
+          ref={fileInput}
+          type="file"
+          accept={CHAT_MEDIA_MIME_TYPES.join(',')}
+          className="hidden"
+          onChange={e => { const f = e.target.files?.[0]; e.target.value = ''; void pickPhoto(f) }}
+        />
+        <button
+          type="button"
+          onClick={() => fileInput.current?.click()}
+          disabled={uploading || sending}
+          aria-label={t('v3.msg.attach')}
+          className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl transition-opacity disabled:cursor-not-allowed disabled:opacity-40"
+          style={{ background: 'var(--v3-panel-elevated)', color: 'var(--v3-fg-secondary)' }}
+        >
+          <ImagePlus size={18} />
+        </button>
         <textarea
           value={draft}
           onChange={e => setDraft(e.target.value)}
@@ -324,13 +440,14 @@ export default function ThreadView({
         <button
           type="button"
           onClick={() => void send()}
-          disabled={!draft.trim() || sending}
+          disabled={(!draft.trim() && !photo) || sending || uploading}
           aria-label={t('v3.msg.send')}
           className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl transition-opacity disabled:cursor-not-allowed disabled:opacity-40"
           style={{ background: 'var(--v3-accent-fill)', color: 'var(--v3-on-accent)' }}
         >
           {sending ? <Loader2 size={18} className="animate-spin" /> : <Send size={18} />}
         </button>
+        </div>
       </div>
     </div>
   )

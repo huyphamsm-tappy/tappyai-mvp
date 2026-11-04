@@ -24,6 +24,11 @@ export interface DeletionMedia {
 export interface DeletionDeps {
   db: SupabaseClient
   media: DeletionMedia
+  /**
+   * The user's pictures in the PRIVATE chat-media bucket (src/lib/messaging/mediaDeletion.ts). Optional so a run pointed at another bucket (the audit proof) is unchanged. It THROWS
+   * on any failure, which keeps the job pending and retried: "done" is never reported while the private pictures may still be there.
+   */
+  chatMedia?: { deleteForUser(userId: string): Promise<number> }
   /** true = revoked or already invalid at Google; false = try again later. */
   revoke: (token: string) => Promise<boolean>
   /** Jobs per database read (a batch). The run keeps reading batches until the queue is empty. */
@@ -119,6 +124,8 @@ export async function processAccountDeletionJobs(deps: DeletionDeps): Promise<De
       for (const prefix of prefixes) {
         if ((await deps.media.listObjects(prefix)).length > 0) throw new Error('objects remain after deletion')
       }
+      // The private chat pictures live in another store (Supabase Storage), so the public-bucket listing above cannot see them.
+      if (deps.chatMedia) deleted += await deps.chatMedia.deleteForUser(job.user_id)
       result.objectsDeleted += deleted
 
       const done = pendingTokens.length === 0

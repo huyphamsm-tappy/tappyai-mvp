@@ -154,7 +154,8 @@ export default function ThreadList({
                         className="min-w-0 flex-1 truncate text-[12px]"
                         style={{ color: unread ? 'var(--v3-fg-secondary)' : 'var(--v3-fg-muted)' }}
                       >
-                        {thread.lastMessage?.body ?? t('v3.msg.noMessages')}
+                        {/* A picture sent with no text has an empty body: say it in words, never show an empty line. */}
+                        {thread.lastMessage ? (thread.lastMessage.body || t('v3.msg.photoPreview')) : t('v3.msg.noMessages')}
                       </span>
                       {/* 🚨 REAL COUNT. Derived server-side from the read cursor by
                           `chat_thread_summaries()`; there is no client-side arithmetic

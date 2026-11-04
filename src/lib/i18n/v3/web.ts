@@ -312,6 +312,15 @@ export const vi: Record<string, string> = {
   'v3.msg.sendError': 'Không gửi được tin nhắn.',
   'v3.msg.cannotSend': 'Không thể gửi tin nhắn trong cuộc trò chuyện này.',
   'v3.msg.sendTooFast': 'Bạn gửi quá nhanh. Hãy thử lại sau ít phút.',
+  'v3.msg.attach': 'Đính kèm ảnh',
+  'v3.msg.removePhoto': 'Bỏ ảnh',
+  'v3.msg.uploading': 'Đang tải ảnh lên...',
+  'v3.msg.photoAlt': 'Ảnh trong tin nhắn',
+  'v3.msg.photoUnavailable': 'Không tải được ảnh',
+  'v3.msg.photoPreview': 'Đã gửi một ảnh',
+  'v3.msg.uploadError': 'Không tải ảnh lên được.',
+  'v3.msg.imageType': 'Chỉ gửi được ảnh JPEG, PNG hoặc WebP.',
+  'v3.msg.imageTooLarge': 'Ảnh quá lớn (tối đa 5 MB).',
   'v3.msg.close': 'Đóng',
 
   // ── Friends / Social ─────────────────────────────────────────────────────
@@ -1025,6 +1034,15 @@ export const en: Record<string, string> = {
   'v3.msg.sendError': 'Message could not be sent.',
   'v3.msg.cannotSend': 'You can’t send messages in this conversation.',
   'v3.msg.sendTooFast': 'You’re sending too fast. Please try again in a few minutes.',
+  'v3.msg.attach': 'Attach a photo',
+  'v3.msg.removePhoto': 'Remove photo',
+  'v3.msg.uploading': 'Uploading photo...',
+  'v3.msg.photoAlt': 'Photo in the message',
+  'v3.msg.photoUnavailable': 'The photo could not be loaded',
+  'v3.msg.photoPreview': 'Sent a photo',
+  'v3.msg.uploadError': 'The photo could not be uploaded.',
+  'v3.msg.imageType': 'Only JPEG, PNG or WebP photos can be sent.',
+  'v3.msg.imageTooLarge': 'The photo is too large (5 MB at most).',
   'v3.msg.close': 'Close',
 
   // ── Friends / Social — see the note in the Vietnamese block above ─────────

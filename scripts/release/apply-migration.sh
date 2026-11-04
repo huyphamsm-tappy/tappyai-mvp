@@ -69,6 +69,10 @@ policy_of() {
     # The route that writes the new value ships with the web release and is invisible while REPORTS_ENABLED is off; applying this first is safe.
     20261108_user_reports_message_target.sql)
       echo AFTER-SMOKE ;;
+    # Messenger images (owner 04/11/2026): four nullable media columns on chat_messages, a relaxed body rule (empty only with an image), a unique index and the
+    # PRIVATE bucket chat-media (no storage policy). Nothing reads them until the web release that sends images; apply BEFORE it (the upload route needs the bucket).
+    20261109_chat_media.sql)
+      echo APPLY ;;
     # H1 → M1 first, then the security-branch migrations in MIGRATION_ORDER.txt order (owner 30/09): 20260928b needs the
     # deal-click code (service role) on production; the others are code-independent but ride the same verified window.
     20260927_owner_update_column_privileges.sql|20260928_revoke_reviews_insert.sql|\
