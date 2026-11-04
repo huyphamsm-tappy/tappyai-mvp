@@ -30,6 +30,8 @@ struct SafetyFlags: Equatable, Sendable {
 /// What can be reported (`POST /api/reports` `target_type`). Clips are reviews.
 enum ReportTargetKind: String, Sendable, CaseIterable {
     case review, comment, user
+    /// A message of a Messenger conversation the person is in (web release 2026-11-04: `POST /api/messaging/messages/{id}/report`).
+    case message
 
     var titleKey: String { "safety.report.title." + rawValue }
 }

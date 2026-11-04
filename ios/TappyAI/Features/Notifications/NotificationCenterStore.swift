@@ -12,18 +12,28 @@ import Supabase
 @MainActor
 final class NotificationCenterStore: AppObservableObject {
     @AppPublished private(set) var unreadCount: Int = 0
+    /// The unread MESSAGES (Messenger), from `GET /api/messaging/unread`, and how many of the unread notifications are message
+    /// notifications. Separate numbers, each from its own source; `badgeCount` is the one the tab bar shows.
+    @AppPublished private(set) var messageUnread: ChatUnread = .zero
+
+    /// The tab-bar badge: the other notifications plus the unread messages, a message counted once (the web's `badgeTotal`).
+    var badgeCount: Int { ChatUnread.badgeTotal(notificationUnread: unreadCount, unread: messageUnread) }
 
     private let service: NotificationsService
+    private let messaging: MessagingService?
     private let supabase: SupabaseClient?
     private let session: SessionStore
     private let log = AppLogger.app
     private var realtimeTask: Task<Void, Never>?
+    private var messagesRealtimeTask: Task<Void, Never>?
     private var realtimeUserId: String?
     private var refreshDebounce: Task<Void, Never>?
 
-    /// `supabase` is nil where no live connection is wanted (tests): the count still works by `refresh()`.
-    init(service: NotificationsService, supabase: SupabaseClient?, session: SessionStore) {
+    /// `supabase` is nil where no live connection is wanted (tests): the count still works by `refresh()`. `messaging` is nil where the unread
+    /// messages are not wanted (tests): the badge then counts the notifications alone, exactly as before.
+    init(service: NotificationsService, supabase: SupabaseClient?, session: SessionStore, messaging: MessagingService? = nil) {
         self.service = service
+        self.messaging = messaging
         self.supabase = supabase
         self.session = session
     }
@@ -31,6 +41,7 @@ final class NotificationCenterStore: AppObservableObject {
     func refresh() async {
         guard session.state.isAuthenticated else {
             unreadCount = 0
+            messageUnread = .zero
             return
         }
         let userId = session.userId
@@ -43,6 +54,10 @@ final class NotificationCenterStore: AppObservableObject {
         } catch {
             log.error("unread badge refresh failed: \(error)")
         }
+        // The unread messages: a failed read keeps the last number (the badge shows nothing wrong rather than a wrong number).
+        if let messaging, let unread = try? await messaging.unread(), session.state.isAuthenticated, session.userId == userId {
+            messageUnread = unread
+        }
     }
 
     /// The person signed in or out (or the app started): count for the one signed in, hold nothing for nobody.
@@ -53,6 +68,7 @@ final class NotificationCenterStore: AppObservableObject {
         } else {
             stopRealtime()
             unreadCount = 0
+            messageUnread = .zero
         }
     }
 
@@ -81,11 +97,30 @@ final class NotificationCenterStore: AppObservableObject {
                 self?.scheduleRefresh()
             }
         }
+        // A new message re-reads the badge too. The subscription is the one the Inbox's own list would use: unfiltered, scoped to the
+        // person's conversations by row-level security. Best effort — `refresh()` on launch, on foreground and after a visit keeps it right.
+        guard messaging != nil else { return }
+        messagesRealtimeTask = Task { [weak self] in
+            let channel = supabase.channel("messages-badge:\(userId)")
+            let changes = channel.postgresChange(AnyAction.self, schema: "public", table: "chat_messages")
+            do {
+                try await channel.subscribeWithError()
+            } catch {
+                self?.log.error("messages badge realtime subscribe failed: \(error)")
+                return
+            }
+            for await _ in changes {
+                guard !Task.isCancelled else { return }
+                self?.scheduleRefresh()
+            }
+        }
     }
 
     func stopRealtime() {
         realtimeTask?.cancel()
         realtimeTask = nil
+        messagesRealtimeTask?.cancel()
+        messagesRealtimeTask = nil
         realtimeUserId = nil
         refreshDebounce?.cancel()
         refreshDebounce = nil

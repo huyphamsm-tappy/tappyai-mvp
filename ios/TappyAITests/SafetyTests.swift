@@ -34,7 +34,9 @@ final class SafetyTests: XCTestCase {
     func testReasonsAreTheServerWhitelistInOrder() {
         XCTAssertEqual(SafetyReportReason.allCases.map(\.rawValue),
                        ["spam", "harassment", "hate", "sexual", "self_harm", "scam", "sensitive", "impersonation", "copyright", "other"])
-        XCTAssertEqual(ReportTargetKind.allCases.map(\.rawValue), ["review", "comment", "user"])
+        // "message" joined on 2026-11-04 (web release b5cd20e: POST /api/messaging/messages/{id}/report).
+        XCTAssertEqual(ReportTargetKind.allCases.map(\.rawValue), ["review", "comment", "user", "message"])
+        XCTAssertEqual(SafetyService.reportPath(kind: .message, targetId: "m-1"), "/api/messaging/messages/m-1/report")
     }
 
     func testEveryStringTheSheetShowsHasACatalogEntry() {

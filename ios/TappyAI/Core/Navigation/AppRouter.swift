@@ -85,6 +85,9 @@ final class AppRouter: AppObservableObject {
         case .group(let id):
             open(ReviewsDestination.group(id: id), on: .profile)
 
+        case .messageThread(let id):
+            open(MessagingDestination.thread(id: id), on: .profile)
+
         case .groupCreate:
             open(ProfileDestination.groupDining, on: .profile)
 

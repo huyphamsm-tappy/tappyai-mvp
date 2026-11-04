@@ -20,6 +20,8 @@ enum DeepLinkTarget: Equatable {
     case userProfile(id: String)
     /// `/group/{id}` — a group-dining room.
     case group(id: String)
+    /// `/profile/notifications?tab=messages&thread={id}` — a Messenger conversation (a message notification's link).
+    case messageThread(id: String)
     /// `/group/new` — the create-a-group screen.
     case groupCreate
     /// `/copyright` — the music copyright policy.
@@ -38,6 +40,9 @@ struct DeepLinkHandler {
 
     /// Accepts either a full URL or a bare web path like `/reviews`.
     func target(for urlOrPath: String) -> DeepLinkTarget? {
+        // A message notification's link names the conversation itself: the tap opens it, never a generic tab. Read from the whole string
+        // because the id is in the QUERY, which the URL path below does not carry.
+        if let thread = ChatLinks.threadId(fromPathOrURL: urlOrPath) { return .messageThread(id: thread) }
         let path: String
         if let url = URL(string: urlOrPath), url.scheme != nil {
             // MOB-1: a sign-in callback opened from outside (Safari, another app, a message) is

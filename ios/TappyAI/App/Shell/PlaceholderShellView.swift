@@ -41,6 +41,14 @@ struct PlaceholderShellView: View {
                                 CopyrightPolicyView()
                             }
                         }
+                        // A Messenger conversation, registered for EVERY tab for the same reason: it opens from the Inbox, from another
+                        // person's profile (on whichever tab the person is) and from a notification link.
+                        .navigationDestination(for: MessagingDestination.self) { dest in
+                            switch dest {
+                            case .thread(let id):
+                                ThreadView(deps: deps, threadId: id)
+                            }
+                        }
                         .navigationTitle(tab == .explore ? "" : LocalizedStringKey(tab.titleKey))
                         .navigationBarTitleDisplayMode(.inline)
                         .navigationBarHidden(tab == .explore)
@@ -66,7 +74,8 @@ struct PlaceholderShellView: View {
                 }
                 .tabItem { Label(LocalizedStringKey(tab.titleKey), systemImage: tab.systemImage) }
                 // The inbox lives under Profile; 0 hides the badge. The count is the app-level store's (it keeps updating off that screen).
-                .badge(tab == .profile ? notificationCenter.unreadCount : 0)
+                // 2026-11-04: it counts the unread MESSAGES too, once each (web `badgeTotal`).
+                .badge(tab == .profile ? notificationCenter.badgeCount : 0)
                 .tag(tab)
             }
         }
@@ -193,7 +202,8 @@ struct PlaceholderShellView: View {
                     case .myPosts:
                         MyPostsView(deps: deps)
                     case .notificationsInbox:
-                        NotificationsInboxView(deps: deps)
+                        // "Tin nhắn | Thông báo", like the web Inbox.
+                        InboxContainerView(deps: deps)
                     case .userSearch:
                         UserSearchView(deps: deps)
                     case .planner:

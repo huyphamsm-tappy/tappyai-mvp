@@ -50,7 +50,11 @@ final class AIConsentStore: @unchecked Sendable {
         if aiPaths.contains(where: { clean == $0 || clean.hasPrefix($0 + "/") }) { return true }
         // POST /api/group/{id}/suggest — sends the members' details to the model.
         let parts = clean.split(separator: "/", omittingEmptySubsequences: true)
-        return parts.count == 4 && parts[0] == "api" && parts[1] == "group" && parts[3] == "suggest"
+        if parts.count == 4 && parts[0] == "api" && parts[1] == "group" && parts[3] == "suggest" { return true }
+        // POST /api/messaging/threads/{id}/media — a Messenger picture goes through the server's safety scan (the AI provider's moderation
+        // service) before it is stored, so it is the person's content leaving for the AI provider like the rest of this list. The text
+        // routes of the Messenger (`.../messages`, `.../read`) never reach a provider and are NOT in this list.
+        return parts.count == 5 && parts[0] == "api" && parts[1] == "messaging" && parts[2] == "threads" && parts[4] == "media"
     }
 
     /// True when a request to `path` must NOT leave the phone.
