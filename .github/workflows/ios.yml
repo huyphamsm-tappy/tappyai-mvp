@@ -34,7 +34,7 @@ jobs:
       run:
         working-directory: ios
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
       - name: Show toolchain
         run: |
@@ -196,7 +196,7 @@ jobs:
 
       - name: Upload screenshots
         if: always() && (github.event_name != 'push' || contains(github.event.head_commit.message, '[shots]'))
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: ios-screenshots
           path: |
@@ -239,7 +239,7 @@ jobs:
       # CFBundleVersion must increase on every upload; the workflow run number always does.
       BUILD_NUMBER: ${{ github.run_number }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
       - name: Show toolchain
         run: |
