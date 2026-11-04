@@ -10,6 +10,9 @@ struct UserProfileView: View {
     @State private var pickedTab: Tab?
     @ObservedObject private var safety: SafetyStore
     @State private var safetyTarget: SafetyTarget?
+    private let messaging: MessagingService
+    @State private var messageBusy = false
+    @State private var messageFailed = false
 
     /// The web's visitor tabs (`v3.publicProfile.tabPosts` / `tabShares`, Android L10): "Chia sẻ" =
     /// rows with no real place (clips/links posted as "Chia sẻ"); "Bài đăng" = the rest.
@@ -26,6 +29,7 @@ struct UserProfileView: View {
 
     init(deps: AppDependencies, userId: String) {
         _safety = ObservedObject(wrappedValue: deps.safety)
+        messaging = MessagingService(api: deps.api)
         _vm = AppStateObject(wrappedValue: UserProfileViewModel(
             userId: userId,
             service: ReviewsService(api: deps.api),
@@ -172,12 +176,44 @@ struct UserProfileView: View {
         } else {
             let following = vm.profile?.isFollowing ?? false
             let titleKey = LocalizedStringKey(following ? "userProfile.following" : "userProfile.follow")
-            Button(titleKey) {
-                vm.toggleFollow()
+            VStack(spacing: Spacing.xs) {
+                Button(titleKey) {
+                    vm.toggleFollow()
+                }
+                .buttonStyle(.tappy(following ? .secondary : .primary))
+                .frame(width: 168)   // a pill, not a full-width bar (web / Android)
+                .disabled(!vm.isAuthenticated || vm.isTogglingFollow)
+
+                // "Nhắn tin" beside "Theo dõi" (the web's profile Message button): a signed-in person, on someone else's profile.
+                if vm.isAuthenticated {
+                    Button { openMessage() } label: { Text("msg.message") }
+                        .buttonStyle(.tappy(.secondary))
+                        .frame(width: 168)
+                        .disabled(messageBusy)
+                        .accessibilityIdentifier("profile-message")
+                    if messageFailed {
+                        // ONE sentence on purpose: "blocked", "not allowed to reach you" and "no such account" are indistinguishable.
+                        Text("msg.startFailed").font(TappyFont.caption).foregroundStyle(TappyColor.danger)
+                    }
+                }
             }
-            .buttonStyle(.tappy(following ? .secondary : .primary))
-            .frame(width: 168)   // a pill, not a full-width bar (web / Android)
-            .disabled(!vm.isAuthenticated || vm.isTogglingFollow)
+        }
+    }
+
+    /// The existing start-direct route (it deduplicates per pair, so an existing conversation is simply reopened), then the conversation itself.
+    private func openMessage() {
+        guard !messageBusy else { return }
+        messageBusy = true
+        messageFailed = false
+        let target = vm.userId
+        Task { @MainActor in
+            defer { messageBusy = false }
+            do {
+                let threadId = try await messaging.start(userIds: [target])
+                router.push(MessagingDestination.thread(id: threadId))
+            } catch {
+                messageFailed = true
+            }
         }
     }
 

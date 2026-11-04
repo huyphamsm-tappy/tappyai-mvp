@@ -60,7 +60,8 @@ final class AppDependencies: AppObservableObject {
         self.entitlements = ServerEntitlementService(api: api)
         self.paymentProvider = StoreKitProvider(api: api, session: session)
         self.notificationManager = NotificationManager(api: api, deepLinks: deepLinks, router: router, session: session)
-        self.notificationCenter = NotificationCenterStore(service: NotificationsService(api: api), supabase: supabase, session: session)
+        self.notificationCenter = NotificationCenterStore(service: NotificationsService(api: api), supabase: supabase, session: session,
+                                                          messaging: MessagingService(api: api))
         self.safety = SafetyStore(service: SafetyService(api: api), config: configService, session: session)
 
         // Auth feature wiring (Phase 1).
@@ -81,7 +82,11 @@ final class AppDependencies: AppObservableObject {
         // registration, while the session can still authorise the call.
         // A real account's session that cannot be renewed → guest + notice; a fresh guest session keeps chat usable.
         session.onSessionEnded = { [weak self] in Task { await self?.authRepository.ensureAnonymousSession() } }
-        authRepository.beforeSignOut = { [weak self] in await self?.notificationManager.releaseThisDevice() }
+        authRepository.beforeSignOut = { [weak self] in
+            await self?.notificationManager.releaseThisDevice()
+            // The pictures this phone saved from Messenger conversations belong to the account that is leaving: remove them (never throws).
+            ChatPhotoFiles.clearAll(base: ChatPhotoFiles.defaultBase)
+        }
         AppLogger.app.info("Dependencies composed (env=\(env.kind.rawValue))")
     }
 

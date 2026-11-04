@@ -19,6 +19,7 @@ struct SafetyService: Sendable {
         case .review: return "/api/reviews/\(targetId)/report"
         case .comment: return "/api/comments/\(targetId)/report"
         case .user: return "/api/users/\(targetId)/report"
+        case .message: return "/api/messaging/messages/\(targetId)/report"
         }
     }
 

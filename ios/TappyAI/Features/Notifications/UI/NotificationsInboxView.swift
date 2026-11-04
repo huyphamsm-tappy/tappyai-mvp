@@ -87,7 +87,8 @@ struct NotificationsInboxView: View {
                     Text(item.title)
                         .font(.system(size: 14, weight: item.isUnread ? .semibold : .regular))
                         .foregroundStyle(TappyColor.textPrimary)
-                    Text(item.body)
+                    // A collapsed message row stands for `count` unread messages: the web's "N tin nhắn mới" replaces its own text.
+                    Text(Self.bodyText(for: item))
                         .font(.system(size: 12))
                         .foregroundStyle(TappyColor.textSecondary)
                         .lineLimit(2)
@@ -130,6 +131,14 @@ struct NotificationsInboxView: View {
         Circle()
             .fill(TappyColor.surface)
             .overlay(Image(systemName: "bell.fill").font(.system(size: 14)).foregroundStyle(TappyColor.textSecondary))
+    }
+
+    /// The second line of a row: "N tin nhắn mới" for a collapsed message row with more than one unread message, else the row's own text.
+    static func bodyText(for item: NotificationDTO) -> String {
+        if let count = item.messageCount, count > 1 {
+            return String(format: NSLocalizedString("notif.newMessages", comment: ""), count)
+        }
+        return item.body
     }
 
     private func navigate(_ item: NotificationDTO) {

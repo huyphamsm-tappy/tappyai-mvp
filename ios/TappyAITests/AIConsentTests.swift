@@ -155,6 +155,18 @@ final class AIConsentTests: XCTestCase {
         XCTAssertTrue(vm.messages.isEmpty)
     }
 
+    // MARK: Messenger pictures — the picture goes through the server's safety scan (the AI provider), so it is gated; the text is not
+
+    func testMessengerPictureUploadIsGatedButMessengerTextIsNot() {
+        let s = store()
+        XCTAssertTrue(s.blocks(path: "/api/messaging/threads/0b1c2d3e-4f50-6789-abcd-ef0123456789/media"))
+        XCTAssertFalse(s.blocks(path: "/api/messaging/threads/0b1c2d3e-4f50-6789-abcd-ef0123456789/messages"))
+        XCTAssertFalse(s.blocks(path: "/api/messaging/threads/0b1c2d3e-4f50-6789-abcd-ef0123456789/read"))
+        XCTAssertFalse(s.blocks(path: "/api/messaging/threads"))
+        XCTAssertFalse(s.blocks(path: "/api/messaging/unread"))
+        XCTAssertFalse(s.blocks(path: "/api/messaging/messages/0b1c/report"))
+    }
+
     // MARK: Disclosure v2 — every AI route the app uses is gated
 
     func testExploreAndGroupSuggestAreGatedToo() {
