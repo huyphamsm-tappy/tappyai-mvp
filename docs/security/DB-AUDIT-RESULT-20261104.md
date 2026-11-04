@@ -22,7 +22,24 @@ Chạy trong Supabase SQL Editor (dự án production `fwznnobrdctuskgrvuik`), c
 
 **Phát hiện chính:** migration `20260928b_revoke_increment_deal_click_public.sql` (thu hồi quyền của `increment_deal_click` khỏi PUBLIC/anon/authenticated) **có trong repo nhưng chưa được áp dụng trên production**: ACL hiện vẫn có `=X/postgres` (PUBLIC), `anon`, `authenticated`. Tệp đó ghi "chỉ áp dụng khi Owner cho phép rõ ràng". Mã phía máy chủ (`/api/deals/[id]/click`) đã dùng service role từ trước nên áp dụng không làm gì vỡ.
 
-## Đề xuất (chưa áp dụng, cần Owner cho phép)
+## ĐÃ ÁP DỤNG trên production ngày 04/11/2026 (Owner cho phép), qua Supabase SQL Editor
+Đã chạy: thu hồi EXECUTE của `increment_deal_click(uuid)` khỏi PUBLIC/anon/authenticated (giữ cho `service_role`, giống nội dung `20260928b`); thu hồi `music_increment_play(uuid)` khỏi PUBLIC/anon (authenticated và service_role vẫn có); và thu hồi EXECUTE của mọi hàm trigger trong `public` khỏi PUBLIC/anon/authenticated (khối `do $$` bên dưới).
+
+Đã kiểm sau khi áp dụng: ACL mới của `increment_deal_click` và `handle_new_user` chỉ còn `postgres` + `service_role`; gọi thẳng bằng khóa anon công khai trả `permission denied` cho cả hai hàm đếm, còn `account_deletion_ready` (công khai có chủ đích) vẫn trả `true`; tạo phiên khách, click deal qua `/api/deals/{id}/click` (bộ đếm tăng 8 → 9) và `/api/health` đều chạy bình thường.
+
+**Hoàn tác** (nếu có gì bất thường):
+```sql
+grant execute on function public.increment_deal_click(uuid) to public, anon, authenticated;
+grant execute on function public.music_increment_play(uuid) to public, anon;
+do $$ declare r record; begin
+  for r in select p.oid::regprocedure as sig from pg_proc p join pg_namespace n on n.oid = p.pronamespace
+           where n.nspname = 'public' and p.prorettype = 'trigger'::regtype
+  loop execute format('grant execute on function %s to public, anon, authenticated', r.sig); end loop;
+end $$;
+```
+(Tệp migration `20260928b` trong repo giữ nguyên; trạng thái production đã khớp nội dung của nó.)
+
+## Đề xuất ban đầu (đã thực hiện 1 và 2 ở trên; 3 và 4 chưa)
 1. Áp dụng `20260928b` bằng quy trình migration thường lệ (có sao lưu).
 2. Thu hồi EXECUTE của hàm trigger khỏi PUBLIC/anon/authenticated. Trigger không cần quyền này khi chạy. Câu lệnh gợi ý (idempotent):
 
