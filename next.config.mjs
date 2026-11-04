@@ -111,6 +111,9 @@ const nextConfig = {
       "form-action 'self'",
       "frame-ancestors 'self'",
       scriptSrc,
+      // Security audit 04/11 (W-05): no inline EVENT-HANDLER attribute (onclick=, onerror=, ...) runs, whatever gets into the markup. Inline <script>
+      // blocks are still allowed (Next's bootstrap), so this costs no static caching. Browsers that do not know the directive ignore it.
+      "script-src-attr 'none'",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' data: https://fonts.gstatic.com",
       "img-src 'self' data: blob: https:",
