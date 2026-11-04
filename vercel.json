@@ -1,14 +1,5 @@
 {
   "ignoreCommand": "node scripts/vercel-ignore.mjs",
-  "headers": [
-    {
-      "source": "/games/supertux/(.*)",
-      "headers": [
-        { "key": "Cross-Origin-Opener-Policy", "value": "same-origin" },
-        { "key": "Cross-Origin-Embedder-Policy", "value": "require-corp" }
-      ]
-    }
-  ],
   "crons": [
     {
       "path": "/api/cron/deal-notifications",

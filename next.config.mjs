@@ -70,9 +70,9 @@ const nextConfig = {
   async headers() {
     // Content-Security-Policy. Tuned to exactly what the app loads:
     //   scripts  — self + PostHog + GA4's gtag.js (googletagmanager.com);
-    //              'unsafe-inline' for Next's bootstrap inline scripts and
-    //              'wasm-unsafe-eval' for the SuperTux WASM game (no nonce
-    //              pipeline, so inline can't be dropped yet).
+    //              'unsafe-inline' for Next's bootstrap inline scripts (no nonce
+    //              pipeline, so inline can't be dropped yet). The SuperTux WASM game, and with
+    //              it 'wasm-unsafe-eval', was removed on 04/11/2026.
     //   styles   — self + Google Fonts CSS; 'unsafe-inline' for Tailwind's
     //              inline style props (animationDelay, etc.).
     //   img/media— any https + data/blob (place photos come from many CDNs;
@@ -86,7 +86,7 @@ const nextConfig = {
     //              Vercel vitals, and Cloud Storage (the browser PUTs review
     //              video/audio/deal images straight to a resumable upload
     //              session URI); everything else is same-origin /api.
-    //   frame    — self (SuperTux iframe) + YouTube video embeds. Stripe checkout is a
+    //   frame    — self + YouTube video embeds. Stripe checkout is a
     //              full-page redirect, so it needs no frame/script entry.
     //   frame-ancestors 'self' — clickjacking guard (supersedes X-Frame-Options).
     // Next's Fast Refresh runtime (react-refresh) compiles modules with eval(),
@@ -98,7 +98,7 @@ const nextConfig = {
     // gated on the dev server only, where react-refresh is the sole eval() user.
     const isDev = process.env.NODE_ENV !== 'production'
     const scriptSrc = [
-      "script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'",
+      "script-src 'self' 'unsafe-inline'",
       isDev ? "'unsafe-eval'" : '',
       'https://us.i.posthog.com https://us-assets.i.posthog.com',
       'https://www.googletagmanager.com',
@@ -145,15 +145,6 @@ const nextConfig = {
       { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
     ]
     return [
-      {
-        // COOP + COEP on the parent Next.js page (required for embedded iframe SharedArrayBuffer).
-        // Static files in public/ are handled via vercel.json (middleware can't reach them).
-        source: '/game/supertux',
-        headers: [
-          { key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
-          { key: 'Cross-Origin-Embedder-Policy', value: 'credentialless' },
-        ],
-      },
       { source: '/:path*', headers: securityHeaders },
       {
         // Tappy Business order tracking. The catch-all above sets
