@@ -107,7 +107,8 @@ export default function ThreadView({
     setLoadingOlder(true)
     setOlderFailed(false)
     try {
-      const r = await fetch(`/api/messaging/threads/${thread.id}/messages?before=${encodeURIComponent(oldest.createdAt)}`)
+      // the cursor is the exact oldest row (time AND id): rows that share its timestamp are neither skipped nor repeated
+      const r = await fetch(`/api/messaging/threads/${thread.id}/messages?before=${encodeURIComponent(oldest.createdAt)}&beforeId=${encodeURIComponent(oldest.id)}`)
       if (!r.ok) throw new Error(String(r.status))
       const d = await r.json()
       const older: ChatMessage[] = d.messages ?? []

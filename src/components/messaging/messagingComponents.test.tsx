@@ -89,7 +89,7 @@ describe('ThreadView · history', () => {
     fetchMock.mockResolvedValueOnce(json({ messages: [msg(1), msg(2), msg(3)], hasMore: false })) // msg(3) overlaps on purpose
     fireEvent.click(screen.getByRole('button', { name: 'Tải tin nhắn cũ hơn' }))
     await waitFor(() => expect(bodies()).toEqual(['tin 1', 'tin 2', 'tin 3', 'tin 4']))
-    expect(fetchMock.mock.calls[1][0]).toBe(`/api/messaging/threads/t1/messages?before=${encodeURIComponent('2026-10-10T00:00:03Z')}`)
+    expect(fetchMock.mock.calls[1][0]).toBe(`/api/messaging/threads/t1/messages?before=${encodeURIComponent('2026-10-10T00:00:03Z')}&beforeId=m3`) // the exact oldest row: time AND id
     expect(screen.queryByRole('button', { name: 'Tải tin nhắn cũ hơn' })).toBeNull()
   })
 

@@ -17,11 +17,16 @@ const h = vi.hoisted(() => {
     i: 0,
     inserted: [] as unknown[],
     upserted: [] as unknown[],
+    /** Every filter/order call on the history query, in order: `order:created_at:desc`, `lt:created_at:<v>`, `or:<expr>`. */
+    calls: [] as string[],
   }
   const builder: Record<string, unknown> = {}
-  for (const m of ['from', 'select', 'eq', 'in', 'order', 'limit', 'lt', 'maybeSingle', 'single']) {
+  for (const m of ['from', 'select', 'eq', 'in', 'limit', 'maybeSingle', 'single']) {
     builder[m] = () => builder
   }
+  builder.order = (col: string, o?: { ascending?: boolean }) => { state.calls.push(`order:${col}:${o?.ascending === false ? 'desc' : 'asc'}`); return builder }
+  builder.lt = (col: string, v: unknown) => { state.calls.push(`lt:${col}:${String(v)}`); return builder }
+  builder.or = (expr: string) => { state.calls.push(`or:${expr}`); return builder }
   builder.insert = (v: unknown) => { state.inserted.push(v); return builder }
   builder.upsert = (v: unknown) => { state.upserted.push(v); return Promise.resolve(state.rows[state.i++] ?? { error: null }) }
   ;(builder as { then: unknown }).then = (res: (v: unknown) => unknown, rej: (e: unknown) => unknown) =>
@@ -56,6 +61,45 @@ beforeEach(() => {
   h.state.i = 0
   h.state.inserted = []
   h.state.upserted = []
+  h.state.calls = []
+})
+
+describe('GET messages · paging cursor (ties on created_at)', () => {
+  const getWith = (qs: string) => GET(new Request(`${url}?${qs}`) as never, params as never)
+  const T = '2026-09-05T10:20:00.000Z'
+
+  it('orders by created_at then id, both newest-first, so rows with the same timestamp have one stable order', async () => {
+    h.state.rows = [THREAD_FOUND, { data: [], error: null }]
+    await get()
+    expect(h.state.calls).toEqual(['order:created_at:desc', 'order:id:desc'])
+  })
+
+  it('with before + beforeId the next page starts after that exact row: older timestamp OR same timestamp with a smaller id', async () => {
+    h.state.rows = [THREAD_FOUND, { data: [], error: null }]
+    await getWith(`before=${encodeURIComponent(T)}&beforeId=11111111-1111-4111-8111-111111111111`)
+    expect(h.state.calls).toContain(`or:created_at.lt.${T},and(created_at.eq.${T},id.lt.11111111-1111-4111-8111-111111111111)`)
+    expect(h.state.calls.some(c => c.startsWith('lt:'))).toBe(false)
+  })
+
+  it('keeps the old cursor (before only) working for clients that do not send beforeId yet', async () => {
+    h.state.rows = [THREAD_FOUND, { data: [], error: null }]
+    await getWith(`before=${encodeURIComponent(T)}`)
+    expect(h.state.calls).toContain(`lt:created_at:${T}`)
+    expect(h.state.calls.some(c => c.startsWith('or:'))).toBe(false)
+  })
+
+  it('ignores a beforeId that is not a uuid (it would be pasted into a filter expression) and falls back to the old cursor', async () => {
+    h.state.rows = [THREAD_FOUND, { data: [], error: null }]
+    await getWith(`before=${encodeURIComponent(T)}&beforeId=${encodeURIComponent('x),or(id.gt.0')}`)
+    expect(h.state.calls.some(c => c.startsWith('or:'))).toBe(false)
+    expect(h.state.calls).toContain(`lt:created_at:${T}`)
+  })
+
+  it('never builds the expression from a before that is not an ISO timestamp', async () => {
+    h.state.rows = [THREAD_FOUND, { data: [], error: null }]
+    await getWith(`before=${encodeURIComponent('2026-09-05),or(id.gt.0')}&beforeId=11111111-1111-4111-8111-111111111111`)
+    expect(h.state.calls.some(c => c.startsWith('or:'))).toBe(false)
+  })
 })
 
 describe('GET messages', () => {
