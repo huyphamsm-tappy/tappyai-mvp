@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 import { NextRequest, NextResponse } from 'next/server'
-import { clientIp } from '@/lib/security/rateLimit'
+import { clientIpKey } from '@/lib/security/rateLimit'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { publicDailyRateLimit, publicRateLimit } from '@/lib/security/publicRateLimit'
@@ -24,7 +24,8 @@ export async function POST(req: NextRequest) {
   // Each call mints a new identity (an auth.users row) — cap creation per IP so
   // a flood can't mass-mint identities to dodge quotas or bloat the user table.
   // Legit clients call this once and refresh the same session thereafter.
-  const ip = clientIp(req)
+  // Security audit 04/11 (W-02): an IPv6 caller is keyed by its /64, so changing the low 64 bits does not open a new allowance.
+  const ip = clientIpKey(req)
   // B04. The `error` code is the machine contract and stays exactly as it was; only the human
   // sentence follows the caller's language.
   const locale = requestLocale(req)
