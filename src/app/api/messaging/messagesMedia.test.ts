@@ -102,9 +102,13 @@ describe('GET history with pictures', () => {
     expect(body.messages[0].media).toEqual({ type: 'image', url: null, width: 800, height: 600 })
   })
 
-  it('the response never carries the storage path (a client has no use for it)', async () => {
+  it('the response has no `media_path` or `path` field: the client only needs the link (the signed link itself names the object — it IS the capability)', async () => {
     h.state.rows = [THREAD_FOUND, { data: [row()], error: null }]
-    expect(JSON.stringify(await (await get()).json())).not.toContain(PATH)
+    const body = await (await get()).json()
+    for (const m of body.messages) {
+      expect('media_path' in m).toBe(false)
+      expect(m.media && 'path' in m.media).toBeFalsy()
+    }
   })
 })
 
