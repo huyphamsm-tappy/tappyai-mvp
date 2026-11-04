@@ -13,8 +13,8 @@ import { imageExt, type SniffedImage } from '@/lib/security/imageType'
 // and its own sender's folder, even through a direct REST insert.
 
 export const CHAT_MEDIA_BUCKET = 'chat-media'
-/** The same ceiling as the bucket's file_size_limit. */
-export const CHAT_MEDIA_MAX_BYTES = 5 * 1024 * 1024
+/** The same ceiling as the bucket's file_size_limit (defined in mediaLimits.ts so the browser can use it without importing this server module). */
+export { CHAT_MEDIA_MAX_BYTES } from './mediaLimits'
 /** How long a signed link lives. A link is made on every read of a thread, so an expired one is replaced by reloading. */
 export const CHAT_MEDIA_URL_TTL_SECONDS = 3600
 /** What a chat accepts: the formats that can be re-encoded without their metadata. GIF is not one of them. */

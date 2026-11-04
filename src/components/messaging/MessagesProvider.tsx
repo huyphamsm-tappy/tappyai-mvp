@@ -3,6 +3,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import type { ChatMessage, ChatThreadSummary } from '@/lib/messaging/types'
+import { messageFromRealtimeRow, type RealtimeMessageRow } from '@/lib/messaging/realtimeRow'
 
 // ── Social messaging store ──────────────────────────────────────────────────
 //
@@ -47,14 +48,6 @@ const MessagesContext = createContext<MessagesContextValue>({
 
 export function useMessages() {
   return useContext(MessagesContext)
-}
-
-interface MessageRow {
-  id: string
-  thread_id: string
-  sender_id: string | null
-  body: string
-  created_at: string
 }
 
 export function MessagesProvider({ children }: { children: React.ReactNode }) {
@@ -120,15 +113,9 @@ export function MessagesProvider({ children }: { children: React.ReactNode }) {
         'postgres_changes',
         { event: 'INSERT', schema: 'public', table: 'chat_messages' },
         payload => {
-          const row = payload.new as MessageRow
+          const row = payload.new as RealtimeMessageRow
           if (!row?.id) return
-          const message: ChatMessage = {
-            id: row.id,
-            threadId: row.thread_id,
-            senderId: row.sender_id,
-            body: row.body,
-            createdAt: row.created_at,
-          }
+          const message: ChatMessage = messageFromRealtimeRow(row)
           for (const fn of listeners.current) fn(message)
 
           // The list itself is re-read rather than patched: unread is derived
