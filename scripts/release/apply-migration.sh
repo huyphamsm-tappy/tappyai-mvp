@@ -73,6 +73,10 @@ policy_of() {
     # PRIVATE bucket chat-media (no storage policy). Nothing reads them until the web release that sends images; apply BEFORE it (the upload route needs the bucket).
     20261109_chat_media.sql)
       echo APPLY ;;
+    # Picture retention (owner 04/11/2026, like Zalo): one nullable column, one partial index and a service-role-only function that LISTS orphan objects. Nothing reads them
+    # until the retention cron ships with the web release; apply BEFORE it (the web GET selects the column).
+    20261110_chat_media_retention.sql)
+      echo APPLY ;;
     # H1 → M1 first, then the security-branch migrations in MIGRATION_ORDER.txt order (owner 30/09): 20260928b needs the
     # deal-click code (service role) on production; the others are code-independent but ride the same verified window.
     20260927_owner_update_column_privileges.sql|20260928_revoke_reviews_insert.sql|\

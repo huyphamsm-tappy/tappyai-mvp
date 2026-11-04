@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/client'
 import { emitAuthLogout } from '@/lib/analytics/authEvents'
 import { releaseOwnPushClaim } from '@/lib/notifications/pushIdentity'
+import { clearPhotoCopies } from '@/lib/messaging/photoCache'
 
 // The ONE place a session is torn down.
 //
@@ -56,6 +57,9 @@ export async function performSignOut(): Promise<void> {
   } catch {
     // Best effort — the next account's login reconcile is the backstop.
   }
+
+  // The pictures this browser saved from Messenger conversations are the previous person's: remove them (clearPhotoCopies never throws).
+  await clearPhotoCopies()
 
   try {
     await createClient().auth.signOut()

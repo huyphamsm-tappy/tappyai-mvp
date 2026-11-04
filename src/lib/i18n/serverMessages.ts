@@ -213,6 +213,8 @@ const MESSAGES = {
 
   // Media / upload
   'media.imageType': { vi: 'Chỉ chấp nhận ảnh JPG, PNG, WebP hoặc GIF', en: 'Only JPG, PNG, WebP or GIF images are accepted' },
+  'media.imageBlocked': { vi: 'Ảnh này không phù hợp nên không thể gửi.', en: "This image isn't allowed, so it can't be sent." },
+  'media.scanUnavailable': { vi: 'Hiện chưa gửi được ảnh. Vui lòng thử lại sau.', en: "Pictures can't be sent right now. Please try again later." },
   'media.imageTooLarge3': { vi: 'Ảnh tối đa 3MB', en: 'Images can be at most 3MB' },
   'media.imageTooLarge6': { vi: 'Ảnh quá lớn. Vui lòng chọn ảnh nhỏ hơn 6MB.', en: 'That image is too large. Please choose one under 6MB.' },
   'media.uploadFailed': { vi: 'Không thể tải ảnh lên. Vui lòng thử lại.', en: "Couldn't upload the image. Please try again." },

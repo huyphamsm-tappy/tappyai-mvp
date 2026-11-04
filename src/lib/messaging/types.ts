@@ -43,6 +43,8 @@ export interface ChatMessageMedia {
   url: string | null
   width: number | null
   height: number | null
+  /** True once the server removed the picture after the retention period (30 days). The message stays; only a copy kept by this device/browser can still show it. */
+  expired?: boolean
 }
 
 /**
