@@ -19,7 +19,7 @@ const h = vi.hoisted(() => {
 })
 vi.mock('@/lib/auth/getRequestUser', () => ({ getRequestUser: h.getRequestUser }))
 
-import { GET } from './unread/route'
+import { GET, dynamic, fetchCache } from './unread/route'
 
 const call = async () => (await GET(new Request('http://localhost/api/messaging/unread') as never)).json()
 
@@ -32,6 +32,11 @@ beforeEach(() => {
 })
 
 describe('GET /api/messaging/unread', () => {
+  it('REGRESSION (found in the live check): no database read may come from Next\'s data cache — a GET-only route that is not marked no-store answered a second call with the first call\'s count', () => {
+    expect(dynamic).toBe('force-dynamic')
+    expect(fetchCache).toBe('force-no-store')
+  })
+
   it('sums the unread of every conversation and reports how many unread notifications are message notifications', async () => {
     h.state.rpc = { data: [{ unread_count: 2 }, { unread_count: 0 }, { unread_count: 5 }], error: null }
     h.state.count = { count: 2, error: null }

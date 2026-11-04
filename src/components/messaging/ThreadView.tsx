@@ -47,6 +47,10 @@ export default function ThreadView({
   // a local object URL of the chosen file (what the person sees in the composer), revoked when it is no longer needed.
   const [photo, setPhoto] = useState<{ path: string; width: number | null; height: number | null; previewUrl: string } | null>(null)
   const [uploading, setUploading] = useState(false)
+  // Set when the server answers a send with the neutral 404 ("this conversation cannot be written to": not a participant any more, or a block — the server never says which).
+  // The writing area is then replaced by that same neutral sentence, so nobody keeps typing into a conversation that will refuse every message, and nothing here ever tells who blocked whom.
+  const [locked, setLocked] = useState(false)
+  useEffect(() => { setLocked(false) }, [thread.id])
   const fileInput = useRef<HTMLInputElement>(null)
   const dropPhoto = useCallback(() => {
     setPhoto(prev => { if (prev) URL.revokeObjectURL(prev.previewUrl); return null })
@@ -228,6 +232,7 @@ export default function ThreadView({
       // NEUTRAL by design: the server answers "not a participant" and "blocked" with the same 404 (no oracle for who blocked whom), so the text
       // says only that this conversation cannot be written to. 429: the sender is going too fast. Anything else keeps the generic text.
       const status = e instanceof Error ? e.message : ''
+      if (status === '404') setLocked(true)
       setError(t(status === '404' ? 'v3.msg.cannotSend' : status === '429' ? 'v3.msg.sendTooFast' : 'v3.msg.sendError'))
     } finally {
       setSending(false)
@@ -369,6 +374,9 @@ export default function ThreadView({
         className="sticky bottom-0 flex flex-shrink-0 flex-col gap-2 border-t px-3 py-3"
         style={{ borderColor: 'var(--v3-border)', background: 'var(--v3-panel)' }}
       >
+        {locked ? (
+          <p data-testid="composer-locked" role="status" className="py-2 text-center text-[13px]" style={{ color: 'var(--v3-fg-muted)' }}>{t('v3.msg.cannotSend')}</p>
+        ) : (<>
         {(photo || uploading) && (
           <div className="flex items-center gap-2">
             {photo && (
@@ -436,6 +444,7 @@ export default function ThreadView({
           {sending ? <Loader2 size={18} className="animate-spin" /> : <Send size={18} />}
         </button>
         </div>
+        </>)}
       </div>
     </div>
   )

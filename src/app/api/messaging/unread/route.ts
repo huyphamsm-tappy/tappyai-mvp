@@ -8,6 +8,9 @@ import { getRequestUser } from '@/lib/auth/getRequestUser'
 // Read with the CALLER's own client, so row-level security scopes both reads. Anonymous or signed-out: zeros (a badge has nothing to say). A failed read answers zeros as well:
 // a badge that cannot be computed shows nothing rather than a wrong number.
 export const dynamic = 'force-dynamic'
+// Every database call in this route is a live read of a number that changes with each message: none may come from Next's data cache (the cache keys on the request, which is
+// identical every time for the same user — measured: without this, a second call kept answering with the first call's count).
+export const fetchCache = 'force-no-store'
 
 const ZERO = { messages: 0, messageNotifications: 0 }
 
