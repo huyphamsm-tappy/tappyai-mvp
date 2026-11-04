@@ -310,6 +310,8 @@ export const vi: Record<string, string> = {
   'v3.msg.retry': 'Thử lại',
   'v3.msg.loadOlder': 'Tải tin nhắn cũ hơn',
   'v3.msg.sendError': 'Không gửi được tin nhắn.',
+  'v3.msg.cannotSend': 'Không thể gửi tin nhắn trong cuộc trò chuyện này.',
+  'v3.msg.sendTooFast': 'Bạn gửi quá nhanh. Hãy thử lại sau ít phút.',
   'v3.msg.close': 'Đóng',
 
   // ── Friends / Social ─────────────────────────────────────────────────────
@@ -1021,6 +1023,8 @@ export const en: Record<string, string> = {
   'v3.msg.retry': 'Try again',
   'v3.msg.loadOlder': 'Load older messages',
   'v3.msg.sendError': 'Message could not be sent.',
+  'v3.msg.cannotSend': 'You can’t send messages in this conversation.',
+  'v3.msg.sendTooFast': 'You’re sending too fast. Please try again in a few minutes.',
   'v3.msg.close': 'Close',
 
   // ── Friends / Social — see the note in the Vietnamese block above ─────────
