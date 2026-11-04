@@ -101,6 +101,7 @@ import { FREE_DAILY_LIMIT, ANON_LIFETIME_LIMIT } from '@/lib/config/product'
 import { accountQuotaFor, aiQuotaIdentity, consumeAiQuestion, consumeDeepResearch, refundAiQuestion, type AiQuotaRefund } from '@/lib/ai/quota/aiQuestionQuota'
 import { tierOf, modeForTier, deepResearchMonthlyLimit } from '@/lib/plans/tiers'
 import { withinGlobalDeepCeiling } from '@/lib/ai/quota/globalCeiling'
+import { withoutInternalToolFields } from '@/lib/ai/streamInternalFields'
 import { wrapToolsWithoutAiSources } from '@/lib/security/aiSourcePolicy'
 import { subscriptionsEnabled } from '@/lib/payments/flags'
 import { entitlementFromRow, type SubscriptionRow } from '@/lib/plans/entitlement'
@@ -4339,9 +4340,10 @@ ${finalWriteInstruction(lang)}` },
   messages.filter((m: { role: string }) => m.role === 'assistant').map((m: { content?: unknown }) => (typeof m.content === 'string' ? m.content : '')),
   // F-094 measurement: the golden harness's pre-guard capture. Never in production (goldenCapture.ts).
   goldenCaptureSink(req))
-  const finalResponse = (budget && budget.max < LUXURY_PRICE_FLOOR)
+  // Security audit 04/11 (W-09): the server's working fields in a tool result do not reach the browser (lib/ai/streamInternalFields.ts).
+  const finalResponse = withoutInternalToolFields((budget && budget.max < LUXURY_PRICE_FLOOR)
     ? applyLuxuryStreamFilter(enrichedResponse)
-    : enrichedResponse
+    : enrichedResponse)
   // ADR-024. The key to this turn's evidence, if a shopping decision writes one.
   // Not a capability: decision_evidence_load() still refuses it unless the
   // caller's auth.uid() owns the row, so holding the id grants nothing.
