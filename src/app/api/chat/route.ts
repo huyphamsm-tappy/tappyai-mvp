@@ -100,6 +100,7 @@ import { flushPending, recordEvent, type UsageEvent } from '@/lib/observability'
 import { FREE_DAILY_LIMIT, ANON_LIFETIME_LIMIT } from '@/lib/config/product'
 import { accountQuotaFor, aiQuotaIdentity, consumeAiQuestion, consumeDeepResearch, refundAiQuestion, type AiQuotaRefund } from '@/lib/ai/quota/aiQuestionQuota'
 import { tierOf, modeForTier, deepResearchMonthlyLimit } from '@/lib/plans/tiers'
+import { withinGlobalDeepCeiling } from '@/lib/ai/quota/globalCeiling'
 import { wrapToolsWithoutAiSources } from '@/lib/security/aiSourcePolicy'
 import { subscriptionsEnabled } from '@/lib/payments/flags'
 import { entitlementFromRow, type SubscriptionRow } from '@/lib/plans/entitlement'
@@ -3597,6 +3598,11 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // Owner 01/11/2026: Deep Research runs per VN month by tier (Coco 10, Tappy 69) on the quota store, with the plans on sale; a run that
     // produces nothing gives the run back with the question.
     let deepRefund: Awaited<ReturnType<typeof consumeDeepResearch>>['refund'] = null
+    // Security audit 04/11 (D-09): the day's ceiling across every account - a breaker for many accounts used together.
+    if (!(await withinGlobalDeepCeiling())) {
+      await refundQuotaOnFailure('deep_research_global_ceiling')
+      return new Response(JSON.stringify({ error: 'deep_research_unavailable', message: serverMessage('rate.retryTomorrow', requestLocale(req)) }), { status: 429, headers: { 'Content-Type': 'application/json' } })
+    }
     if (authedUserId) {
       const limit = deepResearchMonthlyLimit(planTier, { subscriptionsOn: subscriptionsEnabled(), signedIn: true })
       const spent = await consumeDeepResearch(authedUserId, limit)
