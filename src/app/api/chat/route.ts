@@ -2857,7 +2857,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
               return guardPlaceGeography(wide, geoGuardArea(city, userLocation)).result
             },
           })
-          if (relax.relaxed.length > 0 || relax.empty) console.log(JSON.stringify({ type: 'tappyai_place_relax', relaxed: relax.relaxed, empty: relax.empty, budget_max: constraints.budgetMax, district: constraints.district?.label ?? null, query }))
+          if (relax.relaxed.length > 0 || relax.empty) console.log(JSON.stringify({ type: 'tappyai_place_relax', relaxed: relax.relaxed, empty: relax.empty, budget_max: constraints.budgetMax, district: constraints.district?.label ?? null, query: logText(query, 'tool_arg') }))
           // CONSULT_UNWIND_S1B: the wider-search chip only for the city of the district the user stated, and only when that wider search has not just run.
           // CONSULT_ONE_BRAIN: the model read the empty result and wrote its own answer; no code block is appended after it.
           emptyPlaceSearch = relax.empty && !oneBrain ? { query, area: statedArea?.label ?? location ?? null, ...(consultUnwindS1bOn() ? { widenCity: statedArea && !widenTried ? (statedArea.city === 'hn' ? 'Hà Nội' : 'TP.HCM') : null } : {}) } : null
