@@ -39,7 +39,7 @@ const SITES: Site[] = [
   },
   {
     id: 'OpenAI http', re: /api\.openai\.com/, through: {},
-    exceptions: { 'src/lib/ai/llm/providers/openai.ts': 'EXCEPTION: the Responses-API prototype (LLM_OPENAI_API=responses; its model is still wrapped by meteredModel) and the hosted web search (TAPPY_ANSWER_V4, a direct fetch). Both default OFF and are outside the legacy benchmark path; the benchmark runner refuses to run with either set.' },
+    exceptions: { 'src/lib/ai/llm/providers/openaiModeration.ts': 'EXCEPTION: the Messenger picture safety scan (upload route only, not reachable from POST /api/chat). It calls the moderation endpoint, which is free of charge, so there is no spend to reserve; revisit if that endpoint ever becomes paid.', 'src/lib/ai/llm/providers/openai.ts': 'EXCEPTION: the Responses-API prototype (LLM_OPENAI_API=responses; its model is still wrapped by meteredModel) and the hosted web search (TAPPY_ANSWER_V4, a direct fetch). Both default OFF and are outside the legacy benchmark path; the benchmark runner refuses to run with either set.' },
   },
   {
     id: 'Anthropic http', re: /api\.anthropic\.com/, through: {},
