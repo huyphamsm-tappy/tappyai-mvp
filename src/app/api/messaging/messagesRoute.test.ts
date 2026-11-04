@@ -170,6 +170,13 @@ describe('POST a message', () => {
     expect((await send({ body: 'hi' })).status).toBe(404)
   })
 
+  it('the database backstop (SQLSTATE 53400, 120 messages a minute) is answered like the route limiter: 429 rate_limit, not a 500', async () => {
+    h.state.rows = [THREAD_FOUND, { data: null, error: { code: '53400', message: 'chat send rate limit' } }]
+    const res = await send({ body: 'hi' })
+    expect(res.status).toBe(429)
+    expect((await res.json()).error).toBe('rate_limit')
+  })
+
   describe('clientId — a retry after a timeout must not store the message twice', () => {
     const CID = '22222222-2222-4222-8222-222222222222'
     const ROW = { id: 'm1', thread_id: 'thread-1', sender_id: 'u1', body: 'xin chào', created_at: '2026-11-05T01:00:00.000Z' }

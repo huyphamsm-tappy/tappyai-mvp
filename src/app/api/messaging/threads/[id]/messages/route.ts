@@ -189,6 +189,13 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
         { status: 404 },
       )
     }
+    // The database backstop on sending (trigger chat_messages_send_limit, 120 a minute per sender): answered like the route's own limiter.
+    if (error.code === '53400') {
+      return NextResponse.json(
+        { error: 'rate_limit', message: serverMessage('rate.tooFast', requestLocale(req)) },
+        { status: 429 },
+      )
+    }
     console.error('[messaging] send:', error.message)
     return NextResponse.json(
       { error: 'server_error', message: serverMessage('server.error', requestLocale(req)) },
