@@ -81,15 +81,21 @@ class MessagingV3Test {
         .replace(Regex("(?s)/\\*.*?\\*/"), "").replace(Regex("(?m)^\\s*//.*$"), "")
 
     @Test
-    fun `the client speaks only the five routes the web calls, and never the AI chat's`() {
+    fun `the client speaks only the routes the web calls, and never the AI chat's`() {
         val api = src("app/src/main/java/com/tappyai/app/messaging/data/MessagingApi.kt")
-        for (route in listOf("@GET(\"api/messaging/threads\")", "@POST(\"api/messaging/threads\")", "@GET(\"api/messaging/threads/{id}/messages\")", "@POST(\"api/messaging/threads/{id}/messages\")", "@POST(\"api/messaging/threads/{id}/read\")")) {
+        // The five original routes, plus (web release 2026-11-04) the picture upload and the unread totals for the badge. The report-a-message route lives in SafetyApi.
+        for (route in listOf(
+            "@GET(\"api/messaging/threads\")", "@POST(\"api/messaging/threads\")", "@GET(\"api/messaging/threads/{id}/messages\")", "@POST(\"api/messaging/threads/{id}/messages\")",
+            "@POST(\"api/messaging/threads/{id}/read\")", "@POST(\"api/messaging/threads/{id}/media\")", "@GET(\"api/messaging/unread\")",
+        )) {
             assertTrue(route, api.contains(route))
         }
+        assertEquals("no route outside /api/messaging", 0, Regex("@(GET|POST|PUT|DELETE|PATCH)\\(\"(?!api/messaging)").findAll(api).count())
         assertFalse(api.contains("api/chat") || api.contains("api/conversations"))
         val repo = src("app/src/main/java/com/tappyai/app/messaging/data/MessagingRepository.kt")
         assertTrue("the body is bounded by the database's CHECK", repo.contains("const val MESSAGE_MAX_BODY = 4000") && repo.contains("take(MESSAGE_MAX_BODY)"))
-        assertTrue("no sender id is sent - the server pins the bearer", api.contains("data class SendMessageRequestDto(val body: String)"))
+        val request = api.substringAfter("data class SendMessageRequestDto(").substringBefore(")\n")
+        assertTrue("the send body is text, an optional picture and the client id - and no sender id (the server pins the bearer)", request.contains("val body: String") && request.contains("val media: SendMediaDto?") && request.contains("val clientId: String?") && !request.contains("sender"))
     }
 
     @Test
@@ -111,7 +117,7 @@ class MessagingV3Test {
         val vm = src("app/src/main/java/com/tappyai/app/messaging/ThreadViewModel.kt")
         assertTrue(vm.contains("repository.markRead(threadId)"))
         assertTrue(vm.contains("if (messages.none { it.id == row.id }) messages = messages + row"))
-        assertTrue(vm.contains("repository.getMessages(threadId, before = oldest)"))
+        assertTrue("older pages by the keyset (stamp AND id), like the web", vm.contains("repository.getMessages(threadId, before = oldest.createdAt, beforeId = oldest.id)"))
         assertTrue("the route argument by name, shared by both hosts", vm.contains("savedStateHandle.get<String>(\"threadId\")"))
         val screen = src("app/src/main/java/com/tappyai/app/messaging/ThreadScreen.kt")
         assertFalse("no Online, no Typing", screen.lowercase().contains("online") || screen.lowercase().contains("typing"))

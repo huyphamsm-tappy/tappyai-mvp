@@ -51,7 +51,7 @@ fun ReportReason.reportsWire(): String = when (this) {
 }
 
 /** What a report is about: a post/clip (own route), a comment or a user (own routes, one each). */
-enum class ReportTarget(val wire: String) { Review("review"), Comment("comment"), User("user") }
+enum class ReportTarget(val wire: String) { Review("review"), Comment("comment"), User("user"), Message("message") }
 
 /** The result of one report call, as far as the screen needs to tell the person. */
 sealed interface ReportOutcome {

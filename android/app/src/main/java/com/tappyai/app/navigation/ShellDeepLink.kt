@@ -51,6 +51,9 @@ object ShellDeepLink {
         val segments = parsed.path.orEmpty().split('/').filter { it.isNotBlank() }
         if (segments.size < 2) return null
 
+        // A Messenger notification's link names the conversation itself (`/profile/notifications?tab=messages&thread=<id>`): the tap opens that conversation, not a generic tab.
+        com.tappyai.app.messaging.messageThreadIdFromLink(uri)?.let { return HomeRoute.MessageThread(threadId = it) }
+
         return when (segments[0].lowercase()) {
             // `HomeRoute.Chat` already carries a conversationId — the destination exists in the
             // app's current navigation model, so no new vocabulary is needed to reach it.

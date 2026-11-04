@@ -288,9 +288,11 @@ internal fun InboxRow(group: ReviewGroupedNotification, onOpen: (ReviewGroupedNo
                 lineHeight = 18.sp,
                 fontWeight = if (group.unread) FontWeight.SemiBold else FontWeight.Medium,
             )
-            if (group.text.isNotBlank() && group.title.isNotBlank()) {
+            // A collapsed message row stands for `count` unread messages: the web's "N tin nhắn mới" replaces the row's own text (`unreadMessages` in NotificationsView).
+            val collapsedMessages = group.type == "message" && group.count > 1
+            if (collapsedMessages || (group.text.isNotBlank() && group.title.isNotBlank())) {
                 Text(
-                    text = group.text,
+                    text = if (collapsedMessages) stringResource(R.string.inbox_v3_new_messages, group.count) else group.text,
                     color = HomeV3.OnSurfaceVariant,
                     fontSize = 12.sp,
                     lineHeight = 16.sp,
@@ -303,7 +305,7 @@ internal fun InboxRow(group: ReviewGroupedNotification, onOpen: (ReviewGroupedNo
         Column(horizontalAlignment = Alignment.End, verticalArrangement = Arrangement.spacedBy(6.dp)) {
             Text(text = clockTime(group.createdAt), color = HomeV3.OnSurfaceVariant, fontSize = 11.sp)
             // A real count, and NOT an unread count: how many notifications collapsed into this row.
-            if (group.count > 1) {
+            if (group.count > 1 && group.type != "message") {
                 Text(
                     text = stringResource(R.string.inbox_v3_count_more, group.count),
                     color = HomeV3.OnSurfaceVariant,

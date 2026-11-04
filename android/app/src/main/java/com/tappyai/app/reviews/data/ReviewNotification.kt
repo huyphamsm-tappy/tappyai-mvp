@@ -16,6 +16,8 @@ data class ReviewNotification(
     val url: String,
     val createdAt: String,
     val readAt: String?,
+    /** For a `message` row: how many unread messages collapsed into it (≥ 1); null for every other row. */
+    val count: Int? = null,
 )
 
 data class ReviewHotPlace(

@@ -32,6 +32,12 @@ sealed interface HomeRoute {
     @Serializable data object Explore : HomeRoute
     @Serializable data object Deals : HomeRoute
     @Serializable data object Profile : HomeRoute
+    /**
+     * One Messenger conversation opened straight from a notification link (`/profile/notifications?tab=messages&thread=<id>`). A message notification's tap lands on the
+     * conversation itself, never on a generic tab. The argument is named `threadId` like [com.tappyai.app.profile.ProfileRoute.MessageThread] and
+     * [com.tappyai.app.reviews.ui.ReviewsRoute.MessageThread], so the one [com.tappyai.app.messaging.ThreadScreen] reads it the same way on every host.
+     */
+    @Serializable data class MessageThread(val threadId: String) : HomeRoute
 }
 
 /**

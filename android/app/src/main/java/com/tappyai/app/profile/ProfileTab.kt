@@ -184,6 +184,9 @@ fun ProfileTab(
                 onBack = { navController.popBackStack() },
                 onOpenNotification = { notification ->
                     when {
+                        // A message notification opens its conversation. Checked BEFORE the `/profile/` branch below, which would take `/profile/notifications?…` for a person called "notifications".
+                        com.tappyai.app.messaging.messageThreadIdFromLink(notification.url) != null ->
+                            navController.navigate(ProfileRoute.MessageThread(com.tappyai.app.messaging.messageThreadIdFromLink(notification.url)!!))
                         notification.url.startsWith("/reviews/") ->
                             navController.navigate(ProfileRoute.ReviewDetail(notification.url.removePrefix("/reviews/").substringBefore('?')))
                         notification.url.startsWith("/profile/") ->
@@ -264,6 +267,8 @@ fun ProfileTab(
             val route = entry.toRoute<ProfileRoute.AuthorProfile>()
             ReviewProfileScreen(
                 userId = route.userId,
+                // "Nhắn tin" on another person's profile opens the conversation (the same ThreadScreen as the Inbox).
+                onOpenThread = { threadId -> navController.navigate(ProfileRoute.MessageThread(threadId)) },
                 // The screen now hands up the review id (Explore's author profile went V3 on
                 // 2026-09-13 and shares this composable); this graph still opens its own detail.
                 onReviewClick = { reviewId -> navController.navigate(ProfileRoute.ReviewDetail(reviewId)) },

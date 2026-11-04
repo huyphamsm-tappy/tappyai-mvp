@@ -191,7 +191,8 @@ fun HomeShellScreen(
             // shell steps out of the way rather than stacking a second — and wrong — title above
             // it. The listening scene draws its own top inset and runs to the status bar.
             topBar = {
-                if (chatImmersive) Unit
+                // The conversation screen draws its own header (back, avatar, title), so the shell steps out of the way on it.
+                if (chatImmersive || backStackEntry?.destination?.hasRoute(HomeRoute.MessageThread::class) == true) Unit
                 else if (isHomeTab) {
                     V3HomeTheme {
                         HomeV3TopBar(
@@ -284,6 +285,8 @@ fun HomeShellScreen(
                             },
                         )
                     }
+                    // A Messenger notification's tap: the conversation itself (the screen reads `threadId` from this route, as on the Profile and Explore hosts).
+                    composable<HomeRoute.MessageThread> { com.tappyai.app.messaging.ThreadScreen(onBack = { navController.popBackStack() }) }
                     composable<HomeRoute.Chat> { ChatScreen(onImmersiveChanged = { chatImmersive = it }, onSignIn = onSignIn) }
                     composable<HomeRoute.Explore> {
                         ExploreTab(

@@ -3,6 +3,7 @@ package com.tappyai.app.reviews.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tappyai.app.R
+import com.tappyai.app.messaging.data.MessagingRepository
 import com.tappyai.app.reviews.data.Review
 import com.tappyai.app.reviews.data.ReviewErrorMessages
 import com.tappyai.app.reviews.data.ReviewProfile
@@ -33,6 +34,10 @@ data class ReviewProfileUiState(
     val isLoading: Boolean = false,
     val error: String? = null,
     val isTogglingFollow: Boolean = false,
+    /** "Nhắn tin" is starting (or reopening) the conversation with this person. */
+    val isOpeningMessage: Boolean = false,
+    /** The last "Nhắn tin" did not open a conversation. ONE sentence on purpose: "blocked", "not allowed to reach you" and "no such account" are indistinguishable — the web does the same. */
+    val messageFailed: Boolean = false,
 )
 
 @HiltViewModel
@@ -42,10 +47,35 @@ class ReviewProfileViewModel @Inject constructor(
     private val reviewErrorMessages: ReviewErrorMessages,
     private val stringProvider: StringProvider,
     private val safety: SafetyRepository,
+    private val messaging: MessagingRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ReviewProfileUiState())
     val uiState: StateFlow<ReviewProfileUiState> = _uiState.asStateFlow()
+
+    /** A signed-in, non-guest member can message; a visitor is offered nothing (the web sends them to the login page, exactly like Follow). */
+    val canMessage: Boolean get() = safety.isMember
+
+    /**
+     * "Nhắn tin" on ANOTHER person's profile — the web's `handleMessage`: the existing start-direct route (it deduplicates per pair, so an existing conversation is simply
+     * reopened), then the conversation itself. A refusal is deliberately ONE sentence ([ReviewProfileUiState.messageFailed]).
+     */
+    fun openMessage(userId: String, onThread: (String) -> Unit) {
+        if (_uiState.value.isOpeningMessage || !canMessage) return
+        _uiState.update { it.copy(isOpeningMessage = true, messageFailed = false) }
+        viewModelScope.launch {
+            when (val result = messaging.startDirect(userId)) {
+                is NetworkResult.Success -> {
+                    _uiState.update { it.copy(isOpeningMessage = false) }
+                    onThread(result.data)
+                }
+                is NetworkResult.Error -> {
+                    logger.e("ReviewProfileVM", "Start direct failed: ${result.error}")
+                    _uiState.update { it.copy(isOpeningMessage = false, messageFailed = true) }
+                }
+            }
+        }
+    }
 
     private var loadedUserId: String? = null
     private var loadJob: Job? = null

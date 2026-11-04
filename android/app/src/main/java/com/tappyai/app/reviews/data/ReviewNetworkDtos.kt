@@ -214,7 +214,14 @@ data class NotificationDto(
     @SerialName("image_url") val imageUrl: String? = null,
     @SerialName("read_at") val readAt: String? = null,
     @SerialName("created_at") val createdAt: String = "",
+    /** Free-form payload written by the database. Only `message` rows use it: `count` = how many unread messages collapsed into the row (web release 2026-11-04). Never trusted blindly. */
+    val data: kotlinx.serialization.json.JsonObject? = null,
 )
+
+/** The collapsed message row's count: an integer ≥ 1, else null (a recipient may edit their own rows, so `data` is never trusted blindly). Pure. */
+fun NotificationDto.messageCount(): Int? =
+    if (type != "message") null
+    else (data?.get("count") as? kotlinx.serialization.json.JsonPrimitive)?.takeIf { !it.isString }?.content?.toIntOrNull()?.takeIf { it >= 1 }
 
 /** `GET /api/reviews/{id}/likes` → `{ likers, next_cursor }` (`LikeListSheet.tsx`'s `LikesResponse`). */
 @Serializable
@@ -443,6 +450,7 @@ fun NotificationDto.toDomain(): ReviewNotification = ReviewNotification(
     url = entityUrl.orEmpty(),
     createdAt = createdAt,
     readAt = readAt,
+    count = messageCount(),
 )
 
 private fun String?.toReviewContentType(): ReviewContentType? = when (this?.lowercase()) {

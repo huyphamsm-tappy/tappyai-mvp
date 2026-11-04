@@ -4,6 +4,8 @@
     <string name="safety_report_post_title">Report post</string>
     <string name="safety_report_comment_title">Report comment</string>
     <string name="safety_report_user_title">Report user</string>
+    <string name="safety_report_message_title">Report message</string>
+    <string name="safety_report_message_notice">This message will be sent to the TappyAI moderation team for review. Other messages in the conversation are not sent.</string>
     <string name="safety_report_prompt">Choose a reason. The Tappy team will review the report.</string>
     <string name="safety_report_send">Send report</string>
     <string name="safety_report_sending">Sending…</string>

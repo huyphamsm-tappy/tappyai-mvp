@@ -36,6 +36,7 @@ class SafetyRepositoryTest {
         override suspend fun reportReview(reviewId: String, body: ReviewReportBodyDto): Response<ReportAckDto> { calls += "reportReview:$reviewId:${body.reason}"; return onReviewReport(reviewId, body) }
         override suspend fun reportComment(commentId: String, body: ReportBodyDto): Response<ReportAckDto> { calls += "report:comment:$commentId:${body.reason}"; return onReport(body) }
         override suspend fun reportUser(userId: String, body: ReportBodyDto): Response<ReportAckDto> { calls += "report:user:$userId:${body.reason}"; return onReport(body) }
+        override suspend fun reportMessage(messageId: String, body: ReportBodyDto): Response<ReportAckDto> { calls += "report:message:$messageId:${body.reason}"; return onReport(body) }
         override suspend fun block(userId: String): Response<ReportAckDto> { calls += "block:$userId"; return onBlock(userId) }
         override suspend fun unblock(userId: String): Response<ReportAckDto> { calls += "unblock:$userId"; return onUnblock(userId) }
         override suspend fun blocks(): BlocksDto { calls += "blocks"; return onBlocks() }
@@ -85,6 +86,31 @@ class SafetyRepositoryTest {
         api.cfg = { throw IOException("offline") }
         repo.refresh()
         assertTrue("an outage must not close what the server opened", repo.flags.value.userBlocks)
+    }
+
+    // ── reporting a message (web release 2026-11-04) ──────────────────────
+
+    @Test
+    fun `a message report goes to the message route with the mapped reason, only while the server has reports`() = runTest {
+        val closed = FakeApi()
+        val closedRepo = SafetyRepository(closed, MemPrefs(), Session())
+        assertEquals("reports closed: nothing is sent", ReportOutcome.Failed, closedRepo.report(ReportTarget.Message, "m1", ReportReason.Harassment))
+        assertTrue(closed.calls.none { it.startsWith("report:message") })
+
+        val api = FakeApi().apply { cfg = { on } }
+        val repo = SafetyRepository(api, MemPrefs(), Session())
+        repo.refresh()
+        assertEquals(ReportOutcome.Sent, repo.report(ReportTarget.Message, "m1", ReportReason.Harassment))
+        assertTrue(api.calls.contains("report:message:m1:harassment"))
+        assertTrue("a message report never touches the post route", api.calls.none { it.startsWith("reportReview") })
+    }
+
+    @Test
+    fun `a refused message report is not sent - the own-message 400 and a server error alike`() = runTest {
+        val api = FakeApi().apply { cfg = { on }; onReport = { ack(400) } }
+        val repo = SafetyRepository(api, MemPrefs(), Session())
+        repo.refresh()
+        assertEquals(ReportOutcome.Failed, repo.report(ReportTarget.Message, "mine", ReportReason.Spam))
     }
 
     // ── reporting a post (production route) ───────────────────────────────

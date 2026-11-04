@@ -73,7 +73,8 @@ fun groupNotifications(
                 text = n.text,
                 commentBody = if (n.type == "comment") n.text else null,
                 createdAt = n.createdAt,
-                count = 1,
+                // a collapsed message row stands for `count` unread messages (the web's D4); every other row starts as one notification
+                count = if (n.type == "message" && n.count != null) n.count else 1,
                 unread = n.readAt == null,
             )
         }

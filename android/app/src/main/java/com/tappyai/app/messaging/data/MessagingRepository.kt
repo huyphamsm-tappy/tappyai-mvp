@@ -7,6 +7,9 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Retrofit
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -17,9 +20,32 @@ enum class ThreadKind { Direct, Group }
 
 data class ChatParticipant(val userId: String, val fullName: String?, val avatarUrl: String?)
 
-data class ChatMessage(val id: String, val threadId: String, val senderId: String?, val body: String, val createdAt: String)
+/**
+ * The picture of a message. [url] is a short-lived signed link the server made for this read (null when it could not be made); [expired] is true once the server
+ * removed the picture after its retention period. Either way the message stays; a copy saved on this device ([ChatPhotoFiles]) can still show it.
+ */
+data class ChatMessageMedia(val url: String?, val width: Int?, val height: Int?, val expired: Boolean)
+
+data class ChatMessage(
+    val id: String,
+    val threadId: String,
+    val senderId: String?,
+    val body: String,
+    val createdAt: String,
+    val media: ChatMessageMedia? = null,
+)
 
 data class LastMessage(val body: String, val senderId: String?, val createdAt: String)
+
+/** A picture the server accepted: the path the message must carry, and its size as the server measured it. */
+data class UploadedMedia(val path: String, val width: Int?, val height: Int?)
+
+/** The navigation badge's two numbers (`GET /api/messaging/unread`). */
+data class MessageUnread(val messages: Int, val messageNotifications: Int)
+
+/** The one number a badge shows: the other notifications plus the unread messages; a message notification is never counted twice. Pure — the web's `badgeTotal`. */
+fun badgeTotal(notificationUnread: Int, unread: MessageUnread): Int =
+    maxOf(0, notificationUnread - unread.messageNotifications) + unread.messages
 
 /**
  * One row of the conversation list. `unreadCount` is DERIVED by `chat_thread_summaries()` — the
@@ -59,10 +85,19 @@ fun ThreadSummaryDto.toDomain(): ChatThreadSummary = ChatThreadSummary(
     participants = participants.map { ChatParticipant(userId = it.userId, fullName = it.fullName, avatarUrl = it.avatarUrl) },
 )
 
-fun MessageDto.toDomain(): ChatMessage = ChatMessage(id = id, threadId = threadId, senderId = senderId, body = body, createdAt = createdAt)
+fun MessageMediaDto.toDomain(): ChatMessageMedia = ChatMessageMedia(url = url, width = width, height = height, expired = expired)
+
+fun MessageDto.toDomain(): ChatMessage =
+    ChatMessage(id = id, threadId = threadId, senderId = senderId, body = body, createdAt = createdAt, media = media?.toDomain())
 
 /** Matches the CHECK constraint on `chat_messages.body`; the database is the authority. */
 const val MESSAGE_MAX_BODY = 4000
+
+/** The ceiling of the private bucket (5 MB) — the same number the web's `CHAT_MEDIA_MAX_BYTES` and the server enforce. */
+const val CHAT_MEDIA_MAX_BYTES = 5 * 1024 * 1024
+
+/** What the server accepts: the formats it can re-encode without their metadata. GIF is not one of them. */
+val CHAT_MEDIA_MIME_TYPES: List<String> = listOf("image/jpeg", "image/png", "image/webp")
 
 /**
  * User ↔ user messaging — the web Inbox's Messages tab (`MessagesProvider`, `ThreadView`,
@@ -74,9 +109,15 @@ interface MessagingRepository {
     /** One person is a direct thread (deduplicated server-side); the id of that thread, new or existing. */
     suspend fun startDirect(userId: String): NetworkResult<String>
     suspend fun startGroup(userIds: List<String>, title: String?): NetworkResult<String>
-    suspend fun getMessages(threadId: String, before: String? = null): NetworkResult<MessagePage>
-    suspend fun sendMessage(threadId: String, body: String): NetworkResult<ChatMessage>
+    /** [before] + [beforeId] are the keyset of the oldest loaded message (both or neither). */
+    suspend fun getMessages(threadId: String, before: String? = null, beforeId: String? = null): NetworkResult<MessagePage>
+    /**
+     * Sends a message: text, a picture, or both. [clientId] makes the send idempotent — a retry of the SAME attempt returns the stored row instead of a second copy.
+     */
+    suspend fun sendMessage(threadId: String, body: String, clientId: String? = null, media: UploadedMedia? = null): NetworkResult<ChatMessage>
+    suspend fun uploadMedia(threadId: String, bytes: ByteArray, mimeType: String): NetworkResult<UploadedMedia>
     suspend fun markRead(threadId: String): NetworkResult<Unit>
+    suspend fun getUnread(): NetworkResult<MessageUnread>
 }
 
 @Singleton
@@ -92,14 +133,32 @@ class RealMessagingRepository @Inject constructor(private val api: MessagingApi)
             api.startThread(StartThreadRequestDto(kind = "group", userIds = userIds, title = title?.trim()?.take(120)?.takeIf { it.isNotEmpty() })).threadId
         }
 
-    override suspend fun getMessages(threadId: String, before: String?): NetworkResult<MessagePage> =
-        safeApiCall { api.getMessages(threadId, before).let { MessagePage(it.messages.map { m -> m.toDomain() }, it.hasMore) } }
+    override suspend fun getMessages(threadId: String, before: String?, beforeId: String?): NetworkResult<MessagePage> =
+        safeApiCall { api.getMessages(threadId, before, beforeId).let { MessagePage(it.messages.map { m -> m.toDomain() }, it.hasMore) } }
 
-    override suspend fun sendMessage(threadId: String, body: String): NetworkResult<ChatMessage> =
-        safeApiCall { api.sendMessage(threadId, SendMessageRequestDto(body = body.trim().take(MESSAGE_MAX_BODY))).message.toDomain() }
+    override suspend fun sendMessage(threadId: String, body: String, clientId: String?, media: UploadedMedia?): NetworkResult<ChatMessage> =
+        safeApiCall {
+            api.sendMessage(
+                threadId,
+                SendMessageRequestDto(
+                    body = body.trim().take(MESSAGE_MAX_BODY),
+                    media = media?.let { SendMediaDto(path = it.path, width = it.width, height = it.height) },
+                    clientId = clientId,
+                ),
+            ).message.toDomain()
+        }
+
+    override suspend fun uploadMedia(threadId: String, bytes: ByteArray, mimeType: String): NetworkResult<UploadedMedia> =
+        safeApiCall {
+            val part = MultipartBody.Part.createFormData("file", "photo", bytes.toRequestBody(mimeType.toMediaType()))
+            api.uploadMedia(threadId, part).media.let { UploadedMedia(path = it.path, width = it.width, height = it.height) }
+        }
 
     override suspend fun markRead(threadId: String): NetworkResult<Unit> =
         safeApiCall { api.markRead(threadId); Unit }
+
+    override suspend fun getUnread(): NetworkResult<MessageUnread> =
+        safeApiCall { api.getUnread().let { MessageUnread(messages = it.messages.coerceAtLeast(0), messageNotifications = it.messageNotifications.coerceAtLeast(0)) } }
 }
 
 /** DI wiring — the same two-module shape as Social and Chat History. */

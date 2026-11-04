@@ -21,6 +21,8 @@ import com.tappyai.app.account.data.deleteOutcomeFor
 import com.tappyai.app.account.data.isDeleteConfirmWord
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
@@ -191,7 +193,11 @@ class SettingsViewModel @Inject constructor(
                 // AppNavHost reacts to the session change and tears this screen down — reset the
                 // flag anyway rather than relying on that timing, so the row never reads "Signing
                 // out..." indefinitely if the screen happens to still be composed for a moment.
-                is NetworkResult.Success -> isSigningOut = false
+                is NetworkResult.Success -> {
+                    // The pictures this phone saved from Messenger conversations belong to the account that just left: remove them (never throws), so the next person inherits nothing.
+                    withContext(Dispatchers.IO) { com.tappyai.app.messaging.data.ChatPhotoFiles.clearAll(appContext.filesDir) }
+                    isSigningOut = false
+                }
                 is NetworkResult.Error -> {
                     logger.e(TAG, "signOut failed: ${result.error}")
                     errorMessage = settingsErrorMessages.toSignOutMessage(result.error)

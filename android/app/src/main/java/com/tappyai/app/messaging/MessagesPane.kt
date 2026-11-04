@@ -197,7 +197,8 @@ private fun ThreadRow(thread: ChatThreadSummary, meId: String?, nowMillis: Long,
             }
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.padding(top = 2.dp)) {
                 Text(
-                    text = thread.lastMessage?.body ?: stringResource(R.string.msg_v3_no_messages),
+                    // A picture-only last message has an empty body: the web shows "Đã gửi một ảnh" there.
+                    text = thread.lastMessage?.let { it.body.ifBlank { stringResource(R.string.msg_v3_photo_preview) } } ?: stringResource(R.string.msg_v3_no_messages),
                     color = HomeV3.OnSurfaceVariant,
                     fontSize = 12.sp,
                     maxLines = 1,
