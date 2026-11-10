@@ -137,6 +137,8 @@ export function ModerationDesk({ can }: { can: DeskCapabilities }) {
         <h1 className="text-2xl font-semibold">{t('admin.desk.title')}</h1>
         <p className="text-muted-foreground text-sm">{t('admin.desk.subtitle')}</p>
         <a className="text-sm underline" href="/community-guidelines" target="_blank" rel="noreferrer">{t('admin.desk.guidelines')}</a>
+        {/* Explore video: the human review of videos the automated check could not clear lives on its own page (the module menu has one entry per module). */}
+        <a className="text-sm underline ml-4" href="/admin/video-moderation">{t('admin.video.deskLink')}</a>
       </div>
       <div role="tablist" className="flex flex-wrap gap-2">
         {tabs.map((k) => (

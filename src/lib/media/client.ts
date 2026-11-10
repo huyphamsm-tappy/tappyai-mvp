@@ -144,7 +144,7 @@ export async function uploadMedia(
   return { url: verdict.url }
 }
 
-const defaultTransport: UploadTransport = {
+export const defaultTransport: UploadTransport = {
   async postJson(url, body, signal) {
     const res = await fetch(url, {
       method: 'POST',

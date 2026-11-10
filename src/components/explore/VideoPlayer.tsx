@@ -6,6 +6,9 @@ import { DefaultPlaybackSession } from '@/lib/playback/PlaybackSession'
 import { createController } from '@/lib/playback/createController'
 import type { LegacyUploadHandle } from '@/lib/playback/UploadCompatAdapter'
 import type { PlaybackSession } from '@/lib/playback/types'
+import { useVideoPlayback } from './useVideoPlayback'
+import { OverlayOverVideo } from '@/components/video/overlay/OverlayOverVideo'
+import { useTranslation } from '@/lib/i18n/useTranslation'
 
 interface VideoPlayerProps {
   url: string
@@ -83,7 +86,11 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
   { url, thumbnail, sourceType = 'upload', sourceUrl, active = false, onWatchProgress, onDurationKnown, soundUrl, soundVolume = 1, hasSound = false },
   ref
 ) {
+  const { t } = useTranslation()
   const videoRef = useRef<HTMLVideoElement>(null)
+  // Explore video pipeline: a post whose media_url is an HLS manifest is played through the playback endpoint + signed CDN cookie (native HLS on Safari/iOS, hls.js elsewhere).
+  // For every other URL (old MP4 posts, YouTube) this hook does nothing at all and the <video> below keeps `src={url}` exactly as before.
+  const hlsPlayback = useVideoPlayback({ url, videoRef })
   const startRef = useRef<number | null>(null)
   const watchedRef = useRef(0)
   const [playing, setPlaying] = useState(false)
@@ -456,7 +463,7 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
             <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
               <Play size={28} className="text-white fill-white" />
             </div>
-            <span className="text-white text-sm font-semibold bg-black/50 px-3 py-1 rounded-full backdrop-blur-sm">Xem video</span>
+            <span className="text-white text-sm font-semibold bg-black/50 px-3 py-1 rounded-full backdrop-blur-sm">{t('video.player.watch')}</span>
           </a>
         )}
       </div>
@@ -472,7 +479,8 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
       )}
       <video
         ref={videoRef}
-        src={url}
+        // HLS: the hook attaches the stream (native or hls.js) once the server has allowed it; setting the manifest URL here would hit the CDN without its cookie.
+        src={hlsPlayback.isHls ? undefined : url}
         className="absolute inset-0 w-full h-full object-cover"
         muted
         playsInline
@@ -486,7 +494,25 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
         onLoadedMetadata={e => onDurationKnown?.(e.currentTarget.duration)}
         onError={() => { console.error('[VideoPlayer] playback error:', url); setPlaying(false) }}
       />
+      {/* The post's text layers (Explore video): drawn from the JSON the playback answer carried; mounted only when there is any, so other posts pay nothing. */}
+      {hlsPlayback.overlayDoc && <OverlayOverVideo doc={hlsPlayback.overlayDoc} videoRef={videoRef} />}
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 pointer-events-none" />
+      {hlsPlayback.status === 'error' && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-black/60 px-6 text-center" data-testid="video-playback-error">
+          <span className="text-white text-sm">
+            {hlsPlayback.errorCode === 'unavailable' ? t('video.player.unavailable') : hlsPlayback.errorCode === 'unsupported' ? t('video.player.unsupported') : t('video.player.network')}
+          </span>
+          {hlsPlayback.errorCode !== 'unavailable' && hlsPlayback.errorCode !== 'unsupported' && (
+            <button
+              type="button"
+              className="rounded-full bg-white/20 px-4 py-1.5 text-sm font-semibold text-white backdrop-blur-sm"
+              onClick={e => { e.stopPropagation(); hlsPlayback.retry() }}
+            >
+              {t('video.player.retry')}
+            </button>
+          )}
+        </div>
+      )}
       {showPlayIcon && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">

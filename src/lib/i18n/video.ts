@@ -1,0 +1,121 @@
+// Explore video (web): every word the video composer, the text-overlay editor, the player and the download button show.
+// One table of [vi, en] pairs, split into the two locale maps the dictionary merge expects. Keys are prefixed `video.`.
+// The consent wording is the owner-approved text (05/11/2026): do not reword it without the owner.
+
+const T: Record<string, [string, string]> = {
+  // ── Overlay editor labels (see src/components/video/overlay/labels.ts) ──
+  'video.overlay.editorTitle': ['Chữ trên video', 'Text on video'],
+  'video.overlay.addText': ['Thêm chữ', 'Add text'],
+  'video.overlay.layers': ['Các lớp chữ', 'Text layers'],
+  'video.overlay.noLayers': ['Chưa có chữ nào. Bấm "Thêm chữ" để bắt đầu.', 'No text yet. Press "Add text" to start.'],
+  'video.overlay.layerFallbackName': ['Lớp chữ', 'Text layer'],
+  'video.overlay.remove': ['Xóa lớp này', 'Delete this layer'],
+  'video.overlay.moveUp': ['Đưa lên trên', 'Move up'],
+  'video.overlay.moveDown': ['Đưa xuống dưới', 'Move down'],
+  'video.overlay.text': ['Nội dung', 'Content'],
+  'video.overlay.font': ['Phông chữ', 'Font'],
+  'video.overlay.fontSans': ['Không chân (sans)', 'Sans-serif'],
+  'video.overlay.size': ['Cỡ chữ', 'Text size'],
+  'video.overlay.boxWidth': ['Độ rộng khung', 'Box width'],
+  'video.overlay.rotation': ['Góc xoay', 'Rotation'],
+  'video.overlay.alignLeft': ['Căn trái', 'Align left'],
+  'video.overlay.alignCenter': ['Căn giữa', 'Align center'],
+  'video.overlay.alignRight': ['Căn phải', 'Align right'],
+  'video.overlay.bold': ['In đậm', 'Bold'],
+  'video.overlay.color': ['Màu chữ', 'Text color'],
+  'video.overlay.background': ['Nền chữ', 'Text background'],
+  'video.overlay.backgroundOpacity': ['Độ đặc của nền', 'Background opacity'],
+  'video.overlay.outline': ['Viền chữ', 'Outline'],
+  'video.overlay.outlineWidth': ['Độ dày viền', 'Outline width'],
+  'video.overlay.shadow': ['Đổ bóng', 'Shadow'],
+  'video.overlay.timeline': ['Thời gian hiển thị', 'Visible time'],
+  'video.overlay.start': ['Bắt đầu', 'Start'],
+  'video.overlay.end': ['Kết thúc', 'End'],
+  'video.overlay.startHandle': ['Điểm bắt đầu hiển thị', 'Where the text appears'],
+  'video.overlay.endHandle': ['Điểm kết thúc hiển thị', 'Where the text disappears'],
+  'video.overlay.moveHandle': ['Kéo để di chuyển chữ', 'Drag to move the text'],
+  'video.overlay.scaleHandle': ['Kéo để đổi cỡ chữ', 'Drag to resize the text'],
+  'video.overlay.rotateHandle': ['Kéo để xoay chữ', 'Drag to rotate the text'],
+  'video.overlay.tooManyLayers': ['Tối đa 10 lớp chữ cho mỗi video.', 'At most 10 text layers per video.'],
+  'video.overlay.save': ['Lưu chữ', 'Save text'],
+  'video.overlay.saving': ['Đang lưu…', 'Saving…'],
+  'video.overlay.saved': ['Đã lưu', 'Saved'],
+  'video.overlay.conflict': ['Chữ này vừa được sửa ở nơi khác. Hãy tải lại rồi sửa tiếp.', 'This text was just changed elsewhere. Reload it and keep editing.'],
+  'video.overlay.loadFailed': ['Không tải được chữ đã lưu. Bạn thử lại nhé.', 'Could not load the saved text. Please try again.'],
+  'video.overlay.saveFailed': ['Chưa lưu được. Bạn thử lại nhé.', 'Could not save yet. Please try again.'],
+  'video.overlay.warningGlyphs': ['Một số ký tự có thể không hiện trong bản tải về:', 'Some characters may not appear in the downloaded copy:'],
+  'video.overlay.reload': ['Tải lại', 'Reload'],
+  'video.overlay.invalid': ['Chữ chưa hợp lệ (quá dài hoặc ngoài thời lượng clip).', 'The text is not valid (too long or outside the clip length).'],
+  'video.overlay.layerAria': ['Chữ trên video', 'Text on video'],
+  'video.overlay.unsavedBlocksPost': ['Chữ trên video chưa lưu được nên chưa đăng bài. Hãy lưu chữ rồi đăng lại.', 'The text on your video could not be saved, so the post was not published. Save the text and post again.'],
+
+  // ── Player ──
+  'video.player.unavailable': ['Video này hiện không xem được.', 'This video is not available right now.'],
+  'video.player.unsupported': ['Trình duyệt của bạn chưa phát được video này.', 'Your browser cannot play this video yet.'],
+  'video.player.network': ['Không phát được video. Kiểm tra kết nối rồi thử lại nhé.', 'Could not play the video. Check your connection and try again.'],
+  'video.player.retry': ['Thử lại', 'Try again'],
+  'video.player.watch': ['Xem video', 'Watch video'],
+
+  // ── AI consent dialog (owner-approved wording) ──
+  'video.consent.title': ['Đồng ý kiểm duyệt bằng AI', 'Agree to AI review'],
+  'video.consent.body': [
+    'Để đăng clip lên Khám phá, TappyAI sẽ gửi hình ảnh (một số khung hình), lời nói và chữ trong clip đến nhà cung cấp trí tuệ nhân tạo (hiện là OpenAI) chỉ để kiểm duyệt trước khi đăng. Nếu không đồng ý, bạn vẫn xem được video nhưng không đăng được clip. Video gốc được lưu riêng tư; bạn có thể xoá bài hoặc tài khoản bất cứ lúc nào để xoá video.',
+    'To post a clip to Explore, TappyAI sends some frames, the speech and the on-screen text of your clip to an AI provider (currently OpenAI) solely to review it before it is published. If you decline you can still watch videos but cannot post a clip. Your original video is stored privately; you can delete the post or your account at any time to remove the video.',
+  ],
+  'video.consent.accept': ['Đồng ý và tiếp tục', 'Agree and continue'],
+  'video.consent.decline': ['Không đồng ý', 'Decline'],
+  'video.consent.saving': ['Đang ghi nhận…', 'Saving…'],
+  'video.consent.saveFailed': ['Chưa ghi nhận được lựa chọn của bạn. Hãy thử lại.', 'Could not record your choice. Please try again.'],
+  'video.consent.declined': ['Bạn chưa đồng ý kiểm duyệt bằng AI nên chưa đăng được clip. Bạn vẫn xem được video bình thường.', 'You have not agreed to AI review, so the clip cannot be posted. You can still watch videos as usual.'],
+
+  // ── Upload / processing states ──
+  'video.flow.preparing': ['Đang chuẩn bị…', 'Preparing…'],
+  'video.flow.uploading': ['Đang tải clip lên', 'Uploading your clip'],
+  'video.flow.finishing': ['Đang hoàn tất tải lên…', 'Finishing the upload…'],
+  'video.flow.processing': ['Đang xử lý', 'Processing'],
+  'video.flow.processingHint': ['Clip đang được xử lý và kiểm duyệt. Bạn có thể chờ ở đây.', 'Your clip is being processed and reviewed. You can wait here.'],
+  'video.flow.review': ['Đang chờ duyệt', 'Waiting for review'],
+  'video.flow.reviewHint': ['Clip cần được xem xét thêm trước khi đăng. Chúng tôi sẽ cập nhật tại đây.', 'Your clip needs a closer look before it can be posted. This page will update.'],
+  'video.flow.ready': ['Sẵn sàng đăng', 'Ready to post'],
+  'video.flow.published': ['Đã đăng', 'Posted'],
+  'video.flow.rejected': ['Clip này không được đăng', 'This clip cannot be posted'],
+  'video.flow.rejectedHint': ['Clip không đáp ứng quy định cộng đồng. Bạn có thể chọn clip khác.', 'The clip does not meet the community guidelines. You can choose another clip.'],
+  'video.flow.failed': ['Xử lý clip chưa thành công', 'Processing the clip failed'],
+  'video.flow.cancel': ['Hủy', 'Cancel'],
+  'video.flow.retry': ['Thử lại', 'Try again'],
+  'video.flow.chooseAnother': ['Chọn clip khác', 'Choose another clip'],
+  'video.flow.remove': ['Xoá clip', 'Remove clip'],
+  'video.flow.cancelled': ['Đã hủy tải lên.', 'Upload cancelled.'],
+
+  // ── Errors, by documented code ──
+  'video.err.tooLarge': ['Clip quá lớn (tối đa 150 MB).', 'The clip is too large (150 MB maximum).'],
+  'video.err.type': ['Chỉ nhận video MP4 hoặc MOV.', 'Only MP4 or MOV videos are accepted.'],
+  'video.err.tooLong': ['Clip dài quá 5 phút. Hãy chọn clip ngắn hơn.', 'The clip is longer than 5 minutes. Choose a shorter one.'],
+  'video.err.unreadable': ['Không đọc được clip này. Hãy thử clip khác.', 'This clip could not be read. Try another one.'],
+  'video.err.metadata': ['Clip còn chứa thông tin vị trí hoặc thiết bị nên chưa đăng được. Hãy xuất lại clip rồi thử lại.', 'The clip still carries location or device information and cannot be posted. Re-export it and try again.'],
+  'video.err.rate': ['Bạn thao tác hơi nhanh. Hãy đợi một lát rồi thử lại.', 'You are going a bit fast. Wait a moment and try again.'],
+  'video.err.unavailable': ['Tính năng đăng clip tạm thời chưa dùng được. Hãy thử lại sau.', 'Posting clips is temporarily unavailable. Please try again later.'],
+  'video.err.failed': ['Clip này không dùng được nữa. Hãy chọn lại clip.', 'This clip can no longer be used. Please choose it again.'],
+  'video.err.login': ['Bạn cần đăng nhập để đăng clip.', 'Please sign in to post a clip.'],
+  'video.err.network': ['Lỗi kết nối. Hãy kiểm tra mạng rồi thử lại.', 'Connection problem. Check your network and try again.'],
+  'video.err.generic': ['Chưa tải được clip. Hãy thử lại.', 'Could not upload the clip. Please try again.'],
+
+  // ── Publishing ──
+  'video.post.notReady': ['Clip chưa sẵn sàng để đăng. Hãy đợi xử lý xong.', 'The clip is not ready to post yet. Wait until processing finishes.'],
+  'video.post.inUse': ['Clip này đã được dùng cho một bài khác.', 'This clip is already used by another post.'],
+  'video.post.promoting': ['Đang chuẩn bị phát clip. Hãy thử đăng lại sau ít giây.', 'The clip is being prepared for playback. Try posting again in a few seconds.'],
+  'video.post.unavailable': ['Chưa đăng được clip lúc này. Hãy thử lại sau.', 'Could not post the clip right now. Please try again later.'],
+  'video.post.notFound': ['Không tìm thấy clip. Hãy chọn lại clip.', 'The clip was not found. Please choose it again.'],
+
+  // ── Download ──
+  'video.download.button': ['Tải về', 'Download'],
+  'video.download.rendering': ['Đang tạo bản tải về…', 'Preparing your download…'],
+  'video.download.ready': ['Đã sẵn sàng, đang tải…', 'Ready, downloading…'],
+  'video.download.failed': ['Không tạo được bản tải về. Hãy thử lại.', 'Could not prepare the download. Please try again.'],
+  'video.download.notReady': ['Clip chưa sẵn sàng để tải về.', 'The clip is not ready to download yet.'],
+  'video.download.overlayInvalid': ['Chữ trên video chưa hợp lệ nên chưa tạo được bản tải. Hãy sửa chữ rồi thử lại.', 'The text on the video is not valid, so the download cannot be made. Fix the text and try again.'],
+  'video.download.unavailable': ['Tải về tạm thời chưa dùng được. Hãy thử lại sau.', 'Downloads are temporarily unavailable. Please try again later.'],
+}
+
+export const vi: Record<string, string> = Object.fromEntries(Object.entries(T).map(([k, v]) => [k, v[0]]))
+export const en: Record<string, string> = Object.fromEntries(Object.entries(T).map(([k, v]) => [k, v[1]]))

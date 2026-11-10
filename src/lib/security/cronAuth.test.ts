@@ -59,7 +59,10 @@ describe('guard — every scheduler route uses it', () => {
     // 18 since subscriptions-expire (P7 subscriptions; flagged, not scheduled)
     // 19 since business-order-expiry (Tappy Business e0f48b3, 21/10; not scheduled — owner 30/10: "fix hết", mục D)
     // 20 cron routes since chat-media-retention (Messenger picture retention, 04/11/2026; scheduled in vercel.json). Each one is checked by the it.each below.
-    expect(routes.length).toBe(21)
+    // 21 cron routes since video-source-cleanup (Explore video part 3, 05/11/2026; scheduled in vercel.json).
+    // 23 cron routes since video-reconcile (Explore video part 4, 05/11/2026; scheduled in vercel.json).
+    // 24 cron routes since video-takedown (Explore video publishing, 05/11/2026; scheduled in vercel.json).
+    expect(routes.length).toBe(24)
   })
 
   it.each(routes)('%s', (file) => {

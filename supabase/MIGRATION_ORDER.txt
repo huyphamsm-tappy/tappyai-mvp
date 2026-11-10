@@ -160,3 +160,10 @@ supabase/migrations/20261107_chat_hardening.sql
 supabase/migrations/20261108_user_reports_message_target.sql
 supabase/migrations/20261109_chat_media.sql
 supabase/migrations/20261110_chat_media_retention.sql
+supabase/migrations/20261111_video_assets.sql
+supabase/migrations/20261112_video_asset_cleanup.sql
+supabase/migrations/20261113_video_transcode.sql
+supabase/migrations/20261114_video_moderation.sql
+supabase/migrations/20261115_video_overlays.sql
+supabase/migrations/20261116_video_publish_delivery.sql
+supabase/migrations/20261117_video_clip_consent.sql

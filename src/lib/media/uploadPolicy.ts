@@ -22,6 +22,7 @@ export type MediaUploadKind =
   | 'dealLogo'
   | 'dealBanner'
   | 'productImage'
+  | 'videoSource'
 
 export interface UploadKindPolicy {
   prefix: MediaPrefix
@@ -51,6 +52,8 @@ export const MEDIA_UPLOAD_POLICIES: Record<MediaUploadKind, UploadKindPolicy> = 
   // re-encodes them and strips EXIF; a photo sent client-direct as a "video" kept its GPS and serial.
   video: { prefix: 'videos', contentTypes: [...VIDEO_TYPES], maxBytes: MAX_VIDEO_SIZE_MB * MB },
   videoThumbnail: { prefix: 'thumbnails', contentTypes: IMAGE_TYPES, maxBytes: 10 * MB },
+  // Explore video, original file in the PRIVATE source bucket (only the new video routes mint it; behind EXPLORE_VIDEO_PIPELINE_ENABLED).
+  videoSource: { prefix: 'vsrc', contentTypes: [...VIDEO_TYPES], maxBytes: MAX_VIDEO_SIZE_MB * MB },
   // Tappy Business — one image per product, shot on a phone by a shop owner.
   // 6MB matches the review-photo ceiling users already meet; SVG is absent
   // because a product photo is never a vector and SVG carries script.

@@ -267,6 +267,17 @@ const MESSAGES = {
   'media.imageTooLarge': { vi: 'File ảnh phải nhỏ hơn {n}MB', en: 'Images must be smaller than {n}MB' },
   'media.videoTooLongSec': { vi: 'Video quá dài. Vui lòng chọn video tối đa {n} giây.', en: 'That video is too long. Please choose one up to {n} seconds.' },
   'media.noFile': { vi: 'Không có file', en: 'No file was provided' },
+  // Explore video (publishing + delivery): the video of a post that is not ready, not yours, or cannot be played right now.
+  'video.notAvailable': { vi: 'Video này hiện không xem được.', en: 'This video is not available right now.' },
+  'video.notReady': { vi: 'Video chưa sẵn sàng để đăng. Bạn đợi một chút rồi thử lại nhé.', en: "Your video isn't ready to post yet. Please try again in a moment." },
+  'video.deliveryUnavailable': { vi: 'Hiện chưa đăng được video. Vui lòng thử lại sau.', en: "Videos can't be posted right now. Please try again later." },
+  // Explore video (text overlay + download).
+  'video.invalidOverlay': { vi: 'Nội dung chữ trên video chưa hợp lệ. Bạn kiểm tra lại rồi lưu nhé.', en: "The text on your video isn't valid. Please check it and save again." },
+  'video.overlayTooLarge': { vi: 'Chữ trên video quá dài hoặc quá nhiều lớp.', en: 'The text on your video is too long or has too many layers.' },
+  'video.assetDeleted': { vi: 'Video này đã bị xoá.', en: 'This video has been deleted.' },
+  'video.versionConflict': { vi: 'Chữ trên video vừa được cập nhật ở nơi khác. Bạn tải lại rồi sửa tiếp nhé.', en: 'The text on this video was just updated somewhere else. Reload and continue editing.' },
+  'video.consentRequired': { vi: 'Bạn cần đồng ý điều kiện đăng clip trước khi đăng. Nếu không đồng ý, bạn vẫn xem được video nhưng không đăng được clip.', en: 'You need to accept the clip conditions before posting. If you decline you can still watch videos, but you cannot post a clip.' },
+  'video.downloadNotReady': { vi: 'Bản tải về chưa sẵn sàng. Bạn đợi một chút rồi thử lại nhé.', en: "The download isn't ready yet. Please try again in a moment." },
   'media.uploadProtocol': { vi: 'Giao thức tải lên không còn được hỗ trợ', en: 'That upload method is no longer supported' },
 
   // Music, remaining cases

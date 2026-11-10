@@ -77,6 +77,35 @@ policy_of() {
     # until the retention cron ships with the web release; apply BEFORE it (the web GET selects the column).
     20261110_chat_media_retention.sql)
       echo APPLY ;;
+    # Explore video, part 1 (owner 05/11/2026): two NEW tables (video_assets, video_asset_events) and their functions/trigger. Purely additive: nothing reads or writes
+    # them until the video routes ship AND EXPLORE_VIDEO_PIPELINE_ENABLED=true (OFF by default), so it can be applied at any time.
+    20261111_video_assets.sql)
+      echo APPLY ;;
+    # Explore video, part 3 (owner 05/11/2026): two nullable columns on video_assets, one partial index and three service-role-only functions (what to clean up, the legal hold,
+    # the removal record). Requires 20261111 (same group). Nothing calls them until the video-source-cleanup cron has a source bucket, so it can be applied at any time.
+    20261112_video_asset_cleanup.sql)
+      echo APPLY ;;
+    # Explore video, part 4 (owner 05/11/2026): three columns on video_assets (has_audio, transcode_attempts, transcode_error), a partial index, and the clean-up function recreated
+    # with an owner_id column in its result (a changed result type, so it is dropped and created again in the same file). Requires 20261111 and 20261112. Nothing reads them until
+    # the video routes are on, so it can be applied at any time, BUT only together with or after 20261112 (the video-source-cleanup cron reads owner_id from this function).
+    20261113_video_transcode.sql)
+      echo APPLY ;;
+    # Explore video, VID-03 (owner 05/11/2026): the moderation decision history and the automatic / human decide functions. Additive, service-role only. Apply only after
+    # 20261111-20261113. Nothing calls them until EXPLORE_VIDEO_PIPELINE_ENABLED is on. Rollback drops the decision history, so use it only if the feature never ran.
+    20261114_video_moderation.sql)
+      echo APPLY ;;
+    # Explore video, VID-02 / VID-04 (owner 05/11/2026): the overlay documents and the download-render table. Additive, service-role only, owner-scoped by the routes.
+    # Requires 20261111. Nothing reads them until EXPLORE_VIDEO_PIPELINE_ENABLED is on.
+    20261115_video_overlays.sql)
+      echo APPLY ;;
+    # Explore video, publishing and delivery (owner 05/11/2026): three columns, three functions and two indexes on video_assets (the post link, the delivery copy, the claim that
+    # makes a retried publish resume the same post). Additive. Requires 20261111-20261114. Nothing calls them until EXPLORE_VIDEO_PIPELINE_ENABLED is on.
+    20261116_video_publish_delivery.sql)
+      echo APPLY ;;
+    # Explore video, clip consent (owner 05/11/2026: every account must accept the clip conditions before it can post a clip): one NEW table, service-role only. Independent of the other
+    # video migrations. Nothing reads it until EXPLORE_VIDEO_PIPELINE_ENABLED is on.
+    20261117_video_clip_consent.sql)
+      echo APPLY ;;
     # H1 → M1 first, then the security-branch migrations in MIGRATION_ORDER.txt order (owner 30/09): 20260928b needs the
     # deal-click code (service role) on production; the others are code-independent but ride the same verified window.
     20260927_owner_update_column_privileges.sql|20260928_revoke_reviews_insert.sql|\

@@ -38,6 +38,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "docx": "^9.7.1",
+    "hls.js": "1.5.20",
     "jose": "^5.10.0",
     "lucide-react": "^0.400.0",
     "matter-js": "^0.20.0",

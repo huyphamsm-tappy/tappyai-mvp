@@ -28,7 +28,7 @@ export const moderationModule: ModuleManifest = {
   capabilities: [],
   permissions: [PERMISSIONS.MODERATION_QUEUE_READ],
   dependencies: [],
-  routes: ['/admin/moderation'],
+  routes: ['/admin/moderation', '/admin/video-moderation'],
   data: { tables: ['moderation_queue', 'moderation_actions'] },
   navigation: {
     label: 'admin.nav.moderation',

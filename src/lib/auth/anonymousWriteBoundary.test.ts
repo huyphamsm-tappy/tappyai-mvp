@@ -52,6 +52,8 @@ const EXEMPT: Record<string, string> = {
   'age-declaration': 'guest 18+ self-declaration for the chat trial; sets an HttpOnly cookie, writes nothing server-side; 10/min per IP',
   'auth/claim-anonymous': 'the anonymous→account handoff; the anonymous token IS the credential',
   'csp-report': 'the browser sends CSP violation reports with no credentials; nothing is stored (one log line per distinct violation); body capped at 20 KB, 30/min per IP',
+  // ── Explore video playback: a PUBLIC post is watched by anyone, signed-in or not. ──
+  'video/playback/[assetId]': 'POST only SIGNS a short-lived cookie for the video of a PUBLIC post (404 unless published, approved and visible); it writes nothing; 240/min per user or IP; 404 while EXPLORE_VIDEO_PIPELINE_ENABLED is off',
 
   // ── Tappy Business: the customer is a guest by design. ──
   //

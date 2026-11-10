@@ -17,6 +17,8 @@ import { getAccountRestriction, accountRestrictionMessage, accountRestrictionCod
 import { refuseIneligible } from '@/lib/account/requireEligibleUser'
 import { getTrack } from '@/modules/music/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { exploreVideoPipelineEnabled } from '@/lib/media/video/flags'
+import { claimVideoForPost, inspectVideoForPost, parseVideoAssetId, videoPostDepsFromEnv, type VideoPostFailure } from '@/lib/media/video/publishPost'
 
 const MUSIC_PAYLOAD_VERSION = 1
 
@@ -100,6 +102,9 @@ export async function POST(req: NextRequest) {
   let placeId: string, placeName: string, placeAddress: string, rating: number, body: string, photos: string[]
   let media_url: string, thumbnail: string, content_type: string, source_type: string, source_url: string, hashtags: string[]
   let videoDuration = 0
+  // Explore video pipeline: a post may carry a processed, approved video by id. ONLY read while EXPLORE_VIDEO_PIPELINE_ENABLED is on; with the flag off the field is ignored
+  // and this route behaves exactly as it always has.
+  let videoAssetRaw: unknown
   // A soundtrack from the Music LIBRARY (Phase 7). The client sends {trackId, startSec, volume};
   // only the id is trusted after the library check below. A clip's OWN audio is unaffected.
   let music: ReviewMusic | null = null
@@ -118,6 +123,7 @@ export async function POST(req: NextRequest) {
     source_url = b.source_url?.trim() || ''
     hashtags = Array.isArray(b.hashtags) ? b.hashtags.filter((t: unknown) => typeof t === 'string').slice(0, 10) : []
     videoDuration = Number(b.duration) || 0
+    if (exploreVideoPipelineEnabled()) videoAssetRaw = b.videoAssetId
     if (b.music) {
       const trackId = typeof b.music.trackId === 'string' ? b.music.trackId.trim() : ''
       if (!trackId) throw new Error('invalid music')
@@ -126,7 +132,7 @@ export async function POST(req: NextRequest) {
       music = { version: MUSIC_PAYLOAD_VERSION, trackId, startSec, volume, origin: 'attached' }
     }
     if (!placeId || !placeName) throw new Error('missing fields')
-    if (!body && photos.length === 0 && !media_url) throw new Error('need body or photos or media')
+    if (!body && photos.length === 0 && !media_url && (videoAssetRaw === undefined || videoAssetRaw === null || videoAssetRaw === '')) throw new Error('need body or photos or media')
     if (rating && (rating < 1 || rating > 5 || !Number.isInteger(rating))) throw new Error('invalid rating')
     if (body.length > 1000) throw new Error('body too long')
   } catch {
@@ -162,6 +168,22 @@ export async function POST(req: NextRequest) {
     if (!track) return gone('music-reuse:attach-sound')
   }
 
+  // ── Explore video: the post carries a processed, approved video ────────────
+  // (flag on AND a videoAssetId in the body; otherwise none of this runs.) The video must be the caller's own, ready and approved; a retry of a post that already exists answers
+  // with that post and writes nothing. The claim itself (promote + publish) happens below, after every other check passed.
+  let videoPost: { assetId: string; resumeReviewId: string | null } | null = null
+  const parsedVideo = parseVideoAssetId(videoAssetRaw)
+  if (!parsedVideo.ok) {
+    return NextResponse.json({ error: 'invalid_video', message: serverMessage('video.notAvailable', requestLocale(req)) }, { status: 400 })
+  }
+  const videoDeps = parsedVideo.id ? videoPostDepsFromEnv(req) : null
+  if (parsedVideo.id && videoDeps) {
+    const inspected = await inspectVideoForPost({ assetId: parsedVideo.id, ownerId: user.id }, videoDeps)
+    if (!inspected.ok) return videoFailureResponse(inspected, requestLocale(req))
+    if (inspected.reused) return NextResponse.json({ ok: true, reused: true, review_id: inspected.reviewId })
+    videoPost = { assetId: parsedVideo.id, resumeReviewId: inspected.reviewId }
+  }
+
   // Check if user has a past booking here → verified badge
   const today = new Date().toISOString().slice(0, 10)
   const { data: booking } = await supabase
@@ -187,6 +209,21 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'already_reviewed', message: serverMessage('review.alreadyReviewed', requestLocale(req)) }, { status: 409 })
   }
 
+  // Explore video: claim the video for this post (promote the HLS copy, ready -> published, post id stamped atomically). From here on a retry resumes the SAME post.
+  let videoReviewId: string | null = null
+  if (videoPost && videoDeps) {
+    const claimed = await claimVideoForPost({ assetId: videoPost.assetId, ownerId: user.id, resumeReviewId: videoPost.resumeReviewId }, videoDeps)
+    if (!claimed.ok) return videoFailureResponse(claimed, requestLocale(req))
+    if (claimed.reused) return NextResponse.json({ ok: true, reused: true, review_id: claimed.reviewId })
+    videoReviewId = claimed.reviewId
+    // The server's facts replace whatever the client sent about the media: the playable URL, the type, the real length.
+    media_url = claimed.manifestUrl
+    content_type = 'video'
+    source_type = 'upload'
+    source_url = ''
+    videoDuration = claimed.durationSec ?? 0
+  }
+
   // Music reuse is retired: a clip's audio is no longer auto-registered as a
   // reusable "original sound" (that only existed so others could "use this
   // sound", which is gone). A clip plays its OWN embedded audio unless the poster
@@ -210,6 +247,8 @@ export async function POST(req: NextRequest) {
   if (source_url) reviewData.source_url = source_url
   if (hashtags.length > 0) reviewData.hashtags = hashtags
   if (music) reviewData.music = music
+  // Explore video: the post id was fixed at the claim, so a retry after a crash writes the same post.
+  if (videoReviewId) reviewData.id = videoReviewId
 
   // ── Content safety publication gate ────────────────────────────────────────
   // The actual publication boundary. New content receives its lifecycle state
@@ -266,6 +305,12 @@ export async function POST(req: NextRequest) {
     insertError = retryError2 ?? null
   }
 
+  // Explore video: the same post id written twice (two retries racing) is the post already being there, not a failure.
+  if (insertError && videoReviewId && insertError.code === '23505') {
+    const { data: already } = await writer.from('reviews').select('id').eq('id', videoReviewId).maybeSingle()
+    if (already) insertError = null
+  }
+
   if (insertError) {
     // Log concise detail server-side for debugging; never leak DB error text to the client.
     console.error('Review insert error:', insertError.code ?? insertError.message)
@@ -286,5 +331,15 @@ export async function POST(req: NextRequest) {
     'vi'
   const moderation = authorModerationPayload(lifecycle, lang.toLowerCase().startsWith('en') ? 'en' : 'vi')
 
-  return NextResponse.json({ ok: true, is_verified: isVerified, ...(moderation ? { moderation } : {}) })
+  return NextResponse.json({ ok: true, is_verified: isVerified, ...(videoReviewId ? { review_id: videoReviewId } : {}), ...(moderation ? { moderation } : {}) })
+}
+
+/** Explore video: the answer for a video that cannot be posted (not yours, not ready, not deliverable right now). Codes the apps can act on, plus a sentence for people. */
+function videoFailureResponse(f: VideoPostFailure, locale: ReturnType<typeof requestLocale>) {
+  // One literal code per branch (the API error contract wants literals, not a computed value).
+  if (f.error === 'video_not_ready') return NextResponse.json({ error: 'video_not_ready', message: serverMessage('video.notReady', locale) }, { status: f.status })
+  if (f.error === 'video_promoting') return NextResponse.json({ error: 'video_promoting', message: serverMessage('video.notReady', locale) }, { status: f.status })
+  if (f.error === 'video_in_use') return NextResponse.json({ error: 'video_in_use', message: serverMessage('video.notReady', locale) }, { status: f.status })
+  if (f.error === 'video_unavailable') return NextResponse.json({ error: 'video_unavailable', message: serverMessage('video.deliveryUnavailable', locale) }, { status: f.status })
+  return NextResponse.json({ error: 'video_not_found', message: serverMessage('video.notAvailable', locale) }, { status: f.status })
 }

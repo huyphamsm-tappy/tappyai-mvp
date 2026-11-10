@@ -58,6 +58,18 @@
       "schedule": "30 19 * * *"
     },
     {
+      "path": "/api/cron/video-source-cleanup",
+      "schedule": "45 19 * * *"
+    },
+    {
+      "path": "/api/cron/video-reconcile",
+      "schedule": "15 20 * * *"
+    },
+    {
+      "path": "/api/cron/video-takedown",
+      "schedule": "30 20 * * *"
+    },
+    {
       "path": "/api/cron/click-attributions-sweep",
       "schedule": "45 18 * * *"
     },

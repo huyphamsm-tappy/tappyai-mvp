@@ -18,6 +18,18 @@ export const ALLOWED_MEDIA_PREFIXES = [
   // so a product's image carries its owner in the path — which is what lets
   // src/lib/business/schema.ts refuse a key belonging to another shop.
   'products',
+  // Explore video, ORIGINAL uploads (ADR rev.1): keys are `vsrc/{ownerId}/{random}.{ext}` in the PRIVATE source bucket (GCS_VIDEO_SOURCE_BUCKET),
+  // never in the public media bucket. Account deletion for this prefix is part 3 of the plan (it must list the source bucket, which
+  // accountMediaPrefixes below does not): the feature stays OFF (EXPLORE_VIDEO_PIPELINE_ENABLED) until that part ships.
+  'vsrc',
+  // Explore video, TRANSCODER OUTPUT before it is approved (private staging area inside the same private source bucket): `vstg/{ownerId}/{assetId}/…`
+  // (HLS playlists and segments, sprite-sheet frames for moderation, the audio-only file). Written only by the Transcoder job, never by a client.
+  'vstg',
+  // Explore video, the rendered DOWNLOAD (MP4 with text and watermark), private, in the source bucket: `vdl/{ownerId}/{assetId}/{cacheKey}/download.mp4`.
+  'vdl',
+  // Explore video, the DELIVERY copy of an APPROVED video (HLS) in the separate delivery bucket (GCS_VIDEO_DELIVERY_BUCKET), served only through the CDN with a
+  // signed cookie: `vdel/{ownerId}/{assetId}/…`. Removed when the video is taken down, deleted, or its account is deleted.
+  'vdel',
 ] as const
 
 export type MediaPrefix = (typeof ALLOWED_MEDIA_PREFIXES)[number]
@@ -100,8 +112,47 @@ export function randomMediaSuffix(length = 24): string {
  */
 const UUID_RE_SRC = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
 const OWNER_PREFIX_RE = new RegExp(
-  `^(?:(?:avatars|covers)/${UUID_RE_SRC}-|(?:reviews|videos|thumbnails|music)/${UUID_RE_SRC}/|avatars/group-${UUID_RE_SRC}-)$`,
+  `^(?:(?:avatars|covers)/${UUID_RE_SRC}-|(?:reviews|videos|thumbnails|music|vsrc)/${UUID_RE_SRC}/|(?:vstg|vdl|vdel)/${UUID_RE_SRC}/(?:${UUID_RE_SRC}/)?|avatars/group-${UUID_RE_SRC}-)$`,
 )
+
+/**
+ * The prefix of ONE owner's original videos in the PRIVATE source bucket (Explore video). Deliberately NOT part of accountMediaPrefixes: that list is run
+ * against the PUBLIC bucket, and this one against the source bucket (see src/lib/media/video/sourceDeletion.ts). Validated like every owner prefix, so a malformed
+ * id fails here rather than widening a listing.
+ */
+export function videoSourcePrefix(userId: string): string {
+  return assertOwnerScopedPrefix(`vsrc/${userId}/`)
+}
+
+/** ALL of one owner's transcoder output (private staging, in the source bucket) — what account deletion removes. */
+export function videoStagingPrefix(userId: string): string {
+  return assertOwnerScopedPrefix(`vstg/${userId}/`)
+}
+
+/** ALL of one owner's rendered downloads (private, source bucket). */
+export function videoDownloadPrefix(userId: string): string {
+  return assertOwnerScopedPrefix(`vdl/${userId}/`)
+}
+
+/** ALL of one owner's delivery copies (the separate delivery bucket). */
+export function videoDeliveryPrefix(userId: string): string {
+  return assertOwnerScopedPrefix(`vdel/${userId}/`)
+}
+
+/** The delivery folder of ONE video: `vdel/{ownerId}/{assetId}/`. */
+export function videoAssetDeliveryPrefix(userId: string, assetId: string): string {
+  return assertOwnerScopedPrefix(`vdel/${userId}/${assetId}/`)
+}
+
+/** The download folder of ONE video: `vdl/{ownerId}/{assetId}/`. */
+export function videoAssetDownloadPrefix(userId: string, assetId: string): string {
+  return assertOwnerScopedPrefix(`vdl/${userId}/${assetId}/`)
+}
+
+/** The staging folder of ONE video: `vstg/{ownerId}/{assetId}/`. Both ids are validated as uuids. */
+export function videoAssetStagingPrefix(userId: string, assetId: string): string {
+  return assertOwnerScopedPrefix(`vstg/${userId}/${assetId}/`)
+}
 
 /** Throws unless `prefix` names exactly ONE owner — never '', never a bare top-level prefix. */
 export function assertOwnerScopedPrefix(prefix: string): string {

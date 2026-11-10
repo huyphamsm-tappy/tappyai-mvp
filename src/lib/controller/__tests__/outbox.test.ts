@@ -476,6 +476,15 @@ describe('C8 — the drain is wired as a daily cron', () => {
     //
     // 17 -> 18 on 2026-11-04 (Messenger, owner): `/api/cron/chat-media-retention` removes pictures older than 30 days from the private bucket and unused uploads after 24 h
     //   (like Zalo, the device keeps its own copy). Daily, fixed minute and hour; it notifies nobody.
-    expect(vercelJson.crons.length).toBe(18)
+    //
+    // 18 -> 19 on 2026-11-05 (Explore video part 3, owner): `/api/cron/video-source-cleanup` removes deleted, failed and abandoned original videos from the PRIVATE source
+    //   bucket (never a live video, never one under a legal hold). Daily, fixed minute and hour; it notifies nobody, and does nothing until the source bucket is configured.
+    //
+    // 19 -> 20 on 2026-11-05 (Explore video part 4, owner): `/api/cron/video-reconcile` advances videos stuck in `processing` (a lost request, a job that never reported). Daily, fixed
+    //   minute and hour; it notifies nobody, and does nothing while EXPLORE_VIDEO_PIPELINE_ENABLED is off.
+    //
+    // 20 -> 21 on 2026-11-05 (Explore video publishing, owner): `/api/cron/video-takedown` removes the delivery copy of any video whose post was hidden, held or restricted, and moves
+    //   it out of `published`. Daily, fixed minute and hour; it notifies nobody, and does nothing while EXPLORE_VIDEO_PIPELINE_ENABLED is off.
+    expect(vercelJson.crons.length).toBe(21)
   })
 })

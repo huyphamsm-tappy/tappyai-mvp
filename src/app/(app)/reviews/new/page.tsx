@@ -47,6 +47,13 @@ import {
   SHOW_MUSIC,
 } from '@/lib/config/product'
 import { apiFetch, isAgeGateMessage, redirectToAgeCheck } from '@/lib/account/ageGateClient'
+// Explore video: the NEW upload flow (private source bucket, processing, moderation, overlay). Every route answers 404 while the server flag is off, and then
+// the existing upload path below runs exactly as before.
+import { useVideoComposerFlow } from '@/components/video/useVideoComposerFlow'
+import { VideoFlowPanel } from '@/components/video/VideoFlowPanel'
+import { VideoOverlayPanel, type OverlaySaveHandle } from '@/components/video/VideoOverlayPanel'
+import { VideoDownloadButton } from '@/components/video/VideoDownloadButton'
+import { mapPublishError } from '@/lib/media/video/composerState'
 
 const MAX_VIDEO_SIZE = MAX_VIDEO_SIZE_MB * 1024 * 1024
 
@@ -388,6 +395,16 @@ export default function NewReviewPage() {
   const [hasOpenedMusicPicker, setHasOpenedMusicPicker] = useState(false)
   const openMusicPicker = () => { setHasOpenedMusicPicker(true); setMusicPickerOpen(true) }
 
+  // New flow (Explore video pipeline). `newFlow` is true once the server accepted this clip into it; the old path never sets it.
+  const videoFlow = useVideoComposerFlow({ onAgeGate: redirectToAgeCheck })
+  const [newFlow, setNewFlow] = useState(false)
+  const [localVideoUrl, setLocalVideoUrl] = useState('')
+  const overlayHandleRef = useRef<OverlaySaveHandle | null>(null)
+  const flowPhase = videoFlow.state.phase
+  const flowBusy = newFlow && ['preparing', 'uploading', 'finishing', 'processing', 'review'].includes(flowPhase)
+  useEffect(() => () => { if (localVideoUrl) URL.revokeObjectURL(localVideoUrl) }, [localVideoUrl])
+  const clearNewFlow = () => { videoFlow.reset(); setNewFlow(false); setLocalVideoUrl('') }
+
   const resetVideoState = () => {
     setMedia_url(''); setThumbnail(''); setThumbPreview(''); setVideoDuration(0)
     setUploadStep(''); setUploadProgress(0); setAiHashtags([])
@@ -495,7 +512,15 @@ export default function NewReviewPage() {
     // Pre-upload: an expired or anonymous session goes to login rather than 401ing mid-upload.
     if (!(await ensureSession())) return
     resetVideoState()
+    clearNewFlow()
     setVideoDuration(duration) // keep the measured length for the original-sound track
+
+    // Explore video pipeline first: 404 means the feature is off and the old path below runs untouched.
+    if ((await videoFlow.start(file)) === 'new') {
+      setLocalVideoUrl(URL.createObjectURL(file))
+      setNewFlow(true)
+      return
+    }
 
     /* 1. Generate + upload thumbnail — best-effort. A poster frame is nice-to-have;
        if the browser can't decode one, the video must still upload and play. */
@@ -703,7 +728,7 @@ export default function NewReviewPage() {
 
   /* ─── Submit ─── */
   const allTags = mergeHashtags(typedTags, aiHashtags)
-  const isUploading = uploadStep === 'thumb' || uploadStep === 'video' || uploadStep === 'ai'
+  const isUploading = uploadStep === 'thumb' || uploadStep === 'video' || uploadStep === 'ai' || flowBusy
 
   /** A drop is the same action as picking from the file dialog, routed by the ACTIVE mode. */
   const acceptDrop = (files: File[]) => {
@@ -722,7 +747,7 @@ export default function NewReviewPage() {
 
   const canPost = (() => {
     if (mediaMode === 'photo') return body.trim().length > 0 || photos.length > 0
-    if (mediaMode === 'video') return uploadStep === 'done'
+    if (mediaMode === 'video') return newFlow ? flowPhase === 'ready' : uploadStep === 'done'
     if (mediaMode === 'url') return !!source_url.trim() && !!detectSource(source_url)
     return false
   })()
@@ -735,7 +760,15 @@ export default function NewReviewPage() {
       // A visitor (no session, or the anonymous chat session) signs in here; what they wrote waits in the draft.
       if (!user || isAnonymousUser(user)) { saveDraft(); router.push(loginHref()); return }
 
-      const placeId = mediaMode === 'photo' && placeName.trim()
+      // A new-flow clip keeps ONE place id per clip, so a retry after a network error resends the same post (the server is idempotent) instead of creating another.
+      const flowAssetId = mediaMode === 'video' && newFlow ? videoFlow.state.assetId : null
+      if (flowAssetId && overlayHandleRef.current && !(await overlayHandleRef.current.save())) {
+        // The text on the video could not be saved: posting now would publish a clip without it.
+        setError(t('video.overlay.unsavedBlocksPost')); return
+      }
+      const placeId = flowAssetId
+        ? `video_${flowAssetId}`
+        : mediaMode === 'photo' && placeName.trim()
         ? 'community_' + placeName.trim().toLowerCase().replace(/\s+/g, '_')
         : `${mediaMode}_${Date.now()}`
 
@@ -759,6 +792,13 @@ export default function NewReviewPage() {
       if (mediaMode === 'photo') {
         payload.photos = photos
         payload.content_type = 'photo'
+      } else if (mediaMode === 'video' && flowAssetId) {
+        // The server replaces media_url / type / length with its own facts for a processed video.
+        payload.content_type = 'video'
+        payload.videoAssetId = flowAssetId
+        payload.source_type = 'upload'
+        payload.duration = videoDuration
+        if (allTags.length > 0) payload.hashtags = allTags
       } else if (mediaMode === 'video') {
         payload.content_type = 'video'
         payload.media_url = media_url
@@ -790,6 +830,10 @@ export default function NewReviewPage() {
         body: JSON.stringify(payload),
       })
       const data = await res.json()
+      if (!res.ok) {
+        const videoError = flowAssetId ? mapPublishError(data.error) : null
+        if (videoError) { vfail('submit-review', tSubmit, new Error(data.error)); throw new Error(t(`video.post.${videoError}`)) }
+      }
       if (!res.ok) { vfail('submit-review', tSubmit, new Error(data.error || `HTTP ${res.status}`)); throw new Error(data.message || data.error || t('reviewNew.postError')) }
       vok('submit-review', tSubmit)
       try { localStorage.removeItem(REVIEW_DRAFT_KEY) } catch { /* nothing kept */ }
@@ -1006,7 +1050,31 @@ export default function NewReviewPage() {
           {/* -- Video -- */}
           {mediaMode === 'video' && (
             <div>
-              {uploadStep === '' && (
+              {/* New flow (Explore video pipeline): progress, server state, errors, consent, then the text editor and the download. */}
+              {newFlow && (
+                <div className="space-y-4">
+                  <VideoFlowPanel
+                    state={videoFlow.state}
+                    onCancel={() => { videoFlow.cancel(); setNewFlow(false); setLocalVideoUrl(''); setError(t('video.flow.cancelled')) }}
+                    onRetry={videoFlow.retry}
+                    onRemove={clearNewFlow}
+                    consentBusy={videoFlow.consentBusy}
+                    consentError={videoFlow.consentError}
+                    onAcceptConsent={() => void videoFlow.acceptConsent()}
+                    onDeclineConsent={videoFlow.declineConsent}
+                  />
+                  {(flowPhase === 'processing' || flowPhase === 'review' || flowPhase === 'ready') && videoFlow.state.assetId && localVideoUrl && (
+                    <VideoOverlayPanel
+                      assetId={videoFlow.state.assetId}
+                      previewUrl={localVideoUrl}
+                      durationMs={Math.round(videoDuration * 1000)}
+                      handleRef={overlayHandleRef}
+                    />
+                  )}
+                  {flowPhase === 'ready' && videoFlow.state.assetId && <VideoDownloadButton assetId={videoFlow.state.assetId} />}
+                </div>
+              )}
+              {uploadStep === '' && !(newFlow && flowPhase !== 'idle') && (
                 <div
                   onDragOver={e => { e.preventDefault(); setDragging(true) }}
                   onDragLeave={() => setDragging(false)}
