@@ -35,26 +35,30 @@ function turn(standardPlanSteps: number) {
     async *write() { yield '# Báo cáo\n\nNội dung [1]\n' },
   })
   const failed = vi.fn(async () => {})
+  const models: string[] = []
   const res = deepResearchResponse({
     question: 'q', context: '', lang: 'vi', cost: { usd: 0, calls: 0 }, serperUsd: () => ({ usd: 0, calls: 0 }), onFailed: failed,
     deps: mk('legacy', 6),
-    standard: { deps: mk('standard', standardPlanSteps), bounds: { ...STANDARD_RUN_BOUNDS } },
+    standard: { deps: mk('standard', standardPlanSteps), bounds: { ...STANDARD_RUN_BOUNDS }, label: 'standard' },
+    onUsage: u => { models.push(u.model) },
   })
-  return { res, ran, failed }
+  return { res, ran, failed, models }
 }
 
 describe('deepResearchResponse with a Standard pair', () => {
   vi.spyOn(console, 'log').mockImplementation(() => {})
   it('a plan within the tier runs on the Standard deps only', async () => {
-    const { res, ran, failed } = turn(2)
+    const { res, ran, failed, models } = turn(2)
     const text = await res.text()
     expect(ran).toEqual({ standard: 1, legacy: 0 })
+    expect(models).toEqual(['haiku55']) // the cost line names the model that served the run
     expect(text).toContain('Báo cáo'); expect(failed).not.toHaveBeenCalled()
   })
   it('a plan over the tier falls back to the legacy engine in the same stream, with no refund and a report', async () => {
-    const { res, ran, failed } = turn(5)
+    const { res, ran, failed, models } = turn(5)
     const text = await res.text()
     expect(ran).toEqual({ standard: 1, legacy: 1 })
+    expect(models).toEqual(['luna']) // served by the existing engine after the fallback
     expect(text).toContain('Báo cáo'); expect(text).not.toContain('không hoàn thành'); expect(failed).not.toHaveBeenCalled()
   })
 })

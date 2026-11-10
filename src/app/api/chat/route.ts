@@ -3662,14 +3662,14 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     return deepResearchResponse({
       question: lastText, context: recent, lang, cost, stop: deepStop,
       deps: createDeepResearchDeps(deepDeps),
-      ...(tierPlan ? { standard: { deps: createDeepResearchDeps({ ...deepDeps, ...(tierPlan.tier === 'ADVANCED_RESEARCH_REPORT' ? { advanced: true } : { standard: true }) }), bounds: tierPlan.bounds } } : {}),
+      ...(tierPlan ? { standard: { deps: createDeepResearchDeps({ ...deepDeps, ...(tierPlan.tier === 'ADVANCED_RESEARCH_REPORT' ? { advanced: true } : { standard: true }) }), bounds: tierPlan.bounds, label: tierPlan.tier === 'ADVANCED_RESEARCH_REPORT' ? 'advanced' as const : 'standard' as const } } : {}),
       // the searches' price: Serper's credits plus the Parallel searches sent
       serperUsd: () => {
         const d = serperDelta(serperAtStart)
         return { usd: Math.round((turnUsd({ promptTokens: 0, completionTokens: 0, serperCredits: d.credits }) + (par?.sent() ?? 0) * PARALLEL_PRICE.searchFastUsd) * 1e6) / 1e6, calls: sumCounts(d.calls) + (par?.sent() ?? 0) }
       },
       onFailed: async reason => { await refundQuotaOnFailure(`deep_research_${reason}`); await refundAiQuestion(deepRefund); await refundAiQuestion(advancedRefund) },
-      onUsage: u => { turnSearch.depth = 'thorough'; usageSink({ domain: null, turnType: 'deep_research', model: 'luna', tokensIn: 0, tokensOut: 0, serperCalls: u.searchCalls - (par?.sent() ?? 0), cacheHits: 0, usd: u.usd, answerUsd: u.llmUsd, serperUsd: u.serperUsd }, { parallelCalls: par?.sent() ?? 0, ok: u.ok }) },
+      onUsage: u => { turnSearch.depth = 'thorough'; usageSink({ domain: null, turnType: 'deep_research', model: u.model, tokensIn: 0, tokensOut: 0, serperCalls: u.searchCalls - (par?.sent() ?? 0), cacheHits: 0, usd: u.usd, answerUsd: u.llmUsd, serperUsd: u.serperUsd }, { parallelCalls: par?.sent() ?? 0, ok: u.ok }) },
     })
   }
   // ── TAPPY_AGENT: the bounded agent turn (src/lib/ai/agent) ──────────────────────────────────────────────────────────────

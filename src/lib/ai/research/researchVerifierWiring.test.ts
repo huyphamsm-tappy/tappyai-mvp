@@ -19,7 +19,7 @@ describe('the verifier is wired to tier runs only', () => {
   })
   it('the response logs the verification as counts and sentence numbers, never the text', async () => {
     const log = vi.spyOn(console, 'log').mockImplementation(() => {})
-    const res = deepResearchResponse({ question: 'q', context: '', lang: 'vi', cost: { usd: 0, calls: 0 }, serperUsd: () => ({ usd: 0, calls: 0 }), onFailed: async () => {}, deps: deps(''), standard: { deps: deps('# B\n\nThị trường đạt 9.999 tỷ USD [1].\n'), bounds: { ...STANDARD_RUN_BOUNDS } } })
+    const res = deepResearchResponse({ question: 'q', context: '', lang: 'vi', cost: { usd: 0, calls: 0 }, serperUsd: () => ({ usd: 0, calls: 0 }), onFailed: async () => {}, deps: deps(''), standard: { deps: deps('# B\n\nThị trường đạt 9.999 tỷ USD [1].\n'), bounds: { ...STANDARD_RUN_BOUNDS }, label: 'standard' } })
     await res.text()
     const line = log.mock.calls.map(c => String(c[0])).find(l => l.includes('tappyai_report_verification'))!
     expect(line).toBeTruthy(); expect(JSON.parse(line)).toMatchObject({ number_not_in_source: 1, flagged: [{ s: 3, status: 'number_not_in_source' }].slice(0, 1).map(f => ({ status: f.status })) })
