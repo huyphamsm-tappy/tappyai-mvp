@@ -5,7 +5,7 @@
 // Serper credits) and one outcome line (`tappyai_deep_research`, counts only, never the question or the report). A failed run gives the
 // question back (the route's refund) and says so in the text.
 
-import { runDeepResearch, chartsFrame, type DeepResearchDeps, type ResearchStatus } from './deepResearch'
+import { runDeepResearch, chartsFrame, type DeepResearchDeps, type ResearchStatus, type ResearchEmit, type RunBounds } from './deepResearch'
 import { evidenceCounts } from './deepResearchDeps'
 import { DOC_MEDIA_KIND, docMediaFrame, sanitizeDocMedia } from '@/lib/answerDoc/media'
 
@@ -25,6 +25,8 @@ export interface DeepResearchTurn {
    * is given back ('client_gone'); the deps' model calls are built on the same signal, so the call in flight is dropped too.
    */
   stop?: AbortController
+  /** R13 Standard tier: when present the run is bounded and uses these (Haiku) deps first; `deps` stays the fallback for a plan the tier cannot hold. */
+  standard?: { deps: DeepResearchDeps; bounds: RunBounds }
 }
 
 const FAILED_TEXT: Record<string, string> = {
@@ -40,14 +42,24 @@ export function deepResearchResponse(t: DeepResearchTurn): Response {
       const send = (line: string) => { try { c.enqueue(enc.encode(line + '\n')) } catch { /* client gone */ } }
       let chars = 0
       let pictures = 0
-      const out = await runDeepResearch(t.question, t.context, t.lang, t.deps, {
+      const emit: ResearchEmit = {
         status: (s: ResearchStatus) => send(`8:${JSON.stringify([s])}`),
         text: (x: string) => { chars += x.length; send(`0:${JSON.stringify(x)}`) },
         // the section pictures, as the answer's item pictures (tappy.doc_media.v1, re-validated here and again by the client; live-only)
         // the section charts (drawn by the client from these checked figures; every point names its source)
         charts: charts => send(`8:${JSON.stringify([chartsFrame(charts)])}`),
         images: items => { const a = sanitizeDocMedia({ kind: DOC_MEDIA_KIND, v: 1, items: items.map(i => ({ title: i.title, src: i.src, source: 'web' })) }); if (a) { pictures = a.items.length; send(docMediaFrame(a).trimEnd()) } },
-      }, t.stop?.signal)
+      }
+      // R13 Standard tier (RESEARCH_ADMISSION): the bounded Haiku run first. A plan the tier cannot hold ('exceeds_standard') or no plan at all, before a word was written, runs on the
+      // unbounded engine below instead (until the Advanced tier exists, that path is the Advanced request's home). Both share one cost counter and one refund.
+      let out = t.standard
+        ? await runDeepResearch(t.question, t.context, t.lang, t.standard.deps, emit, t.stop?.signal, t.standard.bounds)
+        : await runDeepResearch(t.question, t.context, t.lang, t.deps, emit, t.stop?.signal)
+      let standardFallback: string | null = null
+      if (t.standard && (out.failed === 'exceeds_standard' || out.failed === 'no_plan') && chars === 0 && !t.stop?.signal.aborted) {
+        standardFallback = out.failed
+        out = await runDeepResearch(t.question, t.context, t.lang, t.deps, emit, t.stop?.signal)
+      }
       // the person left before any report text went out: nothing was read, so the run is given back. Review 01/11: once the report had started
       // streaming it was read (at least in part), so leaving before the sources is not a way to get the quota back.
       if (out.failed === 'client_gone') { if (chars === 0) await Promise.resolve(t.onFailed(out.failed)) }
@@ -56,7 +68,7 @@ export function deepResearchResponse(t: DeepResearchTurn): Response {
       const usd = Math.round((t.cost.usd + serper.usd) * 1e6) / 1e6
       console.log(JSON.stringify({ type: 'tappyai_turn_cost', turnType: 'deep_research', usd, answerUsd: Math.round(t.cost.usd * 1e6) / 1e6, serperUsd: serper.usd, serperCalls: serper.calls, modelCalls: t.cost.calls }))
       try { t.onUsage?.({ usd, searchCalls: serper.calls, ok: !out.failed, llmUsd: Math.round(t.cost.usd * 1e6) / 1e6, serperUsd: serper.usd }) } catch { /* the ledger never breaks a run */ }
-      console.log(JSON.stringify({ type: 'tappyai_deep_research', ok: !out.failed, failed: out.failed, cut: out.cut === true, follow_ups: out.followUps ?? 0, steps: out.plan?.steps.length ?? 0, findings: out.findings.length, ...evidenceCounts(out.evidence), report_chars: chars, pictures, charts: out.charts ?? 0, figures_proposed: out.figures?.proposed ?? 0, figures_kept: out.figures?.kept ?? 0, step_stats: out.stepStats ?? [], unsupported_numbers: out.unsupported?.length ?? 0, unsupported_sample: (out.unsupported ?? []).slice(0, 12), ms: Date.now() - t0 }))
+      console.log(JSON.stringify({ type: 'tappyai_deep_research', ok: !out.failed, failed: out.failed, tier: t.standard ? (standardFallback ? 'STANDARD_FALLBACK_LEGACY' : 'STANDARD_REPORT') : 'LEGACY', standard_fallback: standardFallback, cut: out.cut === true, follow_ups: out.followUps ?? 0, steps: out.plan?.steps.length ?? 0, findings: out.findings.length, ...evidenceCounts(out.evidence), report_chars: chars, pictures, charts: out.charts ?? 0, figures_proposed: out.figures?.proposed ?? 0, figures_kept: out.figures?.kept ?? 0, step_stats: out.stepStats ?? [], unsupported_numbers: out.unsupported?.length ?? 0, unsupported_sample: (out.unsupported ?? []).slice(0, 12), ms: Date.now() - t0 }))
       send(`d:${JSON.stringify({ finishReason: out.failed ? 'error' : 'stop', usage: { promptTokens: 0, completionTokens: 0 } })}`)
       try { c.close() } catch { /* client gone */ }
     },

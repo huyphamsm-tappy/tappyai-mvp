@@ -31,6 +31,8 @@ import { wrapToolResultAsData } from '@/lib/ai/security/toolResultFence'
 import { pdfPartsToText } from '@/lib/ai/attachments/pdfAttachments'
 import { deepResearchResponse } from '@/lib/ai/research/deepResearchResponse'
 import { createDeepResearchDeps, deepResearchParallel, PARALLEL_PRICE } from '@/lib/ai/research/deepResearchDeps'
+import { standardTurnFor } from '@/lib/ai/research/researchTurn'
+import { claudeWriterAvailable } from '@/lib/ai/llm/registry'
 import { classifyIntent, detectLang, detectLangConfident, detectExplicitLangRequest, detectForcedTool, detectTravelIntent, detectLocationIntent, detectPlanningIntent, detectPlanningIntentFromConversation, detectPlanActivities, detectTripLength, isPlanningRefinement, defaultTransportFor, detectMovieRecommendationIntent, isSimpleQuery, normalizeVN, isPurchaseShaped, routeToolOfferOn } from '@/lib/ai/intent'
 import { deriveNeedProfile, type StoredPreferences } from '@/lib/ai/consultative/needProfile'
 import { resolveDecisionStage, taskSwitched, consultationUserTexts } from '@/lib/ai/consultative/refinement'
@@ -3645,9 +3647,14 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // review 02/11: the person closed the page - the run stops (the model call in flight too) and is given back
     const deepStop = new AbortController()
     if (req.signal?.aborted) deepStop.abort(); else req.signal?.addEventListener('abort', () => deepStop.abort(), { once: true })
+    // R13 Standard tier (RESEARCH_ADMISSION, off by default, locked in production): a simple report runs the bounded Haiku path; everything else, and a plan the tier cannot hold, runs as before
+    const standardPlan = standardTurnFor(lastText, { claudeAvailable: claudeWriterAvailable() })
+    if (standardPlan) console.log(JSON.stringify({ type: 'tappyai_research_admission', tier: standardPlan.decision.tier, score: standardPlan.decision.score.total, cues: standardPlan.cues, policy: standardPlan.decision.policyVersion }))
+    const deepDeps = { lang, userTexts: recentUserTexts, cost, questionLang: detectLangConfident(lastText), signal: deepStop.signal, ...(par ? { parallelSearch: par } : {}) }
     return deepResearchResponse({
       question: lastText, context: recent, lang, cost, stop: deepStop,
-      deps: createDeepResearchDeps({ lang, userTexts: recentUserTexts, cost, questionLang: detectLangConfident(lastText), signal: deepStop.signal, ...(par ? { parallelSearch: par } : {}) }),
+      deps: createDeepResearchDeps(deepDeps),
+      ...(standardPlan ? { standard: { deps: createDeepResearchDeps({ ...deepDeps, standard: true }), bounds: standardPlan.bounds } } : {}),
       // the searches' price: Serper's credits plus the Parallel searches sent
       serperUsd: () => {
         const d = serperDelta(serperAtStart)
