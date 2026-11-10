@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import {
   normalizeVietnamese, matchesQuery, messageText, conversationMatches, timeGroupOf, groupByTime,
-  buildTranscriptMarkdown, exportFileName, type HistoryConversation,
+  buildTranscriptMarkdown, exportFileName, itemsForTab, tabCounts, buildGroups, type HistoryConversation,
 } from './historyModel'
 
 // A fixed "now": Tuesday 10 Nov 2026, 14:00 local time.
@@ -60,6 +60,31 @@ describe('time groups', () => {
     expect(groups[0].items.map(i => i.id)).toEqual(['t2', 't1'])
     expect(groupByTime([{ id: 'x', updated_at: at(2026, 11, 10) }], NOW).map(g => g.key)).toEqual(['today'])
     expect(groupByTime([], NOW)).toEqual([])
+  })
+})
+
+describe('tabs: all / pinned / archived', () => {
+  const mk = (id: string, flags: { p?: boolean | null; a?: boolean | null }, h = 12): HistoryConversation => ({ id, title: id, updated_at: at(2026, 11, 10, h), is_pinned: flags.p, is_archived: flags.a })
+  const list = [mk('plain', {}), mk('pin', { p: true }, 9), mk('arch', { a: true }), mk('pinarch', { p: true, a: true }), mk('legacy', { p: null, a: null }), mk('unset', {}, 8)]
+  it('"all" hides archived; "pinned" shows pinned and not archived; "archived" shows archived (pinned or not)', () => {
+    expect(itemsForTab(list, 'all').map(c => c.id)).toEqual(['plain', 'pin', 'legacy', 'unset'])
+    expect(itemsForTab(list, 'pinned').map(c => c.id)).toEqual(['pin'])
+    expect(itemsForTab(list, 'archived').map(c => c.id)).toEqual(['arch', 'pinarch'])
+  })
+  it('counts agree with the tabs, and a row without the flags (older server) counts as plain', () => {
+    expect(tabCounts(list)).toEqual({ all: 4, pinned: 1, archived: 2 })
+    expect(tabCounts([{ id: 'x', title: 'x', updated_at: at(2026, 11, 10) }])).toEqual({ all: 1, pinned: 0, archived: 0 })
+  })
+  it('on "all" the pinned come first in their own group, newest first; the rest follow by day', () => {
+    const groups = buildGroups(itemsForTab(list, 'all'), 'all', NOW)
+    expect(groups.map(g => g.key)).toEqual(['pinned', 'today'])
+    expect(groups[0].items.map(c => c.id)).toEqual(['pin'])
+    expect(groups[1].items.map(c => c.id)).toEqual(['plain', 'legacy', 'unset'])
+  })
+  it('on "pinned" and "archived" there is no pinned group, only days', () => {
+    expect(buildGroups(itemsForTab(list, 'pinned'), 'pinned', NOW).map(g => g.key)).toEqual(['today'])
+    expect(buildGroups(itemsForTab(list, 'archived'), 'archived', NOW).map(g => g.key)).toEqual(['today'])
+    expect(buildGroups([], 'all', NOW)).toEqual([])
   })
 })
 

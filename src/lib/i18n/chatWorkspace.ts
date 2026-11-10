@@ -57,7 +57,36 @@ const T: Record<string, [string, string]> = {
   'chatWs.signin.desc': ['Lịch sử trò chuyện được lưu theo tài khoản của bạn.', 'Your chat history is saved to your account.'],
   'chatWs.signin.action': ['Đăng nhập', 'Sign in'],
 
-  'chatWs.error.load': ['Không tải được lịch sử trò chuyện.', 'Could not load your chat history.'],
+  'chatWs.tab.all': ['Tất cả', 'All'],
+  'chatWs.tab.pinned': ['Ghim', 'Pinned'],
+  'chatWs.tab.archived': ['Lưu trữ', 'Archived'],
+  'chatWs.tab.label': ['Lọc lịch sử', 'Filter history'],
+  'chatWs.group.pinned': ['Đã ghim', 'Pinned'],
+
+  'chatWs.menu.pin': ['Ghim lên đầu danh sách', 'Pin to the top'],
+  'chatWs.menu.unpin': ['Bỏ ghim', 'Unpin'],
+  'chatWs.menu.archive': ['Lưu trữ (ẩn khỏi danh sách)', 'Archive (hide from the list)'],
+  'chatWs.menu.restore': ['Khôi phục về danh sách chính', 'Restore to the main list'],
+  'chatWs.pinned.badge': ['Đã ghim', 'Pinned'],
+
+  'chatWs.pin.done': ['Đã ghim {n} cuộc trò chuyện', 'Pinned {n} conversation(s)'],
+  'chatWs.unpin.done': ['Đã bỏ ghim {n} cuộc trò chuyện', 'Unpinned {n} conversation(s)'],
+  'chatWs.archive.done': ['Đã lưu trữ {n} cuộc trò chuyện', 'Archived {n} conversation(s)'],
+  'chatWs.restore.done': ['Đã khôi phục {n} cuộc trò chuyện về danh sách chính', 'Restored {n} conversation(s) to the main list'],
+  'chatWs.action.failed': ['Không thực hiện được. Hãy thử lại.', 'That did not work. Please try again.'],
+
+  'chatWs.select.pin': ['Ghim hàng loạt', 'Pin selected'],
+  'chatWs.select.unpin': ['Bỏ ghim hàng loạt', 'Unpin selected'],
+  'chatWs.select.archive': ['Lưu trữ hàng loạt', 'Archive selected'],
+  'chatWs.select.restore': ['Khôi phục hàng loạt', 'Restore selected'],
+
+  'chatWs.empty.pinned.title': ['Chưa có cuộc trò chuyện nào được ghim', 'No pinned conversations'],
+  'chatWs.empty.pinned.desc': ['Nhấp vào menu ba chấm (⋮) trên một cuộc trò chuyện rồi chọn "Ghim lên đầu danh sách" để giữ cuộc trò chuyện quan trọng ở trên cùng.', 'Open the three-dot menu (⋮) on a conversation and choose "Pin to the top" to keep an important one up front.'],
+  'chatWs.empty.archived.title': ['Kho lưu trữ đang trống', 'Nothing archived'],
+  'chatWs.empty.archived.desc': ['Cuộc trò chuyện bạn lưu trữ sẽ được cất ở đây và có thể khôi phục bất cứ lúc nào. Dùng menu ba chấm (⋮) rồi chọn "Lưu trữ" để ẩn bớt cuộc trò chuyện cũ khỏi danh sách chính.', 'Conversations you archive are kept here and can be restored at any time. Use the three-dot menu (⋮) and choose "Archive" to tidy the main list.'],
+  'chatWs.empty.toAll': ['Xem tất cả cuộc trò chuyện', 'See all conversations'],
+
+  'chatWs.error.load':['Không tải được lịch sử trò chuyện.', 'Could not load your chat history.'],
   'chatWs.error.retry': ['Thử lại', 'Try again'],
 }
 

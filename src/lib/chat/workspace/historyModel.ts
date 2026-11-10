@@ -12,6 +12,22 @@ export interface HistoryConversation {
   category?: string | null
   updated_at: string
   messages?: HistoryMessage[] | null
+  /** Chat workspace slice 2. Missing / null reads as false (an older server, or a row from before the migration). */
+  is_pinned?: boolean | null
+  is_archived?: boolean | null
+}
+
+export type HistoryTab = 'all' | 'pinned' | 'archived'
+
+/** The conversations a tab shows. Archived ones leave "all" and "pinned"; a pinned + archived conversation is shown only under "archived". */
+export function itemsForTab<T extends HistoryConversation>(list: readonly T[], tab: HistoryTab): T[] {
+  if (tab === 'archived') return list.filter(c => c.is_archived === true)
+  if (tab === 'pinned') return list.filter(c => c.is_pinned === true && c.is_archived !== true)
+  return list.filter(c => c.is_archived !== true)
+}
+
+export function tabCounts(list: readonly HistoryConversation[]): Record<HistoryTab, number> {
+  return { all: itemsForTab(list, 'all').length, pinned: itemsForTab(list, 'pinned').length, archived: itemsForTab(list, 'archived').length }
 }
 
 /** Lower-cases, strips Vietnamese diacritics (đ → d), trims. "Đà Lạt" and "da lat" normalise to the same string. */
@@ -82,6 +98,21 @@ export function groupByTime<T extends { updated_at: string }>(list: readonly T[]
   return (['today', 'sevenDays', 'older'] as const)
     .map(key => ({ key, items: buckets[key].sort(byNewest) }))
     .filter(g => g.items.length > 0)
+}
+
+export type GroupKey = TimeGroupKey | 'pinned'
+
+/**
+ * The sidebar's groups for a tab. On "all" the pinned conversations come first in their own group ("pinned"), then the rest by day;
+ * on "pinned" and "archived" everything is grouped by day only.
+ */
+export function buildGroups<T extends HistoryConversation>(list: readonly T[], tab: HistoryTab, now: Date): { key: GroupKey; items: T[] }[] {
+  const byNewest = (a: T, b: T) => (Date.parse(b.updated_at) || 0) - (Date.parse(a.updated_at) || 0)
+  if (tab !== 'all') return groupByTime(list, now)
+  const pinned = list.filter(c => c.is_pinned === true).sort(byNewest)
+  const rest = list.filter(c => c.is_pinned !== true)
+  const groups: { key: GroupKey; items: T[] }[] = groupByTime(rest, now)
+  return pinned.length > 0 ? [{ key: 'pinned', items: pinned }, ...groups] : groups
 }
 
 export interface TranscriptLabels {

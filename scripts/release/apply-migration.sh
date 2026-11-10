@@ -106,6 +106,10 @@ policy_of() {
     # video migrations. Nothing reads it until EXPLORE_VIDEO_PIPELINE_ENABLED is on.
     20261117_video_clip_consent.sql)
       echo APPLY ;;
+    # Chat workspace, slice 2 (owner 10/11/2026): two additive boolean columns on conversations (pin, archive). Existing rows read as false. Nothing uses them until
+    # NEXT_PUBLIC_CHAT_WORKSPACE_ENABLED is on.
+    20261118_conversation_pin_archive.sql)
+      echo APPLY ;;
     # H1 → M1 first, then the security-branch migrations in MIGRATION_ORDER.txt order (owner 30/09): 20260928b needs the
     # deal-click code (service role) on production; the others are code-independent but ride the same verified window.
     20260927_owner_update_column_privileges.sql|20260928_revoke_reviews_insert.sql|\

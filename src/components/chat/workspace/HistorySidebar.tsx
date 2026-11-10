@@ -3,18 +3,19 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { Download, ListChecks, MessageCircle, MoreVertical, Pencil, Plus, Search, Trash2 } from 'lucide-react'
+import { Archive, ArchiveRestore, Download, ListChecks, MessageCircle, MoreVertical, Pencil, Pin, PinOff, Plus, Search, Trash2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { apiFetch } from '@/lib/account/ageGateClient'
 import {
-  buildTranscriptMarkdown, conversationMatches, exportFileName, groupByTime, type HistoryConversation,
+  buildGroups, buildTranscriptMarkdown, conversationMatches, exportFileName, itemsForTab, tabCounts,
+  type HistoryConversation, type HistoryTab,
 } from '@/lib/chat/workspace/historyModel'
 
 // Desktop history sidebar of the chat workspace (400 px at 2xl, 360 px below). It lists the signed-in person's own saved conversations
-// from GET /api/conversations (the 20 most recent), searches title + messages without diacritics, groups by day, renames in place,
-// exports a transcript as .md and deletes one or several behind a confirmation. Pin / archive / projects are NOT here yet: the
-// `conversations` table has no column for them (a later slice adds them with a migration).
+// from GET /api/conversations (the 40 most recent), in three tabs (all / pinned / archived), searches title + messages without
+// diacritics, groups by day (pinned first on "all"), renames in place, pins, archives and restores, exports a transcript as .md and
+// deletes one or several behind a confirmation. "Projects" is NOT here yet: the product has no projects concept to list.
 
 type Status = 'loading' | 'ready' | 'error' | 'signedOut'
 
@@ -30,6 +31,7 @@ export default function HistorySidebar() {
 
   const [items, setItems] = useState<HistoryConversation[]>([])
   const [status, setStatus] = useState<Status>('loading')
+  const [tab, setTab] = useState<HistoryTab>('all')
   const [queryInput, setQueryInput] = useState('')
   const [query, setQuery] = useState('')
   const [selectMode, setSelectMode] = useState(false)
@@ -90,8 +92,48 @@ export default function HistorySidebar() {
 
   useEffect(() => () => { if (noticeTimer.current) clearTimeout(noticeTimer.current) }, [])
 
-  const visible = useMemo(() => items.filter(c => conversationMatches(c, query)), [items, query])
-  const groups = useMemo(() => groupByTime(visible, new Date()), [visible])
+  const counts = useMemo(() => tabCounts(items), [items])
+  const tabItems = useMemo(() => itemsForTab(items, tab), [items, tab])
+  const visible = useMemo(() => tabItems.filter(c => conversationMatches(c, query)), [tabItems, query])
+  const groups = useMemo(() => buildGroups(visible, tab, new Date()), [visible, tab])
+
+  function changeTab(next: HistoryTab) {
+    if (next === tab) return
+    setTab(next)
+    setSelected(new Set()) // never act on rows another tab is hiding
+    setMenuId(null)
+  }
+
+  // ── pin / archive / restore (one or several) ──
+  async function applyFlags(ids: string[], flags: { pinned?: boolean; archived?: boolean }, doneKey: string) {
+    if (ids.length === 0) return
+    const before = new Map(items.filter(c => ids.includes(c.id)).map(c => [c.id, { is_pinned: c.is_pinned, is_archived: c.is_archived }]))
+    setItems(list => list.map(c => (ids.includes(c.id)
+      ? { ...c, ...(flags.pinned !== undefined ? { is_pinned: flags.pinned } : {}), ...(flags.archived !== undefined ? { is_archived: flags.archived } : {}) }
+      : c)))
+    const results = await Promise.all(ids.map(async id => {
+      try {
+        const res = await apiFetch('/api/conversations', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id, ...flags }),
+        })
+        return res.ok ? id : null
+      } catch { return null }
+    }))
+    const failed = ids.filter(id => !results.includes(id))
+    if (failed.length > 0) {
+      setItems(list => list.map(c => (failed.includes(c.id) ? { ...c, ...before.get(c.id) } : c)))
+      say(t('chatWs.action.failed'))
+    }
+    const okCount = ids.length - failed.length
+    if (okCount > 0) say(t(doneKey, { n: String(okCount) }))
+  }
+
+  function finishBatch() {
+    setSelected(new Set())
+    setSelectMode(false)
+  }
 
   // ── rename ──
   function startRename(id: string) {
@@ -193,7 +235,7 @@ export default function HistorySidebar() {
       <div className="flex items-center justify-between border-b border-blue-900/30 px-4 py-3.5">
         <div className="flex items-center gap-2">
           <h2 className="text-sm font-bold tracking-tight text-white">{t('chatWs.sidebar.title')}</h2>
-          <span className="rounded-full border border-blue-500/30 bg-blue-900/40 px-2 py-0.5 font-mono text-[10px] font-bold text-sky-300">{items.length}</span>
+          <span className="rounded-full border border-blue-500/30 bg-blue-900/40 px-2 py-0.5 font-mono text-[10px] font-bold text-sky-300">{counts.all}</span>
         </div>
         <Link
           href="/chat"
@@ -221,7 +263,7 @@ export default function HistorySidebar() {
           onClick={() => (selectMode ? exitSelectMode() : setSelectMode(true))}
           title={t('chatWs.select.title')}
           aria-pressed={selectMode}
-          disabled={status !== 'ready' || items.length === 0}
+          disabled={status !== 'ready' || tabItems.length === 0}
           className={cn(
             'flex shrink-0 items-center gap-1 rounded-xl border px-2.5 py-1.5 text-[11px] font-medium transition-all disabled:cursor-not-allowed disabled:opacity-40',
             selectMode ? 'border-blue-400 bg-blue-600/25 text-sky-200' : 'border-blue-900/40 bg-[#050B18] text-slate-300 hover:border-blue-500/50 hover:text-white',
@@ -232,7 +274,25 @@ export default function HistorySidebar() {
         </button>
       </div>
 
-      <div className={cn('flex-1 space-y-3 overflow-y-auto px-2 py-2', selectMode && 'pb-24')}>
+      <div role="tablist" aria-label={t('chatWs.tab.label')} className="flex items-center gap-1 border-b border-blue-900/20 px-3 pb-1.5 pt-2 text-[11px]">
+        {(['all', 'pinned', 'archived'] as const).map(key => (
+          <button
+            key={key}
+            type="button"
+            role="tab"
+            aria-selected={tab === key}
+            onClick={() => changeTab(key)}
+            className={cn(
+              'flex-1 truncate rounded-lg px-1.5 py-1 text-center font-medium transition-all',
+              tab === key ? 'border border-blue-500/30 bg-blue-600/30 text-sky-300' : 'text-slate-400 hover:bg-blue-900/20 hover:text-slate-200',
+            )}
+          >
+            {t(`chatWs.tab.${key}`)} ({counts[key]})
+          </button>
+        ))}
+      </div>
+
+      <div className={cn('flex-1 space-y-3 overflow-y-auto px-2 py-2', selectMode && 'pb-32')}>
         {status === 'loading' && <p className="p-6 text-center text-xs text-slate-400">{t('chatWs.loading')}</p>}
 
         {status === 'error' && (
@@ -247,7 +307,17 @@ export default function HistorySidebar() {
           <EmptyState icon={<MessageCircle size={28} aria-hidden />} title={t('chatWs.empty.none.title')} desc={t('chatWs.empty.none.desc')} actionLabel={t('chatWs.empty.none.action')} href="/chat" />
         )}
 
-        {status === 'ready' && items.length > 0 && visible.length === 0 && (
+        {status === 'ready' && items.length > 0 && tabItems.length === 0 && (
+          <EmptyState
+            icon={tab === 'pinned' ? <Pin size={28} aria-hidden /> : tab === 'archived' ? <Archive size={28} aria-hidden /> : <MessageCircle size={28} aria-hidden />}
+            title={t(tab === 'pinned' ? 'chatWs.empty.pinned.title' : tab === 'archived' ? 'chatWs.empty.archived.title' : 'chatWs.empty.none.title')}
+            desc={t(tab === 'pinned' ? 'chatWs.empty.pinned.desc' : tab === 'archived' ? 'chatWs.empty.archived.desc' : 'chatWs.empty.none.desc')}
+            actionLabel={tab === 'all' ? t('chatWs.empty.none.action') : t('chatWs.empty.toAll')}
+            {...(tab === 'all' ? { href: '/chat' } : { onAction: () => changeTab('all') })}
+          />
+        )}
+
+        {status === 'ready' && tabItems.length > 0 && visible.length === 0 && (
           <EmptyState
             icon={<Search size={28} aria-hidden />}
             title={t('chatWs.empty.search.title')}
@@ -323,6 +393,9 @@ export default function HistorySidebar() {
                           </span>
                         )}
                       </div>
+                      {conv.is_pinned === true && !isRenaming && (
+                        <Pin size={12} aria-label={t('chatWs.pinned.badge')} className="mr-1 shrink-0 text-amber-400" />
+                      )}
                       {!selectMode && !isRenaming && (
                         <button
                           type="button"
@@ -345,6 +418,16 @@ export default function HistorySidebar() {
                         <button role="menuitem" type="button" onClick={e => { e.stopPropagation(); setMenuId(null); exportConversation(conv) }} className="flex w-full items-center gap-2.5 px-3.5 py-2 text-left transition-colors hover:bg-blue-600/25 hover:text-white">
                           <Download size={14} aria-hidden />{t('chatWs.menu.export')}
                         </button>
+                        {conv.is_archived !== true && (
+                          <button role="menuitem" type="button" onClick={e => { e.stopPropagation(); setMenuId(null); void applyFlags([conv.id], { pinned: conv.is_pinned !== true }, conv.is_pinned === true ? 'chatWs.unpin.done' : 'chatWs.pin.done') }} className="flex w-full items-center gap-2.5 px-3.5 py-2 text-left transition-colors hover:bg-blue-600/25 hover:text-white">
+                            {conv.is_pinned === true ? <PinOff size={14} aria-hidden /> : <Pin size={14} aria-hidden />}
+                            {conv.is_pinned === true ? t('chatWs.menu.unpin') : t('chatWs.menu.pin')}
+                          </button>
+                        )}
+                        <button role="menuitem" type="button" onClick={e => { e.stopPropagation(); setMenuId(null); void applyFlags([conv.id], { archived: conv.is_archived !== true }, conv.is_archived === true ? 'chatWs.restore.done' : 'chatWs.archive.done') }} className="flex w-full items-center gap-2.5 px-3.5 py-2 text-left transition-colors hover:bg-blue-600/25 hover:text-white">
+                          {conv.is_archived === true ? <ArchiveRestore size={14} aria-hidden /> : <Archive size={14} aria-hidden />}
+                          {conv.is_archived === true ? t('chatWs.menu.restore') : t('chatWs.menu.archive')}
+                        </button>
                         <div className="my-1 h-px bg-blue-900/40" />
                         <button role="menuitem" type="button" onClick={e => { e.stopPropagation(); setMenuId(null); setConfirm({ ids: [conv.id] }) }} className="flex w-full items-center gap-2.5 px-3.5 py-2 text-left text-red-300 transition-colors hover:bg-red-600/30 hover:text-red-100">
                           <Trash2 size={14} aria-hidden />{t('chatWs.menu.delete')}
@@ -361,25 +444,54 @@ export default function HistorySidebar() {
 
       {selectMode && (
         <div className="absolute inset-x-2 bottom-3 z-30 rounded-2xl border border-blue-500/40 bg-[#0A1530] px-3 py-2.5 shadow-2xl shadow-black/70">
-          <div className="flex items-center justify-between">
+          <div className="mb-2 flex items-center justify-between">
             <span role="status" className="text-xs font-semibold text-white">{t('chatWs.select.count', { n: String(selected.size) })}</span>
-            <div className="flex items-center gap-1.5 text-[11px]">
-              <button type="button" onClick={exitSelectMode} className="rounded-lg px-2 py-1 text-slate-300 hover:bg-blue-900/30 hover:text-white">{t('chatWs.select.cancel')}</button>
+            <button type="button" onClick={exitSelectMode} className="rounded-lg px-2 py-0.5 text-[11px] text-slate-300 hover:bg-blue-900/30 hover:text-white">{t('chatWs.select.cancel')}</button>
+          </div>
+          <div className="flex items-center gap-1.5 text-[11px]">
+            <button
+              type="button"
+              disabled={selected.size === 0}
+              onClick={() => {
+                const ids = Array.from(selected)
+                void applyFlags(ids, { archived: tab !== 'archived' }, tab === 'archived' ? 'chatWs.restore.done' : 'chatWs.archive.done')
+                finishBatch()
+              }}
+              className="flex flex-1 items-center justify-center gap-1 truncate rounded-lg border border-amber-500/30 bg-amber-500/15 px-1 py-1.5 font-medium text-amber-200 hover:bg-amber-500/30 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              {tab === 'archived' ? <ArchiveRestore size={13} aria-hidden /> : <Archive size={13} aria-hidden />}
+              {tab === 'archived' ? t('chatWs.select.restore') : t('chatWs.select.archive')}
+            </button>
+            {tab !== 'archived' && (
               <button
                 type="button"
                 disabled={selected.size === 0}
-                onClick={() => setConfirm({ ids: Array.from(selected) })}
-                className="flex items-center gap-1 rounded-lg border border-red-500/30 bg-red-600/20 px-2.5 py-1 font-medium text-red-200 hover:bg-red-600/40 disabled:cursor-not-allowed disabled:opacity-40"
+                onClick={() => {
+                  const ids = Array.from(selected)
+                  const allPinned = ids.every(id => items.find(c => c.id === id)?.is_pinned === true)
+                  void applyFlags(ids, { pinned: !allPinned }, allPinned ? 'chatWs.unpin.done' : 'chatWs.pin.done')
+                  finishBatch()
+                }}
+                className="flex flex-1 items-center justify-center gap-1 truncate rounded-lg border border-blue-400/30 bg-blue-600/25 px-1 py-1.5 font-medium text-sky-200 hover:bg-blue-600/45 disabled:cursor-not-allowed disabled:opacity-40"
               >
-                <Trash2 size={13} aria-hidden />{t('chatWs.select.delete')}
+                {Array.from(selected).length > 0 && Array.from(selected).every(id => items.find(c => c.id === id)?.is_pinned === true) ? <PinOff size={13} aria-hidden /> : <Pin size={13} aria-hidden />}
+                {Array.from(selected).length > 0 && Array.from(selected).every(id => items.find(c => c.id === id)?.is_pinned === true) ? t('chatWs.select.unpin') : t('chatWs.select.pin')}
               </button>
-            </div>
+            )}
+            <button
+              type="button"
+              disabled={selected.size === 0}
+              onClick={() => setConfirm({ ids: Array.from(selected) })}
+              className="flex flex-1 items-center justify-center gap-1 truncate rounded-lg border border-red-500/30 bg-red-600/20 px-1 py-1.5 font-medium text-red-200 hover:bg-red-600/40 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              <Trash2 size={13} aria-hidden />{t('chatWs.select.delete')}
+            </button>
           </div>
         </div>
       )}
 
       {notice && (
-        <p role="status" className="absolute inset-x-3 bottom-3 z-40 rounded-xl border border-blue-500/40 bg-[#0B152C] px-3 py-2 text-xs font-medium text-white shadow-xl" style={selectMode ? { bottom: '4.5rem' } : undefined}>
+        <p role="status" className="absolute inset-x-3 bottom-3 z-40 rounded-xl border border-blue-500/40 bg-[#0B152C] px-3 py-2 text-xs font-medium text-white shadow-xl" style={selectMode ? { bottom: '7.25rem' } : undefined}>
           {notice}
         </p>
       )}
