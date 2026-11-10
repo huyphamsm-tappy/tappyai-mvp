@@ -46,6 +46,15 @@ const MESSAGES = {
     vi: 'Hôm nay bạn đã dùng tới {n} lượt hỏi Tappy — mức trần để giữ dịch vụ ổn định cho mọi người. Hẹn gặp lại bạn vào ngày mai nhé!',
     en: "You've reached today's ceiling of {n} Tappy turns — a limit that keeps the service steady for everyone. See you again tomorrow!",
   },
+  // R13 cost gate (10/11/2026): the account's day of AI work reached the safety ceiling. A graceful sentence with no figure; resets at 00:00 Vietnam time.
+  'chat.dailyCostLimit': {
+    vi: 'Hôm nay tài khoản của bạn đã dùng nhiều lượt hỏi AI hơn mức an toàn của một ngày. Hẹn gặp lại bạn vào ngày mai nhé!',
+    en: "Your account has reached today's safety ceiling for AI use. See you again tomorrow!",
+  },
+  'chat.costGateUnavailable': {
+    vi: 'Hệ thống đang kiểm tra hạn mức nên chưa trả lời được lúc này. Bạn thử lại sau ít phút nhé.',
+    en: 'The usage check is not responding, so Tappy cannot answer right now. Please try again in a few minutes.',
+  },
   // P7 closeout (02/10): a PAID plan that used its daily allowance — no upgrade nag, it resets at 00:00 Vietnam time.
   // Owner 01/11/2026: paid plans have no question limit; this is only the hidden anti-abuse ceiling (PAID_DAILY_CEILING).
   'chat.planLimit': {

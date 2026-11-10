@@ -100,6 +100,7 @@ import { flushPending, recordEvent, type UsageEvent } from '@/lib/observability'
 import { FREE_DAILY_LIMIT, ANON_LIFETIME_LIMIT } from '@/lib/config/product'
 import { accountQuotaFor, aiQuotaIdentity, consumeAiQuestion, consumeDeepResearch, refundAiQuestion, type AiQuotaRefund } from '@/lib/ai/quota/aiQuestionQuota'
 import { tierOf, modeForTier, deepResearchMonthlyLimit } from '@/lib/plans/tiers'
+import { costGateOn, reserveTurnCost, type CostTurn } from '@/lib/ai/cost/costGate'
 import { withinGlobalDeepCeiling } from '@/lib/ai/quota/globalCeiling'
 import { withoutInternalToolFields } from '@/lib/ai/streamInternalFields'
 import { wrapToolsWithoutAiSources } from '@/lib/security/aiSourcePolicy'
@@ -766,6 +767,9 @@ export async function POST(req: Request) {
   // null for an exempt turn (canned / clarify) and for Pro (metered by the daily cap, not here).
   let quotaRefund: AiQuotaRefund | null = null
   let quotaRefunded = false
+  // R13 cost gate (lib/ai/cost, AI_COST_GATE=1, off by default): the day's money this account may still spend, reserved before the model runs,
+  // settled to the turn's real cost in usageSink, given back when the turn produced nothing. Null when the gate is off or the turn is exempt.
+  let costTurn: CostTurn | null = null
   // ── CONSULT_V3 turn contract (clarifyCredit.ts) and Q-03 pending actions ────────────────────────────────────────────
   // Every rule below is inert with CONSULT_V3 off: no credit is taken, issued or kept, and no "ok" is free. The stored chat state is read
   // once here for both the pending-action rules and the carried facts (P0-2).
@@ -1245,6 +1249,24 @@ export async function POST(req: Request) {
             { status: 429, headers: { 'Content-Type': 'application/json' } },
           )
         }
+      }
+      // R13 cost gate: a signed-in account's DAY of money, reserved by the mode that will really run (a Free account asking for Deep Research
+      // runs Chat, so it reserves Chat). Refused here, before any model or search work. Canned/deterministic turns cost nothing and skip it.
+      if (costGateOn() && !quotaExempt) {
+        const gate = await reserveTurnCost({ userId: user.id, tier: tierOf(quotaPlan), mode: modeForTier(chatMode, tierOf(quotaPlan)) })
+        if (!gate.ok) {
+          // The person is told only to come back tomorrow, never a figure. A metering outage gets its own code so it is not mistaken for the ceiling.
+          const outage = gate.reason === 'store_unavailable'
+          await refundAiQuestion(quotaRefund)
+          quotaRefund = null
+          return new Response(
+            JSON.stringify(outage
+              ? { error: 'cost_gate_unavailable', message: serverMessage('chat.costGateUnavailable', requestLocale(req)) }
+              : { error: 'daily_cost_limit_reached', message: serverMessage('chat.dailyCostLimit', requestLocale(req)) }),
+            { status: outage ? 503 : 429, headers: { 'Content-Type': 'application/json', ...(outage ? { 'Retry-After': '30' } : {}) } },
+          )
+        }
+        costTurn = gate.turn
       }
     }
   } catch (e) {
@@ -2700,6 +2722,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   const turnSearch: { depth: 'none' | SearchDepth } = { depth: 'none' }
   const usageSink = (i: TurnCostInfo, extra: { parallelCalls?: number; ok?: boolean } = {}) => {
     logSessionCost(i) // 02/11: outside production, one readable line with the running total of the testing session (never in production)
+    if (costTurn) { const t = costTurn; costTurn = null; void t.settle(i.usd) } // R13 cost gate: the reservation becomes the turn's real cost, once
     void recordAiUsage({ userId: authedUserId ?? null, plan: quotaPlan, mode: ledgerMode(chatMode, autoThink.on, responsesConfigured()), searchDepth: turnSearch.depth, costUsd: i.usd, tokensIn: i.tokensIn, tokensOut: i.tokensOut, serperCalls: i.serperCalls, ...usageSplit(i), ...extra })
   }
   const tools = noToolTurn && !agentOn ? undefined : gateTools(timeTools({
@@ -3588,6 +3611,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // throw refunds exactly once. The tools in this route catch their own errors and never throw, so
   // `onError` here means the turn produced no usable answer.
   const refundQuotaOnFailure = async (reason: string): Promise<void> => {
+    // R13 cost gate: a turn that produced nothing gives its reserved money back too (independent of the question refund below: Pro has none).
+    if (costTurn) { const t = costTurn; costTurn = null; await t.release() }
     if (quotaRefunded || !quotaRefund) return
     quotaRefunded = true
     console.warn(JSON.stringify({ type: 'tappyai_quota_refund', reason, scope: quotaRefund.scope }))
