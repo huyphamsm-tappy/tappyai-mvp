@@ -37,7 +37,7 @@ Ký hiệu: **XONG** = có mã + test và đã nối vào đường chạy (sau 
 | 15 Quan sát | MỘT PHẦN | Nhật ký mới: admission, verification, conflicts, tier. |
 | 16 Hiệu năng / benchmark | CHƯA | Chưa đo Standard vs Advanced vs engine cũ (Chủ sở hữu tự UAT). |
 | 17 Kiểm thử chấp nhận | MỘT PHẦN | Mỗi lát có test đơn vị; bộ chấp nhận theo chương chưa dựng. |
-| 24 Đa phương thức, camera | HÀM (chính sách) | Còn: cấu trúc tệp Office, bom giải nén, OCR, Vision theo nhà cung cấp, camera, giao diện ba nền tảng. |
+| 24 Đa phương thức, camera | MỘT PHẦN (kiểm byte + kích thước ảnh ĐÃ NỐI sau cờ `ATTACHMENT_BYTE_CHECK`; còn lại là HÀM) | Còn: cấu trúc tệp Office, bom giải nén, OCR, Vision theo nhà cung cấp, camera, giao diện ba nền tảng. |
 | 25 Cổng MCP ngoài | HÀM (hợp đồng) | Cổng thật chờ Source Audit + Chủ sở hữu cho phép (ADR-CONN-019). |
 
 ## Việc còn lại có thể làm mà không cần Chủ sở hữu
