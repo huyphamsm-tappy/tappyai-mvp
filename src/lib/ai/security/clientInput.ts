@@ -26,7 +26,7 @@
 //         the client's ability to forge STRUCTURE and AUTHORITY.
 
 import { lockedInProduction } from '@/lib/config/consultFlags'
-import { dataUrlMatchesDeclared } from '@/lib/attachments/policy'
+import { dataUrlMatchesDeclared, dataUrlImageSize, imagePreflight } from '@/lib/attachments/policy'
 
 /** Every bound on client-controlled input, in one auditable place. */
 export const CLIENT_INPUT_LIMITS = {
@@ -174,6 +174,8 @@ function validateAttachment(raw: unknown): ImagePart | FilePart | RejectCode {
   if (attachmentByteCheckOn() && contentType in { 'image/png': 1, 'image/jpeg': 1, 'image/webp': 1, 'image/gif': 1, 'application/pdf': 1 } && !dataUrlMatchesDeclared(url, contentType)) return 'invalid_content'
   if ((IMAGE_ATTACHMENT_TYPES as readonly string[]).includes(contentType)) {
     if (!url.startsWith(`data:${contentType};base64,`)) return 'invalid_content'
+    // R13 §17.7 image preflight (same flag): the header's own dimensions must pass the versioned policy before the image can reach a Vision call
+    if (attachmentByteCheckOn()) { const d = dataUrlImageSize(url); if (d && imagePreflight(d.width, d.height).decision === 'reject') return 'image_too_large' }
     if (url.length > CLIENT_INPUT_LIMITS.maxImageDataUrlChars) return 'image_too_large'
     return { type: 'image', image: url }
   }

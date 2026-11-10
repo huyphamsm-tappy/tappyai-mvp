@@ -93,6 +93,46 @@ export function classifyAttachment(f: { declaredMime?: string | null; filename?:
 
 export const IMAGE_PREFLIGHT_POLICY = { version: 'image-preflight.v1', maxSide: 12_000, maxPixels: 36_000_000, maxAspectRatio: 10 } as const
 
+/** Width and height read from the image HEADER (PNG, GIF, JPEG, WebP), without decoding pixels. null when the header does not give them within the bytes handed in. Pure. */
+export function imageDimensions(b: Uint8Array): { width: number; height: number } | null {
+  const be32 = (o: number) => ((b[o] << 24) | (b[o + 1] << 16) | (b[o + 2] << 8) | b[o + 3]) >>> 0
+  const be16 = (o: number) => (b[o] << 8) | b[o + 1]
+  const le16 = (o: number) => b[o] | (b[o + 1] << 8)
+  const kind = sniffKind(b)
+  if (kind === 'png' && b.length >= 24) return { width: be32(16), height: be32(20) }
+  if (kind === 'gif' && b.length >= 10) return { width: le16(6), height: le16(8) }
+  if (kind === 'webp' && b.length >= 30) {
+    const chunk = ascii(b, 12, 16)
+    if (chunk === 'VP8X') return { width: 1 + (b[24] | (b[25] << 8) | (b[26] << 16)), height: 1 + (b[27] | (b[28] << 8) | (b[29] << 16)) }
+    if (chunk === 'VP8 ') return { width: le16(26) & 0x3fff, height: le16(28) & 0x3fff }
+    if (chunk === 'VP8L') { const bits = (b[21] | (b[22] << 8) | (b[23] << 16) | (b[24] << 24)) >>> 0; return { width: (bits & 0x3fff) + 1, height: ((bits >>> 14) & 0x3fff) + 1 } }
+    return null
+  }
+  if (kind === 'jpeg') {
+    let o = 2
+    while (o + 9 < b.length) {
+      if (b[o] !== 0xff) { o++; continue }
+      const m = b[o + 1]
+      if (m === 0xff) { o++; continue }
+      if ((m >= 0xc0 && m <= 0xcf) && ![0xc4, 0xc8, 0xcc].includes(m)) return { height: be16(o + 5), width: be16(o + 7) }
+      if (m === 0xd8 || m === 0x01 || (m >= 0xd0 && m <= 0xd7)) { o += 2; continue }
+      o += 2 + be16(o + 2)
+    }
+    return null
+  }
+  return null
+}
+
+/** Dimensions of a base64 image data URL from its first ~48 KB. Never throws. Pure. */
+export function dataUrlImageSize(url: string): { width: number; height: number } | null {
+  const i = url.indexOf(';base64,')
+  if (i < 0) return null
+  try {
+    const head = url.slice(i + 8, i + 8 + 65536).replace(/[^A-Za-z0-9+/]/g, '')
+    return imageDimensions(new Uint8Array(Buffer.from(head.slice(0, head.length - (head.length % 4)), 'base64')))
+  } catch { return null }
+}
+
 export type PreflightDecision = { decision: 'accept' } | { decision: 'reject'; reason: 'invalid_dimensions' | 'side_too_long' | 'too_many_pixels' | 'extreme_aspect_ratio' }
 
 /** Decoded dimensions against the versioned policy, before a Vision call. A 1000x20000 image is small in bytes and still refused. Pure. */
