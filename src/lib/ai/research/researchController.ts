@@ -13,6 +13,13 @@ export const CONTROLLER_POLICY_VERSION = 'research-controller.v1'
 /** Advanced bounds are the Controller's, applied to Sonnet's proposed graph. */
 export const ADVANCED_BOUNDS = { maxWorkPackages: 8, maxGapRounds: 3 } as const
 
+/**
+ * What one Advanced run is held to by the engine (runDeepResearch's `bounds`): the plan's own cap plus the parts steps, 3 queries a step, up to ADVANCED_BOUNDS.maxGapRounds gap rounds
+ * (each stopped early by the V2 rules: time, diminishing returns, coverage) of up to 4 follow-up steps, and the report checked against the parts of the question and repaired.
+ * Dependent stages are served by those sequential gap rounds (a later round's questions come from what the earlier ones found); the engine runs the steps of one round in parallel.
+ */
+export const ADVANCED_RUN_BOUNDS = { maxSteps: 13, queriesPerStep: 3, gapRounds: ADVANCED_BOUNDS.maxGapRounds, followUpSteps: 4, repairParts: true } as const
+
 export interface WorkPackage {
   id: string
   title: string

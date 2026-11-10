@@ -126,6 +126,8 @@ export const HAIKU55_MODEL_ID = 'claude-haiku-5-5'
 interface Rates { in: number; cacheWrite: number; cacheRead: number; out: number }
 const CLAUDE_PRICES: Array<[RegExp, { tierAbove?: number; low: Rates; high?: Rates }]> = [
   [/^claude-haiku-5-5/, { tierAbove: 100_000, low: { in: 0.10, cacheWrite: 0.125, cacheRead: 0.01, out: 0.50 }, high: { in: 0.50, cacheWrite: 0.625, cacheRead: 0.05, out: 2.50 } }],
+  // Sonnet 5.5, one rate card at any prompt length (the pricing page's table, read 2026-11-10 through a fetch agent: $2 in · $2.50 5-min cache write · $0.10 cache read · $10 out).
+  [/^claude-sonnet-5-5/, { low: { in: 2, cacheWrite: 2.5, cacheRead: 0.1, out: 10 } }],
 ]
 
 /** Anthropic usage semantics: `input` is the UNCACHED input only; cache reads and writes are reported beside it. */
@@ -164,11 +166,11 @@ function logCost(c: CallCost, label: string): void {
 }
 
 /** A failed call, logged by status and vendor error type only (the response body can echo the request; it is not logged). */
-function logError(e: unknown, label: string): void {
+function logError(e: unknown, label: string, modelId: string = HAIKU55_MODEL_ID): void {
   const err = e as { statusCode?: number; responseBody?: string; name?: string }
   let kind: string | null = null
   try { kind = (JSON.parse(err.responseBody ?? '') as { error?: { type?: string } }).error?.type ?? null } catch { kind = null }
-  console.warn(JSON.stringify({ type: 'tappyai_agent_model_error', label, model: HAIKU55_MODEL_ID, status: err.statusCode ?? null, error_type: kind, name: err.name ?? null }))
+  console.warn(JSON.stringify({ type: 'tappyai_agent_model_error', label, model: modelId, status: err.statusCode ?? null, error_type: kind, name: err.name ?? null }))
 }
 
 /**
@@ -176,15 +178,25 @@ function logError(e: unknown, label: string): void {
  * route and the runtime trace already read) and logs it. `fetchImpl` is for tests only.
  */
 export function createHaiku55AgentModel(o: { label?: string; fetchImpl?: FetchLike } = {}): LanguageModelV1 {
+  return createPricedClaudeModel(HAIKU55_MODEL_ID, o)
+}
+
+/** R13 Advanced Research Lead (planning and final synthesis): Claude Sonnet 5.5, same metering and transport as the Haiku model. */
+export const SONNET55_MODEL_ID = 'claude-sonnet-5-5'
+export function createSonnet55Model(o: { label?: string; fetchImpl?: FetchLike } = {}): LanguageModelV1 {
+  return createPricedClaudeModel(SONNET55_MODEL_ID, o)
+}
+
+function createPricedClaudeModel(modelId: string, o: { label?: string; fetchImpl?: FetchLike }): LanguageModelV1 {
   const anthropic = createAnthropic({
     apiKey: process.env.ANTHROPIC_API_KEY ?? '',
     headers: { 'anthropic-beta': 'prompt-caching-2024-07-31' },
-    fetch: agentTransport(HAIKU55_MODEL_ID, o.fetchImpl) as never,
+    fetch: agentTransport(modelId, o.fetchImpl) as never,
   })
-  const inner = anthropic(HAIKU55_MODEL_ID)
+  const inner = anthropic(modelId)
   const label = o.label ?? 'agent'
   const withCost = (usage: { promptTokens: number; completionTokens: number } | undefined, meta: Record<string, Record<string, unknown>> | undefined) => {
-    const cost = claudeCallCost(HAIKU55_MODEL_ID, usageFrom(usage, meta))
+    const cost = claudeCallCost(modelId, usageFrom(usage, meta))
     if (!cost) return meta
     logCost(cost, label)
     return { ...(meta ?? {}), tappy: { ...((meta?.tappy as Record<string, unknown>) ?? {}), cost: cost as unknown as Record<string, unknown> } }
@@ -202,7 +214,7 @@ export function createHaiku55AgentModel(o: { label?: string; fetchImpl?: FetchLi
       try {
         const r = await inner.doGenerate(opts)
         return { ...r, providerMetadata: withCost(r.usage, r.providerMetadata as never) as never }
-      } catch (e) { logError(e, label); throw e }
+      } catch (e) { logError(e, label, modelId); throw e }
     },
     async doStream(opts) {
       try {
@@ -211,7 +223,7 @@ export function createHaiku55AgentModel(o: { label?: string; fetchImpl?: FetchLi
           transform(part, c) { c.enqueue(part.type === 'finish' ? { ...part, providerMetadata: withCost(part.usage, part.providerMetadata as never) as never } : part) },
         }))
         return { ...r, stream }
-      } catch (e) { logError(e, label); throw e }
+      } catch (e) { logError(e, label, modelId); throw e }
     },
   }
 }

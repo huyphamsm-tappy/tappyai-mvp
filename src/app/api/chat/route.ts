@@ -31,7 +31,7 @@ import { wrapToolResultAsData } from '@/lib/ai/security/toolResultFence'
 import { pdfPartsToText } from '@/lib/ai/attachments/pdfAttachments'
 import { deepResearchResponse } from '@/lib/ai/research/deepResearchResponse'
 import { createDeepResearchDeps, deepResearchParallel, PARALLEL_PRICE } from '@/lib/ai/research/deepResearchDeps'
-import { standardTurnFor } from '@/lib/ai/research/researchTurn'
+import { tierTurnFor } from '@/lib/ai/research/researchTurn'
 import { claudeWriterAvailable } from '@/lib/ai/llm/registry'
 import { classifyIntent, detectLang, detectLangConfident, detectExplicitLangRequest, detectForcedTool, detectTravelIntent, detectLocationIntent, detectPlanningIntent, detectPlanningIntentFromConversation, detectPlanActivities, detectTripLength, isPlanningRefinement, defaultTransportFor, detectMovieRecommendationIntent, isSimpleQuery, normalizeVN, isPurchaseShaped, routeToolOfferOn } from '@/lib/ai/intent'
 import { deriveNeedProfile, type StoredPreferences } from '@/lib/ai/consultative/needProfile'
@@ -101,7 +101,7 @@ import { readZaloIdentity, zaloIdentitySecret } from '@/lib/zalo/identity'
 import { flushPending, recordEvent, type UsageEvent } from '@/lib/observability'
 import { FREE_DAILY_LIMIT, ANON_LIFETIME_LIMIT } from '@/lib/config/product'
 import { accountQuotaFor, aiQuotaIdentity, consumeAiQuestion, consumeDeepResearch, refundAiQuestion, type AiQuotaRefund } from '@/lib/ai/quota/aiQuestionQuota'
-import { tierOf, modeForTier, deepResearchMonthlyLimit } from '@/lib/plans/tiers'
+import { tierOf, modeForTier, deepResearchMonthlyLimit, advancedResearchMonthlyLimit } from '@/lib/plans/tiers'
 import { costGateOn, reserveTurnCost, type CostTurn } from '@/lib/ai/cost/costGate'
 import { withinGlobalDeepCeiling } from '@/lib/ai/quota/globalCeiling'
 import { withoutInternalToolFields } from '@/lib/ai/streamInternalFields'
@@ -3648,19 +3648,27 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     const deepStop = new AbortController()
     if (req.signal?.aborted) deepStop.abort(); else req.signal?.addEventListener('abort', () => deepStop.abort(), { once: true })
     // R13 Standard tier (RESEARCH_ADMISSION, off by default, locked in production): a simple report runs the bounded Haiku path; everything else, and a plan the tier cannot hold, runs as before
-    const standardPlan = standardTurnFor(lastText, { claudeAvailable: claudeWriterAvailable() })
-    if (standardPlan) console.log(JSON.stringify({ type: 'tappyai_research_admission', tier: standardPlan.decision.tier, score: standardPlan.decision.score.total, cues: standardPlan.cues, policy: standardPlan.decision.policyVersion }))
+    // R13 Advanced (RESEARCH_ADVANCED, dearer: Sonnet leads) additionally spends from the account's Advanced sub-allowance; an account past it gets the existing engine for this request.
+    let tierPlan = tierTurnFor(lastText, { claudeAvailable: claudeWriterAvailable() })
+    let advancedRefund: Awaited<ReturnType<typeof consumeDeepResearch>>['refund'] = null
+    if (tierPlan?.tier === 'ADVANCED_RESEARCH_REPORT') {
+      const advLimit = advancedResearchMonthlyLimit(planTier, { subscriptionsOn: subscriptionsEnabled(), signedIn: !!authedUserId })
+      const adv = authedUserId ? await consumeDeepResearch(authedUserId, advLimit, 'advanced') : null
+      if (adv?.ok) advancedRefund = adv.refund
+      else { console.log(JSON.stringify({ type: 'tappyai_research_admission', tier: tierPlan.tier, advanced_allowance: 'used_or_none', ran: 'legacy' })); tierPlan = null }
+    }
+    if (tierPlan) console.log(JSON.stringify({ type: 'tappyai_research_admission', tier: tierPlan.decision.tier, score: tierPlan.decision.score.total, cues: tierPlan.cues, policy: tierPlan.decision.policyVersion }))
     const deepDeps = { lang, userTexts: recentUserTexts, cost, questionLang: detectLangConfident(lastText), signal: deepStop.signal, ...(par ? { parallelSearch: par } : {}) }
     return deepResearchResponse({
       question: lastText, context: recent, lang, cost, stop: deepStop,
       deps: createDeepResearchDeps(deepDeps),
-      ...(standardPlan ? { standard: { deps: createDeepResearchDeps({ ...deepDeps, standard: true }), bounds: standardPlan.bounds } } : {}),
+      ...(tierPlan ? { standard: { deps: createDeepResearchDeps({ ...deepDeps, ...(tierPlan.tier === 'ADVANCED_RESEARCH_REPORT' ? { advanced: true } : { standard: true }) }), bounds: tierPlan.bounds } } : {}),
       // the searches' price: Serper's credits plus the Parallel searches sent
       serperUsd: () => {
         const d = serperDelta(serperAtStart)
         return { usd: Math.round((turnUsd({ promptTokens: 0, completionTokens: 0, serperCredits: d.credits }) + (par?.sent() ?? 0) * PARALLEL_PRICE.searchFastUsd) * 1e6) / 1e6, calls: sumCounts(d.calls) + (par?.sent() ?? 0) }
       },
-      onFailed: async reason => { await refundQuotaOnFailure(`deep_research_${reason}`); await refundAiQuestion(deepRefund) },
+      onFailed: async reason => { await refundQuotaOnFailure(`deep_research_${reason}`); await refundAiQuestion(deepRefund); await refundAiQuestion(advancedRefund) },
       onUsage: u => { turnSearch.depth = 'thorough'; usageSink({ domain: null, turnType: 'deep_research', model: 'luna', tokensIn: 0, tokensOut: 0, serperCalls: u.searchCalls - (par?.sent() ?? 0), cacheHits: 0, usd: u.usd, answerUsd: u.llmUsd, serperUsd: u.serperUsd }, { parallelCalls: par?.sent() ?? 0, ok: u.ok }) },
     })
   }

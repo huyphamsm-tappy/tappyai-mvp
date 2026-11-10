@@ -34,6 +34,18 @@ export function modeForTier(mode: ChatMode, tier: Tier): ChatMode {
 export const DEEP_RESEARCH_MONTHLY: Readonly<Record<Tier, number>> = { free: 0, pro: 10, promax: 30 }
 
 /**
+ * R13 Advanced reports (Sonnet-led, dearer than a Standard one) per VN month: a SUB-allowance inside DEEP_RESEARCH_MONTHLY, not extra reports. PROPOSED defaults (10/11/2026), not yet approved by
+ * the owner; behind RESEARCH_ADVANCED (off). An account past it gets the existing research engine for that request, never a silently thinner "Advanced" report.
+ */
+export const ADVANCED_RESEARCH_MONTHLY: Readonly<Record<Tier, number>> = { free: 0, pro: 3, promax: 10 }
+
+/** Advanced reports an account may start per VN month, by the same plans-on / plans-off rule as deepResearchMonthlyLimit. Pure. */
+export function advancedResearchMonthlyLimit(tier: Tier, opts: { subscriptionsOn: boolean; signedIn: boolean }): number {
+  if (opts.subscriptionsOn) return ADVANCED_RESEARCH_MONTHLY[tier]
+  return opts.signedIn ? ADVANCED_RESEARCH_MONTHLY[tier === 'free' ? 'pro' : tier] : 0
+}
+
+/**
  * The Deep Research runs an account may start per VN month. Security audit 04/11 (W-01): this used to be metered only with the plans on sale
  * (SUBSCRIPTIONS_ENABLED); with the flag off any account could start unlimited runs at ~0.06 USD each. Now the meter does not depend on the flag:
  *   plans on sale  - the tier's own allowance (Free 0 - those turns already run as Chat);

@@ -21,7 +21,7 @@ import { deepResearchV2On, V2_LIMITS, termScores, stepCoverage, decideNext, miss
 
 // planSteps: the plan's own steps; steps: all steps of a run (the plan's + the follow-up round's GAP_STEPS), as the card shows them
 /** R13 tier bounds for one run (Standard report). Absent = the unbounded one-pass / V2 run, byte for byte. */
-export interface RunBounds { maxSteps: number; queriesPerStep: number; gapRounds: number; followUpSteps: number }
+export interface RunBounds { maxSteps: number; queriesPerStep: number; gapRounds: number; followUpSteps: number; /** the semantic check of the report against the parts of the question, and the repair of what it misses (the V2 repair), without needing DEEP_RESEARCH_V2 */ repairParts?: boolean }
 export const DEEP_RESEARCH_LIMITS = { planSteps: 10, steps: 17, queriesPerStep: 3, findingsPerStep: 90, researchDeadlineMs: 120_000, runDeadlineMs: 270_000 } as const
 
 /**
@@ -653,7 +653,7 @@ export async function runDeepResearch(question: string, context: string, lang: s
       if (now() - t0 >= DEEP_RESEARCH_LIMITS.runDeadlineMs) { cut = true; break }
     }
     // DEEP_RESEARCH_V2 (03/11): the parts of the question that no heading of the report names are answered in one appended section (once; a structural check only)
-    if (v2 && deps.repair && !left?.aborted && !cut && plan.parts?.length) {
+    if ((v2 || bounds?.repairParts) && deps.repair && !left?.aborted && !cut && plan.parts?.length) {
       const heads = parseDoc(written).filter((b): b is Extract<DocBlock, { t: 'heading' }> => b.t === 'heading').map(b => headingTitle(b.text) ?? '').filter(Boolean)
       const parts = plan.parts
       const named = missingParts(parts, heads)

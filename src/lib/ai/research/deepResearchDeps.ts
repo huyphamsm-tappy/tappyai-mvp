@@ -190,18 +190,21 @@ const LANGUAGE_NAMES: Record<string, string> = { vi: 'Vietnamese', en: 'English'
 export const questionLanguageLine = (code: string | null | undefined) => (code && LANGUAGE_NAMES[code] ? `\n(The question is written in ${LANGUAGE_NAMES[code]}: every title, heading and line you write is in ${LANGUAGE_NAMES[code]}.)` : '')
 
 /** `signal` (review 02/11): the person went away - the model call in flight is dropped. */
-export function createDeepResearchDeps(o: { lang: string; userTexts: readonly string[]; cost: Cost; parallelSearch?: ResearchParallelSearch; questionLang?: string | null; signal?: AbortSignal; /** R13 Standard tier: Claude Haiku reads, plans and writes (when the Anthropic key is present) regardless of the DEEP_RESEARCH_*_MODEL flags; the caller only asks for it behind RESEARCH_ADMISSION. */ standard?: boolean }): DeepResearchDeps {
+export function createDeepResearchDeps(o: { lang: string; userTexts: readonly string[]; cost: Cost; parallelSearch?: ResearchParallelSearch; questionLang?: string | null; signal?: AbortSignal; /** R13 Standard tier: Claude Haiku reads, plans and writes (when the Anthropic key is present) regardless of the DEEP_RESEARCH_*_MODEL flags; the caller only asks for it behind RESEARCH_ADMISSION. */ standard?: boolean; /** R13 Advanced tier: Sonnet 5.5 plans, checks gaps and writes; Haiku 5.5 reads the sources (work packages). Behind RESEARCH_ADVANCED. */ advanced?: boolean }): DeepResearchDeps {
   const langLine = questionLanguageLine(o.questionLang)
   const claudeStandard = o.standard === true && claudeWriterAvailable()
-  const notesBy = (): 'haiku55' | 'luna' => (claudeStandard ? 'haiku55' : notesModel())
-  const writerBy = (): 'haiku55' | 'luna' => (claudeStandard ? 'haiku55' : writerModel())
+  // R13 Advanced: Sonnet 5.5 leads (plans, checks gaps, writes the final report); Haiku 5.5 does the bounded work packages (reading the sources into findings)
+  const advancedLead = o.advanced === true && claudeWriterAvailable()
+  const leadModel = (): { claudeModel: 'sonnet55' | 'haiku55' } | Record<string, never> => (advancedLead ? { claudeModel: 'sonnet55' as const } : claudeStandard ? { claudeModel: 'haiku55' as const } : {})
+  const notesBy = (): 'haiku55' | 'luna' => (claudeStandard || advancedLead ? 'haiku55' : notesModel())
+  const writerBy = (): 'sonnet55' | 'haiku55' | 'luna' => (advancedLead ? 'sonnet55' : claudeStandard ? 'haiku55' : writerModel())
   const reader = createLeanResearch({ lang: o.lang, userTexts: o.userTexts, maxReads: DEEP_RESEARCH_LIMITS.steps * DEEP_RESEARCH_LIMITS.queriesPerStep * READ_PER_QUERY, v5Reading: true })
   const exec = reader.tool.execute as unknown as (a: unknown, c: unknown) => Promise<unknown>
   return {
     // the full texts ('dump') only when DEEP_RESEARCH_TRACE_FULL=1 as well: a local measurement of where information is lost, never production
     ...(consultTraceDiagnosticsOn() ? { trace: (e: Record<string, unknown>) => { if (e.ev === 'dump' && process.env.DEEP_RESEARCH_TRACE_FULL !== '1') return; console.log(JSON.stringify({ type: 'tappyai_deep_research_trace', ...e })) } } : {}),
     async plan(question, context) {
-      const r = await AI.extract({ role: planningRole(), ...(claudeStandard ? { claudeModel: 'haiku55' as const } : {}), systemShared: PLAN_SYSTEM, messages: [{ role: 'user', content: `${context ? `Conversation so far:\n${context}\n\n` : ''}Question:\n${question}${langLine}` }], schema: PlanSchema, schemaName: 'tappy_research_plan', maxTokens: 3500, budgetKind: 'aux', abortSignal: o.signal } as never) as { object: Omit<ResearchPlan, 'parts'> & { specialist_steps?: ResearchPlan['steps']; parts?: Array<{ part?: string; step?: number | null }> }; providerMetadata?: unknown }
+      const r = await AI.extract({ role: planningRole(), ...leadModel(), systemShared: PLAN_SYSTEM, messages: [{ role: 'user', content: `${context ? `Conversation so far:\n${context}\n\n` : ''}Question:\n${question}${langLine}` }], schema: PlanSchema, schemaName: 'tappy_research_plan', maxTokens: 3500, budgetKind: 'aux', abortSignal: o.signal } as never) as { object: Omit<ResearchPlan, 'parts'> & { specialist_steps?: ResearchPlan['steps']; parts?: Array<{ part?: string; step?: number | null }> }; providerMetadata?: unknown }
       addCost(o.cost, r.providerMetadata)
       // the listed parts first, the specialist's steps last; when together they exceed the plan's cap the listed ones give way, never the specialist's
       const extra = (Array.isArray(r.object.specialist_steps) ? r.object.specialist_steps : []).slice(0, 3)
@@ -264,7 +267,7 @@ export function createDeepResearchDeps(o: { lang: string; userTexts: readonly st
     },
     async gaps(question, plan, found, coverage) {
       const data = `Research plan: ${plan.title}\n${plan.parts?.length ? `Parts the question asks for: ${plan.parts.join('; ')}\n` : ''}${plan.steps.map((s, k) => `${k + 1}. ${s.title}${coverage?.[k] ? ` - ${coverage[k].findings} findings, ${coverage[k].figures} with a figure` : ''}`).join('\n')}\n\nFindings so far:\n${found.map(f => `- ${f}`).join('\n').slice(0, GAP_FINDINGS_BUDGET)}`
-      const r = await AI.extract({ role: planningRole(), ...(claudeStandard ? { claudeModel: 'haiku55' as const } : {}), systemShared: GAPS_SYSTEM, messages: [{ role: 'user', content: `Question:\n${question}${langLine}\n\n${fenceUntrusted('tool_result', data)}` }], schema: GapsSchema, schemaName: 'tappy_research_gaps', maxTokens: 3500, budgetKind: 'aux', abortSignal: o.signal } as never) as { object: { steps: Array<{ title: string; queries: string[] }> }; providerMetadata?: unknown }
+      const r = await AI.extract({ role: planningRole(), ...leadModel(), systemShared: GAPS_SYSTEM, messages: [{ role: 'user', content: `Question:\n${question}${langLine}\n\n${fenceUntrusted('tool_result', data)}` }], schema: GapsSchema, schemaName: 'tappy_research_gaps', maxTokens: 3500, budgetKind: 'aux', abortSignal: o.signal } as never) as { object: { steps: Array<{ title: string; queries: string[] }> }; providerMetadata?: unknown }
       addCost(o.cost, r.providerMetadata)
       return Array.isArray(r.object?.steps) ? r.object.steps.map(s => ({ title: s.title, queries: s.queries, completes: (s as { completes_step?: number | null }).completes_step ?? null })) : []
     },
@@ -277,8 +280,9 @@ export function createDeepResearchDeps(o: { lang: string; userTexts: readonly st
       const messages = [{ role: 'user' as const, content: `Question:\n${question}${langLine}\n\nToday's date: ${new Date().toISOString().slice(0, 10)}\nResearch plan: ${plan.title}${plan.parts?.length ? `\nParts the question asks for: ${plan.parts.join('; ')}` : ''}\n\n${fenceUntrusted('tool_result', `Sources:\n${sources}\n\nFindings by step:\n${notes}`)}` }]
       // 03/11 DEEP_RESEARCH_WRITER_MODEL=haiku55: Claude Haiku 5.5 writes the report (a Vietnamese report is ~27-30k Claude tokens, so the ceiling is higher);
       // a failure before any text (credit, overload) falls back to the Luna writer below, so the person still gets a report
-      if (writerBy() === 'haiku55') {
-        const claude = AI.stream({ role: 'consult', claudeModel: 'haiku55', maxTokens: CLAUDE_WRITER_MAX_TOKENS, abortSignal: o.signal, systemShared: WRITER_SYSTEM, messages })
+      const writer = writerBy()
+      if (writer === 'haiku55' || writer === 'sonnet55') {
+        const claude = AI.stream({ role: 'consult', claudeModel: writer, maxTokens: CLAUDE_WRITER_MAX_TOKENS, abortSignal: o.signal, systemShared: WRITER_SYSTEM, messages })
         let any = false
         try {
           for await (const t of writtenText(claude.fullStream)) { any = true; yield t }
@@ -286,7 +290,7 @@ export function createDeepResearchDeps(o: { lang: string; userTexts: readonly st
           return
         } catch (e) {
           if (any || o.signal?.aborted) throw e
-          console.warn(JSON.stringify({ type: 'tappyai_deep_research_writer_fallback', from: 'haiku55', to: 'luna' }))
+          console.warn(JSON.stringify({ type: 'tappyai_deep_research_writer_fallback', from: writer, to: 'luna' }))
         }
       }
       const result = AI.stream({ role: 'consult', thinkEffort: writerEffort(), maxTokens: 16000, abortSignal: o.signal, systemShared: WRITER_SYSTEM, messages })

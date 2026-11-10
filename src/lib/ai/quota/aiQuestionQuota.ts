@@ -233,8 +233,9 @@ export async function peekAiQuestionQuota(identity: AiQuotaIdentity): Promise<Ai
 // account and month (`ai:dr:u:<id>:<YYYY-MM>` in Vietnam time), a 32-day window so the key's month is the whole window.
 const MONTH_WINDOW_MS = 32 * ONE_DAY_MS
 
-export async function consumeDeepResearch(userId: string, limit: number): Promise<AiQuotaSpend> {
-  const key = `ai:dr:u:${userId}:${vnToday().slice(0, 7)}`
+export async function consumeDeepResearch(userId: string, limit: number, kind: 'standard' | 'advanced' = 'standard'): Promise<AiQuotaSpend> {
+  // `advanced` (R13): the sub-allowance of Advanced reports inside the month's Deep Research allowance, counted under its own key
+  const key = `${kind === 'advanced' ? 'ai:dra' : 'ai:dr'}:u:${userId}:${vnToday().slice(0, 7)}`
   if (limit <= 0) return { ok: false, limit: 0, period: 'day', used: 0, remaining: 0, scope: 'instance', refund: null }
   if (!isDistributedStoreConfigured()) {
     const r = localSpend(key, MONTH_WINDOW_MS, limit)

@@ -2,7 +2,7 @@ import type { AIProvider } from './provider'
 import type { ModelOverrides, ProviderId } from './types'
 import type { CoreMessage, LanguageModelV1 } from 'ai'
 import type { ModelRole } from './types'
-import { AGENT_MODEL_KEY_NAME, anthropicConfigured, claudeDecorateMessages, createClaudeProvider, createHaiku55AgentModel } from './providers/claude'
+import { AGENT_MODEL_KEY_NAME, anthropicConfigured, claudeDecorateMessages, createClaudeProvider, createHaiku55AgentModel, createSonnet55Model } from './providers/claude'
 import { createOpenAIProvider } from './providers/openai'
 import { withFallback } from './fallback'
 import { meteredModel } from '../budget/meteredModel'
@@ -145,12 +145,13 @@ function waitsFor(role: ModelRole): { firstPartMs: number; generateMs: number } 
  * The model for a role. A fresh routed model per call (the adapter keeps a per-call usage sink on it).
  * `structured` asks for the vendor's strict JSON-schema mode where it has one.
  */
-export function modelForRole(role: ModelRole, opts: { structured?: boolean; agentRuntime?: boolean; budgetKind?: BudgetKind; claudeModel?: 'haiku55' } = {}): LanguageModelV1 {
+export function modelForRole(role: ModelRole, opts: { structured?: boolean; agentRuntime?: boolean; budgetKind?: BudgetKind; claudeModel?: 'haiku55' | 'sonnet55' } = {}): LanguageModelV1 {
   // C2_REQUEST_BUDGET (budget/meteredModel.ts): every concrete upstream model is metered separately (primary, retry, fallback). Outside a
   // request ledger, or with the flag unset, the meter calls straight through, so the resolution below is unchanged.
   const kind: BudgetKind = opts.budgetKind ?? 'main'
   // 03/11: ONE call that asked for Claude Haiku 5.5 (Deep Research's writer, AIStreamOptions.claudeModel) gets it when the key is present, metered like the others
   if (opts.claudeModel === 'haiku55' && anthropicConfigured()) return meteredModel(createHaiku55AgentModel({ label: role }), role, kind)
+  if (opts.claudeModel === 'sonnet55' && anthropicConfigured()) return meteredModel(createSonnet55Model({ label: role }), role, kind)
   if (servesAgentModel(role, opts) && agentModelChoice() === 'haiku55') return meteredModel(agentModel(role, opts), role, kind)
   return defaultModelForRole(role, { structured: opts.structured }, kind)
 }
