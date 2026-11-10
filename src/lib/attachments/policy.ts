@@ -33,6 +33,23 @@ export function sniffKind(bytes: Uint8Array): SniffedKind {
   return 'unknown'
 }
 
+const DECLARED_KIND: Record<string, SniffedKind> = { 'image/png': 'png', 'image/jpeg': 'jpeg', 'image/webp': 'webp', 'image/gif': 'gif', 'application/pdf': 'pdf' }
+
+/**
+ * Do the BYTES of a base64 data URL match the type it declares? Only the first bytes are decoded (enough for every signature). A declared type outside the five the web client may send is
+ * not judged here (false). Never throws. Pure.
+ */
+export function dataUrlMatchesDeclared(url: string, declaredMime: string): boolean {
+  const want = DECLARED_KIND[declaredMime]
+  const prefix = `data:${declaredMime};base64,`
+  if (!want || !url.startsWith(prefix)) return false
+  try {
+    const head = url.slice(prefix.length, prefix.length + 64).replace(/[^A-Za-z0-9+/]/g, '')
+    const bin = Buffer.from(head.slice(0, head.length - (head.length % 4)), 'base64')
+    return sniffKind(new Uint8Array(bin)) === want
+  } catch { return false }
+}
+
 export type AttachmentFamily = 'image' | 'pdf' | 'office' | 'text'
 
 /** P0 families (R13 §17.7). Office files are ZIP containers: the sniffer says `zip`, and the extension then only chooses among the three Office kinds (see classifyAttachment). */

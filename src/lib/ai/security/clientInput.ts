@@ -25,6 +25,9 @@
 //         enforcement. This module does NOT solve prompt injection; it removes
 //         the client's ability to forge STRUCTURE and AUTHORITY.
 
+import { lockedInProduction } from '@/lib/config/consultFlags'
+import { dataUrlMatchesDeclared } from '@/lib/attachments/policy'
+
 /** Every bound on client-controlled input, in one auditable place. */
 export const CLIENT_INPUT_LIMITS = {
   /** Turns per request. The route separately trims to the last 10 for cost. */
@@ -160,10 +163,15 @@ const IMAGE_ATTACHMENT_TYPES = ['image/png', 'image/jpeg', 'image/webp', 'image/
  * the model (measured 31/10: "ảnh này là gì" reached the model with no image). An attachment becomes a part here, under the same rules as a
  * part a client sends directly: data URLs only, the declared type must match the data URL's own, bounded size; images and PDFs only.
  */
+/** R13 §17.7 (ATTACHMENT_BYTE_CHECK, off by default, locked in production): the bytes must be the type the attachment declares. */
+export const ATTACHMENT_BYTE_CHECK_FLAG = 'ATTACHMENT_BYTE_CHECK'
+export const attachmentByteCheckOn = (env: Record<string, string | undefined> = process.env): boolean => env[ATTACHMENT_BYTE_CHECK_FLAG] === '1' && !lockedInProduction(env, ATTACHMENT_BYTE_CHECK_FLAG)
+
 function validateAttachment(raw: unknown): ImagePart | FilePart | RejectCode {
   if (!isRecord(raw)) return 'invalid_content'
   const { url, contentType, name } = raw
   if (typeof url !== 'string' || typeof contentType !== 'string') return 'invalid_content'
+  if (attachmentByteCheckOn() && contentType in { 'image/png': 1, 'image/jpeg': 1, 'image/webp': 1, 'image/gif': 1, 'application/pdf': 1 } && !dataUrlMatchesDeclared(url, contentType)) return 'invalid_content'
   if ((IMAGE_ATTACHMENT_TYPES as readonly string[]).includes(contentType)) {
     if (!url.startsWith(`data:${contentType};base64,`)) return 'invalid_content'
     if (url.length > CLIENT_INPUT_LIMITS.maxImageDataUrlChars) return 'image_too_large'
