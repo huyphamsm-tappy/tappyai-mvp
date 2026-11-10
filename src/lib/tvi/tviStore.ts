@@ -101,6 +101,52 @@ export async function promoteFact(
   }
 }
 
+export type AttachEvidenceResult =
+  | { ok: true; outcome: 'attached' | 'already_attached'; evidenceId: string }
+  | { ok: false; reason: 'invalid_input' | 'store_error' }
+
+/**
+ * Attaches evidence to one fact version: a REFERENCE and a hash only (no text is stored; see storage_permission). The source is found or created by its domain; the same evidence
+ * again is `already_attached`.
+ */
+export async function attachEvidence(
+  input: {
+    versionId: string
+    sourceType: 'GOVERNMENT' | 'OFFICIAL_BUSINESS' | 'NEWS' | 'PROVIDER_API' | 'KOL' | 'COMMUNITY' | 'UGC' | 'OTHER'
+    domain: string
+    publisher?: string | null
+    reference?: string | null
+    contentHash?: string | null
+    retrievedAt: Date
+    policyVersion: string
+    relation?: 'SUPPORTS' | 'REFUTES' | 'QUALIFIES' | 'CONTEXT_ONLY'
+    evaluator?: string
+  },
+  db: Rpc = createAdminClient(),
+): Promise<AttachEvidenceResult> {
+  const retrieved = iso(input.retrievedAt)
+  if (!retrieved || !input.domain.trim() || !input.policyVersion.trim()) return { ok: false, reason: 'invalid_input' }
+  try {
+    const { data, error } = await db.rpc('tvi_attach_evidence', {
+      p_version_id: input.versionId,
+      p_source_type: input.sourceType,
+      p_domain: input.domain,
+      p_publisher: input.publisher ?? null,
+      p_reference: input.reference ?? null,
+      p_content_hash: input.contentHash ?? null,
+      p_retrieved_at: retrieved,
+      p_policy_version: input.policyVersion,
+      p_relation: input.relation ?? 'SUPPORTS',
+      p_evaluator: input.evaluator ?? 'capture.v1',
+    })
+    const row = Array.isArray(data) ? data[0] : data
+    if (error || !row || typeof row.evidence_id !== 'string') return { ok: false, reason: 'store_error' }
+    return { ok: true, outcome: row.outcome === 'attached' ? 'attached' : 'already_attached', evidenceId: row.evidence_id }
+  } catch {
+    return { ok: false, reason: 'store_error' }
+  }
+}
+
 export type RetireResult =
   | { ok: true; outcome: 'retired'; rowVersion: number }
   | { ok: false; reason: 'conflict' | 'not_current' | 'store_error' | 'invalid_input'; rowVersion?: number }

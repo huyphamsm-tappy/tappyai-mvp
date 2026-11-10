@@ -1,6 +1,7 @@
 import { getCache, setCache, serperSearch } from './common'
 import { logText } from '@/lib/ai/logSafeText'
 import { withRetrievedAt } from './retrievalClock'
+import { tviCaptureOn, captureTviFromPlaces } from '@/lib/tvi/capturePlaces'
 import { normalizeVN } from '@/lib/ai/intent'
 import { createClient } from '@/lib/supabase/server'
 import { publishableFilter } from '@/lib/safety/gate/publicationAccess'
@@ -1096,7 +1097,13 @@ async function searchPlacesImpl(
 }
 
 /** Stamps `retrieved_at` (the oldest real fetch time of the rows used) on the result — see retrievalClock.ts. */
-export function searchPlaces(...args: Parameters<typeof searchPlacesImpl>): ReturnType<typeof searchPlacesImpl> { return withRetrievedAt(() => searchPlacesImpl(...args)) }
+export function searchPlaces(...args: Parameters<typeof searchPlacesImpl>): ReturnType<typeof searchPlacesImpl> {
+  return withRetrievedAt(() => searchPlacesImpl(...args)).then(result => {
+    // R13 TVI capture (TVI_CAPTURE=1, off by default and locked in production): the stable facts of the rows go to the fact store AFTER the answer is built. Fire and forget; the result is returned as it is.
+    if (tviCaptureOn()) void captureTviFromPlaces(result, { city: args[1] })
+    return result
+  })
+}
 
 /** Stamps `retrieved_at` (the oldest real fetch time of the rows used) on the result — see retrievalClock.ts. */
 export function getNews(...args: Parameters<typeof getNewsImpl>): ReturnType<typeof getNewsImpl> { return withRetrievedAt(() => getNewsImpl(...args)) }

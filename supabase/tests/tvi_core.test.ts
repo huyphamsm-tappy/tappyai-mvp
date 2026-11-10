@@ -224,8 +224,9 @@ describe('evidence and the storage permission', () => {
 
   it('text may be stored only where the source allows it; the default stores a reference and a hash', async () => {
     const src = (await db.query(`INSERT INTO public.knowledge_sources (source_type, canonical_domain) VALUES ('OFFICIAL_BUSINESS','quana.vn') RETURNING id`)).rows[0].id
+    let n = 0 // a distinct reference each time: the same (source, reference, hash) is stored once
     const ins = (perm: string, excerpt: string | null) => db.query(
-      `INSERT INTO public.knowledge_evidence (source_id, external_reference, content_hash, excerpt, retrieved_at, storage_permission, policy_version) VALUES ($1,'https://quana.vn/gio-mo-cua',$2,$3,now(),$4,'p1')`, [src, H('e'), excerpt, perm])
+      `INSERT INTO public.knowledge_evidence (source_id, external_reference, content_hash, excerpt, retrieved_at, storage_permission, policy_version) VALUES ($1,$5,$2,$3,now(),$4,'p1')`, [src, H('e'), excerpt, perm, `https://quana.vn/gio-mo-cua-${++n}`])
     expect(await errorOf(() => ins('REFERENCE_ONLY', 'Mở cửa 8h-22h'))).toBe('23514')
     expect(await errorOf(() => ins('UNKNOWN', 'x'))).toBe('23514')
     expect(await errorOf(() => ins('REFERENCE_ONLY', null))).toBeNull()
@@ -241,6 +242,53 @@ describe('evidence and the storage permission', () => {
     await db.query(`INSERT INTO public.knowledge_fact_evidence (fact_version_id, evidence_id, relation, evaluator_version) VALUES ($1,$2,'QUALIFIES','e1')`, [a.version_id, ev])
     expect(await errorOf(() => db.query(`INSERT INTO public.knowledge_fact_evidence (fact_version_id, evidence_id, relation, evaluator_version) VALUES ($1,$2,'SUPPORTS','e2')`, [a.version_id, ev]))).toBe('23505')
     expect(await errorOf(() => db.query(`INSERT INTO public.knowledge_fact_evidence (fact_version_id, evidence_id, relation, evaluator_version) VALUES ($1,$2,'MAYBE','e1')`, [a.version_id, ev]))).toBe('23514')
+  })
+})
+
+describe('attaching evidence', () => {
+  beforeEach(async () => { await setup() })
+  const attach = (client: Client, versionId: string, over: { domain?: string; ref?: string; hash?: string; relation?: string } = {}) =>
+    client.query(`SELECT * FROM public.tvi_attach_evidence($1,'PROVIDER_API',$2,'Google Maps (via Serper)',$3,$4,$5,'p1',$6,'e1')`,
+      [versionId, over.domain ?? 'Maps.Google.com', over.ref ?? 'https://maps.google.com/?cid=1', over.hash ?? H('e'), NOW, over.relation ?? 'SUPPORTS']).then(r => r.rows[0] as { evidence_id: string; outcome: string })
+
+  it('creates the source (domain lower-cased), the evidence (reference + hash, no text) and the relation; the same again adds nothing', async () => {
+    const a = await stage(db)
+    const first = await attach(db, a.version_id)
+    expect(first.outcome).toBe('attached')
+    const again = await attach(db, a.version_id)
+    expect(again).toEqual({ evidence_id: first.evidence_id, outcome: 'already_attached' })
+    expect(await count('knowledge_sources')).toBe(1)
+    expect(await count('knowledge_evidence')).toBe(1)
+    expect(await count('knowledge_fact_evidence')).toBe(1)
+    const src = (await db.query('SELECT canonical_domain, source_type FROM public.knowledge_sources')).rows[0]
+    expect(src).toEqual({ canonical_domain: 'maps.google.com', source_type: 'PROVIDER_API' })
+    const ev = (await db.query('SELECT excerpt, storage_permission, external_reference FROM public.knowledge_evidence')).rows[0]
+    expect(ev).toEqual({ excerpt: null, storage_permission: 'REFERENCE_ONLY', external_reference: 'https://maps.google.com/?cid=1' })
+  })
+
+  it('one piece of evidence can back two versions, and a second relation to the same version is its own row', async () => {
+    const a = await stage(db, { hash: H('a') })
+    const b = await stage(db, { hash: H('b'), value: 2 })
+    const x = await attach(db, a.version_id)
+    const y = await attach(db, b.version_id)
+    expect(y.evidence_id).toBe(x.evidence_id)
+    expect((await attach(db, a.version_id, { relation: 'QUALIFIES' })).outcome).toBe('attached')
+    expect(await count('knowledge_evidence')).toBe(1)
+    expect(await count('knowledge_fact_evidence')).toBe(3)
+  })
+
+  it('an unknown version or an empty domain is refused', async () => {
+    expect(await errorOf(() => attach(db, '00000000-0000-4000-8000-000000000000'))).toBe('23503')
+    const a = await stage(db)
+    expect(await errorOf(() => attach(db, a.version_id, { domain: '  ' }))).toBe('22023')
+  })
+
+  it('two writers attaching the same evidence at once record it once', async () => {
+    const a = await stage(db)
+    const [x, y] = await Promise.all([attach(db, a.version_id), attach(db2, a.version_id)])
+    expect(x.evidence_id).toBe(y.evidence_id)
+    expect(await count('knowledge_evidence')).toBe(1)
+    expect(await count('knowledge_fact_evidence')).toBe(1)
   })
 })
 

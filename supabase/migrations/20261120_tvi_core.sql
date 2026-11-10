@@ -123,6 +123,9 @@ CREATE TABLE IF NOT EXISTS public.knowledge_evidence (
   CONSTRAINT knowledge_evidence_excerpt_len_check CHECK (excerpt IS NULL OR char_length(excerpt) <= 2000)
 );
 
+-- One piece of evidence is stored once per (source, reference, content hash): re-reading the same page records nothing new.
+CREATE UNIQUE INDEX IF NOT EXISTS knowledge_evidence_dedup_uidx ON public.knowledge_evidence (source_id, COALESCE(external_reference, ''), COALESCE(content_hash, ''));
+
 CREATE TABLE IF NOT EXISTS public.knowledge_fact_evidence (
   fact_version_id   uuid        NOT NULL REFERENCES public.knowledge_fact_versions(id) ON DELETE CASCADE,
   evidence_id       uuid        NOT NULL REFERENCES public.knowledge_evidence(id),
@@ -274,6 +277,38 @@ BEGIN
 END
 $fn$;
 
+-- ── write path 4: attach evidence to a fact version (source found-or-created by domain; evidence and relation deduplicated) ──────────────────────────────────────
+-- Stores a REFERENCE and a hash only (storage_permission REFERENCE_ONLY, no text). outcome: 'attached' · 'already_attached'
+CREATE OR REPLACE FUNCTION public.tvi_attach_evidence(
+  p_version_id uuid, p_source_type text, p_domain text, p_publisher text, p_reference text, p_content_hash text,
+  p_retrieved_at timestamptz, p_policy_version text, p_relation text, p_evaluator text
+)
+RETURNS TABLE (evidence_id uuid, outcome text)
+LANGUAGE plpgsql SECURITY DEFINER SET search_path = public, pg_temp AS $fn$
+#variable_conflict use_column
+DECLARE v_source uuid; v_evidence uuid; v_cnt bigint;
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM public.knowledge_fact_versions fv WHERE fv.id = p_version_id) THEN RAISE EXCEPTION 'tvi_attach_evidence: unknown fact version' USING ERRCODE = '23503'; END IF;
+  IF p_domain IS NULL OR btrim(p_domain) = '' THEN RAISE EXCEPTION 'tvi_attach_evidence: a source domain is required' USING ERRCODE = '22023'; END IF;
+  INSERT INTO public.knowledge_sources (source_type, canonical_domain, publisher_name) VALUES (p_source_type, lower(btrim(p_domain)), p_publisher)
+  ON CONFLICT (canonical_domain) WHERE canonical_domain IS NOT NULL DO UPDATE SET last_verified_at = now()
+  RETURNING id INTO v_source;
+
+  INSERT INTO public.knowledge_evidence (source_id, external_reference, content_hash, retrieved_at, storage_permission, policy_version)
+  VALUES (v_source, p_reference, p_content_hash, p_retrieved_at, 'REFERENCE_ONLY', p_policy_version)
+  ON CONFLICT (source_id, COALESCE(external_reference, ''), COALESCE(content_hash, '')) DO NOTHING
+  RETURNING id INTO v_evidence;
+  IF v_evidence IS NULL THEN
+    SELECT e.id INTO v_evidence FROM public.knowledge_evidence e WHERE e.source_id = v_source AND COALESCE(e.external_reference, '') = COALESCE(p_reference, '') AND COALESCE(e.content_hash, '') = COALESCE(p_content_hash, '');
+  END IF;
+
+  INSERT INTO public.knowledge_fact_evidence (fact_version_id, evidence_id, relation, evaluator_version) VALUES (p_version_id, v_evidence, p_relation, p_evaluator)
+  ON CONFLICT (fact_version_id, evidence_id, relation) DO NOTHING;
+  GET DIAGNOSTICS v_cnt = ROW_COUNT;
+  RETURN QUERY SELECT v_evidence, (CASE WHEN v_cnt > 0 THEN 'attached' ELSE 'already_attached' END)::text;
+END
+$fn$;
+
 -- Service-role only.
 DO $$
 DECLARE t text;
@@ -289,5 +324,7 @@ REVOKE EXECUTE ON FUNCTION public.tvi_stage_fact(text,text,text,text,text,text,t
 GRANT  EXECUTE ON FUNCTION public.tvi_stage_fact(text,text,text,text,text,text,text,jsonb,text,timestamptz,timestamptz,timestamptz,timestamptz,timestamptz,text,text,text) TO service_role;
 REVOKE EXECUTE ON FUNCTION public.tvi_promote_fact(uuid,uuid,integer,text,text,text,text,uuid[]) FROM PUBLIC, anon, authenticated;
 GRANT  EXECUTE ON FUNCTION public.tvi_promote_fact(uuid,uuid,integer,text,text,text,text,uuid[]) TO service_role;
+REVOKE EXECUTE ON FUNCTION public.tvi_attach_evidence(uuid,text,text,text,text,text,timestamptz,text,text,text) FROM PUBLIC, anon, authenticated;
+GRANT  EXECUTE ON FUNCTION public.tvi_attach_evidence(uuid,text,text,text,text,text,timestamptz,text,text,text) TO service_role;
 REVOKE EXECUTE ON FUNCTION public.tvi_retire_fact(uuid,integer,text,text,text,text) FROM PUBLIC, anon, authenticated;
 GRANT  EXECUTE ON FUNCTION public.tvi_retire_fact(uuid,integer,text,text,text,text) TO service_role;
