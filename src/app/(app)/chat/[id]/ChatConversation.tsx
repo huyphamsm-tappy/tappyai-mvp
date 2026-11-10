@@ -9,6 +9,7 @@ import { TappyMascot } from '@/components/TappyMascot'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { readSavedContext, type SavedMessage } from '@/lib/chat/savedContext'
 import { apiFetch } from '@/lib/account/ageGateClient'
+import { HiddenInWorkspace, useInChatWorkspace } from '@/components/chat/workspace/ChatWorkspaceContext'
 
 interface Conversation {
   id: string
@@ -19,6 +20,7 @@ interface Conversation {
 
 export default function ChatConversation({ conversation }: { conversation: Conversation }) {
   const { t } = useTranslation()
+  const inWorkspace = useInChatWorkspace()
   const catInfo = CATEGORIES.find(c => c.id === conversation.category)
   // The Explore clip this thread started from, if any — read back from the saved row so every
   // follow-up after the `/chat` → `/chat/<id>` move still names it. Shape-validated; see
@@ -27,15 +29,17 @@ export default function ChatConversation({ conversation }: { conversation: Conve
 
   const handleSave = useCallback(async (
     msgs: SavedMessage[],
-    title: string
+    _title: string
   ) => {
     try {
       // Age refusals redirect to /age-check via the ONE shared handler; every other
       // response behaves exactly as before.
+      // The title is NOT sent: it was set when the conversation was created, and the person may have renamed it since
+      // (history sidebar). Omitting it leaves the stored title untouched, so a rename survives the next message.
       await apiFetch('/api/conversations', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: conversation.id, title, messages: msgs }),
+        body: JSON.stringify({ id: conversation.id, messages: msgs }),
       })
     } catch (e) { console.error('Save failed:', e) }
   }, [conversation.id])
@@ -45,23 +49,25 @@ export default function ChatConversation({ conversation }: { conversation: Conve
   // the same product instead of a light page reached from a dark one. No behaviour changes: the
   // marker contract, the action boundary and the honesty rule are untouched.
   return (
-    <div data-chat-page className="v3-theme dark flex flex-col h-dvh">
+    <div data-chat-page className={`v3-theme dark flex flex-col h-dvh${inWorkspace ? ' lg:h-full' : ''}`}>
       {/* The saved-conversation header carries the same approved pose as the live
         * one — the two are the same surface and must not disagree. See the note
         * in src/app/(app)/chat/page.tsx. */}
       {/* Phase 7 §13: Back pops the in-app history; Home is only the fallback. A fixed
         * `backHref="/"` sent Back to Home even when the user arrived from
         * /profile/history or from a notification. */}
-      <Header
-        showBack
-        backFallbackHref="/"
-        title={catInfo ? (
-          <span className="inline-flex items-center justify-center gap-2">
-            <TappyMascot pose={catInfo.id} size={24} alt="" />
-            {t(`tag.${catInfo.id}`)}
-          </span>
-        ) : conversation.title}
-      />
+      <HiddenInWorkspace>
+        <Header
+          showBack
+          backFallbackHref="/"
+          title={catInfo ? (
+            <span className="inline-flex items-center justify-center gap-2">
+              <TappyMascot pose={catInfo.id} size={24} alt="" />
+              {t(`tag.${catInfo.id}`)}
+            </span>
+          ) : conversation.title}
+        />
+      </HiddenInWorkspace>
       <div className="flex-1 overflow-hidden">
         <ChatInterface
           initialCategory={conversation.category}
@@ -71,8 +77,10 @@ export default function ChatConversation({ conversation }: { conversation: Conve
           onSave={handleSave}
         />
       </div>
-      <div className="h-16" />
-      <BottomNav />
+      <HiddenInWorkspace>
+        <div className="h-16" />
+        <BottomNav />
+      </HiddenInWorkspace>
     </div>
   )
 }
