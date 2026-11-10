@@ -191,6 +191,28 @@ export function stsAudience(c: WifConfig): string {
 }
 
 /**
+ * True only under `next dev`, WITH the explicit opt-in variable, and only when this process is NOT pointed at the production public
+ * media bucket (the developer's own login can write anywhere, so a laptop session must name a non-production bucket first).
+ * Never in a production build.
+ */
+export function localGcloudTokenAllowed(env: NodeJS.ProcessEnv = process.env): boolean {
+  if (env.NODE_ENV !== 'development' || env.LOCAL_DEV_GCLOUD_TOKEN !== 'true') return false
+  const publicBucket = env.GCS_MEDIA_BUCKET?.trim() || 'tappyai-media-prod'
+  return publicBucket !== 'tappyai-media-prod'
+}
+
+async function readLocalGcloudToken(): Promise<string> {
+  const { execFile } = await import('node:child_process')
+  return new Promise<string>((resolve, reject) => {
+    execFile('gcloud', ['auth', 'print-access-token'], { shell: process.platform === 'win32', timeout: 20_000 }, (err, stdout) => {
+      const token = String(stdout ?? '').trim()
+      if (err || !token) reject(new WifExchangeError('oidc'))
+      else resolve(token)
+    })
+  })
+}
+
+/**
  * Returns a `getAccessToken()` suitable for the GCS provider. The resulting
  * access token is cached in memory until shortly before it expires; it is
  * never written to disk and never logged.
@@ -215,6 +237,14 @@ export function createWifTokenSource(deps: WifDeps): () => Promise<string> {
 
   return async function getAccessToken(): Promise<string> {
     if (cached && cached.expiresAt - EXPIRY_SKEW_MS > now()) return cached.token
+
+    // Local UAT only: `next dev` on a developer laptop has no Vercel OIDC token, so an explicit opt-in uses the developer's own
+    // `gcloud` login. Unreachable in a production build (NODE_ENV is "production" there) and never set on Vercel.
+    if (localGcloudTokenAllowed()) {
+      const token = await readLocalGcloudToken()
+      cached = { token, expiresAt: now() + 30 * 60_000 }
+      return token
+    }
 
     const oidc = deps.getOidcToken()
     if (!oidc) throw new WifExchangeError('oidc')
