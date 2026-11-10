@@ -114,6 +114,10 @@ policy_of() {
     # project. Nothing uses them until NEXT_PUBLIC_CHAT_WORKSPACE_ENABLED is on.
     20261119_chat_projects.sql)
       echo APPLY ;;
+    # TVI core, R13 §8 slice 2a (owner 10/11/2026): eight NEW service-role-only tables (entities, facts, immutable versions, state, append-only events, evidence, sources, fact-evidence)
+    # and three write functions. Independent of the other migrations; nothing reads or writes them until a later flagged slice wires the chat to the store.
+    20261120_tvi_core.sql)
+      echo APPLY ;;
     # H1 → M1 first, then the security-branch migrations in MIGRATION_ORDER.txt order (owner 30/09): 20260928b needs the
     # deal-click code (service role) on production; the others are code-independent but ride the same verified window.
     20260927_owner_update_column_privileges.sql|20260928_revoke_reviews_insert.sql|\
