@@ -110,6 +110,10 @@ policy_of() {
     # NEXT_PUBLIC_CHAT_WORKSPACE_ENABLED is on.
     20261118_conversation_pin_archive.sql)
       echo APPLY ;;
+    # Chat workspace, slice 3 (owner 10/11/2026): projects — one new owner-only table (chat_projects), a nullable conversations.project_id and a trigger that refuses another account's
+    # project. Nothing uses them until NEXT_PUBLIC_CHAT_WORKSPACE_ENABLED is on.
+    20261119_chat_projects.sql)
+      echo APPLY ;;
     # H1 → M1 first, then the security-branch migrations in MIGRATION_ORDER.txt order (owner 30/09): 20260928b needs the
     # deal-click code (service role) on production; the others are code-independent but ride the same verified window.
     20260927_owner_update_column_privileges.sql|20260928_revoke_reviews_insert.sql|\

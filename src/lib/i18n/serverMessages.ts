@@ -329,6 +329,9 @@ const MESSAGES = {
   // Conversations
   'conversation.tooMany': { vi: 'Quá nhiều tin nhắn', en: 'Too many messages' },
   'conversation.tooLarge': { vi: 'Nội dung quá lớn', en: 'That content is too large' },
+  'chatProject.tooMany': { vi: 'Bạn đã có tối đa 50 dự án. Hãy xóa bớt dự án cũ rồi tạo mới.', en: 'You already have 50 projects. Delete an old one to create a new one.' },
+  'chatProject.notFound': { vi: 'Không tìm thấy dự án này.', en: 'That project was not found.' },
+  'chatProject.notYours': { vi: 'Dự án này không thuộc tài khoản của bạn.', en: 'That project does not belong to your account.' },
 
   // Subscription management
   'subscription.portalFailed': { vi: 'Không mở được trang quản lý đăng ký lúc này.', en: "Couldn't open subscription management right now." },

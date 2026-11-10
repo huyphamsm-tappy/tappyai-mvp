@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import {
   normalizeVietnamese, matchesQuery, messageText, conversationMatches, timeGroupOf, groupByTime,
-  buildTranscriptMarkdown, exportFileName, itemsForTab, tabCounts, buildGroups, type HistoryConversation,
+  buildTranscriptMarkdown, exportFileName, itemsForTab, itemsForProject, tabCounts, buildGroups, type HistoryConversation,
 } from './historyModel'
 
 // A fixed "now": Tuesday 10 Nov 2026, 14:00 local time.
@@ -72,8 +72,19 @@ describe('tabs: all / pinned / archived', () => {
     expect(itemsForTab(list, 'archived').map(c => c.id)).toEqual(['arch', 'pinarch'])
   })
   it('counts agree with the tabs, and a row without the flags (older server) counts as plain', () => {
-    expect(tabCounts(list)).toEqual({ all: 4, pinned: 1, archived: 2 })
-    expect(tabCounts([{ id: 'x', title: 'x', updated_at: at(2026, 11, 10) }])).toEqual({ all: 1, pinned: 0, archived: 0 })
+    expect(tabCounts(list)).toEqual({ all: 4, pinned: 1, archived: 2, projects: 0 })
+    expect(tabCounts([{ id: 'x', title: 'x', updated_at: at(2026, 11, 10) }], 3)).toEqual({ all: 1, pinned: 0, archived: 0, projects: 3 })
+  })
+  it('a project shows its own conversations, hides the archived ones, and ignores rows without a project (older server)', () => {
+    const rows: HistoryConversation[] = [
+      { id: 'a', title: 'a', updated_at: at(2026, 11, 10), project_id: 'p1' },
+      { id: 'b', title: 'b', updated_at: at(2026, 11, 10), project_id: 'p1', is_archived: true },
+      { id: 'c', title: 'c', updated_at: at(2026, 11, 10), project_id: 'p2' },
+      { id: 'd', title: 'd', updated_at: at(2026, 11, 10) },
+      { id: 'e', title: 'e', updated_at: at(2026, 11, 10), project_id: null },
+    ]
+    expect(itemsForProject(rows, 'p1').map(c => c.id)).toEqual(['a'])
+    expect(itemsForProject(rows, 'none').map(c => c.id)).toEqual([])
   })
   it('on "all" the pinned come first in their own group, newest first; the rest follow by day', () => {
     const groups = buildGroups(itemsForTab(list, 'all'), 'all', NOW)

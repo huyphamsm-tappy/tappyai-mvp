@@ -15,9 +15,14 @@ export interface HistoryConversation {
   /** Chat workspace slice 2. Missing / null reads as false (an older server, or a row from before the migration). */
   is_pinned?: boolean | null
   is_archived?: boolean | null
+  /** Chat workspace slice 3: the project this conversation is in, if any. */
+  project_id?: string | null
 }
 
-export type HistoryTab = 'all' | 'pinned' | 'archived'
+/** Rows per page of GET /api/conversations. The client treats a page of exactly this size as "there may be more". */
+export const HISTORY_PAGE_SIZE = 40
+
+export type HistoryTab = 'all' | 'pinned' | 'archived' | 'projects'
 
 /** The conversations a tab shows. Archived ones leave "all" and "pinned"; a pinned + archived conversation is shown only under "archived". */
 export function itemsForTab<T extends HistoryConversation>(list: readonly T[], tab: HistoryTab): T[] {
@@ -26,8 +31,14 @@ export function itemsForTab<T extends HistoryConversation>(list: readonly T[], t
   return list.filter(c => c.is_archived !== true)
 }
 
-export function tabCounts(list: readonly HistoryConversation[]): Record<HistoryTab, number> {
-  return { all: itemsForTab(list, 'all').length, pinned: itemsForTab(list, 'pinned').length, archived: itemsForTab(list, 'archived').length }
+/** The conversations of one project (archived ones stay out of sight, like on every tab except "archived"). */
+export function itemsForProject<T extends HistoryConversation>(list: readonly T[], projectId: string): T[] {
+  return list.filter(c => c.project_id === projectId && c.is_archived !== true)
+}
+
+/** `projects` is the number of projects the person has (it is not derived from the conversation list, which is paged). */
+export function tabCounts(list: readonly HistoryConversation[], projects = 0): Record<HistoryTab, number> {
+  return { all: itemsForTab(list, 'all').length, pinned: itemsForTab(list, 'pinned').length, archived: itemsForTab(list, 'archived').length, projects }
 }
 
 /** Lower-cases, strips Vietnamese diacritics (đ → d), trims. "Đà Lạt" and "da lat" normalise to the same string. */
