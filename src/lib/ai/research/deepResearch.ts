@@ -509,7 +509,7 @@ export function sectionImages(report: string, plan: ResearchPlan, pictures: Read
 
 /** Runs one deep research. Never throws: a failure ends with a `failed` status and whatever was written. */
 /** `left` (review 02/11): the person went away - the run stops where it is, writes nothing more and ends as 'client_gone'. */
-export async function runDeepResearch(question: string, context: string, lang: string, deps: DeepResearchDeps, emit: ResearchEmit, left?: AbortSignal, bounds?: RunBounds): Promise<{ plan: ResearchPlan | null; evidence: Evidence[]; findings: Finding[]; failed: string | null; cut?: boolean; followUps?: number; charts?: number; figures?: { proposed: number; kept: number }; stepStats?: StepStat[]; unsupported?: string[]; repaired?: number }> {
+export async function runDeepResearch(question: string, context: string, lang: string, deps: DeepResearchDeps, emit: ResearchEmit, left?: AbortSignal, bounds?: RunBounds): Promise<{ plan: ResearchPlan | null; evidence: Evidence[]; findings: Finding[]; failed: string | null; cut?: boolean; followUps?: number; charts?: number; figures?: { proposed: number; kept: number }; stepStats?: StepStat[]; unsupported?: string[]; repaired?: number; /** tier runs only (bounds given): the written report and the sources it cites, for the independent verifier (claimVerifier.ts) */ checked?: { report: string; sources: Evidence[] } }> {
   const now = deps.now ?? Date.now
   const t0 = now()
   // DEEP_RESEARCH_V2 (03/11, OFF unless "1", never in production): several gap rounds in this request and a repair of the parts the report does not name
@@ -701,5 +701,5 @@ export async function runDeepResearch(question: string, context: string, lang: s
   if (placed.length && emit.images) emit.images(placed)
   const links = cited.map(e => ({ id: e.id, title: e.title, url: e.url }))
   emit.status({ type: 'tappy.research.v1', title: plan.title, phase: 'done', steps: steps.map(s => ({ ...s })), sources: evidence.length, links })
-  return { plan, evidence, findings, failed: null, cut, followUps, charts: charts.length, figures: { ...figureCount }, stepStats, unsupported: unsupportedNumbers(written, notes), ...(repaired ? { repaired } : {}) }
+  return { plan, evidence, findings, failed: null, cut, followUps, charts: charts.length, figures: { ...figureCount }, stepStats, unsupported: unsupportedNumbers(written, notes), ...(repaired ? { repaired } : {}), ...(bounds ? { checked: { report: written, sources: cited } } : {}) }
 }

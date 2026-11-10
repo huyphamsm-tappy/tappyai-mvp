@@ -7,6 +7,7 @@
 
 import { runDeepResearch, chartsFrame, type DeepResearchDeps, type ResearchStatus, type ResearchEmit, type RunBounds } from './deepResearch'
 import { evidenceCounts } from './deepResearchDeps'
+import { verifyReport } from './claimVerifier'
 import { DOC_MEDIA_KIND, docMediaFrame, sanitizeDocMedia } from '@/lib/answerDoc/media'
 
 export interface DeepResearchTurn {
@@ -64,6 +65,10 @@ export function deepResearchResponse(t: DeepResearchTurn): Response {
       // streaming it was read (at least in part), so leaving before the sources is not a way to get the quota back.
       if (out.failed === 'client_gone') { if (chars === 0) await Promise.resolve(t.onFailed(out.failed)) }
       else if (out.failed && chars === 0) { send(`0:${JSON.stringify(FAILED_TEXT[t.lang === 'en' ? 'en' : 'vi'])}`); await Promise.resolve(t.onFailed(out.failed)) }
+      // R13: the independent verifier reads a tier run's report against the sources it cites (numbers and citation ids only; counts are logged, never the text)
+      let verification: ReturnType<typeof verifyReport> | null = null
+      if (out.checked && !out.failed) { try { verification = verifyReport(out.checked.report, out.checked.sources) } catch { verification = null } }
+      if (verification) console.log(JSON.stringify({ type: 'tappyai_report_verification', scope: verification.scope, sentences: verification.sentences, checked: verification.checked, ...verification.counts, flagged: verification.flagged.slice(0, 20).map(f => ({ s: f.sentence, status: f.status })) }))
       const serper = t.serperUsd()
       const usd = Math.round((t.cost.usd + serper.usd) * 1e6) / 1e6
       console.log(JSON.stringify({ type: 'tappyai_turn_cost', turnType: 'deep_research', usd, answerUsd: Math.round(t.cost.usd * 1e6) / 1e6, serperUsd: serper.usd, serperCalls: serper.calls, modelCalls: t.cost.calls }))
