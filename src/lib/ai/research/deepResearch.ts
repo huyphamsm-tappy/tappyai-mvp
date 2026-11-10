@@ -20,6 +20,8 @@ import { leanValue } from './deepResearchLean'
 import { deepResearchV2On, V2_LIMITS, termScores, stepCoverage, decideNext, missingParts, findingsForPart } from './deepResearchState'
 
 // planSteps: the plan's own steps; steps: all steps of a run (the plan's + the follow-up round's GAP_STEPS), as the card shows them
+/** R13 tier bounds for one run (Standard report). Absent = the unbounded one-pass / V2 run, byte for byte. */
+export interface RunBounds { maxSteps: number; queriesPerStep: number; gapRounds: number; followUpSteps: number }
 export const DEEP_RESEARCH_LIMITS = { planSteps: 10, steps: 17, queriesPerStep: 3, findingsPerStep: 90, researchDeadlineMs: 120_000, runDeadlineMs: 270_000 } as const
 
 /**
@@ -507,7 +509,7 @@ export function sectionImages(report: string, plan: ResearchPlan, pictures: Read
 
 /** Runs one deep research. Never throws: a failure ends with a `failed` status and whatever was written. */
 /** `left` (review 02/11): the person went away - the run stops where it is, writes nothing more and ends as 'client_gone'. */
-export async function runDeepResearch(question: string, context: string, lang: string, deps: DeepResearchDeps, emit: ResearchEmit, left?: AbortSignal): Promise<{ plan: ResearchPlan | null; evidence: Evidence[]; findings: Finding[]; failed: string | null; cut?: boolean; followUps?: number; charts?: number; figures?: { proposed: number; kept: number }; stepStats?: StepStat[]; unsupported?: string[]; repaired?: number }> {
+export async function runDeepResearch(question: string, context: string, lang: string, deps: DeepResearchDeps, emit: ResearchEmit, left?: AbortSignal, bounds?: RunBounds): Promise<{ plan: ResearchPlan | null; evidence: Evidence[]; findings: Finding[]; failed: string | null; cut?: boolean; followUps?: number; charts?: number; figures?: { proposed: number; kept: number }; stepStats?: StepStat[]; unsupported?: string[]; repaired?: number }> {
   const now = deps.now ?? Date.now
   const t0 = now()
   // DEEP_RESEARCH_V2 (03/11, OFF unless "1", never in production): several gap rounds in this request and a repair of the parts the report does not name
@@ -525,6 +527,9 @@ export async function runDeepResearch(question: string, context: string, lang: s
   try { const first = normalisePlan(await deps.plan(question, context), question); plan = first ? withPartSteps(first) : null } catch { plan = null }
   if (left?.aborted) return { plan, evidence, findings, failed: 'client_gone' }
   if (!plan) return { plan: null, evidence, findings, failed: fail(clean(question, 120), [], 'no_plan') }
+  // R13 Standard tier: a plan that needs more steps than the tier allows is an Advanced request (hard trigger: four or more work packages). Nothing is dropped to make it fit and
+  // nothing is searched: the caller promotes the request or clarifies it, so no part of the question is silently left out.
+  if (bounds && plan.steps.length > bounds.maxSteps) return { plan, evidence, findings, failed: 'exceeds_standard' }
   deps.trace?.({ ev: 'plan', title: plan.title, steps: plan.steps.map(s => ({ title: s.title, queries: s.queries })) })
   const steps: ResearchStatus['steps'] = plan.steps.map(s => ({ title: s.title, status: 'pending' }))
   const show = (phase: ResearchStatus['phase']) => emit.status({ type: 'tappy.research.v1', title: plan!.title, phase, steps: steps.map(s => ({ ...s })), sources: evidence.length })
@@ -540,7 +545,7 @@ export async function runDeepResearch(question: string, context: string, lang: s
   const runStep = async (k: number): Promise<void> => {
     const step = plan!.steps[k]
     steps[k].status = 'running'; show('researching')
-    const gathered = (await Promise.all(step.queries.map(q => deps.gather(q, `${step.title} - ${question}`).catch(() => [])))).flat()
+    const gathered = (await Promise.all(step.queries.slice(0, bounds?.queriesPerStep ?? step.queries.length).map(q => deps.gather(q, `${step.title} - ${question}`).catch(() => [])))).flat()
     const mine: Evidence[] = []
     for (const g of gathered) {
       const url = g.url ? canonicalSourceUrl(g.url) : null
@@ -593,7 +598,7 @@ export async function runDeepResearch(question: string, context: string, lang: s
   // One-pass: one round. DEEP_RESEARCH_V2: up to V2_LIMITS.maxGapRounds, each further one decided by decideNext (time, rounds, diminishing returns, coverage)
   let followUps = 0
   let lastNew = 0
-  for (let r = 0; r < (v2 ? V2_LIMITS.maxGapRounds : 1); r++) {
+  for (let r = 0; r < (bounds ? bounds.gapRounds : v2 ? V2_LIMITS.maxGapRounds : 1); r++) {
     if (timedOut || !deps.gaps || !findings.length || researchDeadline - (now() - t0) < GAP_MIN_LEFT_MS) break
     if (r > 0) {
       const d = decideNext({ round: r, newFindings: lastNew, msLeft: researchDeadline - (now() - t0), coverage: stepCoverage(plan, findings), ...(deps.spent ? { llmUsd: deps.spent() } : {}) })
@@ -611,7 +616,7 @@ export async function runDeepResearch(question: string, context: string, lang: s
         // 02/11: a follow-up the check did not tie to a step still joins the section whose title it shares the most words with (when that is unique)
         const c = Number.isInteger(given) && given >= 1 && given <= planned ? given : stepForGap(s?.title ?? '', plan!.steps.slice(0, planned))
         return s ? { title: s.title, queries: s.queries, ...(c ? { completes: c } : {}) } : null
-      }).filter((s): s is ResearchPlan['steps'][number] => !!s).slice(0, leanValue('gaps', GAP_STEPS, 2))
+      }).filter((s): s is ResearchPlan['steps'][number] => !!s).slice(0, bounds ? bounds.followUpSteps : leanValue('gaps', GAP_STEPS, 2))
     deps.trace?.({ ev: 'gaps', steps: more.map(s => ({ title: s.title, queries: s.queries })) })
     if (!more.length) break
     const from = plan.steps.length

@@ -134,3 +134,6 @@ export function promoteAfterEvidence(current: ResearchTier, signals: ResearchSig
  * Standard report bounds (R13 §4.2.1). Advanced bounds are set by the Controller after it validates Sonnet's task graph, not here.
  */
 export const STANDARD_BOUNDS = { maxWorkPackages: 3, targetSources: 8, supplementalPasses: 1 } as const
+
+/** What one Standard run is held to by the engine (runDeepResearch's `bounds`): 3 steps, 2 queries a step, one gap round of at most 2 follow-up steps. */
+export const STANDARD_RUN_BOUNDS = { maxSteps: STANDARD_BOUNDS.maxWorkPackages, queriesPerStep: 2, gapRounds: STANDARD_BOUNDS.supplementalPasses, followUpSteps: 2 } as const
