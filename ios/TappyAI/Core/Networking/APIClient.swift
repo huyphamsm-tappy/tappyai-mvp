@@ -151,6 +151,8 @@ final class URLSessionAPIClient: APIClient {
         case (429, "deep_research_limit_reached"): return .authentication(reason: .deepResearchLimitReached(message: serverMessage(from: data)))
         case (429, "pro_daily_limit_reached"): return .authentication(reason: .proDailyLimitReached(message: serverMessage(from: data)))
         case (403, "ai_consent_required"): return .authentication(reason: .aiConsentRequired(message: serverMessage(from: data)))
+        // Explore video: the clip-conditions gate keeps its code (a sheet follows, not a sign-in or an AI-consent message).
+        case (403, "video_consent_required"): return .network(status: 403, code: "video_consent_required")
         case (400, _): return .validation(message: errorMessage(from: data) ?? "Invalid request")
         case (401, _): return .authentication(reason: .unauthenticated)
         case (403, let code?) where AgeGateCode(rawValue: code) != nil:

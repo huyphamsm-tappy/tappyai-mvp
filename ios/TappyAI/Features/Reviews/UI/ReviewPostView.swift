@@ -28,6 +28,13 @@ struct ReviewPostView: View {
     @State private var singleTapTask: Task<Void, Never>?
     @State private var showOwnMenu = false
     @State private var showReportMenu = false
+    @State private var showDownload = false
+
+    /// The asset id when this post is an Explore HLS clip, and only for its owner (downloads are owner-only).
+    private var exploreAssetId: String? {
+        guard isOwnPost, review.isVideo, !isExternalEmbed, let raw = review.mediaUrl, let url = URL(string: raw) else { return nil }
+        return ExploreVideoPlayback.assetId(fromManifestURL: url)
+    }
 
     private var canReport: Bool { !isOwnPost && isAuthenticated && (onReport != nil || onSafety != nil) }
 
@@ -91,7 +98,16 @@ struct ReviewPostView: View {
             guard review.isVideo, !isExternalEmbed else { return }
             if phase == .active { if isActive { videoPlayer.setActive(true) } } else { videoPlayer.setActive(false) }
         }
+        .sheet(isPresented: $showDownload) {
+            if let assetId = exploreAssetId, let service = ExploreVideoRuntime.service {
+                ExploreVideoDownloadView(assetId: assetId, api: service)
+            }
+        }
         .confirmationDialog("", isPresented: $showOwnMenu, titleVisibility: .hidden) {
+            // Explore clips only (a private HLS manifest): the owner's watermarked copy for the Photos library.
+            if exploreAssetId != nil, ExploreVideoRuntime.service != nil {
+                Button(NSLocalizedString("video.download.action", comment: "")) { showDownload = true }
+            }
             Button(NSLocalizedString("review.action.hide", comment: "")) { onHide() }
             Button(NSLocalizedString("review.action.delete", comment: ""), role: .destructive) { onDelete() }
             Button(NSLocalizedString("common.cancel", comment: ""), role: .cancel) {}
@@ -124,6 +140,11 @@ struct ReviewPostView: View {
                     FeedVideoView(player: videoPlayer.player)
                         .frame(width: size.width, height: size.height)
                         .clipped()
+                    // Explore clip text (already validated by the player; nil for every other clip).
+                    if let doc = videoPlayer.overlayDoc {
+                        OverlayLayersView(doc: doc, timeMs: videoPlayer.playheadMs, container: size,
+                                          videoSize: videoPlayer.videoSize, fill: true)
+                    }
                     if isActive, videoPlayer.failed {
                         VStack(spacing: Spacing.sm) {
                             Text("feed.video.failed").font(TappyFont.callout).foregroundStyle(.white)

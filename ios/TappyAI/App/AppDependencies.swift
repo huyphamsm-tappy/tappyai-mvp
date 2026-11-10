@@ -101,6 +101,8 @@ final class AppDependencies: AppObservableObject {
         c.register(SupabaseClient.self, instance: supabase)
         c.register(AppConfigService.self, instance: configService)
         c.register(NotificationManager.self, instance: notificationManager)
+        // Explore video pipeline handle for the feed player and the post menu (every route answers 404 while the server flag is off).
+        ExploreVideoRuntime.service = ExploreVideoService(api: api)
     }
 
     /// Fast, synchronous launch routing (F12): read Keychain, pick the root, no blocking network.

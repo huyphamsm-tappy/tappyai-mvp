@@ -65,13 +65,114 @@ final class FeedVideoPlayer: AppObservableObject {
         currentURL = url
         userPaused = false
         watchStart = nil
+        cancelExplore()
 
+        // Explore HLS clip (private CDN): the playback grant and its cookie come first. Old MP4 / other links go straight on.
+        if let assetId = ExploreVideoPlayback.assetId(fromManifestURL: url), let service = ExploreVideoRuntime.service {
+            beginExploreLoad(assetId: assetId, service: service)
+            return
+        }
+
+        install(item: AVPlayerItem(url: url))
+    }
+
+    // MARK: - Explore video (contract §5)
+
+    /// The post's text overlay, only when it passed the validator. Drawn above the video by `OverlayLayersView`.
+    @AppPublished private(set) var overlayDoc: OverlayDocument?
+    @AppPublished private(set) var playheadMs: Int = 0
+    @AppPublished private(set) var videoSize: CGSize = .zero
+    private var exploreTask: Task<Void, Never>?
+    private var refreshTask: Task<Void, Never>?
+    private var timeObserver: Any?
+
+    private func cancelExplore() {
+        exploreTask?.cancel()
+        exploreTask = nil
+        refreshTask?.cancel()
+        refreshTask = nil
+        if let obs = timeObserver { player.removeTimeObserver(obs); timeObserver = nil }
+        overlayDoc = nil
+        playheadMs = 0
+        videoSize = .zero
+    }
+
+    private func beginExploreLoad(assetId: String, service: ExploreVideoService) {
+        failed = false
+        isBuffering = true
+        exploreTask = Task { [weak self] in
+            do {
+                let grant = try await service.playback(assetId: assetId)
+                try Task.checkCancellation()
+                guard let self else { return }
+                // 404 or an unusable grant = do not play.
+                guard let prepared = ExploreVideoPlayback.prepare(grant) else {
+                    self.failed = true
+                    self.isBuffering = false
+                    return
+                }
+                self.install(item: AVPlayerItem(asset: ExploreVideoPlayback.makeAsset(prepared)))
+                self.applyOverlay(prepared.overlay)
+                self.scheduleRefresh(assetId: assetId, service: service, after: prepared.refreshAfter)
+            } catch is CancellationError {
+                // replaced by another clip
+            } catch {
+                guard let self else { return }
+                self.failed = true
+                self.isBuffering = false
+            }
+        }
+    }
+
+    private func applyOverlay(_ doc: OverlayDocument?) {
+        overlayDoc = doc
+        if let obs = timeObserver { player.removeTimeObserver(obs); timeObserver = nil }
+        guard doc != nil else { return }
+        timeObserver = player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.1, preferredTimescale: 600), queue: .main) { [weak self] time in
+            Task { @MainActor in
+                guard let self else { return }
+                let ms = Int(max(0, time.seconds) * 1000)
+                if ms != self.playheadMs { self.playheadMs = ms }
+                if let size = self.player.currentItem?.presentationSize, size != self.videoSize { self.videoSize = size }
+            }
+        }
+    }
+
+    /// Renews the CDN cookie at ~80% of its lifetime. AVURLAsset fixes its cookies when it is made, so the renewal builds a new
+    /// asset and swaps it in at the same position (a short hiccup every ~8 minutes). Revoked (404) = stop; other errors = retry later.
+    private func scheduleRefresh(assetId: String, service: ExploreVideoService, after seconds: TimeInterval) {
+        refreshTask?.cancel()
+        refreshTask = Task { [weak self] in
+            try? await Task.sleep(nanoseconds: UInt64(max(1, seconds) * 1_000_000_000))
+            guard !Task.isCancelled else { return }
+            do {
+                let grant = try await service.playback(assetId: assetId)
+                guard !Task.isCancelled, let self else { return }
+                guard let prepared = ExploreVideoPlayback.prepare(grant) else { return }
+                let position = self.player.currentTime()
+                self.install(item: AVPlayerItem(asset: ExploreVideoPlayback.makeAsset(prepared)))
+                self.player.seek(to: position)
+                self.scheduleRefresh(assetId: assetId, service: service, after: prepared.refreshAfter)
+            } catch {
+                guard !Task.isCancelled, let self else { return }
+                if ExploreVideoIssue.from(error) == .notFound {
+                    self.player.pause()
+                    self.failed = true
+                    self.isBuffering = false
+                } else {
+                    self.scheduleRefresh(assetId: assetId, service: service, after: ExploreVideoPlayback.retryAfterFailure)
+                }
+            }
+        }
+    }
+
+    /// Puts an item on the player and wires its status / buffering / end-of-clip observers (shared by every kind of clip).
+    private func install(item: AVPlayerItem) {
         if let obs = endObserver {
             NotificationCenter.default.removeObserver(obs)
             endObserver = nil
         }
 
-        let item = AVPlayerItem(url: url)
         // Start small: a feed clip needs a first frame fast, not a deep buffer (less to download before it shows).
         item.preferredForwardBufferDuration = 4
         player.replaceCurrentItem(with: item)

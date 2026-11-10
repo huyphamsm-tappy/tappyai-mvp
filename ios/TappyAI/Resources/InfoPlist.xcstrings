@@ -32,8 +32,8 @@
     "NSPhotoLibraryAddUsageDescription" : {
       "extractionState" : "manual",
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "TappyAI saves the share cards and images you choose to save to your photos." } },
-        "vi" : { "stringUnit" : { "state" : "translated", "value" : "TappyAI lưu vào thư viện ảnh những thẻ chia sẻ và hình ảnh bạn chọn lưu về máy." } }
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "TappyAI saves the share cards, images and videos you choose to save to your photos." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "TappyAI lưu vào thư viện ảnh những thẻ chia sẻ, hình ảnh và video bạn chọn lưu về máy." } }
       }
     },
     "NSLocationWhenInUseUsageDescription" : {

@@ -32,6 +32,10 @@ final class CreateReviewViewModel: AppObservableObject {
     @AppPublished var thumbPreview: UIImage?
     @AppPublished var videoDuration: Double = 0
     @AppPublished var aiHashtags: [String] = []
+    /// Explore video pipeline: the server-owned clip behind this draft, and where it stands. Both nil on the legacy path.
+    @AppPublished var videoAssetId: String?
+    @AppPublished var videoPhase: ExploreVideoPhase?
+    @AppPublished var overlayEditorOpen = false
 
     // URL
     @AppPublished var sourceURL: String = ""
@@ -66,8 +70,43 @@ final class CreateReviewViewModel: AppObservableObject {
     private let log = AppLogger.reviews
     private var uploadTask: Task<Void, Never>?
     private var searchDebounceTask: Task<Void, Never>?
+    /// nil = the Explore video pipeline is not wired (tests, previews): the legacy upload is used.
+    private let explore: ExploreVideoUploader?
+    /// True while the composer follows a server-owned clip; the view leaving the screen stops this and nothing else.
+    private var isPollingExplore = false
 
     var isAuthenticated: Bool { session.state.isAuthenticated }
+
+    var exploreAPI: ExploreVideoAPI? { explore?.api }
+
+    // MARK: Clip conditions sheet (contract §6; NOT the AI consent sheet)
+
+    @AppPublished var showVideoConsent = false
+    private var videoConsentContinuation: CheckedContinuation<Bool, Never>?
+
+    /// Shows the clip-conditions sheet and waits for «Đồng ý» / «Để sau».
+    func askVideoConsent() async -> Bool {
+        await withCheckedContinuation { continuation in
+            videoConsentContinuation = continuation
+            showVideoConsent = true
+        }
+    }
+
+    func answerVideoConsent(_ accepted: Bool) {
+        showVideoConsent = false
+        let pending = videoConsentContinuation
+        videoConsentContinuation = nil
+        pending?.resume(returning: accepted)
+    }
+
+    /// The composer went off screen: stop following the clip (the server keeps it; nothing is lost).
+    func viewDisappeared() {
+        guard isPollingExplore else { return }
+        if videoConsentContinuation != nil { answerVideoConsent(false) }
+        uploadTask?.cancel()
+        uploadTask = nil
+        resetVideoState()
+    }
 
     /// Applies the backend-owned provider list to the selector. A provider is offered only if the
     /// backend lists it AND this client has a case for it, so an id we cannot parse is dropped
@@ -85,8 +124,10 @@ final class CreateReviewViewModel: AppObservableObject {
         }
     }
 
-    init(service: CreateReviewService, session: SessionStore, config: AppConfigService, prefilledPlaceId: String? = nil, prefilledPlaceName: String? = nil) {
+    init(service: CreateReviewService, session: SessionStore, config: AppConfigService, prefilledPlaceId: String? = nil, prefilledPlaceName: String? = nil,
+         explore: ExploreVideoUploader? = nil) {
         self.service = service
+        self.explore = explore
         self.session = session
         self.config = config
         if let id = prefilledPlaceId, !id.isEmpty {
@@ -232,6 +273,10 @@ final class CreateReviewViewModel: AppObservableObject {
 
         try Task.checkCancellation()
 
+        // 2a. Explore video pipeline (server-owned upload, processing and review). A 404 from the server = the feature is off:
+        // `runExploreUpload` answers false and the legacy upload below runs exactly as before.
+        if let explore, try await runExploreUpload(explore, sourceURL: url, thumbnailURL: thumbnailURL) { return }
+
         // 2. Upload video
         uploadStep = .uploading(progress: 0)
         // GPS location, device and creation times removed before the bytes leave the phone — the
@@ -263,6 +308,91 @@ final class CreateReviewViewModel: AppObservableObject {
         try? FileManager.default.removeItem(at: url)
     }
 
+    // MARK: - Explore video pipeline
+
+    private func setUploadProgress(_ p: Double) {
+        if case .uploading = uploadStep { uploadStep = .uploading(progress: p) }
+    }
+
+    private func failExplore(_ key: String) {
+        error = NSLocalizedString(key, comment: "")
+        resetVideoState()
+    }
+
+    /// Returns true when the pipeline handled the clip (success OR a shown error), false when the server says the feature is off
+    /// (or the file type is not one the new route takes) and the legacy upload must run.
+    private func runExploreUpload(_ explore: ExploreVideoUploader, sourceURL: URL, thumbnailURL: String) async throws -> Bool {
+        let ext = sourceURL.pathExtension.isEmpty ? "mp4" : sourceURL.pathExtension.lowercased()
+        guard let contentType = ExploreVideoUploadRules.contentType(forExtension: ext) else { return false }
+
+        // Location, device and creation times are removed before the bytes leave the phone (the server refuses a clip that keeps them),
+        // then the neutral copy is a temporary FILE that the PUT streams from.
+        let neutral = ClipMetadata.neutralize(try Data(contentsOf: sourceURL, options: .mappedIfSafe))
+        let prepared = FileManager.default.temporaryDirectory.appendingPathComponent("explore-\(UUID().uuidString).\(ext)")
+        try neutral.write(to: prepared, options: .atomic)
+        defer { try? FileManager.default.removeItem(at: prepared) }
+
+        uploadStep = .uploading(progress: 0)
+        isPollingExplore = true
+        defer { isPollingExplore = false }
+        do {
+            let outcome = try await explore.upload(
+                fileURL: prepared, contentType: contentType, size: neutral.count,
+                askConsent: { await self.askVideoConsent() },
+                onProgress: { [weak self] p in Task { @MainActor in self?.setUploadProgress(p) } }
+            )
+            guard case .uploaded(let assetId, let state) = outcome else { return false }
+
+            try Task.checkCancellation()
+            videoAssetId = assetId
+            uploadStep = .processing
+            let phase = try await explore.poll(assetId: assetId, initial: state, onPhase: { self.videoPhase = $0 })
+            try Task.checkCancellation()
+
+            switch phase {
+            case .ready:
+                await applyAISuggestions(thumbnailURL: thumbnailURL)
+                uploadStep = .done(mediaURL: "", thumbnailURL: thumbnailURL)
+                try? FileManager.default.removeItem(at: sourceURL)
+            case .rejected:
+                failExplore("video.status.rejected")
+            case .failed:
+                failExplore("video.status.failed")
+            case .published:
+                failExplore("video.error.inUse")
+            case .processing, .awaitingReview:
+                failExplore("video.error.stillProcessing")
+            }
+            return true
+        } catch let cancelled as CancellationError {
+            throw cancelled
+        } catch {
+            let issue = ExploreVideoIssue.from(error)
+            if issue == .cancelled { throw CancellationError() }
+            log.error("explore upload failed: \(error)")
+            failExplore(issue.messageKey)
+            return true
+        }
+    }
+
+    /// The same non-blocking caption/hashtag suggestion the legacy path asks for (it needs the legacy thumbnail URL).
+    private func applyAISuggestions(thumbnailURL: String) async {
+        guard !thumbnailURL.isEmpty else { return }
+        do {
+            let ai = try await service.processContent(
+                thumbnailUrl: thumbnailURL,
+                caption: body.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : body
+            )
+            if let tags = ai.hashtags, !tags.isEmpty { aiHashtags = tags }
+            if body.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+               let caption = ai.caption, !caption.isEmpty {
+                body = caption
+            }
+        } catch {
+            log.error("AI processing failed (non-blocking): \(error)")
+        }
+    }
+
     func cancelUpload() {
         uploadTask?.cancel()
         uploadTask = nil
@@ -279,6 +409,8 @@ final class CreateReviewViewModel: AppObservableObject {
         thumbPreview = nil
         videoDuration = 0
         aiHashtags = []
+        videoAssetId = nil
+        videoPhase = nil
     }
 
     // MARK: - URL source
@@ -549,13 +681,15 @@ final class CreateReviewViewModel: AppObservableObject {
                             body: trimmedBody,
                             photos: nil,
                             contentType: "video",
-                            mediaUrl: mediaURL,
+                            // Explore pipeline: the server derives the media URL from the asset, the app sends only the asset id.
+                            mediaUrl: videoAssetId == nil ? mediaURL : nil,
                             thumbnail: thumbnailURL,
                             sourceType: "upload",
                             sourceUrl: nil,
                             hashtags: aiHashtags.isEmpty ? nil : aiHashtags,
                             music: musicPayload,
-                            duration: videoDuration
+                            duration: videoDuration,
+                            videoAssetId: videoAssetId
                         )
                     }
                 case .url:
@@ -596,11 +730,15 @@ final class CreateReviewViewModel: AppObservableObject {
                     success = true
                 }
             } catch let appError as AppError {
-                switch appError {
-                case .network(status: let s, code: _) where s == 409:
-                    self.error = NSLocalizedString("review.error.alreadyReviewed", comment: "")
-                default:
-                    self.error = NSLocalizedString("review.error.post", comment: "")
+                if videoAssetId != nil, mediaMode == .video, let key = ExploreVideoIssue.publishMessageKey(for: appError) {
+                    self.error = NSLocalizedString(key, comment: "")
+                } else {
+                    switch appError {
+                    case .network(status: let s, code: _) where s == 409:
+                        self.error = NSLocalizedString("review.error.alreadyReviewed", comment: "")
+                    default:
+                        self.error = NSLocalizedString("review.error.post", comment: "")
+                    }
                 }
                 log.error("submit review failed: \(appError)")
             } catch {

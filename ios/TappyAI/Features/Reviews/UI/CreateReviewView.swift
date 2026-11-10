@@ -21,7 +21,8 @@ struct CreateReviewView: View {
         let service = CreateReviewService(api: deps.api, consent: deps.aiConsent)
         _vm = AppStateObject(wrappedValue: CreateReviewViewModel(
             service: service, session: deps.session, config: deps.configService,
-            prefilledPlaceId: prefilledPlaceId, prefilledPlaceName: prefilledPlaceName
+            prefilledPlaceId: prefilledPlaceId, prefilledPlaceName: prefilledPlaceName,
+            explore: ExploreVideoUploader.make(api: deps.api)
         ))
     }
 
@@ -182,6 +183,25 @@ struct CreateReviewView: View {
                     onCancel: { askTerms = false }
                 )
             }
+            // Clip conditions (Explore video, contract §6). A swipe-away counts as «Để sau».
+            .sheet(isPresented: Binding(
+                get: { vm.showVideoConsent },
+                set: { if !$0 && vm.showVideoConsent { vm.answerVideoConsent(false) } }
+            )) {
+                VideoConsentSheet(
+                    onAccept: { vm.answerVideoConsent(true) },
+                    onLater: { vm.answerVideoConsent(false) }
+                )
+            }
+            .sheet(isPresented: $vm.overlayEditorOpen) {
+                if let api = vm.exploreAPI, let assetId = vm.videoAssetId {
+                    OverlayEditorView(
+                        model: OverlayEditorViewModel(api: api, assetId: assetId,
+                                                      durationMs: Int(vm.videoDuration * 1000), thumbnail: vm.thumbPreview)
+                    )
+                }
+            }
+            .onDisappear { vm.viewDisappeared() }
             .onAppear {
                 if let soundId = preselectedSoundId {
                     vm.selectMusic(MusicSelection(trackId: soundId, startSec: 0, volume: 1.0))
@@ -475,7 +495,10 @@ struct CreateReviewView: View {
         switch vm.uploadStep {
         case .thumbnail: return NSLocalizedString("review.progress.thumbnail", comment: "")
         case .uploading: return NSLocalizedString("review.progress.uploading", comment: "")
-        case .processing: return NSLocalizedString("review.progress.analyzing", comment: "")
+        case .processing:
+            // Explore pipeline: «Đang xử lý» / «Đang chờ duyệt» from the server's state; the legacy path keeps its own label.
+            if let phase = vm.videoPhase { return NSLocalizedString(phase.labelKey, comment: "") }
+            return NSLocalizedString("review.progress.analyzing", comment: "")
         default: return ""
         }
     }
@@ -506,6 +529,12 @@ struct CreateReviewView: View {
                     .font(TappyFont.caption)
                     .foregroundStyle(TappyColor.textSecondary)
                 Spacer()
+                if vm.videoAssetId != nil, vm.exploreAPI != nil {
+                    Button("video.overlay.open") { vm.overlayEditorOpen = true }
+                        .font(TappyFont.caption)
+                        .foregroundStyle(TappyColor.primary)
+                        .padding(.trailing, Spacing.sm)
+                }
                 Button("common.delete") { vm.removeVideo() }
                     .font(TappyFont.caption)
                     .foregroundStyle(TappyColor.danger)

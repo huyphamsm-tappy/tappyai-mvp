@@ -277,8 +277,11 @@ struct CreateReviewPayload: Encodable, Sendable {
     let hashtags: [String]?
     let music: MusicPayload?
     let duration: Double?
+    /// Explore video pipeline: the server-owned clip this post publishes (the server derives the media URL). Omitted when nil.
+    var videoAssetId: String? = nil
 
     enum CodingKeys: String, CodingKey {
+        case videoAssetId
         case placeId, placeName, placeAddress, rating, body, photos
         case contentType = "content_type"
         case mediaUrl = "media_url"

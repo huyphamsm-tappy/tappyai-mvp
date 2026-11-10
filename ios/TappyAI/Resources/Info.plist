@@ -66,7 +66,7 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>TappyAI reads the photos and videos you choose to post, set as your avatar or cover, or send to be scanned. Nothing else in your library is read.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>TappyAI saves the share cards and images you choose to save to your photos.</string>
+	<string>TappyAI saves the share cards, images and videos you choose to save to your photos.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>TappyAI uses your precise location, only while the app is open and only if you allow it, to find places around you. It is never used in the background.</string>
 
