@@ -151,7 +151,7 @@ final class FeedVideoPlayer: AppObservableObject {
                 guard let prepared = ExploreVideoPlayback.prepare(grant) else { return }
                 let position = self.player.currentTime()
                 self.install(item: AVPlayerItem(asset: ExploreVideoPlayback.makeAsset(prepared)))
-                self.player.seek(to: position)
+                self.player.seek(to: position, completionHandler: { _ in })
                 self.scheduleRefresh(assetId: assetId, service: service, after: prepared.refreshAfter)
             } catch {
                 guard !Task.isCancelled, let self else { return }
