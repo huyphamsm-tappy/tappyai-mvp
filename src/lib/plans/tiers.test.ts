@@ -1,5 +1,5 @@
 // Owner 01/11/2026: plan tiers - Pip (Free) chats with Luna 6.0; MoMo (Trial) and Coco (Pro) have every mode and 10 Deep Research a month;
-// Tappy (Promax) every mode and 50 (02/11: was 69). The ids stored in subscriptions stay as they are.
+// Tappy (Promax) every mode and 30 (02/11: was 69, then 50; 10/11: 30). The ids stored in subscriptions stay as they are.
 import { describe, it, expect, beforeEach } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
@@ -27,8 +27,8 @@ describe('modeForTier', () => {
     expect(modeForTier('auto', 'pro')).toBe('auto')
     expect(modeForTier('auto', 'promax')).toBe('auto')
   })
-  it('Deep Research per month: Free 0, Pro 10, Promax 50', () => {
-    expect(DEEP_RESEARCH_MONTHLY).toEqual({ free: 0, pro: 10, promax: 50 })
+  it('Deep Research per month: Free 0, Pro 10, Promax 30 (owner 10/11/2026: lowered from 50)', () => {
+    expect(DEEP_RESEARCH_MONTHLY).toEqual({ free: 0, pro: 10, promax: 30 })
   })
 })
 
@@ -41,7 +41,7 @@ describe('deepResearchMonthlyLimit (security audit 04/11, W-01: the meter does n
   it('plans off: a signed-in account is metered at the Coco allowance (never unlimited), Promax keeps its own', () => {
     expect(deepResearchMonthlyLimit('free', { subscriptionsOn: false, signedIn: true })).toBe(10)
     expect(deepResearchMonthlyLimit('pro', { subscriptionsOn: false, signedIn: true })).toBe(10)
-    expect(deepResearchMonthlyLimit('promax', { subscriptionsOn: false, signedIn: true })).toBe(50)
+    expect(deepResearchMonthlyLimit('promax', { subscriptionsOn: false, signedIn: true })).toBe(30)
   })
   it('plans off: a visitor gets none, so the turn runs as Chat', () => {
     for (const tier of ['free', 'pro', 'promax'] as const) expect(deepResearchMonthlyLimit(tier, { subscriptionsOn: false, signedIn: false })).toBe(0)

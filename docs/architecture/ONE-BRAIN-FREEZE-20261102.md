@@ -143,3 +143,16 @@ Chủ sở hữu (03/11): "kiến trúc bộ não cho tappy hiện tại đóng 
 5. **Rà soát 03/11:** `tsc` sạch, `next lint` 0 lỗi, toàn bộ test web xanh ở mốc đóng băng (1562 tệp, 25 216 ca, lần chạy cuối). Một ca chập chờn đã thấy một lần khi cả bộ chạy song song: `agentResearchWS2.route.test.ts`, "provider ERROR and fallback ERROR"; nó xanh khi chạy riêng, khi chạy cả thư mục chat và ở hai lần chạy toàn bộ sau đó. Nguyên nhân chưa tìm ra (mô hình giả bị dùng hết bước, nghi chạy chậm khi máy tải nặng); ghi ở đây để không bị coi là lỗi mới, việc tìm gốc để Phase 9.
 
 Test canh: khối "architecture freeze, fourth" trong `architectureFreeze.test.ts` (cờ mới TẮT mặc định, người viết mặc định là Luna, mục 7 có mặt).
+
+## 8. Mở khóa theo từng lát để làm kiến trúc R13 (10/11/2026)
+
+Chủ sở hữu (10/11): "e có thể bắt đầu rồi" làm bộ não theo `TappyAI_Master_Architecture_v3.0_Revision13`, "trước tiên tập trung toàn lực cho bộ não". Đóng băng lần 4 **không bị bỏ**: nó được mở **từng lát một**, mỗi lát có một mục có ngày ở dưới đây, một commit, và (theo luật cũ) chỉ nhận thay đổi nào **đo tốt hơn** hoặc được Chủ sở hữu duyệt rõ. Các cờ mới vẫn TẮT mặc định và bị khóa ở production cho đến khi Chủ sở hữu bật.
+
+Đánh giá và đối chiếu R13 với code: `docs/handoff/BO-NAO-R13-DOI-CHIEU-VOI-CODE-20261110.md` và `BO-NAO-R13-DANH-GIA-CO-NGANG-CHATGPT-CLAUDE-20261110.md` (cây g1-growth). Thứ tự đã đề xuất: 0 khung đo mù + chi phí · 1 cổng chi phí bền · 2 TVI mỏng + cổng bằng chứng · 3 Research Controller + Haiku · 4 Sonnet + Haiku · 5 an toàn cấp cứu (song song) · 6 đính kèm, rồi Connector (MCP).
+
+### Nhật ký các lát
+
+- **10/11, Chủ sở hữu: "50 báo cáo a cũng thấy nhiều, hạ xuống còn 30 là dc"** — hạn mức Nghiên cứu sâu của gói Tappy (Promax: `promax1m`, `promax3m`) **50 → 30 mỗi tháng**. Coco/Pro giữ 10, Free giữ 0.
+  - Đổi: `DEEP_RESEARCH_MONTHLY` (`lib/plans/tiers.ts`), dòng gói trong `lib/i18n/payments.ts` (vi + en), và 4 test ghim con số (`architectureFreeze.test.ts`, `tiers.test.ts`, `SubscriptionFlow.test.tsx`, `sepay.test.ts`). Email xác nhận thanh toán đọc số này từ `tiers.ts` nên tự đổi.
+  - Lý do: một báo cáo tốn khoảng 0,09 USD (log UAT 03/11); 50 báo cáo ≈ 4,5 USD ≈ một nửa doanh thu gói 225.000đ (≈ 9 USD) trước khi tính phí cửa hàng ứng dụng.
+  - **Chưa đổi (cần Chủ sở hữu làm):** mô tả gói trong App Store Connect / Google Play nếu có ghi "50"; app Android và iOS lấy chữ từ máy chủ nên không có số này trong mã. Người đã mua gói trước đây (nếu có) theo số mới từ tháng kế tiếp.

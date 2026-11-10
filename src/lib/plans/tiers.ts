@@ -5,7 +5,7 @@
 // runs and the Deep Research allowance per VN calendar month:
 //   free   (guest, anonymous, free)                       - Chat only (Luna 6.0, the model's own quick lookup); no Web / Thinking / Deep Research
 //   pro    (pip = MoMo trial, momo / coco = Coco, and the older milo / sunny / pro while they last) - every mode, Deep Research 10 a month
-//   promax (promax1m / promax3m = Tappy)                   - every mode, Deep Research 50 a month
+//   promax (promax1m / promax3m = Tappy)                   - every mode, Deep Research 30 a month
 // The SERVER enforces it (a mode the tier does not have runs as Chat); the client only hides what it cannot use. Pure.
 import type { ChatMode } from '@/lib/ai/security/clientInput'
 
@@ -30,8 +30,8 @@ export function modeForTier(mode: ChatMode, tier: Tier): ChatMode {
   return MODES[tier].has(mode) ? mode : 'chat'
 }
 
-/** Deep Research runs per VN calendar month (owner: Coco/Pro 10, Tappy/Promax 50 since 02/11/2026 - a run costs about 0.06 USD; Free none). */
-export const DEEP_RESEARCH_MONTHLY: Readonly<Record<Tier, number>> = { free: 0, pro: 10, promax: 50 }
+/** Deep Research runs per VN calendar month (owner: Coco/Pro 10; Tappy/Promax 50 since 02/11/2026, lowered to 30 on 10/11/2026 - a run costs about 0.09 USD; Free none). */
+export const DEEP_RESEARCH_MONTHLY: Readonly<Record<Tier, number>> = { free: 0, pro: 10, promax: 30 }
 
 /**
  * The Deep Research runs an account may start per VN month. Security audit 04/11 (W-01): this used to be metered only with the plans on sale
