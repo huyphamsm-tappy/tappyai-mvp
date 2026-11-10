@@ -11,15 +11,15 @@ Ký hiệu: **XONG** = có mã + test và đã nối vào đường chạy (sau 
 | 3.2.4 Chuẩn hóa yêu cầu MCP ngoài | HÀM (`mcp/connectorContract.ts`) | Chỉ hợp đồng, không có cổng. |
 | 4.1 Vai trò đa mô hình | XONG (sau cờ) | Luna có sẵn; Haiku 5.5 (Standard, gói việc), Sonnet 5.5 (Advanced lead) thêm, giá + hình dạng yêu cầu đo với API. |
 | 4.2 Admission / Controller / Standard / Advanced | XONG (sau cờ) | Đồ thị gói việc phụ thuộc **tường minh** chưa dùng trong engine (dùng các vòng bổ sung nối tiếp). Ngưỡng là mặc định, chưa đo. |
-| 4.3 Hợp đồng điều phối (WorkPackageAssignment/Result, ResearchGapRequest, khóa theo Context Version) | MỘT PHẦN | Luật duyệt gap + kiểm đồ thị có (HÀM); các đối tượng hợp đồng đầy đủ và khóa Context Version chưa. |
+| 4.3 Hợp đồng điều phối (WorkPackageAssignment/Result, ResearchGapRequest, khóa theo Context Version) | MỘT PHẦN | Luật duyệt gap, kiểm đồ thị và kiểm kết quả gói việc có (HÀM); đối tượng giao việc đầy đủ, ngân sách/đặt chỗ theo gói và khóa Context Version chưa. |
 | 4.4 Vòng công cụ có trạng thái | KHÔNG ĐỤNG | Agent runtime hiện có. |
 | 5.1–5.4 Provider Registry theo năng lực | CHƯA | Source Audit quyết REUSE/EXTEND/NEW. |
 | 5.5 Market & Capability Gate, 6 Mô hình thị trường | HÀM (`market/marketGate.ts`) | Có kiểm theo Market+Vùng/Thành phố+Vertical+Capability+Action, phạm vi cụ thể thắng, thất bại đóng; `DEFAULT_REGISTRY` chỉ phản ánh hành vi hôm nay (Việt Nam). Chưa có bảng dữ liệu. |
 | 7 Ngôn ngữ, bản địa hóa | KHÔNG ĐỤNG | Có phát hiện ngôn ngữ cũ; bốn lớp ngôn ngữ R13 chưa dựng. |
 | 8.1–8.4 TVI lõi (bảng, vòng đời, staging) | XONG (sau cờ) | Migration `20261120` mới áp lên TEST. `TVI_CAPTURE` bật ở UAT cục bộ. |
 | 8.5–8.6 Nguồn thẩm quyền, đánh giá dữ kiện | HÀM (`tvi/evidenceGate.ts`) | Chưa nối vào đường đọc (kho không thay lần gọi Serper: đã ghi trong tài liệu đóng băng). |
-| 8.7 Lắp dossier xác định | CHƯA | |
-| 9.1 Hợp đồng đầu ra work-package / Haiku / Sonnet | MỘT PHẦN | |
+| 8.7 Lắp dossier xác định | HÀM (`research/dossier.ts`) | Chuẩn hóa, gộp trùng và phát hiện bài chép lại, xếp hạng BM25, nhóm dữ kiện, trạng thái bằng cổng §8.6, đóng gói theo ngân sách (không cắt dữ kiện quan trọng). Engine chưa dùng (bước của nó trả phát hiện, chưa phải dữ kiện); chưa đo mục tiêu <50 ms. |
+| 9.1 Hợp đồng đầu ra work-package / Haiku / Sonnet | HÀM (`research/workPackageContract.ts`) | `WorkPackageResult` kiểm như dữ liệu không đáng tin: danh tính, phiên bản giao việc, nguồn/dữ kiện nằm trong gói nguồn của chính việc đó. `SynthesisResponse` có cấu trúc claim chưa dựng. Engine chưa dùng. |
 | 9.2 Verifier độc lập | MỘT PHẦN (`claimVerifier.ts`) | Chỉ kiểm **con số và id trích dẫn**, không kiểm nghĩa; mới ghi nhật ký. |
 | 9.3 Mâu thuẫn bằng chứng | HÀM (`conflictMetadata.ts`) | Dữ liệu có cấu trúc, ghi nhật ký; giao diện chưa hiển thị. |
 | 9.4 Sửa có giới hạn | HÀM | `nextRepairAction` có; engine vẫn dùng sửa V2 (theo các phần của câu hỏi), chưa chạy lại Verifier sau mỗi lần sửa. |
