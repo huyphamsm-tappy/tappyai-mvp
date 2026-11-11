@@ -31,7 +31,8 @@ import { wrapToolResultAsData } from '@/lib/ai/security/toolResultFence'
 import { pdfPartsToText } from '@/lib/ai/attachments/pdfAttachments'
 import { deepResearchResponse } from '@/lib/ai/research/deepResearchResponse'
 import { createDeepResearchDeps, deepResearchParallel, PARALLEL_PRICE } from '@/lib/ai/research/deepResearchDeps'
-import { tierTurnFor } from '@/lib/ai/research/researchTurn'
+import { tierTurnFor, researchAdvancedOn } from '@/lib/ai/research/researchTurn'
+import { ADVANCED_RUN_BOUNDS } from '@/lib/ai/research/researchController'
 import { claudeWriterAvailable } from '@/lib/ai/llm/registry'
 import { classifyIntent, detectLang, detectLangConfident, detectExplicitLangRequest, detectForcedTool, detectTravelIntent, detectLocationIntent, detectPlanningIntent, detectPlanningIntentFromConversation, detectPlanActivities, detectTripLength, isPlanningRefinement, defaultTransportFor, detectMovieRecommendationIntent, isSimpleQuery, normalizeVN, isPurchaseShaped, routeToolOfferOn } from '@/lib/ai/intent'
 import { deriveNeedProfile, type StoredPreferences } from '@/lib/ai/consultative/needProfile'
@@ -3663,6 +3664,17 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       question: lastText, context: recent, lang, cost, stop: deepStop,
       deps: createDeepResearchDeps(deepDeps),
       ...(tierPlan ? { standard: { deps: createDeepResearchDeps({ ...deepDeps, ...(tierPlan.tier === 'ADVANCED_RESEARCH_REPORT' ? { advanced: true } : { standard: true }) }), bounds: tierPlan.bounds, label: tierPlan.tier === 'ADVANCED_RESEARCH_REPORT' ? 'advanced' as const : 'standard' as const } } : {}),
+      // R13 §4.2.3: a Standard plan that needs more than 3 steps is an Advanced request; promoted once, taking the account's Advanced allowance at that moment (none left = the existing engine, as before)
+      ...(tierPlan?.tier === 'STANDARD_REPORT' && researchAdvancedOn() ? {
+        promote: async () => {
+          const advLimit = advancedResearchMonthlyLimit(planTier, { subscriptionsOn: subscriptionsEnabled(), signedIn: !!authedUserId })
+          const adv = authedUserId ? await consumeDeepResearch(authedUserId, advLimit, 'advanced') : null
+          if (!adv?.ok) { console.log(JSON.stringify({ type: 'tappyai_research_admission', promote: 'advanced', advanced_allowance: 'used_or_none', ran: 'legacy' })); return null }
+          advancedRefund = adv.refund
+          console.log(JSON.stringify({ type: 'tappyai_research_admission', promote: 'advanced', from: 'STANDARD_REPORT', reason: 'PLAN_OVER_STANDARD_STEPS' }))
+          return { deps: createDeepResearchDeps({ ...deepDeps, advanced: true }), bounds: { ...ADVANCED_RUN_BOUNDS } }
+        },
+      } : {}),
       // the searches' price: Serper's credits plus the Parallel searches sent
       serperUsd: () => {
         const d = serperDelta(serperAtStart)

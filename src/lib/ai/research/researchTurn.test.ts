@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest'
 import { standardTurnFor } from './researchTurn'
 import { deepResearchResponse } from './deepResearchResponse'
 import { STANDARD_RUN_BOUNDS } from './researchAdmission'
-import type { DeepResearchDeps, Evidence, ResearchPlan } from './deepResearch'
+import type { DeepResearchDeps, Evidence, ResearchPlan, RunBounds } from './deepResearch'
 
 const ON = { RESEARCH_ADMISSION: '1' }
 
@@ -44,6 +44,39 @@ function turn(standardPlanSteps: number) {
   })
   return { res, ran, failed, models }
 }
+
+describe('a Standard plan over the tier is promoted to Advanced (R13 4.2.3) when the route can run it', () => {
+  vi.spyOn(console, 'log').mockImplementation(() => {})
+  const mkDeps = (who: string, steps: number, ran: string[]): DeepResearchDeps => ({
+    async plan(): Promise<ResearchPlan> { ran.push(who); return { title: 'T', steps: Array.from({ length: steps }, (_, i) => ({ title: `Bước ${i + 1}`, queries: ['q'] })) } },
+    async gather() { return [{ title: 'N', url: `https://example.com/${who}`, snippet: 's', text: 'nội dung' }] },
+    async notes(_s: string, _q: string, ev: readonly Evidence[]) { return [{ text: 'phát hiện', source: ev[0]!.id }] },
+    async *write() { yield '# Báo cáo\n\nNội dung [1]\n' },
+  })
+  const run = (promote: (() => Promise<{ deps: DeepResearchDeps; bounds: RunBounds } | null>) | undefined, ran: string[], models: string[]) => deepResearchResponse({
+    question: 'q', context: '', lang: 'vi', cost: { usd: 0, calls: 0 }, serperUsd: () => ({ usd: 0, calls: 0 }), onFailed: async () => {},
+    deps: mkDeps('legacy', 6, ran), standard: { deps: mkDeps('standard', 7, ran), bounds: { ...STANDARD_RUN_BOUNDS }, label: 'standard' },
+    ...(promote ? { promote } : {}), onUsage: u => { models.push(u.model) },
+  })
+  it('over 3 steps, with allowance: the Advanced deps run instead, once, and the cost line says so; the legacy engine is not touched', async () => {
+    const ran: string[] = []; const models: string[] = []
+    const text = await run(async () => ({ deps: mkDeps('advanced', 5, ran), bounds: { ...STANDARD_RUN_BOUNDS, maxSteps: 13 } }), ran, models).text()
+    expect(ran).toEqual(['standard', 'advanced']); expect(models).toEqual(['sonnet55+haiku55']); expect(text).toContain('Báo cáo')
+  })
+  it('over 3 steps, no allowance (promote returns null) or no promote at all: the existing engine, as before', async () => {
+    const a: string[] = []; const m1: string[] = []
+    await run(async () => null, a, m1).text()
+    expect(a).toEqual(['standard', 'legacy']); expect(m1).toEqual(['luna'])
+    const b: string[] = []; const m2: string[] = []
+    await run(undefined, b, m2).text()
+    expect(b).toEqual(['standard', 'legacy']); expect(m2).toEqual(['luna'])
+  })
+  it('a promote that throws is the same as none; a plan within the tier is never promoted', async () => {
+    const a: string[] = []
+    await run(async () => { throw new Error('quota store down') }, a, []).text()
+    expect(a).toEqual(['standard', 'legacy'])
+  })
+})
 
 describe('deepResearchResponse with a Standard pair', () => {
   vi.spyOn(console, 'log').mockImplementation(() => {})

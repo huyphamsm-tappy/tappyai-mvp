@@ -30,6 +30,8 @@ export interface DeepResearchTurn {
   stop?: AbortController
   /** R13 Standard tier: when present the run is bounded and uses these (Haiku) deps first; `deps` stays the fallback for a plan the tier cannot hold. */
   standard?: { deps: DeepResearchDeps; bounds: RunBounds; label: 'standard' | 'advanced' }
+  /** R13: called once when a Standard attempt refuses its own plan as too big; returns the Advanced deps and bounds to run instead (after the route has taken the account's Advanced allowance), or null. */
+  promote?: () => Promise<{ deps: DeepResearchDeps; bounds: RunBounds } | null> | { deps: DeepResearchDeps; bounds: RunBounds } | null
 }
 
 const FAILED_TEXT: Record<string, string> = {
@@ -58,6 +60,13 @@ export function deepResearchResponse(t: DeepResearchTurn): Response {
       let out = t.standard
         ? await runDeepResearch(t.question, t.context, t.lang, t.standard.deps, emit, t.stop?.signal, t.standard.bounds)
         : await runDeepResearch(t.question, t.context, t.lang, t.deps, emit, t.stop?.signal)
+      // R13 §4.2.3: a plan that needs more steps than Standard holds IS an Advanced request (hard trigger: four or more work packages). When the route can run Advanced (its flag is on and the account still
+      // has Advanced allowance) the request is promoted ONCE, before any retrieval; otherwise it falls back as below. Nothing was searched or written by the Standard attempt that refused the plan.
+      let promoted = false
+      if (t.standard && out.failed === 'exceeds_standard' && chars === 0 && !t.stop?.signal.aborted && t.promote) {
+        const p = await Promise.resolve(t.promote()).catch(() => null)
+        if (p) { promoted = true; out = await runDeepResearch(t.question, t.context, t.lang, p.deps, emit, t.stop?.signal, p.bounds) }
+      }
       let standardFallback: string | null = null
       if (t.standard && (out.failed === 'exceeds_standard' || out.failed === 'no_plan') && chars === 0 && !t.stop?.signal.aborted) {
         standardFallback = out.failed
@@ -77,9 +86,9 @@ export function deepResearchResponse(t: DeepResearchTurn): Response {
       const serper = t.serperUsd()
       const usd = Math.round((t.cost.usd + serper.usd) * 1e6) / 1e6
       console.log(JSON.stringify({ type: 'tappyai_turn_cost', turnType: 'deep_research', usd, answerUsd: Math.round(t.cost.usd * 1e6) / 1e6, serperUsd: serper.usd, serperCalls: serper.calls, modelCalls: t.cost.calls }))
-      const servedBy = !t.standard || standardFallback ? 'luna' : t.standard.label === 'advanced' ? 'sonnet55+haiku55' : 'haiku55'
+      const servedBy = !t.standard || standardFallback ? 'luna' : promoted || t.standard.label === 'advanced' ? 'sonnet55+haiku55' : 'haiku55'
       try { t.onUsage?.({ usd, searchCalls: serper.calls, ok: !out.failed, llmUsd: Math.round(t.cost.usd * 1e6) / 1e6, serperUsd: serper.usd, model: servedBy }) } catch { /* the ledger never breaks a run */ }
-      console.log(JSON.stringify({ type: 'tappyai_deep_research', ok: !out.failed, failed: out.failed, tier: t.standard ? (standardFallback ? 'STANDARD_FALLBACK_LEGACY' : 'STANDARD_REPORT') : 'LEGACY', standard_fallback: standardFallback, cut: out.cut === true, follow_ups: out.followUps ?? 0, steps: out.plan?.steps.length ?? 0, findings: out.findings.length, ...evidenceCounts(out.evidence), report_chars: chars, pictures, charts: out.charts ?? 0, figures_proposed: out.figures?.proposed ?? 0, figures_kept: out.figures?.kept ?? 0, step_stats: out.stepStats ?? [], unsupported_numbers: out.unsupported?.length ?? 0, unsupported_sample: (out.unsupported ?? []).slice(0, 12), ms: Date.now() - t0 }))
+      console.log(JSON.stringify({ type: 'tappyai_deep_research', ok: !out.failed, failed: out.failed, tier: t.standard ? (standardFallback ? 'STANDARD_FALLBACK_LEGACY' : promoted ? 'STANDARD_PROMOTED_ADVANCED' : t.standard.label === 'advanced' ? 'ADVANCED_RESEARCH_REPORT' : 'STANDARD_REPORT') : 'LEGACY', standard_fallback: standardFallback, cut: out.cut === true, follow_ups: out.followUps ?? 0, steps: out.plan?.steps.length ?? 0, findings: out.findings.length, ...evidenceCounts(out.evidence), report_chars: chars, pictures, charts: out.charts ?? 0, figures_proposed: out.figures?.proposed ?? 0, figures_kept: out.figures?.kept ?? 0, step_stats: out.stepStats ?? [], unsupported_numbers: out.unsupported?.length ?? 0, unsupported_sample: (out.unsupported ?? []).slice(0, 12), ms: Date.now() - t0 }))
       send(`d:${JSON.stringify({ finishReason: out.failed ? 'error' : 'stop', usage: { promptTokens: 0, completionTokens: 0 } })}`)
       try { c.close() } catch { /* client gone */ }
     },
