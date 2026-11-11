@@ -18,6 +18,10 @@ export const RESEARCH_SOURCE_DIVERSITY_FLAG = 'RESEARCH_SOURCE_DIVERSITY'
 /** Pure. Source diversity (a publisher that already gave many sources is left out of later searches; no chart from a dated source older than 24 months): OFF unless exactly "1", locked in production. */
 export const researchSourceDiversityOn = (env: Env = process.env): boolean => env[RESEARCH_SOURCE_DIVERSITY_FLAG] === '1' && !lockedInProduction(env, RESEARCH_SOURCE_DIVERSITY_FLAG)
 
+export const RESEARCH_CONSOLIDATION_FLAG = 'RESEARCH_CONSOLIDATION'
+/** Pure. Consolidation before the writer (a fact read in several steps is kept once; a disagreement is a conflict only for the same subject, measure, scope and period; readings at different dates are a trend; the newest period found is reported): OFF unless exactly "1", locked in production. */
+export const researchConsolidationOn = (env: Env = process.env): boolean => env[RESEARCH_CONSOLIDATION_FLAG] === '1' && !lockedInProduction(env, RESEARCH_CONSOLIDATION_FLAG)
+
 /** The V2 budgets of one request (the request's own ceiling stays DEEP_RESEARCH_LIMITS.runDeadlineMs). */
 export const V2_LIMITS = {
   /** the research phase may run longer than the one-pass 120 s: the writer still has what is left of the 270 s */

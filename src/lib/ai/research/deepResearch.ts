@@ -136,7 +136,8 @@ export interface Evidence { id: number; title: string; url: string; snippet: str
  * what is measured (`series`), for what (`label`: an item or a year), the value and its unit - checked by code against its source's own
  * text (numberInText) before it may draw a chart.
  */
-export interface Figure { series: string; label: string; value: number; unit: string }
+/** `subject` / `scope` / `period` (RESEARCH_CONSOLIDATION): who or what the number is about, the area or population it covers, and the year or half-year or quarter it is for. Absent = the older shape. */
+export interface Figure { series: string; label: string; value: number; unit: string; subject?: string; scope?: string; period?: string }
 export interface Finding { step: number; text: string; source: number; figure?: Figure }
 /** A chart the code draws from the figures of one section; every point names its source. */
 export interface ResearchChart { section: string; title: string; unit: string; kind: 'bar' | 'line'; points: Array<{ label: string; value: number; source: number }> }
@@ -274,7 +275,8 @@ export function checkedFigure(f: unknown, sourceText: string): Figure | undefine
   const series = clean(x.series, 80), label = clean(x.label, 40), unit = clean(x.unit, 24)
   const value = typeof x.value === 'number' ? x.value : NaN
   if (!series || !label || !Number.isFinite(value) || !numberInText(value, sourceText)) return undefined
-  return { series, label, value, unit }
+  const subject = clean(x.subject, 60), scope = clean(x.scope, 60), period = clean(x.period, 24)
+  return { series, label, value, unit, ...(subject ? { subject } : {}), ...(scope ? { scope } : {}), ...(period ? { period } : {}) }
 }
 
 /**
