@@ -22,10 +22,17 @@ export const ADVANCED_OUTLINE: OutlineBounds = { minSections: 3, maxSections: 6 
 export const ANALYST_CARDS_MAX = 90
 
 const str = z.string().optional().catch(undefined)
+/** A list of short texts that may arrive as an array, a JSON string, or plain text (one item per line, or "C1, C2" for ids): measured 11/11, the analyst wrote `doubts` as plain text in 2 of 5 live runs. */
+const textList = (split: RegExp) => z.preprocess((v: unknown) => {
+  if (typeof v === 'string') {
+    try { return JSON.parse(v) } catch { return v.split(split).map(x => x.replace(/^\s*[-*•\d.)]+\s+/, '').trim()).filter(Boolean) }
+  }
+  return v === undefined || v === null ? [] : v
+}, z.array(z.string()))
 export const OutlineSchema = z.object({
   thesis: str,
-  sections: lenientArray(z.object({ title: str, points: lenientArray(z.object({ claim: str, cards: lenientArray(z.string()) })) })),
-  doubts: lenientArray(z.string()),
+  sections: lenientArray(z.object({ title: str, points: lenientArray(z.object({ claim: str, cards: textList(/[\s,;]+/) })) })),
+  doubts: textList(/\n+/),
 })
 
 /** The analyst's raw answer into an outline that points only at cards that exist: unknown ids are dropped, a point with no real card is dropped, a section with no point is dropped. null when nothing usable is left (no thesis, too few sections): the engine then writes the way it did before. Pure. */

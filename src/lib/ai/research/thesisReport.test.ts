@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach, vi } from 'vitest'
 import { runDeepResearch, type DeepResearchDeps, type ResearchPlan } from './deepResearch'
 import { researchThesisOn, researchEvidenceCardsOn } from './deepResearchState'
-import { outlineFrom, analystCards, outlineWriterInput, releaseText, type Outline } from './thesisReport'
+import { OutlineSchema, outlineFrom, analystCards, outlineWriterInput, releaseText, type Outline } from './thesisReport'
 import type { EvidenceCard } from './evidenceCards'
 import type { Evidence } from './deepResearch'
 
@@ -49,6 +49,20 @@ describe('outlineFrom: the analyst may only point at cards that exist', () => {
   it('keeps at most maxSections', () => {
     const many = { thesis: 't', sections: Array.from({ length: 9 }, (_, i) => ({ title: `S${i}`, points: [{ claim: 'c', cards: ['C1'] }] })) }
     expect(outlineFrom(many, cards, { minSections: 2, maxSections: 4 })!.sections).toHaveLength(4)
+  })
+})
+
+describe('OutlineSchema reads what the analyst really returns (11/11 live: 2 of 5 runs failed on "doubts" written as plain text)', () => {
+  const base = { thesis: 't', sections: [{ title: 's', points: [{ claim: 'c', cards: ['C1'] }] }] }
+  it('doubts as plain text become a list, one doubt per line; as a JSON string they are parsed; absent is empty', () => {
+    expect(OutlineSchema.parse({ ...base, doubts: 'First doubt.\nSecond doubt.' }).doubts).toEqual(['First doubt.', 'Second doubt.'])
+    expect(OutlineSchema.parse({ ...base, doubts: '["a","b"]' }).doubts).toEqual(['a', 'b'])
+    expect(OutlineSchema.parse({ ...base }).doubts).toEqual([])
+    expect(OutlineSchema.parse({ ...base, doubts: ['x'] }).doubts).toEqual(['x'])
+  })
+  it('a card list written as "C1, C2" is read as two ids', () => {
+    const p = OutlineSchema.parse({ ...base, sections: [{ title: 's', points: [{ claim: 'c', cards: 'C1, C2' }] }] })
+    expect(p.sections[0].points[0].cards).toEqual(['C1', 'C2'])
   })
 })
 
