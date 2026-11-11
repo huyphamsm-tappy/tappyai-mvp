@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach, vi } from 'vitest'
 import { zodToJsonSchema } from 'zod-to-json-schema'
-import { ANALYST_SYSTEM, GAPS_SYSTEM, GAPS_UPCOMING_ADDENDUM } from './deepResearchDeps'
+import { ANALYST_SYSTEM, GAPS_SYSTEM, GAPS_UPCOMING_ADDENDUM, reportFallback } from './deepResearchDeps'
 import { runDeepResearch, type DeepResearchDeps, type ResearchPlan } from './deepResearch'
 import { researchThesisOn, researchEvidenceCardsOn } from './deepResearchState'
 import { PolicyScanSchema, policyStepFrom, withPolicyStep, OutlineSchema, outlineFrom, analystCards, outlineWriterInput, releaseText, type Outline } from './thesisReport'
@@ -112,6 +112,13 @@ describe('the policy scan: a stronger model writes the queries for rules coming 
     expect(withPolicyStep(gaps, { title: 'P', queries: ['p'] }).map(s => s.title)).toEqual(['P', 'g1', 'g2'])
     expect(withPolicyStep(gaps, null)).toBe(gaps)
     expect(withPolicyStep([], { title: 'P', queries: ['p'] }).map(s => s.title)).toEqual(['P'])
+  })
+})
+
+describe('R13: no Luna in a Standard or Advanced report path (owner 11/11/2026, "giữ nguyên như tài liệu")', () => {
+  it('a failed Claude call in a tier run is retried on Claude; only the existing (non-tier) engine may fall back to Luna', () => {
+    expect(reportFallback(true)).toBe('retry_claude')
+    expect(reportFallback(false)).toBe('luna')
   })
 })
 

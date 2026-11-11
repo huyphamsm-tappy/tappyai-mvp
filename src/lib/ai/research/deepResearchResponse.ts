@@ -34,6 +34,12 @@ export interface DeepResearchTurn {
   promote?: () => Promise<{ deps: DeepResearchDeps; bounds: RunBounds } | null> | { deps: DeepResearchDeps; bounds: RunBounds } | null
 }
 
+/** A request the Standard tier cannot hold (it needs more than three research steps) and that the account has no Advanced report left for. */
+const NEEDS_ADVANCED_TEXT: Record<string, string> = {
+  vi: 'Yêu cầu này cần báo cáo Advanced (phạm vi rộng hơn mức Standard), mà hạn mức báo cáo Advanced của bạn trong tháng này đã hết hoặc gói hiện tại chưa có. Lượt hỏi đã được hoàn lại; bạn có thể thu hẹp câu hỏi để chạy báo cáo Standard.',
+  en: 'This request needs an Advanced report (a wider scope than Standard) and your Advanced allowance for this month is used up or not included in your plan. The question was given back; you can narrow it to run a Standard report.',
+}
+
 const FAILED_TEXT: Record<string, string> = {
   vi: 'Lần nghiên cứu này không hoàn thành được (không lập được kế hoạch hoặc không tìm được nguồn đọc được). Lượt hỏi đã được hoàn lại; bạn thử lại sau hoặc hỏi cụ thể hơn nhé.',
   en: 'This research could not be completed (no plan, or no readable sources were found). The question was given back; please try again later or ask more specifically.',
@@ -69,16 +75,15 @@ export function deepResearchResponse(t: DeepResearchTurn): Response {
         const p = await Promise.resolve(t.promote()).catch(() => null)
         if (p) { promoted = true; currentTier = 'advanced'; out = await runDeepResearch(t.question, t.context, t.lang, p.deps, emit, t.stop?.signal, p.bounds) }
       }
-      let standardFallback: string | null = null
-      if (t.standard && (out.failed === 'exceeds_standard' || out.failed === 'no_plan') && chars === 0 && !t.stop?.signal.aborted) {
-        standardFallback = out.failed
-        currentTier = undefined
-        out = await runDeepResearch(t.question, t.context, t.lang, t.deps, emit, t.stop?.signal)
-      }
+      // Owner 11/11/2026 ("giữ nguyên như tài liệu"): R13 allows no Luna in a Standard or Advanced report path and no silent substitute for an unavailable Claude model (Section 4; failure table: "do not substitute
+      // Luna"). A tier run that ended with no plan, or with a plan the Standard tier cannot hold and no Advanced allowance to promote it to, is a failed run: the person is told why, the question is given back.
+      // (Before, such a request ran on the existing Luna engine in the same stream.) The Luna engine remains for a request that never entered a tier (admission off, no Claude key, an ambiguous scope).
+      const standardFallback: string | null = null
+      const needsAdvanced = !!t.standard && out.failed === 'exceeds_standard'
       // the person left before any report text went out: nothing was read, so the run is given back. Review 01/11: once the report had started
       // streaming it was read (at least in part), so leaving before the sources is not a way to get the quota back.
       if (out.failed === 'client_gone') { if (chars === 0) await Promise.resolve(t.onFailed(out.failed)) }
-      else if (out.failed && chars === 0) { send(`0:${JSON.stringify(FAILED_TEXT[t.lang === 'en' ? 'en' : 'vi'])}`); await Promise.resolve(t.onFailed(out.failed)) }
+      else if (out.failed && chars === 0) { send(`0:${JSON.stringify((needsAdvanced ? NEEDS_ADVANCED_TEXT : FAILED_TEXT)[t.lang === 'en' ? 'en' : 'vi'])}`); await Promise.resolve(t.onFailed(out.failed)) }
       // R13: the independent verifier reads a tier run's report against the sources it cites (numbers and citation ids only; counts are logged, never the text)
       let verification: ReturnType<typeof verifyReport> | null = null
       if (out.checked && !out.failed) { try { verification = verifyReport(out.checked.report, out.checked.sources) } catch { verification = null } }

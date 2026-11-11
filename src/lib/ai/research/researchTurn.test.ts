@@ -63,18 +63,25 @@ describe('a Standard plan over the tier is promoted to Advanced (R13 4.2.3) when
     const text = await run(async () => ({ deps: mkDeps('advanced', 5, ran), bounds: { ...STANDARD_RUN_BOUNDS, maxSteps: 13 } }), ran, models).text()
     expect(ran).toEqual(['standard', 'advanced']); expect(models).toEqual(['sonnet55+haiku55']); expect(text).toContain('Báo cáo')
   })
-  it('over 3 steps, no allowance (promote returns null) or no promote at all: the existing engine, as before', async () => {
-    const a: string[] = []; const m1: string[] = []
-    await run(async () => null, a, m1).text()
-    expect(a).toEqual(['standard', 'legacy']); expect(m1).toEqual(['luna'])
-    const b: string[] = []; const m2: string[] = []
-    await run(undefined, b, m2).text()
-    expect(b).toEqual(['standard', 'legacy']); expect(m2).toEqual(['luna'])
+  // Owner 11/11/2026 ("giữ nguyên như tài liệu"): R13 says no Luna in a report path (Section 4, and the failure table: "do not substitute Luna"). Before, a plan over the Standard tier with no Advanced
+  // allowance ran on the existing Luna engine; now it ends with an explicit message and the question is given back. A report is never silently thinner or run by another model.
+  it('over 3 steps, no allowance (promote returns null) or no promote at all: no Luna run - an explicit message about the Advanced allowance, and the question is given back', async () => {
+    for (const promote of [async () => null, undefined] as const) {
+      const a: string[] = []; const m: string[] = []; const failed = vi.fn(async () => {})
+      const res = deepResearchResponse({
+        question: 'q', context: '', lang: 'vi', cost: { usd: 0, calls: 0 }, serperUsd: () => ({ usd: 0, calls: 0 }), onFailed: failed,
+        deps: mkDeps('legacy', 6, a), standard: { deps: mkDeps('standard', 5, a), bounds: { ...STANDARD_RUN_BOUNDS, maxSteps: 3 }, label: 'standard' },
+        ...(promote ? { promote } : {}), onUsage: u => { m.push(u.model) },
+      })
+      const text = await res.text()
+      expect(a).toEqual(['standard']); expect(text).toContain('Advanced'); expect(text).not.toContain('Báo cáo'); expect(failed).toHaveBeenCalledTimes(1)
+      expect(m).not.toContain('luna')
+    }
   })
   it('a promote that throws is the same as none; a plan within the tier is never promoted', async () => {
     const a: string[] = []
     await run(async () => { throw new Error('quota store down') }, a, []).text()
-    expect(a).toEqual(['standard', 'legacy'])
+    expect(a).toEqual(['standard'])
   })
 })
 
@@ -87,11 +94,11 @@ describe('deepResearchResponse with a Standard pair', () => {
     expect(models).toEqual(['haiku55']) // the cost line names the model that served the run
     expect(text).toContain('Báo cáo'); expect(failed).not.toHaveBeenCalled()
   })
-  it('a plan over the tier falls back to the legacy engine in the same stream, with no refund and a report', async () => {
+  it('a plan over the tier does NOT fall back to the Luna engine (R13; owner 11/11/2026): the person is told it needs the Advanced allowance and the question is given back', async () => {
     const { res, ran, failed, models } = turn(5)
     const text = await res.text()
-    expect(ran).toEqual({ standard: 1, legacy: 1 })
-    expect(models).toEqual(['luna']) // served by the existing engine after the fallback
-    expect(text).toContain('Báo cáo'); expect(text).not.toContain('không hoàn thành'); expect(failed).not.toHaveBeenCalled()
+    expect(ran).toEqual({ standard: 1, legacy: 0 })
+    expect(models).not.toContain('luna')
+    expect(text).toContain('Advanced'); expect(text).not.toContain('Báo cáo'); expect(failed).toHaveBeenCalledTimes(1)
   })
 })

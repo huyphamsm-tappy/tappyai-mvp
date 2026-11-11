@@ -34,10 +34,12 @@ describe('the report says which kind it is (owner 11/11: the system must tell st
     const t = await tiers(turn({ standard: { steps: 5, label: 'standard' }, promote: true }))
     expect(t.at(-1)).toBe('advanced'); expect(t.every(x => x === 'standard' || x === 'advanced')).toBe(true)
   })
-  it('the existing engine (no tier run, or after a fallback) carries no tier at all', async () => {
+  it('the existing engine (a request that never entered a tier) carries no tier at all', async () => {
     expect(new Set(await tiers(turn({})))).toEqual(new Set([undefined]))
+  })
+  it('a Standard plan too big with no Advanced allowance no longer reruns on the existing engine (owner 11/11/2026, R13: no Luna): the run ends failed and no frame is a finished report', async () => {
     const fb = await tiers(turn({ standard: { steps: 5, label: 'standard' } }))
-    expect(fb.at(-1)).toBeUndefined()
+    expect(fb.every(x => x === 'standard')).toBe(true)
   })
 })
 
