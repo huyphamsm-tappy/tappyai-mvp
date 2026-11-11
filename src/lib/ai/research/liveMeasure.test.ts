@@ -8,6 +8,8 @@ import { tmpdir } from 'node:os'
 import { runDeepResearch, numberInText, type DeepResearchDeps } from './deepResearch'
 import { consolidate } from './consolidate'
 import { repeatedFigures } from './reportRepeats'
+import { BENCHMARK, benchmarkById } from './benchmark/benchmarkSet'
+import { scoreReport } from './benchmark/benchmarkScore'
 import type { ForecastResult } from './forecastModel'
 import { createDeepResearchDeps, deepResearchParallel, PARALLEL_PRICE } from './deepResearchDeps'
 import { STANDARD_RUN_BOUNDS } from './researchAdmission'
@@ -22,13 +24,19 @@ const ON = process.env.RUN_LIVE_RESEARCH_MEASURE === '1'
 const QUESTIONS: Record<string, string> = {
   trend: process.env.MEASURE_Q_TREND ?? 'Xu hướng thị trường trà sữa tại Hà Nội',
   forecast: process.env.MEASURE_Q_FORECAST ?? 'Dự báo doanh thu trà sữa Việt Nam giai đoạn 2027–2029 và phân tích độ nhạy',
+  // the ten questions of the V2.1 benchmark (benchmark/benchmarkSet.ts): "standard:q05", "advanced:q05"
+  ...Object.fromEntries(BENCHMARK.map(b => [b.id, b.text])),
 }
+// BENCH_CAP_USD: a ceiling on what one process may spend in all; once it is reached the remaining entries are skipped (0 or unset = no ceiling)
+const CAP_USD = Number(process.env.BENCH_CAP_USD ?? 0)
+let spentUsd = 0
 const PLAN: Array<{ tier: 'standard' | 'advanced' | 'legacy'; q: keyof typeof QUESTIONS }> = (process.env.MEASURE_TIERS ?? 'standard,advanced')
   .split(',').map(s => s.trim()).filter(Boolean).map(s => { const [tier, q] = s.split(':'); return { tier: tier as 'standard' | 'advanced' | 'legacy', q: (q ?? (tier === 'advanced' ? 'forecast' : 'trend')) as keyof typeof QUESTIONS } })
 
 describe.skipIf(!ON)('LIVE: one run per tier (costs money)', () => {
   for (const { tier, q } of PLAN) {
     it(`${tier} on "${q}"`, async () => {
+      if (CAP_USD > 0 && spentUsd >= CAP_USD) { console.log('LIVE_MEASURE_SKIPPED_CAP', JSON.stringify({ tier, q, spentUsd: Math.round(spentUsd * 1e4) / 1e4, cap: CAP_USD })); return }
       try { process.loadEnvFile(join(process.cwd(), '.env.local')) } catch { throw new Error('env not loaded') }
       process.env.RESEARCH_SOURCE_DIVERSITY = '1'
       const question = QUESTIONS[q]
@@ -54,6 +62,7 @@ describe.skipIf(!ON)('LIVE: one run per tier (costs money)', () => {
       const serperUsd = turnUsd({ promptTokens: 0, completionTokens: 0, serperCredits: d.credits })
       const parallelUsd = (par?.sent() ?? 0) * PARALLEL_PRICE.searchFastUsd
       const ver = out.checked ? verifyReport(out.checked.report, out.checked.sources) : null
+      const totalUsd = cost.usd + serperUsd + parallelUsd
       const row = {
         tier, question: q, ok: !out.failed, failed: out.failed, ms,
         usd: { llm: Math.round(cost.usd * 1e5) / 1e5, serper: Math.round(serperUsd * 1e5) / 1e5, parallel: Math.round(parallelUsd * 1e5) / 1e5, total: Math.round((cost.usd + serperUsd + parallelUsd) * 1e5) / 1e5 },
@@ -62,6 +71,8 @@ describe.skipIf(!ON)('LIVE: one run per tier (costs money)', () => {
         charts: out.charts ?? 0, tableProblems: tableProblems(text).length, conflicts: structuredConflicts(out.findings).length,
         verifier: ver ? { ...ver.counts, checked: ver.checked } : null,
         label: process.env.MEASURE_LABEL ?? '',
+        // the automatic part of the V2.1 benchmark score (mandatory facts, pages, repetition, filler candidates, forecast checks, efficiency); null for a question outside the set
+        bench: benchmarkById(String(q)) && !out.failed ? scoreReport(text, benchmarkById(String(q))!, { tier: tier === 'advanced' ? 'advanced' : 'standard', usd: totalUsd, verifier: ver ? { supported: ver.counts.supported, checked: ver.checked } : null }) : null,
         flags: { consolidation: process.env.RESEARCH_CONSOLIDATION === '1', packages: process.env.RESEARCH_PACKAGES === '1', forecastModel: process.env.RESEARCH_FORECAST_MODEL === '1', freshness: process.env.RESEARCH_FRESHNESS === '1', tightWrite: process.env.RESEARCH_TIGHT_WRITE === '1', chartRelevance: process.env.RESEARCH_CHART_RELEVANCE === '1' },
         repeats: repeatedFigures(text),
         freshnessHints: traces.filter(t => t.ev === 'freshness_hints').map(t => t.n),
@@ -73,6 +84,7 @@ describe.skipIf(!ON)('LIVE: one run per tier (costs money)', () => {
         stepTitles: out.plan?.steps.map(s => s.title) ?? [],
         headings: [...text.matchAll(/^#{1,3} (.+)$/gm)].map(m => m[1].slice(0, 100)),
       }
+      spentUsd += totalUsd
       const dir = process.env.MEASURE_OUT ?? join(tmpdir(), 'tappy-live-measure')
       mkdirSync(dir, { recursive: true })
       const stamp = `${process.env.MEASURE_LABEL ? `${process.env.MEASURE_LABEL}-` : ''}${tier}-${q}-${Date.now()}`
