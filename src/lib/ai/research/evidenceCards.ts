@@ -32,10 +32,11 @@ export function hostOf(url: string): string {
 
 const hostIn = (host: string, list: readonly string[]) => list.some(d => host === d || host.endsWith(`.${d}`))
 const OFFICIAL_HOSTS = ['chinhphu.vn', 'vbpl.vn', 'quochoi.vn', 'baochinhphu.vn', 'worldbank.org', 'imf.org', 'adb.org', 'oecd.org', 'un.org']
-const PRESS_HOSTS = ['vnexpress.net', 'tuoitre.vn', 'thanhnien.vn', 'dantri.com.vn', 'vietnamnet.vn', 'cafef.vn', 'znews.vn', 'zingnews.vn', 'nld.com.vn', 'laodong.vn', 'tienphong.vn', 'vneconomy.vn', 'baodautu.vn', 'nhandan.vn', 'vietnamplus.vn', 'vov.vn', 'vtv.vn', 'kinhtedothi.vn', 'theinvestor.vn', 'vir.com.vn', 'vietnamnews.vn', 'reuters.com', 'bloomberg.com', 'ft.com', 'nikkei.com', 'scmp.com', 'bbc.com', 'cnbc.com', 'forbes.com', 'forbesvietnam.vn', 'vietnambiz.vn', 'nguoiquansat.vn', 'doanhnhansaigon.vn', 'cafebiz.vn', 'brandsvietnam.com', 'advertisingvietnam.com', 'vietstock.vn', 'kenh14.vn', 'afamily.vn', '24h.com.vn', 'baophapluat.vn', 'vnbusiness.vn', 'baogialai.com.vn', 'nhipcaudautu.vn', 'doanhnghieptiepthi.vn', 'kinhtetieudung.vn', 'kinhtedouong.vn']
-const FIRM_HOSTS = ['ipos.vn', 'momentumworks.com', 'euromonitor.com', 'nielseniq.com', 'statista.com', 'imarcgroup.com', 'mordorintelligence.com', 'grandviewresearch.com', 'cimigo.com', 'qandme.net', 'decisionlab.co', 'kantar.com', 'mckinsey.com', 'bain.com', 'deloitte.com', 'pwc.com', 'kpmg.com', 'vcsc.com.vn', 'ssi.com.vn', 'mbs.com.vn', 'vndirect.com.vn', 'b-company.jp', 'kenresearch.com', '6wresearch.com', 'fortunebusinessinsights.com', 'industryarc.com', 'mobilityforesights.com', 'insightasia.com', 'vietdata.vn', 'metric.vn']
-const REFERENCE_HOSTS = ['wikipedia.org', 'thuvienphapluat.vn', 'luatvietnam.vn']
-const AGGREGATOR_HOSTS = ['studocu.vn', 'studocu.com', 'scribd.com', 'slideshare.net', 'medium.com', 'blogspot.com', 'wordpress.com', 'quora.com', 'validator.vn', 'baomoi.com', 'tripi.vn', 'lypham.vn', '123doc.net', 'tailieu.vn', 'vietnammm.com', 'rssing.com']
+const PRESS_HOSTS = ['vnexpress.net', 'tuoitre.vn', 'thanhnien.vn', 'dantri.com.vn', 'vietnamnet.vn', 'cafef.vn', 'znews.vn', 'zingnews.vn', 'nld.com.vn', 'laodong.vn', 'tienphong.vn', 'vneconomy.vn', 'baodautu.vn', 'nhandan.vn', 'vietnamplus.vn', 'vov.vn', 'vtv.vn', 'kinhtedothi.vn', 'theinvestor.vn', 'vir.com.vn', 'vietnamnews.vn', 'reuters.com', 'bloomberg.com', 'ft.com', 'nikkei.com', 'scmp.com', 'bbc.com', 'cnbc.com', 'forbes.com', 'forbesvietnam.vn', 'vietnambiz.vn', 'nguoiquansat.vn', 'doanhnhansaigon.vn', 'cafebiz.vn', 'brandsvietnam.com', 'advertisingvietnam.com', 'vietstock.vn', 'kenh14.vn', 'afamily.vn', '24h.com.vn', 'baophapluat.vn', 'vnbusiness.vn', 'baogialai.com.vn', 'nhipcaudautu.vn', 'doanhnghieptiepthi.vn', 'kinhtetieudung.vn', 'kinhtedouong.vn', 'vietnam.vn', 'vcci.com.vn', 'tapchikinhtetaichinh.vn', 'nhadautu.vn', 'danviet.vn', 'vietnamfinance.vn', 'markettimes.vn', 'kinhtechungkhoan.vn', 'thanhtra.com.vn', 'congly.vn']
+const COMPANY_HOSTS = ['masangroup.com', 'masanconsumer.com', 'momo.vn', 'zalopay.vn']
+const FIRM_HOSTS = ['ipos.vn', 'momentumworks.com', 'euromonitor.com', 'nielseniq.com', 'statista.com', 'imarcgroup.com', 'mordorintelligence.com', 'grandviewresearch.com', 'cimigo.com', 'qandme.net', 'decisionlab.co', 'kantar.com', 'mckinsey.com', 'bain.com', 'deloitte.com', 'pwc.com', 'kpmg.com', 'vcsc.com.vn', 'ssi.com.vn', 'mbs.com.vn', 'vndirect.com.vn', 'b-company.jp', 'kenresearch.com', '6wresearch.com', 'fortunebusinessinsights.com', 'industryarc.com', 'mobilityforesights.com', 'insightasia.com', 'vietdata.vn', 'metric.vn', 'vda.org.vn', 'vietnam-briefing.com']
+const REFERENCE_HOSTS = ['wikipedia.org', 'thuvienphapluat.vn', 'luatvietnam.vn', 'dulieuphapluat.vn']
+const AGGREGATOR_HOSTS = ['studocu.vn', 'studocu.com', 'scribd.com', 'slideshare.net', 'medium.com', 'blogspot.com', 'wordpress.com', 'quora.com', 'validator.vn', 'baomoi.com', 'tripi.vn', 'lypham.vn', '123doc.net', 'tailieu.vn', 'vietnammm.com', 'rssing.com', 'posapp.vn', 'banhmimahai.vn', 'einvoice.vn', 'vinalink.vn', 'mqflavor.com', 'unitedvision.com.vn', 'phuctea.com.vn', 'khonguyenlieu.net', 'airwallex.com']
 const SOCIAL_HOSTS = ['facebook.com', 'tiktok.com', 'youtube.com', 'youtu.be', 'instagram.com', 'reddit.com', 'x.com', 'twitter.com', 'threads.net', 'zalo.me', 'pinterest.com']
 
 /**
@@ -49,12 +50,15 @@ export function classifySource(url: string, site?: string): SourceKind {
   let raw = ''
   try { raw = new URL(url).hostname.toLowerCase() } catch { raw = '' }
   if (host.endsWith('.gov.vn') || hostIn(host, OFFICIAL_HOSTS)) return 'OFFICIAL'
-  if (/^(ir|investor|investors)\./.test(raw) || /(annual-?report|bao-cao-thuong-nien|\/investor)/i.test(url)) return 'COMPANY'
+  if (/^(ir|investor|investors)\./.test(raw) || /(annual-?report|bao-cao-thuong-nien|\/investor)/i.test(url) || hostIn(host, COMPANY_HOSTS)) return 'COMPANY'
   if (hostIn(host, FIRM_HOSTS)) return 'RESEARCH_FIRM'
   if (hostIn(host, PRESS_HOSTS)) return 'PRESS'
   if (hostIn(host, REFERENCE_HOSTS)) return 'REFERENCE'
   if (hostIn(host, AGGREGATOR_HOSTS)) return 'AGGREGATOR'
   if (hostIn(host, SOCIAL_HOSTS)) return 'SOCIAL'
+  // what the suffix says: an association (.org.vn) publishes data like a research firm; a school or university (.edu.vn) is a reference
+  if (host.endsWith('.org.vn')) return 'RESEARCH_FIRM'
+  if (host.endsWith('.edu.vn')) return 'REFERENCE'
   return 'OTHER'
 }
 
@@ -88,17 +92,21 @@ export const authorityFor = (family: FactFamily, kind: SourceKind): Authority =>
 
 // ── the quote ─────────────────────────────────────────────────────────────────────────────────────────────────────────
 
-/** Folded text with every kind of dash, quote mark and run of spaces made plain, so spelling, case, diacritics and typography do not decide. */
-const plain = (s: string): string => fold(s).replace(/[‐‑‒–—―−]/g, '-').replace(/[“”„«»"']/g, '"').replace(/\s+/g, ' ').trim()
-const MIN_PIECE = 15
+/**
+ * Only the letters and digits, folded (no diacritics, lower case): spelling, case, punctuation, table bars, line breaks and stray spaces do not decide, the words and the numbers do. Measured 11/11 (M2, 1821
+ * cards): 124 quotes were refused when the comparison also looked at punctuation and spacing, and the ones looked at were real (a table row "Bia các loại | 65% | 90%", " ." for ".", "5g/100ml" for "5 g / 100 ml").
+ */
+const squash = (s: string): string => fold(s).replace(/[^a-z0-9]/g, '')
+const MIN_PIECE = 10
 
 /**
- * Whether the quote is on the page. "…" (or "...") skips words: every piece of at least 15 characters must be found, in that order. A quote with no such piece, or an empty one, proves nothing. Pure.
+ * Whether the quote is on the page. "…" (or "...") skips words: every piece, with at least 10 letters and digits, must be found, in that order. A quote with a shorter piece, or an empty one, proves nothing.
+ * A different number is a different quote. Pure.
  */
 export function quoteInText(quote: string, text: string): boolean {
-  const pieces = String(quote ?? '').split(/…|\.{3}/).map(plain).filter(Boolean)
+  const pieces = String(quote ?? '').split(/…|\.{3}/).map(squash).filter(Boolean)
   if (!pieces.length || pieces.some(p => p.length < MIN_PIECE)) return false
-  const page = plain(text)
+  const page = squash(text)
   let from = 0
   for (const p of pieces) { const at = page.indexOf(p, from); if (at < 0) return false; from = at + p.length }
   return true

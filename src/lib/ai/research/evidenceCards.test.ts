@@ -41,6 +41,21 @@ describe('classifySource', () => {
     expect(classifySource('https://some-unknown-blog.example/p')).toBe('OTHER')
     expect(classifySource('not a url')).toBe('OTHER')
   })
+  // Measured 11/11 (M2): a third of the cards came from hosts the lists did not know (vietnam.vn, vcci.com.vn, masangroup.com, vinalink.vn, vda.org.vn, posapp.vn…)
+  it('knows the hosts the first measurement met most, and the suffixes that say what a site is', () => {
+    expect(classifySource('https://vietnam.vn/a')).toBe('PRESS')
+    expect(classifySource('https://vcci.com.vn/a')).toBe('PRESS')
+    expect(classifySource('https://tapchikinhtetaichinh.vn/a')).toBe('PRESS')
+    expect(classifySource('https://masangroup.com/a')).toBe('COMPANY')
+    expect(classifySource('https://www.masanconsumer.com/a')).toBe('COMPANY')
+    expect(classifySource('https://vda.org.vn/a')).toBe('RESEARCH_FIRM')
+    expect(classifySource('https://vietnam-briefing.com/a')).toBe('RESEARCH_FIRM')
+    expect(classifySource('https://posapp.vn/a')).toBe('AGGREGATOR')
+    expect(classifySource('https://vcs.edu.vn/a')).toBe('REFERENCE')
+    expect(classifySource('https://dulieuphapluat.vn/a')).toBe('REFERENCE')
+    expect(classifySource('https://some-association.org.vn/a')).toBe('RESEARCH_FIRM')
+    expect(classifySource('https://some-university.edu.vn/a')).toBe('REFERENCE')
+  })
   it('an investor-relations address is the company\'s own', () => {
     expect(classifySource('https://ir.phuclong.example/annual-report')).toBe('COMPANY')
     expect(classifySource('https://x.example/investor/bao-cao-thuong-nien-2025.pdf')).toBe('COMPANY')
@@ -85,9 +100,20 @@ describe('quoteInText: the quote must be in the page', () => {
     expect(quoteInText('theo khảo sát của iPOS.vn … tăng từ 48,29% lên 61,78%', PAGE)).toBe(true)
     expect(quoteInText('tăng từ 48,29% lên 61,78% … theo khảo sát của iPOS.vn', PAGE)).toBe(false)
   })
-  it('a quote shorter than 15 characters, or an empty one, proves nothing', () => {
+  it('a quote with fewer than 10 letters and digits, or an empty one, proves nothing', () => {
     expect(quoteInText('61,78%', PAGE)).toBe(false)
+    expect(quoteInText('Gong Cha (9%)', 'Gong Cha (9%) đến thường xuyên')).toBe(false)
     expect(quoteInText('', PAGE)).toBe(false)
+  })
+  // Measured 11/11 (M2, 1821 cards): 124 quotes were refused, and the ones looked at were real: a table cell row, spaces before a full stop, punctuation set differently. Only the words and numbers decide.
+  it('punctuation, table bars, line breaks and stray spaces do not decide: only the letters and digits do', () => {
+    expect(quoteInText('Bia các loại | 65% | 90%', 'Bảng thuế suất\nBia các loại\n65%\n90%\nRượu')).toBe(true)
+    expect(quoteInText('Market value stands at USD 420 Million in 2026 . It is forecast to reach USD 780 Million', 'Market value stands at USD 420 Million in 2026. It is forecast to reach USD 780 Million by 2032')).toBe(true)
+    expect(quoteInText('nước giải khát có hàm lượng đường trên 5g/100ml', 'nước giải khát có hàm lượng đường trên 5 g / 100 ml thuộc diện')).toBe(true)
+  })
+  it('a different number is still a different quote, however alike the rest', () => {
+    expect(quoteInText('Market value stands at USD 420 Million in 2026', 'Market value stands at USD 430 Million in 2026')).toBe(false)
+    expect(quoteInText('tăng từ 48,29% lên 61,78% trong nửa đầu', 'tăng từ 48,29% lên 61,87% trong nửa đầu')).toBe(false)
   })
 })
 
