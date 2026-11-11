@@ -20,9 +20,10 @@ import { leanValue } from './deepResearchLean'
 import { questionKind, withNewsLane } from './researchLanes'
 import { dedupePackages } from './researchPackages'
 import { consolidate, freshnessHints } from './consolidate'
+import { sectionTextOf, seriesRelevant } from './chartRelevance'
 import { FIGURE_CONFLICT_GAP } from './figureGap'
 import { groundForecast, runForecast, wantsForecastModel, type ForecastSpec, type ForecastResult } from './forecastModel'
-import { deepResearchV2On, researchSourceDiversityOn, researchPackagesOn, researchForecastModelOn, researchFreshnessOn, V2_LIMITS, termScores, stepCoverage, decideNext, missingParts, findingsForPart } from './deepResearchState'
+import { deepResearchV2On, researchSourceDiversityOn, researchPackagesOn, researchForecastModelOn, researchFreshnessOn, researchChartRelevanceOn, V2_LIMITS, termScores, stepCoverage, decideNext, missingParts, findingsForPart } from './deepResearchState'
 
 // planSteps: the plan's own steps; steps: all steps of a run (the plan's + the follow-up round's GAP_STEPS), as the card shows them
 /** R13 tier bounds for one run (Standard report). Absent = the unbounded one-pass / V2 run, byte for byte. */
@@ -313,7 +314,7 @@ export function staleSourceIds(evidence: ReadonlyArray<{ id: number; published?:
   return new Set(evidence.filter(e => { const t = e.published ? Date.parse(e.published) : NaN; return Number.isFinite(t) && t < cutoff }).map(e => e.id))
 }
 
-export function sectionCharts(report: string, plan: ResearchPlan, findings: readonly Finding[], stale?: ReadonlySet<number>): ResearchChart[] {
+export function sectionCharts(report: string, plan: ResearchPlan, findings: readonly Finding[], stale?: ReadonlySet<number>, /** RESEARCH_CHART_RELEVANCE: draw only a series the written section talks about */ relevant = false): ResearchChart[] {
   const heads = parseDoc(report).filter((b): b is Extract<DocBlock, { t: 'heading' }> => b.t === 'heading' && b.level === 2).map(b => headingTitle(b.text))
   const key = (s: string) => titleKey(s)
   const out: ResearchChart[] = []
@@ -322,9 +323,12 @@ export function sectionCharts(report: string, plan: ResearchPlan, findings: read
     const own = headingTitle(s.title)
     const head = own ? heads.find(h => !!h && key(h) === key(own)) : undefined
     if (!head) return
+    const body = relevant ? sectionTextOf(report, t => { const x = headingTitle(t); return !!x && key(x) === key(head) }) : ''
     const groups = new Map<string, Finding[]>()
     for (const f of findings) {
       if (!f.figure || !(f.step === k + 1 || plan.steps[f.step - 1]?.completes === k + 1)) continue
+      // RESEARCH_CHART_RELEVANCE: a chart is drawn from a series the section itself talks about, not from the largest group of figures that happened to be found for it
+      if (relevant && !seriesRelevant(f.figure.series, body)) continue
       // a chart is not drawn from a dated source that is too old (owner 11/11: a 2017 survey drew a trend chart in a 2026 report)
       if (stale?.has(f.source)) continue
       const g = `${key(f.figure.series)}|${key(f.figure.unit)}`
@@ -752,7 +756,7 @@ export async function runDeepResearch(question: string, context: string, lang: s
   const pictures = await Promise.race([picturesP, new Promise<null>(r => { pictureTimer = setTimeout(() => r(null), 1500) })])
   clearTimeout(pictureTimer)
   // owner 31/10: the figures matter more than a picture - a section with a chart gets the chart, not a (small) picture
-  const charts = sectionCharts(written, plan, notes, researchSourceDiversityOn() ? staleSourceIds(cited, now()) : undefined)
+  const charts = sectionCharts(written, plan, notes, researchSourceDiversityOn() ? staleSourceIds(cited, now()) : undefined, researchChartRelevanceOn())
   if (charts.length && emit.charts) emit.charts(charts)
   const charted = new Set(charts.map(c => titleKey(c.section)))
   const placed = (pictures ? sectionImages(written, plan, pictures) : []).filter(p => !charted.has(titleKey(p.title)))

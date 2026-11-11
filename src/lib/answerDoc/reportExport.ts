@@ -70,10 +70,21 @@ table{border:0;border-radius:10px;overflow:hidden}th,td{border:0;border-bottom:1
 @page{@bottom-left{content:"TappyAI";font-family:Arial,sans-serif;font-size:10px;color:#007AFF}}
 `
 const COVER_TEXT = { vi: { eyebrow: 'Báo cáo nghiên cứu · TappyAI', updated: 'Cập nhật', sources: 'nguồn' }, en: { eyebrow: 'Research report · TappyAI', updated: 'Updated', sources: 'sources' } }
-function designACover(o: { title: string; links: readonly ReportLink[]; lang: string }): string {
+/**
+ * How many sources the cover states: the larger of the live link list and the numbered "n. title — site" lines of the text's LAST section (the sources list the server builds, which is all a reloaded
+ * report has: the export bar has no link list). 0 means unknown, and the cover then says nothing about sources rather than "0". Pure.
+ */
+export function sourceCountOf(text: string, links: readonly ReportLink[]): number {
+  const lines = text.replace(/\r\n?/g, '\n').split('\n')
+  let last = -1
+  lines.forEach((l, i) => { if (/^\s{0,3}#{1,6}\s/.test(l)) last = i })
+  const listed = lines.slice(last + 1).filter(l => /^\s{0,3}\d{1,3}\.\s+.+\s—\s/.test(l)).length
+  return Math.max(links.length, listed)
+}
+function designACover(o: { title: string; lang: string }, sources: number): string {
   const c = COVER_TEXT[o.lang === 'en' ? 'en' : 'vi']
   const date = new Date().toLocaleDateString(o.lang === 'en' ? 'en-GB' : 'vi-VN')
-  return `<header class="cover"><div class="eyebrow">${esc(c.eyebrow)}</div><div class="ttl">${esc(o.title)}</div><div class="meta"><span class="pill">${esc(c.updated)} ${esc(date)}</span><span class="pill">${o.links.length} ${esc(c.sources)}</span></div></header>`
+  return `<header class="cover"><div class="eyebrow">${esc(c.eyebrow)}</div><div class="ttl">${esc(o.title)}</div><div class="meta"><span class="pill">${esc(c.updated)} ${esc(date)}</span>${sources > 0 ? `<span class="pill">${sources} ${esc(c.sources)}</span>` : ''}</div></header>`
 }
 
 export function reportHtml(text: string, o: { title: string; images: readonly ReportImage[]; links: readonly ReportLink[]; format: (s: string) => string; lang: string; charts?: readonly ResearchChart[]; /** report layout A (NEXT_PUBLIC_REPORT_LAYOUT=a): cover, brand colours, zebra tables, callout quotes, running footer */ design?: 'a' }): string {
@@ -113,7 +124,7 @@ figure{margin:12px 0}figure img{max-width:100%;max-height:320px;object-fit:cover
 table{border-collapse:collapse;width:100%;font-size:14px;line-height:1.55;margin:14px 0 18px}th,td{border:1px solid #ccc;padding:8px 10px;text-align:left;vertical-align:top}th{background:#eef2fa}
 a{color:#1a4fb5}blockquote{border-left:3px solid #ccc;margin:12px 0;padding-left:12px;color:#444}
 @media print{body{margin:0 auto}h2,h3{break-after:avoid}figure,table{break-inside:avoid}}
-${o.design === 'a' ? DESIGN_A_CSS : ''}</style></head><body>${o.design === 'a' ? designACover(o) : ''}${html(blocks)}</body></html>`
+${o.design === 'a' ? DESIGN_A_CSS : ''}</style></head><body>${o.design === 'a' ? designACover(o, sourceCountOf(text, o.links)) : ''}${html(blocks)}</body></html>`
 }
 
 /** Saves a file the browser builds (no request). */

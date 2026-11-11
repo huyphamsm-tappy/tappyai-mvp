@@ -40,6 +40,27 @@ describe('reportHtml', () => {
   })
 })
 
+// Measured 11/11 (real exports of a reloaded report): the cover said "0 nguồn" because the export bar has no live link list, though the sources list is in the text.
+describe('the cover of layout A counts the sources', () => {
+  const cover = (text: string, links: Parameters<typeof reportHtml>[1]['links'], lang = 'vi') => /<header class="cover">.*?<\/header>/.exec(reportHtml(text, { title: 'T', images: [], links, format: esc, lang, design: 'a' }))?.[0] ?? ''
+  it('with no link list it counts the numbered lines of the sources section in the text', () => {
+    expect(cover(REPORT, [])).toContain('2 nguồn')
+    expect(cover(REPORT, [], 'en')).toContain('2 sources')
+  })
+  it('with a link list longer than the lines it uses the list; the larger of the two', () => {
+    const five = Array.from({ length: 5 }, (_, i) => ({ id: i + 1, title: `t${i}`, url: `https://a${i}.example/` }))
+    expect(cover(REPORT, five)).toContain('5 nguồn')
+  })
+  it('a report with no sources list and no links shows no source count at all (never "0 nguồn")', () => {
+    const c = cover('# Báo cáo\n\n## Mục\nNội dung.\n', [])
+    expect(c).not.toContain('nguồn')
+    expect(c).toContain('Cập nhật')
+  })
+  it('only the lines after the last heading count: a numbered list in the body is not a source', () => {
+    expect(cover('# T\n## Mục\n1. một\n2. hai\n3. ba\n### Nguồn\n1. a — x\n', [])).toContain('1 nguồn')
+  })
+})
+
 describe('section charts in the files', () => {
   const chart = { section: 'Doanh số', title: 'Bán <script>x</script>', unit: 'triệu xe', kind: 'bar' as const, points: [{ label: 'BYD & co', value: 2.26, source: 1 }, { label: 'Tesla', value: 1.64, source: 2 }, { label: 'Geely', value: 1.2, source: 3 }] }
   it('the SVG escapes every text and shows the values in the reader\'s locale with their sources', () => {

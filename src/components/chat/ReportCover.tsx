@@ -12,13 +12,15 @@ export default function ReportCover({ status }: { status: ResearchStatus }) {
   const { t, locale } = useTranslation()
   if (status.phase !== 'done' || !status.title) return null
   const date = new Date().toLocaleDateString(locale === 'en' ? 'en-GB' : 'vi-VN')
+  // the sources the report cites (its links), as the PDF cover states; the count of everything gathered only when the links are not known; nothing when neither is known
+  const sources = status.links?.length || status.sources
   return (
     <header className="tappy-report-cover mb-4" data-testid="report-cover">
       <div className="tappy-report-eyebrow">{t('report.eyebrow')}{status.tier ? ` · ${t(`report.tier.${status.tier}`)}` : ''}</div>
       <h1 className="tappy-report-title">{status.title}</h1>
       <div className="mt-3 flex flex-wrap gap-2">
         <span className="tappy-report-pill">{t('report.updated', { date })}</span>
-        <span className="tappy-report-pill">{t('report.sources', { n: String(status.sources) })}</span>
+        {sources > 0 && <span className="tappy-report-pill">{t('report.sources', { n: String(sources) })}</span>}
       </div>
     </header>
   )

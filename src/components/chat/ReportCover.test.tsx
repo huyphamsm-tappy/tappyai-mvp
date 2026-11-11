@@ -27,6 +27,14 @@ describe('ReportCover', () => {
     const none = render(<ReportCover status={status()} />).container.textContent ?? ''
     expect(none).not.toContain('tiêu chuẩn'); expect(none).not.toContain('nâng cao')
   })
+  it('states the sources the report CITES when the card has its links (the PDF cover does the same), not everything that was gathered; with none known it states no count', () => {
+    setLocale('vi')
+    const links = Array.from({ length: 12 }, (_, i) => ({ id: i + 1, title: `t${i}`, url: `https://a${i}.example/` }))
+    expect(render(<ReportCover status={status({ sources: 120, links })} />).container.textContent).toContain('12 nguồn')
+    cleanup()
+    const none = render(<ReportCover status={status({ sources: 0 })} />).container.textContent ?? ''
+    expect(none).not.toContain('nguồn'); expect(none).toContain('Cập nhật')
+  })
   it('English follows the locale', () => {
     setLocale('en')
     expect(render(<ReportCover status={status()} />).container.textContent).toContain('38 sources')
