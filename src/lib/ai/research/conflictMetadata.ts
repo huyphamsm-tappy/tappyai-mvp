@@ -55,6 +55,32 @@ export function structuredConflicts(findings: readonly Finding[]): ConflictRecor
   return out
 }
 
+// ── reconciling by date ───────────────────────────────────────────────────────────────────────────────────────────────
+
+export type LikelyReason = 'DIFFERENT_AS_OF_DATE' | 'UNKNOWN'
+export interface ReconciledConflict extends ConflictRecord {
+  /** each value with the year its source was published (null when the source gives no date) */
+  asOf: Array<{ value: number; source: number; year: number | null }>
+  likelyReason: LikelyReason
+  /** the value from the most recently published source, when the dates differ: where to look first, NOT a verdict */
+  newestValue: number | null
+}
+
+/**
+ * A disagreement between sources is often two readings taken at different dates (a store count in 2025 vs 2026), not a contradiction. When the sources' own publication years differ, the record says so and
+ * names the newest source's value; with no dates, or the same year, the reason stays UNKNOWN and nothing is preferred (a definition difference cannot be told from a date by code). Pure.
+ */
+export function reconcileByDate(conflicts: readonly ConflictRecord[], evidence: ReadonlyArray<{ id: number; published?: string }>): ReconciledConflict[] {
+  const yearOf = new Map(evidence.map(e => { const y = e.published ? Number(e.published.slice(0, 4)) : NaN; return [e.id, Number.isFinite(y) ? y : null] as const }))
+  return conflicts.map(c => {
+    const asOf = c.values.map(v => ({ value: v.value, source: v.source, year: yearOf.get(v.source) ?? null }))
+    const dated = asOf.filter(a => a.year !== null) as Array<{ value: number; source: number; year: number }>
+    const differs = dated.length >= 2 && new Set(dated.map(a => a.year)).size > 1
+    const newest = differs ? [...dated].sort((a, b) => b.year - a.year)[0] : null
+    return { ...c, asOf, likelyReason: differs ? 'DIFFERENT_AS_OF_DATE' : 'UNKNOWN', newestValue: newest ? newest.value : null }
+  })
+}
+
 // ── bounded repair ────────────────────────────────────────────────────────────────────────────────────────────────────
 
 export const REPAIR_BOUNDS = { STANDARD: { maxRounds: 1, minMsLeft: 12_000 }, ADVANCED: { maxRounds: 2, minMsLeft: 20_000 } } as const

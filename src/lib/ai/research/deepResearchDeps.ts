@@ -19,6 +19,8 @@ import { createParallelTurnBudget, parallelSearch, PARALLEL_PRICE } from '@/lib/
 export { PARALLEL_PRICE }
 import { consultTraceDiagnosticsOn, lockedInProduction } from '@/lib/config/consultFlags'
 import { leanValue } from './deepResearchLean'
+import { researchSourceDiversityOn } from './deepResearchState'
+import { questionKind } from './researchLanes'
 import { DEEP_RESEARCH_LIMITS, GAP_FINDINGS_BUDGET, pageTextLimit, writerNotes, type Figure, type DeepResearchDeps, type Evidence, type ResearchPlan } from './deepResearch'
 
 const PlanStep = z.object({
@@ -279,7 +281,11 @@ export function createDeepResearchDeps(o: { lang: string; userTexts: readonly st
       const host = (u: string) => { try { return new URL(u).hostname.replace(/^www\./, '') } catch { return '' } }
       const sources = evidence.filter(e => findings.some(f => f.source === e.id)).map(e => `[${e.id}] ${e.title} — ${e.site ?? host(e.url)}${e.published ? `, ${e.published}` : ''}`).join('\n')
       const notes = writerNotes(plan, findings)
-      const messages = [{ role: 'user' as const, content: `Question:\n${question}${langLine}\n\nToday's date: ${new Date().toISOString().slice(0, 10)}\nResearch plan: ${plan.title}${plan.parts?.length ? `\nParts the question asks for: ${plan.parts.join('; ')}` : ''}\n\n${fenceUntrusted('tool_result', `Sources:\n${sources}\n\nFindings by step:\n${notes}`)}` }]
+      // RESEARCH_SOURCE_DIVERSITY: for a forecast or size question (decided by code, questionKind) every figure for a FUTURE year is written as a scenario with its assumptions, never as a fact
+      const forecastRule = researchSourceDiversityOn() && questionKind(question) === 'SIZE_FORECAST'
+        ? '\n\nForecast rule: every figure for a year that has not happened yet is an ESTIMATE under stated assumptions, not a fact. Say so in the sentence ("ước tính", "kịch bản", "dự báo", "giả định" / estimate, scenario, assumes). Give a low / base / high range when the findings allow it, name the assumptions behind each (growth, price, volume), never write that a figure "will reach" a value as certain, and say which input assumption no source confirms.'
+        : ''
+      const messages = [{ role: 'user' as const, content: `Question:\n${question}${langLine}${forecastRule}\n\nToday's date: ${new Date().toISOString().slice(0, 10)}\nResearch plan: ${plan.title}${plan.parts?.length ? `\nParts the question asks for: ${plan.parts.join('; ')}` : ''}\n\n${fenceUntrusted('tool_result', `Sources:\n${sources}\n\nFindings by step:\n${notes}`)}` }]
       // 03/11 DEEP_RESEARCH_WRITER_MODEL=haiku55: Claude Haiku 5.5 writes the report (a Vietnamese report is ~27-30k Claude tokens, so the ceiling is higher);
       // a failure before any text (credit, overload) falls back to the Luna writer below, so the person still gets a report
       const writer = writerBy()

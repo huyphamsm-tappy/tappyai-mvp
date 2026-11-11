@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { structuredConflicts, nextRepairAction, REPAIR_BOUNDS } from './conflictMetadata'
+import { structuredConflicts, nextRepairAction, reconcileByDate, REPAIR_BOUNDS } from './conflictMetadata'
 import type { Finding } from './deepResearch'
 import type { ClaimCheck } from './claimVerifier'
 
@@ -28,6 +28,23 @@ describe('structuredConflicts', () => {
   })
   it('the record carries no sentence text from the report', () => {
     expect(JSON.stringify(structuredConflicts([f(1, 100), f(2, 150)]))).not.toContain('"t"')
+  })
+})
+
+describe('reconcileByDate', () => {
+  const conflicts = structuredConflicts([f(1, 54), f(2, 1304)])
+  it('different publication years: likely a different as-of date, and the newest source value is named (not a verdict)', () => {
+    const r = reconcileByDate(conflicts, [{ id: 1, published: '2023-03-01' }, { id: 2, published: '2026-08-10' }])
+    expect(r[0]).toMatchObject({ likelyReason: 'DIFFERENT_AS_OF_DATE', newestValue: 1304 })
+    expect(r[0].asOf).toEqual([{ value: 54, source: 1, year: 2023 }, { value: 1304, source: 2, year: 2026 }])
+  })
+  it('the same year, or missing dates: the reason stays UNKNOWN and nothing is preferred', () => {
+    expect(reconcileByDate(conflicts, [{ id: 1, published: '2026-01-01' }, { id: 2, published: '2026-09-09' }])[0]).toMatchObject({ likelyReason: 'UNKNOWN', newestValue: null })
+    expect(reconcileByDate(conflicts, [{ id: 1 }, { id: 2, published: '2026-09-09' }])[0]).toMatchObject({ likelyReason: 'UNKNOWN', newestValue: null })
+    expect(reconcileByDate(conflicts, [])[0].asOf.every(a => a.year === null)).toBe(true)
+  })
+  it('keeps the original record fields', () => {
+    expect(reconcileByDate(conflicts, [])[0]).toMatchObject({ kind: 'SOURCES_DIFFER', series: 'Doanh thu', low: 54, high: 1304 })
   })
 })
 

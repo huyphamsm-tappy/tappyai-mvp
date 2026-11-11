@@ -8,7 +8,7 @@
 import { runDeepResearch, chartsFrame, type DeepResearchDeps, type ResearchStatus, type ResearchEmit, type RunBounds } from './deepResearch'
 import { evidenceCounts } from './deepResearchDeps'
 import { verifyReport } from './claimVerifier'
-import { structuredConflicts } from './conflictMetadata'
+import { structuredConflicts, reconcileByDate } from './conflictMetadata'
 import { DOC_MEDIA_KIND, docMediaFrame, sanitizeDocMedia } from '@/lib/answerDoc/media'
 
 export interface DeepResearchTurn {
@@ -71,7 +71,7 @@ export function deepResearchResponse(t: DeepResearchTurn): Response {
       if (out.checked && !out.failed) { try { verification = verifyReport(out.checked.report, out.checked.sources) } catch { verification = null } }
       if (verification) console.log(JSON.stringify({ type: 'tappyai_report_verification', scope: verification.scope, sentences: verification.sentences, checked: verification.checked, ...verification.counts, flagged: verification.flagged.slice(0, 20).map(f => ({ s: f.sentence, status: f.status })) }))
       // R13 §9.3: disagreements between sources as structured data (counts and kinds only are logged: never the figures' words or the report)
-      if (out.checked && !out.failed) { try { const c = structuredConflicts(out.findings); if (c.length) console.log(JSON.stringify({ type: 'tappyai_report_conflicts', n: c.length, display: c.map(x => x.display) })) } catch { /* diagnostics only */ } }
+      if (out.checked && !out.failed) { try { const c = reconcileByDate(structuredConflicts(out.findings), out.evidence); if (c.length) console.log(JSON.stringify({ type: 'tappyai_report_conflicts', n: c.length, display: c.map(x => x.display), likely_reason: c.map(x => x.likelyReason) })) } catch { /* diagnostics only */ } }
       const serper = t.serperUsd()
       const usd = Math.round((t.cost.usd + serper.usd) * 1e6) / 1e6
       console.log(JSON.stringify({ type: 'tappyai_turn_cost', turnType: 'deep_research', usd, answerUsd: Math.round(t.cost.usd * 1e6) / 1e6, serperUsd: serper.usd, serperCalls: serper.calls, modelCalls: t.cost.calls }))

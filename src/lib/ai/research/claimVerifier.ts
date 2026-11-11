@@ -9,7 +9,7 @@
 
 import { numberInText } from './deepResearch'
 
-export type ClaimStatus = 'supported' | 'number_not_in_source' | 'bad_citation' | 'uncited_number' | 'source_unreadable'
+export type ClaimStatus = 'supported' | 'number_not_in_source' | 'bad_citation' | 'uncited_number' | 'source_unreadable' | 'unframed_forecast'
 
 export interface VerifierSource { id: number; title: string; snippet: string; text: string }
 
@@ -52,10 +52,21 @@ const written = (figure: string, corpus: string): boolean => {
   return numberInText(Number(raw.replace(/,/g, '')), corpus) || numberInText(Number(raw.replace(/\./g, '').replace(',', '.')), corpus) || corpus.includes(raw)
 }
 
-/** Verify a written report. `sources` are the report's own numbered sources (1..n). Pure. */
-export function verifyReport(report: string, sources: readonly VerifierSource[]): VerificationResult {
+const FUTURE_YEAR = /\b(20\d{2})\b/g
+const HEDGE = /(du bao|uoc tinh|kich ban|gia dinh|du kien|co the dat|forecast|estimate|scenario|assum|expected|projected|projection)/
+const foldLite = (s: string) => s.normalize('NFD').replace(/\p{M}/gu, '').replace(/đ/gi, 'd').toLowerCase()
+
+/** A sentence that gives a figure for a FUTURE year (later than `year`) without saying it is an estimate, forecast, scenario or assumption: a forecast written as a fact. Pure. */
+export function unframedForecast(sentence: string, year: number): boolean {
+  const bare = sentence.replace(/\[\d+\](\[\d+\])*/g, ' ')
+  const future = [...bare.matchAll(FUTURE_YEAR)].some(m => Number(m[1]) > year && Number(m[1]) <= year + 10)
+  return future && figuresOf(bare).length > 0 && !HEDGE.test(foldLite(bare))
+}
+
+/** Verify a written report. `sources` are the report's own numbered sources (1..n). `year` = the current year, for the forecast-as-fact check. Pure. */
+export function verifyReport(report: string, sources: readonly VerifierSource[], year: number = new Date().getFullYear()): VerificationResult {
   const byId = new Map(sources.map(s => [s.id, s]))
-  const counts: Record<ClaimStatus, number> = { supported: 0, number_not_in_source: 0, bad_citation: 0, uncited_number: 0, source_unreadable: 0 }
+  const counts: Record<ClaimStatus, number> = { supported: 0, number_not_in_source: 0, bad_citation: 0, uncited_number: 0, source_unreadable: 0, unframed_forecast: 0 }
   const flagged: ClaimCheck[] = []
   const sentences = String(report ?? '').split(SENTENCE_SPLIT).map(s => s.trim()).filter(Boolean)
   let checked = 0
@@ -78,6 +89,8 @@ export function verifyReport(report: string, sources: readonly VerifierSource[])
         if (missing.length) { status = 'number_not_in_source'; bad = missing.slice(0, 4) }
       }
     }
+    // a figure for a future year with no word of estimate, forecast or assumption is a forecast written as a fact (it does not hide a worse status)
+    if (status === 'supported' && unframedForecast(sentence, year)) { status = 'unframed_forecast'; bad = figuresOf(sentence).slice(0, 4) }
     counts[status]++
     if (status !== 'supported') flagged.push({ sentence: i + 1, status, figures: bad, cited })
   })
@@ -85,4 +98,4 @@ export function verifyReport(report: string, sources: readonly VerifierSource[])
 }
 
 /** True when nothing the verifier can check failed (unreadable sources do not fail a report, they are reported). */
-export const verifierClean = (r: VerificationResult): boolean => r.counts.bad_citation + r.counts.number_not_in_source + r.counts.uncited_number === 0
+export const verifierClean = (r: VerificationResult): boolean => r.counts.bad_citation + r.counts.number_not_in_source + r.counts.uncited_number + r.counts.unframed_forecast === 0
