@@ -7,6 +7,7 @@ import { join } from 'node:path'
 import { tmpdir } from 'node:os'
 import { runDeepResearch, numberInText, type DeepResearchDeps } from './deepResearch'
 import { consolidate } from './consolidate'
+import { repeatedFigures } from './reportRepeats'
 import type { ForecastResult } from './forecastModel'
 import { createDeepResearchDeps, deepResearchParallel, PARALLEL_PRICE } from './deepResearchDeps'
 import { STANDARD_RUN_BOUNDS } from './researchAdmission'
@@ -61,7 +62,9 @@ describe.skipIf(!ON)('LIVE: one run per tier (costs money)', () => {
         charts: out.charts ?? 0, tableProblems: tableProblems(text).length, conflicts: structuredConflicts(out.findings).length,
         verifier: ver ? { ...ver.counts, checked: ver.checked } : null,
         label: process.env.MEASURE_LABEL ?? '',
-        flags: { consolidation: process.env.RESEARCH_CONSOLIDATION === '1', packages: process.env.RESEARCH_PACKAGES === '1', forecastModel: process.env.RESEARCH_FORECAST_MODEL === '1' },
+        flags: { consolidation: process.env.RESEARCH_CONSOLIDATION === '1', packages: process.env.RESEARCH_PACKAGES === '1', forecastModel: process.env.RESEARCH_FORECAST_MODEL === '1', freshness: process.env.RESEARCH_FRESHNESS === '1', tightWrite: process.env.RESEARCH_TIGHT_WRITE === '1', chartRelevance: process.env.RESEARCH_CHART_RELEVANCE === '1' },
+        repeats: repeatedFigures(text),
+        freshnessHints: traces.filter(t => t.ev === 'freshness_hints').map(t => t.n),
         // what the consolidation WOULD say about this run's findings (computed after the fact for every config, so the baseline shows how much it repeats and how many "conflicts" are not)
         consolidation: (() => { const c = consolidate(out.findings); return { ...c.stats, staleItems: c.stale.slice(0, 10).map(s => `${s.subject || '-'} / ${s.metric}: ${s.newest}`), conflictsOld: structuredConflicts(out.findings).length } })(),
         packages: { briefs: out.plan?.steps.filter(s => s.brief).length ?? 0, merged: traces.find(t => t.ev === 'packages_merged')?.merged ?? [] },

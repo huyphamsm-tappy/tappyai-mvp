@@ -19,7 +19,8 @@ import { createParallelTurnBudget, parallelSearch, PARALLEL_PRICE } from '@/lib/
 export { PARALLEL_PRICE }
 import { consultTraceDiagnosticsOn, lockedInProduction } from '@/lib/config/consultFlags'
 import { leanValue } from './deepResearchLean'
-import { researchSourceDiversityOn, researchConsolidationOn, researchPackagesOn, researchForecastModelOn } from './deepResearchState'
+import { researchSourceDiversityOn, researchConsolidationOn, researchPackagesOn, researchForecastModelOn, researchTightWriteOn } from './deepResearchState'
+import { TIGHT_WRITE_RULE } from './reportRepeats'
 import { forecastNotes, packFindingsForForecast, specFromRaw, askTwice, type ForecastSpecRaw } from './forecastModel'
 import { consolidate, consolidatedNotes } from './consolidate'
 import { briefText, planWithFallback, PLAN_PACKAGES_MAX_TOKENS } from './researchPackages'
@@ -365,7 +366,7 @@ export function createDeepResearchDeps(o: { lang: string; userTexts: readonly st
       const forecastRule = researchSourceDiversityOn() && questionKind(question) === 'SIZE_FORECAST'
         ? '\n\nForecast rule: every figure for a year that has not happened yet is an ESTIMATE under stated assumptions, not a fact. Say so in the sentence ("ước tính", "kịch bản", "dự báo", "giả định" / estimate, scenario, assumes). Give a low / base / high range when the findings allow it, name the assumptions behind each (growth, price, volume), never write that a figure "will reach" a value as certain, and say which input assumption no source confirms.'
         : ''
-      const messages = [{ role: 'user' as const, content: `Question:\n${question}${langLine}${forecastRule}${modelRule}\n\nToday's date: ${new Date().toISOString().slice(0, 10)}\nResearch plan: ${plan.title}${plan.parts?.length ? `\nParts the question asks for: ${plan.parts.join('; ')}` : ''}\n\n${fenceUntrusted('tool_result', `Sources:\n${sources}\n\nFindings by step:\n${notes}`)}` }]
+      const messages = [{ role: 'user' as const, content: `Question:\n${question}${langLine}${forecastRule}${modelRule}${researchTightWriteOn() ? `\n\n${TIGHT_WRITE_RULE}` : ''}\n\nToday's date: ${new Date().toISOString().slice(0, 10)}\nResearch plan: ${plan.title}${plan.parts?.length ? `\nParts the question asks for: ${plan.parts.join('; ')}` : ''}\n\n${fenceUntrusted('tool_result', `Sources:\n${sources}\n\nFindings by step:\n${notes}`)}` }]
       // 03/11 DEEP_RESEARCH_WRITER_MODEL=haiku55: Claude Haiku 5.5 writes the report (a Vietnamese report is ~27-30k Claude tokens, so the ceiling is higher);
       // a failure before any text (credit, overload) falls back to the Luna writer below, so the person still gets a report
       const writer = writerBy()

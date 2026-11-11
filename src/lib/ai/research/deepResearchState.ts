@@ -18,6 +18,10 @@ export const RESEARCH_SOURCE_DIVERSITY_FLAG = 'RESEARCH_SOURCE_DIVERSITY'
 /** Pure. Source diversity (a publisher that already gave many sources is left out of later searches; no chart from a dated source older than 24 months): OFF unless exactly "1", locked in production. */
 export const researchSourceDiversityOn = (env: Env = process.env): boolean => env[RESEARCH_SOURCE_DIVERSITY_FLAG] === '1' && !lockedInProduction(env, RESEARCH_SOURCE_DIVERSITY_FLAG)
 
+export const RESEARCH_TIGHT_WRITE_FLAG = 'RESEARCH_TIGHT_WRITE'
+/** Pure. The writer is given a rule to state each figure once and keep the summary and the caveats from restating it (reportRepeats.ts): OFF unless exactly "1", locked in production. */
+export const researchTightWriteOn = (env: Env = process.env): boolean => env[RESEARCH_TIGHT_WRITE_FLAG] === '1' && !lockedInProduction(env, RESEARCH_TIGHT_WRITE_FLAG)
+
 export const RESEARCH_FRESHNESS_FLAG = 'RESEARCH_FRESHNESS'
 /** Pure. The gap check is told which measures run on old readings (newest reading before this year) so it looks up their latest period first: OFF unless exactly "1", locked in production. */
 export const researchFreshnessOn = (env: Env = process.env): boolean => env[RESEARCH_FRESHNESS_FLAG] === '1' && !lockedInProduction(env, RESEARCH_FRESHNESS_FLAG)
