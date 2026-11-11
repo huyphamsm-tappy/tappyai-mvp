@@ -22,10 +22,11 @@ import { dedupePackages } from './researchPackages'
 import { consolidate, freshnessHints } from './consolidate'
 import { sectionTextOf, seriesRelevant } from './chartRelevance'
 import { failureKind } from './failureKind'
-import { buildCards, cardSummary, quoteInText, type CardSummary, type EvidenceCard } from './evidenceCards'
+import { buildCards, cardSummary, factSupport, quoteInText, type CardSummary, type EvidenceCard } from './evidenceCards'
+import { outlineWriterInput, releaseText, type Outline, type WriterInput } from './thesisReport'
 import { FIGURE_CONFLICT_GAP } from './figureGap'
 import { groundForecast, runForecast, wantsForecastModel, type ForecastSpec, type ForecastResult } from './forecastModel'
-import { deepResearchV2On, researchSourceDiversityOn, researchPackagesOn, researchForecastModelOn, researchFreshnessOn, researchChartRelevanceOn, researchEvidenceCardsOn, V2_LIMITS, termScores, stepCoverage, decideNext, missingParts, findingsForPart } from './deepResearchState'
+import { deepResearchV2On, researchSourceDiversityOn, researchPackagesOn, researchForecastModelOn, researchFreshnessOn, researchChartRelevanceOn, researchEvidenceCardsOn, researchThesisOn, V2_LIMITS, termScores, stepCoverage, decideNext, missingParts, findingsForPart } from './deepResearchState'
 
 // planSteps: the plan's own steps; steps: all steps of a run (the plan's + the follow-up round's GAP_STEPS), as the card shows them
 /** R13 tier bounds for one run (Standard report). Absent = the unbounded one-pass / V2 run, byte for byte. */
@@ -201,7 +202,12 @@ export interface DeepResearchDeps {
    * grounds them in the findings and computes the model itself. Absent = no model. Never computes the forecast.
    */
   forecast?(input: { question: string; plan: ResearchPlan; findings: readonly Finding[] }): Promise<ForecastSpec | null>
-  write(input: { question: string; plan: ResearchPlan; evidence: readonly Evidence[]; findings: readonly Finding[]; /** the computed model, given only when the flag is on and the spec was grounded */ forecast?: ForecastResult }): AsyncIterable<string>
+  /**
+   * RESEARCH_THESIS_REPORT (M3): reads the evidence cards (never the pages) and returns the report's thesis with its sections and the cards behind each point, or null (the engine then writes from the findings as before).
+   * The deps validate the answer against the cards (outlineFrom) with the bounds of their tier.
+   */
+  analyze?(input: { question: string; plan: ResearchPlan; cards: readonly EvidenceCard[]; support: ReadonlyMap<string, string> }): Promise<Outline | null>
+  write(input: { question: string; plan: ResearchPlan; evidence: readonly Evidence[]; findings: readonly Finding[]; /** the computed model, given only when the flag is on and the spec was grounded */ forecast?: ForecastResult; /** RESEARCH_THESIS_REPORT (M4): the outline as notes (the thesis, its points with their facts), written instead of the findings by step */ thesisNotes?: string }): AsyncIterable<string>
   /**
    * DEEP_RESEARCH_V2 only (03/11): writes sections for the parts of the question no heading of the written report names, from the findings that
    * speak to each; appended to the report. Absent = no repair.
@@ -554,7 +560,7 @@ export function sectionImages(report: string, plan: ResearchPlan, pictures: Read
 
 /** Runs one deep research. Never throws: a failure ends with a `failed` status and whatever was written. */
 /** `left` (review 02/11): the person went away - the run stops where it is, writes nothing more and ends as 'client_gone'. */
-export async function runDeepResearch(question: string, context: string, lang: string, deps: DeepResearchDeps, emit: ResearchEmit, left?: AbortSignal, bounds?: RunBounds): Promise<{ plan: ResearchPlan | null; evidence: Evidence[]; findings: Finding[]; failed: string | null; cut?: boolean; followUps?: number; charts?: number; figures?: { proposed: number; kept: number }; stepStats?: StepStat[]; unsupported?: string[]; repaired?: number; /** tier runs only (bounds given): the written report and the sources it cites, for the independent verifier (claimVerifier.ts) */ checked?: { report: string; sources: Evidence[] }; /** RESEARCH_EVIDENCE_CARDS: the cards of the run and their counts */ cards?: { summary: CardSummary; cards: EvidenceCard[] } }> {
+export async function runDeepResearch(question: string, context: string, lang: string, deps: DeepResearchDeps, emit: ResearchEmit, left?: AbortSignal, bounds?: RunBounds): Promise<{ plan: ResearchPlan | null; evidence: Evidence[]; findings: Finding[]; failed: string | null; cut?: boolean; followUps?: number; charts?: number; figures?: { proposed: number; kept: number }; stepStats?: StepStat[]; unsupported?: string[]; repaired?: number; /** tier runs only (bounds given): the written report and the sources it cites, for the independent verifier (claimVerifier.ts) */ checked?: { report: string; sources: Evidence[] }; /** RESEARCH_EVIDENCE_CARDS: the cards of the run and their counts */ cards?: { summary: CardSummary; cards: EvidenceCard[] }; /** RESEARCH_THESIS_REPORT: the report was written from a thesis outline; the sentences the verifier dropped, and the length before */ thesis?: { dropped: number; charsBefore: number } }> {
   const now = deps.now ?? Date.now
   const t0 = now()
   // DEEP_RESEARCH_V2 (03/11, OFF unless "1", never in production): several gap rounds in this request and a repair of the parts the report does not name
@@ -709,22 +715,36 @@ export async function runDeepResearch(question: string, context: string, lang: s
     if (g.ok) forecastResult = runForecast(g.spec)
     deps.trace?.({ ev: 'forecast', ok: g.ok, reason: g.ok ? null : g.reason, downgrades: g.ok ? g.downgrades : [] })
   }
+  // RESEARCH_THESIS_REPORT (M3): an analyst reads the cards and returns the thesis, its sections and the cards behind each point; null (any failure) = the report is written from the findings as before
+  let thesisIn: WriterInput | null = null
+  if (researchThesisOn() && deps.analyze && cards && now() - t0 < DEEP_RESEARCH_LIMITS.runDeadlineMs - 100_000) {
+    const support = new Map<string, string>()
+    for (const f of factSupport(cards)) for (const v of f.values) for (const id of v.cards) support.set(id, f.status)
+    const t1 = now()
+    const outline = await deps.analyze({ question, plan, cards, support }).catch(() => null)
+    deps.trace?.({ ev: 'thesis', ok: !!outline, sections: outline?.sections.length ?? 0, points: outline?.sections.reduce((n, s) => n + s.points.length, 0) ?? 0, doubts: outline?.doubts.length ?? 0, ms: now() - t1 })
+    if (outline) thesisIn = outlineWriterInput(outline, cards, cited, renumber, forecastResult ? [forecastResult.spec.base.source] : [])
+  }
+  // M4: with a thesis the text is HELD until the code has read it (releaseText): nothing is shown that the verifier could refute
+  const hold = !!thesisIn
   const stripper = linkStripper()
   const numberer = headingNumberer()
   let cut = false
   let repaired = 0
   let written = ''
-  const say = (t: string) => { if (t) { written += t; emit.text(t) } }
+  let shown: { cited: Evidence[]; findings: Finding[]; plan: ResearchPlan } = { cited, findings: notes, plan }
+  let released: { dropped: number; before: number } | null = null
+  const say = (t: string) => { if (t) { written += t; if (!hold) emit.text(t) } }
   const finish = () => { say(numberer.push(stripper.end())); say(numberer.end()) }
   try {
-    for await (const delta of deps.write({ question, plan, evidence: cited, findings: notes, ...(forecastResult ? { forecast: forecastResult } : {}) })) {
+    for await (const delta of deps.write({ question, plan: thesisIn ? thesisIn.plan : plan, evidence: thesisIn ? thesisIn.sources : cited, findings: thesisIn ? thesisIn.findings : notes, ...(thesisIn ? { thesisNotes: thesisIn.notes } : {}), ...(forecastResult ? { forecast: forecastResult } : {}) })) {
       say(numberer.push(stripper.push(delta)))
       if (left?.aborted) break
       // the run's own deadline: what was written stays and gets its sources (the route must answer inside its maxDuration)
       if (now() - t0 >= DEEP_RESEARCH_LIMITS.runDeadlineMs) { cut = true; break }
     }
     // DEEP_RESEARCH_V2 (03/11): the parts of the question that no heading of the report names are answered in one appended section (once; a structural check only)
-    if ((v2 || bounds?.repairParts) && deps.repair && !left?.aborted && !cut && plan.parts?.length) {
+    if ((v2 || bounds?.repairParts) && deps.repair && !left?.aborted && !cut && plan.parts?.length && !thesisIn) {
       const heads = parseDoc(written).filter((b): b is Extract<DocBlock, { t: 'heading' }> => b.t === 'heading').map(b => headingTitle(b.text) ?? '').filter(Boolean)
       const parts = plan.parts
       const named = missingParts(parts, heads)
@@ -754,23 +774,34 @@ export async function runDeepResearch(question: string, context: string, lang: s
     finish()
     // review 02/11: a writer that wrote nothing is a failed write (refunded), not a report of sources alone
     if (!written.trim()) throw new Error('empty_report')
+    if (thesisIn && !left?.aborted) {
+      const before = written.length
+      const r = releaseText(written, thesisIn.sources)
+      if (!r.text.trim()) throw new Error('empty_report')
+      written = r.text
+      emit.text(r.text)
+      released = { dropped: r.dropped, before }
+      const sourceOf = (n: number) => r.renumbered.get(n)
+      shown = { cited: r.used as Evidence[], plan: thesisIn.plan, findings: [...thesisIn.findings.flatMap(f => { const s = sourceOf(f.source); return s ? [{ ...f, source: s }] : [] }), ...r.used.map(s => ({ step: 1, text: '', source: s.id }))] }
+      deps.trace?.({ ev: 'released', dropped: r.dropped, chars: written.length, cited: r.used.length })
+    }
   } catch {
     finish()
     return { plan, evidence, findings, failed: left?.aborted ? 'client_gone' : fail(plan.title, steps, 'write_failed'), cut }
   }
   if (left?.aborted) return { plan, evidence, findings, failed: 'client_gone', cut }
-  emit.text(sourcesBlock(cited, notes, lang, plan.sources_label))
+  emit.text(sourcesBlock(shown.cited, shown.findings, lang, plan.sources_label))
   // the pictures go under their sections (an annotation the article layout places; never in the text). A lookup still running is not waited for.
   let pictureTimer: ReturnType<typeof setTimeout> | undefined
   const pictures = await Promise.race([picturesP, new Promise<null>(r => { pictureTimer = setTimeout(() => r(null), 1500) })])
   clearTimeout(pictureTimer)
   // owner 31/10: the figures matter more than a picture - a section with a chart gets the chart, not a (small) picture
-  const charts = sectionCharts(written, plan, notes, researchSourceDiversityOn() ? staleSourceIds(cited, now()) : undefined, researchChartRelevanceOn())
+  const charts = sectionCharts(written, shown.plan, shown.findings, researchSourceDiversityOn() ? staleSourceIds(shown.cited, now()) : undefined, researchChartRelevanceOn())
   if (charts.length && emit.charts) emit.charts(charts)
   const charted = new Set(charts.map(c => titleKey(c.section)))
-  const placed = (pictures ? sectionImages(written, plan, pictures) : []).filter(p => !charted.has(titleKey(p.title)))
+  const placed = (pictures ? sectionImages(written, shown.plan, pictures) : []).filter(p => !charted.has(titleKey(p.title)))
   if (placed.length && emit.images) emit.images(placed)
-  const links = cited.map(e => ({ id: e.id, title: e.title, url: e.url }))
+  const links = shown.cited.map(e => ({ id: e.id, title: e.title, url: e.url }))
   emit.status({ type: 'tappy.research.v1', title: plan.title, phase: 'done', steps: steps.map(s => ({ ...s })), sources: evidence.length, links })
-  return { plan, evidence, findings, failed: null, cut, followUps, charts: charts.length, figures: { ...figureCount }, stepStats, unsupported: unsupportedNumbers(written, notes), ...(repaired ? { repaired } : {}), ...(bounds ? { checked: { report: written, sources: cited } } : {}), ...(cards ? { cards: { summary: cardSummary(cards), cards } } : {}) }
+  return { plan, evidence, findings, failed: null, cut, followUps, charts: charts.length, figures: { ...figureCount }, stepStats, unsupported: unsupportedNumbers(written, shown.findings), ...(repaired ? { repaired } : {}), ...(bounds ? { checked: { report: written, sources: shown.cited } } : {}), ...(cards ? { cards: { summary: cardSummary(cards), cards } } : {}), ...(released ? { thesis: { dropped: released.dropped, charsBefore: released.before } } : {}) }
 }

@@ -78,6 +78,9 @@ describe.skipIf(!ON)('LIVE: one run per tier (costs money)', () => {
         // RESEARCH_EVIDENCE_CARDS: the counts of the run's cards (exact quotes verified against the page or not, kinds of source, confidence, facts by support); the cards themselves go to a .cards.json file
         cards: out.cards ? out.cards.summary : null,
         evidenceCards: process.env.RESEARCH_EVIDENCE_CARDS === '1',
+        // RESEARCH_THESIS_REPORT: whether the analyst's outline was used (a null outline means the old way), its size, and what the code dropped before showing the text
+        thesisFlag: process.env.RESEARCH_THESIS_REPORT === '1',
+        thesis: { used: !!out.thesis, dropped: out.thesis?.dropped ?? null, charsBefore: out.thesis?.charsBefore ?? null, outline: traces.find(t => t.ev === 'thesis') ?? null, released: traces.find(t => t.ev === 'released') ?? null },
         freshnessHints: traces.filter(t => t.ev === 'freshness_hints').map(t => t.n),
         // what the consolidation WOULD say about this run's findings (computed after the fact for every config, so the baseline shows how much it repeats and how many "conflicts" are not)
         consolidation: (() => { const c = consolidate(out.findings); return { ...c.stats, staleItems: c.stale.slice(0, 10).map(s => `${s.subject || '-'} / ${s.metric}: ${s.newest}`), conflictsOld: structuredConflicts(out.findings).length } })(),

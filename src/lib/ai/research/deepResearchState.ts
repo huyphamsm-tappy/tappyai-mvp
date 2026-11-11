@@ -20,7 +20,11 @@ export const researchSourceDiversityOn = (env: Env = process.env): boolean => en
 
 export const RESEARCH_EVIDENCE_CARDS_FLAG = 'RESEARCH_EVIDENCE_CARDS'
 /** Pure. Evidence cards (evidenceCards.ts): the notes step also returns the source's exact words for each finding, the code checks them against the page, and the run reports the cards: OFF unless exactly "1", locked in production. */
-export const researchEvidenceCardsOn = (env: Env = process.env): boolean => env[RESEARCH_EVIDENCE_CARDS_FLAG] === '1' && !lockedInProduction(env, RESEARCH_EVIDENCE_CARDS_FLAG)
+export const researchEvidenceCardsOn = (env: Env = process.env): boolean => (env[RESEARCH_EVIDENCE_CARDS_FLAG] === '1' && !lockedInProduction(env, RESEARCH_EVIDENCE_CARDS_FLAG)) || researchThesisOn(env)
+
+export const RESEARCH_THESIS_REPORT_FLAG = 'RESEARCH_THESIS_REPORT'
+/** Pure. Report Engine V2.1 (M3-M5): an analyst reads the evidence cards and returns a thesis with the points that support it, the writer writes from that outline, and only text the code could check is shown. Needs the cards, so it switches them on. OFF unless exactly "1", locked in production. */
+export function researchThesisOn(env: Env = process.env): boolean { return env[RESEARCH_THESIS_REPORT_FLAG] === '1' && !lockedInProduction(env, RESEARCH_THESIS_REPORT_FLAG) }
 
 export const RESEARCH_CHART_RELEVANCE_FLAG = 'RESEARCH_CHART_RELEVANCE'
 /** Pure. A section's chart is drawn only from a series that the written section talks about (chartRelevance.ts): OFF unless exactly "1", locked in production. */
