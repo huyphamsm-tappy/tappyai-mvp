@@ -8,9 +8,41 @@ const card = (o: Partial<VerifiedHotline> = {}): VerifiedHotline => ({
 })
 const ctx = (o: Partial<SafetyContext> = {}): SafetyContext => ({ severity: 'EMERGENCY', reasonCode: 'TEST', locale: 'vi', jurisdictionStatus: 'VERIFIED', currentJurisdiction: 'XX', category: 'MEDICAL', mayAskLocation: true, ...o })
 
-describe('the shipped registry', () => {
-  it('is EMPTY: no number is real until the owner verifies it with its official source', () => {
-    expect(VERIFIED_HOTLINES).toEqual([])
+// 11/11: the owner supplied the verified list (VIETNAM_HOTLINE_VERIFICATION_REPORT_FOR_CLAUDE_2026-11-11.md: 111, 112, 113, 114, 115, each with its official source). The old test said the registry
+// is EMPTY because no number was verified; what it protected (no number without its source, date and scope) is now the set of assertions below, and the owner's own "UNKNOWN" fields stay unknown.
+describe('the shipped registry (the owner\'s verified list of 11/11)', () => {
+  const byNumber = (n: string) => VERIFIED_HOTLINES.filter(h => h.phoneNumber === n)
+  it('every entry is a VERIFIED local card of Viet Nam with an https official source and a date, and passes the shape rule', () => {
+    expect(VERIFIED_HOTLINES.length).toBeGreaterThan(0)
+    for (const h of VERIFIED_HOTLINES) {
+      expect(cardShapeProblem(h), h.hotlineId).toBeNull()
+      expect(h.jurisdiction).toBe('VN')
+      expect(h.displayScope).toBe('LOCAL_EMERGENCY')
+      expect(h.sourceUrl, h.hotlineId).toMatch(/^https:\/\/(tongdai111\.vn|congbaocdn\.chinhphu\.vn|xaydungchinhsach\.chinhphu\.vn|mps\.gov\.vn|congbao\.chinhphu\.vn|adminmoh\.moh\.gov\.vn|vanban\.chinhphu\.vn|tphcm\.chinhphu\.vn)\//)
+      expect(h.lastVerifiedAt).toMatch(/^2026-11-11/)
+    }
+    expect(new Set(VERIFIED_HOTLINES.map(h => h.hotlineId)).size).toBe(VERIFIED_HOTLINES.length)
+  })
+  it('the five numbers are kept apart by what they do: 111 child protection and anti-trafficking (two functions on one number), 112 civil defence, 113 police, 114 fire and rescue, 115 medical', () => {
+    expect(byNumber('111').map(h => h.emergencyCategory).sort()).toEqual(['CHILD_PROTECTION', 'HUMAN_TRAFFICKING'])
+    expect(byNumber('112').map(h => h.emergencyCategory)).toEqual(['CIVIL_DEFENCE'])
+    expect(byNumber('113').map(h => h.emergencyCategory)).toEqual(['POLICE'])
+    expect(byNumber('114').map(h => h.emergencyCategory)).toEqual(['FIRE_RESCUE'])
+    expect(byNumber('115').map(h => h.emergencyCategory)).toEqual(['MEDICAL'])
+  })
+  it('hours and cost are written ONLY where the owner\'s report verified them (111 and 112: 24/7 and free); 113, 114 and 115 carry neither, and no entry claims a mental-health line', () => {
+    for (const n of ['111', '112']) for (const h of byNumber(n)) { expect(h.operatingHours).toBe('24/7'); expect(h.freeOfCharge).toBe(true) }
+    for (const n of ['113', '114', '115']) for (const h of byNumber(n)) { expect(h.operatingHours).toBeUndefined(); expect(h.freeOfCharge).toBeUndefined() }
+    expect(VERIFIED_HOTLINES.some(h => h.emergencyCategory === 'MENTAL_HEALTH')).toBe(false)
+  })
+  it('113, 114 and 115 say the unified-113 integration is transitional and not proven nationwide', () => {
+    for (const n of ['113', '114', '115']) for (const h of byNumber(n)) expect(h.notes ?? '', h.hotlineId).toMatch(/transition|chuyển tiếp/i)
+  })
+  it('a medical emergency in a verified Vietnamese place offers 115 and nothing else; a fire offers 114; the person\'s language never picks the place', () => {
+    const med = buildSafetyPayload(ctx({ category: 'MEDICAL', currentJurisdiction: 'VN', jurisdictionStatus: 'VERIFIED' }))
+    expect(med.hotlineCards.map(h => h.phoneNumber)).toEqual(['115'])
+    expect(buildSafetyPayload(ctx({ category: 'FIRE_RESCUE', currentJurisdiction: 'VN' })).hotlineCards.map(h => h.phoneNumber)).toEqual(['114'])
+    expect(buildSafetyPayload(ctx({ category: 'MEDICAL', currentJurisdiction: 'VN', jurisdictionStatus: 'UNKNOWN', locale: 'vi' })).hotlineCards).toEqual([])
   })
 })
 

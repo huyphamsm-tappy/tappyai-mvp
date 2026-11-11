@@ -1,12 +1,13 @@
 // Contextual Safety Gateway, response side (R13 §10.5): the structured payload every client renders for an EMERGENCY, and the rules that decide which hotline cards may be in it.
-// Pure. No number is written in this file on purpose: R13 says no phone number is hardcoded as a general hotline and none counts until it is a VERIFIED configuration with its own
-// category, jurisdiction, scope, official source, hours and last-verified date. VERIFIED_HOTLINES below is therefore EMPTY until the owner (with legal) supplies and verifies them.
+// Pure. R13 says no phone number is hardcoded as a general hotline and none counts until it is a VERIFIED configuration with its own category, jurisdiction, scope, official source, hours and
+// last-verified date. VERIFIED_HOTLINES below holds only what the owner verified (his report of 11/11: 111 to 115, each with its official source); a field his report left UNKNOWN stays absent.
 // An EMERGENCY with no card still returns immediate guidance (never a blank answer); a fact about where the person is is never guessed from their language.
 // NOT wired into the chat route or any client yet: it is the contract and its enforcement.
 
 export type Severity = 'SAFE' | 'SOFT_FLAG' | 'HARD_BLOCK' | 'EMERGENCY'
 export type DisplayScope = 'LOCAL_EMERGENCY' | 'HOME_MARKET_RESOURCE' | 'GLOBAL_DIRECTORY'
-export type EmergencyCategory = 'MEDICAL' | 'CHILD_PROTECTION' | 'MENTAL_HEALTH' | 'OTHER'
+/** The owner's report (11/11) keeps the five numbers apart by function: a number is never classified under a function its source does not give it (111 is not a general mental-health line). */
+export type EmergencyCategory = 'MEDICAL' | 'CHILD_PROTECTION' | 'HUMAN_TRAFFICKING' | 'POLICE' | 'FIRE_RESCUE' | 'CIVIL_DEFENCE' | 'MENTAL_HEALTH' | 'OTHER'
 export type JurisdictionStatus = 'VERIFIED' | 'UNKNOWN' | 'LOW_CONFIDENCE'
 
 export interface VerifiedHotline {
@@ -20,15 +21,39 @@ export interface VerifiedHotline {
   /** required when a home-market or non-local resource is shown */
   scopeWarningLocaleKey?: string
   displayName: string
+  /** written only where an official source gives it */
   operatingHours?: string
+  /** true only where an official source says calls are free; absent = not established (never "false") */
+  freeOfCharge?: true
   timezone?: string
+  /** internal: caveats from the verification (never shown as a fact to the person) */
+  notes?: string
   sourceUrl: string
   lastVerifiedAt: string
   verificationStatus: 'VERIFIED' | 'REQUIRES_RECHECK' | 'DISABLED'
 }
 
-/** The hotlines the owner has verified. EMPTY by design: nothing here is real until it carries its official source and verification date. */
-export const VERIFIED_HOTLINES: readonly VerifiedHotline[] = []
+const VN_BASE = { jurisdiction: 'VN', displayScope: 'LOCAL_EMERGENCY', timezone: 'Asia/Ho_Chi_Minh', lastVerifiedAt: '2026-11-11T00:00:00Z', verificationStatus: 'VERIFIED' } as const
+const UNIFIED_113 = 'The 113/114/115 unified-intake integration is in transition: the HCMC Government Portal (4 Nov 2026) says all three stay usable there; nationwide completion is NOT verified, nor hours or whether calls are free. Do not state either.'
+
+/**
+ * The hotlines the owner has verified: VIETNAM_HOTLINE_VERIFICATION_REPORT_FOR_CLAUDE_2026-11-11 (the owner's own list, each number with its official source). Hours and "free of charge" are written ONLY where
+ * that report verified them (111 and 112); for 113, 114 and 115 the report left them UNKNOWN and so do these entries. Province-by-province routing and the capacity of 115 locally are not claimed.
+ */
+export const VERIFIED_HOTLINES: readonly VerifiedHotline[] = [
+  { ...VN_BASE, hotlineId: 'vn-111-child-protection', emergencyCategory: 'CHILD_PROTECTION', phoneNumber: '111', displayName: 'Tổng đài Quốc gia Bảo vệ Trẻ em 111', operatingHours: '24/7', freeOfCharge: true,
+    sourceUrl: 'https://tongdai111.vn/sites/gioi-thieu', notes: 'Run by the Center for Consultation and Communication Services, Department of Mothers and Children, Ministry of Health. Child and family counselling scope: not a general adult mental-health line.' },
+  { ...VN_BASE, hotlineId: 'vn-111-human-trafficking', emergencyCategory: 'HUMAN_TRAFFICKING', phoneNumber: '111', displayName: 'Tổng đài phòng, chống mua bán người 111', operatingHours: '24/7', freeOfCharge: true,
+    sourceUrl: 'https://congbaocdn.chinhphu.vn/CongBaoCP/VanBan/2025/6/45339/57267-1-2025873-874162-2025-nd-cp.pdf', notes: 'Decree 162/2025/NĐ-CP Article 4: the anti-trafficking hotline uses the short code 111, 24 hours every day, calls free.' },
+  { ...VN_BASE, hotlineId: 'vn-112-civil-defence', emergencyCategory: 'CIVIL_DEFENCE', phoneNumber: '112', displayName: 'Tổng đài 112 - thông tin sự cố, thiên tai, thảm họa', operatingHours: '24/7', freeOfCharge: true,
+    sourceUrl: 'https://congbaocdn.chinhphu.vn/CongBaoCP/VanBan/2025/7/45545/57679-1-2025959-960200-2025-nd-cp.pdf', notes: 'Decree 200/2025/NĐ-CP: provincial Military Commands; operating nationwide since 23 Aug 2025; linked with 113, 114 and 115 but does not replace them. Kept apart from the 113/114/115 integration project.' },
+  { ...VN_BASE, hotlineId: 'vn-113-police', emergencyCategory: 'POLICE', phoneNumber: '113', displayName: 'Đường dây 113 - Công an (an ninh, trật tự khẩn cấp)',
+    sourceUrl: 'https://mps.gov.vn/bai-viet/moi-lam-viec-01-cong-dan-nhieu-lan-goi-dien-quay-roi-so-113-1782459200', notes: UNIFIED_113 + ' Circular 42/2026/TT-BYT (effective 1 Nov 2026) routes medical-support information reaching 113 to medical staff at the provincial Police Information Command Center.' },
+  { ...VN_BASE, hotlineId: 'vn-114-fire-rescue', emergencyCategory: 'FIRE_RESCUE', phoneNumber: '114', displayName: 'Đường dây 114 - Cứu hỏa, cứu nạn cứu hộ',
+    sourceUrl: 'https://congbao.chinhphu.vn/tai-ve-van-ban-so-55-2024-qh15-43594-53752', notes: UNIFIED_113 + ' Law 55/2024/QH15 Article 6(2): 114 is the nationwide number for reporting fires and rescue.' },
+  { ...VN_BASE, hotlineId: 'vn-115-medical', emergencyCategory: 'MEDICAL', phoneNumber: '115', displayName: 'Đường dây 115 - Cấp cứu y tế (điều xe cứu thương)',
+    sourceUrl: 'https://adminmoh.moh.gov.vn/web/guest/tin-noi-bat/-/asset_publisher/3Yst7YhbkA5j/content/thu-truong-bo-y-te-tran-van-thuan-to-chuc-mang-luoi-cap-cuu-ngoai-vien-theo-huong-gan-dan', notes: UNIFIED_113 + ' A nationally assigned number does not prove every locality has a working ambulance-dispatch network (Ministry of Health, March 2026).' },
+]
 
 export interface EmergencyFallbackGuidance {
   jurisdictionStatus: JurisdictionStatus
