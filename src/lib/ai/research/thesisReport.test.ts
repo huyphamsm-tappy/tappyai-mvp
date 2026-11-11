@@ -85,6 +85,9 @@ describe('the instructions that came out of the live runs (a prompt cannot be pr
   it('the analyst weighs a subject by how many cards cover it, so a wave found in 11 to 24 cards is not left out of a trend report', () => {
     expect(ANALYST_SYSTEM).toMatch(/five or more cards/)
   })
+  it('the analyst always gives a place to a law, tax or ban coming into force that affects the subject, however few cards carry it', () => {
+    expect(ANALYST_SYSTEM).toMatch(/coming into force[^.]*always a point/)
+  })
   it('the gap check looks for a rule coming into force soon, not only for the framework laws a general search returns', () => {
     expect(GAPS_UPCOMING_ADDENDUM).toMatch(/coming into force within the next two years/)
     expect(GAPS_UPCOMING_ADDENDUM).toMatch(/framework laws/)
@@ -214,6 +217,42 @@ describe('the engine with a thesis', () => {
     expect(seen.emittedAtSecondChunk).toBeGreaterThan(0)
     expect(emitted).toContain('99,99')
     expect(out.thesis).toBeUndefined()
+  })
+  it('the write from the outline fails (live 11/11: write_failed after a good outline): nothing was shown, so the report is written from the findings as before', async () => {
+    vi.stubEnv('RESEARCH_THESIS_REPORT', '1')
+    let emitted = ''
+    const calls: Array<string | undefined> = []
+    const deps: DeepResearchDeps = {
+      async plan() { return structuredClone(plan) },
+      async gather() { return [{ title: 'iPOS', url: 'https://ipos.vn/bao-cao', snippet: 's', text: PAGE }] },
+      async notes(_s: string, _q: string, e: readonly Evidence[]) { return [{ text: 'Nhóm 36–70k tăng lên 61,78%', source: e[0]!.id, quote: 'nhóm chi 36.000–70.000 đồng một ly tăng từ 48,29% lên 61,78%' }] as never },
+      analyze: async () => outline,
+      async *write(i) {
+        calls.push(i.thesisNotes)
+        if (i.thesisNotes !== undefined) throw new Error('provider overloaded')
+        yield '# Báo cáo cũ\n\n## 1. Giá tăng\nNhóm giá cao tăng lên 61,78% [1].\n'
+      },
+    }
+    const out = await runDeepResearch('câu hỏi', '', 'vi', deps, { status() {}, text(x) { emitted += x } })
+    expect(calls).toHaveLength(2)
+    expect(calls[0]).toContain('THESIS')
+    expect(calls[1]).toBeUndefined()
+    expect(out.failed).toBeNull()
+    expect(emitted).toContain('Báo cáo cũ')
+    expect(out.thesis).toBeUndefined()
+  })
+  it('both writes fail: the run fails as before', async () => {
+    vi.stubEnv('RESEARCH_THESIS_REPORT', '1')
+    const deps: DeepResearchDeps = {
+      async plan() { return structuredClone(plan) },
+      async gather() { return [{ title: 'iPOS', url: 'https://ipos.vn/bao-cao', snippet: 's', text: PAGE }] },
+      async notes(_s: string, _q: string, e: readonly Evidence[]) { return [{ text: 'x', source: e[0]!.id }] as never },
+      analyze: async () => outline,
+      // eslint-disable-next-line require-yield
+      async *write() { throw new Error('down') },
+    }
+    const out = await runDeepResearch('câu hỏi', '', 'vi', deps, { status() {}, text() {} })
+    expect(out.failed).toBe('write_failed')
   })
   it('flag off: the analyst is never called', async () => {
     const { out } = await run(async () => outline)

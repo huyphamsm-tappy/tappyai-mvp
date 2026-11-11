@@ -726,9 +726,9 @@ export async function runDeepResearch(question: string, context: string, lang: s
     if (outline) thesisIn = outlineWriterInput(outline, cards, cited, renumber, forecastResult ? [forecastResult.spec.base.source] : [])
   }
   // M4: with a thesis the text is HELD until the code has read it (releaseText): nothing is shown that the verifier could refute
-  const hold = !!thesisIn
-  const stripper = linkStripper()
-  const numberer = headingNumberer()
+  let hold = !!thesisIn
+  let stripper = linkStripper()
+  let numberer = headingNumberer()
   let cut = false
   let repaired = 0
   let written = ''
@@ -736,6 +736,8 @@ export async function runDeepResearch(question: string, context: string, lang: s
   let released: { dropped: number; before: number } | null = null
   const say = (t: string) => { if (t) { written += t; if (!hold) emit.text(t) } }
   const finish = () => { say(numberer.push(stripper.end())); say(numberer.end()) }
+  // pass 0 writes from the outline when there is one; if that write fails (nothing was shown: the text is held) pass 1 writes from the findings as before
+  for (let pass = 0; ; pass++) {
   try {
     for await (const delta of deps.write({ question, plan: thesisIn ? thesisIn.plan : plan, evidence: thesisIn ? thesisIn.sources : cited, findings: thesisIn ? thesisIn.findings : notes, ...(thesisIn ? { thesisNotes: thesisIn.notes } : {}), ...(forecastResult ? { forecast: forecastResult } : {}) })) {
       say(numberer.push(stripper.push(delta)))
@@ -785,9 +787,16 @@ export async function runDeepResearch(question: string, context: string, lang: s
       shown = { cited: r.used as Evidence[], plan: thesisIn.plan, findings: [...thesisIn.findings.flatMap(f => { const s = sourceOf(f.source); return s ? [{ ...f, source: s }] : [] }), ...r.used.map(s => ({ step: 1, text: '', source: s.id }))] }
       deps.trace?.({ ev: 'released', dropped: r.dropped, chars: written.length, cited: r.used.length })
     }
-  } catch {
+    break
+  } catch (e) {
     finish()
+    if (thesisIn && pass === 0 && !left?.aborted) {
+      deps.trace?.({ ev: 'thesis_write_failed', message: String((e as Error)?.message ?? e).slice(0, 120), chars: written.length })
+      thesisIn = null; hold = false; written = ''; cut = false; stripper = linkStripper(); numberer = headingNumberer()
+      continue
+    }
     return { plan, evidence, findings, failed: left?.aborted ? 'client_gone' : fail(plan.title, steps, 'write_failed'), cut }
+  }
   }
   if (left?.aborted) return { plan, evidence, findings, failed: 'client_gone', cut }
   emit.text(sourcesBlock(shown.cited, shown.findings, lang, plan.sources_label))
