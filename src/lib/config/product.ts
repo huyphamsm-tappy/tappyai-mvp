@@ -18,8 +18,8 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 //
 /**
  * Owner 01/11/2026: a signed-in account has NO question limit (every plan, Free included) - shown as "Không giới hạn câu hỏi AI".
- * These two numbers are the ceilings per VN day (owner 11/11/2026: Free 300 a day, Pro and Promax 500; was 1000 paid), the HIDDEN anti-abuse ceilings of 01/11 that the owner has now stated as the plans' numbers;
- * real use is far below them. The unit of the paid 500 is a VN day, as Free's 300 (the owner confirmed it on 11/11/2026: "500 câu/ngày"). (Was Free = 10/day, paid = 30/day.)
+ * These two numbers are the ceilings per VN day (owner 11/11/2026: Free 300 a day, Pro and Promax 500; was 1000 paid). The owner's intent (11/11/2026): the product stays "no limit" - the ceiling exists only so that
+ * a flood of requests (DoS) cannot take the system down; real use is far below it, and the message to people stays "Không giới hạn câu hỏi AI". The unit is a VN day for both ("500 câu/ngày"). (Was Free = 10/day, paid = 30/day.)
  */
 export const FREE_DAILY_LIMIT = 300
 export const PAID_DAILY_CEILING = 500
