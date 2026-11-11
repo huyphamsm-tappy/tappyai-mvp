@@ -102,7 +102,7 @@ import { readZaloIdentity, zaloIdentitySecret } from '@/lib/zalo/identity'
 import { flushPending, recordEvent, type UsageEvent } from '@/lib/observability'
 import { FREE_DAILY_LIMIT, ANON_LIFETIME_LIMIT } from '@/lib/config/product'
 import { accountQuotaFor, aiQuotaIdentity, consumeAiQuestion, consumeDeepResearch, refundAiQuestion, type AiQuotaRefund } from '@/lib/ai/quota/aiQuestionQuota'
-import { tierOf, modeForTier, deepResearchMonthlyLimit, advancedResearchMonthlyLimit } from '@/lib/plans/tiers'
+import { tierOf, modeForTier, deepResearchMonthlyLimit, standardResearchMonthlyLimit, advancedResearchMonthlyLimit } from '@/lib/plans/tiers'
 import { costGateOn, reserveTurnCost, type CostTurn } from '@/lib/ai/cost/costGate'
 import { withinGlobalDeepCeiling } from '@/lib/ai/quota/globalCeiling'
 import { withoutInternalToolFields } from '@/lib/ai/streamInternalFields'
@@ -3624,7 +3624,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // 31/10 (mode "Nghiên cứu sâu", owner): plan → parallel research branches → one report (lib/ai/research). Here, after the identity, consent,
   // age and quota checks every turn passes, and in place of the single answer call. A run that produces nothing gives the question back.
   if (oneBrain && chatMode === 'deep') {
-    // Owner 01/11/2026: Deep Research runs per VN month by tier (Coco 10, Tappy 69) on the quota store, with the plans on sale; a run that
+    // Owner 01/11/2026, changed 11/11/2026: Deep Research reports per VN month by tier and kind (Pro 5 Standard + 5 Advanced, Promax 10 + 15) on the quota store, with the plans on sale; a run that
     // produces nothing gives the run back with the question.
     let deepRefund: Awaited<ReturnType<typeof consumeDeepResearch>>['refund'] = null
     // Security audit 04/11 (D-09): the day's ceiling across every account - a breaker for many accounts used together.
@@ -3632,15 +3632,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       await refundQuotaOnFailure('deep_research_global_ceiling')
       return new Response(JSON.stringify({ error: 'deep_research_unavailable', message: serverMessage('rate.retryTomorrow', requestLocale(req)) }), { status: 429, headers: { 'Content-Type': 'application/json' } })
     }
-    if (authedUserId) {
-      const limit = deepResearchMonthlyLimit(planTier, { subscriptionsOn: subscriptionsEnabled(), signedIn: true })
-      const spent = await consumeDeepResearch(authedUserId, limit)
-      if (!spent.ok) {
-        await refundQuotaOnFailure('deep_research_month_used')
-        return new Response(JSON.stringify({ error: 'deep_research_limit_reached', message: serverMessage('chat.deepResearchLimit', requestLocale(req), { n: limit }) }), { status: 429, headers: { 'Content-Type': 'application/json' } })
-      }
-      deepRefund = spent.refund
-    }
+    // Owner 11/11/2026: two separate monthly allowances (Standard and Advanced, tiers.ts). The Advanced one is tried first when the request is an Advanced report (below); every other run, and an Advanced
+    // request past its allowance, spends from the Standard one, which is taken right after the tier is known.
     const recent = typedMessages.slice(-7, -1).map(m => `${m.role}: ${typeof m.content === 'string' ? m.content : m.content.map(p => (p.type === 'text' ? p.text : '')).join(' ')}`).join('\n').slice(-2500)
     const cost = { usd: 0, calls: 0 }
     // 01/11 (owner approved): Parallel's search beside Serper for every query - its own budget for the run (16 searches), the same daily cap
@@ -3658,6 +3651,16 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       if (adv?.ok) advancedRefund = adv.refund
       else { console.log(JSON.stringify({ type: 'tappyai_research_admission', tier: tierPlan.tier, advanced_allowance: 'used_or_none', ran: 'legacy' })); tierPlan = null }
     }
+    // the Standard allowance: every signed-in run that did not take an Advanced one (a Standard report, the existing engine, an Advanced request past its allowance)
+    if (authedUserId && !advancedRefund) {
+      const limit = standardResearchMonthlyLimit(planTier, { subscriptionsOn: subscriptionsEnabled(), signedIn: true })
+      const spent = await consumeDeepResearch(authedUserId, limit)
+      if (!spent.ok) {
+        await refundQuotaOnFailure('deep_research_month_used')
+        return new Response(JSON.stringify({ error: 'deep_research_limit_reached', message: serverMessage('chat.deepResearchLimit', requestLocale(req), { n: limit }) }), { status: 429, headers: { 'Content-Type': 'application/json' } })
+      }
+      deepRefund = spent.refund
+    }
     if (tierPlan) console.log(JSON.stringify({ type: 'tappyai_research_admission', tier: tierPlan.decision.tier, score: tierPlan.decision.score.total, cues: tierPlan.cues, policy: tierPlan.decision.policyVersion }))
     const deepDeps = { lang, userTexts: recentUserTexts, cost, questionLang: detectLangConfident(lastText), signal: deepStop.signal, ...(par ? { parallelSearch: par } : {}) }
     return deepResearchResponse({
@@ -3671,6 +3674,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const adv = authedUserId ? await consumeDeepResearch(authedUserId, advLimit, 'advanced') : null
           if (!adv?.ok) { console.log(JSON.stringify({ type: 'tappyai_research_admission', promote: 'advanced', advanced_allowance: 'used_or_none', ran: 'legacy' })); return null }
           advancedRefund = adv.refund
+          // the report is Advanced now: it is charged to the Advanced allowance only, so the Standard unit taken at the start is given back
+          const standardUnit = deepRefund; deepRefund = null
+          await refundAiQuestion(standardUnit)
           console.log(JSON.stringify({ type: 'tappyai_research_admission', promote: 'advanced', from: 'STANDARD_REPORT', reason: 'PLAN_OVER_STANDARD_STEPS' }))
           return { deps: createDeepResearchDeps({ ...deepDeps, advanced: true }), bounds: { ...ADVANCED_RUN_BOUNDS } }
         },

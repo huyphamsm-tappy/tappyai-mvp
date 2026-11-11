@@ -13,11 +13,11 @@ import { ACCOUNT_QUESTIONS_UNLIMITED, ANON_LIFETIME_LIMIT, FREE_DAILY_LIMIT, PAI
 const read = (p: string) => readFileSync(p, 'utf8')
 
 describe('the values', () => {
-  it('anonymous = 10 lifetime, registered = no visible limit (hidden ceiling Free 300/day, paid 1000/day)', () => {
-    // owner 01/11/2026: anon 5 -> 10, Free 10 -> 300 (accounts have no visible limit; hidden anti-abuse ceiling)
-    expect(ANON_LIFETIME_LIMIT).toBe(10)
+  it('anonymous = 5 lifetime, registered = no visible limit (ceiling Free 300/day, paid 500/day)', () => {
+    // owner 01/11/2026: Free 10 -> 300 (accounts have no visible limit); owner 11/11/2026: anon 10 -> 5, paid 1000 -> 500
+    expect(ANON_LIFETIME_LIMIT).toBe(5)
     expect(FREE_DAILY_LIMIT).toBe(300)
-    expect(PAID_DAILY_CEILING).toBe(1000)
+    expect(PAID_DAILY_CEILING).toBe(500)
     expect(ACCOUNT_QUESTIONS_UNLIMITED).toBe(true)
   })
 })
@@ -67,7 +67,7 @@ describe('no consumer can read the anonymous allowance as a daily figure', () =>
 
   it('the contract docs name the lifetime field', () => {
     expect(read('docs/ios/04_API_CONTRACT.md')).toContain('anonLifetimeLimit')
-    // owner 01/11/2026: 5 -> 10 (the doc follows ANON_LIFETIME_LIMIT)
+    // owner 11/11/2026: 10 -> 5 (the doc follows ANON_LIFETIME_LIMIT)
     expect(read('docs/architecture/BACKEND_OWNERSHIP.md')).toContain(`"anonLifetimeLimit": ${ANON_LIFETIME_LIMIT}`)
   })
 

@@ -18,19 +18,19 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 //
 /**
  * Owner 01/11/2026: a signed-in account has NO question limit (every plan, Free included) - shown as "Không giới hạn câu hỏi AI".
- * These two numbers are only the HIDDEN anti-abuse ceilings per VN day (owner approved: 300 Free, 1000 paid), never advertised;
- * real use is far below them. (Was Free = 10/day, paid = 30/day.)
+ * These two numbers are the ceilings per VN day (owner 11/11/2026: Free 300 a day, Pro and Promax 500; was 1000 paid), the HIDDEN anti-abuse ceilings of 01/11 that the owner has now stated as the plans' numbers;
+ * real use is far below them. The unit of the paid 500 (a day, as Free's 300) is the assistant's reading of the owner's message: change it here if he meant a month. (Was Free = 10/day, paid = 30/day.)
  */
 export const FREE_DAILY_LIMIT = 300
-export const PAID_DAILY_CEILING = 1000
+export const PAID_DAILY_CEILING = 500
 /** For display: accounts have no question limit (the ceilings above are anti-abuse only). Read by the clients via GET /api/config. */
 export const ACCOUNT_QUESTIONS_UNLIMITED = true
 /**
  * Anonymous visitors: AI questions for the LIFETIME of the anonymous identity — a one-time trial,
- * not a daily allowance. Ten, once (owner 01/11/2026: "10 câu hỏi đầu, câu 11 bắt tạo account"; was five); then an account.
+ * not a daily allowance. Five, once (owner 11/11/2026: "hỏi 5 câu phải tạo account Tappy để hỏi tiếp"; 01/11 it was ten, before that five); then an account.
  * Not per day, not per session, not per return visit. (Was `ANON_DAILY_LIMIT`, five per VN day, until 2026-09-15.)
  */
-export const ANON_LIFETIME_LIMIT = 10
+export const ANON_LIFETIME_LIMIT = 5
 
 // ── G1 growth: share-out + anonymous follow-up policy ───────────────────────
 //

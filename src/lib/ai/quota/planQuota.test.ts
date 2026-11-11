@@ -6,7 +6,7 @@ import { entitlementFromRow } from '@/lib/plans/entitlement'
 import { PAID_PLAN_IDS } from '@/lib/plans/planConfig'
 import { ANON_LIFETIME_LIMIT, FREE_DAILY_LIMIT, PAID_DAILY_CEILING } from '@/lib/config/product'
 
-// P7 — ONE quota, plan-aware: guest 10 for life · free 300/day · every paid plan 1000/day (hidden anti-abuse
+// P7 — ONE quota, plan-aware: guest 5 for life · free 300/day · every paid plan 500/day (owner 11/11/2026; hidden anti-abuse
 // ceilings; accounts show no limit) · daily reset at the Vietnam midnight · legacy Pro exempt only while
 // SUBSCRIPTIONS_ENABLED is off (or inside the grandfather window).
 // No store is configured here, so this exercises the in-process path with the same semantics as the store.
@@ -29,8 +29,8 @@ afterEach(() => { vi.useRealTimers(); vi.unstubAllEnvs() })
 describe('limits by identity', () => {
   it(`a guest has ${ANON_LIFETIME_LIMIT} questions for life: the ${ANON_LIFETIME_LIMIT + 1}th is refused, and a later day does not bring them back`, async () => {
     const id = aiQuotaIdentity(null, IP)
-    // owner 01/11/2026: 5 -> 10 (accounts have no visible limit; hidden anti-abuse ceiling)
-    expect(ANON_LIFETIME_LIMIT).toBe(10)
+    // owner 11/11/2026: 10 -> 5 ("hỏi 5 câu phải tạo account Tappy để hỏi tiếp")
+    expect(ANON_LIFETIME_LIMIT).toBe(5)
     expect(quotaFor(id)).toEqual({ limit: ANON_LIFETIME_LIMIT, period: 'lifetime' })
     const r = await spendAll(id, ANON_LIFETIME_LIMIT + 1)
     expect(r.map((x) => x.ok)).toEqual([...Array(ANON_LIFETIME_LIMIT).fill(true), false])
@@ -49,7 +49,8 @@ describe('limits by identity', () => {
 
   it.each([...PAID_PLAN_IDS])(`plan %s: hidden ceiling of ${PAID_DAILY_CEILING} questions a day, the ${PAID_DAILY_CEILING + 1}th is refused`, async (plan) => {
     const id = aiQuotaIdentity(USER, IP, plan)
-    expect(PAID_DAILY_CEILING).toBe(1000)
+    // owner 11/11/2026: Pro and Promax 500 questions (was the 1000 hidden ceiling); the numbers a plan states, still metered per VN day
+    expect(PAID_DAILY_CEILING).toBe(500)
     expect(quotaFor(id)).toEqual({ limit: PAID_DAILY_CEILING, period: 'day' })
     const r = await spendAll(id, PAID_DAILY_CEILING + 1)
     expect(r.filter((x) => x.ok)).toHaveLength(PAID_DAILY_CEILING)

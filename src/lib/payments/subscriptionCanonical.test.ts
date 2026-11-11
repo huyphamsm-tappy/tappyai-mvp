@@ -7,11 +7,11 @@ import { FREE_DAILY_LIMIT, ANON_LIFETIME_LIMIT, PAID_DAILY_CEILING, ACCOUNT_QUES
 import { subscriptionCatalog } from './subscriptionCatalog'
 
 describe('canonical catalog', () => {
-  it('Guest 10 lifetime · accounts unlimited (hidden ceiling Free 300/day, every sale plan 1000/day) at $1/$7/$9/$18.9/$24.3 for 7/30/30/90/90 days', () => {
-    // owner 01/11/2026: guest 5 -> 10, Free 10 -> 300, paid 30 -> 1000 (accounts have no visible limit; hidden anti-abuse ceiling)
-    expect(ANON_LIFETIME_LIMIT).toBe(10)
+  it('Guest 5 lifetime · accounts unlimited (ceiling Free 300/day, every sale plan 500/day) at $1/$7/$9/$18.9/$24.3 for 7/30/30/90/90 days', () => {
+    // owner 01/11/2026: Free 10 -> 300; owner 11/11/2026: guest 10 -> 5, paid 1000 -> 500
+    expect(ANON_LIFETIME_LIMIT).toBe(5)
     expect(FREE_DAILY_LIMIT).toBe(300)
-    expect(PAID_DAILY_CEILING).toBe(1000)
+    expect(PAID_DAILY_CEILING).toBe(500)
     expect(ACCOUNT_QUESTIONS_UNLIMITED).toBe(true)
     const c = subscriptionCatalog({ env: { SUBSCRIPTIONS_ENABLED: '1' } as unknown as NodeJS.ProcessEnv })
     expect(c.guest.aiQuestions).toBe(ANON_LIFETIME_LIMIT)

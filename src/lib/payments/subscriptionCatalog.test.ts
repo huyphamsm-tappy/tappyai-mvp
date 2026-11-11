@@ -12,8 +12,8 @@ describe('subscriptionCatalog', () => {
     expect(c.plans.map((p) => p.id)).toEqual(['pip', 'momo', 'promax1m', 'coco', 'promax3m'])
     expect(c.plans.map((p) => p.durationDays)).toEqual([7, 30, 30, 90, 90])
     for (const p of c.plans) {
-      // owner 01/11/2026: 30 -> 1000 (accounts have no visible limit; hidden anti-abuse ceiling)
-      expect(PAID_DAILY_CEILING).toBe(1000)
+      // owner 11/11/2026: 1000 -> 500 (Pro and Promax: 500 questions)
+      expect(PAID_DAILY_CEILING).toBe(500)
       expect(p.dailyAiQuestions).toBe(PAID_DAILY_CEILING)
       expect(p).not.toHaveProperty('popular')
       // Owner 01/11/2026: new plan catalog - no plan has a badge any more
@@ -37,7 +37,7 @@ describe('subscriptionCatalog', () => {
 
   it(`Free carries the value the backend enforces (hidden ${FREE_DAILY_LIMIT} a day); guest ${ANON_LIFETIME_LIMIT}; every paid plan ${PAID_DAILY_CEILING} a day`, () => {
     expect(FREE_DAILY_LIMIT).toBe(300)
-    expect(ANON_LIFETIME_LIMIT).toBe(10)
+    expect(ANON_LIFETIME_LIMIT).toBe(5) // owner 11/11/2026: 10 -> 5
     expect(subscriptionCatalog({ env: env() }).free.dailyAiQuestions).toBe(FREE_DAILY_LIMIT)
     for (const p of subscriptionCatalog({ env: env() }).plans) expect(p.dailyAiQuestions).toBe(PAID_DAILY_CEILING)
     expect(subscriptionCatalog({ env: env() }).guest.aiQuestions).toBe(ANON_LIFETIME_LIMIT)

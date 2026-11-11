@@ -36,7 +36,8 @@ describe('architecture freeze 02/11/2026', () => {
     for (const m of ['web', 'think', 'deep', 'auto'] as const) expect(modeForTier(m, 'free')).toBe('chat')
     for (const m of ['chat', 'web', 'think', 'deep', 'auto'] as const) { expect(modeForTier(m, 'pro')).toBe(m); expect(modeForTier(m, 'promax')).toBe(m) }
     expect([tierOf(null), tierOf('guest'), tierOf('pip'), tierOf('coco'), tierOf('milo'), tierOf('promax1m'), tierOf('promax3m')]).toEqual(['free', 'free', 'pro', 'pro', 'pro', 'promax', 'promax'])
-    expect(DEEP_RESEARCH_MONTHLY).toEqual({ free: 0, pro: 10, promax: 30 })
+    // owner 11/11/2026: Pro 5 Standard + 5 Advanced, Promax 10 + 15 (a total of 10 / 25); tiers.test.ts holds the split and proves each part
+    expect(DEEP_RESEARCH_MONTHLY).toEqual({ free: 0, pro: 10, promax: 25 })
     expect([...SALE_PLAN_IDS]).toEqual(['pip', 'momo', 'coco', 'promax1m', 'promax3m'])
   })
   it('one brain: 8 steps, 8000 output tokens per step (03/11, section 4: a 7-day trip card did not fit in 4000); Chat lookups quick 1 / thorough 3', () => {

@@ -5,7 +5,7 @@
 // error. It NEVER throws and gives up after 5 s: a mail problem must not fail the webhook.
 
 import { PLAN_CONFIG, type PaidPlanId } from '@/lib/plans/planConfig'
-import { DEEP_RESEARCH_MONTHLY, tierOf } from '@/lib/plans/tiers'
+import { STANDARD_RESEARCH_MONTHLY, ADVANCED_RESEARCH_MONTHLY, tierOf } from '@/lib/plans/tiers'
 
 const BREVO_URL = 'https://api.brevo.com/v3/smtp/email'
 const TIMEOUT_MS = 5_000
@@ -34,7 +34,8 @@ export function paymentMailContent(m: PaymentMail): { subject: string; text: str
     `Cảm ơn bạn! Tappy đã nhận ${formatVnd(m.amountVnd)} cho gói ${name} (mã đơn ${m.code}).`,
     until ? `Gói của bạn có hiệu lực đến hết ngày ${until}.` : '',
     // Owner 01/11/2026: accounts ask without a limit (the daily number in PLAN_CONFIG is only the hidden anti-abuse ceiling).
-    `Bạn hỏi AI không giới hạn, có Suy nghĩ, Tìm web và ${DEEP_RESEARCH_MONTHLY[tierOf(m.plan)]} lượt Nghiên cứu sâu mỗi tháng.`,
+    // Owner 11/11/2026: the reports are two separate allowances a month (Standard and Advanced), so the mail states both.
+    `Bạn hỏi AI không giới hạn, có Suy nghĩ, Tìm web, ${STANDARD_RESEARCH_MONTHLY[tierOf(m.plan)]} báo cáo Nghiên cứu sâu Standard và ${ADVANCED_RESEARCH_MONTHLY[tierOf(m.plan)]} báo cáo Advanced mỗi tháng.`,
     'Nếu bạn không thực hiện giao dịch này, hãy trả lời thư này để được hỗ trợ.',
   ].filter(Boolean)
   const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')

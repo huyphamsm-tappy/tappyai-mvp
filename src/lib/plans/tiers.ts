@@ -30,14 +30,21 @@ export function modeForTier(mode: ChatMode, tier: Tier): ChatMode {
   return MODES[tier].has(mode) ? mode : 'chat'
 }
 
-/** Deep Research runs per VN calendar month (owner: Coco/Pro 10; Tappy/Promax 50 since 02/11/2026, lowered to 30 on 10/11/2026 - a run costs about 0.09 USD; Free none). */
-export const DEEP_RESEARCH_MONTHLY: Readonly<Record<Tier, number>> = { free: 0, pro: 10, promax: 30 }
-
 /**
- * R13 Advanced reports (Sonnet-led, dearer than a Standard one) per VN month: a SUB-allowance inside DEEP_RESEARCH_MONTHLY, not extra reports. PROPOSED defaults (10/11/2026), not yet approved by
- * the owner; behind RESEARCH_ADVANCED (off). An account past it gets the existing research engine for that request, never a silently thinner "Advanced" report.
+ * Owner 11/11/2026: two separate monthly allowances of reports, each metered on its own counter. Pro (Coco and the trial): 5 Standard + 5 Advanced; Promax (Tappy): 10 Standard + 15 Advanced; Free none.
+ * (Before: one total of 10 / 30 with Advanced a sub-allowance of 3 / 10, so an account that never asked for Advanced could run 10 Standard.) An Advanced request past its allowance runs as the existing
+ * engine and spends from the Standard one; a Standard request past its allowance is refused, never silently turned into a thinner report.
  */
-export const ADVANCED_RESEARCH_MONTHLY: Readonly<Record<Tier, number>> = { free: 0, pro: 3, promax: 10 }
+export const STANDARD_RESEARCH_MONTHLY: Readonly<Record<Tier, number>> = { free: 0, pro: 5, promax: 10 }
+export const ADVANCED_RESEARCH_MONTHLY: Readonly<Record<Tier, number>> = { free: 0, pro: 5, promax: 15 }
+/** Reports of both kinds per VN month: the sum, for display and for "has any allowance at all". */
+export const DEEP_RESEARCH_MONTHLY: Readonly<Record<Tier, number>> = { free: 0, pro: STANDARD_RESEARCH_MONTHLY.pro + ADVANCED_RESEARCH_MONTHLY.pro, promax: STANDARD_RESEARCH_MONTHLY.promax + ADVANCED_RESEARCH_MONTHLY.promax }
+
+/** Standard reports an account may start per VN month, by the same plans-on / plans-off rule as the other limits. Pure. */
+export function standardResearchMonthlyLimit(tier: Tier, opts: { subscriptionsOn: boolean; signedIn: boolean }): number {
+  if (opts.subscriptionsOn) return STANDARD_RESEARCH_MONTHLY[tier]
+  return opts.signedIn ? STANDARD_RESEARCH_MONTHLY[tier === 'free' ? 'pro' : tier] : 0
+}
 
 /** Advanced reports an account may start per VN month, by the same plans-on / plans-off rule as deepResearchMonthlyLimit. Pure. */
 export function advancedResearchMonthlyLimit(tier: Tier, opts: { subscriptionsOn: boolean; signedIn: boolean }): number {
