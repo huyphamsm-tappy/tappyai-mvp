@@ -3,7 +3,7 @@ import { zodToJsonSchema } from 'zod-to-json-schema'
 import { ANALYST_SYSTEM, GAPS_SYSTEM, GAPS_UPCOMING_ADDENDUM } from './deepResearchDeps'
 import { runDeepResearch, type DeepResearchDeps, type ResearchPlan } from './deepResearch'
 import { researchThesisOn, researchEvidenceCardsOn } from './deepResearchState'
-import { OutlineSchema, outlineFrom, analystCards, outlineWriterInput, releaseText, type Outline } from './thesisReport'
+import { PolicyScanSchema, policyStepFrom, withPolicyStep, OutlineSchema, outlineFrom, analystCards, outlineWriterInput, releaseText, type Outline } from './thesisReport'
 import type { EvidenceCard } from './evidenceCards'
 import type { Evidence } from './deepResearch'
 
@@ -92,6 +92,26 @@ describe('the instructions that came out of the live runs (a prompt cannot be pr
     expect(GAPS_UPCOMING_ADDENDUM).toMatch(/coming into force within the next two years/)
     expect(GAPS_UPCOMING_ADDENDUM).toMatch(/framework laws/)    // flag-gated: the gap check's own text is as it was
     expect(GAPS_SYSTEM).not.toMatch(/coming into force/)
+  })
+})
+
+describe('the policy scan: a stronger model writes the queries for rules coming into force', () => {
+  it('the schema requires a title and queries (sent to the model as required)', () => {
+    const js = zodToJsonSchema(PolicyScanSchema, { $refStrategy: 'none' }) as { required?: string[] }
+    expect(js.required).toEqual(expect.arrayContaining(['title', 'queries']))
+    expect(PolicyScanSchema.safeParse({ title: 't' }).success).toBe(false)
+  })
+  it('policyStepFrom keeps at most three non-empty queries and refuses an answer with none', () => {
+    expect(policyStepFrom({ title: ' Thay đổi chính sách ', queries: ['a', ' ', 'b', 'c', 'd'] })).toEqual({ title: 'Thay đổi chính sách', queries: ['a', 'b', 'c'] })
+    expect(policyStepFrom({ title: 't', queries: [] })).toBeNull()
+    expect(policyStepFrom({ title: '', queries: ['a'] })).toBeNull()
+    expect(policyStepFrom(null)).toBeNull()
+  })
+  it('withPolicyStep puts the policy step first, so a cap on follow-up steps drops the weakest gap and not it; no policy step leaves the list as it was', () => {
+    const gaps = [{ title: 'g1', queries: ['q1'] }, { title: 'g2', queries: ['q2'] }]
+    expect(withPolicyStep(gaps, { title: 'P', queries: ['p'] }).map(s => s.title)).toEqual(['P', 'g1', 'g2'])
+    expect(withPolicyStep(gaps, null)).toBe(gaps)
+    expect(withPolicyStep([], { title: 'P', queries: ['p'] }).map(s => s.title)).toEqual(['P'])
   })
 })
 

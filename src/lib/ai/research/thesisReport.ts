@@ -38,6 +38,24 @@ export const OutlineSchema = z.object({
   doubts: textList(/\n+/),
 })
 
+/** The policy scan (Standard): one stronger-model call writes the queries for rules coming into force (a tax, a law, a standard, a ban), which the cheap planner does not know to ask for. title and queries are required (sent to the model as required). */
+export const PolicyScanSchema = z.object({ title: z.string(), queries: z.array(z.string()) })
+export interface PolicyStep { title: string; queries: string[] }
+
+/** The scan's answer as a follow-up step: at most three non-empty queries; null when there is no title or no query. Pure. */
+export function policyStepFrom(raw: unknown): PolicyStep | null {
+  if (!raw || typeof raw !== 'object') return null
+  const r = raw as { title?: unknown; queries?: unknown }
+  const title = typeof r.title === 'string' ? r.title.trim() : ''
+  const queries = (Array.isArray(r.queries) ? r.queries : []).filter((q): q is string => typeof q === 'string' && !!q.trim()).map(q => q.trim()).slice(0, 3)
+  return title && queries.length ? { title, queries } : null
+}
+
+/** The gap check's follow-up steps with the policy step first (a cap on follow-up steps then drops the weakest gap, so the scan adds a call but not a step). Pure. */
+export function withPolicyStep<T extends { title: string; queries: string[] }>(gaps: readonly T[], policy: PolicyStep | null): Array<T | PolicyStep> {
+  return policy ? [policy, ...gaps] : (gaps as T[])
+}
+
 /** The analyst's raw answer into an outline that points only at cards that exist: unknown ids are dropped, a point with no real card is dropped, a section with no point is dropped. null when nothing usable is left (no thesis, too few sections): the engine then writes the way it did before. Pure. */
 export function outlineFrom(raw: unknown, cards: readonly EvidenceCard[], bounds: OutlineBounds): Outline | null {
   if (!raw || typeof raw !== 'object') return null
