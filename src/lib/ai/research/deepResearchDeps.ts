@@ -214,9 +214,11 @@ export function createDeepResearchDeps(o: { lang: string; userTexts: readonly st
       const uncovered = parts.filter(x => !(Number.isInteger(x.step) && (x.step as number) >= 1 && (x.step as number) <= listed.length)).map(x => x.part as string)
       return { ...r.object, parts: parts.map(x => x.part as string), uncovered, steps: [...listed, ...extra] }
     },
-    async gather(query, focus) {
+    async gather(query, focus, avoid) {
+      // hosts that already gave this run many sources are left out of Serper's query (-site:), so a later round finds other publishers; Parallel keeps the plain query
+      const serperQuery = avoid?.length ? `${query} ${avoid.slice(0, 4).map(h => `-site:${h}`).join(' ')}` : query
       // Parallel's search runs alongside (its rows carry their excerpts; a failure or no budget = Serper's rows alone)
-      const [rawBase, par] = await Promise.all([webSearch(query, o.lang), o.parallelSearch ? o.parallelSearch(query).catch(() => null) : Promise.resolve(null)])
+      const [rawBase, par] = await Promise.all([webSearch(serperQuery, o.lang), o.parallelSearch ? o.parallelSearch(query).catch(() => null) : Promise.resolve(null)])
       const base = withoutAiSources(rawBase).value // 01/11: no AI product's page is read or kept as a source
       reader.collectFrom(base)
       // the top READ_PER_QUERY results are opened at once (measured 31/10: the chat's 3 reads per search gave full text for 7-21 of 42-58 sources)

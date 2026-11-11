@@ -14,6 +14,10 @@ export const DEEP_RESEARCH_V2_FLAG = 'DEEP_RESEARCH_V2'
 /** Pure. ON only for the exact value "1", and never in a production runtime unless the owner lists the name in CONSULT_PRODUCTION_ALLOW. */
 export const deepResearchV2On = (env: Env = process.env): boolean => env[DEEP_RESEARCH_V2_FLAG] === '1' && !lockedInProduction(env, DEEP_RESEARCH_V2_FLAG)
 
+export const RESEARCH_SOURCE_DIVERSITY_FLAG = 'RESEARCH_SOURCE_DIVERSITY'
+/** Pure. Source diversity (a publisher that already gave many sources is left out of later searches; no chart from a dated source older than 24 months): OFF unless exactly "1", locked in production. */
+export const researchSourceDiversityOn = (env: Env = process.env): boolean => env[RESEARCH_SOURCE_DIVERSITY_FLAG] === '1' && !lockedInProduction(env, RESEARCH_SOURCE_DIVERSITY_FLAG)
+
 /** The V2 budgets of one request (the request's own ceiling stays DEEP_RESEARCH_LIMITS.runDeadlineMs). */
 export const V2_LIMITS = {
   /** the research phase may run longer than the one-pass 120 s: the writer still has what is left of the 270 s */

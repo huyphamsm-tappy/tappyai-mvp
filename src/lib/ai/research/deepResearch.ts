@@ -17,7 +17,8 @@
 // a pricing report was cut at 105 s.
 import { parseDoc, headingTitle, titleKey, type DocBlock } from '@/lib/answerDoc/parse'
 import { leanValue } from './deepResearchLean'
-import { deepResearchV2On, V2_LIMITS, termScores, stepCoverage, decideNext, missingParts, findingsForPart } from './deepResearchState'
+import { questionKind, withNewsLane } from './researchLanes'
+import { deepResearchV2On, researchSourceDiversityOn, V2_LIMITS, termScores, stepCoverage, decideNext, missingParts, findingsForPart } from './deepResearchState'
 
 // planSteps: the plan's own steps; steps: all steps of a run (the plan's + the follow-up round's GAP_STEPS), as the card shows them
 /** R13 tier bounds for one run (Standard report). Absent = the unbounded one-pass / V2 run, byte for byte. */
@@ -178,7 +179,7 @@ export function httpsUrl(u: unknown): u is string {
 export interface DeepResearchDeps {
   plan(question: string, context: string): Promise<ResearchPlan>
   /** One query: its search results with the text of the pages read (empty when nothing came back). */
-  gather(query: string, focus: string): Promise<Array<{ title: string; url: string; snippet: string; text: string; published?: string; site?: string }>>
+  gather(query: string, focus: string, /** hosts that already gave this run many sources: the search leaves them out, to find other publishers */ avoid?: readonly string[]): Promise<Array<{ title: string; url: string; snippet: string; text: string; published?: string; site?: string }>>
   /** The step's findings; `source` is an id of the evidence handed in; `figure` when the finding states one figure. */
   notes(step: string, question: string, evidence: readonly Evidence[]): Promise<Array<{ text: string; source: number; figure?: Figure | null }>>
   write(input: { question: string; plan: ResearchPlan; evidence: readonly Evidence[]; findings: readonly Finding[] }): AsyncIterable<string>
@@ -278,7 +279,25 @@ export function checkedFigure(f: unknown, sourceText: string): Figure | undefine
  * the same thing in the same unit, when it has at least 3 different labels - a line over the years when every label is a year, else bars
  * (in the order the sources gave them). The chart goes under the heading that is its step's title (like the section pictures). Pure.
  */
-export function sectionCharts(report: string, plan: ResearchPlan, findings: readonly Finding[]): ResearchChart[] {
+/** A host that already gave a run this many sources is left out of the run's later searches. */
+export const HOST_SHARE_AVOID_AT = 8
+const hostOfUrl = (u: string): string => { try { return new URL(u).hostname.toLowerCase().replace(/^www\./, '') } catch { return '' } }
+/** The hosts with at least `at` sources among the evidence so far (the site named by a Google redirect row counts, not google.com). Pure. */
+export function heavyHosts(evidence: ReadonlyArray<{ url: string; site?: string }>, at = HOST_SHARE_AVOID_AT): string[] {
+  const n = new Map<string, number>()
+  for (const e of evidence) { const h = e.site ?? hostOfUrl(e.url); if (h && !/(^|\.)google\./.test(h)) n.set(h, (n.get(h) ?? 0) + 1) }
+  return [...n].filter(([, c]) => c >= at).map(([h]) => h).sort()
+}
+
+/** Months after which a dated source is too old to draw a chart from (undated sources are not judged). */
+export const CHART_MAX_SOURCE_AGE_MONTHS = 24
+/** The ids of the sources whose own publication date is older than `months` before `nowMs`. Pure. */
+export function staleSourceIds(evidence: ReadonlyArray<{ id: number; published?: string }>, nowMs: number, months = CHART_MAX_SOURCE_AGE_MONTHS): Set<number> {
+  const cutoff = nowMs - months * 30.4375 * 86_400_000
+  return new Set(evidence.filter(e => { const t = e.published ? Date.parse(e.published) : NaN; return Number.isFinite(t) && t < cutoff }).map(e => e.id))
+}
+
+export function sectionCharts(report: string, plan: ResearchPlan, findings: readonly Finding[], stale?: ReadonlySet<number>): ResearchChart[] {
   const heads = parseDoc(report).filter((b): b is Extract<DocBlock, { t: 'heading' }> => b.t === 'heading' && b.level === 2).map(b => headingTitle(b.text))
   const key = (s: string) => titleKey(s)
   const out: ResearchChart[] = []
@@ -290,6 +309,8 @@ export function sectionCharts(report: string, plan: ResearchPlan, findings: read
     const groups = new Map<string, Finding[]>()
     for (const f of findings) {
       if (!f.figure || !(f.step === k + 1 || plan.steps[f.step - 1]?.completes === k + 1)) continue
+      // a chart is not drawn from a dated source that is too old (owner 11/11: a 2017 survey drew a trend chart in a 2026 report)
+      if (stale?.has(f.source)) continue
       const g = `${key(f.figure.series)}|${key(f.figure.unit)}`
       groups.set(g, [...(groups.get(g) ?? []), f])
     }
@@ -524,7 +545,9 @@ export async function runDeepResearch(question: string, context: string, lang: s
   const fail = (title: string, steps: ResearchStatus['steps'], why: string) => { emit.status({ type: 'tappy.research.v1', title, phase: 'failed', steps, sources: evidence.length }); return why }
   emit.status({ type: 'tappy.research.v1', title: clean(question, 120), phase: 'planning', steps: [], sources: 0 })
   let plan: ResearchPlan | null = null
-  try { const first = normalisePlan(await deps.plan(question, context), question); plan = first ? withPartSteps(first) : null } catch { plan = null }
+  try { const first = normalisePlan(await deps.plan(question, context), question); plan = first ? withPartSteps(first) : null
+    // RESEARCH_SOURCE_DIVERSITY: a TREND question (by code) also gets a press step about what changed lately; other kinds are untouched
+    if (plan && researchSourceDiversityOn()) plan = withNewsLane(plan, questionKind(question), lang, new Date(now()).getFullYear(), bounds?.maxSteps ?? DEEP_RESEARCH_LIMITS.planSteps + PART_STEPS) } catch { plan = null }
   if (left?.aborted) return { plan, evidence, findings, failed: 'client_gone' }
   if (!plan) return { plan: null, evidence, findings, failed: fail(clean(question, 120), [], 'no_plan') }
   // R13 Standard tier: a plan that needs more steps than the tier allows is an Advanced request (hard trigger: four or more work packages). Nothing is dropped to make it fit and
@@ -545,7 +568,9 @@ export async function runDeepResearch(question: string, context: string, lang: s
   const runStep = async (k: number): Promise<void> => {
     const step = plan!.steps[k]
     steps[k].status = 'running'; show('researching')
-    const gathered = (await Promise.all(step.queries.slice(0, bounds?.queriesPerStep ?? step.queries.length).map(q => deps.gather(q, `${step.title} - ${question}`).catch(() => [])))).flat()
+    // a publisher that already gave this run HOST_SHARE_AVOID_AT sources is left out of the next searches (-site:), so a later round finds OTHER sources instead of more of the same
+    const avoid = researchSourceDiversityOn() ? heavyHosts(evidence) : undefined
+    const gathered = (await Promise.all(step.queries.slice(0, bounds?.queriesPerStep ?? step.queries.length).map(q => deps.gather(q, `${step.title} - ${question}`, avoid).catch(() => [])))).flat()
     const mine: Evidence[] = []
     for (const g of gathered) {
       const url = g.url ? canonicalSourceUrl(g.url) : null
@@ -694,7 +719,7 @@ export async function runDeepResearch(question: string, context: string, lang: s
   const pictures = await Promise.race([picturesP, new Promise<null>(r => { pictureTimer = setTimeout(() => r(null), 1500) })])
   clearTimeout(pictureTimer)
   // owner 31/10: the figures matter more than a picture - a section with a chart gets the chart, not a (small) picture
-  const charts = sectionCharts(written, plan, notes)
+  const charts = sectionCharts(written, plan, notes, researchSourceDiversityOn() ? staleSourceIds(cited, now()) : undefined)
   if (charts.length && emit.charts) emit.charts(charts)
   const charted = new Set(charts.map(c => titleKey(c.section)))
   const placed = (pictures ? sectionImages(written, plan, pictures) : []).filter(p => !charted.has(titleKey(p.title)))
