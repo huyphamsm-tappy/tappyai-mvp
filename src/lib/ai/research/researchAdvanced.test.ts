@@ -66,6 +66,25 @@ describe('Sonnet 5.5 request shape (measured against the API 10/11/2026: it 400s
   })
 })
 
+describe('Sonnet 5.5 and a forced tool choice (measured 11/11/2026: 400 "type tool and any are not supported for this model")', () => {
+  const forced = (system: unknown) => JSON.stringify({ model: SONNET55_MODEL_ID, max_tokens: 9, tools: [{ name: 'tappy_research_plan', input_schema: { type: 'object' } }], tool_choice: { type: 'tool', name: 'tappy_research_plan' }, ...(system === undefined ? {} : { system }) })
+  it('the forced choice is dropped and the instruction to answer through the tool moves into the system prompt (string, block list, or none)', () => {
+    for (const sys of ['Be brief.', [{ type: 'text', text: 'Be brief.', cache_control: { type: 'ephemeral' } }], undefined]) {
+      const out = JSON.parse(withThinkingDisabled(forced(sys), SONNET55_MODEL_ID) as string)
+      expect(out.tool_choice).toBeUndefined(); expect(out.thinking).toBeUndefined(); expect(out.tools).toHaveLength(1)
+      const blocks = out.system as Array<{ type: string; text: string }>
+      expect(blocks.at(-1)!.text).toContain('tappy_research_plan')
+      if (sys) expect(blocks[0].text).toBe('Be brief.')
+    }
+  })
+  it('an automatic tool choice is left alone, and Haiku keeps its forced choice untouched', () => {
+    const auto = JSON.stringify({ model: SONNET55_MODEL_ID, tool_choice: { type: 'auto' }, tools: [] })
+    expect(JSON.parse(withThinkingDisabled(auto, SONNET55_MODEL_ID) as string).tool_choice).toEqual({ type: 'auto' })
+    const haiku = JSON.stringify({ model: HAIKU55_MODEL_ID, tool_choice: { type: 'tool', name: 'x' }, tools: [{ name: 'x' }] })
+    expect(JSON.parse(withThinkingDisabled(haiku, HAIKU55_MODEL_ID) as string).tool_choice).toEqual({ type: 'tool', name: 'x' })
+  })
+})
+
 describe('Sonnet 5.5 pricing row', () => {
   it('prices one call at the list card: $2 in, $2.50 cache write, $0.10 cache read, $10 out per million, one tier at any length', () => {
     const c = claudeCallCost(SONNET55_MODEL_ID, { input: 1_000_000, cacheRead: 0, cacheWrite: 0, output: 0 })!
