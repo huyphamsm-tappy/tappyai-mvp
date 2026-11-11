@@ -20,11 +20,18 @@ const plan = (n: number, queries = 3): ResearchPlan => ({ title: 'T', steps: Arr
 
 describe('runDeepResearch with Standard bounds', () => {
   it('a plan with more steps than the tier allows is refused BEFORE any search or model work: it is an Advanced request, nothing is cut to fit', async () => {
-    const h = harness(plan(4))
+    const h = harness(plan(9))
     const out = await h.run(STANDARD_RUN_BOUNDS)
     expect(out.failed).toBe('exceeds_standard')
     expect(h.calls.gather).toEqual([]); expect(h.calls.notes).toBe(0); expect(h.calls.write).toBe(0)
-    expect(out.plan?.steps).toHaveLength(4)
+    expect(out.plan?.steps).toHaveLength(9)
+  })
+  it('an ORDINARY report plan (six or seven sections, the shape every normal report has) is Standard, not Advanced (owner 11/11: "tất cả báo cáo đều là Advanced")', async () => {
+    for (const n of [5, 6, 7, 8]) {
+      const h = harness(plan(n))
+      const out = await h.run(STANDARD_RUN_BOUNDS)
+      expect(out.failed, `${n} steps`).toBeNull(); expect(h.calls.write).toBe(1)
+    }
   })
   it('three steps run, each with at most two queries; one gap round of at most two follow-up steps', async () => {
     const h = harness(plan(3, 3))

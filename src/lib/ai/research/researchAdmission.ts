@@ -135,5 +135,11 @@ export function promoteAfterEvidence(current: ResearchTier, signals: ResearchSig
  */
 export const STANDARD_BOUNDS = { maxWorkPackages: 3, targetSources: 8, supplementalPasses: 1 } as const
 
-/** What one Standard run is held to by the engine (runDeepResearch's `bounds`): 3 steps, 2 queries a step, one gap round of at most 2 follow-up steps. */
-export const STANDARD_RUN_BOUNDS = { maxSteps: STANDARD_BOUNDS.maxWorkPackages, queriesPerStep: 2, gapRounds: STANDARD_BOUNDS.supplementalPasses, followUpSteps: 2 } as const
+/**
+ * What one Standard run is held to by the engine (runDeepResearch's `bounds`): up to 8 plan steps, 2 queries a step, one gap round of at most 2 follow-up steps.
+ * A plan STEP is a section of the report that gets its own searches (market size, brands, prices, channels...): an ordinary report has five to eight of them. It is NOT R13's "independent
+ * work package" (a separately analysed dimension); counting the two as one sent every report to Advanced (owner 11/11: "tất cả báo cáo đều là Advanced"). What makes a report Advanced is the
+ * admission's own triggers (forecast or scenario analysis, dependent stages, several markets or periods, four or more dimensions the PERSON listed) and, later, evidence triggers. A plan
+ * larger than this (more than 8 steps) is still refused, because that really is a very wide request.
+ */
+export const STANDARD_RUN_BOUNDS = { maxSteps: 8, queriesPerStep: 2, gapRounds: STANDARD_BOUNDS.supplementalPasses, followUpSteps: 2 } as const
