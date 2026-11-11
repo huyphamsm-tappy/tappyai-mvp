@@ -100,6 +100,8 @@ import ResearchCard from '@/components/chat/ResearchCard'
 import ReportCover, { REPORT_LAYOUT_A } from '@/components/chat/ReportCover'
 import ReportExportBar from '@/components/chat/ReportExportBar'
 import { looksLikeReport } from '@/lib/chat/requestHistory'
+import ReportViewBar from '@/components/chat/ReportViewBar'
+import { reportViewOf } from '@/lib/chat/reportView'
 import { rememberPlacesView, recallPlacesView } from '@/lib/recommendation/liveViewCache'
 import { rememberTurnStatus, recallTurnStatus } from '@/lib/recommendation/turnStatusCache'
 import PlaceDecision from '@/components/chat/PlaceDecision'
@@ -913,6 +915,8 @@ export default function ChatInterface({
   const [zoomedImage, setZoomedImage] = useState<string | null>(null)
   // CONSULT_V3 layouts: the subject panel (Wikipedia summary) open over the chat, or none.
   const [entityPanel, setEntityPanel] = useState<MediaEntity | null>(null)
+  // NEXT_PUBLIC_REPORT_SUMMARY_VIEW: the research reports (by message id) whose full text the person has opened; the others show the key points and the source count
+  const [expandedReports, setExpandedReports] = useState<ReadonlySet<string>>(() => new Set())
   const fileInputRef = useRef<HTMLInputElement>(null)
   // 31/10 (owner, ChatGPT's composer): the mode the person picks - web search, thinking, deep research. Sent with every request of this chat
   // until turned off; the server decides what each mode may do (clientInput.readChatMode, route.ts).
@@ -1879,6 +1883,8 @@ export default function ChatInterface({
                   const c = researchCharts.find(x => titleKey(x.section) === titleKey(title))
                   return c ? <figure className="my-3" data-research-chart><img src={chartDataUrl(c, locale)} alt={c.title} className="w-full max-w-2xl rounded-xl border border-gray-200 dark:border-gray-700" /></figure> : null
                 } : undefined
+                // NEXT_PUBLIC_REPORT_SUMMARY_VIEW: a research report shows its key points and the source count; the full report (and its sources list) opens on a button. Off: the text as it is.
+                const reportView = reportViewOf({ text: bodyText, research: !!research, expanded: expandedReports.has(msg.id), links: research?.links?.length ?? 0 })
                 return (
                   <div key={msg.id} data-msg-id={msg.id} className="animate-slide-up flex gap-3">
                     <TappyAvatar category={category} active={isLoading && isLastMessage} searching={!!(isLoading && isLastMessage && activeTool)} />
@@ -1890,7 +1896,7 @@ export default function ChatInterface({
                         {(() => {
                           // CONSULT_V3 layouts: the news grid / subject card sit right after the answer's first paragraph (as ChatGPT places them);
                           // tapping the subject's bold name opens the side panel. Without a media block: exactly the former single body.
-                          const shown = choice?.groups.length ? choice.text : bodyText
+                          const shown = reportView.collapsed ? reportView.shown : choice?.groups.length ? choice.text : bodyText
                           const settled = !(isLoading && isLastMessage)
                           const entity = settled && entityMedia?.kind === 'entity' ? entityMedia.entity : null
                           const news = settled && newsMedia?.kind === 'news' ? newsMedia.items : null
@@ -1933,6 +1939,10 @@ export default function ChatInterface({
                           )
                         })()}
                       </div>
+                      {reportView.bar && !(isLoading && isLastMessage) && (
+                        <ReportViewBar sources={reportView.bar.sources} expanded={reportView.bar.expanded}
+                          onToggle={() => setExpandedReports(prev => { const next = new Set(prev); if (next.has(msg.id)) next.delete(msg.id); else next.add(msg.id); return next })} />
+                      )}
                       {optionsMedia?.kind === 'options' && !(isLoading && isLastMessage) && <OptionCards title={optionsMedia.title} options={optionsMedia.options} />}
                       {plan && <TripPlanCard plan={plan} placePhotos={placeView?.items} />}
                       {shopView && (
