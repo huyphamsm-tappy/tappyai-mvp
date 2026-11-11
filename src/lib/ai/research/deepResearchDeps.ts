@@ -199,7 +199,9 @@ export function createDeepResearchDeps(o: { lang: string; userTexts: readonly st
   const advancedLead = o.advanced === true && claudeWriterAvailable()
   const leadModel = (): { claudeModel: 'sonnet55' | 'haiku55' } | Record<string, never> => (advancedLead ? { claudeModel: 'sonnet55' as const } : claudeStandard ? { claudeModel: 'haiku55' as const } : {})
   const notesBy = (): 'haiku55' | 'luna' => (claudeStandard || advancedLead ? 'haiku55' : notesModel())
-  const writerBy = (): 'sonnet55' | 'haiku55' | 'luna' => (advancedLead ? 'sonnet55' : claudeStandard ? 'haiku55' : writerModel())
+  // RESEARCH_ADVANCED_WRITER=haiku55 (off = Sonnet, locked in production): the Advanced report is written by Haiku too, Sonnet keeping the plan. Measured 11/11: Sonnet writing the report is 58% of an Advanced report's cost
+  const advancedWriterHaiku = advancedLead && (process.env.RESEARCH_ADVANCED_WRITER ?? '').trim() === 'haiku55' && !lockedInProduction(process.env, 'RESEARCH_ADVANCED_WRITER')
+  const writerBy = (): 'sonnet55' | 'haiku55' | 'luna' => (advancedLead ? (advancedWriterHaiku ? 'haiku55' : 'sonnet55') : claudeStandard ? 'haiku55' : writerModel())
   const reader = createLeanResearch({ lang: o.lang, userTexts: o.userTexts, maxReads: DEEP_RESEARCH_LIMITS.steps * DEEP_RESEARCH_LIMITS.queriesPerStep * READ_PER_QUERY, v5Reading: true })
   const exec = reader.tool.execute as unknown as (a: unknown, c: unknown) => Promise<unknown>
   return {
@@ -271,6 +273,8 @@ export function createDeepResearchDeps(o: { lang: string; userTexts: readonly st
     },
     async gaps(question, plan, found, coverage) {
       const data = `Research plan: ${plan.title}\n${plan.parts?.length ? `Parts the question asks for: ${plan.parts.join('; ')}\n` : ''}${plan.steps.map((s, k) => `${k + 1}. ${s.title}${coverage?.[k] ? ` - ${coverage[k].findings} findings, ${coverage[k].figures} with a figure` : ''}`).join('\n')}\n\nFindings so far:\n${found.map(f => `- ${f}`).join('\n').slice(0, GAP_FINDINGS_BUDGET)}`
+      // 11/11 measured: moving the Advanced gap check from Sonnet to Haiku saved nothing - the run went from 4 follow-up steps to 11 (more searches, more reading: 0.506 USD against 0.473) - so Advanced
+      // keeps Sonnet for it (a stricter judge asks for less); Standard's gap check is Haiku as before.
       const r = await AI.extract({ role: planningRole(), ...leadModel(), systemShared: GAPS_SYSTEM, messages: [{ role: 'user', content: `Question:\n${question}${langLine}\n\n${fenceUntrusted('tool_result', data)}` }], schema: GapsSchema, schemaName: 'tappy_research_gaps', maxTokens: 3500, budgetKind: 'aux', abortSignal: o.signal } as never) as { object: { steps: Array<{ title: string; queries: string[] }> }; providerMetadata?: unknown }
       addCost(o.cost, r.providerMetadata)
       return Array.isArray(r.object?.steps) ? r.object.steps.map(s => ({ title: s.title, queries: s.queries, completes: (s as { completes_step?: number | null }).completes_step ?? null })) : []
