@@ -18,6 +18,10 @@ export const RESEARCH_SOURCE_DIVERSITY_FLAG = 'RESEARCH_SOURCE_DIVERSITY'
 /** Pure. Source diversity (a publisher that already gave many sources is left out of later searches; no chart from a dated source older than 24 months): OFF unless exactly "1", locked in production. */
 export const researchSourceDiversityOn = (env: Env = process.env): boolean => env[RESEARCH_SOURCE_DIVERSITY_FLAG] === '1' && !lockedInProduction(env, RESEARCH_SOURCE_DIVERSITY_FLAG)
 
+export const RESEARCH_EVIDENCE_CARDS_FLAG = 'RESEARCH_EVIDENCE_CARDS'
+/** Pure. Evidence cards (evidenceCards.ts): the notes step also returns the source's exact words for each finding, the code checks them against the page, and the run reports the cards: OFF unless exactly "1", locked in production. */
+export const researchEvidenceCardsOn = (env: Env = process.env): boolean => env[RESEARCH_EVIDENCE_CARDS_FLAG] === '1' && !lockedInProduction(env, RESEARCH_EVIDENCE_CARDS_FLAG)
+
 export const RESEARCH_CHART_RELEVANCE_FLAG = 'RESEARCH_CHART_RELEVANCE'
 /** Pure. A section's chart is drawn only from a series that the written section talks about (chartRelevance.ts): OFF unless exactly "1", locked in production. */
 export const researchChartRelevanceOn = (env: Env = process.env): boolean => env[RESEARCH_CHART_RELEVANCE_FLAG] === '1' && !lockedInProduction(env, RESEARCH_CHART_RELEVANCE_FLAG)

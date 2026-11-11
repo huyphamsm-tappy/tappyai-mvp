@@ -22,9 +22,10 @@ import { dedupePackages } from './researchPackages'
 import { consolidate, freshnessHints } from './consolidate'
 import { sectionTextOf, seriesRelevant } from './chartRelevance'
 import { failureKind } from './failureKind'
+import { buildCards, cardSummary, quoteInText, type CardSummary, type EvidenceCard } from './evidenceCards'
 import { FIGURE_CONFLICT_GAP } from './figureGap'
 import { groundForecast, runForecast, wantsForecastModel, type ForecastSpec, type ForecastResult } from './forecastModel'
-import { deepResearchV2On, researchSourceDiversityOn, researchPackagesOn, researchForecastModelOn, researchFreshnessOn, researchChartRelevanceOn, V2_LIMITS, termScores, stepCoverage, decideNext, missingParts, findingsForPart } from './deepResearchState'
+import { deepResearchV2On, researchSourceDiversityOn, researchPackagesOn, researchForecastModelOn, researchFreshnessOn, researchChartRelevanceOn, researchEvidenceCardsOn, V2_LIMITS, termScores, stepCoverage, decideNext, missingParts, findingsForPart } from './deepResearchState'
 
 // planSteps: the plan's own steps; steps: all steps of a run (the plan's + the follow-up round's GAP_STEPS), as the card shows them
 /** R13 tier bounds for one run (Standard report). Absent = the unbounded one-pass / V2 run, byte for byte. */
@@ -146,7 +147,8 @@ export interface Evidence { id: number; title: string; url: string; snippet: str
  */
 /** `subject` / `scope` / `period` (RESEARCH_CONSOLIDATION): who or what the number is about, the area or population it covers, and the year or half-year or quarter it is for. Absent = the older shape. */
 export interface Figure { series: string; label: string; value: number; unit: string; subject?: string; scope?: string; period?: string }
-export interface Finding { step: number; text: string; source: number; figure?: Figure }
+/** `quote` / `quoteStatus` (RESEARCH_EVIDENCE_CARDS): the source's own words for this finding, and whether the code found them in the page (VERIFIED) or not (UNVERIFIED). Absent = no quote asked or given. */
+export interface Finding { step: number; text: string; source: number; figure?: Figure; quote?: string; quoteStatus?: 'VERIFIED' | 'UNVERIFIED' }
 /** A chart the code draws from the figures of one section; every point names its source. */
 export interface ResearchChart { section: string; title: string; unit: string; kind: 'bar' | 'line'; points: Array<{ label: string; value: number; source: number }> }
 export const MAX_CHARTS = 4
@@ -193,7 +195,7 @@ export interface DeepResearchDeps {
   /** One query: its search results with the text of the pages read (empty when nothing came back). */
   gather(query: string, focus: string, /** hosts that already gave this run many sources: the search leaves them out, to find other publishers */ avoid?: readonly string[]): Promise<Array<{ title: string; url: string; snippet: string; text: string; published?: string; site?: string }>>
   /** The step's findings; `source` is an id of the evidence handed in; `figure` when the finding states one figure. */
-  notes(step: string, question: string, evidence: readonly Evidence[], /** RESEARCH_PACKAGES: the step's brief, given only when the flag is on and the step has one */ brief?: StepBrief): Promise<Array<{ text: string; source: number; figure?: Figure | null }>>
+  notes(step: string, question: string, evidence: readonly Evidence[], /** RESEARCH_PACKAGES: the step's brief, given only when the flag is on and the step has one */ brief?: StepBrief): Promise<Array<{ text: string; source: number; figure?: Figure | null; quote?: string }>>
   /**
    * RESEARCH_FORECAST_MODEL (Advanced): the INPUTS of a scenario model for a forecast question (base level, years, low / base / high assumptions, each labelled source or assumption); the engine
    * grounds them in the findings and computes the model itself. Absent = no model. Never computes the forecast.
@@ -552,7 +554,7 @@ export function sectionImages(report: string, plan: ResearchPlan, pictures: Read
 
 /** Runs one deep research. Never throws: a failure ends with a `failed` status and whatever was written. */
 /** `left` (review 02/11): the person went away - the run stops where it is, writes nothing more and ends as 'client_gone'. */
-export async function runDeepResearch(question: string, context: string, lang: string, deps: DeepResearchDeps, emit: ResearchEmit, left?: AbortSignal, bounds?: RunBounds): Promise<{ plan: ResearchPlan | null; evidence: Evidence[]; findings: Finding[]; failed: string | null; cut?: boolean; followUps?: number; charts?: number; figures?: { proposed: number; kept: number }; stepStats?: StepStat[]; unsupported?: string[]; repaired?: number; /** tier runs only (bounds given): the written report and the sources it cites, for the independent verifier (claimVerifier.ts) */ checked?: { report: string; sources: Evidence[] } }> {
+export async function runDeepResearch(question: string, context: string, lang: string, deps: DeepResearchDeps, emit: ResearchEmit, left?: AbortSignal, bounds?: RunBounds): Promise<{ plan: ResearchPlan | null; evidence: Evidence[]; findings: Finding[]; failed: string | null; cut?: boolean; followUps?: number; charts?: number; figures?: { proposed: number; kept: number }; stepStats?: StepStat[]; unsupported?: string[]; repaired?: number; /** tier runs only (bounds given): the written report and the sources it cites, for the independent verifier (claimVerifier.ts) */ checked?: { report: string; sources: Evidence[] }; /** RESEARCH_EVIDENCE_CARDS: the cards of the run and their counts */ cards?: { summary: CardSummary; cards: EvidenceCard[] } }> {
   const now = deps.now ?? Date.now
   const t0 = now()
   // DEEP_RESEARCH_V2 (03/11, OFF unless "1", never in production): several gap rounds in this request and a repair of the parts the report does not name
@@ -635,7 +637,9 @@ export async function runDeepResearch(question: string, context: string, lang: s
       const figure = checkedFigure(f.figure, `${src.title}\n${src.snippet}\n${src.text}`)
       if (f.figure) figureCount.proposed++
       if (figure) figureCount.kept++
-      findings.push({ step: k + 1, text, source: f.source, ...(figure ? { figure } : {}) })
+      // RESEARCH_EVIDENCE_CARDS: the source's own words for the finding, checked here against the page the finding was read from
+      const quote = researchEvidenceCardsOn() && typeof f.quote === 'string' ? clean(f.quote, 400) : ''
+      findings.push({ step: k + 1, text, source: f.source, ...(figure ? { figure } : {}), ...(quote ? { quote, quoteStatus: quoteInText(quote, `${src.title}\n${src.snippet}\n${src.text}`) ? 'VERIFIED' as const : 'UNVERIFIED' as const } : {}) })
       stat.kept = kept + 1
       if (++kept >= DEEP_RESEARCH_LIMITS.findingsPerStep) break
     }
@@ -689,6 +693,9 @@ export async function runDeepResearch(question: string, context: string, lang: s
   for (const s of steps) if (s.status !== 'done') s.status = 'failed'
   if (!findings.length) return { plan, evidence, findings, failed: fail(plan.title, steps, 'no_findings') }
 
+  // RESEARCH_EVIDENCE_CARDS: every finding becomes a card (its exact words checked against the page, the kind of source, the independence group, the authority per kind of fact); only counts are logged
+  const cards = researchEvidenceCardsOn() ? buildCards(findings, evidence, numberInText) : undefined
+  if (cards) deps.trace?.({ ev: 'cards', ...cardSummary(cards) })
   show('writing')
   // the report numbers its sources 1..n: only the cited ones, renumbered in the order they were found (the person reads [1]..[n], not [3][14][24])
   const renumber = new Map(citedEvidence(evidence, findings).map((e, i) => [e.id, i + 1]))
@@ -765,5 +772,5 @@ export async function runDeepResearch(question: string, context: string, lang: s
   if (placed.length && emit.images) emit.images(placed)
   const links = cited.map(e => ({ id: e.id, title: e.title, url: e.url }))
   emit.status({ type: 'tappy.research.v1', title: plan.title, phase: 'done', steps: steps.map(s => ({ ...s })), sources: evidence.length, links })
-  return { plan, evidence, findings, failed: null, cut, followUps, charts: charts.length, figures: { ...figureCount }, stepStats, unsupported: unsupportedNumbers(written, notes), ...(repaired ? { repaired } : {}), ...(bounds ? { checked: { report: written, sources: cited } } : {}) }
+  return { plan, evidence, findings, failed: null, cut, followUps, charts: charts.length, figures: { ...figureCount }, stepStats, unsupported: unsupportedNumbers(written, notes), ...(repaired ? { repaired } : {}), ...(bounds ? { checked: { report: written, sources: cited } } : {}), ...(cards ? { cards: { summary: cardSummary(cards), cards } } : {}) }
 }

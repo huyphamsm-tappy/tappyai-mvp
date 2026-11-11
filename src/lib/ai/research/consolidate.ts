@@ -77,6 +77,11 @@ function normOf(f: Finding): Norm | null {
 }
 
 const baseKey = (n: Norm) => `${n.metric}|${n.unit}|${n.subject}`
+/** The identity of the fact a finding states (subject, measure, unit, scope, period, folded) and its value; null when it has no figure. Two findings with the same key speak of the same thing. Pure. */
+export function figureKey(f: Finding): { key: string; value: number } | null {
+  const n = normOf(f)
+  return n ? { key: `${baseKey(n)}|${n.scope}|${n.period?.key ?? '-'}`, value: n.value } : null
+}
 const sortedNums = (xs: Iterable<number>) => [...new Set(xs)].sort((a, b) => a - b)
 const apart = (lo: number, hi: number) => hi - lo > Math.abs(hi) * FIGURE_CONFLICT_GAP
 

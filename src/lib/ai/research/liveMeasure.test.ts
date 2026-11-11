@@ -75,6 +75,9 @@ describe.skipIf(!ON)('LIVE: one run per tier (costs money)', () => {
         bench: benchmarkById(String(q)) && !out.failed ? scoreReport(text, benchmarkById(String(q))!, { tier: tier === 'advanced' ? 'advanced' : 'standard', usd: totalUsd, verifier: ver ? { supported: ver.counts.supported, checked: ver.checked } : null }) : null,
         flags: { consolidation: process.env.RESEARCH_CONSOLIDATION === '1', packages: process.env.RESEARCH_PACKAGES === '1', forecastModel: process.env.RESEARCH_FORECAST_MODEL === '1', freshness: process.env.RESEARCH_FRESHNESS === '1', tightWrite: process.env.RESEARCH_TIGHT_WRITE === '1', chartRelevance: process.env.RESEARCH_CHART_RELEVANCE === '1' },
         repeats: repeatedFigures(text),
+        // RESEARCH_EVIDENCE_CARDS: the counts of the run's cards (exact quotes verified against the page or not, kinds of source, confidence, facts by support); the cards themselves go to a .cards.json file
+        cards: out.cards ? out.cards.summary : null,
+        evidenceCards: process.env.RESEARCH_EVIDENCE_CARDS === '1',
         freshnessHints: traces.filter(t => t.ev === 'freshness_hints').map(t => t.n),
         // what the consolidation WOULD say about this run's findings (computed after the fact for every config, so the baseline shows how much it repeats and how many "conflicts" are not)
         consolidation: (() => { const c = consolidate(out.findings); return { ...c.stats, staleItems: c.stale.slice(0, 10).map(s => `${s.subject || '-'} / ${s.metric}: ${s.newest}`), conflictsOld: structuredConflicts(out.findings).length } })(),
@@ -90,6 +93,7 @@ describe.skipIf(!ON)('LIVE: one run per tier (costs money)', () => {
       const stamp = `${process.env.MEASURE_LABEL ? `${process.env.MEASURE_LABEL}-` : ''}${tier}-${q}-${Date.now()}`
       writeFileSync(join(dir, `${stamp}.json`), JSON.stringify(row, null, 2))
       writeFileSync(join(dir, `${stamp}.md`), text)
+      if (out.cards) writeFileSync(join(dir, `${stamp}.cards.json`), JSON.stringify(out.cards.cards.map(c => ({ id: c.id, step: c.step, source: c.source, kind: c.sourceKind, host: c.host, family: c.family, quote: c.quoteStatus, confidence: c.confidence, text: c.text.slice(0, 160), quoteText: c.quote?.slice(0, 220) })), null, 1))
       console.log('LIVE_MEASURE', JSON.stringify(row))
     }, 600_000)
   }
