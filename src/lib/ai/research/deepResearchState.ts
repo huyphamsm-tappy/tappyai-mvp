@@ -18,6 +18,10 @@ export const RESEARCH_SOURCE_DIVERSITY_FLAG = 'RESEARCH_SOURCE_DIVERSITY'
 /** Pure. Source diversity (a publisher that already gave many sources is left out of later searches; no chart from a dated source older than 24 months): OFF unless exactly "1", locked in production. */
 export const researchSourceDiversityOn = (env: Env = process.env): boolean => env[RESEARCH_SOURCE_DIVERSITY_FLAG] === '1' && !lockedInProduction(env, RESEARCH_SOURCE_DIVERSITY_FLAG)
 
+export const RESEARCH_FRESHNESS_FLAG = 'RESEARCH_FRESHNESS'
+/** Pure. The gap check is told which measures run on old readings (newest reading before this year) so it looks up their latest period first: OFF unless exactly "1", locked in production. */
+export const researchFreshnessOn = (env: Env = process.env): boolean => env[RESEARCH_FRESHNESS_FLAG] === '1' && !lockedInProduction(env, RESEARCH_FRESHNESS_FLAG)
+
 export const RESEARCH_FORECAST_MODEL_FLAG = 'RESEARCH_FORECAST_MODEL'
 /** Pure. A scenario model computed by code (forecastModel.ts) for a forecast question in an Advanced run: a model call supplies the inputs, the code refuses a base level no finding states and does every calculation: OFF unless exactly "1", locked in production. */
 export const researchForecastModelOn = (env: Env = process.env): boolean => env[RESEARCH_FORECAST_MODEL_FLAG] === '1' && !lockedInProduction(env, RESEARCH_FORECAST_MODEL_FLAG)

@@ -9,7 +9,8 @@
 //   - 2024 survey quoted though 2026 existed    -> the newest period found for each measure is reported, and an old one (older than last year) is marked, so the writer says "latest available".
 // The writer is told these in its notes; nothing here decides which source is right.
 
-import { FIGURE_CONFLICT_GAP, type Finding, type ResearchPlan } from './deepResearch'
+import type { Finding, ResearchPlan } from './deepResearch'
+import { FIGURE_CONFLICT_GAP } from './figureGap'
 import { fold } from './researchSignals'
 
 export interface PeriodKey { key: string; year: number; order: number }
@@ -45,6 +46,8 @@ export interface TrendItem { subject: string; metric: string; unit: string; scop
 export interface StaleItem { subject: string; metric: string; unit: string; scope: string; newest: string; /** how many findings read this measure: the measures a run read most are its central ones */ readings: number }
 /** The writer is shown at most this many old-period measures (most-read first): a run's findings hold dozens of measures that are not the subject. */
 export const MAX_STALE_SHOWN = 8
+/** A measure read at a dated period: its newest period (and that period's year) and how many findings read it. */
+export interface LatestItem { subject: string; metric: string; unit: string; scope: string; newest: string; year: number; readings: number }
 export interface ConsolidatedFinding { text: string; sources: number[]; steps: number[]; figure?: Finding['figure'] }
 export interface Consolidation {
   findings: ConsolidatedFinding[]
@@ -53,6 +56,8 @@ export interface Consolidation {
   scopeUnclear: ConflictItem[]
   trends: TrendItem[]
   stale: StaleItem[]
+  /** every measure read at a dated period, the most-read first (what the freshness hints are drawn from) */
+  latest: LatestItem[]
   stats: { in: number; out: number; merged: number; conflicts: number; scopeSplits: number; scopeUnclear: number; trends: number; stale: number }
 }
 
@@ -157,6 +162,7 @@ export function consolidate(findings: readonly Finding[], now: number = Date.now
   for (const n of norms) if (n.period) { const k = `${baseKey(n)}|${n.scope}`; bySeries.set(k, [...(bySeries.get(k) ?? []), n]) }
   const trends: TrendItem[] = []
   const stale: StaleItem[] = []
+  const latest: LatestItem[] = []
   const nowYear = new Date(now).getUTCFullYear()
   for (const items of bySeries.values()) {
     const head = items[0]
@@ -170,14 +176,25 @@ export function consolidate(findings: readonly Finding[], now: number = Date.now
         points: ordered.map(([period, e]) => { const vs = valueGroups(e.items); return { period, value: vs[0].value, values: vs.map(v => v.value), sources: sortedNums(e.items.map(n => n.f.source)) } }),
       })
     }
+    latest.push({ subject: head.subjectText, metric: head.metricText, unit: head.unitText, scope: head.scopeText, newest: newest[0], year: Math.floor(newest[1].order / 100), readings: items.length })
     if (Math.floor(newest[1].order / 100) <= nowYear - 2) stale.push({ subject: head.subjectText, metric: head.metricText, unit: head.unitText, scope: head.scopeText, newest: newest[0], readings: items.length })
   }
   stale.sort((a, b) => b.readings - a.readings || a.metric.localeCompare(b.metric) || a.subject.localeCompare(b.subject))
+  latest.sort((a, b) => b.readings - a.readings || a.metric.localeCompare(b.metric) || a.subject.localeCompare(b.subject))
 
   return {
-    findings: merged, conflicts, scopeSplits, scopeUnclear, trends, stale,
+    findings: merged, conflicts, scopeSplits, scopeUnclear, trends, stale, latest,
     stats: { in: findings.length, out: merged.length, merged: findings.length - merged.length, conflicts: conflicts.length, scopeSplits: scopeSplits.length, scopeUnclear: scopeUnclear.length, trends: trends.length, stale: stale.length },
   }
+}
+
+/**
+ * The measures a run read more than once whose newest reading is before this year (no reading from the current year yet), most-read first, at most `limit`: lines for the gap check, so it looks up
+ * the latest period of the central measures first (this year to date, the latest quarter). A measure read once, or with no period, is not a hint. Pure.
+ */
+export function freshnessHints(c: Consolidation, nowYear: number, limit = 6): string[] {
+  return c.latest.filter(l => l.year < nowYear && l.readings >= 2).slice(0, limit)
+    .map(l => `${l.subject ? `${l.subject} / ` : ''}${l.metric}${l.unit ? ` (${l.unit})` : ''}${l.scope ? `, scope: ${l.scope}` : ''}: newest reading ${l.newest}, ${l.readings} readings, none from ${nowYear}`)
 }
 
 const tags = (sources: readonly number[]) => sources.map(s => `[${s}]`).join('')

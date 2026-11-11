@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { consolidate, consolidatedNotes, parsePeriod } from './consolidate'
+import { consolidate, consolidatedNotes, parsePeriod, freshnessHints } from './consolidate'
 import { researchConsolidationOn } from './deepResearchState'
 import { checkedFigure, type Finding, type ResearchPlan } from './deepResearch'
 
@@ -130,6 +130,28 @@ describe('the old-period list is short and led by the measures read the most', (
   it('with few of them all are shown and nothing is said about more', () => {
     const notes = consolidatedNotes(plan, consolidate(many().slice(0, 3), NOW))
     expect(notes).not.toContain('more not shown')
+  })
+})
+
+// Measured 11/11: all eight trend reports lacked the 2026 half-year figures that the forecast run of the same hour found; the gap check had no way to know which measures were running on old readings.
+describe('freshness hints for the gap check', () => {
+  const m = (series: string, period: string, value: number, source: number) => mk(1, source, 't', { series, label: series, unit: '%', subject: series, scope: 'khảo sát', period, value })
+  it('a measure read twice whose newest reading is before this year is a hint; one with a current-year reading, a single reading, or no period is not', () => {
+    const c = consolidate([m('Chi 21-35k', '2023', 29.6, 1), m('Chi 21-35k', '2024', 40, 2), m('Đã mới', '2024', 1, 3), m('Đã mới', '2026-H1', 2, 4), m('Một lần', '2024', 5, 5), mk(1, 6, 't', { series: 'Không kỳ', label: 'x', unit: '%', value: 3 }), mk(1, 7, 't', { series: 'Không kỳ', label: 'y', unit: '%', value: 4 })], NOW)
+    const h = freshnessHints(c, 2026)
+    expect(h).toHaveLength(1)
+    expect(h[0]).toContain('Chi 21-35k')
+    expect(h[0]).toContain('2024')
+  })
+  it('two readings in the same past year count (2025 is before 2026), the most-read measure first, and at most `limit`', () => {
+    const many = Array.from({ length: 9 }, (_, i) => Array.from({ length: i + 2 }, (_, k) => m(`Chỉ số ${i}`, '2025', 10 + k, 100 + i * 20 + k))).flat()
+    const h = freshnessHints(consolidate(many, NOW), 2026, 6)
+    expect(h).toHaveLength(6)
+    expect(h[0]).toContain('Chỉ số 8')
+  })
+  it('latest lists every dated measure with its newest period and how many readings it has', () => {
+    const c = consolidate([m('A', '2023', 1, 1), m('A', '2025', 2, 2), m('B', '2026', 3, 3)], NOW)
+    expect(c.latest.map(l => `${l.metric}:${l.newest}:${l.readings}`).sort()).toEqual(['A:2025:2', 'B:2026:1'])
   })
 })
 

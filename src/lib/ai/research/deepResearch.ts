@@ -19,8 +19,10 @@ import { parseDoc, headingTitle, titleKey, type DocBlock } from '@/lib/answerDoc
 import { leanValue } from './deepResearchLean'
 import { questionKind, withNewsLane } from './researchLanes'
 import { dedupePackages } from './researchPackages'
+import { consolidate, freshnessHints } from './consolidate'
+import { FIGURE_CONFLICT_GAP } from './figureGap'
 import { groundForecast, runForecast, wantsForecastModel, type ForecastSpec, type ForecastResult } from './forecastModel'
-import { deepResearchV2On, researchSourceDiversityOn, researchPackagesOn, researchForecastModelOn, V2_LIMITS, termScores, stepCoverage, decideNext, missingParts, findingsForPart } from './deepResearchState'
+import { deepResearchV2On, researchSourceDiversityOn, researchPackagesOn, researchForecastModelOn, researchFreshnessOn, V2_LIMITS, termScores, stepCoverage, decideNext, missingParts, findingsForPart } from './deepResearchState'
 
 // planSteps: the plan's own steps; steps: all steps of a run (the plan's + the follow-up round's GAP_STEPS), as the card shows them
 /** R13 tier bounds for one run (Standard report). Absent = the unbounded one-pass / V2 run, byte for byte. */
@@ -48,8 +50,8 @@ export function writerNotes(plan: ResearchPlan, findings: readonly Finding[]): s
   return conflicts.length ? `${body}\n\n## Conflicting figures (same series and label, different values — report both with their sources, never pick one silently)\n${conflicts.join('\n')}` : body
 }
 
-/** Relative gap above which two values of one series and label count as a conflict, not as rounding. */
-export const FIGURE_CONFLICT_GAP = 0.02
+/** Relative gap above which two values of one series and label count as a conflict, not as rounding (defined in figureGap.ts, a leaf, so consolidate.ts can share it without a cycle). */
+export { FIGURE_CONFLICT_GAP }
 
 /**
  * Same series and label read from different sources with different values. Pure and deterministic: the writer is told, in the notes, which
@@ -212,7 +214,7 @@ export interface DeepResearchDeps {
    * The parts of the question the findings do not answer yet, as at most GAP_STEPS follow-up steps (title + queries); [] = covered.
    * Absent = one research round only.
    */
-  gaps?(question: string, plan: ResearchPlan, findings: readonly string[], coverage?: ReadonlyArray<{ title: string; findings: number; figures: number }>): Promise<Array<{ title: string; queries: string[]; completes?: number | null }>>
+  gaps?(question: string, plan: ResearchPlan, findings: readonly string[], coverage?: ReadonlyArray<{ title: string; findings: number; figures: number }>, /** RESEARCH_FRESHNESS: measures whose newest reading is before this year, given only when the flag is on and there are some */ freshness?: readonly string[]): Promise<Array<{ title: string; queries: string[]; completes?: number | null }>>
   /** Picture URLs for one image query (server-chosen, never the model's); absent = a report without pictures. */
   images?(query: string): Promise<string[]>
   /** Diagnostics only (CONSULT_TRACE_DIAGNOSTICS, never in production): what each step searched, read and kept. Absent = nothing is traced. */
@@ -652,7 +654,10 @@ export async function runDeepResearch(question: string, context: string, lang: s
     }
     // how much each plan step brought (02/11): the check sees a thin step, not only the pooled findings
     const coverage: Array<{ title: string; findings: number; figures: number }> = plan.steps.map((s, k) => ({ title: s.title, findings: findings.filter(f => f.step === k + 1).length, figures: findings.filter(f => f.step === k + 1 && f.figure).length }))
-    const asked: Awaited<ReturnType<NonNullable<DeepResearchDeps['gaps']>>> = await deps.gaps(question, plan, packFindingsForGapCheck(findings), coverage).catch(() => [])
+    // RESEARCH_FRESHNESS: the measures this run reads from old periods only (newest reading before this year) go to the gap check, which looks up their latest period first
+    const fresh = researchFreshnessOn() ? freshnessHints(consolidate(findings, now()), new Date(now()).getUTCFullYear()) : []
+    const asked: Awaited<ReturnType<NonNullable<DeepResearchDeps['gaps']>>> = await (fresh.length ? deps.gaps(question, plan, packFindingsForGapCheck(findings), coverage, fresh) : deps.gaps(question, plan, packFindingsForGapCheck(findings), coverage)).catch(() => [])
+    if (fresh.length) deps.trace?.({ ev: 'freshness_hints', n: fresh.length })
     const planned = plan.steps.length
     const more: ResearchPlan['steps'] = (Array.isArray(asked) ? asked : [])
       .map(g => {

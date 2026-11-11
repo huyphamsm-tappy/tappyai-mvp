@@ -330,8 +330,10 @@ export function createDeepResearchDeps(o: { lang: string; userTexts: readonly st
       return (await Promise.all(batches.map(b => one(b).catch(() => [] as Array<{ text: string; source: number; figure?: Figure | null }>)))).flat()
         .filter(f => { const k = `${f.source}|${String(f.text).slice(0, 80).toLowerCase()}`; if (seen.has(k)) return false; seen.add(k); return true })
     },
-    async gaps(question, plan, found, coverage) {
-      const data = `Research plan: ${plan.title}\n${plan.parts?.length ? `Parts the question asks for: ${plan.parts.join('; ')}\n` : ''}${plan.steps.map((s, k) => `${k + 1}. ${s.title}${coverage?.[k] ? ` - ${coverage[k].findings} findings, ${coverage[k].figures} with a figure` : ''}`).join('\n')}\n\nFindings so far:\n${found.map(f => `- ${f}`).join('\n').slice(0, GAP_FINDINGS_BUDGET)}`
+    async gaps(question, plan, found, coverage, freshness) {
+      // RESEARCH_FRESHNESS: the measures this run reads from old periods only; their latest period (this year to date, the latest quarter) is the first gap to fill, named with the publisher that usually reports it
+      const old = freshness?.length ? `\n\nMeasures whose newest reading found is from an earlier year (look up the latest period of these FIRST: this year to date or the latest quarter, naming the publisher that usually reports it, with the year in the query):\n${freshness.map(f => `- ${f}`).join('\n')}` : ''
+      const data = `Research plan: ${plan.title}\n${plan.parts?.length ? `Parts the question asks for: ${plan.parts.join('; ')}\n` : ''}${plan.steps.map((s, k) => `${k + 1}. ${s.title}${coverage?.[k] ? ` - ${coverage[k].findings} findings, ${coverage[k].figures} with a figure` : ''}`).join('\n')}\n\nFindings so far:\n${found.map(f => `- ${f}`).join('\n').slice(0, GAP_FINDINGS_BUDGET)}${old}`
       // 11/11 measured: moving the Advanced gap check from Sonnet to Haiku saved nothing - the run went from 4 follow-up steps to 11 (more searches, more reading: 0.506 USD against 0.473) - so Advanced
       // keeps Sonnet for it (a stricter judge asks for less); Standard's gap check is Haiku as before.
       const r = await AI.extract({ role: planningRole(), ...leadModel(), systemShared: GAPS_SYSTEM, messages: [{ role: 'user', content: `Question:\n${question}${langLine}\n\n${fenceUntrusted('tool_result', data)}` }], schema: GapsSchema, schemaName: 'tappy_research_gaps', maxTokens: 3500, budgetKind: 'aux', abortSignal: o.signal } as never) as { object: { steps: Array<{ title: string; queries: string[] }> }; providerMetadata?: unknown }
