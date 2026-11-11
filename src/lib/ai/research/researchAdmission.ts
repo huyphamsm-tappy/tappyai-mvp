@@ -140,6 +140,9 @@ export const STANDARD_BOUNDS = { maxWorkPackages: 3, targetSources: 8, supplemen
  * A plan STEP is a section of the report that gets its own searches (market size, brands, prices, channels...): an ordinary report has five to eight of them. It is NOT R13's "independent
  * work package" (a separately analysed dimension); counting the two as one sent every report to Advanced (owner 11/11: "tất cả báo cáo đều là Advanced"). What makes a report Advanced is the
  * admission's own triggers (forecast or scenario analysis, dependent stages, several markets or periods, four or more dimensions the PERSON listed) and, later, evidence triggers. A plan
- * larger than this (more than 8 steps) is still refused, because that really is a very wide request.
+ * larger than this is still refused, because that really is a very wide request.
+ * 11/11 LIVE MEASURE: the ceiling was 8 and the first real Standard run on "Xu hướng thị trường trà sữa tại Hà Nội" planned 9 steps (the planner's own sections plus the press step plus a step for a
+ * part no section covered) and was refused; the same question had planned 7 the time before. The step count of a model-written plan VARIES from run to run, so no small ceiling can separate the
+ * tiers. The ceiling is therefore the plan's own cap (planSteps 10 + PART_STEPS 3 = 13): a safety limit that an ordinary plan never reaches, not a trigger.
  */
-export const STANDARD_RUN_BOUNDS = { maxSteps: 8, queriesPerStep: 2, gapRounds: STANDARD_BOUNDS.supplementalPasses, followUpSteps: 2 } as const
+export const STANDARD_RUN_BOUNDS = { maxSteps: 13, queriesPerStep: 2, gapRounds: STANDARD_BOUNDS.supplementalPasses, followUpSteps: 2 } as const

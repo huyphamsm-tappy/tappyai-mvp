@@ -18,6 +18,15 @@ describe('ReportCover', () => {
     expect(text).not.toMatch(/tin cậy|độ tin|confidence/i)
     expect(container.querySelector('h1')?.textContent).toBe('Xu hướng trà sữa Hà Nội')
   })
+  it('says which kind of report it is (standard or advanced); the existing engine report says nothing', () => {
+    setLocale('vi')
+    expect(render(<ReportCover status={status({ tier: 'advanced' })} />).container.textContent).toContain('Báo cáo nâng cao')
+    cleanup()
+    expect(render(<ReportCover status={status({ tier: 'standard' })} />).container.textContent).toContain('Báo cáo tiêu chuẩn')
+    cleanup()
+    const none = render(<ReportCover status={status()} />).container.textContent ?? ''
+    expect(none).not.toContain('tiêu chuẩn'); expect(none).not.toContain('nâng cao')
+  })
   it('English follows the locale', () => {
     setLocale('en')
     expect(render(<ReportCover status={status()} />).container.textContent).toContain('38 sources')

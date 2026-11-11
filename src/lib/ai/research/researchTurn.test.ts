@@ -39,7 +39,7 @@ function turn(standardPlanSteps: number) {
   const res = deepResearchResponse({
     question: 'q', context: '', lang: 'vi', cost: { usd: 0, calls: 0 }, serperUsd: () => ({ usd: 0, calls: 0 }), onFailed: failed,
     deps: mk('legacy', 6),
-    standard: { deps: mk('standard', standardPlanSteps), bounds: { ...STANDARD_RUN_BOUNDS }, label: 'standard' },
+    standard: { deps: mk('standard', standardPlanSteps), bounds: { ...STANDARD_RUN_BOUNDS, maxSteps: 3 }, label: 'standard' },
     onUsage: u => { models.push(u.model) },
   })
   return { res, ran, failed, models }
@@ -55,7 +55,7 @@ describe('a Standard plan over the tier is promoted to Advanced (R13 4.2.3) when
   })
   const run = (promote: (() => Promise<{ deps: DeepResearchDeps; bounds: RunBounds } | null>) | undefined, ran: string[], models: string[]) => deepResearchResponse({
     question: 'q', context: '', lang: 'vi', cost: { usd: 0, calls: 0 }, serperUsd: () => ({ usd: 0, calls: 0 }), onFailed: async () => {},
-    deps: mkDeps('legacy', 6, ran), standard: { deps: mkDeps('standard', 9, ran), bounds: { ...STANDARD_RUN_BOUNDS }, label: 'standard' },
+    deps: mkDeps('legacy', 6, ran), standard: { deps: mkDeps('standard', 5, ran), bounds: { ...STANDARD_RUN_BOUNDS, maxSteps: 3 }, label: 'standard' },
     ...(promote ? { promote } : {}), onUsage: u => { models.push(u.model) },
   })
   it('over 3 steps, with allowance: the Advanced deps run instead, once, and the cost line says so; the legacy engine is not touched', async () => {
@@ -88,7 +88,7 @@ describe('deepResearchResponse with a Standard pair', () => {
     expect(text).toContain('Báo cáo'); expect(failed).not.toHaveBeenCalled()
   })
   it('a plan over the tier falls back to the legacy engine in the same stream, with no refund and a report', async () => {
-    const { res, ran, failed, models } = turn(9)
+    const { res, ran, failed, models } = turn(5)
     const text = await res.text()
     expect(ran).toEqual({ standard: 1, legacy: 1 })
     expect(models).toEqual(['luna']) // served by the existing engine after the fallback

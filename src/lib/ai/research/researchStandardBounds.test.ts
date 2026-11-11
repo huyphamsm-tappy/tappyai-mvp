@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { runDeepResearch, type DeepResearchDeps, type Evidence, type ResearchPlan } from './deepResearch'
+import { runDeepResearch, type DeepResearchDeps, type Evidence, type ResearchPlan, type RunBounds } from './deepResearch'
 import { STANDARD_RUN_BOUNDS } from './researchAdmission'
 
 function harness(plan: ResearchPlan, gapSteps = 5) {
@@ -12,7 +12,7 @@ function harness(plan: ResearchPlan, gapSteps = 5) {
     async gaps() { calls.gaps++; return Array.from({ length: gapSteps }, (_, i) => ({ title: `Bù ${i}`, queries: ['g1', 'g2', 'g3'], completes: null })) },
     async *write() { calls.write++; yield '# Báo cáo\n\nNội dung [1]\n' },
   }
-  const run = (bounds?: typeof STANDARD_RUN_BOUNDS) => runDeepResearch('câu hỏi', '', 'vi', deps, { status() {}, text() {} }, undefined, bounds)
+  const run = (bounds?: RunBounds) => runDeepResearch('câu hỏi', '', 'vi', deps, { status() {}, text() {} }, undefined, bounds)
   return { calls, run }
 }
 
@@ -20,14 +20,15 @@ const plan = (n: number, queries = 3): ResearchPlan => ({ title: 'T', steps: Arr
 
 describe('runDeepResearch with Standard bounds', () => {
   it('a plan with more steps than the tier allows is refused BEFORE any search or model work: it is an Advanced request, nothing is cut to fit', async () => {
+    // the real ceiling (13) is the plan's own cap, which a plan never exceeds; the refusal rule is shown with a lower ceiling passed in
     const h = harness(plan(9))
-    const out = await h.run(STANDARD_RUN_BOUNDS)
+    const out = await h.run({ ...STANDARD_RUN_BOUNDS, maxSteps: 8 })
     expect(out.failed).toBe('exceeds_standard')
     expect(h.calls.gather).toEqual([]); expect(h.calls.notes).toBe(0); expect(h.calls.write).toBe(0)
     expect(out.plan?.steps).toHaveLength(9)
   })
   it('an ORDINARY report plan (six or seven sections, the shape every normal report has) is Standard, not Advanced (owner 11/11: "tất cả báo cáo đều là Advanced")', async () => {
-    for (const n of [5, 6, 7, 8]) {
+    for (const n of [5, 7, 9, 12]) {
       const h = harness(plan(n))
       const out = await h.run(STANDARD_RUN_BOUNDS)
       expect(out.failed, `${n} steps`).toBeNull(); expect(h.calls.write).toBe(1)

@@ -5,7 +5,7 @@
 // Serper credits) and one outcome line (`tappyai_deep_research`, counts only, never the question or the report). A failed run gives the
 // question back (the route's refund) and says so in the text.
 
-import { runDeepResearch, chartsFrame, type DeepResearchDeps, type ResearchStatus, type ResearchEmit, type RunBounds } from './deepResearch'
+import { runDeepResearch, chartsFrame, type DeepResearchDeps, type ResearchStatus, type ResearchEmit, type ReportTier, type RunBounds } from './deepResearch'
 import { evidenceCounts } from './deepResearchDeps'
 import { verifyReport } from './claimVerifier'
 import { structuredConflicts, reconcileByDate } from './conflictMetadata'
@@ -47,8 +47,10 @@ export function deepResearchResponse(t: DeepResearchTurn): Response {
       const send = (line: string) => { try { c.enqueue(enc.encode(line + '\n')) } catch { /* client gone */ } }
       let chars = 0
       let pictures = 0
+      let currentTier: ReportTier | undefined = t.standard ? t.standard.label : undefined
       const emit: ResearchEmit = {
-        status: (s: ResearchStatus) => send(`8:${JSON.stringify([s])}`),
+        // the card says which kind of report this is (standard / advanced); the existing engine's report carries no tier
+        status: (s: ResearchStatus) => send(`8:${JSON.stringify([currentTier ? { ...s, tier: currentTier } : s])}`),
         text: (x: string) => { chars += x.length; send(`0:${JSON.stringify(x)}`) },
         // the section pictures, as the answer's item pictures (tappy.doc_media.v1, re-validated here and again by the client; live-only)
         // the section charts (drawn by the client from these checked figures; every point names its source)
@@ -65,11 +67,12 @@ export function deepResearchResponse(t: DeepResearchTurn): Response {
       let promoted = false
       if (t.standard && out.failed === 'exceeds_standard' && chars === 0 && !t.stop?.signal.aborted && t.promote) {
         const p = await Promise.resolve(t.promote()).catch(() => null)
-        if (p) { promoted = true; out = await runDeepResearch(t.question, t.context, t.lang, p.deps, emit, t.stop?.signal, p.bounds) }
+        if (p) { promoted = true; currentTier = 'advanced'; out = await runDeepResearch(t.question, t.context, t.lang, p.deps, emit, t.stop?.signal, p.bounds) }
       }
       let standardFallback: string | null = null
       if (t.standard && (out.failed === 'exceeds_standard' || out.failed === 'no_plan') && chars === 0 && !t.stop?.signal.aborted) {
         standardFallback = out.failed
+        currentTier = undefined
         out = await runDeepResearch(t.question, t.context, t.lang, t.deps, emit, t.stop?.signal)
       }
       // the person left before any report text went out: nothing was read, so the run is given back. Review 01/11: once the report had started

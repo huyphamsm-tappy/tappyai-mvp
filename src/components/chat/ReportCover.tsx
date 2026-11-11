@@ -14,7 +14,7 @@ export default function ReportCover({ status }: { status: ResearchStatus }) {
   const date = new Date().toLocaleDateString(locale === 'en' ? 'en-GB' : 'vi-VN')
   return (
     <header className="tappy-report-cover mb-4" data-testid="report-cover">
-      <div className="tappy-report-eyebrow">{t('report.eyebrow')}</div>
+      <div className="tappy-report-eyebrow">{t('report.eyebrow')}{status.tier ? ` · ${t(`report.tier.${status.tier}`)}` : ''}</div>
       <h1 className="tappy-report-title">{status.title}</h1>
       <div className="mt-3 flex flex-wrap gap-2">
         <span className="tappy-report-pill">{t('report.updated', { date })}</span>

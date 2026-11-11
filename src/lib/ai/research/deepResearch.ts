@@ -151,7 +151,10 @@ const MAX_CHART_POINTS = 12
 export type StepStatus = 'pending' | 'running' | 'done' | 'failed'
 /** A cited source as the card links it (https only); the report text names it without a link. */
 export interface ResearchLink { id: number; title: string; url: string }
-export interface ResearchStatus { type: 'tappy.research.v1'; title: string; phase: 'planning' | 'researching' | 'writing' | 'done' | 'failed'; steps: Array<{ title: string; status: StepStatus }>; sources: number; links?: ResearchLink[] }
+/** Which kind of report this is, so the person and the logs can tell them apart (owner 11/11: "hệ thống phải phân biệt standard report và advanced report"). Absent = the existing engine's report. */
+export type ReportTier = 'standard' | 'advanced'
+const REPORT_TIERS = new Set<string>(['standard', 'advanced'])
+export interface ResearchStatus { type: 'tappy.research.v1'; title: string; phase: 'planning' | 'researching' | 'writing' | 'done' | 'failed'; steps: Array<{ title: string; status: StepStatus }>; sources: number; links?: ResearchLink[]; tier?: ReportTier }
 
 const PHASES = new Set(['planning', 'researching', 'writing', 'done', 'failed'])
 const STEP_STATUSES = new Set(['pending', 'running', 'done', 'failed'])
@@ -165,7 +168,7 @@ export function readResearchStatus(annotations: unknown[] | undefined | null): R
     if (!c || typeof c !== 'object' || c.type !== 'tappy.research.v1' || typeof c.phase !== 'string' || !PHASES.has(c.phase)) continue
     const steps = (Array.isArray(c.steps) ? c.steps : []).filter(s => s && typeof s.title === 'string' && STEP_STATUSES.has(s.status)).slice(0, DEEP_RESEARCH_LIMITS.steps)
     const links = (Array.isArray(c.links) ? c.links : []).filter(l => l && typeof l.id === 'number' && typeof l.title === 'string' && httpsUrl(l.url)).slice(0, 40)
-    out = { type: 'tappy.research.v1', title: typeof c.title === 'string' ? c.title.slice(0, 160) : '', phase: c.phase, steps: steps.map(s => ({ title: s.title.slice(0, 160), status: s.status })), sources: typeof c.sources === 'number' && c.sources >= 0 ? Math.floor(c.sources) : 0, ...(links.length ? { links: links.map(l => ({ id: l.id, title: l.title.slice(0, 200), url: l.url })) } : {}) }
+    out = { type: 'tappy.research.v1', title: typeof c.title === 'string' ? c.title.slice(0, 160) : '', phase: c.phase, steps: steps.map(s => ({ title: s.title.slice(0, 160), status: s.status })), sources: typeof c.sources === 'number' && c.sources >= 0 ? Math.floor(c.sources) : 0, ...(links.length ? { links: links.map(l => ({ id: l.id, title: l.title.slice(0, 200), url: l.url })) } : {}), ...(typeof c.tier === 'string' && REPORT_TIERS.has(c.tier) ? { tier: c.tier as ReportTier } : {}) }
   }
   return out
 }

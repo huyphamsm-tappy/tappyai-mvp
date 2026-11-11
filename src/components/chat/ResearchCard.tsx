@@ -34,6 +34,7 @@ export default function ResearchCard({ status, report, images = [], charts = [],
       <div className="flex items-center gap-2 text-xs font-medium text-primary-700 dark:text-primary-300">
         <span aria-hidden="true">🔎</span>
         <span role="status" aria-live="polite" className={cn(working && 'animate-pulse')}>{t(`research.${status.phase}`, { sources: String(status.sources) })}</span>
+        {status.tier && <span data-testid="research-tier" data-tier={status.tier} className={cn('ml-auto rounded-full border px-2 py-0.5 text-[11px] font-semibold', status.tier === 'advanced' ? 'border-orange-300 bg-orange-50 text-orange-700 dark:border-orange-500/50 dark:bg-orange-500/10 dark:text-orange-300' : 'border-gray-200 text-gray-600 dark:border-gray-700 dark:text-gray-300')}>{t(`report.tier.${status.tier}`)}</span>}
       </div>
       {status.title && <div className="mt-2 text-sm font-semibold text-gray-900 dark:text-gray-100">{status.title}</div>}
       {status.steps.length > 0 && (

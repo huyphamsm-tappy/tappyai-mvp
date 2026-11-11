@@ -83,6 +83,8 @@ export const vi: Record<string, string> = {
   'report.updated': 'Cập nhật {date}',
   'report.sources': '{n} nguồn',
   'report.disclaimer': 'Tappy có thể mắc lỗi. Vui lòng kiểm tra lại thông tin quan trọng.',
+  'report.tier.standard': 'Báo cáo tiêu chuẩn',
+  'report.tier.advanced': 'Báo cáo nâng cao',
 }
 
 export const en: Record<string, string> = {
@@ -161,4 +163,6 @@ export const en: Record<string, string> = {
   'report.updated': 'Updated {date}',
   'report.sources': '{n} sources',
   'report.disclaimer': 'Tappy can make mistakes. Please double-check important information.',
+  'report.tier.standard': 'Standard report',
+  'report.tier.advanced': 'Advanced report',
 }
