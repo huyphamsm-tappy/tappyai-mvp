@@ -25,7 +25,7 @@ import { failureKind } from './failureKind'
 import { buildCards, cardSummary, factSupport, quoteInText, type CardSummary, type EvidenceCard } from './evidenceCards'
 import { outlineWriterInput, releaseText, type Outline, type WriterInput } from './thesisReport'
 import { FIGURE_CONFLICT_GAP } from './figureGap'
-import { groundForecast, runForecast, wantsForecastModel, type ForecastSpec, type ForecastResult } from './forecastModel'
+import { groundForecast, runForecast, wantsForecastModel, forecastNotes, type ForecastSpec, type ForecastResult } from './forecastModel'
 import { deepResearchV2On, researchSourceDiversityOn, researchPackagesOn, researchForecastModelOn, researchFreshnessOn, researchChartRelevanceOn, researchEvidenceCardsOn, researchThesisOn, V2_LIMITS, termScores, stepCoverage, decideNext, missingParts, findingsForPart } from './deepResearchState'
 
 // planSteps: the plan's own steps; steps: all steps of a run (the plan's + the follow-up round's GAP_STEPS), as the card shows them
@@ -776,7 +776,7 @@ export async function runDeepResearch(question: string, context: string, lang: s
     if (!written.trim()) throw new Error('empty_report')
     if (thesisIn && !left?.aborted) {
       const before = written.length
-      const r = releaseText(written, thesisIn.sources)
+      const r = releaseText(written, thesisIn.sources, forecastResult ? forecastNotes(forecastResult) : '')
       if (!r.text.trim()) throw new Error('empty_report')
       written = r.text
       emit.text(r.text)

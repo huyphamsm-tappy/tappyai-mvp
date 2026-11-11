@@ -142,6 +142,15 @@ describe('releaseText: only checked text is shown', () => {
     expect(r.used.map(s => s.id)).toEqual([1, 2])
     expect(r.used.map(s => s.title)).toEqual(['S2', 'S1'])
   })
+  it('keeps a sentence whose figures all come from the scenario model computed by code (given as the trusted text), and still drops one with a figure that is nowhere', () => {
+    const model = '| 2027 | 411,05 | 449,47 | 480,82 |\nGrowth 2026 to 2029, percent per year: base 9,3.'
+    const report = 'Kịch bản cơ sở đạt 449,47 vào 2027 và tăng 9,3% mỗi năm. Kịch bản cao đạt 777,77 vào 2027.'
+    const r = releaseText(report, sources, model)
+    expect(r.text).toContain('449,47')
+    expect(r.text).not.toContain('777,77')
+    expect(r.dropped).toBe(1)
+    expect(releaseText(report, sources).text).not.toContain('449,47')
+  })
   it('drops a sentence with a figure and no citation at all', () => {
     const r = releaseText('Thị trường tăng 35% mỗi năm.', sources)
     expect(r.text).not.toContain('35%')

@@ -47,7 +47,8 @@ function figuresOf(sentence: string): string[] {
   return out
 }
 
-const written = (figure: string, corpus: string): boolean => {
+/** A figure as written in a sentence ("12.500", "9,3%") is present in a text: as the same number, in either decimal convention, or as the same characters. */
+export const written = (figure: string, corpus: string): boolean => {
   const raw = figure.replace(/%$/, '')
   return numberInText(Number(raw.replace(/,/g, '')), corpus) || numberInText(Number(raw.replace(/\./g, '').replace(',', '.')), corpus) || corpus.includes(raw)
 }

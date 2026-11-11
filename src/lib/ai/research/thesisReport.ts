@@ -7,7 +7,7 @@
 import { z } from 'zod'
 import type { Evidence, Finding, ResearchPlan } from './deepResearch'
 import type { EvidenceCard } from './evidenceCards'
-import { verifyReport, type VerifierSource } from './claimVerifier'
+import { verifyReport, written, type VerifierSource } from './claimVerifier'
 import { lenientArray } from './lenientSchema'
 
 export interface OutlinePoint { claim: string; cards: string[] }
@@ -119,7 +119,7 @@ export interface Released { text: string; /** sentences dropped */ dropped: numb
  * no citation is dropped. Headings, tables (the scenario model's numbers are computed by code, not read from a page), list markers and sentences without a figure stay. The citations that remain are renumbered
  * in order of first use, and `used` lists those sources in the new order. Pure.
  */
-export function releaseText(report: string, sources: readonly (VerifierSource & { url?: string; site?: string; published?: string })[]): Released {
+export function releaseText(report: string, sources: readonly (VerifierSource & { url?: string; site?: string; published?: string })[], /** text whose figures code computed (the scenario model): a sentence whose figures are all in it is not dropped for lacking a source */ trusted = ''): Released {
   let dropped = 0
   const kept = String(report ?? '').split('\n').map(line => {
     if (/^\s*(#{1,6}\s|\|)/.test(line) || !line.trim()) return line
@@ -128,7 +128,12 @@ export function releaseText(report: string, sources: readonly (VerifierSource & 
     const sentences = body.split(SENTENCE).filter(Boolean)
     const ok = sentences.filter(s => {
       const r = verifyReport(s, sources)
-      const bad = [...Object.entries(r.counts)].some(([k, n]) => ERRORS.has(k) && n > 0)
+      let bad = [...Object.entries(r.counts)].some(([k, n]) => ERRORS.has(k) && n > 0)
+      // a figure the model computed is the report's own analysis, sourced by the code that computed it: allowed when every figure the verifier refused is in the model's text and no citation id is wrong
+      if (bad && trusted && !r.counts.bad_citation) {
+        const refused = r.flagged.flatMap(f => f.figures)
+        if (refused.length && refused.every(f => written(f, trusted))) bad = false
+      }
       if (bad) dropped++
       return !bad
     })
