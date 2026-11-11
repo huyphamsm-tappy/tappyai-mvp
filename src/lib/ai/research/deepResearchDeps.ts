@@ -23,7 +23,7 @@ import { researchSourceDiversityOn, researchConsolidationOn, researchPackagesOn,
 import { TIGHT_WRITE_RULE } from './reportRepeats'
 import { forecastNotes, packFindingsForForecast, specFromRaw, askTwice, type ForecastSpecRaw } from './forecastModel'
 import { consolidate, consolidatedNotes } from './consolidate'
-import { briefText, planWithFallback, PLAN_PACKAGES_MAX_TOKENS } from './researchPackages'
+import { briefText, planWithFallback, PLAN_PACKAGES_MAX_TOKENS, PLAN_CLAUDE_MAX_TOKENS } from './researchPackages'
 import { questionKind } from './researchLanes'
 import { DEEP_RESEARCH_LIMITS, GAP_FINDINGS_BUDGET, pageTextLimit, writerNotes, type Figure, type Finding, type DeepResearchDeps, type Evidence, type ResearchPlan } from './deepResearch'
 
@@ -267,8 +267,11 @@ export function createDeepResearchDeps(o: { lang: string; userTexts: readonly st
     ...(consultTraceDiagnosticsOn() ? { trace: (e: Record<string, unknown>) => { if (e.ev === 'dump' && process.env.DEEP_RESEARCH_TRACE_FULL !== '1') return; console.log(JSON.stringify({ type: 'tappyai_deep_research_trace', ...e })) } } : {}),
     async plan(question, context) {
       type PlanOut = { object: Omit<ResearchPlan, 'parts'> & { specialist_steps?: ResearchPlan['steps']; parts?: Array<{ part?: string; step?: number | null }> }; providerMetadata?: unknown }
-      const ask = (pk: boolean) => AI.extract({ role: planningRole(), ...leadModel(), systemShared: pk ? PLAN_SYSTEM + PLAN_PACKAGES_ADDENDUM : PLAN_SYSTEM, messages: [{ role: 'user', content: `${context ? `Conversation so far:\n${context}\n\n` : ''}Question:\n${question}${langLine}` }], schema: pk ? PlanSchemaPackages : PlanSchema, schemaName: 'tappy_research_plan', maxTokens: pk ? PLAN_PACKAGES_MAX_TOKENS : 3500, budgetKind: 'aux', abortSignal: o.signal } as never) as Promise<PlanOut>
-      const r = await planWithFallback(packages, ask)
+      const ask = (pk: boolean) => AI.extract({ role: planningRole(), ...leadModel(), systemShared: pk ? PLAN_SYSTEM + PLAN_PACKAGES_ADDENDUM : PLAN_SYSTEM, messages: [{ role: 'user', content: `${context ? `Conversation so far:\n${context}\n\n` : ''}Question:\n${question}${langLine}` }], schema: pk ? PlanSchemaPackages : PlanSchema, schemaName: 'tappy_research_plan', maxTokens: pk ? PLAN_PACKAGES_MAX_TOKENS : advancedLead ? PLAN_CLAUDE_MAX_TOKENS : 3500, budgetKind: 'aux', abortSignal: o.signal } as never) as Promise<PlanOut>
+      // a plan call that fails (cut off, a structured answer that does not match the schema) is made once more; the log names the kind of failure, never the text. Seen 11/11 in the owner's UAT: one Advanced plan
+      // call failed silently and the run fell to the old engine
+      const logged = (pk: boolean) => ask(pk).catch(e => { console.warn(JSON.stringify({ type: 'tappyai_research_plan_failed', packages: pk, error: String(e).slice(0, 160) })); throw e })
+      const r = await askTwice(() => planWithFallback(packages, logged))
       addCost(o.cost, r.providerMetadata)
       // the listed parts first, the specialist's steps last; when together they exceed the plan's cap the listed ones give way, never the specialist's
       const extra = (Array.isArray(r.object.specialist_steps) ? r.object.specialist_steps : []).slice(0, 3)

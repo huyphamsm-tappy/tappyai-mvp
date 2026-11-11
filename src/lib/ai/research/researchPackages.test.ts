@@ -1,5 +1,6 @@
 import { describe, it, expect, afterEach, vi } from 'vitest'
-import { dedupePackages, briefText, planWithFallback, PLAN_PACKAGES_MAX_TOKENS } from './researchPackages'
+import { dedupePackages, briefText, planWithFallback, PLAN_PACKAGES_MAX_TOKENS, PLAN_CLAUDE_MAX_TOKENS } from './researchPackages'
+import { askTwice } from './forecastModel'
 import { researchPackagesOn } from './deepResearchState'
 import { normalisePlan, runDeepResearch, type DeepResearchDeps, type Evidence, type ResearchPlan } from './deepResearch'
 import { PlanSchema, PlanSchemaPackages } from './deepResearchDeps'
@@ -102,6 +103,27 @@ describe('the package plan cannot cost the report', () => {
     await expect(planWithFallback(true, async pk => { calls.push(pk); throw new Error('down') })).rejects.toThrow('down')
     expect(calls).toEqual([true, false])
     await expect(planWithFallback(false, async () => { throw new Error('down') })).rejects.toThrow('down')
+  })
+})
+
+// Seen in the owner's UAT on 11/11: an Advanced forecast question ran the plan call (Sonnet, ~3000 tokens out), got no usable plan, and nothing in the log said why; the run fell to the old engine, whose
+// writer then failed, so the person got "research could not be completed". The plan call is made twice and its failure kind is logged.
+describe('the plan call is made twice, and the package fallback sits inside that', () => {
+  it('a first attempt that fails completely (package plan and plain plan) is repeated once', async () => {
+    const calls: boolean[] = []
+    const r = await askTwice(() => planWithFallback(true, async pk => { calls.push(pk); if (calls.length <= 2) throw new Error('no object'); return 'plan' }))
+    expect(r).toBe('plan')
+    expect(calls).toEqual([true, false, true])
+  })
+  it('a plain plan that fails once is repeated once; two failures reach the caller (which falls back to the old engine)', async () => {
+    let n = 0
+    expect(await askTwice(() => planWithFallback(false, async () => { n++; if (n === 1) throw new Error('x'); return 'ok' }))).toBe('ok')
+    n = 0
+    await expect(askTwice(() => planWithFallback(false, async () => { n++; throw new Error('down') }))).rejects.toThrow('down')
+    expect(n).toBe(2)
+  })
+  it('the plan\'s ceiling for the Claude-led (Advanced) plain plan is above the 3500 that cut a plan off once', () => {
+    expect(PLAN_CLAUDE_MAX_TOKENS).toBeGreaterThanOrEqual(6000)
   })
 })
 

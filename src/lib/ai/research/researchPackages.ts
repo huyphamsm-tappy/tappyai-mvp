@@ -20,6 +20,8 @@ function jaccard(a: ReadonlySet<string>, b: ReadonlySet<string>): number {
   return inter / (a.size + b.size - inter)
 }
 
+/** The output ceiling of the plain plan call when Claude leads (Advanced): a Sonnet plan of 8 to 10 steps comes close to the 3500 the Luna plan call is given, and one plan was cut off at exactly 3500 (11/11). */
+export const PLAN_CLAUDE_MAX_TOKENS = 6000
 /** The output ceiling of the package plan call: four parts on every step make it far longer than the plain plan's 3500 tokens, which cut it off in the first live run (11/11). */
 export const PLAN_PACKAGES_MAX_TOKENS = 9000
 /** The package plan is asked first when `packages` is on; if that call fails (cut off, unreadable, refused) the plain plan is asked once, so the flag can never cost the report. A plain failure is the caller's. */
