@@ -52,6 +52,8 @@ const EXEMPT: Record<string, string> = {
   'age-declaration': 'guest 18+ self-declaration for the chat trial; sets an HttpOnly cookie, writes nothing server-side; 10/min per IP',
   'auth/claim-anonymous': 'the anonymous→account handoff; the anonymous token IS the credential',
   'csp-report': 'the browser sends CSP violation reports with no credentials; nothing is stored (one log line per distinct violation); body capped at 20 KB, 30/min per IP',
+  // ── Remote MCP Gateway: its callers are external AI Hosts, not Tappy sessions. ──
+  'mcp': 'not a Tappy account session: every request carries a Host-issued token that is verified per request (default wiring denies all, no verifier exists yet); an unlinked caller is a limited anonymous Gateway principal by design (R13 10.7); tools are read-only and job creation is control-plane state; 404 unless MCP_GATEWAY=1, locked in production',
   // ── Explore video playback: a PUBLIC post is watched by anyone, signed-in or not. ──
   'video/playback/[assetId]': 'POST only SIGNS a short-lived cookie for the video of a PUBLIC post (404 unless published, approved and visible); it writes nothing; 240/min per user or IP; 404 while EXPLORE_VIDEO_PIPELINE_ENABLED is off',
 
