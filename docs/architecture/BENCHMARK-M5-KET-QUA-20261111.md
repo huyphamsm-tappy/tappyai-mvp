@@ -39,6 +39,12 @@ Chẩn đoán: thẻ về "làn sóng 7.000 đồng" có (11–24 thẻ) nhưng 
 Đã làm: (1) người phân tích tính trọng lượng theo số thẻ phủ một chủ đề (5 thẻ trở lên) và luôn dành chỗ cho luật, thuế, cấm sắp có hiệu lực; (2) khi cờ `RESEARCH_FRESHNESS` bật, rà khoảng trống tìm thêm một quy định sắp có hiệu lực; (3) viết từ dàn ý hỏng thì viết lại từ phát hiện như cũ (lượt hỏng `write_failed` sau dàn ý tốt).
 Kết quả 12 lượt q01 (4 bộ 3 lượt; 1 lượt hỏng `write_failed` trước khi có bước thử lại, 11 lượt thành công): số liệu bắt buộc 0–50%, **không cải thiện chắc chắn**; "7.000 đồng" có mặt ở 8/11 lượt thành công (trước đó 1/2 lượt), mốc 36.000–70.000 đồng ở 1/11, thuế tiêu thụ đặc biệt ở 0/11. Một câu thêm (tìm theo ngành hàng và nguyên liệu chính) không làm thẻ thuế xuất hiện (0/3) nên đã bỏ. Kết luận: phần thiếu còn lại nằm ở tìm nguồn của Standard (Haiku không biết để hỏi về luật thuế mới), không sửa được tiếp bằng lời nhắc mà không thành vá riêng từng câu. Cách thật là cho Standard một lượt tìm "thay đổi chính sách sắp có hiệu lực" có nguồn tri thức tốt hơn (ví dụ để Sonnet viết truy vấn cho bước này), cần anh quyết vì tốn thêm chi phí.
 
+## Quét chính sách cho Standard (cách 2, 11/11)
+
+Mỗi lượt Standard (cờ `RESEARCH_THESIS_REPORT`), trong bước rà khoảng trống, một lời gọi Sonnet viết một bước tìm quy định sắp có hiệu lực (tiêu đề + 3 truy vấn); bước này xếp đầu danh sách nên chỉ thế chỗ khoảng trống yếu nhất, không thêm bước. Cả 5 lượt Sonnet đều viết truy vấn về thuế tiêu thụ đặc biệt nước giải khát có đường (q01) hoặc quy định giao đồ ăn (q06).
+Kết quả q01 ×3: số liệu bắt buộc 50%, 25%, 75% (trước đó 0–50%): thuế tiêu thụ đặc biệt có ở 2/3 (trước 0/11), mốc 36.000–70.000 đồng 2/3 (trước 1/11), số liệu nửa đầu 2026 2/3; **mất "7.000 đồng" ở 3/3** (trước 8/11) vì bước chính sách thế chỗ bước tìm làn sóng giá rẻ. q04 100%, q06 75%.
+**Giá mỗi báo cáo Standard: 0,111 USD (trung bình 5 lượt, 0,092–0,117) so với 0,106 USD trước đó (17 lượt)**: thêm khoảng 0,005 USD, thấp hơn ước tính 0,01–0,03.
+
 ## Chi phí đo M3–M5
 
 Khoảng 4,8 USD cho 14 lượt đo (kể cả các lượt phát hiện lỗi), cộng dồn từ số `usd.total` của từng lượt.
