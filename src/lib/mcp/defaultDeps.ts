@@ -10,10 +10,33 @@ import { createSpendPool } from './spendPool'
 import { createAbuseMonitor } from './abuseGuard'
 import { unavailableJobStore } from './jobs'
 import { NO_ADAPTERS, type ServiceAdapters } from './serviceMap'
+import { createSupabaseTokenVerifier, parseClientRegistry, type ProviderUser } from './identity'
 
 type Env = Record<string, string | undefined>
 
 export const denyAllVerifier: TokenVerifier = async () => null
+
+/** The identity provider's own token check (Supabase auth.getUser): signature, expiry and session revocation. A plain anon-key client acting for the token: no service role. Lazily imported. */
+function supabaseGetUser(env: Env): (token: string) => Promise<ProviderUser | null> {
+  return async token => {
+    const { createClient } = await import('@supabase/supabase-js')
+    const c = createClient(env.NEXT_PUBLIC_SUPABASE_URL as string, env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string, { auth: { autoRefreshToken: false, persistSession: false } })
+    const { data, error } = await c.auth.getUser(token)
+    return error || !data.user ? null : { id: data.user.id, is_anonymous: data.user.is_anonymous }
+  }
+}
+
+/**
+ * The token verifier: the Supabase-backed one ONLY when the resource URL (https), at least one registered client and the identity provider settings are all configured; otherwise deny-all.
+ * `getUser` is a test seam. Presence of settings is checked, their values are never read into any output.
+ */
+export function buildVerifier(env: Env, getUser?: (token: string) => Promise<ProviderUser | null>): TokenVerifier {
+  const audience = env.MCP_RESOURCE_URL ?? ''
+  const registry = parseClientRegistry(env.MCP_OAUTH_CLIENTS)
+  const providerConfigured = !!env.NEXT_PUBLIC_SUPABASE_URL && !!env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  if (!audience.startsWith('https://') || Object.keys(registry).length === 0 || (!getUser && !providerConfigured)) return denyAllVerifier
+  return createSupabaseTokenVerifier({ expectedAudience: audience, registry, now: () => new Date(), getUser: getUser ?? supabaseGetUser(env) })
+}
 
 /** Per-principal rate limit: the shared sliding window, which refuses when its store is missing or down (fail closed). PLACEHOLDER numbers. */
 const RATE_LIMIT = 30
@@ -40,9 +63,9 @@ export function realAdapters(): ServiceAdapters {
   }
 }
 
-export function buildGatewayDeps(env: Env = process.env): GatewayDeps {
+export function buildGatewayDeps(env: Env = process.env, seams: { getUser?: (token: string) => Promise<ProviderUser | null> } = {}): GatewayDeps {
   return {
-    verify: denyAllVerifier,
+    verify: buildVerifier(env, seams.getUser),
     expectedAudience: env.MCP_RESOURCE_URL ?? '',
     resourceMetadataUrl: env.MCP_RESOURCE_METADATA_URL || undefined,
     adapters: realAdapters(),
