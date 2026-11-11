@@ -18,7 +18,8 @@
 import { parseDoc, headingTitle, titleKey, type DocBlock } from '@/lib/answerDoc/parse'
 import { leanValue } from './deepResearchLean'
 import { questionKind, withNewsLane } from './researchLanes'
-import { deepResearchV2On, researchSourceDiversityOn, V2_LIMITS, termScores, stepCoverage, decideNext, missingParts, findingsForPart } from './deepResearchState'
+import { dedupePackages } from './researchPackages'
+import { deepResearchV2On, researchSourceDiversityOn, researchPackagesOn, V2_LIMITS, termScores, stepCoverage, decideNext, missingParts, findingsForPart } from './deepResearchState'
 
 // planSteps: the plan's own steps; steps: all steps of a run (the plan's + the follow-up round's GAP_STEPS), as the card shows them
 /** R13 tier bounds for one run (Standard report). Absent = the unbounded one-pass / V2 run, byte for byte. */
@@ -31,7 +32,9 @@ export const DEEP_RESEARCH_LIMITS = { planSteps: 10, steps: 17, queriesPerStep: 
  * A follow-up step's `completes`: the plan step (1-based) whose section its findings complete (measured 31/10: follow-ups written as their own
  * sections repeated two earlier ones); absent = a section of its own.
  */
-export interface ResearchPlan { title: string; sources_label?: string; /** the parts of the report the question asks for, in its own words and order */ parts?: string[]; /** the parts the plan call says no step researches */ uncovered?: string[]; steps: Array<{ title: string; queries: string[]; image_query?: string; completes?: number }> }
+/** RESEARCH_PACKAGES: what a step (a work package) is held to - its one question, what it hands back, where such facts are published, and what another step covers instead. */
+export interface StepBrief { objective: string; output: string; sources: string; boundary: string }
+export interface ResearchPlan { title: string; sources_label?: string; /** the parts of the report the question asks for, in its own words and order */ parts?: string[]; /** the parts the plan call says no step researches */ uncovered?: string[]; steps: Array<{ title: string; queries: string[]; image_query?: string; completes?: number; brief?: StepBrief }> }
 
 /** The report's sections: the steps that are not follow-ups of another, in order. Pure. */
 export const sectionSteps = (plan: ResearchPlan) => plan.steps.filter(s => !s.completes)
@@ -185,7 +188,7 @@ export interface DeepResearchDeps {
   /** One query: its search results with the text of the pages read (empty when nothing came back). */
   gather(query: string, focus: string, /** hosts that already gave this run many sources: the search leaves them out, to find other publishers */ avoid?: readonly string[]): Promise<Array<{ title: string; url: string; snippet: string; text: string; published?: string; site?: string }>>
   /** The step's findings; `source` is an id of the evidence handed in; `figure` when the finding states one figure. */
-  notes(step: string, question: string, evidence: readonly Evidence[]): Promise<Array<{ text: string; source: number; figure?: Figure | null }>>
+  notes(step: string, question: string, evidence: readonly Evidence[], /** RESEARCH_PACKAGES: the step's brief, given only when the flag is on and the step has one */ brief?: StepBrief): Promise<Array<{ text: string; source: number; figure?: Figure | null }>>
   write(input: { question: string; plan: ResearchPlan; evidence: readonly Evidence[]; findings: readonly Finding[] }): AsyncIterable<string>
   /**
    * DEEP_RESEARCH_V2 only (03/11): writes sections for the parts of the question no heading of the written report names, from the findings that
@@ -364,10 +367,11 @@ export function normalisePlan(p: unknown, question: string): ResearchPlan | null
   const parts = (Array.isArray(r.parts) ? r.parts : []).map(x => clean(x, 120)).filter(Boolean).slice(0, 12)
   const uncovered = (Array.isArray(r.uncovered) ? r.uncovered : []).map(x => clean(x, 120)).filter(Boolean).slice(0, PART_STEPS)
   const steps = (Array.isArray(r.steps) ? r.steps : []).map(s => {
-    const x = (s ?? {}) as { title?: unknown; queries?: unknown; image_query?: unknown }
+    const x = (s ?? {}) as { title?: unknown; queries?: unknown; image_query?: unknown; objective?: unknown; output?: unknown; sources?: unknown; boundary?: unknown }
     const queries = (Array.isArray(x.queries) ? x.queries : []).map(q => clean(q, 200)).filter(Boolean).slice(0, leanValue('queries', DEEP_RESEARCH_LIMITS.queriesPerStep, 2))
     const image = clean(x.image_query, 80)
-    return { title: clean(x.title, 160), queries, ...(image ? { image_query: image } : {}) }
+    const objective = clean(x.objective, 240)
+    return { title: clean(x.title, 160), queries, ...(image ? { image_query: image } : {}), ...(objective ? { brief: { objective, output: clean(x.output, 200), sources: clean(x.sources, 200), boundary: clean(x.boundary, 240) } } : {}) }
   }).filter(s => s.title && s.queries.length).slice(0, leanValue('planSteps', DEEP_RESEARCH_LIMITS.planSteps, 8))
   if (!steps.length) return null
   // the label is one short heading word or two: markup characters are blanked like a source title's
@@ -551,6 +555,8 @@ export async function runDeepResearch(question: string, context: string, lang: s
   emit.status({ type: 'tappy.research.v1', title: clean(question, 120), phase: 'planning', steps: [], sources: 0 })
   let plan: ResearchPlan | null = null
   try { const first = normalisePlan(await deps.plan(question, context), question); plan = first ? withPartSteps(first) : null
+    // RESEARCH_PACKAGES: a package that asks what an earlier one asks is merged into it (its new queries folded in), so the same fact is not searched and read twice
+    if (plan && researchPackagesOn()) { const d = dedupePackages(plan); plan = d.plan; if (d.merged.length) deps.trace?.({ ev: 'packages_merged', merged: d.merged }) }
     // RESEARCH_SOURCE_DIVERSITY: a TREND question (by code) also gets a press step about what changed lately; other kinds are untouched
     if (plan && researchSourceDiversityOn()) plan = withNewsLane(plan, questionKind(question), lang, new Date(now()).getFullYear(), bounds?.maxSteps ?? DEEP_RESEARCH_LIMITS.planSteps + PART_STEPS) } catch { plan = null }
   if (left?.aborted) return { plan, evidence, findings, failed: 'client_gone' }
@@ -575,7 +581,10 @@ export async function runDeepResearch(question: string, context: string, lang: s
     steps[k].status = 'running'; show('researching')
     // a publisher that already gave this run HOST_SHARE_AVOID_AT sources is left out of the next searches (-site:), so a later round finds OTHER sources instead of more of the same
     const avoid = researchSourceDiversityOn() ? heavyHosts(evidence) : undefined
-    const gathered = (await Promise.all(step.queries.slice(0, bounds?.queriesPerStep ?? step.queries.length).map(q => deps.gather(q, `${step.title} - ${question}`, avoid).catch(() => [])))).flat()
+    // RESEARCH_PACKAGES: a step with a brief searches and reads for its OBJECTIVE (not just its section title), and its reader is told its boundary
+    const briefed = researchPackagesOn() && step.brief ? step.brief : undefined
+    const focus = `${briefed ? briefed.objective : step.title} - ${question}`
+    const gathered = (await Promise.all(step.queries.slice(0, bounds?.queriesPerStep ?? step.queries.length).map(q => deps.gather(q, focus, avoid).catch(() => [])))).flat()
     const mine: Evidence[] = []
     for (const g of gathered) {
       const url = g.url ? canonicalSourceUrl(g.url) : null
@@ -592,7 +601,7 @@ export async function runDeepResearch(question: string, context: string, lang: s
     // 02/11 (owner: "tại sao thiếu thông tin"): counts per step - where the information is lost (not found / not read / cut at the page limit / not kept)
     const stat = stepStats[k] = { rows: gathered.length, evidence: mine.length, with_text: gathered.filter(g => g.text.trim()).length, cut_pages: gathered.filter(g => g.text.length > pageTextLimit()).length, notes: 0, kept: 0 }
     if (!mine.length) { steps[k].status = 'failed'; show('researching'); return }
-    const got = await deps.notes(step.title, question, mine).catch(() => [])
+    const got = await (briefed ? deps.notes(step.title, question, mine, briefed) : deps.notes(step.title, question, mine)).catch(() => [])
     stat.notes = got.length
     deps.trace?.({ ev: 'dump', step: k + 1, evidence: mine.map(e => ({ id: e.id, url: e.url, title: e.title, snippet: e.snippet, text: e.text })), findings: got.map(f => ({ source: f.source, text: f.text, figure: f.figure ?? null })) })
     deps.trace?.({ ev: 'step', step: k + 1, title: step.title, queries: step.queries, evidence: mine.map(e => ({ id: e.id, url: e.url.slice(0, 110), title: e.title.slice(0, 90), chars: e.text.length })), findings: got.map(f => ({ source: f.source, text: clean(f.text, 200), figure: !!f.figure })) })

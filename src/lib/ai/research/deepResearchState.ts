@@ -18,6 +18,10 @@ export const RESEARCH_SOURCE_DIVERSITY_FLAG = 'RESEARCH_SOURCE_DIVERSITY'
 /** Pure. Source diversity (a publisher that already gave many sources is left out of later searches; no chart from a dated source older than 24 months): OFF unless exactly "1", locked in production. */
 export const researchSourceDiversityOn = (env: Env = process.env): boolean => env[RESEARCH_SOURCE_DIVERSITY_FLAG] === '1' && !lockedInProduction(env, RESEARCH_SOURCE_DIVERSITY_FLAG)
 
+export const RESEARCH_PACKAGES_FLAG = 'RESEARCH_PACKAGES'
+/** Pure. Work packages with a four-part brief (objective, output, sources, boundary) for the Advanced plan, repeated packages merged by code, the brief handed to the reader of each step: OFF unless exactly "1", locked in production. */
+export const researchPackagesOn = (env: Env = process.env): boolean => env[RESEARCH_PACKAGES_FLAG] === '1' && !lockedInProduction(env, RESEARCH_PACKAGES_FLAG)
+
 export const RESEARCH_CONSOLIDATION_FLAG = 'RESEARCH_CONSOLIDATION'
 /** Pure. Consolidation before the writer (a fact read in several steps is kept once; a disagreement is a conflict only for the same subject, measure, scope and period; readings at different dates are a trend; the newest period found is reported): OFF unless exactly "1", locked in production. */
 export const researchConsolidationOn = (env: Env = process.env): boolean => env[RESEARCH_CONSOLIDATION_FLAG] === '1' && !lockedInProduction(env, RESEARCH_CONSOLIDATION_FLAG)
