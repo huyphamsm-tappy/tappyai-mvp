@@ -9,6 +9,7 @@ import { runDeepResearch, chartsFrame, type DeepResearchDeps, type ResearchStatu
 import { evidenceCounts } from './deepResearchDeps'
 import { verifyReport } from './claimVerifier'
 import { structuredConflicts, reconcileByDate } from './conflictMetadata'
+import { tableProblems } from './tableIntegrity'
 import { DOC_MEDIA_KIND, docMediaFrame, sanitizeDocMedia } from '@/lib/answerDoc/media'
 
 export interface DeepResearchTurn {
@@ -69,6 +70,7 @@ export function deepResearchResponse(t: DeepResearchTurn): Response {
       // R13: the independent verifier reads a tier run's report against the sources it cites (numbers and citation ids only; counts are logged, never the text)
       let verification: ReturnType<typeof verifyReport> | null = null
       if (out.checked && !out.failed) { try { verification = verifyReport(out.checked.report, out.checked.sources) } catch { verification = null } }
+      if (out.checked && !out.failed) { try { const tp = tableProblems(out.checked.report); if (tp.length) console.log(JSON.stringify({ type: 'tappyai_report_table_problems', n: tp.length, kinds: [...new Set(tp.map(x => x.kind))], lines: tp.slice(0, 10).map(x => x.line) })) } catch { /* diagnostics only */ } }
       if (verification) console.log(JSON.stringify({ type: 'tappyai_report_verification', scope: verification.scope, sentences: verification.sentences, checked: verification.checked, ...verification.counts, flagged: verification.flagged.slice(0, 20).map(f => ({ s: f.sentence, status: f.status })) }))
       // R13 §9.3: disagreements between sources as structured data (counts and kinds only are logged: never the figures' words or the report)
       if (out.checked && !out.failed) { try { const c = reconcileByDate(structuredConflicts(out.findings), out.evidence); if (c.length) console.log(JSON.stringify({ type: 'tappyai_report_conflicts', n: c.length, display: c.map(x => x.display), likely_reason: c.map(x => x.likelyReason) })) } catch { /* diagnostics only */ } }
