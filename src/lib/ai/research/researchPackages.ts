@@ -20,6 +20,14 @@ function jaccard(a: ReadonlySet<string>, b: ReadonlySet<string>): number {
   return inter / (a.size + b.size - inter)
 }
 
+/** The output ceiling of the package plan call: four parts on every step make it far longer than the plain plan's 3500 tokens, which cut it off in the first live run (11/11). */
+export const PLAN_PACKAGES_MAX_TOKENS = 9000
+/** The package plan is asked first when `packages` is on; if that call fails (cut off, unreadable, refused) the plain plan is asked once, so the flag can never cost the report. A plain failure is the caller's. */
+export async function planWithFallback<T>(packages: boolean, ask: (packages: boolean) => Promise<T>): Promise<T> {
+  if (!packages) return ask(false)
+  try { return await ask(true) } catch { return ask(false) }
+}
+
 /** The brief as text for the model that reads this step's sources; empty when the step has none. Pure. */
 export function briefText(b: StepBrief | undefined): string {
   if (!b || !b.objective) return ''

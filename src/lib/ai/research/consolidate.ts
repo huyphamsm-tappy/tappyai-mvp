@@ -42,7 +42,9 @@ export interface ValueGroup { value: number; sources: number[]; scope: string }
 export interface ConflictItem { subject: string; metric: string; unit: string; scope: string; period: string | null; values: ValueGroup[] }
 export interface TrendPoint { period: string; value: number; values: number[]; sources: number[] }
 export interface TrendItem { subject: string; metric: string; unit: string; scope: string; points: TrendPoint[]; newest: string }
-export interface StaleItem { subject: string; metric: string; unit: string; scope: string; newest: string }
+export interface StaleItem { subject: string; metric: string; unit: string; scope: string; newest: string; /** how many findings read this measure: the measures a run read most are its central ones */ readings: number }
+/** The writer is shown at most this many old-period measures (most-read first): a run's findings hold dozens of measures that are not the subject. */
+export const MAX_STALE_SHOWN = 8
 export interface ConsolidatedFinding { text: string; sources: number[]; steps: number[]; figure?: Finding['figure'] }
 export interface Consolidation {
   findings: ConsolidatedFinding[]
@@ -168,8 +170,9 @@ export function consolidate(findings: readonly Finding[], now: number = Date.now
         points: ordered.map(([period, e]) => { const vs = valueGroups(e.items); return { period, value: vs[0].value, values: vs.map(v => v.value), sources: sortedNums(e.items.map(n => n.f.source)) } }),
       })
     }
-    if (Math.floor(newest[1].order / 100) <= nowYear - 2) stale.push({ subject: head.subjectText, metric: head.metricText, unit: head.unitText, scope: head.scopeText, newest: newest[0] })
+    if (Math.floor(newest[1].order / 100) <= nowYear - 2) stale.push({ subject: head.subjectText, metric: head.metricText, unit: head.unitText, scope: head.scopeText, newest: newest[0], readings: items.length })
   }
+  stale.sort((a, b) => b.readings - a.readings || a.metric.localeCompare(b.metric) || a.subject.localeCompare(b.subject))
 
   return {
     findings: merged, conflicts, scopeSplits, scopeUnclear, trends, stale,
@@ -195,6 +198,6 @@ export function consolidatedNotes(plan: ResearchPlan, c: Consolidation): string 
   if (c.trends.length) blocks.push(`### The same measure at different dates (NOT a conflict: readings from different periods; describe the change over time and use the newest as the current value)\n${c.trends.map(x => `- ${label(x)}${x.scope ? `, scope: ${x.scope}` : ''}: ${x.points.map(p => `${p.period}: ${p.values.join(' / ')} ${tags(p.sources)}`).join('; ')}`).join('\n')}`)
   if (c.scopeSplits.length) blocks.push(`### The same measure for different scopes (NOT a conflict: name the scope with each value)\n${c.scopeSplits.map(x => `- ${label(x)}, period: ${x.period ?? 'not stated'}: ${values(x, true)}`).join('\n')}`)
   if (c.scopeUnclear.length) blocks.push(`### A value whose scope is not stated beside values that have one (it may be another scope, for example national against one city: do not call it a contradiction, say the scope is unclear)\n${c.scopeUnclear.map(x => `- ${label(x)}, period: ${x.period ?? 'not stated'}: ${values(x, true)}`).join('\n')}`)
-  if (c.stale.length) blocks.push(`### The newest period found for these measures is old (write "latest available: <period>"; never present it as current)\n${c.stale.map(x => `- ${label(x)}${x.scope ? `, scope: ${x.scope}` : ''}: newest ${x.newest}`).join('\n')}`)
+  if (c.stale.length) blocks.push(`### The newest period found for these measures is old (write "latest available: <period>"; never present it as current)\n${c.stale.slice(0, MAX_STALE_SHOWN).map(x => `- ${label(x)}${x.scope ? `, scope: ${x.scope}` : ''}: newest ${x.newest}`).join('\n')}${c.stale.length > MAX_STALE_SHOWN ? `\n(${c.stale.length - MAX_STALE_SHOWN} more not shown)` : ''}`)
   return blocks.length ? `${body}\n\n## Data checks computed by code from the findings above (use them; never contradict them)\n${blocks.join('\n\n')}` : body
 }

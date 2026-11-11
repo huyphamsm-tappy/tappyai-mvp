@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, vi } from 'vitest'
-import { dedupePackages, briefText } from './researchPackages'
+import { dedupePackages, briefText, planWithFallback, PLAN_PACKAGES_MAX_TOKENS } from './researchPackages'
 import { researchPackagesOn } from './deepResearchState'
 import { normalisePlan, runDeepResearch, type DeepResearchDeps, type Evidence, type ResearchPlan } from './deepResearch'
 import { PlanSchema, PlanSchemaPackages } from './deepResearchDeps'
@@ -76,6 +76,32 @@ describe('dedupePackages: two packages that ask the same thing are one', () => {
     expect(r.plan.steps[0].queries).toEqual(['q1', 'q2', 'q3', 'q4'])
     expect(r.plan.parts).toEqual(['p'])
     expect(r.plan.sources_label).toBe('Nguồn')
+  })
+})
+
+// Measured 11/11 (first live run with the flag): the package plan, with four parts on every step, was cut off at the plain plan's 3500-token ceiling, could not be read, and both Advanced runs ended as
+// no_plan with nothing researched. The ceiling is higher for this plan, and a package plan that fails falls back to the plain plan once.
+describe('the package plan cannot cost the report', () => {
+  it('has a ceiling well above the plain plan\'s 3500 tokens', () => {
+    expect(PLAN_PACKAGES_MAX_TOKENS).toBeGreaterThanOrEqual(8000)
+  })
+  it('without the flag the plain plan is asked once; with it the package plan is asked once', async () => {
+    const calls: boolean[] = []
+    await planWithFallback(false, async pk => { calls.push(pk); return 'plain' })
+    await planWithFallback(true, async pk => { calls.push(pk); return 'package' })
+    expect(calls).toEqual([false, true])
+  })
+  it('a package plan that fails is replaced by the plain plan, asked once', async () => {
+    const calls: boolean[] = []
+    const r = await planWithFallback(true, async pk => { calls.push(pk); if (pk) throw new Error('cut off'); return 'plain' })
+    expect(r).toBe('plain')
+    expect(calls).toEqual([true, false])
+  })
+  it('when the plain plan fails too, the failure is the caller\'s (no endless retry)', async () => {
+    const calls: boolean[] = []
+    await expect(planWithFallback(true, async pk => { calls.push(pk); throw new Error('down') })).rejects.toThrow('down')
+    expect(calls).toEqual([true, false])
+    await expect(planWithFallback(false, async () => { throw new Error('down') })).rejects.toThrow('down')
   })
 })
 

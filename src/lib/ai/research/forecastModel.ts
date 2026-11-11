@@ -27,14 +27,18 @@ export interface ForecastSpec {
 }
 
 /** The model's structured answer as the schema returns it (nulls where a field does not apply). */
-type RawRate = RateRange & { basis: 'source' | 'assumption'; source: number | null; note: string }
+type RawRate = RateRange & { basis: 'source' | 'assumption'; source?: number | null; note: string }
 export interface ForecastSpecRaw {
   unit: string; baseYear: number
-  base: { value: number; source: number; scope: string; note: string }
-  baseRange: { low: number; high: number; note: string } | null
+  base: { value: number; source: number; scope: string; note?: string }
+  baseRange?: { low: number; high: number; note: string } | null
   years: number[]
   volume: RawRate; price: RawRate
-  adjustment: (RawRate & { years: number[] }) | null
+  adjustment?: (RawRate & { years: number[] }) | null
+}
+/** The inputs call is made once more when its first answer fails (a model answer that does not match the schema is occasional); a second failure is the caller's. */
+export async function askTwice<T>(ask: () => Promise<T>): Promise<T> {
+  try { return await ask() } catch { return ask() }
 }
 /** Raw structured answer to ForecastSpec: null becomes absent, an empty note is dropped. Pure. */
 export function specFromRaw(r: ForecastSpecRaw): ForecastSpec {

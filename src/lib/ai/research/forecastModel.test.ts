@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach, vi } from 'vitest'
-import { groundForecast, runForecast, forecastNotes, packFindingsForForecast, wantsForecastModel, specFromRaw, type ForecastSpec } from './forecastModel'
+import { groundForecast, runForecast, forecastNotes, packFindingsForForecast, wantsForecastModel, specFromRaw, askTwice, type ForecastSpec } from './forecastModel'
 import { ForecastSpecSchema } from './deepResearchDeps'
 import { researchForecastModelOn } from './deepResearchState'
 import { numberInText, runDeepResearch, type DeepResearchDeps, type Evidence, type Finding, type ResearchPlan } from './deepResearch'
@@ -175,6 +175,38 @@ describe('the model\'s structured answer', () => {
     expect(ForecastSpecSchema.safeParse({ ...raw, base: { ...raw.base, source: undefined } }).success).toBe(false)
     expect(ForecastSpecSchema.safeParse({ ...raw, volume: { ...raw.volume, basis: 'guess' } }).success).toBe(false)
     expect(ForecastSpecSchema.safeParse({ ...raw, years: undefined }).success).toBe(false)
+  })
+})
+
+// Measured 11/11 (first live forecast run with the flag): the inputs call came back once with an answer that did not match the schema (so the engine had no model: "no_spec"), and the same call gave a good
+// answer a minute later. The schema accepts a field that does not apply being left out, and the call is made twice before the engine gives up.
+describe('a flaky answer does not cost the model', () => {
+  const minimal = {
+    unit: 'nghìn tỷ đồng', baseYear: 2026, base: { value: 100, source: 1, scope: 'toàn quốc' }, years: [2027, 2028],
+    volume: { low: -1, base: 1.5, high: 3, basis: 'source' as const, note: 'n' },
+    price: { low: 1, base: 3, high: 4, basis: 'assumption' as const, note: 'n' },
+  }
+  it('the schema accepts source, base note, base range and adjustment left out; it still needs the base source and the years', () => {
+    expect(ForecastSpecSchema.safeParse(minimal).success).toBe(true)
+    expect(ForecastSpecSchema.safeParse({ ...minimal, base: { value: 100, scope: 'x' } }).success).toBe(false)
+    expect(ForecastSpecSchema.safeParse({ ...minimal, years: undefined }).success).toBe(false)
+  })
+  it('specFromRaw reads such an answer into a spec the grounding accepts', () => {
+    const s = specFromRaw(minimal as never)
+    expect('adjustment' in s).toBe(false)
+    expect('baseRange' in s).toBe(false)
+    expect(groundForecast(s, findings, numberInText).ok).toBe(true)
+  })
+  it('askTwice: a first failure is retried once; two failures are the caller\'s', async () => {
+    let n = 0
+    expect(await askTwice(async () => { n++; if (n === 1) throw new Error('x'); return 'ok' })).toBe('ok')
+    expect(n).toBe(2)
+    n = 0
+    await expect(askTwice(async () => { n++; throw new Error('down') })).rejects.toThrow('down')
+    expect(n).toBe(2)
+    n = 0
+    expect(await askTwice(async () => { n++; return 'fine' })).toBe('fine')
+    expect(n).toBe(1)
   })
 })
 

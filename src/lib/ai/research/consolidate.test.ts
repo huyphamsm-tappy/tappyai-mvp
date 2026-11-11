@@ -110,6 +110,29 @@ describe('freshness: the newest period found for a measure', () => {
   })
 })
 
+// Measured 11/11 (live runs): a run's findings hold dozens of measures that are not the subject (yoghurt share, bottled tea) and 20-40 of them are "old"; handed whole, the list pulls the report off topic.
+describe('the old-period list is short and led by the measures read the most', () => {
+  const many = (): Finding[] => Array.from({ length: 12 }, (_, i) => Array.from({ length: i + 1 }, (_, k) => mk(1, 100 + i * 20 + k, 't', { series: `Chỉ số ${i}`, label: '2023', unit: '%', value: 10 + k })).flat()).flat()
+  it('stale items carry how many readings each has, most-read first', () => {
+    const c = consolidate(many(), NOW)
+    expect(c.stale).toHaveLength(12)
+    expect(c.stale[0].readings).toBe(12)
+    const r = c.stale.map(s => s.readings)
+    expect(r).toEqual([...r].sort((a, b) => b - a))
+  })
+  it('the notes show at most 8 and say how many more there are', () => {
+    const notes = consolidatedNotes(plan, consolidate(many(), NOW))
+    const lines = notes.split('\n').filter(l => /: newest 2023$/.test(l))
+    expect(lines).toHaveLength(8)
+    expect(lines[0]).toContain('Chỉ số 11')
+    expect(notes).toContain('4 more not shown')
+  })
+  it('with few of them all are shown and nothing is said about more', () => {
+    const notes = consolidatedNotes(plan, consolidate(many().slice(0, 3), NOW))
+    expect(notes).not.toContain('more not shown')
+  })
+})
+
 describe('the writer notes', () => {
   const f = { series: 'Số cửa hàng', label: 'Toco Toco', unit: 'cửa hàng', subject: 'Toco Toco', scope: 'toàn quốc', period: '2025' }
   const findings = [mk(2, 4, 'Toco Toco có 389 cửa hàng', { ...f, value: 389 }), mk(3, 5, 'Toco Toco có 313 cửa hàng', { ...f, value: 313 }), mk(3, 6, 'Giá trung bình 35.000 đồng')]
