@@ -1,4 +1,5 @@
 import { describe, it, expect, afterEach, vi } from 'vitest'
+import { zodToJsonSchema } from 'zod-to-json-schema'
 import { runDeepResearch, type DeepResearchDeps, type ResearchPlan } from './deepResearch'
 import { researchThesisOn, researchEvidenceCardsOn } from './deepResearchState'
 import { OutlineSchema, outlineFrom, analystCards, outlineWriterInput, releaseText, type Outline } from './thesisReport'
@@ -63,6 +64,19 @@ describe('OutlineSchema reads what the analyst really returns (11/11 live: 2 of 
   it('a card list written as "C1, C2" is read as two ids', () => {
     const p = OutlineSchema.parse({ ...base, sections: [{ title: 's', points: [{ claim: 'c', cards: 'C1, C2' }] }] })
     expect(p.sections[0].points[0].cards).toEqual(['C1', 'C2'])
+  })
+})
+
+describe('OutlineSchema tells the model what is required (11/11 live: Advanced returned a thesis and no sections, because a list that defaults to empty is sent to the model as optional)', () => {
+  it('the JSON schema sent with the call requires thesis, sections, and each section\'s title and points', () => {
+    const js = zodToJsonSchema(OutlineSchema, { $refStrategy: 'none' }) as { required?: string[]; properties: { sections: { items: { required?: string[]; properties: { points: { items: { required?: string[] } } } } } } }
+    expect(js.required).toEqual(expect.arrayContaining(['thesis', 'sections']))
+    expect(js.properties.sections.items.required).toEqual(expect.arrayContaining(['title', 'points']))
+    expect(js.properties.sections.items.properties.points.items.required).toEqual(expect.arrayContaining(['claim', 'cards']))
+  })
+  it('an answer with no sections, or a section with no points, is refused so the retry runs', () => {
+    expect(OutlineSchema.safeParse({ thesis: 't' }).success).toBe(false)
+    expect(OutlineSchema.safeParse({ thesis: 't', sections: [{ title: 's' }] }).success).toBe(false)
   })
 })
 

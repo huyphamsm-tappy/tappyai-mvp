@@ -389,7 +389,10 @@ export function createDeepResearchDeps(o: { lang: string; userTexts: readonly st
         const ask = () => AI.extract({ role: planningRole(), ...leadModel(), systemShared: ANALYST_SYSTEM, messages: [{ role: 'user', content: `Question:\n${question}${langLine}\n\nToday's date: ${new Date().toISOString().slice(0, 10)}\nWrite ${bounds.minSections} to ${bounds.maxSections} sections.\n\n${fenceUntrusted('tool_result', data)}` }], schema: OutlineSchema, schemaName: 'tappy_research_outline', maxTokens: advancedLead ? 4500 : 3500, budgetKind: 'aux', abortSignal: o.signal } as never) as Promise<{ object: unknown; providerMetadata?: unknown }>
         const r = await askTwice(() => ask().catch(e => { console.warn(JSON.stringify({ type: 'tappyai_research_outline_failed', ...failureKind(e) })); throw e }))
         addCost(o.cost, r.providerMetadata)
-        return outlineFrom(r.object, cards, bounds)
+        const outline = outlineFrom(r.object, cards, bounds)
+        // an answer that parsed but gave nothing usable: the log says what shape it had (counts only, never text)
+        if (!outline) { const x = (r.object ?? {}) as { thesis?: unknown; sections?: unknown }; const secs = Array.isArray(x.sections) ? x.sections as Array<{ points?: unknown }> : []; console.warn(JSON.stringify({ type: 'tappyai_research_outline_rejected', thesisChars: typeof x.thesis === 'string' ? x.thesis.length : -1, sections: secs.length, withPoints: secs.filter(s => Array.isArray(s?.points) && s.points.length).length, need: bounds.minSections })) }
+        return outline
       },
     } : {}),
     async *write({ question, plan, evidence, findings, forecast, thesisNotes }) {

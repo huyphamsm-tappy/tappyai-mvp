@@ -21,17 +21,20 @@ export const ADVANCED_OUTLINE: OutlineBounds = { minSections: 3, maxSections: 6 
 /** The most cards the analyst reads (the best by confidence). */
 export const ANALYST_CARDS_MAX = 90
 
-const str = z.string().optional().catch(undefined)
-/** A list of short texts that may arrive as an array, a JSON string, or plain text (one item per line, or "C1, C2" for ids): measured 11/11, the analyst wrote `doubts` as plain text in 2 of 5 live runs. */
-const textList = (split: RegExp) => z.preprocess((v: unknown) => {
+/**
+ * A list of short texts that may arrive as an array, a JSON string, or plain text (one item per line, or "C1, C2" for ids): measured 11/11, the analyst wrote `doubts` as plain text in 2 of 5 live runs.
+ * `required`: an absent list stays absent (refused, so the retry runs) - and the JSON schema sent to the model says required. A list that defaults to empty is sent as OPTIONAL (zod-to-json-schema asks
+ * the schema whether undefined parses), and Advanced then returned a thesis with no sections at all.
+ */
+const textList = (split: RegExp, required = false) => z.preprocess((v: unknown) => {
   if (typeof v === 'string') {
     try { return JSON.parse(v) } catch { return v.split(split).map(x => x.replace(/^\s*[-*•\d.)]+\s+/, '').trim()).filter(Boolean) }
   }
-  return v === undefined || v === null ? [] : v
+  return (v === undefined || v === null) && !required ? [] : v
 }, z.array(z.string()))
 export const OutlineSchema = z.object({
-  thesis: str,
-  sections: lenientArray(z.object({ title: str, points: lenientArray(z.object({ claim: str, cards: textList(/[\s,;]+/) })) })),
+  thesis: z.string(),
+  sections: lenientArray(z.object({ title: z.string(), points: lenientArray(z.object({ claim: z.string(), cards: textList(/[\s,;]+/, true) }), { required: true }) }), { required: true }),
   doubts: textList(/\n+/),
 })
 
