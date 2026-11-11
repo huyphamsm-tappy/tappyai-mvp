@@ -19,7 +19,8 @@ import { parseDoc, headingTitle, titleKey, type DocBlock } from '@/lib/answerDoc
 import { leanValue } from './deepResearchLean'
 import { questionKind, withNewsLane } from './researchLanes'
 import { dedupePackages } from './researchPackages'
-import { deepResearchV2On, researchSourceDiversityOn, researchPackagesOn, V2_LIMITS, termScores, stepCoverage, decideNext, missingParts, findingsForPart } from './deepResearchState'
+import { groundForecast, runForecast, wantsForecastModel, type ForecastSpec, type ForecastResult } from './forecastModel'
+import { deepResearchV2On, researchSourceDiversityOn, researchPackagesOn, researchForecastModelOn, V2_LIMITS, termScores, stepCoverage, decideNext, missingParts, findingsForPart } from './deepResearchState'
 
 // planSteps: the plan's own steps; steps: all steps of a run (the plan's + the follow-up round's GAP_STEPS), as the card shows them
 /** R13 tier bounds for one run (Standard report). Absent = the unbounded one-pass / V2 run, byte for byte. */
@@ -189,7 +190,12 @@ export interface DeepResearchDeps {
   gather(query: string, focus: string, /** hosts that already gave this run many sources: the search leaves them out, to find other publishers */ avoid?: readonly string[]): Promise<Array<{ title: string; url: string; snippet: string; text: string; published?: string; site?: string }>>
   /** The step's findings; `source` is an id of the evidence handed in; `figure` when the finding states one figure. */
   notes(step: string, question: string, evidence: readonly Evidence[], /** RESEARCH_PACKAGES: the step's brief, given only when the flag is on and the step has one */ brief?: StepBrief): Promise<Array<{ text: string; source: number; figure?: Figure | null }>>
-  write(input: { question: string; plan: ResearchPlan; evidence: readonly Evidence[]; findings: readonly Finding[] }): AsyncIterable<string>
+  /**
+   * RESEARCH_FORECAST_MODEL (Advanced): the INPUTS of a scenario model for a forecast question (base level, years, low / base / high assumptions, each labelled source or assumption); the engine
+   * grounds them in the findings and computes the model itself. Absent = no model. Never computes the forecast.
+   */
+  forecast?(input: { question: string; plan: ResearchPlan; findings: readonly Finding[] }): Promise<ForecastSpec | null>
+  write(input: { question: string; plan: ResearchPlan; evidence: readonly Evidence[]; findings: readonly Finding[]; /** the computed model, given only when the flag is on and the spec was grounded */ forecast?: ForecastResult }): AsyncIterable<string>
   /**
    * DEEP_RESEARCH_V2 only (03/11): writes sections for the parts of the question no heading of the written report names, from the findings that
    * speak to each; appended to the report. Absent = no repair.
@@ -677,6 +683,14 @@ export async function runDeepResearch(question: string, context: string, lang: s
   const renumber = new Map(citedEvidence(evidence, findings).map((e, i) => [e.id, i + 1]))
   const cited = citedEvidence(evidence, findings).map(e => ({ ...e, id: renumber.get(e.id)! }))
   const notes = findings.map(f => ({ ...f, source: renumber.get(f.source)! }))
+  // RESEARCH_FORECAST_MODEL: for a question about the future, a model call gives the INPUTS (never the forecast); the code refuses a base level no finding states and computes every number
+  let forecastResult: ForecastResult | null = null
+  if (researchForecastModelOn() && deps.forecast && wantsForecastModel(question, now()) && now() - t0 < DEEP_RESEARCH_LIMITS.runDeadlineMs - 60_000) {
+    const spec = await deps.forecast({ question, plan, findings: notes }).catch(() => null)
+    const g = spec ? groundForecast(spec, notes, numberInText) : { ok: false as const, reason: 'no_spec' as const }
+    if (g.ok) forecastResult = runForecast(g.spec)
+    deps.trace?.({ ev: 'forecast', ok: g.ok, reason: g.ok ? null : g.reason, downgrades: g.ok ? g.downgrades : [] })
+  }
   const stripper = linkStripper()
   const numberer = headingNumberer()
   let cut = false
@@ -685,7 +699,7 @@ export async function runDeepResearch(question: string, context: string, lang: s
   const say = (t: string) => { if (t) { written += t; emit.text(t) } }
   const finish = () => { say(numberer.push(stripper.end())); say(numberer.end()) }
   try {
-    for await (const delta of deps.write({ question, plan, evidence: cited, findings: notes })) {
+    for await (const delta of deps.write({ question, plan, evidence: cited, findings: notes, ...(forecastResult ? { forecast: forecastResult } : {}) })) {
       say(numberer.push(stripper.push(delta)))
       if (left?.aborted) break
       // the run's own deadline: what was written stays and gets its sources (the route must answer inside its maxDuration)

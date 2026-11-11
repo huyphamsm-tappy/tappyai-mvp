@@ -18,6 +18,10 @@ export const RESEARCH_SOURCE_DIVERSITY_FLAG = 'RESEARCH_SOURCE_DIVERSITY'
 /** Pure. Source diversity (a publisher that already gave many sources is left out of later searches; no chart from a dated source older than 24 months): OFF unless exactly "1", locked in production. */
 export const researchSourceDiversityOn = (env: Env = process.env): boolean => env[RESEARCH_SOURCE_DIVERSITY_FLAG] === '1' && !lockedInProduction(env, RESEARCH_SOURCE_DIVERSITY_FLAG)
 
+export const RESEARCH_FORECAST_MODEL_FLAG = 'RESEARCH_FORECAST_MODEL'
+/** Pure. A scenario model computed by code (forecastModel.ts) for a forecast question in an Advanced run: a model call supplies the inputs, the code refuses a base level no finding states and does every calculation: OFF unless exactly "1", locked in production. */
+export const researchForecastModelOn = (env: Env = process.env): boolean => env[RESEARCH_FORECAST_MODEL_FLAG] === '1' && !lockedInProduction(env, RESEARCH_FORECAST_MODEL_FLAG)
+
 export const RESEARCH_PACKAGES_FLAG = 'RESEARCH_PACKAGES'
 /** Pure. Work packages with a four-part brief (objective, output, sources, boundary) for the Advanced plan, repeated packages merged by code, the brief handed to the reader of each step: OFF unless exactly "1", locked in production. */
 export const researchPackagesOn = (env: Env = process.env): boolean => env[RESEARCH_PACKAGES_FLAG] === '1' && !lockedInProduction(env, RESEARCH_PACKAGES_FLAG)
