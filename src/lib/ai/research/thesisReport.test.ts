@@ -90,8 +90,7 @@ describe('the instructions that came out of the live runs (a prompt cannot be pr
   })
   it('the gap check looks for a rule coming into force soon, not only for the framework laws a general search returns', () => {
     expect(GAPS_UPCOMING_ADDENDUM).toMatch(/coming into force within the next two years/)
-    expect(GAPS_UPCOMING_ADDENDUM).toMatch(/framework laws/)
-    // flag-gated: the gap check's own text is as it was
+    expect(GAPS_UPCOMING_ADDENDUM).toMatch(/framework laws/)    // flag-gated: the gap check's own text is as it was
     expect(GAPS_SYSTEM).not.toMatch(/coming into force/)
   })
 })

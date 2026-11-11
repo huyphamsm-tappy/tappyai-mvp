@@ -33,6 +33,12 @@ Cờ `RESEARCH_THESIS_REPORT=1` cùng các cờ UAT (hợp nhất, làm mới s�
 3. Phân tích hỏng 5 trên 14 lượt đo (Standard và Advanced) ở các vòng đầu (lược đồ tùy chọn, trần token); đã sửa, 3 lượt Advanced liền sau sửa đều có dàn ý. Khi hỏng, báo cáo vẫn được viết theo cách cũ (dài 14–16 trang), không mất.
 4. Chưa so mù với Claude.
 
+## Sửa Standard q01 (vòng sau, 12 lượt, 11/11)
+
+Chẩn đoán: thẻ về "làn sóng 7.000 đồng" có (11–24 thẻ) nhưng ở một lượt người phân tích bỏ qua; còn mốc 36.000–70.000 đồng, số liệu nửa đầu 2026 và thuế tiêu thụ đặc biệt **không có trong thẻ nào** (khâu tìm nguồn, không phải khâu viết).
+Đã làm: (1) người phân tích tính trọng lượng theo số thẻ phủ một chủ đề (5 thẻ trở lên) và luôn dành chỗ cho luật, thuế, cấm sắp có hiệu lực; (2) khi cờ `RESEARCH_FRESHNESS` bật, rà khoảng trống tìm thêm một quy định sắp có hiệu lực; (3) viết từ dàn ý hỏng thì viết lại từ phát hiện như cũ (lượt hỏng `write_failed` sau dàn ý tốt).
+Kết quả 12 lượt q01 (4 bộ 3 lượt; 1 lượt hỏng `write_failed` trước khi có bước thử lại, 11 lượt thành công): số liệu bắt buộc 0–50%, **không cải thiện chắc chắn**; "7.000 đồng" có mặt ở 8/11 lượt thành công (trước đó 1/2 lượt), mốc 36.000–70.000 đồng ở 1/11, thuế tiêu thụ đặc biệt ở 0/11. Một câu thêm (tìm theo ngành hàng và nguyên liệu chính) không làm thẻ thuế xuất hiện (0/3) nên đã bỏ. Kết luận: phần thiếu còn lại nằm ở tìm nguồn của Standard (Haiku không biết để hỏi về luật thuế mới), không sửa được tiếp bằng lời nhắc mà không thành vá riêng từng câu. Cách thật là cho Standard một lượt tìm "thay đổi chính sách sắp có hiệu lực" có nguồn tri thức tốt hơn (ví dụ để Sonnet viết truy vấn cho bước này), cần anh quyết vì tốn thêm chi phí.
+
 ## Chi phí đo M3–M5
 
 Khoảng 4,8 USD cho 14 lượt đo (kể cả các lượt phát hiện lỗi), cộng dồn từ số `usd.total` của từng lượt.
