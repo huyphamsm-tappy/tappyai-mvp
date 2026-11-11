@@ -21,6 +21,7 @@ import { questionKind, withNewsLane } from './researchLanes'
 import { dedupePackages } from './researchPackages'
 import { consolidate, freshnessHints } from './consolidate'
 import { sectionTextOf, seriesRelevant } from './chartRelevance'
+import { failureKind } from './failureKind'
 import { FIGURE_CONFLICT_GAP } from './figureGap'
 import { groundForecast, runForecast, wantsForecastModel, type ForecastSpec, type ForecastResult } from './forecastModel'
 import { deepResearchV2On, researchSourceDiversityOn, researchPackagesOn, researchForecastModelOn, researchFreshnessOn, researchChartRelevanceOn, V2_LIMITS, termScores, stepCoverage, decideNext, missingParts, findingsForPart } from './deepResearchState'
@@ -570,8 +571,9 @@ export async function runDeepResearch(question: string, context: string, lang: s
     // RESEARCH_PACKAGES: a package that asks what an earlier one asks is merged into it (its new queries folded in), so the same fact is not searched and read twice
     if (plan && researchPackagesOn()) { const d = dedupePackages(plan); plan = d.plan; if (d.merged.length) deps.trace?.({ ev: 'packages_merged', merged: d.merged }) }
     // RESEARCH_SOURCE_DIVERSITY: a TREND question (by code) also gets a press step about what changed lately; other kinds are untouched
-    if (plan && researchSourceDiversityOn()) plan = withNewsLane(plan, questionKind(question), lang, new Date(now()).getFullYear(), bounds?.maxSteps ?? DEEP_RESEARCH_LIMITS.planSteps + PART_STEPS) } catch { plan = null }
+    if (plan && researchSourceDiversityOn()) plan = withNewsLane(plan, questionKind(question), lang, new Date(now()).getFullYear(), bounds?.maxSteps ?? DEEP_RESEARCH_LIMITS.planSteps + PART_STEPS) } catch (e) { plan = null; deps.trace?.({ ev: 'plan_error', ...failureKind(e) }) }
   if (left?.aborted) return { plan, evidence, findings, failed: 'client_gone' }
+  if (!plan && !left?.aborted) deps.trace?.({ ev: 'no_plan' })
   if (!plan) return { plan: null, evidence, findings, failed: fail(clean(question, 120), [], 'no_plan') }
   // R13 Standard tier: a plan that needs more steps than the tier allows is an Advanced request (hard trigger: four or more work packages). Nothing is dropped to make it fit and
   // nothing is searched: the caller promotes the request or clarifies it, so no part of the question is silently left out.

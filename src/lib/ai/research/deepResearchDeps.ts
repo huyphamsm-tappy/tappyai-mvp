@@ -21,6 +21,7 @@ import { consultTraceDiagnosticsOn, lockedInProduction } from '@/lib/config/cons
 import { leanValue } from './deepResearchLean'
 import { researchSourceDiversityOn, researchConsolidationOn, researchPackagesOn, researchForecastModelOn, researchTightWriteOn } from './deepResearchState'
 import { TIGHT_WRITE_RULE } from './reportRepeats'
+import { failureKind } from './failureKind'
 import { forecastNotes, packFindingsForForecast, specFromRaw, askTwice, type ForecastSpecRaw } from './forecastModel'
 import { consolidate, consolidatedNotes } from './consolidate'
 import { briefText, planWithFallback, PLAN_PACKAGES_MAX_TOKENS, PLAN_CLAUDE_MAX_TOKENS } from './researchPackages'
@@ -270,7 +271,7 @@ export function createDeepResearchDeps(o: { lang: string; userTexts: readonly st
       const ask = (pk: boolean) => AI.extract({ role: planningRole(), ...leadModel(), systemShared: pk ? PLAN_SYSTEM + PLAN_PACKAGES_ADDENDUM : PLAN_SYSTEM, messages: [{ role: 'user', content: `${context ? `Conversation so far:\n${context}\n\n` : ''}Question:\n${question}${langLine}` }], schema: pk ? PlanSchemaPackages : PlanSchema, schemaName: 'tappy_research_plan', maxTokens: pk ? PLAN_PACKAGES_MAX_TOKENS : advancedLead ? PLAN_CLAUDE_MAX_TOKENS : 3500, budgetKind: 'aux', abortSignal: o.signal } as never) as Promise<PlanOut>
       // a plan call that fails (cut off, a structured answer that does not match the schema) is made once more; the log names the kind of failure, never the text. Seen 11/11 in the owner's UAT: one Advanced plan
       // call failed silently and the run fell to the old engine
-      const logged = (pk: boolean) => ask(pk).catch(e => { console.warn(JSON.stringify({ type: 'tappyai_research_plan_failed', packages: pk, error: String(e).slice(0, 160) })); throw e })
+      const logged = (pk: boolean) => ask(pk).catch(e => { console.warn(JSON.stringify({ type: 'tappyai_research_plan_failed', packages: pk, ...failureKind(e) })); throw e })
       const r = await askTwice(() => planWithFallback(packages, logged))
       addCost(o.cost, r.providerMetadata)
       // the listed parts first, the specialist's steps last; when together they exceed the plan's cap the listed ones give way, never the specialist's
@@ -352,7 +353,7 @@ export function createDeepResearchDeps(o: { lang: string; userTexts: readonly st
         const data = `Findings (the number in brackets is the source number):\n${packFindingsForForecast(findings).join('\n')}`
         const ask = () => AI.extract({ role: planningRole(), ...leadModel(), systemShared: FORECAST_SYSTEM, messages: [{ role: 'user', content: `Question:\n${question}${langLine}\n\nToday's date: ${new Date().toISOString().slice(0, 10)}\n\n${fenceUntrusted('tool_result', data)}` }], schema: ForecastSpecSchema, schemaName: 'tappy_research_forecast_inputs', maxTokens: 3500, budgetKind: 'aux', abortSignal: o.signal } as never) as Promise<{ object: ForecastSpecRaw; providerMetadata?: unknown }>
         // an answer that does not match the schema is occasional (measured 11/11): asked once more; the log names the kind of failure, never the text
-        const r = await askTwice(() => ask().catch(e => { console.warn(JSON.stringify({ type: 'tappyai_research_forecast_inputs_failed', error: String(e).slice(0, 120) })); throw e }))
+        const r = await askTwice(() => ask().catch(e => { console.warn(JSON.stringify({ type: 'tappyai_research_forecast_inputs_failed', ...failureKind(e) })); throw e }))
         addCost(o.cost, r.providerMetadata)
         return specFromRaw(r.object)
       },
