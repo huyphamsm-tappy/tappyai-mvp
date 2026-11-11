@@ -1,5 +1,6 @@
 import { describe, it, expect, afterEach, vi } from 'vitest'
 import { zodToJsonSchema } from 'zod-to-json-schema'
+import { ANALYST_SYSTEM, GAPS_SYSTEM, GAPS_UPCOMING_ADDENDUM } from './deepResearchDeps'
 import { runDeepResearch, type DeepResearchDeps, type ResearchPlan } from './deepResearch'
 import { researchThesisOn, researchEvidenceCardsOn } from './deepResearchState'
 import { OutlineSchema, outlineFrom, analystCards, outlineWriterInput, releaseText, type Outline } from './thesisReport'
@@ -77,6 +78,18 @@ describe('OutlineSchema tells the model what is required (11/11 live: Advanced r
   it('an answer with no sections, or a section with no points, is refused so the retry runs', () => {
     expect(OutlineSchema.safeParse({ thesis: 't' }).success).toBe(false)
     expect(OutlineSchema.safeParse({ thesis: 't', sections: [{ title: 's' }] }).success).toBe(false)
+  })
+})
+
+describe('the instructions that came out of the live runs (a prompt cannot be proved by a test; this keeps the rule from being edited away unnoticed)', () => {
+  it('the analyst weighs a subject by how many cards cover it, so a wave found in 11 to 24 cards is not left out of a trend report', () => {
+    expect(ANALYST_SYSTEM).toMatch(/five or more cards/)
+  })
+  it('the gap check looks for a rule coming into force soon, not only for the framework laws a general search returns', () => {
+    expect(GAPS_UPCOMING_ADDENDUM).toMatch(/coming into force within the next two years/)
+    expect(GAPS_UPCOMING_ADDENDUM).toMatch(/framework laws/)
+    // flag-gated: the gap check's own text is as it was
+    expect(GAPS_SYSTEM).not.toMatch(/coming into force/)
   })
 })
 
