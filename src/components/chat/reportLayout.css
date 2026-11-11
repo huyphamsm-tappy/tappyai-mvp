@@ -1,0 +1,35 @@
+/* Report layout A (owner 11/11; mockup: docs/design/report-mockup/index.html). Scoped to `.tappy-report` (the body of a FINISHED deep research report) and the cover; applied only behind
+   NEXT_PUBLIC_REPORT_LAYOUT=a. Tokens are the product's own: primary #007AFF, accent #FF9500; everything else neutral. Light by default, `.dark` ancestor for dark. */
+.tappy-report-cover, .tappy-report {
+  --rp-primary: #007AFF; --rp-primary-50: #E5F1FF; --rp-accent: #FF9500; --rp-accent-50: #FFF4E5;
+  --rp-ink: #14181f; --rp-ink-2: #4a5260; --rp-ink-3: #7b8494; --rp-line: #e3e6eb; --rp-chip: #eef1f5;
+}
+.dark .tappy-report-cover, .dark .tappy-report {
+  --rp-primary: #3d9bff; --rp-primary-50: #12294a; --rp-accent-50: #2a2113;
+  --rp-ink: #e8edf6; --rp-ink-2: #b2bdd1; --rp-ink-3: #7f8ca3; --rp-line: #22304a; --rp-chip: #1a2740;
+}
+
+.tappy-report-cover { position: relative; padding: 22px 24px 20px 28px; border: 1px solid var(--rp-line); border-radius: 14px; background: #fff; overflow: hidden; }
+.dark .tappy-report-cover { background: #121b2e; }
+.tappy-report-cover::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 6px; background: linear-gradient(var(--rp-primary), var(--rp-accent)); }
+.tappy-report-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--rp-primary); }
+.tappy-report-title { margin: 6px 0 0; font-size: clamp(22px, 3.4vw, 32px); line-height: 1.2; font-weight: 800; letter-spacing: -.01em; color: var(--rp-ink); }
+.tappy-report-pill { font-size: 13px; padding: 4px 11px; border-radius: 999px; background: var(--rp-chip); color: var(--rp-ink-2); border: 1px solid var(--rp-line); }
+
+.tappy-report { font-size: 16.5px; line-height: 1.72; color: var(--rp-ink); }
+.tappy-report p, .tappy-report li { max-width: 72ch; }
+.tappy-report h2 { margin: 34px 0 10px; font-size: 24px; line-height: 1.3; font-weight: 700; color: var(--rp-ink); padding-bottom: 6px; border-bottom: 2px solid var(--rp-primary-50); }
+.tappy-report h3 { margin: 24px 0 8px; font-size: 19px; line-height: 1.35; font-weight: 700; color: var(--rp-primary); }
+.tappy-report strong { color: var(--rp-ink); font-weight: 700; }
+.tappy-report a { color: var(--rp-primary); }
+.tappy-report blockquote { margin: 16px 0; padding: 12px 16px; border-left: 4px solid var(--rp-accent); border-radius: 0 12px 12px 0; background: var(--rp-accent-50); color: var(--rp-ink); }
+.tappy-report [data-md="table"] { margin: 16px 0; border: 1px solid var(--rp-line); border-radius: 12px; }
+.tappy-report [data-md="table"] table { width: 100%; font-size: 14.5px; line-height: 1.55; border-collapse: separate; border-spacing: 0; }
+.tappy-report [data-md="table"] th { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--rp-ink-3); background: transparent !important; }
+.tappy-report [data-md="table"] th, .tappy-report [data-md="table"] td { padding: 10px 14px; border-bottom: 1px solid var(--rp-line); vertical-align: top; }
+.tappy-report [data-md="table"] tbody tr:nth-child(even) td { background: var(--rp-chip); }
+.tappy-report [data-md="table"] tbody tr:last-child td { border-bottom: 0; }
+.tappy-report figure[data-research-chart] img { border-radius: 12px; border: 1px solid var(--rp-line); }
+.tappy-report ul, .tappy-report ol { margin: 10px 0 16px; }
+.tappy-report li::marker { color: var(--rp-primary); }
+@media print { .tappy-report-cover { break-inside: avoid; } }

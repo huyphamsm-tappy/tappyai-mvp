@@ -97,6 +97,7 @@ import { readResearchStatus, readResearchCharts } from '@/lib/ai/research/deepRe
 import { chartDataUrl } from '@/lib/answerDoc/reportChart'
 import { titleKey } from '@/lib/answerDoc/parse'
 import ResearchCard from '@/components/chat/ResearchCard'
+import ReportCover, { REPORT_LAYOUT_A } from '@/components/chat/ReportCover'
 import { rememberPlacesView, recallPlacesView } from '@/lib/recommendation/liveViewCache'
 import { rememberTurnStatus, recallTurnStatus } from '@/lib/recommendation/turnStatusCache'
 import PlaceDecision from '@/components/chat/PlaceDecision'
@@ -1881,7 +1882,8 @@ export default function ChatInterface({
                     <TappyAvatar category={category} active={isLoading && isLastMessage} searching={!!(isLoading && isLastMessage && activeTool)} />
                     <div className="flex-1 min-w-0">
                       {research && <ResearchCard status={research} report={msg.content} images={docImages} charts={researchCharts} format={formatMessage} />}
-                      <div className="text-base leading-[1.6] text-gray-800 dark:text-gray-100 pt-0.5">
+                      {research && REPORT_LAYOUT_A && <ReportCover status={research} />}
+                      <div className={`text-base leading-[1.6] text-gray-800 dark:text-gray-100 pt-0.5${research && REPORT_LAYOUT_A && research.phase === 'done' ? ' tappy-report' : ''}`}>
                         {(() => {
                           // CONSULT_V3 layouts: the news grid / subject card sit right after the answer's first paragraph (as ChatGPT places them);
                           // tapping the subject's bold name opens the side panel. Without a media block: exactly the former single body.

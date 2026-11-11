@@ -58,7 +58,25 @@ const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replac
  * The report as one printable HTML page: the same blocks and inline formatter as the chat's article layout (`format` is the chat's own
  * sanitising formatter), each section picture under its heading, the sources linked. No script; opened in a sandboxed frame to print.
  */
-export function reportHtml(text: string, o: { title: string; images: readonly ReportImage[]; links: readonly ReportLink[]; format: (s: string) => string; lang: string; charts?: readonly ResearchChart[] }): string {
+/** Layout A of the printed / PDF report: the product colours (primary #007AFF, accent #FF9500), a cover block, zebra tables, callout quotes, a running footer. Only with `design: 'a'`. */
+const DESIGN_A_CSS = `body{font-family:'Be Vietnam Pro','Segoe UI','Noto Sans',Roboto,Arial,sans-serif;font-size:16px;line-height:1.72;color:#14181f}
+.cover{position:relative;border:1px solid #e3e6eb;border-radius:12px;padding:20px 24px 18px 28px;margin:0 0 24px;break-inside:avoid;overflow:hidden}
+.cover::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:linear-gradient(#007AFF,#FF9500)}
+.cover .eyebrow{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#007AFF}.cover .ttl{font-size:28px;line-height:1.2;font-weight:800;margin:6px 0 0}
+.cover .meta{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}.cover .pill{font-size:12px;padding:3px 10px;border-radius:999px;background:#eef1f5;color:#4a5260;border:1px solid #e3e6eb}
+h1{border-bottom:0}h2{color:#14181f;border-bottom:2px solid #E5F1FF;padding-bottom:6px}h3{color:#007AFF}a{color:#007AFF}
+blockquote{border-left:4px solid #FF9500;background:#FFF4E5;color:#14181f;border-radius:0 10px 10px 0;padding:10px 14px}
+table{border:0;border-radius:10px;overflow:hidden}th,td{border:0;border-bottom:1px solid #e3e6eb}th{background:transparent;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#7b8494}tbody tr:nth-child(even) td{background:#eef1f5}
+@page{@bottom-left{content:"TappyAI";font-family:Arial,sans-serif;font-size:10px;color:#007AFF}}
+`
+const COVER_TEXT = { vi: { eyebrow: 'Báo cáo nghiên cứu · TappyAI', updated: 'Cập nhật', sources: 'nguồn' }, en: { eyebrow: 'Research report · TappyAI', updated: 'Updated', sources: 'sources' } }
+function designACover(o: { title: string; links: readonly ReportLink[]; lang: string }): string {
+  const c = COVER_TEXT[o.lang === 'en' ? 'en' : 'vi']
+  const date = new Date().toLocaleDateString(o.lang === 'en' ? 'en-GB' : 'vi-VN')
+  return `<header class="cover"><div class="eyebrow">${esc(c.eyebrow)}</div><div class="ttl">${esc(o.title)}</div><div class="meta"><span class="pill">${esc(c.updated)} ${esc(date)}</span><span class="pill">${o.links.length} ${esc(c.sources)}</span></div></header>`
+}
+
+export function reportHtml(text: string, o: { title: string; images: readonly ReportImage[]; links: readonly ReportLink[]; format: (s: string) => string; lang: string; charts?: readonly ResearchChart[]; /** report layout A (NEXT_PUBLIC_REPORT_LAYOUT=a): cover, brand colours, zebra tables, callout quotes, running footer */ design?: 'a' }): string {
   const pics = new Map<string, ReportImage>()
   for (const img of o.images) { const k = titleKey(img.title); if (k && isSafeHttpsUrl(img.src) && !pics.has(k)) pics.set(k, img) }
   const charts = new Map((o.charts ?? []).map(c => [titleKey(c.section), c]))
@@ -95,7 +113,7 @@ figure{margin:12px 0}figure img{max-width:100%;max-height:320px;object-fit:cover
 table{border-collapse:collapse;width:100%;font-size:14px;line-height:1.55;margin:14px 0 18px}th,td{border:1px solid #ccc;padding:8px 10px;text-align:left;vertical-align:top}th{background:#eef2fa}
 a{color:#1a4fb5}blockquote{border-left:3px solid #ccc;margin:12px 0;padding-left:12px;color:#444}
 @media print{body{margin:0 auto}h2,h3{break-after:avoid}figure,table{break-inside:avoid}}
-</style></head><body>${html(blocks)}</body></html>`
+${o.design === 'a' ? DESIGN_A_CSS : ''}</style></head><body>${o.design === 'a' ? designACover(o) : ''}${html(blocks)}</body></html>`
 }
 
 /** Saves a file the browser builds (no request). */

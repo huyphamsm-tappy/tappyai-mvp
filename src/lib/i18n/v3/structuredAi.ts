@@ -79,6 +79,10 @@ export const vi: Record<string, string> = {
   'research.failed': 'Không hoàn thành được nghiên cứu',
   'research.sources': 'Nguồn',
   'research.download': 'Tải báo cáo:',
+  'report.eyebrow': 'Báo cáo nghiên cứu · TappyAI',
+  'report.updated': 'Cập nhật {date}',
+  'report.sources': '{n} nguồn',
+  'report.disclaimer': 'Tappy có thể mắc lỗi. Vui lòng kiểm tra lại thông tin quan trọng.',
 }
 
 export const en: Record<string, string> = {
@@ -153,4 +157,8 @@ export const en: Record<string, string> = {
   'research.failed': 'The research could not be completed',
   'research.sources': 'Sources',
   'research.download': 'Download report:',
+  'report.eyebrow': 'Research report · TappyAI',
+  'report.updated': 'Updated {date}',
+  'report.sources': '{n} sources',
+  'report.disclaimer': 'Tappy can make mistakes. Please double-check important information.',
 }
