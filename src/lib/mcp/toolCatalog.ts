@@ -1,13 +1,19 @@
 // The published tool catalog (connector doc §12, R13 §25.6): the six initial tools plus the four fallback job tools used because MCP Tasks is not negotiated (§13.6).
 // ONE field table per tool builds BOTH the JSON Schema a Host sees and the validator the Gateway runs, so the two cannot drift apart.
 //
-// 🚨 The schemas are DRAFT v0.1: the connector doc calls its example input "illustrative" and says final schemas wait for the Source Audit and contract testing. They are inferred from
-// connector doc §12.4 and connectorContract.ts and have NOT been approved by the owner or exercised against any Host. Additive optional fields only until they are frozen.
+// v1.0 (12/11/2026): the inputs follow connector doc §12.4 (illustrative example) and §7.2 (explicit context parameters: location_query, latitude, longitude, preferred_language, user_locale, currency,
+// timezone, search_radius_meters), the outputs follow §14.1 (status, query_context, results, warnings, next_action) and §13.6 (job_id, status, created_at, poll_after_ms, expires_at). The doc says its example
+// is not the approved schema, so this version is FROZEN BY THIS FILE'S OWN RULES, not by a Host or the owner's sign-off: it has not been exercised against any Host.
+//
+// VERSIONING POLICY (connector doc §12.5): additive OPTIONAL input fields and additive output fields are allowed within a major version; removing or renaming a field, tightening a bound, adding a required
+// field or changing a type is breaking and needs a new major version, a migration note and the owner's approval. catalogFingerprint() is pinned by a test: any change to the published catalog fails it
+// until the version and the pinned value are changed together on purpose. A Host may keep an older schema snapshot, so a change is never assumed to reach it at once.
 // Deadlines are conservative PLACEHOLDERS, not measured SLAs (no fixed 3/5/8 s claim before a benchmark, connector doc §13.3).
+import { createHash } from 'node:crypto'
 import { z } from 'zod'
 import { CONNECTOR_TOOLS, type ToolName } from './connectorContract'
 
-export const TOOL_CATALOG_VERSION = 'mcp-tools.v0.1-draft'
+export const TOOL_CATALOG_VERSION = 'mcp-tools.v1.0'
 
 export type CatalogToolName = ToolName | 'create_itinerary_job' | 'get_itinerary_job_status' | 'get_itinerary_job_result' | 'cancel_itinerary_job'
 export type ExecutionMode = 'SYNC' | 'ASYNC' | 'JOB_CONTROL'
@@ -65,7 +71,9 @@ const searchFields = (maxResults: number): Fields => ({
   latitude: O({ kind: 'number', min: -90, max: 90, description: 'Latitude the user shared; send together with longitude.' }),
   longitude: O({ kind: 'number', min: -180, max: 180, description: 'Longitude the user shared; send together with latitude.' }),
   preferred_language: O(str(2, 'Answer language of the result labels.', { enum: ['vi', 'en'] })),
+  user_locale: O(str(20, 'The user\'s locale as a BCP 47 tag, for example vi-VN. Advisory: it never selects a location.', { pattern: '^[A-Za-z]{2,3}(-[A-Za-z0-9]{2,8}){0,2}$' })),
   currency: O(str(3, 'ISO 4217 display currency, for example VND.', { pattern: '^[A-Z]{3}$' })),
+  timezone: O(str(64, 'IANA timezone of the user, for example Asia/Ho_Chi_Minh. Advisory: it never selects a location.', { pattern: '^[A-Za-z_]+(/[A-Za-z0-9_+-]+){0,2}$' })),
   search_radius_meters: O({ kind: 'integer', min: 100, max: 20_000, description: 'Search radius around the coordinates.' }),
   limit: O({ kind: 'integer', min: 1, max: maxResults, description: `How many results, at most ${maxResults}. Default 5.` }),
 })
@@ -80,11 +88,47 @@ const itineraryFields: Fields = {
 }
 const jobIdField: Fields = { job_id: R(str(64, 'The job_id returned when the job was created.', { pattern: JOB_ID })) }
 
+// ── output schemas (connector doc §14.1, §13.6) ──────────────────────────────────────────────────────────────────────────
+
+const S = { type: 'string' } as const
+const N = { type: 'number' } as const
+/** The JSON type of every DTO field a result row may carry. A field of connectorContract's allowlist without an entry here is a bug (a test fails). */
+export const DTO_FIELD_TYPES: Readonly<Record<string, Record<string, unknown>>> = Object.freeze({
+  id: S, name: S, title: S, category: S, address: S, district: S, city: S, rating: N, priceLevel: S, openNow: { type: 'boolean' }, distanceMeters: N, url: S,
+  cuisine: S, priceRange: S, openingHours: S, ticketPrice: { anyOf: [N, S] }, price: { anyOf: [N, S] }, currency: S, merchant: S, pricePerNight: N, stars: N,
+})
+const rowSchema = (fields: readonly string[]) => ({ type: 'object', properties: Object.fromEntries(fields.map(f => [f, DTO_FIELD_TYPES[f] ?? { type: 'null' }])), additionalProperties: false })
+const objectOf = (properties: Record<string, unknown>, required: string[]) => ({ type: 'object', properties, required, additionalProperties: false })
+
+const JOB_STATUS = ['queued', 'running', 'succeeded', 'failed', 'cancelled', 'expired']
+const JOB_VIEW_PROPS = { job_id: S, status: { type: 'string', enum: JOB_STATUS }, created_at: S, poll_after_ms: { type: 'integer' }, expires_at: S }
+const JOB_VIEW_REQUIRED = ['job_id', 'status', 'created_at', 'poll_after_ms', 'expires_at']
+const ITINERARY_SCHEMA = objectOf({ days: { type: 'array', maxItems: 7, items: objectOf({ day: { type: 'integer' }, items: { type: 'array', maxItems: 12, items: objectOf({ title: S, kind: { type: 'string', enum: ['attraction', 'restaurant', 'hotel'] }, url: S }, ['title', 'kind']) } }, ['day', 'items']) } }, ['days'])
+
+/** Structured result of a SUCCESSFUL call (an error is an isError result with the error contract, not described here). */
+function outputSchemaFor(name: CatalogToolName): Record<string, unknown> {
+  switch (name) {
+    case 'create_itinerary': case 'create_itinerary_job': case 'get_itinerary_job_status': case 'cancel_itinerary_job': return objectOf(JOB_VIEW_PROPS, JOB_VIEW_REQUIRED)
+    case 'get_itinerary_job_result': return objectOf({ ...JOB_VIEW_PROPS, result: { anyOf: [{ type: 'null' }, ITINERARY_SCHEMA] } }, [...JOB_VIEW_REQUIRED, 'result'])
+    default: {
+      const c = CONNECTOR_TOOLS[name]
+      return objectOf({
+        status: { type: 'string', enum: ['success', 'partial'] },
+        query_context: objectOf({ market: S, language: S, context_source: S, context_confidence: S, location_precision: S, needs_clarification: { type: 'boolean' } }, ['market', 'language', 'context_source', 'context_confidence', 'location_precision', 'needs_clarification']),
+        results: { type: 'array', maxItems: c.maxResults, items: rowSchema(c.dtoFields) },
+        warnings: { type: 'array', items: S },
+        next_action: { type: 'null' },
+      }, ['status', 'query_context', 'results', 'warnings', 'next_action'])
+    }
+  }
+}
+
 export interface CatalogTool {
   name: CatalogToolName
   title: string
   description: string
   inputSchema: Record<string, unknown>
+  outputSchema: Record<string, unknown>
   annotations: ToolAnnotations
   mode: ExecutionMode
   /** hard server deadline of one call (placeholder, see the header) */
@@ -100,7 +144,7 @@ const CONTROL_READ: ToolAnnotations = { readOnlyHint: true, destructiveHint: fal
 
 function def(name: CatalogToolName, o: { title: string; description: string; fields: Fields; annotations: ToolAnnotations; mode: ExecutionMode; deadlineMs: number; contract: ToolName }): CatalogTool {
   const { zod, json } = build(o.fields)
-  return { name, title: o.title, description: o.description, inputSchema: json, annotations: o.annotations, mode: o.mode, deadlineMs: o.deadlineMs, contract: o.contract, schema: zod }
+  return { name, title: o.title, description: o.description, inputSchema: json, outputSchema: outputSchemaFor(name), annotations: o.annotations, mode: o.mode, deadlineMs: o.deadlineMs, contract: o.contract, schema: zod }
 }
 const search = (name: ToolName & keyof typeof CONNECTOR_TOOLS, title: string, description: string, extra: Fields = {}): CatalogTool =>
   def(name, { title, description, fields: { ...searchFields(CONNECTOR_TOOLS[name].maxResults), ...extra }, annotations: CONNECTOR_TOOLS[name].annotations, mode: 'SYNC', deadlineMs: SYNC_DEADLINE_MS, contract: name })
@@ -125,8 +169,8 @@ export const CATALOG: Readonly<Record<CatalogToolName, CatalogTool>> = Object.fr
 /** The catalog entry for a name, or null. Own properties only: '__proto__', 'constructor' and the like are not tools. Pure. */
 export const catalogTool = (n: unknown): CatalogTool | null => (typeof n === 'string' && Object.prototype.hasOwnProperty.call(CATALOG, n) ? CATALOG[n as CatalogToolName] : null)
 
-export function listTools(): Array<{ name: string; title: string; description: string; inputSchema: Record<string, unknown>; annotations: ToolAnnotations }> {
-  return Object.values(CATALOG).map(t => ({ name: t.name, title: t.title, description: t.description, inputSchema: t.inputSchema, annotations: { ...t.annotations, title: t.title } as ToolAnnotations }))
+export function listTools(): Array<{ name: string; title: string; description: string; inputSchema: Record<string, unknown>; outputSchema: Record<string, unknown>; annotations: ToolAnnotations }> {
+  return Object.values(CATALOG).map(t => ({ name: t.name, title: t.title, description: t.description, inputSchema: t.inputSchema, outputSchema: t.outputSchema, annotations: { ...t.annotations, title: t.title } as ToolAnnotations }))
 }
 
 export type ParsedArgs = { ok: true; value: Record<string, unknown> } | { ok: false }
@@ -139,5 +183,26 @@ export function parseArgs(name: CatalogToolName, raw: unknown): ParsedArgs {
   if (!r.success) return { ok: false }
   const v = r.data as Record<string, unknown>
   if (('latitude' in v) !== ('longitude' in v)) return { ok: false }
+  if (name === 'search_hotels' && !validStay(v.check_in, v.check_out)) return { ok: false }
   return { ok: true, value: v }
+}
+
+/** Hotel dates: check_out needs check_in, both real calendar dates, check_out after check_in, at most 30 nights. Pure. */
+function validStay(checkIn: unknown, checkOut: unknown): boolean {
+  const day = (v: unknown): number | null => {
+    if (typeof v !== 'string') return null
+    const t = Date.parse(v + 'T00:00:00Z')
+    return Number.isFinite(t) && new Date(t).toISOString().slice(0, 10) === v ? t : null
+  }
+  if (checkIn === undefined && checkOut === undefined) return true
+  const a = day(checkIn)
+  if (a === null) return false
+  if (checkOut === undefined) return true
+  const b = day(checkOut)
+  return b !== null && b > a && (b - a) / 86_400_000 <= 30
+}
+
+/** A stable fingerprint of everything a Host can see of the catalog (names, descriptions, schemas, annotations, version). Pinned by a test: change the catalog on purpose, then change both together. */
+export function catalogFingerprint(): string {
+  return createHash('sha256').update(JSON.stringify({ v: TOOL_CATALOG_VERSION, tools: listTools() })).digest('hex')
 }

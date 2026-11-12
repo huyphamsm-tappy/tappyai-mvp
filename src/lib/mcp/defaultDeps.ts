@@ -1,8 +1,8 @@
 // The Gateway's default wiring (what /api/mcp runs with). It is deliberately inert until the owner supplies the missing pieces:
-//   · token verifier   → DENIES EVERYTHING. No OAuth handshake exists (Source Audit §4): the SDK is not in the repo and the Supabase OAuth server is not confirmed. Until a real verifier is plugged
-//                        in here, every request is 401 AUTH_REQUIRED, so none of the adapters below can be reached over HTTP.
-//   · job store        → unavailable (no durable queue chosen).
-//   · hotels adapter   → NOT wired (Agoda/Vexere keys do not exist yet; nothing is invented).
+//   · token verifier   → DENIES EVERYTHING unless the https resource URL, a registered client and the identity-provider settings are all configured (identity.ts). The OAuth server itself is not built here
+//                        (Source Audit §4), so with no configuration every request is 401 AUTH_REQUIRED and none of the adapters below can be reached over HTTP.
+//   · job store        → unavailable unless MCP_JOBS_ENABLED=1 (and the owner has applied the 20261121 migration).
+//   · hotels adapter   → NOT wired until Agoda keys are present AND a real client is plugged in (providers.ts); today no client exists, so it stays null. Nothing is invented.
 //   · places + shopping adapters → real, lazily imported existing services (searchPlaces, searchProducts), never called in tests.
 import { distributedRateLimit } from '@/lib/security/distributedRateLimit'
 import type { GatewayDeps, TokenVerifier } from './gateway'
@@ -10,6 +10,7 @@ import { createSpendPool } from './spendPool'
 import { createAbuseMonitor } from './abuseGuard'
 import { unavailableJobStore, type JobStore, type JobWorkerStore } from './jobs'
 import { createRpcJobStore } from './jobsRpc'
+import { hotelAdapter, hotelProviderFromEnv } from './providers'
 import { NO_ADAPTERS, type ServiceAdapters } from './serviceMap'
 import { createSupabaseTokenVerifier, parseClientRegistry, type ProviderUser } from './identity'
 
@@ -46,7 +47,7 @@ const RATE_WINDOW_MS = 60_000
 // per-instance memory (see abuseGuard.ts): module scope so one warm instance keeps its history between requests
 const abuse = createAbuseMonitor()
 
-export function realAdapters(): ServiceAdapters {
+export function realAdapters(env: Env = process.env): ServiceAdapters {
   return {
     ...NO_ADAPTERS,
     'places.search': async c => {
@@ -60,7 +61,8 @@ export function realAdapters(): ServiceAdapters {
       const r = (await searchProducts(c.query, c.lang, { merchantLinks: false })) as { search_results?: unknown }
       return { rows: Array.isArray(r?.search_results) ? (r.search_results as Array<Record<string, unknown>>) : [] }
     },
-    // 'hotels.prices': deliberately null. getHotelPrices (src/lib/ai/tools/travel.ts) exists, but the owner asked for the hotel/Agoda path to stay unwired until the keys exist.
+    // hotels: wired ONLY when the provider keys are present AND a real client has been plugged in (providers.ts); today no client exists, so this stays null. getHotelPrices (travel.ts) is deliberately not used.
+    'hotels.prices': (() => { const p = hotelProviderFromEnv(env); return p ? hotelAdapter(p) : null })(),
   }
 }
 
@@ -78,7 +80,7 @@ export function buildGatewayDeps(env: Env = process.env, seams: { getUser?: (tok
     verify: buildVerifier(env, seams.getUser),
     expectedAudience: env.MCP_RESOURCE_URL ?? '',
     resourceMetadataUrl: env.MCP_RESOURCE_METADATA_URL || undefined,
-    adapters: realAdapters(),
+    adapters: realAdapters(env),
     spend: createSpendPool({ env }),
     jobs: rpcJobStore(env) ?? unavailableJobStore,
     abuse,

@@ -5,11 +5,11 @@ import { TOOL_SERVICE } from './serviceMap'
 
 const SEARCH = ['search_places', 'search_restaurants', 'search_shopping', 'search_hotels', 'search_attractions'] as const
 
-describe('tool catalog (draft schemas v0.1)', () => {
+describe('tool catalog (schemas v1.0)', () => {
   it('publishes the six initial tools plus the four fallback job tools, and nothing else', () => {
     expect(Object.keys(CATALOG).sort()).toEqual([...SEARCH, 'create_itinerary', 'create_itinerary_job', 'get_itinerary_job_status', 'get_itinerary_job_result', 'cancel_itinerary_job'].sort())
     expect(listTools().length).toBe(10)
-    expect(TOOL_CATALOG_VERSION).toMatch(/draft/)
+    expect(TOOL_CATALOG_VERSION).toBe('mcp-tools.v1.0')
   })
   it('SYNC for the five searches, ASYNC for create_itinerary, JOB_CONTROL for the job tools', () => {
     for (const n of SEARCH) expect(CATALOG[n].mode).toBe('SYNC')
