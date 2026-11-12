@@ -157,3 +157,19 @@ Skeleton chỉ có **một** "hồ sơ" cấu hình mỏng (nhãn host + hằng 
 5. **Khóa Agoda/Vexere** (12/11) — mới nối sau khi có; không bịa.
 6. **Chốt schema tool** (bản nháp v0.1 là suy luận).
 7. Kiểm lại tài liệu chính thức từng nền tảng và đo độ trễ thật (cần ngân sách đo có kiểm soát) trước Phase 4.
+
+---
+
+## Phụ lục 12/11/2026 — những gì thay đổi sau audit (chủ sở hữu cho phép làm đầy đủ trên nhánh này)
+
+Audit ở trên mô tả trạng thái **trước khi** xây. Sau đó nhánh này đã làm thêm (xem `docs/PROJECT-STATE.md`, mục 9, dòng 2026-11-12). Các nhận xét của audit còn nguyên giá trị; chỉ các dòng sau đổi trạng thái:
+
+| Mục audit | Trước | Sau (12/11) |
+|---|---|---|
+| D — OAuth / danh tính | stub, từ chối tất cả | ánh xạ token→principal + xác thực qua nhà cung cấp ở mỗi request (`identity.ts`); vẫn **không có** máy chủ OAuth, màn hình đồng ý, đăng ký connector (cần Host + bí mật) |
+| Q — hàng đợi / worker | không có | migration **chưa áp dụng** + store RPC + worker + composer; cần chủ áp migration, bật `MCP_JOBS_ENABLED`, chọn bộ lập lịch |
+| R — chống cào | bản tối thiểu | thêm khối lượng kết quả khác nhau và mẫu truy vấn lặp; vẫn từng instance, ngưỡng chưa hiệu chỉnh |
+| T — gán nguồn | chưa có | link ký `/go/m/<token>` (nguồn ≠ danh tính giao dịch); cần `MCP_ATTRIBUTION_SECRET` và danh sách đối tác của chủ |
+| Y — Agoda / Vexere | không nối | cổng + dữ liệu giả + hợp đồng; **không có client thật**, không tên khóa nào trong mã (luật kiến trúc: chỉ `src/lib/ccp/tracking` được đọc khóa đối tác) |
+| §9 — schema | bản nháp v0.1 | v1.1, có output schema, vân tay được ghim bằng test; chưa được chủ ký duyệt, chưa chạy với Host nào |
+| §8 — hồ sơ Host | UNVERIFIED | vẫn UNVERIFIED, nay là dữ liệu có test tương thích từng hồ sơ; không có tuyên bố ngang nhau |
