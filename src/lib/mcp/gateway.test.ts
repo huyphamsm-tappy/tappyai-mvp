@@ -257,6 +257,16 @@ describe('abuse monitor', () => {
     expect(errCode(await run(call('search_places', { query: 'pho', ...HCMC }), deps))).toBe('ABUSE_RESTRICTED')
     expect(placesAdapter).not.toHaveBeenCalled()
   })
+  it('the monitor is told the query and, after a success, the ids of the results handed out (cumulative extraction volume); a refused call records nothing', async () => {
+    const observed: unknown[] = []; const handed: string[][] = []
+    const abuse = { observe: (_p: string, o: unknown) => { observed.push(o); return { level: 'normal' as const, depthFactor: 1 } }, recordResults: (_p: string, ids: readonly string[]) => { handed.push([...ids]) }, size: () => 0 }
+    const d = mk({ abuse }).deps
+    await run(call('search_places', { query: 'phở bò', ...HCMC }), d)
+    expect(observed[0]).toMatchObject({ tool: 'search_places', query: 'phở bò', lat: 10.776 })
+    expect(handed.length).toBe(1); expect(handed[0].length).toBe(5); expect(handed[0][0]).toBe('id0')
+    await run(call('search_places', { query: '', ...HCMC }), d)
+    expect(handed.length).toBe(1)
+  })
   it('an elevated principal gets reduced depth, labelled partial with a warning', async () => {
     const abuse = { observe: () => ({ level: 'elevated' as const, depthFactor: 0.4 }), size: () => 0 }
     const r = await run(call('search_places', { query: 'pho', limit: 10, ...HCMC }), mk({ abuse }).deps)

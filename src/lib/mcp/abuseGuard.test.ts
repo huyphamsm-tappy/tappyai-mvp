@@ -49,6 +49,37 @@ describe('spatial / temporal abuse monitor (placeholder thresholds, uncalibrated
     const c = clock(); const m = createAbuseMonitor({ now: c.now })
     for (let i = 0; i < 100; i++) expect(m.observe('p', { tool: 'search_shopping' }).level).toBe('normal')
   })
+  it('HARVESTING: handing out hundreds of DISTINCT results escalates even from one cell; re-reading the same results does not', () => {
+    const c = clock(); const m = createAbuseMonitor({ now: c.now })
+    const tools = ['search_places', 'search_restaurants', 'search_attractions', 'search_hotels', 'search_shopping']
+    const levels = new Set<string>()
+    for (let i = 0; i < 70; i++) { levels.add(m.observe('h', { lat: D.d1[0], lng: D.d1[1], tool: tools[i % 5], query: `q${i}` }).level); m.recordResults!('h', Array.from({ length: 10 }, (_, j) => `r${i}-${j}`)); c.tick(2_000) }
+    expect(levels.has('normal')).toBe(true); expect(levels.has('elevated')).toBe(true); expect(levels.has('high')).toBe(true)
+    const same = createAbuseMonitor({ now: c.now })
+    for (let i = 0; i < 200; i++) { expect(same.observe('s', { lat: D.d1[0], lng: D.d1[1], tool: 'search_places', query: 'pho' }).level).toBe('normal'); same.recordResults!('s', ['a', 'b', 'c', 'd', 'e']); c.tick(1_000) }
+  })
+  it('a legitimate tourist session (20 calls, 5 results each, 5 districts, 4 categories) stays normal even counting its results', () => {
+    const c = clock(); const m = createAbuseMonitor({ now: c.now }); let n = 0; let worst = 'normal'
+    for (const d of Object.values(D)) for (const t of ['search_places', 'search_restaurants', 'search_attractions', 'search_hotels']) {
+      const v = m.observe('t', { lat: d[0], lng: d[1], tool: t, query: `${t} nice` }); if (v.level !== 'normal') worst = v.level
+      m.recordResults!('t', Array.from({ length: 5 }, (_, j) => `r${n++}-${j}`)); c.tick(15_000)
+    }
+    expect(worst).toBe('normal')
+  })
+  it('TEMPLATE: one query walked over many cells is at least suspicious even before the cell count alone would say so', () => {
+    const c = clock(); const m = createAbuseMonitor({ now: c.now }); const seen = new Set<string>()
+    for (let i = 0; i < 9; i++) { seen.add(m.observe('w', { lat: 10 + i * 0.05, lng: 106, tool: 'search_places', query: i % 2 ? '  Phở   BÒ ' : 'phở bò' }).level); c.tick(3_000) }
+    expect(seen.has('suspicious')).toBe(true)
+    const diff = createAbuseMonitor({ now: c.now })
+    for (let i = 0; i < 9; i++) expect(diff.observe('d', { lat: 10 + i * 0.05, lng: 106, tool: 'search_places', query: `different ${i}` }).level).toBe('normal')
+  })
+  it('result ids age out of the window and the id table is bounded', () => {
+    const c = clock(); const m = createAbuseMonitor({ now: c.now, windowMs: 60_000, maxPrincipals: 50 })
+    m.recordResults!('a', Array.from({ length: 400 }, (_, i) => `r${i}`)); c.tick(120_000)
+    expect(m.observe('a', { lat: 10, lng: 106, tool: 'search_places' }).level).toBe('normal')
+    for (let i = 0; i < 500; i++) m.recordResults!(`p${i}`, ['x'])
+    expect(m.size()).toBeLessThanOrEqual(50)
+  })
   it('is bounded in memory: a flood of distinct principals does not grow without limit', () => {
     const c = clock(); const m = createAbuseMonitor({ now: c.now, maxPrincipals: 100 })
     for (let i = 0; i < 1000; i++) m.observe(`p${i}`, { lat: 10, lng: 106, tool: 'search_places' })

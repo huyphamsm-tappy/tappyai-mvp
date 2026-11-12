@@ -203,7 +203,7 @@ async function callTool(id: unknown, params: unknown, claims: VerifiedClaims, in
 
     const lat = typeof args.latitude === 'number' ? args.latitude : undefined
     const lng = typeof args.longitude === 'number' ? args.longitude : undefined
-    const verdict = deps.abuse.observe(claims.principalId, { lat, lng, tool: t.name })
+    const verdict = deps.abuse.observe(claims.principalId, { lat, lng, tool: t.name, query: typeof args.query === 'string' ? args.query : undefined })
     if (verdict.level === 'high') return fail('ABUSE_RESTRICTED', { retryable: true })
 
     const requested = Math.min(typeof args.limit === 'number' ? args.limit : DEFAULT_LIMIT, 100)
@@ -228,6 +228,7 @@ async function callTool(id: unknown, params: unknown, claims: VerifiedClaims, in
     if (reduced) warnings.push('Result depth was reduced for this connection.')
     if (shaped.partial) warnings.push('Some results were omitted to fit the response size limit.')
     meta.status = 'success'; meta.resultCount = shaped.rows.length
+    deps.abuse.recordResults?.(claims.principalId, shaped.rows.map(r => String(r.id ?? r.name ?? r.title ?? '')).filter(Boolean))
     return success({
       status: reduced || shaped.partial ? 'partial' : 'success',
       query_context: { market: ctx.marketId, language: call.lang, context_source: ctx.source, context_confidence: 'client_supplied', location_precision: ctx.precision, needs_clarification: false },
