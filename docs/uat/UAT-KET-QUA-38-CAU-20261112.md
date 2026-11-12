@@ -31,3 +31,10 @@ Chạy: 33 câu hỏi đáp qua đường chat thật (server cục bộ cổng 
 ## Chưa kiểm được bằng cách này
 - Tin chỉ có ảnh (cần đính kèm thật qua giao diện), giao diện điện thoại, đăng nhập thật, hạn mức gói, thẻ số khẩn cấp trên giao diện (chỉ kiểm bằng văn bản trả về), hợp đồng điều phối và kiểm từng mục (chỉ chạy trong báo cáo Advanced, không thấy trên giao diện).
 - Mọi phán xét ở đây là của Claude; số liệu thực tế (giá phòng, giờ mở cửa) lấy theo nguồn mô hình trích dẫn, chưa đối chiếu độc lập.
+
+## Kiểm lại sau các bản sửa (12/11, máy chủ mới, đủ cờ: ngữ cảnh chuẩn, Vexere trực tiếp, bố cục mới, bộ canh hotline, khẩn cấp tiếng Trung)
+Chạy 9 câu (A1, B1, C5, D3, E1, E3, F1, F2, F4) rồi A1, B1 lần nữa; tốn khoảng 0,05 USD.
+- **F2** ("115 miễn phí không"): câu "miễn phí" đã bị bộ canh bỏ; còn lại "115 là số cấp cứu y tế... có thể phát sinh chi phí tùy trường hợp".
+- **F4** (tiếng Trung, trẻ bị đưa đi): nhận diện trong 53 ms, không gọi mô hình, trả lời bằng tiếng Trung với thẻ 113 và 111 (24/7 và miễn phí chỉ ghi cho 111, đã xác minh).
+- **F1, D3, E1, E3**: như trước, đạt.
+- **Lỗi thoáng qua đã thấy:** ngay sau khi máy chủ khởi động lại, A1 và B1 trả "không tìm được địa điểm" và C5 quá thời gian; chạy lại A1 và B1 trên máy chủ đã ấm thì có quán thật (Phở Gà Huyền Hương, Phở Thìn Bờ Hồ; tiếng Trung với MẸT, Hong Hoai's). Nguyên nhân khả dĩ nhất là biên dịch lần đầu của máy chủ dev làm công cụ tìm địa điểm quá thời gian (suy luận, chưa chứng minh). C5 chưa chạy lại. Máy chủ UAT trên cổng 3000 đã được làm ấm bằng yêu cầu không tốn câu hỏi.
