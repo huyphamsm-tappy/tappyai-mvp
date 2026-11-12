@@ -8,7 +8,8 @@ import { distributedRateLimit } from '@/lib/security/distributedRateLimit'
 import type { GatewayDeps, TokenVerifier } from './gateway'
 import { createSpendPool } from './spendPool'
 import { createAbuseMonitor } from './abuseGuard'
-import { unavailableJobStore } from './jobs'
+import { unavailableJobStore, type JobStore, type JobWorkerStore } from './jobs'
+import { createRpcJobStore } from './jobsRpc'
 import { NO_ADAPTERS, type ServiceAdapters } from './serviceMap'
 import { createSupabaseTokenVerifier, parseClientRegistry, type ProviderUser } from './identity'
 
@@ -63,6 +64,15 @@ export function realAdapters(): ServiceAdapters {
   }
 }
 
+/**
+ * The persisted job store, ONLY when MCP_JOBS_ENABLED=1 (set it after the owner has applied supabase/migrations/20261121_mcp_jobs.sql); otherwise null. It reaches the table through the
+ * migration's service-role functions only (each filters on the owner principal); the admin client is created on first use, so a missing service configuration is JobStoreUnavailable, never a crash.
+ */
+export function rpcJobStore(env: Env = process.env): (JobStore & JobWorkerStore) | null {
+  if (env.MCP_JOBS_ENABLED !== '1') return null
+  return createRpcJobStore({ rpc: async (fn, args) => { const { createAdminClient } = await import('@/lib/supabase/admin'); return createAdminClient().rpc(fn, args) } })
+}
+
 export function buildGatewayDeps(env: Env = process.env, seams: { getUser?: (token: string) => Promise<ProviderUser | null> } = {}): GatewayDeps {
   return {
     verify: buildVerifier(env, seams.getUser),
@@ -70,7 +80,7 @@ export function buildGatewayDeps(env: Env = process.env, seams: { getUser?: (tok
     resourceMetadataUrl: env.MCP_RESOURCE_METADATA_URL || undefined,
     adapters: realAdapters(),
     spend: createSpendPool({ env }),
-    jobs: unavailableJobStore,
+    jobs: rpcJobStore(env) ?? unavailableJobStore,
     abuse,
     rateLimit: async key => {
       const r = await distributedRateLimit(key, RATE_LIMIT, RATE_WINDOW_MS)

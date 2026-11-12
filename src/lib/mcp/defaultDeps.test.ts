@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { buildVerifier, buildGatewayDeps, denyAllVerifier } from './defaultDeps'
+import { buildVerifier, buildGatewayDeps, denyAllVerifier, rpcJobStore } from './defaultDeps'
 
 const AUD = 'https://mcp.test/api/mcp'
 const SUB = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa'
@@ -25,6 +25,11 @@ describe('default wiring is inert until fully configured', () => {
     expect(v).not.toBe(denyAllVerifier)
     expect((await v(`Bearer ${token}`))?.principalId).toBe(`u:${SUB}`)
     expect(getUser).toHaveBeenCalledTimes(1)
+  })
+  it('the persisted job store is off unless MCP_JOBS_ENABLED=1; the default store is unavailable', async () => {
+    expect(rpcJobStore({})).toBeNull(); expect(rpcJobStore({ MCP_JOBS_ENABLED: 'true' })).toBeNull()
+    expect(rpcJobStore({ MCP_JOBS_ENABLED: '1' })).not.toBeNull()
+    await expect(buildGatewayDeps({}).jobs.get('x', 'p')).rejects.toThrow('job_store_unavailable')
   })
   it('the real adapters stay lazy and the hotel path stays unwired', () => {
     const d = buildGatewayDeps({})

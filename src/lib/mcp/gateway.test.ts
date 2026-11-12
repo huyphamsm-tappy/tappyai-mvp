@@ -304,14 +304,14 @@ describe('itinerary jobs (fallback job tools; durable store not chosen yet)', ()
     const jobs = createInMemoryJobStore(() => NOW)
     const { deps } = mk({ jobs })
     const id = structured(await run(call('create_itinerary_job', { destination: 'Huế', days: 1 }), deps)).job_id
-    const rec = (await jobs.get(id, 'anon-1'))!
-    rec.status = 'succeeded'
-    rec.result = { days: [{ day: 1, internal_note: 'secret', items: [{ title: 'Đại Nội', kind: 'attraction', url: 'javascript:alert(1)', cost_basis: 12 }, { title: 'Quán A', kind: 'restaurant', url: 'https://a.example/x', tvi_id: 'internal' }] }], worker_debug: 'x' }
+    await jobs.claim('w1', 60_000)
+    await jobs.complete(id, 'w1', { days: [{ day: 1, internal_note: 'secret', items: [{ title: 'Đại Nội', kind: 'attraction', url: 'javascript:alert(1)', cost_basis: 12 }, { title: 'Quán A', kind: 'restaurant', url: 'https://a.example/x', tvi_id: 'internal' }] }], worker_debug: 'x' })
     const out = structured(await run(call('get_itinerary_job_result', { job_id: id }), deps))
     expect(out.result).toEqual({ days: [{ day: 1, items: [{ title: 'Đại Nội', kind: 'attraction' }, { title: 'Quán A', kind: 'restaurant', url: 'https://a.example/x' }] }] })
     expect(JSON.stringify(out)).not.toMatch(/secret|internal|worker_debug|cost_basis/)
-    rec.result = { days: 'nope' }
-    expect(structured(await run(call('get_itinerary_job_result', { job_id: id }), deps)).result).toBeNull()
+    const id2 = structured(await run(call('create_itinerary_job', { destination: 'Hà Nội', days: 1 }), deps)).job_id
+    await jobs.claim('w1', 60_000); await jobs.complete(id2, 'w1', { days: 'nope' })
+    expect(structured(await run(call('get_itinerary_job_result', { job_id: id2 }), deps)).result).toBeNull()
   })
   it('the default (unavailable) job store fails closed with PROVIDER_UNAVAILABLE', async () => {
     const { deps } = mk({ jobs: unavailableJobStore })

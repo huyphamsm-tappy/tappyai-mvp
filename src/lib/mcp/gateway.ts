@@ -14,6 +14,7 @@ import { admissionToCode, toolError, RPC, type GatewayErrorCode } from './gatewa
 import { catalogTool, listTools, parseArgs, type CatalogTool } from './toolCatalog'
 import { ROW_MAPPER, TOOL_SERVICE, safeUrl, cleanText, type SearchToolName, type ServiceAdapters } from './serviceMap'
 import { TOOL_RESERVE_USD, type SpendPool } from './spendPool'
+import { dispatchPaid } from './dispatch'
 import { jobView, type JobStore, JobStoreUnavailable } from './jobs'
 import type { AbuseMonitor } from './abuseGuard'
 
@@ -81,22 +82,6 @@ function marketError(ctx: Ctx, vertical: string, gate: (q: GateQuery) => GateDec
   const d = gate({ marketId: ctx.marketId, vertical, capability: 'search', action: 'search', userNamedMarket: ctx.userNamed })
   if (d.allowed) return null
   return d.reason === 'NO_MARKET' ? 'SUPPORTED_MARKET_REQUIRED' : 'MARKET_UNSUPPORTED'
-}
-
-// ── deadline and abort ─────────────────────────────────────────────────────────────────────────────────────────────────
-
-type Race<T> = { kind: 'ok'; value: T } | { kind: 'error' } | { kind: 'timeout' } | { kind: 'aborted' }
-
-/** Waits for `p` for at most `ms` and until the client goes away. It does NOT wait for a provider that ignores cancellation: the caller keeps the reservation (unknown outcome). */
-function race<T>(p: Promise<T>, ms: number, signal: AbortSignal | undefined, onGiveUp: () => void): Promise<Race<T>> {
-  return new Promise(resolve => {
-    let done = false
-    const finish = (r: Race<T>) => { if (done) return; done = true; clearTimeout(timer); signal?.removeEventListener('abort', onAbort); if (r.kind !== 'ok' && r.kind !== 'error') onGiveUp(); resolve(r) }
-    const timer = setTimeout(() => finish({ kind: 'timeout' }), ms)
-    const onAbort = () => finish({ kind: 'aborted' })
-    signal?.addEventListener('abort', onAbort, { once: true })
-    p.then(value => finish({ kind: 'ok', value }), () => finish({ kind: 'error' }))
-  })
 }
 
 // ── itinerary result DTO ────────────────────────────────────────────────────────────────────────────────────────────────
@@ -215,31 +200,16 @@ async function callTool(id: unknown, params: unknown, claims: VerifiedClaims, in
     const limit = reduced ? Math.max(1, Math.floor(requested * verdict.depthFactor)) : requested
 
     const estimate = TOOL_RESERVE_USD[t.contract]
-    const reserved = await deps.spend.reserve({ claims, tool: t.contract, estimateUsd: estimate, requestId })
-    if (!reserved.ok) {
-      return (reserved.reason === 'store_unavailable' ? fail('PROVIDER_UNAVAILABLE', { retryable: true }) : fail('BUDGET_EXCEEDED', { retryable: reserved.reason === 'budget_exceeded' }))
-    }
-    const reservation = reserved.reservation
+    const call = { query: args.query as string, location: typeof args.location_query === 'string' ? args.location_query : undefined, lat, lng, lang: (args.preferred_language === 'en' ? 'en' : 'vi') as 'vi' | 'en', limit, radiusMeters: typeof args.search_radius_meters === 'number' ? args.search_radius_meters : undefined, placeType: entry.placeType, checkIn: typeof args.check_in === 'string' ? args.check_in : undefined, checkOut: typeof args.check_out === 'string' ? args.check_out : undefined }
+    const r = await dispatchPaid({ pool: deps.spend, claims, tool: t.contract, estimateUsd: estimate, requestId, adapter, call, deadlineMs: deps.deadlineMs ? deps.deadlineMs(t) : t.deadlineMs, signal: input.signal, onUnknownOutcome: () => { meta.unknownOutcome = true } })
+    if (r.kind === 'refused') return (r.reason === 'store_unavailable' ? fail('PROVIDER_UNAVAILABLE', { retryable: true }) : fail('BUDGET_EXCEEDED', { retryable: r.reason === 'budget_exceeded' }))
     meta.estimatedCostUsd = estimate
+    if (r.kind === 'cancelled_before') return fail('DEADLINE_EXCEEDED')
+    // error / deadline / client gone while the provider ran: the reservation was KEPT (unknown outcome); nothing about the provider's internals is said
+    if (r.kind !== 'ok') return (r.kind === 'error' ? fail('PROVIDER_UNAVAILABLE', { retryable: true }) : fail('DEADLINE_EXCEEDED', { retryable: true }))
 
-    // the client is already gone: nothing was dispatched, so the whole reservation is given back
-    if (input.signal?.aborted) { await reservation.release(); return fail('DEADLINE_EXCEEDED') }
-
-    const ac = new AbortController()
-    const call = { query: args.query as string, location: typeof args.location_query === 'string' ? args.location_query : undefined, lat, lng, lang: (args.preferred_language === 'en' ? 'en' : 'vi') as 'vi' | 'en', limit, radiusMeters: typeof args.search_radius_meters === 'number' ? args.search_radius_meters : undefined, placeType: entry.placeType, checkIn: typeof args.check_in === 'string' ? args.check_in : undefined, checkOut: typeof args.check_out === 'string' ? args.check_out : undefined, signal: ac.signal }
-    const settled = adapter(call)
-    settled.catch(() => { /* an abandoned call that fails later is not an unhandled rejection */ })
-    const r = await race(settled, deps.deadlineMs ? deps.deadlineMs(t) : t.deadlineMs, input.signal, () => ac.abort())
-
-    if (r.kind !== 'ok') {
-      // the provider may already have been charged: keep the reservation (unknown outcome), say nothing about its internals
-      reservation.keep(r.kind); meta.unknownOutcome = true
-      return (r.kind === 'error' ? fail('PROVIDER_UNAVAILABLE', { retryable: true }) : fail('DEADLINE_EXCEEDED', { retryable: true }))
-    }
-
-    await reservation.settle(typeof r.value.costUsd === 'number' ? r.value.costUsd : estimate)
     const mapper = ROW_MAPPER[entry.service]
-    const mapped = r.value.rows.map(row => mapper(row)).filter((x): x is Record<string, unknown> => x !== null).slice(0, limit)
+    const mapped = r.output.rows.map(row => mapper(row)).filter((x): x is Record<string, unknown> => x !== null).slice(0, limit)
     const shaped = shapeResult(t.contract, mapped)
     const warnings: string[] = []
     if (reduced) warnings.push('Result depth was reduced for this connection.')
@@ -261,7 +231,7 @@ async function callTool(id: unknown, params: unknown, claims: VerifiedClaims, in
         const gate = deps.market ?? ((q: GateQuery) => evaluateGate(q, DEFAULT_REGISTRY))
         const mErr = marketError(ctx, 'travel', gate)
         if (mErr) return asErr(mErr)
-        const rec = await deps.jobs.create({ ownerPrincipalId: claims.principalId, tool: 'create_itinerary', input: args })
+        const rec = await deps.jobs.create({ ownerPrincipalId: claims.principalId, host: claims.host, installId: claims.installId, tool: 'create_itinerary', input: args })
         meta.status = 'success'
         return success(jobView(rec, now()))
       }
