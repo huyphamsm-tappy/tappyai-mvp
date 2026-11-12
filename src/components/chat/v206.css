@@ -154,3 +154,43 @@
 .tappy-doc.v206-doc [data-md="table"] th, .tappy-doc.v206-doc [data-md="table"] td { padding: 9px 12px; border-top: 1px solid var(--rp-line); font-size: 14px; vertical-align: top; }
 .tappy-doc.v206-doc [data-md="table"] td:first-child { font-weight: 600; color: var(--rp-ink-2); }
 .tappy-doc.v206-doc [data-md="table"] tbody tr:hover { background: color-mix(in srgb, var(--rp-primary) 8%, transparent); }
+
+/* ---- dossier cover (the opened full report) ---- */
+.tappy-report-eyebrow.v206-dossier-kind { display: inline-block; padding: 3px 10px; border: 1px solid rgb(14 165 233 / .4); border-radius: 6px; background: rgb(14 165 233 / .12); color: #0369a1; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; letter-spacing: .08em; }
+.dark .tappy-report-eyebrow.v206-dossier-kind { color: #7dd3fc; }
+.v206-dossier-by { margin: 10px 0 0; color: var(--rp-ink-3, #64748b); font-size: 13px; }
+.tappy-doc.v206-doc h2 .v206-hnum { color: var(--rp-accent, #38bdf8); }
+
+/* ---- editorial answers (look flag): section headings as mono caps eyebrows, tables as a titled data box ---- */
+.v206-ed .v206-h { margin-top: 1.7rem; margin-bottom: .6rem; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13.5px; font-weight: 700; letter-spacing: .05em; line-height: 1.5; text-transform: uppercase; color: #0369a1; }
+.dark .v206-ed .v206-h { color: #38bdf8; }
+.v206-ed .v206-h:first-child { margin-top: .4rem; }
+.v206-hnum { margin-right: .3em; }
+.v206-databox { margin: 14px 0; overflow: hidden; border: 1px solid rgb(14 116 144 / .3); border-radius: 12px; background: rgb(240 249 255 / .6); }
+.dark .v206-databox { border-color: rgb(59 130 246 / .35); background: rgb(11 21 44 / .72); box-shadow: 0 10px 28px rgb(2 6 23 / .35); }
+.v206-databox-title { padding: 8px 14px; border-bottom: 1px solid rgb(14 116 144 / .25); background: rgb(14 165 233 / .1); color: #0369a1; font: 700 11.5px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .06em; text-transform: uppercase; }
+.dark .v206-databox-title { border-bottom-color: rgb(59 130 246 / .3); color: #38bdf8; }
+.v206-databox [data-md="table"] { margin: 0; max-width: 100%; }
+.v206-databox table { width: 100%; font-size: 13.5px; }
+.v206-databox th { padding: 10px 14px; background: rgb(14 165 233 / .1); color: #0c4a6e; font-weight: 700; white-space: nowrap; }
+.dark .v206-databox th { background: rgb(15 30 62 / .9); color: #7dd3fc; }
+.v206-databox td { padding: 10px 14px; vertical-align: top; }
+.v206-databox td:first-child { font-weight: 600; color: #475569; }
+.dark .v206-databox td:first-child { color: #94a3b8; }
+.v206-databox tbody tr:last-child td { border-bottom: 0; }
+
+/* ---- entity chips: a bold name that has a real profile (icon + name, like the mockup's) ---- */
+.v206-ent { display: inline-flex; align-items: center; gap: 4px; padding: 0 7px; border: 1px solid rgb(14 165 233 / .35); border-radius: 6px; background: rgb(14 165 233 / .1); color: #0369a1; font-size: .9em; font-weight: 600; line-height: 1.55; vertical-align: baseline; cursor: pointer; transition: background .15s, border-color .15s; }
+.dark .v206-ent { color: #38bdf8; background: rgb(14 165 233 / .1); }
+.v206-ent:hover { background: rgb(14 165 233 / .22); border-color: rgb(14 165 233 / .6); }
+.v206-ent:focus-visible { outline: 2px solid #3d8bff; outline-offset: 2px; }
+.v206-ent-i { font-size: .95em; line-height: 1; }
+
+/* ---- entity (Wikipedia) drawer ---- */
+.v206-wiki-kind { margin: 0 0 10px; color: #38bdf8; font: 700 11px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .06em; text-transform: uppercase; }
+.v206-wiki-photo { height: auto; max-height: 18rem; object-fit: cover; }
+.v206-wiki-title { margin: 12px 0 0; color: #f1f5f9; font-size: 15px; font-weight: 700; }
+.v206-wiki-extract { margin: 10px 0 0; color: #d6deee; font-size: 14.5px; line-height: 1.7; }
+.v206-wiki-src { margin: 14px 0 0; padding-top: 12px; border-top: 1px solid rgb(59 130 246 / .2); color: #8593ad; font: 500 12px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace; }
+.v206-wiki-link { color: #7cc4ff; text-decoration: underline; text-underline-offset: 3px; }
+.v206-wiki-link:hover { color: #fff; }

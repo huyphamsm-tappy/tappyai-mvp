@@ -6,7 +6,7 @@
 // every block still goes through the chat's formatter (`format` = formatMessage: escaping, bold, link chips, source chips, tables, code), so
 // nothing about what may reach the page changes. The server's item pictures (tappy.doc_media.v1) are placed next to the item they belong to,
 // matched by title in any script (titleKey); a picture whose item is not found is not shown. Every picture URL is re-checked (safe https).
-import { Fragment, useMemo, type MouseEvent, type ReactNode } from 'react'
+import { Fragment, useMemo, type KeyboardEvent, type MouseEvent, type ReactNode } from 'react'
 import './presentation.css'
 import { parseDoc, listItemTitle, headingTitle, titleKey, type DocBlock } from '@/lib/answerDoc/parse'
 import type { DocItemImage } from '@/lib/answerDoc/media'
@@ -54,6 +54,23 @@ export interface Presentation {
   cite?: (html: string) => string
   /** the rich cards of the turn, placed after the lead and spread between the paragraphs (presentation.embedAnchors) */
   embeds?: ReactNode[]
+  /** applied after `cite` to every formatted paragraph: the answer's resolved entity names become chips (workspace v206) */
+  decorate?: (html: string) => string
+  /** workspace v206 look: section headings as the mockup's mono caps eyebrows (numbered when the answer has two or more unnumbered ones), tables as a titled data box */
+  look?: boolean
+  /** a document's own heading number ("01.") by the heading's ordinal; none: no number is added */
+  headingNumber?: (ordinal: number) => string | undefined
+}
+
+/** A table block (the formatter's table syntax): its first line starts with a pipe. */
+const isTableBlock = (raw: string) => /^\s*\|/.test(raw)
+
+/** The data box's title: the short line right before the table that introduces it ("Bảng so sánh:"). A heading before the table is its own title: no second one is made. Pure. */
+export function dataBoxTitle(prev: DocBlock | undefined): string | null {
+  if (!prev || prev.t !== 'para') return null
+  const s = plainHeading(prev.text)
+  if (!/[:：]$/.test(s) || s.length > 90 || s.includes('\n')) return null
+  return s.replace(/[:：]\s*$/, '').trim() || null
 }
 
 /**
@@ -104,8 +121,20 @@ function Blocks({ blocks, format, placed, prefix = '', under, pres }: { blocks: 
   const leadIdx = top && pres!.variant === 'editorial' && pres!.lead !== false ? blocks.findIndex(b => b.t === 'para') : -1
   const anchors = top && pres!.embeds?.length ? embedAnchors(blocks, pres!.embeds.length) : []
   const embedsAfter = (i: number) => anchors.flatMap((a, k) => (a === i ? [<div key={`e${k}`} className="tappy-embed" data-embed>{pres!.embeds![k]}</div>] : []))
+  const mono = top && !!pres!.look
+  // editorial "1." in front of a level-2 heading that has no number of its own (needs two or more such headings; presentation only)
+  const unnumbered = mono && pres!.variant === 'editorial'
+    ? blocks.map((b, i) => (b.t === 'heading' && b.level === 2 && !/^\s*\d{1,3}[.)]/.test(plainHeading(b.text)) ? i : -1)).filter(i => i >= 0)
+    : []
+  const numberOf = (i: number, ord: number | undefined): string => {
+    if (!mono) return ''
+    if (pres!.variant === 'doc') return ord !== undefined ? pres!.headingNumber?.(ord) ?? '' : ''
+    const k = unnumbered.indexOf(i)
+    return unnumbered.length >= 2 && k >= 0 ? `${k + 1}.` : ''
+  }
   const withCite = pres?.cite
-  const fmt: Format = withCite ? s => withCite(format(s)) : format
+  const withChips = pres?.decorate
+  const fmt: Format = withCite || withChips ? s => { let h = format(s); if (withCite) h = withCite(h); if (withChips) h = withChips(h); return h } : format
   const rendered = blocks.map((b, i) => {
         switch (b.t) {
           case 'heading': {
@@ -114,10 +143,12 @@ function Blocks({ blocks, format, placed, prefix = '', under, pres }: { blocks: 
             // a document section starts with its own heading, which keeps the air above it (each section is drawn as its own block)
             const cls = top && pres!.variant === 'doc' ? cls0.replace(' first:mt-0', '') : cls0
             const ord = ords?.get(i)
+            const num = numberOf(i, ord)
+            const head = fmt(top ? b.text.replace(/^(\d{1,3})\./, `$1${WORD_JOINER}.`) : b.text)
             return (
               <Fragment key={i}>
-                <Inline html={fmt(top ? b.text.replace(/^(\d{1,3})\./, `$1${WORD_JOINER}.`) : b.text)} as={top ? (`h${Math.min(b.level, 6)}` as 'h1') : 'div'} id={ord !== undefined ? pres!.headingId?.(ord) : undefined}
-                  className={`${cls} text-gray-900 dark:text-gray-50 [text-wrap:balance]${ord !== undefined ? ' scroll-mt-16' : ''}`} />
+                <Inline html={num ? `<span class="v206-hnum">${num}</span> ${head}` : head} as={top ? (`h${Math.min(b.level, 6)}` as 'h1') : 'div'} id={ord !== undefined ? pres!.headingId?.(ord) : undefined}
+                  className={`${cls} text-gray-900 dark:text-gray-50 [text-wrap:balance]${ord !== undefined ? ' scroll-mt-16' : ''}${mono && b.level <= 3 ? ' v206-h' : ''}`} />
                 {img && <ItemPicture img={img} size="wide" />}
                 {under && (() => { const t = headingTitle(b.text); return t ? under(t) : null })()}
               </Fragment>
@@ -131,8 +162,18 @@ function Blocks({ blocks, format, placed, prefix = '', under, pres }: { blocks: 
               : <Inline key={i} html={fmt(b.text)} className="my-3 border-l-4 border-gray-200 dark:border-gray-700 pl-4 text-gray-600 dark:text-gray-300 whitespace-pre-line" />
           case 'hr':
             return <hr key={i} className="my-6 border-gray-200 dark:border-gray-700" />
-          case 'raw':
+          case 'raw': {
+            if (mono && isTableBlock(b.text)) {
+              const title = dataBoxTitle(blocks[i - 1])
+              return (
+                <div key={i} className="v206-databox" data-testid="v206-databox">
+                  {title && <div className="v206-databox-title">{title}</div>}
+                  <Inline html={fmt(b.text)} className="whitespace-pre-wrap" />
+                </div>
+              )
+            }
             return <Inline key={i} html={fmt(b.text)} className="my-3 whitespace-pre-wrap" />
+          }
           case 'list': {
             const ListTag = b.ordered ? 'ol' : 'ul'
             return (
@@ -143,7 +184,7 @@ function Blocks({ blocks, format, placed, prefix = '', under, pres }: { blocks: 
                   const body = (
                     <>
                       <Inline html={fmt(it.text)} className="whitespace-pre-line" />
-                      {it.children && <div className="mt-1.5"><Blocks blocks={parseDoc(it.children)} format={format} placed={placed} prefix={`${prefix}${i}.${k}/`} under={under} pres={pres ? { variant: pres.variant, cite: pres.cite } : undefined} /></div>}
+                      {it.children && <div className="mt-1.5"><Blocks blocks={parseDoc(it.children)} format={format} placed={placed} prefix={`${prefix}${i}.${k}/`} under={under} pres={pres ? { variant: pres.variant, cite: pres.cite, decorate: pres.decorate } : undefined} /></div>}
                     </>
                   )
                   return (
@@ -232,14 +273,14 @@ export function SourcesFooter({ text, lang }: { text: string; lang: string }) {
   )
 }
 
-export function ArticleAnswer({ text, images, format, className, onClick, under, presentation }: { text: string; images: readonly DocItemImage[]; format: Format; className?: string; onClick?: (e: MouseEvent<HTMLDivElement>) => void; under?: UnderHeading; presentation?: Presentation }) {
+export function ArticleAnswer({ text, images, format, className, onClick, onKeyDown, under, presentation }: { text: string; images: readonly DocItemImage[]; format: Format; className?: string; onClick?: (e: MouseEvent<HTMLDivElement>) => void; onKeyDown?: (e: KeyboardEvent<HTMLDivElement>) => void; under?: UnderHeading; presentation?: Presentation }) {
   const pics = new Map<string, DocItemImage>()
   for (const img of images) { const k = titleKey(img.title); if (k && !pics.has(k)) pics.set(k, img) }
   const blocks = parseDoc(text)
   // RFC-001 4.1: an editorial answer reads at line-height 1.65 (the article layout's 1.75rem is 1.8 at this size)
   const type = presentation?.variant === 'editorial' ? 'text-base leading-[1.65]' : 'text-[15.5px] leading-7'
   return (
-    <div data-answer="article" {...(presentation ? { 'data-presentation': presentation.variant } : {})} className={`message-content ${type} ${className ?? ''}`} onClick={onClick}>
+    <div data-answer="article" {...(presentation ? { 'data-presentation': presentation.variant } : {})} className={`message-content ${type} ${presentation?.look ? 'v206-ed ' : ''}${className ?? ''}`} onClick={onClick} onKeyDown={onKeyDown}>
       <Blocks blocks={blocks} format={format} placed={assignPictures(blocks, pics)} under={under} pres={presentation} />
     </div>
   )

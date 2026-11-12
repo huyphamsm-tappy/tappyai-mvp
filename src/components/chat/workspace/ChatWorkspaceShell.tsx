@@ -1,6 +1,9 @@
 'use client'
 
-import type { ReactNode } from 'react'
+import { useEffect, useSyncExternalStore, type ReactNode } from 'react'
+import { usePathname } from 'next/navigation'
+import ProjectOverview from './ProjectOverview'
+import { projectViewStore } from '@/lib/chat/workspace/projectView'
 import { ChatWorkspaceProvider, ConversationStoreProvider } from './ChatWorkspaceContext'
 import NavRail from './NavRail'
 import HistorySidebar from './HistorySidebar'
@@ -22,13 +25,19 @@ export default function ChatWorkspaceShell({ children }: { children: ReactNode }
 // Separate component so the store's hooks are only ever called when the workspace is on.
 function EnabledShell({ children }: { children: ReactNode }) {
   const store = useConversationList()
+  const pathname = usePathname()
+  // mockup look: the project opened in the sidebar shows its overview over the chat (the chat stays mounted, only hidden, so nothing of it is lost); going to a conversation closes it
+  const projectId = useSyncExternalStore(projectViewStore.subscribe, projectViewStore.getSnapshot, projectViewStore.getServerSnapshot)
+  useEffect(() => { projectViewStore.set(null) }, [pathname])
+  const overview = V206_LOOK && !!projectId
   const columns = (
     <>
       <NavRail />
       <HistorySidebar />
       <div className="relative min-w-0 flex-1 lg:flex lg:flex-col lg:overflow-hidden lg:rounded-2xl lg:border lg:border-blue-500/25 lg:shadow-xl lg:shadow-blue-950/70">
-        <WorkspaceToolbar />
-        <div className="min-h-0 flex-1">{children}</div>
+        {!overview && <WorkspaceToolbar />}
+        {V206_LOOK && <div className={overview ? 'hidden min-h-0 flex-1 lg:block' : 'hidden'}><ProjectOverview /></div>}
+        <div className={overview ? 'hidden' : 'min-h-0 flex-1'}>{children}</div>
       </div>
     </>
   )

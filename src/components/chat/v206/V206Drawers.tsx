@@ -8,6 +8,7 @@ import OverlayDrawer from './OverlayDrawer'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { filterTips, type EntityLabels, type EntityProfile, type PlanTip } from '@/lib/chat/v206'
 import { v206Store } from '@/lib/chat/v206Store'
+import type { WikiEntity } from '@/lib/chat/entityProfiles'
 
 /** Below this many tips a search box is noise. */
 const SEARCH_FROM = 4
@@ -63,6 +64,31 @@ export function EntityDrawer({ profile, onClose }: { profile: EntityProfile; onC
   )
 }
 
+/**
+ * The profile a named-entity chip opens: ONLY what Wikipedia's summary said (picture, name, one-line description, extract) and where it is from.
+ * No verification badge, no figure of ours, no source that was not fetched.
+ */
+export function WikiDrawer({ profile, onClose }: { profile: WikiEntity; onClose: () => void }) {
+  const { t } = useTranslation()
+  return (
+    <OverlayDrawer title={profile.name} subtitle={profile.description || undefined} closeLabel={t('v206.close')} onClose={onClose} testId="v206-wiki-drawer"
+      footer={<><span>{t('v206.wiki.note')}</span><button type="button" className="v206-kbd" onClick={onClose}>{t('v206.close')} [Esc]</button></>}>
+      <p className="v206-wiki-kind">{t('v206.wiki.title')}</p>
+      {profile.image && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={profile.image} alt={profile.title} className="v206-hero v206-wiki-photo" loading="lazy" referrerPolicy="no-referrer" onError={e => { e.currentTarget.style.display = 'none' }} />
+      )}
+      {profile.title !== profile.name && <p className="v206-wiki-title">{profile.title}</p>}
+      <p className="v206-wiki-extract" data-testid="v206-wiki-extract">{profile.extract}</p>
+      <p className="v206-wiki-src">
+        <span>{t('v206.wiki.source')}</span>
+        {' · '}
+        <a href={profile.href} target="_blank" rel="noopener noreferrer" className="v206-wiki-link" data-testid="v206-wiki-link">{t('v206.wiki.read')}</a>
+      </p>
+    </OverlayDrawer>
+  )
+}
+
 /** The labels of an entity profile in the person's language. */
 export function useEntityLabels(): EntityLabels {
   const { t } = useTranslation()
@@ -79,5 +105,6 @@ export default function V206DrawerHost() {
   const st = useSyncExternalStore(v206Store.subscribe, v206Store.getSnapshot, v206Store.getServerSnapshot)
   if (!st.drawer) return null
   if (st.drawer.kind === 'tips') return <TipsDrawer tips={st.tips} onClose={v206Store.closeDrawer} />
+  if (st.drawer.kind === 'wiki') return <WikiDrawer profile={st.drawer.profile} onClose={v206Store.closeDrawer} />
   return <EntityDrawer profile={st.drawer.profile} onClose={v206Store.closeDrawer} />
 }

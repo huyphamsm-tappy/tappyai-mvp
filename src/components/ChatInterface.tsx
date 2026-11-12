@@ -110,6 +110,7 @@ import { WORKSPACE_V206, buildEntityProfile, calloutTips, matchPlace } from '@/l
 import { v206Store } from '@/lib/chat/v206Store'
 import TripTimeline, { TipsPublisher } from '@/components/chat/v206/TripTimeline'
 import V206DrawerHost, { useEntityLabels } from '@/components/chat/v206/V206Drawers'
+import EntityChipsScope, { chipClick, chipKeyDown } from '@/components/chat/v206/EntityChipsScope'
 import { rememberPlacesView, recallPlacesView } from '@/lib/recommendation/liveViewCache'
 import { rememberTurnStatus, recallTurnStatus } from '@/lib/recommendation/turnStatusCache'
 import PlaceDecision from '@/components/chat/PlaceDecision'
@@ -2005,19 +2006,24 @@ export default function ChatInterface({
                             // a deep research report shows its pictures under their own sections only (no opening grid of the same pictures)
                             const [gLead, gRest] = !entity && !news && !entities && !research && settled && docImages.length >= 3 ? splitLeadParagraph(shown) : [lead, rest]
                             return (
-                              <>
-                                <ArticleAnswer text={gLead} images={docImages} format={formatMessage} onClick={onBodyClick} under={underHeading}
-                                  presentation={edit ? { variant: 'editorial', embeds: gRest ? undefined : embedList } : undefined}
-                                  className={cn(isLoading && isLastMessage && 'streaming-cursor', (entity || entities) && '[&_strong]:cursor-pointer')} />
-                                {gLead !== lead && <ImageGrid images={docImages} />}
-                                {news && <NewsMediaGrid items={news} />}
-                                {entity && <EntityCard entity={{ ...entity, summary: summaryOpening(entity.summary, 300) }} onOpen={() => setEntityPanel(entity)} />}
-                                {entities && <EntityRow entities={entities} onOpen={x => setEntityPanel(x)} />}
-                                {gRest && <ArticleAnswer text={gRest} images={docImages} format={formatMessage} onClick={onBodyClick} className="mt-3" under={underHeading}
-                                  presentation={edit ? { variant: 'editorial', lead: false, embeds: embedList } : undefined} />}
-                                {settled && <SourcesFooter text={shown} lang={locale === 'en' ? 'en' : 'vi'} />}
-                                {WORKSPACE_V206 && settled && <TipsPublisher msgId={`${msg.id}:c`} tips={calloutTips(shown)} />}
-                              </>
+                              // workspace v206 entity chips: a bold name Wikipedia resolves becomes a chip that opens the right-hand profile; only once the answer is complete, never for a place card's own name
+                              <EntityChipsScope text={shown} enabled={WORKSPACE_V206 && edit && settled} exclude={placeView?.items?.map(p => p.name)}>
+                                {chips => (
+                                  <>
+                                    <ArticleAnswer text={gLead} images={docImages} format={formatMessage} onClick={chipClick(chips, onBodyClick)} onKeyDown={chipKeyDown(chips)} under={underHeading}
+                                      presentation={edit ? { variant: 'editorial', embeds: gRest ? undefined : embedList, decorate: chips.decorate, look: WORKSPACE_V206 } : undefined}
+                                      className={cn(isLoading && isLastMessage && 'streaming-cursor', (entity || entities) && '[&_strong]:cursor-pointer')} />
+                                    {gLead !== lead && <ImageGrid images={docImages} />}
+                                    {news && <NewsMediaGrid items={news} />}
+                                    {entity && <EntityCard entity={{ ...entity, summary: summaryOpening(entity.summary, 300) }} onOpen={() => setEntityPanel(entity)} />}
+                                    {entities && <EntityRow entities={entities} onOpen={x => setEntityPanel(x)} />}
+                                    {gRest && <ArticleAnswer text={gRest} images={docImages} format={formatMessage} onClick={chipClick(chips, onBodyClick)} onKeyDown={chipKeyDown(chips)} className="mt-3" under={underHeading}
+                                      presentation={edit ? { variant: 'editorial', lead: false, embeds: embedList, decorate: chips.decorate, look: WORKSPACE_V206 } : undefined} />}
+                                    {settled && <SourcesFooter text={shown} lang={locale === 'en' ? 'en' : 'vi'} />}
+                                    {WORKSPACE_V206 && settled && <TipsPublisher msgId={`${msg.id}:c`} tips={calloutTips(shown)} />}
+                                  </>
+                                )}
+                              </EntityChipsScope>
                             )
                           }
                           if (!entity && !news) return <div className={cn('message-content whitespace-pre-wrap', isLoading && isLastMessage && 'streaming-cursor')} onClick={onMessageLinkClick} dangerouslySetInnerHTML={{ __html: formatMessage(shown) }} />

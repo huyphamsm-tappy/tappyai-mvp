@@ -8,6 +8,9 @@ import '../v206.css'
 
 const FOCUSABLE = 'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])'
 
+/** The drawers that are open, the last one on top. */
+const openStack: object[] = []
+
 export interface OverlayDrawerProps {
   /** the dialog's accessible name */
   title: string
@@ -27,11 +30,15 @@ export default function OverlayDrawer({ title, subtitle, closeLabel, onClose, ch
   const onCloseRef = useRef(onClose)
   onCloseRef.current = onClose
   const titleId = useRef(`v206-dlg-${Math.random().toString(36).slice(2, 8)}`).current
+  const token = useRef({}).current
 
   useEffect(() => {
     const opener = document.activeElement as HTMLElement | null
     closeBtn.current?.focus({ preventScroll: true })
+    openStack.push(token)
     const onKey = (e: KeyboardEvent) => {
+      // two drawers can be open (a profile opened from inside the full report): Esc and Tab belong to the one on top only
+      if (openStack[openStack.length - 1] !== token) return
       if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); onCloseRef.current(); return }
       if (e.key !== 'Tab' || !root.current) return
       const items = Array.from(root.current.querySelectorAll<HTMLElement>(FOCUSABLE)).filter(el => !el.hasAttribute('disabled'))
@@ -44,6 +51,8 @@ export default function OverlayDrawer({ title, subtitle, closeLabel, onClose, ch
     document.addEventListener('keydown', onKey, true)
     return () => {
       document.removeEventListener('keydown', onKey, true)
+      const at = openStack.indexOf(token)
+      if (at >= 0) openStack.splice(at, 1)
       // back to the control that opened the drawer (if it is still on the page); without preventScroll the page would jump
       if (opener && opener !== document.body && document.contains(opener)) opener.focus({ preventScroll: true })
     }

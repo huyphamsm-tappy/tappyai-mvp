@@ -18,6 +18,8 @@ import {
   type DocSection, type Footnote, type TocEntry,
 } from '@/lib/chat/presentation'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { useEntityChips } from '@/components/chat/v206/useEntityChips'
+import { chipKeyDown, chipNameOf } from '@/components/chat/v206/EntityChipsScope'
 
 type Format = (markdown: string) => string
 type UnderHeading = (title: string) => React.ReactNode
@@ -63,6 +65,9 @@ interface SectionViewProps {
   known: ReadonlyMap<number, string>
   linked: boolean
   footnotes: readonly Footnote[]
+  /** workspace v206: the entity chips' decorator and this section's heading numbers ("01.") by heading ordinal */
+  decorate?: (html: string) => string
+  numbers: readonly (string | undefined)[]
   activeFootnote: number | null
   amended: boolean
   fresh: boolean
@@ -74,7 +79,10 @@ interface SectionViewProps {
 const SectionView = memo(function SectionView(p: SectionViewProps) {
   const { t } = useTranslation()
   const cite = useMemo(() => (html: string) => linkCitations(html, p.prefix, p.known, p.linked), [p.prefix, p.known, p.linked])
-  const presentation: Presentation = useMemo(() => ({ variant: 'doc', cite, headingId: k => p.headingIds[k] }), [cite, p.headingIds])
+  const presentation: Presentation = useMemo(
+    () => ({ variant: 'doc', cite, headingId: k => p.headingIds[k], ...(WORKSPACE_V206 ? { look: true, decorate: p.decorate, headingNumber: (k: number) => p.numbers[k] } : {}) }),
+    [cite, p.headingIds, p.decorate, p.numbers],
+  )
   const isSources = isSourcesSection(p.section.text) && p.footnotes.length > 0
   const heading = p.section.text.split('\n')[0]
   return (
@@ -103,7 +111,7 @@ const SectionView = memo(function SectionView(p: SectionViewProps) {
   )
 }, (a, b) => a.section.text === b.section.text && a.index === b.index && a.prefix === b.prefix && a.known === b.known && a.linked === b.linked
   && a.activeFootnote === b.activeFootnote && a.amended === b.amended && a.fresh === b.fresh && a.images === b.images && a.format === b.format
-  && a.under === b.under && a.footnotes === b.footnotes && a.headingIds.join('|') === b.headingIds.join('|'))
+  && a.under === b.under && a.footnotes === b.footnotes && a.headingIds.join('|') === b.headingIds.join('|') && a.decorate === b.decorate && a.numbers.join('|') === b.numbers.join('|'))
 
 function ContentsBar({ entries, activeId, pendingTitle, hasPending, toolbar }: { entries: TocEntry[]; activeId: string | null; pendingTitle: string | null; hasPending: boolean; toolbar: React.ReactNode }) {
   const { t } = useTranslation()
@@ -181,6 +189,23 @@ export default function ResearchCanvas(p: ResearchCanvasProps) {
   const headIds = useMemo(() => toc.slice(0, head ? buildToc(head, 'x').length : 0).map(e => e.id), [toc, head])
   const showToc = !p.collapsed && toc.filter(e => e.level === 2).length >= 2
 
+  // workspace v206 dossier: "01." in front of each level-2 heading that has no number of its own (the sources list is not numbered); the real entity names of the report become chips
+  const numbersBySection = useMemo(() => {
+    if (!WORKSPACE_V206) return arrival.complete.map(() => [] as (string | undefined)[])
+    const byId = new Map(toc.map(e => [e.id, e] as const))
+    let n = 0
+    return arrival.complete.map((s, si) => {
+      const sources = isSourcesSection(s.text)
+      return (idsBySection[si] ?? []).map(id => {
+        const e = byId.get(id)
+        if (!e || e.level !== 2 || sources || /^\d{1,3}[.)]/.test(e.title)) return undefined
+        n++
+        return `${String(n).padStart(2, '0')}.`
+      })
+    })
+  }, [arrival.complete, idsBySection, toc])
+  const chips = useEntityChips(p.text, WORKSPACE_V206 && !p.streaming)
+
   // 4.3 arrival: a section drawn before whose text changed is shown with a note, in place; the others stay as they are
   const texts = useMemo(() => arrival.complete.map(s => s.text), [arrival.complete])
   const prevTexts = useRef<string[]>([])
@@ -236,6 +261,9 @@ export default function ResearchCanvas(p: ResearchCanvasProps) {
   const [activeFn, setActiveFn] = useState<number | null>(null)
   const lastMark = useRef<HTMLElement | null>(null)
   const onCapture = (e: MouseEvent<HTMLDivElement>) => {
+    // an entity chip opens the right-hand profile
+    const chipName = chipNameOf(e.target)
+    if (chipName && chips.open(chipName)) { e.preventDefault(); e.stopPropagation(); return }
     const mark = (e.target as HTMLElement | null)?.closest?.('a[data-cite]') as HTMLElement | null
     if (!mark) return
     e.preventDefault(); e.stopPropagation() // the footnote jump is not an outbound link: the chat's link tracking must not see it
@@ -275,11 +303,14 @@ export default function ResearchCanvas(p: ResearchCanvasProps) {
     <article className={WORKSPACE_V206 ? 'tappy-doc tappy-report v206-doc' : 'tappy-doc tappy-report'} data-testid="research-canvas" aria-labelledby={`${prefix}-title`} aria-busy={p.streaming}>
       {title && (
         <header className="tappy-report-cover">
-          <div className="tappy-report-eyebrow">{t('report.eyebrow')}{p.research?.tier ? ` · ${t(`report.tier.${p.research.tier}`)}` : ''}</div>
+          {WORKSPACE_V206
+            ? <div className="tappy-report-eyebrow v206-dossier-kind" data-testid="dossier-kind">{t('v206.dossier.kind')}{p.research?.tier ? ` · ${t(`report.tier.${p.research.tier}`)}` : ''}</div>
+            : <div className="tappy-report-eyebrow">{t('report.eyebrow')}{p.research?.tier ? ` · ${t(`report.tier.${p.research.tier}`)}` : ''}</div>}
           <h1 id={`${prefix}-title`} className="tappy-report-title">{title}</h1>
+          {WORKSPACE_V206 && date && !p.streaming && <p className="v206-dossier-by" data-testid="dossier-byline">{t('v206.dossier.byline', { date })}</p>}
           {(date || sources > 0) && (
             <div className="mt-3 flex flex-wrap gap-2">
-              {date && !p.streaming && <span className="tappy-report-pill">{t('report.updated', { date })}</span>}
+              {date && !p.streaming && !WORKSPACE_V206 && <span className="tappy-report-pill">{t('report.updated', { date })}</span>}
               {sources > 0 && !p.streaming && <span className="tappy-report-pill">{t('report.sources', { n: String(sources) })}</span>}
             </div>
           )}
@@ -288,12 +319,12 @@ export default function ResearchCanvas(p: ResearchCanvasProps) {
       {hasBar && <ContentsBar entries={showToc ? toc : []} activeId={activeId} pendingTitle={arrival.pending?.title ?? null} hasPending={!!arrival.pending} toolbar={toolbar} />}
       <div onClickCapture={onCapture}>
         {head && head.trim() && (
-          <ArticleAnswer text={head} images={[]} format={p.format} onClick={p.onClick} presentation={{ variant: 'doc', headingId: k => headIds[k] }} className="pt-3" />
+          <ArticleAnswer text={head} images={[]} format={p.format} onClick={p.onClick} onKeyDown={chipKeyDown(chips)} presentation={{ variant: 'doc', headingId: k => headIds[k], ...(WORKSPACE_V206 ? { look: true, decorate: chips.decorate } : {}) }} className="pt-3" />
         )}
         {arrival.complete.map((s, i) => (
-          <div key={i} onClick={p.onClick}>
+          <div key={i} onClick={p.onClick} onKeyDown={chipKeyDown(chips)}>
             <SectionView prefix={prefix} index={i} section={s} headingIds={idsBySection[i] ?? []} format={p.format} images={p.images ?? []} under={p.under}
-              known={known} linked={linked} footnotes={footnotes} activeFootnote={activeFn} amended={amended.has(i)} fresh={fresh.has(i)} onBack={back} setRef={setRef} />
+              known={known} linked={linked} footnotes={footnotes} decorate={chips.decorate} numbers={numbersBySection[i] ?? []} activeFootnote={activeFn} amended={amended.has(i)} fresh={fresh.has(i)} onBack={back} setRef={setRef} />
           </div>
         ))}
       </div>

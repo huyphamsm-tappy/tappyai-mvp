@@ -15,6 +15,7 @@ import {
   buildGroups, buildTranscriptMarkdown, conversationMatches, exportFileName, itemsForProject, itemsForTab, matchesQuery, tabCounts,
   type HistoryConversation, type HistoryTab,
 } from '@/lib/chat/workspace/historyModel'
+import { projectViewStore } from '@/lib/chat/workspace/projectView'
 import { useConversationStore } from './ChatWorkspaceContext'
 import ProjectsPanel from './ProjectsPanel'
 
@@ -95,6 +96,8 @@ export default function HistorySidebar() {
   const groups = useMemo(() => buildGroups(visible, tab === 'projects' ? 'archived' : tab, new Date()), [visible, tab])
   const visibleProjects = useMemo(() => projects.filter(p => matchesQuery(p.title, query) || matchesQuery(p.description, query)), [projects, query])
   const showConversationList = tab !== 'projects' || openProjectId !== null
+  // mockup look: the project opened here shows its overview in the canvas
+  useEffect(() => { if (V206_LOOK) projectViewStore.set(tab === 'projects' ? openProjectId : null) }, [tab, openProjectId])
 
   function changeTab(next: HistoryTab) {
     if (next === tab && !(next === 'projects' && openProjectId)) return
