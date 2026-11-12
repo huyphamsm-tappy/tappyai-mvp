@@ -5,9 +5,10 @@ import { parsePlan } from '@/lib/structuredContent/parsePlan'
 import { parseMediaBlocks } from '@/lib/media/mediaHosts'
 import { looksLikeReport } from '@/lib/chat/requestHistory'
 import { readPlacesLiveView } from '@/lib/recommendation/liveView'
-import { HARNESS_SCENARIOS, HARNESS_STORE_ITEMS, HARNESS_PROJECTS, HARNESS_PROFILES, scenarioByParam, assistantTextOf } from './fixtures'
+import { HARNESS_SCENARIOS, harnessStoreItems, HARNESS_PROJECTS, HARNESS_PROFILES, scenarioByParam, assistantTextOf } from './fixtures'
 
 const byN = (n: number) => HARNESS_SCENARIOS.find(s => s.n === n)!
+const HARNESS_STORE_ITEMS = harnessStoreItems(Date.UTC(2026, 10, 12, 8, 0, 0))
 
 describe('harness fixtures', () => {
   it('has the six scenarios of the mockup, in order, each with its own conversation id', () => {
@@ -75,6 +76,13 @@ describe('harness fixtures', () => {
   it('profiles for the chips are fixed local data with Wikipedia as source and no picture host to reach', () => {
     expect(HARNESS_PROFILES.length).toBeGreaterThanOrEqual(3)
     for (const p of HARNESS_PROFILES) { expect(p.source).toBe('Wikipedia'); expect(p.image).toBeNull() }
+  })
+
+  it('the sidebar times depend ONLY on the clock handed in (the server renders and the browser hydrates with the same one: no hydration mismatch), and never sit on a minute boundary', () => {
+    const t = Date.UTC(2026, 10, 12, 8, 0, 0)
+    expect(harnessStoreItems(t)).toEqual(harnessStoreItems(t))
+    expect(harnessStoreItems(t + 60_000)).not.toEqual(harnessStoreItems(t))
+    for (const c of harnessStoreItems(t)) expect((t - Date.parse(c.updated_at)) % 60_000).toBe(30_000)
   })
 
   it('scenarioByParam: 1..6, anything else falls back to 1', () => {

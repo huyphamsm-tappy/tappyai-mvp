@@ -263,7 +263,7 @@ describe('T09 (the renderer half): a revised itinerary replaces day 2 and keeps 
 
 describe('T17 / T18 project overview and the linked conversations', () => {
   const store = () => ({
-    items: fx.HARNESS_STORE_ITEMS, setItems: () => {}, status: 'ready', setStatus: () => {}, hasMore: false, loadingMore: false, reload: async () => {}, loadMore: async () => {},
+    items: fx.harnessStoreItems(Date.now()), setItems: () => {}, status: 'ready', setStatus: () => {}, hasMore: false, loadingMore: false, reload: async () => {}, loadMore: async () => {},
     projects: [...fx.HARNESS_PROJECTS], setProjects: () => {}, reloadProjects: async () => {},
   }) as never
 

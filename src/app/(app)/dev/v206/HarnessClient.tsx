@@ -7,7 +7,7 @@ import type { HistoryConversation } from '@/lib/chat/workspace/historyModel'
 import ChatConversation from '@/app/(app)/chat/[id]/ChatConversation'
 import { projectViewStore } from '@/lib/chat/workspace/projectView'
 import { rememberPlacesView } from '@/lib/recommendation/liveViewCache'
-import { HARNESS_PROJECTS, HARNESS_SCENARIOS, HARNESS_STORE_ITEMS, scenarioByParam } from '@/lib/dev/v206Harness/fixtures'
+import { HARNESS_PROJECTS, HARNESS_SCENARIOS, harnessStoreItems, scenarioByParam } from '@/lib/dev/v206Harness/fixtures'
 import { createHarnessFetch } from '@/lib/dev/v206Harness/harnessFetch'
 
 // The real workspace (rail, history, toolbar, product header, project overview) and the real chat (ChatConversation -> ChatInterface), fed fixtures.
@@ -21,11 +21,11 @@ function installHarnessFetch(): void {
   window.__v206HarnessFetch = true
 }
 
-export default function HarnessClient({ scenarioParam, showBar }: { scenarioParam?: string; showBar: boolean }) {
+export default function HarnessClient({ scenarioParam, showBar, nowMs }: { scenarioParam?: string; showBar: boolean; nowMs: number }) {
   // before any child effect runs, so nothing the chat does at mount can reach a paid endpoint
   useState(() => { installHarnessFetch(); return null })
   const scenario = scenarioByParam(scenarioParam)
-  const [items, setItems] = useState<HistoryConversation[]>(() => HARNESS_STORE_ITEMS)
+  const [items, setItems] = useState<HistoryConversation[]>(() => harnessStoreItems(nowMs))
   const [projects, setProjects] = useState<ChatProject[]>(() => [...HARNESS_PROJECTS])
 
   // the place cards of a conversation reach the chat the way they do across its save navigation: through the product's own in-memory hand-off

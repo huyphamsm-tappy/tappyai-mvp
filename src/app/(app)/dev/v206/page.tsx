@@ -8,5 +8,6 @@ export const dynamic = 'force-dynamic'
 
 export default function V206HarnessPage({ searchParams }: { searchParams?: { s?: string; bar?: string } }) {
   if (process.env.NODE_ENV === 'production') notFound()
-  return <HarnessClient scenarioParam={searchParams?.s} showBar={searchParams?.bar !== '0'} />
+  // ONE clock for the server render and the hydration (the sidebar's "x phút trước" must read the same in both)
+  return <HarnessClient scenarioParam={searchParams?.s} showBar={searchParams?.bar !== '0'} nowMs={Date.now()} />
 }

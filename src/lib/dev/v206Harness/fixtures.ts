@@ -31,7 +31,9 @@ export const assistantTextOf = (s: HarnessScenario): string => s.messages.filter
 const MIN = 60_000
 const HOUR = 60 * MIN
 const DAY = 24 * HOUR
-const ago = (ms: number): string => new Date(Date.now() - ms).toISOString()
+// Times are relative to a clock the CALLER hands in (the page's server render passes one, and the browser reuses it): a clock read here would differ between the server render
+// and the hydration ("57 phút trước" against "30 phút trước"). Each offset sits 30 s past a whole minute, so a few seconds of drift never flips the relative label.
+const agoFrom = (nowMs: number) => (ms: number): string => new Date(nowMs - ms - 30_000).toISOString()
 
 // ── 1. Elon vs Sam: two subjects, a comparison table, a verdict ─────────────────────────────────────────────
 const S1_MEDIA = '[TAPPY_MEDIA]' + JSON.stringify({
@@ -280,16 +282,19 @@ export const HARNESS_SCENARIOS: HarnessScenario[] = [
 const msgs = (m: HarnessMessage[]) => m.map(x => ({ role: x.role, content: x.content }))
 const stub = (q: string, a: string): HarnessMessage[] => [{ role: 'user', content: q }, { role: 'assistant', content: a }]
 
-export const HARNESS_STORE_ITEMS: HistoryConversation[] = [
-  { id: 'h-thaodien', title: 'Quán ăn Âu sân vườn Thảo Điền', category: 'food', updated_at: ago(2 * HOUR), is_pinned: true, messages: msgs(HARNESS_SCENARIOS[2].messages) },
-  { id: 'h-dossier', title: 'Khảo sát 3 cụm resort Phú Quốc (Dossier)', category: 'travel', updated_at: ago(3 * DAY), is_pinned: true, project_id: 'p1', messages: msgs(PQ_RESEARCH) },
-  { id: 'h-elon', title: 'So sánh Elon Musk và Sam Altman', category: 'general', updated_at: ago(30 * MIN), messages: msgs(HARNESS_SCENARIOS[0].messages) },
-  { id: 'h-tesla', title: 'Tesla và vai trò sáng lập của Elon Musk', category: 'general', updated_at: ago(3 * HOUR), messages: msgs(HARNESS_SCENARIOS[1].messages) },
-  { id: 'h-dalat', title: 'Lịch trình Đà Lạt 3N2Đ cho bé 5 tuổi', category: 'travel', updated_at: ago(5 * HOUR), messages: msgs(HARNESS_SCENARIOS[3].messages) },
-  { id: 'h-comtam', title: 'Quán cơm tấm đêm Sài Gòn nổi tiếng', category: 'food', updated_at: ago(2 * DAY), messages: msgs(stub('Cơm tấm khuya ở Sài Gòn?', 'Đây là vài gợi ý mẫu.')) },
-  { id: 'h-pq-plan', title: 'Kế hoạch du lịch Phú Quốc 4N3Đ Bãi Trường', category: 'travel', updated_at: ago(5 * DAY), project_id: 'p1', messages: msgs(PQ_PLAN) },
-  { id: 'h-laptop', title: 'Vệ sinh laptop và sửa chữa uy tín Q.10', category: 'general', updated_at: ago(20 * DAY), messages: msgs(stub('Chỗ vệ sinh laptop quận 10?', 'Đây là vài gợi ý mẫu.')) },
-]
+export const harnessStoreItems = (nowMs: number): HistoryConversation[] => {
+  const ago = agoFrom(nowMs)
+  return [
+    { id: 'h-thaodien', title: 'Quán ăn Âu sân vườn Thảo Điền', category: 'food', updated_at: ago(2 * HOUR), is_pinned: true, messages: msgs(HARNESS_SCENARIOS[2].messages) },
+    { id: 'h-dossier', title: 'Khảo sát 3 cụm resort Phú Quốc (Dossier)', category: 'travel', updated_at: ago(3 * DAY), is_pinned: true, project_id: 'p1', messages: msgs(PQ_RESEARCH) },
+    { id: 'h-elon', title: 'So sánh Elon Musk và Sam Altman', category: 'general', updated_at: ago(30 * MIN), messages: msgs(HARNESS_SCENARIOS[0].messages) },
+    { id: 'h-tesla', title: 'Tesla và vai trò sáng lập của Elon Musk', category: 'general', updated_at: ago(3 * HOUR), messages: msgs(HARNESS_SCENARIOS[1].messages) },
+    { id: 'h-dalat', title: 'Lịch trình Đà Lạt 3N2Đ cho bé 5 tuổi', category: 'travel', updated_at: ago(5 * HOUR), messages: msgs(HARNESS_SCENARIOS[3].messages) },
+    { id: 'h-comtam', title: 'Quán cơm tấm đêm Sài Gòn nổi tiếng', category: 'food', updated_at: ago(2 * DAY), messages: msgs(stub('Cơm tấm khuya ở Sài Gòn?', 'Đây là vài gợi ý mẫu.')) },
+    { id: 'h-pq-plan', title: 'Kế hoạch du lịch Phú Quốc 4N3Đ Bãi Trường', category: 'travel', updated_at: ago(5 * DAY), project_id: 'p1', messages: msgs(PQ_PLAN) },
+    { id: 'h-laptop', title: 'Vệ sinh laptop và sửa chữa uy tín Q.10', category: 'general', updated_at: ago(20 * DAY), messages: msgs(stub('Chỗ vệ sinh laptop quận 10?', 'Đây là vài gợi ý mẫu.')) },
+  ]
+}
 
 export const HARNESS_PROJECTS: ChatProject[] = [
   { id: 'p1', title: 'Dự án Du lịch Phú Quốc 2026', description: 'Chuyến đi gia đình 4N3Đ tháng 12/2026, 3 thế hệ nghỉ dưỡng biển êm', conversationCount: 2 },
