@@ -8,6 +8,7 @@ import { wrapWithAccesstrade } from '../tracking/accesstrade'
 import { buildClickUrl } from '../tracking/clickLink'
 import { wrapWithTemplate } from '../tracking/template'
 import { wrapWithParam } from '../tracking/param'
+import { wrapWithVexereDirect } from '../tracking/vexereDirect'
 import { effectiveTracking, providerOverride } from '../registry/runtime'
 
 // ── Deep Link Resolver (Plan §6) ─────────────────────────────────────────────
@@ -93,7 +94,9 @@ export function resolveDeepLink(
       ? wrapWithTemplate({ directUrl: build.url, tracking: trackingConfig, actorHash })
       : trackingConfig.network === 'param'
         ? wrapWithParam({ directUrl: build.url, tracking: trackingConfig })
-        : wrapWithAccesstrade({ directUrl: build.url, tracking: trackingConfig, actorHash, utmContent: opts.utmContent })
+        : trackingConfig.network === 'vexere_direct'
+          ? wrapWithVexereDirect({ directUrl: build.url, tracking: trackingConfig })
+          : wrapWithAccesstrade({ directUrl: build.url, tracking: trackingConfig, actorHash, utmContent: opts.utmContent })
     if (w.ok) {
       // Phương án C: an ACCESSTRADE deep link goes out through /go/at (fresh sub1 per click, join kept server-side).
       url = (trackingConfig.network === 'accesstrade' ? buildClickUrl({ wrapperUrl: w.url, providerId: adapter.providerId, seal: request.context?.actorSeal, actorHash }) : undefined) ?? w.url

@@ -15,6 +15,8 @@
 import { searchTemplates } from '@/lib/ccp/adapters'
 import { tripcomFlightSearchUrl } from '@/lib/ccp/adapters/tripcom'
 import { GRAMMARS } from '@/lib/ccp/adapters/grammar'
+import { withVexereDirectParams } from '@/lib/ccp/tracking/vexereDirect'
+import { vexereDirectAffiliateOn, VEXERE_FLIGHT_LANDING } from '@/lib/config/vexereDirect'
 
 export type PlatformLink = { name: string; url: string }
 
@@ -58,9 +60,13 @@ export function buildFlightLinks(
   const traveloka = configuration
     ? GRAMMARS.traveloka.search?.({ domain: 'travel', intentType: 'book_flight', subject: `${o} ${d}`, configuration })?.url ?? 'https://www.traveloka.com/vi-VN/flight'
     : 'https://www.traveloka.com/vi-VN/flight'
+  // Vexere sells flights too (owner, 12/11/2026). Its flight route pages need Vexere's own area ids and no query grammar for the date was
+  // verified (public pages opened 12/11/2026), so only the flight landing page is offered, labelled as such. Only while the direct programme is ON.
+  const vexereFlights = vexereDirectAffiliateOn() ? vexereOutbound(VEXERE_FLIGHT_LANDING) : null
   return [
     ...(tripcom ? [{ name: 'Trip.com', url: tripcom }] : []),
     { name: 'Traveloka', url: traveloka },
+    ...(vexereFlights ? [{ name: 'Vexere (trang vé máy bay)', url: vexereFlights }] : []),
     { name: 'Google Flights', url: google },
   ]
 }
@@ -80,5 +86,12 @@ export function buildHotelSearchLinks(location: string, checkIn?: string, checkO
 
 /** Vexere's front door — the only composable coach link (the route search grammar is 404). */
 export function buildCoachLandingLink(): string {
-  return template('vexere') ?? 'https://vexere.com/vi-VN'
+  return vexereOutbound(template('vexere') ?? 'https://vexere.com/vi-VN')
+}
+
+/** The outward Vexere URL: with VEXERE_DIRECT_AFFILIATE ON the direct programme's parameters, otherwise the URL untouched. Never the Accesstrade wrapper (no aid collision). */
+function vexereOutbound(url: string): string {
+  if (!vexereDirectAffiliateOn()) return url
+  const r = withVexereDirectParams(url)
+  return r.ok ? r.url : url
 }

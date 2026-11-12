@@ -97,6 +97,14 @@ State lives in `commerce_providers` (runtime; the owner flips it without a deplo
 4. **Re-check the portal** before flipping any row. A campaign becomes Tier 1 only when its page shows "Create link", its rules don't restrict which link tool is credited, and a Deep Link followed end to end lands with the merchant's affiliate parameter.
 5. **Reconcile conversions.** ACCESSTRADE reports carry `sub1`. Recompute `commerceActorHash(userId)` server-side to match. Not automated yet: there is no commission-reporting integration.
 
+## 4b. Vexere: chương trình trực tiếp (12/11/2026, sau cờ, mặc định TẮT)
+
+- **Đã đổi gì.** Vexere cấp cho chủ dự án chương trình affiliate trực tiếp (aid công khai `380`, không phải bí mật). Cờ `VEXERE_DIRECT_AFFILIATE=1` bật chương trình này: mọi link Vexere gửi cho người dùng (trang tuyến xe khách, trang tìm tàu, trang chủ, trang vé máy bay) được nối đúng 4 tham số `utm_source=affiliate&utm_campaign=380&utm_medium=aff_link&aid=380` vào cuối URL (giữ nguyên query cũ và `%5B…%5D` của link tàu). Link KHÔNG đi qua Accesstrade deep link và không qua `/go/at` (không có `aff_sid`). URL định danh (`canonical`, `directUrl`) vẫn sạch, chỉ `url` gửi ra ngoài mang tham số.
+- **Mã.** Hằng số AID duy nhất: `src/lib/config/vexereDirect.ts`. Mạng mới `vexere_direct` ở `src/lib/ccp/tracking/vexereDirect.ts`, chọn trong `effectiveTracking()` (`src/lib/ccp/registry/runtime.ts`); bảng `commerce_providers` không ghi đè được khi cờ bật. Trên production cờ bị khóa trừ khi tên cờ nằm trong `CONSULT_PRODUCTION_ALLOW`.
+- **Quay lại Accesstrade.** Bỏ biến `VEXERE_DIRECT_AFFILIATE` (hoặc đặt khác `1`) rồi redeploy: mọi thứ trở về đúng như trước (Accesstrade, campaign `5222734619328835827`).
+- **Rủi ro va chạm.** Cả hai chương trình dùng tên tham số `aid` với id khác nhau. Một link chỉ được mang MỘT chương trình: mã từ chối nối nếu URL đã có `aid` khác, `aff_sid` hoặc `sub1`, và khi cờ bật không bao giờ bọc Accesstrade. Hoa hồng hai bên không cộng dồn; đối soát riêng từng bên.
+- **Chưa kiểm chứng.** Chưa thấy được từ phía mình việc Vexere ghi nhận `aid=380` (cần báo cáo từ Vexere). Trang `https://vexere.com/vn/ve-may-bay.vi` mở được kèm tham số (đọc công khai 12/11/2026); chưa có cú pháp link chặng bay có ngày đã kiểm chứng nên chỉ dùng trang vé máy bay. Widget tìm kiếm của Vexere (nạp JavaScript bên thứ ba) KHÔNG được nhúng.
+
 ## 5. Other networks
 
 - **Agoda (direct).** Partner Center approval was pending on 13 Sep and needs manual domain verification of `https://tappyai.com`. Support ticket 00764268. Not re-checked on 27 Sep.

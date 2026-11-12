@@ -31,7 +31,9 @@ export interface TrackingConfig {
    * `accesstrade` = the code wrapper (tracking/accesstrade.ts); `template` = a runtime-configured generic wrapper (A3.1);
    * `param` = the merchant's OWN partner id appended to its own page (tracking/param.ts) — no wrapper host at all (Agoda's `cid`).
    */
-  network: 'accesstrade' | 'template' | 'param'
+  network: 'accesstrade' | 'template' | 'param' | 'vexere_direct'
+  // `vexere_direct` (12/11/2026) = Vexere's OWN affiliate programme (tracking/vexereDirect.ts): its public parameters on its own page, no wrapper.
+  // Never declared in the code registry: effectiveTracking() returns it for provider `vexere` only while VEXERE_DIRECT_AFFILIATE is ON, and it replaces the Accesstrade wrapper (never both).
   /** ACCESSTRADE campaign id (public; appears in every generated link). Required for `accesstrade`. */
   campaignId?: string
   /** `template` network only: an https template with `{url}` where the encoded destination goes. */
