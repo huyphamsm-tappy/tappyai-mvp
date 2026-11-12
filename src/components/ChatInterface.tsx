@@ -105,6 +105,8 @@ import { reportViewOf } from '@/lib/chat/reportView'
 import { rememberPlacesView, recallPlacesView } from '@/lib/recommendation/liveViewCache'
 import { rememberTurnStatus, recallTurnStatus } from '@/lib/recommendation/turnStatusCache'
 import PlaceDecision from '@/components/chat/PlaceDecision'
+import EmergencyCard from '@/components/chat/EmergencyCard'
+import { readSafetyAnnotation } from '@/lib/safety/emergencyResponse'
 import { useTranslation, getStoredLocale } from '@/lib/i18n/useTranslation'
 import ScrollJumpButtons from '@/components/chat/ScrollJumpButtons'
 import { validateModelCtaButtons } from '@/lib/recommendation/ctaValidation'
@@ -1971,6 +1973,7 @@ export default function ChatInterface({
                           owns its own decision surface, so the two are mutually
                           exclusive by construction (the projection returns null for a
                           product). */}
+                      {(() => { const safetyView = readSafetyAnnotation(msg.annotations as unknown[] | undefined); return safetyView ? <EmergencyCard view={safetyView} /> : null })()}
                       {placeView && !shopView && (!(isLoading && isLastMessage) || !!annotated) && <PlaceDecision view={placeView} />}
                       {/* Comparison (DD-005). Derived from the SAME payload the decision above
                           renders — no extra request, nothing inferred. Offered only once the reply

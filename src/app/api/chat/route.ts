@@ -7,6 +7,11 @@ import { serperSnapshot, serperDelta } from '@/lib/ai/tools/serperMeter'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { refuseWithoutAiConsent } from '@/lib/ai/consent/aiConsentGuard'
+import { attachmentOnlyPolicyOn, marketGateOn, safetyEmergencyOn } from '@/lib/config/r13Flags'
+import { classifyEmergency } from '@/lib/safety/emergencyClassifier'
+import { buildEmergencyTurn, emergencyDataStreamResponse } from '@/lib/safety/emergencyResponse'
+import { attachmentOnlyTask, attachmentTaskSystemLine } from '@/lib/attachments/routeTask'
+import { resolveRequestMarket, wrapToolsWithMarketGate } from '@/lib/market/routeGate'
 import { memoryMessageText } from '@/lib/p8/costWins'
 import { timeClientEmit } from './emitTiming'
 import { getAccountRestriction, accountRestrictionMessage, accountRestrictionCode, accountRestrictionStatus } from '@/lib/account/accountStatus'
@@ -372,6 +377,18 @@ export async function POST(req: Request) {
   const hasImage = Array.isArray(rawContent) && rawContent.some(
     (c: { type?: string }) => c.type === 'image' || c.type === 'image_url'
   )
+
+  // R13 §10.5 (SAFETY_EMERGENCY, default OFF, locked in production): a clear emergency statement is answered here, before consent, intent, quota, memory, any model or any tool: verified hotline
+  // cards only for a device position inside Viet Nam, else immediate guidance and at most one location question per thread (lib/safety/emergencyResponse.ts). Nothing leaves for a provider.
+  if (safetyEmergencyOn()) {
+    const emergency = classifyEmergency(lastText)
+    if (emergency.emergency && emergency.category) {
+      console.log(JSON.stringify({ type: 'tappyai_safety_emergency', category: emergency.category, lang: emergency.lang, elapsedMs: Date.now() - startTime }))
+      return emergencyDataStreamResponse(buildEmergencyTurn({ category: emergency.category, lang: emergency.lang ?? 'vi', userLocation, priorMessages: messages as Array<{ role: string; content: unknown }>, now: new Date() }))
+    }
+  }
+  // R13 §3.2.3 (ATTACHMENT_ONLY_POLICY, default OFF, locked in production): the last user turn is only an attachment -> the server-owned task, no tool this turn (used where the stream is built).
+  const attachmentOnly = attachmentOnlyPolicyOn() ? attachmentOnlyTask(typedMessages as Array<{ role: string; content: unknown }>) : null
 
   // Item 1: after a clarify turn the deterministic readers (intent, need profile, decision frame,
   // situation, search-now) see the original request and the answer as ONE user turn
@@ -3319,6 +3336,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   if (tools) wrapToolsWithoutAiSources(tools as unknown as Record<string, unknown>)
   if (tools && turnWebTicket) wrapToolsWithTurnWebTicket(tools as unknown as Record<string, unknown>, turnWebTicket)
   if (tools && requestCapTurn) wrapToolsWithRequestCap(tools as unknown as Record<string, unknown>, requestCapTurn)
+  // R13 §5.5/§6 (MARKET_GATE, default OFF, locked in production): every market-bound tool is judged by evaluateGate before it runs; a refusal is a readable tool result. Default registry + Viet Nam = no change.
+  if (tools && marketGateOn()) wrapToolsWithMarketGate(tools as unknown as Record<string, unknown>, resolveRequestMarket(req.headers), undefined, d => console.log(JSON.stringify({ type: 'tappyai_market_gate_denied', tool: d.tool, reason: d.reason })))
   // CONSULT_UNWIND_S6A / S6B (searchReads.ts): the model's web_search also reads its top pages - through the turn's OWN read_page tool (after the request-cap / trace
   // wrappers above, so robots.txt, the safe fetch, the page budget and the bench wall all apply), and once per turn one follow-up search through the same web_search.
   // The links are registered with the reader first (the outer collectUrls wrapper adds them only after this returns). No read_page tool on the turn: nothing changes.
@@ -3991,7 +4010,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // tokens for a response nobody is receiving. Review 02/11: also at the turn's deadline (maxDuration is 300 s for Deep Research only).
     abortSignal: turnSignal(req.signal, startTime, TURN_DEADLINE_MS),
     systemShared,
-    system: eveningAddendum ? (w3Prompt ?? systemPrompt) + eveningAddendum : (w3Prompt ?? systemPrompt),
+    system: (eveningAddendum ? (w3Prompt ?? systemPrompt) + eveningAddendum : (w3Prompt ?? systemPrompt)) + (attachmentOnly ? `\n\n${attachmentTaskSystemLine(lang)}` : ''),
     messages: (lunaData ? (() => { const at = modelMessagesForStream.map((m: { role: string }) => m.role).lastIndexOf('user'); return at < 0 ? modelMessagesForStream : [...modelMessagesForStream.slice(0, at), { role: 'user' as const, content: lunaData }, ...modelMessagesForStream.slice(at)] })() : modelMessagesForStream) as typeof modelMessages,
     // Completion cap. Place/product replies previously hit finishReason:"length"
     // at 2048 (deterministic image/review/order URLs are token-heavy). Those are
@@ -4053,7 +4072,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // call with tools). A TRIP plan has the code's full presearch (hotels, places, weather) → no tools, the plan effort
     // applies. Every other plan keeps its tools (replay 30/09: without them E1-G5 planned only the dinner, R16 named no
     // venue) and so runs at 'none'.
-    tools: turnHasNoTools ? undefined : traceToolsOuter(finalSynthesisGuard(lunaGuardTools(withResearchUrls(leanToolSet))), trace),
+    tools: turnHasNoTools || attachmentOnly ? undefined : traceToolsOuter(finalSynthesisGuard(lunaGuardTools(withResearchUrls(leanToolSet))), trace),
     onFinish: async ({ usage, finishReason, text, steps }) => {
       // P2-8: one line per one-brain turn - model, effort, steps run vs the cap, tools by name, how it ended (counts and names only; never text or arguments).
       if (oneBrain) { try { console.log(JSON.stringify(oneBrainTurnTrace({ serving: AI.serving(role), finishReason, maxSteps: streamMaxSteps, maxTokens: ONE_BRAIN_MAX_TOKENS, text, usage, steps: steps as never }))) } catch { /* trace only */ } }
