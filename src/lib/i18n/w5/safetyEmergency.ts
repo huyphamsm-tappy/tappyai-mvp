@@ -15,6 +15,22 @@ export const vi: Record<string, string> = {
   'safety.emergency.hours': 'Trực {hours}',
   'safety.emergency.free': 'Miễn phí',
 }
+/** Simplified Chinese, for the emergency chat text only (the web cards follow the UI locale). No number and no hours here: the only digits on screen come from the registry card. */
+export const zh: Record<string, string> = {
+  'safety.emergency.title': '这可能是紧急情况',
+  'safety.emergency.cardsTitle': '紧急求助电话',
+  'safety.emergency.guidance.unknownPlace': '如果有人处于危险中，请立即拨打您当前所在地的紧急电话，或请身边的人帮忙拨打。请先确保自己的安全；只有在不会让自己陷入更大危险的前提下，才把伤者转移到安全的地方。',
+  'safety.emergency.guidance.knownPlace': '请立即拨打下面的电话，或请身边的人帮忙拨打。请先确保自己的安全，并按照接线员的指示去做。',
+  'safety.emergency.askLocation': '请告诉我您在哪个国家、哪个省或城市，我可以继续帮您。',
+  'safety.emergency.cat.FIRE_RESCUE': '请立即撤离火场，不要回去拿东西，不要乘电梯。',
+  'safety.emergency.cat.MEDICAL': '不要让伤者独自一人。如果附近有人懂急救，请马上请他帮忙。',
+  'safety.emergency.cat.CHILD_PROTECTION': '如果可以安全地做到，请把孩子带离危险的地方。不要自己与施害者正面冲突。',
+  'safety.emergency.cat.HUMAN_TRAFFICKING': '不要与相关人员正面冲突。请记住您看到的人、车辆和地点，并立即报告当局。',
+  'safety.emergency.cat.POLICE': '请尽快躲到安全的地方，避免正面冲突，并立即报警。',
+  'safety.emergency.call': '拨打 {number}',
+  'safety.emergency.hours': '值班时间 {hours}',
+  'safety.emergency.free': '免费',
+}
 export const en: Record<string, string> = {
   'safety.emergency.title': 'This may be an emergency',
   'safety.emergency.cardsTitle': 'Emergency numbers',

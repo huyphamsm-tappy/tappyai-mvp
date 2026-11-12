@@ -12,7 +12,7 @@ import { BENCHMARK, benchmarkById } from './benchmark/benchmarkSet'
 import { scoreReport } from './benchmark/benchmarkScore'
 import type { ForecastResult } from './forecastModel'
 import { createDeepResearchDeps, deepResearchParallel, PARALLEL_PRICE } from './deepResearchDeps'
-import { detectLangConfident } from '@/lib/ai/intent'
+import { reportQuestionLang } from './reportLang'
 import { STANDARD_RUN_BOUNDS } from './researchAdmission'
 import { ADVANCED_RUN_BOUNDS } from './researchController'
 import { verifyReport } from './claimVerifier'
@@ -44,7 +44,7 @@ describe.skipIf(!ON)('LIVE: one run per tier (costs money)', () => {
       const cost = { usd: 0, calls: 0 }
       const par = process.env.PARALLEL_API_KEY ? deepResearchParallel() : null
       // MEASURE_LANG_DETECT=1: the question's language is detected the way the chat route does (detectLangConfident), so a Chinese or English question is written in its own language; absent = 'vi' as before (the older measurements)
-      const questionLang = process.env.MEASURE_LANG_DETECT === '1' ? detectLangConfident(question) : 'vi'
+      const questionLang = process.env.MEASURE_LANG_DETECT === '1' ? reportQuestionLang(question) : 'vi'
       const base = { lang: 'vi', userTexts: [question], cost, questionLang, ...(par ? { parallelSearch: par } : {}) }
       const deps: DeepResearchDeps = createDeepResearchDeps({ ...base, ...(tier === 'standard' ? { standard: true } : tier === 'advanced' ? { advanced: true } : {}) })
       const bounds = tier === 'standard' ? { ...STANDARD_RUN_BOUNDS } : tier === 'advanced' ? { ...ADVANCED_RUN_BOUNDS } : undefined

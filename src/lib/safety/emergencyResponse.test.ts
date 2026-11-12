@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { buildEmergencyTurn, emergencyDataStreamResponse, locationAlreadyAsked, readSafetyAnnotation, SAFETY_ANNOTATION_KIND } from './emergencyResponse'
-import { vi as VI, en as EN } from '@/lib/i18n/w5/safetyEmergency'
+import { vi as VI, en as EN, zh as ZH } from '@/lib/i18n/w5/safetyEmergency'
 
 const HANOI = { lat: 21.03, lng: 105.85 }
 const BANGKOK = { lat: 13.75, lng: 100.5 }
@@ -65,6 +65,56 @@ describe('buildEmergencyTurn', () => {
     const json = JSON.stringify(t.annotation)
     expect(json).not.toMatch(/transition|notes|Decree/i)
     expect(t.annotation.kind).toBe(SAFETY_ANNOTATION_KIND)
+  })
+})
+
+describe('buildEmergencyTurn: Simplified Chinese', () => {
+  const zh = { ...base, lang: 'zh' as const }
+  it('the dictionaries have the same keys in every language and no empty value', () => {
+    expect(Object.keys(ZH).sort()).toEqual(Object.keys(VI).sort())
+    for (const v of Object.values(ZH)) expect(v.length).toBeGreaterThan(0)
+  })
+  it('verified Viet Nam position: Chinese guidance and labels, the registry card (Vietnamese name, same number) unchanged', () => {
+    const t = buildEmergencyTurn({ ...zh, category: 'FIRE_RESCUE', userLocation: HANOI })
+    expect(numbers(t)).toEqual(['114'])
+    expect(t.text).toContain(ZH['safety.emergency.title'])
+    expect(t.text).toContain(ZH['safety.emergency.guidance.knownPlace'])
+    expect(t.text).toContain(ZH['safety.emergency.cat.FIRE_RESCUE'])
+    expect(t.text).toContain('Đường dây 114 - Cứu hỏa, cứu nạn cứu hộ: 114')
+    expect(t.annotation.cards.map(c => [c.displayName, c.phoneNumber])).toEqual([['Đường dây 114 - Cứu hỏa, cứu nạn cứu hộ', '114']])
+  })
+  it('🔑 no position or outside Viet Nam: no card, no number, Chinese guidance and ONE Chinese location question', () => {
+    for (const loc of [null, BANGKOK]) {
+      const t = buildEmergencyTurn({ ...zh, category: 'MEDICAL', userLocation: loc })
+      expect(t.payload.hotlineCards).toEqual([])
+      expect(t.text).not.toMatch(/\b11[1-5]\b/)
+      expect(t.text).toContain(ZH['safety.emergency.guidance.unknownPlace'])
+      expect(t.text).toContain(ZH['safety.emergency.askLocation'])
+    }
+  })
+  it('🔑 a thread that already asked (in any language) does not ask again in Chinese', () => {
+    for (const q of [ZH, VI, EN]) {
+      const prior = [{ role: 'assistant', content: `x\n\n${q['safety.emergency.askLocation']}` }]
+      expect(locationAlreadyAsked(prior)).toBe(true)
+      const t = buildEmergencyTurn({ ...zh, priorMessages: prior, category: 'MEDICAL', userLocation: null })
+      expect(t.text).not.toContain(ZH['safety.emergency.askLocation'])
+      expect(t.text).toContain(ZH['safety.emergency.guidance.unknownPlace'])
+    }
+  })
+  it('🔑 113, 114 and 115 never get hours or "free" in Chinese either; 111 does, from the registry', () => {
+    for (const [cat, n] of [['POLICE', '113'], ['FIRE_RESCUE', '114'], ['MEDICAL', '115']] as const) {
+      const t = buildEmergencyTurn({ ...zh, category: cat, userLocation: HANOI })
+      expect(numbers(t)).toEqual([n])
+      expect(t.text).not.toMatch(/24\/7|24小时|免费|值班|全天/)
+      expect(Object.values(ZH).join(' ')).not.toMatch(/24\/7|24小时|全天/)
+    }
+    const c = buildEmergencyTurn({ ...zh, category: 'CHILD_PROTECTION', userLocation: HANOI })
+    expect(c.text).toContain('24/7')
+    expect(c.text).toContain(ZH['safety.emergency.free'])
+  })
+  it('every category has Chinese copy, and the copy contains no digits (every number comes from the registry)', () => {
+    for (const k of ['FIRE_RESCUE', 'MEDICAL', 'CHILD_PROTECTION', 'HUMAN_TRAFFICKING', 'POLICE']) expect(ZH[`safety.emergency.cat.${k}`]).toBeTruthy()
+    for (const [k, v] of Object.entries(ZH)) expect(v, k).not.toMatch(/\d/)
   })
 })
 

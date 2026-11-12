@@ -5,11 +5,11 @@
 import { buildSafetyPayload, mayAskLocation, type EpisodeState, type SafetyResponsePayload, type VerifiedHotline } from './emergencyPayload'
 import type { DetectedCategory } from './emergencyClassifier'
 import { insideVietnam } from './vietnamPlace'
-import { vi as VI, en as EN } from '@/lib/i18n/w5/safetyEmergency'
+import { vi as VI, en as EN, zh as ZH } from '@/lib/i18n/w5/safetyEmergency'
 
 export const SAFETY_ANNOTATION_KIND = 'tappy.safety.v1'
-type Lang = 'vi' | 'en'
-const copy = (lang: Lang) => (lang === 'en' ? EN : VI)
+type Lang = 'vi' | 'en' | 'zh'
+const copy = (lang: Lang) => (lang === 'en' ? EN : lang === 'zh' ? ZH : VI)
 
 export interface SafetyCard { hotlineId: string; displayName: string; phoneNumber: string; operatingHours?: string; freeOfCharge?: true; sourceUrl: string }
 export interface SafetyAnnotation { kind: typeof SAFETY_ANNOTATION_KIND; v: 1; category: DetectedCategory; cards: SafetyCard[]; askedLocation: boolean }
@@ -19,7 +19,7 @@ const textOf = (c: unknown): string => (typeof c === 'string' ? c : Array.isArra
 
 /** Did an earlier ASSISTANT turn of this thread already ask where the person is? (the question's own words, in either language) */
 export function locationAlreadyAsked(messages: ReadonlyArray<{ role: string; content: unknown }>): boolean {
-  return messages.some(m => m.role === 'assistant' && (() => { const t = textOf(m.content); return t.includes(VI['safety.emergency.askLocation']) || t.includes(EN['safety.emergency.askLocation']) })())
+  return messages.some(m => m.role === 'assistant' && (() => { const t = textOf(m.content); return t.includes(VI['safety.emergency.askLocation']) || t.includes(EN['safety.emergency.askLocation']) || t.includes(ZH['safety.emergency.askLocation']) })())
 }
 
 const toCard = (h: VerifiedHotline): SafetyCard => ({ hotlineId: h.hotlineId, displayName: h.displayName, phoneNumber: h.phoneNumber ?? '', ...(h.operatingHours ? { operatingHours: h.operatingHours } : {}), ...(h.freeOfCharge ? { freeOfCharge: true as const } : {}), sourceUrl: h.sourceUrl })
