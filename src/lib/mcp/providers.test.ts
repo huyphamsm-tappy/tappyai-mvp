@@ -1,5 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { keysPresent, hotelProviderFromEnv, transportProviderFromEnv, providerStatus, hotelAdapter, fakeHotelProvider, fakeTransportProvider, PROVIDER_KEY_ENV, HOTEL_PROVIDER_FACTORY, TRANSPORT_PROVIDER_FACTORY } from './providers'
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
+import { hotelProviderFromEnv, transportProviderFromEnv, providerStatus, hotelAdapter, fakeHotelProvider, fakeTransportProvider, HOTEL_PROVIDER_SOURCE, TRANSPORT_PROVIDER_SOURCE } from './providers'
 import { realAdapters } from './defaultDeps'
 import { handleMcpRequest, type GatewayDeps } from './gateway'
 import { createSpendPool } from './spendPool'
@@ -25,31 +27,31 @@ const call = (d: GatewayDeps, args: unknown) => handleMcpRequest({ authorization
 const sc = (r: { body: unknown }) => (r.body as { result: { structuredContent: Record<string, any> } }).result.structuredContent
 beforeEach(() => __resetKvCounters())
 
-describe('key gate: presence only, and a client must exist', () => {
-  it('keysPresent needs every named setting non-empty', () => {
-    expect(keysPresent(PROVIDER_KEY_ENV.agoda, {})).toBe(false)
-    expect(keysPresent(PROVIDER_KEY_ENV.agoda, { AGODA_API_KEY: 'x' })).toBe(false)
-    expect(keysPresent(PROVIDER_KEY_ENV.agoda, { AGODA_API_KEY: 'x', AGODA_SITE_ID: ' ' })).toBe(false)
-    expect(keysPresent(PROVIDER_KEY_ENV.agoda, { AGODA_API_KEY: 'x', AGODA_SITE_ID: 'y' })).toBe(true)
+describe('provider source gate: configured AND a source must exist', () => {
+  const src = <P,>(p: P, key = 'FAKE_PROVIDER_KEY') => ({ isConfigured: (env: Record<string, string | undefined>) => typeof env[key] === 'string' && (env[key] as string).trim() !== '', create: vi.fn(() => p) })
+  it('no real source exists today: whatever the environment holds the providers stay null (unwired)', () => {
+    expect(HOTEL_PROVIDER_SOURCE).toBeNull(); expect(TRANSPORT_PROVIDER_SOURCE).toBeNull()
+    expect(hotelProviderFromEnv({ FAKE_PROVIDER_KEY: 'x' })).toBeNull(); expect(transportProviderFromEnv({ FAKE_PROVIDER_KEY: 'x' })).toBeNull()
+    expect(realAdapters({ FAKE_PROVIDER_KEY: 'x' })['hotels.prices']).toBeNull()
   })
-  it('no real client exists today: even with every key present the providers stay null (unwired)', () => {
-    expect(HOTEL_PROVIDER_FACTORY).toBeNull(); expect(TRANSPORT_PROVIDER_FACTORY).toBeNull()
-    expect(hotelProviderFromEnv({ AGODA_API_KEY: 'x', AGODA_SITE_ID: 'y' })).toBeNull()
-    expect(transportProviderFromEnv({ VEXERE_API_KEY: 'x' })).toBeNull()
-    expect(realAdapters({ AGODA_API_KEY: 'x', AGODA_SITE_ID: 'y' })['hotels.prices']).toBeNull()
-  })
-  it('a provider is built only when BOTH the keys are present and a factory is supplied', () => {
-    const p = fakeHotelProvider([])
-    const factory = vi.fn(() => p)
-    expect(hotelProviderFromEnv({}, factory)).toBeNull(); expect(factory).not.toHaveBeenCalled()
-    expect(hotelProviderFromEnv({ AGODA_API_KEY: 'x', AGODA_SITE_ID: 'y' }, factory)).toBe(p)
-    const t = fakeTransportProvider([])
-    expect(transportProviderFromEnv({ VEXERE_API_KEY: 'k' }, () => t)).toBe(t); expect(transportProviderFromEnv({}, () => t)).toBeNull()
+  it('a provider is built only when a source exists AND says it is configured', () => {
+    const p = fakeHotelProvider([]); const s = src(p)
+    expect(hotelProviderFromEnv({}, s)).toBeNull(); expect(s.create).not.toHaveBeenCalled()
+    expect(hotelProviderFromEnv({ FAKE_PROVIDER_KEY: ' ' }, s)).toBeNull()
+    expect(hotelProviderFromEnv({ FAKE_PROVIDER_KEY: 'x' }, s)).toBe(p)
+    const t = fakeTransportProvider([]); const ts = src(t)
+    expect(transportProviderFromEnv({ FAKE_PROVIDER_KEY: 'k' }, ts)).toBe(t); expect(transportProviderFromEnv({}, ts)).toBeNull()
   })
   it('providerStatus reports booleans only, never a value', () => {
-    const s = providerStatus({ AGODA_API_KEY: 'SECRET-VALUE-1', AGODA_SITE_ID: 'SECRET-VALUE-2' })
-    expect(s).toEqual({ agoda: { keys: true, client: false }, vexere: { keys: false, client: false } })
+    const s = providerStatus({ FAKE_PROVIDER_KEY: 'SECRET-VALUE-1' })
+    expect(s).toEqual({ hotels: { source: false, configured: false }, transport: { source: false, configured: false } })
     expect(JSON.stringify(s)).not.toContain('SECRET')
+  })
+  it('this file names no partner credential (the architecture guard allows only src/lib/ccp/tracking to)', () => {
+    const lines = readFileSync(join(process.cwd(), 'src/lib/mcp/providers.ts'), 'utf8').split(String.fromCharCode(10))
+    const code = lines.filter(l => !l.trim().startsWith('//') && !l.trim().startsWith('*') && !l.trim().startsWith('/**')).join(' ')
+    expect(code).not.toMatch(/process[.]env[.][A-Z]/)
+    expect(code.toLowerCase()).not.toMatch(/api_key|site_id|secret/)
   })
 })
 
