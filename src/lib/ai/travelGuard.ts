@@ -318,7 +318,23 @@ export function guardTravelClaimsInText(
       for (const j of judged) if (j.verdict !== 'VERIFIED') { const sp = spans.find(([a, b]) => j.start >= a && j.start < b); if (sp) cutTexts.push(out.slice(sp[0], sp[1])) }
       if (opts.money === 'annotate') {
         const tag = opts.lang === 'en' ? ' (estimate, not verified)' : ' (ước tính, chưa xác minh)'
-        for (const j of [...judged].filter(x => x.verdict !== 'VERIFIED').sort((a, b) => b.start - a.start)) if (!out.slice(j.end, j.end + tag.length + 2).includes(tag.trim())) out = out.slice(0, j.end) + tag + out.slice(j.end)
+        // 12/11 UAT: "(estimate, not verified)" was written three times in two lines ("from US$28.87 per night ... US$54.52/night"). Amounts of ONE KIND in ONE LINE (same currency words and the same unit
+        // word after them: "US$28.87 per night" / "US$54.52/night") share the label that goes after the first of them. Amounts of different kinds ("2,1 triệu ăn uống, 700.000 đồng thuê xe") each keep their own,
+        // and an amount already followed by the label is not labelled again. Nothing unverified goes unlabelled: every kind in every line still carries it once.
+        const kindOf = (j: (typeof judged)[number]): string => {
+          const money = out.slice(j.start, j.end).replace(/[\d.,\s*–—-]+/g, ' ').trim().toLowerCase()
+          const unit = /^\s*(?:\*+\s*)?(?:\/|per\s+|mỗi\s+|một\s+)?\s*(\p{L}+)/u.exec(out.slice(j.end).replace(tag, ''))?.[1]?.toLowerCase() ?? ''
+          return `${out.lastIndexOf('\n', j.start - 1)}|${money}|${unit}`
+        }
+        const seen = new Set<string>()
+        const toTag: number[] = []
+        for (const j of judged.filter(x => x.verdict !== 'VERIFIED').sort((a, b) => a.start - b.start)) {
+          const k = kindOf(j)
+          const already = out.slice(j.end, j.end + tag.length + 2).includes(tag.trim())
+          if (!seen.has(k) && !already) toTag.push(j.end)
+          seen.add(k)
+        }
+        for (const at of toTag.sort((a, b) => b - a)) out = out.slice(0, at) + tag + out.slice(at)
         redacted += bad
       } else if (opts.money === 'label') {
         // the figure is replaced, the line stays: the label is the disclosure, so no second notice below (moneyCut stays false)

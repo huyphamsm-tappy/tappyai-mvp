@@ -18,9 +18,38 @@ describe('buildEmergencyTurn', () => {
   })
   it('medical -> 115 only; child protection -> 111 only; trafficking -> 111 only; police -> 113 only; each from the registry', () => {
     expect(numbers(buildEmergencyTurn({ ...base, category: 'MEDICAL', userLocation: HANOI }))).toEqual(['115'])
-    expect(numbers(buildEmergencyTurn({ ...base, category: 'CHILD_PROTECTION', userLocation: HANOI }))).toEqual(['111'])
-    expect(numbers(buildEmergencyTurn({ ...base, category: 'HUMAN_TRAFFICKING', userLocation: HANOI }))).toEqual(['111'])
+    // 12/11 UAT: a child being taken or abused right now also needs the police number. Child -> 111 then 113; trafficking/abduction -> 113 then 111 (a crime is happening now).
+    expect(numbers(buildEmergencyTurn({ ...base, category: 'CHILD_PROTECTION', userLocation: HANOI }))).toEqual(['111', '113'])
+    expect(numbers(buildEmergencyTurn({ ...base, category: 'HUMAN_TRAFFICKING', userLocation: HANOI }))).toEqual(['113', '111'])
     expect(numbers(buildEmergencyTurn({ ...base, category: 'POLICE', userLocation: HANOI }))).toEqual(['113'])
+    // the caller may say a crime/abduction is happening now (113 first) or not (111 first); other categories are unaffected
+    expect(numbers(buildEmergencyTurn({ ...base, category: 'CHILD_PROTECTION', userLocation: HANOI, crimeInProgress: true }))).toEqual(['113', '111'])
+    expect(numbers(buildEmergencyTurn({ ...base, category: 'HUMAN_TRAFFICKING', userLocation: HANOI, crimeInProgress: false }))).toEqual(['111', '113'])
+    expect(numbers(buildEmergencyTurn({ ...base, category: 'MEDICAL', userLocation: HANOI, crimeInProgress: true }))).toEqual(['115'])
+  })
+  it('🔑 child and trafficking cards: only for a verified Viet Nam position; 113 never carries hours or "free" while 111 does; annotation matches payload', () => {
+    for (const cat of ['CHILD_PROTECTION', 'HUMAN_TRAFFICKING'] as const) {
+      for (const loc of [null, BANGKOK]) {
+        const t = buildEmergencyTurn({ ...base, category: cat, userLocation: loc })
+        expect(t.payload.hotlineCards).toEqual([]); expect(t.annotation.cards).toEqual([])
+        expect(t.text).not.toMatch(/\b11[13]\b/)
+      }
+      const t = buildEmergencyTurn({ ...base, category: cat, userLocation: HANOI })
+      expect(t.annotation.cards.map(c => c.phoneNumber)).toEqual(numbers(t))
+      const p = t.annotation.cards.find(c => c.phoneNumber === '113')!
+      expect(p.operatingHours).toBeUndefined(); expect(p.freeOfCharge).toBeUndefined()
+      expect(t.annotation.cards.find(c => c.phoneNumber === '111')!.operatingHours).toBe('24/7')
+      expect(t.text.split('\n').find(l => l.includes(': 113'))!).not.toMatch(/24\/7|miễn phí|trực/i)
+    }
+  })
+  it('the annotation carries the language of the turn (the card follows it); unknown values are dropped by the reader', () => {
+    for (const lang of ['vi', 'en', 'zh'] as const) {
+      const t = buildEmergencyTurn({ ...base, lang, category: 'FIRE_RESCUE', userLocation: HANOI })
+      expect(t.annotation.lang).toBe(lang)
+      expect(readSafetyAnnotation([JSON.parse(JSON.stringify(t.annotation))])?.lang).toBe(lang)
+    }
+    expect(readSafetyAnnotation([{ kind: SAFETY_ANNOTATION_KIND, cards: [], lang: 'xx' }])?.lang).toBeUndefined()
+    expect(readSafetyAnnotation([{ kind: SAFETY_ANNOTATION_KIND, cards: [] }])?.lang).toBeUndefined()
   })
   it('🔑 no position, or a position outside Viet Nam: NO card and no number in the text, guidance and one location question', () => {
     for (const loc of [null, BANGKOK]) {

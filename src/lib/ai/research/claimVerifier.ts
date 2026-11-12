@@ -57,11 +57,30 @@ const FUTURE_YEAR = /\b(20\d{2})\b/g
 const HEDGE = /(du bao|uoc tinh|kich ban|gia dinh|du kien|co the dat|forecast|estimate|scenario|assum|expected|projected|projection)/
 const foldLite = (s: string) => s.normalize('NFD').replace(/\p{M}/gu, '').replace(/đ/gi, 'd').toLowerCase()
 
+// Framing words of other scripts. They are matched on the text as written (never folded: folding strips Thai vowel marks). Words that SAY "forecast / estimate / scenario / assumption / expected / may":
+//   zh (simplified + traditional) 预测 预计 预估 估计 估算 预期 预料 预判 展望 情景 假设 设想 推算 推测 测算 有望 或将 或许 也许 可能 趋势;  ja 予測 予想 見込 見通 推計 推定 想定 仮定 試算 見積 シナリオ 可能性;
+//   ko 예상 전망 예측 추정 추산 가정 시나리오 가능성 예견;  th คาดการณ์ คาดว่า คาดหมาย ประมาณการ พยากรณ์ สมมติ แนวโน้ม สถานการณ์จำลอง อาจ.
+// "不可能 / 不太可能 / 没有可能" is the opposite of a hedge (a flat denial) and does not count. 目标 / target is a goal, not a forecast, and is not a hedge (as in English).
+const HEDGE_CJKT = new RegExp([
+  '预测|预计|预估|估计|估算|预期|预料|预判|展望|情景|假设|设想|推算|推测|测算|有望|或将|或许|也许|(?<![不没无未太])可能|趋势',
+  '預測|預計|預估|估計|預期|預料|預判|設想|測算|或將|也許|趨勢|假設',
+  '予測|予想|見込|見通|推計|推定|想定|仮定|試算|見積|シナリオ|可能性',
+  '예상|전망|예측|추정|추산|가정|시나리오|가능성|예견',
+  'คาดการณ์|คาดว่า|คาดหมาย|ประมาณการ|พยากรณ์|สมมติ|แนวโน้ม|สถานการณ์จำลอง|อาจ(?!าร)',
+].join('|'))
+// A bare "approximately" frames an estimate only inside the clause that holds the future year ("2027年规模约800亿元"); in "2023年销售额约300亿元，2027年将达到800亿元" the 约 belongs to a past figure.
+// 约 counts only as the word "approximately" (followed by a number or 为/合/占/达/有...: not 公约, 条约, 制约, 预约); 左右 only after a number or unit (not 左右为难).
+const APPROX_CJKT = /大约|大約|大概|大致|约(?=[\d０-９一二三四五六七八九十百千万亿零几为合占达有在增降计共等])|約(?=[\d０-９一二三四五六七八九十百千万萬億零幾為合占佔達有在增降計共等])|(?<=[\d０-９万萬亿億千百元美％%年月日人倍])左右|(?<=[\d０-９万萬亿億千百元円%％年月日人倍])ほど|およそ|대략|가량|ประมาณ/
+const CLAUSE_SPLIT = /[，、；;：。！？]|,(?=\s)/
+
 /** A sentence that gives a figure for a FUTURE year (later than `year`) without saying it is an estimate, forecast, scenario or assumption: a forecast written as a fact. Pure. */
 export function unframedForecast(sentence: string, year: number): boolean {
   const bare = sentence.replace(/\[\d+\](\[\d+\])*/g, ' ')
-  const future = [...bare.matchAll(FUTURE_YEAR)].some(m => Number(m[1]) > year && Number(m[1]) <= year + 10)
-  return future && figuresOf(bare).length > 0 && !HEDGE.test(foldLite(bare))
+  const isFuture = (m: RegExpMatchArray) => Number(m[1]) > year && Number(m[1]) <= year + 10
+  const future = [...bare.matchAll(FUTURE_YEAR)].some(isFuture)
+  if (!future || figuresOf(bare).length === 0) return false
+  if (HEDGE.test(foldLite(bare)) || HEDGE_CJKT.test(bare)) return false
+  return !bare.split(CLAUSE_SPLIT).some(clause => [...clause.matchAll(FUTURE_YEAR)].some(isFuture) && APPROX_CJKT.test(clause))
 }
 
 /** Verify a written report. `sources` are the report's own numbered sources (1..n). `year` = the current year, for the forecast-as-fact check. Pure. */

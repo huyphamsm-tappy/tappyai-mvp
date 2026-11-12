@@ -12,7 +12,7 @@ type Lang = 'vi' | 'en' | 'zh'
 const copy = (lang: Lang) => (lang === 'en' ? EN : lang === 'zh' ? ZH : VI)
 
 export interface SafetyCard { hotlineId: string; displayName: string; phoneNumber: string; operatingHours?: string; freeOfCharge?: true; sourceUrl: string }
-export interface SafetyAnnotation { kind: typeof SAFETY_ANNOTATION_KIND; v: 1; category: DetectedCategory; cards: SafetyCard[]; askedLocation: boolean }
+export interface SafetyAnnotation { kind: typeof SAFETY_ANNOTATION_KIND; v: 1; category: DetectedCategory; cards: SafetyCard[]; askedLocation: boolean; /** language of the turn's text: the card renders its labels in it */ lang?: Lang }
 export interface EmergencyTurn { payload: SafetyResponsePayload; text: string; annotation: SafetyAnnotation }
 
 const textOf = (c: unknown): string => (typeof c === 'string' ? c : Array.isArray(c) ? c.map(p => (p && typeof p === 'object' && typeof (p as { text?: unknown }).text === 'string' ? (p as { text: string }).text : '')).join(' ') : '')
@@ -24,11 +24,25 @@ export function locationAlreadyAsked(messages: ReadonlyArray<{ role: string; con
 
 const toCard = (h: VerifiedHotline): SafetyCard => ({ hotlineId: h.hotlineId, displayName: h.displayName, phoneNumber: h.phoneNumber ?? '', ...(h.operatingHours ? { operatingHours: h.operatingHours } : {}), ...(h.freeOfCharge ? { freeOfCharge: true as const } : {}), sourceUrl: h.sourceUrl })
 
-export function buildEmergencyTurn(i: { category: DetectedCategory; lang: Lang; userLocation: { lat: number; lng: number } | null; priorMessages: ReadonlyArray<{ role: string; content: unknown }>; now: Date }): EmergencyTurn {
+/**
+ * The card set is decided here, not in the registry data. A child being taken or abused right now (CHILD_PROTECTION) and a person being trafficked or abducted (HUMAN_TRAFFICKING) also need the
+ * police number: both get 111 AND 113 (113 added from the registry's own POLICE entry, so its hours/cost stay unstated). Order: 113 first when a crime or an abduction is happening now, else 111 first.
+ * `crimeInProgress` is the caller's reading of the statement; when it is not given, trafficking/abduction counts as in progress (the classifier only fires on "is being taken") and child protection does not.
+ */
+const WITH_POLICE: ReadonlySet<DetectedCategory> = new Set<DetectedCategory>(['CHILD_PROTECTION', 'HUMAN_TRAFFICKING'])
+
+export function buildEmergencyTurn(i: { category: DetectedCategory; lang: Lang; userLocation: { lat: number; lng: number } | null; priorMessages: ReadonlyArray<{ role: string; content: unknown }>; now: Date; crimeInProgress?: boolean }): EmergencyTurn {
   const inVn = !!i.userLocation && insideVietnam(i.userLocation.lat, i.userLocation.lng)
   const jurisdictionStatus = inVn ? 'VERIFIED' as const : 'UNKNOWN' as const
   const episode: EpisodeState = { emergencyEpisodeId: 'thread', status: 'ACTIVE', locationClarificationPromptIssued: locationAlreadyAsked(i.priorMessages), jurisdictionStatus, lastSafetyRelevantActivityAt: i.now.toISOString(), inactivityWindowSeconds: 3600 }
-  const payload = buildSafetyPayload({ severity: 'EMERGENCY', reasonCode: `EMERGENCY_${i.category}`, locale: i.lang, jurisdictionStatus, currentJurisdiction: inVn ? 'VN' : null, category: i.category, mayAskLocation: mayAskLocation(episode, i.now) })
+  const ctx = { severity: 'EMERGENCY' as const, reasonCode: `EMERGENCY_${i.category}`, locale: i.lang, jurisdictionStatus, currentJurisdiction: inVn ? 'VN' as const : null, category: i.category, mayAskLocation: mayAskLocation(episode, i.now) }
+  const first = buildSafetyPayload(ctx)
+  let payload = first
+  if (WITH_POLICE.has(i.category) && first.hotlineCards.length) {
+    const police = buildSafetyPayload({ ...ctx, category: 'POLICE' }).hotlineCards.filter(h => !first.hotlineCards.some(x => x.hotlineId === h.hotlineId))
+    const policeFirst = i.crimeInProgress ?? i.category === 'HUMAN_TRAFFICKING'
+    payload = { ...first, hotlineCards: policeFirst ? [...police, ...first.hotlineCards] : [...first.hotlineCards, ...police] }
+  }
   const c = copy(i.lang)
   const cards = payload.hotlineCards.map(toCard).filter(x => x.phoneNumber)
   const asks = !!payload.emergencyFallback?.locationClarificationPromptKey
@@ -40,7 +54,7 @@ export function buildEmergencyTurn(i: { category: DetectedCategory; lang: Lang; 
     ...(lines.length ? [`${c['safety.emergency.cardsTitle']}:`, lines.join('\n')] : []),
     ...(asks ? [c['safety.emergency.askLocation']] : []),
   ].join('\n\n')
-  return { payload, text, annotation: { kind: SAFETY_ANNOTATION_KIND, v: 1, category: i.category, cards, askedLocation: asks } }
+  return { payload, text, annotation: { kind: SAFETY_ANNOTATION_KIND, v: 1, category: i.category, cards, askedLocation: asks, lang: i.lang } }
 }
 
 /** The answer as the AI SDK data stream the clients parse: the text, the card annotation, the finish frame. No model, no tool, no cost. */
@@ -57,7 +71,7 @@ export function readSafetyAnnotation(annotations: unknown[] | undefined | null):
     const x = a as Partial<SafetyAnnotation>
     if (x.kind !== SAFETY_ANNOTATION_KIND || !Array.isArray(x.cards)) continue
     const cards = x.cards.filter((k): k is SafetyCard => !!k && typeof k.phoneNumber === 'string' && /^\d{2,4}$/.test(k.phoneNumber) && typeof k.displayName === 'string')
-    return { kind: SAFETY_ANNOTATION_KIND, v: 1, category: x.category as DetectedCategory, cards, askedLocation: !!x.askedLocation }
+    return { kind: SAFETY_ANNOTATION_KIND, v: 1, category: x.category as DetectedCategory, cards, askedLocation: !!x.askedLocation, ...(x.lang === 'vi' || x.lang === 'en' || x.lang === 'zh' ? { lang: x.lang } : {}) }
   }
   return null
 }
