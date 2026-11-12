@@ -118,6 +118,10 @@ policy_of() {
     # and three write functions. Independent of the other migrations; nothing reads or writes them until a later flagged slice wires the chat to the store.
     20261120_tvi_core.sql)
       echo APPLY ;;
+    # MCP gateway durable jobs (12/11/2026): one new service-role-only table and its SECURITY DEFINER functions. Nothing uses it until MCP_GATEWAY is on and the gateway ships, and the file has never been applied
+    # anywhere: held (DEFER, the script refuses it) until the owner lifts it when the gateway is released.
+    20261121_mcp_jobs.sql)
+      echo DEFER ;;
     # H1 → M1 first, then the security-branch migrations in MIGRATION_ORDER.txt order (owner 30/09): 20260928b needs the
     # deal-click code (service role) on production; the others are code-independent but ride the same verified window.
     20260927_owner_update_column_privileges.sql|20260928_revoke_reviews_insert.sql|\
