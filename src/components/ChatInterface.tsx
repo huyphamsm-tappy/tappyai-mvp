@@ -102,6 +102,9 @@ import ReportExportBar from '@/components/chat/ReportExportBar'
 import { looksLikeReport } from '@/lib/chat/requestHistory'
 import ReportViewBar from '@/components/chat/ReportViewBar'
 import { reportViewOf } from '@/lib/chat/reportView'
+import ResearchCanvas from '@/components/chat/ResearchCanvas'
+import { useReadingState } from '@/components/chat/useReadingState'
+import { RESPONSE_PRESENTATION } from '@/lib/chat/presentation'
 import { rememberPlacesView, recallPlacesView } from '@/lib/recommendation/liveViewCache'
 import { rememberTurnStatus, recallTurnStatus } from '@/lib/recommendation/turnStatusCache'
 import PlaceDecision from '@/components/chat/PlaceDecision'
@@ -1192,6 +1195,10 @@ export default function ChatInterface({
     ? parseMediaBlocks(parsePlacesMarker(parseShoppingMarker(parseFollowups(parseCTA(parsePlan(lastMsg.content).text).text).text).text).text).text
     : ''
   const smoothedLastText = useSmoothText(lastAssistantRaw, isLoading && lastMsg?.role === 'assistant')
+  // RFC-001 section 6.2 (NEXT_PUBLIC_RESPONSE_PRESENTATION): the reading position and the half-typed message of a conversation come back when the person returns to it
+  useReadingState({ enabled: RESPONSE_PRESENTATION, conversationId, scrollRef, contentRef, pinned, input, setInput })
+  // the research reports (by message id) that were written in front of the reader: they stay whole when the reply ends (an earlier section never disappears)
+  const streamedReports = useRef<Set<string>>(new Set())
   // C2 P2 6.2: note when the reply being received first shows text (once per reply), and — flag on — never re-reveal a reply the user already
   // read while it streamed (the finish reveal restarts from 0: it would hide what is on screen and type it again). Decided once, at the finish.
   if (isLoading && lastMsg?.role === 'assistant' && lastAssistantRaw) streamKeeperRef.current.noteShown(lastMsg.id, Date.now())
@@ -1886,15 +1893,65 @@ export default function ChatInterface({
                   return c ? <figure className="my-3" data-research-chart><img src={chartDataUrl(c, locale)} alt={c.title} className="w-full max-w-2xl rounded-xl border border-gray-200 dark:border-gray-700" /></figure> : null
                 } : undefined
                 // NEXT_PUBLIC_REPORT_SUMMARY_VIEW: a research report shows its key points and the source count; the full report (and its sources list) opens on a button. Off: the text as it is.
-                const reportView = reportViewOf({ text: bodyText, research: !!research, expanded: expandedReports.has(msg.id), links: research?.links?.length ?? 0 })
+                // RFC-001 4.2 (NEXT_PUBLIC_RESPONSE_PRESENTATION): a research report is drawn as a document (ResearchCanvas), everything else as an editorial answer.
+                // A report written in front of the reader stays whole when it ends (the summary view only folds a report that was loaded, never one that was just shown section by section).
+                const isDoc = RESPONSE_PRESENTATION && (!!research || looksLikeReport(msg.content))
+                if (isDoc && research && isLoading && isLastMessage) streamedReports.current.add(msg.id)
+                const streamedHere = isDoc && streamedReports.current.has(msg.id)
+                const reportView = reportViewOf({ text: bodyText, research: !!research, expanded: streamedHere ? !expandedReports.has(msg.id) : expandedReports.has(msg.id), links: research?.links?.length ?? 0 })
+                // RFC-001 4.1: the cards of an ordinary answer are placed between its paragraphs (the answer text's own layout decides where); kept as nodes so the former layout still renders them below the text
+                const streamingMsg = isLoading && isLastMessage
+                const optionsNode = optionsMedia?.kind === 'options' && !streamingMsg ? <OptionCards title={optionsMedia.title} options={optionsMedia.options} /> : null
+                const planNode = plan ? <TripPlanCard plan={plan} placePhotos={placeView?.items} /> : null
+                const shopNode = shopView ? (
+                  <ShoppingDecision
+                    view={shopView}
+                    heroImage={heroImage}
+                    /**
+                     * Price watch, from the product that is already on screen.
+                     *
+                     * It prefills the SAME phrasing the composer chip prefills, so the
+                     * request goes through the shipped `save_price_watch` tool - the one
+                     * with the permission, argument and audit steps in
+                     * `runAiWriteAction`. No second write path, and the user still sends
+                     * the message: nothing is saved by pressing a button on a card.
+                     */
+                    onPriceWatch={(name) => {
+                      posthog.capture('chat_message_sent', { input_method: 'price_watch_card' })
+                      setInput(t('chat.chipPriceWatchPrefill') + name)
+                    }}
+                  />
+                ) : null
+                const placeNode = placeView && !shopView && (!streamingMsg || !!annotated) ? <PlaceDecision view={placeView} /> : null
+                // Comparison (DD-005). Derived from the SAME payload the decision above renders - no extra request, nothing inferred. Offered only once the reply
+                // is complete, like every other structured action, and only when there are at least two options to compare.
+                // (the guard stays in the JSX form chatStructuredWiring.test.tsx reads: a comparison never appears while the reply is still streaming)
+                const cmpBlock = (
+                  <>
+                    {shopView && !(isLoading && isLastMessage) && (() => {
+                      const cmp = comparisonFromSynthesis(shopView, t, locale)
+                      return cmp ? (
+                        <ComparisonBlock
+                          entities={cmp.entities}
+                          attributes={cmp.attributes}
+                          recommendedKey={cmp.recommendedKey}
+                          reason={cmp.reason}
+                        />
+                      ) : null
+                    })()}
+                  </>
+                )
+                const cmpNode = shopView && !streamingMsg && comparisonFromSynthesis(shopView, t, locale) ? cmpBlock : null
+                const embedList = RESPONSE_PRESENTATION && !isDoc ? [optionsNode, planNode, shopNode, placeNode, cmpNode].filter((n): n is NonNullable<typeof n> => !!n) : []
+                const inlineEmbeds = embedList.length > 0
                 return (
                   <div key={msg.id} data-msg-id={msg.id} className="animate-slide-up flex gap-3">
                     <TappyAvatar category={category} active={isLoading && isLastMessage} searching={!!(isLoading && isLastMessage && activeTool)} />
                     <div className="flex-1 min-w-0">
                       {research && <ResearchCard status={research} report={msg.content} images={docImages} charts={researchCharts} format={formatMessage} />}
-                      {research && REPORT_LAYOUT_A && <ReportCover status={research} />}
-                      {!research && !(isLoading && isLastMessage) && looksLikeReport(msg.content) && <ReportExportBar report={msg.content} format={formatMessage} />}
-                      <div className={`text-base leading-[1.6] text-gray-800 dark:text-gray-100 pt-0.5${research && REPORT_LAYOUT_A && research.phase === 'done' ? ' tappy-report' : ''}`}>
+                      {research && REPORT_LAYOUT_A && !isDoc && <ReportCover status={research} />}
+                      {!research && !(isLoading && isLastMessage) && !isDoc && looksLikeReport(msg.content) && <ReportExportBar report={msg.content} format={formatMessage} />}
+                      <div className={`text-base leading-[1.6] text-gray-800 dark:text-gray-100 pt-0.5${research && REPORT_LAYOUT_A && !isDoc && research.phase === 'done' ? ' tappy-report' : ''}`}>
                         {(() => {
                           // CONSULT_V3 layouts: the news grid / subject card sit right after the answer's first paragraph (as ChatGPT places them);
                           // tapping the subject's bold name opens the side panel. Without a media block: exactly the former single body.
@@ -1911,21 +1968,34 @@ export default function ChatInterface({
                             if (tapped) { setEntityPanel(tapped); return }
                             onMessageLinkClick(e)
                           }
+                          // RFC-001 4.2/4.3 (NEXT_PUBLIC_RESPONSE_PRESENTATION): a research report is a document - cover, toolbar, contents, footnotes, sections that appear whole.
+                          // While it is arriving the canvas reads the message text itself (not the typewriter's partial text): a section is drawn only when it is complete.
+                          if (isDoc) {
+                            return (
+                              <ResearchCanvas msgId={msg.id} text={streamingMsg ? text : shown} streaming={streamingMsg} collapsed={reportView.collapsed} research={research}
+                                format={formatMessage} images={docImages} charts={researchCharts} under={underHeading} onClick={onMessageLinkClick}
+                                onShare={() => { document.querySelector<HTMLElement>(`[data-msg-id="${msg.id}"] [data-testid="message-share"]`)?.click() }} />
+                            )
+                          }
+                          // RFC-001 4.1: an ordinary answer is editorial - lead paragraph, reading line height, callouts, and its cards between the paragraphs
+                          const edit = RESPONSE_PRESENTATION
                           // TAPPY_ANSWER_V4 (build flag, off by default): the article layout — same text, same formatter, block typography and the
                           // server's item pictures (an annotation, live-only).
-                          if (ANSWER_V4) {
+                          if (ANSWER_V4 || edit) {
                             // Owner 28/10 (ChatGPT layout): the item pictures also open the answer as a grid under its first paragraph; the pages it used end it ("Nguồn").
                             // a deep research report shows its pictures under their own sections only (no opening grid of the same pictures)
                             const [gLead, gRest] = !entity && !news && !entities && !research && settled && docImages.length >= 3 ? splitLeadParagraph(shown) : [lead, rest]
                             return (
                               <>
                                 <ArticleAnswer text={gLead} images={docImages} format={formatMessage} onClick={onBodyClick} under={underHeading}
+                                  presentation={edit ? { variant: 'editorial', embeds: gRest ? undefined : embedList } : undefined}
                                   className={cn(isLoading && isLastMessage && 'streaming-cursor', (entity || entities) && '[&_strong]:cursor-pointer')} />
                                 {gLead !== lead && <ImageGrid images={docImages} />}
                                 {news && <NewsMediaGrid items={news} />}
                                 {entity && <EntityCard entity={{ ...entity, summary: summaryOpening(entity.summary, 300) }} onOpen={() => setEntityPanel(entity)} />}
                                 {entities && <EntityRow entities={entities} onOpen={x => setEntityPanel(x)} />}
-                                {gRest && <ArticleAnswer text={gRest} images={docImages} format={formatMessage} onClick={onBodyClick} className="mt-3" under={underHeading} />}
+                                {gRest && <ArticleAnswer text={gRest} images={docImages} format={formatMessage} onClick={onBodyClick} className="mt-3" under={underHeading}
+                                  presentation={edit ? { variant: 'editorial', lead: false, embeds: embedList } : undefined} />}
                                 {settled && <SourcesFooter text={shown} lang={locale === 'en' ? 'en' : 'vi'} />}
                               </>
                             )
@@ -1945,27 +2015,9 @@ export default function ChatInterface({
                         <ReportViewBar sources={reportView.bar.sources} expanded={reportView.bar.expanded}
                           onToggle={() => setExpandedReports(prev => { const next = new Set(prev); if (next.has(msg.id)) next.delete(msg.id); else next.add(msg.id); return next })} />
                       )}
-                      {optionsMedia?.kind === 'options' && !(isLoading && isLastMessage) && <OptionCards title={optionsMedia.title} options={optionsMedia.options} />}
-                      {plan && <TripPlanCard plan={plan} placePhotos={placeView?.items} />}
-                      {shopView && (
-                        <ShoppingDecision
-                          view={shopView}
-                          heroImage={heroImage}
-                          /**
-                           * Price watch, from the product that is already on screen.
-                           *
-                           * It prefills the SAME phrasing the composer chip prefills, so the
-                           * request goes through the shipped `save_price_watch` tool - the one
-                           * with the permission, argument and audit steps in
-                           * `runAiWriteAction`. No second write path, and the user still sends
-                           * the message: nothing is saved by pressing a button on a card.
-                           */
-                          onPriceWatch={(name) => {
-                            posthog.capture('chat_message_sent', { input_method: 'price_watch_card' })
-                            setInput(t('chat.chipPriceWatchPrefill') + name)
-                          }}
-                        />
-                      )}
+                      {!inlineEmbeds && optionsNode}
+                      {!inlineEmbeds && planNode}
+                      {!inlineEmbeds && shopNode}
                       {/* One card per turn. While the reply is still arriving the card renders
                           only from a frame the SERVER sent for this turn (A1(a): the engine's
                           preliminary set at the tool result, then the decision after the prose —
@@ -1974,22 +2026,9 @@ export default function ChatInterface({
                           exclusive by construction (the projection returns null for a
                           product). */}
                       {(() => { const safetyView = readSafetyAnnotation(msg.annotations as unknown[] | undefined); return safetyView ? <EmergencyCard view={safetyView} /> : null })()}
-                      {placeView && !shopView && (!(isLoading && isLastMessage) || !!annotated) && <PlaceDecision view={placeView} />}
-                      {/* Comparison (DD-005). Derived from the SAME payload the decision above
-                          renders — no extra request, nothing inferred. Offered only once the reply
-                          is complete, like every other structured action, and only when there are
-                          at least two options to compare. */}
-                      {shopView && !(isLoading && isLastMessage) && (() => {
-                        const cmp = comparisonFromSynthesis(shopView, t, locale)
-                        return cmp ? (
-                          <ComparisonBlock
-                            entities={cmp.entities}
-                            attributes={cmp.attributes}
-                            recommendedKey={cmp.recommendedKey}
-                            reason={cmp.reason}
-                          />
-                        ) : null
-                      })()}
+                      {!inlineEmbeds && placeNode}
+                      {/* Comparison (DD-005): see cmpNode above. */}
+                      {!inlineEmbeds && cmpNode}
                       {/* C2 P2 layer 5: one fixed status line under a turn the server marked incomplete / interrupted — shown once the reply is
                           done (and its reveal finished), client copy only (never the server's reason), never part of the answer text. */}
                       {turnStatus && !(isLoading && isLastMessage) && !(isLastMessage && finishReveal.revealing) && (

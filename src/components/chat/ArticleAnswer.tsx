@@ -6,11 +6,13 @@
 // every block still goes through the chat's formatter (`format` = formatMessage: escaping, bold, link chips, source chips, tables, code), so
 // nothing about what may reach the page changes. The server's item pictures (tappy.doc_media.v1) are placed next to the item they belong to,
 // matched by title in any script (titleKey); a picture whose item is not found is not shown. Every picture URL is re-checked (safe https).
-import { Fragment, type MouseEvent, type ReactNode } from 'react'
+import { Fragment, useMemo, type MouseEvent, type ReactNode } from 'react'
+import './presentation.css'
 import { parseDoc, listItemTitle, headingTitle, titleKey, type DocBlock } from '@/lib/answerDoc/parse'
 import type { DocItemImage } from '@/lib/answerDoc/media'
 import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 import { isAllowedMediaImage, isAllowedMediaPage, type MediaEntity } from '@/lib/media/mediaHosts'
+import { embedAnchors, plainHeading } from '@/lib/chat/presentation'
 
 type Format = (markdown: string) => string
 
@@ -30,9 +32,42 @@ function ItemPicture({ img, size }: { img: DocItemImage; size: 'thumb' | 'wide' 
   )
 }
 
-function Inline({ html, as = 'div', className }: { html: string; as?: 'div' | 'span'; className?: string }) {
+function Inline({ html, as = 'div', className, id }: { html: string; as?: 'div' | 'span' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'; className?: string; id?: string }) {
   const Tag = as
-  return <Tag className={className} dangerouslySetInnerHTML={{ __html: html }} />
+  // The same object while the text is the same: React sets the element's HTML again whenever it is handed a NEW object (measured in the browser: every re-render of a section
+  // replaced all its nodes, which drops the focus of a footnote mark and the reader's text selection). Same markup, no needless DOM replacement.
+  const inner = useMemo(() => ({ __html: html }), [html])
+  return <Tag id={id} className={className} dangerouslySetInnerHTML={inner} />
+}
+
+/**
+ * RFC-001 section 4 (NEXT_PUBLIC_RESPONSE_PRESENTATION): the presentation of the same blocks. `editorial` = an ordinary answer (lead paragraph, reading line height,
+ * callout quotes, the rich embeds between the paragraphs); `doc` = a section of a research document (the same, without the lead emphasis). Absent: the former layout, untouched.
+ */
+export interface Presentation {
+  variant: 'editorial' | 'doc'
+  /** false for the text that continues after the lead (its first paragraph is not the lead) */
+  lead?: boolean
+  /** the id of the n-th level 2/3 heading of THIS text (the table of contents jumps to it); undefined: no id */
+  headingId?: (ordinal: number) => string | undefined
+  /** applied to every formatted paragraph (footnote marks) */
+  cite?: (html: string) => string
+  /** the rich cards of the turn, placed after the lead and spread between the paragraphs (presentation.embedAnchors) */
+  embeds?: ReactNode[]
+}
+
+/**
+ * The chat formatter turns a line that starts "3. " into a numbered row (a flex div): inside a real heading it would be a block in a heading and the number would be
+ * drawn small and grey. A zero-width word joiner between the digits and the dot keeps the number part of the heading's own text; nothing is visible.
+ * (Built from its code point: a literal invisible character in a source file is a hazard.)
+ */
+const WORD_JOINER = String.fromCharCode(0x2060)
+
+/** Which top-level heading blocks the table of contents counts (level 2 and 3 with a text): their ordinal, by block index. Shared by buildToc's rule. */
+function headingOrdinals(blocks: DocBlock[]): Map<number, number> {
+  const out = new Map<number, number>()
+  blocks.forEach((b, i) => { if (b.t === 'heading' && (b.level === 2 || b.level === 3) && plainHeading(b.text)) out.set(i, out.size) })
+  return out
 }
 
 /**
@@ -62,30 +97,42 @@ function assignPictures(blocks: DocBlock[], pics: Map<string, DocItemImage>, pre
 /** What goes right under a heading besides its picture (31/10: a deep research section's chart), by the heading's title; none → null. */
 type UnderHeading = (title: string) => ReactNode
 
-function Blocks({ blocks, format, placed, prefix = '', under }: { blocks: DocBlock[]; format: Format; placed: Map<string, DocItemImage>; prefix?: string; under?: UnderHeading }) {
-  return (
-    <>
-      {blocks.map((b, i) => {
+function Blocks({ blocks, format, placed, prefix = '', under, pres }: { blocks: DocBlock[]; format: Format; placed: Map<string, DocItemImage>; prefix?: string; under?: UnderHeading; pres?: Presentation }) {
+  // the presentation applies to the top level only (a list item's children keep the plain layout); the footnote marks apply everywhere
+  const top = !!pres && prefix === ''
+  const ords = top ? headingOrdinals(blocks) : null
+  const leadIdx = top && pres!.variant === 'editorial' && pres!.lead !== false ? blocks.findIndex(b => b.t === 'para') : -1
+  const anchors = top && pres!.embeds?.length ? embedAnchors(blocks, pres!.embeds.length) : []
+  const embedsAfter = (i: number) => anchors.flatMap((a, k) => (a === i ? [<div key={`e${k}`} className="tappy-embed" data-embed>{pres!.embeds![k]}</div>] : []))
+  const withCite = pres?.cite
+  const fmt: Format = withCite ? s => withCite(format(s)) : format
+  const rendered = blocks.map((b, i) => {
         switch (b.t) {
           case 'heading': {
             const img = placed.get(`${prefix}${i}`) ?? null
-            const cls = b.level <= 2 ? 'text-xl font-semibold mt-6 mb-2 first:mt-0' : b.level === 3 ? 'text-lg font-semibold mt-5 mb-2 first:mt-0' : 'text-base font-semibold mt-4 mb-1.5 first:mt-0'
+            const cls0 = b.level <= 2 ? 'text-xl font-semibold mt-6 mb-2 first:mt-0' : b.level === 3 ? 'text-lg font-semibold mt-5 mb-2 first:mt-0' : 'text-base font-semibold mt-4 mb-1.5 first:mt-0'
+            // a document section starts with its own heading, which keeps the air above it (each section is drawn as its own block)
+            const cls = top && pres!.variant === 'doc' ? cls0.replace(' first:mt-0', '') : cls0
+            const ord = ords?.get(i)
             return (
               <Fragment key={i}>
-                <Inline html={format(b.text)} className={`${cls} text-gray-900 dark:text-gray-50 [text-wrap:balance]`} />
+                <Inline html={fmt(top ? b.text.replace(/^(\d{1,3})\./, `$1${WORD_JOINER}.`) : b.text)} as={top ? (`h${Math.min(b.level, 6)}` as 'h1') : 'div'} id={ord !== undefined ? pres!.headingId?.(ord) : undefined}
+                  className={`${cls} text-gray-900 dark:text-gray-50 [text-wrap:balance]${ord !== undefined ? ' scroll-mt-16' : ''}`} />
                 {img && <ItemPicture img={img} size="wide" />}
                 {under && (() => { const t = headingTitle(b.text); return t ? under(t) : null })()}
               </Fragment>
             )
           }
           case 'para':
-            return <Inline key={i} html={format(b.text)} className="my-3 first:mt-0 last:mb-0 whitespace-pre-line" />
+            return <Inline key={i} html={fmt(b.text)} className={i === leadIdx ? 'my-3 first:mt-0 last:mb-0 whitespace-pre-line text-[17px] text-gray-900 dark:text-gray-50' : 'my-3 first:mt-0 last:mb-0 whitespace-pre-line'} />
           case 'quote':
-            return <Inline key={i} html={format(b.text)} className="my-3 border-l-4 border-gray-200 dark:border-gray-700 pl-4 text-gray-600 dark:text-gray-300 whitespace-pre-line" />
+            return top && pres!.variant === 'editorial'
+              ? <Inline key={i} html={fmt(b.text)} className="tappy-callout my-4 rounded-xl border-l-4 border-[#FF9500] bg-[#FFF4E5] px-4 py-3 text-[15px] text-gray-800 dark:bg-[#2a2113] dark:text-amber-50 whitespace-pre-line" />
+              : <Inline key={i} html={fmt(b.text)} className="my-3 border-l-4 border-gray-200 dark:border-gray-700 pl-4 text-gray-600 dark:text-gray-300 whitespace-pre-line" />
           case 'hr':
             return <hr key={i} className="my-6 border-gray-200 dark:border-gray-700" />
           case 'raw':
-            return <Inline key={i} html={format(b.text)} className="my-3 whitespace-pre-wrap" />
+            return <Inline key={i} html={fmt(b.text)} className="my-3 whitespace-pre-wrap" />
           case 'list': {
             const ListTag = b.ordered ? 'ol' : 'ul'
             return (
@@ -95,8 +142,8 @@ function Blocks({ blocks, format, placed, prefix = '', under }: { blocks: DocBlo
                   const img = placed.get(`${prefix}${i}.${k}`) ?? null
                   const body = (
                     <>
-                      <Inline html={format(it.text)} className="whitespace-pre-line" />
-                      {it.children && <div className="mt-1.5"><Blocks blocks={parseDoc(it.children)} format={format} placed={placed} prefix={`${prefix}${i}.${k}/`} under={under} /></div>}
+                      <Inline html={fmt(it.text)} className="whitespace-pre-line" />
+                      {it.children && <div className="mt-1.5"><Blocks blocks={parseDoc(it.children)} format={format} placed={placed} prefix={`${prefix}${i}.${k}/`} under={under} pres={pres ? { variant: pres.variant, cite: pres.cite } : undefined} /></div>}
                     </>
                   )
                   return (
@@ -109,7 +156,12 @@ function Blocks({ blocks, format, placed, prefix = '', under }: { blocks: DocBlo
             )
           }
         }
-      })}
+      })
+  if (!anchors.length) return <>{rendered}</>
+  return (
+    <>
+      {blocks.length === 0 && embedsAfter(-1)}
+      {rendered.map((node, i) => <Fragment key={i}>{node}{embedsAfter(i)}</Fragment>)}
     </>
   )
 }
@@ -180,13 +232,15 @@ export function SourcesFooter({ text, lang }: { text: string; lang: string }) {
   )
 }
 
-export function ArticleAnswer({ text, images, format, className, onClick, under }: { text: string; images: readonly DocItemImage[]; format: Format; className?: string; onClick?: (e: MouseEvent<HTMLDivElement>) => void; under?: UnderHeading }) {
+export function ArticleAnswer({ text, images, format, className, onClick, under, presentation }: { text: string; images: readonly DocItemImage[]; format: Format; className?: string; onClick?: (e: MouseEvent<HTMLDivElement>) => void; under?: UnderHeading; presentation?: Presentation }) {
   const pics = new Map<string, DocItemImage>()
   for (const img of images) { const k = titleKey(img.title); if (k && !pics.has(k)) pics.set(k, img) }
   const blocks = parseDoc(text)
+  // RFC-001 4.1: an editorial answer reads at line-height 1.65 (the article layout's 1.75rem is 1.8 at this size)
+  const type = presentation?.variant === 'editorial' ? 'text-base leading-[1.65]' : 'text-[15.5px] leading-7'
   return (
-    <div data-answer="article" className={`message-content text-[15.5px] leading-7 ${className ?? ''}`} onClick={onClick}>
-      <Blocks blocks={blocks} format={format} placed={assignPictures(blocks, pics)} under={under} />
+    <div data-answer="article" {...(presentation ? { 'data-presentation': presentation.variant } : {})} className={`message-content ${type} ${className ?? ''}`} onClick={onClick}>
+      <Blocks blocks={blocks} format={format} placed={assignPictures(blocks, pics)} under={under} pres={presentation} />
     </div>
   )
 }

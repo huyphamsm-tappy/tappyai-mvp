@@ -1,0 +1,51 @@
+/* RFC-001 section 4 (NEXT_PUBLIC_RESPONSE_PRESENTATION). Scoped to `.tappy-doc` (the research document canvas) and `[data-presentation]` (the answer text). The tokens are the report layout's own
+   (reportLayout.css): primary #007AFF, accent #FF9500, neutral ink and lines; the `.dark` ancestor switches them. Without the flag none of this is rendered. */
+.tappy-doc {
+  --rp-primary: #007AFF; --rp-primary-50: #E5F1FF; --rp-accent: #FF9500; --rp-accent-50: #FFF4E5;
+  --rp-ink: #14181f; --rp-ink-2: #4a5260; --rp-ink-3: #7b8494; --rp-line: #e3e6eb; --rp-chip: #eef1f5; --rp-paper: #ffffff;
+}
+.dark .tappy-doc {
+  --rp-primary: #3d9bff; --rp-primary-50: #12294a; --rp-accent-50: #2a2113;
+  --rp-ink: #e8edf6; --rp-ink-2: #b2bdd1; --rp-ink-3: #7f8ca3; --rp-line: #22304a; --rp-chip: #1a2740; --rp-paper: #0d1627;
+}
+
+/* the document canvas: a sheet of its own inside the conversation */
+.tappy-doc { border: 1px solid var(--rp-line); border-radius: 16px; background: var(--rp-paper); padding: 0 16px 20px; }
+.tappy-doc .tappy-report-cover { margin: 16px 0 12px; }
+@media (min-width: 640px) { .tappy-doc { padding: 0 28px 28px; } }
+
+/* toolbar + sticky table of contents share one bar that stays under the top of the reading area */
+.tappy-doc-bar { position: sticky; top: 0; z-index: 10; margin: 0 -16px; padding: 8px 16px; background: color-mix(in srgb, var(--rp-paper) 94%, transparent); backdrop-filter: blur(6px); border-bottom: 1px solid var(--rp-line); }
+@media (min-width: 640px) { .tappy-doc-bar { margin: 0 -28px; padding: 8px 28px; } }
+.tappy-doc-btn { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 4px 12px; border-radius: 999px; border: 1px solid var(--rp-line); background: transparent; color: var(--rp-ink-2); font-size: 13px; font-weight: 500; }
+.tappy-doc-btn:hover { background: var(--rp-chip); }
+.tappy-doc-btn:focus-visible, .tappy-doc-toc a:focus-visible, .tappy-doc [data-cite]:focus-visible { outline: 2px solid var(--rp-primary); outline-offset: 2px; }
+.tappy-doc-toc-panel { position: absolute; top: calc(100% + 4px); left: 12px; right: 12px; z-index: 20; max-height: min(60vh, 420px); overflow-y: auto; padding: 6px; border: 1px solid var(--rp-line); border-radius: 12px; background: var(--rp-paper); box-shadow: 0 10px 30px rgb(0 0 0 / .12); }
+.tappy-doc-toc-panel a { display: block; padding: 8px 10px; border-radius: 8px; color: var(--rp-ink); font-size: 14px; line-height: 1.4; text-decoration: none; }
+.tappy-doc-toc-panel a:hover, .tappy-doc-toc-panel a[aria-current="true"] { background: var(--rp-primary-50); color: var(--rp-primary); }
+.tappy-doc-toc-panel li[data-level="3"] a { padding-left: 24px; font-size: 13px; color: var(--rp-ink-2); }
+
+/* a section that has just arrived complete; sections already shown are never touched */
+.tappy-section-in { animation: tappy-section-in .35s ease-out both; }
+@keyframes tappy-section-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.tappy-section-pending { margin: 20px 0 4px; padding: 10px 14px; border: 1px dashed var(--rp-line); border-radius: 12px; color: var(--rp-ink-3); font-size: 14px; }
+.tappy-section-note { margin: 8px 0; padding: 8px 12px; border-left: 3px solid var(--rp-accent); border-radius: 0 8px 8px 0; background: var(--rp-accent-50); color: var(--rp-ink); font-size: 13px; }
+@media (prefers-reduced-motion: reduce) { .tappy-section-in { animation: none; } .tappy-doc-toc-panel { scroll-behavior: auto; } }
+
+/* footnote marks and the list they point at */
+.tappy-cite { position: relative; top: -.3em; display: inline-flex; align-items: center; justify-content: center; min-width: 1.2em; height: 1.2em; padding: 0 .3em; margin: 0 .08em; border-radius: 999px; background: var(--rp-primary-50); color: var(--rp-primary); font-size: .72em; font-weight: 600; line-height: 1; text-decoration: none; }
+a.tappy-cite:hover { background: var(--rp-primary); color: #fff; }
+.tappy-fn { display: flex; gap: 10px; padding: 8px 10px; border-radius: 10px; scroll-margin-top: 64px; font-size: 14.5px; line-height: 1.5; }
+.tappy-fn[data-active="true"] { background: var(--rp-primary-50); }
+.tappy-fn-n { flex: none; min-width: 1.8em; color: var(--rp-primary); font-weight: 700; }
+.tappy-fn a { color: var(--rp-primary); }
+.tappy-fn-site { color: var(--rp-ink-3); }
+
+/* tables of the document scroll sideways on a phone instead of squeezing the page */
+.tappy-doc [data-md="table"] { max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.tappy-doc [data-md="table"] table { min-width: 460px; }
+
+/* editorial answers: the source chips beside a claim are small pills, the embeds have air around them */
+[data-presentation="editorial"] a[target="_blank"].rounded-full { font-size: 12px; line-height: 1.5; padding: 0 .55rem; margin: 0 .15rem; vertical-align: baseline; }
+[data-presentation="editorial"] > [data-media], [data-presentation="editorial"] > .tappy-embed { margin: 20px 0; }
+.tappy-embed { margin: 20px 0; min-width: 0; }
