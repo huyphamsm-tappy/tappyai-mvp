@@ -1,10 +1,11 @@
 import { describe, it, expect } from 'vitest'
-import { attachmentOnlyPolicyOn, marketGateOn, safetyEmergencyOn } from './r13Flags'
+import { attachmentOnlyPolicyOn, marketGateOn, safetyEmergencyOn, hotlineClaimGuardOn } from './r13Flags'
 
 const cases: Array<[string, (e?: Record<string, string | undefined>) => boolean]> = [
   ['ATTACHMENT_ONLY_POLICY', attachmentOnlyPolicyOn],
   ['MARKET_GATE', marketGateOn],
   ['SAFETY_EMERGENCY', safetyEmergencyOn],
+  ['HOTLINE_CLAIM_GUARD', hotlineClaimGuardOn],
 ]
 
 describe.each(cases)('%s flag', (name, on) => {

@@ -7,7 +7,8 @@ import { serperSnapshot, serperDelta } from '@/lib/ai/tools/serperMeter'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { refuseWithoutAiConsent } from '@/lib/ai/consent/aiConsentGuard'
-import { attachmentOnlyPolicyOn, marketGateOn, safetyEmergencyOn } from '@/lib/config/r13Flags'
+import { attachmentOnlyPolicyOn, hotlineClaimGuardOn, marketGateOn, safetyEmergencyOn } from '@/lib/config/r13Flags'
+import { hotlineClaimGuardStream } from '@/lib/safety/hotlineClaimStream'
 import { classifyEmergency } from '@/lib/safety/emergencyClassifier'
 import { buildEmergencyTurn, emergencyDataStreamResponse } from '@/lib/safety/emergencyResponse'
 import { attachmentOnlyTask, attachmentTaskSystemLine } from '@/lib/attachments/routeTask'
@@ -36,6 +37,7 @@ import { wrapToolResultAsData } from '@/lib/ai/security/toolResultFence'
 import { pdfPartsToText } from '@/lib/ai/attachments/pdfAttachments'
 import { deepResearchResponse } from '@/lib/ai/research/deepResearchResponse'
 import { createDeepResearchDeps, deepResearchParallel, PARALLEL_PRICE } from '@/lib/ai/research/deepResearchDeps'
+import { reportQuestionLang } from '@/lib/ai/research/reportLang'
 import { tierTurnFor, researchAdvancedOn } from '@/lib/ai/research/researchTurn'
 import { ADVANCED_RUN_BOUNDS } from '@/lib/ai/research/researchController'
 import { claudeWriterAvailable } from '@/lib/ai/llm/registry'
@@ -3681,7 +3683,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       deepRefund = spent.refund
     }
     if (tierPlan) console.log(JSON.stringify({ type: 'tappyai_research_admission', tier: tierPlan.decision.tier, score: tierPlan.decision.score.total, cues: tierPlan.cues, policy: tierPlan.decision.policyVersion }))
-    const deepDeps = { lang, userTexts: recentUserTexts, cost, questionLang: detectLangConfident(lastText), signal: deepStop.signal, ...(par ? { parallelSearch: par } : {}) }
+    const deepDeps = { lang, userTexts: recentUserTexts, cost, questionLang: reportQuestionLang(lastText), signal: deepStop.signal, ...(par ? { parallelSearch: par } : {}) }
     return deepResearchResponse({
       question: lastText, context: recent, lang, cost, stop: deepStop,
       deps: createDeepResearchDeps(deepDeps),
@@ -4586,7 +4588,10 @@ ${finalWriteInstruction(lang)}` },
     : finalResponse.body
   // CONSULT_ONE_BRAIN_MEDIA: the pictures go out last, before the finish frame, once every guard and frame above has run on the answer.
   const pictured = oneBrainUnderstanding && timedBody ? oneBrainMediaStream(timedBody, { understanding: oneBrainUnderstanding, cardTurn: () => !!(enrichment.placesRecommendations?.length || enrichment.shoppingMarker), log: l => console.log(JSON.stringify(l)) }) : timedBody
-  return new Response(pictured, { status: finalResponse.status, headers: finalResponse.headers })
+  // HOTLINE_CLAIM_GUARD (R13, off by default): the FINAL text (after every guard above) loses an hours/cost claim about 113/114/115 - the owner's list does not establish them; 111 and 112 are verified and stay.
+  // Flag off: the stream is returned exactly as it was.
+  const guardedBody = hotlineClaimGuardOn() && pictured ? pictured.pipeThrough(hotlineClaimGuardStream(r => console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'hotline_claim', removedSentences: r.removedSentences, editedSentences: r.editedSentences })))) : pictured
+  return new Response(guardedBody, { status: finalResponse.status, headers: finalResponse.headers })
   }
   if (willPresearch) {
     return new Response(deferredBody(hasValidCurrentLocation(userLocation) ? searchingFrame(lang) : '', finishTurn), {
