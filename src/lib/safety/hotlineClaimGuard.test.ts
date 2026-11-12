@@ -11,10 +11,11 @@ const same = (s: string): Case => [s, s]
 
 const VI: Case[] = [
   // the exact UAT sentence, alone, with a full stop, and inside a paragraph
-  [UAT, ''],
-  [UAT + '.', ''],
-  ['Gọi 115 khi cần cấp cứu. ' + UAT + '. Bạn nên báo rõ địa chỉ.', 'Gọi 115 khi cần cấp cứu. Bạn nên báo rõ địa chỉ.'],
-  ['Hãy gọi 115. Cuộc gọi đến tổng đài 115 miễn phí; tuy nhiên, chi phí xe cứu thương có thể được tính riêng.\nBạn nên giữ bình tĩnh.', 'Hãy gọi 115.\nBạn nên giữ bình tĩnh.'],
+  // the claim goes; the contrast ("tuy nhiên, chi phí xe cứu thương ...") stands alone without it, so it stays (lead's rule of 12/11, second round)
+  [UAT, 'Chi phí xe cứu thương có thể được tính riêng'],
+  [UAT + '.', 'Chi phí xe cứu thương có thể được tính riêng.'],
+  ['Gọi 115 khi cần cấp cứu. ' + UAT + '. Bạn nên báo rõ địa chỉ.', 'Gọi 115 khi cần cấp cứu. Chi phí xe cứu thương có thể được tính riêng. Bạn nên báo rõ địa chỉ.'],
+  ['Hãy gọi 115. Cuộc gọi đến tổng đài 115 miễn phí; tuy nhiên, chi phí xe cứu thương có thể được tính riêng.\nBạn nên giữ bình tĩnh.', 'Hãy gọi 115. Chi phí xe cứu thương có thể được tính riêng.\nBạn nên giữ bình tĩnh.'],
   // cost claims
   ['Tổng đài 115 miễn phí.', ''],
   ['Gọi 115 là miễn phí.', ''],
@@ -40,7 +41,7 @@ const VI: Case[] = [
   // only the claim clause goes, the rest of the sentence stays
   ['Gọi 111 miễn phí; gọi 115 miễn phí.', 'Gọi 111 miễn phí.'],
   ['Gọi 115 miễn phí; mang theo giấy tờ tùy thân.', 'Mang theo giấy tờ tùy thân.'],
-  ['Gọi 115 miễn phí, nhưng hãy chuẩn bị địa chỉ.', ''],
+  ['Gọi 115 miễn phí, nhưng hãy chuẩn bị địa chỉ.', 'Hãy chuẩn bị địa chỉ.'],
   // bullets and lines
   ['- Gọi 115: miễn phí\n- Gọi 113 khi có trộm', '- Gọi 113 khi có trộm'],
   ['Danh sách:\n* 114 - cứu hỏa, 24/7\n* 115 - cấp cứu\n', 'Danh sách:\n* 115 - cấp cứu\n'],
@@ -89,14 +90,14 @@ const EN: Case[] = [
   ['The numbers 113, 114 and 115 are all free and open 24/7.', ''],
   ['111 and 115 are both free.', ''],
   ['Dial 111 for free; dial 115 for free.', 'Dial 111 for free.'],
-  ['Dial 115; it is free, but ambulance fees may apply.', 'Dial 115.'],
-  ['Call 115 for an ambulance. The call is free. Stay calm.', 'Call 115 for an ambulance. The call is free. Stay calm.'],
+  ['Dial 115; it is free, but ambulance fees may apply.', 'Dial 115; ambulance fees may apply.'],
+  ['Call 115 for an ambulance. The call is free. Stay calm.', 'Call 115 for an ambulance. Stay calm.'],
   ['Call 115 for an ambulance. 115 is free to call. Stay calm.', 'Call 115 for an ambulance. Stay calm.'],
   ['Hotlines:\n- 115 (free, 24/7)\n- 113 (police)', 'Hotlines:\n- 113 (police)'],
   ['**115** is free.\n\nCall it when someone is hurt.', 'Call it when someone is hurt.'],
   ['See TP. HCM listings: 115 is free.', ''],
   ['Call 115 for an ambulance. However, it is free; the ambulance is not.', 'Call 115 for an ambulance. However, it is free; the ambulance is not.'],
-  ['Call 114 for a fire. It is toll-free. However, rescue fees may apply.', 'Call 114 for a fire. It is toll-free. However, rescue fees may apply.'],
+  ['Call 114 for a fire. It is toll-free. However, rescue fees may apply.', 'Call 114 for a fire. Rescue fees may apply.'],
   ['Call 115 for an ambulance. 115 is free. However, ambulance fees may apply.', 'Call 115 for an ambulance. Ambulance fees may apply.'],
   // near misses that must NOT change
   same('Feel free to call 115 whenever someone is hurt.'),

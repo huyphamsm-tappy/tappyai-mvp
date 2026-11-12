@@ -2,17 +2,19 @@
 // split across frames is still seen whole; every other frame (tool calls, step ends, the finish frame) goes through in order, after the text that preceded it. Behind HOTLINE_CLAIM_GUARD only;
 // the caller never builds this with the flag off, which keeps the route byte for byte as it was.
 
-import { guardHotlineClaims, splitSentences } from '@/lib/safety/hotlineClaimGuard'
+import { freshHotlineGuardState, guardHotlineClaims, splitSentences } from '@/lib/safety/hotlineClaimGuard'
 
 export function hotlineClaimGuardStream(onChange?: (r: { removedSentences: number; editedSentences: number }) => void): TransformStream<Uint8Array, Uint8Array> {
   const dec = new TextDecoder()
   const enc = new TextEncoder()
   let carry = ''
   let pending = ''
+  // what the answer has said so far (which emergency number it named last): a claim sentence that arrives later is judged against it
+  const state = freshHotlineGuardState()
 
   const emit = (c: TransformStreamDefaultController<Uint8Array>, text: string) => { if (text) c.enqueue(enc.encode('0:' + JSON.stringify(text) + '\n')) }
   const guarded = (text: string) => {
-    const r = guardHotlineClaims(text)
+    const r = guardHotlineClaims(text, state)
     if (r.changed) onChange?.({ removedSentences: r.removedSentences, editedSentences: r.editedSentences })
     return r.text
   }

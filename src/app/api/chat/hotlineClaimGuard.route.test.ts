@@ -76,7 +76,7 @@ describe('HOTLINE_CLAIM_GUARD in the chat route', () => {
   it('ON: the unverified "free" claim about 115 is gone, the rest of the answer is not', async () => {
     vi.stubEnv('HOTLINE_CLAIM_GUARD', '1')
     const body = await (await post(ASK)).text()
-    expect(textOf(body)).toBe('Gọi 115 khi cần xe cứu thương. Hãy nói rõ địa chỉ.')
+    expect(textOf(body)).toBe('Gọi 115 khi cần xe cứu thương. Chi phí xe cứu thương có thể được tính riêng. Hãy nói rõ địa chỉ.')
     expect(body).toContain('d:{"finishReason":"stop"}')
   })
   it('ON: 111 and 112 (verified) keep their claims', async () => {

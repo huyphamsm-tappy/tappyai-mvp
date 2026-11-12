@@ -15,8 +15,8 @@ describe('hotlineClaimGuardStream', () => {
     const words = 'Gọi 115 để cấp cứu. Cuộc gọi đến tổng đài 115 miễn phí; tuy nhiên, chi phí xe cứu thương có thể được tính riêng. Hãy nói rõ địa chỉ.'.split(/(?<= )/)
     const seen: Array<{ removedSentences: number }> = []
     const out = await run([...words.map(frame), 'e:{"finishReason":"stop"}\n', 'd:{"finishReason":"stop"}\n'], r => seen.push(r))
-    expect(textOf(out)).toBe('Gọi 115 để cấp cứu. Hãy nói rõ địa chỉ.')
-    expect(seen).toEqual([{ removedSentences: 1, editedSentences: 0 }])
+    expect(textOf(out)).toBe('Gọi 115 để cấp cứu. Chi phí xe cứu thương có thể được tính riêng. Hãy nói rõ địa chỉ.')
+    expect(seen).toEqual([{ removedSentences: 0, editedSentences: 1 }])
     expect(out.endsWith('d:{"finishReason":"stop"}\n')).toBe(true)
   })
   it('a claim split inside a frame boundary ("115 miễn" | " phí") is still seen', async () => {

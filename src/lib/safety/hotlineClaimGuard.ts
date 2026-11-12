@@ -50,6 +50,28 @@ const hasClaim = (s: string) => {
   return COST_RE.test(t) || HOURS_RE.test(t)
 }
 
+// A CALL-specific claim: it is about calling the line (the cost of the call, the line being answered around the clock), so it is a claim about the hotline even in a sentence that names no number.
+// Other free things (Wi-Fi, entry, a tour), the cost of an ambulance and "a shop open 24/7" are not matched.
+const FREE_VI = 'miễn\\s*phí|miễn\\s*cước|mien\\s*phi|không\\s+(?:mất|tốn|thu|tính)\\s+(?:tiền|phí|cước|chi\\s*phí)|không\\s+bị\\s+tính\\s+(?:phí|cước)'
+const CALL_VI = '(?:cuộc\\s+gọi|cước\\s+gọi|việc\\s+gọi|gọi\\s+(?:điện(?:\\s+thoại)?|đến|tới|tổng\\s*đài|số|hotline|đường\\s*dây))'
+const ROUND_VI = '24\\s*/\\s*(?:24|7)|24\\s*(?:giờ|tiếng)|24h|suốt\\s+ngày\\s+đêm|cả\\s+ngày\\s+lẫn\\s+đêm'
+const FREE_EN = 'free(?![\\w-])|toll[- ]?free|at\\s+no\\s+(?:cost|charge)|no\\s+(?:charge|cost|fee)|without\\s+(?:charge|cost)'
+const NOT_TERM = '[^.;,，。!?\\n]'
+const CALL_CLAIM_RE = new RegExp([
+  `${CALL_VI}${NOT_TERM}{0,40}?(?:${FREE_VI})`,
+  `(?:${FREE_VI})\\s+(?:khi\\s+|cho\\s+|với\\s+)?(?:cuộc\\s+gọi|cước\\s+gọi|gọi\\s+(?:điện|đến|tới|tổng|số|hotline|đường))`,
+  `(?:tổng\\s*đài|đường\\s*dây(?:\\s*nóng)?|hotline|số\\s+(?:này|đó))${NOT_TERM}{0,40}?(?:${ROUND_VI})`,
+  `(?<![\\w-])(?:the\\s+)?calls?(?![\\w-])${NOT_TERM}{0,40}?(?<![\\w-])(?:${FREE_EN})`,
+  '(?<![\\w-])free\\s+(?:phone\\s+)?calls?(?![\\w-])', 'free\\s+(?:of\\s+charge\\s+)?to\\s+call', 'toll[- ]?free',
+  `(?<![\\w-])(?:line|hotline|helpline|number)(?![\\w-])${NOT_TERM}{0,40}?(?:24\\s*/\\s*(?:24|7)|24[\\s-]*hours?|around[\\s-]+the[\\s-]+clock|day\\s+and\\s+night)`,
+  `(?:通话|通話|拨打|撥打|呼叫|来电|來電)[^。；，！？]{0,6}?(?:免费|免費|不收费|不收費)`, '(?:免费|免費)(?:拨打|撥打|通话|通話|电话|電話)', '(?:24\\s*小[时時]|全天候?)\\s*(?:接听|接聽|受理|值守|服务|服務)',
+].join('|'), 'iu')
+const hasCallClaim = (s: string) => CALL_CLAIM_RE.test(s.replace(INVITATION_RE, ' '))
+
+/** What the guard remembers between sentences (and between the pieces of a stream): the last emergency number named, and whether an unverified one has been named at all. */
+export interface HotlineGuardState { lastCode: 'U' | 'V' | null; seenU: boolean }
+export const freshHotlineGuardState = (): HotlineGuardState => ({ lastCode: null, seenU: false })
+
 // Sentence ends; an abbreviation's full stop ("TP. HCM", "Q. 1", "Dr.") does not end one.
 const ABBREVIATIONS = new Set(['tp', 'tx', 'q', 'p', 'st', 'mr', 'mrs', 'ms', 'dr', 'no', 'vs', 'ths', 'ts', 'gs', 'pgs', 'đ', 'tt', 'tel', 'ext', 'approx', 'etc'])
 const CLOSERS = new Set([...'*_"\'”’)]»}'])
@@ -98,7 +120,7 @@ export function splitSentences(text: string): Segment[] {
 }
 
 // Clause boundaries inside one sentence: a semicolon, or a contrast connector that opens a new statement.
-const CLAUSE_SPLIT = /(?=[;；]\s*)|(?=,\s*(?:còn|nhưng|tuy nhiên|trong khi|while|whereas|but|however|though)\b)|(?<!,)(?=\s+(?:nhưng|tuy nhiên|however|but)\b)|(?=，?(?:但是|不过|不過|然而))/giu
+const CLAUSE_SPLIT = /(?=[;；]\s*)|(?=,\s*(?:còn|nhưng|tuy nhiên|trong khi|while|whereas|but|however|though)\b)|(?<![,;；])(?=\s+(?:nhưng|tuy nhiên|however|but)\b)|(?<!，)(?=，?(?:但是|不过|不過|然而))/giu
 const CONTRAST_LEAD = /^[;；,，\s]*(?:(?:tuy\s+nhiên|nhưng|trái\s+lại|however|but|though|yet)(?![\p{L}])|但是|不过|不過|然而)/iu
 const TERMINATOR = /[.!?。！？]+[*_"'”’)\]»}]*$/u
 
@@ -108,15 +130,17 @@ function clausesOf(body: string): string[] {
   return parts.length ? parts : [body]
 }
 
-function rewriteSentence(body: string, unverified: RegExp, verified: RegExp | null): string | null {
+function rewriteSentence(body: string, unverified: RegExp, verified: RegExp | null, callCtx: 'U' | 'V' | null): string | null {
   const clauses = clausesOf(body)
   // A clause is flagged when it makes a claim and names an unverified number; a claim clause that names no number ("it is free") belongs to the number the sentence spoke of last.
+  // A CALL-specific claim (cước gọi miễn phí, the call is free, 通话免费) needs no number in its own clause: it belongs to the number the ANSWER spoke of last (callCtx).
   let ctx: 'U' | 'V' | null = null
+  let gctx = callCtx
   const flags = clauses.map(c => {
     const u = unverified.test(c)
     const v = !!verified && verified.test(c)
-    if (u) ctx = 'U'; else if (v) ctx = 'V'
-    return hasClaim(c) && (u || (!v && ctx === 'U'))
+    if (u) { ctx = 'U'; gctx = 'U' } else if (v) { ctx = 'V'; gctx = 'V' }
+    return (hasClaim(c) && (u || (!v && ctx === 'U'))) || (!v && gctx === 'U' && hasCallClaim(c))
   })
   if (!flags.some(Boolean)) return body
   if (clauses.length < 2) return null
@@ -125,7 +149,12 @@ function rewriteSentence(body: string, unverified: RegExp, verified: RegExp | nu
   for (let k = 0; k < clauses.length; k++) {
     const c = clauses[k]
     if (flags[k]) { droppedBefore = true; continue }
-    if (droppedBefore && CONTRAST_LEAD.test(c)) continue
+    if (droppedBefore && CONTRAST_LEAD.test(c)) {
+      // a contrast ("however, ambulance costs may be charged separately") argued against the claim that is gone: the connector goes and the statement stays when it still stands alone without a claim
+      const stripped = c.replace(new RegExp(CONTRAST_LEAD.source + '[\\s,，:]*', 'iu'), '')
+      if (/\p{L}|\p{N}/u.test(stripped) && !hasClaim(stripped)) keep.push((keep.length ? '; ' : '') + stripped)
+      continue
+    }
     keep.push(c)
   }
   if (!keep.length || keep.every(c => !/\p{L}|\p{N}/u.test(c))) return null
@@ -142,21 +171,28 @@ function rewriteSentence(body: string, unverified: RegExp, verified: RegExp | nu
 export interface HotlineClaimResult { text: string; changed: boolean; removedSentences: number; editedSentences: number }
 
 /** Applies the guard to a final answer text. Pure; returns the text unchanged (same string) when nothing is claimed. */
-export function guardHotlineClaims(text: string): HotlineClaimResult {
+export function guardHotlineClaims(text: string, state?: HotlineGuardState): HotlineClaimResult {
   const none: HotlineClaimResult = { text, changed: false, removedSentences: 0, editedSentences: 0 }
   if (!text || UNVERIFIED_HOTLINE_NUMBERS.length === 0) return none
   const unverified = NUMBER_RE(UNVERIFIED_HOTLINE_NUMBERS)
   const verifiedCodes = ALL_CODES.filter(n => !UNVERIFIED_HOTLINE_NUMBERS.includes(n))
   const verified = verifiedCodes.length ? NUMBER_RE(verifiedCodes) : null
-  // cheap exit: no code in the text at all
-  if (!unverified.test(text)) return none
+  const st = state ?? freshHotlineGuardState()
+  const textHasU = unverified.test(text)
+  // cheap exit: no unverified code in this text, and none named earlier
+  if (!textHasU && !st.seenU) return none
+  if (textHasU) st.seenU = true
   const segs = splitSentences(text)
   let removed = 0
   let edited = 0
   let out = ''
   let afterRemoved = false
   for (const seg of segs) {
-    const next = rewriteSentence(seg.body, unverified, verified)
+    // the number the answer spoke of last; before any number was named the answer's unverified number (this text, or an earlier piece) decides
+    const callCtx = st.lastCode ?? (st.seenU ? 'U' : null)
+    const next = rewriteSentence(seg.body, unverified, verified, callCtx)
+    if (unverified.test(seg.body)) st.lastCode = 'U'
+    else if (verified && verified.test(seg.body)) st.lastCode = 'V'
     if (next === null) {
       removed++
       afterRemoved = true
