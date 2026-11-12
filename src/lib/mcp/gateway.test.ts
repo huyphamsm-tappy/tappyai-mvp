@@ -334,6 +334,34 @@ describe('itinerary jobs (fallback job tools; durable store not chosen yet)', ()
   })
 })
 
+describe('attribution links and metrics hook', () => {
+  const SECRET = 'test-secret-test-secret-test-secret-0123456789'
+  const withUrls = (host: string) => Array.from({ length: 3 }, (_, i) => ({ name: `Quán ${i}`, place_id: `id${i}`, maps_link: `https://${host}/p/${i}` }))
+  it('adds action_links (tracked, signed, channel from the verified Host) only for allowlisted destinations, and keeps the original url in the row', async () => {
+    const d = mk({ attribution: { secret: SECRET, baseUrl: 'https://tappy.example' } }, async () => ({ rows: [...withUrls('www.google.com').slice(0, 2), { name: 'Lạ', place_id: 'x', maps_link: 'https://unknown.example/z' }] })).deps
+    const s = structured(await run(call('search_places', { query: 'pho', ...HCMC }), d))
+    expect(s.results.length).toBe(3); expect(s.results[0].url).toBe('https://www.google.com/p/0')
+    expect(s.action_links.map((l: { result_index: number }) => l.result_index)).toEqual([0, 1])
+    for (const l of s.action_links) expect(l.url).toMatch(/^https:\/\/tappy\.example\/go\/m\/[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/)
+    const body = JSON.parse(Buffer.from(s.action_links[0].url.split('/go/m/')[1].split('.')[0], 'base64url').toString())
+    expect(body).toMatchObject({ ch: 'claude_mcp', tool: 'search_places', dest: 'https://www.google.com/p/0' })
+    expect(JSON.stringify(body)).not.toMatch(/anon-1|inst-1/)
+  })
+  it('without attribution configured there is no action_links key at all', async () => {
+    const s = structured(await run(call('search_places', { query: 'pho', ...HCMC }), mk().deps))
+    expect('action_links' in s).toBe(false)
+  })
+  it('the metrics hook receives each call event (tool, host, status, partial) and a throwing hook never breaks the call', async () => {
+    const seen: Array<Record<string, unknown>> = []
+    const ok1 = await run(call('search_places', { query: 'pho', ...HCMC }), mk({ metrics: e => { seen.push(e) } }).deps)
+    expect(ok1.status).toBe(200); expect(seen[0]).toMatchObject({ type: 'tappyai_mcp_call', tool: 'search_places', host: 'claude', status: 'success' })
+    const bad = await run(call('search_places', { query: 'pho', ...HCMC }), mk({ metrics: () => { throw new Error('boom') } }).deps)
+    expect(structured(bad).status).toBe('success')
+    const elevated = await run(call('search_places', { query: 'pho', limit: 10, ...HCMC }), mk({ metrics: e => { seen.push(e) }, abuse: { observe: () => ({ level: 'elevated' as const, depthFactor: 0.4 }), size: () => 0 } }).deps)
+    expect(structured(elevated).status).toBe('partial'); expect(seen[seen.length - 1].partial).toBe(true)
+  })
+})
+
 describe('telemetry', () => {
   it('emits one event per tool call with attribution fields and no token, query text, or raw principal id', async () => {
     const { deps, events } = mk()

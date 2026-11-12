@@ -11,6 +11,8 @@ import { createAbuseMonitor } from './abuseGuard'
 import { unavailableJobStore, type JobStore, type JobWorkerStore } from './jobs'
 import { createRpcJobStore } from './jobsRpc'
 import { hotelAdapter, hotelProviderFromEnv } from './providers'
+import { attributionConfig } from './attribution'
+import { createMetrics } from './metrics'
 import { NO_ADAPTERS, type ServiceAdapters } from './serviceMap'
 import { createSupabaseTokenVerifier, parseClientRegistry, type ProviderUser } from './identity'
 
@@ -46,6 +48,7 @@ const RATE_WINDOW_MS = 60_000
 
 // per-instance memory (see abuseGuard.ts): module scope so one warm instance keeps its history between requests
 const abuse = createAbuseMonitor()
+const metrics = createMetrics()
 
 export function realAdapters(env: Env = process.env): ServiceAdapters {
   return {
@@ -84,6 +87,8 @@ export function buildGatewayDeps(env: Env = process.env, seams: { getUser?: (tok
     spend: createSpendPool({ env }),
     jobs: rpcJobStore(env) ?? unavailableJobStore,
     abuse,
+    attribution: attributionConfig(env),
+    metrics: e => metrics.record(e),
     rateLimit: async key => {
       const r = await distributedRateLimit(key, RATE_LIMIT, RATE_WINDOW_MS)
       return { ok: r.ok, retryAfter: r.retryAfter, reason: r.reason }

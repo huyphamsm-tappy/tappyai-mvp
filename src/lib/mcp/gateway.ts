@@ -15,6 +15,7 @@ import { catalogTool, listTools, parseArgs, type CatalogTool } from './toolCatal
 import { ROW_MAPPER, TOOL_SERVICE, safeUrl, cleanText, type SearchToolName, type ServiceAdapters } from './serviceMap'
 import { TOOL_RESERVE_USD, type SpendPool } from './spendPool'
 import { dispatchPaid } from './dispatch'
+import { buildTrackedLink } from './attribution'
 import { limitsFor } from './hostProfiles'
 import { jobView, type JobStore, JobStoreUnavailable } from './jobs'
 import type { AbuseMonitor } from './abuseGuard'
@@ -39,6 +40,10 @@ export interface GatewayDeps {
   allowedOrigins: readonly string[]
   /** test seam: the hard server deadline of a tool call */
   deadlineMs?: (tool: CatalogTool) => number
+  /** attribution short links (attribution.ts); null/absent = no links are added */
+  attribution?: { secret: string; baseUrl: string } | null
+  /** aggregate counters (metrics.ts); best effort */
+  metrics?: (event: Record<string, unknown>) => void
   /** per-Host server limits (hostProfiles.ts); default: the strictest of the Host's profiles */
   profileLimits?: (host: VerifiedClaims['host']) => { serverDeadlineMs: number; maxResponseBytes: number }
 }
@@ -147,7 +152,7 @@ export async function handleMcpRequest(input: GatewayRequest, deps: GatewayDeps)
   }
 }
 
-interface CallMeta { status: string; errorCode?: GatewayErrorCode; resultCount?: number; estimatedCostUsd: number; market?: string | null; contextSource?: string; unknownOutcome?: boolean }
+interface CallMeta { status: string; errorCode?: GatewayErrorCode; resultCount?: number; estimatedCostUsd: number; market?: string | null; contextSource?: string; unknownOutcome?: boolean; partial?: boolean }
 
 async function callTool(id: unknown, params: unknown, claims: VerifiedClaims, input: GatewayRequest, deps: GatewayDeps, now: () => Date): Promise<GatewayResponse> {
   const p = params && typeof params === 'object' && !Array.isArray(params) ? params as { name?: unknown; arguments?: unknown } : null
@@ -165,12 +170,14 @@ async function callTool(id: unknown, params: unknown, claims: VerifiedClaims, in
   } catch {
     out = fail('INTERNAL_ERROR')
   } finally {
-    deps.log({
+    const event = {
       type: 'tappyai_mcp_call', request_id: requestId, tool: tool.name, host: claims.host, install_ref: ref(claims.installId), principal_ref: ref(claims.principalId),
       auth_tier: claims.userId ? 'authenticated' : 'anonymous', execution_mode: tool.mode, status: meta.status, ...(meta.errorCode ? { error_code: meta.errorCode } : {}),
       latency_ms: Date.now() - started, result_count: meta.resultCount ?? 0, estimated_cost_usd: meta.estimatedCostUsd, market: meta.market ?? null, context_source: meta.contextSource ?? null,
-      ...(meta.unknownOutcome ? { unknown_outcome: true } : {}),
-    })
+      ...(meta.unknownOutcome ? { unknown_outcome: true } : {}), ...(meta.partial ? { partial: true } : {}),
+    }
+    deps.log(event)
+    try { deps.metrics?.(event) } catch { /* counts are best effort and never in the way */ }
   }
   return ok(id, out)
 
@@ -227,12 +234,18 @@ async function callTool(id: unknown, params: unknown, claims: VerifiedClaims, in
     const warnings: string[] = []
     if (reduced) warnings.push('Result depth was reduced for this connection.')
     if (shaped.partial) warnings.push('Some results were omitted to fit the response size limit.')
-    meta.status = 'success'; meta.resultCount = shaped.rows.length
+    meta.status = 'success'; meta.resultCount = shaped.rows.length; meta.partial = reduced || shaped.partial
+    // attribution links: only when configured, only for destinations on the allowlist; the original URL stays in the row, and a Host that drops the link loses nothing but the measurement
+    const links = deps.attribution ? shaped.rows.flatMap((row, i) => {
+      const url = typeof row.url === 'string' ? row.url : ''
+      const link = url ? buildTrackedLink({ ...deps.attribution!, host: claims.host, tool: t.name, ref: createHash('sha256').update(`${t.name}:${String(row.id ?? row.name ?? row.title ?? i)}`).digest('hex').slice(0, 12), dest: url, now: now() }) : null
+      return link ? [{ result_index: i, label: String(row.name ?? row.title ?? '').slice(0, 120), url: link }] : []
+    }) : null
     deps.abuse.recordResults?.(claims.principalId, shaped.rows.map(r => String(r.id ?? r.name ?? r.title ?? '')).filter(Boolean))
     return success({
       status: reduced || shaped.partial ? 'partial' : 'success',
       query_context: { market: ctx.marketId, language: call.lang, context_source: ctx.source, context_confidence: 'client_supplied', location_precision: ctx.precision, needs_clarification: false },
-      results: shaped.rows, warnings, next_action: null,
+      results: shaped.rows, warnings, next_action: null, ...(links ? { action_links: links } : {}),
     })
   }
 

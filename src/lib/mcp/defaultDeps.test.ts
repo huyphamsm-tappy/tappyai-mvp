@@ -31,6 +31,11 @@ describe('default wiring is inert until fully configured', () => {
     expect(rpcJobStore({ MCP_JOBS_ENABLED: '1' })).not.toBeNull()
     await expect(buildGatewayDeps({}).jobs.get('x', 'p')).rejects.toThrow('job_store_unavailable')
   })
+  it('attribution links exist only with a long secret and an https resource URL; metrics are wired', () => {
+    expect(buildGatewayDeps({}).attribution).toBeNull()
+    expect(buildGatewayDeps({ MCP_ATTRIBUTION_SECRET: 'x'.repeat(40), MCP_RESOURCE_URL: AUD }).attribution).toEqual({ secret: 'x'.repeat(40), baseUrl: 'https://mcp.test' })
+    expect(typeof buildGatewayDeps({}).metrics).toBe('function')
+  })
   it('the real adapters stay lazy and the hotel path stays unwired', () => {
     const d = buildGatewayDeps({})
     expect(d.adapters['hotels.prices']).toBeNull()

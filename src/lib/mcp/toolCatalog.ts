@@ -1,7 +1,7 @@
 // The published tool catalog (connector doc §12, R13 §25.6): the six initial tools plus the four fallback job tools used because MCP Tasks is not negotiated (§13.6).
 // ONE field table per tool builds BOTH the JSON Schema a Host sees and the validator the Gateway runs, so the two cannot drift apart.
 //
-// v1.0 (12/11/2026): the inputs follow connector doc §12.4 (illustrative example) and §7.2 (explicit context parameters: location_query, latitude, longitude, preferred_language, user_locale, currency,
+// v1.0 (12/11/2026), v1.1 (12/11/2026: additive optional output field action_links): the inputs follow connector doc §12.4 (illustrative example) and §7.2 (explicit context parameters: location_query, latitude, longitude, preferred_language, user_locale, currency,
 // timezone, search_radius_meters), the outputs follow §14.1 (status, query_context, results, warnings, next_action) and §13.6 (job_id, status, created_at, poll_after_ms, expires_at). The doc says its example
 // is not the approved schema, so this version is FROZEN BY THIS FILE'S OWN RULES, not by a Host or the owner's sign-off: it has not been exercised against any Host.
 //
@@ -13,7 +13,7 @@ import { createHash } from 'node:crypto'
 import { z } from 'zod'
 import { CONNECTOR_TOOLS, type ToolName } from './connectorContract'
 
-export const TOOL_CATALOG_VERSION = 'mcp-tools.v1.0'
+export const TOOL_CATALOG_VERSION = 'mcp-tools.v1.1'
 
 export type CatalogToolName = ToolName | 'create_itinerary_job' | 'get_itinerary_job_status' | 'get_itinerary_job_result' | 'cancel_itinerary_job'
 export type ExecutionMode = 'SYNC' | 'ASYNC' | 'JOB_CONTROL'
@@ -118,6 +118,8 @@ function outputSchemaFor(name: CatalogToolName): Record<string, unknown> {
         results: { type: 'array', maxItems: c.maxResults, items: rowSchema(c.dtoFields) },
         warnings: { type: 'array', items: S },
         next_action: { type: 'null' },
+        // additive in v1.1: present only when attribution is configured; the row's own url is unchanged
+        action_links: { type: 'array', items: objectOf({ result_index: { type: 'integer' }, label: S, url: S }, ['result_index', 'label', 'url']) },
       }, ['status', 'query_context', 'results', 'warnings', 'next_action'])
     }
   }
