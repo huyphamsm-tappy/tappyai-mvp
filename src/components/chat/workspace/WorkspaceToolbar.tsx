@@ -24,7 +24,8 @@ function messageCount(messages: ReadonlyArray<{ content?: unknown } | null> | nu
 export default function WorkspaceToolbar() {
   const { t, locale } = useTranslation()
   const pathname = usePathname()
-  const { items } = useConversationStore()
+  const store = useConversationStore()
+  const { items } = store
   const [drawerOpen, setDrawerOpen] = useState(false)
   // workspace v206: the tips the open conversation's answers carry, and the overlay drawers' state (one drawer at a time, the saved drawer included)
   const v206 = useSyncExternalStore(v206Store.subscribe, v206Store.getSnapshot, v206Store.getServerSnapshot)
@@ -34,7 +35,7 @@ export default function WorkspaceToolbar() {
     window.addEventListener(OPEN_SAVED_EVENT, open)
     return () => window.removeEventListener(OPEN_SAVED_EVENT, open)
   }, [])
-  const activeId = /^\/chat\/([^/?#]+)/.exec(pathname)?.[1] ?? null
+  const activeId = store.activeId !== undefined ? store.activeId : /^\/chat\/([^/?#]+)/.exec(pathname)?.[1] ?? null
   const conv = activeId ? items.find(c => c.id === activeId) ?? null : null
 
   function exportTranscript() {

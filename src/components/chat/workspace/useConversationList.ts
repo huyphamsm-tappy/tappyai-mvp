@@ -30,6 +30,8 @@ export interface ConversationStore {
   projects: ChatProject[]
   setProjects: Dispatch<SetStateAction<ChatProject[]>>
   reloadProjects: () => Promise<void>
+  /** The open conversation, when the store itself knows it (the dev test harness has no /chat/<id> URL). Absent: it is read from the URL, as always. */
+  activeId?: string | null
 }
 
 const time = (iso: string) => Date.parse(iso) || 0

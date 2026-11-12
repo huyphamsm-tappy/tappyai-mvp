@@ -9,7 +9,7 @@ import NavRail from './NavRail'
 import HistorySidebar from './HistorySidebar'
 import WorkspaceToolbar from './WorkspaceToolbar'
 import ProductHeader from './ProductHeader'
-import { useConversationList } from './useConversationList'
+import { useConversationList, type ConversationStore } from './useConversationList'
 import { V206_LOOK } from '@/lib/chat/v206Look'
 
 // Desktop chat workspace: navigation rail + history sidebar + the chat itself. Behind NEXT_PUBLIC_CHAT_WORKSPACE_ENABLED (off by
@@ -26,9 +26,18 @@ export default function ChatWorkspaceShell({ children }: { children: ReactNode }
 function EnabledShell({ children }: { children: ReactNode }) {
   const store = useConversationList()
   const pathname = usePathname()
-  // mockup look: the project opened in the sidebar shows its overview over the chat (the chat stays mounted, only hidden, so nothing of it is lost); going to a conversation closes it
-  const projectId = useSyncExternalStore(projectViewStore.subscribe, projectViewStore.getSnapshot, projectViewStore.getServerSnapshot)
+  // going to a conversation closes an opened project overview
   useEffect(() => { projectViewStore.set(null) }, [pathname])
+  return <WorkspaceFrame store={store}>{children}</WorkspaceFrame>
+}
+
+/**
+ * The workspace's drawing, given its conversation store. The production shell above feeds it the live store; the development-only test harness feeds it
+ * a fixture store, so the REAL rail, history, toolbar, product header and project overview are what get compared with the mockup.
+ */
+export function WorkspaceFrame({ store, children }: { store: ConversationStore; children: ReactNode }) {
+  // mockup look: the project opened in the sidebar shows its overview over the chat (the chat stays mounted, only hidden, so nothing of it is lost)
+  const projectId = useSyncExternalStore(projectViewStore.subscribe, projectViewStore.getSnapshot, projectViewStore.getServerSnapshot)
   const overview = V206_LOOK && !!projectId
   const columns = (
     <>

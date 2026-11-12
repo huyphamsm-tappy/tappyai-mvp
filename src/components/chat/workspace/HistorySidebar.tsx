@@ -34,8 +34,8 @@ export default function HistorySidebar() {
   const { t } = useTranslation()
   const pathname = usePathname()
   const router = useRouter()
-  const activeId = /^\/chat\/([^/?#]+)/.exec(pathname)?.[1] ?? null
   const store = useConversationStore()
+  const activeId = store.activeId !== undefined ? store.activeId : /^\/chat\/([^/?#]+)/.exec(pathname)?.[1] ?? null
   const { items, setItems, status, setStatus, hasMore, loadingMore, reload, loadMore, projects, setProjects, reloadProjects } = store
 
   const [tab, setTab] = useState<HistoryTab>('all')
