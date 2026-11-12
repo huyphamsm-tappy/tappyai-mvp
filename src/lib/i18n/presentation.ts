@@ -72,6 +72,24 @@ const T: Record<string, [string, string]> = {
   'v206.header.project': ['Trong dự án', 'In a project'],
   'v206.header.tips': ['Mẹo', 'Tips'],
   'v206.header.tipsN': ['Mẹo ({n})', 'Tips ({n})'],
+  // place card (the mockup's dark glass card; every control is drawn only when the card has the data behind it)
+  'v206.card.profile': ['Xem hồ sơ', 'View profile'],
+  'v206.card.openProfile': ['Mở hồ sơ {name}', 'Open the profile of {name}'],
+  'v206.card.map': ['Bản đồ', 'Map'],
+  'v206.card.website': ['Website', 'Website'],
+  'v206.card.hotline': ['Hotline', 'Hotline'],
+  'v206.card.save': ['Lưu', 'Save'],
+  'v206.card.saved': ['Đã lưu', 'Saved'],
+  'v206.card.saveFailed': ['Không lưu được', 'Could not save'],
+  'v206.card.open': ['Đang mở', 'Open now'],
+  'v206.card.closed': ['Đang đóng', 'Closed now'],
+  'v206.card.ratingLabel': ['{rating} sao, {count} đánh giá', '{rating} stars, {count} reviews'],
+  'v206.card.ratingOnly': ['{rating} sao', '{rating} stars'],
+  // conversation header
+  'v206.header.messages': ['{n} tin nhắn', '{n} messages'],
+  // product header
+  'v206.product.tagline': ['Trợ lý Trí tuệ Toàn diện & Đồng hành Địa phương', 'All-round AI assistant & local companion'],
+  'v206.product.home': ['TappyAI - về trang chủ', 'TappyAI - back to home'],
 }
 
 export const vi: Record<string, string> = Object.fromEntries(Object.entries(T).map(([k, v]) => [k, v[0]]))

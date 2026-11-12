@@ -4,8 +4,10 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import {
-  Archive, ArchiveRestore, ArrowLeft, Check, Download, FolderInput, ListChecks, Loader2, MessageCircle, MoreVertical, Pencil, Pin, PinOff, Plus, Search, Trash2,
+  Archive, ArchiveRestore, ArrowLeft, Check, ChevronDown, ChevronRight, Download, FolderInput, ListChecks, Loader2, MessageCircle, MoreVertical, Pencil, Pin, PinOff, Plus, Search, Trash2,
 } from 'lucide-react'
+import '@/components/chat/v206.css'
+import { conversationEmoji, conversationPreview, V206_LOOK } from '@/lib/chat/v206Look'
 import { cn } from '@/lib/utils'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { apiFetch } from '@/lib/account/ageGateClient'
@@ -80,6 +82,9 @@ export default function HistorySidebar() {
 
   useEffect(() => () => { if (noticeTimer.current) clearTimeout(noticeTimer.current) }, [])
 
+  // mockup rows: a one-line preview of each conversation's real last message (computed from the messages the list already carries; no extra request)
+  const [collapsedGroups, setCollapsedGroups] = useState<Set<string>>(new Set())
+  const previews = useMemo(() => new Map(items.map(c => [c.id, conversationPreview(c.messages)] as const)), [items])
   const counts = useMemo(() => tabCounts(items, projects.length), [items, projects.length])
   const openProject = openProjectId ? projects.find(p => p.id === openProjectId) ?? null : null
   const tabItems = useMemo(
@@ -305,17 +310,29 @@ export default function HistorySidebar() {
   const allSelectedPinned = selected.size > 0 && Array.from(selected).every(id => items.find(c => c.id === id)?.is_pinned === true)
 
   function renderGroups() {
-    return groups.map(group => (
-      <section key={group.key} className="space-y-1">
-        <h3 className="px-2 py-1 font-mono text-[10px] font-bold uppercase text-slate-400">
-          {t(`chatWs.group.${group.key}`)} ({group.items.length})
+    return groups.map(group => {
+      const isCollapsed = collapsedGroups.has(group.key)
+      return (
+      <section key={group.key} className="space-y-1" data-group={group.key}>
+        <h3 className="m-0">
+          <button
+            type="button"
+            aria-expanded={!isCollapsed}
+            aria-label={`${t(`chatWs.group.${group.key}`)} (${group.items.length}) - ${isCollapsed ? t('chatWs.group.expand') : t('chatWs.group.collapse')}`}
+            onClick={() => setCollapsedGroups(prev => { const next = new Set(prev); if (next.has(group.key)) next.delete(group.key); else next.add(group.key); return next })}
+            className="flex w-full items-center justify-between rounded-lg px-2 py-1 font-mono text-[10px] font-bold uppercase tracking-wide text-slate-400 transition-colors hover:text-slate-200"
+          >
+            <span><span aria-hidden>{group.key === 'pinned' ? '⭐' : '📅'}</span> {t(`chatWs.group.${group.key}`)} ({group.items.length})</span>
+            {isCollapsed ? <ChevronRight size={12} aria-hidden className="text-slate-500" /> : <ChevronDown size={12} aria-hidden className="text-slate-500" />}
+          </button>
         </h3>
-        <ul className="space-y-1">
+        {!isCollapsed && <ul className="space-y-1">
           {group.items.map(conv => {
             const isActive = conv.id === activeId
             const isSelected = selected.has(conv.id)
             const isRenaming = renamingId === conv.id
             const title = conv.title || t('chatWs.untitled')
+            const preview = previews.get(conv.id) ?? null
             return (
               <li key={conv.id} className="relative">
                 <div
@@ -344,6 +361,7 @@ export default function HistorySidebar() {
                       className="mr-2.5 h-3.5 w-3.5 shrink-0 cursor-pointer accent-blue-500"
                     />
                   )}
+                  <span aria-hidden className="v206-rowicon mr-2.5">{conversationEmoji(conv.category)}</span>
                   <div className="min-w-0 flex-1 pr-2">
                     {isRenaming ? (
                       <input
@@ -365,11 +383,12 @@ export default function HistorySidebar() {
                       <span
                         title={t('chatWs.rename.hint')}
                         onDoubleClick={e => { if (selectMode) return; e.stopPropagation(); startRename(conv.id) }}
-                        className={cn('block truncate text-xs font-medium', isActive && 'font-semibold text-white')}
+                        className={cn('block truncate text-[13px] font-medium', isActive && 'font-semibold text-white')}
                       >
                         {title}
                       </span>
                     )}
+                    {!isRenaming && preview && <span data-testid="history-preview" className="mt-0.5 block truncate text-[11px] font-normal text-slate-400">{preview}</span>}
                   </div>
                   {conv.is_pinned === true && !isRenaming && (
                     <Pin size={12} aria-label={t('chatWs.pinned.badge')} className="mr-1 shrink-0 text-amber-400" />
@@ -450,9 +469,10 @@ export default function HistorySidebar() {
               </li>
             )
           })}
-        </ul>
+        </ul>}
       </section>
-    ))
+      )
+    })
   }
 
   return (
@@ -465,13 +485,16 @@ export default function HistorySidebar() {
           <h2 className="text-sm font-bold tracking-tight text-white">{t('chatWs.sidebar.title')}</h2>
           <span className="rounded-full border border-blue-500/30 bg-blue-900/40 px-2 py-0.5 font-mono text-[10px] font-bold text-sky-300">{counts.all}</span>
         </div>
-        <Link
-          href="/chat"
-          className="flex items-center gap-1 rounded-xl border border-blue-500/40 bg-blue-600/20 px-2.5 py-1.5 text-[11px] font-medium text-sky-200 transition-colors hover:bg-blue-600/40"
-        >
-          <Plus size={14} aria-hidden />
-          {t('chatWs.sidebar.newChat')}
-        </Link>
+        {/* the mockup's "Tạo mới" lives on top of the rail; the sidebar keeps its own button only when the mockup look is off */}
+        {!V206_LOOK && (
+          <Link
+            href="/chat"
+            className="flex items-center gap-1 rounded-xl border border-blue-500/40 bg-blue-600/20 px-2.5 py-1.5 text-[11px] font-medium text-sky-200 transition-colors hover:bg-blue-600/40"
+          >
+            <Plus size={14} aria-hidden />
+            {t('chatWs.sidebar.newChat')}
+          </Link>
+        )}
       </div>
 
       <div className="flex items-center gap-2 border-b border-blue-900/20 p-3">
@@ -608,19 +631,21 @@ export default function HistorySidebar() {
 
         {status === 'ready' && showConversationList && renderGroups()}
 
-        {status === 'ready' && hasMore && tab !== 'projects' && (
-          <div className="px-1 pb-1 pt-1 text-center">
-            <button
-              type="button"
-              onClick={() => void loadMore()}
-              disabled={loadingMore}
-              className="flex w-full items-center justify-center gap-1.5 rounded-xl border border-blue-900/40 bg-[#091226] px-3 py-1.5 text-xs font-medium text-blue-300 transition-all hover:border-blue-500/50 hover:bg-blue-900/30 hover:text-white disabled:cursor-wait disabled:opacity-60"
-            >
-              {loadingMore ? <><Loader2 size={13} className="animate-spin" aria-hidden />{t('chatWs.more.loading')}</> : t('chatWs.more.load')}
-            </button>
-          </div>
-        )}
       </div>
+
+      {/* the mockup's footer bar: the button that loads the next page of older conversations (how many remain is not known until they are loaded, so no count is shown) */}
+      {status === 'ready' && hasMore && tab !== 'projects' && (
+        <div className="border-t border-blue-900/30 bg-[#060D1E]/60 p-2.5 text-center">
+          <button
+            type="button"
+            onClick={() => void loadMore()}
+            disabled={loadingMore}
+            className="flex w-full items-center justify-center gap-1.5 rounded-xl border border-blue-900/40 bg-[#091226] px-3 py-1.5 text-xs font-medium text-blue-300 transition-all hover:border-blue-500/50 hover:bg-blue-900/30 hover:text-white disabled:cursor-wait disabled:opacity-60"
+          >
+            {loadingMore ? <><Loader2 size={13} className="animate-spin" aria-hidden />{t('chatWs.more.loading')}</> : <><Plus size={13} aria-hidden />{t('chatWs.more.load')}</>}
+          </button>
+        </div>
+      )}
 
       {selectMode && (
         <div className="absolute inset-x-2 bottom-3 z-30 rounded-2xl border border-blue-500/40 bg-[#0A1530] px-3 py-2.5 shadow-2xl shadow-black/70">

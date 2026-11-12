@@ -8,12 +8,18 @@ import { WORKSPACE_V206, headerBadges } from '@/lib/chat/v206'
 import { v206Store } from '@/lib/chat/v206Store'
 import { cn, formatRelativeTime } from '@/lib/utils'
 import { useTranslation } from '@/lib/i18n/useTranslation'
-import { buildTranscriptMarkdown, exportFileName } from '@/lib/chat/workspace/historyModel'
+import { buildTranscriptMarkdown, exportFileName, messageText } from '@/lib/chat/workspace/historyModel'
+import { OPEN_SAVED_EVENT, V206_LOOK, conversationEmoji, statusLine } from '@/lib/chat/v206Look'
 import { useConversationStore } from './ChatWorkspaceContext'
 import SavedDrawer from './SavedDrawer'
 
 // The bar above the conversation on desktop: the conversation's title and when it was last updated, an export button, and the button
 // that slides the saved-places panel over the chat. The title always follows the sidebar (one shared store), so a rename shows in both.
+
+/** The messages of a conversation that have readable text (the count the header may state). */
+function messageCount(messages: ReadonlyArray<{ content?: unknown } | null> | null | undefined): number {
+  return Array.isArray(messages) ? messages.filter(m => m && messageText(m.content).trim() !== '').length : 0
+}
 
 export default function WorkspaceToolbar() {
   const { t, locale } = useTranslation()
@@ -23,6 +29,11 @@ export default function WorkspaceToolbar() {
   // workspace v206: the tips the open conversation's answers carry, and the overlay drawers' state (one drawer at a time, the saved drawer included)
   const v206 = useSyncExternalStore(v206Store.subscribe, v206Store.getSnapshot, v206Store.getServerSnapshot)
   useEffect(() => { if (WORKSPACE_V206 && v206.drawer && drawerOpen) setDrawerOpen(false) }, [v206.drawer, drawerOpen])
+  useEffect(() => {
+    const open = () => { if (WORKSPACE_V206) v206Store.closeDrawer(); setDrawerOpen(true) }
+    window.addEventListener(OPEN_SAVED_EVENT, open)
+    return () => window.removeEventListener(OPEN_SAVED_EVENT, open)
+  }, [])
   const activeId = /^\/chat\/([^/?#]+)/.exec(pathname)?.[1] ?? null
   const conv = activeId ? items.find(c => c.id === activeId) ?? null : null
 
@@ -51,14 +62,21 @@ export default function WorkspaceToolbar() {
   return (
     <>
       <div className="hidden shrink-0 items-center justify-between border-b border-blue-900/30 bg-[#091022]/80 px-5 py-3 backdrop-blur-md lg:flex">
-        <div className="min-w-0">
-          <h1 className="truncate text-sm font-bold text-white md:text-base">{conv?.title || t('chatWs.header.untitled')}</h1>
-          {conv && (
-            <p className="flex flex-wrap items-center gap-1.5 text-[11px] text-slate-400">
-              <span>{t('chatWs.header.updated', { time: formatRelativeTime(conv.updated_at, t, locale) })}</span>
-              {WORKSPACE_V206 && headerBadges(conv).map(b => <span key={b} className="v206-badge" data-testid={`v206-badge-${b}`}>{t(`v206.header.${b}`)}</span>)}
-            </p>
-          )}
+        <div className="flex min-w-0 items-center gap-3">
+          {V206_LOOK && <span aria-hidden className="v206-convicon" data-testid="v206-convicon">{conversationEmoji(conv?.category)}</span>}
+          <div className="min-w-0">
+            <h1 className="truncate text-sm font-bold text-white md:text-base">{conv?.title || t('chatWs.header.untitled')}</h1>
+            {conv && (
+              <p className="flex flex-wrap items-center gap-1.5 text-[11px] text-slate-400" data-testid="v206-status">
+                <span>
+                  {V206_LOOK
+                    ? statusLine({ updated: t('chatWs.header.updated', { time: formatRelativeTime(conv.updated_at, t, locale) }), messages: messageCount(conv.messages) }, n => t('v206.header.messages', { n: String(n) }))
+                    : t('chatWs.header.updated', { time: formatRelativeTime(conv.updated_at, t, locale) })}
+                </span>
+                {WORKSPACE_V206 && headerBadges(conv).map(b => <span key={b} className="v206-badge" data-testid={`v206-badge-${b}`}>{t(`v206.header.${b}`)}</span>)}
+              </p>
+            )}
+          </div>
         </div>
         <div className="flex shrink-0 items-center gap-2">
           {WORKSPACE_V206 && v206.tips.length > 0 && (

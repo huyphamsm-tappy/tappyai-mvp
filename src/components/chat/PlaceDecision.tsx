@@ -11,6 +11,8 @@ import { placesRenderOrder, type LivePlace, type PlaceFlag, type PlacesLiveView 
 import { reasonList, reasonText } from '@/lib/recommendation/reasonText'
 import { formatPriceBandText } from '@/lib/recommendation/priceBand'
 import { plainTextDeep } from '@/lib/chat/markdownNormalize'
+import { V206_LOOK } from '@/lib/chat/v206Look'
+import V206PlaceCard from '@/components/chat/v206/V206PlaceCard'
 
 // ── The place decision, as the approved Food composition renders it ─────────
 //
@@ -393,7 +395,8 @@ function PlaceCard({ p, position, ranked }: { p: LivePlace; position: number; ra
   )
 }
 
-export default function PlaceDecision({ view }: { view: PlacesLiveView | null }) {
+/** `forceV206` is a test seam: it overrides the build flags (NEXT_PUBLIC_WORKSPACE_V206 + NEXT_PUBLIC_RESPONSE_PRESENTATION). */
+export default function PlaceDecision({ view, forceV206 }: { view: PlacesLiveView | null; forceV206?: boolean }) {
   const { t } = useTranslation()
   // Memoised together so the filter row is not rebuilt on every keystroke elsewhere
   // in the chat; `view` is a stable object for the life of the message.
@@ -452,7 +455,9 @@ export default function PlaceDecision({ view }: { view: PlacesLiveView | null })
           <div key={p.id} role="listitem" className="w-[85%] flex-none snap-start sm:w-[320px]">
             {/* A.4 (2026-09-19): when the reply named venues and none matched a row, the order is the
                 engine's, not the model's — no "#1" and no lead, exactly as an unranked set. */}
-            <PlaceCard p={p} position={ordered.indexOf(p)} ranked={view.ranked !== false && !view.pickUnmatched} />
+            {(forceV206 ?? V206_LOOK)
+              ? <V206PlaceCard p={p} position={ordered.indexOf(p)} ranked={view.ranked !== false && !view.pickUnmatched} />
+              : <PlaceCard p={p} position={ordered.indexOf(p)} ranked={view.ranked !== false && !view.pickUnmatched} />}
           </div>
         ))}
       </div>

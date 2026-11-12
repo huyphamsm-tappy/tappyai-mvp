@@ -133,6 +133,12 @@ const T: Record<string, [string, string]> = {
 
   'chatWs.error.load':['Không tải được lịch sử trò chuyện.', 'Could not load your chat history.'],
   'chatWs.error.retry': ['Thử lại', 'Try again'],
+
+  // mockup look: rail and history rows
+  'chatWs.rail.create': ['Tạo mới', 'New'],
+  'chatWs.rail.saved': ['Đã lưu', 'Saved'],
+  'chatWs.group.collapse': ['Thu gọn nhóm', 'Collapse group'],
+  'chatWs.group.expand': ['Mở rộng nhóm', 'Expand group'],
 }
 
 export const vi: Record<string, string> = Object.fromEntries(Object.entries(T).map(([k, v]) => [k, v[0]]))
