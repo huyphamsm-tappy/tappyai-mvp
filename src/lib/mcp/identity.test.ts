@@ -8,10 +8,10 @@ import { NO_ADAPTERS } from './serviceMap'
 
 const NOW = new Date('2026-11-11T03:00:00Z')
 const AUD = 'https://mcp.test/api/mcp'
-const REG: ClientRegistry = { 'client-claude-1': { host: 'claude' }, 'client-chatgpt-1': { host: 'chatgpt' } }
+const REG: ClientRegistry = { 'cid-one': { host: 'claude' }, 'cid-two': { host: 'chatgpt' } }
 const SUB_A = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa'
 const SUB_B = 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb'
-const payload = (o: Record<string, unknown> = {}) => ({ sub: SUB_A, aud: AUD, exp: NOW.getTime() / 1000 + 3600, client_id: 'client-claude-1', scope: 'places:read hotels:read', is_anonymous: false, ...o })
+const payload = (o: Record<string, unknown> = {}) => ({ sub: SUB_A, aud: AUD, exp: NOW.getTime() / 1000 + 3600, client_id: 'cid-one', scope: 'places:read hotels:read', is_anonymous: false, ...o })
 const b64 = (o: unknown) => Buffer.from(JSON.stringify(o)).toString('base64url')
 const jwt = (p: Record<string, unknown>) => `${b64({ alg: 'ES256', typ: 'JWT' })}.${b64(p)}.sig`
 const opts = { expectedAudience: AUD, registry: REG, now: () => NOW }
@@ -19,13 +19,13 @@ const opts = { expectedAudience: AUD, registry: REG, now: () => NOW }
 describe('claimsFromJwtPayload: deterministic principal mapping (R13 10.7)', () => {
   it('maps a linked-user token: userId only from sub, host from the REGISTERED client, install = host + client, principal scoped to the user', () => {
     const c = claimsFromJwtPayload(payload(), opts)!
-    expect(c).toMatchObject({ audience: AUD, host: 'claude', installId: 'claude:client-claude-1', userId: SUB_A, principalId: `u:${SUB_A}`, revoked: false })
+    expect(c).toMatchObject({ audience: AUD, host: 'claude', installId: 'claude:cid-one', userId: SUB_A, principalId: `u:${SUB_A}`, revoked: false })
     expect(c.scopes).toEqual(['places:read', 'hotels:read'])
   })
   it('the four identities stay distinct: platform, installation, linked user, anonymous principal', () => {
     const linked = claimsFromJwtPayload(payload(), opts)!
     const anon = claimsFromJwtPayload(payload({ sub: SUB_B, is_anonymous: true }), opts)!
-    const other = claimsFromJwtPayload(payload({ client_id: 'client-chatgpt-1' }), opts)!
+    const other = claimsFromJwtPayload(payload({ client_id: 'cid-two' }), opts)!
     expect(anon.userId).toBeNull(); expect(anon.principalId).toBe(`a:${SUB_B}`)
     expect(linked.principalId).not.toBe(anon.principalId)
     expect(other.host).toBe('chatgpt'); expect(other.installId).not.toBe(linked.installId); expect(other.principalId).toBe(linked.principalId) // same person, different Host install
