@@ -49,6 +49,12 @@ Mô hình thật (One Brain): đọc cả hội thoại, tự chọn công cụ,
 
 ## 4. Ba thế hệ trong một hàm
 
+**Chúng không hỗ trợ nhau; chúng là ba cách thay thế cho cùng một việc (đọc hiểu câu hỏi và quyết định làm gì), chỉ một cách chạy cho mỗi request, rồi cùng đổ vào một phần đuôi chung.** (**ĐO**, `route.ts` dòng 442, 510, 521)
+- Chọn theo cờ, loại trừ nhau: `oneBrain` = cờ `CONSULT_ONE_BRAIN` bật **và** agent tắt **và** không phải clip; `agentOn` = cờ agent bật và không có ảnh; đường cũ `consultOn` = `consultV2Enabled()` (**mặc định BẬT**, chỉ tắt khi đặt `CONSULT_V2=0/false/off`) **và** không phải One Brain.
+- Vì `CONSULT_ONE_BRAIN` mặc định tắt và bị khóa ở production trừ khi được cho phép, **không đặt gì thì chạy đường cũ**.
+- Phần dùng chung (đây mới là chỗ chúng "hỗ trợ" nhau, vì sửa ở đó có lợi cho cả ba): cổng 18+, hạn mức, trần chi phí, công cụ, các guard thẻ, làm giàu ảnh, ghi chi phí.
+- Phần chồng chéo: bước hiểu câu hỏi. Đường cũ dùng bộ luật + một lệnh gọi ý định + ép công cụ + câu trả lời đóng hộp; One Brain để mô hình tự quyết; agent dùng runtime Luna. Mỗi chỗ khác nhau là một chỗ rẽ `oneBrain ? A : B` (76 dòng nhắc `oneBrain`), và mã nhánh không chạy vẫn nằm đó, vẫn phải bảo trì.
+
 - Bộ định tuyến luật cũ (`consultRouter.ts`, theo chính chú thích trong `oneBrain.ts` là "~180 pattern checks") **vẫn được import và gọi** (`route.ts` dòng 172, 547, 568, 589). Dưới One Brain nó bị né bằng guard, không bị gỡ. **ĐO**
 - Mã đặc thù theo chủ đề vẫn nằm trong hàm: tìm phim (`wantsFilmTitles`), tìm chuyến bay trước (`planFlightPresearch`), câu trả lời đóng hộp (`cannedMovie`…), đều có `!oneBrain` đi kèm. **ĐO**
 - 16 cờ "unwind" (`consultUnwind*`) tồn tại chỉ để gỡ dần từng mảnh luật cũ. **ĐO**
