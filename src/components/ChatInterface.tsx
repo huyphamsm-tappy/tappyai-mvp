@@ -1205,7 +1205,9 @@ export default function ChatInterface({
   useReadingState({ enabled: RESPONSE_PRESENTATION, conversationId, scrollRef, contentRef, pinned, input, setInput })
   // workspace v206: the drawers and tips of one conversation never carry over to the next (a constant flag: the hook order never changes)
   const v206Labels = useEntityLabels()
-  useEffect(() => { if (WORKSPACE_V206) v206Store.reset() }, [conversationId])
+  // The reset runs when the conversation is LEFT, not when it is entered: an effect of this component runs after those of its children, so a reset on entry wiped the tips the
+  // itinerary had just published (an opened conversation showed no "Mẹo" button). Found by the dev test harness; tipsAfterOpen.test.tsx.
+  useEffect(() => () => { if (WORKSPACE_V206) v206Store.reset() }, [conversationId])
   // the research reports (by message id) that were written in front of the reader: they stay whole when the reply ends (an earlier section never disappears)
   const streamedReports = useRef<Set<string>>(new Set())
   // C2 P2 6.2: note when the reply being received first shows text (once per reply), and — flag on — never re-reveal a reply the user already
