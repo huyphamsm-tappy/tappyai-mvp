@@ -17,6 +17,10 @@ export const HOTLINE_CLAIM_GUARD_FLAG = 'HOTLINE_CLAIM_GUARD'
 /** Pure. R13 §10.5 / owner's hotline list: the final answer loses a cost or hours claim about 113, 114 or 115 (not verified); 111 and 112 are verified and untouched. */
 export const hotlineClaimGuardOn = (env: Env = process.env): boolean => env[HOTLINE_CLAIM_GUARD_FLAG] === '1' && !lockedInProduction(env, HOTLINE_CLAIM_GUARD_FLAG)
 
+export const CANONICAL_CONTEXT_FLAG = 'CANONICAL_CONTEXT'
+/** Pure. R13 §3.3-3.5 / §7.1: the turn gets ONE Canonical Context (service target, role of the current location, four language layers); a counts-only trace and, only when it differs from what the model would assume, one fact line. It never changes the market the gate judges. */
+export const canonicalContextOn = (env: Env = process.env): boolean => env[CANONICAL_CONTEXT_FLAG] === '1' && !lockedInProduction(env, CANONICAL_CONTEXT_FLAG)
+
 export const SAFETY_EMERGENCY_FLAG = 'SAFETY_EMERGENCY'
 /** Pure. R13 §10.5: a clear emergency statement is answered with the safety payload (verified hotline cards or immediate guidance) and no tool runs. */
 export const safetyEmergencyOn = (env: Env = process.env): boolean => env[SAFETY_EMERGENCY_FLAG] === '1' && !lockedInProduction(env, SAFETY_EMERGENCY_FLAG)

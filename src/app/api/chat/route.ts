@@ -7,7 +7,8 @@ import { serperSnapshot, serperDelta } from '@/lib/ai/tools/serperMeter'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { refuseWithoutAiConsent } from '@/lib/ai/consent/aiConsentGuard'
-import { attachmentOnlyPolicyOn, hotlineClaimGuardOn, marketGateOn, safetyEmergencyOn } from '@/lib/config/r13Flags'
+import { attachmentOnlyPolicyOn, canonicalContextOn, hotlineClaimGuardOn, marketGateOn, safetyEmergencyOn } from '@/lib/config/r13Flags'
+import { canonicalTurn } from '@/lib/context/routeBridge'
 import { hotlineClaimGuardStream } from '@/lib/safety/hotlineClaimStream'
 import { classifyEmergency } from '@/lib/safety/emergencyClassifier'
 import { buildEmergencyTurn, emergencyDataStreamResponse } from '@/lib/safety/emergencyResponse'
@@ -421,6 +422,15 @@ export async function POST(req: Request) {
     .filter((t: string) => t.length > 0)
   const replyLanguage = resolveReplyLanguage({ lastText, priorUserTexts: earlierUserTexts, clientLocale })
   const lang = replyLanguage.lang
+  // CANONICAL_CONTEXT (R13 §3.3-3.5, §7.1; default OFF): ONE contract per turn, right after the location / language reading. A counts-only trace and at most one fact line for the
+  // model; the market the gate judges (resolveRequestMarket, below) is NOT touched by it: a Bangkok target never makes the gate deny a tool. OFF = this block does not run.
+  const canonicalCtx = canonicalContextOn()
+    ? canonicalTurn({
+      text: lastText, priorUserTexts: earlierUserTexts, userMarketId: resolveRequestMarket(req.headers).marketId, uiLocale: clientLocale,
+      locations: userLocation ? [{ source: 'GPS', latitude: userLocation.lat, longitude: userLocation.lng, consentGranted: true }] : [],
+    })
+    : null
+  if (canonicalCtx) console.log(JSON.stringify(canonicalCtx.trace))
   const forcedTool = detectForcedTool(lastText)
   // CONSULT_UNWIND_S4A: the keyword reading no longer DECIDES (domain, pre-search, decision frame, actionability); it reaches the model as a hint
   // only (unwindToolHint, below). Memory scoping and the logs keep reading `forcedTool`. Measured 28/10: "tiệm vàng" forced search_places, "mua" forced
@@ -2444,7 +2454,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     ? understandTurn({ userText: lastText, previousUser: (() => { const u = userMessages[userMessages.length - 2] as { content?: unknown } | undefined; return typeof u?.content === 'string' ? u.content : null })(), previousReply: priorAssistantText ?? null })
     : null
   const systemShared = oneBrainPrompt ? oneBrainPrompt.shared : lean ? lean.shared : legacyShared
-  const systemPrompt = oneBrainPrompt ? oneBrainPrompt.dynamic : lean ? lean.dynamic : legacyPrompt
+  const systemPromptBase = oneBrainPrompt ? oneBrainPrompt.dynamic : lean ? lean.dynamic : legacyPrompt
+  // CANONICAL_CONTEXT: one fact line, only when it exists (OFF or nothing to say = the very same string as before)
+  const systemPrompt = canonicalCtx?.systemLine ? `${systemPromptBase}\n\n${canonicalCtx.systemLine}` : systemPromptBase
 
   // ── Model timing instrumentation ────────────────────────────────────────
   //
@@ -3975,6 +3987,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     w3Structured = structured
     if (structured) enrichment.setStructuredSynthesis(true) // the prose-shape sentence cap is stepped aside only for an answer that is really sectioned (streamEnrichment checks the text)
     w3Prompt = buildLean(wave3PromptLines({ offeredToolNames, structured, toolByNeed: toolByNeed || pickTools, math: deterministicMath || pickTools, research: !!research })).dynamic
+      + (canonicalCtx?.systemLine ? `\n\n${canonicalCtx.systemLine}` : '') // CANONICAL_CONTEXT: this branch replaces the prompt, so the fact line is carried over (OFF: '')
   } else if (knowledgeTurn) {
     // Wave 4 · C2: the knowledge path gets the same lines from the same function, appended to its own (legacy) prompt - each line only when its tool is in the turn's real tool set, the shape block
     // only with W3 on, tools offered and a request with several parts (the A3 rule of the lean path).

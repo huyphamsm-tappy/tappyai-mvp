@@ -19,7 +19,7 @@ const EN_STOP = new Set([
 ])
 
 /** Vietnamese words typed WITHOUT tone marks that no English sentence uses. A word that is also English ("me", "do", "an", "to", "la") is left out on purpose. */
-const VI_BARE = new Set([
+export const VI_BARE = new Set([
   'toi', 'minh', 'cho', 'quan', 'ngon', 'ngay', 'dem', 'nguoi', 'bao', 'nhieu', 'gia', 'khong', 'nao', 'gi', 'duoc', 'nhung', 'voi', 'cua', 'nhu', 'hay', 'muon', 'tim',
   'goi', 'mua', 'ban', 'di', 'den', 've', 'bun', 'bo', 'pho', 'com', 'va', 'cac', 'mot', 'hai', 'bon', 'nay', 'kia', 'dang', 'roi', 'rat', 'qua', 'lam', 'sao', 'dau', 'khi',
   'thi', 'ma', 'nen', 'hoac', 'neu', 'vi', 'sau', 'truoc', 'trong', 'ngoai', 'gan', 'xa', 're', 'dat', 'mai', 'nay', 'tuan', 'thang', 'nam', 'gio', 'phut', 'o', 'tai', 'tu',
