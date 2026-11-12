@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { clientIp } from '@/lib/security/rateLimit'
 import { publicRateLimit } from '@/lib/security/publicRateLimit'
 import { rateLimitedResponse } from '@/lib/security/rateLimitResponse'
+import { requestSearchParams } from '@/lib/http/searchParams'
 import { lookupWikiProfile, validEntityTitle, type WikiProfile } from '@/lib/entity/wikiProfile'
 
 // GET /api/entity-profile?t=Elon%20Musk&t=Tesla   (workspace v206 entity chips)
@@ -19,7 +20,7 @@ export async function GET(req: NextRequest) {
   if (!limited.ok) return rateLimitedResponse(req, limited, 'entity-profile')
 
   const names: string[] = []
-  for (const raw of req.nextUrl.searchParams.getAll('t')) {
+  for (const raw of requestSearchParams(req).getAll('t')) {
     const t = validEntityTitle(raw)
     if (t && !names.some(n => n.toLowerCase() === t.toLowerCase())) names.push(t)
     if (names.length >= MAX_NAMES) break
