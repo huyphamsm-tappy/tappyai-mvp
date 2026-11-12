@@ -12,12 +12,14 @@ import { cn } from '@/lib/utils'
 
 const MARK: Record<ResearchStatus['steps'][number]['status'], string> = { pending: '○', running: '◌', done: '✓', failed: '–' }
 
-export default function ResearchCard({ status, report, images = [], charts = [], format }: { status: ResearchStatus; report?: string; images?: readonly ReportImage[]; charts?: readonly ResearchChart[]; format?: (s: string) => string }) {
+export default function ResearchCard({ status, report, images = [], charts = [], format, compact = false }: { status: ResearchStatus; report?: string; images?: readonly ReportImage[]; charts?: readonly ResearchChart[]; format?: (s: string) => string
+  /** the report is presented as a summary card + an opened view (NEXT_PUBLIC_RESPONSE_PRESENTATION): this card keeps only the progress; no sources list, no download buttons, and nothing once the report is done (the summary card says it) */
+  compact?: boolean }) {
   const { t, locale } = useTranslation()
   const [busy, setBusy] = useState(false)
   const working = status.phase === 'planning' || status.phase === 'researching' || status.phase === 'writing'
   const links = status.links ?? []
-  const canExport = status.phase === 'done' && !!report && !!format
+  const canExport = !compact && status.phase === 'done' && !!report && !!format
   const title = status.title || 'report'
   // Markdown and Word carry each chart's figures as a table under its section; the PDF draws the chart
   const asMarkdown = () => downloadBlob(new Blob([reportMarkdown(withChartTables(report!, charts, locale), links)], { type: 'text/markdown;charset=utf-8' }), reportFileName(title, 'md'))
@@ -29,6 +31,7 @@ export default function ResearchCard({ status, report, images = [], charts = [],
       downloadBlob(await reportDocx(withChartTables(report!, charts, locale), links, title), reportFileName(title, 'docx'))
     } finally { setBusy(false) }
   }
+  if (compact && status.phase === 'done') return null
   return (
     <div className="mb-3 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900/60 p-4 shadow-sm" data-testid="research-card" data-phase={status.phase}>
       <div className="flex items-center gap-2 text-xs font-medium text-primary-700 dark:text-primary-300">
@@ -47,7 +50,7 @@ export default function ResearchCard({ status, report, images = [], charts = [],
           ))}
         </ol>
       )}
-      {links.length > 0 && (
+      {!compact && links.length > 0 && (
         <div className="mt-3 border-t border-gray-100 dark:border-gray-800 pt-2" data-testid="research-links">
           <div className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">{t('research.sources')}</div>
           <ol className="space-y-0.5">

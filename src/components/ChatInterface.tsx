@@ -102,9 +102,14 @@ import ReportExportBar from '@/components/chat/ReportExportBar'
 import { looksLikeReport } from '@/lib/chat/requestHistory'
 import ReportViewBar from '@/components/chat/ReportViewBar'
 import { reportViewOf } from '@/lib/chat/reportView'
-import ResearchCanvas from '@/components/chat/ResearchCanvas'
+import ReportInChat from '@/components/chat/ReportInChat'
 import { useReadingState } from '@/components/chat/useReadingState'
 import { RESPONSE_PRESENTATION } from '@/lib/chat/presentation'
+// workspace v206 (NEXT_PUBLIC_WORKSPACE_V206): itinerary timeline, tips / entity drawers built from the answer's own data
+import { WORKSPACE_V206, buildEntityProfile, calloutTips, matchPlace } from '@/lib/chat/v206'
+import { v206Store } from '@/lib/chat/v206Store'
+import TripTimeline, { TipsPublisher } from '@/components/chat/v206/TripTimeline'
+import V206DrawerHost, { useEntityLabels } from '@/components/chat/v206/V206Drawers'
 import { rememberPlacesView, recallPlacesView } from '@/lib/recommendation/liveViewCache'
 import { rememberTurnStatus, recallTurnStatus } from '@/lib/recommendation/turnStatusCache'
 import PlaceDecision from '@/components/chat/PlaceDecision'
@@ -1197,6 +1202,9 @@ export default function ChatInterface({
   const smoothedLastText = useSmoothText(lastAssistantRaw, isLoading && lastMsg?.role === 'assistant')
   // RFC-001 section 6.2 (NEXT_PUBLIC_RESPONSE_PRESENTATION): the reading position and the half-typed message of a conversation come back when the person returns to it
   useReadingState({ enabled: RESPONSE_PRESENTATION, conversationId, scrollRef, contentRef, pinned, input, setInput })
+  // workspace v206: the drawers and tips of one conversation never carry over to the next (a constant flag: the hook order never changes)
+  const v206Labels = useEntityLabels()
+  useEffect(() => { if (WORKSPACE_V206) v206Store.reset() }, [conversationId])
   // the research reports (by message id) that were written in front of the reader: they stay whole when the reply ends (an earlier section never disappears)
   const streamedReports = useRef<Set<string>>(new Set())
   // C2 P2 6.2: note when the reply being received first shows text (once per reply), and — flag on — never re-reveal a reply the user already
@@ -1902,7 +1910,11 @@ export default function ChatInterface({
                 // RFC-001 4.1: the cards of an ordinary answer are placed between its paragraphs (the answer text's own layout decides where); kept as nodes so the former layout still renders them below the text
                 const streamingMsg = isLoading && isLastMessage
                 const optionsNode = optionsMedia?.kind === 'options' && !streamingMsg ? <OptionCards title={optionsMedia.title} options={optionsMedia.options} /> : null
-                const planNode = plan ? <TripPlanCard plan={plan} placePhotos={placeView?.items} /> : null
+                const planNode = plan
+                  ? (WORKSPACE_V206 && !streamingMsg && plan.days.length > 0
+                    ? <TripTimeline msgId={msg.id} plan={plan} places={placeView?.items} />
+                    : <TripPlanCard plan={plan} placePhotos={placeView?.items} />)
+                  : null
                 const shopNode = shopView ? (
                   <ShoppingDecision
                     view={shopView}
@@ -1948,7 +1960,7 @@ export default function ChatInterface({
                   <div key={msg.id} data-msg-id={msg.id} className="animate-slide-up flex gap-3">
                     <TappyAvatar category={category} active={isLoading && isLastMessage} searching={!!(isLoading && isLastMessage && activeTool)} />
                     <div className="flex-1 min-w-0">
-                      {research && <ResearchCard status={research} report={msg.content} images={docImages} charts={researchCharts} format={formatMessage} />}
+                      {research && <ResearchCard status={research} report={msg.content} images={docImages} charts={researchCharts} format={formatMessage} compact={isDoc} />}
                       {research && REPORT_LAYOUT_A && !isDoc && <ReportCover status={research} />}
                       {!research && !(isLoading && isLastMessage) && !isDoc && looksLikeReport(msg.content) && <ReportExportBar report={msg.content} format={formatMessage} />}
                       <div className={`text-base leading-[1.6] text-gray-800 dark:text-gray-100 pt-0.5${research && REPORT_LAYOUT_A && !isDoc && research.phase === 'done' ? ' tappy-report' : ''}`}>
@@ -1963,6 +1975,12 @@ export default function ChatInterface({
                           const [lead, rest] = entity || news || entities ? splitLeadParagraph(shown) : [shown, '']
                           const onBodyClick = (e: React.MouseEvent<HTMLDivElement>) => {
                             const el = e.target as HTMLElement
+                            // workspace v206: the bold name of a place the turn's own place cards carry opens that place's profile (real fields only); no match, no profile: the click is the usual one
+                            if (WORKSPACE_V206 && el.tagName === 'STRONG' && placeView?.items?.length) {
+                              const pl = matchPlace(placeView.items, el.textContent ?? '')
+                              const prof = pl ? buildEntityProfile(pl, null, v206Labels) : null
+                              if (prof) { v206Store.openEntity(prof); return }
+                            }
                             if (entity && el.tagName === 'STRONG' && sameSubjectName(el.textContent ?? '', entity.name)) { setEntityPanel(entity); return }
                             const tapped = el.tagName === 'STRONG' ? entities?.find(x => sameSubjectName(el.textContent ?? '', x.name)) : undefined
                             if (tapped) { setEntityPanel(tapped); return }
@@ -1972,7 +1990,8 @@ export default function ChatInterface({
                           // While it is arriving the canvas reads the message text itself (not the typewriter's partial text): a section is drawn only when it is complete.
                           if (isDoc) {
                             return (
-                              <ResearchCanvas msgId={msg.id} text={streamingMsg ? text : shown} streaming={streamingMsg} collapsed={reportView.collapsed} research={research}
+                              // owner 11/11 + 12/11: the chat holds a progress line, then a summary card (key points, source COUNT, one button); the full report opens over the chat
+                              <ReportInChat msgId={msg.id} text={streamingMsg ? text : bodyText} streaming={streamingMsg} collapsed={false} research={research}
                                 format={formatMessage} images={docImages} charts={researchCharts} under={underHeading} onClick={onMessageLinkClick}
                                 onShare={() => { document.querySelector<HTMLElement>(`[data-msg-id="${msg.id}"] [data-testid="message-share"]`)?.click() }} />
                             )
@@ -1997,6 +2016,7 @@ export default function ChatInterface({
                                 {gRest && <ArticleAnswer text={gRest} images={docImages} format={formatMessage} onClick={onBodyClick} className="mt-3" under={underHeading}
                                   presentation={edit ? { variant: 'editorial', lead: false, embeds: embedList } : undefined} />}
                                 {settled && <SourcesFooter text={shown} lang={locale === 'en' ? 'en' : 'vi'} />}
+                                {WORKSPACE_V206 && settled && <TipsPublisher msgId={`${msg.id}:c`} tips={calloutTips(shown)} />}
                               </>
                             )
                           }
@@ -2011,7 +2031,7 @@ export default function ChatInterface({
                           )
                         })()}
                       </div>
-                      {reportView.bar && !(isLoading && isLastMessage) && (
+                      {reportView.bar && !isDoc && !(isLoading && isLastMessage) && (
                         <ReportViewBar sources={reportView.bar.sources} expanded={reportView.bar.expanded}
                           onToggle={() => setExpandedReports(prev => { const next = new Set(prev); if (next.has(msg.id)) next.delete(msg.id); else next.add(msg.id); return next })} />
                       )}
@@ -2631,6 +2651,7 @@ export default function ChatInterface({
         <AiDisclaimer className="mt-1.5" />
       </div>
       {entityPanel && <EntityPanel entity={entityPanel} onClose={() => setEntityPanel(null)} />}
+      {WORKSPACE_V206 && <V206DrawerHost />}
       {/* Image zoom lightbox — opens on click for any place photo or uploaded attachment */}
       {zoomedImage && (
         <div

@@ -1,8 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState, useSyncExternalStore } from 'react'
 import { usePathname } from 'next/navigation'
-import { Bookmark, Download } from 'lucide-react'
+import { Bookmark, Download, Lightbulb } from 'lucide-react'
+import '@/components/chat/v206.css'
+import { WORKSPACE_V206, headerBadges } from '@/lib/chat/v206'
+import { v206Store } from '@/lib/chat/v206Store'
 import { cn, formatRelativeTime } from '@/lib/utils'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { buildTranscriptMarkdown, exportFileName } from '@/lib/chat/workspace/historyModel'
@@ -17,6 +20,9 @@ export default function WorkspaceToolbar() {
   const pathname = usePathname()
   const { items } = useConversationStore()
   const [drawerOpen, setDrawerOpen] = useState(false)
+  // workspace v206: the tips the open conversation's answers carry, and the overlay drawers' state (one drawer at a time, the saved drawer included)
+  const v206 = useSyncExternalStore(v206Store.subscribe, v206Store.getSnapshot, v206Store.getServerSnapshot)
+  useEffect(() => { if (WORKSPACE_V206 && v206.drawer && drawerOpen) setDrawerOpen(false) }, [v206.drawer, drawerOpen])
   const activeId = /^\/chat\/([^/?#]+)/.exec(pathname)?.[1] ?? null
   const conv = activeId ? items.find(c => c.id === activeId) ?? null : null
 
@@ -47,9 +53,25 @@ export default function WorkspaceToolbar() {
       <div className="hidden shrink-0 items-center justify-between border-b border-blue-900/30 bg-[#091022]/80 px-5 py-3 backdrop-blur-md lg:flex">
         <div className="min-w-0">
           <h1 className="truncate text-sm font-bold text-white md:text-base">{conv?.title || t('chatWs.header.untitled')}</h1>
-          {conv && <p className="text-[11px] text-slate-400">{t('chatWs.header.updated', { time: formatRelativeTime(conv.updated_at, t, locale) })}</p>}
+          {conv && (
+            <p className="flex flex-wrap items-center gap-1.5 text-[11px] text-slate-400">
+              <span>{t('chatWs.header.updated', { time: formatRelativeTime(conv.updated_at, t, locale) })}</span>
+              {WORKSPACE_V206 && headerBadges(conv).map(b => <span key={b} className="v206-badge" data-testid={`v206-badge-${b}`}>{t(`v206.header.${b}`)}</span>)}
+            </p>
+          )}
         </div>
         <div className="flex shrink-0 items-center gap-2">
+          {WORKSPACE_V206 && v206.tips.length > 0 && (
+            <button
+              type="button"
+              onClick={() => { setDrawerOpen(false); v206Store.openTips() }}
+              aria-haspopup="dialog"
+              data-testid="v206-header-tips"
+              className="flex items-center gap-1.5 rounded-xl border border-transparent px-3 py-1.5 text-xs font-medium text-amber-300 transition-colors hover:border-amber-500/40 hover:bg-amber-500/10"
+            >
+              <Lightbulb size={15} aria-hidden />{t('v206.header.tipsN', { n: String(v206.tips.length) })}
+            </button>
+          )}
           {conv && (
             <button
               type="button"
@@ -62,7 +84,7 @@ export default function WorkspaceToolbar() {
           )}
           <button
             type="button"
-            onClick={() => setDrawerOpen(open => !open)}
+            onClick={() => { if (WORKSPACE_V206) v206Store.closeDrawer(); setDrawerOpen(open => !open) }}
             aria-pressed={drawerOpen}
             title={t('chatWs.drawer.title')}
             className={cn(

@@ -168,7 +168,8 @@ describe('research document (4.2)', () => {
   it('English wording', () => {
     setLocale('en')
     const { getByTestId } = render(canvas(REPORT))
-    expect(getByTestId('research-toolbar').textContent).toContain('Export PDF')
+    // owner 12/11: no PDF download in the report UI (removed on purpose); the Markdown copy stays
+    expect(getByTestId('research-toolbar').textContent).not.toMatch(/PDF/i)
     expect(getByTestId('research-toolbar').textContent).toContain('Copy Markdown')
     setLocale('vi')
   })

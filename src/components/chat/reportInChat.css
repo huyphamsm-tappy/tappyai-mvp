@@ -1,0 +1,20 @@
+/* The report in the chat (NEXT_PUBLIC_RESPONSE_PRESENTATION): the progress line and the summary card. Tokens as presentation.css; the `.dark` ancestor switches them. */
+.tappy-rep-card, .tappy-rep-progress {
+  --rp-primary: #007AFF; --rp-ink: #14181f; --rp-ink-2: #4a5260; --rp-ink-3: #7b8494; --rp-line: #e3e6eb; --rp-chip: #eef1f5; --rp-paper: #ffffff;
+}
+.dark .tappy-rep-card, .dark .tappy-rep-progress {
+  --rp-primary: #3d9bff; --rp-ink: #e8edf6; --rp-ink-2: #b2bdd1; --rp-ink-3: #7f8ca3; --rp-line: rgb(59 130 246 / .25); --rp-chip: #1a2740; --rp-paper: rgb(9 18 38 / .72);
+}
+.tappy-rep-card { margin: 4px 0; padding: 16px 18px; border: 1px solid var(--rp-line); border-radius: 16px; background: var(--rp-paper); color: var(--rp-ink); }
+.tappy-rep-title { margin: 0; font-size: 18px; font-weight: 700; line-height: 1.3; text-wrap: balance; }
+.tappy-rep-bullets { margin-top: 10px; color: var(--rp-ink-2); }
+.tappy-rep-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--rp-line); }
+.tappy-rep-sources { color: var(--rp-ink-3); font-size: 13px; font-weight: 500; }
+.tappy-rep-open { margin-left: auto; display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 6px 16px; border: 0; border-radius: 999px; background: var(--rp-primary); color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; }
+.tappy-rep-open:hover { filter: brightness(1.08); }
+.tappy-rep-open:focus-visible { outline: 2px solid var(--rp-primary); outline-offset: 2px; }
+.tappy-rep-progress { margin: 4px 0; padding: 12px 16px; border: 1px dashed var(--rp-line); border-radius: 14px; color: var(--rp-ink-2); font-size: 14px; }
+.tappy-rep-progress-head { display: flex; align-items: center; gap: 8px; margin: 0; font-weight: 600; color: var(--rp-ink); }
+.tappy-rep-progress ol { margin-top: 8px !important; }
+.tappy-rep-progress li { display: flex; align-items: center; gap: 8px; padding: 2px 0; }
+.tappy-rep-progress li[data-writing="true"] { color: var(--rp-ink-3); }

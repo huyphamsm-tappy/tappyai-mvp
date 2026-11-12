@@ -3,20 +3,21 @@
 // contents built from the report's REAL headings, footnote-style numbered citations linked to the sources list, and sections that appear one by one, each only once it is complete.
 // VIEW ONLY: the report text, its headings and the saved message are exactly what the engine wrote. The five headings of the RFC's example are NOT forced: the contents list what the report has.
 import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type MouseEvent } from 'react'
-import { ChevronDown, Copy, FileDown, Share2, Check } from 'lucide-react'
+import { ChevronDown, Copy, Share2, Check } from 'lucide-react'
 import './reportLayout.css'
 import './presentation.css'
+import './v206.css'
+import { WORKSPACE_V206 } from '@/lib/chat/v206'
 import { ArticleAnswer, type Presentation } from '@/components/chat/ArticleAnswer'
 import { reportTitleOf } from '@/components/chat/ReportExportBar'
 import type { ResearchChart, ResearchStatus } from '@/lib/ai/research/deepResearch'
 import type { DocItemImage } from '@/lib/answerDoc/media'
-import { printHtml, reportHtml, reportMarkdown, sourceCountOf, type ReportImage } from '@/lib/answerDoc/reportExport'
+import { reportMarkdown, sourceCountOf } from '@/lib/answerDoc/reportExport'
 import {
   amendedSections, arrivalOf, buildToc, footnoteId, footnotesOf, isSourcesSection, linkCitations, safeId, sectionId, stripTitleLine,
   type DocSection, type Footnote, type TocEntry,
 } from '@/lib/chat/presentation'
 import { useTranslation } from '@/lib/i18n/useTranslation'
-import { REPORT_LAYOUT_A } from '@/components/chat/ReportCover'
 
 type Format = (markdown: string) => string
 type UnderHeading = (title: string) => React.ReactNode
@@ -205,7 +206,7 @@ export default function ResearchCanvas(p: ResearchCanvasProps) {
       const before = heights.current.get(i)
       heights.current.set(i, h)
       if (before === undefined || before === h) return
-      const box = el.closest('[data-chat-scroll]') as HTMLElement | null
+      const box = el.closest('[data-chat-scroll],[data-report-scroll]') as HTMLElement | null
       if (box && el.getBoundingClientRect().bottom <= box.getBoundingClientRect().top) box.scrollTop += h - before
     })
   })
@@ -215,7 +216,7 @@ export default function ResearchCanvas(p: ResearchCanvasProps) {
   useEffect(() => {
     if (!showToc) return
     const targets = toc.map(e => document.getElementById(e.id)).filter((x): x is HTMLElement => !!x)
-    const box = (targets[0]?.closest('[data-chat-scroll]') as HTMLElement | null) ?? null
+    const box = (targets[0]?.closest('[data-chat-scroll],[data-report-scroll]') as HTMLElement | null) ?? null
     // the heading being read = the last one that has reached the top of the reading area (none yet: the cover is on screen)
     const pick = () => {
       const top = (box?.getBoundingClientRect().top ?? 0) + 96
@@ -256,11 +257,9 @@ export default function ResearchCanvas(p: ResearchCanvasProps) {
   const asMd = async () => {
     try { await navigator.clipboard.writeText(reportMarkdown(p.text, links)); setCopied(true); setTimeout(() => setCopied(false), 2000) } catch { /* the browser refused the clipboard: nothing to say */ }
   }
-  const asPdf = () => printHtml(reportHtml(p.text, { title, images: (p.images ?? []) as readonly ReportImage[], links, format: p.format, lang: locale, charts: p.charts ?? [], ...(REPORT_LAYOUT_A ? { design: 'a' as const } : {}) }))
   const toolbar = !p.streaming && (
     // on a phone the buttons are icons (the bar is sticky: it must stay one short row); the words stay for screen readers and from the `sm` width up
     <div role="group" aria-label={t('pres.toolbar.label')} className="flex shrink-0 items-center gap-1.5" data-testid="research-toolbar">
-      <button type="button" className="tappy-doc-btn" onClick={asPdf} data-testid="research-pdf" title={t('pres.pdf')}><FileDown size={15} aria-hidden="true" /><span className="sr-only sm:not-sr-only">{t('pres.pdf')}</span></button>
       <button type="button" className="tappy-doc-btn" onClick={() => { void asMd() }} data-testid="research-copy-md" title={t('pres.copyMd')}>
         {copied ? <Check size={15} aria-hidden="true" /> : <Copy size={15} aria-hidden="true" />}<span className="sr-only sm:not-sr-only" aria-live="polite">{copied ? t('pres.copied') : t('pres.copyMd')}</span>
       </button>
@@ -273,7 +272,7 @@ export default function ResearchCanvas(p: ResearchCanvasProps) {
   const hasBar = showToc || !!toolbar
 
   return (
-    <article className="tappy-doc tappy-report" data-testid="research-canvas" aria-labelledby={`${prefix}-title`} aria-busy={p.streaming}>
+    <article className={WORKSPACE_V206 ? 'tappy-doc tappy-report v206-doc' : 'tappy-doc tappy-report'} data-testid="research-canvas" aria-labelledby={`${prefix}-title`} aria-busy={p.streaming}>
       {title && (
         <header className="tappy-report-cover">
           <div className="tappy-report-eyebrow">{t('report.eyebrow')}{p.research?.tier ? ` · ${t(`report.tier.${p.research.tier}`)}` : ''}</div>
