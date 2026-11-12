@@ -15,6 +15,7 @@ import { catalogTool, listTools, parseArgs, type CatalogTool } from './toolCatal
 import { ROW_MAPPER, TOOL_SERVICE, safeUrl, cleanText, type SearchToolName, type ServiceAdapters } from './serviceMap'
 import { TOOL_RESERVE_USD, type SpendPool } from './spendPool'
 import { dispatchPaid } from './dispatch'
+import { limitsFor } from './hostProfiles'
 import { jobView, type JobStore, JobStoreUnavailable } from './jobs'
 import type { AbuseMonitor } from './abuseGuard'
 
@@ -38,6 +39,8 @@ export interface GatewayDeps {
   allowedOrigins: readonly string[]
   /** test seam: the hard server deadline of a tool call */
   deadlineMs?: (tool: CatalogTool) => number
+  /** per-Host server limits (hostProfiles.ts); default: the strictest of the Host's profiles */
+  profileLimits?: (host: VerifiedClaims['host']) => { serverDeadlineMs: number; maxResponseBytes: number }
 }
 
 export interface GatewayRequest { authorization: string | null; origin?: string | null; body: unknown; signal?: AbortSignal; requestId?: string }
@@ -82,6 +85,14 @@ function marketError(ctx: Ctx, vertical: string, gate: (q: GateQuery) => GateDec
   const d = gate({ marketId: ctx.marketId, vertical, capability: 'search', action: 'search', userNamedMarket: ctx.userNamed })
   if (d.allowed) return null
   return d.reason === 'NO_MARKET' ? 'SUPPORTED_MARKET_REQUIRED' : 'MARKET_UNSUPPORTED'
+}
+
+/** The rows that fit a Host profile's response size (the row array as JSON, brackets and commas included); anything cut makes the result partial. Pure. */
+function trimToBytes(s: { rows: Array<Record<string, unknown>>; partial: boolean; dropped: number }, max: number): { rows: Array<Record<string, unknown>>; partial: boolean; dropped: number } {
+  const kept: Array<Record<string, unknown>> = []
+  let bytes = 2
+  for (const row of s.rows) { const n = Buffer.byteLength(JSON.stringify(row)) + 1; if (bytes + n > max) break; kept.push(row); bytes += n }
+  return kept.length === s.rows.length ? s : { rows: kept, partial: true, dropped: s.dropped + (s.rows.length - kept.length) }
 }
 
 // ── itinerary result DTO ────────────────────────────────────────────────────────────────────────────────────────────────
@@ -200,8 +211,9 @@ async function callTool(id: unknown, params: unknown, claims: VerifiedClaims, in
     const limit = reduced ? Math.max(1, Math.floor(requested * verdict.depthFactor)) : requested
 
     const estimate = TOOL_RESERVE_USD[t.contract]
+    const limits = (deps.profileLimits ?? limitsFor)(claims.host)
     const call = { query: args.query as string, location: typeof args.location_query === 'string' ? args.location_query : undefined, lat, lng, lang: (args.preferred_language === 'en' ? 'en' : 'vi') as 'vi' | 'en', limit, radiusMeters: typeof args.search_radius_meters === 'number' ? args.search_radius_meters : undefined, placeType: entry.placeType, checkIn: typeof args.check_in === 'string' ? args.check_in : undefined, checkOut: typeof args.check_out === 'string' ? args.check_out : undefined }
-    const r = await dispatchPaid({ pool: deps.spend, claims, tool: t.contract, estimateUsd: estimate, requestId, adapter, call, deadlineMs: deps.deadlineMs ? deps.deadlineMs(t) : t.deadlineMs, signal: input.signal, onUnknownOutcome: () => { meta.unknownOutcome = true } })
+    const r = await dispatchPaid({ pool: deps.spend, claims, tool: t.contract, estimateUsd: estimate, requestId, adapter, call, deadlineMs: Math.min(deps.deadlineMs ? deps.deadlineMs(t) : t.deadlineMs, limits.serverDeadlineMs), signal: input.signal, onUnknownOutcome: () => { meta.unknownOutcome = true } })
     if (r.kind === 'refused') return (r.reason === 'store_unavailable' ? fail('PROVIDER_UNAVAILABLE', { retryable: true }) : fail('BUDGET_EXCEEDED', { retryable: r.reason === 'budget_exceeded' }))
     meta.estimatedCostUsd = estimate
     if (r.kind === 'cancelled_before') return fail('DEADLINE_EXCEEDED')
@@ -210,7 +222,8 @@ async function callTool(id: unknown, params: unknown, claims: VerifiedClaims, in
 
     const mapper = ROW_MAPPER[entry.service]
     const mapped = r.output.rows.map(row => mapper(row)).filter((x): x is Record<string, unknown> => x !== null).slice(0, limit)
-    const shaped = shapeResult(t.contract, mapped)
+    const shaped0 = shapeResult(t.contract, mapped)
+    const shaped = trimToBytes(shaped0, limits.maxResponseBytes)
     const warnings: string[] = []
     if (reduced) warnings.push('Result depth was reduced for this connection.')
     if (shaped.partial) warnings.push('Some results were omitted to fit the response size limit.')
