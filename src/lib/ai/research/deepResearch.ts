@@ -24,9 +24,11 @@ import { sectionTextOf, seriesRelevant } from './chartRelevance'
 import { failureKind } from './failureKind'
 import { buildCards, cardSummary, factSupport, quoteInText, type CardSummary, type EvidenceCard } from './evidenceCards'
 import { outlineWriterInput, releaseText, type Outline, type WriterInput } from './thesisReport'
+import { createSectionRelease, sectionEventOf, type ReleasedSection, type SectionRelease } from './sectionRelease'
+import { createContractsRun, type ContractsSummary } from './contractsRun'
 import { FIGURE_CONFLICT_GAP } from './figureGap'
 import { groundForecast, runForecast, wantsForecastModel, forecastNotes, type ForecastSpec, type ForecastResult } from './forecastModel'
-import { deepResearchV2On, researchSourceDiversityOn, researchPackagesOn, researchForecastModelOn, researchFreshnessOn, researchChartRelevanceOn, researchEvidenceCardsOn, researchThesisOn, V2_LIMITS, termScores, stepCoverage, decideNext, missingParts, findingsForPart } from './deepResearchState'
+import { deepResearchV2On, researchSourceDiversityOn, researchPackagesOn, researchForecastModelOn, researchFreshnessOn, researchChartRelevanceOn, researchEvidenceCardsOn, researchThesisOn, researchContractsOn, researchStreamVerifyOn, V2_LIMITS, termScores, stepCoverage, decideNext, missingParts, findingsForPart } from './deepResearchState'
 
 // planSteps: the plan's own steps; steps: all steps of a run (the plan's + the follow-up round's GAP_STEPS), as the card shows them
 /** R13 tier bounds for one run (Standard report). Absent = the unbounded one-pass / V2 run, byte for byte. */
@@ -560,7 +562,7 @@ export function sectionImages(report: string, plan: ResearchPlan, pictures: Read
 
 /** Runs one deep research. Never throws: a failure ends with a `failed` status and whatever was written. */
 /** `left` (review 02/11): the person went away - the run stops where it is, writes nothing more and ends as 'client_gone'. */
-export async function runDeepResearch(question: string, context: string, lang: string, deps: DeepResearchDeps, emit: ResearchEmit, left?: AbortSignal, bounds?: RunBounds): Promise<{ plan: ResearchPlan | null; evidence: Evidence[]; findings: Finding[]; failed: string | null; cut?: boolean; followUps?: number; charts?: number; figures?: { proposed: number; kept: number }; stepStats?: StepStat[]; unsupported?: string[]; repaired?: number; /** tier runs only (bounds given): the written report and the sources it cites, for the independent verifier (claimVerifier.ts) */ checked?: { report: string; sources: Evidence[] }; /** RESEARCH_EVIDENCE_CARDS: the cards of the run and their counts */ cards?: { summary: CardSummary; cards: EvidenceCard[] }; /** RESEARCH_THESIS_REPORT: the report was written from a thesis outline; the sentences the verifier dropped, and the length before */ thesis?: { dropped: number; charsBefore: number } }> {
+export async function runDeepResearch(question: string, context: string, lang: string, deps: DeepResearchDeps, emit: ResearchEmit, left?: AbortSignal, bounds?: RunBounds): Promise<{ plan: ResearchPlan | null; evidence: Evidence[]; findings: Finding[]; failed: string | null; cut?: boolean; followUps?: number; charts?: number; figures?: { proposed: number; kept: number }; stepStats?: StepStat[]; unsupported?: string[]; repaired?: number; /** tier runs only (bounds given): the written report and the sources it cites, for the independent verifier (claimVerifier.ts) */ checked?: { report: string; sources: Evidence[] }; /** RESEARCH_EVIDENCE_CARDS: the cards of the run and their counts */ cards?: { summary: CardSummary; cards: EvidenceCard[] }; /** RESEARCH_THESIS_REPORT: the report was written from a thesis outline; the sentences the verifier dropped, and the length before */ thesis?: { dropped: number; charsBefore: number }; /** RESEARCH_CONTRACTS (Advanced): the R13 4.3 assignments, step checks and gap decisions of the run (counts and codes) */ contracts?: ContractsSummary }> {
   const now = deps.now ?? Date.now
   const t0 = now()
   // DEEP_RESEARCH_V2 (03/11, OFF unless "1", never in production): several gap rounds in this request and a repair of the parts the report does not name
@@ -587,6 +589,10 @@ export async function runDeepResearch(question: string, context: string, lang: s
   // nothing is searched: the caller promotes the request or clarifies it, so no part of the question is silently left out.
   if (bounds && plan.steps.length > bounds.maxSteps) return { plan, evidence, findings, failed: 'exceeds_standard' }
   deps.trace?.({ ev: 'plan', title: plan.title, steps: plan.steps.map(s => ({ title: s.title, queries: s.queries })) })
+  // RESEARCH_CONTRACTS (R13 4.3), Advanced runs only: observational, never allowed to cost the report
+  const safe = <T,>(f: () => T): T | undefined => { try { return f() } catch { return undefined } }
+  const cx = researchContractsOn() && bounds?.repairParts ? safe(() => createContractsRun(plan!, { question, context, lang, nowMs: now(), deadlineMs: researchDeadline })) : undefined
+  if (cx) safe(() => deps.trace?.({ ev: 'contracts', assignments: cx.issued.assignments.length, issues: cx.summary().assignmentIssues, ...(cx.issued.refused ? { refused: cx.issued.refused } : {}) }))
   const steps: ResearchStatus['steps'] = plan.steps.map(s => ({ title: s.title, status: 'pending' }))
   const show = (phase: ResearchStatus['phase']) => emit.status({ type: 'tappy.research.v1', title: plan!.title, phase, steps: steps.map(s => ({ ...s })), sources: evidence.length })
   show('researching')
@@ -649,6 +655,7 @@ export async function runDeepResearch(question: string, context: string, lang: s
       stat.kept = kept + 1
       if (++kept >= DEEP_RESEARCH_LIMITS.findingsPerStep) break
     }
+    if (cx) safe(() => { const c = cx.checkStep(k, { evidenceIds: mine.map(e => e.id), allEvidenceIds: evidence.map(e => e.id), findings: findings.filter(f => f.step === k + 1) }); deps.trace?.({ ev: 'contract_step', ...c }) })
     steps[k].status = 'done'; show('researching')
   }
   // every step at once; a step still running at the deadline is dropped (marked failed), the report is written from what came back
@@ -685,6 +692,7 @@ export async function runDeepResearch(question: string, context: string, lang: s
       }).filter((s): s is ResearchPlan['steps'][number] => !!s).slice(0, bounds ? bounds.followUpSteps : leanValue('gaps', GAP_STEPS, 2))
     deps.trace?.({ ev: 'gaps', steps: more.map(s => ({ title: s.title, queries: s.queries })) })
     if (!more.length) break
+    if (cx) safe(() => { const g = cx.checkGap({ round: r, plan: plan!, more }); deps.trace?.({ ev: 'contract_gap', ...g }) })
     const from = plan.steps.length
     plan = { ...plan, steps: [...plan.steps, ...more] }
     for (const s of more) steps.push({ title: s.title, status: 'pending' })
@@ -734,7 +742,10 @@ export async function runDeepResearch(question: string, context: string, lang: s
   let written = ''
   let shown: { cited: Evidence[]; findings: Finding[]; plan: ResearchPlan } = { cited, findings: notes, plan }
   let released: { dropped: number; before: number } | null = null
-  const say = (t: string) => { if (t) { written += t; if (!hold) emit.text(t) } }
+  // RESEARCH_STREAM_VERIFY (R13 9.5): with a thesis, each finished section is read by the verifier and shown at once (sectionRelease.ts); same text in the end as releaseText of the whole
+  let sv: SectionRelease | null = hold && researchStreamVerifyOn() ? createSectionRelease(thesisIn!.sources, forecastResult ? forecastNotes(forecastResult) : '') : null
+  const showSection = (s: ReleasedSection) => { const ev = sectionEventOf('report', s); deps.trace?.({ ev: 'section', id: s.sectionId, type: ev.type, status: s.status, dropped: s.dropped, chars: s.text.length }); if (s.text) emit.text(s.text) }
+  const say = (t: string) => { if (t) { written += t; if (!hold) emit.text(t); else if (sv) for (const s of sv.push(t)) showSection(s) } }
   const finish = () => { say(numberer.push(stripper.end())); say(numberer.end()) }
   // pass 0 writes from the outline when there is one; if that write fails (nothing was shown: the text is held) pass 1 writes from the findings as before
   for (let pass = 0; ; pass++) {
@@ -778,10 +789,11 @@ export async function runDeepResearch(question: string, context: string, lang: s
     if (!written.trim()) throw new Error('empty_report')
     if (thesisIn && !left?.aborted) {
       const before = written.length
-      const r = releaseText(written, thesisIn.sources, forecastResult ? forecastNotes(forecastResult) : '')
+      const sr = sv ? sv.end() : null
+      const r = sr ?? releaseText(written, thesisIn.sources, forecastResult ? forecastNotes(forecastResult) : '')
       if (!r.text.trim()) throw new Error('empty_report')
       written = r.text
-      emit.text(r.text)
+      if (sr) { if (sr.last) showSection(sr.last) } else emit.text(r.text)
       released = { dropped: r.dropped, before }
       const sourceOf = (n: number) => r.renumbered.get(n)
       shown = { cited: r.used as Evidence[], plan: thesisIn.plan, findings: [...thesisIn.findings.flatMap(f => { const s = sourceOf(f.source); return s ? [{ ...f, source: s }] : [] }), ...r.used.map(s => ({ step: 1, text: '', source: s.id }))] }
@@ -790,9 +802,18 @@ export async function runDeepResearch(question: string, context: string, lang: s
     break
   } catch (e) {
     finish()
+    // RESEARCH_STREAM_VERIFY: sections already shown stay (R13: an interrupted stream keeps its verified sections); the unfinished one is dropped unread, and the report is not written a second time
+    const ab = thesisIn && sv && !left?.aborted ? sv.abandon() : null
+    if (thesisIn && ab && ab.shown > 0) {
+      deps.trace?.({ ev: 'stream_interrupted', message: String((e as Error)?.message ?? e).slice(0, 120), sections: ab.shown })
+      written = ab.text; cut = true
+      released = { dropped: ab.dropped, before: written.length }
+      shown = { cited: ab.used as Evidence[], plan: thesisIn.plan, findings: [...thesisIn.findings.flatMap(f => { const s = ab.renumbered.get(f.source); return s ? [{ ...f, source: s }] : [] }), ...ab.used.map(s => ({ step: 1, text: '', source: s.id }))] }
+      break
+    }
     if (thesisIn && pass === 0 && !left?.aborted) {
       deps.trace?.({ ev: 'thesis_write_failed', message: String((e as Error)?.message ?? e).slice(0, 120), chars: written.length })
-      thesisIn = null; hold = false; written = ''; cut = false; stripper = linkStripper(); numberer = headingNumberer()
+      thesisIn = null; hold = false; sv = null; written = ''; cut = false; stripper = linkStripper(); numberer = headingNumberer()
       continue
     }
     return { plan, evidence, findings, failed: left?.aborted ? 'client_gone' : fail(plan.title, steps, 'write_failed'), cut }
@@ -812,5 +833,5 @@ export async function runDeepResearch(question: string, context: string, lang: s
   if (placed.length && emit.images) emit.images(placed)
   const links = shown.cited.map(e => ({ id: e.id, title: e.title, url: e.url }))
   emit.status({ type: 'tappy.research.v1', title: plan.title, phase: 'done', steps: steps.map(s => ({ ...s })), sources: evidence.length, links })
-  return { plan, evidence, findings, failed: null, cut, followUps, charts: charts.length, figures: { ...figureCount }, stepStats, unsupported: unsupportedNumbers(written, shown.findings), ...(repaired ? { repaired } : {}), ...(bounds ? { checked: { report: written, sources: shown.cited } } : {}), ...(cards ? { cards: { summary: cardSummary(cards), cards } } : {}), ...(released ? { thesis: { dropped: released.dropped, charsBefore: released.before } } : {}) }
+  return { plan, evidence, findings, failed: null, cut, followUps, charts: charts.length, figures: { ...figureCount }, stepStats, unsupported: unsupportedNumbers(written, shown.findings), ...(repaired ? { repaired } : {}), ...(bounds ? { checked: { report: written, sources: shown.cited } } : {}), ...(cards ? { cards: { summary: cardSummary(cards), cards } } : {}), ...(released ? { thesis: { dropped: released.dropped, charsBefore: released.before } } : {}), ...(cx ? { contracts: cx.summary() } : {}) }
 }

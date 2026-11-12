@@ -46,7 +46,15 @@ export const RESEARCH_PACKAGES_FLAG = 'RESEARCH_PACKAGES'
 /** Pure. Work packages with a four-part brief (objective, output, sources, boundary) for the Advanced plan, repeated packages merged by code, the brief handed to the reader of each step: OFF unless exactly "1", locked in production. */
 export const researchPackagesOn = (env: Env = process.env): boolean => env[RESEARCH_PACKAGES_FLAG] === '1' && !lockedInProduction(env, RESEARCH_PACKAGES_FLAG)
 
-export const RESEARCH_CONSOLIDATION_FLAG = 'RESEARCH_CONSOLIDATION'
+export const RESEARCH_CONTRACTS_FLAG = 'RESEARCH_CONTRACTS'
+/** Pure. Orchestration contract objects (R13 4.3, researchContracts.ts): the Advanced engine issues a WorkPackageAssignment per plan step (bound to a Context Version, with its budget reservation), checks the package's result against it and every gap round against the Controller's rules, and records the outcome in the run's log: OFF unless exactly "1", locked in production. */
+export const researchContractsOn = (env: Env = process.env): boolean => env[RESEARCH_CONTRACTS_FLAG] === '1' && !lockedInProduction(env, RESEARCH_CONTRACTS_FLAG)
+
+export const RESEARCH_STREAM_VERIFY_FLAG = 'RESEARCH_STREAM_VERIFY'
+/** Pure. Section-level verification while the report is written (R13 9.5, sectionRelease.ts): each finished section of a thesis report is read by the verifier and shown at once, instead of the whole text after the last section: OFF unless exactly "1", locked in production. */
+export const researchStreamVerifyOn = (env: Env = process.env): boolean => env[RESEARCH_STREAM_VERIFY_FLAG] === '1' && !lockedInProduction(env, RESEARCH_STREAM_VERIFY_FLAG)
+
+export const RESEARCH_CONSOLIDATION_FLAG ='RESEARCH_CONSOLIDATION'
 /** Pure. Consolidation before the writer (a fact read in several steps is kept once; a disagreement is a conflict only for the same subject, measure, scope and period; readings at different dates are a trend; the newest period found is reported): OFF unless exactly "1", locked in production. */
 export const researchConsolidationOn = (env: Env = process.env): boolean => env[RESEARCH_CONSOLIDATION_FLAG] === '1' && !lockedInProduction(env, RESEARCH_CONSOLIDATION_FLAG)
 

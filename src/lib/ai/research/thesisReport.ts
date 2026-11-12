@@ -138,6 +138,18 @@ export interface Released { text: string; /** sentences dropped */ dropped: numb
  * in order of first use, and `used` lists those sources in the new order. Pure.
  */
 export function releaseText(report: string, sources: readonly (VerifierSource & { url?: string; site?: string; published?: string })[], /** text whose figures code computed (the scenario model): a sentence whose figures are all in it is not dropped for lacking a source */ trusted = ''): Released {
+  const { kept, dropped } = filterVerified(report, sources, trusted)
+  const order: number[] = []
+  for (const m of kept.matchAll(CITE)) { const id = Number(m[1]); if (!order.includes(id)) order.push(id) }
+  const map = new Map(order.map((id, i) => [id, i + 1]))
+  const byId = new Map(sources.map(s => [s.id, s]))
+  const text = kept.replace(CITE, (_, d: string) => `[${map.get(Number(d)) ?? d}]`)
+  const used = order.flatMap(id => { const s = byId.get(id); return s ? [{ ...s, id: map.get(id)! }] : [] })
+  return { text, dropped, used, renumbered: map }
+}
+
+/** The sentence filter of releaseText, before the citations are renumbered (sectionRelease.ts runs it on one section at a time). Pure. */
+export function filterVerified(report: string, sources: readonly (VerifierSource & { url?: string; site?: string; published?: string })[], trusted = ''): { kept: string; dropped: number } {
   let dropped = 0
   const kept = String(report ?? '').split('\n').map(line => {
     if (/^\s*(#{1,6}\s|\|)/.test(line) || !line.trim()) return line
@@ -158,11 +170,5 @@ export function releaseText(report: string, sources: readonly (VerifierSource & 
     if (!ok.length) return null
     return marker + ok.join(' ')
   }).filter((l): l is string => l !== null).join('\n').replace(/\n{3,}/g, '\n\n')
-  const order: number[] = []
-  for (const m of kept.matchAll(CITE)) { const id = Number(m[1]); if (!order.includes(id)) order.push(id) }
-  const map = new Map(order.map((id, i) => [id, i + 1]))
-  const byId = new Map(sources.map(s => [s.id, s]))
-  const text = kept.replace(CITE, (_, d: string) => `[${map.get(Number(d)) ?? d}]`)
-  const used = order.flatMap(id => { const s = byId.get(id); return s ? [{ ...s, id: map.get(id)! }] : [] })
-  return { text, dropped, used, renumbered: map }
+  return { kept, dropped }
 }
