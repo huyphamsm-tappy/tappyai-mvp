@@ -10,7 +10,6 @@
 // gap round; the outcome goes to the run's log. It does not yet stop a run on a failed check, because the notes step returns findings, not the model-issued claims these validators were written
 // for. NOT built here: TokenExecutionLimits on the envelope, durable assignment state (R13 9.x), the Controller's budget-extension decision, criticality-based failure policy.
 
-import { createHash } from 'node:crypto'
 import { validateWorkPackageResult, type AssignmentScope, type ResultIssue, type ResultValidation } from './workPackageContract'
 import { CONTROLLER_POLICY_VERSION, type GapDecision } from './researchController'
 import type { ResearchPlan } from './deepResearch'
@@ -299,7 +298,18 @@ export function reserveBudgets(i: ReserveInput): ReserveResult {
 
 // ── what the engine issues ──────────────────────────────────────────────────────────────────────────────────────────────
 
-const fnv = (s: string): string => createHash('sha256').update(s).digest('hex').slice(0, 12)
+/** A short digest for ids (not a security measure): two 32-bit mixes (cyrb53 style) to 12 hex characters. Pure JS on purpose: this file is reachable from the client bundle (deepResearch.ts is imported by ChatInterface), where `node:crypto` does not exist. */
+const fnv = (s: string): string => {
+  let h1 = 0xdeadbeef, h2 = 0x41c6ce57
+  for (let i = 0; i < s.length; i++) {
+    const c = s.charCodeAt(i)
+    h1 = Math.imul(h1 ^ c, 2654435761)
+    h2 = Math.imul(h2 ^ c, 1597334677)
+  }
+  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909)
+  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909)
+  return ((h2 >>> 0).toString(16).padStart(8, '0') + (h1 >>> 0).toString(16).padStart(8, '0')).slice(0, 12)
+}
 /** The Context Version of one request: a digest of what the plan was written from (the question, the conversation and its language). Same input, same version. */
 export const lockedContextVersionOf = (question: string, context: string, lang: string): string => `ctxv:${fnv(JSON.stringify([question, context, lang]))}`
 export const researchRequestIdOf = (question: string, nowMs: number): string => `rr:${fnv(`${question}|${nowMs}`)}`
