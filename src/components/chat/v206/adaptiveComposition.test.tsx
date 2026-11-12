@@ -243,6 +243,76 @@ describe('variations: five intent families, three different answers each; the la
   })
 })
 
+describe('place cards sit under the text that names them (one rule for every answer: the text and the place names decide, not the question, a keyword or the kind of venue)', () => {
+  const kids = (c: HTMLElement) => Array.from(c.querySelector('[data-answer="article"]')!.children).map(el => {
+    const e = el as HTMLElement
+    if (e.dataset.embed === undefined) return (e.textContent ?? '').replace(/\s+/g, ' ').trim().slice(0, 24)
+    const card = e.querySelector('[data-testid="place-decision"]')
+    return `${card?.getAttribute('data-layout') === 'solo' ? 'SOLO' : 'GROUP'}:${Array.from(e.querySelectorAll('.v206-pc-name')).map(n => n.textContent).join('+')}`
+  })
+  const setup = (cid: string, q: string, answer: string, v: PlacesView) => { rememberPlacesView(answer, v); return open(cid, msgs([q, answer])) }
+  const rows = (names: string[], domain: PlacesView['domain'] = 'food') => view(domain, names.map((n, i) => place(`id${i}`, n, domain, i, { address: `${i + 1} Đường Mẫu`, rating: 4.4 + i / 20, ratingCount: 50 + i })))
+
+  it('sections that name each place: each card right after its own section\'s text', () => {
+    const answer = '## Quán Gió Mẫu\n\nKhông gian thoáng, hợp buổi tối.\n\n## Quán Mưa Mẫu\n\nẤm cúng, hợp ngày lạnh.\n\nChúc bạn ngon miệng.'
+    const { container } = setup('pc1', 'Tìm chỗ ăn tối', answer, rows(['Quán Gió Mẫu', 'Quán Mưa Mẫu']))
+    const k = kids(container)
+    expect(k.indexOf('SOLO:Quán Gió Mẫu')).toBe(k.findIndex(x => x.startsWith('Không gian thoáng')) + 1)
+    expect(k.indexOf('SOLO:Quán Mưa Mẫu')).toBe(k.findIndex(x => x.startsWith('Ấm cúng')) + 1)
+    expect(k.some(x => x.startsWith('GROUP'))).toBe(false)
+  })
+
+  it('names written inside ordinary paragraphs (no headings): the same rule', () => {
+    const answer = 'Mở đầu ngắn.\n\nVề **Quán Gió Mẫu**: nên đặt trước.\n\nVề **Quán Mưa Mẫu**: đông vào cuối tuần.\n\nKết.'
+    const { container } = setup('pc2', 'Gợi ý chỗ', answer, rows(['Quán Gió Mẫu', 'Quán Mưa Mẫu']))
+    const k = kids(container)
+    expect(k.indexOf('SOLO:Quán Gió Mẫu')).toBe(k.findIndex(x => x.startsWith('Về Quán Gió Mẫu')) + 1)
+    expect(k.indexOf('SOLO:Quán Mưa Mẫu')).toBe(k.findIndex(x => x.startsWith('Về Quán Mưa Mẫu')) + 1)
+  })
+
+  it('one place named, one not: the named one stands alone under its text, the other goes in the group at the end (nothing dropped)', () => {
+    const answer = '## Quán Gió Mẫu\n\nKhông gian thoáng.\n\nChúc bạn vui.'
+    const { container } = setup('pc3', 'Gợi ý chỗ', answer, rows(['Quán Gió Mẫu', 'Quán Nắng Mẫu']))
+    const k = kids(container)
+    expect(k.indexOf('SOLO:Quán Gió Mẫu')).toBe(k.findIndex(x => x.startsWith('Không gian thoáng')) + 1)
+    expect(k.some(x => x === 'GROUP:Quán Nắng Mẫu')).toBe(true)
+    expect(parts(container).placeCards).toBe(2)
+  })
+
+  it('no place named in the text: the single group exactly as before', () => {
+    const answer = 'Mình gợi ý vài chỗ hợp ngân sách của bạn.\n\nBạn xem thẻ bên dưới nhé.'
+    const { container } = setup('pc4', 'Gợi ý', answer, rows(['Quán Gió Mẫu', 'Quán Mưa Mẫu']))
+    const k = kids(container)
+    expect(k.filter(x => x.startsWith('SOLO'))).toEqual([])
+    expect(k.filter(x => x.startsWith('GROUP'))).toHaveLength(1)
+    expect(k.find(x => x.startsWith('GROUP'))).toBe('GROUP:Quán Gió Mẫu+Quán Mưa Mẫu')
+  })
+
+  it('the same rule for other kinds of venue and other questions: a hotel and a repair shop', () => {
+    const answer = '## Khách sạn Biển Xanh Mẫu\n\nPhòng hướng biển, gần bãi tắm.\n\n## Tiệm sửa xe Thành Mẫu\n\nSửa nhanh, bảo hành 6 tháng.'
+    const v = view('travel', [place('h', 'Khách sạn Biển Xanh Mẫu', 'travel', 0), place('s', 'Tiệm sửa xe Thành Mẫu', 'travel', 1)])
+    const { container } = setup('pc5', 'Chỗ ở và sửa xe', answer, v)
+    const k = kids(container)
+    expect(k.indexOf('SOLO:Khách sạn Biển Xanh Mẫu')).toBe(k.findIndex(x => x.startsWith('Phòng hướng biển')) + 1)
+    expect(k.indexOf('SOLO:Tiệm sửa xe Thành Mẫu')).toBe(k.findIndex(x => x.startsWith('Sửa nhanh')) + 1)
+  })
+
+  it('a card is never put between a heading and its text', () => {
+    const answer = '## Quán Gió Mẫu\n\nKhông gian thoáng.\n\n## Quán Mưa Mẫu\n\nẤm cúng.'
+    const { container } = setup('pc6', 'Chỗ', answer, rows(['Quán Gió Mẫu', 'Quán Mưa Mẫu']))
+    const els = Array.from(container.querySelector('[data-answer="article"]')!.children) as HTMLElement[]
+    els.forEach((el, i) => { if (/^H[1-6]$/.test(el.tagName)) expect(els[i + 1]?.dataset.embed).toBeUndefined() })
+  })
+
+  it('the model may name the places in a different order than the engine ranked them: the text order wins for placement, every card still appears once', () => {
+    const answer = '## Quán Mưa Mẫu\n\nẤm cúng.\n\n## Quán Gió Mẫu\n\nThoáng.'
+    const { container } = setup('pc7', 'Chỗ', answer, rows(['Quán Gió Mẫu', 'Quán Mưa Mẫu']))
+    const k = kids(container).filter(x => x.startsWith('SOLO'))
+    expect(k).toEqual(['SOLO:Quán Mưa Mẫu', 'SOLO:Quán Gió Mẫu'])
+    expect(parts(container).placeCards).toBe(2)
+  })
+})
+
 describe('T09 (the renderer half): a revised itinerary replaces day 2 and keeps the rest', () => {
   it('day 2\'s stop changes to the indoor one; days 1 and 3 and the tabs are as before', () => {
     const base = JSON.parse(JSON.stringify({ ...JSON.parse(/\[TAPPY_PLAN\]([\s\S]*?)\[\/TAPPY_PLAN\]/.exec(bySn(4).messages[1].content)![1]) }))

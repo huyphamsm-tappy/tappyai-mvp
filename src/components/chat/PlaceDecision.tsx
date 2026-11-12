@@ -395,8 +395,11 @@ function PlaceCard({ p, position, ranked }: { p: LivePlace; position: number; ra
   )
 }
 
-/** `forceV206` is a test seam: it overrides the build flags (NEXT_PUBLIC_WORKSPACE_V206 + NEXT_PUBLIC_RESPONSE_PRESENTATION). */
-export default function PlaceDecision({ view, forceV206 }: { view: PlacesLiveView | null; forceV206?: boolean }) {
+/**
+ * `forceV206` is a test seam: it overrides the build flags (NEXT_PUBLIC_WORKSPACE_V206 + NEXT_PUBLIC_RESPONSE_PRESENTATION).
+ * `layout="solo"` + `soloId`: ONE card of the view standing alone under the text that talks about it (placeAnchoring decides which and where); no filters, carousel or "show more".
+ */
+export default function PlaceDecision({ view, forceV206, layout, soloId }: { view: PlacesLiveView | null; forceV206?: boolean; layout?: 'group' | 'solo'; soloId?: string }) {
   const { t } = useTranslation()
   // Memoised together so the filter row is not rebuilt on every keystroke elsewhere
   // in the chat; `view` is a stable object for the life of the message.
@@ -411,6 +414,20 @@ export default function PlaceDecision({ view, forceV206 }: { view: PlacesLiveVie
   const order = useMemo(() => (view ? placesRenderOrder(view) : { visible: [], hidden: [] }), [view])
 
   if (!view || items.length === 0) return null
+
+  if (layout === 'solo') {
+    const one = items.find(i => i.id === soloId)
+    if (!one) return null
+    const ranked = view.ranked !== false && !view.pickUnmatched
+    const position = [...order.visible, ...order.hidden].findIndex(i => i.id === one.id)
+    return (
+      <div className={cn('mt-3 animate-fade-in', view.preliminary && 'opacity-80')} data-testid="place-decision" data-layout="solo" data-domain={view.domain} data-preliminary={view.preliminary ? 'true' : undefined}>
+        {(forceV206 ?? V206_LOOK)
+          ? <V206PlaceCard p={one} position={Math.max(0, position)} ranked={ranked} solo />
+          : <PlaceCard p={one} position={Math.max(0, position)} ranked={ranked} />}
+      </div>
+    )
+  }
 
   const filter = filters.find(f => f.id === active) ?? filters[0]
   // A filter shows every admitted row (a chip that could only choose among three is decoration);

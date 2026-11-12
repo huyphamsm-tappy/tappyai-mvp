@@ -114,6 +114,7 @@ import EntityChipsScope, { chipClick, chipKeyDown } from '@/components/chat/v206
 import { rememberPlacesView, recallPlacesView } from '@/lib/recommendation/liveViewCache'
 import { rememberTurnStatus, recallTurnStatus } from '@/lib/recommendation/turnStatusCache'
 import PlaceDecision from '@/components/chat/PlaceDecision'
+import { placeEmbedPlan } from '@/lib/chat/placeAnchoring'
 import EmergencyCard from '@/components/chat/EmergencyCard'
 import { readSafetyAnnotation } from '@/lib/safety/emergencyResponse'
 import { useTranslation, getStoredLocale } from '@/lib/i18n/useTranslation'
@@ -1937,7 +1938,15 @@ export default function ChatInterface({
                     }}
                   />
                 ) : null
-                const placeNode = placeView && !shopView && (!streamingMsg || !!annotated) ? <PlaceDecision view={placeView} /> : null
+                // workspace v206: a place the answer's own text names stands alone right under that text (placeAnchoring: the TEXT and the place NAMES decide, never the question or the kind of
+                // venue); the places it does not name stay together in the group, as before. Only once the answer is complete (while it streams the cards must not jump as paragraphs arrive).
+                const placeSplit = WORKSPACE_V206 && RESPONSE_PRESENTATION && !isDoc && placeView && !shopView && !streamingMsg ? placeEmbedPlan(bodyText, placeView.items) : null
+                const soloPlaces = placeSplit?.solo ?? []
+                const groupView = placeView && soloPlaces.length && placeSplit
+                  ? (placeSplit.rest.length ? { ...placeView, items: placeSplit.rest, picked: placeView.picked?.filter(id => placeSplit.rest.some(r => r.id === id)) } : null)
+                  : placeView
+                const placeNode = placeView && !shopView && (!streamingMsg || !!annotated) && groupView ? <PlaceDecision view={groupView} /> : null
+                const soloNodes = placeView ? soloPlaces.map(p => <PlaceDecision key={p.id} view={placeView} layout="solo" soloId={p.id} />) : []
                 // Comparison (DD-005). Derived from the SAME payload the decision above renders - no extra request, nothing inferred. Offered only once the reply
                 // is complete, like every other structured action, and only when there are at least two options to compare.
                 // (the guard stays in the JSX form chatStructuredWiring.test.tsx reads: a comparison never appears while the reply is still streaming)
@@ -1957,7 +1966,13 @@ export default function ChatInterface({
                   </>
                 )
                 const cmpNode = shopView && !streamingMsg && comparisonFromSynthesis(shopView, t, locale) ? cmpBlock : null
-                const embedList = RESPONSE_PRESENTATION && !isDoc ? [optionsNode, planNode, shopNode, placeNode, cmpNode].filter((n): n is NonNullable<typeof n> => !!n) : []
+                const embedItems: Array<{ node: React.ReactNode; name?: string }> = [
+                  { node: optionsNode }, { node: planNode }, { node: shopNode },
+                  ...soloNodes.map((node, i) => ({ node, name: soloPlaces[i].name })),
+                  { node: placeNode }, { node: cmpNode },
+                ].filter(e => !!e.node)
+                const embedList = RESPONSE_PRESENTATION && !isDoc ? embedItems.map(e => e.node) : []
+                const embedNames = RESPONSE_PRESENTATION && !isDoc ? embedItems.map(e => e.name) : []
                 const inlineEmbeds = embedList.length > 0
                 return (
                   <div key={msg.id} data-msg-id={msg.id} className="animate-slide-up flex gap-3">
@@ -2013,14 +2028,14 @@ export default function ChatInterface({
                                 {chips => (
                                   <>
                                     <ArticleAnswer text={gLead} images={docImages} format={formatMessage} onClick={chipClick(chips, onBodyClick)} onKeyDown={chipKeyDown(chips)} under={underHeading}
-                                      presentation={edit ? { variant: 'editorial', embeds: gRest ? undefined : embedList, decorate: chips.decorate, look: WORKSPACE_V206 } : undefined}
+                                      presentation={edit ? { variant: 'editorial', embeds: gRest ? undefined : embedList, embedNames: gRest ? undefined : embedNames, decorate: chips.decorate, look: WORKSPACE_V206 } : undefined}
                                       className={cn(isLoading && isLastMessage && 'streaming-cursor', (entity || entities) && '[&_strong]:cursor-pointer')} />
                                     {gLead !== lead && <ImageGrid images={docImages} />}
                                     {news && <NewsMediaGrid items={news} />}
                                     {entity && <EntityCard entity={{ ...entity, summary: summaryOpening(entity.summary, 300) }} onOpen={() => setEntityPanel(entity)} />}
                                     {entities && <EntityRow entities={entities} onOpen={x => setEntityPanel(x)} />}
                                     {gRest && <ArticleAnswer text={gRest} images={docImages} format={formatMessage} onClick={chipClick(chips, onBodyClick)} onKeyDown={chipKeyDown(chips)} className="mt-3" under={underHeading}
-                                      presentation={edit ? { variant: 'editorial', lead: false, embeds: embedList, decorate: chips.decorate, look: WORKSPACE_V206 } : undefined} />}
+                                      presentation={edit ? { variant: 'editorial', lead: false, embeds: embedList, embedNames, decorate: chips.decorate, look: WORKSPACE_V206 } : undefined} />}
                                     {settled && <SourcesFooter text={shown} lang={locale === 'en' ? 'en' : 'vi'} />}
                                     {WORKSPACE_V206 && settled && <TipsPublisher msgId={`${msg.id}:c`} tips={calloutTips(shown)} />}
                                   </>

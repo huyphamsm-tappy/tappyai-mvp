@@ -13,6 +13,7 @@ import type { DocItemImage } from '@/lib/answerDoc/media'
 import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 import { isAllowedMediaImage, isAllowedMediaPage, type MediaEntity } from '@/lib/media/mediaHosts'
 import { embedAnchors, plainHeading } from '@/lib/chat/presentation'
+import { embedAnchorsNamed } from '@/lib/chat/placeAnchoring'
 
 type Format = (markdown: string) => string
 
@@ -54,6 +55,8 @@ export interface Presentation {
   cite?: (html: string) => string
   /** the rich cards of the turn, placed after the lead and spread between the paragraphs (presentation.embedAnchors) */
   embeds?: ReactNode[]
+  /** per embed, the name of the place it is about (or undefined): a card with a name that the text mentions goes under that text instead of being spread by position (placeAnchoring) */
+  embedNames?: ReadonlyArray<string | undefined>
   /** applied after `cite` to every formatted paragraph: the answer's resolved entity names become chips (workspace v206) */
   decorate?: (html: string) => string
   /** workspace v206 look: section headings as the mockup's mono caps eyebrows (numbered when the answer has two or more unnumbered ones), tables as a titled data box */
@@ -119,7 +122,9 @@ function Blocks({ blocks, format, placed, prefix = '', under, pres }: { blocks: 
   const top = !!pres && prefix === ''
   const ords = top ? headingOrdinals(blocks) : null
   const leadIdx = top && pres!.variant === 'editorial' && pres!.lead !== false ? blocks.findIndex(b => b.t === 'para') : -1
-  const anchors = top && pres!.embeds?.length ? embedAnchors(blocks, pres!.embeds.length) : []
+  const anchors = top && pres!.embeds?.length
+    ? (pres!.embedNames?.some(Boolean) ? embedAnchorsNamed(blocks, pres!.embedNames) : embedAnchors(blocks, pres!.embeds.length))
+    : []
   const embedsAfter = (i: number) => anchors.flatMap((a, k) => (a === i ? [<div key={`e${k}`} className="tappy-embed" data-embed>{pres!.embeds![k]}</div>] : []))
   const mono = top && !!pres!.look
   // editorial "1." in front of a level-2 heading that has no number of its own (needs two or more such headings; presentation only)

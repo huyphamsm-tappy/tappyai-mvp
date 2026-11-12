@@ -53,7 +53,8 @@ function SaveButton({ place }: { place: LivePlace }) {
   )
 }
 
-export default function V206PlaceCard({ p, position, ranked }: { p: LivePlace; position: number; ranked: boolean }) {
+/** `solo`: the card standing alone under its own text (wide; shows the place's real photo when it has one) instead of one card of a swipeable group. */
+export default function V206PlaceCard({ p, position, ranked, solo }: { p: LivePlace; position: number; ranked: boolean; solo?: boolean }) {
   const { t, locale } = useTranslation()
   const labels = useEntityLabels()
   const v = useMemo(() => placeCardView(p, locale), [p, locale])
@@ -75,7 +76,14 @@ export default function V206PlaceCard({ p, position, ranked }: { p: LivePlace; p
       data-lead={ranked && position === 0 ? 'true' : undefined}
       onClick={() => track('recommendation_click', { domain: p.domain })}
       className="v206-pc"
+      data-solo={solo ? 'true' : undefined}
+      data-photo={solo && v.image ? 'true' : undefined}
     >
+      {solo && v.image && (
+        <div className="v206-pc-solo-photo" data-testid="place-solo-photo">
+          <img src={v.image} alt={p.name} loading="lazy" referrerPolicy="no-referrer" onError={e => { (e.currentTarget.parentElement as HTMLElement).style.display = 'none' }} />
+        </div>
+      )}
       {(v.badge || v.rating) && (
         <div className="v206-pc-top">
           {v.badge ? <span className="v206-pc-badge" data-testid="v206-pc-badge">{v.badge}</span> : <span />}
