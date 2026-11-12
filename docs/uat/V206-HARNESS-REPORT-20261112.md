@@ -20,7 +20,9 @@ Chạy: máy chủ UAT cổng 3000 (đang chạy) → mở `http://localhost:300
 | `edaff0d` | Sửa lỗi thật của sản phẩm: mở hội thoại đã lưu không hiện nút "Mẹo" (xem mục 4) |
 | `6684085` | Trang thử `/dev/v206`, dữ liệu mẫu, lớp bọc fetch, khung `WorkspaceFrame`, test |
 | `2c10f4e` | Bộ T01–T18 + biến thể + hợp đồng + cách ly (34 test đạt, 1 hạn chế đã biết, 5 todo) |
-| commit kế | Sửa hydration của trang thử (một đồng hồ cho server và client) |
+| `9732ac7` | Sửa hydration của trang thử (một đồng hồ cho server và client) |
+| `8d40643` | Báo cáo này |
+| `8939154` | Thẻ địa điểm nằm dưới đoạn văn bản nhắc tên nó (quy tắc chung theo văn bản và tên, thẻ đơn rộng, có ảnh thật khi có); 21 + 9 + 7 test, đột biến tắt tách thẻ làm 5 test đỏ |
 
 HEAD trước phiên này: `710b458`.
 
@@ -39,7 +41,7 @@ HEAD trước phiên này: `710b458`.
 
 **Tab 2 Tesla.** Khớp: danh sách mốc, callout, bảng dữ liệu. Thiếu: lưới 3 ảnh, mini-card sản phẩm (cần ảnh và dữ liệu có cấu trúc), huy hiệu "Verifying Status: ACTIVE" (cố ý không làm giả).
 
-**Tab 3 Thảo Điền.** **Khác về cấu trúc, không chỉ giao diện:** mockup đặt một thẻ rộng ngay dưới phần mô tả của từng quán (ảnh lớn, đặc trưng nổi bật, giá, giờ mở, nút chính, hotline, menu, video). Sản phẩm gom các thẻ thành một băng ngang nhỏ sau đoạn mở đầu, tách khỏi phần mô tả từng quán. Thiếu: ảnh quán, "đặc trưng nổi bật", bãi xe, nút đặt bàn ưu đãi, menu, clip review, "Thực thể đã xác minh" (cần adapter nhà hàng có cấu trúc và kho đối tác). Thẻ thứ ba của mockup (Cá Khói – Quy Nhơn) là minh họa wireframe, không đưa vào.
+**Tab 3 Thảo Điền.** *Cập nhật sau commit đặt thẻ theo văn bản:* trước đây sản phẩm gom các thẻ thành một băng ngang nhỏ sau đoạn mở đầu, tách khỏi phần mô tả từng quán (khác mockup về cấu trúc). Nay thẻ của một địa điểm nằm **ngay dưới đoạn văn bản nhắc tên địa điểm đó**, dạng thẻ rộng; địa điểm mà văn bản không nhắc vẫn ở băng cuối như cũ. Quy tắc này chỉ dựa vào văn bản và tên địa điểm, không dựa vào câu hỏi, từ khóa hay loại hình (nhà hàng, khách sạn, tiệm sửa xe dùng cùng một quy tắc). Ảnh so sánh: `tab3-thao-dien-v2.png`. Vẫn thiếu so với mockup: ảnh quán (thẻ chỉ vẽ ảnh khi nhà cung cấp trả ảnh thật), "đặc trưng nổi bật", bãi xe, nút đặt bàn ưu đãi, menu, clip review, "Thực thể đã xác minh" (cần adapter nhà hàng có cấu trúc và kho đối tác). Thẻ thứ ba của mockup (Cá Khói – Quy Nhơn) là minh họa wireframe, không đưa vào.
 
 **Tab 4 Đà Lạt.** Khớp cấu trúc tốt nhất: khung tổng quan, tab ngày, đường dọc, nút số, chip giờ, callout mẹo cạnh chặng, tab Dự toán, ngăn Mẹo (5 mẹo, tìm kiếm, Esc đóng). Khác: không có ảnh từng chặng (cần `photo_url` từ máy chủ), nhãn nguồn gốc Yêu cầu/Đề xuất/Ước tính/Đối soát, thẻ khách sạn/vé, nút Thêm điểm dừng/Đổi điểm đến, banner đối tác.
 
