@@ -324,7 +324,8 @@ export function guardTravelClaimsInText(
         const kindOf = (j: (typeof judged)[number]): string => {
           const money = out.slice(j.start, j.end).replace(/[\d.,\s*–—-]+/g, ' ').trim().toLowerCase()
           const unit = /^\s*(?:\*+\s*)?(?:\/|per\s+|mỗi\s+|một\s+)?\s*(\p{L}+)/u.exec(out.slice(j.end).replace(tag, ''))?.[1]?.toLowerCase() ?? ''
-          return `${out.lastIndexOf('\n', j.start - 1)}|${money}|${unit}`
+          // an amount with no unit word right after it ("giá từ 363.000đ,") is a price of its own item: never merged
+          return `${out.lastIndexOf('\n', j.start - 1)}|${money}|${unit || `own${j.start}`}`
         }
         const seen = new Set<string>()
         const toTag: number[] = []
