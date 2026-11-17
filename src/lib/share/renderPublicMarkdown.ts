@@ -14,13 +14,39 @@ function escapeHtml(s: string): string {
 
 const LINK_CLASS = 'text-primary-600 dark:text-primary-400 underline font-medium break-all'
 
+/**
+ * 18/11: a markdown table (a header row, a `---` separator row, body rows) of the ALREADY ESCAPED text becomes one <table> on a single line (the container keeps line breaks, so none are
+ * emitted inside it). A report's tables were printed as rows of pipes. Not a table (no separator row) = untouched. Pure.
+ */
+function tablesToHtml(escaped: string): string {
+  const lines = escaped.split('\n')
+  const out: string[] = []
+  const cells = (l: string) => l.trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map(c => c.trim())
+  const isRow = (l: string) => /^\s*\|.*\|\s*$/.test(l)
+  const isSep = (l: string) => isRow(l) && cells(l).every(c => /^:?-{3,}:?$/.test(c))
+  for (let i = 0; i < lines.length; i++) {
+    if (isRow(lines[i]) && i + 1 < lines.length && isSep(lines[i + 1])) {
+      const head = cells(lines[i])
+      let j = i + 2
+      const body: string[][] = []
+      while (j < lines.length && isRow(lines[j]) && !isSep(lines[j])) { body.push(cells(lines[j])); j++ }
+      out.push(`<div class="overflow-x-auto my-3"><table class="w-full text-sm border-collapse"><thead><tr>${head.map(h => `<th class="text-left font-semibold p-2 border-b border-gray-300 dark:border-gray-600">${h}</th>`).join('')}</tr></thead><tbody>${body.map(r => `<tr>${r.map(c => `<td class="p-2 border-b border-gray-200 dark:border-gray-700 align-top">${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`)
+      i = j - 1
+    } else out.push(lines[i])
+  }
+  return out.join('\n')
+}
+
 export function renderPublicMarkdown(content: string): string {
   // UAT 2026-09-28: an unpaired "**" is dropped, never printed (same rule as the chat renderer).
-  return escapeHtml(balanceBoldPerLine(content))
+  return tablesToHtml(escapeHtml(balanceBoldPerLine(content)))
     // Any image markdown that survived (it should not) renders as its alt text, never as an <img>.
     .replace(/!\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/g, '$1')
     .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, `<a href="$2" target="_blank" rel="noopener noreferrer nofollow" class="${LINK_CLASS}">$1</a>`)
     .replace(/(^|[^"'>])(https?:\/\/[^\s<]+)/g, `$1<a href="$2" target="_blank" rel="noopener noreferrer nofollow" class="${LINK_CLASS}">$2</a>`)
+    // 18/11: a report opens with "# title"; a citation mark "[3]" is a small raised number, not bracketed text in the line
+    .replace(/^# (.+)$\n?/gm, '<h1 class="font-bold text-xl mt-2 mb-2">$1</h1>')
+    .replace(/(?<!\w)\[(\d{1,3})\](?!\()/g, '<sup class="text-gray-400 text-[0.7em]">$1</sup>')
     .replace(/^### (.+)$\n?/gm, '<h3 class="font-semibold mt-4 mb-1">$1</h3>')
     .replace(/^## (.+)$\n?/gm, '<h2 class="font-semibold text-lg mt-4 mb-1">$1</h2>')
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')

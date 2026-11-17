@@ -32,6 +32,13 @@ describe('resolveReplyLanguage', () => {
     expect(resolveReplyLanguage({ lastText: 'Quán nào ngon nhất ở đây vậy?', priorUserTexts: ['Tôi muốn ăn bún bò'], clientLocale: 'en' })).toEqual({ lang: 'vi', source: 'message', named: null })
   })
 
+  it('18/11 (mutation gap): a language with a script of its own is named to the model even on a first message and in a thread already in it; a Latin-script language is not', () => {
+    const ja = '東京でおすすめのラーメン屋を教えてください'
+    expect(resolveReplyLanguage({ lastText: ja, priorUserTexts: [], clientLocale: 'vi' })).toMatchObject({ lang: 'ja', source: 'message', named: 'ja' })
+    expect(resolveReplyLanguage({ lastText: ja, priorUserTexts: [ja], clientLocale: 'vi' })).toMatchObject({ lang: 'ja', named: 'ja' })
+    expect(resolveReplyLanguage({ lastText: 'Quán nào ngon nhất ở đây vậy?', priorUserTexts: [], clientLocale: 'en' })).toMatchObject({ lang: 'vi', named: null })
+  })
+
   it('the UI locale only breaks a tie nothing the user wrote settles (a first-turn "ok")', () => {
     expect(resolveReplyLanguage({ lastText: 'ok', priorUserTexts: [], clientLocale: 'en' })).toEqual({ lang: 'en', source: 'client', named: null })
     expect(resolveReplyLanguage({ lastText: 'ok', priorUserTexts: ['ok', 'hmm'], clientLocale: 'vi' })).toEqual({ lang: 'vi', source: 'client', named: null })
