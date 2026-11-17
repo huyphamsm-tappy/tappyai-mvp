@@ -54,7 +54,7 @@ function SaveButton({ place }: { place: LivePlace }) {
 }
 
 /** `solo`: the card standing alone under its own text (wide; shows the place's real photo when it has one) instead of one card of a swipeable group. */
-export default function V206PlaceCard({ p, position, ranked, solo }: { p: LivePlace; position: number; ranked: boolean; solo?: boolean }) {
+export default function V206PlaceCard({ p, position, ranked, solo, notes, noteSources }: { p: LivePlace; position: number; ranked: boolean; solo?: boolean; /** the points the answer gave about this venue (the model's declared subject card for it): drawn as the "highlights" box */ notes?: ReadonlyArray<{ lead?: string; text: string }>; /** the names of the sources those points rest on, shown under them */ noteSources?: readonly string[] }) {
   const { t, locale } = useTranslation()
   const labels = useEntityLabels()
   const v = useMemo(() => placeCardView(p, locale), [p, locale])
@@ -64,8 +64,11 @@ export default function V206PlaceCard({ p, position, ranked, solo }: { p: LivePl
     [p, v.maps, labels],
   )
   const lead = p.actions.find(a => a.commerce?.primary === true)
-  const books = p.actions.filter(a => a !== lead && BOOK_KINDS.has(a.kind))
-  const extra = p.actions.filter(a => a !== lead && !books.includes(a) && !OWN_KINDS.has(a.kind))
+  // two buttons that say the same thing ("Đặt chỗ" twice) are one: the first of each label stays (the lead's label counts)
+  const seenLabels = new Set<string>(lead ? [actionLabel(lead, t)] : [])
+  const bookAll = p.actions.filter(a => a !== lead && BOOK_KINDS.has(a.kind))
+  const books = bookAll.filter(a => { const l = actionLabel(a, t); if (seenLabels.has(l)) return false; seenLabels.add(l); return true })
+  const extra = p.actions.filter(a => a !== lead && !bookAll.includes(a) && !OWN_KINDS.has(a.kind))
   const open = () => { if (profile) v206Store.openEntity(profile) }
 
   return (
@@ -84,9 +87,16 @@ export default function V206PlaceCard({ p, position, ranked, solo }: { p: LivePl
           <img src={v.image} alt={p.name} loading="lazy" referrerPolicy="no-referrer" onError={e => { (e.currentTarget.parentElement as HTMLElement).style.display = 'none' }} />
         </div>
       )}
-      {(v.badge || v.rating) && (
+      {/* the first layout's card of a group: the place's real picture on top with the rank badge on it (a card with no picture keeps the badge in its first row) */}
+      {!solo && v.image && (
+        <div className="v206-pc-thumb" data-testid="place-thumb">
+          <img src={v.image} alt={p.name} loading="lazy" referrerPolicy="no-referrer" onError={e => { (e.currentTarget.parentElement as HTMLElement).style.display = 'none' }} />
+          {v.badge && <span className="v206-pc-badge v206-pc-thumb-badge" data-testid="v206-pc-badge">{v.badge}</span>}
+        </div>
+      )}
+      {(v.rating || (v.badge && !(!solo && v.image))) && (
         <div className="v206-pc-top">
-          {v.badge ? <span className="v206-pc-badge" data-testid="v206-pc-badge">{v.badge}</span> : <span />}
+          {v.badge && !(!solo && v.image) ? <span className="v206-pc-badge" data-testid="v206-pc-badge">{v.badge}</span> : <span />}
           {v.rating && (
             <span
               className="v206-pc-rating"
@@ -121,6 +131,14 @@ export default function V206PlaceCard({ p, position, ranked, solo }: { p: LivePl
           )}
           {v.price && <span className="v206-pc-price" data-testid="v206-pc-price">{v.price}</span>}
         </p>
+      )}
+
+      {notes && notes.length > 0 && (
+        <div className="v206-pc-notes" data-testid="v206-pc-notes">
+          <p className="v206-pc-notes-title">{t('v206.card.highlights')}</p>
+          <ul>{notes.map((n, i) => <li key={i}>{n.lead && <strong>{n.lead}: </strong>}{n.text}</li>)}</ul>
+          {noteSources && noteSources.length > 0 && <p className="v206-pc-notes-src" data-testid="v206-pc-notes-src">{t('v206.profile.sources')}: {noteSources.join(', ')}</p>}
+        </div>
       )}
 
       {lead && (

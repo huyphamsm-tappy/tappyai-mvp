@@ -5,7 +5,7 @@
 import type { EntityProfile, PlanTip } from '@/lib/chat/v206'
 import type { WikiEntity } from '@/lib/chat/entityProfiles'
 
-export type V206Drawer = { kind: 'tips' } | { kind: 'entity'; profile: EntityProfile } | { kind: 'wiki'; profile: WikiEntity } | null
+export type V206Drawer = { kind: 'tips' } | { kind: 'entity'; profile: EntityProfile } | { kind: 'wiki'; profile: WikiEntity } | { kind: 'link'; url: string; title: string } | null
 export interface V206State { tips: readonly PlanTip[]; drawer: V206Drawer; tipsByMessage: ReadonlyMap<string, readonly PlanTip[]> }
 
 let state: V206State = { tips: [], drawer: null, tipsByMessage: new Map() }
@@ -45,6 +45,8 @@ export const v206Store = {
   openEntity(profile: EntityProfile) { set({ drawer: { kind: 'entity', profile } }) },
   /** a real Wikipedia profile of a named entity (an entity chip's drawer) */
   openWiki(profile: WikiEntity) { set({ drawer: { kind: 'wiki', profile } }) },
+  /** 15/11: a link of an answer, read beside the chat (readerLinks.ts says which links; the drawer fetches /api/link-preview) */
+  openLink(url: string, title = '') { set({ drawer: { kind: 'link', url, title } }) },
   closeDrawer() { if (state.drawer) set({ drawer: null }) },
   /** a conversation switch: nothing of the previous one stays open or published */
   reset() { state = { tips: [], drawer: null, tipsByMessage: new Map() }; listeners.forEach(l => l()) },

@@ -36,6 +36,9 @@ export interface V206Plan {
   days: V206PlanDay[]
   cost_breakdown?: Record<string, string>
   local_tips?: Array<{ text: string; basis?: string; place?: string }>
+  /** CONSULT_PLAN_V2: who the plan was built for and what it took for granted (the model's own fields, already bounded and marker-free by the server). */
+  traveler?: { party?: string; pace?: string; interests?: string[] }
+  assumptions?: string[]
 }
 
 /** The time chip of a stop: "9:5" is not a time; "09:30" / "9h30" / "9:30" become "09:30"; any other non-empty text (e.g. "Sáng") is kept as the plan wrote it. Empty → null. */
@@ -104,6 +107,19 @@ export function budgetRows(plan: Pick<V206Plan, 'cost_breakdown'>): BudgetRow[] 
     .filter(r => r.label && r.value)
 }
 
+export interface BudgetLine { label: string; amount: string; estimate: boolean }
+const ESTIMATE_TAIL = /\s*\((?:ước tính|estimate)\)\s*$/i
+/**
+ * The same rows for the mockup's three-column table (item / basis / cost). The basis is what the plan itself marked: a V2 plan folds "found" or "estimate" into each amount
+ * ("1.200.000đ (ước tính)", planV2.foldPlanV2), so an unmarked amount of a plan that marks others was found in this turn's lookups. A plan that marks nothing (V1) has no basis
+ * to show: `hasBasis` is false and the table keeps two columns. Pure; nothing is summed or invented.
+ */
+export function budgetLines(plan: Pick<V206Plan, 'cost_breakdown'>): { lines: BudgetLine[]; hasBasis: boolean } {
+  const rows = budgetRows(plan)
+  const hasBasis = rows.some(r => ESTIMATE_TAIL.test(r.value))
+  return { hasBasis, lines: rows.map(r => ({ label: r.label, amount: r.value.replace(ESTIMATE_TAIL, '').trim(), estimate: ESTIMATE_TAIL.test(r.value) })) }
+}
+
 export interface TripFacts { days: number; stops: number; people: number | null; budget: string | null }
 /** The header chips of the trip: only what the plan itself carries (no destination, dates or pace are inferred). */
 export function tripFacts(plan: V206Plan): TripFacts {
@@ -112,6 +128,16 @@ export function tripFacts(plan: V206Plan): TripFacts {
     stops: plan.days.reduce((n, d) => n + d.items.length, 0),
     people: plan.people && plan.people > 1 ? plan.people : null,
     budget: plan.budget_total?.trim() || null,
+  }
+}
+
+const textList = (xs: unknown, max: number): string[] => (Array.isArray(xs) ? xs : []).filter((x): x is string => typeof x === 'string').map(x => x.trim()).filter(Boolean).slice(0, max)
+/** CONSULT_PLAN_V2: who the plan was built for (party, pace, interests: one chip each) and what it took for granted, from the model's own plan fields only. Empty for a plan that carries none. */
+export function tripWho(plan: V206Plan): { traveler: string[]; assumptions: string[] } {
+  const t = plan.traveler
+  return {
+    traveler: [typeof t?.party === 'string' ? t.party.trim() : '', typeof t?.pace === 'string' ? t.pace.trim() : '', ...textList(t?.interests, 5)].filter(Boolean),
+    assumptions: textList(plan.assumptions, 4),
   }
 }
 

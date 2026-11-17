@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import type { ComponentProps } from 'react'
@@ -15,8 +15,12 @@ import { useTranslation } from '@/lib/i18n/useTranslation'
 import { SHOW_HOME_CATEGORY_ROW } from '@/lib/config/product'
 import { formatRelativeTime, cn } from '@/lib/utils'
 import { homeSmartTools, SMART_TOOLS_HREF } from '@/lib/tools/registry'
+import { useAttachmentTray } from '@/components/chat/useAttachmentTray'
+import { ATTACH_ACCEPT, docIcon } from '@/components/chat/composerAttachment'
+import { setHomeHandoff } from '@/lib/chat/homeHandoff'
+import { useDeepResearchOffered } from '@/lib/subscription/modeAccess'
 import {
-  MessageCircle, Mic, ArrowUp, ArrowRight, ChevronRight, Sparkles, Search, Plus,
+  MessageCircle, Mic, ArrowUp, ArrowRight, ChevronRight, Sparkles, Search, Plus, X,
   Coffee, Languages, ShieldCheck,
   UtensilsCrossed, ShoppingBag, Plane, Clapperboard, Flower2,
   Music2, Sparkle, PenLine, Users, Star,
@@ -274,11 +278,19 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
   const [heroLine1, heroLine2] = heroGreeting(hero, locale === 'en' ? 'en' : 'vi')
   const router = useRouter()
   const [draft, setDraft] = useState('')
+  // 15/11 (owner): the box has the chat's "+" too: attach pictures / PDF / Word / Excel and choose Deep Research (offered by the plan, as in the chat). The choices travel to the chat page in memory (homeHandoff.ts).
+  const [plusOpen, setPlusOpen] = useState(false)
+  const [deep, setDeep] = useState(false)
+  const deepOffered = useDeepResearchOffered()
+  const tray = useAttachmentTray()
+  const fileRef = useRef<HTMLInputElement>(null)
 
   /** Submitting NAVIGATES. Home never answers in place. */
   function ask(text: string) {
     const q = text.trim()
-    if (!q) return
+    const files = tray.items.map(i => i.file)
+    if (!q && !files.length) return
+    setHomeHandoff({ files: tray.release(), mode: deep && deepOffered ? 'deep' : 'auto' })
     router.push(`/chat?q=${encodeURIComponent(q)}`)
   }
 
@@ -452,10 +464,60 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
               It ran the full width here; in the approved composition it ends roughly where
               Tappy's column begins, which is what keeps the hero reading as one scene with the
               character in it rather than as a full-bleed bar with art parked above it. */}
+          {/* what was chosen with the "+": the files (a picture shows itself, a document its name) and Deep Research, each removable; a refused file says why */}
+          {(tray.items.length > 0 || (deep && deepOffered) || tray.error) && (
+            <div className="mt-5 flex flex-wrap items-center gap-2 lg:mr-[132px] xl:mr-[176px] 2xl:mr-[216px]" data-testid="home-tray">
+              {tray.items.map((it, i) => (it.previewUrl ? (
+                <span key={`${it.file.name}-${i}`} className="relative inline-flex">
+                  {/* eslint-disable-next-line @next/next/no-img-element -- a local preview of the picture the person chose */}
+                  <img src={it.previewUrl} alt="" className="h-14 w-14 rounded-xl border object-cover" style={{ borderColor: 'var(--v3-border)' }} />
+                  <button type="button" onClick={() => tray.remove(i)} aria-label={t('attach.remove')} className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-gray-800 text-white hover:bg-red-500"><X size={10} aria-hidden="true" /></button>
+                </span>
+              ) : (
+                <span key={`${it.file.name}-${i}`} data-testid="home-file-chip" className="inline-flex items-center gap-2 rounded-xl border px-3 py-1.5 text-[13px]" style={{ borderColor: 'var(--v3-border)', color: 'var(--v3-fg-secondary)' }}>
+                  <span aria-hidden="true">{docIcon(it.file.type)}</span>
+                  <span className="max-w-[200px] truncate">{it.file.name}</span>
+                  <button type="button" onClick={() => tray.remove(i)} aria-label={t('attach.remove')} className="rounded-full p-0.5 hover:bg-white/10"><X size={12} aria-hidden="true" /></button>
+                </span>
+              )))}
+              {deep && deepOffered && (
+                <span data-testid="home-deep-chip" className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[12.5px] font-medium" style={{ borderColor: 'color-mix(in srgb, var(--v3-accent) 45%, transparent)', color: 'var(--v3-accent)' }}>
+                  <span aria-hidden="true">🔎</span>{t('mode.deep')}
+                  <button type="button" onClick={() => setDeep(false)} aria-label={t('mode.off')} className="rounded-full p-0.5 hover:bg-white/10"><X size={11} aria-hidden="true" /></button>
+                </span>
+              )}
+              {tray.error && <span role="status" className="text-[12px] text-red-400">{tray.error}</span>}
+            </div>
+          )}
           <form
             onSubmit={(e) => { e.preventDefault(); ask(draft) }}
-            className="v3-ai-composer mt-6 flex items-center gap-3 rounded-2xl px-5 py-3 sm:py-3.5 lg:mr-[132px] xl:mr-[176px] 2xl:mr-[216px]"
+            className={cn('v3-ai-composer relative flex items-center gap-3 rounded-2xl px-5 py-3 sm:py-3.5 lg:mr-[132px] xl:mr-[176px] 2xl:mr-[216px]', tray.items.length > 0 || (deep && deepOffered) || tray.error ? 'mt-3' : 'mt-6')}
           >
+            <button type="button" onClick={() => setPlusOpen(v => !v)} aria-expanded={plusOpen} aria-label={t('composer.plus')} data-testid="home-plus"
+              className="-ml-2 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl transition-colors hover:bg-white/5"
+              style={{ color: plusOpen ? 'var(--v3-accent)' : 'var(--v3-fg-secondary)' }}>
+              <Plus size={20} aria-hidden="true" />
+            </button>
+            {plusOpen && (
+              <>
+                <button type="button" aria-hidden="true" tabIndex={-1} className="fixed inset-0 z-30 cursor-default" onClick={() => setPlusOpen(false)} />
+                <div role="menu" data-testid="home-plus-menu" className="absolute left-3 top-full z-40 mt-2 w-72 rounded-2xl border p-1.5 shadow-xl" style={{ background: 'var(--v3-panel)', borderColor: 'var(--v3-border)' }}>
+                  {([
+                    { key: 'attach', icon: '📎', label: t('composer.attach'), hint: t('composer.attachHint'), on: false, act: () => fileRef.current?.click() },
+                    { key: 'deep', icon: '🔎', label: t('mode.deep'), hint: t('mode.deepHint'), on: deep, act: () => setDeep(v => !v) },
+                  ] as const).filter(item => item.key !== 'deep' || deepOffered).map(item => (
+                    <button key={item.key} type="button" role="menuitem" data-testid={`home-${item.key}`} onClick={() => { item.act(); setPlusOpen(false) }}
+                      className="flex w-full items-start gap-3 rounded-xl px-3 py-2 text-left hover:bg-white/5" style={item.on ? { background: 'color-mix(in srgb, var(--v3-accent) 12%, transparent)' } : undefined}>
+                      <span aria-hidden="true" className="text-lg leading-6">{item.icon}</span>
+                      <span className="min-w-0">
+                        <span className="block text-sm font-medium" style={{ color: 'var(--v3-fg)' }}>{item.label}{item.on ? ' ✓' : ''}</span>
+                        <span className="block text-xs" style={{ color: 'var(--v3-fg-muted)' }}>{item.hint}</span>
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
             <Search size={19} aria-hidden="true" className="flex-shrink-0" style={{ color: 'var(--v3-fg-muted)' }} />
             <input
               value={draft}
@@ -468,6 +530,9 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
               className="min-w-0 flex-1 bg-transparent text-[15px] font-light outline-none placeholder:font-light sm:text-[16.5px]"
               style={{ color: 'var(--v3-fg)' }}
             />
+            {/* after the text field on purpose: the first input of this form is the question, as it always was */}
+            <input ref={fileRef} type="file" multiple accept={ATTACH_ACCEPT} className="hidden" data-testid="home-file-input"
+              onChange={(e) => { const picked = Array.from(e.target.files ?? []); e.target.value = ''; if (picked.length) void tray.add(picked) }} />
             <button
               type="button"
               aria-label={t('v3.home.voiceAria')}

@@ -4,11 +4,12 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import {
-  Archive, ArchiveRestore, ArrowLeft, Check, ChevronDown, ChevronRight, Download, FolderInput, ListChecks, Loader2, MessageCircle, MoreVertical, Pencil, Pin, PinOff, Plus, Search, Trash2,
+  Archive, ArchiveRestore, ArrowLeft, Check, ChevronDown, ChevronRight, Download, FolderInput, Layers, ListChecks, Loader2, MessageCircle, MoreHorizontal, MoreVertical, Pencil, Pin, PinOff, Plus, Search, SlidersHorizontal, Star, Trash2, X,
 } from 'lucide-react'
 import '@/components/chat/v206.css'
 import { conversationEmoji, conversationPreview, V206_LOOK } from '@/lib/chat/v206Look'
-import { cn } from '@/lib/utils'
+import { cn, formatRelativeTime } from '@/lib/utils'
+import { SHELL_REF } from '@/lib/chat/shellRef'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { apiFetch } from '@/lib/account/ageGateClient'
 import {
@@ -31,7 +32,7 @@ type Confirm =
 type ChangeBody = { pinned?: boolean; archived?: boolean; projectId?: string | null }
 
 export default function HistorySidebar() {
-  const { t } = useTranslation()
+  const { t, locale } = useTranslation()
   const pathname = usePathname()
   const router = useRouter()
   const store = useConversationStore()
@@ -323,10 +324,20 @@ export default function HistorySidebar() {
             aria-expanded={!isCollapsed}
             aria-label={`${t(`chatWs.group.${group.key}`)} (${group.items.length}) - ${isCollapsed ? t('chatWs.group.expand') : t('chatWs.group.collapse')}`}
             onClick={() => setCollapsedGroups(prev => { const next = new Set(prev); if (next.has(group.key)) next.delete(group.key); else next.add(group.key); return next })}
-            className="flex w-full items-center justify-between rounded-lg px-2 py-1 font-mono text-[10px] font-bold uppercase tracking-wide text-slate-400 transition-colors hover:text-slate-200"
+            className={cn('flex w-full items-center rounded-lg px-2 py-1 transition-colors', SHELL_REF ? 'gap-2 text-[14px] font-semibold text-slate-100 hover:text-white' : 'justify-between font-mono text-[10px] font-bold uppercase tracking-wide text-slate-400 hover:text-slate-200')}
           >
-            <span><span aria-hidden>{group.key === 'pinned' ? '⭐' : '📅'}</span> {t(`chatWs.group.${group.key}`)} ({group.items.length})</span>
-            {isCollapsed ? <ChevronRight size={12} aria-hidden className="text-slate-500" /> : <ChevronDown size={12} aria-hidden className="text-slate-500" />}
+            {SHELL_REF ? (
+              <>
+                {isCollapsed ? <ChevronRight size={14} aria-hidden className="text-slate-300" /> : <ChevronDown size={14} aria-hidden className="text-slate-300" />}
+                {/* the first layout counts only the pinned group: "Đã ghim (2)", "Hôm nay", "7 ngày qua" */}
+                <span>{t(`chatWs.group.${group.key}`)}{group.key === 'pinned' ? ` (${group.items.length})` : ''}</span>
+              </>
+            ) : (
+              <>
+                <span><span aria-hidden>{group.key === 'pinned' ? '⭐' : '📅'}</span> {t(`chatWs.group.${group.key}`)} ({group.items.length})</span>
+                {isCollapsed ? <ChevronRight size={12} aria-hidden className="text-slate-500" /> : <ChevronDown size={12} aria-hidden className="text-slate-500" />}
+              </>
+            )}
           </button>
         </h3>
         {!isCollapsed && <ul className="space-y-1">
@@ -348,10 +359,11 @@ export default function HistorySidebar() {
                     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); if (selectMode) toggleSelected(conv.id); else router.push(`/chat/${conv.id}`) }
                   }}
                   className={cn(
-                    'group flex w-full cursor-pointer items-center justify-between rounded-xl px-3 py-2 text-left transition-all',
+                    'group flex w-full cursor-pointer items-center justify-between text-left transition-all',
+                    SHELL_REF ? 'rounded-2xl border px-4 py-2.5' : 'rounded-xl px-3 py-2',
                     isSelected ? 'bg-blue-600/20 text-sky-100 ring-1 ring-blue-400/60'
-                      : isActive ? 'border-l-2 border-blue-400 bg-gradient-to-r from-blue-600/30 via-blue-500/15 to-transparent text-sky-200'
-                        : 'text-slate-300 hover:bg-blue-900/20 hover:text-slate-100',
+                      : isActive ? (SHELL_REF ? 'border-blue-400/80 bg-blue-600/15 text-white shadow-[0_0_18px_rgba(37,99,235,.45)]' : 'border-l-2 border-blue-400 bg-gradient-to-r from-blue-600/30 via-blue-500/15 to-transparent text-sky-200')
+                        : cn('text-slate-300 hover:bg-blue-900/20 hover:text-slate-100', SHELL_REF && 'border-transparent'),
                   )}
                 >
                   {selectMode && (
@@ -364,7 +376,7 @@ export default function HistorySidebar() {
                       className="mr-2.5 h-3.5 w-3.5 shrink-0 cursor-pointer accent-blue-500"
                     />
                   )}
-                  <span aria-hidden className="v206-rowicon mr-2.5">{conversationEmoji(conv.category)}</span>
+                  {!SHELL_REF && <span aria-hidden className="v206-rowicon mr-2.5">{conversationEmoji(conv.category)}</span>}
                   <div className="min-w-0 flex-1 pr-2">
                     {isRenaming ? (
                       <input
@@ -386,15 +398,27 @@ export default function HistorySidebar() {
                       <span
                         title={t('chatWs.rename.hint')}
                         onDoubleClick={e => { if (selectMode) return; e.stopPropagation(); startRename(conv.id) }}
-                        className={cn('block truncate text-[13px] font-medium', isActive && 'font-semibold text-white')}
+                        className={cn('block truncate font-medium', SHELL_REF ? 'text-[14px] font-semibold text-white' : 'text-[13px]', !SHELL_REF && isActive && 'font-semibold text-white')}
                       >
                         {title}
                       </span>
                     )}
-                    {!isRenaming && preview && <span data-testid="history-preview" className="mt-0.5 block truncate text-[11px] font-normal text-slate-400">{preview}</span>}
+                    {/* the first layout's second line is WHEN, not a snippet: "Cập nhật 2 ngày trước" in the pinned group, the time of day for today, how long ago for the rest (real update times) */}
+                    {SHELL_REF && !isRenaming && conv.updated_at && (
+                      <span data-testid="history-updated" className="mt-0.5 block truncate text-[12.5px] font-normal text-slate-400">
+                        {group.key === 'today'
+                          ? new Date(conv.updated_at).toLocaleTimeString(locale === 'en' ? 'en-GB' : 'vi-VN', { hour: '2-digit', minute: '2-digit', hour12: false })
+                          : group.key === 'pinned'
+                            ? t('chatWs.row.updated', { when: formatRelativeTime(conv.updated_at, t, locale === 'en' ? 'en' : 'vi') })
+                            : formatRelativeTime(conv.updated_at, t, locale === 'en' ? 'en' : 'vi')}
+                      </span>
+                    )}
+                    {!SHELL_REF && !isRenaming && preview && <span data-testid="history-preview" className="mt-0.5 block truncate text-[11px] font-normal text-slate-400">{preview}</span>}
                   </div>
                   {conv.is_pinned === true && !isRenaming && (
-                    <Pin size={12} aria-label={t('chatWs.pinned.badge')} className="mr-1 shrink-0 text-amber-400" />
+                    SHELL_REF
+                      ? <Star size={17} aria-label={t('chatWs.pinned.badge')} className="mr-1 shrink-0 fill-amber-400 text-amber-400" />
+                      : <Pin size={12} aria-label={t('chatWs.pinned.badge')} className="mr-1 shrink-0 text-amber-400" />
                   )}
                   {!selectMode && !isRenaming && (
                     <button
@@ -403,9 +427,9 @@ export default function HistorySidebar() {
                       aria-haspopup="menu"
                       aria-expanded={menuId === conv.id}
                       onClick={e => { e.stopPropagation(); setMenuView('main'); setMenuId(menuId === conv.id ? null : conv.id) }}
-                      className="shrink-0 rounded-lg p-1 text-slate-400 opacity-0 transition-all hover:bg-blue-800/40 hover:text-white focus:opacity-100 group-hover:opacity-100"
+                      className={cn('shrink-0 rounded-lg p-1 text-slate-400 transition-all hover:bg-blue-800/40 hover:text-white', SHELL_REF ? 'text-slate-300' : 'opacity-0 focus:opacity-100 group-hover:opacity-100')}
                     >
-                      <MoreVertical size={14} aria-hidden />
+                      {SHELL_REF ? <MoreHorizontal size={18} aria-hidden /> : <MoreVertical size={14} aria-hidden />}
                     </button>
                   )}
                 </div>
@@ -481,13 +505,28 @@ export default function HistorySidebar() {
   return (
     <aside
       aria-label={t('chatWs.sidebar.title')}
-      className="relative hidden lg:flex w-[360px] 2xl:w-[400px] shrink-0 flex-col overflow-hidden rounded-2xl border border-blue-500/25 bg-[#091022]/90 shadow-2xl shadow-blue-950/70"
+      className={cn('relative hidden lg:flex w-[360px] 2xl:w-[400px] shrink-0 flex-col overflow-hidden rounded-2xl border', SHELL_REF ? 'shell-panel shell-panel-bg' : 'border-blue-500/25 bg-[#091022]/90 shadow-2xl shadow-blue-950/70')}
     >
       <div className="flex items-center justify-between border-b border-blue-900/30 px-4 py-3.5">
         <div className="flex items-center gap-2">
-          <h2 className="text-sm font-bold tracking-tight text-white">{t('chatWs.sidebar.title')}</h2>
-          <span className="rounded-full border border-blue-500/30 bg-blue-900/40 px-2 py-0.5 font-mono text-[10px] font-bold text-sky-300">{counts.all}</span>
+          <h2 className={cn('font-bold tracking-tight text-white', SHELL_REF ? 'text-base' : 'text-sm')}>{t('chatWs.sidebar.title')}</h2>
+          {!SHELL_REF && <span className="rounded-full border border-blue-500/30 bg-blue-900/40 px-2 py-0.5 font-mono text-[10px] font-bold text-sky-300">{counts.all}</span>}
         </div>
+        {/* the first layout: the select-several control is the icon at the right of the title (same action, same label) */}
+        {SHELL_REF && (
+          <button
+            type="button"
+            onClick={() => (selectMode ? exitSelectMode() : setSelectMode(true))}
+            title={t('chatWs.select.title')}
+            aria-label={selectMode ? t('chatWs.select.done') : t('chatWs.select.on')}
+            aria-pressed={selectMode}
+            disabled={status !== 'ready' || !showConversationList || tabItems.length === 0}
+            data-testid="history-select-toggle"
+            className={cn('flex h-9 w-9 items-center justify-center rounded-xl border transition-all disabled:cursor-not-allowed disabled:opacity-40', selectMode ? 'border-blue-400 bg-blue-600/25 text-sky-200' : 'border-white/10 bg-white/[0.04] text-slate-200 hover:bg-white/10')}
+          >
+            <SlidersHorizontal size={16} aria-hidden />
+          </button>
+        )}
         {/* the mockup's "Tạo mới" lives on top of the rail; the sidebar keeps its own button only when the mockup look is off */}
         {!V206_LOOK && (
           <Link
@@ -507,12 +546,24 @@ export default function HistorySidebar() {
             type="search"
             value={queryInput}
             onChange={e => setQueryInput(e.target.value)}
-            placeholder={t('chatWs.search.placeholder')}
-            aria-label={t('chatWs.search.placeholder')}
-            className="w-full rounded-xl border border-blue-900/40 bg-[#050B18] py-1.5 pl-9 pr-3 text-xs text-slate-200 placeholder-slate-500 transition-all focus:border-blue-500/60 focus:outline-none"
+            placeholder={t(SHELL_REF ? 'chatWs.search.placeholderRef' : 'chatWs.search.placeholder')}
+            aria-label={t(SHELL_REF ? 'chatWs.search.placeholderRef' : 'chatWs.search.placeholder')}
+            className={cn('w-full border bg-[#050B18] pl-9 pr-3 text-slate-200 placeholder-slate-500 transition-all focus:outline-none', SHELL_REF ? 'rounded-2xl border-white/10 py-2.5 text-[13px] focus:border-sky-400/50' : 'rounded-xl border-blue-900/40 py-1.5 text-xs focus:border-blue-500/60')}
           />
         </div>
-        <button
+        {SHELL_REF && (
+          <button
+            type="button"
+            onClick={() => setQueryInput('')}
+            disabled={!queryInput}
+            aria-label={t('chatWs.search.clear')}
+            data-testid="history-search-clear"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-slate-200 transition-all hover:bg-white/10 disabled:cursor-default disabled:opacity-60"
+          >
+            <X size={16} aria-hidden />
+          </button>
+        )}
+        {!SHELL_REF && <button
           type="button"
           onClick={() => (selectMode ? exitSelectMode() : setSelectMode(true))}
           title={t('chatWs.select.title')}
@@ -525,10 +576,10 @@ export default function HistorySidebar() {
         >
           <ListChecks size={14} aria-hidden />
           {selectMode ? t('chatWs.select.done') : t('chatWs.select.on')}
-        </button>
+        </button>}
       </div>
 
-      <div role="tablist" aria-label={t('chatWs.tab.label')} className="flex items-center gap-1 border-b border-blue-900/20 px-3 pb-1.5 pt-2 text-[11px]">
+      <div role="tablist" aria-label={t('chatWs.tab.label')} className={cn('flex items-center border-b border-blue-900/20 px-3 pb-1.5 pt-2 text-[11px]', SHELL_REF ? 'gap-2 border-0 pb-2' : 'gap-1')}>
         {(['all', 'pinned', 'projects', 'archived'] as const).map(key => (
           <button
             key={key}
@@ -537,11 +588,16 @@ export default function HistorySidebar() {
             aria-selected={tab === key}
             onClick={() => changeTab(key)}
             className={cn(
-              'flex-1 truncate rounded-lg px-1 py-1 text-center font-medium transition-all',
-              tab === key ? 'border border-blue-500/30 bg-blue-600/30 text-sky-300' : 'text-slate-400 hover:bg-blue-900/20 hover:text-slate-200',
+              'truncate font-medium transition-all',
+              SHELL_REF
+                // the first layout: round pills, the chosen one solid blue, an icon before "pinned" and "projects", no counts
+                ? cn('flex items-center justify-center gap-1.5 rounded-full px-3.5 py-1.5 text-[13px]', key === 'archived' ? 'flex-none' : 'flex-none', tab === key ? 'border border-blue-400/60 bg-[#1D68FE] font-semibold text-white shadow-[0_0_14px_rgba(29,104,254,.45)]' : 'border border-white/10 bg-white/[0.04] text-slate-200 hover:bg-white/10')
+                : cn('flex-1 rounded-lg px-1 py-1 text-center', tab === key ? 'border border-blue-500/30 bg-blue-600/30 text-sky-300' : 'text-slate-400 hover:bg-blue-900/20 hover:text-slate-200'),
             )}
           >
-            {t(`chatWs.tab.${key}`)} ({counts[key]})
+            {SHELL_REF && key === 'pinned' && <Pin size={13} aria-hidden />}
+            {SHELL_REF && key === 'projects' && <Layers size={13} aria-hidden />}
+            {SHELL_REF ? (key === 'pinned' ? t('chatWs.group.pinned') : t(`chatWs.tab.${key}`)) : <>{t(`chatWs.tab.${key}`)} ({counts[key]})</>}
           </button>
         ))}
       </div>
@@ -638,14 +694,20 @@ export default function HistorySidebar() {
 
       {/* the mockup's footer bar: the button that loads the next page of older conversations (how many remain is not known until they are loaded, so no count is shown) */}
       {status === 'ready' && hasMore && tab !== 'projects' && (
-        <div className="border-t border-blue-900/30 bg-[#060D1E]/60 p-2.5 text-center">
+        <div className={SHELL_REF ? 'px-3 pb-3 pt-1' : 'border-t border-blue-900/30 bg-[#060D1E]/60 p-2.5 text-center'}>
           <button
             type="button"
             onClick={() => void loadMore()}
             disabled={loadingMore}
-            className="flex w-full items-center justify-center gap-1.5 rounded-xl border border-blue-900/40 bg-[#091226] px-3 py-1.5 text-xs font-medium text-blue-300 transition-all hover:border-blue-500/50 hover:bg-blue-900/30 hover:text-white disabled:cursor-wait disabled:opacity-60"
+            className={SHELL_REF
+              ? 'flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-[14px] font-medium text-slate-200 transition-all hover:bg-white/5 hover:text-white disabled:cursor-wait disabled:opacity-60'
+              : 'flex w-full items-center justify-center gap-1.5 rounded-xl border border-blue-900/40 bg-[#091226] px-3 py-1.5 text-xs font-medium text-blue-300 transition-all hover:border-blue-500/50 hover:bg-blue-900/30 hover:text-white disabled:cursor-wait disabled:opacity-60'}
           >
-            {loadingMore ? <><Loader2 size={13} className="animate-spin" aria-hidden />{t('chatWs.more.loading')}</> : <><Plus size={13} aria-hidden />{t('chatWs.more.load')}</>}
+            {loadingMore
+              ? <><Loader2 size={13} className="animate-spin" aria-hidden />{t('chatWs.more.loading')}</>
+              : SHELL_REF
+                ? <><ChevronRight size={14} aria-hidden className="text-slate-400" />{t('chatWs.more.load')}</>
+                : <><Plus size={13} aria-hidden />{t('chatWs.more.load')}</>}
           </button>
         </div>
       )}

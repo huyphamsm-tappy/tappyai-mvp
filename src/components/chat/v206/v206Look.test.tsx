@@ -50,6 +50,53 @@ describe('V206PlaceCard', () => {
     expect(screen.getByTestId('v206-pc-save')).toBeTruthy()
   })
 
+  it('the points the answer gave about the venue are the "highlights" box (the mockup\'s ĐẶC TRƯNG NỔI BẬT), each with its bold label; no points, no box', () => {
+    const { container, rerender } = render(<V206PlaceCard p={lost} position={1} ranked={false} notes={[{ lead: 'Không gian', text: 'ấm cúng, sân vườn' }, { text: 'Hợp buổi tối cuối tuần' }]} />)
+    const box = screen.getByTestId('v206-pc-notes')
+    expect(box.textContent).toContain('Đặc trưng nổi bật')
+    expect(box.querySelector('li strong')?.textContent).toBe('Không gian: ')
+    expect(box.textContent).toContain('Hợp buổi tối cuối tuần')
+    expect(container.querySelector('[data-testid="v206-pc-notes-src"]')).toBeNull()
+    rerender(<V206PlaceCard p={lost} position={1} ranked={false} notes={[{ text: 'x' }]} noteSources={['madamelam.com', 'Google Maps']} />)
+    expect(screen.getByTestId('v206-pc-notes-src').textContent).toBe('Nguồn: madamelam.com, Google Maps')
+    rerender(<V206PlaceCard p={lost} position={1} ranked={false} notes={[]} />)
+    expect(container.querySelector('[data-testid="v206-pc-notes"]')).toBeNull()
+    rerender(<V206PlaceCard p={lost} position={1} ranked={false} />)
+    expect(container.querySelector('[data-testid="v206-pc-notes"]')).toBeNull()
+  })
+
+  it('two booking buttons that say the same thing are drawn once (the live turn showed "Đặt chỗ" twice)', () => {
+    const twice = { ...lost, id: 'p-twice', actions: [
+      { kind: 'reservation', urlKind: 'direct', url: 'https://a.example/book', labelKey: 'x' },
+      { kind: 'reservation', urlKind: 'direct', url: 'https://a.example/reserve', labelKey: 'x' },
+      { kind: 'maps', urlKind: 'direct', url: 'https://www.google.com/maps/place/lost', labelKey: 'v3.action.maps' },
+    ] } as unknown as LivePlace
+    const { container } = render(<V206PlaceCard p={twice} position={0} ranked={false} />)
+    expect(container.querySelectorAll('[data-action-kind="reservation"]')).toHaveLength(1)
+  })
+
+  it('a group left with one card draws it as the standing-alone card (full width), not a narrow card in an empty row', () => {
+    const { container } = render(<PlaceDecision view={view([lost])} forceV206 />)
+    expect(container.querySelector('[role="listitem"]')?.className).toContain('w-full')
+    expect(container.querySelector('[data-testid="place-card"]')?.getAttribute('data-solo')).toBe('true')
+    cleanup()
+    const two = render(<PlaceDecision view={view([offDry, lost])} forceV206 />)
+    expect(two.container.querySelector('[role="listitem"]')?.className).not.toContain('w-full')
+    expect(two.container.querySelector('[data-testid="place-card"]')?.getAttribute('data-solo')).toBeNull()
+  })
+
+  it('the place decision hands each venue its own points by place id, in the group and standing alone', () => {
+    const notes = new Map([['p-lost', [{ lead: 'Món', text: 'cocktail' }]]])
+    const { container } = render(<PlaceDecision view={view([offDry, lost])} forceV206 notes={notes} />)
+    expect(container.querySelectorAll('[data-testid="v206-pc-notes"]')).toHaveLength(1)
+    cleanup()
+    const solo = render(<PlaceDecision view={view([offDry, lost])} forceV206 layout="solo" soloId="p-lost" notes={notes} />)
+    expect(solo.container.querySelector('[data-testid="v206-pc-notes"]')?.textContent).toContain('cocktail')
+    cleanup()
+    const other = render(<PlaceDecision view={view([offDry, lost])} forceV206 layout="solo" soloId="p-offdry" notes={notes} />)
+    expect(other.container.querySelector('[data-testid="v206-pc-notes"]')).toBeNull()
+  })
+
   it('the closed card says closed, and shows the 5 star rating with its 753 reviews', () => {
     render(<V206PlaceCard p={offDry} position={0} ranked={false} />)
     expect(screen.getByTestId('v206-pc-rating').textContent).toBe('★ 5.0 (753)')
@@ -105,6 +152,15 @@ describe('V206PlaceCard', () => {
 })
 
 describe('PlaceDecision picks the card by the flag', () => {
+  it('15/11: with the look the group is three cards that fill a wide row; without it the old fixed-width cards', () => {
+    const on = render(<PlaceDecision view={view([offDry, lost])} forceV206 />)
+    const items = [...on.container.querySelectorAll('[data-testid="place-carousel"] [role="listitem"]')]
+    expect(items.length).toBe(2)
+    expect(items.every(i => i.className.includes('lg:w-[calc((100%-1.5rem)/3)]'))).toBe(true)
+    cleanup()
+    const off = render(<PlaceDecision view={view([offDry, lost])} forceV206={false} />)
+    expect([...off.container.querySelectorAll('[data-testid="place-carousel"] [role="listitem"]')].every(i => !i.className.includes('lg:w-[calc'))).toBe(true)
+  })
   it('flag off (default): the old photo card, no v206 card', () => {
     const { container } = render(<PlaceDecision view={view([offDry, lost])} />)
     expect(container.querySelector('[data-v206-card]')).toBeNull()
@@ -114,7 +170,18 @@ describe('PlaceDecision picks the card by the flag', () => {
   it('flag on: the mockup card for every place', () => {
     const { container } = render(<PlaceDecision view={view([offDry, lost])} forceV206 />)
     expect(container.querySelectorAll('[data-v206-card="true"]')).toHaveLength(2)
-    expect(container.querySelector('img')).toBeNull()
+    // 14/11 (owner's first layout: a card of a group has its picture on top with the rank badge on it): only a place that HAS a real picture draws one; none is faked for the other
+    const withPhoto = container.querySelectorAll('[data-testid="place-thumb"]')
+    expect(withPhoto).toHaveLength(1)
+    expect(withPhoto[0].querySelector('img')?.getAttribute('src')).toBe('https://lh3.googleusercontent.com/off')
+    expect(container.querySelectorAll('img')).toHaveLength(1)
+  })
+  it('flag on: the rank badge sits on the picture when the card has one, and stays in the first row when it has none', () => {
+    const { container } = render(<PlaceDecision view={view([offDry, lost])} forceV206 />)
+    const cards = [...container.querySelectorAll('[data-v206-card="true"]')]
+    const [a, b] = cards.map(c => ({ thumbBadge: !!c.querySelector('.v206-pc-thumb .v206-pc-badge'), rowBadge: !!c.querySelector('.v206-pc-top .v206-pc-badge') }))
+    expect(a.rowBadge && a.thumbBadge).toBe(false) // never drawn twice
+    expect(b.thumbBadge).toBe(false) // no picture: no thumb
   })
 })
 

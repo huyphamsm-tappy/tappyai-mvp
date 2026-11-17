@@ -2,13 +2,14 @@
 // Workspace v206: the tips drawer and the entity-profile drawer, and the host that shows whichever the store says is open. They show ONLY what the answer really has:
 // the tips are the answer's own (a plan's local tips, the callouts it wrote), the profile is a place card's / plan stop's own fields. No verification claim, no source, no
 // partner or discount is ever made up; with nothing real to show the control that opens them is not rendered.
-import { useMemo, useState, useSyncExternalStore } from 'react'
+import { useEffect, useMemo, useState, useSyncExternalStore } from 'react'
 import { Lightbulb } from 'lucide-react'
 import OverlayDrawer from './OverlayDrawer'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { filterTips, type EntityLabels, type EntityProfile, type PlanTip } from '@/lib/chat/v206'
 import { v206Store } from '@/lib/chat/v206Store'
 import type { WikiEntity } from '@/lib/chat/entityProfiles'
+import { fetchEntityFacts, type EntityFacts } from '@/lib/chat/entityFacts'
 
 /** Below this many tips a search box is noise. */
 const SEARCH_FROM = 4
@@ -69,7 +70,15 @@ export function EntityDrawer({ profile, onClose }: { profile: EntityProfile; onC
  * No verification badge, no figure of ours, no source that was not fetched.
  */
 export function WikiDrawer({ profile, onClose }: { profile: WikiEntity; onClose: () => void }) {
-  const { t } = useTranslation()
+  const { t, locale } = useTranslation()
+  // 15/11 (owner's mockup): the data table - a few structured facts from Wikidata (born, nationality, education ... / founded, headquarters ...), only those it has; no table when it has none
+  const [data, setData] = useState<EntityFacts>({ facts: [] })
+  useEffect(() => {
+    let live = true
+    setData({ facts: [] })
+    fetchEntityFacts(profile.title, profile.lang, locale === 'en' ? 'en' : 'vi').then(d => { if (live) setData(d) }, () => { /* no table */ })
+    return () => { live = false }
+  }, [profile.title, profile.lang, locale])
   return (
     <OverlayDrawer title={profile.name} subtitle={profile.description || undefined} closeLabel={t('v206.close')} onClose={onClose} testId="v206-wiki-drawer"
       footer={<><span>{t('v206.wiki.note')}</span><button type="button" className="v206-kbd" onClick={onClose}>{t('v206.close')} [Esc]</button></>}>
@@ -79,11 +88,66 @@ export function WikiDrawer({ profile, onClose }: { profile: WikiEntity; onClose:
         <img src={profile.image} alt={profile.title} className="v206-hero v206-wiki-photo" loading="lazy" referrerPolicy="no-referrer" onError={e => { e.currentTarget.style.display = 'none' }} />
       )}
       {profile.title !== profile.name && <p className="v206-wiki-title">{profile.title}</p>}
+      {data.facts.length > 0 && (
+        <>
+          <p className="v206-wiki-kind">{t('v206.wiki.facts')}</p>
+          <dl className="v206-facts" data-testid="v206-wiki-facts">
+            {data.facts.map((f, i) => <div key={`${f.label}-${i}`}><dt>{f.label}</dt><dd>{f.value}</dd></div>)}
+          </dl>
+        </>
+      )}
+      <p className="v206-wiki-kind">{t('v206.wiki.overview')}</p>
       <p className="v206-wiki-extract" data-testid="v206-wiki-extract">{profile.extract}</p>
       <p className="v206-wiki-src">
         <span>{t('v206.wiki.source')}</span>
         {' · '}
-        <a href={profile.href} target="_blank" rel="noopener noreferrer" className="v206-wiki-link" data-testid="v206-wiki-link">{t('v206.wiki.read')}</a>
+        <a href={profile.href} target="_blank" rel="noopener noreferrer" data-reader="off" className="v206-wiki-link" data-testid="v206-wiki-link">{t('v206.wiki.read')}</a>
+        {data.wikidata && <>{' · '}<a href={data.wikidata} target="_blank" rel="noopener noreferrer" data-reader="off" className="v206-wiki-link" data-testid="v206-wikidata-link">{t('v206.wiki.dataSource')}</a></>}
+      </p>
+    </OverlayDrawer>
+  )
+}
+
+interface LinkPreview { ok: boolean; host?: string; title?: string; siteName?: string; description?: string; publishedAt?: string | null; passages?: string[] }
+
+/**
+ * 15/11 (owner): a link of an answer, read beside the chat. Shows what the page itself says of itself (title, site, date, description, its first passages: /api/link-preview) and ends with the button to
+ * the original page, which stays the source. A page that cannot be read still opens the drawer with its address and that button: a tap never leads nowhere.
+ */
+export function LinkDrawer({ url, title, onClose }: { url: string; title: string; onClose: () => void }) {
+  const { t, locale } = useTranslation()
+  const [data, setData] = useState<LinkPreview | 'loading'>('loading')
+  useEffect(() => {
+    let live = true
+    setData('loading')
+    fetch(`/api/link-preview?u=${encodeURIComponent(url)}`)
+      .then(r => (r.ok ? r.json() : { ok: false }))
+      .then((j: LinkPreview) => { if (live) setData(j) }, () => { if (live) setData({ ok: false }) })
+    return () => { live = false }
+  }, [url])
+  const host = (() => { try { return new URL(url).hostname.replace(/^www\./, '') } catch { return '' } })()
+  const page = data === 'loading' ? null : data
+  const heading = (page?.ok && page.title) || title || host
+  const published = page?.ok && page.publishedAt ? new Date(page.publishedAt) : null
+  const date = published && !Number.isNaN(published.getTime()) ? published.toLocaleDateString(locale === 'en' ? 'en-GB' : 'vi-VN') : ''
+  return (
+    <OverlayDrawer title={heading} subtitle={(page?.ok && page.siteName) || host} closeLabel={t('v206.close')} onClose={onClose} testId="v206-link-drawer"
+      footer={<><span>{t('v206.link.note')}</span><button type="button" className="v206-kbd" onClick={onClose}>{t('v206.close')} [Esc]</button></>}>
+      <p className="v206-wiki-kind">{t('v206.link.kind')}</p>
+      {data === 'loading' && <p className="v206-note" role="status" data-testid="v206-link-loading">{t('v206.link.loading')}</p>}
+      {page?.ok && (
+        <article data-testid="v206-link-article">
+          {date && <p className="v206-wiki-title">{t('v206.link.published', { date })}</p>}
+          {page.description && <p className="v206-wiki-extract" data-testid="v206-link-description">{page.description}</p>}
+          {(page.passages ?? []).map((p, i) => <p key={i} className="v206-wiki-extract" style={{ opacity: 0.92 }}>{p}</p>)}
+          {!page.description && !(page.passages ?? []).length && <p className="v206-note" role="status">{t('v206.link.unreadable')}</p>}
+        </article>
+      )}
+      {page && !page.ok && <p className="v206-note" role="status" data-testid="v206-link-unreadable">{t('v206.link.unreadable')}</p>}
+      <p className="v206-wiki-src">
+        <span>{host}</span>
+        {' · '}
+        <a href={url} target="_blank" rel="noopener noreferrer" data-reader="off" className="v206-wiki-link" data-testid="v206-link-original">{t('v206.link.open')}</a>
       </p>
     </OverlayDrawer>
   )
@@ -106,5 +170,6 @@ export default function V206DrawerHost() {
   if (!st.drawer) return null
   if (st.drawer.kind === 'tips') return <TipsDrawer tips={st.tips} onClose={v206Store.closeDrawer} />
   if (st.drawer.kind === 'wiki') return <WikiDrawer profile={st.drawer.profile} onClose={v206Store.closeDrawer} />
+  if (st.drawer.kind === 'link') return <LinkDrawer url={st.drawer.url} title={st.drawer.title} onClose={v206Store.closeDrawer} />
   return <EntityDrawer profile={st.drawer.profile} onClose={v206Store.closeDrawer} />
 }

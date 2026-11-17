@@ -9,6 +9,7 @@
 import type { HistoryConversation } from '@/lib/chat/workspace/historyModel'
 import type { ChatProject } from '@/components/chat/workspace/useConversationList'
 import type { PlacesLiveView, LivePlace, LiveAction } from '@/lib/recommendation/liveView'
+import type { PresentationFrame } from '@/lib/presentation/read'
 
 export interface HarnessMessage { role: 'user' | 'assistant'; content: string }
 
@@ -24,9 +25,32 @@ export interface HarnessScenario {
   placesView?: PlacesLiveView
   /** a project to open (kind 'project') */
   projectId?: string
+  /** the blocks the model declared for the (last) answer, as the live frame the product reads (15/11: the subject cards) */
+  presentation?: PresentationFrame
 }
 
-export const assistantTextOf = (s: HarnessScenario): string => s.messages.filter(m => m.role === 'assistant').map(m => m.content).join('\n\n')
+/** The subject cards the model would declare for scenario 1: sample text of the mockup, labelled as such; no link, no picture of ours (the entity-profile fixture answers with no picture). */
+const S1_PROFILES: PresentationFrame = {
+  presentation: {
+    v: 1,
+    blocks: [{
+      id: 'prof1', type: 'profiles', items: [
+        { name: 'Elon Musk', subtitle: '1971 · 55 tuổi trong năm 2026', points: [
+          { lead: 'PayPal', text: 'tham gia xây dựng X.com, tiền thân của PayPal.' }, { lead: 'Tesla', text: 'thúc đẩy xe điện trở thành ngành công nghiệp quy mô lớn.' },
+          { lead: 'SpaceX', text: 'thương mại hóa tên lửa tái sử dụng, tạo bước ngoặt cho ngành phóng vệ tinh.' }, { lead: 'Starlink', text: 'xây dựng mạng Internet vệ tinh toàn cầu.' }, { lead: 'xAI', text: 'bước vào cuộc đua AI với Grok.' },
+        ], sources: ['Tesla Investor Relations', 'Biography.com', 'TechCrunch'] },
+        { name: 'Sam Altman', subtitle: '1985 · 41 tuổi trong năm 2026', points: [
+          { lead: 'Loopt', text: 'startup đầu tiên, sau đó được Green Dot mua lại.' }, { lead: 'Y Combinator', text: 'cựu Chủ tịch vườn ươm khởi nghiệp số 1 thế giới, đỡ đầu Airbnb, Stripe, Reddit.' },
+          { lead: 'OpenAI', text: 'đồng sáng lập và CEO, biến ChatGPT thành sản phẩm công nghệ phát triển nhanh nhất lịch sử.' }, { lead: 'Worldcoin (World Network)', text: 'mạng lưới định danh sinh trắc học toàn cầu thời đại AI.' },
+          { lead: 'Helion Energy', text: 'đầu tư 375 triệu USD đặt cược vào năng lượng nhiệt hạch sạch.' },
+        ], sources: ['Y Combinator', 'OpenAI', 'Reuters'] },
+      ],
+    }],
+  },
+  links: {},
+}
+
+export const assistantTextOf =(s: HarnessScenario): string => s.messages.filter(m => m.role === 'assistant').map(m => m.content).join('\n\n')
 
 const MIN = 60_000
 const HOUR = 60 * MIN
@@ -270,7 +294,7 @@ const PQ_PLAN: HarnessMessage[] = [
 ]
 
 export const HARNESS_SCENARIOS: HarnessScenario[] = [
-  { n: 1, label: 'Elon vs Sam', conversationId: 'h-elon', kind: 'chat', messages: [{ role: 'user', content: 'So sánh 2 cha nội Elon với Sam coi cha nào giỏi hơn' }, { role: 'assistant', content: S1_ANSWER }] },
+  { n: 1, label: 'Elon vs Sam', conversationId: 'h-elon', kind: 'chat', messages: [{ role: 'user', content: 'So sánh 2 cha nội Elon với Sam coi cha nào giỏi hơn' }, { role: 'assistant', content: S1_ANSWER }], presentation: S1_PROFILES },
   { n: 2, label: 'Tesla Fact', conversationId: 'h-tesla', kind: 'chat', messages: [{ role: 'user', content: 'Tesla có phải do Elon sáng lập từ đầu không? Kể tóm tắt giai đoạn đầu' }, { role: 'assistant', content: S2_ANSWER }] },
   { n: 3, label: 'Thảo Điền', conversationId: 'h-thaodien', kind: 'chat', messages: [{ role: 'user', content: 'Tư vấn cho tôi quán ăn tối cao cấp ở Thảo Điền Quận 2 cuối tuần này, không gian ấm cúng, đồ ăn ngon' }, { role: 'assistant', content: S3_ANSWER }], placesView: S3_VIEW },
   { n: 4, label: 'Đà Lạt Travel', conversationId: 'h-dalat', kind: 'chat', messages: [{ role: 'user', content: 'Lên giúp mình lịch trình Đà Lạt 3N2Đ cho gia đình có bé 5 tuổi, ưu tiên di chuyển nhẹ nhàng, không đi quá nhiều điểm dốc và có chỗ nghỉ trưa thoải mái.' }, { role: 'assistant', content: S4_ANSWER }] },

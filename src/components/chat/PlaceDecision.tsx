@@ -399,7 +399,7 @@ function PlaceCard({ p, position, ranked }: { p: LivePlace; position: number; ra
  * `forceV206` is a test seam: it overrides the build flags (NEXT_PUBLIC_WORKSPACE_V206 + NEXT_PUBLIC_RESPONSE_PRESENTATION).
  * `layout="solo"` + `soloId`: ONE card of the view standing alone under the text that talks about it (placeAnchoring decides which and where); no filters, carousel or "show more".
  */
-export default function PlaceDecision({ view, forceV206, layout, soloId }: { view: PlacesLiveView | null; forceV206?: boolean; layout?: 'group' | 'solo'; soloId?: string }) {
+export default function PlaceDecision({ view, forceV206, layout, soloId, notes, noteSources }: { view: PlacesLiveView | null; forceV206?: boolean; layout?: 'group' | 'solo'; soloId?: string; /** by place id: the points the answer gave about that venue (drawn inside its card in the v206 look) */ notes?: ReadonlyMap<string, ReadonlyArray<{ lead?: string; text: string }>>; /** by place id: the names of the sources those points rest on */ noteSources?: ReadonlyMap<string, readonly string[]> }) {
   const { t } = useTranslation()
   // Memoised together so the filter row is not rebuilt on every keystroke elsewhere
   // in the chat; `view` is a stable object for the life of the message.
@@ -423,7 +423,7 @@ export default function PlaceDecision({ view, forceV206, layout, soloId }: { vie
     return (
       <div className={cn('mt-3 animate-fade-in', view.preliminary && 'opacity-80')} data-testid="place-decision" data-layout="solo" data-domain={view.domain} data-preliminary={view.preliminary ? 'true' : undefined}>
         {(forceV206 ?? V206_LOOK)
-          ? <V206PlaceCard p={one} position={Math.max(0, position)} ranked={ranked} solo />
+          ? <V206PlaceCard p={one} position={Math.max(0, position)} ranked={ranked} solo notes={notes?.get(one.id)} noteSources={noteSources?.get(one.id)} />
           : <PlaceCard p={one} position={Math.max(0, position)} ranked={ranked} />}
       </div>
     )
@@ -436,6 +436,7 @@ export default function PlaceDecision({ view, forceV206, layout, soloId }: { vie
   const folded = active === 'all' && !expanded && order.hidden.length > 0
   const shown = (folded ? order.visible : ordered).filter(filter.match)
   const hiddenCount = folded ? order.hidden.filter(filter.match).length : 0
+  const alone = (forceV206 ?? V206_LOOK) && ordered.length === 1
 
   return (
     <div className={cn('mt-3 animate-fade-in', view.preliminary && 'opacity-80')} data-testid="place-decision" data-domain={view.domain} data-pick-unmatched={view.pickUnmatched ? 'true' : undefined} data-preliminary={view.preliminary ? 'true' : undefined}>
@@ -469,11 +470,13 @@ export default function PlaceDecision({ view, forceV206, layout, soloId }: { vie
         className="flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain scroll-smooth pb-2 [scrollbar-width:thin]"
       >
         {shown.map((p) => (
-          <div key={p.id} role="listitem" className="w-[85%] flex-none snap-start sm:w-[320px]">
+          // the first layout: on a wide column the group is three cards that fill the row (gap 0.75rem x 2); more than three keep scrolling sideways
+          // 16/11: a group left with ONE card (the others stand under their own text) is drawn full width like a card standing alone, not a third-width card in an empty row
+          <div key={p.id} role="listitem" className={cn('flex-none snap-start', alone ? 'w-full' : 'w-[85%] sm:w-[320px]', (forceV206 ?? V206_LOOK) && !alone && 'lg:w-[calc((100%-1.5rem)/3)]')}>
             {/* A.4 (2026-09-19): when the reply named venues and none matched a row, the order is the
                 engine's, not the model's — no "#1" and no lead, exactly as an unranked set. */}
             {(forceV206 ?? V206_LOOK)
-              ? <V206PlaceCard p={p} position={ordered.indexOf(p)} ranked={view.ranked !== false && !view.pickUnmatched} />
+              ? <V206PlaceCard p={p} position={ordered.indexOf(p)} ranked={view.ranked !== false && !view.pickUnmatched} solo={alone} notes={notes?.get(p.id)} noteSources={noteSources?.get(p.id)} />
               : <PlaceCard p={p} position={ordered.indexOf(p)} ranked={view.ranked !== false && !view.pickUnmatched} />}
           </div>
         ))}

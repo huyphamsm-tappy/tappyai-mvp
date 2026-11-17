@@ -1,8 +1,17 @@
 import { describe, it, expect } from 'vitest'
 import { parseDoc } from '@/lib/answerDoc/parse'
 import {
-  amendedSections, arrivalOf, buildToc, embedAnchors, footnotesOf, isSourcesSection, linkCitations, plainHeading, safeId, splitSections, stripTitleLine,
+  amendedSections, arrivalOf, buildToc, embedAnchors, footnotesOf, isSourcesSection, linkCitations, plainHeading, safeId, splitSections, stripTitleLine, withoutTrailingSources,
 } from './presentation'
+
+describe('withoutTrailingSources (16/11, UAT 60)', () => {
+  it('a section that ends with its own small heading and numbered source lines loses them; anything else gives null', () => {
+    const s = '## 6. Điều chưa chắc\n\nCòn thiếu số liệu [1].\n\n### Nguồn tham khảo\n\n1. Giá nhà — cafef.vn, 15/11/2026\n2. Lãi vay — vnexpress.net, 14/11/2026\n'
+    expect(withoutTrailingSources(s)).toBe('## 6. Điều chưa chắc\n\nCòn thiếu số liệu [1].\n')
+    expect(withoutTrailingSources('## Tóm tắt\n\nChỉ có chữ.')).toBeNull()
+    expect(withoutTrailingSources('## A\n\ntext\n\n### Ghi chú\n\nmột dòng thường\n1. chỉ một — a.vn')).toBeNull()
+  })
+})
 
 // RFC-001 section 4: the pure parts of the response presentation. The expectations are written from the RFC (embeds BETWEEN the paragraphs, the contents from the report's REAL headings,
 // numbered footnotes linked to the sources list, a section drawn only when complete, nothing removed when one is rewritten) - not from what the first implementation happened to do.

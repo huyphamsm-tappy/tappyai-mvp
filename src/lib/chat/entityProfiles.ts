@@ -16,6 +16,11 @@ export interface WikiEntity {
   lang: 'vi' | 'en'
 }
 
+/** A subject the server resolved for the answer ([TAPPY_MEDIA] entity) as the profile the drawer shows: the same Wikipedia summary, picture and article. Pure. */
+export function wikiFromMedia(e: { name: string; summary: string; image?: string; href: string }): WikiEntity {
+  return { name: e.name, title: e.name, description: '', extract: e.summary, image: e.image ?? null, href: e.href, lang: /^https:\/\/en\./i.test(e.href) ? 'en' : 'vi' }
+}
+
 const ENDPOINT = '/api/entity-profile'
 const cache = new Map<string, WikiEntity | null>()
 const inflight = new Map<string, Promise<void>>()

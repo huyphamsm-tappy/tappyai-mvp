@@ -7,6 +7,7 @@ import type { HistoryConversation } from '@/lib/chat/workspace/historyModel'
 import ChatConversation from '@/app/(app)/chat/[id]/ChatConversation'
 import { projectViewStore } from '@/lib/chat/workspace/projectView'
 import { rememberPlacesView } from '@/lib/recommendation/liveViewCache'
+import { rememberPresentation } from '@/lib/presentation/read'
 import { HARNESS_PROJECTS, HARNESS_SCENARIOS, harnessStoreItems, scenarioByParam } from '@/lib/dev/v206Harness/fixtures'
 import { createHarnessFetch } from '@/lib/dev/v206Harness/harnessFetch'
 
@@ -32,6 +33,7 @@ export default function HarnessClient({ scenarioParam, showBar, nowMs }: { scena
   useMemo(() => {
     const last = scenario.messages[scenario.messages.length - 1]
     if (scenario.placesView && last) rememberPlacesView(last.content, scenario.placesView)
+    if (scenario.presentation && last) rememberPresentation(last.content, scenario.presentation)
   }, [scenario])
 
   useEffect(() => {

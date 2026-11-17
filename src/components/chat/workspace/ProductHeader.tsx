@@ -5,11 +5,19 @@ import Link from 'next/link'
 import '@/components/chat/v206.css'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { planBadgeLabel } from '@/lib/chat/v206Look'
+import { SHELL_REF } from '@/lib/chat/shellRef'
+import ShellHeader from './ShellHeader'
 
 // The mockup's product header (80 px, above the three columns): logo, "TappyAI" with the REAL plan badge, tagline. The badge is the person's active plan (GET /api/payments/me, the same
 // source as the account page); no active plan, a guest, or the subscriptions switched off = no badge. Nothing else is drawn: no verification pill, no partner banner.
 
-export default function ProductHeader() {
+export default function ProductHeader({ historyOpen = true, onToggleHistory }: { historyOpen?: boolean; onToggleHistory?: () => void } = {}) {
+  // NEXT_PUBLIC_SHELL_REF (default off): the first layout's header; every hook of the old header stays below the early return's component boundary
+  if (SHELL_REF && onToggleHistory) return <ShellHeader historyOpen={historyOpen} onToggleHistory={onToggleHistory} />
+  return <MockupHeader />
+}
+
+function MockupHeader() {
   const { t } = useTranslation()
   const [badge, setBadge] = useState<string | null>(null)
   useEffect(() => {

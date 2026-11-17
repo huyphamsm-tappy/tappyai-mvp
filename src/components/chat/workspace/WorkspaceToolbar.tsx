@@ -7,6 +7,7 @@ import '@/components/chat/v206.css'
 import { WORKSPACE_V206, headerBadges } from '@/lib/chat/v206'
 import { v206Store } from '@/lib/chat/v206Store'
 import { cn, formatRelativeTime } from '@/lib/utils'
+import { SHELL_REF } from '@/lib/chat/shellRef'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { buildTranscriptMarkdown, exportFileName, messageText } from '@/lib/chat/workspace/historyModel'
 import { OPEN_SAVED_EVENT, V206_LOOK, conversationEmoji, statusLine } from '@/lib/chat/v206Look'
@@ -62,11 +63,12 @@ export default function WorkspaceToolbar() {
 
   return (
     <>
-      <div className="hidden shrink-0 items-center justify-between border-b border-blue-900/30 bg-[#091022]/80 px-5 py-3 backdrop-blur-md lg:flex">
+      {/* the first layout: the conversation is ONE surface (the panel's); the header is a row of it, with no bar of its own and no line under it */}
+      <div className={cn('hidden shrink-0 items-center justify-between px-5 py-3 lg:flex', SHELL_REF ? 'bg-transparent' : 'border-b border-blue-900/30 bg-[#091022]/80 backdrop-blur-md')}>
         <div className="flex min-w-0 items-center gap-3">
           {V206_LOOK && <span aria-hidden className="v206-convicon" data-testid="v206-convicon">{conversationEmoji(conv?.category)}</span>}
           <div className="min-w-0">
-            <h1 className="truncate text-sm font-bold text-white md:text-base">{conv?.title || t('chatWs.header.untitled')}</h1>
+            <h1 className={cn('truncate font-bold text-white', SHELL_REF ? 'text-base md:text-[17px]' : 'text-sm md:text-base')}>{conv?.title || t('chatWs.header.untitled')}</h1>
             {conv && (
               <p className="flex flex-wrap items-center gap-1.5 text-[11px] text-slate-400" data-testid="v206-status">
                 <span>
@@ -96,9 +98,12 @@ export default function WorkspaceToolbar() {
               type="button"
               onClick={exportTranscript}
               title={t('chatWs.menu.export')}
-              className="flex items-center gap-1.5 rounded-xl border border-transparent px-3 py-1.5 text-xs font-medium text-slate-300 transition-colors hover:border-blue-900/40 hover:bg-blue-900/20 hover:text-white"
+              className={SHELL_REF
+                ? 'flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-slate-200 transition-colors hover:bg-white/10 hover:text-white'
+                : 'flex items-center gap-1.5 rounded-xl border border-transparent px-3 py-1.5 text-xs font-medium text-slate-300 transition-colors hover:border-blue-900/40 hover:bg-blue-900/20 hover:text-white'}
             >
-              <Download size={15} aria-hidden />{t('chatWs.header.export')}
+              {/* the first layout draws the header actions as round icon buttons: same actions, same names (read by screen readers and shown as the tooltip) */}
+              <Download size={SHELL_REF ? 18 : 15} aria-hidden />{SHELL_REF ? <span className="sr-only">{t('chatWs.header.export')}</span> : t('chatWs.header.export')}
             </button>
           )}
           <button
@@ -107,11 +112,12 @@ export default function WorkspaceToolbar() {
             aria-pressed={drawerOpen}
             title={t('chatWs.drawer.title')}
             className={cn(
-              'flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-medium transition-colors',
-              drawerOpen ? 'border-blue-400 bg-blue-600/25 text-sky-200' : 'border-transparent text-slate-300 hover:border-blue-900/40 hover:bg-blue-900/20 hover:text-white',
+              'flex items-center transition-colors',
+              SHELL_REF ? 'h-10 w-10 justify-center rounded-xl border' : 'gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-medium',
+              drawerOpen ? 'border-blue-400 bg-blue-600/25 text-sky-200' : SHELL_REF ? 'border-white/10 bg-white/[0.04] text-slate-200 hover:bg-white/10 hover:text-white' : 'border-transparent text-slate-300 hover:border-blue-900/40 hover:bg-blue-900/20 hover:text-white',
             )}
           >
-            <Bookmark size={15} aria-hidden />{t('chatWs.header.saved')}
+            <Bookmark size={SHELL_REF ? 18 : 15} aria-hidden />{SHELL_REF ? <span className="sr-only">{t('chatWs.header.saved')}</span> : t('chatWs.header.saved')}
           </button>
         </div>
       </div>

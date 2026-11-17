@@ -44,6 +44,9 @@ export interface TappyPlan {
   share_text?: string
   /** Trip plans only; every tip already passed the server's planLocalTipsGuard (UAT3 P2). */
   local_tips?: Array<{ text: string; basis: 'tool' | 'general'; place?: string }>
+  /** CONSULT_PLAN_V2: who the plan was built for and what it took for granted (the server folds them in, bounded and marker-free). */
+  traveler?: { party?: string; pace?: string; interests?: string[] }
+  assumptions?: string[]
 }
 
 const CATEGORY_COLORS: Record<string, string> = {

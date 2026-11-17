@@ -7,6 +7,10 @@ const T: Record<string, [string, string]> = {
   'chatWs.sidebar.title': ['Lịch sử trò chuyện', 'Chat history'],
   'chatWs.sidebar.newChat': ['Cuộc trò chuyện mới', 'New chat'],
   'chatWs.search.placeholder': ['Tìm trong tiêu đề và tin nhắn...', 'Search titles and messages...'],
+  // the first layout's history panel (NEXT_PUBLIC_SHELL_REF)
+  'chatWs.search.placeholderRef': ['Tìm trong các cuộc trò chuyện...', 'Search your conversations...'],
+  'chatWs.search.clear': ['Xóa tìm kiếm', 'Clear search'],
+  'chatWs.row.updated': ['Cập nhật {when}', 'Updated {when}'],
   'chatWs.loading': ['Đang tải…', 'Loading…'],
   'chatWs.untitled': ['Cuộc trò chuyện mới', 'New conversation'],
 
@@ -137,6 +141,13 @@ const T: Record<string, [string, string]> = {
   // mockup look: rail and history rows
   'chatWs.rail.create': ['Tạo mới', 'New'],
   'chatWs.rail.saved': ['Đã lưu', 'Saved'],
+  // the first layout's shell (NEXT_PUBLIC_SHELL_REF)
+  'chatWs.rail.inbox': ['Inbox', 'Inbox'],
+  'chatWs.rail.apps': ['Ứng dụng', 'Apps'],
+  'chatWs.shell.menu': ['Mở hoặc đóng lịch sử trò chuyện', 'Open or close the chat history'],
+  'chatWs.shell.bell': ['Thông báo', 'Notifications'],
+  'chatWs.shell.bellUnread': ['Thông báo, có tin chưa đọc', 'Notifications, unread items'],
+  'chatWs.shell.account': ['Tài khoản của bạn', 'Your account'],
   'chatWs.group.collapse': ['Thu gọn nhóm', 'Collapse group'],
   'chatWs.group.expand': ['Mở rộng nhóm', 'Expand group'],
 }

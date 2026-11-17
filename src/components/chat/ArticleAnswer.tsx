@@ -14,6 +14,8 @@ import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 import { isAllowedMediaImage, isAllowedMediaPage, type MediaEntity } from '@/lib/media/mediaHosts'
 import { embedAnchors, plainHeading } from '@/lib/chat/presentation'
 import { embedAnchorsNamed } from '@/lib/chat/placeAnchoring'
+import ProfileCards, { pointsFromSummary, type CardItem } from '@/components/chat/ProfileCards'
+import type { WikiEntity } from '@/lib/chat/entityProfiles'
 
 type Format = (markdown: string) => string
 
@@ -159,8 +161,14 @@ function Blocks({ blocks, format, placed, prefix = '', under, pres }: { blocks: 
               </Fragment>
             )
           }
-          case 'para':
+          case 'para': {
+            // the mockup's source line under a data table: one short line straight after a table is its caption (small, mono, muted)
+            const prev = blocks[i - 1]
+            if (mono && prev && prev.t === 'raw' && isTableBlock(prev.text) && !b.text.includes('\n') && plainHeading(b.text).length <= 160) {
+              return <Inline key={i} html={fmt(b.text)} className="v206-caption" />
+            }
             return <Inline key={i} html={fmt(b.text)} className={i === leadIdx ? 'my-3 first:mt-0 last:mb-0 whitespace-pre-line text-[17px] text-gray-900 dark:text-gray-50' : 'my-3 first:mt-0 last:mb-0 whitespace-pre-line'} />
+          }
           case 'quote':
             return top && pres!.variant === 'editorial'
               ? <Inline key={i} html={fmt(b.text)} className="tappy-callout my-4 rounded-xl border-l-4 border-[#FF9500] bg-[#FFF4E5] px-4 py-3 text-[15px] text-gray-800 dark:bg-[#2a2113] dark:text-amber-50 whitespace-pre-line" />
@@ -219,9 +227,18 @@ function Blocks({ blocks, format, placed, prefix = '', under, pres }: { blocks: 
 export function ImageGrid({ images }: { images: readonly DocItemImage[] }) {
   const safe = images.filter(i => isSafeHttpsUrl(i.src)).slice(0, 3)
   if (safe.length < 3) return null
+  // the mockup (15/11): each picture carries its name as a small mono chip at the bottom-left, over a soft gradient
   const pic = (img: DocItemImage, cls: string) => (
-    <img src={img.src} alt={img.title} loading="lazy" referrerPolicy="no-referrer" data-zoomable="true"
-      onError={e => { e.currentTarget.style.setProperty('visibility', 'hidden') }} className={`h-full w-full object-cover bg-gray-100 dark:bg-gray-800 ${cls}`} />
+    <div className="relative h-full w-full">
+      <img src={img.src} alt={img.title} loading="lazy" referrerPolicy="no-referrer" data-zoomable="true"
+        onError={e => { e.currentTarget.style.setProperty('visibility', 'hidden') }} className={`h-full w-full object-cover bg-gray-100 dark:bg-gray-800 ${cls}`} />
+      {img.title && (
+        <>
+          <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/60 to-transparent" />
+          <span data-doc-caption className="pointer-events-none absolute bottom-2 left-2.5 max-w-[85%] truncate rounded bg-black/60 px-1.5 py-0.5 font-mono text-[10px] text-white backdrop-blur-sm">{img.title}</span>
+        </>
+      )}
+    </div>
   )
   return (
     <div data-doc-grid className="my-3 grid h-48 grid-cols-3 grid-rows-2 gap-1 overflow-hidden rounded-2xl sm:h-60">
@@ -298,25 +315,24 @@ export function summaryOpening(s: string, max = 150): string {
   return `${s.slice(0, at > max / 2 ? at : max - 1).replace(/[\s,;:.–—-]+$/, '')}…`
 }
 
-/** TAPPY_ANSWER_V4: the subjects of a comparison side by side — one Wikipedia card each (picture, name, two lines), opening the side panel. */
-export function EntityRow({ entities, onOpen }: { entities: readonly MediaEntity[]; onOpen: (e: MediaEntity) => void }) {
+/**
+ * TAPPY_ANSWER_V4: the subjects of a comparison - one card each, in the owner's mockup layout (15/11): picture, name with a link mark, one-line subtitle, the first sentences of Wikipedia's summary as the
+ * points, "Wikipedia" as the source, and the profile button. The same look as the cards the model declares (ProfileCards.tsx); a tap opens the profile beside the chat.
+ */
+export function EntityRow({ entities, onOpen, onOpenProfile, label }: {
+  entities: readonly MediaEntity[]
+  /** the older side panel, from what the server resolved */
+  onOpen: (e: MediaEntity) => void
+  /** the profile drawer of the workspace layout (the Wikipedia profile found for the name) */
+  onOpenProfile?: (profile: WikiEntity) => void
+  label: { open: string; sources: string }
+}) {
   const ok = entities.filter(e => isAllowedMediaPage(e.href))
   if (ok.length < 2) return null
+  const items: CardItem[] = ok.map(e => ({ name: e.name, points: pointsFromSummary(e.summary), sources: [e.source], ...(e.image && isAllowedMediaImage(e.image) ? { image: e.image } : {}) }))
   return (
-    <div data-media="entities" className={`my-3 grid gap-2 ${ok.length === 2 ? 'grid-cols-2' : 'grid-cols-2 sm:grid-cols-3'}`}>
-      {ok.map(e => (
-        // the summary is cut HERE to its opening (UAT 19/10: CSS line clamping showed the END of the summary in the headless browser)
-        <div key={e.href} role="button" tabIndex={0} onClick={() => onOpen(e)} onKeyDown={ev => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); onOpen(e) } }}
-          className="min-w-0 cursor-pointer overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900/60 text-left">
-          {e.image && isAllowedMediaImage(e.image)
-            ? <img src={e.image} alt={e.name} loading="lazy" onError={ev => { ev.currentTarget.style.display = 'none' }} className="h-36 w-full object-cover object-top" />
-            : <div className="h-2" />}
-          <div className="p-2.5">
-            <div className="truncate text-sm font-semibold text-gray-900 dark:text-gray-100">{e.name}</div>
-            <p className="mt-0.5 text-xs leading-snug text-gray-600 dark:text-gray-300">{summaryOpening(e.summary)}</p>
-          </div>
-        </div>
-      ))}
+    <div data-media="entities">
+      <ProfileCards items={items} label={label} onOpenProfile={onOpenProfile} onOpenName={name => { const e = ok.find(x => x.name === name); if (e) onOpen(e) }} />
     </div>
   )
 }

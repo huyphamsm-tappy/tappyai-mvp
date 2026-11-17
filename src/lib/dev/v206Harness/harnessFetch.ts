@@ -23,6 +23,17 @@ export function createHarnessFetch(orig: typeof fetch): typeof fetch {
       const asked = url.searchParams.getAll('t').map(n => n.trim().toLowerCase())
       return json(200, { profiles: HARNESS_PROFILES.filter(p => asked.includes(p.name.toLowerCase())).map(p => ({ ...p })) })
     }
+    // the profile panel's data table: fixed sample facts (labelled as sample), so the harness needs no network
+    if (url.pathname === '/api/entity-facts') {
+      return json(200, { facts: [{ label: 'Sinh', value: '28/06/1971 (Pretoria)' }, { label: 'Quốc tịch', value: 'Nam Phi, Canada, Hoa Kỳ' }, { label: 'Học vấn', value: 'The Wharton School (dữ liệu mẫu)' }, { label: 'Nghề nghiệp', value: 'kỹ sư, chủ doanh nghiệp' }], wikidata: 'https://www.wikidata.org/wiki/Q317521' })
+    }
+    // the reader of a tapped link: a fixed page, so the harness needs no network and shows the same thing every time
+    if (url.pathname === '/api/link-preview') {
+      const target = url.searchParams.get('u') ?? ''
+      let host = ''
+      try { host = new URL(target).hostname.replace(/^www\./, '') } catch { /* no host */ }
+      return json(200, { ok: true, url: target, host, title: 'Bài viết mẫu của bộ thử', siteName: host, description: 'Mô tả mẫu của trang: bộ thử không gọi mạng, chỉ cho thấy khung đọc nhanh bên cạnh cuộc trò chuyện.', publishedAt: '2026-11-13T08:00:00Z', passages: ['Đoạn mở đầu mẫu của bài viết, lấy nguyên từ trang gốc khi dùng thật.', 'Đoạn thứ hai mẫu: khung đọc chỉ trích vài đoạn đầu, còn đọc đầy đủ thì mở trang gốc.'] })
+    }
     if (isBlockedEndpoint(url.pathname)) return json(503, { error: 'dev test harness: no model, paid-service or session-minting calls' })
     return orig(input, init)
   }) as typeof fetch

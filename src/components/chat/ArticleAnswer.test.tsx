@@ -66,11 +66,15 @@ describe('ArticleAnswer', () => {
   })
 
   it('EntityRow: two or more Wikipedia subjects side by side; non-Wikipedia links dropped', () => {
-    const e = (n: string, href = `https://en.wikipedia.org/wiki/${n}`) => ({ name: n, summary: `${n} …`, href, image: `https://upload.wikimedia.org/${n}.jpg`, source: 'Wikipedia' as const })
-    const d = dom(renderToStaticMarkup(<EntityRow entities={[e('Elon_Musk'), e('Mark_Zuckerberg')]} onOpen={() => {}} />))
-    expect(d.querySelectorAll('[role="button"]')).toHaveLength(2)
-    expect(d.querySelector('[role="button"] p')!.textContent).toBe('Elon_Musk …')
-    expect(renderToStaticMarkup(<EntityRow entities={[e('A'), e('B', 'https://evil.example/B')]} onOpen={() => {}} />)).toBe('')
+    const e = (n: string, href = `https://en.wikipedia.org/wiki/${n}`) => ({ name: n, summary: `${n} là một chủ thể mẫu của phép thử. Câu thứ hai nói thêm một ý nữa.`, href, image: `https://upload.wikimedia.org/${n}.jpg`, source: 'Wikipedia' as const })
+    const d = dom(renderToStaticMarkup(<EntityRow entities={[e('Elon_Musk'), e('Mark_Zuckerberg')]} onOpen={() => {}} label={{ open: 'Open', sources: 'Nguồn' }} />))
+    // 15/11 (owner's mockup): one card per subject - name, the first sentences of the summary as points, "Wikipedia" as the source
+    expect(d.querySelectorAll('[data-profile-card]')).toHaveLength(2)
+    expect(d.querySelector('[data-profile-card] h4')!.textContent).toBe('Elon_Musk')
+    expect([...d.querySelectorAll('[data-profile-card]')[0].querySelectorAll('li')].map(li => li.textContent)).toEqual(['Elon_Musk là một chủ thể mẫu của phép thử.', 'Câu thứ hai nói thêm một ý nữa.'])
+    expect(d.querySelector('[data-profile-card]')!.textContent).toContain('Nguồn: Wikipedia')
+    expect(d.querySelector('[data-profile-card] img')!.getAttribute('src')).toBe('https://upload.wikimedia.org/Elon_Musk.jpg')
+    expect(renderToStaticMarkup(<EntityRow entities={[e('A'), e('B', 'https://evil.example/B')]} onOpen={() => {}} label={{ open: 'Open', sources: 'Sources' }} />)).toBe('')
   })
 
   it('ImageGrid: one large and two small pictures from the first three safe ones; fewer than three -> nothing', () => {

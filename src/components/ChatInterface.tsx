@@ -1,15 +1,19 @@
 'use client'
 
 import AiDisclaimer from '@/components/AiDisclaimer'
+import '@/components/chat/v206.css'
+import { V206_LOOK } from '@/lib/chat/v206Look'
 import { useChat } from 'ai/react'
 import type { Message } from 'ai'
 import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
 import { flushSync } from 'react-dom'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Send, Sparkles, Mic, Smile, Heart, X, Square, RotateCcw, Brain, Info } from 'lucide-react'
+import { Send, Sparkles, Mic, Smile, Image as ImageIcon, Heart, X, Square, RotateCcw, Brain, Info } from 'lucide-react'
 import posthog from 'posthog-js'
 import { useDeepResearchOffered } from '@/lib/subscription/modeAccess'
+import { takeHomeHandoff } from '@/lib/chat/homeHandoff'
+import { wikiFromMedia } from '@/lib/chat/entityProfiles'
 import { useServerTTS } from '@/hooks/useServerTTS'
 import MessageActionBar from '@/components/chat/MessageActionBar'
 import { cn, CATEGORIES, type CategoryId } from '@/lib/utils'
@@ -74,12 +78,15 @@ import { parseCTA } from '@/lib/structuredContent/parseCta'
 import { parseFollowups } from '@/lib/structuredContent/parseFollowups'
 import { parseAsk } from '@/lib/structuredContent/parseAsk'
 import AskCard from '@/components/chat/AskCard'
+import PresentationBlocks from '@/components/chat/PresentationBlocks'
+import { readPresentationFrame, rememberPresentation, recallPresentation } from '@/lib/presentation/read'
 import ChoiceCard from '@/components/chat/ChoiceCard'
 import { parseChoiceTail, isOtherOption, otherPrefill } from '@/lib/structuredContent/parseChoices'
 import { parseMediaBlocks, type MediaEntity } from '@/lib/media/mediaHosts'
 import { NewsMediaGrid, EntityCard, EntityPanel, OptionCards } from '@/components/chat/MediaBlocks'
 import { ArticleAnswer, EntityRow, ImageGrid, SourcesFooter, summaryOpening } from '@/components/chat/ArticleAnswer'
 import { readDocMedia, rememberDocMedia, recallDocMedia } from '@/lib/answerDoc/media'
+import { readSubjectImages, rememberSubjectImages, recallSubjectImages, subjectImageMap, galleryImageMap, stopImageMap, subjectKey } from '@/lib/answerDoc/subjectImages'
 import { StreamedTextKeeper } from '@/lib/chat/streamedText'
 import { useLatencyMarks } from '@/lib/chat/useLatencyMarks'
 import VoiceOverlay from '@/components/chat/VoiceOverlay'
@@ -94,6 +101,8 @@ import { parsePlacesMarker } from '@/lib/recommendation/marker'
 import { readPlacesLiveView } from '@/lib/recommendation/liveView'
 import { readProgress, readTurnStatus } from '@/lib/recommendation/progressAnnotation'
 import { readResearchStatus, readResearchCharts } from '@/lib/ai/research/deepResearch'
+import { rememberResearch, recallResearch } from '@/lib/ai/research/researchMemory'
+import { roundDongDecimals } from '@/lib/chat/dongDecimals'
 import { chartDataUrl } from '@/lib/answerDoc/reportChart'
 import { titleKey } from '@/lib/answerDoc/parse'
 import ResearchCard from '@/components/chat/ResearchCard'
@@ -110,6 +119,7 @@ import { WORKSPACE_V206, buildEntityProfile, calloutTips, matchPlace } from '@/l
 import { v206Store } from '@/lib/chat/v206Store'
 import TripTimeline, { TipsPublisher } from '@/components/chat/v206/TripTimeline'
 import V206DrawerHost, { useEntityLabels } from '@/components/chat/v206/V206Drawers'
+import ReaderLinkInterceptor from '@/components/chat/v206/ReaderLinkInterceptor'
 import EntityChipsScope, { chipClick, chipKeyDown } from '@/components/chat/v206/EntityChipsScope'
 import { rememberPlacesView, recallPlacesView } from '@/lib/recommendation/liveViewCache'
 import { rememberTurnStatus, recallTurnStatus } from '@/lib/recommendation/turnStatusCache'
@@ -118,6 +128,8 @@ import { placeEmbedPlan } from '@/lib/chat/placeAnchoring'
 import EmergencyCard from '@/components/chat/EmergencyCard'
 import { readSafetyAnnotation } from '@/lib/safety/emergencyResponse'
 import { useTranslation, getStoredLocale } from '@/lib/i18n/useTranslation'
+import { planItemNames, withoutListed, textHasTable, splitProfilesByPlaces } from '@/lib/chat/cardDedupe'
+import TopicBanner from '@/components/chat/TopicBanner'
 import ScrollJumpButtons from '@/components/chat/ScrollJumpButtons'
 import { validateModelCtaButtons } from '@/lib/recommendation/ctaValidation'
 import { requestedProviderOf } from '@/lib/ai/tools/commerceIntent'
@@ -139,7 +151,7 @@ import { useStickToBottom } from '@/components/chat/useStickToBottom'
 import { balanceBoldPerLine } from '@/lib/chat/markdownNormalize'
 import { cleanRepeats } from '@/lib/chat/replyRepeat'
 import { isAgeGateMessage, redirectToAgeCheck } from '@/lib/account/ageGateClient'
-import { checkAttachment, firstAttachable, pastedAttachment, dragHasFiles } from '@/components/chat/composerAttachment'
+import { checkAttachment, checkAddition, attachableList, shrinkImage, pastedAttachment, dragHasFiles, normalizedType, docIcon, ATTACH_ACCEPT } from '@/components/chat/composerAttachment'
 import UserMessageCopy from '@/components/chat/UserMessageCopy'
 
 // Mood chips — labels and the message each sends are dictionary keys so both
@@ -578,6 +590,8 @@ export function sameSubjectName(a: string, b: string): boolean {
 const CONSULT_V3_CHOICES = process.env.NEXT_PUBLIC_CONSULT_V3 === '1'
 /** TAPPY_ANSWER_V4 build flag (owner 19/10): answers laid out as an article (ArticleAnswer) with the server's item pictures and comparison cards. */
 const ANSWER_V4 = process.env.NEXT_PUBLIC_TAPPY_ANSWER_V4 === '1'
+/** NEXT_PUBLIC_PRESENT_BLOCKS (14/11, layout slice 3; off by default): the blocks the model declared (compare table, ask options, booking handoff) are drawn from the server's live frame. Off: nothing is read, nothing is drawn. */
+const PRESENT_BLOCKS = process.env.NEXT_PUBLIC_PRESENT_BLOCKS === '1'
 /** A source chip whose label is just its own host ("vnexpress.net", the citation step's label) reads better as the outlet's name. */
 const labelIsOwnHost = (label: string, url: string) => {
   try { return label.trim().toLowerCase().replace(/^www\./, '') === new URL(url.replace(/&amp;/g, '&')).hostname.toLowerCase().replace(/^www\./, '') } catch { return false }
@@ -668,7 +682,7 @@ function renderTables(escaped: string): string {
 }
 
 export function formatMessage(content: string) {
-  const lifted = liftCode(content)
+  const lifted = liftCode(roundDongDecimals(content))
   // Security audit 04/11 (W-07): a code block is put back only in the text BETWEEN tags. A marker that a URL / label / alt pattern swallowed
   // sits INSIDE a tag (an href, an alt, a title); restoring the block's HTML there let its quotes close the attribute and the rest of the code
   // text parse as attributes (`onclick=`). Inside a tag the marker is simply dropped.
@@ -922,11 +936,16 @@ export default function ChatInterface({
   const [showEmojiPanel, setShowEmojiPanel] = useState(false)
   const [userPreferences, setUserPreferences] = useState<string[]>([])
   const [showOnboarding, setShowOnboarding] = useState(false)
-  const [imageFile, setImageFile] = useState<File | null>(null)
-  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null)
+  // 15/11: several files per message (composerAttachment.ts limits); a picture has a preview address, a PDF none
+  const [attached, setAttached] = useState<Array<{ file: File; previewUrl: string | null }>>([])
+  const attachedRef = useRef(attached)
+  attachedRef.current = attached
+  const imageFile = attached.length > 0 ? attached[0].file : null // "is anything attached" for the send button and the placeholder
   const [zoomedImage, setZoomedImage] = useState<string | null>(null)
   // CONSULT_V3 layouts: the subject panel (Wikipedia summary) open over the chat, or none.
   const [entityPanel, setEntityPanel] = useState<MediaEntity | null>(null)
+  // 15/11 (owner's mockup): a subject's profile opens in the workspace's panel beside the chat (the same drawer for a card, a name in the text and an entity chip); without the workspace layout, the older panel
+  const openEntity = useCallback((e: MediaEntity) => { if (WORKSPACE_V206) v206Store.openWiki(wikiFromMedia(e)); else setEntityPanel(e) }, [])
   // NEXT_PUBLIC_REPORT_SUMMARY_VIEW: the research reports (by message id) whose full text the person has opened; the others show the key points and the source count
   const [expandedReports, setExpandedReports] = useState<ReadonlySet<string>>(() => new Set())
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -1209,8 +1228,6 @@ export default function ChatInterface({
   // The reset runs when the conversation is LEFT, not when it is entered: an effect of this component runs after those of its children, so a reset on entry wiped the tips the
   // itinerary had just published (an opened conversation showed no "Mẹo" button). Found by the dev test harness; tipsAfterOpen.test.tsx.
   useEffect(() => () => { if (WORKSPACE_V206) v206Store.reset() }, [conversationId])
-  // the research reports (by message id) that were written in front of the reader: they stay whole when the reply ends (an earlier section never disappears)
-  const streamedReports = useRef<Set<string>>(new Set())
   // C2 P2 6.2: note when the reply being received first shows text (once per reply), and — flag on — never re-reveal a reply the user already
   // read while it streamed (the finish reveal restarts from 0: it would hide what is on screen and type it again). Decided once, at the finish.
   if (isLoading && lastMsg?.role === 'assistant' && lastAssistantRaw) streamKeeperRef.current.noteShown(lastMsg.id, Date.now())
@@ -1484,6 +1501,19 @@ export default function ChatInterface({
     // If we're about to restore a stashed transcript (post-login), don't also
     // auto-send the initialMessage from a lingering ?q= — that would duplicate it.
     if (typeof window !== 'undefined' && sessionStorage.getItem('tappy_pending_chat')) return
+    // 15/11 (owner): the home page's "+" - what it left (files, Deep Research) is taken ONCE here; the files are checked and shrunk like a pick in this box, then the question is sent with them
+    const handoff = messages.length === 0 ? takeHomeHandoff() : null
+    if (handoff) {
+      if (handoff.mode === 'deep') setChatMode('deep')
+      if (initialMessage || handoff.files.length) {
+        void (async () => {
+          if (handoff.files.length) await acceptAttachments(handoff.files)
+          setInput(initialMessage ?? '')
+          setTimeout(() => { (document.getElementById('chat-form') as HTMLFormElement | null)?.requestSubmit() }, 250)
+        })()
+      }
+      return
+    }
     if (initialMessage && messages.length === 0) {
       setInput(initialMessage)
       setTimeout(() => {
@@ -1577,19 +1607,29 @@ export default function ChatInterface({
   // 31/10: an image or a PDF (the server reads the PDF's text: pdfAttachments.ts). The same limits as the server, said before sending.
   const [attachError, setAttachError] = useState<string | null>(null)
   // 01/11: the attach button, a file dropped on the chat and a picture pasted into the box all end here (composerAttachment.ts rules).
-  const acceptAttachment = useCallback((file: File) => {
-    const check = checkAttachment(file)
-    if (!check.ok) { setAttachError(t(check.error)); return }
-    setAttachError(null)
-    setImageFile(file)
-    setImagePreviewUrl(check.isPdf ? null : URL.createObjectURL(file))
+  const acceptAttachments = useCallback(async (files: File[]) => {
+    let error: string | null = null
+    for (const original of files) {
+      const first = checkAttachment(original)
+      if (!first.ok) { error = t(first.error); continue }
+      const type = normalizedType(original)
+      // a document keeps its bytes (the server reads its text); a file the system gave no type gets the one its extension names; photos are shrunk before they are counted
+      const file = first.isPdf ? (original.type === type ? original : new File([original], original.name, { type })) : await shrinkImage(original)
+      const room = checkAddition(attachedRef.current.map(a => a.file), file)
+      if (!room.ok) { error = t(room.error); continue }
+      const entry = { file, previewUrl: first.isPdf ? null : URL.createObjectURL(file) }
+      attachedRef.current = [...attachedRef.current, entry]
+      setAttached(attachedRef.current)
+    }
+    setAttachError(error)
   }, [t])
+  const acceptAttachment = useCallback((file: File) => { void acceptAttachments([file]) }, [acceptAttachments])
   const handleImageSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
+    const files = attachableList(e.target.files)
     // Reset so same file can be re-selected
     e.target.value = ''
-    if (file) acceptAttachment(file)
-  }, [acceptAttachment])
+    if (files.length) void acceptAttachments(files)
+  }, [acceptAttachments])
   // A file dragged over the chat: the hint shows while it is over any part of the chat. enter / leave are counted (a child element fires its own pair;
   // Safari gives no relatedTarget), so the hint does not flicker. While Tappy is answering the box is disabled: the drop is still taken over (the
   // browser would otherwise open the file) but nothing is attached and no hint shows.
@@ -1615,9 +1655,9 @@ export default function ChatInterface({
     dragDepth.current = 0
     setDragOver(false)
     if (isLoading) return
-    const file = firstAttachable(e.dataTransfer.files)
-    if (file) acceptAttachment(file)
-  }, [acceptAttachment, isLoading])
+    const files = attachableList(e.dataTransfer.files)
+    if (files.length) void acceptAttachments(files)
+  }, [acceptAttachments, isLoading])
   const onComposerPaste = useCallback((e: React.ClipboardEvent) => {
     const file = pastedAttachment(e.clipboardData)
     if (!file) return // pasted text (and anything Tappy cannot read) goes into the box as before
@@ -1626,17 +1666,20 @@ export default function ChatInterface({
   }, [acceptAttachment])
 
   const clearImage = useCallback(() => {
-    setImageFile(null)
-    setImagePreviewUrl(null)
+    attachedRef.current.forEach(a => { if (a.previewUrl) URL.revokeObjectURL(a.previewUrl) })
+    attachedRef.current = []
+    setAttached([])
     setAttachError(null)
   }, [])
-
-  // Revoke the object URL whenever it changes (re-selection) or on unmount, so a
-  // selected-but-not-cleared image preview can never leak.
-  useEffect(() => {
-    if (!imagePreviewUrl) return
-    return () => URL.revokeObjectURL(imagePreviewUrl)
-  }, [imagePreviewUrl])
+  const removeAttachment = useCallback((index: number) => {
+    const gone = attachedRef.current[index]
+    if (gone?.previewUrl) URL.revokeObjectURL(gone.previewUrl)
+    attachedRef.current = attachedRef.current.filter((_, i) => i !== index)
+    setAttached(attachedRef.current)
+    setAttachError(null)
+  }, [])
+  // Every chosen file's address is revoked on unmount, so a selected-but-not-sent picture can never leak.
+  useEffect(() => () => { attachedRef.current.forEach(a => { if (a.previewUrl) URL.revokeObjectURL(a.previewUrl) }) }, [])
 
   const handleFormSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -1646,14 +1689,14 @@ export default function ChatInterface({
     submitWithCurrentLocation(() => {
       if (imageFile) {
         const dt = new DataTransfer()
-        dt.items.add(imageFile)
+        attached.forEach(a => dt.items.add(a.file))
         handleSubmit(e, { experimental_attachments: dt.files })
         clearImage()
       } else {
         handleSubmit(e)
       }
     })
-  }, [input, imageFile, handleSubmit, clearImage, cancelAutoSend, submitWithCurrentLocation])
+  }, [input, imageFile, attached, handleSubmit, clearImage, cancelAutoSend, submitWithCurrentLocation])
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -1665,7 +1708,7 @@ export default function ChatInterface({
         submitWithCurrentLocation(() => {
           if (imageFile) {
             const dt = new DataTransfer()
-            dt.items.add(imageFile)
+            attached.forEach(a => dt.items.add(a.file))
             handleSubmit(fakeForm, { experimental_attachments: dt.files })
             clearImage()
           } else {
@@ -1830,6 +1873,7 @@ export default function ChatInterface({
                 const entityMedia = mediaBlocks.find(b => b.kind === 'entity')
                 const entitiesMedia = mediaBlocks.find(b => b.kind === 'entities')
                 const optionsMedia = mediaBlocks.find(b => b.kind === 'options')
+                const topicMedia = mediaBlocks.find(b => b.kind === 'topic')
                 const { text, questions: askQuestions } = parseAsk(textAfterMedia)
                 // TAPPY_ANSWER_V4: the item pictures arrive as an ANNOTATION (never stored text — web images are live-only); kept for the tab's life
                 // across the save navigation, like the place card. Flag off: nothing is read.
@@ -1897,26 +1941,44 @@ export default function ChatInterface({
                 if (liveTurnStatus) rememberTurnStatus(msg.content, liveTurnStatus)
                 const turnStatus = liveTurnStatus ?? recallTurnStatus(msg.content)
                 // 31/10: a deep research's plan and progress (tappy.research.v1), above its report; live-only like the cards above
-                const research = readResearchStatus(msg.annotations as unknown[] | undefined)
+                // 16/11: kept across the save navigation like the other live annotations, so the finished report keeps its clickable sources (researchMemory.ts)
+                const liveResearch = readResearchStatus(msg.annotations as unknown[] | undefined)
+                const liveCharts = liveResearch ? readResearchCharts(msg.annotations as unknown[] | undefined) : []
+                if (liveResearch) rememberResearch(msg.content, { status: liveResearch, charts: liveCharts })
+                const recalledResearch = liveResearch ? null : recallResearch(msg.content)
+                const research = liveResearch ?? recalledResearch?.status ?? null
                 // owner 31/10: a deep research section's chart (figures checked against their sources) right under its heading
-                const researchCharts = research ? readResearchCharts(msg.annotations as unknown[] | undefined) : []
+                const researchCharts = liveResearch ? liveCharts : recalledResearch?.charts ?? []
                 const underHeading = researchCharts.length ? (title: string) => {
                   const c = researchCharts.find(x => titleKey(x.section) === titleKey(title))
                   return c ? <figure className="my-3" data-research-chart><img src={chartDataUrl(c, locale)} alt={c.title} className="w-full max-w-2xl rounded-xl border border-gray-200 dark:border-gray-700" /></figure> : null
                 } : undefined
                 // NEXT_PUBLIC_REPORT_SUMMARY_VIEW: a research report shows its key points and the source count; the full report (and its sources list) opens on a button. Off: the text as it is.
                 // RFC-001 4.2 (NEXT_PUBLIC_RESPONSE_PRESENTATION): a research report is drawn as a document (ResearchCanvas), everything else as an editorial answer.
-                // A report written in front of the reader stays whole when it ends (the summary view only folds a report that was loaded, never one that was just shown section by section).
+                // 16/11 (owner): the conversation shows a research report as its key points only (bullets) and the source count; the whole report lives in the report panel, which opens on a button.
+                // Always, whether the report was written in front of the reader or loaded.
                 const isDoc = RESPONSE_PRESENTATION && (!!research || looksLikeReport(msg.content))
-                if (isDoc && research && isLoading && isLastMessage) streamedReports.current.add(msg.id)
-                const streamedHere = isDoc && streamedReports.current.has(msg.id)
-                const reportView = reportViewOf({ text: bodyText, research: !!research, expanded: streamedHere ? !expandedReports.has(msg.id) : expandedReports.has(msg.id), links: research?.links?.length ?? 0 })
+                const reportView = reportViewOf({ text: bodyText, research: !!research, expanded: expandedReports.has(msg.id), links: research?.links?.length ?? 0 })
                 // RFC-001 4.1: the cards of an ordinary answer are placed between its paragraphs (the answer text's own layout decides where); kept as nodes so the former layout still renders them below the text
                 const streamingMsg = isLoading && isLastMessage
-                const optionsNode = optionsMedia?.kind === 'options' && !streamingMsg ? <OptionCards title={optionsMedia.title} options={optionsMedia.options} /> : null
+                // 16/11: one place, one card on the page. The plan card keeps its stops, the place cards keep the places the plan does not name, the option cards keep what neither shows (cardDedupe.ts)
+                const planNames = planItemNames(plan)
+                const optionsShown = optionsMedia?.kind === 'options' ? withoutListed(optionsMedia.options, [...planNames, ...(placeView?.items ?? []).map(p => p.name)]) : []
+                const optionsNode = optionsMedia?.kind === 'options' && optionsShown.length > 0 && !streamingMsg ? <OptionCards title={optionsMedia.title} options={optionsShown} /> : null
+                const placeViewShown = placeView && planNames.length
+                  ? (rest => (rest.length ? { ...placeView, items: rest, picked: placeView.picked?.filter(id => rest.some(r => r.id === id)) } : null))(withoutListed(placeView.items, planNames))
+                  : placeView
+                // 16/11: the fixed picture of a live-information topic, under the answer's opening (TopicBanner.tsx)
+                const topicNode = topicMedia?.kind === 'topic' && !streamingMsg && !isDoc ? <TopicBanner topic={topicMedia.topic} variant={topicMedia.variant ?? 0} label={t(`v206.topic.${topicMedia.topic}`)} /> : null
+                // 16/11: the pictures found after the answer (subject cards, gallery, the itinerary's stops), live-only and kept for the tab
+                const liveSubjectImages = readSubjectImages(msg.annotations as unknown[] | undefined)
+                if (liveSubjectImages) rememberSubjectImages(msg.content, liveSubjectImages)
+                const subjectAnn = liveSubjectImages ?? recallSubjectImages(msg.content)
+                const subjectImages = subjectImageMap(subjectAnn)
+                const galleryImages = galleryImageMap(subjectAnn)
                 const planNode = plan
                   ? (WORKSPACE_V206 && !streamingMsg && plan.days.length > 0
-                    ? <TripTimeline msgId={msg.id} plan={plan} places={placeView?.items} />
+                    ? <TripTimeline msgId={msg.id} plan={plan} places={placeView?.items} stopImages={stopImageMap(subjectAnn)} />
                     : <TripPlanCard plan={plan} placePhotos={placeView?.items} />)
                   : null
                 const shopNode = shopView ? (
@@ -1938,15 +2000,30 @@ export default function ChatInterface({
                     }}
                   />
                 ) : null
+                // NEXT_PUBLIC_PRESENT_BLOCKS: the blocks the model declared, from this message's live frame; kept for the tab's life across the save navigation, like the place card. Flag off: nothing is read.
+                const liveFrame = PRESENT_BLOCKS ? readPresentationFrame(msg.annotations as unknown[] | undefined) : null
+                if (liveFrame) rememberPresentation(msg.content, liveFrame)
+                const declaredFrame = PRESENT_BLOCKS ? (liveFrame ?? recallPresentation(msg.content)) : null
+                // 15/11 (owner): the subject cards of a comparison / list sit in the answer, right after its opening paragraph (an embed, like the place cards); the other declared blocks (table, questions, booking) stay under it
+                const declaredBlocks = declaredFrame?.presentation.blocks ?? []
+                // 16/11 (owner's mockup, tab 3): a subject card the model declared for a place the lookup also returned as a VENUE card is not drawn twice: its points become the venue card's "highlights" box
+                const venueSplit = WORKSPACE_V206 && RESPONSE_PRESENTATION && !isDoc && placeViewShown && !shopView
+                  ? splitProfilesByPlaces(declaredBlocks.flatMap(b => (b.type === 'profiles' ? b.items : [])), placeViewShown.items)
+                  : null
+                const placeNotes = venueSplit && venueSplit.notes.size > 0 ? venueSplit.notes : undefined
+                const profileBlocks = declaredBlocks
+                  .filter(b => b.type === 'profiles')
+                  .map(b => (b.type === 'profiles' && placeNotes && venueSplit ? { ...b, items: b.items.filter(i => venueSplit.rest.includes(i)) } : b))
+                  .filter(b => b.type !== 'profiles' || b.items.length > 0)
                 // workspace v206: a place the answer's own text names stands alone right under that text (placeAnchoring: the TEXT and the place NAMES decide, never the question or the kind of
                 // venue); the places it does not name stay together in the group, as before. Only once the answer is complete (while it streams the cards must not jump as paragraphs arrive).
-                const placeSplit = WORKSPACE_V206 && RESPONSE_PRESENTATION && !isDoc && placeView && !shopView && !streamingMsg ? placeEmbedPlan(bodyText, placeView.items) : null
+                const placeSplit = WORKSPACE_V206 && RESPONSE_PRESENTATION && !isDoc && placeViewShown && !shopView && !streamingMsg ? placeEmbedPlan(bodyText, placeViewShown.items) : null
                 const soloPlaces = placeSplit?.solo ?? []
-                const groupView = placeView && soloPlaces.length && placeSplit
-                  ? (placeSplit.rest.length ? { ...placeView, items: placeSplit.rest, picked: placeView.picked?.filter(id => placeSplit.rest.some(r => r.id === id)) } : null)
-                  : placeView
-                const placeNode = placeView && !shopView && (!streamingMsg || !!annotated) && groupView ? <PlaceDecision view={groupView} /> : null
-                const soloNodes = placeView ? soloPlaces.map(p => <PlaceDecision key={p.id} view={placeView} layout="solo" soloId={p.id} />) : []
+                const groupView = placeViewShown && soloPlaces.length && placeSplit
+                  ? (placeSplit.rest.length ? { ...placeViewShown, items: placeSplit.rest, picked: placeViewShown.picked?.filter(id => placeSplit.rest.some(r => r.id === id)) } : null)
+                  : placeViewShown
+                const placeNode = placeViewShown && !shopView && (!streamingMsg || !!annotated) && groupView ? <PlaceDecision view={groupView} notes={placeNotes} noteSources={venueSplit?.noteSources} /> : null
+                const soloNodes = placeViewShown ? soloPlaces.map(p => <PlaceDecision key={p.id} view={placeViewShown} layout="solo" soloId={p.id} notes={placeNotes} noteSources={venueSplit?.noteSources} />) : []
                 // Comparison (DD-005). Derived from the SAME payload the decision above renders - no extra request, nothing inferred. Offered only once the reply
                 // is complete, like every other structured action, and only when there are at least two options to compare.
                 // (the guard stays in the JSX form chatStructuredWiring.test.tsx reads: a comparison never appears while the reply is still streaming)
@@ -1966,8 +2043,32 @@ export default function ChatInterface({
                   </>
                 )
                 const cmpNode = shopView && !streamingMsg && comparisonFromSynthesis(shopView, t, locale) ? cmpBlock : null
+                // (the declared blocks - declaredFrame, declaredBlocks, profileBlocks - are read above, ahead of the place cards: a venue's points go onto its card)
+                // 16/11 (owner's mockup): the table that goes with the subject cards comes straight after them, before the closing verdict; questions and bookings stay under the answer
+                const compareBlocks = declaredBlocks.filter(b => b.type === 'compare')
+                const galleryBlocks = declaredBlocks.filter(b => b.type === 'gallery')
+                const otherBlocks = declaredBlocks.filter(b => b.type !== 'profiles' && b.type !== 'compare' && b.type !== 'gallery')
+                const onOpenProfile = WORKSPACE_V206 ? ((profile: Parameters<typeof v206Store.openWiki>[0]) => v206Store.openWiki(profile)) : undefined
+                // 16/11 (owner's mockup): the group's heading as a mono caps eyebrow, numbered when the cards and the table both have one; web pictures only for subjects Wikipedia cannot illustrate
+                const titled = profileBlocks.some(b => 'title' in b && b.title) && compareBlocks.some(b => 'title' in b && b.title)
+                const profilesNode = declaredFrame && profileBlocks.length
+                  ? <PresentationBlocks frame={{ presentation: { v: declaredFrame.presentation.v, blocks: profileBlocks }, links: {} }} lang={locale} disabled onSend={() => {}} onOpenProfile={onOpenProfile} look={WORKSPACE_V206} eyebrow={titled ? '1.' : undefined} subjectImages={subjectImages} profilesNote={placeViewShown && !shopView ? t('v206.profile.unlisted') : undefined} />
+                  : null
+                // one table on the page: when the text already has its own markdown table, the declared comparison block (the same table again) is not drawn
+                const compareNode = declaredFrame && compareBlocks.length && !textHasTable(bodyText)
+                  ? <PresentationBlocks frame={{ presentation: { v: declaredFrame.presentation.v, blocks: compareBlocks }, links: {} }} lang={locale} disabled onSend={() => {}} look={WORKSPACE_V206} eyebrow={titled ? '2.' : undefined} />
+                  : null
+                // 16/11 (owner's mockup, tab 2): the gallery of what the answer is about stands first, right after the opening, once the server found at least one confirmed picture of it
+                const galleryNode = declaredFrame && galleryBlocks.some(b => b.type === 'gallery' && b.items.some(i => galleryImages.has(subjectKey(i.caption))))
+                  ? <PresentationBlocks frame={{ presentation: { v: declaredFrame.presentation.v, blocks: galleryBlocks }, links: {} }} lang={locale} disabled onSend={() => {}} galleryImages={galleryImages} />
+                  : null
+                const subjectsNode = galleryNode || profilesNode || compareNode ? <>{galleryNode}{profilesNode}{compareNode}</> : null
+                const declaredNode = declaredFrame && otherBlocks.length
+                  ? <PresentationBlocks frame={{ presentation: { v: declaredFrame.presentation.v, blocks: otherBlocks }, links: declaredFrame.links }} lang={locale} disabled={!isLastMessage || isLoading} onSend={answer => { posthog.capture('present_blocks_option_clicked'); append({ role: 'user', content: answer }) }} />
+                  : null
                 const embedItems: Array<{ node: React.ReactNode; name?: string }> = [
-                  { node: optionsNode }, { node: planNode }, { node: shopNode },
+                  // 16/11: what the model declared about the SUBJECT (its pictures, its cards, their table) opens the answer, ahead of every card the tools produced
+                  { node: subjectsNode }, { node: topicNode }, { node: optionsNode }, { node: planNode }, { node: shopNode },
                   ...soloNodes.map((node, i) => ({ node, name: soloPlaces[i].name })),
                   { node: placeNode }, { node: cmpNode },
                 ].filter(e => !!e.node)
@@ -1999,9 +2100,9 @@ export default function ChatInterface({
                               const prof = pl ? buildEntityProfile(pl, null, v206Labels) : null
                               if (prof) { v206Store.openEntity(prof); return }
                             }
-                            if (entity && el.tagName === 'STRONG' && sameSubjectName(el.textContent ?? '', entity.name)) { setEntityPanel(entity); return }
+                            if (entity && el.tagName === 'STRONG' && sameSubjectName(el.textContent ?? '', entity.name)) { openEntity(entity); return }
                             const tapped = el.tagName === 'STRONG' ? entities?.find(x => sameSubjectName(el.textContent ?? '', x.name)) : undefined
-                            if (tapped) { setEntityPanel(tapped); return }
+                            if (tapped) { openEntity(tapped); return }
                             onMessageLinkClick(e)
                           }
                           // RFC-001 4.2/4.3 (NEXT_PUBLIC_RESPONSE_PRESENTATION): a research report is a document - cover, toolbar, contents, footnotes, sections that appear whole.
@@ -2032,10 +2133,13 @@ export default function ChatInterface({
                                       className={cn(isLoading && isLastMessage && 'streaming-cursor', (entity || entities) && '[&_strong]:cursor-pointer')} />
                                     {gLead !== lead && <ImageGrid images={docImages} />}
                                     {news && <NewsMediaGrid items={news} />}
-                                    {entity && <EntityCard entity={{ ...entity, summary: summaryOpening(entity.summary, 300) }} onOpen={() => setEntityPanel(entity)} />}
-                                    {entities && <EntityRow entities={entities} onOpen={x => setEntityPanel(x)} />}
+                                    {entity && !profilesNode && !galleryNode && <EntityCard entity={{ ...entity, summary: summaryOpening(entity.summary, 300) }} onOpen={() => openEntity(entity)} />}
+                                    {/* 16/11 (owner's mockup): the subject cards (and their table) stand right after the opening, whatever else splits the text */}
+                                    {gRest && subjectsNode && inlineEmbeds && <div className={`tappy-embed${WORKSPACE_V206 ? ' v206-ed' : ''}`} data-embed>{subjectsNode}</div>}
+                                    {/* the cards the model declared (profiles) replace the server's subject row: one look, never both */}
+                                    {entities && !profilesNode && <EntityRow entities={entities} onOpen={openEntity} onOpenProfile={onOpenProfile} label={{ open: t('v206.profile.open'), sources: t('v206.profile.sources') }} />}
                                     {gRest && <ArticleAnswer text={gRest} images={docImages} format={formatMessage} onClick={chipClick(chips, onBodyClick)} onKeyDown={chipKeyDown(chips)} className="mt-3" under={underHeading}
-                                      presentation={edit ? { variant: 'editorial', lead: false, embeds: embedList, embedNames, decorate: chips.decorate, look: WORKSPACE_V206 } : undefined} />}
+                                      presentation={edit ? { variant: 'editorial', lead: false, embeds: subjectsNode && inlineEmbeds ? embedItems.filter(e => e.node !== subjectsNode).map(e => e.node) : embedList, embedNames: subjectsNode && inlineEmbeds ? embedItems.filter(e => e.node !== subjectsNode).map(e => e.name) : embedNames, decorate: chips.decorate, look: WORKSPACE_V206 } : undefined} />}
                                     {settled && <SourcesFooter text={shown} lang={locale === 'en' ? 'en' : 'vi'} />}
                                     {WORKSPACE_V206 && settled && <TipsPublisher msgId={`${msg.id}:c`} tips={calloutTips(shown)} />}
                                   </>
@@ -2048,7 +2152,7 @@ export default function ChatInterface({
                             <>
                               <div className={cn('message-content whitespace-pre-wrap', isLoading && isLastMessage && 'streaming-cursor', entity && '[&_strong]:cursor-pointer')} onClick={onBodyClick} dangerouslySetInnerHTML={{ __html: formatMessage(lead) }} />
                               {news && <NewsMediaGrid items={news} />}
-                              {entity && <EntityCard entity={entity} onOpen={() => setEntityPanel(entity)} />}
+                              {entity && <EntityCard entity={entity} onOpen={() => openEntity(entity)} />}
                               {rest && <div className="message-content whitespace-pre-wrap" onClick={onBodyClick} dangerouslySetInnerHTML={{ __html: formatMessage(rest) }} />}
                             </>
                           )
@@ -2058,6 +2162,7 @@ export default function ChatInterface({
                         <ReportViewBar sources={reportView.bar.sources} expanded={reportView.bar.expanded}
                           onToggle={() => setExpandedReports(prev => { const next = new Set(prev); if (next.has(msg.id)) next.delete(msg.id); else next.add(msg.id); return next })} />
                       )}
+                      {!inlineEmbeds && topicNode}
                       {!inlineEmbeds && optionsNode}
                       {!inlineEmbeds && planNode}
                       {!inlineEmbeds && shopNode}
@@ -2072,6 +2177,9 @@ export default function ChatInterface({
                       {!inlineEmbeds && placeNode}
                       {/* Comparison (DD-005): see cmpNode above. */}
                       {!inlineEmbeds && cmpNode}
+                      {/* NEXT_PUBLIC_PRESENT_BLOCKS: what the model declared, under the answer (see declaredNode above). */}
+                      {!inlineEmbeds && subjectsNode}
+                      {declaredNode}
                       {/* C2 P2 layer 5: one fixed status line under a turn the server marked incomplete / interrupted — shown once the reply is
                           done (and its reveal finished), client copy only (never the server's reason), never part of the answer text. */}
                       {turnStatus && !(isLoading && isLastMessage) && !(isLastMessage && finishReveal.revealing) && (
@@ -2202,8 +2310,12 @@ export default function ChatInterface({
                                 posthog.capture('followup_clicked'); emitResultAction({ action_type: 'follow_up_query', result_id: resultIdsRef.current.get(msg.id) }); append({ role: 'user', content: f })
                               }}
                               style={{ animationDelay: `${i * 70}ms` }}
-                              className="animate-pop-in inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                              className={V206_LOOK
+                                // the first layout's follow-up chips: the SAME suggestions the model declared (nothing hard-coded per question), drawn as round ghost pills with one uniform icon; the first one is the lead suggestion
+                                ? cn('v206-followup animate-pop-in inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[13.5px] font-medium transition-colors', i === 0 ? 'v206-followup-lead' : 'border-white/15 bg-white/[0.04] text-slate-100 hover:bg-white/10')
+                                : 'animate-pop-in inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors'}
                             >
+                              {V206_LOOK && <Sparkles size={15} aria-hidden="true" className={i === 0 ? 'text-violet-300' : 'text-sky-300'} />}
                               {f}
                             </button>
                           ))}
@@ -2230,9 +2342,9 @@ export default function ChatInterface({
                         className="rounded-2xl rounded-br-md max-w-[240px] max-h-[280px] object-cover border border-white/20 shadow cursor-zoom-in"
                       />
                     ))}
-                    {msgAttachments?.filter(a => a.contentType === 'application/pdf').map((att, i) => (
+                    {msgAttachments?.filter(a => a.contentType && !a.contentType.startsWith('image/')).map((att, i) => (
                       <div key={`pdf-${i}`} className="inline-flex items-center gap-2 rounded-2xl rounded-br-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200">
-                        <span aria-hidden="true">📄</span>
+                        <span aria-hidden="true">{docIcon(att.contentType ?? '')}</span>
                         <span className="max-w-[220px] truncate">{att.name || 'PDF'}</span>
                       </div>
                     ))}
@@ -2240,6 +2352,12 @@ export default function ChatInterface({
                       <div className="bg-interactive text-white rounded-2xl rounded-br-md px-4 py-2.5 text-base leading-[1.6]">
                         <div className="message-content whitespace-pre-wrap" onClick={onMessageLinkClick} dangerouslySetInnerHTML={{ __html: formatMessage(typeof msg.content === 'string' ? msg.content : '') }} />
                       </div>
+                    )}
+                    {/* look flag: when the person sent it, under their bubble (the message's own time; no delivery tick is drawn, the app has no read receipt to show) */}
+                    {V206_LOOK && msg.createdAt && !Number.isNaN(new Date(msg.createdAt).getTime()) && (
+                      <span data-testid="user-msg-time" className="text-[11px] text-slate-400">
+                        {new Date(msg.createdAt).toLocaleTimeString(locale === 'en' ? 'en-GB' : 'vi-VN', { hour: '2-digit', minute: '2-digit', hour12: false })}
+                      </span>
                     )}
                     <UserMessageCopy text={typeof msg.content === 'string' ? msg.content : ''} />
                   </div>
@@ -2386,7 +2504,8 @@ export default function ChatInterface({
         onEnd={pin}
       />
       </div>
-      <div data-print-hide className="flex-shrink-0 px-4 pb-4 pt-2 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-950">
+      {/* look flag: the bar and its chips are part of the conversation's one surface, no bar of their own and no line above them */}
+      <div data-print-hide className={V206_LOOK ? 'flex-shrink-0 px-4 pb-4 pt-2' : 'flex-shrink-0 px-4 pb-4 pt-2 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-950'}>
         {/* Emoji panel overlay — click outside to close */}
         {showEmojiPanel && (
           <div className="fixed inset-0 z-10" onClick={() => setShowEmojiPanel(false)} />
@@ -2447,7 +2566,8 @@ export default function ChatInterface({
         <input
           ref={fileInputRef}
           type="file"
-          accept="image/png,image/jpeg,image/webp,image/gif,application/pdf"
+          accept={ATTACH_ACCEPT}
+          multiple
           className="hidden"
           onChange={handleImageSelect}
         />
@@ -2493,34 +2613,27 @@ export default function ChatInterface({
             </div>
           )}
           {/* PDF chosen: its name (no preview of a document's pages); a refused file says why */}
-          {imageFile && imageFile.type === 'application/pdf' && (
-            <div className="inline-flex items-center gap-2 self-start ml-1 rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200" data-testid="pdf-attachment">
-              <span aria-hidden="true">📄</span>
-              <span className="max-w-[220px] truncate">{imageFile.name}</span>
-              <button type="button" onClick={clearImage} className="ml-1 rounded-full p-0.5 hover:bg-gray-200 dark:hover:bg-gray-700" aria-label={t('attach.remove')}>
-                <X size={12} />
-              </button>
+          {attached.length > 0 && (
+            <div className="flex flex-wrap items-center gap-2 self-start ml-1" data-testid="attachment-tray">
+              {attached.map((a, i) => a.previewUrl ? (
+                <div key={`${a.file.name}-${i}`} className="relative inline-flex">
+                  <img src={a.previewUrl} alt="Preview" className="h-20 w-20 rounded-xl object-cover border border-gray-200 dark:border-gray-700 shadow" />
+                  <button type="button" onClick={() => removeAttachment(i)} className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-gray-800 dark:bg-gray-600 text-white flex items-center justify-center hover:bg-red-500 transition-colors" aria-label="Xóa ảnh">
+                    <X size={10} />
+                  </button>
+                </div>
+              ) : (
+                <div key={`${a.file.name}-${i}`} className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200" data-testid="pdf-attachment">
+                  <span aria-hidden="true">{docIcon(a.file.type)}</span>
+                  <span className="max-w-[220px] truncate">{a.file.name}</span>
+                  <button type="button" onClick={() => removeAttachment(i)} className="ml-1 rounded-full p-0.5 hover:bg-gray-200 dark:hover:bg-gray-700" aria-label={t('attach.remove')}>
+                    <X size={12} />
+                  </button>
+                </div>
+              ))}
             </div>
           )}
           {attachError && <div role="status" className="self-start ml-1 text-xs text-red-600 dark:text-red-400">{attachError}</div>}
-          {/* Image preview */}
-          {imagePreviewUrl && (
-            <div className="relative inline-flex self-start ml-1">
-              <img
-                src={imagePreviewUrl}
-                alt="Preview"
-                className="h-20 w-20 rounded-xl object-cover border border-gray-200 dark:border-gray-700 shadow"
-              />
-              <button
-                type="button"
-                onClick={clearImage}
-                className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-gray-800 dark:bg-gray-600 text-white flex items-center justify-center hover:bg-red-500 transition-colors"
-                aria-label="Xóa ảnh"
-              >
-                <X size={10} />
-              </button>
-            </div>
-          )}
           {/* Voice status — user always knows the state (listening / auto-sending / error) */}
           {!isListening && pendingSend && (
             <button
@@ -2547,7 +2660,8 @@ export default function ChatInterface({
               </button>
             </div>
           )}
-          <div className="flex gap-2 items-end">
+          {/* look flag (the owner's reference bar, 14/11): a round "+" on the left, ONE pill with the text and the picture / mic icons inside it, a round glowing send on the right */}
+          <div className={V206_LOOK ? 'v206-composer flex gap-3 items-center' : 'flex gap-2 items-end'} data-v206-composer={V206_LOOK ? 'true' : undefined}>
           {/* 31/10: "+" - attach a picture or a PDF, or pick a mode (ChatGPT's composer menu) */}
           <div className="relative flex-shrink-0">
             <button
@@ -2588,6 +2702,7 @@ export default function ChatInterface({
               </>
             )}
           </div>
+          <div className={V206_LOOK ? 'v206-pill' : 'contents'}>
           <textarea
               ref={inputRef}
               value={input}
@@ -2604,6 +2719,7 @@ export default function ChatInterface({
               disabled={isLoading}
               rows={1}
               className="flex-1 bg-gray-100 dark:bg-gray-800 rounded-2xl px-4 py-3 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 resize-none transition-all overflow-hidden"
+              data-v206-input={V206_LOOK ? 'true' : undefined}
             />
           {/* Camera button hidden for MVP */}
           {/* Nút emoji */}
@@ -2640,6 +2756,12 @@ export default function ChatInterface({
               </div>
             )}
           </div>
+          {/* look flag: the picture icon inside the pill (the same file picker as the "+" menu's attach) */}
+          {V206_LOOK && (
+            <button type="button" onClick={() => fileInputRef.current?.click()} disabled={isLoading} aria-label={t('composer.attach')} data-testid="composer-image" className="v206-pill-icon">
+              <ImageIcon size={18} />
+            </button>
+          )}
           {/* Nút microphone màu cam #FF9500 — hidden when the user switched the microphone off in Settings */}
           {micAllowed && <button
             type="button"
@@ -2660,6 +2782,7 @@ export default function ChatInterface({
                "mic disabled" and confused users about the on/off state. */}
             <Mic size={18} className={isListening ? 'text-white' : 'text-[#FF9500]'} />
           </button>}
+          </div>
           {isLoading ? (
             <button type="button" onClick={() => stop()} aria-label="Dừng trả lời" className="w-11 h-11 rounded-2xl bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 flex items-center justify-center transition-all flex-shrink-0">
               <Square size={15} className="text-gray-700 dark:text-gray-200 fill-current" />
@@ -2675,6 +2798,8 @@ export default function ChatInterface({
       </div>
       {entityPanel && <EntityPanel entity={entityPanel} onClose={() => setEntityPanel(null)} />}
       {WORKSPACE_V206 && <V206DrawerHost />}
+      {/* 15/11 (owner): a tap on an ordinary link of an answer reads it beside the chat, for every answer */}
+      {WORKSPACE_V206 && <ReaderLinkInterceptor />}
       {/* Image zoom lightbox — opens on click for any place photo or uploaded attachment */}
       {zoomedImage && (
         <div

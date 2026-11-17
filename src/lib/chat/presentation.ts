@@ -139,6 +139,20 @@ export function footnotesOf(text: string, links: ReadonlyArray<{ id: number; url
   return out
 }
 
+/**
+ * A section that ENDS with its own small heading and the numbered source lines under it ("### Nguồn tham khảo" + "1. title — site"…): the section's text without that heading and those lines, so the
+ * canvas can draw the list itself, each source a link. Null when the section does not end that way. Pure.
+ */
+export function withoutTrailingSources(sectionText: string): string | null {
+  const lines = String(sectionText ?? '').replace(/\r\n?/g, '\n').split('\n')
+  let last = -1
+  lines.forEach((l, i) => { if (/^\s{0,3}#{1,6}\s/.test(l)) last = i })
+  if (last <= 0) return null
+  const tail = lines.slice(last + 1).filter(l => l.trim())
+  if (tail.length < 2 || !tail.every(l => SOURCE_LINE.test(l))) return null
+  return lines.slice(0, last).join('\n').replace(/\s+$/, '') + '\n'
+}
+
 /** Is this whole section the sources list (two or more numbered "n. title — site" lines and nothing else but its heading)? Pure. */
 export function isSourcesSection(sectionText: string): boolean {
   const body = sectionText.split('\n').filter(l => l.trim() && !/^\s{0,3}#{1,6}\s/.test(l))
