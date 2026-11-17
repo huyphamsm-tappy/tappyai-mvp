@@ -104,6 +104,7 @@ vi.mock('@/lib/ai/tools/food', async (importOriginal) => {
 
 import { POST } from '@/app/api/chat/route'
 import { AREA_ASK_VI } from '@/lib/ai/consultative/areaAsk'
+import { ONE_BRAIN_CORE } from '@/lib/ai/consultative/oneBrain'
 
 const ROW = {
   id: REVIEW,
@@ -507,5 +508,43 @@ describe('TEST L · no metric row when there is nothing to measure', () => {
     } finally {
       h.client.from = original
     }
+  })
+})
+
+// 17/11: the clip turn runs on ONE BRAIN when CONSULT_ONE_BRAIN is on. The clip is context, not a reason for another path.
+describe('TEST M · one brain ON: a clip turn is a one-brain turn that carries the clip as context', () => {
+  const oneBrainTurn = async (body: unknown) => {
+    vi.stubEnv('CONSULT_ONE_BRAIN', '1')
+    try { return await post(body) } finally { vi.unstubAllEnvs() }
+  }
+  const sharedPrompt = () => String(h.state.streamOptions?.systemShared ?? '')
+  const dynamicPrompt = () => String(h.state.streamOptions?.system ?? '')
+
+  it('the shared prompt is the one-brain core and the dynamic prompt carries the fenced clip block', async () => {
+    h.state.reviewRow = ROW
+    const res = await oneBrainTurn({ messages: [{ role: 'user', content: QUESTION }], context: { kind: 'explore_clip', reviewId: REVIEW } })
+    expect(res.status).toBe(200)
+    expect(sharedPrompt()).toBe(ONE_BRAIN_CORE)
+    expect(dynamicPrompt()).toContain('NGUON CAU HOI: CLIP TREN EXPLORE')
+    expect(dynamicPrompt()).toContain('Bún bò Huế Cô Ba')
+    expect(dynamicPrompt()).toContain('source=explore_clip')
+    // A one-brain-only tool is defined: the turn did not fall back to the old path.
+    expect(Object.keys(tools())).toContain('present_options')
+  })
+
+  it('the place search still narrows its rows to the venue of the clip', async () => {
+    h.state.reviewRow = GOC_HUE_REVIEW
+    h.state.providerRows = [GOC_HUE_ROW, ...NEIGHBOURS]
+    await oneBrainTurn({ messages: [{ role: 'user', content: 'Cho mình biết thêm về GÓC HUẾ - Nguyễn Thái Bình' }], context: { kind: 'explore_clip', reviewId: REVIEW } })
+    const out = await toolResult({ query: 'GÓC HUẾ - Nguyễn Thái Bình' })
+    expect(h.state.placeCalls[0].location).toBe('155 Nguyễn Thái Bình, Quận 1, TP.HCM')
+    expect(out._tappy_clip_target).toBe('resolved')
+    expect((out.results as unknown[]).length).toBe(1)
+  })
+
+  it('a one-brain turn without a clip carries no clip block', async () => {
+    await oneBrainTurn({ messages: [{ role: 'user', content: QUESTION }] })
+    expect(sharedPrompt()).toBe(ONE_BRAIN_CORE)
+    expect(dynamicPrompt()).not.toContain('CLIP TREN EXPLORE')
   })
 })

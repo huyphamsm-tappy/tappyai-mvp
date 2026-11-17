@@ -439,10 +439,13 @@ export async function POST(req: Request) {
   // only (unwindToolHint, below). Memory scoping and the logs keep reading `forcedTool`. Measured 28/10: "tiệm vàng" forced search_places, "mua" forced
   // search_products, "trời mưa" was read as "mua". OFF: `forcedToolDecides` is `forcedTool`, as at HEAD.
   // CONSULT_ONE_BRAIN (oneBrain.ts): the answer model is the only reader of the question - no rules router, intent call, code question, pre-search, plan frame
-  // or keyword tool decides the turn; it gets the whole conversation, every tool and one general instruction. An image / clip turn and the agent keep their own path.
+  // or keyword tool decides the turn; it gets the whole conversation, every tool and one general instruction. The agent keeps its own path.
   // 31/10: a turn with a picture runs on one brain too (gpt-6-luna reads images with tools defined - probe 31/10); before, it fell back to the
   // old 3-step, 1 024-token path with the old rulebook.
-  const oneBrain = consultOneBrainOn() && !tappyAgentEnabled() && !clipRef
+  // 17/11: a turn that comes from an Explore clip runs on one brain too. The clip is one more kind of context (the fenced block of
+  // exploreClipContext.ts among the dynamic blocks, below) and the place search narrows its rows to the clip's venue as before; before, the
+  // clip turn fell back to the old rulebook path.
+  const oneBrain = consultOneBrainOn() && !tappyAgentEnabled()
   // CONSULT_PRESENT_BLOCKS (default OFF): the turn's tool results get ids and the model may declare blocks (presentation/declare.ts).
   const presentBlocksOn = oneBrain && consultPresentBlocksOn()
   // CONSULT_PERSON_MODEL (default OFF): an INPUT fix, no prompt text: the memory of WHO the person is (style, company) is extracted on ordinary turns and kept (memoryGate.ts, memoryTransientFilter.ts).
@@ -2462,7 +2465,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // (AI.stream autoThink) and the lookups follow the Thinking mode. Off for the whole turn = exactly Chat.
   const autoThink: { on: boolean; effort: 'medium' } = { on: false, effort: 'medium' }
   const chatLike = () => chatMode === 'chat' || (chatMode === 'auto' && !autoThink.on)
-  const oneBrainPrompt = oneBrain ? { shared: ONE_BRAIN_CORE, dynamic: oneBrainDynamic({ lang, now: new Date(), address: userLocation?.address ?? null, hasLocation: hasValidCurrentLocation(userLocation), blocks: [memoryBlock ?? '', prefBlock, styleBlock, shareContextBlock], latestLang: detectLangConfident(lastText), mode: chatMode === 'deep' ? 'think' : chatMode, ...(planHasTools ? {} : { noTools: true }) }) } : null
+  const oneBrainPrompt = oneBrain ? { shared: ONE_BRAIN_CORE, dynamic: oneBrainDynamic({ lang, now: new Date(), address: userLocation?.address ?? null, hasLocation: hasValidCurrentLocation(userLocation), blocks: [clipContext ? buildExploreClipBlock(clipContext, lang) : '', memoryBlock ?? '', prefBlock, styleBlock, shareContextBlock], latestLang: detectLangConfident(lastText), mode: chatMode === 'deep' ? 'think' : chatMode, ...(planHasTools ? {} : { noTools: true }) }) } : null
   if (oneBrain) console.log(JSON.stringify({ type: 'tappyai_chat_mode', mode: chatMode }))
   // CONSULT_ONE_BRAIN_MEDIA: what the pictures should show is read beside the answer (never before it, never for the answer) and used when the answer ends.
   const oneBrainUnderstanding = oneBrain && consultOneBrainMediaOn()
