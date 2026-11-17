@@ -1,0 +1,38 @@
+[
+  {
+    "id": 20,
+    "group": "travel",
+    "turns": [
+      {
+        "q": "lên lịch trình Đà Lạt 3 ngày 2 đêm cho cặp đôi, thích cà phê và chụp ảnh",
+        "done": true,
+        "seconds": 79,
+        "screen": "screens/q20.jpg",
+        "answered": true,
+        "chars": 6232,
+        "head": "Mình xếp lịch theo cụm khu vực để hai bạn có nhiều thời gian cà phê và chụp ảnh hơn là ngồi xe: ngày đầu ở trung tâm, ngày hai đi hướng Trại Mát–Sào Nam, ngày cuối ghé phía tây rồi quay lại trung tâm. Lịch tham khảo quán cà phê và điểm săn mây được đối chiếu với Lữ Hành Việt Nam và danh sách quán cà phê 2026 của MIA.vn.\n\nHÀNH TRÌNH\n\nĐà Lạt 3 ngày 2 đêm cho cặp đôi — cà phê & ảnh đẹp\n3 ngày\n15 điểm dừng\n2 người\nƯớc tính 5.500.000–9.000.000đ/cặp, chưa gồm vé đến/đi Đà Lạt\n2 người lớn, cặp đôi\nKhá dày nhưng có khoảng nghỉ cà phê; ưu tiên ảnh đẹp và tránh lưu lại lâu ở điểm\ncà phê\nchụp ảnh\nkhung cảnh Đà Lạt\n\nMình giả định: Giả định đến Đà Lạt khoảng 09:00 ngày đầu và rời trung tâm khoảng 17:00 n",
+        "tail": " để khám phá thêm địa điểm\nLưu ý kiểm tra giờ mở cửa và tình trạng vườn hoa trước khi đi; lịch săn mây phụ thuộc thời tiết. Mang áo khoác và giày dễ đi cho buổi sáng sớm.\nL\nM\nNguồn · 2\n🔖 Lưu địa điểm",
+        "links": 27,
+        "hosts": {
+          "luhanhvietnam.com.vn": 2,
+          "mia.vn": 2,
+          "maps.google.com": 17,
+          "google.com": 2,
+          "facebook.com": 1,
+          "youtube.com": 3
+        },
+        "sourcesChip": "L M Nguồn · 2",
+        "tables": 1,
+        "images": 11,
+        "actionKinds": [
+          "review:Tìm review trên YouT",
+          "review:Tìm review trên YouT",
+          "review:Tìm review trên YouT"
+        ],
+        "placeCards": 14,
+        "path": "/chat/94fc5ee0-e5f1-4d77-b6ad-787a1633b231",
+        "proNote": 0
+      }
+    ]
+  }
+]

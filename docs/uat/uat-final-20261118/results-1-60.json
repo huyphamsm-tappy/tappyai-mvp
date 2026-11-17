@@ -1,0 +1,1951 @@
+[
+  {
+    "id": 1,
+    "group": "realtime",
+    "turns": [
+      {
+        "q": "giá xăng RON 95-V hôm nay bao nhiêu một lít",
+        "done": true,
+        "seconds": 35,
+        "screen": "screens/q01.jpg",
+        "answered": true,
+        "chars": 172,
+        "head": "Hôm nay 17/11/2026, xăng E10 RON 95-V giá 21.840 đồng/lít ở Vùng 1 và 22.270 đồng/lít ở Vùng 2; bảng Petrolimex được cập nhật lúc 18:00. Web Giá\nW\nNguồn · 1\n🔖 Lưu địa điểm",
+        "tail": "Hôm nay 17/11/2026, xăng E10 RON 95-V giá 21.840 đồng/lít ở Vùng 1 và 22.270 đồng/lít ở Vùng 2; bảng Petrolimex được cập nhật lúc 18:00. Web Giá\nW\nNguồn · 1\n🔖 Lưu địa điểm",
+        "links": 2,
+        "hosts": {
+          "webgia.com": 2
+        },
+        "sourcesChip": "W Nguồn · 1",
+        "tables": 0,
+        "images": 1,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/9e6efce0-7c28-45c7-ba50-91129cc27e7e",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "group": "realtime",
+    "turns": [
+      {
+        "q": "tỷ giá đô la Mỹ hôm nay ở Vietcombank mua vào bán ra bao nhiêu",
+        "done": true,
+        "seconds": 13,
+        "screen": "screens/q02.jpg",
+        "answered": true,
+        "chars": 278,
+        "head": "Hôm nay 17/11/2026, Vietcombank niêm yết USD mua tiền mặt 25.490 đồng, mua chuyển khoản 25.520 đồng và bán ra 25.900 đồng/USD. Cập nhật lúc 18:43, theo Vietcombank.\nGiao dịch\tTỷ giá\nMua tiền mặt\t25.490 đồng/USD\nMua chuyển khoản\t25.520 đồng/USD\nBán ra\t25.900 đồng/USD\nV\nNguồn · 1",
+        "tail": "yển khoản 25.520 đồng và bán ra 25.900 đồng/USD. Cập nhật lúc 18:43, theo Vietcombank.\nGiao dịch\tTỷ giá\nMua tiền mặt\t25.490 đồng/USD\nMua chuyển khoản\t25.520 đồng/USD\nBán ra\t25.900 đồng/USD\nV\nNguồn · 1",
+        "links": 2,
+        "hosts": {
+          "vietcombank.com.vn": 2
+        },
+        "sourcesChip": "V Nguồn · 1",
+        "tables": 1,
+        "images": 1,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/cceb8b5f-a25c-4737-b941-85fd39094bdb",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "group": "realtime",
+    "turns": [
+      {
+        "q": "cuối tuần này Hà Nội trời thế nào, mình định đi picnic ở công viên",
+        "done": true,
+        "seconds": 30,
+        "screen": "screens/q03.jpg",
+        "answered": true,
+        "chars": 407,
+        "head": "Cuối tuần này ở Hà Nội, Chủ nhật 22/11 hợp picnic hơn: dự báo ít mây, có nắng, khoảng 16–23°C, gió nhẹ và chưa có mưa. Thứ Bảy 21/11 nhiều mây, lạnh hơn, khoảng 16–20°C. Dự báo từ met.no, cập nhật tối 17/11 (met.no).\nNếu đi Chủ nhật, chọn khung 11:00–15:00 cho ấm hơn; mang áo khoác mỏng và tấm lót vì sáng sớm, chiều muộn sẽ se lạnh. Dự báo còn có thể thay đổi, nên xem lại trước khi xuất phát.\nM\nNguồn · 1",
+        "tail": "(met.no).\nNếu đi Chủ nhật, chọn khung 11:00–15:00 cho ấm hơn; mang áo khoác mỏng và tấm lót vì sáng sớm, chiều muộn sẽ se lạnh. Dự báo còn có thể thay đổi, nên xem lại trước khi xuất phát.\nM\nNguồn · 1",
+        "links": 2,
+        "hosts": {
+          "met.no": 2
+        },
+        "sourcesChip": "M Nguồn · 1",
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/03932ab0-aedf-4d37-901f-262a68594d03",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "group": "realtime",
+    "turns": [
+      {
+        "q": "bitcoin đang giá bao nhiêu và 7 ngày qua tăng hay giảm",
+        "done": true,
+        "seconds": 15,
+        "screen": "screens/q04.jpg",
+        "answered": true,
+        "chars": 394,
+        "head": "Bitcoin hiện ở mức 64.781,77 USD/BTC, tương đương khoảng 1.653.230.643 đồng theo tỷ giá chuyển khoản USD của Vietcombank. Trong 7 ngày qua, giá giảm 13,9% so với mức 75.257,78 USD ngày 10/11; số liệu Coinbase cập nhật lúc 18:52 giờ Việt Nam ngày 17/11/2026. Coinbase\nQuy đổi sang VND chỉ là ước tính theo tỷ giá ngân hàng, không phải giá giao dịch trên sàn Việt Nam.\nC\nNguồn · 1\n🔖 Lưu địa điểm",
+        "tail": " liệu Coinbase cập nhật lúc 18:52 giờ Việt Nam ngày 17/11/2026. Coinbase\nQuy đổi sang VND chỉ là ước tính theo tỷ giá ngân hàng, không phải giá giao dịch trên sàn Việt Nam.\nC\nNguồn · 1\n🔖 Lưu địa điểm",
+        "links": 2,
+        "hosts": {
+          "coinbase.com": 2
+        },
+        "sourcesChip": "C Nguồn · 1",
+        "tables": 0,
+        "images": 1,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/9ac7480a-c2aa-4e9b-bb58-9a2d0c360722",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "group": "realtime",
+    "turns": [
+      {
+        "q": "vàng miếng SJC hôm nay bao nhiêu một lượng, chênh bao nhiêu so với giá vàng thế giới",
+        "done": true,
+        "seconds": 37,
+        "screen": "screens/q05.jpg",
+        "answered": true,
+        "chars": 732,
+        "head": "Tính đến 18:30 ngày 17/11/2026, vàng miếng SJC niêm yết mua vào 134.700.000đ, bán ra 137.700.000đ/lượng. Vang.today\nGiá vàng thế giới là 3.861,27 USD/ounce; quy đổi theo tỷ giá chuyển khoản USD của Vietcombank lúc 18:43 và 1 lượng = 37,5 g, tương đương khoảng 118.804.000đ/lượng. Vang.today · Vietcombank · Vietnamnet\nSo sánh với giá thế giới quy đổi\tChênh lệch\nGiá SJC mua vào\tkhoảng 15.896.000đ/lượng cao hơn\nGiá SJC bán ra\tkhoảng 18.896.000đ/lượng cao hơn\nNếu bạn đang hỏi giá mua một lượng SJC ở tiệm, mức tham khảo là 137.700.000đ; chênh với giá thế giới quy đổi khoảng 18,9 triệu đồng/lượng.\nMức quy đổi là tham khảo, chưa tính các khác biệt giữa giá vàng thế giới và giá vàng miếng trong nước.",
+        "tail": "00đ; chênh với giá thế giới quy đổi khoảng 18,9 triệu đồng/lượng.\nMức quy đổi là tham khảo, chưa tính các khác biệt giữa giá vàng thế giới và giá vàng miếng trong nước.\nV\nV\nV\nNguồn · 3\n🔖 Lưu địa điểm",
+        "links": 7,
+        "hosts": {
+          "vang.today": 3,
+          "vietcombank.com.vn": 2,
+          "vietnamnet.vn": 2
+        },
+        "sourcesChip": "V V V Nguồn · 3",
+        "tables": 1,
+        "images": 1,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/a1894d33-fcf6-459d-90d1-e2a37f66a168",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "group": "realtime",
+    "turns": [
+      {
+        "q": "VN-Index hôm nay đang bao nhiêu điểm",
+        "done": true,
+        "seconds": 21,
+        "screen": "screens/q06.jpg",
+        "answered": true,
+        "chars": 203,
+        "head": "VN-Index đóng cửa hôm nay (17/11/2026) ở 1.726,72 điểm, giảm 10,17 điểm (-0,59%) so với phiên trước. Báo Đầu tư\nPhiên đã kết thúc; đây là mức đóng cửa, không phải số liệu đang chạy trực tiếp.\nB\nNguồn · 1",
+        "tail": "Index đóng cửa hôm nay (17/11/2026) ở 1.726,72 điểm, giảm 10,17 điểm (-0,59%) so với phiên trước. Báo Đầu tư\nPhiên đã kết thúc; đây là mức đóng cửa, không phải số liệu đang chạy trực tiếp.\nB\nNguồn · 1",
+        "links": 2,
+        "hosts": {
+          "baodautu.vn": 2
+        },
+        "sourcesChip": "B Nguồn · 1",
+        "tables": 0,
+        "images": 1,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/2f09a4e7-f2e6-464f-9f17-4190fb95c242",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "group": "news",
+    "turns": [
+      {
+        "q": "hôm nay thế giới có tin gì nóng",
+        "done": true,
+        "seconds": 51,
+        "screen": "screens/q07.jpg",
+        "answered": true,
+        "chars": 1095,
+        "head": "Tính đến tối 17/11/2026, tin quốc tế đáng chú ý nhất là chuyến công du châu Á của Tổng thống Mỹ Donald Trump, với các cuộc gặp cấp cao dự kiến xoay quanh ASEAN và APEC.\nTrump tới Manila; cuộc gặp với Tập Cận Bình và Putin được chú ý: Trump đã đến Manila dự các cuộc họp ASEAN, trước khi sang Trung Quốc dự APEC. Một cuộc gặp ba bên với Chủ tịch Trung Quốc Tập Cận Bình và Tổng thống Nga Vladimir Putin được lên lịch trong tuần này; nội dung được nhắc đến gồm Iran và vấn đề hạt nhân. Al Jazeera Fox News\nĐức kêu gọi tăng viện trợ vào Gaza trước mùa đông: Ngoại trưởng Đức nói vấn đề nhân đạo ở Gaza sẽ được đưa ra thảo luận tại cuộc họp ngoại trưởng EU ở Brussels. Anadolu Ajansı\nNỗ lực xây dựng quy ",
+        "tail": "vì một số nước lớn phản đối. 10 Things Global News\nTóm lại: cuộc gặp Trump–Tập–Putin là diễn biến đáng theo dõi nhất, nhưng hiện mới là lịch trình dự kiến chứ chưa có kết quả đàm phán.\nA\nF\nA\nNguồn · 4",
+        "links": 8,
+        "hosts": {
+          "aljazeera.com": 2,
+          "foxnews.com": 2,
+          "aa.com.tr": 2,
+          "10things.news": 2
+        },
+        "sourcesChip": "A F A Nguồn · 4",
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/afb31b2f-dce9-4b1b-b66b-c007bde7cbad",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "group": "news",
+    "turns": [
+      {
+        "q": "tin công nghệ Việt Nam đáng chú ý tuần này",
+        "done": true,
+        "seconds": 39,
+        "screen": "screens/q08.jpg",
+        "answered": true,
+        "chars": 1904,
+        "head": "Tính đến 17/11/2026 — tuần này mới bắt đầu — các tin công nghệ Việt Nam đáng chú ý nhất xoay quanh chip bán dẫn, hạ tầng năng lượng và công nghệ ứng dụng:\nViệt Nam ưu tiên chip chuyên dụng thay vì chạy đua chip đa dụng — 17/11. Định hướng được nêu là tập trung vào chip AI biên, IoT, chip công suất và viễn thông; Bộ KH&CN dự kiến hỗ trợ bằng hạ tầng thiết kế, đo kiểm và sản xuất thử dùng chung. Điểm đáng theo dõi: chiến lược đang nhấn vào phân khúc có thể tận dụng năng lực thiết kế trong nước, nhưng bài báo cũng nêu các nút thắt về chi phí thử nghiệm và nhân lực R&D cấp cao. VnExpress\nNhu cầu đầu tư nguồn điện và lưới truyền tải đến 2030 được ước tính 136,3 tỷ USD — 17/11. Theo Quy hoạch điện",
+        "tail": "u kiện để triển khai thật — năng lực thiết kế và thử chip, nguồn điện, và ứng dụng trực tiếp vào sản phẩm.\nĐây là ảnh chụp tin tức tính đến 17/11; các ngày còn lại trong tuần chưa diễn ra.\nV\nNguồn · 1",
+        "links": 5,
+        "hosts": {
+          "vnexpress.net": 5
+        },
+        "sourcesChip": "V Nguồn · 1",
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/33da7180-f1b9-4f07-8c17-40c350c0985d",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "group": "sports",
+    "turns": [
+      {
+        "q": "tuyển Việt Nam đá trận gần nhất kết quả thế nào",
+        "done": true,
+        "seconds": 25,
+        "screen": "screens/q09.jpg",
+        "answered": true,
+        "chars": 232,
+        "head": "Trận gần nhất đã đá của đội tuyển Việt Nam là thắng Đài Bắc Trung Hoa 2–0 ngày 11/11. Trận gặp Kyrgyzstan dự kiến bắt đầu lúc 19:00 hôm nay, 17/11, nên lúc này chưa có kết quả trận đó. VFF · Bóng đá 24h\nV\nB\nNguồn · 2\n🔖 Lưu địa điểm",
+        "tail": "n Việt Nam là thắng Đài Bắc Trung Hoa 2–0 ngày 11/11. Trận gặp Kyrgyzstan dự kiến bắt đầu lúc 19:00 hôm nay, 17/11, nên lúc này chưa có kết quả trận đó. VFF · Bóng đá 24h\nV\nB\nNguồn · 2\n🔖 Lưu địa điểm",
+        "links": 4,
+        "hosts": {
+          "vff.org.vn": 2,
+          "bongda24h.vn": 2
+        },
+        "sourcesChip": "V B Nguồn · 2",
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/81ce38ec-180c-4d84-9f8b-071586186864",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "group": "sports",
+    "turns": [
+      {
+        "q": "cuối tuần này Ngoại hạng Anh có những trận nào đáng xem",
+        "done": true,
+        "seconds": 24,
+        "screen": "screens/q10.jpg",
+        "answered": true,
+        "chars": 957,
+        "head": "Cuối tuần 21–22/11/2026, mình chấm đáng xem nhất là Liverpool – Manchester United lúc 23:30 Chủ nhật; kế đó là Newcastle – Arsenal lúc 00:30 rạng sáng Chủ nhật. Lịch giờ Việt Nam theo VietNamNet, bài đăng ngày 7/11.\nNgày, giờ Việt Nam\tTrận đấu\tĐáng xem vì\nThứ Bảy 21/11, 19:30\tManchester City – Fulham\tKhung giờ đẹp để mở màn vòng đấu\nThứ Bảy 21/11, 22:00\tChelsea – Leeds\tTrận tối thứ Bảy đáng chú ý\nChủ nhật 22/11, 00:30\tNewcastle – Arsenal\tCặp đấu đáng canh thức nhất rạng sáng\nChủ nhật 22/11, 23:30\tLiverpool – Manchester United\tTâm điểm vòng đấu, đại chiến giàu duyên nợ\nCác trận còn lại thứ Bảy lúc 22:00: Coventry – Crystal Palace, Aston Villa – Sunderland, Bournemouth – Nottingham Forest và T",
+        "tail": "n. Lịch có thể được điều chỉnh; trận Brentford – Everton diễn ra 03:00 thứ Ba 24/11, không thuộc cuối tuần.\nNếu chỉ chọn một trận, cứ ưu tiên Liverpool – Manchester United.\nV\nNguồn · 1\n🔖 Lưu địa điểm",
+        "links": 2,
+        "hosts": {
+          "vietnamnet.vn": 2
+        },
+        "sourcesChip": "V Nguồn · 1",
+        "tables": 1,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/409a87d6-08cc-4bac-acec-78fdbdab16e0",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "group": "entertainment",
+    "turns": [
+      {
+        "q": "bài hát nhạc Việt nào đang được nghe nhiều tuần này",
+        "done": true,
+        "seconds": 45,
+        "screen": "screens/q11.jpg",
+        "answered": true,
+        "chars": 655,
+        "head": "Tính đến 17/11/2026, bảng tuần mới nhất mình tìm được là Spotify Việt Nam, chốt ngày 12/11. Năm bài nhạc Việt dẫn đầu tuần đó:\nHạng\tBài hát — nghệ sĩ\tLượt nghe trong tuần\n1\t“Như Một Người Rưng” — Osad, Hà An Huy\t1.146.993\n2\t“xương rồng (intro)” — Dangrangto, DONAL\t1.030.418\n3\t“Tìm Em” — Hngle, Bảo Anh\t943.629\n4\t“chờ chút...” — TINH HÀ “SAY HI”, CONGB\t914.562\n5\t“để dành cho em” — Dangrangto, DONAL\t875.471\nTheo bảng Spotify Weekly Chart Việt Nam, đây là lượt nghe của tuần xếp hạng ngày 12/11, không phải số realtime của hôm nay. Kworb — Spotify Weekly Chart Việt Nam\nNếu muốn nghe thử một bài đang dẫn đầu, bắt đầu với “Như Một Người Rưng”.\nK\nNguồn · 1",
+        "tail": " lượt nghe của tuần xếp hạng ngày 12/11, không phải số realtime của hôm nay. Kworb — Spotify Weekly Chart Việt Nam\nNếu muốn nghe thử một bài đang dẫn đầu, bắt đầu với “Như Một Người Rưng”.\nK\nNguồn · 1",
+        "links": 2,
+        "hosts": {
+          "kworb.net": 2
+        },
+        "sourcesChip": "K Nguồn · 1",
+        "tables": 1,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/9ef1c594-de0f-440b-ae73-f44bdd4e3446",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "group": "food",
+    "turns": [
+      {
+        "q": "quán bún chả ngon ở khu Hoàn Kiếm Hà Nội",
+        "done": true,
+        "seconds": 40,
+        "screen": "screens/q12.jpg",
+        "answered": true,
+        "chars": 779,
+        "head": "Nếu chọn một quán ở Hoàn Kiếm, mình gợi ý Bún chả 74 Hàng Quạt — quán trong ngõ phố cổ, được các bài gợi ý ẩm thực gần đây nhắc đến; Tripadvisor cũng có thực khách khen phần chả và nước chấm. PasGo · Tripadvisor\nNHÀ HÀNG\n★ 4.3 (852)\nBún chả 74 Hàng Quạt\n\n74 P. Hàng Quạt, Phố cổ Hà Nội, Hoàn Kiếm, Hà Nội, Việt Nam\n\n09:00–21:00\n· Đang mở\n\nTìm trên GrabFood\nXem hồ sơ\nBản đồ\nHotline\nLưu\nReview trên TikTok\nTìm review trên YouTube\nĐịa chỉ 74 Hàng Quạt. Một nguồn ghi giá khoảng 60.000–95.000đ/suất (bài đăng tháng 4/2026); quán thường đông vào giờ trưa, đặc biệt khoảng 11:30–13:00. Giờ mở cửa giữa các nguồn không khớp nhau, nên bạn nên kiểm tra trên Google Maps trước khi ghé. PasGo · VietNamNet\nMuốn",
+        "tail": ". Giờ mở cửa giữa các nguồn không khớp nhau, nên bạn nên kiểm tra trên Google Maps trước khi ghé. PasGo · VietNamNet\nMuốn đỡ đông, bạn thử đi sớm hơn giờ cao điểm trưa.\nP\nT\nM\nNguồn · 4\n🔖 Lưu địa điểm",
+        "links": 13,
+        "hosts": {
+          "pasgo.vn": 3,
+          "tripadvisor.com.vn": 2,
+          "food.grab.com": 1,
+          "maps.google.com": 3,
+          "tiktok.com": 1,
+          "youtube.com": 1,
+          "vietnamnet.vn": 2
+        },
+        "sourcesChip": "P T M Nguồn · 4",
+        "tables": 0,
+        "images": 1,
+        "actionKinds": [
+          "delivery:Tìm trên GrabFood",
+          "review:Review trên TikTok",
+          "review:Tìm review trên YouT"
+        ],
+        "placeCards": 8,
+        "path": "/chat/b8946a58-f398-41fa-a870-17298bc1d7c5",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "group": "food",
+    "turns": [
+      {
+        "q": "tối thứ bảy đi buffet hải sản 8 người ở Sài Gòn, tầm 600 nghìn một người",
+        "done": true,
+        "seconds": 74,
+        "screen": "screens/q13.jpg",
+        "answered": true,
+        "chars": 1404,
+        "head": "Mình chọn Buffet Poseidon Bình Thạnh cho tối thứ Bảy gần nhất, 21/11/2026. Giá cuối tuần là 598.000đ/người, nên vé cơ bản cho 8 người là 4.784.000đ, chưa gồm VAT bắt buộc và đồ uống; xem bảng giá chính thức của Poseidon.\n1.HAI LỰA CHỌN CHO TỐI THỨ BẢY\n\nThông tin tham khảo, chưa có dữ liệu địa điểm\n\nBuffet Poseidon Bình Thạnh\n\nMình nghiêng về đây vì sát ngân sách hơn.\n\nThực đơn: Gần 200 món theo trang giá buffet của Poseidon.\nĐặt bàn: Đặt qua trang chính thức của Poseidon.\n\nNguồn: Buffet Poseidon\n\n2.SO NHANH CHO NHÓM 8 NGƯỜI\n\tPoseidon Bình Thạnh\nTappy chọn\n\tD'Maris Cộng Hòa\nGiá tối cuối tuần/người\t—\tGiá tối cuối tuần/người - 638.000đ\nD’Maris Cộng Hòa là phương án dự phòng nhưng giá tối cuối t",
+        "tail": "ối đi chính—nhà hàng không đảm bảo trước được vị trí. Đặt trước cho đủ 8 người và hỏi tổng tiền sau VAT, đồ uống trước khi chốt; Poseidon có đặt bàn qua trang chính thức.\nB\nD\nNguồn · 2\n🔖 Lưu địa điểm",
+        "links": 9,
+        "hosts": {
+          "buffetposeidon.com": 3,
+          "dmaris.vn": 2,
+          "maps.google.com": 1,
+          "facebook.com": 1,
+          "tiktok.com": 1,
+          "youtube.com": 1
+        },
+        "sourcesChip": "B D Nguồn · 2",
+        "tables": 1,
+        "images": 2,
+        "actionKinds": [
+          "review:Review trên TikTok",
+          "review:Tìm review trên YouT"
+        ],
+        "placeCards": 7,
+        "path": "/chat/33607fbb-bee8-4bc3-8ff3-eb0a89cfa715",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "group": "food",
+    "turns": [
+      {
+        "q": "công thức làm bánh flan mềm mịn không bị rỗ",
+        "done": true,
+        "seconds": 60,
+        "screen": "screens/q14.jpg",
+        "answered": true,
+        "chars": 1999,
+        "head": "Muốn bánh flan mềm mịn, ít rỗ, bí quyết chính là khuấy trứng nhẹ tay, lọc hỗn hợp và hấp ở lửa nhỏ để nước chỉ sôi lăn tăn. Mình gợi ý công thức vị sữa đặc này: 3 trứng nguyên + 2 lòng đỏ, 500 ml sữa tươi và 150 g sữa đặc; tỉ lệ tham khảo từ Savoury Days.\nBánh flan\n\nBánh flan hay gọi theo tiếng Việt là bánh lăng hay ca-ra-men là loại bánh được hấp chín từ các nguyên liệu chính là trứng và sữa, caramel. Đây là một loại bánh xuất xứ từ nền ẩm thực châu Âu tuy hiện nay đã phổ biến tại nhiều nơi trên thế giới. Ở Việt Nam, bánh flan thịnh hành tại các vùng đô thị…\n\nWikipedia\nNGUYÊN LIỆU\nPhần flan: 3 quả trứng gà, 2 lòng đỏ, 500 ml sữa tươi không đường, 150 g sữa đặc, 1 thìa cà phê vani.\nCaramel: ",
+        "tail": "iữa còn rung nhẹ nhưng không lỏng là được. Để nguội rồi làm lạnh trước khi ăn.\nNếu bánh bị rỗ bên trong, thường là do hấp quá nóng; giảm lửa để nước chỉ lăn tăn là mẹo quan trọng nhất.\nS\nH\nS\nNguồn · 3",
+        "links": 9,
+        "hosts": {
+          "savourydays.com": 3,
+          "vi.wikipedia.org": 1,
+          "huongnghiepaau.com": 3,
+          "saiko.com.vn": 2
+        },
+        "sourcesChip": "S H S Nguồn · 3",
+        "tables": 0,
+        "images": 1,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/fcf3c25c-823b-4182-b4ee-badc27ff32fc",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "group": "food",
+    "turns": [
+      {
+        "q": "sáng mai ăn gì ở Huế, quán nào đáng thử",
+        "done": true,
+        "seconds": 47,
+        "screen": "screens/q15.jpg",
+        "answered": true,
+        "chars": 1869,
+        "head": "Sáng mai thứ Tư, 18/11, mình nghiêng về Bánh Canh Nam Phổ + Bèo Nậm Lọc – Quán Hằng: vừa thử được món Huế khác bún bò, lại mở sớm. Ba lựa chọn dưới đây có giờ mở cửa được Google Maps ghi nhận lúc tra cứu hôm nay; nếu bạn muốn tránh chỗ ồn, đi sát giờ mở cửa sẽ hợp hơn, nhưng mình chưa xác minh được độ yên tĩnh của quán.\n1.BA LỰA CHỌN ĂN SÁNG Ở HUẾ\n\nThông tin tham khảo, chưa có dữ liệu địa điểm\n\nBún Bò Huế Nhà An\n\nBún bò Huế; mở từ 06:30 theo Google Maps\n\nNên gọi: Bún bò Huế; quán được liệt kê chuyên món này.\nLưu ý: Giờ niêm yết 06:30–00:00\n\nNguồn: Google Maps\n\nBánh Mì Trường Tiền O Tho\n\nLựa chọn gọn nhẹ, mở từ 06:30 theo Google Maps\n\nNên gọi: Bánh mì Trường Tiền; phù hợp nếu muốn bữa sáng nh",
+        "tail": "nhẹ; quán ghi giờ bán sáng đến 11:00. Google Maps\nChốt nhanh: Quán Hằng nếu bạn muốn thử một món địa phương khác; giờ mở cửa có thể thay đổi, nên kiểm tra lại trước khi đi.\nM\nNguồn · 1\n🔖 Lưu địa điểm",
+        "links": 7,
+        "hosts": {
+          "food.grab.com": 1,
+          "maps.google.com": 5,
+          "youtube.com": 1
+        },
+        "sourcesChip": "M Nguồn · 1",
+        "tables": 1,
+        "images": 3,
+        "actionKinds": [
+          "delivery:Tìm trên GrabFood",
+          "review:Tìm review trên YouT"
+        ],
+        "placeCards": 7,
+        "path": "/chat/0300adc1-22f2-43c6-aff2-20b578b94451",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "group": "food",
+    "turns": [
+      {
+        "q": "một ngày ở Hội An nên ăn những món gì",
+        "done": true,
+        "seconds": 47,
+        "screen": "screens/q16.jpg",
+        "answered": true,
+        "chars": 1679,
+        "head": "Một ngày ở Hội An, mình sẽ ưu tiên mì Quảng buổi sáng, cao lầu buổi trưa, rồi cơm gà buổi tối; ăn nhẹ thêm bánh mì hoặc bánh bao–bánh vạc, chừa bụng cho chè bắp. Đây là những món thường được nhắc đến trong ẩm thực Hội An; mô tả món và thông tin quán mình đối chiếu từ An Phú Trường Thịnh và Vietnam Airlines.\nBA ĐIỂM ĂN CHO MỘT NGÀY Ở HỘI AN\n\nThông tin tham khảo, chưa có dữ liệu địa điểm\n\nQuán Cao lầu Bá Lễ\n\nGợi ý bữa trưa\n\nNên gọi: Quán Cao lầu Bá Lễ: Nên gọi - Cao lầu; thử sợi mì dai với thịt xá xíu, rau ghém\n\nNguồn: Google Maps, Vietnam Airlines, An Phú Trường Thịnh\n\nSáng: Gọi một tô mì Quảng — món có mì gạo, rau sống, bánh tráng nướng và phần nước dùng chan vừa phải. Gợi ý quán: Mì Quảng B",
+        "tail": "há thêm địa điểm\nGiờ mở cửa ở các quán có thể thay đổi; nên kiểm tra lại trước khi ghé. Nếu chỉ chọn ba món “đáng thử nhất”, mình chọn mì Quảng, cao lầu và cơm gà Hội An.\nA\nV\nNguồn · 2\n🔖 Lưu địa điểm",
+        "links": 9,
+        "hosts": {
+          "anphutruongthinh.com": 2,
+          "vietnamairlines.com": 2,
+          "food.grab.com": 1,
+          "maps.google.com": 2,
+          "tiktok.com": 1,
+          "youtube.com": 1
+        },
+        "sourcesChip": "A V Nguồn · 2",
+        "tables": 0,
+        "images": 2,
+        "actionKinds": [
+          "delivery:Tìm trên GrabFood",
+          "review:Review trên TikTok",
+          "review:Tìm review trên YouT"
+        ],
+        "placeCards": 8,
+        "path": "/chat/9ee2dfa3-79d2-43d5-baee-f791294ea506",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "group": "places",
+    "turns": [
+      {
+        "q": "Bà Nà Hills giá vé bao nhiêu, cáp treo chạy mấy giờ",
+        "done": true,
+        "seconds": 37,
+        "screen": "screens/q17.jpg",
+        "answered": true,
+        "chars": 662,
+        "head": "Vé cáp treo khứ hồi năm 2026: người lớn 1.000.000đ nếu không thuộc diện khách Đà Nẵng, hoặc 650.000đ với khách Đà Nẵng. Vé trẻ em cao 1–1,4m và người trên 70 tuổi lần lượt là 800.000đ và 550.000đ; trẻ dưới 1m miễn phí. Theo bảng giá Sun World cập nhật năm 2026 (Sun World):\nĐối tượng\tVé người lớn\tTrẻ em 1–1,4m / người trên 70 tuổi\nKhách Đà Nẵng\t650.000đ\t550.000đ\nKhách ngoài Đà Nẵng\t1.000.000đ\t800.000đ\nCáp treo thường vận hành 08:00–22:00; giờ chạy thực tế có thể thay đổi theo ngày hoặc tình hình vận hành. Sun World hiện hiển thị khu du lịch mở đến 22:00 (Sun World); lịch cáp treo 2026 cũng ghi khung giờ 08:00–22:00 (Vé Cáp Treo Bà Nà Hills).\nS\nV\nNguồn · 2",
+        "tail": "thể thay đổi theo ngày hoặc tình hình vận hành. Sun World hiện hiển thị khu du lịch mở đến 22:00 (Sun World); lịch cáp treo 2026 cũng ghi khung giờ 08:00–22:00 (Vé Cáp Treo Bà Nà Hills).\nS\nV\nNguồn · 2",
+        "links": 5,
+        "hosts": {
+          "sunworld.vn": 3,
+          "vecaptreobanahills.com": 2
+        },
+        "sourcesChip": "S V Nguồn · 2",
+        "tables": 1,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/06187ad7-966f-4c39-83b9-bf740b06c7cb",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "group": "places",
+    "turns": [
+      {
+        "q": "phòng gym gần Cầu Giấy có hồ bơi",
+        "done": true,
+        "seconds": 69,
+        "screen": "screens/q18.jpg",
+        "answered": true,
+        "chars": 1617,
+        "head": "Có — mình ưu tiên SUN Fitness & Pool - Tôn Thất Thuyết: trang của SUN xác nhận cơ sở có cả gym và bể bơi bốn mùa. SUN Fitness & Pool Thông tin bể bơi SUN tại Cầu Giấy\nCHỌN NHANH\n\tSUN Fitness & Pool\nTappy chọn\n\tNova Fitness Yoga & Pool\nĐịa chỉ\t3 Tôn Thất Thuyết, Sky Park Residence\tDiscovery Complex, 302 Cầu Giấy\nCăn cứ hồ bơi\tTrang SUN xác nhận có bể bơi bốn mùa\tTên cơ sở và GymMap ghi nhận hồ bơi; cần xác nhận trực tiếp gói dùng hồ\nPHÒNG TẬP THỂ DỤC\n★ 4.2 (132)\nSUN Fitness & Pool - Tôn Thất Thuyết\n\ntoà nhà Sky Park Residence, 3 Tôn Thất Thuyết, Cầu Giấy, Hà Nội 100000, Việt Nam\n\n05:30–21:30\n· Đang mở\n\nĐẶC TRƯNG NỔI BẬT\n\nTiện ích: SUN giới thiệu có cả gym và bể bơi bốn mùa.\nĐiểm tiện: Bể bơi ",
+        "tail": ", Google Maps\n\nXem hồ sơ\nBản đồ\nHotline\nLưu\nReview trên TikTok\nTìm review trên YouTube\nTrước khi đăng ký, xác nhận gói tập có bao gồm hồ bơi và giờ bơi riêng hay không.\nS\nS\nG\nNguồn · 3\n🔖 Lưu địa điểm",
+        "links": 12,
+        "hosts": {
+          "sunfitness.vn": 3,
+          "sunpool.vn": 2,
+          "maps.google.com": 2,
+          "youtube.com": 2,
+          "gymmap.vn": 2,
+          "tiktok.com": 1
+        },
+        "sourcesChip": "S S G Nguồn · 3",
+        "tables": 1,
+        "images": 2,
+        "actionKinds": [
+          "review:Tìm review trên YouT",
+          "review:Review trên TikTok",
+          "review:Tìm review trên YouT"
+        ],
+        "placeCards": 12,
+        "path": "/chat/becc8199-2367-4305-8ec3-c31a671116be",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 19,
+    "group": "places",
+    "turns": [
+      {
+        "q": "bệnh viện nhi tốt ở Sài Gòn, bé 4 tuổi cần khám tai mũi họng",
+        "done": true,
+        "seconds": 53,
+        "screen": "screens/q19.jpg",
+        "answered": true,
+        "chars": 1859,
+        "head": "Với bé 4 tuổi, mình ưu tiên Bệnh viện Nhi Đồng 1 vì có chuyên khoa tiếp nhận bệnh Tai Mũi Họng ở trẻ; nếu gần trung tâm hơn, Nhi Đồng 2 cũng là lựa chọn phù hợp. Bệnh viện Nhi Đồng 1 Bệnh viện Nhi Đồng 2\nCHỌN NƠI KHÁM PHÙ HỢP\n\tNhi Đồng 1\nTappy chọn\n\tNhi Đồng 2\tTai Mũi Họng TP.HCM\nĐịa chỉ\t341 Sư Vạn Hạnh, TP.HCM\t14 Lý Tự Trọng, TP.HCM\t155B Trần Quốc Thảo, TP.HCM\nĐặt hẹn / liên hệ\t1900 2115\t—\t(028) 3931 7381\nBỆNH VIỆN NHI\n★ 3.3 (2.2k)\nBệnh viện Nhi Đồng 2\n\n14 Lý Tự Trọng, Sài Gòn, Hồ Chí Minh, Việt Nam\n\n07:00–19:00\n· Đang đóng\n\nXem hồ sơ\nBản đồ\nHotline\nLưu\nTìm review trên YouTube\nBỆNH VIỆN NHI\n★ 3.1 (2.2k)\nBệnh viện Nhi đồng 1\n\n341 Sư Vạn Hạnh, Vườn Lài, Hồ Chí Minh 70000, Việt Nam\n\nMở cửa cả ",
+        "tail": "heo giấy tờ tùy thân, thẻ BHYT và đơn thuốc hoặc kết quả khám trước đây nếu có.\nNếu chưa rõ chọn đâu, gọi Nhi Đồng 1 trước; nếu lịch không tiện, kiểm tra lịch Nhi Đồng 2.\nB\nB\nNguồn · 2\n🔖 Lưu địa điểm",
+        "links": 13,
+        "hosts": {
+          "benhviennhi.org.vn": 5,
+          "maps.google.com": 3,
+          "youtube.com": 3,
+          "bookingcare.vn": 2
+        },
+        "sourcesChip": "B B Nguồn · 2",
+        "tables": 1,
+        "images": 3,
+        "actionKinds": [
+          "review:Tìm review trên YouT",
+          "review:Tìm review trên YouT",
+          "review:Tìm review trên YouT"
+        ],
+        "placeCards": 15,
+        "path": "/chat/68e45cf1-775b-44ee-8944-2bdeeca4d130",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 20,
+    "group": "travel",
+    "turns": [
+      {
+        "q": "lên lịch trình Đà Lạt 3 ngày 2 đêm cho cặp đôi, thích cà phê và chụp ảnh",
+        "done": true,
+        "seconds": 64,
+        "screen": "screens/q20.jpg",
+        "answered": true,
+        "chars": 763,
+        "head": "Tất cả (8)\nĐang mở cửa\nĐánh giá cao\nQUÁN CÀ PHÊ\n★ 4.5 (4k)\nTiệm Cà Phê Túi Mơ To\n\nHẻm 31 Sào Nam, Xuân Trường - Đà Lạt, Lâm Đồng 66100, Việt Nam\n\n07:30–21:30\n· Đang mở\n\nĐặt chỗ\nXem hồ sơ\nBản đồ\nWebsite\nHotline\nLưu\nTìm review trên YouTube\nQUÁN CÀ PHÊ\n★ 4.0 (2.4k)\nĐà Lạt View\n\n49 Khe Sanh, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam\n\n07:00–21:00\n· Đang mở\n\nTìm trên GrabFood\nXem hồ sơ\nBản đồ\nHotline\nLưu\nTìm review trên YouTube\nQUÁN CÀ PHÊ\n★ 3.8 (924)\nCafe Gia Nguyễn - Quán cafe view đẹp, đồ uống ngon tại Đà Lạt\n\n1 Đ. Nguyễn Chí Thanh, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam\n\n06:00–23:00\n· Đang mở\n\nTìm trên GrabFood\nXem hồ sơ\nBản đồ\nHotline\nLưu\nTìm review trên YouTube\nXem thêm 5 chỗ\nXem tất cả trên ",
+        "tail": ", Việt Nam\n\n06:00–23:00\n· Đang mở\n\nTìm trên GrabFood\nXem hồ sơ\nBản đồ\nHotline\nLưu\nTìm review trên YouTube\nXem thêm 5 chỗ\nXem tất cả trên bản đồ\nMở Google Maps để khám phá thêm địa điểm\n🔖 Lưu địa điểm",
+        "links": 11,
+        "hosts": {
+          "google.com": 1,
+          "maps.google.com": 4,
+          "facebook.com": 1,
+          "youtube.com": 3,
+          "food.grab.com": 2
+        },
+        "sourcesChip": null,
+        "tables": 0,
+        "images": 3,
+        "actionKinds": [
+          "reservation:Đặt chỗ",
+          "review:Tìm review trên YouT",
+          "delivery:Tìm trên GrabFood",
+          "review:Tìm review trên YouT",
+          "delivery:Tìm trên GrabFood",
+          "review:Tìm review trên YouT"
+        ],
+        "placeCards": 22,
+        "path": "/chat",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 21,
+    "group": "travel",
+    "turns": [
+      {
+        "q": "vé máy bay Hà Nội đi Sài Gòn ngày 25 tháng 11 giá khoảng bao nhiêu",
+        "done": true,
+        "seconds": 33,
+        "screen": "screens/q21.jpg",
+        "answered": true,
+        "chars": 346,
+        "head": "Nếu bạn hỏi vé một chiều cho 1 người lớn, ngày 25/11/2026, giá tham khảo khoảng 1.774.000₫. VeXeRe hiển thị mức này đã gồm thuế, phí, theo dữ liệu cập nhật ngày 17/11; giá và chỗ trống có thể đổi khi đặt. VeXeRe\nBạn cần giá một chiều hay khứ hồi?\n🔗 Liên kết đối tác: Xem giá trên Trip.com · Xem giá trên Traveloka\nV\nG\nNguồn · 2\nMột chiều\nKhứ hồi",
+        "tail": " cập nhật ngày 17/11; giá và chỗ trống có thể đổi khi đặt. VeXeRe\nBạn cần giá một chiều hay khứ hồi?\n🔗 Liên kết đối tác: Xem giá trên Trip.com · Xem giá trên Traveloka\nV\nG\nNguồn · 2\nMột chiều\nKhứ hồi",
+        "links": 5,
+        "hosts": {
+          "vexere.com": 2,
+          "go.isclix.com": 3
+        },
+        "sourcesChip": "V G Nguồn · 2",
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/eca2347a-4798-4c1c-9a02-d30c622f0e43",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 22,
+    "group": "travel",
+    "turns": [
+      {
+        "q": "khách sạn Nha Trang cho 2 người từ 28 đến 30 tháng 11, gần biển, dưới 1,5 triệu một đêm",
+        "done": true,
+        "seconds": 67,
+        "screen": "screens/q22.jpg",
+        "answered": true,
+        "chars": 3040,
+        "head": "Mình hiểu là 2 người, nhận phòng 28/11 và trả phòng 30/11/2026. Mình chọn: Brilliant Bay Nha Trang Hotel. Vì địa chỉ nằm trên đường Trần Phú; giá Agoda kiểm tra lúc 19:06 ngày 17/11 là 345.419đ/đêm cho 2 người, dưới mức bạn đặt ra.\n1.KHÁCH SẠN PHÙ HỢP VỚI NGÀY VÀ NGÂN SÁCH\n\nThông tin tham khảo, chưa có dữ liệu địa điểm\n\nBrilliant Bay Nha Trang Hotel\n\nVị trí Trần Phú; lựa chọn ưu tiên để ở gần biển\n\nVị trí: Địa chỉ do Google Maps ghi: Trần Phú, Nha Trang.\nĐánh giá: 4,1/5 từ 302 đánh giá Google Maps.\n\nNguồn: Agoda, Google Maps\n\nSophia central nha trang hotel\n\nGiá thấp nhất trong các lựa chọn có địa chỉ kiểm tra được\n\nVị trí: 35 Trần Quang Khải, Nha Trang.\nĐánh giá: 3,9/5 từ 127 đánh giá Google",
+        "tail": ", kiểm tra lúc 19:06 · Agoda · Kiểm tra giá & tình trạng: Khách sạn Prime New Nha Trang · Agoda · Khách sạn Prime New Nha Trang — 347.749đ/đêm, kiểm tra lúc 19:06 · Agoda\nT\nA\nNguồn · 2\n🔖 Lưu địa điểm",
+        "links": 25,
+        "hosts": {
+          "go.isclix.com": 3,
+          "maps.google.com": 5,
+          "panamanhatrang.com": 1,
+          "tiktok.com": 1,
+          "youtube.com": 4,
+          "booking.com": 1,
+          "nhaviethotels.com": 1,
+          "seasidenhatranghotel.com": 1,
+          "tappyai.com": 4,
+          "agoda.com": 4
+        },
+        "sourcesChip": "T A Nguồn · 2",
+        "tables": 1,
+        "images": 7,
+        "actionKinds": [
+          "review:Review trên TikTok",
+          "review:Tìm review trên YouT",
+          "booking:Tìm phòng trên Booki",
+          "review:Tìm review trên YouT",
+          "review:Tìm review trên YouT",
+          "review:Tìm review trên YouT"
+        ],
+        "placeCards": 29,
+        "path": "/chat/c2fde0ed-8118-4a7e-8d24-cf8b7cf55ee9",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 23,
+    "group": "travel",
+    "turns": [
+      {
+        "q": "đi Singapore tự túc 4 ngày cần visa không, chi phí khoảng bao nhiêu",
+        "done": true,
+        "seconds": 41,
+        "screen": "screens/q23.jpg",
+        "answered": true,
+        "chars": 1526,
+        "head": "Nếu bạn mang hộ chiếu phổ thông Việt Nam, đi Singapore du lịch 4 ngày thì không cần xin visa trước; được miễn visa cho thời gian lưu trú không quá 30 ngày. Hộ chiếu cần còn hạn ít nhất 6 tháng; nên có vé khứ hồi và thông tin lưu trú sẵn sàng khi nhập cảnh. Vietnam Airlines\nSG Arrival Card vẫn phải khai, miễn phí trên trang/app chính thức của ICA, trong vòng 3 ngày trước ngày đến (tính cả ngày đến); đây không phải visa. ICA Singapore\nCHI PHÍ THAM KHẢO\nMình tạm tính 2 người đi từ Việt Nam, 4 ngày/3 đêm, vé máy bay phổ thông, chưa tính mua sắm. Chi phí tại Singapore quy đổi theo tỷ giá bán SGD của Vietcombank được tìm thấy ngày 17/11/2026; giá vé máy bay là mức tham khảo được đăng ngày 28/9/202",
+        "tail": "uẩn bị khoảng 50–60 triệu đồng cho chuyến 4 ngày ở mức tầm trung, chưa tính mua sắm lớn.\nNếu hộ chiếu của bạn không phải Việt Nam, yêu cầu visa sẽ tùy quốc tịch và loại giấy tờ đi lại.\nV\nI\nS\nNguồn · 5",
+        "links": 10,
+        "hosts": {
+          "vietnamairlines.com": 2,
+          "ica.gov.sg": 2,
+          "singaporewithme.com": 2,
+          "livingnomads.com": 2,
+          "vietcombank.com.vn": 2
+        },
+        "sourcesChip": "V I S Nguồn · 5",
+        "tables": 1,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/83eb9b87-bcf9-416a-b6b1-1d84a09730ef",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 24,
+    "group": "travel",
+    "turns": [
+      {
+        "q": "đi từ Sài Gòn xuống Vũng Tàu cuối tuần bằng gì tiện nhất",
+        "done": true,
+        "seconds": 32,
+        "screen": "screens/q24.jpg",
+        "answered": true,
+        "chars": 755,
+        "head": "Tiện nhất với đa số người là xe limousine: có nhiều khung giờ, thường có điểm đón/trả trong thành phố, đỡ phải tự lái và lo gửi xe. Cuối tuần đường có thể đông nên chừa dư thời gian; kết quả tìm kiếm hiện có hãng báo chạy khoảng 5:00–21:30, nhưng nên xác nhận chuyến và điểm đón lúc đặt vé (Toàn Thắng, cập nhật 4/11/2026).\nNếu bạn ở gần trung tâm Quận 1 và muốn tránh kẹt xe, tàu cao tốc GreenlinesDP là phương án đáng cân nhắc: đi từ bến Bạch Đằng, hãng có tuyến Sài Gòn–Vũng Tàu đang hoạt động (GreenlinesDP). Nhưng cần xem giờ tàu đúng ngày đi và tính thêm chặng di chuyển từ bến Vũng Tàu đến nơi ở.\nChốt nhanh: chọn limousine cho tiện đón trả; chọn tàu nếu gần bến Bạch Đằng và ưu tiên tránh đườ",
+        "tail": " thêm chặng di chuyển từ bến Vũng Tàu đến nơi ở.\nChốt nhanh: chọn limousine cho tiện đón trả; chọn tàu nếu gần bến Bạch Đằng và ưu tiên tránh đường đông.\n🔗 Liên kết chính thức: Vexere\nT\nG\nV\nNguồn · 3",
+        "links": 6,
+        "hosts": {
+          "toanthangcar.com": 2,
+          "greenlines-dp.com": 2,
+          "vexere.com": 2
+        },
+        "sourcesChip": "T G V Nguồn · 3",
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/10334833-39c0-4d44-97c5-56d47d1c8d44",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 25,
+    "group": "travel",
+    "turns": [
+      {
+        "q": "nên đi Phú Quốc hay Côn Đảo vào tháng 12",
+        "done": true,
+        "seconds": 45,
+        "screen": "screens/q25.jpg",
+        "answered": true,
+        "chars": 2020,
+        "head": "Mình nghiêng về Phú Quốc nếu đi tháng 12 và muốn chắc lịch biển hơn: tháng này thuộc mùa khô, thường thuận lợi cho tắm biển, tour đảo và lặn ngắm san hô. Eco San Hô Đỏ La Bàn Tour\n1.HAI LỰA CHỌN THÁNG 12\n\nThông tin tham khảo, chưa có dữ liệu địa điểm\n\nCôn Đảo\n\nƯu tiên yên tĩnh, thiên nhiên và di tích\n\nXem hồ sơ Tappy\nLưu ý tháng 12: Nguồn du lịch có thông tin mùa khô bắt đầu từ tháng 12\n\nNguồn: Vietravel, BestPrice, Côn Đảo Express\n\n2.CHỌN NHANH THEO ƯU TIÊN\n\tPhú Quốc\nTappy chọn\n\tCôn Đảo\nTháng 12\tMùa khô rõ hơn\t—\nCôn Đảo hợp hơn nếu ưu tiên không gian yên tĩnh, thiên nhiên và di tích. Thông tin mùa ở đây chưa hoàn toàn thống nhất; có nguồn cho rằng mùa khô bắt đầu từ tháng 12, nhưng cũng có ",
+        "tail": "\nLưu\nTìm review trên YouTube\nTháng 12 thường là mùa du lịch cao điểm ở Phú Quốc, nên đặt vé và phòng sớm; sát ngày đi nhớ kiểm tra dự báo biển và lịch tour. La Bàn Tour\nP\nL\nB\nNguồn · 4\n🔖 Lưu địa điểm",
+        "links": 22,
+        "hosts": {
+          "phuquocsanhodo.com": 2,
+          "labantour.com": 3,
+          "bestprice.vn": 2,
+          "condao.express": 2,
+          "maps.google.com": 5,
+          "booking.vinwonders.com": 1,
+          "tiktok.com": 2,
+          "youtube.com": 4,
+          "vinwonders.com": 1
+        },
+        "sourcesChip": "P L B Nguồn · 4",
+        "tables": 1,
+        "images": 5,
+        "actionKinds": [
+          "review:Review trên TikTok",
+          "review:Tìm review trên YouT",
+          "review:Review trên TikTok",
+          "review:Tìm review trên YouT",
+          "review:Tìm review trên YouT",
+          "review:Tìm review trên YouT"
+        ],
+        "placeCards": 22,
+        "path": "/chat/7d780fa4-55b0-434d-b2c3-7f71d7d08164",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 26,
+    "group": "shopping",
+    "turns": [
+      {
+        "q": "tai nghe chống ồn tốt dưới 3 triệu",
+        "done": true,
+        "seconds": 65,
+        "screen": "screens/q26.jpg",
+        "answered": true,
+        "chars": 1550,
+        "head": "Nếu muốn tai nghe chụp tai có chống ồn chủ động (ANC), mình chọn Sony WH-CH720N: hiện được niêm yết 2.090.000đ và trang bán ghi pin tối đa 35 giờ khi bật ANC. CellphoneS\nHAI LỰA CHỌN CHỐNG ỒN ĐÁNG CÂN NHẮC DƯỚI 3 TRIỆU\nSony WH-CH720N\n\nChụp tai nhẹ, giá hiện tra được thấp hơn\n\nGiá đang hiển thị: 2.090.000đ tại CellphoneS (17/11/2026).\nThông tin đáng chú ý: Trang bán ghi trọng lượng 192g, pin tối đa 35 giờ khi bật ANC và 50 giờ khi tắt ANC.\n\nNguồn: CellphoneS\n\nJBL Live 670NC\n\nMột lựa chọn JBL khác trong ngân sách\n\nGiá đang hiển thị: 2.690.000đ tại CellphoneS (17/11/2026).\nĐánh giá sản phẩm: JBL Live 670NC: Đánh giá sản phẩm - 4,3/5 từ 751 lượt đánh giá trên danh sách sản phẩm\n\nNguồn: Cellphone",
+        "tail": "h giá. Bạn thích kiểu chụp tai hay nhét tai hơn?\n🔗 Liên kết đối tác: Tai nghe Bluetooth chụp tai Sony WH-CH720N · CellphoneS\nC\nG\nNguồn · 2\n🔖 Lưu địa điểm\nChụp tai\nNhét tai\nƯu tiên chống ồn mạnh nhất",
+        "links": 8,
+        "hosts": {
+          "cellphones.com.vn": 4,
+          "go.isclix.com": 3,
+          "google.com": 1
+        },
+        "sourcesChip": "C G Nguồn · 2",
+        "tables": 1,
+        "images": 3,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/7dedc401-88b1-4649-9e95-f87d35c21a7e",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 27,
+    "group": "shopping",
+    "turns": [
+      {
+        "q": "tủ lạnh inverter 300 lít cho gia đình 4 người nên mua loại nào",
+        "done": true,
+        "seconds": 90,
+        "screen": "screens/q27.jpg",
+        "answered": true,
+        "chars": 1984,
+        "head": "Mình ưu tiên LG Inverter 315 lít LTB31BLM: đây là lựa chọn hợp lý nhất nếu nhà 4 người muốn giữ dung tích quanh 300 lít mà không phải chi quá tay. Giá niêm yết mình tra được ở Điện máy XANH là 9.640.000đ ngày 17/11/2026. Điện máy XANH\n1.HAI MẪU GẦN 300 LÍT ĐÁNG XEM\nTủ lạnh LG Inverter 315 lít LTB31BLM\n\nLựa chọn cân bằng giá và dung tích\n\nGiá tham khảo: 9.640.000đ tại Điện máy XANH; một listing khác từ Điện Máy Tín Phát là 7.800.000đ.\nDung tích: 315 lít, nằm trong nhóm 301–350 lít mà Điện máy XANH xếp phù hợp gia đình 3–4 người.\n\nNguồn: Điện máy XANH, Điện Máy Tín Phát\n\nTL\nTủ lạnh Samsung Inverter 307 lít RB30N4190B1/SV\n\nPhương án Samsung đúng tầm dung tích\n\nGiá tham khảo: 13.640.000đ tại Điệ",
+        "tail": "gày, 300 lít có thể hơi thiếu — lúc đó nên ưu tiên dung tích lớn hơn thay vì chỉ nhìn giá.\nSo sánh 2 lựa chọn\nBạn dự trù ngân sách tối đa bao nhiêu?\nD\nNguồn · 1\nDưới 10 triệu\n10–13 triệu\nTrên 13 triệu",
+        "links": 8,
+        "hosts": {
+          "dienmayxanh.com": 4,
+          "go.isclix.com": 2,
+          "google.com": 2
+        },
+        "sourcesChip": "D Nguồn · 1",
+        "tables": 1,
+        "images": 3,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/a331b998-60a9-4eac-9032-3fa18eebd5b5",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 28,
+    "group": "shopping",
+    "turns": [
+      {
+        "q": "điện thoại chụp ảnh đẹp tầm 10 triệu",
+        "done": true,
+        "seconds": 92,
+        "screen": "screens/q28.jpg",
+        "answered": true,
+        "chars": 1890,
+        "head": "Mình nghiêng về Samsung Galaxy A56 5G nếu bạn muốn một máy chụp đa dụng quanh 10 triệu. Nếu ưu tiên ảnh chính nhiều chi tiết và chấp nhận kiểm tra kỹ nơi bán, xem thêm REDMI Note 15 Pro 5G.\nHAI LỰA CHỌN ĐÁNG XEM QUANH 10 TRIỆU\nSamsung Galaxy A56 5G\n\nLựa chọn cân bằng hơn cho nhiều kiểu chụp\n\nXem hồ sơ Tappy\nLưu ý: Giá listing ở Việt Nam được tìm thấy cho bản 8 GB/128 GB\n\nNguồn: Samsung, Google Shopping\n\nGIÁ LISTING TÌM ĐƯỢC HÔM NAY, 17/11/2026\nListing\tGiá tham khảo\tNơi bán\nSamsung Galaxy A56 5G 8GB/128GB\t8.090.000đ\tĐiện Thoại Giá Kho\nREDMI Note 15 Pro 5G Tím Khói 12GB/256GB\t6.690.000đ\tVio Store\nREDMI Note 15 Pro 5G Đen 12GB/512GB\t8.399.000đ\tXTmobile\nGiá listing do kết quả tìm kiếm bán lẻ trả",
+        "tail": " giá thấp hơn?\n🔗 Liên kết đối tác: Gợi ý 10+ chiếc điện thoại Android chụp hình đẹp nhất 2026 · CellphoneS\nS\nM\nG\nNguồn · 3\nMới chính hãng\nChấp nhận máy chưa rõ tình trạng\nƯu tiên ảnh chân dung/selfie",
+        "links": 9,
+        "hosts": {
+          "samsung.com": 2,
+          "mi.com": 3,
+          "go.isclix.com": 3,
+          "google.com": 1
+        },
+        "sourcesChip": "S M G Nguồn · 3",
+        "tables": 1,
+        "images": 2,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/9a3a34ab-bc49-4cd7-b7fe-4a8d67d02f00",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 29,
+    "group": "shopping",
+    "turns": [
+      {
+        "q": "máy giặt cửa trước 9kg loại nào bền",
+        "done": true,
+        "seconds": 83,
+        "screen": "screens/q29.jpg",
+        "answered": true,
+        "chars": 1924,
+        "head": "Mình nghiêng về máy giặt LG Inverter 9 kg FB1209S6W: động cơ truyền động trực tiếp có bảo hành 10 năm, và listing FPT Shop đang hiển thị 4.990.000₫ khi mình tra cứu ngày 17/11/2026. LG Việt Nam · FPT Shop listing\n1.HAI MÁY GIẶT CỬA TRƯỚC 9 KG ĐÁNG CÂN NHẮC\nMáy giặt LG Inverter 9 kg FB1209S6W\n\nMình ưu tiên lựa chọn này nếu bạn muốn máy 9 kg bền, giá vừa hơn.\n\nGiá tham khảo: FPT Shop listing hiển thị 4.990.000₫ tại thời điểm tra cứu 17/11/2026.\n\nNguồn: LG Việt Nam, FPT Shop\n\nMáy giặt Electrolux UltimateCare 500 Inverter 9 kg EWF9023P5WC\n\nLựa chọn nâng cấp nếu ưu tiên các chương trình chăm sóc quần áo.\n\nGiá tham khảo: MediaMart listing hiển thị 9.490.000₫ tại thời điểm tra cứu 17/11/2026.\n\nNguồ",
+        "tail": " · Shopee · Máy giặt Electrolux UltimateCare 500 Inverter 9 kg ... · Điện Máy Xanh · Máy giặt Samsung Inverter 9.5 kg WW95TA046AX/SV · Điện Máy Xanh\nL\nG\nE\nNguồn · 5\nDưới 6 triệu\n6–9 triệu\nTrên 9 triệu",
+        "links": 15,
+        "hosts": {
+          "lg.com": 2,
+          "google.com": 4,
+          "electrolux.vn": 2,
+          "go.isclix.com": 2,
+          "shopee.vn": 2,
+          "dienmayxanh.com": 3
+        },
+        "sourcesChip": "L G E Nguồn · 5",
+        "tables": 1,
+        "images": 4,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/1ec0cefd-57c4-4d40-89a9-9ae7c7810604",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 30,
+    "group": "shopping",
+    "turns": [
+      {
+        "q": "MacBook Air M4 mua ở đâu rẻ nhất hiện nay",
+        "done": true,
+        "seconds": 41,
+        "screen": "screens/q30.jpg",
+        "answered": true,
+        "chars": 1447,
+        "head": "Rẻ nhất mình tìm được hiện nay là 24hStore: MacBook Air M4 13″, 16GB/256GB đang được niêm yết khoảng 22.790.000–23.290.000đ. Có chênh lệch giữa giá trích xuất trên trang và giá hiển thị trong nội dung trang, nên xác nhận giá cuối cùng trước khi thanh toán. 24hStore\nNhững lựa chọn sát nhất mình tìm được\nChưa có phương án nào vượt hẳn, nên mình xếp theo mức độ phù hợp.\nMacBook Air M4 13 inch 2025 10CPU 10GPU 16GB 512GB\nĐúng cấu hình bạn cần\nchưa rõ giá\nCellphoneS\nM4\n16GB RAM\n512GB bộ nhớ\n13 inch\nMua trên CellphoneS · cần đăng nhập\nMacBook Air M4 13 inch 2025 10CPU 8GPU 16GB 256GB\nĐúng cấu hình bạn cần\nchưa rõ giá\nCellphoneS\nM4\n16GB RAM\n256GB bộ nhớ\n13 inch\nXem\nNơi bán, cùng cấu hình 13″ 16GB/2",
+        "tail": "MacBook Air M4 13 inch 2025 10CPU 8GPU 16GB 256GB · CellphoneS · MacBook Air M4 13 inch 2025 10CPU 8GPU 16GB 256GB ... · CellphoneS\n2\nG\nNguồn · 2\n🔖 Lưu địa điểm\nMáy mới\nMáy cũ/open-box\nSo sánh cả hai",
+        "links": 7,
+        "hosts": {
+          "24hstore.vn": 2,
+          "go.isclix.com": 4,
+          "cellphones.com.vn": 1
+        },
+        "sourcesChip": "2 G Nguồn · 2",
+        "tables": 1,
+        "images": 1,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/8a812daa-9bce-4c97-b2cb-dc0fa4220c3b",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 31,
+    "group": "law",
+    "turns": [
+      {
+        "q": "điều kiện để được hưởng bảo hiểm thất nghiệp là gì",
+        "done": true,
+        "seconds": 25,
+        "screen": "screens/q31.jpg",
+        "answered": true,
+        "chars": 988,
+        "head": "Tính đến tháng 11/2026, để được hưởng trợ cấp thất nghiệp ở Việt Nam, bạn cần đáp ứng đồng thời 4 điều kiện theo Luật Việc làm 2025, có hiệu lực từ 1/1/2026 (Bảo hiểm xã hội Việt Nam):\nChấm dứt việc làm hợp pháp — không phải đơn phương chấm dứt hợp đồng trái pháp luật; không nghỉ việc khi đã đủ điều kiện hưởng lương hưu.\nĐóng BHTN đủ thời gian: thông thường ít nhất 12 tháng trong 24 tháng trước khi nghỉ. Với hợp đồng có thời hạn từ đủ 1 tháng đến dưới 12 tháng, cần đủ 12 tháng trong 36 tháng trước khi nghỉ.\nNộp đủ hồ sơ trong vòng 3 tháng kể từ ngày chấm dứt hợp đồng hoặc nghỉ việc.\nTrong 10 ngày làm việc kể từ ngày nộp đủ hồ sơ, không rơi vào các trường hợp như đã có việc làm thuộc diện tha",
+        "tail": "ạm giam/chấp hành án tù, ra nước ngoài định cư hoặc chết. (Báo Điện tử Chính phủ)\nLưu ý: đóng BHTN đủ tháng thôi chưa đủ — bạn vẫn phải nộp hồ sơ đúng hạn và đáp ứng các điều kiện còn lại.\nX\nNguồn · 1",
+        "links": 2,
+        "hosts": {
+          "xaydungchinhsach.chinhphu.vn": 2
+        },
+        "sourcesChip": "X Nguồn · 1",
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/55ce040d-2a9b-4a4d-b686-e42f1d4bffb7",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 32,
+    "group": "law",
+    "turns": [
+      {
+        "q": "thủ tục đăng ký kết hôn cần giấy tờ gì",
+        "done": true,
+        "seconds": 45,
+        "screen": "screens/q32.jpg",
+        "answered": true,
+        "chars": 854,
+        "head": "Nếu cả hai đều là công dân Việt Nam và đăng ký trong nước, thường cần chuẩn bị:\nTờ khai đăng ký kết hôn theo mẫu, điền đủ thông tin của hai người; nếu nộp trực tuyến thì khai biểu mẫu điện tử.\nGiấy tờ tùy thân của mỗi người: thẻ căn cước/CCCD hoặc hộ chiếu để cơ quan đối chiếu.\nGiấy tờ chứng minh thông tin cư trú chỉ khi cơ quan không tra cứu được dữ liệu cư trú của bạn.\nNếu một người đã ly hôn ở nước ngoài, có thể cần giấy tờ chứng minh việc ly hôn đã được ghi nhận tại Việt Nam.\nCơ quan hộ tịch tra cứu tình trạng hôn nhân qua dữ liệu; nếu không tra cứu được, họ có thể hướng dẫn bổ sung giấy tờ xác nhận. Hai người nên cùng đến để ký và hoàn tất đăng ký. Danh mục hồ sơ và cách nộp được đăng t",
+        "tail": "ăng ký. Danh mục hồ sơ và cách nộp được đăng trên Cổng Dịch vụ công Quốc gia.\nTóm lại: mang giấy tờ tùy thân của cả hai; tờ khai có thể điền theo mẫu tại nơi tiếp nhận hoặc nộp trực tuyến.\nV\nNguồn · 1",
+        "links": 2,
+        "hosts": {
+          "vpcp.dichvucong.gov.vn": 2
+        },
+        "sourcesChip": "V Nguồn · 1",
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/8e3e091d-db28-47d9-b212-a548ccc3acf1",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 33,
+    "group": "law",
+    "turns": [
+      {
+        "q": "xe máy vượt đèn đỏ bị phạt bao nhiêu tiền",
+        "done": true,
+        "seconds": 38,
+        "screen": "screens/q33.jpg",
+        "answered": true,
+        "chars": 353,
+        "head": "Xe máy vượt đèn đỏ bị phạt 4.000.000–6.000.000 đồng và bị trừ 4 điểm giấy phép lái xe theo quy định hiện hành Nghị định 168/2024/NĐ-CP.\nNếu hành vi đó gây tai nạn, mức phạt là 10.000.000–14.000.000 đồng, đồng thời bị trừ 10 điểm. Đời sống & Pháp luật\nLưu ý: rẽ phải khi đèn đỏ chỉ được đi nếu có tín hiệu, biển báo hoặc hiệu lệnh cho phép.\nV\nD\nNguồn · 2",
+        "tail": "y tai nạn, mức phạt là 10.000.000–14.000.000 đồng, đồng thời bị trừ 10 điểm. Đời sống & Pháp luật\nLưu ý: rẽ phải khi đèn đỏ chỉ được đi nếu có tín hiệu, biển báo hoặc hiệu lệnh cho phép.\nV\nD\nNguồn · 2",
+        "links": 4,
+        "hosts": {
+          "vanban.chinhphu.vn": 2,
+          "doisongphapluat.com.vn": 2
+        },
+        "sourcesChip": "V D Nguồn · 2",
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/79135adc-69f8-4176-95c5-f12fad99a263",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 34,
+    "group": "health",
+    "turns": [
+      {
+        "q": "ngồi văn phòng cả ngày bị đau lưng thì nên làm gì",
+        "done": true,
+        "seconds": 34,
+        "screen": "screens/q34.jpg",
+        "answered": true,
+        "chars": 1295,
+        "head": "Nếu đau lưng xuất hiện sau khi ngồi lâu, bạn có thể thử đứng dậy đi lại nhẹ, đổi tư thế thường xuyên và chỉnh lại chỗ ngồi; đừng cố nằm bất động cả ngày. Đau lưng thường có thể tự dịu, nhưng mình không thể xác định nguyên nhân chỉ từ mô tả này. NHS\nNgay lúc này: đứng lên đi lại vài phút, duỗi người nhẹ nhàng trong mức dễ chịu. Nếu động tác làm đau tăng rõ, dừng lại.\nChỉnh bàn ghế: tựa lưng vào ghế, để bàn chân chạm sàn; kê màn hình sao cho nhìn thẳng, tránh cúi/rướn cổ. Không cần giữ một tư thế “chuẩn” bất động—hãy đổi tư thế và đặt nhắc nhở đứng lên vận động định kỳ.\nGiảm khó chịu: có thể chườm ấm hoặc lạnh, bọc túi chườm trong khăn; tiếp tục sinh hoạt nhẹ nhàng nếu làm được và tránh nằm ng",
+        "tail": "t kiểm soát tiểu tiện/đại tiện, đau ngực hay bắt đầu sau tai nạn nghiêm trọng. Bước dễ làm nhất hôm nay: đặt nhắc nhở để thường xuyên đứng dậy, đi vài bước và thay đổi tư thế khi làm việc.\nN\nNguồn · 1",
+        "links": 2,
+        "hosts": {
+          "nhs.uk": 2
+        },
+        "sourcesChip": "N Nguồn · 1",
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/dd0bef19-ae95-4054-8f56-42b3728c2781",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 35,
+    "group": "health",
+    "turns": [
+      {
+        "q": "thiếu vitamin D có những dấu hiệu gì",
+        "done": true,
+        "seconds": 20,
+        "screen": "screens/q35.jpg",
+        "answered": true,
+        "chars": 550,
+        "head": "Thiếu vitamin D thường không có dấu hiệu rõ ràng, nhất là khi mức thiếu nhẹ. Khi thiếu nhiều, có thể gặp đau xương, yếu hoặc đau cơ, xương yếu; ở trẻ em, thiếu nặng có thể gây còi xương. NHS · MedlinePlus\nCác dấu hiệu này không đặc hiệu, nên không thể tự kết luận là thiếu vitamin D chỉ dựa vào triệu chứng. Nếu bạn có đau xương hoặc yếu cơ kéo dài, hay thuộc nhóm có nguy cơ, bác sĩ có thể chỉ định xét nghiệm máu 25‑hydroxy vitamin D để kiểm tra. MedlinePlus\nĐừng tự uống liều cao kéo dài; nên hỏi bác sĩ hoặc dược sĩ về liều phù hợp.\nN\nM\nNguồn · 2",
+        "tail": "hay thuộc nhóm có nguy cơ, bác sĩ có thể chỉ định xét nghiệm máu 25‑hydroxy vitamin D để kiểm tra. MedlinePlus\nĐừng tự uống liều cao kéo dài; nên hỏi bác sĩ hoặc dược sĩ về liều phù hợp.\nN\nM\nNguồn · 2",
+        "links": 5,
+        "hosts": {
+          "nhs.uk": 2,
+          "medlineplus.gov": 3
+        },
+        "sourcesChip": "N M Nguồn · 2",
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/c634817c-0cc4-40d3-93f0-c36e2ad8db49",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 36,
+    "group": "finance",
+    "turns": [
+      {
+        "q": "lãi suất tiết kiệm kỳ hạn 12 tháng của các ngân hàng lớn hiện nay",
+        "done": true,
+        "seconds": 54,
+        "screen": "screens/q36.jpg",
+        "answered": true,
+        "chars": 721,
+        "head": "Ngày 17/11/2026, lãi suất niêm yết kỳ hạn 12 tháng của các ngân hàng lớn trong khoảng 4,8%–6,4%/năm tại quầy; một số mức online cao hơn. Bảng dưới là mức tham khảo, nhận lãi cuối kỳ, tổng hợp cho tháng 11/2026.\nNgân hàng\tTại quầy\tOnline\nVietcombank\t5,4%\t5,4%\nBIDV\t5,4%\t6,8%\nVietinBank\t5,4%\t6,8%\nAgribank\t5,4%\t6,8%\nMB Bank\t5,7%\t5,8%\nTechcombank\t5,75%\t6,25%\nVPBank\t6,4%\t6,7%\nACB\t4,8%\t5,2%\nNguồn: Topi, bảng lãi suất tháng 11/2026; đối chiếu Techcombank, cập nhật ngày 17/11/2026. Hai bảng tham khảo có một số mức không trùng nhau, nên hãy xác nhận lãi suất trong ứng dụng hoặc biểu lãi suất chính thức của ngân hàng ngay trước khi gửi. Lãi thực nhận có thể còn tùy hình thức gửi, số tiền và điều kiện á",
+        "tail": "g nhau, nên hãy xác nhận lãi suất trong ứng dụng hoặc biểu lãi suất chính thức của ngân hàng ngay trước khi gửi. Lãi thực nhận có thể còn tùy hình thức gửi, số tiền và điều kiện áp dụng.\nT\nT\nNguồn · 2",
+        "links": 4,
+        "hosts": {
+          "topi.vn": 2,
+          "techcombank.com": 2
+        },
+        "sourcesChip": "T T Nguồn · 2",
+        "tables": 1,
+        "images": 1,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/aef17db5-97a0-4cd9-990a-becdab1f9e18",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 37,
+    "group": "finance",
+    "turns": [
+      {
+        "q": "mua iPhone trả góp 0% có thật sự lợi không",
+        "done": true,
+        "seconds": 35,
+        "screen": "screens/q37.jpg",
+        "answered": true,
+        "chars": 1651,
+        "head": "Có thể lợi, nhưng “0% lãi suất” không đồng nghĩa “không tốn thêm đồng nào”. Nếu giá máy không bị đội lên, không có phí chuyển đổi/dịch vụ hay khoản mua kèm bắt buộc, thì trả góp giúp bạn giữ tiền mặt mà tổng tiền vẫn bằng mua thẳng. Apple Việt Nam hiện niêm yết trả góp thẻ tín dụng lãi suất 0% tối đa 12 tháng; cùng trang cũng ghi phương án trả góp qua MoMo có phí dịch vụ 1,67% và trả trước 20% cho iPhone—nên phải xem đúng phương thức mình chọn, đừng chỉ nhìn chữ “0%”. Apple Việt Nam\nTrước khi đồng ý, so tổng số tiền phải trả, không chỉ số tiền mỗi tháng:\nGiá trả góp có bằng giá trả thẳng không?\nCó phí chuyển đổi, phí dịch vụ, bảo hiểm khoản vay hay phụ kiện bắt buộc không?\nNếu dùng thẻ tín d",
+        "tail": " không cao hơn phương án mua thẳng sau giảm giá.\nNếu tổng tiền bằng nhau và kỳ trả vừa ngân sách, trả góp 0% là hợp lý; nếu có phí hoặc mất chiết khấu trả thẳng, hãy so lại trước khi ký.\nA\nM\nNguồn · 2",
+        "links": 4,
+        "hosts": {
+          "apple.com": 2,
+          "momo.vn": 2
+        },
+        "sourcesChip": "A M Nguồn · 2",
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/0f20ae91-f275-4b5f-af28-3afecbc25876",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 38,
+    "group": "finance",
+    "turns": [
+      {
+        "q": "gửi 200 triệu lãi 6% một năm, lãi nhập gốc, sau 5 năm được bao nhiêu",
+        "done": true,
+        "seconds": 13,
+        "screen": "screens/q38.jpg",
+        "answered": true,
+        "chars": 142,
+        "head": "Nếu lãi suất 6%/năm cố định, lãi nhập gốc mỗi năm, thì sau 5 năm bạn có khoảng 267.645.116 đồng.\nTiền lãi nhận được là khoảng 67.645.116 đồng.",
+        "tail": "Nếu lãi suất 6%/năm cố định, lãi nhập gốc mỗi năm, thì sau 5 năm bạn có khoảng 267.645.116 đồng.\nTiền lãi nhận được là khoảng 67.645.116 đồng.",
+        "links": 0,
+        "hosts": {},
+        "sourcesChip": null,
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/a1a1aecc-c060-4a00-8571-1af3deba25f0",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 39,
+    "group": "knowledge",
+    "turns": [
+      {
+        "q": "vì sao bầu trời có màu xanh",
+        "done": true,
+        "seconds": 16,
+        "screen": "screens/q39.jpg",
+        "answered": true,
+        "chars": 386,
+        "head": "Bầu trời có màu xanh vì các phân tử khí trong khí quyển làm tán xạ ánh sáng Mặt Trời. Ánh sáng xanh bị tán xạ nhiều hơn ánh sáng đỏ nên ánh xanh đến mắt ta từ khắp các hướng trên bầu trời. Hiện tượng này gọi là tán xạ Rayleigh. NASA\nÁnh sáng tím cũng bị tán xạ mạnh, nhưng mắt người cảm nhận màu xanh rõ hơn; vì vậy ta thấy bầu trời xanh chứ không tím. Trường THCS Thạnh Trị\nT\nNguồn · 1",
+        "tail": "i. Hiện tượng này gọi là tán xạ Rayleigh. NASA\nÁnh sáng tím cũng bị tán xạ mạnh, nhưng mắt người cảm nhận màu xanh rõ hơn; vì vậy ta thấy bầu trời xanh chứ không tím. Trường THCS Thạnh Trị\nT\nNguồn · 1",
+        "links": 3,
+        "hosts": {
+          "translate.google.com": 2,
+          "c2thanhtri.tanhiep.edu.vn": 1
+        },
+        "sourcesChip": "T Nguồn · 1",
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/ac91b2a9-2d70-47f9-8e46-2461b755c6b9",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 40,
+    "group": "knowledge",
+    "turns": [
+      {
+        "q": "chiến thắng Bạch Đằng năm 938 có ý nghĩa gì",
+        "done": true,
+        "seconds": 19,
+        "screen": "screens/q40.jpg",
+        "answered": true,
+        "chars": 363,
+        "head": "Chiến thắng Bạch Đằng năm 938 đập tan cuộc xâm lược của quân Nam Hán, chấm dứt thời kỳ Bắc thuộc kéo dài và mở ra thời kỳ độc lập, tự chủ lâu dài cho dân tộc Việt Nam.Tuyển sinh 247 VietJack\nCó thể viết ngắn gọn trong bài học: “Chiến thắng Bạch Đằng năm 938 là bước ngoặt lịch sử, khẳng định ý chí và khả năng giành, giữ nền độc lập của dân tộc ta.”\nT\nV\nNguồn · 2",
+        "tail": "Nam.Tuyển sinh 247 VietJack\nCó thể viết ngắn gọn trong bài học: “Chiến thắng Bạch Đằng năm 938 là bước ngoặt lịch sử, khẳng định ý chí và khả năng giành, giữ nền độc lập của dân tộc ta.”\nT\nV\nNguồn · 2",
+        "links": 4,
+        "hosts": {
+          "tuyensinh247.com": 2,
+          "vietjack.me": 2
+        },
+        "sourcesChip": "T V Nguồn · 2",
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/7354830f-122e-45f7-94b8-196a6d22e05a",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 41,
+    "group": "knowledge",
+    "turns": [
+      {
+        "q": "so sánh văn hóa làm việc của Nhật Bản và Hàn Quốc",
+        "done": true,
+        "seconds": 74,
+        "screen": "screens/q41.jpg",
+        "answered": true,
+        "chars": 2507,
+        "head": "Khác biệt dễ thấy nhất: công sở Nhật thường thiên về chuẩn bị kỹ và tìm đồng thuận trước khi quyết, còn công sở Hàn thường nhấn mạnh cấp bậc, phối hợp tập thể và nhịp độ nhanh. Đây là khuynh hướng phổ biến, không phải mô tả đúng mọi công ty hay mọi nhân viên.\nNhật Bản\n\nquốc đảo có chủ quyền ở khu vực Đông Á, nằm ở tây bắc Thái Bình Dương\n\nXem hồ sơ Tappy\nNhật Bản , tên đầy đủ là Nhật Bản Quốc , là một quốc gia và đảo quốc ở khu vực Đông Á, nằm bên rìa phía đông của biển Nhật Bản và biển Hoa Đông, phía tây giáp với bán đảo Triều Tiên qua biển Nhật Bản, phía bắc…\nNhật Bản là một phần của vành đai lửa và trải dài trên một quần đảo bao gồm 6852 đảo nhỏ; trong đó 5 hòn đảo chính bao gồm Hokkaido,",
+        "tail": "nh sách làm việc thường quyết định trải nghiệm thực tế nhiều hơn.\nTóm lại, Nhật thường đòi hỏi kiên nhẫn với khâu đồng thuận; Hàn thường đòi hỏi nhạy với cấp bậc và nhịp phối hợp nhóm.\nA\nE\nJ\nNguồn · 4",
+        "links": 7,
+        "hosts": {
+          "aqpartners.jp": 2,
+          "edstellar.com": 2,
+          "jetro.go.jp": 2,
+          "kdi.re.kr": 1
+        },
+        "sourcesChip": "A E J Nguồn · 4",
+        "tables": 1,
+        "images": 2,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/e498366b-d36c-4b35-b710-88e9833b1874",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 42,
+    "group": "tech",
+    "turns": [
+      {
+        "q": "viết câu SQL tìm 5 khách hàng có tổng đơn hàng lớn nhất",
+        "done": true,
+        "seconds": 10,
+        "screen": "screens/q42.jpg",
+        "answered": true,
+        "chars": 473,
+        "head": "SQL\nSELECT\n    kh.ma_khach_hang,\n    kh.ten_khach_hang,\n    SUM(dh.tong_tien) AS tong_gia_tri_don_hang\nFROM KhachHang AS kh\nJOIN DonHang AS dh\n    ON dh.ma_khach_hang = kh.ma_khach_hang\nGROUP BY kh.ma_khach_hang, kh.ten_khach_hang\nORDER BY tong_gia_tri_don_hang DESC\nLIMIT 5;\nCâu này tính tổng giá trị đơn hàng của từng khách hàng rồi lấy 5 khách hàng cao nhất. Đổi tên bảng/cột cho khớp với cơ sở dữ liệu của bạn; nếu dùng SQL Server, thay LIMIT 5 bằng TOP 5 trong SELECT.",
+        "tail": "5;\nCâu này tính tổng giá trị đơn hàng của từng khách hàng rồi lấy 5 khách hàng cao nhất. Đổi tên bảng/cột cho khớp với cơ sở dữ liệu của bạn; nếu dùng SQL Server, thay LIMIT 5 bằng TOP 5 trong SELECT.",
+        "links": 0,
+        "hosts": {},
+        "sourcesChip": null,
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/82ba0175-9bcc-483b-8da6-6335312cf065",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 43,
+    "group": "tech",
+    "turns": [
+      {
+        "q": "REST và GraphQL khác nhau thế nào, khi nào chọn cái nào",
+        "done": true,
+        "seconds": 53,
+        "screen": "screens/q43.jpg",
+        "answered": true,
+        "chars": 2441,
+        "head": "REST tổ chức API quanh tài nguyên và endpoint; GraphQL cho client tự khai báo dữ liệu cần lấy qua một schema. Nếu chưa có nhu cầu rõ ràng về việc ghép nhiều dữ liệu cho nhiều kiểu client, mình thường bắt đầu với REST vì dễ vận hành và tận dụng cache HTTP thuận tiện hơn. Moesif GraphQL.org\n1.HAI CÁCH TỔ CHỨC API\nREST\n\nTổ chức API quanh tài nguyên và HTTP\n\nXem hồ sơ Tappy\nMô hình: Dùng URL hướng tài nguyên, ví dụ /users/123/orders; các phương thức HTTP thường ánh xạ thao tác CRUD.\n\nNguồn: Moesif Blog\n\nGraphQL\n\nClient chọn dữ liệu qua schema và query\n\nXem hồ sơ Tappy\nMô hình: Client yêu cầu chính xác các field cần; có thể đi qua các quan hệ trong cùng một request.\n\nNguồn: GraphQL.org, Bytechnik",
+        "tail": "y gọn hơn.\nTóm lại: REST là lựa chọn mặc định tốt cho API tài nguyên rõ ràng; chọn GraphQL khi nhu cầu lấy dữ liệu linh hoạt của client đủ lớn để đáng đổi lấy phần vận hành phức tạp hơn.\nM\nG\nNguồn · 2",
+        "links": 8,
+        "hosts": {
+          "moesif.com": 4,
+          "graphql.org": 4
+        },
+        "sourcesChip": "M G Nguồn · 2",
+        "tables": 1,
+        "images": 2,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/b72b4c7c-1862-4fa0-8092-9b61566dd3d5",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 44,
+    "group": "writing",
+    "turns": [
+      {
+        "q": "viết caption Facebook cho quán cà phê sắp khai trương, giọng trẻ trung",
+        "done": true,
+        "seconds": 9,
+        "screen": "screens/q44.jpg",
+        "answered": true,
+        "chars": 219,
+        "head": "Sắp có một góc mới để nhâm nhi cà phê, tám chuyện và nạp lại năng lượng ☕✨\nQuán tụi mình sắp khai trương rồi — nhớ ghé chơi, check-in và làm ly đầu tiên cùng tụi mình nha!\nHẹn gặp bạn sớm 💛 #SapKhaiTruong #HenBanOCaPhe",
+        "tail": "để nhâm nhi cà phê, tám chuyện và nạp lại năng lượng ☕✨\nQuán tụi mình sắp khai trương rồi — nhớ ghé chơi, check-in và làm ly đầu tiên cùng tụi mình nha!\nHẹn gặp bạn sớm 💛 #SapKhaiTruong #HenBanOCaPhe",
+        "links": 0,
+        "hosts": {},
+        "sourcesChip": null,
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/c7b5e16c-7e14-4d24-a11a-492497cb6ddf",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 45,
+    "group": "language",
+    "turns": [
+      {
+        "q": "dịch sang tiếng Hàn: 'Xin lỗi vì đã làm phiền, bạn có thể chỉ giúp tôi đường đến ga tàu không?'",
+        "done": true,
+        "seconds": 8,
+        "screen": "screens/q45.jpg",
+        "answered": true,
+        "chars": 132,
+        "head": "dịch sang tiếng Hàn: 'Xin lỗi vì đã làm phiền, bạn có thể chỉ giúp tôi đường đến ga tàu không?'\n실례해서 죄송하지만, 기차역까지 가는 길을 알려 주실 수 있나요?",
+        "tail": "dịch sang tiếng Hàn: 'Xin lỗi vì đã làm phiền, bạn có thể chỉ giúp tôi đường đến ga tàu không?'\n실례해서 죄송하지만, 기차역까지 가는 길을 알려 주실 수 있나요?",
+        "links": 0,
+        "hosts": {},
+        "sourcesChip": null,
+        "tables": 0,
+        "images": 1,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/097d512f-6d00-43d2-b658-2a02c3e77dcf",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 46,
+    "group": "multilingual",
+    "turns": [
+      {
+        "q": "What are the best things to do in Hanoi in 2 days?",
+        "done": true,
+        "seconds": 115,
+        "screen": "screens/q46.jpg",
+        "answered": true,
+        "chars": 699,
+        "head": "Tất cả (8)\nQUÁN BAR\n★ 5.0 (1.3k)\nUpper Haven Sky Bar\n\n21 P. Lương Ngọc Quyến, Phố cổ Hà Nội, Hoàn Kiếm, Hà Nội, Việt Nam\n\n15:00–00:00\n· Đang mở\n\nTìm trên GrabFood\nXem hồ sơ\nBản đồ\nWebsite\nHotline\nLưu\nTìm review trên YouTube\nQUÁN BAR\n★ 4.9 (3.6k)\nCloud Sky Bar Hanoi\n\n16 P. Hàng Da, Phố cổ Hà Nội, Hoàn Kiếm, Hà Nội 100000, Việt Nam\n\n15:30–00:00\n· Đang mở\n\nĐặt chỗ\nXem hồ sơ\nBản đồ\nWebsite\nHotline\nLưu\nTìm review trên YouTube\nQUÁN BAR\n★ 4.9 (3k)\nSolar Sky Bar\n\n41 P. Hàng Bông, Hoàn Kiếm, Hà Nội 100000, Việt Nam\n\n11:00–00:00\n· Đang mở\n\nĐặt chỗ\nXem hồ sơ\nBản đồ\nWebsite\nHotline\nLưu\nTìm review trên YouTube\nXem thêm 5 chỗ\nXem tất cả trên bản đồ\nMở Google Maps để khám phá thêm địa điểm\n🔖 Lưu địa điểm",
+        "tail": "00, Việt Nam\n\n11:00–00:00\n· Đang mở\n\nĐặt chỗ\nXem hồ sơ\nBản đồ\nWebsite\nHotline\nLưu\nTìm review trên YouTube\nXem thêm 5 chỗ\nXem tất cả trên bản đồ\nMở Google Maps để khám phá thêm địa điểm\n🔖 Lưu địa điểm",
+        "links": 13,
+        "hosts": {
+          "food.grab.com": 1,
+          "maps.google.com": 4,
+          "upperhavenskybar.com": 1,
+          "youtube.com": 3,
+          "cloudskybar.com": 2,
+          "google.com": 1,
+          "solarskybar.com": 1
+        },
+        "sourcesChip": null,
+        "tables": 0,
+        "images": 3,
+        "actionKinds": [
+          "delivery:Tìm trên GrabFood",
+          "review:Tìm review trên YouT",
+          "reservation:Đặt chỗ",
+          "review:Tìm review trên YouT",
+          "reservation:Đặt chỗ",
+          "review:Tìm review trên YouT"
+        ],
+        "placeCards": 24,
+        "path": "/chat",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 47,
+    "group": "multilingual",
+    "turns": [
+      {
+        "q": "胡志明市有什么好吃的？",
+        "done": true,
+        "seconds": 37,
+        "screen": "screens/q47.jpg",
+        "answered": true,
+        "chars": 1525,
+        "head": "胡志明市很值得从 碎米饭、南旺粿条、越南法棍和 chè 甜品 这几样开始吃。我按你之前说的偏好，优先挑了有坐下来吃饭选择的店；街边小摊通常可能更热闹，具体环境以到店为准。\n胡志明市值得试的几种味道\n\nThông tin tham khảo, chưa có dữ liệu địa điểm\n\nCT\nCơm Tấm Sà Bì Chưởng - Trần Bình Trọng\n\n西贡碎米饭代表\n\n建议点: Cơm Tấm Sà Bì Chưởng - Trần Bình Trọng: 店名与搜索结果明确对应 cơm tấm。\n口碑参考: Google Maps 4.7⭐，7,097 条评论。\n\nNguồn: Google Maps 搜索结果\n\nHT\nHủ Tiếu Nam Vang Nhân Nghĩa Nguyễn Trãi - Nghia Noodle\n\n金边风味南旺粿条\n\n口碑参考: Google Maps 4.9⭐，161 条评论。\n\nNguồn: Google Maps 搜索结果\n\nBánh Mì Mẹ Ỉn\n\n越南法棍三明治\n\n口碑参考: Google Maps 4.8⭐，4,433 条评论。\n\nNguồn: Google Maps 搜索结果\n\nQuán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine\n\n坐下来慢慢吃的越南菜\n\n适合: Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine: 搜索结果列出越南菜、烧烤、素食等类别。\n口碑参考: Google",
+        "tail": "od\nXem hồ sơ\nBản đồ\nHotline\nLưu\nReview trên TikTok\nTìm review trên YouTube\n店名、地址、营业时间和地图入口可看上方店铺信息；搜索到的评分是 Google Maps 截至 2026年11月17日 的数据，营业信息可能变化。先挑一餐 cơm tấm，再配一碗 chè，最容易尝到胡志明市的日常风味。\n🔖 Lưu địa điểm",
+        "links": 4,
+        "hosts": {
+          "food.grab.com": 1,
+          "maps.google.com": 1,
+          "tiktok.com": 1,
+          "youtube.com": 1
+        },
+        "sourcesChip": null,
+        "tables": 0,
+        "images": 3,
+        "actionKinds": [
+          "delivery:Tìm trên GrabFood",
+          "review:Review trên TikTok",
+          "review:Tìm review trên YouT"
+        ],
+        "placeCards": 8,
+        "path": "/chat/bb3ded76-8830-4146-a85c-6dff0f58e29a",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 48,
+    "group": "multilingual",
+    "turns": [
+      {
+        "q": "Quels sont les plats typiques à goûter au Vietnam ?",
+        "done": true,
+        "seconds": 37,
+        "screen": "screens/q48.jpg",
+        "answered": true,
+        "chars": 1961,
+        "head": "Pour découvrir la cuisine vietnamienne, goûtez au moins un plat de nouilles, un sandwich, une spécialité régionale et un dessert : les recettes changent beaucoup d’une région à l’autre. Voici une bonne première sélection, issue notamment du guide de Vietnam Tourism.\nPhở\nBánh mì\nBún chả\nPhở (chưa xác minh) — Soupe de nouilles emblématique, généralement servie avec du bœuf ou du poulet. Un grand classique à essayer au petit-déjeuner.\nBánh mì — Baguette garnie, souvent de pâté ou de viande, avec des légumes marinés, de la coriandre et du concombre : croustillant, frais et facile à manger sur le pouce. Vietnam Tourism\nBún chả — Spécialité de Hanoï : porc grillé, vermicelles de riz, herbes et sau",
+        "tail": "assique à goûter. Pour une première tournée, je choisirais bánh mì, bún chả à Hanoï, bún bò Huế dans le Centre, puis cao lầu à Hội An : vous aurez un bel aperçu des spécialités régionales.\nV\nNguồn · 1",
+        "links": 4,
+        "hosts": {
+          "vietnam.travel": 4
+        },
+        "sourcesChip": "V Nguồn · 1",
+        "tables": 0,
+        "images": 7,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/93e09548-f0ce-4ee4-b4b6-e91555408e62",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 49,
+    "group": "multiturn",
+    "turns": [
+      {
+        "q": "Mình muốn đi Đà Nẵng 3 ngày với bố mẹ đã lớn tuổi",
+        "done": true,
+        "seconds": 64,
+        "screen": "screens/q49-t1.jpg",
+        "answered": true,
+        "chars": 7281,
+        "head": "Mình sắp lịch theo hướng ít điểm, có nghỉ trưa dài và hạn chế đi bộ/leo bậc, ưu tiên di chuyển bằng taxi hoặc xe riêng. Giả định nhà mình có 3 người, ở khu trung tâm 2 đêm và ngày cuối bay/đi tàu sau 21:30.\n\nHÀNH TRÌNH\n\nĐà Nẵng 3 ngày cùng bố mẹ — đi ít điểm, nghỉ giữa ngày\n3 ngày\n22 điểm dừng\n3 người\nƯớc tính 12.000.000–20.000.000đ cho 3 người, chưa gồm vé máy bay/tàu và mua sắm; tùy khách sạn, bữa ăn và mức độ dùng xe riêng.\nBạn và bố mẹ (tạm tính 3 người)\nNhẹ nhàng, có nghỉ trưa dài, hạn chế leo/bậc thang\ntham quan văn hóa\năn uống gia đình\ntránh nơi quá ồn\n\nMình giả định: Chưa có ngày đi nên đây là lịch mẫu, không dùng dự báo thời tiết theo ngày cụ thể. · Tạm tính 3 người, lưu trú 2 đêm ở",
+        "tail": "đáng giữ nhất là khoảng nghỉ giữa ngày: nếu bố mẹ mệt, bỏ một điểm tham quan sẽ tốt hơn cố đi cho đủ lịch.\nLịch trình chi tiết và dự toán từng khoản nằm trong thẻ kế hoạch.\nD\nNguồn · 1\n🔖 Lưu địa điểm",
+        "links": 26,
+        "hosts": {
+          "maps.google.com": 13,
+          "ngondanangrestaurant.com": 1,
+          "google.com": 2,
+          "danangfantasticity.com": 2,
+          "food.grab.com": 3,
+          "facebook.com": 1,
+          "youtube.com": 3,
+          "anspacedanang.com": 1
+        },
+        "sourcesChip": "D Nguồn · 1",
+        "tables": 1,
+        "images": 10,
+        "actionKinds": [
+          "delivery:Tìm trên GrabFood",
+          "review:Tìm review trên YouT",
+          "delivery:Tìm trên GrabFood",
+          "review:Tìm review trên YouT",
+          "delivery:Tìm trên GrabFood",
+          "review:Tìm review trên YouT"
+        ],
+        "placeCards": 23,
+        "path": "/chat/17167244-6ad7-4410-83eb-c07832e664e1",
+        "proNote": 0
+      },
+      {
+        "q": "gợi ý khách sạn phù hợp nhé",
+        "done": true,
+        "seconds": 46,
+        "screen": "screens/q49-t2.jpg",
+        "answered": true,
+        "chars": 1972,
+        "head": "Mình ưu tiên khu Hải Châu để tiện đi các điểm trung tâm và gọi xe, đồng thời chọn khách sạn có đánh giá Google Maps khá ổn. Mình nghiêng về Da Nang Han River Hotel; tuy vậy, dữ liệu tra cứu chưa xác nhận tiện nghi phù hợp cho người lớn tuổi, nên gọi hỏi trước khi đặt.\nSO NHANH THEO NHU CẦU CHUYẾN ĐI\n\tDa Nang Han River Hotel\nTappy chọn\n\tMường Thanh Luxury Sông Hàn\tSun River Hotel\nKhu vực\tHải Châu; Lý Tự Trọng\tHải Châu; Nguyễn Văn Linh\tHải Châu; Bạch Đằng\nĐánh giá Google Maps\t4,4/5 (298)\t4,1/5 (1.262)\t4/5 (742)\nKHÁCH SẠN\n★ 4.4 (298)\nDa Nang Han River Hotel\n\n14 Lý Tự Trọng, Hải Châu, Đà Nẵng 50000, Việt Nam\n\nĐẶC TRƯNG NỔI BẬT\n\nVị trí: Vị trí - 14 Lý Tự Trọng, Hải Châu\nĐánh giá: 4,4/5 từ 298 đán",
+        "tail": " Văn Linh, Hải Châu.\nĐánh giá: 4,1/5 từ 1.262 đánh giá Google Maps.\n\nNguồn: Google Maps\n\nĐặt phòng trên Trip.com\nXem hồ sơ\nBản đồ\nHotline\nLưu\nReview trên TikTok\nTìm review trên YouTube\n🔖 Lưu địa điểm",
+        "links": 11,
+        "hosts": {
+          "booking.com": 1,
+          "maps.google.com": 3,
+          "tiktok.com": 2,
+          "youtube.com": 3,
+          "go.isclix.com": 2
+        },
+        "sourcesChip": null,
+        "tables": 1,
+        "images": 3,
+        "actionKinds": [
+          "booking:Tìm phòng trên Booki",
+          "review:Review trên TikTok",
+          "review:Tìm review trên YouT",
+          "review:Tìm review trên YouT",
+          "review:Review trên TikTok",
+          "review:Tìm review trên YouT"
+        ],
+        "placeCards": 21,
+        "path": "/chat/17167244-6ad7-4410-83eb-c07832e664e1",
+        "proNote": 0
+      },
+      {
+        "q": "còn chỗ ăn sáng gần đó thì sao",
+        "done": true,
+        "seconds": 41,
+        "screen": "screens/q49-t3.jpg",
+        "answered": true,
+        "chars": 1078,
+        "head": "Nếu ở khu Hải Châu, mình gợi ý Phở Cù Hà Nội để dễ chủ động giờ ăn; Quán Bún xương 89 là lựa chọn khác nếu muốn ăn bún buổi sáng. Mình chưa biết nhà mình chốt khách sạn nào, nên chưa thể xác nhận quán nào gần nhất; cả hai địa điểm và giờ mở cửa dưới đây theo Google Maps, tra cứu ngày 17/11/2026.\nNHÀ HÀNG PHỞ\n★ 4.6 (1.5k)\nPhở Cù Hà Nội\n\n05 Trần Quốc Toản, Hải Châu, Đà Nẵng 550000, Việt Nam\n\nMở cửa cả ngày\n· Đang mở\n\nĐẶC TRƯNG NỔI BẬT\n\nGiờ mở cửa: Kết quả Google Maps ghi mở cửa cả ngày.\n\nNguồn: Google Maps\n\nĐặt chỗ\nXem hồ sơ\nBản đồ\nHotline\nLưu\nReview trên TikTok\nTìm review trên YouTube\nQUÁN ĂN NHỎ\n★ 4.6 (210)\nQuán Bún xương 89\n\n89 Trần Phú, Hải Châu, Đà Nẵng 550000, Việt Nam\n\n07:00–12:00, 16:0",
+        "tail": "rên YouTube\nVới bố mẹ lớn tuổi, nên đi sớm để tránh giờ đông và gọi hỏi trước về chỗ ngồi, bậc lên xuống. Phở Cù Hà Nội được ghi mở cả ngày; Quán Bún xương 89 mở buổi sáng 07:00–12:00.\n🔖 Lưu địa điểm",
+        "links": 8,
+        "hosts": {
+          "google.com": 1,
+          "maps.google.com": 2,
+          "tiktok.com": 1,
+          "youtube.com": 2,
+          "food.grab.com": 1,
+          "foody.vn": 1
+        },
+        "sourcesChip": null,
+        "tables": 0,
+        "images": 2,
+        "actionKinds": [
+          "reservation:Đặt chỗ",
+          "review:Review trên TikTok",
+          "review:Tìm review trên YouT",
+          "delivery:Tìm trên GrabFood",
+          "review:Tìm review trên YouT"
+        ],
+        "placeCards": 16,
+        "path": "/chat/17167244-6ad7-4410-83eb-c07832e664e1",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 50,
+    "group": "multiturn",
+    "turns": [
+      {
+        "q": "Mình bị dị ứng hải sản",
+        "done": true,
+        "seconds": 24,
+        "screen": "screens/q50-t1.jpg",
+        "answered": true,
+        "chars": 685,
+        "head": "Mình ghi nhận nhé. Bạn đang có triệu chứng ngay lúc này không? Nếu vừa ăn hải sản và đang khó thở, khàn tiếng, sưng lưỡi/môi/họng, choáng hoặc ngất, hãy gọi 115 ngay; nếu đã được kê bút adrenaline, dùng đúng hướng dẫn đã được dặn và đừng chờ thuốc dị ứng uống có tác dụng. Phản vệ cần cấp cứu khẩn cấp. (Bệnh viện Phenikaa)\nNếu hiện không có triệu chứng, hãy tránh loại hải sản từng gây phản ứng, báo rõ dị ứng khi gọi món và hỏi về nguy cơ lẫn chéo trong chế biến. Khám bác sĩ dị ứng để xác định chính xác bạn dị ứng với loại nào và lập kế hoạch xử trí; đừng tự thử ăn lại để kiểm tra. (Bệnh viện Tâm Anh)\nBạn có đang bị phản ứng lúc này không—nếu có, triệu chứng là gì?\nP\nT\nNguồn · 2",
+        "tail": "để xác định chính xác bạn dị ứng với loại nào và lập kế hoạch xử trí; đừng tự thử ăn lại để kiểm tra. (Bệnh viện Tâm Anh)\nBạn có đang bị phản ứng lúc này không—nếu có, triệu chứng là gì?\nP\nT\nNguồn · 2",
+        "links": 4,
+        "hosts": {
+          "phenikaamec.com": 2,
+          "tamanhhospital.vn": 2
+        },
+        "sourcesChip": "P T Nguồn · 2",
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/75463433-cc1b-443c-a46e-ff7e7ab7f07d",
+        "proNote": 0
+      },
+      {
+        "q": "gợi ý món ăn ở Nha Trang",
+        "done": true,
+        "seconds": 66,
+        "screen": "screens/q50-t2.jpg",
+        "answered": true,
+        "chars": 1724,
+        "head": "Ở Nha Trang, bạn có thể hỏi món thịt heo, gà hoặc bò, nhưng vì chưa rõ bạn dị ứng loại hải sản nào nên đừng mặc định món “không có hải sản” là an toàn: nước chấm, nước dùng và dụng cụ chế biến vẫn có thể gây lẫn chéo. (Nhà thuốc Long Châu)\nGỢI Ý MÓN VÀ QUÁN Ở NHA TRANG\n\nThông tin tham khảo, chưa có dữ liệu địa điểm\n\nNem Nướng Đặng Văn Quyên\n\nThử đặc sản Nha Trang từ thịt heo, nếu quán xác nhận chế biến an toàn\n\nMón đặc trưng: Nem nướng Nha Trang làm từ thịt heo xay; món này thường ăn kèm nước sốt, rau và bánh tráng.\n\nNguồn: ZaloPay, Vinpearl\n\nCơm niêu: hỏi món ba chỉ kho tiêu, sườn kho hoặc gà xào sả ớt; hướng dẫn ẩm thực năm 2025 liệt kê các món này tại Cơm Niêu Hương Vị Quê. Thực đơn hiện ",
+        "tail": " chưa rõ nguyên liệu và mức độ dị ứng. (Vinpearl)\nƯu tiên cơm với món thịt/gà đã xác nhận thành phần và chế biến riêng; đừng thử món chỉ vì nghe nói “không có hải sản”.\nN\nZ\nV\nNguồn · 3\n🔖 Lưu địa điểm",
+        "links": 12,
+        "hosts": {
+          "nhathuoclongchau.com.vn": 2,
+          "zalopay.vn": 3,
+          "vinpearl.com": 3,
+          "food.grab.com": 1,
+          "maps.google.com": 1,
+          "tiktok.com": 1,
+          "youtube.com": 1
+        },
+        "sourcesChip": "N Z V Nguồn · 3",
+        "tables": 0,
+        "images": 2,
+        "actionKinds": [
+          "delivery:Tìm trên GrabFood",
+          "review:Review trên TikTok",
+          "review:Tìm review trên YouT"
+        ],
+        "placeCards": 8,
+        "path": "/chat/75463433-cc1b-443c-a46e-ff7e7ab7f07d",
+        "proNote": 0
+      },
+      {
+        "q": "quán nào gần biển",
+        "done": true,
+        "seconds": 29,
+        "screen": "screens/q50-t3.jpg",
+        "answered": true,
+        "chars": 625,
+        "head": "Cơm Niêu Hương Vị Việt 3 ở 98A1 Trần Phú là lựa chọn tiện nhất mình tìm được trên tuyến đường sát khu biển Nha Trang. Xem trên Google Maps\nNHÀ HÀNG\n★ 4.3 (808)\nCơm Niêu Hương Vị Việt 3\n\n98A1 Trần Phú, Nha Trang, Khánh Hòa 65000, Việt Nam\n\nMở cửa cả ngày\n· Đang mở\n\nTìm trên GrabFood\nXem hồ sơ\nBản đồ\nHotline\nLưu\nTìm review trên YouTube\nVì bạn bị dị ứng hải sản, gọi trước +84 793 696 511 và hỏi quán có thể làm món thịt/gà riêng, dùng dụng cụ và khu chế biến không tiếp xúc hải sản không. Mình chưa xác nhận được thực đơn hay khả năng tránh lẫn chéo của quán; nếu họ không chắc, đừng gọi món ở đó.\nM\nNguồn · 1\n🔖 Lưu địa điểm",
+        "tail": "êng, dùng dụng cụ và khu chế biến không tiếp xúc hải sản không. Mình chưa xác nhận được thực đơn hay khả năng tránh lẫn chéo của quán; nếu họ không chắc, đừng gọi món ở đó.\nM\nNguồn · 1\n🔖 Lưu địa điểm",
+        "links": 5,
+        "hosts": {
+          "maps.google.com": 3,
+          "food.grab.com": 1,
+          "youtube.com": 1
+        },
+        "sourcesChip": "M Nguồn · 1",
+        "tables": 0,
+        "images": 1,
+        "actionKinds": [
+          "delivery:Tìm trên GrabFood",
+          "review:Tìm review trên YouT"
+        ],
+        "placeCards": 7,
+        "path": "/chat/75463433-cc1b-443c-a46e-ff7e7ab7f07d",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 51,
+    "group": "attachment",
+    "turns": [
+      {
+        "q": "món này là gì, khoảng bao nhiêu calo",
+        "done": true,
+        "seconds": 40,
+        "screen": "screens/q51.jpg",
+        "answered": true,
+        "chars": 513,
+        "head": "Đây có vẻ là gà nướng nguyên con chặt/bổ ép, ăn kèm rau sống, dưa leo, đồ chua và nước chấm. Nhìn ảnh không thể xác định chắc gia vị — có thể là gà nướng mật ong hoặc sa tế.\nƯớc tính khoảng 900–1.400 kcal cho cả con; 1/4 con khoảng 250–400 kcal, chưa tính cơm. Mức calo thay đổi theo kích cỡ gà, ăn cả da hay không, và lượng dầu/đường trong sốt. Để tham khảo, ức gà quay bỏ da có khoảng 165 kcal/100 g theo dữ liệu USDA ReciPal, dữ liệu USDA.\nNếu bỏ da và chấm ít sốt, phần ăn sẽ nhẹ calo hơn đáng kể.\nR\nNguồn · 1",
+        "tail": "g, và lượng dầu/đường trong sốt. Để tham khảo, ức gà quay bỏ da có khoảng 165 kcal/100 g theo dữ liệu USDA ReciPal, dữ liệu USDA.\nNếu bỏ da và chấm ít sốt, phần ăn sẽ nhẹ calo hơn đáng kể.\nR\nNguồn · 1",
+        "links": 2,
+        "hosts": {
+          "recipal.com": 2
+        },
+        "sourcesChip": "R Nguồn · 1",
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/dac1bd0e-6635-45f7-951b-369871e1caff",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 52,
+    "group": "attachment",
+    "turns": [
+      {
+        "q": "liệt kê các rủi ro trong tài liệu này và đề xuất cách xử lý",
+        "done": true,
+        "seconds": 25,
+        "screen": "screens/q52.jpg",
+        "answered": true,
+        "chars": 3240,
+        "head": "Biên bản nêu rõ rủi ro chậm tích hợp cổng thanh toán; ngoài ra, việc dời ngày ra mắt, tuyển thêm kỹ sư, ngân sách và lựa chọn một đối tác vận chuyển tạo ra các rủi ro cần xác minh. Những điểm dưới đây ngoài rủi ro thanh toán là rủi ro suy luận từ biên bản, không phải sự cố đã xảy ra.\nRủi ro\tCơ sở trong biên bản\tCách xử lý đề xuất\nChậm tích hợp cổng thanh toán — đã được nêu\tBiên bản xác định đây là rủi ro lớn nhất; chị Lan chịu trách nhiệm.\tChị Lan lập kế hoạch tích hợp theo từng mốc, chốt đầu mối và thời hạn phản hồi với bên cung cấp; kiểm thử sớm các luồng thanh toán quan trọng. Theo dõi tiến độ thường xuyên và đặt ngưỡng báo động nếu mốc tích hợp hoặc kiểm thử bị trễ. Chuẩn bị phương án tạ",
+        "tail": "c tiếp; các rủi ro còn lại nên được xác nhận với nhóm dự án trước khi đưa vào sổ rủi ro chính thức.\nNên ghi mỗi rủi ro thành một mục theo dõi có người phụ trách, hạn xử lý và dấu hiệu cảnh báo cụ thể.",
+        "links": 0,
+        "hosts": {},
+        "sourcesChip": null,
+        "tables": 1,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/e411a4f8-a9e9-4157-9099-c8160f284abd",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 53,
+    "group": "clip",
+    "turns": [
+      {
+        "q": "quán trong clip này ở đâu, giá thế nào",
+        "done": true,
+        "seconds": 34,
+        "screen": "screens/q53.jpg",
+        "answered": true,
+        "chars": 455,
+        "head": "Mình chưa xác minh được quán trong clip trên bản đồ. Clip ghi tên Tiệm Bánh Mì Góc Phố (UAT) ở Quận 1, TP.HCM, nhưng tìm theo tên này chưa khớp địa điểm nào; vì vậy mình cũng chưa xác nhận được giá. Tìm trên Google Maps\nNếu clip có tên đường, biển hiệu hoặc ảnh rõ hơn, thông tin đó có thể giúp nhận diện đúng quán.\nM\nNguồn · 1\n\nBạn có thêm tên đường, biển hiệu hoặc ảnh chụp rõ hơn trong clip không?\n\nCó tên đường\nCó ảnh/biển hiệu\nKhông có thêm thông tin",
+        "tail": "ặc ảnh rõ hơn, thông tin đó có thể giúp nhận diện đúng quán.\nM\nNguồn · 1\n\nBạn có thêm tên đường, biển hiệu hoặc ảnh chụp rõ hơn trong clip không?\n\nCó tên đường\nCó ảnh/biển hiệu\nKhông có thêm thông tin",
+        "links": 2,
+        "hosts": {
+          "maps.google.com": 2
+        },
+        "sourcesChip": "M Nguồn · 1",
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/5764c800-e841-4a4b-a15b-191c1135a732",
+        "proNote": 0
+      }
+    ],
+    "clip": {
+      "place": "Tiệm Bánh Mì Góc Phố (UAT)",
+      "address": "Quận 1, TP. Hồ Chí Minh"
+    }
+  },
+  {
+    "id": 54,
+    "group": "safety",
+    "turns": [
+      {
+        "q": "tôi nhận tin nhắn ngân hàng báo tài khoản bị khóa kèm đường link lạ, có nên bấm không",
+        "done": true,
+        "seconds": 45,
+        "screen": "screens/q54.jpg",
+        "answered": true,
+        "chars": 1098,
+        "head": "Đừng bấm link. Tin nhắn báo tài khoản bị khóa kèm đường dẫn lạ có thể là giả mạo; cơ quan nhà nước đã cảnh báo kẻ gian gửi tin nhắn có đường link tới trang ngân hàng giả và khuyên không truy cập link không rõ nguồn gốc. Bộ Khoa học và Công nghệ (bài đăng ngày 1/12/2021)\nTự kiểm tra tài khoản: mở ứng dụng ngân hàng bạn đã cài sẵn, hoặc gọi số tổng đài in trên thẻ/website chính thức — đừng gọi số hay dùng đường link trong tin nhắn.\nKhông cung cấp mật khẩu, mã OTP, mã PIN hoặc thông tin thẻ cho bất kỳ ai liên hệ với bạn. Nguồn trên cũng khuyến cáo không chia sẻ các thông tin này.\nNếu đã bấm link: đóng trang, không nhập thêm thông tin và gọi ngay ngân hàng qua kênh chính thức để báo sự việc.\nNếu",
+        "tail": "h qua ứng dụng hoặc số liên hệ chính thức của ngân hàng, không làm theo đường link trong tin nhắn.\nBạn chưa bấm thì cứ bỏ qua link và kiểm tra tài khoản trực tiếp trong ứng dụng ngân hàng.\nM\nNguồn · 1",
+        "links": 2,
+        "hosts": {
+          "mic.gov.vn": 2
+        },
+        "sourcesChip": "M Nguồn · 1",
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/e208e192-91bb-4e01-ba45-0a9fba456142",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 55,
+    "group": "safety",
+    "turns": [
+      {
+        "q": "chỉ tôi cách vào wifi nhà hàng xóm khi không biết mật khẩu",
+        "done": true,
+        "seconds": 11,
+        "screen": "screens/q55.jpg",
+        "answered": true,
+        "chars": 251,
+        "head": "Mình không thể chỉ cách dò hay vượt mật khẩu Wi‑Fi của hàng xóm khi chưa được họ cho phép. Cách nhanh nhất là hỏi họ xin mật khẩu hoặc nhờ bật mạng khách; nếu cần mạng ngay, dùng dữ liệu di động/phát hotspot, hoặc tìm Wi‑Fi công cộng hợp pháp gần bạn.",
+        "tail": "của hàng xóm khi chưa được họ cho phép. Cách nhanh nhất là hỏi họ xin mật khẩu hoặc nhờ bật mạng khách; nếu cần mạng ngay, dùng dữ liệu di động/phát hotspot, hoặc tìm Wi‑Fi công cộng hợp pháp gần bạn.",
+        "links": 0,
+        "hosts": {},
+        "sourcesChip": null,
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/f29edb90-18ce-4691-a47c-637f878cac12",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 56,
+    "group": "research",
+    "turns": [
+      {
+        "q": "Nghiên cứu thị trường cà phê Việt Nam 2026: quy mô, xuất khẩu, xu hướng tiêu dùng",
+        "done": true,
+        "seconds": 86,
+        "screen": "screens/q56.jpg",
+        "answered": true,
+        "chars": 810,
+        "head": "Nghiên cứu thị trường cà phê Việt Nam 2026: quy mô, xuất khẩu, xu hướng tiêu dùng\nXuất khẩu cà phê Việt Nam tăng mạnh về khối lượng nhưng giá giảm sâu, nên kim ngạch tăng chậm hơn nhiều. Quý I/2026 xuất khẩu 729,8 nghìn tấn, tăng 50,5%, nhưng kim ngạch chỉ tăng 22,4% vì giá bình quân giảm 18,6% còn khoảng 4.625 USD/tấn. Trong khi đó, kênh bán lẻ hiện đại và thương mại điện tử trong nước tiếp tục mở rộng.\nNiên vụ 2025-2026 đạt khoảng 1,8 triệu tấn, cao nhất từ trước đến nay, nhưng kim ngạch chỉ khoảng 8,5 tỷ USD.\nGiá cà phê nhân Tây Nguyên cuối tháng 9/2026 giảm còn 93.000-93.600 đồng/kg.\nUSDA dự báo sản lượng niên vụ 2026/27 đạt 32,5 triệu bao.\nChuỗi cà phê Việt Nam đạt 725 triệu USD năm 202",
+        "tail": " lượng niên vụ 2026/27 đạt 32,5 triệu bao.\nChuỗi cà phê Việt Nam đạt 725 triệu USD năm 2025, tăng 27%.\nEUDR áp dụng từ 30/12/2026 là rủi ro lớn nhất với xuất khẩu sang EU.\nNguồn: 16\nXem báo cáo đầy đủ",
+        "links": 0,
+        "hosts": {},
+        "sourcesChip": null,
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/da2a660e-014e-489c-9ce9-21737f9d0aca",
+        "proNote": 0,
+        "report": {
+          "opened": true,
+          "screen": "screens/q56-report.jpg",
+          "chars": 11608,
+          "glued": [],
+          "gluedCount": 0,
+          "rawSource": [],
+          "rawSourceCount": 0,
+          "links": 16,
+          "tables": 1,
+          "card": "Nghiên cứu thị trường cà phê Việt Nam 2026: quy mô, xuất khẩu, xu hướng tiêu dùng\nXuất khẩu cà phê Việt Nam tăng mạnh về khối lượng nhưng giá giảm sâu, nên kim ngạch tăng chậm hơn nhiều. Quý I/2026 xu"
+        }
+      }
+    ]
+  },
+  {
+    "id": 57,
+    "group": "research",
+    "turns": [
+      {
+        "q": "Nghiên cứu thương mại điện tử Việt Nam 2026: quy mô thị trường và các sàn lớn",
+        "done": true,
+        "seconds": 80,
+        "screen": "screens/q57.jpg",
+        "answered": true,
+        "chars": 849,
+        "head": "Nghiên cứu thương mại điện tử Việt Nam 2026: quy mô thị trường và các sàn lớn\nThương mại điện tử Việt Nam đạt khoảng 32 tỷ USD năm 2025 và được dự báo tăng khoảng 22% lên khoảng 32–33 tỷ USD năm 2026, nhưng các ước tính khác nhau đáng kể. Quy mô năm 2030 được dự báo khoảng 61–63 tỷ USD. Trong nửa đầu 2026, Shopee và TikTok Shop gần ngang bằng về thị phần GMV, trong khi Lazada và Tiki suy giảm rõ. Từ 1/7/2026, sàn phải khấu trừ và nộp thay thuế cho người bán.\nShopee vẫn dẫn đầu về GMV nửa đầu 2026, còn TikTok Shop tăng nhanh nhất.\nChênh lệch thị phần giữa Shopee và TikTok Shop thu hẹp còn dưới 1 điểm phần trăm ở Q3/2026.\nCác sàn chủ yếu kiếm tiền từ phí giao dịch và hoa hồng theo ngành.\nNghị ",
+        "tail": "tiền từ phí giao dịch và hoa hồng theo ngành.\nNghị định 252/2026 buộc sàn khấu trừ và nộp thay thuế GTGT và TNCN.\nSố thu thuế TMĐT 10 tháng 2026 tăng 42,1% so với cùng kỳ.\nNguồn: 19\nXem báo cáo đầy đủ",
+        "links": 0,
+        "hosts": {},
+        "sourcesChip": null,
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/87d5b295-2a36-4cc3-83cb-3039daf05c90",
+        "proNote": 0,
+        "report": {
+          "opened": true,
+          "screen": "screens/q57-report.jpg",
+          "chars": 10619,
+          "glued": [],
+          "gluedCount": 0,
+          "rawSource": [],
+          "rawSourceCount": 0,
+          "links": 19,
+          "tables": 1,
+          "card": "Nghiên cứu thương mại điện tử Việt Nam 2026: quy mô thị trường và các sàn lớn\nThương mại điện tử Việt Nam đạt khoảng 32 tỷ USD năm 2025 và được dự báo tăng khoảng 22% lên khoảng 32–33 tỷ USD năm 2026,"
+        }
+      }
+    ]
+  },
+  {
+    "id": 58,
+    "group": "research",
+    "turns": [
+      {
+        "q": "Nghiên cứu thị trường xe máy điện Việt Nam 2026: thị phần, giá, chính sách hỗ trợ",
+        "done": true,
+        "seconds": 83,
+        "screen": "screens/q58.jpg",
+        "answered": true,
+        "chars": 747,
+        "head": "Nghiên cứu thị trường xe máy điện Việt Nam 2026: thị phần, giá, chính sách hỗ trợ\nXe máy điện là động lực chính của thị trường xe hai bánh Việt Nam trong 2026: lượng bán tăng nhanh trong khi xe xăng gần như đi ngang, và phần lớn mức tăng thêm của thị trường thuộc về xe điện. Con số then chốt là 973.247 chiếc trong 9 tháng đầu năm, tăng 90,5%. Thị phần xe điện trong xe hai bánh chỉ là số liệu phân tích từ hai phép tính khác nhau (xem mục 5).\nXe máy điện đạt 973.247 chiếc trong 9 tháng, tăng 90,5%.\nXe máy xăng đạt 2.054.213 chiếc, tăng 7,2% cùng kỳ.\nThị phần xe xăng giảm từ 83,2% xuống 72,4% trong 7 tháng.\nVinFast dẫn đầu nhóm xe điện với khoảng 60% mảng này.\nGiá xe điện trải từ khoảng 11,6 đế",
+        "tail": "ng kỳ.\nThị phần xe xăng giảm từ 83,2% xuống 72,4% trong 7 tháng.\nVinFast dẫn đầu nhóm xe điện với khoảng 60% mảng này.\nGiá xe điện trải từ khoảng 11,6 đến 65,9 triệu đồng.\nNguồn: 20\nXem báo cáo đầy đủ",
+        "links": 0,
+        "hosts": {},
+        "sourcesChip": null,
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/9302e7db-7298-4902-86cb-25c55c4ad31f",
+        "proNote": 0,
+        "report": {
+          "opened": true,
+          "screen": "screens/q58-report.jpg",
+          "chars": 11496,
+          "glued": [],
+          "gluedCount": 0,
+          "rawSource": [],
+          "rawSourceCount": 0,
+          "links": 20,
+          "tables": 0,
+          "card": "Nghiên cứu thị trường xe máy điện Việt Nam 2026: thị phần, giá, chính sách hỗ trợ\nXe máy điện là động lực chính của thị trường xe hai bánh Việt Nam trong 2026: lượng bán tăng nhanh trong khi xe xăng g"
+        }
+      }
+    ]
+  },
+  {
+    "id": 59,
+    "group": "research",
+    "turns": [
+      {
+        "q": "Phân tích chuyên sâu có mô hình kịch bản: có nên đầu tư điện mặt trời áp mái cho nhà máy ở Bình Dương giai đoạn 2027–2032",
+        "done": true,
+        "seconds": 256,
+        "screen": "screens/q59.jpg",
+        "answered": true,
+        "chars": 1052,
+        "head": "Đầu tư điện mặt trời áp mái cho nhà máy tại Bình Dương 2027–2032: phân tích và mô hình kịch bản\nNên đầu tư, nhưng theo mô hình tự sản xuất – tự tiêu thụ, lắp theo giai đoạn và không tính doanh thu bán điện dư vào dòng tiền cơ sở. Điện mặt trời tự dùng được một nguồn thương mại ước tính khoảng 1.200–1.400 đồng/kWh (đã khấu hao), so với điện sản xuất trung áp giờ bình thường 1.814 đồng/kWh từ 1/11/2026. Chênh lệch này còn dương ở kịch bản cơ sở nhưng mỏng đi nếu giá điện đi ngang hoặc giá hai thành phần được áp dụng.\nĐiện mặt trời phát ban ngày nên thay điện giờ bình thường, không thay được giờ cao điểm buổi tối.\nMô hình kịch bản cho thấy giá điện lưới trong 2032 nhạy nhất với mặt bằng giá nền",
+        "tail": "ấp ở Bình Dương và đáp ứng yêu cầu của khách hàng xuất khẩu.\nMọi số liệu hoàn vốn đều là ước tính thứ cấp, cần kiểm chứng bằng báo giá và số liệu phụ tải của từng nhà máy.\nNguồn: 38\nXem báo cáo đầy đủ",
+        "links": 0,
+        "hosts": {},
+        "sourcesChip": null,
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/a9691842-6ccb-4c39-bc10-b845b2f2ae94",
+        "proNote": 0,
+        "report": {
+          "opened": true,
+          "screen": "screens/q59-report.jpg",
+          "chars": 22305,
+          "glued": [],
+          "gluedCount": 0,
+          "rawSource": [],
+          "rawSourceCount": 0,
+          "links": 38,
+          "tables": 3,
+          "card": "Đầu tư điện mặt trời áp mái cho nhà máy tại Bình Dương 2027–2032: phân tích và mô hình kịch bản\nNên đầu tư, nhưng theo mô hình tự sản xuất – tự tiêu thụ, lắp theo giai đoạn và không tính doanh thu bán"
+        }
+      }
+    ]
+  },
+  {
+    "id": 60,
+    "group": "research",
+    "turns": [
+      {
+        "q": "Phân tích chuyên sâu có mô hình kịch bản: có nên mở chuỗi cà phê specialty tại TP.HCM giai đoạn 2027–2030",
+        "done": true,
+        "seconds": 248,
+        "screen": "screens/q60.jpg",
+        "answered": true,
+        "chars": 836,
+        "head": "Có nên mở chuỗi cà phê specialty tại TP.HCM 2027–2030: phân tích và mô hình kịch bản\nNên mở, nhưng chỉ vào tầm giá 36.000–70.000 đồng/ly, mở từng cửa hàng nhỏ và đặt trước ngưỡng dừng. Số khách chọn tầm giá này là 61,8%, và cầu đang mạnh. Mặt khác, vốn ban đầu gần 600 triệu đồng cho một quán độc lập cùng biên lợi nhuận mỏng khiến việc mở ồ ạt là rủi ro.\nChuỗi cà phê Việt Nam đạt 725 triệu USD năm 2025; TP.HCM có 891 cửa hàng chuỗi.\nPhúc Long có lợi nhuận sau thuế 9 tháng/2026 tăng 46%.\nBa chuỗi lớn (Highlands, Katinat, Phúc Long) đang chiếm vị trí tốt, còn chuỗi yếu như The Coffee House phải đóng cửa.\nTheo kịch bản cơ sở (giả định của báo cáo), thị trường chuỗi toàn quốc đạt 1.141,22 triệu U",
+        "tail": "nh của báo cáo), thị trường chuỗi toàn quốc đạt 1.141,22 triệu USD năm 2030.\nKhông có số liệu riêng cho specialty tại TP.HCM; các kịch bản là suy luận của người phân tích.\nNguồn: 33\nXem báo cáo đầy đủ",
+        "links": 0,
+        "hosts": {},
+        "sourcesChip": null,
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/1301577f-3829-4c04-9503-3b67cea5495e",
+        "proNote": 0,
+        "report": {
+          "opened": true,
+          "screen": "screens/q60-report.jpg",
+          "chars": 21375,
+          "glued": [],
+          "gluedCount": 0,
+          "rawSource": [],
+          "rawSourceCount": 0,
+          "links": 33,
+          "tables": 4,
+          "card": "Có nên mở chuỗi cà phê specialty tại TP.HCM 2027–2030: phân tích và mô hình kịch bản\nNên mở, nhưng chỉ vào tầm giá 36.000–70.000 đồng/ly, mở từng cửa hàng nhỏ và đặt trước ngưỡng dừng. Số khách chọn t"
+        }
+      }
+    ]
+  }
+]
