@@ -1,0 +1,39 @@
+[
+  {
+    "id": 60,
+    "group": "research",
+    "turns": [
+      {
+        "q": "Phân tích chuyên sâu có mô hình kịch bản: có nên mở chuỗi trạm sạc xe điện tại 5 thành phố lớn Việt Nam giai đoạn 2027–2030",
+        "done": true,
+        "seconds": 249,
+        "screen": "screens/q60.jpg",
+        "answered": true,
+        "chars": 980,
+        "head": "Có nên mở chuỗi trạm sạc xe điện tại 5 thành phố lớn Việt Nam 2027–2030? (Hà Nội, TP.HCM, Hải Phòng, Đà Nẵng, Cần Thơ)\nCầu sạc ở đô thị lớn là thật, nhưng V-Green đã chiếm ưu thế về mạng lưới và doanh thu toàn ngành còn nhỏ. Vì vậy chỉ nên vào theo giai đoạn, tập trung vào sạc nhanh DC và đổi pin cho đội xe dịch vụ tại các vị trí đã chốt điện và mặt bằng. Kịch bản cơ sở ước tính doanh thu dịch vụ sạc toàn quốc khoảng 208,07 triệu USD năm 2030, xuất phát từ mốc 82 triệu USD năm 2025; đây là ước tính theo giả định, không phải số đã xảy ra.\nXe điện hóa chiếm khoảng 44% xe du lịch bán ra nửa đầu 2026.\nV-Green đã lắp hơn 150.000 cổng sạc, vượt xa mọi đối thủ.\nKhoảng trống hạ tầng lớn, nhưng chi p",
+        "tail": "ên nguồn độ tin cậy thấp, nên cần thí điểm có tiêu chí dừng.\nDữ liệu chỉ đủ cho Hà Nội, TP.HCM và một phần Đà Nẵng; chưa đủ để kết luận cho cả 5 thành phố.\nNguồn: 31\nXem báo cáo đầy đủ\n🔖 Lưu địa điểm",
+        "links": 0,
+        "hosts": {},
+        "sourcesChip": null,
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/59eba7a6-2e7c-4e1a-8b19-a7d37f6c4822",
+        "proNote": 0,
+        "report": {
+          "opened": true,
+          "screen": "screens/q60-report.jpg",
+          "chars": 20675,
+          "glued": [],
+          "gluedCount": 0,
+          "rawSource": [],
+          "rawSourceCount": 0,
+          "links": 31,
+          "tables": 2,
+          "card": "Có nên mở chuỗi trạm sạc xe điện tại 5 thành phố lớn Việt Nam 2027–2030? (Hà Nội, TP.HCM, Hải Phòng, Đà Nẵng, Cần Thơ)\nCầu sạc ở đô thị lớn là thật, nhưng V-Green đã chiếm ưu thế về mạng lưới và doanh"
+        }
+      }
+    ]
+  }
+]

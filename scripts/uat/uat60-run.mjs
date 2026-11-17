@@ -135,7 +135,8 @@ const METRICS = `(() => {
 // summary can be checked against it. clip: a published review of the UAT project that names a place and an address (read only), opened
 // the way the Explore button opens the chat (/chat?ctx=<review id>&q=<question>).
 const IMAGE_FILE = path.join(REPO, 'public/home/inspire/food-2.webp')
-const PDF_FILE = path.join(outDir, 'uat-attachment.pdf')
+// absolute: DOM.setFileInputFiles hands the path to the browser process, which resolves a relative one against ITS OWN folder, finds no file and attaches nothing (18/11: case 52 never showed a tray)
+const PDF_FILE = path.resolve(outDir, 'uat-attachment.pdf')
 const PDF_TEXT = ['Biên bản họp dự án Sông Hồng, ngày 12/11/2026.', '1. Ngân sách quý 1 năm 2027 được duyệt là 3,2 tỷ đồng.', '2. Ngày ra mắt bản thử nghiệm dời từ 15/12/2026 sang 10/01/2027.', '3. Nhóm kỹ thuật tuyển thêm 4 kỹ sư, bắt đầu từ tháng 12.', '4. Đối tác vận chuyển được chọn là công ty Bình Minh, hợp đồng 12 tháng.', '5. Rủi ro lớn nhất là chậm tích hợp cổng thanh toán; người chịu trách nhiệm là chị Lan.']
 if (cases.some(c => c.attach === 'pdf')) {
   await goto('data:text/html;charset=utf-8,' + encodeURIComponent(`<html><body style="font-family:Arial;font-size:16px;padding:40px">${PDF_TEXT.map(l => `<p>${l}</p>`).join('')}</body></html>`))
@@ -214,7 +215,9 @@ for (const c of cases) {
         const report = await evaluate(`(() => {
           const text = document.body.innerText
           const glued = [...text.matchAll(/[\\d%)\\]]\\.[A-ZĐÀ-Ỹ][a-zà-ỹ]/g)].map(m => text.slice(Math.max(0, m.index - 30), m.index + 30).replace(/\\s+/g, ' '))
-          const rawSource = [...text.matchAll(/ngu[oồ]n\\s+\\d{2,3}\\b/gi)].map(m => text.slice(Math.max(0, m.index - 30), m.index + 30).replace(/\\s+/g, ' '))
+          // 18/11: a citation chip (a[data-cite]) is a number the page draws beside the word "nguồn" ("do nguồn [34] cung cấp"); only a number typed in the text itself is a leak
+          const plain = (() => { const c = document.body.cloneNode(true); c.querySelectorAll('a[data-cite]').forEach(n => n.remove()); return c.innerText ?? c.textContent ?? '' })()
+          const rawSource = [...plain.matchAll(/ngu[oồ]n\\s+\\d{2,3}\\b/gi)].map(m => plain.slice(Math.max(0, m.index - 30), m.index + 30).replace(/\\s+/g, ' '))
           const label = (document.querySelector('[data-testid="report-summary-card"]')?.innerText ?? '').slice(0, 200)
           return { chars: text.length, glued: glued.slice(0, 6), gluedCount: glued.length, rawSource: rawSource.slice(0, 6), rawSourceCount: rawSource.length, links: document.querySelectorAll('a[href^="http"]').length, tables: document.querySelectorAll('table').length, card: label }
         })()`)
