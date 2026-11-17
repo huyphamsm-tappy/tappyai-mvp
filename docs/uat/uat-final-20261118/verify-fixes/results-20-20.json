@@ -1,0 +1,36 @@
+[
+  {
+    "id": 20,
+    "group": "travel",
+    "turns": [
+      {
+        "q": "lên lịch trình Đà Lạt 3 ngày 2 đêm cho cặp đôi, thích cà phê và chụp ảnh",
+        "done": true,
+        "seconds": 89,
+        "screen": "screens/q20.jpg",
+        "answered": true,
+        "chars": 6539,
+        "head": "Mình xếp lịch theo cụm trung tâm, Trại Mát–Cầu Đất rồi quay lại trung tâm, ưu tiên cà phê và góc chụp ảnh đôi; không đưa bar hay điểm vui chơi ồn vào lịch. Mình giả định hai bạn đến 09:30 ngày đầu, rời Đà Lạt 17:00 ngày cuối. Kế hoạch chi tiết nằm trong thẻ lịch trình.\n\nHÀNH TRÌNH\n\nĐà Lạt 3 ngày 2 đêm — cà phê, ảnh đôi & phố núi\n3 ngày\n17 điểm dừng\n2 người\nƯớc tính 4.500.000–7.500.000đ cho 2 người; không gồm vé đến/đi và mua sắm.\nCặp đôi, 2 người\nKhá kín lịch nhưng ưu tiên các điểm cùng khu vực, có khoảng ngồi cà phê và chụp\nCà phê\nChụp ảnh đôi\nKhông gian ít ồn\n\nMình giả định: Chưa nêu ngày đi nên không gắn lịch với dự báo cụ thể; giờ mở cửa/giá có thể thay đổi. · Giả định đến ngày đầu lúc 0",
+        "tail": "\nXem thêm 4 chỗ\nXem tất cả trên bản đồ\nMở Google Maps để khám phá thêm địa điểm\nTóm lại: lịch này dành nhiều thời gian cho cà phê, ảnh và những buổi tối dạo phố vừa phải.\nK\nM\nNguồn · 2\n🔖 Lưu địa điểm",
+        "links": 20,
+        "hosts": {
+          "maps.google.com": 14,
+          "klook.com": 2,
+          "nongtraicun.com": 1,
+          "youtube.com": 3
+        },
+        "sourcesChip": "K M Nguồn · 2",
+        "tables": 1,
+        "images": 11,
+        "actionKinds": [
+          "review:Tìm review trên YouT",
+          "review:Tìm review trên YouT",
+          "review:Tìm review trên YouT"
+        ],
+        "placeCards": 15,
+        "path": "/chat/8b5db61d-6b7f-46aa-854d-13c241bcf319",
+        "proNote": 0
+      }
+    ]
+  }
+]

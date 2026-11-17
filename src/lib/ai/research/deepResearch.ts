@@ -17,6 +17,7 @@
 // a pricing report was cut at 105 s.
 import { parseDoc, headingTitle, titleKey, type DocBlock } from '@/lib/answerDoc/parse'
 import { leanValue } from './deepResearchLean'
+import { canonicalSourceUrl } from '@/lib/ai/tools/sourceUrl'
 import { questionKind, withNewsLane } from './researchLanes'
 import { dedupePackages } from './researchPackages'
 import { consolidate, freshnessHints } from './consolidate'
@@ -449,30 +450,8 @@ export function linkStripper(): { push(delta: string): string; end(): string } {
   }
 }
 
-/**
- * A search result's page, not Google's wrapper around it (measured 31/10: sources shown as "google.com" / "translate.google.com"): a redirect
- * (`google.com/url?q=` / `url=`), a translate proxy (`translate.google.com/translate?u=`, `<host-with-dashes>.translate.goog`) becomes the page
- * it points to; any other Google page (a search page) is not a source (null). Only https results are sources. Pure.
- */
-export function canonicalSourceUrl(raw: string): string | null {
-  let u: URL
-  try { u = new URL(raw) } catch { return null }
-  const host = u.hostname.toLowerCase()
-  if (host.endsWith('.translate.goog')) {
-    // Google's scheme: "-" stands for "." and "--" for "-" in the original host; the _x_tr_* parameters are the proxy's own
-    const original = host.slice(0, -'.translate.goog'.length).split('--').map(p => p.replace(/-/g, '.')).join('-')
-    for (const k of [...u.searchParams.keys()]) if (k.startsWith('_x_tr_')) u.searchParams.delete(k)
-    return canonicalSourceUrl(`https://${original}${u.pathname}${u.search}${u.hash}`)
-  }
-  if (/(^|\.)google\.[a-z.]+$/.test(host)) {
-    // 31/10: a google.com/goto token the search layer could not resolve (Google's bot check) - kept: it opens the page in a browser, and its
-    // snippet is evidence; the site it names comes with the row (Evidence.site)
-    if (u.protocol === 'https:' && u.pathname === '/goto' && u.searchParams.has('url')) return u.toString()
-    const inner = u.pathname === '/url' ? u.searchParams.get('q') ?? u.searchParams.get('url') : host.startsWith('translate.') ? u.searchParams.get('u') : null
-    return inner && inner !== raw ? canonicalSourceUrl(inner) : null
-  }
-  return u.protocol === 'https:' ? u.toString() : null
-}
+// The search result's page, not Google's wrapper around it: the function lives in tools/sourceUrl.ts since 18/11 (the one-brain web_search uses it too); re-exported here.
+export { canonicalSourceUrl }
 
 /**
  * Measured 31/10: the writer numbered its own sections "1. Summary, 2. Scope" and then the research sections from 1 again. The numbers are
@@ -484,9 +463,17 @@ export function headingNumberer(): { push(delta: string): string; end(): string 
   let mid = false
   let section = 0
   let sub = 0
+  let vietnamese = false // the report so far (its title) is in Vietnamese
   const fix = (line: string) => {
+    if (!vietnamese && /[ăđơưạảấầẩẫậắằẳẵặẹẻẽếềểễệỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹ]/i.test(line)) vietnamese = true
     const h2 = /^##\s+\d{1,2}[.)]?\s+/.exec(line)
-    if (h2 && !line.startsWith('###')) { section++; sub = 0; return `## ${section}. ${line.slice(h2[0].length)}` }
+    if (h2 && !line.startsWith('###')) {
+      section++; sub = 0
+      let title = line.slice(h2[0].length)
+      // 18/11 (UAT case 58): the writer copied the English name of the doubts section into a Vietnamese report; the section is named in the report's language by the code
+      if (vietnamese && /^what is doubtful\s*$/i.test(title)) title = 'Những điểm chưa chắc chắn'
+      return `## ${section}. ${title}`
+    }
     const h3 = /^###\s+\d{1,2}\.\d{1,2}[.)]?\s+/.exec(line)
     if (h3 && section > 0) { sub++; return `### ${section}.${sub}. ${line.slice(h3[0].length)}` }
     return line
@@ -528,7 +515,29 @@ export function sourcesBlock(evidence: readonly Evidence[], findings: readonly F
   const host = (u: string) => { try { return new URL(u).hostname.replace(/^www\./, '') } catch { return '' } }
   const label = (t: string) => t.replace(/[[\]()<>`*_#|\\\n]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 140)
   const head = heading || (lang === 'en' ? 'Sources' : 'Nguồn')
-  return `\n\n### ${head}\n${used.map(e => `${e.id}. ${label(e.title) || e.site || host(e.url)} — ${e.site ?? host(e.url)}${e.published ? `, ${sourceDate(e.published, lang)}` : ''}`).join('\n')}\n`
+  return `\n\n### ${head}\n${used.map(e => `${e.id}. ${label(weakSourceTitle(e.title, host(e.url)) ? titleFromUrl(e.url) ?? e.title : e.title) || e.site || host(e.url)} — ${e.site ?? host(e.url)}${e.published ? `, ${sourceDate(e.published, lang)}` : ''}`).join('\n')}\n`
+}
+
+/** A page title that says nothing about the page: the host itself, a one- or two-word heading ("MỤC LỤC", "NĂM 2025"), or all capitals. Pure. */
+export function weakSourceTitle(title: string, host: string): boolean {
+  const t = title.replace(/\s+/g, ' ').trim()
+  if (!t) return true
+  if (host && t.toLowerCase() === host.toLowerCase()) return true
+  if (/^[\w.-]+\.[a-z]{2,}$/i.test(t)) return true // a bare domain name
+  const words = t.split(' ').filter(Boolean)
+  return words.length <= 2 || (t === t.toUpperCase() && t.length < 40)
+}
+
+/** What the address of a page says about it: its last path segment as words ("gia-xang-dau-hom-nay.html" → "gia xang dau hom nay"); null when there is nothing readable. Pure. */
+export function titleFromUrl(url: string): string | null {
+  let u: URL
+  try { u = new URL(url) } catch { return null }
+  const seg = u.pathname.split('/').filter(Boolean).pop()
+  if (!seg) return null
+  let s = seg
+  try { s = decodeURIComponent(seg) } catch { /* keep the raw segment */ }
+  const words = s.replace(/\.[a-z0-9]{2,5}$/i, '').replace(/[-_+]+/g, ' ').replace(/\b[a-z]?\d{5,}\b/gi, '').replace(/\s+/g, ' ').trim()
+  return words.split(' ').length >= 3 && words.length >= 12 ? words : null
 }
 
 /** A source's date as the reader's locale writes it: 22/10/2025 (vi), 2025-10-22 otherwise. Pure. */

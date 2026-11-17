@@ -43,9 +43,16 @@ describe('the typed fields', () => {
     ['a cost with an unknown basis', { ...good, costs: [{ item: 'a', amount: '1', basis: 'guess' }] }],
     ['more than 12 cost lines', { ...good, costs: Array.from({ length: 13 }, (_, i) => ({ item: `l${i}`, amount: '1', basis: 'estimate' })) }],
     ['no total', { ...good, budget_total: undefined }],
-    ['no assumptions field (the plan must say what it took for granted, even if nothing)', { ...good, assumptions: undefined }],
-    ['more than 4 assumptions', { ...good, assumptions: ['a', 'b', 'c', 'd', 'e'] }],
   ])('refuses %s', (_n, v) => { expect(schema.safeParse(v).success).toBe(false) })
+  // 18/11 (UAT case 20): a plan call without the list of assumptions was refused and the whole turn ended with no text. The list is what may be empty, so a missing or long one is accepted
+  // (foldPlanV2 keeps four); the fields that carry the plan itself stay required.
+  it('accepts a plan with no assumptions field, or more than four (the fold keeps four), and fills the missing one with an empty list', () => {
+    const missing = schema.safeParse({ ...good, assumptions: undefined })
+    expect(missing.success).toBe(true)
+    expect(missing.success && missing.data.assumptions).toEqual([])
+    expect(schema.safeParse({ ...good, assumptions: ['a', 'b', 'c', 'd', 'e'] }).success).toBe(true)
+    expect((foldPlanV2({ ...good, assumptions: ['a', 'b', 'c', 'd', 'e'] }) as { assumptions: string[] }).assumptions).toHaveLength(4)
+  })
 })
 
 describe('foldPlanV2: into the fields the product already reads', () => {

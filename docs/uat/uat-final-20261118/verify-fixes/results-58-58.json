@@ -1,0 +1,39 @@
+[
+  {
+    "id": 58,
+    "group": "research",
+    "turns": [
+      {
+        "q": "Nghiên cứu thị trường xe máy điện Việt Nam 2026: thị phần, giá, chính sách hỗ trợ",
+        "done": true,
+        "seconds": 84,
+        "screen": "screens/q58.jpg",
+        "answered": true,
+        "chars": 910,
+        "head": "Nghiên cứu thị trường xe máy điện Việt Nam 2026: thị phần, giá, chính sách hỗ trợ\nXe máy điện đã chiếm khoảng 27,6% thị phần xe máy Việt Nam trong 7 tháng đầu 2026, tăng từ 16,8% cùng kỳ 2025. Trong 9 tháng, xe máy điện đạt 973.247 chiếc, tăng 90,5%, tiệm cận mốc 1 triệu xe. Chính sách hỗ trợ ở cấp quốc gia chủ yếu dành cho ô tô điện, còn xe máy điện được hưởng lợi từ các chương trình địa phương có điều kiện.\nVinFast đứng hạng 2 toàn thị trường 9 tháng 2026, tăng 152,1%; Honda vẫn đứng đầu nhưng chỉ tăng 8,4%.\nGiá xe máy điện trải từ 11,6 triệu đến 65,9 triệu đồng, tháng 11/2026.\nHà Nội hỗ trợ tối đa 20 triệu đồng cho hộ nghèo đổi xe, với điều kiện thu nhập.\nHạ tầng đổi pin đang được các hãn",
+        "tail": " nhưng chưa có chuẩn thống nhất.\nKịch bản: nếu tăng trưởng hiện tại được duy trì, thị trường có thể vượt 2 triệu xe vào 2027; đây là giả định chưa được nguồn nào xác nhận.\nNguồn: 15\nXem báo cáo đầy đủ",
+        "links": 0,
+        "hosts": {},
+        "sourcesChip": null,
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/7cd8ff19-3b45-4c41-acc4-714190c966ed",
+        "proNote": 0,
+        "report": {
+          "opened": true,
+          "screen": "screens/q58-report.jpg",
+          "chars": 10757,
+          "glued": [],
+          "gluedCount": 0,
+          "rawSource": [],
+          "rawSourceCount": 0,
+          "links": 15,
+          "tables": 1,
+          "card": "Nghiên cứu thị trường xe máy điện Việt Nam 2026: thị phần, giá, chính sách hỗ trợ\nXe máy điện đã chiếm khoảng 27,6% thị phần xe máy Việt Nam trong 7 tháng đầu 2026, tăng từ 16,8% cùng kỳ 2025. Trong 9"
+        }
+      }
+    ]
+  }
+]

@@ -1,4 +1,5 @@
 import { normalizeVN } from './intent'
+import { unverifiedWord } from './unverifiedLabel'
 import { sentenceSpans } from './moneyGuard'
 import { evidenceSegments, isBlockStart, namedInSegments, stripPickPhrase } from './entityNameGuard'
 
@@ -294,13 +295,14 @@ export function suppressUngroundedVenues(
   for (let i = 0; i < heads.length - 1; i++) heads[i].end = heads[i + 1].start
   if (heads.length === 0) return { text, suppressed: [] }
   if (opts.labelUngrounded) {
-    const tag = lang === 'en' ? ' (unverified)' : ' (chưa xác minh)'
     const seen = new Set<string>()
     const targets = heads.filter(h => !h.label && !h.grounded && !seen.has(normalizeHeading(h.shown)) && (seen.add(normalizeHeading(h.shown)), true))
     if (!targets.length) return { text, suppressed: [] }
     let out = prose
     for (const h of [...targets].reverse()) {
       const p = h.at + h.len
+      // the label is in the language of the line it labels (a French line in a Vietnamese app is not told "chưa xác minh")
+      const tag = ` (${unverifiedWord((out.slice(p, p + 300).split('\n')[0] ?? '').split(/\s-\s+\*\*/)[0] ?? '', lang)})` // up to the end of this item (items glued on one line are other items' words)
       if (out.slice(p, p + tag.length + 2).includes(tag.trim())) continue
       out = out.slice(0, p) + tag + out.slice(p)
     }

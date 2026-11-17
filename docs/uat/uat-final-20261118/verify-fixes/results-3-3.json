@@ -1,0 +1,29 @@
+[
+  {
+    "id": 3,
+    "group": "realtime",
+    "turns": [
+      {
+        "q": "cuối tuần này Hà Nội trời thế nào, mình định đi picnic ở công viên",
+        "done": true,
+        "seconds": 44,
+        "screen": "screens/q03.jpg",
+        "answered": true,
+        "chars": 516,
+        "head": "Cuối tuần này, Chủ nhật 22/11 có vẻ hợp picnic hơn: Hà Nội dự báo ít mây, có nắng, khoảng 16–23°C. Thứ Bảy 21/11 nhiều mây và lạnh hơn, khoảng 16–20°C. Dự báo từ yr.no, cập nhật tối 17/11 theo giờ Việt Nam. yr.no\nNgày\tDự báo\tNhiệt độ\tMưa dự kiến\tGió tối đa\nThứ Bảy 21/11\tNhiều mây\t16–20°C\t0,3 mm\t5 km/h\nChủ nhật 22/11\tÍt mây, có nắng\t16–23°C\t0 mm\t8 km/h\nNếu chọn thứ Bảy, mang áo khoác vì trời se lạnh; còn Chủ nhật thuận lợi hơn để ngồi ngoài trời lâu. Dự báo còn vài ngày nên kiểm tra lại trước khi đi.\nY\nNguồn · 1",
+        "tail": "1\tÍt mây, có nắng\t16–23°C\t0 mm\t8 km/h\nNếu chọn thứ Bảy, mang áo khoác vì trời se lạnh; còn Chủ nhật thuận lợi hơn để ngồi ngoài trời lâu. Dự báo còn vài ngày nên kiểm tra lại trước khi đi.\nY\nNguồn · 1",
+        "links": 2,
+        "hosts": {
+          "yr.no": 2
+        },
+        "sourcesChip": "Y Nguồn · 1",
+        "tables": 1,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/88807c5c-9c8e-43cf-a35b-3fb75306cddb",
+        "proNote": 0
+      }
+    ]
+  }
+]

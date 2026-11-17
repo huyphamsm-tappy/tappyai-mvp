@@ -6,7 +6,7 @@
 // `>`, `"` and `&` is escaped BEFORE any markdown transform, so nothing in the
 // frozen payload can become markup. Links open in a new tab with `noopener`.
 
-import { balanceBoldPerLine } from '@/lib/chat/markdownNormalize'
+import { balanceBoldPerLine, repairGluedMarkdown } from '@/lib/chat/markdownNormalize'
 
 function escapeHtml(s: string): string {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
@@ -39,7 +39,7 @@ function tablesToHtml(escaped: string): string {
 
 export function renderPublicMarkdown(content: string): string {
   // UAT 2026-09-28: an unpaired "**" is dropped, never printed (same rule as the chat renderer).
-  return tablesToHtml(escapeHtml(balanceBoldPerLine(content)))
+  return tablesToHtml(escapeHtml(balanceBoldPerLine(repairGluedMarkdown(content))))
     // Any image markdown that survived (it should not) renders as its alt text, never as an <img>.
     .replace(/!\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/g, '$1')
     .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, `<a href="$2" target="_blank" rel="noopener noreferrer nofollow" class="${LINK_CLASS}">$1</a>`)

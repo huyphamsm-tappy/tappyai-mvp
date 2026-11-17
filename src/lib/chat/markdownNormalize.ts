@@ -166,6 +166,65 @@ export function fixHalfAccented(text: string): string {
   return HALF_ACCENTED.reduce((t, [re, to]) => t.replace(re, to), text)
 }
 
+// ── LINE BREAKS THE MODEL FORGOT (UAT 18/11: a list of four items printed as one bullet, two rows of a table lost) ────────────────
+//
+// The model sometimes writes the items of a list, or the rows of a table, with no line break between them. The renderers then print one
+// long bullet, or a table that holds only the rows that happened to be on their own line. Fixed here, once, for every answer and every
+// renderer (the server's final text goes through `normalizeReplyMarkdown`), never by asking the model to be careful.
+
+const FENCE = /^\s*```/
+const isSeparatorRow = (cells: string[]): boolean => cells.length > 0 && cells.every(c => /^:?-{3,}:?$/.test(c))
+const tableCells = (l: string): string[] => l.trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map(c => c.trim())
+
+/**
+ * A table row line that holds several rows: after a header and its separator row fix the number of columns, so a line with a whole number
+ * (two or more) of that many cells is split back into rows. Anything else is untouched. Pure; code fences are skipped.
+ */
+export function repairGluedTables(text: string): string {
+  if (typeof text !== 'string' || !text.includes('|')) return text
+  let cols = 0
+  let fenced = false
+  const out: string[] = []
+  for (const l of text.split('\n')) {
+    if (FENCE.test(l)) { fenced = !fenced; out.push(l); continue }
+    if (fenced) { out.push(l); continue }
+    if (!/^\s*\|/.test(l)) { cols = 0; out.push(l); continue }
+    const cells = tableCells(l)
+    if (isSeparatorRow(cells)) { cols = cells.length; out.push(l); continue }
+    if (cols >= 2 && /\|\s*$/.test(l) && cells.length > cols && cells.length % cols === 0) {
+      for (let i = 0; i < cells.length; i += cols) out.push(`| ${cells.slice(i, i + cols).join(' | ')} |`)
+      continue
+    }
+    out.push(l)
+  }
+  return out.join('\n')
+}
+
+/** Items of a list written on one line ("- **A:** text - **B:** text"): a bullet line holding " - **label**" more than once is split into one bullet per item. Pure; code fences are skipped. */
+const GLUED_BULLET = /(?<=\S)[ \t]+-[ \t]+(?=\*\*[^*\n]+\*\*)/g
+export function splitGluedBullets(text: string): string {
+  if (typeof text !== 'string' || !text.includes('**')) return text
+  let fenced = false
+  return text.split('\n').map(l => {
+    if (FENCE.test(l)) { fenced = !fenced; return l }
+    if (fenced || !/^\s*(?:[-*•]|\d+[.)])\s/.test(l)) return l
+    const parts = l.split(GLUED_BULLET)
+    if (parts.length < 2) return l
+    const indent = /^\s*/.exec(l)?.[0] ?? ''
+    return parts.map((p, i) => (i === 0 ? p : `${indent}- ${p}`)).join('\n')
+  }).join('\n')
+}
+
+/**
+ * Both repairs in one call, for a renderer: the text the SERVER sends can be fixed only where the client has not already received it (a streamed prefix cannot be rewritten),
+ * so every renderer (the chat, the public page of a shared answer) repairs what it is about to draw as well. Idempotent. Pure.
+ */
+export function repairGluedMarkdown(text: string): string {
+  return splitGluedBullets(repairGluedTables(text))
+}
+
+const proseOf = (s: string): string => balanceBoldPerLine(repairGluedMarkdown(s))
+
 /**
  * The reply as the user must see it: prose bold balanced per line, marker blocks kept in place
  * with markdown stripped from their string values. An UNCLOSED block (truncated reply) and
@@ -174,17 +233,17 @@ export function fixHalfAccented(text: string): string {
 export function normalizeReplyMarkdown(text: string): string {
   if (typeof text !== 'string' || !text) return text
   text = fixHalfAccented(text)
-  if (!/[*_`#[]/.test(text)) return text
+  if (!/[*_`#[|]/.test(text)) return text
   let out = ''
   let at = 0
   for (const m of text.matchAll(BLOCK)) {
     const start = m.index ?? 0
-    out += balanceBoldPerLine(text.slice(at, start))
+    out += proseOf(text.slice(at, start))
     out += `[${m[1]}]${normalizeBlockBody(m[1], m[2])}[/${m[1]}]`
     at = start + m[0].length
   }
   const rest = text.slice(at)
   const openAt = rest.search(/\[(TAPPY_[A-Z_]+|CTA_BUTTONS|FOLLOWUPS)\]/)
-  out += openAt === -1 ? balanceBoldPerLine(rest) : balanceBoldPerLine(rest.slice(0, openAt)) + rest.slice(openAt)
+  out += openAt === -1 ? proseOf(rest) : proseOf(rest.slice(0, openAt)) + rest.slice(openAt)
   return out
 }

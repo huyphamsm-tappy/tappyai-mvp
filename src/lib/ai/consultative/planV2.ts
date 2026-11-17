@@ -20,7 +20,9 @@ export const planV2Shape = {
     basis: z.enum(['found', 'estimate']).describe('found = from this turn\'s tool results; estimate = a typical figure you reliably know'),
   })).min(1).max(12),
   budget_total: z.string().describe('the total for the whole party, and what it leaves out (e.g. flights)'),
-  assumptions: z.array(z.string()).max(4).describe('what you took for granted because the person did not say (empty when nothing)'),
+  // 18/11 (UAT case 20): a call that left this list out was refused by the schema and the WHOLE turn died with no text. The list is what the model may leave empty, so a missing or long one is
+  // accepted (the fold keeps four): a refused argument costs the person the whole answer, an empty list costs nothing.
+  assumptions: z.array(z.string()).default([]).describe('what you took for granted because the person did not say, at most 4 (empty when nothing)'),
 }
 
 const MARKER = /\[\/?(?:TAPPY_|CTA_|FOLLOWUPS)/i

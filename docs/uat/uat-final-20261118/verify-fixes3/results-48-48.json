@@ -1,0 +1,29 @@
+[
+  {
+    "id": 48,
+    "group": "multilingual",
+    "turns": [
+      {
+        "q": "Quels sont les plats typiques à goûter au Vietnam ?",
+        "done": true,
+        "seconds": 39,
+        "screen": "screens/q48.jpg",
+        "answered": true,
+        "chars": 1795,
+        "head": "Pour découvrir la cuisine vietnamienne, goûtez au moins un plat de nouilles, un bánh mì et une spécialité de chaque région : les recettes changent beaucoup d’une ville à l’autre.\nPhở\nBún chả\nBánh mì\nPhở — soupe de nouilles de riz au bœuf ou au poulet, dans un bouillon parfumé. La version du Nord est souvent plus sobre ; celle du Sud s’accompagne volontiers d’herbes fraîches et de pousses de soja. Vietnam Tourism\nBún chả — spécialité de Hanoï : porc grillé, vermicelles de riz, herbes et sauce aigre-douce. On trempe ou mélange les vermicelles avec la viande et la sauce. Vietnam Tourism\nBánh mì — baguette croustillante garnie, selon l’endroit, de viande, pâté, légumes marinés, concombre et cori",
+        "tail": "lacé au lait concentré, ou un chè, dessert vietnamien qui peut mêler fruits, haricots et gelées. Mon trio pour commencer : phở, bún chả et bánh mì — puis cao lầu si vous passez par Hội An.\nV\nNguồn · 1",
+        "links": 5,
+        "hosts": {
+          "vietnam.travel": 5
+        },
+        "sourcesChip": "V Nguồn · 1",
+        "tables": 0,
+        "images": 9,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/e613c7b0-02dc-4fe2-a53d-4d5addb1a9e4",
+        "proNote": 0
+      }
+    ]
+  }
+]

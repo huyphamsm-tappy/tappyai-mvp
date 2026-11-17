@@ -1,6 +1,0 @@
-# Đợt 7 (câu 31-35)
-31 xe máy điện HS cấp 3: nghiêng VinFast Flazz (39 km/h, 1.100W, 14,2tr, pin phụ 135km), nêu điều kiện tuổi: đủ 16 tuổi mới lái xe gắn máy điện ≤50km/h ≤4kW, không cần GPLX; chưa đủ 16 -> xe đạp điện (LuatVietnam 27/8/2026). Nguồn vinfastauto.com + luatvietnam. Không thẻ, ảnh nguồn lạ (video TikTok). XÁC MINH luật tuổi.
-32 Galaxy S25 Ultra: "256GB mới khoảng 21,2-25,9tr"; danh sách có cả 18,6tr (Hàn Quốc), 20tr, 22,7tr, 31,9tr (512GB), 33,4tr (Samsung VN) -> khoảng giá ở đầu không khớp mục 18,6 và 20 (hàng Hàn/không rõ). Nút "Tìm trên Lazada" + isclix. Nguồn cellphones, TGDĐ, viettelstore. Trung thực "cần xác nhận phiên bản".
-33 đổi GPLX: nộp tại Công an xã/phường hoặc trực tuyến (hướng dẫn cập nhật 9/11/2026), hồ sơ: khám sức khỏe điện tử, GPLX, giấy tờ tùy thân...; nói "thời hạn xử lý và lệ phí cần xem tại nơi tiếp nhận" (không nêu số). Nguồn luatvietnam + dichvucong. Đầy đủ nhưng không có lệ phí.
-34 vượt đèn đỏ xe máy: 4-6 triệu, trừ 4 điểm (NĐ 168/2024); gây tai nạn 10-14 triệu, trừ 10 điểm; nhắc NĐ 238/2026 sửa đổi NĐ 168 (vanban.chinhphu.vn). Số phạt khớp NĐ 168. Rất gọn.
-35 thuế TNCN lương 30tr + 1 phụ thuộc: 257.500đ/tháng; giảm trừ 15,5tr + 6,2tr (2026), BH 10,5% = 3,15tr; thu nhập tính thuế 5,15tr x5%; còn 26.592.500đ. Số học ĐÚNG (30-3,15-21,7=5,15; x5%=257,5k; 30-3,15-0,2575=26,5925tr). Có bảng + giả định nêu rõ. Rất tốt.

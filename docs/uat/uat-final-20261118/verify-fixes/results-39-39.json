@@ -1,0 +1,29 @@
+[
+  {
+    "id": 39,
+    "group": "knowledge",
+    "turns": [
+      {
+        "q": "vì sao bầu trời có màu xanh",
+        "done": true,
+        "seconds": 17,
+        "screen": "screens/q39.jpg",
+        "answered": true,
+        "chars": 405,
+        "head": "Bầu trời trông xanh vì các phân tử khí trong khí quyển tán xạ ánh sáng xanh từ Mặt Trời mạnh hơn ánh sáng đỏ. Ánh sáng xanh bị hắt ra khắp các hướng, nên khi nhìn lên, ta thấy ánh xanh đến từ nhiều phía NASA.\nHiện tượng này gọi là tán xạ Rayleigh. Còn lúc hoàng hôn, ánh sáng đi qua lớp khí quyển dày hơn nên phần xanh bị tán xạ khỏi đường nhìn nhiều hơn, khiến các sắc đỏ và cam nổi bật NASA.\nS\nNguồn · 1",
+        "tail": "SA.\nHiện tượng này gọi là tán xạ Rayleigh. Còn lúc hoàng hôn, ánh sáng đi qua lớp khí quyển dày hơn nên phần xanh bị tán xạ khỏi đường nhìn nhiều hơn, khiến các sắc đỏ và cam nổi bật NASA.\nS\nNguồn · 1",
+        "links": 3,
+        "hosts": {
+          "spaceplace.nasa.gov": 3
+        },
+        "sourcesChip": "S Nguồn · 1",
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/7a0dc70a-2ec5-4088-8575-83e068695269",
+        "proNote": 0
+      }
+    ]
+  }
+]

@@ -31,6 +31,7 @@
 // cleaned values). Pure: no model, no network, no I/O.
 
 import { extractMoneyClaims, sentenceSpans } from './moneyGuard'
+import { unverifiedWord } from './unverifiedLabel'
 import { AVAIL_RE } from './travelGuard'
 import { unitOf } from './agent/runtime/evidence'
 import { reliabilityFor, type ClaimKind, type SourceType } from './agent/runtime/sourceType'
@@ -362,7 +363,7 @@ export function shieldSupported(text: string, ev: GuardEvidence | null | undefin
     report.markersDropped++
     // RETRIEVAL_V5 lần 2c (B3): the marker of a page that does not state the figure still goes (no false source), and the figure says ONCE
     // that it is not verified — the source does not vanish silently
-    edits.push({ start: src, end: g.end, text: text.slice(src, g.end).replace(MARKER_RE, o.labelMisattributed ? (o.lang === 'en' ? ' (unverified)' : ' (chưa xác minh)') : '') })
+    edits.push({ start: src, end: g.end, text: text.slice(src, g.end).replace(MARKER_RE, o.labelMisattributed ? ` (${unverifiedWord(text.slice(Math.max(0, src - 200), g.end), o.lang ?? 'vi')})` : '') })
   }
   for (const s of judged) {
     const j = s.j

@@ -149,7 +149,7 @@ import { useChatSessionId } from '@/lib/chat/useChatSessionId'
 import { useFinishReveal } from '@/lib/chat/useFinishReveal'
 import MessageBoundary, { Deferred } from '@/components/chat/MessageBoundary'
 import { useStickToBottom } from '@/components/chat/useStickToBottom'
-import { balanceBoldPerLine } from '@/lib/chat/markdownNormalize'
+import { balanceBoldPerLine, repairGluedMarkdown } from '@/lib/chat/markdownNormalize'
 import { cleanRepeats } from '@/lib/chat/replyRepeat'
 import { isAgeGateMessage, redirectToAgeCheck } from '@/lib/account/ageGateClient'
 import { checkAttachment, checkAddition, attachableList, shrinkImage, pastedAttachment, dragHasFiles, normalizedType, docIcon, ATTACH_ACCEPT } from '@/components/chat/composerAttachment'
@@ -705,7 +705,8 @@ function formatMessageBody(content: string) {
   // gaps. Normalised here, for every vertical: blank-line runs a guard left behind collapse to one
   // paragraph break; a link whose target IS an image renders as the image; every other link is a
   // separate chip with a readable label — a URL is never printed as text.
-  const normalized = balanceBoldPerLine(content)
+  // 18/11: the items of a list or the rows of a table the model wrote with no line break are drawn one per line (the text a stream already sent cannot be rewritten by the server)
+  const normalized = balanceBoldPerLine(repairGluedMarkdown(content))
     .replace(/[ \t]+\n/g, '\n')
     .replace(/\n{3,}/g, '\n\n')
     // [Ảnh địa điểm](https://…googleusercontent…) — a photo, written as a link.

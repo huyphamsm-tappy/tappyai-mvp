@@ -181,7 +181,8 @@ async function metForecast(hit: GeoHit, n: number, tz: string, lang: string, fet
     next_hours: hourly.map(s => ({ time: clock(s.time!), summary: metSymbolText(s.data!.next_1_hours!.summary?.symbol_code, lang), temp_c: num(s.data!.instant!.details!.air_temperature), rain_chance_pct: null, rain_mm: num(s.data!.next_1_hours!.details?.precipitation_amount) })),
     days,
     source: 'met.no',
-    source_url: 'https://www.met.no/en',
+    // 18/11 (UAT case 3: the answer linked the institute's home page): yr.no is the Norwegian Meteorological Institute's own forecast site, opened on the very place the forecast is for
+    source_url: `https://www.yr.no/en/forecast/daily-table/${Number(hit.latitude).toFixed(4)},${Number(hit.longitude).toFixed(4)}`,
     fetched_at: now.toISOString(),
     timezone: tz,
   }

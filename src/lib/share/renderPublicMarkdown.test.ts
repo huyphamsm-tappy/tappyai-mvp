@@ -17,6 +17,12 @@ describe('renderPublicMarkdown: what a shared report needs', () => {
     expect(h).toContain('[2023]')
     expect(h).toContain('<a href="https://example.com/a"')
   })
+  it('items and rows the model wrote with no line break are drawn one per line (UAT 18/11, cases 34, 41, 48)', () => {
+    const h = renderPublicMarkdown('- **A** — un. - **B** — deux. - **C** — trois.')
+    expect(h.match(/<li>/g)).toHaveLength(3)
+    const t = renderPublicMarkdown('| x | y |\n|---|---|\n| **1** | a | **2** | b | **3** | c |')
+    expect(t.match(/<tr>/g)).toHaveLength(4) // the header and three rows
+  })
   it('a "[12]" inside a link address stays part of the address (the href is never cut)', () => {
     const h = renderPublicMarkdown('Xem https://example.com/a/[12]/b và [trang](https://example.com/p[3]).')
     expect(h).not.toMatch(/href="[^"]*<sup/)

@@ -2,6 +2,7 @@ import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 import { withRetrievedAt } from './retrievalClock'
 import { serperPost, type SerperPostState } from './serperClient'
 import { resolveGotoRows, isGoogleGoto, displayedSite } from './googleGoto'
+import { unwrapProxyLink } from './sourceUrl'
 import { serperCacheGetMeta, serperCacheSet } from './serperCache'
 import { noteRetrieval, withRetrievalClock, type Retrieval } from './retrievalClock'
 import { recordSerperCacheHit, recordSerperL1Hit } from './serperMeter'
@@ -609,7 +610,9 @@ async function serperSearchPaid(query: string, searchCacheKey: string, apiKey: s
     const data = await (resp as Response).json()
     const organic = (data?.organic || []) as Array<{ title?: string; link?: string; snippet?: string; date?: unknown }>
     // 31/10 (measured: 7 of 10 rows were google.com/goto tokens): each token becomes the page it points to before anyone sees the row
-    const gone = await resolveGotoRows(organic.filter(r => r.title && r.link).slice(0, 6).map(r => ({ ...r, link: r.link as string })))
+    // 18/11 (UAT case 39: "[NASA](https://translate.google.com/translate?u=)"): a translate proxy becomes the page it points to; one that names no page is no source
+    const direct = organic.flatMap(r => { const link = typeof r.link === 'string' ? unwrapProxyLink(r.link) : null; return r.title && link ? [{ ...r, link }] : [] })
+    const gone = await resolveGotoRows(direct.slice(0, 6))
     if (gone.resolved || gone.failed) console.log(JSON.stringify({ type: 'tappyai_serper_goto', resolved: gone.resolved, failed: gone.failed }))
     const results: SerperSearchRow[] = gone.rows
       .map(r => {

@@ -168,6 +168,8 @@ describe('getWeatherForecast — place names the geocoder does not hold, and a f
     const r = await getWeatherForecast('Quy Nhơn', 2, 'vi', downForecast(calls, () => ok(metBody)), new Date('2026-11-14T08:30:00Z'))
     if ('error' in r) throw new Error('unexpected error: ' + r.note)
     expect(r.source).toBe('met.no')
+    // 18/11: the link is the forecast page of this very place, not the institute's home page
+    expect(r.source_url).toBe('https://www.yr.no/en/forecast/daily-table/13.7800,109.2200')
     const met = calls.find(c => c.u.includes('api.met.no'))!
     expect(met.u).toContain('lat=13.7800')
     expect(met.u).toContain('lon=109.2200')
