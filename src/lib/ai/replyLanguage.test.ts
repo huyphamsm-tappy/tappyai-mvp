@@ -11,12 +11,12 @@ describe('resolveReplyLanguage', () => {
       priorUserTexts: ['gia vang sjc hom nay bao nhieu', 'Cuối tuần đi Vũng Tàu 2 người ở khách sạn nào'],
       clientLocale: 'en',
     })
-    expect(r).toEqual({ lang: 'vi', source: 'conversation' })
+    expect(r).toEqual({ lang: 'vi', source: 'conversation', named: null })
   })
 
   it('an English conversation stays English on a Vietnamese UI', () => {
     expect(resolveReplyLanguage({ lastText: 'ok thanks', priorUserTexts: ['What are the best cafes near District 1 for working?'], clientLocale: 'vi' }))
-      .toEqual({ lang: 'en', source: 'conversation' })
+      .toEqual({ lang: 'en', source: 'conversation', named: null })
   })
 
   it('the nearest earlier turn that settles a language wins; an earlier explicit request holds for the thread', () => {
@@ -25,12 +25,15 @@ describe('resolveReplyLanguage', () => {
   })
 
   it('the message itself still decides first: an explicit request, then a clear language', () => {
-    expect(resolveReplyLanguage({ lastText: 'answer in English please', priorUserTexts: ['Tôi muốn ăn bún bò'], clientLocale: 'vi' })).toEqual({ lang: 'en', source: 'explicit' })
-    expect(resolveReplyLanguage({ lastText: 'Quán nào ngon nhất ở đây vậy?', priorUserTexts: ['Where should I eat tonight?'], clientLocale: 'en' })).toEqual({ lang: 'vi', source: 'message' })
+    expect(resolveReplyLanguage({ lastText: 'answer in English please', priorUserTexts: ['Tôi muốn ăn bún bò'], clientLocale: 'vi' })).toEqual({ lang: 'en', source: 'explicit', named: null })
+    // 17/11: the message switches the conversation (English before it), so the turn names its language
+    expect(resolveReplyLanguage({ lastText: 'Quán nào ngon nhất ở đây vậy?', priorUserTexts: ['Where should I eat tonight?'], clientLocale: 'en' })).toEqual({ lang: 'vi', source: 'message', named: 'vi' })
+    // no switch: the same message in a Vietnamese thread names nothing
+    expect(resolveReplyLanguage({ lastText: 'Quán nào ngon nhất ở đây vậy?', priorUserTexts: ['Tôi muốn ăn bún bò'], clientLocale: 'en' })).toEqual({ lang: 'vi', source: 'message', named: null })
   })
 
   it('the UI locale only breaks a tie nothing the user wrote settles (a first-turn "ok")', () => {
-    expect(resolveReplyLanguage({ lastText: 'ok', priorUserTexts: [], clientLocale: 'en' })).toEqual({ lang: 'en', source: 'client' })
-    expect(resolveReplyLanguage({ lastText: 'ok', priorUserTexts: ['ok', 'hmm'], clientLocale: 'vi' })).toEqual({ lang: 'vi', source: 'client' })
+    expect(resolveReplyLanguage({ lastText: 'ok', priorUserTexts: [], clientLocale: 'en' })).toEqual({ lang: 'en', source: 'client', named: null })
+    expect(resolveReplyLanguage({ lastText: 'ok', priorUserTexts: ['ok', 'hmm'], clientLocale: 'vi' })).toEqual({ lang: 'vi', source: 'client', named: null })
   })
 })

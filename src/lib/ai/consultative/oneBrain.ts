@@ -120,7 +120,7 @@ export interface OneBrainContext {
   hasLocation: boolean
   /** Blocks the route already built for every path (memory, preferences, response style, shared page); '' when absent. */
   blocks: readonly string[]
-  /** The language the latest message is written in when its SCRIPT settles it (intent.detectLangConfident: zh, ja, ko, th, ar); else null. */
+  /** The language this turn states by name, from the turn's one language decision (replyLanguage.ts `named`); null = nothing to state. */
   latestLang?: string | null
   /** 31/10: the mode the person picked in the composer (clientInput.readChatMode); absent = no mode line (the route before modes). */
   mode?: 'chat' | 'web' | 'think' | 'auto'
@@ -188,9 +188,10 @@ export const ONE_BRAIN_MODE_LINES: Readonly<Record<'chat' | 'web' | 'think' | 'a
 /**
  * A script nothing else writes (rerun 31/10: the question in Chinese got a Vietnamese answer again, while the Polish and Portuguese ones were
  * answered in their language). The general line was not enough against a long Vietnamese conversation; when the script itself says which
- * language the message is in, the turn says it by name. Latin-script languages stay with the general line (their detection is not certain).
+ * language the message is in, the turn says it by name. 17/11: so does a message that switches the conversation to Vietnamese or English
+ * (a Vietnamese question after Japanese turns was answered in Japanese). WHEN a name is passed is one decision, replyLanguage.ts `named`.
  */
-const SCRIPT_LANGS: Readonly<Record<string, string>> = { zh: 'Chinese', ja: 'Japanese', ko: 'Korean', th: 'Thai', ar: 'Arabic' }
+const SCRIPT_LANGS: Readonly<Record<string, string>> = { zh: 'Chinese', ja: 'Japanese', ko: 'Korean', th: 'Thai', ar: 'Arabic', vi: 'Vietnamese', en: 'English' }
 
 /**
  * 02/11 (owner: a question written in Chinese got an NHS link for the hospital): the language of a message says nothing about where the person
