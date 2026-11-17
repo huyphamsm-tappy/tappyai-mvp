@@ -2466,10 +2466,11 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // (AI.stream autoThink) and the lookups follow the Thinking mode. Off for the whole turn = exactly Chat.
   const autoThink: { on: boolean; effort: 'medium' } = { on: false, effort: 'medium' }
   const chatLike = () => chatMode === 'chat' || (chatMode === 'auto' && !autoThink.on)
-  const oneBrainPrompt = oneBrain ? { shared: ONE_BRAIN_CORE, dynamic: oneBrainDynamic({ lang, now: new Date(), address: userLocation?.address ?? null, hasLocation: hasValidCurrentLocation(userLocation), blocks: [clipContext ? buildExploreClipBlock(clipContext, lang) : '', memoryBlock ?? '', prefBlock, styleBlock, shareContextBlock], latestLang: replyLanguage.named, mode: chatMode === 'deep' ? 'think' : chatMode, ...(planHasTools ? {} : { noTools: true }) }) } : null
+  const oneBrainPrompt = oneBrain ? { shared: ONE_BRAIN_CORE, dynamic: oneBrainDynamic({ lang, now: new Date(), address: userLocation?.address ?? null, hasLocation: hasValidCurrentLocation(userLocation), blocks: [clipContext ? buildExploreClipBlock(clipContext, lang) : '', memoryBlock ?? '', prefBlock, styleBlock, shareContextBlock], latestLang: replyLanguage.named, mode: chatMode === 'deep' ? 'think' : chatMode, ...(planHasTools ? {} : { noTools: true }), ...(presentBlocksOn ? {} : { noBlocks: true }) }) } : null
   if (oneBrain) console.log(JSON.stringify({ type: 'tappyai_chat_mode', mode: chatMode }))
   // CONSULT_ONE_BRAIN_MEDIA: what the pictures should show is read beside the answer (never before it, never for the answer) and used when the answer ends.
-  const oneBrainUnderstanding = oneBrain && consultOneBrainMediaOn()
+  // The Free plan (no tools) gets no picture lookups either: the model's own ability only
+  const oneBrainUnderstanding = oneBrain && planHasTools && consultOneBrainMediaOn()
     ? understandTurn({ userText: lastText, previousUser: (() => { const u = userMessages[userMessages.length - 2] as { content?: unknown } | undefined; return typeof u?.content === 'string' ? u.content : null })(), previousReply: priorAssistantText ?? null })
     : null
   const systemShared = oneBrainPrompt ? oneBrainPrompt.shared : lean ? lean.shared : legacyShared

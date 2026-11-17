@@ -18,6 +18,7 @@ import { isAiProductSource, withoutAiSources } from '@/lib/security/aiSourcePoli
 import { createParallelTurnBudget, parallelSearch, PARALLEL_PRICE } from '@/lib/ai/tools/parallelClient'
 export { PARALLEL_PRICE }
 import { consultTraceDiagnosticsOn, lockedInProduction } from '@/lib/config/consultFlags'
+import { vnToday } from '@/lib/config/product'
 import { leanValue } from './deepResearchLean'
 import { researchSourceDiversityOn, researchConsolidationOn, researchPackagesOn, researchForecastModelOn, researchTightWriteOn, researchEvidenceCardsOn, researchThesisOn, researchFreshnessOn } from './deepResearchState'
 import type { EvidenceCard } from './evidenceCards'
@@ -295,7 +296,7 @@ export function createDeepResearchDeps(o: { lang: string; userTexts: readonly st
   const policyScanOn = claudeStandard && researchThesisOn()
   let policyScanned = false
   const policyScan = async (question: string, plan: ResearchPlan): Promise<PolicyStep | null> => {
-    const r = await AI.extract({ role: planningRole(), claudeModel: 'sonnet55', systemShared: POLICY_SCAN_SYSTEM, messages: [{ role: 'user', content: `Question:\n${question}${langLine}\n\nToday's date: ${new Date().toISOString().slice(0, 10)}\nResearch plan: ${plan.title}\nSteps already planned: ${plan.steps.map(s => s.title).join('; ')}` }], schema: PolicyScanSchema, schemaName: 'tappy_research_policy_scan', maxTokens: 4000, budgetKind: 'aux', abortSignal: o.signal } as never) as { object: unknown; providerMetadata?: unknown }
+    const r = await AI.extract({ role: planningRole(), claudeModel: 'sonnet55', systemShared: POLICY_SCAN_SYSTEM, messages: [{ role: 'user', content: `Question:\n${question}${langLine}\n\nToday's date: ${vnToday()}\nResearch plan: ${plan.title}\nSteps already planned: ${plan.steps.map(s => s.title).join('; ')}` }], schema: PolicyScanSchema, schemaName: 'tappy_research_policy_scan', maxTokens: 4000, budgetKind: 'aux', abortSignal: o.signal } as never) as { object: unknown; providerMetadata?: unknown }
     addCost(o.cost, r.providerMetadata)
     return policyStepFrom(r.object)
   }
@@ -401,7 +402,7 @@ export function createDeepResearchDeps(o: { lang: string; userTexts: readonly st
     ...(advancedLead && researchForecastModelOn() ? {
       async forecast({ question, findings }: { question: string; findings: readonly Finding[] }) {
         const data = `Findings (the number in brackets is the source number):\n${packFindingsForForecast(findings).join('\n')}`
-        const ask = () => AI.extract({ role: planningRole(), ...leadModel(), systemShared: FORECAST_SYSTEM, messages: [{ role: 'user', content: `Question:\n${question}${langLine}\n\nToday's date: ${new Date().toISOString().slice(0, 10)}\n\n${fenceUntrusted('tool_result', data)}` }], schema: ForecastSpecSchema, schemaName: 'tappy_research_forecast_inputs', maxTokens: 3500, budgetKind: 'aux', abortSignal: o.signal } as never) as Promise<{ object: ForecastSpecRaw; providerMetadata?: unknown }>
+        const ask = () => AI.extract({ role: planningRole(), ...leadModel(), systemShared: FORECAST_SYSTEM, messages: [{ role: 'user', content: `Question:\n${question}${langLine}\n\nToday's date: ${vnToday()}\n\n${fenceUntrusted('tool_result', data)}` }], schema: ForecastSpecSchema, schemaName: 'tappy_research_forecast_inputs', maxTokens: 3500, budgetKind: 'aux', abortSignal: o.signal } as never) as Promise<{ object: ForecastSpecRaw; providerMetadata?: unknown }>
         // an answer that does not match the schema is occasional (measured 11/11): asked once more; the log names the kind of failure, never the text
         const r = await askTwice(() => ask().catch(e => { console.warn(JSON.stringify({ type: 'tappyai_research_forecast_inputs_failed', ...failureKind(e) })); throw e }))
         addCost(o.cost, r.providerMetadata)
@@ -415,7 +416,7 @@ export function createDeepResearchDeps(o: { lang: string; userTexts: readonly st
         const data = `${plan.parts?.length ? `Parts the question asks for: ${plan.parts.join('; ')}\n\n` : ''}Evidence cards:\n${analystCards(cards, support)}`
         // 18/11 (UAT run 3 of the Advanced question: both tries came back without a usable `sections`): the second try is told which field the first was refused on
         let hint = ''
-        const ask = () => AI.extract({ role: planningRole(), ...leadModel(), systemShared: ANALYST_SYSTEM, messages: [{ role: 'user', content: `Question:\n${question}${langLine}\n\nToday's date: ${new Date().toISOString().slice(0, 10)}\nWrite ${bounds.minSections} to ${bounds.maxSections} sections.${hint}\n\n${fenceUntrusted('tool_result', data)}` }], schema: OutlineSchema, schemaName: 'tappy_research_outline', maxTokens: advancedLead ? 10000 : 6000, budgetKind: 'aux', abortSignal: o.signal } as never) as Promise<{ object: unknown; providerMetadata?: unknown }>
+        const ask = () => AI.extract({ role: planningRole(), ...leadModel(), systemShared: ANALYST_SYSTEM, messages: [{ role: 'user', content: `Question:\n${question}${langLine}\n\nToday's date: ${vnToday()}\nWrite ${bounds.minSections} to ${bounds.maxSections} sections.${hint}\n\n${fenceUntrusted('tool_result', data)}` }], schema: OutlineSchema, schemaName: 'tappy_research_outline', maxTokens: advancedLead ? 10000 : 6000, budgetKind: 'aux', abortSignal: o.signal } as never) as Promise<{ object: unknown; providerMetadata?: unknown }>
         const r = await askTwice(() => ask().catch(e => { const k = failureKind(e, ['thesis', 'sections', 'doubts']); console.warn(JSON.stringify({ type: 'tappyai_research_outline_failed', ...k })); hint = retryHint(k.issues, 'thesis (text), sections (an ARRAY of objects, each with a title and a points array of {claim, cards}) and doubts'); throw e }))
         addCost(o.cost, r.providerMetadata)
         const outline = outlineFrom(r.object, cards, bounds)
@@ -439,7 +440,7 @@ export function createDeepResearchDeps(o: { lang: string; userTexts: readonly st
       const forecastRule = researchSourceDiversityOn() && questionKind(question) === 'SIZE_FORECAST'
         ? '\n\nForecast rule: every figure for a year that has not happened yet is an ESTIMATE under stated assumptions, not a fact. Say so in the sentence ("ước tính", "kịch bản", "dự báo", "giả định" / estimate, scenario, assumes). Give a low / base / high range when the findings allow it, name the assumptions behind each (growth, price, volume), never write that a figure "will reach" a value as certain, and say which input assumption no source confirms.'
         : ''
-      const messages = [{ role: 'user' as const, content: `Question:\n${question}${langLine}${forecastRule}${modelRule}${researchTightWriteOn() ? `\n\n${TIGHT_WRITE_RULE}` : ''}${lengthRule}\n\nToday's date: ${new Date().toISOString().slice(0, 10)}\nResearch plan: ${plan.title}${plan.parts?.length ? `\nParts the question asks for: ${plan.parts.join('; ')}` : ''}\n\n${fenceUntrusted('tool_result', `Sources:\n${sources}\n\nFindings by step:\n${notes}`)}` }]
+      const messages = [{ role: 'user' as const, content: `Question:\n${question}${langLine}${forecastRule}${modelRule}${researchTightWriteOn() ? `\n\n${TIGHT_WRITE_RULE}` : ''}${lengthRule}\n\nToday's date: ${vnToday()}\nResearch plan: ${plan.title}${plan.parts?.length ? `\nParts the question asks for: ${plan.parts.join('; ')}` : ''}\n\n${fenceUntrusted('tool_result', `Sources:\n${sources}\n\nFindings by step:\n${notes}`)}` }]
       // 03/11 DEEP_RESEARCH_WRITER_MODEL=haiku55: Claude Haiku 5.5 writes the report (a Vietnamese report is ~27-30k Claude tokens, so the ceiling is higher);
       // a failure before any text (credit, overload) falls back to the Luna writer below, so the person still gets a report
       const writer = writerBy()

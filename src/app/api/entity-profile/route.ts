@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { clientIp } from '@/lib/security/rateLimit'
+import { clientIpKey } from '@/lib/security/rateLimit'
 import { publicRateLimit } from '@/lib/security/publicRateLimit'
 import { rateLimitedResponse } from '@/lib/security/rateLimitResponse'
 import { requestSearchParams } from '@/lib/http/searchParams'
@@ -16,7 +16,7 @@ export const dynamic = 'force-dynamic'
 const MAX_NAMES = 6
 
 export async function GET(req: NextRequest) {
-  const limited = await publicRateLimit(`entity-profile:${clientIp(req)}`, 40, 60_000)
+  const limited = await publicRateLimit(`entity-profile:${clientIpKey(req)}`, 40, 60_000)
   if (!limited.ok) return rateLimitedResponse(req, limited, 'entity-profile')
 
   const names: string[] = []

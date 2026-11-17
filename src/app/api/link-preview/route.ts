@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { clientIp } from '@/lib/security/rateLimit'
+import { clientIpKey } from '@/lib/security/rateLimit'
 import { publicRateLimit } from '@/lib/security/publicRateLimit'
 import { rateLimitedResponse } from '@/lib/security/rateLimitResponse'
 import { requestSearchParams } from '@/lib/http/searchParams'
@@ -21,7 +21,7 @@ const MAX_URL = 1500
 const MAX_EXCERPT = 700 // not exported: a Next route file may export only its HTTP methods and config
 
 export async function GET(req: NextRequest) {
-  const limited = await publicRateLimit(`link-preview:${clientIp(req)}`, 30, 60_000)
+  const limited = await publicRateLimit(`link-preview:${clientIpKey(req)}`, 30, 60_000)
   if (!limited.ok) return rateLimitedResponse(req, limited, 'link-preview')
 
   const raw = requestSearchParams(req).get('u') ?? ''

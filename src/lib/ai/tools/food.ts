@@ -60,7 +60,7 @@ async function getNewsImpl(query: string, lang = 'vi') {
     await Promise.all(feeds.map(async feed => {
       try {
         const resp = await Promise.race([
-          fetch(feed.url, { headers: { 'User-Agent': 'TappyAI/1.0 (huypham.sm@gmail.com)' } }),
+          fetch(feed.url, { headers: { 'User-Agent': 'TappyAI/1.0 https://www.tappyai.com' } }),
           new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 4000))
         ])
         const xml = await (resp as Response).text()
@@ -270,7 +270,7 @@ export async function searchPlacesOSM(query: string, location?: string, type?: s
         try {
           const geoResp = await Promise.race([
             fetch('https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(loc + ' Vietnam') + '&format=json&limit=1', {
-              headers: { 'User-Agent': 'TappyAI/1.0 (huypham.sm@gmail.com)' }
+              headers: { 'User-Agent': 'TappyAI/1.0 https://www.tappyai.com' }
             }),
             new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 2500))
           ])
@@ -332,7 +332,7 @@ export async function searchPlacesOSM(query: string, location?: string, type?: s
     for (const endpoint of endpoints) {
       try {
         const resp = await Promise.race([
-          fetch(endpoint + '?data=' + encodeURIComponent(oql), { headers: { 'User-Agent': 'TappyAI/1.0 (huypham.sm@gmail.com)' } }),
+          fetch(endpoint + '?data=' + encodeURIComponent(oql), { headers: { 'User-Agent': 'TappyAI/1.0 https://www.tappyai.com' } }),
           // Aligned with the query's own [timeout:10] budget + 1s network buffer —
           // previously 5000ms, which aborted before the server's own declared timeout.
           new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 11000))
@@ -377,7 +377,7 @@ export async function searchPlacesOSM(query: string, location?: string, type?: s
       for (const endpoint of endpoints) {
         try {
           const resp = await Promise.race([
-            fetch(endpoint + '?data=' + encodeURIComponent(fallbackOql), { headers: { 'User-Agent': 'TappyAI/1.0 (huypham.sm@gmail.com)' } }),
+            fetch(endpoint + '?data=' + encodeURIComponent(fallbackOql), { headers: { 'User-Agent': 'TappyAI/1.0 https://www.tappyai.com' } }),
             new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 11000))
           ])
           if ((resp as Response).ok) {

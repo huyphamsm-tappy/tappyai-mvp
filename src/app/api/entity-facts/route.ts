@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { clientIp } from '@/lib/security/rateLimit'
+import { clientIpKey } from '@/lib/security/rateLimit'
 import { publicRateLimit } from '@/lib/security/publicRateLimit'
 import { rateLimitedResponse } from '@/lib/security/rateLimitResponse'
 import { requestSearchParams } from '@/lib/http/searchParams'
@@ -16,7 +16,7 @@ export const dynamic = 'force-dynamic'
 const lang = (raw: string | null, fallback: 'vi' | 'en'): 'vi' | 'en' => (raw === 'vi' || raw === 'en' ? raw : fallback)
 
 export async function GET(req: NextRequest) {
-  const limited = await publicRateLimit(`entity-facts:${clientIp(req)}`, 40, 60_000)
+  const limited = await publicRateLimit(`entity-facts:${clientIpKey(req)}`, 40, 60_000)
   if (!limited.ok) return rateLimitedResponse(req, limited, 'entity-facts')
   const q = requestSearchParams(req)
   const title = validEntityTitle(q.get('t'))

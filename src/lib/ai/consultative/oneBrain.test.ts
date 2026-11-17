@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { consultOneBrainOn, CONSULT_ONE_BRAIN_FLAG } from '@/lib/config/consultFlags'
-import { ONE_BRAIN_CORE, ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, ONE_BRAIN_SHAPE_REMINDER, PLACE_RULE, oneBrainDynamic } from './oneBrain'
+import { ONE_BRAIN_CORE, ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, ONE_BRAIN_NO_BLOCKS_LINE, ONE_BRAIN_SHAPE_REMINDER, PLACE_RULE, oneBrainDynamic } from './oneBrain'
 
 describe('CONSULT_ONE_BRAIN flag', () => {
   it('is ON only for exactly "1", and never in a production runtime', () => {
@@ -89,6 +89,20 @@ describe('oneBrainDynamic', () => {
     expect(PLACE_RULE).toMatch(/in Vietnam by default, whatever language/)
     expect(PLACE_RULE).toMatch(/hospitals and clinics, emergency numbers/)
     expect(PLACE_RULE).toMatch(/unless their device location or their own words/)
+  })
+  it('18/11 review: the instruction never contradicts a turn - no "do not search" licence beside the check-every-fact duty, no brand in the buying line, and a turn without present_blocks or without tools says so', () => {
+    expect(ONE_BRAIN_CORE).not.toContain('Do NOT search for general knowledge')
+    expect(ONE_BRAIN_CORE).not.toContain('unless it is world-famous')
+    expect(ONE_BRAIN_CORE).not.toMatch(/Shopee|TikTok Shop|Lazada/)
+    expect(ONE_BRAIN_CORE).not.toContain('offer to lighten')
+    const base = { lang: 'vi', now, address: null, hasLocation: false, blocks: [] as string[], mode: 'chat' as const }
+    expect(oneBrainDynamic(base)).not.toContain(ONE_BRAIN_NO_BLOCKS_LINE)
+    expect(oneBrainDynamic({ ...base, noBlocks: true })).toContain(ONE_BRAIN_NO_BLOCKS_LINE)
+    expect(ONE_BRAIN_NO_BLOCKS_LINE).toContain('do not call it')
+    // a Free turn has one line that overrides every tool instruction above it
+    const free = oneBrainDynamic({ ...base, noTools: true, noBlocks: true })
+    expect(free).toContain('This overrides every instruction above that calls a tool')
+    expect(free).not.toContain(ONE_BRAIN_NO_BLOCKS_LINE)
   })
   it('names the address the device sent, never coordinates', () => {
     expect(oneBrainDynamic({ lang: 'en', now, address: 'Quận 1, TP.HCM', hasLocation: true, blocks: [] })).toContain('device location: Quận 1, TP.HCM')

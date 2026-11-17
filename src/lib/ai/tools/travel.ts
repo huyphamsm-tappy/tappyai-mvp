@@ -324,7 +324,7 @@ async function geocodeForTransport(loc: string): Promise<[number, number] | null
   try {
     const geoResp = await Promise.race([
       fetch('https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(loc + ' Vietnam') + '&format=json&limit=1', {
-        headers: { 'User-Agent': 'TappyAI/1.0 (huypham.sm@gmail.com)' }
+        headers: { 'User-Agent': 'TappyAI/1.0 https://www.tappyai.com' }
       }),
       new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 4000))
     ])

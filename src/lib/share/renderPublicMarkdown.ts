@@ -46,7 +46,8 @@ export function renderPublicMarkdown(content: string): string {
     .replace(/(^|[^"'>])(https?:\/\/[^\s<]+)/g, `$1<a href="$2" target="_blank" rel="noopener noreferrer nofollow" class="${LINK_CLASS}">$2</a>`)
     // 18/11: a report opens with "# title"; a citation mark "[3]" is a small raised number, not bracketed text in the line
     .replace(/^# (.+)$\n?/gm, '<h1 class="font-bold text-xl mt-2 mb-2">$1</h1>')
-    .replace(/(?<!\w)\[(\d{1,3})\](?!\()/g, '<sup class="text-gray-400 text-[0.7em]">$1</sup>')
+    // outside the tags only: a "[12]" inside an already built href must stay part of the address
+    .replace(/(<[^>]*>)|(?<!\w)\[(\d{1,3})\](?!\()/g, (m, tag: string | undefined, n: string | undefined) => (tag ? tag : `<sup class="text-gray-400 text-[0.7em]">${n}</sup>`))
     .replace(/^### (.+)$\n?/gm, '<h3 class="font-semibold mt-4 mb-1">$1</h3>')
     .replace(/^## (.+)$\n?/gm, '<h2 class="font-semibold text-lg mt-4 mb-1">$1</h2>')
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')

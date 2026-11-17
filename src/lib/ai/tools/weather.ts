@@ -16,13 +16,12 @@ export async function getWeather(location: string, lang = 'vi') {
 
   let result: unknown
   try {
-    const resp = await Promise.race([
-      fetch('https://wttr.in/' + encodeURIComponent(place) + '?format=j1', {
-        headers: { 'User-Agent': 'curl/8.0', 'Accept': 'application/json' }
-      }),
-      new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 6000))
-    ])
-    const data = await (resp as Response).json()
+    // the signal covers the body read too, and aborts the socket when the time is up
+    const resp = await fetch('https://wttr.in/' + encodeURIComponent(place) + '?format=j1', {
+      headers: { 'User-Agent': 'curl/8.0', 'Accept': 'application/json' },
+      signal: AbortSignal.timeout(6000),
+    })
+    const data = await resp.json()
     const cur = data.current_condition?.[0]
     const today = data.weather?.[0]
     if (!cur) throw new Error('no data')
@@ -101,7 +100,8 @@ export async function getWeather(location: string, lang = 'vi') {
       source_url: 'https://wttr.in/' + encodeURIComponent(place),
     }
   } catch {
-    result = { error: messages.weather.fetchError(lang), note: messages.weather.seeAt(lang, fallbackUrl), search_url: fallbackUrl }
+    // a failure is never cached: one blip must not pin "unavailable" for the whole window
+    return { error: messages.weather.fetchError(lang), note: messages.weather.seeAt(lang, fallbackUrl), search_url: fallbackUrl }
   }
   setCache(cacheKey, result, 30 * 60 * 1000) // cache 30 phut
   return result
@@ -121,11 +121,8 @@ export async function getGoldPrice(query: string, lang = 'vi') {
   const fallbackUrl = 'https://www.vang.today'
   let result: unknown
   try {
-    const resp = await Promise.race([
-      fetch('https://www.vang.today/api/prices', { headers: { 'User-Agent': 'Mozilla/5.0', 'Accept': 'application/json' } }),
-      new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 6000))
-    ])
-    const data = await (resp as Response).json()
+    const resp = await fetch('https://www.vang.today/api/prices', { headers: { 'User-Agent': 'Mozilla/5.0', 'Accept': 'application/json' }, signal: AbortSignal.timeout(6000) })
+    const data = await resp.json()
     if (data?.success && data.prices && typeof data.prices === 'object') {
       const wanted = ['SJL1L10', 'SJ9999', 'PQHN24NTT', 'PQHNVM', 'DOHNL', 'XAUUSD']
       type GoldEntry = { name: string; buy: number; sell: number; change_buy: number; change_sell: number; currency: string }
@@ -143,7 +140,7 @@ export async function getGoldPrice(query: string, lang = 'vi') {
       throw new Error('no data')
     }
   } catch {
-    result = { error: messages.gold.fetchError(lang), note: messages.gold.seeAt(lang, fallbackUrl), search_url: fallbackUrl }
+    return { error: messages.gold.fetchError(lang), note: messages.gold.seeAt(lang, fallbackUrl), search_url: fallbackUrl }
   }
   setCache(cacheKey, result, 5 * 60 * 1000) // cache 5 phut, gia vang cap nhat thuong xuyen
   return result

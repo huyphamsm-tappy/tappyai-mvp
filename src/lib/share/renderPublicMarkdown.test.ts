@@ -17,6 +17,12 @@ describe('renderPublicMarkdown: what a shared report needs', () => {
     expect(h).toContain('[2023]')
     expect(h).toContain('<a href="https://example.com/a"')
   })
+  it('a "[12]" inside a link address stays part of the address (the href is never cut)', () => {
+    const h = renderPublicMarkdown('Xem https://example.com/a/[12]/b và [trang](https://example.com/p[3]).')
+    expect(h).not.toMatch(/href="[^"]*<sup/)
+    expect(h).toContain('href="https://example.com/a/[12]/b"')
+    expect(h).toContain('href="https://example.com/p[3]"')
+  })
   it('a markdown table becomes a table; a line of pipes with no separator row stays text', () => {
     const t = renderPublicMarkdown('| Năm | Giá trị |\n|---|---|\n| 2025 | 81,68 |\n| 2026 | 90,10 |\n\nHết.')
     expect(t).toContain('<table')
