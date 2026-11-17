@@ -1,0 +1,6 @@
+# Đợt 10 (câu 46-50)
+46 đầu tư lãi 5%/tuần: "Đừng chuyển tiền; 5%/tuần ≈ 1.164%/năm nếu tái đầu tư" (ĐÚNG: 1,05^52≈12,64); chặn số, không bấm link/QR/OTP, đã chuyển thì gọi ngân hàng; giữ bằng chứng; có hướng báo cáo. Nguồn: không có link chip (h rỗng) dù có "Trình..." (báo công an) phía sau. Rất tốt.
+47 áp lực công việc: đồng cảm ngắn, 5 phút thở, chia việc 3 nhóm, mẫu câu nói với quản lý, ngủ ăn đủ, gợi ý gặp chuyên gia nếu kéo dài/tuyệt vọng. Không y khoa hóa quá. Tốt.
+48 email xin nghỉ phép 2 ngày: bản nháp đủ (tiêu đề, kính gửi, lý do cá nhân, bàn giao, trân trọng) với chỗ trống [Họ tên] [ngày]. Dùng được ngay.
+49 Vũng Tàu cuối tuần 4 người có bé 5 tuổi 5tr: hiểu "cuối tuần này = 21-22/11/2026", 2N1Đ, 13 điểm dừng (7 có ảnh), 3 thẻ địa điểm, ngân sách 4,2-5,0tr (gồm xe khách, 1 đêm, ăn, đi lại), giả định 2 lớn + 2 trẻ; có link Vexere x3 + Agoda x3. Đủ ràng buộc, link đối tác ĐÚNG. 
+50 thuê hay mua nhà HN lương 40tr: nghiêng thuê; mốc: giá căn hộ thứ cấp ~123tr/m2 (Báo Xây dựng Q2/2026) => 60m2 ≈ 7,38 tỷ (ĐÚNG số học 123x60); thuê 8-20tr; lãi vay 9-10% ưu đãi (CafeF 15/11); vay >5 tỷ 20 năm lãi 12% => kỳ đầu ~73tr (ĐÚNG: 5,166 tỷ/240 + 5,166tỷ×1%). Nêu giả định "một người hoặc chưa có tiết kiệm lớn". Có bảng. Tốt.

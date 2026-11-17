@@ -1,0 +1,6 @@
+# Đợt 4 (câu 16-20)
+16 lịch trình Hà Giang 3N2Đ nhóm 4: thẻ hành trình + 20 điểm dừng, 4 ảnh, ngân sách 14-22 triệu/4 người (chưa gồm đi lại), tab ngày, bảng dự toán, 1 thẻ địa điểm. Nút Klook/Grab Food/isclix. LƯU Ý: lời mở nói "theo sở thích cà phê, ngắm cảnh bạn từng chia sẻ" - lấy từ bộ nhớ người dùng (do chat thử trước đó của em để lại) áp vào câu hỏi mới; ghi rõ là giả định. Chỉ 4/20 điểm có ảnh.
+17 Phú Quốc tháng 12: trả lời văn xuôi, nói "mùa khô, nắng nhiều, 20-gần 30°C", cảnh báo mùa cao điểm, nguồn vinwonders.com và phuquocsanhodo.com (nguồn của nhà bán tour, không phải nguồn khí tượng). Trung thực "không phải dự báo chính xác". Không số liệu lượng mưa/nhiệt độ cụ thể từ nguồn khí tượng.
+18 visa Nhật: danh sách giấy tờ theo Tổng LSQ Nhật tại TP.HCM, trang cập nhật 3/6/2024, nhắc kiểm tra lại. Trung thực về ngày nguồn. XÁC MINH: quy định visa Nhật cho người Việt hiện nay (e-visa?).
+19 tàu HN-SG: 31-33 giờ; ghế mềm 1,1-1,35tr, giường khoang 6 1,9-2,3tr, khoang 4 2,45-2,8tr; bảng 3 hàng; nguồn dsvn.vn + vetau247.vn. XÁC MINH.
+20 Hội An 3 ngày: thẻ hành trình + 18 điểm dừng (11 có ảnh), 3 thẻ địa điểm (nút Tìm trên GrabFood...), ngân sách 2,5-4tr/2 người chưa gồm KS. Lại dùng "sở thích bạn đã nói trước đây" (bộ nhớ). Hỏi 3 ngày nhưng giả định 2 người (không hỏi số người).
