@@ -3,7 +3,7 @@ import { zodToJsonSchema } from 'zod-to-json-schema'
 import { ANALYST_SYSTEM, GAPS_SYSTEM, GAPS_UPCOMING_ADDENDUM, reportFallback } from './deepResearchDeps'
 import { runDeepResearch, type DeepResearchDeps, type ResearchPlan } from './deepResearch'
 import { researchThesisOn, researchEvidenceCardsOn } from './deepResearchState'
-import { PolicyScanSchema, policyStepFrom, withPolicyStep, OutlineSchema, outlineFrom, analystCards, outlineWriterInput, releaseText, wordCitationsToMarks, type Outline } from './thesisReport'
+import { PolicyScanSchema, policyStepFrom, withPolicyStep, OutlineSchema, outlineFrom, analystCards, outlineWriterInput, releaseText, wordCitationsToMarks, wordCiteStream, type Outline } from './thesisReport'
 import type { EvidenceCard } from './evidenceCards'
 import type { Evidence } from './deepResearch'
 
@@ -212,6 +212,20 @@ describe('releaseText: only checked text is shown', () => {
   it('17/11: a quantity after the word "nguồn" is not a reference and stays as written', () => {
     expect(wordCitationsToMarks('Dự án có nguồn 500 triệu đồng và 3 nguồn vốn khác; nguồn 12,5% đến từ vay.')).toBe('Dự án có nguồn 500 triệu đồng và 3 nguồn vốn khác; nguồn 12,5% đến từ vay.')
     expect(wordCitationsToMarks('Theo nguồn số 7 và nguồn 3 và 4.')).toBe('Theo [7] và [3][4].')
+  })
+  it('17/11: the same on text that arrives in pieces, wherever the pieces are cut (the write path without a thesis streams its text)', () => {
+    const whole = 'Số liệu bị gán năm 2026 ở nguồn 96 nhưng năm 2025 ở nguồn 97, nên báo cáo không dùng.\n| Loại | Nguồn 112 (tổng đầu tư) | Nguồn 114 |\nDự án có nguồn 500 triệu đồng.'
+    const expected = wordCitationsToMarks(whole)
+    expect(expected).toContain('ở [96] nhưng năm 2025 ở [97]')
+    expect(expected).toContain('| [112] (tổng đầu tư) | [114] |')
+    expect(expected).toContain('nguồn 500 triệu đồng')
+    for (const size of [1, 2, 3, 5, 7, 11, 40, 1000]) {
+      const s = wordCiteStream()
+      let out = ''
+      for (let i = 0; i < whole.length; i += size) out += s.push(whole.slice(i, i + size))
+      out += s.end()
+      expect(out, `pieces of ${size}`).toBe(expected)
+    }
   })
 })
 

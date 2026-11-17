@@ -138,8 +138,9 @@ for (const c of cases) {
       const started = Date.now()
       if (c.mode === 'research' && t === 0) {
         // the composer's "+" menu, then "Nghiên cứu sâu" (the way a person picks the mode)
-        await evaluate(`document.querySelector('button[aria-label="Thêm tệp hoặc chọn chế độ"]')?.click()`)
-        if (!await waitFor(`!!document.querySelector('[data-testid="composer-deep"]')`, 8000)) throw new Error('no deep research item in the + menu')
+        // the menu opens only once the page is interactive: press "+" again until its item shows (17/11: one case pressed it too early)
+        const opened = await waitFor(`(() => { if (document.querySelector('[data-testid="composer-deep"]')) return true; document.querySelector('button[aria-label="Thêm tệp hoặc chọn chế độ"]')?.click(); return false })()`, 20000)
+        if (!opened) throw new Error('no deep research item in the + menu')
         await evaluate(`document.querySelector('[data-testid="composer-deep"]').click()`)
         await sleep(500)
       }

@@ -23,7 +23,7 @@ import { consolidate, freshnessHints } from './consolidate'
 import { sectionTextOf, seriesRelevant } from './chartRelevance'
 import { failureKind } from './failureKind'
 import { buildCards, cardSummary, factSupport, quoteInText, type CardSummary, type EvidenceCard } from './evidenceCards'
-import { outlineWriterInput, releaseText, type Outline, type WriterInput } from './thesisReport'
+import { outlineWriterInput, releaseText, wordCiteStream, type Outline, type WriterInput } from './thesisReport'
 import { createSectionRelease, sectionEventOf, type ReleasedSection, type SectionRelease } from './sectionRelease'
 import { createContractsRun, type ContractsSummary } from './contractsRun'
 import { FIGURE_CONFLICT_GAP } from './figureGap'
@@ -759,8 +759,12 @@ export async function runDeepResearch(question: string, context: string, lang: s
   // RESEARCH_STREAM_VERIFY (R13 9.5): with a thesis, each finished section is read by the verifier and shown at once (sectionRelease.ts); same text in the end as releaseText of the whole
   let sv: SectionRelease | null = hold && researchStreamVerifyOn() ? createSectionRelease(thesisIn!.sources, forecastResult ? forecastNotes(forecastResult) : '') : null
   const showSection = (s: ReleasedSection) => { const ev = sectionEventOf('report', s); deps.trace?.({ ev: 'section', id: s.sectionId, type: ev.type, status: s.status, dropped: s.dropped, chars: s.text.length }); if (s.text) emit.text(s.text) }
-  const say = (t: string) => { if (t) { written += t; if (!hold) emit.text(t); else if (sv) for (const s of sv.push(t)) showSection(s) } }
-  const finish = () => { say(numberer.push(stripper.end())); say(numberer.end()) }
+  const put = (t: string) => { if (t) { written += t; if (!hold) emit.text(t); else if (sv) for (const s of sv.push(t)) showSection(s) } }
+  // 17/11: a source named by its number in words ("nguồn 96") becomes the mark on EVERY write path (thesisReport.wordCitationsToMarks). The
+  // release of the thesis path does it too; a report written without a thesis (the outline failed) had no release and showed the words.
+  let marker = wordCiteStream()
+  const say = (t: string) => put(marker.push(t))
+  const finish = () => { say(numberer.push(stripper.end())); say(numberer.end()); put(marker.end()) }
   // pass 0 writes from the outline when there is one; if that write fails (nothing was shown: the text is held) pass 1 writes from the findings as before
   for (let pass = 0; ; pass++) {
   try {
@@ -827,7 +831,7 @@ export async function runDeepResearch(question: string, context: string, lang: s
     }
     if (thesisIn && pass === 0 && !left?.aborted) {
       deps.trace?.({ ev: 'thesis_write_failed', message: String((e as Error)?.message ?? e).slice(0, 120), chars: written.length })
-      thesisIn = null; hold = false; sv = null; written = ''; cut = false; stripper = linkStripper(); numberer = headingNumberer()
+      thesisIn = null; hold = false; sv = null; written = ''; cut = false; stripper = linkStripper(); numberer = headingNumberer(); marker = wordCiteStream()
       continue
     }
     return { plan, evidence, findings, failed: left?.aborted ? 'client_gone' : fail(plan.title, steps, 'write_failed'), cut }

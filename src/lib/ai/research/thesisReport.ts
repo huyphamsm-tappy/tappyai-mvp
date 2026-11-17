@@ -156,6 +156,28 @@ export function wordCitationsToMarks(text: string): string {
   return text.replace(WORD_CITE, (_m, list: string) => list.split(/\s*(?:,|và|and)\s*/).map(n => `[${Number(n)}]`).join(''))
 }
 
+/**
+ * The same, for text that arrives in pieces: a piece is released up to the last "nguồn" / "source" word that may still be followed by its
+ * number in the next piece (the last 40 characters at most); the rest waits. `end()` releases what is left.
+ */
+export function wordCiteStream(): { push(delta: string): string; end(): string } {
+  let carry = ''
+  const OPEN = /(?:nguồn|nguon|sources?)[^\n]{0,40}$/iu
+  return {
+    push(delta: string) {
+      carry += delta
+      const m = OPEN.exec(carry)
+      // an unfinished last word may be the start of "nguồn" itself: it waits too
+      const word = /[\p{L}]+$/u.exec(carry)
+      const at = Math.min(m ? m.index : carry.length, word ? word.index : carry.length)
+      const out = wordCitationsToMarks(carry.slice(0, at))
+      carry = carry.slice(at)
+      return out
+    },
+    end() { const out = wordCitationsToMarks(carry); carry = ''; return out },
+  }
+}
+
 /** The sentence filter of releaseText, before the citations are renumbered (sectionRelease.ts runs it on one section at a time). Pure. */
 export function filterVerified(report: string, sources: readonly (VerifierSource & { url?: string; site?: string; published?: string })[], trusted = ''): { kept: string; dropped: number } {
   let dropped = 0
