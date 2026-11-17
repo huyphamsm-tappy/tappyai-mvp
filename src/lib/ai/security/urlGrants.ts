@@ -165,6 +165,7 @@ export const TOOL_URL_CONTRACT: Readonly<Record<string, Contract>> = {
   get_weather: { search_url: 'action', source_url: 'source' },
   get_weather_forecast: { source_url: 'source' },
   get_gold_price: { search_url: 'action', source_url: 'source' },
+  get_market_rate: { source_url: 'source' },
   get_transport_options: {
     'vexere_link': 'action', 'train_booking_link': 'action', 'train_schedule.page_url': 'source', 'apps[].link': 'action',
     'bus_search_results[].link': 'source', 'train_search_results[].link': 'source', 'travel_editorial[].url': 'source',

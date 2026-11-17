@@ -92,6 +92,7 @@ export const AI_TOOLS: readonly AiToolDescriptor[] = [
   // CONSULT_PRESENT_BLOCKS only (14/11): the model declares compare / ask / booking blocks; checked server-side, nothing leaves the server
   { tool: 'present_blocks', effect: 'deterministic', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
   { tool: 'get_gold_price', effect: 'external_read', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
+  { tool: 'get_market_rate', effect: 'external_read', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
   { tool: 'get_flight_prices', effect: 'external_read', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
   { tool: 'get_hotel_prices', effect: 'external_read', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
   { tool: 'get_transport_options', effect: 'external_read', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },

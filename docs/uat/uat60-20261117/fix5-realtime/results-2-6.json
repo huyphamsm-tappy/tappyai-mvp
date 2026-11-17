@@ -1,0 +1,140 @@
+[
+  {
+    "id": 2,
+    "group": "realtime",
+    "turns": [
+      {
+        "q": "1 euro đổi được bao nhiêu tiền Việt hôm nay",
+        "done": true,
+        "seconds": 20,
+        "screen": "screens/q02.jpg",
+        "answered": true,
+        "chars": 360,
+        "head": "Hôm nay, 17/11/2026, 1 EUR tương đương khoảng 27.880 đồng theo tỷ giá chuyển khoản Vietcombank cập nhật lúc 15:16. Vietcombank\nGiao dịch tại Vietcombank\t1 EUR\nNgân hàng mua tiền mặt\t27.601 đồng\nNgân hàng mua chuyển khoản\t27.880 đồng\nNgân hàng bán euro cho bạn\t29.058 đồng\nTỷ giá thực nhận có thể khác tùy ngân hàng và phí giao dịch.\nV\nNguồn · 1\n🔖 Lưu địa điểm",
+        "tail": "gân hàng mua tiền mặt\t27.601 đồng\nNgân hàng mua chuyển khoản\t27.880 đồng\nNgân hàng bán euro cho bạn\t29.058 đồng\nTỷ giá thực nhận có thể khác tùy ngân hàng và phí giao dịch.\nV\nNguồn · 1\n🔖 Lưu địa điểm",
+        "links": 2,
+        "hosts": {
+          "vietcombank.com.vn": 2
+        },
+        "sourcesChip": "V Nguồn · 1",
+        "tables": 1,
+        "images": 1,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/2fda915f-aa9e-4fab-af98-4af6856aeca6",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "group": "realtime",
+    "turns": [
+      {
+        "q": "thời tiết Đà Nẵng 3 ngày tới thế nào, có nên ra biển không",
+        "done": true,
+        "seconds": 21,
+        "screen": "screens/q03.jpg",
+        "answered": true,
+        "chars": 691,
+        "head": "Ba ngày tới (18–20/11), Đà Nẵng có mưa tăng dần; mình không khuyên đi tắm biển trong hai ngày cuối. Dự báo Open-Meteo cập nhật ngày 17/11 Open-Meteo.\nNgày\tDự báo\tNhiệt độ\tMưa dự báo\n18/11\tMưa phùn, có thể có quãng tạnh\t24–29°C\t95% khả năng; khoảng 2 mm\n19/11\tMưa phùn/mưa rải rác trong ngày\t23–28°C\t98%; khoảng 13 mm\n20/11\tCó dông\t23–26°C\t100%; khoảng 43 mm\nCó nên ra biển? Ngày 18 có thể ra dạo biển nếu trời đang tạnh, nhưng nên kiểm tra biển thực tế và cảnh báo tại bãi trước khi xuống nước. Ngày 19–20 nên tránh tắm biển; đặc biệt ngày 20 có dông. Dự báo thời tiết không cho biết chính xác sóng và dòng chảy, nên đừng xuống nước nếu có cờ cảnh báo, sóng lớn hoặc dông gần đó.\nO\nNguồn · 1",
+        "tail": "ớc. Ngày 19–20 nên tránh tắm biển; đặc biệt ngày 20 có dông. Dự báo thời tiết không cho biết chính xác sóng và dòng chảy, nên đừng xuống nước nếu có cờ cảnh báo, sóng lớn hoặc dông gần đó.\nO\nNguồn · 1",
+        "links": 2,
+        "hosts": {
+          "open-meteo.com": 2
+        },
+        "sourcesChip": "O Nguồn · 1",
+        "tables": 1,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/b3c87f6b-95e1-45d1-b829-5cd7e7a3ab65",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "group": "realtime",
+    "turns": [
+      {
+        "q": "giá ethereum hiện tại và so với tuần trước tăng hay giảm",
+        "done": true,
+        "seconds": 14,
+        "screen": "screens/q04.jpg",
+        "answered": true,
+        "chars": 204,
+        "head": "Ethereum (ETH) hiện ở mức 1.828,26 USD, giảm 14,2% so với tuần trước. Coinbase ghi nhận giá ngày 10/11/2026 là 2.132,08 USD; dữ liệu hiện tại cập nhật lúc 08:27 UTC ngày 17/11/2026 (Coinbase).\nC\nNguồn · 1",
+        "tail": "reum (ETH) hiện ở mức 1.828,26 USD, giảm 14,2% so với tuần trước. Coinbase ghi nhận giá ngày 10/11/2026 là 2.132,08 USD; dữ liệu hiện tại cập nhật lúc 08:27 UTC ngày 17/11/2026 (Coinbase).\nC\nNguồn · 1",
+        "links": 2,
+        "hosts": {
+          "coinbase.com": 2
+        },
+        "sourcesChip": "C Nguồn · 1",
+        "tables": 0,
+        "images": 1,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/8f45a190-7db5-4e93-9d0b-e7206dab5d28",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "group": "realtime",
+    "turns": [
+      {
+        "q": "lãi suất vay mua nhà của Vietcombank, BIDV, Techcombank hiện nay",
+        "done": true,
+        "seconds": 52,
+        "screen": "screens/q05.jpg",
+        "answered": true,
+        "chars": 2217,
+        "head": "Tính đến 17/11/2026, mức ưu đãi được công bố cho vay mua nhà là Vietcombank từ 9%/năm trong 12 tháng, BIDV từ 9%/năm trong 12 tháng, còn Techcombank từ 6%/năm cho một số gói; Techcombank có gói từ 3,99% dành riêng cho khách hàng trẻ đủ điều kiện.\nVAY MUA NHÀ: BA NGÂN HÀNG ĐANG CÔNG BỐ GÌ? (17/11/2026)\nVietcombank\n\nGói Nhà Mới An Cư\n\nXem hồ sơ Tappy\nMức ưu đãi: Từ 9,0%/năm cố định 12 tháng đầu.\nĐiều kiện chính: Nhà thuộc dự án đã có Giấy chứng nhận; thời hạn vay tối đa 35 năm.\n\nNguồn: Vietcombank\n\nBIDV\n\nGói Ngôi nhà đầu tiên\n\n12 tháng: Từ 9,0%/năm; thời hạn vay tối thiểu 36 tháng.\n18 tháng: Từ 9,5%/năm; thời hạn vay tối thiểu 60 tháng.\n24 tháng: Từ 10%/năm; thời hạn vay tối thiểu 60 tháng.\nĐi",
+        "tail": "hí trả nợ trước hạn và tổng khoản trả dự kiến. VCB và BIDV có mức khởi điểm 9% cho kỳ cố định 12 tháng, còn mức thấp hơn của Techcombank gắn với nhóm khách hàng/gói đủ điều kiện riêng.\nV\nB\nT\nNguồn · 4",
+        "links": 8,
+        "hosts": {
+          "vietcombank.com.vn": 2,
+          "bidv.com.vn": 2,
+          "techcombank.com": 2,
+          "cafef.vn": 2
+        },
+        "sourcesChip": "V B T Nguồn · 4",
+        "tables": 1,
+        "images": 4,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/9b9cb378-46f0-4a2f-b2cb-9f83bdeb79ca",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "group": "realtime",
+    "turns": [
+      {
+        "q": "giá dầu Brent hôm nay",
+        "done": true,
+        "seconds": 9,
+        "screen": "screens/q06.jpg",
+        "answered": true,
+        "chars": 230,
+        "head": "Hôm nay, 17/11/2026, dầu Brent giao sau ở mức 92,16 USD/thùng, giảm 0,3% so với giá đóng cửa trước đó. Đây là hợp đồng kỳ hạn gần nhất; dữ liệu Yahoo Finance cập nhật lúc 08:18 UTC và có thể trễ vài phút. Yahoo Finance\nF\nNguồn · 1",
+        "tail": " giao sau ở mức 92,16 USD/thùng, giảm 0,3% so với giá đóng cửa trước đó. Đây là hợp đồng kỳ hạn gần nhất; dữ liệu Yahoo Finance cập nhật lúc 08:18 UTC và có thể trễ vài phút. Yahoo Finance\nF\nNguồn · 1",
+        "links": 2,
+        "hosts": {
+          "finance.yahoo.com": 2
+        },
+        "sourcesChip": "F Nguồn · 1",
+        "tables": 0,
+        "images": 1,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/0ea33e1a-b0b5-46a0-8855-ce964d29455d",
+        "proNote": 0
+      }
+    ]
+  }
+]

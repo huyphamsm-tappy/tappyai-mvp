@@ -16,7 +16,7 @@ export function resolveRequestMarket(headers: Headers): { marketId: string | nul
 
 const SCOPE: Record<string, string> = {
   search_places: 'food', get_news: 'general', search_products: 'shopping', web_search: 'general', get_weather: 'general', get_weather_forecast: 'general',
-  get_gold_price: 'general', get_flight_prices: 'travel', get_hotel_prices: 'hotels', get_transport_options: 'travel',
+  get_gold_price: 'general', get_market_rate: 'general', get_flight_prices: 'travel', get_hotel_prices: 'hotels', get_transport_options: 'travel',
 }
 export const MARKET_GATED_TOOLS = Object.keys(SCOPE)
 

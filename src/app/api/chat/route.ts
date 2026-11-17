@@ -22,6 +22,7 @@ import { readGuestAgeDeclaration, GUEST_AGE_DECLARATION_REQUIRED } from '@/lib/a
 import { buildMemoryBlock, extractMemoryFromConversation, lastMemoryExtractionUsage, updateMemory, type UserMemory } from '@/lib/memory/memoryService'
 import { webSearch, resolvePlacePhotos } from '@/lib/ai/tools/common'
 import { getWeather, getGoldPrice } from '@/lib/ai/tools/weather'
+import { getMarketRate } from '@/lib/ai/tools/marketRates'
 import { searchProducts } from '@/lib/ai/tools/shopping'
 import { getNews, searchPlaces } from '@/lib/ai/tools/food'
 import { getFlightPrices, getHotelPrices, getTransportOptions } from '@/lib/ai/tools/travel'
@@ -3233,6 +3234,12 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         parameters: z.object({ query: z.string().optional().describe('Loai vang user hoi, vd: SJC, PNJ, vang the gioi (khong bat buoc)') }),
         execute: async ({ query }) => getGoldPrice(query || '', lang)
       }),
+      // 17/11 (owner: "the official, frequently updated page for each, as the default"): exchange rates from Vietcombank's own feed, crypto from Coinbase, oil futures from the exchange quote
+      ...(oneBrain ? { get_market_rate: tool({
+        description: 'Current market rate from the page that publishes it: kind "fx" = the Vietcombank rate of a currency in dong (symbol: USD, EUR, JPY, KRW, GBP, AUD, CNY, THB, SGD...), kind "crypto" = the Coinbase price of a coin in USD with its change against a week ago, computed (symbol: BTC, ETH, SOL...), kind "oil" = the futures price of Brent or WTI with its change against the previous close, computed (symbol: BRENT or WTI). Gold has its own tool; weather too. The result names its source, its page and its time: say them, and use its numbers exactly.',
+        parameters: z.object({ kind: z.enum(['fx', 'crypto', 'oil']), symbol: z.string().describe('Currency code, coin symbol, or BRENT / WTI') }),
+        execute: async ({ kind, symbol }) => getMarketRate(kind, symbol),
+      }) } : {}),
       get_flight_prices: tool({
         description: oneBrain
           ? 'Flight booking pages between two cities or airports for the route and date (Trip.com, Traveloka, airlines), shown as buttons. It has NO fare, time or status data: for a reference price, web_search current fares instead.'

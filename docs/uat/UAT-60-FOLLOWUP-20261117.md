@@ -39,6 +39,20 @@ Kiểm: `tsc` sạch; vitest app: 27.269 qua, 0 hỏng, 95 bỏ qua. Chi phí đ
 - **Trang công khai `/r/...`**: tìm ra 3 lỗi: dòng "# tiêu đề" in nguyên dấu thăng, dấu trích dẫn "[1][2]" in nguyên trong ngoặc, bảng in thành hàng dấu gạch đứng. Đã sửa bộ vẽ (`renderPublicMarkdown.ts`: tiêu đề, số trích dẫn nhỏ nâng lên, bảng), test mới gồm cả chống chèn mã. Kiểm lại trang thật: 0 dấu "#", 0 "[n]" thô, 37 số nâng lên. Báo cáo Standard không có bảng nên bảng mới chỉ có test đơn vị.
 - **Free**: đọc 4/14 ảnh (tỷ giá, quán phở, lãi kép, iPhone/Galaxy). Không công cụ, nói thẳng không tra được tỷ giá và giờ mở cửa; lãi kép 119.101.600 đồng đúng; có dòng mời Pro. Câu quán phở hỏi lại khu vực thay vì gợi ý từ hiểu biết sẵn: hơi yếu. 10 câu còn lại chưa đọc.
 
+## Nguồn mặc định cho số thời gian thực (anh yêu cầu chiều 17/11)
+
+Công cụ mới `get_market_rate` (One Brain), kết quả luôn kèm tên nguồn, trang nguồn, thời điểm, và phần trăm thay đổi do mã tính:
+
+| Loại | Nguồn mặc định | Ghi chú |
+|---|---|---|
+| Tỷ giá | Vietcombank (nguồn cấp dữ liệu công khai của chính ngân hàng) | Một ngân hàng, không phải tỷ giá trung tâm hay trung bình; cache 5 phút theo yêu cầu của họ |
+| ETH và tiền mã hoá | Coinbase (giá spot công khai, kèm giá cách đây 7 ngày) | Quy đổi VND là ước tính từ tỷ giá chuyển khoản Vietcombank, có ghi rõ |
+| Dầu Brent, WTI | Báo giá hợp đồng tương lai (Yahoo Finance) | Có thể trễ vài phút; xin xem rủi ro điều khoản ở dưới |
+| Thời tiết | Giữ nguyên công cụ dự báo hiện có (Open-Meteo; thời tiết hiện tại wttr.in) | |
+| Vàng | Giữ vang.today (tổng hợp SJC, PNJ, DOJI) | Trang SJC chính chủ bị Cloudflare chặn truy cập tự động |
+
+Đã kiểm trên giao diện thật (ca 2, 4, 6, 3): tỷ giá EUR từ Vietcombank 27.880 đồng, ETH 1.828 USD giảm 14,2% so với tuần trước từ Coinbase, Brent 92,16 USD giảm 0,3% từ Yahoo Finance. Một lỗi tự bắt khi đo: lấy "giá đóng cửa trước" với range 5 ngày cho ra -4,2% (sai, là giá trước khoảng 5 ngày); đã sửa về range 1 ngày (-0,7% khớp), có test canh.
+
 ## Việc còn lại trước khi đóng băng
 
 Đối chiếu nguồn ngoài cho phần thời gian thực; lỗi gán số cho "hãng công bố"; chip nhầm nghĩa; thẻ chia sẻ và `/r/...`; Free 14 câu; thử đột biến cho `3793313` và `cf0f3fd`; nhãn "Tappy chọn" trong câu tiếng Nhật; dọn chat/tài khoản thử; hai thư mục `run1` chưa commit. Em chưa chạy chấm lại 9/10 nên **chưa xin gắn tag**.
