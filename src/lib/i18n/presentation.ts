@@ -15,6 +15,9 @@ const T: Record<string, [string, string]> = {
   'pres.pendingNamed': ['Đang kiểm chứng và viết: {title}', 'Checking and writing: {title}'],
   'pres.amended': ['Mục này vừa được cập nhật sau khi kiểm chứng lại.', 'This section was just updated after being checked again.'],
   'pres.cite': ['Nguồn {n}', 'Source {n}'],
+  // 17/11 (owner): under every answer of the Free plan, when the plans are on sale
+  'pres.proNote': ['Dùng gói Pro để có câu trả lời thông minh hơn và dữ liệu chính xác hơn.', 'Use the Pro plan for smarter answers and more accurate data.'],
+  'pres.proNote.cta': ['Xem gói Pro', 'See the Pro plan'],
   'pres.backToText': ['Quay lại chỗ trích dẫn', 'Back to where it is cited'],
   'pres.sources.list': ['Danh sách nguồn', 'List of sources'],
   // the report in the chat: progress line, summary card, the opened full report

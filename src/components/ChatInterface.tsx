@@ -16,6 +16,7 @@ import { takeHomeHandoff } from '@/lib/chat/homeHandoff'
 import { wikiFromMedia } from '@/lib/chat/entityProfiles'
 import { useServerTTS } from '@/hooks/useServerTTS'
 import MessageActionBar from '@/components/chat/MessageActionBar'
+import { ProUpsellNote } from '@/components/chat/ProUpsellNote'
 import { cn, CATEGORIES, type CategoryId } from '@/lib/utils'
 import { inlineLinkTap } from '@/lib/recommendation/handoff'
 import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
@@ -2192,6 +2193,8 @@ export default function ChatInterface({
                           once the reply is done, fading in for a polished finish. */}
                       {!(isLoading && isLastMessage) && (
                         <div className="animate-fade-in">
+                          {/* 17/11: under every finished answer of the Free plan, when the plans are on sale (ProUpsellNote.tsx) */}
+                          <ProUpsellNote />
                           <MessageActionBar
                             msgId={msg.id}
                             messageIndex={msgIdx}

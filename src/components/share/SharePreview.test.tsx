@@ -56,7 +56,8 @@ describe('SharePreview', () => {
     expect(a.text.endsWith('https://www.tappyai.com')).toBe(true)
     render(<SharePreview artifact={a} />)
     expect(screen.getByTestId('share-preview-report').textContent).toContain('Chuỗi lớn')
-    expect(screen.getByTestId('share-preview-report').textContent).toContain('Nguồn: 3')
+    // the count goes through the app's own string (this file's translation stub prints the key and its values)
+    expect(screen.getByTestId('share-preview-report').textContent).toContain('pres.rep.sources:{"n":"3"}')
   })
 
   it('previews three places and says how many more there are', () => {

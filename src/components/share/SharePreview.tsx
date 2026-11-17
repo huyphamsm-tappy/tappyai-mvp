@@ -108,7 +108,7 @@ export default function SharePreview({ artifact }: { artifact: ShareArtifact }) 
           <div data-testid="share-preview-report" className="space-y-1">
             <p className="max-h-40 overflow-hidden whitespace-pre-wrap break-words text-xs leading-snug" style={{ color: 'var(--v3-fg, #111827)' }}>{artifact.report.points}</p>
             {artifact.report.sources > 0 && (
-              <p className="text-xs" style={{ color: 'var(--v3-fg-muted, #6b7280)' }}>{locale === 'en' ? 'Sources' : 'Nguồn'}: {artifact.report.sources}</p>
+              <p className="text-xs" style={{ color: 'var(--v3-fg-muted, #6b7280)' }}>{t('pres.rep.sources', { n: String(artifact.report.sources) })}</p>
             )}
           </div>
         )}
