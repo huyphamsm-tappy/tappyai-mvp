@@ -165,6 +165,16 @@ describe('serperPlaceToRow — the provider record becomes a pipeline row', () =
   // A Thursday 09:00 in Vietnam: inside the published 06:00–20:00 window.
   const THU_0900 = new Date('2026-09-10T02:00:00Z')
 
+  it('17/11: the provider\'s primary type is the first of place_types, whatever order `types` came in; no type is lost or repeated', () => {
+    const site = { ...LIVE_ROW, title: 'Khu di tích Lam Kinh', type: 'Bảo tàng lịch sử', types: ['Quán bar karaoke', 'Bảo tàng lịch sử', 'Điểm thu hút khách du lịch'] }
+    expect(serperPlaceToRow(site, { ratingText, now: THU_0900 }).place_types).toEqual(['Bảo tàng lịch sử', 'Quán bar karaoke', 'Điểm thu hút khách du lịch'])
+    // already first: unchanged; only `type`: one entry; only `types`: the provider's own order
+    expect(serperPlaceToRow(LIVE_ROW, { ratingText, now: THU_0900 }).place_types).toEqual(['Quán ăn nhỏ'])
+    expect(serperPlaceToRow({ ...LIVE_ROW, types: undefined }, { ratingText, now: THU_0900 }).place_types).toEqual(['Quán ăn nhỏ'])
+    expect(serperPlaceToRow({ ...LIVE_ROW, type: undefined, types: ['A', 'B'] }, { ratingText, now: THU_0900 }).place_types).toEqual(['A', 'B'])
+    expect(serperPlaceToRow({ ...LIVE_ROW, type: undefined, types: undefined }, { ratingText, now: THU_0900 })).not.toHaveProperty('place_types')
+  })
+
   it('carries every retrievable field onto the row', () => {
     const row = serperPlaceToRow(LIVE_ROW, { ratingText, now: THU_0900 })
     expect(row).toMatchObject({

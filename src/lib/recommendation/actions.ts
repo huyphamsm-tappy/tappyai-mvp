@@ -477,7 +477,10 @@ export function buildActions(
     for (const url of (src.booking_links ?? []).slice(0, 3)) {
       if (typeof url !== 'string' || !namesTheVenue(url)) continue
       const owner = providerOwning(url)
-      const kind: ActionKind = owner === 'shopeefood' || owner === 'grabfood' || owner === 'befood' ? 'order' : 'reservation'
+      // 17/11: "reservation" says WHAT the page does, and that is known only when the search was for a kind of venue that takes
+      // reservations (food, spa, entertainment). On a plain place search (a historic site, a museum, a park: domain 'place') the same
+      // provider link is kept, as the venue's page: a "Đặt chỗ" button on a monument claimed something no data said.
+      const kind: ActionKind = owner === 'shopeefood' || owner === 'grabfood' || owner === 'befood' ? 'order' : domain === 'place' ? 'website' : 'reservation'
       out.push(action(kind, url, domain, { urlKind: 'direct', attributed: true }))
     }
   }

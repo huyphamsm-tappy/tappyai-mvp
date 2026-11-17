@@ -205,6 +205,21 @@ describe('server-authored CTA', () => {
   })
 })
 
+describe('17/11: a provider booking link is a "reservation" only where the search was for a venue that takes one', () => {
+  const ROW = { name: 'Khu di tích Lam Kinh', maps_link: 'https://maps.google.com/?cid=9', booking_links: ['https://lamkinh.example/dat-ve/tham-quan'] }
+  const kindsOf = (domain: string) => buildActions(ROW, domain).filter(a => a.url === ROW.booking_links[0]).map(a => a.kind)
+
+  it('a plain place search (a historic site, a museum): the link is kept as the venue\'s page, never "Đặt chỗ"', () => {
+    expect(kindsOf('place')).toEqual(['website'])
+    expect(buildActions(ROW, 'place').some(a => a.kind === 'reservation')).toBe(false)
+  })
+  it('food, spa and entertainment searches keep the reservation; a delivery platform page stays an order everywhere', () => {
+    for (const d of ['food', 'spa', 'entertainment']) expect(kindsOf(d), d).toEqual(['reservation'])
+    const order = buildActions({ name: 'X', booking_links: ['https://shopeefood.vn/ho-chi-minh/quan-x'] }, 'place')
+    expect(order.filter(a => a.kind === 'order')).toHaveLength(1)
+  })
+})
+
 describe('the flags that gate all of this are OFF', () => {
   // 🚨 Both changes are staged, and shipped behaviour must be unchanged until
   // their prerequisites land. A flag flipped by accident is exactly the kind of
