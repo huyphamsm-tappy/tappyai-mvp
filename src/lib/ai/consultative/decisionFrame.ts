@@ -295,6 +295,20 @@ export function evidenceGap(frame: DecisionFrame, ranked: readonly RankedEntry[]
   return { qualified, total: ranked.length, needed, action }
 }
 
+/**
+ * 15/11/2026 (measured on the 24-turn baseline: every hotel turn logged `evidence_gap q0 need=price` while the answer quoted real Agoda prices): the gap is computed from the place rows, and the
+ * provider's live offers are attached to the result AFTER that, so a turn whose prices all came from the live offers still read "no evidence". When the ONLY thing missing was the price and the
+ * result now carries fresh priced offers, those offers are the evidence: the gap becomes `recommend` over them (qualified = priced offers, total = offers). Any other missing evidence (a rating, hours…)
+ * is not something a price can stand in for, so the gap is returned untouched. Pure; `offers` is the result's `realtime_results`.
+ */
+export function gapWithRealtimePrice(gap: EvidenceGap, offers: unknown): EvidenceGap | null {
+  if (gap.action === 'recommend' || gap.needed.length === 0 || !gap.needed.every(k => k === 'price')) return null
+  const rows = Array.isArray(offers) ? offers.filter((o): o is Record<string, unknown> => !!o && typeof o === 'object') : []
+  const priced = rows.filter(o => typeof o.price === 'number' && Number.isFinite(o.price) && (o.price as number) > 0).length
+  if (priced === 0) return null
+  return { qualified: priced, total: Math.max(gap.total, rows.length), needed: gap.needed, action: 'recommend' }
+}
+
 /** A compact, model-facing view of one shortlisted candidate's evidence — real fields only. */
 export function evidenceSummary(attrs: CandidateAttrs): Record<string, string | number | boolean | string[]> {
   const out: Record<string, string | number | boolean | string[]> = {}

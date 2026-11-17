@@ -31,8 +31,11 @@ describe('the trust boundary admits the web client\'s attachments (images, PDFs)
     expect(validateClientInput(user('x', [{ url: 'https://evil.example/a.png', contentType: 'image/png' }]))).toMatchObject({ ok: false, code: 'invalid_content' })
     expect(validateClientInput({ messages: [{ role: 'user', content: 'hi' }, { role: 'assistant', content: 'x', experimental_attachments: [{ url: PNG, contentType: 'image/png' }] }] })).toMatchObject({ ok: false, code: 'invalid_content' })
     const pdf = { url: tinyPdf('x'), contentType: 'application/pdf' }
-    expect(validateClientInput(user('x', [pdf, pdf, pdf]))).toMatchObject({ ok: false, code: 'too_many_files' })
-    expect(validateClientInput(user('x', Array.from({ length: 5 }, () => ({ url: PNG, contentType: 'image/png' }))))).toMatchObject({ ok: false, code: 'too_many_images' })
+    // 15/11 (owner): 3 PDFs and 5 images per message are allowed; one more of each is refused
+    expect(validateClientInput(user('x', [pdf, pdf, pdf]))).toMatchObject({ ok: true })
+    expect(validateClientInput(user('x', Array.from({ length: 5 }, () => ({ url: PNG, contentType: 'image/png' }))))).toMatchObject({ ok: true })
+    expect(validateClientInput(user('x', [pdf, pdf, pdf, pdf]))).toMatchObject({ ok: false, code: 'too_many_files' })
+    expect(validateClientInput(user('x', Array.from({ length: 6 }, () => ({ url: PNG, contentType: 'image/png' }))))).toMatchObject({ ok: false, code: 'too_many_images' })
     expect(validateClientInput(user('x', [{ url: 'data:application/pdf;base64,' + 'A'.repeat(CLIENT_INPUT_LIMITS.maxPdfDataUrlChars), contentType: 'application/pdf' }]))).toMatchObject({ ok: false, code: 'file_too_large' })
     expect(validateClientInput({ messages: [{ role: 'user', content: 'x', experimental_attachments: 'nope' }] })).toMatchObject({ ok: false, code: 'invalid_content' })
   })

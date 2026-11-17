@@ -19,6 +19,14 @@ describe('system links of date-bound tools (03/11)', () => {
     led.record('get_flight_prices', [])
     expect(led.links()).toEqual([])
   })
+  it('16/11 (UAT 60): the SAME route and day asked twice, the second call finding no link, keeps the first call\'s link; another day or route still replaces', () => {
+    const led = createSystemLinkLedger()
+    led.record('get_transport_options', [L('Vexere', '2026-11-20')], 'get_transport_options|sai gon|vung tau|2026-11-20|')
+    led.record('get_transport_options', [], 'get_transport_options|sai gon|vung tau|2026-11-20|')
+    expect(led.links().map(l => l.url)).toEqual(['https://x.example/Vexere?d=2026-11-20'])
+    led.record('get_transport_options', [], 'get_transport_options|sai gon|vung tau|2026-11-21|')
+    expect(led.links()).toEqual([])
+  })
   it('other tools keep every link: two product searches are two products', () => {
     const led = createSystemLinkLedger()
     led.record('search_products', [L('Shopee', 'a')])

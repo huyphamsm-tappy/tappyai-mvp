@@ -14,8 +14,7 @@ export interface FactTypePolicy {
 export const FACT_TYPES = {
   opening_hours: { policyId: 'opening_hours.v1', revalidateAfterDays: 30 },
   ticket_price: { policyId: 'ticket_price.v1', revalidateAfterDays: 7 },
-  menu_price: { policyId: 'menu_price.v1', revalidateAfterDays: 14 },
-  address: { policyId: 'address.v1', revalidateAfterDays: 180 },
+  menu_price: { policyId: 'menu_price.v1', revalidateAfterDays: 14 },  address: { policyId: 'address.v1', revalidateAfterDays: 180 },
   phone: { policyId: 'phone.v1', revalidateAfterDays: 180 },
   permanently_closed: { policyId: 'permanently_closed.v1', revalidateAfterDays: 7 },
   website: { policyId: 'website.v1', revalidateAfterDays: 180 },

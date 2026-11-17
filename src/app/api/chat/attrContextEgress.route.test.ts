@@ -100,5 +100,5 @@ describe('Q-02 X3 · a granted external URL, through the server egress, rendered
     // the granted prefix survives the server egress (that is the case under test), and the rendered DOM must still carry no handler
     expect(sent).toContain(`https://evil.example/a/onmouseover=${INERT}`)
     expect(foreignHandlers(root)).toEqual([])
-  })
+  }, 30000) // it imports the whole chat route and then the whole chat module: it passed alone and timed out at 5 s under the full parallel run (the assertions are unchanged)
 })

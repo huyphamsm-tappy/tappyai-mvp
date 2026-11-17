@@ -29,8 +29,7 @@ export type FactEvaluation =
 export const SOURCE_AUTHORITY: Readonly<Record<KnownFactType, Partial<Record<SourceType, Authority>>>> = {
   opening_hours: { OFFICIAL_BUSINESS: 'HIGH', PROVIDER_API: 'MEDIUM', NEWS: 'LOW' },
   ticket_price: { OFFICIAL_BUSINESS: 'HIGH', GOVERNMENT: 'HIGH', PROVIDER_API: 'LOW', NEWS: 'LOW' },
-  menu_price: { OFFICIAL_BUSINESS: 'HIGH', PROVIDER_API: 'LOW' },
-  address: { GOVERNMENT: 'HIGH', OFFICIAL_BUSINESS: 'HIGH', PROVIDER_API: 'MEDIUM', NEWS: 'LOW' },
+  menu_price: { OFFICIAL_BUSINESS: 'HIGH', PROVIDER_API: 'LOW' },  address: { GOVERNMENT: 'HIGH', OFFICIAL_BUSINESS: 'HIGH', PROVIDER_API: 'MEDIUM', NEWS: 'LOW' },
   phone: { OFFICIAL_BUSINESS: 'HIGH', PROVIDER_API: 'MEDIUM' },
   permanently_closed: { OFFICIAL_BUSINESS: 'HIGH', GOVERNMENT: 'HIGH', NEWS: 'MEDIUM', PROVIDER_API: 'MEDIUM' },
   website: { OFFICIAL_BUSINESS: 'HIGH', PROVIDER_API: 'MEDIUM' },

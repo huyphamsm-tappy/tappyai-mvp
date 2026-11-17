@@ -27,6 +27,7 @@
 
 import { fenceUntrusted } from '@/lib/ai/security/fence'
 import type { UserMemory } from '@/lib/memory/memoryService'
+import { isPersonKey, personLine } from '@/lib/memory/personFacts'
 
 export const PREF_CAP = 4
 export const CAT_CAP = 3
@@ -89,7 +90,8 @@ export function buildConsultativeMemoryBlock(memory: UserMemory, forcedTool?: st
     const prefs = memory.preferences || {}
     const prefParts: string[] = []
     // `avoid` first: a constraint outranks a taste, and the cap must never drop it.
-    const keys = ['avoid', ...Object.keys(prefs).filter(k => k !== 'avoid')]
+    // The person facts (work, projects, goals) are not tastes: they have their own line below.
+    const keys = ['avoid', ...Object.keys(prefs).filter(k => k !== 'avoid' && !isPersonKey(k))]
     for (const k of keys) {
       const list = prefs[k]
       if (!Array.isArray(list) || list.length === 0 || !inScope(k)) continue
@@ -99,6 +101,9 @@ export function buildConsultativeMemoryBlock(memory: UserMemory, forcedTool?: st
       prefParts.push(`${PREF_LABEL[k] ?? clip(k, 20)}: ${vals.join(', ')}`)
     }
     if (prefParts.length > 0) parts.push(`- So thich da noi ro: ${prefParts.join('; ')}`)
+    // 14/11: who the person is, in their own words (personFacts.ts): not scoped by domain, because what someone does and is after bears on every choice.
+    const who = personLine(prefs)
+    if (who) parts.push(who)
 
     const budgets = memory.budget || {}
     const budgetParts: string[] = []

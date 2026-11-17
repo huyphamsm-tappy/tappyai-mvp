@@ -1,5 +1,5 @@
-// TVI store adapter (R13 §8): the three write paths of 20261120_tvi_core.sql, typed. Server only (service role). It never throws: a failure is a result the caller can log.
-// Nothing in the chat calls this yet; a later, flagged slice wires capture (write) and read-before-search.
+// TVI store adapter (R13 §8): the three write paths of 20261120_tvi_core.sql, typed, and (14/11/2026) one read. Server only (service role). It never throws: a failure is a result the caller can log.
+// Capture (write, TVI_CAPTURE) and the read of stored place facts (TVI_READ, readPlaces.ts) are wired in the place tool, both flagged off by default.
 
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { createAdminClient } from '@/lib/supabase/admin'
@@ -144,6 +144,58 @@ export async function attachEvidence(
     return { ok: true, outcome: row.outcome === 'attached' ? 'attached' : 'already_attached', evidenceId: row.evidence_id }
   } catch {
     return { ok: false, reason: 'store_error' }
+  }
+}
+
+/** One stored fact as the chat may read it: the CURRENT version of a fact whose lifecycle status is ACTIVE or CANDIDATE (never rejected, expired or superseded). */
+export interface StoredFact {
+  entityKey: string
+  factType: string
+  subjectKey: string
+  value: unknown
+  valueUnit: string | null
+  retrievedAt: string
+  validUntil: string | null
+  status: 'ACTIVE' | 'CANDIDATE'
+  verification: string
+}
+
+/** The most entity keys one read asks for: a bound on the read one search can cause. */
+export const READ_MAX_ENTITIES = 12
+
+/**
+ * Reads the current facts of the given entities (service role; the tables have no other reader). Never throws: any failure is an empty list, so the chat goes on exactly as it
+ * would without the store. Only ACTIVE and CANDIDATE facts come back, and only while their validity has not ended.
+ */
+export async function readFacts(entityKeys: readonly string[], db: Pick<SupabaseClient, 'from'> = createAdminClient(), opts: { marketId?: string; now?: Date } = {}): Promise<StoredFact[]> {
+  const keys = [...new Set(entityKeys.map(k => k.trim()).filter(Boolean))].slice(0, READ_MAX_ENTITIES)
+  if (keys.length === 0) return []
+  try {
+    const { data, error } = await db
+      .from('knowledge_entities')
+      // `knowledge_fact_state` has TWO foreign keys to `knowledge_facts` (fact_id and superseded_by_fact_id): without the hint the database refuses the embed as ambiguous (found with the live check, readLive.test.ts)
+      .select('entity_key, knowledge_facts(fact_type, subject_key, knowledge_fact_state!knowledge_fact_state_fact_id_fkey(status, verification_status, current:knowledge_fact_versions!current_version_id(value, value_unit, retrieved_at, valid_until)))')
+      .eq('market_id', opts.marketId ?? 'VN')
+      .in('entity_key', keys)
+    if (error || !Array.isArray(data)) return []
+    const nowMs = (opts.now ?? new Date()).getTime()
+    const out: StoredFact[] = []
+    for (const e of data as Array<Record<string, unknown>>) {
+      const facts = Array.isArray(e.knowledge_facts) ? e.knowledge_facts as Array<Record<string, unknown>> : []
+      for (const f of facts) {
+        const st = Array.isArray(f.knowledge_fact_state) ? f.knowledge_fact_state[0] : f.knowledge_fact_state
+        const state = st && typeof st === 'object' ? st as Record<string, unknown> : null
+        const cur = state && typeof state.current === 'object' && state.current ? state.current as Record<string, unknown> : null
+        if (!state || !cur || (state.status !== 'ACTIVE' && state.status !== 'CANDIDATE')) continue
+        const until = typeof cur.valid_until === 'string' ? cur.valid_until : null
+        if (until && Date.parse(until) <= nowMs) continue
+        if (typeof e.entity_key !== 'string' || typeof f.fact_type !== 'string' || typeof cur.retrieved_at !== 'string') continue
+        out.push({ entityKey: e.entity_key, factType: f.fact_type, subjectKey: typeof f.subject_key === 'string' ? f.subject_key : '', value: cur.value, valueUnit: typeof cur.value_unit === 'string' ? cur.value_unit : null, retrievedAt: cur.retrieved_at, validUntil: until, status: state.status, verification: typeof state.verification_status === 'string' ? state.verification_status : 'UNVERIFIED' })
+      }
+    }
+    return out
+  } catch {
+    return []
   }
 }
 

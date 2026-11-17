@@ -11,6 +11,7 @@
 import { normalizeVN } from '../intent'
 import { DESTINATION_SIGNAL } from '../memoryGate'
 import type { UserMemory } from '@/lib/memory/memoryService'
+import { isPersonKey } from '@/lib/memory/personFacts'
 
 const fold = (s: string) => normalizeVN(s.toLowerCase()).replace(/\s+/g, ' ').trim()
 
@@ -37,6 +38,8 @@ export interface TransientFilterStats {
 export function filterTransientMemory(
   extracted: Partial<UserMemory>,
   userTexts: readonly string[],
+  /** CONSULT_PERSON_MODEL: style and company are about WHO the person is, so they stay unless they only describe this outing (a transient word). Timing, per-turn budget, search subjects and districts follow the rules above. */
+  opts: { keepPerson?: boolean } = {},
 ): { memory: Partial<UserMemory>; stats: TransientFilterStats } {
   const stats: TransientFilterStats = { timing_dropped: false, budget_dropped: 0, preferences_dropped: 0 }
   const out: Partial<UserMemory> = { ...extracted }
@@ -62,12 +65,13 @@ export function filterTransientMemory(
   // the next trip plan opened with "như sở thích trước đây"). Kept only when stated as a habit.
   // Measured E5: "hội bạn 5 người" from ONE outing came back as "đi cùng 5 người như thường lệ".
   // A trait about company or taste is durable only when the user's own words say it is a habit.
-  if (typeof out.personality === 'string' && out.personality && !habitual) {
+  const keepWho = (v: string) => !!opts.keepPerson && !TRANSIENT_RE.test(fold(v))
+  if (typeof out.personality === 'string' && out.personality && !habitual && !keepWho(out.personality)) {
     delete out.personality
     stats.personality_dropped = true
   }
   // companions: "hay đi 2 người" is a habit; "2 người tối nay" is one outing.
-  if (typeof out.companions === 'string' && out.companions && !habitual) {
+  if (typeof out.companions === 'string' && out.companions && !habitual && !keepWho(out.companions)) {
     delete out.companions
     stats.companions_dropped = true
   }
@@ -92,6 +96,8 @@ export function filterTransientMemory(
       const kept = list.filter(v => {
         const f = fold(String(v))
         if (TRANSIENT_RE.test(f)) { stats.preferences_dropped++; return false }
+        // 14/11 (personFacts.ts): work / projects / goals are who the person is, not a taste: they need no habit marker, only the flag (keepPerson) and no transient word.
+        if (isPersonKey(k)) { if (!opts.keepPerson) { stats.preferences_dropped++; return false } return true }
         if (k !== 'avoid' && !habitual) { stats.preferences_dropped++; return false }
         if (ATMOSPHERE_RE.test(f) && !habitual) { stats.preferences_dropped++; return false }
         return true

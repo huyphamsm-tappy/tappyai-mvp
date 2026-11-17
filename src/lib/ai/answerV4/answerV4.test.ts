@@ -224,7 +224,7 @@ describe('layer 2 · pictures resolved by the server (docMedia.ts)', () => {
       wiki: async (s, l) => { tried.push([s, l]); return l === 'en' ? en[s] ?? null : s === 'Tesla' ? VI_ARTICLES.Tesla : null }, langlink: async () => null, webImages: async () => [],
     })
     expect(tried).toEqual([['Tesla', 'vi'], ['Tesla, Inc.', 'en']])
-    expect(r.block).toEqual({ v: 1, kind: 'entity', entity: en['Tesla, Inc.'] })
+    expect(r.block).toBeNull() // 16/11: the English article is found, but a Vietnamese reader is not given a card in English
     const none = await resolveDocMedia(TESLA, 'x', {}, { wiki: async (s, l) => (l === 'vi' && s === 'Tesla' ? VI_ARTICLES.Tesla : null), langlink: async () => null, webImages: async () => [] })
     expect(none.block).toBeNull()
   })

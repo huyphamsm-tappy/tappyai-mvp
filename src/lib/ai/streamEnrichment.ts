@@ -87,6 +87,7 @@ const CARDS_SHOWN = CARD_FOLD_SHOWN
 import { renderCtaBlock, stripModelCta } from '@/lib/recommendation/cta'
 import { unlinkMislabelledMerchantLinks, validateModelCtaBlock, stripFalseDisconnectClaims, unemphasizeLinks, dropTruncatedTrailingBlock } from '@/lib/recommendation/ctaValidation'
 import { PROVIDER_REGISTRY } from '@/lib/ccp'
+import { presentationAnnotation } from '@/lib/presentation/declare'
 import { searchTemplates } from '@/lib/ccp/adapters'
 import { actionTranslator } from '@/lib/recommendation/actionLabel'
 import { entertainmentCapabilityOf, requestedProviderOf } from './tools/commerceIntent'
@@ -1724,6 +1725,24 @@ export function citeSourcesDetailed(
   }
   return { text: out, used: used > 0 }
 }
+/**
+ * 16/11 (owner: real data only): the blocks the model declared, with every card point this turn's lookups do not support removed (collector.verifyPresentation = answerV4/factSense.ts), or as
+ * declared when the turn has no check. A check that fails or runs past its time confirms nothing: the declared blocks go out WITHOUT their cards' points, i.e. the cards are not sent (a missing
+ * card costs less than a wrong fact); blocks that carry no model fact (questions, bookings, the gallery) stay. The comparison table's cells are facts too and are checked the same way.
+ */
+async function verifiedPresentation(collector: EnrichmentCollector): Promise<import('@/lib/presentation/contract').Presentation | null> {
+  const p = collector.presentation
+  if (!p) return null
+  if (!collector.verifyPresentation) return p
+  const withoutCards = (): import('@/lib/presentation/contract').Presentation | null => {
+    const blocks = p.blocks.filter(b => b.type !== 'profiles' && b.type !== 'compare')
+    return blocks.length ? { v: p.v, blocks } : null
+  }
+  const timeout = new Promise<'timeout'>(r => setTimeout(() => r('timeout'), 10_000))
+  const out = await Promise.race([collector.verifyPresentation(p).catch(() => 'failed' as const), timeout])
+  return out === 'timeout' || out === 'failed' ? withoutCards() : out
+}
+
 export function applyPlaceEnrichmentStreamFilter(
   response: Response,
   lang = 'vi',
@@ -1804,6 +1823,7 @@ export function applyPlaceEnrichmentStreamFilter(
   }
   let mainText = '' // assistant text buffered AFTER a place-search tool call
   const toolNameByCallId = new Map<string, string>()
+  const askByCallId = new Map<string, string>()
   const productQueries: string[] = []   // C3-B.10: what search_products was asked for
   // CONSULTATIVE_IN_AGENT trip-plan turn: the destination the plan's tool calls were made for (get_trip_data.destination, else the first place tool's
   // location) — the plan card keeps only retrieved places whose address names it (planItemGuard). Stays null when the flag is off.
@@ -4257,6 +4277,15 @@ export function applyPlaceEnrichmentStreamFilter(
       controller.enqueue(encoder.encode('8:' + JSON.stringify([{ kind: 'tappy.places.v1', v: 1, items: [], cleared: true }]) + '\n'))
       console.log(JSON.stringify({ type: 'tappyai_cards_cleared', reason: lunaRanked ? 'luna_none' : 'no_decision_card' }))
     }
+    // CONSULT_PRESENT_BLOCKS (default OFF: the collector never carries a declaration): the blocks the model declared, already checked against the turn, as one live annotation after the
+    // prose. Like the places view it is an `8:` frame: not in the text, not stored, ignored by a client that does not know it.
+    if (collector?.oneBrain === true && collector.presentation && !agentViolation) {
+      const sent = await verifiedPresentation(collector)
+      if (sent) {
+        controller.enqueue(encoder.encode('8:' + JSON.stringify([presentationAnnotation(sent, collector.presentationLinks)]) + '\n'))
+        console.log(JSON.stringify({ type: 'tappyai_present_blocks', blocks: sent.blocks.map(b => b.type) }))
+      }
+    }
   }
 
   const transform = new TransformStream<any, any>({
@@ -4349,6 +4378,12 @@ export function applyPlaceEnrichmentStreamFilter(
           try {
             const call = JSON.parse(line.slice(2)) as { toolCallId?: string; toolName?: string; args?: { query?: string; destination?: string; location?: string } }
             if (call.toolCallId && call.toolName) toolNameByCallId.set(call.toolCallId, call.toolName)
+            // the route and day a dated tool call asked for: a repeat of the same ask must not wipe the link the first call found (systemLinkSupersede.ts)
+            if (call.toolCallId && call.toolName && DATED_LINK_TOOLS.has(call.toolName)) {
+              const a = (call.args ?? {}) as Record<string, unknown>
+              const norm = (v: unknown) => (typeof v === 'string' ? v.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s+/g, ' ').trim() : '')
+              askByCallId.set(call.toolCallId, [call.toolName, norm(a.origin), norm(a.destination), norm(a.date ?? a.departDate ?? a.depart_date), norm(a.returnDate ?? a.return_date)].join('|'))
+            }
             anyToolCalled = true
             // CONSULT_ONE_BRAIN: a present_plan turn is rebuilt at the end (the plan block is appended before the plan guards).
             if ((call.toolName === 'present_plan' || call.toolName === 'present_options') && collector?.oneBrain) bufferMode = true
@@ -4439,7 +4474,7 @@ export function applyPlaceEnrichmentStreamFilter(
                 if (typeof r.vexere_link === 'string') found.push({ name: 'Vexere', url: r.vexere_link })
                 if (typeof r.train_booking_link === 'string') found.push({ name: 'Vexere', url: r.train_booking_link })
               }
-              systemLinkLedger.record(toolName ?? 'unknown', found)
+              systemLinkLedger.record(toolName ?? 'unknown', found, res.toolCallId ? askByCallId.get(res.toolCallId) : undefined)
               systemLinks.length = 0
               systemLinkUrls.clear()
               for (const l of systemLinkLedger.links()) { systemLinkUrls.add(l.url); systemLinks.push(l) }
@@ -4748,6 +4783,15 @@ export function applyPlaceEnrichmentStreamFilter(
           // P3-F2: release the live tail (a held-back token, sanitised) before anything else.
           flushLive(controller)
           await emitReconstructed(controller)
+          // 16/11: the blocks the model declared (present_blocks) belong to EVERY one-brain turn, not only to a turn that ran a place or product tool. A turn that streamed live (a web lookup
+          // only) never reaches the settle path that sends the frame, so its declaration was checked, accepted and then dropped: send it here, once, before the finish frame.
+          if (!bufferMode && collector?.oneBrain === true && collector.presentation) {
+            const sent = await verifiedPresentation(collector)
+            if (sent) {
+              controller.enqueue(encoder.encode('8:' + JSON.stringify([presentationAnnotation(sent, collector.presentationLinks)]) + '\n'))
+              console.log(JSON.stringify({ type: 'tappyai_present_blocks', blocks: sent.blocks.map(b => b.type), live: true }))
+            }
+          }
           // CONSULT_FINAL_SYNTHESIS (Wave 2, default OFF = this block never runs). A LIVE turn (nothing buffered, so no guard above ran) whose model stopped in the middle of its tool loop
           // (finishReason "tool-calls": it used every step calling tools) and streamed NOT ONE word used to end with an empty reply. One honest sentence is sent as the reply, as a text
           // frame like the F-043 tail below; no place or shopping vocabulary. A turn that streamed any text, or that ended for another reason, is not touched.

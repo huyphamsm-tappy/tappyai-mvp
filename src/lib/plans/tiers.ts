@@ -3,7 +3,7 @@
 // Display names (owner): Pip = Free · MoMo = Trial (7 days, once) · Coco = Pro · Tappy = Promax. The plan ids stored in subscriptions stay as
 // they are (free / pip / momo / coco / milo / sunny / pro); this maps them to a TIER, and the tier decides the composer modes the server
 // runs and the Deep Research allowance per VN calendar month:
-//   free   (guest, anonymous, free)                       - Chat only (Luna 6.0, the model's own quick lookup); no Web / Thinking / Deep Research
+//   free   (guest, anonymous, free)                       - Chat only, answered by the model's own ability (14/11/2026: NO tools — no search, no realtime, no partner links); no Web / Thinking / Deep Research
 //   pro    (pip = MoMo trial, momo / coco = Coco, and the older milo / sunny / pro while they last) - every mode, Deep Research 10 a month
 //   promax (promax1m / promax3m = Tappy)                   - every mode, Deep Research 30 a month
 // The SERVER enforces it (a mode the tier does not have runs as Chat); the client only hides what it cannot use. Pure.
@@ -24,6 +24,12 @@ const MODES: Record<Tier, ReadonlySet<ChatMode>> = {
   pro: new Set<ChatMode>(['chat', 'web', 'think', 'deep', 'auto']),
   promax: new Set<ChatMode>(['chat', 'web', 'think', 'deep', 'auto']),
 }
+
+/**
+ * Owner 14/11/2026: Free answers with the model's own ability only (no web search, no realtime lookup, no partner links); Pro / Trial / Promax answer
+ * with Luna plus Serper, Parallel and the affiliate partners. With the plans on sale the route gives a Free turn no tools at all.
+ */
+export const TIER_HAS_TOOLS: Readonly<Record<Tier, boolean>> = { free: false, pro: true, promax: true }
 
 /** The mode the server runs: the one asked for when the tier has it, else Chat. */
 export function modeForTier(mode: ChatMode, tier: Tier): ChatMode {

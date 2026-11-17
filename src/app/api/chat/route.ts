@@ -49,7 +49,7 @@ import { normalizePlaces, normalizeHotels, normalizeShopping, type Candidate } f
 import { rankCandidates } from '@/lib/ai/consultative/rank'
 import { buildBrief, briefForModel, consultBriefEnabled } from '@/lib/ai/consultative/consultativeBrief'
 import { shortlistShopping, shortlistCandidates, restrictRankedTo } from '@/lib/ai/consultative/shortlist'
-import { deriveDecisionFrame, qualifiesFor, missingFor, evidenceGap, evidenceSummary, buildDecisionFrameBlock } from '@/lib/ai/consultative/decisionFrame'
+import { deriveDecisionFrame, qualifiesFor, missingFor, evidenceGap, gapWithRealtimePrice, evidenceSummary, buildDecisionFrameBlock } from '@/lib/ai/consultative/decisionFrame'
 import { voiceLayerBlock, styleLuna6On } from '@/lib/ai/consultative/styleLuna6'
 import { wantsFilmTitles, movieTitlesReply } from '@/lib/links/movieTitles'
 import { filmQueries, extractFilmEvidence, filmEvidencePayload, FILM_ENOUGH } from '@/lib/ai/searchIntel/filmSearch'
@@ -86,7 +86,8 @@ import { enrichWithTikTok } from '@/lib/links/tiktokEnrichment'
 import { serperSearch } from '@/lib/ai/tools/common'
 import { dropInactiveMerchantRows, attachCommerceLinks as attachCommerceLinksBase } from '@/lib/ai/tools/commerce'
 import { dropLoginWallRows } from '@/lib/ai/tools/loginWallHosts'
-import { commerceActorHash } from '@/lib/ccp'
+import { commerceActorHash, PROVIDER_REGISTRY } from '@/lib/ccp'
+import { ResultLedger, withResultIds, validateDeclared, resolveBookingLinks, makeProviderOfUrl, PRESENT_BLOCKS_DESCRIPTION, presentBlocksParameters } from '@/lib/presentation/declare'
 import { sealIdentity } from '@/lib/ccp/tracking/clickLink'
 import { rendersDecisionCard as rendersDecisionCardFor, rendersAskBlock } from '@/lib/ai/decisionSurface'
 import { normalizePwLang } from '@/lib/priceWatch/messages'
@@ -110,7 +111,7 @@ import { readZaloIdentity, zaloIdentitySecret } from '@/lib/zalo/identity'
 import { flushPending, recordEvent, type UsageEvent } from '@/lib/observability'
 import { FREE_DAILY_LIMIT, ANON_LIFETIME_LIMIT } from '@/lib/config/product'
 import { accountQuotaFor, aiQuotaIdentity, consumeAiQuestion, consumeDeepResearch, refundAiQuestion, type AiQuotaRefund } from '@/lib/ai/quota/aiQuestionQuota'
-import { tierOf, modeForTier, deepResearchMonthlyLimit, standardResearchMonthlyLimit, advancedResearchMonthlyLimit } from '@/lib/plans/tiers'
+import { tierOf, modeForTier, TIER_HAS_TOOLS, deepResearchMonthlyLimit, standardResearchMonthlyLimit, advancedResearchMonthlyLimit } from '@/lib/plans/tiers'
 import { costGateOn, reserveTurnCost, type CostTurn } from '@/lib/ai/cost/costGate'
 import { withinGlobalDeepCeiling } from '@/lib/ai/quota/globalCeiling'
 import { withoutInternalToolFields } from '@/lib/ai/streamInternalFields'
@@ -122,11 +123,13 @@ import { recordDecision, DECISION_RECORD_TIMEOUT_MS } from '@/lib/ai/agent/runti
 import { createPlacesBudget, PLACES_BUDGET_AGENT, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_ONE_BRAIN, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
 // Consultative V1 (flag CONSULTATIVE_V1, default OFF — see docs/audit/consultative-v1-design.md).
 import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
-import { isProductionRuntime, consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, consultReadPageLateOn, consultPickPageReadOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn, consultUnwindS1aOn, consultUnwindS1bOn, consultUnwindS1dOn, consultUnwindS2aOn, consultUnwindS2bOn, consultUnwindS2cOn, consultUnwindS3aOn, consultUnwindS3bOn, consultUnwindS3cOn, consultUnwindS4aOn, consultUnwindS4bOn, consultUnwindS5On, consultUnwindS6aOn, consultUnwindS6bOn, consultUnwindS6cOn, consultOneBrainOn, consultOneBrainMediaOn, consultParallelOn } from '@/lib/config/consultFlags'
+import { isProductionRuntime, consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, consultReadPageLateOn, consultPickPageReadOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn, consultUnwindS1aOn, consultUnwindS1bOn, consultUnwindS1dOn, consultUnwindS2aOn, consultUnwindS2bOn, consultUnwindS2cOn, consultUnwindS3aOn, consultUnwindS3bOn, consultUnwindS3cOn, consultUnwindS4aOn, consultUnwindS4bOn, consultUnwindS5On, consultUnwindS6aOn, consultUnwindS6bOn, consultUnwindS6cOn, consultOneBrainOn, consultOneBrainMediaOn, consultPresentBlocksOn, consultPersonModelOn, consultPlanV2On, consultParallelOn } from '@/lib/config/consultFlags'
+import { planV2Shape, foldPlanV2 } from '@/lib/ai/consultative/planV2'
 import { createParallelTurnBudget, parallelExtract, parallelSearch } from '@/lib/ai/tools/parallelClient'
 import { searchWithReads, createOnce, FOLLOW_UP_SYSTEM, S6_MAX_READS } from '@/lib/ai/consultative/searchReads'
 import { ONE_BRAIN_CORE, PRESENT_PLAN_DESCRIPTION, PRESENT_PLAN_FIELD_NOTES, THINK_DEEPER_DESCRIPTION, THINK_DEEPER_NOTE, ONE_BRAIN_CHAT_CAP_NOTE, ONE_BRAIN_FARE_NOTE, ONE_BRAIN_WEB_FALLBACK_NOTE, CHAT_SEARCH_BUDGET, SEARCH_DEPTH_DESCRIPTION, searchDepthOf, type SearchDepth, ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, oneBrainDynamic } from '@/lib/ai/consultative/oneBrain'
 import { oneBrainMediaStream } from '@/lib/ai/consultative/oneBrainMedia'
+import { verifyDeclaredFacts } from '@/lib/ai/answerV4/factSense'
 import { oneBrainTurnTrace } from '@/lib/ai/consultative/turnTrace'
 import { serperLastAccountErrorAt } from '@/lib/ai/tools/serperClient'
 import { getWeatherForecast } from '@/lib/ai/tools/weatherForecast'
@@ -440,6 +443,16 @@ export async function POST(req: Request) {
   // 31/10: a turn with a picture runs on one brain too (gpt-6-luna reads images with tools defined - probe 31/10); before, it fell back to the
   // old 3-step, 1 024-token path with the old rulebook.
   const oneBrain = consultOneBrainOn() && !tappyAgentEnabled() && !clipRef
+  // CONSULT_PRESENT_BLOCKS (default OFF): the turn's tool results get ids and the model may declare blocks (presentation/declare.ts).
+  const presentBlocksOn = oneBrain && consultPresentBlocksOn()
+  // CONSULT_PERSON_MODEL (default OFF): an INPUT fix, no prompt text: the memory of WHO the person is (style, company) is extracted on ordinary turns and kept (memoryGate.ts, memoryTransientFilter.ts).
+  const personModelOn = oneBrain && consultPersonModelOn()
+  // CONSULT_PLAN_V2 (default OFF): present_plan carries who it is for, every cost line, the total and its assumptions as required fields (consultative/planV2.ts)
+  const planV2On = oneBrain && consultPlanV2On()
+  const resultLedger = new ResultLedger()
+  const RESULT_ID_SKIP: ReadonlySet<string> = new Set(['present_plan', 'present_options', 'present_blocks', 'think_deeper', 'save_price_watch'])
+  const presentBlockProviders: ReadonlySet<string> = new Set(PROVIDER_REGISTRY.map(p => p.providerId))
+  const presentBlockProviderOf = makeProviderOfUrl(PROVIDER_REGISTRY)
   const forcedToolDecides = consultUnwindS4aOn() ? null : forcedTool && !oneBrain ? forcedTool : null
   // P0: a travel turn buffers and runs the fail-closed dynamic-fact guard, so no
   // fabricated fare/price/schedule/availability can reach the user.
@@ -450,7 +463,7 @@ export async function POST(req: Request) {
   // (12 chars) — a hard dietary constraint. See memoryGate.ts. Consultative V1 flips the
   // default to NO (measured: ordinary requests yield nothing the transient filter keeps) and the
   // topic of a plain request is written to `history` below without a model call.
-  const worthExtract = shouldExtractMemory({ text: lastText, intent, forcedTool, consultative: consultativeV1Enabled() })
+  const worthExtract = shouldExtractMemory({ text: lastText, intent, forcedTool, consultative: consultativeV1Enabled(), ...(personModelOn ? { personModel: true } : {}) })
   const userMessages = messages.filter((m: { role: string }) => m.role === 'user')
   const isFirstReply = userMessages.length <= 1
   // CCP Phase 8 (P1-2): the commerce seam reads the capability and the reservation party/time/date
@@ -2434,6 +2447,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // Owner 01/11/2026 (plan tiers, lib/plans/tiers.ts): with the plans on sale (SUBSCRIPTIONS_ENABLED) a mode the account's tier does not
   // have runs as Chat - Pip (Free) and visitors chat with Luna 6.0; Coco / MoMo / Tappy have every mode. Off: every mode, as before.
   const planTier = tierOf(quotaPlan)
+  // Owner 14/11/2026: with the plans on sale a Free turn has NO tools (the model's own ability only); Pro / Trial / Promax have them all. Plans off: as before.
+  const planHasTools = !subscriptionsEnabled() || TIER_HAS_TOOLS[planTier]
   if (subscriptionsEnabled()) {
     const asked = chatMode
     chatMode = modeForTier(chatMode, planTier)
@@ -2447,7 +2462,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // (AI.stream autoThink) and the lookups follow the Thinking mode. Off for the whole turn = exactly Chat.
   const autoThink: { on: boolean; effort: 'medium' } = { on: false, effort: 'medium' }
   const chatLike = () => chatMode === 'chat' || (chatMode === 'auto' && !autoThink.on)
-  const oneBrainPrompt = oneBrain ? { shared: ONE_BRAIN_CORE, dynamic: oneBrainDynamic({ lang, now: new Date(), address: userLocation?.address ?? null, hasLocation: hasValidCurrentLocation(userLocation), blocks: [memoryBlock ?? '', prefBlock, styleBlock, shareContextBlock], latestLang: detectLangConfident(lastText), mode: chatMode === 'deep' ? 'think' : chatMode }) } : null
+  const oneBrainPrompt = oneBrain ? { shared: ONE_BRAIN_CORE, dynamic: oneBrainDynamic({ lang, now: new Date(), address: userLocation?.address ?? null, hasLocation: hasValidCurrentLocation(userLocation), blocks: [memoryBlock ?? '', prefBlock, styleBlock, shareContextBlock], latestLang: detectLangConfident(lastText), mode: chatMode === 'deep' ? 'think' : chatMode, ...(planHasTools ? {} : { noTools: true }) }) } : null
   if (oneBrain) console.log(JSON.stringify({ type: 'tappyai_chat_mode', mode: chatMode }))
   // CONSULT_ONE_BRAIN_MEDIA: what the pictures should show is read beside the answer (never before it, never for the answer) and used when the answer ends.
   const oneBrainUnderstanding = oneBrain && consultOneBrainMediaOn()
@@ -2507,6 +2522,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
    * ungated in silence. Only Consultative V1 turns (`situation` set) are judged.
    */
   const gateTools = <T extends Record<string, unknown>>(tools: T): T => {
+    if (!planHasTools) return {} as T // Free plan (plans on sale): the model's own ability only, no tool at all
     for (const [name, t] of Object.entries(tools)) {
       const def = t as { execute?: (...a: unknown[]) => Promise<unknown> }
       const orig = def.execute
@@ -3146,7 +3162,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           people: z.number().optional(),
           budget_total: z.string().optional().describe('only when the person gave a budget or the tools gave prices'),
           days: z.array(z.object({
-            label: z.string().describe('e.g. "Ngày 1 — Kỳ Co, Eo Gió"; each day has 3-6 items (morning, lunch, afternoon, dinner, evening)'),
+            label: z.string().describe('e.g. "Ngày 1 — Kỳ Co, Eo Gió"; each day has 4-7 items (morning, lunch, afternoon, dinner, and the evening or late night where the place has one)'),
             items: z.array(z.object({
               time: z.string().describe('e.g. "07:00" or "Sáng"'),
               emoji: z.string(),
@@ -3159,9 +3175,11 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           })).min(1),
           cost_breakdown: z.record(z.string()).optional(),
           local_tips: z.array(z.object({ text: z.string(), basis: z.enum(['tool', 'general']) })).optional(),
+          // CONSULT_PLAN_V2 (default OFF): who the plan is for, every cost line, the total and the assumptions are REQUIRED fields (they replace the optional budget_total above)
+          ...(planV2On ? planV2Shape : {}),
         }),
         execute: async (plan) => {
-          enrichment.planBlock = JSON.stringify(plan)
+          enrichment.planBlock = JSON.stringify(planV2On ? foldPlanV2(plan as Parameters<typeof foldPlanV2>[0]) : plan)
           return { ok: true, note: 'The app shows this plan as a card BELOW your text, and it can be shared as a brochure. Write only a short summary and the key tips; do not repeat the plan, and do not say the card is above.' }
         },
       }) } : {}),
@@ -3187,6 +3205,24 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         execute: async ({ title, options }) => {
           enrichment.optionsBlock = JSON.stringify({ v: 1, kind: 'options', ...(title ? { title } : {}), options: options.map(o => ({ name: o.name, badge: o.badge, figure: o.figure, figureNote: o.figure_note, verdict: o.verdict, highlights: o.highlights, extras: o.extras, caveat: o.caveat, href: o.link, linkLabel: o.link_label })) })
           return { ok: true, note: 'The app shows these options as cards BELOW your text. Write the lead (what you chose by), your pick and why, and a short table mapping each need to an option; do not repeat each card, and do not say the cards are above.' }
+        },
+      }) } : {}),
+      // CONSULT_PRESENT_BLOCKS (14/11, layout slice 2; default OFF): the model declares the blocks its answer needs (compare table, ask chips, booking handoff) and points at this turn's tool
+      // results by id (`result_id`, added by withResultIds). The declaration is checked against the turn (presentation/declare.ts) and sent after the prose as a live annotation; no link is
+      // written here, and nothing is stored.
+      ...(presentBlocksOn ? { present_blocks: tool({
+        description: PRESENT_BLOCKS_DESCRIPTION,
+        parameters: presentBlocksParameters,
+        execute: async ({ blocks }) => {
+          const declared = validateDeclared({ v: 1, blocks }, resultLedger, presentBlockProviders)
+          // a booking takes the partner link of its own tool result (written by the partner layer, never by the model); one without a link is dropped
+          const resolved = declared ? resolveBookingLinks(declared, resultLedger) : null
+          if (!resolved) return { ok: false, note: 'None of the blocks could be used (check kind, result_id and the sizes; a booking needs a result that carries a booking link). Write the answer as text.' }
+          enrichment.presentation = resolved.presentation
+          enrichment.presentationLinks = resolved.links
+          // 16/11 (owner: real data only): before the cards are sent, each of their points is checked against what this turn's lookups returned (answerV4/factSense.ts)
+          enrichment.verifyPresentation = p => verifyDeclaredFacts(p, resultLedger.evidence())
+          return { ok: true, note: 'The app shows these blocks with your answer. Write the answer around them; do not repeat what a block already shows, do not say where it appears, and do not write a block name, placeholder or marker in the text.' }
         },
       }) } : {}),
       get_gold_price: tool({
@@ -3226,8 +3262,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           location: z.string().describe('Dia diem/thanh pho can tim khach san (vd: Da Nang, Phu Quoc, Ha Noi)'),
           checkIn: z.string().optional().describe('Ngay check-in dang YYYY-MM-DD (khong bat buoc)'),
           checkOut: z.string().optional().describe('Ngay check-out dang YYYY-MM-DD (khong bat buoc)'),
+          guests: z.number().optional().describe('So nguoi lon o neu user noi ro (khong bat buoc; bo trong neu user chua noi — khong tu doan)'),
         }),
-        execute: async ({ location, checkIn, checkOut }) => {
+        execute: async ({ location, checkIn, checkOut, guests: rawGuests }) => {
+          const { passengers: guests } = clampPassengers(rawGuests, lang)
           const stored = stayOverride
           stayOverride = null
           if (stored) console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'get_hotel_prices', step: 'from_chat_state', rows: stored.length }))
@@ -3253,7 +3291,18 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const { result, pick } = rankForModel('get_hotel_prices', filtered)
           if (pick) turnPick = pick
           turnPlaceLocation = location
-          await attachCommerceLinks('get_hotel_prices', result, { location, checkIn, checkOut, platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, actorSeal: commerceActorSealValue, userText: lastText, userTexts: recentUserTexts })
+          await attachCommerceLinks('get_hotel_prices', result, { location, checkIn, checkOut, ...(guests ? { passengers: guests } : {}), platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, actorSeal: commerceActorSealValue, userText: lastText, userTexts: recentUserTexts })
+          // 15/11: the live offers are attached just above, after the place rows' evidence gap was read; when price was the only thing missing and the offers carry fresh prices, they ARE the evidence (decisionFrame.gapWithRealtimePrice)
+          {
+            const rec = result as Record<string, unknown>
+            const before = rec._tappy_evidence_gap as { qualified: number; total: number; needed: Array<'price'>; action: 'recommend' | 'search_again' | 'insufficient' } | undefined
+            const after = before ? gapWithRealtimePrice(before as never, rec.realtime_results) : null
+            if (after) {
+              rec._tappy_evidence_gap = after
+              enrichment.setClarificationPolicy('no_reflex')
+              console.log(JSON.stringify({ type: 'tappyai_evidence_gap', tool: 'get_hotel_prices', ...after, source: 'realtime' }))
+            }
+          }
           enrichment.setPlacesRecommendations(stayRecommendations(result, pickContext(pick)), producerSubject('get_hotel_prices'))
           // Model copy = the decision set (≤5 hotel rows, no photos/coords) — the card was built
           // from the full list above. Same trim as places (cost item 4).
@@ -4087,7 +4136,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // call with tools). A TRIP plan has the code's full presearch (hotels, places, weather) → no tools, the plan effort
     // applies. Every other plan keeps its tools (replay 30/09: without them E1-G5 planned only the dinner, R16 named no
     // venue) and so runs at 'none'.
-    tools: turnHasNoTools || attachmentOnly ? undefined : traceToolsOuter(finalSynthesisGuard(lunaGuardTools(withResearchUrls(leanToolSet))), trace),
+    tools: turnHasNoTools || attachmentOnly ? undefined : traceToolsOuter(finalSynthesisGuard(lunaGuardTools(withResearchUrls(presentBlocksOn && leanToolSet ? withResultIds(leanToolSet, resultLedger, RESULT_ID_SKIP, presentBlockProviderOf) : leanToolSet))), trace),
     onFinish: async ({ usage, finishReason, text, steps }) => {
       // P2-8: one line per one-brain turn - model, effort, steps run vs the cap, tools by name, how it ended (counts and names only; never text or arguments).
       if (oneBrain) { try { console.log(JSON.stringify(oneBrainTurnTrace({ serving: AI.serving(role), finishReason, maxSteps: streamMaxSteps, maxTokens: ONE_BRAIN_MAX_TOKENS, text, usage, steps: steps as never }))) } catch { /* trace only */ } }
@@ -4161,7 +4210,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           ]
           // Consultative V1 reads the LATEST user turn only (earlier turns were extracted on
           // their own turn); the habit markers the filter needs are read from the same text.
-          const extractedRaw = await extractMemoryFromConversation(convMessages, existingMemory, { lastUserOnly: !!situation })
+          const extractedRaw = await extractMemoryFromConversation(convMessages, existingMemory, { lastUserOnly: !!situation, ...(personModelOn ? { person: true } : {}) })
           const auditFile = process.env.AUDIT_USAGE_LOG_FILE
           if (auditFile) {
             try { appendFileSync(auditFile, JSON.stringify({ turn: auditTurn, type: 'tappyai_usage_memory', ...(lastMemoryExtractionUsage() ?? {}) }) + '\n') } catch { /* audit only */ }
@@ -4172,7 +4221,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const extracted = situation
             ? (() => {
               const userTexts = convMessages.filter(m => m.role === 'user').map(m => m.content)
-              const { memory, stats } = filterTransientMemory(extractedRaw, userTexts.slice(-1))
+              const { memory, stats } = filterTransientMemory(extractedRaw, userTexts.slice(-1), personModelOn ? { keepPerson: true } : {})
               console.log(JSON.stringify({ type: 'tappyai_consultative_v1', step: 'memory_filter', ...stats }))
               return memory
             })()
@@ -4600,7 +4649,12 @@ ${finalWriteInstruction(lang)}` },
       }, usageSink).pipeThrough(timeClientEmit(startTime, Date.now, (t) => logUsage(t.ttuaMs))).pipeThrough(traceTailStream(agentRunTrace))
     : finalResponse.body
   // CONSULT_ONE_BRAIN_MEDIA: the pictures go out last, before the finish frame, once every guard and frame above has run on the answer.
-  const pictured = oneBrainUnderstanding && timedBody ? oneBrainMediaStream(timedBody, { understanding: oneBrainUnderstanding, cardTurn: () => !!(enrichment.placesRecommendations?.length || enrichment.shoppingMarker), log: l => console.log(JSON.stringify(l)) }) : timedBody
+  const pictured = oneBrainUnderstanding && timedBody ? oneBrainMediaStream(timedBody, { understanding: oneBrainUnderstanding, cardTurn: () => !!(enrichment.placesRecommendations?.length || enrichment.shoppingMarker),
+    // 16/11: the subject cards the model declared get a web picture when Wikipedia has none (answerV4/subjectImages.ts); the declared kinds are traced
+    subjects: () => (enrichment.presentation?.blocks ?? []).flatMap(b => (b.type === 'profiles' ? b.items.map(i => ({ name: i.name, hint: b.title })) : [])),
+    gallery: () => (enrichment.presentation?.blocks ?? []).flatMap(b => (b.type === 'gallery' ? b.items : [])),
+    declared: () => (enrichment.presentation?.blocks ?? []).map(b => b.type),
+    log: l => console.log(JSON.stringify(l)) }) : timedBody
   // HOTLINE_CLAIM_GUARD (R13, off by default): the FINAL text (after every guard above) loses an hours/cost claim about 113/114/115 - the owner's list does not establish them; 111 and 112 are verified and stay.
   // Flag off: the stream is returned exactly as it was.
   const guardedBody = hotlineClaimGuardOn() && pictured ? pictured.pipeThrough(hotlineClaimGuardStream(r => console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'hotline_claim', removedSentences: r.removedSentences, editedSentences: r.editedSentences })))) : pictured

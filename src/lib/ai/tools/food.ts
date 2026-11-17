@@ -2,6 +2,7 @@ import { getCache, setCache, serperSearch } from './common'
 import { logText } from '@/lib/ai/logSafeText'
 import { withRetrievedAt } from './retrievalClock'
 import { tviCaptureOn, captureTviFromPlaces } from '@/lib/tvi/capturePlaces'
+import { tviReadOn, readTviForPlaces } from '@/lib/tvi/readPlaces'
 import { normalizeVN } from '@/lib/ai/intent'
 import { createClient } from '@/lib/supabase/server'
 import { publishableFilter } from '@/lib/safety/gate/publicationAccess'
@@ -1098,10 +1099,12 @@ async function searchPlacesImpl(
 
 /** Stamps `retrieved_at` (the oldest real fetch time of the rows used) on the result — see retrievalClock.ts. */
 export function searchPlaces(...args: Parameters<typeof searchPlacesImpl>): ReturnType<typeof searchPlacesImpl> {
-  return withRetrievedAt(() => searchPlacesImpl(...args)).then(result => {
+  return withRetrievedAt(() => searchPlacesImpl(...args)).then(async result => {
     // R13 TVI capture (TVI_CAPTURE=1, off by default and locked in production): the stable facts of the rows go to the fact store AFTER the answer is built. Fire and forget; the result is returned as it is.
+    // It captures the LIVE result, before the stored facts below are merged in, so a stored fact is never written back as if it had just been read.
     if (tviCaptureOn()) void captureTviFromPlaces(result, { city: args[1] })
-    return result
+    // 14/11 TVI read (TVI_READ=1, same rule): what the store holds about the same places fills a field this call did not return, with its date and freshness (readPlaces.ts).
+    return tviReadOn() ? await readTviForPlaces(result, { city: args[1] }) as typeof result : result
   })
 }
 

@@ -15,6 +15,14 @@ const row = (i: number, extra: Record<string, unknown> = {}) => ({
 })
 const ten = Array.from({ length: 10 }, (_, i) => row(i))
 
+describe('known_facts (TVI_READ) reach the model', () => {
+  it('a stored fact the store filled in, with its date and freshness, survives the compact copy the model reads', () => {
+    const known = [{ fact_type: 'phone', value: '0123', retrieved_at: '2026-11-10T07:00:00.000Z', freshness: 'FRESH', verification: 'UNVERIFIED', from: 'stored' }]
+    const out = trimPlacesForModel({ results: [{ name: 'A', place_id: 'p1', known_facts: known }] }) as { results: Array<Record<string, unknown>> }
+    expect(out.results[0].known_facts).toEqual(known)
+  })
+})
+
 describe('trimPlacesForModel (stage 1: every row, compact)', () => {
   it('flag OFF (default): keeps the shortlist members first, then every other row, each with the citable fields only', () => {
     const out = trimPlacesForModel({ results: ten, _tappy_shortlist: [{ id: 'p7', name: 'Quán 7' }, { id: 'p0', name: 'Quán 0' }], google_maps_search: 'https://maps' }) as Record<string, unknown>

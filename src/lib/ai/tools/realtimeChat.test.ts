@@ -157,9 +157,13 @@ describe('A. "khách sạn Đà Lạt 20-22/10 cho 2 người"', () => {
     await attachCommerceLinks('get_hotel_prices', noDates, { enabled: true, now: NOW, search: noSearch, location: 'Đà Lạt', realtime: { env: AGODA_ENV, http: httpOk(agodaSearch()) } } as never)
     expect(noDates.realtime_results).toBeUndefined()
     const otherCity = hotelResult()
-    // A4 (owner-approved 30/10): Vũng Tàu now has a verified Agoda id (17190); Quy Nhơn has none, so it is the unmapped city.
-    await attachCommerceLinks('get_hotel_prices', otherCity, { ...hotelCtx({ env: AGODA_ENV, http: httpOk(agodaSearch()) }), location: 'Quy Nhơn' } as never)
+    // A4 (owner-approved 30/10): Vũng Tàu has a verified Agoda id (17190). 14/11: Quy Nhơn was the "unmapped city" here only because the 30/10 slug guess 404ed (its id 17242 is on its own page and in Agoda's
+    // Hotel Data File), so it is now mapped; the fallback under test - an unmapped city gets no realtime search - is kept on a place that is really unmapped.
+    await attachCommerceLinks('get_hotel_prices', otherCity, { ...hotelCtx({ env: AGODA_ENV, http: httpOk(agodaSearch()) }), location: 'Atlantis' } as never)
     expect(otherCity.realtime_results).toBeUndefined()
+    const quyNhon = hotelResult()
+    await attachCommerceLinks('get_hotel_prices', quyNhon, { ...hotelCtx({ env: AGODA_ENV, http: httpOk(agodaSearch()) }), location: 'Quy Nhơn' } as never)
+    expect(quyNhon.realtime_results).toBeDefined()
     expect(logs.join('\n')).not.toMatch(/secret-key-value|secret-token-value|authorization|Bearer/i)
   })
 

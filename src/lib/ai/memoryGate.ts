@@ -95,9 +95,14 @@ export interface MemoryGateInput {
    * route (`history`), without a model call.
    */
   consultative?: boolean
+  /**
+   * CONSULT_PERSON_MODEL (14/11): who the person IS (style, company) shows in ordinary requests, not only in a first-person statement, so the consultative default-NO is lifted: an ordinary
+   * request earns the call like in the legacy mode (not a greeting, not a point-in-time lookup, not too short). What the call yields is still filtered (memoryTransientFilter keepPerson).
+   */
+  personModel?: boolean
 }
 
-export function shouldExtractMemory({ text, intent, forcedTool, consultative }: MemoryGateInput): boolean {
+export function shouldExtractMemory({ text, intent, forcedTool, consultative, personModel }: MemoryGateInput): boolean {
   const t = normalizeVN((text ?? '').toLowerCase().trim())
   if (!t) return false
 
@@ -109,7 +114,7 @@ export function shouldExtractMemory({ text, intent, forcedTool, consultative }: 
   if (DURABLE_SIGNAL.test(t)) return true
 
   // Consultative V1: nothing else earns the call except a trip being planned.
-  if (consultative) return DESTINATION_SIGNAL.test(t)
+  if (consultative && !personModel) return DESTINATION_SIGNAL.test(t)
 
   // 3. Point-in-time lookups. Checked after (2) so they can never mask a fact.
   if ((forcedTool && EPHEMERAL_TOOLS.has(forcedTool)) || EPHEMERAL_TOPIC.test(t)) return false

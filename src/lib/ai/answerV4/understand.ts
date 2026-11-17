@@ -15,6 +15,7 @@ import { z } from 'zod'
 import { AI } from '@/lib/ai/llm'
 import { DATA_OPEN, DATA_CLOSE } from '@/lib/ai/consultative/lunaSafety'
 import { neutralizeFenceMarkers } from '@/lib/ai/security/fence'
+import { TOPIC_KEYS } from '@/lib/media/topicImages'
 
 export const INTENTS = ['chat', 'knowledge', 'advice', 'recommendation', 'comparison', 'how_to', 'planning', 'writing', 'math_code', 'lookup', 'shopping', 'local_place', 'news', 'other'] as const
 export const SHAPES = ['chat', 'explanation', 'list', 'comparison', 'steps', 'itinerary', 'news_digest', 'table'] as const
@@ -22,8 +23,11 @@ export const ITEM_KINDS = ['none', 'dish', 'place', 'film', 'book', 'product', '
 export const ENTITY_TYPES = ['person', 'place', 'organization', 'work', 'product', 'dish', 'concept', 'event', 'other'] as const
 export const SENSITIVITY = ['none', 'medical', 'legal', 'financial', 'mental_health'] as const
 
+/** The fixed-picture topics (media/topicImages.ts) or none: the understanding picks ONE of a closed list, never anything else. */
+export const TOPIC_VISUALS = ['none', ...TOPIC_KEYS] as const
+
 /** Strict-mode friendly: every field present, nullable instead of optional. */
-export const TurnUnderstandingSchema = z.object({
+const TurnUnderstandingBase = z.object({
   reply_language: z.string().describe("BCP-47 code of the language of the user's LATEST message, which is the language the reply must use (vi, en, th, ja, ko, zh-Hans, fr…). Vietnamese typed without diacritics or in slang is still vi."),
   intent: z.enum(INTENTS).describe('what the user wants from this message, read from its meaning in any language'),
   needs_fresh_data: z.boolean().describe('true when a correct answer depends on facts that change over time or that a model cannot know from training: prices, rates, weather, schedules, opening hours, recent or ongoing events, rankings, what is showing/trending now, availability, local businesses'),
@@ -37,7 +41,13 @@ export const TurnUnderstandingSchema = z.object({
     wiki_title: z.string().nullable().describe('the exact English Wikipedia article title for this entity when one clearly exists, else null'),
   })).describe('the named people, places, organizations, works, products or concepts the message is ABOUT (at most 4); empty for none'),
 })
-export type TurnUnderstanding = z.infer<typeof TurnUnderstandingSchema>
+/** What the model is asked for: the base read plus the topic of a fixed picture. */
+export const TurnUnderstandingSchema = TurnUnderstandingBase.extend({
+  topic_visual: z.enum(TOPIC_VISUALS).describe('only when the message asks for a LIVE figure or the state of a market of exactly this kind: gold = gold or precious-metal prices; oil = oil, petrol and energy prices; currency = an exchange rate or a currency; stocks = a share price, a stock index or the stock market; crypto = a cryptocurrency; growth = economic growth, GDP, inflation or other growth figures; rates = interest rates, bank deposit or loan rates; markets = the financial markets in general. none for everything else (a person, a company\'s history, a product, a place, news, weather, advice, a question about how something works)'),
+})
+/** The base read, plus the topic when the model gave one (a test or an older caller may not). */
+export type TurnUnderstanding = z.infer<typeof TurnUnderstandingBase> & { topic_visual?: (typeof TOPIC_VISUALS)[number] }
+const TurnUnderstandingParse = TurnUnderstandingSchema.partial({ topic_visual: true })
 
 const SYSTEM = `You read ONE user message sent to a general-purpose assistant and describe it as structured data. You do not answer it.
 - The user may write in any language or script, with or without diacritics, with slang, typos, phonetic spellings of names, or mixed languages. Read the meaning, not keywords.
@@ -100,7 +110,7 @@ export async function understandTurn(i: UnderstandInput): Promise<UnderstandResu
       return r.object
     })
     const u = await run({ system: SYSTEM, prompt, signal: i.signal })
-    return { u: cleanUnderstanding(TurnUnderstandingSchema.parse(u)), ms: Date.now() - t0, usd }
+    return { u: cleanUnderstanding(TurnUnderstandingParse.parse(u)), ms: Date.now() - t0, usd }
   } catch (e) {
     return { u: null, ms: Date.now() - t0, usd: 0, error: String(e instanceof Error ? e.message : e).slice(0, 120) }
   }
@@ -108,5 +118,5 @@ export async function understandTurn(i: UnderstandInput): Promise<UnderstandResu
 
 /** Trace view: enums and counts only — never the user's words or entity names. */
 export function understandingTrace(u: TurnUnderstanding): Record<string, unknown> {
-  return { lang: u.reply_language, intent: u.intent, fresh: u.needs_fresh_data, figures: u.wants_figures, sensitivity: u.sensitivity, shape: u.answer_shape, item_kind: u.item_kind, entities: u.entities.map(e => e.type), wiki: u.entities.filter(e => e.wiki_title).length }
+  return { lang: u.reply_language, intent: u.intent, fresh: u.needs_fresh_data, figures: u.wants_figures, sensitivity: u.sensitivity, shape: u.answer_shape, item_kind: u.item_kind, topic: u.topic_visual ?? 'none', entities: u.entities.map(e => e.type), wiki: u.entities.filter(e => e.wiki_title).length }
 }

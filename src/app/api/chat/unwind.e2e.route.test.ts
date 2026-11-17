@@ -37,8 +37,7 @@ const h = vi.hoisted(() => {
     /** 29/10: the trains a rail route page states (railSchedule mock); null = the page gives none. */
     railRows: null as null | Array<Record<string, unknown>>,
     /** 30/10: what the route's attachCommerceLinks wrapper passed on, per call (the real function still runs). */
-    commerceCtx: [] as Array<{ tool: string; ctx: Record<string, unknown> }>,
-    /** 30/10: every Serper /maps call - its query and its centre (the mock returns no rows). */
+    commerceCtx: [] as Array<{ tool: string; ctx: Record<string, unknown> }>,    /** 30/10: every Serper /maps call - its query and its centre (the mock returns no rows). */
     placesCalls: [] as Array<{ q: string; centre: { lat: number; lng: number } | null }>,
     /** 31/10: what the Deep Research plan call returns (null = the call fails). */
     researchPlan: null as null | Record<string, unknown>,
@@ -181,7 +180,7 @@ type Msg = { role: 'user' | 'assistant'; content: string }
 const intent = (turn: string, domains: string[], extra: Record<string, unknown> = {}) => ({
   domains, turn, goal: 'x', known: [], party: null, budget_vnd_max: null, difficulty: 'normal', missing: [], assumptions: [], ask: null, query: null, area: null, refers: [], reject_reason: null, ...extra,
 })
-interface TurnOpts { unwind: boolean; oneBrain?: boolean; media?: boolean; mode?: 'chat' | 'web' | 'think' | 'deep' | 'auto'; researchPlan?: Record<string, unknown> | null; plan?: string; subscriptionsOn?: boolean; preSpendDeep?: number; luna: Record<string, unknown>; tools?: Array<{ name: string; args: Record<string, unknown> }>; reply?: string; gapQuery?: string | null; finishSteps?: Array<Record<string, unknown>>; railRows?: Array<Record<string, unknown>> }
+interface TurnOpts { unwind: boolean; oneBrain?: boolean; presentBlocks?: boolean; personModel?: boolean; planV2?: boolean; media?: boolean; mode?: 'chat' | 'web' | 'think' | 'deep' | 'auto'; researchPlan?: Record<string, unknown> | null; plan?: string; subscriptionsOn?: boolean; preSpendDeep?: number; luna: Record<string, unknown>; tools?: Array<{ name: string; args: Record<string, unknown> }>; reply?: string; gapQuery?: string | null; finishSteps?: Array<Record<string, unknown>>; railRows?: Array<Record<string, unknown>> }
 
 async function turn(messages: Msg[], o: TurnOpts) {
   delete process.env.TAPPY_AGENT
@@ -189,6 +188,9 @@ async function turn(messages: Msg[], o: TurnOpts) {
   for (const k of UNWIND) vi.stubEnv(k, o.unwind ? '1' : '0')
   vi.stubEnv('CONSULT_ONE_BRAIN', o.oneBrain ? '1' : '0')
   vi.stubEnv('CONSULT_ONE_BRAIN_MEDIA', o.media ? '1' : '0')
+  vi.stubEnv('CONSULT_PRESENT_BLOCKS', o.presentBlocks ? '1' : '0')
+  vi.stubEnv('CONSULT_PERSON_MODEL', o.personModel ? '1' : '0')
+  vi.stubEnv('CONSULT_PLAN_V2', o.planV2 ? '1' : '0')
   for (const k of ['CONSULT_PICK_TURN_TOOLS', 'CONSULT_KNOWLEDGE_PATH', 'CONSULT_RESEARCH_LOOP', 'CONSULT_TOOL_BY_NEED', 'CONSULT_DETERMINISTIC_MATH', 'CONSULT_STRUCTURED_SYNTHESIS', 'CONSULT_CHAT_DOMAIN_AGREEMENT', 'CONSULT_THREAD_AWARE_ASK', 'CONSULT_PICK_PAGE_READ', 'CONSULT_LUNA_ONE', 'VERCEL_ENV']) vi.stubEnv(k, undefined as unknown as string)
   h.state.calls = (o.tools ?? []).map((t, i) => ({ toolCallId: `c${i + 1}`, toolName: t.name, args: t.args }))
   h.state.text = o.reply ?? 'Câu trả lời của mô hình.'
@@ -841,6 +843,20 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     const off = await turn(Q, { unwind: true, oneBrain: true, mode: 'think', luna: intent('chat', []), reply: 'x' })
     expect(off.opts.thinkEffort).toBe('medium')
   }, 60000)
+  it('14/11 (owner: "Gói free: chỉ trả lời bằng năng lực của model"): with the plans on sale a Free turn has NO tool and the model is told so; Trial / Pro keep every tool; plans off = unchanged', async () => {
+    const Q: Msg[] = [{ role: 'user', content: 'thoi tiet Da Lat cuoi tuan nay the nao' }]
+    const free = await turn(Q, { unwind: true, oneBrain: true, mode: 'chat', subscriptionsOn: true, luna: intent('chat', []), reply: 'x' })
+    expect(free.toolNames).toEqual([])
+    expect(free.system).toContain('Mode: Plain')
+    expect(free.system).not.toContain('Mode: Chat.')
+    for (const plan of ['momo', 'coco']) {
+      const paid = await turn(Q, { unwind: true, oneBrain: true, mode: 'chat', plan, subscriptionsOn: true, luna: intent('chat', []), reply: 'x' })
+      expect(paid.toolNames, plan).toEqual(expect.arrayContaining(['web_search', 'get_weather_forecast']))
+      expect(paid.system, plan).toContain('Mode: Chat.')
+    }
+    const off = await turn(Q, { unwind: true, oneBrain: true, mode: 'chat', luna: intent('chat', []), reply: 'x' })
+    expect(off.toolNames).toContain('web_search')
+  }, 60000)
   it('31/10 (T01 measured): a news lookup is not the last word - its result tells the model to search the web when it does not answer', async () => {
     const Q: Msg[] = [{ role: 'user', content: 'tin moi nhat ve vu hack san giao dich' }]
     const NEWS = [{ name: 'get_news', args: { query: 'vu hack san giao dich' } }]
@@ -1153,5 +1169,90 @@ describe('one brain: a place keyword alone does not run the place guards (P0-3)'
     const off = await turn(ASK, { unwind: true, oneBrain: false, luna: intent('pick', ['food']), reply })
     expect(off.text).not.toContain('50.000đ')
     expect(off.logs.some(l => l.guard === 'legacy_stage' && l.stage === 'snippet_price')).toBe(true)
+  }, 60000)
+})
+
+// Layout slice 2 (14/11): CONSULT_PRESENT_BLOCKS. The model declares compare / ask / booking blocks and points at this turn's tool results by id; the server checks the declaration against the
+// turn and sends it as ONE live `8:` annotation after the prose. Flag OFF: the tool does not exist, no result carries an id, no frame is sent.
+describe('one brain: the model declares the blocks it needs (CONSULT_PRESENT_BLOCKS, layout slice 2)', () => {
+  const ROWS = [{ train: 'SE8', depart: '06:00', arrive: '13:43', from_station: 'Ga Sài Gòn', to_station: 'Ga Nha Trang', price_from_vnd: 315000 }]
+  const TRAIN: Msg[] = [{ role: 'user', content: 've tau sai gon nha trang ngay 16/11 cho 2 nguoi' }]
+  const CALL = { name: 'get_transport_options', args: { origin: 'Sài Gòn', destination: 'Nha Trang', date: '2026-11-16', passengers: 2 } }
+  const declare = (blocks: Array<Record<string, unknown>>) => ({ name: 'present_blocks', args: { blocks } })
+  const BOOK = { id: 'b1', type: 'booking', kind: 'transport', title: 'Tàu SE8 Sài Gòn – Nha Trang', providerId: 'vexere', ref: 'r1' }
+  const frames = (raw: string) => raw.split('\n').filter(l => l.startsWith('8:')).flatMap(l => { try { return JSON.parse(l.slice(2)) as Array<Record<string, any>> } catch { return [] } }).filter(f => f.kind === 'tappy.presentation.v1')
+  const run = (o: { presentBlocks: boolean; tools: Array<{ name: string; args: Record<string, unknown> }> }) =>
+    turn(TRAIN, { unwind: true, oneBrain: true, presentBlocks: o.presentBlocks, luna: intent('ask', ['travel']), tools: o.tools, reply: 'Tàu SE8 khởi hành 06:00.', railRows: ROWS })
+
+  it('flag ON: present_blocks joins the tool set, results carry result_id, and a checked booking reaches the client as one live frame with no link in it', async () => {
+    const on = await run({ presentBlocks: true, tools: [CALL, declare([BOOK, { id: 'a1', type: 'ask', questions: [{ text: 'Đi ghế ngồi hay giường nằm?', options: ['Ghế ngồi', 'Giường nằm'] }] }])] })
+    expect(on.toolNames).toContain('present_blocks')
+    expect(on.results.find(r => r.name === 'get_transport_options')?.result?.result_id).toBe('r1')
+    const f = frames(on.raw)
+    expect(f).toHaveLength(1)
+    expect(f[0].presentation.blocks.map((b: { type: string }) => b.type)).toEqual(['booking', 'ask'])
+    expect(f[0].presentation.blocks[0]).toEqual(BOOK)
+    // the contract carries no link; the booking's button comes from the partner layer's link on the result it points at (the model never wrote it)
+    expect(JSON.stringify(f[0].presentation)).not.toMatch(/https?:/)
+    expect(f[0].links.b1).toMatchObject({ providerId: 'vexere', label: 'Vexere', handoff: 'guest' })
+    expect(f[0].links.b1.url).toMatch(/^https:\/\/vexere\.com\/vn\/ve-tau-hoa\//)
+    expect(on.text).toContain('06:00')
+    expect(on.text).not.toContain('tappy.presentation')
+  }, 60000)
+
+  it('flag ON: a booking that points at a result that does not exist sends no frame (the model is told to write text)', async () => {
+    const on = await run({ presentBlocks: true, tools: [CALL, declare([{ ...BOOK, ref: 'r9' }])] })
+    expect(frames(on.raw)).toHaveLength(0)
+    expect(on.results.find(r => r.name === 'present_blocks')?.result?.ok).toBe(false)
+  }, 60000)
+
+  it('flag ON: a partner the registry does not know, and a kind the result cannot ground, are dropped; the valid block next to them stays', async () => {
+    const on = await run({ presentBlocks: true, tools: [CALL, declare([{ ...BOOK, id: 'x1', providerId: 'evilmart' }, { ...BOOK, id: 'x2', kind: 'hotel' }, { ...BOOK, id: 'ok' }])] })
+    const f = frames(on.raw)
+    expect(f[0].presentation.blocks.map((b: { id: string }) => b.id)).toEqual(['ok'])
+  }, 60000)
+
+  it('flag OFF (one brain on): no present_blocks tool, no result_id, no frame', async () => {
+    const off = await run({ presentBlocks: false, tools: [CALL] })
+    expect(off.toolNames).not.toContain('present_blocks')
+    expect(off.results.find(r => r.name === 'get_transport_options')?.result?.result_id).toBeUndefined()
+    expect(frames(off.raw)).toHaveLength(0)
+  }, 60000)
+
+  it('CONSULT_PLAN_V2: a plan carries who it is for, its cost lines (an estimate says so), its total and its assumptions to the user; the typed costs array itself never ships', async () => {
+    const PLAN: Msg[] = [{ role: 'user', content: 'len lich trinh 2 ngay 1 dem o da lat giup minh' }]
+    const args = {
+      type: 'trip', title: 'Đà Lạt 2 ngày 1 đêm', people: 2, budget_total: 'khoảng 4.000.000đ cho 2 người, chưa gồm vé máy bay',
+      days: [{ label: 'Ngày 1 — Hồ Xuân Hương', items: [{ time: 'Sáng', emoji: '🌲', category: 'sightseeing', name: 'Hồ Xuân Hương' }] }],
+      traveler: { party: '2 người lớn', pace: 'thong thả, có buổi tối', interests: ['cà phê', 'phố đêm'] },
+      costs: [{ item: 'Khách sạn 1 đêm, phòng đôi', amount: '800.000đ', basis: 'estimate' }, { item: 'Ăn uống 2 ngày', amount: '1.000.000đ', basis: 'estimate' }],
+      assumptions: ['xuất phát từ TP.HCM'],
+    }
+    const on = await turn(PLAN, { unwind: true, oneBrain: true, planV2: true, luna: intent('plan', ['travel']), tools: [{ name: 'present_plan', args }], reply: 'Mình lập khung 2 ngày, bạn xem thẻ bên dưới.' })
+    const m = on.text.match(/\[TAPPY_PLAN\]([\s\S]*?)\[\/TAPPY_PLAN\]/)
+    expect(m).not.toBeNull()
+    const plan = JSON.parse(m![1])
+    expect(plan.traveler).toEqual({ party: '2 người lớn', pace: 'thong thả, có buổi tối', interests: ['cà phê', 'phố đêm'] })
+    expect(plan.assumptions).toEqual(['xuất phát từ TP.HCM'])
+    expect(Object.keys(plan.cost_breakdown)).toEqual(['Khách sạn 1 đêm, phòng đôi', 'Ăn uống 2 ngày'])
+    expect(plan.cost_breakdown['Khách sạn 1 đêm, phòng đôi']).toContain('800.000')
+    expect(plan.cost_breakdown['Khách sạn 1 đêm, phòng đôi']).toContain('ước tính')
+    expect(plan.budget_total).toContain('4.000.000')
+    expect(plan).not.toHaveProperty('costs')
+  }, 60000)
+
+  it('CONSULT_PLAN_V2 off: the plan is passed on exactly as the model sent it', async () => {
+    const PLAN: Msg[] = [{ role: 'user', content: 'len lich trinh 2 ngay 1 dem o da lat giup minh' }]
+    const args = { type: 'trip', title: 'Đà Lạt 2 ngày 1 đêm', days: [{ label: 'Ngày 1', items: [{ time: 'Sáng', emoji: '🌲', category: 'sightseeing', name: 'Hồ Xuân Hương' }] }], traveler: { party: 'x', pace: 'y' } }
+    const off = await turn(PLAN, { unwind: true, oneBrain: true, planV2: false, luna: intent('plan', ['travel']), tools: [{ name: 'present_plan', args }], reply: 'ok' })
+    const plan = JSON.parse(off.text.match(/\[TAPPY_PLAN\]([\s\S]*?)\[\/TAPPY_PLAN\]/)![1])
+    expect(plan.cost_breakdown).toBeUndefined()
+    expect(plan.assumptions).toBeUndefined()
+  }, 60000)
+
+  it('the flag needs the one brain: with it off, the declaration tool is not offered', async () => {
+    const r = await turn(TRAIN, { unwind: true, oneBrain: false, presentBlocks: true, luna: intent('ask', ['travel']), tools: [CALL], reply: 'ok', railRows: ROWS })
+    expect(r.toolNames).not.toContain('present_blocks')
+    expect(frames(r.raw)).toHaveLength(0)
   }, 60000)
 })

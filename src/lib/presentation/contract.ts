@@ -40,6 +40,25 @@ export type PresentationBlock =
   | { id: string; type: 'media'; media: MediaBlock }
   /** a finished research report: shown in the chat as a summary card that opens the full text */
   | { id: string; type: 'report'; title: string; sourceCount: number }
+  /** a comparison table the MODEL asked for (columns x rows, an optional pick); `ref` ties a row to a tool result */
+  | { id: string; type: 'compare'; title?: string; columns: string[]; rows: CompareRow[]; pick?: number }
+  /** one card per named subject of a comparison or a list of two or more (people, companies, products, places...): a subtitle, key points with a bold lead, the names of the sources the points rest on */
+  | { id: string; type: 'profiles'; title?: string; items: ProfileItem[] }
+  /** 2-3 pictures that show what the answer is about (a product, a place, a person, a vehicle): the MODEL names what to show (`caption`) and the words to find it (`query`); the SERVER finds the pictures and the card carries none of its own */
+  | { id: string; type: 'gallery'; title?: string; items: GalleryItem[] }
+  /** narrowing questions with tap-to-send options */
+  | { id: string; type: 'ask'; questions: AskQuestion[] }
+  /** a "book it" handoff. It names the partner (`providerId`) and the tool result it came from (`ref`); it NEVER carries a link: the server attaches the partner link from the registry */
+  | { id: string; type: 'booking'; kind: BookingKind; title: string; detail?: string; providerId?: string; ref: string }
+
+export interface CompareRow { label: string; cells: string[]; ref?: string }
+export interface ProfilePoint { lead?: string; text: string }
+/** `sources` are NAMES of the places the points came from (a site, a report), never an address: a card carries no link. */
+export interface ProfileItem { name: string; subtitle?: string; points: ProfilePoint[]; sources?: string[] }
+export interface AskQuestion { text: string; options: string[] }
+export interface GalleryItem { caption: string; query: string }
+export const BOOKING_KINDS = ['flight', 'hotel', 'transport', 'ticket', 'activity', 'product'] as const
+export type BookingKind = (typeof BOOKING_KINDS)[number]
 
 export interface Presentation { v: typeof PRESENTATION_VERSION; blocks: PresentationBlock[] }
 
@@ -47,6 +66,173 @@ const isObj = (x: unknown): x is Record<string, unknown> => typeof x === 'object
 
 function jsonOf(x: unknown, max: number): string | null {
   try { const s = JSON.stringify(x); return typeof s === 'string' && s.length <= max ? s : null } catch { return null }
+}
+
+const MAX_COLUMNS = 6
+const MAX_ROWS = 12
+const MAX_QUESTIONS = 3
+const MAX_OPTIONS = 6
+const MAX_COL = 60
+const MAX_LABEL = 80
+const MAX_CELL = 200
+const MAX_QUESTION = 200
+const MAX_OPTION = 60
+const MAX_DETAIL = 240
+const REF = /^[A-Za-z0-9_.:-]{1,64}$/
+const PROVIDER = /^[a-z0-9_]{1,40}$/
+
+/** Single-line plain text, control characters removed, bounded. A text marker inside it makes the whole value unusable (null): a card must not smuggle a marker into the answer. */
+function cleanText(x: unknown, max: number): string | null {
+  if (typeof x !== 'string') return null
+  const t = x.replace(/[\u0000-\u001f\u007f]+/g, m => (/[\n\r\t]/.test(m) ? ' ' : '')).replace(/\s+/g, ' ').trim()
+  if (/\[\/?TAPPY_/i.test(t)) return null
+  return t.slice(0, max)
+}
+
+function readCompare(id: string, raw: Record<string, unknown>): PresentationBlock | null {
+  const cols = raw.columns
+  if (!Array.isArray(cols) || cols.length < 2 || cols.length > MAX_COLUMNS) return null
+  const columns: string[] = []
+  for (const c of cols) { const t = cleanText(c, MAX_COL); if (!t) return null; columns.push(t) }
+  if (!Array.isArray(raw.rows)) return null
+  const rows: CompareRow[] = []
+  for (let i = 0; i < Math.min(raw.rows.length, MAX_SCAN) && rows.length < MAX_ROWS; i++) {
+    const r = raw.rows[i]
+    if (!isObj(r) || !Array.isArray(r.cells) || r.cells.length !== columns.length) continue
+    const label = cleanText(r.label, MAX_LABEL)
+    const cells = r.cells.map(c => cleanText(c, MAX_CELL))
+    if (!label || cells.some(c => c === null)) continue
+    const row: CompareRow = { label, cells: cells as string[] }
+    if (typeof r.ref === 'string' && REF.test(r.ref)) row.ref = r.ref
+    rows.push(row)
+  }
+  if (!rows.length) return null
+  const block: Extract<PresentationBlock, { type: 'compare' }> = { id, type: 'compare', columns, rows }
+  const title = raw.title === undefined ? null : cleanText(raw.title, MAX_TITLE)
+  if (title) block.title = title
+  if (raw.pick !== undefined) {
+    if (typeof raw.pick !== 'number' || !Number.isInteger(raw.pick) || raw.pick < 0 || raw.pick >= columns.length) return null
+    block.pick = raw.pick
+  }
+  return block
+}
+
+// 16/11: one card is a valid block - the fact check may leave a comparison with the one subject whose points the turn's lookups support (the prompt still asks for cards only for two or more subjects)
+const MIN_PROFILES = 1
+const MAX_PROFILES = 6
+const MAX_POINTS = 6
+const MAX_NAME = 80
+const MAX_SUBTITLE = 120
+const MAX_LEAD = 60
+const MAX_POINT = 260
+const MAX_SOURCE_NAMES = 5
+const MAX_SOURCE_NAME = 60
+
+function readProfiles(id: string, raw: Record<string, unknown>): PresentationBlock | null {
+  if (!Array.isArray(raw.items)) return null
+  const items: ProfileItem[] = []
+  const names = new Set<string>()
+  for (let i = 0; i < Math.min(raw.items.length, MAX_SCAN) && items.length < MAX_PROFILES; i++) {
+    const it = raw.items[i]
+    if (!isObj(it) || !Array.isArray(it.points)) continue
+    const name = cleanText(it.name, MAX_NAME)
+    if (!name || names.has(name.toLowerCase())) continue
+    const points: ProfilePoint[] = []
+    for (let j = 0; j < Math.min(it.points.length, MAX_SCAN) && points.length < MAX_POINTS; j++) {
+      const p = it.points[j]
+      if (!isObj(p)) continue
+      const text = cleanText(p.text, MAX_POINT)
+      if (!text) continue
+      const lead = p.lead === undefined ? null : cleanText(p.lead, MAX_LEAD)
+      points.push(lead ? { lead, text } : { text })
+    }
+    if (!points.length) continue
+    const item: ProfileItem = { name, points }
+    const subtitle = it.subtitle === undefined ? null : cleanText(it.subtitle, MAX_SUBTITLE)
+    if (subtitle) item.subtitle = subtitle
+    if (Array.isArray(it.sources)) {
+      const sources: string[] = []
+      for (let k = 0; k < Math.min(it.sources.length, MAX_SCAN) && sources.length < MAX_SOURCE_NAMES; k++) {
+        const s = cleanText(it.sources[k], MAX_SOURCE_NAME)
+        // a source is a NAME: an address is not accepted here, a card carries no link
+        if (s && !/https?:\/\/|www\./i.test(s) && !sources.includes(s)) sources.push(s)
+      }
+      if (sources.length) item.sources = sources
+    }
+    names.add(name.toLowerCase())
+    items.push(item)
+  }
+  if (items.length < MIN_PROFILES) return null
+  const block: Extract<PresentationBlock, { type: 'profiles' }> = { id, type: 'profiles', items }
+  const title = raw.title === undefined ? null : cleanText(raw.title, MAX_TITLE)
+  if (title) block.title = title
+  return block
+}
+
+const MIN_GALLERY = 2
+const MAX_GALLERY = 3
+const MAX_CAPTION = 80
+const MAX_QUERY = 100
+
+/** A gallery: two or three shots, each a short caption and the words a picture search needs. No address and no picture comes from the model: a query that looks like a link is refused. */
+function readGallery(id: string, raw: Record<string, unknown>): PresentationBlock | null {
+  // the model declares `images` (its tool's field); the contract carries them as `items` (what the server sends and the client reads back): both are read, so a parsed block parses again
+  const list = Array.isArray(raw.images) ? raw.images : Array.isArray(raw.items) ? raw.items : null
+  if (!list) return null
+  const items: GalleryItem[] = []
+  const seen = new Set<string>()
+  for (let i = 0; i < Math.min(list.length, MAX_SCAN) && items.length < MAX_GALLERY; i++) {
+    const it = list[i]
+    if (!isObj(it)) continue
+    const caption = cleanText(it.caption, MAX_CAPTION)
+    const query = cleanText(it.query, MAX_QUERY)
+    if (!caption || !query || /https?:\/\/|www\./i.test(query) || seen.has(caption.toLowerCase())) continue
+    seen.add(caption.toLowerCase())
+    items.push({ caption, query })
+  }
+  if (items.length < MIN_GALLERY) return null
+  const block: Extract<PresentationBlock, { type: 'gallery' }> = { id, type: 'gallery', items }
+  const title = raw.title === undefined ? null : cleanText(raw.title, MAX_TITLE)
+  if (title) block.title = title
+  return block
+}
+
+function readAsk(id: string, raw: Record<string, unknown>): PresentationBlock | null {
+  if (!Array.isArray(raw.questions)) return null
+  const questions: AskQuestion[] = []
+  for (let i = 0; i < Math.min(raw.questions.length, MAX_SCAN) && questions.length < MAX_QUESTIONS; i++) {
+    const q = raw.questions[i]
+    if (!isObj(q) || !Array.isArray(q.options)) continue
+    const text = cleanText(q.text, MAX_QUESTION)
+    if (!text) continue
+    const options: string[] = []
+    for (let j = 0; j < Math.min(q.options.length, MAX_SCAN) && options.length < MAX_OPTIONS; j++) {
+      const o = cleanText(q.options[j], MAX_OPTION)
+      if (o && !options.includes(o)) options.push(o)
+    }
+    if (options.length) questions.push({ text, options })
+  }
+  return questions.length ? { id, type: 'ask', questions } : null
+}
+
+function readBooking(id: string, raw: Record<string, unknown>): PresentationBlock | null {
+  if (typeof raw.kind !== 'string' || !(BOOKING_KINDS as readonly string[]).includes(raw.kind)) return null
+  const title = cleanText(raw.title, MAX_TITLE)
+  if (!title || typeof raw.ref !== 'string' || !REF.test(raw.ref)) return null
+  const block: Extract<PresentationBlock, { type: 'booking' }> = { id, type: 'booking', kind: raw.kind as BookingKind, title, ref: raw.ref }
+  if (raw.detail !== undefined) { const d = cleanText(raw.detail, MAX_DETAIL); if (d) block.detail = d }
+  if (raw.providerId !== undefined) { if (typeof raw.providerId !== 'string' || !PROVIDER.test(raw.providerId)) return null; block.providerId = raw.providerId }
+  return block
+}
+
+/** The tool results a contract points at (each id once). The server checks every one exists in the turn's tool results before it sends the contract. */
+export function blockRefs(p: Presentation): string[] {
+  const out = new Set<string>()
+  for (const b of p.blocks) {
+    if (b.type === 'booking') out.add(b.ref)
+    else if (b.type === 'compare') for (const r of b.rows) if (r.ref) out.add(r.ref)
+  }
+  return [...out]
 }
 
 function readBlock(raw: unknown): PresentationBlock | null {
@@ -75,6 +261,11 @@ function readBlock(raw: unknown): PresentationBlock | null {
       if (!title || typeof n !== 'number' || !Number.isInteger(n) || n < 0 || n > MAX_SOURCES) return null
       return { id, type: 'report', title, sourceCount: n }
     }
+    case 'compare': return readCompare(id, raw)
+    case 'profiles': return readProfiles(id, raw)
+    case 'gallery': return readGallery(id, raw)
+    case 'ask': return readAsk(id, raw)
+    case 'booking': return readBooking(id, raw)
     default:
       return null
   }

@@ -36,6 +36,8 @@ const ROW_KEEP = [
   '_tappy_price_unconfirmed',
   // The URL fields the CTA and review-link rules read; nothing else the model could invent from.
   'maps_link', 'booking_links', 'website_uri', 'has_tiktok_review',
+  // 14/11 (TVI_READ, tvi/readPlaces.ts): facts the knowledge store holds that this call did not return, each with the date it was read and its freshness. Present only when the store filled a gap.
+  'known_facts',
 ] as const
 
 /** The provider caps a place search at 10 rows; the model reads at most that many. */

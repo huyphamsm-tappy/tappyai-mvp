@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { deriveDecisionFrame, qualifiesFor, missingFor, evidenceGap, evidenceSummary, buildDecisionFrameBlock, type DecisionFrame } from './decisionFrame'
+import { deriveDecisionFrame, qualifiesFor, missingFor, evidenceGap, gapWithRealtimePrice, evidenceSummary, buildDecisionFrameBlock, type DecisionFrame, type EvidenceGap } from './decisionFrame'
 import { deriveNeedProfile } from './needProfile'
 import { rankCandidates } from './rank'
 import { shortlistCandidates } from './shortlist'
@@ -281,5 +281,27 @@ describe('PROVENANCE — atmosphere and quality adjectives need text about the p
   it('suitability inferred from a real category is not touched', () => {
     const out = guardPlaceClaimsInText('Mimi Ultra Lounge là bar, lý tưởng để nhảy múa.', ev as never, { scope: 'all' })
     expect(out.redacted).toBe(0)
+  })
+})
+
+// 15/11/2026: a hotel turn whose prices all came from the live offers (attached after the place rows' gap was read) logged "q0 need=price" while the answer quoted real prices.
+describe('gapWithRealtimePrice — the live offers are the evidence when price was the only thing missing', () => {
+  const gap = (over: Partial<EvidenceGap> = {}): EvidenceGap => ({ qualified: 0, total: 17, needed: ['price'], action: 'search_again', ...over })
+  const offers = [{ provider: 'agoda', price: 246494 }, { provider: 'agoda', price: 312044 }, { provider: 'agoda', name: 'no price (stale)' }]
+
+  it('price was the only gap and fresh priced offers exist: recommend over them (priced count, all offers)', () => {
+    expect(gapWithRealtimePrice(gap(), offers)).toEqual({ qualified: 2, total: 17, needed: ['price'], action: 'recommend' })
+    expect(gapWithRealtimePrice(gap({ action: 'insufficient', total: 0 }), offers)).toEqual({ qualified: 2, total: 3, needed: ['price'], action: 'recommend' })
+  })
+  it('anything else missing (a rating, hours) is not something a price can stand in for: untouched', () => {
+    expect(gapWithRealtimePrice(gap({ needed: ['price', 'rating'] as never }), offers)).toBeNull()
+    expect(gapWithRealtimePrice(gap({ needed: ['rating'] as never }), offers)).toBeNull()
+    expect(gapWithRealtimePrice(gap({ needed: [] }), offers)).toBeNull()
+  })
+  it('already a recommendation, or no priced offer (none, stale only, zero or junk prices): untouched', () => {
+    expect(gapWithRealtimePrice(gap({ action: 'recommend', qualified: 3 }), offers)).toBeNull()
+    expect(gapWithRealtimePrice(gap(), undefined)).toBeNull()
+    expect(gapWithRealtimePrice(gap(), [])).toBeNull()
+    expect(gapWithRealtimePrice(gap(), [{ name: 'stale' }, { price: 0 }, { price: Number.NaN }, { price: '300000' }, null, 'x'])).toBeNull()
   })
 })

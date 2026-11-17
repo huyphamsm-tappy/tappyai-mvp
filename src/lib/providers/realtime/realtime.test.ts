@@ -222,8 +222,11 @@ describe('end to end — the fallback chain on the owner fixtures', () => {
     expect(links(withHotel).agoda.depth).toBe(3)
     const verified = await resolveBooking({ ...stay, context: { ...stay.context, providerRefs: undefined } }, { env: {}, now })
     expect(links(verified).agoda.directUrl).toContain('city=15932') // Đà Lạt is in the verified table
-    // A3 (owner-approved 30/10): Vũng Tàu now has a verified Agoda id (17190, its own city page); Quy Nhơn has none, so it is the unknown city.
-    const unknownCity = await resolveBooking({ ...stay, context: { ...stay.context, destination: 'Quy Nhơn', providerRefs: undefined } }, { env: {}, now })
+    // A3 (owner-approved 30/10): Vũng Tàu has a verified Agoda id (17190). 14/11: Quy Nhơn was the "unknown city" of this test only because the 30/10 slug guess 404ed; its id (17242) is on its own page and in Agoda's
+    // Hotel Data File, so it now gets its dated search link. The behaviour under test - an unknown city falls back to the landing page, never a guessed id - is kept, on a place that is really unknown.
+    const quyNhon = await resolveBooking({ ...stay, context: { ...stay.context, destination: 'Quy Nhơn', providerRefs: undefined } }, { env: {}, now })
+    expect(links(quyNhon).agoda.directUrl).toContain('city=17242')
+    const unknownCity = await resolveBooking({ ...stay, context: { ...stay.context, destination: 'Atlantis', providerRefs: undefined } }, { env: {}, now })
     expect(links(unknownCity).agoda).toMatchObject({ directUrl: 'https://www.agoda.com/vi-vn/', level: 'PROVIDER_PAGE' })
   })
 

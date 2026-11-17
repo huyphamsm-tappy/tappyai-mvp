@@ -33,7 +33,9 @@ export function sniffKind(bytes: Uint8Array): SniffedKind {
   return 'unknown'
 }
 
-const DECLARED_KIND: Record<string, SniffedKind> = { 'image/png': 'png', 'image/jpeg': 'jpeg', 'image/webp': 'webp', 'image/gif': 'gif', 'application/pdf': 'pdf' }
+const DECLARED_KIND: Record<string, SniffedKind> = { 'image/png': 'png', 'image/jpeg': 'jpeg', 'image/webp': 'webp', 'image/gif': 'gif', 'application/pdf': 'pdf',
+  // 15/11: Word and Excel files are ZIP packages by their bytes
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'zip', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'zip' }
 
 /**
  * Do the BYTES of a base64 data URL match the type it declares? Only the first bytes are decoded (enough for every signature). A declared type outside the five the web client may send is

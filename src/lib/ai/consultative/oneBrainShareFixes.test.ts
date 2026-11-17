@@ -33,7 +33,7 @@ describe('T38: a subject card of another sense than the answer is not shown (one
     expect(short.block).toBeNull()
   })
   it('in a comparison only the confirmed cards stay', async () => {
-    const two = U({ intent: 'knowledge', entities: [{ name: 'Elon Musk', type: 'person', wiki_title: 'Elon Musk' }, { name: 'Claude', type: 'product', wiki_title: null }] })
+    const two = U({ intent: 'knowledge', answer_shape: 'comparison', entities: [{ name: 'Elon Musk', type: 'person', wiki_title: 'Elon Musk' }, { name: 'Claude', type: 'product', wiki_title: null }] })
     const wiki = async (s: string) => (s === 'Claude' ? ALLIGATOR : { name: s, summary: `${s} là doanh nhân.`, href: `https://vi.wikipedia.org/wiki/${s.replace(/ /g, '_')}`, source: 'Wikipedia' as const })
     const r = await resolveDocMedia(two, ANSWER, ONE, { wiki, webImages: async () => [], confirmSense: async (_a, cards) => cards.map(c => c.name !== 'Claude') })
     expect(r.block).toMatchObject({ kind: 'entity', entity: { name: 'Elon Musk' } })

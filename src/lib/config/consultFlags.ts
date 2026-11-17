@@ -257,6 +257,21 @@ export function consultOneBrainOn(env: Env = process.env): boolean { return unwi
 //                       the V4 picture layer). One extra intent-role call reads what the pictures should show; up to 6 image searches. Needs CONSULT_ONE_BRAIN. Localhost UAT only.
 export const CONSULT_ONE_BRAIN_MEDIA_FLAG = 'CONSULT_ONE_BRAIN_MEDIA'
 export function consultOneBrainMediaOn(env: Env = process.env): boolean { return unwindOn(env, CONSULT_ONE_BRAIN_MEDIA_FLAG) && consultOneBrainOn(env) }
+//   CONSULT_PRESENT_BLOCKS  (14/11, layout slice 2) a one-brain answer may DECLARE the blocks it needs (compare table, ask chips, booking handoff) through the present_blocks tool, pointing at this
+//                       turn's tool results by id; the server checks the declaration and sends it as a live annotation (tappy.presentation.v1), nothing stored. Needs CONSULT_ONE_BRAIN.
+//                       Default OFF; locked in production unless named in CONSULT_PRODUCTION_ALLOW.
+export const CONSULT_PRESENT_BLOCKS_FLAG = 'CONSULT_PRESENT_BLOCKS'
+export function consultPresentBlocksOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_PRESENT_BLOCKS_FLAG]) && !lockedInProduction(env, CONSULT_PRESENT_BLOCKS_FLAG) && consultOneBrainOn(env) }
+//   CONSULT_PERSON_MODEL  (14/11) an INPUT fix, no prompt text: the memory extraction runs on ordinary turns and the WHO traits (style, company) are kept while the transient things stay dropped (the prompt
+//                       texts first added here were removed after the 14/11 investigation). Needs CONSULT_ONE_BRAIN. Default OFF; locked in production unless named in CONSULT_PRODUCTION_ALLOW
+//                       (it stores more about the person: the owner decides with the privacy page).
+//   CONSULT_PLAN_V2  (14/11, owner UAT: "a plan with no cost and no way to book is a challenge to the person") present_plan carries, as required typed fields, who the plan is for, every cost line (found or
+//                       estimate), the total for the party and what it assumed (planV2.ts; a typed contract, no prompt text). Needs
+//                       CONSULT_ONE_BRAIN. Default OFF; locked in production unless named in CONSULT_PRODUCTION_ALLOW.
+export const CONSULT_PLAN_V2_FLAG = 'CONSULT_PLAN_V2'
+export function consultPlanV2On(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_PLAN_V2_FLAG]) && !lockedInProduction(env, CONSULT_PLAN_V2_FLAG) && consultOneBrainOn(env) }
+export const CONSULT_PERSON_MODEL_FLAG = 'CONSULT_PERSON_MODEL'
+export function consultPersonModelOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_PERSON_MODEL_FLAG]) && !lockedInProduction(env, CONSULT_PERSON_MODEL_FLAG) && consultOneBrainOn(env) }
 //   CONSULT_PARALLEL    LOCALHOST ONLY: Parallel (parallelClient.ts) reads a page the consult reader could not (blocked / timed out / JavaScript / thin), and
 //                       searches when Serper gives no rows. Needs PARALLEL_API_KEY; at most 1 search + 3 reads a turn, 5 USD a day. A new data processor:
 //                       never in production until the Owner decides on the privacy page and the AI-data consent.

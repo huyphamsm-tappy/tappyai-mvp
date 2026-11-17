@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { oneBrainMediaStream } from './oneBrainMedia'
+import { oneBrainMediaStream, answerShapeCounts } from './oneBrainMedia'
 import type { UnderstandResult } from '@/lib/ai/answerV4/understand'
 import type { DocMediaResult } from '@/lib/ai/answerV4/docMedia'
 
@@ -8,6 +8,14 @@ const ENTITY = { v: 1 as const, kind: 'entity' as const, entity: { name: 'Chiế
 const body = (lines: string[]) => new ReadableStream<Uint8Array>({ start(c) { const e = new TextEncoder(); for (const l of lines) c.enqueue(e.encode(l)); c.close() } })
 const read = async (s: ReadableStream<Uint8Array>) => new Response(s).text()
 const ANSWER = ['0:"Mở đầu. "\n', '0:"Phần hai."\n', 'e:{"finishReason":"stop"}\n', 'd:{"finishReason":"stop"}\n']
+
+describe('answerShapeCounts', () => {
+  it('counts quote lines and markdown tables, never words', () => {
+    const text = ['Mở đầu.', '', '| A | B |', '|---|:--:|', '| 1 | 2 |', '', '> Điều đáng nhớ.', '', 'Bình thường > không phải quote', '', '| X | Y |', '| --- | --- |', '| 3 | 4 |'].join('\n')
+    expect(answerShapeCounts(text)).toEqual({ chars: text.length, quotes: 1, md_tables: 2 })
+    expect(answerShapeCounts('Canberra.')).toEqual({ chars: 9, quotes: 0, md_tables: 0 })
+  })
+})
 
 describe('oneBrainMediaStream', () => {
   it('passes the answer through and puts the subject card and the item pictures BEFORE the finish frame; the resolver reads the whole answer', async () => {
@@ -50,5 +58,41 @@ describe('oneBrainMediaStream', () => {
     expect(seen).toBe('Mở đầu.')
     expect(out).not.toContain('javascript:')
     expect(out).not.toContain('TAPPY_MEDIA')
+  })
+  it('the declared subject cards get their pictures in one frame before the finish frame; the trace says the shape and the declared blocks', async () => {
+    const none = async (): Promise<DocMediaResult> => ({ block: null, annotation: null, webImages: 0, trace: {} })
+    const logs: Array<Record<string, unknown>> = []
+    const out = await read(oneBrainMediaStream(body(ANSWER), {
+      understanding: Promise.resolve(U), cardTurn: () => false, resolve: none as never, log: l => logs.push(l),
+      subjects: () => [{ name: 'Be', hint: 'Grab và Be' }, { name: 'Grab' }],
+      declared: () => ['profiles'],
+      subjectDeps: { verify: async (xs: unknown[]) => xs.map(() => true), wiki: async (s: string) => (s === 'Grab' ? ({ name: 'Grab', summary: 'x', image: 'https://upload.wikimedia.org/g.png', href: 'https://vi.wikipedia.org/wiki/Grab', source: 'Wikipedia' } as never) : null), webImages: async (q: string) => [`https://img.example.com/${encodeURIComponent(q)}.jpg`] },
+    }))
+    const lines = out.trim().split('\n')
+    const frame = lines.find(l => l.startsWith('8:') && l.includes('tappy.subject_images.v1'))
+    expect(frame).toBeTruthy()
+    // only the subject Wikipedia cannot illustrate gets a web picture; the query carries the comparison's own title
+    expect(JSON.parse(frame!.slice(2))[0].images).toEqual([{ name: 'Be', src: 'https://img.example.com/Be%20Grab%20v%C3%A0%20Be.jpg' }])
+    expect(lines.indexOf(frame!)).toBeLessThan(lines.indexOf('d:{"finishReason":"stop"}'))
+    expect(logs[0]).toMatchObject({ shape: 'explanation', declared: ['profiles'], subject_images: 1 })
+  })
+  it('the declared gallery gets its pictures in the same frame, under "gallery", before the finish frame', async () => {
+    const none = async (): Promise<DocMediaResult> => ({ block: null, annotation: null, webImages: 0, trace: {} })
+    const logs: Array<Record<string, unknown>> = []
+    const out = await read(oneBrainMediaStream(body(ANSWER), {
+      understanding: Promise.resolve(U), cardTurn: () => false, resolve: none as never, log: l => logs.push(l),
+      gallery: () => [{ caption: 'Model S', query: 'Tesla Model S' }, { caption: 'Model 3', query: 'Tesla Model 3' }],
+      subjectDeps: { verify: async (xs: unknown[]) => xs.map(() => true), webImages: async (q: string) => [`https://img.example.com/${encodeURIComponent(q)}.jpg`] },
+    }))
+    const lines = out.trim().split('\n')
+    const frame = lines.find(l => l.startsWith('8:') && l.includes('tappy.subject_images.v1'))!
+    expect(JSON.parse(frame.slice(2))[0].gallery.map((g: { name: string }) => g.name)).toEqual(['Model S', 'Model 3'])
+    expect(lines.indexOf(frame)).toBeLessThan(lines.indexOf('d:{"finishReason":"stop"}'))
+    expect(logs[0]).toMatchObject({ gallery_images: 2, subject_images: 0 })
+  })
+  it('a turn with no declared subject cards sends no subject frame', async () => {
+    const none = async (): Promise<DocMediaResult> => ({ block: null, annotation: null, webImages: 0, trace: {} })
+    const out = await read(oneBrainMediaStream(body(ANSWER), { understanding: Promise.resolve(U), cardTurn: () => false, resolve: none as never }))
+    expect(out).not.toContain('tappy.subject_images.v1')
   })
 })

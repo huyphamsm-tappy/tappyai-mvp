@@ -29,6 +29,23 @@ describe('one brain: a subject card only when the turn is about the entity', () 
   it('without the option (the agent runtime) the same lookup turn keeps its card, as before', async () => {
     expect((await resolveDocMedia(U({ intent: 'lookup' }), 'x', {}, deps)).block).toMatchObject({ kind: 'entity' })
   })
+  it('15/11: two named things in a LOOKUP (two oil benchmarks) are not a comparison: no side-by-side cards; a real comparison keeps them', async () => {
+    const two = [{ name: 'Brent', type: 'concept' as const, wiki_title: 'Brent' }, { name: 'WTI', type: 'concept' as const, wiki_title: 'WTI' }]
+    const wiki = async (n: string) => ({ ...ARTICLE, name: n, href: `https://vi.wikipedia.org/wiki/${n}` })
+    const d = { wiki, webImages: async () => [] as string[] }
+    for (const shape of ['explanation', 'chat', 'table'] as const) expect((await resolveDocMedia(U({ intent: 'lookup', answer_shape: shape, entities: two }), 'x', {}, d)).block, shape).toBeNull()
+    expect((await resolveDocMedia(U({ intent: 'comparison', answer_shape: 'comparison', entities: two }), 'x', {}, d)).block).toMatchObject({ kind: 'entities' })
+  })
+  it('15/11: a Vietnamese reader gets the Vietnamese article when the lookup fell back to English and the same article exists in Vietnamese; otherwise the English one stays', async () => {
+    const en = { name: 'BYD Company', summary: 'BYD Company Limited is a Chinese conglomerate.', href: 'https://en.wikipedia.org/wiki/BYD_Company', source: 'Wikipedia' as const }
+    const vi = { name: 'BYD Auto', summary: 'BYD Auto là hãng xe Trung Quốc.', href: 'https://vi.wikipedia.org/wiki/BYD_Auto', source: 'Wikipedia' as const }
+    const one = [{ name: 'BYD', type: 'organization' as const, wiki_title: null }]
+    const wiki = async (s: string, l: string) => (l === 'vi' && s === 'BYD Auto' ? vi : l === 'vi' ? en : null)
+    const withLink = await resolveDocMedia(U({ intent: 'knowledge', entities: one }), 'x', {}, { wiki, webImages: async () => [], langlink: async () => 'BYD Auto' })
+    expect(withLink.block).toMatchObject({ kind: 'entity', entity: { href: 'https://vi.wikipedia.org/wiki/BYD_Auto' } })
+    const noLink = await resolveDocMedia(U({ intent: 'knowledge', entities: one }), 'x', {}, { wiki, webImages: async () => [], langlink: async () => null })
+    expect(noLink.block).toBeNull() // 16/11: an English-only article gives a Vietnamese reader no card (its words would be English)
+  })
   it('the one-brain stream asks for exactly these intents', async () => {
     let asked: ReadonlySet<string> | undefined
     const resolve = async (_u: unknown, _a: string, o: { subjectIntents?: ReadonlySet<string> }): Promise<DocMediaResult> => { asked = o.subjectIntents; return { block: null, annotation: null, webImages: 0, trace: {} } }

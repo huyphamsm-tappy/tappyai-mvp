@@ -1,0 +1,649 @@
+{
+ "source": "Agoda Hotel Data File, EN feed, partial prefix (first ~29% of the file by hotel_id: the server closes the download after about 60 s), read 14/11/2026. A LOWER BOUND: a city whose hotels all sit later in the file is absent.",
+ "rowsRead": 231649,
+ "cities": [
+  {
+   "id": 13170,
+   "name": "Ho Chi Minh City",
+   "state": "Ho Chi Minh",
+   "hotels": 950,
+   "aliases": [
+    "Ho Chi Minh",
+    "Ho Chi Minh City"
+   ]
+  },
+  {
+   "id": 2758,
+   "name": "Hanoi",
+   "state": "Ha Noi",
+   "hotels": 681,
+   "aliases": [
+    "Hanoi"
+   ]
+  },
+  {
+   "id": 16440,
+   "name": "Da Nang",
+   "state": "Da Nang",
+   "hotels": 455,
+   "aliases": [
+    "Da Nang"
+   ]
+  },
+  {
+   "id": 16552,
+   "name": "Hoi An",
+   "state": "Quang Nam",
+   "hotels": 344,
+   "aliases": [
+    "Hoi An"
+   ]
+  },
+  {
+   "id": 2679,
+   "name": "Nha Trang",
+   "state": "Khanh Hoa",
+   "hotels": 283,
+   "aliases": [
+    "Nha Trang"
+   ]
+  },
+  {
+   "id": 17188,
+   "name": "Phu Quoc Island",
+   "state": "Kien Giang",
+   "hotels": 204,
+   "aliases": [
+    "Phu Quoc",
+    "Phu Quoc Island"
+   ]
+  },
+  {
+   "id": 17190,
+   "name": "Vung Tau",
+   "state": "Ba Ria Vung Tau",
+   "hotels": 200,
+   "aliases": [
+    "Vung Tau"
+   ]
+  },
+  {
+   "id": 15932,
+   "name": "Dalat",
+   "state": "Lam Dong",
+   "hotels": 175,
+   "aliases": [
+    "Dalat"
+   ]
+  },
+  {
+   "id": 16264,
+   "name": "Phan Thiet",
+   "state": "Binh Thuan",
+   "hotels": 160,
+   "aliases": [
+    "Phan Thiet"
+   ]
+  },
+  {
+   "id": 17182,
+   "name": "Hạ Long",
+   "state": "Quang Ninh",
+   "hotels": 130,
+   "aliases": [
+    "Hạ Long"
+   ]
+  },
+  {
+   "id": 3738,
+   "name": "Hue",
+   "state": "Thua Thien Hue",
+   "hotels": 115,
+   "aliases": [
+    "Hue"
+   ]
+  },
+  {
+   "id": 17160,
+   "name": "Sapa",
+   "state": "Lao Cai",
+   "hotels": 109,
+   "aliases": [
+    "Sapa"
+   ]
+  },
+  {
+   "id": 17245,
+   "name": "Ninh Bình",
+   "state": "Ninh Binh",
+   "hotels": 99,
+   "aliases": [
+    "Ninh Bình"
+   ]
+  },
+  {
+   "id": 16079,
+   "name": "Cần Thơ",
+   "state": "Can Tho",
+   "hotels": 49,
+   "aliases": [
+    "Cần Thơ"
+   ]
+  },
+  {
+   "id": 17242,
+   "name": "Quy Nhon (Binh Dinh)",
+   "state": "Binh Dinh",
+   "hotels": 45,
+   "aliases": [
+    "Binh Dinh",
+    "Quy Nhon",
+    "Quy Nhon (Binh Dinh)"
+   ]
+  },
+  {
+   "id": 17161,
+   "name": "Haiphong",
+   "state": "Hai Phong",
+   "hotels": 36,
+   "aliases": [
+    "Haiphong"
+   ]
+  },
+  {
+   "id": 18866,
+   "name": "Đồng Hới (Quảng Bình)",
+   "state": "Quang Binh",
+   "hotels": 36,
+   "aliases": [
+    "Quảng Bình",
+    "Đồng Hới",
+    "Đồng Hới (Quảng Bình)"
+   ]
+  },
+  {
+   "id": 17243,
+   "name": "Cat Ba Island",
+   "state": "Hai Phong",
+   "hotels": 32,
+   "aliases": [
+    "Cat Ba",
+    "Cat Ba Island"
+   ]
+  },
+  {
+   "id": 228387,
+   "name": "Phong Nha",
+   "state": "Quang Binh",
+   "hotels": 27,
+   "aliases": [
+    "Phong Nha"
+   ]
+  },
+  {
+   "id": 105661,
+   "name": "Thanh Hoá / Sầm Sơn Beach",
+   "state": "Thanh Hoa",
+   "hotels": 21,
+   "aliases": [
+    "Sầm Sơn",
+    "Sầm Sơn Beach",
+    "Thanh Hoá / Sầm Sơn",
+    "Thanh Hoá / Sầm Sơn Beach"
+   ]
+  },
+  {
+   "id": 78908,
+   "name": "Tuy Hòa (Phú Yên)",
+   "state": "Phu Yen",
+   "hotels": 19,
+   "aliases": [
+    "Phú Yên",
+    "Tuy Hòa",
+    "Tuy Hòa (Phú Yên)"
+   ]
+  },
+  {
+   "id": 115678,
+   "name": "Bình Dương",
+   "state": "Binh Duong",
+   "hotels": 19,
+   "aliases": [
+    "Bình Dương"
+   ]
+  },
+  {
+   "id": 115625,
+   "name": "Bac Ninh",
+   "state": "Bac Ninh",
+   "hotels": 18,
+   "aliases": [
+    "Bac Ninh"
+   ]
+  },
+  {
+   "id": 19603,
+   "name": "Buon Ma Thuot",
+   "state": "Dak Lak",
+   "hotels": 15,
+   "aliases": [
+    "Buon Ma Thuot"
+   ]
+  },
+  {
+   "id": 106067,
+   "name": "Quang Ngai",
+   "state": "Quang Ngai",
+   "hotels": 14,
+   "aliases": [
+    "Quang Ngai"
+   ]
+  },
+  {
+   "id": 105652,
+   "name": "Côn Đảo Islands",
+   "state": "Ba Ria Vung Tau",
+   "hotels": 13,
+   "aliases": [
+    "Côn Đảo",
+    "Côn Đảo Islands"
+   ]
+  },
+  {
+   "id": 21557,
+   "name": "Phan Rang – Tháp Chàm (Ninh Thuận)",
+   "state": "Ninh Thuan",
+   "hotels": 13,
+   "aliases": [
+    "Ninh Thuận",
+    "Phan Rang – Tháp Chàm",
+    "Phan Rang – Tháp Chàm (Ninh Thuận)"
+   ]
+  },
+  {
+   "id": 214967,
+   "name": "My Tho (Tien Giang)",
+   "state": "Tien Giang",
+   "hotels": 11,
+   "aliases": [
+    "My Tho",
+    "My Tho (Tien Giang)"
+   ]
+  },
+  {
+   "id": 226263,
+   "name": "Mai Chau (Hoa Binh)",
+   "state": "Hoa Binh",
+   "hotels": 10,
+   "aliases": [
+    "Mai Chau",
+    "Mai Chau (Hoa Binh)"
+   ]
+  },
+  {
+   "id": 17162,
+   "name": "Chau Doc (An Giang)",
+   "state": "An Giang",
+   "hotels": 10,
+   "aliases": [
+    "Chau Doc",
+    "Chau Doc (An Giang)"
+   ]
+  },
+  {
+   "id": 702291,
+   "name": "Nam Cat Tien",
+   "state": "Dong Nai",
+   "hotels": 10,
+   "aliases": [
+    "Nam Cat Tien"
+   ]
+  },
+  {
+   "id": 115666,
+   "name": "Vinh",
+   "state": "Nghe An",
+   "hotels": 9,
+   "aliases": [
+    "Vinh"
+   ]
+  },
+  {
+   "id": 106068,
+   "name": "Lao Cai City",
+   "state": "Lao Cai",
+   "hotels": 9,
+   "aliases": [
+    "Lao Cai",
+    "Lao Cai City"
+   ]
+  },
+  {
+   "id": 106012,
+   "name": "Rach Gia (Kien Giang)",
+   "state": "Kien Giang",
+   "hotels": 9,
+   "aliases": [
+    "Rach Gia",
+    "Rach Gia (Kien Giang)"
+   ]
+  },
+  {
+   "id": 78906,
+   "name": "Pleiku (Gia Lai)",
+   "state": "Gia Lai",
+   "hotels": 8,
+   "aliases": [
+    "Gia Lai",
+    "Pleiku",
+    "Pleiku (Gia Lai)"
+   ]
+  },
+  {
+   "id": 204056,
+   "name": "Ben Tre",
+   "state": "Ben Tre",
+   "hotels": 8,
+   "aliases": [
+    "Ben Tre"
+   ]
+  },
+  {
+   "id": 105991,
+   "name": "Bien Hoa (Dong Nai)",
+   "state": "Dong Nai",
+   "hotels": 8,
+   "aliases": [
+    "Bien Hoa",
+    "Bien Hoa (Dong Nai)",
+    "Dong Nai"
+   ]
+  },
+  {
+   "id": 230398,
+   "name": "Tam Dao (Vinh Phuc)",
+   "state": "Vinh Phuc",
+   "hotels": 7,
+   "aliases": [
+    "Tam Dao",
+    "Tam Dao (Vinh Phuc)"
+   ]
+  },
+  {
+   "id": 219881,
+   "name": "Cai Be (Tien Giang)",
+   "state": "Tien Giang",
+   "hotels": 7,
+   "aliases": [
+    "Cai Be",
+    "Cai Be (Tien Giang)"
+   ]
+  },
+  {
+   "id": 115754,
+   "name": "Thai Nguyen",
+   "state": "Thai Nguyen",
+   "hotels": 7,
+   "aliases": [
+    "Thai Nguyen"
+   ]
+  },
+  {
+   "id": 204059,
+   "name": "Cao Lanh (Dong Thap)",
+   "state": "Dong Thap",
+   "hotels": 6,
+   "aliases": [
+    "Cao Lanh",
+    "Cao Lanh (Dong Thap)",
+    "Dong Thap"
+   ]
+  },
+  {
+   "id": 230985,
+   "name": "Ha Tinh",
+   "state": "Ha Tinh",
+   "hotels": 6,
+   "aliases": [
+    "Ha Tinh"
+   ]
+  },
+  {
+   "id": 204063,
+   "name": "Kon Tum",
+   "state": "Kon Tum",
+   "hotels": 6,
+   "aliases": [
+    "Kon Tum"
+   ]
+  },
+  {
+   "id": 204060,
+   "name": "Ha Giang",
+   "state": "Ha Giang",
+   "hotels": 6,
+   "aliases": [
+    "Ha Giang"
+   ]
+  },
+  {
+   "id": 204064,
+   "name": "Lang Son",
+   "state": "Lang Son",
+   "hotels": 5,
+   "aliases": [
+    "Lang Son"
+   ]
+  },
+  {
+   "id": 21501,
+   "name": "Cua Lo Beach",
+   "state": "Nghe An",
+   "hotels": 5,
+   "aliases": [
+    "Cua Lo",
+    "Cua Lo Beach"
+   ]
+  },
+  {
+   "id": 115751,
+   "name": "Tay Ninh",
+   "state": "Tay Ninh",
+   "hotels": 5,
+   "aliases": [
+    "Tay Ninh"
+   ]
+  },
+  {
+   "id": 115742,
+   "name": "Tam Ky (Quang Nam)",
+   "state": "Quang Nam",
+   "hotels": 5,
+   "aliases": [
+    "Quang Nam",
+    "Tam Ky",
+    "Tam Ky (Quang Nam)"
+   ]
+  },
+  {
+   "id": 115635,
+   "name": "Hai Duong",
+   "state": "Hai Duong",
+   "hotels": 5,
+   "aliases": [
+    "Hai Duong"
+   ]
+  },
+  {
+   "id": 115734,
+   "name": "Vinh Long",
+   "state": "Vinh Long",
+   "hotels": 5,
+   "aliases": [
+    "Vinh Long"
+   ]
+  },
+  {
+   "id": 720977,
+   "name": "Tanh Gia (Thanh Hoa)",
+   "state": "Thanh Hoa",
+   "hotels": 5,
+   "aliases": [
+    "Tanh Gia",
+    "Tanh Gia (Thanh Hoa)"
+   ]
+  },
+  {
+   "id": 115735,
+   "name": "Vinh Yen (Vinh Phuc)",
+   "state": "Vinh Phuc",
+   "hotels": 4,
+   "aliases": [
+    "Vinh Yen",
+    "Vinh Yen (Vinh Phuc)"
+   ]
+  },
+  {
+   "id": 115740,
+   "name": "Phuc Yen",
+   "state": "Vinh Phuc",
+   "hotels": 4,
+   "aliases": [
+    "Phuc Yen"
+   ]
+  },
+  {
+   "id": 232772,
+   "name": "Van Giang",
+   "state": "Ha Tinh",
+   "hotels": 4,
+   "aliases": [
+    "Van Giang"
+   ]
+  },
+  {
+   "id": 204055,
+   "name": "Bac Lieu",
+   "state": "Bac Lieu",
+   "hotels": 4,
+   "aliases": [
+    "Bac Lieu"
+   ]
+  },
+  {
+   "id": 19657,
+   "name": "Dien Bien Phu",
+   "state": "Dien Bien",
+   "hotels": 4,
+   "aliases": [
+    "Dien Bien Phu"
+   ]
+  },
+  {
+   "id": 115622,
+   "name": "Long Xuyen (An Giang)",
+   "state": "An Giang",
+   "hotels": 3,
+   "aliases": [
+    "Long Xuyen",
+    "Long Xuyen (An Giang)"
+   ]
+  },
+  {
+   "id": 204067,
+   "name": "Dong Ha (Quang Tri)",
+   "state": "Quang Tri",
+   "hotels": 3,
+   "aliases": [
+    "Dong Ha",
+    "Dong Ha (Quang Tri)",
+    "Quang Tri"
+   ]
+  },
+  {
+   "id": 204053,
+   "name": "Bac Giang",
+   "state": "Bac Giang",
+   "hotels": 3,
+   "aliases": [
+    "Bac Giang"
+   ]
+  },
+  {
+   "id": 720973,
+   "name": "Tu Son (Bac Ninh)",
+   "state": "Bac Ninh",
+   "hotels": 3,
+   "aliases": [
+    "Tu Son",
+    "Tu Son (Bac Ninh)"
+   ]
+  },
+  {
+   "id": 204071,
+   "name": "Tuyen Quang",
+   "state": "Tuyen Quang",
+   "hotels": 3,
+   "aliases": [
+    "Tuyen Quang"
+   ]
+  },
+  {
+   "id": 204057,
+   "name": "Cao Bang",
+   "state": "Cao Bang",
+   "hotels": 3,
+   "aliases": [
+    "Cao Bang"
+   ]
+  },
+  {
+   "id": 21673,
+   "name": "Ha Tien (Kien Giang)",
+   "state": "Kien Giang",
+   "hotels": 3,
+   "aliases": [
+    "Ha Tien",
+    "Ha Tien (Kien Giang)"
+   ]
+  },
+  {
+   "id": 226464,
+   "name": "Moc Chau",
+   "state": "Son La",
+   "hotels": 3,
+   "aliases": [
+    "Moc Chau"
+   ]
+  },
+  {
+   "id": 220463,
+   "name": "Chuc Tchia",
+   "state": "Quang Ninh",
+   "hotels": 3,
+   "aliases": [
+    "Chuc Tchia"
+   ]
+  },
+  {
+   "id": 215135,
+   "name": "Tan Hiep",
+   "state": "Quang Nam",
+   "hotels": 3,
+   "aliases": [
+    "Tan Hiep"
+   ]
+  },
+  {
+   "id": 204066,
+   "name": "Viet Tri (Phu Tho)",
+   "state": "Vinh Phuc",
+   "hotels": 3,
+   "aliases": [
+    "Phu Tho",
+    "Viet Tri",
+    "Viet Tri (Phu Tho)"
+   ]
+  }
+ ]
+}
