@@ -140,7 +140,10 @@ describe('one simulated trip turn (Round 24 trace fixtures), flag ON', () => {
     expect(t.plan?.days).toHaveLength(3)
     expect(t.text.match(/khởi hành \*\*thứ Bảy 24\/10\/2026\*\*/g) ?? t.text.match(/thứ Bảy 24\/10\/2026/g)).toHaveLength(1)
     expect(t.text.match(/Lịch này ưu tiên điểm tham quan trong thành phố/g)).toHaveLength(1)
-    expect(t.tail.trim().endsWith('cần chỉnh lại.')).toBe(true)
+    // 17/11 (owner): the trip plan looked hotels up, so its answer now ends with the hotel partner row (Agoda first, then the other platforms) after the plan's own tail.
+    const [tailText, linkRow = ''] = t.tail.split('\n\n🔗 ')
+    expect(tailText.trim().endsWith('cần chỉnh lại.')).toBe(true)
+    expect(linkRow).toMatch(/^Liên kết chính thức: \[Agoda/)
     expect(t.text).not.toContain('Mình không chia sẻ hướng dẫn nội bộ') // the leak guard did not replace the answer
   })
 

@@ -32,9 +32,12 @@ const realtimeLogs = () => logs.filter(l => l.includes('tappyai_realtime')).map(
 describe('A. "khách sạn Đà Lạt 20-22/10 cho 2 người"', () => {
   it('realtime disabled (no flag): the tool result is untouched — nothing realtime is added, nothing is logged', async () => {
     const r = hotelResult()
-    const before = JSON.stringify(r)
     await attachCommerceLinks('get_hotel_prices', r, hotelCtx({ env: {} }) as never)
-    expect(JSON.stringify(r)).toBe(before)
+    // 17/11 (owner): a hotel answer always carries the partner row (Agoda first + other platforms), flag or not; nothing REALTIME is added.
+    const { booking_links, _tappy_commerce, ...rest } = r
+    expect(rest).toEqual({ search_results: [], hotel_list: [] })
+    expect((booking_links as Row[]).some(l => l._realtime === true)).toBe(false)
+    expect(Array.isArray(_tappy_commerce)).toBe(true)
     expect(realtimeLogs()).toEqual([])
   })
 
@@ -42,7 +45,7 @@ describe('A. "khách sạn Đà Lạt 20-22/10 cho 2 người"', () => {
     const r = hotelResult()
     await attachCommerceLinks('get_hotel_prices', r, hotelCtx({ env: { CCP_REALTIME_AGODA: '1' } }) as never)
     expect(r.realtime_results).toBeUndefined()
-    expect(r.booking_links).toBeUndefined()
+    expect((r.booking_links as Row[]).some(l => l._realtime === true)).toBe(false) // 17/11: only the partner row (no realtime link)
     expect(realtimeLogs()).toEqual([{ type: 'tappyai_realtime', provider: 'agoda', step: 'attach', ok: false, reason: 'credentials_missing' }])
   })
 
@@ -70,7 +73,9 @@ describe('A. "khách sạn Đà Lạt 20-22/10 cho 2 người"', () => {
     expect(rows[0].context_missing_in_url).toBeUndefined()
     expect(rows[0].sentence).toMatch(/Tappy kiểm tra lúc 10:00/)
     // CTA: the system link channel (streamEnrichment appends these when the model does not copy them)
-    expect(r.booking_links).toEqual([{ name: 'The Luxe Hotel Da Lat — 1.800.000đ, kiểm tra lúc 10:00', platform: 'Agoda', url: LANDING, _realtime: true }])
+    // 17/11: the realtime Agoda link LEADS the row; the other platforms follow it (see partnerLinkSet.test.ts)
+    expect((r.booking_links as Row[])[0]).toEqual({ name: 'The Luxe Hotel Da Lat — 1.800.000đ, kiểm tra lúc 10:00', platform: 'Agoda', url: LANDING, _realtime: true })
+    expect((r.booking_links as Row[]).filter(l => l._realtime === true)).toHaveLength(1)
     expect(Array.isArray(r._tappy_commerce)).toBe(true)
     expect(r.price_search_results).toEqual([expect.objectContaining({ evidence_scope: 'entity', evidence_about: 'The Luxe Hotel Da Lat', link: LANDING })])
     const note = String(r.realtime_note)
@@ -143,13 +148,15 @@ describe('A. "khách sạn Đà Lạt 20-22/10 cho 2 người"', () => {
     const ctx = hotelCtx({ env: AGODA_ENV, http: httpOk(agodaSearch()), now: () => NOW })
     await attachCommerceLinks('get_hotel_prices', r, ctx)
     await attachCommerceLinks('get_hotel_prices', r, ctx)
-    expect(r.booking_links).toHaveLength(1)
+    const realtimeOnly = () => (r.booking_links as Row[]).filter(l => l._realtime === true)
+    expect(realtimeOnly()).toHaveLength(1)
+    expect((r.booking_links as Row[])).toHaveLength(4) // 17/11: 1 realtime Agoda link + Booking.com, Traveloka, Trip.com — rebuilt, not appended, on the second call
     expect(r.price_search_results).toHaveLength(1)
     expect(r.realtime_results).toHaveLength(1)
     // …and switching the flag off between turns removes it
     await attachCommerceLinks('get_hotel_prices', r, hotelCtx({ env: {} }) as never)
     expect(r.realtime_results).toBeUndefined()
-    expect(r.booking_links).toEqual([])
+    expect(realtimeOnly()).toEqual([])
   })
 
   it('an undated question has no realtime search (a price needs dates); an unmapped city falls back; logs never carry a credential', async () => {
@@ -251,7 +258,7 @@ describe('E. hotel end to end (web): search → realtime result → recheck → 
   it('web: the result carries [recheck link, booking CTA]; the recheck answers unchanged / changed / unavailable; the CTA is the provider page with the stay', async () => {
     const r = await search('web')
     const links = r.booking_links as Array<{ name: string; url: string }>
-    expect(links.map(l => l.name)).toEqual(['Kiểm tra giá & tình trạng: The Luxe Hotel Da Lat', 'The Luxe Hotel Da Lat — 1.800.000đ, kiểm tra lúc 10:00'])
+    expect(links.slice(0, 2).map(l => l.name)).toEqual(['Kiểm tra giá & tình trạng: The Luxe Hotel Da Lat', 'The Luxe Hotel Da Lat — 1.800.000đ, kiểm tra lúc 10:00']) // 17/11: the other platforms follow these two
     const recheckHref = links[0].url
     expect(parseRecheckHref(recheckHref)).toMatchObject({ provider: 'agoda', providerItemId: '4942635', previousPrice: 1_800_000, stay: { destination: 'Đà Lạt', checkIn: '2026-10-20', checkOut: '2026-10-22', adults: 2 } })
     expect(links[1].url).toBe(LANDING)
@@ -269,7 +276,8 @@ describe('E. hotel end to end (web): search → realtime result → recheck → 
 
   it('native clients get NO recheck link (never a dead link): only the booking CTA', async () => {
     const r = await search('android')
-    expect((r.booking_links as Array<{ name: string }>).map(l => l.name)).toEqual(['The Luxe Hotel Da Lat — 1.800.000đ, kiểm tra lúc 10:00'])
+    expect((r.booking_links as Array<{ name: string }>).slice(0, 1).map(l => l.name)).toEqual(['The Luxe Hotel Da Lat — 1.800.000đ, kiểm tra lúc 10:00'])
+    expect((r.booking_links as Array<{ name: string }>).some(l => /Kiểm tra giá/.test(l.name))).toBe(false)
   })
 
   it('a provider with no recheck (flag ON, no mapped API) shows no fake recheck button: flights/bus keep dynamic deeplink → provider page only', async () => {

@@ -50,8 +50,11 @@ describe('the one general instruction', () => {
     // độ ồn" for each (ChatGPT stated the maker's published figures). The rule against inventing stays as it is.
     // 17/11 (owner: every answer that states a fact carries an authoritative source; Pro and Promax have the tools): the "known facts without a search" licence is replaced by a duty to
     // check and cite every statement of fact; calculation, code, writing, translation, small talk and refusals need no search. The hedge and partial-lookup rules stay.
-    for (const s of ['every statement of fact about the world', 'carries the link of its source', 'most authoritative page', 'No search is needed for calculation, code, writing or translating', 'say so instead of stating it with no source']) expect(ONE_BRAIN_CORE, s).toContain(s)
+    for (const s of ['every statement of fact about the world', 'carries the link of its source', 'most authoritative page', 'No search is needed for what a tool result already states', 'for calculation, code, writing or translating','say so instead of stating it with no source']) expect(ONE_BRAIN_CORE, s).toContain(s)
     expect(ONE_BRAIN_CORE).not.toContain('may be stated from your own knowledge without a search result')
+    // 18/11 (owner: the place cards of yesterday's mockup came back as avatar cards and tables): the every-fact rule must not send the model past its dedicated tools - the card is the source of what its tool states
+    for (const s of ['with the tool that fits it (the dedicated tool when there is one', 'the card is the source']) expect(ONE_BRAIN_CORE, s).toContain(s)
+    expect(ONE_BRAIN_CORE).not.toContain('is checked with web_search in this turn')
     for (const s of ['# Be useful, not only careful', 'Hedge only what changes', 'Asked for N items, give N items', 'never in place of the answer']) expect(ONE_BRAIN_CORE, s).toContain(s)
     expect(ONE_BRAIN_CORE).toContain('Never invent a fact')
     expect(ONE_BRAIN_SHAPE_REMINDER).toMatch(/hedge only what changes/i)

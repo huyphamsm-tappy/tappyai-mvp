@@ -4179,7 +4179,9 @@ export function applyPlaceEnrichmentStreamFilter(
     const linksLabel = partnerLinks
       ? (lang === 'vi' ? '🔗 Liên kết đối tác:' : '🔗 Partner links:')
       : (lang === 'vi' ? '🔗 Liên kết chính thức:' : '🔗 Official links:')
-    const systemLinksSuffix = systemLinks.length > 0 && missingSystemLinks.length === systemLinks.length
+    // 18/11 (owner: the booking platform first and 2-3 others beside it, for fairness): on one brain the platform links the answer does not carry yet are added even when the model
+    // already linked one of them in its own sentence (a hotel answer that linked Agoda inline lost every other platform's link: the row was all-or-nothing).
+    const systemLinksSuffix = systemLinks.length > 0 && (missingSystemLinks.length === systemLinks.length || (collector?.oneBrain === true && missingSystemLinks.length > 0))
       ? `\n\n${linksLabel} ${(collector?.oneBrain === true ? compactSystemLinks(missingSystemLinks) : missingSystemLinks).map(l => `[${escapeMarkdownLabel(l.name)}](${sanitizeUrlForMarkdown(l.url)})`).join(' · ')}`
       : ''
     // Phase 7 2B/2C: a flight / film fact no approved source returns is said to be unverified for exactly the dimension the user asked
@@ -4466,13 +4468,15 @@ export function applyPlaceEnrichmentStreamFilter(
             if (hasCommerce || (toolName && DATED_LINK_TOOLS.has(toolName))) {
               const found: SystemLink[] = []
               if (hasCommerce) {
-                const r = res.result as { booking_links?: Array<{ url?: string }>; event_links?: Array<{ url?: string }>; film_links?: Array<{ url?: string }>; product_links?: Array<{ url?: string }>; vexere_link?: string; train_booking_link?: string }
+                const r = res.result as { booking_links?: Array<{ url?: string; _partnerSet?: boolean }>; event_links?: Array<{ url?: string }>; film_links?: Array<{ url?: string }>; product_links?: Array<{ url?: string }>; vexere_link?: string; train_booking_link?: string }
+                // 17/11: a coach / train result whose row the platform already assembled (Vexere first, then the other platforms: `_partnerSet`) is shown as assembled — the two single Vexere fields would only re-add what the turn did not ask for.
+                const rowAssembled = (r.booking_links ?? []).some(l => l?._partnerSet === true) && (typeof r.vexere_link === 'string' || typeof r.train_booking_link === 'string')
                 for (const l of [...(r.booking_links ?? []), ...(r.event_links ?? []), ...(r.film_links ?? []), ...(r.product_links ?? [])] as Array<{ name?: string; platform?: string; url?: string }>) {
                   if (typeof l?.url !== 'string') continue
                   found.push({ name: [l.name, l.platform].filter(Boolean).join(' · ') || l.url, url: l.url })
                 }
-                if (typeof r.vexere_link === 'string') found.push({ name: 'Vexere', url: r.vexere_link })
-                if (typeof r.train_booking_link === 'string') found.push({ name: 'Vexere', url: r.train_booking_link })
+                if (!rowAssembled && typeof r.vexere_link === 'string') found.push({ name: 'Vexere', url: r.vexere_link })
+                if (!rowAssembled && typeof r.train_booking_link === 'string') found.push({ name: 'Vexere', url: r.train_booking_link })
               }
               systemLinkLedger.record(toolName ?? 'unknown', found, res.toolCallId ? askByCallId.get(res.toolCallId) : undefined)
               systemLinks.length = 0

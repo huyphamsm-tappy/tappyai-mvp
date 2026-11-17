@@ -89,6 +89,30 @@ export function buildCoachLandingLink(): string {
   return vexereOutbound(template('vexere') ?? 'https://vexere.com/vi-VN')
 }
 
+/** Vexere's flight landing page with the direct programme's parameters, or null while the programme is OFF (an unaffiliated Vexere flights button is not offered). */
+export function buildVexereFlightLink(): string | null {
+  return vexereDirectAffiliateOn() ? vexereOutbound(VEXERE_FLIGHT_LANDING) : null
+}
+
+/** Vexere's train landing page (public, opened 17/11/2026: HTTP 200; the bare /vn/ve-tau-hoa is 404). The dated train list needs Vexere's own area ids, so only this page is linked here. */
+export const VEXERE_TRAIN_LANDING = 'https://vexere.com/vn/ve-tau-hoa.vi'
+
+export function buildVexereTrainLandingLink(): string {
+  return vexereOutbound(VEXERE_TRAIN_LANDING)
+}
+
+/**
+ * Other platforms' PUBLIC landing pages, offered beside the affiliate platform for fairness (owner decision 17/11/2026). Every host answered HTTP 200 on
+ * 17/11/2026. No search grammar is claimed for any of them: the user types the route / destination on the site, and the label says so (`landing`).
+ * Plain links: none of these platforms is in the affiliate programme.
+ */
+export const PLAIN_PLATFORM_LANDINGS = {
+  tripcomHotels: { merchant: 'tripcom', name: 'Trip.com', url: 'https://vn.trip.com/hotels/' },
+  futabus: { merchant: 'futabus', name: 'FUTA Bus Lines', url: 'https://futabus.vn/' },
+  baolau: { merchant: 'baolau', name: 'Baolau', url: 'https://www.baolau.com/vi/' },
+  dsvn: { merchant: 'dsvn', name: 'Đường sắt Việt Nam', url: 'https://dsvn.vn/' },
+} as const
+
 /** The outward Vexere URL: with VEXERE_DIRECT_AFFILIATE ON the direct programme's parameters, otherwise the URL untouched. Never the Accesstrade wrapper (no aid collision). */
 function vexereOutbound(url: string): string {
   if (!vexereDirectAffiliateOn()) return url
