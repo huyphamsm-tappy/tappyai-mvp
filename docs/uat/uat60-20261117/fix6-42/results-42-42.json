@@ -1,0 +1,30 @@
+[
+  {
+    "id": 42,
+    "group": "knowledge",
+    "turns": [
+      {
+        "q": "vì sao nhà Trần ba lần thắng quân Nguyên Mông",
+        "done": true,
+        "seconds": 33,
+        "screen": "screens/q42.jpg",
+        "answered": true,
+        "chars": 1643,
+        "head": "Nhà Trần thắng ba lần không phải vì quân đông hay mạnh hơn, mà vì biết đoàn kết sức dân, tránh chỗ mạnh của địch, đánh vào hậu cần và chọn đúng lúc phản công. Ba cuộc kháng chiến diễn ra vào 1258, 1285 và 1287–1288.[QĐND]\nTriều đình và nhân dân cùng chống giặc. Vua, tướng và quân dân phối hợp; người dân góp sức chiến đấu, giữ hậu phương và làm cho quân xâm lược khó tìm nguồn tiếp tế. Một bài viết trên Tạp chí Hậu cần Quân đội nhấn mạnh nhà Trần đã chuẩn bị hậu phương trong nhiều năm trước cuộc xâm lược lần thứ ba.[Tạp chí Hậu cần Quân đội]\nKhông cố thủ hay quyết chiến khi bất lợi. Quân Trần chủ động rút lui để bảo toàn lực lượng; khi địch chiếm thành, kế “vườn không nhà trống” khiến chúng kh",
+        "tail": "ài đường tiếp tế, làm địch kiệt sức, giữ lực lượng của mình và phản công đúng thời điểm. Thành Thăng Long có thể bị chiếm tạm thời, nhưng quân địch không thể giữ được thế chủ động lâu dài.\nC\nNguồn · 1",
+        "links": 4,
+        "hosts": {
+          "ct.qdnd.vn": 3,
+          "hc.qdnd.vn": 1
+        },
+        "sourcesChip": "C Nguồn · 1",
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/d31e00c9-88b7-47b6-88da-dc9586dc203f",
+        "proNote": 0
+      }
+    ]
+  }
+]

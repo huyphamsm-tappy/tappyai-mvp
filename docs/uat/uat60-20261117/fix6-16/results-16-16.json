@@ -1,0 +1,31 @@
+[
+  {
+    "id": 16,
+    "group": "food",
+    "turns": [
+      {
+        "q": "cách nấu bún riêu cua cho 4 người",
+        "done": true,
+        "seconds": 44,
+        "screen": "screens/q16.jpg",
+        "answered": true,
+        "chars": 2394,
+        "head": "BÚN RIÊU CUA ĐỒNG CHO 4 NGƯỜI\nBún riêu cua\n\nBún riêu cua là một món ăn truyền thống Việt Nam, có nguồn gốc từ vùng đồng bằng sông Hồng của Việt Nam, được biết đến rộng rãi trong nước và quốc tế. Món ăn này gồm bún và 'riêu cua'. Riêu cua là canh chua được nấu từ gạch cua, thịt cua giã và lọc cùng với quả dọc, cà chua, mỡ nước, giấm bỗng…\n\nWikipedia\nMình gợi ý kiểu cua đồng truyền thống, nước dùng chua thanh; công thức tham khảo cách nấu cua đồng của Điện Máy Xanh và định lượng nguyên liệu của Hướng Nghiệp Á Âu (Điện Máy Xanh, Hướng Nghiệp Á Âu). Chuẩn bị khoảng 30 phút, nấu khoảng 45–60 phút.\nNGUYÊN LIỆU\n1 kg cua đồng xay hoặc cua sống\n800 g bún tươi\n4–5 quả cà chua\n300 g đậu hũ chiên\n200–30",
+        "tail": "\nNấu riêu cua ở lửa vừa và khuấy nhẹ lúc đầu; khi riêu đã nổi thì tránh đảo mạnh để riêu giữ thành mảng đẹp.\nMẹo nhỏ: Nêm mắm tôm từng chút một — món bún sẽ thơm hơn mà không bị quá mặn.\nD\nH\nNguồn · 2",
+        "links": 5,
+        "hosts": {
+          "vi.wikipedia.org": 1,
+          "dienmayxanh.com": 2,
+          "huongnghiepaau.com": 2
+        },
+        "sourcesChip": "D H Nguồn · 2",
+        "tables": 0,
+        "images": 1,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/d8d315c1-9198-4bad-9d19-e3fac5581b9a",
+        "proNote": 0
+      }
+    ]
+  }
+]
