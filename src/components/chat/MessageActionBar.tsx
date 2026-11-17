@@ -11,7 +11,8 @@ import { cn } from '@/lib/utils'
 import { TappyMascot } from '@/components/TappyMascot'
 import { getTappyPose } from '@/lib/TappyMascotState'
 import ShareMenu from '@/components/share/ShareMenu'
-import { buildPlacesArtifact, buildPlanArtifact, buildProseArtifact, type ShareArtifact } from '@/lib/share/shareArtifact'
+import { buildPlacesArtifact, buildPlanArtifact, buildProseArtifact, buildReportArtifact, type ShareArtifact } from '@/lib/share/shareArtifact'
+import { looksLikeReport } from '@/lib/chat/requestHistory'
 import type { PlacesLiveView } from '@/lib/recommendation/liveView'
 import type { TappyPlan } from '@/components/TripPlanCard'
 import { useTranslation } from '@/lib/i18n/useTranslation'
@@ -154,6 +155,9 @@ export default function MessageActionBar({
       a = buildPlacesArtifact(share.placeView, subject, shareLang)
     } else if (share?.plan) {
       a = buildPlanArtifact(share.plan, shareLang)
+    } else if (looksLikeReport(text)) {
+      // 17/11: a research report shares as a report (title, key points, number of sources), not as one clipped line of prose
+      a = buildReportArtifact(text, shareLang)
     } else {
       // Prose only: safe links survive as `label: url` — the useful half of a flight answer.
       a = buildProseArtifact(subject, text)
