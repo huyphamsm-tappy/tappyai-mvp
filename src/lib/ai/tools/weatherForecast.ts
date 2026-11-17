@@ -81,7 +81,7 @@ export interface ForecastNow { time: string; summary: string; temp_c: number | n
 export interface ForecastHour { time: string; summary: string; temp_c: number | null; rain_chance_pct: number | null; rain_mm: number | null }
 export const FORECAST_NEXT_HOURS = 12
 export type ForecastResult =
-  | { location: string; country: string | null; now: ForecastNow | null; next_hours: ForecastHour[]; days: ForecastDay[]; source: 'open-meteo.com' | 'met.no'; fetched_at: string; timezone: string }
+  | { location: string; country: string | null; now: ForecastNow | null; next_hours: ForecastHour[]; days: ForecastDay[]; source: 'open-meteo.com' | 'met.no'; /** 17/11: the source's own site, so the answer can LINK its source (urlGrants: a 'source' reference) */ source_url: string; fetched_at: string; timezone: string }
   | { error: 'place_not_found' | 'forecast_unavailable'; note: string }
 type ForecastOk = Exclude<ForecastResult, { error: unknown }>
 
@@ -181,6 +181,7 @@ async function metForecast(hit: GeoHit, n: number, tz: string, lang: string, fet
     next_hours: hourly.map(s => ({ time: clock(s.time!), summary: metSymbolText(s.data!.next_1_hours!.summary?.symbol_code, lang), temp_c: num(s.data!.instant!.details!.air_temperature), rain_chance_pct: null, rain_mm: num(s.data!.next_1_hours!.details?.precipitation_amount) })),
     days,
     source: 'met.no',
+    source_url: 'https://www.met.no/en',
     fetched_at: now.toISOString(),
     timezone: tz,
   }
@@ -245,6 +246,7 @@ async function openMeteoForecast(hit: GeoHit, n: number, tz: string, lang: strin
       next_hours: hours.map((time, j) => { const i = start + j; return { time, summary: weatherCodeText(Number(hAt('weather_code', i)), lang), temp_c: num(hAt('temperature_2m', i)), rain_chance_pct: num(hAt('precipitation_probability', i)), rain_mm: num(hAt('precipitation', i)) } }),
       days: dates.map((date, i) => ({ date, summary: weatherCodeText(Number(at('weather_code', i)), lang), temp_min_c: num(at('temperature_2m_min', i)), temp_max_c: num(at('temperature_2m_max', i)), rain_chance_pct: num(at('precipitation_probability_max', i)), rain_mm: num(at('precipitation_sum', i)), wind_max_kmh: num(at('wind_speed_10m_max', i)), ...windowsOf(date) })),
       source: 'open-meteo.com',
+      source_url: 'https://open-meteo.com/',
       fetched_at: now.toISOString(),
       timezone: tz,
     }

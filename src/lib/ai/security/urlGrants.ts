@@ -159,8 +159,12 @@ export const TOOL_URL_CONTRACT: Readonly<Record<string, Contract>> = {
   // RETRIEVAL_V5 serves get_news with the web research (retrievalV5/research.ts): its search rows and the pages it read are SOURCE links like a
   // web_search's (cổng 2 lần 1, u02 / u22: pages read, 0 source links — their [S#] were dropped because these fields had no grant).
   get_news: { 'articles[].link': 'source', 'sources[].url': 'source', 'results[].link': 'source', 'pages[].url': 'source', ...prefixed('fallback', WEB) },
-  get_weather: { search_url: 'action' },
-  get_gold_price: { search_url: 'action' },
+  // 17/11: a data tool names its source WITH its page (`source_url`), a source reference like a search result's link. Before, the result
+  // carried the source's name only, the instruction allows only URLs that appear in a tool result, and realtime answers named their source
+  // in words with nothing to tap.
+  get_weather: { search_url: 'action', source_url: 'source' },
+  get_weather_forecast: { source_url: 'source' },
+  get_gold_price: { search_url: 'action', source_url: 'source' },
   get_transport_options: {
     'vexere_link': 'action', 'train_booking_link': 'action', 'train_schedule.page_url': 'source', 'apps[].link': 'action',
     'bus_search_results[].link': 'source', 'train_search_results[].link': 'source', 'travel_editorial[].url': 'source',

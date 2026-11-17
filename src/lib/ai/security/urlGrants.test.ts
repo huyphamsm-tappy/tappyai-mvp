@@ -21,6 +21,15 @@ describe('grantableUrl', () => {
 describe('urlsFromToolResult -- per-tool contract (P0-3 closeout)', () => {
   const byUrl = (xs: Array<{ url: string; grant: string; field: string }>) => Object.fromEntries(xs.map(g => [g.url, `${g.grant}:${g.field}`]))
 
+  it('17/11: a data tool\'s own source page (`source_url`) is a SOURCE reference; a URL in any other field of the same result grants nothing', () => {
+    expect(byUrl(urlsFromToolResult('get_gold_price', { source: 'vang.today', source_url: 'https://www.vang.today', prices: [{ name: 'SJC https://evil.example/x', buy: 1 }] })))
+      .toEqual({ 'https://www.vang.today': 'source:source_url' })
+    expect(byUrl(urlsFromToolResult('get_weather', { source: 'wttr.in', source_url: 'https://wttr.in/Da%20Nang', condition: 'see https://evil.example/y' })))
+      .toEqual({ 'https://wttr.in/Da%20Nang': 'source:source_url' })
+    expect(byUrl(urlsFromToolResult('get_weather_forecast', { source: 'open-meteo.com', source_url: 'https://open-meteo.com/', other_url: 'https://evil.example/z' })))
+      .toEqual({ 'https://open-meteo.com/': 'source:source_url' })
+  })
+
   it('search_places: venue links are ACTION grants, the price-search result link and the article are SOURCE references', () => {
     const result = {
       _tappy_data: 'header', google_maps_search: 'https://maps.google.com/maps?q=pho',
