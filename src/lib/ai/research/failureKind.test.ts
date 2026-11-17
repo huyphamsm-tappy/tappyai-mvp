@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { failureKind } from './failureKind'
+import { failureKind, answerShape, retryHint } from './failureKind'
 import { runDeepResearch, type DeepResearchDeps } from './deepResearch'
 
 // A model call whose answer did not match the schema was logged as one generic line (11/11, the owner's UAT: the plan call and then the forecast-inputs call failed with nothing to say why). This reads the
@@ -56,5 +56,23 @@ describe('failureKind', () => {
   })
   it('a long first line of the message is cut', () => {
     expect(failureKind(new Error('y'.repeat(500))).message.length).toBeLessThanOrEqual(120)
+  })
+  it('18/11: the shape of a refused answer is its fields and their kinds, never a value', () => {
+    const text = JSON.stringify({ thesis: 'SECRET-THESIS', doubts: ['SECRET-DOUBT', 'b'], extra: { a: 1 } })
+    const k = failureKind(noObject({ text }), ['thesis', 'sections', 'doubts', 'extra', 'n'])
+    expect(k.shape).toEqual(['thesis:string', 'sections:absent', 'doubts:array[2]', 'extra:object[1]', 'n:absent'])
+    expect(JSON.stringify(k)).not.toContain('SECRET')
+    expect(failureKind(noObject({ text }), []).shape).toBeUndefined()
+    expect(failureKind(noObject({ text: 'not json' }), ['thesis']).shape).toBeUndefined()
+    expect(answerShape(JSON.stringify({ sections: 'x', k: null, z: 3 }), ['sections', 'k', 'z'])).toEqual(['sections:string', 'k:null', 'z:number'])
+    expect(answerShape('[1]', ['a'])).toBeNull()
+  })
+  it('18/11: the second try is told which fields the first was refused on, once each; nothing known, no line', () => {
+    const hint = retryHint(['sections:invalid_type(array)', 'sections.0.points:invalid_type(array)', 'doubts:invalid_type'], 'thesis, sections and doubts')
+    expect(hint).toContain('sections, doubts were missing or of the wrong kind')
+    expect(hint).toContain('thesis, sections and doubts')
+    expect(retryHint(['sections:invalid_type(array)'], 'r')).toContain('sections was missing')
+    expect(retryHint([], 'r')).toBe('')
+    expect(retryHint(undefined, 'r')).toBe('')
   })
 })

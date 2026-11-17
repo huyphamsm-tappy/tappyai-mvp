@@ -22,7 +22,7 @@ import { leanValue } from './deepResearchLean'
 import { researchSourceDiversityOn, researchConsolidationOn, researchPackagesOn, researchForecastModelOn, researchTightWriteOn, researchEvidenceCardsOn, researchThesisOn, researchFreshnessOn } from './deepResearchState'
 import type { EvidenceCard } from './evidenceCards'
 import { TIGHT_WRITE_RULE } from './reportRepeats'
-import { failureKind } from './failureKind'
+import { failureKind, retryHint } from './failureKind'
 import { lenientArray } from './lenientSchema'
 import { forecastNotes, packFindingsForForecast, specFromRaw, askTwice, type ForecastSpecRaw } from './forecastModel'
 import { consolidate, consolidatedNotes } from './consolidate'
@@ -413,8 +413,10 @@ export function createDeepResearchDeps(o: { lang: string; userTexts: readonly st
       async analyze({ question, plan, cards, support }: { question: string; plan: ResearchPlan; cards: readonly EvidenceCard[]; support: ReadonlyMap<string, string> }) {
         const bounds = advancedLead ? ADVANCED_OUTLINE : STANDARD_OUTLINE
         const data = `${plan.parts?.length ? `Parts the question asks for: ${plan.parts.join('; ')}\n\n` : ''}Evidence cards:\n${analystCards(cards, support)}`
-        const ask = () => AI.extract({ role: planningRole(), ...leadModel(), systemShared: ANALYST_SYSTEM, messages: [{ role: 'user', content: `Question:\n${question}${langLine}\n\nToday's date: ${new Date().toISOString().slice(0, 10)}\nWrite ${bounds.minSections} to ${bounds.maxSections} sections.\n\n${fenceUntrusted('tool_result', data)}` }], schema: OutlineSchema, schemaName: 'tappy_research_outline', maxTokens: advancedLead ? 10000 : 6000, budgetKind: 'aux', abortSignal: o.signal } as never) as Promise<{ object: unknown; providerMetadata?: unknown }>
-        const r = await askTwice(() => ask().catch(e => { console.warn(JSON.stringify({ type: 'tappyai_research_outline_failed', ...failureKind(e) })); throw e }))
+        // 18/11 (UAT run 3 of the Advanced question: both tries came back without a usable `sections`): the second try is told which field the first was refused on
+        let hint = ''
+        const ask = () => AI.extract({ role: planningRole(), ...leadModel(), systemShared: ANALYST_SYSTEM, messages: [{ role: 'user', content: `Question:\n${question}${langLine}\n\nToday's date: ${new Date().toISOString().slice(0, 10)}\nWrite ${bounds.minSections} to ${bounds.maxSections} sections.${hint}\n\n${fenceUntrusted('tool_result', data)}` }], schema: OutlineSchema, schemaName: 'tappy_research_outline', maxTokens: advancedLead ? 10000 : 6000, budgetKind: 'aux', abortSignal: o.signal } as never) as Promise<{ object: unknown; providerMetadata?: unknown }>
+        const r = await askTwice(() => ask().catch(e => { const k = failureKind(e, ['thesis', 'sections', 'doubts']); console.warn(JSON.stringify({ type: 'tappyai_research_outline_failed', ...k })); hint = retryHint(k.issues, 'thesis (text), sections (an ARRAY of objects, each with a title and a points array of {claim, cards}) and doubts'); throw e }))
         addCost(o.cost, r.providerMetadata)
         const outline = outlineFrom(r.object, cards, bounds)
         // an answer that parsed but gave nothing usable: the log says what shape it had (counts only, never text)
