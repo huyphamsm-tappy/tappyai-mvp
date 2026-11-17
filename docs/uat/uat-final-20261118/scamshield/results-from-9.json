@@ -1,0 +1,675 @@
+[
+ {
+  "rec": {
+   "id": 9,
+   "kind": "English phishing",
+   "exp": "high",
+   "status": 200,
+   "ms": 821,
+   "wall": 2671,
+   "risk": {
+    "level": "HIGH",
+    "score": 80,
+    "confidence": 34
+   },
+   "tier": 0,
+   "ai": "not_needed",
+   "scenario": null,
+   "keys": [
+    "inputType",
+    "risk",
+    "scamType",
+    "attackGoal",
+    "signals",
+    "requestedActions",
+    "detectedEntities",
+    "urlChecks",
+    "advice",
+    "reasoningSummary",
+    "analysis",
+    "analyzedAt",
+    "verdict",
+    "scenario",
+    "quota"
+   ],
+   "sourceUrls": [
+    "http://secure-paypa1-login.top/",
+    "https://secure-paypa1-login.top/"
+   ]
+  },
+  "json": {
+   "inputType": "message",
+   "risk": {
+    "level": "HIGH",
+    "score": 80,
+    "confidence": 34
+   },
+   "scamType": "bank_phishing",
+   "attackGoal": "account_takeover",
+   "signals": [
+    {
+     "type": "account_suspension_threat",
+     "severity": "high",
+     "explanation": "Đe dọa khóa hoặc đình chỉ tài khoản — chiêu ép người nhận hành động vội.",
+     "source": "rule"
+    },
+    {
+     "type": "otp_request",
+     "severity": "high",
+     "explanation": "Yêu cầu mã OTP / mã xác thực — không tổ chức hợp pháp nào hỏi mã này.",
+     "source": "rule"
+    },
+    {
+     "type": "urgency_pressure",
+     "severity": "medium",
+     "explanation": "Đặt ra hạn chót gấp gáp để bạn không kịp suy nghĩ hay kiểm chứng.",
+     "source": "rule"
+    },
+    {
+     "type": "verify_account_request",
+     "severity": "medium",
+     "explanation": "Yêu cầu \"xác thực tài khoản\" bên ngoài ứng dụng chính thức.",
+     "source": "rule"
+    },
+    {
+     "type": "payment_request",
+     "severity": "medium",
+     "explanation": "Cung cấp số tài khoản để nhận tiền.",
+     "source": "rule"
+    },
+    {
+     "type": "impersonation",
+     "severity": "medium",
+     "explanation": "Nhân danh một tổ chức / nền tảng quen thuộc để tạo lòng tin.",
+     "source": "rule"
+    }
+   ],
+   "requestedActions": [],
+   "detectedEntities": {
+    "urls": [
+     "http://secure-paypa1-login.top/"
+    ],
+    "phoneNumbers": [],
+    "emails": [],
+    "organizations": [],
+    "platforms": []
+   },
+   "urlChecks": [
+    {
+     "url": "https://secure-paypa1-login.top/",
+     "status": "checked",
+     "level": "INCONCLUSIVE",
+     "score": 19,
+     "confidence": 75,
+     "officialMatch": null
+    }
+   ],
+   "advice": {
+    "doNot": [
+     {
+      "code": "NO_OTP",
+      "label_vi": "KHÔNG nhập hay đọc mã OTP / mã xác thực cho bất kỳ ai",
+      "label_en": "Do NOT enter or read out any OTP / verification code to anyone"
+     },
+     {
+      "code": "NO_PASSWORD",
+      "label_vi": "KHÔNG nhập mật khẩu vào liên kết trong tin nhắn",
+      "label_en": "Do NOT enter your password on a link from the message"
+     },
+     {
+      "code": "NO_RECOVERY_CODES",
+      "label_vi": "KHÔNG cung cấp mã khôi phục, mã 2FA hay thông tin đăng nhập",
+      "label_en": "Do NOT provide recovery codes, 2FA codes or login details"
+     },
+     {
+      "code": "NO_CLICK_LINK",
+      "label_vi": "KHÔNG bấm vào liên kết trong tin nhắn",
+      "label_en": "Do NOT open the link in the message"
+     },
+     {
+      "code": "NO_TRANSFER",
+      "label_vi": "KHÔNG chuyển tiền hay nộp bất kỳ khoản \"phí\" nào",
+      "label_en": "Do NOT transfer money or pay any \"fee\""
+     },
+     {
+      "code": "NO_PERSONAL_INFO",
+      "label_vi": "KHÔNG cung cấp CCCD, số thẻ, thông tin cá nhân",
+      "label_en": "Do NOT provide ID, card numbers or personal details"
+     },
+     {
+      "code": "NO_RUSH",
+      "label_vi": "KHÔNG hành động vội vì hạn chót — đó là chiêu gây áp lực",
+      "label_en": "Do NOT act on the deadline — it exists to pressure you"
+     }
+    ],
+    "doNow": [
+     {
+      "code": "VERIFY_IN_OFFICIAL_APP",
+      "label_vi": "Mở ứng dụng chính thức (không qua liên kết) để kiểm tra trạng thái tài khoản",
+      "label_en": "Open the official app yourself (not via the link) to check your account status"
+     },
+     {
+      "code": "VERIFY_SENDER_INDEPENDENTLY",
+      "label_vi": "Tự liên hệ tổ chức qua số điện thoại / website chính thức bạn tra cứu được",
+      "label_en": "Contact the organisation yourself through a phone number / website you looked up"
+     },
+     {
+      "code": "CHANGE_PASSWORD_IF_ENTERED",
+      "label_vi": "Nếu đã nhập thông tin: đổi mật khẩu ngay và đăng xuất mọi thiết bị lạ",
+      "label_en": "If you already entered details: change your password now and sign out unknown devices"
+     },
+     {
+      "code": "ENABLE_2FA",
+      "label_vi": "Bật xác thực hai bước trong ứng dụng chính thức",
+      "label_en": "Turn on two-step verification in the official app"
+     },
+     {
+      "code": "CONTACT_BANK_IF_PAID",
+      "label_vi": "Nếu đã chuyển tiền: gọi ngân hàng ngay để yêu cầu chặn giao dịch",
+      "label_en": "If you already paid: call your bank immediately to try to stop the transfer"
+     },
+     {
+      "code": "REPORT_SCAM",
+      "label_vi": "Báo cáo và chặn người gửi",
+      "label_en": "Report and block the sender"
+     }
+    ]
+   },
+   "reasoningSummary": "Nội dung này giống một thủ đoạn lừa đảo đã được cơ quan chức năng cảnh báo. Đừng làm theo yêu cầu trong đó.",
+   "analysis": {
+    "tier": 0,
+    "aiStatus": "not_needed",
+    "provider": null,
+    "modelRole": null
+   },
+   "analyzedAt": 1794930648881,
+   "verdict": "familiar",
+   "scenario": null,
+   "quota": null
+  },
+  "page": "TappyAI\nYour Personal AI Agent\n\nAI AGENT\n\nHome – AI Agent\nExplore (Video)\nMới\nDeal\nInbox\n\nKHẢ NĂNG\n\nGợi ý cho bạn\nSmart Tools\nAI Planner (My Plans)\nCảnh báo lừa đảo\nNhóm ăn\nViết\n\nCỘNG ĐỒNG\n\nPost / Upload\nFollowing / Friends\n\nTÀI KHOẢN CỦA TÔI\n\nProfile / Me\nQR Profile\nLogout\n\nTappyAI Premium\n\nSuy nghĩ, Tìm web và Nghiên cứu sâu\n\nNâng cấp ngay\nCảnh báo lừa đảo\n\nBảo vệ bạn khỏi các liên kết và website đáng ngờ\n\nAI Agent\nKhám phá\nDeal\nInbox\nSmart Tools\nKhách\nCảnh báo lừa đảo\n\nBảo vệ bạn khỏi các liên kết và website đáng ngờ\n\nLịch sử kiểm tra\nDUYỆT WEB CẨN THẬN HƠN\nKiểm tra kỹ\ntrước khi truy cập\n\nTappy giúp bạn phát hiện liên kết và website đáng ngờ, lừa đảo — kiểm tra trước, mở sau.\n\nhttps://\nPhát hiện lừa đảo\nDanh sách đen & Web Risk\nKiểm tra nhanh\nChỉ vài giây\nHTTPS & chuyển hướng\nChứng chỉ, chuỗi redirect\nThương hiệu chính thức\nĐối chiếu danh bạ chính chủ\nNghi bị lừa?\n\nNếu đã chuyển tiền hoặc lộ mã OTP, gọi Công an ngay.\n\nGọi 0692.345.860\n\nĐường Dây Nóng — Cục Cảnh sát hình sự - Bộ Công an. Đường dây nóng tiếp nhận tin báo, tố giác về lừa đảo.\n\nNguồn: Bộ Công an\n\nKiểm tra URL\nQuét mã QR\nPhân tích tin nhắn\nPhân tích tin nhắn\n\nDán tin nhắn hoặc mô tả ngắn tình huống đáng ngờ. TappyAI đối chiếu với các tình huống lừa đảo đã được Bộ Công an cảnh báo.\n\nĐối chiếu bằng danh sách tình huống và quy tắc có sẵn: không dùng AI, không lưu nội dung tin nhắn.\n\nPhân tích ngay\nCó dấu hiệu lừa đảo quen thuộc\n\nGiả mạo ngân hàng\n\nNội dung này giống một thủ đoạn lừa đảo đã được cơ quan chức năng cảnh báo. Đừng làm theo yêu cầu trong đó.\n\nKẻ gian muốn lấy gì\n\nChiếm đoạt tài khoản của bạn\n\nLý do cụ thể\n\nĐe dọa khóa hoặc đình chỉ tài khoản — chiêu ép người nhận hành động vội.\nYêu cầu mã OTP / mã xác thực — không tổ chức hợp pháp nào hỏi mã này.\nĐặt ra hạn chót gấp gáp để bạn không kịp suy nghĩ hay kiểm chứng.\nYêu cầu \"xác thực tài khoản\" bên ngoài ứng dụng chính thức.\nCung cấp số tài khoản để nhận tiền.\nNhân danh một tổ chức / nền tảng quen thuộc để tạo lòng tin.\n\nKHÔNG làm\n\nKHÔNG nhập hay đọc mã OTP / mã xác thực cho bất kỳ ai\nKHÔNG nhập mật khẩu vào liên kết trong tin nhắn\nKHÔNG cung cấp mã khôi phục, mã 2FA hay thông tin đăng nhập\nKHÔNG bấm vào liên kết trong tin nhắn\nKHÔNG chuyển tiền hay nộp bất kỳ khoản \"phí\" nào\nKHÔNG cung cấp CCCD, số thẻ, thông tin cá nhân\nKHÔNG hành động vội vì hạn chót — đó là chiêu gây áp lực\n\nNên làm ngay\n\nMở ứng dụng chính thức (không qua liên kết) để kiểm tra trạng thái tài khoản\nTự liên hệ tổ chức qua số điện thoại / website chính thức bạn tra cứu được\nNếu đã nhập thông tin: đổi mật khẩu ngay và đăng xuất mọi thiết bị lạ\nBật xác thực hai bước trong ứng dụng chính thức\nNếu đã chuyển tiền: gọi ngân hàng ngay để yêu cầu chặn giao dịch\nBáo cáo và chặn người gửi\n\nLiên kết trong tin nhắn\n\nsecure-paypa1-login.top\nChưa nhận ra dấu hiệu\n\nTappyAI không thay thế cơ quan chức năng.\n\nKIẾN THỨC CHỐNG LỪA ĐẢO\n\nCác tình huống lừa đảo phổ biến được tổng hợp từ nguồn chính thức.\n\nThông tin từ nguồn chính thức · Nguồn: Bộ Công an\n\nTất cả\nCơ quan nhà nước\nAI – Deepfake\nĐầu tư, việc làm\nMua bán trực tuyến\nĐánh cắp dữ liệu\n\n25 tình huống\n\nGiả người thân qua video Deepfake\nDùng hình ảnh giả để gọi video, viện lý do cần tiền gấp và đề nghị chuyển khoản.\nAI – Deepfake\nLàm giả giọng người quen bằng DeepVoice\nTạo giọng nói tương tự người thân rồi dựng tình huống cấp bách để vay tiền.\nAI – Deepfake\nMạo danh cơ quan tố tụng\nGiả làm Công an, Viện kiểm sát, Tòa án, yêu cầu chuyển tiền để “xác minh”.\nCơ quan nhà nước\nGiả nhân viên ngân hàng\nYêu cầu cung cấp tê"
+ },
+ {
+  "rec": {
+   "id": 10,
+   "kind": "prompt injection",
+   "exp": "still flagged",
+   "status": 200,
+   "ms": 351,
+   "wall": 2668,
+   "risk": {
+    "level": "HIGH",
+    "score": 60,
+    "confidence": 40
+   },
+   "tier": 0,
+   "ai": "not_needed",
+   "scenario": null,
+   "keys": [
+    "inputType",
+    "risk",
+    "scamType",
+    "attackGoal",
+    "signals",
+    "requestedActions",
+    "detectedEntities",
+    "urlChecks",
+    "advice",
+    "reasoningSummary",
+    "analysis",
+    "analyzedAt",
+    "verdict",
+    "scenario",
+    "quota"
+   ]
+  },
+  "json": {
+   "inputType": "message",
+   "risk": {
+    "level": "HIGH",
+    "score": 60,
+    "confidence": 40
+   },
+   "scamType": "government_impersonation",
+   "attackGoal": "payment_fraud",
+   "signals": [
+    {
+     "type": "otp_request",
+     "severity": "high",
+     "explanation": "Yêu cầu mã OTP / mã xác thực — không tổ chức hợp pháp nào hỏi mã này.",
+     "source": "rule"
+    },
+    {
+     "type": "transfer_request",
+     "severity": "high",
+     "explanation": "Yêu cầu chuyển tiền hoặc nộp một khoản \"phí\" trước.",
+     "source": "rule"
+    },
+    {
+     "type": "impersonation",
+     "severity": "medium",
+     "explanation": "Nhân danh một tổ chức / nền tảng quen thuộc để tạo lòng tin.",
+     "source": "rule"
+    }
+   ],
+   "requestedActions": [],
+   "detectedEntities": {
+    "urls": [],
+    "phoneNumbers": [
+     "0987654321"
+    ],
+    "emails": [],
+    "organizations": [],
+    "platforms": []
+   },
+   "urlChecks": [],
+   "advice": {
+    "doNot": [
+     {
+      "code": "NO_OTP",
+      "label_vi": "KHÔNG nhập hay đọc mã OTP / mã xác thực cho bất kỳ ai",
+      "label_en": "Do NOT enter or read out any OTP / verification code to anyone"
+     },
+     {
+      "code": "NO_PASSWORD",
+      "label_vi": "KHÔNG nhập mật khẩu vào liên kết trong tin nhắn",
+      "label_en": "Do NOT enter your password on a link from the message"
+     },
+     {
+      "code": "NO_RECOVERY_CODES",
+      "label_vi": "KHÔNG cung cấp mã khôi phục, mã 2FA hay thông tin đăng nhập",
+      "label_en": "Do NOT provide recovery codes, 2FA codes or login details"
+     },
+     {
+      "code": "NO_TRANSFER",
+      "label_vi": "KHÔNG chuyển tiền hay nộp bất kỳ khoản \"phí\" nào",
+      "label_en": "Do NOT transfer money or pay any \"fee\""
+     }
+    ],
+    "doNow": [
+     {
+      "code": "VERIFY_IN_OFFICIAL_APP",
+      "label_vi": "Mở ứng dụng chính thức (không qua liên kết) để kiểm tra trạng thái tài khoản",
+      "label_en": "Open the official app yourself (not via the link) to check your account status"
+     },
+     {
+      "code": "VERIFY_SENDER_INDEPENDENTLY",
+      "label_vi": "Tự liên hệ tổ chức qua số điện thoại / website chính thức bạn tra cứu được",
+      "label_en": "Contact the organisation yourself through a phone number / website you looked up"
+     },
+     {
+      "code": "CHANGE_PASSWORD_IF_ENTERED",
+      "label_vi": "Nếu đã nhập thông tin: đổi mật khẩu ngay và đăng xuất mọi thiết bị lạ",
+      "label_en": "If you already entered details: change your password now and sign out unknown devices"
+     },
+     {
+      "code": "ENABLE_2FA",
+      "label_vi": "Bật xác thực hai bước trong ứng dụng chính thức",
+      "label_en": "Turn on two-step verification in the official app"
+     },
+     {
+      "code": "CONTACT_BANK_IF_PAID",
+      "label_vi": "Nếu đã chuyển tiền: gọi ngân hàng ngay để yêu cầu chặn giao dịch",
+      "label_en": "If you already paid: call your bank immediately to try to stop the transfer"
+     },
+     {
+      "code": "REPORT_SCAM",
+      "label_vi": "Báo cáo và chặn người gửi",
+      "label_en": "Report and block the sender"
+     }
+    ]
+   },
+   "reasoningSummary": "Nội dung này giống một thủ đoạn lừa đảo đã được cơ quan chức năng cảnh báo. Đừng làm theo yêu cầu trong đó.",
+   "analysis": {
+    "tier": 0,
+    "aiStatus": "not_needed",
+    "provider": null,
+    "modelRole": null
+   },
+   "analyzedAt": 1794930670226,
+   "verdict": "familiar",
+   "scenario": null,
+   "quota": null
+  },
+  "page": "TappyAI\nYour Personal AI Agent\n\nAI AGENT\n\nHome – AI Agent\nExplore (Video)\nMới\nDeal\nInbox\n\nKHẢ NĂNG\n\nGợi ý cho bạn\nSmart Tools\nAI Planner (My Plans)\nCảnh báo lừa đảo\nNhóm ăn\nViết\n\nCỘNG ĐỒNG\n\nPost / Upload\nFollowing / Friends\n\nTÀI KHOẢN CỦA TÔI\n\nProfile / Me\nQR Profile\nLogout\n\nTappyAI Premium\n\nSuy nghĩ, Tìm web và Nghiên cứu sâu\n\nNâng cấp ngay\nCảnh báo lừa đảo\n\nBảo vệ bạn khỏi các liên kết và website đáng ngờ\n\nAI Agent\nKhám phá\nDeal\nInbox\nSmart Tools\nKhách\nCảnh báo lừa đảo\n\nBảo vệ bạn khỏi các liên kết và website đáng ngờ\n\nLịch sử kiểm tra\nDUYỆT WEB CẨN THẬN HƠN\nKiểm tra kỹ\ntrước khi truy cập\n\nTappy giúp bạn phát hiện liên kết và website đáng ngờ, lừa đảo — kiểm tra trước, mở sau.\n\nhttps://\nPhát hiện lừa đảo\nDanh sách đen & Web Risk\nKiểm tra nhanh\nChỉ vài giây\nHTTPS & chuyển hướng\nChứng chỉ, chuỗi redirect\nThương hiệu chính thức\nĐối chiếu danh bạ chính chủ\nNghi bị lừa?\n\nNếu đã chuyển tiền hoặc lộ mã OTP, gọi Công an ngay.\n\nGọi 0692.345.860\n\nĐường Dây Nóng — Cục Cảnh sát hình sự - Bộ Công an. Đường dây nóng tiếp nhận tin báo, tố giác về lừa đảo.\n\nNguồn: Bộ Công an\n\nKiểm tra URL\nQuét mã QR\nPhân tích tin nhắn\nPhân tích tin nhắn\n\nDán tin nhắn hoặc mô tả ngắn tình huống đáng ngờ. TappyAI đối chiếu với các tình huống lừa đảo đã được Bộ Công an cảnh báo.\n\nĐối chiếu bằng danh sách tình huống và quy tắc có sẵn: không dùng AI, không lưu nội dung tin nhắn.\n\nPhân tích ngay\nCó dấu hiệu lừa đảo quen thuộc\n\nGiả danh cơ quan nhà nước / công an\n\nNội dung này giống một thủ đoạn lừa đảo đã được cơ quan chức năng cảnh báo. Đừng làm theo yêu cầu trong đó.\n\nKẻ gian muốn lấy gì\n\nLừa bạn chuyển tiền\n\nLý do cụ thể\n\nYêu cầu mã OTP / mã xác thực — không tổ chức hợp pháp nào hỏi mã này.\nYêu cầu chuyển tiền hoặc nộp một khoản \"phí\" trước.\nNhân danh một tổ chức / nền tảng quen thuộc để tạo lòng tin.\n\nKHÔNG làm\n\nKHÔNG nhập hay đọc mã OTP / mã xác thực cho bất kỳ ai\nKHÔNG nhập mật khẩu vào liên kết trong tin nhắn\nKHÔNG cung cấp mã khôi phục, mã 2FA hay thông tin đăng nhập\nKHÔNG chuyển tiền hay nộp bất kỳ khoản \"phí\" nào\n\nNên làm ngay\n\nMở ứng dụng chính thức (không qua liên kết) để kiểm tra trạng thái tài khoản\nTự liên hệ tổ chức qua số điện thoại / website chính thức bạn tra cứu được\nNếu đã nhập thông tin: đổi mật khẩu ngay và đăng xuất mọi thiết bị lạ\nBật xác thực hai bước trong ứng dụng chính thức\nNếu đã chuyển tiền: gọi ngân hàng ngay để yêu cầu chặn giao dịch\nBáo cáo và chặn người gửi\n\nTappyAI không thay thế cơ quan chức năng.\n\nKIẾN THỨC CHỐNG LỪA ĐẢO\n\nCác tình huống lừa đảo phổ biến được tổng hợp từ nguồn chính thức.\n\nThông tin từ nguồn chính thức · Nguồn: Bộ Công an\n\nTất cả\nCơ quan nhà nước\nAI – Deepfake\nĐầu tư, việc làm\nMua bán trực tuyến\nĐánh cắp dữ liệu\n\n25 tình huống\n\nGiả người thân qua video Deepfake\nDùng hình ảnh giả để gọi video, viện lý do cần tiền gấp và đề nghị chuyển khoản.\nAI – Deepfake\nLàm giả giọng người quen bằng DeepVoice\nTạo giọng nói tương tự người thân rồi dựng tình huống cấp bách để vay tiền.\nAI – Deepfake\nMạo danh cơ quan tố tụng\nGiả làm Công an, Viện kiểm sát, Tòa án, yêu cầu chuyển tiền để “xác minh”.\nCơ quan nhà nước\nGiả nhân viên ngân hàng\nYêu cầu cung cấp tên đăng nhập, mật khẩu, OTP hoặc thông tin tài khoản.\nCơ quan nhà nước\nTin nhắn Brandname giả\nGửi SMS tên hiển thị giống ngân hàng, cơ quan nhà nước để đánh lừa.\nCơ quan nhà nước\nPhát tán đường link giả mạo\nGửi liên kết qua SMS, email, MXH để đánh cắp dữ liệu hoặc cài mã độc.\nĐánh cắp dữ liệu\nXem thêm tình huống\nLịch sử kiểm tra\n\nChưa có lượt kiểm tra nào.\n\nLịch sử chỉ được lưu trên thi"
+ },
+ {
+  "rec": {
+   "id": 11,
+   "kind": "legit English",
+   "exp": "not flagged",
+   "status": 200,
+   "ms": 378,
+   "wall": 2623,
+   "risk": {
+    "level": "INCONCLUSIVE",
+    "score": 0,
+    "confidence": 40
+   },
+   "tier": 0,
+   "ai": "not_needed",
+   "scenario": null,
+   "keys": [
+    "inputType",
+    "risk",
+    "scamType",
+    "attackGoal",
+    "signals",
+    "requestedActions",
+    "detectedEntities",
+    "urlChecks",
+    "advice",
+    "reasoningSummary",
+    "analysis",
+    "analyzedAt",
+    "verdict",
+    "scenario",
+    "quota"
+   ]
+  },
+  "json": {
+   "inputType": "message",
+   "risk": {
+    "level": "INCONCLUSIVE",
+    "score": 0,
+    "confidence": 40
+   },
+   "scamType": null,
+   "attackGoal": null,
+   "signals": [],
+   "requestedActions": [],
+   "detectedEntities": {
+    "urls": [],
+    "phoneNumbers": [],
+    "emails": [],
+    "organizations": [],
+    "platforms": []
+   },
+   "urlChecks": [],
+   "advice": {
+    "doNot": [
+     {
+      "code": "NO_TRANSFER",
+      "label_vi": "KHÔNG chuyển tiền hay nộp bất kỳ khoản \"phí\" nào",
+      "label_en": "Do NOT transfer money or pay any \"fee\""
+     },
+     {
+      "code": "NO_OTP",
+      "label_vi": "KHÔNG nhập hay đọc mã OTP / mã xác thực cho bất kỳ ai",
+      "label_en": "Do NOT enter or read out any OTP / verification code to anyone"
+     },
+     {
+      "code": "NO_CLICK_LINK",
+      "label_vi": "KHÔNG bấm vào liên kết trong tin nhắn",
+      "label_en": "Do NOT open the link in the message"
+     }
+    ],
+    "doNow": [
+     {
+      "code": "COULD_NOT_CONCLUDE",
+      "label_vi": "Chưa nhận ra dấu hiệu quen thuộc. Điều này KHÔNG có nghĩa là an toàn: hãy xác minh qua kênh chính thức trước khi làm theo",
+      "label_en": "No familiar signs recognised. This does NOT mean it is safe: verify through an official channel before acting on it"
+     },
+     {
+      "code": "VERIFY_SENDER_INDEPENDENTLY",
+      "label_vi": "Tự liên hệ tổ chức qua số điện thoại / website chính thức bạn tra cứu được",
+      "label_en": "Contact the organisation yourself through a phone number / website you looked up"
+     }
+    ]
+   },
+   "reasoningSummary": "Chưa nhận ra dấu hiệu quen thuộc. Điều này KHÔNG có nghĩa là an toàn: đừng chuyển tiền, đừng đọc mã OTP, đừng bấm link lạ; hãy xác minh qua kênh chính thức.",
+   "analysis": {
+    "tier": 0,
+    "aiStatus": "not_needed",
+    "provider": null,
+    "modelRole": null
+   },
+   "analyzedAt": 1794930692073,
+   "verdict": "unrecognized",
+   "scenario": null,
+   "quota": null
+  },
+  "page": "TappyAI\nYour Personal AI Agent\n\nAI AGENT\n\nHome – AI Agent\nExplore (Video)\nMới\nDeal\nInbox\n\nKHẢ NĂNG\n\nGợi ý cho bạn\nSmart Tools\nAI Planner (My Plans)\nCảnh báo lừa đảo\nNhóm ăn\nViết\n\nCỘNG ĐỒNG\n\nPost / Upload\nFollowing / Friends\n\nTÀI KHOẢN CỦA TÔI\n\nProfile / Me\nQR Profile\nLogout\n\nTappyAI Premium\n\nSuy nghĩ, Tìm web và Nghiên cứu sâu\n\nNâng cấp ngay\nCảnh báo lừa đảo\n\nBảo vệ bạn khỏi các liên kết và website đáng ngờ\n\nAI Agent\nKhám phá\nDeal\nInbox\nSmart Tools\nKhách\nCảnh báo lừa đảo\n\nBảo vệ bạn khỏi các liên kết và website đáng ngờ\n\nLịch sử kiểm tra\nDUYỆT WEB CẨN THẬN HƠN\nKiểm tra kỹ\ntrước khi truy cập\n\nTappy giúp bạn phát hiện liên kết và website đáng ngờ, lừa đảo — kiểm tra trước, mở sau.\n\nhttps://\nPhát hiện lừa đảo\nDanh sách đen & Web Risk\nKiểm tra nhanh\nChỉ vài giây\nHTTPS & chuyển hướng\nChứng chỉ, chuỗi redirect\nThương hiệu chính thức\nĐối chiếu danh bạ chính chủ\nNghi bị lừa?\n\nNếu đã chuyển tiền hoặc lộ mã OTP, gọi Công an ngay.\n\nGọi 0692.345.860\n\nĐường Dây Nóng — Cục Cảnh sát hình sự - Bộ Công an. Đường dây nóng tiếp nhận tin báo, tố giác về lừa đảo.\n\nNguồn: Bộ Công an\n\nKiểm tra URL\nQuét mã QR\nPhân tích tin nhắn\nPhân tích tin nhắn\n\nDán tin nhắn hoặc mô tả ngắn tình huống đáng ngờ. TappyAI đối chiếu với các tình huống lừa đảo đã được Bộ Công an cảnh báo.\n\nĐối chiếu bằng danh sách tình huống và quy tắc có sẵn: không dùng AI, không lưu nội dung tin nhắn.\n\nPhân tích ngay\nChưa nhận ra dấu hiệu quen thuộc\n\nĐiều này KHÔNG có nghĩa là an toàn: đừng chuyển tiền, đừng đọc mã OTP, đừng bấm link lạ; hãy xác minh qua kênh chính thức.\n\nKHÔNG làm\n\nKHÔNG chuyển tiền hay nộp bất kỳ khoản \"phí\" nào\nKHÔNG nhập hay đọc mã OTP / mã xác thực cho bất kỳ ai\nKHÔNG bấm vào liên kết trong tin nhắn\n\nNên làm ngay\n\nChưa nhận ra dấu hiệu quen thuộc. Điều này KHÔNG có nghĩa là an toàn: hãy xác minh qua kênh chính thức trước khi làm theo\nTự liên hệ tổ chức qua số điện thoại / website chính thức bạn tra cứu được\n\nTappyAI không thay thế cơ quan chức năng.\n\nKIẾN THỨC CHỐNG LỪA ĐẢO\n\nCác tình huống lừa đảo phổ biến được tổng hợp từ nguồn chính thức.\n\nThông tin từ nguồn chính thức · Nguồn: Bộ Công an\n\nTất cả\nCơ quan nhà nước\nAI – Deepfake\nĐầu tư, việc làm\nMua bán trực tuyến\nĐánh cắp dữ liệu\n\n25 tình huống\n\nGiả người thân qua video Deepfake\nDùng hình ảnh giả để gọi video, viện lý do cần tiền gấp và đề nghị chuyển khoản.\nAI – Deepfake\nLàm giả giọng người quen bằng DeepVoice\nTạo giọng nói tương tự người thân rồi dựng tình huống cấp bách để vay tiền.\nAI – Deepfake\nMạo danh cơ quan tố tụng\nGiả làm Công an, Viện kiểm sát, Tòa án, yêu cầu chuyển tiền để “xác minh”.\nCơ quan nhà nước\nGiả nhân viên ngân hàng\nYêu cầu cung cấp tên đăng nhập, mật khẩu, OTP hoặc thông tin tài khoản.\nCơ quan nhà nước\nTin nhắn Brandname giả\nGửi SMS tên hiển thị giống ngân hàng, cơ quan nhà nước để đánh lừa.\nCơ quan nhà nước\nPhát tán đường link giả mạo\nGửi liên kết qua SMS, email, MXH để đánh cắp dữ liệu hoặc cài mã độc.\nĐánh cắp dữ liệu\nXem thêm tình huống\nLịch sử kiểm tra\n\nChưa có lượt kiểm tra nào.\n\nLịch sử chỉ được lưu trên thiết bị này.\n\n🧪 audit dev · wt-integration\nfeat/brain-r13-p1 @ 9d69e5d\nsupabase: zdaprdfgpbpnxyofagmc"
+ },
+ {
+  "rec": {
+   "id": 12,
+   "kind": "very long (UI truncates 4000)",
+   "exp": "handled, no crash",
+   "status": 200,
+   "ms": 336,
+   "wall": 2636,
+   "risk": {
+    "level": "HIGH",
+    "score": 60,
+    "confidence": 40
+   },
+   "tier": 0,
+   "ai": "not_needed",
+   "scenario": null,
+   "keys": [
+    "inputType",
+    "risk",
+    "scamType",
+    "attackGoal",
+    "signals",
+    "requestedActions",
+    "detectedEntities",
+    "urlChecks",
+    "advice",
+    "reasoningSummary",
+    "analysis",
+    "analyzedAt",
+    "verdict",
+    "scenario",
+    "quota"
+   ]
+  },
+  "json": {
+   "inputType": "message",
+   "risk": {
+    "level": "HIGH",
+    "score": 60,
+    "confidence": 40
+   },
+   "scamType": "other",
+   "attackGoal": "account_takeover",
+   "signals": [
+    {
+     "type": "account_suspension_threat",
+     "severity": "high",
+     "explanation": "Đe dọa khóa hoặc đình chỉ tài khoản — chiêu ép người nhận hành động vội.",
+     "source": "rule"
+    },
+    {
+     "type": "verify_account_request",
+     "severity": "medium",
+     "explanation": "Yêu cầu \"xác thực tài khoản\" bên ngoài ứng dụng chính thức.",
+     "source": "rule"
+    }
+   ],
+   "requestedActions": [],
+   "detectedEntities": {
+    "urls": [],
+    "phoneNumbers": [],
+    "emails": [],
+    "organizations": [],
+    "platforms": []
+   },
+   "urlChecks": [],
+   "advice": {
+    "doNot": [
+     {
+      "code": "NO_OTP",
+      "label_vi": "KHÔNG nhập hay đọc mã OTP / mã xác thực cho bất kỳ ai",
+      "label_en": "Do NOT enter or read out any OTP / verification code to anyone"
+     },
+     {
+      "code": "NO_PASSWORD",
+      "label_vi": "KHÔNG nhập mật khẩu vào liên kết trong tin nhắn",
+      "label_en": "Do NOT enter your password on a link from the message"
+     },
+     {
+      "code": "NO_RECOVERY_CODES",
+      "label_vi": "KHÔNG cung cấp mã khôi phục, mã 2FA hay thông tin đăng nhập",
+      "label_en": "Do NOT provide recovery codes, 2FA codes or login details"
+     },
+     {
+      "code": "NO_PERSONAL_INFO",
+      "label_vi": "KHÔNG cung cấp CCCD, số thẻ, thông tin cá nhân",
+      "label_en": "Do NOT provide ID, card numbers or personal details"
+     }
+    ],
+    "doNow": [
+     {
+      "code": "VERIFY_IN_OFFICIAL_APP",
+      "label_vi": "Mở ứng dụng chính thức (không qua liên kết) để kiểm tra trạng thái tài khoản",
+      "label_en": "Open the official app yourself (not via the link) to check your account status"
+     },
+     {
+      "code": "CHANGE_PASSWORD_IF_ENTERED",
+      "label_vi": "Nếu đã nhập thông tin: đổi mật khẩu ngay và đăng xuất mọi thiết bị lạ",
+      "label_en": "If you already entered details: change your password now and sign out unknown devices"
+     },
+     {
+      "code": "ENABLE_2FA",
+      "label_vi": "Bật xác thực hai bước trong ứng dụng chính thức",
+      "label_en": "Turn on two-step verification in the official app"
+     },
+     {
+      "code": "REPORT_SCAM",
+      "label_vi": "Báo cáo và chặn người gửi",
+      "label_en": "Report and block the sender"
+     }
+    ]
+   },
+   "reasoningSummary": "Nội dung này giống một thủ đoạn lừa đảo đã được cơ quan chức năng cảnh báo. Đừng làm theo yêu cầu trong đó.",
+   "analysis": {
+    "tier": 0,
+    "aiStatus": "not_needed",
+    "provider": null,
+    "modelRole": null
+   },
+   "analyzedAt": 1794930713793,
+   "verdict": "familiar",
+   "scenario": null,
+   "quota": null
+  },
+  "page": "TappyAI\nYour Personal AI Agent\n\nAI AGENT\n\nHome – AI Agent\nExplore (Video)\nMới\nDeal\nInbox\n\nKHẢ NĂNG\n\nGợi ý cho bạn\nSmart Tools\nAI Planner (My Plans)\nCảnh báo lừa đảo\nNhóm ăn\nViết\n\nCỘNG ĐỒNG\n\nPost / Upload\nFollowing / Friends\n\nTÀI KHOẢN CỦA TÔI\n\nProfile / Me\nQR Profile\nLogout\n\nTappyAI Premium\n\nSuy nghĩ, Tìm web và Nghiên cứu sâu\n\nNâng cấp ngay\nCảnh báo lừa đảo\n\nBảo vệ bạn khỏi các liên kết và website đáng ngờ\n\nAI Agent\nKhám phá\nDeal\nInbox\nSmart Tools\nKhách\nCảnh báo lừa đảo\n\nBảo vệ bạn khỏi các liên kết và website đáng ngờ\n\nLịch sử kiểm tra\nDUYỆT WEB CẨN THẬN HƠN\nKiểm tra kỹ\ntrước khi truy cập\n\nTappy giúp bạn phát hiện liên kết và website đáng ngờ, lừa đảo — kiểm tra trước, mở sau.\n\nhttps://\nPhát hiện lừa đảo\nDanh sách đen & Web Risk\nKiểm tra nhanh\nChỉ vài giây\nHTTPS & chuyển hướng\nChứng chỉ, chuỗi redirect\nThương hiệu chính thức\nĐối chiếu danh bạ chính chủ\nNghi bị lừa?\n\nNếu đã chuyển tiền hoặc lộ mã OTP, gọi Công an ngay.\n\nGọi 0692.345.860\n\nĐường Dây Nóng — Cục Cảnh sát hình sự - Bộ Công an. Đường dây nóng tiếp nhận tin báo, tố giác về lừa đảo.\n\nNguồn: Bộ Công an\n\nKiểm tra URL\nQuét mã QR\nPhân tích tin nhắn\nPhân tích tin nhắn\n\nDán tin nhắn hoặc mô tả ngắn tình huống đáng ngờ. TappyAI đối chiếu với các tình huống lừa đảo đã được Bộ Công an cảnh báo.\n\nĐối chiếu bằng danh sách tình huống và quy tắc có sẵn: không dùng AI, không lưu nội dung tin nhắn.\n\nPhân tích ngay\nCó dấu hiệu lừa đảo quen thuộc\n\nDấu hiệu lừa đảo khác\n\nNội dung này giống một thủ đoạn lừa đảo đã được cơ quan chức năng cảnh báo. Đừng làm theo yêu cầu trong đó.\n\nKẻ gian muốn lấy gì\n\nChiếm đoạt tài khoản của bạn\n\nLý do cụ thể\n\nĐe dọa khóa hoặc đình chỉ tài khoản — chiêu ép người nhận hành động vội.\nYêu cầu \"xác thực tài khoản\" bên ngoài ứng dụng chính thức.\n\nKHÔNG làm\n\nKHÔNG nhập hay đọc mã OTP / mã xác thực cho bất kỳ ai\nKHÔNG nhập mật khẩu vào liên kết trong tin nhắn\nKHÔNG cung cấp mã khôi phục, mã 2FA hay thông tin đăng nhập\nKHÔNG cung cấp CCCD, số thẻ, thông tin cá nhân\n\nNên làm ngay\n\nMở ứng dụng chính thức (không qua liên kết) để kiểm tra trạng thái tài khoản\nNếu đã nhập thông tin: đổi mật khẩu ngay và đăng xuất mọi thiết bị lạ\nBật xác thực hai bước trong ứng dụng chính thức\nBáo cáo và chặn người gửi\n\nTappyAI không thay thế cơ quan chức năng.\n\nKIẾN THỨC CHỐNG LỪA ĐẢO\n\nCác tình huống lừa đảo phổ biến được tổng hợp từ nguồn chính thức.\n\nThông tin từ nguồn chính thức · Nguồn: Bộ Công an\n\nTất cả\nCơ quan nhà nước\nAI – Deepfake\nĐầu tư, việc làm\nMua bán trực tuyến\nĐánh cắp dữ liệu\n\n25 tình huống\n\nGiả người thân qua video Deepfake\nDùng hình ảnh giả để gọi video, viện lý do cần tiền gấp và đề nghị chuyển khoản.\nAI – Deepfake\nLàm giả giọng người quen bằng DeepVoice\nTạo giọng nói tương tự người thân rồi dựng tình huống cấp bách để vay tiền.\nAI – Deepfake\nMạo danh cơ quan tố tụng\nGiả làm Công an, Viện kiểm sát, Tòa án, yêu cầu chuyển tiền để “xác minh”.\nCơ quan nhà nước\nGiả nhân viên ngân hàng\nYêu cầu cung cấp tên đăng nhập, mật khẩu, OTP hoặc thông tin tài khoản.\nCơ quan nhà nước\nTin nhắn Brandname giả\nGửi SMS tên hiển thị giống ngân hàng, cơ quan nhà nước để đánh lừa.\nCơ quan nhà nước\nPhát tán đường link giả mạo\nGửi liên kết qua SMS, email, MXH để đánh cắp dữ liệu hoặc cài mã độc.\nĐánh cắp dữ liệu\nXem thêm tình huống\nLịch sử kiểm tra\n\nChưa có lượt kiểm tra nào.\n\nLịch sử chỉ được lưu trên thiết bị này.\n\n🧪 audit dev · wt-integration\nfeat/brain-r13-p1 @ 9d69e5d\nsupabase: zdaprdfgpbpnxyofagmc"
+ },
+ {
+  "rec": {
+   "id": 13,
+   "kind": "legit gov-like notice w/ official link",
+   "exp": "not flagged / low",
+   "status": 200,
+   "ms": 1373,
+   "wall": 3668,
+   "risk": {
+    "level": "MEDIUM",
+    "score": 31,
+    "confidence": 28
+   },
+   "tier": 0,
+   "ai": "not_needed",
+   "scenario": null,
+   "keys": [
+    "inputType",
+    "risk",
+    "scamType",
+    "attackGoal",
+    "signals",
+    "requestedActions",
+    "detectedEntities",
+    "urlChecks",
+    "advice",
+    "reasoningSummary",
+    "analysis",
+    "analyzedAt",
+    "verdict",
+    "scenario",
+    "quota"
+   ],
+   "sourceUrls": [
+    "https://moh.gov.vn/",
+    "https://moh.gov.vn/"
+   ]
+  },
+  "json": {
+   "inputType": "message",
+   "risk": {
+    "level": "MEDIUM",
+    "score": 31,
+    "confidence": 28
+   },
+   "scamType": "other",
+   "attackGoal": "payment_fraud",
+   "signals": [
+    {
+     "type": "transfer_request",
+     "severity": "high",
+     "explanation": "Yêu cầu chuyển tiền hoặc nộp một khoản \"phí\" trước.",
+     "source": "rule"
+    }
+   ],
+   "requestedActions": [],
+   "detectedEntities": {
+    "urls": [
+     "https://moh.gov.vn/"
+    ],
+    "phoneNumbers": [],
+    "emails": [],
+    "organizations": [],
+    "platforms": []
+   },
+   "urlChecks": [
+    {
+     "url": "https://moh.gov.vn/",
+     "status": "checked",
+     "level": "INCONCLUSIVE",
+     "score": 14,
+     "confidence": 50,
+     "officialMatch": null
+    }
+   ],
+   "advice": {
+    "doNot": [
+     {
+      "code": "NO_CLICK_LINK",
+      "label_vi": "KHÔNG bấm vào liên kết trong tin nhắn",
+      "label_en": "Do NOT open the link in the message"
+     },
+     {
+      "code": "NO_TRANSFER",
+      "label_vi": "KHÔNG chuyển tiền hay nộp bất kỳ khoản \"phí\" nào",
+      "label_en": "Do NOT transfer money or pay any \"fee\""
+     }
+    ],
+    "doNow": [
+     {
+      "code": "CONTACT_BANK_IF_PAID",
+      "label_vi": "Nếu đã chuyển tiền: gọi ngân hàng ngay để yêu cầu chặn giao dịch",
+      "label_en": "If you already paid: call your bank immediately to try to stop the transfer"
+     },
+     {
+      "code": "REPORT_SCAM",
+      "label_vi": "Báo cáo và chặn người gửi",
+      "label_en": "Report and block the sender"
+     }
+    ]
+   },
+   "reasoningSummary": "Chưa đủ để kết luận, nhưng bạn nên dừng lại và xác minh qua kênh chính thức trước khi làm bất cứ điều gì.",
+   "analysis": {
+    "tier": 0,
+    "aiStatus": "not_needed",
+    "provider": null,
+    "modelRole": null
+   },
+   "analyzedAt": 1794930736640,
+   "verdict": "suspicious",
+   "scenario": null,
+   "quota": null
+  },
+  "page": "TappyAI\nYour Personal AI Agent\n\nAI AGENT\n\nHome – AI Agent\nExplore (Video)\nMới\nDeal\nInbox\n\nKHẢ NĂNG\n\nGợi ý cho bạn\nSmart Tools\nAI Planner (My Plans)\nCảnh báo lừa đảo\nNhóm ăn\nViết\n\nCỘNG ĐỒNG\n\nPost / Upload\nFollowing / Friends\n\nTÀI KHOẢN CỦA TÔI\n\nProfile / Me\nQR Profile\nLogout\n\nTappyAI Premium\n\nSuy nghĩ, Tìm web và Nghiên cứu sâu\n\nNâng cấp ngay\nCảnh báo lừa đảo\n\nBảo vệ bạn khỏi các liên kết và website đáng ngờ\n\nAI Agent\nKhám phá\nDeal\nInbox\nSmart Tools\nKhách\nCảnh báo lừa đảo\n\nBảo vệ bạn khỏi các liên kết và website đáng ngờ\n\nLịch sử kiểm tra\nDUYỆT WEB CẨN THẬN HƠN\nKiểm tra kỹ\ntrước khi truy cập\n\nTappy giúp bạn phát hiện liên kết và website đáng ngờ, lừa đảo — kiểm tra trước, mở sau.\n\nhttps://\nPhát hiện lừa đảo\nDanh sách đen & Web Risk\nKiểm tra nhanh\nChỉ vài giây\nHTTPS & chuyển hướng\nChứng chỉ, chuỗi redirect\nThương hiệu chính thức\nĐối chiếu danh bạ chính chủ\nNghi bị lừa?\n\nNếu đã chuyển tiền hoặc lộ mã OTP, gọi Công an ngay.\n\nGọi 0692.345.860\n\nĐường Dây Nóng — Cục Cảnh sát hình sự - Bộ Công an. Đường dây nóng tiếp nhận tin báo, tố giác về lừa đảo.\n\nNguồn: Bộ Công an\n\nKiểm tra URL\nQuét mã QR\nPhân tích tin nhắn\nPhân tích tin nhắn\n\nDán tin nhắn hoặc mô tả ngắn tình huống đáng ngờ. TappyAI đối chiếu với các tình huống lừa đảo đã được Bộ Công an cảnh báo.\n\nĐối chiếu bằng danh sách tình huống và quy tắc có sẵn: không dùng AI, không lưu nội dung tin nhắn.\n\nPhân tích ngay\nCó một số dấu hiệu đáng ngờ\n\nDấu hiệu lừa đảo khác\n\nChưa đủ để kết luận, nhưng bạn nên dừng lại và xác minh qua kênh chính thức trước khi làm bất cứ điều gì.\n\nKẻ gian muốn lấy gì\n\nLừa bạn chuyển tiền\n\nLý do cụ thể\n\nYêu cầu chuyển tiền hoặc nộp một khoản \"phí\" trước.\n\nKHÔNG làm\n\nKHÔNG bấm vào liên kết trong tin nhắn\nKHÔNG chuyển tiền hay nộp bất kỳ khoản \"phí\" nào\n\nNên làm ngay\n\nNếu đã chuyển tiền: gọi ngân hàng ngay để yêu cầu chặn giao dịch\nBáo cáo và chặn người gửi\n\nLiên kết trong tin nhắn\n\nmoh.gov.vn\nChưa nhận ra dấu hiệu\n\nTappyAI không thay thế cơ quan chức năng.\n\nKIẾN THỨC CHỐNG LỪA ĐẢO\n\nCác tình huống lừa đảo phổ biến được tổng hợp từ nguồn chính thức.\n\nThông tin từ nguồn chính thức · Nguồn: Bộ Công an\n\nTất cả\nCơ quan nhà nước\nAI – Deepfake\nĐầu tư, việc làm\nMua bán trực tuyến\nĐánh cắp dữ liệu\n\n25 tình huống\n\nGiả người thân qua video Deepfake\nDùng hình ảnh giả để gọi video, viện lý do cần tiền gấp và đề nghị chuyển khoản.\nAI – Deepfake\nLàm giả giọng người quen bằng DeepVoice\nTạo giọng nói tương tự người thân rồi dựng tình huống cấp bách để vay tiền.\nAI – Deepfake\nMạo danh cơ quan tố tụng\nGiả làm Công an, Viện kiểm sát, Tòa án, yêu cầu chuyển tiền để “xác minh”.\nCơ quan nhà nước\nGiả nhân viên ngân hàng\nYêu cầu cung cấp tên đăng nhập, mật khẩu, OTP hoặc thông tin tài khoản.\nCơ quan nhà nước\nTin nhắn Brandname giả\nGửi SMS tên hiển thị giống ngân hàng, cơ quan nhà nước để đánh lừa.\nCơ quan nhà nước\nPhát tán đường link giả mạo\nGửi liên kết qua SMS, email, MXH để đánh cắp dữ liệu hoặc cài mã độc.\nĐánh cắp dữ liệu\nXem thêm tình huống\nLịch sử kiểm tra\n\nChưa có lượt kiểm tra nào.\n\nLịch sử chỉ được lưu trên thiết bị này.\n\n🧪 audit dev · wt-integration\nfeat/brain-r13-p1 @ 9d69e5d\nsupabase: zdaprdfgpbpnxyofagmc"
+ }
+]

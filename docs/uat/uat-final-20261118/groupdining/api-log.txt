@@ -1,0 +1,78 @@
+create group [u1] POST /api/group -> 200 1066ms {"id":"56694de7-385b-40dd-b8f3-6176bbeb6323","name":"Nhóm ăn tối thứ Sáu"}
+create no auth [none] POST /api/group -> 401 25ms {"error":"unauthorized","message":"Cần đăng nhập"}
+create anon [anon] POST /api/group -> 403 95ms {"error":"account_required","message":"Hãy đăng nhập để đăng bài, bình luận và theo dõi."}
+create empty name [u1] POST /api/group -> 400 97ms {"error":"invalid_name","message":"Tên nhóm không hợp lệ"}
+create name number [u1] POST /api/group -> 400 91ms {"error":"invalid_name","message":"Tên nhóm không hợp lệ"}
+create name 5000 chars [u1] POST /api/group -> 200 211ms {"id":"a81e39c0-e307-4159-bce2-239dde12cdc7","name":"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+create xss name [u1] POST /api/group -> 200 224ms {"id":"9e6be472-044e-4465-bd1c-e7c3f7d636f8","name":"<img src=x onerror=alert(1)><script>alert(2)</script>"}
+create emoji/diacritics [u1] POST /api/group -> 200 201ms {"id":"8592b91e-894e-4b31-a5eb-80c7ed086711","name":"Đi ăn phở 🍜 Nguyễn Thị Hương ❤️‍🔥"}
+create bad json [u1] POST /api/group -> 400 94ms {"error":"invalid_name","message":"Tên nhóm không hợp lệ"}
+read as no-auth (link holder) [none] GET /api/group?id=56694de7-385b-40dd-b8f3-6176bbeb6323 -> 200 235ms {"id":"56694de7-385b-40dd-b8f3-6176bbeb6323","name":"Nhóm ăn tối thứ Sáu","creator_id":"630130af-689d-421c-9faf-87b1cdb38a7b","status":"open","suggestion":null,"created_at":"2026-11-17T15:45:06.288176
+read as non-member u5 [u5] GET /api/group?id=56694de7-385b-40dd-b8f3-6176bbeb6323 -> 200 184ms {"id":"56694de7-385b-40dd-b8f3-6176bbeb6323","name":"Nhóm ăn tối thứ Sáu","creator_id":"630130af-689d-421c-9faf-87b1cdb38a7b","status":"open","suggestion":null,"created_at":"2026-11-17T15:45:06.288176
+read random uuid [u5] GET /api/group?id=00000000-0000-4000-8000-000000000000 -> 404 110ms {"error":"group_not_found","message":"Không tìm thấy nhóm"}
+read non-uuid [u5] GET /api/group?id=abc' -> 404 95ms {"error":"group_not_found","message":"Không tìm thấy nhóm"}
+read missing id [u5] GET /api/group -> 400 22ms {"error":"missing_fields","message":"Thiếu thông tin bắt buộc"}
+join no auth [none] POST /api/group/56694de7-385b-40dd-b8f3-6176bbeb6323/jo -> 401 700ms {"error":"unauthorized","message":"Cần đăng nhập"}
+join anon [anon] POST /api/group/56694de7-385b-40dd-b8f3-6176bbeb6323/jo -> 403 101ms {"error":"account_required","message":"Hãy đăng nhập để đăng bài, bình luận và theo dõi."}
+creator joins [u1] POST /api/group/56694de7-385b-40dd-b8f3-6176bbeb6323/jo -> 200 408ms {"ok":true}
+u2 joins [u2] POST /api/group/56694de7-385b-40dd-b8f3-6176bbeb6323/jo -> 200 541ms {"ok":true}
+u2 joins again (dup) [u2] POST /api/group/56694de7-385b-40dd-b8f3-6176bbeb6323/jo -> 200 632ms {"ok":true,"alreadyJoined":true}
+u3 joins xss+emoji [u3] POST /api/group/56694de7-385b-40dd-b8f3-6176bbeb6323/jo -> 200 495ms {"ok":true}
+u4 joins long fields [u4] POST /api/group/56694de7-385b-40dd-b8f3-6176bbeb6323/jo -> 200 743ms {"ok":true}
+join missing area [u5] POST /api/group/56694de7-385b-40dd-b8f3-6176bbeb6323/jo -> 400 217ms {"error":"invalid_input","message":"Dữ liệu không hợp lệ"}
+join to nonexistent group [u5] POST /api/group/00000000-0000-4000-8000-000000000000/jo -> 500 433ms {"error":"join_failed","message":"Không thể tham gia nhóm"}
+join non-uuid group [u5] POST /api/group/zzz/join -> 500 643ms {"error":"join_failed","message":"Không thể tham gia nhóm"}
+u5 joins (non-member before) [u5] POST /api/group/56694de7-385b-40dd-b8f3-6176bbeb6323/jo -> 200 485ms {"ok":true}
+read as member [u2] GET /api/group?id=56694de7-385b-40dd-b8f3-6176bbeb6323 -> 200 322ms {"id":"56694de7-385b-40dd-b8f3-6176bbeb6323","name":"Nhóm ăn tối thứ Sáu","creator_id":"630130af-689d-421c-9faf-87b1cdb38a7b","status":"open","suggestion":null,"created_at":"2026-11-17T15:45:06.288176
+members: 5 lens [ 14, 3, 41, 100000, 4 ]
+join body with user_id spoof [u5] POST /api/group/56694de7-385b-40dd-b8f3-6176bbeb6323/jo -> 200 749ms {"ok":true,"alreadyJoined":true}
+suggest no auth [none] POST /api/group/56694de7-385b-40dd-b8f3-6176bbeb6323/su -> 401 964ms {"error":"unauthorized","message":"Cần đăng nhập"}
+suggest anon [anon] POST /api/group/56694de7-385b-40dd-b8f3-6176bbeb6323/su -> 403 261ms {"error":"account_required","message":"Hãy đăng nhập để đăng bài, bình luận và theo dõi."}
+suggest non-member u5? (is member) [u3] POST /api/group/56694de7-385b-40dd-b8f3-6176bbeb6323/su -> 403 216ms {"error":"owner_only","message":"Chỉ trưởng nhóm mới có thể gợi ý"}
+create group2 by u2 [u2] POST /api/group -> 200 209ms {"id":"beeb7a92-4141-4066-9c09-3237173c8610","name":"Nhóm riêng của Lan"}
+suggest outsider on g2 [u5] POST /api/group/beeb7a92-4141-4066-9c09-3237173c8610/su -> 404 256ms {"error":"group_not_found","message":"Không tìm thấy nhóm"}
+suggest g2 empty members (creator) [u2] POST /api/group/beeb7a92-4141-4066-9c09-3237173c8610/su -> 400 287ms {"error":"no_members","message":"Chưa có thành viên nào tham gia"}
+suggest creator g1 [u1] POST /api/group/56694de7-385b-40dd-b8f3-6176bbeb6323/su -> 200 5162ms {"suggestion":"Hiện chưa thể gợi ý **3 địa điểm phù hợp với tất cả mọi người** vì thông tin nhóm có hai vấn đề:\n\n- Sở thích và kiêng ăn của **Lan** đang mâu thuẫn: thích đồ chay nh�
+SUGGESTION: Hiện chưa thể gợi ý **3 địa điểm phù hợp với tất cả mọi người** vì thông tin nhóm có hai vấn đề:
+
+- Sở thích và kiêng ăn của **Lan** đang mâu thuẫn: thích đồ chay nhưng “kiêng ăn chay”.
+- Thành viên thứ tư có tên và khu vực quá dài, ngân sách ghi `abc -5 999999999999` nên không xác định được ngân sách thực tế. Ngoài ra, ngân sách của **Bình là 50.000 đồng**, thấp hơn mức thấp nhất trong nhóm còn lại.
+
+Để chọn địa điểm hợp lý, bạn vui lòng xác nhận:
+1. Lan **ăn chay hay không ăn chay**?
+2. Ngân sách đúng của thành viên thứ tư là bao nhiêu?
+3. Bình có thể tăng ngân sách không, hay cần giới hạn chi phí cho mỗi người ở **50.000 đồng**?
+
+Khi có thông tin rõ ràng, mình sẽ gợi ý 3 lựa chọn và nêu lý do phù hợp với cả nhóm.
+suggest burst 0 [u1] POST /api/group/56694de7-385b-40dd-b8f3-6176bbeb6323/su -> 200 9420ms {"suggestion":"Mình chưa thể gợi ý địa điểm **phù hợp với tất cả mọi người** vì thông tin nhóm hiện có vài điểm mâu thuẫn hoặc không hợp lệ:\n\n- Danh sách có **6 người**, không phải 5
+suggest burst 1 [u1] POST /api/group/56694de7-385b-40dd-b8f3-6176bbeb6323/su -> 200 5415ms {"suggestion":"## Gợi ý cho nhóm ăn tối thứ Sáu\n\nMình chưa thể xác định 3 địa điểm cụ thể mà **chắc chắn phù hợp với tất cả mọi người**, vì thông tin hiện có chưa đủ và có một s
+suggest burst 2 [u1] POST /api/group/56694de7-385b-40dd-b8f3-6176bbeb6323/su -> 200 4388ms {"suggestion":"Mình chưa thể gợi ý chính xác 3 địa điểm phù hợp với **tất cả mọi người**, vì thông tin hiện tại có vài điểm chưa rõ:\n\n- **Lan:** “thích đồ chay” nhưng “kiêng ăn chay�
+suggest burst 3 [u1] POST /api/group/56694de7-385b-40dd-b8f3-6176bbeb6323/su -> 200 5035ms {"suggestion":"Với dữ liệu hiện có, **chưa thể xác định 3 địa điểm cụ thể phù hợp với tất cả mọi người**. Một thành viên có tên và khu vực dài bất thường, cùng ngân sách không rõ 
+suggest burst 4 [u1] POST /api/group/56694de7-385b-40dd-b8f3-6176bbeb6323/su -> 200 5051ms {"suggestion":"Mình chưa thể gợi ý 3 địa điểm **phù hợp với tất cả mọi người** vì danh sách có hai điểm chưa rõ:\n\n- **Sở thích và yêu cầu ăn uống mâu thuẫn:** Lan thích đồ chay nhưng l
+suggest burst 5 [u1] POST /api/group/56694de7-385b-40dd-b8f3-6176bbeb6323/su -> 200 4002ms {"suggestion":"Mình chưa thể gợi ý địa điểm **phù hợp với tất cả mọi người** từ thông tin hiện có, vì dữ liệu có một số mâu thuẫn và không hợp lệ:\n\n- **Lan:** “thích đồ chay” nh
+PG bulk read group_members no auth [anon-key] GET /group_members?select=name&limit=5 -> 200 []
+PG bulk read groups no auth [anon-key] GET /groups?select=id&limit=5 -> 200 []
+PG bulk read groups outsider u5 on all [u5] GET /groups?select=id,name -> 200 [{"id":"56694de7-385b-40dd-b8f3-6176bbeb6323","name":"Nhóm ăn tối thứ Sáu"}]
+PG u5 update group name (not creator) [u5] PATCH /groups?id=eq.56694de7-385b-40dd-b8f3-6176bbeb6323 -> 200 []
+PG u5 set suggestion [u5] PATCH /groups?id=eq.56694de7-385b-40dd-b8f3-6176bbeb6323 -> 200 []
+PG u2 delete u3 member (not self) [u2] DELETE /group_members?group_id=eq.56694de7-385b-40dd-b8f3-6176bbeb6 -> 200 []
+PG creator u1 delete u3 member [u1] DELETE /group_members?group_id=eq.56694de7-385b-40dd-b8f3-6176bbeb6 -> 200 []
+PG u2 leaves (delete self) [u2] DELETE /group_members?group_id=eq.56694de7-385b-40dd-b8f3-6176bbeb6 -> 200 [{"id":"a254ba23-938b-4fc0-88ce-e4331ef56d71","group_id":"56694de7-385b-40dd-b8f3-6176bbeb6323","name":"Lan","budget":"100000","food_preferences":"đồ chay","dietary_restrictions":"ăn chay","area":"Quận 1","created_at"
+PG u2 update own member row budget [u3] PATCH /group_members?group_id=eq.56694de7-385b-40dd-b8f3-6176bbeb6 -> 200 []
+PG u5 insert member spoof user_id=u4 [u5] POST /group_members -> 403 {"code":"42501","details":null,"hint":null,"message":"new row violates row-level security policy for table \"group_members\""}
+PG anon token insert member [anon] POST /group_members -> 403 {"code":"42501","details":null,"hint":null,"message":"new row violates row-level security policy for table \"group_members\""}
+PG anon token create group [anon] POST /groups -> 403 {"code":"42501","details":null,"hint":null,"message":"new row violates row-level security policy for table \"groups\""}
+PG u5 create group directly [u5] POST /groups -> 201 [{"id":"19f74d39-14df-4f05-b0ea-33c6a4af8d4a","creator_id":"7560d357-e68f-449f-a204-a19464b5a38c","name":"directly","status":"open","suggestion":null,"created_at":"2026-11-17T15:45:56.495733+00:00","avatar_url":null}]
+after leave: u2 read [u2] GET /api/group?id=56694de7-385b-40dd-b8f3-6176bbeb6323 -> 200 267ms {"id":"56694de7-385b-40dd-b8f3-6176bbeb6323","name":"Nhóm ăn tối thứ Sáu","creator_id":"630130af-689d-421c-9faf-87b1cdb38a7b","status":"open","suggestion":"Mình chưa thể gợi ý địa điểm **phù hợp với t
+rejoin u2 after leave [u2] POST /api/group/56694de7-385b-40dd-b8f3-6176bbeb6323/jo -> 200 467ms {"ok":true}
+PG creator delete group [u2] DELETE /groups?id=eq.beeb7a92-4141-4066-9c09-3237173c8610 -> 200 [{"id":"beeb7a92-4141-4066-9c09-3237173c8610","creator_id":"99451bf8-fa3b-4d6b-9ac4-9a59c3a39e99","name":"Nhóm riêng của Lan","status":"open","suggestion":null,"created_at":"2026-11-17T15:45:16.132007+00:00","avatar_url":null}]
+read deleted group [u5] GET /api/group?id=beeb7a92-4141-4066-9c09-3237173c8610 -> 404 253ms {"error":"group_not_found","message":"Không tìm thấy nhóm"}
+PG creator u1 delete group1 (cascade) [u1] DELETE /groups?id=eq.56694de7-385b-40dd-b8f3-6176bbeb6323 -> 200 [{"id":"56694de7-385b-40dd-b8f3-6176bbeb6323","creator_id":"630130af-689d-421c-9faf-87b1cdb38a7b","name":"Nhóm ăn tối thứ Sáu","status":"open","suggestion":"Mình chưa thể gợi ý địa điểm **phù hợp v�
+read after delete [none] GET /api/group?id=56694de7-385b-40dd-b8f3-6176bbeb6323 -> 404 169ms {"error":"group_not_found","message":"Không tìm thấy nhóm"}
+60 random-uuid guesses 7725 ms 404
+create group3 [u1] POST /api/group -> 200 189ms {"id":"1b93183c-5b4a-49b3-b16c-b31042540d96","name":"Race group"}
+race joins same user 200,200,200,200
+read race group [u2] GET /api/group?id=1b93183c-5b4a-49b3-b16c-b31042540d96 -> 200 289ms {"id":"1b93183c-5b4a-49b3-b16c-b31042540d96","name":"Race group","creator_id":"630130af-689d-421c-9faf-87b1cdb38a7b","status":"open","suggestion":null,"created_at":"2026-11-17T15:46:05.721305+00:00","
+race members 1
+double-submit create x6 200,200,200,200,200,200
+create flood x25 200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200,200
