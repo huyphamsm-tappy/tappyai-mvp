@@ -159,10 +159,14 @@ export async function resolveDocMedia(
 
   const entitiesP = (async (): Promise<MediaEntity[]> => {
     if (o.skipEntities) return []
-    if (o.subjectIntents && !o.subjectIntents.has(u.intent)) return []
+    // 18/11 (UAT 60, question 16 "cách nấu bún riêu cua": a recipe with no picture of the dish): a how-to is ABOUT the dish it teaches to cook, whatever the shape of the steps.
+    // Only a dish: a how-to that merely names a place, a tool or a concept stays without a card, as before.
+    const taught = u.intent === 'how_to' ? u.entities.filter(e => e.type === 'dish') : []
+    const outOfIntent = !!o.subjectIntents && !o.subjectIntents.has(u.intent)
+    if (outOfIntent && !taught.length) return []
     // A list answer illustrates its items; its subject card would only repeat the question. A comparison shows its subjects side by side.
-    if (u.answer_shape === 'list' || u.answer_shape === 'itinerary' || u.answer_shape === 'news_digest' || u.answer_shape === 'steps') return []
-    const wanted = u.entities.filter(e => CARD_TYPES.has(e.type)).slice(0, MAX_ENTITIES)
+    if (u.answer_shape === 'list' || u.answer_shape === 'itinerary' || u.answer_shape === 'news_digest' || (u.answer_shape === 'steps' && !taught.length)) return []
+    const wanted = (taught.length ? taught : u.entities).filter(e => CARD_TYPES.has(e.type)).slice(0, MAX_ENTITIES)
     // 15/11 (owner: "hỏi hai chủ thể trở lên là lấy layout so sánh mà không hiểu câu hỏi"): side-by-side cards are the layout of a COMPARISON. A lookup that merely mentions two things
     // (two oil benchmarks, a person and his company) is answered in its own shape; the understanding of the question decides, not the count of names.
     if (wanted.length > 1 && u.answer_shape !== 'comparison') return []

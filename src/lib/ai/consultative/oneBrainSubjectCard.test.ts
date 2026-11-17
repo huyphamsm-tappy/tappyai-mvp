@@ -46,6 +46,23 @@ describe('one brain: a subject card only when the turn is about the entity', () 
     const noLink = await resolveDocMedia(U({ intent: 'knowledge', entities: one }), 'x', {}, { wiki, webImages: async () => [], langlink: async () => null })
     expect(noLink.block).toBeNull() // 16/11: an English-only article gives a Vietnamese reader no card (its words would be English)
   })
+  it('18/11 (UAT 60 q16): a how-to about a DISH shows the dish, in steps shape too; a how-to that names a place or a concept still gets no card', async () => {
+    const dish = [{ name: 'Bún riêu cua', type: 'dish' as const, wiki_title: null }]
+    const wiki = async (n: string) => ({ ...ARTICLE, name: n, href: 'https://vi.wikipedia.org/wiki/B%C3%BAn_ri%C3%AAu' })
+    const d = { wiki, webImages: async () => [] as string[], confirmSense: async (_a: string, cards: readonly unknown[]) => cards.map(() => true) }
+    for (const shape of ['steps', 'explanation'] as const) {
+      expect((await resolveDocMedia(U({ intent: 'how_to', answer_shape: shape, entities: dish }), 'x', ONE, d)).block, shape).toMatchObject({ kind: 'entity' })
+    }
+    // the dish alongside a place: only the dish is what the recipe is about, one card
+    const mixed = [...dish, { name: 'Hà Nội', type: 'place' as const, wiki_title: 'Hà Nội' }]
+    expect((await resolveDocMedia(U({ intent: 'how_to', answer_shape: 'steps', entities: mixed }), 'x', ONE, d)).block).toMatchObject({ kind: 'entity', entity: { name: 'Bún riêu cua' } })
+    // not a dish: no card, as before
+    for (const type of ['place', 'concept', 'product', 'organization'] as const) {
+      expect((await resolveDocMedia(U({ intent: 'how_to', answer_shape: 'steps', entities: [{ name: 'X', type, wiki_title: null }] }), 'x', ONE, d)).block, type).toBeNull()
+    }
+    // a dish in a LOOKUP (not a how-to) keeps being left out of the one-brain card
+    expect((await resolveDocMedia(U({ intent: 'lookup', answer_shape: 'explanation', entities: dish }), 'x', ONE, d)).block).toBeNull()
+  })
   it('the one-brain stream asks for exactly these intents', async () => {
     let asked: ReadonlySet<string> | undefined
     const resolve = async (_u: unknown, _a: string, o: { subjectIntents?: ReadonlySet<string> }): Promise<DocMediaResult> => { asked = o.subjectIntents; return { block: null, annotation: null, webImages: 0, trace: {} } }
