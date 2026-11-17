@@ -50,7 +50,7 @@ describe('the finished report in the chat', () => {
     expect(screen.queryByRole('dialog')).toBeNull()
   })
 
-  it('the button opens the full report over the chat: all sections, the table, the sources list; no PDF, Copy Markdown stays', () => {
+  it('the button opens the full report over the chat: all sections, the table, the sources list; Markdown, Word and PDF downloads', () => {
     render(el(REPORT))
     fireEvent.click(screen.getByTestId('report-open'))
     const dlg = screen.getByRole('dialog')
@@ -58,8 +58,10 @@ describe('the finished report in the chat', () => {
     expect(dlg.textContent).toContain('CHI-TIẾT-QUY-MÔ')
     expect(dlg.textContent).toContain('BẢNG-DÒNG')
     expect(dlg.textContent).toContain('vnexpress.net')
-    expect(dlg.textContent).toContain('Sao chép Markdown')
-    expect(dlg.textContent).not.toMatch(/PDF/i)
+    // owner 15/11 ("sao chua co xuat pdf va word"; "bấm là tải về"): Markdown, Word and PDF are in the opened report
+    expect(screen.getByTestId('research-export-md')).toBeTruthy()
+    expect(screen.getByTestId('research-export-docx')).toBeTruthy()
+    expect(screen.getByTestId('research-export-pdf')).toBeTruthy()
   })
 
   it('Esc closes it and the focus returns to the button', () => {

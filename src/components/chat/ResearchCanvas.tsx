@@ -3,7 +3,7 @@
 // contents built from the report's REAL headings, footnote-style numbered citations linked to the sources list, and sections that appear one by one, each only once it is complete.
 // VIEW ONLY: the report text, its headings and the saved message are exactly what the engine wrote. The five headings of the RFC's example are NOT forced: the contents list what the report has.
 import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type MouseEvent } from 'react'
-import { ChevronDown, Copy, Share2, Check } from 'lucide-react'
+import { ChevronDown, Share2, FileDown } from 'lucide-react'
 import './reportLayout.css'
 import './presentation.css'
 import './v206.css'
@@ -12,9 +12,11 @@ import { ArticleAnswer, type Presentation } from '@/components/chat/ArticleAnswe
 import { reportTitleOf } from '@/components/chat/ReportExportBar'
 import type { ResearchChart, ResearchStatus } from '@/lib/ai/research/deepResearch'
 import type { DocItemImage } from '@/lib/answerDoc/media'
-import { reportMarkdown, sourceCountOf } from '@/lib/answerDoc/reportExport'
+import { downloadBlob, reportFileName, reportMarkdown, sourceCountOf, withChartTables } from '@/lib/answerDoc/reportExport'
+import { downloadReportPdf } from '@/lib/answerDoc/reportPdf'
+import { pdfCoverOf } from '@/components/chat/reportPdfCover'
 import {
-  amendedSections, arrivalOf, buildToc, footnoteId, footnotesOf, isSourcesSection, linkCitations, safeId, sectionId, stripTitleLine,
+  amendedSections, arrivalOf, buildToc, footnoteId, footnotesOf, isSourcesSection, linkCitations, safeId, sectionId, stripTitleLine, withoutTrailingSources,
   type DocSection, type Footnote, type TocEntry,
 } from '@/lib/chat/presentation'
 import { useTranslation } from '@/lib/i18n/useTranslation'
@@ -281,16 +283,28 @@ export default function ResearchCanvas(p: ResearchCanvasProps) {
 
   // toolbar (a finished report only: an unfinished text is not exported)
   const links = p.research?.links ?? []
-  const [copied, setCopied] = useState(false)
-  const asMd = async () => {
-    try { await navigator.clipboard.writeText(reportMarkdown(p.text, links)); setCopied(true); setTimeout(() => setCopied(false), 2000) } catch { /* the browser refused the clipboard: nothing to say */ }
+  // 15/11 (owner: "bấm vào là tải về, không phải hành động Ctrl+P"): Markdown, Word and PDF are files that download on one click, built in the browser (the charts' figures go in as tables)
+  const [busy, setBusy] = useState(false)
+  const exportTitle = (p.research?.title || reportTitleOf(p.text) || 'report')
+  const charts = p.charts ?? []
+  const asMd = () => downloadBlob(new Blob([reportMarkdown(withChartTables(p.text, charts, locale), links)], { type: 'text/markdown;charset=utf-8' }), reportFileName(exportTitle, 'md'))
+  const asPdf = async () => {
+    setBusy(true)
+    try { await downloadReportPdf(withChartTables(p.text, charts, locale), links, exportTitle, pdfCoverOf(t, locale, exportTitle, p.research?.tier, Math.max(links.length, p.research?.sources ?? 0, sourceCountOf(p.text, links)))) } finally { setBusy(false) }
+  }
+  const asWord = async () => {
+    setBusy(true)
+    try {
+      const { reportDocx } = await import('@/lib/answerDoc/reportDocx')
+      downloadBlob(await reportDocx(withChartTables(p.text, charts, locale), links, exportTitle), reportFileName(exportTitle, 'docx'))
+    } finally { setBusy(false) }
   }
   const toolbar = !p.streaming && (
     // on a phone the buttons are icons (the bar is sticky: it must stay one short row); the words stay for screen readers and from the `sm` width up
     <div role="group" aria-label={t('pres.toolbar.label')} className="flex shrink-0 items-center gap-1.5" data-testid="research-toolbar">
-      <button type="button" className="tappy-doc-btn" onClick={() => { void asMd() }} data-testid="research-copy-md" title={t('pres.copyMd')}>
-        {copied ? <Check size={15} aria-hidden="true" /> : <Copy size={15} aria-hidden="true" />}<span className="sr-only sm:not-sr-only" aria-live="polite">{copied ? t('pres.copied') : t('pres.copyMd')}</span>
-      </button>
+      <button type="button" className="tappy-doc-btn" onClick={asMd} data-testid="research-export-md" title="Markdown"><FileDown size={15} aria-hidden="true" /><span className="sr-only sm:not-sr-only">Markdown</span></button>
+      <button type="button" className="tappy-doc-btn" onClick={() => { void asWord() }} disabled={busy} data-testid="research-export-docx" title="Word"><FileDown size={15} aria-hidden="true" /><span className="sr-only sm:not-sr-only">Word</span></button>
+      <button type="button" className="tappy-doc-btn" onClick={() => { void asPdf() }} disabled={busy} data-testid="research-export-pdf" title="PDF"><FileDown size={15} aria-hidden="true" /><span className="sr-only sm:not-sr-only">PDF</span></button>
       {p.onShare && <button type="button" className="tappy-doc-btn" onClick={p.onShare} data-testid="research-share" title={t('pres.share')}><Share2 size={15} aria-hidden="true" /><span className="sr-only sm:not-sr-only">{t('pres.share')}</span></button>}
     </div>
   )
@@ -321,12 +335,35 @@ export default function ResearchCanvas(p: ResearchCanvasProps) {
         {head && head.trim() && (
           <ArticleAnswer text={head} images={[]} format={p.format} onClick={p.onClick} onKeyDown={chipKeyDown(chips)} presentation={{ variant: 'doc', headingId: k => headIds[k], ...(WORKSPACE_V206 ? { look: true, decorate: chips.decorate } : {}) }} className="pt-3" />
         )}
-        {arrival.complete.map((s, i) => (
+        {arrival.complete.map((s0, i) => {
+          // a last section that ends with its own "sources" sub-heading and numbered lines: the list below replaces it (each source a link)
+          const trimmed = !p.streaming && footnotes.length > 0 && i === arrival.complete.length - 1 && !arrival.pending ? withoutTrailingSources(s0.text) : null
+          const s = trimmed === null ? s0 : { ...s0, text: trimmed }
+          return (
           <div key={i} onClick={p.onClick} onKeyDown={chipKeyDown(chips)}>
             <SectionView prefix={prefix} index={i} section={s} headingIds={idsBySection[i] ?? []} format={p.format} images={p.images ?? []} under={p.under}
               known={known} linked={linked} footnotes={footnotes} decorate={chips.decorate} numbers={numbersBySection[i] ?? []} activeFootnote={activeFn} amended={amended.has(i)} fresh={fresh.has(i)} onBack={back} setRef={setRef} />
           </div>
-        ))}
+          )
+        })}
+        {/* 16/11 (UAT 60): a report whose own text has no sources section (the Standard one) still lists the sources it cites, each a link, from the research card's links */}
+        {!arrival.pending && !p.streaming && footnotes.length > 0 && !arrival.complete.some(s => isSourcesSection(s.text)) && (
+          <section data-testid="report-sources" aria-label={t('pres.sources.list')} className="mt-6">
+            <h2 className="mb-2 text-base font-semibold">{t('pres.sources.list')}</h2>
+            <ol className="m-0 list-none p-0">
+              {footnotes.map(f => (
+                <li key={f.n} id={footnoteId(prefix, f.n)} tabIndex={-1} className="tappy-fn" data-active={activeFn === f.n ? 'true' : 'false'} data-footnote={f.n}>
+                  <span className="tappy-fn-n">{f.n}</span>
+                  <span className="min-w-0 flex-1 break-words">
+                    {f.href ? <a href={f.href} target="_blank" rel="noopener noreferrer">{f.title}</a> : f.title}
+                    {' '}<span className="tappy-fn-site">· {f.site}</span>
+                    {activeFn === f.n && <button type="button" onClick={back} className="ml-2 text-xs underline" aria-label={t('pres.backToText')}>↑</button>}
+                  </span>
+                </li>
+              ))}
+            </ol>
+          </section>
+        )}
       </div>
       {arrival.pending && (
         <p role="status" className="tappy-section-pending" data-testid="research-pending">

@@ -4,9 +4,10 @@
 // not there. It exports from the message text alone: Markdown, Word, PDF (built in the browser, nothing is sent anywhere). The sources are already inside the text; pictures and charts,
 // which come from the live annotation, are not in these files.
 import { useState } from 'react'
-import { downloadBlob, printHtml, reportFileName, reportHtml, reportMarkdown } from '@/lib/answerDoc/reportExport'
+import { downloadBlob, reportFileName, reportMarkdown, sourceCountOf } from '@/lib/answerDoc/reportExport'
+import { downloadReportPdf } from '@/lib/answerDoc/reportPdf'
+import { pdfCoverOf } from '@/components/chat/reportPdfCover'
 import { useTranslation } from '@/lib/i18n/useTranslation'
-import { REPORT_LAYOUT_A } from '@/components/chat/ReportCover'
 
 /** The report's title: its first "# " heading, else its first line. */
 export function reportTitleOf(text: string): string {
@@ -19,7 +20,11 @@ export default function ReportExportBar({ report, format }: { report: string; fo
   const [busy, setBusy] = useState(false)
   const title = reportTitleOf(report)
   const asMarkdown = () => downloadBlob(new Blob([reportMarkdown(report, [])], { type: 'text/markdown;charset=utf-8' }), reportFileName(title, 'md'))
-  const asPdf = () => printHtml(reportHtml(report, { title, images: [], links: [], format, lang: locale, ...(REPORT_LAYOUT_A ? { design: 'a' as const } : {}) }))
+  // 15/11 (owner): a PDF file that downloads on one click, not the browser's print dialog
+  const asPdf = async () => {
+    setBusy(true)
+    try { await downloadReportPdf(report, [], title, pdfCoverOf(t, locale, title, undefined, sourceCountOf(report, []))) } finally { setBusy(false) }
+  }
   const asWord = async () => {
     setBusy(true)
     try {

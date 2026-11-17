@@ -10,6 +10,7 @@ import type { Evidence, Figure, Finding } from './deepResearch'
 import { figureKey } from './consolidate'
 import { FIGURE_CONFLICT_GAP } from './figureGap'
 import { fold } from './researchSignals'
+import { ratioMismatch, resolveVintages, whenOf, type VintageItem } from './evidenceState'
 
 export type SourceKind = 'OFFICIAL' | 'COMPANY' | 'RESEARCH_FIRM' | 'PRESS' | 'REFERENCE' | 'AGGREGATOR' | 'SOCIAL' | 'OTHER'
 export type FactFamily = 'regulation' | 'statistic' | 'company' | 'market_estimate' | 'survey' | 'price' | 'other'
@@ -31,13 +32,30 @@ export function hostOf(url: string): string {
 }
 
 const hostIn = (host: string, list: readonly string[]) => list.some(d => host === d || host.endsWith(`.${d}`))
-const OFFICIAL_HOSTS = ['chinhphu.vn', 'vbpl.vn', 'quochoi.vn', 'baochinhphu.vn', 'worldbank.org', 'imf.org', 'adb.org', 'oecd.org', 'un.org']
-const PRESS_HOSTS = ['vnexpress.net', 'tuoitre.vn', 'thanhnien.vn', 'dantri.com.vn', 'vietnamnet.vn', 'cafef.vn', 'znews.vn', 'zingnews.vn', 'nld.com.vn', 'laodong.vn', 'tienphong.vn', 'vneconomy.vn', 'baodautu.vn', 'nhandan.vn', 'vietnamplus.vn', 'vov.vn', 'vtv.vn', 'kinhtedothi.vn', 'theinvestor.vn', 'vir.com.vn', 'vietnamnews.vn', 'reuters.com', 'bloomberg.com', 'ft.com', 'nikkei.com', 'scmp.com', 'bbc.com', 'cnbc.com', 'forbes.com', 'forbesvietnam.vn', 'vietnambiz.vn', 'nguoiquansat.vn', 'doanhnhansaigon.vn', 'cafebiz.vn', 'brandsvietnam.com', 'advertisingvietnam.com', 'vietstock.vn', 'kenh14.vn', 'afamily.vn', '24h.com.vn', 'baophapluat.vn', 'vnbusiness.vn', 'baogialai.com.vn', 'nhipcaudautu.vn', 'doanhnghieptiepthi.vn', 'kinhtetieudung.vn', 'kinhtedouong.vn', 'vietnam.vn', 'vcci.com.vn', 'tapchikinhtetaichinh.vn', 'nhadautu.vn', 'danviet.vn', 'vietnamfinance.vn', 'markettimes.vn', 'kinhtechungkhoan.vn', 'thanhtra.com.vn', 'congly.vn']
+// 15/11 (the chip report: 354 of 441 cards were "OTHER" and so LOW, because this list was written for a Vietnamese consumer report: WSTS, SIA, SEC, the company's own newsroom, McKinsey, Gartner and
+// TSMC's pages were all "unknown", and the analyst, who reads the best 90 cards, never met the newest figures). Authority is now read from WHAT the publisher is - a government, an intergovernmental
+// or industry statistics body, a company speaking about itself, a research firm, the press - in this order: the shape of the address first (a government or intergovernmental suffix, an investor or
+// newsroom page of a company), then these tables of the publishers whose nature is known world-wide. An address that is none of these stays OTHER (LOW): nothing is guessed.
+const OFFICIAL_HOSTS = ['chinhphu.vn', 'vbpl.vn', 'quochoi.vn', 'baochinhphu.vn', 'worldbank.org', 'imf.org', 'adb.org', 'oecd.org', 'un.org',
+  // statistics and industry bodies that are the origin of the sector's own numbers
+  'wsts.org', 'semiconductors.org', 'semi.org', 'iea.org', 'bis.org', 'wto.org', 'unctad.org', 'ilo.org', 'iata.org', 'unwto.org', 'eurostat.eu', 'ecb.europa.eu', 'sec.gov']
+/** A government, a regulator or an intergovernmental body by the SHAPE of its address (".gov", ".gov.xx", ".go.jp", ".gouv.fr", ".gob.es", ".europa.eu", ".int"). */
+const OFFICIAL_SHAPE = /(^|\.)(gov|gouv|gob)\.[a-z]{2,3}$|(^|\.)go\.[a-z]{2}$|\.gov$|\.mil$|\.europa\.eu$|\.int$/
+/** A company's own investor or newsroom page by the shape of its address: "ir.x.com", "investor.x.com", "newsroom.x.com", "press.x.com", and "xnews.x.com" for company x. */
+function isCompanyVoice(rawHost: string, url: string, host: string): boolean {
+  const labels = rawHost.replace(/^www\./, '').split('.')
+  if (labels.length >= 3 && /^(ir|investor|investors|newsroom|press|pr|corporate)$/.test(labels[0])) return true
+  if (labels.length >= 3 && labels[0].length > 4 && labels[0].endsWith('news') && labels[0].slice(0, -4) === labels[1]) return true
+  // a "newsroom" or "press release" PATH is the company's own voice only on a site that is not itself a research firm, a statistics body or the press (Gartner's newsroom is Gartner the analyst, not a company)
+  if (hostIn(host, FIRM_HOSTS) || hostIn(host, OFFICIAL_HOSTS) || hostIn(host, PRESS_HOSTS)) return /(annual-?report|bao-cao-thuong-nien)/i.test(url)
+  return /(annual-?report|bao-cao-thuong-nien|\/investors?(\/|$)|\/newsroom(\/|$)|\/press-?releases?(\/|$))/i.test(url)
+}
+const PRESS_HOSTS = ['vnexpress.net', 'tuoitre.vn', 'thanhnien.vn', 'dantri.com.vn', 'vietnamnet.vn', 'cafef.vn', 'znews.vn', 'zingnews.vn', 'nld.com.vn', 'laodong.vn', 'tienphong.vn', 'vneconomy.vn', 'baodautu.vn', 'nhandan.vn', 'vietnamplus.vn', 'vov.vn', 'vtv.vn', 'kinhtedothi.vn', 'theinvestor.vn', 'vir.com.vn', 'vietnamnews.vn', 'reuters.com', 'bloomberg.com', 'ft.com', 'nikkei.com', 'scmp.com', 'bbc.com', 'cnbc.com', 'forbes.com', 'wsj.com', 'nytimes.com', 'apnews.com', 'theguardian.com', 'washingtonpost.com', 'economist.com', 'cnn.com', 'nbcnews.com', 'pbs.org', 'techcrunch.com', 'theverge.com', 'wired.com', 'arstechnica.com', 'koreatimes.co.kr', 'koreaherald.com', 'straitstimes.com', 'yahoo.com', 'marketwatch.com', 'investing.com', 'cbsnews.com', 'businessinsider.com', 'seekingalpha.com', 'techpowerup.com', 'tomshardware.com', 'theregister.com', 'digitimes.com', 'taipeitimes.com', 'focustaiwan.tw', 'yna.co.kr', 'forbesvietnam.vn', 'vietnambiz.vn', 'nguoiquansat.vn', 'doanhnhansaigon.vn', 'cafebiz.vn', 'brandsvietnam.com', 'advertisingvietnam.com', 'vietstock.vn', 'kenh14.vn', 'afamily.vn', '24h.com.vn', 'baophapluat.vn', 'vnbusiness.vn', 'baogialai.com.vn', 'nhipcaudautu.vn', 'doanhnghieptiepthi.vn', 'kinhtetieudung.vn', 'kinhtedouong.vn', 'vietnam.vn', 'vcci.com.vn', 'tapchikinhtetaichinh.vn', 'nhadautu.vn', 'danviet.vn', 'vietnamfinance.vn', 'markettimes.vn', 'kinhtechungkhoan.vn', 'thanhtra.com.vn', 'congly.vn']
 const COMPANY_HOSTS = ['masangroup.com', 'masanconsumer.com', 'momo.vn', 'zalopay.vn']
-const FIRM_HOSTS = ['ipos.vn', 'momentumworks.com', 'euromonitor.com', 'nielseniq.com', 'statista.com', 'imarcgroup.com', 'mordorintelligence.com', 'grandviewresearch.com', 'cimigo.com', 'qandme.net', 'decisionlab.co', 'kantar.com', 'mckinsey.com', 'bain.com', 'deloitte.com', 'pwc.com', 'kpmg.com', 'vcsc.com.vn', 'ssi.com.vn', 'mbs.com.vn', 'vndirect.com.vn', 'b-company.jp', 'kenresearch.com', '6wresearch.com', 'fortunebusinessinsights.com', 'industryarc.com', 'mobilityforesights.com', 'insightasia.com', 'vietdata.vn', 'metric.vn', 'vda.org.vn', 'vietnam-briefing.com']
+const FIRM_HOSTS = ['ipos.vn', 'momentumworks.com', 'euromonitor.com', 'nielseniq.com', 'statista.com', 'imarcgroup.com', 'mordorintelligence.com', 'grandviewresearch.com', 'cimigo.com', 'qandme.net', 'decisionlab.co', 'kantar.com', 'mckinsey.com', 'bain.com', 'bcg.com', 'ey.com', 'accenture.com', 'gartner.com', 'idc.com', 'trendforce.com', 'counterpointresearch.com', 'canalys.com', 'forrester.com', 'goldmansachs.com', 'morganstanley.com', 'jpmorgan.com', 'ipsos.com', 'gfk.com', 'mintel.com', 'cbre.com', 'jll.com', 'colliers.com', 'savills.com', 'knightfrank.com', 'pewresearch.org', 'cfr.org', 'whitecase.com', 'ourworldindata.org', 'semianalysis.com', 'yolegroup.com', 'techinsights.com', 'deloitte.com', 'pwc.com', 'kpmg.com', 'vcsc.com.vn', 'ssi.com.vn', 'mbs.com.vn', 'vndirect.com.vn', 'b-company.jp', 'kenresearch.com', '6wresearch.com', 'fortunebusinessinsights.com', 'industryarc.com', 'mobilityforesights.com', 'insightasia.com', 'vietdata.vn', 'metric.vn', 'vda.org.vn', 'vietnam-briefing.com']
 const REFERENCE_HOSTS = ['wikipedia.org', 'thuvienphapluat.vn', 'luatvietnam.vn', 'dulieuphapluat.vn']
 const AGGREGATOR_HOSTS = ['studocu.vn', 'studocu.com', 'scribd.com', 'slideshare.net', 'medium.com', 'blogspot.com', 'wordpress.com', 'quora.com', 'validator.vn', 'baomoi.com', 'tripi.vn', 'lypham.vn', '123doc.net', 'tailieu.vn', 'vietnammm.com', 'rssing.com', 'posapp.vn', 'banhmimahai.vn', 'einvoice.vn', 'vinalink.vn', 'mqflavor.com', 'unitedvision.com.vn', 'phuctea.com.vn', 'khonguyenlieu.net', 'airwallex.com']
-const SOCIAL_HOSTS = ['facebook.com', 'tiktok.com', 'youtube.com', 'youtu.be', 'instagram.com', 'reddit.com', 'x.com', 'twitter.com', 'threads.net', 'zalo.me', 'pinterest.com']
+const SOCIAL_HOSTS = ['linkedin.com', 'facebook.com', 'tiktok.com', 'youtube.com', 'youtu.be', 'instagram.com', 'reddit.com', 'x.com', 'twitter.com', 'threads.net', 'zalo.me', 'pinterest.com']
 
 /**
  * What kind of source an address is. `site`: the real site a search row names when its link is a Google redirect. COMPANY is only the company's own investor pages (an "ir." or "investor." host, or an
@@ -49,8 +67,8 @@ export function classifySource(url: string, site?: string): SourceKind {
   if (!host) return 'OTHER'
   let raw = ''
   try { raw = new URL(url).hostname.toLowerCase() } catch { raw = '' }
-  if (host.endsWith('.gov.vn') || hostIn(host, OFFICIAL_HOSTS)) return 'OFFICIAL'
-  if (/^(ir|investor|investors)\./.test(raw) || /(annual-?report|bao-cao-thuong-nien|\/investor)/i.test(url) || hostIn(host, COMPANY_HOSTS)) return 'COMPANY'
+  if (host.endsWith('.gov.vn') || OFFICIAL_SHAPE.test(raw) || hostIn(host, OFFICIAL_HOSTS)) return 'OFFICIAL'
+  if (isCompanyVoice(raw, url, host) || hostIn(host, COMPANY_HOSTS)) return 'COMPANY'
   if (hostIn(host, FIRM_HOSTS)) return 'RESEARCH_FIRM'
   if (hostIn(host, PRESS_HOSTS)) return 'PRESS'
   if (hostIn(host, REFERENCE_HOSTS)) return 'REFERENCE'
@@ -58,7 +76,7 @@ export function classifySource(url: string, site?: string): SourceKind {
   if (hostIn(host, SOCIAL_HOSTS)) return 'SOCIAL'
   // what the suffix says: an association (.org.vn) publishes data like a research firm; a school or university (.edu.vn) is a reference
   if (host.endsWith('.org.vn')) return 'RESEARCH_FIRM'
-  if (host.endsWith('.edu.vn')) return 'REFERENCE'
+  if (host.endsWith('.edu.vn') || /\.edu(\.[a-z]{2})?$|\.ac\.[a-z]{2}$/.test(raw)) return 'REFERENCE'
   return 'OTHER'
 }
 
@@ -71,10 +89,12 @@ export function factFamily(f: Figure | undefined): FactFamily {
   if (/(thue|luat|nghi dinh|thong tu|nghi quyet|quy dinh|muc phat)/.test(s)) return 'regulation'
   if (/(khao sat|dieu tra|dap vien|ty le (nguoi|khach|chi|uong|su dung|chon))/.test(s)) return 'survey'
   if (/(gdp|cpi|lam phat|dan so|thu nhap|ban le)/.test(s)) return 'statistic'
-  if (/(quy mo|thi truong|cagr|tang truong)/.test(s) && !(f.subject ?? '').trim()) return 'market_estimate'
+  if (/(quy mo|thi truong|cagr|tang truong|du bao)/.test(s) && !(f.subject ?? '').trim()) return 'market_estimate'
+  // a sector's own sales, output or trade series with no company named is a statistic (the body that counts it is the authority), not one company's revenue
+  if (/(doanh so|san luong|xuat khau|nhap khau)/.test(s) && !(f.subject ?? '').trim()) return 'statistic'
   if (/(doanh thu|loi nhuan|cua hang|diem ban)/.test(s)) return 'company'
   if (/(gia ban|gia trung binh|dong\/ly|muc gia|gia ve)/.test(s)) return 'price'
-  if (/(quy mo|thi truong|cagr|tang truong)/.test(s)) return 'market_estimate'
+  if (/(quy mo|thi truong|cagr|tang truong|du bao)/.test(s)) return 'market_estimate'
   return 'other'
 }
 
@@ -82,7 +102,7 @@ const AUTH: Record<FactFamily, Partial<Record<SourceKind, Authority>>> = {
   regulation: { OFFICIAL: 'HIGH', REFERENCE: 'MEDIUM', PRESS: 'MEDIUM' },
   statistic: { OFFICIAL: 'HIGH', RESEARCH_FIRM: 'MEDIUM', PRESS: 'MEDIUM', COMPANY: 'MEDIUM' },
   company: { COMPANY: 'HIGH', OFFICIAL: 'HIGH', PRESS: 'MEDIUM', RESEARCH_FIRM: 'MEDIUM' },
-  market_estimate: { OFFICIAL: 'HIGH', RESEARCH_FIRM: 'MEDIUM', PRESS: 'MEDIUM' },
+  market_estimate: { OFFICIAL: 'HIGH', RESEARCH_FIRM: 'MEDIUM', PRESS: 'MEDIUM', COMPANY: 'MEDIUM' },
   survey: { RESEARCH_FIRM: 'HIGH', OFFICIAL: 'HIGH', PRESS: 'MEDIUM' },
   price: { COMPANY: 'HIGH', PRESS: 'MEDIUM' },
   other: { OFFICIAL: 'HIGH', RESEARCH_FIRM: 'MEDIUM', PRESS: 'MEDIUM', COMPANY: 'MEDIUM' },
@@ -133,6 +153,12 @@ export interface EvidenceCard {
   independenceGroup: string
   score: number
   confidence: Authority
+  /** when the source STATED this figure (the figure's own "stated" date, else the page's date), as the source wrote it; absent when neither is known */
+  vintage?: string
+  /** the id of a newer card from an equally or more authoritative source that states the same fact with another value: this card is out of date and does not go to the analyst or the forecast */
+  supersededBy?: string
+  /** the code's own arithmetic found that the text contradicts itself (evidenceState.ratioMismatch); the card is LOW and the analyst is told the computed share */
+  ratioNote?: string
 }
 
 type WithQuote = Finding & { quote?: string }
@@ -156,7 +182,7 @@ export function buildCards(findings: readonly WithQuote[], evidence: readonly Ev
     if (fp && !fpGroup.has(fp)) fpGroup.set(fp, g)
     groupOf.set(e.id, g)
   }
-  return findings.map((f, i): EvidenceCard => {
+  const cards = findings.map((f, i): EvidenceCard => {
     const e = byId.get(f.source)
     const pageText = e ? `${e.title}\n${e.snippet}\n${e.text}` : ''
     const quote = typeof f.quote === 'string' && f.quote.trim() ? f.quote.trim() : undefined
@@ -166,13 +192,24 @@ export function buildCards(findings: readonly WithQuote[], evidence: readonly Ev
     const family = factFamily(f.figure)
     const authority = authorityFor(family, sourceKind)
     const score = RANK[authority] + (quoteStatus === 'VERIFIED' ? 1 : 0) + (figureInQuote ? 1 : 0)
-    const confidence: Authority = authority === 'LOW' ? 'LOW' : score >= 5 ? 'HIGH' : score >= 3 ? 'MEDIUM' : 'LOW'
+    const ratio = ratioMismatch(f.text)
+    const confidence: Authority = authority === 'LOW' || ratio ? 'LOW' : score >= 5 ? 'HIGH' : score >= 3 ? 'MEDIUM' : 'LOW'
+    const vintage = (f.figure?.stated && whenOf(f.figure.stated) !== null ? f.figure.stated : undefined) ?? (e?.published && whenOf(e.published) !== null ? e.published : undefined)
     return {
       id: `C${i + 1}`, step: f.step, source: f.source, text: f.text, ...(quote ? { quote } : {}), quoteStatus, ...(f.figure ? { figure: f.figure } : {}), figureInQuote,
       sourceKind, host: e ? hostOf(e.url) : '', ...(e?.published ? { published: e.published } : {}), family, authority,
       independenceGroup: groupOf.get(f.source) ?? `source-${f.source}`, score, confidence,
+      ...(vintage ? { vintage } : {}), ...(ratio ? { ratioNote: ratio.note } : {}),
     }
   })
+  // one state for every later reader: a figure that a newer, equally authoritative statement of the same fact replaces is marked, and the analyst and the forecast model both skip it
+  const items: VintageItem[] = []
+  for (const c of cards) {
+    const k = c.figure ? figureKey({ step: c.step, source: c.source, text: c.text, figure: c.figure }) : null
+    if (k) items.push({ id: c.id, key: k.key, value: k.value, when: whenOf(c.vintage), rank: RANK[c.authority] })
+  }
+  const replaced = resolveVintages(items, FIGURE_CONFLICT_GAP)
+  return cards.map(c => (replaced.has(c.id) ? { ...c, supersededBy: replaced.get(c.id) } : c))
 }
 
 export interface FactSupport { key: string; status: 'STRONG' | 'SINGLE' | 'CONFLICT'; values: Array<{ value: number; groups: number; cards: string[] }> }
@@ -203,10 +240,42 @@ export function factSupport(cards: readonly EvidenceCard[]): FactSupport[] {
 }
 
 /** The cards the analyst may read: every card whose quote is not refuted (VERIFIED, or no quote), best confidence first, then score, then order; at most `limit`. UNVERIFIED cards stay in the dossier. Pure. */
-export function forAnalyst(cards: readonly EvidenceCard[], limit = 100): EvidenceCard[] {
-  return cards.filter(c => c.quoteStatus !== 'UNVERIFIED')
-    .sort((a, b) => RANK[b.confidence] - RANK[a.confidence] || b.score - a.score || Number(a.id.slice(1)) - Number(b.id.slice(1)))
-    .slice(0, limit)
+export function forAnalyst(cards: readonly EvidenceCard[], limit = 100, nowMs: number = Date.now()): EvidenceCard[] {
+  return pickForAnalyst(cards, limit, nowMs)
+}
+
+/** A quarter of the analyst's places go to the NEWEST dated cards (stated within this many days), so a fresh figure from a lesser-ranked source is not crowded out by older, better-ranked ones. */
+export const RECENT_DAYS = 120
+export const RECENT_SHARE = 0.25
+
+/** Two fifths of the places are shared out by research step (one step = one part of the question), so a part the question asks for is never crowded out by a bigger one (the chip run: the hot-news step's cards
+ *  were in the pool, MEDIUM, and the report still left out the day's biggest event, because the analyst's 90 places went to the steps with the most cards). */
+export const STEP_SHARE = 0.4
+
+/**
+ * The cards the analyst reads: not refuted (quote VERIFIED or absent), not replaced by a newer statement of the same fact. Three tiers, each in the order best confidence, score, newer statement, order:
+ * (1) every step gets its best cards, two fifths of the places in all; (2) a quarter go to the newest dated cards; (3) the rest to the best of what is left. At most `limit`, shown best first. Pure.
+ */
+export function pickForAnalyst(cards: readonly EvidenceCard[], limit: number, nowMs: number): EvidenceCard[] {
+  const when = (c: EvidenceCard) => whenOf(c.vintage)
+  const eligible = cards.filter(c => c.quoteStatus !== 'UNVERIFIED' && !c.supersededBy)
+  const ranked = [...eligible].sort((a, b) => RANK[b.confidence] - RANK[a.confidence] || b.score - a.score || (when(b) ?? -Infinity) - (when(a) ?? -Infinity) || Number(a.id.slice(1)) - Number(b.id.slice(1)))
+  if (ranked.length <= limit) return ranked
+  const taken = new Set<string>()
+  // 1. each step's best cards
+  const steps = [...new Set(ranked.map(c => c.step))]
+  const perStep = Math.max(1, Math.floor((limit * STEP_SHARE) / steps.length))
+  for (const s of steps) {
+    let n = 0
+    for (const c of ranked) { if (c.step === s && n < perStep && taken.size < Math.floor(limit * STEP_SHARE)) { taken.add(c.id); n++ } }
+  }
+  // 2. the newest dated cards
+  const reserve = Math.floor(limit * RECENT_SHARE)
+  ranked.filter(c => !taken.has(c.id) && (when(c) ?? -Infinity) >= nowMs - RECENT_DAYS * 86_400_000)
+    .sort((a, b) => (when(b) as number) - (when(a) as number) || RANK[b.confidence] - RANK[a.confidence]).slice(0, reserve).forEach(c => taken.add(c.id))
+  // 3. the best of the rest
+  for (const c of ranked) { if (taken.size >= limit) break; taken.add(c.id) }
+  return ranked.filter(c => taken.has(c.id))
 }
 
 export interface CardSummary {
@@ -215,6 +284,10 @@ export interface CardSummary {
   byKind: Partial<Record<SourceKind, number>>
   byConfidence: Record<Authority, number>
   forAnalyst: number
+  /** cards a newer statement of the same fact replaced / cards whose own arithmetic failed / cards with a known date */
+  superseded: number
+  ratioFlagged: number
+  dated: number
   facts: { strong: number; single: number; conflict: number }
 }
 
@@ -228,7 +301,10 @@ export function cardSummary(cards: readonly EvidenceCard[]): CardSummary {
     quote: { verified: cards.filter(c => c.quoteStatus === 'VERIFIED').length, unverified: cards.filter(c => c.quoteStatus === 'UNVERIFIED').length, absent: cards.filter(c => c.quoteStatus === 'ABSENT').length },
     byKind,
     byConfidence: { HIGH: cards.filter(c => c.confidence === 'HIGH').length, MEDIUM: cards.filter(c => c.confidence === 'MEDIUM').length, LOW: cards.filter(c => c.confidence === 'LOW').length },
-    forAnalyst: cards.filter(c => c.quoteStatus !== 'UNVERIFIED').length,
+    forAnalyst: cards.filter(c => c.quoteStatus !== 'UNVERIFIED' && !c.supersededBy).length,
+    superseded: cards.filter(c => c.supersededBy).length,
+    ratioFlagged: cards.filter(c => c.ratioNote).length,
+    dated: cards.filter(c => c.vintage).length,
     facts: { strong: facts.filter(f => f.status === 'STRONG').length, single: facts.filter(f => f.status === 'SINGLE').length, conflict: facts.filter(f => f.status === 'CONFLICT').length },
   }
 }

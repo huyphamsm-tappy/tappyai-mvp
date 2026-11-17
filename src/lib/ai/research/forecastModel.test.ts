@@ -256,3 +256,67 @@ describe('the engine', () => {
     expect('forecast' in none.seen[0]).toBe(false)
   })
 })
+
+// 15/11 (the chip report): the base level must be on the source's own page, and the model reads the same resolved findings as the analyst.
+describe('the engine with evidence cards: the base level is on the page, or the source is set aside', () => {
+  afterEach(() => vi.unstubAllEnvs())
+  const plan: ResearchPlan = { title: 'T', steps: [{ title: 'Quy mô', queries: ['q'] }] }
+  const Q = 'Dự báo doanh thu thị trường chip 2027–2029 và phân tích độ nhạy'
+  type Note = { text: string; source: number; quote?: string; figure?: { series: string; label: string; value: number; unit: string; subject?: string; scope?: string; period?: string; stated?: string } }
+  function run(notes: Note[], pages: Array<{ url: string; text: string; published?: string }>, forecast: NonNullable<DeepResearchDeps['forecast']>) {
+    const traces: Array<Record<string, unknown>> = []
+    const asked: Array<readonly Finding[]> = []
+    const deps: DeepResearchDeps = {
+      async plan() { return structuredClone(plan) },
+      async gather() { return pages.map((p, i) => ({ title: `Nguồn ${i + 1}`, url: p.url, snippet: 's', text: p.text, ...(p.published ? { published: p.published } : {}) })) },
+      async notes() { return notes as never },
+      async *write() { yield '# B\n\n## Quy mô\nNội dung [1]\n' },
+      trace: e => { traces.push(e) },
+      forecast: async i => { asked.push(i.findings); return forecast(i) },
+    }
+    return runDeepResearch(Q, '', 'vi', deps, { status() {}, text() {} }).then(() => ({ traces, asked }))
+  }
+  const fig = (value: number, over: Record<string, unknown> = {}) => ({ series: 'Doanh số bán dẫn', label: '2026', value, unit: 'tỷ USD', scope: 'toàn cầu', period: '2026', ...over })
+  const pages = [
+    { url: 'https://www.wsts.org/a', text: 'Dự báo 2026: 1.510 tỷ USD' },
+    { url: 'https://www.wsts.org/b', text: 'Chỉ có mấy dòng đầu của tệp' },
+  ]
+  it('a base the model wrote in a note (no verified quote holds it) is refused as "base_not_on_page"; the source is set aside and the model is asked once more', async () => {
+    vi.stubEnv('RESEARCH_FORECAST_MODEL', '1'); vi.stubEnv('RESEARCH_EVIDENCE_CARDS', '1')
+    const notes: Note[] = [
+      { text: 'WSTS cập nhật: 1.655 tỷ USD năm 2026', source: 2, figure: fig(1655) },
+      { text: 'WSTS dự báo 2026: 1.510 tỷ USD', source: 1, quote: 'Dự báo 2026: 1.510 tỷ USD', figure: fig(1510) },
+    ]
+    let call = 0
+    const r = await run(notes, pages, async i => {
+      call++
+      const bad = call === 1
+      const src = (bad ? i.findings.find(f => f.text.includes('1.655')) : i.findings.find(f => f.text.includes('1.510')))!.source
+      return spec({ base: { value: bad ? 1655 : 1510, source: src, scope: 'toàn cầu' }, baseRange: undefined, volume: { low: 0, base: 3, high: 6, basis: 'assumption', note: 'a' }, price: { low: -3, base: 5, high: 10, basis: 'assumption', note: 'b' }, adjustment: undefined })
+    })
+    const f = r.traces.filter(t => t.ev === 'forecast')
+    expect(f[0]).toMatchObject({ ok: false, reason: 'base_not_on_page', attempt: 1 })
+    expect(f[1]).toMatchObject({ ok: true, attempt: 2 })
+    expect(r.asked).toHaveLength(2)
+    expect(r.asked[1].some(x => x.text.includes('1.655'))).toBe(false)
+  })
+  it('a base the page states in a verified quote is accepted at the first call', async () => {
+    vi.stubEnv('RESEARCH_FORECAST_MODEL', '1'); vi.stubEnv('RESEARCH_EVIDENCE_CARDS', '1')
+    const notes: Note[] = [{ text: 'WSTS dự báo 2026: 1.510 tỷ USD', source: 1, quote: 'Dự báo 2026: 1.510 tỷ USD', figure: fig(1510) }]
+    const r = await run(notes, pages, async i => spec({ base: { value: 1510, source: i.findings[0].source, scope: 'toàn cầu' }, baseRange: undefined, volume: { low: 0, base: 3, high: 6, basis: 'assumption', note: 'a' }, price: { low: -3, base: 5, high: 10, basis: 'assumption', note: 'b' }, adjustment: undefined }))
+    expect(r.traces.filter(t => t.ev === 'forecast')).toEqual([expect.objectContaining({ ok: true, attempt: 1 })])
+    expect(r.asked).toHaveLength(1)
+  })
+  it('a figure a newer statement replaces is not shown to the forecast model', async () => {
+    vi.stubEnv('RESEARCH_FORECAST_MODEL', '1'); vi.stubEnv('RESEARCH_EVIDENCE_CARDS', '1')
+    const dated = [{ url: pages[0].url, text: 'Dự báo cũ 2030: 1.600 tỷ USD', published: '2025-12-10' }, { url: 'https://www.wsts.org/c', text: 'Dự báo mới 2030: 2.300 tỷ USD', published: '2026-09-18' }]
+    const f2030 = (value: number) => fig(value, { label: '2030', period: '2030', subject: 'thị trường bán dẫn', series: 'Dự báo thị trường' })
+    const notes: Note[] = [
+      { text: 'Dự báo cũ 2030: 1.600 tỷ USD', source: 1, quote: 'Dự báo cũ 2030: 1.600 tỷ USD', figure: f2030(1600) },
+      { text: 'Dự báo mới 2030: 2.300 tỷ USD', source: 2, quote: 'Dự báo mới 2030: 2.300 tỷ USD', figure: f2030(2300) },
+    ]
+    const r = await run(notes, dated, async i => spec({ base: { value: 2300, source: i.findings[0].source, scope: 'toàn cầu' }, baseRange: undefined, volume: { low: 0, base: 3, high: 6, basis: 'assumption', note: 'a' }, price: { low: -3, base: 5, high: 10, basis: 'assumption', note: 'b' }, adjustment: undefined }))
+    expect(r.asked[0].some(x => x.text.includes('1.600'))).toBe(false)
+    expect(r.asked[0].some(x => x.text.includes('2.300'))).toBe(true)
+  })
+})

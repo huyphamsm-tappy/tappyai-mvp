@@ -143,14 +143,30 @@ describe('research document (4.2)', () => {
     expect(container.querySelector('#m1-fn1 a')?.getAttribute('href')).toBe('https://vnexpress.net/a')
     expect(container.querySelector('#m1-fn2 a')).toBeNull()
   })
-  it('copy Markdown writes the report text to the clipboard and says so', async () => {
-    const writeText = vi.fn().mockResolvedValue(undefined)
-    Object.defineProperty(navigator, 'clipboard', { value: { writeText }, configurable: true })
+  it('16/11 (UAT 60): a report whose text has no sources section still lists the sources it cites, each a link from the research card; with a sources section of its own, nothing is added', () => {
+    const research = { type: 'tappy.research.v1' as const, title: 'Xu hướng trà sữa', phase: 'done' as const, steps: [], sources: 2, links: [{ id: 1, title: 'Giá', url: 'https://vnexpress.net/a' }, { id: 2, title: 'Ngành', url: 'https://cafef.vn/b' }] }
+    const underLastSection = REPORT.replace('## Nguồn tham khảo', '### Nguồn tham khảo')
+    const a = render(canvas(underLastSection, { research }))
+    expect(a.getByTestId('report-sources')).toBeTruthy()
+    expect(a.container.querySelector('#m1-fn2 a')?.getAttribute('href')).toBe('https://cafef.vn/b')
+    expect(a.container.querySelectorAll('[data-footnote]')).toHaveLength(2) // the plain copy under the last section is gone: one list, not two
+    cleanup()
+    const b = render(canvas(REPORT, { research }))
+    expect(b.queryByTestId('report-sources')).toBeNull()
+  })
+  it('Markdown is a file that downloads on one click (owner 15/11): the report text, a .md name, no print dialog', async () => {
+    let blob: Blob | null = null
+    let name = ''
+    const create = vi.fn((b: Blob) => { blob = b; return 'blob:x' })
+    Object.defineProperty(URL, 'createObjectURL', { value: create, configurable: true })
+    Object.defineProperty(URL, 'revokeObjectURL', { value: vi.fn(), configurable: true })
+    const click = vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(function (this: HTMLAnchorElement) { name = this.download })
     const { getByTestId } = render(canvas(REPORT))
-    await act(async () => { fireEvent.click(getByTestId('research-copy-md')) })
-    expect(writeText).toHaveBeenCalledTimes(1)
-    expect(writeText.mock.calls[0][0]).toContain('## 2. Quy mô')
-    expect(getByTestId('research-copy-md').textContent).toContain('Đã sao chép')
+    await act(async () => { fireEvent.click(getByTestId('research-export-md')) })
+    expect(click).toHaveBeenCalledTimes(1)
+    expect(name).toMatch(/\.md$/)
+    expect(await (blob as unknown as Blob).text()).toContain('## 2. Quy mô')
+    click.mockRestore()
   })
   it('share is offered only when the page can open the message\'s share sheet', () => {
     const onShare = vi.fn()
@@ -168,9 +184,10 @@ describe('research document (4.2)', () => {
   it('English wording', () => {
     setLocale('en')
     const { getByTestId } = render(canvas(REPORT))
-    // owner 12/11: no PDF download in the report UI (removed on purpose); the Markdown copy stays
-    expect(getByTestId('research-toolbar').textContent).not.toMatch(/PDF/i)
-    expect(getByTestId('research-toolbar').textContent).toContain('Copy Markdown')
+    // owner 15/11: Markdown, Word and PDF are downloads in the report toolbar (12/11 removal reversed)
+    expect(getByTestId('research-toolbar').textContent).toMatch(/PDF/)
+    expect(getByTestId('research-toolbar').textContent).toContain('Word')
+    expect(getByTestId('research-toolbar').textContent).toContain('Markdown')
     setLocale('vi')
   })
 })

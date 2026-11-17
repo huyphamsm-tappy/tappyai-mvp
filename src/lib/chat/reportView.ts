@@ -6,7 +6,8 @@
 import { looksLikeReport } from '@/lib/chat/requestHistory'
 import { sourceCountOf } from '@/lib/answerDoc/reportExport'
 
-export const REPORT_SUMMARY_VIEW = process.env.NEXT_PUBLIC_REPORT_SUMMARY_VIEW === '1'
+// 16/11 (owner): ON unless switched off with '0' - the chat shows a report's key points, never the whole report.
+export const REPORT_SUMMARY_VIEW = process.env.NEXT_PUBLIC_REPORT_SUMMARY_VIEW !== '0'
 
 export interface ReportSplit { head: string; summary: string; rest: string; hasRest: boolean }
 

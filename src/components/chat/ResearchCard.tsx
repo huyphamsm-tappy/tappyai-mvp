@@ -5,9 +5,10 @@
 // Owner 31/10: a finished report downloads as Markdown, Word or PDF (lib/answerDoc/reportExport.ts - built here, nothing is sent anywhere).
 import { useState } from 'react'
 import type { ResearchChart, ResearchStatus } from '@/lib/ai/research/deepResearch'
-import { downloadBlob, printHtml, reportFileName, reportHtml, reportMarkdown, withChartTables, type ReportImage } from '@/lib/answerDoc/reportExport'
+import { downloadBlob, reportFileName, reportMarkdown, withChartTables, type ReportImage } from '@/lib/answerDoc/reportExport'
+import { downloadReportPdf } from '@/lib/answerDoc/reportPdf'
+import { pdfCoverOf } from '@/components/chat/reportPdfCover'
 import { useTranslation } from '@/lib/i18n/useTranslation'
-import { REPORT_LAYOUT_A } from '@/components/chat/ReportCover'
 import { cn } from '@/lib/utils'
 
 const MARK: Record<ResearchStatus['steps'][number]['status'], string> = { pending: '○', running: '◌', done: '✓', failed: '–' }
@@ -23,7 +24,11 @@ export default function ResearchCard({ status, report, images = [], charts = [],
   const title = status.title || 'report'
   // Markdown and Word carry each chart's figures as a table under its section; the PDF draws the chart
   const asMarkdown = () => downloadBlob(new Blob([reportMarkdown(withChartTables(report!, charts, locale), links)], { type: 'text/markdown;charset=utf-8' }), reportFileName(title, 'md'))
-  const asPdf = () => printHtml(reportHtml(report!, { title, images, links, format: format!, lang: locale, charts, ...(REPORT_LAYOUT_A ? { design: 'a' as const } : {}) }))
+  // 15/11 (owner): a PDF file that downloads on one click; like Word, each chart's figures go in as a table under its section
+  const asPdf = async () => {
+    setBusy(true)
+    try { await downloadReportPdf(withChartTables(report!, charts, locale), links, title, pdfCoverOf(t, locale, title, status.tier, links.length || status.sources)) } finally { setBusy(false) }
+  }
   const asWord = async () => {
     setBusy(true)
     try {

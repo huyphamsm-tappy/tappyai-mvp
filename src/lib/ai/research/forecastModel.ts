@@ -53,7 +53,7 @@ export function specFromRaw(r: ForecastSpecRaw): ForecastSpec {
   }
 }
 
-export type GroundReject = 'bad_shape' | 'bad_years' | 'rate_out_of_range' | 'assumption_order' | 'bad_base_range' | 'base_not_in_findings'
+export type GroundReject = 'bad_shape' | 'bad_years' | 'rate_out_of_range' | 'assumption_order' | 'bad_base_range' | 'base_not_in_findings' | 'base_not_on_page'
 export type Grounded = { ok: true; spec: ForecastSpec; downgrades: string[] } | { ok: false; reason: GroundReject }
 
 const MAX_RATE = 50
@@ -87,7 +87,9 @@ export function packFindingsForForecast(findings: readonly Finding[], budget = 3
  * Hold a spec to the findings. `numberIn(value, text)` says whether a value is written in a text (deepResearch's numberInText, passed in so this file does not import the engine). The checks run in this
  * order: shape, years, rate size, assumption order, base range, then the base level itself. Pure; never throws.
  */
-export function groundForecast(spec: ForecastSpec, findings: readonly Finding[], numberIn: (value: number, text: string) => boolean): Grounded {
+export function groundForecast(spec: ForecastSpec, findings: readonly Finding[], numberIn: (value: number, text: string) => boolean,
+  /** 15/11: whether the base level is written on the SOURCE'S OWN PAGE (a card whose verified quote holds the figure's number), not only in a note the model wrote about it. Absent = the older check alone. */
+  onPage?: (source: number, value: number) => boolean): Grounded {
   const no = (reason: GroundReject): Grounded => ({ ok: false, reason })
   const s = spec as Partial<ForecastSpec> | null
   if (!s || typeof s !== 'object' || typeof s.unit !== 'string' || !isInt(s.baseYear) || !s.base || !isNum(s.base.value) || s.base.value <= 0 || !isInt(s.base.source) || typeof s.base.scope !== 'string'
@@ -104,6 +106,7 @@ export function groundForecast(spec: ForecastSpec, findings: readonly Finding[],
   if (sp.baseRange && (!isNum(sp.baseRange.low) || !isNum(sp.baseRange.high) || sp.baseRange.low > sp.base.value || sp.baseRange.high < sp.base.value || sp.baseRange.low <= 0 || typeof sp.baseRange.note !== 'string')) return no('bad_base_range')
   const stated = (value: number, source: number) => findings.some(f => f.source === source && ((f.figure && Math.abs(f.figure.value - value) <= Math.abs(value) * 1e-9) || numberIn(value, f.text)))
   if (!stated(sp.base.value, sp.base.source)) return no('base_not_in_findings')
+  if (onPage && !onPage(sp.base.source, sp.base.value)) return no('base_not_on_page')
   const downgrades: string[] = []
   const check = <T extends RateRange & Basis>(r: T, name: string): T => {
     if (r.basis !== 'source') return r

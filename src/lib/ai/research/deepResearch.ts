@@ -149,7 +149,9 @@ export interface Evidence { id: number; title: string; url: string; snippet: str
  * text (numberInText) before it may draw a chart.
  */
 /** `subject` / `scope` / `period` (RESEARCH_CONSOLIDATION): who or what the number is about, the area or population it covers, and the year or half-year or quarter it is for. Absent = the older shape. */
-export interface Figure { series: string; label: string; value: number; unit: string; subject?: string; scope?: string; period?: string }
+export interface Figure { series: string; label: string; value: number; unit: string; subject?: string; scope?: string; period?: string
+  /** 15/11: when the SOURCE stated this figure (a release's date, a forecast's edition) as "YYYY", "YYYY-MM" or "YYYY-MM-DD"; not the period the number is for. Absent when the source does not say. */
+  stated?: string }
 /** `quote` / `quoteStatus` (RESEARCH_EVIDENCE_CARDS): the source's own words for this finding, and whether the code found them in the page (VERIFIED) or not (UNVERIFIED). Absent = no quote asked or given. */
 export interface Finding { step: number; text: string; source: number; figure?: Figure; quote?: string; quoteStatus?: 'VERIFIED' | 'UNVERIFIED' }
 /** A chart the code draws from the figures of one section; every point names its source. */
@@ -299,7 +301,8 @@ export function checkedFigure(f: unknown, sourceText: string): Figure | undefine
   const value = typeof x.value === 'number' ? x.value : NaN
   if (!series || !label || !Number.isFinite(value) || !numberInText(value, sourceText)) return undefined
   const subject = clean(x.subject, 60), scope = clean(x.scope, 60), period = clean(x.period, 24)
-  return { series, label, value, unit, ...(subject ? { subject } : {}), ...(scope ? { scope } : {}), ...(period ? { period } : {}) }
+  const stated = clean(x.stated, 12)
+  return { series, label, value, unit, ...(subject ? { subject } : {}), ...(scope ? { scope } : {}), ...(period ? { period } : {}), ...(/^\d{4}(-\d{2}(-\d{2})?)?$/.test(stated) ? { stated } : {}) }
 }
 
 /**
@@ -718,10 +721,21 @@ export async function runDeepResearch(question: string, context: string, lang: s
   // RESEARCH_FORECAST_MODEL: for a question about the future, a model call gives the INPUTS (never the forecast); the code refuses a base level no finding states and computes every number
   let forecastResult: ForecastResult | null = null
   if (researchForecastModelOn() && deps.forecast && wantsForecastModel(question, now()) && now() - t0 < DEEP_RESEARCH_LIMITS.runDeadlineMs - 60_000) {
-    const spec = await deps.forecast({ question, plan, findings: notes }).catch(() => null)
-    const g = spec ? groundForecast(spec, notes, numberInText) : { ok: false as const, reason: 'no_spec' as const }
-    if (g.ok) forecastResult = runForecast(g.spec)
-    deps.trace?.({ ev: 'forecast', ok: g.ok, reason: g.ok ? null : g.reason, downgrades: g.ok ? g.downgrades : [] })
+    // 15/11 (the chip report: the model's base level, 1,655, was a note about a page of which only 670 characters were read; and it read older findings the analyst never saw): with cards, the model reads
+    // the same RESOLVED set as the analyst (a figure a newer one replaces is left out), and its base level must be on the source's own page (a card whose verified quote holds the number). When the base
+    // is refused for that, it is asked once more without that source.
+    let pool = cards ? notes.filter((_, i) => !cards[i]?.supersededBy) : notes
+    const onPage = cards ? (source: number, value: number) => cards.some((c, i) => notes[i]?.source === source && !!c.figure && c.figureInQuote && Math.abs(c.figure.value - value) <= Math.abs(value) * 1e-9) : undefined
+    for (let attempt = 0; attempt < 2 && !forecastResult && pool.length; attempt++) {
+      if (attempt > 0 && now() - t0 >= DEEP_RESEARCH_LIMITS.runDeadlineMs - 60_000) break
+      const spec = await deps.forecast({ question, plan, findings: pool }).catch(() => null)
+      const g = spec ? groundForecast(spec, pool, numberInText, onPage) : { ok: false as const, reason: 'no_spec' as const }
+      if (g.ok) forecastResult = runForecast(g.spec)
+      deps.trace?.({ ev: 'forecast', ok: g.ok, reason: g.ok ? null : g.reason, downgrades: g.ok ? g.downgrades : [], attempt: attempt + 1 })
+      if (g.ok || g.reason !== 'base_not_on_page' || !spec?.base) break
+      const refused = spec.base.source
+      pool = pool.filter(f => f.source !== refused)
+    }
   }
   // RESEARCH_THESIS_REPORT (M3): an analyst reads the cards and returns the thesis, its sections and the cards behind each point; null (any failure) = the report is written from the findings as before
   let thesisIn: WriterInput | null = null

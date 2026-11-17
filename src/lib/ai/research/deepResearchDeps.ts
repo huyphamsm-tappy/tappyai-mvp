@@ -126,6 +126,7 @@ export const NotesSchemaConsolidated = z.object({ findings: z.array(z.object({
     subject: z.string().describe('who or what the number is about (the brand, place, product or group), in the same words every time; the item the source\'s own sentence ties the number to'),
     scope: z.string().describe('the area or population the number covers, as the source says it ("toàn quốc", "Hà Nội", "khảo sát 934 người"); empty when the source does not say'),
     period: z.string().describe('the period the number is FOR (not when it was published): a year "2025", a half "2026-H1", a quarter "2025-Q3"; empty when the source does not say'),
+    stated: z.string().optional().describe('when the SOURCE stated this number (the date of the release or of the forecast edition; NOT the period it is for): "2026-09-18", "2026-06" or "2026"; empty when the source does not say'),
   }).nullable().describe('when the finding states ONE figure that could go in a chart with others; else null'),
 })) })
 /** RESEARCH_EVIDENCE_CARDS: the same findings with the source's exact words for each (optional: a finding without one is still a finding; the code checks the quote against the page). */

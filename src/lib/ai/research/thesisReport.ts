@@ -6,7 +6,7 @@
 // Pure and deterministic: the model calls live in deepResearchDeps.ts. The checks prove numbers and citation ids, not meaning (claimVerifier's own scope).
 import { z } from 'zod'
 import type { Evidence, Finding, ResearchPlan } from './deepResearch'
-import type { EvidenceCard } from './evidenceCards'
+import { pickForAnalyst, type EvidenceCard } from './evidenceCards'
 import { verifyReport, written, type VerifierSource } from './claimVerifier'
 import { lenientArray } from './lenientSchema'
 
@@ -18,8 +18,8 @@ export interface OutlineBounds { minSections: number; maxSections: number }
 /** Standard (Haiku): a short report, up to four sections. Advanced (Sonnet): up to six, with the doubts argued in a section of their own. */
 export const STANDARD_OUTLINE: OutlineBounds = { minSections: 2, maxSections: 4 }
 export const ADVANCED_OUTLINE: OutlineBounds = { minSections: 3, maxSections: 6 }
-/** The most cards the analyst reads (the best by confidence). */
-export const ANALYST_CARDS_MAX = 90
+/** The most cards the analyst reads: two fifths shared out by step, a quarter kept for the newest dated ones, the rest the best by confidence. 15/11: 90 to 120 (about 3k more input tokens, cents per run) because the chip run had 138 cards at MEDIUM or above. */
+export const ANALYST_CARDS_MAX = 120
 
 /**
  * A list of short texts that may arrive as an array, a JSON string, or plain text (one item per line, or "C1, C2" for ids): measured 11/11, the analyst wrote `doubts` as plain text in 2 of 5 live runs.
@@ -81,12 +81,10 @@ export function outlineFrom(raw: unknown, cards: readonly EvidenceCard[], bounds
 }
 
 /** What the analyst reads: one line per readable card (never an UNVERIFIED quote), best confidence first, with how far its fact is held (STRONG: two independent groups agree, SINGLE: one, CONFLICT: they differ). Pure. */
-export function analystCards(cards: readonly EvidenceCard[], support: ReadonlyMap<string, string>, limit = ANALYST_CARDS_MAX): string {
-  const rank = { HIGH: 2, MEDIUM: 1, LOW: 0 } as const
-  return cards.filter(c => c.quoteStatus !== 'UNVERIFIED')
-    .sort((a, b) => rank[b.confidence] - rank[a.confidence] || b.score - a.score || Number(a.id.slice(1)) - Number(b.id.slice(1)))
-    .slice(0, limit)
-    .map(c => `${c.id} [${c.confidence}${support.get(c.id) ? `, ${support.get(c.id)}` : ''}; ${c.sourceKind.toLowerCase()}, ${c.host || 'unknown'}${c.published ? `, ${c.published}` : ''}] ${c.text.slice(0, 260)}`)
+export function analystCards(cards: readonly EvidenceCard[], support: ReadonlyMap<string, string>, limit = ANALYST_CARDS_MAX, nowMs: number = Date.now()): string {
+  // 15/11: a card a newer statement of the same fact replaced is not offered; a quarter of the places go to the newest dated cards; a card whose own arithmetic failed carries the code's note
+  return pickForAnalyst(cards, limit, nowMs)
+    .map(c => `${c.id} [${c.confidence}${support.get(c.id) ? `, ${support.get(c.id)}` : ''}; ${c.sourceKind.toLowerCase()}, ${c.host || 'unknown'}${c.vintage ? `, stated ${c.vintage}` : c.published ? `, ${c.published}` : ''}] ${c.text.slice(0, 260)}${c.ratioNote ? ` (${c.ratioNote})` : ''}`)
     .join('\n')
 }
 
@@ -115,7 +113,7 @@ export function outlineWriterInput(outline: Outline, cards: readonly EvidenceCar
         const n = number.get(c.source)!
         used.add(n)
         findings.push({ step: k + 1, text: c.text, source: n, ...(c.figure ? { figure: c.figure } : {}) })
-        return `  - ${c.text} [${n}]`
+        return `  - ${c.text} [${n}]${c.ratioNote ? ` (${c.ratioNote})` : ''}`
       })
       return `- POINT: ${p.claim}\n${facts.join('\n')}`
     })
