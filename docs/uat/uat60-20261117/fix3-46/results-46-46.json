@@ -1,0 +1,29 @@
+[
+  {
+    "id": 46,
+    "group": "multilingual",
+    "turns": [
+      {
+        "q": "Who is Barack Obama?",
+        "done": true,
+        "seconds": 27,
+        "screen": "screens/q46.jpg",
+        "answered": true,
+        "chars": 1052,
+        "head": "Barack Obama is an American politician who served as the 44th president of the United States from 2009 to 2017. He was the first African American to become U.S. president. Barack Obama Presidential Library\nBarack Obama at his 2009 inauguration\nBackground: Born in Honolulu, Hawaii, on August 4, 1961, Obama studied law at Harvard and became the first African American president of the Harvard Law Review.\nBefore the presidency: He worked as a community organizer and civil-rights lawyer, then served in the Illinois state senate and the U.S. Senate.\nPresidency: His administration’s major domestic achievements included the Affordable Care Act, a major U.S. health-care reform law. He won re-election",
+        "tail": "oks, including Dreams from My Father and A Promised Land.\nIn short, he is a major figure in modern U.S. politics, known especially for his historic election and his two terms as president.\nO\nNguồn · 1",
+        "links": 2,
+        "hosts": {
+          "obamalibrary.gov": 2
+        },
+        "sourcesChip": "O Nguồn · 1",
+        "tables": 0,
+        "images": 1,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/d20cdf63-76c6-4aae-bc47-31bbf7f7bdbf",
+        "proNote": 0
+      }
+    ]
+  }
+]

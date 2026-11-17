@@ -5,7 +5,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import '../v206.css'
 import { decorateEntityChips, detectEntityCandidates, entityKey, MAX_ENTITY_CHIPS } from '@/lib/chat/entityChips'
-import { chipsOf, fetchEntityProfiles, type WikiEntity } from '@/lib/chat/entityProfiles'
+import { chipsOf, confirmProfileSense, fetchEntityProfiles, type WikiEntity } from '@/lib/chat/entityProfiles'
 import { v206Store } from '@/lib/chat/v206Store'
 
 export interface EntityChips {
@@ -29,8 +29,11 @@ export function useEntityChips(text: string, enabled: boolean, exclude: readonly
   useEffect(() => {
     if (!namesKey) { setProfiles(NONE); return }
     let live = true
-    fetchEntityProfiles(namesKey.split('\u0001')).then(m => { if (live) setProfiles(m) }, () => { /* plain bold */ })
+    // 18/11: a name Wikipedia found is a chip only when the profile is about what the answer talks about (confirmProfileSense)
+    fetchEntityProfiles(namesKey.split('\u0001')).then(m => confirmProfileSense(text, m)).then(m => { if (live) setProfiles(m) }, () => { /* plain bold */ })
     return () => { live = false }
+    // `text` is read once per set of names (the answer is complete when names appear), not on every change
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [namesKey])
 
   const decorate = useMemo(() => {

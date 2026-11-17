@@ -78,6 +78,37 @@ export async function fetchEntityProfiles(names: readonly string[], fetchImpl: t
   return out
 }
 
+const SENSE_ENDPOINT = '/api/entity-profile/sense'
+const senseCache = new Map<string, boolean>()
+/** A short fingerprint of the answer's opening (the part the check reads), so the same name in another answer is asked again. Pure. */
+const fingerprint = (s: string): string => { let h = 5381; for (const ch of s.slice(0, 1500)) h = ((h * 33) ^ ch.charCodeAt(0)) >>> 0; return h.toString(36) }
+
+/**
+ * 18/11: a profile found BY NAME is shown only when it is about the same thing the answer talks about (a company in the user's document is not the commune of the same name). One request
+ * per answer for the profiles not yet judged; the verdict is cached per name and answer. Any failure, a bad reply or a refusal: no chips for the unjudged names (a missing chip costs
+ * less than a wrong one). Never throws.
+ */
+export async function confirmProfileSense(answer: string, profiles: ReadonlyMap<string, WikiEntity>, fetchImpl: typeof fetch = (...a) => fetch(...a)): Promise<Map<string, WikiEntity>> {
+  const fp = fingerprint(answer)
+  const keyOf = (k: string) => `${k}|${fp}`
+  const unjudged = [...profiles].filter(([k]) => !senseCache.has(keyOf(k)))
+  if (unjudged.length && answer.trim()) {
+    try {
+      const res = await fetchImpl(SENSE_ENDPOINT, {
+        method: 'POST', credentials: 'omit', referrerPolicy: 'no-referrer', headers: { 'content-type': 'application/json', accept: 'application/json' },
+        body: JSON.stringify({ answer: answer.slice(0, 1500), cards: unjudged.map(([, p]) => ({ name: p.name, summary: p.description ? `${p.description}. ${p.extract ?? ''}` : p.extract ?? '' })) }),
+      })
+      if (res.ok) {
+        const j = (await res.json()) as { same?: unknown }
+        if (Array.isArray(j?.same) && j.same.length === unjudged.length) unjudged.forEach(([k], i) => senseCache.set(keyOf(k), (j.same as unknown[])[i] === true))
+      }
+    } catch { /* offline / blocked: the unjudged names get no chip */ }
+  }
+  const out = new Map<string, WikiEntity>()
+  for (const [k, p] of profiles) if (senseCache.get(keyOf(k)) === true) out.set(k, p)
+  return out
+}
+
 /** The chips (name + icon) of the resolved profiles. Pure. */
 export function chipsOf(profiles: ReadonlyMap<string, WikiEntity>): Map<string, ChipInfo> {
   const m = new Map<string, ChipInfo>()
@@ -86,4 +117,4 @@ export function chipsOf(profiles: ReadonlyMap<string, WikiEntity>): Map<string, 
 }
 
 /** Test hook. */
-export const __clearEntityProfileCache = (): void => { cache.clear(); inflight.clear() }
+export const __clearEntityProfileCache = (): void => { cache.clear(); inflight.clear(); senseCache.clear() }
