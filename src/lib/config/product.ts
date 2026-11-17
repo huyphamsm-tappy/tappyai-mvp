@@ -120,6 +120,17 @@ export const SHOW_SCAM_SHIELD = true
  */
 export const SHOW_MUSIC = false
 /**
+ * Dịch (Translate) - HIDDEN, NOT DELETED (owner, 18/11/2026: "the old way no user will use it; we will rebuild it or do something else"). The page, its API and its module stay
+ * intact; every entry point (the Smart Tools list, Home, the sidebar) is gated off and the route answers 404 while this is `false`. Mirrors Android `ProductFlags.SHOW_TRANSLATE`
+ * and iOS `ProductFlags.showTranslate` (both already false). Flip them together.
+ */
+export const SHOW_TRANSLATE = false
+/**
+ * Coi bói / Tử vi - Tarot - Cung hoàng đạo (the /boi routes) - HIDDEN, NOT DELETED (owner, 18/11/2026, same decision as SHOW_TRANSLATE). Entry points are gated off and the
+ * routes answer 404 while this is `false`. Mirrored by `ProductFlags.SHOW_FORTUNE` (Android) and `ProductFlags.showFortune` (iOS). Flip them together.
+ */
+export const SHOW_FORTUNE = false
+/**
  * Marketplace — HIDDEN, NOT DELETED.
  *
  * 🚨 The V3 shell advertised Marketplace in the sidebar AND the top tab bar, and

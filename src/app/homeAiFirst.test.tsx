@@ -202,9 +202,10 @@ describe('no tool was dropped when Home stopped being a dashboard', () => {
   // '/music' is intentionally NOT here: Music is hidden by default (SHOW_MUSIC, owner decision
   // 2026-09-24), so its route is deliberately unreachable from the page — the opposite of a
   // dropped-by-accident tool. Restoring SHOW_MUSIC restores every music entry point at once.
+  // '/boi' and '/translate' are NOT here either: fortune telling and Translate are hidden (SHOW_FORTUNE / SHOW_TRANSLATE, owner decision 18/11/2026); their routes answer 404.
   const REQUIRED_TOOLS = [
-    '/boi', '/scan', '/group/new', '/currency', '/split-bill',
-    '/translate', '/scam-shield', '/viet-content', '/recommendations',
+    '/scan', '/group/new', '/currency', '/split-bill',
+    '/scam-shield', '/viet-content', '/recommendations',
   ]
 
   it('leaves no tool route unreachable from the page', () => {
@@ -236,7 +237,8 @@ describe('no tool was dropped when Home stopped being a dashboard', () => {
     // curation is now pinned directly instead of inferred from a total.
     const { container } = renderHome()
     const tools = container.querySelector('[data-home-section="tools"]')!
-    expect(tools.querySelectorAll('[data-tool]').length, 'Home shows five, not the catalogue').toBe(5)
+    // the five curated tools minus Translate while it is hidden (SHOW_TRANSLATE = false, owner decision 18/11/2026)
+    expect(tools.querySelectorAll('[data-tool]').length, 'Home shows the curated four, not the catalogue').toBe(4)
     // And the only other link in the section is that see-all, at the REAL destination.
     const others = [...tools.querySelectorAll('a[href]')].filter(a => !a.hasAttribute('data-tool'))
     expect(others.map(a => a.getAttribute('href')), 'one see-all, pointing at the Tools page').toEqual(['/tools'])

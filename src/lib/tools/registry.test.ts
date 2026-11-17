@@ -107,9 +107,11 @@ describe('Smart Tools is utilities, never a marketplace taxonomy', () => {
 })
 
 describe('Home curates; it does not mirror the catalogue', () => {
-  it('offers five tools, all of which are in the full registry', () => {
+  it('offers the curated tools (five, minus Translate while it is hidden), all of which are in the full registry', () => {
     const home = homeSmartTools()
-    expect(home.length).toBe(5)
+    expect(home.length).toBe(4)
+    expect(home.map((t) => t.id)).not.toContain('translate') // SHOW_TRANSLATE = false (owner decision 18/11/2026)
+    expect(smartTools().map((t) => t.id)).not.toContain('fortune') // SHOW_FORTUNE = false
     const all = new Set(smartTools().map((t) => t.id))
     for (const tool of home) expect(all.has(tool.id)).toBe(true)
   })
