@@ -2013,7 +2013,11 @@ export default function ChatInterface({
                   ? splitProfilesByPlaces(declaredBlocks.flatMap(b => (b.type === 'profiles' ? b.items : [])), placeViewShown.items)
                   : null
                 const placeNotes = venueSplit && venueSplit.notes.size > 0 ? venueSplit.notes : undefined
-                const profileBlocks = declaredBlocks
+                // 18/11 (owner: "a product has its own layout, a restaurant and a hotel have theirs"): a turn that shows venue cards (restaurants, cafes, hotels, attractions) or product cards is laid out by
+                // those cards. The model's own subject cards and comparison table are not drawn beside them whatever the model declared: a venue's points already ride on its card (above), and a name
+                // that has no card is told in the text, never given an avatar card. The layout follows what the answer is about, not what the model happened to declare this time.
+                const ownLayout = !isDoc && !!(placeViewShown || shopView)
+                const profileBlocks = ownLayout ? [] : declaredBlocks
                   .filter(b => b.type === 'profiles')
                   .map(b => (b.type === 'profiles' && placeNotes && venueSplit ? { ...b, items: b.items.filter(i => venueSplit.rest.includes(i)) } : b))
                   .filter(b => b.type !== 'profiles' || b.items.length > 0)
@@ -2047,7 +2051,7 @@ export default function ChatInterface({
                 const cmpNode = shopView && !streamingMsg && comparisonFromSynthesis(shopView, t, locale) ? cmpBlock : null
                 // (the declared blocks - declaredFrame, declaredBlocks, profileBlocks - are read above, ahead of the place cards: a venue's points go onto its card)
                 // 16/11 (owner's mockup): the table that goes with the subject cards comes straight after them, before the closing verdict; questions and bookings stay under the answer
-                const compareBlocks = declaredBlocks.filter(b => b.type === 'compare')
+                const compareBlocks = ownLayout ? [] : declaredBlocks.filter(b => b.type === 'compare')
                 const galleryBlocks = declaredBlocks.filter(b => b.type === 'gallery')
                 const otherBlocks = declaredBlocks.filter(b => b.type !== 'profiles' && b.type !== 'compare' && b.type !== 'gallery')
                 const onOpenProfile = WORKSPACE_V206 ? ((profile: Parameters<typeof v206Store.openWiki>[0]) => v206Store.openWiki(profile)) : undefined
