@@ -454,6 +454,8 @@ export function createDeepResearchDeps(o: { lang: string; userTexts: readonly st
             addCost(o.cost, await claude.providerMetadata.catch(() => undefined))
             return
           } catch (e) {
+            // a failed attempt: count what it did spend, and never leave its metadata promise unhandled (it rejects with the stream)
+            void Promise.resolve(claude.providerMetadata).then(m => addCost(o.cost, m), () => undefined)
             if (any || o.signal?.aborted) throw e
             // R13 (owner 11/11/2026): a Standard or Advanced run retries on Claude once and then fails (refunded); only the existing engine falls back to Luna
             if (reportFallback(tierPath) === 'retry_claude') {

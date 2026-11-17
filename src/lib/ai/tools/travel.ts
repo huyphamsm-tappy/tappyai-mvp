@@ -322,13 +322,11 @@ async function geocodeForTransport(loc: string): Promise<[number, number] | null
   const preset = cityInText(locKey)
   if (preset) return [preset.coords[0], preset.coords[1]]
   try {
-    const geoResp = await Promise.race([
-      fetch('https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(loc + ' Vietnam') + '&format=json&limit=1', {
-        headers: { 'User-Agent': 'TappyAI/1.0 https://www.tappyai.com' }
-      }),
-      new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 4000))
-    ])
-    const geoData = await (geoResp as Response).json()
+    const geoResp = await fetch('https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(loc + ' Vietnam') + '&format=json&limit=1', {
+      headers: { 'User-Agent': 'TappyAI/1.0 https://www.tappyai.com' },
+      signal: AbortSignal.timeout(4000), // covers the body read too
+    })
+    const geoData = await geoResp.json()
     if (geoData[0]) return [parseFloat(geoData[0].lat), parseFloat(geoData[0].lon)]
   } catch { /* fallback */ }
   return null

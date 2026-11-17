@@ -119,8 +119,10 @@ function bucket(identity: AiQuotaIdentity): { key: string; windowMs: number; lim
 // deployments only.
 // Held on globalThis so that every copy of this module in the process (Next bundles route handlers and
 // dev HMR can evaluate the module more than once) shares ONE counter: a second copy must not start from 0.
-const g = globalThis as { __tappyAiQuotaLocal?: Map<string, number[]> }
+const g = globalThis as { __tappyAiQuotaLocal?: Map<string, number[]>; __tappyAiQuotaLocalWindow?: Map<string, number> }
 const local: Map<string, number[]> = (g.__tappyAiQuotaLocal ??= new Map<string, number[]>())
+// each key's own window: the sweep below must judge a counter by ITS window, never by the window of whoever triggered the sweep
+const localWindow: Map<string, number> = (g.__tappyAiQuotaLocalWindow ??= new Map<string, number>())
 
 function localSpend(key: string, windowMs: number, limit: number): { ok: boolean; used: number; member?: number } {
   const now = Date.now()
@@ -131,8 +133,12 @@ function localSpend(key: string, windowMs: number, limit: number): { ok: boolean
   }
   hits.push(now)
   local.set(key, hits)
+  localWindow.set(key, windowMs)
   if (local.size > 5000) {
-    for (const [k, v] of local) if (v.every(t => now - t >= windowMs)) local.delete(k)
+    for (const [k, v] of local) {
+      const w = localWindow.get(k) ?? windowMs
+      if (v.every(t => now - t >= w)) { local.delete(k); localWindow.delete(k) }
+    }
   }
   return { ok: true, used: hits.length, member: now }
 }
@@ -157,6 +163,7 @@ function localCount(key: string, windowMs: number): number {
 /** Test seam: forget every in-process counter. */
 export function __resetAiQuestionQuotaLocal(): void {
   local.clear()
+  localWindow.clear()
 }
 
 // ── Public surface ───────────────────────────────────────────────────────────

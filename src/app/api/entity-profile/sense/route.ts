@@ -28,6 +28,9 @@ export async function POST(req: NextRequest) {
   const limited = await publicRateLimit(`entity-sense:${user.id}`, 20, 60_000)
   if (!limited.ok) return rateLimitedResponse(req, limited, 'entity-sense')
 
+  // the declared size is checked before the body is read (a client that lies still hits the check after the read)
+  const declared = Number(req.headers.get('content-length') ?? 0)
+  if (Number.isFinite(declared) && declared > MAX_BODY_CHARS * 4) return NextResponse.json({ same: [] }, { status: 413 })
   let body: { answer?: unknown; cards?: unknown } = {}
   try {
     const raw = await req.text()

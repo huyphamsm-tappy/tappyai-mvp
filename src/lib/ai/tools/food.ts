@@ -59,11 +59,10 @@ async function getNewsImpl(query: string, lang = 'vi') {
     const withImages = consultV3Enabled()
     await Promise.all(feeds.map(async feed => {
       try {
-        const resp = await Promise.race([
-          fetch(feed.url, { headers: { 'User-Agent': 'TappyAI/1.0 https://www.tappyai.com' } }),
-          new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 4000))
-        ])
-        const xml = await (resp as Response).text()
+        // the signal covers the body read too and aborts the socket; a failed answer is not a feed
+        const resp = await fetch(feed.url, { headers: { 'User-Agent': 'TappyAI/1.0 https://www.tappyai.com' }, signal: AbortSignal.timeout(4000) })
+        if (!resp.ok) return
+        const xml = (await resp.text()).slice(0, 1_000_000)
         const items = xml.match(/<item>([\s\S]*?)<\/item>/g) || []
         for (const item of items.slice(0, 30)) {
           if (articles.length >= 8) break
@@ -75,7 +74,7 @@ async function getNewsImpl(query: string, lang = 'vi') {
           const tl = title.toLowerCase(), dl = desc.toLowerCase()
           const matches = queryTerms.length === 0 || queryTerms.some(k => tl.includes(k) || dl.includes(k))
           const image = withImages ? rssItemImage(item) : null
-          if (matches) articles.push({ title, description: desc.slice(0, 200), link, source: feed.name, published: pub ? new Date(pub).toLocaleDateString(isVi(lang) ? 'vi-VN' : 'en-US') : messages.news.latest(lang), ...(image ? { image } : {}) })
+          if (matches) articles.push({ title, description: desc.slice(0, 200), link, source: feed.name, published: pub && Number.isFinite(Date.parse(pub)) ? new Date(pub).toLocaleDateString(isVi(lang) ? 'vi-VN' : 'en-US') : messages.news.latest(lang), ...(image ? { image } : {}) })
         }
       } catch { /* skip feed */ }
     }))
@@ -268,13 +267,11 @@ export async function searchPlacesOSM(query: string, location?: string, type?: s
       searchRadius = 1500
       if (!city) {
         try {
-          const geoResp = await Promise.race([
-            fetch('https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(loc + ' Vietnam') + '&format=json&limit=1', {
-              headers: { 'User-Agent': 'TappyAI/1.0 https://www.tappyai.com' }
-            }),
-            new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 2500))
-          ])
-          const geoData = await (geoResp as Response).json()
+          const geoResp = await fetch('https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(loc + ' Vietnam') + '&format=json&limit=1', {
+            headers: { 'User-Agent': 'TappyAI/1.0 https://www.tappyai.com' },
+            signal: AbortSignal.timeout(2500),
+          })
+          const geoData = await geoResp.json()
           if (geoData[0]) { lat = parseFloat(geoData[0].lat); lon = parseFloat(geoData[0].lon); located = true }
         } catch { /* use default */ }
       }
@@ -331,14 +328,11 @@ export async function searchPlacesOSM(query: string, location?: string, type?: s
     let overpassData: { elements?: unknown[] } | null = null
     for (const endpoint of endpoints) {
       try {
-        const resp = await Promise.race([
-          fetch(endpoint + '?data=' + encodeURIComponent(oql), { headers: { 'User-Agent': 'TappyAI/1.0 https://www.tappyai.com' } }),
-          // Aligned with the query's own [timeout:10] budget + 1s network buffer —
-          // previously 5000ms, which aborted before the server's own declared timeout.
-          new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 11000))
-        ])
-        if ((resp as Response).ok) {
-          overpassData = usableOverpass(await (resp as Response).json())
+        // Aligned with the query's own [timeout:10] budget + 1s network buffer (previously 5000ms, which aborted
+        // before the server's own declared timeout); the signal covers the body read too.
+        const resp = await fetch(endpoint + '?data=' + encodeURIComponent(oql), { headers: { 'User-Agent': 'TappyAI/1.0 https://www.tappyai.com' }, signal: AbortSignal.timeout(11000) })
+        if (resp.ok) {
+          overpassData = usableOverpass(await resp.json())
           if (overpassData) break
         }
       } catch { continue }
@@ -376,12 +370,9 @@ export async function searchPlacesOSM(query: string, location?: string, type?: s
       const fallbackOql = buildOql('')
       for (const endpoint of endpoints) {
         try {
-          const resp = await Promise.race([
-            fetch(endpoint + '?data=' + encodeURIComponent(fallbackOql), { headers: { 'User-Agent': 'TappyAI/1.0 https://www.tappyai.com' } }),
-            new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 11000))
-          ])
-          if ((resp as Response).ok) {
-          overpassData = usableOverpass(await (resp as Response).json())
+          const resp = await fetch(endpoint + '?data=' + encodeURIComponent(fallbackOql), { headers: { 'User-Agent': 'TappyAI/1.0 https://www.tappyai.com' }, signal: AbortSignal.timeout(11000) })
+          if (resp.ok) {
+          overpassData = usableOverpass(await resp.json())
           if (overpassData) break
         }
         } catch { continue }

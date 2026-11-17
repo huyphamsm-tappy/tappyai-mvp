@@ -62,6 +62,16 @@ describe('limits by identity', () => {
   })
 })
 
+describe('in-process sweep (18/11 review)', () => {
+  it('the cleanup of old counters judges each counter by its OWN window: a daily account triggering it does not give a guest back the lifetime 5', async () => {
+    const guest = aiQuotaIdentity(null, IP)
+    expect((await spendAll(guest, ANON_LIFETIME_LIMIT)).every((x) => x.ok)).toBe(true)
+    vi.useFakeTimers({ now: Date.now() + 3 * 86_400_000 }) // the guest's hits are now older than a day
+    for (let i = 0; i < 5100; i++) await consumeAiQuestion(aiQuotaIdentity({ id: `sweep-${i}`, is_anonymous: false }, IP))
+    expect((await consumeAiQuestion(guest)).ok).toBe(false)
+  })
+})
+
 describe('daily reset (Vietnam midnight)', () => {
   it(`a spent paid day starts again at ${PAID_DAILY_CEILING} after 00:00 +07, not before`, async () => {
     const id = aiQuotaIdentity(USER, IP, 'momo')

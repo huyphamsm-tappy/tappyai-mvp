@@ -61,7 +61,7 @@ export async function checkClaimsWithModel(claims: readonly string[], evidence: 
       const v = r.object.verdicts.find(x => x.n === i + 1)
       if (!v) return false
       const q = norm(v.quote)
-      const quoteOk = !(haveEvidence && q && !ev.includes(q)) // a quote that is not in the evidence is no support
+      const quoteOk = haveEvidence ? q.length > 0 && ev.includes(q) : true // with evidence in hand, support means a quote that IS in it; no quote, or one that is not there, is no support
       if (v.supported) return quoteOk
       const cut = v.kept_text.trim()
       return quoteOk && q && cut && acceptableCut(claim, cut) ? cut : false

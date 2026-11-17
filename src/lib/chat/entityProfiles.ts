@@ -88,11 +88,14 @@ const fingerprint = (s: string): string => { let h = 5381; for (const ch of s.sl
  * per answer for the profiles not yet judged; the verdict is cached per name and answer. Any failure, a bad reply or a refusal: no chips for the unjudged names (a missing chip costs
  * less than a wrong one). Never throws.
  */
+const SENSE_DENIED_MS = 5 * 60_000
+let senseDeniedUntil = 0
+
 export async function confirmProfileSense(answer: string, profiles: ReadonlyMap<string, WikiEntity>, fetchImpl: typeof fetch = (...a) => fetch(...a)): Promise<Map<string, WikiEntity>> {
   const fp = fingerprint(answer)
   const keyOf = (k: string) => `${k}|${fp}`
   const unjudged = [...profiles].filter(([k]) => !senseCache.has(keyOf(k)))
-  if (unjudged.length && answer.trim()) {
+  if (unjudged.length && answer.trim() && Date.now() >= senseDeniedUntil) {
     try {
       const res = await fetchImpl(SENSE_ENDPOINT, {
         method: 'POST', credentials: 'omit', referrerPolicy: 'no-referrer', headers: { 'content-type': 'application/json', accept: 'application/json' },
@@ -101,6 +104,8 @@ export async function confirmProfileSense(answer: string, profiles: ReadonlyMap<
       if (res.ok) {
         const j = (await res.json()) as { same?: unknown }
         if (Array.isArray(j?.same) && j.same.length === unjudged.length) unjudged.forEach(([k], i) => senseCache.set(keyOf(k), (j.same as unknown[])[i] === true))
+      } else if (res.status === 401 || res.status === 403) {
+        senseDeniedUntil = Date.now() + SENSE_DENIED_MS // a visitor: do not ask again for every answer
       }
     } catch { /* offline / blocked: the unjudged names get no chip */ }
   }
@@ -117,4 +122,4 @@ export function chipsOf(profiles: ReadonlyMap<string, WikiEntity>): Map<string, 
 }
 
 /** Test hook. */
-export const __clearEntityProfileCache = (): void => { cache.clear(); inflight.clear(); senseCache.clear() }
+export const __clearEntityProfileCache = (): void => { cache.clear(); inflight.clear(); senseCache.clear(); senseDeniedUntil = 0 }
