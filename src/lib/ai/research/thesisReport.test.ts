@@ -3,7 +3,7 @@ import { zodToJsonSchema } from 'zod-to-json-schema'
 import { ANALYST_SYSTEM, GAPS_SYSTEM, GAPS_UPCOMING_ADDENDUM, reportFallback } from './deepResearchDeps'
 import { runDeepResearch, type DeepResearchDeps, type ResearchPlan } from './deepResearch'
 import { researchThesisOn, researchEvidenceCardsOn } from './deepResearchState'
-import { PolicyScanSchema, policyStepFrom, withPolicyStep, OutlineSchema, outlineFrom, analystCards, outlineWriterInput, releaseText, type Outline } from './thesisReport'
+import { PolicyScanSchema, policyStepFrom, withPolicyStep, OutlineSchema, outlineFrom, analystCards, outlineWriterInput, releaseText, wordCitationsToMarks, type Outline } from './thesisReport'
 import type { EvidenceCard } from './evidenceCards'
 import type { Evidence } from './deepResearch'
 
@@ -197,6 +197,21 @@ describe('releaseText: only checked text is shown', () => {
     const r = releaseText('Thị trường tăng 35% mỗi năm.', sources)
     expect(r.text).not.toContain('35%')
     expect(r.dropped).toBe(1)
+  })
+  it('17/11: a source referred to by its number in words is a citation: checked and renumbered like a mark, the whole sentence dropped when the number points at no source', () => {
+    // the UAT sentence shape: "nguồn 2 chỉ nói…" beside a mark; the reader must never see the writer's working number
+    const r = releaseText('Có 700 cửa hàng [2]. Đây là giả định của báo cáo; nguồn 2 chỉ nói về số cửa hàng. Theo nguồn 144, 98 thì thị trường còn tăng. Doanh thu đạt 12.500 tỷ đồng theo source 1.', sources)
+    expect(r.text).toContain('Có 700 cửa hàng [1].')
+    expect(r.text).toContain('Đây là giả định của báo cáo; [1] chỉ nói về số cửa hàng.')
+    expect(r.text).toContain('12.500 tỷ đồng theo [2].')
+    expect(r.text).not.toMatch(/ngu[oồ]n\s+\d|source\s+\d/i)
+    expect(r.text).not.toContain('thị trường còn tăng') // 144 and 98 are no source of this report: the sentence goes, whole
+    expect(r.dropped).toBe(1)
+    expect(r.used.map(s => s.title)).toEqual(['S2', 'S1'])
+  })
+  it('17/11: a quantity after the word "nguồn" is not a reference and stays as written', () => {
+    expect(wordCitationsToMarks('Dự án có nguồn 500 triệu đồng và 3 nguồn vốn khác; nguồn 12,5% đến từ vay.')).toBe('Dự án có nguồn 500 triệu đồng và 3 nguồn vốn khác; nguồn 12,5% đến từ vay.')
+    expect(wordCitationsToMarks('Theo nguồn số 7 và nguồn 3 và 4.')).toBe('Theo [7] và [3][4].')
   })
 })
 

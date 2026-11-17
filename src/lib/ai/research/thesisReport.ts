@@ -146,10 +146,20 @@ export function releaseText(report: string, sources: readonly (VerifierSource & 
   return { text, dropped, used, renumbered: map }
 }
 
+// A source referred to by its NUMBER IN WORDS ("nguồn 33 chỉ nói…", "theo nguồn 144, 98", "source 12 says"). 17/11 (UAT, Advanced report):
+// the writer does this now and then; the number is the writer's own working number, it is not a "[n]" mark, so the release neither
+// checked it nor renumbered it and the reader saw "nguồn 33" beside a list numbered 1..n ("nguồn 144" on 13/11). Such a reference IS a
+// citation: it becomes the mark, and from there the one rule applies (checked against the source, renumbered, the whole sentence dropped
+// when the number points at no source). A quantity is not a reference: "nguồn 500 triệu đồng", "3 nguồn" stay as written.
+const WORD_CITE = /(?<![\p{L}\d])(?:nguồn|nguon|sources?)\s+(?:số\s+|no\.?\s*)?(\d{1,3}(?:\s*(?:,|và|and)\s*\d{1,3})*)(?![\d%]|[.,]\d|\s*(?:tỷ|tỉ|triệu|nghìn|ngàn|đồng|usd|vnd|người|billion|million|thousand|percent)(?![\p{L}]))/giu
+export function wordCitationsToMarks(text: string): string {
+  return text.replace(WORD_CITE, (_m, list: string) => list.split(/\s*(?:,|và|and)\s*/).map(n => `[${Number(n)}]`).join(''))
+}
+
 /** The sentence filter of releaseText, before the citations are renumbered (sectionRelease.ts runs it on one section at a time). Pure. */
 export function filterVerified(report: string, sources: readonly (VerifierSource & { url?: string; site?: string; published?: string })[], trusted = ''): { kept: string; dropped: number } {
   let dropped = 0
-  const kept = String(report ?? '').split('\n').map(line => {
+  const kept = wordCitationsToMarks(String(report ?? '')).split('\n').map(line => {
     if (/^\s*(#{1,6}\s|\|)/.test(line) || !line.trim()) return line
     const marker = /^(\s*(?:[-*+]|\d+[.)])\s+)/.exec(line)?.[1] ?? ''
     const body = line.slice(marker.length)
