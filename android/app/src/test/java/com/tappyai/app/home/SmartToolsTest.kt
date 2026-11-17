@@ -46,7 +46,7 @@ class SmartToolsTest {
         assertEquals(8, SMART_TOOL_CATALOGUE.size)
         assertEquals(listOf("safety", "scan", "translate", "currency", "split", "together", "fortune", "captions"), SMART_TOOL_CATALOGUE.map { it.id.name.lowercase() })
         // Un-hidden, the offered list is the whole catalogue again — the day the flags flip nothing is lost.
-        assertEquals(SMART_TOOL_CATALOGUE, smartTools(showTranslate = true, showVietContent = true))
+        assertEquals(SMART_TOOL_CATALOGUE, smartTools(showTranslate = true, showVietContent = true, showFortune = true))
         assertEquals(listOf("daily", "discover", "fun"), smartToolGroups(SMART_TOOL_CATALOGUE).map { it.first.name.lowercase() })
         assertEquals(listOf(5, 1, 2), smartToolGroups(SMART_TOOL_CATALOGUE).map { it.second.size })
         assertEquals(setOf(SmartToolId.Together), SMART_TOOL_CATALOGUE.filter { it.auth }.map { it.id }.toSet())
@@ -56,15 +56,18 @@ class SmartToolsTest {
     fun `Dịch and Viết nội dung are hidden by default - same flags and default as web and iOS - and every other tool is untouched`() {
         assertFalse(ProductFlags.SHOW_TRANSLATE)
         assertFalse(ProductFlags.SHOW_VIET_CONTENT)
+        // Coi bói is hidden too (owner decision 2026-11-18), so the "fun" group is empty and drops out.
+        assertFalse(ProductFlags.SHOW_FORTUNE)
         val shipped = SMART_TOOLS.map { it.id.name.lowercase() }
-        assertEquals(listOf("safety", "scan", "currency", "split", "together", "fortune"), shipped)
-        assertEquals(listOf(4, 1, 1), smartToolGroups().map { it.second.size })
-        assertEquals(listOf("daily", "discover", "fun"), smartToolGroups().map { it.first.name.lowercase() })
+        assertEquals(listOf("safety", "scan", "currency", "split", "together"), shipped)
+        assertEquals(listOf(4, 1), smartToolGroups().map { it.second.size })
+        assertEquals(listOf("daily", "discover"), smartToolGroups().map { it.first.name.lowercase() })
         // Each flag hides only its own tool.
-        assertEquals(listOf("translate"), (SMART_TOOL_CATALOGUE.map { it.id } - smartTools(showTranslate = false, showVietContent = true).map { it.id }.toSet()).map { it.name.lowercase() })
-        assertEquals(listOf("captions"), (SMART_TOOL_CATALOGUE.map { it.id } - smartTools(showTranslate = true, showVietContent = false).map { it.id }.toSet()).map { it.name.lowercase() })
-        // Home and the Smart Tools page (and its search) read SMART_TOOLS, so Dịch and Viết appear on none of them.
-        assertTrue(SMART_TOOLS.none { it.id == SmartToolId.Translate || it.id == SmartToolId.Captions })
+        assertEquals(listOf("translate"), (SMART_TOOL_CATALOGUE.map { it.id } - smartTools(showTranslate = false, showVietContent = true, showFortune = true).map { it.id }.toSet()).map { it.name.lowercase() })
+        assertEquals(listOf("captions"), (SMART_TOOL_CATALOGUE.map { it.id } - smartTools(showTranslate = true, showVietContent = false, showFortune = true).map { it.id }.toSet()).map { it.name.lowercase() })
+        assertEquals(listOf("fortune"), (SMART_TOOL_CATALOGUE.map { it.id } - smartTools(showTranslate = true, showVietContent = true, showFortune = false).map { it.id }.toSet()).map { it.name.lowercase() })
+        // Home and the Smart Tools page (and its search) read SMART_TOOLS, so Dịch, Viết and Coi bói appear on none of them.
+        assertTrue(SMART_TOOLS.none { it.id == SmartToolId.Translate || it.id == SmartToolId.Captions || it.id == SmartToolId.Fortune })
         assertTrue("the page searches the shipped list", screen.contains("smartToolGroups(filterSmartTools(SMART_TOOLS, query))"))
         assertTrue("Home previews from the shipped list", home.contains("SMART_TOOLS.filter { it.id in previewed }"))
     }

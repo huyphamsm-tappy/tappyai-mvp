@@ -50,4 +50,13 @@ internal object ProductFlags {
      * `ProductFlags.showVietContent`. Flip all three together.
      */
     const val SHOW_VIET_CONTENT = false
+
+    /**
+     * Coi bói (Fortune: Tử vi, Tarot, Cung hoàng đạo) — HIDDEN, NOT DELETED (owner decision
+     * 2026-11-18). The hub, the three screens, their ViewModels and data stay in place; the Smart
+     * Tools entry is gated off and a stale route to any fortune screen pops straight back.
+     * Mirrors web `SHOW_FORTUNE` (served as `flags.showFortune`) and iOS `ProductFlags.showFortune`.
+     * Flip all three together.
+     */
+    const val SHOW_FORTUNE = false
 }

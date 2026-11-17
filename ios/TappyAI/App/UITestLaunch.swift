@@ -155,6 +155,8 @@ enum UITestLaunch {
             router.switchTo(.home)
             router.push(HomeDestination.splitBill, on: .home)
         case "fortune":
+            // Deep link to a hidden tool is ignored while ProductFlags.showFortune is off.
+            guard ProductFlags.showFortune else { break }
             router.switchTo(.home)
             router.push(HomeDestination.fortune, on: .home)
         case "group":

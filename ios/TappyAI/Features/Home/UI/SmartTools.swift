@@ -54,11 +54,13 @@ struct SmartTool: Identifiable {
 
     /// Hidden tools are removed here (owner decision 2026-10-25). Their views and services stay in place.
     /// Translate follows `ProductFlags.showTranslate`; Captions follows `ProductFlags.showVietContent`.
-    static func tools(showTranslate: Bool, showVietContent: Bool) -> [SmartTool] {
+    /// Fortune follows `ProductFlags.showFortune` (owner decision 2026-11-18).
+    static func tools(showTranslate: Bool, showVietContent: Bool, showFortune: Bool = ProductFlags.showFortune) -> [SmartTool] {
         catalogue.filter { tool in
             switch tool.id {
             case .translate: return showTranslate
             case .captions: return showVietContent
+            case .fortune: return showFortune
             default: return true
             }
         }
