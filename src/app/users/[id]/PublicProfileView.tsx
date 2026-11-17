@@ -50,6 +50,7 @@ import {
 } from 'lucide-react'
 import V3Shell from '@/components/v3/V3Shell'
 import { useNotifications } from '@/components/NotificationProvider'
+import { useMessageUnread, badgeTotal } from '@/lib/messaging/useMessageUnread'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { createClient } from '@/lib/supabase/client'
 import LinkPoster from '@/components/LinkPoster'
@@ -88,7 +89,8 @@ export interface Viewer { id: string; avatarUrl: string | null }
 
 export default function PublicProfileView({ userId, viewer, onBack }: { userId: string; viewer: Viewer | null; onBack: () => void }) {
   const { t, locale } = useTranslation()
-  const { unreadCount } = useNotifications()
+  const { unreadCount: notificationUnread } = useNotifications()
+  const unreadCount = badgeTotal(notificationUnread, useMessageUnread())
   const viewerId = viewer?.id ?? null
   const isOwn = viewerId === userId
   const supabase = useMemo(() => createClient(), [])

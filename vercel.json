@@ -84,6 +84,10 @@
     {
       "path": "/api/cron/moderation-digest?run=evening",
       "schedule": "0 13 * * *"
+    },
+    {
+      "path": "/api/cron/scam-shield-sync",
+      "schedule": "0 3 * * 1"
     }
   ]
 }

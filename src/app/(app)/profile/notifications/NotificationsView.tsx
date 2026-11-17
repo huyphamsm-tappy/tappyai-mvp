@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import Image from '@/components/media/SafeImage'
 import { useRouter, useSearchParams } from 'next/navigation'
 import type { ComponentProps } from 'react'
@@ -12,6 +12,7 @@ import NotificationSettings from '@/components/notifications/NotificationSetting
 import { useNotifications } from '@/components/NotificationProvider'
 import { MessagesProvider, useMessages } from '@/components/messaging/MessagesProvider'
 import MessagesTab from '@/components/messaging/MessagesTab'
+import { useMessageUnread } from '@/lib/messaging/useMessageUnread'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { CATEGORY_STYLE,
   mapDtoToInbox, groupNotifs, notifSection, isSocialGroup, notificationBrandMark,
@@ -89,10 +90,13 @@ function InboxTabs({ tab, onChange }: { tab: InboxTab; onChange: (t: InboxTab) =
   const { t } = useTranslation()
   const { unreadCount: notificationUnread } = useNotifications()
   const { unreadTotal: messageUnread } = useMessages()
+  // A message notification (flag on) is already the Messages tab's count: it is not counted again here, so the two tabs add up to the
+  // bell and the nav badge (`badgeTotal`) instead of exceeding them. With the flag off `messageNotifications` is 0 and nothing changes.
+  const { messageNotifications } = useMessageUnread()
 
   const TABS: { id: InboxTab; labelKey: string; count: number }[] = [
     { id: 'messages', labelKey: 'v3.inbox.messages', count: messageUnread },
-    { id: 'notifications', labelKey: 'v3.inbox.announcements', count: notificationUnread },
+    { id: 'notifications', labelKey: 'v3.inbox.announcements', count: Math.max(0, notificationUnread - messageNotifications) },
   ]
 
   return (
@@ -129,6 +133,10 @@ function InboxTabs({ tab, onChange }: { tab: InboxTab; onChange: (t: InboxTab) =
 
 type InboxTab = 'messages' | 'notifications'
 
+function parseInboxTab(v: string | null | undefined): InboxTab | null {
+  return v === 'messages' || v === 'notifications' ? v : null
+}
+
 /**
  * `MessagesProvider` is mounted HERE rather than in the root layout.
  *
@@ -147,10 +155,28 @@ export default function NotificationsView({ user }: { user: ComponentProps<typeo
 
 function InboxView({ user }: { user: ComponentProps<typeof Header>['user'] }) {
   const { t, locale } = useTranslation()
-  const { notifications, unreadCount, loading, markAllRead } = useNotifications()
-  const [tab, setTab] = useState<InboxTab>('messages')
+  const { notifications, unreadCount, loading, markAllRead, markRead } = useNotifications()
+  const { unreadTotal: messageUnread, loading: messagesLoading } = useMessages()
+  const searchParams = useSearchParams()
   // `?thread=<id>` (the profile's Message button) opens that conversation; anything else is ignored.
   const requestedThread = useSearchParams()?.get('thread') ?? undefined
+  // `?tab=messages|notifications` picks the tab (a notification's deep link, the bell); anything else is ignored.
+  const requestedTab = parseInboxTab(searchParams?.get('tab'))
+  const [picked, setPicked] = useState<InboxTab | null>(null)
+  // No `?tab=`: open on Notifications when only notifications are unread, otherwise on Messages. Decided ONCE, when the counts
+  // are known, so marking things read afterwards never moves the person to another tab by itself.
+  const [auto, setAuto] = useState<InboxTab | null>(null)
+  const sawLoading = useRef(false)
+  if (loading || messagesLoading) sawLoading.current = true
+  useEffect(() => {
+    if (auto !== null || loading || messagesLoading) return
+    if (unreadCount > 0 || messageUnread > 0) setAuto(unreadCount > 0 && messageUnread === 0 ? 'notifications' : 'messages')
+    else if (sawLoading.current) setAuto('messages')
+  }, [auto, loading, messagesLoading, unreadCount, messageUnread])
+  // A new `?tab=` (navigating inside the page) wins over an earlier click.
+  useEffect(() => { setPicked(null) }, [requestedTab])
+  const tab: InboxTab = picked ?? requestedTab ?? auto ?? 'messages'
+  const setTab = (next: InboxTab) => setPicked(next)
   const [filter, setFilter] = useState(0)
   const [showSettings, setShowSettings] = useState(false)
 
@@ -320,7 +346,7 @@ function InboxView({ user }: { user: ComponentProps<typeof Header>['user'] }) {
               style={{ background: 'var(--v3-panel)', borderColor: 'var(--v3-border)' }}
             >
               {section.items.map((g, i) => (
-                <NotifRow key={g.id} g={g} locale={locale} first={i === 0} />
+                <NotifRow key={g.id} g={g} locale={locale} first={i === 0} onRead={markRead} />
               ))}
             </div>
           </section>
@@ -386,7 +412,7 @@ function EmptyState({ icon, text }: { icon: React.ReactNode; text: string }) {
  * the whole row; a wall of highlighted rows is the same as no highlight at all, and this list is
  * mostly unread the first time anyone opens it.
  */
-function NotifRow({ g, locale, first }: { g: GroupedNotif; locale: 'vi' | 'en'; first: boolean }) {
+function NotifRow({ g, locale, first, onRead }: { g: GroupedNotif; locale: 'vi' | 'en'; first: boolean; onRead: (ids: string[]) => Promise<void> | void }) {
   const router = useRouter()
   const { t } = useTranslation()
   const cat = CATEGORY_STYLE[g.category] ?? CATEGORY_STYLE.system
@@ -394,8 +420,12 @@ function NotifRow({ g, locale, first }: { g: GroupedNotif; locale: 'vi' | 'en'; 
   const social = isSocialGroup(g)
   const actors = g.actors.slice(0, 3)
 
-  const go = () => { if (g.url) router.push(g.url) }
-  const interactive = !!g.url
+  // Tapping a row reads it (every unread notification stacked into it), then opens where it points. A read row sends nothing.
+  const go = () => {
+    if (g.unreadIds.length > 0) void onRead(g.unreadIds)
+    if (g.url) router.push(g.url)
+  }
+  const interactive = !!g.url || g.unreadIds.length > 0
   // A collapsed message row (DR-4 D4) is ONE row per conversation: its `count` is how many messages are unread, said in words in the second line
   // ("An · 10 tin nhắn mới"), by locale, in the client — the server-side title stays the sender's name. It gets no "+N" chip (that is for stacks).
   const unreadMessages = g.type === 'message' && g.count > 1 ? g.count : 0

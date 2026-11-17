@@ -13,6 +13,7 @@ import { TappyMascot } from '@/components/TappyMascot'
 import { getTappyPose } from '@/lib/TappyMascotState'
 import { markAuthPending, emitAuthLoginFailed, getPendingMethod } from '@/lib/analytics/authEvents'
 import { readReturnTo } from '@/lib/auth/returnTo'
+import { loginErrorKey, type LoginErrorKey } from '@/lib/auth/loginError'
 import { emailEntryRequested } from '@/lib/auth/emailEntry'
 import { isControllerLoginEntry } from '@/lib/auth/controllerLoginEntry'
 import { ControllerLoginCard, type LoginOutcome } from '@/components/controller/ControllerLoginCard'
@@ -68,6 +69,8 @@ export default function LoginPage() {
   const [pwPassword, setPwPassword] = useState('')
   const [pwBusy, setPwBusy] = useState(false)
   const [pwError, setPwError] = useState<string | null>(null)
+  // `?error=…` on arrival (a failed OAuth / magic-link / Zalo attempt), as a dictionary key.
+  const [urlError, setUrlError] = useState<LoginErrorKey | null>(null)
   const [inApp, setInApp] = useState<{ isInApp: boolean; name: string; isAndroid: boolean }>({ isInApp: false, name: '', isAndroid: false })
   // `/login?email=1` reveals the EXISTING email block in a normal browser. Starts
   // false so the server-rendered card is the unchanged V1 card (no hydration
@@ -111,6 +114,8 @@ export default function LoginPage() {
     const err = new URLSearchParams(window.location.search).get('error')
     if (!err) return
     emitAuthLoginFailed(err === 'zalo_failed' ? 'zalo' : (getPendingMethod() ?? 'unknown'), 'oauth_denied')
+    // Show it, in words: mapped to a fixed dictionary key, never the raw value (see lib/auth/loginError.ts).
+    setUrlError(loginErrorKey(err))
     const url = new URL(window.location.href)
     url.searchParams.delete('error')
     window.history.replaceState({}, '', url.toString())
@@ -682,6 +687,11 @@ export default function LoginPage() {
                 <>
                   <h2 className="text-center text-lg font-bold text-gray-900 dark:text-white">{t('login.signinTitle')}</h2>
                   <p className="text-center text-sm text-content-secondary mt-1 mb-6">{t('login.signinSubtitle')}</p>
+                  {urlError && (
+                    <p data-testid="login-url-error" role="alert" className="mb-4 rounded-xl border border-red-200 bg-red-50 px-3 py-2.5 text-center text-sm text-red-700 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-300">
+                      {t(urlError)}
+                    </p>
+                  )}
 
                   <div className="space-y-3">
                     {/* Google */}

@@ -5,6 +5,8 @@ import type { MessageAnalysisResult, MessageSignal, AdviceItem, UrlCheckSummary 
 import { Ban, CheckCircle2, Crosshair, Globe, Info, ScanText, BookOpenCheck, ExternalLink } from 'lucide-react'
 import { LEVEL_TONE, linkBadgeKey, VerdictDisclaimer } from './ScamShieldResult'
 import { messageVerdict, type Verdict, type ScenarioBlock } from '@/lib/scam-shield/verdict'
+import type { KnowledgeMeta } from '@/lib/scam-shield/knowledge'
+import KnowledgeFreshness from './KnowledgeFreshness'
 
 // ── Scam Shield · the message verdict card ──────────────────────────────────
 //
@@ -27,6 +29,8 @@ export type MessageAnalysisResponse = MessageAnalysisResult & {
     exhausted: boolean
     pro: boolean
   } | null
+  /** Freshness of the official knowledge the verdict leaned on (weekly sync, or the static dataset). Absent on an older server. */
+  knowledge?: KnowledgeMeta
 }
 
 const SEVERITY_COLOR: Record<MessageSignal['severity'], string> = {
@@ -229,6 +233,7 @@ export default function ScamMessageResult({ result }: { result: MessageAnalysisR
           </details>
         )}
 
+        <KnowledgeFreshness meta={result.knowledge} className="mt-3" />
         <VerdictDisclaimer />
       </div>
     </section>

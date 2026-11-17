@@ -63,7 +63,8 @@ describe('guard — every scheduler route uses it', () => {
     // 23 cron routes since video-reconcile (Explore video part 4, 05/11/2026; scheduled in vercel.json).
     // 24 cron routes since video-takedown (Explore video publishing, 05/11/2026; scheduled in vercel.json).
     // 25 with cron/mcp-jobs (MCP Gateway job worker trigger, 12/11/2026): flag-gated, cron-secret guarded, NOT scheduled in vercel.json.
-    expect(routes.length).toBe(25)
+    // 26 with cron/scam-shield-sync (Scam Shield weekly knowledge sync, 18/11/2026): cron-secret guarded (checked by the it.each below), scheduled weekly in vercel.json.
+    expect(routes.length).toBe(26)
   })
 
   it.each(routes)('%s', (file) => {

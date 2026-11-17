@@ -46,8 +46,8 @@ describe('subscriptionCatalog', () => {
   it('web gets VND prices; no catalog plan gets "about …/month"; no per-day price or hint anywhere; apps get no price', () => {
     const web = subscriptionCatalog({ env: env() })
     // Owner 01/11/2026: new plan catalog
-    expect(web.plans.find((p) => p.id === 'momo')).toMatchObject({ priceVnd: 175_000 })
-    expect(web.plans.find((p) => p.id === 'promax1m')).toMatchObject({ priceVnd: 225_000 })
+    expect(web.plans.find((p) => p.id === 'momo')).toMatchObject({ priceVnd: 225_000 }) // prices raised 18/11/2026
+    expect(web.plans.find((p) => p.id === 'promax1m')).toMatchObject({ priceVnd: 300_000 })
     // Owner 01/11/2026: new plan catalog - Sunny (the only showMonthlyApprox plan) is not sold, so no card has it
     expect(web.plans.find((p) => p.id === 'sunny')).toBeUndefined()
     for (const p of web.plans) {

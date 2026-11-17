@@ -3,6 +3,7 @@ import { BRAND, ROUTE_TITLES, absoluteUrl, brandedOgImage } from '@/lib/share/op
 import { breadcrumbJsonLd, homeCrumb } from '@/lib/discovery/siteJsonLd'
 import { hubText } from '@/lib/i18n/discovery'
 import ScamShieldView from './ScamShieldView'
+import { loadKnowledgeMeta } from '@/lib/scam-shield/knowledge/versionStore'
 import JsonLd from '@/components/JsonLd'
 
 // G1 completion — Scam Shield is the highest-intent public entry Tappy has
@@ -34,11 +35,16 @@ const breadcrumb = breadcrumbJsonLd([homeCrumb(), { name: 'Scam Shield', path: '
 //
 // The check itself is unchanged: the view is a client of POST /api/scam-shield/check and /qr,
 // the same endpoints Android and iOS consume.
-export default function ScamShieldPage() {
+// The knowledge's "last updated" date comes from the weekly sync's approved rows (fails open to the static dataset; never blocks the page),
+// refreshed hourly at most.
+export const revalidate = 3600
+
+export default async function ScamShieldPage() {
+  const knowledge = await loadKnowledgeMeta()
   return (
     <>
       <JsonLd data={breadcrumb} />
-      <ScamShieldView />
+      <ScamShieldView knowledge={knowledge} />
     </>
   )
 }

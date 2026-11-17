@@ -18,7 +18,7 @@ import ScamShieldResult, { LEVEL_TONE, linkBadgeKey, VerdictDisclaimer } from '.
 import { decodeQrFromFile } from '@/lib/scam-shield/qr/clientDecode'
 import { classifyQrPayload, type QrKind } from '@/lib/scam-shield/qr/payload'
 import ScamMessageResult, { type MessageAnalysisResponse } from './ScamMessageResult'
-import ScamKnowledgeSection from './ScamKnowledgeSection'
+import ScamKnowledgeSection, { type KnowledgeMeta } from './ScamKnowledgeSection'
 import ScamHelpCard from './ScamHelpCard'
 import { track } from '@/lib/tracking/tracker'
 import { MESSAGE_MAX_CHARS, SCREENSHOT_ALLOWED_MIME, SCREENSHOT_MAX_BYTES } from '@/lib/scam-shield/message/config'
@@ -130,7 +130,7 @@ function LevelBadge({ level, size = 'md' }: { level: RiskLevel; size?: 'sm' | 'm
   )
 }
 
-export default function ScamShieldView() {
+export default function ScamShieldView({ knowledge }: { knowledge?: KnowledgeMeta | null } = {}) {
   const { t } = useTranslation()
   const timeAgo = useTimeAgo()
 
@@ -617,7 +617,7 @@ export default function ScamShieldView() {
           {messageResult && <ScamMessageResult result={messageResult} />}
 
           {/* ── Official anti-fraud knowledge — static, sourced, costs nothing to browse ── */}
-          <ScamKnowledgeSection />
+          <ScamKnowledgeSection knowledge={knowledge} />
 
           {/* ── Recent checks, on this device ── */}
           <section id="scam-shield-history" className="v3-scam-tool scroll-mt-24 p-4 sm:p-5" aria-labelledby="scam-history-title" data-scam-history>

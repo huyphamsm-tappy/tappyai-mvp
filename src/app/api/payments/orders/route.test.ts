@@ -44,16 +44,16 @@ describe('create order', () => {
     expect(PLAN_CONFIG.pip.durationDays).toBe(7)
   })
 
-  it('a Tappy 1-month order (promax1m) is created at 225.000 VND / 30 days', async () => {
-    // Owner 01/11/2026: new plan catalog
-    rpc.mockResolvedValue({ data: { status: 'created', order: { id: 'o2', plan: 'promax1m', amount_vnd: 225000, code: 'TAPPYDEF567', status: 'pending', expires_at: '2099-01-01T00:00:00Z', paid_at: null } }, error: null })
+  it('a Tappy 1-month order (promax1m) is created at 300.000 VND / 30 days', async () => {
+    // Owner 01/11/2026: new plan catalog; price raised 18/11/2026 (12 USD x 25.000)
+    rpc.mockResolvedValue({ data: { status: 'created', order: { id: 'o2', plan: 'promax1m', amount_vnd: 300000, code: 'TAPPYDEF567', status: 'pending', expires_at: '2099-01-01T00:00:00Z', paid_at: null } }, error: null })
     const res = await post('promax1m')
     expect(res.status).toBe(201)
     expect(rpc).toHaveBeenCalledTimes(1)
     const [name, args] = rpc.mock.calls[0]
     expect(name).toBe('p8_payments_create_order')
-    expect(args).toMatchObject({ p_plan: 'promax1m', p_amount: 225000, p_days: 30 })
-    expect(PLAN_CONFIG.promax1m.priceVnd).toBe(225000)
+    expect(args).toMatchObject({ p_plan: 'promax1m', p_amount: 300000, p_days: 30 })
+    expect(PLAN_CONFIG.promax1m.priceVnd).toBe(300000)
     expect(PLAN_CONFIG.promax1m.durationDays).toBe(30)
   })
 

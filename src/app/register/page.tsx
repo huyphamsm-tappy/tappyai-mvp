@@ -66,7 +66,8 @@ export default function RegisterPage() {
 
     if (error) {
       emitAuthLoginFailed('email', 'invalid_credentials')
-      setError(error.message)
+      // Never the provider's text ("User already registered" is an account-enumeration oracle).
+      setError(t('register.errFailed'))
       return
     }
     // On immediate session (email confirmation off), onAuthStateChange fires and

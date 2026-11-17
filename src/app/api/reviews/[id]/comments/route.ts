@@ -7,6 +7,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { emitNotification } from '@/lib/notifications/emit'
 import { searchParam } from '@/lib/http/searchParams'
 import { requestLocale } from '@/lib/i18n/requestLocale'
+import { resolveUserLang } from '@/lib/priceWatch/messages'
+import { actorShortName, commentNotice, replyNotice } from '@/lib/i18n/socialNotices'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
 import { getAccountRestriction, accountRestrictionMessage, accountRestrictionCode, accountRestrictionStatus } from '@/lib/account/accountStatus'
@@ -151,26 +153,54 @@ export async function POST(
   const [withProfile] = await attachProfiles(supabase, [insertedComment])
   const comment = { ...withProfile, reactions: {} as Record<string, number>, my_reaction: null as string | null }
 
-  // Notify review owner (fire-and-forget, skip self-comment)
-  const adminSb = createAdminClient()
-  const { data: review } = await adminSb
-    .from('reviews')
-    .select('user_id, place_name')
-    .eq('id', params.id)
-    .single()
+  // Notify (fire-and-forget; a notification never breaks the comment):
+  //  - the review owner gets a "comment" row (skipped for a self-comment);
+  //  - a REPLY also notifies the author of the PARENT comment with a "reply" row (skipped for a self-reply). When the parent's
+  //    author is also the review owner they get ONE row (the reply), not a comment row plus a reply row.
+  // Each row is written in the recipient's stored language. The review page has no comment anchor, so the link is the review.
+  try {
+    const adminSb = createAdminClient()
+    const { data: review } = await adminSb
+      .from('reviews')
+      .select('user_id, place_name')
+      .eq('id', params.id)
+      .single()
 
-  if (review && review.user_id !== user.id) {
-    const commenterName = comment.profiles?.full_name?.split(' ').pop() || 'Ai do'
-    emitNotification({
-      userId: review.user_id,
-      type: 'comment',
-      category: 'social',
-      title: commenterName + ' binh luan review cua ban',
-      body: '"' + body.slice(0, 60) + (body.length > 60 ? '...' : '') + '"',
-      actorId: user.id,
-      entityUrl: '/reviews/' + params.id,
-    }).catch(() => {})
-  }
+    let parentAuthorId: string | null = null
+    if (parentId) {
+      const { data: parent } = await adminSb
+        .from('review_comments')
+        .select('user_id, review_id')
+        .eq('id', parentId)
+        .maybeSingle()
+      // Only a parent that really belongs to THIS review counts (the client sends the id).
+      if (parent && parent.review_id === params.id) parentAuthorId = parent.user_id as string
+    }
+
+    const ownerId = (review?.user_id as string | undefined) ?? null
+    const entityUrl = '/reviews/' + params.id
+    const send = async (recipientId: string, kind: 'comment' | 'reply') => {
+      const lang = await resolveUserLang(adminSb, recipientId)
+      const name = actorShortName(comment.profiles?.full_name, lang)
+      const copy = kind === 'reply' ? replyNotice(lang, name, body) : commentNotice(lang, name, body)
+      await emitNotification({
+        userId: recipientId,
+        type: kind,
+        category: 'social',
+        title: copy.title,
+        body: copy.body,
+        actorId: user.id,
+        entityUrl,
+      })
+    }
+
+    if (parentAuthorId && parentAuthorId !== user.id) {
+      send(parentAuthorId, 'reply').catch(() => {})
+    }
+    if (ownerId && ownerId !== user.id && ownerId !== parentAuthorId) {
+      send(ownerId, 'comment').catch(() => {})
+    }
+  } catch { /* the comment is saved; the notification is best-effort */ }
 
   const count = await getRealCommentCount(supabase, params.id)
   return NextResponse.json({ comment, count })

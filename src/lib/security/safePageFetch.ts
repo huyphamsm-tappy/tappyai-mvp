@@ -57,6 +57,8 @@ export interface PageFetchOptions {
    * The research reader passes the robots.txt gate here, so the host a redirect leads to is judged by its own robots.txt. Absent = no extra check.
    */
   hopGate?: (url: URL, signal: AbortSignal) => Promise<PageFailure | null>
+  /** Overrides the User-Agent header (a scheduled job identifies itself, e.g. "TappyAI/1.0 https://www.tappyai.com"). Absent = the default string. */
+  userAgent?: string
   maxRedirects?: number
   connectTimeoutMs?: number
   readTimeoutMs?: number
@@ -93,7 +95,7 @@ export type HopResult =
   | { kind: 'body'; status: number; contentType: string; body: string; bytes: number; truncated: boolean; raw?: Buffer }
   | { kind: 'error'; reason: PageFailure; status?: number }
 
-export type HopTransport = (url: URL, o: { signal: AbortSignal; maxBytes: number; connectTimeoutMs: number; readTimeoutMs: number; pdfMaxBytes?: number; decodeCompressed?: boolean; anyContentType?: boolean }) => Promise<HopResult>
+export type HopTransport = (url: URL, o: { signal: AbortSignal; maxBytes: number; connectTimeoutMs: number; readTimeoutMs: number; pdfMaxBytes?: number; decodeCompressed?: boolean; anyContentType?: boolean; userAgent?: string }) => Promise<HopResult>
 
 const PDF_TYPE = /^application\/pdf\b/i
 
@@ -118,7 +120,7 @@ export const realHop: HopTransport = (url, o) => new Promise<HopResult>(resolve 
       port: url.port ? Number(url.port) : url.protocol === 'http:' ? 80 : 443,
       path: url.pathname + url.search,
       method: 'GET',
-      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; TappyAI/1.0; +https://tappyai.com)', Accept: 'text/html,application/xhtml+xml,text/plain;q=0.9,application/json;q=0.8,*/*;q=0.1', 'Accept-Encoding': 'identity', 'Accept-Language': 'vi-VN,vi;q=0.9,en;q=0.8', Host: url.host },
+      headers: { 'User-Agent': o.userAgent ?? 'Mozilla/5.0 (compatible; TappyAI/1.0; +https://tappyai.com)', Accept: 'text/html,application/xhtml+xml,text/plain;q=0.9,application/json;q=0.8,*/*;q=0.1', 'Accept-Encoding': 'identity', 'Accept-Language': 'vi-VN,vi;q=0.9,en;q=0.8', Host: url.host },
       ...(url.protocol === 'https:' ? { servername: url.hostname } : {}),
       lookup: safeLookup,
       agent: false,
@@ -193,7 +195,7 @@ export async function fetchPublicPageReal(rawUrl: string, opts: PageFetchOptions
         try { refused = await o.hopGate(v.url, ctrl.signal) } catch { refused = 'robots_unreachable' } // a gate that fails closes the hop
         if (refused) return { ok: false, url: rawUrl, reason: totalTimedOut ? 'total_timeout' : ctrl.signal.aborted && refused === 'robots_unreachable' ? 'aborted' : refused, redirects, ms: Date.now() - t0 }
       }
-      const hop = await transport(v.url, { signal: ctrl.signal, maxBytes: o.maxBytes, connectTimeoutMs: o.connectTimeoutMs, readTimeoutMs: o.readTimeoutMs, ...(o.pdfMaxBytes ? { pdfMaxBytes: o.pdfMaxBytes } : {}), ...(o.decodeCompressed ? { decodeCompressed: true } : {}), ...(o.anyContentType ? { anyContentType: true } : {}) })
+      const hop = await transport(v.url, { signal: ctrl.signal, maxBytes: o.maxBytes, connectTimeoutMs: o.connectTimeoutMs, readTimeoutMs: o.readTimeoutMs, ...(o.pdfMaxBytes ? { pdfMaxBytes: o.pdfMaxBytes } : {}), ...(o.decodeCompressed ? { decodeCompressed: true } : {}), ...(o.anyContentType ? { anyContentType: true } : {}), ...(o.userAgent ? { userAgent: o.userAgent } : {}) })
       if (hop.kind === 'error') return { ok: false, url: rawUrl, reason: totalTimedOut ? 'total_timeout' : hop.reason, ...(hop.status ? { status: hop.status } : {}), redirects, ms: Date.now() - t0 }
       if (hop.kind === 'redirect') {
         if (!hop.location) return { ok: false, url: rawUrl, reason: 'redirect_without_location', status: hop.status, redirects, ms: Date.now() - t0 }

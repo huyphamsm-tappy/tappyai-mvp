@@ -140,6 +140,12 @@ const MESSAGES = {
     vi: 'Ngày sinh không hợp lệ.',
     en: 'That date of birth is not valid.',
   },
+  // The one-button age confirmation could not be stored (database error, or the migration is not applied yet).
+  // Nobody is admitted on this answer; the screen stays and asks again.
+  'age.confirmUnavailable': {
+    vi: 'Chưa thể lưu xác nhận lúc này. Vui lòng thử lại sau ít phút.',
+    en: "We couldn't save your confirmation right now. Please try again in a few minutes.",
+  },
 
   // Validation
   'validation.invalid': { vi: 'Dữ liệu không hợp lệ', en: 'That data is not valid' },

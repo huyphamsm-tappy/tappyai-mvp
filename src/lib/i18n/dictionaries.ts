@@ -91,6 +91,17 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     // password, no such account. Forwarding the provider's own text would turn
     // the form into an account-enumeration oracle, so it never is.
     'login.errorSignInFailed': 'Email hoặc mật khẩu không đúng.',
+    // Shown on /login after a failed attempt (?error=…); mapped in src/lib/auth/loginError.ts, never the raw provider text.
+    'login.err.noCode': 'Đăng nhập chưa hoàn tất. Vui lòng thử lại.',
+    'login.err.cancelled': 'Bạn đã huỷ đăng nhập. Hãy thử lại khi bạn sẵn sàng.',
+    'login.err.zaloDenied': 'Zalo chưa được cấp quyền hoặc phiên đăng nhập đã hết hạn. Vui lòng thử lại.',
+    'login.err.zaloFailed': 'Đăng nhập bằng Zalo không thành công. Vui lòng thử lại.',
+    'login.err.zaloUnavailable': 'Đăng nhập bằng Zalo tạm thời chưa dùng được. Bạn có thể dùng cách khác hoặc thử lại sau.',
+    'login.err.zaloInvalid': 'Không xác minh được tài khoản Zalo của bạn. Vui lòng thử lại.',
+    'login.err.appState': 'Phiên đăng nhập từ ứng dụng không hợp lệ hoặc đã hết hạn. Hãy mở lại ứng dụng và thử lại.',
+    'login.err.linkExpired': 'Liên kết đăng nhập không hợp lệ hoặc đã hết hạn. Vui lòng yêu cầu liên kết mới.',
+    'login.err.rateLimited': 'Bạn thử quá nhiều lần. Vui lòng đợi một phút rồi thử lại.',
+    'login.err.generic': 'Đăng nhập không thành công. Vui lòng thử lại.',
     'login.continueGuest': 'Tiếp tục với tư cách Khách',
     'login.trustLine': 'Dữ liệu của bạn được an toàn. Chúng tôi không bao giờ đăng gì nếu chưa được phép.',
     'login.statUsers': 'Người dùng hài lòng',
@@ -101,6 +112,9 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     // Register
     'register.subtitle': 'Tạo tài khoản mới',
     'register.errPasswordLen': 'Mật khẩu cần ít nhất 6 ký tự',
+    // ONE message for every sign-up refusal (address already used, weak password, provider error): the provider's
+    // own text would tell a stranger which emails have an account.
+    'register.errFailed': 'Không thể tạo tài khoản bằng thông tin này. Vui lòng kiểm tra lại hoặc thử cách đăng nhập khác.',
     'register.checkEmailTitle': 'Kiểm tra email của bạn 📩',
     'register.checkEmailDesc': 'Chúng tôi đã gửi link xác nhận tới {email}. Hãy mở email và bấm vào link để hoàn tất đăng ký.',
     'register.backToLogin': 'Quay lại đăng nhập',
@@ -384,6 +398,16 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'login.signinTitle': 'Sign in to TappyAI',
     'login.signinSubtitle': 'Choose the best way to continue',
     'login.errorSignInFailed': 'That email or password is not correct.',
+    'login.err.noCode': 'Sign-in did not finish. Please try again.',
+    'login.err.cancelled': 'You cancelled the sign-in. Try again whenever you are ready.',
+    'login.err.zaloDenied': 'Zalo access was not granted or the sign-in session expired. Please try again.',
+    'login.err.zaloFailed': 'Signing in with Zalo did not work. Please try again.',
+    'login.err.zaloUnavailable': 'Zalo sign-in is temporarily unavailable. Use another method or try again later.',
+    'login.err.zaloInvalid': 'We could not verify your Zalo account. Please try again.',
+    'login.err.appState': 'The sign-in from the app is not valid or has expired. Open the app and try again.',
+    'login.err.linkExpired': 'This sign-in link is invalid or has expired. Please request a new one.',
+    'login.err.rateLimited': 'Too many attempts. Please wait a minute and try again.',
+    'login.err.generic': 'Sign-in did not work. Please try again.',
     'login.continueGuest': 'Continue as Guest',
     'login.trustLine': 'Your data is safe with us. We never post without your permission.',
     'login.statUsers': 'Happy Users',
@@ -394,6 +418,7 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     // Register
     'register.subtitle': 'Create a new account',
     'register.errPasswordLen': 'Password must be at least 6 characters',
+    'register.errFailed': 'We could not create an account with these details. Please check them or try another way to sign in.',
     'register.checkEmailTitle': 'Check your email 📩',
     'register.checkEmailDesc': 'We sent a confirmation link to {email}. Open the email and tap the link to finish signing up.',
     'register.backToLogin': 'Back to sign in',

@@ -116,6 +116,8 @@ export async function GET(req: NextRequest) {
     age: eligibility.age,
     ageBand: eligibility.ageBand,
     canCorrectAge: eligibility.canSelfCorrect,
+    // 'adult' | 'minor' | null — the one-button answer on file (age-check screen reads it).
+    ageDeclaration: eligibility.declaration ?? null,
 
     // ── Demographic + professional profile (private to the owner) ───────────
     gender: demographics.gender,

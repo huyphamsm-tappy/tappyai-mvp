@@ -1,4 +1,5 @@
 import type { ZaloProfile } from './identity'
+import { safeReturnTo } from '@/lib/auth/returnTo'
 
 // Turning a VERIFIED Zalo identity into a TappyAI session.
 //
@@ -42,7 +43,7 @@ export function zaloEmail(zaloId: string): string {
 
 /** A path we are willing to send a freshly signed-in person to. Never an absolute URL. */
 export function safeNext(value: string | null | undefined): string {
-  return typeof value === 'string' && value.startsWith('/') && !value.startsWith('//') ? value : '/'
+  return safeReturnTo(value)
 }
 
 /**

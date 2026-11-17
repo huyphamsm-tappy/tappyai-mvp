@@ -6,6 +6,7 @@ import { Bell, Menu } from 'lucide-react'
 import '@/components/chat/v206.css'
 import UserAvatar from '@/components/UserAvatar'
 import { useNotifications } from '@/components/NotificationProvider'
+import { useMessageUnread, badgeTotal } from '@/lib/messaging/useMessageUnread'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { planBadgeLabel } from '@/lib/chat/v206Look'
 
@@ -13,7 +14,9 @@ import { planBadgeLabel } from '@/lib/chat/v206Look'
 // when something is unread) and their real avatar to the profile. A guest has no profile to read: the avatar is then the app's initial-letter state. Nothing is drawn that has no source.
 export default function ShellHeader({ historyOpen, onToggleHistory }: { historyOpen: boolean; onToggleHistory: () => void }) {
   const { t } = useTranslation()
-  const { unreadCount } = useNotifications()
+  // The same number as the shell badge and the bottom bar: other notifications + unread messages (a message notification counted once).
+  const { unreadCount: notificationUnread } = useNotifications()
+  const unreadCount = badgeTotal(notificationUnread, useMessageUnread())
   const [badge, setBadge] = useState<string | null>(null)
   const [me, setMe] = useState<{ name: string; avatar: string } | null>(null)
   useEffect(() => {

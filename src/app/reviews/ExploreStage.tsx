@@ -14,6 +14,7 @@ import VideoPlayer, { type VideoPlayerHandle } from '@/components/explore/VideoP
 import LinkPoster from '@/components/LinkPoster'
 import { createClient } from '@/lib/supabase/client'
 import { useNotifications } from '@/components/NotificationProvider'
+import { useMessageUnread, badgeTotal } from '@/lib/messaging/useMessageUnread'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { isShareOnlyName, type Review } from './feedShared'
 import { ClipStage, useClipActions, Avatar, type Me } from './clipStage'
@@ -94,7 +95,9 @@ function feedUrl(sort: FeedSort, search: string): string {
 
 export default function ExploreStage() {
   const { t } = useTranslation()
-  const { unreadCount } = useNotifications()
+  // Same number as every other badge: notifications + unread messages, a message notification counted once.
+  const { unreadCount: notificationUnread } = useNotifications()
+  const unreadCount = badgeTotal(notificationUnread, useMessageUnread())
 
   const [rows, setRows] = useState<Review[]>([])
   const [loading, setLoading] = useState(true)

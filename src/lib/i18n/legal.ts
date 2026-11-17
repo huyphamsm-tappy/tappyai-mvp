@@ -36,7 +36,7 @@ export const en: Record<string, string> = {
     'Precise location (optional). Only if you allow it, the app sends your device’s precise coordinates with a request so it can find places near you. You can refuse or withdraw the permission at any time and keep using TappyAI; location is never collected in the background.',
   'legal.privacy.s1.b8':
     'Usage and device information — pages viewed, searches, the categories, places, deals and reviews you interact with, the features you use, plus device type, operating system, app version, language, a session identifier, and the country derived from your IP address.',
-  'legal.privacy.s1.b9': 'Your date of birth, to confirm you are 18 or older. TappyAI is for people aged 18 and over: you must be 18 or older to use the AI assistant, recommendations and posting. Without an account the date stays on your device and is sent with your requests.',
+  'legal.privacy.s1.b9': 'Your confirmation that you are 18 or older (or, if you gave one earlier, your date of birth). TappyAI is for people aged 18 and over: you must be 18 or older to use the AI assistant, recommendations and posting. With an account we store when you confirmed and which version of the Terms you saw; if you say you are under 18, that answer is stored too, so the service stays closed to you. Without an account the answer stays on your device and is sent with your requests.',
   'legal.privacy.s1.b10':
     'Content you create: reviews, photos and clips you post, comments, your profile bio, and messages you send to other users.',
   'legal.privacy.s1.b11': 'Reports, blocks and moderation: when you report a post, comment or person we store the report (what was reported, the reason you chose and a short note if you add one); when you block someone we store the block; when we review content against the Community Guidelines we keep a record of the decision (the rule, the action, the date) and of any appeal you make.',
@@ -122,7 +122,7 @@ export const en: Record<string, string> = {
     'TappyAI is an AI assistant that helps you find places to eat, shop, relax and travel, along with related reference information. By using TappyAI, you agree to the terms below.',
 
   'legal.terms.s2.heading': '2. Your Account',
-  'legal.terms.s2.p1': 'You sign in with a Google, Zalo or Apple account, or with an email address and password, to use TappyAI. TappyAI is for people aged 18 and over; you confirm that you are 18 or older. You are responsible for keeping your account secure and for activity that happens under it.',
+  'legal.terms.s2.p1': 'You sign in with a Google, Zalo or Apple account, or with an email address and password, to use TappyAI. TappyAI is for people aged 18 and over; you confirm that you are 18 or older by pressing the confirmation button, and we store that confirmation (the time and the version of these terms). You are responsible for keeping your account secure and for activity that happens under it.',
 
   'legal.terms.s3.heading': '3. Information Provided by the AI',
   'legal.terms.s3.p1':
@@ -280,7 +280,7 @@ export const en: Record<string, string> = {
   // ⚠️ OWNER-REVIEW: public statement of the 18+ policy and of what the date of birth is used for.
   'legal.support.faq.age.q': 'Why does TappyAI ask for my age?',
   'legal.support.faq.age.a':
-    'TappyAI is for people aged 18 and over. Before you chat with the AI assistant, a signed-in account is asked for its date of birth; without an account, you confirm that you are 18 or older or enter your birth year. Your date of birth is used to check your age and is never sent to our AI provider. People under 18 cannot use the assistant.',
+    'TappyAI is for people aged 18 and over. Before you chat with the AI assistant, you press a button to confirm that you are 18 or older (or that you are under 18). We store your answer: with an account, the time and the version of the Terms; without one, on your device. It is used only to check that you may use the service and is never sent to our AI provider. People under 18 cannot use the assistant.',
   // ⚠️ OWNER-REVIEW: "not professional advice" and "entertainment only" are liability statements.
   'legal.support.faq.accuracy.q': 'Is the information TappyAI gives me accurate?',
   'legal.support.faq.accuracy.a':
@@ -327,7 +327,7 @@ export const vi: Record<string, string> = {
     'Vị trí chính xác (tuỳ chọn). Chỉ khi bạn cho phép, ứng dụng gửi tọa độ chính xác của thiết bị kèm yêu cầu để tìm địa điểm quanh bạn. Bạn có thể từ chối hoặc thu hồi quyền bất cứ lúc nào mà vẫn dùng được TappyAI; ứng dụng không thu vị trí khi chạy nền.',
   'legal.privacy.s1.b8':
     'Thông tin sử dụng và thiết bị — các trang bạn xem, nội dung bạn tìm kiếm, các danh mục, địa điểm, ưu đãi và bài đánh giá bạn tương tác, các tính năng bạn dùng, cùng với loại thiết bị, hệ điều hành, phiên bản ứng dụng, ngôn ngữ, mã phiên và quốc gia được xác định từ địa chỉ IP của bạn.',
-  'legal.privacy.s1.b9': 'Ngày sinh của bạn, để xác nhận bạn đủ 18 tuổi. TappyAI dành cho người từ 18 tuổi trở lên: bạn cần đủ 18 tuổi để dùng trợ lý AI, gợi ý và đăng bài. Khi chưa có tài khoản, ngày sinh được giữ trên thiết bị và gửi kèm yêu cầu của bạn.',
+  'legal.privacy.s1.b9': 'Xác nhận của bạn rằng bạn đủ 18 tuổi (hoặc ngày sinh, nếu bạn đã cung cấp trước đó). TappyAI dành cho người từ 18 tuổi trở lên: bạn cần đủ 18 tuổi để dùng trợ lý AI, gợi ý và đăng bài. Với tài khoản, chúng tôi lưu thời điểm bạn xác nhận và phiên bản Điều khoản bạn đã xem; nếu bạn cho biết mình chưa đủ 18 tuổi, câu trả lời đó cũng được lưu để dịch vụ không mở cho bạn. Khi chưa có tài khoản, câu trả lời được giữ trên thiết bị và gửi kèm yêu cầu của bạn.',
   'legal.privacy.s1.b10':
     'Nội dung bạn tạo: bài review, ảnh và clip bạn đăng, bình luận, phần giới thiệu trên hồ sơ và tin nhắn bạn gửi cho người dùng khác.',
   'legal.privacy.s1.b11': 'Báo cáo, chặn và kiểm duyệt: khi bạn báo cáo một bài, bình luận hoặc người dùng, chúng tôi lưu báo cáo (đối tượng bị báo, lý do bạn chọn và ghi chú ngắn nếu bạn thêm); khi bạn chặn ai đó, chúng tôi lưu việc chặn; khi chúng tôi xem xét nội dung theo Quy tắc cộng đồng, chúng tôi lưu quyết định (quy tắc, hành động, ngày) và kháng nghị của bạn nếu có.',
@@ -414,7 +414,7 @@ export const vi: Record<string, string> = {
     'TappyAI là trợ lý AI giúp bạn tìm kiếm địa điểm ăn uống, mua sắm, spa, giải trí, du lịch và các thông tin tham khảo liên quan. Khi sử dụng TappyAI, bạn đồng ý với các điều khoản dưới đây.',
 
   'legal.terms.s2.heading': '2. Tài khoản',
-  'legal.terms.s2.p1': 'Bạn đăng nhập bằng tài khoản Google, Zalo hoặc Apple, hoặc bằng email và mật khẩu, để sử dụng TappyAI. TappyAI dành cho người từ 18 tuổi trở lên; bạn xác nhận mình đủ 18 tuổi. Bạn chịu trách nhiệm bảo mật tài khoản của mình và các hoạt động diễn ra dưới tài khoản đó.',
+  'legal.terms.s2.p1': 'Bạn đăng nhập bằng tài khoản Google, Zalo hoặc Apple, hoặc bằng email và mật khẩu, để sử dụng TappyAI. TappyAI dành cho người từ 18 tuổi trở lên; bạn xác nhận mình đủ 18 tuổi bằng cách bấm nút xác nhận, và chúng tôi lưu xác nhận đó (thời điểm và phiên bản điều khoản). Bạn chịu trách nhiệm bảo mật tài khoản của mình và các hoạt động diễn ra dưới tài khoản đó.',
 
   'legal.terms.s3.heading': '3. Thông tin do AI cung cấp',
   'legal.terms.s3.p1':
@@ -563,7 +563,7 @@ export const vi: Record<string, string> = {
     'Bạn có thể đăng nhập bằng Google, Zalo hoặc địa chỉ email. Bạn có thể xem địa điểm, ưu đãi và bài đánh giá mà không cần tài khoản; để lưu lịch sử trò chuyện và đăng bài đánh giá thì cần có tài khoản.',
   'legal.support.faq.age.q': 'Vì sao TappyAI hỏi tuổi của tôi?',
   'legal.support.faq.age.a':
-    'TappyAI dành cho người từ 18 tuổi trở lên. Trước khi trò chuyện với trợ lý AI, tài khoản đã đăng nhập sẽ được yêu cầu nhập ngày sinh; nếu chưa đăng nhập, bạn xác nhận mình đủ 18 tuổi hoặc nhập năm sinh. Ngày sinh chỉ dùng để kiểm tra độ tuổi và không bao giờ được gửi cho nhà cung cấp AI. Người dưới 18 tuổi không thể sử dụng trợ lý.',
+    'TappyAI dành cho người từ 18 tuổi trở lên. Trước khi trò chuyện với trợ lý AI, bạn bấm một nút để xác nhận mình đủ 18 tuổi (hoặc chưa đủ 18 tuổi). Chúng tôi lưu câu trả lời của bạn: với tài khoản là thời điểm và phiên bản Điều khoản, khi chưa có tài khoản là trên thiết bị của bạn. Câu trả lời chỉ dùng để kiểm tra bạn có thể dùng dịch vụ hay không và không bao giờ được gửi cho nhà cung cấp AI. Người dưới 18 tuổi không thể sử dụng trợ lý.',
   'legal.support.faq.accuracy.q': 'Thông tin TappyAI đưa ra có chính xác không?',
   'legal.support.faq.accuracy.a':
     'Câu trả lời do AI tạo ra từ các nguồn công khai. Giá, giờ mở cửa, địa chỉ và đánh giá có thể thay đổi hoặc chưa chính xác, vì vậy hãy kiểm tra lại các thông tin quan trọng với địa điểm hoặc người bán trước khi quyết định. Câu trả lời chỉ mang tính tham khảo, không phải lời khuyên y tế, pháp lý hay tài chính. Nội dung tarot, cung hoàng đạo và tử vi chỉ nhằm mục đích giải trí.',

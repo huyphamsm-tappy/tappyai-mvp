@@ -73,8 +73,8 @@ describe('catalog', () => {
     expect(c.map((p) => p.id)).toEqual(['pip', 'momo', 'coco', 'promax1m', 'promax3m'])
     expect(c.find((p) => p.id === 'pip')!.pricePerDayVnd).toBeUndefined()
     expect(c.find((p) => p.id === 'promax1m')!.pricePerDayVnd).toBeUndefined()
-    expect(c.find((p) => p.id === 'coco')!.pricePerDayVnd).toBe(Math.round(472_500 / 90))
-    expect(c.find((p) => p.id === 'promax3m')!.pricePerDayVnd).toBe(Math.round(607_500 / 90))
+    expect(c.find((p) => p.id === 'coco')!.pricePerDayVnd).toBe(Math.round(607_500 / 90)) // prices raised 18/11/2026
+    expect(c.find((p) => p.id === 'promax3m')!.pricePerDayVnd).toBe(Math.round(810_000 / 90))
   })
 
   it('the app catalog carries NO web price (Google Play policy)', () => {

@@ -485,6 +485,8 @@ describe('C8 — the drain is wired as a daily cron', () => {
     //
     // 20 -> 21 on 2026-11-05 (Explore video publishing, owner): `/api/cron/video-takedown` removes the delivery copy of any video whose post was hidden, held or restricted, and moves
     //   it out of `published`. Daily, fixed minute and hour; it notifies nobody, and does nothing while EXPLORE_VIDEO_PIPELINE_ENABLED is off.
-    expect(vercelJson.crons.length).toBe(21)
+    // 21 -> 22 on 2026-11-18 (Scam Shield, owner): `/api/cron/scam-shield-sync` reads the Ministry's scam warnings from the allow-listed official hosts ONCE A WEEK
+    //   (Monday 03:00 UTC = 10:00 VN) and stores them in `scam_knowledge_versions`. At most 7 page reads per run; the model step is off unless SCAM_SHIELD_SYNC_AI=true.
+    expect(vercelJson.crons.length).toBe(22)
   })
 })

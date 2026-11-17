@@ -34,12 +34,32 @@ export const DEFAULT_RETURN_TO = '/'
  * `javascript:` URLs can never be reached. This preserves the guard that
  * already existed inline in the login page — it is centralised, not relaxed.
  */
+/** Backslash (92), DEL (127) or any control character (< 32). Char codes, so no invisible literal sits in this file. */
+function hasUnsafeChar(s: string): boolean {
+  for (let i = 0; i < s.length; i++) {
+    const c = s.charCodeAt(i)
+    if (c < 32 || c === 127 || c === 92) return true
+  }
+  return false
+}
+
 export function safeReturnTo(raw: string | null | undefined): string {
   if (typeof raw !== 'string') return DEFAULT_RETURN_TO
   // `//host` is protocol-relative and leaves the origin; `/\host` does too in
   // several browsers, which is why the backslash form is rejected as well.
   if (!raw.startsWith('/')) return DEFAULT_RETURN_TO
   if (raw.startsWith('//') || raw.startsWith('/\\')) return DEFAULT_RETURN_TO
+  // A backslash or control character has no place in a same-origin path we generate ourselves (URL
+  // parsers strip tab/CR/LF, turning "/<TAB>/evil.com" into "//evil.com").
+  if (hasUnsafeChar(raw)) return DEFAULT_RETURN_TO
+  // The percent-encoded forms ("/%5Cevil.com", "/%2F/evil.com") are refused too: a proxy or a second
+  // decode further along would turn them into the forms above.
+  try {
+    const decoded = decodeURIComponent(raw.split('?')[0].split('#')[0])
+    if (decoded.startsWith('//') || hasUnsafeChar(decoded)) return DEFAULT_RETURN_TO
+  } catch {
+    return DEFAULT_RETURN_TO
+  }
   return raw
 }
 

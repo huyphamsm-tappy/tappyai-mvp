@@ -1,0 +1,241 @@
+[
+ {
+  "name": "home",
+  "url": "/",
+  "path": "/",
+  "lang": "en",
+  "htmlLang": "en",
+  "vnLines": 1,
+  "vnSample": [
+   "Cafés with a view"
+  ],
+  "rawKeys": [],
+  "vnAttrs": [],
+  "overflowX": false,
+  "len": 1826
+ },
+ {
+  "name": "chat",
+  "url": "/chat",
+  "path": "/chat",
+  "lang": "en",
+  "htmlLang": "en",
+  "vnLines": 0,
+  "vnSample": [],
+  "rawKeys": [],
+  "vnAttrs": [
+   "Nói để nhập văn bản",
+   "Nói để nhập"
+  ],
+  "overflowX": false,
+  "len": 721
+ },
+ {
+  "name": "login",
+  "url": "/login",
+  "path": "/login",
+  "lang": "en",
+  "htmlLang": "en",
+  "vnLines": 0,
+  "vnSample": [],
+  "rawKeys": [],
+  "vnAttrs": [],
+  "overflowX": false,
+  "len": 809
+ },
+ {
+  "name": "scam-shield",
+  "url": "/scam-shield",
+  "path": "/scam-shield",
+  "lang": "en",
+  "htmlLang": "en",
+  "vnLines": 13,
+  "vnSample": [
+   "Information from an official source · Source: Bộ Công an",
+   "Giả người thân qua video Deepfake",
+   "Dùng hình ảnh giả để gọi video, viện lý do cần tiền gấp và đề nghị chuyển khoản.",
+   "Làm giả giọng người quen bằng DeepVoice",
+   "Tạo giọng nói tương tự người thân rồi dựng tình huống cấp bách để vay tiền.",
+   "Mạo danh cơ quan tố tụng",
+   "Giả làm Công an, Viện kiểm sát, Tòa án, yêu cầu chuyển tiền để “xác minh”.",
+   "Giả nhân viên ngân hàng"
+  ],
+  "rawKeys": [],
+  "vnAttrs": [],
+  "overflowX": false,
+  "len": 2366
+ },
+ {
+  "name": "explore",
+  "url": "/reviews",
+  "path": "/reviews",
+  "lang": "en",
+  "htmlLang": "en",
+  "vnLines": 4,
+  "vnSample": [
+   "Huy Phạm",
+   "Huy Phạm",
+   "Khám phá đảo núi lửa ở Bali và thưởng thức những món ăn địa phương hấp dẫn. Hành trình du ",
+   "Huy Phạm"
+  ],
+  "rawKeys": [],
+  "vnAttrs": [
+   "View Huy Phạm’s profile"
+  ],
+  "overflowX": false,
+  "len": 756
+ },
+ {
+  "name": "deals",
+  "url": "/deals",
+  "path": "/deals",
+  "lang": "en",
+  "htmlLang": "en",
+  "vnLines": 0,
+  "vnSample": [],
+  "rawKeys": [],
+  "vnAttrs": [],
+  "overflowX": false,
+  "len": 1360
+ },
+ {
+  "name": "terms",
+  "url": "/terms",
+  "path": "/terms",
+  "lang": "en",
+  "htmlLang": "en",
+  "vnLines": 0,
+  "vnSample": [],
+  "rawKeys": [
+   "www.tappyai.com"
+  ],
+  "vnAttrs": [],
+  "overflowX": false,
+  "len": 2431
+ },
+ {
+  "name": "privacy",
+  "url": "/privacy",
+  "path": "/privacy",
+  "lang": "en",
+  "htmlLang": "en",
+  "vnLines": 1,
+  "vnSample": [
+   "OpenAI (OpenAI OpCo, LLC) processes the content you send to our AI features to write the a"
+  ],
+  "rawKeys": [
+   "platform.openai.com",
+   "www.tappyai.com"
+  ],
+  "vnAttrs": [],
+  "overflowX": false,
+  "len": 12054
+ },
+ {
+  "name": "support",
+  "url": "/support",
+  "path": "/support",
+  "lang": "en",
+  "htmlLang": "en",
+  "vnLines": 0,
+  "vnSample": [],
+  "rawKeys": [
+   "www.tappyai.com"
+  ],
+  "vnAttrs": [],
+  "overflowX": false,
+  "len": 2295
+ },
+ {
+  "name": "notfound",
+  "url": "/zzz-not-a-page",
+  "path": "/zzz-not-a-page",
+  "lang": "en",
+  "htmlLang": "en",
+  "vnLines": 3,
+  "vnSample": [
+   "Không tìm thấy trang",
+   "Trang bạn tìm không tồn tại hoặc đã bị di chuyển.",
+   "Về trang chủ"
+  ],
+  "rawKeys": [],
+  "vnAttrs": [],
+  "overflowX": false,
+  "len": 177
+ },
+ {
+  "name": "plans",
+  "url": "/plans",
+  "path": "/plans",
+  "lang": "en",
+  "htmlLang": "en",
+  "vnLines": 3,
+  "vnSample": [
+   "Không tìm thấy trang",
+   "Trang bạn tìm không tồn tại hoặc đã bị di chuyển.",
+   "Về trang chủ"
+  ],
+  "rawKeys": [],
+  "vnAttrs": [],
+  "overflowX": false,
+  "len": 177
+ },
+ {
+  "name": "split-bill",
+  "url": "/split-bill",
+  "path": "/split-bill",
+  "lang": "en",
+  "htmlLang": "en",
+  "vnLines": 1,
+  "vnSample": [
+   "Bill total (đ)"
+  ],
+  "rawKeys": [],
+  "vnAttrs": [],
+  "overflowX": false,
+  "len": 521
+ },
+ {
+  "name": "group",
+  "url": "/group",
+  "path": "/group",
+  "lang": "en",
+  "htmlLang": "en",
+  "vnLines": 3,
+  "vnSample": [
+   "Không tìm thấy trang",
+   "Trang bạn tìm không tồn tại hoặc đã bị di chuyển.",
+   "Về trang chủ"
+  ],
+  "rawKeys": [],
+  "vnAttrs": [],
+  "overflowX": false,
+  "len": 177
+ },
+ {
+  "name": "how-to-use",
+  "url": "/how-to-use",
+  "path": "/how-to-use",
+  "lang": "en",
+  "htmlLang": "en",
+  "vnLines": 0,
+  "vnSample": [],
+  "rawKeys": [],
+  "vnAttrs": [],
+  "overflowX": false,
+  "len": 6005
+ },
+ {
+  "name": "about",
+  "url": "/about",
+  "path": "/about",
+  "lang": "en",
+  "htmlLang": "en",
+  "vnLines": 0,
+  "vnSample": [],
+  "rawKeys": [],
+  "vnAttrs": [],
+  "overflowX": false,
+  "len": 2141
+ }
+]

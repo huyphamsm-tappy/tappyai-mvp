@@ -27,8 +27,8 @@ const activeWeb = (endDays = 20): MyPlanResponse => ({
   subscription: mySubscription({ plan: 'momo', status: 'active', current_period_end: inDays(endDays), source: 'web_sepay' }),
 })
 const ORDER = {
-  // Owner 01/11/2026: new plan catalog (coco = Coco 3 months, 472.500đ)
-  order: { id: '0b3c0f7e-0000-4000-8000-000000000001', code: 'TAPPYAB23CD', plan: 'coco', amountVnd: 472500, status: 'pending', expiresAt: inDays(0.01) },
+  // Owner 01/11/2026: new plan catalog (coco = Coco 3 months); price raised 18/11/2026 (607.500đ)
+  order: { id: '0b3c0f7e-0000-4000-8000-000000000001', code: 'TAPPYAB23CD', plan: 'coco', amountVnd: 607500, status: 'pending', expiresAt: inDays(0.01) },
   bank: { accountNumber: '0011223344', accountName: 'TEST', bankCode: 'MBBank' },
   qrUrl: 'https://qr.sepay.vn/img?x',
 }
@@ -72,10 +72,11 @@ describe('plan list', () => {
     // Standardized VND prices on the plans; no price per day, no %, no USD
     // Owner 01/11/2026: new plan catalog
     expect(document.body.textContent).toMatch(/25\.000đ \/ 7 ngày/)
-    expect(document.body.textContent).toMatch(/175\.000đ \/ 1 tháng/)
+    // prices raised 18/11/2026 (owner): Coco 9 USD, Tappy 12 USD a month; 3 months 10% off
     expect(document.body.textContent).toMatch(/225\.000đ \/ 1 tháng/)
-    expect(document.body.textContent).toMatch(/472\.500đ \/ 3 tháng/)
+    expect(document.body.textContent).toMatch(/300\.000đ \/ 1 tháng/)
     expect(document.body.textContent).toMatch(/607\.500đ \/ 3 tháng/)
+    expect(document.body.textContent).toMatch(/810\.000đ \/ 3 tháng/)
     expect(document.body.textContent).not.toMatch(/939\.000đ|1\.719\.000đ|6 tháng|12 tháng/) // Milo / Sunny are not sold
     expect(document.body.textContent).not.toMatch(/\$[0-9]+/)
     expect(document.body.textContent).not.toMatch(/đ\s*\/\s*ngày|\/ngày/)
@@ -99,7 +100,7 @@ describe('purchase (web)', () => {
     render(<SubscriptionFlow catalog={catalog} initialMe={free} />)
     goTo('coco')
     const disclosure = screen.getByTestId('sub-disclosure').textContent!
-    expect(disclosure).toMatch(/472\.500đ cho 3 tháng/) // Owner 01/11/2026: new plan catalog
+    expect(disclosure).toMatch(/607\.500đ cho 3 tháng/) // Owner 01/11/2026: new plan catalog
     expect(disclosure).toMatch(/không tự trừ tiền/)
     expect(disclosure).toMatch(/Gói dùng đến hết ngày .*, mua lại để tiếp tục\./)
     expect(disclosure).not.toMatch(/nhắc|Nhắc/)
@@ -138,7 +139,7 @@ describe('purchase (web)', () => {
   it('the order row says paid but the server does not show ACTIVE → failure, not success', async () => {
     render(<SubscriptionFlow catalog={catalog} initialMe={free} />)
     goTo('coco')
-    await act(async () => { fireEvent.click(screen.getByRole('button', { name: /Thanh toán 472\.500đ/ })) }) // Owner 01/11/2026: new plan catalog
+    await act(async () => { fireEvent.click(screen.getByRole('button', { name: /Thanh toán 607\.500đ/ })) }) // Coco 3 months (18/11/2026 prices)
     await waitFor(() => expect(screen.getByTestId('pay-qr')).toBeTruthy())
     orderStatus = 'paid'
     meAfterPay = free // a client-side "paid" without the server's ACTIVE
@@ -149,7 +150,7 @@ describe('purchase (web)', () => {
   it('server ACTIVE → "Xong rồi! Coco đã đồng hành cùng bạn."', async () => {
     render(<SubscriptionFlow catalog={catalog} initialMe={free} />)
     goTo('coco')
-    await act(async () => { fireEvent.click(screen.getByRole('button', { name: /Thanh toán 472\.500đ/ })) }) // Owner 01/11/2026: new plan catalog
+    await act(async () => { fireEvent.click(screen.getByRole('button', { name: /Thanh toán 607\.500đ/ })) }) // Coco 3 months (18/11/2026 prices)
     orderStatus = 'paid'
     meAfterPay = { signedIn: true, quota: { limit: PAID_DAILY_CEILING, used: 0, remaining: PAID_DAILY_CEILING, period: 'day' },
       subscription: mySubscription({ plan: 'coco', status: 'active', current_period_end: inDays(90), source: 'web_sepay' }) }
@@ -162,7 +163,7 @@ describe('purchase (web)', () => {
   it('a short transfer → failure screen; "Thử lại" keeps the chosen plan', async () => {
     render(<SubscriptionFlow catalog={catalog} initialMe={free} />)
     goTo('coco')
-    await act(async () => { fireEvent.click(screen.getByRole('button', { name: /Thanh toán 472\.500đ/ })) }) // Owner 01/11/2026: new plan catalog
+    await act(async () => { fireEvent.click(screen.getByRole('button', { name: /Thanh toán 607\.500đ/ })) }) // Coco 3 months (18/11/2026 prices)
     orderStatus = 'mismatch'
     await waitFor(() => expect(screen.getByTestId('sub-failure')).toBeTruthy(), { timeout: 5_000 })
     fireEvent.click(screen.getByRole('button', { name: 'Thử lại' }))

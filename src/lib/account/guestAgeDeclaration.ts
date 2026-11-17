@@ -61,6 +61,9 @@ export function evaluateGuestAge(raw: unknown, now: Date = new Date()): GuestAge
   if (typeof raw !== 'string') return UNKNOWN
   const value = raw.trim()
   if (value === '18plus') return { status: 'eligible', value }
+  // The refusal button ("I am under 18"): remembered on the device like any other answer, so it is
+  // durable rather than a retry away.
+  if (value === 'under18') return { status: 'ineligible', value }
 
   const iso = parseDateOfBirthInput(value)
   if (iso) {

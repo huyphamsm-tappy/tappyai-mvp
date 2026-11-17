@@ -6,7 +6,15 @@ const push = vi.fn()
 vi.mock('next/navigation', () => ({
   useRouter: () => ({ push, replace: vi.fn(), back: vi.fn(), refresh: vi.fn() }),
   usePathname: () => '/profile/notifications',
-  useSearchParams: () => new URLSearchParams(),
+  useSearchParams: () => new URLSearchParams(query),
+}))
+let query = ''
+
+// The shared unread reader opens a real auth client + Realtime channel; here it is a plain number pair.
+let messageUnreadPair = { messages: 0, messageNotifications: 0 }
+vi.mock('@/lib/messaging/useMessageUnread', () => ({
+  useMessageUnread: () => messageUnreadPair,
+  badgeTotal: (n: number, u: { messages: number; messageNotifications: number }) => Math.max(0, n - u.messageNotifications) + u.messages,
 }))
 
 // The real settings panel talks to the Push API and the marketing-consent endpoint. This file is
@@ -17,9 +25,10 @@ vi.mock('@/components/notifications/NotificationSettings', () => ({
 }))
 
 const markAllRead = vi.fn()
+const markRead = vi.fn()
 let store: { notifications: unknown[]; unreadCount: number; loading: boolean }
 vi.mock('@/components/NotificationProvider', () => ({
-  useNotifications: () => ({ ...store, refetch: vi.fn(), markAllRead }),
+  useNotifications: () => ({ ...store, refetch: vi.fn(), markAllRead, markRead }),
 }))
 
 // The messaging store opens a real Supabase client and a Realtime channel. This file is about the
@@ -92,6 +101,9 @@ const socialDto = (over: Record<string, unknown> = {}) => dto({
 beforeEach(() => {
   push.mockClear()
   markAllRead.mockClear()
+  markRead.mockClear()
+  query = ''
+  messageUnreadPair = { messages: 0, messageNotifications: 0 }
   store = { notifications: [], unreadCount: 0, loading: false }
   messageStore = { threads: [], unreadTotal: 0, loading: false }
 })
@@ -152,6 +164,7 @@ describe('the Inbox is two tabs over two independent data models', () => {
 
   it('shows the notification centre only on its own tab', () => {
     store = { notifications: [dto({ title: 'Deal moi' })], unreadCount: 1, loading: false }
+    messageStore = { threads: [], unreadTotal: 1, loading: false } // unread messages too -> the Inbox opens on Messages
     renderPage()
     expect(screen.queryByText('Deal moi'), 'notifications do not leak into the Messages tab').toBeNull()
     fireEvent.click(screen.getByRole('tab', { name: /thông báo|announcements/i }))

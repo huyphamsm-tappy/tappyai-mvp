@@ -10,7 +10,7 @@ describe('subscription prices (fixed catalog)', () => {
   it('the approved VND amounts and USD labels, exactly', () => {
     expect(PAID_PLAN_IDS.map((id) => [id, PLAN_CONFIG[id].priceUsd, PLAN_CONFIG[id].priceVnd, PLAN_CONFIG[id].durationDays])).toEqual([
       // Owner 01/11/2026: new plan catalog (VND = USD x 25.000; milo/sunny keep their old values, not sold)
-      ['pip', 1, 25_000, 7], ['momo', 7, 175_000, 30], ['coco', 18.9, 472_500, 90], ['promax1m', 9, 225_000, 30], ['promax3m', 24.3, 607_500, 90],
+      ['pip', 1, 25_000, 7], ['momo', 9, 225_000, 30], ['coco', 24.3, 607_500, 90], ['promax1m', 12, 300_000, 30], ['promax3m', 32.4, 810_000, 90], // owner 18/11/2026: prices only (Pro 9, Promax 12 USD a month, 3 months 10% off)
       ['milo', 36, 939_000, 180], ['sunny', 66, 1_719_000, 365],
     ])
     // Owner 01/11/2026: new plan catalog - the plans on sale, exactly

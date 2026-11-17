@@ -1,0 +1,35 @@
+plan | channel | netUSD | allowanceCostUSD(all used, 0 chat) | worstMargin | typicalCostUSD(15 chat/day + half allow) | typMargin | breakEvenChatTurns(all allow) | breakEvenChatTurns(half allow) | per day (all) | per day (half)
+pip trial 7d | web0 | 0.98 | 3.52 | -260% | 3.23 | -230% | 0 | 0 | 0.0 | 0.0
+pip trial 7d | store15 | 0.83 | 3.52 | -323% | 3.23 | -288% | 0 | 0 | 0.0 | 0.0
+pip trial 7d | store30 | 0.69 | 3.52 | -414% | 3.23 | -371% | 0 | 0 | 0.0 | 0.0
+coco 1m | web0 | 6.86 | 3.52 | 49% | 8.06 | -17% | 238 | 364 | 7.9 | 12.1
+coco 1m | store15 | 5.83 | 3.52 | 40% | 8.06 | -38% | 164 | 290 | 5.5 | 9.7
+coco 1m | store30 | 4.80 | 3.52 | 27% | 8.06 | -68% | 91 | 217 | 3.0 | 7.2
+coco 3m | web0 | 18.53 | 10.57 | 43% | 24.19 | -31% | 568 | 945 | 6.3 | 10.5
+coco 3m | store15 | 15.75 | 10.57 | 33% | 24.19 | -54% | 369 | 747 | 4.1 | 8.3
+coco 3m | store30 | 12.97 | 10.57 | 18% | 24.19 | -86% | 171 | 548 | 1.9 | 6.1
+promax 1m | web0 | 8.82 | 10.07 | -14% | 11.34 | -28% | 0 | 270 | 0.0 | 9.0
+promax 1m | store15 | 7.50 | 10.07 | -34% | 11.34 | -51% | 0 | 175 | 0.0 | 5.8
+promax 1m | store30 | 6.18 | 10.07 | -63% | 11.34 | -84% | 0 | 81 | 0.0 | 2.7
+promax 3m | web0 | 23.82 | 30.22 | -27% | 34.01 | -43% | 0 | 622 | 0.0 | 6.9
+promax 3m | store15 | 20.25 | 30.22 | -49% | 34.01 | -68% | 0 | 366 | 0.0 | 4.1
+promax 3m | store30 | 16.68 | 30.22 | -81% | 34.01 | -104% | 0 | 111 | 0.0 | 1.2
+
+Option b: min price (VND) for 30% web margin
+pip trial 7d typical15: 118000 worst-allow+8chat: 157000
+coco 1m typical15: 294000 worst-allow+8chat: 251000
+coco 3m typical15: 881000 worst-allow+8chat: 752000
+promax 1m typical15: 413000 worst-allow+8chat: 489000
+promax 3m typical15: 1239000 worst-allow+8chat: 1468000
+
+Option a: allowance pairs (Std+Adv) with cost <= 35% of monthly web revenue
+coco 1m monthly budget USD 2.40 e.g. Std/Adv -> 5+1=1.10, 5+2=1.71, 8+2=2.01, 10+3=2.81, 10+4=3.42
+coco 3m monthly budget USD 2.16 e.g. Std/Adv -> 5+1=1.10, 5+2=1.71, 8+2=2.01, 10+3=2.81, 10+4=3.42
+promax 1m monthly budget USD 3.09 e.g. Std/Adv -> 5+1=1.10, 5+2=1.71, 8+2=2.01, 10+3=2.81, 10+4=3.42
+promax 3m monthly budget USD 2.78 e.g. Std/Adv -> 5+1=1.10, 5+2=1.71, 8+2=2.01, 10+3=2.81, 10+4=3.42
+
+Option c: unit pool, worst case = units/2 Advanced
+pro 8 units worst USD 2.42 all-standard USD 0.80
+pro 10 units worst USD 3.02 all-standard USD 1.00
+promax 16 units worst USD 4.84 all-standard USD 1.60
+promax 20 units worst USD 6.05 all-standard USD 2.00

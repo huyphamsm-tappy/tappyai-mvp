@@ -108,7 +108,7 @@ describe('POST /api/payments/sepay', () => {
 
   it('full amount (code found in the content, lower-case) → 200 {success:true}, paid, plan granted, mail sent', async () => {
     const o = await order('momo')
-    const res = await hook(tx(o.code.toLowerCase(), 175_000)) // Owner 01/11/2026: momo = 175 000 VND
+    const res = await hook(tx(o.code.toLowerCase(), 225_000)) // Owner 01/11/2026: momo = Coco 1 month; price raised 18/11/2026 (225 000 VND)
     expect(res.status).toBe(200)
     expect(await res.json()).toEqual({ success: true })
     expect((await orderRow(o.id)).status).toBe('paid')
@@ -182,9 +182,9 @@ describe('POST /api/payments/orders', () => {
     const res = await createOrder(new Request('https://t.test/x', { method: 'POST', body: '{"plan":"coco"}' }))
     expect(res.status).toBe(201)
     const body = await res.json()
-    expect(body.order.amountVnd).toBe(472_500)
+    expect(body.order.amountVnd).toBe(607_500)
     expect(body.bank).toEqual({ accountNumber: ACCOUNT, accountName: 'PHAM HUY', bankCode: 'MBBank' })
-    expect(body.qrUrl).toBe(`https://qr.sepay.vn/img?acc=${ACCOUNT}&bank=MBBank&amount=472500&des=${body.order.code}`)
+    expect(body.qrUrl).toBe(`https://qr.sepay.vn/img?acc=${ACCOUNT}&bank=MBBank&amount=607500&des=${body.order.code}`)
   })
 
   it('the client cannot choose the price; unknown plans are refused', async () => {

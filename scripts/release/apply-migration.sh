@@ -122,6 +122,14 @@ policy_of() {
     # anywhere: held (DEFER, the script refuses it) until the owner lifts it when the gateway is released.
     20261121_mcp_jobs.sql)
       echo DEFER ;;
+    # Scam Shield weekly knowledge sync (18/11/2026): one NEW service-role-only table (scam_knowledge_versions). Independent of every other migration; until it is applied the reader
+    # fails open to the static dataset and the weekly cron answers 503 "store_unavailable" without crawling. Owner applies it (UAT first); the file has not been applied anywhere.
+    20261201_scam_knowledge_versions.sql)
+      echo APPLY ;;
+    # 18+ gate as ONE BUTTON (owner 18/11/2026): three additive nullable columns on user_demographics, a new record_age_declaration() and user_age_status() with one more column (`declaration`).
+    # Old code ignores the extra column, so it is safe before the new code; the new code FAILS CLOSED (503, nobody admitted) until this is applied. Applied to UAT only; production needs the owner.
+    20261202_age_adult_declaration.sql)
+      echo APPLY ;;
     # H1 → M1 first, then the security-branch migrations in MIGRATION_ORDER.txt order (owner 30/09): 20260928b needs the
     # deal-click code (service role) on production; the others are code-independent but ride the same verified window.
     20260927_owner_update_column_privileges.sql|20260928_revoke_reviews_insert.sql|\

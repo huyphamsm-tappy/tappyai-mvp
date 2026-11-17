@@ -49,7 +49,7 @@ const MUTATING = /export async function (POST|PUT|PATCH|DELETE)\b/
 const EXEMPT: Record<string, string> = {
   // ── The anonymous tier itself. Refusing anonymous here would refuse everything. ──
   'auth/anonymous': 'mints the anonymous session; rate-limited 5/min + 30/day per IP',
-  'age-declaration': 'guest 18+ self-declaration for the chat trial; sets an HttpOnly cookie, writes nothing server-side; 10/min per IP',
+  'age-declaration': '18+ one-button answer: a guest (or anonymous session) only gets an HttpOnly cookie and nothing is stored server-side; a signed-in non-anonymous account is recorded through record_age_declaration() (auth.uid() only, fail closed 503); 10/min per IP',
   'auth/claim-anonymous': 'the anonymous→account handoff; the anonymous token IS the credential',
   'csp-report': 'the browser sends CSP violation reports with no credentials; nothing is stored (one log line per distinct violation); body capped at 20 KB, 30/min per IP',
   // ── Remote MCP Gateway: its callers are external AI Hosts, not Tappy sessions. ──
