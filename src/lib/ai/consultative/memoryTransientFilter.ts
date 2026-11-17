@@ -22,6 +22,14 @@ const ATMOSPHERE_RE = /\b(yen tinh|chill|soi dong|lang man|view|sang trong|binh 
 /** The user says it is a habit. */
 const HABITUAL_RE = /\b(minh|toi|tui|em|i)\s+(?:thuong|hay|luon|thich|ua|chuong|khoai|usually|always|often|prefer|like|love)\b|\b(?:thuong|hay|luon)\s+(?:di|an|chon|uong|ghe)\b|\bbudget cua (?:minh|toi|tui|em)\b|\bngan sach cua (?:minh|toi)\b|\bthuong (?:chi|xai|tieu)\b|\bmy (?:usual|normal|typical) budget\b|\bi usually spend\b/
 
+/** Words that only count or frame a group: with the digits and number words removed, a headcount has nothing else to say. */
+const HEADCOUNT_WORDS = /\b(?:\d+|mot|hai|ba|bon|nam|sau|bay|tam|chin|muoi|vai|may|one|two|three|four|five|six|seven|eight|nine|ten|nguoi|nhom|khach|suat|pax|people|persons?|guests?|di|cung|voi|khoang|tam|cho|of|a|group|party|with|for)\b/g
+/** "6 người", "nhóm 4", "đi 2 người", "a group of 5": a number of people and nothing about who they are. */
+export function isHeadcountOnly(value: string): boolean {
+  const f = fold(value)
+  return /\d|\b(?:mot|hai|ba|bon|nam|sau|bay|tam|chin|muoi|vai|may|two|three|four|five|six|seven|eight|nine|ten)\b/.test(f) && f.replace(HEADCOUNT_WORDS, '').replace(/[^a-z]/g, '') === ''
+}
+
 export interface TransientFilterStats {
   timing_dropped: boolean
   budget_dropped: number
@@ -71,7 +79,10 @@ export function filterTransientMemory(
     stats.personality_dropped = true
   }
   // companions: "hay đi 2 người" is a habit; "2 người tối nay" is one outing.
-  if (typeof out.companions === 'string' && out.companions && !habitual && !keepWho(out.companions)) {
+  // 17/11 (UAT: "tối nay đi ăn lẩu 6 người" was kept and three later, unrelated answers planned "cho nhóm 6 người"): WHO the person goes
+  // with (a partner, the family, colleagues) is about the person; HOW MANY came to one outing is about that outing. A value that is only
+  // a headcount is never durable unless the user states it as a habit.
+  if (typeof out.companions === 'string' && out.companions && !habitual && (!keepWho(out.companions) || isHeadcountOnly(out.companions))) {
     delete out.companions
     stats.companions_dropped = true
   }

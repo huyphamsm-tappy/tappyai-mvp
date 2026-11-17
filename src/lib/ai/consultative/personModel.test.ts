@@ -4,7 +4,7 @@
 // Flag off: every line below that says "unchanged" is the behaviour of the day before.
 import { describe, it, expect } from 'vitest'
 import { consultPersonModelOn, CONSULT_PERSON_MODEL_FLAG } from '@/lib/config/consultFlags'
-import { filterTransientMemory } from './memoryTransientFilter'
+import { filterTransientMemory, isHeadcountOnly } from './memoryTransientFilter'
 import { shouldExtractMemory } from '@/lib/ai/memoryGate'
 import { buildConsultativeMemoryBlock } from './memoryBlock'
 import { oneBrainDynamic } from './oneBrain'
@@ -54,6 +54,16 @@ describe('the write side keeps WHO the person is, and still drops what is only t
     const { memory } = filterTransientMemory({ personality: 'muốn chill tối nay', companions: 'đi 2 người hôm nay' } as Partial<UserMemory>, said, { keepPerson: true })
     expect(memory.personality).toBeUndefined()
     expect(memory.companions).toBeUndefined()
+  })
+  it('17/11 keepPerson: how many people came to one outing is not who the person is; who they go with still stays', () => {
+    const keep = (companions: string, texts: string[]) => filterTransientMemory({ companions } as Partial<UserMemory>, texts, { keepPerson: true }).memory.companions
+    // the UAT case: the value carries no "tối nay", so the transient-word test on the value alone kept it
+    for (const v of ['6 người', 'nhóm 6 người', 'đi 2 người', 'sáu người', 'a group of 5', '4 khách']) expect(keep(v, ['tối nay đi ăn lẩu 6 người ở quận 7']), v).toBeUndefined()
+    for (const v of ['đi với bạn gái', 'gia đình có 2 bé nhỏ', 'đi với 2 bạn', 'vợ và 2 con']) expect(keep(v, ['tìm quán ăn ở quận 7']), v).toBe(v)
+    // stated as a habit, a headcount is the user's own rule and stays
+    expect(keep('2 người', ['mình thường đi 2 người thôi'])).toBe('2 người')
+    expect(isHeadcountOnly('6 người')).toBe(true)
+    expect(isHeadcountOnly('bạn gái')).toBe(false)
   })
 })
 
