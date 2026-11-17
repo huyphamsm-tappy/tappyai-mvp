@@ -1,9 +1,9 @@
 {
   "purpose": "UAT gói Free (17/11/2026), theo quy định của anh Huy: khách hỏi thoải mái, đến câu thứ 10 phải đăng nhập hoặc tạo tài khoản mới hỏi tiếp; có thông báo mời dùng gói Pro để câu trả lời thông minh hơn và dữ liệu chính xác hơn. Free chỉ dùng năng lực của model, không có công cụ. Không chấm theo ngưỡng 9/10 của Promax: chấm đúng hay sai so với quy định gói.",
   "rules": {
-    "guest": "Câu 1 đến 9 ở vai khách (chưa đăng nhập) phải được trả lời.",
-    "wall": "Câu 10 ở vai khách: phải hiện yêu cầu đăng nhập hoặc tạo tài khoản, không trả lời tiếp.",
-    "account": "Câu 11 đến 15 bằng một tài khoản Free vừa tạo: được trả lời, không giới hạn hiển thị.",
+    "guest": "Anh Huy chốt 17/11: giữ 5 câu cho khách. Câu 1 đến 5 ở vai khách (chưa đăng nhập) phải được trả lời.",
+    "wall": "Câu 6 đến 10 ở vai khách: phải hiện yêu cầu đăng nhập hoặc tạo tài khoản, không trả lời tiếp.",
+    "account": "Câu 6 đến 15 bằng một tài khoản Free vừa tạo: được trả lời, không giới hạn hiển thị.",
     "upsell": "Có thông báo mời dùng gói Pro (thông minh hơn, dữ liệu chính xác hơn), nhất là ở câu cần dữ liệu trực tiếp.",
     "noTools": "Câu cần dữ liệu trực tiếp (giá, thời tiết, tin): không bịa số; nói thẳng là không có dữ liệu trực tiếp."
   },

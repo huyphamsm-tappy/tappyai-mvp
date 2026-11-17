@@ -1,0 +1,114 @@
+[
+  {
+    "id": 51,
+    "group": "attachment",
+    "turns": [
+      {
+        "q": "món này là gì, khoảng bao nhiêu calo",
+        "done": true,
+        "seconds": 14,
+        "screen": "screens/q51.jpg",
+        "answered": true,
+        "chars": 315,
+        "head": "Đây có vẻ là gà nướng nguyên con chặt phanh (hoặc gà nướng bướm), ăn kèm rau sống, dưa góp và nước chấm.\nƯớc tính khoảng 800–1.200 kcal cho cả con; nếu chỉ ăn nửa con thì khoảng 400–600 kcal. Mức này thay đổi tùy kích cỡ gà, phần da, lượng dầu và mật ong/đường trong sốt ướp; rau ăn kèm thường đóng góp rất ít calo.",
+        "tail": "hoảng 800–1.200 kcal cho cả con; nếu chỉ ăn nửa con thì khoảng 400–600 kcal. Mức này thay đổi tùy kích cỡ gà, phần da, lượng dầu và mật ong/đường trong sốt ướp; rau ăn kèm thường đóng góp rất ít calo.",
+        "links": 0,
+        "hosts": {},
+        "sourcesChip": null,
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/24ea4969-7d51-4163-bfa4-3d6888c9c25e",
+        "proNote": 0
+      }
+    ]
+  },
+  {
+    "id": 52,
+    "group": "attachment",
+    "turns": [
+      {
+        "q": "tóm tắt tài liệu này trong 5 ý",
+        "done": false,
+        "seconds": 185,
+        "screen": "screens/q52.jpg",
+        "answered": false,
+        "tail": " giúp mình email xin nghỉ phép cho lịch sự hơn\n💡 Tư vấn\n📖 Giải thích\n📍 Tìm quanh đây\n🌙 Tappy Tối Nay\n✈️ Lên kế hoạch trip\n🎯 Theo dõi giá\n+\n\nTappy có thể mắc lỗi. Vui lòng kiểm tra lại thông tin quan trọng.\n\n🧪 audit dev · wt-integration\nfeat/brain-r13-p1 @ 41d3ab7\nsupabase: zdaprdfgpbpnxyofagmc"
+      }
+    ]
+  },
+  {
+    "id": 53,
+    "group": "clip",
+    "turns": [
+      {
+        "q": "quán trong clip này ở đâu, giá thế nào",
+        "done": true,
+        "seconds": 21,
+        "screen": "screens/q53.jpg",
+        "answered": true,
+        "chars": 257,
+        "head": "Clip ghi quán là Tiệm Bánh Mì Góc Phố (UAT) ở Quận 1, TP.HCM, nhưng mình chưa xác minh được quán này trên bản đồ. Vì vậy mình cũng chưa có giá đáng tin cậy để báo bạn.\nThử tìm quán trên Google Maps%20Qu%E1%BA%ADn%201%2C%20TP.%20H%E1%BB%93%20Ch%C3%AD%20Minh)",
+        "tail": "HCM, nhưng mình chưa xác minh được quán này trên bản đồ. Vì vậy mình cũng chưa có giá đáng tin cậy để báo bạn.\nThử tìm quán trên Google Maps%20Qu%E1%BA%ADn%201%2C%20TP.%20H%E1%BB%93%20Ch%C3%AD%20Minh)",
+        "links": 0,
+        "hosts": {},
+        "sourcesChip": null,
+        "tables": 0,
+        "images": 0,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat/21ab7fc0-6155-4c49-9fdd-cc6f6b91a711",
+        "proNote": 0
+      }
+    ],
+    "clip": {
+      "place": "Tiệm Bánh Mì Góc Phố (UAT)",
+      "address": "Quận 1, TP. Hồ Chí Minh"
+    }
+  },
+  {
+    "id": 54,
+    "group": "clip",
+    "turns": [
+      {
+        "q": "có quán nào tương tự gần đó không",
+        "done": true,
+        "seconds": 33,
+        "screen": "screens/q54.jpg",
+        "answered": true,
+        "chars": 1688,
+        "head": "Có — ngoài Tiệm Bánh Mì Góc Phố trong clip, mình gợi ý ba quán bánh mì khác ở Quận 1. Mình chọn Bánh Mì Mẹ Ỉn trước vì điểm đánh giá cao và có nhiều lượt nhận xét; tuy vậy, kết quả không đủ dữ liệu để xác nhận quán nào gần clip nhất hay có đúng kiểu nhân như caption.\nSO NHANH THEO THÔNG TIN GOOGLE MAPS, 17/11/2026\n\tMẹ Ỉn\nTappy chọn\n\tĐỉnh Bread & Tea\tHuynh Hoa\nĐánh giá / số nhận xét\t4,8/5 · 4.433\t4,9/5 · 412\t4,1/5 · 7.896\nGiờ được niêm yết\t09:00–21:30\t06:30–22:00\t06:00–22:00\nNHÀ HÀNG VIỆT NAM\n★ 4.8 (4.4k)\nBánh Mì Mẹ Ỉn\n\n136/13 Lê Thánh Tôn, Quận 1, Hồ Chí Minh 700000, Việt Nam\n\n09:00–21:30\n· Đang mở\n\nĐẶC TRƯNG NỔI BẬT\n\nLoại hình: Cửa hàng sandwich.\nĐặt món: Có giao hàng và đặt món.\n\nNguồn: Go",
+        "tail": " món: Có giao hàng và đặt món.\n\nNguồn: Google Maps\n\nĐặt chỗ\nXem hồ sơ\nBản đồ\nWebsite\nHotline\nLưu\nTìm review trên YouTube\nXem tất cả trên bản đồ\nMở Google Maps để khám phá thêm địa điểm\n🔖 Lưu địa điểm",
+        "links": 13,
+        "hosts": {
+          "google.com": 2,
+          "maps.google.com": 4,
+          "banhmi.mein.vn": 1,
+          "youtube.com": 3,
+          "food.grab.com": 1,
+          "banhmidinh.com": 1,
+          "banhmihuynhhoa.vn": 1
+        },
+        "sourcesChip": null,
+        "tables": 1,
+        "images": 3,
+        "actionKinds": [
+          "reservation:Đặt chỗ",
+          "review:Tìm review trên YouT",
+          "delivery:Tìm trên GrabFood",
+          "review:Tìm review trên YouT",
+          "reservation:Đặt chỗ",
+          "review:Tìm review trên YouT"
+        ],
+        "placeCards": 24,
+        "path": "/chat/6aeb6697-7ded-445b-be87-9dc201e0ed78",
+        "proNote": 0
+      }
+    ],
+    "clip": {
+      "place": "Tiệm Bánh Mì Góc Phố (UAT)",
+      "address": "Quận 1, TP. Hồ Chí Minh"
+    }
+  }
+]

@@ -1,5 +1,6 @@
 import { getCache, setCache, serperSearch } from './common'
 import { logText } from '@/lib/ai/logSafeText'
+import { encodeQuery } from '@/lib/links/encodeQuery'
 import { withRetrievedAt } from './retrievalClock'
 import { tviCaptureOn, captureTviFromPlaces } from '@/lib/tvi/capturePlaces'
 import { tviReadOn, readTviForPlaces } from '@/lib/tvi/readPlaces'
@@ -183,7 +184,7 @@ export async function searchPlacesOSM(query: string, location?: string, type?: s
   // and the coordinate branch never reads `loc`. Empty is the honest value to
   // report back - the old code reported "Ha Noi" here, which is the fabrication.
   const loc = location ?? ''
-  const googleMapsUrl = 'https://maps.google.com/maps?q=' + encodeURIComponent(query + ' ' + loc)
+  const googleMapsUrl = 'https://maps.google.com/maps?q=' + encodeQuery(query + ' ' + loc)
   try {
     /**
      * 🚨 TWO CITY TABLES, AND THE SMALLER ONE WAS IN CHARGE OF PLACES.
@@ -625,7 +626,7 @@ async function searchPlacesSerper(
     location: location ?? '',
     results: rows.slice(0, 10),
     ...(abroad ? { centre_abroad: abroad } : {}),
-    google_maps_search: 'https://maps.google.com/maps?q=' + encodeURIComponent(query + ' ' + (location ?? '')),
+    google_maps_search: 'https://maps.google.com/maps?q=' + encodeQuery(query + ' ' + (location ?? '')),
   }
 }
 
@@ -1080,7 +1081,7 @@ async function searchPlacesImpl(
         return {
           // review 30/10: said plainly, so the model does not read the empty list as "no such place exists"
           source: 'budget', count: 0, results: [], place_search_status: verdict.reason === 'budget_exhausted' ? 'not_run_turn_budget_used' : 'not_run_same_search_already_done',
-          note: messages.places.searchOnMaps(lang, 'https://maps.google.com/maps?q=' + encodeURIComponent(query + ' ' + (location || ''))),
+          note: messages.places.searchOnMaps(lang, 'https://maps.google.com/maps?q=' + encodeQuery(query + ' ' + (location || ''))),
         }
       }
     }

@@ -22,7 +22,7 @@ const DEBUG_PORT = 9333
 const sleep = ms => new Promise(r => setTimeout(r, ms))
 
 const all = JSON.parse(readFileSync(questionsPath, 'utf8')).questions
-const cases = all.filter(q => q.id >= Number(fromArg ?? 1) && q.id <= Number(toArg ?? 999) && !q.attach && !q.account)
+const cases = all.filter(q => q.id >= Number(fromArg ?? 1) && q.id <= Number(toArg ?? 999) && !q.account)
 mkdirSync(path.join(outDir, 'screens'), { recursive: true })
 
 // ── sign-in link (UAT project only) ──────────────────────────────────────────────────────────────────────────────────────────────
@@ -111,7 +111,9 @@ const METRICS = `(() => {
   const shares = [...document.querySelectorAll('[data-testid="message-share"]')]
   let el = shares[shares.length - 1]
   if (!el) return { answered: false, tail: document.body.innerText.slice(-300) }
-  for (let i = 0; i < 12 && el.parentElement; i++) { el = el.parentElement; if (el.parentElement && el.parentElement.children.length > 1 && el.innerText.length > 80) break }
+  // climb to the message: the first ancestor that has siblings and holds more than the action row and the Free plan's note under it
+  const note = document.querySelector('[data-testid="pro-upsell-note"]')?.innerText ?? ''
+  for (let i = 0; i < 12 && el.parentElement; i++) { el = el.parentElement; if (el.parentElement && el.parentElement.children.length > 1 && el.innerText.replace(note, '').trim().length > 80) break }
   const text = el.innerText
   const hosts = {}
   for (const a of el.querySelectorAll('a[href^="http"]')) { try { const h = new URL(a.href).hostname.replace(/^www\\./, ''); hosts[h] = (hosts[h] || 0) + 1 } catch {} }
@@ -124,16 +126,65 @@ const METRICS = `(() => {
     actionKinds: [...el.querySelectorAll('[data-action-kind]')].map(a => a.getAttribute('data-action-kind') + ':' + a.innerText.trim().slice(0, 20)).slice(0, 16),
     placeCards: el.querySelectorAll('[data-testid="place-book"], .v206-pc-primary, .v206-pc-btn').length,
     path: location.pathname,
+    proNote: document.querySelectorAll('[data-testid="pro-upsell-note"]').length,
   }
 })()`
 
+// ── attachments and the Explore clip (cases with `attach`) ───────────────────────────────────────────────────────────────────────
+// image: a food picture of the repo's own (public/home/inspire). pdf: a one-page document printed by this browser from known text, so the
+// summary can be checked against it. clip: a published review of the UAT project that names a place and an address (read only), opened
+// the way the Explore button opens the chat (/chat?ctx=<review id>&q=<question>).
+const IMAGE_FILE = path.join(REPO, 'public/home/inspire/food-2.webp')
+const PDF_FILE = path.join(outDir, 'uat-attachment.pdf')
+const PDF_TEXT = ['Biên bản họp dự án Sông Hồng, ngày 12/11/2026.', '1. Ngân sách quý 1 năm 2027 được duyệt là 3,2 tỷ đồng.', '2. Ngày ra mắt bản thử nghiệm dời từ 15/12/2026 sang 10/01/2027.', '3. Nhóm kỹ thuật tuyển thêm 4 kỹ sư, bắt đầu từ tháng 12.', '4. Đối tác vận chuyển được chọn là công ty Bình Minh, hợp đồng 12 tháng.', '5. Rủi ro lớn nhất là chậm tích hợp cổng thanh toán; người chịu trách nhiệm là chị Lan.']
+if (cases.some(c => c.attach === 'pdf')) {
+  await goto('data:text/html;charset=utf-8,' + encodeURIComponent(`<html><body style="font-family:Arial;font-size:16px;padding:40px">${PDF_TEXT.map(l => `<p>${l}</p>`).join('')}</body></html>`))
+  const pdf = await cdp('Page.printToPDF', { printBackground: false })
+  writeFileSync(PDF_FILE, Buffer.from(pdf.data, 'base64'))
+}
+let clipReview = null
+if (cases.some(c => c.attach === 'clip')) {
+  const { data } = await admin.from('reviews').select('id, place_name, place_address').eq('is_hidden', false).not('place_address', 'is', null).limit(40)
+  clipReview = (data ?? []).find(r => typeof r.place_name === 'string' && r.place_name.trim().length > 3 && !/^chia s[eẻ]$/i.test(r.place_name.trim()) && typeof r.place_address === 'string' && r.place_address.trim().length > 8) ?? null
+  console.log('clip review:', clipReview ? `${clipReview.place_name} | ${clipReview.place_address}` : 'none found')
+}
+const attachFile = async file => {
+  const { root } = await cdp('DOM.getDocument', { depth: 0 })
+  const { nodeId } = await cdp('DOM.querySelector', { nodeId: root.nodeId, selector: 'input[type="file"]' })
+  if (!nodeId) throw new Error('no file input')
+  await cdp('DOM.setFileInputFiles', { nodeId, files: [file] })
+  await sleep(2500)
+}
+/** The question as a person types it: the "(đính kèm …)" note of the question file is for the reader of the file. */
+const typed = q => q.replace(/^\([^)]*\)\s*/, '')
+
 const results = []
 for (const c of cases) {
-  const turns = c.turns ?? [c.q]
+  const turns = (c.turns ?? [c.q]).map(typed)
   const rec = { id: c.id, group: c.group, turns: [] }
   try {
+    if (c.attach === 'clip') {
+      if (!clipReview) throw new Error('no review with a place and an address in the UAT project')
+      rec.clip = { place: clipReview.place_name, address: clipReview.place_address }
+      // the Explore button's own way in: the chat sends the question itself
+      await goto(`${BASE}/chat?ctx=${clipReview.id}&q=${encodeURIComponent(turns[0])}`)
+      const started = Date.now()
+      const done = await waitFor(`${SHARES} >= 1`, TURN_MS)
+      await sleep(4000)
+      const m = await evaluate(METRICS)
+      const shot = await cdp('Page.captureScreenshot', { format: 'jpeg', quality: 72 })
+      const file = `q${String(c.id).padStart(2, '0')}.jpg`
+      writeFileSync(path.join(outDir, 'screens', file), Buffer.from(shot.data, 'base64'))
+      rec.turns.push({ q: turns[0], done, seconds: Math.round((Date.now() - started) / 1000), screen: `screens/${file}`, ...m })
+      console.log(`case ${c.id} (clip): ${done ? 'done' : 'TIMEOUT'} chars=${m.chars ?? 0} links=${m.links ?? 0}`)
+      results.push(rec)
+      writeFileSync(path.join(outDir, `results-${fromArg ?? 1}-${toArg ?? 'end'}.json`), JSON.stringify(results, null, 2))
+      continue
+    }
     await goto(`${BASE}/chat`)
     if (!await waitFor(`!!${COMPOSER}`, 20000)) throw new Error('no composer')
+    if (c.attach === 'image') await attachFile(IMAGE_FILE)
+    if (c.attach === 'pdf') await attachFile(PDF_FILE)
     for (let t = 0; t < turns.length; t++) {
       const started = Date.now()
       if (c.mode === 'research' && t === 0) {
