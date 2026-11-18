@@ -2028,7 +2028,7 @@ export default function ChatInterface({
                 const groupView = placeViewShown && soloPlaces.length && placeSplit
                   ? (placeSplit.rest.length ? { ...placeViewShown, items: placeSplit.rest, picked: placeViewShown.picked?.filter(id => placeSplit.rest.some(r => r.id === id)) } : null)
                   : placeViewShown
-                const placeNode = placeViewShown && !shopView && (!streamingMsg || !!annotated) && groupView ? <PlaceDecision view={groupView} notes={placeNotes} noteSources={venueSplit?.noteSources} /> : null
+                const placeNode = placeViewShown && !shopView && (!streamingMsg || !!annotated) && groupView ? <PlaceDecision view={groupView} notes={placeNotes} noteSources={venueSplit?.noteSources} collapsed={soloPlaces.length > 0} /> : null
                 const soloNodes = placeViewShown ? soloPlaces.map(p => <PlaceDecision key={p.id} view={placeViewShown} layout="solo" soloId={p.id} notes={placeNotes} noteSources={venueSplit?.noteSources} />) : []
                 // Comparison (DD-005). Derived from the SAME payload the decision above renders - no extra request, nothing inferred. Offered only once the reply
                 // is complete, like every other structured action, and only when there are at least two options to compare.
