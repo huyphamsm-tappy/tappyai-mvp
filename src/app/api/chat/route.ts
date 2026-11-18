@@ -2465,7 +2465,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // 01/11 (mode "Tự động", owner chose "C"): the switch the model turns on with think_deeper; every later step of the stream reasons at medium
   // (AI.stream autoThink) and the lookups follow the Thinking mode. Off for the whole turn = exactly Chat.
   // 18/11 (Phase 1 S2): the effort drops to 'low' for the writing step once the turn's write reserve is reached (see timeReserveHoldsToolCall); streamProviderOptions reads it at each step.
-  const autoThink: { on: boolean; effort: 'low' | 'medium' } = { on: false, effort: 'medium' }
+  // 18/11 (Phase 1): CONSULT_AUTOTHINK_EFFORT = none | low | medium (default medium = unchanged). Measured on the real UI: think_deeper was called in 100% of the baseline turns, so every later step reasoned at
+  // medium (500-3,500 reasoning tokens per step at about 100 tokens/s = 5-35 s per step); the plan turns that ended in the red banner spent 100+ s in reasoning and the plan card's own arguments.
+  const autoThinkEffortEnv = (process.env.CONSULT_AUTOTHINK_EFFORT ?? '').trim().toLowerCase()
+  const autoThink: { on: boolean; effort: 'none' | 'low' | 'medium' } = { on: false, effort: autoThinkEffortEnv === 'none' || autoThinkEffortEnv === 'low' ? autoThinkEffortEnv : 'medium' }
   const chatLike = () => chatMode === 'chat' || (chatMode === 'auto' && !autoThink.on)
   const oneBrainPrompt = oneBrain ? { shared: ONE_BRAIN_CORE, dynamic: oneBrainDynamic({ lang, now: new Date(), address: userLocation?.address ?? null, hasLocation: hasValidCurrentLocation(userLocation), blocks: [clipContext ? buildExploreClipBlock(clipContext, lang) : '', memoryBlock ?? '', prefBlock, styleBlock, shareContextBlock], latestLang: replyLanguage.named, mode: chatMode === 'deep' ? 'think' : chatMode, ...(planHasTools ? {} : { noTools: true }), ...(presentBlocksOn ? {} : { noBlocks: true }) }) } : null
   if (oneBrain) console.log(JSON.stringify({ type: 'tappyai_chat_mode', mode: chatMode }))
