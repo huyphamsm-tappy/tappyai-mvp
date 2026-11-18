@@ -96,8 +96,7 @@ export async function getWeather(location: string, lang = 'vi') {
       today_min_C: today?.mintempC,
       chance_of_rain_percent: today?.hourly?.find((h: { time: string }) => h.time === '1200')?.chanceofrain ?? today?.hourly?.[4]?.chanceofrain,
       source: 'wttr.in',
-      // 17/11: the source's own page for this place, so the answer can link its source instead of naming it in words only
-      source_url: 'https://wttr.in/' + encodeURIComponent(place),
+      // 18/11 (owner): no source_url for weather — a link to a foreign site is no use to the reader; the answer names the provider in words
     }
   } catch {
     // a failure is never cached: one blip must not pin "unavailable" for the whole window

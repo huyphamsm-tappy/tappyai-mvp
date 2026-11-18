@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "group": "greeting",
+    "turns": [
+      {
+        "q": "Hi",
+        "done": true,
+        "seconds": 14,
+        "screen": "screens/q01.jpg",
+        "answered": true,
+        "chars": 100,
+        "head": "Tappy đang dùng trí nhớ của bạn để trả lời · Xem & quản lý\nHi\n08:33\nHi! How’s your day going so far?",
+        "tail": "Tappy đang dùng trí nhớ của bạn để trả lời · Xem & quản lý\nHi\n08:33\nHi! How’s your day going so far?",
+        "links": 0,
+        "hosts": {},
+        "sourcesChip": null,
+        "tables": 0,
+        "images": 1,
+        "actionKinds": [],
+        "placeCards": 0,
+        "path": "/chat",
+        "proNote": 0
+      }
+    ]
+  }
+]
