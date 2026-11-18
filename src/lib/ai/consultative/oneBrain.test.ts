@@ -20,10 +20,13 @@ describe('the one general instruction', () => {
       expect(ONE_BRAIN_CORE, s).toContain(s)
     }
   })
-  it('buying: concrete listings and at most three narrowing questions; a store the person names is searched on its own site (30/10)', () => {
-    for (const s of ['lay out the concrete listings', 'at most three short narrowing questions', 'from the whole message, not from single words', "search that store's own site", 'Never write a product link that did not come from a tool result', '[FOLLOWUPS]option 1|option 2|option 3[/FOLLOWUPS]', 'in place of the usual closing offer', 'then end the same way: a narrowing question and its tap-to-send chips', 'one search_products call is rarely the whole picture', 'price range by condition and version', 'a listing you did not name gets no card']) expect(ONE_BRAIN_CORE, s).toContain(s)
+  it('buying: concrete listings, a pick and one plain closing line, the narrowing choices only as tap-to-send chips (owner 18/11, ChatGPT style: no question to the person); a store the person names is searched on its own site (30/10)', () => {
+    for (const s of ['lay out the concrete listings', 'end on your pick in one plain closing line', 'from the whole message, not from single words', "search that store's own site", 'Never write a product link that did not come from a tool result', '[FOLLOWUPS]option 1|option 2|option 3[/FOLLOWUPS]', 'the answer does not end with a question to the person', 'end the same way: a closing line and the chips', 'one search_products call is rarely the whole picture', 'price range by condition and version', 'a listing you did not name gets no card']) expect(ONE_BRAIN_CORE, s).toContain(s)
+    // the old rule must be gone: no narrowing questions to the person, in the core or in the reminder
+    expect(ONE_BRAIN_CORE).not.toContain('at most three short narrowing questions')
+    expect(ONE_BRAIN_SHAPE_REMINDER).not.toContain('narrowing questions')
     // the shape reminder (last in the prompt) must not undo the buying rule
-    expect(ONE_BRAIN_SHAPE_REMINDER).toContain('narrowing questions of the buying rule')
+    expect(ONE_BRAIN_SHAPE_REMINDER).toContain('closing line of the buying rule')
     expect(ONE_BRAIN_SHAPE_REMINDER).toContain('[FOLLOWUPS] chips') // the reminder is last in the prompt: the chips line is named there too (measured 17/20 without it)
   })
   it('the buying rule names no product, brand, store or language of the question (any product, any language)', () => {
