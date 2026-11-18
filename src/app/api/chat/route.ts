@@ -124,7 +124,7 @@ import { recordDecision, DECISION_RECORD_TIMEOUT_MS } from '@/lib/ai/agent/runti
 import { createPlacesBudget, PLACES_BUDGET_AGENT, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_ONE_BRAIN, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
 // Consultative V1 (flag CONSULTATIVE_V1, default OFF — see docs/audit/consultative-v1-design.md).
 import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
-import { isProductionRuntime, consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, timeReserveHoldsToolCall, consultReadPageLateOn, consultPickPageReadOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn, consultUnwindS1aOn, consultUnwindS1bOn, consultUnwindS1dOn, consultUnwindS2aOn, consultUnwindS2bOn, consultUnwindS2cOn, consultUnwindS3aOn, consultUnwindS3bOn, consultUnwindS3cOn, consultUnwindS4aOn, consultUnwindS4bOn, consultUnwindS5On, consultUnwindS6aOn, consultUnwindS6bOn, consultUnwindS6cOn, consultOneBrainOn, consultOneBrainMediaOn, consultPresentBlocksOn, consultPersonModelOn, consultPlanV2On, consultParallelOn } from '@/lib/config/consultFlags'
+import { isProductionRuntime, consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, isLookupTool, heavyTurnReached, consultReadPageLateOn, consultPickPageReadOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn, consultUnwindS1aOn, consultUnwindS1bOn, consultUnwindS1dOn, consultUnwindS2aOn, consultUnwindS2bOn, consultUnwindS2cOn, consultUnwindS3aOn, consultUnwindS3bOn, consultUnwindS3cOn, consultUnwindS4aOn, consultUnwindS4bOn, consultUnwindS5On, consultUnwindS6aOn, consultUnwindS6bOn, consultUnwindS6cOn, consultOneBrainOn, consultOneBrainMediaOn, consultPresentBlocksOn, consultPersonModelOn, consultPlanV2On, consultParallelOn } from '@/lib/config/consultFlags'
 import { planV2Shape, foldPlanV2 } from '@/lib/ai/consultative/planV2'
 import { createParallelTurnBudget, parallelExtract, parallelSearch } from '@/lib/ai/tools/parallelClient'
 import { searchWithReads, createOnce, FOLLOW_UP_SYSTEM, S6_MAX_READS } from '@/lib/ai/consultative/searchReads'
@@ -2464,7 +2464,6 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   }
   // 01/11 (mode "Tự động", owner chose "C"): the switch the model turns on with think_deeper; every later step of the stream reasons at medium
   // (AI.stream autoThink) and the lookups follow the Thinking mode. Off for the whole turn = exactly Chat.
-  // 18/11 (Phase 1 S2): the effort drops to 'low' for the writing step once the turn's write reserve is reached (see timeReserveHoldsToolCall); streamProviderOptions reads it at each step.
   // 18/11 (Phase 1): CONSULT_AUTOTHINK_EFFORT = none | low | medium (default medium = unchanged). Measured on the real UI: think_deeper was called in 100% of the baseline turns, so every later step reasoned at
   // medium (500-3,500 reasoning tokens per step at about 100 tokens/s = 5-35 s per step); the plan turns that ended in the red banner spent 100+ s in reasoning and the plan card's own arguments.
   const autoThinkEffortEnv = (process.env.CONSULT_AUTOTHINK_EFFORT ?? '').trim().toLowerCase()
@@ -4022,23 +4021,26 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   const withResearchUrls = <T,>(set: T): T => (research ? research.collectUrls(set) : set)
   const finalSynthesisGuard = <T,>(set: T): T => {
     // Wave 3 (W1): a research turn keeps its own writing step reserved (the flag does not depend on CONSULT_FINAL_SYNTHESIS).
-    // 18/11 (Phase 1 S2): the one-brain turn also keeps a TIME reserve (timeReserveHoldsToolCall), independent of CONSULT_FINAL_SYNTHESIS (that flag is locked in production unless allowed; the clock is not optional).
+    // 18/11 (Phase 1, S6b): the one-brain "auto" turn also climbs an EFFORT LADDER (heavyTurnReached): the steps after think_deeper reason at medium (a light turn keeps that), but once the turn has run
+    // HEAVY_TURN_LOOKUPS lookups the evidence is gathered and the steps that remain compose it, so they drop to effort none. Independent of CONSULT_FINAL_SYNTHESIS (that flag is locked in production unless allowed).
     const stepReserve = (consultFinalSynthesisOn() || research) && streamMaxSteps >= 3
-    const timeReserve = oneBrain
-    if (!set || (!stepReserve && !timeReserve)) return set
+    const effortLadder = oneBrain && chatMode === 'auto'
+    if (!set || (!stepReserve && !effortLadder)) return set
+    let lookupCallsN = 0
     // Wave 5 · W5-1 (CONSULT_READ_PAGE_LATE, OFF = the two-step reserve for every tool): a page read may still run in the step before the last.
     const readPageLate = consultReadPageLateOn()
     return Object.fromEntries(Object.entries(set as Record<string, { execute?: (args: Record<string, unknown>, ctx: unknown) => unknown }>).map(([name, t]) => [name, !t?.execute ? t : {
       ...t,
       execute: (args: Record<string, unknown>, ctx: unknown) => {
-        const timeUp = timeReserve && timeReserveHoldsToolCall(name, Date.now() - startTime, TURN_DEADLINE_MS)
-        if (timeUp && autoThink.effort !== 'low') {
-          // the writing step that follows must not think for 20-30 s: it is composed from what the lookups already found
-          autoThink.effort = 'low'
-          console.log(JSON.stringify({ type: 'tappyai_turn_reserve', reason: 'time', tool: name, elapsedMs: Date.now() - startTime, stepsFinished: stepsFinishedN, maxSteps: streamMaxSteps }))
+        if (effortLadder && isLookupTool(name)) {
+          lookupCallsN++
+          if (heavyTurnReached(lookupCallsN) && autoThink.effort !== 'none') {
+            autoThink.effort = 'none'
+            console.log(JSON.stringify({ type: 'tappyai_turn_effort', to: 'none', lookups: lookupCallsN, tool: name, stepsFinished: stepsFinishedN, elapsedMs: Date.now() - startTime }))
+          }
         }
-        if (timeUp || (stepReserve && reserveHoldsToolCall(name, stepsFinishedN, streamMaxSteps, readPageLate))) {
-          console.log(JSON.stringify({ type: 'tappyai_final_synthesis_guard', tool: name, stepsFinished: stepsFinishedN, maxSteps: streamMaxSteps, ...(timeUp ? { reason: 'time' } : {}) }))
+        if (stepReserve && reserveHoldsToolCall(name, stepsFinishedN, streamMaxSteps, readPageLate)) {
+          console.log(JSON.stringify({ type: 'tappyai_final_synthesis_guard', tool: name, stepsFinished: stepsFinishedN, maxSteps: streamMaxSteps }))
           // A Promise like every tool result (the wrapped tool chains .then on execute()).
           return Promise.resolve({ error: 'search_budget_used', note: lang === 'en' ? 'No more tool calls this turn. Write the answer now from the data you already have; say plainly what you could not confirm, and do not invent it.' : 'Hết lượt tìm của lượt này. Viết ngay câu trả lời từ dữ liệu đã có; phần nào chưa xác nhận được thì nói rõ là chưa có, không bịa.' })
         }

@@ -148,17 +148,16 @@ export function reserveHoldsToolCall(tool: string, stepsFinished: number, maxSte
   return finalSynthesisReserveReached(stepsFinished, maxSteps)
 }
 /**
- * 18/11 (Phase 1, causes R1 + R2 of docs/eval/brain-eval-v1/PHASE1-DESIGN.md). Measured on the real chat UI (brain-eval-v1, 90 turns): the step reserve above counts STEPS, never TIME. Five of 21 trip turns spent
- * 80+ s on 20-24 tool calls and the writing step, at effort medium, then had about 26 s left before the 110 s turn deadline: the stream was aborted with no text (log: llm_call error "aborted", mid_stream, deltas 0),
- * and the page showed the red "Mình gặp trục trặc". The tool loop did not know the clock.
- * Pure. Once only `reserveMs` of the turn is left, a LOOKUP is answered by code ("write now from what you have") instead of being run. What composes the answer is never held: the presentation tools
- * (the plan card), `calculate` (no provider, no cost) and `think_deeper` (a switch, no work).
+ * 18/11 (Phase 1, causes R1 + R3 of docs/eval/brain-eval-v1/PHASE1-DESIGN.md; measured on the real chat UI). think_deeper was called in 100% of the baseline turns, so every later step reasoned at effort
+ * medium: 500-3,500 reasoning tokens per step at about 100 tokens/s, 5-35 s per step. On the heavy turns (trip plans, shopping: 9-24 lookups) that is 100+ s, past the 110 s turn deadline: the stream was
+ * aborted with no text and the page showed the red "Mình gặp trục trặc" (stress set of 11 plan turns: medium 4 of 11 ended badly, median 116 s; none 1 of 11, median 62 s, 11 of 11 answered).
+ * Dropping the effort for EVERY turn lost quality on places and advice (30-question gate), so the effort steps down only on a HEAVY turn: after HEAVY_TURN_LOOKUPS lookups the evidence is gathered and what is
+ * left is composing it. Pure. A lookup is any tool that fetches (search, places, products, hotels, flights, weather, read_page ...); what composes the answer or switches a mode is not one.
  */
-export const TURN_WRITE_RESERVE_MS = 40_000
-const TIME_RESERVE_NEVER_HELD = new Set(['present_plan', 'present_options', 'present_blocks', 'calculate', 'think_deeper'])
-export function timeReserveHoldsToolCall(tool: string, elapsedMs: number, deadlineMs: number, reserveMs: number = TURN_WRITE_RESERVE_MS): boolean {
-  return elapsedMs >= deadlineMs - reserveMs && !TIME_RESERVE_NEVER_HELD.has(tool)
-}
+export const HEAVY_TURN_LOOKUPS = 9
+const NOT_A_LOOKUP = new Set(['present_plan', 'present_options', 'present_blocks', 'calculate', 'think_deeper', 'save_price_watch'])
+export function isLookupTool(tool: string): boolean { return !NOT_A_LOOKUP.has(tool) }
+export function heavyTurnReached(lookupCalls: number, heavy: number = HEAVY_TURN_LOOKUPS): boolean { return lookupCalls >= heavy }
 /**
  * Wave 5 · W5-2 (CONSULT_PICK_PAGE_READ). ON only for the exact value "1" and outside a production runtime: NOT tied to the level. It acts only on a pre-searched pick (R2) that carries the page reader,
  * i.e. with CONSULT_PICK_TURN_TOOLS on (Wave 4 · C3); without that there is no R2 reader and the flag changes nothing.
