@@ -1,0 +1,19 @@
+{
+  "rubric": "brain-eval-v1/rubric-ui-layout",
+  "locked": "18/11/2026",
+  "use": "Chấm GIAO DIỆN THẬT như người dùng nhìn. Người chấm nhận ảnh chụp trang (một hoặc hai ảnh nối nhau, 1280 rộng), văn bản câu trả lời, các link, và tiêu chí nội dung của câu (rubric.json). Chấm mù: không biết hệ thống hay model nào tạo.",
+  "dimensions_1to5": {
+    "layout_fit": "bố cục hợp loại câu hỏi: số liệu và so sánh có bảng; quán và sản phẩm có thẻ có ảnh, giá, nút; kế hoạch có lịch trình theo mốc giờ, ảnh điểm dừng và bảng ngân sách; tin tức có tiêu đề, nguồn, ngày; câu ngắn là chữ thường. 5 = đúng loại và đủ khối, 1 = sai loại hoặc thiếu khối chính",
+    "visual_quality": "đẹp và dễ đọc như một người dùng thật: thứ bậc rõ, ảnh hiển thị, không khối bị cắt, không chữ chồng chữ, khoảng cách hợp lý. 5 = đẹp và dễ đọc, 1 = lộn xộn hoặc khó đọc",
+    "completeness_on_screen": "người dùng thấy ĐỦ thông tin để hành động mà không phải hỏi lại: số, giờ, giá, nút đặt hoặc xem; 5 = đủ, 1 = chỉ có thẻ trần hoặc thiếu phần chính"
+  },
+  "flags_boolean": {
+    "error_banner": "có khung lỗi hoặc chữ báo lỗi (ví dụ 'Mình gặp trục trặc')",
+    "bare_cards_only": "chỉ có thẻ (quán hoặc sản phẩm) mà không có câu trả lời hoặc kế hoạch đi kèm khi câu hỏi cần",
+    "duplicate_or_stale_blocks": "khối trùng chữ, thẻ lặp, hoặc khối không liên quan tới câu hỏi",
+    "unrelated_chips": "chip nguồn hoặc nhãn không liên quan tới câu hỏi",
+    "closing_question": "câu hỏi mời thừa ở cuối câu trả lời"
+  },
+  "pass_rule": "Một lượt giao diện ĐẠT khi không có error_banner, không bare_cards_only, trung bình ba trục trên từ 3,5, và đạt luôn phần nội dung của rubric.json (answered, hard_fail, leak, trung bình năm trục từ 3,5).",
+  "limits": "Ảnh là mô phỏng trình duyệt headless 1280x4000 trên máy phát triển, gói Promax; không thay thế mắt người. Mắt của anh Huy là chuẩn cuối: khoảng 10 ảnh ẩn danh để anh chấm mù và hiệu chuẩn người chấm AI."
+}

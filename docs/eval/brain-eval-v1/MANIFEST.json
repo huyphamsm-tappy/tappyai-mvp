@@ -1,0 +1,12 @@
+{
+  "set": "brain-eval-v1",
+  "locked": "18/11/2026",
+  "files": {
+    "docs/eval/brain-eval-v1/dev-30.json": "sha256:1c6559460809f6a266f95e88bb21354c07e538e636a07957c8801e25105a52b5",
+    "docs/eval/brain-eval-v1/rubric.json": "sha256:67d103bc75cbefa7dc850d936b34761da84d5fa7812d908f710631ce2a3d91d8",
+    "docs/eval/brain-eval-v1/rubric-ui-layout.json (thêm 18/11 theo yêu cầu chấm trên giao diện thật, khóa trước khi chạy lượt giao diện)": "sha256:afb5a0fb7e55774e5824716c9e66d4c3a41a06e70e6f10a8209700ac04020ba6",
+    "D:/TappyAI-review-artifacts/eval-holdout/holdout-10.json (NGOÀI repo, giữ kín)": "sha256:ee9bca6c180db6176179945d3f1b29925ea001d45b1afdf340ca3c0f570348b9"
+  },
+  "rule": "Mọi thay đổi chữ câu hỏi hoặc rubric làm hash đổi và là phiên bản mới (v2) với mốc đo nền mới. Holdout chỉ chạy ở đo nền và Giai đoạn 3; không đọc kết quả từng câu để sửa.",
+  "pinned_baseline_build": "b0fe4bf (tag brain-freeze-20261117)"
+}
