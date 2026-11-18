@@ -26,7 +26,7 @@ export const dynamic = 'force-dynamic'
 
 // Only the plans on sale (owner 01/11/2026: Milo and Sunny are no longer sold).
 const CreateSchema = z.object({ plan: z.enum(SALE_PLAN_IDS as unknown as [PaidPlanId, ...PaidPlanId[]]) })
-const ORDER_COLUMNS = 'id, plan, amount_vnd, code, status, expires_at, paid_at, created_at'
+const ORDER_COLUMNS = 'id, plan, amount_vnd, code, status, expires_at, paid_at, created_at, received_vnd, bonus_seconds'
 
 interface OrderRow {
   id: string
@@ -36,6 +36,10 @@ interface OrderRow {
   status: 'pending' | 'paid' | 'expired' | 'mismatch'
   expires_at: string
   paid_at: string | null
+  /** Everything received on this order so far (a short transfer stays here until topped up). */
+  received_vnd?: number | null
+  /** Extra time (seconds) given for money above the price; 0 when the transfer was exact. */
+  bonus_seconds?: number | null
 }
 
 /** Pending past its 15 minutes reads as expired (a late transfer is still honoured by the webhook). */
@@ -125,5 +129,5 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: 'not_found', message: serverMessage('payments.failed', requestLocale(req)) }, { status: 404 })
   }
   const o = data as OrderRow
-  return NextResponse.json({ order: { id: o.id, code: o.code, plan: o.plan, amountVnd: o.amount_vnd, status: publicStatus(o), expiresAt: o.expires_at, paidAt: o.paid_at } })
+  return NextResponse.json({ order: { id: o.id, code: o.code, plan: o.plan, amountVnd: o.amount_vnd, status: publicStatus(o), expiresAt: o.expires_at, paidAt: o.paid_at, receivedVnd: o.received_vnd ?? 0, bonusSeconds: o.bonus_seconds ?? 0 } })
 }

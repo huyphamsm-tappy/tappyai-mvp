@@ -173,3 +173,4 @@ supabase/migrations/20261120_tvi_core.sql
 supabase/migrations/20261121_mcp_jobs.sql
 supabase/migrations/20261201_scam_knowledge_versions.sql
 supabase/migrations/20261202_age_adult_declaration.sql
+supabase/migrations/20261203_payments_no_refund.sql

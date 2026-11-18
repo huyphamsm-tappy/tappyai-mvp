@@ -145,6 +145,7 @@ export default function SubscriptionFlow({ catalog, initialMe, initial, initialH
   const [planId, setPlanId] = useState<string | null>(initial?.planId ?? null)
   const [order, setOrder] = useState<CreatedOrder | null>(initial?.order ?? null)
   const [failure, setFailure] = useState<'mismatch' | 'expired' | 'error'>(initial?.failure ?? 'error')
+  const [bonusDays, setBonusDays] = useState(0)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const plan = catalog.plans.find((p) => p.id === planId) ?? null
@@ -201,8 +202,9 @@ export default function SubscriptionFlow({ catalog, initialMe, initial, initialH
     }
   }
 
-  const onPaid = useCallback(async () => {
+  const onPaid = useCallback(async (days: number) => {
     // The order row says "paid"; the plan is only shown as active once the SERVER says so.
+    setBonusDays(days)
     setScreen('processing')
     const fresh = await refresh()
     if (fresh?.subscription.state === 'ACTIVE') setScreen('success')
@@ -250,6 +252,7 @@ export default function SubscriptionFlow({ catalog, initialMe, initial, initialH
         <h1 className="text-2xl font-black text-gray-900 dark:text-white">{t('sub.success.title', { plan: plan.name })}</h1>
         <p className="text-content-secondary">{t('sub.success.welcome', { plan: plan.name })}</p>
         {sub.periodEnd && <p className="text-sm text-content-secondary">{t('sub.success.until', { date: formatDay(sub.periodEnd, locale) })}</p>}
+        {bonusDays > 0 && <p className="text-sm font-semibold text-green-700 dark:text-green-400">{t('pay.qr.bonus', { days: String(bonusDays) })}</p>}
         <Link href="/chat" className="inline-flex w-full justify-center py-3.5 rounded-2xl bg-[#FF9500] hover:bg-orange-600 text-white font-semibold">
           {t('sub.success.start')}
         </Link>

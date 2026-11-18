@@ -10,6 +10,7 @@ import { Loader2, ExternalLink, Copy, Check, Mail, ArrowLeft, User, ShieldCheck,
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { AUTH_PROVIDERS } from '@/lib/auth/providers'
 import { TappyMascot } from '@/components/TappyMascot'
+import LoginLanguageChooser from '@/components/LoginLanguageChooser'
 import { getTappyPose } from '@/lib/TappyMascotState'
 import { markAuthPending, emitAuthLoginFailed, getPendingMethod } from '@/lib/analytics/authEvents'
 import { readReturnTo } from '@/lib/auth/returnTo'
@@ -553,14 +554,15 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-dvh bg-[#eef1f8] dark:bg-gray-950 flex items-center justify-center p-3 sm:p-6 lg:p-10">
+      {/* The language question comes BEFORE signing in (owner 18/11/2026): flags, once, then never again. */}
+      <LoginLanguageChooser />
       {/* Float animation for the hero chips — plain <style> (no styled-jsx: the App
           Router would need a style registry for it; a raw tag needs nothing). */}
       <style>{'@keyframes tappy-float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }'}</style>
 
       <div className="w-full max-w-6xl bg-white dark:bg-gray-900 rounded-[28px] shadow-[0_24px_80px_rgba(30,41,90,0.12)] overflow-hidden">
-        {/* Card header: logo. (Language selection stays with the app's global
-            first-visit LanguagePicker modal — rendering it again here duplicated
-            the overlay and blocked the whole card.) */}
+        {/* Card header: logo. (The language question is LoginLanguageChooser above: one modal, once, before
+            signing in. The app's own LanguagePicker never mounts on this page, so the two cannot stack.) */}
         <div className="flex items-center justify-between px-6 sm:px-10 pt-6">
           <div className="flex items-center gap-2.5">
             {/* Approved Tappy Otter mascot (pose 02 "wave" = default AI avatar) as the

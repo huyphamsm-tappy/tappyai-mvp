@@ -33,6 +33,11 @@ export const vi: Record<string, string> = {
   'pay.qr.done': 'Tôi đã chuyển khoản',
   'pay.qr.doneWaiting': 'Tappy đang chờ ngân hàng báo về. Thường mất dưới 1 phút — bạn cứ để trang này mở.',
   'pay.qr.mismatch': 'Tappy đã nhận tiền nhưng số tiền chưa khớp với gói. Đội ngũ Tappy sẽ kiểm tra và liên hệ bạn sớm.',
+  // Owner 18/11/2026: no refunds — a short transfer stays on the order, a surplus becomes extra days.
+  'pay.qr.partial': 'Tappy đã nhận {received} nhưng còn thiếu {short} so với giá gói.',
+  'pay.qr.partialHow': 'Bạn chỉ cần chuyển thêm {short} với đúng nội dung {code}. Số tiền đã chuyển được giữ lại, gói sẽ tự kích hoạt khi đủ — không bị mất tiền.',
+  'pay.qr.exactNote': 'Chuyển đúng số tiền hiển thị. Nếu chuyển thiếu, bạn sẽ được báo số còn thiếu; nếu chuyển dư, phần dư được cộng thành ngày sử dụng thêm — Tappy không phải hoàn tiền cho ai.',
+  'pay.qr.bonus': 'Bạn chuyển dư nên được cộng thêm {days} ngày sử dụng.',
   'pay.qr.back': 'Chọn gói khác',
 
   'pay.success.title': 'Bạn đã là thành viên {plan} 🎉',
@@ -217,6 +222,10 @@ export const en: Record<string, string> = {
   'pay.qr.done': "I've made the transfer",
   'pay.qr.doneWaiting': 'Tappy is waiting for the bank to confirm. It usually takes under a minute — keep this page open.',
   'pay.qr.mismatch': "Tappy received your transfer, but the amount doesn't match the plan. The Tappy team will check and contact you soon.",
+  'pay.qr.partial': 'Tappy received {received}, which is {short} short of the plan price.',
+  'pay.qr.partialHow': 'Just send {short} more with the exact note {code}. What you already sent is kept and the plan starts automatically once it is complete — nothing is lost.',
+  'pay.qr.exactNote': 'Send exactly the amount shown. If you send less you are told what is missing; if you send more, the extra becomes added days of use — Tappy never has to refund anyone.',
+  'pay.qr.bonus': 'You sent a little extra, so {days} extra days were added.',
   'pay.qr.back': 'Choose another plan',
 
   'pay.success.title': "You're a {plan} member 🎉",

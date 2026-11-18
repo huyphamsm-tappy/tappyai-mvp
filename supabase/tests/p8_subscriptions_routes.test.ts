@@ -121,6 +121,7 @@ beforeAll(async () => {
   await t.db.query(readRepo('supabase/migrations/20261016_p7_pip_one_time.sql'))
   await t.db.query(readRepo('supabase/migrations/20261017_p7_pip_trial_any_source.sql'))
   await t.db.query(readRepo('supabase/migrations/20261102_plans_promax.sql'))
+  await t.db.query(readRepo('supabase/migrations/20261203_payments_no_refund.sql'))
   h.run =(role, sql, sub, params) => t.rows(role, sql, sub, params)
 }, 240_000)
 afterAll(async () => { await t?.stop() })
@@ -413,7 +414,7 @@ describe('Tappy Pip — one-time trial per account (owner decision, enforced in 
     expect(await pipGrants(ERIN)).toBe(1)
   })
 
-  it('two Pip orders opened before paying: only the first payment grants; the second is recorded for a refund', async () => {
+  it('two Pip orders opened before paying: only the first is a Pip purchase; the second payment becomes extra days (no refund, no second Pip grant)', async () => {
     h.user = { id: FRANK }
     await t.db.query(`DELETE FROM public.subscriptions WHERE user_id = $1`, [FRANK])
     const o1 = (await (await post(createOrder, { plan: 'pip' })).json()).order
@@ -422,11 +423,38 @@ describe('Tappy Pip — one-time trial per account (owner decision, enforced in 
     expect((await bankPays(o1.code, 25_000)).status).toBe(200)
     const end = (await myPlan()).subscription.periodEnd
     expect((await bankPays(o2.code, 25_000)).status).toBe(200)
-    expect((await myPlan()).subscription.periodEnd).toBe(end)
-    expect(await pipGrants(FRANK)).toBe(1)
+    // owner 18/11/2026: money that arrived is NEVER left for a refund: the second Pip payment is converted to 7 extra days at the Pip rate
+    const after = (await myPlan()).subscription.periodEnd as string
+    expect(new Date(after).getTime() - new Date(end as string).getTime()).toBe(7 * DAY)
+    expect(await pipGrants(FRANK)).toBe(1) // still ONE Pip purchase (stack, plan pip): the unique index holds; the conversion is an extend_to row
     const ev = await t.one<{ result: string }>(`SELECT e.result FROM public.payment_events e JOIN public.payment_orders o ON o.id = e.order_id WHERE o.code = $1`, [o2.code])
     expect(ev.result).toBe('pip_used')
-    expect((await t.one<{ status: string }>(`SELECT status FROM public.payment_orders WHERE code = $1`, [o2.code])).status).toBe('mismatch')
+    expect((await t.one<{ status: string }>(`SELECT status FROM public.payment_orders WHERE code = $1`, [o2.code])).status).toBe('paid')
+  })
+
+  it('NO REFUND: a short transfer stays on the order, the top-up completes it, a surplus becomes extra days, a second transfer on a paid order becomes days', async () => {
+    h.user = { id: DAVE }
+    const days = (a: unknown, b: unknown) => (new Date(a as string).getTime() - new Date(b as string).getTime()) / DAY
+    // short, then the rest with the same code
+    const o1 = (await (await newOrder('momo')).json()).order // 225 000 = 30 days
+    await bankPays(o1.code, 100_000)
+    expect((await t.one<{ s: string; r: string }>(`SELECT status AS s, received_vnd AS r FROM public.payment_orders WHERE code = $1`, [o1.code]))).toEqual({ s: 'mismatch', r: '100000' })
+    expect((await myPlan()).subscription.state).not.toBe('ACTIVE')
+    await bankPays(o1.code, 125_000)
+    const end1 = (await myPlan()).subscription.periodEnd
+    expect((await myPlan()).subscription.state).toBe('ACTIVE')
+    // a second transfer on the same (paid) order: converted into time at the plan rate
+    await bankPays(o1.code, 225_000)
+    const end2 = (await myPlan()).subscription.periodEnd
+    expect(days(end2, end1)).toBeCloseTo(30, 3)
+    expect(Number((await t.one<{ b: string }>(`SELECT bonus_seconds AS b FROM public.payment_orders WHERE code = $1`, [o1.code])).b)).toBe(30 * 86_400)
+    // a surplus on a fresh order: the plan AND the extra days in one grant
+    await t.db.query(`UPDATE public.subscriptions SET current_period_end = now() - interval '1 day', status = 'expired' WHERE user_id = $1`, [DAVE])
+    const o2 = (await (await newOrder('momo')).json()).order
+    await bankPays(o2.code, 450_000)
+    const end3 = (await myPlan()).subscription.periodEnd
+    expect(days(end3, new Date().toISOString())).toBeCloseTo(60, 1)
+    expect(Number((await t.one<{ b: string }>(`SELECT bonus_seconds AS b FROM public.payment_orders WHERE code = $1`, [o2.code])).b)).toBe(30 * 86_400)
   })
 
   it('the database refuses it directly too (service role), and the unique backstop holds', async () => {

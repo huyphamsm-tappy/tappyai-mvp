@@ -24,11 +24,15 @@ const ORDER = {
 }
 
 let orderStatus = 'pending'
+let orderReceived = 0
+let orderBonus = 0
 beforeEach(() => {
   orderStatus = 'pending'
+  orderReceived = 0
+  orderBonus = 0
   vi.stubGlobal('fetch', vi.fn(async (url: string, init?: RequestInit) => {
     if (url === '/api/payments/orders' && init?.method === 'POST') return new Response(JSON.stringify(ORDER), { status: 201 })
-    if (url.startsWith('/api/payments/orders?id=')) return new Response(JSON.stringify({ order: { ...ORDER.order, status: orderStatus } }))
+    if (url.startsWith('/api/payments/orders?id=')) return new Response(JSON.stringify({ order: { ...ORDER.order, status: orderStatus, receivedVnd: orderReceived, bonusSeconds: orderBonus } }))
     if (url === '/api/subscription') return new Response(JSON.stringify({ isPro: true, currentPeriodEnd: '2026-10-27T10:00:00Z' }))
     return new Response('{}', { status: 404 })
   }))
@@ -95,6 +99,32 @@ describe('VietQR → success', () => {
     orderStatus = 'mismatch'
     await act(async () => { await vi.advanceTimersByTimeAsync(3_100) })
     await waitFor(() => expect(screen.getByText(/số tiền chưa khớp/)).toBeTruthy())
+  })
+
+  it('NO REFUND: a short transfer tells the payer exactly what is missing and keeps the order open', async () => {
+    vi.useFakeTimers({ shouldAdvanceTime: true })
+    const onePart = Math.floor(ORDER.order.amountVnd / 2)
+    render(<PaymentsFlow plans={paymentsCatalog()} current={null} />)
+    fireEvent.click(screen.getByRole('button', { name: 'Tiếp tục' }))
+    await waitFor(() => expect(screen.getByTestId('pay-qr')).toBeTruthy())
+    orderStatus = 'mismatch'
+    orderReceived = onePart
+    await act(async () => { await vi.advanceTimersByTimeAsync(3_100) })
+    await waitFor(() => expect(screen.getByText(/nhưng còn thiếu/)).toBeTruthy())
+    expect(screen.getByText(/đúng nội dung/).textContent).toContain(ORDER.order.code)
+    expect(screen.queryByText(/số tiền chưa khớp/)).toBeNull()
+  })
+
+  it('NO REFUND: a surplus is shown as extra days on the success screen', async () => {
+    vi.useFakeTimers({ shouldAdvanceTime: true })
+    render(<PaymentsFlow plans={paymentsCatalog()} current={null} />)
+    fireEvent.click(screen.getByRole('button', { name: 'Tiếp tục' }))
+    await waitFor(() => expect(screen.getByTestId('pay-qr')).toBeTruthy())
+    orderStatus = 'paid'
+    orderBonus = 7 * 86_400
+    await act(async () => { await vi.advanceTimersByTimeAsync(3_100) })
+    await waitFor(() => expect(screen.getByTestId('pay-success')).toBeTruthy())
+    expect(screen.getByText(/cộng thêm 7 ngày/)).toBeTruthy()
   })
 
   it('a refused order shows the server’s plain message, never a code', async () => {

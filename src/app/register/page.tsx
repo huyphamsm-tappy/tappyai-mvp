@@ -9,6 +9,7 @@ import { Loader2, ArrowRight, User, Mail, Lock, Compass, Heart, Sparkles } from 
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { markAuthPending, emitAuthLoginFailed } from '@/lib/analytics/authEvents'
 import { TappyMascot } from '@/components/TappyMascot'
+import LoginLanguageChooser from '@/components/LoginLanguageChooser'
 
 // Visual layer redesigned 2026-09-26 (owner brief: light, two-column, real brand assets).
 // Everything the page DOES — the fields, `signUp`, validation, the age-check hand-off, the
@@ -114,6 +115,8 @@ export default function RegisterPage() {
           'radial-gradient(circle at 94% 88%, rgba(0,122,255,0.05), transparent 40%)',
       }}
     >
+      {/* The language question comes BEFORE signing up (owner 18/11/2026): flags, once, then never again. */}
+      <LoginLanguageChooser />
       <div className="mx-auto flex min-h-dvh w-full max-w-[1200px] flex-col px-5 sm:px-8 lg:px-10">
         {/* Header — the real lockup. On a phone the card's own mascot is the brand, so the
             header is not rendered there at all. */}

@@ -130,6 +130,10 @@ policy_of() {
     # Old code ignores the extra column, so it is safe before the new code; the new code FAILS CLOSED (503, nobody admitted) until this is applied. Applied to UAT only; production needs the owner.
     20261202_age_adult_declaration.sql)
       echo APPLY ;;
+    # Payments never refund (owner 18/11/2026): a short transfer stays on the order until topped up, a surplus becomes extra time at the plan's rate, a second transfer on a paid order
+    # becomes time too. One additive column (payment_orders.bonus_seconds) and a replaced p8_payments_apply_sepay (same signature and grants). Needs 20261011_p8_payments.sql first.
+    20261203_payments_no_refund.sql)
+      echo APPLY ;;
     # H1 → M1 first, then the security-branch migrations in MIGRATION_ORDER.txt order (owner 30/09): 20260928b needs the
     # deal-click code (service role) on production; the others are code-independent but ride the same verified window.
     20260927_owner_update_column_privileges.sql|20260928_revoke_reviews_insert.sql|\

@@ -10,7 +10,9 @@
 //        - only incoming transfers to OUR account count;
 //        - full amount → order paid → plan granted (stacked on the current expiry),
 //          even when the 15-minute window has passed;
-//        - short amount → order `mismatch`, nothing granted (resolved in admin).
+//        - short amount → the money stays ON the order (`mismatch`); a later top-up with the same code completes it;
+//        - amount above the price → plan granted + the surplus as extra time at the plan's rate;
+//        - a transfer on an already paid order → converted to extra time. NEVER a refund (owner 18/11/2026).
 //   3. Any transaction we recorded answers 200 {"success": true}; a database failure
 //      answers 500 so SePay retries (their retries are idempotent here).
 //   4. The confirmation mail is best-effort, capped at 5 s, and cannot fail the webhook.
@@ -28,11 +30,14 @@ export const dynamic = 'force-dynamic'
 const OK = () => NextResponse.json({ success: true })
 
 interface ApplyResult {
-  result: 'duplicate' | 'ignored_out' | 'no_order' | 'paid' | 'late_paid' | 'mismatch' | 'already_settled'
+  result: 'duplicate' | 'ignored_out' | 'no_order' | 'paid' | 'late_paid' | 'extra_paid' | 'pip_used' | 'mismatch' | 'already_settled'
   user_id?: string | null
   plan?: PaidPlanId | null
   code?: string | null
   received_vnd?: number | null
+  total_received_vnd?: number | null
+  short_vnd?: number | null
+  bonus_seconds?: number | null
   expires_at?: string | null
 }
 
@@ -63,12 +68,18 @@ export async function POST(req: Request) {
   }
 
   const r = data as ApplyResult
-  if ((r.result === 'paid' || r.result === 'late_paid') && r.user_id && r.plan && r.code) {
+  if ((r.result === 'paid' || r.result === 'late_paid' || r.result === 'mismatch' || r.result === 'extra_paid' || r.result === 'pip_used') && r.user_id && r.plan && r.code) {
     try {
       const { data: u } = await db.auth.admin.getUserById(r.user_id)
       const email = u?.user?.email
       if (email) {
-        await sendPaymentMail({ to: email, plan: r.plan, amountVnd: r.received_vnd ?? tx.amountVnd, code: r.code, expiresAt: r.expires_at ?? null })
+        const kind = r.result === 'mismatch' ? 'partial' : (r.result === 'extra_paid' || r.result === 'pip_used') ? 'extra' : 'paid'
+        await sendPaymentMail({
+          to: email, plan: r.plan, code: r.code, expiresAt: r.expires_at ?? null, kind,
+          amountVnd: (kind === 'extra' ? r.received_vnd : r.total_received_vnd) ?? r.received_vnd ?? tx.amountVnd,
+          shortVnd: r.short_vnd ?? 0,
+          bonusDays: Math.floor(Math.max(0, r.bonus_seconds ?? 0) / 86_400),
+        })
       }
     } catch {
       // best-effort: the plan is already granted
