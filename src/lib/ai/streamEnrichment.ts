@@ -2464,7 +2464,7 @@ export function applyPlaceEnrichmentStreamFilter(
       // CONSULT_ONE_BRAIN: the named items, in the order named, the first crowned; a card nobody named is not shown, and none named leaves the cards as they were.
       if (!planOwnsAnswer && !contract && collector.oneBrain === true && !collector.semanticRanking && candidateNames.length) {
         const fromProse = rankingFromProse(mainText, [
-          ...(collector.placesRecommendations ?? []).map(r => ({ name: r.entity.identity.name ?? '' })),
+          ...(collector.placesRecommendations ?? []).map(r => ({ name: r.entity.identity.name ?? '', detail: typeof r.entity.location?.address === 'string' ? r.entity.location.address : undefined })),
           ...(collector.shoppingMarker ? (parseShoppingMarker(collector.shoppingMarker).view?.entities ?? []).map(e => ({ name: e.name ?? e.config ?? '', price: typeof e.priceLow === 'number' ? e.priceLow : null })) : []),
         ].filter(c => c.name))
         if (fromProse) { contract = fromProse; rt.block = 'prose'; rt.via = 'prose' }

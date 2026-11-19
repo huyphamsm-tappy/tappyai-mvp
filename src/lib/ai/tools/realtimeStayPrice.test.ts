@@ -49,6 +49,19 @@ describe('stay price line on the hotel card (Agoda offer matched by name)', () =
     expect(stayOfferLine(matched.agoda_offer_price as never, t('en'), 'en')).toBe('Reference price: 231,481 VND/night for 2 guests, excluding taxes and fees; checked on Agoda at 14:47 on 19/11/2026. Open the booking page for the final price.')
   })
 
+  // 19/11 final UAT: the answer named the Agoda hotels (they came beside the list) while the cards were three other hotels of the list
+  it('an Agoda offer that matches no row becomes a row of its own, with its price and its own Agoda page, so the hotel the answer names has a card', async () => {
+    const offers = { results: [{ hotelId: 7, hotelName: 'Kingo Retreat Resort', dailyRate: 2_400_000, currency: 'VND', landingURL: LANDING }] }
+    const r: Row = { search_results: [], hotel_list: [{ name: 'Some Other Hotel', address: '1 Tran Phu', lat: 11.94, lng: 108.44, rating_value: 4.5, maps_link: 'https://maps.google.com/?cid=1' }] }
+    await attachCommerceLinks('get_hotel_prices', r, ctx({ env: LITE_ENV, http: httpOk(offers), now: () => NOW }))
+    const rows = r.hotel_list as Row[]
+    expect(rows).toHaveLength(2)
+    expect(rows[0].agoda_offer_url).toBeUndefined()
+    expect(rows[1]).toMatchObject({ name: 'Kingo Retreat Resort', agoda_offer_url: LANDING, agoda_offer_price: { amount: 2_400_000, platform: 'Agoda' } })
+    const recs = stayRecommendations(r)
+    expect(recs.map(x => x.entity.identity.name)).toContain('Kingo Retreat Resort')
+  })
+
   // 19/11 (review): the match was a substring test, so "X Hotel" took the page and price of "X Hotel Annex"
   it('a row never takes the offer of a different hotel whose name merely contains or extends its own', async () => {
     const annex = { results: [{ hotelId: 1, hotelName: 'Sunrise Hotel Da Lat Annex', dailyRate: 500_000, currency: 'VND', landingURL: LANDING }] }

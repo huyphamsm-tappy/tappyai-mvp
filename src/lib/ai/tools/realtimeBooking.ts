@@ -177,19 +177,12 @@ function attachAgodaOfferUrls(result: Row, offers: SearchResult[], now: Date, c:
     const sameSet = agoda.filter(a => { const ad = distinct(a.key); return ad.length === kd.length && ad.every((w, i) => w === kd[i]) })
     return sameSet.length === 1 ? sameSet[0] : undefined
   }
-  for (const h of result.hotel_list) {
-    if (!isRecord(h)) continue
-    const k = nameKey(h.name)
-    if (!k) continue
-    const hit = hitFor(k, nameKey(String(h.name).split(/\s[-–—]\s/)[0]))
-    if (!hit) continue
-    h.agoda_offer_url = hit.url
-    const o = hit.offer
+  const priceOf = (o: SearchResult): Row | null => {
     const price = claimablePrice(o, now)
     if (price !== null && (o.currency === 'VND' || o.currency === 'USD') && o.lastCheckedAt !== null) {
       const perNight = o.priceUnit === 'per_night'
       const nightsRaw = c.vertical === 'hotel' && c.context.checkIn && c.context.checkOut ? Math.round((Date.parse(c.context.checkOut) - Date.parse(c.context.checkIn)) / 86_400_000) : null
-      h.agoda_offer_price = {
+      return {
         platform: MERCHANT.agoda,
         amount: price,
         currency: o.currency,
@@ -199,7 +192,24 @@ function attachAgodaOfferUrls(result: Row, offers: SearchResult[], now: Date, c:
         checkedAt: o.lastCheckedAt,
       }
     }
+    return null
   }
+  const matchedUrls = new Set<string>()
+  for (const h of result.hotel_list) {
+    if (!isRecord(h)) continue
+    const k = nameKey(h.name)
+    if (!k) continue
+    const hit = hitFor(k, nameKey(String(h.name).split(/\s[-–—]\s/)[0]))
+    if (!hit) continue
+    h.agoda_offer_url = hit.url
+    matchedUrls.add(hit.url)
+    const pr = priceOf(hit.offer)
+    if (pr) h.agoda_offer_price = pr
+  }
+  // An Agoda offer that matched no row is still a hotel the answer may recommend (the model reads the offers beside the list): it becomes a row of its own, so the hotel it names has a card
+  // with its price and its own Agoda page instead of a card of a different hotel (final UAT 19/11: the answer named the Agoda hotels, the cards were three others). Priced offers only, at most 6.
+  const extra = agoda.filter(a => !matchedUrls.has(a.url)).map(a => ({ a, pr: priceOf(a.offer) })).filter(x => x.pr !== null).slice(0, 6)
+  for (const { a, pr } of extra) result.hotel_list.push({ name: String(a.offer.title), link: a.url, agoda_offer_url: a.url, agoda_offer_price: pr, source: 'agoda_offer' })
 }
 
 function describe(o: SearchResult, now: Date, assumedAdults: boolean, c: SearchCriteria): Row {

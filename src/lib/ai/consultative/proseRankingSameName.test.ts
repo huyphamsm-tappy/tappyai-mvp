@@ -11,6 +11,21 @@ describe('rankingFromProse: a name two listings share', () => {
     const r = rankingFromProse(text, candidates)
     expect(r?.picks.map(p => p.name)).toEqual(['Pho bung Hang Trong', 'Pho Ga Huyen Huong', 'Pho Thin Bo Ho'])
   })
+  it('two branches of one name: the branch whose street the answer says is the pick', () => {
+    const c = [{ name: 'Pho Thin Bo Ho', detail: '19 P. Hang Voi, Hoan Kiem' }, { name: 'Pho Thin Bo Ho', detail: '1 P. Hang Tre, Pho co' }]
+    const r = rankingFromProse('I choose **Pho Thin Bo Ho**, 1 Hang Tre - near the lake', c)
+    expect(r?.picks.map(p => p.name)).toEqual(['Pho Thin Bo Ho'])
+    expect(r?.picks).toHaveLength(1)
+  })
+  it('a venue named in plain text (not bold) gets its card too, in the order of the text', () => {
+    const c = [{ name: 'On Time Cau Giay' }, { name: 'Study-ik Coworking Books Coffee' }, { name: 'Other Place Far Away' }]
+    const r = rankingFromProse('I lean to Study-ik Coworking Books Coffee; On Time Cau Giay is the second choice.', c)
+    expect(r?.picks.map(p => p.name)).toEqual(['Study-ik Coworking Books Coffee', 'On Time Cau Giay'])
+  })
+  it('a name two listings share is not picked from plain text (ambiguous), a short generic name is not either', () => {
+    expect(rankingFromProse('try Pho Thin Bo Ho today', [{ name: 'Pho Thin Bo Ho' }, { name: 'Pho Thin Bo Ho' }])).toBeNull()
+    expect(rankingFromProse('try Cafe today', [{ name: 'Cafe' }])).toBeNull()
+  })
   it('the listing whose whole name is the bold name wins over a longer listing that contains it', () => {
     const r = rankingFromProse('- **Pho Thin Bo Ho** - open late', [{ name: 'Pho Thin Bo Ho (Hang Voi) Chon pho gan Ho' }, { name: 'Pho Thin Bo Ho' }])
     expect(r?.picks.map(p => p.name)).toEqual(['Pho Thin Bo Ho'])
