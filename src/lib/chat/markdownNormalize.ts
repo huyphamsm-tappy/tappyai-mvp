@@ -191,6 +191,13 @@ export function repairGluedTables(text: string): string {
     if (!/^\s*\|/.test(l)) { cols = 0; out.push(l); continue }
     const cells = tableCells(l)
     if (isSeparatorRow(cells)) { cols = cells.length; out.push(l); continue }
+    // A sentence written right after the last row on the same line ("| a | 259.259d | Price checked at 21:54 ... [link](...)"): the row keeps its own cells and the sentence becomes a paragraph
+    // (final UAT 19/11, hotel table: the sentence became a third cell and the table broke, "231." and merged rows).
+    if (cols >= 2 && !/\|\s*$/.test(l)) {
+      const parts = l.trim().replace(/^\|/, '').split('|')
+      const rest = parts.slice(cols).join('|').trim()
+      if (parts.length > cols && rest) { out.push(`| ${parts.slice(0, cols).map(c => c.trim()).join(' | ')} |`, '', rest); cols = 0; continue }
+    }
     if (cols >= 2 && /\|\s*$/.test(l) && cells.length > cols && cells.length % cols === 0) {
       for (let i = 0; i < cells.length; i += cols) out.push(`| ${cells.slice(i, i + cols).join(' | ')} |`)
       continue
