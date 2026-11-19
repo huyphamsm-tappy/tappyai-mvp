@@ -449,7 +449,8 @@ describe('Tappy Pip — one-time trial per account (owner decision, enforced in 
     expect(days(end2, end1)).toBeCloseTo(30, 3)
     expect(Number((await t.one<{ b: string }>(`SELECT bonus_seconds AS b FROM public.payment_orders WHERE code = $1`, [o1.code])).b)).toBe(30 * 86_400)
     // a surplus on a fresh order: the plan AND the extra days in one grant
-    await t.db.query(`UPDATE public.subscriptions SET current_period_end = now() - interval '1 day', status = 'expired' WHERE user_id = $1`, [DAVE])
+    // the plan row is DERIVED from the ledger (the ledger is append-only), so setting it to "expired" is undone on the next write; the row is dropped instead (as the Pip test below does) to start from no plan
+    await t.db.query(`DELETE FROM public.subscriptions WHERE user_id = $1`, [DAVE])
     const o2 = (await (await newOrder('momo')).json()).order
     await bankPays(o2.code, 450_000)
     const end3 = (await myPlan()).subscription.periodEnd
