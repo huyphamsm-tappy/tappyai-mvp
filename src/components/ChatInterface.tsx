@@ -294,10 +294,12 @@ function detectFirstPlaceName(text: string, buttons: CTAButton[]): string {
  * followed by a rating, an address or hours in the same paragraph). A bold phrase alone is
  * not a place: "**cần check kỹ**" in a shopping checklist was offering "Lưu địa điểm".
  */
-function replyHasSavablePlace(text: string, buttons: CTAButton[], placeView: { items?: unknown[] } | null | undefined): boolean {
+export function replyHasSavablePlace(text: string, buttons: CTAButton[], placeView: { items?: unknown[] } | null | undefined): boolean {
   if (placeView && Array.isArray(placeView.items) && placeView.items.length > 0) return true
   if (buttons.some(b => b.type === 'maps' || b.type === 'booking' || b.type === 'internal_booking')) return true
-  return /\*\*[^*\n]{3,60}\*\*[^\n]{0,80}(?:⭐|★|đánh giá|reviews?|\d+\s*(?:đường|street|quận|q\.|phường|district)|\bmở\b|\bopen\b|\d{1,2}[:h]\d{2})/i.test(text)
+  // a rating, a review count or a street address beside a bold name. A bare clock time or the word "open" is NOT a sign of a place (final UAT 19/11: the fuel price, the weather,
+  // the news and the flight answers offered "save place" because they mention a time of day).
+  return /\*\*[^*\n]{3,60}\*\*[^\n]{0,80}(?:⭐|★|đánh giá|reviews?|\d+\s*(?:đường|street|quận|q\.|phường|district))/i.test(text)
 }
 
 function SavePlaceButton({ text, buttons }: { text: string; buttons: CTAButton[] }) {
