@@ -126,6 +126,7 @@ import { createPlacesBudget, PLACES_BUDGET_AGENT, PLACES_BUDGET_DEFAULT, PLACES_
 import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
 import { isProductionRuntime, consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, isLookupTool, heavyTurnReached, lookupTimeUp, consultReadPageLateOn, consultPickPageReadOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn, consultUnwindS1aOn, consultUnwindS1bOn, consultUnwindS1dOn, consultUnwindS2aOn, consultUnwindS2bOn, consultUnwindS2cOn, consultUnwindS3aOn, consultUnwindS3bOn, consultUnwindS3cOn, consultUnwindS4aOn, consultUnwindS4bOn, consultUnwindS5On, consultUnwindS6aOn, consultUnwindS6bOn, consultUnwindS6cOn, consultOneBrainOn, consultOneBrainMediaOn, consultPresentBlocksOn, consultPersonModelOn, consultPlanV2On, consultParallelOn } from '@/lib/config/consultFlags'
 import { planV2Shape, foldPlanV2 } from '@/lib/ai/consultative/planV2'
+import { tierOf as turnTierOf, budgetOf, spendLookup, newBudgetState, type TurnTier } from '@/lib/ai/consultative/turnBudget'
 import { createParallelTurnBudget, parallelExtract, parallelSearch } from '@/lib/ai/tools/parallelClient'
 import { searchWithReads, createOnce, FOLLOW_UP_SYSTEM, S6_MAX_READS } from '@/lib/ai/consultative/searchReads'
 import { ONE_BRAIN_CORE, PRESENT_PLAN_DESCRIPTION, PRESENT_PLAN_FIELD_NOTES, THINK_DEEPER_DESCRIPTION, THINK_DEEPER_NOTE, ONE_BRAIN_CHAT_CAP_NOTE, ONE_BRAIN_FARE_NOTE, ONE_BRAIN_WEB_FALLBACK_NOTE, CHAT_SEARCH_BUDGET, SEARCH_DEPTH_DESCRIPTION, searchDepthOf, type SearchDepth, ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, oneBrainDynamic } from '@/lib/ai/consultative/oneBrain'
@@ -4045,13 +4046,30 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // HEAVY_TURN_LOOKUPS lookups the evidence is gathered and the steps that remain compose it, so they drop to effort none. Independent of CONSULT_FINAL_SYNTHESIS (that flag is locked in production unless allowed).
     const stepReserve = (consultFinalSynthesisOn() || research) && streamMaxSteps >= 3
     const effortLadder = oneBrain && chatMode === 'auto'
-    if (!set || (!stepReserve && !effortLadder)) return set
+    // 19/11 (orchestration layer): the kind of turn (read beside the answer) sets how many lookups it may spend; see consultative/turnBudget.ts
+    const budgeting = oneBrain && oneBrainUnderstanding !== null
+    if (!set || (!stepReserve && !effortLadder && !budgeting)) return set
     let lookupCallsN = 0
+    const budgetState = newBudgetState()
+    // the reading runs beside the model's first step, so it is normally ready; never wait for it longer than a moment
+    const tierP: Promise<TurnTier | null> = budgeting
+      ? Promise.race([oneBrainUnderstanding!.then(r => turnTierOf(r.u)).catch(() => null), new Promise<null>(res => setTimeout(() => res(null), 4000))])
+      : Promise.resolve(null)
     // Wave 5 · W5-1 (CONSULT_READ_PAGE_LATE, OFF = the two-step reserve for every tool): a page read may still run in the step before the last.
     const readPageLate = consultReadPageLateOn()
     return Object.fromEntries(Object.entries(set as Record<string, { execute?: (args: Record<string, unknown>, ctx: unknown) => unknown }>).map(([name, t]) => [name, !t?.execute ? t : {
       ...t,
-      execute: (args: Record<string, unknown>, ctx: unknown) => {
+      execute: async (args: Record<string, unknown>, ctx: unknown) => {
+        if (budgeting && isLookupTool(name)) {
+          const tier = await tierP
+          if (tier) {
+            const verdict = spendLookup(budgetOf(tier), budgetState, name, Date.now() - startTime)
+            if (!verdict.ok) {
+              console.log(JSON.stringify({ type: 'tappyai_turn_budget_refused', tier, tool: name, reason: verdict.reason, lookups: budgetState.lookups, elapsedMs: Date.now() - startTime }))
+              return { error: 'search_budget_used', note: verdict.note }
+            }
+          }
+        }
         if (effortLadder && isLookupTool(name)) {
           lookupCallsN++
           if (heavyTurnReached(lookupCallsN) && autoThink.effort !== 'none') {

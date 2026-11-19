@@ -45,8 +45,8 @@ describe('stay price line on the hotel card (Agoda offer matched by name)', () =
     expect(items.find(i => i.name === 'The Luxe Hotel Da Lat')?.stayOffer).toMatchObject({ amount: 231_481, unit: 'per_night', platform: 'Agoda' })
     expect(items.find(i => i.name === 'Another Hotel')?.stayOffer).toBeUndefined()
 
-    expect(stayOfferLine(matched.agoda_offer_price as never, t('vi'), 'vi')).toBe('Giá tham khảo: 231.481đ/đêm cho 2 người, chưa gồm thuế và phí; Agoda kiểm tra lúc 14:47 ngày 19/11/2026.')
-    expect(stayOfferLine(matched.agoda_offer_price as never, t('en'), 'en')).toBe('Reference price: 231,481 VND/night for 2 guests, excluding taxes and fees; checked on Agoda at 14:47 on 19/11/2026.')
+    expect(stayOfferLine(matched.agoda_offer_price as never, t('vi'), 'vi')).toBe('Giá tham khảo: 231.481đ/đêm cho 2 người, chưa gồm thuế và phí; Agoda kiểm tra lúc 14:47 ngày 19/11/2026. Bấm nút đặt phòng để xem giá cuối cùng.')
+    expect(stayOfferLine(matched.agoda_offer_price as never, t('en'), 'en')).toBe('Reference price: 231,481 VND/night for 2 guests, excluding taxes and fees; checked on Agoda at 14:47 on 19/11/2026. Open the booking page for the final price.')
   })
 
   // 19/11 (review): the match was a substring test, so "X Hotel" took the page and price of "X Hotel Annex"
