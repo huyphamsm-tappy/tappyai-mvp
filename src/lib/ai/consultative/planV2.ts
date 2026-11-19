@@ -18,7 +18,10 @@ export const planV2Shape = {
     item: z.string().describe('what the line is for, with its key detail, e.g. "2 nights, double room near the beach"'),
     amount: z.string().describe('the amount or range with its currency'),
     basis: z.enum(['found', 'estimate']).describe('found = from this turn\'s tool results; estimate = a typical figure you reliably know'),
-  })).min(1).max(12),
+  // 19/11 (UI eval s7: 8 of the 13 refused present_plan calls in the UAT log left `costs` out and 2 sent it empty; each one ended the WHOLE turn with no text and a red banner, as `assumptions` did on 18/11).
+  // The cost lines are still asked for here and the plan keeps them when they come; a missing, empty or long list is accepted (the fold keeps twelve): a refused argument costs the person the whole
+  // answer, while a plan without cost lines still has its total (`budget_total`, required) and its days.
+  })).default([]),
   budget_total: z.string().describe('the total for the whole party, and what it leaves out (e.g. flights)'),
   // 18/11 (UAT case 20): a call that left this list out was refused by the schema and the WHOLE turn died with no text. The list is what the model may leave empty, so a missing or long one is
   // accepted (the fold keeps four): a refused argument costs the person the whole answer, an empty list costs nothing.
@@ -39,7 +42,7 @@ const clean = (x: unknown, max: number): string => {
 export function foldPlanV2<T extends { costs?: unknown; traveler?: unknown; assumptions?: unknown }>(args: T): Omit<T, 'costs' | 'assumptions'> & { cost_breakdown?: Record<string, string>; assumptions?: string[] } {
   const { costs, assumptions, ...rest } = args as Record<string, unknown>
   const cost_breakdown: Record<string, string> = {}
-  for (const c of Array.isArray(costs) ? costs : []) {
+  for (const c of (Array.isArray(costs) ? costs : []).slice(0, 12)) {
     const r = c as { item?: unknown; amount?: unknown; basis?: unknown }
     const item = clean(r?.item, 120)
     const amount = clean(r?.amount, 80)

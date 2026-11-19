@@ -37,15 +37,27 @@ describe('the typed fields', () => {
   it.each([
     ['no traveler', { ...good, traveler: undefined }],
     ['traveler without a party', { ...good, traveler: { pace: 'x' } }],
-    ['no costs', { ...good, costs: undefined }],
-    ['empty costs', { ...good, costs: [] }],
     ['a cost without a basis', { ...good, costs: [{ item: 'a', amount: '1' }] }],
     ['a cost with an unknown basis', { ...good, costs: [{ item: 'a', amount: '1', basis: 'guess' }] }],
-    ['more than 12 cost lines', { ...good, costs: Array.from({ length: 13 }, (_, i) => ({ item: `l${i}`, amount: '1', basis: 'estimate' })) }],
     ['no total', { ...good, budget_total: undefined }],
   ])('refuses %s', (_n, v) => { expect(schema.safeParse(v).success).toBe(false) })
   // 18/11 (UAT case 20): a plan call without the list of assumptions was refused and the whole turn ended with no text. The list is what may be empty, so a missing or long one is accepted
   // (foldPlanV2 keeps four); the fields that carry the plan itself stay required.
+  // 19/11 (UI eval s7, UAT log: 8 of 13 refused present_plan calls had no `costs`, 2 had an empty one; each killed the whole turn with a red banner). Same rule as the assumptions: a missing, empty or
+  // long list of cost lines is accepted (the fold keeps twelve); the traveler, the total and the shape of every line that IS sent stay required (the three refusals above still hold).
+  it('accepts a plan with no costs, empty costs, or more than twelve (the fold keeps twelve), and fills the missing one with an empty list', () => {
+    const missing = schema.safeParse({ ...good, costs: undefined })
+    expect(missing.success).toBe(true)
+    expect(missing.success && missing.data.costs).toEqual([])
+    expect(schema.safeParse({ ...good, costs: [] }).success).toBe(true)
+    const many = Array.from({ length: 13 }, (_, i) => ({ item: `l${i}`, amount: '1đ', basis: 'estimate' as const }))
+    expect(schema.safeParse({ ...good, costs: many }).success).toBe(true)
+    const folded = foldPlanV2({ ...good, costs: many }) as { cost_breakdown: Record<string, string> }
+    expect(Object.keys(folded.cost_breakdown)).toHaveLength(12)
+    const none = foldPlanV2({ ...good, costs: undefined }) as Record<string, unknown>
+    expect(none).not.toHaveProperty('cost_breakdown')
+    expect(none.budget_total).toBe(good.budget_total)
+  })
   it('accepts a plan with no assumptions field, or more than four (the fold keeps four), and fills the missing one with an empty list', () => {
     const missing = schema.safeParse({ ...good, assumptions: undefined })
     expect(missing.success).toBe(true)
