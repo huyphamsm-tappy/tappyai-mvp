@@ -15,11 +15,16 @@ export interface OutlineSection { title: string; points: OutlinePoint[] }
 export interface Outline { thesis: string; sections: OutlineSection[]; doubts: string[] }
 export interface OutlineBounds { minSections: number; maxSections: number }
 
-/** Standard (Haiku): a short report, up to four sections. Advanced (Sonnet): up to six, with the doubts argued in a section of their own. */
-export const STANDARD_OUTLINE: OutlineBounds = { minSections: 2, maxSections: 4 }
-export const ADVANCED_OUTLINE: OutlineBounds = { minSections: 3, maxSections: 6 }
+/**
+ * Standard (Haiku) and Advanced (Sonnet): the sections of the report; the doubts are argued in a section of their own.
+ * 19/11 (blind judge, 3 questions, Opus 5.5): Tappy 3.10 against Haiku 3.93 and Sonnet 4.70 with the research tools of the API; the gap is completeness (2.4 against 4.0 and 5.0) and usefulness, not freshness.
+ * The run trace showed why: Standard collected 246 to 279 evidence cards and kept 3 sections / 11 to 12 points (about 5 500 characters, 19 to 20 citations), a third of the length of the same question
+ * answered by Claude (17 000 to 24 000). Bounds raised from 2-4 / 3-6 to 4-6 / 4-7; the length target in deepResearchDeps follows.
+ */
+export const STANDARD_OUTLINE: OutlineBounds = { minSections: 4, maxSections: 6 }
+export const ADVANCED_OUTLINE: OutlineBounds = { minSections: 4, maxSections: 7 } // Advanced already runs 232 s of the 270 s run deadline (the writer is cut at it): a smaller step than Standard
 /** The most cards the analyst reads: two fifths shared out by step, a quarter kept for the newest dated ones, the rest the best by confidence. 15/11: 90 to 120 (about 3k more input tokens, cents per run) because the chip run had 138 cards at MEDIUM or above. */
-export const ANALYST_CARDS_MAX = 120
+export const ANALYST_CARDS_MAX = 160 // 19/11: 120 to 160 - the analyst read 120 of 246 to 448 cards (about 3k more input tokens, a cent per run; the Advanced analyst step already takes 66 s)
 
 /**
  * A list of short texts that may arrive as an array, a JSON string, or plain text (one item per line, or "C1, C2" for ids): measured 11/11, the analyst wrote `doubts` as plain text in 2 of 5 live runs.

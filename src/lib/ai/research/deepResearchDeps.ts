@@ -430,7 +430,8 @@ export function createDeepResearchDeps(o: { lang: string; userTexts: readonly st
       // with an outline the writer is handed exactly the sources the outline (and the scenario model) cites
       const sources = evidence.filter(e => thesisNotes !== undefined || findings.some(f => f.source === e.id)).map(e => `[${e.id}] ${e.title} — ${e.site ?? host(e.url)}${e.published ? `, ${e.published}` : ''}`).join('\n')
       const systemShared = thesisNotes !== undefined ? THESIS_WRITER_SYSTEM : WRITER_SYSTEM
-      const lengthRule = thesisNotes !== undefined ? `\n\nLength: about ${advancedLead ? '1 500 to 2 200' : '900 to 1 400'} words in all, tables aside (a reader should finish it in a few minutes): say each thing once.` : ''
+      // 19/11: 900-1 400 / 1 500-2 200 words gave reports a third of the length of the same question answered by Claude and a completeness score of 2.4 of 5 (blind judge); the sections and the cards the analyst may use were raised with it
+      const lengthRule = thesisNotes !== undefined ? `\n\nLength: about ${advancedLead ? '2 200 to 3 000' : '1 800 to 2 600'} words in all, tables aside; every point of every section gets its facts, figures and sources, and a reader can scan the report by its headings: say each thing once.` : ''
       // RESEARCH_CONSOLIDATION: each fact once, a conflict only where the subject, measure, scope and period agree, readings at different dates as a trend, the newest period named (consolidate.ts); the log has counts only
       const baseNotes = thesisNotes !== undefined ? thesisNotes : researchConsolidationOn() ? (() => { const c = consolidate(findings); console.log(JSON.stringify({ type: 'tappyai_research_consolidation', ...c.stats })); return consolidatedNotes(plan, c) })() : writerNotes(plan, findings)
       // RESEARCH_FORECAST_MODEL: the computed model follows the findings, and the writer is told to use its numbers exactly
