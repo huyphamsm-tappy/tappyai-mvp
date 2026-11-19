@@ -123,18 +123,28 @@ export function rankingFromProse(text: string, candidates: readonly RankCandidat
   // The full listing name, or the part before " - " / " | ", found whole in the folded prose; a name two listings share is left to the bold path.
   const plainProse = fold(text.replace(/\[TAPPY_[A-Z_]+\][\s\S]*?(?:\[\/TAPPY_[A-Z_]+\]|$)/g, ' ').replace(/\]\([^)\n]*\)/g, ' '))
   const PLAIN_BASE = 1_000_000
+  // a mention that only repeats the start of a longer name already picked ("O Lac" inside "O Lac CN 2") is that pick, not another listing
+  const prefixOfPicked = (k: string): boolean => [...first.keys()].some(j => { const n = fold(candidates[j].name); return n !== k && (n.startsWith(`${k} `) || k.startsWith(`${n} `)) })
   candidates.forEach((c, i) => {
     if (first.has(i)) return
     const keys = [c.name, c.name.split(/\s[-|–—]\s/)[0]].map(fold).filter(k => k.length >= 8 && k.includes(' '))
     if (keys.length === 0) return
-    if (candidates.some((o, j) => j !== i && fold(o.name) === fold(c.name))) return
+    const twins = candidates.map((o, j) => ({ o, j })).filter(x => x.j !== i && fold(x.o.name) === fold(c.name))
     for (const k of keys) {
-      const at = plainProse.indexOf(` ${k} `.trimStart())
+      if (prefixOfPicked(k)) continue
+      const at = plainProse.indexOf(k)
       const ok = at >= 0 && (at === 0 || plainProse[at - 1] === ' ') && (plainProse[at + k.length] === undefined || plainProse[at + k.length] === ' ')
-      if (ok) { first.set(i, PLAIN_BASE + at); break }
+      if (!ok) continue
+      if (twins.length > 0) {
+        // two listings share the name: only the one whose street the answer says right after the name is the pick (and only once)
+        const after = plainProse.slice(at + k.length, at + k.length + 160)
+        const said = [i, ...twins.map(x => x.j)].filter(j => addressSaid(candidates[j].detail, after))
+        if (said.length === 1 && said[0] === i) first.set(i, PLAIN_BASE + at)
+      } else first.set(i, PLAIN_BASE + at)
+      break
     }
   })
   if (first.size === 0) return null
-  const picks = [...first.entries()].sort((x, y) => x[1] - y[1]).map(([i]) => ({ name: candidates[i].name, why: null, tradeoff: null, fits: null, refs: [] as string[], said: said.get(i) ?? null }))
+  const picks = [...first.entries()].sort((x, y) => x[1] - y[1]).map(([i]) => ({ name: candidates[i].name, why: null, tradeoff: null, fits: null, refs: [] as string[], said: said.get(i) ?? null, at: i }))
   return { picks, none: false, confidence: firstPickUnresolved ? 'low' : 'medium' }
 }
