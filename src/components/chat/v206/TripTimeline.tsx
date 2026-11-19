@@ -3,7 +3,9 @@
 // the tips that name a stop beside it, the plan's own budget rows and the share action. Built ONLY from the plan the answer carries (TripPlanCard's data) and the turn's own place
 // cards: nothing is added (no destination, dates, pace, verification, partner or discount that the plan does not state). The former TripPlanCard stays the layout when the flag is off.
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react'
-import { ExternalLink, Lightbulb, MapPin, Share2, UserRound } from 'lucide-react'
+import { Download, ExternalLink, Lightbulb, MapPin, Share2, UserRound } from 'lucide-react'
+import { downloadReportPdf, type PdfCover } from '@/lib/answerDoc/reportPdf'
+import { planMarkdown } from '@/lib/answerDoc/planMarkdown'
 import '../v206.css'
 import type { TappyPlan } from '@/components/TripPlanCard'
 import ShareMenu from '@/components/share/ShareMenu'
@@ -88,6 +90,23 @@ export default function TripTimeline({ msgId, plan: rawPlan, places, stopImages 
   const plan = useMemo(() => plainTextDeep(rawPlan) as unknown as V206Plan & TappyPlan, [rawPlan])
   const [tab, setTab] = useState<Tab>('all')
   const [shareOpen, setShareOpen] = useState(false)
+  const [pdfBusy, setPdfBusy] = useState(false)
+  // the plan as the designed PDF page (the same layout as a research report): built in the browser, nothing is sent anywhere
+  const downloadPlanPdf = async () => {
+    setPdfBusy(true)
+    try {
+      const f = tripFacts(plan)
+      const facts = [t('v206.trip.days', { n: String(f.days) }), t('v206.trip.stops', { n: String(f.stops) }), ...(f.people ? [t('v206.trip.people', { n: String(f.people) })] : []), ...(f.budget ? [f.budget] : [])].join(' · ')
+      const text = planMarkdown(plan as TappyPlan, { facts, budget: t('v206.trip.budget'), item: t('v206.trip.pdfItem'), cost: t('v206.trip.pdfCost'), tips: t('v206.trip.pdfTips'), total: t('v206.trip.pdfTotal') })
+      const date = new Date().toLocaleDateString(locale === 'en' ? 'en-GB' : 'vi-VN')
+      const cover: PdfCover = {
+        eyebrow: t('v206.trip.pdfEyebrow'), title: plan.title, facts: [facts, t('report.updated', { date })].filter(Boolean),
+        kind: t('v206.trip.pdfEyebrow').split('·')[0].trim(), updated: t('report.updated', { date }), sources: 0, sourcesWord: '',
+        words: { scope: t('report.design.scope'), caveats: t('report.design.caveats'), sources: t('report.design.sources'), footer: t('report.design.footer') },
+      }
+      await downloadReportPdf(text, [], plan.title, cover)
+    } finally { setPdfBusy(false) }
+  }
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([])
 
   const facts = tripFacts(plan)
@@ -221,6 +240,7 @@ export default function TripTimeline({ msgId, plan: rawPlan, places, stopImages 
       <div className="v206-actions">
         <TipsButton n={tips.length} />
         <button type="button" className="v206-link" data-primary="true" onClick={() => setShareOpen(true)} data-testid="v206-share"><Share2 size={14} aria-hidden="true" />{t('v206.trip.share')}</button>
+        <button type="button" className="v206-link" disabled={pdfBusy} onClick={() => { void downloadPlanPdf() }} data-testid="v206-pdf"><Download size={14} aria-hidden="true" />{t('v206.trip.pdf')}</button>
       </div>
       <ShareMenu artifact={artifact} variant="plan" profileName={plan.title} open={shareOpen} onClose={() => setShareOpen(false)} />
     </section>
