@@ -6,7 +6,7 @@
 // turns or writes the right answer. Those cases (T04, T06, T09 as a conversation, the context-resolution part of T15) need the model and are marked below; they belong to the
 // separate UAT that needs an approved account and API budget. Nothing here calls a model, a search service or the network.
 import { describe, it, expect, afterEach, beforeAll, vi } from 'vitest'
-import { render, cleanup, screen, within } from '@testing-library/react'
+import { render, cleanup, screen, within, fireEvent } from '@testing-library/react'
 
 Element.prototype.scrollIntoView = vi.fn()
 Object.defineProperty(window, 'matchMedia', {
@@ -270,13 +270,20 @@ describe('place cards sit under the text that names them (one rule for every ans
     expect(k.indexOf('SOLO:Quán Mưa Mẫu')).toBe(k.findIndex(x => x.startsWith('Về Quán Mưa Mẫu')) + 1)
   })
 
-  it('one place named, one not: the named one stands alone under its text, the other goes in the group at the end (nothing dropped)', () => {
+  // 18/11 (layout S5a): the places the text does not name no longer stand beside the single cards as a second list (the blind eval flagged such cards as contradicting the advice): the group is collapsed
+  // behind "Xem thêm N chỗ" and opens on tap, so nothing is dropped and nothing competes with the pick.
+  it('one place named, one not: the named one stands alone under its text, the other waits behind "Xem thêm 1 chỗ" at the end (nothing dropped)', () => {
     const answer = '## Quán Gió Mẫu\n\nKhông gian thoáng.\n\nChúc bạn vui.'
     const { container } = setup('pc3', 'Gợi ý chỗ', answer, rows(['Quán Gió Mẫu', 'Quán Nắng Mẫu']))
     const k = kids(container)
     expect(k.indexOf('SOLO:Quán Gió Mẫu')).toBe(k.findIndex(x => x.startsWith('Không gian thoáng')) + 1)
-    expect(k.some(x => x === 'GROUP:Quán Nắng Mẫu')).toBe(true)
+    expect(k.some(x => x === 'GROUP:')).toBe(true) // the group is there, collapsed: no card of its own yet
+    expect(parts(container).placeCards).toBe(1)
+    const more = within(container).getByTestId('place-show-more')
+    expect(more.textContent).toBe('Xem thêm 1 chỗ')
+    fireEvent.click(more)
     expect(parts(container).placeCards).toBe(2)
+    expect(Array.from(container.querySelectorAll('.v206-pc-name')).map(n => n.textContent)).toContain('Quán Nắng Mẫu')
   })
 
   it('no place named in the text: the single group exactly as before', () => {

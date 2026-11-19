@@ -2051,7 +2051,9 @@ export default function ChatInterface({
                 const cmpNode = shopView && !streamingMsg && comparisonFromSynthesis(shopView, t, locale) ? cmpBlock : null
                 // (the declared blocks - declaredFrame, declaredBlocks, profileBlocks - are read above, ahead of the place cards: a venue's points go onto its card)
                 // 16/11 (owner's mockup): the table that goes with the subject cards comes straight after them, before the closing verdict; questions and bookings stay under the answer
-                const compareBlocks = ownLayout ? [] : declaredBlocks.filter(b => b.type === 'compare')
+                // 19/11 (layout S5c): a turn that shows venue or product cards keeps its OWN comparison table. The model's declared table was hidden whenever cards were shown (0e5e19e), so the text said "the price in
+                // the table" over a page with no table (iPhone 16 vs Galaxy S25: no table in 3 of 5 runs). It is hidden only when the page already draws a comparison from the tool's data (cmpNode): one table, never two.
+                const compareBlocks = ownLayout && cmpNode ? [] : declaredBlocks.filter(b => b.type === 'compare')
                 const galleryBlocks = declaredBlocks.filter(b => b.type === 'gallery')
                 const otherBlocks = declaredBlocks.filter(b => b.type !== 'profiles' && b.type !== 'compare' && b.type !== 'gallery')
                 const onOpenProfile = WORKSPACE_V206 ? ((profile: Parameters<typeof v206Store.openWiki>[0]) => v206Store.openWiki(profile)) : undefined
