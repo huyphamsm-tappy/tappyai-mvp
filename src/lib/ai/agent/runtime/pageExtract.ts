@@ -51,9 +51,12 @@ export const BLOCK_CAPS = { blocks: 14, total: 7_000, paragraph: 700, table: 3_5
  * a page uses around quotes and lists. Names are lower case here; the match is case-insensitive, so an upper-case name (Aacute) is served from its own entry below.
  */
 const LATIN1_LOWER = 'agrave aacute acirc atilde auml aring aelig ccedil egrave eacute ecirc euml igrave iacute icirc iuml eth ntilde ograve oacute ocirc otilde ouml - oslash ugrave uacute ucirc uuml yacute thorn yuml'.split(' ')
-const LATIN1: Record<string, string> = {}
-LATIN1_LOWER.forEach((name, i) => { if (name !== '-') { LATIN1[name] = String.fromCodePoint(0xe0 + i); LATIN1[name[0].toUpperCase() + name.slice(1)] = String.fromCodePoint(0xc0 + i) } })
-const ENTITIES: Record<string, string> = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ', ndash: '–', mdash: '—', hellip: '…', laquo: '«', raquo: '»', copy: '©', reg: '®', ldquo: '“', rdquo: '”', lsquo: '‘', rsquo: '’', bull: '•', middot: '·', euro: '€', trade: '™', times: '×', dstrok: 'đ', Dstrok: 'Đ' }
+// no prototype: a page's "&constructor;" or "&toString;" must stay text, never a member of Object
+const LATIN1: Record<string, string> = Object.create(null)
+LATIN1_LOWER.forEach((name, i) => { if (name !== '-' && name !== 'yuml') { LATIN1[name] = String.fromCodePoint(0xe0 + i); LATIN1[name[0].toUpperCase() + name.slice(1)] = String.fromCodePoint(0xc0 + i) } })
+LATIN1.yuml = String.fromCodePoint(0xff)
+LATIN1.Yuml = String.fromCodePoint(0x178)
+const ENTITIES: Record<string, string> = Object.assign(Object.create(null) as Record<string, string>, { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ', ndash: '–', mdash: '—', hellip: '…', laquo: '«', raquo: '»', copy: '©', reg: '®', ldquo: '“', rdquo: '”', lsquo: '‘', rsquo: '’', bull: '•', middot: '·', euro: '€', trade: '™', times: '×', dstrok: 'đ', Dstrok: 'Đ' })
 export function decodeEntities(s: string): string {
   return s.replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, (m, e: string) => {
     if (e[0] === '#') { const n = e[1] === 'x' || e[1] === 'X' ? parseInt(e.slice(2), 16) : parseInt(e.slice(1), 10); return Number.isFinite(n) && n > 0 && n < 0x110000 ? String.fromCodePoint(n) : ' ' }

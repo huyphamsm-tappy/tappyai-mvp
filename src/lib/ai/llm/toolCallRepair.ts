@@ -138,6 +138,12 @@ export async function repairToolCall(options: {
     console.warn(JSON.stringify({ ...base, outcome: fb ? 'presentation_fallback' : 'unrepairable', why: 'unrepairable', message: String(options.error?.message ?? '').slice(0, 200) }))
     return fb
   }
+  // 19/11 (review): the SDK repairs a call once. A presentation call that is still missing a required field after the shape repair would be refused again and end the turn, so it falls back the same way
+  const stillMissing = (schema.required ?? []).filter(k => args[k] === undefined || args[k] === null)
+  if (stillMissing.length > 0) {
+    const fb = presentationFallback(toolCall, options.tools)
+    if (fb) { console.warn(JSON.stringify({ ...base, outcome: 'presentation_fallback', why: 'required_missing_after_repair', fields: stillMissing.slice(0, 5) })); return fb }
+  }
   console.warn(JSON.stringify({ ...base, outcome: 'repaired', changes: changed }))
   return { ...toolCall, args: JSON.stringify(args) }
 }

@@ -21,6 +21,21 @@ beforeEach(() => { h.deny = false; h.keys = []; seen = [] })
 afterEach(() => __setPageFetchOverride(null))
 
 describe('GET /api/link-preview', () => {
+  // 19/11 (owner: an Agoda page showed "window.params = {...}" in the reader; review: the first filter also dropped prose starting with "Let")
+  it('a passage that is script or JSON or a bare placeholder is dropped, but prose that merely starts like code is kept', async () => {
+    const code = '<p>window.params = {"breadcrumbs":[{"pageTypeId":null,"regionName":"Trang chủ","isShowCountNumber":true}],"x":"y"};</p>'
+    const json = '<p>{"hotel":"x","price":1,"currency":"VND","rooms":3,"checkin":"2026-11-19","checkout":"2026-11-20"}</p>'
+    const prose = '<p>Let us look at what the page says about the history of the old city and the people who lived there for centuries.</p>'
+    const quote = '<p>Ông nói: "Chúng ta phải giữ lấy làng nghề", rồi kể về hành trình dài của gia đình qua nhiều thế hệ ở làng.</p>'
+    __setPageFetchOverride(async () => ok(html('Trang thử', `${code}${json}${prose}${quote}`)))
+    const res = await call('?u=https%3A%2F%2Fbaomau.vn%2Fbai-viet')
+    const body = await res.json() as { ok: boolean; passages: string[] }
+    const all = body.passages.join(' ')
+    expect(all).not.toContain('window.params')
+    expect(all).not.toContain('"currency"')
+    expect(all).toContain('Let us look at what the page says')
+    expect(all).toContain('giữ lấy làng nghề')
+  })
   it('a page: its title, site, date, description and the first passages - never more than the excerpt limit', async () => {
     __setPageFetchOverride(async (url, opts) => { seen.push({ url, opts: opts as Record<string, unknown> }); return ok(html('Giá vàng giảm mạnh', `${para(4)}${para(4)}${para(4)}${para(4)}`)) })
     const res = await call('?u=' + encodeURIComponent('https://baomau.vn/bai-viet'))

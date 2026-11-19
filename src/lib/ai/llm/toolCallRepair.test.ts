@@ -95,5 +95,14 @@ describe('repairToolCall (SDK hook)', () => {
       const r = await repairToolCall({ ...withFallback(JSON.stringify({ query: 'q', type: null, target_price: '1.000' }), 'present_plan') })
       expect(r!.toolName).toBe('present_plan')
     })
+    // 19/11 (review): the SDK repairs once; a present_* call that the shape repair changed but that still lacks a required field would be refused again and end the turn
+    it('a present_* call repaired in shape but still missing a required field falls back too; another tool in that state is left to fail as before', async () => {
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+      const r = await repairToolCall(withFallback(JSON.stringify({ query: 123 }), 'present_plan'))
+      expect(r).toMatchObject({ toolName: 'present_failed', args: '{}' })
+      expect(JSON.parse(warn.mock.calls[0][0] as string)).toMatchObject({ outcome: 'presentation_fallback', why: 'required_missing_after_repair' })
+      const other = await repairToolCall(withFallback(JSON.stringify({ query: 123 }), 'search_places'))
+      expect(other!.toolName).toBe('search_places') // repaired as before; the SDK then refuses it visibly
+    })
   })
 })

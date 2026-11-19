@@ -19,7 +19,10 @@ export const dynamic = 'force-dynamic'
 const MAX_URL = 1500
 /** The most characters of body text sent back (the passages together). */
 const MAX_EXCERPT = 700 // not exported: a Next route file may export only its HTTP methods and config
-const SCRIPT_LIKE = /^\s*(?:window\.|var\s|let\s|const\s|function\b|\(function|\{\s*"|\[\s*\{)|"\s*:\s*[\["{]|^\s*(?:xin\s+ch\S\s+m\S+t\s+l\S+t|please wait|loading\b)/i
+// code or JSON at the start of a passage (an assignment, a function, an object), a passage with three or more JSON keys, or a bare "please wait" placeholder; ordinary prose that merely starts with a word like "let" is kept
+const CODE_START = /^\s*(?:window\.[\w$.]+\s*=|(?:var|let|const)\s+[\w$]+\s*=|function\s*[\w$]*\s*\(|\(function\s*\(|\{\s*"[\w-]+"\s*:|\[\s*\{\s*")/
+const PLACEHOLDER = /^\s*(?:xin\s+ch\S\s+m\S+t\s+l\S+t|please wait|loading\.{0,3}\s*$)/i
+const scriptLike = (p: string): boolean => CODE_START.test(p) || PLACEHOLDER.test(p) || (p.match(/"[\w-]+"\s*:/g)?.length ?? 0) >= 3
 
 export async function GET(req: NextRequest) {
   const limited = await publicRateLimit(`link-preview:${clientIpKey(req)}`, 30, 60_000)
@@ -40,7 +43,7 @@ export async function GET(req: NextRequest) {
   for (const p of doc.passages) {
     if (used >= MAX_EXCERPT) break
     // 19/11 (a page drawn by script left "window.params = {...}" as a passage): a passage that is code or JSON, or a "please wait" placeholder, is not what the page says
-    if (SCRIPT_LIKE.test(p)) continue
+    if (scriptLike(p)) continue
     const room = MAX_EXCERPT - used
     passages.push(p.length > room ? `${p.slice(0, room).replace(/\s+\S*$/, '')}…` : p)
     used += p.length

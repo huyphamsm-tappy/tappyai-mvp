@@ -49,6 +49,21 @@ describe('stay price line on the hotel card (Agoda offer matched by name)', () =
     expect(stayOfferLine(matched.agoda_offer_price as never, t('en'), 'en')).toBe('Reference price: 231,481 VND/night for 2 guests, excluding taxes and fees; checked on Agoda at 14:47 on 19/11/2026.')
   })
 
+  // 19/11 (review): the match was a substring test, so "X Hotel" took the page and price of "X Hotel Annex"
+  it('a row never takes the offer of a different hotel whose name merely contains or extends its own', async () => {
+    const annex = { results: [{ hotelId: 1, hotelName: 'Sunrise Hotel Da Lat Annex', dailyRate: 500_000, currency: 'VND', landingURL: LANDING }] }
+    const r: Row = { search_results: [], hotel_list: [{ name: 'Sunrise Hotel Da Lat', address: '1 Tran Phu', lat: 11.94, lng: 108.44, rating_value: 4.5, maps_link: 'https://maps.google.com/?cid=1' }] }
+    await attachCommerceLinks('get_hotel_prices', r, ctx({ env: LITE_ENV, http: httpOk(annex), now: () => NOW }))
+    const [row] = r.hotel_list as Row[]
+    expect(row.agoda_offer_url).toBeUndefined()
+    expect(row.agoda_offer_price).toBeUndefined()
+  })
+  it('the same hotel written with a generic word or a different order still matches (the distinctive words are the same set)', async () => {
+    const lite = { results: [{ hotelId: 2, hotelName: 'Luxe Da Lat Hotel', dailyRate: 231_481, currency: 'VND', landingURL: LANDING }] }
+    const r: Row = { search_results: [], hotel_list: [{ name: 'The Luxe Hotel Da Lat', address: '1 Tran Phu', lat: 11.94, lng: 108.44, rating_value: 4.5, maps_link: 'https://maps.google.com/?cid=1' }] }
+    await attachCommerceLinks('get_hotel_prices', r, ctx({ env: LITE_ENV, http: httpOk(lite), now: () => NOW }))
+    expect((r.hotel_list as Row[])[0].agoda_offer_url).toBe(LANDING)
+  })
   it('no offer for the turn (provider off): no price on any row and no line', async () => {
     const r = hotels()
     await attachCommerceLinks('get_hotel_prices', r, ctx({ env: {} }))

@@ -2805,9 +2805,11 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // 19/11: the person's own narrowing (a street, "near the market") had no field; it was squeezed into `query` or lost
           ...(oneBrain ? { near: z.string().optional().describe('A street, ward or landmark inside the area, as the person said it (e.g. Phan Xich Long, near Ben Thanh market). Leave out when only a city or district was given') } : {}),
         }),
-        execute: async ({ query, location: modelLocationArg, type: rawType, near }: { query: string; location?: string; type?: string; near?: unknown }) => {
+        execute: async ({ query: queryArg, location: modelLocationArg, type: rawType, near }: { query: string; location?: string; type?: string; near?: unknown }) => {
           const nearText = typeof near === 'string' ? near.replace(/\s+/g, ' ').trim().slice(0, 80) : ''
-          const modelLocation = nearText ? (modelLocationArg?.trim() ? `${nearText}, ${modelLocationArg.trim()}` : nearText) : modelLocationArg
+          // `near` narrows an area: with an area it joins it ("street, area"); alone it goes into the query, so the city the query or the question names still decides where the search is centred
+          const modelLocation = nearText && modelLocationArg?.trim() ? `${nearText}, ${modelLocationArg.trim()}` : modelLocationArg
+          const query = nearText && !modelLocationArg?.trim() ? `${queryArg} ${nearText}` : queryArg
           const type = coercePlaceType(rawType)
           lastPlaceSearch = { args: { query, ...(type ? { type } : {}), ...(modelLocation ? { location: modelLocation } : {}) }, shown: [], at: new Date().toISOString() }
           if (rawType !== undefined && type !== rawType) console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', step: 'type_coerced', from: String(rawType).slice(0, 40), to: type ?? null }))
