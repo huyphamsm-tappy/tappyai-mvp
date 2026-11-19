@@ -84,14 +84,22 @@ const claimOf = (name: string, p: { lead?: string; text: string }): string => `$
 export async function verifyDeclaredFacts(p: Presentation, evidence: string, check: (claims: string[], evidence: string) => Promise<Array<boolean | string>> = (c, e) => checkClaimsWithModel(c, e)): Promise<Presentation | null> {
   try {
     const claims: string[] = []
+    // the part of each claim only the check needs ("Name: label - "): a trimmed claim it hands back may begin with it, and it must not reach the card or the table
+    const prefixes: string[] = []
     for (const b of p.blocks) {
-      if (b.type === 'profiles') for (const it of b.items) for (const pt of it.points) claims.push(claimOf(it.name, pt))
-      else if (b.type === 'compare') for (const r of b.rows) r.cells.forEach((c, j) => { if (c.trim()) claims.push(`${b.columns[j] ?? ''}: ${r.label} - ${c}`) })
+      if (b.type === 'profiles') for (const it of b.items) for (const pt of it.points) { const c = claimOf(it.name, pt); claims.push(c); prefixes.push(c.slice(0, c.length - pt.text.length)) }
+      else if (b.type === 'compare') for (const r of b.rows) r.cells.forEach((c, j) => { if (c.trim()) { const pre = `${b.columns[j] ?? ''}: ${r.label} - `; claims.push(`${pre}${c}`); prefixes.push(pre) } })
     }
     if (!claims.length) return p
     const ok = await check(claims.slice(0, MAX_CLAIMS), evidence).catch(() => [] as Array<boolean | string>)
     let k = 0
-    const verdict = (original: string): string | null => { const v = ok[k++]; const t = v === true ? original : typeof v === 'string' && v.trim() ? v.trim() : null; return t === null ? null : roundDongDecimals(t) }
+    const verdict = (original: string): string | null => {
+      const pre = prefixes[k]
+      const v = ok[k++]
+      let t = v === true ? original : typeof v === 'string' && v.trim() ? v.trim() : null
+      if (t !== null && pre && typeof v === 'string' && t.toLowerCase().startsWith(pre.toLowerCase())) t = t.slice(pre.length).trim()
+      return t === null || t === '' ? null : roundDongDecimals(t)
+    }
     const blocks: PresentationBlock[] = []
     for (const b of p.blocks) {
       if (b.type === 'profiles') {
