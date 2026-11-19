@@ -116,6 +116,10 @@ const T: Record<string, [string, string]> = {
   'v206.card.profile': ['Xem hồ sơ', 'View profile'],
   'v206.card.openProfile': ['Mở hồ sơ {name}', 'Open the profile of {name}'],
   'v206.card.highlights': ['Đặc trưng nổi bật', 'Highlights'],
+  // a stay's reference price: the provider's own figure with the platform and its check time (the guests part is empty when the provider did not state it)
+  'v206.card.stayPriceNight': ['Giá tham khảo: {price}/đêm{guests}, chưa gồm thuế và phí; {platform} kiểm tra lúc {time} ngày {date}.', 'Reference price: {price}/night{guests}, excluding taxes and fees; checked on {platform} at {time} on {date}.'],
+  'v206.card.stayPriceTotal': ['Giá tham khảo: {price}{guests}; {platform} kiểm tra lúc {time} ngày {date}.', 'Reference price: {price}{guests}; checked on {platform} at {time} on {date}.'],
+  'v206.card.stayGuests': [' cho {n} người', ' for {n} guests'],
   'v206.profile.unlisted': ['Thông tin tham khảo, chưa có dữ liệu địa điểm', 'For reference only: no place data behind it'],
   'v206.card.map': ['Bản đồ', 'Map'],
   'v206.card.website': ['Website', 'Website'],

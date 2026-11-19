@@ -9,6 +9,7 @@ import '../v206.css'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { actionLabel } from '@/lib/recommendation/actionLabel'
 import { commerceTap } from '@/lib/recommendation/handoff'
+import { stayOfferLine } from '@/lib/recommendation/stayOffer'
 import { track } from '@/lib/tracking/tracker'
 import type { LivePlace } from '@/lib/recommendation/liveView'
 import { buildEntityProfile } from '@/lib/chat/v206'
@@ -63,6 +64,9 @@ export default function V206PlaceCard({ p, position, ranked, solo, notes, noteSo
     () => buildEntityProfile(p, v.maps ? { name: p.name, maps_link: v.maps } : null, labels),
     [p, v.maps, labels],
   )
+  // a stay's reference price from the provider's own structured figure; its platform is a source of the box
+  const stayLine = useMemo(() => stayOfferLine(p.stayOffer, t, locale), [p.stayOffer, t, locale])
+  const allNoteSources = useMemo(() => (stayLine && p.stayOffer ? [...new Set([p.stayOffer.platform, ...(noteSources ?? [])])] : [...(noteSources ?? [])]), [stayLine, p.stayOffer, noteSources])
   const lead = p.actions.find(a => a.commerce?.primary === true)
   // two buttons that say the same thing ("Đặt chỗ" twice) are one: the first of each label stays (the lead's label counts)
   const seenLabels = new Set<string>(lead ? [actionLabel(lead, t)] : [])
@@ -133,11 +137,14 @@ export default function V206PlaceCard({ p, position, ranked, solo, notes, noteSo
         </p>
       )}
 
-      {notes && notes.length > 0 && (
+      {((notes && notes.length > 0) || stayLine) && (
         <div className="v206-pc-notes" data-testid="v206-pc-notes">
           <p className="v206-pc-notes-title">{t('v206.card.highlights')}</p>
-          <ul>{notes.map((n, i) => <li key={i}>{n.lead && <strong>{n.lead}: </strong>}{n.text}</li>)}</ul>
-          {noteSources && noteSources.length > 0 && <p className="v206-pc-notes-src" data-testid="v206-pc-notes-src">{t('v206.profile.sources')}: {noteSources.join(', ')}</p>}
+          <ul>
+            {stayLine && <li data-testid="v206-pc-stay-price">{stayLine}</li>}
+            {notes?.map((n, i) => <li key={i}>{n.lead && <strong>{n.lead}: </strong>}{n.text}</li>)}
+          </ul>
+          {allNoteSources.length > 0 && <p className="v206-pc-notes-src" data-testid="v206-pc-notes-src">{t('v206.profile.sources')}: {allNoteSources.join(', ')}</p>}
         </div>
       )}
 

@@ -10,6 +10,7 @@ import { track } from '@/lib/tracking/tracker'
 import { placesRenderOrder, type LivePlace, type PlaceFlag, type PlacesLiveView } from '@/lib/recommendation/liveView'
 import { reasonList, reasonText } from '@/lib/recommendation/reasonText'
 import { formatPriceBandText } from '@/lib/recommendation/priceBand'
+import { stayOfferLine } from '@/lib/recommendation/stayOffer'
 import { plainTextDeep } from '@/lib/chat/markdownNormalize'
 import { V206_LOOK } from '@/lib/chat/v206Look'
 import V206PlaceCard from '@/components/chat/v206/V206PlaceCard'
@@ -298,6 +299,11 @@ function PlaceCard({ p, position, ranked }: { p: LivePlace; position: number; ra
           <p className="text-xs text-gray-500 dark:text-gray-400">
             {t('placeDecision.referencePrice')}: {p.priceSignal}
           </p>
+        )}
+
+        {stayOfferLine(p.stayOffer, t, locale) && (
+          // The provider's own structured figure, with the platform and its check time.
+          <p className="text-xs text-gray-600 dark:text-gray-400" data-testid="stay-offer-price">{stayOfferLine(p.stayOffer, t, locale)}</p>
         )}
 
         {(p.flags?.length || p.categories?.length) && (

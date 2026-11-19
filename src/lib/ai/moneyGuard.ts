@@ -770,6 +770,11 @@ function claimSpansAreSafe(claims: ReadonlyArray<{ start: number; end: number }>
   return here.every((c, i) => here.every((d, j) => i === j || c.end <= d.start || d.end <= c.start))
 }
 
+/** A markdown table row: opens with a pipe, or has two or more cell separators (links masked, so a pipe inside a URL does not count). */
+function isTableRowLine(line: string): boolean {
+  return /^\s*\|/.test(line) || (maskLinks(line).match(/\|/g) ?? []).length >= 2
+}
+
 /** keepVerified fallback: only the unverified amounts (and the hedge word right before each) are taken out of the sentence; every other character stays. */
 function removeAmountsOnly(sentenceWithBreak: string, spans: Array<[number, number]>): string {
   let out = sentenceWithBreak
@@ -852,6 +857,15 @@ export function redactUnsupportedClaims(text: string, claims: MoneyClaim[], opts
     const isListLine = /^\s*(?:\*\*)?\s*(?:[-*•+]|\d+[.)])\s/u.test(text.slice(lineStart, b))
     if (opts.wholeSentence && !isListLine) return pieceDropped()
     droppedOnLine = false
+    // A markdown TABLE ROW is cells, not a prose sentence: no clause delimiter inside it ("Quy Nhon Center - 08 Tran Doc" in a name cell, a "," or ":" in
+    // another) is a cut point. Measured live: the clause cut ran from such a delimiter to the end of the row and left "| Name" with no price, no
+    // link cell and the row's closing pipe. Only the unverified amounts go; every cell (and so the row's cell count) stays.
+    // A row is a line that opens with a pipe, or (pipe-less table) carries at least two cell separators.
+    if (isTableRowLine(lineAt(text, a)) && claimSpansAreSafe(claims, a, b)) {
+      const kept = removeAmountsOnly(raw, [...inSentence].reverse().map((c): [number, number] => [c.start - a, c.end - a]))
+      dropped = false
+      return kept
+    }
     // Round 42 round 3 (commit 3a): with the opt-in, a sentence that also states a verified amount is cut around it BEFORE the clause path (1),
     // whose cut can take the verified amount with the clause (S5h3) or drop the sentence whole (travelGuard.test.ts case 4).
     if (opts.noAmountOnlyFallback) {

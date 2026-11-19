@@ -13,6 +13,7 @@ import {
   type ShoppingOffer,
   type SourceRef,
 } from './entity'
+import { readStayOffer } from './stayOffer'
 
 // ── THE ONLY WAY A CanonicalEntity IS CREATED ────────────────────────────────
 //
@@ -364,6 +365,8 @@ export interface StayRow extends ActionSource {
   opening_hours_week?: Record<string, string>
   price_range_text?: string
   place_types?: string[]
+  /** The matched realtime offer's structured price (set by `attachRealtime` next to `agoda_offer_url`); same shape as `StayOffer`. */
+  agoda_offer_price?: unknown
 }
 
 export function buildStayEntity(row: StayRow, opts: { bookingLink?: string; agodaLink?: string } = {}): CanonicalEntity {
@@ -398,6 +401,8 @@ export function buildStayEntity(row: StayRow, opts: { bookingLink?: string; agod
   if (row.phone) provenance['attributes.phone'] = staySource
   if (row.opening_hours) provenance['availability.openingHours'] = staySource
   if (row.price_range_text) provenance['pricing.priceRangeText'] = staySource
+
+  const stayOffer = readStayOffer(row.agoda_offer_price)
 
   return {
     v: 1,
@@ -444,6 +449,7 @@ export function buildStayEntity(row: StayRow, opts: { bookingLink?: string; agod
     provenance,
     ext: {
       ...(Number.isFinite(stars) ? { stars: stars as number } : {}),
+      ...(stayOffer ? { stayOffer } : {}),
       ...(row.opening_hours_week && Object.keys(row.opening_hours_week).length > 0
         ? { openingHoursWeek: row.opening_hours_week }
         : {}),

@@ -131,7 +131,23 @@ export interface ShoppingExt {
   specs?: Record<string, string | number>
 }
 
-export interface TravelExt { stars?: number }
+/**
+ * The provider's own structured price for THIS stay, as the realtime layer returned it (never computed, never parsed from prose).
+ * Present only when a fresh offer for the same hotel exists; the card shows one reference-price line from it, naming the platform and the check time.
+ */
+export interface StayOffer {
+  platform: string
+  amount: number
+  currency: 'VND' | 'USD'
+  /** `per_night` when the provider's figure is one night's rate; `total` when it is the stay total. */
+  unit: 'per_night' | 'total'
+  nights?: number
+  guests?: number
+  /** ISO instant of the provider check. */
+  checkedAt: string
+}
+
+export interface TravelExt { stars?: number; stayOffer?: StayOffer }
 
 /**
  * 🚨 EMPTY ON PURPOSE, BOTH OF THEM.

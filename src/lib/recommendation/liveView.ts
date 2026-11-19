@@ -1,5 +1,6 @@
 import type { Recommendation, RecommendationReason } from './recommendation'
-import type { EntityDomain, EntityKind } from './entity'
+import type { EntityDomain, EntityKind, StayOffer } from './entity'
+import { readStayOffer } from './stayOffer'
 import type { Action } from './actions'
 import { resolveActionLabel } from './actionLabel'
 import { UNKNOWN } from '@/lib/ai/consultative/normalizedEvidence'
@@ -102,6 +103,8 @@ export interface LivePlace {
    * always be hedged as a reference.
    */
   priceRangeText?: string
+  /** A stay's structured provider price (realtime layer), with platform and check time; the card shows one reference-price line from it. */
+  stayOffer?: StayOffer
   /** The full published week, when the provider gave one. */
   openingHoursWeek?: Record<string, string>
   distanceKm?: number
@@ -294,6 +297,7 @@ function toLive(r: Recommendation, actionLimit: number): LivePlace {
   const priceSignalRaw = str(e.pricing.priceSignal.value as unknown)
   const priceSignal = priceSignalRaw && /\d/.test(priceSignalRaw) ? priceSignalRaw : undefined
   const priceRangeText = str(e.pricing.priceRangeText?.value as unknown)
+  const stayOffer = readStayOffer((e.ext as { stayOffer?: unknown } | undefined)?.stayOffer) ?? undefined
   const hoursWeek = e.ext && typeof e.ext === 'object'
     ? (e.ext as { openingHoursWeek?: Record<string, string> }).openingHoursWeek
     : undefined
@@ -324,6 +328,7 @@ function toLive(r: Recommendation, actionLimit: number): LivePlace {
     ...(e.pricing.priceLevel !== null && e.pricing.priceLevel !== undefined ? { priceLevel: e.pricing.priceLevel } : {}),
     ...(priceSignal ? { priceSignal } : {}),
     ...(priceRangeText ? { priceRangeText } : {}),
+    ...(stayOffer ? { stayOffer } : {}),
     ...(hoursWeek && Object.keys(hoursWeek).length > 0 ? { openingHoursWeek: hoursWeek } : {}),
     ...(e.location.distanceKm !== null && e.location.distanceKm !== undefined ? { distanceKm: e.location.distanceKm } : {}),
     ...(categories && categories.length > 0 ? { categories } : {}),

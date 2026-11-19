@@ -106,7 +106,7 @@ export async function attachRealtime(toolName: CommerceToolName, result: unknown
 
   const rows = offers.map(o => describe(o, now, built.assumedAdults, built.criteria))
   result.realtime_results = rows
-  if (built.criteria.vertical === 'hotel') attachAgodaOfferUrls(result, offers)
+  if (built.criteria.vertical === 'hotel') attachAgodaOfferUrls(result, offers, now, built.criteria)
   result.realtime_note = noteFor(rows, built.assumedAdults, built.criteria)
   // Web only: ONE "Kiểm tra giá & tình trạng" link per offer whose provider can recheck, placed BEFORE its booking link (flow: recheck → booking CTA).
   // Native clients never receive it (no client shows a dead link); a provider with no recheck, or a result Tappy does not hold, gets none.
@@ -148,17 +148,21 @@ export async function attachRealtime(toolName: CommerceToolName, result: unknown
 const nameKey = (s: unknown): string => (typeof s === 'string' ? normalizeVN(s.toLowerCase()).replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim() : '')
 
 function clearAgodaOfferUrls(result: Row): void {
-  if (Array.isArray(result.hotel_list)) for (const h of result.hotel_list) if (isRecord(h)) delete h.agoda_offer_url
+  if (Array.isArray(result.hotel_list)) for (const h of result.hotel_list) if (isRecord(h)) { delete h.agoda_offer_url; delete h.agoda_offer_price }
 }
 
 /**
  * The hotel card's lead booking action is the hotel's own Agoda page (owner, 19/11/2026): each `hotel_list` row gets the Agoda offer's booking URL when
  * an Agoda offer names the SAME hotel (normalised name equal, or one contains the other with at least two words). The URL is the one the provider
  * returned (already restricted to Agoda's own hosts); nothing is composed, and a row with no matching offer gets nothing.
+ *
+ * The same row also gets `agoda_offer_price`: the matched offer's structured price, currency, nights, guests and check instant, for the card's one
+ * reference-price line. Only a FRESH price (claimablePrice: inside its TTL, a Tappy-checked offer with a currency and a check time) is attached;
+ * nothing is computed, so a stale or price-less offer leaves the row with its URL and no price.
  */
-function attachAgodaOfferUrls(result: Row, offers: SearchResult[]): void {
+function attachAgodaOfferUrls(result: Row, offers: SearchResult[], now: Date, c: SearchCriteria): void {
   if (!Array.isArray(result.hotel_list)) return
-  const agoda = offers.filter(o => o.provider === 'agoda' && typeof o.bookingUrl === 'string' && o.bookingUrl).map(o => ({ key: nameKey(o.title), url: o.bookingUrl as string }))
+  const agoda = offers.filter(o => o.provider === 'agoda' && typeof o.bookingUrl === 'string' && o.bookingUrl).map(o => ({ key: nameKey(o.title), url: o.bookingUrl as string, offer: o }))
   if (agoda.length === 0) return
   const words = (k: string) => k.split(' ').filter(Boolean).length
   for (const h of result.hotel_list) {
@@ -166,7 +170,23 @@ function attachAgodaOfferUrls(result: Row, offers: SearchResult[]): void {
     const k = nameKey(h.name)
     if (!k) continue
     const hit = agoda.find(a => a.key && (a.key === k || (words(a.key) >= 2 && words(k) >= 2 && (a.key.includes(k) || k.includes(a.key)))))
-    if (hit) h.agoda_offer_url = hit.url
+    if (!hit) continue
+    h.agoda_offer_url = hit.url
+    const o = hit.offer
+    const price = claimablePrice(o, now)
+    if (price !== null && (o.currency === 'VND' || o.currency === 'USD') && o.lastCheckedAt !== null) {
+      const perNight = o.priceUnit === 'per_night'
+      const nightsRaw = c.vertical === 'hotel' && c.context.checkIn && c.context.checkOut ? Math.round((Date.parse(c.context.checkOut) - Date.parse(c.context.checkIn)) / 86_400_000) : null
+      h.agoda_offer_price = {
+        platform: MERCHANT.agoda,
+        amount: price,
+        currency: o.currency,
+        unit: perNight ? 'per_night' : 'total',
+        ...(nightsRaw !== null && nightsRaw >= 1 && nightsRaw <= 30 ? { nights: nightsRaw } : {}),
+        ...(c.context.adults !== undefined ? { guests: c.context.adults } : {}),
+        checkedAt: o.lastCheckedAt,
+      }
+    }
   }
 }
 
