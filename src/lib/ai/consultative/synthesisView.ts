@@ -240,7 +240,21 @@ function entityCommerceLinks(e: Entity): { links: SynthesisCommerceView[]; ownSh
       out.push(projectCommerce(r))
     }
   }
-  return { links: out, ownShop }
+  return { links: leadWithShoppingPartner(out), ownShop }
+}
+
+/**
+ * 19/11/2026 (owner): Lazada is the shopping affiliate partner. Its handoff moves ahead of the other marketplaces' handoffs of the same kind
+ * (a detail page never passes a deeper detail page, a search page never passes a detail page); every other order is kept. Re-ordering only.
+ */
+function leadWithShoppingPartner(links: SynthesisCommerceView[]): SynthesisCommerceView[] {
+  const at = links.findIndex(l => l.providerId === 'lazada')
+  if (at <= 0) return links
+  const lz = links[at]
+  const isSearch = (l: SynthesisCommerceView) => l.kind === 'SEARCH_HANDOFF'
+  const ahead = links.findIndex(l => l.providerId !== 'lazada' && isSearch(l) === isSearch(lz) && l.depth <= lz.depth)
+  if (ahead < 0 || ahead >= at) return links
+  return [...links.slice(0, ahead), lz, ...links.slice(ahead, at), ...links.slice(at + 1)]
 }
 
 /** The entity's leading handoff: the first DETAIL-level link of the offer's OWN shop (a search page, or another shop, never leads). */

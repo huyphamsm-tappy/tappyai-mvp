@@ -282,6 +282,10 @@ export interface ActionSource {
  * never in front of them. "Deeper" is not "more relevant".
  */
 const COMMERCE_PRIORITY = -1
+/** The shopping affiliate partner (providerId of the CCP registry) leads a product card; at most this many other platforms follow it. */
+const SHOPPING_DOMAIN = 'shopping'
+const SHOPPING_LEAD = 'lazada'
+const MAX_SECONDARY_SHOPPING_LINKS = 3
 
 /**
  * Normalised destination identity: scheme-insensitive host, path without a
@@ -302,6 +306,13 @@ function destinationKey(url: string | undefined): string | null {
 function commerceActions(rows: readonly CommerceLinkRow[] | undefined, domain: string): Action[] {
   if (!Array.isArray(rows) || rows.length === 0) return []
   const out: Action[] = []
+  // 19/11/2026 (owner): Lazada is the shopping affiliate partner. CCP keeps its depth-first order (a deeper product page beats a search page);
+  // among rows of the same depth or deeper a Lazada row steps ahead of the other marketplaces. Pure re-ranking of rows that already exist.
+  const rankIndex = (row: CommerceLinkRow, index: number): number => {
+    if (domain !== SHOPPING_DOMAIN || row.providerId !== SHOPPING_LEAD || row.primary === false) return index
+    const ahead = rows.findIndex(o => isCommerceLinkRow(o) && !isSearchFallbackRow(o) && o.primary !== false && o.providerId !== SHOPPING_LEAD && o.depth <= row.depth)
+    return ahead >= 0 && ahead < index ? ahead - 0.5 : index
+  }
   rows.forEach((row, index) => {
     if (!isCommerceLinkRow(row)) return
     // A1 (UAT 2026-09-28): the row's ONE search-page fallback (no own page on any platform). It is a
@@ -330,11 +341,15 @@ function commerceActions(rows: readonly CommerceLinkRow[] | undefined, domain: s
       ...a,
       // Ranked order from CCP is preserved; a fraction keeps every PRIMARY commerce action ahead of
       // index 0. A secondary one keeps the table priority of its kind.
-      priority: primary ? COMMERCE_PRIORITY + index / 100 : nonPartnerStay ? priorityFor(domain, 'website') : a.priority,
+      priority: primary ? COMMERCE_PRIORITY + rankIndex(row, index) / 100 : nonPartnerStay ? priorityFor(domain, 'website') : a.priority,
       commerce: commerceFactsOf(row, primary),
     })
   })
-  return out
+  if (domain !== SHOPPING_DOMAIN) return out
+  // Lead + at most 3 other platforms. Search fallbacks (urlKind 'search', not primary) are not counted: withoutShadowedFallbacks judges them.
+  const isFallback = (a: Action) => a.urlKind === 'search' && a.commerce?.primary === false
+  const kept = new Set(out.filter(a => !isFallback(a)).sort((a, b) => a.priority - b.priority).slice(0, 1 + MAX_SECONDARY_SHOPPING_LINKS))
+  return out.filter(a => isFallback(a) || kept.has(a))
 }
 
 function commerceFactsOf(row: CommerceLinkRow, primary: boolean): CommerceActionFacts {
@@ -543,7 +558,9 @@ export function buildActions(
     if (isDeepEnough(facts)) {
       const a = action(rowKind, rowLink, domain, { urlKind: 'direct' })
       // Booking.com is not an affiliate partner (owner, 19/11/2026): on a stay its page stays as a secondary link, behind Maps — never the lead.
-      out.push(a && domain === 'travel' && providerOwning(rowLink) === 'booking' ? { ...a, priority: priorityFor(domain, 'website') } : a)
+      // Lazada is the shopping affiliate partner (owner, 19/11/2026): a deep Lazada product page that came with the row leads the other marketplaces' pages (same kind).
+      const lazadaLead = a && domain === SHOPPING_DOMAIN && rowKind === 'purchase' && providerOwning(rowLink) === SHOPPING_LEAD
+      out.push(a && domain === 'travel' && providerOwning(rowLink) === 'booking' ? { ...a, priority: priorityFor(domain, 'website') } : a && lazadaLead ? { ...a, priority: COMMERCE_PRIORITY - 0.5 } : a)
     }
   } else {
     out.push(action(rowKind, rowKind === 'website' ? venueSite(rowLink) : rowLink, domain, { urlKind: 'direct' }))

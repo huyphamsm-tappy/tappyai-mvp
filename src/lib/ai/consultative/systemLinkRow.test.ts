@@ -18,6 +18,10 @@ describe('compactSystemLinks', () => {
     const out = compactSystemLinks([mk('Agoda · Hotel A', 'https://a/1'), mk('Agoda · Hotel A', 'https://a/2'), mk('Booking · Hotel A', 'https://b/1')])
     expect(out.map(l => l.url)).toEqual(['https://a/1', 'https://b/1'])
   })
+  it('19/11 (owner): the affiliate partners lead the row (Agoda, Vexere, Lazada), every other platform follows, each group in ranked order', () => {
+    const out = compactSystemLinks([mk('Booking.com'), mk('Shopee'), mk('Hotel A · Agoda'), mk('Tiki'), mk('Vexere'), mk('Product · Lazada')])
+    expect(out.map(l => l.name)).toEqual(['Hotel A · Agoda', 'Vexere', 'Product · Lazada', 'Booking.com', 'Shopee', 'Tiki'])
+  })
   it('a short row is returned untouched', () => {
     const links = [mk('A'), mk('B')]
     expect(compactSystemLinks(links)).toEqual(links)

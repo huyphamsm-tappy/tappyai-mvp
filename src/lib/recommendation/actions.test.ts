@@ -239,6 +239,39 @@ describe('19/11 (owner): a stay card leads with THIS hotel\'s own Agoda page; Bo
   })
 })
 
+describe('19/11 (owner): a product card leads with the Lazada partner page; the other marketplaces follow (at most 3)', () => {
+  const SHOPEE = 'https://shopee.vn/Tai-nghe-X-i.88201679.23456789'
+  const LAZADA = 'https://www.lazada.vn/products/tai-nghe-x-i123456-s654321.html'
+  const TIKTOK = 'https://shop.tiktok.com/view/product/1729384756'
+  const base = {
+    requestId: 'r', kind: 'PRODUCT_PAGE', merchantName: 'M', domain: 'shopping', intentType: 'buy_product', capability: 'product_discovery',
+    depth: 4, guestDepth: 4, authenticatedDepth: null, authRequiredAt: 'before_checkout', handoff: 'guest', expiresAt: null,
+    freshness: { source: 's', retrievedAt: '2026-11-19T00:00:00Z', expiresAt: null, freshnessType: 'static', confidence: 0.9 },
+    assumedParams: [], limitations: [], tracked: false,
+  }
+  const cl = (providerId: string, url: string, extra: Record<string, unknown> = {}) => ({ ...base, linkId: `l-${providerId}-${String(extra.depth ?? 4)}`, providerId, url, destinationUrl: url, ...extra }) as never
+  const platforms = (rows: unknown[], link?: string) => buildActions({ name: 'Tai nghe X', ...(link ? { link } : {}), commerce_links: rows as never }, 'shopping').filter(a => a.kind === 'purchase').map(a => a.url)
+
+  it('a Lazada commerce link leads even when CCP ranked it behind Shopee at the same depth', () => {
+    expect(platforms([cl('shopee', SHOPEE), cl('tiktokshop', TIKTOK), cl('lazada', LAZADA)])[0]).toBe(LAZADA)
+  })
+  it('depth still comes first: a deeper marketplace page keeps the lead over a shallower Lazada one', () => {
+    expect(platforms([cl('shopee', SHOPEE, { depth: 5, guestDepth: 5 }), cl('lazada', LAZADA, { depth: 4 })])[0]).toBe(SHOPEE)
+  })
+  it('without a Lazada link the CCP order is untouched', () => {
+    expect(platforms([cl('shopee', SHOPEE), cl('tiktokshop', TIKTOK)])).toEqual([SHOPEE, TIKTOK])
+  })
+  it('a Lazada row listing link (the product page that came with the row) leads the other marketplaces', () => {
+    expect(platforms([cl('shopee', SHOPEE)], LAZADA)[0]).toBe(LAZADA)
+  })
+  it('at most 3 other platforms follow the lead', () => {
+    const rows = [cl('shopee', SHOPEE), cl('tiktokshop', TIKTOK), cl('tiki', 'https://tiki.vn/tai-nghe-x-p111.html'), cl('dienmayxanh', 'https://www.dienmayxanh.com/tai-nghe/x'), cl('lazada', LAZADA)]
+    const urls = platforms(rows)
+    expect(urls[0]).toBe(LAZADA)
+    expect(urls.length).toBeLessThanOrEqual(4)
+  })
+})
+
 describe('the flags that gate all of this are OFF', () => {
   // 🚨 Both changes are staged, and shipped behaviour must be unchanged until
   // their prerequisites land. A flag flipped by accident is exactly the kind of

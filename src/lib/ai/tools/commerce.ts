@@ -31,7 +31,7 @@ import type { ResolveDeps } from '@/lib/providers/realtime/resolve'
 import { normalizeVN } from '@/lib/ai/intent'
 import { linkDepthClass } from '@/lib/commerce/linkDepth'
 import { buildCoachLandingLink, buildVexereFlightLink, buildVexereTrainLandingLink, PLAIN_PLATFORM_LANDINGS } from '@/lib/platformLinks/travel'
-import { entryFromCcp, landingEntry, merchantOfLink, orderLeadFirst, transportAsked, withoutPartnerSet, TRANSPORT_LEAD, HOTEL_LEAD, type PartnerEntry, type PartnerLink } from './partnerLinkSet'
+import { entryFromCcp, landingEntry, merchantOfLink, orderLeadFirst, transportAsked, withoutPartnerSet, TRANSPORT_LEAD, HOTEL_LEAD, SHOPPING_LEAD, type PartnerEntry, type PartnerLink } from './partnerLinkSet'
 import { fetchEventPageText, scheduleFacts, scheduleIsPast, statedScheduleOf, type FetchTextFn } from './eventSchedule'
 
 // ── The Phase-6 seam: tool result → CCP → `commerce_links` on the row ────────
@@ -1123,6 +1123,7 @@ async function eventScheduleOf(url: string, ctx: CommerceAttachContext, now: Dat
 
 /** Product pages the platform offers from one web search. */
 const MAX_WEB_PRODUCT_LINKS = 3
+const MAX_WEB_PRODUCT_CANDIDATES = 8
 
 /**
  * A web result that IS a product page of a registry shopping merchant (the model searched `site:<store> <product>` itself, in
@@ -1136,7 +1137,8 @@ function attachProductHandoffs(r: Row, ctx: CommerceAttachContext, now: Date): R
   const rows: CommerceLinkRow[] = []
   const names: string[] = []
   for (const h of results) {
-    if (rows.length >= MAX_WEB_PRODUCT_LINKS) break
+    // Scan past the display cap: the shopping affiliate partner (Lazada) leads the row even when its page ranks later in the web results.
+    if (rows.length >= MAX_WEB_PRODUCT_CANDIDATES) break
     const url = str(h?.link)
     const title = str(h?.title)
     if (!url || !title) continue
@@ -1152,8 +1154,10 @@ function attachProductHandoffs(r: Row, ctx: CommerceAttachContext, now: Date): R
     names.push(title)
   }
   if (rows.length === 0) return r
-  r.product_links = rows.map((l, i) => ({ name: names[i], platform: l.merchantName, url: l.url }))
-  r._tappy_commerce = rows.map((l): RouteHandoffFacts => ({
+  // Owner decision 19/11/2026: the partner (Lazada) first, the other platforms behind it in their found order; stable, nothing re-composed.
+  const order = rows.map((l, i) => i).sort((a, b) => (rows[a].providerId === SHOPPING_LEAD ? 0 : 1) - (rows[b].providerId === SHOPPING_LEAD ? 0 : 1) || a - b).slice(0, MAX_WEB_PRODUCT_LINKS)
+  r.product_links = order.map(i => ({ name: names[i], platform: rows[i].merchantName, url: rows[i].url }))
+  r._tappy_commerce = order.map(i => rows[i]).map((l): RouteHandoffFacts => ({
     merchantName: l.merchantName, providerId: l.providerId, kind: l.kind, depth: l.depth, guestDepth: l.guestDepth, authRequiredAt: l.authRequiredAt,
     linkId: l.linkId, requestId: l.requestId, assumedParams: l.assumedParams, limitations: l.limitations,
   }))

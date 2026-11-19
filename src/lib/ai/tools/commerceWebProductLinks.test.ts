@@ -49,6 +49,19 @@ describe('web_search results that are a registry merchant\'s product page become
     expect(links(r)).toHaveLength(3)
     expect(r.results).toHaveLength(6)
   })
+  it('19/11 (owner): a Lazada product page leads the row even when the web results ranked it last; the other platforms keep their order', async () => {
+    const r = await run([
+      { title: 'Máy A', link: 'https://www.dienmayxanh.com/may-lanh/model-a-inverter' },
+      { title: 'Máy B', link: 'https://www.dienmayxanh.com/may-lanh/model-b-inverter' },
+      { title: 'Máy C', link: 'https://www.dienmayxanh.com/may-lanh/model-c-inverter' },
+      { title: 'Máy D', link: 'https://www.lazada.vn/products/may-lanh-d-i123456.html' },
+    ], ['máy lạnh'])
+    const facts = r._tappy_commerce as Array<{ providerId: string }>
+    expect(links(r)).toHaveLength(3)
+    expect(links(r)[0].platform).toBe('Lazada')
+    expect(facts[0].providerId).toBe('lazada')
+    expect(links(r).slice(1).map(l => l.name)).toEqual(['Máy A', 'Máy B'])
+  })
   it('the platform facts ride along as for every other handoff', async () => {
     const r = await run([{ title: 'iPhone 15 256GB', link: 'https://www.dienmayxanh.com/dien-thoai/iphone-15-256gb' }], ['iPhone 15 256GB'])
     const facts = r._tappy_commerce as Array<{ providerId: string; kind: string }>

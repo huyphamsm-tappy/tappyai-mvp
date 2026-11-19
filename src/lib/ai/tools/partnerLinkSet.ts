@@ -11,6 +11,8 @@ import { normalizeVN } from '@/lib/ai/intent'
 /** The affiliate platform a hotel row leads with (Agoda) and the one a flight / coach / train row leads with (Vexere): providerIds of the registry. */
 export const HOTEL_LEAD = 'agoda'
 export const TRANSPORT_LEAD = 'vexere'
+/** The affiliate platform a shopping (product) row leads with: Lazada. */
+export const SHOPPING_LEAD = 'lazada'
 
 /** Entries of the lead (affiliate) platform kept at the head of the row (hotel: the first offer's "check price" + booking link). */
 export const MAX_LEAD_LINKS = 2
