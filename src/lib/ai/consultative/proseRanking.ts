@@ -66,13 +66,22 @@ function saidAfter(text: string, at: number, end: number): string | null {
 }
 
 /** Is the span a name of this candidate? The share of the span's tokens the candidate has, or null. */
-function overlap(span: string, name: string): number | null {
+function overlap(span: string, name: string, common?: ReadonlySet<string>): number | null {
   const f = fold(span), n = fold(name)
   if (f.length < 3) return null
   if (f === n) return 1
   const st = tokens(span), nt = new Set(tokens(name))
   if (st.length === 0 || nt.size === 0) return null
   const shared = st.filter(t => nt.has(t))
+  // The words most listings share ("hotel", the city) tell nothing: a name matches only when every DISTINCTIVE word of the span is in the listing (final UAT 19/11: "Khach san Menora Quy Nhon"
+  // took the card of "Khach san Sai Gon - Quy Nhon": four of five words are shared, the one that names the hotel is not).
+  if (common && !shared.some(isCode)) {
+    const spanSet = new Set(st)
+    const spanOnly = st.filter(t => !common.has(t) && !isCode(t) && !nt.has(t))
+    const listingOnly = [...nt].filter(t => !common.has(t) && !isCode(t) && !spanSet.has(t))
+    // both sides carry a word the other lacks: two different hotels of one city, not one hotel named loosely
+    if (spanOnly.length > 0 && listingOnly.length > 0 && spanOnly.length >= shared.filter(t => !common.has(t)).length) return null
+  }
   // a model code the span and the listing share names the listing, even inside a long bold sentence
   if (shared.some(isCode)) return 1
   const a = shared.length / st.length
@@ -87,12 +96,16 @@ function overlap(span: string, name: string): number | null {
 export function rankingFromProse(text: string, candidates: readonly RankCandidate[]): RankingContract | null {
   const tokenCount = new Map<string, number>()
   for (const c of candidates) for (const t of new Set(tokens(c.name))) tokenCount.set(t, (tokenCount.get(t) ?? 0) + 1)
+  const commonCut = Math.max(3, Math.ceil(candidates.length / 2))
+  // venues only (products carry a price and keep the older rule: a brand word shared by several of them is how they are told apart)
+  const venuesOnly = candidates.every(c => c.price === undefined || c.price === null)
+  const common = venuesOnly ? new Set([...tokenCount.entries()].filter(([, n]) => n >= commonCut).map(([t]) => t)) : undefined
   const first = new Map<number, number>()
   const said = new Map<number, string>()
   // The answer's first pick names a model code that no single listing could be matched to: a LATER pick that did match is not the answer's pick, so nothing is crowned.
   let firstPickUnresolved = false
   for (const { s, at, after, said: words } of boldSpans(text)) {
-    let pool = candidates.map((c, i) => ({ i, a: overlap(s, c.name) })).filter((x): x is { i: number; a: number } => x.a !== null).map(x => x.i)
+    let pool = candidates.map((c, i) => ({ i, a: overlap(s, c.name, common) })).filter((x): x is { i: number; a: number } => x.a !== null).map(x => x.i)
     if (pool.length === 0) { if (first.size === 0 && tokens(s).some(isCode)) firstPickUnresolved = true; continue }
     if (pool.length > 1) {
       // the price stated beside the name says which listing it is

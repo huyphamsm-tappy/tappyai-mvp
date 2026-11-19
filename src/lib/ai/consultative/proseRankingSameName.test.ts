@@ -31,6 +31,12 @@ describe('rankingFromProse: a name two listings share', () => {
     expect(rankingFromProse('I choose Pho Thin Bo Ho, 19 Hang Voi', c)?.picks[0].at).toBe(0)
     expect(rankingFromProse('I choose Pho Thin Bo Ho, somewhere', c)).toBeNull()
   })
+  it('the words most listings share do not make a match: another hotel in the same city is not the one named', () => {
+    const c = [{ name: 'Khach san Sai Gon - Quy Nhon' }, { name: 'Khach san Mira Quy Nhon' }, { name: 'Khach san Sala Quy Nhon' }, { name: 'Khach san Menora Quy Nhon' }]
+    const r = rankingFromProse('Tonight **Khach san Menora Quy Nhon** has a room.', c)
+    expect(r?.picks.map(p => p.name)).toEqual(['Khach san Menora Quy Nhon'])
+    expect(rankingFromProse('Tonight **Khach san Lotus Quy Nhon** has a room.', c)).toBeNull()
+  })
   it('a shorter mention that is the start of a longer name already picked is not another card', () => {
     const c = [{ name: 'Bun Bo Hue O Lac CN 2' }, { name: 'Bun Bo Hue O Lac' }]
     const r = rankingFromProse('Start with **Bun Bo Hue O Lac CN 2**; Bun Bo Hue O Lac CN 2 opens early.', c)
