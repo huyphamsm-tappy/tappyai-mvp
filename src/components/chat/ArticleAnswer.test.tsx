@@ -85,12 +85,12 @@ describe('ArticleAnswer', () => {
     expect(renderToStaticMarkup(<ImageGrid images={[p('a'), p('b')]} />)).toBe('')
   })
 
-  it('answerSources / SourcesFooter: one entry per site in order, safe https only, the link text as label, no third-party favicon', () => {
-    const text = 'A [VnExpress](https://vnexpress.net/a) và [Tuổi Trẻ](https://tuoitre.vn/b), lại [VnExpress khác](https://www.vnexpress.net/c), [x](http://plain.example/x), [y](javascript:alert(1)), [z](https://user:pw@cred.example/p).'
-    expect(answerSources(text)).toEqual([{ label: 'VnExpress', href: 'https://vnexpress.net/a', host: 'vnexpress.net' }, { label: 'Tuổi Trẻ', href: 'https://tuoitre.vn/b', host: 'tuoitre.vn' }])
+  it('answerSources / SourcesFooter: one entry per page in order (the same page twice counts once), safe https only, the link text as label, no third-party favicon', () => {
+    const text = 'A [VnExpress](https://vnexpress.net/a) và [Tuổi Trẻ](https://tuoitre.vn/b), lại [VnExpress khác](https://www.vnexpress.net/c), [lặp](https://vnexpress.net/a/#top), [x](http://plain.example/x), [y](javascript:alert(1)), [z](https://user:pw@cred.example/p).'
+    expect(answerSources(text)).toEqual([{ label: 'VnExpress', href: 'https://vnexpress.net/a', host: 'vnexpress.net' }, { label: 'Tuổi Trẻ', href: 'https://tuoitre.vn/b', host: 'tuoitre.vn' }, { label: 'VnExpress khác', href: 'https://www.vnexpress.net/c', host: 'vnexpress.net' }])
     const d = dom(renderToStaticMarkup(<SourcesFooter text={text} lang="vi" />))
-    expect(d.querySelector('summary')!.textContent).toContain('Nguồn · 2')
-    expect([...d.querySelectorAll('a')].map(a => a.getAttribute('href'))).toEqual(['https://vnexpress.net/a', 'https://tuoitre.vn/b'])
+    expect(d.querySelector('summary')!.textContent).toContain('Nguồn · 3')
+    expect([...d.querySelectorAll('a')].map(a => a.getAttribute('href'))).toEqual(['https://vnexpress.net/a', 'https://tuoitre.vn/b', 'https://www.vnexpress.net/c'])
     expect(d.querySelectorAll('img')).toHaveLength(0)
     expect(renderToStaticMarkup(<SourcesFooter text="không có link" lang="vi" />)).toBe('')
   })

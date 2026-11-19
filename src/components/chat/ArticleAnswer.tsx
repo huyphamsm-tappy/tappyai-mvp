@@ -252,17 +252,20 @@ export function ImageGrid({ images }: { images: readonly DocItemImage[] }) {
 /** A source of the answer: the link text the model wrote and the page's host. */
 export interface AnswerSource { label: string; href: string; host: string }
 
-/** The pages the answer links to, in order, one per host (markdown links with a safe https URL). */
-export function answerSources(text: string, max = 8): AnswerSource[] {
+/**
+ * The pages the answer links to, in order, one per PAGE (markdown links with a safe https URL; the same page twice counts once). It counted one per host: three articles of one newspaper
+ * read "Sources · 1" under an answer that cites three (final UAT 19/11).
+ */
+export function answerSources(text: string, max = 12): AnswerSource[] {
   const out: AnswerSource[] = []
   const seen = new Set<string>()
   for (const m of text.matchAll(/\[([^\]\n]{1,80})\]\((https:\/\/[^)\s]{1,500})\)/g)) {
     const href = m[2]
     if (!isSafeHttpsUrl(href)) continue
-    let host = ''
-    try { host = new URL(href).hostname.replace(/^www\./, '') } catch { continue }
-    if (!host || seen.has(host)) continue
-    seen.add(host)
+    let host = '', page = ''
+    try { const u = new URL(href); host = u.hostname.replace(/^www\./, ''); page = `${host}${u.pathname.replace(/\/+$/, '')}${u.search}` } catch { continue }
+    if (!host || seen.has(page)) continue
+    seen.add(page)
     out.push({ label: m[1].replace(/[*_`]/g, '').trim() || host, href, host })
     if (out.length >= max) break
   }
@@ -280,7 +283,7 @@ export function SourcesFooter({ text, lang }: { text: string; lang: string }) {
     <details data-doc-sources className="mt-3 group">
       <summary className="inline-flex cursor-pointer list-none items-center gap-2 rounded-full border border-gray-200 px-3 py-1 text-[13px] text-gray-600 dark:border-gray-700 dark:text-gray-300">
         <span className="flex -space-x-1.5">
-          {sources.slice(0, 3).map(s => (
+          {[...new Map(sources.map(s => [s.host, s])).values()].slice(0, 3).map(s => (
             <span key={s.host} className="flex h-5 w-5 items-center justify-center rounded-full bg-gray-200 text-[10px] font-semibold uppercase text-gray-700 ring-2 ring-white dark:bg-gray-700 dark:text-gray-100 dark:ring-gray-900">{s.host[0]}</span>
           ))}
         </span>
@@ -288,7 +291,7 @@ export function SourcesFooter({ text, lang }: { text: string; lang: string }) {
       </summary>
       <ul className="mt-2 space-y-1.5 text-[13px]">
         {sources.map(s => (
-          <li key={s.host}><a href={s.href} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline dark:text-blue-400">{s.label}</a> <span className="text-gray-500">· {s.host}</span></li>
+          <li key={s.href}><a href={s.href} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline dark:text-blue-400">{s.label}</a> <span className="text-gray-500">· {s.host}</span></li>
         ))}
       </ul>
     </details>

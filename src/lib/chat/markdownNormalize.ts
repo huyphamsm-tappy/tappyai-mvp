@@ -220,7 +220,19 @@ export function splitGluedBullets(text: string): string {
  * so every renderer (the chat, the public page of a shared answer) repairs what it is about to draw as well. Idempotent. Pure.
  */
 export function repairGluedMarkdown(text: string): string {
-  return splitGluedBullets(repairGluedTables(text))
+  return splitGluedQuote(splitGluedBullets(repairGluedTables(text)))
+}
+
+/** A quote written glued to the end of a sentence ("... a basket. > In short: ..."): its "> " starts a paragraph of its own, so it renders as a quote and not as a stray character. Fences, table rows and quote lines are skipped. Pure. */
+const GLUED_QUOTE = /(?<=[.!?:…])[ \t]+>[ \t]+(?=\S)/
+export function splitGluedQuote(text: string): string {
+  if (typeof text !== 'string' || !text.includes('>')) return text
+  let fenced = false
+  return text.split('\n').map(l => {
+    if (FENCE.test(l)) { fenced = !fenced; return l }
+    if (fenced || /^\s*[>|]/.test(l)) return l
+    return l.replace(GLUED_QUOTE, '\n\n> ')
+  }).join('\n')
 }
 
 const proseOf = (s: string): string => balanceBoldPerLine(repairGluedMarkdown(s))

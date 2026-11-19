@@ -3354,7 +3354,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // A free string, coerced in execute (transportMode.ts): same class as search_places.type —
           // an off-enum value ("bus", "grab") used to fail SDK validation and end the whole turn.
           mode: z.string().optional().describe('"intercity" cho xe khach/tau giua 2 tinh thanh, "taxi" cho di chuyen trong thanh pho/quang duong ngan bang taxi/xe cong nghe. Bo trong neu khong ro.'),
-          date: z.string().optional().describe('Ngay di dang YYYY-MM-DD neu user noi ro (chi cho xe khach/tau, khong bat buoc)'),
+          date: z.string().optional().describe('Ngay di dang YYYY-MM-DD neu user noi ro (chi cho xe khach/tau, khong bat buoc). The REAL travel date: the month the person named (late December -> YYYY-12-2x of the coming one), never the current month by default; leave it out when no date can be worked out. Tau hoa only where a railway line joins the two places.'),
           // 29 Oct 2026: the dated train list takes the adult count (Vexere passenger[adt]); same field and clamp as get_flight_prices.
           passengers: z.number().optional().describe('So hanh khach nguoi lon neu user noi ro (khong bat buoc; toi da 9 tren mot ve le)'),
         }),
