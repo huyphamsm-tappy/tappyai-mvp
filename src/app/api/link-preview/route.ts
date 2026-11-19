@@ -19,7 +19,7 @@ export const dynamic = 'force-dynamic'
 const MAX_URL = 1500
 /** The most characters of body text sent back (the passages together). */
 const MAX_EXCERPT = 700 // not exported: a Next route file may export only its HTTP methods and config
-const SCRIPT_LIKE = /^\s*(?:window\.|var\s|let\s|const\s|function\b|\(function|\{\s*"|\[\s*\{)|"\s*:\s*[\["{]|^\s*(?:xin chờ một lát|please wait|loading\b)/i
+const SCRIPT_LIKE = /^\s*(?:window\.|var\s|let\s|const\s|function\b|\(function|\{\s*"|\[\s*\{)|"\s*:\s*[\["{]|^\s*(?:xin\s+ch\S\s+m\S+t\s+l\S+t|please wait|loading\b)/i
 
 export async function GET(req: NextRequest) {
   const limited = await publicRateLimit(`link-preview:${clientIpKey(req)}`, 30, 60_000)

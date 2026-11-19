@@ -2802,7 +2802,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // A free string, coerced in execute (placeType.ts): an off-enum value from the model
           // ("entertainment") used to fail SDK validation and end the whole turn with an error.
           type: z.string().optional().describe('Loai dia diem: restaurant | cafe | spa | hotel | bar | gym | cinema | attraction | mall'),
-          // 19/11: the person's own narrowing ("ở Phan Xích Long", "gần chợ Bến Thành") had no field; it was squeezed into `query` or lost
+          // 19/11: the person's own narrowing (a street, "near the market") had no field; it was squeezed into `query` or lost
           ...(oneBrain ? { near: z.string().optional().describe('A street, ward or landmark inside the area, as the person said it (e.g. Phan Xich Long, near Ben Thanh market). Leave out when only a city or district was given') } : {}),
         }),
         execute: async ({ query, location: modelLocationArg, type: rawType, near }: { query: string; location?: string; type?: string; near?: unknown }) => {

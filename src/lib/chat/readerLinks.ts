@@ -11,7 +11,7 @@ export const READER_SCOPE = '.message-content, [data-doc-sources], [data-media],
 const NOT_READABLE = /(^|\.)(google\.[a-z.]+\/maps|maps\.google\.[a-z.]+|maps\.app\.goo\.gl|goo\.gl|youtube\.com|youtu\.be|tiktok\.com|facebook\.com|fb\.com|fb\.watch|instagram\.com|x\.com|twitter\.com|threads\.net|zalo\.me|t\.me|wa\.me|messenger\.com)$/i
 /**
  * 19/11 (owner: "we are an Agoda partner, why does the page not open"): a booking or shopping site is a page to ACT on, not an article to read, and its pages are drawn by script, so the reader showed
- * "Xin chờ một lát" and a line of JSON. The partners (Agoda, Vexere, Lazada) and the other travel and shopping platforms always open where they belong, whether or not the address carries a tracking mark.
+ * a "please wait" placeholder and a line of JSON. The partners (Agoda, Vexere, Lazada) and the other travel and shopping platforms always open where they belong, whether or not the address carries a tracking mark.
  */
 const ACTION_SITES = /(^|\.)(agoda\.[a-z.]+|vexere\.com|lazada\.[a-z.]+|shopee\.[a-z.]+|tiki\.vn|booking\.com|traveloka\.com|trip\.com|klook\.com|food\.grab\.com|grab\.com|shopeefood\.vn|befood\.vn|baemin\.vn|cellphones\.com\.vn|dienmayxanh\.com|thegioididong\.com|dienmaycholon\.vn)$/i
 
