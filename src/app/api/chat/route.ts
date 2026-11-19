@@ -3167,7 +3167,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       ...(oneBrain ? { present_failed: tool({
         description: 'Internal. The system uses this when a card or plan call could not be built. Never call it yourself.',
         parameters: z.object({}),
-        execute: async () => ({ error: 'presentation_failed', note: lang === 'en' ? 'The card could not be built. Write the answer in plain text now, with the key facts, figures and sources you already have.' : 'Không dựng được thẻ. Viết ngay câu trả lời bằng chữ, đủ các ý, số liệu và nguồn đã có.' }),
+        execute: async () => ({ error: 'presentation_failed', note: 'The card could not be built. Write the answer in plain text now, in the language of the person, with the key facts, figures and sources you already have.' }),
       }) } : {}),
       ...(oneBrain ? { present_plan: tool({
         description: PRESENT_PLAN_DESCRIPTION,
