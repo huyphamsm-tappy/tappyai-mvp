@@ -29,9 +29,10 @@ describe('the one general instruction', () => {
     expect(ONE_BRAIN_SHAPE_REMINDER).toContain('closing line of the buying rule')
     expect(ONE_BRAIN_SHAPE_REMINDER).toContain('[FOLLOWUPS] chips') // the reminder is last in the prompt: the chips line is named there too (measured 17/20 without it)
   })
-  it('venues: only what search_places returned is recommended (a web-found venue is searched by name first) and the written count matches the names; the plan card holds the one budget and the visa note for a border crossing (UI eval M1, 19/11)', () => {
-    expect(ONE_BRAIN_CORE).toContain('Recommend only venues that search_places returned')
-    expect(ONE_BRAIN_CORE).toContain('the count you write')
+  // 19/11: the "recommend only venues search_places returned" sentence was measured in three gates (s6, s8, s8b: content 3.54/3.45/3.39 vs 3.62 in M1, time and cost creeping up) with no gain on
+  // the venue questions, and was taken out again; the plan-card rules below stay (the visa gap closed in D30).
+  it('the plan card holds the one budget and the visa note for a border crossing (UI eval M1, 19/11); the venue-only sentence is not in the core', () => {
+    expect(ONE_BRAIN_CORE).not.toContain('Recommend only venues that search_places returned')
     expect(PRESENT_PLAN_DESCRIPTION).toContain('The budget appears ONCE, in the plan card')
     expect(PRESENT_PLAN_DESCRIPTION).toContain('whether the traveller needs a visa for their passport')
     // general principles only: no country, city or place name in them
