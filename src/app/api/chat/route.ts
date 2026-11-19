@@ -88,7 +88,7 @@ import { serperSearch } from '@/lib/ai/tools/common'
 import { dropInactiveMerchantRows, attachCommerceLinks as attachCommerceLinksBase } from '@/lib/ai/tools/commerce'
 import { dropLoginWallRows } from '@/lib/ai/tools/loginWallHosts'
 import { commerceActorHash, PROVIDER_REGISTRY } from '@/lib/ccp'
-import { ResultLedger, withResultIds, validateDeclared, resolveBookingLinks, makeProviderOfUrl, PRESENT_BLOCKS_DESCRIPTION, presentBlocksParameters } from '@/lib/presentation/declare'
+import { ResultLedger, withResultIds, validateDeclared, resolveBookingLinks, mergePresentations, makeProviderOfUrl, PRESENT_BLOCKS_DESCRIPTION, presentBlocksParameters } from '@/lib/presentation/declare'
 import { sealIdentity } from '@/lib/ccp/tracking/clickLink'
 import { rendersDecisionCard as rendersDecisionCardFor, rendersAskBlock } from '@/lib/ai/decisionSurface'
 import { normalizePwLang } from '@/lib/priceWatch/messages'
@@ -3244,8 +3244,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // a booking takes the partner link of its own tool result (written by the partner layer, never by the model); one without a link is dropped
           const resolved = declared ? resolveBookingLinks(declared, resultLedger) : null
           if (!resolved) return { ok: false, note: 'None of the blocks could be used (check kind, result_id and the sizes; a booking needs a result that carries a booking link). Write the answer as text.' }
-          enrichment.presentation = resolved.presentation
-          enrichment.presentationLinks = resolved.links
+          // a second call adds to the first (blocks of a type declared again replace that type only): see mergePresentations
+          const merged = mergePresentations(enrichment.presentation ? { presentation: enrichment.presentation, links: enrichment.presentationLinks ?? {} } : null, resolved)
+          enrichment.presentation = merged.presentation
+          enrichment.presentationLinks = merged.links
           // 16/11 (owner: real data only): before the cards are sent, each of their points is checked against what this turn's lookups returned (answerV4/factSense.ts)
           enrichment.verifyPresentation = p => verifyDeclaredFacts(p, resultLedger.evidence())
           return { ok: true, note: 'The app shows these blocks with your answer. Write the answer around them; do not repeat what a block already shows, do not say where it appears, and do not write a block name, placeholder or marker in the text.' }

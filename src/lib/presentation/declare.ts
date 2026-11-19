@@ -184,6 +184,24 @@ export function resolveBookingLinks(p: Presentation, ledger: ResultLedger): { pr
   return blocks.length ? { presentation: { v: p.v, blocks }, links } : null
 }
 
+/**
+ * A second present_blocks call used to REPLACE the first, so a model that declared the cards in one call and the table in another (final UAT 19/11: two of three comparisons of two subjects) ended with the
+ * table alone. A later call now replaces only the blocks of the types it declares again; the types it leaves out stay. The partner links of both are kept. Pure.
+ */
+export function mergePresentations(
+  prev: { presentation: Presentation; links: Record<string, BookingLink> } | null | undefined,
+  next: { presentation: Presentation; links: Record<string, BookingLink> },
+): { presentation: Presentation; links: Record<string, BookingLink> } {
+  if (!prev || prev.presentation.blocks.length === 0) return next
+  const again = new Set(next.presentation.blocks.map(b => b.type))
+  const kept = prev.presentation.blocks.filter(b => !again.has(b.type))
+  const blocks = [...kept, ...next.presentation.blocks]
+  const live = new Set(blocks.map(b => b.id))
+  const links: Record<string, BookingLink> = {}
+  for (const [id, l] of Object.entries({ ...prev.links, ...next.links })) if (live.has(id)) links[id] = l
+  return { presentation: { v: next.presentation.v, blocks }, links }
+}
+
 /** The live frame the server sends after the prose (an `8:` annotation: not stored, not in the text, ignored by clients that do not know it). `links` = the bookings' partner links by block id. */
 export function presentationAnnotation(p: Presentation, links?: Record<string, BookingLink>): { kind: typeof PRESENTATION_ANNOTATION_KIND; v: 1; presentation: Presentation; links?: Record<string, BookingLink> } {
   return { kind: PRESENTATION_ANNOTATION_KIND, v: 1, presentation: p, ...(links && Object.keys(links).length ? { links } : {}) }
