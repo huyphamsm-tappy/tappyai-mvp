@@ -290,7 +290,7 @@ export default function ResearchCanvas(p: ResearchCanvasProps) {
   const asMd = () => downloadBlob(new Blob([reportMarkdown(withChartTables(p.text, charts, locale), links)], { type: 'text/markdown;charset=utf-8' }), reportFileName(exportTitle, 'md'))
   const asPdf = async () => {
     setBusy(true)
-    try { await downloadReportPdf(withChartTables(p.text, charts, locale), links, exportTitle, pdfCoverOf(t, locale, exportTitle, p.research?.tier, Math.max(links.length, p.research?.sources ?? 0, sourceCountOf(p.text, links)))) } finally { setBusy(false) }
+    try { await downloadReportPdf(withChartTables(p.text, charts, locale), links, exportTitle, pdfCoverOf(t, locale, exportTitle, p.research?.tier, Math.max(links.length, sourceCountOf(p.text, links)))) } finally { setBusy(false) }
   }
   const asWord = async () => {
     setBusy(true)
@@ -310,7 +310,8 @@ export default function ResearchCanvas(p: ResearchCanvasProps) {
   )
 
   const date = p.research ? new Date().toLocaleDateString(locale === 'en' ? 'en-GB' : 'vi-VN') : null
-  const sources = Math.max(links.length, p.research?.sources ?? 0, sourceCountOf(p.text, links))
+  // the number of sources the report LISTS (final UAT 19/11: the pill said 256 over a list of 27: it counted the pages read, not the ones cited)
+  const sources = Math.max(links.length, sourceCountOf(p.text, links))
   const hasBar = showToc || !!toolbar
 
   return (
