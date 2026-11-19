@@ -103,6 +103,7 @@ export default function TripTimeline({ msgId, plan: rawPlan, places, stopImages 
         eyebrow: t('v206.trip.pdfEyebrow'), title: plan.title, facts: [facts, t('report.updated', { date })].filter(Boolean),
         kind: t('v206.trip.pdfEyebrow').split('·')[0].trim(), updated: t('report.updated', { date }), sources: 0, sourcesWord: '',
         words: { scope: t('report.design.scope'), caveats: t('report.design.caveats'), sources: t('report.design.sources'), footer: t('report.design.footer') },
+        labels: { line: t('v206.trip.pdfLine'), note: t('v206.trip.pdfNote'), footerBrand: t('v206.trip.pdfFooter') },
       }
       await downloadReportPdf(text, [], plan.title, cover)
     } finally { setPdfBusy(false) }

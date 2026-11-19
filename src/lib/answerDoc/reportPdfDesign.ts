@@ -68,7 +68,7 @@ function hero(m: DesignModel, o: DesignOptions): PdfNode[] {
   const pills: PdfNode[] = [pill(kind || 'BÁO CÁO NGHIÊN CỨU', '#14284F', null, '#CFE0FF')]
   if (sources > 0) pills.push(pill(`${sources} ${o.cover.sourcesWord ?? 'NGUỒN'}`.toUpperCase(), null, AMBER, AMBER))
   const heroStack: PdfNode[] = [
-    { columns: [logoNode(o.logo), { width: '*', stack: [{ text: 'TAPPYAI', bold: true, fontSize: 15, color: '#FFFFFF', margin: [0, 6, 0, 1] }, { text: 'RESEARCH  /  INTELLIGENCE', bold: true, fontSize: 7, color: SOFT }], margin: [12, 0, 0, 0] }], margin: [0, 0, 0, 16] },
+    { columns: [logoNode(o.logo), { width: '*', stack: [{ text: 'TAPPYAI', bold: true, fontSize: 15, color: '#FFFFFF', margin: [0, 6, 0, 1] }, { text: o.cover.labels?.line ?? 'RESEARCH  /  INTELLIGENCE', bold: true, fontSize: 7, color: SOFT }], margin: [12, 0, 0, 0] }], margin: [0, 0, 0, 16] },
     { columns: pills.map(p => ({ ...p })), columnGap: 8, margin: [0, 0, 0, 16] },
     { text: title, bold: true, fontSize: titleSize(title), color: '#FFFFFF', lineHeight: 1.18, margin: [0, 0, 0, 10] },
     ...(sub ? [{ text: sub, fontSize: 9.5, color: '#C3D2EE', margin: [0, 0, 0, 12] }] : []),
@@ -90,7 +90,7 @@ function hero(m: DesignModel, o: DesignOptions): PdfNode[] {
         { type: 'ellipse', x: 429, y: 105, r1: 6.5, r2: 6.5, color: CORAL },
       ],
     },
-    { absolutePosition: { x: PAGE.w - MX - 190, y: 40 }, width: 190, text: `RESEARCH NOTE   ${now.getFullYear()}.${pad2(now.getMonth() + 1)}`, alignment: 'right', bold: true, fontSize: 8, color: '#B5C6E8' },
+    { absolutePosition: { x: PAGE.w - MX - 190, y: 40 }, width: 190, text: `${o.cover.labels?.note ?? 'RESEARCH NOTE'}   ${now.getFullYear()}.${pad2(now.getMonth() + 1)}`, alignment: 'right', bold: true, fontSize: 8, color: '#B5C6E8' },
   ]
 }
 
@@ -284,7 +284,7 @@ export function reportPdfDesigned(text: string, links: readonly ReportLink[], o:
     },
     pageBreakBefore: (node: { headlineLevel?: number }, following: unknown[]) => !!node.headlineLevel && following.length === 0,
     footer: (page: number, pages: number) => ({
-      columns: [{ text: `${w.footer} ${updated.replace(/^\D+/, '')}  ·  TAPPYAI RESEARCH`.toUpperCase(), alignment: 'left' }, { text: `${pad2(page)} / ${pad2(pages)}`, alignment: 'right' }],
+      columns: [{ text: `${w.footer} ${updated.replace(/^\D+/, '')}  ·  ${o.cover.labels?.footerBrand ?? 'TAPPYAI RESEARCH'}`.toUpperCase(), alignment: 'left' }, { text: `${pad2(page)} / ${pad2(pages)}`, alignment: 'right' }],
       fontSize: 7.5, bold: true, color: '#7A86A3', margin: [MX, 22, MX, 0],
     }),
   }

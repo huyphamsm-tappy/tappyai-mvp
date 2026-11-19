@@ -61,6 +61,8 @@ export interface PdfCover {
   /** for the designed page (all optional; the plain cover ignores them): the kind of report, "Cập nhật <day>", how many sources, the word for "sources", and the labels of the notes and the footer in the person's language */
   kind?: string; updated?: string; sources?: number; sourcesWord?: string
   words?: { scope: string; caveats: string; sources: string; footer: string }
+  /** the page's own brand lines (a trip plan is not a research note): the line under the logo, the note at the top right and the footer brand. Default: the research report's. */
+  labels?: { line: string; note: string; footerBrand: string }
 }
 
 const coverNode = (c: PdfCover): PdfNode => ({
