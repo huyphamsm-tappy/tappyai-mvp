@@ -40,8 +40,8 @@ export function tierOf(u: TurnReading | null | undefined): TurnTier | null {
 
 export function budgetOf(tier: TurnTier): TurnBudget { return BUDGETS[tier] }
 
-export interface BudgetState { lookups: number; perTool: Record<string, number> }
-export const newBudgetState = (): BudgetState => ({ lookups: 0, perTool: {} })
+export interface BudgetState { lookups: number; perTool: Record<string, number>; /** the turn clock at the first lookup that was allowed */ firstAtMs: number | null }
+export const newBudgetState = (): BudgetState => ({ lookups: 0, perTool: {}, firstAtMs: null })
 
 export type BudgetVerdict = { ok: true } | { ok: false; reason: 'tool_cap' | 'total_cap' | 'time'; note: string }
 
@@ -51,7 +51,10 @@ export function spendLookup(budget: TurnBudget, state: BudgetState, tool: string
   const cap = budget.perTool[tool]
   if (cap !== undefined && used >= cap) return { ok: false, reason: 'tool_cap', note: `This answer has used its ${cap} ${tool} call${cap === 1 ? '' : 's'}. Use what you already have; if something is still missing, say plainly that it could not be confirmed.` }
   if (state.lookups >= budget.maxLookups) return { ok: false, reason: 'total_cap', note: 'The lookups of this answer are used. Write the answer now from what you have and what you reliably know, and say what could not be checked.' }
-  if (elapsedMs >= budget.timeMs) return { ok: false, reason: 'time', note: 'The time for lookups in this answer is used. Write the answer now from the data you already have; say plainly what you could not confirm, and do not invent it.' }
+  // the time counts from the FIRST lookup, not from the start of the turn: a model that was slow to begin (measured 64 s under load) must still get its lookups, or it answers with nothing
+  const since = state.firstAtMs === null ? 0 : elapsedMs - state.firstAtMs
+  if (since >= budget.timeMs) return { ok: false, reason: 'time', note: 'The time for lookups in this answer is used. Write the answer now from the data you already have; say plainly what you could not confirm, and do not invent it.' }
+  if (state.firstAtMs === null) state.firstAtMs = elapsedMs
   state.lookups++
   state.perTool[tool] = used + 1
   return { ok: true }

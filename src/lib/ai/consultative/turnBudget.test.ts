@@ -39,10 +39,18 @@ describe('spendLookup', () => {
   })
   it('refuses a new lookup after the time of the tier', () => {
     const b = budgetOf('lookup'), s = newBudgetState()
-    const v = spendLookup(b, s, 'web_search', b.timeMs + 1)
+    expect(spendLookup(b, s, 'web_search', 0).ok).toBe(true)
+    const v = spendLookup(b, s, 'get_weather', b.timeMs + 1)
     expect(v.ok).toBe(false)
     if (!v.ok) expect(v.reason).toBe('time')
-    expect(s.lookups).toBe(0) // a refused call is not counted
+    expect(s.lookups).toBe(1) // a refused call is not counted
+  })
+  it('the time counts from the first lookup: a turn that was slow to begin still gets its lookups', () => {
+    const b = budgetOf('lookup'), s = newBudgetState()
+    const late = 64_000 // the model took 64 s before its first step finished (measured under load)
+    expect(spendLookup(b, s, 'get_hotel_prices', late).ok).toBe(true)
+    expect(spendLookup(b, s, 'web_search', late + 1000).ok).toBe(true)
+    expect(spendLookup(b, s, 'get_weather', late + b.timeMs + 1).ok).toBe(false)
   })
   it('a plan turn carries room for its parts: 6 place searches, a stay, a fare', () => {
     const b = budgetOf('plan'), s = newBudgetState()

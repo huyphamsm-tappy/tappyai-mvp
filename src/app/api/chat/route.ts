@@ -4072,6 +4072,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     const budgeting = oneBrain && oneBrainUnderstanding !== null
     if (!set || (!stepReserve && !effortLadder && !budgeting)) return set
     let lookupCallsN = 0
+    let firstLookupAt: number | null = null
     const budgetState = newBudgetState()
     // the reading runs beside the model's first step, so it is normally ready; never wait for it longer than a moment
     const tierP: Promise<TurnTier | null> = budgeting
@@ -4094,12 +4095,14 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         }
         if (effortLadder && isLookupTool(name)) {
           lookupCallsN++
+          if (firstLookupAt === null) firstLookupAt = Date.now()
           if (heavyTurnReached(lookupCallsN) && autoThink.effort !== 'none') {
             autoThink.effort = 'none'
             console.log(JSON.stringify({ type: 'tappyai_turn_effort', to: 'none', lookups: lookupCallsN, tool: name, stepsFinished: stepsFinishedN, elapsedMs: Date.now() - startTime }))
           }
         }
-        if (effortLadder && isLookupTool(name) && lookupTimeUp(Date.now() - startTime)) {
+        // the lookup time counts from the first lookup (a turn that was slow to begin, 64 s measured under load, still gets its lookups)
+        if (effortLadder && isLookupTool(name) && lookupTimeUp(Date.now() - (firstLookupAt ?? Date.now()))) {
           console.log(JSON.stringify({ type: 'tappyai_lookup_time_up', tool: name, stepsFinished: stepsFinishedN, elapsedMs: Date.now() - startTime }))
           return Promise.resolve({ error: 'search_budget_used', note: 'No more lookups in this turn (the time for them is used). Write the answer now from the data you already have; say plainly what you could not confirm, and do not invent it.' })
         }

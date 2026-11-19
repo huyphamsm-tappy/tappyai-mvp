@@ -13,7 +13,8 @@ describe('lookup time budget', () => {
   })
   it('the route refuses a lookup (never a card or a plan call) once the time is up, on the ladder turns only', () => {
     const src = readFileSync('src/app/api/chat/route.ts', 'utf8')
-    expect(src).toContain('if (effortLadder && isLookupTool(name) && lookupTimeUp(Date.now() - startTime)) {')
+    // counted from the first lookup of the turn, not from its start (a slow first step must not leave the turn with no lookup at all)
+    expect(src).toContain('if (effortLadder && isLookupTool(name) && lookupTimeUp(Date.now() - (firstLookupAt ?? Date.now()))) {')
     expect(src).toContain("type: 'tappyai_lookup_time_up'")
   })
 })
