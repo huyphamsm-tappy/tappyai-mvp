@@ -3015,10 +3015,12 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       }),
       ...(locationIntent !== 'offline' || oneBrain ? { search_products: tool({
         description: 'Tim san pham/shop mua sam: gia tren Shopee/Tiki/Lazada, website rieng cua shop, dia chi cua hang vat ly (neu co), Facebook cua shop - tat ca tu Google Search (Serper)',
-        parameters: z.object({ query: z.string().describe('Ten san pham can tim mua'), ...(agentV2 ? { purchase_links: z.boolean().optional().describe('true CHI KHI nguoi dung hoi mua o dau / xin link mua / the hien ro y dinh mua. Tu van, tieu chi, so sanh, danh gia: bo trong (khong tra link mua)') } : {}) }),
+        parameters: z.object({ query: z.string().describe('Ten san pham can tim mua'), ...(agentV2 || oneBrain ? { purchase_links: z.boolean().optional().describe('true CHI KHI nguoi dung hoi mua o dau / xin link mua / the hien ro y dinh mua. Tu van, tieu chi, so sanh, danh gia: bo trong (khong tra link mua)') } : {}) }),
         execute: async ({ query, purchase_links }: { query: string; purchase_links?: unknown }) => {
           // Enrichment policy (enrichmentPolicy.ts): the Agent Runtime fetches purchase links only when Luna declared purchase intent.
-          const enrichmentMode = productEnrichmentFor({ agentRuntime: agentV2, purchaseLinks: purchase_links })
+          // 19/11 (owner: fix the tool call, not the Serper count): one brain declares what it needs too. A call that only compares or advises gets the rows (price, spec, the listing's own link);
+          // the vendor-link searches that put buy buttons on cards (~9 of the ~12 credits of a call) run only when the model declares purchase intent (`purchase_links`), as the Agent Runtime does since 09/10.
+          const enrichmentMode = productEnrichmentFor({ agentRuntime: agentV2 || oneBrain, purchaseLinks: purchase_links })
           const enrichmentBefore = serperSnapshot()
           const stored = productsOverride
           productsOverride = null
@@ -3042,7 +3044,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
             if (Number.isFinite(optionalBudget)) await withSerperToolBudget(optionalBudget, async () => { await attachCommerceLinks('search_products', result, { location: needProfile.location.text ?? undefined, query, platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, actorSeal: commerceActorSealValue, userText: lastText, userTexts: recentUserTexts }) })
             else await attachCommerceLinks('search_products', result, { location: needProfile.location.text ?? undefined, query, platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, actorSeal: commerceActorSealValue, userText: lastText, userTexts: recentUserTexts })
           }
-          if (agentV2) console.log(JSON.stringify({ type: 'tappyai_product_enrichment', mode: enrichmentMode, purchase_links: purchase_links === true, optional_budget: Number.isFinite(optionalBudget) ? optionalBudget : null, worst_case: worstCaseSearchProductsCredits(enrichmentMode), requests: serperDelta(enrichmentBefore).calls, credits: serperDelta(enrichmentBefore).credits }))
+          if (agentV2 || oneBrain) console.log(JSON.stringify({ type: 'tappyai_product_enrichment', mode: enrichmentMode, purchase_links: purchase_links === true, optional_budget: Number.isFinite(optionalBudget) ? optionalBudget : null, worst_case: worstCaseSearchProductsCredits(enrichmentMode), requests: serperDelta(enrichmentBefore).calls, credits: serperDelta(enrichmentBefore).credits }))
           enrichment.setPlacesRecommendations(productRecommendations(result), producerSubject('search_products'))
           /**
            * THE DECISION SURFACE DOES NOT DEPEND ON A WINNER EXISTING.

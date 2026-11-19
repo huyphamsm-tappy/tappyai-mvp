@@ -243,13 +243,18 @@ afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals(); vi.unstubAllEnvs();
 describe('P0-3 follow-up (30/10): the route\'s attachCommerceLinks wrapper, offline (the real function runs; Serper and the network are stubbed)', () => {
   const ASK: Msg[] = [{ role: 'user', content: 'Tư vấn nồi chiên không dầu 6 lít. Shopee hay Lazada mua chỗ nào lợi hơn?' }]
   const SHOP = intent('pick', ['shopping'])
-  const run = (oneBrain: boolean) => turn(ASK, { unwind: oneBrain, oneBrain, luna: SHOP, tools: [{ name: 'search_products', args: { query: 'nồi chiên không dầu 6 lít' } }], reply: 'Mình chọn nồi 6 lít.' })
+  // 19/11: on one brain the buy-link searches run only when the model declares purchase intent (`purchase_links: true`; the question here asks where to buy).
+  const run = (oneBrain: boolean, purchaseLinks = true) => turn(ASK, { unwind: oneBrain, oneBrain, luna: SHOP, tools: [{ name: 'search_products', args: { query: 'nồi chiên không dầu 6 lít', ...(oneBrain && purchaseLinks ? { purchase_links: true } : {}) } }], reply: 'Mình chọn nồi 6 lít.' })
   const shoppingCtx = () => h.state.commerceCtx.filter(c => c.tool === 'search_products').map(c => c.ctx)
   it('one brain: a search_products result reaches CCP with unambiguousMerchantOnly = true (a turn naming several merchants names none)', async () => {
     await run(true)
     const ctxs = shoppingCtx()
     expect(ctxs.length).toBeGreaterThan(0)
     for (const c of ctxs) expect(c.unambiguousMerchantOnly).toBe(true)
+  }, 60000)
+  it('one brain: a call that does not declare purchase intent (advice / comparison) does NOT run the vendor-link searches at all', async () => {
+    await run(true, false)
+    expect(shoppingCtx().length).toBe(0)
   }, 60000)
   it('one brain: the context the tool layer built is passed on whole (only the flag is added)', async () => {
     await run(true)

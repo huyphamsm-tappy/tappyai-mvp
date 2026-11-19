@@ -38,6 +38,10 @@ describe('the one general instruction', () => {
     // general principles only: no country, city or place name in them
     for (const w of ['Singapore', 'Sa Pa', 'Đà Nẵng', 'Hội An', 'Tân Bình']) expect(`${ONE_BRAIN_CORE}${PRESENT_PLAN_DESCRIPTION}`, w).not.toContain(w)
   })
+  it('buying: the model is told when to declare purchase intent (buy links) and to make one call per distinct need (owner 19/11: the tool call, not a Serper cap)', () => {
+    expect(ONE_BRAIN_CORE).toContain('Set purchase_links to true only when the person asks where to buy')
+    expect(ONE_BRAIN_CORE).toContain('One call per distinct need')
+  })
   it('the buying rule names no product, brand, store or language of the question (any product, any language)', () => {
     const rule = ONE_BRAIN_CORE.split('\n').filter(l => /BUY something|names a store|price or buying question|Name each product or listing/.test(l)).join('\n')
     expect(rule.length).toBeGreaterThan(200)
