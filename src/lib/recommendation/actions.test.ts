@@ -220,6 +220,25 @@ describe('17/11: a provider booking link is a "reservation" only where the searc
   })
 })
 
+describe('19/11 (owner): a stay card leads with THIS hotel\'s own Agoda page; Booking.com is never the lead', () => {
+  const PAGE = 'https://www.agoda.com/partners/partnersearch.aspx?cid=1974819&hid=4942635&checkin=2026-10-20&checkout=2026-10-22&adults=2&rooms=1'
+  const ROW = { name: 'Some Hotel', maps_link: 'https://maps.google.com/?cid=9', link: 'https://www.booking.com/hotel/vn/some.vi.html' }
+  it('an Agoda offer page leads, ahead of Maps and of the row\'s Booking.com page (which stays as a secondary link)', () => {
+    const acts = buildActions({ ...ROW, agoda_offer_url: PAGE }, 'travel')
+    expect(acts[0]).toMatchObject({ kind: 'booking', url: PAGE, platform: 'Agoda', urlKind: 'direct' })
+    const booking = acts.find(a => /booking\.com/i.test(a.url))
+    expect(booking && acts.indexOf(booking)).toBeGreaterThan(acts.findIndex(a => a.kind === 'maps'))
+  })
+  it('Booking.com\'s own hotel page is not the lead even when it is the only booking page', () => {
+    expect(buildActions(ROW, 'travel')[0].kind).toBe('maps')
+  })
+  it('an Agoda front door or search page is never a CTA (A3.3), and an off-Agoda URL in the field is ignored', () => {
+    for (const bad of ['https://www.agoda.com/', 'https://www.agoda.com/vi-vn/search?city=15932', 'https://evil.example/hotel/1']) {
+      expect(buildActions({ name: 'Some Hotel', maps_link: ROW.maps_link, agoda_offer_url: bad }, 'travel').some(a => a.url === bad)).toBe(false)
+    }
+  })
+})
+
 describe('the flags that gate all of this are OFF', () => {
   // 🚨 Both changes are staged, and shipped behaviour must be unchanged until
   // their prerequisites land. A flag flipped by accident is exactly the kind of

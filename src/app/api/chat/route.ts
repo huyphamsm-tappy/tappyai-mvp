@@ -2788,7 +2788,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       // model can't answer "recommend a movie" with a list of cinemas — it
       // recommends titles from film knowledge instead (see detectMovieRecommendationIntent).
       ...(!oneBrain && ((movieRecommend && !agentOn) || filmAsk) ? {} : { search_places: tool({
-        description: 'Tim dia diem, nha hang, cafe, spa, khach san, diem tham quan/du lich (thang canh, bao tang, cong vien, danh lam), benh vien, giai tri (rap phim, karaoke, gym, bar...) tai Viet Nam. Voi quan an/nha hang/cafe/spa/giai tri se kem gia mon/dich vu/ve tham khao tu Google Search (Serper)',
+        // 19/11 (owner: the model must pass the person's need down to the tool precisely, and know what a call costs): what the call is, what to put in each field, the cap of the turn, what it returns
+        description: oneBrain
+          ? 'Find real places in Vietnam: restaurants, cafes, spas, hotels, attractions, hospitals, entertainment (cinema, karaoke, gym, bar). One call is ONE search for ONE kind of place in ONE area; a turn allows at most 6 calls, so decide what you need first and make those calls together in one step. Put what the person wants in `query` (the dish, the style, a must-have: "bun bo Hue", "quiet cafe with power outlets"), the city or district in `location`, a street, ward or landmark in `near` ("Phan Xich Long", "near Ben Thanh market"), the kind in `type`. It returns rows with address, rating, opening hours, price level and photos, which the person sees as cards; it does not return reviews text or booking availability. Do not repeat a search for the same need with other words.'
+          : 'Tim dia diem, nha hang, cafe, spa, khach san, diem tham quan/du lich (thang canh, bao tang, cong vien, danh lam), benh vien, giai tri (rap phim, karaoke, gym, bar...) tai Viet Nam. Voi quan an/nha hang/cafe/spa/giai tri se kem gia mon/dich vu/ve tham khao tu Google Search (Serper)',
         parameters: z.object({
           query: z.string().describe('Tu khoa tim kiem (vd: pho ngon, cafe dep, spa tot, diem tham quan)'),
           location: z.string().optional().describe('Khu vuc (vd: Ha Noi, Quan 1 Ho Chi Minh, Da Nang)'),
@@ -2798,9 +2801,13 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // that told the user its own results were wrong.
           // A free string, coerced in execute (placeType.ts): an off-enum value from the model
           // ("entertainment") used to fail SDK validation and end the whole turn with an error.
-          type: z.string().optional().describe('Loai dia diem: restaurant | cafe | spa | hotel | bar | gym | cinema | attraction | mall')
+          type: z.string().optional().describe('Loai dia diem: restaurant | cafe | spa | hotel | bar | gym | cinema | attraction | mall'),
+          // 19/11: the person's own narrowing ("ở Phan Xích Long", "gần chợ Bến Thành") had no field; it was squeezed into `query` or lost
+          ...(oneBrain ? { near: z.string().optional().describe('A street, ward or landmark inside the area, as the person said it (e.g. Phan Xich Long, near Ben Thanh market). Leave out when only a city or district was given') } : {}),
         }),
-        execute: async ({ query, location: modelLocation, type: rawType }) => {
+        execute: async ({ query, location: modelLocationArg, type: rawType, near }: { query: string; location?: string; type?: string; near?: unknown }) => {
+          const nearText = typeof near === 'string' ? near.replace(/\s+/g, ' ').trim().slice(0, 80) : ''
+          const modelLocation = nearText ? (modelLocationArg?.trim() ? `${nearText}, ${modelLocationArg.trim()}` : nearText) : modelLocationArg
           const type = coercePlaceType(rawType)
           lastPlaceSearch = { args: { query, ...(type ? { type } : {}), ...(modelLocation ? { location: modelLocation } : {}) }, shown: [], at: new Date().toISOString() }
           if (rawType !== undefined && type !== rawType) console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', step: 'type_coerced', from: String(rawType).slice(0, 40), to: type ?? null }))

@@ -2,6 +2,7 @@ import { CCP_ENABLED } from '@/lib/config/product'
 import { adapterState, claimableAvailability, claimablePrice, logRealtime } from '@/lib/providers/realtime/common'
 import { liveSentence, REALTIME_ADAPTERS, resolveBooking, type ResolveDeps } from '@/lib/providers/realtime/resolve'
 import type { RealtimeProviderId, SearchCriteria, SearchResult, Vertical } from '@/lib/providers/realtime/types'
+import { normalizeVN } from '@/lib/ai/intent'
 import { buildRecheckUrl } from '@/lib/providers/realtime/recheckLink'
 import type { CommerceAttachContext, CommerceToolName } from './commerce'
 
@@ -71,6 +72,7 @@ export async function attachRealtime(toolName: CommerceToolName, result: unknown
 
   // Idempotent on a cached result object (the tools memoise it for minutes): the previous turn's realtime attachment goes first.
   for (const k of REALTIME_KEYS) delete result[k]
+  clearAgodaOfferUrls(result)
   if (Array.isArray(result.booking_links)) result.booking_links = (result.booking_links as Array<Row>).filter(l => !(isRecord(l) && l._realtime === true))
   if (Array.isArray(result.price_search_results)) result.price_search_results = (result.price_search_results as Array<Row>).filter(l => !(isRecord(l) && l._realtime === true))
 
@@ -104,6 +106,7 @@ export async function attachRealtime(toolName: CommerceToolName, result: unknown
 
   const rows = offers.map(o => describe(o, now, built.assumedAdults, built.criteria))
   result.realtime_results = rows
+  if (built.criteria.vertical === 'hotel') attachAgodaOfferUrls(result, offers)
   result.realtime_note = noteFor(rows, built.assumedAdults, built.criteria)
   // Web only: ONE "Kiểm tra giá & tình trạng" link per offer whose provider can recheck, placed BEFORE its booking link (flow: recheck → booking CTA).
   // Native clients never receive it (no client shows a dead link); a provider with no recheck, or a result Tappy does not hold, gets none.
@@ -140,6 +143,31 @@ export async function attachRealtime(toolName: CommerceToolName, result: unknown
   if (evidence.length > 0) result.price_search_results = [...(Array.isArray(result.price_search_results) ? result.price_search_results : []), ...evidence]
   for (const o of offers) logRealtime(o.provider, 'attach', { ok: true, results: offers.length })
   return result
+}
+
+const nameKey = (s: unknown): string => (typeof s === 'string' ? normalizeVN(s.toLowerCase()).replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim() : '')
+
+function clearAgodaOfferUrls(result: Row): void {
+  if (Array.isArray(result.hotel_list)) for (const h of result.hotel_list) if (isRecord(h)) delete h.agoda_offer_url
+}
+
+/**
+ * The hotel card's lead booking action is the hotel's own Agoda page (owner, 19/11/2026): each `hotel_list` row gets the Agoda offer's booking URL when
+ * an Agoda offer names the SAME hotel (normalised name equal, or one contains the other with at least two words). The URL is the one the provider
+ * returned (already restricted to Agoda's own hosts); nothing is composed, and a row with no matching offer gets nothing.
+ */
+function attachAgodaOfferUrls(result: Row, offers: SearchResult[]): void {
+  if (!Array.isArray(result.hotel_list)) return
+  const agoda = offers.filter(o => o.provider === 'agoda' && typeof o.bookingUrl === 'string' && o.bookingUrl).map(o => ({ key: nameKey(o.title), url: o.bookingUrl as string }))
+  if (agoda.length === 0) return
+  const words = (k: string) => k.split(' ').filter(Boolean).length
+  for (const h of result.hotel_list) {
+    if (!isRecord(h)) continue
+    const k = nameKey(h.name)
+    if (!k) continue
+    const hit = agoda.find(a => a.key && (a.key === k || (words(a.key) >= 2 && words(k) >= 2 && (a.key.includes(k) || k.includes(a.key)))))
+    if (hit) h.agoda_offer_url = hit.url
+  }
 }
 
 function describe(o: SearchResult, now: Date, assumedAdults: boolean, c: SearchCriteria): Row {

@@ -1,5 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { attachCommerceLinks } from './commerce'
+import { stayRecommendations } from '@/lib/recommendation/fromToolResult'
+import { resolveActionLabel } from '@/lib/recommendation/actionLabel'
 import { nowShowingLinks } from '@/lib/ai/agent/agentTools'
 import type { HttpPost } from '@/lib/providers/realtime/types'
 
@@ -83,6 +85,26 @@ describe('A. "khách sạn Đà Lạt 20-22/10 cho 2 người"', () => {
     expect(note).toMatch(/KHÔNG dùng chữ "realtime"/)
     expect(note).toMatch(/mặc định/) // adults were not stated → said to the user
     expect(realtimeLogs().find(l => l.step === 'attach')).toMatchObject({ provider: 'agoda', ok: true, results: 1 })
+  })
+
+  it('19/11 owner: the hotel card\'s LEAD booking action is the hotel\'s own Agoda page ("Xem trên Agoda"), never Booking.com', async () => {
+    const r: Row = { search_results: [], hotel_list: [
+      { name: 'The Luxe Hotel Da Lat', address: '1 Tran Phu', lat: 11.94, lng: 108.44, rating_value: 4.5, maps_link: 'https://maps.google.com/?cid=1' },
+      { name: 'Another Hotel', address: '2 Tran Phu', lat: 11.95, lng: 108.45, rating_value: 4.1, maps_link: 'https://maps.google.com/?cid=2', link: 'https://www.booking.com/hotel/vn/another.vi.html' },
+    ] }
+    await attachCommerceLinks('get_hotel_prices', r, hotelCtx({ env: AGODA_ENV, http: httpOk(agodaSearch()), now: () => NOW }) as never)
+    const [matched, other] = stayRecommendations(r).map(x => x.entity.actions)
+    // matched hotel: Agoda page leads, labelled with the platform; nothing from Booking.com at all
+    expect(matched[0]).toMatchObject({ kind: 'booking', url: LANDING, platform: 'Agoda', urlKind: 'direct' })
+    expect(resolveActionLabel(matched[0])).toEqual({ key: 'v3.action.viewOn', params: { platform: 'Agoda' } })
+    expect(matched.some(a => /booking\.com/i.test(a.url))).toBe(false)
+    // an unmatched hotel invents no Agoda URL; its Booking.com page, if the row has one, is demoted behind Maps (never the lead)
+    expect(other.some(a => /agoda\./i.test(a.url))).toBe(false)
+    expect(other[0].kind).toBe('maps')
+    expect(other.some(a => /booking\.com/i.test(a.url))).toBe(true)
+    // idempotent on a memoised result: a second attach neither duplicates nor leaks a stale URL when the offer is gone
+    await attachCommerceLinks('get_hotel_prices', r, hotelCtx({ env: {} }) as never)
+    expect((r.hotel_list as Row[])[0].agoda_offer_url).toBeUndefined()
   })
 
   it('a PER-NIGHT rate (Agoda Lite) says "/đêm" and carries the stay total for the nights searched; a provider total (Demand) does not (29/10)', async () => {

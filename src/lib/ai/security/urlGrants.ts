@@ -121,6 +121,7 @@ const PLACES: Contract = {
 }
 const HOTELS: Contract = {
   'hotel_list[].maps_link': 'action', 'hotel_list[].website_uri': 'action', 'hotel_list[].booking_links[]': 'action',
+  'hotel_list[].agoda_offer_url': 'action', // the same Agoda page as realtime_results[].booking_url, copied onto the matching hotel row (realtimeBooking.ts)
   'hotel_list[].commerce_links[].url': 'action', // CCP-validated deep links (round 6: inventory only, unchanged)
   'search_results[].commerce_links[].url': hotelRowCommerceLink, // round 6: CCP handoff of the same row's link, this turn only
   // Owner decision 16/10 (b): a SOURCE until a data contract proves a detail / booking page. travel.ts fills this field with the OTA

@@ -100,6 +100,9 @@ export function resolveActionLabel(
     }
   }
 
+  // A hotel's own OTA page that is not a CCP handoff (the realtime offer's Agoda page) names its platform (the v3.action.viewOn label, "View on Agoda"), not a bare booking word.
+  if (action.kind === 'booking' && action.urlKind === 'direct' && !action.commerce && action.platform) return withPlatform('v3.action.viewOn', 'v3.action.booking')
+
   if (action.kind === 'review') {
     // Attribution, not the host, decides this. A TikTok video the pipeline tied
     // to THIS place is a review; a YouTube search for its name is not.

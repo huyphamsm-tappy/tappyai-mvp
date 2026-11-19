@@ -767,7 +767,9 @@ function fallbackIntentOf(plan: Plan, ctx: CommerceAttachContext, listingsAdded:
   // tool's lodging rows or get_hotel_prices' `hotel_list`, never the OTA snippets the model reads —
   // with no page of its own gets the one OTA whose search grammar lands on a results page for the
   // hotel's name (Booking.com, depth 2; Traveloka/Agoda only reach a front door and are refused).
-  if (plan.domain === 'travel' && plan.listKey !== 'search_results' && plan.intents.some(i => i.intentType === 'book_hotel')) return 'book_hotel'
+  // 19/11/2026 (owner): NO Booking.com search fallback on a hotel card any more — Booking.com is not an affiliate partner and its search
+  // button led the card (the "find rooms on Booking.com" label). The lead booking action is the hotel's own Agoda page (realtime offer, set by
+  // attachRealtime as `agoda_offer_url`) or a Commerce Link; a hotel with neither shows Maps / website only.
   return null
 }
 
