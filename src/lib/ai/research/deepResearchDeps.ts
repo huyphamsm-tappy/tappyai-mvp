@@ -27,7 +27,7 @@ import { failureKind, retryHint } from './failureKind'
 import { lenientArray } from './lenientSchema'
 import { forecastNotes, packFindingsForForecast, specFromRaw, askTwice, type ForecastSpecRaw } from './forecastModel'
 import { consolidate, consolidatedNotes } from './consolidate'
-import { OutlineSchema, outlineFrom, analystCards, STANDARD_OUTLINE, ADVANCED_OUTLINE, PolicyScanSchema, policyStepFrom, withPolicyStep, type PolicyStep } from './thesisReport'
+import { OutlineSchema, outlineFrom, analystCards, STANDARD_OUTLINE, ADVANCED_OUTLINE, ADVANCED_ANALYST_CARDS, PolicyScanSchema, policyStepFrom, withPolicyStep, type PolicyStep } from './thesisReport'
 import { briefText, planWithFallback, PLAN_PACKAGES_MAX_TOKENS, PLAN_CLAUDE_MAX_TOKENS } from './researchPackages'
 import { questionKind } from './researchLanes'
 import { DEEP_RESEARCH_LIMITS, GAP_FINDINGS_BUDGET, pageTextLimit, writerNotes, type Figure, type Finding, type DeepResearchDeps, type Evidence, type ResearchPlan } from './deepResearch'
@@ -413,7 +413,7 @@ export function createDeepResearchDeps(o: { lang: string; userTexts: readonly st
     ...((claudeStandard || advancedLead) && researchThesisOn() ? {
       async analyze({ question, plan, cards, support }: { question: string; plan: ResearchPlan; cards: readonly EvidenceCard[]; support: ReadonlyMap<string, string> }) {
         const bounds = advancedLead ? ADVANCED_OUTLINE : STANDARD_OUTLINE
-        const data = `${plan.parts?.length ? `Parts the question asks for: ${plan.parts.join('; ')}\n\n` : ''}Evidence cards:\n${analystCards(cards, support)}`
+        const data = `${plan.parts?.length ? `Parts the question asks for: ${plan.parts.join('; ')}\n\n` : ''}Evidence cards:\n${analystCards(cards, support, advancedLead ? ADVANCED_ANALYST_CARDS : undefined)}`
         // 18/11 (UAT run 3 of the Advanced question: both tries came back without a usable `sections`): the second try is told which field the first was refused on
         let hint = ''
         const ask = () => AI.extract({ role: planningRole(), ...leadModel(), systemShared: ANALYST_SYSTEM, messages: [{ role: 'user', content: `Question:\n${question}${langLine}\n\nToday's date: ${vnToday()}\nWrite ${bounds.minSections} to ${bounds.maxSections} sections.${hint}\n\n${fenceUntrusted('tool_result', data)}` }], schema: OutlineSchema, schemaName: 'tappy_research_outline', maxTokens: advancedLead ? 10000 : 6000, budgetKind: 'aux', abortSignal: o.signal } as never) as Promise<{ object: unknown; providerMetadata?: unknown }>
@@ -431,7 +431,7 @@ export function createDeepResearchDeps(o: { lang: string; userTexts: readonly st
       const sources = evidence.filter(e => thesisNotes !== undefined || findings.some(f => f.source === e.id)).map(e => `[${e.id}] ${e.title} — ${e.site ?? host(e.url)}${e.published ? `, ${e.published}` : ''}`).join('\n')
       const systemShared = thesisNotes !== undefined ? THESIS_WRITER_SYSTEM : WRITER_SYSTEM
       // 19/11: 900-1 400 / 1 500-2 200 words gave reports a third of the length of the same question answered by Claude and a completeness score of 2.4 of 5 (blind judge); the sections and the cards the analyst may use were raised with it
-      const lengthRule = thesisNotes !== undefined ? `\n\nLength: about ${advancedLead ? '2 200 to 3 000' : '1 800 to 2 600'} words in all, tables aside; every point of every section gets its facts, figures and sources, and a reader can scan the report by its headings: say each thing once.` : ''
+      const lengthRule = thesisNotes !== undefined ? `\n\nLength: about ${advancedLead ? '1 500 to 2 200' : '1 800 to 2 600'} words in all, tables aside; every point of every section gets its facts, figures and sources, and a reader can scan the report by its headings: say each thing once.` : ''
       // RESEARCH_CONSOLIDATION: each fact once, a conflict only where the subject, measure, scope and period agree, readings at different dates as a trend, the newest period named (consolidate.ts); the log has counts only
       const baseNotes = thesisNotes !== undefined ? thesisNotes : researchConsolidationOn() ? (() => { const c = consolidate(findings); console.log(JSON.stringify({ type: 'tappyai_research_consolidation', ...c.stats })); return consolidatedNotes(plan, c) })() : writerNotes(plan, findings)
       // RESEARCH_FORECAST_MODEL: the computed model follows the findings, and the writer is told to use its numbers exactly

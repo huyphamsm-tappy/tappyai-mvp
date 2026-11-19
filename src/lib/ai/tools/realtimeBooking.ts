@@ -162,14 +162,15 @@ function clearAgodaOfferUrls(result: Row): void {
  */
 function attachAgodaOfferUrls(result: Row, offers: SearchResult[], now: Date, c: SearchCriteria): void {
   if (!Array.isArray(result.hotel_list)) return
-  const agoda = offers.filter(o => o.provider === 'agoda' && typeof o.bookingUrl === 'string' && o.bookingUrl).map(o => ({ key: nameKey(o.title), url: o.bookingUrl as string, offer: o }))
+  const agoda = offers.filter(o => o.provider === 'agoda' && typeof o.bookingUrl === 'string' && o.bookingUrl).map(o => ({ key: nameKey(o.title), short: nameKey(String(o.title).split(/\s[-–—]\s/)[0]), url: o.bookingUrl as string, offer: o }))
   if (agoda.length === 0) return
   // 19/11 (review): the match used to be a substring test, so a row "X Hotel" matched the offer "X Hotel Annex" and showed another hotel's page and price. A row matches an offer only when the names are equal, or
   // when their DISTINCTIVE words (the name without generic words like hotel, resort, villa) are the same set, at least two of them, and exactly one offer fits.
   const GENERIC = new Set(['hotel', 'khach', 'san', 'resort', 'the', 'and', 'spa', 'villa', 'apartment', 'homestay', 'hostel'])
   const distinct = (k: string): string[] => [...new Set(k.split(' ').filter(w => w && !GENERIC.has(w)))].sort()
-  const hitFor = (k: string) => {
-    const exact = agoda.find(a => a.key === k)
+  // A name followed by " - 08 Street" (a branch or address suffix on one side only) is the same hotel: the part before the dash is compared too (final UAT 19/11: "X Center" and "X Center - 08 Y" must meet)
+  const hitFor = (k: string, short: string) => {
+    const exact = agoda.find(a => a.key === k || (short && (a.short === short || a.key === short)) || (k && a.short === k))
     if (exact) return exact
     const kd = distinct(k)
     if (kd.length < 2) return undefined
@@ -180,7 +181,7 @@ function attachAgodaOfferUrls(result: Row, offers: SearchResult[], now: Date, c:
     if (!isRecord(h)) continue
     const k = nameKey(h.name)
     if (!k) continue
-    const hit = hitFor(k)
+    const hit = hitFor(k, nameKey(String(h.name).split(/\s[-–—]\s/)[0]))
     if (!hit) continue
     h.agoda_offer_url = hit.url
     const o = hit.offer

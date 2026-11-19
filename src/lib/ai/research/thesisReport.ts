@@ -22,7 +22,10 @@ export interface OutlineBounds { minSections: number; maxSections: number }
  * answered by Claude (17 000 to 24 000). Bounds raised from 2-4 / 3-6 to 4-6 / 4-7; the length target in deepResearchDeps follows.
  */
 export const STANDARD_OUTLINE: OutlineBounds = { minSections: 4, maxSections: 6 }
-export const ADVANCED_OUTLINE: OutlineBounds = { minSections: 4, maxSections: 7 } // Advanced already runs 232 s of the 270 s run deadline (the writer is cut at it): a smaller step than Standard
+// Advanced stays at 3-6 sections: it already runs 232 to 258 s of the 270 s run deadline and the writer is cut at it. Final UAT 19/11: a scenario question with 4-7 sections and 160 cards ran 278 s and the report ended in the middle of a sentence.
+export const ADVANCED_OUTLINE: OutlineBounds = { minSections: 3, maxSections: 6 }
+/** The cards the Advanced analyst reads (Standard reads ANALYST_CARDS_MAX): its analyst step already takes about 66 s. */
+export const ADVANCED_ANALYST_CARDS = 120
 /** The most cards the analyst reads: two fifths shared out by step, a quarter kept for the newest dated ones, the rest the best by confidence. 15/11: 90 to 120 (about 3k more input tokens, cents per run) because the chip run had 138 cards at MEDIUM or above. */
 export const ANALYST_CARDS_MAX = 160 // 19/11: 120 to 160 - the analyst read 120 of 246 to 448 cards (about 3k more input tokens, a cent per run; the Advanced analyst step already takes 66 s)
 

@@ -64,6 +64,15 @@ describe('stay price line on the hotel card (Agoda offer matched by name)', () =
     await attachCommerceLinks('get_hotel_prices', r, ctx({ env: LITE_ENV, http: httpOk(lite), now: () => NOW }))
     expect((r.hotel_list as Row[])[0].agoda_offer_url).toBe(LANDING)
   })
+  // final UAT 19/11: the card "Khach san X Center" and the offer "Khach san X Center - 08 Y Street" are one hotel (an address suffix on one side); the strict match had dropped the price and the Agoda button
+  it('a hotel named with an address suffix after a dash on one side still meets its offer', async () => {
+    const lite = { results: [{ hotelId: 3, hotelName: 'Khach san Quy Nhon Center - 08 Tran Doc', dailyRate: 231_481, currency: 'VND', landingURL: LANDING }] }
+    const r: Row = { search_results: [], hotel_list: [{ name: 'Khach san Quy Nhon Center', address: '51 Hoang Dieu', lat: 13.7, lng: 109.2, rating_value: 4.2, maps_link: 'https://maps.google.com/?cid=1' }] }
+    await attachCommerceLinks('get_hotel_prices', r, ctx({ env: LITE_ENV, http: httpOk(lite), now: () => NOW }))
+    const [row] = r.hotel_list as Row[]
+    expect(row.agoda_offer_url).toBe(LANDING)
+    expect(row.agoda_offer_price).toMatchObject({ amount: 231_481, platform: 'Agoda' })
+  })
   it('no offer for the turn (provider off): no price on any row and no line', async () => {
     const r = hotels()
     await attachCommerceLinks('get_hotel_prices', r, ctx({ env: {} }))

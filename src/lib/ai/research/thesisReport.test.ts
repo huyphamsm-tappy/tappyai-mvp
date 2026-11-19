@@ -3,7 +3,7 @@ import { zodToJsonSchema } from 'zod-to-json-schema'
 import { ANALYST_SYSTEM, GAPS_SYSTEM, GAPS_UPCOMING_ADDENDUM, reportFallback } from './deepResearchDeps'
 import { runDeepResearch, type DeepResearchDeps, type ResearchPlan } from './deepResearch'
 import { researchThesisOn, researchEvidenceCardsOn } from './deepResearchState'
-import { PolicyScanSchema, policyStepFrom, withPolicyStep, OutlineSchema, outlineFrom, analystCards, outlineWriterInput, releaseText, wordCitationsToMarks, wordCiteStream, STANDARD_OUTLINE, ADVANCED_OUTLINE, ANALYST_CARDS_MAX, EXCERPT_MAX, excerptOf, type Outline } from './thesisReport'
+import { PolicyScanSchema, policyStepFrom, withPolicyStep, OutlineSchema, outlineFrom, analystCards, outlineWriterInput, releaseText, wordCitationsToMarks, wordCiteStream, STANDARD_OUTLINE, ADVANCED_OUTLINE, ADVANCED_ANALYST_CARDS, ANALYST_CARDS_MAX, EXCERPT_MAX, excerptOf, type Outline } from './thesisReport'
 import { readFileSync } from 'node:fs'
 import type { EvidenceCard } from './evidenceCards'
 import type { Evidence } from './deepResearch'
@@ -11,15 +11,19 @@ import type { Evidence } from './deepResearch'
 // 19/11 (blind judge, 3 research questions: Tappy 3.10 against Haiku 3.93 / Sonnet 4.70; completeness 2.4 against 4.0 / 5.0): the run trace showed 246 to 279 cards collected and 3 sections / 11-12 points kept by Standard
 // (about 5 500 characters). The report size follows the bounds below; the writer's length target is read from the source because it is built inline.
 describe('report size bounds (19/11)', () => {
-  it('Standard: 4 to 6 sections; Advanced: 4 to 7 (it already runs close to the 270 s run deadline); the analyst reads up to 160 cards', () => {
+  // Final UAT 19/11: Standard gains from the bigger report, but an Advanced scenario question with 4-7 sections and 160 cards ran 278 s and was cut in the middle of a sentence at the 270 s run deadline.
+  // Advanced therefore keeps its earlier size (3-6 sections, 1 500 to 2 200 words, 120 cards); only Standard grew.
+  it('Standard: 4 to 6 sections and up to 160 cards; Advanced: 3 to 6 sections and 120 cards (it already runs close to the 270 s run deadline)', () => {
     expect(STANDARD_OUTLINE).toEqual({ minSections: 4, maxSections: 6 })
-    expect(ADVANCED_OUTLINE).toEqual({ minSections: 4, maxSections: 7 })
+    expect(ADVANCED_OUTLINE).toEqual({ minSections: 3, maxSections: 6 })
     expect(ANALYST_CARDS_MAX).toBe(160)
+    expect(ADVANCED_ANALYST_CARDS).toBe(120)
   })
-  it('the writer is told a length of 1 800 to 2 600 words (Standard) and 2 200 to 3 000 (Advanced), not the old 900 to 1 400 / 1 500 to 2 200', () => {
+  it('the writer is told 1 800 to 2 600 words (Standard) and 1 500 to 2 200 (Advanced), not the old 900 to 1 400 for Standard; Advanced reads fewer cards', () => {
     const src = readFileSync('src/lib/ai/research/deepResearchDeps.ts', 'utf8')
-    expect(src).toContain("'2 200 to 3 000' : '1 800 to 2 600'")
+    expect(src).toContain("'1 500 to 2 200' : '1 800 to 2 600'")
     expect(src).not.toContain("'1 500 to 2 200' : '900 to 1 400'")
+    expect(src).toContain('analystCards(cards, support, advancedLead ? ADVANCED_ANALYST_CARDS : undefined)')
   })
 })
 
