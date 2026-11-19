@@ -42,45 +42,78 @@ export function rssItemImage(item: string): string | null {
   return url && isAllowedMediaImage(url) ? url : null
 }
 
+const NEWS_SECTIONS: Array<{ re: RegExp; feeds: Array<{ url: string; name: string }> }> = [
+  { re: /kinh te|kinh doanh|tai chinh|chung khoan|lai suat|gia vang|bat dong san|thi truong|economy|business|finance/, feeds: [
+    { url: 'https://vnexpress.net/rss/kinh-doanh.rss', name: 'VnExpress' }, { url: 'https://tuoitre.vn/rss/kinh-doanh.rss', name: 'Tuoi Tre' }, { url: 'https://dantri.com.vn/rss/kinh-doanh.rss', name: 'Dan Tri' }] },
+  { re: /cong nghe|so hoa|tech|\bai\b|chuyen doi so/, feeds: [
+    { url: 'https://vnexpress.net/rss/so-hoa.rss', name: 'VnExpress' }, { url: 'https://tuoitre.vn/rss/nhip-song-so.rss', name: 'Tuoi Tre' }, { url: 'https://dantri.com.vn/rss/nhip-song-so.rss', name: 'Dan Tri' }] },
+  { re: /the thao|bong da|sports?|football/, feeds: [
+    { url: 'https://vnexpress.net/rss/the-thao.rss', name: 'VnExpress' }, { url: 'https://tuoitre.vn/rss/the-thao.rss', name: 'Tuoi Tre' }, { url: 'https://dantri.com.vn/rss/the-thao.rss', name: 'Dan Tri' }] },
+  { re: /the gioi|quoc te|world/, feeds: [
+    { url: 'https://vnexpress.net/rss/the-gioi.rss', name: 'VnExpress' }, { url: 'https://tuoitre.vn/rss/the-gioi.rss', name: 'Tuoi Tre' }, { url: 'https://dantri.com.vn/rss/the-gioi.rss', name: 'Dan Tri' }] },
+]
+const NEWS_DEFAULT_FEEDS = [
+  { url: 'https://vnexpress.net/rss/tin-moi-nhat.rss', name: 'VnExpress' },
+  { url: 'https://tuoitre.vn/rss/tin-moi-nhat.rss', name: 'Tuoi Tre' },
+  { url: 'https://dantri.com.vn/rss/home.rss', name: 'Dan Tri' },
+]
+/** The feeds of the section the question is about (economy, tech, sport, world), else the latest-news feeds. */
+const COMBINING = new RegExp(`[${String.fromCharCode(0x300)}-${String.fromCharCode(0x36f)}]`, 'g')
+/** Lower case, accents removed (including the stroked d), so one spelling of a word matches every other. */
+export function foldAccents(s: string): string {
+  return s.normalize('NFD').replace(COMBINING, '').replace(new RegExp(String.fromCharCode(0x111), 'g'), 'd').replace(new RegExp(String.fromCharCode(0x110), 'g'), 'd').toLowerCase()
+}
+export function newsFeedsFor(query: string): Array<{ url: string; name: string }> {
+  const q = foldAccents(query)
+  return NEWS_SECTIONS.find(s => s.re.test(q))?.feeds ?? NEWS_DEFAULT_FEEDS
+}
+const NEWS_FILLER = new Set(['tin', 'tuc', 'tuan', 'nay', 'hom', 'moi', 'nhat', 'noi', 'bat', 'dang', 'chu', 'viet', 'nam', 'the', 'and', 'news', 'latest', 'this', 'week', 'today', 'about', 'trong', 'cua', 'nhung', 'cac', 'mot'])
+/** The words of the question that can tell one headline from another, accents removed (filler such as "tin", "tuan nay", "Viet Nam" matches nothing in particular). */
+export function newsQueryTerms(query: string): string[] {
+  return foldAccents(query).split(/\s+/).filter(t => t.length > 2 && !NEWS_FILLER.has(t))
+}
+
 async function getNewsImpl(query: string, lang = 'vi') {
   const cacheKey = newsCacheKey(query, lang)
   const cached = getCache(cacheKey)
   if (cached) return cached
 
-  const feeds = [
-    { url: 'https://vnexpress.net/rss/tin-moi-nhat.rss', name: 'VnExpress' },
-    { url: 'https://tuoitre.vn/rss/tin-moi-nhat.rss', name: 'Tuoi Tre' },
-    { url: 'https://dantri.com.vn/rss/home.rss', name: 'Dan Tri' },
-  ]
+  const feeds = newsFeedsFor(query)
   let result: unknown
   try {
-    const queryTerms = query.toLowerCase().split(' ').filter(t => t.length > 2)
-    const articles: Array<{ title: string; description: string; link: string; source: string; published: string; image?: string }> = []
+    const queryTerms = newsQueryTerms(query)
+    type Article = { title: string; description: string; link: string; source: string; published: string; image?: string }
+    const matched: Article[] = []
+    const latest: Article[] = []
     const withImages = consultV3Enabled()
     await Promise.all(feeds.map(async feed => {
       try {
         // the signal covers the body read too and aborts the socket; a failed answer is not a feed
-        const resp = await fetch(feed.url, { headers: { 'User-Agent': 'TappyAI/1.0 https://www.tappyai.com' }, signal: AbortSignal.timeout(4000) })
+        const resp = await fetch(feed.url, { headers: { 'User-Agent': 'TappyAI/1.0 https://www.tappyai.com' }, signal: AbortSignal.timeout(6000), redirect: 'follow' })
         if (!resp.ok) return
         const xml = (await resp.text()).slice(0, 1_000_000)
         const items = xml.match(/<item>([\s\S]*?)<\/item>/g) || []
-        for (const item of items.slice(0, 30)) {
-          if (articles.length >= 8) break
+        let kept = 0
+        for (const item of items.slice(0, 40)) {
+          if (kept >= 4) break // each outlet keeps its own share, so one fast feed cannot fill the list
           const title = (item.match(/<title><!\[CDATA\[(.*?)\]\]>/)?.[1] || item.match(/<title>(.*?)<\/title>/)?.[1] || '').trim()
           const desc = (item.match(/<description><!\[CDATA\[(.*?)\]\]>/)?.[1] || item.match(/<description>(.*?)<\/description>/)?.[1] || '').replace(/<[^>]*>/g, '').trim()
           const link = (item.match(/<link>(.*?)<\/link>/)?.[1] || item.match(/<guid>(.*?)<\/guid>/)?.[1] || '').trim()
           const pub = item.match(/<pubDate>(.*?)<\/pubDate>/)?.[1] || ''
           if (!title) continue
-          const tl = title.toLowerCase(), dl = desc.toLowerCase()
+          const tl = foldAccents(title), dl = foldAccents(desc)
           const matches = queryTerms.length === 0 || queryTerms.some(k => tl.includes(k) || dl.includes(k))
           const image = withImages ? rssItemImage(item) : null
-          if (matches) articles.push({ title, description: desc.slice(0, 200), link, source: feed.name, published: pub && Number.isFinite(Date.parse(pub)) ? new Date(pub).toLocaleDateString(isVi(lang) ? 'vi-VN' : 'en-US') : messages.news.latest(lang), ...(image ? { image } : {}) })
+          const article: Article = { title, description: desc.slice(0, 200), link, source: feed.name, published: pub && Number.isFinite(Date.parse(pub)) ? new Date(pub).toLocaleDateString(isVi(lang) ? 'vi-VN' : 'en-US') : messages.news.latest(lang), ...(image ? { image } : {}) }
+          if (matches) { matched.push(article); kept++ } else if (latest.filter(a => a.source === feed.name).length < 3) latest.push(article)
         }
       } catch { /* skip feed */ }
     }))
+    // Nothing matched the words but the feeds answered: the newest headlines of the topic feed are the answer to "what is the news", not an empty list.
+    const articles = matched.length ? matched : latest
     result = articles.length === 0
       ? { note: messages.news.noResults(lang), articles: [] }
-      : { query, total: articles.length, articles: articles.slice(0, 5) }
+      : { query, total: articles.length, articles: articles.slice(0, 6) }
   } catch {
     result = { error: messages.news.fetchError(lang), articles: [] }
   }

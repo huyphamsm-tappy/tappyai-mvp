@@ -92,6 +92,13 @@ export function rankingFromProse(text: string, candidates: readonly RankCandidat
       if (byPrice.length >= 1) pool = byPrice
     }
     if (pool.length > 1) {
+      // The listing whose whole name IS the bold name wins over listings that merely contain it (19/11 final UAT: "Pho Thin Bo Ho" and the same place's second
+      // listing "Pho Thin Bo Ho (Hang Voi) Chon pho gan H..." left the third named venue without a card).
+      const exact = pool.filter(i => fold(candidates[i].name) === fold(s))
+      // two listings with the very same name (two branches of one place) are the same pick: the better-ranked, earlier one
+      if (exact.length >= 1) pool = [exact[0]]
+    }
+    if (pool.length > 1) {
       // a token only one candidate has points at that candidate; a token every one of them has points at none
       const st = new Set(tokens(s))
       const hits = pool.map(i => ({ i, n: tokens(candidates[i].name).filter(t => st.has(t) && tokenCount.get(t) === 1).length }))

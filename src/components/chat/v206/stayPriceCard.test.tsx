@@ -18,7 +18,7 @@ describe('V206PlaceCard stay price line', () => {
   it('a stay with a structured offer: the highlights box holds the price line and the source Agoda', () => {
     render(<V206PlaceCard p={hotel({ stayOffer: offer })} position={0} ranked={false} />)
     expect(screen.getByTestId('v206-pc-notes').textContent).toContain('Đặc trưng nổi bật')
-    expect(screen.getByTestId('v206-pc-stay-price').textContent).toBe('Giá tham khảo: 231.481đ/đêm cho 2 người, chưa gồm thuế và phí; Agoda kiểm tra lúc 14:47 ngày 19/11/2026.')
+    expect(screen.getByTestId('v206-pc-stay-price').textContent).toBe('Giá tham khảo: 231.481đ/đêm cho 2 người, chưa gồm thuế và phí; Agoda kiểm tra lúc 14:47 ngày 19/11/2026. Bấm nút đặt phòng để xem giá cuối cùng.')
     expect(screen.getByTestId('v206-pc-notes-src').textContent).toBe('Nguồn: Agoda')
   })
 
@@ -33,7 +33,7 @@ describe('V206PlaceCard stay price line', () => {
   it('English wording', () => {
     setLocale('en')
     render(<V206PlaceCard p={hotel({ stayOffer: offer })} position={0} ranked={false} />)
-    expect(screen.getByTestId('v206-pc-stay-price').textContent).toBe('Reference price: 231,481 VND/night for 2 guests, excluding taxes and fees; checked on Agoda at 14:47 on 19/11/2026.')
+    expect(screen.getByTestId('v206-pc-stay-price').textContent).toBe('Reference price: 231,481 VND/night for 2 guests, excluding taxes and fees; checked on Agoda at 14:47 on 19/11/2026. Open the booking page for the final price.')
   })
 
   it('no offer: no price line and no box', () => {
