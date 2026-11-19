@@ -53,6 +53,11 @@ describe('the one general instruction', () => {
     expect(THINK_DEEPER_DESCRIPTION).toContain('in the same step as the lookups you already know you need')
     expect(THINK_DEEPER_DESCRIPTION).not.toContain('FIRST, alone')
   })
+  // 19/11 (owner: answers are too slow and history / list answers too thin): the measured turns made one lookup per step (about 8 s a step); lists give each item a few sentences
+  it('the model is told to make all foreseeable lookups in the first step, and each listed item gets a few sentences', () => {
+    expect(ONE_BRAIN_CORE).toContain('Make ALL the lookups you can foresee in your first step together')
+    expect(ONE_BRAIN_CORE).toContain('each item stands on its own: what or who it is, when or where, why it matters and one concrete detail, in two or three sentences')
+  })
   // 19/11 (owner UAT: "biết hồ chủ tịch ko" was answered with an emoji, "tui" and "are you teasing me?"): the tone follows the subject, in general terms (no name of a person or country in the rule)
   it('the tone rule: plain and respectful for history, politics, religion, tragedy and national figures; no joke, emoji or guessing the motive', () => {
     expect(ONE_BRAIN_CORE).toContain('The tone follows the subject.')
