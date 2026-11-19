@@ -3,7 +3,7 @@ import { zodToJsonSchema } from 'zod-to-json-schema'
 import { ANALYST_SYSTEM, GAPS_SYSTEM, GAPS_UPCOMING_ADDENDUM, reportFallback } from './deepResearchDeps'
 import { runDeepResearch, type DeepResearchDeps, type ResearchPlan } from './deepResearch'
 import { researchThesisOn, researchEvidenceCardsOn } from './deepResearchState'
-import { PolicyScanSchema, policyStepFrom, withPolicyStep, OutlineSchema, outlineFrom, analystCards, outlineWriterInput, releaseText, wordCitationsToMarks, wordCiteStream, STANDARD_OUTLINE, ADVANCED_OUTLINE, ANALYST_CARDS_MAX, type Outline } from './thesisReport'
+import { PolicyScanSchema, policyStepFrom, withPolicyStep, OutlineSchema, outlineFrom, analystCards, outlineWriterInput, releaseText, wordCitationsToMarks, wordCiteStream, STANDARD_OUTLINE, ADVANCED_OUTLINE, ANALYST_CARDS_MAX, EXCERPT_MAX, excerptOf, type Outline } from './thesisReport'
 import { readFileSync } from 'node:fs'
 import type { EvidenceCard } from './evidenceCards'
 import type { Evidence } from './deepResearch'
@@ -163,6 +163,30 @@ describe('outlineWriterInput: the writer is handed the outline and only the sour
     expect(w.notes).toContain('Price rose 10% in 2026 [1]')
     expect(w.notes).toContain('Tax 8% from 2027 [2]')
     expect(w.notes).toContain('THESIS: T')
+  })
+  // 19/11: under a fact whose quote the code verified, the source's own words follow, so the writer has the detail; nothing for an unverified quote or one that adds nothing
+  it('hands the writer a verified quote as an excerpt under its fact (page marks [12] become (12), cut at EXCERPT_MAX), and nothing for an unverified or redundant quote', () => {
+    const long = 'Doanh số xe điện năm 2025 tăng mạnh theo Hiệp hội [12] nhờ ưu đãi lệ phí trước bạ 0% và mạng lưới sạc mở rộng; tuy vậy từ 2031 chính sách thuế sẽ thắt chặt. '.repeat(6)
+    const withQuote = [card(1, { source: 5, text: 'Price rose 10% in 2026', quote: long, quoteStatus: 'VERIFIED' }), card(2, { source: 7, text: 'Tax 8% from 2027', quote: long, quoteStatus: 'UNVERIFIED' }), card(3, { source: 5, text: 'Another fact', quote: 'Another fact', quoteStatus: 'VERIFIED' })]
+    const w = outlineWriterInput(outline, withQuote, cited, number)
+    expect(w.notes).toContain('Price rose 10% in 2026 [1]\n    excerpt: "Doanh số xe điện')
+    expect(w.notes).toContain('Hiệp hội (12)')
+    expect(w.notes).not.toContain('[12]')
+    const ex = w.notes.split('excerpt: "')[1].split('"\n')[0]
+    expect(ex.length).toBeLessThanOrEqual(EXCERPT_MAX + 2)
+    expect(w.notes.match(/excerpt:/g)).toHaveLength(1) // the unverified quote and the one that only repeats the fact get none
+    expect(w.notes).toContain('Tax 8% from 2027 [2]')
+    expect(w.notes).not.toContain('Tax 8% from 2027 [2]\n    excerpt')
+  })
+  it('excerptOf is empty for a missing quote and for a short one', () => {
+    expect(excerptOf({ text: 'x', quoteStatus: 'VERIFIED' })).toBe('')
+    expect(excerptOf({ text: 'x', quote: 'too short a quote', quoteStatus: 'VERIFIED' })).toBe('')
+  })
+  it('the analyst may attach two to six cards to a point and the writer is told what an excerpt is (prompt text, read from the source)', () => {
+    const src = readFileSync('src/lib/ai/research/deepResearchDeps.ts', 'utf8')
+    expect(src).toContain('(two to six, the best-held first')
+    expect(src).not.toContain('(one to four, the best-held first)')
+    expect(src).toContain('a fact may be followed by an "excerpt", the source\'s own words')
   })
   it('adds a source the scenario model cites even when no point uses it', () => {
     expect(outlineWriterInput(outline, cards, cited, number, [3]).sources.map(s => s.id)).toEqual([1, 2, 3])

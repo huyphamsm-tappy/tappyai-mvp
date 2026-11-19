@@ -107,6 +107,21 @@ export interface WriterInput {
  * The outline into what the writer is handed. `cited` are the run's sources under the numbers the whole run uses (the scenario model's notes cite those numbers) and `number` maps a card's own source id to
  * that number; the writer gets only the sources a point uses (plus `extra`, e.g. the base source of the scenario model). Release renumbers what the text really cites. Pure.
  */
+/** The most characters of a source's own words handed to the writer under a fact. */
+export const EXCERPT_MAX = 420
+/**
+ * 19/11 (the research report was a third of the length of Claude's and scored 3.1 against 3.9 / 4.7; Claude reads whole pages, the writer here got one short fact line per card): under a fact whose quote the code
+ * verified against the page, the source's own words follow (cut at EXCERPT_MAX) so the writer has the detail, the date and the qualifier. A page's own "[12]" marks become "(12)" so they are never read as a citation.
+ * Nothing for an unverified or absent quote, or a quote that adds nothing to the fact. Pure.
+ */
+export function excerptOf(c: Pick<EvidenceCard, 'text' | 'quote' | 'quoteStatus'>): string {
+  if (c.quoteStatus !== 'VERIFIED') return ''
+  const q = (c.quote ?? '').replace(/\s+/g, ' ').replace(/\[(\d{1,3})\]/g, '($1)').trim()
+  if (q.length < 40 || q.length <= c.text.length * 0.8) return ''
+  const cut = q.length > EXCERPT_MAX ? `${q.slice(0, EXCERPT_MAX).replace(/\s+\S*$/, '')}…` : q
+  return `\n    excerpt: "${cut.replace(/"/g, "'")}"`
+}
+
 export function outlineWriterInput(outline: Outline, cards: readonly EvidenceCard[], cited: readonly Evidence[], number: ReadonlyMap<number, number>, extra: readonly number[] = []): WriterInput {
   const byCard = new Map(cards.map(c => [c.id, c]))
   const byEv = new Map(cited.map(e => [e.id, e]))
@@ -118,7 +133,7 @@ export function outlineWriterInput(outline: Outline, cards: readonly EvidenceCar
         const n = number.get(c.source)!
         used.add(n)
         findings.push({ step: k + 1, text: c.text, source: n, ...(c.figure ? { figure: c.figure } : {}) })
-        return `  - ${c.text} [${n}]${c.ratioNote ? ` (${c.ratioNote})` : ''}`
+        return `  - ${c.text} [${n}]${c.ratioNote ? ` (${c.ratioNote})` : ''}${excerptOf(c)}`
       })
       return `- POINT: ${p.claim}\n${facts.join('\n')}`
     })
