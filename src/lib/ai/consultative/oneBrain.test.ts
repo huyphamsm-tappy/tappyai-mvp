@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { consultOneBrainOn, CONSULT_ONE_BRAIN_FLAG } from '@/lib/config/consultFlags'
-import { ONE_BRAIN_CORE, ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, ONE_BRAIN_NO_BLOCKS_LINE, ONE_BRAIN_SHAPE_REMINDER, PLACE_RULE, oneBrainDynamic } from './oneBrain'
+import { ONE_BRAIN_CORE, ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, ONE_BRAIN_NO_BLOCKS_LINE, ONE_BRAIN_SHAPE_REMINDER, PLACE_RULE, PRESENT_PLAN_DESCRIPTION, oneBrainDynamic } from './oneBrain'
 
 describe('CONSULT_ONE_BRAIN flag', () => {
   it('is ON only for exactly "1", and never in a production runtime', () => {
@@ -28,6 +28,14 @@ describe('the one general instruction', () => {
     // the shape reminder (last in the prompt) must not undo the buying rule
     expect(ONE_BRAIN_SHAPE_REMINDER).toContain('closing line of the buying rule')
     expect(ONE_BRAIN_SHAPE_REMINDER).toContain('[FOLLOWUPS] chips') // the reminder is last in the prompt: the chips line is named there too (measured 17/20 without it)
+  })
+  it('venues: only what search_places returned is recommended (a web-found venue is searched by name first) and the written count matches the names; the plan card holds the one budget and the visa note for a border crossing (UI eval M1, 19/11)', () => {
+    expect(ONE_BRAIN_CORE).toContain('Recommend only venues that search_places returned')
+    expect(ONE_BRAIN_CORE).toContain('the count you write')
+    expect(PRESENT_PLAN_DESCRIPTION).toContain('The budget appears ONCE, in the plan card')
+    expect(PRESENT_PLAN_DESCRIPTION).toContain('whether the traveller needs a visa for their passport')
+    // general principles only: no country, city or place name in them
+    for (const w of ['Singapore', 'Sa Pa', 'Đà Nẵng', 'Hội An', 'Tân Bình']) expect(`${ONE_BRAIN_CORE}${PRESENT_PLAN_DESCRIPTION}`, w).not.toContain(w)
   })
   it('the buying rule names no product, brand, store or language of the question (any product, any language)', () => {
     const rule = ONE_BRAIN_CORE.split('\n').filter(l => /BUY something|names a store|price or buying question|Name each product or listing/.test(l)).join('\n')
