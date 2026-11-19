@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { consultOneBrainOn, CONSULT_ONE_BRAIN_FLAG } from '@/lib/config/consultFlags'
+import { PLACES_BUDGET_ONE_BRAIN } from '@/lib/ai/tools/placesBudget'
 import { ONE_BRAIN_CORE, ONE_BRAIN_MAX_STEPS, ONE_BRAIN_MAX_TOKENS, ONE_BRAIN_NO_BLOCKS_LINE, ONE_BRAIN_SHAPE_REMINDER, PLACE_RULE, PRESENT_PLAN_DESCRIPTION, oneBrainDynamic } from './oneBrain'
 
 describe('CONSULT_ONE_BRAIN flag', () => {
@@ -37,6 +38,26 @@ describe('the one general instruction', () => {
     expect(PRESENT_PLAN_DESCRIPTION).toContain('whether the traveller needs a visa for their passport')
     // general principles only: no country, city or place name in them
     for (const w of ['Singapore', 'Sa Pa', 'Đà Nẵng', 'Hội An', 'Tân Bình']) expect(`${ONE_BRAIN_CORE}${PRESENT_PLAN_DESCRIPTION}`, w).not.toContain(w)
+  })
+  // 19/11 (UAT: a trip plan made 13 search_places calls, 7 refused by the per-turn cap of 6 the model was never told; the turn then hit the 110 s deadline): the cap is in the prompt, equal to the code's own,
+  // and the venue rule and the itinerary rule are two bullets (an edit once merged them onto one line)
+  it('the model is told the search_places cap of the turn (the same number the code enforces) and the venue and itinerary bullets are separate lines', () => {
+    expect(ONE_BRAIN_CORE).toContain(`A turn may spend at most ${PLACES_BUDGET_ONE_BRAIN} search_places calls and a call over that is refused`)
+    const lines = ONE_BRAIN_CORE.split('\n')
+    expect(lines.some(l => l.startsWith('- A venue the person may go to') && !l.includes('- A trip or evening itinerary'))).toBe(true)
+    expect(lines.some(l => l.startsWith('- A trip or evening itinerary'))).toBe(true)
+  })
+  // 19/11 (owner: the answers are too slow; the first step of nearly every turn was think_deeper ALONE, a model round trip with nothing else in it): it is asked for in the same step as the first lookups
+  it('think_deeper is called in the first step together with the lookups, not alone', async () => {
+    const { THINK_DEEPER_DESCRIPTION } = await import('./oneBrain')
+    expect(THINK_DEEPER_DESCRIPTION).toContain('in the same step as the lookups you already know you need')
+    expect(THINK_DEEPER_DESCRIPTION).not.toContain('FIRST, alone')
+  })
+  // 19/11 (owner UAT: "biết hồ chủ tịch ko" was answered with an emoji, "tui" and "are you teasing me?"): the tone follows the subject, in general terms (no name of a person or country in the rule)
+  it('the tone rule: plain and respectful for history, politics, religion, tragedy and national figures; no joke, emoji or guessing the motive', () => {
+    expect(ONE_BRAIN_CORE).toContain('The tone follows the subject.')
+    expect(ONE_BRAIN_CORE).toContain('no joke, no emoji, no slang, no teasing, and never guess or comment on why the person asks')
+    for (const w of ['Hồ Chí Minh', 'Hồ Chủ tịch', 'Bác Hồ']) expect(ONE_BRAIN_CORE, w).not.toContain(w)
   })
   it('buying: the model is told when to declare purchase intent (buy links) and to make one call per distinct need (owner 19/11: the tool call, not a Serper cap)', () => {
     expect(ONE_BRAIN_CORE).toContain('Set purchase_links to true only when the person asks where to buy')

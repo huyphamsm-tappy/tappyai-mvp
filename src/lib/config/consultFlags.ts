@@ -159,6 +159,12 @@ const NOT_A_LOOKUP = new Set(['present_plan', 'present_options', 'present_blocks
 export function isLookupTool(tool: string): boolean { return !NOT_A_LOOKUP.has(tool) }
 export function heavyTurnReached(lookupCalls: number, heavy: number = HEAVY_TURN_LOOKUPS): boolean { return lookupCalls >= heavy }
 /**
+ * 19/11 (UAT: a trip plan spent 80 s of the 110 s turn on 13 lookups, then was cut off while it wrote the plan): the lookups of a one-brain auto turn have a TIME budget the code holds. Once the turn is this old,
+ * a further lookup is answered "no more lookups, write now" (no provider call, no cost) so the writing step keeps the rest of the turn (TURN_DEADLINE_MS 110 s: about 55 s are left to write a plan).
+ */
+export const LOOKUP_TIME_BUDGET_MS = 55_000
+export function lookupTimeUp(elapsedMs: number, budgetMs: number = LOOKUP_TIME_BUDGET_MS): boolean { return elapsedMs >= budgetMs }
+/**
  * Wave 5 · W5-2 (CONSULT_PICK_PAGE_READ). ON only for the exact value "1" and outside a production runtime: NOT tied to the level. It acts only on a pre-searched pick (R2) that carries the page reader,
  * i.e. with CONSULT_PICK_TURN_TOOLS on (Wave 4 · C3); without that there is no R2 reader and the flag changes nothing.
  * Measured (W4-R2, 28/10, bench json): on R2 the model called no tool in 4 of 5 questions (one read three cinema pages) and all five lost the blind grading - the venue pages were mostly never

@@ -124,7 +124,7 @@ import { recordDecision, DECISION_RECORD_TIMEOUT_MS } from '@/lib/ai/agent/runti
 import { createPlacesBudget, PLACES_BUDGET_AGENT, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_ONE_BRAIN, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
 // Consultative V1 (flag CONSULTATIVE_V1, default OFF — see docs/audit/consultative-v1-design.md).
 import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
-import { isProductionRuntime, consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, isLookupTool, heavyTurnReached, consultReadPageLateOn, consultPickPageReadOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn, consultUnwindS1aOn, consultUnwindS1bOn, consultUnwindS1dOn, consultUnwindS2aOn, consultUnwindS2bOn, consultUnwindS2cOn, consultUnwindS3aOn, consultUnwindS3bOn, consultUnwindS3cOn, consultUnwindS4aOn, consultUnwindS4bOn, consultUnwindS5On, consultUnwindS6aOn, consultUnwindS6bOn, consultUnwindS6cOn, consultOneBrainOn, consultOneBrainMediaOn, consultPresentBlocksOn, consultPersonModelOn, consultPlanV2On, consultParallelOn } from '@/lib/config/consultFlags'
+import { isProductionRuntime, consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, isLookupTool, heavyTurnReached, lookupTimeUp, consultReadPageLateOn, consultPickPageReadOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn, consultUnwindS1aOn, consultUnwindS1bOn, consultUnwindS1dOn, consultUnwindS2aOn, consultUnwindS2bOn, consultUnwindS2cOn, consultUnwindS3aOn, consultUnwindS3bOn, consultUnwindS3cOn, consultUnwindS4aOn, consultUnwindS4bOn, consultUnwindS5On, consultUnwindS6aOn, consultUnwindS6bOn, consultUnwindS6cOn, consultOneBrainOn, consultOneBrainMediaOn, consultPresentBlocksOn, consultPersonModelOn, consultPlanV2On, consultParallelOn } from '@/lib/config/consultFlags'
 import { planV2Shape, foldPlanV2 } from '@/lib/ai/consultative/planV2'
 import { createParallelTurnBudget, parallelExtract, parallelSearch } from '@/lib/ai/tools/parallelClient'
 import { searchWithReads, createOnce, FOLLOW_UP_SYSTEM, S6_MAX_READS } from '@/lib/ai/consultative/searchReads'
@@ -4047,6 +4047,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
             autoThink.effort = 'none'
             console.log(JSON.stringify({ type: 'tappyai_turn_effort', to: 'none', lookups: lookupCallsN, tool: name, stepsFinished: stepsFinishedN, elapsedMs: Date.now() - startTime }))
           }
+        }
+        if (effortLadder && isLookupTool(name) && lookupTimeUp(Date.now() - startTime)) {
+          console.log(JSON.stringify({ type: 'tappyai_lookup_time_up', tool: name, stepsFinished: stepsFinishedN, elapsedMs: Date.now() - startTime }))
+          return Promise.resolve({ error: 'search_budget_used', note: 'No more lookups in this turn (the time for them is used). Write the answer now from the data you already have; say plainly what you could not confirm, and do not invent it.' })
         }
         if (stepReserve && reserveHoldsToolCall(name, stepsFinishedN, streamMaxSteps, readPageLate)) {
           console.log(JSON.stringify({ type: 'tappyai_final_synthesis_guard', tool: name, stepsFinished: stepsFinishedN, maxSteps: streamMaxSteps }))

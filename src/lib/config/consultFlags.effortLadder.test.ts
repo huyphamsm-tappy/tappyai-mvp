@@ -1,5 +1,22 @@
 import { describe, it, expect } from 'vitest'
-import { isLookupTool, heavyTurnReached, HEAVY_TURN_LOOKUPS } from './consultFlags'
+import { isLookupTool, heavyTurnReached, HEAVY_TURN_LOOKUPS, lookupTimeUp, LOOKUP_TIME_BUDGET_MS } from './consultFlags'
+import { readFileSync } from 'node:fs'
+
+// 19/11 (UAT: a trip plan spent 80 s of the 110 s turn on lookups and was cut off while writing): the lookups have a time budget the code holds
+describe('lookup time budget', () => {
+  it('is 55 s of the 110 s turn: a lookup at or after it is refused, before it is allowed', () => {
+    expect(LOOKUP_TIME_BUDGET_MS).toBe(55_000)
+    expect(lookupTimeUp(54_999)).toBe(false)
+    expect(lookupTimeUp(55_000)).toBe(true)
+    expect(lookupTimeUp(80_000)).toBe(true)
+    expect(lookupTimeUp(10_000, 10_000)).toBe(true) // a custom budget moves the line
+  })
+  it('the route refuses a lookup (never a card or a plan call) once the time is up, on the ladder turns only', () => {
+    const src = readFileSync('src/app/api/chat/route.ts', 'utf8')
+    expect(src).toContain('if (effortLadder && isLookupTool(name) && lookupTimeUp(Date.now() - startTime)) {')
+    expect(src).toContain("type: 'tappyai_lookup_time_up'")
+  })
+})
 
 // 18/11 (Phase 1, S6b): the effort of a one-brain turn steps down only once the turn is HEAVY (many lookups); a light turn keeps medium.
 describe('effort ladder', () => {
