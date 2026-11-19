@@ -126,6 +126,7 @@ import { createPlacesBudget, PLACES_BUDGET_AGENT, PLACES_BUDGET_DEFAULT, PLACES_
 import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
 import { isProductionRuntime, consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, isLookupTool, heavyTurnReached, lookupTimeUp, consultReadPageLateOn, consultPickPageReadOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn, consultUnwindS1aOn, consultUnwindS1bOn, consultUnwindS1dOn, consultUnwindS2aOn, consultUnwindS2bOn, consultUnwindS2cOn, consultUnwindS3aOn, consultUnwindS3bOn, consultUnwindS3cOn, consultUnwindS4aOn, consultUnwindS4bOn, consultUnwindS5On, consultUnwindS6aOn, consultUnwindS6bOn, consultUnwindS6cOn, consultOneBrainOn, consultOneBrainMediaOn, consultPresentBlocksOn, consultPersonModelOn, consultPlanV2On, consultParallelOn } from '@/lib/config/consultFlags'
 import { planV2Shape, foldPlanV2 } from '@/lib/ai/consultative/planV2'
+import { daysWithoutNight, NIGHT_RETRY_NOTE } from '@/lib/ai/consultative/planNight'
 import { tierOf as turnTierOf, budgetOf, spendLookup, newBudgetState, type TurnTier } from '@/lib/ai/consultative/turnBudget'
 import { createParallelTurnBudget, parallelExtract, parallelSearch } from '@/lib/ai/tools/parallelClient'
 import { searchWithReads, createOnce, FOLLOW_UP_SYSTEM, S6_MAX_READS } from '@/lib/ai/consultative/searchReads'
@@ -2698,6 +2699,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   let placesOverride: { results: unknown[]; location?: string } | null = null
   let lastPlaceRowsForState: { args: { query: string; type?: string; location?: string }; rows: unknown[] } | null = null
   let lastStayForState: NonNullable<ChatSessionState['stay']> | null = null
+  let planNightRetries = 0 // present_plan: a trip day with no stop after 20:30 is sent back once (planNight.ts)
   let lastProductsForState: NonNullable<ChatSessionState['products']> | null = null
   // A place "xem thêm" / "bác" with ≥ 2 stored candidates nobody has been shown: the stored set, not a new
   // search. Fewer left → search again (the candidates ran out).
@@ -3187,6 +3189,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           type: z.enum(['trip', 'evening']),
           title: z.string().describe('e.g. "Quy Nhơn 3 ngày 2 đêm"'),
           people: z.number().optional(),
+          gentle: z.boolean().optional().describe('true ONLY when the person asked for a slow, light or relaxed plan, or travels with elderly people or small children: the plan then needs no stop after 20:30'),
           budget_total: z.string().optional().describe('only when the person gave a budget or the tools gave prices'),
           days: z.array(z.object({
             label: z.string().describe('e.g. "Ngày 1 — Kỳ Co, Eo Gió"; each day has 4-7 items (morning, lunch, afternoon, dinner, and the evening or late night where the place has one)'),
@@ -3206,6 +3209,13 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           ...(planV2On ? planV2Shape : {}),
         }),
         execute: async (plan) => {
+          // owner 19/11: a plan whose day closes at dinner goes back to the model once (the night is part of the first plan); the second call is shown as it is
+          const noNight = plan.type === 'trip' ? daysWithoutNight(plan.days as Array<{ items?: Array<{ time?: unknown }> }>, { gentle: (plan as { gentle?: boolean }).gentle === true }) : []
+          if (noNight.length > 0 && planNightRetries < 1) {
+            planNightRetries++
+            console.log(JSON.stringify({ type: 'tappyai_plan_night_retry', days: noNight }))
+            return { ok: false, note: NIGHT_RETRY_NOTE(noNight) }
+          }
           enrichment.planBlock = JSON.stringify(planV2On ? foldPlanV2(plan as Parameters<typeof foldPlanV2>[0]) : plan)
           return { ok: true, note: 'The app shows this plan as a card BELOW your text, and it can be shared as a brochure. Write only a short summary and the key tips; do not repeat the plan, and do not say the card is above.' }
         },

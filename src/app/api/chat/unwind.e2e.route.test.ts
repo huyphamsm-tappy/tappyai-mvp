@@ -721,13 +721,20 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     // The fix was checked on localhost 28/10 with the turn that showed it (MOT-BO-NAO report, question 8).
   }, 60000)
   it('flag ON: a plan handed to present_plan reaches the user as the [TAPPY_PLAN] card block (the brochure), after the model\'s summary', async () => {
-    const plan = { type: 'trip', title: 'Đà Lạt 2 ngày 1 đêm', days: [{ label: 'Ngày 1 — Hồ Xuân Hương', items: [{ time: 'Sáng', emoji: '🌲', category: 'sightseeing', name: 'Hồ Xuân Hương' }] }] }
+    const plan = { type: 'trip', gentle: true, title: 'Đà Lạt 2 ngày 1 đêm', days: [{ label: 'Ngày 1 — Hồ Xuân Hương', items: [{ time: 'Sáng', emoji: '🌲', category: 'sightseeing', name: 'Hồ Xuân Hương' }] }] }
     const on = await turn(TRIP, { unwind: true, oneBrain: true, luna: TRIP_INTENT, tools: [{ name: 'present_plan', args: plan }], reply: 'Lịch trình gọn cho bạn, xem thẻ kế hoạch bên dưới.' })
     expect(on.text).toContain('Lịch trình gọn cho bạn')
     const m = on.text.match(/\[TAPPY_PLAN\]([\s\S]*?)\[\/TAPPY_PLAN\]/)
     expect(m).not.toBeNull()
     expect(JSON.parse(m![1])).toMatchObject({ type: 'trip', title: 'Đà Lạt 2 ngày 1 đêm', days: [{ label: 'Ngày 1 — Hồ Xuân Hương' }] })
     expect(on.text.indexOf('Lịch trình gọn')).toBeLessThan(on.text.indexOf('[TAPPY_PLAN]'))
+  }, 60000)
+  it('a trip plan whose day closes at dinner is sent back once: no card, the model is told to add the night (owner 19/11)', async () => {
+    const plan = { type: 'trip', title: 'Đà Lạt 2 ngày 1 đêm', days: [{ label: 'Ngày 1', items: [{ time: '08:00', emoji: '🌲', category: 'sightseeing', name: 'Hồ Xuân Hương' }, { time: '19:00', emoji: '🍲', category: 'food', name: 'Lẩu gà' }] }, { label: 'Ngày 2', items: [{ time: '09:00', emoji: '☕', category: 'food', name: 'Cà phê' }] }] }
+    const on = await turn(TRIP, { unwind: true, oneBrain: true, luna: TRIP_INTENT, tools: [{ name: 'present_plan', args: plan }], reply: 'ok' })
+    expect(on.text).not.toContain('[TAPPY_PLAN]')
+    expect(JSON.stringify(on.results.find(r => r.name === 'present_plan')?.result ?? {})).toContain('before the night starts')
+    expect(on.logs.some(x => x.type === 'tappyai_plan_night_retry')).toBe(true)
   }, 60000)
   it('31/10 option cards: options handed to present_options reach the user as a [TAPPY_MEDIA] options block after the text; a link the turn\'s tools gave stays, any other link is dropped (the card stays)', async () => {
     const ASK: Msg[] = [{ role: 'user', content: 'tour thai lan 7 ngay nao dang tien' }]
@@ -938,7 +945,7 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
   }, 60000)
   it('flag ON, no place retrieved (search down): the brochure keeps every stop under the model\'s own name - sights untagged (N3), unreturned venues labelled "(chưa xác minh)" with no link, address or price (review 30/10)', async () => {
     // Localhost 29/10 ("Đà Lạt 2 ngày 1 đêm", Serper 403): the strict plan guard dropped all 9 stops and every day of the card was empty.
-    const plan = { type: 'trip', title: 'Đà Lạt 2 ngày 1 đêm', days: [{ label: 'Ngày 1 — Trung tâm', items: [
+    const plan = { type: 'trip', gentle: true, title: 'Đà Lạt 2 ngày 1 đêm', days: [{ label: 'Ngày 1 — Trung tâm', items: [
       { time: '08:00', emoji: '🌲', category: 'attraction', name: 'Hồ Xuân Hương', description: 'Đi dạo quanh hồ' },
       { time: '12:00', emoji: '🍲', category: 'food', name: 'Lẩu gà lá é Tao Ngộ', description: 'Ăn trưa' },
       { time: '14:00', emoji: '🏨', category: 'hotel', name: 'Khách sạn Hoa Mai Đà Lạt', description: 'Nhận phòng' },
@@ -962,7 +969,7 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     // Measured 30/10 (O-DEV30 k3a/k3par, C3010 k3): plan_local_tips ~1 000, plan_trip_facts ~500-600, plan_price ~340-600 characters removed per run on
     // trip answers; review 30/10: plan_trip_facts dropped the model's own date / origin questions (no system question replaces them on one brain),
     // guardClarifications dropped every "?" heading after the first, answerFirst moved the opening question.
-    const plan = { type: 'trip', title: 'Đà Lạt 2 ngày 1 đêm', local_tips: [{ text: 'Mang áo khoác, đêm xuống khoảng 15°C.', basis: 'general' }, { text: 'Đi chợ đêm sau 18:00 cho đỡ nắng.', basis: 'general' }], days: [{ label: 'Ngày 1', items: [
+    const plan = { type: 'trip', gentle: true, title: 'Đà Lạt 2 ngày 1 đêm', local_tips: [{ text: 'Mang áo khoác, đêm xuống khoảng 15°C.', basis: 'general' }, { text: 'Đi chợ đêm sau 18:00 cho đỡ nắng.', basis: 'general' }], days: [{ label: 'Ngày 1', items: [
       { time: '08:00', emoji: '🌲', category: 'attraction', name: 'Hồ Xuân Hương', description: 'Đi dạo quanh hồ' },
     ] }] }
     const reply = 'Bạn muốn đi ngày nào để mình xem thời tiết đúng ngày?\n\nMình tạm tính đi ngày 7/11, khởi hành từ TP.HCM bằng xe giường nằm.\n\n### Đi mùa nào đẹp?\nTháng 11 trời se lạnh, ít mưa.\n\n### Nên ở khu nào?\nGần chợ Đà Lạt cho tiện đi bộ.\n\nBạn xuất phát từ TP.HCM hay Hà Nội?'
@@ -975,7 +982,7 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     expect(on.logs.some(x => x.type === 'tappyai_guard_shadow')).toBe(true)
   }, 60000)
   it('P0-2 rest (30/10): one brain - a plan stop\'s price and fee clause stay (plan_price runs in shadow); a no-tool answer keeps "mình đã kiểm tra" (V1 guards off)', async () => {
-    const plan = { type: 'trip', title: 'Đà Lạt 2 ngày 1 đêm', days: [{ label: 'Ngày 1', items: [
+    const plan = { type: 'trip', gentle: true, title: 'Đà Lạt 2 ngày 1 đêm', days: [{ label: 'Ngày 1', items: [
       { time: '06:00', emoji: '🚌', category: 'transport', name: 'Xe giường nằm TP.HCM – Đà Lạt', description: 'Đi đêm cho đỡ mất ngày, vé khoảng 300.000đ một chiều', price: '300.000đ' },
     ] }] }
     const on = await turn(TRIP, { unwind: true, oneBrain: true, luna: TRIP_INTENT, tools: [{ name: 'present_plan', args: plan }], reply: 'Lịch trình gọn cho bạn.' })
@@ -1228,7 +1235,7 @@ describe('one brain: the model declares the blocks it needs (CONSULT_PRESENT_BLO
   it('CONSULT_PLAN_V2: a plan carries who it is for, its cost lines (an estimate says so), its total and its assumptions to the user; the typed costs array itself never ships', async () => {
     const PLAN: Msg[] = [{ role: 'user', content: 'len lich trinh 2 ngay 1 dem o da lat giup minh' }]
     const args = {
-      type: 'trip', title: 'Đà Lạt 2 ngày 1 đêm', people: 2, budget_total: 'khoảng 4.000.000đ cho 2 người, chưa gồm vé máy bay',
+      type: 'trip', gentle: true, title: 'Đà Lạt 2 ngày 1 đêm', people: 2, budget_total: 'khoảng 4.000.000đ cho 2 người, chưa gồm vé máy bay',
       days: [{ label: 'Ngày 1 — Hồ Xuân Hương', items: [{ time: 'Sáng', emoji: '🌲', category: 'sightseeing', name: 'Hồ Xuân Hương' }] }],
       traveler: { party: '2 người lớn', pace: 'thong thả, có buổi tối', interests: ['cà phê', 'phố đêm'] },
       costs: [{ item: 'Khách sạn 1 đêm, phòng đôi', amount: '800.000đ', basis: 'estimate' }, { item: 'Ăn uống 2 ngày', amount: '1.000.000đ', basis: 'estimate' }],
@@ -1249,7 +1256,7 @@ describe('one brain: the model declares the blocks it needs (CONSULT_PRESENT_BLO
 
   it('CONSULT_PLAN_V2 off: the plan is passed on exactly as the model sent it', async () => {
     const PLAN: Msg[] = [{ role: 'user', content: 'len lich trinh 2 ngay 1 dem o da lat giup minh' }]
-    const args = { type: 'trip', title: 'Đà Lạt 2 ngày 1 đêm', days: [{ label: 'Ngày 1', items: [{ time: 'Sáng', emoji: '🌲', category: 'sightseeing', name: 'Hồ Xuân Hương' }] }], traveler: { party: 'x', pace: 'y' } }
+    const args = { type: 'trip', gentle: true, title: 'Đà Lạt 2 ngày 1 đêm', days: [{ label: 'Ngày 1', items: [{ time: 'Sáng', emoji: '🌲', category: 'sightseeing', name: 'Hồ Xuân Hương' }] }], traveler: { party: 'x', pace: 'y' } }
     const off = await turn(PLAN, { unwind: true, oneBrain: true, planV2: false, luna: intent('plan', ['travel']), tools: [{ name: 'present_plan', args }], reply: 'ok' })
     const plan = JSON.parse(off.text.match(/\[TAPPY_PLAN\]([\s\S]*?)\[\/TAPPY_PLAN\]/)![1])
     expect(plan.cost_breakdown).toBeUndefined()
