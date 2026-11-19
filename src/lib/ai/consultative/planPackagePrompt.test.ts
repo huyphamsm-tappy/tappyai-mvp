@@ -4,7 +4,7 @@ import { PRESENT_PLAN_DESCRIPTION } from './oneBrain'
 
 describe('present_plan description', () => {
   it('asks for the package: transport, stay with a price, cost lines, tips', () => {
-    for (const w of ['how to get there and back', 'get_hotel_prices', 'cost_breakdown', 'local_tips']) expect(PRESENT_PLAN_DESCRIPTION).toContain(w)
+    for (const w of ['how to get there and back', 'get_hotel_prices', 'costs_vnd', 'local_tips']) expect(PRESENT_PLAN_DESCRIPTION).toContain(w)
   })
   it('a short plan for today starts from the next sensible hour and is shaped by the hour', () => {
     expect(PRESENT_PLAN_DESCRIPTION).toMatch(/current local time/)

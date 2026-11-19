@@ -736,6 +736,16 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
     expect(JSON.stringify(on.results.find(r => r.name === 'present_plan')?.result ?? {})).toContain('before the night starts')
     expect(on.logs.some(x => x.type === 'tappyai_plan_night_retry')).toBe(true)
   }, 60000)
+  it('the plan total is added up by the code from costs_vnd: the model\'s own total and breakdown are replaced, the numbers never ship (owner 19/11)', async () => {
+    const plan = { type: 'trip', gentle: true, title: 'Đà Lạt 2 ngày 1 đêm', people: 2, budget_total: '9.999.999đ (sai)', cost_breakdown: { Sai: '1đ' }, costs_vnd: [{ item: 'Xe', low: 300000, per_person: true }, { item: 'Phòng', low: 800000 }], days: [{ label: 'Ngày 1', items: [{ time: '08:00', emoji: '🌲', category: 'sightseeing', name: 'Hồ Xuân Hương' }] }] }
+    const on = await turn(TRIP, { unwind: true, oneBrain: true, luna: TRIP_INTENT, tools: [{ name: 'present_plan', args: plan }], reply: 'ok' })
+    const m = on.text.match(/\[TAPPY_PLAN\]([\s\S]*?)\[\/TAPPY_PLAN\]/)
+    expect(m).not.toBeNull()
+    const card = JSON.parse(m![1]) as { budget_total: string; cost_breakdown: Record<string, string>; costs_vnd?: unknown }
+    expect(card.budget_total).toContain('1.400.000')
+    expect(Object.keys(card.cost_breakdown)).toEqual(['Xe', 'Phòng'])
+    expect(card.costs_vnd).toBeUndefined()
+  }, 60000)
   it('31/10 option cards: options handed to present_options reach the user as a [TAPPY_MEDIA] options block after the text; a link the turn\'s tools gave stays, any other link is dropped (the card stays)', async () => {
     const ASK: Msg[] = [{ role: 'user', content: 'tour thai lan 7 ngay nao dang tien' }]
     const options = [

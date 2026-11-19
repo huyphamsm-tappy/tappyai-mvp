@@ -100,6 +100,7 @@ const T: Record<string, [string, string]> = {
   'v206.trip.map': ['Bản đồ', 'Map'],
   'v206.trip.book': ['Đặt chỗ', 'Book'],
   'v206.trip.share': ['Chia sẻ lịch trình', 'Share itinerary'],
+  'plan.cost.perPerson': ['{amount}/người', '{amount} per person'],
   'v206.trip.pdf': ['Tải PDF', 'Download PDF'],
   'v206.trip.pdfEyebrow': ['Kế hoạch du lịch · TappyAI', 'Trip plan · TappyAI'],
   'v206.trip.pdfItem': ['Hạng mục', 'Item'],

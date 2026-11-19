@@ -127,6 +127,7 @@ import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuar
 import { isProductionRuntime, consultFinalSynthesisOn, consultFinalWriteOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, consultChatDomainAgreementOn, capabilityLimits, reserveHoldsToolCall, isLookupTool, heavyTurnReached, lookupTimeUp, consultReadPageLateOn, consultPickPageReadOn, knowledgeDepth, consultKnowledgePathOn, consultPickTurnToolsOn, consultUnwindS1aOn, consultUnwindS1bOn, consultUnwindS1dOn, consultUnwindS2aOn, consultUnwindS2bOn, consultUnwindS2cOn, consultUnwindS3aOn, consultUnwindS3bOn, consultUnwindS3cOn, consultUnwindS4aOn, consultUnwindS4bOn, consultUnwindS5On, consultUnwindS6aOn, consultUnwindS6bOn, consultUnwindS6cOn, consultOneBrainOn, consultOneBrainMediaOn, consultPresentBlocksOn, consultPersonModelOn, consultPlanV2On, consultParallelOn } from '@/lib/config/consultFlags'
 import { planV2Shape, foldPlanV2 } from '@/lib/ai/consultative/planV2'
 import { daysWithoutNight, NIGHT_RETRY_NOTE } from '@/lib/ai/consultative/planNight'
+import { sumCosts, type CostLine } from '@/lib/ai/consultative/planCosts'
 import { tierOf as turnTierOf, budgetOf, spendLookup, newBudgetState, type TurnTier } from '@/lib/ai/consultative/turnBudget'
 import { createParallelTurnBudget, parallelExtract, parallelSearch } from '@/lib/ai/tools/parallelClient'
 import { searchWithReads, createOnce, FOLLOW_UP_SYSTEM, S6_MAX_READS } from '@/lib/ai/consultative/searchReads'
@@ -3190,7 +3191,14 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           title: z.string().describe('e.g. "Quy Nhơn 3 ngày 2 đêm"'),
           people: z.number().optional(),
           gentle: z.boolean().optional().describe('true ONLY when the person asked for a slow, light or relaxed plan, or travels with elderly people or small children: the plan then needs no stop after 20:30'),
-          budget_total: z.string().optional().describe('only when the person gave a budget or the tools gave prices'),
+          budget_total: z.string().optional().describe('only when the person gave a budget or the tools gave prices; leave it out when you give costs_vnd (the app writes the total)'),
+          costs_vnd: z.array(z.object({
+            item: z.string().describe('what the money is for: transport, stay, food, activities, local travel...'),
+            low: z.number().describe('the amount in VND (a whole number); the low end when it is a range'),
+            high: z.number().optional().describe('the high end in VND when it is a range'),
+            per_person: z.boolean().optional().describe('true when the figure is for ONE person (the app multiplies by people); false or omitted when it is for the whole group'),
+            note: z.string().optional().describe('where the figure comes from, a few words'),
+          })).optional().describe('the cost lines as NUMBERS. The app adds them up and writes cost_breakdown and the total itself, so the total always equals its lines. Give one line per kind of cost, covering the whole trip.'),
           days: z.array(z.object({
             label: z.string().describe('e.g. "Ngày 1 — Kỳ Co, Eo Gió"; each day has 4-7 items (morning, lunch, afternoon, dinner, and the evening or late night where the place has one)'),
             items: z.array(z.object({
@@ -3216,6 +3224,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
             console.log(JSON.stringify({ type: 'tappyai_plan_night_retry', days: noNight }))
             return { ok: false, note: NIGHT_RETRY_NOTE(noNight) }
           }
+          // the total is added up here, from the numbers the model gave: lines and total can never disagree (planCosts.ts)
+          const summed = sumCosts((plan as { costs_vnd?: CostLine[] }).costs_vnd, plan.people, lang === 'en' ? 'en' : 'vi')
+          if (summed) { (plan as Record<string, unknown>).cost_breakdown = summed.cost_breakdown; (plan as Record<string, unknown>).budget_total = summed.budget_total }
+          delete (plan as Record<string, unknown>).costs_vnd
           enrichment.planBlock = JSON.stringify(planV2On ? foldPlanV2(plan as Parameters<typeof foldPlanV2>[0]) : plan)
           return { ok: true, note: 'The app shows this plan as a card BELOW your text, and it can be shared as a brochure. Write only a short summary and the key tips; do not repeat the plan, and do not say the card is above.' }
         },
