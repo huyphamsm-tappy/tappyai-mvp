@@ -58,6 +58,10 @@ describe('the one general instruction', () => {
     expect(ONE_BRAIN_CORE).toContain('Make ALL the lookups you can foresee in your first step together')
     expect(ONE_BRAIN_CORE).toContain('each item stands on its own: what or who it is, when or where, why it matters and one concrete detail, in two or three sentences')
   })
+  // 19/11 (final UAT: two of three comparisons of two subjects showed one card and no table; the model had run one shared search, the server dropped the card whose facts no lookup carried)
+  it('subjects side by side: one lookup per subject, in the same step, before the cards are declared', () => {
+    expect(ONE_BRAIN_CORE).toContain('Look each subject up on its own (one lookup per subject, all in the same step) before you declare its card')
+  })
   // 19/11 (owner UAT: "biết hồ chủ tịch ko" was answered with an emoji, "tui" and "are you teasing me?"): the tone follows the subject, in general terms (no name of a person or country in the rule)
   it('the tone rule: plain and respectful for history, politics, religion, tragedy and national figures; no joke, emoji or guessing the motive', () => {
     expect(ONE_BRAIN_CORE).toContain('The tone follows the subject.')
