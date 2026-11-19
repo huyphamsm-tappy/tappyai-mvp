@@ -91,6 +91,8 @@ export const AI_TOOLS: readonly AiToolDescriptor[] = [
   { tool: 'present_options', effect: 'deterministic', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
   // CONSULT_PRESENT_BLOCKS only (14/11): the model declares compare / ask / booking blocks; checked server-side, nothing leaves the server
   { tool: 'present_blocks', effect: 'deterministic', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
+  // CONSULT_ONE_BRAIN only (19/11): the no-op a refused presentation call is turned into by the repair hook; returns a note, nothing leaves the server
+  { tool: 'present_failed', effect: 'deterministic', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
   { tool: 'get_gold_price', effect: 'external_read', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
   { tool: 'get_market_rate', effect: 'external_read', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
   { tool: 'get_flight_prices', effect: 'external_read', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },

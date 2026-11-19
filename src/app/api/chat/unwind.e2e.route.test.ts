@@ -461,7 +461,8 @@ describe('one brain e2e (CONSULT_ONE_BRAIN) - the answer model is the only reade
   const TRIP_INTENT = intent('plan', ['travel'], { known: [{ key: 'diem_den', value: 'Đà Lạt' }, { key: 'so_ngay', value: '2' }] })
   const cases: Array<[string, Msg[], Record<string, unknown>]> = [['review', REVIEW, intent('chat', [])], ['trip', TRIP, TRIP_INTENT], ['pick', PICK, PICK_INTENT], ['know', KNOW, KNOW_INTENT], ['hello', [{ role: 'user', content: 'chao ban' }], intent('chat', [])]]
   // 31/10 (owner approved the option cards): present_options joins the one-brain tool set.
-  const ALL_TOOLS = ['search_places', 'get_news', 'search_products', 'web_search', 'read_page', 'calculate', 'get_weather', 'get_weather_forecast', 'present_plan', 'present_options', 'get_gold_price', 'get_market_rate', 'get_flight_prices', 'get_hotel_prices', 'get_transport_options', 'save_price_watch']
+  // 19/11: present_failed (the no-op a refused presentation call is turned into by the repair hook; never called by the model) is part of the one-brain set.
+  const ALL_TOOLS = ['search_places', 'get_news', 'search_products', 'web_search', 'read_page', 'calculate', 'get_weather', 'get_weather_forecast', 'present_failed', 'present_plan', 'present_options', 'get_gold_price', 'get_market_rate', 'get_flight_prices', 'get_hotel_prices', 'get_transport_options', 'save_price_watch']
   const reply = 'Trả lời của mô hình.'
   it('flag ON: every kind of request reaches the model the same way - no intent call, the whole tool set, the one general instruction, 8 steps, 8000 tokens', async () => {
     for (const [name, m, l] of cases) {

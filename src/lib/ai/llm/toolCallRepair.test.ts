@@ -71,4 +71,29 @@ describe('repairToolCall (SDK hook)', () => {
     expect(await repairToolCall(opts('{}', 'no_such_tool'))).toBeNull()
     expect(warn.mock.calls.map(c => JSON.parse(c[0] as string).outcome)).toEqual(['unrepairable', 'args_not_json', 'no_such_tool'])
   })
+  // 19/11: a refused presentation call (a card with no blocks, a plan whose JSON was cut) ended the whole turn with no text; it becomes a no-op call of present_failed so the model writes the answer.
+  describe('presentation fallback', () => {
+    const withFallback = (args: string, toolName: string) => ({ ...opts(args, toolName), tools: { search_places: {}, present_plan: {}, present_blocks: {}, present_failed: {} } })
+    it('turns an unrepairable or non-JSON present_* call into present_failed with empty args, logged as presentation_fallback', async () => {
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+      const a = await repairToolCall(withFallback('{}', 'present_blocks'))
+      expect(a).toMatchObject({ toolName: 'present_failed', args: '{}', toolCallId: 'c1' })
+      const b = await repairToolCall(withFallback('{"type":"trip","title":"x"  \n\n\n', 'present_plan'))
+      expect(b).toMatchObject({ toolName: 'present_failed' })
+      const c = await repairToolCall(withFallback('[1]', 'present_plan'))
+      expect(c).toMatchObject({ toolName: 'present_failed' })
+      expect(warn.mock.calls.map(x => JSON.parse(x[0] as string).outcome)).toEqual(['presentation_fallback', 'presentation_fallback', 'presentation_fallback'])
+    })
+    it('never for another tool, never for the fallback itself, and only when present_failed is registered', async () => {
+      vi.spyOn(console, 'warn').mockImplementation(() => {})
+      expect(await repairToolCall(withFallback('{not json', 'search_places'))).toBeNull()
+      expect(await repairToolCall(withFallback('{not json', 'present_failed'))).toBeNull()
+      expect(await repairToolCall({ ...opts('{not json', 'present_plan'), tools: { present_plan: {} } })).toBeNull()
+    })
+    it('a present_* call that CAN be repaired is repaired as before, not replaced', async () => {
+      vi.spyOn(console, 'warn').mockImplementation(() => {})
+      const r = await repairToolCall({ ...withFallback(JSON.stringify({ query: 'q', type: null, target_price: '1.000' }), 'present_plan') })
+      expect(r!.toolName).toBe('present_plan')
+    })
+  })
 })

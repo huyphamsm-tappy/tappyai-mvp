@@ -454,7 +454,7 @@ export async function POST(req: Request) {
   // CONSULT_PLAN_V2 (default OFF): present_plan carries who it is for, every cost line, the total and its assumptions as required fields (consultative/planV2.ts)
   const planV2On = oneBrain && consultPlanV2On()
   const resultLedger = new ResultLedger()
-  const RESULT_ID_SKIP: ReadonlySet<string> = new Set(['present_plan', 'present_options', 'present_blocks', 'think_deeper', 'save_price_watch'])
+  const RESULT_ID_SKIP: ReadonlySet<string> = new Set(['present_plan', 'present_options', 'present_blocks', 'present_failed', 'think_deeper', 'save_price_watch'])
   const presentBlockProviders: ReadonlySet<string> = new Set(PROVIDER_REGISTRY.map(p => p.providerId))
   const presentBlockProviderOf = makeProviderOfUrl(PROVIDER_REGISTRY)
   const forcedToolDecides = consultUnwindS4aOn() ? null : forcedTool && !oneBrain ? forcedTool : null
@@ -3162,6 +3162,13 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       // CONSULT_ONE_BRAIN: the plan card / brochure (TripPlanCard, the shared plan page). Before, code decided a "trip turn" and wrote the
       // [TAPPY_PLAN] spec into the prompt; with one brain the model decides to present a day-by-day plan and passes it here (TappyPlan shape,
       // components/TripPlanCard.tsx). The block is appended in streamEnrichment, where the photo, link and price guards still run on it.
+      // 19/11: never called by the model. A refused presentation call (a card with no/empty fields, a plan whose JSON was cut) is turned into a call of this no-op by the repair hook
+      // (llm/toolCallRepair.ts presentationFallback) instead of ending the turn with no text; its result tells the model to write the answer in text.
+      ...(oneBrain ? { present_failed: tool({
+        description: 'Internal. The system uses this when a card or plan call could not be built. Never call it yourself.',
+        parameters: z.object({}),
+        execute: async () => ({ error: 'presentation_failed', note: lang === 'en' ? 'The card could not be built. Write the answer in plain text now, with the key facts, figures and sources you already have.' : 'Không dựng được thẻ. Viết ngay câu trả lời bằng chữ, đủ các ý, số liệu và nguồn đã có.' }),
+      }) } : {}),
       ...(oneBrain ? { present_plan: tool({
         description: PRESENT_PLAN_DESCRIPTION,
         parameters: z.object({
