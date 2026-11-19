@@ -28,6 +28,13 @@ describe('readerLinkTarget', () => {
     expect(readerLinkTarget(a('https://vnexpress.net/a.pdf', { download: true }), ORIGIN)).toBeNull()
     expect(readerLinkTarget(a('https://vnexpress.net/a', { attrs: { 'data-reader': 'off' } }), ORIGIN)).toBeNull()
   })
+  // 19/11 (owner: "we are an Agoda partner, why does the page not open"): the reader showed "Xin chờ một lát" and a line of JSON for an Agoda page, which a script draws
+  it('the partners and the booking / shopping platforms always open where they belong, with or without a tracking mark', () => {
+    for (const h of ['https://www.agoda.com/vi-vn/hotel/quy-nhon.html?cid=1974819', 'https://www.agoda.com/partners/x', 'https://www.vexere.com/vi-VN/ve-xe-khach', 'https://www.lazada.vn/products/x.html', 'https://shopee.vn/x', 'https://www.booking.com/hotel/vn/x.html', 'https://www.traveloka.com/vi-vn/hotel/x', 'https://food.grab.com/vn/vi/restaurants']) {
+      expect(readerLinkTarget(a(h), ORIGIN), h).toBeNull()
+    }
+    expect(readerLinkTarget(a('https://vnexpress.net/kinh-doanh/agoda-x.html'), ORIGIN)).not.toBeNull() // a news article that merely mentions a platform is still read
+  })
 })
 
 describe('isPlainClick', () => {

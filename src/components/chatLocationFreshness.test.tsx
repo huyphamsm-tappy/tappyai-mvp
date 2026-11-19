@@ -2,6 +2,9 @@
 import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest'
 import { render, cleanup, screen, fireEvent, act } from '@testing-library/react'
 
+// 19/11: the six shortcut chips are hidden in the product (owner); this test is about the nearby-search code path the chip calls, so the build flag that shows them is on here
+vi.hoisted(() => { process.env.NEXT_PUBLIC_ACTION_CHIPS = '1' })
+
 // ── Round 42 round 2 (stored location), STEP 1 — REPRODUCTION, no product code changed ─────────────────────────────────────────────────────
 // The real ChatInterface / LocationProvider, jsdom, `useChat` mocked to CAPTURE the request body (the same pattern as chatExploreClipContextWiring.test.tsx),
 // navigator.geolocation mocked per case, fetch mocked (no network: Nominatim and /api/preferences answer from the test).

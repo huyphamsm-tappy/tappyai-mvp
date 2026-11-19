@@ -591,6 +591,8 @@ export function sameSubjectName(a: string, b: string): boolean {
 const CONSULT_V3_CHOICES = process.env.NEXT_PUBLIC_CONSULT_V3 === '1'
 /** TAPPY_ANSWER_V4 build flag (owner 19/10): answers laid out as an article (ArticleAnswer) with the server's item pictures and comparison cards. */
 const ANSWER_V4 = process.env.NEXT_PUBLIC_TAPPY_ANSWER_V4 === '1'
+/** The six shortcut chips above the message box (advice, explain, nearby, tonight, trip, price watch). Hidden on purpose (owner 19/11): they belong to the old design. */
+const ACTION_CHIPS_VISIBLE = process.env.NEXT_PUBLIC_ACTION_CHIPS === '1' // off unless a build says so (the nearby-search tests turn it on)
 /** NEXT_PUBLIC_PRESENT_BLOCKS (14/11, layout slice 3; off by default): the blocks the model declared (compare table, ask options, booking handoff) are drawn from the server's live frame. Off: nothing is read, nothing is drawn. */
 const PRESENT_BLOCKS = process.env.NEXT_PUBLIC_PRESENT_BLOCKS === '1'
 /** A source chip whose label is just its own host ("vnexpress.net", the citation step's label) reads better as the outlet's name. */
@@ -2520,8 +2522,8 @@ export default function ChatInterface({
         {showEmojiPanel && (
           <div className="fixed inset-0 z-10" onClick={() => setShowEmojiPanel(false)} />
         )}
-        {/* Action chips */}
-        <div className="max-w-container-content mx-auto w-full flex gap-2 mb-2 overflow-x-auto scrollbar-none">
+        {/* Action chips: hidden (owner 19/11: these six old-design shortcuts open flows of the old architecture; the person just types) */}
+        {ACTION_CHIPS_VISIBLE && <div className="max-w-container-content mx-auto w-full flex gap-2 mb-2 overflow-x-auto scrollbar-none">
           {/* Not a scope: Tappy answers any topic. These two lead the bar so the place/trip tools below are not the whole story. */}
           <button
             type="button"
@@ -2571,7 +2573,7 @@ export default function ChatInterface({
           >
             {t('chat.chipPriceWatch')}
           </button>
-        </div>
+        </div>}
         {/* Hidden file input */}
         <input
           ref={fileInputRef}

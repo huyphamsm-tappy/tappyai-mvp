@@ -46,11 +46,18 @@ export const EXTRACT_CAPS = { title: 200, description: 300, headings: 12, headin
  */
 export const BLOCK_CAPS = { blocks: 14, total: 7_000, paragraph: 700, table: 3_500, tableRows: 60, list: 2_500, listItems: 40, cell: 120 } as const
 
-const ENTITIES: Record<string, string> = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ', ndash: '–', mdash: '—', hellip: '…', laquo: '«', raquo: '»', copy: '©', reg: '®' }
+/**
+ * 19/11 (owner: the reader showed "Th&aacute;ng 8/1945"): the HTML 4 Latin-1 letters by name (every accented vowel Vietnamese and French pages write as an entity), both cases, and the typographic marks
+ * a page uses around quotes and lists. Names are lower case here; the match is case-insensitive, so an upper-case name (Aacute) is served from its own entry below.
+ */
+const LATIN1_LOWER = 'agrave aacute acirc atilde auml aring aelig ccedil egrave eacute ecirc euml igrave iacute icirc iuml eth ntilde ograve oacute ocirc otilde ouml - oslash ugrave uacute ucirc uuml yacute thorn yuml'.split(' ')
+const LATIN1: Record<string, string> = {}
+LATIN1_LOWER.forEach((name, i) => { if (name !== '-') { LATIN1[name] = String.fromCodePoint(0xe0 + i); LATIN1[name[0].toUpperCase() + name.slice(1)] = String.fromCodePoint(0xc0 + i) } })
+const ENTITIES: Record<string, string> = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ', ndash: '–', mdash: '—', hellip: '…', laquo: '«', raquo: '»', copy: '©', reg: '®', ldquo: '“', rdquo: '”', lsquo: '‘', rsquo: '’', bull: '•', middot: '·', euro: '€', trade: '™', times: '×', dstrok: 'đ', Dstrok: 'Đ' }
 export function decodeEntities(s: string): string {
   return s.replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, (m, e: string) => {
     if (e[0] === '#') { const n = e[1] === 'x' || e[1] === 'X' ? parseInt(e.slice(2), 16) : parseInt(e.slice(1), 10); return Number.isFinite(n) && n > 0 && n < 0x110000 ? String.fromCodePoint(n) : ' ' }
-    return ENTITIES[e.toLowerCase()] ?? m
+    return LATIN1[e] ?? ENTITIES[e] ?? ENTITIES[e.toLowerCase()] ?? LATIN1[e.toLowerCase()] ?? m
   })
 }
 
