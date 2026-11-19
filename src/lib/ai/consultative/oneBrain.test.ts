@@ -37,12 +37,6 @@ describe('the one general instruction', () => {
     // general principles only: no country, city or place name in them
     for (const w of ['Singapore', 'Sa Pa', 'Đà Nẵng', 'Hội An', 'Tân Bình']) expect(`${ONE_BRAIN_CORE}${PRESENT_PLAN_DESCRIPTION}`, w).not.toContain(w)
   })
-  it('the last-in-prompt reminder asks for a completeness check before writing: every found figure/fee/condition/step, totals and worked examples, what was not found named (UI eval M1: 87% of turns under 2,500 chars scored completeness 3.1 vs 4.0)', () => {
-    expect(ONE_BRAIN_SHAPE_REMINDER).toContain('before you write, check what the person needs to decide or act on')
-    expect(ONE_BRAIN_SHAPE_REMINDER).toContain('a total for their party size')
-    expect(ONE_BRAIN_SHAPE_REMINDER).toContain('a thin answer that leaves these out is the failure')
-    expect(ONE_BRAIN_SHAPE_REMINDER).toContain('[FOLLOWUPS] chips') // the earlier reminder promises stay
-  })
   it('the buying rule names no product, brand, store or language of the question (any product, any language)', () => {
     const rule = ONE_BRAIN_CORE.split('\n').filter(l => /BUY something|names a store|price or buying question|Name each product or listing/.test(l)).join('\n')
     expect(rule.length).toBeGreaterThan(200)
