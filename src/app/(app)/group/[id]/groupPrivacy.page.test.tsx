@@ -77,6 +77,39 @@ describe('the group page draws what the server says the caller may see', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Xóa khỏi nhóm' }))
     await waitFor(() => expect(JSON.parse(String(calls.find(c => c.url === '/api/group/g-1/members')!.init?.body))).toEqual({ memberId: 'm1', action: 'remove' }))
   })
+  it('a member can leave, a pending person can withdraw, the leader can delete: each asks first, then calls the server', async () => {
+    const confirm = vi.spyOn(window, 'confirm').mockReturnValue(true)
+    const loc = Object.getOwnPropertyDescriptor(window, 'location')
+    Object.defineProperty(window, 'location', { value: { origin: 'http://t.test', href: '' }, writable: true, configurable: true })
+    try {
+      groupReply = { status: 200, body: { state: 'member', id: 'g-1', name: 'Bua toi thu 6', creator_id: 'boss', status: 'open', suggestion: null, members: [member('m1', 'Linh')] } }
+      const a = render(<GroupPage />)
+      fireEvent.click(await screen.findByTestId('group-leave'))
+      await waitFor(() => expect(calls.some(c => c.url === '/api/group/g-1/leave' && c.init?.method === 'POST')).toBe(true))
+      a.unmount()
+      groupReply = { status: 200, body: { state: 'pending', id: 'g-1', name: 'Bua toi thu 6' } }
+      const b = render(<GroupPage />)
+      fireEvent.click(await screen.findByRole('button', { name: 'Rút yêu cầu' }))
+      await waitFor(() => expect(calls.filter(c => c.url === '/api/group/g-1/leave').length).toBe(2))
+      b.unmount()
+      groupReply = { status: 200, body: { state: 'creator', id: 'g-1', name: 'Bua toi thu 6', creator_id: 'me', status: 'open', suggestion: null, members: [], pendingRequests: [] } }
+      render(<GroupPage />)
+      fireEvent.click(await screen.findByTestId('group-delete'))
+      await waitFor(() => expect(calls.some(c => c.url === '/api/group/g-1' && c.init?.method === 'DELETE')).toBe(true))
+      expect(confirm).toHaveBeenCalledTimes(3)
+    } finally {
+      if (loc) Object.defineProperty(window, 'location', loc)
+      confirm.mockRestore()
+    }
+  })
+  it('declining the confirmation calls nothing', async () => {
+    const confirm = vi.spyOn(window, 'confirm').mockReturnValue(false)
+    groupReply = { status: 200, body: { state: 'creator', id: 'g-1', name: 'Bua toi thu 6', creator_id: 'me', status: 'open', suggestion: null, members: [], pendingRequests: [] } }
+    render(<GroupPage />)
+    fireEvent.click(await screen.findByTestId('group-delete'))
+    expect(calls.some(c => c.init?.method === 'DELETE')).toBe(false)
+    confirm.mockRestore()
+  })
   it('an accepted member sees the members count and no request list, and no request form', async () => {
     groupReply = { status: 200, body: { state: 'member', id: 'g-1', name: 'Bua toi thu 6', creator_id: 'boss', status: 'open', suggestion: null, members: [member('m1', 'Linh'), member('m3', 'Cuong')] } }
     render(<GroupPage />)

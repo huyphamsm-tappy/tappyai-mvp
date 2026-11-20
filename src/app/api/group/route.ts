@@ -6,6 +6,9 @@ import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
 import { isServableMediaUrl } from '@/lib/media/servableMedia'
+import { publicRateLimit } from '@/lib/security/publicRateLimit'
+import { rateLimitedResponse } from '@/lib/security/rateLimitResponse'
+import { clipField } from '@/lib/group/fields'
 
 export async function POST(req: NextRequest) {
   const { user, supabase } = await getRequestUser(req)
@@ -14,14 +17,22 @@ export async function POST(req: NextRequest) {
   const anonRefusal = refuseAnonymousSocialWrite(req, user)
   if (anonRefusal) return anonRefusal
 
+  // owner 20/11 (UAT 18/11: 25 groups in a row and six from one double tap were all accepted): a limit per account, and a second tap on the same name is the same group
+  const rl = await publicRateLimit(`group-create:${user.id}`, 10, 60 * 60_000)
+  if (!rl.ok) return rateLimitedResponse(req, rl, 'group_create')
+
   let name: string
   try {
     const body = await req.json()
-    name = (body.name || '').trim()
+    name = clipField(body.name, 60)
     if (!name) throw new Error('missing name')
   } catch {
     return NextResponse.json({ error: 'invalid_name', message: serverMessage('group.invalidName', requestLocale(req)) }, { status: 400 })
   }
+
+  const since = new Date(Date.now() - 60_000).toISOString()
+  const { data: recent } = await supabase.from('groups').select('id, name').eq('creator_id', user.id).eq('name', name).gt('created_at', since).limit(1)
+  if (recent && recent.length > 0) return NextResponse.json(recent[0])
 
   const { data, error } = await supabase
     .from('groups')

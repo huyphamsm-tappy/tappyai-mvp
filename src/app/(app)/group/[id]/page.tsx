@@ -162,6 +162,22 @@ export default function GroupPage() {
     }
   }
 
+  /** A member leaves, a pending person withdraws the request, the leader deletes the group; then back to the tools list. */
+  async function endGroup(kind: 'leave' | 'delete') {
+    if (!window.confirm(t(kind === 'leave' ? 'groupDining.confirmLeave' : 'groupDining.confirmDelete'))) return
+    setActionBusy(kind)
+    setActionError('')
+    try {
+      const res = await fetch(kind === 'leave' ? `/api/group/${id}/leave` : `/api/group/${id}`, { method: kind === 'leave' ? 'POST' : 'DELETE' })
+      if (!res.ok) { const err = await res.json().catch(() => ({})); setActionError(err.message || t('groupDining.actionFailed')); return }
+      window.location.href = SMART_TOOLS_HREF
+    } catch {
+      setActionError(t('groupDining.actionFailed'))
+    } finally {
+      setActionBusy(null)
+    }
+  }
+
   async function saveAvatar() {
     if (!avatarFile) return
     setAvatarBusy(true)
@@ -437,15 +453,23 @@ export default function GroupPage() {
             <div className="text-4xl mb-3">⏳</div>
             <h2 className="font-semibold text-gray-900 dark:text-white">{t('groupDining.pendingTitle')}</h2>
             <p className="text-sm text-content-secondary mt-1">{t('groupDining.pendingBody')}</p>
+            <button type="button" disabled={actionBusy === 'leave'} onClick={() => endGroup('leave')} className="mt-3 text-sm text-red-500 font-medium disabled:opacity-60">{t('groupDining.withdraw')}</button>
           </div>
         )}
 
-        {/* ACCEPTED MEMBER: waiting for the leader's suggestion */}
+        {/* ACCEPTED MEMBER: waiting for the leader's suggestion, and the way out */}
         {!isCreator && !gate && !group.suggestion && (
           <div className="card p-6 text-center">
             <p className="text-sm text-content-secondary">{t('groupDining.waitingSuggest')}</p>
           </div>
         )}
+        {!isCreator && !gate && (
+          <button type="button" disabled={actionBusy === 'leave'} onClick={() => endGroup('leave')} className="w-full text-center text-sm text-red-500 font-medium py-2 disabled:opacity-60" data-testid="group-leave">{t('groupDining.leave')}</button>
+        )}
+        {isCreator && (
+          <button type="button" disabled={actionBusy === 'delete'} onClick={() => endGroup('delete')} className="w-full text-center text-sm text-red-500 font-medium py-2 disabled:opacity-60" data-testid="group-delete">{t('groupDining.delete')}</button>
+        )}
+        {actionError && !isCreator && <p role="alert" className="text-sm text-red-500 text-center">{actionError}</p>}
 
         {/* Suggestion result — visible to everyone */}
         {group.suggestion && (
