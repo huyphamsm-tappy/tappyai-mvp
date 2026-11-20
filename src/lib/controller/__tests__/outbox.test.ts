@@ -487,6 +487,8 @@ describe('C8 — the drain is wired as a daily cron', () => {
     //   it out of `published`. Daily, fixed minute and hour; it notifies nobody, and does nothing while EXPLORE_VIDEO_PIPELINE_ENABLED is off.
     // 21 -> 22 on 2026-11-18 (Scam Shield, owner): `/api/cron/scam-shield-sync` reads the Ministry's scam warnings from the allow-listed official hosts ONCE A WEEK
     //   (Monday 03:00 UTC = 10:00 VN) and stores them in `scam_knowledge_versions`. At most 7 page reads per run; the model step is off unless SCAM_SHIELD_SYNC_AI=true.
-    expect(vercelJson.crons.length).toBe(22)
+    // 22 -> 24 on 2026-11-20 (owner approved the cleanup list, A3): `/api/cron/moderation-snapshot-purge` (clears appeal snapshots older than 60 days; 404 while MODERATION_ADMIN_ENABLED is off) and
+    //   `/api/cron/business-order-expiry` (closes Tappy Business orders pending past 72 h; no rows until the Business feature is live). Both daily, fixed minute and hour; neither notifies anybody.
+    expect(vercelJson.crons.length).toBe(24)
   })
 })

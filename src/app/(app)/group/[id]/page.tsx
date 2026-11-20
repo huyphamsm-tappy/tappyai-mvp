@@ -11,6 +11,7 @@ import GroupAvatarPicker from '../GroupAvatarPicker'
 import GroupBill, { type BillPerson, type BillShape } from './GroupBill'
 import { uploadGroupAvatar } from '@/lib/groups/avatarClient'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { GROUP_BUDGETS, budgetKeyFor } from '@/lib/group/budgets'
 
 type Member = {
   id: string
@@ -46,12 +47,13 @@ type VoteState = { counts: Record<string, number>; mine: string | null; voted: n
 /** What a person who is NOT yet a member is told: the group's name and whether their request waits. */
 type Gate = { state: 'pending' | 'none'; id: string; name: string }
 
-const BUDGET_OPTIONS = ['Dưới 100k', '100–200k', 'Trên 200k']
 
 export default function GroupPage() {
   const params = useParams()
   const id = params.id as string
   const { t } = useTranslation()
+  /** A stored budget shows in the viewer's language when it is one of the form's choices, else as typed (an older row). */
+  const budgetText = (v: string | null | undefined): string => { const k = budgetKeyFor(v); return k ? t(k) : (v ?? '') }
   const [avatarFile, setAvatarFile] = useState<File | null>(null)
   const [avatarBusy, setAvatarBusy] = useState(false)
   const [avatarError, setAvatarError] = useState('')
@@ -128,13 +130,13 @@ export default function GroupPage() {
       })
       if (!res.ok) {
         const err = await res.json()
-        setJoinError(err.message || err.error || 'Lỗi tham gia nhóm')
+        setJoinError(err.message || err.error || t('groupDining.joinFailed'))
         return
       }
       // opening the link only filed a REQUEST: the server says where the person stands (waiting for the leader)
       fetchGroup()
     } catch {
-      setJoinError('Lỗi kết nối, vui lòng thử lại')
+      setJoinError(t('groupDining.connFailed'))
     } finally {
       setJoining(false)
     }
@@ -146,7 +148,7 @@ export default function GroupPage() {
       const res = await fetch(`/api/group/${id}/suggest`, { method: 'POST' })
       if (!res.ok) {
         const err = await res.json()
-        alert(err.message || err.error || 'Lỗi gợi ý')
+        alert(err.message || err.error || t('groupDining.suggestFailed'))
         return
       }
       const data = await res.json()
@@ -154,7 +156,7 @@ export default function GroupPage() {
       setGroup(prev => prev ? { ...prev, suggestion: data.suggestion, suggestion_options: data.options?.length ? data.options : null, chosen_option: null, votes: undefined } : prev)
       if (data.options?.length) fetchGroup()
     } catch {
-      alert('Lỗi kết nối, vui lòng thử lại')
+      alert(t('groupDining.connFailed'))
     } finally {
       setSuggesting(false)
     }
@@ -254,7 +256,7 @@ export default function GroupPage() {
     return (
       <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 flex flex-col items-center justify-center gap-3 px-4">
         <div className="text-4xl">😕</div>
-        <p className="text-gray-600 dark:text-gray-400 font-medium">Không tìm thấy nhóm này</p>
+        <p className="text-gray-600 dark:text-gray-400 font-medium">{t('groupDining.notFound')}</p>
       </div>
     )
   }
@@ -300,7 +302,7 @@ export default function GroupPage() {
 
             {/* Share link */}
             <div className="card p-4">
-              <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-2">Chia sẻ link với nhóm</p>
+              <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-2">{t('groupDining.shareLink')}</p>
               <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-800 rounded-xl px-3 py-2.5">
                 <span className="flex-1 text-sm text-gray-600 dark:text-gray-300 truncate font-mono">
                   {typeof window !== 'undefined' ? `${window.location.origin}/group/${id}` : `tappyai.com/group/${id}`}
@@ -310,7 +312,7 @@ export default function GroupPage() {
                   className="flex items-center gap-1 text-link font-semibold text-sm shrink-0 transition-all"
                 >
                   {copied ? <Check size={15} /> : <Copy size={15} />}
-                  {copied ? 'Đã sao chép' : 'Sao chép'}
+                  {copied ? t('groupDining.copied') : t('groupDining.copy')}
                 </button>
               </div>
             </div>
@@ -326,7 +328,7 @@ export default function GroupPage() {
                     <div key={m.id} className="pb-3 border-b border-gray-100 dark:border-gray-800 last:border-0" data-testid="group-request">
                       <p className="font-semibold text-gray-900 dark:text-white">{m.name}</p>
                       <div className="mt-1 space-y-0.5 text-sm text-content-secondary">
-                        {m.budget && <p>💰 {m.budget}</p>}
+                        {m.budget && <p>💰 {budgetText(m.budget)}</p>}
                         {m.food_preferences && <p>🍽️ {m.food_preferences}</p>}
                         {m.dietary_restrictions && <p>🚫 {m.dietary_restrictions}</p>}
                         {m.area && <p>📍 {m.area}</p>}
@@ -345,7 +347,7 @@ export default function GroupPage() {
             {/* Member list */}
             {group.members.length > 0 ? (
               <div className="card p-4">
-                <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-3">Thành viên</p>
+                <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide mb-3">{t('groupDining.membersTitle')}</p>
                 <div className="space-y-3">
                   {group.members.map((m, i) => (
                     <div
@@ -354,10 +356,10 @@ export default function GroupPage() {
                     >
                       <p className="font-semibold text-gray-900 dark:text-white">{m.name}</p>
                       <div className="mt-1 space-y-0.5 text-sm text-content-secondary">
-                        {m.budget && <p>💰 {m.budget}</p>}
-                        {m.food_preferences && <p>🍽️ Thích: {m.food_preferences}</p>}
-                        {m.dietary_restrictions && <p>🚫 Kiêng: {m.dietary_restrictions}</p>}
-                        {m.area && <p>📍 Khu vực: {m.area}</p>}
+                        {m.budget && <p>💰 {budgetText(m.budget)}</p>}
+                        {m.food_preferences && <p>🍽️ {t('groupDining.likes', { v: m.food_preferences })}</p>}
+                        {m.dietary_restrictions && <p>🚫 {t('groupDining.avoids', { v: m.dietary_restrictions })}</p>}
+                        {m.area && <p>📍 {t('groupDining.areaLine', { v: m.area })}</p>}
                       </div>
                       <button type="button" disabled={actionBusy === m.id} onClick={() => decide(m.id, 'remove')} className="mt-1.5 text-xs text-red-500 font-medium disabled:opacity-60">{t('groupDining.remove')}</button>
                     </div>
@@ -366,7 +368,7 @@ export default function GroupPage() {
               </div>
             ) : (
               <div className="card p-4 text-center text-sm text-content-secondary">
-                Chưa có ai tham gia. Chia sẻ link ở trên nhé!
+                {t('groupDining.noMembersYet')}
               </div>
             )}
 
@@ -378,9 +380,9 @@ export default function GroupPage() {
                 className="w-full py-3 bg-gradient-to-r from-primary-500 to-accent-500 text-white font-semibold rounded-2xl flex items-center justify-center gap-2 disabled:opacity-60 transition-all active:scale-95 shadow-sm"
               >
                 {suggesting ? (
-                  <><Loader2 size={18} className="animate-spin" /> Tappy đang nghĩ...</>
+                  <><Loader2 size={18} className="animate-spin" /> {t('groupDining.thinking')}</>
                 ) : (
-                  '🍽️ Tappy gợi ý ngay'
+                  t('groupDining.suggestNow')
                 )}
               </button>
             )}
@@ -395,13 +397,13 @@ export default function GroupPage() {
             <form onSubmit={handleJoin} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-                  Tên bạn <span className="text-red-400">*</span>
+                  {t('groupDining.nameLabel')} <span className="text-red-400">*</span>
                 </label>
                 <input
                   type="text"
                   value={name}
                   onChange={e => setName(e.target.value)}
-                  placeholder="VD: Minh, Lan, Tú..."
+                  placeholder={t('groupDining.namePlaceholder')}
                   maxLength={50}
                   required
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 transition"
@@ -410,57 +412,57 @@ export default function GroupPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Ngân sách <span className="text-red-400">*</span>
+                  {t('groupDining.budgetLabel')} <span className="text-red-400">*</span>
                 </label>
                 <div className="flex gap-2 flex-wrap">
-                  {BUDGET_OPTIONS.map(b => (
+                  {GROUP_BUDGETS.map(b => (
                     <button
-                      key={b}
+                      key={b.value}
                       type="button"
-                      onClick={() => setBudget(b)}
+                      onClick={() => setBudget(b.value)}
                       className={`px-4 py-2 rounded-xl text-sm font-medium transition-all border ${
-                        budget === b
+                        budget === b.value
                           ? 'bg-interactive text-white border-primary-500'
                           : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-700 hover:border-primary-300'
                       }`}
                     >
-                      {b}
+                      {t(b.key)}
                     </button>
                   ))}
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Thích ăn gì?</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{t('groupDining.foodLabel')}</label>
                 <input
                   type="text"
                   value={foodPrefs}
                   onChange={e => setFoodPrefs(e.target.value)}
-                  placeholder="VD: bún bò, pizza, cơm tấm, lẩu..."
+                  placeholder={t('groupDining.foodPlaceholder')}
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 transition"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Kiêng gì không?</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{t('groupDining.dietLabel')}</label>
                 <input
                   type="text"
                   value={dietary}
                   onChange={e => setDietary(e.target.value)}
-                  placeholder="VD: không ăn thịt heo, dị ứng hải sản, ăn chay..."
+                  placeholder={t('groupDining.dietPlaceholder')}
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 transition"
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-                  Khu vực thuận tiện <span className="text-red-400">*</span>
+                  {t('groupDining.areaLabel')} <span className="text-red-400">*</span>
                 </label>
                 <input
                   type="text"
                   value={area}
                   onChange={e => setArea(e.target.value)}
-                  placeholder="VD: Quận 1, Bình Thạnh, Thủ Đức..."
+                  placeholder={t('groupDining.areaPlaceholder')}
                   required
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 transition"
                 />
@@ -559,7 +561,7 @@ export default function GroupPage() {
           <div className="card p-5">
             <div className="flex items-center gap-2 mb-3">
               <span className="text-2xl">🍽️</span>
-              <h2 className="font-bold text-gray-900 dark:text-white">Gợi ý của Tappy</h2>
+              <h2 className="font-bold text-gray-900 dark:text-white">{t('groupDining.suggestionTitle')}</h2>
             </div>
             <div className="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap leading-relaxed">
               {group.suggestion}
