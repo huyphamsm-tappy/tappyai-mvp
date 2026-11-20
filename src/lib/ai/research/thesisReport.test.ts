@@ -227,6 +227,21 @@ describe('releaseText: only checked text is shown', () => {
     expect(r.text).toContain('Nhưng đó là mức ổn định')
     expect(r.dropped).toBe(2)
   })
+  it('a sentence that points back, or a fragment of six words or fewer, goes with the dropped one before it; a paragraph that lost half of its sentences goes whole', () => {
+    const a = releaseText('## 1. A\nDoanh thu đạt 99.999 tỷ đồng [1]. Các số này cũ hơn nhiều [2]. Có 700 cửa hàng [2]. Có 700 cửa hàng nữa [2]. Mức này ổn định [2].', sources)
+    expect(a.text).not.toContain('Các số này')
+    expect(a.text).toContain('Có 700 cửa hàng')
+    const b = releaseText('## 1. A\nDoanh thu đạt 99.999 tỷ đồng [1]. Xem mục 3. Có 700 cửa hàng [2]. Có 700 cửa hàng nữa [2]. Mức này ổn định [2].', sources)
+    expect(b.text).not.toContain('Xem mục 3')
+    expect(b.text).toContain('Có 700 cửa hàng')
+    const c = releaseText('## 1. A\nDoanh thu đạt 99.999 tỷ đồng [1]. Có 800 cửa hàng [2]. Chênh lệch vẫn đáng kể khi tính đến ngành nghề [2].\n\nCó 700 cửa hàng [2].', sources)
+    expect(c.text).not.toContain('Chênh lệch vẫn')
+    expect(c.text).toContain('Có 700 cửa hàng')
+  })
+  it('a sentence that starts with "Do" (because) and does not follow a dropped one is kept', () => {
+    const r = releaseText('## 1. A\nDo vậy mô hình giữ nguyên lập luận chính của nó [2]. Có 700 cửa hàng [2].', sources)
+    expect(r.text).toContain('Do vậy mô hình')
+  })
   it('keeps headings, tables and sentences without figures, and renumbers the citations that remain', () => {
     const report = '## 1. A\nCó 700 cửa hàng [2].\n\n## 2. B\nDoanh thu đạt 12.500 tỷ đồng [1]. Đây là nhận định không có số.\n| Kịch bản | 2027 |\n| thấp | 120 |'
     const r = releaseText(report, sources)

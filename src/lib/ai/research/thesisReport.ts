@@ -204,6 +204,10 @@ export function wordCiteStream(): { push(delta: string): string; end(): string }
 
 /** Words that start a sentence resting on the previous one (folded: no accents, lower case). */
 const DEPENDENT_START = /^(nhung|tuy nhien|tuy vay|tuy|song|cung|ngoai ra|ben canh do|theo do|do do|vi vay|vi the|nhu vay|trong khi do|trong khi|dong thoi|con|however|but|also|moreover|therefore|thus|meanwhile|in addition|by contrast)\b/
+/** A sentence that opens by pointing back: "this range", "these figures", "those two" (folded). The first two or three words, then "nay" / "tren" / "vua", or a word and then "do" (this/that). */
+const DEICTIC_START = /^(?:\S+\s+){0,2}(?:nay|tren|vua)\b|^(?:\S+\s+){1,2}do\b/
+/** A cross-reference or a pointer that says nothing by itself ("Xem mục 3.", "Cần theo dõi văn bản ban hành.", "See section 3."), folded. */
+const FRAGMENT = /^(xem|can theo doi|tham khao|see|refer to)\b/
 /** The sentence filter of releaseText, before the citations are renumbered (sectionRelease.ts runs it on one section at a time). Pure. */
 export function filterVerified(report: string, sources: readonly (VerifierSource & { url?: string; site?: string; published?: string })[], trusted = ''): { kept: string; dropped: number } {
   let dropped = 0
@@ -222,12 +226,17 @@ export function filterVerified(report: string, sources: readonly (VerifierSource
         if (refused.length && refused.every(f => written(f, trusted))) bad = false
       }
       // a sentence that leans on the one before it ("But only 1.8% ...", "Also ...") is left with nothing to lean on when that one was dropped (judge, 20/11: a summary opening "Nhung chi 1,8%..."): it goes with it
-      if (!bad && prevDropped && DEPENDENT_START.test(fold(s.trim()))) bad = true
+      // the same for a sentence that points back ("Các số này cũ hơn...", "Dải này cho thấy...") and for a cross-reference or a fragment of three words or fewer ("Xem mục 3.", "Cần theo dõi văn bản ban hành."): what they pointed at or finished is gone
+      const f = fold(s.trim())
+      if (!bad && prevDropped && (DEPENDENT_START.test(f) || DEICTIC_START.test(f) || FRAGMENT.test(f) || f.split(' ').length <= 3)) bad = true
       prevDropped = bad
       if (bad) dropped++
       return !bad
     })
     if (!ok.length) return null
+    // a paragraph that lost three fifths of its sentences (and at least two) is no longer the paragraph the writer wrote: what is left has lost its thread (two judges, 20/11: "Chênh lệch vẫn đáng kể..." alone after its comparison went), so the whole paragraph goes
+    const lost = sentences.length - ok.length
+    if (lost >= 2 && lost * 5 >= sentences.length * 3) { dropped += ok.length; return null }
     return marker + ok.join(' ')
   }).filter((l): l is string => l !== null).join('\n').replace(/\n{3,}/g, '\n\n')
   return { kept, dropped }
