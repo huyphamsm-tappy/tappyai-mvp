@@ -3,7 +3,7 @@
 import { useEffect, useState, useSyncExternalStore, type CSSProperties, type ReactNode } from 'react'
 import { SHELL_REF } from '@/lib/chat/shellRef'
 import { SHELL_SLOTS_ACTIVE } from '@/lib/chat/shellSlots'
-import { ShellBackgroundSlot, ShellBannerSlot } from './ShellSlots'
+import { ShellBackgroundSlot } from './ShellSlots'
 import { usePathname } from 'next/navigation'
 import ProjectOverview from './ProjectOverview'
 import { projectViewStore } from '@/lib/chat/workspace/projectView'
@@ -66,7 +66,7 @@ export function WorkspaceFrame({ store, children }: { store: ConversationStore; 
       {SHELL_REF ? <div data-shell-history className={historyOpen ? 'contents' : 'hidden'}><HistorySidebar /></div> : <HistorySidebar />}
       {/* the first layout: the banner is a panel of its own ABOVE the conversation's panel, level with the top of the history panel; the two are separate, the conversation is not shrunk inside a banner */}
       {SHELL_REF
-        ? <div className="min-w-0 flex-1 lg:flex lg:min-h-0 lg:flex-col lg:gap-3">{!overview && <ShellBannerSlot />}{conversation}</div>
+        ? <div className="min-w-0 flex-1 lg:flex lg:min-h-0 lg:flex-col lg:gap-3">{/* owner 20/11 (picture 1): the banner now lives INSIDE the header row (HeaderPartnerBanner); the conversation panel starts right under the header */}{conversation}</div>
         : conversation}
     </>
   )

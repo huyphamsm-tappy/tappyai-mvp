@@ -25,7 +25,7 @@ export default function HomeGreeting() {
       <div className="h-28 w-28 select-none overflow-hidden rounded-3xl shadow-lg sm:h-32 sm:w-32">
         <TappyMascot pose="wave" size={128} eager animated />
       </div>
-      <h2 className="min-h-[2.5rem] max-w-xl px-4 text-center text-2xl font-semibold leading-snug text-gray-900 dark:text-white sm:text-3xl" data-testid="home-greeting-line">{line}</h2>
+      <h2 className="min-h-[2.5rem] max-w-xl px-4 text-center text-2xl font-semibold leading-snug text-[#ffc83d] sm:text-3xl" data-testid="home-greeting-line">{line}</h2>
     </div>
   )
 }

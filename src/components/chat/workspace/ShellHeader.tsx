@@ -9,6 +9,7 @@ import { useNotifications } from '@/components/NotificationProvider'
 import { useMessageUnread, badgeTotal } from '@/lib/messaging/useMessageUnread'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { planBadgeLabel } from '@/lib/chat/v206Look'
+import HeaderPartnerBanner from './HeaderPartnerBanner'
 
 // The first layout's header (NEXT_PUBLIC_SHELL_REF): a menu button that opens / closes the history panel, the logo with the REAL plan badge, a bell to the person's notifications (a red dot only
 // when something is unread) and their real avatar to the profile. A guest has no profile to read: the avatar is then the app's initial-letter state. Nothing is drawn that has no source.
@@ -47,6 +48,7 @@ export default function ShellHeader({ historyOpen, onToggleHistory }: { historyO
           {badge && <span data-testid="v206-plan-badge" className="rounded border border-white/15 bg-white/10 px-1.5 font-mono text-[10px] font-bold leading-4 text-amber-200">{badge}</span>}
         </Link>
       </div>
+      <HeaderPartnerBanner />
       <div className="flex items-center gap-2">
         <Link href="/profile/notifications" aria-label={unread ? t('chatWs.shell.bellUnread') : t('chatWs.shell.bell')} className="relative flex h-10 w-10 items-center justify-center rounded-xl text-slate-200 transition-colors hover:bg-white/10">
           <Bell size={22} aria-hidden="true" />
