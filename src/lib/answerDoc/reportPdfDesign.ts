@@ -28,7 +28,11 @@ const CW = PAGE.w - 2 * MX
 const NOGRID = { hLineWidth: () => 0, vLineWidth: () => 0, paddingLeft: () => 0, paddingRight: () => 0, paddingTop: () => 0, paddingBottom: () => 0 }
 
 /** What the designed page needs besides the text: the cover facts, the logo as a data URL (when the browser could load it), and the clock. */
-export interface DesignOptions { cover: PdfCover; logo?: string; now?: Date }
+export interface DesignOptions {
+  cover: PdfCover; logo?: string; now?: Date
+  /** 20/11 (trip plan PDF): pictures the caller already loaded as JPEG/PNG data URLs, drawn as a captioned gallery after the sections. Anything that is not an image data URL is skipped. */
+  gallery?: { title: string; items: Array<{ name: string; dataUrl: string }> }
+}
 
 const rrect = (x: number, y: number, w: number, h: number, r: number, color?: string, line?: string): PdfNode => ({ type: 'rect', x, y, w, h, r, ...(color ? { color } : {}), ...(line ? { lineColor: line, lineWidth: 0.9 } : {}) })
 
@@ -238,6 +242,24 @@ function sectionBody(blocks: Parameters<typeof blocksToNodes>[0]): PdfNode[] {
   return out
 }
 
+const IMAGE_DATA_URL = /^data:image\/(?:jpeg|png);base64,[A-Za-z0-9+/=]+$/
+
+/** The gallery of a plan: a title, then the pictures three to a row, each with its caption; a row is never split across pages. */
+function galleryBlock(g: DesignOptions['gallery']): PdfNode[] {
+  const items = (g?.items ?? []).filter(i => IMAGE_DATA_URL.test(i.dataUrl)).slice(0, 12)
+  if (!g || !items.length) return []
+  const cols = 3
+  const gap = 10
+  const w = (CW - gap * (cols - 1)) / cols
+  const rows: PdfNode[] = []
+  for (let i = 0; i < items.length; i += cols) {
+    const cells: PdfNode[] = items.slice(i, i + cols).map(it => ({ width: w, stack: [{ image: it.dataUrl, fit: [w, 96] }, { text: clip(it.name, 44), fontSize: 8, color: MUTED, margin: [0, 3, 0, 0], lineHeight: 1.15 }] }))
+    while (cells.length < cols) cells.push({ width: w, text: '' })
+    rows.push({ columns: cells, columnGap: gap, margin: [0, 0, 0, 10], unbreakable: true })
+  }
+  return [{ text: g.title, bold: true, fontSize: 10, color: INK, margin: [0, 10, 0, 8], headlineLevel: 1 }, ...rows]
+}
+
 function sourcesBlock(m: DesignModel, label: string): PdfNode[] {
   const items = m.sources.flatMap(b => (b.t === 'list' ? b.items.map(i => plainText(i.text)) : b.t === 'para' ? [plainText(b.text)] : [])).filter(Boolean)
   if (!items.length) return []
@@ -262,6 +284,7 @@ export function reportPdfDesigned(text: string, links: readonly ReportLink[], o:
     // the designed cards follow the summary: key figures, the highlight (with the bar card), the notes
     if (i === summaryAt) body.push(...kpiRow(m), ...highlightAndBars(m), ...notes(m, w.scope, w.caveats))
   })
+  body.push(...galleryBlock(o.gallery))
   body.push(...sourcesBlock(m, w.sources))
   const updated = o.cover.updated ?? o.cover.facts[0] ?? ''
   return {

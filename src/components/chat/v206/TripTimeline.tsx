@@ -6,6 +6,7 @@ import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react'
 import { Download, ExternalLink, Lightbulb, MapPin, Share2, UserRound } from 'lucide-react'
 import { downloadReportPdf, type PdfCover } from '@/lib/answerDoc/reportPdf'
 import { planMarkdown } from '@/lib/answerDoc/planMarkdown'
+import { loadPlanGallery, planPhotoList } from '@/lib/answerDoc/planPdfImages'
 import '../v206.css'
 import type { TappyPlan } from '@/components/TripPlanCard'
 import ShareMenu from '@/components/share/ShareMenu'
@@ -120,7 +121,9 @@ export default function TripTimeline({ msgId, plan: rawPlan, places, stopImages 
         words: { scope: t('report.design.scope'), caveats: t('report.design.caveats'), sources: t('report.design.sources'), footer: t('report.design.footer') },
         labels: { line: t('v206.trip.pdfLine'), note: t('v206.trip.pdfNote'), footerBrand: t('v206.trip.pdfFooter') },
       }
-      await downloadReportPdf(text, [], plan.title, cover)
+      // the pictures the card shows (a stop's own, the turn's place cards, the ones found for it), loaded through the server and shrunk; one that cannot be loaded is left out
+      const photos = await loadPlanGallery(planPhotoList(withPlacePhotos(plan as TappyPlan, places), stopImages, subjectKey))
+      await downloadReportPdf(text, [], plan.title, cover, photos.length ? { title: t('v206.trip.pdfGallery'), items: photos } : undefined)
     } finally { setPdfBusy(false) }
   }
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([])

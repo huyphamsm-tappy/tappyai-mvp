@@ -130,19 +130,22 @@ export async function loadLogoDataUrl(src = '/branding/otter-logo.png'): Promise
 }
 
 /** Builds the PDF and hands it to the browser as a download named after the title: one click, no print dialog. */
-export async function downloadReportPdf(text: string, links: readonly ReportLink[], title: string, cover?: PdfCover): Promise<void> {
-  downloadBlob(await reportPdf(text, links, title, cover, await loadLogoDataUrl()), reportFileName(title, 'pdf'))
+export async function downloadReportPdf(text: string, links: readonly ReportLink[], title: string, cover?: PdfCover, gallery?: PdfGallery): Promise<void> {
+  downloadBlob(await reportPdf(text, links, title, cover, await loadLogoDataUrl(), gallery), reportFileName(title, 'pdf'))
 }
+
+/** Pictures for the designed page (a trip plan's stop photos as JPEG data URLs) and the title of their section. */
+export type PdfGallery = { title: string; items: Array<{ name: string; dataUrl: string }> }
 
 /**
  * The report as a PDF file (a Blob), built in the browser. pdfmake and its font file are loaded on first use only. With a cover, the report is laid out as the owner's designed page
  * (reportPdfDesign.ts) whenever it has "##" sections; anything else keeps the plain layout above.
  */
-export async function reportPdf(text: string, links: readonly ReportLink[], title: string, cover?: PdfCover, logo?: string): Promise<Blob> {
+export async function reportPdf(text: string, links: readonly ReportLink[], title: string, cover?: PdfCover, logo?: string, gallery?: PdfGallery): Promise<Blob> {
   const [pm, fonts] = await Promise.all([import('pdfmake/build/pdfmake'), import('pdfmake/build/vfs_fonts')])
   const pdfMake = (pm as { default?: typeof pm.default }).default ?? (pm as unknown as typeof pm.default)
   const vfs = (fonts as { default?: Record<string, string> }).default ?? (fonts as unknown as Record<string, string>)
   pdfMake.addVirtualFileSystem(vfs)
-  const designed = cover ? (await import('@/lib/answerDoc/reportPdfDesign')).reportPdfDesigned(text, links, { cover, ...(logo ? { logo } : {}) }) : null
+  const designed = cover ? (await import('@/lib/answerDoc/reportPdfDesign')).reportPdfDesigned(text, links, { cover, ...(logo ? { logo } : {}), ...(gallery?.items.length ? { gallery } : {}) }) : null
   return pdfMake.createPdf(designed ?? reportPdfDefinition(text, links, title, cover)).getBlob()
 }
