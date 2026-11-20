@@ -1929,8 +1929,11 @@ export default function ChatInterface({
                 const planNames = planItemNames(plan)
                 const optionsShown = optionsMedia?.kind === 'options' ? withoutListed(optionsMedia.options, [...planNames, ...(placeView?.items ?? []).map(p => p.name)]) : []
                 const optionsNode = optionsMedia?.kind === 'options' && optionsShown.length > 0 && !streamingMsg ? <OptionCards title={optionsMedia.title} options={optionsShown} /> : null
+                // 20/11 (owner): under a plan card the leftover place cards ("Tất cả (8)", "Xem thêm 5 chỗ") are not shown: the stops already carry their photos and details, and a long ugly list under the plan helps nobody.
+                // Only a place the answer's own words name (a resort it recommends beside the plan) keeps its card.
+                const plain = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
                 const placeViewShown = placeView && planNames.length
-                  ? (rest => (rest.length ? { ...placeView, items: rest, picked: placeView.picked?.filter(id => rest.some(r => r.id === id)) } : null))(withoutListed(placeView.items, planNames))
+                  ? (rest => (rest.length ? { ...placeView, items: rest, picked: placeView.picked?.filter(id => rest.some(r => r.id === id)) } : null))(withoutListed(placeView.items, planNames).filter(p => p.name.length >= 4 && plain(bodyTextRaw).includes(plain(p.name))))
                   : placeView
                 // 16/11: the fixed picture of a live-information topic, under the answer's opening (TopicBanner.tsx)
                 const topicNode = topicMedia?.kind === 'topic' && !streamingMsg && !isDoc ? <TopicBanner topic={topicMedia.topic} variant={topicMedia.variant ?? 0} label={t(`v206.topic.${topicMedia.topic}`)} /> : null

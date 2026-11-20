@@ -192,6 +192,13 @@ describe('the same component for different content (variation), and a different 
     expect(parts(container).placeCards).toBe(2)
     expect(screen.getByRole('tab', { name: 'Dự toán' })).toBeTruthy()
   })
+  it('T16 owner 20/11: under a plan the leftover place cards the answer does not name are not shown at all (the stops carry their own photos)', () => {
+    const plan = { type: 'trip', title: 'Quy Nhơn 3N2Đ', days: [{ label: 'Ngày 1', items: [{ time: '10:00', emoji: '🌊', category: 'entertainment', name: 'Bãi Xếp' }] }, { label: 'Ngày 2', items: [{ time: '09:00', emoji: '🏝️', category: 'entertainment', name: 'Kỳ Co' }] }] }
+    const answer = withCards(`Lịch trình gọn cho bạn.\n\n[TAPPY_PLAN]${JSON.stringify(plan)}[/TAPPY_PLAN]`, view('travel', [place('x1', 'Bãi Biển Lạ Một', 'travel', 0), place('x2', 'Bãi Biển Lạ Hai', 'travel', 1)]))
+    const { container } = open('c16', msgs(['lập kế hoạch Quy Nhơn 3 ngày 2 đêm', answer]))
+    expect(parts(container)).toMatchObject({ timeline: 1 })
+    expect(parts(container).placeCards).toBe(0)
+  })
 })
 
 describe('variations: five intent families, three different answers each; the layout follows the DATA (counts are not fixed anywhere)', () => {
