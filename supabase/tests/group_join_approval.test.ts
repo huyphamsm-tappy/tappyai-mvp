@@ -15,7 +15,7 @@ const AUTH = read('add_group_members_auth.sql')
 const BOUNDARY = read('20260904_group_read_boundary.sql')
 const APPROVAL = read('20261204_group_join_approval.sql')
 
-const PORT = 54392
+const PORT = 54300
 const CREATOR = '11111111-1111-4111-8111-111111111111'
 const MEMBER = '22222222-2222-4222-8222-222222222222'
 const PENDING = '33333333-3333-4333-8333-333333333333'

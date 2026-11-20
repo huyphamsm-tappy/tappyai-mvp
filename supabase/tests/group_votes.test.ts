@@ -10,7 +10,7 @@ const REPO = join(__dirname, '..', '..')
 const read = (f: string) => readFileSync(join(REPO, 'supabase/migrations', f), 'utf8')
 const FILES = ['add_groups.sql', 'add_group_members_auth.sql', '20260904_group_read_boundary.sql', '20261204_group_join_approval.sql', '20261205_group_suggestion_votes.sql'].map(read)
 
-const PORT = 54393
+const PORT = 54303
 const CREATOR = '11111111-1111-4111-8111-111111111111'
 const MEMBER = '22222222-2222-4222-8222-222222222222'
 const PENDING = '33333333-3333-4333-8333-333333333333'
