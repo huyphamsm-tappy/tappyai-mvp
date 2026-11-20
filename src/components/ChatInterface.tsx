@@ -109,6 +109,7 @@ import { titleKey } from '@/lib/answerDoc/parse'
 import ResearchCard from '@/components/chat/ResearchCard'
 import ReportCover, { REPORT_LAYOUT_A } from '@/components/chat/ReportCover'
 import ReportExportBar from '@/components/chat/ReportExportBar'
+import HomeGreeting from '@/components/chat/HomeGreeting'
 import { looksLikeReport } from '@/lib/chat/requestHistory'
 import ReportViewBar from '@/components/chat/ReportViewBar'
 import { reportViewOf } from '@/lib/chat/reportView'
@@ -1768,51 +1769,8 @@ export default function ChatInterface({
       <div ref={scrollRef} data-chat-scroll style={{ overflowAnchor: "none" }} className="flex-1 overflow-y-auto">
         <div ref={contentRef} className="max-w-container-content mx-auto w-full px-4 py-5">
           {messages.length === 0 && (
-            <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 animate-fade-in">
-              <div className="text-center">
-                <div className="w-20 h-20 rounded-2xl mx-auto mb-4 select-none overflow-hidden shadow-lg">
-                  <TappyMascot pose={getTappyPose({ category })} size={80} eager animated />
-                </div>
-                <h3 className="font-semibold text-gray-900 dark:text-white text-lg">{catInfo ? t(`tag.${catInfo.id}`) : 'TappyAI'}</h3>
-                <p className="text-content-secondary text-sm mt-1">{t('chat.welcomeSubtitle')}</p>
-                {hasMemory && (
-                  <Link
-                    href="/profile/tappy-knows"
-                    className="inline-flex items-center gap-1.5 mt-2 px-2.5 py-1 rounded-full bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 text-xs font-medium hover:bg-primary-100 dark:hover:bg-primary-900/50 transition-colors"
-                  >
-                    <Brain size={12} /> {t('chat.memoryChip')}
-                  </Link>
-                )}
-              </div>
-              {/* Tappy Mood selector */}
-              <div className="w-full">
-                <p className="text-xs text-gray-400 dark:text-gray-500 text-center mb-2">{t('chat.moodQuestion')}</p>
-                <div className="flex justify-center gap-2 flex-wrap">
-                  {MOODS.map((mood) => (
-                    <button
-                      key={mood.id}
-                      type="button"
-                      onClick={() => {
-                        posthog.capture('mood_selected', { mood: mood.id })
-                        append({ role: 'user', content: t(mood.promptKey) })
-                      }}
-                      className="flex flex-col items-center gap-1 px-3 py-2 rounded-2xl bg-gray-50 dark:bg-gray-800/50 hover:bg-primary-50 dark:hover:bg-primary-900/20 border border-gray-100 dark:border-gray-700 hover:border-primary-200 dark:hover:border-primary-800 transition-all active:scale-95"
-                    >
-                      <span className="text-2xl">{mood.emoji}</span>
-                      <span className="text-xs font-medium text-content-secondary">{t(mood.labelKey)}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <div className="w-full space-y-2">
-                {quickPrompts.map((prompt) => (
-                  <button key={prompt} onClick={() => { posthog.capture('chat_message_sent', { input_method: 'quick_prompt' }); append({ role: 'user', content: prompt }) }} className="w-full text-left px-4 py-3 rounded-2xl bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 text-sm transition-all border border-gray-100 dark:border-gray-700 flex items-center gap-2">
-                    <Sparkles size={14} className="text-primary-400 flex-shrink-0" />
-                    {prompt}
-                  </button>
-                ))}
-              </div>
-            </div>
+            // owner 20/11: the empty chat is the mascot and ONE greeting by the time of day; no mood buttons, no suggested questions, no memory chip
+            <HomeGreeting />
           )}
           {/* Memory / data transparency indicator — visible while chatting, links to review & control (MUXS 23) */}
           {hasMemory && messages.length > 0 && (
